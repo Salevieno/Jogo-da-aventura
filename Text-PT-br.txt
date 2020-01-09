@@ -1,0 +1,30 @@
+Tudo esta bem
+
+* Boas vindas *
+Bem vindo ao jogo da aventura!
+Novo jogo (n) Carregar jogo (l)
+
+* Classes *
+Cavaleiro
+Mago
+Arqueiro
+Animal
+Assassino
+
+* Novo jogo *
+Portugues (P) English (E)
+Qual o seu nome?
+Qual o seu sexo? (M/F)
+Escolha sua classe:
+Cavaleiro (1)	Mago (2)	Arqueiro (3)	Animal (4)	Assassino (5)
+Cavaleiros sao poderosos guerreiros corpo-a-corpo. Eles tem grande ataque, poder e vitalidade e sao os guerreiros mais fortes do reino.
+Magos tem o maior poder magico. Eles controlam os elementos e podem usar poderes sobrenaturais para manipular a magia e a vida.
+Arqueiros sao guerreiros especializados em luta a distancia. Eles usam poder fisico combinado com o controle dos elementos.
+Animais vivem em harmonia com a natureza e podem usufruir dos seus poderes. Eles tem grande poder sobre a vida e incrivel agilidade.
+Assassinos sao os mais ageis em todo o reino. Eles atacam cruelmente qualquer inimigo que cruze o seu caminho buscando poder e riqueza.
+Tutorial? (s/n)
+
+* Doctor *
+Ola, gostaria de tratar esses ferimentos?
+Tenha um bom dia!
+Ola, bom ver que esta bem!

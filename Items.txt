@@ -1,0 +1,337 @@
+// Invent[1] a invent[60] = Potions
+// Invent[61] a invent[120] = Alchemy
+// Invent[121] a invent[160] = Forge
+// Invent[161] a invent[220] = Pet
+// Invent[221] a invent[260] = Food
+// Invent[261] a invent[300] = Arrow
+// Invent[301] a invent[1300] = Equips
+// Invent[1301] a invent[1700] = Itens
+// Invent[1701] a invent[1800] = Fab
+// Invent[1801] a invent[2000] = Quest
+1	tiny hp	5	20
+2	tiny mp	5	20
+3	small hp	5	20
+4	small mp	5	20
+5	better hp	5	20
+6	better mp	5	20
+7	medium hp	5	20
+8	medium mp	5	20
+9	dense hp	5	20
+10	dense mp	5	20
+11	big hp	5	20
+12	big mp	5	20
+13	master hp	5	20
+14	master mp	5	20
+15	huge hp	5	20
+16	huge mp	5	20
+17	mighty hp	5	20
+18	mighty mp	5	20
+19	legend hp	5	20
+20	legend mp	5	20
+21	small fire	5	20
+22	small water	5	20
+23	small earth	5	20
+24	small grass	5	20
+25	small air	5	20
+26	small bolt	5	20
+27	Medium fire	5	20
+28	Medium water	5	20
+29	Medium earth	5	20
+30	Medium grass	5	20
+31	Medium air	5	20
+32	Medium bolt	5	20
+33	Big fire	5	20
+34	Big water	5	20
+35	Big earth	5	20
+36	Big grass	5	20
+37	Big air	5	20
+38	Big bolt	5	20
+39	Big dark	5	20
+40	Big light	5	20
+41	Small dragon's potion	5	20
+42	Medium dragon's potion	5	20
+43	Big dragon's potion	5	20
+61	Big snow	5	20
+62	herb 1	5	20
+63	wood 1	5	20
+64	metal 1	5	20
+65	herb 2	5	20
+66	wood 2	5	20
+67	metal 2	5	20
+68	herb 3	5	20
+69	wood 3	5	20
+70	metal 3	5	20
+71	herb 4	5	20
+72	wood 4	5	20
+73	metal 4	5	20
+74	herb 5	5	20
+75	wood 5	5	20
+76	metal 5	5	20
+77	herb 6	5	20
+78	wood 6	5	20
+79	metal 6	5	20
+80	herb 7	5	20
+81	wood 7	5	20
+82	metal 7	5	20
+83	herb 8	5	20
+84	wood 8	5	20
+85	metal 8	5	20
+86	herb 9	5	20
+87	wood 9	5	20
+88	metal 9	5	20
+89	herb 10	5	20
+90	wood 10	5	20
+91	metal 10	5	20
+92	small rune	5	20
+93	small rune	5	20
+94	medium rune	5	20
+95	medium rune	5	20
+96	big rune	5	20
+97	big rune	5	20
+98	rough rune	5	20
+99	rough rune	5	20
+100	strong rune	5	20
+101	strong rune	5	20
+102	food	5	20
+103	wood equip	5	20
+104	wood weapon	5	20
+105	apple smoothie	5	20
+106	banana smoothie	5	20
+107	straw smoothie	5	20
+108	blackb smoothie	5	20
+109	pet exp	5	20
+110	atk train	5	20
+111	def train	5	20
+112	steel equip	5	20
+113	steel weapon	5	20
+114	hp medium pot	5	20
+115	mini coconut	5	20
+116	pet medium exp	5	20
+117	refresh water	5	20
+118	high hp pot	5	20
+119	high mp pot	5	20
+120	pet high exp	5	20
+121	special equip	5	20
+122	mp medium pot	5	20
+123	apple	5	20
+124	banana	5	20
+125	strawberry	5	20
+126	chilli peper	5	20
+127	blackberry	5	20
+128	mushroom	5	20
+129	fish	5	20
+130	raspberry	5	20
+131	lemon	5	20
+132	orange	5	20
+133	tomato	5	20
+134	carrot	5	20
+135	honey	5	20
+136	mango	5	20
+137	watermelon	5	20
+138	grapes	5	20
+139	fern	5	20
+140	meat	5	20
+141	bat	5	20
+142	cave rat	5	20
+143	coconut	5	20
+144	crab	5	20
+145	shrimp	5	20
+146	oyster	5	20
+147	Soup	5	20
+148	Hot beverage	5	20
+149	Coffee	5	20
+150	Boiling water	5	20
+151	Noodles	5	20
+152	Yakisoba	5	20
+153	Melted cheese	5	20
+154	Dragon's food	5	20
+155	Chocolate milk	5	20
+156	Milk	5	20
+157	Pizza	5	20
+158	Magic soup	5	20
+159	Ice Cream	5	20
+160	Iced tea	5	20
+161	Sweeties	5	20
+162	Cold chocolate	5	20
+163	coconut water	5	20
+164	coconut meat	5	20
+165	arrow	5	20
+166	strong arrow	5	20
+167	fire arrow	5	20
+168	water arrow	5	20
+169	earth arrow	5	20
+170	grass arrow	5	20
+171	air arrow	5	20
+172	bolt arrow	5	20
+173	dark arrow	5	20
+174	light arrow	5	20
+175	snow arrow	5	20
+176	wood sword	5	20
+177	wood shield	5	20
+178	wood armor	5	20
+179	Copper sword	5	20
+180	Copper shield	5	20
+181	Copper armor	5	20
+182	light sword	5	20
+183	light shield	5	20
+184	light armor	5	20
+185	heavy sword	5	20
+186	heavy shield	5	20
+187	heavy armor	5	20
+188	knight sword	5	20
+189	knight shield	5	20
+190	knight armor	5	20
+191	super sword	5	20
+192	super shield	5	20
+193	super armor	5	20
+194	iron sword	5	20
+195	iron shield	5	20
+196	iron armor	5	20
+197	metal sword	5	20
+198	metal shield	5	20
+199	metal armor	5	20
+200	rare sword	5	20
+201	rare shield	5	20
+202	rare armor	5	20
+203	epic sword	5	20
+204	epic shield	5	20
+205	epic armor	5	20
+206	Antique sword	5	20
+207	Antique shield	5	20
+208	Antique armor	5	20
+209	Rock sword	5	20
+210	Rock shield	5	20
+211	Rock armor	5	20
+212	Crystal sword	5	20
+213	Crystal shield	5	20
+214	Crystal armor	5	20
+215	Relic sword	5	20
+216	Relic shield	5	20
+217	Relic armor	5	20
+218	Beach sword	5	20
+219	Beach shield	5	20
+220	Beach armor	5	20
+221	Sun sword	5	20
+222	Sun shield	5	20
+223	Sun armor	5	20
+224	Tropical sword	5	20
+225	Tropical shield	5	20
+226	Tropical armor	5	20
+227	Island sword	5	20
+228	Island shield	5	20
+229	Island armor	5	20
+230	Ash sword	5	20
+231	Ash shield	5	20
+232	Ash armor	5	20
+233	Magma sword	5	20
+234	Magma shield	5	20
+235	Magma armor	5	20
+236	Hot sword	5	20
+237	Hot shield	5	20
+238	Hot armor	5	20
+239	Volcano sword	5	20
+240	Volcano shield	5	20
+241	Volcano armor	5	20
+242	Core sword	5	20
+243	Core shield	5	20
+244	Core armor	5	20
+245	Bright sword	5	20
+246	Bright shield	5	20
+247	Bright armor	5	20
+248	Glorious sword	5	20
+249	Glorious shield	5	20
+250	Glorious armor	5	20
+251	Dragon's sword	5	20
+252	Dragon's shield	5	20
+253	Dragon's armor	5	20
+254	Toy sword	5	20
+255	Toy shield	5	20
+256	Toy armor	5	20
+257	rookie's sword	5	20
+258	rookie's shield	5	20
+259	rookie's armor	5	20
+260	Dreamer's sword	5	20
+261	Dreamer's shield	5	20
+262	Dreamer's armor	5	20
+263	mid sword	5	20
+264	mid shield	5	20
+265	mid armor	5	20
+266	courage sword	5	20
+267	courage shield	5	20
+268	courage armor	5	20
+269	partner's sword	5	20
+270	partner's shield	5	20
+271	partner's armor	5	20
+272	evo sword	5	20
+273	evo shield	5	20
+274	evo armor	5	20
+275	grow sword	5	20
+276	grow shield	5	20
+277	grow armor	5	20
+278	love sword	5	20
+279	love shield	5	20
+280	love armor	5	20
+281	Conquer's sword	5	20
+282	Conquer's shield	5	20
+283	Conquer's armor	5	20
+284	Coconut sword	5	20
+285	Coconut shield	5	20
+286	Coconut armor	5	20
+287	Ocean sword	5	20
+288	Ocean shield	5	20
+289	Ocean armor	5	20
+290	train staff	5	20
+291	train shield	5	20
+292	train robe	5	20
+293	great staff	5	20
+294	great shield	5	20
+295	great robe	5	20
+296	power staff	5	20
+297	power shield	5	20
+298	power robe	5	20
+299	Mystical staff	5	20
+300	Mystical shield	5	20
+301	Mystical robe	5	20
+302	mage staff	5	20
+303	mage shield	5	20
+304	mage robe	5	20
+305	arcane staff	5	20
+306	arcane shield	5	20
+307	arcane robe	5	20
+308	magic staff	5	20
+309	magic shield	5	20
+310	magic robe	5	20
+311	learn staff	5	20
+312	learn shield	5	20
+313	learn robe	5	20
+314	wise staff	5	20
+315	wise shield	5	20
+316	wise robe	5	20
+317	epic staff	5	20
+318	epic shield	5	20
+319	epic robe	5	20
+320	Antique staff	5	20
+321	Antique shield	5	20
+322	Antique robe	5	20
+323	Rock staff	5	20
+324	Rock shield	5	20
+325	Rock robe	5	20
+326	Crystal staff	5	20
+327	Crystal shield	5	20
+328	Crystal robe	5	20
+329	Relic staff	5	20
+330	Relic shield	5	20
+331	Relic robe	5	20
+332	Beach staff	5	20
+333	Beach shield	5	20
+334	Beach robe	5	20
+335	Sun staff	5	20
+336	Sun shield	5	20
+337	Sun robe	5	20
+338	Tropical staff	5	20
+339	Tropical shield	5	20
+340	Tropical robe	5	20
+341	Island staff	5	20
+342	Island shield	5	20
+343	Island robe	5	20
+344	Ash staff	5	20
