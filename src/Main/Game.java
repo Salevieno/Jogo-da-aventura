@@ -1,807 +1,1669 @@
-package Main;
+package Main ;
 
-import java.util.Scanner;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import Actions.Battle;
-import GameComponents.Buildings;
-import GameComponents.Creatures;
-import GameComponents.Items;
-import GameComponents.Maps;
-import GameComponents.NPCs;
-import GameComponents.Pet;
-import GameComponents.Player;
-import java.awt.Color;
-import java.awt.Font;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import Graphics.DrawFunctions;
-import Speech.Speech;
+import java.awt.Color ;
+import java.awt.Font ;
+import java.awt.Graphics ;
+import java.awt.Image ;
+import java.awt.Toolkit ;
+import java.awt.event.ActionEvent ;
+import java.awt.event.ActionListener ;
+import java.awt.event.KeyAdapter ;
+import java.awt.event.KeyEvent ;
+import java.awt.event.MouseEvent ;
+import java.awt.event.MouseListener ;
+import java.io.File ;
+import java.util.Arrays ;
 
-public class Game 
+import javax.sound.sampled.Clip ;
+import javax.swing.ImageIcon ;
+import javax.swing.JPanel ;
+import javax.swing.Timer ;
+
+import Actions.Battle ;
+import Actions.BattleActions;
+import GameComponents.BattleAttributes ;
+import GameComponents.Buildings ;
+import GameComponents.CreatureTypes ;
+import GameComponents.Creatures ;
+import GameComponents.Icon ;
+import GameComponents.Items ;
+import GameComponents.MapElements ;
+import GameComponents.Maps ;
+import GameComponents.NPCs ;
+import GameComponents.PersonalAttributes ;
+import GameComponents.Pet ;
+import GameComponents.PetSkills ;
+import GameComponents.Player ;
+import GameComponents.Projectiles ;
+import GameComponents.Quests ;
+import GameComponents.Screen ;
+import GameComponents.Skills ;
+import GameComponents.SkyComponents ;
+import Graphics.Animations ;
+import Graphics.DrawFunctions ;
+import Graphics.DrawPrimitives ;
+
+public class Game extends JPanel implements ActionListener
 {
-	private int ScreenWidth, ScreenHeight;
-	private Font TextFont;
-	private int NumberOfSkills;
-	private int NumberOfPetSkills;
-	private int NumberOfQuests;
-	private int NumberOfItems;
-	private int NumberOfStatus;
-	private int NumberOfCreatures;
-	private int NumberOfMaps;
-	private int NumberOfCreaturesPerMap;
-	private int NumberOfBuildings;
-	private int NumberOfNPCs;
-	private int MinX, MinY, MaxX, MaxY;
-	private DrawFunctions DF;
+	private static final long serialVersionUID = 1L ;
+	
+	private Timer timer ;		// Main timer of the game
+    private int[] MousePos ;
+	private JPanel mainpanel = this ;
 
-	public Game()
-	{
-		ScreenWidth = 700;
-		ScreenHeight = 700;
-		TextFont = new Font("SansSerif", Font.PLAIN, 20);
-		NumberOfSkills = 25;
-		NumberOfPetSkills = 10;
-		NumberOfQuests = 50;
-		NumberOfItems = 2000;
-		NumberOfStatus = 13;
-		NumberOfCreatures = 500;
-		NumberOfMaps = 50;
-		NumberOfCreaturesPerMap = 5;
-		NumberOfBuildings = 30;
-		NumberOfNPCs = 115;
-		MinX = 0;
-		MinY = 0;
-		MaxX = 100;
-		MaxY = 100;
-		DF = new DrawFunctions(ScreenWidth, ScreenHeight);
-	}
+	public static String CSVPath, ImagesPath, MusicPath ;
+	public static String MainFontName ;
+	public static Color[] ColorPalette ;
 	
-	public void temp()
-	{
-		//NPCsMethods NPC = new NPCsMethods();
-		Player player = new Player("", "", "", 0, 0, 0, 0, new int[3], new int[NumberOfSkills], new int[NumberOfQuests], new int[NumberOfItems], 0, 0, 0, 0, 0, 0, new float[3], new float[3], new float[3], new float[3], new float[3], new float[3], new float[] {0, 0}, new String[5], new float[3], 0, 0, 0, 0, 0, 0, false, new boolean[NumberOfStatus]);		
-		Pet pet = new Pet("", 0, new int[3], new int[NumberOfPetSkills], 0, 0, 0, 0, 0, 0, new float[3], new float[3], new float[3], new float[3], new float[3], new float[3], new float[] {0, 0}, new String[5], 0, 0, 0, new boolean[NumberOfStatus]);
-		Creatures[] creature = new Creatures[NumberOfCreatures];
-		Items[] items = new Items[NumberOfItems];
-		Buildings[] hospital = new Buildings[NumberOfBuildings];
-		Maps[] maps = new Maps[NumberOfMaps];
-		NPCs[] npc = new NPCs[NumberOfNPCs];
+    private boolean OpeningIsOn, TutorialIsOn, CustomizationIsOn, LoadingGameIsOn, InitializationIsOn, MusicIsOn, SoundEffectsAreOn ;
+    private boolean RunGame ;
+    private int OPSelectedButton ;
+	private int LoadingSelectedSlot, LoadingGameTab ;
+    private int[] DamageAnimationType ;
+    private int DayCounter, DayDuration ;
+	private int OpeningStep, TutorialStep ;
+    private String GameLanguage, PlayerName, PlayerSex ;
+    private int PlayerJob ;
+    private String[][] AllText ;
+    private int[] AllTextCat ;
+	
+	private Image SkillCooldownImage, SkillSlotImage ;
+	private Image CoinIcon ;
+	private Image ElementalCircle ;
+	private Image LoadingGif ;
+	private Image OpeningBG, OpeningGif ;
+	private Clip MusicIntro ;
+	private Clip[] Music, SoundEffects ;
+
+	private SkyComponents[] Cloud, Star ;
+	private NPCsMethods NPC ;
+	private DrawFunctions DF ;
+	private Animations Ani ;
+	private Battle B ;
+	private Screen screen ;
+	private Icon[] OPbuttons, SideBarIcons, plusSignIcon ;
+	private CreatureTypes[] creatureTypes ;
+	private Player player ;
+	private Pet pet ;
+	private Creatures[] creature ;
+	private NPCs[] npc ;
+	private Items[] items ;
+	private Buildings[] buildings ;
+	private Maps[] maps ;
+	private Skills[] skills ;
+	private PetSkills[] petskills ;
+	private Quests[] quest ;
+	private Projectiles[] proj ;	
+	
+	public Game(int[] WinDim) 
+	{         	
+		FirstInitialization(WinDim) ;
+		timer.start() ;	// Game will start checking for keyboard events and go to the method paintComponent every "timer" miliseconds
+		addMouseListener(new MouseEventDemo()) ;
+		addKeyListener(new TAdapter()) ;
+		setFocusable(true) ;
+	}
+    
+    public void FirstInitialization(int[] WinDim)
+    {
+		timer = new Timer(10, this) ;	// timer of the game, first number = delay
+    	screen = new Screen(new int[] {WinDim[0] - 40 - 15, WinDim[1] - 39}, new int[] {0, 140, WinDim[0] - 40 - 15, WinDim[1] - 39}) ;
+		CSVPath = ".\\csv files\\" ;
+		ImagesPath = ".\\images\\" ;
+		MusicPath = ".\\music\\" ;
+		MainFontName = "Scheherazade Bold" ;
+		ColorPalette = Uts.ReadColorPalette(new ImageIcon(ImagesPath + "ColorPalette.png").getImage(), "Normal") ;
+		GameLanguage = "P" ;
+		ElementalCircle = new ImageIcon(ImagesPath + "ElementalCicle.png").getImage() ;
+		LoadingGif = new ImageIcon(ImagesPath + "Loading.gif").getImage() ;
+    	OpeningBG = new ImageIcon(ImagesPath + "Opening.png").getImage() ;
+		OpeningGif = new ImageIcon(ImagesPath + "Opening.gif").getImage() ;
+    	
+    	LoadingSelectedSlot = 0 ;
+		LoadingGameTab = 0 ;
+		OPSelectedButton = 2 ;
 		
-		InitialPlayerStats(player);
-		InitialCreaturesStats(creature);
-		ItemsProperties(items);
-		BuildingsProperties(hospital);
-		MapsProperties(maps);
-		NPCsProperties(npc);
-		Save(player, pet);
-		//Battle B = new Battle();
-		//System.out.println(B.ElemMult("w", "w", "f", "w", "n"));
-		//NPC.Doctor(player, pet, npc[0], TextFont);
-		Opening(player);
-		/*do
+    	MusicIntro = Utg.MusicFileToClip(new File(MusicPath + "1-Intro.wav").getAbsoluteFile()) ;
+    	MusicIsOn = true ;
+    	OpeningIsOn = true ; 
+    	SoundEffectsAreOn = true ;
+    	
+    	player = InitializePlayer("", 0, "", "") ;
+    	
+    	int ScreenW = screen.getDimensions()[0], ScreenH = screen.getDimensions()[1] ;
+		Image ButtonPort = new ImageIcon(ImagesPath + "ButtonPort.png").getImage() ;
+		Image ButtonEn = new ImageIcon(ImagesPath + "ButtonEn.png").getImage() ;
+		Image ButtonPortSelected = new ImageIcon(ImagesPath + "ButtonPortSelected.png").getImage() ;
+		Image ButtonEnSelected = new ImageIcon(ImagesPath + "ButtonEnSelected.png").getImage() ;
+		Image ButtonNewGame = new ImageIcon(ImagesPath + "Button_newGame.png").getImage() ;
+		Image ButtonNewGameSelected = new ImageIcon(ImagesPath + "Button_newGameSelected.gif").getImage() ;
+		Image ButtonLoadGame = new ImageIcon(ImagesPath + "Button_loadGame.png").getImage() ;
+		Image ButtonLoadGameSelected = new ImageIcon(ImagesPath + "Button_loadGameSelected.gif").getImage() ;
+    	OPbuttons = new Icon[14] ;
+    	OPbuttons[0] = new Icon(0, "Port", new int[] {ScreenW - 50, 30}, null, ButtonPort, ButtonPortSelected) ;
+    	OPbuttons[1] = new Icon(1, "En", new int[] {ScreenW - 0, 30}, null, ButtonEn, ButtonEnSelected) ;
+    	OPbuttons[2] = new Icon(2, "New game", new int[] {ScreenW / 2 - 80, ScreenH / 4}, null, ButtonNewGame, ButtonNewGameSelected) ;
+    	OPbuttons[3] = new Icon(3, "Load game", new int[] {ScreenW / 2 + 80, ScreenH / 4}, null, ButtonLoadGame, ButtonLoadGameSelected) ;
+    	OPbuttons[4] = new Icon(4, "Male", new int[] {ScreenW / 2 - 50, ScreenH / 4}, null, null, null) ;
+    	OPbuttons[5] = new Icon(5, "Female", new int[] {ScreenW / 2 + 50, ScreenH / 4}, null, null, null) ;
+    	OPbuttons[6] = new Icon(6, "Baixo", new int[] {ScreenW / 2 - 100, ScreenH / 4}, null, null, null) ;
+    	OPbuttons[7] = new Icon(7, "Médio", new int[] {ScreenW / 2 + 0, ScreenH / 4}, null, null, null) ;
+    	OPbuttons[8] = new Icon(8, "Alto", new int[] {ScreenW / 2 + 100, ScreenH / 4}, null, null, null) ;
+    	OPbuttons[9] = new Icon(9, "Cavaleiro", new int[] {ScreenW / 2 - 200, ScreenH / 4}, null, null, null) ;
+    	OPbuttons[10] = new Icon(10, "Mago", new int[] {ScreenW / 2 - 100, ScreenH / 4}, null, null, null) ;
+    	OPbuttons[11] = new Icon(11, "Arqueiro", new int[] {ScreenW / 2 + 0, ScreenH / 4}, null, null, null) ;
+    	OPbuttons[12] = new Icon(12, "Animal", new int[] {ScreenW / 2 + 100, ScreenH / 4}, null, null, null) ;
+    	OPbuttons[13] = new Icon(13, "Ladrão", new int[] {ScreenW / 2 + 200, ScreenH / 4}, null, null, null) ;
+    	
+    	Ani = new Animations(screen.getDimensions(), null, null) ;
+		Ani.SetAniVars(20, new Object[] {147, OpeningGif}) ;
+		Ani.StartAni(20) ;
+    }
+    public void InitializeGeneralVariables(int[] screenDim)
+    {
+    	Cloud = new SkyComponents[5] ;
+    	Star = new SkyComponents[50] ;
+		for (int c = 0 ; c <= Cloud.length - 1 ; c += 1)
 		{
-			//System.out.println("");
-			//System.out.println("Player coords (" + player.getCoords()[0] + "," + player.getCoords()[1] + "," + player.getCoords()[2] + ") " + "Player map = " + player.getMap());
-			PlayerMove(player);
-			CreaturesMove(creature);
-			int meet = CheckMeet(player, creature);
-			if(meet > 0)
-			{
-				Battle(player, creature[meet], items);
-			}
-			if (player.getLife() < 0)
-			{
-				player.setGold((int)(0.8*player.getGold()));
-				player.setLife(player.getLifeMax());
-				player.setMp(player.getMpMax());
-				ResetPlayerPosition(player);
-			}
-		} while (true);*/
+			Image CloudImage = new ImageIcon(ImagesPath + "Cloud" + String.valueOf(1 + (int) (3 * Math.random())) + ".png").getImage() ;
+			int[] InitialCloudPos = new int[] {(int)(Math.random() * screenDim[0]), 2 + (int) ((screen.SkyHeight - CloudImage.getHeight(mainpanel)) * Math.random())} ;
+			float[] CloudSpeed = new float[] {(float)(1 + 1.5 * Math.random()), 0} ;
+	    	Cloud[c] = new SkyComponents(CloudImage, "Cloud", InitialCloudPos, CloudSpeed, new Color[] {ColorPalette[4]}) ;
+		}
+		Image StarImage = new ImageIcon(ImagesPath + "Star.png").getImage() ;
+		for (int s = 0 ; s <= Star.length - 1 ; s += 1)
+		{
+			int[] StarPos = new int[] {(int)(Math.random() * screenDim[0]), (int)(Math.random() * screen.SkyHeight)} ;
+			Color[] StarColor = new Color[] {ColorPalette[(int)((ColorPalette.length - 1)*Math.random())]} ;
+	    	Star[s] = new SkyComponents(StarImage, "Cloud", StarPos, new float[2], StarColor) ;
+		}	
+    	DayCounter = 60000 ;
+    	DayDuration = 120000 ;
+    	
+    	OpeningStep = 0 ;
+    	TutorialStep = 0 ;
+		DamageAnimationType = new int[] {1, 1} ;
+		MusicIsOn = true ;
+		Quests.CalcNumberOfQuests(CSVPath) ;
+		Items.CalcNumberOfCraftingItems(CSVPath) ;
+    	Items.CalcNumberOfAllItems() ;
+		Items.CalcBagIDs() ;
+		Items.CalcItemEffects(CSVPath) ;
+		Items.CalcCrafting(CSVPath) ;
+		Items.CalcItemsWithEffects(CSVPath) ;
+		
+		// Initialize images and music
+		SkillCooldownImage = new ImageIcon(ImagesPath + "Cooldown.png").getImage() ;	
+		SkillSlotImage = new ImageIcon(ImagesPath + "SkillSlot.png").getImage() ;	
+		CoinIcon = new ImageIcon(ImagesPath + "CoinIcon.png").getImage() ;
+    	Maps.InitializeStaticVars(ImagesPath) ;
+    	Items.InitializeStaticVars(ImagesPath) ;
+    	BattleActions.InitializeStaticVars(CSVPath) ;
+    	
+    	Clip MusicKnightCity = Utg.MusicFileToClip(new File(MusicPath + "2-Knight city.wav").getAbsoluteFile()) ;
+    	Clip MusicMageCity = Utg.MusicFileToClip(new File(MusicPath + "3-Mage city.wav").getAbsoluteFile()) ;
+    	Clip MusicArcherCity = Utg.MusicFileToClip(new File(MusicPath + "4-Archer city.wav").getAbsoluteFile()) ;
+    	Clip MusicAnimalCity = Utg.MusicFileToClip(new File(MusicPath + "5-Animal city.wav").getAbsoluteFile()) ;
+    	Clip MusicAssassinCity = Utg.MusicFileToClip(new File(MusicPath + "6-Assassin city.wav").getAbsoluteFile()) ;
+    	Clip MusicForest = Utg.MusicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
+    	Clip MusicCave = Utg.MusicFileToClip(new File(MusicPath + "8-Cave.wav").getAbsoluteFile()) ;
+    	Clip MusicIsland = Utg.MusicFileToClip(new File(MusicPath + "9-Island.wav").getAbsoluteFile()) ;
+    	Clip MusicVolcano = Utg.MusicFileToClip(new File(MusicPath + "10-Volcano.wav").getAbsoluteFile()) ;
+    	Clip MusicSnowland = Utg.MusicFileToClip(new File(MusicPath + "11-Snowland.wav").getAbsoluteFile()) ;
+    	Clip MusicSpecial = Utg.MusicFileToClip(new File(MusicPath + "12-Special.wav").getAbsoluteFile()) ;
+    	Clip MusicSailing = Utg.MusicFileToClip(new File(MusicPath + "13-Sailing.wav").getAbsoluteFile()) ;
+    	Clip MusicPlayerEvolution = Utg.MusicFileToClip(new File(MusicPath + "14-Player evolution.wav").getAbsoluteFile()) ;
+    	Clip MusicDrumRoll = Utg.MusicFileToClip(new File(MusicPath + "15-Drumroll.wav").getAbsoluteFile()) ;
+    	Clip SoundEffectSwordHit = Utg.MusicFileToClip(new File(MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
+    	Music = new Clip[] {MusicKnightCity, MusicMageCity, MusicArcherCity, MusicAnimalCity, MusicAssassinCity, MusicForest, MusicCave, MusicIsland, MusicVolcano, MusicSnowland, MusicSpecial, MusicSailing, MusicPlayerEvolution, MusicDrumRoll} ;
+    	SoundEffects = new Clip[] {SoundEffectSwordHit} ;
 	}
-	
-	public String PlayerChoice(Player player)
-	{
-		return DF.ReturnPlayerChoice();
-		/*class ListenForButton implements ActionListener
+    
+    public Player InitializePlayer(String Name, int Job, String GameLanguage, String Sex)
+    {
+    	Player player = new Player(Name, GameLanguage, Sex, Job) ;
+		
+		Arrays.fill(player.getQuest(), -1) ;
+		Arrays.fill(player.getElemMult(), 1) ;
+		Arrays.fill(player.getBattleAtt().getSpecialStatus(), -1) ;
+		if (player.getJob() == 2)
 		{
-			@Override
-			public void actionPerformed(ActionEvent event) 
-			{
-				System.out.println("a");
-				System.out.println(event.getSource());		
-			}
-			
+			player.getBag()[Items.BagIDs[4]] = 100 ;
+		}
+		player.getSpell()[0] = 1 ;
+		player.ResetPosition() ;		
+		//player.setPhyAtk(new float[] {100, 0, 0}) ;
+		//player.setMagAtk(new float[] {100, 0, 0}) ;
+		//player.getBag()[60] = 1 ;
+		//player.getBag()[63] = 1 ;
+		//player.getBag()[1700] = 1 ;
+		//player.setCreaturesDiscovered(new int[] {1, 2, 249}) ;
+		//Arrays.fill(player.getQuestSkills(), true) ;
+		//player.setMap(27) ;
+		//player.setProJob(1) ;
+		//player.setSkillPoints(50) ;
+		//Arrays.fill(player.getBag(), 3) ;
+		//player.setLevel(50) ;
+		//Arrays.fill(player.getSkill(), 5) ;
+		/*for (int i = 0 ; i <= player.getQuest().length - 1 ; ++i)
+		{
+			player.getQuest()[i] = i ;
+		}
+		player.setLife(new float[] {1000, 1000, 1000}) ;
+		player.setMp(new float[] {1000, 1000, 1000}) ;*/
+		return player ;
+    }
+    public Pet InitializePet()
+    {
+    	Pet pet = new Pet((int) (4 * Math.random())) ;
+    	pet.getLife()[0] = 0 ;
+		return pet ;
+    }
+    public Buildings[] InitializeBuildings(int[] screenDim)
+    {
+		int NumberOfBuildings = 30 ;
+    	Buildings[] buildings = new Buildings[NumberOfBuildings] ;
+		String[][] BuildingsInput = Utg.ReadTextFile(CSVPath + "Buildings.csv", NumberOfBuildings, 5) ;
+		int[] ColorID = new int[] {6, 3, 13, 3, 0, 0} ;
+		/*Image Dock = new ImageIcon(ImagesPath + "Dock.png").getImage() ;
+		Image ForgingTable = new ImageIcon(ImagesPath + "BuildingForgingTable.png").getImage() ;
+		Image Sign = new ImageIcon(ImagesPath + "Sign.png").getImage() ;*/
+		for (int i = 0 ; i <= NumberOfBuildings - 1 ; i += 1)
+		{
+			int ID = Integer.parseInt(BuildingsInput[i][0]) ;
+			String Name = BuildingsInput[i][1] ;
+			int Map = Integer.parseInt(BuildingsInput[i][2]) ;
+			int[] Pos = new int[] {(int)(Float.parseFloat(BuildingsInput[i][3])*screenDim[0]), (int)(Float.parseFloat(BuildingsInput[i][4])*screenDim[1])} ;
+			Image[] Images = new Image[] {new ImageIcon(ImagesPath + "Building.png").getImage(), new ImageIcon(ImagesPath + "Building" + Name + "Inside.png").getImage()} ;
+			Image[] OrnamentImages = new Image[] {new ImageIcon(ImagesPath + "Building" + Name + "Ornament.png").getImage()} ;
+			Color color = ColorPalette[ColorID[i % 6]] ;
+			buildings[i] = new Buildings(ID, Name, Map, Pos, Images, OrnamentImages, color) ;
+		}
+		return buildings ;
+    }
+    public CreatureTypes[] InitializeCreatureTypes(String Language, float DiffMult)
+    {
+    	CreatureTypes.setNumberOfCreatureTypes(CSVPath);
+		CreatureTypes[] creatureTypes = new CreatureTypes[CreatureTypes.getNumberOfCreatureTypes()] ;
+		String[][] Input = Utg.ReadTextFile(CSVPath + "CreatureTypes.csv", CreatureTypes.getNumberOfCreatureTypes(), 44) ;
+		String Name = "" ;
+		Color[] color = new Color[creatureTypes.length] ;
+		/*for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
+		{
 		}*/
-		/*KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher( 
-				new KeyEventDispatcher()
-				{  
-					public boolean dispatchKeyEvent(KeyEvent e)
+		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
+		{			
+			if (Language.equals("P"))
+			{
+				Name = Input[ct][1] ;
+			}
+			else if (Language.equals("E"))
+			{
+				Name = Input[ct][2] ;
+			}
+			int colorid = (int)((Creatures.getskinColor().length - 1)*Math.random()) ;
+			color[ct] = Creatures.getskinColor()[colorid] ;
+			if (270 < ct & ct <= 299)	// Ocean creatures
+			{
+				color[ct] = ColorPalette[5] ;
+			}
+			Image image = new ImageIcon(ImagesPath + "creature.png").getImage() ;
+			Image[] animations = new Image[] {new ImageIcon(ImagesPath + "creature_idle.gif").getImage(), new ImageIcon(ImagesPath + "creature_movingup.gif").getImage(), new ImageIcon(ImagesPath + "creature_movingdown.gif").getImage(), new ImageIcon(ImagesPath + "creature_movingleft.gif").getImage(), new ImageIcon(ImagesPath + "creature_movingright.gif").getImage()} ;
+			int Level = Integer.parseInt(Input[ct][3]) ;
+			int Map = Integer.parseInt(Input[ct][4]) ;
+			int[] Size = new int[] {42, 30} ;
+			int[] Skill = new int[] {Integer.parseInt(Input[ct][5])} ;
+			float[] Life = new float[] {Float.parseFloat(Input[ct][6]) * DiffMult, Float.parseFloat(Input[ct][6]) * DiffMult} ;
+			float[] MP = new float[] {Float.parseFloat(Input[ct][7]) * DiffMult, Float.parseFloat(Input[ct][7]) * DiffMult} ;
+			float Range = Float.parseFloat(Input[ct][8]) * DiffMult ;
+			float[] PhyAtk = new float[] {Float.parseFloat(Input[ct][9]) * DiffMult, 0, 0} ;
+			float[] MagAtk = new float[] {Float.parseFloat(Input[ct][10]) * DiffMult, 0, 0} ;
+			float[] PhyDef = new float[] {Float.parseFloat(Input[ct][11]) * DiffMult, 0, 0} ;
+			float[] MagDef = new float[] {Float.parseFloat(Input[ct][12]) * DiffMult, 0, 0} ;
+			float[] Dex = new float[] {Float.parseFloat(Input[ct][13]) * DiffMult, 0, 0} ;
+			float[] Agi = new float[] {Float.parseFloat(Input[ct][14]) * DiffMult, 0, 0} ;
+			float[] Crit = new float[] {Float.parseFloat(Input[ct][15]) * DiffMult, 0, Float.parseFloat(Input[ct][16]) * DiffMult, 0} ;
+			float[] Stun = new float[] {Float.parseFloat(Input[ct][17]) * DiffMult, 0, Float.parseFloat(Input[ct][18]) * DiffMult, 0, Float.parseFloat(Input[ct][19]) * DiffMult} ;
+			float[] Block = new float[] {Float.parseFloat(Input[ct][20]) * DiffMult, 0, Float.parseFloat(Input[ct][21]) * DiffMult, 0, Float.parseFloat(Input[ct][22]) * DiffMult} ;
+			float[] Blood = new float[] {Float.parseFloat(Input[ct][23]) * DiffMult, 0, Float.parseFloat(Input[ct][24]) * DiffMult, 0, Float.parseFloat(Input[ct][25]) * DiffMult, 0, Float.parseFloat(Input[ct][26]) * DiffMult, 0, Float.parseFloat(Input[ct][27]) * DiffMult} ;
+			float[] Poison = new float[] {Float.parseFloat(Input[ct][28]) * DiffMult, 0, Float.parseFloat(Input[ct][29]) * DiffMult, 0, Float.parseFloat(Input[ct][30]) * DiffMult, 0, Float.parseFloat(Input[ct][31]) * DiffMult, 0, Float.parseFloat(Input[ct][32]) * DiffMult} ;
+			float[] Silence = new float[] {Float.parseFloat(Input[ct][33]) * DiffMult, 0, Float.parseFloat(Input[ct][34]) * DiffMult, 0, Float.parseFloat(Input[ct][35]) * DiffMult} ;						
+			String[] Elem = new String[] {Input[ct][36]} ;
+			int Exp = Integer.parseInt(Input[ct][37]) ;
+			int[] Bag = new int[] {Integer.parseInt(Input[ct][38]), Integer.parseInt(Input[ct][39]), Integer.parseInt(Input[ct][40]), Integer.parseInt(Input[ct][41]), Integer.parseInt(Input[ct][42]), Integer.parseInt(Input[ct][43]), Integer.parseInt(Input[ct][44]), Integer.parseInt(Input[ct][45]), Integer.parseInt(Input[ct][46]), Integer.parseInt(Input[ct][47])} ;
+			int Gold = Integer.parseInt(Input[ct][48]) ;
+			int Step = Integer.parseInt(Input[ct][49]) ;
+			int[] Status = new int[8] ;
+			int[] SpecialStatus = new int[5] ;
+			int[][] Actions = new int[][] {{0, Integer.parseInt(Input[ct][50]), 0}, {0, Integer.parseInt(Input[ct][51]), 0}} ;
+			int[][] BattleActions = new int[][] {{0, Integer.parseInt(Input[ct][52]), 0}} ;
+			int[] StatusCounter = new int[8] ;
+			image = Utg.ChangeImageColor(image, new float[] {0, 0, 1, 1}, color[ct], ColorPalette[20]) ;
+			image = Utg.ChangeImageColor(image, new float[] {0, 0, 1, 1}, Creatures.getshadeColor()[colorid], ColorPalette[19]) ;
+			creatureTypes[ct] = new CreatureTypes(ct, image, animations, Name, Level, Map, Size, Skill, Life, MP, Range, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Elem, Exp, Bag, Gold, Step, Status, SpecialStatus, color[ct], Actions, BattleActions, StatusCounter) ;	
+		}
+		return creatureTypes ;
+    }
+    public Creatures[] InitializeCreatures(CreatureTypes[] creatureTypes, int[] screenDim, Maps[] maps, int PlayerStep)
+    {    	
+    	int NumberOfCreatures = 575 ;
+		Creatures[] creature = new Creatures[NumberOfCreatures] ;
+		String Name = "" ;
+		for (int c = 0 ; c <= creature.length - 1 ; c += 1)
+		{
+			int type = -1 ;
+			for (int map = 0 ; map <= maps.length - 1 ; map += 1)
+			{
+				if (maps[map].getCreatureIDs() != null)	// Map has creatures
+				{
+					for (int j = 0 ; j <= maps[map].getCreatureIDs().length - 1 ; j += 1)
 					{
-						if(e.getID() == KeyEvent.KEY_PRESSED)
+						if (c == maps[map].getCreatureIDs()[j])
 						{
-							if (e.getKeyCode() == 37)	// Left arrow key
-							{
-								Choice = "n";
-							}
-							if (e.getKeyCode() == 38)	// Up arrow key
-							{
-								if(player.getCoords()[0] > MinX)
-								{
-									++player.getCoords()[1];
-									player.setCoords(player.getCoords());						
-								}
-								else
-								{
-									MovePlayerMap(player, "w");
-								}
-							}
-							if (e.getKeyCode() == 39)	// Right arrow key
-							{
-								if(player.getCoords()[1] > MinY)
-								{
-									++player.getCoords()[0];
-									player.setCoords(player.getCoords());	
-								}
-								else
-								{
-									MovePlayerMap(player, "d");
-								}
-							}					
+							type = maps[map].getCreatureTypes()[j] ;
 						}
-						return false;
-					}  
-				});*/
-		/*KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher( 
-		new KeyEventDispatcher()
-		{  
-			public boolean dispatchKeyEvent(KeyEvent e)
-			{
-				if(e.getID() == KeyEvent.KEY_PRESSED)
-				{
-					if (e.getKeyCode() == 78)	// n key
-					{
-						Choice = "n";
 					}
 				}
-				if(e.getID() == KeyEvent.KEY_PRESSED)
-				{
-					if (e.getKeyCode() == 87)	// w key
-					{
-						Choice = "w";
-					}
-				}
-				return false;
-			}
-			
-		});*/
-	}
-	
-	public void Opening(Player player)
-	{
-		//DrawScreens DS = new DrawScreens();
-		Speech S = new Speech();
-		//Scanner in = new Scanner(System.in);
-		String PlayerChoice;
-		String PlayerLanguage = "";
-		String PlayerName = "";
-		String PlayerSex = "";
-		int PlayerJob = 0;
-		
-		DF.OpeningScreen();
-		DF.DrawText(new int[] {(int)(0.28*ScreenWidth), (int)(0.2*ScreenHeight)}, TextFont, S.OpeningText("* Boas vindas *", 1), 60, Color.BLUE);
-		DF.DrawText(new int[] {(int)(0.28*ScreenWidth), (int)(0.3*ScreenHeight)}, TextFont, S.OpeningText("* Boas vindas *", 2), 40, Color.BLUE);
-		//PlayerChoice = in.nextLine();	// Reads the player choice
-		do
-		{
-			//System.out.println("Player choice = " + PlayerChoice);
-			PlayerChoice = PlayerChoice(player);
-			System.out.println("Player choice = " + PlayerChoice);
-		} while (!PlayerChoice.equals("N") & !PlayerChoice.equals("L"));
-		DF.OpeningScreen();
-		if (PlayerChoice.equals("N"))
-		{
-			DF.DrawText(new int[] {(int)(0.4*ScreenWidth), (int)(0.2*ScreenHeight)}, TextFont, S.OpeningText("* Novo jogo *", 1), 40, Color.BLUE);
-			do
-			{
-				PlayerLanguage = PlayerChoice(player);
-				System.out.println("Player choice = " + PlayerChoice);
-			} while (!PlayerLanguage.equals("P") & !PlayerLanguage.equals("E"));
-			DF.OpeningScreen();
-			DF.DrawText(new int[] {(int)(0.5*ScreenWidth), (int)(0.2*ScreenHeight)}, TextFont, S.OpeningText("* Novo jogo *", 2), 40, Color.BLUE);
-			
-			//PlayerName = in.nextLine();
-			DF.OpeningScreen();
-			DF.DrawText(new int[] {(int)(0.5*ScreenWidth), (int)(0.2*ScreenHeight)}, TextFont, S.OpeningText("* Novo jogo *", 3), 40, Color.BLUE);
-			do
-			{
-				//PlayerSex = in.nextLine();
-				PlayerSex = PlayerChoice(player);
-				System.out.println("Player choice = " + PlayerChoice);
-			} while (!PlayerSex.equals("M") & !PlayerSex.equals("F"));
-			for (int i = 4; i <= 9; ++i)
-			{
-				System.out.println(S.OpeningText("* Novo jogo *", i));	
-			}
-			do
-			{
-				//PlayerJob = in.nextInt();
-			} while (PlayerJob < 1 | PlayerJob > 5);
-		}
-		player.setLanguage(PlayerLanguage);
-		player.setName(PlayerName);
-		player.setSex(PlayerSex);
-		player.setJob(PlayerJob);
-	}
-	
-	public void InitialPlayerStats(Player player)
-	{
-		int PlayerJob = player.getJob();
-		int PlayerProJob = 0;
-		int PlayerContinent = 0;
-		int PlayerMap = 0;
-		int[] PlayerCoords = new int[3];
-		int[] PlayerSkill = new int[NumberOfSkills];
-		int[] PlayerQuest = new int[NumberOfQuests];
-		int[] PlayerBag = new int[NumberOfItems];
-		int PlayerSkillPoints = 0;
-		float PlayerLife = 0;
-		float PlayerMp = 0;
-		float PlayerLifeMax = 0;
-		float PlayerMpMax = 0;
-		float PlayerRange = 0;
-		float[] PlayerPhyAtk = new float[3];		// [Basic atk, bonus, train]
-		float[] PlayerMagAtk = new float[3];		// [Basic atk, bonus, train]
-		float[] PlayerPhyDef = new float[3];		// [Basic def, bonus, train]
-		float[] PlayerMagDef = new float[3];		// [Basic def, bonus, train]
-		float[] PlayerDex = new float[3];			// [Basic dex, bonus, train]
-		float[] PlayerAgi = new float[3];			// [Basic agi, bonus, train]
-		float[] PlayerCrit = new float[2];			// [Basic crit atk, bonus]
-		String[] PlayerElem = new String[5];
-		float[] PlayerCollect = new float[3];		// Herb, wood, metal
-		int PlayerLevel = 0;
-		int PlayerGold = 0;
-		int PlayerStep = 0;
-		float PlayerCraft = 0;
-		float PlayerExp = 0;
-		float PlayerHunger = 0;
-		boolean PlayerRide = false;
-		boolean[] PlayerStatus = new boolean[11];	// [Life, Mp, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Block, Blood, Poison]
-		
-		if (PlayerJob == 1)
-		{
-			PlayerLife = 100;
-			PlayerMp = 50;
-			PlayerPhyAtk = new float[] {5, 0, 0};
-			PlayerMagAtk = new float[] {2, 0, 0};
-			PlayerPhyDef = new float[] {5, 0, 0};
-			PlayerMagDef = new float[] {2, 0, 0};
-			PlayerDex = new float[] {3, 0, 0};
-			PlayerAgi = new float[] {2, 0, 0};
-			PlayerCrit = new float[] {(float)0.1, 0};
-			PlayerRange = 1;
-		}
-		if (PlayerJob == 2)
-		{
-			PlayerLife = 50;
-			PlayerMp = 100;
-			PlayerPhyAtk = new float[] {2, 0, 0};
-			PlayerMagAtk = new float[] {5, 0, 0};
-			PlayerPhyDef = new float[] {2, 0, 0};
-			PlayerMagDef = new float[] {5, 0, 0};
-			PlayerDex = new float[] {3, 0, 0};
-			PlayerAgi = new float[] {1, 0, 0};
-			PlayerCrit = new float[] {(float)0.1, 0};
-			PlayerRange = 4;
-		}
-		if (PlayerJob == 3)
-		{
-			PlayerLife = 60;
-			PlayerMp = 80;
-			PlayerPhyAtk = new float[] {3, 0, 0};
-			PlayerMagAtk = new float[] {3, 0, 0};
-			PlayerPhyDef = new float[] {3, 0, 0};
-			PlayerMagDef = new float[] {3, 0, 0};
-			PlayerDex = new float[] {8, 0, 0};
-			PlayerAgi = new float[] {3, 0, 0};
-			PlayerCrit = new float[] {(float)0.12, 0};
-			PlayerRange = 6;
-		}
-		if (PlayerJob == 4)
-		{
-			PlayerLife = 70;
-			PlayerMp = 70;
-			PlayerPhyAtk = new float[] {4, 0, 0};
-			PlayerMagAtk = new float[] {3, 0, 0};
-			PlayerPhyDef = new float[] {4, 0, 0};
-			PlayerMagDef = new float[] {3, 0, 0};
-			PlayerDex = new float[] {4, 0, 0};
-			PlayerAgi = new float[] {6, 0, 0};
-			PlayerCrit = new float[] {(float)0.15, 0};
-			PlayerRange = 1;
-		}
-		if (PlayerJob == 5)
-		{
-			PlayerLife = 30;
-			PlayerMp = 50;
-			PlayerPhyAtk = new float[] {3, 0, 0};
-			PlayerMagAtk = new float[] {2, 0, 0};
-			PlayerPhyDef = new float[] {3, 0, 0};
-			PlayerMagDef = new float[] {2, 0, 0};
-			PlayerDex = new float[] {4, 0, 0};
-			PlayerAgi = new float[] {8, 0, 0};
-			PlayerCrit = new float[] {(float)0.18, 0};
-			PlayerRange = 1;
-		}
-		PlayerContinent = 1;
-		PlayerMap = PlayerJob;
-		PlayerLifeMax = PlayerLife;
-		PlayerMpMax = PlayerMp;
-		PlayerElem = new String[] {"n", "n", "n", "n", "n"};
-		PlayerSkill[0] = 1;
-		PlayerLevel = 1;
-		PlayerStep = 1;
-		PlayerCoords = new int[] {50, 50, 50};
-		player.setProJob(PlayerProJob);
-		player.setContinent(PlayerContinent);
-		player.setMap(PlayerMap);
-		player.setCoords(PlayerCoords);
-		player.setSkill(PlayerSkill);
-		player.setQuest(PlayerQuest);
-		player.setBag(PlayerBag);
-		player.setSkillPoints(PlayerSkillPoints);
-		player.setLife(PlayerLife);
-		player.setMp(PlayerMp);
-		player.setLifeMax(PlayerLifeMax);
-		player.setMpMax(PlayerMpMax);
-		player.setRange(PlayerRange);
-		player.setPhyAtk(PlayerPhyAtk);
-		player.setMagAtk(PlayerMagAtk);
-		player.setPhyDef(PlayerPhyDef);
-		player.setMagDef(PlayerMagDef);
-		player.setDex(PlayerDex);
-		player.setAgi(PlayerAgi);
-		player.setCrit(PlayerCrit);
-		player.setElem(PlayerElem);
-		player.setCollect(PlayerCollect);
-		player.setLevel(PlayerLevel);
-		player.setGold(PlayerGold);
-		player.setStep(PlayerStep);
-		player.setCraft(PlayerCraft);
-		player.setExp(PlayerExp);
-		player.setHunger(PlayerHunger);
-		player.setRide(PlayerRide);
-		player.setStatus(PlayerStatus);
-	}
-	
-	public void InitialCreaturesStats(Creatures[] creature)
-	{
-		for (int i = 0; i <= NumberOfCreatures - 1; ++i)
-		{
-			creature[i] = new Creatures(0, 0, new int[] {50, 50, 50}, new int[] {1}, new int[] {1, 2, 3, 4, 5}, 50, 20, 50, 20, 1, new float[] {5, 0}, new float[] {3, 0}, new float[] {2, 0}, new float[] {2, 0}, new float[] {5, 0}, new float[] {5, 0}, 	new float[] {(float)0.1, 0}, new String[] {"n", "n", "n", "n", "n"}, 10, 1, 50, new boolean[11]);
-			/*creature[i].setContinent(0);
-			creature[i].setMap(0);
-			creature[i].setCoords(new float[] {50, 50, 50});
-			creature[i].setSkill(new int[] {1});
-			creature[i].setBag(new int[] {1, 2, 3, 4, 5});
-			creature[i].setLife(50);
-			creature[i].setMp(20);
-			creature[i].setLifeMax(creature[i].getLife());
-			creature[i].setMpMax(creature[i].getMp());
-			creature[i].setRange(1);
-			creature[i].setPhyAtk(new float[] {5, 0});
-			creature[i].setMagAtk(new float[] {3, 0});
-			creature[i].setPhyDef(new float[] {2, 0});
-			creature[i].setMagDef(new float[] {2, 0});
-			creature[i].setDex(new float[] {5, 0});
-			creature[i].setAgi(new float[] {5, 0});
-			creature[i].setGold(10);
-			creature[i].setStep(1);
-			creature[i].setExp(5);
-			creature[i].setStatus(new boolean[11]);*/
-		}
-	}
-	
-	public void ItemsProperties(Items[] items)
-	{
-		String[] Name = new String[NumberOfItems];
-		int[] Price = new int[NumberOfItems], DropChance = new int[NumberOfItems];
-		Name = new String[] {"tiny hp","tiny mp","small hp","small mp","better hp","better mp","medium hp","medium mp","dense hp","dense mp","big hp","big mp","master hp","master mp","huge hp","huge mp","mighty hp","mighty mp","legend hp","legend mp","small fire","small water","small earth","small grass","small air","small bolt","Medium fire","Medium water","Medium earth","Medium grass","Medium air","Medium bolt","Big fire","Big water","Big earth","Big grass","Big air","Big bolt","Big dark","Big light","Small Dragon","Medium Dragon","Big Dragon","Big snow","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","herb","wood","metal","herb","wood","metal","herb","wood","metal","herb","wood","metal","herb","wood","metal","herb","wood","metal","herb","wood","metal","herb","wood","metal","herb","wood","metal","herb","wood","metal","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","small atk rune","small def rune","medium atk rune","medium def rune","big atk rune","big def rune","rough atk rune","rough def rune","strong atk rune","strong def rune","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","food","wood equip","wood weapon","apple smoothie","banana smoothie","straw smoothie","blackb smoothie","pet exp","atk train","def train","steel equip","steel weapon","hp medium pot","mini coconut","pet medium exp","refresh water","high hp pot","high mp pot","pet high exp","special equip","-","-","mp medium pot","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","apple","banana","strawberry","chilli peper","blackberry","mushroom","fish","raspberry","lemon","orange","tomato","carrot","honey","mango","watermelon","grapes","fern","meat","bat","cave rat","coconut","crab","shrimp","oyster","Soup","Hot beverage","Coffee","Boiling water","Noodles","Yakisoba","Melted cheese","Dragon's food","Hot chocolate","Milk","Pizza","Magic soup","Ice Cream","Iced tea","Sweeties","Chocolate milk","coconut water","coconut meat","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","arrow","strong arrow","fire arrow","water arrow","earth arrow","grass arrow","air arrow","bolt arrow","dark arrow","light arrow","snow arrow","-","-","-","-","-","-","-","-","-","wood sword","wood shield","wood armor","Copper sword","Copper shield","Copper armor","light sword","light shield","light armor","heavy sword","heavy shield","heavy armor","knight sword","knight shield","knight armor","super sword","super shield","super armor","iron sword","iron shield","iron armor","metal sword","metal shield","metal armor","rare sword","rare shield","rare armor","epic sword","epic shield","epic armor","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","Toy sword","Toy shield","Toy armor","rookie's sword","rookie's shield","rookie's armor","Dreamer's sword","Dreamer's shield","Dreamer's armor","mid sword","mid shield","mid armor","courage sword","courage shield","courage armor","partner's sword","partner's shield","partner's armor","evo sword","evo shield","evo armor","grow sword","grow shield","grow armor","love sword","love shield","love armor","Conquer's sword","Conquer's shield","Conquer's armor","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","train staff","train shield","train robe","great staff","great shield","great robe","power staff","power shield","power robe","Mystical staff","Mystical shield","Mystical robe","mage staff","mage shield","mage robe","arcane staff","arcane shield","arcane robe","magic staff","magic shield","magic robe","learn staff","learn shield","learn robe","wise staff","wise shield","wise robe","epic staff","epic shield","epic robe","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","Toy staff","Toy shield","Toy robe","rookie's staff","rookie's shield","rookie's robe","Dreamer's staff","Dreamer's shield","Dreamer's robe","mid staff","mid shield","mid robe","courage staff","courage shield","courage robe","partner's staff","partner's shield","partner's robe","evo staff","evo shield","evo robe","grow staff","grow shield","grow robe","love staff","love shield","love robe","Conquer's staff","Conquer's shield","Conquer's robe","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","wood bow","wood armor","long bow","long armor","flexible bow","flexible armor","strong bow","strong armor","precise bow","precise armor","reflex bow","reflex armor","archer bow","archer armor","fibre bow","fibre armor","recursive bow","recursive armor","modern bow","modern armor","speedy bow","speedy armor","composite bow","composite armor","keen bow","keen armor","self bow","self armor","epic bow","epic armor","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","Toy bow","Toy armor","simple bow","simple armor","rookie's bow","rookie's armor","Dreamer's bow","Dreamer's armor","fight bow","fight armor","mid bow","mid armor","courage bow","courage armor","partner's bow","partner's armor","journey bow","journey armor","evo bow","evo armor","effort bow","effort armor","grow bow","grow armor","love bow","love armor","happiness bow","happiness armor","Conquer's bow","Conquer's armor","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","sharpier claws","wood shield","wood armor","long claws","Copper shield","Copper armor","fast claws","light shield","light armor","iron claws","iron shield","iron armor","animal claws","animal shield","animal armor","deepy claws","rigid shield","rigid armor","stiff claws","stiff shield","stiff armor","mighty claws","mighty shield","mighty armor","nature claws","nature shield","nature armor","epic claws","epic shield","epic armor","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","Toy claws","Toy shield","Toy armor","rookie's claws","rookie's shield","rookie's armor","Dreamer's claws","Dreamer's shield","Dreamer's armor","mid claws","mid shield","mid armor","courage claws","courage shield","courage armor","partner's claws","partner's shield","partner's armor","evo claws","evo shield","evo armor","grow claws","grow shield","grow armor","love claws","love shield","love armor","Conquer's claws","Conquer's shield","Conquer's armor","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","kitchen dagger","wood shield","wood armor","Copper dagger","Copper shield","Copper armor","light dagger","light shield","light armor","iron dagger","iron shield","iron armor","assassin dagger","assassin shield","assassin armor","cutting dagger","super shield","super armor","stiff dagger","stiff shield","stiff armor","metal dagger","metal shield","metal armor","thin dagger","thick shield","thick armor","epic dagger","epic shield","epic armor","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","Toy dagger","Toy shield","Toy armor","rookie's dagger","rookie's shield","rookie's armor","Dreamer's dagger","Dreamer's shield","Dreamer's armor","-","mid shield","mid armor","courage dagger","courage shield","courage armor","partner's dagger","partner's shield","partner's armor","evo dagger","mid dagger","evo armor","grow dagger","grow shield","grow armor","love dagger","love shield","love armor","Conquer's dagger","Conquer's shield","Conquer's armor","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","fur","wings","nuts","grass","rocks","pot","spores","slime","feather","shell","ambrosia","ferns","ivy","maple leaf","tulsi","orchid","violet","blackhaw","dew","lilac","flower","doll","battery","tail","papyrus","worms","lit bottle","med bottle","big bottle","lit w bottle","med w bottle","big w bottle","wire","heavy rock","stiff wood","humus","shovel","ladder","String","Rope","fishing rod","shelter","teleport","map","book","knife","sphere of fire","sphere of water","sphere of grass","sphere of earth","sphere of air","sphere of bolt","stalactite","stalagmite","crystal","subrock","relic","fossil","bone","lime","mineral","crystalwater","crableg","lei","coconut shell","sand","beak","palm leaf","palm shell","shell","oyster","lobster","magma","ash","igneous rock","golem arm","serpent tail","square eye","Platinum","Sphere of dark","Sphere of light","Titanium","Core","Heart","Dragon's eyes","Dragon's ears","Dragon's skin","Dragon's head","Sphere of snow","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","ply","yard","copper ore","iron ore","flex wood","leather","cotton","plastic","latex","ferky","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","rigid shell","rabbit fur","polymer","strap","sand","branches","needle","proof of courage","proof of valor","proof of force","proof of honor","proof of benignity","proof of ambition","proof of agility","proof of crime","proof of money","proof of magic","proof of wisdom","proof of knowledge","proof of power","proof of dexterity","proof of determination","proof of peace","proof of equilibrum","proof of harmony","proof of wild","proof of nature","proof of simplicity","proof of loyalty","sharp rocks","stalk","jackknife","big leaf","scroll","ink","plume","long stick","hook","Elixir of life","sphere of slime","prayer","iron sheet","iron strip","tracing paper","sinew","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"}; 
-		Price = new int[] {5,5,10,10,15,15,20,20,25,25,30,30,35,35,40,40,45,45,50,50,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,300,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,300,20,20,60,60,100,100,140,140,180,180,220,220,260,260,300,300,340,340,380,380,420,420,460,460,500,500,540,540,580,580,620,620,660,660,700,700,740,740,780,780,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,300,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,300,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3100,3200,3300,3400,3500,3600,3700,3800,3900,4000,4100,4200,4300,4400,4500,4600,4700,4800,4900,5000,5100,5200,5300,5400,5500,5600,5700,5800,5900,6000,6100,6200,6300,6400,6500,6600,6700,6800,6900,7000,7100,7200,7300,7400,7500,7600,7700,7800,7900,8000,8100,8200,8300,8400,8500,8600,8700,8800,8900,9000,9100,9200,9300,9400,9500,9600,9700,9800,9900,10000,10100,10200,10300,10400,10500,10600,10700,10800,10900,11000,11100,11200,11300,11400,11500,11600,11700,11800,11900,12000,12100,12200,12300,12400,12500,12600,12700,12800,12900,13000,13100,13200,13300,13400,13500,13600,13700,13800,13900,14000,14100,14200,14300,14400,14500,14600,14700,14800,14900,15000,15100,15200,15300,15400,15500,15600,15700,15800,15900,16000,16100,16200,16300,16400,16500,16600,16700,16800,16900,17000,17100,17200,17300,17400,17500,17600,17700,17800,17900,18000,18100,18200,18300,18400,18500,18600,18700,18800,18900,19000,19100,19200,19300,19400,19500,19600,19700,19800,19900,20000,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3100,3200,3300,3400,3500,3600,3700,3800,3900,4000,4100,4200,4300,4400,4500,4600,4700,4800,4900,5000,5100,5200,5300,5400,5500,5600,5700,5800,5900,6000,6100,6200,6300,6400,6500,6600,6700,6800,6900,7000,7100,7200,7300,7400,7500,7600,7700,7800,7900,8000,8100,8200,8300,8400,8500,8600,8700,8800,8900,9000,9100,9200,9300,9400,9500,9600,9700,9800,9900,10000,10100,10200,10300,10400,10500,10600,10700,10800,10900,11000,11100,11200,11300,11400,11500,11600,11700,11800,11900,12000,12100,12200,12300,12400,12500,12600,12700,12800,12900,13000,13100,13200,13300,13400,13500,13600,13700,13800,13900,14000,14100,14200,14300,14400,14500,14600,14700,14800,14900,15000,15100,15200,15300,15400,15500,15600,15700,15800,15900,16000,16100,16200,16300,16400,16500,16600,16700,16800,16900,17000,17100,17200,17300,17400,17500,17600,17700,17800,17900,18000,18100,18200,18300,18400,18500,18600,18700,18800,18900,19000,19100,19200,19300,19400,19500,19600,19700,19800,19900,20000,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3100,3200,3300,3400,3500,3600,3700,3800,3900,4000,4100,4200,4300,4400,4500,4600,4700,4800,4900,5000,5100,5200,5300,5400,5500,5600,5700,5800,5900,6000,6100,6200,6300,6400,6500,6600,6700,6800,6900,7000,7100,7200,7300,7400,7500,7600,7700,7800,7900,8000,8100,8200,8300,8400,8500,8600,8700,8800,8900,9000,9100,9200,9300,9400,9500,9600,9700,9800,9900,10000,10100,10200,10300,10400,10500,10600,10700,10800,10900,11000,11100,11200,11300,11400,11500,11600,11700,11800,11900,12000,12100,12200,12300,12400,12500,12600,12700,12800,12900,13000,13100,13200,13300,13400,13500,13600,13700,13800,13900,14000,14100,14200,14300,14400,14500,14600,14700,14800,14900,15000,15100,15200,15300,15400,15500,15600,15700,15800,15900,16000,16100,16200,16300,16400,16500,16600,16700,16800,16900,17000,17100,17200,17300,17400,17500,17600,17700,17800,17900,18000,18100,18200,18300,18400,18500,18600,18700,18800,18900,19000,19100,19200,19300,19400,19500,19600,19700,19800,19900,20000,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3100,3200,3300,3400,3500,3600,3700,3800,3900,4000,4100,4200,4300,4400,4500,4600,4700,4800,4900,5000,5100,5200,5300,5400,5500,5600,5700,5800,5900,6000,6100,6200,6300,6400,6500,6600,6700,6800,6900,7000,7100,7200,7300,7400,7500,7600,7700,7800,7900,8000,8100,8200,8300,8400,8500,8600,8700,8800,8900,9000,9100,9200,9300,9400,9500,9600,9700,9800,9900,10000,10100,10200,10300,10400,10500,10600,10700,10800,10900,11000,11100,11200,11300,11400,11500,11600,11700,11800,11900,12000,12100,12200,12300,12400,12500,12600,12700,12800,12900,13000,13100,13200,13300,13400,13500,13600,13700,13800,13900,14000,14100,14200,14300,14400,14500,14600,14700,14800,14900,15000,15100,15200,15300,15400,15500,15600,15700,15800,15900,16000,16100,16200,16300,16400,16500,16600,16700,16800,16900,17000,17100,17200,17300,17400,17500,17600,17700,17800,17900,18000,18100,18200,18300,18400,18500,18600,18700,18800,18900,19000,19100,19200,19300,19400,19500,19600,19700,19800,19900,20000,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000,3100,3200,3300,3400,3500,3600,3700,3800,3900,4000,4100,4200,4300,4400,4500,4600,4700,4800,4900,5000,5100,5200,5300,5400,5500,5600,5700,5800,5900,6000,6100,6200,6300,6400,6500,6600,6700,6800,6900,7000,7100,7200,7300,7400,7500,7600,7700,7800,7900,8000,8100,8200,8300,8400,8500,8600,8700,8800,8900,9000,9100,9200,9300,9400,9500,9600,9700,9800,9900,10000,10100,10200,10300,10400,10500,10600,10700,10800,10900,11000,11100,11200,11300,11400,11500,11600,11700,11800,11900,12000,12100,12200,12300,12400,12500,12600,12700,12800,12900,13000,13100,13200,13300,13400,13500,13600,13700,13800,13900,14000,14100,14200,14300,14400,14500,14600,14700,14800,14900,15000,15100,15200,15300,15400,15500,15600,15700,15800,15900,16000,16100,16200,16300,16400,16500,16600,16700,16800,16900,17000,17100,17200,17300,17400,17500,17600,17700,17800,17900,18000,18100,18200,18300,18400,18500,18600,18700,18800,18900,19000,19100,19200,19300,19400,19500,19600,19700,19800,19900,20000,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,300,305,310,315,320,325,330,335,340,345,350,355,360,365,370,375,380,385,390,395,400,405,410,415,420,425,430,435,440,445,450,455,460,465,470,475,480,485,490,495,500,505,510,515,520,525,530,535,540,545,550,555,560,565,570,575,580,585,590,595,600,605,610,615,620,625,630,635,640,645,650,655,660,665,670,675,680,685,690,695,700,705,710,715,720,725,730,735,740,745,750,755,760,765,770,775,780,785,790,795,800,805,810,815,820,825,830,835,840,845,850,855,860,865,870,875,880,885,890,895,900,905,910,915,920,925,930,935,940,945,950,955,960,965,970,975,980,985,990,995,1000,1005,1010,1015,1020,1025,1030,1035,1040,1045,1050,1055,1060,1065,1070,1075,1080,1085,1090,1095,1100,1105,1110,1115,1120,1125,1130,1135,1140,1145,1150,1155,1160,1165,1170,1175,1180,1185,1190,1195,1200,1205,1210,1215,1220,1225,1230,1235,1240,1245,1250,1255,1260,1265,1270,1275,1280,1285,1290,1295,1300,1305,1310,1315,1320,1325,1330,1335,1340,1345,1350,1355,1360,1365,1370,1375,1380,1385,1390,1395,1400,1405,1410,1415,1420,1425,1430,1435,1440,1445,1450,1455,1460,1465,1470,1475,1480,1485,1490,1495,1500,1505,1510,1515,1520,1525,1530,1535,1540,1545,1550,1555,1560,1565,1570,1575,1580,1585,1590,1595,1600,1605,1610,1615,1620,1625,1630,1635,1640,1645,1650,1655,1660,1665,1670,1675,1680,1685,1690,1695,1700,1705,1710,1715,1720,1725,1730,1735,1740,1745,1750,1755,1760,1765,1770,1775,1780,1785,1790,1795,1800,1805,1810,1815,1820,1825,1830,1835,1840,1845,1850,1855,1860,1865,1870,1875,1880,1885,1890,1895,1900,1905,1910,1915,1920,1925,1930,1935,1940,1945,1950,1955,1960,1965,1970,1975,1980,1985,1990,1995,2000,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,300,305,310,315,320,325,330,335,340,345,350,355,360,365,370,375,380,385,390,395,400,405,410,415,420,425,430,435,440,445,450,455,460,465,470,475,480,485,490,495,500,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,255,260,265,270,275,280,285,290,295,300,305,310,315,320,325,330,335,340,345,350,355,360,365,370,375,380,385,390,395,400,405,410,415,420,425,430,435,440,445,450,455,460,465,470,475,480,485,490,495,500,505,510,515,520,525,530,535,540,545,550,555,560,565,570,575,580,585,590,595,600,605,610,615,620,625,630,635,640,645,650,655,660,665,670,675,680,685,690,695,700,705,710,715,720,725,730,735,740,745,750,755,760,765,770,775,780,785,790,795,800,805,810,815,820,825,830,835,840,845,850,855,860,865,870,875,880,885,890,895,900,905,910,915,920,925,930,935,940,945,950,955,960,965,970,975,980,985,990,995,1000};
-		DropChance = new int[] {20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20};
-		for (int i = 0; i <= NumberOfItems - 1; ++i)
-		{
-			items[i] = new Items(i, Name[i], Price[i], DropChance[i]);
-		}
-	}
-	
-	public void BuildingsProperties(Buildings[] buildings)
-	{
-		String[] Name = new String[NumberOfBuildings];
-		int[][] Pos = new int[NumberOfBuildings][3];
-		Name = new String[] {"Hospital", "Hospital", "Hospital", "Hospital", "Hospital", "Store", "Store", "Store", "Store", "Store", "Forge", "Forge", "Forge", "Forge", "Forge", "Bank", "Bank", "Bank", "Bank", "Bank", "Craft", "Craft", "Craft", "Craft", "Craft", "Sign", "Sign", "Sign", "Sign", "Sign"};
-		Pos = new int[][] {{50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}};
-		for (int i = 0; i <= NumberOfBuildings - 1; ++i)
-		{
-			buildings[i] = new Buildings(Name[i], Pos[i], 1);
-		}
-	}
+			}			
+			Image image = creatureTypes[type].getimage() ;
+			Image idleGif = creatureTypes[type].getanimations()[0]; 
+			Image movingUpGif = creatureTypes[type].getanimations()[1]; 
+			Image movingDownGif = creatureTypes[type].getanimations()[2]; 
+			Image movingLeftGif = creatureTypes[type].getanimations()[3]; 
+			Image movingRightGif = creatureTypes[type].getanimations()[4] ;
+			Color color = creatureTypes[type].getColor() ;	
+			int[] Skill = creatureTypes[type].getSkill() ;
 
-	public void NPCsProperties(NPCs[] npc)
-	{
-		String[] Name = new String[NumberOfNPCs];
-		int[][] Pos = new int[NumberOfNPCs][3];
-		Color[] color = new Color[NumberOfNPCs];
-		Name = new String[] {"Doctor", "Doctor", "Doctor", "Doctor", "Doctor", "Equips Seller", "Equips Seller", "Equips Seller", "Equips Seller", "Equips Seller", "Items Seller", "Items Seller", "Items Seller", "Items Seller", "Items Seller", "Smuggle Seller", "Smuggle Seller", "Smuggle Seller", "Smuggle Seller", "Smuggle Seller", "Alchemist", "Alchemist", "Alchemist", "Alchemist", "Alchemist", "WoodCrafter", "WoodCrafter", "WoodCrafter", "WoodCrafter", "WoodCrafter", "Forger", "Forger", "Forger", "Forger", "Forger", "Crafter", "Crafter", "Crafter", "Crafter", "Crafter", "Elemental", "Elemental", "Elemental", "Elemental", "Elemental", "Saver", "Saver", "Saver", "Saver", "Saver", "Master knight", "Master mage", "Master archer", "Master animal", "Master assassin", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Quest", "Sailer", "Special"};
-		Pos = new int[][] {{50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}, {50, 50, 50}};
-		color = new Color[] {Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue, Color.blue};
-		for (int i = 0; i <= NumberOfNPCs - 1; ++i)
-		{
-			npc[i] = new NPCs(Name[i], Pos[i], color[i]);
-		}
-	}
-	
-	public void MapsProperties(Maps[] maps)
-	{
-		String[] Name = new String[NumberOfMaps], Continent = new String[NumberOfMaps];
-		boolean[][][] Walkable = new boolean[NumberOfMaps][MaxX][MaxY];
-		Name = new String[] {"City of the knights"};
-		Continent = new String[] {"City"};
-		for (int i = 0; i <= NumberOfMaps - 1; ++i)
-		{
-			if (i == 0)
+			Name = creatureTypes[type].getName() ;
+			int Level = creatureTypes[type].getLevel() ;
+			int Map = creatureTypes[type].getMap() ;
+			int Continent = maps[Map].getContinent() ;
+			int[] Pos = Utg.RandomPos(screenDim, new float[] {0, (float)(0.2)}, new float[] {1, 1 - (float)(screen.SkyHeight)/screenDim[1]}, new int[] {PlayerStep, PlayerStep}) ;
+			if (Map == 13 | Map == 17)	// Shore creatures
 			{
-				Walkable[i][0][0] = false;
+				Pos = Utg.RandomPos(new int[] {(int)(0.8*screenDim[0]), screenDim[1]}, new float[] {0, (float)0.2}, new float[] {1, 1 - (float)(screen.SkyHeight)/screenDim[1]}, new int[] {PlayerStep, PlayerStep}) ;
+			}
+			String dir = Player.MoveKeys[0] ;
+			String Thought = "Exist" ;
+			int[] Size = creatureTypes[type].getSize() ;
+			float[] Life = creatureTypes[type].getLife() ;
+			float[] Mp = creatureTypes[type].getMp() ;
+			float Range = creatureTypes[type].getRange() ;
+			int Step = creatureTypes[type].getStep() ;
+			float[] Exp = new float[] {creatureTypes[type].getExp()} ;
+			float[] Satiation = new float[] {100, 100, 1} ;
+			float[] Thirst = new float[] {100, 100, 0} ;			
+			PersonalAttributes PA = new PersonalAttributes(Name, new Image[] {image}, Level, Continent, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst) ;
+
+			float[] PhyAtk = creatureTypes[type].getPhyAtk() ;
+			float[] MagAtk = creatureTypes[type].getMagAtk() ;
+			float[] PhyDef = creatureTypes[type].getPhyDef() ;
+			float[] MagDef = creatureTypes[type].getMagDef() ;
+			float[] Dex = creatureTypes[type].getDex() ;
+			float[] Agi = creatureTypes[type].getAgi() ;
+			float[] Crit = creatureTypes[type].getCrit() ;
+			float[] Stun = creatureTypes[type].getStun() ;
+			float[] Block = creatureTypes[type].getBlock() ;
+			float[] Blood = creatureTypes[type].getBlood() ;
+			float[] Poison = creatureTypes[type].getPoison() ;
+			float[] Silence = creatureTypes[type].getSilence() ;
+			int[] Status = creatureTypes[type].getStatus() ;
+			int[] SpecialStatus = creatureTypes[type].getSpecialStatus() ;
+			int[][] BattleActions = creatureTypes[type].getBattleActions() ;
+			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
+			
+			String[] Elem = creatureTypes[type].getElem() ;
+			int[] Bag = creatureTypes[type].getBag() ;
+			int Gold = creatureTypes[type].getGold() ;
+			int[][] Actions = creatureTypes[type].getActions() ;
+			int[] StatusCounter = creatureTypes[type].getStatusCounter() ;
+			String[] Combo = new String[1] ;
+			creature[c] = new Creatures(type, image, idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif, Map, Size, Skill, PA, BA, Elem, Bag, Gold, color, Actions, StatusCounter, Combo) ;	
+			if (creature[c].getName().equals("Dragão") | creature[c].getName().equals("Dragon"))
+			{
+				creature[c].getPersonalAtt().setPos(new int[] {(int)(0.5*screenDim[0]), (int)(0.5*screenDim[1])}) ;
+			}
+		}
+		return creature ;
+    }
+    public Skills[] InitializeSkills(String Language)
+    {
+    	int NumberOfAllSkills = 178 ;
+    	int NumberOfSkills = Player.NumberOfSkillsPerJob[player.getJob()] ;
+    	int NumberOfAtt = 14 ;
+    	int NumberOfBuffs = 12 ;
+		Skills[] skills = new Skills[NumberOfSkills] ;
+		String[][] SkillsInput = Utg.ReadTextFile(CSVPath + "Skills.csv", NumberOfAllSkills, 46) ;	
+		String[][] SkillsBuffsInput = Utg.ReadTextFile(CSVPath + "SkillsBuffs.csv", NumberOfAllSkills, 63) ;
+		String[][] SkillsNerfsInput = Utg.ReadTextFile(CSVPath + "SkillsNerfs.csv", NumberOfAllSkills, 63) ;
+		float[][][] SkillBuffs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+		float[][][] SkillNerfs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+		String[][] SkillsInfo = new String[NumberOfSkills][2] ;
+		for (int i = 0 ; i <= NumberOfSkills - 1 ; i += 1)
+		{
+			int ID = i + Player.CumNumberOfSkillsPerJob[player.getJob()] ;
+			int BuffCont = 0, NerfCont = 0 ;
+			for (int j = 0 ; j <= NumberOfAtt - 1 ; j += 1)
+			{
+				if (j == 11 | j == 12)
+				{
+					for (int k = 0 ; k <= NumberOfBuffs - 1 ; k += 1)
+					{
+						SkillBuffs[i][j][k] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 3]) ;
+						SkillNerfs[i][j][k] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 3]) ;
+						NerfCont += 1 ;
+						BuffCont += 1 ;
+					}
+				}
+				else
+				{
+					SkillBuffs[i][j][0] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 3]) ;
+					SkillBuffs[i][j][1] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 4]) ;
+					SkillBuffs[i][j][2] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 5]) ;
+					SkillNerfs[i][j][0] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 3]) ;
+					SkillNerfs[i][j][1] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 4]) ;
+					SkillNerfs[i][j][2] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 5]) ;
+					NerfCont += 3 ;
+					BuffCont += 3 ;
+				}
+			}
+			if (Language.equals("P"))
+			{
+				SkillsInfo[i] = new String[] {SkillsInput[ID][42], SkillsInput[ID][43]} ;
+			}
+			else if (Language.equals("E"))
+			{
+				SkillsInfo[i] = new String[] {SkillsInput[ID][44], SkillsInput[ID][45]} ;
+			}
+			String Name = SkillsInput[ID][4] ;
+			int MaxLevel = Integer.parseInt(SkillsInput[ID][5]) ;
+			float MpCost = Float.parseFloat(SkillsInput[ID][6]) ;
+			String Type = SkillsInput[ID][7] ;
+			int[][] PreRequisites = new int[][] {{Integer.parseInt(SkillsInput[ID][8]), Integer.parseInt(SkillsInput[ID][9])}, {Integer.parseInt(SkillsInput[ID][10]), Integer.parseInt(SkillsInput[ID][11])}, {Integer.parseInt(SkillsInput[ID][12]), Integer.parseInt(SkillsInput[ID][13])}} ;
+			int Cooldown = Integer.parseInt(SkillsInput[ID][14]) ;
+			int Duration = Integer.parseInt(SkillsInput[ID][15]) ;
+			float[] Atk = new float[] {Float.parseFloat(SkillsInput[ID][16]), Float.parseFloat(SkillsInput[ID][17])} ;
+			float[] Def = new float[] {Float.parseFloat(SkillsInput[ID][18]), Float.parseFloat(SkillsInput[ID][19])} ;
+			float[] Dex = new float[] {Float.parseFloat(SkillsInput[ID][20]), Float.parseFloat(SkillsInput[ID][21])} ;
+			float[] Agi = new float[] {Float.parseFloat(SkillsInput[ID][22]), Float.parseFloat(SkillsInput[ID][23])} ;
+			float[] AtkCrit = new float[] {Float.parseFloat(SkillsInput[ID][24])} ;
+			float[] DefCrit = new float[] {Float.parseFloat(SkillsInput[ID][25])} ;
+			float[] Stun = new float[] {Float.parseFloat(SkillsInput[ID][26]), Float.parseFloat(SkillsInput[ID][27]), Float.parseFloat(SkillsInput[ID][28])} ;
+			float[] Block = new float[] {Float.parseFloat(SkillsInput[ID][29]), Float.parseFloat(SkillsInput[ID][30]), Float.parseFloat(SkillsInput[ID][31])} ;
+			float[] Blood = new float[] {Float.parseFloat(SkillsInput[ID][32]), Float.parseFloat(SkillsInput[ID][33]), Float.parseFloat(SkillsInput[ID][34])} ;
+			float[] Poison = new float[] {Float.parseFloat(SkillsInput[ID][35]), Float.parseFloat(SkillsInput[ID][36]), Float.parseFloat(SkillsInput[ID][37])} ;
+			float[] Silence = new float[] {Float.parseFloat(SkillsInput[ID][38]), Float.parseFloat(SkillsInput[ID][39]), Float.parseFloat(SkillsInput[ID][40])} ;
+			String Elem = SkillsInput[ID][41] ;
+			skills[i] = new Skills(Name, MaxLevel, MpCost, Type, PreRequisites, Cooldown, Duration, SkillBuffs[i], SkillNerfs[i], Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, SkillsInfo[i]) ;	
+		}
+		//System.out.println(Arrays.toString(ActivePlayerSkills)) ;
+		return skills ;
+    }
+    public PetSkills[] InitializePetSkills()
+    {
+		PetSkills[] petskills = new PetSkills[Pet.NumberOfPetSkills] ;
+		String[][] PetSkillsInput = Utg.ReadTextFile(CSVPath + "PetSkills.csv", 20, 19) ;	
+		String[][] PetSkillsBuffsInput = Utg.ReadTextFile(CSVPath + "PetSkillsBuffs.csv", 20, 77) ;
+		String[][] PetSkillsNerfsInput = Utg.ReadTextFile(CSVPath + "PetSkillsNerfs.csv", 20, 77) ;
+		float[][][] PetSkillBuffs = new float[Pet.NumberOfPetSkills][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]		
+		float[][][] PetSkillNerfs = new float[Pet.NumberOfPetSkills][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]	
+		for (int i = 0 ; i <= Pet.NumberOfPetSkills - 1 ; i += 1)
+		{
+			int ID = i + pet.getJob()*Pet.NumberOfPetSkills ;
+			int BuffCont = 0, NerfCont = 0 ;
+			for (int j = 0 ; j <= 14 - 1 ; j += 1)
+			{
+				if (j == 11 | j == 12)
+				{
+					for (int k = 0 ; k <= 13 - 1 ; k += 1)
+					{
+						PetSkillBuffs[i][j][k] = Float.parseFloat(PetSkillsBuffsInput[ID][BuffCont + 3]) ;
+						BuffCont += 1 ;
+					}
+				}
+				else
+				{
+					PetSkillBuffs[i][j][0] = Float.parseFloat(PetSkillsBuffsInput[ID][BuffCont + 3]) ;
+					PetSkillBuffs[i][j][1] = Float.parseFloat(PetSkillsBuffsInput[ID][BuffCont + 4]) ;
+					PetSkillBuffs[i][j][2] = Float.parseFloat(PetSkillsBuffsInput[ID][BuffCont + 5]) ;
+					PetSkillBuffs[i][j][12] = Float.parseFloat(PetSkillsBuffsInput[ID][BuffCont + 6]) ;
+					BuffCont += 4 ;
+				}
+			}
+			for (int j = 0 ; j <= 14 - 1 ; j += 1)
+			{
+				if (j == 11 | j == 12)
+				{
+					for (int k = 0 ; k <= 13 - 1 ; k += 1)
+					{
+						PetSkillNerfs[i][j][k] = Float.parseFloat(PetSkillsNerfsInput[ID][NerfCont + 3]) ;
+						NerfCont += 1 ;
+					}
+				}
+				else
+				{
+					PetSkillNerfs[i][j][0] = Float.parseFloat(PetSkillsNerfsInput[ID][NerfCont + 3]) ;
+					PetSkillNerfs[i][j][1] = Float.parseFloat(PetSkillsNerfsInput[ID][NerfCont + 4]) ;
+					PetSkillNerfs[i][j][2] = Float.parseFloat(PetSkillsNerfsInput[ID][NerfCont + 5]) ;
+					PetSkillNerfs[i][j][12] = Float.parseFloat(PetSkillsNerfsInput[ID][NerfCont + 6]) ;
+					NerfCont += 4 ;
+				}
+			}
+			petskills[i] = new PetSkills(PetSkillsInput[ID][4], Integer.parseInt(PetSkillsInput[ID][5]), Float.parseFloat(PetSkillsInput[ID][6]), PetSkillsInput[ID][7], new int[][] {{Integer.parseInt(PetSkillsInput[ID][8]), Integer.parseInt(PetSkillsInput[ID][9])}, {Integer.parseInt(PetSkillsInput[ID][10]), Integer.parseInt(PetSkillsInput[ID][11])}, {Integer.parseInt(PetSkillsInput[ID][12]), Integer.parseInt(PetSkillsInput[ID][13])}}, Integer.parseInt(PetSkillsInput[ID][14]), PetSkillBuffs[i], PetSkillNerfs[i], PetSkillsInput[ID][16], new String[] {PetSkillsInput[ID][17], PetSkillsInput[ID][18]}) ;	
+		}
+		return petskills ;
+    }
+    public NPCs[] InitializeNPCs(String Language, int[] screenDim)
+    {
+    	int NumberOfNPCs = 149 ;
+    	// Doutor, Equips Seller, Items Seller, Smuggle Seller, Banker, Alchemist, Woodcrafter, Forger, Crafter, Elemental, Saver, Master, Quest 0, Citizen 0, Citizen 1, Citizen 2, Citizen 3
+		NPCs[] npc = new NPCs[NumberOfNPCs] ;
+		String[][] NPCsInput = Utg.ReadTextFile(CSVPath + "NPCs.csv", NumberOfNPCs, 9) ;
+		String Name = "" ;
+		String Info = "" ;
+		int[] ColorID = new int[] {6, 10, 20, 16, 3, 23, 27, 0, 25, 7, 5, 0, 26, 18, 15, 14, 21} ;
+		for (int i = 0 ; i <= NumberOfNPCs - 1 ; i += 1)
+		{
+			int ID = Integer.parseInt(NPCsInput[i][0]) ;
+			int[] Pos = new int[] {(int)(Utg.Round(Float.parseFloat(NPCsInput[i][3]) * screenDim[0] / player.getStep(), 0) * player.getStep()), (int)(Utg.Round(Float.parseFloat(NPCsInput[i][4]) * screenDim[1] / player.getStep(), 0) * player.getStep())} ;
+			Image image = null ;
+			int Map = Integer.parseInt(NPCsInput[i][5]) ;
+			String PosReltoBuilding = NPCsInput[i][6] ;
+			if (Language.equals("P"))
+			{
+				Name = NPCsInput[i][1] ;
+				Info = NPCsInput[i][7] ;
+			}
+			else if (Language.equals("E"))
+			{
+				Name = NPCsInput[i][2] ;
+				Info = NPCsInput[i][8] ;
+			}
+			Color color ;
+			if (i < 17*4)
+			{
+				color = ColorPalette[ColorID[i % 17]] ;
+			}
+			else
+			{
+				color = ColorPalette[(int)((ColorPalette.length - 1)*Math.random())] ;
+			}
+			if (!Name.equals("Master") & !Name.equals("Mestre") & i != 85 & i != 87)
+			{
+				image = Utg.ChangeImageColor(new ImageIcon(ImagesPath + "NPC.png").getImage(), new float[] {0, 0, 1, 1}, color, ColorPalette[6]) ;
+			}
+			if (Name.equals("Master") | Name.equals("Mestre"))
+			{
+				image = Utg.ChangeImageColor(new ImageIcon(ImagesPath + "PlayerFront.png").getImage(), new float[] {0, 0, 1, 1}, color, ColorPalette[6]) ;
+			}
+			if (i == 85)
+			{
+				image = new ImageIcon(ImagesPath + "NPCHole.png").getImage() ;
+			}
+			if (i == 87)
+			{
+				image = new ImageIcon(ImagesPath + "NPCHoleInCave.png").getImage() ;
+			}
+			npc[i] = new NPCs(ID, Name, Pos, image, Map, PosReltoBuilding, Info, color) ;
+		}
+    	
+		return npc ;
+    }
+    public Maps[] InitializeMaps(int[] screenDim, Buildings[] buildings)
+    {
+    	int NumberOfMaps = 67 ;
+		Maps[] maps = new Maps[NumberOfMaps] ;
+		String[][] MapsInput = Utg.ReadTextFile(CSVPath + "Maps.csv", NumberOfMaps, 22) ;	
+		for (int map = 0 ; map <= NumberOfMaps - 1 ; map += 1)
+		{
+			String Name = MapsInput[map][1] ;
+			int Continent = Integer.parseInt(MapsInput[map][2]) ;
+			Image image = new ImageIcon(ImagesPath + "Map" + String.valueOf(map) + ".png").getImage() ;
+			int CollectibleLevel = Integer.parseInt(MapsInput[map][3]) ;
+			int[] CollectibleDelay = new int[] {Integer.parseInt(MapsInput[map][4]), Integer.parseInt(MapsInput[map][5]), Integer.parseInt(MapsInput[map][6]), Integer.parseInt(MapsInput[map][7])} ;
+			int[] Connections = new int[] {Integer.parseInt(MapsInput[map][8]), Integer.parseInt(MapsInput[map][9]), Integer.parseInt(MapsInput[map][10]), Integer.parseInt(MapsInput[map][11]), Integer.parseInt(MapsInput[map][12]), Integer.parseInt(MapsInput[map][13]), Integer.parseInt(MapsInput[map][14]), Integer.parseInt(MapsInput[map][15])} ;
+			int[] CreatureTypes = null ;
+			int[] CreatureIDs = null ;
+			for (int c = 0 ; c <= 10 - 1 ; c += 1)
+			{
+				if (-1 < Integer.parseInt(MapsInput[map][16 + c]))
+				{
+					CreatureTypes = Utg.AddVectorElem(CreatureTypes, Integer.parseInt(MapsInput[map][16 + c])) ;
+				}
+			}
+			
+			// Creating map elements
+			MapElements[] MapElem = null ;
+			if (!Name.contains("City"))
+			{
+				MapElem = new MapElements[5] ;
+				float MinX = (float) 0.1 ;
+				float MinY = (float)((float)(screen.SkyHeight)/screenDim[1] + 0.1) ;
+				float RangeX = (float) 0.8 ;
+				float RangeY = (float)(1 - MinY) ;
+				for (int j = 0 ; j <= 4 ; ++j)
+				{
+					int[] randomPos = new int[] {Utg.RandomCoord1D(screenDim[0], MinX, RangeX, 1), Utg.RandomCoord1D(screenDim[1], MinY, RangeY, 1)} ;
+					MapElem[j] = new MapElements(j, "ForestTree", randomPos, new ImageIcon(ImagesPath + "MapElem6_TreeForest.png").getImage()) ;				
+				}	
+			}
+			
+			
+			maps[map] = new Maps(Name, map, Continent, image, MapElem, CollectibleLevel, CollectibleDelay, Connections, CreatureTypes, CreatureIDs) ;
+			maps[map].InitializeGroundTypes(screen.SkyHeight, screen.getDimensions()) ;
+			
+			// Creating collectibles
+			if (!maps[map].IsACity() & maps[map].getContinent() != 5 & map != 60)
+			{
+				for (int i = 0 ; i <= Maps.CollectibleTypes.length - 1 ; i += 1)
+				{
+					maps[map].CreateCollectible(screen, map, i) ;
+				}
+			}
+		}
+		
+		// Setting creatures in map
+		int[][] CreaturesInMapID = new int[maps.length][] ;
+		int cont = 0 ;
+		for (int map = 0 ; map <= maps.length - 1 ; map += 1)
+		{
+			if (maps[map].getCreatureTypes() != null)
+			{
+				for (int c = 0 ; c <= maps[map].getCreatureTypes().length - 1 ; c += 1)
+				{
+					if (-1 < maps[map].getCreatureTypes()[c])
+					{
+						CreaturesInMapID[map] = Utg.AddVectorElem(CreaturesInMapID[map], cont) ;
+						maps[map].setCreatureIDs(CreaturesInMapID[map]) ;
+						cont += 1 ;
+					}
+				}
+			}
+		}
+		return maps ;
+    }
+    public Items[] InitializeItems(int DifficultLevel, String Language)
+    {
+    	Items[] items = new Items[Items.NumberOfAllItems] ;
+		String[][] Input = Utg.ReadTextFile(CSVPath + "Items.csv", Items.NumberOfAllItems, 8) ;
+		String[] Name = new String[Items.NumberOfAllItems] ;
+		String[] Description = new String[Items.NumberOfAllItems] ;
+		for (int i = 0 ; i <= Items.NumberOfAllItems - 1 ; ++i)
+		{
+			if (Language.equals("P"))
+			{
+				Name[i] = Input[i][2] ;
+				Description[i] = Input[i][5] ;
+			}
+			if (Language.equals("E"))
+			{
+				Name[i] = Input[i][1] ;
+				Description[i] = Input[i][6] ;
+			}
+			Image image = new ImageIcon(ImagesPath + "items.png").getImage() ;
+			int Price = (int)(Integer.parseInt(Input[i][3]) * Player.DifficultMult[DifficultLevel]) ;
+			float DropChance = Integer.parseInt(Input[i][4]) / Player.DifficultMult[DifficultLevel] ;
+			float[][] Buffs = new float[14][13] ;
+			String Type = Input[i][7] ;
+			items[i] = new Items(i, Name[i], image, Price, DropChance, Buffs, Description[i], Type) ;
+		}
+		for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
+		{
+			items[Items.ItemsWithEffects[i]].setBuffs(Items.ItemsBuffs[i]) ;
+		}
+		Items.CalcItemsWithEffects(CSVPath) ;
+		
+		return items ;
+    }
+    public Quests[] InitializeQuests(String Language, int PlayerJob)
+    {
+		Quests[] quest = new Quests[Quests.NumberOfQuests] ;
+		String[][] Input = Utg.ReadTextFile(CSVPath + "Quests.csv", Quests.NumberOfQuests, 32) ;
+		for (int i = 0 ; i <= Quests.NumberOfQuests - 1 ; i += 1)
+		{
+			quest[i] = new Quests(Integer.parseInt(Input[i][0])) ;
+			quest[i].Initialize(CSVPath, Language, Integer.parseInt(Input[i][0]), PlayerJob) ;
+		}
+		
+		return quest ;
+    }
+    public Icon[] InitializeIcons(int[] WinDim)
+    {
+		/* Icons' position */
+		Image IconOptions = new ImageIcon(ImagesPath + "Icon0_Options.png").getImage() ;
+		Image IconBag = new ImageIcon(ImagesPath + "Icon1_Bag.png").getImage() ;
+		Image IconQuest = new ImageIcon(ImagesPath + "Icon2_Quest.png").getImage() ;
+		Image IconMap = new ImageIcon(ImagesPath + "Icon3_Map.png").getImage() ;
+		Image IconBook = new ImageIcon(ImagesPath + "Icon4_Book.png").getImage() ;
+    	Image IconTent = new ImageIcon(ImagesPath + "Icon5_Tent.png").getImage() ;
+    	Image PlayerImage = new ImageIcon(ImagesPath + "Player.png").getImage() ;
+    	Image PetImage = new ImageIcon(ImagesPath + "PetType" + pet.getJob() + ".png").getImage() ;
+		Image IconSkillsTree = new ImageIcon(ImagesPath + "Icon8_SkillsTree.png").getImage() ;
+		Image IconSelectedOptions = new ImageIcon(ImagesPath + "Icon0_OptionsSelected.png").getImage() ;
+		Image IconSelectedBag = new ImageIcon(ImagesPath + "Icon1_BagSelected.png").getImage() ;
+		Image IconSelectedQuest = new ImageIcon(ImagesPath + "Icon2_QuestSelected.png").getImage() ;
+		Image IconSelectedMap = new ImageIcon(ImagesPath + "Icon3_MapSelected.png").getImage() ;
+		Image IconSelectedBook = new ImageIcon(ImagesPath + "Icon4_BookSelected.png").getImage() ;
+    	Image IconSelectedTent = new ImageIcon(ImagesPath + "Icon5_TentSelected.png").getImage() ;
+    	Image PlayerSelectedImage = new ImageIcon(ImagesPath + "Player.png").getImage() ;
+    	Image PetSelectedImage = new ImageIcon(ImagesPath + "PetType" + pet.getJob() + ".png").getImage() ;
+		Image IconSelectedSkillsTree = new ImageIcon(ImagesPath + "Icon8_SelectedSkillsTree.png").getImage() ;
+		Image[] SideBarIconsImages = new Image[] {IconOptions, IconBag, IconQuest, IconMap, IconBook, IconTent, PlayerImage, PetImage, IconSkillsTree} ;
+		Image[] SideBarIconsSelectedImages = new Image[] {IconSelectedOptions, IconSelectedBag, IconSelectedQuest, IconSelectedMap, IconSelectedBook, IconSelectedTent, PlayerSelectedImage, PetSelectedImage, IconSelectedSkillsTree} ;
+
+		/* Side bar icons */
+		SideBarIcons = new Icon[8] ;
+		String[] SBname = new String[] {"Options", "Bag", "Quest", "Map", "Book", "Tent", "Player", "Pet"} ;
+    	int[][] SBpos = new int[SBname.length][2] ;
+		int sy = 20 ;
+		SBpos[0] = new int[] {WinDim[0] + 20, WinDim[1] - 230} ;
+    	for (int i = 1 ; i <= 6 - 1 ; i += 1)
+    	{
+    		SBpos[i] = new int[] {SBpos[0][0], SBpos[i - 1][1] - SideBarIconsImages[i - 1].getHeight(null) / 2 - sy} ;
+    	}
+    	SBpos[6] = new int[] {SBpos[0][0], SBpos[5][1] - SideBarIconsImages[5].getHeight(null)/2 - sy} ;
+    	SBpos[7] = new int[] {SBpos[0][0], SBpos[6][1] - (int)PlayerImage.getHeight(mainpanel) - SideBarIconsImages[4].getHeight(null)/2 - 20/2 - sy} ;
+     	for (int i = 0 ; i <= SideBarIcons.length - 1 ; i += 1)
+    	{
+     		SideBarIcons[i] = new Icon(i, SBname[i], SBpos[i], null, SideBarIconsImages[i], SideBarIconsSelectedImages[i]) ;
+    	}
+
+		/* Plus sign icons */
+     	plusSignIcon = new Icon[8] ;
+     	int[][] PlusSignPos = new int[][] {{175, 206}, {175, 225}, {175, 450}, {175, 475}, {175, 500}, {175, 525}, {175, 550}, {175, 575}} ;
+		Image PlusSignImage = new ImageIcon(ImagesPath + "PlusSign.png").getImage() ;
+		Image SelectedPlusSignImage = new ImageIcon(ImagesPath + "ShiningPlusSign.png").getImage() ;
+		for (int i = 0 ; i <= PlusSignPos.length - 1 ; i += 1)
+    	{
+    		plusSignIcon[i] = new Icon(i + SBname.length, "Plus sign", PlusSignPos[i], null, PlusSignImage, SelectedPlusSignImage) ;
+    	}
+		
+    	return plusSignIcon ;
+    }
+ 	public void MainInitialization()
+	{
+ 		InitializeGeneralVariables(screen.getDimensions()) ;
+ 		player = InitializePlayer(PlayerName, PlayerJob, GameLanguage, PlayerSex) ;
+		items = InitializeItems(player.DifficultLevel, GameLanguage) ;
+		creatureTypes = InitializeCreatureTypes(GameLanguage, player.DifficultLevel) ;
+		pet = InitializePet() ;
+		buildings = InitializeBuildings(screen.getDimensions()) ;
+		maps = InitializeMaps(screen.getDimensions(), buildings) ;
+		creature = InitializeCreatures(creatureTypes, screen.getDimensions(), maps, player.getStep()) ;
+		skills = InitializeSkills(GameLanguage) ;
+		petskills = InitializePetSkills() ;
+		npc = InitializeNPCs(GameLanguage, screen.getDimensions()) ;
+		for (int map = 0 ; map <= maps.length - 1 ; map += 1)
+		{
+			maps[map].CalcNPCsInMap(npc) ;
+		}
+		quest = InitializeQuests(GameLanguage, player.getJob()) ;
+		plusSignIcon = InitializeIcons(screen.getDimensions()) ;
+		Uts.FindMaxItemNameLength(items) ;
+
+		// Initialize classes
+    	Ani = new Animations(screen.getDimensions(), AllTextCat, AllText) ;
+    	B = new Battle(CSVPath, ImagesPath, skills, petskills, items, DamageAnimationType, SoundEffects, new int[] {player.getBattleAtt().getBattleActions()[0][1]/2, pet.getBattleAtt().getBattleActions()[0][1]/2}, Ani) ;
+		NPC = new NPCsMethods(player, screen.getDimensions(), ImagesPath, AllText, AllTextCat, plusSignIcon) ;
+	}
+  	
+	public void Opening(Image OpeningBG, Image OpeningGif)
+	{
+		DrawPrimitives DP = DF.getDrawPrimitives() ;
+		Font font = new Font(MainFontName, Font.BOLD, 14) ;
+		int ScreenW = screen.getDimensions()[0], ScreenH = screen.getDimensions()[1] ;
+		float Textangle = DrawPrimitives.OverallAngle ;
+		int TextCat = -1 ;
+		Color TextColor = ColorPalette[5] ;
+		if (AllTextCat != null)
+		{
+			TextCat = AllTextCat[2] ;
+		}
+		if (!Ani.isActive(20))
+		{
+	    	OPbuttons[0].activate() ;
+	    	OPbuttons[1].activate() ;
+	    	OPbuttons[2].activate() ;
+	    	OPbuttons[3].activate() ;
+		}
+		DP.DrawImage(OpeningBG, new int[2], 0, new float[] {1, 1}, new boolean[] {false, false}, "TopLeft", 1) ;
+		for (int i = 0 ; i <= OPbuttons.length - 1 ; i += 1)
+		{
+			if (OPbuttons[i].isActive)
+			{
+				OPbuttons[i].DrawImage(0, OPSelectedButton, MousePos, DP) ;
+			}
+		}
+		if (player.action.equals("Enter"))
+		{
+			player.action = (String) OPbuttons[OPSelectedButton].startaction() ;
+		}
+		OPSelectedButton = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], player.action, OPSelectedButton, OPbuttons.length) ;
+		if (OpeningStep == 0)
+		{
+			if (MusicIsOn)
+			{
+				Utg.PlayMusic(MusicIntro) ;
+			}
+			OpeningStep += 1 ;
+		}
+		if (OpeningStep == 1)
+		{
+			if (player != null)
+			{
+				if (player.action.equals("N"))
+				{
+					//TutorialIsOn = true ;
+					AllText = Utg.ReadTextFile(GameLanguage) ;
+					AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
+			    	OPbuttons[2].deactivate() ;
+			    	OPbuttons[3].deactivate() ;
+					OpeningStep += 1 ;
+				}	
+				if (player.action.equals("L"))
+				{
+					player = new Player("", GameLanguage, PlayerSex, PlayerJob) ;
+					Items.InitializeStaticVars(ImagesPath) ;
+					pet = new Pet(0) ;
+			    	OPbuttons[2].deactivate() ;
+			    	OPbuttons[3].deactivate() ;
+					LoadingGameIsOn = true ;
+					InitializationIsOn = false ;
+					OpeningIsOn = false ;
+				}
+			}
+		}
+		else if (OpeningStep == 2)
+		{
+			Font Largefont = new Font(MainFontName, Font.BOLD, 13) ;
+			DP.DrawText(new int[] {(int)(0.5*ScreenW) + 20, (int)(0.25*ScreenH)}, "Center", Textangle, AllText[TextCat][1], font, TextColor) ;
+			if (player.action.equals("Enter"))
+			{
+				Uts.LiveTyping(new int[] {(int)(0.4*ScreenW), (int)(0.3*ScreenH)}, Textangle, player.action, Largefont, TextColor, DP) ;
+		    	OPbuttons[4].activate() ;
+		    	OPbuttons[5].activate() ;
+				OpeningStep += 1 ;
+			}
+			else
+			{
+				PlayerName = Uts.LiveTyping(new int[] {(int)(0.4*ScreenW), (int)(0.3*ScreenH)}, Textangle, player.action, Largefont, TextColor, DP) ;
+			}
+		}
+		else if (OpeningStep == 3)
+		{
+			if (player.action.equals("M") | player.action.equals("F"))
+			{
+		    	OPbuttons[4].deactivate() ;
+		    	OPbuttons[5].deactivate() ;
+		    	OPbuttons[6].activate() ;
+		    	OPbuttons[7].activate() ;
+		    	OPbuttons[8].activate() ;
+				OpeningStep += 1 ;	
+				PlayerSex = player.action ;
+			}
+		}
+		else if (OpeningStep == 4)
+		{
+			if (player.action.equals("0") | player.action.equals("1") | player.action.equals("2"))
+			{
+		    	OPbuttons[6].deactivate() ;
+		    	OPbuttons[7].deactivate() ;
+		    	OPbuttons[8].deactivate() ;
+		    	OPbuttons[9].activate() ;
+		    	OPbuttons[10].activate() ;
+		    	OPbuttons[11].activate() ;
+		    	OPbuttons[12].activate() ;
+		    	OPbuttons[13].activate() ;
+				player.DifficultLevel = Integer.parseInt(player.action) ;
+				OpeningStep += 1 ;
+			}
+		}
+		else if (OpeningStep == 5)
+		{
+			int TextL = 15 ;
+			int sx = (int)(0.21*ScreenW), sy = 20 ;
+			Font smallfont = new Font("BoldSansSerif", Font.BOLD, 12) ;
+			DP.DrawText(new int[] {(int)(0.35*ScreenW), (int)(0.1*ScreenH)}, "BotLeft", Textangle, AllText[TextCat][5], font, TextColor) ;		
+			for (int i = 0 ; i <= 5 - 1 ; i += 1)
+			{
+				int[] Pos = {(int) (0.01 * ScreenW + i * sx), (int) (0.28 * ScreenH)} ;
+				int L = TextL * font.getSize() * 9 / 20, H = (int) (12.4 * sy);
+				DF.DrawMenuWindow(Pos, L, H, null, 0, Player.ClassColors[i], ColorPalette[7]) ;
+				DP.DrawFitText(new int[] {Pos[0] + 5, Pos[1] + 5}, sy, "TopLeft", AllText[TextCat][11 + i], smallfont, TextL, TextColor) ;	
+			}
+			if (player.action.equals("0") | player.action.equals("1") | player.action.equals("2") | player.action.equals("3") | player.action.equals("4"))
+			{
+		    	OPbuttons[9].deactivate() ;
+		    	OPbuttons[10].deactivate() ;
+		    	OPbuttons[11].deactivate() ;
+		    	OPbuttons[12].deactivate() ;
+		    	OPbuttons[13].deactivate() ;
+				OpeningStep += 1 ;	
+				PlayerJob = Integer.parseInt(player.action) ;
+				OPbuttons[0].deactivate() ;
+				OPbuttons[1].deactivate() ;
+				OpeningIsOn = false ;
 			}			
 		}
 	}
 	
-	public void MovePlayerMap(Player player, String PlayerMove)
+	public void Loading(int LoadingGameTab)
 	{
-		int[][] Maps = new int[NumberOfMaps][4];	// Maps[Current map][map above, map to the left, map below, map to the right]
-		for(int i = 0; i <= NumberOfMaps - 1; ++i)
+		DrawPrimitives DP = DF.getDrawPrimitives() ;
+		Font font = new Font("BoldSansSerif", Font.BOLD, 20) ;
+		int ScreenL = screen.getDimensions()[0], ScreenH = screen.getDimensions()[1] ;
+		int NumberOfSlots = 3 ;
+		int NumberOfTabs = 2 ;
+		int NumberOfUsedSlots = 0 ;
+		//Object[] LoadingResult = new Object[2] ;
+		for (int i = 0 ; i <= NumberOfSlots - 1 ; ++i)
 		{
-			if(player.getMap() == i)
+			if (Utg.FindFile("save" + (i + 1) + ".txt"))
 			{
-				if (PlayerMove.equals("w"))
+				NumberOfUsedSlots += 1 ;
+			}
+		}
+		if (Utg.FindFile("save" + (LoadingSelectedSlot + 1) + ".txt"))
+		{
+			player = null ;
+			pet = null ;
+			player.Load("save" + (LoadingSelectedSlot + 1) + ".txt", pet, maps) ;
+			//Items.EquipsBonus = (float[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 33)], Items.EquipsBonus[0].length), "String", "float") ;
+			//FirstNPCContact = (int[]) UtilGeral.ConvertArray(UtilGeral.toString(ReadFile[2*(NumberOfPlayerAttributes + 34)]), "String", "int") ;
+			//DifficultLevel = Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 35)][0]) ;
+			if (player == null)
+			{
+				DP.DrawText(new int[] {(int) (0.5*ScreenL), (int) (0.5*ScreenH)}, "Center", DrawPrimitives.OverallAngle, "Save version is old, do you want to convert to a new version?", font, ColorPalette[5]) ;
+			}
+			else
+			{
+		 		//pet = (Pet)LoadingResult[1] ;	
+		 		//Items.EquipsBonus = (float[][]) LoadingResult[2] ;
+		 		//player.DifficultLevel = (int)LoadingResult[3] ;
+		 		GameLanguage = player.getLanguage() ;
+		 		AllText = Utg.ReadTextFile(GameLanguage) ;
+				AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
+		 		buildings = InitializeBuildings(screen.getDimensions()) ;
+				maps = InitializeMaps(screen.getDimensions(), buildings) ;
+				creatureTypes = InitializeCreatureTypes(GameLanguage, player.DifficultLevel) ;
+				creature = InitializeCreatures(creatureTypes, screen.getDimensions(), maps, player.getStep()) ;
+				skills = InitializeSkills(GameLanguage) ;
+				petskills = InitializePetSkills() ;
+				npc = InitializeNPCs(GameLanguage, screen.getDimensions()) ;
+				for (int map = 0 ; map <= maps.length - 1 ; map += 1)
 				{
-					player.getCoords()[1] = MinY;
-					player.setCoords(player.getCoords());
-					player.setMap(Maps[i][0]);
+					maps[map].CalcNPCsInMap(npc) ;
 				}
-				if (PlayerMove.equals("a"))
+				items = InitializeItems(player.DifficultLevel, GameLanguage) ;
+				quest = InitializeQuests(GameLanguage, player.getJob()) ;
+				Uts.FindMaxItemNameLength(items) ;
+				DF.DrawLoadingGameScreen(player, pet, items, plusSignIcon, screen.getDimensions(), LoadingSelectedSlot, NumberOfUsedSlots, CoinIcon) ;
+			}
+	 	}
+		else
+		{
+			DF.DrawEmptyLoadingSlot(screen.getDimensions(), LoadingSelectedSlot, NumberOfSlots - 1) ;
+		}
+		LoadingSelectedSlot = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], player.action, LoadingSelectedSlot, NumberOfSlots - 1) ;
+		LoadingGameTab = Uts.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], player.action, LoadingGameTab, NumberOfTabs) ;
+		if (player.action.equals("Enter"))
+		{
+			LoadingSelectedSlot += 1 ;
+			if (0 < LoadingSelectedSlot & LoadingSelectedSlot <= NumberOfSlots)
+			{
+				if (Utg.FindFile("save" + LoadingSelectedSlot + ".txt"))
 				{
-					player.getCoords()[0] = MaxX;
-					player.setCoords(player.getCoords());
-					player.setMap(Maps[i][1]);
+					//LoadingResult = Uts.Load("save" + LoadingSelectedSlot + ".txt") ;
+					//player = (Player)LoadingResult[0] ;
+			 		//pet = (Pet)LoadingResult[1] ;
+			 		//Items.EquipsBonus = (float[][]) LoadingResult[2] ;
+			 		PlayerSex = player.getSex() ;		
+			 		GameLanguage = player.getLanguage() ;	
+			 		AllText = Utg.ReadTextFile(GameLanguage) ;		
 				}
-				if (PlayerMove.equals("s"))
-				{
-					player.getCoords()[1] = MaxY;
-					player.setCoords(player.getCoords());
-					player.setMap(Maps[i][2]);
-				}
-				if (PlayerMove.equals("d"))
-				{
-					player.getCoords()[0] = MinX;
-					player.setCoords(player.getCoords());
-					player.setMap(Maps[i][3]);
-				}
+				LoadingGameIsOn = false ;
+				CustomizationIsOn = true ;
 			}
 		}
 	}
 	
-	public void PlayerMove(Player player)
+	public void Tutorial(Player player, int[] meet)
 	{
-		Scanner in = new Scanner(System.in);
-		String PlayerMove;
-		/*
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher( 
-		new KeyEventDispatcher()
-		{  
-			public boolean dispatchKeyEvent(KeyEvent e)
+		DrawPrimitives DP = DF.getDrawPrimitives() ;
+		int TextCat = AllTextCat[3] ;
+		int L = (int)(screen.getDimensions()[0]), H = (int)(0.12*screen.getDimensions()[1]) ;
+		int[] Pos = new int[] {0, H} ;
+		Font font = new Font("SansSerif", Font.BOLD, 15) ;
+		int TextL = 95 ;
+		int sy = Utg.TextH(font.getSize()) + 2 ;
+		if (TutorialStep <= 13)
+		{
+			DP.DrawRoundRect(Pos, "BotLeft", L, H, 1, ColorPalette[7], ColorPalette[8], true) ;
+			DP.DrawText(new int[] {Pos[0] + 5, Pos[1] + 5 - Utg.TextH(font.getSize())}, "BotLeft", DrawPrimitives.OverallAngle, AllText[TextCat][1], font, ColorPalette[5]) ;
+			DP.DrawFitText(new int[] {Pos[0] + 5, Pos[1] - H + 5 + Utg.TextH(font.getSize())}, sy, "BotLeft", AllText[TextCat][TutorialStep + 2], font, TextL, ColorPalette[5]) ;					
+		}
+		if (player.action.equals("Space"))
+		{
+			TutorialStep += 1 ;
+		}
+		if (TutorialStep == 0)
+		{
+			if (player.action.equals(Player.MoveKeys[0]) | player.action.equals(Player.MoveKeys[2]) | player.action.equals(Player.MoveKeys[3]) | player.action.equals(Player.MoveKeys[1]))
 			{
-				if(e.getID() == KeyEvent.KEY_PRESSED)
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 1)
+		{
+			if (player.action.equals("Enter"))
+			{
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 2)
+		{
+			if (player.action.equals("Enter"))
+			{
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 3)
+		{
+			if (player.action.equals(Player.ActionKeys[4]))
+			{
+				player.getBag()[0] += 1 ;
+				int ItemID = 0 ;		// obtained item: hp potion lv 0
+				Ani.SetAniVars(0, new Object[] {100, items, new int[] {ItemID}}) ;
+				Ani.StartAni(0) ;
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 4)
+		{
+			if (player.getBag()[0] == 0)
+			{
+				int ItemID = Items.BagIDs[5] + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * player.getJob() ;		// obtained item: first equip
+				player.getBag()[ItemID] += 1 ;
+				Ani.SetAniVars(0, new Object[] {100, items, new int[] {ItemID}}) ;
+				Ani.StartAni(0) ;
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 5)
+		{
+			if (0 < player.getEquips()[0])
+			{
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 6)
+		{
+			if (player.action.equals(Player.ActionKeys[5]))
+			{
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 7)
+		{
+			if (player.action.equals(Player.ActionKeys[5]))
+			{
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 8)
+		{
+			DF.DrawNPCsIntro(player, npc, new float[] {1, 1}, maps[player.getMap()].NPCsInMap) ;
+			if (player.action.equals("Enter"))
+			{
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 9)
+		{
+			//Ani.SetAniVars(17, new Object[] {10, player.getMap(), CrazyArrowImage}) ;
+			//Ani.StartAni(17) ;
+			if (!maps[player.getMap()].IsACity())
+			{
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 10)
+		{
+			if (player.action.equals("Enter"))
+			{
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 11)
+		{
+			if (0 < player.getBag()[Items.BagIDs[0]] | 0 < player.getBag()[Items.BagIDs[0] + 1] | 0 < player.getBag()[Items.BagIDs[0] + 2] | 0 < player.getBag()[Items.BagIDs[3]] | player.action.equals("Space"))
+			{
+				player.getBag()[Items.BagIDs[3]] += 5 ;
+				Ani.SetAniVars(0, new Object[] {100, items, new int[] {Items.BagIDs[3]}}) ;
+				Ani.StartAni(0) ;
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 12)
+		{
+			if (player.action.equals("Enter"))
+			{
+				TutorialStep += 1 ;
+			}
+		}
+		else if (TutorialStep == 13)
+		{
+			if (player.action.equals("Enter"))
+			{
+				TutorialStep += 1 ;
+			}
+		}
+		else if (14 <= TutorialStep & TutorialStep < 17)
+		{
+			if (meet[0] == 1 & meet[1] == 2)	// First time meeting the items seller
+			{
+				if (npc[meet[1]].Firstcontact)
 				{
-					if (e.getKeyCode() == 37)	// Left arrow key
-					{
-						if(player.getCoords()[1] < MaxY)
-						{
-							--player.getCoords()[0];
-							player.setCoords(player.getCoords());
-						}
-						else
-						{
-							MovePlayerMap(player, "a");
-						}
-					}
-					if (e.getKeyCode() == 38)	// Up arrow key
-					{
-						if(player.getCoords()[0] > MinX)
-						{
-							++player.getCoords()[1];
-							player.setCoords(player.getCoords());						
-						}
-						else
-						{
-							MovePlayerMap(player, "w");
-						}
-					}
-					if (e.getKeyCode() == 39)	// Right arrow key
-					{
-						if(player.getCoords()[1] > MinY)
-						{
-							++player.getCoords()[0];
-							player.setCoords(player.getCoords());	
-						}
-						else
-						{
-							MovePlayerMap(player, "d");
-						}
-					}					
+					player.getGold()[0] += 100 ;
 				}
-				return false;
-			}  
-		});*/
+				npc[meet[1]].Firstcontact = false ;
+				/*
+				 * This is an animation
+				 * 
+				 * DP.DrawRect(Pos, "Left", L, H, 1, ColorPalette[7], ColorPalette[9], true) ;
+					DP.DrawText(new int[] {Pos[0] + 5, Pos[1] + 5 - Utg.TextH(FontSize)}, "Left", DrawPrimitives.OverallAngle, AllText[TextCat][1], TextFont, FontSize, ColorPalette[5]) ;		
+					DP.DrawFitText(new int[] {Pos[0] + 5, Pos[1] - H + 5 + Utg.TextH(FontSize)}, sy, "Left", AllText[TextCat][16], TextFont, TextL, TextFont.getSize(), ColorPalette[5]) ;
+				else if (NPcContactAnimationIsOver)
+				{
+					TutorialStep += 1 ;
+				}*/
+			}
+			else if (meet[0] == 1 & meet[1] == 7)	// First time meeting the forger
+			{
+				if (npc[meet[1]].Firstcontact)
+				{
+					player.getBag()[Items.BagIDs[1]] += 1 ;
+					Ani.SetAniVars(0, new Object[] {100, items, new int[] {Items.BagIDs[1]}}) ;
+					Ani.StartAni(0) ;
+				}
+				npc[meet[1]].Firstcontact = false ;
+				/*
+				 * This is an animation
+				 * 
+				 * if (FirstNPCContact[npc[meet[1]].getID()] <= 300)
+				{
+					DP.DrawRect(Pos, "Left", L, H, 1, ColorPalette[7], ColorPalette[9], true) ;
+					DP.DrawText(new int[] {Pos[0] + 5, Pos[1] + 5 - Utg.TextH(FontSize)}, "Left", DrawPrimitives.OverallAngle, AllText[TextCat][1], TextFont, FontSize, ColorPalette[5]) ;		
+					DP.DrawFitText(new int[] {Pos[0] + 5, Pos[1] - H + 5 + Utg.TextH(FontSize)}, sy, "Left", AllText[TextCat][17], TextFont, TextL, TextFont.getSize(), ColorPalette[5]) ;					
+				}
+				else if (FirstNPCContact[npc[meet[1]].getID()] == 301)
+				{
+					TutorialStep += 1 ;
+				}*/
+			}
+			else if (meet[0] == 1 & meet[1] == 11)	// First time meeting the master
+			{
+				if (npc[meet[1]].Firstcontact)
+				{
+					player.addSkillPoint(1) ;
+				}
+				npc[meet[1]].Firstcontact = false ;
+				/*
+				 * This is an animation
+				 * 
+				 * if (FirstNPCContact[npc[meet[1]].getID()] <= 300)
+				{
+					DP.DrawRect(Pos, "Left", L, H, 1, ColorPalette[7], ColorPalette[9], true) ;
+					DP.DrawText(new int[] {Pos[0] + 5, Pos[1] + 5 - Utg.TextH(FontSize)}, "Left", DrawPrimitives.OverallAngle, AllText[TextCat][1], TextFont, FontSize, ColorPalette[5]) ;		
+					DP.DrawFitText(new int[] {Pos[0] + 5, Pos[1] - H + 5 + Utg.TextH(FontSize)}, sy, "Left", AllText[TextCat][18], TextFont, TextL, TextFont.getSize(), ColorPalette[5]) ;					
+				}
+				else if (FirstNPCContact[npc[meet[1]].getID()] == 301)
+				{
+					TutorialStep += 1 ;
+				}*/
+			}
+		}
+		else if (TutorialStep == 17)
+		{
+			TutorialIsOn = false ;
+		}
+	}
 		
-		PlayerMove = in.nextLine();
-		if (PlayerMove.equals("w"))
+	public void Customization()
+	{
+		//player.Customization(Player.ActionKeys, Player.MoveKeys) ;
+		player.setSize(new int[] {player.getPersonalAtt().getimage()[0].getWidth(mainpanel), player.getPersonalAtt().getimage()[0].getHeight(mainpanel)}) ;
+		int SelectedOption = player.SelectedOption ;
+		int[] CurrentColorValues = new int[] {player.getColors()[0].getRed(), player.getColors()[0].getGreen(), player.getColors()[0].getBlue()} ;
+		DF.DrawCustomizationMenu(player, SelectedOption, CurrentColorValues) ;	
+		if (player.action.equals("Enter"))
 		{
-			if(player.getCoords()[1] < MaxY)
+			CustomizationIsOn = false ;
+			RunGame = true ;
+			if (MusicIsOn)
 			{
-				++player.getCoords()[1];
-				player.setCoords(player.getCoords());
-			}
-			else
-			{
-				MovePlayerMap(player, PlayerMove);
+				Utg.SwitchMusic(MusicIntro, Music[Maps.Music[player.getMap()]]) ;
 			}
 		}
-		if (PlayerMove.equals("a"))
+	}
+		
+	public void IncrementCounters(Player player, Pet pet, Creatures[] creature)
+	{
+		DayCounter += 1 ;
+		for (int c = 0 ; c <= Cloud.length - 1 ; c += 1)
 		{
-			if(player.getCoords()[0] > MinX)
+			Cloud[c].IncCounter(700) ;
+		}
+		player.IncActionCounters() ;
+		player.SupSkillCounters(skills, creature, player.CreatureInBattle) ;
+		pet.IncActionCounters() ;
+		if (maps[player.getMap()].hasCreatures())
+		{
+			for (int c = 0 ; c <= maps[player.getMap()].getCreatureIDs().length - 1 ; c += 1)
 			{
-				--player.getCoords()[0];
-				player.setCoords(player.getCoords());
-			}
-			else
-			{
-				MovePlayerMap(player, PlayerMove);
+				int ID = maps[player.getMap()].getCreatureIDs()[c] ;
+				creature[ID].IncActionCounters() ;
 			}
 		}
-		if (PlayerMove.equals("s"))
+		if (player.isInBattle())
 		{
-			if(player.getCoords()[1] > MinY)
+			player.IncBattleActionCounters() ;
+			pet.IncBattleActionCounters() ;
+			/*for (int c = 0 ; c <= maps[player.getMap()].getCreatureIDs().length - 1 ; c += 1)
 			{
-				--player.getCoords()[1];
-				player.setCoords(player.getCoords());	
-			}
-			else
+				int ID = maps[player.getMap()].getCreatureIDs()[c] ;
+				creature[ID].IncBattleActionCounters() ;
+			}*/
+			creature[player.CreatureInBattle].IncBattleActionCounters() ;
+		}
+		if (!maps[player.getMap()].IsACity())
+		{
+			maps[player.getMap()].IncCollectiblesCounter() ;
+		}
+	}
+	
+	public void ActivateCounters(Player player, Pet pet, Creatures[] creature, int DayCounter, int DayDuration)
+	{	
+		if (DayCounter % DayDuration == 0)
+		{
+			DayCounter = 0 ;
+		}
+		player.ActivateActionCounters(Ani.SomeAnimationIsActive()) ;
+		if (0 < pet.getLife()[0])
+		{
+			pet.ActivateActionCounters(Ani.SomeAnimationIsActive()) ;
+		}
+		if (!maps[player.getMap()].IsACity())	// player is out of the cities
+		{
+			for (int i = 0 ; i <= maps[player.getMap()].getCreatureIDs().length - 1 ; ++i)
 			{
-				MovePlayerMap(player, PlayerMove);
+				int ID = maps[player.getMap()].getCreatureIDs()[i] ;
+				if (!Ani.isActive(12) & !Ani.isActive(13) & !Ani.isActive(14) & !Ani.isActive(18))
+				{
+					creature[ID].ActivateActionCounters() ;
+				}
 			}
 		}
-		if (PlayerMove.equals("d"))
+		if (!maps[player.getMap()].IsACity())
 		{
-			if(player.getCoords()[0] < MaxX)
+			maps[player.getMap()].CreateCollectibles(screen) ;
+		}
+	}
+	
+	public void KonamiCode()
+	{
+		//OpeningScreenImages[2] = ElementalCircle ;
+		ColorPalette = Uts.ReadColorPalette(new ImageIcon(ImagesPath + "ColorPalette.png").getImage(), "Konami") ;
+		if (DayCounter % 1200 <= 300)
+		{
+			DrawPrimitives.OverallAngle += 0.04 ;
+		}
+		else if (DayCounter % 1200 <= 900)
+		{
+			DrawPrimitives.OverallAngle -= 0.04 ;
+		}
+		else
+		{
+			DrawPrimitives.OverallAngle += 0.04 ;
+		}
+	}
+	
+	public void RunGame(DrawFunctions DF)
+	{	
+		IncrementCounters(player, pet, creature) ;
+		ActivateCounters(player, pet, creature, DayCounter, DayDuration) ;
+		if (Uts.KonamiCodeActivated(player.getCombo()))
+		{
+			KonamiCode() ;
+		}
+		DF.DrawFullMap(screen, player, pet, maps, npc, buildings, skills, SideBarIcons, items, MousePos, DayCounter, Cloud, Star, SkillCooldownImage, SkillSlotImage) ;
+		/*if (TutorialIsOn)
+		{
+			Tutorial(player, meet) ;
+		}*/
+		
+		// Creatures move
+		if (maps[player.getMap()].hasCreatures())
+		{
+			for (int c = 0 ; c <= maps[player.getMap()].getCreatureIDs().length - 1 ; c += 1)
 			{
-				++player.getCoords()[0];
-				player.setCoords(player.getCoords());
-			}
-			else
-			{
-				MovePlayerMap(player, PlayerMove);
+				int id = maps[player.getMap()].getCreatureIDs()[c] ;
+				creature[id].Think() ;	
+				if (creature[id].getPersonalAtt().getThought().equals("Move"))
+				{
+					creature[id].Move(player.getPos(), creature[id].getFollow(), player.getMap(), screen, maps) ;
+					if (creature[id].countmove % 5 == 0)
+					{
+						creature[id].getPersonalAtt().setdir(creature[id].getPersonalAtt().randomDir()) ;	// set random direction
+					}
+					if (creature[id].getActions()[0][2] == 1)	// If the creature can move
+					{
+						creature[id].ResetActions() ;
+					}
+				}
+				creature[id].Draw(DF) ;
+				//repaint() ;
 			}
 		}
+		
+		// Player acts
+		player.act(pet, maps, skills, screen, MousePos, OPbuttons[OPSelectedButton], SideBarIcons, Ani) ;
+		if (player.ActionIsAMove(player.action) | 0 < player.countmove)	// countmove becomes 0 < when the player moves, then starts to increase 1 by 1 and returns to 0 when it reaches 20
+		{
+			player.Move(pet, maps, screen, Music, MusicIsOn, Ani) ;
+		}
+		
+		// Draw player stuff
+		DF.DrawPlayerAttributes(player, (int)player.OptionStatus[3]) ;
+		player.DrawPlayer(player.getPos(), new float[] {1, 1}, player.getDir(), (boolean)player.OptionStatus[2], DF.getDrawPrimitives()) ;
+		if (0 < player.getEquips()[0])	// If the player is equipped
+		{
+			DF.DrawPlayerWeapon(player, player.getPos(), new float[] {1, 1}) ;
+		}
+		
+		// Draw pet stuff
+		if (0 < pet.getLife()[0])		// If the pet is alive
+		{
+			pet.setCombo(Uts.RecordCombo(pet.getCombo(), pet.action, 1)) ;
+			pet.Move(player, maps) ;
+			if (player.isInBattle())
+			{
+				pet.action = pet.Action(Player.ActionKeys) ;
+			}
+			DF.DrawPetAttributes(pet) ;
+			DF.DrawPet(pet.getPos(), new float[] {1, 1}, pet.getPersonalAtt().getimage()[0]) ;
+		}
+		
+		
+		player.ClosestCreature = Uts.ClosestCreatureInRange(player, creature, maps, screen) ;	// find the closest creature to the player
+		
+		// check if the player met something
+		if (!player.isInBattle())
+		{
+			int[] meet = player.meet(creature, npc, maps[player.getMap()], player.CreatureInBattle, Ani) ;	// meet[0] is the encounter and meet[1] is its id
+			if (meet[0] == 0 & 0 <= meet[1])	// meet with creature
+			{
+				creature[meet[1]].setFollow(true) ;
+				player.setCurrentAction("Fighting") ;	
+				player.CreatureInBattle = meet[1] ;
+				player.AddCreatureToBestiary(meet[1]) ;
+			}
+			if (meet[0] == 1 & 0 <= meet[1])	// meet with npc
+			{
+				NPC.Contact(player, pet, creatureTypes, creature, skills, maps, npc[meet[1]], items, quest, MousePos, TutorialIsOn, CoinIcon, Ani, DF) ;				
+			}
+			if (meet[0] == 2 & 0 <= meet[1])	// meet with collectibles
+			{
+				player.Collect(meet[1], screen, maps, items, AllText, AllTextCat, DF, Ani) ;
+			}
+			if (meet[0] == 3 & 0 <= meet[1])	// meet with chest
+			{
+				player.TreasureChestReward(meet[1], CoinIcon, maps, items, Ani) ;
+			}
+		}
+		
+		// if the player is in battle, run battle
+		if (player.isInBattle() & !Ani.isActive(12) & !Ani.isActive(13) & !Ani.isActive(14) & !Ani.isActive(16))	// only enter battle if the animations for win (12), level up (13), pet level up (14), and pterodactile (16) are off
+		{
+			B.RunBattle(player, pet, creature[player.CreatureInBattle], screen, skills, petskills, player.activeSpells(skills), items, quest, SoundEffectsAreOn, MousePos, DF) ;
+		}
+		
+		// check if the player and the pet have leveled up
+		if (!Ani.isActive(12) & Uts.CheckLevelUP(player, Ani))
+		{
+			float[] AttributesIncrease = Uts.LevelUpIncAtt(player.getAttIncrease()[player.getProJob()], player.getChanceIncrease()[player.getProJob()], player.getLevel()) ;
+			player.LevelUp(AttributesIncrease) ;
+			Ani.SetAniVars(13, new Object[] {150, AttributesIncrease, player.getLevel(), player.getColors()[0]}) ;
+			Ani.StartAni(13) ;
+		}
+		if (Uts.CheckLevelUP(pet, Ani))
+		{
+			float[] AttributesIncrease = Uts.LevelUpIncAtt(Pet.AttributeIncrease, Pet.ChanceIncrease, pet.getLevel()) ;
+			pet.LevelUp(AttributesIncrease) ;
+			Ani.SetAniVars(14, new Object[] {150, pet, AttributesIncrease}) ;
+			Ani.StartAni(14) ;
+		}
+		
+		// Draw player windows
+		//ShowPlayerWindows() ;
+		player.ShowWindows(pet, creature, creatureTypes, quest, screen, items, maps, plusSignIcon, B, AllText, AllTextCat, Music, MusicIsOn, SoundEffectsAreOn, MousePos, CoinIcon, DF) ;
+		
+		// if tutorial is on, draw tutorial animations
+		if (TutorialIsOn)
+		{
+			DF.TutorialAnimations(player, TutorialStep) ;
+		}		
+		
+		// move the active projectiles and check if they collide with something
+		if (proj != null)
+		{
+			for (int p = 0 ; p <= proj.length - 1 ; p += 1)
+			{
+				proj[p].go(player, maps[player.getMap()].creaturesinmap(creature), pet, DF.getDrawPrimitives()) ;
+			}
+			if (proj[0].collidedwith(player, maps[player.getMap()].creaturesinmap(creature), pet) != - 3)
+			{
+				proj = null ;
+			}
+		}
+		//repaint() ;
+	}
+	
+	@Override
+	public void paintComponent(Graphics g)
+	{
+        super.paintComponent(g) ;
+		MousePos = Utg.GetMousePos(mainpanel) ;
+        DF = new DrawFunctions(g, screen.getDimensions(), ColorPalette, DayDuration, AllText, AllTextCat) ;
+        DF.InitializeVariables(ImagesPath) ;
+		
+    	if (OpeningIsOn)
+		{
+			//Opening(OpeningBG, OpeningGif) ;
+        	
+    		// Quick start
+        	GameLanguage = "P" ;
+    		AllText = Utg.ReadTextFile(GameLanguage) ;
+    		AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
+        	PlayerName = "" ;
+        	PlayerJob = 2 ;
+        	PlayerSex = "N" ;
+    		MainInitialization() ;
+        	player.setMap(2, maps) ;
+        	//Arrays.fill(player.getSkill(), 5) ;
+    		Arrays.fill(player.getQuestSkills(), true) ;
+        	Arrays.fill(player.getBag(), 30) ;
+        	player.setPos(new int[] {screen.getDimensions()[0] / 2 + 160, screen.getDimensions()[1] / 2}) ;
+        	OpeningIsOn = false ;
+        	InitializationIsOn = false ;
+        	LoadingGameIsOn = false ;
+        	CustomizationIsOn = false ;
+        	MusicIsOn = false ;
+        	if (MusicIsOn)
+			{
+				Utg.PlayMusic(Music[Maps.Music[player.getMap()]]) ;
+			}
+        	RunGame = true ;
+    		
+        	// Battle simulation
+        	/*GameLanguage = "P" ;
+    		AllText = Utg.ReadTextFile(GameLanguage) ;
+    		AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
+        	PlayerName = "" ;
+        	PlayerJob = 1 ;
+        	PlayerSex = "N" ;
+        	MainInitialization() ;
+        	OpeningIsOn = false ;
+        	RunGame = true ;
+    		//player.PrintAllAttributes();
+    		player.CreatureInBattle = 85;
+    		//creatureTypes[creature[player.CreatureInBattle].getType()].printAtt() ;
+    		player.setPos(creature[player.CreatureInBattle].getPos()) ;
+    		player.setPos(new int[] {player.getPos()[0] + 20, player.getPos()[1] + 15});
+    		//player.getBattleAtt().setStun(new float[] {1, 0, 0, 0, 500});
+    		player.getEquips()[0] = 301 ;
+    		player.getEquips()[1] = 302 ;
+    		player.getEquips()[2] = 303 ;
+    		player.setCurrentAction("Fighting");*/
+		/*} else if (LoadingScreenIsOn)
+		{
+			LoadingScreenIsOn = false ;
+			InitializationIsOn = true ;*/
+		} 
+		else if (InitializationIsOn)
+		{
+			DF.DrawLoadingText(LoadingGif, screen.getCenter()) ;
+			MainInitialization() ;
+			InitializationIsOn = false ;
+			CustomizationIsOn = true ;
+		} 
+		else if (LoadingGameIsOn)
+		{
+	 		InitializeGeneralVariables(screen.getDimensions()) ;
+			Loading(LoadingGameTab) ;
+			//InitializeClasses() ;
+		}
+		else if (CustomizationIsOn)
+		{
+			Customization() ;
+		} else if (RunGame)
+		{
+			RunGame(DF) ;
+			/*IncrementCounters(player, pet, creature) ;
+			ActivateCounters(player, pet, creature, DayCounter, DayDuration) ;
+        	B.RunBattle(player, pet, creature[player.CreatureInBattle], screen, skills, petskills, player.activeSpells(skills), items, quest, SoundEffectsAreOn, MousePos, DF) ;*/
+        	//player.AttWindow(AllText, AllTextCat, items, plusSignIcon, screen.getDimensions(), player.getAttIncrease()[player.getProJob()], MousePos, CoinIcon, DF.getDrawPrimitives()) ;			
+    	}
+		Ani.RunAnimation(DF) ;	// run all the active animations
+    	player.action = "" ;
+        Toolkit.getDefaultToolkit().sync() ;
+        g.dispose() ;  
+    }
+		
+	class TAdapter extends KeyAdapter 
+	{	
+	    @Override
+	    public void keyPressed(KeyEvent e) 
+	    {
+	        int key = e.getKeyCode() ;
+            if (key == KeyEvent.VK_LEFT | key == KeyEvent.VK_UP | key == KeyEvent.VK_DOWN | key == KeyEvent.VK_RIGHT) 
+            {
+            	if (CustomizationIsOn | player.getActions()[0][2] == 1)	// If the player can move
+    			{
+                	player.action = KeyEvent.getKeyText(key) ;
+                	//player.setActions(new int[][] {{0, player.getActions()[0][1], 0}, {player.getActions()[1][0], player.getActions()[1][1], player.getActions()[1][2]}, {player.getActions()[2][0], player.getActions()[2][1], player.getActions()[2][2]}}) ;
+    			}
+            } else if (key == KeyEvent.VK_ENTER | key == KeyEvent.VK_ESCAPE | key == KeyEvent.VK_BACK_SPACE | key == KeyEvent.VK_F1 | key == KeyEvent.VK_F2 | key == KeyEvent.VK_F3 | key == KeyEvent.VK_F4 | key == KeyEvent.VK_F5 | key == KeyEvent.VK_F6 | key == KeyEvent.VK_F7 | key == KeyEvent.VK_F8 | key == KeyEvent.VK_F9 | key == KeyEvent.VK_F10 | key == KeyEvent.VK_F11 | key == KeyEvent.VK_F12 | key == KeyEvent.VK_A | key == KeyEvent.VK_B | key == KeyEvent.VK_C | key == KeyEvent.VK_D | key == KeyEvent.VK_E | key == KeyEvent.VK_F | key == KeyEvent.VK_G | key == KeyEvent.VK_H | key == KeyEvent.VK_I | key == KeyEvent.VK_J | key == KeyEvent.VK_K | key == KeyEvent.VK_L | key == KeyEvent.VK_M | key == KeyEvent.VK_N | key == KeyEvent.VK_O | key == KeyEvent.VK_P | key == KeyEvent.VK_Q | key == KeyEvent.VK_R | key == KeyEvent.VK_S | key == KeyEvent.VK_T | key == KeyEvent.VK_U | key == KeyEvent.VK_V | key == KeyEvent.VK_W | key == KeyEvent.VK_X | key == KeyEvent.VK_Y | key == KeyEvent.VK_Z | key == KeyEvent.VK_0 | key == KeyEvent.VK_1 | key == KeyEvent.VK_2 | key == KeyEvent.VK_3 | key == KeyEvent.VK_4 | key == KeyEvent.VK_5 | key == KeyEvent.VK_6 | key == KeyEvent.VK_7 | key == KeyEvent.VK_8 | key == KeyEvent.VK_9) 
+            {
+            	player.action = KeyEvent.getKeyText(key) ;
+            }
+            else if (key == KeyEvent.VK_SPACE)
+            {
+            	player.action = "Space" ;
+            } else if (key == KeyEvent.VK_NUMPAD0 | key == KeyEvent.VK_NUMPAD1 | key == KeyEvent.VK_NUMPAD2 | key == KeyEvent.VK_NUMPAD3 | key == KeyEvent.VK_NUMPAD4 | key == KeyEvent.VK_NUMPAD5 | key == KeyEvent.VK_NUMPAD6 | key == KeyEvent.VK_NUMPAD7 | key == KeyEvent.VK_NUMPAD8 | key == KeyEvent.VK_NUMPAD9)
+            {
+            	player.action = String.valueOf(key - 96) ;
+            }
+            else if (key == KeyEvent.VK_PAUSE) 
+            {
+                if (timer.isRunning()) 
+                {
+                   timer.stop() ;
+                } else 
+                {
+                   timer.start() ;
+                }
+            }
+            //repaint() ;
+	    }
+	
+	    @Override
+	    public void keyReleased(KeyEvent e) 
+	    {
+	        player.action = "" ;
+	    }
 	}
 
-	public void CreaturesMove(Creatures[] creature)
+	public class MouseEventDemo implements MouseListener 
 	{
-		int CreatureMove;
-		
-		for (int i = 0; i <= 4; ++i)
+		@Override
+		public void mouseClicked(MouseEvent evt)
 		{
-			CreatureMove = (int)(3*Math.random());
-			if (CreatureMove == 0 & creature[i].getCoords()[1] < MaxY)
+			if (evt.getButton() == 1)	// Left click
 			{
-				++creature[i].getCoords()[1];
-				creature[i].setCoords(creature[i].getCoords());
+				player.action = "MouseLeftClick" ;
+				for (int i = 0 ; i <= OPbuttons.length - 1 ; i += 1)
+				{
+					if (OPbuttons[i].ishovered(MousePos) & OPbuttons[i].isActive)
+					{
+						OPbuttons[i].startaction() ;
+						if (OPbuttons[i].getid() == 0 | OPbuttons[i].getid() == 1)
+						{
+							GameLanguage = (String) OPbuttons[i].startaction() ;
+							AllText = Utg.ReadTextFile(GameLanguage) ;
+							AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
+						}
+						if (2 <= OPbuttons[i].getid() & OPbuttons[i].getid() <= 13)
+						{
+							player.action = (String) OPbuttons[i].startaction() ;
+						}
+					}
+				}
 			}
-			if (CreatureMove == 1 & creature[i].getCoords()[0] > MinX)
+			if (evt.getButton() == 3)	// Right click
 			{
-				--creature[i].getCoords()[0];
-				creature[i].setCoords(creature[i].getCoords());
+				player.action = "MouseRightClick" ;
 			}
-			if (CreatureMove == 2 & creature[i].getCoords()[1] > MinY)
-			{
-				--creature[i].getCoords()[1];
-				creature[i].setCoords(creature[i].getCoords());
-			}
-			if (CreatureMove == 3 & creature[i].getCoords()[0] < MaxX)
-			{
-				++creature[i].getCoords()[0];
-				creature[i].setCoords(creature[i].getCoords());
-			}
-			//System.out.print("(" + creature[i].getCoords()[0] + "," + creature[i].getCoords()[1] + "," + creature[i].getCoords()[2] + ") ");
+			//repaint() ;
 		}
-	}
-	
-	public int CheckMeet(Player player, Creatures[] creature)
-	{
-		/* Meeting with creatures */
-		for (int i = 0; i <= NumberOfCreaturesPerMap - 1; ++i)
+
+		@Override
+		public void mouseEntered(MouseEvent arg0)
 		{
-			//System.out.println("Number = " + i);
-			//System.out.println(Arrays.toString(creature[i].getCoords()));
-			if (player.getCoords() == creature[i].getCoords())
-			{
-				System.out.println("* Met! *");
-				//System.out.println(Arrays.toString(player.getCoords()));
-				return i;
-			}
 			
 		}
-		/* Meeting with buildings */
-		/*for (int i = 0; i <= 4; ++i)
-		{
-			if (player.getCoords() == HosPos[i])
-			{
-				
-			}
-		}*/
-		return 0;
-	}
 
-	public void ShowPlayerAttributes(Player player)
-	{
-		System.out.println("* Player attributes *");
-		System.out.println("Player level = " + player.getLevel());
-		System.out.println("Player life = " + player.getLife());
-		System.out.println("Player mp = " + player.getMp());
-		System.out.println("Player phy atk = " + player.getPhyAtk()[0]);
-		System.out.println("Player mag atk = " + player.getMagAtk()[0]);
-		System.out.println("Player phy def = " + player.getPhyDef()[0]);
-		System.out.println("Player mag def = " + player.getMagDef()[0]);
-		System.out.println("Player dex = " + player.getDex()[0]);
-		System.out.println("Player agi = " + player.getAgi()[0]);		
-	}
-	
-	public void LevelUp(Player player)
-	{
-		player.setLevel(player.getLevel() + 1);
-		player.setLifeMax(player.getLifeMax() + 20);
-		player.setMpMax(player.getMpMax() + 20);
-		if (Math.random() < 0.2)
+		@Override
+		public void mouseExited(MouseEvent arg0)
 		{
-			player.setPhyAtk(new float[] {player.getPhyAtk()[0] + 1, player.getPhyAtk()[1], player.getPhyAtk()[2]});
+			
 		}
-		if (Math.random() < 0.2)
+
+		@Override
+		public void mousePressed(MouseEvent evt)
 		{
-			player.setMagAtk(new float[] {player.getMagAtk()[0] + 1, player.getMagAtk()[1], player.getMagAtk()[2]});
 		}
-		if (Math.random() < 0.2)
+
+		@Override
+		public void mouseReleased(MouseEvent e) 
 		{
-			player.setPhyDef(new float[] {player.getPhyDef()[0] + 1, player.getPhyDef()[1], player.getPhyDef()[2]});
-		}
-		if (Math.random() < 0.2)
-		{
-			player.setMagDef(new float[] {player.getMagDef()[0] + 1, player.getMagDef()[1], player.getMagDef()[2]});
-		}
-		if (Math.random() < 0.2)
-		{
-			player.setDex(new float[] {player.getDex()[0] + 1, player.getDex()[1], player.getDex()[2]});
-		}
-		if (Math.random() < 0.2)
-		{
-			player.setAgi(new float[] {player.getAgi()[0] + 1, player.getAgi()[1], player.getAgi()[2]});
-		}
-	}
-	
-	public void Win(Player player, Creatures creature, Items[] items)
-	{
-		player.setLife(player.getLifeMax());
-		for (int i = 0; i <= 9; ++i)
-		{
-			if(Math.random() < items[i].getDropChance())
-			{
-				++player.getBag()[creature.getBag()[i]];		
-			}
-		}
-		player.setBag(player.getBag());
-		player.setGold(player.getGold() + creature.getGold());
-		player.setExp(player.getExp() + creature.getExp());
-		if (player.getExp() > (50*Math.pow(2, player.getLevel()) - 50))
-		{
-			LevelUp(player);
-		}
-		ShowPlayerAttributes(player);
-	}
-	
-	public void Battle(Player player, Creatures creature, Items[] items)
-	{
-		Battle B = new Battle();
-		do
-		{
-			B.PlayerAtk(player, creature);
-			B.CreatureAtk(player, creature);
-		} while (player.getLife() > 0 & creature.getLife() > 0);
-		if (player.getLife() > 0)
-		{
-			Win(player, creature, items);
-			creature.setLife(creature.getLifeMax());
-		}
-	}
-	
-	public void ResetPlayerPosition(Player player)
-	{
-		player.setContinent(1);
-		player.setMap(player.getJob());
-		player.setCoords(new int[] {50, 50, 50});
-	}
-	
-	public void Save(Player player, Pet pet)
-	{
-		String fileName = player.getName() + " save.txt";
-		try
-		{	
-			FileWriter fileWriter = new FileWriter (fileName);
-			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter); 
-			bufferedWriter.write("Player name = " + player.getName());
-			bufferedWriter.write("\nPlayer language = " + player.getLanguage());
-			bufferedWriter.write("\nPlayer sex = " + player.getSex());
-			bufferedWriter.write("\nPlayer job = " + player.getJob());
-			bufferedWriter.write("\nPlayer proJob = " + player.getProJob());
-			bufferedWriter.write("\nPlayer continent = " + player.getContinent());
-			bufferedWriter.write("\nPlayer map = " + player.getMap());
-			bufferedWriter.write("\nPlayer coords = " + player.getCoords());
-			bufferedWriter.write("\nPlayer skill = " + player.getSkill());
-			bufferedWriter.write("\nPlayer quest = " + player.getQuest());
-			bufferedWriter.write("\nPlayer bag = " + player.getBag());
-			bufferedWriter.write("\nPlayer skillPoints = " + player.getSkillPoints());
-			bufferedWriter.write("\nPlayer life = " + player.getLife());
-			bufferedWriter.write("\nPlayer mp = " + player.getMp());
-			bufferedWriter.write("\nPlayer lifeMax = " + player.getLifeMax());
-			bufferedWriter.write("\nPlayer mpMax = " + player.getMpMax());
-			bufferedWriter.write("\nPlayer range = " + player.getRange());
-			bufferedWriter.write("\nPlayer phyAtk = " + player.getPhyAtk());
-			bufferedWriter.write("\nPlayer magAtk = " + player.getMagAtk());
-			bufferedWriter.write("\nPlayer phyDef = " + player.getPhyDef());
-			bufferedWriter.write("\nPlayer magDef = " + player.getMagDef());
-			bufferedWriter.write("\nPlayer dex = " + player.getDex());
-			bufferedWriter.write("\nPlayer agi = " + player.getAgi());
-			bufferedWriter.write("\nPlayer collect = " + player.getCollect());
-			bufferedWriter.write("\nPlayer level = " + player.getLevel());
-			bufferedWriter.write("\nPlayer gold = " + player.getGold());
-			bufferedWriter.write("\nPlayer step = " + player.getStep());
-			bufferedWriter.write("\nPlayer craft = " + player.getCraft());
-			bufferedWriter.write("\nPlayer exp = " + player.getExp());
-			bufferedWriter.write("\nPlayer ride = " + player.getRide());
-			bufferedWriter.write("\nPlayer status = " + player.getStatus()); 
-			bufferedWriter.write("\nPet name = " + pet.getName());
-			bufferedWriter.write("\nPet job = " + pet.getJob());
-			bufferedWriter.write("\nPet coords = " + pet.getCoords());
-			bufferedWriter.write("\nPet skill = " + pet.getSkill());
-			bufferedWriter.write("\nPet skillPoints = " + pet.getSkillPoints());
-			bufferedWriter.write("\nPet life = " + pet.getLife());
-			bufferedWriter.write("\nPet mp = " + pet.getMp());
-			bufferedWriter.write("\nPet lifeMax = " + pet.getLifeMax());
-			bufferedWriter.write("\nPet mpMax = " + pet.getMpMax());
-			bufferedWriter.write("\nPet range = " + pet.getRange());
-			bufferedWriter.write("\nPet phyAtk = " + pet.getPhyAtk());
-			bufferedWriter.write("\nPet magAtk = " + pet.getMagAtk());
-			bufferedWriter.write("\nPet phyDef = " + pet.getPhyDef());
-			bufferedWriter.write("\nPet magDef = " + pet.getMagDef());
-			bufferedWriter.write("\nPet dex = " + pet.getDex());
-			bufferedWriter.write("\nPet agi = " + pet.getAgi());
-			bufferedWriter.write("\nPet level = " + pet.getLevel());
-			bufferedWriter.write("\nPet exp = " + pet.getExp());
-			bufferedWriter.write("\nPet status = " + pet.getStatus()); 
-			bufferedWriter.close();
+			player.action = "" ;
 		}		
-		catch(IOException ex) 
-		{
-            System.out.println("Error writing to file '" + fileName + "'");
-        }
+	}
+	
+	@Override
+    public void actionPerformed(ActionEvent e) 
+	{
+		repaint() ;
 	}
 }

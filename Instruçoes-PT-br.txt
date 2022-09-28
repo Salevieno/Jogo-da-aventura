@@ -1,0 +1,11 @@
+Instruções de instalação:
+Extraia A PASTA (não crie uma nova pasta) e coloque em C:\\Program Files (x86)
+Abra o arquivo Game 3.2.jar
+Seja feliz =D
+
+Instruções de como jogar o jogo:
+Faz quase tudo no W A S D (move menus pra cima, baixo, direita e esquerda)
+Move nas setas
+Responda aos NPCs com as opções que eles apresentam quando vc fala com eles (1, 2, 3...)
+Muitas coisas dá pra clicar, teste se funciona clicar nas coisas
+Ataque físico no A, defesa no D, usa skills nas hotkeys no menu à direita (0, 1, 2...F1, F2...F12)

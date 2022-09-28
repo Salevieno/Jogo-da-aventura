@@ -1,0 +1,2001 @@
+ID,Name,Nome,Price,Drop chance,Description,Descrição,Type
+0,Forest hp pot 1,hp da floresta 1,15,25,Forest hp pot 1,hp da floresta 1,Potion
+1,Forest mp pot 1,mp da floresta 1,15,25,Forest mp pot 1,mp da floresta 1,Potion
+2,Forest hp pot 2,hp da floresta 2,61,25,Forest hp pot 2,hp da floresta 2,Potion
+3,Forest mp pot 2,mp da floresta 2,61,25,Forest mp pot 2,mp da floresta 2,Potion
+4,Forest hp pot 3,hp da floresta 3,119,25,Forest hp pot 3,hp da floresta 3,Potion
+5,Forest mp pot 3,mp da floresta 3,119,25,Forest mp pot 3,mp da floresta 3,Potion
+6,Forest hp pot 4,hp da floresta 4,184,25,Forest hp pot 4,hp da floresta 4,Potion
+7,Forest mp pot 4,mp da floresta 4,184,25,Forest mp pot 4,mp da floresta 4,Potion
+8,Forest hp pot 5,hp da floresta 5,254,25,Forest hp pot 5,hp da floresta 5,Potion
+9,Forest mp pot 5,mp da floresta 5,254,25,Forest mp pot 5,mp da floresta 5,Potion
+10,Forest hp pot 6,hp da floresta 6,330,25,Forest hp pot 6,hp da floresta 6,Potion
+11,Forest mp pot 6,mp da floresta 6,330,25,Forest mp pot 6,mp da floresta 6,Potion
+12,Forest hp pot 7,hp da floresta 7,410,25,Forest hp pot 7,hp da floresta 7,Potion
+13,Forest mp pot 7,mp da floresta 7,410,25,Forest mp pot 7,mp da floresta 7,Potion
+14,Forest hp pot 8,hp da floresta 8,494,25,Forest hp pot 8,hp da floresta 8,Potion
+15,Forest mp pot 8,mp da floresta 8,494,25,Forest mp pot 8,mp da floresta 8,Potion
+16,Forest hp pot 9,hp da floresta 9,581,25,Forest hp pot 9,hp da floresta 9,Potion
+17,Forest mp pot 9,mp da floresta 9,581,25,Forest mp pot 9,mp da floresta 9,Potion
+18,Forest hp pot 10,hp da floresta 10,671,25,Forest hp pot 10,hp da floresta 10,Potion
+19,Forest mp pot 10,mp da floresta 10,671,25,Forest mp pot 10,mp da floresta 10,Potion
+20,Forest hp pot 11,hp da floresta 11,764,25,Forest hp pot 11,hp da floresta 11,Potion
+21,Forest mp pot 11,mp da floresta 11,764,25,Forest mp pot 11,mp da floresta 11,Potion
+22,Cave hp pot 1,hp da caverna 1,860,25,Cave hp pot 1,hp da caverna 1,Potion
+23,Cave mp pot 1,mp da caverna 1,860,25,Cave mp pot 1,mp da caverna 1,Potion
+24,Cave hp pot 2,hp da caverna 2,958,25,Cave hp pot 2,hp da caverna 2,Potion
+25,Cave mp pot 2,mp da caverna 2,958,25,Cave mp pot 2,mp da caverna 2,Potion
+26,Island hp pot 1,hp da ilha 1,1059,20,Island hp pot 1,hp da ilha 1,Potion
+27,Island mp pot 1,mp da ilha 1,1059,20,Island mp pot 1,mp da ilha 1,Potion
+28,Ocean hp pot 1,hp do oceano 1,1162,20,Ocean hp pot 1,hp do oceano 1,Potion
+29,Ocean mp pot 1,mp do oceano 1,1162,20,Ocean mp pot 1,mp do oceano 1,Potion
+30,Volcano hp pot 1,hp do vulcão 1,1267,20,Volcano hp pot 1,hp do vulcão 1,Potion
+31,Volcano mp pot 1,mp do vulcão 1,1267,20,Volcano mp pot 1,mp do vulcão 1,Potion
+32,Volcano hp pot 2,hp do vulcão 2,1375,20,Volcano hp pot 2,hp do vulcão 2,Potion
+33,Volcano mp pot 2,mp do vulcão 2,1375,20,Volcano mp pot 2,mp do vulcão 2,Potion
+34,Volcano hp pot 3,hp do vulcão 3,1484,15,Volcano hp pot 3,hp do vulcão 3,Potion
+35,Volcano mp pot 3,mp do vulcão 3,1484,15,Volcano mp pot 3,mp do vulcão 3,Potion
+36,Snowland hp pot 1,hp da terra das neves 1,1595,15,Snowland hp pot 1,hp da terra das neves 1,Potion
+37,Snowland mp pot 1,mp da terra das neves 1,1595,15,Snowland mp pot 1,mp da terra das neves 1,Potion
+38,Snowland hp pot 2,hp da terra das neves 2,1708,15,Snowland hp pot 2,hp da terra das neves 2,Potion
+39,Snowland mp pot 2,mp da terra das neves 2,1708,15,Snowland mp pot 2,mp da terra das neves 2,Potion
+40,Water drink,Bebida de água,1500,5,Water boost,Impulso de água,Potion
+41,Fire drink,Bebida de fogo,1500,5,Fire boost,Impulso de fogo,Potion
+42,Plant drink,Bebida de planta,1500,5,Plant boost,Impulso de planta,Potion
+43,Earth drink,Bebida de terra,1500,5,Earth boost,Impulso de terra,Potion
+44,Air drink,Bebida de ar,1500,5,Air boost,Impulso de ar,Potion
+45,Thunder drink,Bebida de trovão,1500,5,Thunder boost,Impulso de trovão,Potion
+46,Light drink,Bebida de luz,1500,5,Light boost,Impulso de luz,Potion
+47,Dark drink,Bebida de escuridão,200,8,Dark boost,Impulso de escuridão,Potion
+48,Snow drink,Bebida de neve,200,8,Snow boost,Impulso de neve,Potion
+49,Phy atk drink,Bebida de ataque físico,200,8,Phy atk boost,Impulso de ataque físico,Potion
+50,Mag atk drink,Bebida de ataque mágico,200,8,Mag atk boost,Impulso de ataque mágico,Potion
+51,Def drink,Bebida de defesa,200,8,Def boost,Impulso de defesa,Potion
+52,Dex and agi drink,Bebida de dex e agi,200,8,Dex and agi boost,Impulso de destreza e agilidade,Potion
+53,Stun drink,Bebida de atordoamento,1500,6,Stun boost,Impulso de atordoamento,Potion
+54,Block drink,Bebida de bloqueio,1500,6,Block boost,Impulso de bloqueio,Potion
+55,Blood drink,Bebida de sangue,1500,6,Blood boost,Impulso de sangue,Potion
+56,Poison drink,Bebida de veneno,1500,6,Poison boost,Impulso de veneno,Potion
+57,Silence drink,Bebida de silêncio,1500,6,Silence boost,Impulso de silêncio,Potion
+58,Speed drink,Bebida de velocidade,1500,6,Speed boost,Impulso de velocidade,Potion
+59,Dragon drink,Bebida do dragão,1500,4,Dragon drink,Bebida do dragão,Potion
+60,herb 1,erva 1,5,0,-,-,Alchemy
+61,wood 1,madeira 1,5,0,-,-,Alchemy
+62,metal 1,metal 1,5,0,-,-,Alchemy
+63,herb 2,erva 2,405,0,-,-,Alchemy
+64,wood 2,madeira 2,405,0,-,-,Alchemy
+65,metal 2,metal 2,405,0,-,-,Alchemy
+66,herb 3,erva 3,1605,0,-,-,Alchemy
+67,wood 3,madeira 3,1605,0,-,-,Alchemy
+68,metal 3,metal 3,1605,0,-,-,Alchemy
+69,herb 4,erva 4,3605,0,-,-,Alchemy
+70,wood 4,madeira 4,3605,0,-,-,Alchemy
+71,metal 4,metal 4,3605,0,-,-,Alchemy
+72,herb 5,erva 5,6405,0,-,-,Alchemy
+73,wood 5,madeira 5,6405,0,-,-,Alchemy
+74,metal 5,metal 5,6405,0,-,-,Alchemy
+75,herb 6,erva 6,10005,0,-,-,Alchemy
+76,wood 6,madeira 6,10005,0,-,-,Alchemy
+77,metal 6,metal 6,10005,0,-,-,Alchemy
+78,herb 7,erva 7,14405,0,-,-,Alchemy
+79,wood 7,madeira 7,14405,0,-,-,Alchemy
+80,metal 7,metal 7,14405,0,-,-,Alchemy
+81,herb 8,erva 8,19605,0,-,-,Alchemy
+82,wood 8,madeira 8,19605,0,-,-,Alchemy
+83,metal 8,metal 8,19605,0,-,-,Alchemy
+84,herb 9,erva 9,25605,0,-,-,Alchemy
+85,wood 9,madeira 9,25605,0,-,-,Alchemy
+86,metal 9,metal 9,25605,0,-,-,Alchemy
+87,herb 10,erva 10,32405,0,-,-,Alchemy
+88,wood 10,madeira 10,32405,0,-,-,Alchemy
+89,metal 10,metal 10,32405,0,-,-,Alchemy
+90,herb 11,erva 11,22505,0,-,-,Alchemy
+91,wood 11,madeira 11,24030,0,-,-,Alchemy
+92,metal 11,metal 11,25605,0,-,-,Alchemy
+93,herb 12,erva 12,27230,0,-,-,Alchemy
+94,wood 12,madeira 12,28905,0,-,-,Alchemy
+95,metal 12,metal 12,30630,0,-,-,Alchemy
+96,herb 13,erva 13,32405,0,-,-,Alchemy
+97,wood 13,madeira 13,34230,0,-,-,Alchemy
+98,metal 13,metal 13,36105,0,-,-,Alchemy
+99,herb 14,erva 14,38030,0,-,-,Alchemy
+100,wood 14,madeira 14,40005,0,-,-,Alchemy
+101,metal 14,metal 14,42030,0,-,-,Alchemy
+102,herb 15,erva 15,44105,0,-,-,Alchemy
+103,wood 15,madeira 15,46230,0,-,-,Alchemy
+104,metal 15,metal 15,48405,0,-,-,Alchemy
+105,herb 16,erva 16,50630,0,-,-,Alchemy
+106,wood 16,madeira 16,52905,0,-,-,Alchemy
+107,metal 16,metal 16,55230,0,-,-,Alchemy
+108,herb 17,erva 17,57605,0,-,-,Alchemy
+109,wood 17,madeira 17,60030,0,-,-,Alchemy
+110,metal 17,metal 17,62505,0,-,-,Alchemy
+111,herb 18,erva 18,65030,0,-,-,Alchemy
+112,wood 18,madeira 18,67605,0,-,-,Alchemy
+113,metal 18,metal 18,70230,0,-,-,Alchemy
+114,herb 19,erva 19,72905,0,-,-,Alchemy
+115,wood 19,madeira 19,75630,0,-,-,Alchemy
+116,metal 19,metal 19,78405,0,-,-,Alchemy
+117,herb 20,erva 20,81230,0,-,-,Alchemy
+118,wood 20,madeira 20,84105,0,-,-,Alchemy
+119,metal 20,metal 20,87030,0,-,-,Alchemy
+120,atk rune lv 1,runa de ataque nv 1,30,10,-,-,Rune
+121,def rune lv 1,runa de defesa nv 1,30,10,-,-,Rune
+122,atk rune lv 2,runa de ataque nv 2,340,10,-,-,Rune
+123,def rune lv 2,runa de defesa nv 2,340,10,-,-,Rune
+124,atk rune lv 3,runa de ataque nv 3,822,10,-,-,Rune
+125,def rune lv 3,runa de defesa nv 3,822,10,-,-,Rune
+126,atk rune lv 4,runa de ataque nv 4,1436,10,-,-,Rune
+127,def rune lv 4,runa de defesa nv 4,1436,10,-,-,Rune
+128,atk rune lv 5,runa de ataque nv 5,2158,10,-,-,Rune
+129,def rune lv 5,runa de defesa nv 5,2158,10,-,-,Rune
+130,atk rune lv 6,runa de ataque nv 6,2974,10,-,-,Rune
+131,def rune lv 6,runa de defesa nv 6,2974,10,-,-,Rune
+132,atk rune lv 7,runa de ataque nv 7,3873,10,-,-,Rune
+133,def rune lv 7,runa de defesa nv 7,3873,10,-,-,Rune
+134,atk rune lv 8,runa de ataque nv 8,4850,10,-,-,Rune
+135,def rune lv 8,runa de defesa nv 8,4850,10,-,-,Rune
+136,atk rune lv 9,runa de ataque nv 9,5898,10,-,-,Rune
+137,def rune lv 9,runa de defesa nv 9,5898,10,-,-,Rune
+138,atk rune lv 10,runa de ataque nv 10,7012,10,-,-,Rune
+139,def rune lv 10,runa de defesa nv 10,7012,10,-,-,Rune
+140,special atk rune 1,runa especial de ataque nv 1,8189,10,-,-,Rune
+141,special def rune 1,runa especial de defesa nv 1,8189,10,-,-,Rune
+142,special atk rune 2,runa especial de ataque nv 2,9426,10,-,-,Rune
+143,special def rune 2,runa especial de defesa nv 2,9426,10,-,-,Rune
+144,special atk rune 3,runa especial de ataque nv 3,10720,10,-,-,Rune
+145,special def rune 3,runa especial de defesa nv 3,10720,10,-,-,Rune
+146,special atk rune 4,runa especial de ataque nv 4,12068,10,-,-,Rune
+147,special def rune 4,runa especial de defesa nv 4,12068,10,-,-,Rune
+148,special atk rune 5,runa especial de ataque nv 5,13468,10,-,-,Rune
+149,special def rune 5,runa especial de defesa nv 5,13468,10,-,-,Rune
+150,special atk rune 6,runa especial de ataque nv 6,14920,10,-,-,Rune
+151,special def rune 6,runa especial de defesa nv 6,14920,10,-,-,Rune
+152,special atk rune 7,runa especial de ataque nv 7,16419,10,-,-,Rune
+153,special def rune 7,runa especial de defesa nv 7,16419,10,-,-,Rune
+154,special atk rune 8,runa especial de ataque nv 8,17967,10,-,-,Rune
+155,special def rune 8,runa especial de defesa nv 8,17967,10,-,-,Rune
+156,special atk rune 9,runa especial de ataque nv 9,19560,10,-,-,Rune
+157,special def rune 9,runa especial de defesa nv 9,19560,10,-,-,Rune
+158,special atk rune 10,runa especial de ataque nv 10,21197,10,-,-,Rune
+159,special def rune 10,runa especial de defesa nv 10,21197,10,-,-,Rune
+160,pet hp pot 1,poção de hp do pet 1,20,20,-,-,Pet
+161,pet mp pot 1,poção de mp do pet 1,20,20,-,-,Pet
+162,pet ration,ração de pet,104,20,-,-,Pet
+163,pet's wood set,set da madeira do pet,167,20,-,-,Pet
+164,pet hp pot 2,poção de hp do pet 2,242,20,-,-,Pet
+165,pet mp pot 2,poção de mp do pet 2,242,20,-,-,Pet
+166,banana smoothie,refresco de banana,426,20,-,-,Pet
+167,pet's metal set,set de metal do pet,534,20,-,-,Pet
+168,pet hp pot 3,poção de hp do pet 3,651,20,-,-,Pet
+169,pet mp pot 3,poção de mp do pet 3,651,20,-,-,Pet
+170,apple smoothie,refresco de maçã,914,20,-,-,Pet
+171,pet's steel set,set de aço do pet,1059,20,-,-,Pet
+172,pet hp pot 4,poção de hp do pet 4,1212,20,-,-,Pet
+173,pet mp pot 4,poção de mp do pet 4,1212,20,-,-,Pet
+174,blackb smoothie,refresco de amora,1545,20,-,-,Pet
+175,pet's rocky set,set rochoso do pet,1723,20,-,-,Pet
+176,pet hp pot 5,poção de hp do pet 5,1910,20,-,-,Pet
+177,pet mp pot 5,poção de mp do pet 5,1910,20,-,-,Pet
+178,strawberry smoothie,refresco de morango,2307,20,-,-,Pet
+179,pet's fossilized set,set fossilizado do pet,2516,20,-,-,Pet
+180,pet hp pot 6,poção de hp do pet 6,2734,20,-,-,Pet
+181,pet mp pot 6,poção de mp do pet 6,2734,20,-,-,Pet
+182,mini coconut,mini côco,3190,20,-,-,Pet
+183,pet's ruins set,set das ruínas do pet,3429,20,-,-,Pet
+184,pet hp pot 7,poção de hp do pet 7,3675,20,-,-,Pet
+185,pet mp pot 7,poção de mp do pet 7,3675,20,-,-,Pet
+186,fresh water,água fresca,4188,20,-,-,Pet
+187,pet's tropical set,set tropical do pet,4455,20,-,-,Pet
+188,pet hp pot 8,poção de hp do pet 8,4729,20,-,-,Pet
+189,pet mp pot 8,poção de mp do pet 8,4729,20,-,-,Pet
+190,pet energy drink,energético do pet,5296,20,-,-,Pet
+191,pet's coconut set,set de côco do pet,5589,20,-,-,Pet
+192,pet hp pot 9,poção de hp do pet 9,5889,20,-,-,Pet
+193,pet mp pot 9,poção de mp do pet 9,5889,20,-,-,Pet
+194,eagle eye,olho de águia,6508,20,-,-,Pet
+195,pet's ocean set,set do oceano do pet,6827,20,-,-,Pet
+196,pet hp pot 10,poção de hp do pet 10,7153,20,-,-,Pet
+197,pet mp pot 10,poção de mp do pet 10,7153,20,-,-,Pet
+198,plancton,plâncton,7822,20,-,-,Pet
+199,pet's magma set,set da lava do pet,8166,20,-,-,Pet
+200,pet hp pot 11,poção de hp do pet 11,8516,20,-,-,Pet
+201,pet mp pot 11,poção de mp do pet 11,8516,20,-,-,Pet
+202,ashes,cinzas,9233,20,-,-,Pet
+203,pet's chocolate set,set de chocolate do pet,9601,20,-,-,Pet
+204,pet hp pot 12,poção de hp do pet 12,9975,20,-,-,Pet
+205,pet mp pot 12,poção de mp do pet 12,9975,20,-,-,Pet
+206,boiling water,água fervente,10740,20,-,-,Pet
+207,pet's fenix set,set da fênix do pet,11131,20,-,-,Pet
+208,pet hp pot 13,poção de hp do pet 13,11528,20,-,-,Pet
+209,pet mp pot 13,poção de mp do pet 13,11528,20,-,-,Pet
+210,snacks,lanchinho,12339,20,-,-,Pet
+211,pet's dragon set,set do dragão do pet,12753,20,-,-,Pet
+212,pet hp pot 14,poção de hp do pet 14,13172,20,-,-,Pet
+213,pet mp pot 14,poção de mp do pet 14,13172,20,-,-,Pet
+214,serpent tail,cauda de serpente,14028,20,-,-,Pet
+215,pet's cold set,set gelado do pet,14465,20,-,-,Pet
+216,pet hp pot 15,poção de hp do pet 15,14906,20,-,-,Pet
+217,pet mp pot 15,poção de mp do pet 15,14906,20,-,-,Pet
+218,ice flock,floco de gelo,15806,20,-,-,Pet
+219,pet's snowman set,set do boneco de neve do pet,16264,20,-,-,Pet
+220,berry,frutinha,5,50,-,-,Food
+221,apple,maçã,10,50,-,-,Food
+222,banana,banana,15,50,-,-,Food
+223,strawberry,morango,20,50,-,-,Food
+224,chilli peper,pimenta,25,50,-,-,Food
+225,blackberry,amora,30,50,-,-,Food
+226,small fish,peixe pequeno,5,50,-,-,Food
+227,medium fish,peixe médio,10,50,-,-,Food
+228,big fish,peixe grande,15,50,-,-,Food
+229,raspberry,framboesa,20,50,-,-,Food
+230,lemon,limão,25,50,-,-,Food
+231,orange,laranja,30,50,-,-,Food
+232,tomato,tomate,5,50,-,-,Food
+233,carrot,cenoura,10,50,-,-,Food
+234,honey,mel,15,50,-,-,Food
+235,mango,manga,20,50,-,-,Food
+236,watermelon,melancia,25,50,-,-,Food
+237,grapes,uvas,30,50,-,-,Food
+238,raw meat,carne crua,5,50,-,-,Food
+239,toasted meat,carne tostada,10,50,-,-,Food
+240,milk,leite,15,50,-,-,Food
+241,insect,inseto,20,50,-,-,Food
+242,leech,sanguessuga,25,50,-,-,Food
+243,bread,pão,30,50,-,-,Food
+244,corn,milho,5,50,-,-,Food
+245,potato bread,pão de batata,10,50,-,-,Food
+246,humus,húmus,15,50,-,-,Food
+247,guarana,guaraná,20,50,-,-,Food
+248,acai,açaí,25,50,-,-,Food
+249,chestnut,castanha,30,50,-,-,Food
+250,bat,morcego,155,50,-,-,Food
+251,cave rat,rato,160,50,-,-,Food
+252,spider,aranha,165,50,-,-,Food
+253,mushroom,cogumelo,170,50,-,-,Food
+254,fossil,fóssil,175,50,-,-,Food
+255,lime,limo,180,50,-,-,Food
+256,toasted fossil,fóssil torrado,185,50,-,-,Food
+257,heated lime,limo quente,190,50,-,-,Food
+258,coconut,coco,195,50,-,-,Food
+259,heart of palm,palmito,200,50,-,-,Food
+260,fruit salad,salada de frutas,205,50,-,-,Food
+261,crab,carangueijo,210,50,-,-,Food
+262,cocktail,coquetel,215,50,-,-,Food
+263,soup,sopa,220,30,-,-,Food
+264,hot beverage,bebida quente,225,30,-,-,Food
+265,coffee,café,230,30,-,-,Food
+266,boiling water,água fervente,235,30,-,-,Food
+267,noodles,macarrão,240,30,-,-,Food
+268,yakisoba,yakisoba,245,30,-,-,Food
+269,melted cheese,queijo derretido,250,30,-,-,Food
+270,dragon's food,comida de dragão,255,30,-,-,Food
+271,hot chocolate,chocolate quente,260,30,-,-,Food
+272,pizza,pizza,265,30,-,-,Food
+273,ice cream,sorvete,270,30,-,-,Food
+274,ice tea,chá gelado,275,30,-,-,Food
+275,sweeties,doces,280,30,-,-,Food
+276,chocolate milk,leite achocolatado,285,30,-,-,Food
+277,eel,enguia,290,30,-,-,Food
+278,algae,algas,295,30,-,-,Food
+279,oyster,ostra,300,30,-,-,Food
+280,wood arrow,flecha de madeira,5,30,-,-,Arrow
+281,steel arrow,flecha de aço,15,30,-,-,Arrow
+282,mountain arrow,flecha da montanha,30,30,-,-,Arrow
+283,lunar arrow,flecha lunar,50,30,-,-,Arrow
+284,ocean arrow,flecha do oceano,60,30,-,-,Arrow
+285,magma arrow,flecha de magma,80,30,-,-,Arrow
+286,water arrow,flecha de água,50,30,-,-,Arrow
+287,fire arrow,flecha de fogo,50,30,-,-,Arrow
+288,plant arrow,flecha de planta,50,30,-,-,Arrow
+289,earth arrow,flecha de terra,50,30,-,-,Arrow
+290,air arrow,flecha de ar,50,30,-,-,Arrow
+291,thunder arrow,flecha de trovão,50,30,-,-,Arrow
+292,light arrow,flecha de luz,50,30,-,-,Arrow
+293,dark arrow,flecha de escuridão,50,30,-,-,Arrow
+294,snow arrow,flecha de neve,50,30,-,-,Arrow
+295,slowing arrow,flecha retardadora,50,30,-,-,Arrow
+296,stunning arrow,flecha atordoante,50,30,-,-,Arrow
+297,bloody arrow,flecha sangrenta,50,30,-,-,Arrow
+298,poison arrow,flecha venenosa,50,30,-,-,Arrow
+299,silent arrow,flecha silenciosa,50,30,-,-,Arrow
+300,wood sword,espada de madeira,20,10,-,-,Equip
+301,wood shield,escudo de madeira,20,10,-,-,Equip
+302,wood armor,armadura de madeira,20,10,-,-,Equip
+303,copper sword,espada de bronze,290,10,-,-,Equip
+304,copper shield,escudo de bronze,290,10,-,-,Equip
+305,copper armor,armadura de bronze,290,10,-,-,Equip
+306,heavy sword,espada pesada,681,10,-,-,Equip
+307,heavy shield,escudo pesada,681,10,-,-,Equip
+308,heavy armor,armadura pesada,681,10,-,-,Equip
+309,mountain sword,espada da montanha,1164,10,-,-,Equip
+310,mountain shield,escudo da montanha,1164,10,-,-,Equip
+311,mountain armor,armadura da montanha,1164,10,-,-,Equip
+312,knight's sword,espada do cavaleiro,1716,10,-,-,Equip
+313,knight's shield,escudo do cavaleiro,1716,10,-,-,Equip
+314,knight's armor,armadura do cavaleiro,1716,10,-,-,Equip
+315,phenomenal sword,espada fenomenal,2326,10,-,-,Equip
+316,phenomenal shield,escudo fenomenal,2326,10,-,-,Equip
+317,phenomenal armor,armadura fenomenal,2326,10,-,-,Equip
+318,epicenter sword,espada do epicentro,2988,10,-,-,Equip
+319,epicenter shield,escudo do epicentro,2988,10,-,-,Equip
+320,epicenter armor,armadura do epicentro,2988,10,-,-,Equip
+321,dimensional sword,espada dimensional,3695,10,-,-,Equip
+322,dimensional shield,escudo dimensional,3695,10,-,-,Equip
+323,dimensional armor,armadura dimensional,3695,10,-,-,Equip
+324,pirate sword,espada do pirata,4445,10,-,-,Equip
+325,pirate shield,escudo do pirata,4445,10,-,-,Equip
+326,pirate armor,armadura do pirata,4445,10,-,-,Equip
+327,epic sword,espada épica,5233,10,-,-,Equip
+328,epic shield,escudo épico,5233,10,-,-,Equip
+329,epic armor,armadura épica,5233,10,-,-,Equip
+330,arcane sword,espada arcana,6056,10,-,-,Equip
+331,arcane shield,escudo arcano,6056,10,-,-,Equip
+332,arcane armor,armadura arcana,6056,10,-,-,Equip
+333,lunar sword,espada lunar,6913,10,-,-,Equip
+334,lunar shield,escudo lunar,6913,10,-,-,Equip
+335,lunar armor,armadura lunar,6913,10,-,-,Equip
+336,fierce sword,espada feroz,7802,10,-,-,Equip
+337,fierce shield,escudo feroz,7802,10,-,-,Equip
+338,fierce armor,armadura feroz,7802,10,-,-,Equip
+339,curvy sword,espada curva,8722,10,-,-,Equip
+340,curvy shield,escudo curvo,8722,10,-,-,Equip
+341,curvy armor,armadura curva,8722,10,-,-,Equip
+342,kinky sword,espada picante,9670,10,-,-,Equip
+343,kinky shield,escudo picante,9670,10,-,-,Equip
+344,kinky armor,armadura picante,9670,10,-,-,Equip
+345,forest sword,espada da floresta,10645,10,-,-,Equip
+346,forest shield,escudo da floresta,10645,10,-,-,Equip
+347,forest armor,armadura da floresta,10645,10,-,-,Equip
+348,excavation sword,espada da escavação,11647,10,-,-,Equip
+349,excavation shield,escudo da escavação,11647,10,-,-,Equip
+350,excavation armor,armadura da escavação,11647,10,-,-,Equip
+351,secular sword,espada secular,12674,10,-,-,Equip
+352,secular shield,escudo secular,12674,10,-,-,Equip
+353,secular armor,armadura secular,12674,10,-,-,Equip
+354,crystal sword,espada do cristal,13726,10,-,-,Equip
+355,crystal shield,escudo do cristal,13726,10,-,-,Equip
+356,crystal armor,armadura do cristal,13726,10,-,-,Equip
+357,cave sword,espada da caverna,14801,10,-,-,Equip
+358,cave shield,escudo da caverna,14801,10,-,-,Equip
+359,cave armor,armadura da caverna,14801,10,-,-,Equip
+360,tropical sword,espada tropical,15899,10,-,-,Equip
+361,tropical shield,escudo tropical,15899,10,-,-,Equip
+362,tropical armor,armadura tropical,15899,10,-,-,Equip
+363,curly sword,espada ondulada,17020,10,-,-,Equip
+364,curly shield,escudo ondulado,17020,10,-,-,Equip
+365,curly armor,armadura ondulada,17020,10,-,-,Equip
+366,island sword,espada da ilha,18162,10,-,-,Equip
+367,island shield,escudo da ilha,18162,10,-,-,Equip
+368,island armor,armadura da ilha,18162,10,-,-,Equip
+369,ocean sword,espada do oceano,19325,10,-,-,Equip
+370,ocean shield,escudo do oceano,19325,10,-,-,Equip
+371,ocean armor,armadura do oceano,19325,10,-,-,Equip
+372,magma sword,espada do magma,20508,10,-,-,Equip
+373,magma shield,escudo do magma,20508,10,-,-,Equip
+374,magma armor,armadura do magma,20508,10,-,-,Equip
+375,chocolate sword,espada de chocolate,21711,10,-,-,Equip
+376,chocolate shield,escudo de chocolate,21711,10,-,-,Equip
+377,chocolate armor,armadura de chocolate,21711,10,-,-,Equip
+378,fenix sword,espada da fênix,22934,10,-,-,Equip
+379,fenix shield,escudo da fênix,22934,10,-,-,Equip
+380,fenix armor,armadura da fênix,22934,10,-,-,Equip
+381,explosive sword,espada explosiva,24175,10,-,-,Equip
+382,explosive shield,escudo explosivo,24175,10,-,-,Equip
+383,explosive armor,armadura explosiva,24175,10,-,-,Equip
+384,melting sword,espada em derretimento,25436,10,-,-,Equip
+385,melting shield,escudo em derretimento,25436,10,-,-,Equip
+386,melting armor,armadura em derretimento,25436,10,-,-,Equip
+387,volcano sword,espada do vulcão,26714,10,-,-,Equip
+388,volcano shield,escudo do vulcão,26714,10,-,-,Equip
+389,volcano armor,armadura do vulcão,26714,10,-,-,Equip
+390,icy sword,espada gelada,28010,10,-,-,Equip
+391,icy shield,escudo gelado,28010,10,-,-,Equip
+392,icy armor,armadura gelada,28010,10,-,-,Equip
+393,winter sword,espada invernal,29323,10,-,-,Equip
+394,winter shield,escudo invernal,29323,10,-,-,Equip
+395,winter armor,armadura invernal,29323,10,-,-,Equip
+396,snowman sword,espada do homem das neves,30654,10,-,-,Equip
+397,snowman shield,escudo do homem das neves,30654,10,-,-,Equip
+398,snowman armor,armadura do homem das neves,30654,10,-,-,Equip
+399,snowland set,set da terra das neves,106585,10,-,-,Equip
+400,toy sword,espada de brinquedo,45,0,-,-,Equip
+401,toy shield,escudo de brinquedo,45,0,-,-,Equip
+402,toy armor,armadura de brinquedo,45,0,-,-,Equip
+403,handicrafted sword,espada artesanal,456,0,-,-,Equip
+404,handicrafted shield,escudo artesanal,456,0,-,-,Equip
+405,handicrafted armor,armadura artesanal,456,0,-,-,Equip
+406,dreamer's sword,espada do sonhador,897,0,-,-,Equip
+407,dreamer's shield,escudo do sonhador,897,0,-,-,Equip
+408,dreamer's armor,armadura do sonhador,897,0,-,-,Equip
+409,light sword,espada leve,1416,0,-,-,Equip
+410,light shield,escudo leve,1416,0,-,-,Equip
+411,light armor,armadura leve,1416,0,-,-,Equip
+412,courage sword,espada da coragem,1998,0,-,-,Equip
+413,courage shield,escudo da coragem,1998,0,-,-,Equip
+414,courage armor,armadura da coragem,1998,0,-,-,Equip
+415,partner's sword,espada do parceiro,2635,0,-,-,Equip
+416,partner's shield,escudo do parceiro,2635,0,-,-,Equip
+417,partner's armor,armadura do parceiro,2635,0,-,-,Equip
+418,sound sword,espada do som,3320,0,-,-,Equip
+419,sound shield,escudo do som,3320,0,-,-,Equip
+420,sound armor,armadura do som,3320,0,-,-,Equip
+421,wild sword,espada selvagem,4049,0,-,-,Equip
+422,wild shield,escudo selvagem,4049,0,-,-,Equip
+423,wild armor,armadura selvagem,4049,0,-,-,Equip
+424,love sword,espada do amor,4818,0,-,-,Equip
+425,love shield,escudo do amor,4818,0,-,-,Equip
+426,love armor,armadura do amor,4818,0,-,-,Equip
+427,ninja sword,espada do ninja,5624,0,-,-,Equip
+428,ninja shield,escudo do ninja,5624,0,-,-,Equip
+429,ninja armor,armadura do ninja,5624,0,-,-,Equip
+430,replenishing sword,espada da restauração,6465,0,-,-,Equip
+431,replenishing shield,escudo da restauração,6465,0,-,-,Equip
+432,replenishing armor,armadura da restauração,6465,0,-,-,Equip
+433,energy sword,espada da energia,7338,0,-,-,Equip
+434,energy shield,escudo da energia,7338,0,-,-,Equip
+435,energy armor,armadura da energia,7338,0,-,-,Equip
+436,spiky sword,espada espinhosa,8242,0,-,-,Equip
+437,spiky shield,escudo espinhoso,8242,0,-,-,Equip
+438,spiky armor,armadura espinhosa,8242,0,-,-,Equip
+439,swampy sword,espada pantanosa,9176,0,-,-,Equip
+440,swampy shield,escudo pantanoso,9176,0,-,-,Equip
+441,swampy armor,armadura pantanosa,9176,0,-,-,Equip
+442,misty sword,espada da névoa,10138,0,-,-,Equip
+443,misty shield,escudo da névoa,10138,0,-,-,Equip
+444,misty armor,armadura da névoa,10138,0,-,-,Equip
+445,glorious sword,espada gloriosa,11127,0,-,-,Equip
+446,glorious shield,escudo glorioso,11127,0,-,-,Equip
+447,glorious armor,armadura gloriosa,11127,0,-,-,Equip
+448,dark sword,espada negra,12141,0,-,-,Equip
+449,dark shield,escudo negro,12141,0,-,-,Equip
+450,dark armor,armadura negra,12141,0,-,-,Equip
+451,punk sword,espada punk,13181,0,-,-,Equip
+452,punk shield,escudo punk,13181,0,-,-,Equip
+453,punk armor,armadura punk,13181,0,-,-,Equip
+454,cracked sword,espada rachada,14245,0,-,-,Equip
+455,cracked shield,escudo rachado,14245,0,-,-,Equip
+456,cracked armor,armadura rachada,14245,0,-,-,Equip
+457,crusty sword,espada encrostada,15332,0,-,-,Equip
+458,crusty shield,escudo encrostado,15332,0,-,-,Equip
+459,crusty armor,armadura encrostada,15332,0,-,-,Equip
+460,sandy sword,espada arenosa,16441,0,-,-,Equip
+461,sandy shield,escudo arenoso,16441,0,-,-,Equip
+462,sandy armor,armadura arenosa,16441,0,-,-,Equip
+463,sunny sword,espada solar,17572,0,-,-,Equip
+464,sunny shield,escudo solar,17572,0,-,-,Equip
+465,sunny armor,armadura solar,17572,0,-,-,Equip
+466,indigenous sword,espada indígena,18725,0,-,-,Equip
+467,indigenous shield,escudo indígena,18725,0,-,-,Equip
+468,indigenous armor,armadura indígena,18725,0,-,-,Equip
+469,underwater sword,espada subaquática,19898,0,-,-,Equip
+470,underwater shield,escudo subaquático,19898,0,-,-,Equip
+471,underwater armor,armadura subaquática,19898,0,-,-,Equip
+472,blast sword,espada da rajada,21091,0,-,-,Equip
+473,blast shield,escudo da rajada,21091,0,-,-,Equip
+474,blast armor,armadura da rajada,21091,0,-,-,Equip
+475,sword of determination,espada da determinação,22304,0,-,-,Equip
+476,shield of determination,escudo da determinação,22304,0,-,-,Equip
+477,armor of determination,armadura da determinação,22304,0,-,-,Equip
+478,earthquake sword,espada do terremoto,23536,0,-,-,Equip
+479,earthquake shield,escudo do terremoto,23536,0,-,-,Equip
+480,earthquake armor,armadura do terremoto,23536,0,-,-,Equip
+481,eruption sword,espada da erupção,24787,0,-,-,Equip
+482,eruption shield,escudo da erupção,24787,0,-,-,Equip
+483,eruption armor,armadura da erupção,24787,0,-,-,Equip
+484,nuclear sword,espada nuclear,26057,0,-,-,Equip
+485,nuclear shield,escudo nuclear,26057,0,-,-,Equip
+486,nuclear armor,armadura nuclear,26057,0,-,-,Equip
+487,dragon sword,espada do dragão,27344,0,-,-,Equip
+488,dragon shield,escudo do dragão,27344,0,-,-,Equip
+489,dragon armor,armadura do dragão,27344,0,-,-,Equip
+490,popsicle sword,espada de picolé,28648,0,-,-,Equip
+491,popsicle shield,escudo de picolé,28648,0,-,-,Equip
+492,popsicle armor,armadura de picolé,28648,0,-,-,Equip
+493,polar sword,espada polar,29970,0,-,-,Equip
+494,polar shield,escudo polar,29970,0,-,-,Equip
+495,polar armor,armadura polar,29970,0,-,-,Equip
+496,aurora sword,espada da aurora,31309,0,-,-,Equip
+497,aurora shield,escudo da aurora,31309,0,-,-,Equip
+498,aurora armor,armadura da aurora,31309,0,-,-,Equip
+499,adventure set,set da aventura,115272,0,-,-,Equip
+500,wood staff,cajado de madeira,20,10,-,-,Equip
+501,wood shield,escudo de madeira,20,10,-,-,Equip
+502,wood armor,armadura de madeira,20,10,-,-,Equip
+503,copper staff,cajado de bronze,290,10,-,-,Equip
+504,copper shield,escudo de bronze,290,10,-,-,Equip
+505,copper armor,armadura de bronze,290,10,-,-,Equip
+506,heavy staff,cajado pesado,681,10,-,-,Equip
+507,heavy shield,escudo pesado,681,10,-,-,Equip
+508,heavy armor,armadura pesada,681,10,-,-,Equip
+509,mountain staff,cajado da montanha,1164,10,-,-,Equip
+510,mountain shield,escudo da montanha,1164,10,-,-,Equip
+511,mountain armor,armadura da montanha,1164,10,-,-,Equip
+512,mage's staff,cajado do mago,1716,10,-,-,Equip
+513,mage's shield,escudo do mago,1716,10,-,-,Equip
+514,mage's armor,armadura do mago,1716,10,-,-,Equip
+515,phenomenal staff,cajado fenomenal,2326,10,-,-,Equip
+516,phenomenal shield,escudo fenomenal,2326,10,-,-,Equip
+517,phenomenal armor,armadura fenomenal,2326,10,-,-,Equip
+518,epicenter staff,cajado do epicentro,2988,10,-,-,Equip
+519,epicenter shield,escudo do epicentro,2988,10,-,-,Equip
+520,epicenter armor,armadura do epicentro,2988,10,-,-,Equip
+521,dimensional staff,cajado dimensional,3695,10,-,-,Equip
+522,dimensional shield,escudo dimensional,3695,10,-,-,Equip
+523,dimensional armor,armadura dimensional,3695,10,-,-,Equip
+524,pirate staff,cajado do pirata,4445,10,-,-,Equip
+525,pirate shield,escudo do pirata,4445,10,-,-,Equip
+526,pirate armor,armadura do pirata,4445,10,-,-,Equip
+527,epic staff,cajado épico,5233,10,-,-,Equip
+528,epic shield,escudo épico,5233,10,-,-,Equip
+529,epic armor,armadura épica,5233,10,-,-,Equip
+530,arcane staff,cajado arcano,6056,10,-,-,Equip
+531,arcane shield,escudo arcano,6056,10,-,-,Equip
+532,arcane armor,armadura arcana,6056,10,-,-,Equip
+533,lunar staff,cajado lunar,6913,10,-,-,Equip
+534,lunar shield,escudo lunar,6913,10,-,-,Equip
+535,lunar armor,armadura lunar,6913,10,-,-,Equip
+536,fierce staff,cajado feroz,7802,10,-,-,Equip
+537,fierce shield,escudo feroz,7802,10,-,-,Equip
+538,fierce armor,armadura feroz,7802,10,-,-,Equip
+539,curvy staff,cajado curvo,8722,10,-,-,Equip
+540,curvy shield,escudo curvo,8722,10,-,-,Equip
+541,curvy armor,armadura curva,8722,10,-,-,Equip
+542,kinky staff,cajado picante,9670,10,-,-,Equip
+543,kinky shield,escudo picante,9670,10,-,-,Equip
+544,kinky armor,armadura picante,9670,10,-,-,Equip
+545,forest staff,cajado da floresta,10645,10,-,-,Equip
+546,forest shield,escudo da floresta,10645,10,-,-,Equip
+547,forest armor,armadura da floresta,10645,10,-,-,Equip
+548,excavation staff,cajado da escavação,11647,10,-,-,Equip
+549,excavation shield,escudo da escavação,11647,10,-,-,Equip
+550,excavation armor,armadura da escavação,11647,10,-,-,Equip
+551,secular staff,cajado secular,12674,10,-,-,Equip
+552,secular shield,escudo secular,12674,10,-,-,Equip
+553,secular armor,armadura secular,12674,10,-,-,Equip
+554,crystal staff,cajado do cristal,13726,10,-,-,Equip
+555,crystal shield,escudo do cristal,13726,10,-,-,Equip
+556,crystal armor,armadura do cristal,13726,10,-,-,Equip
+557,cave staff,cajado da caverna,14801,10,-,-,Equip
+558,cave shield,escudo da caverna,14801,10,-,-,Equip
+559,cave armor,armadura da caverna,14801,10,-,-,Equip
+560,tropical staff,cajado tropical,15899,10,-,-,Equip
+561,tropical shield,escudo tropical,15899,10,-,-,Equip
+562,tropical armor,armadura tropical,15899,10,-,-,Equip
+563,curly staff,cajado ondulado,17020,10,-,-,Equip
+564,curly shield,escudo ondulado,17020,10,-,-,Equip
+565,curly armor,armadura ondulada,17020,10,-,-,Equip
+566,island staff,cajado da ilha,18162,10,-,-,Equip
+567,island shield,escudo da ilha,18162,10,-,-,Equip
+568,island armor,armadura da ilha,18162,10,-,-,Equip
+569,ocean staff,cajado do oceano,19325,10,-,-,Equip
+570,ocean shield,escudo do oceano,19325,10,-,-,Equip
+571,ocean armor,armadura do oceano,19325,10,-,-,Equip
+572,magma staff,cajado do magma,20508,10,-,-,Equip
+573,magma shield,escudo do magma,20508,10,-,-,Equip
+574,magma armor,armadura do magma,20508,10,-,-,Equip
+575,chocolate staff,cajado de chocolate,21711,10,-,-,Equip
+576,chocolate shield,escudo de chocolate,21711,10,-,-,Equip
+577,chocolate armor,armadura de chocolate,21711,10,-,-,Equip
+578,fenix staff,cajado da fênix,22934,10,-,-,Equip
+579,fenix shield,escudo da fênix,22934,10,-,-,Equip
+580,fenix armor,armadura da fênix,22934,10,-,-,Equip
+581,explosive staff,cajado explosivo,24175,10,-,-,Equip
+582,explosive shield,escudo explosivo,24175,10,-,-,Equip
+583,explosive armor,armadura explosiva,24175,10,-,-,Equip
+584,melting staff,cajado em derretimento,25436,10,-,-,Equip
+585,melting shield,escudo em derretimento,25436,10,-,-,Equip
+586,melting armor,armadura em derretimento,25436,10,-,-,Equip
+587,volcano staff,cajado do vulcão,26714,10,-,-,Equip
+588,volcano shield,escudo do vulcão,26714,10,-,-,Equip
+589,volcano armor,armadura do vulcão,26714,10,-,-,Equip
+590,icy staff,cajado gelado,28010,10,-,-,Equip
+591,icy shield,escudo gelado,28010,10,-,-,Equip
+592,icy armor,armadura gelada,28010,10,-,-,Equip
+593,winter staff,cajado invernal,29323,10,-,-,Equip
+594,winter shield,escudo invernal,29323,10,-,-,Equip
+595,winter armor,armadura invernal,29323,10,-,-,Equip
+596,snowman staff,cajado do homem das neves,30654,10,-,-,Equip
+597,snowman shield,escudo do homem das neves,30654,10,-,-,Equip
+598,snowman armor,armadura do homem das neves,30654,10,-,-,Equip
+599,snowland set,set da terra das neves,106585,10,-,-,Equip
+600,toy staff,cajado de brinquedo,45,0,-,-,Equip
+601,toy shield,escudo de brinquedo,45,0,-,-,Equip
+602,toy armor,armadura de brinquedo,45,0,-,-,Equip
+603,handicrafted staff,cajado artesanal,456,0,-,-,Equip
+604,handicrafted shield,escudo artesanal,456,0,-,-,Equip
+605,handicrafted armor,armadura artesanal,456,0,-,-,Equip
+606,dreamer's staff,cajado do sonhador,897,0,-,-,Equip
+607,dreamer's shield,escudo do sonhador,897,0,-,-,Equip
+608,dreamer's armor,armadura do sonhador,897,0,-,-,Equip
+609,light staff,cajado leve,1416,0,-,-,Equip
+610,light shield,escudo leve,1416,0,-,-,Equip
+611,light armor,armadura leve,1416,0,-,-,Equip
+612,courage staff,cajado da coragem,1998,0,-,-,Equip
+613,courage shield,escudo da coragem,1998,0,-,-,Equip
+614,courage armor,armadura da coragem,1998,0,-,-,Equip
+615,partner's staff,cajado do parceiro,2635,0,-,-,Equip
+616,partner's shield,escudo do parceiro,2635,0,-,-,Equip
+617,partner's armor,armadura do parceiro,2635,0,-,-,Equip
+618,sound staff,cajado do som,3320,0,-,-,Equip
+619,sound shield,escudo do som,3320,0,-,-,Equip
+620,sound armor,armadura do som,3320,0,-,-,Equip
+621,wild staff,cajado selvagem,4049,0,-,-,Equip
+622,wild shield,escudo selvagem,4049,0,-,-,Equip
+623,wild armor,armadura selvagem,4049,0,-,-,Equip
+624,love staff,cajado do amor,4818,0,-,-,Equip
+625,love shield,escudo do amor,4818,0,-,-,Equip
+626,love armor,armadura do amor,4818,0,-,-,Equip
+627,ninja staff,cajado do ninja,5624,0,-,-,Equip
+628,ninja shield,escudo do ninja,5624,0,-,-,Equip
+629,ninja armor,armadura do ninja,5624,0,-,-,Equip
+630,replenishing staff,cajado da restauração,6465,0,-,-,Equip
+631,replenishing shield,escudo da restauração,6465,0,-,-,Equip
+632,replenishing armor,armadura da restauração,6465,0,-,-,Equip
+633,energy staff,cajado da energia,7338,0,-,-,Equip
+634,energy shield,escudo da energia,7338,0,-,-,Equip
+635,energy armor,armadura da energia,7338,0,-,-,Equip
+636,spiky staff,cajado espinhoso,8242,0,-,-,Equip
+637,spiky shield,escudo espinhoso,8242,0,-,-,Equip
+638,spiky armor,armadura espinhosa,8242,0,-,-,Equip
+639,swampy staff,cajado pantanoso,9176,0,-,-,Equip
+640,swampy shield,escudo pantanoso,9176,0,-,-,Equip
+641,swampy armor,armadura pantanosa,9176,0,-,-,Equip
+642,misty staff,cajado da névoa,10138,0,-,-,Equip
+643,misty shield,escudo da névoa,10138,0,-,-,Equip
+644,misty armor,armadura da névoa,10138,0,-,-,Equip
+645,glorious staff,cajado glorioso,11127,0,-,-,Equip
+646,glorious shield,escudo glorioso,11127,0,-,-,Equip
+647,glorious armor,armadura gloriosa,11127,0,-,-,Equip
+648,dark staff,cajado negro,12141,0,-,-,Equip
+649,dark shield,escudo negro,12141,0,-,-,Equip
+650,dark armor,armadura negra,12141,0,-,-,Equip
+651,punk staff,cajado punk,13181,0,-,-,Equip
+652,punk shield,escudo punk,13181,0,-,-,Equip
+653,punk armor,armadura punk,13181,0,-,-,Equip
+654,cracked staff,cajado rachado,14245,0,-,-,Equip
+655,cracked shield,escudo rachado,14245,0,-,-,Equip
+656,cracked armor,armadura rachada,14245,0,-,-,Equip
+657,crusty staff,cajado encrostado,15332,0,-,-,Equip
+658,crusty shield,escudo encrostado,15332,0,-,-,Equip
+659,crusty armor,armadura encrostada,15332,0,-,-,Equip
+660,sandy staff,cajado arenoso,16441,0,-,-,Equip
+661,sandy shield,escudo arenoso,16441,0,-,-,Equip
+662,sandy armor,armadura arenosa,16441,0,-,-,Equip
+663,sunny staff,cajado solar,17572,0,-,-,Equip
+664,sunny shield,escudo solar,17572,0,-,-,Equip
+665,sunny armor,armadura solar,17572,0,-,-,Equip
+666,indigenous staff,cajado indígena,18725,0,-,-,Equip
+667,indigenous shield,escudo indígena,18725,0,-,-,Equip
+668,indigenous armor,armadura indígena,18725,0,-,-,Equip
+669,underwater staff,cajado subaquático,19898,0,-,-,Equip
+670,underwater shield,escudo subaquático,19898,0,-,-,Equip
+671,underwater armor,armadura subaquática,19898,0,-,-,Equip
+672,blast staff,cajado da rajada,21091,0,-,-,Equip
+673,blast shield,escudo da rajada,21091,0,-,-,Equip
+674,blast armor,armadura da rajada,21091,0,-,-,Equip
+675,staff of determination,cajado da determinação,22304,0,-,-,Equip
+676,shield of determination,escudo da determinação,22304,0,-,-,Equip
+677,armor of determination,armadura da determinação,22304,0,-,-,Equip
+678,earthquake staff,cajado do terremoto,23536,0,-,-,Equip
+679,earthquake shield,escudo do terremoto,23536,0,-,-,Equip
+680,earthquake armor,armadura do terremoto,23536,0,-,-,Equip
+681,eruption staff,cajado da erupção,24787,0,-,-,Equip
+682,eruption shield,escudo da erupção,24787,0,-,-,Equip
+683,eruption armor,armadura da erupção,24787,0,-,-,Equip
+684,nuclear staff,cajado nuclear,26057,0,-,-,Equip
+685,nuclear shield,escudo nuclear,26057,0,-,-,Equip
+686,nuclear armor,armadura nuclear,26057,0,-,-,Equip
+687,dragon staff,cajado do dragão,27344,0,-,-,Equip
+688,dragon shield,escudo do dragão,27344,0,-,-,Equip
+689,dragon armor,armadura do dragão,27344,0,-,-,Equip
+690,popsicle staff,cajado de picolé,28648,0,-,-,Equip
+691,popsicle shield,escudo de picolé,28648,0,-,-,Equip
+692,popsicle armor,armadura de picolé,28648,0,-,-,Equip
+693,polar staff,cajado polar,29970,0,-,-,Equip
+694,polar shield,escudo polar,29970,0,-,-,Equip
+695,polar armor,armadura polar,29970,0,-,-,Equip
+696,aurora staff,cajado da aurora,31309,0,-,-,Equip
+697,aurora shield,escudo da aurora,31309,0,-,-,Equip
+698,aurora armor,armadura da aurora,31309,0,-,-,Equip
+699,adventure set,set da aventura,115272,0,-,-,Equip
+700,wood bow,arco de madeira,20,10,-,-,Equip
+701,wood bandana,bandana de madeira,20,10,-,-,Equip
+702,wood armor,armadura de madeira,20,10,-,-,Equip
+703,copper bow,arco de bronze,290,10,-,-,Equip
+704,copper bandana,bandana de bronze,290,10,-,-,Equip
+705,copper armor,armadura de bronze,290,10,-,-,Equip
+706,heavy bow,arco pesada,681,10,-,-,Equip
+707,heavy bandana,bandana pesada,681,10,-,-,Equip
+708,heavy armor,armadura pesada,681,10,-,-,Equip
+709,mountain bow,arco da montanha,1164,10,-,-,Equip
+710,mountain bandana,bandana da montanha,1164,10,-,-,Equip
+711,mountain armor,armadura da montanha,1164,10,-,-,Equip
+712,archer's bow,arco do arqueiro,1716,10,-,-,Equip
+713,archer's bandana,bandana do arqueiro,1716,10,-,-,Equip
+714,archer's armor,armadura do arqueiro,1716,10,-,-,Equip
+715,phenomenal bow,arco fenomenal,2326,10,-,-,Equip
+716,phenomenal bandana,bandana fenomenal,2326,10,-,-,Equip
+717,phenomenal armor,armadura fenomenal,2326,10,-,-,Equip
+718,epicenter bow,arco do epicentro,2988,10,-,-,Equip
+719,epicenter bandana,bandana do epicentro,2988,10,-,-,Equip
+720,epicenter armor,armadura do epicentro,2988,10,-,-,Equip
+721,dimensional bow,arco dimensional,3695,10,-,-,Equip
+722,dimensional bandana,bandana dimensional,3695,10,-,-,Equip
+723,dimensional armor,armadura dimensional,3695,10,-,-,Equip
+724,pirate bow,arco do pirata,4445,10,-,-,Equip
+725,pirate bandana,bandana do pirata,4445,10,-,-,Equip
+726,pirate armor,armadura do pirata,4445,10,-,-,Equip
+727,epic bow,arco épico,5233,10,-,-,Equip
+728,epic bandana,bandana épica,5233,10,-,-,Equip
+729,epic armor,armadura épica,5233,10,-,-,Equip
+730,arcane bow,arco arcano,6056,10,-,-,Equip
+731,arcane bandana,bandana arcana,6056,10,-,-,Equip
+732,arcane armor,armadura arcana,6056,10,-,-,Equip
+733,lunar bow,arco lunar,6913,10,-,-,Equip
+734,lunar bandana,bandana lunar,6913,10,-,-,Equip
+735,lunar armor,armadura lunar,6913,10,-,-,Equip
+736,fierce bow,arco feroz,7802,10,-,-,Equip
+737,fierce bandana,bandana feroz,7802,10,-,-,Equip
+738,fierce armor,armadura feroz,7802,10,-,-,Equip
+739,curvy bow,arco curvo,8722,10,-,-,Equip
+740,curvy bandana,bandana curva,8722,10,-,-,Equip
+741,curvy armor,armadura curva,8722,10,-,-,Equip
+742,kinky bow,arco picante,9670,10,-,-,Equip
+743,kinky bandana,bandana picante,9670,10,-,-,Equip
+744,kinky armor,armadura picante,9670,10,-,-,Equip
+745,forest bow,arco da floresta,10645,10,-,-,Equip
+746,forest bandana,bandana da floresta,10645,10,-,-,Equip
+747,forest armor,armadura da floresta,10645,10,-,-,Equip
+748,excavation bow,arco da escavação,11647,10,-,-,Equip
+749,excavation bandana,bandana da escavação,11647,10,-,-,Equip
+750,excavation armor,armadura da escavação,11647,10,-,-,Equip
+751,secular bow,arco secular,12674,10,-,-,Equip
+752,secular bandana,bandana secular,12674,10,-,-,Equip
+753,secular armor,armadura secular,12674,10,-,-,Equip
+754,crystal bow,arco do cristal,13726,10,-,-,Equip
+755,crystal bandana,bandana do cristal,13726,10,-,-,Equip
+756,crystal armor,armadura do cristal,13726,10,-,-,Equip
+757,cave bow,arco da caverna,14801,10,-,-,Equip
+758,cave bandana,bandana da caverna,14801,10,-,-,Equip
+759,cave armor,armadura da caverna,14801,10,-,-,Equip
+760,tropical bow,arco tropical,15899,10,-,-,Equip
+761,tropical bandana,bandana tropical,15899,10,-,-,Equip
+762,tropical armor,armadura tropical,15899,10,-,-,Equip
+763,curly bow,arco ondulado,17020,10,-,-,Equip
+764,curly bandana,bandana ondulada,17020,10,-,-,Equip
+765,curly armor,armadura ondulada,17020,10,-,-,Equip
+766,island bow,arco da ilha,18162,10,-,-,Equip
+767,island bandana,bandana da ilha,18162,10,-,-,Equip
+768,island armor,armadura da ilha,18162,10,-,-,Equip
+769,ocean bow,arco do oceano,19325,10,-,-,Equip
+770,ocean bandana,bandana do oceano,19325,10,-,-,Equip
+771,ocean armor,armadura do oceano,19325,10,-,-,Equip
+772,magma bow,arco do magma,20508,10,-,-,Equip
+773,magma bandana,bandana do magma,20508,10,-,-,Equip
+774,magma armor,armadura do magma,20508,10,-,-,Equip
+775,chocolate bow,arco de chocolate,21711,10,-,-,Equip
+776,chocolate bandana,bandana de chocolate,21711,10,-,-,Equip
+777,chocolate armor,armadura de chocolate,21711,10,-,-,Equip
+778,fenix bow,arco da fênix,22934,10,-,-,Equip
+779,fenix bandana,bandana da fênix,22934,10,-,-,Equip
+780,fenix armor,armadura da fênix,22934,10,-,-,Equip
+781,explosive bow,arco explosivo,24175,10,-,-,Equip
+782,explosive bandana,bandana explosiva,24175,10,-,-,Equip
+783,explosive armor,armadura explosiva,24175,10,-,-,Equip
+784,melting bow,arco em derretimento,25436,10,-,-,Equip
+785,melting bandana,bandana em derretimento,25436,10,-,-,Equip
+786,melting armor,armadura em derretimento,25436,10,-,-,Equip
+787,volcano bow,arco do vulcão,26714,10,-,-,Equip
+788,volcano bandana,bandana do vulcão,26714,10,-,-,Equip
+789,volcano armor,armadura do vulcão,26714,10,-,-,Equip
+790,icy bow,arco gelado,28010,10,-,-,Equip
+791,icy bandana,bandana gelada,28010,10,-,-,Equip
+792,icy armor,armadura gelada,28010,10,-,-,Equip
+793,winter bow,arco invernal,29323,10,-,-,Equip
+794,winter bandana,bandana invernal,29323,10,-,-,Equip
+795,winter armor,armadura invernal,29323,10,-,-,Equip
+796,snowman bow,arco do homem das neves,30654,10,-,-,Equip
+797,snowman bandana,bandana do homem das neves,30654,10,-,-,Equip
+798,snowman armor,armadura do homem das neves,30654,10,-,-,Equip
+799,snowland set,set da terra das neves,106585,10,-,-,Equip
+800,toy bow,arco de brinquedo,45,0,-,-,Equip
+801,toy bandana,bandana de brinquedo,45,0,-,-,Equip
+802,toy armor,armadura de brinquedo,45,0,-,-,Equip
+803,handicrafted bow,arco artesanal,456,0,-,-,Equip
+804,handicrafted bandana,bandana artesanal,456,0,-,-,Equip
+805,handicrafted armor,armadura artesanal,456,0,-,-,Equip
+806,dreamer's bow,arco do sonhador,897,0,-,-,Equip
+807,dreamer's bandana,bandana do sonhador,897,0,-,-,Equip
+808,dreamer's armor,armadura do sonhador,897,0,-,-,Equip
+809,light bow,arco leve,1416,0,-,-,Equip
+810,light bandana,bandana leve,1416,0,-,-,Equip
+811,light armor,armadura leve,1416,0,-,-,Equip
+812,courage bow,arco da coragem,1998,0,-,-,Equip
+813,courage bandana,bandana da coragem,1998,0,-,-,Equip
+814,courage armor,armadura da coragem,1998,0,-,-,Equip
+815,partner's bow,arco do parceiro,2635,0,-,-,Equip
+816,partner's bandana,bandana do parceiro,2635,0,-,-,Equip
+817,partner's armor,armadura do parceiro,2635,0,-,-,Equip
+818,sound bow,arco do som,3320,0,-,-,Equip
+819,sound bandana,bandana no som,3320,0,-,-,Equip
+820,sound armor,armadura do som,3320,0,-,-,Equip
+821,wild bow,arco selvagem,4049,0,-,-,Equip
+822,wild bandana,bandana selvagem,4049,0,-,-,Equip
+823,wild armor,armadura selvagem,4049,0,-,-,Equip
+824,love bow,arco do amor,4818,0,-,-,Equip
+825,love bandana,bandana do amor,4818,0,-,-,Equip
+826,love armor,armadura do amor,4818,0,-,-,Equip
+827,ninja bow,arco do ninja,5624,0,-,-,Equip
+828,ninja bandana,bandana no ninja,5624,0,-,-,Equip
+829,ninja armor,armadura do ninja,5624,0,-,-,Equip
+830,replenishing bow,arco da restauração,6465,0,-,-,Equip
+831,replenishing bandana,bandana da restauração,6465,0,-,-,Equip
+832,replenishing armor,armadura da restauração,6465,0,-,-,Equip
+833,energy bow,arco da energia,7338,0,-,-,Equip
+834,energy bandana,bandana da energia,7338,0,-,-,Equip
+835,energy armor,armadura da energia,7338,0,-,-,Equip
+836,spiky bow,arco espinhoso,8242,0,-,-,Equip
+837,spiky bandana,bandana espinhosa,8242,0,-,-,Equip
+838,spiky armor,armadura espinhosa,8242,0,-,-,Equip
+839,swampy bow,arco pantanoso,9176,0,-,-,Equip
+840,swampy bandana,bandana pantanosa,9176,0,-,-,Equip
+841,swampy armor,armadura pantanosa,9176,0,-,-,Equip
+842,misty bow,arco da névoa,10138,0,-,-,Equip
+843,misty bandana,bandana da névoa,10138,0,-,-,Equip
+844,misty armor,armadura da névoa,10138,0,-,-,Equip
+845,glorious bow,arco glorioso,11127,0,-,-,Equip
+846,glorious bandana,bandana gloriosa,11127,0,-,-,Equip
+847,glorious armor,armadura gloriosa,11127,0,-,-,Equip
+848,dark bow,arco negro,12141,0,-,-,Equip
+849,dark bandana,bandana negra,12141,0,-,-,Equip
+850,dark armor,armadura negra,12141,0,-,-,Equip
+851,punk bow,arco punk,13181,0,-,-,Equip
+852,punk bandana,bandana punk,13181,0,-,-,Equip
+853,punk armor,armadura punk,13181,0,-,-,Equip
+854,cracked bow,arco rachado,14245,0,-,-,Equip
+855,cracked bandana,bandana rachada,14245,0,-,-,Equip
+856,cracked armor,armadura rachada,14245,0,-,-,Equip
+857,crusty bow,arco encrostado,15332,0,-,-,Equip
+858,crusty bandana,bandana encrostada,15332,0,-,-,Equip
+859,crusty armor,armadura encrostada,15332,0,-,-,Equip
+860,sandy bow,arco arenoso,16441,0,-,-,Equip
+861,sandy bandana,bandana arenosa,16441,0,-,-,Equip
+862,sandy armor,armadura arenosa,16441,0,-,-,Equip
+863,sunny bow,arco solar,17572,0,-,-,Equip
+864,sunny bandana,bandana solar,17572,0,-,-,Equip
+865,sunny armor,armadura solar,17572,0,-,-,Equip
+866,indigenous bow,arco indígena,18725,0,-,-,Equip
+867,indigenous bandana,bandana indígena,18725,0,-,-,Equip
+868,indigenous armor,armadura indígena,18725,0,-,-,Equip
+869,underwater bow,arco subaquático,19898,0,-,-,Equip
+870,underwater bandana,bandana subaquática,19898,0,-,-,Equip
+871,underwater armor,armadura subaquática,19898,0,-,-,Equip
+872,blast bow,arco da rajada,21091,0,-,-,Equip
+873,blast bandana,bandana da rajada,21091,0,-,-,Equip
+874,blast armor,armadura da rajada,21091,0,-,-,Equip
+875,bow of determination,arco da determinação,22304,0,-,-,Equip
+876,bandana of determination,bandana da determinação,22304,0,-,-,Equip
+877,armor of determination,armadura da determinação,22304,0,-,-,Equip
+878,earthquake bow,arco do terremoto,23536,0,-,-,Equip
+879,earthquake bandana,bandana do terremoto,23536,0,-,-,Equip
+880,earthquake armor,armadura do terremoto,23536,0,-,-,Equip
+881,eruption bow,arco da erupção,24787,0,-,-,Equip
+882,eruption bandana,bandana da erupção,24787,0,-,-,Equip
+883,eruption armor,armadura da erupção,24787,0,-,-,Equip
+884,nuclear bow,arco nuclear,26057,0,-,-,Equip
+885,nuclear bandana,bandana nuclear,26057,0,-,-,Equip
+886,nuclear armor,armadura nuclear,26057,0,-,-,Equip
+887,dragon bow,arco do dragão,27344,0,-,-,Equip
+888,dragon bandana,bandana do dragão,27344,0,-,-,Equip
+889,dragon armor,armadura do dragão,27344,0,-,-,Equip
+890,popsicle bow,arco de picolé,28648,0,-,-,Equip
+891,popsicle bandana,bandana de picolé,28648,0,-,-,Equip
+892,popsicle armor,armadura de picolé,28648,0,-,-,Equip
+893,polar bow,arco polar,29970,0,-,-,Equip
+894,polar bandana,bandana polar,29970,0,-,-,Equip
+895,polar armor,armadura polar,29970,0,-,-,Equip
+896,aurora bow,arco da aurora,31309,0,-,-,Equip
+897,aurora bandana,bandana da aurora,31309,0,-,-,Equip
+898,aurora armor,armadura da aurora,31309,0,-,-,Equip
+899,adventure set,set da aventura,115272,0,-,-,Equip
+900,wood claws,garras de madeira,20,20,-,-,Equip
+901,wood shield,escudo de madeira,20,20,-,-,Equip
+902,wood armor,armadura de madeira,20,20,-,-,Equip
+903,copper claws,garras de bronze,290,15,-,-,Equip
+904,copper shield,escudo de bronze,290,15,-,-,Equip
+905,copper armor,armadura de bronze,290,15,-,-,Equip
+906,heavy claws,garras pesadas,681,10,-,-,Equip
+907,heavy shield,escudo pesado,681,10,-,-,Equip
+908,heavy armor,armadura pesada,681,10,-,-,Equip
+909,mountain claws,garras da montanha,1164,10,-,-,Equip
+910,mountain shield,escudo da montanha,1164,10,-,-,Equip
+911,mountain armor,armadura da montanha,1164,10,-,-,Equip
+912,animal's claws,garras do animal,1716,10,-,-,Equip
+913,animal's shield,escudo do animal,1716,10,-,-,Equip
+914,animal's armor,armadura do animal,1716,10,-,-,Equip
+915,phenomenal claws,garras fenomenais,2326,10,-,-,Equip
+916,phenomenal shield,escudo fenomenal,2326,10,-,-,Equip
+917,phenomenal armor,armadura fenomenal,2326,10,-,-,Equip
+918,epicenter claws,garras do epicentro,2988,10,-,-,Equip
+919,epicenter shield,escudo do epicentro,2988,10,-,-,Equip
+920,epicenter armor,armadura do epicentro,2988,10,-,-,Equip
+921,dimensional claws,garras dimensional,3695,10,-,-,Equip
+922,dimensional shield,escudo dimensional,3695,10,-,-,Equip
+923,dimensional armor,armadura dimensional,3695,10,-,-,Equip
+924,pirate claws,garras do piratas,4445,10,-,-,Equip
+925,pirate shield,escudo do pirata,4445,10,-,-,Equip
+926,pirate armor,armadura do pirata,4445,10,-,-,Equip
+927,epic claws,garras épicas,5233,10,-,-,Equip
+928,epic shield,escudo épico,5233,10,-,-,Equip
+929,epic armor,armadura épica,5233,10,-,-,Equip
+930,arcane claws,garras arcanas,6056,10,-,-,Equip
+931,arcane shield,escudo arcano,6056,10,-,-,Equip
+932,arcane armor,armadura arcana,6056,10,-,-,Equip
+933,lunar claws,garras lunares,6913,10,-,-,Equip
+934,lunar shield,escudo lunar,6913,10,-,-,Equip
+935,lunar armor,armadura lunar,6913,10,-,-,Equip
+936,fierce claws,garras ferozes,7802,10,-,-,Equip
+937,fierce shield,escudo feroz,7802,10,-,-,Equip
+938,fierce armor,armadura feroz,7802,10,-,-,Equip
+939,curvy claws,garras curvas,8722,10,-,-,Equip
+940,curvy shield,escudo curvo,8722,10,-,-,Equip
+941,curvy armor,armadura curva,8722,10,-,-,Equip
+942,kinky claws,garras picantes,9670,10,-,-,Equip
+943,kinky shield,escudo picante,9670,10,-,-,Equip
+944,kinky armor,armadura picante,9670,10,-,-,Equip
+945,forest claws,garras da floresta,10645,10,-,-,Equip
+946,forest shield,escudo da floresta,10645,10,-,-,Equip
+947,forest armor,armadura da floresta,10645,10,-,-,Equip
+948,excavation claws,garras da escavação,11647,10,-,-,Equip
+949,excavation shield,escudo da escavação,11647,10,-,-,Equip
+950,excavation armor,armadura da escavação,11647,10,-,-,Equip
+951,secular claws,garras seculares,12674,10,-,-,Equip
+952,secular shield,escudo secular,12674,10,-,-,Equip
+953,secular armor,armadura secular,12674,10,-,-,Equip
+954,crystal claws,garras do cristal,13726,10,-,-,Equip
+955,crystal shield,escudo do cristal,13726,10,-,-,Equip
+956,crystal armor,armadura do cristal,13726,10,-,-,Equip
+957,cave claws,garras da caverna,14801,10,-,-,Equip
+958,cave shield,escudo da caverna,14801,10,-,-,Equip
+959,cave armor,armadura da caverna,14801,10,-,-,Equip
+960,tropical claws,garras tropicais,15899,10,-,-,Equip
+961,tropical shield,escudo tropical,15899,10,-,-,Equip
+962,tropical armor,armadura tropical,15899,10,-,-,Equip
+963,curly claws,garras onduladas,17020,10,-,-,Equip
+964,curly shield,escudo ondulado,17020,10,-,-,Equip
+965,curly armor,armadura ondulada,17020,10,-,-,Equip
+966,island claws,garras da ilha,18162,10,-,-,Equip
+967,island shield,escudo da ilha,18162,10,-,-,Equip
+968,island armor,armadura da ilha,18162,10,-,-,Equip
+969,ocean claws,garras do oceano,19325,10,-,-,Equip
+970,ocean shield,escudo do oceano,19325,10,-,-,Equip
+971,ocean armor,armadura do oceano,19325,10,-,-,Equip
+972,magma claws,garras do magma,20508,10,-,-,Equip
+973,magma shield,escudo do magma,20508,10,-,-,Equip
+974,magma armor,armadura do magma,20508,10,-,-,Equip
+975,chocolate claws,garras de chocolate,21711,10,-,-,Equip
+976,chocolate shield,escudo de chocolate,21711,10,-,-,Equip
+977,chocolate armor,armadura de chocolate,21711,10,-,-,Equip
+978,fenix claws,garras da fênix,22934,10,-,-,Equip
+979,fenix shield,escudo da fênix,22934,10,-,-,Equip
+980,fenix armor,armadura da fênix,22934,10,-,-,Equip
+981,explosive claws,garras explosivas,24175,10,-,-,Equip
+982,explosive shield,escudo explosivo,24175,10,-,-,Equip
+983,explosive armor,armadura explosiva,24175,10,-,-,Equip
+984,melting claws,garras em derretimento,25436,10,-,-,Equip
+985,melting shield,escudo em derretimento,25436,10,-,-,Equip
+986,melting armor,armadura em derretimento,25436,10,-,-,Equip
+987,volcano claws,garras do vulcão,26714,10,-,-,Equip
+988,volcano shield,escudo do vulcão,26714,10,-,-,Equip
+989,volcano armor,armadura do vulcão,26714,10,-,-,Equip
+990,icy claws,garras geladas,28010,10,-,-,Equip
+991,icy shield,escudo gelado,28010,10,-,-,Equip
+992,icy armor,armadura gelada,28010,10,-,-,Equip
+993,winter claws,garras invernais,29323,10,-,-,Equip
+994,winter shield,escudo invernal,29323,10,-,-,Equip
+995,winter armor,armadura invernal,29323,10,-,-,Equip
+996,snowman claws,garras do homem das neves,30654,10,-,-,Equip
+997,snowman shield,escudo do homem das neves,30654,10,-,-,Equip
+998,snowman armor,armadura do homem das neves,30654,10,-,-,Equip
+999,snowland set,set da terra das neves,106585,10,-,-,Equip
+1000,toy claws,garras de brinquedo,45,0,-,-,Equip
+1001,toy shield,escudo de brinquedo,45,0,-,-,Equip
+1002,toy armor,armadura de brinquedo,45,0,-,-,Equip
+1003,handicrafted claws,garras artesanais,456,0,-,-,Equip
+1004,handicrafted shield,escudo artesanal,456,0,-,-,Equip
+1005,handicrafted armor,armadura artesanal,456,0,-,-,Equip
+1006,dreamer's claws,garras do sonhador,897,0,-,-,Equip
+1007,dreamer's shield,escudo do sonhador,897,0,-,-,Equip
+1008,dreamer's armor,armadura do sonhador,897,0,-,-,Equip
+1009,light claws,garras leves,1416,0,-,-,Equip
+1010,light shield,escudo leve,1416,0,-,-,Equip
+1011,light armor,armadura leve,1416,0,-,-,Equip
+1012,courage claws,garras da coragem,1998,0,-,-,Equip
+1013,courage shield,escudo da coragem,1998,0,-,-,Equip
+1014,courage armor,armadura da coragem,1998,0,-,-,Equip
+1015,partner's claws,garras do parceiro,2635,0,-,-,Equip
+1016,partner's shield,escudo do parceiro,2635,0,-,-,Equip
+1017,partner's armor,armadura do parceiro,2635,0,-,-,Equip
+1018,sound claws,garras do som,3320,0,-,-,Equip
+1019,sound shield,escudo do som,3320,0,-,-,Equip
+1020,sound armor,armadura do som,3320,0,-,-,Equip
+1021,wild claws,garras selvagens,4049,0,-,-,Equip
+1022,wild shield,escudo selvagem,4049,0,-,-,Equip
+1023,wild armor,armadura selvagem,4049,0,-,-,Equip
+1024,love claws,garras do amor,4818,0,-,-,Equip
+1025,love shield,escudo do amor,4818,0,-,-,Equip
+1026,love armor,armadura do amor,4818,0,-,-,Equip
+1027,ninja claws,garras do ninja,5624,0,-,-,Equip
+1028,ninja shield,escudo do ninja,5624,0,-,-,Equip
+1029,ninja armor,armadura do ninja,5624,0,-,-,Equip
+1030,replenishing claws,garras da restauração,6465,0,-,-,Equip
+1031,replenishing shield,escudo da restauração,6465,0,-,-,Equip
+1032,replenishing armor,armadura da restauração,6465,0,-,-,Equip
+1033,energy claws,garras da energia,7338,0,-,-,Equip
+1034,energy shield,escudo da energia,7338,0,-,-,Equip
+1035,energy armor,armadura da energia,7338,0,-,-,Equip
+1036,spiky claws,garras espinhosas,8242,0,-,-,Equip
+1037,spiky shield,escudo espinhoso,8242,0,-,-,Equip
+1038,spiky armor,armadura espinhosa,8242,0,-,-,Equip
+1039,swampy claws,garras pantanosas,9176,0,-,-,Equip
+1040,swampy shield,escudo pantanoso,9176,0,-,-,Equip
+1041,swampy armor,armadura pantanosa,9176,0,-,-,Equip
+1042,misty claws,garras da névoa,10138,0,-,-,Equip
+1043,misty shield,escudo da névoa,10138,0,-,-,Equip
+1044,misty armor,armadura da névoa,10138,0,-,-,Equip
+1045,glorious claws,garras gloriosas,11127,0,-,-,Equip
+1046,glorious shield,escudo glorioso,11127,0,-,-,Equip
+1047,glorious armor,armadura gloriosa,11127,0,-,-,Equip
+1048,dark claws,garras negras,12141,0,-,-,Equip
+1049,dark shield,escudo negro,12141,0,-,-,Equip
+1050,dark armor,armadura negra,12141,0,-,-,Equip
+1051,punk claws,garras punk,13181,0,-,-,Equip
+1052,punk shield,escudo punk,13181,0,-,-,Equip
+1053,punk armor,armadura punk,13181,0,-,-,Equip
+1054,cracked claws,garras rachadas,14245,0,-,-,Equip
+1055,cracked shield,escudo rachado,14245,0,-,-,Equip
+1056,cracked armor,armadura rachada,14245,0,-,-,Equip
+1057,crusty claws,garras encrostadas,15332,0,-,-,Equip
+1058,crusty shield,escudo encrostado,15332,0,-,-,Equip
+1059,crusty armor,armadura encrostada,15332,0,-,-,Equip
+1060,sandy claws,garras arenosas,16441,0,-,-,Equip
+1061,sandy shield,escudo arenoso,16441,0,-,-,Equip
+1062,sandy armor,armadura arenosa,16441,0,-,-,Equip
+1063,sunny claws,garras solares,17572,0,-,-,Equip
+1064,sunny shield,escudo solar,17572,0,-,-,Equip
+1065,sunny armor,armadura solar,17572,0,-,-,Equip
+1066,indigenous claws,garras indígenas,18725,0,-,-,Equip
+1067,indigenous shield,escudo indígena,18725,0,-,-,Equip
+1068,indigenous armor,armadura indígena,18725,0,-,-,Equip
+1069,underwater claws,garras subaquáticas,19898,0,-,-,Equip
+1070,underwater shield,escudo subaquático,19898,0,-,-,Equip
+1071,underwater armor,armadura subaquática,19898,0,-,-,Equip
+1072,blast claws,garras da rajada,21091,0,-,-,Equip
+1073,blast shield,escudo da rajada,21091,0,-,-,Equip
+1074,blast armor,armadura da rajada,21091,0,-,-,Equip
+1075,claws of determination,garras da determinação,22304,0,-,-,Equip
+1076,shield of determination,escudo da determinação,22304,0,-,-,Equip
+1077,armor of determination,armadura da determinação,22304,0,-,-,Equip
+1078,earthquake claws,garras do terremoto,23536,0,-,-,Equip
+1079,earthquake shield,escudo do terremoto,23536,0,-,-,Equip
+1080,earthquake armor,armadura do terremoto,23536,0,-,-,Equip
+1081,eruption claws,garras da erupção,24787,0,-,-,Equip
+1082,eruption shield,escudo da erupção,24787,0,-,-,Equip
+1083,eruption armor,armadura da erupção,24787,0,-,-,Equip
+1084,nuclear claws,garras nucleares,26057,0,-,-,Equip
+1085,nuclear shield,escudo nuclear,26057,0,-,-,Equip
+1086,nuclear armor,armadura nuclear,26057,0,-,-,Equip
+1087,dragon claws,garras do dragão,27344,0,-,-,Equip
+1088,dragon shield,escudo do dragão,27344,0,-,-,Equip
+1089,dragon armor,armadura do dragão,27344,0,-,-,Equip
+1090,popsicle claws,garras de picolé,28648,0,-,-,Equip
+1091,popsicle shield,escudo de picolé,28648,0,-,-,Equip
+1092,popsicle armor,armadura de picolé,28648,0,-,-,Equip
+1093,polar claws,garras polares,29970,0,-,-,Equip
+1094,polar shield,escudo polar,29970,0,-,-,Equip
+1095,polar armor,armadura polar,29970,0,-,-,Equip
+1096,aurora claws,garras da aurora,31309,0,-,-,Equip
+1097,aurora shield,escudo da aurora,31309,0,-,-,Equip
+1098,aurora armor,armadura da aurora,31309,0,-,-,Equip
+1099,adventure set,set da aventura,115272,0,-,-,Equip
+1100,wood dagger,faca de madeira,20,10,-,-,Equip
+1101,wood shield,escudo de madeira,20,10,-,-,Equip
+1102,wood armor,armadura de madeira,20,10,-,-,Equip
+1103,copper dagger,faca de bronze,290,10,-,-,Equip
+1104,copper shield,escudo de bronze,290,10,-,-,Equip
+1105,copper armor,armadura de bronze,290,10,-,-,Equip
+1106,heavy dagger,faca pesada,681,10,-,-,Equip
+1107,heavy shield,escudo pesado,681,10,-,-,Equip
+1108,heavy armor,armadura pesada,681,10,-,-,Equip
+1109,mountain dagger,faca da montanha,1164,10,-,-,Equip
+1110,mountain shield,escudo da montanha,1164,10,-,-,Equip
+1111,mountain armor,armadura da montanha,1164,10,-,-,Equip
+1112,assassin's dagger,faca do assassino,1716,10,-,-,Equip
+1113,assassin's shield,escudo do assassino,1716,10,-,-,Equip
+1114,assassin's armor,armadura do assassino,1716,10,-,-,Equip
+1115,phenomenal dagger,faca fenomenal,2326,10,-,-,Equip
+1116,phenomenal shield,escudo fenomenal,2326,10,-,-,Equip
+1117,phenomenal armor,armadura fenomenal,2326,10,-,-,Equip
+1118,epicenter dagger,faca do epicentro,2988,10,-,-,Equip
+1119,epicenter shield,escudo do epicentro,2988,10,-,-,Equip
+1120,epicenter armor,armadura do epicentro,2988,10,-,-,Equip
+1121,dimensional dagger,faca dimensional,3695,10,-,-,Equip
+1122,dimensional shield,escudo dimensional,3695,10,-,-,Equip
+1123,dimensional armor,armadura dimensional,3695,10,-,-,Equip
+1124,pirate dagger,faca do pirata,4445,10,-,-,Equip
+1125,pirate shield,escudo do pirata,4445,10,-,-,Equip
+1126,pirate armor,armadura do pirata,4445,10,-,-,Equip
+1127,epic dagger,faca épica,5233,10,-,-,Equip
+1128,epic shield,escudo épico,5233,10,-,-,Equip
+1129,epic armor,armadura épica,5233,10,-,-,Equip
+1130,arcane dagger,faca arcana,6056,10,-,-,Equip
+1131,arcane shield,escudo arcano,6056,10,-,-,Equip
+1132,arcane armor,armadura arcana,6056,10,-,-,Equip
+1133,lunar dagger,faca lunar,6913,10,-,-,Equip
+1134,lunar shield,escudo lunar,6913,10,-,-,Equip
+1135,lunar armor,armadura lunar,6913,10,-,-,Equip
+1136,fierce dagger,faca feroz,7802,10,-,-,Equip
+1137,fierce shield,escudo feroz,7802,10,-,-,Equip
+1138,fierce armor,armadura feroz,7802,10,-,-,Equip
+1139,curvy dagger,faca curva,8722,10,-,-,Equip
+1140,curvy shield,escudo curvo,8722,10,-,-,Equip
+1141,curvy armor,armadura curva,8722,10,-,-,Equip
+1142,kinky dagger,faca picante,9670,10,-,-,Equip
+1143,kinky shield,escudo picante,9670,10,-,-,Equip
+1144,kinky armor,armadura picante,9670,10,-,-,Equip
+1145,forest dagger,faca da floresta,10645,10,-,-,Equip
+1146,forest shield,escudo da floresta,10645,10,-,-,Equip
+1147,forest armor,armadura da floresta,10645,10,-,-,Equip
+1148,excavation dagger,faca da escavação,11647,10,-,-,Equip
+1149,excavation shield,escudo da escavação,11647,10,-,-,Equip
+1150,excavation armor,armadura da escavação,11647,10,-,-,Equip
+1151,secular dagger,faca secular,12674,10,-,-,Equip
+1152,secular shield,escudo secular,12674,10,-,-,Equip
+1153,secular armor,armadura secular,12674,10,-,-,Equip
+1154,crystal dagger,faca do cristal,13726,10,-,-,Equip
+1155,crystal shield,escudo do cristal,13726,10,-,-,Equip
+1156,crystal armor,armadura do cristal,13726,10,-,-,Equip
+1157,cave dagger,faca da caverna,14801,10,-,-,Equip
+1158,cave shield,escudo da caverna,14801,10,-,-,Equip
+1159,cave armor,armadura da caverna,14801,10,-,-,Equip
+1160,tropical dagger,faca tropical,15899,10,-,-,Equip
+1161,tropical shield,escudo tropical,15899,10,-,-,Equip
+1162,tropical armor,armadura tropical,15899,10,-,-,Equip
+1163,curly dagger,faca ondulada,17020,10,-,-,Equip
+1164,curly shield,escudo ondulado,17020,10,-,-,Equip
+1165,curly armor,armadura ondulada,17020,10,-,-,Equip
+1166,island dagger,faca da ilha,18162,10,-,-,Equip
+1167,island shield,escudo da ilha,18162,10,-,-,Equip
+1168,island armor,armadura da ilha,18162,10,-,-,Equip
+1169,ocean dagger,faca do oceano,19325,10,-,-,Equip
+1170,ocean shield,escudo do oceano,19325,10,-,-,Equip
+1171,ocean armor,armadura do oceano,19325,10,-,-,Equip
+1172,magma dagger,faca do magma,20508,10,-,-,Equip
+1173,magma shield,escudo do magma,20508,10,-,-,Equip
+1174,magma armor,armadura do magma,20508,10,-,-,Equip
+1175,chocolate dagger,faca de chocolate,21711,10,-,-,Equip
+1176,chocolate shield,escudo de chocolate,21711,10,-,-,Equip
+1177,chocolate armor,armadura de chocolate,21711,10,-,-,Equip
+1178,fenix dagger,faca da fênix,22934,10,-,-,Equip
+1179,fenix shield,escudo da fênix,22934,10,-,-,Equip
+1180,fenix armor,armadura da fênix,22934,10,-,-,Equip
+1181,explosive dagger,faca explosiva,24175,10,-,-,Equip
+1182,explosive shield,escudo explosivo,24175,10,-,-,Equip
+1183,explosive armor,armadura explosiva,24175,10,-,-,Equip
+1184,melting dagger,faca em derretimento,25436,10,-,-,Equip
+1185,melting shield,escudo  em derretimento,25436,10,-,-,Equip
+1186,melting armor,armadura em derretimento,25436,10,-,-,Equip
+1187,volcano dagger,faca do vulcão,26714,10,-,-,Equip
+1188,volcano shield,escudo do vulcão,26714,10,-,-,Equip
+1189,volcano armor,armadura do vulcão,26714,10,-,-,Equip
+1190,icy dagger,faca gelada,28010,10,-,-,Equip
+1191,icy shield,escudo gelado,28010,10,-,-,Equip
+1192,icy armor,armadura gelada,28010,10,-,-,Equip
+1193,winter dagger,faca invernal,29323,10,-,-,Equip
+1194,winter shield,escudo invernal,29323,10,-,-,Equip
+1195,winter armor,armadura invernal,29323,10,-,-,Equip
+1196,snowman dagger,faca do homem das neves,30654,10,-,-,Equip
+1197,snowman shield,escudo do homem das neves,30654,10,-,-,Equip
+1198,snowman armor,armadura do homem das neves,30654,10,-,-,Equip
+1199,snowland set,set da terra das neves,106585,10,-,-,Equip
+1200,toy dagger,faca de brinquedo,45,0,-,-,Equip
+1201,toy shield,escudo de brinquedo,45,0,-,-,Equip
+1202,toy armor,armadura de brinquedo,45,0,-,-,Equip
+1203,handicrafted dagger,faca artesanal,456,0,-,-,Equip
+1204,handicrafted shield,escudo artesanal,456,0,-,-,Equip
+1205,handicrafted armor,armadura artesanal,456,0,-,-,Equip
+1206,dreamer's dagger,faca do sonhador,897,0,-,-,Equip
+1207,dreamer's shield,escudo do sonhador,897,0,-,-,Equip
+1208,dreamer's armor,armadura do sonhador,897,0,-,-,Equip
+1209,light dagger,faca leve,1416,0,-,-,Equip
+1210,light shield,escudo leve,1416,0,-,-,Equip
+1211,light armor,armadura leve,1416,0,-,-,Equip
+1212,courage dagger,faca da coragem,1998,0,-,-,Equip
+1213,courage shield,escudo da coragem,1998,0,-,-,Equip
+1214,courage armor,armadura da coragem,1998,0,-,-,Equip
+1215,partner's dagger,faca do parceiro,2635,0,-,-,Equip
+1216,partner's shield,escudo do parceiro,2635,0,-,-,Equip
+1217,partner's armor,armadura do parceiro,2635,0,-,-,Equip
+1218,sound dagger,faca do som,3320,0,-,-,Equip
+1219,sound shield,escudo do som,3320,0,-,-,Equip
+1220,sound armor,armadura do som,3320,0,-,-,Equip
+1221,wild dagger,faca selvagem,4049,0,-,-,Equip
+1222,wild shield,escudo selvagem,4049,0,-,-,Equip
+1223,wild armor,armadura selvagem,4049,0,-,-,Equip
+1224,love dagger,faca do amor,4818,0,-,-,Equip
+1225,love shield,escudo do amor,4818,0,-,-,Equip
+1226,love armor,armadura do amor,4818,0,-,-,Equip
+1227,ninja dagger,faca do ninja,5624,0,-,-,Equip
+1228,ninja shield,escudo do ninja,5624,0,-,-,Equip
+1229,ninja armor,armadura do ninja,5624,0,-,-,Equip
+1230,replenishing dagger,faca da restauração,6465,0,-,-,Equip
+1231,replenishing shield,escudo da restauração,6465,0,-,-,Equip
+1232,replenishing armor,armadura da restauração,6465,0,-,-,Equip
+1233,energy dagger,faca da energia,7338,0,-,-,Equip
+1234,energy shield,escudo da energia,7338,0,-,-,Equip
+1235,energy armor,armadura da energia,7338,0,-,-,Equip
+1236,spiky dagger,faca espinhosa,8242,0,-,-,Equip
+1237,spiky shield,escudo espinhoso,8242,0,-,-,Equip
+1238,spiky armor,armadura espinhosa,8242,0,-,-,Equip
+1239,swampy dagger,faca pantanosa,9176,0,-,-,Equip
+1240,swampy shield,escudo pantanoso,9176,0,-,-,Equip
+1241,swampy armor,armadura pantanosa,9176,0,-,-,Equip
+1242,misty dagger,faca da névoa,10138,0,-,-,Equip
+1243,misty shield,escudo da névoa,10138,0,-,-,Equip
+1244,misty armor,armadura da névoa,10138,0,-,-,Equip
+1245,glorious dagger,faca gloriosa,11127,0,-,-,Equip
+1246,glorious shield,escudo glorioso,11127,0,-,-,Equip
+1247,glorious armor,armadura gloriosa,11127,0,-,-,Equip
+1248,dark dagger,faca negra,12141,0,-,-,Equip
+1249,dark shield,escudo negro,12141,0,-,-,Equip
+1250,dark armor,armadura negra,12141,0,-,-,Equip
+1251,punk dagger,faca punk,13181,0,-,-,Equip
+1252,punk shield,escudo punk,13181,0,-,-,Equip
+1253,punk armor,armadura punk,13181,0,-,-,Equip
+1254,cracked dagger,faca rachada,14245,0,-,-,Equip
+1255,cracked shield,escudo rachado,14245,0,-,-,Equip
+1256,cracked armor,armadura rachada,14245,0,-,-,Equip
+1257,crusty dagger,faca encrostada,15332,0,-,-,Equip
+1258,crusty shield,escudo encrostado,15332,0,-,-,Equip
+1259,crusty armor,armadura encrostada,15332,0,-,-,Equip
+1260,sandy dagger,faca arenosa,16441,0,-,-,Equip
+1261,sandy shield,escudo arenoso,16441,0,-,-,Equip
+1262,sandy armor,armadura arenosa,16441,0,-,-,Equip
+1263,sunny dagger,faca solar,17572,0,-,-,Equip
+1264,sunny shield,escudo solar,17572,0,-,-,Equip
+1265,sunny armor,armadura solar,17572,0,-,-,Equip
+1266,indigenous dagger,faca indígena,18725,0,-,-,Equip
+1267,indigenous shield,escudo indígena,18725,0,-,-,Equip
+1268,indigenous armor,armadura indígena,18725,0,-,-,Equip
+1269,underwater dagger,faca subaquática,19898,0,-,-,Equip
+1270,underwater shield,escudo subaquático,19898,0,-,-,Equip
+1271,underwater armor,armadura subaquática,19898,0,-,-,Equip
+1272,blast dagger,faca da rajada,21091,0,-,-,Equip
+1273,blast shield,escudo da rajada,21091,0,-,-,Equip
+1274,blast armor,armadura da rajada,21091,0,-,-,Equip
+1275,dagger of determination,faca da determinação,22304,0,-,-,Equip
+1276,shield of determination,escudo da determinação,22304,0,-,-,Equip
+1277,armor of determination,armadura da determinação,22304,0,-,-,Equip
+1278,earthquake dagger,faca do terremoto,23536,0,-,-,Equip
+1279,earthquake shield,escudo do terremoto,23536,0,-,-,Equip
+1280,earthquake armor,armadura do terremoto,23536,0,-,-,Equip
+1281,eruption dagger,faca da erupção,24787,0,-,-,Equip
+1282,eruption shield,escudo da erupção,24787,0,-,-,Equip
+1283,eruption armor,armadura da erupção,24787,0,-,-,Equip
+1284,nuclear dagger,faca nuclear,26057,0,-,-,Equip
+1285,nuclear shield,escudo nuclear,26057,0,-,-,Equip
+1286,nuclear armor,armadura nuclear,26057,0,-,-,Equip
+1287,dragon dagger,faca do dragão,27344,0,-,-,Equip
+1288,dragon shield,escudo do dragão,27344,0,-,-,Equip
+1289,dragon armor,armadura do dragão,27344,0,-,-,Equip
+1290,popsicle dagger,faca de picolé,28648,0,-,-,Equip
+1291,popsicle shield,escudo de picolé,28648,0,-,-,Equip
+1292,popsicle armor,armadura de picolé,28648,0,-,-,Equip
+1293,polar dagger,faca polar,29970,0,-,-,Equip
+1294,polar shield,escudo polar,29970,0,-,-,Equip
+1295,polar armor,armadura polar,29970,0,-,-,Equip
+1296,aurora dagger,faca da aurora,31309,0,-,-,Equip
+1297,aurora shield,escudo da aurora,31309,0,-,-,Equip
+1298,aurora armor,armadura da aurora,31309,0,-,-,Equip
+1299,adventure set,set da aventura,115272,0,-,-,Equip
+1300,fur,pêlo,5,60,-,-,Item
+1301,wings,asas,7,60,-,-,Item
+1302,nut,noz,10,60,-,-,Item
+1303,leather,couro,12,60,-,-,Item
+1304,rock,pedra,15,60,-,-,Item
+1305,cotton,algodão,18,60,-,-,Item
+1306,spores,esporos,5,60,-,-,Item
+1307,slime,gosma,7,60,-,-,Item
+1308,leaf,folha,10,60,-,-,Item
+1309,shell,casca,12,60,-,-,Item
+1310,ambrosia,ambrosia,15,60,-,-,Item
+1311,fern,samambaia,18,60,-,-,Item
+1312,ivy,hedera,20,60,-,-,Item
+1313,maple leaf,folha de maple,5,60,-,-,Item
+1314,tulsi,tulsi,7,60,-,-,Item
+1315,orchid,orquídea,10,60,-,-,Item
+1316,violet,violeta,12,60,-,-,Item
+1317,black haw,espinho preto,15,60,-,-,Item
+1318,dew,orvalho,18,60,-,-,Item
+1319,lilac,lilás,5,60,-,-,Item
+1320,flower,flor,7,60,-,-,Item
+1321,campfire,fogueira,10,60,recupera vida com o tempo,heals life over time,Item
+1322,antidote,antídoto,12,60,para veneno,stops poison,Item
+1323,bandaid,bandaid,15,60,recupera vida,heals life,Item
+1324,megaphone,megafone,18,60,-,-,Item
+1325,worms,minhoca,20,60,aumenta chance de pesca,increases fishing chance,Item
+1326,little bottle,garrafa pequena,5,60,pode ser enchida com água,can be filled with water,Item
+1327,medium bottle,garrafa média,7,60,pode ser enchida com água,can be filled with water,Item
+1328,big bottle,garrafa grande,10,60,pode ser enchida com água,can be filled with water,Item
+1329,little water bottle,garrafa pequena de água,12,60,-,-,Item
+1330,medium water bottle,garrafa média de água,15,60,-,-,Item
+1331,big water bottle,garrafa grande de água,18,60,-,-,Item
+1332,wire,arame,20,60,-,-,Item
+1333,heavy rock,pedra pesada,25,60,-,-,Item
+1334,stiff wood,madeira dura,30,60,-,-,Item
+1335,humus,húmus,35,60,-,-,Item
+1336,shovel,pá,40,60,-,-,Item
+1337,ladder,escada,45,60,permite entrar e sair da caverna,-,Item
+1338,tent,tenda,50,60,-,-,Item
+1339,rope,corda,55,60,permite entrar e sair da caverna (consumível),-,Item
+1340,fishing rod,vara de pescar,60,60,permite pescar,-,Item
+1341,freckly shell,casca sardenta,65,60,-,-,Item
+1342,wallet,carteira,70,60,-,-,Item
+1343,barking animal,animal que late,75,60,-,-,Item
+1344,vine,cipó,80,60,-,-,Item
+1345,insect leg,perna de inseto,85,60,-,-,Item
+1346,branches,galhos,90,60,-,-,Item
+1347,fur ball,bola de pêlos,95,60,-,-,Item
+1348,reflective lens,lentes refletivas,100,60,-,-,Item
+1349,spring,mola,105,60,-,-,Item
+1350,piano key,tecla de piano,110,60,-,-,Item
+1351,furry arm,braço peludo,115,60,-,-,Item
+1352,dry stalk,caulo seco,120,60,-,-,Item
+1353,telescope,telescópio,125,60,-,-,Item
+1354,bat wings,asas de morcego,130,60,-,-,Item
+1355,shiny eyes,olhos brilhantes,135,60,-,-,Item
+1356,small egg,ovo pequeno,140,60,-,-,Item
+1357,edgy egg,ovo pontudo,145,60,-,-,Item
+1358,frenetic spirit,espírito frenético,150,60,-,-,Item
+1359,gold nugget,pepita de ouro,500,10,-,-,Item
+1360,diamond,diamante,5000,1,-,-,Item
+1361,graphene,grafeno,165,60,-,-,Item
+1362,golden string,corda dourada,170,60,-,-,Item
+1363,colorful feather,pena colorida,175,60,-,-,Item
+1364,poisonous spore,esporo venenoso,180,60,causes poison,-,Item
+1365,cutting scale,escama cortante,185,60,causes blood,-,Item
+1366,protective scale,escama protetora,190,60,causes block,-,Item
+1367,stunning planck,tábua atordoante,195,60,causes stun,-,Item
+1368,horn,chifre,200,60,-,-,Item
+1369,silencing zipper,zípper silenciador,205,60,causes silence,-,Item
+1370,gag,mordaça,210,60,causes silence,-,Item
+1371,nailled wood,madeira com pregos,215,60,causes stun,-,Item
+1372,syringe,seringa,220,60,-,-,Item
+1373,poison syringe,seringa envenenada,225,60,causes poison,-,Item
+1374,hallucinogenic mushroom,cogumelo alucinógeno,230,60,causes drunk,-,Item
+1375,sturdy shell,casco robusto,235,60,causes block,-,Item
+1376,empty glass,copo vazio,240,60,Mas sem espaço para especulações filosóficas,-,Item
+1377,sunglasses,óculos de sol,245,60,-,-,Item
+1378,poison glass,copo com veneno,250,60,causes poison,-,Item
+1379,little adrenaline dose,pequena dose de adrenalina,255,60,increases atk speed,-,Item
+1380,energetic stone,pedra energizada,260,60,aumenta chance de refino de atk,-,Item
+1381,viscous fluid,fluido viscoso,265,60,stops blood,-,Item
+1382,sedative,calmante,270,60,stops blood and reduces atk speed,-,Item
+1383,adrenaline syringe,seringa com adrenalina,275,60,increases atk speed,-,Item
+1384,blood thickening,engrossador de sangue,280,60,stops blood,-,Item
+1385,elastic,elástico,285,60,-,-,Item
+1386,binoculars,binóculos,290,60,aumenta dex,increases dex,Item
+1387,high-precision glasses,óculos de alta precisão,295,60,aumenta dex,increases dex,Item
+1388,smoking pipe,cachimbo,300,60,-,-,Item
+1389,magic potion,poção mágica,305,60,aumenta atk mag e def mag,increases magatk and magdef,Item
+1390,sparkling dust,pó cintilante,310,60,aumenta chance de refino de special atk,-,Item
+1391,sparkling snow,neve cintilante,315,60,-,-,Item
+1392,curvy fang,presa curva,320,60,-,-,Item
+1393,sulfer gas,gás de enxofre,325,60,fede,-,Item
+1394,colorful smoke,fumaça colorida,330,60,-,-,Item
+1395,magic orb,orbe mágico,335,60,-,-,Item
+1396,matches,fósforos,340,60,-,-,Item
+1397,igniter,ignidor,345,60,-,-,Item
+1398,celestial wings,asas celestiais,350,60,-,-,Item
+1399,enchanted stick,vareta encantada,355,60,aumenta chance de refino de def,-,Item
+1400,ecliptic manifest,manifesto eclíptico,360,60,aumenta chance de refino de special def,-,Item
+1401,peaceful morning,manhã pacífica,365,60,-,-,Item
+1402,slingshot,estilingue,370,60,-,-,Item
+1403,sticky tongue,língua grudenta,375,60,-,-,Item
+1404,eagle's eyes,olhos de águia,380,60,são os olhos dela, não os seus (não aumenta dex),Item
+1405,beer cup,copo de cerveja,385,60,causes drunk,-,Item
+1406,beer gallon,galão de cerveja,390,60,causes drunk,-,Item
+1407,festive ink,pintura festiva,395,60,-,-,Item
+1408,elven ears,orelhas de elfo,400,60,lendárias e super raras, essas orelhas te deixam élfic@,Item
+1409,tarantula web,teia de tarântula,405,60,diminui agi,reduces agi,Item
+1410,suspicious pills,pílulas suspeitas,410,60,você não tomaria pílulas tão suspeitas (não vai tomar não! U.u),-,Item
+1411,recorded voice,voz gravada,415,60,stops silence,-,Item
+1412,medicine,remédio,420,60,-,-,Item
+1413,dirty mud,lama suja,425,60,e tem lama limpa?,-,Item
+1414,wet cloth,pano molhado,430,60,causes water atk,-,Item
+1415,burning cloth,pano em chamas,435,60,causes fire atk,-,Item
+1416,fast growth seed,semente de crescimento rápido,440,60,causes plant atk,-,Item
+1417,ball of clay,bola de argila,445,60,causes earth atk,-,Item
+1418,vibrant air,ar vibrante,450,60,causes air atk,-,Item
+1419,rubbed rug,pano atritado,455,60,causes thunder atk,-,Item
+1420,luminous glass,vidro luminoso,460,60,causes light atk,-,Item
+1421,somber robe,capa sombria,465,60,causes dark atk,-,Item
+1422,snowball,bola de neve,470,60,causes snow atk,-,Item
+1423,water gun,arma d'água,475,60,causes water atk,-,Item
+1424,burning pan,panela fervente,480,60,causes fire atk,-,Item
+1425,sharp leaf,folha afiada,485,60,causes plant atk,-,Item
+1426,boulder,rochedo,490,60,causes earth atk,-,Item
+1427,pressurized air,ar pressurizado,495,60,causes air atk,-,Item
+1428,electric wire,fio elétrico,500,60,causes thunder atk,-,Item
+1429,flashlight,lanterna,505,60,causes light atk,-,Item
+1430,blindfold,venda,510,60,causes dark atk,-,Item
+1431,snowchunck,punhado de neve,515,60,causes snow atk,-,Item
+1432,water cannon,canhão de água,520,60,causes water atk,-,Item
+1433,incinerator,incinerador,525,60,causes fire atk,-,Item
+1434,beanstalk,pé de feijão,530,60,causes plant atk,-,Item
+1435,mountain,montanha,535,60,causes earth atk,-,Item
+1436,sparky spike,espinho faiscante,540,60,causes air atk,-,Item
+1437,charged cloud,nuvem carregada,545,60,causes thunder atk,-,Item
+1438,spotlight,holofote,550,60,causes light atk,-,Item
+1439,wet plank,tábua molhada,555,60,causes dark atk,-,Item
+1440,avalanche,avalanche,560,60,causes snow atk,-,Item
+1441,cosmic pebble,seixo cósmico,565,60,-,-,Item
+1442,falling star,estrela cadente,570,60,-,-,Item
+1443,underground root,raiz subterrânea,575,60,-,-,Item
+1444,pulsar fragment,fragmento de pulsar,580,60,-,-,Item
+1445,active brain,cérebro ativo,585,60,-,-,Item
+1446,pulsant heart,coração latejante,590,60,-,-,Item
+1447,verdant tail,rabo verdejante,595,60,-,-,Item
+1448,nine tails,nove caudas,600,60,-,-,Item
+1449,animalistic drawing,desenho animalesco,605,60,-,-,Item
+1450,acromic bat,bastão acrômico,610,60,-,-,Item
+1451,untamed virus,vírus indomado,615,60,-,-,Item
+1452,cromatic gel,gel cromático,620,60,-,-,Item
+1453,crayon drawing,desenho de giz de cera,625,60,-,-,Item
+1454,fertile soil,solo fértil,630,60,-,-,Item
+1455,humid soil,solo úmido,635,60,-,-,Item
+1456,moisty root,raiz úmida,640,60,-,-,Item
+1457,frutiferous seed,semente frutífera,645,60,-,-,Item
+1458,bouncy little creature,criaturinha saltitante,650,60,-,-,Item
+1459,ascending rope,corda ascendente,655,60,-,-,Item
+1460,flowey tiara,tiara florida,660,60,-,-,Item
+1461,rocky ring,anel rochoso,665,60,-,-,Item
+1462,rugged xylem,xilema rugoso,670,60,-,-,Item
+1463,scratchy skin,pele áspera,675,60,-,-,Item
+1464,piece of cloud,pedaço de nuvem,680,60,-,-,Item
+1465,vibrant string,corda vibrante,685,60,-,-,Item
+1466,ressonant rock,rocha ressonante,690,60,-,-,Item
+1467,stalactite,estalactite,695,60,-,-,Item
+1468,stalagmite,estalagmite,700,60,-,-,Item
+1469,climbing hook,gancho trepador,705,60,-,-,Item
+1470,subrock,rocha subterrânea,710,60,-,-,Item
+1471,discovered relic,relíquia descoberta,715,60,-,-,Item
+1472,fossil,fóssil,720,60,-,-,Item
+1473,broken bone,osso quebrado,725,60,-,-,Item
+1474,slippery lime,limo escorregadio,730,60,-,-,Item
+1475,shiny mineral,mineral brilhante,735,60,-,-,Item
+1476,crystaline water,água cristalina,740,60,-,-,Item
+1477,expedition bag,mochila de expedição,745,60,-,-,Item
+1478,bioluminescent jelly,gosma bioluminescente,750,60,-,-,Item
+1479,crystallic formation,formação cristalina,755,60,-,-,Item
+1480,moist walls,paredes úmidas,760,60,-,-,Item
+1481,soft tissue,tecido mole,765,60,-,-,Item
+1482,unused eyes,olhos não-usados,770,60,-,-,Item
+1483,subcutaneous verm,larva subcutânea,775,60,-,-,Item
+1484,obnoxious arm,braço obnóxio,780,60,-,-,Item
+1485,articulate mouth,boca articulada,785,60,-,-,Item
+1486,steep cliff,falésia íngreme,790,60,-,-,Item
+1487,arqueological drawing,desenho arqueológico,795,60,-,-,Item
+1488,overdosed fluid,fluido superdosado,800,60,-,-,Item
+1489,sticky mucus,catarro grudento,805,60,-,-,Item
+1490,sparkling wings,asas cintilantes,810,60,-,-,Item
+1491,underground rock,rocha subterrânea,815,60,-,-,Item
+1492,subsolid formation,formação subsólida,820,60,-,-,Item
+1493,brilliant dust,pó brilhante,825,60,-,-,Item
+1494,divine shiny eyes,olhos brilhantes divinos,830,60,-,-,Item
+1495,crispy hair,cabelo crocante,835,60,-,-,Item
+1496,capilar block,bloco capilar,840,60,-,-,Item
+1497,clinchy toes,pés rebitados,845,60,-,-,Item
+1498,howling paw,pata urrante,850,60,-,-,Item
+1499,strafing law,lei metralhante,855,60,-,-,Item
+1500,corona bacteria,bactéria corona,860,60,-,-,Item
+1501,rotational helix,hélice rotacional,865,60,-,-,Item
+1502,vortexy nuclei,núcleo vórtico,870,60,-,-,Item
+1503,dug relic,relíquia escavada,875,60,-,-,Item
+1504,exotic moss,musgo exótico,880,60,-,-,Item
+1505,ground substrate,substrato do solo,885,60,-,-,Item
+1506,biologic substance,substância biológica,890,60,-,-,Item
+1507,putrefied smell,cheio putrefado,895,60,-,-,Item
+1508,unique flower,flor única,900,60,-,-,Item
+1509,twisted body part,parte do corpo retorcida,905,60,-,-,Item
+1510,excavation flashlight,lanterna de escavação,910,60,-,-,Item
+1511,warm waxed candle,vela parafinada morna,915,60,-,-,Item
+1512,melted candle,vela derretida,920,60,-,-,Item
+1513,intrinsic organism,organismo intrínseco,925,60,-,-,Item
+1514,encrypted message,mensagem criptografada,930,60,-,-,Item
+1515,petrified eye,olho petrificado,935,60,-,-,Item
+1516,carismatic turbant,turbante carismático,940,60,-,-,Item
+1517,intricate pattern,padrão intrincado,945,60,-,-,Item
+1518,medieval hat,chapéu medieval,950,60,-,-,Item
+1519,polygamous elder,ancião poligâmico,955,60,-,-,Item
+1520,crooked tool,ferramenta torta,960,60,-,-,Item
+1521,secret box,caixa secreta,965,60,-,-,Item
+1522,compact wood piece,peça de madeira compacta,970,60,-,-,Item
+1523,sedimented rock,rocha sedimentada,975,60,-,-,Item
+1524,layered soil,solo em camadas,980,60,-,-,Item
+1525,ornate orb,orbe ornamentado,985,60,-,-,Item
+1526,crab leg,pata de carangueijo,990,60,-,-,Item
+1527,shuriken,shuriken,995,60,-,-,Item
+1528,coconut shell,casca de côco,1000,60,-,-,Item
+1529,knee pad,joelheira,1005,60,-,-,Item
+1530,granular sand,areia grossa,1010,60,-,-,Item
+1531,pointy beak,bico pontiagudo,1015,60,-,-,Item
+1532,palm leaf,folha de palha,1020,60,-,-,Item
+1533,palm shell,casca de palma,1025,60,-,-,Item
+1534,native skirt,saia nativa,1030,60,-,-,Item
+1535,flowery collar,colar florido,1035,60,-,-,Item
+1536,painted surfboard,prancha pintada,1040,60,-,-,Item
+1537,waxed board,tábua parafinada,1045,60,-,-,Item
+1538,fanatic flag,bandeira fanática,1050,60,-,-,Item
+1539,orgastic dove,pombo orgástico,1055,60,-,-,Item
+1540,ritualistic timpano,tímpano ritualístico,1060,60,-,-,Item
+1541,aerodynamic disk,disco aerodinâmico,1065,60,-,-,Item
+1542,wavy shell,concha ondulada,1070,60,-,-,Item
+1543,saline towel,toalha salina,1075,60,-,-,Item
+1544,freckled floater,flutuante com sardas,1080,60,-,-,Item
+1545,water bucket,balde d'água,1085,60,-,-,Item
+1546,contemporaneous costume,fantasia contemporânea,1090,60,-,-,Item
+1547,swift pup,filhote veloz,1095,60,-,-,Item
+1548,molded clay,argila moldada,1100,60,-,-,Item
+1549,sand castle,castelo de areia,1105,60,-,-,Item
+1550,swollen jellyfish,caravela inchada,1110,60,-,-,Item
+1551,beachy music,música praieira,1115,60,-,-,Item
+1552,airy shuttlecock,peteca aerada,1120,60,-,-,Item
+1553,fan,leque,1125,60,-,-,Item
+1554,salt water,água salgada,1130,60,-,-,Item
+1555,sun hat,boné,1135,60,-,-,Item
+1556,sticky tentacle,tentáculo grudento,1140,60,-,-,Item
+1557,electric tail,cauda elétrica,1145,60,-,-,Item
+1558,marine wing,asa marinha,1150,60,-,-,Item
+1559,adapted bone arch,arcada óssea adaptada,1155,60,-,-,Item
+1560,exotic feeler,antena exótica,1160,60,-,-,Item
+1561,creepy mouth,boca assustadora,1165,60,-,-,Item
+1562,shapeless form,forma sem formato,1170,60,-,-,Item
+1563,synergic vortex,vórtex sinérgico,1175,60,-,-,Item
+1564,fluorescent liquid,líquido florescente,1180,60,-,-,Item
+1565,psychological mind,mente psicológica,1185,60,-,-,Item
+1566,emotive soul,alma emocionada,1190,60,-,-,Item
+1567,incisive tooth,dente incisivo,1195,60,-,-,Item
+1568,scaling skin,pele escamada,1200,60,-,-,Item
+1569,vigorous heart,coração vigoroso,1205,60,-,-,Item
+1570,topping move,movimento avantajado,1210,60,-,-,Item
+1571,tactile skin,pele táctil,1215,60,-,-,Item
+1572,hard teeth,dentes duros,1220,60,-,-,Item
+1573,luminous veil,véu luminoso,1225,60,-,-,Item
+1574,inhumane sound,som inumano,1230,60,-,-,Item
+1575,internal fluid,fluido interno,1235,60,-,-,Item
+1576,refined pearl,pérola refinada,1240,60,-,-,Item
+1577,overround roll,rolo superredondo,1245,60,-,-,Item
+1578,scarlet pebble,seixo escarlate,1250,60,-,-,Item
+1579,static energy,energia estática,1255,60,-,-,Item
+1580,ecstatic ring,anel da êxtase,1260,60,-,-,Item
+1581,inocular glasses,óculos inoculares,1265,60,-,-,Item
+1582,relucent shape,forma reluzente,1270,60,-,-,Item
+1583,tight handcuffs,algemas apertadas,1275,60,-,-,Item
+1584,gradient piercing,piercing gradiente,1280,60,-,-,Item
+1585,bearded octahedron,octaedro barbudo,1285,60,-,-,Item
+1586,enamelled nails,unhas esmaltadas,1290,60,-,-,Item
+1587,electrode,eletroldo,1295,60,-,-,Item
+1588,lard,banha,1300,60,-,-,Item
+1589,magnetic lens,lentes magnéticas,1305,60,-,-,Item
+1590,dyed queratin,queratina tingida,1310,60,-,-,Item
+1591,muscle relaxant,relaxante muscular,1315,60,-,-,Item
+1592,shiny egg,ovo brilhante,1320,60,-,-,Item
+1593,magma,magma,1325,60,-,-,Item
+1594,ash,cinzas,1330,60,-,-,Item
+1595,igneous rock,rocha ígnea,1335,60,-,-,Item
+1596,incandescent fire,fogo incandescente,1340,60,-,-,Item
+1597,serpent tail,cauda de serpente,1345,60,-,-,Item
+1598,fantastic beast,criatura fantástica,1350,60,-,-,Item
+1599,platinum,platina,1355,60,-,-,Item
+1600,treacherous scythe,foice ameaçadora,1360,60,-,-,Item
+1601,core,núcleo,1365,60,-,-,Item
+1602,digital screen,tela digital,1370,60,-,-,Item
+1603,romantic ship,nave romântica,1375,60,-,-,Item
+1604,improbabilistic motor,motor improbabilístico,1380,60,-,-,Item
+1605,overpriced headphone,fone de ouvido superfaturado,1385,60,-,-,Item
+1606,rainbow umbrella,guarda-chuva arco-íris,1390,60,-,-,Item
+1607,naughty bat,morcego sapeca,1395,60,-,-,Item
+1608,intelligent lifeform,forma de vida inteligente,1400,60,-,-,Item
+1609,pulsant vein,veia latejante,1405,60,-,-,Item
+1610,throbbing member,membro pulsante,1410,60,-,-,Item
+1611,flexible spiral,espiral flexível,1415,60,-,-,Item
+1612,loaded cannon,canhão carregado,1420,60,-,-,Item
+1613,alien greeting,saudação alienígena,1425,60,-,-,Item
+1614,tale of the underworld,conto do submundo,1430,60,-,-,Item
+1615,hipnotic eye,olho hipnótico,1435,60,-,-,Item
+1616,archaic skeleton,esqueleto arcaico,1440,60,-,-,Item
+1617,tortuous wings,asas tortuosas,1445,60,-,-,Item
+1618,enthusiastic collar,colar entusiástico,1450,60,-,-,Item
+1619,galactic plum,pluma galática,1455,60,-,-,Item
+1620,wise corner,canto sábio,1460,60,-,-,Item
+1621,lunatic spell,encanto lunático,1465,60,-,-,Item
+1622,wicked bat,bastão encantado,1470,60,-,-,Item
+1623,ignitive totem,totem ignitivo,1475,60,-,-,Item
+1624,trillion tiny balls,tilhão de bolinhas,1480,60,-,-,Item
+1625,improbable metal,metal improvável,1485,60,-,-,Item
+1626,windy flute,flauta da ventania,1490,60,-,-,Item
+1627,dimensional hole,buraco dimensional,1495,60,-,-,Item
+1628,artistic disk,disco artístico,1500,60,-,-,Item
+1629,stealthy smile,sorriso furtivo,1505,60,-,-,Item
+1630,celestial paper,papel celestial,1510,60,-,-,Item
+1631,pressurized gas,gás pressurizado,1515,60,-,-,Item
+1632,harmonic melody,melodia harmônica,1520,60,-,-,Item
+1633,spicy seasoning,tempero apimentado,1525,60,-,-,Item
+1634,draconic tail,cauda dracônica,1530,60,-,-,Item
+1635,power gear,engrenagem poderosa,1535,60,-,-,Item
+1636,dusty tongue,língua empoeirada,1540,60,-,-,Item
+1637,burried scroll,pergaminho enterrado,1545,60,-,-,Item
+1638,restored vase,vaso restaurado,1550,60,-,-,Item
+1639,blackbody,corpo negro,1555,60,-,-,Item
+1640,sunny raindrop,gota de chuva com sol,1560,60,-,-,Item
+1641,insect body,corpo de inseto,1565,60,-,-,Item
+1642,transparent veil,véu transparente,1570,60,-,-,Item
+1643,volcanic energy,energia vulcânica,1575,60,-,-,Item
+1644,grumpy robot,robô rabugento,1580,60,-,-,Item
+1645,immaterial orb,orbe imaterial,1585,60,-,-,Item
+1646,translucid glass,vidro translúcido,1590,60,-,-,Item
+1647,capture net,rede de captura,1595,60,-,-,Item
+1648,scratchy cloth,tecido bom de arranhar,1600,60,-,-,Item
+1649,burning forehead,testa em chamas,1605,60,-,-,Item
+1650,tensioned tendon,tendão tensionado,1610,60,-,-,Item
+1651,cloud adhesive,adesivo de nuvem,1615,60,-,-,Item
+1652,sensitive nerve,nervo sensível,1620,60,-,-,Item
+1653,gyroscope,giroscópio,1625,60,-,-,Item
+1654,spinning fidget,inquietação giratória,1630,60,-,-,Item
+1655,ill canine,canino doentio,1635,60,-,-,Item
+1656,hot muscle,músculo quente,1640,60,-,-,Item
+1657,sphere of snow,esfera de neve,1645,60,-,-,Item
+1658,froggy eye,olho de sapo,1650,60,-,-,Item
+1659,moulded blade,lâmina moldada,1655,60,-,-,Item
+1660,hopeful hand,mão esperançosa,1660,60,-,-,Item
+1661,twisted pen,caneta entortada,1665,60,-,-,Item
+1662,misty sword,espada nebulosa,1670,60,-,-,Item
+1663,cloudy puppet,marionete nublada,1675,60,-,-,Item
+1664,jiggly butt,bumbum dançante,1680,60,-,-,Item
+1665,furry tail,cauda peluda,1685,60,-,-,Item
+1666,airy helix,hélice aerada,1690,60,-,-,Item
+1667,spiral bracelet,bracelete espiral,1695,60,-,-,Item
+1668,fractal flower,flor em fractal,1700,60,-,-,Item
+1669,snowflake,floco de neve,1705,60,-,-,Item
+1670,ice cube,cubo de gelo,1710,60,-,-,Item
+1671,frozen cookies,biscoitos congelados,1715,60,-,-,Item
+1672,white fur,pêlo branco,1720,60,-,-,Item
+1673,glacial spear,lança glacial,1725,60,-,-,Item
+1674,tyrande's horn,berrante de tyrande,1730,60,-,-,Item
+1675,baked cookies,biscoitos assados,1735,60,-,-,Item
+1676,cozy scarf,cachecol aconchegante,1740,60,-,-,Item
+1677,large facewarmer,grande aquecedor de rosto,1745,60,-,-,Item
+1678,viking hat,chapéu viking,1750,60,-,-,Item
+1679,nightfall window,janela da queda da noite,1755,60,-,-,Item
+1680,celestial companion,companhia celestial,1760,60,-,-,Item
+1681,snowwhite gloves,luvas brancas de neve,1765,60,-,-,Item
+1682,starry night,noite estrelada,1770,60,-,-,Item
+1683,thermal isolating coat,casaco de isolamento térmico,1775,60,-,-,Item
+1684,big foot,grande pé,1780,60,-,-,Item
+1685,exploration flag,bandeira de exploração,1785,60,-,-,Item
+1686,nightlight vision,visão da luz da noite,1790,60,-,-,Item
+1687,snowman head,cabeça do homem das neves,1795,60,-,-,Item
+1688,frosted skin,pele congelada,1800,60,-,-,Item
+1689,mark of the adventure,marca da aventura,1805,60,-,-,Item
+1690,neutral sphere,esfera neutra,0,60,-,-,Item
+1691,sphere of water,esfera de água,0,60,-,-,Item
+1692,sphere of fire,esfera de fogo,0,60,-,-,Item
+1693,sphere of plant,esfera de planta,0,60,-,-,Item
+1694,sphere of earth,esfera de terra,0,60,-,-,Item
+1695,sphere of air,esfera de ar,0,60,-,-,Item
+1696,sphere of thunder,esfera de trovão,0,60,-,-,Item
+1697,sphere of light,esfera de luz,0,60,-,-,Item
+1698,sphere of dark,esfera negra,0,60,-,-,Item
+1699,sphere of snow,esfera de neve,0,60,-,-,Item
+1700,ferky,ferque,4,30,-,-,Fab
+1701,sewing thread,linha de costura,8,30,-,-,Fab
+1702,sintetic leather,couro sintético,12,30,-,-,Fab
+1703,iron ore,minério de ferro,16,30,-,-,Fab
+1704,igniting rocks,rochas ignidoras,20,30,-,-,Fab
+1705,cotton,algodão,24,30,-,-,Fab
+1706,gold ore,minério de ouro,28,30,-,-,Fab
+1707,carbon,carbono,32,30,-,-,Fab
+1708,gold,ouro,36,30,-,-,Fab
+1709,iron,ferro,40,30,-,-,Fab
+1710,mountain feather,pena da montanha,44,30,-,-,Fab
+1711,meteorite,meteorito,48,30,-,-,Fab
+1712,needle,agulha,52,30,-,-,Fab
+1713,coal,carvão,56,30,-,-,Fab
+1714,steel,aço,60,30,-,-,Fab
+1715,yeast,fermento,64,30,-,-,Fab
+1716,oyster shell,casca de ostra,68,30,-,-,Fab
+1717,titanium,titânio,72,30,-,-,Fab
+1718,bamboo,bambu,76,30,-,-,Fab
+1719,cloth,pano,80,30,-,-,Fab
+1720,stake,estaca,84,30,-,-,Fab
+1721,alcohol,álcool,88,30,-,-,Fab
+1722,vines,videiras,92,30,-,-,Fab
+1723,lego,lego,100,30,-,-,Fab
+1724,plastic piece,peça plástica,100,30,-,-,Fab
+1725,clay,argila,120,30,-,-,Fab
+1726,protective gel,gel protetivo,120,30,-,-,Fab
+1727,dreamcatcher,filtro dos sonhos,140,30,-,-,Fab
+1728,purifying amulet,amuleto purificador,140,30,-,-,Fab
+1729,aluminum,alumínio,160,30,-,-,Fab
+1730,floating cotton,algodão flutuante,160,30,-,-,Fab
+1731,fang,presa,180,30,-,-,Fab
+1732,rugged wood,madeira enrugada,180,30,-,-,Fab
+1733,tie,laço,200,30,-,-,Fab
+1734,shared tie,laço compartilhado,200,30,-,-,Fab
+1735,musical note,nota musical,220,30,-,-,Fab
+1736,amplifying extension,extensão amplificadora,220,30,-,-,Fab
+1737,scar,cicatriz,240,30,-,-,Fab
+1738,beast scales,escamas de besta,240,30,-,-,Fab
+1739,bond,conexão,260,30,-,-,Fab
+1740,loving barrier,barreira de amor,260,30,-,-,Fab
+1741,kunai,kunai,280,30,-,-,Fab
+1742,shinobe protection,proteção shinobi,280,30,-,-,Fab
+1743,reserve tank,tanque reserva,300,30,-,-,Fab
+1744,self-filling energy,energia auto-abastecedora,300,30,-,-,Fab
+1745,plasma ball,bola de plasma,320,30,-,-,Fab
+1746,fluent energy,energia fluente,320,30,-,-,Fab
+1747,spike,espinho,340,30,-,-,Fab
+1748,calcic formation,formação cálcica,340,30,-,-,Fab
+1749,organic mass,massa orgânica,360,30,-,-,Fab
+1750,gooey mucus,muco gosmento,360,30,-,-,Fab
+1751,moss,musgo,380,30,-,-,Fab
+1752,thick mist,névoa densa,380,30,-,-,Fab
+1753,glory,glória,400,30,-,-,Fab
+1754,topping disk,disco avantajado,400,30,-,-,Fab
+1755,maleficent influence,influência maléfica,420,30,-,-,Fab
+1756,somber tentacles,tentáculos sombrios,420,30,-,-,Fab
+1757,spiked fur,pelo espinhoso,440,30,-,-,Fab
+1758,rebel attitude,atitude rebelde,440,30,-,-,Fab
+1759,sword fragment,fragmento de espada,460,30,-,-,Fab
+1760,piece of shield,peça de escudo,460,30,-,-,Fab
+1761,crost,crosta,480,30,-,-,Fab
+1762,calcified shell,casca calcificada,480,30,-,-,Fab
+1763,beach sand,areia de praia,500,30,-,-,Fab
+1764,wet grains,grãos úmidos,500,30,-,-,Fab
+1765,shiny rock,pedra brilhante,520,30,-,-,Fab
+1766,incandescent beam,feixe incandescente,520,30,-,-,Fab
+1767,totem,totem,540,30,-,-,Fab
+1768,leaf crown,coroa de folhas,540,30,-,-,Fab
+1769,wavy power,poder ondulado,560,30,-,-,Fab
+1770,water bubble,bolha de água,560,30,-,-,Fab
+1771,circular flame,chama circular,580,30,-,-,Fab
+1772,conjured explosion,explosão conjurada,580,30,-,-,Fab
+1773,inner flame,chama interna,600,30,-,-,Fab
+1774,continuous step,passo contínuo,600,30,-,-,Fab
+1775,tectonic plate,placa tectônica,620,30,-,-,Fab
+1776,earthly blast,choque terrestre,620,30,-,-,Fab
+1777,pressurized lava,lava pressurizada,640,30,-,-,Fab
+1778,untamed power,poder indomado,640,30,-,-,Fab
+1779,radiactive uranium,urânio radioativo,660,30,-,-,Fab
+1780,strong core,núcleo forte,660,30,-,-,Fab
+1781,dragon eye,olho de dragão,680,30,-,-,Fab
+1782,dragon ear,orelha de dragão,680,30,-,-,Fab
+1783,dragon skin,pele de dragão,680,30,-,-,Fab
+1784,dragon head,cabeça de dragão,680,30,-,-,Fab
+1785,popsicle,picolé,700,30,-,-,Fab
+1786,frozen balls,bolas congeladas,700,30,-,-,Fab
+1787,polar snow,neve polar,720,30,-,-,Fab
+1788,magnetic pole,pólo magnético,720,30,-,-,Fab
+1789,boreal light,luz boreal,740,30,-,-,Fab
+1790,bright dawn,amanhecer brilhante,740,30,-,-,Fab
+1791,adventurous water,água aventureira,800,30,-,-,Fab
+1792,adventurous fire,fogo aventureiro,800,30,-,-,Fab
+1793,adventurous earth,terra aventureira,800,30,-,-,Fab
+1794,adventurous plant,planta aventureira,800,30,-,-,Fab
+1795,adventurous air,ar aventureiro,800,30,-,-,Fab
+1796,adventurous thunder,trovão aventureiro,800,30,-,-,Fab
+1797,adventurous light,luz aventureira,800,30,-,-,Fab
+1798,adventurous darkness,sombra aventureira,800,30,-,-,Fab
+1799,adventurous snow,neve aventureira,800,30,-,-,Fab
+1800,rigid shell,casca rígida,5,20,-,-,Quest
+1801,cutting edge,beira cortante,10,20,-,-,Quest
+1802,harden wood,madeira dura,15,20,-,-,Quest
+1803,resin,resina,20,20,-,-,Quest
+1804,fixed base,base fixa,25,20,-,-,Quest
+1805,childhood memory,memória de criança,30,20,-,-,Quest
+1806,fighting spirit,espírito de luta,35,20,-,-,Quest
+1807,wild curiosity,curiosidade selvagem,40,20,-,-,Quest
+1808,encouraging boldness,ousadia encorajadora,45,20,-,-,Quest
+1809,playful mind,mente brincalhona,50,20,-,-,Quest
+1810,brave heart,coração valente,55,20,-,-,Quest
+1811,bold voice,voz ousada,60,20,-,-,Quest
+1812,impetuous impulse,impulso impetuoso,65,20,-,-,Quest
+1813,fierce gesture,gesto feroz,70,20,-,-,Quest
+1814,fiery will,vontade ardente,75,20,-,-,Quest
+1815,proof of courage,prova de coragem,0,0,-,-,Quest
+1816,proof of honor,prova de honra,0,0,-,-,Quest
+1817,proof of loyalty,prova de lealdade,0,0,-,-,Quest
+1818,orb of the master lord,orbe do mestre lorde,0,0,-,-,Quest
+1819,proof of worthness,prova de valor,0,0,-,-,Quest
+1820,proof of benignity,prova de bondade,0,0,-,-,Quest
+1821,orb of the master shielder,orbe do mestre escudeiro,0,0,-,-,Quest
+1822,proof of magic,prova de mágica,0,0,-,-,Quest
+1823,proof of wisdom,prova de sabedoria,0,0,-,-,Quest
+1824,proof of knowledge,prova de conhecimento,0,0,-,-,Quest
+1825,orb of the master archmage,orbe do mestre arquimago,0,0,-,-,Quest
+1826,proof of replenishment,prova de reabastecimento,0,0,-,-,Quest
+1827,proof of purity,prova de pureza,0,0,-,-,Quest
+1828,orb of the master healer,orbe do mestre curandeiro,0,0,-,-,Quest
+1829,proof of determination,prova de determinação,0,0,-,-,Quest
+1830,proof of dexterity,prova de destreza,0,0,-,-,Quest
+1831,proof of energy,prova de energia,0,0,-,-,Quest
+1832,orb of the master ranger,orbe do mestre ranger,0,0,-,-,Quest
+1833,proof of simplicity,prova de simplicidade,0,0,-,-,Quest
+1834,proof of chemistry,prova de química,0,0,-,-,Quest
+1835,orb of the master elementalist,orbe do mestre elementalista,0,0,-,-,Quest
+1836,proof of nature,prova de natureza,0,0,-,-,Quest
+1837,proof of peace,prova de paz,0,0,-,-,Quest
+1838,proof of equilibrum,prova de equilíbrio,0,0,-,-,Quest
+1839,orb of the master king of the forest,orbe do mestre rei da floresta,0,0,-,-,Quest
+1840,proof of wildness,prova de selvageria,0,0,-,-,Quest
+1841,proof of harmony,prova de harmonia,0,0,-,-,Quest
+1842,orb of the master wild,orbe do mestre selvagem,0,0,-,-,Quest
+1843,proof of crime,prova de crime,0,0,-,-,Quest
+1844,proof of money,prova de dinheiro,0,0,-,-,Quest
+1845,proof of ambition,prova de ambição,0,0,-,-,Quest
+1846,orb of the master mercenary,orbe do mestre mercenário,0,0,-,-,Quest
+1847,proof of power,prova de poder,0,0,-,-,Quest
+1848,proof of agility,prova de agilidade,0,0,-,-,Quest
+1849,orb of the master agile,orbe do mestre ágil,0,0,-,-,Quest
+1850,moldable copper,bronze moldável,255,20,-,-,Quest
+1851,manipulative tube,tubo manipulativo,260,20,-,-,Quest
+1852,hittable block,bloco batível,265,20,-,-,Quest
+1853,spiky adornment,adorno espinhoso,270,20,-,-,Quest
+1854,metallic sparkles,faíscas metálicas,275,20,-,-,Quest
+1855,amulet of trust,amuleto de confiança,280,20,-,-,Quest
+1856,friendship link,laço de amizade,285,20,-,-,Quest
+1857,creative bond,ligação criativa,290,20,-,-,Quest
+1858,unbreakable connection,conexão inquebrável,295,20,-,-,Quest
+1859,internal joke,piada interna,300,20,-,-,Quest
+1860,ascending will,vontade ascendente,305,20,-,-,Quest
+1861,climbing equipment,equipamento de escalada,310,20,-,-,Quest
+1862,bulky mass,massa volumosa,315,20,-,-,Quest
+1863,robustness,robustez,320,20,-,-,Quest
+1864,muscular constitution,constituição muscular,325,20,-,-,Quest
+1865,chemical fluid,fluido químico,330,20,-,-,Quest
+1866,magical bubbles,bolhas mágicas,335,20,-,-,Quest
+1867,hipnotic whirl,redemoinho hipnótico,340,20,-,-,Quest
+1868,vivid blood,sangue vívido,345,20,-,-,Quest
+1869,arcane energy,energia arcana,350,20,-,-,Quest
+1870,cloud blade,lâmina da nuvem,355,20,-,-,Quest
+1871,shadowy cap,capa das sombras,360,20,-,-,Quest
+1872,pervasive ornament,ornamento pervasivo,365,20,-,-,Quest
+1873,swift shoes,calçados velozes,370,20,-,-,Quest
+1874,slicing armlet,braçadeira cortante,375,20,-,-,Quest
+1875,duty badge,emblema da função,380,20,-,-,Quest
+1876,job proud,orgulho da profissão,385,20,-,-,Quest
+1877,mastery amulet,amuleto da maestria,390,20,-,-,Quest
+1878,calistic stake,estaca calística,395,20,-,-,Quest
+1879,official emblem,emblema oficial,400,20,-,-,Quest
+1880,flexible wood,madeira flexível,405,20,-,-,Quest
+1881,line,linha,410,20,-,-,Quest
+1882,hook,gancho,415,20,-,-,Quest
+1883,handcatched fish,peixe pego à mão,420,20,-,-,Quest
+1884,swimming feet,pés nadantes,425,20,-,-,Quest
+1885,soundwave,onda sonora,430,20,-,-,Quest
+1886,volant timbre,timbre volante,435,20,-,-,Quest
+1887,vibrating vein,veia vibrante,440,20,-,-,Quest
+1888,ressonant metal,metal ressonante,445,20,-,-,Quest
+1889,rock 'n roll spirit,espírito rock 'n roll,450,20,-,-,Quest
+1890,enchanted rock,rocha encantada,455,20,-,-,Quest
+1891,shiny neon,neon brilhante,460,20,-,-,Quest
+1892,orbital sphere,esfera orbital,465,20,-,-,Quest
+1893,precious material,material precioso,470,20,-,-,Quest
+1894,forging rock,rocha forjadora,475,20,-,-,Quest
+1895,himonous belt,cinto hediondo,480,20,-,-,Quest
+1896,vampiric hand,mão vampírica,485,20,-,-,Quest
+1897,molecular optics,ótica molecular,490,20,-,-,Quest
+1898,stringent hair,cabelo estringente,495,20,-,-,Quest
+1899,voltaic turbine,turbina voltaica,500,20,-,-,Quest
+1900,spiritual face,face espiritual,505,20,-,-,Quest
+1901,feline paw,pata felina,510,20,-,-,Quest
+1902,breezy air,leve brisa,515,20,-,-,Quest
+1903,pale sheet,folha pálida,520,20,-,-,Quest
+1904,humid cell,celúla úmida,525,20,-,-,Quest
+1905,fulvous curve,curva fulvosa,530,20,-,-,Quest
+1906,demoniac horn,chifre demoníaco,535,20,-,-,Quest
+1907,cancerigeous tile,telha cancerígena,540,20,-,-,Quest
+1908,rubber piece,peça de borracha,545,20,-,-,Quest
+1909,peaceful smile,sorriso pacífico,550,20,-,-,Quest
+1910,piercing cone,cone perfurante,555,20,-,-,Quest
+1911,hardened mineral,mineral endurecido,560,20,-,-,Quest
+1912,crystalized gypsum,gesso cristalizado,565,20,-,-,Quest
+1913,gluey gel,gel colante,570,20,-,-,Quest
+1914,armored base,base de armadura,575,20,-,-,Quest
+1915,native tatoo,tatuagem de nativo,580,20,-,-,Quest
+1916,skirt of leaves,saia de flores,585,20,-,-,Quest
+1917,tribal mask,máscara tribal,590,20,-,-,Quest
+1918,indigenous tools,ferramentas indígena,595,20,-,-,Quest
+1919,survival weapon,arma do sobrevivente,600,20,-,-,Quest
+1920,violent move,movimento violento,605,20,-,-,Quest
+1921,rare petal,pétala rara,610,20,-,-,Quest
+1922,fragant scent,essência fragante,615,20,-,-,Quest
+1923,luscious tail,cauda melada,620,20,-,-,Quest
+1924,delicious brain,cérebro delicioso,625,20,-,-,Quest
+1925,shadow of the ruins,sombra das ruínas,630,20,-,-,Quest
+1926,mouse cheese,queijo do rato,635,20,-,-,Quest
+1927,conveninent lamp,lâmpada conveniente,640,20,-,-,Quest
+1928,perfect snowdog,cachorro de neve perfeito,645,20,-,-,Quest
+1929,worthless garbage,lixo sem valor,650,20,-,-,Quest
+1930,radioactive ray,raio radioativo,655,20,-,-,Quest
+1931,charged nuclei,núcleos carregados,660,20,-,-,Quest
+1932,fused neutron,neutron fundido,665,20,-,-,Quest
+1933,electromagnetic strength,força eletromagnética,670,20,-,-,Quest
+1934,quantic vibration,vibração quântica,675,20,-,-,Quest
+1935,atractive aroma,aroma atrativo,680,20,-,-,Quest
+1936,rodent teeth,dente de roedor,685,20,-,-,Quest
+1937,nuclear liquid,líquido nuclear,690,20,-,-,Quest
+1938,molten rock,rocha derretida,695,20,-,-,Quest
+1939,musical string,corda musical,700,20,-,-,Quest
+1940,old jackknife,canivete velho,705,20,-,-,Quest
+1941,hard wire,arame duro,710,20,-,-,Quest
+1942,long piece of wood,peça longa de madeira,715,20,-,-,Quest
+1943,warm blanket,lençol quentinho,720,20,-,-,Quest
+1944,clown nose,nariz de palhaço,725,20,-,-,Quest
+1945,warrior of the wolves,guerreira dos lobos,730,20,-,-,Quest
+1946,boreal seed,semente boreal,735,20,-,-,Quest
+1947,natural paint,pintura natural,740,20,-,-,Quest
+1948,polar animal,animal polar,745,20,-,-,Quest
+1949,unknown intuition,intuição desconhecida,750,20,-,-,Quest
+1950,motivated semblant,semblante motivado,755,20,-,-,Quest
+1951,constant bravery,bravura constante,760,20,-,-,Quest
+1952,incisive flame,chama incisiva,765,20,-,-,Quest
+1953,apocaliptic spear,lança apocalíptica,770,20,-,-,Quest
+1954,otherworld eye,olho do outro mundo,775,20,-,-,Quest
+1955,ludic puppet,fantoche lúdico,780,20,-,-,Quest
+1956,boar mask,máscara de javali,785,20,-,-,Quest
+1957,fervid hat,chapéu férvido,790,20,-,-,Quest
+1958,timeless enchantment,encanto intemporal,795,20,-,-,Quest
+1959,charming fragance,fragância charmosa,800,20,-,-,Quest
+1960,letal vaccine,vacina letal,805,20,-,-,Quest
+1961,enlighted dream,sonho iluminado,810,20,-,-,Quest
+1962,blessed event,evento abençoado,815,20,-,-,Quest
+1963,leap of faith,salto de fé,820,20,-,-,Quest
+1964,large scroll,pergaminho largo,825,20,-,-,Quest
+1965,writing ink,tinta de escrever,830,20,-,-,Quest
+1966,gargolian wings,asas de gárgula,835,20,-,-,Quest
+1967,vampiric look,olhar vampírico,840,20,-,-,Quest
+1968,jurassic feather,pena jurássica,845,20,-,-,Quest
+1969,teddy bear,ursinho de pelúcia,850,20,-,-,Quest
+1970,contagious rhythm,ritmo contagiante,855,20,-,-,Quest
+1971,iconic adams,adams icônico,860,20,-,-,Quest
+1972,designed bookmark,marcador de livro desenhado,865,20,-,-,Quest
+1973,artistic creation,criação artística,870,20,-,-,Quest
+1974,autonomous hand,mão autônoma,875,20,-,-,Quest
+1975,elixir of life,exilir da vida,880,20,-,-,Quest
+1976,sphere of zygot,esfera de zigoto,885,20,-,-,Quest
+1977,interactive living being,ser-vivo interativo,890,20,-,-,Quest
+1978,ancient gas lamp,lampião antigo,895,20,-,-,Quest
+1979,preserved papyrus,papiro conservado,900,20,-,-,Quest
+1980,thoughtful note,nota pensativa,905,20,-,-,Quest
+1981,calm writer,escritor calmo,910,20,-,-,Quest
+1982,electric beverage,bebida elétrica,915,20,-,-,Quest
+1983,recovered scratches,rabiscos recuperados,920,20,-,-,Quest
+1984,fine sand,areia fina,925,20,-,-,Quest
+1985,chill glue,cola tranquila,930,20,-,-,Quest
+1986,exposed cable,cabo exposto,935,20,-,-,Quest
+1987,alternative fingers,dedos alternativos,940,20,-,-,Quest
+1988,plasticized records,registros plastificados,945,20,-,-,Quest
+1989,vibrant pick,palheta vibrante,950,20,-,-,Quest
+1990,medieval dinosaur,dinossauro medieval,955,20,-,-,Quest
+1991,glitchy software,software bugado,960,20,-,-,Quest
+1992,sweet juice,suco doce,965,20,-,-,Quest
+1993,carbon powder,pó de carbono,970,20,-,-,Quest
+1994,spacial sheet,folha sideral,975,20,-,-,Quest
+1995,appetizing treat,mimo apetitoso,980,20,-,-,Quest
+1996,cozy saddle,sela aconchegante,985,20,-,-,Quest
+1997,dragon's aura,aura do dragão,990,20,-,-,Quest
+1998,relaxed posture,postura relaxada,995,20,-,-,Quest
+1999,frozen map,mapa congelado,1000,20,-,-,Quest

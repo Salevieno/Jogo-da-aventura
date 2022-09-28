@@ -1,0 +1,4 @@
+Paths:
+.\\csv files\\
+.\\images\\
+.\\music\\
