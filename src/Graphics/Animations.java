@@ -176,7 +176,7 @@ public class Animations
 		int TextCat = AllTextCat[10] ;
 		int[] Pos = new int[] {(int) (0.5*ScreenL), (int) (0.25*ScreenH)} ;
 		int[] ValidItemIDs = Utg.ArrayWithValuesGreaterThan(ItemIDs, -1) ;
-		int L = (int) (1.2*Utg.TextL(Uts.GetLongestItemName(), font, DF.getGraphs())), H = (int) (10 + (ValidItemIDs.length + 1)*Utg.TextH(font.getSize())) ;
+		int L = (int) (1.2*Utg.TextL(Items.LongestName, font, DF.getGraphs())), H = (int) (10 + (ValidItemIDs.length + 1)*Utg.TextH(font.getSize())) ;
 		int sy = (int) (1.2*Utg.TextH(font.getSize())) ;
 		int[] WindowPos = new int[] {Pos[0] - L/2, Pos[1] + H/2} ;
 		int[] TextPos = new int[] {WindowPos[0] + L/2, Pos[1] - H/2 + 5 + Utg.TextH(font.getSize())/2} ;

@@ -201,15 +201,7 @@ public class Items
 	}
 
 	public static void InitializeStaticVars(String ImagesPath)
-	{
-		for (int i = 0 ; i <= items.length - 1 ; i += 1)
-		{
-			if (LongestItemName.length() < items[i].getName().length())
-			{
-				LongestItemName = items[i].getName() ;
-			}
-		}
-		
+	{		
 		// Equip images
 		Image Sword = new ImageIcon(ImagesPath + "Eq0_Sword.png").getImage() ;
 		Image Staff = new ImageIcon(ImagesPath + "Eq1_Staff.png").getImage() ;

@@ -21,7 +21,7 @@ import Main.Uts ;
 import Main.Game ;
 import Main.Utg ;
 
-public class Player 
+public class Player extends LiveBeing
 {
 	private String Language ;
 	private String Sex ;
@@ -33,8 +33,6 @@ public class Player
 	private int[] Bag ;
 	private int[] Equips ;		// 0: Weapon, 1: Shield, 2: Armor, 3: Arrow]
 	private int SkillPoints ;
-	private PersonalAttributes PA ;	// Personal attributes
-	private BattleAttributes BA ;	// Battle attributes
 	private String[] Elem ;		// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
 	private float[] ElemMult ;	// 0: Neutral, 1: Water, 2: Fire, 3: Plant, 4: Earth, 5: Air, 6: Thunder, 7: Light, 8: Dark, 9: Snow
 	private float[] Collect ;	// 0: Herb, 1: wood, 2: metal
@@ -83,6 +81,17 @@ public class Player
     public static Image[] AttWindow = new Image[] {new ImageIcon(Game.ImagesPath + "PlayerAttWindow1.png").getImage(), new ImageIcon(Game.ImagesPath + "PlayerAttWindow2.png").getImage(), new ImageIcon(Game.ImagesPath + "PlayerAttWindow3.png").getImage()} ;
     public static Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
 
+
+    public static Image PlayerBack = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
+	public static Image PlayerFront = new ImageIcon(Game.ImagesPath + "PlayerFront.png").getImage() ;
+	public static Image PlayerLeft = new ImageIcon(Game.ImagesPath + "PlayerLeft.png").getImage() ;
+	public static Image PlayerRight = new ImageIcon(Game.ImagesPath + "PlayerRight.png").getImage() ;
+	public static Image PlayerBack2 = new ImageIcon(Game.ImagesPath + "PlayerBack2.png").getImage() ;
+	public static Image PlayerFront2 = new ImageIcon(Game.ImagesPath + "PlayerFront2.png").getImage() ;
+	public static Image PlayerLeft2 = new ImageIcon(Game.ImagesPath + "PlayerLeft2.png").getImage() ;
+	public static Image PlayerRight2 = new ImageIcon(Game.ImagesPath + "PlayerRight2.png").getImage() ;
+	public static Image[] Images = new Image[] {PlayerBack, PlayerFront, PlayerLeft, PlayerRight, PlayerBack2, PlayerFront2, PlayerLeft2, PlayerRight2} ;
+    
     public static Image BookImage = new ImageIcon(Game.ImagesPath + "Book.png").getImage() ;
     public static Image TentImage = new ImageIcon(Game.ImagesPath + "Tent.png").getImage() ;
     public static Image QuestImage = new ImageIcon(Game.ImagesPath + "Quest.png").getImage() ;
@@ -97,6 +106,17 @@ public class Player
 	
 	public Player(String Name, String Language, String Sex, int Job)
 	{
+		/*
+		 * PA
+		 * BA
+		 * Elem
+		 * Actions
+		 * Current action
+		 * count move
+		 * */
+		super(Job, InitializePersonalAttributes(Name, Job), InitializeBattleAttributes(Job)) ;
+		System.out.println("Hi, level " + super.level + ". Nice to meet you") ;
+		System.out.println("Hi, I'm " + super.apelido + " " + Name + ". Nice to meet you") ;
 		this.Language = Language ;
 		this.Sex = Sex ;
 		this.Job = Job ;
@@ -109,47 +129,7 @@ public class Player
 		Color[] ColorPalette = Uts.ReadColorPalette(new ImageIcon(Game.ImagesPath + "ColorPalette.png").getImage(), "Normal") ;
 		color = new Color[] {ColorPalette[12], ColorPalette[13], ColorPalette[14], ColorPalette[14], ColorPalette[15], ColorPalette[7], ColorPalette[16]} ;
 
-		Image PlayerBack = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
-		Image PlayerFront = new ImageIcon(Game.ImagesPath + "PlayerFront.png").getImage() ;
-		Image PlayerLeft = new ImageIcon(Game.ImagesPath + "PlayerLeft.png").getImage() ;
-		Image PlayerRight = new ImageIcon(Game.ImagesPath + "PlayerRight.png").getImage() ;
-		Image PlayerBack2 = new ImageIcon(Game.ImagesPath + "PlayerBack2.png").getImage() ;
-		Image PlayerFront2 = new ImageIcon(Game.ImagesPath + "PlayerFront2.png").getImage() ;
-		Image PlayerLeft2 = new ImageIcon(Game.ImagesPath + "PlayerLeft2.png").getImage() ;
-		Image PlayerRight2 = new ImageIcon(Game.ImagesPath + "PlayerRight2.png").getImage() ;
-		Image[] Images = new Image[] {PlayerBack, PlayerFront, PlayerLeft, PlayerRight, PlayerBack2, PlayerFront2, PlayerLeft2, PlayerRight2} ;
-    	int Level = 1 ;
-		int Continent = 0 ;
-		int Map = Job ;
-		int[] Pos = new int[] {0, 0} ;
-		String dir = Player.MoveKeys[0] ;
-		String Thought = "Exist" ;
-		int[] Size = new int[] {Images[0].getWidth(null), Images[0].getHeight(null)} ;
-		float[] Life = new float[] {Float.parseFloat(Properties[Job][2]), Float.parseFloat(Properties[Job][2])} ;
-		float[] Mp = new float[] {Float.parseFloat(Properties[Job][3]), Float.parseFloat(Properties[Job][3])} ;
-		float Range = Float.parseFloat(Properties[Job][4]) ;
-		int Step = Integer.parseInt(Properties[Job][33]) ;
-		float[] Exp = new float[] {0, 5, Float.parseFloat(Properties[Job][34])} ;
-		float[] Satiation = new float[] {100, 100, Float.parseFloat(Properties[Job][35])} ;
-		float[] Thirst = new float[] {100, 100, Float.parseFloat(Properties[Job][36])} ;
-		PA = new PersonalAttributes(Name, Images, Level, Continent, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst) ;
     	
-		float[] PhyAtk = new float[] {Float.parseFloat(Properties[Job][5]), 0, 0} ;
-		float[] MagAtk = new float[] {Float.parseFloat(Properties[Job][6]), 0, 0} ;
-		float[] PhyDef = new float[] {Float.parseFloat(Properties[Job][7]), 0, 0} ;
-		float[] MagDef = new float[] {Float.parseFloat(Properties[Job][8]), 0, 0} ;
-		float[] Dex = new float[] {Float.parseFloat(Properties[Job][9]), 0, 0} ;	
-		float[] Agi = new float[] {Float.parseFloat(Properties[Job][10]), 0, 0} ;
-		float[] Crit = new float[] {Float.parseFloat(Properties[Job][11]), 0, Float.parseFloat(Properties[Job][12]), 0} ;
-		float[] Stun = new float[] {Float.parseFloat(Properties[Job][13]), 0, Float.parseFloat(Properties[Job][14]), 0, Float.parseFloat(Properties[Job][15])} ;
-		float[] Block = new float[] {Float.parseFloat(Properties[Job][16]), 0, Float.parseFloat(Properties[Job][17]), 0, Float.parseFloat(Properties[Job][18])} ;
-		float[] Blood = new float[] {Float.parseFloat(Properties[Job][19]), 0, Float.parseFloat(Properties[Job][20]), 0, Float.parseFloat(Properties[Job][21]), 0, Float.parseFloat(Properties[Job][22]), 0, Float.parseFloat(Properties[Job][23])} ;
-		float[] Poison = new float[] {Float.parseFloat(Properties[Job][24]), 0, Float.parseFloat(Properties[Job][25]), 0, Float.parseFloat(Properties[Job][26]), 0, Float.parseFloat(Properties[Job][27]), 0, Float.parseFloat(Properties[Job][28])} ;
-		float[] Silence = new float[] {Float.parseFloat(Properties[Job][29]), 0, Float.parseFloat(Properties[Job][30]), 0, Float.parseFloat(Properties[Job][31])} ;
-		int[] Status = new int[9] ;
-		int[] SpecialStatus = new int[5] ;
-		int[][] BattleActions = new int[][] {{0, Integer.parseInt(Properties[Job][41]), 0}} ;
-		BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
 
 		Elem = new String[] {"n", "n", "n", "n", "n"} ;
 		ElemMult = new float[10] ;
@@ -189,14 +169,57 @@ public class Player
 		WindowIsOpen[9] = true ;
 	}
 
+	private static PersonalAttributes InitializePersonalAttributes(String Name, int Job)
+	{
+
+    	int Level = 1 ;
+		int Continent = 0 ;
+		int Map = Job ;
+		int[] Pos = new int[] {0, 0} ;
+		String dir = Player.MoveKeys[0] ;
+		String Thought = "Exist" ;
+		int[] Size = new int[] {Images[0].getWidth(null), Images[0].getHeight(null)} ;
+		float[] Life = new float[] {Float.parseFloat(Properties[Job][2]), Float.parseFloat(Properties[Job][2])} ;
+		float[] Mp = new float[] {Float.parseFloat(Properties[Job][3]), Float.parseFloat(Properties[Job][3])} ;
+		float Range = Float.parseFloat(Properties[Job][4]) ;
+		int Step = Integer.parseInt(Properties[Job][33]) ;
+		float[] Exp = new float[] {0, 5, Float.parseFloat(Properties[Job][34])} ;
+		float[] Satiation = new float[] {100, 100, Float.parseFloat(Properties[Job][35])} ;
+		float[] Thirst = new float[] {100, 100, Float.parseFloat(Properties[Job][36])} ;
+		return new PersonalAttributes(Name, Images, Level, Continent, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst) ;
+	}
+	
+	private static BattleAttributes InitializeBattleAttributes(int Job)
+	{
+
+		float[] PhyAtk = new float[] {Float.parseFloat(Properties[Job][5]), 0, 0} ;
+		float[] MagAtk = new float[] {Float.parseFloat(Properties[Job][6]), 0, 0} ;
+		float[] PhyDef = new float[] {Float.parseFloat(Properties[Job][7]), 0, 0} ;
+		float[] MagDef = new float[] {Float.parseFloat(Properties[Job][8]), 0, 0} ;
+		float[] Dex = new float[] {Float.parseFloat(Properties[Job][9]), 0, 0} ;	
+		float[] Agi = new float[] {Float.parseFloat(Properties[Job][10]), 0, 0} ;
+		float[] Crit = new float[] {Float.parseFloat(Properties[Job][11]), 0, Float.parseFloat(Properties[Job][12]), 0} ;
+		float[] Stun = new float[] {Float.parseFloat(Properties[Job][13]), 0, Float.parseFloat(Properties[Job][14]), 0, Float.parseFloat(Properties[Job][15])} ;
+		float[] Block = new float[] {Float.parseFloat(Properties[Job][16]), 0, Float.parseFloat(Properties[Job][17]), 0, Float.parseFloat(Properties[Job][18])} ;
+		float[] Blood = new float[] {Float.parseFloat(Properties[Job][19]), 0, Float.parseFloat(Properties[Job][20]), 0, Float.parseFloat(Properties[Job][21]), 0, Float.parseFloat(Properties[Job][22]), 0, Float.parseFloat(Properties[Job][23])} ;
+		float[] Poison = new float[] {Float.parseFloat(Properties[Job][24]), 0, Float.parseFloat(Properties[Job][25]), 0, Float.parseFloat(Properties[Job][26]), 0, Float.parseFloat(Properties[Job][27]), 0, Float.parseFloat(Properties[Job][28])} ;
+		float[] Silence = new float[] {Float.parseFloat(Properties[Job][29]), 0, Float.parseFloat(Properties[Job][30]), 0, Float.parseFloat(Properties[Job][31])} ;
+		int[] Status = new int[9] ;
+		int[] SpecialStatus = new int[5] ;
+		int[][] BattleActions = new int[][] {{0, Integer.parseInt(Properties[Job][41]), 0}} ;
+		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
+	}
+	
 	public String getLanguage() {return Language ;}
 	public String getName() {return PA.getName() ;}
 	public String getSex() {return Sex ;}
 	public String getDir() {return PA.getDir() ;}
 	public int[] getSize() {return PA.getSize() ;}
 	public Color[] getColors() {return color ;}
+	public PersonalAttributes getPersonalAtt() {return PA ;}
+	public BattleAttributes getBattleAtt() {return BA ;}
 	public int getJob() {return Job ;}
-	public int getProJob() {return ProJob ;}
+	public int getProJob() {return ProJob ;}	
 	public int getContinent() {return PA.getContinent() ;}
 	public int getMap() {return PA.getMap() ;}
 	public int[] getPos() {return PA.getPos() ;}
@@ -208,8 +231,6 @@ public class Player
 	public float[] getLife() {return PA.getLife() ;}
 	public float[] getMp() {return PA.getMp() ;}
 	public float getRange() {return PA.getRange() ;}
-	public PersonalAttributes getPersonalAtt() {return PA ;}
-	public BattleAttributes getBattleAtt() {return BA ;}
 	public float[] getPhyAtk() {return BA.getPhyAtk() ;}
 	public float[] getMagAtk() {return BA.getMagAtk() ;}
 	public float[] getPhyDef() {return BA.getPhyDef() ;}
@@ -232,9 +253,7 @@ public class Player
 	public float[] getSatiation() {return PA.getSatiation() ;}
 	public float[] getThirst() {return PA.getThirst() ;}
 	public boolean[] getQuestSkills() {return QuestSkills ;}
-	public int[][] getActions() {return Actions ;}
-	public String getCurrentAction() {return CurrentAction ;}
-	public boolean[] getSkillIsActive() {return SpellIsActive ;}
+	public int[][] getActions() {return Actions ;}	
 	public int[][] getSkillCounter() {return SpellCounter ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public float[] getStats() {return Stats ;}
@@ -244,7 +263,6 @@ public class Player
 	public float[][] getChanceIncrease() {return ChanceIncrease ;}
 	public int[] getCreaturesDiscovered() {return CreaturesDiscovered ;}
 	public String getAction() {return action ;}
-	public int getSelectedOption() {return SelectedOption ;}
 	public void setSize(int[] S) {PA.setSize(S) ;}
 	public void setProJob(int PJ) {ProJob = PJ ;}
 	public void setMap(int M, Maps[] maps) {PA.setMap(M) ; PA.setContinent(maps[PA.getMap()].getContinent()) ;}
@@ -410,7 +428,7 @@ public class Player
 			WindowIsOpen[1] = !WindowIsOpen[1] ;
 		}
 		
-		if (Uts.ActionIsSkill(SkillKeys, action) & (!isInBattle() | canAtk()) & Utg.IndexOf(SkillKeys, action) < activeSpells(spell).length)
+		if (Uts.ActionIsSkill(SkillKeys, action) & (!isInBattle() | canAtk(BA)) & Utg.IndexOf(SkillKeys, action) < activeSpells(spell).length)
 		{
 			SupSpell(pet, activeSpells(spell)[Utg.IndexOf(SkillKeys, action)], spell) ;
 		}
@@ -1497,18 +1515,11 @@ public class Player
 	}
 	public boolean canAtk()
 	{
-		if (BA.getBattleActions()[0][2] == 1 & !BA.isStun())
-		{
-			return true ;
-		}
-		else
-		{
-			return false ;
-		}
+		return canAtk(BA) ;
 	}
 	public boolean isDefending()
 	{
-		if (BA.getCurrentAction().equals("D") & !canAtk())
+		if (BA.getCurrentAction().equals("D") & !canAtk(BA))
 		{
 			return true ;
 		}
@@ -1797,7 +1808,7 @@ public class Player
 							}
 							if (-1 < ItemsWithEffectsID)
 							{
-								B.ItemEffectInBattle(BA, pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
+								B.ItemEffectInBattle(getBattleAtt(), pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
 							}
 						}
 					}
@@ -1855,7 +1866,7 @@ public class Player
 						}
 						if (-1 < ItemsWithEffectsID)
 						{
-							B.ItemEffectInBattle(BA, pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
+							B.ItemEffectInBattle(getBattleAtt(), pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
 						}
 						Bag[itemID] += -1 ;
 						BA.getBattleActions()[0][0] = 0 ;
@@ -2344,9 +2355,9 @@ public class Player
 			bw.write("\nPlayer exp: \n" + Arrays.toString(getExp())) ;
 			bw.write("\nPlayer satiation: \n" + Arrays.toString(getSatiation())) ;
 			bw.write("\nPlayer quest skills: \n" + Arrays.toString(QuestSkills)) ;
-			bw.write("\nPlayer status: \n" + Arrays.toString(getBattleAtt().getSpecialStatus())) ; 
+			bw.write("\nPlayer status: \n" + Arrays.toString(BA.getSpecialStatus())) ; 
 			bw.write("\nPlayer actions: \n" + Arrays.deepToString(getActions())) ; 
-			bw.write("\nPlayer battle actions: \n" + Arrays.deepToString(getBattleAtt().getBattleActions())) ; 
+			bw.write("\nPlayer battle actions: \n" + Arrays.deepToString(BA.getBattleActions())) ; 
 			bw.write("\nPlayer status counter: \n" + Arrays.toString(getStatusCounter())) ; 		
 			bw.write("\nPlayer stats: \n" + Arrays.toString(getStats())) ;
 			bw.write("\nPlayer available attribute points: \n" + getAttPoints()) ;
@@ -2409,9 +2420,9 @@ public class Player
 			PA.setExp((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*38]), "String", "float")) ;
 			PA.setSatiation((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*39]), "String", "float")) ;
 			QuestSkills = (boolean[]) Utg.ConvertArray(Utg.toString(ReadFile[2*40]), "String", "boolean") ;
-			getBattleAtt().setSpecialStatus((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*41]), "String", "int")) ;
+			BA.setSpecialStatus((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*41]), "String", "int")) ;
 			Actions = (int[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*42], 3), "String", "int") ;
-			getBattleAtt().setBattleActions((int[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*43], 3), "String", "int")) ;
+			BA.setBattleActions((int[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*43], 3), "String", "int")) ;
 			SpellIsActive = new boolean[getSpell().length] ;
 			SpellCounter = new int[getSpell().length][2] ;
 			StatusCounter = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*44]), "String", "int") ;

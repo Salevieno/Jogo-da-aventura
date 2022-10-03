@@ -491,16 +491,6 @@ public class Uts
 		return false ;
 	}
 	
-	public static void FindMaxItemNameLength(Items[] items)
-	{
-		
-	}
-	
-	public static String GetLongestItemName()
-	{
-		return LongestItemName ;
-	}
-	
 	public static boolean IsInRange(int[] Pos1, int[] Pos2, float Range)
 	{
 		boolean isInRange = false ;

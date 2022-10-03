@@ -222,7 +222,7 @@ public class Game extends JPanel implements ActionListener
     public Player InitializePlayer(String Name, int Job, String GameLanguage, String Sex)
     {
     	Player player = new Player(Name, GameLanguage, Sex, Job) ;
-		
+
 		Arrays.fill(player.getQuest(), -1) ;
 		Arrays.fill(player.getElemMult(), 1) ;
 		Arrays.fill(player.getBattleAtt().getSpecialStatus(), -1) ;
@@ -713,6 +713,16 @@ public class Game extends JPanel implements ActionListener
 		}
 		Items.CalcItemsWithEffects(CSVPath) ;
 		
+
+		Items.LongestName = "";
+		for (int i = 0 ; i <= items.length - 1 ; i += 1)
+		{
+			if (Items.LongestName.length() < items[i].getName().length())
+			{
+				Items.LongestName = items[i].getName() ;
+			}
+		}
+		
 		return items ;
     }
     public Quests[] InitializeQuests(String Language, int PlayerJob)
@@ -799,7 +809,6 @@ public class Game extends JPanel implements ActionListener
 		}
 		quest = InitializeQuests(GameLanguage, player.getJob()) ;
 		plusSignIcon = InitializeIcons(screen.getDimensions()) ;
-		Uts.FindMaxItemNameLength(items) ;
 
 		// Initialize classes
     	Ani = new Animations(screen.getDimensions(), AllTextCat, AllText) ;
@@ -996,7 +1005,6 @@ public class Game extends JPanel implements ActionListener
 				}
 				items = InitializeItems(player.DifficultLevel, GameLanguage) ;
 				quest = InitializeQuests(GameLanguage, player.getJob()) ;
-				Uts.FindMaxItemNameLength(items) ;
 				DF.DrawLoadingGameScreen(player, pet, items, plusSignIcon, screen.getDimensions(), LoadingSelectedSlot, NumberOfUsedSlots, CoinIcon) ;
 			}
 	 	}
