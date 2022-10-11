@@ -46,7 +46,7 @@ public class Battle
 		int NumElem = 10 ;
     	ElemID = new String[NumElem] ;
 		ElemMult = new float[NumElem][NumElem] ;
-		String[][] ElemInput = Utg.ReadTextFile(CSVPath + "Elem.csv", NumElem, NumElem) ;
+		String[][] ElemInput = Utg.ReadTextFile(CSVPath + "Elem.csv", NumElem) ;
 		for (int i = 0 ; i <= NumElem - 1 ; ++i)
 		{
 			ElemID[i] = ElemInput[i][0] ;
@@ -815,7 +815,7 @@ public class Battle
 	}
 	
 	
-	public void StatusAnimations(int AniID, int[] AttackerPos, int[] TargetPos, int[] AttackerSize, int Duration, int[] SpecialStatus, boolean isDefending)
+	/*public void StatusAnimations(int AniID, int[] AttackerPos, int[] TargetPos, int[] AttackerSize, int Duration, int[] SpecialStatus, boolean isDefending)
 	{
 		String RelPos = Uts.RelPos(AttackerPos, TargetPos) ;
 		if (isDefending)	// Status animation
@@ -823,7 +823,7 @@ public class Battle
 			Ani.SetAniVars(AniID, new Object[] {Duration, AttackerPos, AttackerSize, RelPos, BattleIconImages, SpecialStatus, isDefending}) ;
 			Ani.StartAni(AniID) ;
 		}
-	}
+	}*/
 	
 	
 	public void RunBattle(Player player, Pet pet, Creatures creature, Screen screen, Skills[] skills, PetSkills[] petskills, int[] ActivePlayerSkills, Items[] items, Quests[] quest, boolean SoundEffectsAreOn, int[] MousePos, DrawFunctions DF)

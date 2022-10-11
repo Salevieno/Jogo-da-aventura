@@ -79,7 +79,7 @@ public class Quests
 
 	public void Initialize(String CSVPath, String Language, int id, int PlayerJob)
 	{
-		String[][] Input = Utg.ReadTextFile(CSVPath + "Quests.csv", Quests.NumberOfQuests, 32) ;
+		String[][] Input = Utg.ReadTextFile(CSVPath + "Quests.csv", Quests.NumberOfQuests) ;
 		Name = String.valueOf("Quest " + id) ;
 		Type = Input[id][1] ;
 		ReqCreatures = new int[] {Integer.parseInt(Input[id][2]), Integer.parseInt(Input[id][4]), Integer.parseInt(Input[id][6])} ;

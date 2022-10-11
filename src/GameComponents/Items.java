@@ -43,7 +43,9 @@ public class Items
 		this.Description = Description ;
 		this.Type = Type ;
 	}
-
+	
+	
+	
 	public int getID() {return id ;}
 	public String getName() {return Name ;}
 	public Image getImage() {return image ;}
@@ -100,7 +102,7 @@ public class Items
 		ArrowElem = new String[NumberOfItems[5]] ;		// [ID]
 		EquipsBonus = new float[NumberOfItems[6]][32] ;	// [ID, Forge level, Life bonus, Mp bonus, PhyAtk bonus, MagAtk bonus, PhyDef bonus, MagDef bonus, Dex bonus, Agi bonus, Crit bonus, Stun bonus, Block bonus, Blood bonus, Poison bonus]
 		EquipsElem = new String[NumberOfItems[6]] ;
-		String[][] PotionsInput = Utg.ReadTextFile(CSVPath + "Potions.csv", Items.NumberOfItems[0], 3) ;	
+		String[][] PotionsInput = Utg.ReadTextFile(CSVPath + "Potions.csv", Items.NumberOfItems[0]) ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[0] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= 3 - 1 ; ++j)
@@ -108,7 +110,7 @@ public class Items
 				PotionsHealing[i][j] = Float.parseFloat(PotionsInput[i][j]) ;
 			}
 		}
-		String[][] PetItemsInput = Utg.ReadTextFile(CSVPath + "PetItems.csv", Items.NumberOfItems[3], 4) ;	
+		String[][] PetItemsInput = Utg.ReadTextFile(CSVPath + "PetItems.csv", Items.NumberOfItems[3]) ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[3] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= 4 - 1 ; ++j)
@@ -116,7 +118,7 @@ public class Items
 				PetItems[i][j] = Float.parseFloat(PetItemsInput[i][j]) ;
 			}
 		}
-		String[][] FoodInput = Utg.ReadTextFile(CSVPath + "Food.csv", Items.NumberOfItems[4], 4) ;	
+		String[][] FoodInput = Utg.ReadTextFile(CSVPath + "Food.csv", Items.NumberOfItems[4]) ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[4] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= 4 - 1 ; ++j)
@@ -124,7 +126,7 @@ public class Items
 				FoodSatiation[i][j] = Float.parseFloat(FoodInput[i][j]) ;
 			}
 		}
-		String[][] ArrowInput = Utg.ReadTextFile(CSVPath + "ArrowPower.csv", Items.NumberOfItems[5], 3) ;	
+		String[][] ArrowInput = Utg.ReadTextFile(CSVPath + "ArrowPower.csv", Items.NumberOfItems[5]) ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[5] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= ArrowPower[i].length - 1 ; ++j)
@@ -133,7 +135,7 @@ public class Items
 			}
 			ArrowElem[i] = ArrowInput[i][2] ;
 		}
-		String[][] EquipsInput = Utg.ReadTextFile(CSVPath + "Equips.csv", Items.NumberOfItems[6], 31) ;	
+		String[][] EquipsInput = Utg.ReadTextFile(CSVPath + "Equips.csv", Items.NumberOfItems[6]) ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[6] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= 31 - 1 ; ++j)
@@ -150,7 +152,7 @@ public class Items
 		CraftingIngredientAmounts = new int[Items.NumberOfCraftingItems][10] ;
 		CraftingProducts = new int[Items.NumberOfCraftingItems][10] ;
 		CraftingProductAmounts = new int[Items.NumberOfCraftingItems][10] ;
-		String[][] CraftingInput = Utg.ReadTextFile(CSVPath + "Craft.csv", Items.NumberOfCraftingItems, 41) ;	
+		String[][] CraftingInput = Utg.ReadTextFile(CSVPath + "Craft.csv", Items.NumberOfCraftingItems) ;	
 		for (int i = 0 ; i <= Items.NumberOfCraftingItems - 1 ; i += 1)
 		{
 			CraftingNPCIDs[i] = Integer.parseInt(CraftingInput[i][0]) ;
@@ -170,7 +172,7 @@ public class Items
 		ItemsElement = new String[ItemsWithEffects.length] ;
 		ItemsEffects = new float[ItemsWithEffects.length][15][3] ;
 		ItemsBuffs = new float[ItemsWithEffects.length][14][13] ;
-		String[][] ItemsEffectsInput = Utg.ReadTextFile(CSVPath + "ItemsEffects.csv", ItemsWithEffects.length, 92) ;
+		String[][] ItemsEffectsInput = Utg.ReadTextFile(CSVPath + "ItemsEffects.csv", ItemsWithEffects.length) ;
 		for (int i = 0 ; i <= ItemsWithEffects.length - 1 ; ++i)
 		{
 			ItemsWithEffects[i] = Integer.parseInt(ItemsEffectsInput[i][0]) ;

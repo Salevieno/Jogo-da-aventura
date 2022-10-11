@@ -99,7 +99,7 @@ public class Uts
 		return false ;
 	}
 	
-	public static String RelPos(int[] RefPos, int[] Pos2)
+	/*public static String RelPos(int[] RefPos, int[] Pos2)
 	{
 		if (Pos2[0] < RefPos[0])
 		{
@@ -109,7 +109,7 @@ public class Uts
 		{
 			return "Left" ;
 		}
-	}
+	}*/
 	
 	public static int MirrorFromRelPos(String relPos)
 	{
@@ -908,7 +908,7 @@ public class Uts
 		return Increase ;
 	}		
 		
-	public static String IdentifySave(Player player, Pet pet, float[][] EquipsBonus, int NumberOfSlots, Maps[] maps)
+	/*public static String IdentifySave(Player player, Pet pet, float[][] EquipsBonus, int NumberOfSlots, Maps[] maps)
 	{
 		for (int i = 0 ; i <= NumberOfSlots - 1 ; i += 1)
 		{
@@ -988,7 +988,7 @@ public class Uts
 		}
 		
 		return null ;
-	}
+	}*/
 	
 	public static String[] RecordCombo(String[] CurrentCombo, String move, int length)
 	{
@@ -1042,7 +1042,7 @@ public class Uts
 		return false ;
 	}
 
-	public void PrintBook(Items[] items, int[][] CraftingIngredients, int[][] CraftingProducts)
+	/*public void PrintBook(Items[] items, int[][] CraftingIngredients, int[][] CraftingProducts)
 	{
 		for (int i = 0 ; i <= CraftingIngredients.length - 1 ; ++i)
 		{
@@ -1053,7 +1053,7 @@ public class Uts
 					System.out.println(items[CraftingIngredients[i][j]].getID() + " " + items[CraftingIngredients[i][j]].getName()) ;
 				}
 			}
-			/*for (int j = 0 ; j <= CraftingProducts[i].length - 1 ; ++j)
+			for (int j = 0 ; j <= CraftingProducts[i].length - 1 ; ++j)
 			{
 				if (-1 < CraftingProducts[i][j])
 				{
@@ -1061,9 +1061,9 @@ public class Uts
 				}
 			}
 			System.out.println() ;
-			System.out.println() ;*/
+			System.out.println() ;
 		}
-	}	
+	}	*/
 		
 	public void BattleSimulation(Player player, Pet pet, Creatures creature, Screen screen, Skills[] skills, PetSkills[] petskills, int[] ActivePlayerSkills, String[] MoveKeys, Items[] items, Quests[] quest, int NumberOfSimulations, String[] ActionKeys, String[] SkillKeys, Battle B, DrawFunctions DF)
 	{

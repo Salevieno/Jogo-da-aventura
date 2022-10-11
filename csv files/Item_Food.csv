@@ -1,0 +1,61 @@
+ID,Nome,Name,Descrição,Description,Price,Drop chance,Life heal,Mp heal,Satiation heal
+0,frutinha,berry,-,-,5,50,0,0,15
+1,maçã,apple,-,-,10,50,0,0,20
+2,banana,banana,-,-,15,50,0,0,25
+3,morango,strawberry,-,-,20,50,0,0,30
+4,pimenta,chilli peper,-,-,25,50,0,0,35
+5,amora,blackberry,-,-,30,50,0,0,40
+6,peixe pequeno,small fish,-,-,5,50,0,0,45
+7,peixe médio,medium fish,-,-,10,50,0,0,50
+8,peixe grande,big fish,-,-,15,50,0,0,55
+9,framboesa,raspberry,-,-,20,50,0,0,60
+10,limão,lemon,-,-,25,50,0,0,65
+11,laranja,orange,-,-,30,50,0,0,70
+12,tomate,tomato,-,-,5,50,0,0,75
+13,cenoura,carrot,-,-,10,50,0,0,80
+14,mel,honey,-,-,15,50,0,0,85
+15,manga,mango,-,-,20,50,0,0,90
+16,melancia,watermelon,-,-,25,50,0,0,95
+17,uvas,grapes,-,-,30,50,0,0,100
+18,carne crua,raw meat,-,-,5,50,0,0,105
+19,carne tostada,toasted meat,-,-,10,50,0,0,110
+20,leite,milk,-,-,15,50,0,0,115
+21,inseto,insect,-,-,20,50,0,0,120
+22,sanguessuga,leech,-,-,25,50,0,0,125
+23,pão,bread,-,-,30,50,0,0,130
+24,milho,corn,-,-,5,50,0,0,135
+25,pão de batata,potato bread,-,-,10,50,0,0,140
+26,húmus,humus,-,-,15,50,0,0,145
+27,guaraná,guarana,-,-,20,50,0,0,150
+28,açaí,acai,-,-,25,50,0,0,155
+29,castanha,chestnut,-,-,30,50,0,0,160
+30,morcego,bat,-,-,155,50,0,0,165
+31,rato,cave rat,-,-,160,50,0,0,170
+32,aranha,spider,-,-,165,50,0,0,175
+33,cogumelo,mushroom,-,-,170,50,0,0,180
+34,fóssil,fossil,-,-,175,50,0,0,185
+35,limo,lime,-,-,180,50,0,0,190
+36,fóssil torrado,toasted fossil,-,-,185,50,0,0,195
+37,limo quente,heated lime,-,-,190,50,0,0,200
+38,coco,coconut,-,-,195,50,0,0,205
+39,palmito,heart of palm,-,-,200,50,0,0,210
+40,salada de frutas,fruit salad,-,-,205,50,0,0,215
+41,carangueijo,crab,-,-,210,50,0,0,220
+42,coquetel,cocktail,-,-,215,50,0,0,225
+43,sopa,soup,-,-,220,30,0,0,230
+44,bebida quente,hot beverage,-,-,225,30,0,0,235
+45,café,coffee,-,-,230,30,0,0,240
+46,água fervente,boiling water,-,-,235,30,0,0,245
+47,macarrão,noodles,-,-,240,30,0,0,250
+48,yakisoba,yakisoba,-,-,245,30,0,0,255
+49,queijo derretido,melted cheese,-,-,250,30,0,0,260
+50,comida de dragão,dragon's food,-,-,255,30,0,0,265
+51,chocolate quente,hot chocolate,-,-,260,30,0,0,270
+52,pizza,pizza,-,-,265,30,0,0,275
+53,sorvete,ice cream,-,-,270,30,0,0,280
+54,chá gelado,ice tea,-,-,275,30,0,0,285
+55,doces,sweeties,-,-,280,30,0,0,290
+56,leite achocolatado,chocolate milk,-,-,285,30,0,0,295
+57,enguia,eel,-,-,290,30,0,0,300
+58,algas,algae,-,-,295,30,0,0,305
+59,ostra,oyster,-,-,300,30,0,0,310

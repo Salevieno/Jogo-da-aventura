@@ -22,13 +22,10 @@ import java.io.InputStreamReader ;
 import java.math.BigDecimal ;
 import java.math.RoundingMode ;
 import java.nio.charset.StandardCharsets ;
-import java.util.Arrays;
-
 import javax.sound.sampled.AudioInputStream ;
 import javax.sound.sampled.AudioSystem ;
 import javax.sound.sampled.Clip ;
 import javax.swing.JPanel ;
-
 import GameComponents.Creatures ;
 import GameComponents.Icon ;
 import GameComponents.Projectiles ;
@@ -605,13 +602,13 @@ public abstract class Utg
 		return MusicClip ;
 	}
 	
-	public static String[][] ReadTextFile(String FileName, int Nrows, int Ncolumns)
+	public static String[][] ReadTextFile(String FileName, int Nrows)
 	{
 		BufferedReader br = null ;
         String line = "" ;
         String separator = "," ;
         int cont = 0 ;
-        String[][] Input = new String[Nrows][Ncolumns] ;
+        String[][] Input = new String[Nrows][] ;
         try 
         {
             br = new BufferedReader(new FileReader(FileName)) ;

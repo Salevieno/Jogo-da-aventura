@@ -12,7 +12,7 @@ public abstract class BattleActions
 		int NumElem = 10 ;
     	ElemID = new String[NumElem] ;
 		ElemMult = new float[NumElem][NumElem] ;
-		String[][] ElemInput = Utg.ReadTextFile(CSVPath + "Elem.csv", NumElem, NumElem) ;
+		String[][] ElemInput = Utg.ReadTextFile(CSVPath + "Elem.csv", NumElem) ;
 		for (int i = 0 ; i <= NumElem - 1 ; ++i)
 		{
 			ElemID[i] = ElemInput[i][0] ;

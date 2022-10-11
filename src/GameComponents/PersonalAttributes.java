@@ -21,8 +21,12 @@ public class PersonalAttributes
 	private float[] Exp ;		// 0: Current exp, 1: max exp, 2: multiplier
 	private float[] Satiation ;	// 0: Current satiation, 1: max satiation, 2: multiplier
 	private float[] Thirst ;	// 0: Current satiation, 1: max satiation, 2: multiplier
+	protected String[] Elem ;	// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
+	protected int[][] Actions ;	// [Move, Satiation, Mp][Counter, delay, permission]
+	protected String currentAction; 
+	protected int countmove ;
 	
-	public PersonalAttributes(String Name, Image[] image, int Level, int continent, int map, int[] Pos, String dir, String Thought, int[] Size, float[] Life, float[] Mp, float Range, int Step, float[] Exp, float[] Satiation, float[] Thirst)
+	public PersonalAttributes(String Name, Image[] image, int Level, int continent, int map, int[] Pos, String dir, String Thought, int[] Size, float[] Life, float[] Mp, float Range, int Step, float[] Exp, float[] Satiation, float[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
 	{
 		this.Name = Name ;
 		this.image = image ;
@@ -40,6 +44,10 @@ public class PersonalAttributes
 		this.Exp = Exp ;
 		this.Satiation = Satiation ;
 		this.Thirst = Thirst ;
+		this.Elem = Elem ;
+		this.Actions = Actions ;
+		this.currentAction = currentAction ;
+		this.countmove = countmove ;
 	}
 
 	public String getName() {return Name ;}
@@ -58,6 +66,11 @@ public class PersonalAttributes
 	public float[] getExp() {return Exp ;}
 	public float[] getSatiation() {return Satiation ;}
 	public float[] getThirst() {return Thirst ;}
+	public String[] getElem() {return Elem ;}
+	public int[][] getActions() {return Actions ;}
+	public String getCurrentAction() {return currentAction ;}
+	public int getCountmove() {return countmove ;}
+	
 	public void setName(String N) {Name = N ;}
 	public void setimage(Image[] I) {image = I ;}
 	public void setLevel(int L) {Level = L ;}
@@ -169,4 +182,5 @@ public class PersonalAttributes
 		System.out.println("Satiation: " + Arrays.toString(Satiation));
 		System.out.println("Thirst: " + Arrays.toString(Thirst));
 	}
+
 }

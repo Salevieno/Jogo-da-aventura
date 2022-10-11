@@ -12,37 +12,50 @@ import Main.Uts ;
 import Main.Game;
 import Main.Utg ;
 
-public class Pet
+public class Pet extends LiveBeing
 {
 	private Color color ;
 	private int Job ;
 	private int[] Skill ;
 	private int SkillPoints ;
-	private PersonalAttributes PA ;
-	private BattleAttributes BA ;
-	private String[] Elem ;		// [Atk, Weapon, Armor, Shield, SuperElem]
-	private float[] ElemMult ;	// [Neutral, Water, Fire, Plant, Earth, Air, Thunder, Light, Dark, Snow]
-	private int[][] Actions ;	// [Move, Satiation, Mp][Counter, delay, permission]
-	private int[] StatusCounter ;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
+	private float[] ElemMult ;		// [Neutral, Water, Fire, Plant, Earth, Air, Thunder, Light, Dark, Snow]
+	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 	private String[] Combo ;		// Record of the last movement
 	
-	public static int NumberOfPetSkills = 5 ;
+	public static int NumberOfSkills = 5 ;
 	public String action = "" ;
 	public static float[] AttributeIncrease ;
 	public static float[] ChanceIncrease ;
 	
-	String[][] PetProperties = Utg.ReadTextFile(Game.CSVPath + "PetInitialStats.csv", 4, 37) ;
-	String[][] PetEvolutionProperties = Utg.ReadTextFile(Game.CSVPath + "PetEvolution.csv", 5, 17) ;
+	private static String[][] PetProperties = Utg.ReadTextFile(Game.CSVPath + "PetInitialStats.csv", 4) ;
+	private static String[][] PetEvolutionProperties = Utg.ReadTextFile(Game.CSVPath + "PetEvolution.csv", 5) ;
 	
 	public Pet(int Job)
 	{
+		super(Job, InitializePersonalAttributes(Job), InitializeBattleAttributes(Job)) ;
 		this.Job = Job ;
 		Color[] ColorPalette = Uts.ReadColorPalette(new ImageIcon(Game.ImagesPath + "ColorPalette.png").getImage(), "Normal") ;
 		Color[] PetColor = new Color[] {ColorPalette[3], ColorPalette[1], ColorPalette[18], ColorPalette[18]} ;
 		color = PetColor[Job] ;
-		Skill = new int[Pet.NumberOfPetSkills] ;
+		Skill = new int[Pet.NumberOfSkills] ;
 		SkillPoints = 0 ;
 
+		
+		ElemMult = new float[10] ;
+		StatusCounter = new int[8] ;
+		Combo = new String[1] ;
+			
+    	AttributeIncrease = new float[8] ;
+    	ChanceIncrease = new float[8] ;
+		for (int i = 0 ; i <= 7 ; ++i)
+		{
+			AttributeIncrease[i] = Float.parseFloat(PetEvolutionProperties[Job][i + 1]) ;
+			ChanceIncrease[i] = Float.parseFloat(PetEvolutionProperties[Job][i + 9]) ;
+		}
+	}
+	
+	private static PersonalAttributes InitializePersonalAttributes(int Job)
+	{
 		String Name = PetProperties[Job][0] ;
 		Image image = new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage() ;
 		int Level = 1 ;
@@ -58,9 +71,16 @@ public class Pet
 		int Step = Integer.parseInt(PetProperties[Job][32]) ;
 		float[] Exp = new float[] {0, 50, 1} ;
 		float[] Satiation = new float[] {100, 100, 1} ;
-		float[] Thirst = new float[] {100, 100, 0} ;		
-		PA = new PersonalAttributes(Name, new Image[] {image}, Level, Continent, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst) ;
-		
+		float[] Thirst = new float[] {100, 100, 0} ;
+		String[] Elem = new String[] {"n", "n", "n", "n", "n"} ;
+		int[][] Actions = new int[][] {{0, Integer.parseInt(PetProperties[Job][33]), 0}, {0, Integer.parseInt(PetProperties[Job][34]), 0}, {0, Integer.parseInt(PetProperties[Job][35]), 0}} ;
+		String currentAction = "" ;
+		int countmove = 0 ;
+		return  new PersonalAttributes(Name, new Image[] {image}, Level, Continent, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
+	}
+	
+	private static BattleAttributes InitializeBattleAttributes(int Job)
+	{
 		float[] PhyAtk = new float[] {Float.parseFloat(PetProperties[Job][5]), 0, 0} ;
 		float[] MagAtk = new float[] {Float.parseFloat(PetProperties[Job][6]), 0, 0} ;
 		float[] PhyDef = new float[] {Float.parseFloat(PetProperties[Job][7]), 0, 0} ;
@@ -76,21 +96,7 @@ public class Pet
 		int[] Status = new int[8] ;
 		int[] SpecialStatus = new int[5] ;
 		int[][] BattleActions = new int[][] {{0, Integer.parseInt(PetProperties[Job][36]), 0}} ;
-		BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
-
-		Elem = new String[] {"n", "n", "n", "n", "n"} ;
-		ElemMult = new float[10] ;
-		Actions = new int[][] {{0, Integer.parseInt(PetProperties[Job][33]), 0}, {0, Integer.parseInt(PetProperties[Job][34]), 0}, {0, Integer.parseInt(PetProperties[Job][35]), 0}} ;
-		StatusCounter = new int[8] ;
-		Combo = new String[1] ;
-			
-    	AttributeIncrease = new float[8] ;
-    	ChanceIncrease = new float[8] ;
-		for (int i = 0 ; i <= 7 ; ++i)
-		{
-			AttributeIncrease[i] = Float.parseFloat(PetEvolutionProperties[Job][i + 1]) ;
-			ChanceIncrease[i] = Float.parseFloat(PetEvolutionProperties[Job][i + 9]) ;
-		}
+		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
 	}
 
 	public String getName() {return PA.getName() ;}
@@ -117,36 +123,35 @@ public class Pet
 	public float[] getBlood() {return BA.getBlood() ;}
 	public float[] getPoison() {return BA.getPoison() ;}
 	public float[] getSilence() {return BA.getSilence() ;}
-	public String[] getElem() {return Elem ;}
+	public String[] getElem() {return PA.Elem ;}
 	public float[] getElemMult() {return ElemMult ;}
 	public int getLevel() {return PA.getLevel() ;}
 	public int getStep() {return PA.getStep() ;}
 	public float[] getExp() {return PA.getExp() ;}
 	public float[] getSatiation() {return PA.getSatiation() ;}
-	public int[][] getActions() {return Actions ;}
+	public int[][] getActions() {return PA.Actions ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public String[] getCombo() {return Combo ;}
 	public String getAction() {return action ;}
 	public void setCombo(String[] C) {Combo = C ;}
 
+	
+	
 	public int[] CenterPos()
 	{
 		return new int[] {(int) (PA.getPos()[0] + 0.5 * PA.getSize()[0]), (int) (PA.getPos()[1] - 0.5 * PA.getSize()[1])} ;
 	}
-	public boolean isAlive()
-	{
-		return 0 < PA.getLife()[0] ;
-	}
+
 	public String Action(String[] ActionKeys)
 	{
 		int move = -1 ;
-		if (10 <= PA.getMp()[0])
+		if (10 <= PA.getMp()[0])	// if there is enough mp
 		{
-			move = (int)(3*Math.random() - 0.01) ;
+			move = (int)(3*Math.random() - 0.01) ;	// consider using spell
 		}
 		else
 		{
-			move = (int)(2*Math.random() - 0.01) ;
+			move = (int)(2*Math.random() - 0.01) ;	// only physical atk of def
 		}
 		if (move == 0)
 		{
@@ -202,87 +207,29 @@ public class Pet
 			PA.setPos(NextPos) ;
 		}
 	}
-	public void ActivateDef()
-	{
-		BA.getPhyDef()[1] += BA.getPhyDef()[0] ;
-		BA.getMagDef()[1] += BA.getMagDef()[0] ;
-	}
-	public void DeactivateDef()
-	{
-		BA.getPhyDef()[1] += -BA.getPhyDef()[0] ;
-		BA.getMagDef()[1] += -BA.getMagDef()[0] ;
-	}
-	public boolean isSilent()
-	{
-		if (BA.getSpecialStatus()[4] <= 0)
-		{
-			return false ;
-		}
-		return true ;
-	}
-	public boolean canAtk()
-	{
-		if (BA.getBattleActions()[0][2] == 1 & !BA.isStun())
-		{
-			return true ;
-		}
-		else
-		{
-			return false ;
-		}
-	}
-	public boolean isDefending()
-	{
-		if (BA.getCurrentAction().equals("D") & !canAtk())
-		{
-			return true ;
-		}
-		else
-		{
-			return false ;
-		}
-	}
-	public void IncActionCounters()
-	{
-		for (int a = 0 ; a <= Actions.length - 1 ; a += 1)
-		{
-			if (Actions[a][0] < Actions[a][1])
-			{
-				Actions[a][0] += 1 ;
-			}	
-		}
-	}
+
 	public void ActivateActionCounters(boolean SomeAnimationIsOn)
 	{
-		if (Actions[1][0] % Actions[1][1] == 0)
+		if (PA.Actions[1][0] % PA.Actions[1][1] == 0)
 		{
 			PA.getSatiation()[0] = Math.max(PA.getSatiation()[0] - 1, 0) ;
 			if (PA.getSatiation()[0] == 0)	// pet is hungry
 			{
 				PA.getLife()[0] = Math.max(PA.getLife()[0] - 1, 0) ;
 			}
-			Actions[1][0] = 0 ;
+			PA.Actions[1][0] = 0 ;
 		}
-		if (Actions[2][0] % Actions[2][1] == 0)	// Pet heals mp
+		if (PA.Actions[2][0] % PA.Actions[2][1] == 0)	// Pet heals mp
 		{
 			PA.getMp()[0] = (float)(Math.min(PA.getMp()[0] + 0.02*PA.getMp()[1], PA.getMp()[1])) ;	
-			Actions[2][0] = 0 ;
+			PA.Actions[2][0] = 0 ;
 		}
-		if (Actions[0][0] % Actions[0][1] == 0 & !SomeAnimationIsOn)
+		if (PA.Actions[0][0] % PA.Actions[0][1] == 0 & !SomeAnimationIsOn)
 		{
-			Actions[0][2] = 1 ;	// pet can move
+			PA.Actions[0][2] = 1 ;	// pet can move
 		}
 	}
-	public void IncBattleActionCounters()
-	{
-		for (int a = 0 ; a <= BA.getBattleActions().length - 1 ; a += 1)
-		{
-			if (BA.getBattleActions()[a][0] < BA.getBattleActions()[a][1])
-			{
-				BA.getBattleActions()[a][0] += 1 ;
-			}	
-		}
-	}
+
 	public void ActivateBattleActionCounters()
 	{
 		if (BA.getBattleActions()[0][0] == BA.getBattleActions()[0][1])
@@ -290,11 +237,7 @@ public class Pet
 			BA.getBattleActions()[0][2] = 1 ;	// Pet can atk
 		}
 	}
-	public void ResetBattleActions()
-	{
-		BA.getBattleActions()[0][0] = 0 ;
-		BA.getBattleActions()[0][2] = 0 ;
-	}
+
 	public boolean usedSkill()
 	{
 		return Utg.isNumeric(BA.getCurrentAction()) ;
@@ -364,42 +307,42 @@ public class Pet
 	}
 
 	/* Save and load methods */
-	public void Save(BufferedWriter bufferedWriter)
+	public void Save(BufferedWriter bW)
 	{
 		try
 		{
-			bufferedWriter.write("\nPet name: \n" + getName()) ;
-			bufferedWriter.write("\nPet size: \n" + Arrays.toString(getSize())) ;
-			bufferedWriter.write("\nPet color: \n" + getColor()) ;
-			bufferedWriter.write("\nPet job: \n" + getJob()) ;
-			bufferedWriter.write("\nPet coords: \n" + Arrays.toString(getPos())) ;
-			bufferedWriter.write("\nPet skill: \n" + Arrays.toString(getSkill())) ;
-			bufferedWriter.write("\nPet skillPoints: \n" + getSkillPoints()) ;
-			bufferedWriter.write("\nPet life: \n" + Arrays.toString(getLife())) ;
-			bufferedWriter.write("\nPet mp: \n" + Arrays.toString(getMp())) ;
-			bufferedWriter.write("\nPet range: \n" + getRange()) ;
-			bufferedWriter.write("\nPet phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
-			bufferedWriter.write("\nPet magAtk: \n" + Arrays.toString(getMagAtk())) ;
-			bufferedWriter.write("\nPet phyDef: \n" + Arrays.toString(getPhyDef())) ;
-			bufferedWriter.write("\nPet magDef: \n" + Arrays.toString(getMagDef())) ;
-			bufferedWriter.write("\nPet dex: \n" + Arrays.toString(getDex())) ;
-			bufferedWriter.write("\nPet agi: \n" + Arrays.toString(getAgi())) ;
-			bufferedWriter.write("\nPet crit: \n" + Arrays.toString(getCrit())) ;
-			bufferedWriter.write("\nPet stun: \n" + Arrays.toString(getStun())) ;
-			bufferedWriter.write("\nPet block: \n" + Arrays.toString(getBlock())) ;
-			bufferedWriter.write("\nPet blood: \n" + Arrays.toString(getBlood())) ;
-			bufferedWriter.write("\nPet poison: \n" + Arrays.toString(getPoison())) ;
-			bufferedWriter.write("\nPet silence: \n" + Arrays.toString(getSilence())) ;
-			bufferedWriter.write("\nPet elem: \n" + Arrays.toString(getElem())) ;
-			bufferedWriter.write("\nPet elem mult: \n" + Arrays.toString(getElemMult())) ;
-			bufferedWriter.write("\nPet level: \n" + getLevel()) ;
-			bufferedWriter.write("\nPet step: \n" + getStep()) ;
-			bufferedWriter.write("\nPet satiation: \n" + Arrays.toString(getSatiation())) ;
-			bufferedWriter.write("\nPet exp: \n" + Arrays.toString(getExp())) ;
-			bufferedWriter.write("\nPet status: \n" + Arrays.toString(getBattleAtt().getSpecialStatus())) ; 
-			bufferedWriter.write("\nPet actions: \n" + Arrays.deepToString(getActions())) ; 
-			bufferedWriter.write("\nPet battle actions: \n" + Arrays.deepToString(getBattleAtt().getBattleActions())) ; 
-			bufferedWriter.write("\nPet status counter: \n" + Arrays.toString(getStatusCounter())) ;
+			bW.write("\nPet name: \n" + getName()) ;
+			bW.write("\nPet size: \n" + Arrays.toString(getSize())) ;
+			bW.write("\nPet color: \n" + getColor()) ;
+			bW.write("\nPet job: \n" + getJob()) ;
+			bW.write("\nPet coords: \n" + Arrays.toString(getPos())) ;
+			bW.write("\nPet skill: \n" + Arrays.toString(getSkill())) ;
+			bW.write("\nPet skillPoints: \n" + getSkillPoints()) ;
+			bW.write("\nPet life: \n" + Arrays.toString(getLife())) ;
+			bW.write("\nPet mp: \n" + Arrays.toString(getMp())) ;
+			bW.write("\nPet range: \n" + getRange()) ;
+			bW.write("\nPet phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
+			bW.write("\nPet magAtk: \n" + Arrays.toString(getMagAtk())) ;
+			bW.write("\nPet phyDef: \n" + Arrays.toString(getPhyDef())) ;
+			bW.write("\nPet magDef: \n" + Arrays.toString(getMagDef())) ;
+			bW.write("\nPet dex: \n" + Arrays.toString(getDex())) ;
+			bW.write("\nPet agi: \n" + Arrays.toString(getAgi())) ;
+			bW.write("\nPet crit: \n" + Arrays.toString(getCrit())) ;
+			bW.write("\nPet stun: \n" + Arrays.toString(getStun())) ;
+			bW.write("\nPet block: \n" + Arrays.toString(getBlock())) ;
+			bW.write("\nPet blood: \n" + Arrays.toString(getBlood())) ;
+			bW.write("\nPet poison: \n" + Arrays.toString(getPoison())) ;
+			bW.write("\nPet silence: \n" + Arrays.toString(getSilence())) ;
+			bW.write("\nPet elem: \n" + Arrays.toString(getElem())) ;
+			bW.write("\nPet elem mult: \n" + Arrays.toString(getElemMult())) ;
+			bW.write("\nPet level: \n" + getLevel()) ;
+			bW.write("\nPet step: \n" + getStep()) ;
+			bW.write("\nPet satiation: \n" + Arrays.toString(getSatiation())) ;
+			bW.write("\nPet exp: \n" + Arrays.toString(getExp())) ;
+			bW.write("\nPet status: \n" + Arrays.toString(getBattleAtt().getSpecialStatus())) ; 
+			bW.write("\nPet actions: \n" + Arrays.deepToString(getActions())) ; 
+			bW.write("\nPet battle actions: \n" + Arrays.deepToString(getBattleAtt().getBattleActions())) ; 
+			bW.write("\nPet status counter: \n" + Arrays.toString(getStatusCounter())) ;
 		}
 		catch (IOException e)
 		{
@@ -431,14 +374,14 @@ public class Pet
 		BA.setBlood((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 20)]), "String", "float")) ;
 		BA.setPoison((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 21)]), "String", "float")) ;
 		BA.setSilence((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 22)]), "String", "float")) ;
-		Elem = (String[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 23)]), "String", "String") ;
+		PA.Elem = (String[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 23)]), "String", "String") ;
 		ElemMult = (float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 24)]), "String", "float") ;
 		PA.setLevel(Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 25)][0])) ;
 		PA.setStep(Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 26)][0])) ;
 		PA.setSatiation((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 27)]), "String", "float")) ;
 		PA.setExp((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 28)]), "String", "float")) ;
 		BA.setSpecialStatus((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 29)]), "String", "int")) ;
-		Actions = (int[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 30)], 3), "String", "int") ;
+		PA.Actions = (int[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 30)], 3), "String", "int") ;
 		BA.setBattleActions((int[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 31)], 3), "String", "int")) ;
 		StatusCounter = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 32)]), "String", "int") ;
 	}
@@ -450,6 +393,6 @@ public class Pet
 		System.out.println("** Player attributes **");
 		PA.printAtt();
 		BA.printAtt();
-		System.out.println("Elem: " + Arrays.toString(Elem));
+		System.out.println("Elem: " + Arrays.toString(PA.Elem));
 	}
 }

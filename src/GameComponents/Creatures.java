@@ -4,15 +4,13 @@ import java.awt.Color ;
 import java.awt.Image ;
 import java.util.Arrays;
 
-import javax.swing.ImageIcon;
-
 import Actions.BattleActions;
 import Graphics.DrawFunctions ;
 import Main.Game;
 import Main.Utg ;
 import Main.Uts ;
 
-public class Creatures 
+public class Creatures extends LiveBeing
 {
 	private int Type ;
 	private Image image ;
@@ -20,24 +18,20 @@ public class Creatures
 	private int Map ;
 	private int[] Size ;
 	private int[] Skill ;
-	private PersonalAttributes PA ;
-	private BattleAttributes BA ;
-	private String[] Elem ;		// [Atk, Weapon, Armor, Shield, SuperElem]
 	private int[] Bag ;
 	private int Gold ;
 	private Color color ;
-	private int[][] Actions ;	// [Move, Mp][Counter, delay, permission]
-	private int[] StatusCounter ;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
+	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 	private String[] Combo ;		// Record of the last movement
 	private boolean Follow ;	
 	public int countmove = 0 ;
 	
-	Color[] ColorPalette = Uts.ReadColorPalette(new ImageIcon(Game.ImagesPath + "ColorPalette.png").getImage(), "Normal") ;
 	private static Color[] skinColor = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1]} ;
 	private static Color[] shadeColor = new Color[] {Game.ColorPalette[2], Game.ColorPalette[3]} ;
 	
- 	public Creatures(int Type, Image image, Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif, int Map, int[] Size, int[] Skill, PersonalAttributes PA, BattleAttributes BA, String[] Elem, int[] Bag, int Gold, Color color, int[][] Actions, int[] StatusCounter, String[] Combo)
+ 	public Creatures(int Type, Image image, Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif, int Map, int[] Size, int[] Skill, PersonalAttributes PA, BattleAttributes BA, int[] Bag, int Gold, Color color, int[] StatusCounter, String[] Combo)
 	{
+		super(Type, PA, BA) ;
 		this.Type = Type ;
 		this.image = image ;
 		this.idleGif = idleGif ; 
@@ -48,13 +42,9 @@ public class Creatures
 		this.Map = Map ;
 		this.Size = Size ;
 		this.Skill = Skill ;
-		this.PA = PA ;
-		this.BA = BA ;
-		this.Elem = Elem ;
 		this.Bag = Bag ;
 		this.Gold = Gold ;
 		this.color = color ;
-		this.Actions = Actions ;
 		this.StatusCounter = StatusCounter ;
 		this.Combo = Combo ;
 		Follow = false ;
@@ -85,13 +75,13 @@ public class Creatures
 	public float[] getBlood() {return BA.getBlood() ;}
 	public float[] getPoison() {return BA.getPoison() ;}
 	public float[] getSilence() {return BA.getSilence() ;}
-	public String[] getElem() {return Elem ;}
+	public String[] getElem() {return PA.Elem ;}
 	public float[] getExp() {return PA.getExp() ;}
 	public int[] getBag() {return Bag ;}
 	public int getGold() {return Gold ;}
 	public int getStep() {return PA.getStep() ;}
 	public Color getColor() {return color ;}
-	public int[][] getActions() {return Actions ;}
+	public int[][] getActions() {return PA.Actions ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public String getAction() {return BA.getCurrentAction() ;}
 	public String[] getCombo() {return Combo ;}
@@ -101,36 +91,6 @@ public class Creatures
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
 
-	public boolean isSilent()
-	{
-		if (BA.getSpecialStatus()[4] <= 0)
-		{
-			return false ;
-		}
-		return true ;
-	}
-	public boolean canAtk()
-	{
-		if (BA.getBattleActions()[0][2] == 1 & !BA.isStun())	// not stun
-		{
-			return true ;
-		}
-		else
-		{
-			return false ;
-		}
-	}
-	public boolean isDefending()
-	{
-		if (BA.getCurrentAction().equals("D") & !canAtk())
-		{
-			return true ;
-		}
-		else
-		{
-			return false ;
-		}
-	}
 	public boolean hasEnoughMP(int skillID)
 	{
 		int MPcost = 10 * skillID ;
@@ -231,7 +191,7 @@ public class Creatures
 		if (skillID == 0)	// magical atk
 		{
 			effect = BattleActions.CalcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock()[1]) ;
-			damage = BattleActions.CalcAtk(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {Elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, player.getElemMult()[Uts.ElementID(Elem[0])]) ;
+			damage = BattleActions.CalcAtk(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {PA.Elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, player.getElemMult()[Uts.ElementID(PA.Elem[0])]) ;
 		}
 		if (magicalType == 0)
 		{
@@ -318,7 +278,7 @@ public class Creatures
 	}
 	public void Move(int[] PlayerPos, boolean FollowPlayer, int map, Screen screen, Maps[] maps)
 	{
-		if (Actions[0][2] == 1 & !PA.getName().equals("Dragão") & !PA.getName().equals("Dragon"))	// If the creature can move
+		if (PA.Actions[0][2] == 1 & !PA.getName().equals("Dragão") & !PA.getName().equals("Dragon"))	// If the creature can move
 		{
 			countmove = (countmove + 1) % 5 ;
 			if (FollowPlayer)
@@ -332,64 +292,33 @@ public class Creatures
 			}				
 		}
 	}
-	public void ActivateDef()
-	{
-		BA.getPhyDef()[1] += BA.getPhyDef()[0] ;
-		BA.getMagDef()[1] += BA.getMagDef()[0] ;
-	}
-	public void DeactivateDef()
-	{
-		BA.getPhyDef()[1] += -BA.getPhyDef()[0] ;
-		BA.getMagDef()[1] += -BA.getMagDef()[0] ;
-	}
-	public void IncActionCounters()
-	{
-		for (int a = 0 ; a <= Actions.length - 1 ; a += 1)
-		{
-			if (Actions[a][0] < Actions[a][1])
-			{
-				Actions[a][0] += 1 ;
-			}	
-		}
-	}
+
+
 	public void ActivateActionCounters()
 	{
-		if (Actions[0][0] % Actions[0][1] == 0)
+		if (PA.Actions[0][0] % PA.Actions[0][1] == 0)
 		{
-			Actions[0][2] = 1 ;	// Creature can move
+			PA.Actions[0][2] = 1 ;	// Creature can move
 		}
 	}
 	public void ResetActions()
 	{
-		Actions = new int[][] {{0, Actions[0][1], 0}, {Actions[1][0], Actions[1][1], Actions[1][2]}} ;
+		PA.Actions = new int[][] {{0, PA.Actions[0][1], 0}, {PA.Actions[1][0], PA.Actions[1][1], PA.Actions[1][2]}} ;
 	}
-	public void IncBattleActionCounters()
-	{
-		for (int a = 0 ; a <= BA.getBattleActions().length - 1 ; a += 1)
-		{
-			if (BA.getBattleActions()[a][0] < BA.getBattleActions()[a][1])
-			{
-				BA.getBattleActions()[a][0] += 1 ;
-			}	
-		}
-	}
+
 	public void ActivateBattleActionCounters()
 	{
 		if (BA.getBattleActions()[0][0] == BA.getBattleActions()[0][1])
 		{
 			BA.getBattleActions()[0][2] = 1 ;	// Creature can atk
 		}
-		if (Actions[1][0] % Actions[1][1] == 0)
+		if (PA.Actions[1][0] % PA.Actions[1][1] == 0)
 		{
 			PA.getMp()[0] = (float)(Math.min(PA.getMp()[0] + 0.02*PA.getMp()[1], PA.getMp()[1])) ;	// Creature heals mp
-			Actions[1][0] = 0 ;
+			PA.Actions[1][0] = 0 ;
 		}	
 	}
-	public void ResetBattleActions()
-	{
-		BA.getBattleActions()[0][0] = 0 ;
-		BA.getBattleActions()[0][2] = 0 ;
-	}
+
 	public void ApplyBuffsAndNerfs(String action, String type, int att, int BuffNerfLevel, Skills skills, boolean SkillIsActive)
 	{
 		int ActionMult = 1 ;
@@ -536,6 +465,6 @@ public class Creatures
 		System.out.println("** Creature attributes **");
 		PA.printAtt();
 		BA.printAtt();
-		System.out.println("Elem: " + Arrays.toString(Elem));
+		System.out.println("Elem: " + Arrays.toString(PA.Elem));
 	}
 }

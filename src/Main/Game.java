@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent ;
 import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import java.io.File ;
+import java.io.IOException;
 import java.util.Arrays ;
 
 import javax.sound.sampled.Clip ;
@@ -21,6 +22,7 @@ import javax.swing.Timer ;
 
 import Actions.Battle ;
 import Actions.BattleActions;
+import GameComponents.Bag;
 import GameComponents.BattleAttributes ;
 import GameComponents.Buildings ;
 import GameComponents.CreatureTypes ;
@@ -42,6 +44,16 @@ import GameComponents.SkyComponents ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Graphics.DrawPrimitives ;
+import Items.Alchemy;
+import Items.Arrow;
+import Items.Equip;
+import Items.Fab;
+import Items.Food;
+import Items.Forge;
+import Items.GeneralItem;
+import Items.PetItem;
+import Items.Potion;
+import Items.Quest;
 
 public class Game extends JPanel implements ActionListener
 {
@@ -188,7 +200,7 @@ public class Game extends JPanel implements ActionListener
 		Items.CalcNumberOfCraftingItems(CSVPath) ;
     	Items.CalcNumberOfAllItems() ;
 		Items.CalcBagIDs() ;
-		Items.CalcItemEffects(CSVPath) ;
+		//Items.CalcItemEffects(CSVPath) ;
 		Items.CalcCrafting(CSVPath) ;
 		Items.CalcItemsWithEffects(CSVPath) ;
 		
@@ -263,7 +275,7 @@ public class Game extends JPanel implements ActionListener
     {
 		int NumberOfBuildings = 30 ;
     	Buildings[] buildings = new Buildings[NumberOfBuildings] ;
-		String[][] BuildingsInput = Utg.ReadTextFile(CSVPath + "Buildings.csv", NumberOfBuildings, 5) ;
+		String[][] BuildingsInput = Utg.ReadTextFile(CSVPath + "Buildings.csv", NumberOfBuildings) ;
 		int[] ColorID = new int[] {6, 3, 13, 3, 0, 0} ;
 		/*Image Dock = new ImageIcon(ImagesPath + "Dock.png").getImage() ;
 		Image ForgingTable = new ImageIcon(ImagesPath + "BuildingForgingTable.png").getImage() ;
@@ -285,7 +297,7 @@ public class Game extends JPanel implements ActionListener
     {
     	CreatureTypes.setNumberOfCreatureTypes(CSVPath);
 		CreatureTypes[] creatureTypes = new CreatureTypes[CreatureTypes.getNumberOfCreatureTypes()] ;
-		String[][] Input = Utg.ReadTextFile(CSVPath + "CreatureTypes.csv", CreatureTypes.getNumberOfCreatureTypes(), 44) ;
+		String[][] Input = Utg.ReadTextFile(CSVPath + "CreatureTypes.csv", CreatureTypes.getNumberOfCreatureTypes()) ;
 		String Name = "" ;
 		Color[] color = new Color[creatureTypes.length] ;
 		/*for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
@@ -392,8 +404,12 @@ public class Game extends JPanel implements ActionListener
 			int Step = creatureTypes[type].getStep() ;
 			float[] Exp = new float[] {creatureTypes[type].getExp()} ;
 			float[] Satiation = new float[] {100, 100, 1} ;
-			float[] Thirst = new float[] {100, 100, 0} ;			
-			PersonalAttributes PA = new PersonalAttributes(Name, new Image[] {image}, Level, Continent, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst) ;
+			float[] Thirst = new float[] {100, 100, 0} ;		
+			String[] Elem = creatureTypes[type].getElem() ;
+			int[][] Actions = creatureTypes[type].getActions() ;
+			String currentAction = "" ;
+			int countmove = 0 ;
+			PersonalAttributes PA = new PersonalAttributes(Name, new Image[] {image}, Level, Continent, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
 
 			float[] PhyAtk = creatureTypes[type].getPhyAtk() ;
 			float[] MagAtk = creatureTypes[type].getMagAtk() ;
@@ -412,13 +428,11 @@ public class Game extends JPanel implements ActionListener
 			int[][] BattleActions = creatureTypes[type].getBattleActions() ;
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
 			
-			String[] Elem = creatureTypes[type].getElem() ;
 			int[] Bag = creatureTypes[type].getBag() ;
 			int Gold = creatureTypes[type].getGold() ;
-			int[][] Actions = creatureTypes[type].getActions() ;
 			int[] StatusCounter = creatureTypes[type].getStatusCounter() ;
 			String[] Combo = new String[1] ;
-			creature[c] = new Creatures(type, image, idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif, Map, Size, Skill, PA, BA, Elem, Bag, Gold, color, Actions, StatusCounter, Combo) ;	
+			creature[c] = new Creatures(type, image, idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif, Map, Size, Skill, PA, BA, Bag, Gold, color, StatusCounter, Combo) ;	
 			if (creature[c].getName().equals("Dragão") | creature[c].getName().equals("Dragon"))
 			{
 				creature[c].getPersonalAtt().setPos(new int[] {(int)(0.5*screenDim[0]), (int)(0.5*screenDim[1])}) ;
@@ -433,9 +447,9 @@ public class Game extends JPanel implements ActionListener
     	int NumberOfAtt = 14 ;
     	int NumberOfBuffs = 12 ;
 		Skills[] skills = new Skills[NumberOfSkills] ;
-		String[][] SkillsInput = Utg.ReadTextFile(CSVPath + "Skills.csv", NumberOfAllSkills, 46) ;	
-		String[][] SkillsBuffsInput = Utg.ReadTextFile(CSVPath + "SkillsBuffs.csv", NumberOfAllSkills, 63) ;
-		String[][] SkillsNerfsInput = Utg.ReadTextFile(CSVPath + "SkillsNerfs.csv", NumberOfAllSkills, 63) ;
+		String[][] SkillsInput = Utg.ReadTextFile(CSVPath + "Skills.csv", NumberOfAllSkills) ;	
+		String[][] SkillsBuffsInput = Utg.ReadTextFile(CSVPath + "SkillsBuffs.csv", NumberOfAllSkills) ;
+		String[][] SkillsNerfsInput = Utg.ReadTextFile(CSVPath + "SkillsNerfs.csv", NumberOfAllSkills) ;
 		float[][][] SkillBuffs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
 		float[][][] SkillNerfs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
 		String[][] SkillsInfo = new String[NumberOfSkills][2] ;
@@ -501,15 +515,15 @@ public class Game extends JPanel implements ActionListener
     }
     public PetSkills[] InitializePetSkills()
     {
-		PetSkills[] petskills = new PetSkills[Pet.NumberOfPetSkills] ;
-		String[][] PetSkillsInput = Utg.ReadTextFile(CSVPath + "PetSkills.csv", 20, 19) ;	
-		String[][] PetSkillsBuffsInput = Utg.ReadTextFile(CSVPath + "PetSkillsBuffs.csv", 20, 77) ;
-		String[][] PetSkillsNerfsInput = Utg.ReadTextFile(CSVPath + "PetSkillsNerfs.csv", 20, 77) ;
-		float[][][] PetSkillBuffs = new float[Pet.NumberOfPetSkills][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]		
-		float[][][] PetSkillNerfs = new float[Pet.NumberOfPetSkills][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]	
-		for (int i = 0 ; i <= Pet.NumberOfPetSkills - 1 ; i += 1)
+		PetSkills[] petskills = new PetSkills[Pet.NumberOfSkills] ;
+		String[][] PetSkillsInput = Utg.ReadTextFile(CSVPath + "PetSkills.csv", 20) ;	
+		String[][] PetSkillsBuffsInput = Utg.ReadTextFile(CSVPath + "PetSkillsBuffs.csv", 20) ;
+		String[][] PetSkillsNerfsInput = Utg.ReadTextFile(CSVPath + "PetSkillsNerfs.csv", 20) ;
+		float[][][] PetSkillBuffs = new float[Pet.NumberOfSkills][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]		
+		float[][][] PetSkillNerfs = new float[Pet.NumberOfSkills][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]	
+		for (int i = 0 ; i <= Pet.NumberOfSkills - 1 ; i += 1)
 		{
-			int ID = i + pet.getJob()*Pet.NumberOfPetSkills ;
+			int ID = i + pet.getJob()*Pet.NumberOfSkills ;
 			int BuffCont = 0, NerfCont = 0 ;
 			for (int j = 0 ; j <= 14 - 1 ; j += 1)
 			{
@@ -558,7 +572,7 @@ public class Game extends JPanel implements ActionListener
     	int NumberOfNPCs = 149 ;
     	// Doutor, Equips Seller, Items Seller, Smuggle Seller, Banker, Alchemist, Woodcrafter, Forger, Crafter, Elemental, Saver, Master, Quest 0, Citizen 0, Citizen 1, Citizen 2, Citizen 3
 		NPCs[] npc = new NPCs[NumberOfNPCs] ;
-		String[][] NPCsInput = Utg.ReadTextFile(CSVPath + "NPCs.csv", NumberOfNPCs, 9) ;
+		String[][] NPCsInput = Utg.ReadTextFile(CSVPath + "NPCs.csv", NumberOfNPCs) ;
 		String Name = "" ;
 		String Info = "" ;
 		int[] ColorID = new int[] {6, 10, 20, 16, 3, 23, 27, 0, 25, 7, 5, 0, 26, 18, 15, 14, 21} ;
@@ -613,7 +627,7 @@ public class Game extends JPanel implements ActionListener
     {
     	int NumberOfMaps = 67 ;
 		Maps[] maps = new Maps[NumberOfMaps] ;
-		String[][] MapsInput = Utg.ReadTextFile(CSVPath + "Maps.csv", NumberOfMaps, 22) ;	
+		String[][] MapsInput = Utg.ReadTextFile(CSVPath + "Maps.csv", NumberOfMaps) ;	
 		for (int map = 0 ; map <= NumberOfMaps - 1 ; map += 1)
 		{
 			String Name = MapsInput[map][1] ;
@@ -685,7 +699,7 @@ public class Game extends JPanel implements ActionListener
     public Items[] InitializeItems(int DifficultLevel, String Language)
     {
     	Items[] items = new Items[Items.NumberOfAllItems] ;
-		String[][] Input = Utg.ReadTextFile(CSVPath + "Items.csv", Items.NumberOfAllItems, 8) ;
+		String[][] Input = Utg.ReadTextFile(CSVPath + "Items.csv", Items.NumberOfAllItems) ;
 		String[] Name = new String[Items.NumberOfAllItems] ;
 		String[] Description = new String[Items.NumberOfAllItems] ;
 		for (int i = 0 ; i <= Items.NumberOfAllItems - 1 ; ++i)
@@ -728,7 +742,7 @@ public class Game extends JPanel implements ActionListener
     public Quests[] InitializeQuests(String Language, int PlayerJob)
     {
 		Quests[] quest = new Quests[Quests.NumberOfQuests] ;
-		String[][] Input = Utg.ReadTextFile(CSVPath + "Quests.csv", Quests.NumberOfQuests, 32) ;
+		String[][] Input = Utg.ReadTextFile(CSVPath + "Quests.csv", Quests.NumberOfQuests) ;
 		for (int i = 0 ; i <= Quests.NumberOfQuests - 1 ; i += 1)
 		{
 			quest[i] = new Quests(Integer.parseInt(Input[i][0])) ;
@@ -1376,7 +1390,7 @@ public class Game extends JPanel implements ActionListener
 		
 		// Player acts
 		player.act(pet, maps, skills, screen, MousePos, OPbuttons[OPSelectedButton], SideBarIcons, Ani) ;
-		if (player.ActionIsAMove(player.action) | 0 < player.countmove)	// countmove becomes 0 < when the player moves, then starts to increase 1 by 1 and returns to 0 when it reaches 20
+		if (player.ActionIsAMove(player.action) | 0 < player.getPersonalAtt().getCountmove())	// countmove becomes 0 < when the player moves, then starts to increase 1 by 1 and returns to 0 when it reaches 20
 		{
 			player.Move(pet, maps, screen, Music, MusicIsOn, Ani) ;
 		}
@@ -1490,7 +1504,28 @@ public class Game extends JPanel implements ActionListener
 			//Opening(OpeningBG, OpeningGif) ;
         	
     		// Quick start
-        	GameLanguage = "P" ;
+    		try {Potion.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the potions
+    		try {Alchemy.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the alchemy items
+    		try {Forge.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the forge items
+    		try {PetItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the pet items
+    		try {Food.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the food items
+    		try {Arrow.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the arrow items
+    		try {Equip.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the equip items
+    		try {GeneralItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the general items
+    		try {Fab.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the fabrication items
+    		try {Quest.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the quest items
+    		Bag b = new Bag(Potion.getAll(), Alchemy.getAll(), Forge.getAll(), PetItem.getAll(), Food.getAll(), Arrow.getAll(), Equip.getAll(), GeneralItem.getAll(), Fab.getAll(), Quest.getAll()) ;
+    		b.getPotions()[9].printAtt();
+    		b.getAlchemy()[2].printAtt();
+    		b.getForge()[3].printAtt();
+    		b.getPetItem()[4].printAtt();
+    		b.getFood()[5].printAtt();
+    		b.getArrow()[6].printAtt();
+    		b.getEquip()[7].printAtt();
+    		b.getGenItem()[8].printAtt();
+    		b.getFab()[9].printAtt();
+    		b.getQuest()[10].printAtt();
+    		GameLanguage = "P" ;
     		AllText = Utg.ReadTextFile(GameLanguage) ;
     		AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
         	PlayerName = "" ;
