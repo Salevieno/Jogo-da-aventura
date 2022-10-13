@@ -17,6 +17,16 @@ import Actions.Battle ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Graphics.DrawPrimitives ;
+import Items.Alchemy;
+import Items.Arrow;
+import Items.Fab;
+import Items.Food;
+import Items.Forge;
+import Items.Equip;
+import Items.GeneralItem;
+import Items.PetItem;
+import Items.Potion;
+import Items.Quest;
 import Main.Uts ;
 import Main.Game ;
 import Main.Utg ;
@@ -30,7 +40,8 @@ public class Player extends LiveBeing
 	private int ProJob ;
 	private int[] Spell ;
 	private int[] Quest ;
-	private int[] Bag ;
+	//private int[] Bag ;
+	private Bag bag ;
 	private int[] Equips ;		// 0: Weapon, 1: Shield, 2: Armor, 3: Arrow]
 	private int SkillPoints ;
 	private float[] ElemMult ;	// 0: Neutral, 1: Water, 2: Fire, 3: Plant, 4: Earth, 5: Air, 6: Thunder, 7: Light, 8: Dark, 9: Snow
@@ -92,8 +103,8 @@ public class Player extends LiveBeing
     public static Image TentImage = new ImageIcon(Game.ImagesPath + "Tent.png").getImage() ;
     public static Image QuestImage = new ImageIcon(Game.ImagesPath + "Quest.png").getImage() ;
     public static Image DragonAuraImage = new ImageIcon(Game.ImagesPath + "DragonAura.png").getImage() ;
-    public static Image BagMenuImage = new ImageIcon(Game.ImagesPath + "BagMenu.png").getImage() ;
-    public static Image BagSlotImage = new ImageIcon(Game.ImagesPath + "BagSlot.png").getImage() ;
+    //public static Image BagMenuImage = new ImageIcon(Game.ImagesPath + "BagMenu.png").getImage() ;
+    //public static Image BagSlotImage = new ImageIcon(Game.ImagesPath + "BagSlot.png").getImage() ;
 	private static Image PterodactileImage = new ImageIcon(Game.ImagesPath + "Pterodactile.png").getImage() ;
 	private static Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "SpeakingBubble.png").getImage() ;
     
@@ -109,7 +120,9 @@ public class Player extends LiveBeing
 		ProJob = 0 ;
 		Spell = new int[NumberOfSkillsPerJob[Job]] ;
 		Quest = new int[Quests.NumberOfQuests] ;
-		Bag = new int[Items.NumberOfAllItems] ;
+		//Bag = new int[Items.NumberOfAllItems] ;
+		bag = new Bag(new Potion[] {}, new Alchemy[] {}, new Forge[] {}, new PetItem[] {}, new Food[] {},
+				new Arrow[] {}, new Equip[] {}, new GeneralItem[] {}, new Fab[] {}, new Quest[] {}) ;
 		Equips = new int[NumberOfEquipTypes] ;
 		SkillPoints = 0 ;
 		Color[] ColorPalette = Uts.ReadColorPalette(new ImageIcon(Game.ImagesPath + "ColorPalette.png").getImage(), "Normal") ;
@@ -212,7 +225,8 @@ public class Player extends LiveBeing
 	public int[] getPos() {return PA.getPos() ;}
 	public int[] getSpell() {return Spell ;}
 	public int[] getQuest() {return Quest ;}
-	public int[] getBag() {return Bag ;}
+	//public int[] getBag() {return Bag ;}
+	public Bag getBag() {return bag ;}
 	public int[] getEquips() {return Equips ;}
 	public int getSkillPoints() {return SkillPoints ;}
 	public float[] getLife() {return PA.getLife() ;}
@@ -254,7 +268,8 @@ public class Player extends LiveBeing
 	public void setProJob(int PJ) {ProJob = PJ ;}
 	public void setMap(int M, Maps[] maps) {PA.setMap(M) ; PA.setContinent(maps[PA.getMap()].getContinent()) ;}
 	public void setPos(int[] P) {PA.setPos(P) ;}
-	public void setBag(int[] B) {Bag = B ;}
+	//public void setBag(int[] B) {Bag = B ;}
+	public void setBag(Bag b) {bag = b ;}
 	public void setStep(int S) {PA.setStep(S) ;}
 	public void setCurrentAction(String CA) {PA.currentAction = CA ;}
 	public void setCombo(String[] C) {Combo = C ;}
@@ -547,20 +562,20 @@ public class Player extends LiveBeing
 		float PlayerCollectLevel = -1 ;
 		if (Coltype == 0)	// Berry
 		{
-			Bag[Items.BagIDs[3] - 1 + MapCollectLevel + Coltype] += 1 ;
+			//Bag[Items.BagIDs[3] - 1 + MapCollectLevel + Coltype] += 1 ;
 			if (Job == 3 & Math.random() <= 0.14*Spell[4])	// Double collect
 			{
-				Bag[Items.BagIDs[3] - 1 + MapCollectLevel + Coltype] += 1 ;	
+				//Bag[Items.BagIDs[3] - 1 + MapCollectLevel + Coltype] += 1 ;	
 			}
 			CollectibleID = 0 ;
 		}
 		else if (MapCollectLevel <= PlayerCollectLevel + 1 & PlayerCollectLevel + 1 < CollectChance)
 		{					
-			Bag[Items.BagIDs[0] + 3*(MapCollectLevel - 1) + Coltype - 1] += 1 ;
+			//Bag[Items.BagIDs[0] + 3*(MapCollectLevel - 1) + Coltype - 1] += 1 ;
 			Collect[Coltype - 1] += 0.25/(PlayerCollectLevel + 1) ;
 			if (Job == 3 & Math.random() <= 0.14*Spell[4])	// Double collect
 			{
-				Bag[Items.BagIDs[0] + 3*(MapCollectLevel - 1) + Coltype - 1] += 1 ;
+				//Bag[Items.BagIDs[0] + 3*(MapCollectLevel - 1) + Coltype - 1] += 1 ;
 				Collect[Coltype - 1] += 0.25/(PlayerCollectLevel + 1) ;	
 			}
 			CollectibleID = 0 ;
@@ -826,7 +841,7 @@ public class Player extends LiveBeing
 		int[] ActiveQuests = Utg.ArrayWithValuesGreaterThan(Quest, -1) ;
 		//windowLimit[player.getContinent()] = Math.max(ActiveQuests.length - 1, 0)/5 ;
 		SelectedWindow[3] = Uts.MenuSelection(ActionKeys[1], ActionKeys[3], action, SelectedWindow[3], windowLimit[PA.getContinent()]) ;
-		DF.DrawQuestWindow(creatureTypes, creatures, quest, items, Language, PA.getContinent(), Bag, MousePos, ActiveQuests, SelectedWindow[3], windowLimit, QuestImage) ;
+		//DF.DrawQuestWindow(creatureTypes, creatures, quest, items, Language, PA.getContinent(), Bag, MousePos, ActiveQuests, SelectedWindow[3], windowLimit, QuestImage) ;
 	}
 	
 	public void ActivateRide()
@@ -889,7 +904,8 @@ public class Player extends LiveBeing
 	{
 		if (WindowIsOpen[0])
 		{
-			Bag(pet, creature, screen.getDimensions(), AllTextCat, AllText, items, B, MousePos, DF) ;
+			//Bag(pet, creature, screen.getDimensions(), AllTextCat, AllText, items, B, MousePos, DF) ;
+			bag.display(screen.getDimensions(), MousePos, DF) ;
 		}
 		if (WindowIsOpen[2])
 		{
@@ -943,7 +959,7 @@ public class Player extends LiveBeing
 		
 		for (int j = 0 ; j <= ItemRewards.length - 1 ; j += 1)
 		{
-			Bag[ItemRewards[ChestID][j]] += 1 ;
+			//Bag[ItemRewards[ChestID][j]] += 1 ;
 		}
 		for (int j = 0 ; j <= GoldRewards.length - 1 ; j += 1)
 		{
@@ -955,18 +971,18 @@ public class Player extends LiveBeing
 	}
 	public void SpendArrow()
 	{
-		if (0 < Equips[3] & 0 < Bag[Equips[3]])
-		{
-			Bag[Equips[3]] += -1 ;
+		//if (0 < Equips[3] & 0 < Bag[Equips[3]])
+		//{
+			//Bag[Equips[3]] += -1 ;
 			if (Job == 2 & Math.random() <= 0.1*Spell[13])
 			{
-				Bag[Equips[3]] += 1 ;
+				//Bag[Equips[3]] += 1 ;
 			}
-		}
-		if (Bag[Equips[3]] == 0)
-		{
+		//}
+		//if (Bag[Equips[3]] == 0)
+		//{
 			Equips[3] = 0 ;
-		}
+		//}
 	}
 	public int StealItem(Creatures creature, Items[] items, int spellLevel)
 	{	
@@ -976,7 +992,7 @@ public class Player extends LiveBeing
 		{
 			if(Math.random() <= 0.01*items[creature.getBag()[ID]].getDropChance() + 0.01*spellLevel)
 			{
-				Bag[creature.getBag()[ID]] += 1 ;
+				//Bag[creature.getBag()[ID]] += 1 ;
 				StolenItemID = items[creature.getBag()[ID]].getID() ;
 			}
 		}
@@ -1344,7 +1360,7 @@ public class Player extends LiveBeing
 			{
 				if(Math.random() <= 0.01*items[creature.getBag()[i]].getDropChance())
 				{
-					Bag[creature.getBag()[i]] += 1 ;	
+					//Bag[creature.getBag()[i]] += 1 ;	
 					GetItemsObtained.add(items[creature.getBag()[i]].getName()) ;
 				}
 			}
@@ -1648,8 +1664,8 @@ public class Player extends LiveBeing
 		int FirstEquipID = Items.BagIDs[6] ;
 		int EquipType = (EquipID + Job) % NumberOfEquipTypes ;
 		int CurrentEquip = Equips[EquipType] ;
-		if (0 < Bag[EquipID])
-		{
+		//if (0 < Bag[EquipID])
+		//{
 			if (0 < CurrentEquip)	// Unnequip the current equip
 			{
 				if (Uts.SetIsFormed(Equips))	// if the set was formed, remove the 20% bonus
@@ -1674,7 +1690,7 @@ public class Player extends LiveBeing
 					ApplyEquipsBonus(Equips[2] - FirstEquipID, (float)0.2) ;
 				}
 			}
-		}
+		//}
 		if (PA.Elem[1].equals(PA.Elem[2]) & PA.Elem[2].equals(PA.Elem[3]))	// if the elements of all equips are the same, activate the superelement
 		{
 			PA.Elem[4] = PA.Elem[1] ;
@@ -1704,15 +1720,15 @@ public class Player extends LiveBeing
 		}
 		if (-1 < itemID)	// if the item is valid
 		{
-			if (0 < Bag[itemID])	// if the player has the item in the bag
-			{
+			//if (0 < Bag[itemID])	// if the player has the item in the bag
+			//{
 				if (items[itemID].getType().equals("Potion"))	// potions
 				{
 					float HealPower = Items.PotionsHealing[itemID][1] * PotMult ;
 					
 					PA.incLife(HealPower * PA.getLife()[1]) ;
 					PA.incMP(HealPower * PA.getMp()[1]) ;
-					Bag[itemID] += -1 ;			
+					//Bag[itemID] += -1 ;			
 				}
 				else if (items[itemID].getType().equals("Alchemy"))	// alchemy (using herbs heal half of their equivalent pot)
 				{
@@ -1741,24 +1757,24 @@ public class Player extends LiveBeing
 							}
 						}
 					}
-					Bag[itemID] += -1 ;
+					//Bag[itemID] += -1 ;
 				}
 				else if (items[itemID].getType().equals("Pet"))		// pet items
 				{
 					pet.getPersonalAtt().incLife(Items.PetItems[itemID - Items.BagIDs[3] + 1][1] * pet.getLife()[1]) ;
 					pet.getPersonalAtt().incMP(Items.PetItems[itemID - Items.BagIDs[3] + 1][2] * pet.getMp()[1]) ;
 					pet.getPersonalAtt().incSatiation(Items.PetItems[itemID - Items.BagIDs[3] + 1][3]) ;
-					Bag[itemID] += -1 ;
+					//Bag[itemID] += -1 ;
 				}
 				else if (items[itemID].getType().equals("Food"))	// food
 				{
 					PA.incSatiation(Items.FoodSatiation[itemID - Items.BagIDs[4] + 1][3] * PA.getSatiation()[2]) ;
-					Bag[itemID] += -1 ;
+					//Bag[itemID] += -1 ;
 				}
 				else if (items[itemID].getType().equals("Arrow"))	// arrows
 				{
-					if (0 < Bag[itemID] & Job == 2)
-					{
+					//if (0 < Bag[itemID] & Job == 2)
+					//{
 						if (itemID == Items.BagIDs[5] | itemID <= Items.BagIDs[5] + 3 & 1 <= Spell[4] | itemID == Items.BagIDs[5] + 4 & 2 <= Spell[4]  | itemID == Items.BagIDs[5] + 5 & 3 <= Spell[4]  | Items.BagIDs[5] + 6 <= itemID & itemID <= Items.BagIDs[5] + 14 & 4 <= Spell[4]  | Items.BagIDs[5] + 14 <= itemID & 5 <= Spell[4])
 						{
 							if (0 == Equips[3])
@@ -1772,7 +1788,7 @@ public class Player extends LiveBeing
 								PA.Elem[0] = "n" ;
 							}
 						}
-					}
+					//}
 				}
 				else if (items[itemID].getType().equals("Equip"))	// equipment
 				{
@@ -1797,20 +1813,20 @@ public class Player extends LiveBeing
 						{
 							B.ItemEffectInBattle(getBattleAtt(), pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
 						}
-						Bag[itemID] += -1 ;
+						//Bag[itemID] += -1 ;
 						BA.getBattleActions()[0][0] = 0 ;
 						BA.getBattleActions()[0][2] = 0 ;
 					}
 					else
 					{
 						ItemEffect(itemID) ;
-						Bag[itemID] += -1 ;
+						//Bag[itemID] += -1 ;
 					}
 				}
-			}			
+			//}			
 		}
 	}
-	public void Bag(Pet pet, Creatures[] creature, int[] WinDim, int[] AllTextCat, String[][] AllText, Items[] items, Battle B, int[] MousePos, DrawFunctions DF)
+	/*public void Bag(Pet pet, Creatures[] creature, int[] WinDim, int[] AllTextCat, String[][] AllText, Items[] items, Battle B, int[] MousePos, DrawFunctions DF)
 	{
 		int NMenus = 10, NItemsMax = 20 ;
 		int[] WindowLimit = new int[NMenus] ;
@@ -1863,7 +1879,7 @@ public class Player extends LiveBeing
 			SelectedItem[1] = 0 ;
 		}
 		
-		/* Select item */
+		
 		int L = (int)(0.52 * WinDim[0]), H = (int)(0.4 * WinDim[1]) ;
 		int NSlotsmax = 20 ;
 		int NumberOfSlots = Math.min(NSlotsmax, ActiveItems.length - NSlotsmax * SelectedWindow[1]) ;
@@ -1893,8 +1909,8 @@ public class Player extends LiveBeing
 				++cont ;
 			}
 		}
-		DF.DrawBag(Job, BagPos, L, H, Bag, NSlotsmax, items, BagMenuImage, BagSlotImage, ActiveItems, SlotCenter, TextPos, SelectedMenu[1], ItemsMenu, SelectedWindow[1], WindowLimit[SelectedMenu[1]], SelectedItem[1], MousePos) ;
-	}
+		DF.DrawBag(Job, BagPos, L, H, Bag, NSlotsmax, items, BagMenuImage, BagSlotImage, ActiveItems, SlotCenter, TextPos, SelectedMenu[1], ItemsMenu, SelectedWindow[1], WindowLimit[SelectedMenu[1]], SelectedItem[1], MousePos) ;	
+	}*/
 	public void FabBook(Items[] items, int[] MousePos, DrawFunctions DF)
 	{
 		int[][] Ingredients = Items.CraftingIngredients, Products = Items.CraftingProducts ;
@@ -2257,7 +2273,7 @@ public class Player extends LiveBeing
 			bw.write("\nPlayer pos: \n" + Arrays.toString(getPos())) ;
 			bw.write("\nPlayer skill: \n" + Arrays.toString(getSpell())) ;
 			bw.write("\nPlayer quest: \n" + Arrays.toString(getQuest())) ;
-			bw.write("\nPlayer bag: \n" + Arrays.toString(getBag())) ;
+			//bw.write("\nPlayer bag: \n" + Arrays.toString(getBag())) ;
 			bw.write("\nPlayer equips: \n" + Arrays.toString(getEquips())) ;
 			bw.write("\nPlayer skillPoints: \n" + getSkillPoints()) ;
 			bw.write("\nPlayer life: \n" + Arrays.toString(getLife())) ;
@@ -2322,7 +2338,7 @@ public class Player extends LiveBeing
 			setPos((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*11]), "String", "int")) ;
 			Spell = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*12]), "String", "int") ;
 			Quest = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*13]), "String", "int") ;
-			setBag((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*14]), "String", "int")) ;
+			//setBag((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*14]), "String", "int")) ;
 			Equips = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*15]), "String", "int") ;
 			SkillPoints = Integer.parseInt(ReadFile[2*16][0]) ;
 			PA.setLife((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*17]), "String", "float")) ;
@@ -2384,7 +2400,7 @@ public class Player extends LiveBeing
 		System.out.println("ProJob: " + ProJob);
 		System.out.println("Skill: " + Arrays.toString(Spell));
 		System.out.println("Quest: " + Arrays.toString(Quest));
-		System.out.println("Bag: " + Arrays.toString(Bag));
+		//System.out.println("Bag: " + Arrays.toString(Bag));
 		System.out.println("Equips: " + Arrays.toString(Equips));
 		System.out.println("SkillPoints: " + SkillPoints);
 		System.out.println("** Personal attributes **");

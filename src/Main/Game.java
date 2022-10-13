@@ -202,7 +202,7 @@ public class Game extends JPanel implements ActionListener
 		Items.CalcBagIDs() ;
 		//Items.CalcItemEffects(CSVPath) ;
 		Items.CalcCrafting(CSVPath) ;
-		Items.CalcItemsWithEffects(CSVPath) ;
+		//Items.CalcItemsWithEffects(CSVPath) ;
 		
 		// Initialize images and music
 		SkillCooldownImage = new ImageIcon(ImagesPath + "Cooldown.png").getImage() ;	
@@ -240,7 +240,7 @@ public class Game extends JPanel implements ActionListener
 		Arrays.fill(player.getBattleAtt().getSpecialStatus(), -1) ;
 		if (player.getJob() == 2)
 		{
-			player.getBag()[Items.BagIDs[4]] = 100 ;
+			//player.getBag()[Items.BagIDs[4]] = 100 ;
 		}
 		player.getSpell()[0] = 1 ;
 		player.ResetPosition() ;		
@@ -721,11 +721,11 @@ public class Game extends JPanel implements ActionListener
 			String Type = Input[i][7] ;
 			items[i] = new Items(i, Name[i], image, Price, DropChance, Buffs, Description[i], Type) ;
 		}
-		for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
+		/*for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
 		{
 			items[Items.ItemsWithEffects[i]].setBuffs(Items.ItemsBuffs[i]) ;
 		}
-		Items.CalcItemsWithEffects(CSVPath) ;
+		Items.CalcItemsWithEffects(CSVPath) ;*/
 		
 
 		Items.LongestName = "";
@@ -1091,25 +1091,25 @@ public class Game extends JPanel implements ActionListener
 		}
 		else if (TutorialStep == 3)
 		{
-			if (player.action.equals(Player.ActionKeys[4]))
+			/*if (player.action.equals(Player.ActionKeys[4]))
 			{
 				player.getBag()[0] += 1 ;
 				int ItemID = 0 ;		// obtained item: hp potion lv 0
 				Ani.SetAniVars(0, new Object[] {100, items, new int[] {ItemID}}) ;
 				Ani.StartAni(0) ;
 				TutorialStep += 1 ;
-			}
+			}*/
 		}
 		else if (TutorialStep == 4)
 		{
-			if (player.getBag()[0] == 0)
+			/*if (player.getBag()[0] == 0)
 			{
 				int ItemID = Items.BagIDs[5] + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * player.getJob() ;		// obtained item: first equip
 				player.getBag()[ItemID] += 1 ;
 				Ani.SetAniVars(0, new Object[] {100, items, new int[] {ItemID}}) ;
 				Ani.StartAni(0) ;
 				TutorialStep += 1 ;
-			}
+			}*/
 		}
 		else if (TutorialStep == 5)
 		{
@@ -1158,13 +1158,13 @@ public class Game extends JPanel implements ActionListener
 		}
 		else if (TutorialStep == 11)
 		{
-			if (0 < player.getBag()[Items.BagIDs[0]] | 0 < player.getBag()[Items.BagIDs[0] + 1] | 0 < player.getBag()[Items.BagIDs[0] + 2] | 0 < player.getBag()[Items.BagIDs[3]] | player.action.equals("Space"))
+			/*if (0 < player.getBag()[Items.BagIDs[0]] | 0 < player.getBag()[Items.BagIDs[0] + 1] | 0 < player.getBag()[Items.BagIDs[0] + 2] | 0 < player.getBag()[Items.BagIDs[3]] | player.action.equals("Space"))
 			{
 				player.getBag()[Items.BagIDs[3]] += 5 ;
 				Ani.SetAniVars(0, new Object[] {100, items, new int[] {Items.BagIDs[3]}}) ;
 				Ani.StartAni(0) ;
 				TutorialStep += 1 ;
-			}
+			}*/
 		}
 		else if (TutorialStep == 12)
 		{
@@ -1202,12 +1202,12 @@ public class Game extends JPanel implements ActionListener
 			}
 			else if (meet[0] == 1 & meet[1] == 7)	// First time meeting the forger
 			{
-				if (npc[meet[1]].Firstcontact)
+				/*if (npc[meet[1]].Firstcontact)
 				{
 					player.getBag()[Items.BagIDs[1]] += 1 ;
 					Ani.SetAniVars(0, new Object[] {100, items, new int[] {Items.BagIDs[1]}}) ;
 					Ani.StartAni(0) ;
-				}
+				}*/
 				npc[meet[1]].Firstcontact = false ;
 				/*
 				 * This is an animation
@@ -1514,7 +1514,7 @@ public class Game extends JPanel implements ActionListener
     		try {GeneralItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the general items
     		try {Fab.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the fabrication items
     		try {Quest.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the quest items
-    		Bag b = new Bag(Potion.getAll(), Alchemy.getAll(), Forge.getAll(), PetItem.getAll(), Food.getAll(), Arrow.getAll(), Equip.getAll(), GeneralItem.getAll(), Fab.getAll(), Quest.getAll()) ;
+    		/*Bag b = new Bag(Potion.getAll(), Alchemy.getAll(), Forge.getAll(), PetItem.getAll(), Food.getAll(), Arrow.getAll(), Equip.getAll(), GeneralItem.getAll(), Fab.getAll(), Quest.getAll()) ;
     		b.getPotions()[9].printAtt();
     		b.getAlchemy()[2].printAtt();
     		b.getForge()[3].printAtt();
@@ -1524,7 +1524,7 @@ public class Game extends JPanel implements ActionListener
     		b.getEquip()[7].printAtt();
     		b.getGenItem()[8].printAtt();
     		b.getFab()[9].printAtt();
-    		b.getQuest()[10].printAtt();
+    		b.getQuest()[10].printAtt();*/
     		GameLanguage = "P" ;
     		AllText = Utg.ReadTextFile(GameLanguage) ;
     		AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
@@ -1535,13 +1535,17 @@ public class Game extends JPanel implements ActionListener
         	player.setMap(2, maps) ;
         	//Arrays.fill(player.getSkill(), 5) ;
     		Arrays.fill(player.getQuestSkills(), true) ;
-        	Arrays.fill(player.getBag(), 30) ;
+        	//Arrays.fill(player.getBag(), 30) ;
         	player.setPos(new int[] {screen.getDimensions()[0] / 2 + 160, screen.getDimensions()[1] / 2}) ;
         	OpeningIsOn = false ;
         	InitializationIsOn = false ;
         	LoadingGameIsOn = false ;
         	CustomizationIsOn = false ;
         	MusicIsOn = false ;
+        	for (int i = 0; i <= 10 - 1; i += 1)
+        	{
+        		player.getBag().Add(Potion.getAll()[i]) ;
+        	}
         	if (MusicIsOn)
 			{
 				Utg.PlayMusic(Music[Maps.Music[player.getMap()]]) ;

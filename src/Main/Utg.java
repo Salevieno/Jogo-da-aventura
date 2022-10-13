@@ -22,6 +22,8 @@ import java.io.InputStreamReader ;
 import java.math.BigDecimal ;
 import java.math.RoundingMode ;
 import java.nio.charset.StandardCharsets ;
+import java.util.Arrays;
+
 import javax.sound.sampled.AudioInputStream ;
 import javax.sound.sampled.AudioSystem ;
 import javax.sound.sampled.Clip ;
@@ -31,6 +33,7 @@ import GameComponents.Icon ;
 import GameComponents.Projectiles ;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives ;
+import Items.Potion;
 
 public abstract class Utg 
 {	
@@ -769,6 +772,25 @@ public abstract class Utg
 				NewArray[i] = OriginalArray[i] ;
 			}
 			NewArray[OriginalArray.length] = NewElem ;
+			return NewArray ;
+		}
+	}
+	
+	public static Potion[] AddElem(Potion[] OriginalArray, Potion NewElem)
+	{
+		if (OriginalArray == null)
+		{
+			return new Potion[] {NewElem} ;
+		}
+		else
+		{
+			Potion[] NewArray = new Potion[OriginalArray.length + 1] ;
+			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
+			{
+				NewArray[i] = OriginalArray[i] ;
+			}
+			NewArray[OriginalArray.length] = NewElem ;
+
 			return NewArray ;
 		}
 	}

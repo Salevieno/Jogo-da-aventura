@@ -97,7 +97,7 @@ public class Battle
 		ShowAtkDurations[1][3] = DamageDelay[1] ;
 		SkillIsReady = new boolean[skills.length] ;
 		SkillBuffIsActive = new boolean[skills.length][skills[0].getBuffs().length] ;
-		ItemEffectIsActive = new boolean[Items.ItemsWithEffects.length][items[0].getBuffs().length] ;
+		//ItemEffectIsActive = new boolean[Items.ItemsWithEffects.length][items[0].getBuffs().length] ;
 		Image ShieldIcon = new ImageIcon(ImagesPath + "ShieldIcon.png").getImage() ;
 		Image StunIcon = new ImageIcon(ImagesPath + "StunIcon.png").getImage() ;
 		Image BlockIcon = new ImageIcon(ImagesPath + "BlockIcon.png").getImage() ;

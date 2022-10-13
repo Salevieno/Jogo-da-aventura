@@ -7,6 +7,7 @@ import java.awt.Font ;
 import java.awt.GradientPaint ;
 import java.awt.Graphics2D ;
 import java.awt.Image ;
+import java.awt.Point;
 import java.awt.geom.AffineTransform ;
 import Main.Utg ;
 
@@ -147,12 +148,12 @@ public class DrawPrimitives
 		G.setStroke(new BasicStroke(StdThickness)) ;
         //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "A rect is being drawn outside window") ;
 	}
-	public void DrawRoundRect(int[] Pos, String Alignment, int l, int h, int Thickness, Color color0, Color color1, boolean contour)
+	public void DrawRoundRect(Point Pos, String Alignment, int l, int h, int Thickness, Color color0, Color color1, boolean contour)
 	{
 		// Round rectangle by default starts at the left top
 		int ArcWidth = 10, ArcHeight = 10 ;
 		int[] offset = Utg.OffsetFromPos(Alignment, l, h) ;
-		int[] Corner = new int[] {Pos[0] + offset[0], Pos[1] + offset[1]} ;
+		int[] Corner = new int[] {Pos.x + offset[0], Pos.y + offset[1]} ;
 		G.setStroke(new BasicStroke(Thickness)) ;
 		if (color0 != null & color1 != null)
 		{

@@ -10,6 +10,7 @@ import java.util.Arrays ;
 
 import javax.swing.ImageIcon ;
 
+import GameComponents.Bag;
 import GameComponents.Buildings ;
 import GameComponents.CreatureTypes ;
 import GameComponents.Creatures ;
@@ -23,6 +24,7 @@ import GameComponents.Quests ;
 import GameComponents.Screen ;
 import GameComponents.Skills ;
 import GameComponents.SkyComponents ;
+import Items.Item;
 import Main.Uts ;
 import Main.Utg ;
 
@@ -1041,7 +1043,78 @@ public class DrawFunctions
 	
 	
 	/* Player actions */
-	public void DrawBag(int PlayerJob, int[] Pos, int L, int H, int[] Bag, int NSlotsmax, Items[] items, Image MenuImage, Image SlotImage, int[] ActiveItems, int[][] slotCenter, int[][] textPos, int menu, int Tab, int window, int windowLimit, int SelectedItem, int[] MousePos)
+	public void DrawBag(Point Pos, int[] size, Bag bag, Image MenuImage, Image SlotImage, int menu, int Tab, int window, int windowLimit, int SelectedItem, int[] MousePos)
+	{
+		int MenusCat = AllTextCat[30] ;
+		Font MenuFont = new Font("SansSerif", Font.BOLD, 13) ;
+		Font ItemFont = new Font("SansSerif", Font.BOLD, 10) ;
+		Color BGColor = ColorPalette[11] ;
+		int NSlotsmax = 20 ;
+		if (Tab == 1)
+		{
+			BGColor = ColorPalette[19] ;
+		}
+		
+		
+		// Draw menus
+		int MenuL = MenuImage.getWidth(null) ;
+		int MenuH = MenuImage.getHeight(null) ;
+		for (int m = 0 ; m <= AllText[MenusCat].length - 3 ; m += 1)
+		{
+			int[] MenuPos = new int[] {Pos.x + 8, Pos.y + m * (MenuH - 1)} ;
+			Color TextColor = ColorPalette[12] ;
+			if (m == menu)
+			{
+				TextColor = ColorPalette[3] ;
+				MenuPos[0] += 3 ;
+			}
+			DP.DrawImage(MenuImage, MenuPos, "TopRight") ;
+			DP.DrawText(new int[] {MenuPos[0] - MenuL / 2, MenuPos.y + MenuH / 2}, "Center", OverallAngle, AllText[MenusCat][m + 1],
+					MenuFont, TextColor) ;
+		}
+		
+		// Draw bag
+		DP.DrawRoundRect(Pos, "TopLeft", size[0], size[1], 1, BGColor, BGColor, true) ;
+		
+		
+		// Draw items
+		Item[] ActiveItems = null;
+		if (menu == 0)
+		{
+			ActiveItems = bag.getPotions() ;
+		}
+		int NumberOfSlots = Math.min(NSlotsmax, ActiveItems.length - NSlotsmax * window) ;
+		
+		int slotW = SlotImage.getWidth(null) ;
+		int slotH = SlotImage.getHeight(null) ;
+		int[][] slotCenter = new int[NumberOfSlots][2] ;
+		int[][] textPos = new int[NumberOfSlots][2] ;
+		for (int i = 0 ; i <= NumberOfSlots - 1 ; i += 1)
+		{
+			int sx = size[0] / 2, sy = (size[1] - 6 - slotH) / 9 ;
+			int row = i % (NSlotsmax / 2), col = i / (NSlotsmax / 2) ;
+			slotCenter[i] = new int[] {(int) (Pos.x + 5 + slotW / 2 + col * sx), (int) (Pos.y + 3 + slotH / 2 + row * sy)} ;
+			textPos[i] = new int[] {slotCenter[i][0] + slotW / 2 + 5, slotCenter[i][1]} ;
+		}
+		
+		for (int i = 0 ; i <= NumberOfSlots - 1 ; i += 1)
+		{
+			String text = ActiveItems[i].getName() ;//+ " (x" + bag[i] + ")" ;
+			Color TextColor = ColorPalette[3] ;
+			if (i == SelectedItem)
+			{
+				TextColor = ColorPalette[6] ;
+			}
+			DP.DrawImage(SlotImage, slotCenter[i], "Center") ;				// Draw slots
+			//DP.DrawImage(items[i].getImage(), slotCenter[i], "Center") ;	// Draw items
+			DP.DrawTextUntil(textPos[i], "CenterLeft", OverallAngle, text, ItemFont, TextColor, 10, MousePos) ;	
+		}
+		if (0 < windowLimit)
+		{
+			DrawWindowArrows(new int[] {Pos.x, Pos.y + size[1]}, size[0], 0, window, windowLimit) ;
+		}
+	}	
+	/*public void DrawBag(int PlayerJob, int[] Pos, int L, int H, int[] Bag, int NSlotsmax, Items[] items, Image MenuImage, Image SlotImage, int[] ActiveItems, int[][] slotCenter, int[][] textPos, int menu, int Tab, int window, int windowLimit, int SelectedItem, int[] MousePos)
 	{
 		int MenusCat = AllTextCat[30] ;
 		Font MenuFont = new Font("SansSerif", Font.BOLD, 13) ;
@@ -1053,7 +1126,7 @@ public class DrawFunctions
 		}
 		
 		
-		/* Draw menus */
+		// Draw menus 
 		int MenuL = MenuImage.getWidth(null) ;
 		int MenuH = MenuImage.getHeight(null) ;
 		for (int m = 0 ; m <= AllText[MenusCat].length - 3 ; m += 1)
@@ -1096,7 +1169,7 @@ public class DrawFunctions
 		{
 			DrawWindowArrows(new int[] {Pos[0], Pos[1] + H}, L, 0, window, windowLimit) ;
 		}
-	}	
+	}	*/
 	public void DrawFabBook(Image BookImage, Items[] items, int SelectedPage, int[][] Ingredients, int[][] Products, int[] MousePos)
 	{
 		int[] Pos = new int[] {(int)(0.5*WinDim[0]), (int)(0.5*WinDim[1])} ;

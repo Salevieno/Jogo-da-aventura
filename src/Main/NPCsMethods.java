@@ -98,7 +98,7 @@ public class NPCsMethods
 		{
 			Doctor(Choice, player, pet, npc, DF) ;
 		}
-		if (npc.getName().equals("Equips Seller") | npc.getName().equals("Vendedor de equipamentos"))
+		/*if (npc.getName().equals("Equips Seller") | npc.getName().equals("Vendedor de equipamentos"))
 		{
 			Sale(Choice, player, npc, items, MousePos, CoinIcon, DF) ;
 		}
@@ -157,7 +157,7 @@ public class NPCsMethods
 		if (npc.getName().contains("Citizen") | npc.getName().contains("Cidadão"))
 		{
 			Citizen(Choice, npc, DF) ;
-		}
+		}*/
 	}
 	public String ChoicesMenu(String playerAction, NPCs npc, String[] choiceOption, DrawFunctions DF)
 	{
@@ -213,7 +213,7 @@ public class NPCsMethods
 		}
 		return Menu[npc.getID()] ;
 	}	
-	public int Sale(String Choice, Player player, NPCs npc, Items[] items, int[] MousePos, Image CoinIcon, DrawFunctions DF)
+	/*public int Sale(String Choice, Player player, NPCs npc, Items[] items, int[] MousePos, Image CoinIcon, DrawFunctions DF)
 	{
 		int[] ItemsOnSale = new int[player.getBag().length] ;
 		if (npc.getName().equals("Equips Seller") | npc.getName().equals("Vendedor de equipamentos"))
@@ -269,7 +269,7 @@ public class NPCsMethods
 			DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
 		}
 		return Menu[npc.getID()] ;
-	}
+	}*/
 	public int Bank(String Choice, Player player, NPCs npc, Image CoinIcon, DrawFunctions DF)
 	{
 		float Tax = (float)(0.01) ;
@@ -414,7 +414,7 @@ public class NPCsMethods
 		}
 		return Menu[npc.getID()] ;
 	}*/
-	public int Forger(String Choice, Player player, Pet pet, NPCs npc, Items[] items, Maps[] maps, DrawFunctions DF)
+	/*public int Forger(String Choice, Player player, Pet pet, NPCs npc, Items[] items, Maps[] maps, DrawFunctions DF)
 	{
 		int ForgeResult = 0 ;	// 0: Forge has not been attempted yet, 1: forge was successful, 2: the player doesn't have the rune, 3: the equip is not equipped, 4: forge failed
 		String[] choices = AcceptedChoices[0] ;
@@ -448,8 +448,8 @@ public class NPCsMethods
 			DF.DrawSpeech(npc.getPos(), AllText[TextCat][ForgeResult + 2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
 		}
 		return Menu[npc.getID()] ;
-	}
-	public void Crafter(String Choice, Player player, NPCs npc, Items[] items, int[] MousePos, DrawFunctions DF)
+	}*/
+	/*public void Crafter(String Choice, Player player, NPCs npc, Items[] items, int[] MousePos, DrawFunctions DF)
 	{
 		int[][] NPCCraftingIngredients = Utg.ArrayWithFirstTermEqualTo(npc.getID() - 17 * player.getJob(), Items.CraftingNPCIDs, Items.CraftingIngredients) ;
 		int[][] NPCCraftingIngredientAmounts = Utg.ArrayWithFirstTermEqualTo(npc.getID() - 17 * player.getJob(), Items.CraftingNPCIDs, Items.CraftingIngredientAmounts) ; 
@@ -506,8 +506,8 @@ public class NPCsMethods
 		{
 			DF.DrawSpeech(npc.getPos(), AllText[TextCat][4], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
 		}
-	}
-	public int Elemental(String Choice, Player player, NPCs npc, Items[] items, DrawFunctions DF)
+	}*/
+	/*public int Elemental(String Choice, Player player, NPCs npc, Items[] items, DrawFunctions DF)
 	{
 		int[] Ingredients = new int[] {1690, 1691, 1692, 1693, 1694, 1695, 1696, 1697, 1698, 1699} ;
 		SelectedItem[0] = Uts.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], Choice, SelectedItem[0], Ingredients.length - 1) ;
@@ -566,7 +566,7 @@ public class NPCsMethods
 			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()]], NPCTextFont, npc.getImage(), SpeakingBubbleImage, new Color(200, 200, 200)) ;
 		}
 		return Menu[npc.getID()] ;
-	}
+	}*/
 	public int Saver(String Choice, Player player, Pet pet, NPCs npc, DrawFunctions DF)
 	{
 		String FileName = "" ;
@@ -710,7 +710,7 @@ public class NPCsMethods
 		}
 		return Menu[npc.getID()] ;
 	}
-	public int Quest(String Choice, Player player, Pet pet, CreatureTypes[] creatureTypes, Creatures[] creatures, NPCs npc, Quests[] quest, Items[] items, DrawFunctions DF)
+	/*public int Quest(String Choice, Player player, Pet pet, CreatureTypes[] creatureTypes, Creatures[] creatures, NPCs npc, Quests[] quest, Items[] items, DrawFunctions DF)
 	{
 		int npcID = -1 ;
 		if (npc.getName().length() == 8)
@@ -784,8 +784,8 @@ public class NPCsMethods
 			DF.DrawSpeech(npc.getPos(), AllText[TextCat][6], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
 		}
 		return Menu[npc.getID()] ;
-	}
-	public void CaveEntrance(Player player, Maps[] maps)
+	}*/
+	/*public void CaveEntrance(Player player, Maps[] maps)
 	{
 		if (player.getMap() == 5)
 		{
@@ -796,7 +796,7 @@ public class NPCsMethods
 			player.setMap(5, maps) ;
 			player.getPos()[0] += -player.getStep() ;
 		}		
-	}
+	}*/
 	public int Sailor(String Choice, Player player, NPCs npc, Image BoatImage, Animations Ani, DrawFunctions DF)
 	{
 		if (Menu[npc.getID()] == 0)
@@ -1079,7 +1079,7 @@ public class NPCsMethods
 			}
 		}
 	}
-	public int Forging(Player player, Pet pet, NPCs npc, Items[] items, int EquipID, Maps[] maps)
+	/*public int Forging(Player player, Pet pet, NPCs npc, Items[] items, int EquipID, Maps[] maps)
 	{
 		int RuneID = 0 ;
 		int equiplocalID = EquipID - Items.BagIDs[6] ;
@@ -1088,10 +1088,6 @@ public class NPCsMethods
 		int ForgeLevel = (int) Items.EquipsBonus[equiplocalID][1] ;
 		float ForgeBonus = (float) 1.1 ;
 		
-		/*if (player.getJob() == 2)
-		{
-			NumberOfEquipTypes = 2 ;
-		}*/
 		RuneID = (Items.BagIDs[2] + 2 * ForgeLevel + (EquipID + player.getJob()) % NumberOfEquipTypes) ;
 		if (Items.BagIDs[5] <= EquipID)						// the player doesn't have the equip equipped
 		{
@@ -1128,13 +1124,13 @@ public class NPCsMethods
 			Items.EquipsBonus[equiplocalID][1] = 0 ;	// reset the bonus of the equipment
 			--player.getBag()[EquipID] ;
 		}
-		/*if (!Uts.IdentifySave(player, pet, Items.EquipsBonus, 3, maps).equals("save not found"))
-		{
-			Save(player, pet, Uts.IdentifySave(player, pet, Items.EquipsBonus, 3, maps)) ;	
-		}*/
+		//if (!Uts.IdentifySave(player, pet, Items.EquipsBonus, 3, maps).equals("save not found"))
+		//{
+		//	Save(player, pet, Uts.IdentifySave(player, pet, Items.EquipsBonus, 3, maps)) ;	
+		//}
 		return ForgeResult ;
-	}
-	public boolean Crafting(String Choice, Player player, NPCs npc, Items[] items, int[][] Ingredients, int[][] IngredientAmounts, int[][] Products, int[][] ProductAmounts, int[] MousePos, DrawFunctions DF)
+	}*/
+	/*public boolean Crafting(String Choice, Player player, NPCs npc, Items[] items, int[][] Ingredients, int[][] IngredientAmounts, int[][] Products, int[][] ProductAmounts, int[] MousePos, DrawFunctions DF)
 	{
 		int ItemsPerWindow = 10 ;
 		int MaxWindow = Math.max(0, (Products.length - 1)/ItemsPerWindow) ;
@@ -1218,8 +1214,8 @@ public class NPCsMethods
 			}
 		}
 		return PlayerHasTheIngredients ;
-	}
-	public int Shopping(String Choice, Player player, NPCs npc, Items[] items, String mode, int[] ItemsOnSale, int[] MousePos, Image CoinIcon, DrawFunctions DF)
+	}*/
+	/*public int Shopping(String Choice, Player player, NPCs npc, Items[] items, String mode, int[] ItemsOnSale, int[] MousePos, Image CoinIcon, DrawFunctions DF)
 	{
 		int ItemsPerWindow = 10 ;
 		int MaxWindow = Math.max(0, (ItemsOnSale.length - 1)/ItemsPerWindow) ;
@@ -1268,12 +1264,12 @@ public class NPCsMethods
 		}
 		DF.DrawShopping(WindowPos, WindowL, WindowH, SelectedItem[2], SelectedWindow[1], TextPos, mode, items, ItemsOnSale, MousePos, CoinIcon) ;
 		return Menu[npc.getID()] ;
-	}
+	}*/
 	public void Save(Player player, Pet pet, String fileName)
 	{
 		player.Save(fileName, pet) ;
 	}
-	public boolean QuestIsComplete(Player player, Quests[] quest, int QuestID)
+	/*public boolean QuestIsComplete(Player player, Quests[] quest, int QuestID)
 	{
 		int[] PlayerItems = new int[quest[QuestID].getReqItems().length] ;
 		for (int i = 0 ; i <= quest[QuestID].getCounter().length - 1 ; i += 1)
@@ -1302,8 +1298,8 @@ public class NPCsMethods
 			}
 		}
 		return true ;
-	}
-	public void QuestReward(Player player, Pet pet, Quests[] quest, int QuestID)
+	}*/
+	/*public void QuestReward(Player player, Pet pet, Quests[] quest, int QuestID)
 	{
 		for (int i = 0 ; i <= quest[QuestID].getCounter().length/2 - 1 ; ++i)
 		{
@@ -1365,5 +1361,5 @@ public class NPCsMethods
 		{
 			player.getQuestSkills()[9] = true ;
 		}
-	}
+	}*/
 }
