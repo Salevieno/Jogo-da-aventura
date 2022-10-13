@@ -2,6 +2,7 @@ package GameComponents ;
 
 import java.awt.Color ;
 import java.awt.Image ;
+import java.awt.Point;
 import java.util.Arrays;
 
 import Actions.BattleActions;
@@ -56,7 +57,7 @@ public class Creatures extends LiveBeing
 	public int getLevel() {return PA.getLevel() ;}
 	public int getMap() {return Map ;}
 	public int[] getSize() {return Size ;}
-	public int[] getPos() {return PA.getPos() ;}
+	public Point getPos() {return PA.getPos() ;}
 	public int[] getSkill() {return Skill ;}
 	public float[] getLife() {return PA.getLife() ;}
 	public float[] getMp() {return PA.getMp() ;}
@@ -123,22 +124,24 @@ public class Creatures extends LiveBeing
 			}
 		}
 	}
-	public void setRandomPos(Screen screen)
+	public void setRandomPos()
 	{
+		Screen screen = Game.getScreen() ;
 		float[] MinCoord = new float[] {0, (float) (0.2)} ;
 		float[] Range = new float[] {1, 1 - (float) (screen.SkyHeight) / screen.getDimensions()[1]} ;
 		int[] step = new int[] {1, 1} ;
 		PA.setPos(Utg.RandomPos(screen.getDimensions(), MinCoord, Range, step)) ;
 	}
-	public int[] CenterPos()
+	public Point CenterPos()
 	{
-		return new int[] {(int) (PA.getPos()[0] + 0.5 * Size[0]), (int) (PA.getPos()[1] - 0.5 * Size[1])} ;
+		return new Point((int) (PA.getPos().x + 0.5 * Size[0]), (int) (PA.getPos().y - 0.5 * Size[1])) ;
 	}
-	public void UpdatePos(String move, int[] CurrentPos, int step, Screen screen, Maps[] maps, int map)
+	public void updatePos(String move, Point CurrentPos, int step, Maps[] maps, int map)
 	{
-		int[] NewPos = PA.CalcNewPos(move, CurrentPos, step) ;
+		Screen screen = Game.getScreen() ;
+		Point NewPos = PA.CalcNewPos(move, CurrentPos, step) ;
 		// First check if the new pos is inside the screen, then check if it is walkable
-		boolean NewPosIsInsideScreen = (screen.getBorders()[0] < NewPos[0] & screen.getBorders()[1] < NewPos[1] & NewPos[0] < screen.getBorders()[2] & NewPos[1] < screen.getBorders()[3]) ;
+		boolean NewPosIsInsideScreen = (screen.getBorders()[0] < NewPos.x & screen.getBorders()[1] < NewPos.y & NewPos.x < screen.getBorders()[2] & NewPos.y < screen.getBorders()[3]) ;
 		if (NewPosIsInsideScreen)
 		{
 			boolean NewPosIsWalkable = maps[map].GroundIsWalkable(NewPos, null) ;
@@ -156,7 +159,24 @@ public class Creatures extends LiveBeing
 			//setPos(CurrentPos) ;
 		}
 	}
-	public void act(String[] ActionKeys)
+	public void act(Point playerPos, int map, Maps[] maps, DrawFunctions DF)
+	{
+		Think() ;	
+		if (getPersonalAtt().getThought().equals("Move"))
+		{
+			Move(playerPos, getFollow(), map, maps) ;
+			if (countmove % 5 == 0)
+			{
+				getPersonalAtt().setdir(getPersonalAtt().randomDir()) ;	// set random direction
+			}
+			if (getActions()[0][2] == 1)	// If the creature can move
+			{
+				ResetActions() ;
+			}
+		}
+		Draw(DF) ;
+	}
+	public void fight(String[] ActionKeys)
 	{
 		int move = -1 ;
 		if (10 <= PA.getMp()[0])
@@ -245,38 +265,38 @@ public class Creatures extends LiveBeing
 		PA.getMp()[0] += -MPCost ;
 		return damage ;
 	}
-	public void Follow(int[] Pos, int[] Target, int step, float mindist)
+	public void Follow(Point Pos, Point Target, int step, float mindist)
 	{
-		int[] pos = new int[] {Pos[0], Pos[1]} ; // Prevent the method from modifying the original variable Pos
-		float verdist = Math.abs(pos[1] - Target[1]), hordist = Math.abs(pos[0] - Target[0]) ;
-		if (mindist < Utg.dist2D(pos, Target))
+		Point pos = new Point(Pos.x, Pos.y) ; // Prevent the method from modifying the original variable Pos
+		float verdist = Math.abs(pos.y - Target.y), hordist = Math.abs(pos.x - Target.x) ;
+		if (mindist < pos.distance(Target))
 		{
 			if (verdist < hordist)
 			{
-				if (pos[0] < Target[0])
+				if (pos.x < Target.x)
 				{
-					pos[0] += step ;
+					pos.x += step ;
 				}
 				else
 				{
-					pos[0] += -step ;
+					pos.x += -step ;
 				}
 			}
 			else
 			{
-				if (pos[1] < Target[1])
+				if (pos.y < Target.y)
 				{
-					pos[1] += step ;
+					pos.y += step ;
 				}
 				else
 				{
-					pos[1] += -step ;
+					pos.y += -step ;
 				}
 			}
 		}
 		PA.setPos(pos) ;
 	}
-	public void Move(int[] PlayerPos, boolean FollowPlayer, int map, Screen screen, Maps[] maps)
+	public void Move(Point PlayerPos, boolean FollowPlayer, int map, Maps[] maps)
 	{
 		if (PA.Actions[0][2] == 1 & !PA.getName().equals("Dragão") & !PA.getName().equals("Dragon"))	// If the creature can move
 		{
@@ -288,7 +308,7 @@ public class Creatures extends LiveBeing
 			else
 			{
 				String move = PA.getDir() ;
-				UpdatePos(move, PA.getPos(), PA.getStep(), screen, maps, map) ;
+				updatePos(move, PA.getPos(), PA.getStep(), maps, map) ;
 			}				
 		}
 	}
@@ -319,7 +339,7 @@ public class Creatures extends LiveBeing
 		}	
 	}
 
-	public void ApplyBuffsAndNerfs(String action, String type, int att, int BuffNerfLevel, Skills skills, boolean SkillIsActive)
+	public void ApplyBuffsAndNerfs(String action, String type, int att, int BuffNerfLevel, Spells skills, boolean SkillIsActive)
 	{
 		int ActionMult = 1 ;
 		float[][] Buff = new float[14][5] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]

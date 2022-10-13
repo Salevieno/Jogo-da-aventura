@@ -422,7 +422,7 @@ Menu de quests:
 Menu de dicas:
 Montar:
 Tenda:
-Bestiário
+Bestiário:
 
 * Menu de dicas *
 Dica

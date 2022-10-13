@@ -1,6 +1,7 @@
 package GameComponents ;
 
 import java.awt.Image ;
+import java.awt.Point;
 import java.util.Arrays;
 
 public class PersonalAttributes
@@ -10,7 +11,7 @@ public class PersonalAttributes
 	private int Level ;
 	private int continent ;
 	private int map ;
-	private int[] Pos ;
+	private Point Pos ;
 	private String dir ;			// direction of the movement
 	private String Thought ;		// current thought
 	private int[] Size ;
@@ -26,7 +27,7 @@ public class PersonalAttributes
 	protected String currentAction; 
 	protected int countmove ;
 	
-	public PersonalAttributes(String Name, Image[] image, int Level, int continent, int map, int[] Pos, String dir, String Thought, int[] Size, float[] Life, float[] Mp, float Range, int Step, float[] Exp, float[] Satiation, float[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
+	public PersonalAttributes(String Name, Image[] image, int Level, int continent, int map, Point Pos, String dir, String Thought, int[] Size, float[] Life, float[] Mp, float Range, int Step, float[] Exp, float[] Satiation, float[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
 	{
 		this.Name = Name ;
 		this.image = image ;
@@ -57,7 +58,7 @@ public class PersonalAttributes
 	public int getMap() {return map ;}
 	public String getDir() {return dir ;}
 	public String getThought() {return Thought ;}
-	public int[] getPos() {return Pos ;}
+	public Point getPos() {return Pos ;}
 	public int[] getSize() {return Size ;}
 	public float[] getLife() {return Life ;}
 	public float[] getMp() {return Mp ;}
@@ -78,7 +79,7 @@ public class PersonalAttributes
 	public void setMap(int M) {map = M ;}
 	public void setdir(String d) {dir = d ;}
 	public void setThought(String T) {Thought = T ;}
-	public void setPos(int[] P) {Pos = P ;}
+	public void setPos(Point P) {Pos = P ;}
 	public void setSize(int[] S) {Size = S ;}
 	public void setLife(float[] L) {Life = L ;}
 	public void setMp(float[] M) {Mp = M ;}
@@ -117,25 +118,25 @@ public class PersonalAttributes
 		
 		return newPos ;
 	}
-	public int[] CalcNewPos(String dir, int[] CurrentPos, int step)
+	public Point CalcNewPos(String dir, Point CurrentPos, int step)
 	{
-		int[] newPos = new int[2] ;
+		Point newPos = new Point(0, 0) ;
 		step = 1 ;
 		if (dir.equals(Player.MoveKeys[0]))	// North
 		{
-			newPos = new int[] {CurrentPos[0], CurrentPos[1] - step} ;
+			newPos = new Point(CurrentPos.x, CurrentPos.y - step) ;
 		}
 		if (dir.equals(Player.MoveKeys[1]))	// West
 		{
-			newPos = new int[] {CurrentPos[0] - step, CurrentPos[1]} ;
+			newPos = new Point(CurrentPos.x - step, CurrentPos.y) ;
 		}
 		if (dir.equals(Player.MoveKeys[2]))	// South
 		{
-			newPos = new int[] {CurrentPos[0], CurrentPos[1] + step} ;	
+			newPos = new Point(CurrentPos.x, CurrentPos.y + step) ;	
 		}
 		if (dir.equals(Player.MoveKeys[3]))	// East
 		{
-			newPos = new int[] {CurrentPos[0] + step, CurrentPos[1]} ;
+			newPos = new Point(CurrentPos.x + step, CurrentPos.y) ;
 		}
 		
 		return newPos ;
@@ -170,7 +171,7 @@ public class PersonalAttributes
 		System.out.println("Level: " + Level);
 		System.out.println("Continent: " + continent);
 		System.out.println("Map: " + map);
-		System.out.println("Pos: " + Arrays.toString(Pos));
+		System.out.println("Pos: " + Pos);
 		System.out.println("dir: " + dir);
 		System.out.println("Thought: " + Thought);
 		System.out.println("Size: " + Arrays.toString(Size));

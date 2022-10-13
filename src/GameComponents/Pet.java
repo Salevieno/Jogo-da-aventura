@@ -2,6 +2,7 @@ package GameComponents ;
 
 import java.awt.Color ;
 import java.awt.Image ;
+import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -61,7 +62,7 @@ public class Pet extends LiveBeing
 		int Level = 1 ;
 		int Continent = 0 ;
 		int Map = 0 ;
-		int[] Pos = new int[2] ;
+		Point Pos = new Point(0, 0) ;
 		String dir = Player.MoveKeys[0] ;
 		String Thought = "Exist" ;
 		int[] Size = new int[] {image.getWidth(null), image.getHeight(null)} ;	
@@ -103,7 +104,7 @@ public class Pet extends LiveBeing
 	public int[] getSize() {return PA.getSize() ;}
 	public Color getColor() {return color ;}
 	public int getJob() {return Job ;}
-	public int[] getPos() {return PA.getPos() ;}
+	public Point getPos() {return PA.getPos() ;}
 	public int[] getSkill() {return Skill ;}
 	public int getSkillPoints() {return SkillPoints ;}
 	public float[] getLife() {return PA.getLife() ;}
@@ -137,9 +138,9 @@ public class Pet extends LiveBeing
 
 	
 	
-	public int[] CenterPos()
+	public Point CenterPos()
 	{
-		return new int[] {(int) (PA.getPos()[0] + 0.5 * PA.getSize()[0]), (int) (PA.getPos()[1] - 0.5 * PA.getSize()[1])} ;
+		return new Point((int) (PA.getPos().x + 0.5 * PA.getSize()[0]), (int) (PA.getPos().y - 0.5 * PA.getSize()[1])) ;
 	}
 
 	public String Action(String[] ActionKeys)
@@ -167,32 +168,32 @@ public class Pet extends LiveBeing
 		}
 		return "" ;
 	}
-	public void Follow(int[] Pos, int[] Target, int step, float mindist)
+	public void Follow(Point Pos, Point Target, int step, float mindist)
 	{
-		int[] pos = new int[] {Pos[0], Pos[1]} ; // Prevent the method from modifying the original variable Pos
-		float verdist = Math.abs(pos[1] - Target[1]), hordist = Math.abs(pos[0] - Target[0]) ;
-		if (mindist < Utg.dist2D(pos, Target))
+		Point pos = new Point(Pos.x, Pos.y) ; // Prevent the method from modifying the original variable Pos
+		float verdist = Math.abs(pos.y - Target.y), hordist = Math.abs(pos.x - Target.x) ;
+		if (mindist < pos.distance(Target))
 		{
 			if (verdist < hordist)
 			{
-				if (pos[0] < Target[0])
+				if (pos.x < Target.x)
 				{
-					pos[0] += step ;
+					pos.x += step ;
 				}
 				else
 				{
-					pos[0] += -step ;
+					pos.x += -step ;
 				}
 			}
 			else
 			{
-				if (pos[1] < Target[1])
+				if (pos.y < Target.y)
 				{
-					pos[1] += step ;
+					pos.y += step ;
 				}
 				else
 				{
-					pos[1] += -step ;
+					pos.y += -step ;
 				}
 			}
 		}
@@ -200,7 +201,7 @@ public class Pet extends LiveBeing
 	}
 	public void Move(Player player,  Maps[] maps)
 	{
-		int[] NextPos = new int[2] ;
+		Point NextPos = new Point(0, 0) ;
 		Follow(PA.getPos(), player.getPos(), PA.getStep(), PA.getStep()) ;
 		if (maps[player.getMap()].GroundIsWalkable(NextPos, player.getElem()[4]))
 		{
@@ -315,7 +316,7 @@ public class Pet extends LiveBeing
 			bW.write("\nPet size: \n" + Arrays.toString(getSize())) ;
 			bW.write("\nPet color: \n" + getColor()) ;
 			bW.write("\nPet job: \n" + getJob()) ;
-			bW.write("\nPet coords: \n" + Arrays.toString(getPos())) ;
+			bW.write("\nPet coords: \n" + getPos()) ;
 			bW.write("\nPet skill: \n" + Arrays.toString(getSkill())) ;
 			bW.write("\nPet skillPoints: \n" + getSkillPoints()) ;
 			bW.write("\nPet life: \n" + Arrays.toString(getLife())) ;
@@ -356,7 +357,7 @@ public class Pet extends LiveBeing
 		PA.setSize((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 2)]), "String", "int")) ;
 		color = Utg.toColor(ReadFile[2*(NumberOfPlayerAttributes + 3)])[0] ;
 		Job = Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 4)][0]) ;
-		PA.setPos((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 5)]), "String", "int")) ;
+		PA.setPos((Point) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 5)]), "String", "int")) ;
 		Skill = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 6)]), "String", "int") ;
 		SkillPoints = Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 7)][0]) ;
 		PA.setLife((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 8)]), "String", "float")) ;

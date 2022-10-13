@@ -3,6 +3,7 @@ package Main ;
 import java.awt.Color ;
 import java.awt.Font ;
 import java.awt.Image ;
+import java.awt.Point;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon ;
@@ -15,7 +16,8 @@ import GameComponents.NPCs ;
 import GameComponents.Pet ;
 import GameComponents.Player ;
 import GameComponents.Quests ;
-import GameComponents.Skills ;
+import GameComponents.Screen;
+import GameComponents.Spells ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Graphics.DrawPrimitives ;
@@ -42,10 +44,10 @@ public class NPCsMethods
 	private static Font NPCTextFont ;
 	private static Image SpeakingBubbleImage, BoatImage ;
 	
-	public NPCsMethods(Player player, int[] MainWinDim, String ImagesPath, String[][] AllText, int[] AllTextCat, Icon[] icons)
+	public NPCsMethods(Player player, String ImagesPath, String[][] AllText, int[] AllTextCat, Icon[] icons)
 	{
-		ScreenL = MainWinDim[0] ;
-		ScreenH = MainWinDim[1] ;
+		ScreenL = Game.getScreen().getDimensions()[0] ;
+		ScreenH = Game.getScreen().getDimensions()[1] ;
 		this.AllText = AllText ;
 		this.AllTextCat = AllTextCat ;
 		this.icons = icons ;
@@ -82,7 +84,7 @@ public class NPCsMethods
 		SpeakingBubbleImage = new ImageIcon(ImagesPath + "SpeakingBubble.png").getImage() ;
 		BoatImage = new ImageIcon(ImagesPath + "Boat.png").getImage() ;
 	}
-	public void Contact(Player player, Pet pet, CreatureTypes[] creatureTypes, Creatures[] creatures, Skills[] skills, Maps[] maps, NPCs npc, Items[] items, Quests[] quest, int[] MousePos, boolean TutorialIsOn, Image CoinIcon, Animations Ani, DrawFunctions DF)
+	public void Contact(Player player, Pet pet, CreatureTypes[] creatureTypes, Creatures[] creatures, Spells[] skills, Maps[] maps, NPCs npc, Quests[] quest, Point MousePos, boolean TutorialIsOn, Image CoinIcon, Animations Ani, DrawFunctions DF)
 	{
 		String Choice = player.action ;
 		TextCat = Uts.FindTextPos(AllText, "* " + npc.getName() + " *") ;
@@ -294,18 +296,18 @@ public class NPCsMethods
 		{	
 			if (Tax*player.getGold()[1] <= player.getGold()[0])
 			{	
-				int[] WindowPos = new int[] {(int)(0.5*ScreenL) - 10, (int)(0.5*ScreenH)} ;
+				Point WindowPos = new Point((int)(0.5*ScreenL) - 10, (int)(0.5*ScreenH)) ;
 				//DP.DrawRoundRect(WindowPos, "BotLeft", 40 + 10*TypedDeposit.length(), (int)(1.8*Utg.TextH(FontSize)), 1, Color.white, Color.lightGray, true) ;
 				DP.DrawImage(CoinIcon, WindowPos, Textangle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
 				DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
 				if (!Choice.equals("Enter"))
 				{
-					TypedDeposit = Uts.LiveTyping(new int[] {WindowPos[0] + 30, WindowPos[1] - 8}, Textangle, Choice, NPCTextFont, npc.getColor(), DP) ;			
+					TypedDeposit = Uts.LiveTyping(new Point(WindowPos.x + 30, WindowPos.y - 8), Textangle, Choice, NPCTextFont, npc.getColor(), DP) ;			
 				}
 				if (Choice.equals("Enter"))
 				{
 					Menu[npc.getID()] = 3 ;
-					Uts.LiveTyping(new int[] {WindowPos[0] + 30, WindowPos[1] - 8}, Textangle, Choice, NPCTextFont, Color.yellow, DP) ;	// Clean the typed text
+					Uts.LiveTyping(new Point(WindowPos.x + 30, WindowPos.y - 8), Textangle, Choice, NPCTextFont, Color.yellow, DP) ;	// Clean the typed text
 					if (!TypedDeposit.equals("") & Utg.isNumeric(TypedDeposit))
 					{
 						Deposit = Integer.parseInt(TypedDeposit) ;	
@@ -336,18 +338,18 @@ public class NPCsMethods
 			}
 		}  else if (Menu[npc.getID()] == 2)
 		{
-			int[] WindowPos = new int[] {(int)(0.5*ScreenL) - 10, (int)(0.5*ScreenH)} ;
+			Point WindowPos = new Point((int)(0.5*ScreenL) - 10, (int)(0.5*ScreenH)) ;
 			//DP.DrawRoundRect(WindowPos, "BotLeft", 40 + 10*TypedWithdraw.length(), (int)(1.8*Utg.TextH(FontSize)), 1, Color.white, Color.lightGray, true) ;
 			DP.DrawImage(CoinIcon, WindowPos, Textangle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
 			DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
 			if (!Choice.equals("Enter"))
 			{
-				TypedWithdraw = Uts.LiveTyping(new int[] {WindowPos[0] + 30, WindowPos[1] - 8}, Textangle, Choice, NPCTextFont, Color.yellow, DP) ;			
+				TypedWithdraw = Uts.LiveTyping(new Point(WindowPos.x + 30, WindowPos.y - 8), Textangle, Choice, NPCTextFont, Color.yellow, DP) ;			
 			}
 			if (Choice.equals("Enter"))
 			{
 				Menu[npc.getID()] = 3 ;
-				Uts.LiveTyping(new int[] {(int)(0.3*ScreenL), (int)(0.5*ScreenH)}, Textangle, Choice, NPCTextFont, Color.yellow, DP) ;	// Clean the typed text
+				Uts.LiveTyping(new Point((int)(0.3*ScreenL), (int)(0.5*ScreenH)), Textangle, Choice, NPCTextFont, Color.yellow, DP) ;	// Clean the typed text
 				if (!TypedWithdraw.equals("") & Utg.isNumeric(TypedWithdraw))
 				{
 					Withdraw = Integer.parseInt(TypedWithdraw) ;	
@@ -602,7 +604,7 @@ public class NPCsMethods
 		}
 		return Menu[npc.getID()] ;
 	}
-	public int Master(String Choice, Player player, Pet pet, Skills[] skills, NPCs npc, int[] MousePos, DrawFunctions DF)
+	public int Master(String Choice, Player player, Pet pet, Spells[] skills, NPCs npc, Point MousePos, DrawFunctions DF)
 	{
 		int[] NumberOfSkillsAvailable = new int[] {14, 15, 15, 14, 14} ;
 		if (Menu[npc.getID()] == 0)
@@ -657,7 +659,7 @@ public class NPCsMethods
 					for (int col = 0 ; col <= Sequence[row] - 1 ; col += 1)
 					{
 						int[] RectCenter = new int[] {(int) (Pos[0] + x0[Sequence[row] - 1] + (l + Sx)*col + l/2), (int) (Pos[1] - H + h/2 + Sy/2 + (h + Sy)*row)} ;
-						if (Utg.isInside(MousePos, new int[] {RectCenter[0] - l/2, RectCenter[1] - h/2}, l, h))
+						if (Utg.isInside(MousePos, new Point(RectCenter[0] - l/2, RectCenter[1] - h/2), l, h))
 						{
 							SelectedSkill = id ;
 						}

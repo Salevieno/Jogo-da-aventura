@@ -3,6 +3,7 @@ package GameComponents ;
 import java.awt.Color ;
 import java.awt.Font ;
 import java.awt.Image ;
+import java.awt.Point;
 import java.awt.event.KeyEvent ;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -24,11 +25,15 @@ import Items.Food;
 import Items.Forge;
 import Items.Equip;
 import Items.GeneralItem;
+import Items.Item;
 import Items.PetItem;
 import Items.Potion;
-import Items.Quest;
+import Items.QuestItem;
 import Main.Uts ;
+import Windows.Bag;
+import Windows.Quest;
 import Main.Game ;
+import Main.Settings;
 import Main.Utg ;
 
 public class Player extends LiveBeing
@@ -42,6 +47,7 @@ public class Player extends LiveBeing
 	private int[] Quest ;
 	//private int[] Bag ;
 	private Bag bag ;
+	private Quest quest ;
 	private int[] Equips ;		// 0: Weapon, 1: Shield, 2: Armor, 3: Arrow]
 	private int SkillPoints ;
 	private float[] ElemMult ;	// 0: Neutral, 1: Water, 2: Fire, 3: Plant, 4: Earth, 5: Air, 6: Thunder, 7: Light, 8: Dark, 9: Snow
@@ -64,7 +70,7 @@ public class Player extends LiveBeing
 	private int[] SelectedItem = new int[2] ;
 	private int ItemsMenu ;
 	private String CustomKey ;
-    public Object[] OptionStatus ;
+	private Settings settings ;
     public int ClosestCreature ;
     public int CreatureInBattle ;
     public int DifficultLevel ;
@@ -100,8 +106,7 @@ public class Player extends LiveBeing
 	public static Image[] Images = new Image[] {PlayerBack, PlayerFront, PlayerLeft, PlayerRight, PlayerBack2, PlayerFront2, PlayerLeft2, PlayerRight2} ;
     
     public static Image BookImage = new ImageIcon(Game.ImagesPath + "Book.png").getImage() ;
-    public static Image TentImage = new ImageIcon(Game.ImagesPath + "Tent.png").getImage() ;
-    public static Image QuestImage = new ImageIcon(Game.ImagesPath + "Quest.png").getImage() ;
+    public static Image TentImage = new ImageIcon(Game.ImagesPath + "Tent.png").getImage() ;   
     public static Image DragonAuraImage = new ImageIcon(Game.ImagesPath + "DragonAura.png").getImage() ;
     //public static Image BagMenuImage = new ImageIcon(Game.ImagesPath + "BagMenu.png").getImage() ;
     //public static Image BagSlotImage = new ImageIcon(Game.ImagesPath + "BagSlot.png").getImage() ;
@@ -122,7 +127,8 @@ public class Player extends LiveBeing
 		Quest = new int[Quests.NumberOfQuests] ;
 		//Bag = new int[Items.NumberOfAllItems] ;
 		bag = new Bag(new Potion[] {}, new Alchemy[] {}, new Forge[] {}, new PetItem[] {}, new Food[] {},
-				new Arrow[] {}, new Equip[] {}, new GeneralItem[] {}, new Fab[] {}, new Quest[] {}) ;
+				new Arrow[] {}, new Equip[] {}, new GeneralItem[] {}, new Fab[] {}, new QuestItem[] {}) ;
+		quest = new Quest() ;
 		Equips = new int[NumberOfEquipTypes] ;
 		SkillPoints = 0 ;
 		Color[] ColorPalette = Uts.ReadColorPalette(new ImageIcon(Game.ImagesPath + "ColorPalette.png").getImage(), "Normal") ;
@@ -161,9 +167,11 @@ public class Player extends LiveBeing
 	    CreatureInBattle = -1 ;
 	    DifficultLevel = 1 ;
 		EquipsBonus = Items.EquipsBonus ;
-		OptionStatus = new Object[] {true, true, false, 1, 1} ;	// Music, sound effects, player range
+		settings = new Settings(true, true, false, 1, 1) ;
+		//OptionStatus = new Object[] {true, true, false, 1, 1} ;
 		WindowIsOpen[9] = true ;
 	}
+	
 
 	private static PersonalAttributes InitializePersonalAttributes(String Name, int Job)
 	{
@@ -171,7 +179,7 @@ public class Player extends LiveBeing
     	int Level = 1 ;
 		int Continent = 0 ;
 		int Map = Job ;
-		int[] Pos = new int[] {0, 0} ;
+		Point Pos = new Point(0, 0) ;
 		String dir = Player.MoveKeys[0] ;
 		String Thought = "Exist" ;
 		int[] Size = new int[] {Images[0].getWidth(null), Images[0].getHeight(null)} ;
@@ -222,7 +230,7 @@ public class Player extends LiveBeing
 	public int getProJob() {return ProJob ;}	
 	public int getContinent() {return PA.getContinent() ;}
 	public int getMap() {return PA.getMap() ;}
-	public int[] getPos() {return PA.getPos() ;}
+	public Point getPos() {return PA.getPos() ;}
 	public int[] getSpell() {return Spell ;}
 	public int[] getQuest() {return Quest ;}
 	//public int[] getBag() {return Bag ;}
@@ -264,10 +272,11 @@ public class Player extends LiveBeing
 	public float[][] getChanceIncrease() {return ChanceIncrease ;}
 	public int[] getCreaturesDiscovered() {return CreaturesDiscovered ;}
 	public String getAction() {return action ;}
+	public Settings getSettings() {return settings ;}
 	public void setSize(int[] S) {PA.setSize(S) ;}
 	public void setProJob(int PJ) {ProJob = PJ ;}
 	public void setMap(int M, Maps[] maps) {PA.setMap(M) ; PA.setContinent(maps[PA.getMap()].getContinent()) ;}
-	public void setPos(int[] P) {PA.setPos(P) ;}
+	public void setPos(Point P) {PA.setPos(P) ;}
 	//public void setBag(int[] B) {Bag = B ;}
 	public void setBag(Bag b) {bag = b ;}
 	public void setStep(int S) {PA.setStep(S) ;}
@@ -288,7 +297,7 @@ public class Player extends LiveBeing
 		}
 		return false ;
 	}
-	public boolean hasEnoughMP(Skills[] spell, int spellID)
+	public boolean hasEnoughMP(Spells[] spell, int spellID)
 	{
 		return (spell[spellID].getMpCost() <= PA.getMp()[0]);
 	}
@@ -311,9 +320,10 @@ public class Player extends LiveBeing
 			PA.setdir(Player.MoveKeys[3]) ;
 		}
 	}
-	public void Move(Pet pet, Maps[] maps, Screen screen, Clip[] Music, boolean MusicIsOn, Animations Ani)
+	public void Move(Pet pet, Maps[] maps, Clip[] Music, boolean MusicIsOn, Animations Ani)
 	{
-		int[] NewPos = PA.CalcNewPos(getDir(), PA.getPos(), PA.getStep()) ;
+		Point NewPos = PA.CalcNewPos(getDir(), PA.getPos(), PA.getStep()) ;
+		Screen screen = Game.getScreen() ;
 		if (screen.posIsInMap(NewPos))	// if the player's new position is inside the map
 		{	
 			if (!Ani.isActive(10) & !Ani.isActive(12) & !Ani.isActive(13) & !Ani.isActive(15) & !Ani.isActive(18))
@@ -330,7 +340,7 @@ public class Player extends LiveBeing
 			//boolean NewPosIsWalkable = Uts.GroundIsWalkable(maps[PA.getMap()].getType()[NewPos[0]][NewPos[1]], Elem[4]) ; -> this has to be on the new map
 			if (true)
 			{
-				MoveToNewMap(pet, screen, maps, action, Music, MusicIsOn, Ani) ;
+				MoveToNewMap(pet, maps, action, Music, MusicIsOn, Ani) ;
 			}
 		}
 		
@@ -340,7 +350,7 @@ public class Player extends LiveBeing
 			PA.countmove = 0 ;
 		}
 	}
-	public void act(Pet pet, Maps[] maps, Skills[] spell, Screen screen, int[] MousePos, Icon Selectedbutton, Icon[] sideBarIcons, Animations Ani)
+	public void act(Pet pet, Maps[] maps, Spells[] spell, Point MousePos, Icon Selectedbutton, Icon[] sideBarIcons, Animations Ani, DrawFunctions DF)
 	{
 		if (ActionIsAMove(action))
 		{
@@ -358,7 +368,7 @@ public class Player extends LiveBeing
 					}	
 					if (i == 1)
 					{
-						WindowIsOpen[0] = !WindowIsOpen[0] ;	// Bag
+						bag.open() ;
 					}
 					if (i == 2)
 					{
@@ -385,7 +395,7 @@ public class Player extends LiveBeing
 		}
 		if (action.equals(ActionKeys[4]))	// Bag
 		{
-			WindowIsOpen[0] = !WindowIsOpen[0] ;
+			bag.open() ;
 		}
 		if (action.equals(ActionKeys[5]))	// Player window
 		{
@@ -410,7 +420,7 @@ public class Player extends LiveBeing
 		}
 		if (action.equals(ActionKeys[9]))							// Quest window
 		{
-			WindowIsOpen[6] = !WindowIsOpen[6] ;
+			quest.open() ;
 		}
 		if (action.equals(ActionKeys[10]))							// Hints window
 		{
@@ -430,9 +440,59 @@ public class Player extends LiveBeing
 			WindowIsOpen[1] = !WindowIsOpen[1] ;
 		}
 		
+		// support skills
 		if (Uts.ActionIsSkill(SkillKeys, action) & (!isInBattle() | canAtk()) & Utg.IndexOf(SkillKeys, action) < activeSpells(spell).length)
 		{
 			SupSpell(pet, activeSpells(spell)[Utg.IndexOf(SkillKeys, action)], spell) ;
+		}
+		
+		// navigating through bag
+		if (bag.isOpen())
+		{
+			if (bag.getTab() == 0)
+			{
+				if (action.equals(Player.ActionKeys[2]))
+				{
+					bag.menuUp() ;
+				}
+				if (action.equals(Player.ActionKeys[0]))
+				{
+					bag.menuDown() ;
+				}
+			}
+			if (bag.getTab() == 1)
+			{
+				if (action.equals(Player.ActionKeys[2]))
+				{
+					bag.itemUp() ;
+				}
+				if (action.equals(Player.ActionKeys[0]))
+				{
+					bag.itemDown() ;
+				}
+				if (action.equals(Player.ActionKeys[3]))
+				{
+					bag.windowUp() ;
+				}
+				if (action.equals(Player.ActionKeys[1]))
+				{
+					bag.windowDown() ;
+				}
+				if (action.equals("Enter") | action.equals("MouseLeftClick"))
+				{
+					UseItem(this, bag.getSelectedItem()) ;
+				}
+			}
+			
+			if (action.equals("Enter") | action.equals("MouseLeftClick"))
+			{
+				bag.tabUp() ;
+			}
+			if (action.equals("Escape") | action.equals("MouseRightClick"))
+			{
+				bag.tabDown() ;
+				bag.setItem(0) ;
+			}
 		}
 		
 		// if meets creature, enters battle
@@ -448,18 +508,18 @@ public class Player extends LiveBeing
 		// Check if there is an animation on, if not, check if there is some ground effect to apply
 		if (!Ani.SomeAnimationIsActive())
 		{
-			AdjacentGroundEffect(screen, maps[PA.getMap()]) ;
+			AdjacentGroundEffect(maps[PA.getMap()]) ;
 		}
 		
 		setCombo(Uts.RecordCombo(Combo, action, 10)) ;
 	}
-	public void AdjacentGroundEffect(Screen screen, Maps map)
+	public void AdjacentGroundEffect(Maps map)
 	{
-		if (Uts.CheckAdjacentGround(PA.getPos(), screen, map, "Lava").equals("Inside") & !PA.Elem[4].equals("f"))
+		if (Uts.CheckAdjacentGround(PA.getPos(), map, "Lava").equals("Inside") & !PA.Elem[4].equals("f"))
 		{
 			PA.incLife(-5) ;
 		}
-		if (Uts.isAdjacentTo(PA.getPos(), screen, map, "Water"))
+		if (Uts.isAdjacentTo(PA.getPos(),  map, "Water"))
 		{
 			PA.incThirst(1) ;
 		}
@@ -501,8 +561,8 @@ public class Player extends LiveBeing
 			/* Meeting with creatures */
 			if (isInBattle())
 			{
-				distx = Math.abs(PA.getPos()[0] - creature[CreatureInBattle].getPos()[0]) ;
-				disty = Math.abs(PA.getPos()[1] - PA.getSize()[1] / 2 - creature[CreatureInBattle].getPos()[1]) ;
+				distx = Math.abs(PA.getPos().x - creature[CreatureInBattle].getPos().x) ;
+				disty = Math.abs(PA.getPos().y - PA.getSize()[1] / 2 - creature[CreatureInBattle].getPos().y) ;
 				if (distx <= (PA.getSize()[0] + creature[CreatureInBattle].getSize()[0]) / 2 & disty <= (PA.getSize()[1] + creature[CreatureInBattle].getSize()[1]) / 2 & !Ani.isActive(10) & !Ani.isActive(19))
 				{
 					return new int[] {0, CreatureInBattle} ;
@@ -511,8 +571,8 @@ public class Player extends LiveBeing
 			for (int i = 0 ; i <= map.getCreatureIDs().length - 1 ; ++i)
 			{
 				int ID = map.getCreatureIDs()[i] ;
-				distx = Utg.dist1D(PA.getPos()[0], creature[ID].getPos()[0]) ;
-				disty = Utg.dist1D(PA.getPos()[1] - PA.getSize()[1] / 2, creature[ID].getPos()[1]) ;
+				distx = Utg.dist1D(PA.getPos().x, creature[ID].getPos().x) ;
+				disty = Utg.dist1D(PA.getPos().y - PA.getSize()[1] / 2, creature[ID].getPos().y) ;
 				if (distx <= (PA.getSize()[0] + creature[ID].getSize()[0]) / 2 & disty <= (PA.getSize()[1] + creature[ID].getSize()[1]) / 2 & !Ani.isActive(10) & !Ani.isActive(19))
 				{
 					return new int[] {0, ID} ;
@@ -528,8 +588,8 @@ public class Player extends LiveBeing
 				int NPCID = map.NPCsInMap[i] ;
 				if (-1 < NPCID)
 				{
-					distx = (float) Math.abs(PA.getPos()[0] - npc[NPCID].getPos()[0]) ;	
-					disty = (float) Math.abs(PA.getPos()[1] - npc[NPCID].getPos()[1]) ;
+					distx = (float) Math.abs(PA.getPos().x - npc[NPCID].getPos().x) ;	
+					disty = (float) Math.abs(PA.getPos().y - npc[NPCID].getPos().y) ;
 					if (distx <= 0.5*PA.getSize()[0] & disty <= 0.5*PA.getSize()[1])
 					{
 						return new int[] {1, NPCID} ;
@@ -539,21 +599,21 @@ public class Player extends LiveBeing
 		}
 		return new int[] {-1, -1} ;
 	}
-	public void Collect(int Coltype, Screen screen, Maps[] maps, Items[] items, String[][] AllText, int[] AllTextCat, DrawFunctions DF, Animations Ani)
+	public void Collect(int Coltype, Maps[] maps, String[][] AllText, int[] AllTextCat, DrawFunctions DF, Animations Ani)
 	{
 		int TextCat = AllTextCat[9] ;
-		String CollectMessage ;
+		String CollectMessage = "";
 		if (Coltype == 0)	// Collectible type
 		{
-			CollectMessage = AllText[TextCat][6] + " " + items[Items.BagIDs[3]].getName() + "!" ;
+			//CollectMessage = AllText[TextCat][6] + " " + items[Items.BagIDs[3]].getName() + "!" ;
 		} else
 		{
-			CollectMessage = AllText[TextCat][6] + " " + items[Coltype + Items.BagIDs[0] - 1].getName() + "!" ;
+			//CollectMessage = AllText[TextCat][6] + " " + items[Coltype + Items.BagIDs[0] - 1].getName() + "!" ;
 		}
 		Ani.SetAniVars(10, new Object[] {100, PA.getPos(), 10, Coltype, CollectMessage}) ;
 		Ani.StartAni(10) ;
 		
-		maps[PA.getMap()].getType()[PA.getPos()[0]][PA.getPos()[1]] = "free" ;	// Make the ground where the player is standing free
+		maps[PA.getMap()].getType()[PA.getPos().x][PA.getPos().y] = "free" ;	// Make the ground where the player is standing free
 		
 		// The collecting act itself
 		int CollectibleID = -1 ;
@@ -604,60 +664,61 @@ public class Player extends LiveBeing
 			CollectibleID = -1 ;
 		}
 		
-		maps[PA.getMap()].CreateCollectible(screen, PA.getMap(), CollectibleID) ;	
+		maps[PA.getMap()].CreateCollectible(PA.getMap(), CollectibleID) ;	
 	}
-	public void MoveToNewMap(Pet pet, Screen screen, Maps[] maps, String action, Clip[] Music, boolean MusicIsOn, Animations Ani)
+	public void MoveToNewMap(Pet pet, Maps[] maps, String action, Clip[] Music, boolean MusicIsOn, Animations Ani)
 	{
+		Screen screen = Game.getScreen() ;
 		int[] screenDim = screen.getDimensions() ;
 		int[] borders = screen.getBorders() ;
 		int NextMap = -1 ;
 		int Step = PA.getStep() ;
-		int[] CurrentPos = Arrays.copyOf(PA.getPos(), PA.getPos().length), NextPos = new int[2] ;
+		Point CurrentPos = new Point(PA.getPos().x, PA.getPos().y), NextPos = new Point(0, 0) ;
 		int[] MapCon = maps[PA.getMap()].getConnections() ;
 		if (action.equals(MoveKeys[0]))	 // Up
 		{
-			NextPos = new int[] {CurrentPos[0], borders[3] - Step} ;
-			if (-1 < MapCon[0] & CurrentPos[0] <= screenDim[0] / 2)
+			NextPos = new Point(CurrentPos.x, borders[3] - Step) ;
+			if (-1 < MapCon[0] & CurrentPos.x <= screenDim[0] / 2)
 			{
 				NextMap = MapCon[0] ;
 			}
-			else if (-1 < MapCon[7] & screenDim[0] / 2 < CurrentPos[0])
+			else if (-1 < MapCon[7] & screenDim[0] / 2 < CurrentPos.x)
 			{
 				NextMap = MapCon[7] ;
 			}			
 		}
 		if (action.equals(MoveKeys[1]))	 // Left
 		{
-			NextPos = new int[] {borders[2] - Step, CurrentPos[1]} ;
-			if (-1 < MapCon[1] & CurrentPos[1] <= screenDim[1] / 2)
+			NextPos = new Point(borders[2] - Step, CurrentPos.y) ;
+			if (-1 < MapCon[1] & CurrentPos.y <= screenDim[1] / 2)
 			{
 				NextMap = MapCon[1] ;
 			}
-			else if (-1 < MapCon[2] & screenDim[1] / 2 < CurrentPos[1])
+			else if (-1 < MapCon[2] & screenDim[1] / 2 < CurrentPos.y)
 			{
 				NextMap = MapCon[2] ;
 			}		
 		}
 		if (action.equals(MoveKeys[2]))	 // Down
 		{
-			NextPos = new int[] {CurrentPos[0], borders[1] + Step} ;
-			if(-1 < MapCon[3] & CurrentPos[0] <= screenDim[0] / 2)
+			NextPos = new Point(CurrentPos.x, borders[1] + Step) ;
+			if(-1 < MapCon[3] & CurrentPos.x <= screenDim[0] / 2)
 			{
 				NextMap = MapCon[3] ;
 			}
-			else if(-1 < MapCon[4] & screenDim[0] / 2 < CurrentPos[0])
+			else if(-1 < MapCon[4] & screenDim[0] / 2 < CurrentPos.x)
 			{
 				NextMap = MapCon[4] ;	
 			}
 		}
 		if (action.equals(MoveKeys[3]))	 // Right
 		{			
-			NextPos = new int[] {borders[0] + Step, CurrentPos[1]} ;
-			if(-1 < MapCon[5] & screenDim[1] / 2 < CurrentPos[1])
+			NextPos = new Point(borders[0] + Step, CurrentPos.y) ;
+			if(-1 < MapCon[5] & screenDim[1] / 2 < CurrentPos.y)
 			{
 				NextMap = MapCon[5] ;
 			}
-			else if(-1 < MapCon[6] & CurrentPos[1] <= screenDim[1] / 2)
+			else if(-1 < MapCon[6] & CurrentPos.y <= screenDim[1] / 2)
 			{
 				NextMap = MapCon[6] ;
 			}
@@ -694,7 +755,7 @@ public class Player extends LiveBeing
 			}
 		}
 	}
-	public void SupSkillCounters(Skills[] spell, Creatures[] creature, int CreatureID)
+	public void SupSkillCounters(Spells[] spell, Creatures[] creature, int CreatureID)
 	{
 		for (int s = 0 ; s <= Spell.length - 1 ; s += 1)
 		{
@@ -746,7 +807,7 @@ public class Player extends LiveBeing
 		}
 		return NumberOfProSkills ;
 	}
-	public int[] activeSpells(Skills[] spell)
+	public int[] activeSpells(Spells[] spell)
 	{
 		int[] ActiveSkills = null ;
 		for (int i = 0 ; i <= spell.length - 1 ; i += 1)
@@ -835,7 +896,7 @@ public class Player extends LiveBeing
 		PA.setLife(new float[] {PA.getLife()[0], PA.getLife()[1]}) ;
 	}
 	
-	public void QuestWindow(CreatureTypes[] creatureTypes, Creatures[] creatures, Quests[] quest, Items[] items, int[] MousePos, DrawFunctions DF)
+	public void QuestWindow(CreatureTypes[] creatureTypes, Creatures[] creatures, Quests[] quest, Items[] items, Point MousePos, DrawFunctions DF)
 	{
 		int[] windowLimit = new int[] {8, 0, 0, 1, 0, 0} ;
 		int[] ActiveQuests = Utg.ArrayWithValuesGreaterThan(Quest, -1) ;
@@ -900,55 +961,58 @@ public class Player extends LiveBeing
 	{
 		return Utg.isNumeric(BA.getCurrentAction()) ;
 	}*/
-	public void ShowWindows(Pet pet, Creatures[] creature, CreatureTypes[] creatureTypes, Quests[] quest, Screen screen, Items[] items, Maps[] maps, Icon[] icon, Battle B, String[][] AllText, int[] AllTextCat, Clip[] Music, boolean MusicIsOn, boolean SoundEffectsAreOn, int[] MousePos, Image CoinIcon, DrawFunctions DF)
+	public void ShowWindows(Pet pet, Creatures[] creature, CreatureTypes[] creatureTypes, Quests[] quests, Maps[] maps, Icon[] icon, Battle B, String[][] AllText, int[] AllTextCat, Clip[] Music, boolean MusicIsOn, boolean SoundEffectsAreOn, Point MousePos, Image CoinIcon, DrawFunctions DF)
 	{
-		if (WindowIsOpen[0])
+		int[] screenDim = Game.getScreen().getDimensions() ;
+		if (bag.isOpen())
 		{
 			//Bag(pet, creature, screen.getDimensions(), AllTextCat, AllText, items, B, MousePos, DF) ;
-			bag.display(screen.getDimensions(), MousePos, DF) ;
+			bag.display(MousePos, AllTextCat, AllText, DF) ;
 		}
 		if (WindowIsOpen[2])
 		{
-			AttWindow(AllText, AllTextCat, items, icon, screen.getDimensions(), getAttIncrease()[getProJob()], MousePos, CoinIcon, DF.getDrawPrimitives()) ;
+			AttWindow(AllText, AllTextCat, icon, screenDim, getAttIncrease()[getProJob()], MousePos, CoinIcon, DF.getDrawPrimitives()) ;
 		}
 		if (WindowIsOpen[4])
 		{		
-			FabBook(items, MousePos, DF) ;
+			//FabBook(items, MousePos, DF) ;
 		}
 		Tent() ;
 		if (WindowIsOpen[3])
 		{
-			DF.DrawPetWindow(pet, new int[] {(int)(0.1*screen.getDimensions()[0]), (int)(0.9*screen.getDimensions()[1])}) ;
+			DF.DrawPetWindow(pet, new Point((int)(0.1*screenDim[0]), (int)(0.9*screenDim[1]))) ;
 		}
 		if (WindowIsOpen[5])
 		{
 			DF.DrawMap(PA.getMap(), PA.getDir(), maps) ;
 		}		
-		if (WindowIsOpen[6])
+		if (quest.isOpen())
 		{
-			QuestWindow(creatureTypes, creature, quest, items, MousePos, DF) ;
+			quest.display(DF) ;
+			//QuestWindow(creatureTypes, creature, quest, items, MousePos, DF) ;
 		}
 		if (WindowIsOpen[1])
 		{
-			Bestiary(creatureTypes, items, getCreaturesDiscovered(), MousePos, DF) ;
+			//Bestiary(creatureTypes, items, getCreaturesDiscovered(), MousePos, DF) ;
 		}
 		if (WindowIsOpen[7])
 		{
-			Object[] OptionStatus = OptionsWindow(Music, DF) ;
-			MusicIsOn = (boolean) OptionStatus[0] ;
+			OptionsWindow(Music, DF) ;
+			//Object[] OptionStatus = OptionsWindow(Music, DF) ;
+			/*MusicIsOn = (boolean) OptionStatus[0] ;
 			SoundEffectsAreOn = (boolean) OptionStatus[1] ;
 			
 			if (!MusicIsOn)
 			{
 				Utg.StopMusic(Music[Maps.Music[getMap()]]) ;
-			}
+			}*/
 		}
 		if (WindowIsOpen[8])
 		{
-			HintsMenu(screen.getDimensions(), MousePos, ClassColors[getJob()], DF) ;
+			HintsMenu(MousePos, ClassColors[getJob()], DF) ;
 		}
 	}
-	public void TreasureChestReward(int ChestID, Image CoinIcon, Maps[] maps, Items[] items, Animations Ani)
+	public void TreasureChestReward(int ChestID, Image CoinIcon, Maps[] maps, Animations Ani)
 	{
 		int[][] ItemRewards = new int[][] {{}, {455 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * Job}, {456 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * Job}, {457 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * Job}, {}, {134, 134, 134, 134, 134, 135, 135, 135, 135, 135}, {1346, 1348, 1349, 1350, 1351}} ;
 		int[][] GoldRewards = new int[][] {{2000, 2000, 2000, 2000, 2000}, {}, {}, {}, {4000, 4000, 4000, 4000, 4000}, {}, {}} ;
@@ -965,9 +1029,9 @@ public class Player extends LiveBeing
 		{
 			Gold[0] += GoldRewards[ChestID][j] ;
 		}
-		maps[PA.getMap()].getType()[PA.getPos()[0]][PA.getPos()[1]] = "free" ;
-		Ani.SetAniVars(18, new Object[] {100, items, ItemRewards, GoldRewards, color[0], CoinIcon}) ;
-		Ani.StartAni(18) ;
+		maps[PA.getMap()].getType()[PA.getPos().x][PA.getPos().y] = "free" ;
+		//Ani.SetAniVars(18, new Object[] {100, items, ItemRewards, GoldRewards, color[0], CoinIcon}) ;
+		//Ani.StartAni(18) ;
 	}
 	public void SpendArrow()
 	{
@@ -998,7 +1062,7 @@ public class Player extends LiveBeing
 		}
 		return StolenItemID ;
 	}
-	public void OffensiveSpell(Creatures creature, int SpellID, Skills[] spell)
+	public void OffensiveSpell(Creatures creature, int SpellID, Spells[] spell)
 	{
 		PA.getMp()[0] += -spell[SpellID].getMpCost() ;
 		SpellCounter[SpellID][1] = 0 ;
@@ -1024,7 +1088,7 @@ public class Player extends LiveBeing
 			creature.ApplyBuffsAndNerfs("activate", "nerfs", i, Spell[SpellID], spell[SpellID], SpellIsActive(SpellID, spell)) ;
 		}
 	}
-	public void SupSpell(Pet pet, int SpellID, Skills[] spell)
+	public void SupSpell(Pet pet, int SpellID, Spells[] spell)
 	{
 		int skillLevel = Spell[SpellID] ;
 		if (spell[SpellID].getMpCost() <= PA.getMp()[0] & 0 < skillLevel)
@@ -1057,7 +1121,7 @@ public class Player extends LiveBeing
 			SpellIsActive[SpellID] = true ;
 		}
 	}
-	public void autoSpells(Creatures creature, Skills[] spell)
+	public void autoSpells(Creatures creature, Spells[] spell)
 	{		
 		/*if (Job == 3 & PA.getLife()[0] < 0.2 * PA.getLife()[1] & 0 < Skill[12] & !SkillBuffIsActive[12][0])	// Survivor's instinct
 		{
@@ -1076,7 +1140,7 @@ public class Player extends LiveBeing
 			SkillBuffIsActive[12][0] = false ;
 		}*/
 	}
-	public void ApplyBuffsAndNerfs(String action, String type, int att, int SkillID, Skills[] skills, boolean SkillIsActive)
+	public void ApplyBuffsAndNerfs(String action, String type, int att, int SkillID, Spells[] skills, boolean SkillIsActive)
 	{
 		int ActionMult = 1 ;
 		float[][] Buff = new float[14][5] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
@@ -1155,7 +1219,7 @@ public class Player extends LiveBeing
 			BA.getSilence()[1] += Buff[13][0] ;
 		}	
 	}
-	public void TakeBloodAndPoisonDamage(Creatures creature)
+	public void TakeBloodAndPoisonDamage(float TotalBloodAtk, float TotalPoisonAtk)
 	{
 		float BloodDamage = 0 ;
 		float PoisonDamage = 0 ;
@@ -1166,11 +1230,11 @@ public class Player extends LiveBeing
 		}
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
-			BloodDamage = Math.max(creature.getBattleAtt().TotalBloodAtk()*BloodMult - BA.TotalBloodDef(), 0) ;
+			BloodDamage = Math.max(TotalBloodAtk*BloodMult - BA.TotalBloodDef(), 0) ;
 		}
 		if (0 < BA.getSpecialStatus()[3])	// Poison
 		{
-			PoisonDamage = Math.max(creature.getBattleAtt().TotalPoisonAtk()*PoisonMult - BA.TotalPoisonDef(), 0) ;
+			PoisonDamage = Math.max(TotalPoisonAtk*PoisonMult - BA.TotalPoisonDef(), 0) ;
 		}
 		PA.getLife()[0] += -BloodDamage - PoisonDamage ;
 		if (0 < BloodDamage)
@@ -1402,23 +1466,23 @@ public class Player extends LiveBeing
 		PA.setContinent(0) ;
 		if (Job == 0)
 		{
-			PA.setPos(new int[] {340, 340}) ;
+			PA.setPos(new Point(340, 340)) ;
 		}
 		if (Job == 1)
 		{
-			PA.setPos(new int[] {340, 180}) ;
+			PA.setPos(new Point(340, 180)) ;
 		}
 		if (Job == 2)
 		{
-			PA.setPos(new int[] {40, 220}) ;
+			PA.setPos(new Point(40, 220)) ;
 		}
 		if (Job == 3)
 		{
-			PA.setPos(new int[] {340, 340}) ;
+			PA.setPos(new Point(340, 340)) ;
 		}
 		if (Job == 4)
 		{
-			PA.setPos(new int[] {340, 640}) ;
+			PA.setPos(new Point(340, 640)) ;
 		}
 		/*if (MusicIsOn)
 		{
@@ -1450,7 +1514,7 @@ public class Player extends LiveBeing
 
 	
 	/* Get current state methods */
-	public boolean SpellIsActive(int SpellID, Skills[] spell)
+	public boolean SpellIsActive(int SpellID, Spells[] spell)
 	{
 		if (SpellCounter[SpellID][0] != 0)
 		{
@@ -1458,7 +1522,7 @@ public class Player extends LiveBeing
 		}
 		return false ;
 	}
-	public boolean SkillIsReady(int SpellID, Skills[] spell)
+	public boolean SkillIsReady(int SpellID, Spells[] spell)
 	{
 		if (SpellCounter[SpellID][1] == spell[SpellID].getCooldown())
 		{
@@ -1486,9 +1550,13 @@ public class Player extends LiveBeing
 		}
 		return false ;
 	}
-
+	public Maps currentMap(Maps[] maps)
+	{
+		return maps[getMap()] ;
+	}
+	
 	/* Action windows */
-	public void AttWindow(String[][] AllText, int[] AllTextCat, Items[] items, Icon[] icons, int[] MainWinDim, float[] PlayerAttributeIncrease, int[] MousePos, Image GoldCoinImage, DrawPrimitives DP)
+	public void AttWindow(String[][] AllText, int[] AllTextCat, Icon[] icons, int[] MainWinDim, float[] PlayerAttributeIncrease, Point MousePos, Image GoldCoinImage, DrawPrimitives DP)
 	{
 		int WindowLimit = 2 ;
 		SelectedWindow[0] = Uts.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedWindow[0], WindowLimit) ;
@@ -1534,10 +1602,10 @@ public class Player extends LiveBeing
 				AttPoints += -1 ;
 			}
 		}
-		int[] WinPos = new int[] {(int) (0.3 * MainWinDim[0]), (int) (0.2 * MainWinDim[1])} ;
-		DrawAttWindow(MainWinDim, WinPos, MousePos, AllText, AllTextCat, SelectedWindow[0], GoldCoinImage, items, icons, DP) ;
+		Point WinPos = new Point((int) (0.3 * MainWinDim[0]), (int) (0.2 * MainWinDim[1])) ;
+		DrawAttWindow(MainWinDim, WinPos, MousePos, AllText, AllTextCat, SelectedWindow[0], GoldCoinImage, icons, DP) ;
 	}
-	public Object[] OptionsWindow(Clip[] Music, DrawFunctions DF)
+	public Settings OptionsWindow(Clip[] Music, DrawFunctions DF)
 	{
 		boolean CustomKeyIsActionKey = false ;
 		if (SelectedMenu[0] == 0)
@@ -1545,7 +1613,33 @@ public class Player extends LiveBeing
 			SelectedItem[0] = Uts.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedItem[0], 5) ;
 			if (action.equals("Enter") | action.equals("MouseLeftClick"))
 			{
-				if (SelectedItem[0] <= 2)
+				if (SelectedItem[0] == 0)
+				{
+					settings.setMusicIsOn(!settings.getMusicIsOn());
+					Utg.PlayMusic(Music[Maps.Music[PA.getMap()]]) ;
+				}
+				if (SelectedItem[0] == 1)
+				{
+					settings.setSoundEffectsAreOn(!settings.getSoundEffectsAreOn());
+				}
+				if (SelectedItem[0] == 2)
+				{
+					settings.setShowPlayerRange(!settings.getShowPlayerRange()) ;
+				}
+				if (SelectedItem[0] == 3)
+				{
+					settings.setAttDisplay((settings.getAttDisplay() + 1) % 2) ;
+				}
+				if (SelectedItem[0] == 4)
+				{
+					settings.setDamageAnimation((settings.getDamageAnimation() + 1) % 4);
+				}
+				if (4 < SelectedItem[0] & SelectedItem[0] <= 4 + Player.ActionKeys.length)
+				{
+					SelectedMenu[0] = 1 ;
+					SelectedItem[0] = 0 ;
+				}
+				/*if (SelectedItem[0] <= 2)
 				{
 					OptionStatus[SelectedItem[0]] = !(boolean)OptionStatus[SelectedItem[0]] ;
 					if (SelectedItem[0] == 0)
@@ -1560,7 +1654,7 @@ public class Player extends LiveBeing
 				else if (SelectedItem[0] == 4)
 				{
 					OptionStatus[4] = ((int)OptionStatus[4] + 1) % 4 ;
-				}
+				}*/
 				else if (3 < SelectedItem[0] & SelectedItem[0] <= 3 + Player.ActionKeys.length)
 				{
 					SelectedMenu[0] = 1 ;
@@ -1606,12 +1700,13 @@ public class Player extends LiveBeing
 				SelectedMenu[0] += -1 ;
 			}
 		}
-		DF.DrawOptionsWindow(SelectedItem[0], SelectedMenu[0], Player.ActionKeys, OptionStatus) ;
-		return OptionStatus ;
+		DF.DrawOptionsWindow(SelectedItem[0], SelectedMenu[0], Player.ActionKeys, settings) ;
+		return settings ;
 	}
-	public void HintsMenu(int[] WinDim, int[] MousePos, Color ClassColor, DrawFunctions DF)
+	public void HintsMenu(Point MousePos, Color ClassColor, DrawFunctions DF)
 	{
 		int NumberOfHints = 15 ;
+		int[] WinDim = Game.getScreen().getDimensions() ;
 		int[] Pos = new int[] {(int)(0.19 * WinDim[0]), (int)(0.5 * WinDim[1])} ;
 		int L = (int)(0.62 * WinDim[0]), H = (int)(0.2 * WinDim[1]) ;
 		int[] OkButtonPos = new int[] {(int) (Pos[0] + 0.7*L), (int) (Pos[1] - 0.125*H)} ;
@@ -1620,7 +1715,7 @@ public class Player extends LiveBeing
 		{
 			SelectedWindow[6] = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, SelectedWindow[6], NumberOfHints - 1) ;
 		}
-		if (action.equals("Enter") | (Utg.isInside(MousePos, new int[] {(int) (OkButtonPos[0] - OkButtonL/2), (int) (OkButtonPos[1] + OkButtonH/2)}, (int) (OkButtonL), (int) (OkButtonH)) & action.equals("MouseLeftClick")))
+		if (action.equals("Enter") | (Utg.isInside(MousePos, new Point((int) (OkButtonPos[0] - OkButtonL/2), (int) (OkButtonPos[1] + OkButtonH/2)), (int) (OkButtonL), (int) (OkButtonH)) & action.equals("MouseLeftClick")))
 		{
 			//return false ;
 		}
@@ -1711,26 +1806,31 @@ public class Player extends LiveBeing
 			BA.getSpecialStatus()[4] = 0 ;
 		}
 	}
-	public void UseItem(Pet pet, Creatures[] creature, boolean BattleIsOn, int creatureID, int itemID, String[] ArrowElem, Items[] items, Battle B)
+	public void UseItem(LiveBeing user, Item item)
 	{
 		float PotMult = 1 ;
 		if (Job == 3)
 		{
 			PotMult += 0.06 * Spell[7] ;
 		}
-		if (-1 < itemID)	// if the item is valid
+		if (item != null)	// if the item is valid
 		{
+			
+			
 			//if (0 < Bag[itemID])	// if the player has the item in the bag
 			//{
-				if (items[itemID].getType().equals("Potion"))	// potions
+				if (item instanceof Potion)	// potions
 				{
-					float HealPower = Items.PotionsHealing[itemID][1] * PotMult ;
+					Potion pot = (Potion) item ;
+					float HealPower = pot.getLifeHeal() * PotMult ;
 					
-					PA.incLife(HealPower * PA.getLife()[1]) ;
-					PA.incMP(HealPower * PA.getMp()[1]) ;
+					user.PA.incLife(HealPower * user.PA.getLife()[1]) ;
+					user.PA.incMP(HealPower * user.PA.getMp()[1]) ;
+					
+					bag.remove(bag.getItem());
 					//Bag[itemID] += -1 ;			
 				}
-				else if (items[itemID].getType().equals("Alchemy"))	// alchemy (using herbs heal half of their equivalent pot)
+				/*else if (items[itemID].getType().equals("Alchemy"))	// alchemy (using herbs heal half of their equivalent pot)
 				{
 					float HealPower = Items.PotionsHealing[itemID / 3 - Items.BagIDs[0] / 3 + 1][1] / 2 * PotMult ;
 					
@@ -1741,7 +1841,7 @@ public class Player extends LiveBeing
 						pet.getPersonalAtt().incMP(HealPower * pet.getMp()[1]) ;
 						
 						// Animal's skill "natural help": gives 20% bonus on the pet attributes. The enhanced attributes depend on the collectible used
-						if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & BattleIsOn & Job == 3 & (itemID - Items.BagIDs[1] + 1) % 3 < Spell[10])
+						if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & Job == 3 & (itemID - Items.BagIDs[1] + 1) % 3 < Spell[10])
 						{
 							int ItemsWithEffectsID = -1 ;
 							for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
@@ -1780,7 +1880,7 @@ public class Player extends LiveBeing
 							if (0 == Equips[3])
 							{
 								Equips[3] = itemID ;	// Equipped arrow
-								PA.Elem[0] = ArrowElem[itemID - Items.BagIDs[5]] ;
+								PA.Elem[0] = bag.getArrow()[itemID - Items.BagIDs[5]].getElem() ;
 							}
 							else
 							{
@@ -1799,7 +1899,122 @@ public class Player extends LiveBeing
 				}
 				else if (items[itemID].getType().equals("Item"))	// items
 				{
-					if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & BattleIsOn & Job == 4 & 0 < Spell[8])
+					if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & Job == 4 & 0 < Spell[8])
+					{		
+						int ItemsWithEffectsID = -1 ;
+						for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
+						{
+							if (itemID == Items.ItemsWithEffects[i])
+							{
+								ItemsWithEffectsID = i ;
+							}
+						}
+						if (-1 < ItemsWithEffectsID)
+						{
+							B.ItemEffectInBattle(getBattleAtt(), pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
+						}
+						//Bag[itemID] += -1 ;
+						BA.getBattleActions()[0][0] = 0 ;
+						BA.getBattleActions()[0][2] = 0 ;
+					}
+					else
+					{
+						ItemEffect(itemID) ;
+						//Bag[itemID] += -1 ;
+					}
+				}*/
+			//}			
+		}
+	}
+	/*public void UseItem(Pet pet, Creatures[] creature, int creatureID, int itemID, Items[] items, Battle B)
+	{
+		float PotMult = 1 ;
+		if (Job == 3)
+		{
+			PotMult += 0.06 * Spell[7] ;
+		}
+		if (-1 < itemID)	// if the item is valid
+		{
+			//if (0 < Bag[itemID])	// if the player has the item in the bag
+			//{
+				if (items[itemID].getType().equals("Potion"))	// potions
+				{
+					float HealPower = Items.PotionsHealing[itemID][1] * PotMult ;
+					
+					PA.incLife(HealPower * PA.getLife()[1]) ;
+					PA.incMP(HealPower * PA.getMp()[1]) ;
+					//Bag[itemID] += -1 ;			
+				}
+				else if (items[itemID].getType().equals("Alchemy"))	// alchemy (using herbs heal half of their equivalent pot)
+				{
+					float HealPower = Items.PotionsHealing[itemID / 3 - Items.BagIDs[0] / 3 + 1][1] / 2 * PotMult ;
+					
+					PA.incLife(HealPower * PA.getLife()[1]) ;
+					if (0 < pet.getLife()[0])
+					{
+						pet.getPersonalAtt().incLife(HealPower * pet.getLife()[1]) ;
+						pet.getPersonalAtt().incMP(HealPower * pet.getMp()[1]) ;
+						
+						// Animal's skill "natural help": gives 20% bonus on the pet attributes. The enhanced attributes depend on the collectible used
+						if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & Job == 3 & (itemID - Items.BagIDs[1] + 1) % 3 < Spell[10])
+						{
+							int ItemsWithEffectsID = -1 ;
+							for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
+							{
+								if (itemID == Items.ItemsWithEffects[i])
+								{
+									ItemsWithEffectsID = i ;
+								}
+							}
+							if (-1 < ItemsWithEffectsID)
+							{
+								B.ItemEffectInBattle(getBattleAtt(), pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
+							}
+						}
+					}
+					//Bag[itemID] += -1 ;
+				}
+				else if (items[itemID].getType().equals("Pet"))		// pet items
+				{
+					pet.getPersonalAtt().incLife(Items.PetItems[itemID - Items.BagIDs[3] + 1][1] * pet.getLife()[1]) ;
+					pet.getPersonalAtt().incMP(Items.PetItems[itemID - Items.BagIDs[3] + 1][2] * pet.getMp()[1]) ;
+					pet.getPersonalAtt().incSatiation(Items.PetItems[itemID - Items.BagIDs[3] + 1][3]) ;
+					//Bag[itemID] += -1 ;
+				}
+				else if (items[itemID].getType().equals("Food"))	// food
+				{
+					PA.incSatiation(Items.FoodSatiation[itemID - Items.BagIDs[4] + 1][3] * PA.getSatiation()[2]) ;
+					//Bag[itemID] += -1 ;
+				}
+				else if (items[itemID].getType().equals("Arrow"))	// arrows
+				{
+					//if (0 < Bag[itemID] & Job == 2)
+					//{
+						if (itemID == Items.BagIDs[5] | itemID <= Items.BagIDs[5] + 3 & 1 <= Spell[4] | itemID == Items.BagIDs[5] + 4 & 2 <= Spell[4]  | itemID == Items.BagIDs[5] + 5 & 3 <= Spell[4]  | Items.BagIDs[5] + 6 <= itemID & itemID <= Items.BagIDs[5] + 14 & 4 <= Spell[4]  | Items.BagIDs[5] + 14 <= itemID & 5 <= Spell[4])
+						{
+							if (0 == Equips[3])
+							{
+								Equips[3] = itemID ;	// Equipped arrow
+								PA.Elem[0] = bag.getArrow()[itemID - Items.BagIDs[5]].getElem() ;
+							}
+							else
+							{
+								Equips[3] = 0 ;	// Unequipped arrow
+								PA.Elem[0] = "n" ;
+							}
+						}
+					//}
+				}
+				else if (items[itemID].getType().equals("Equip"))	// equipment
+				{
+					if (isEquippable(itemID))
+					{
+						Equip(items, itemID) ;
+					}
+				}
+				else if (items[itemID].getType().equals("Item"))	// items
+				{
+					if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & Job == 4 & 0 < Spell[8])
 					{		
 						int ItemsWithEffectsID = -1 ;
 						for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
@@ -1825,100 +2040,16 @@ public class Player extends LiveBeing
 				}
 			//}			
 		}
-	}
-	/*public void Bag(Pet pet, Creatures[] creature, int[] WinDim, int[] AllTextCat, String[][] AllText, Items[] items, Battle B, int[] MousePos, DrawFunctions DF)
-	{
-		int NMenus = 10, NItemsMax = 20 ;
-		int[] WindowLimit = new int[NMenus] ;
-		int[] ActiveItems = Utg.ArrayWithIndexesGreaterThan(Arrays.copyOfRange(Bag, Items.BagIDs[SelectedMenu[1]], Items.BagIDs[SelectedMenu[1] + 1]), 0) ;
-		int[] BagPos = new int[] {(int)(0.35 * WinDim[0]), (int)(0.48 * WinDim[1])} ;
-		if (SelectedMenu[1] == 6)	// Equips
-		{
-			//ActiveItems = Utg.ArrayWithIndexesGreaterThan(Arrays.copyOfRange(Bag, Items.BagIDs[5] + Items.NumberOfItems[6] / 5 * Job, Items.BagIDs[5] + Items.NumberOfItems[6] / 5 * (Job + 1)), 0) ;
-		}
-		WindowLimit[SelectedMenu[1]] = Math.max(ActiveItems.length - 1, 0) / NItemsMax  ;
-		if (WindowLimit[SelectedMenu[1]] < SelectedWindow[1])
-		{
-			SelectedWindow[1] = 0 ;
-		}
-		if (ItemsMenu == 0)
-		{
-			SelectedMenu[1] = Uts.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedMenu[1], NMenus - 1) ;
-			if (action.equals(Player.ActionKeys[0]) | action.equals(Player.ActionKeys[2]))
-			{
-				SelectedWindow[1] = 0 ;
-			}
-			String[] BagMenus = AllText[AllTextCat[30]] ;
-			int MenuL = BagMenuImage.getWidth(null) ;
-			int MenuH = BagMenuImage.getHeight(null) ;
-			for (int m = 0 ; m <= BagMenus.length - 3 ; m += 1)
-			{
-				if (Utg.isInside(MousePos, new int[] {BagPos[0] - MenuL, BagPos[1] + m * MenuH}, MenuL, MenuH))
-				{
-					SelectedMenu[1] = m ;
-					SelectedWindow[1] = 0 ;
-				}
-			}
-		}
-		SelectedWindow[1] = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, SelectedWindow[1], WindowLimit[SelectedMenu[1]]) ;
-		if (action.equals("Enter") | action.equals("MouseLeftClick"))
-		{
-			if (ItemsMenu == 0)
-			{
-				ItemsMenu = 1 ;
-				SelectedItem[1] = Items.BagIDs[SelectedMenu[1]] ;
-			} 
-			else if (ItemsMenu == 1)
-			{
-				UseItem(pet, creature, isInBattle(), ClosestCreature, SelectedItem[1], Items.ArrowElem, items, B) ;
-			}
-		}
-		else if (action.equals("Escape") | action.equals("MouseRightClick"))
-		{
-			ItemsMenu = 0 ;
-			SelectedItem[1] = 0 ;
-		}
-		
-		
-		int L = (int)(0.52 * WinDim[0]), H = (int)(0.4 * WinDim[1]) ;
-		int NSlotsmax = 20 ;
-		int NumberOfSlots = Math.min(NSlotsmax, ActiveItems.length - NSlotsmax * SelectedWindow[1]) ;
-		int slotW = BagSlotImage.getWidth(null) ;
-		int slotH = BagSlotImage.getHeight(null) ;
-		int[][] SlotCenter = new int[NumberOfSlots][2] ;
-		int[][] TextPos = new int[NumberOfSlots][2] ;		
-		int cont = 0 ;
-		for (int i = 0 ; i <= NumberOfSlots - 1 ; i += 1)
-		{
-			int ItemID = ActiveItems[i + NSlotsmax * SelectedWindow[1]] ;
-			int sx = L / 2, sy = (H - 6 - slotH) / 9 ;
-			int[] offset = Utg.OffsetFromPos("CenterLeft", sx, Utg.TextH(13)) ;
-			int row = cont % (NSlotsmax / 2), col = cont / (NSlotsmax / 2) ;
-			SlotCenter[i] = new int[] {(int) (BagPos[0] + 5 + slotW / 2 + col * sx), (int) (BagPos[1] + 3 + slotH / 2 + row * sy)} ;
-			TextPos[i] = new int[] {SlotCenter[i][0] + slotW / 2 + 5, SlotCenter[i][1]} ;
-			if (Utg.isInside(MousePos, new int[] {TextPos[i][0] + offset[0], TextPos[i][1] + offset[1]}, sx, Utg.TextH(13)))
-			{
-				SelectedItem[1] = Items.BagIDs[SelectedMenu[1]] + ItemID ;
-				if (SelectedMenu[1] == 6)	// Equips
-				{
-					//SelectedItem[1] = Items.BagIDs[SelectedMenu[1]] + ItemID + Items.NumberOfItems[6] / 5 * Job ;
-				}
-			}
-			if (0 < Bag[ItemID])
-			{
-				++cont ;
-			}
-		}
-		DF.DrawBag(Job, BagPos, L, H, Bag, NSlotsmax, items, BagMenuImage, BagSlotImage, ActiveItems, SlotCenter, TextPos, SelectedMenu[1], ItemsMenu, SelectedWindow[1], WindowLimit[SelectedMenu[1]], SelectedItem[1], MousePos) ;	
 	}*/
-	public void FabBook(Items[] items, int[] MousePos, DrawFunctions DF)
+	
+	public void FabBook(Items[] items, Point MousePos, DrawFunctions DF)
 	{
 		int[][] Ingredients = Items.CraftingIngredients, Products = Items.CraftingProducts ;
 		int NumberOfPages = Ingredients.length - 1 ;
 		SelectedWindow[2] = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, SelectedWindow[2], NumberOfPages) ;
 		DF.DrawFabBook(BookImage, items, SelectedWindow[2], Ingredients, Products, MousePos) ;
 	}
-	public void Bestiary(CreatureTypes[] creatureTypes, Items[] items, int[] CreaturesDiscovered, int[] MousePos, DrawFunctions DF)
+	public void Bestiary(CreatureTypes[] creatureTypes, Items[] items, int[] CreaturesDiscovered, Point MousePos, DrawFunctions DF)
 	{
 		int windowLimit = 0 ;
 		if (CreaturesDiscovered != null)
@@ -1931,98 +2062,96 @@ public class Player extends LiveBeing
 
 	
 	/* Drawing methods */
-	public void DrawStats(String[][] AllText, int[] AllTextCat, int[] Pos, int L, int H, float[] PlayerStats, DrawPrimitives DP)
+	public void DrawStats(String[][] AllText, int[] AllTextCat, Point Pos, int L, int H, float[] PlayerStats, DrawPrimitives DP)
 	{
 		Font font = new Font("SansSerif", Font.BOLD, L / 28) ;
-		Color[] ColorPalette = Game.ColorPalette ;
 		float OverallAngle = DrawPrimitives.OverallAngle ;
 		int TextCat = AllTextCat[7] ;
-		int[] TextPos = new int[] {(int) (Pos[0] + 5 + 0.05*L), (int) (Pos[1] + 0.05*H)} ;
+		Point TextPos = new Point((int) (Pos.x + 5 + 0.05*L), (int) (Pos.y + 0.05*H)) ;
 		for (int i = 0 ; i <= PlayerStats.length - 1 ; i += 1)
 		{
-			DP.DrawText(TextPos, "BotLeft", OverallAngle, AllText[TextCat][i + 1] + " " + String.valueOf(Utg.Round(PlayerStats[i], 1)), font, ColorPalette[5]) ;
-			TextPos[1] += 0.95*H/PlayerStats.length ;
+			DP.DrawText(TextPos, "BotLeft", OverallAngle, AllText[TextCat][i + 1] + " " + String.valueOf(Utg.Round(PlayerStats[i], 1)), font, Game.ColorPalette[5]) ;
+			TextPos.y += 0.95*H/PlayerStats.length ;
 		}
 	}
-	public void DrawSpecialAttributesWindow(String[][] AllText, int[] AllTextCat, int[] Pos, int L, int H, float[] Stun, float[] Block, float[] Blood, float[] Poison, float[] Silence, DrawPrimitives DP)
+	public void DrawSpecialAttributesWindow(String[][] AllText, int[] AllTextCat, Point Pos, int L, int H, DrawPrimitives DP)
 	{
 		Font font = new Font("SansSerif", Font.BOLD, L / 20) ;
-		Color[] ColorPalette = Game.ColorPalette ;
 		float OverallAngle = DrawPrimitives.OverallAngle ;
 		int SpecialAttrPropCat = AllTextCat[8], AttrCat = AllTextCat[6] ;
-		int Linewidth = 2 ;
+		int lineW = 2 ;
 		float sx = (float)0.15*L, sy = (float)(1.8*Utg.TextH(font.getSize())) ;
-		Color TextColor = ColorPalette[5], LineColor = ColorPalette[9] ;
-		Color[] AttributeColor = new Color[] {ColorPalette[5], ColorPalette[5], ColorPalette[6], ColorPalette[3], ColorPalette[9]} ;
-		Pos[1] += H ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.025*L), Pos[0] + (int)(0.025*L)}, new int[] {(int)(Pos[1] - H + 0.5*sy), (int)(Pos[1] - H + 8.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.375*L), Pos[0] + (int)(0.375*L)}, new int[] {(int)(Pos[1] - H + 0.5*sy), (int)(Pos[1] - H + 3.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.975*L), Pos[0] + (int)(0.975*L)}, new int[] {(int)(Pos[1] - H + 0.5*sy), (int)(Pos[1] - H + 8.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.025*L), Pos[0] + (int)(0.975*L)}, new int[] {(int)(Pos[1] - H + 0.5*sy), (int)(Pos[1] - H + 0.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.025*L), Pos[0] + (int)(0.975*L)}, new int[] {(int)(Pos[1] - H + 8.5*sy), (int)(Pos[1] - H + 8.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.025*L), Pos[0] + (int)(0.975*L)}, new int[] {(int)(Pos[1] - H + 1.5*sy), (int)(Pos[1] - H + 1.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.025*L), Pos[0] + (int)(0.975*L)}, new int[] {(int)(Pos[1] - H + 2.5*sy), (int)(Pos[1] - H + 2.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.375*L + 2*sx), Pos[0] + (int)(0.375*L + 2*sx)}, new int[] {(int)(Pos[1] - H + 1.5*sy), (int)(Pos[1] - H + 2.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawText(new int[] {Pos[0] + (int)(0.65*L), (int)(Pos[1] - H + sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][1], font, TextColor) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.375*L + sx), (int)(Pos[1] - H + 2*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][2], font, TextColor) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.375*L + 3*sx), (int)(Pos[1] - H + 2*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][3], font, TextColor) ;
-		DP.DrawText(new int[] {Pos[0] + (int)(0.45*L), (int)(Pos[1] - H + 3*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][4], font, TextColor) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + sx), (int)(Pos[1] - H + 3*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][5], font, TextColor) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + 2*sx), (int)(Pos[1] - H + 3*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][4], font, TextColor) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + 3*sx), (int)(Pos[1] - H + 3*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][5], font, TextColor) ;	
+		Color TextColor = Game.ColorPalette[5], LineColor = Game.ColorPalette[9] ;
+		Color[] AttributeColor = new Color[] {Game.ColorPalette[5], Game.ColorPalette[5], Game.ColorPalette[6], Game.ColorPalette[3], Game.ColorPalette[9]} ;
+		Pos.y += H ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.025*L)}, new int[] {(int)(Pos.y - H + 0.5*sy), (int)(Pos.y - H + 8.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.375*L), Pos.x + (int)(0.375*L)}, new int[] {(int)(Pos.y - H + 0.5*sy), (int)(Pos.y - H + 3.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.975*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + 0.5*sy), (int)(Pos.y - H + 8.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + 0.5*sy), (int)(Pos.y - H + 0.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + 8.5*sy), (int)(Pos.y - H + 8.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + 1.5*sy), (int)(Pos.y - H + 1.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + 2.5*sy), (int)(Pos.y - H + 2.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.375*L + 2*sx), Pos.x + (int)(0.375*L + 2*sx)}, new int[] {(int)(Pos.y - H + 1.5*sy), (int)(Pos.y - H + 2.5*sy)}, lineW, LineColor) ;
+		DP.DrawText(new Point(Pos.x + (int)(0.65*L), (int)(Pos.y - H + sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][1], font, TextColor) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.375*L + sx), (int)(Pos.y - H + 2*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][2], font, TextColor) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.375*L + 3*sx), (int)(Pos.y - H + 2*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][3], font, TextColor) ;
+		DP.DrawText(new Point(Pos.x + (int)(0.45*L), (int)(Pos.y - H + 3*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][4], font, TextColor) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.45*L + sx), (int)(Pos.y - H + 3*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][5], font, TextColor) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.45*L + 2*sx), (int)(Pos.y - H + 3*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][4], font, TextColor) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.45*L + 3*sx), (int)(Pos.y - H + 3*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][5], font, TextColor) ;	
 		for (int i = 0 ; i <= 4 ; ++i)
 		{
-			DP.DrawLine(new int[] {Pos[0] + (int)(0.025*L), Pos[0] + (int)(0.975*L)}, new int[] {(int)(Pos[1] - H + (i + 3.5)*sy), (int)(Pos[1] - H + (i + 3.5)*sy)}, Linewidth, LineColor) ;
-			DP.DrawText(new int[] {Pos[0] + (int)(0.2*L), (int)(Pos[1] - H + (i + 4)*sy)}, "Center", OverallAngle, AllText[AttrCat][i + 11], font, AttributeColor[i]) ;	
+			DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + (i + 3.5)*sy), (int)(Pos.y - H + (i + 3.5)*sy)}, lineW, LineColor) ;
+			DP.DrawText(new Point(Pos.x + (int)(0.2*L), (int)(Pos.y - H + (i + 4)*sy)), "Center", OverallAngle, AllText[AttrCat][i + 11], font, AttributeColor[i]) ;	
 		}
 		for (int i = 0 ; i <= 3 ; ++i)
 		{
-			DP.DrawLine(new int[] {Pos[0] + (int)(0.375*L + i*sx), Pos[0] + (int)(0.375*L + i*sx)}, new int[] {(int)(Pos[1] - H + 2*sy + sy/2), (int)(Pos[1] - H + 8*sy + sy/2)}, Linewidth, LineColor) ;
-			DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + i*sx), (int)(Pos[1] - H + 4*sy)}, "Center", OverallAngle, String.valueOf(Utg.Round(Stun[i], 2)), font, AttributeColor[0]) ;	
-			DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + i*sx), (int)(Pos[1] - H + 5*sy)}, "Center", OverallAngle, String.valueOf(Utg.Round(Block[i], 2)), font, AttributeColor[1]) ;	
-			DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + i*sx), (int)(Pos[1] - H + 6*sy)}, "Center", OverallAngle, String.valueOf(Utg.Round(Blood[i], 2)), font, AttributeColor[2]) ;	
-			DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + i*sx), (int)(Pos[1] - H + 7*sy)}, "Center", OverallAngle, String.valueOf(Utg.Round(Poison[i], 2)), font, AttributeColor[3]) ;	
-			DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + i*sx), (int)(Pos[1] - H + 8*sy)}, "Center", OverallAngle, String.valueOf(Utg.Round(Silence[i], 2)), font, AttributeColor[4]) ;				
+			DP.DrawLine(new int[] {Pos.x + (int)(0.375*L + i*sx), Pos.x + (int)(0.375*L + i*sx)}, new int[] {(int)(Pos.y - H + 2*sy + sy/2), (int)(Pos.y - H + 8*sy + sy/2)}, lineW, LineColor) ;
+			DP.DrawText(new Point(Pos.x + (int)(0.45*L + i*sx), (int)(Pos.y - H + 4*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(BA.getStun()[i], 2)), font, AttributeColor[0]) ;	
+			DP.DrawText(new Point(Pos.x + (int)(0.45*L + i*sx), (int)(Pos.y - H + 5*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(BA.getBlock()[i], 2)), font, AttributeColor[1]) ;	
+			DP.DrawText(new Point(Pos.x + (int)(0.45*L + i*sx), (int)(Pos.y - H + 6*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(BA.getBlood()[i], 2)), font, AttributeColor[2]) ;	
+			DP.DrawText(new Point(Pos.x + (int)(0.45*L + i*sx), (int)(Pos.y - H + 7*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(BA.getPoison()[i], 2)), font, AttributeColor[3]) ;	
+			DP.DrawText(new Point(Pos.x + (int)(0.45*L + i*sx), (int)(Pos.y - H + 8*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(BA.getSilence()[i], 2)), font, AttributeColor[4]) ;				
 		}
 		
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.025*L), Pos[0] + (int)(0.025*L)}, new int[] {(int)(Pos[1] - H + 9.5*sy), (int)(Pos[1] - H + 14.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.375*L), Pos[0] + (int)(0.375*L)}, new int[] {(int)(Pos[1] - H + 9.5*sy), (int)(Pos[1] - H + 12.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.975*L), Pos[0] + (int)(0.975*L)}, new int[] {(int)(Pos[1] - H + 9.5*sy), (int)(Pos[1] - H + 14.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.025*L), Pos[0] + (int)(0.975*L)}, new int[] {(int)(Pos[1] - H + 9.5*sy), (int)(Pos[1] - H + 9.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.025*L), Pos[0] + (int)(0.975*L)}, new int[] {(int)(Pos[1] - H + 14.5*sy), (int)(Pos[1] - H + 14.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.025*L), Pos[0] + (int)(0.975*L)}, new int[] {(int)(Pos[1] - H + 10.5*sy), (int)(Pos[1] - H + 10.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.025*L), Pos[0] + (int)(0.975*L)}, new int[] {(int)(Pos[1] - H + 11.5*sy), (int)(Pos[1] - H + 11.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawLine(new int[] {Pos[0] + (int)(0.375*L + 2*sx), Pos[0] + (int)(0.375*L + 2*sx)}, new int[] {(int)(Pos[1] - H + 10.5*sy), (int)(Pos[1] - H + 12.5*sy)}, Linewidth, LineColor) ;
-		DP.DrawText(new int[] {Pos[0] + (int)(0.65*L), (int)(Pos[1] - H + 10*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][6], font, TextColor) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.375*L + sx), (int)(Pos[1] - H + 11*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][2], font, TextColor) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.375*L + 3*sx), (int)(Pos[1] - H + 11*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][3], font, TextColor) ;
-		DP.DrawText(new int[] {Pos[0] + (int)(0.45*L), (int)(Pos[1] - H + 12*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][4], font, TextColor) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + sx), (int)(Pos[1] - H + 12*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][5], font, TextColor) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + 2*sx), (int)(Pos[1] - H + 12*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][4], font, TextColor) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + 3*sx), (int)(Pos[1] - H + 12*sy)}, "Center", OverallAngle, AllText[SpecialAttrPropCat][5], font, TextColor) ;	
+		DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.025*L)}, new int[] {(int)(Pos.y - H + 9.5*sy), (int)(Pos.y - H + 14.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.375*L), Pos.x + (int)(0.375*L)}, new int[] {(int)(Pos.y - H + 9.5*sy), (int)(Pos.y - H + 12.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.975*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + 9.5*sy), (int)(Pos.y - H + 14.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + 9.5*sy), (int)(Pos.y - H + 9.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + 14.5*sy), (int)(Pos.y - H + 14.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + 10.5*sy), (int)(Pos.y - H + 10.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + 11.5*sy), (int)(Pos.y - H + 11.5*sy)}, lineW, LineColor) ;
+		DP.DrawLine(new int[] {Pos.x + (int)(0.375*L + 2*sx), Pos.x + (int)(0.375*L + 2*sx)}, new int[] {(int)(Pos.y - H + 10.5*sy), (int)(Pos.y - H + 12.5*sy)}, lineW, LineColor) ;
+		DP.DrawText(new Point(Pos.x + (int)(0.65*L), (int)(Pos.y - H + 10*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][6], font, TextColor) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.375*L + sx), (int)(Pos.y - H + 11*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][2], font, TextColor) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.375*L + 3*sx), (int)(Pos.y - H + 11*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][3], font, TextColor) ;
+		DP.DrawText(new Point(Pos.x + (int)(0.45*L), (int)(Pos.y - H + 12*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][4], font, TextColor) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.45*L + sx), (int)(Pos.y - H + 12*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][5], font, TextColor) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.45*L + 2*sx), (int)(Pos.y - H + 12*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][4], font, TextColor) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.45*L + 3*sx), (int)(Pos.y - H + 12*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][5], font, TextColor) ;	
 		for (int i = 0 ; i <= 1 ; ++i)
 		{
-			DP.DrawLine(new int[] {Pos[0] + (int)(0.025*L), Pos[0] + (int)(0.975*L)}, new int[] {(int)(Pos[1] - H + (i + 12.5)*sy), (int)(Pos[1] - H + (i + 12.5)*sy)}, Linewidth, LineColor) ;
-			DP.DrawText(new int[] {Pos[0] + (int)(0.2*L), (int)(Pos[1] - H + (i + 13)*sy)}, "Center", OverallAngle, AllText[AttrCat][i + 13], font, AttributeColor[i + 2]) ;	
+			DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + (i + 12.5)*sy), (int)(Pos.y - H + (i + 12.5)*sy)}, lineW, LineColor) ;
+			DP.DrawText(new Point(Pos.x + (int)(0.2*L), (int)(Pos.y - H + (i + 13)*sy)), "Center", OverallAngle, AllText[AttrCat][i + 13], font, AttributeColor[i + 2]) ;	
 		}
 		for (int i = 0 ; i <= 3 ; ++i)
 		{
-			DP.DrawLine(new int[] {Pos[0] + (int)(0.375*L + i*sx), Pos[0] + (int)(0.375*L + i*sx)}, new int[] {(int)(Pos[1] - H + 11.5*sy), (int)(Pos[1] - H + 14.5*sy)}, Linewidth, LineColor) ;
-			DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + i*sx), (int)(Pos[1] - H + 13*sy)}, "Center", OverallAngle, String.valueOf(Utg.Round(Blood[i + 4], 2)), font, AttributeColor[2]) ;	
-			DP.DrawText(new int[] {Pos[0] + (int)(0.45*L + i*sx), (int)(Pos[1] - H + 14*sy)}, "Center", OverallAngle, String.valueOf(Utg.Round(Poison[i + 4], 2)), font, AttributeColor[3]) ;	
+			DP.DrawLine(new int[] {Pos.x + (int)(0.375*L + i*sx), Pos.x + (int)(0.375*L + i*sx)}, new int[] {(int)(Pos.y - H + 11.5*sy), (int)(Pos.y - H + 14.5*sy)}, lineW, LineColor) ;
+			DP.DrawText(new Point(Pos.x + (int)(0.45*L + i*sx), (int)(Pos.y - H + 13*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(BA.getBlood()[i + 4], 2)), font, AttributeColor[2]) ;	
+			DP.DrawText(new Point(Pos.x + (int)(0.45*L + i*sx), (int)(Pos.y - H + 14*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(BA.getPoison()[i + 4], 2)), font, AttributeColor[3]) ;	
 		}
 		
-		DP.DrawText(new int[] {Pos[0] + (int)(0.025*L), (int)(Pos[1] - H + 16*sy)}, "BotLeft", OverallAngle, AllText[AttrCat][11] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(Stun[4], 2), font, AttributeColor[0]) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.025*L), (int)(Pos[1] - H + 17*sy)}, "BotLeft", OverallAngle, AllText[AttrCat][12] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(Block[4], 2), font, AttributeColor[1]) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.025*L), (int)(Pos[1] - H + 18*sy)}, "BotLeft", OverallAngle, AllText[AttrCat][13] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(Blood[8], 2), font, AttributeColor[2]) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.025*L), (int)(Pos[1] - H + 19*sy)}, "BotLeft", OverallAngle, AllText[AttrCat][14] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(Poison[8], 2), font, AttributeColor[3]) ;	
-		DP.DrawText(new int[] {Pos[0] + (int)(0.025*L), (int)(Pos[1] - H + 20*sy)}, "BotLeft", OverallAngle, AllText[AttrCat][15] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(Silence[4], 2), font, AttributeColor[4]) ;				
+		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 16*sy)), "BotLeft", OverallAngle, AllText[AttrCat][11] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(BA.getStun()[4], 2), font, AttributeColor[0]) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 17*sy)), "BotLeft", OverallAngle, AllText[AttrCat][12] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(BA.getBlock()[4], 2), font, AttributeColor[1]) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 18*sy)), "BotLeft", OverallAngle, AllText[AttrCat][13] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(BA.getBlood()[8], 2), font, AttributeColor[2]) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 19*sy)), "BotLeft", OverallAngle, AllText[AttrCat][14] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(BA.getPoison()[8], 2), font, AttributeColor[3]) ;	
+		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 20*sy)), "BotLeft", OverallAngle, AllText[AttrCat][15] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(BA.getSilence()[4], 2), font, AttributeColor[4]) ;				
 	}
 	public void DrawRange(DrawPrimitives DP)
 	{
 		DP.DrawCircle(PA.getPos(), (int)(2 * PA.getRange()), 2, Game.ColorPalette[Job], false, true) ;
 	}
-	public void DrawEquips(int[] Pos, int Job, int equiptype, int EquipID, float[][] EquipsBonus, float[] scale, float angle, DrawPrimitives DP)
+	public void DrawEquips(Point Pos, int Job, int equiptype, int EquipID, float[][] EquipsBonus, float[] scale, float angle, DrawPrimitives DP)
 	{
 		int bonus = 0 ;
 		if (EquipsBonus[EquipID][1] == 10)
@@ -2050,13 +2179,13 @@ public class Player extends LiveBeing
 	{
 		float[] scale = new float[] {(float) 0.6, (float) 0.6} ;
 		float[] angle = new float[] {50, 30, 0, 0, 0} ;
-		int[] EqPos = new int[] {(int)(Pos[0] + 0.16 * PA.getSize()[0] * playerscale[0]), (int)(Pos[1] - 0.4 * PA.getSize()[1] * playerscale[1])} ;
+		Point EqPos = new Point((int)(Pos[0] + 0.16 * PA.getSize()[0] * playerscale[0]), (int)(Pos[1] - 0.4 * PA.getSize()[1] * playerscale[1])) ;
 		if (0 < Equips[0])
 		{
 			DrawEquips(EqPos, Job, 0, Equips[0] - Items.BagIDs[5], Items.EquipsBonus, scale, angle[Job], DP) ;
 		}	
 	}
-	public void DrawPlayer(int[] PlayerPos, float[] scale, String dir, boolean ShowPlayerRange, DrawPrimitives DP)
+	public void display(Point PlayerPos, float[] scale, String dir, boolean ShowPlayerRange, DrawPrimitives DP)
 	{
 		// BP = Body part
 		// 0,0 on shoes tip
@@ -2065,7 +2194,7 @@ public class Player extends LiveBeing
 		float OverallAngle = DrawPrimitives.OverallAngle ;
 		if (IsRiding())	// If the player is mounted
 		{
-			DP.DrawImage(RidingImage, new int[] {PA.getPos()[0] - RidingImage.getWidth(null)/2, PA.getPos()[1] + RidingImage.getHeight(null)/2}, OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
+			DP.DrawImage(RidingImage, new Point(PA.getPos().x - RidingImage.getWidth(null)/2, PA.getPos().y + RidingImage.getHeight(null)/2), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
 		}
 		//Image[] PlayerImages = new Image[] {PA.getimage()} ;
 		//float[][] BPScale = new float[PA.getimage().length][2] ;
@@ -2073,28 +2202,28 @@ public class Player extends LiveBeing
 		if (dir.equals("Acima"))
 		{
 			mirror = new boolean[] {false, false} ;
-			DP.DrawImage(PA.getimage()[0], new int[] {PlayerPos[0], (int) (PlayerPos[1] - 0.5*scale[1] * PA.getSize()[1])}, OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+			DP.DrawImage(PA.getimage()[0], new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Abaixo"))
 		{
 			mirror = new boolean[] {false, false} ;
-			DP.DrawImage(PA.getimage()[1], new int[] {PlayerPos[0], (int) (PlayerPos[1] - 0.5*scale[1] * PA.getSize()[1])}, OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+			DP.DrawImage(PA.getimage()[1], new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Esquerda"))
 		{
 			mirror = new boolean[] {false, false} ;
-			DP.DrawImage(PA.getimage()[2], new int[] {PlayerPos[0], (int) (PlayerPos[1] - 0.5*scale[1] * PA.getSize()[1])}, OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+			DP.DrawImage(PA.getimage()[2], new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Direita"))
 		{
 			mirror = new boolean[] {false, false} ;
 			if (PA.countmove % 2 == 0)
 			{
-				DP.DrawImage(PA.getimage()[3], new int[] {PlayerPos[0], (int) (PlayerPos[1] - 0.5*scale[1] * PA.getSize()[1])}, OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+				DP.DrawImage(PA.getimage()[3], new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
 			}
 			else
 			{
-				DP.DrawImage(PA.getimage()[7], new int[] {PlayerPos[0], (int) (PlayerPos[1] - 0.5*scale[1] * PA.getSize()[1])}, OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+				DP.DrawImage(PA.getimage()[7], new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
 			}
 		}
 		if (ShowPlayerRange)
@@ -2108,21 +2237,24 @@ public class Player extends LiveBeing
 		}*/
 		/*for (int i = 0 ; i <= PlayerImages.length - 1 ; i += 1)						
 		{
-			DP.DrawImage(PlayerImages[i], new int[] {PlayerPos[0], (int) (PlayerPos[1] - 0.5*scale[1] * PA.getSize()[1])}, OverallAngle, BPScale[i], mirror, "Center") ;
+			DP.DrawImage(PlayerImages[i], new int[] {PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])}, OverallAngle, BPScale[i], mirror, "Center") ;
 		}*/
 		if (QuestSkills[8])
 		{
-			DP.DrawImage(DragonAuraImage, new int[] {PlayerPos[0], (int) (PlayerPos[1] - 0.5*scale[1] * PA.getSize()[1])}, OverallAngle, new float[] {1, 1}, mirror, "Center", 0.5) ;					
+			DP.DrawImage(DragonAuraImage, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 0.5) ;					
 		}
 		//DP.DrawRect(player.getPos(), "Center", (int)(player.getSize()[0]*scale[0]), (int)(player.getSize()[1]*scale[1]), 1, null, ColorPalette[9], true) ;	// Player contour
 		//DrawCircle(player.getPos(), 2, 2, ColorPalette[6], false, true) ;	// Player center
 	}
-	public void DrawAttWindow(int[] MainWinDim, int[] WinPos, int[] MousePos, String[][] AllText, int[] AllTextCat, int Tab, Image GoldCoinImage, Items[] items, Icon[] icons, DrawPrimitives DP)
+	public void DrawAttributes(DrawFunctions DF)
 	{
-		// Player player, Items[] items, Icon[] icons, int[] Pos, int Tab, float[] PlayerStats, int[] MousePos, Image GoldCoinImage, Image DragonAuraImage
+		DF.DrawPlayerAttributes(this, settings.getAttDisplay()) ;
+	}
+	public void DrawAttWindow(int[] MainWinDim, Point WindowPos, Point MousePos, String[][] AllText, int[] AllTextCat, int Tab, Image GoldCoinImage, Icon[] icons, DrawPrimitives DP)
+	{
 		float TextAngle = DrawPrimitives.OverallAngle ;
 		int L = Player.AttWindow[0].getWidth(null), H = Player.AttWindow[0].getHeight(null) ;
-		int[] PlayerImagePos = new int[] {WinPos[0] + (int) (0.55 * L), WinPos[1] - (int) (0.85 * H)} ;
+		Point PlayerImagePos = new Point(WindowPos.x + (int) (0.55 * L), WindowPos.y - (int) (0.85 * H)) ;
 		int ClassesCat = -1, ProClassesCat = -1, AttCat = -1, CollectCat = -1, EquipsCat = -1, TabsCat = -1 ;
 		Font Namefont = new Font("GothicE", Font.BOLD, L / 28 + 1) ;
 		Font font = new Font("GothicE", Font.BOLD, L / 28 + 2) ;
@@ -2144,29 +2276,32 @@ public class Player extends LiveBeing
 		TabTextColor[Tab] = ColorPalette[3] ;
 		
 		// Main window
-		DP.DrawImage(Player.AttWindow[Tab], WinPos, "TopLeft") ;
-		DP.DrawText(new int[] {WinPos[0] + 5, WinPos[1] + (int)(0.05*H)}, "Center", 90, AllText[TabsCat][1], Namefont, TabTextColor[0]) ;				// Tab 0 text	
-		DP.DrawText(new int[] {WinPos[0] + 5, WinPos[1] + (int)(0.15*H)}, "Center", 90, AllText[TabsCat][2], Namefont, TabTextColor[1]) ;				// Tab 1 text	
-		DP.DrawText(new int[] {WinPos[0] + 5, WinPos[1] + (int)(0.25*H)}, "Center", 90, AllText[TabsCat][3], Namefont, TabTextColor[2]) ;				// Tab 2 text	
+		DP.DrawImage(Player.AttWindow[Tab], WindowPos, "TopLeft") ;
+		DP.DrawText(new Point(WindowPos.x + 5, WindowPos.y + (int)(0.05*H)), "Center", 90, AllText[TabsCat][1], Namefont, TabTextColor[0]) ;				// Tab 0 text	
+		DP.DrawText(new Point(WindowPos.x + 5, WindowPos.y + (int)(0.15*H)), "Center", 90, AllText[TabsCat][2], Namefont, TabTextColor[1]) ;				// Tab 1 text	
+		DP.DrawText(new Point(WindowPos.x + 5, WindowPos.y + (int)(0.25*H)), "Center", 90, AllText[TabsCat][3], Namefont, TabTextColor[2]) ;				// Tab 2 text	
 		if (Tab == 0)
 		{
 			//	Player
-			DrawPlayer(PlayerImagePos, new float[] {(float) 1.8, (float) 1.8}, PA.getDir(), false, DP) ;
-			DP.DrawText(new int[] {WinPos[0] + (int)(0.5*L), WinPos[1] + (int)(0.1*H)}, "Center", TextAngle, PA.getName(), Namefont, TextColor) ;						// Name text			
-			DP.DrawText(new int[] {WinPos[0] + (int)(0.5*L), WinPos[1] + (int)(0.03*H)}, "Center", TextAngle, AllText[AttCat][1] + ": " + PA.getLevel(), font, ColorPalette[6]) ;	// Level text		
+			display(PlayerImagePos, new float[] {(float) 1.8, (float) 1.8}, PA.getDir(), false, DP) ;
+			DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.1*H)), "Center", TextAngle, PA.getName(), Namefont, TextColor) ;						// Name text			
+			DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.03*H)), "Center", TextAngle, AllText[AttCat][1] + ": " + PA.getLevel(), font, ColorPalette[6]) ;	// Level text		
 			if(ProJob == 0)
 			{
-				DP.DrawText(new int[] {WinPos[0] + (int)(0.5*L), WinPos[1] + (int)(0.06*H)}, "Center", TextAngle, AllText[ClassesCat][Job + 1], font, ColorPalette[5]) ;	// Job text			
+				DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.06*H)), "Center", TextAngle, AllText[ClassesCat][Job + 1], font, ColorPalette[5]) ;	// Job text			
 			}
 			else
 			{
-				DP.DrawText(new int[] {WinPos[0] + (int)(0.5*L), WinPos[1] + (int)(0.15*H + TextH/2)}, "Center", TextAngle, AllText[ProClassesCat][ProJob + 2*Job], font, ColorPalette[5]) ;	// Pro job text					
+				DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.15*H + TextH/2)), "Center", TextAngle, AllText[ProClassesCat][ProJob + 2*Job], font, ColorPalette[5]) ;	// Pro job text					
 			}
 			
 			//	Equips
 			int[] EqRectL = new int[] {51, 51, 51, 8} ;
 			int[] EqRectH = new int[] {51, 51, 51, 24} ;
-			int[][] EqRectPos = new int[][] {{WinPos[0] + 62, WinPos[1] + 78}, {WinPos[0] + 200, WinPos[1] + 43}, {WinPos[0] + 200, WinPos[1] + 96}, {WinPos[0] + 53, WinPos[1] + 90}} ;	// Weapon, armor, shield, arrow
+			Point[] EqRectPos = new Point[] {new Point(WindowPos.x + 62, WindowPos.y + 78),
+					new Point(WindowPos.x + 200, WindowPos.y + 43),
+					new Point(WindowPos.x + 200, WindowPos.y + 96), 
+					new Point(WindowPos.x + 53, WindowPos.y + 90)} ;	// Weapon, armor, shield, arrow
 			for (int eq = 0 ; eq <= 4 - 1 ; eq += 1)
 			{
 				Image ElemImage = DrawFunctions.ElementImages[Uts.ElementID(PA.Elem[eq + 1])] ;
@@ -2178,7 +2313,7 @@ public class Player extends LiveBeing
 						{
 							if (-1 < EquipsCat)
 							{
-								DP.DrawText(new int[] {EqRectPos[eq][0], EqRectPos[eq][1] - EqRectH[eq] / 2 - TextH}, "Center", TextAngle, AllText[EquipsCat][eq + 1] + " + " + (int)(EquipsBonus[Equips[eq] - Items.BagIDs[6]][1]), font, TextColor) ;					
+								DP.DrawText(new Point(EqRectPos[eq].x, EqRectPos[eq].y - EqRectH[eq] / 2 - TextH), "Center", TextAngle, AllText[EquipsCat][eq + 1] + " + " + (int)(EquipsBonus[Equips[eq] - Items.BagIDs[6]][1]), font, TextColor) ;					
 							}
 						}
 						DrawEquips(EqRectPos[eq], Job, eq, Equips[eq] - Items.BagIDs[6], EquipsBonus, new float[] {1, 1}, TextAngle, DP) ;
@@ -2187,51 +2322,51 @@ public class Player extends LiveBeing
 					{
 						DrawEquips(EqRectPos[eq], Job, eq, Equips[0] - Items.BagIDs[6], EquipsBonus, new float[] {1, 1}, TextAngle, DP) ;
 					}
-					DP.DrawImage(ElemImage, new int[] {(int) (EqRectPos[eq][0] + 0.3*EqRectL[eq]), (int) (EqRectPos[eq][1] + 0.3*EqRectH[eq])}, TextAngle, new float[] {(float) 0.12, (float) 0.12}, new boolean[] {false, false}, "Center", 1) ;					
-					DP.DrawTextUntil(new int[] {EqRectPos[eq][0] - EqRectL[eq] / 2, EqRectPos[eq][1] + EqRectH[eq] / 2 + TextH}, "BotLeft", TextAngle, items[Equips[eq]].getName(), Equipfont, TextColor, 14, MousePos) ;	// Equip text	
+					DP.DrawImage(ElemImage, new Point((int) (EqRectPos[eq].x + 0.3*EqRectL[eq]), (int) (EqRectPos[eq].y + 0.3*EqRectH[eq])), TextAngle, new float[] {(float) 0.12, (float) 0.12}, new boolean[] {false, false}, "Center", 1) ;					
+					//DP.DrawTextUntil(new Point(EqRectPos[eq].x - EqRectL[eq] / 2, EqRectPos[eq].y + EqRectH[eq] / 2 + TextH), "BotLeft", TextAngle, items[Equips[eq]].getName(), Equipfont, TextColor, 14, MousePos) ;	// Equip text	
 				}
 				else
 				{
-					DP.DrawText(new int[] {EqRectPos[eq][0] + EqRectL[eq]/2, EqRectPos[eq][1] - EqRectH[eq] / 2 - TextH}, "Center", TextAngle, AllText[EquipsCat][eq + 1], font, TextColor) ;
+					DP.DrawText(new Point(EqRectPos[eq].x + EqRectL[eq]/2, EqRectPos[eq].y - EqRectH[eq] / 2 - TextH), "Center", TextAngle, AllText[EquipsCat][eq + 1], font, TextColor) ;
 				}
 			}
 			
 			// Super element
 			if (PA.Elem[1].equals(PA.Elem[2]) & PA.Elem[2].equals(PA.Elem[3]))
 			{
-				DP.DrawImage(DrawFunctions.ElementImages[Uts.ElementID(PA.Elem[4])], new int[] {WinPos[0] + (int)(0.5*L), WinPos[1] + (int)(0.45*H)}, TextAngle, new float[] {(float) 0.3, (float) 0.3}, new boolean[] {false, false}, "Center", 1) ;
+				DP.DrawImage(DrawFunctions.ElementImages[Uts.ElementID(PA.Elem[4])], new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.45*H)), TextAngle, new float[] {(float) 0.3, (float) 0.3}, new boolean[] {false, false}, "Center", 1) ;
 			}
 			
 			//	Attributes
 			float[] Attributes = new float[] {BA.TotalPhyAtk(), BA.TotalMagAtk(), BA.TotalPhyDef(), BA.TotalMagDef(), BA.TotalDex(), BA.TotalAgi()} ;
 			int AttSy = 22 ;
-			DP.DrawText(new int[] {WinPos[0] + 15, WinPos[1] + 30}, "BotLeft", TextAngle, AllText[AttCat][2] + ": " + Utg.Round(PA.getLife()[0], 1), font, ColorPalette[6]) ;	// Life text	
-			DP.DrawText(new int[] {WinPos[0] + 15, WinPos[1] + 40}, "BotLeft", TextAngle, AllText[AttCat][3] + ": " + Utg.Round(PA.getMp()[0], 1), font, ColorPalette[5]) ;		// MP text
+			DP.DrawText(new Point(WindowPos.x + 15, WindowPos.y + 30), "BotLeft", TextAngle, AllText[AttCat][2] + ": " + Utg.Round(PA.getLife()[0], 1), font, ColorPalette[6]) ;	// Life text	
+			DP.DrawText(new Point(WindowPos.x + 15, WindowPos.y + 40), "BotLeft", TextAngle, AllText[AttCat][3] + ": " + Utg.Round(PA.getMp()[0], 1), font, ColorPalette[5]) ;	// MP text
 
-			DP.DrawImage(Items.EquipImage[0], new int[] {WinPos[0] + 30, WinPos[1] + 134 + 1 * AttSy}, new float[] {(float) (11 / 38.0), (float) (11 / 38.0)}, "Center") ;	// Draw sword icon
+			DP.DrawImage(Equip.SwordImage, new Point(WindowPos.x + 30, WindowPos.y + 134 + 1 * AttSy), new float[] {(float) (11 / 38.0), (float) (11 / 38.0)}, "Center") ;	// Draw sword icon
 			for (int i = 0; i <= Attributes.length - 1; i += 1)
 			{
-				DP.DrawText(new int[] {WinPos[0] + 45, WinPos[1] + 136 + (i + 1) * AttSy}, "BotLeft", TextAngle, AllText[AttCat][4] + ": " + Utg.Round(Attributes[i], 1), font, TextColor) ;
+				DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + (i + 1) * AttSy), "BotLeft", TextAngle, AllText[AttCat][4] + ": " + Utg.Round(Attributes[i], 1), font, TextColor) ;
 			}	
-			DP.DrawText(new int[] {WinPos[0] + 45, WinPos[1] + 136 + 7 * AttSy}, "BotLeft", TextAngle, AllText[AttCat][10] + ": " + Utg.Round(100 * BA.TotalCritAtkChance(), 1) + "%", font, ColorPalette[6]) ;		
+			DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + 7 * AttSy), "BotLeft", TextAngle, AllText[AttCat][10] + ": " + Utg.Round(100 * BA.TotalCritAtkChance(), 1) + "%", font, ColorPalette[6]) ;		
 			
 			//	Collection
 			if (Language.equals("P"))
 			{	
-				DP.DrawText(new int[] {WinPos[0] + (int)(0.95*L), WinPos[1] + (int)(0.895*H)}, "TopRight", TextAngle, AllText[AttCat][17] + " de " + AllText[CollectCat][3] + " = " + Utg.Round(Collect[0], 1), font, DrawFunctions.MapsTypeColor[13]) ;		
-				DP.DrawText(new int[] {WinPos[0] + (int)(0.95*L), WinPos[1] + (int)(0.945*H)}, "TopRight", TextAngle, AllText[AttCat][17] + " de " + AllText[CollectCat][4] + " = " + Utg.Round(Collect[1], 1), font, DrawFunctions.MapsTypeColor[14]) ;		
-				DP.DrawText(new int[] {WinPos[0] + (int)(0.95*L), WinPos[1] + (int)(0.975*H)}, "TopRight", TextAngle, AllText[AttCat][17] + " de " + AllText[CollectCat][5] + " = " + Utg.Round(Collect[2], 1), font, DrawFunctions.MapsTypeColor[15]) ;
+				DP.DrawText(new Point(WindowPos.x + (int)(0.95*L), WindowPos.y + (int)(0.895*H)), "TopRight", TextAngle, AllText[AttCat][17] + " de " + AllText[CollectCat][3] + " = " + Utg.Round(Collect[0], 1), font, DrawFunctions.MapsTypeColor[13]) ;		
+				DP.DrawText(new Point(WindowPos.x + (int)(0.95*L), WindowPos.y + (int)(0.945*H)), "TopRight", TextAngle, AllText[AttCat][17] + " de " + AllText[CollectCat][4] + " = " + Utg.Round(Collect[1], 1), font, DrawFunctions.MapsTypeColor[14]) ;		
+				DP.DrawText(new Point(WindowPos.x + (int)(0.95*L), WindowPos.y + (int)(0.975*H)), "TopRight", TextAngle, AllText[AttCat][17] + " de " + AllText[CollectCat][5] + " = " + Utg.Round(Collect[2], 1), font, DrawFunctions.MapsTypeColor[15]) ;
 			}
 			else if (Language.equals("E"))
 			{
-				DP.DrawText(new int[] {WinPos[0] + (int)(0.95*L), WinPos[1] + (int)(0.895*H)}, "TopRight", TextAngle, AllText[CollectCat][3] + " " + AllText[AttCat][17] + " = " + Utg.Round(Collect[0], 1), font, DrawFunctions.MapsTypeColor[13]) ;		
-				DP.DrawText(new int[] {WinPos[0] + (int)(0.95*L), WinPos[1] + (int)(0.945*H)}, "TopRight", TextAngle, AllText[CollectCat][4] + " " + AllText[AttCat][17] + " = " + Utg.Round(Collect[1], 1), font, DrawFunctions.MapsTypeColor[14]) ;		
-				DP.DrawText(new int[] {WinPos[0] + (int)(0.95*L), WinPos[1] + (int)(0.975*H)}, "TopRight", TextAngle, AllText[CollectCat][5] + " " + AllText[AttCat][17] + " = " + Utg.Round(Collect[2], 1), font, DrawFunctions.MapsTypeColor[15]) ;
+				DP.DrawText(new Point(WindowPos.x + (int)(0.95*L), WindowPos.y + (int)(0.895*H)), "TopRight", TextAngle, AllText[CollectCat][3] + " " + AllText[AttCat][17] + " = " + Utg.Round(Collect[0], 1), font, DrawFunctions.MapsTypeColor[13]) ;		
+				DP.DrawText(new Point(WindowPos.x + (int)(0.95*L), WindowPos.y + (int)(0.945*H)), "TopRight", TextAngle, AllText[CollectCat][4] + " " + AllText[AttCat][17] + " = " + Utg.Round(Collect[1], 1), font, DrawFunctions.MapsTypeColor[14]) ;		
+				DP.DrawText(new Point(WindowPos.x + (int)(0.95*L), WindowPos.y + (int)(0.975*H)), "TopRight", TextAngle, AllText[CollectCat][5] + " " + AllText[AttCat][17] + " = " + Utg.Round(Collect[2], 1), font, DrawFunctions.MapsTypeColor[15]) ;
 			}
 			
 			//	Gold
-			DP.DrawImage(GoldCoinImage, new int[] {WinPos[0] + (int)(0.04*L), WinPos[1] + (int)(0.975*H)}, TextAngle, new float[] {(float) 1.2, (float) 1.2}, new boolean[] {false, false}, "BotLeft", 1) ;
-			DP.DrawText(new int[] {WinPos[0] + (int)(0.18*L), WinPos[1] + (int)(0.96*H) - TextH/2}, "BotLeft", TextAngle, String.valueOf(Utg.Round(Gold[0], 1)), font, ColorPalette[18]) ;	// Gold text
+			DP.DrawImage(GoldCoinImage, new Point(WindowPos.x + (int)(0.04*L), WindowPos.y + (int)(0.975*H)), TextAngle, new float[] {(float) 1.2, (float) 1.2}, new boolean[] {false, false}, "BotLeft", 1) ;
+			DP.DrawText(new Point(WindowPos.x + (int)(0.18*L), WindowPos.y + (int)(0.96*H) - TextH/2), "BotLeft", TextAngle, String.valueOf(Utg.Round(Gold[0], 1)), font, ColorPalette[18]) ;	// Gold text
 		
 			//	Plus sign
 			if (0 < AttPoints)
@@ -2244,11 +2379,11 @@ public class Player extends LiveBeing
 		}
 		else if (Tab == 1)
 		{
-			DrawSpecialAttributesWindow(AllText, AllTextCat, WinPos, L, H, BA.getStun(), BA.getBlock(), BA.getBlood(), BA.getPoison(), BA.getSilence(), DP) ;
+			DrawSpecialAttributesWindow(AllText, AllTextCat, WindowPos, L, H, DP) ;
 		}
 		else if (Tab == 2)
 		{
-			DrawStats(AllText, AllTextCat, WinPos, L, H, Stats, DP) ;
+			DrawStats(AllText, AllTextCat, WindowPos, L, H, Stats, DP) ;
 		}
 	}
 
@@ -2270,7 +2405,7 @@ public class Player extends LiveBeing
 			bw.write("\nPlayer proJob: \n" + getProJob()) ;
 			bw.write("\nPlayer continent: \n" + getContinent()) ;
 			bw.write("\nPlayer map: \n" + getMap()) ;
-			bw.write("\nPlayer pos: \n" + Arrays.toString(getPos())) ;
+			bw.write("\nPlayer pos: \n" + getPos()) ;
 			bw.write("\nPlayer skill: \n" + Arrays.toString(getSpell())) ;
 			bw.write("\nPlayer quest: \n" + Arrays.toString(getQuest())) ;
 			//bw.write("\nPlayer bag: \n" + Arrays.toString(getBag())) ;
@@ -2335,7 +2470,7 @@ public class Player extends LiveBeing
 			Job = Integer.parseInt(ReadFile[2*7][0]) ;
 			setProJob(Integer.parseInt(ReadFile[2*8][0])) ;
 			setMap(Integer.parseInt(ReadFile[2*10][0]), maps) ;
-			setPos((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*11]), "String", "int")) ;
+			setPos((Point) Utg.ConvertArray(Utg.toString(ReadFile[2*11]), "String", "int")) ;
 			Spell = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*12]), "String", "int") ;
 			Quest = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*13]), "String", "int") ;
 			//setBag((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*14]), "String", "int")) ;
@@ -2424,13 +2559,12 @@ public class Player extends LiveBeing
 		System.out.println("AttIncrease: " + Arrays.deepToString(AttIncrease));
 		System.out.println("ChanceIncrease: " + Arrays.deepToString(ChanceIncrease));
 		System.out.println("CreaturesDiscovered: " + Arrays.toString(CreaturesDiscovered));
-
 		System.out.println("SelectedWindow: " + Arrays.toString(SelectedWindow));
 		System.out.println("SelectedMenu: " + Arrays.toString(SelectedMenu));
 		System.out.println("SelectedItem: " + Arrays.toString(SelectedItem));
 		System.out.println("ItemsMenu: " + ItemsMenu);
 		System.out.println("CustomKey: " + CustomKey);
-		System.out.println("OptionStatus: " + Arrays.toString(OptionStatus));
+		System.out.println("OptionStatus: " + settings);
 		System.out.println("ClosestCreature: " + ClosestCreature);
 		System.out.println("CreatureInBattle: " + CreatureInBattle);
 		System.out.println("DifficultLevel: " + DifficultLevel);

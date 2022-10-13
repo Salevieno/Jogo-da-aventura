@@ -1,6 +1,6 @@
 package GameComponents ;
 
-public class PetSkills 
+public class PetSpells 
 {
 	private String Name ;
 	private int MaxLevel ;
@@ -13,7 +13,7 @@ public class PetSkills
 	private String Elem ;
 	private String[] Info ;	// Effect and description
 	
-	public PetSkills(String Name, int MaxLevel, float MpCost, String Type, int[][] PreRequisites, int Cooldown, float[][] Buffs, float[][] Nerfs, String Elem, String[] Info)
+	public PetSpells(String Name, int MaxLevel, float MpCost, String Type, int[][] PreRequisites, int Cooldown, float[][] Buffs, float[][] Nerfs, String Elem, String[] Info)
 	{
 		this.Name = Name ;
 		this.MaxLevel = MaxLevel ;

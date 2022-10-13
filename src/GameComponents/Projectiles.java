@@ -1,6 +1,7 @@
 package GameComponents ;
 
 import java.awt.Image ;
+import java.awt.Point;
 
 import Graphics.DrawPrimitives ;
 import Main.Utg ;
@@ -8,14 +9,14 @@ import Main.Uts ;
 
 public class Projectiles
 {
-	private int[] Pos ;		// [x, y]
+	private Point Pos ;
 	private int Type ;		// 0: friendly, 1: hostile
 	private int damage ;
 	private float[] speed ;	// [vx, vy]
 	private int range ;
 	private Image image ;
 	
-	public Projectiles(int[] Pos, int Type, int damage, float[] speed, int range, Image image)
+	public Projectiles(Point Pos, int Type, int damage, float[] speed, int range, Image image)
 	{
 		this.Pos = Pos ;
 		this.Type = Type ;
@@ -25,13 +26,13 @@ public class Projectiles
 		this.image = image ;
 	}
 
-	public int[] getPos() {return Pos ;}
+	public Point getPos() {return Pos ;}
 	public int getType() {return Type ;}
 	public int getdamage() {return damage ;}
 	public float[] getSpeed() {return speed ;}
 	public int getrange() {return range ;}
 	public Image getImage() {return image ;}
-	public void setPos(int[] P) {Pos = P ;}
+	public void setPos(Point P) {Pos = P ;}
 	public void setType(int T) {Type = T ;}
 	public void setdamage(int D) {damage = D ;}
 	public void setSpeed(float[] S) {speed = S ;}
@@ -44,8 +45,8 @@ public class Projectiles
 	}
 	public void move()
 	{
-		Pos[0] += speed[0] ;
-		Pos[1] += speed[1] ;
+		Pos.x += speed[0] ;
+		Pos.y += speed[1] ;
 	}
 	public int collidedwith(Player player, Creatures[] creature, Pet pet)
 	{

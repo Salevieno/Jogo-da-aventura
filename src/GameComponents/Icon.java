@@ -3,6 +3,7 @@ package GameComponents ;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image ;
+import java.awt.Point;
 import java.util.Arrays ;
 
 import Graphics.DrawPrimitives ;
@@ -12,14 +13,14 @@ public class Icon
 {
 	private int id ;
 	private String Name ;
-	private int[] Pos ;		// [x, y]
+	private Point Pos ;		// [x, y]
 	private int[] Size ;	// [width, height]
 	public boolean isActive ;
 	private String description ;
 	private Image image ;
 	private Image SelectedImage ;	// Image when selected
 	
-	public Icon(int id, String Name, int[] Pos, String description, Image image, Image SelectedImage)
+	public Icon(int id, String Name, Point Pos, String description, Image image, Image SelectedImage)
 	{
 		this.id = id ;
 		this.Name = Name ;
@@ -39,18 +40,18 @@ public class Icon
 
 	public int getid() {return id ;}
 	public String getName() {return Name ;}
-	public int[] getPos() {return Pos ;}
+	public Point getPos() {return Pos ;}
 	public Image getImage() {return image ;}
 	public Image getSelectedImage() {return SelectedImage ;}
 	public void setid(int I) {id = I ;}
 	public void setName(String N) {Name = N ;}
-	public void setPos(int[] P) {Pos = P ;}
+	public void setPos(Point P) {Pos = P ;}
 	public void setImage(Image I) {image = I ;}
 	public void setSelectedImage(Image S) {SelectedImage = S ;}
 	
-	public boolean ishovered(int[] MousePos)
+	public boolean ishovered(Point MousePos)
 	{
-		if (Utg.isInside(MousePos, new int[] {Pos[0] - Size[0] / 2, Pos[1] - Size[1] / 2}, Size[0], Size[1]))
+		if (Utg.isInside(MousePos, new Point(Pos.x - Size[0] / 2, Pos.y - Size[1] / 2), Size[0], Size[1]))
 		{
 			return true ;
 		}
@@ -140,7 +141,7 @@ public class Icon
 	
 	
 	/* Draw methods */
-	public void DrawImage(float angle, int selectedButton, int[] MousePos, DrawPrimitives DP)
+	public void DrawImage(float angle, int selectedButton, Point MousePos, DrawPrimitives DP)
 	{
 		if (ishovered(MousePos) | isselected(selectedButton))
 		{
@@ -171,8 +172,8 @@ public class Icon
 	{
 		if (description != null)
 		{
-			DP.DrawRoundRect(new int[] {Pos[0] + 20, Pos[1] - 10}, "Center", Size[0], Size[1], 5, Color.lightGray, Color.gray, true) ;
-			DP.DrawFitText(new int[] {Pos[0] + 20, Pos[1] - 10}, 14, "Center", description, new Font("Scheherazade Bold", Font.BOLD, 12), 20, Color.blue) ;
+			DP.DrawRoundRect(new Point(Pos.x + 20, Pos.y - 10), "Center", Size[0], Size[1], 5, Color.lightGray, Color.gray, true) ;
+			DP.DrawFitText(new Point(Pos.x + 20, Pos.y - 10), 14, "Center", description, new Font("Scheherazade Bold", Font.BOLD, 12), 20, Color.blue) ;
 		}
 	}
 	
@@ -184,7 +185,7 @@ public class Icon
 		System.out.println(" *** icon properties ***") ;
 		System.out.println("id: " + id) ;
 		System.out.println("name: " + Name) ;
-		System.out.println("pos: " + Arrays.toString(Pos)) ;
+		System.out.println("pos: " + Pos) ;
 		System.out.println("size: " + Arrays.toString(Size)) ;
 		System.out.println("image: " + image) ;
 		System.out.println("selected image: " + SelectedImage) ;

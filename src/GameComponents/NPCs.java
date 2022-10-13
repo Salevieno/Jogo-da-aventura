@@ -2,12 +2,13 @@ package GameComponents ;
 
 import java.awt.Color ;
 import java.awt.Image ;
+import java.awt.Point;
 
 public class NPCs
 {
 	private int ID ;
 	private String Name ;
-	private int[] Pos ;
+	private Point Pos ;
 	private Image image ;
 	private int Map ;
 	private String PosRelToBuilding ;
@@ -15,7 +16,7 @@ public class NPCs
 	private Color color ;	
 	public boolean Firstcontact ;
 	
-	public NPCs(int ID, String Name, int[] Pos, Image image, int Map, String PosRelToBuilding, String Info, Color color)
+	public NPCs(int ID, String Name, Point Pos, Image image, int Map, String PosRelToBuilding, String Info, Color color)
 	{
 		this.ID = ID ;
 		this.Name = Name ;
@@ -30,7 +31,7 @@ public class NPCs
 
 	public int getID() {return ID ;}
 	public String getName() {return Name ;}
-	public int[] getPos() {return Pos ;}
+	public Point getPos() {return Pos ;}
 	public Image getImage() {return image ;}
 	public int getMap() {return Map ;}
 	public String getPosRelToBuilding() {return PosRelToBuilding ;}
@@ -38,7 +39,7 @@ public class NPCs
 	public Color getColor() {return color ;}
 	public void setID(int I) {ID = I ;}
 	public void setName(String N) {Name = N ;}
-	public void setPos(int[] P) {Pos = P ;}
+	public void setPos(Point P) {Pos = P ;}
 	public void setImage(Image I) {image = I ;}
 	public void setMap(int M) {Map = M ;}
 	public void setPosRelToBuilding(String P) {PosRelToBuilding = P ;}

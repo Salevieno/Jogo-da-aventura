@@ -25,27 +25,27 @@ public class DrawPrimitives
 		this.G = G ;
 		ColorPalette = colorPalette ;
 	}
-	public void DrawImage(Image icon, int[] Pos, String Alignment)
+	public void DrawImage(Image icon, Point Pos, String Alignment)
 	{       
 		if (icon != null)
 		{
 			int l = (int)(icon.getWidth(null)), h = (int)(icon.getHeight(null)) ;
 			int[] offset = Utg.OffsetFromPos(Alignment, l, h) ;
-			G.drawImage(icon, Pos[0] + offset[0], Pos[1] + offset[1], l, h, null) ;
+			G.drawImage(icon, Pos.x + offset[0], Pos.y + offset[1], l, h, null) ;
 	        //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "An image is being drawn outside window") ;
 		}
 	}
-	public void DrawImage(Image icon, int[] Pos, float[] scale, String Alignment)
+	public void DrawImage(Image icon, Point Pos, float[] scale, String Alignment)
 	{       
 		if (icon != null)
 		{
 			int l = (int)(scale[0] * icon.getWidth(null)), h = (int)(scale[1] * icon.getHeight(null)) ;
 			int[] offset = Utg.OffsetFromPos(Alignment, l, h) ;
-			G.drawImage(icon, Pos[0] + offset[0], Pos[1] + offset[1], l, h, null) ;
+			G.drawImage(icon, Pos.x + offset[0], Pos.y + offset[1], l, h, null) ;
 	        //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "An image is being drawn outside window") ;
 		}
 	}
-	public void DrawImage(Image icon, int[] Pos, float angle, float[] scale, boolean[] mirror, String Alignment, double alpha)
+	public void DrawImage(Image icon, Point Pos, float angle, float[] scale, boolean[] mirror, String Alignment, double alpha)
 	{       
 		if (icon != null)
 		{
@@ -61,21 +61,21 @@ public class DrawPrimitives
 				m[1] = -1 ;
 			}			
 			AffineTransform backup = G.getTransform() ;
-			G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, Pos[0] + offset[0], Pos[1] + offset[1])) ;	 // Rotate image
+			G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, Pos.x + offset[0], Pos.y + offset[1])) ;	 // Rotate image
 			G.setComposite(AlphaComposite.SrcOver.derive((float) alpha)) ;
-			G.drawImage(icon, Pos[0] + offset[0], Pos[1] + offset[1], m[0] * l, m[1] * h, null) ;
+			G.drawImage(icon, Pos.x + offset[0], Pos.y + offset[1], m[0] * l, m[1] * h, null) ;
 			G.setComposite(AlphaComposite.SrcOver.derive((float) 1.0)) ;
 	        G.setTransform(backup) ;
 	        // Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "An image is being drawn outside window") ;
 		}
 	}
-	public void DrawGif(Image icon, int[] Pos, String Alignment)
+	public void DrawGif(Image icon, Point Pos, String Alignment)
 	{
 		int l = (int)(icon.getWidth(null)), h = (int)(icon.getHeight(null)) ;
 		int[] offset = Utg.OffsetFromPos(Alignment, l, h) ;
-		G.drawImage(icon, Pos[0] + offset[0], Pos[1] + offset[1], null) ;
+		G.drawImage(icon, Pos.x + offset[0], Pos.y + offset[1], null) ;
 	}
-	public void DrawText(int[] Pos, String Alignment, float angle, String Text, Font font, Color color)
+	public void DrawText(Point Pos, String Alignment, float angle, String Text, Font font, Color color)
 	{
 		// Rectangle by default starts at the left bottom
 		int TextL = Utg.TextL(Text, font, G), TextH = Utg.TextH(font.getSize()) ;
@@ -83,22 +83,22 @@ public class DrawPrimitives
 		AffineTransform backup = G.getTransform() ;		
 		G.setColor(color) ;
 		G.setFont(font) ;
-		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, Pos[0], Pos[1])) ;	// Rotate text
-		G.drawString(Text, Pos[0] + offset[0], Pos[1] + offset[1] + TextH) ;
+		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, Pos.x, Pos.y)) ;	// Rotate text
+		G.drawString(Text, Pos.x + offset[0], Pos.y + offset[1] + TextH) ;
         G.setTransform(backup) ;
         //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "A text is being drawn outside window") ;
 	}
-	public void DrawFitText(int[] Pos, int sy, String Alignment, String Text, Font font, int length, Color color)
+	public void DrawFitText(Point Pos, int sy, String Alignment, String Text, Font font, int length, Color color)
 	{
 		String[] FitText = Utg.FitText(Text, length) ;
 		for (int i = 0 ; i <= FitText.length - 1 ; i += 1)
 		{
 			//System.out.println(FitText[i]);
-			DrawText(new int[] {Pos[0], Pos[1] + i*sy}, Alignment, OverallAngle, FitText[i], font, color) ;						
+			DrawText(new Point(Pos.x, Pos.y + i*sy), Alignment, OverallAngle, FitText[i], font, color) ;						
 		}
         //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL, ScreenH}, "A fit text is being drawn outside window") ;
 	}
-	public void DrawTextUntil(int[] Pos, String Alignment, float angle, String Text, Font font, Color color, int maxlength, int[] MousePos)
+	public void DrawTextUntil(Point Pos, String Alignment, float angle, String Text, Font font, Color color, int maxlength, Point MousePos)
 	{
 		int[] offset = Utg.OffsetFromPos(Alignment, maxlength, Utg.TextH(font.getSize())) ;
 		String ShortText = Text ;
@@ -108,7 +108,7 @@ public class DrawPrimitives
 			Text.getChars(0, maxlength - 4, chararray, 0) ;
 			ShortText = String.valueOf(chararray) ;
 		}
-		if (Text.length() <= maxlength | Utg.isInside(MousePos, new int[] {Pos[0] + offset[0], Pos[1] + offset[1]}, Utg.TextL(ShortText, font, G), Utg.TextH(font.getSize())))
+		if (Text.length() <= maxlength | Utg.isInside(MousePos, new Point(Pos.x + offset[0], Pos.y + offset[1]), Utg.TextL(ShortText, font, G), Utg.TextH(font.getSize())))
 		{
 			DrawText(Pos, Alignment, OverallAngle, Text, font, color) ;
 		}
@@ -129,11 +129,11 @@ public class DrawPrimitives
         //Ut.CheckIfPosIsOutsideScreen(new int[] {x[0], y[0]}, new int[] {ScreenL + 55, ScreenH + 19}, "A line is being drawn outside window") ;
 		//Ut.CheckIfPosIsOutsideScreen(new int[] {x[1], y[1]}, new int[] {ScreenL + 55, ScreenH + 19}, "A line is being drawn outside window") ;
 	}
-	public void DrawRect(int[] Pos, String Alignment, int l, int h, int Thickness, Color color, Color contourColor, boolean contour)
+	public void DrawRect(Point Pos, String Alignment, int l, int h, int Thickness, Color color, Color contourColor, boolean contour)
 	{
 		// Rectangle by default starts at the left top
 		int[] offset = Utg.OffsetFromPos(Alignment, l, h) ;
-		int[] Corner = new int[] {Pos[0] + offset[0], Pos[1] + offset[1]} ;
+		int[] Corner = new int[] {Pos.x + offset[0], Pos.y + offset[1]} ;
 		G.setStroke(new BasicStroke(Thickness)) ;
 		if (color != null)
 		{
@@ -169,18 +169,18 @@ public class DrawPrimitives
 		G.setStroke(new BasicStroke(StdThickness)) ;
         //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "A round rect is being drawn outside window") ;
 	}
-	public void DrawCircle(int[] Center, int size, int Thickness, Color color, boolean fill, boolean contour)
+	public void DrawCircle(Point Center, int size, int Thickness, Color color, boolean fill, boolean contour)
 	{
 		G.setColor(color) ;
 		G.setStroke(new BasicStroke(Thickness)) ;
 		if (fill)
 		{
-			G.fillOval(Center[0] - size/2, Center[1] - size/2, size, size) ;
+			G.fillOval(Center.x - size/2, Center.y - size/2, size, size) ;
 			G.setColor(Color.black) ;
 		}
 		if (contour)
 		{
-			G.drawOval(Center[0] - size/2, Center[1] - size/2, size, size) ;
+			G.drawOval(Center.x - size/2, Center.y - size/2, size, size) ;
 		}
 		G.setStroke(new BasicStroke(StdThickness)) ;
         //Ut.CheckIfPosIsOutsideScreen(Center, new int[] {ScreenL, ScreenH}, "A circle is being drawn outside window") ;

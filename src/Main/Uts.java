@@ -13,11 +13,11 @@ import GameComponents.Items ;
 import GameComponents.Maps ;
 import GameComponents.NPCs ;
 import GameComponents.Pet ;
-import GameComponents.PetSkills ;
+import GameComponents.PetSpells ;
 import GameComponents.Player ;
 import GameComponents.Quests ;
 import GameComponents.Screen ;
-import GameComponents.Skills ;
+import GameComponents.Spells ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Graphics.DrawPrimitives ;
@@ -38,7 +38,7 @@ public class Uts
 			{
 				for (int x = 0 ; x <= 4 - 1 ; x += 1)
 				{
-					Palette = Utg.AddElem(Palette, Utg.GetPixelColor(Utg.toBufferedImage(ColorPaletteImage), new int[] {x, y})) ;
+					Palette = Utg.AddElem(Palette, Utg.GetPixelColor(Utg.toBufferedImage(ColorPaletteImage), new Point(x, y))) ;
 				}
 			}
 		}
@@ -48,7 +48,7 @@ public class Uts
 			{
 				for (int y = 0 ; y <= 7 - 1 ; y += 1)
 				{
-					Palette = Utg.AddElem(Palette, Utg.GetPixelColor(Utg.toBufferedImage(ColorPaletteImage), new int[] {x, y})) ;
+					Palette = Utg.AddElem(Palette, Utg.GetPixelColor(Utg.toBufferedImage(ColorPaletteImage), new Point(x, y))) ;
 				}
 			}
 		}
@@ -64,7 +64,7 @@ public class Uts
 		return false ;
 	}*/
 	
-	public static String LiveTyping(int[] Pos, float angle, String Input, Font font, Color color, DrawPrimitives DP)
+	public static String LiveTyping(Point Pos, float angle, String Input, Font font, Color color, DrawPrimitives DP)
 	{
 		if (Utg.IsAlphaNumeric(Input))
 		{
@@ -368,9 +368,9 @@ public class Uts
 		return GroundType ;
  	}*/
 	
- 	public static String CheckAdjacentGround(int[] playerPos, Screen screen, Maps map, String GroundType)
+ 	public static String CheckAdjacentGround(Point playerPos, Maps map, String GroundType)
 	{
-		int[] PlayerPos = Arrays.copyOf(playerPos, playerPos.length) ;
+ 		Point PlayerPos = new Point(playerPos.x, playerPos.y) ;
 		if (map.getgroundType() != null)
 		{
 			for (int i = 0; i <= map.getgroundType().length - 1; i += 1)
@@ -380,23 +380,23 @@ public class Uts
 				Point p = (Point) o[1] ;		// point on the map
 				if (type.equals(GroundType))
 				{
-					if (p.x == PlayerPos[0] & p.y == PlayerPos[1])
+					if (p.x == PlayerPos.x & p.y == PlayerPos.y)
 					{
 						return "inside" ;	// The player is inside the ground
 					}
-					else if (p.x == (PlayerPos[0] - 1) & p.y == PlayerPos[1])
+					else if (p.x == (PlayerPos.x - 1) & p.y == PlayerPos.y)
 					{
 						return "touching left" ;	// The ground is touching the player from the left
 					}
-					else if (p.x == (PlayerPos[0] + 1) & p.y == PlayerPos[1])
+					else if (p.x == (PlayerPos.x + 1) & p.y == PlayerPos.y)
 					{
 						return "touching right" ;	// The player is touching the ground and the ground is on the left
 					}
-					else if (p.x == PlayerPos[0] & p.y == (PlayerPos[1] - 1))
+					else if (p.x == PlayerPos.x & p.y == (PlayerPos.y - 1))
 					{
 						return "touching up" ;	// The player is touching the ground and the ground is on the left
 					}
-					else if (p.x == (PlayerPos[0] - 1) & p.y == (PlayerPos[1] + 1))
+					else if (p.x == (PlayerPos.x - 1) & p.y == (PlayerPos.y + 1))
 					{
 						return "touching down" ;	// The player is touching the ground and the ground is on the left
 					}
@@ -439,17 +439,19 @@ public class Uts
 		return "";
 	}
  	
- 	public static boolean isAdjacentTo(int[] pos, Screen screen, Maps maps, String GroundType)
+ 	public static boolean isAdjacentTo(Point pos, Maps maps, String GroundType)
  	{
- 		if (CheckAdjacentGround(pos, screen, maps, GroundType).equals("Inside") | CheckAdjacentGround(pos, screen, maps, GroundType).equals("Touching Left") | CheckAdjacentGround(pos, screen, maps, GroundType).equals("Touching Right") | CheckAdjacentGround(pos, screen, maps, GroundType).equals("Touching Up") | CheckAdjacentGround(pos, screen, maps, GroundType).equals("Touching Down"))
+ 		String adjGround = CheckAdjacentGround(pos, maps, GroundType) ;
+ 		if (adjGround.equals("Inside") | adjGround.equals("Touching Left") | adjGround.equals("Touching Right") | adjGround.equals("Touching Up") | adjGround.equals("Touching Down"))
  		{
  			return true ;
  		}
  		return false ;
  	}
 		
-	public static int ClosestCreatureInRange(Player player, Creatures[] creature, Maps[] maps, Screen screen)
+	public static int ClosestCreatureInRange(Player player, Creatures[] creature, Maps[] maps)
 	{	
+		int[] WinDim = Game.getScreen().getDimensions() ;
 		if (maps[player.getMap()].getCreatureIDs() != null)	// Map has creatures
 		{
 			int NumberOfCreaturesInMap = 0 ;
@@ -461,13 +463,13 @@ public class Uts
 				}
 			}
 			float[] dist = new float[NumberOfCreaturesInMap] ;
-			float MinDist = screen.getDimensions()[0] + screen.getDimensions()[1] ;
+			float MinDist = WinDim[0] + WinDim[1] ;
 			for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 			{
 				int ID = maps[player.getMap()].getCreatureIDs()[i] ;
 				if (-1 < ID)
 				{
-					dist[i] = Utg.dist2D(new int[] {player.getPos()[0], player.getPos()[1]}, new int[] {creature[ID].getPos()[0], creature[ID].getPos()[1]}) ;				
+					dist[i] = (float) new Point(player.getPos().x, player.getPos().y).distance(new Point(creature[ID].getPos().x, creature[ID].getPos().y)) ;				
 					MinDist = Math.min(MinDist, dist[i]) ;
 				}	
 			}
@@ -491,10 +493,10 @@ public class Uts
 		return false ;
 	}
 	
-	public static boolean IsInRange(int[] Pos1, int[] Pos2, float Range)
+	public static boolean IsInRange(Point Pos1, Point Pos2, float Range)
 	{
 		boolean isInRange = false ;
-		if (Utg.dist2D(Pos1, Pos2) < Range)
+		if (Pos1.distance(Pos2) < Range)
 		{
 			isInRange = true ;
 		}
@@ -607,7 +609,7 @@ public class Uts
 		return ElementNames[ElemID] ;
 	}
 	
-	public static boolean SpellIsAvailable(Player player, Skills[] spells, int SelectedSkill)
+	public static boolean SpellIsAvailable(Player player, Spells[] spells, int SelectedSkill)
 	{
 		boolean SkillAvailability = false ;
 		int cont = 0 ;	
@@ -881,7 +883,7 @@ public class Uts
 		return IDs ;
 	}
 	
-	public static int[] BuildingPos(Buildings[] buildings, int map, String Name)
+	public static Point BuildingPos(Buildings[] buildings, int map, String Name)
 	{
 		for (int b = 0 ; b <= buildings.length - 1 ; b += 1)
 		{
@@ -1065,7 +1067,7 @@ public class Uts
 		}
 	}	*/
 		
-	public void BattleSimulation(Player player, Pet pet, Creatures creature, Screen screen, Skills[] skills, PetSkills[] petskills, int[] ActivePlayerSkills, String[] MoveKeys, Items[] items, Quests[] quest, int NumberOfSimulations, String[] ActionKeys, String[] SkillKeys, Battle B, DrawFunctions DF)
+	public void BattleSimulation(Player player, Pet pet, Creatures creature, Spells[] skills, PetSpells[] petskills, int[] ActivePlayerSkills, String[] MoveKeys, Items[] items, Quests[] quest, int NumberOfSimulations, String[] ActionKeys, String[] SkillKeys, Battle B, DrawFunctions DF)
 	{
 		int move = 0 ;
 		//String[] ItemsObtained = new String[10] ;
@@ -1190,7 +1192,7 @@ public class Uts
 						NumberOfPetMagAtks += 1 ;
 					}
 				}
-				B.RunBattle(player, pet, creature, screen, skills, petskills, ActivePlayerSkills, items, quest, true, new int[2], DF) ;
+				B.RunBattle(player, pet, creature, skills, petskills, ActivePlayerSkills, quest, true, new Point(0, 0), DF) ;
 				if (0 == BattleResults[0])
 				{
 					if (0 < player.getLife()[0])

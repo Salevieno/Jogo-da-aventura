@@ -1,6 +1,9 @@
 package Items;
 
+import java.awt.Image;
 import java.io.IOException;
+
+import javax.swing.ImageIcon;
 
 import GameComponents.AttributeBonus;
 import Main.Game;
@@ -14,6 +17,16 @@ public class Equip extends Item
 	private String elem ;
 	
 	private static Equip[] AllEquip ;
+	
+	public static Image SwordImage = new ImageIcon(Game.ImagesPath + "Eq0_Sword.png").getImage() ;
+	public static Image StaffImage = new ImageIcon(Game.ImagesPath + "Eq1_Staff.png").getImage() ;
+	public static Image BowImage = new ImageIcon(Game.ImagesPath + "Eq2_Bow.png").getImage() ;
+	public static Image ClawsImage = new ImageIcon(Game.ImagesPath + "Eq3_Claws.png").getImage() ;
+	public static Image DaggerImage = new ImageIcon(Game.ImagesPath + "Eq4_Dagger.png").getImage() ;
+	public static Image ShieldImage = new ImageIcon(Game.ImagesPath + "Eq5_Shield.png").getImage() ;
+	public static Image ArmorImage = new ImageIcon(Game.ImagesPath + "Eq6_Armor.png").getImage() ;
+	public static Image ArrowImage = new ImageIcon(Game.ImagesPath + "Eq7_Arrow.png").getImage() ;
+	//public static Image[] EquipImage = new Image[] {Sword, Staff, Bow, Claws, Dagger, Shield, Armor, Arrow} ;
 	public Equip(int id, String Name, String Description, int price, float dropChance, int forgeLevel, AttributeBonus attBonus, String elem)
 	{
 		super(Name, Description, price, dropChance) ;

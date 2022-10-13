@@ -4,6 +4,8 @@ import java.awt.Image ;
 import java.awt.Point;
 
 import javax.swing.ImageIcon ;
+
+import Main.Game;
 import Main.Utg ;
 
 public class Maps 
@@ -219,7 +221,7 @@ public class Maps
 	{
 		return (getCreatureIDs() != null) ;
 	}
-	public String groundTypeAtPoint(int[] pos)
+	public String groundTypeAtPoint(Point pos)
 	{
 		if (groundType != null)
 		{
@@ -228,7 +230,7 @@ public class Maps
 				Object[] o = (Object[]) groundType[i] ;
 				String type = (String) o[0] ;	// ground type at the point
 				Point p = (Point) o[1] ;		// point on the map
-				if (p.x == pos[0] & p.y == pos[1])
+				if (p.x == pos.x & p.y == pos.y)
 				{
 					return type ;
 				}			
@@ -237,9 +239,9 @@ public class Maps
 		
 		return null ;
 	}
-	public boolean GroundIsWalkable(int[] Pos, String SuperElem)
+	public boolean GroundIsWalkable(Point Pos, String SuperElem)
 	{
-		Point point = new Point(Pos[0], Pos[1]) ;
+		Point point = new Point(Pos.x, Pos.y) ;
 		if (groundType == null)
 		{
 			return true ;
@@ -282,8 +284,9 @@ public class Maps
 			}	
 		}
 	}
-	public void CreateCollectible(Screen screen, int MapID, int CollectibleID)
+	public void CreateCollectible(int MapID, int CollectibleID)
 	{
+		Screen screen = Game.getScreen() ;
 		float MinX = (float) (0.1), MinY = (float) ((float) (screen.SkyHeight) / screen.getDimensions()[1] + 0.1) ; 
     	float RangeX = (float) (0.8), RangeY = (float) (1 - MinY) ;
     	if (MapID == 13 | MapID == 17)
@@ -298,7 +301,7 @@ public class Maps
 			//invisible_wall = Utg.AddElem(invisible_wall, new Point(randomPos[0], randomPos[1])) ;	// collider
     	}
 	}
-	public void CreateCollectibles(Screen screen)
+	public void CreateCollectibles()
 	{
 		if (id <= 59 & id != 36 & id != 39)
 		{
@@ -307,7 +310,7 @@ public class Maps
 				if (CollectibleCounter[i] % CollectibleDelay[i] == 0)
 				{	
 					CollectibleCounter[i] = 0 ;
-					CreateCollectible(screen, id, i) ;
+					CreateCollectible(id, i) ;
 				}	
 			}
 		}

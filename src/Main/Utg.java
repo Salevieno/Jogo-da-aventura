@@ -279,7 +279,7 @@ public abstract class Utg
 		{
 			for (int j = 0 ; j <= image.getHeight(null) - 1 ; j += 1)
 			{
-				Color PixelColor = GetPixelColor(image, new int[] {i, j}) ;
+				Color PixelColor = GetPixelColor(image, new Point(i, j)) ;
 				double linRed, linGreen, linBlue ;
 				linRed = GamaDecompress(PixelColor.getRed() / 255.0) ;
 				linGreen = GamaDecompress(PixelColor.getGreen() / 255.0) ;
@@ -313,19 +313,19 @@ public abstract class Utg
 	    return bimage ;
 	}
 
-	public static Color GetPixelColor(BufferedImage Bufferedimage, int[] Pos)
+	public static Color GetPixelColor(BufferedImage Bufferedimage, Point Pos)
 	{
-		int clr = Bufferedimage.getRGB(Pos[0], Pos[1]) ; 
+		int clr = Bufferedimage.getRGB(Pos.x, Pos.y) ; 
 		int red = (clr & 0x00ff0000) >> 16 ;
 		int green = (clr & 0x0000ff00) >> 8 ;
 		int blue = clr & 0x000000ff ;
 		return new Color(red, green, blue) ;
 	}
 	
-	public static Image SetPixelColor(Image File, int[] Pos, Color color)
+	public static Image SetPixelColor(Image File, Point Pos, Color color)
 	{
 		BufferedImage BufferedFile = toBufferedImage(File) ;
-		BufferedFile.setRGB(Pos[0], Pos[1], color.getRGB()) ;
+		BufferedFile.setRGB(Pos.x, Pos.y, color.getRGB()) ;
 		return BufferedFile ;
 	}
 	
@@ -348,7 +348,7 @@ public abstract class Utg
 		{
 			for (int j = (int)(area[1]*h) ; j <= (int)(area[3]*h) - 1 ; j += 1)
 			{
-				Color PreviousColor = GetPixelColor(BufferedFile, new int[] {i, j}) ;
+				Color PreviousColor = GetPixelColor(BufferedFile, new Point(i, j)) ;
 				if (PreviousColor.getRed() == OriginalColor.getRed() & PreviousColor.getGreen() == OriginalColor.getGreen() & PreviousColor.getBlue() == OriginalColor.getBlue())
 				{	
 					BufferedFile.setRGB(i, j, newColor.getRGB()) ;
@@ -379,7 +379,7 @@ public abstract class Utg
 		return A ;
 	}
 	
-	public static void PlayGif(int[] Pos, Image gif, DrawPrimitives DP)
+	public static void PlayGif(Point Pos, Image gif, DrawPrimitives DP)
 	{
 		DP.DrawGif(gif, Pos, "Center") ;
 	}
@@ -389,10 +389,10 @@ public abstract class Utg
 		GraphicsEnvironment ge;  
 	    ge = GraphicsEnvironment.getLocalGraphicsEnvironment();  
 		Font[] AllFonts = ge.getAllFonts();	// 286, 562, 683, 685, 689, 720
-		DF.getDrawPrimitives().DrawText(new int[] {200, 100}, "TopLeft", 0, "Exemplo", new Font(AllFonts[fontid].getFontName(), Font.BOLD, 12), Color.blue) ;	
-		DF.getDrawPrimitives().DrawText(new int[] {200, 120}, "TopLeft", 0, "Exemplo", new Font(AllFonts[fontid].getFontName(), Font.BOLD, 16), Color.blue) ;	
-		DF.getDrawPrimitives().DrawText(new int[] {200, 160}, "TopLeft", 0, "Exemplo", new Font(AllFonts[fontid].getFontName(), Font.BOLD, 20), Color.blue) ;	
-		DF.getDrawPrimitives().DrawText(new int[] {200, 200}, "TopLeft", 0, String.valueOf(562) + ": " + AllFonts[fontid].getFontName(), new Font(AllFonts[562].getFontName(), Font.BOLD, 20), Color.blue) ;	
+		DF.getDrawPrimitives().DrawText(new Point(200, 100), "TopLeft", 0, "Exemplo", new Font(AllFonts[fontid].getFontName(), Font.BOLD, 12), Color.blue) ;	
+		DF.getDrawPrimitives().DrawText(new Point(200, 120), "TopLeft", 0, "Exemplo", new Font(AllFonts[fontid].getFontName(), Font.BOLD, 16), Color.blue) ;	
+		DF.getDrawPrimitives().DrawText(new Point(200, 160), "TopLeft", 0, "Exemplo", new Font(AllFonts[fontid].getFontName(), Font.BOLD, 20), Color.blue) ;	
+		DF.getDrawPrimitives().DrawText(new Point(200, 200), "TopLeft", 0, String.valueOf(562) + ": " + AllFonts[fontid].getFontName(), new Font(AllFonts[562].getFontName(), Font.BOLD, 20), Color.blue) ;	
 	}
 	
 	public static float RandomMult(float amplitude)
@@ -451,10 +451,10 @@ public abstract class Utg
 		return offset ;
 	}
 	
- 	public static int[] GetMousePos(JPanel mainpanel)
+ 	public static Point GetMousePos(JPanel mainpanel)
  	{
- 		int[] PanelLocation = new int[] {mainpanel.getLocationOnScreen().x, mainpanel.getLocationOnScreen().y} ;
-		return new int[] {MouseInfo.getPointerInfo().getLocation().x - PanelLocation[0], MouseInfo.getPointerInfo().getLocation().y - PanelLocation[1]} ;
+ 		Point PanelLocation = new Point(mainpanel.getLocationOnScreen().x, mainpanel.getLocationOnScreen().y) ;
+		return new Point(MouseInfo.getPointerInfo().getLocation().x - PanelLocation.x, MouseInfo.getPointerInfo().getLocation().y - PanelLocation.y) ;
  	} 	 	
 	
 	public static String[][] ReadTextFile(String Language)
@@ -1172,15 +1172,10 @@ public abstract class Utg
 		return (int)(size*(Range*Math.random() + MinCoord)/step)*step ;
 	}
 	
-	public static int[] RandomPos(int[] size, float[] MinCoord, float[] Range, int[] step)
+	public static Point RandomPos(int[] size, float[] MinCoord, float[] Range, int[] step)
 	{
-		return new int[] {(int)(size[0]*(Range[0]*Math.random() + MinCoord[0])/step[0])*step[0], (int)(size[1]*(Range[1]*Math.random() + MinCoord[1])/step[1])*step[1]} ;
+		return new Point((int)(size[0]*(Range[0]*Math.random() + MinCoord[0])/step[0])*step[0], (int)(size[1]*(Range[1]*Math.random() + MinCoord[1])/step[1])*step[1]) ;
 	}
-	
-	/*public int[] RandomPosInScreen(Screen screen, int step)
-	{
-		return new int[] {(int)(screen.getDimensions()[0]*Math.random()/step)*step, (int)(screen.getDimensions()[1]*Math.random()/step)*step} ;
-	}*/
 	
 	public static void ResetMusic(Clip MusicFile)
  	{
@@ -1238,11 +1233,6 @@ public abstract class Utg
 	public static float dist1D(int PosA, int PosB)
 	{
 		return Math.abs(PosA - PosB) ;
-	}
-	
-	public static float dist2D(int[] PosA, int[] PosB)
-	{
-		return (float)(Math.sqrt(Math.pow(PosB[0] - PosA[0], 2) + Math.pow(PosB[1] - PosA[1], 2))) ;
 	}
 	
 	public static float dist3D(int[] PosA, int[] PosB)
@@ -1322,9 +1312,9 @@ public abstract class Utg
 		return s ;
 	}
 	
-	public static boolean isInside(int[] ObjPos, int[] RectTopLeftPos, int L, int H)
+	public static boolean isInside(Point ObjPos, Point RectTopLeftPos, int L, int H)
 	{
-		if (RectTopLeftPos[0] <= ObjPos[0] & ObjPos[1] <= RectTopLeftPos[1] + H & ObjPos[0] <= RectTopLeftPos[0] + L & RectTopLeftPos[1] <= ObjPos[1])
+		if (RectTopLeftPos.x <= ObjPos.x & ObjPos.y <= RectTopLeftPos.y + H & ObjPos.x <= RectTopLeftPos.x + L & RectTopLeftPos.y <= ObjPos.y)
 		{
 			return true ;
 		} 

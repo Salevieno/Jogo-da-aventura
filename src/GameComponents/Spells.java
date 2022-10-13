@@ -1,6 +1,6 @@
 package GameComponents ;
 
-public class Skills 
+public class Spells 
 {
 	private String Name ;
 	private int MaxLevel ;
@@ -25,7 +25,7 @@ public class Skills
 	private String Elem ;
 	private String[] Info ;	// Effect and description
 	
-	public Skills(String Name, int MaxLevel, float MpCost, String Type, int[][] PreRequisites, int Cooldown, int Duration, float[][] Buffs, float[][] Nerfs, float[] AtkMod, float[] DefMod, float[] DexMod, float[] AgiMod, float[] AtkCritMod, float[] DefCritMod, float[] StunMod, float[] BlockMod, float[] BloodMod, float[] PoisonMod, float[] SilenceMod, String Elem, String[] Info)
+	public Spells(String Name, int MaxLevel, float MpCost, String Type, int[][] PreRequisites, int Cooldown, int Duration, float[][] Buffs, float[][] Nerfs, float[] AtkMod, float[] DefMod, float[] DexMod, float[] AgiMod, float[] AtkCritMod, float[] DefCritMod, float[] StunMod, float[] BlockMod, float[] BloodMod, float[] PoisonMod, float[] SilenceMod, String Elem, String[] Info)
 	{
 		this.Name = Name ;
 		this.MaxLevel = MaxLevel ;

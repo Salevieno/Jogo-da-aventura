@@ -1,6 +1,7 @@
 package Actions ;
 
 import java.awt.Image ;
+import java.awt.Point;
 import java.util.Arrays ;
 import javax.sound.sampled.Clip ;
 import javax.swing.ImageIcon ;
@@ -8,11 +9,11 @@ import GameComponents.BattleAttributes ;
 import GameComponents.Creatures ;
 import GameComponents.Items ;
 import GameComponents.Pet ;
-import GameComponents.PetSkills ;
+import GameComponents.PetSpells ;
 import GameComponents.Player ;
 import GameComponents.Quests;
 import GameComponents.Screen;
-import GameComponents.Skills ;
+import GameComponents.Spells ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Main.Uts ;
@@ -37,7 +38,7 @@ public class Battle
 	private static String[] ElemID ;
 	private static float[][] ElemMult ;
 	
-	public Battle(String CSVPath, String ImagesPath, Skills[] skills, PetSkills[] petskills, Items[] items, int[] DamageAnimation, Clip[] SoundEffects, int[] DamageDelay, Animations Ani)
+	public Battle(String CSVPath, String ImagesPath, Spells[] skills, PetSpells[] petskills, int[] DamageAnimation, Clip[] SoundEffects, int[] DamageDelay, Animations Ani)
 	{	
 		this.DamageAnimation = DamageAnimation ;
 		this.SoundEffects = SoundEffects ;
@@ -69,7 +70,7 @@ public class Battle
 		PlayerSkillNerfCounter = new int[skills.length][skills[0].getNerfs().length] ;
 		PetSkillBuffCounter = new int[petskills.length][skills[0].getBuffs().length] ;
 		PetSkillNerfCounter = new int[petskills.length][skills[0].getNerfs().length] ;
-		PlayerItemEffectCounter = new int[items.length][items[0].getBuffs().length] ;
+		//PlayerItemEffectCounter = new int[items.length][items[0].getBuffs().length] ;
 		CreatureTarget = 0 ;
 		randomAmp = (float)0.1 ;
 		for (int i = 0 ; i <= skills.length - 1 ; ++i)
@@ -117,7 +118,7 @@ public class Battle
 		return (-1 < Utg.IndexOf(Player.SkillKeys, action)) ;
 	}
 	
-	public void IncrementCounters(Player player, Pet pet, Creatures creature, Skills[] skills, PetSkills[] petskills, Items[] items)
+	public void IncrementCounters(Player player, Pet pet, Creatures creature, Spells[] skills, PetSpells[] petskills)
 	{	
 		for (int i = 0 ; i <= ShowAtkCounters.length - 1 ; i += 1)
 		{
@@ -129,7 +130,7 @@ public class Battle
 				}
 			}
 		}
-		for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
+		/*for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
 		{
 			int ItemID = Items.ItemsWithEffects[i] ;
 			for (int j = 0 ; j <= items[ItemID].getBuffs().length - 1 ; ++j)
@@ -139,10 +140,10 @@ public class Battle
 					++PlayerItemEffectCounter[i][j] ;
 				}
 			}
-		}
+		}*/
 	}	
 	
-	public void ActivateCounters(Player player, Pet pet, Creatures creature, Skills[] skills, Items[] items)
+	public void ActivateCounters(Player player, Pet pet, Creatures creature, Spells[] skills)
 	{
 		for (int i = 0 ; i <= ShowAtkCounters.length - 1 ; i += 1)
 		{
@@ -176,7 +177,7 @@ public class Battle
 		{
 			SkillIsReady[i] = player.SkillIsReady(i, skills) ;
 		}
-		for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
+		/*for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
 		{
 			int ItemID = Items.ItemsWithEffects[i] ;
 			for (int j = 0 ; j <= items[ItemID].getBuffs().length - 1 ; ++j)
@@ -188,7 +189,7 @@ public class Battle
 					ItemEffectIsActive[i][j] = false ;
 				}
 			}
-		}
+		}*/
 	}
 
 	public void BuffsAndNerfs(Player player, Pet pet, Creatures creature, float[][] Buffs, int BuffNerfLevel, int effect, boolean SkillIsActive, String Target, String action)
@@ -362,7 +363,7 @@ public class Battle
 		}
 	}
 	
-	public void OffensiveSkillsStatus(Player player, Creatures creature, Skills skills)
+	public void OffensiveSkillsStatus(Player player, Creatures creature, Spells skills)
 	{
 		BattleAttributes playerBA = player.getBattleAtt();		// Battle attributes of the player
 		BattleAttributes creatureBA = creature.getBattleAtt();	// Battle attributes of the creature
@@ -381,7 +382,7 @@ public class Battle
 		creatureBA.receiveStatus(SkillStatus) ;
 	}
 	
-	public int[] OffensiveSkills(Player player, Creatures creature, Skills skills, int SkillID)
+	public int[] OffensiveSkills(Player player, Creatures creature, Spells skills, int SkillID)
 	{
 		int skilllevel = player.getSpell()[SkillID] ;
 		int damage = -1 ;
@@ -467,7 +468,7 @@ public class Battle
 		return new int[] {damage, effect} ;
 	}
 	
-	public int[] PlayerSkill(Player player, Pet pet, Creatures creature, Skills[] skills, Items[] items, int[] ActivePlayerSkills, int SelectedSkill)
+	public int[] PlayerSkill(Player player, Pet pet, Creatures creature, Spells[] skills, int[] ActivePlayerSkills, int SelectedSkill)
 	{
 		int[] AtkResult = new int[] {-1, 0} ;	// [damage, effect]
 		int skilllevel = player.getSpell()[SelectedSkill] ;
@@ -502,7 +503,7 @@ public class Battle
 				}
 				if (player.getJob() == 4 & SelectedSkill == 3)	// Steal
 				{
-					player.StealItem(creature, items, skilllevel) ;
+					//player.StealItem(creature, items, skilllevel) ;
 				}
 				if (player.getJob() == 4 & SelectedSkill == 12)	// Murder
 				{
@@ -516,7 +517,7 @@ public class Battle
 		return new int[] {AtkResult[0], AtkResult[1]} ;
 	}
 	
-	public int[] PetSkill(Pet pet, Creatures creature, PetSkills[] skills, int SelectedSkill)
+	public int[] PetSkill(Pet pet, Creatures creature, PetSpells[] skills, int SelectedSkill)
 	{
 		int damage = -1 ;
 		int effect = -1 ;
@@ -568,7 +569,7 @@ public class Battle
 		return (float)(0.025/(Attribute + 1)) ;
 	}
 	
-	public Object[] PlayerAtk(Player player, Pet pet, Creatures creature, Skills[] skills, Items[] items, int[] ActivePlayerSkills)
+	public Object[] PlayerAtk(Player player, Pet pet, Creatures creature, Spells[] skills, int[] ActivePlayerSkills)
 	{
 		int damage = -1 ;
 		int effect = 0 ;	// 0 = hit, 1 = crit, 2 = miss, 3 = block
@@ -610,7 +611,7 @@ public class Battle
 				{
 					if (player.hasEnoughMP(skills, SkillID) & 0 < player.getSpell()[SkillID])
 					{
-						int[] AtkResult = PlayerSkill(player, pet, creature, skills, items, ActivePlayerSkills, SkillID) ;
+						int[] AtkResult = PlayerSkill(player, pet, creature, skills, ActivePlayerSkills, SkillID) ;
 						damage = AtkResult[0] ;
 						effect = AtkResult[1] ;
 					}
@@ -630,7 +631,7 @@ public class Battle
 	}
 	
 
-	public Object[] PetAtk(Pet pet, PetSkills[] petskills, Creatures creature, DrawFunctions DF)
+	public Object[] PetAtk(Pet pet, PetSpells[] petskills, Creatures creature, DrawFunctions DF)
 	{
 		int damage = -1 ;
 		int effect = 0 ;
@@ -707,7 +708,7 @@ public class Battle
 		int MpCost = 10 ;
 		BattleAttributes creatureBA = creature.getBattleAtt(), playerBA = player.getBattleAtt(), petBA = pet.getBattleAtt() ;
 		
-		creature.act(Player.ActionKeys) ;
+		creature.fight(Player.ActionKeys) ;
 		creature.setCombo(Uts.RecordCombo(creature.getCombo(), String.valueOf(creature.getAction()), 1)) ;
 		CreatureTarget = 0 ;
 		if (0 < pet.getLife()[0])
@@ -790,7 +791,7 @@ public class Battle
 	}
 
 	
-	public void AtkAnimations(int[] AniID, int[] AttackerPos, int[] TargetPos, int[] AttackerSize, int[] TargetSize, boolean UsedSkill, int[] PlayerAtkResult, boolean[] Show, int[] Durations, Skills[] skills, int[] ActivePlayerSkills, String PlayerMove)
+	public void AtkAnimations(int[] AniID, Point AttackerPos, Point TargetPos, int[] AttackerSize, int[] TargetSize, boolean UsedSkill, int[] PlayerAtkResult, boolean[] Show, int[] Durations, Spells[] skills, int[] ActivePlayerSkills, String PlayerMove)
 	{
 		if (Show[0] & 0 <= PlayerAtkResult[0])	// Damage animation
 		{
@@ -826,19 +827,19 @@ public class Battle
 	}*/
 	
 	
-	public void RunBattle(Player player, Pet pet, Creatures creature, Screen screen, Skills[] skills, PetSkills[] petskills, int[] ActivePlayerSkills, Items[] items, Quests[] quest, boolean SoundEffectsAreOn, int[] MousePos, DrawFunctions DF)
+	public void RunBattle(Player player, Pet pet, Creatures creature, Spells[] skills, PetSpells[] petskills, int[] ActivePlayerSkills, Quests[] quest, boolean SoundEffectsAreOn, Point MousePos, DrawFunctions DF)
 	{	
 		ShowAtkDurations[2][0] = creature.getBattleAtt().getBattleActions()[0][1]/2 ;
-		IncrementCounters(player, pet, creature, skills, petskills, items) ;
-		ActivateCounters(player, pet, creature, skills, items) ;
+		IncrementCounters(player, pet, creature, skills, petskills) ;
+		ActivateCounters(player, pet, creature, skills) ;
 		if (0 < player.getLife()[0])
 		{
 			//DF.DrawTimeBar(player.getPos(), player.getBattleAtt().getBattleActions()[0][0], player.getBattleAtt().getBattleActions()[0][1], player.getSize()[1], new int[] {player.getSize()[0]/2 + (BattleIconImages[0].getWidth(null) + 5), -player.getSize()[1]/2}, Uts.RelPos(player.getPos(), creature.getPos()), "Vertical", Color.yellow) ;
-			player.TakeBloodAndPoisonDamage(creature) ;
+			player.TakeBloodAndPoisonDamage(creature.getBattleAtt().TotalBloodAtk(), creature.getBattleAtt().TotalPoisonAtk()) ;
 			if (player.canAtk() & Uts.IsInRange(player.getPos(), creature.getPos(), player.getRange()))
 			{
 				//int[] PlayerAtkResult = PlayerAtk(player, pet, creature, skills, items, ActivePlayerSkills) ;
-				Object[] PlayerAtkResult = PlayerAtk(player, pet, creature, skills, items, ActivePlayerSkills) ;
+				Object[] PlayerAtkResult = PlayerAtk(player, pet, creature, skills, ActivePlayerSkills) ;
 				int damage = (int) PlayerAtkResult[0] ;
 				//int effect = (int) PlayerAtkResult[1] ;
 				//int[] statusinflicted = (int[]) PlayerAtkResult[2] ;
@@ -919,7 +920,7 @@ public class Battle
 				System.out.println("creature action: " + creature.getAction());
 				System.out.println("creature def: " + creature.getMagDef()[1]);
 				System.out.println("player life: " + player.getLife()[0]);
-				System.out.println("player pos: " + Arrays.toString(player.getPos()));
+				System.out.println("player pos: " + player.getPos());
 			}
 			//DF.ShowEffectsAndStatusAnimation(creature.getPos(), Uts.MirrorFromRelPos(Uts.RelPos(creature.getPos(), player.getPos())), new int[] {13, (int)(0.8*creature.getSize()[1])}, BattleIconImages, creature.getBattleAtt().getSpecialStatus(), new boolean[] {creature.isDefending()}) ;
 			creature.getBattleAtt().decreaseStatus() ;
@@ -927,12 +928,12 @@ public class Battle
 		}
 		if (creature.getLife()[0] <= 0 | player.getLife()[0] <= 0)
 		{	
-			FinishBattle(player, pet, creature, screen, skills, items, quest) ;
+			FinishBattle(player, pet, creature, skills, quest) ;
 		}
 	}
 	
 	
-	public void FinishBattle(Player player, Pet pet, Creatures creature, Screen screen, Skills[] skills, Items[] items, Quests[] quest)
+	public void FinishBattle(Player player, Pet pet, Creatures creature, Spells[] skills, Quests[] quest)
 	{
 		System.out.println("Battle is over!");
 		System.out.println();
@@ -967,12 +968,12 @@ public class Battle
 		
 		if (0 < player.getLife()[0])	// If the player is alive
 		{
-			player.Win(creature, items, quest, Ani) ;
+			//player.Win(creature, items, quest, Ani) ;
 			if (0 < pet.getLife()[0])
 			{
 				pet.Win(creature) ;
 			}
-			creature.setRandomPos(screen) ;
+			creature.setRandomPos() ;
 			player.action = "" ;
 		}
 		else	// if the player is dead

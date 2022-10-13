@@ -1,6 +1,7 @@
 package GameComponents ;
 
 import java.awt.Image ;
+import java.awt.Point;
 import java.util.Arrays ;
 import Graphics.DrawPrimitives ;
 
@@ -8,11 +9,11 @@ public class MapElements
 {
 	private int id ;
 	private String Name ;
-	private int[] Pos ;		// [x, y]
+	private Point Pos ;
 	private Image image ;
 	private int[][] block ;
 	
-	public MapElements(int id, String Name, int[] Pos, Image image)
+	public MapElements(int id, String Name, Point Pos, Image image)
 	{
 		this.id = id ;
 		this.Name = Name ;
@@ -30,12 +31,12 @@ public class MapElements
 
 	public int getid() {return id ;}
 	public String getName() {return Name ;}
-	public int[] getPos() {return Pos ;}
+	public Point getPos() {return Pos ;}
 	public Image getImage() {return image ;}
 	public int[][] getBlock() {return block ;}
 	public void setid(int I) {id = I ;}
 	public void setName(String N) {Name = N ;}
-	public void setPos(int[] P) {Pos = P ;}
+	public void setPos(Point P) {Pos = P ;}
 	public void setImage(Image I) {image = I ;}
 	public void setBlock(int[][] B) {block = B ;}
 
@@ -50,7 +51,7 @@ public class MapElements
 		System.out.println(" *** icon properties ***") ;
 		System.out.println("id: " + id) ;
 		System.out.println("name: " + Name) ;
-		System.out.println("pos: " + Arrays.toString(Pos)) ;
+		System.out.println("pos: " + Pos) ;
 		System.out.println("image: " + image) ;
 		System.out.println("blocks: " + Arrays.deepToString(block)) ;
 	}

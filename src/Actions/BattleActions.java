@@ -1,4 +1,6 @@
 package Actions;
+import java.awt.Point;
+
 import GameComponents.PersonalAttributes;
 import Main.Utg;
 
@@ -145,12 +147,12 @@ public abstract class BattleActions
 	
 	
 	/* Attack and spell effects */
-	public static int[] knockback(int[] SourcePos, int step, PersonalAttributes PA)
+	public static Point knockback(Point SourcePos, int step, PersonalAttributes PA)
 	{
-		int angletan = (int)((PA.getPos()[1] - SourcePos[1]) / (float)(PA.getPos()[0] - SourcePos[0])) ;
-		int dirx = (int)Math.signum(PA.getPos()[0] - SourcePos[0]) ;
-		int diry = (int)Math.signum(PA.getPos()[1] - SourcePos[1]) ;
+		int angletan = (int)((PA.getPos().y - SourcePos.y) / (float)(PA.getPos().x - SourcePos.x)) ;
+		int dirx = (int)Math.signum(PA.getPos().x - SourcePos.x) ;
+		int diry = (int)Math.signum(PA.getPos().y - SourcePos.y) ;
 		//PA.setPos(new int[] {PA.getPos()[0] + step * dirx, PA.getPos()[1] + step * diry * angletan}) ;
-		return new int[] {PA.getPos()[0] + step * dirx, PA.getPos()[1] + step * diry * angletan} ;
+		return new Point(PA.getPos().x + step * dirx, PA.getPos().y + step * diry * angletan) ;
 	}
 }
