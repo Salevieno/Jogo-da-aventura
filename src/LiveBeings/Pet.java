@@ -1,4 +1,4 @@
-package GameComponents ;
+package LiveBeings ;
 
 import java.awt.Color ;
 import java.awt.Image ;
@@ -9,7 +9,9 @@ import java.util.Arrays;
 
 import javax.swing.ImageIcon ;
 
+import GameComponents.Maps;
 import Main.Uts ;
+import Windows.AttributesWindow;
 import Main.Game;
 import Main.Utg ;
 
@@ -33,7 +35,7 @@ public class Pet extends LiveBeing
 	
 	public Pet(int Job)
 	{
-		super(Job, InitializePersonalAttributes(Job), InitializeBattleAttributes(Job)) ;
+		super(Job, InitializePersonalAttributes(Job), InitializeBattleAttributes(Job), new AttributesWindow()) ;
 		this.Job = Job ;
 		Color[] ColorPalette = Uts.ReadColorPalette(new ImageIcon(Game.ImagesPath + "ColorPalette.png").getImage(), "Normal") ;
 		Color[] PetColor = new Color[] {ColorPalette[3], ColorPalette[1], ColorPalette[18], ColorPalette[18]} ;
@@ -60,6 +62,7 @@ public class Pet extends LiveBeing
 		String Name = PetProperties[Job][0] ;
 		Image image = new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage() ;
 		int Level = 1 ;
+		int ProJob = 0 ;
 		int Continent = 0 ;
 		int Map = 0 ;
 		Point Pos = new Point(0, 0) ;
@@ -77,7 +80,7 @@ public class Pet extends LiveBeing
 		int[][] Actions = new int[][] {{0, Integer.parseInt(PetProperties[Job][33]), 0}, {0, Integer.parseInt(PetProperties[Job][34]), 0}, {0, Integer.parseInt(PetProperties[Job][35]), 0}} ;
 		String currentAction = "" ;
 		int countmove = 0 ;
-		return  new PersonalAttributes(Name, new Image[] {image}, Level, Continent, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
+		return  new PersonalAttributes(Name, new Image[] {image}, Level, Job, ProJob, Continent, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
 	}
 	
 	private static BattleAttributes InitializeBattleAttributes(int Job)
@@ -199,7 +202,7 @@ public class Pet extends LiveBeing
 		}
 		PA.setPos(pos) ;
 	}
-	public void Move(Player player,  Maps[] maps)
+	public void Move(Player player, Maps[] maps)
 	{
 		Point NextPos = new Point(0, 0) ;
 		Follow(PA.getPos(), player.getPos(), PA.getStep(), PA.getStep()) ;

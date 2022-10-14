@@ -7,6 +7,7 @@ import java.awt.Point;
 
 import javax.swing.ImageIcon;
 
+import GameComponents.Size;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
 import Items.Alchemy;
@@ -20,6 +21,7 @@ import Items.Item;
 import Items.PetItem;
 import Items.Potion;
 import Items.QuestItem;
+import LiveBeings.Player;
 import Main.Game;
 import Main.Utg;
 
@@ -85,13 +87,61 @@ public class Bag extends Window
 		return null ;
 	}
 	
+	public void navigate(String action)
+	{
+		if (getTab() == 0)
+		{
+			if (action.equals(Player.ActionKeys[2]))
+			{
+				menuUp() ;
+			}
+			if (action.equals(Player.ActionKeys[0]))
+			{
+				menuDown() ;
+			}
+		}
+		if (getTab() == 1)
+		{
+			if (action.equals(Player.ActionKeys[2]))
+			{
+				itemUp() ;
+			}
+			if (action.equals(Player.ActionKeys[0]))
+			{
+				itemDown() ;
+			}
+			if (action.equals(Player.ActionKeys[3]))
+			{
+				windowUp() ;
+			}
+			if (action.equals(Player.ActionKeys[1]))
+			{
+				windowDown() ;
+			}
+			if (action.equals("Enter") | action.equals("MouseLeftClick"))
+			{
+				//UseItem(this, getSelectedItem()) ;
+			}
+		}
+		
+		if (action.equals("Enter") | action.equals("MouseLeftClick"))
+		{
+			tabUp() ;
+		}
+		if (action.equals("Escape") | action.equals("MouseRightClick"))
+		{
+			tabDown() ;
+			setItem(0) ;
+		}
+	}
+	
 	public void display(Point MousePos, int[] AllTextCat, String[][] AllText, DrawFunctions DF)
 	{
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
 		float OverallAngle = DF.getOverallAngle() ;
-		int[] WinDim = Game.getScreen().getDimensions() ;
-		Point pos = new Point((int)(0.35 * WinDim[0]), (int)(0.48 * WinDim[1])) ;
-		int[] size = new int[] {(int)(0.52 * WinDim[0]), (int)(0.4 * WinDim[1])} ;
+		Size screenSize = Game.getScreen().getSize() ;
+		Point pos = new Point((int)(0.35 * screenSize.x), (int)(0.48 * screenSize.y)) ;
+		Size size = new Size((int)(0.52 * screenSize.x), (int)(0.4 * screenSize.y)) ;
 		int windowLimit = 20 ;
 		Color[] ColorPalette = Game.ColorPalette ;
 		//DF.DrawBag(pos, size, this, MenuImage, SlotImage, 0, 0, 0, 10, 0, MousePos) ;
@@ -125,7 +175,7 @@ public class Bag extends Window
 		}
 		
 		// Draw bag
-		DP.DrawRoundRect(pos, "TopLeft", size[0], size[1], 1, BGColor, BGColor, true) ;
+		DP.DrawRoundRect(pos, "TopLeft", size, 1, BGColor, BGColor, true) ;
 		
 		
 		// Draw items
@@ -149,7 +199,7 @@ public class Bag extends Window
 		Point[] textPos = new Point[numberItems] ;
 		for (int i = 0 ; i <= numberItems - 1 ; i += 1)
 		{
-			int sx = size[0] / 2, sy = (size[1] - 6 - slotH) / 9 ;
+			int sx = size.x / 2, sy = (size.y - 6 - slotH) / 9 ;
 			int row = i % (NSlotsmax / 2), col = i / (NSlotsmax / 2) ;
 			slotCenter[i] = new Point((int) (pos.x + 5 + slotW / 2 + col * sx), (int) (pos.y + 3 + slotH / 2 + row * sy)) ;
 			textPos[i] = new Point(slotCenter[i].x + slotW / 2 + 5, slotCenter[i].y) ;
@@ -169,7 +219,7 @@ public class Bag extends Window
 		}
 		if (0 < windowLimit)
 		{
-			DF.DrawWindowArrows(new Point(pos.x, pos.y + size[1]), size[0], 0, window, windowLimit) ;
+			DF.DrawWindowArrows(new Point(pos.x, pos.y + size.y), size.x, 0, window, windowLimit) ;
 		}
 	}
 	

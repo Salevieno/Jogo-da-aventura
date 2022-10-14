@@ -5,6 +5,7 @@ import java.awt.Point;
 
 import javax.swing.ImageIcon ;
 
+import LiveBeings.Creatures;
 import Main.Game;
 import Main.Utg ;
 
@@ -88,7 +89,7 @@ public class Maps
 		GroundImage = new Image[] {Water, Lava, Ice} ;
 	}
 	
- 	public void InitializeGroundTypes(int SkyHeight, int[] screenDim)
+ 	public void InitializeGroundTypes(int SkyHeight, Size screenDim)
  	{	
 		//float Skyratio = SkyHeight / (float) screenDim[1] ;
 		//float MinX = (float)(0.1), MinY = (float)(Skyratio + 0.1) ; 
@@ -97,12 +98,12 @@ public class Maps
 		{
 			if (id == 2)	// archers' city
 			{
-				groundType = new Object[(screenDim[1] - SkyHeight) * (screenDim[0] * 1 / 5)] ;
-				for (int j = SkyHeight ; j <= screenDim[1] - 1 ; j += 1)
+				groundType = new Object[(screenDim.y - SkyHeight) * (screenDim.x * 1 / 5)] ;
+				for (int j = SkyHeight ; j <= screenDim.y - 1 ; j += 1)
 				{
-					for (int k = (screenDim[0] * 4 / 5) ; k <= screenDim[0] - 1 ; k += 1)
+					for (int k = (screenDim.x * 4 / 5) ; k <= screenDim.x - 1 ; k += 1)
 					{
-						groundType[(j - SkyHeight) * (screenDim[0] * 1 / 5) + k - (screenDim[0] * 4 / 5)] = new Object[] {"water", new Point(j, k)} ;
+						groundType[(j - SkyHeight) * (screenDim.x * 1 / 5) + k - (screenDim.x * 4 / 5)] = new Object[] {"water", new Point(j, k)} ;
 					}
 				}
 			}
@@ -287,7 +288,7 @@ public class Maps
 	public void CreateCollectible(int MapID, int CollectibleID)
 	{
 		Screen screen = Game.getScreen() ;
-		float MinX = (float) (0.1), MinY = (float) ((float) (screen.SkyHeight) / screen.getDimensions()[1] + 0.1) ; 
+		float MinX = (float) (0.1), MinY = (float) ((float) (screen.getSkyHeight()) / screen.getSize().y + 0.1) ; 
     	float RangeX = (float) (0.8), RangeY = (float) (1 - MinY) ;
     	if (MapID == 13 | MapID == 17)
 		{ 

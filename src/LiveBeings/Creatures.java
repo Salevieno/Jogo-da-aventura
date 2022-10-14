@@ -1,4 +1,4 @@
-package GameComponents ;
+package LiveBeings ;
 
 import java.awt.Color ;
 import java.awt.Image ;
@@ -6,10 +6,14 @@ import java.awt.Point;
 import java.util.Arrays;
 
 import Actions.BattleActions;
+import GameComponents.Maps;
+import GameComponents.Screen;
+import GameComponents.Spells;
 import Graphics.DrawFunctions ;
 import Main.Game;
 import Main.Utg ;
 import Main.Uts ;
+import Windows.AttributesWindow;
 
 public class Creatures extends LiveBeing
 {
@@ -32,7 +36,7 @@ public class Creatures extends LiveBeing
 	
  	public Creatures(int Type, Image image, Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif, int Map, int[] Size, int[] Skill, PersonalAttributes PA, BattleAttributes BA, int[] Bag, int Gold, Color color, int[] StatusCounter, String[] Combo)
 	{
-		super(Type, PA, BA) ;
+		super(Type, PA, BA, new AttributesWindow()) ;
 		this.Type = Type ;
 		this.image = image ;
 		this.idleGif = idleGif ; 
@@ -128,9 +132,9 @@ public class Creatures extends LiveBeing
 	{
 		Screen screen = Game.getScreen() ;
 		float[] MinCoord = new float[] {0, (float) (0.2)} ;
-		float[] Range = new float[] {1, 1 - (float) (screen.SkyHeight) / screen.getDimensions()[1]} ;
+		float[] Range = new float[] {1, 1 - (float) (screen.getSkyHeight()) / screen.getSize().y} ;
 		int[] step = new int[] {1, 1} ;
-		PA.setPos(Utg.RandomPos(screen.getDimensions(), MinCoord, Range, step)) ;
+		PA.setPos(Utg.RandomPos(screen.getSize(), MinCoord, Range, step)) ;
 	}
 	public Point CenterPos()
 	{

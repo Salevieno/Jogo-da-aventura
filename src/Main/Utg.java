@@ -28,12 +28,14 @@ import javax.sound.sampled.AudioInputStream ;
 import javax.sound.sampled.AudioSystem ;
 import javax.sound.sampled.Clip ;
 import javax.swing.JPanel ;
-import GameComponents.Creatures ;
+
 import GameComponents.Icon ;
 import GameComponents.Projectiles ;
+import GameComponents.Size;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives ;
 import Items.Potion;
+import LiveBeings.Creatures;
 
 public abstract class Utg 
 {	
@@ -1172,9 +1174,9 @@ public abstract class Utg
 		return (int)(size*(Range*Math.random() + MinCoord)/step)*step ;
 	}
 	
-	public static Point RandomPos(int[] size, float[] MinCoord, float[] Range, int[] step)
+	public static Point RandomPos(Size size, float[] MinCoord, float[] Range, int[] step)
 	{
-		return new Point((int)(size[0]*(Range[0]*Math.random() + MinCoord[0])/step[0])*step[0], (int)(size[1]*(Range[1]*Math.random() + MinCoord[1])/step[1])*step[1]) ;
+		return new Point((int)(size.x*(Range[0]*Math.random() + MinCoord[0])/step[0])*step[0], (int)(size.y*(Range[1]*Math.random() + MinCoord[1])/step[1])*step[1]) ;
 	}
 	
 	public static void ResetMusic(Clip MusicFile)

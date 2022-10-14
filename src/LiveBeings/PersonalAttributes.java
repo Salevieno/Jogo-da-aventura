@@ -1,4 +1,4 @@
-package GameComponents ;
+package LiveBeings ;
 
 import java.awt.Image ;
 import java.awt.Point;
@@ -9,6 +9,8 @@ public class PersonalAttributes
 	private String Name ;
 	private Image[] image ;
 	private int Level ;
+	protected int Job ;
+	protected int ProJob ;
 	private int continent ;
 	private int map ;
 	private Point Pos ;
@@ -27,11 +29,13 @@ public class PersonalAttributes
 	protected String currentAction; 
 	protected int countmove ;
 	
-	public PersonalAttributes(String Name, Image[] image, int Level, int continent, int map, Point Pos, String dir, String Thought, int[] Size, float[] Life, float[] Mp, float Range, int Step, float[] Exp, float[] Satiation, float[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
+	public PersonalAttributes(String Name, Image[] image, int Level, int Job, int ProJob, int continent, int map, Point Pos, String dir, String Thought, int[] Size, float[] Life, float[] Mp, float Range, int Step, float[] Exp, float[] Satiation, float[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
 	{
 		this.Name = Name ;
 		this.image = image ;
 		this.Level = Level ;
+		this.Job = Job ;
+		this.ProJob = ProJob ;
 		this.continent = continent ;
 		this.map = map ;
 		this.Pos = Pos ;
@@ -54,6 +58,8 @@ public class PersonalAttributes
 	public String getName() {return Name ;}
 	public Image[] getimage() {return image ;}
 	public int getLevel() {return Level ;}
+	public int getJob() {return Job ;}
+	public int getProJob() {return ProJob ;}
 	public int getContinent() {return continent ;}
 	public int getMap() {return map ;}
 	public String getDir() {return dir ;}
@@ -72,22 +78,24 @@ public class PersonalAttributes
 	public String getCurrentAction() {return currentAction ;}
 	public int getCountmove() {return countmove ;}
 	
-	public void setName(String N) {Name = N ;}
-	public void setimage(Image[] I) {image = I ;}
-	public void setLevel(int L) {Level = L ;}
-	public void setContinent(int C) {continent = C ;}
-	public void setMap(int M) {map = M ;}
-	public void setdir(String d) {dir = d ;}
-	public void setThought(String T) {Thought = T ;}
-	public void setPos(Point P) {Pos = P ;}
-	public void setSize(int[] S) {Size = S ;}
-	public void setLife(float[] L) {Life = L ;}
-	public void setMp(float[] M) {Mp = M ;}
-	public void setRange(float R) {Range = R ;}
-	public void setStep(int S) {Step = S ;}
-	public void setExp(float[] E) {Exp = E ;}
-	public void setSatiation(float[] S) {Satiation = S ;}
-	public void setThirst(float[] T) {Thirst = T ;}
+	public void setName(String newValue) {Name = newValue ;}
+	public void setimage(Image[] newValue) {image = newValue ;}
+	public void setLevel(int newValue) {Level = newValue ;}
+	public void setJob(int newValue) {Job = newValue ;}
+	public void setProJob(int newValue) {ProJob = newValue ;}
+	public void setContinent(int newValue) {continent = newValue ;}
+	public void setMap(int newValue) {map = newValue ;}
+	public void setdir(String newValue) {dir = newValue ;}
+	public void setThought(String newValue) {Thought = newValue ;}
+	public void setPos(Point newValue) {Pos = newValue ;}
+	public void setSize(int[] newValue) {Size = newValue ;}
+	public void setLife(float[] newValue) {Life = newValue ;}
+	public void setMp(float[] newValue) {Mp = newValue ;}
+	public void setRange(float newValue) {Range = newValue ;}
+	public void setStep(int newValue) {Step = newValue ;}
+	public void setExp(float[] newValue) {Exp = newValue ;}
+	public void setSatiation(float[] newValue) {Satiation = newValue ;}
+	public void setThirst(float[] newValue) {Thirst = newValue ;}
 
 	public String randomDir()
 	{

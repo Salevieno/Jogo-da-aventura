@@ -1,6 +1,15 @@
 package Windows;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
+import java.awt.Point;
+
+import GameComponents.Size;
+import Graphics.DrawFunctions;
+import Graphics.DrawPrimitives;
+import Main.Game;
+import Main.Utg;
 
 public class Window
 {
@@ -97,6 +106,42 @@ public class Window
 		if (0 < item)
 		{
 			item -= 1 ;
+		}
+	}
+	
+	public void drawGenericWindow(DrawPrimitives DP)
+	{
+		Size screenDim = Game.getScreen().getSize() ;
+		Point pos = new Point((int) (0.5 * screenDim.x), (int) (0.5 * screenDim.y)) ;
+		Font font = new Font("SansSerif", Font.BOLD, screenDim.x * screenDim.y / 3500) ;
+		String Title = "Janela genérica" ;
+		Size size = new Size((int)(0.3*screenDim.x), (int)(3*Utg.TextH(font.getSize()))) ;
+		Point windowCenter = new Point((int) (pos.x + 0.5*screenDim.x), (int) (pos.y - screenDim.y - 0.5*3*Utg.TextH(font.getSize()))) ;
+		//if (type == 0)
+		//{
+			DP.DrawRoundRect(pos, "TopLeft", size, 3, Game.ColorPalette[7], Game.ColorPalette[2], true) ;
+			//DP.DrawRoundRect(windowCenter, "Center", size[0], size[1], 3, Game.ColorPalette[7], Game.ColorPalette[2], true) ;
+			DP.DrawText(windowCenter, "Center", DrawPrimitives.OverallAngle, Title, font, Game.ColorPalette[9]) ;
+		//}
+		//if (type == 1)
+		//{
+		//	int ImageW = MenuWindow1.getWidth(null), ImageH = MenuWindow1.getHeight(null) ;
+		//	DP.DrawImage(MenuWindow1, pos, new float[] {(float) L / ImageW, (float) H / ImageH}, "TopLeft") ;
+		//}
+	}
+	
+	public void display(DrawPrimitives DP)
+	{
+		if (image != null)
+		{
+			Size screenDim = Game.getScreen().getSize() ;
+			Point pos = new Point((int) (0.5 * screenDim.x), (int) (0.5 * screenDim.y)) ;
+			DP.DrawImage(image, pos, "Center") ;
+		}
+		else
+		{
+			drawGenericWindow(DP) ;
+			//System.out.println("Tentando mostrar uma janela que não possui imagem") ;
 		}
 	}
 }

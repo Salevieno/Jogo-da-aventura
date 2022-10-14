@@ -1,4 +1,4 @@
-package GameComponents ;
+package LiveBeings ;
 
 import java.awt.Color ;
 import java.awt.Image ;

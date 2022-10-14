@@ -9,10 +9,11 @@ import java.util.Arrays ;
 import GameComponents.Items ;
 import GameComponents.Maps;
 import GameComponents.NPCs ;
-import GameComponents.Pet ;
-import GameComponents.Player ;
 import GameComponents.Screen;
+import GameComponents.Size;
 import GameComponents.Spells ;
+import LiveBeings.Pet;
+import LiveBeings.Player;
 import Main.Uts ;
 import Main.Game;
 import Main.Utg ;
@@ -29,15 +30,15 @@ public class Animations
 	
 	public Animations(int[] AllTextCat, String[][] AllText)
 	{
-		int[] screenDim = Game.getScreen().getDimensions() ;
+		Size screenDim = Game.getScreen().getSize() ;
 		int NumberOfAni = 21 ;
 		Anicounter = new int[NumberOfAni] ;
 		Aniduration = new int[NumberOfAni] ;
 		Arrays.fill(Aniduration, 100) ;
 		AniIsActive = new boolean[NumberOfAni] ;
 		AniVars = new Object[NumberOfAni][] ;
-		this.ScreenL = screenDim[0] ;
-		this.ScreenH = screenDim[1] ;
+		this.ScreenL = screenDim.x ;
+		this.ScreenH = screenDim.y ;
 		this.AllTextCat = AllTextCat ;
 		this.AllText = AllText ;
 	}
@@ -180,11 +181,11 @@ public class Animations
 		int TextCat = AllTextCat[10] ;
 		int[] Pos = new int[] {(int) (0.5*ScreenL), (int) (0.25*ScreenH)} ;
 		int[] ValidItemIDs = Utg.ArrayWithValuesGreaterThan(ItemIDs, -1) ;
-		int L = (int) (1.2*Utg.TextL(Items.LongestName, font, DF.getGraphs())), H = (int) (10 + (ValidItemIDs.length + 1)*Utg.TextH(font.getSize())) ;
+		Size size = new Size((int) (1.2*Utg.TextL(Items.LongestName, font, DF.getGraphs())), (int) (10 + (ValidItemIDs.length + 1)*Utg.TextH(font.getSize()))) ;
 		int sy = (int) (1.2*Utg.TextH(font.getSize())) ;
-		Point WindowPos = new Point(Pos[0] - L/2, Pos[1] + H/2) ;
-		Point TextPos = new Point(WindowPos.x + L/2, Pos[1] - H/2 + 5 + Utg.TextH(font.getSize())/2) ;
-		DF.DrawMenuWindow(WindowPos, L, H, null, 0, Color.white, Color.gray) ;
+		Point WindowPos = new Point(Pos[0] - size.x / 2, Pos[1] + size.y / 2) ;
+		Point TextPos = new Point(WindowPos.x + size.x / 2, Pos[1] - size.y / 2 + 5 + Utg.TextH(font.getSize())/2) ;
+		DF.DrawMenuWindow(WindowPos, size, null, 0, Color.white, Color.gray) ;
 		DP.DrawText(TextPos, "Center", 0, AllText[TextCat][3], font, Color.blue) ;
 		for (int i = 0 ; i <= ValidItemIDs.length - 1 ; i += 1)
 		{

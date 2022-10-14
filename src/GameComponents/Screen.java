@@ -4,27 +4,28 @@ import java.awt.Point;
 
 public class Screen
 {
-	private int[] Dimensions ;	// Length, height
-	private int[] Borders ;	// Min x, Min y, Max x, Max y
-	private Point Center ;
-    public int SkyHeight ;
+	private Size size ;	// Length, height
+	private int[] borders ;	// Min x, Min y, Max x, Max y
+	private Point center ;
+    private int skyHeight ;
 
-	public Screen(int[] Dimensions, int[] Borders)
+	public Screen(Size Size, int[] Borders)
 	{
-		this.Dimensions = Dimensions ;
-		this.Borders = Borders ;
-		Center = new Point(Dimensions[0] / 2, Dimensions[1] / 2) ;
-		SkyHeight = (int)(0.2 * Dimensions[1]) ;
+		this.size = Size ;
+		this.borders = Borders ;
+		center = new Point(Size.x / 2, Size.y / 2) ;
+		skyHeight = (int)(0.2 * Size.x) ;
 	}
 
-	public int[] getDimensions() {return Dimensions ;}
-	public int[] getBorders() {return Borders ;}
-	public Point getCenter() {return Center ;}
-	public void setDimensions(int[] D) {Dimensions = D ;}
-	public void setBorders(int[] B) {Borders = B ;}
+	public Size getSize() {return size ;}
+	public int[] getBorders() {return borders ;}
+	public Point getCenter() {return center ;}
+	public int getSkyHeight() {return skyHeight ;}
+	public void setSize(Size D) {size = D ;}
+	public void setBorders(int[] B) {borders = B ;}
 	
 	public boolean posIsInMap(Point pos)
 	{
-		return (Borders[0] < pos.x & Borders[1] < pos.y & pos.x < Borders[2] & pos.y < Borders[3]) ;
+		return (borders[0] < pos.x & borders[1] < pos.y & pos.x < borders[2] & pos.y < borders[3]) ;
 	}
 }

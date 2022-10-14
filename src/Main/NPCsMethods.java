@@ -7,20 +7,21 @@ import java.awt.Point;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon ;
-import GameComponents.CreatureTypes ;
-import GameComponents.Creatures ;
+
 import GameComponents.Icon ;
 import GameComponents.Items ;
 import GameComponents.Maps;
 import GameComponents.NPCs ;
-import GameComponents.Pet ;
-import GameComponents.Player ;
 import GameComponents.Quests ;
 import GameComponents.Screen;
 import GameComponents.Spells ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Graphics.DrawPrimitives ;
+import LiveBeings.CreatureTypes;
+import LiveBeings.Creatures;
+import LiveBeings.Pet;
+import LiveBeings.Player;
 
 public class NPCsMethods
 {
@@ -46,8 +47,8 @@ public class NPCsMethods
 	
 	public NPCsMethods(Player player, String ImagesPath, String[][] AllText, int[] AllTextCat, Icon[] icons)
 	{
-		ScreenL = Game.getScreen().getDimensions()[0] ;
-		ScreenH = Game.getScreen().getDimensions()[1] ;
+		ScreenL = Game.getScreen().getSize().x ;
+		ScreenH = Game.getScreen().getSize().y ;
 		this.AllText = AllText ;
 		this.AllTextCat = AllTextCat ;
 		this.icons = icons ;

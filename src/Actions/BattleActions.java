@@ -1,7 +1,7 @@
 package Actions;
 import java.awt.Point;
 
-import GameComponents.PersonalAttributes;
+import LiveBeings.PersonalAttributes;
 import Main.Utg;
 
 public abstract class BattleActions

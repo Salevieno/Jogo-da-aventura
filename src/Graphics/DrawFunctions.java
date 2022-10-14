@@ -11,28 +11,29 @@ import java.util.Arrays ;
 import javax.swing.ImageIcon ;
 
 import GameComponents.Buildings ;
-import GameComponents.CreatureTypes ;
-import GameComponents.Creatures ;
 import GameComponents.Icon ;
 import GameComponents.Items ;
 import GameComponents.Maps ;
 import GameComponents.NPCs ;
-import GameComponents.Pet ;
-import GameComponents.Player ;
 import GameComponents.Quests ;
 import GameComponents.Screen ;
+import GameComponents.Size;
 import GameComponents.Spells ;
 import GameComponents.SkyComponents ;
 import Items.Item;
+import LiveBeings.CreatureTypes;
+import LiveBeings.Creatures;
+import LiveBeings.Pet;
+import LiveBeings.Player;
 import Main.Uts ;
 import Windows.Bag;
+import Windows.Settings;
 import Main.Game;
-import Main.Settings;
 import Main.Utg ;
 
 public class DrawFunctions
 {
-	private int[] WinDim ;
+	private Size screenSize ;
 	private int DayDuration ;
 	private String[][] AllText ;
 	private int[] AllTextCat ;
@@ -53,7 +54,7 @@ public class DrawFunctions
 	
 	public DrawFunctions(Graphics g, int DayDuration, String[][] AllText, int[] AllTextCat)
 	{
-		this.WinDim = Game.getScreen().getDimensions() ;
+		this.screenSize = Game.getScreen().getSize() ;
 		this.DayDuration = DayDuration ;
 		this.AllText = AllText ;
 		this.AllTextCat = AllTextCat ;
@@ -110,12 +111,12 @@ public class DrawFunctions
 	/* General drawing */
 	public void DrawColorPalette(Point Pos, Color[] Pallete)
 	{
-		int L = 20, H = 20 ;
-		DP.DrawRoundRect(Pos, "TopLeft", 6 * L + 10, (Pallete.length / 6 + 1) * H + 10, 1, ColorPalette[7], ColorPalette[7], true) ;
+		Size size = new Size(20, 20) ;
+		DP.DrawRoundRect(Pos, "TopLeft", new Size(6 * size.x + 10, (Pallete.length / 6 + 1) * size.y + 10), 1, ColorPalette[7], ColorPalette[7], true) ;
 		for (int i = 0 ; i <= Pallete.length - 1 ; i += 1)
 		{
-			Point ColorPos = new Point((int) (Pos.x + 5 + L / 2 + (i % 6) * L), (int) (Pos.y + 5 + H / 2 + i / 6 * H)) ;
-			DP.DrawRoundRect(ColorPos, "Center", L, H, 1, Pallete[i], Pallete[i], false) ;
+			Point ColorPos = new Point((int) (Pos.x + 5 + size.x / 2 + (i % 6) * size.x), (int) (Pos.y + 5 + size.y / 2 + i / 6 * size.y)) ;
+			DP.DrawRoundRect(ColorPos, "Center", size, 1, Pallete[i], Pallete[i], false) ;
 		}
 	}
 	public void DrawColorScheme()
@@ -148,12 +149,10 @@ public class DrawFunctions
 	}
 	public void DrawAllFonts()
 	{		
-		Font fonts[] = 
-			      GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-
+		Font fonts[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
 		int numrows = 60 ;
 		int sx = 100, sy = 14 ;
-		DP.DrawRect(new Point(0, 0), "TopLeft", WinDim[0], WinDim[1], 1, Color.white, Color.black, true) ;
+		DP.DrawRect(new Point(0, 0), "TopLeft", screenSize, 1, Color.white, Color.black, true) ;
 		for (int i = 0 ; i <= fonts.length / numrows - 1 ; i += 1)
 		{
 			for (int j = 0 ; j <= numrows - 1 ; j += 1)
@@ -168,27 +167,27 @@ public class DrawFunctions
 	}
 	
 
-	public void DrawMenuWindow(Point Pos, int L, int H, String Title, int type, Color color1, Color color2)
+	public void DrawMenuWindow(Point Pos, Size size, String Title, int type, Color color1, Color color2)
 	{
 		if (type == 0)
 		{
-			DP.DrawRoundRect(Pos, "TopLeft", L, H, 3, color1, color2, true) ;
+			DP.DrawRoundRect(Pos, "TopLeft", size, 3, color1, color2, true) ;
 			if (Title != null)
 			{
-				Font font = new Font("SansSerif", Font.BOLD, L * H / 3500) ;
-				Point WindowPos = new Point((int) (Pos.x + 0.5*L), (int) (Pos.y - H - 0.5*3*Utg.TextH(font.getSize()))) ;
+				Font font = new Font("SansSerif", Font.BOLD, size.x * size.y / 3500) ;
+				Point WindowPos = new Point((int) (Pos.x + 0.5 * size.x), (int) (Pos.y - size.y - 0.5*3*Utg.TextH(font.getSize()))) ;
 				Color TextColor = ColorPalette[9] ;
-				DP.DrawRoundRect(WindowPos, "Center", (int)(0.6*L), (int)(3*Utg.TextH(font.getSize())), 3, color1, color2, true) ;
+				DP.DrawRoundRect(WindowPos, "Center", new Size((int)(0.6 * size.x), (int)(3*Utg.TextH(font.getSize()))), 3, color1, color2, true) ;
 				DP.DrawText(WindowPos, "Center", OverallAngle, Title, font, TextColor) ;
 			}
 		}
 		if (type == 1)
 		{
 			int ImageW = MenuWindow1.getWidth(null), ImageH = MenuWindow1.getHeight(null) ;
-			DP.DrawImage(MenuWindow1, Pos, new float[] {(float) L / ImageW, (float) H / ImageH}, "TopLeft") ;
+			DP.DrawImage(MenuWindow1, Pos, new float[] {(float) size.x / ImageW, (float) size.y / ImageH}, "TopLeft") ;
 		}
 	}
-	public void DrawWindowArray(int[] NumberOfWindows, Point InitialPos, String Alignment, int l, int h, float sx, float sy, int thickness, Color[] colors, int maxwindows)
+	public void DrawWindowArray(int[] NumberOfWindows, Point InitialPos, String Alignment, Size size, float sx, float sy, int thickness, Color[] colors, int maxwindows)
 	{
 		for (int nx = 0 ; nx <= NumberOfWindows[0] - 1 ; nx += 1)
 		{
@@ -196,8 +195,8 @@ public class DrawFunctions
 			{
 				if (nx * NumberOfWindows[0] + ny < maxwindows)
 				{
-					Point WindowPos = new Point((int) (InitialPos.x + nx * (l + sx)), (int) (InitialPos.y + ny * (h + sy))) ;
-					DP.DrawRoundRect(WindowPos, Alignment, l, h, thickness, colors[0], colors[1], true) ;
+					Point WindowPos = new Point((int) (InitialPos.x + nx * (size.x + sx)), (int) (InitialPos.y + ny * (size.y + sy))) ;
+					DP.DrawRoundRect(WindowPos, Alignment, size, thickness, colors[0], colors[1], true) ;
 				}
 			}
 		}
@@ -211,9 +210,9 @@ public class DrawFunctions
 			Lmax = Math.max(Lmax, Choices[i].length()) ;
 		}
 		int Sy = 2 * Utg.TextH(font.getSize()) ;
-		int L = (int)(Lmax * 0.012 * WinDim[0] + 0.01 * WinDim[0]), H = 10 + Choices.length * Sy ;
+		Size size = new Size((int)(Lmax * 0.012 * screenSize.x + 0.01 * screenSize.x), 10 + Choices.length * Sy) ;
 		
-		DrawMenuWindow(Pos, L, H, null, 0, ColorPalette[7], ColorPalette[7]) ;
+		DrawMenuWindow(Pos, size, null, 0, ColorPalette[7], ColorPalette[7]) ;
 		for (int i = 0 ; i <= Choices.length - 1 ; i += 1)
 		{
 			if (i == selChoice)
@@ -231,7 +230,7 @@ public class DrawFunctions
 		int ImageL = SpeakingBubble.getWidth(null), ImageH = SpeakingBubble.getHeight(null) ;
 		Pos = new Point (Pos.x, Pos.y - NPCimage.getHeight(null)) ;
 		int MaxTextL = 20 ;
-		if (0.7 * WinDim[0] < Pos.x)
+		if (0.7 * screenSize.x < Pos.x)
 		{
 			DP.DrawImage(SpeakingBubble, new Point(Pos.x + ImageL, Pos.y), OverallAngle, new float[] {1, 1}, new boolean[] {true, false}, "BotCenter", 1) ;
 		}
@@ -261,7 +260,7 @@ public class DrawFunctions
 	}
 	public void DrawOrganogram(int[] Sequence, Point Pos, int sx, int sy, int l, int h, String[][] Text1, String[] Text2, Icon SlotIcon, Font font, Color[] TextColor, Point MousePos)
 	{
-		int[] x0 = new int[] {WinDim[0] / 30 + l + sx, WinDim[0] / 30 + l / 2 + sx / 2, WinDim[0] / 30} ;
+		int[] x0 = new int[] {screenSize.x / 30 + l + sx, screenSize.x / 30 + l / 2 + sx / 2, screenSize.x / 30} ;
 		int IconH = SlotIcon.getImage().getHeight(null) ;
 		int RectH = (int) (0.67 * IconH) ;
 		int id = 0 ;
@@ -333,15 +332,16 @@ public class DrawFunctions
 			DrawEquips(EqPos, player.getJob(), 0, player.getEquips()[0] - Items.BagIDs[6], Items.EquipsBonus, scale, angle[player.getJob()]) ;
 		}	
 	}
-	public void DrawSpecialAttributesWindow(Player player, Point Pos, int L, int H, float[] Stun, float[] Block, float[] Blood, float[] Poison, float[] Silence)
+	public void DrawSpecialAttributesWindow(Player player, Point Pos, Size size, float[] Stun, float[] Block, float[] Blood, float[] Poison, float[] Silence)
 	{
 		int SpecialAttrPropCat = AllTextCat[8], AttrCat = AllTextCat[6] ;	
 		Font font = new Font("SansSerif", Font.BOLD, 13) ;
 		int Linewidth = 2 ;
+		int L = size.x, H = size.y ;
 		float sx = (float)0.15*L, sy = (float)(1.8*Utg.TextH(font.getSize())) ;
 		Color TextColor = ColorPalette[5], LineColor = ColorPalette[9] ;
 		Color[] AttributeColor = new Color[] {ColorPalette[5], ColorPalette[5], ColorPalette[6], ColorPalette[3], ColorPalette[9]} ;
-		DP.DrawRoundRect(Pos, "BotLeft", L, H, 1, ColorPalette[0], ColorPalette[7], true) ;
+		DP.DrawRoundRect(Pos, "BotLeft", size, 1, ColorPalette[0], ColorPalette[7], true) ;
 		DP.DrawLine(new int[] {Pos.x + (int)(0.025*L), Pos.x + (int)(0.025*L)}, new int[] {(int)(Pos.y - H + 0.5*sy), (int)(Pos.y - H + 8.5*sy)}, Linewidth, LineColor) ;
 		DP.DrawLine(new int[] {Pos.x + (int)(0.375*L), Pos.x + (int)(0.375*L)}, new int[] {(int)(Pos.y - H + 0.5*sy), (int)(Pos.y - H + 3.5*sy)}, Linewidth, LineColor) ;
 		DP.DrawLine(new int[] {Pos.x + (int)(0.975*L), Pos.x + (int)(0.975*L)}, new int[] {(int)(Pos.y - H + 0.5*sy), (int)(Pos.y - H + 8.5*sy)}, Linewidth, LineColor) ;
@@ -405,16 +405,16 @@ public class DrawFunctions
 		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 19*sy)), "BotLeft", OverallAngle, AllText[AttrCat][14] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(Poison[8], 2), font, AttributeColor[3]) ;	
 		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 20*sy)), "BotLeft", OverallAngle, AllText[AttrCat][15] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(Silence[4], 2), font, AttributeColor[4]) ;				
 	}
-	public void DrawPlayerStats(Player player, Point Pos, int L, int H)
+	public void DrawPlayerStats(Player player, Point Pos, Size size)
 	{
 		int TextCat = AllTextCat[7] ;
 		Font font = new Font("SansSerif", Font.BOLD, 13) ;
-		Point TextPos = new Point((int) (Pos.x + 0.05*L), (int) (Pos.y - H + 0.05*H)) ;
-		DP.DrawRoundRect(Pos, "BotLeft", L, H, 1, ColorPalette[0], ColorPalette[7], true) ;
+		Point TextPos = new Point((int) (Pos.x + 0.05 * size.x), (int) (Pos.y - size.y + 0.05 * size.y)) ;
+		DP.DrawRoundRect(Pos, "BotLeft", size, 1, ColorPalette[0], ColorPalette[7], true) ;
 		for (int i = 0 ; i <= player.getStats().length - 1 ; i += 1)
 		{
 			DP.DrawText(TextPos, "BotLeft", OverallAngle, AllText[TextCat][i + 1] + " " + String.valueOf(Utg.Round(player.getStats()[i], 1)), font, ColorPalette[5]) ;
-			TextPos.y += 0.95 * H / player.getStats().length ;
+			TextPos.y += 0.95 * size.y / player.getStats().length ;
 		}
 	}
 	public void DrawPlayerAttributes(Player player, int design)
@@ -425,23 +425,25 @@ public class DrawFunctions
 		if (design == 0)
 		{
 			Point Pos = new Point((int)(player.getPos().x - player.getSize()[0]/2), (int)(player.getPos().y - player.getSize()[1] - 10)) ;
-			int L = (int)(0.05*WinDim[0]), H = (int)(0.01*WinDim[1]), Sy = (int)(0.01*WinDim[1]) ;
+			Size size = new Size((int)(0.05*screenSize.x), (int)(0.01*screenSize.y)) ;
+			int Sy = (int)(0.01*screenSize.y) ;
 			int barthick = 1 ;
 			for (int att = 0; att <= attRate.length - 1; att += 1)
 			{
-				DP.DrawRect(new Point(Pos.x, Pos.y + (att + 1) * Sy), "TopLeft", (int)(attRate[0] * L), H, barthick, attColor[att], ColorPalette[9], true) ;
+				DP.DrawRect(new Point(Pos.x, Pos.y + (att + 1) * Sy), "TopLeft", new Size((int)(attRate[0] * size.x), size.y), barthick, attColor[att], ColorPalette[9], true) ;
 			}
 		}
 		if (design == 1)
 		{
-			Point Pos = new Point((int)(0.01*WinDim[0]), (int)(0.03*WinDim[1])) ;
-			int L = (int)(0.13*WinDim[0]), H = (int)(0.013*WinDim[1]), Sy = H ;
+			Point Pos = new Point((int)(0.01*screenSize.x), (int)(0.03*screenSize.y)) ;
+			Size size = new Size((int)(0.13*screenSize.x), (int)(0.013*screenSize.y)) ;
+			int Sy = size.y ;
 			int barthick = 1 ;
-			DP.DrawRoundRect(Pos, "TopLeft", (int)(1.4*L), (attRate.length + 1) * Sy, barthick, ColorPalette[8], ColorPalette[4], true) ;
+			DP.DrawRoundRect(Pos, "TopLeft", new Size((int)(1.4 * size.x), (attRate.length + 1) * Sy), barthick, ColorPalette[8], ColorPalette[4], true) ;
 			for (int att = 0; att <= attRate.length - 1; att += 1)
 			{
-				DP.DrawRect(new Point((int) (Pos.x + 0.3*L), Pos.y + (att + 1) * Sy), "CenterLeft", L, H, barthick, null, ColorPalette[9], true) ;
-				DP.DrawRect(new Point((int) (Pos.x + 0.3*L), Pos.y + (att + 1) * Sy), "CenterLeft", (int)(attRate[att] * L), H, barthick, attColor[att], ColorPalette[9], true) ;
+				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.x), Pos.y + (att + 1) * Sy), "CenterLeft", size, barthick, null, ColorPalette[9], true) ;
+				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.x), Pos.y + (att + 1) * Sy), "CenterLeft", new Size((int)(attRate[att] * size.x), size.y), barthick, attColor[att], ColorPalette[9], true) ;
 			}
 		}
 	}	
@@ -449,32 +451,32 @@ public class DrawFunctions
 	{
 		Color color[] = new Color[] {ColorPalette[6], ColorPalette[5], ColorPalette[1], ColorPalette[2]} ;
 		Point Pos = new Point((int)(pet.getPos().x - pet.getSize()[0]/2), (int)(pet.getPos().y - 0.6*pet.getSize()[1])) ;
-		int L = (int)(0.025*WinDim[0]), H = (int)(0.005*WinDim[1]), Sy = H ;
+		int L = (int)(0.025*screenSize.x), H = (int)(0.005*screenSize.y), Sy = H ;
 		int RectThickness = 1 ;
-		DP.DrawRect(new Point(Pos.x, Pos.y), "BotLeft", L, 3*H, RectThickness, null, ColorPalette[9], true) ;
-		DP.DrawRect(new Point(Pos.x, Pos.y - 3*Sy), "BotLeft", (int)(L*pet.getLife()[0]/pet.getLife()[1]), H, RectThickness, color[0], ColorPalette[9], true) ;
-		DP.DrawRect(new Point(Pos.x, Pos.y - 2*Sy), "BotLeft", (int)(L*pet.getMp()[0]/pet.getMp()[1]), H, RectThickness, color[1], ColorPalette[9], true) ;
-		DP.DrawRect(new Point(Pos.x, Pos.y - Sy), "BotLeft", (int)(L*pet.getExp()[0]/pet.getExp()[1]), H, RectThickness, color[2], ColorPalette[9], true) ;
-		DP.DrawRect(new Point(Pos.x, Pos.y), "BotLeft", (int)(L*pet.getSatiation()[0]/pet.getSatiation()[1]), H, RectThickness, color[3], ColorPalette[9], true) ;
+		DP.DrawRect(new Point(Pos.x, Pos.y), "BotLeft", new Size(L, 3 * H), RectThickness, null, ColorPalette[9], true) ;
+		DP.DrawRect(new Point(Pos.x, Pos.y - 3*Sy), "BotLeft", new Size((int)(L*pet.getLife()[0]/pet.getLife()[1]), H), RectThickness, color[0], ColorPalette[9], true) ;
+		DP.DrawRect(new Point(Pos.x, Pos.y - 2*Sy), "BotLeft", new Size((int)(L*pet.getMp()[0]/pet.getMp()[1]), H), RectThickness, color[1], ColorPalette[9], true) ;
+		DP.DrawRect(new Point(Pos.x, Pos.y - Sy), "BotLeft", new Size((int)(L*pet.getExp()[0]/pet.getExp()[1]), H), RectThickness, color[2], ColorPalette[9], true) ;
+		DP.DrawRect(new Point(Pos.x, Pos.y), "BotLeft", new Size((int)(L*pet.getSatiation()[0]/pet.getSatiation()[1]), H), RectThickness, color[3], ColorPalette[9], true) ;
 	}
 	public void DrawCreatureAttributes(Creatures creature)
 	{
 		Color color[] = new Color[] {ColorPalette[6], ColorPalette[5]} ;
 		Point Pos = new Point((int)(creature.getPos().x - creature.getSize()[0]/2), (int)(creature.getPos().y - creature.getSize()[1])) ;
-		int L = (int)(0.05*WinDim[0]), H = (int)(0.01*WinDim[1]), Sy = (int)(0.01*WinDim[1]) ;
+		int L = (int)(0.05*screenSize.x), H = (int)(0.01*screenSize.y), Sy = (int)(0.01*screenSize.y) ;
 		int RectThickness = 1 ;
-		DP.DrawRect(new Point(Pos.x, Pos.y), "BotLeft", L, 2*H, RectThickness, null, ColorPalette[9], true) ;
-		DP.DrawRect(new Point(Pos.x, Pos.y - Sy), "BotLeft", (int)(L*creature.getLife()[0]/creature.getLife()[1]), H, RectThickness, color[0], ColorPalette[9], true) ;
-		DP.DrawRect(new Point(Pos.x, Pos.y), "BotLeft", (int)(L*creature.getMp()[0]/creature.getMp()[1]), H, RectThickness, color[1], ColorPalette[9], true) ;
+		DP.DrawRect(new Point(Pos.x, Pos.y), "BotLeft", new Size(L, 2*H), RectThickness, null, ColorPalette[9], true) ;
+		DP.DrawRect(new Point(Pos.x, Pos.y - Sy), "BotLeft", new Size((int)(L*creature.getLife()[0]/creature.getLife()[1]), H), RectThickness, color[0], ColorPalette[9], true) ;
+		DP.DrawRect(new Point(Pos.x, Pos.y), "BotLeft", new Size((int)(L*creature.getMp()[0]/creature.getMp()[1]), H), RectThickness, color[1], ColorPalette[9], true) ;
 	}	
 	public void DrawCreatureTypeWindow(CreatureTypes creature)
 	{
 		Font Namefont = new Font("SansSerif", Font.BOLD, 14) ;
 		Font font = new Font("SansSerif", Font.BOLD, 13) ;
 		int TextCat = AllTextCat[6] ;
-		Point Pos = new Point((int)(0.1*WinDim[0]), (int)(0.9*WinDim[1])) ;
-		int W = (int)(0.4*WinDim[0]), H = (int)(0.6*WinDim[1]) ;
-		DrawMenuWindow(Pos, W, H, "Creature type window", 0, ColorPalette[7], ColorPalette[9]) ;
+		Point Pos = new Point((int)(0.1*screenSize.x), (int)(0.9*screenSize.y)) ;
+		int W = (int)(0.4*screenSize.x), H = (int)(0.6*screenSize.y) ;
+		DrawMenuWindow(Pos, new Size(W, H), "Creature type window", 0, ColorPalette[7], ColorPalette[9]) ;
 		DrawCreature(new Point(Pos.x + (int)(0.5*W), Pos.y - (int)(0.7*H)), new int[] {30, 30}, creature.getimage(), creature.getColor()) ;
 		DP.DrawText(new Point(Pos.x + (int)(0.4*W), Pos.y - (int)(0.95*H)), "BotLeft", OverallAngle, creature.getName(), Namefont, creature.getColor()) ;				
 		DP.DrawText(new Point(Pos.x + (int)(0.43*W), Pos.y - (int)(0.90*H)), "BotLeft", OverallAngle, AllText[TextCat][1] + ": " + creature.getLevel(), font, ColorPalette[6]) ;		
@@ -494,10 +496,10 @@ public class DrawFunctions
 		Font Namefont = new Font("SansSerif", Font.BOLD, 14) ;
 		Font font = new Font("SansSerif", Font.BOLD, 13) ;
 		int TextCat = AllTextCat[6] ;
-		Point Pos = new Point((int)(0.2*WinDim[0]), (int)(0.6*WinDim[1])) ;
-		int W = (int)(0.3*WinDim[0]), H = (int)(0.3*WinDim[1]) ;
+		Point Pos = new Point((int)(0.2*screenSize.x), (int)(0.6*screenSize.y)) ;
+		int W = (int)(0.3*screenSize.x), H = (int)(0.3*screenSize.y) ;
 		float sy = (float) (0.07*H) ;
-		DrawMenuWindow(Pos, W, H, "Creature window", 0, ColorPalette[7], ColorPalette[4]) ;
+		DrawMenuWindow(Pos, new Size(W, H), "Creature window", 0, ColorPalette[7], ColorPalette[4]) ;
 		DrawCreature(new Point(Pos.x + (int)(0.5*W), Pos.y - (int)(0.65*H)), new int[] {42, 30}, creature.getimage(), creature.getColor()) ;
 		DP.DrawText(new Point(Pos.x + (int)(0.4*W), Pos.y - (int)(0.92*H)), "BotLeft", OverallAngle, creature.getName(), Namefont, creature.getColor()) ;				
 		DP.DrawText(new Point(Pos.x + (int)(0.43*W), Pos.y - (int)(0.85*H)), "BotLeft", OverallAngle, AllText[TextCat][1] + ": " + creature.getLevel(), font, ColorPalette[6]) ;		
@@ -526,12 +528,12 @@ public class DrawFunctions
 		Font Namefont = new Font("SansSerif", Font.BOLD, 15) ;
 		Font font = new Font("SansSerif", Font.BOLD, 13) ;
 		Color TextColor = ColorPalette[9] ;
-		int L = (int)(0.28*WinDim[0]), H = (int)(0.5*WinDim[1]) ;
+		int L = (int)(0.28*screenSize.x), H = (int)(0.5*screenSize.y) ;
 		int l = (int) (1.5*creatureType.getSize()[0]), h = (int) (1.5*creatureType.getSize()[1]) ;
 		int offsetx = 5, offseth = 5 ;
 		float sy = (float) (1.0/17*(H - 1.5*h)) ;
-		DrawMenuWindow(Pos, L, H, null, 0, ColorPalette[7], ColorPalette[8]) ;
-		DP.DrawRoundRect(new Point((int) (Pos.x + 0.5*L), (int) (Pos.y - H + h)), "Center", l, h, 3, null, ColorPalette[9], true) ;
+		DrawMenuWindow(Pos, new Size(L, H), null, 0, ColorPalette[7], ColorPalette[8]) ;
+		DP.DrawRoundRect(new Point((int) (Pos.x + 0.5*L), (int) (Pos.y - H + h)), "Center", new Size(l, h), 3, null, ColorPalette[9], true) ;
 		DrawCreature(new Point((int) (Pos.x + 0.5*L), (int) (Pos.y - H + h + 0.1*creatureType.getSize()[1])), new int[] {creatureType.getSize()[0], creatureType.getSize()[1]}, creatureType.getimage(), creatureType.getColor()) ;
 		DP.DrawText(new Point(Pos.x + offsetx, (int) (Pos.y - H + 1.5*h + offseth + 1*sy)), "BotLeft", OverallAngle, creatureType.getName(), Namefont, creatureType.getColor()) ;		// Name
 		DP.DrawText(new Point(Pos.x + offsetx, (int) (Pos.y - H + 1.5*h + offseth + 2*sy)), "BotLeft", OverallAngle, AllText[TextCat][2] + ": " + creatureType.getLevel(), font, TextColor) ;	// Level
@@ -559,17 +561,18 @@ public class DrawFunctions
 	{
 		DP.DrawGif(LoadingGif, Pos, "Center");
 	}
-	public void DrawLoadingGameScreen(Player player, Pet pet, Icon[] icons, int[] MainWinDim, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
+	public void DrawLoadingGameScreen(Player player, Pet pet, Icon[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
 	{
-		Point[] WindowPos = new Point[] {new Point((int)(0.15*WinDim[0]), (int)(0.2*WinDim[1])),
-				new Point((int)(0.65*WinDim[0]), (int)(0.2*WinDim[1])),
-				new Point((int)(0.5*WinDim[0]), (int)(0.2*WinDim[1]))} ;
+		Point[] WindowPos = new Point[] {new Point((int)(0.15*screenSize.x), (int)(0.2*screenSize.y)),
+				new Point((int)(0.65*screenSize.x), (int)(0.2*screenSize.y)),
+				new Point((int)(0.5*screenSize.x), (int)(0.2*screenSize.y))} ;
 		Font font = new Font("SansSerif", Font.BOLD, 28) ;
 		
-		DP.DrawText(new Point((int)(0.5*WinDim[0]), (int)(0.05*WinDim[1])), "Center", OverallAngle, "Slot " + (SlotID + 1), font, ColorPalette[5]) ;
+		DP.DrawText(new Point((int)(0.5*screenSize.x), (int)(0.05*screenSize.y)), "Center", OverallAngle, "Slot " + (SlotID + 1), font, ColorPalette[5]) ;
  		if (AllText != null)
  		{
- 			player.DrawAttWindow(MainWinDim, WindowPos[0], null, AllText, AllTextCat, 0, GoldCoinImage, icons, DP) ;
+ 			//player.DrawAttWindow(MainWinDim, WindowPos[0], null, AllText, AllTextCat, 0, GoldCoinImage, icons, DP) ;
+ 			player.getAttWindow().display(player, AllTextCat, AllText, player.getEquips(), player.getEquipsBonus(), player.getAttPoints(), new Point(0, 0), player.getPersonalAtt(), player.getBattleAtt(), DP) ;
  			if (0 < pet.getLife()[0])
  			{
  	 			DrawPetWindow(pet, WindowPos[0]) ;
@@ -577,17 +580,17 @@ public class DrawFunctions
  		}
  		if (ArrowIconImage != null)
  		{
- 			DrawWindowArrows(WindowPos[2], (int)(0.5*WinDim[0]), 0, SlotID, NumberOfUsedSlots - 1) ;
+ 			DrawWindowArrows(WindowPos[2], (int)(0.5*screenSize.x), 0, SlotID, NumberOfUsedSlots - 1) ;
  		}
 	}
-	public void DrawEmptyLoadingSlot(int[] MainWinDim, int SlotID, int NumSlots)
+	public void DrawEmptyLoadingSlot(int SlotID, int NumSlots)
 	{
-		Point[] WindowPos = new Point[] {new Point((int)(0.35*WinDim[0]), (int)(0.2*WinDim[1])),
-				new Point((int)(0.65*WinDim[0]), (int)(0.2*WinDim[1])),
-				new Point((int)(0.5*WinDim[0]), (int)(0.2*WinDim[1]))} ;
-		DP.DrawRoundRect(WindowPos[0], "TopLeft", MainWinDim[0] / 3, MainWinDim[1] / 2, 2, Color.white, Color.lightGray, true) ;
-		DP.DrawText(new Point(WindowPos[0].x + MainWinDim[0] / 6, WindowPos[0].y + MainWinDim[1] / 4), "Center", OverallAngle, "Slot " + String.valueOf(SlotID + 1) + " is empty", new Font("SansSerif", Font.BOLD, 20), ColorPalette[5]) ;
-		DrawWindowArrows(new Point(WindowPos[0].x, WindowPos[0].y + MainWinDim[1] / 2), MainWinDim[0] / 3, 0, SlotID, NumSlots) ;
+		Point[] WindowPos = new Point[] {new Point((int)(0.35*screenSize.x), (int)(0.2*screenSize.y)),
+				new Point((int)(0.65*screenSize.x), (int)(0.2*screenSize.y)),
+				new Point((int)(0.5*screenSize.x), (int)(0.2*screenSize.y))} ;
+		DP.DrawRoundRect(WindowPos[0], "TopLeft", new Size(screenSize.x / 3, screenSize.y / 2), 2, Color.white, Color.lightGray, true) ;
+		DP.DrawText(new Point(WindowPos[0].x + screenSize.x / 6, WindowPos[0].y + screenSize.y / 4), "Center", OverallAngle, "Slot " + String.valueOf(SlotID + 1) + " is empty", new Font("SansSerif", Font.BOLD, 20), ColorPalette[5]) ;
+		DrawWindowArrows(new Point(WindowPos[0].x, WindowPos[0].y + screenSize.y / 2), screenSize.x / 3, 0, SlotID, NumSlots) ;
 	}
 	public void DrawCustomizationMenu(Player player, int SelectedOption, int[] CurrentColorValue)
 	{
@@ -595,7 +598,7 @@ public class DrawFunctions
 		Font font = new Font("SansSerif", Font.BOLD, 16) ;
 		int CustomCat = AllTextCat[34] ;	// Main text category
 		int ColorsCat = AllTextCat[39] ;	// Colors text category
-		Point ColorBarsPos = new Point((int)(0.4 * WinDim[0]), (int)(0.9 * WinDim[1])) ;
+		Point ColorBarsPos = new Point((int)(0.4 * screenSize.x), (int)(0.9 * screenSize.y)) ;
 		int Sx = 100, Sy = font.getSize() ;
 		int BarSize = 50 ;
 		float[] ArrowScale = new float[] {1, 1} ;
@@ -603,11 +606,11 @@ public class DrawFunctions
 		Color[] BarTextColor = new Color[] {ColorPalette[6], ColorPalette[6], ColorPalette[6]} ;
 		int[] MaxColorValue = new int[] {255, 255, 255} ;	// [Red, Green, Blue]
 		
-		player.display(new Point(WinDim[0] / 2,  WinDim[1] / 2 + player.getSize()[1]), new float[] {2, 2}, player.getDir(), false,  DP) ;
+		player.display(new Point(screenSize.x / 2,  screenSize.y / 2 + player.getSize()[1]), new float[] {2, 2}, player.getDir(), false,  DP) ;
 		
 		// Main text
-		DP.DrawText(new Point(WinDim[0] / 2,  WinDim[1] / 10), "Center", OverallAngle, AllText[CustomCat][1], Titlefont, ColorPalette[5]) ;
-		DP.DrawText(new Point(WinDim[0] / 2,  WinDim[1] / 10 + 2 * Sy), "Center", OverallAngle, AllText[CustomCat][2], Titlefont, ColorPalette[5]) ;
+		DP.DrawText(new Point(screenSize.x / 2,  screenSize.y / 10), "Center", OverallAngle, AllText[CustomCat][1], Titlefont, ColorPalette[5]) ;
+		DP.DrawText(new Point(screenSize.x / 2,  screenSize.y / 10 + 2 * Sy), "Center", OverallAngle, AllText[CustomCat][2], Titlefont, ColorPalette[5]) ;
 		DP.DrawText(new Point(ColorBarsPos.x + Sx / 2, ColorBarsPos.y - 8 * Sy), "Center", OverallAngle, AllText[CustomCat][3], Titlefont, ColorPalette[5]) ;
 		
 		// Side bar text
@@ -640,25 +643,25 @@ public class DrawFunctions
 		Font Titlefont = new Font("SansSerif", Font.BOLD, 10) ;
 		Font font = new Font("SansSerif", Font.BOLD, 9) ;
 		String Title = AllText[AllTextCat[61]][1] ;
-		Point Pos = new Point(WinDim[0] + 1, (int) (0.99 * WinDim[1]) - 70) ;
+		Point Pos = new Point(screenSize.x + 1, (int) (0.99 * screenSize.y) - 70) ;
 		int[] ActiveSpells = player.activeSpells(spells) ;
-		int L = 36, H = 130 ;
+		Size size = new Size(36, 130) ;
 		int slotW = SlotImage.getWidth(null), slotH = SlotImage.getHeight(null) ;	// Bar size
 		int Ncols = Math.max(ActiveSpells.length / 11 + 1, 1) ;
 		int Nrows = ActiveSpells.length / Ncols + 1 ;
-		int Sx = (int) Utg.spacing(L, Ncols, slotW, 3), Sy = (int) Utg.spacing(H, Nrows, slotH, 5) ;		
+		int Sx = (int) Utg.spacing(size.x, Ncols, slotW, 3), Sy = (int) Utg.spacing(size.y, Nrows, slotH, 5) ;		
 		String[] Key = Player.SkillKeys ;
 		Color BGcolor = Player.ClassColors[player.getJob()] ;
 		Color TextColor = player.getColors()[0] ;
 		int[] Counter = Utg.ArrayInPos(player.getSkillCounter(), 1) ;
 		
-		DP.DrawRoundRect(Pos, "BotLeft", L, H, 1, ColorPalette[7], BGcolor, true) ;
-		DP.DrawText(new Point(Pos.x + L / 2, Pos.y - H + 3), "TopCenter", OverallAngle, Title, Titlefont, ColorPalette[5]) ;
+		DP.DrawRoundRect(Pos, "BotLeft", size, 1, ColorPalette[7], BGcolor, true) ;
+		DP.DrawText(new Point(Pos.x + size.x / 2, Pos.y - size.y + 3), "TopCenter", OverallAngle, Title, Titlefont, ColorPalette[5]) ;
 		for (int i = 0 ; i <= ActiveSpells.length - 1 ; ++i)
 		{
 			if (0 < player.getSpell()[ActiveSpells[i]])
 			{
-				Point slotCenter = new Point(Pos.x + slotW / 2 + (i / Nrows) * Sx + 3, Pos.y - H + slotH / 2 + (i % Nrows) * Sy + Titlefont.getSize() + 5) ;
+				Point slotCenter = new Point(Pos.x + slotW / 2 + (i / Nrows) * Sx + 3, Pos.y - size.y + slotH / 2 + (i % Nrows) * Sy + Titlefont.getSize() + 5) ;
 				if (player.getMp()[0] < spells[ActiveSpells[i]].getMpCost())
 				{
 					DP.DrawImage(SlotImage, slotCenter, "Center") ;
@@ -689,7 +692,7 @@ public class DrawFunctions
 		String[] IconKey = new String[] {Player.ActionKeys[9], Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7]} ;
 		Color TextColor = ColorPalette[7] ;
 		
-		DP.DrawRect(new Point(WinDim[0], WinDim[1]), "BotLeft", 40, WinDim[1], 1, ColorPalette[9], ColorPalette[9], false) ;	// Background
+		DP.DrawRect(new Point(screenSize.x, screenSize.y), "BotLeft", new Size(40, screenSize.y), 1, ColorPalette[9], ColorPalette[9], false) ;	// Background
 		DrawSpellsBar(player, spells, SkillCooldownImage, SlotImage, MousePos) ;
 		for (int i = 0 ; i <= 3 - 1 ; i += 1)	// Options, bag, and quest
 		{
@@ -721,10 +724,10 @@ public class DrawFunctions
 		}
 		
 		// Hotkeys
-		DP.DrawRoundRect(new Point(WinDim[0] + 1, WinDim[1] - 70), "TopLeft", 36, 60, 1, ColorPalette[7], ColorPalette[19], true) ;
+		DP.DrawRoundRect(new Point(screenSize.x + 1, screenSize.y - 70), "TopLeft", new Size(36, 60), 1, ColorPalette[7], ColorPalette[19], true) ;
 		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 		{
-			Point slotCenter = new Point(WinDim[0] + 10, WinDim[1] - 60 + 20 * i) ;
+			Point slotCenter = new Point(screenSize.x + 10, screenSize.y - 60 + 20 * i) ;
 			int slotL = SlotImage.getWidth(null), slotH = SlotImage.getHeight(null) ;
 			DP.DrawImage(SlotImage, slotCenter, "Center") ;
 			DP.DrawText(new Point(slotCenter.x + slotL / 2 + 5, slotCenter.y + slotH / 2), "BotLeft", OverallAngle, Player.HotKeys[i], font, TextColor) ;
@@ -743,19 +746,19 @@ public class DrawFunctions
 		float time = 0 ;
 		Font font = new Font("SansSerif", Font.BOLD, 14) ;
 		time = (float)(DayCounter)/DayDuration ;
-		DP.DrawText(new Point(0, (int) (0.99*WinDim[1])), "BotLeft", OverallAngle, (int)(24*time) + ":" + (int)(24*60*time % 60), font, ColorPalette[5]) ;
+		DP.DrawText(new Point(0, (int) (0.99*screenSize.y)), "BotLeft", OverallAngle, (int)(24*time) + ":" + (int)(24*60*time % 60), font, ColorPalette[5]) ;
 	}
 	public void DrawSky(int DayCounter, SkyComponents[] Cloud, SkyComponents[] Star)
 	{
 		Screen screen = Game.getScreen() ;
 		float ColorMult = (1 - (float)(1.8 * Math.abs(DayCounter - DayDuration / 2)) / DayDuration) ;		
-		DP.DrawRect(new Point(0, screen.SkyHeight), "BotLeft", WinDim[0], screen.SkyHeight, 1, new Color(ColorPalette[0].getRed(), (int)(ColorPalette[0].getGreen()*ColorMult), (int)(ColorPalette[0].getBlue()*ColorMult)), ColorPalette[9], false) ;
+		DP.DrawRect(new Point(0, screen.getSkyHeight()), "BotLeft", new Size(screenSize.x, screen.getSkyHeight()), 1, new Color(ColorPalette[0].getRed(), (int)(ColorPalette[0].getGreen()*ColorMult), (int)(ColorPalette[0].getBlue()*ColorMult)), ColorPalette[9], false) ;
 		if (DayDuration / 4 <= DayCounter & DayCounter <= 3 * DayDuration / 4)
 		{
 			for (int c = 0 ; c <= Cloud.length - 1 ; c += 1)
 			{
 				Cloud[c].setPos(new Point((int) (Cloud[c].getPos().x + Cloud[c].getSpeed()[0]), (int) Cloud[c].getPos().y)) ;
-				if (WinDim[0] <= Cloud[c].getPos().x)
+				if (screenSize.x <= Cloud[c].getPos().x)
 				{
 					Cloud[c].getPos().x = -Cloud[c].getImage().getWidth(null) ;
 					Cloud[c].setCounter(0) ;
@@ -816,7 +819,7 @@ public class DrawFunctions
 				Point p = (Point) o[1] ;
 				if (type.equals("water"))
 				{
-					DP.DrawRect(new Point(p.x, p.y), "center", 10, 10, 0, Color.blue, null, false);
+					DP.DrawRect(new Point(p.x, p.y), "center", new Size(10, 10), 0, Color.blue, null, false);
 				}
 			}
 		}
@@ -848,8 +851,8 @@ public class DrawFunctions
 				int TextH = Utg.TextH(font.getSize()) ;
 				int TextL = Math.max(Utg.TextL(npc[NPCID].getName(), font, G), Utg.TextL(npc[NPCID].getInfo(), font, G)) ;
 				TextColor = npc[NPCID].getColor() ;
-				int[] WindowSize = new int[] {(int)(15 + TextL), (int)(10 + 2.2*TextH)} ;
-				Point WindowPos = new Point((int) (npc[NPCID].getPos().x + 0.5*npc[0].getImage().getWidth(null) - 0.5*WindowSize[0]), npc[NPCID].getPos().y - npc[0].getImage().getHeight(null)) ;
+				Size WindowSize = new Size((int)(15 + TextL), (int)(10 + 2.2*TextH)) ;
+				Point WindowPos = new Point((int) (npc[NPCID].getPos().x + 0.5*npc[0].getImage().getWidth(null) - 0.5*WindowSize.x), npc[NPCID].getPos().y - npc[0].getImage().getHeight(null)) ;
 				if (i == 9)	// Elemental
 				{
 					TextColor = ColorPalette[8] ;
@@ -859,8 +862,8 @@ public class DrawFunctions
 					WindowPos.y += -1.2*TextH ;
 				}
 				
-				Point TextPos = new Point((int) (WindowPos.x + 5 + 0.5*WindowSize[0]), (int) (WindowPos.y + TextH - 0.5*WindowSize[1])) ;
-				DrawMenuWindow(WindowPos, WindowSize[0], WindowSize[1], null, 0, ColorPalette[player.getJob()], ColorPalette[7]) ;
+				Point TextPos = new Point((int) (WindowPos.x + 5 + 0.5*WindowSize.x), (int) (WindowPos.y + TextH - 0.5*WindowSize.y)) ;
+				DrawMenuWindow(WindowPos, WindowSize, null, 0, ColorPalette[player.getJob()], ColorPalette[7]) ;
 				DP.DrawText(TextPos, "Center", OverallAngle, npc[NPCID].getInfo(), font, TextColor) ;
 				TextPos.y += -1.2*TextH ;
 				DP.DrawText(TextPos, "Center", OverallAngle, npc[NPCID].getName(), font, TextColor) ;
@@ -923,7 +926,7 @@ public class DrawFunctions
 		{			
 			int[][] SignTextPos = new int[][] {{SignPos.x - 200, SignPos.y - 150}, {SignPos.x + 50, SignPos.y - 50}, {SignPos.x + 50, SignPos.y - 50}, {SignPos.x + 100, SignPos.y - 50}, {SignPos.x - 540, SignPos.y - 50}} ;
 			Point Pos = new Point(SignTextPos[map][0], SignTextPos[map][1]) ;
-			DrawMenuWindow(Pos, (int)(0.25*Utg.TextL(AllText[TextCat][map + 1], font, G)), (int)(7*Utg.TextH(font.getSize())), null, 0, ColorPalette[4], ColorPalette[4]) ;
+			DrawMenuWindow(Pos, new Size((int)(0.25*Utg.TextL(AllText[TextCat][map + 1], font, G)), (int)(7*Utg.TextH(font.getSize()))), null, 0, ColorPalette[4], ColorPalette[4]) ;
 			DP.DrawFitText(new Point(Pos.x + 10, Pos.y - (int)(5.5*Utg.TextH(font.getSize()))), Utg.TextH(font.getSize()), "BotLeft", AllText[TextCat][map + 1], font, 35, ColorPalette[5]) ;		
 		}
 	}
@@ -942,54 +945,54 @@ public class DrawFunctions
 			DP.DrawRect(new int[] {0, (int)(0.01*WinDim[1] + SkyHeight)}, "BotLeft", WinDim[0], (int)(0.01*WinDim[1]), RectThickness, MapsTypeColor[4], ColorPalette[9], false) ;								// Grass
 			DrawGrass(new int[] {(int)(0.3*WinDim[0]), (int)(0.08*WinDim[1] + SkyHeight)}, 1, MapsTypeColor[4]) ;																					// Grass
 			DP.DrawImage(WallImage, new int[] {0, WinDim[1]}, OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "Left") ;*/						// Wall
-			DP.DrawImage(maps[player.getMap()].getimage(), new Point(0, WinDim[1]), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
+			DP.DrawImage(maps[player.getMap()].getimage(), new Point(0, screenSize.y), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
 		}
-		if (player.getMap() == 1)	// Mage's city
+		/*if (player.getMap() == 1)	// Mage's city
 		{
 			Color magicgroundcolor = ColorPalette[1] ;
-			DP.DrawRect(new Point(0, WinDim[1]), "BotLeft", WinDim[0], WinDim[1] - screen.SkyHeight, RectThickness, MapsTypeColor[4], ColorPalette[9], false) ;								// Grass
-			DP.DrawRect(new Point((int)(0.5*WinDim[0]), (int)(0.5*WinDim[1])), "Center", (int)(0.10*WinDim[0]), WinDim[1], RectThickness, magicgroundcolor, ColorPalette[9], false) ;	// Magic ground		
-			DP.DrawRect(new Point((int)(0.5*WinDim[0]), (int)(0.55*WinDim[1])), "Center", WinDim[0], (int)(0.10*WinDim[1]), RectThickness, magicgroundcolor, ColorPalette[9], false) ;	// Magic ground
+			DP.DrawRect(new Point(0, screenSize.y), "BotLeft", screenSize.x, screenSize.y - screen.getSkyHeight(), RectThickness, MapsTypeColor[4], ColorPalette[9], false) ;								// Grass
+			DP.DrawRect(new Point((int)(0.5*screenSize.x), (int)(0.5*screenSize.y)), "Center", (int)(0.10*screenSize.x), screenSize.y, RectThickness, magicgroundcolor, ColorPalette[9], false) ;	// Magic ground		
+			DP.DrawRect(new Point((int)(0.5*screenSize.x), (int)(0.55*screenSize.y)), "Center", screenSize.x, (int)(0.10*screenSize.y), RectThickness, magicgroundcolor, ColorPalette[9], false) ;	// Magic ground
 		}
 		if (player.getMap() == 2)	// Archer's city
 		{
-			DP.DrawRect(new Point(0, WinDim[1]), "BotLeft", WinDim[0], WinDim[1] - screen.SkyHeight, RectThickness, ColorPalette[19], ColorPalette[9], false) ;									// Soil
-			DP.DrawRect(new Point(0, (int)(0.80*WinDim[1])), "BotLeft", (int)(0.16*WinDim[0]), (int)(0.08*WinDim[1]), RectThickness, MapsTypeColor[4], ColorPalette[9], false) ;		// Grass
-			DP.DrawRect(new Point(0, (int)(0.38*WinDim[1])), "BotLeft", (int)(0.16*WinDim[0]), (int)(0.08*WinDim[1]), RectThickness, MapsTypeColor[4], ColorPalette[9], false) ;		// Grass
+			DP.DrawRect(new Point(0, screenSize.y), "BotLeft", screenSize.x, screenSize.y - screen.getSkyHeight(), RectThickness, ColorPalette[19], ColorPalette[9], false) ;									// Soil
+			DP.DrawRect(new Point(0, (int)(0.80*screenSize.y)), "BotLeft", (int)(0.16*screenSize.x), (int)(0.08*screenSize.y), RectThickness, MapsTypeColor[4], ColorPalette[9], false) ;		// Grass
+			DP.DrawRect(new Point(0, (int)(0.38*screenSize.y)), "BotLeft", (int)(0.16*screenSize.x), (int)(0.08*screenSize.y), RectThickness, MapsTypeColor[4], ColorPalette[9], false) ;		// Grass
 		}
 		if (player.getMap() == 3)	// Animal's city
 		{
-			DP.DrawRect(new Point(0, WinDim[1]), "BotLeft", WinDim[0], WinDim[1] - screen.SkyHeight, RectThickness, MapsTypeColor[4], ColorPalette[9], false) ;								// Grass
+			DP.DrawRect(new Point(0, screenSize.y), "BotLeft", screenSize.x, screenSize.y - screen.getSkyHeight(), RectThickness, MapsTypeColor[4], ColorPalette[9], false) ;								// Grass
 		}
 		if (player.getMap() == 4)	// Assassin's city
 		{
-			DP.DrawRect(new Point(0, WinDim[1]), "BotLeft", WinDim[0], WinDim[1] - screen.SkyHeight, RectThickness, ColorPalette[19], ColorPalette[9], false) ;										// Soil
-		}
+			DP.DrawRect(new Point(0, screenSize.y), "BotLeft", screenSize.x, screenSize.y - screen.getSkyHeight(), RectThickness, ColorPalette[19], ColorPalette[9], false) ;										// Soil
+		}*/
 		
 		if (player.getMap() == 13 | player.getMap() == 17 | player.getMap() == 60)
 		{
 			if (player.getMap() == 60)
 			{
-				DP.DrawRect(new Point(0, WinDim[1]), "BotLeft", WinDim[0], WinDim[1] - screen.SkyHeight, RectThickness, ContinentsColor[2], ColorPalette[9], false) ;
+				//DP.DrawRect(new Point(0, screenSize.y), "BotLeft", screenSize.x, screenSize.y - screen.SkyHeight, RectThickness, ContinentsColor[2], ColorPalette[9], false) ;
 			}
 			else
 			{
-				DP.DrawRect(new Point(0, WinDim[1]), "BotLeft", WinDim[0], WinDim[1] - screen.SkyHeight, RectThickness, ColorPalette[19], ColorPalette[9], false) ;
+				//DP.DrawRect(new Point(0, screenSize.y), "BotLeft", screenSize.x, screenSize.y - screen.SkyHeight, RectThickness, ColorPalette[19], ColorPalette[9], false) ;
 			}
 		} else if (!maps[player.getMap()].IsACity())
 		{
-			DP.DrawRect(new Point(0, WinDim[1]), "BotLeft", WinDim[0], WinDim[1] - screen.SkyHeight, RectThickness, ContinentsColor[player.getContinent()], ColorPalette[9], false) ;
+			//DP.DrawRect(new Point(0, screenSize.y), "BotLeft", screenSize.x, screenSize.y - screen.SkyHeight, RectThickness, ContinentsColor[player.getContinent()], ColorPalette[9], false) ;
 		}		
 		if (player.getMap() == 13)
 		{
-			DP.DrawImage(DockImage, new Point((int)(0.8*WinDim[0]), (int)(0.8*WinDim[1])), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
-			DP.DrawImage(BoatImage, new Point((int)(0.88*WinDim[0]), (int)(0.75*WinDim[1])), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
+			DP.DrawImage(DockImage, new Point((int)(0.8*screenSize.x), (int)(0.8*screenSize.y)), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
+			DP.DrawImage(BoatImage, new Point((int)(0.88*screenSize.x), (int)(0.75*screenSize.y)), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
 		}
-		DP.DrawText(new Point(0, (int)(0.025*WinDim[1])), "BotLeft", OverallAngle, AllText[AllTextCat[0]][1], new Font("SansSerif", Font.BOLD, 20), ColorPalette[5]) ;	// Tudo está bem
+		DP.DrawText(new Point(0, (int)(0.025*screenSize.y)), "BotLeft", OverallAngle, AllText[AllTextCat[0]][1], new Font("SansSerif", Font.BOLD, 20), ColorPalette[5]) ;	// Tudo está bem
 	}
 	public void DrawGrid(int[] spacing)
 	{
-		for (int i = 0 ; i <= WinDim[0]/spacing[0] - 1 ; ++i)
+		for (int i = 0 ; i <= screenSize.x/spacing[0] - 1 ; ++i)
 		{
 			int LineThickness = 1 ;
 			Color color = ColorPalette[9] ;
@@ -1002,8 +1005,8 @@ public class DrawFunctions
 				LineThickness = 2 ;
 				color = ColorPalette[5] ;
 			}
-			DP.DrawLine(new int[] {i*spacing[0], i*spacing[0]}, new int[] {0, WinDim[1]}, LineThickness, color) ;
-			for (int j = 0 ; j <= WinDim[1]/spacing[1] - 1 ; ++j)
+			DP.DrawLine(new int[] {i*spacing[0], i*spacing[0]}, new int[] {0, screenSize.y}, LineThickness, color) ;
+			for (int j = 0 ; j <= screenSize.y/spacing[1] - 1 ; ++j)
 			{
 				LineThickness = 1 ;
 				color = ColorPalette[9] ;
@@ -1016,14 +1019,14 @@ public class DrawFunctions
 					LineThickness = 2 ;
 					color = ColorPalette[5] ;
 				}
-				DP.DrawLine(new int[] {0, WinDim[0]}, new int[] {j*spacing[1], j*spacing[1]}, LineThickness, color) ;
+				DP.DrawLine(new int[] {0, screenSize.x}, new int[] {j*spacing[1], j*spacing[1]}, LineThickness, color) ;
 			}							
 		}
 	}	
 	public void DrawFullMap(Player player, Pet pet, Maps[] maps, NPCs[] npc, Buildings[] buildings, Spells[] skills, Icon[] SBicons, Point MousePos, int DayCounter, SkyComponents[] Cloud, SkyComponents[] Star, Image SkillCooldownImage, Image SkillSlotImage)
 	{
 		Screen screen = Game.getScreen() ;
-		DP.DrawImage(maps[player.getMap()].getimage(), new Point(WinDim[0] / 2, WinDim[1] / 2 + screen.SkyHeight / 2), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
+		DP.DrawImage(maps[player.getMap()].getimage(), new Point(screenSize.x / 2, screenSize.y / 2 + screen.getSkyHeight() / 2), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
 		DrawSky(DayCounter, Cloud, Star) ;
 		DrawMapElems(player, maps[player.getMap()]) ;
 		if (maps[player.getMap()].IsACity())
@@ -1035,29 +1038,29 @@ public class DrawFunctions
 		DrawSideBar(player, pet, MousePos, skills, SBicons, SkillCooldownImage, SkillSlotImage) ;
 		DrawTime(DayCounter, DayDuration) ;
 	}
-	public void DrawTimeBar(Point Pos, int Counter, int Delay, int size, int[] offset, String relPos, String dir, Color color)
+	public void DrawTimeBar(Point Pos, int Counter, int Delay, int size2, int[] offset, String relPos, String dir, Color color)
 	{
-		int l = (int)(2 + size/20), h = (int)(size) ;
+		Size size = new Size((int)(2 + size2/20), (int)(size2)) ;
 		int mirror = Uts.MirrorFromRelPos(relPos) ;
 		int RectT = 1 ;
 		Color BackgroundColor = ColorPalette[7] ;
 		if (dir.equals("Vertical"))
 		{
 			Pos = new Point(Pos.x + mirror*offset[0], Pos.y + offset[1]) ;
-			DP.DrawRect(Pos, "Center", l, h, RectT, BackgroundColor, ColorPalette[9], true) ;
-			DP.DrawRect(new Point(Pos.x - l/2, Pos.y + h/2), "BotLeft", l, h*Counter/Delay, RectT, color, ColorPalette[9], false) ;	
+			DP.DrawRect(Pos, "Center", size, RectT, BackgroundColor, ColorPalette[9], true) ;
+			DP.DrawRect(new Point(Pos.x - size.x / 2, Pos.y + size.y / 2), "BotLeft", new Size(size.x, size.y * Counter / Delay), RectT, color, ColorPalette[9], false) ;	
 		}
 		if (dir.equals("Horizontal"))
 		{
 			Pos = new Point(Pos.x + offset[0], Pos.y + mirror*offset[1]) ;
-			DP.DrawRect(Pos, "Center", h, l, RectT, BackgroundColor, ColorPalette[9], true) ;
-			DP.DrawRect(new Point(Pos.x - h/2, Pos.y + l/2), "BotLeft", h*Counter/Delay, l, RectT, color, ColorPalette[9], false) ;	
+			DP.DrawRect(Pos, "Center", new Size(size.y, size.x), RectT, BackgroundColor, ColorPalette[9], true) ;
+			DP.DrawRect(new Point(Pos.x - size.y / 2, Pos.y + size.x / 2), "BotLeft", new Size(size.y * Counter / Delay, size.x), RectT, color, ColorPalette[9], false) ;	
 		}			
 	}
 	
 	
 	/* Player actions */
-	public void DrawBag(Point Pos, int[] size, Bag bag, Image MenuImage, Image SlotImage, int menu, int Tab, int window, int windowLimit, int SelectedItem, Point MousePos)
+	public void DrawBag(Point Pos, Size size, Bag bag, Image MenuImage, Image SlotImage, int menu, int Tab, int window, int windowLimit, int SelectedItem, Point MousePos)
 	{
 		int MenusCat = AllTextCat[30] ;
 		Font MenuFont = new Font("SansSerif", Font.BOLD, 13) ;
@@ -1088,7 +1091,7 @@ public class DrawFunctions
 		}
 		
 		// Draw bag
-		DP.DrawRoundRect(Pos, "TopLeft", size[0], size[1], 1, BGColor, BGColor, true) ;
+		DP.DrawRoundRect(Pos, "TopLeft", size, 1, BGColor, BGColor, true) ;
 		
 		
 		// Draw items
@@ -1105,7 +1108,7 @@ public class DrawFunctions
 		Point[] textPos = new Point[NumberOfSlots] ;
 		for (int i = 0 ; i <= NumberOfSlots - 1 ; i += 1)
 		{
-			int sx = size[0] / 2, sy = (size[1] - 6 - slotH) / 9 ;
+			int sx = size.x / 2, sy = (size.y - 6 - slotH) / 9 ;
 			int row = i % (NSlotsmax / 2), col = i / (NSlotsmax / 2) ;
 			slotCenter[i] = new Point((int) (Pos.x + 5 + slotW / 2 + col * sx), (int) (Pos.y + 3 + slotH / 2 + row * sy)) ;
 			textPos[i] = new Point(slotCenter[i].x + slotW / 2 + 5, slotCenter[i].y) ;
@@ -1125,7 +1128,7 @@ public class DrawFunctions
 		}
 		if (0 < windowLimit)
 		{
-			DrawWindowArrows(new Point(Pos.x, Pos.y + size[1]), size[0], 0, window, windowLimit) ;
+			DrawWindowArrows(new Point(Pos.x, Pos.y + size.y), size.x, 0, window, windowLimit) ;
 		}
 	}	
 	/*public void DrawBag(int PlayerJob, Point Pos, int L, int H, int[] Bag, int NSlotsmax, Items[] items, Image MenuImage, Image SlotImage, int[] ActiveItems, int[][] slotCenter, int[][] textPos, int menu, int Tab, int window, int windowLimit, int SelectedItem, Point MousePos)
@@ -1186,7 +1189,7 @@ public class DrawFunctions
 	}	*/
 	public void DrawFabBook(Image BookImage, Items[] items, int SelectedPage, int[][] Ingredients, int[][] Products, Point MousePos)
 	{
-		Point Pos = new Point((int)(0.5*WinDim[0]), (int)(0.5*WinDim[1])) ;
+		Point Pos = new Point((int)(0.5*screenSize.x), (int)(0.5*screenSize.y)) ;
 		Font Titlefont = new Font("SansSerif", Font.BOLD, 16) ;
 		Font font = new Font("SansSerif", Font.BOLD, 14) ;
 		int L = BookImage.getWidth(null), H = BookImage.getHeight(null) ;
@@ -1228,13 +1231,13 @@ public class DrawFunctions
 		}
 		DrawWindowArrows(new Point(Pos.x, Pos.y + 15*H/32), L, 0, SelectedPage, Ingredients.length - 1) ;
 	}
-	public void DrawMap(int playerMap, String playerDir, Maps[] maps)
+	/*public void DrawMap(int playerMap, String playerDir, Maps[] maps)
 	{
 		int LineThickness = 2 ;
 		Font font = new Font("SansSerif", Font.BOLD, 16) ;
-		Point WindowPos = new Point((int)(0.25*WinDim[0]), (int)(0.75*WinDim[1])) ;
-		int L = (int)(0.05*WinDim[0]), H = (int)(0.05*WinDim[1]) ;
-		int Sx = (int)(0.01*WinDim[0]), Sy = (int)(0.01*WinDim[1]) ;
+		Point WindowPos = new Point((int)(0.25*screenSize.x), (int)(0.75*screenSize.y)) ;
+		int L = (int)(0.05*screenSize.x), H = (int)(0.05*screenSize.y) ;
+		int Sx = (int)(0.01*screenSize.x), Sy = (int)(0.01*screenSize.y) ;
 		float[][] MapsPos = new float[][] {{0, 3}, {2, 0}, {4, 4}, {4, 6}, {0, 0}, {1, 0}, {0, 1}, {1, 1}, {2, 1}, {3, 1}, {1, 2}, {2, 2}, {3, 2}, {4, 2}, {1, 3}, {2, 3}, {3, 3}, {4, 3}, {1, 4}, {2, 4}, {3, 4}, {1, 5}, {2, 5}, {3, 5}, {4, 5}, {1, 6}, {2, 6}, {3, 6}, {2, 7}, {3, 7}, {0, 1}, {1, 1}, {2, 1}, {0, 0}, {1, 0}, {2, 0}, {3, (float)(0.5)}, {4, 1}, {4, 0}, {5, (float)(0.5)}, {0, (float)(0.5)}, {1, 1}, {1, 0}, {2, 1}, {2, 0}, {2, 0}, {0, 1}, {1, 1}, {2, 1}, {0, 2}, {1, 2}, {2, 2}, {0, 3}, {1, 3}, {2, 3}, {2, 1}, {2, 0}, {1, 1}, {1, 0}, {0, 0}, {1, 0}, {0, 3}, {1, 3}, {2, 3}, {3, 3}, {1, 2}, {1, 1}} ;
 		int[][] MapsLeftBot = new int[MapsPos.length][2] ;
 		int [] MapStart = new int[] {0, 30, 40, 45, 55, 60}, MapEnd = new int[] {29, 39, 44, 54, 59, 66} ;
@@ -1246,11 +1249,11 @@ public class DrawFunctions
 			MapsLeftBot[map] = new int[] {(int)(Sx + MapsPos[map][0]*(L + Sx)), (int)(-Sy - MapsPos[map][1]*(H + Sy))} ; 
 		}
 		ContinentColor = ContinentsColor[Continent] ;
-		DP.DrawRoundRect(WindowPos, "BotLeft", 8*L, 10*H, 1, ColorPalette[18], ColorPalette[7], true) ;
+		DP.DrawRoundRect(WindowPos, "BotLeft", new Size(8 * L, 10 * H), 1, ColorPalette[18], ColorPalette[7], true) ;
 		for (int map = MapStart[Continent] ; map <= MapEnd[Continent] ; map += 1)
 		{
-			L = (int)(0.05*WinDim[0]) ;
-			H = (int)(0.05*WinDim[1]) ;
+			L = (int)(0.05*screenSize.x) ;
+			H = (int)(0.05*screenSize.y) ;
 			if (map == 25)
 			{
 				H = 2*H + Sy ;
@@ -1336,8 +1339,8 @@ public class DrawFunctions
 		
 		for (int map = MapStart[Continent] ; map <= MapEnd[Continent] ; map += 1)
 		{
-			L = (int)(0.05*WinDim[0]) ;
-			H = (int)(0.05*WinDim[1]) ;
+			L = (int)(0.05*screenSize.x) ;
+			H = (int)(0.05*screenSize.y) ;
 			if (map == 25)
 			{
 				H = 2*H + Sy ;
@@ -1373,38 +1376,38 @@ public class DrawFunctions
 				//player.DrawPlayer(new int[] {MapPos.x + (int)(player.getPos()[0]/(float)(WinDim[0])*L), MapPos.y - (int)((WinDim[1] - player.getPos()[1])/(float)(WinDim[1])*H)}, new float[] {(float)0.2, (float)0.2}, player.getDir(), false, DP) ;
 			}
 		}
-	}
+	}*/
 	public void DrawPetWindow(Pet pet, Point Pos)
 	{
 		Font Namefont = new Font("SansSerif", Font.BOLD, 16) ;
 		Font font = new Font("SansSerif", Font.BOLD, 14) ;
-		int W = (int)(0.35*WinDim[0]), H = (int)(0.5*WinDim[1]) ;
-		int sy = (int)(0.07*H) ;
+		Size size = new Size((int)(0.35*screenSize.x), (int)(0.5*screenSize.y)) ;
+		int sy = (int)(0.07 * size.y) ;
 		float angle = OverallAngle ;
 		int TextCat = AllTextCat[6] ;
 		Color TextColor = ColorPalette[5] ;
-		DP.DrawRoundRect(Pos, "BotLeft", W, H, 1, pet.getColor(), ColorPalette[7], true) ;
-		DrawPet(new Point(Pos.x + (int)(0.5*W), Pos.y - (int)(0.7*H)), new float[] {(float)2, (float)2}, pet.getPersonalAtt().getimage()[0]) ;
-		DP.DrawText(new Point(Pos.x + (int)(0.5*W), Pos.y - (int)(0.92*H)), "Center", angle, pet.getName(), Namefont, TextColor) ;				// Name	
-		DP.DrawText(new Point(Pos.x + (int)(0.43*W), Pos.y - (int)(0.85*H)), "BotLeft", angle, AllText[TextCat][1] + ": " + pet.getLevel(), font, ColorPalette[6]) ;	// Level
-		DP.DrawText(new Point(Pos.x + (int)(0.025*W), Pos.y - (int)(0.83*H)), "BotLeft", angle, AllText[TextCat][2] + ": " + Utg.Round(pet.getLife()[0], 1), font, ColorPalette[6]) ;	// Life		
-		DP.DrawText(new Point(Pos.x + (int)(0.025*W), Pos.y - (int)(0.78*H)), "BotLeft", angle, AllText[TextCat][3] + ": " + Utg.Round(pet.getMp()[0], 1), font, ColorPalette[5]) ;	// MP
-		DP.DrawText(new Point(Pos.x + (int)(0.025*W), Pos.y - 13*sy/2), "BotLeft", angle, AllText[TextCat][4] + ": " + Utg.Round(pet.getPhyAtk()[0], 1) + " + " + Utg.Round(pet.getPhyAtk()[1], 1) + " + " + Utg.Round(pet.getPhyAtk()[2], 1), font, TextColor) ;		
-		DP.DrawText(new Point(Pos.x + (int)(0.025*W), Pos.y - 11*sy/2), "BotLeft", angle, AllText[TextCat][5] + ": " + Utg.Round(pet.getMagAtk()[0], 1) + " + " + Utg.Round(pet.getMagAtk()[1], 1) + " + " + Utg.Round(pet.getMagAtk()[2], 1), font, TextColor) ;		
-		DP.DrawText(new Point(Pos.x + (int)(0.025*W), Pos.y - 9*sy/2), "BotLeft", angle, AllText[TextCat][6] + ": " + Utg.Round(pet.getPhyDef()[0], 1) + " + " + Utg.Round(pet.getPhyDef()[1], 1) + " + " + Utg.Round(pet.getPhyDef()[2], 1), font, TextColor) ;		
-		DP.DrawText(new Point(Pos.x + (int)(0.025*W), Pos.y - 7*sy/2), "BotLeft", angle, AllText[TextCat][7] + ": " + Utg.Round(pet.getMagDef()[0], 1) + " + " + Utg.Round(pet.getMagDef()[1], 1) + " + " + Utg.Round(pet.getMagDef()[2], 1), font, TextColor) ;		
-		DP.DrawText(new Point(Pos.x + (int)(0.025*W), Pos.y - 5*sy/2), "BotLeft", angle, AllText[TextCat][8] + ": " + Utg.Round(pet.getDex()[0], 1) + " + " + Utg.Round(pet.getDex()[1], 1) + " + " + Utg.Round(pet.getDex()[2], 1), font, TextColor) ;		
-		DP.DrawText(new Point(Pos.x + (int)(0.025*W), Pos.y - 3*sy/2), "BotLeft", angle, AllText[TextCat][9] + ": " + Utg.Round(pet.getAgi()[0], 1) + " + " + Utg.Round(pet.getAgi()[1], 1) + " + " + Utg.Round(pet.getAgi()[2], 1), font, TextColor) ;		
-		DP.DrawText(new Point(Pos.x + (int)(0.025*W), Pos.y - sy/2), "BotLeft", angle, AllText[TextCat][10] + ": " + (int)(100*pet.getCrit()[0]) + "% + " + (int)(100*pet.getCrit()[1]) + "%", font, ColorPalette[6]) ;		
-		DP.DrawImage(ElementImages[Uts.ElementID(pet.getElem()[1])], new Point(Pos.x + (int)(0.5*W), Pos.y - (int)(0.52*H)), angle, new float[] {(float) 0.5, (float) 0.5}, new boolean[] {false, false}, "Center", 1) ;
+		DP.DrawRoundRect(Pos, "BotLeft", size, 1, pet.getColor(), ColorPalette[7], true) ;
+		DrawPet(new Point(Pos.x + (int)(0.5 * size.x), Pos.y - (int)(0.7 * size.y)), new float[] {(float)2, (float)2}, pet.getPersonalAtt().getimage()[0]) ;
+		DP.DrawText(new Point(Pos.x + (int)(0.5 * size.x), Pos.y - (int)(0.92 * size.y)), "Center", angle, pet.getName(), Namefont, TextColor) ;				// Name	
+		DP.DrawText(new Point(Pos.x + (int)(0.43 * size.x), Pos.y - (int)(0.85 * size.y)), "BotLeft", angle, AllText[TextCat][1] + ": " + pet.getLevel(), font, ColorPalette[6]) ;	// Level
+		DP.DrawText(new Point(Pos.x + (int)(0.025 * size.x), Pos.y - (int)(0.83 * size.y)), "BotLeft", angle, AllText[TextCat][2] + ": " + Utg.Round(pet.getLife()[0], 1), font, ColorPalette[6]) ;	// Life		
+		DP.DrawText(new Point(Pos.x + (int)(0.025 * size.x), Pos.y - (int)(0.78 * size.y)), "BotLeft", angle, AllText[TextCat][3] + ": " + Utg.Round(pet.getMp()[0], 1), font, ColorPalette[5]) ;	// MP
+		DP.DrawText(new Point(Pos.x + (int)(0.025 * size.x), Pos.y - 13*sy/2), "BotLeft", angle, AllText[TextCat][4] + ": " + Utg.Round(pet.getPhyAtk()[0], 1) + " + " + Utg.Round(pet.getPhyAtk()[1], 1) + " + " + Utg.Round(pet.getPhyAtk()[2], 1), font, TextColor) ;		
+		DP.DrawText(new Point(Pos.x + (int)(0.025 * size.x), Pos.y - 11*sy/2), "BotLeft", angle, AllText[TextCat][5] + ": " + Utg.Round(pet.getMagAtk()[0], 1) + " + " + Utg.Round(pet.getMagAtk()[1], 1) + " + " + Utg.Round(pet.getMagAtk()[2], 1), font, TextColor) ;		
+		DP.DrawText(new Point(Pos.x + (int)(0.025 * size.x), Pos.y - 9*sy/2), "BotLeft", angle, AllText[TextCat][6] + ": " + Utg.Round(pet.getPhyDef()[0], 1) + " + " + Utg.Round(pet.getPhyDef()[1], 1) + " + " + Utg.Round(pet.getPhyDef()[2], 1), font, TextColor) ;		
+		DP.DrawText(new Point(Pos.x + (int)(0.025 * size.x), Pos.y - 7*sy/2), "BotLeft", angle, AllText[TextCat][7] + ": " + Utg.Round(pet.getMagDef()[0], 1) + " + " + Utg.Round(pet.getMagDef()[1], 1) + " + " + Utg.Round(pet.getMagDef()[2], 1), font, TextColor) ;		
+		DP.DrawText(new Point(Pos.x + (int)(0.025 * size.x), Pos.y - 5*sy/2), "BotLeft", angle, AllText[TextCat][8] + ": " + Utg.Round(pet.getDex()[0], 1) + " + " + Utg.Round(pet.getDex()[1], 1) + " + " + Utg.Round(pet.getDex()[2], 1), font, TextColor) ;		
+		DP.DrawText(new Point(Pos.x + (int)(0.025 * size.x), Pos.y - 3*sy/2), "BotLeft", angle, AllText[TextCat][9] + ": " + Utg.Round(pet.getAgi()[0], 1) + " + " + Utg.Round(pet.getAgi()[1], 1) + " + " + Utg.Round(pet.getAgi()[2], 1), font, TextColor) ;		
+		DP.DrawText(new Point(Pos.x + (int)(0.025 * size.x), Pos.y - sy/2), "BotLeft", angle, AllText[TextCat][10] + ": " + (int)(100*pet.getCrit()[0]) + "% + " + (int)(100*pet.getCrit()[1]) + "%", font, ColorPalette[6]) ;		
+		DP.DrawImage(ElementImages[Uts.ElementID(pet.getElem()[1])], new Point(Pos.x + (int)(0.5 * size.x), Pos.y - (int)(0.52 * size.y)), angle, new float[] {(float) 0.5, (float) 0.5}, new boolean[] {false, false}, "Center", 1) ;
 	}
-	public void DrawOptionsWindow(int SelectedItem, int SelectedMenu, String[] ActionKeys, Settings settings)
+	/*public void DrawOptionsWindow(int SelectedItem, int SelectedMenu, String[] ActionKeys, Settings settings)
 	{
 		int TextCat = AllTextCat[36] ;
-		int L = (int)(0.5*WinDim[0]), H = (int)Math.max(0.34*WinDim[1], ActionKeys.length*(Utg.TextH(L / 20 + 2) + 4) + 8) ;
+		int L = (int)(0.5*screenSize.x), H = (int)Math.max(0.34*screenSize.y, ActionKeys.length*(Utg.TextH(L / 20 + 2) + 4) + 8) ;
 		Font font = new Font("SansSerif", Font.BOLD, L / 20 + 2) ;
 		Color[] TextColor = new Color[3 + ActionKeys.length] ;
-		Point Pos = new Point((int)(0.4*WinDim[0]), (int)(0.4*WinDim[1])) ;
+		Point Pos = new Point((int)(0.4*screenSize.x), (int)(0.4*screenSize.y)) ;
 		Point TextPos = new Point(Pos.x + 5, Pos.y + 5) ;
 		int TextH = Utg.TextH(font.getSize()) ;
 		int Sx = 7*L/8, Sy = TextH + 4 ;
@@ -1417,9 +1420,9 @@ public class DrawFunctions
 			{
 				DP.DrawText(new Point(TextPos.x, TextPos.y + (i + 1)*Sy), "BotLeft", OverallAngle, AllText[TextCat][i + 1], font, TextColor[i]) ;
 			}
-			settings.displayValue(settings.getMusicIsOn(), new Point(TextPos.x + Sx, TextPos.y + Sy), OverallAngle, font, ColorPalette, DP) ;
-			settings.displayValue(settings.getSoundEffectsAreOn(), new Point(TextPos.x + Sx, TextPos.y + 2 * Sy), OverallAngle, font, ColorPalette, DP) ;
-			settings.displayValue(settings.getShowPlayerRange(), new Point(TextPos.x + Sx, TextPos.y + 3 * Sy), OverallAngle, font, ColorPalette, DP) ;
+			settings.displayValue(settings.getMusicIsOn(), new Point(TextPos.x + Sx, TextPos.y + Sy), OverallAngle, font, DP) ;
+			settings.displayValue(settings.getSoundEffectsAreOn(), new Point(TextPos.x + Sx, TextPos.y + 2 * Sy), OverallAngle, font, DP) ;
+			settings.displayValue(settings.getShowPlayerRange(), new Point(TextPos.x + Sx, TextPos.y + 3 * Sy), OverallAngle, font, DP) ;
 			DP.DrawText(new Point(TextPos.x + Sx, TextPos.y + (3 + 1)*Sy), "BotCenter", OverallAngle, String.valueOf(settings.getAttDisplay()), font, TextColor[3]) ;
 			DP.DrawText(new Point(TextPos.x + Sx, TextPos.y + (4 + 1)*Sy), "BotCenter", OverallAngle, String.valueOf(settings.getDamageAnimation()), font, TextColor[4]) ;				
 		}
@@ -1433,14 +1436,14 @@ public class DrawFunctions
 		}
 		else if (SelectedMenu == 2)
 		{
-			DrawMenuWindow(Pos, L, (int)Math.max(0.34*WinDim[1], ActionKeys.length*(Utg.TextH(L / 20 + 2) + 4) + 8), null, 0, ColorPalette[8], ColorPalette[7]) ;
+			DrawMenuWindow(Pos, L, (int)Math.max(0.34*screenSize.y, ActionKeys.length*(Utg.TextH(L / 20 + 2) + 4) + 8), null, 0, ColorPalette[8], ColorPalette[7]) ;
 			for (int i = 0 ; i <= ActionKeys.length - 1 ; i += 1)
 			{
 				DP.DrawText(new Point(TextPos.x, TextPos.y + (i + 1)*Sy), "BotLeft", OverallAngle, AllText[TextCat][i + 7], font, TextColor[i]) ;
 				DP.DrawText(new Point(TextPos.x + Sx, TextPos.y + (i + 1)*Sy - TextH/2), "Center", OverallAngle, ActionKeys[i], font, TextColor[i]) ;			
 			}
 		}
-	}
+	}*/
 	public void DrawQuestRequirementsList(CreatureTypes[] creatureTypes, Creatures[] creatures, Items[] items, Quests quest, NPCs npc, int[] SpeechPos, boolean QuestHasCreatures, boolean QuestHasItems, Image SpeakingBubbleImage)
 	{
 		Font font = new Font("SansSerif", Font.BOLD, 14) ;
@@ -1450,19 +1453,19 @@ public class DrawFunctions
 		int[] ReqItems = quest.getReqItems() ;
 		if (QuestHasCreatures)
 		{
-			int L = (int)(0.23*WinDim[0]), H = (int) (0.2*WinDim[1]) ;
-			int sy = H / 5 ;
-			Point WindowPos = new Point((int) (0.4*WinDim[0]), (int) (0.6*WinDim[1])) ;
-			DrawMenuWindow(WindowPos, L, H, null, 0, MenuColor[0], ColorPalette[7]) ;
-			DP.DrawText(new Point((int) (WindowPos.x + 0.5*L), (int) (WindowPos.y - H + 1.1*Utg.TextH(font.getSize()))), "Center", OverallAngle, AllText[ExpTextCat][3], font, ColorPalette[0]) ;
+			Size size = new Size((int)(0.23*screenSize.x), (int) (0.2*screenSize.y)) ;
+			int sy = size.y / 5 ;
+			Point WindowPos = new Point((int) (0.4*screenSize.x), (int) (0.6*screenSize.y)) ;
+			DrawMenuWindow(WindowPos, size, null, 0, MenuColor[0], ColorPalette[7]) ;
+			DP.DrawText(new Point((int) (WindowPos.x + 0.5 * size.x), (int) (WindowPos.y - size.y + 1.1*Utg.TextH(font.getSize()))), "Center", OverallAngle, AllText[ExpTextCat][3], font, ColorPalette[0]) ;
 			for (int i = 0 ; i <= ReqCreatures.length - 1 ; i += 1)
 			{
 				if (-1 < ReqCreatures[i])
 				{
 					int CreatureType = ReqCreatures[i] ;
 					String CreatureName = creatureTypes[CreatureType].getName() ;
-					Point Pos1 = new Point((int) (WindowPos.x + 0.05*L), (int) (WindowPos.y - H + 1.1*Utg.TextH(font.getSize()) + (i + 1.5)*sy)) ;
-					Point Pos2 = new Point((int) (WindowPos.x + Utg.TextL("Creature 299: ", font, G)) + creatureTypes[CreatureType].getSize()[0]/2, (int) (WindowPos.y - H + 1.1*Utg.TextH(font.getSize()) + (i + 1.5)*sy)) ;
+					Point Pos1 = new Point((int) (WindowPos.x + 0.05 * size.x), (int) (WindowPos.y - size.y + 1.1*Utg.TextH(font.getSize()) + (i + 1.5)*sy)) ;
+					Point Pos2 = new Point((int) (WindowPos.x + Utg.TextL("Creature 299: ", font, G)) + creatureTypes[CreatureType].getSize()[0]/2, (int) (WindowPos.y - size.y + 1.1*Utg.TextH(font.getSize()) + (i + 1.5)*sy)) ;
 					DP.DrawText(Pos1, "BotLeft", OverallAngle, CreatureName + ":", font, ColorPalette[0]) ;
 					DrawCreature(Pos2, new int[] {creatureTypes[CreatureType].getSize()[0]/2, creatureTypes[CreatureType].getSize()[1]/2}, creatureTypes[CreatureType].getimage(), creatureTypes[CreatureType].getColor()) ;
 				}
@@ -1470,17 +1473,17 @@ public class DrawFunctions
 		}
 		if (QuestHasItems)
 		{
-			int L = (int) (0.16*WinDim[0]), H = (int) (1.6*Utg.TextH(font.getSize())*(ReqItems.length + 1)) ;
-			int sy = H / (ReqItems.length + 1) ;
-			Point WindowPos = new Point((int) (0.2*WinDim[0]), (int) (0.6*WinDim[1])) ;
-			DrawMenuWindow(WindowPos, L, H, null, 0, MenuColor[0], ColorPalette[7]) ;
-			DP.DrawText(new Point((int) (WindowPos.x + 0.05*L), (int) (WindowPos.y - H + 1.1*Utg.TextH(font.getSize()))), "BotLeft", OverallAngle, AllText[ItemsTextCat][3], font, npc.getColor()) ;
+			Size size = new Size((int) (0.16*screenSize.x), (int) (1.6*Utg.TextH(font.getSize())*(ReqItems.length + 1))) ;
+			int sy = size.y / (ReqItems.length + 1) ;
+			Point WindowPos = new Point((int) (0.2*screenSize.x), (int) (0.6*screenSize.y)) ;
+			DrawMenuWindow(WindowPos, size, null, 0, MenuColor[0], ColorPalette[7]) ;
+			DP.DrawText(new Point((int) (WindowPos.x + 0.05 * size.x), (int) (WindowPos.y - size.y + 1.1*Utg.TextH(font.getSize()))), "BotLeft", OverallAngle, AllText[ItemsTextCat][3], font, npc.getColor()) ;
 			for (int i = 0 ; i <= ReqItems.length - 1 ; i += 1)
 			{
 				if (-1 < ReqItems[i])
 				{
 					String ItemName = items[ReqItems[i]].getName() ;
-					Point Pos1 = new Point((int) (WindowPos.x + 0.05*L), (int) (WindowPos.y - H + 1.1*Utg.TextH(font.getSize()) + 0.15*H + i*sy)) ;
+					Point Pos1 = new Point((int) (WindowPos.x + 0.05 * size.x), (int) (WindowPos.y - size.y + 1.1*Utg.TextH(font.getSize()) + 0.15 * size.y + i*sy)) ;
 					DP.DrawText(Pos1, "BotLeft", OverallAngle, ItemName, font, npc.getColor()) ;
 				}
 			}
@@ -1494,7 +1497,7 @@ public class DrawFunctions
 		int[] FirstQuestIDPerContinent = new int[] {0, 45, 49, 53, 61, 64, 64} ;
 		int MaxNumberOfQuestsPerWindow = 5 ;
 		int NumberOfQuestsInWindow = Math.min(MaxNumberOfQuestsPerWindow, ActiveQuests.length - MaxNumberOfQuestsPerWindow*window) ;
-		Point Pos = new Point((int)(0.5*WinDim[0]), (int)(0.55*WinDim[1])) ;
+		Point Pos = new Point((int)(0.5*screenSize.x), (int)(0.55*screenSize.y)) ;
 		int L = QuestImage.getWidth(null), H = QuestImage.getHeight(null) ;
 		int Sx = L/10, Sy = H/35 ;
 		Color TextColor = ColorPalette[23] ;
@@ -1517,8 +1520,8 @@ public class DrawFunctions
 			if (-1 < QuestID & QuestID <= FirstQuestIDPerContinent[Continent + 1] - 1)
 			{
 				Point RectPos = new Point(TextPos.x + 2*Sx, (int) (TextPos.y + 3.5*Sy + q*5*Sy - Utg.TextH(font.getSize())/2)) ;
-				DP.DrawRoundRect(RectPos, "Center", 8*Sx, (int)(4.5*Sy), 2, null, null, true) ;
-				DP.DrawRoundRect(RectPos, "Center", 3*Sx, (int)(4.5*Sy), 2, null, null, true) ;
+				DP.DrawRoundRect(RectPos, "Center", new Size(8*Sx, (int)(4.5*Sy)), 2, null, null, true) ;
+				DP.DrawRoundRect(RectPos, "Center", new Size(3*Sx, (int)(4.5*Sy)), 2, null, null, true) ;
 				DP.DrawText(new Point((int) (TextPos.x - 1*Sx), (int) (TextPos.y + 3.2*Sy + q*5*Sy)), "Center", OverallAngle, "Quest " + QuestID + ": ", font, TextColor) ;	
 				for (int j = 0 ; j <= quest[QuestID].getReqCreatures().length - 1 ; j += 1)
 				{
@@ -1554,12 +1557,12 @@ public class DrawFunctions
 		}
 		DrawWindowArrows(new Point(Pos.x, Pos.y + (int)(0.42*H)), L, 0, window, windowLimit[Continent]) ;
 	}
-	public void DrawHintsMenu(Point MousePos, int SelectedWindow, int NumberOfHints, Color ClassColor)
+	/*public void DrawHintsMenu(Point MousePos, int SelectedWindow, int NumberOfHints, Color ClassColor)
 	{
 		int TextCat = AllTextCat[37] ;
 		Font font = new Font("SansSerif", Font.BOLD, 12) ;
-		Point Pos = new Point((int) (0.19 * WinDim[0]), (int) (0.5 * WinDim[1])) ;
-		int L = (int)(0.62 * WinDim[0]), H = (int) (0.2 * WinDim[1]) ;
+		Point Pos = new Point((int) (0.19 * screenSize.x), (int) (0.5 * screenSize.y)) ;
+		int L = (int)(0.62 * screenSize.x), H = (int) (0.2 * screenSize.y) ;
 		int sy = Utg.TextH(font.getSize()) + 2 ;
 		int MaxTextL = L ;
 		Point TextPos = new Point(Pos.x + 5, Pos.y - H + Utg.TextH(font.getSize())) ;
@@ -1571,10 +1574,10 @@ public class DrawFunctions
 		DP.DrawText(new Point(Pos.x + L/2, Pos.y - 3 * Utg.TextH(font.getSize())), "Center", OverallAngle, AllText[TextCat][4], font, TextColor) ;
 		DP.DrawFitText(new Point(TextPos.x, TextPos.y + 2 * Utg.TextH(font.getSize())), sy, "BotLeft", AllText[TextCat][SelectedWindow + 5], font, MaxTextL, TextColor) ;
 		DrawWindowArrows(new Point(Pos.x + L/2, Pos.y - 3 * Utg.TextH(font.getSize())/2), L, 0, SelectedWindow, NumberOfHints - 1) ;
-	}
-	public void DrawBestiary(CreatureTypes[] creatureTypes, int[] CreaturesDiscovered, Items[] items, Point MousePos, int window)
+	}*/
+	/*public void DrawBestiary(CreatureTypes[] creatureTypes, int[] CreaturesDiscovered, Items[] items, Point MousePos, int window)
 	{
-		Point Pos = new Point((int)(0.05*WinDim[0]), (int)(0.95*WinDim[1])) ;
+		Point Pos = new Point((int)(0.05*screenSize.x), (int)(0.95*screenSize.y)) ;
 		int[] NumCreatureWindows = new int[] {6, 6} ;
 		int NumberOfCreaturesPerWindow = NumCreatureWindows[0]*NumCreatureWindows[1] ;
 		int NumberOfCreaturesInWindow = 0 ;
@@ -1582,7 +1585,7 @@ public class DrawFunctions
 		{
 			NumberOfCreaturesInWindow = Math.min(NumberOfCreaturesPerWindow, CreaturesDiscovered.length - NumberOfCreaturesPerWindow*window) ;
 		}
-		int L = (int)(0.6*WinDim[0]), H = (int)(0.6*WinDim[1]) ;
+		int L = (int)(0.6*screenSize.x), H = (int)(0.6*screenSize.y) ;
 		float offset = 5 ;	// Offset from the edges
 		float Sx = offset, Sy = offset ;
 		int l = (int) ((L - 2*offset - (NumCreatureWindows[0] - 1)*Sx)/NumCreatureWindows[0]), h = (int) (H - 2*offset - (NumCreatureWindows[1] - 1)*Sy)/NumCreatureWindows[1] ;
@@ -1614,7 +1617,7 @@ public class DrawFunctions
 				DrawCreatureInfoWindow(new Point(Pos.x + L, Pos.y), creatureTypes[SelectedCreature], items) ;
 			}
 		}
-	}
+	}*/
 	
 	
 	/* NPC windows */
@@ -1622,19 +1625,19 @@ public class DrawFunctions
 	{
 		Font font = new Font("SansSerif", Font.BOLD, 14) ;
 		int NmaxItemsPerWindow = 10 ;
-		Point Pos = new Point((int) (0.1 * WinDim[0]), (int) (0.88 * WinDim[1])) ;
-		int L = (int) (0.35 * WinDim[0]), H = (int) (0.45 * WinDim[1]) ;
-		int sy = (int) (0.1 * H) ;
+		Point Pos = new Point((int) (0.1 * screenSize.x), (int) (0.88 * screenSize.y)) ;
+		Size size = new Size((int) (0.35 * screenSize.x), (int) (0.45 * screenSize.y)) ;
+		int sy = (int) (0.1 * size.y) ;
 		Color TextColor[] = new Color[Products.length] ;
 		Arrays.fill(TextColor, ColorPalette[4]) ;
-		DrawMenuWindow(Pos, L, H, null, 0, ColorPalette[7], MenuColor[0]) ;
+		DrawMenuWindow(Pos, size, null, 0, ColorPalette[7], MenuColor[0]) ;
 		int NitensOnWindow = Math.min(Products.length - SelectedWindow * NmaxItemsPerWindow, NmaxItemsPerWindow) ;
 		for (int i = 0 ; i <= NitensOnWindow - 1 ; i += 1)
 		{
 			int ItemID = i + SelectedWindow * NmaxItemsPerWindow ;
 			if (0 < Products[ItemID].length)
 			{
-				Point TextPos = new Point((int) (Pos.x + 0.03 * L), (int) (Pos.y - 0.97 * H + Utg.TextH(font.getSize())) + i * sy) ;
+				Point TextPos = new Point((int) (Pos.x + 0.03 * size.x), (int) (Pos.y - 0.97 * size.y + Utg.TextH(font.getSize())) + i * sy) ;
 				String ProductName = items[Products[ItemID][0]].getName() ;
 				String ProductAmount = String.valueOf(ProductAmounts[ItemID][0]) ;
 				if (Utg.ArrayContains(AvailableProducts, Products[ItemID][0]))
@@ -1643,21 +1646,21 @@ public class DrawFunctions
 				}
 				TextColor[SelectedItem] = ColorPalette[3] ;
 				DP.DrawText(TextPos, "BotLeft", OverallAngle, ProductName, font, TextColor[ItemID]) ;
-				DP.DrawText(new Point((int) (TextPos.x + 0.9 * L), TextPos.y), "TopRight", OverallAngle, ProductAmount, font, TextColor[ItemID]) ;
+				DP.DrawText(new Point((int) (TextPos.x + 0.9 * size.x), TextPos.y), "TopRight", OverallAngle, ProductAmount, font, TextColor[ItemID]) ;
 			}
 		}
-		DrawWindowArrows(Pos, L, 0, SelectedWindow, Math.max(0, (Products.length - 1) / NmaxItemsPerWindow)) ;
+		DrawWindowArrows(Pos, size.x, 0, SelectedWindow, Math.max(0, (Products.length - 1) / NmaxItemsPerWindow)) ;
 	}
-	public void DrawShopping(Point WindowPos, int WindowL, int WindowH, int SelectedItem, int SelectedWindow, Point[] textpos, String mode, Items[] items, int[] ItemsOnSale, Point MousePos, Image CoinIcon)
+	public void DrawShopping(Point WindowPos, Size size, int SelectedItem, int SelectedWindow, Point[] textpos, String mode, Items[] items, int[] ItemsOnSale, Point MousePos, Image CoinIcon)
 	{
 		int ItemsPerWindow = 10 ;
 		int offset = 6 ;
 		Font font = new Font("SansSerif", Font.BOLD, CoinIcon.getHeight(null) - 2) ;
-		int Sy = (int) Utg.spacing(WindowH, ItemsPerWindow, font.getSize(), offset) ;
+		int Sy = (int) Utg.spacing(size.y, ItemsPerWindow, font.getSize(), offset) ;
 		Color TextColor[] = new Color[ItemsOnSale.length] ;
 		Arrays.fill(TextColor, ColorPalette[1]) ;
 		TextColor[SelectedItem] = ColorPalette[3] ;
-		DrawMenuWindow(WindowPos, WindowL, WindowH, null, 0, ColorPalette[0], ColorPalette[0]) ;
+		DrawMenuWindow(WindowPos, size, null, 0, ColorPalette[0], ColorPalette[0]) ;
 		for (int i = 0 ; i <= Math.min(ItemsOnSale.length - ItemsPerWindow * SelectedWindow, ItemsPerWindow) - 1 ; i += 1)
 		{
 			int ItemID = i + ItemsPerWindow * SelectedWindow ;
@@ -1668,7 +1671,7 @@ public class DrawFunctions
 			}
 			if (i + ItemsPerWindow * SelectedWindow == SelectedItem)
 			{
-				DP.DrawRect(new Point(textpos[i].x - 2, textpos[i].y), "CenterLeft", TextL, font.getSize(), StdThickness, ColorPalette[18], ColorPalette[9], false) ;			
+				DP.DrawRect(new Point(textpos[i].x - 2, textpos[i].y), "CenterLeft", new Size(TextL, font.getSize()), StdThickness, ColorPalette[18], ColorPalette[9], false) ;			
 			}
 			DP.DrawText(textpos[i], "CenterLeft", OverallAngle, items[ItemsOnSale[ItemID]].getName(), font, TextColor[i]) ;
 			String ItemPrice = null ;
@@ -1680,26 +1683,26 @@ public class DrawFunctions
 			{
 				ItemPrice = String.valueOf(items[ItemsOnSale[ItemID]].getPrice()) ;
 			}
-			DP.DrawText(new Point((int) (textpos[i].x + WindowL - 13 - CoinIcon.getWidth(null)), textpos[i].y), "CenterRight", OverallAngle, ItemPrice, font, ColorPalette[18]) ;		
-			DP.DrawImage(CoinIcon, new Point((int) (textpos[i].x + WindowL - 10), textpos[i].y), "CenterRight") ;
+			DP.DrawText(new Point((int) (textpos[i].x + size.x - 13 - CoinIcon.getWidth(null)), textpos[i].y), "CenterRight", OverallAngle, ItemPrice, font, ColorPalette[18]) ;		
+			DP.DrawImage(CoinIcon, new Point((int) (textpos[i].x + size.x - 10), textpos[i].y), "CenterRight") ;
 		}	
 		//DP.DrawLine(new int[] {(int) (Pos.x + Sx), (int) (Pos.x + Sx)}, new int[] {(int) (Pos.y), (int) (Pos.y - H)}, 2, ColorPalette[9]) ;		
-		DrawWindowArrows(new Point((int) (WindowPos.x + 0.85 * WindowL), WindowPos.y), WindowL, 0, SelectedWindow, Math.max(0, (ItemsOnSale.length - 1) / ItemsPerWindow)) ;
+		DrawWindowArrows(new Point((int) (WindowPos.x + 0.85 * size.x), WindowPos.y), size.x, 0, SelectedWindow, Math.max(0, (ItemsOnSale.length - 1) / ItemsPerWindow)) ;
 	}
 	public void DrawElementalNPCScreen(int SelectedItem, Items[] items, int[] Ingredients)
 	{
 		Font font = new Font("SansSerif", Font.BOLD, 20) ;
-		Point Pos = new Point((int)(0.1*WinDim[0]), (int)(0.88*WinDim[1])) ;
-		int L = (int)(0.5*WinDim[0]), H = (int)(0.5*WinDim[1]) ;
-		Point TextPos = new Point((int)(Pos.x + 0.02*WinDim[0]), (int)(Pos.y - H + font.getSize())) ;
-		int sy = (int)(0.05*WinDim[1]) ;
+		Point Pos = new Point((int)(0.1*screenSize.x), (int)(0.88*screenSize.y)) ;
+		Size size = new Size((int)(0.5*screenSize.x), (int)(0.5*screenSize.y)) ;
+		Point TextPos = new Point((int)(Pos.x + 0.02*screenSize.x), (int)(Pos.y - size.y + font.getSize())) ;
+		int sy = (int)(0.05*screenSize.y) ;
 		Color TextColor[] = new Color[Ingredients.length] ;
 		for (int i = 0 ; i <= Ingredients.length - 1 ; ++i)
 		{
 			TextColor[i] = ColorPalette[6] ;
 		}
 		TextColor[SelectedItem] = ColorPalette[3] ;
-		DrawMenuWindow(Pos, L, H, null, 0, ColorPalette[20], ColorPalette[20]) ;
+		DrawMenuWindow(Pos, size, null, 0, ColorPalette[20], ColorPalette[20]) ;
 		for (int i = 0 ; i <= Ingredients.length - 1 ; ++i)
 		{
 			DP.DrawText(new Point(TextPos.x, TextPos.y + i*sy), "BotLeft", OverallAngle, items[Ingredients[i]].getName(), font, TextColor[i]) ;	
@@ -1710,10 +1713,10 @@ public class DrawFunctions
 		int ClassesCat = AllTextCat[4], ProClassesCat = AllTextCat[5] ;
 		Font font = new Font("SansSerif", Font.BOLD, 10) ;
 		Font Largefont = new Font("SansSerif", Font.BOLD, 12) ;
-		Point Pos = new Point((int)(0.1*WinDim[0]), (int)(0.9*WinDim[1])) ;
-		int L = (int)(0.7*WinDim[0]), H = (int)(0.66*WinDim[1]) ;
-		int TabL = L/20, TabH = H/3 ;
-		int l = (int)(0.2*WinDim[0]), h = (int)(0.1*WinDim[1]) ;
+		Point Pos = new Point((int)(0.1*screenSize.x), (int)(0.9*screenSize.y)) ;
+		Size size = new Size((int)(0.7*screenSize.x), (int)(0.66*screenSize.y)) ;
+		int TabL = size.x/20, TabH = size.y/3 ;
+		int l = (int)(0.2*screenSize.x), h = (int)(0.1*screenSize.y) ;
 		int Sx = l/10, Sy = h/10 ;
 		Color[] SpellsColors = null, TabColor = new Color[] {ColorPalette[7], ColorPalette[7]}, TabTextColor = new Color[] {ColorPalette[5], ColorPalette[5]} ;
 		int tab = 0 ;
@@ -1739,14 +1742,14 @@ public class DrawFunctions
 		}
 		
 		// Main window
-		DP.DrawRoundRect(Pos, "BotLeft", L, H, 1, MenuColor[0], MenuColor[0], true) ;
+		DP.DrawRoundRect(Pos, "BotLeft", size, 1, MenuColor[0], MenuColor[0], true) ;
 		TabColor[tab] = MenuColor[0] ;
 		TabTextColor[tab] = ColorPalette[3] ;
-		DP.DrawRoundRect(new Point(Pos.x, Pos.y - 2*TabH), "BotRight", TabL, TabH, 1, TabColor[0], ColorPalette[8], true) ;
+		DP.DrawRoundRect(new Point(Pos.x, Pos.y - 2*TabH), "BotRight", new Size(TabL, TabH), 1, TabColor[0], ColorPalette[8], true) ;
 		DP.DrawText(new Point(Pos.x + TabL/2 + Utg.TextH(font.getSize())/2, Pos.y - 2*TabH - TabH/2), "Center", 90, AllText[ClassesCat][player.getJob() + 1], Largefont, TabTextColor[0]) ;
 		if (0 < player.getProJob())
 		{
-			DP.DrawRoundRect(new Point(Pos.x, Pos.y - TabH), "BotRight", TabL, TabH, 1, TabColor[1], ColorPalette[8], true) ;	
+			DP.DrawRoundRect(new Point(Pos.x, Pos.y - TabH), "BotRight", new Size(TabL, TabH), 1, TabColor[1], ColorPalette[8], true) ;	
 			DP.DrawText(new Point(Pos.x + TabL/2 + Utg.TextH(font.getSize())/2, Pos.y - 3*TabH/2), "Center", 90, AllText[ProClassesCat][player.getProJob() + 2*player.getJob()], Largefont, TabTextColor[1]) ;
 		}
 		
@@ -1775,15 +1778,15 @@ public class DrawFunctions
 			}
 		}
 		SpellsColors[SelectedSpell - tab*NumberOfSpells] = ColorPalette[3] ;
-		DrawOrganogram(Sequence, new Point(Pos.x, Pos.y - H), Sx, Sy, l, h, SpellNames, SpellLevels, SpellsTreeIcon, font, SpellsColors, MousePos) ;
+		DrawOrganogram(Sequence, new Point(Pos.x, Pos.y - size.y), Sx, Sy, l, h, SpellNames, SpellLevels, SpellsTreeIcon, font, SpellsColors, MousePos) ;
 		
 		// Skill info
-		int TextmaxL = L / 5, sx = 10, sy = Utg.TextH(font.getSize()) + 2 ;
+		int TextmaxL = size.x / 5, sx = 10, sy = Utg.TextH(font.getSize()) + 2 ;
 		String Description = spells[SelectedSpell].getInfo()[0], Effect = spells[SelectedSpell].getInfo()[1] ;
-		DP.DrawRoundRect(new Point(Pos.x, Pos.y - H), "BotLeft", L, H/4, 1, ColorPalette[7], ColorPalette[7], true) ;
-		DP.DrawFitText(new Point(Pos.x + sx, Pos.y - H - H / 5), sy, "BotLeft", Effect, font, TextmaxL, player.getColors()[0]) ;
-		DP.DrawFitText(new Point(Pos.x + sx, Pos.y - H - H / 10), sy, "BotLeft", Description, font, TextmaxL - 6, player.getColors()[0]) ;		
-		DP.DrawText(new Point(Pos.x + L, Pos.y), "TopRight", OverallAngle, "Pontos: " +  player.getSkillPoints(), font, player.getColors()[0]) ;		
+		DP.DrawRoundRect(new Point(Pos.x, Pos.y - size.y), "BotLeft", new Size(size.x, size.y / 4), 1, ColorPalette[7], ColorPalette[7], true) ;
+		DP.DrawFitText(new Point(Pos.x + sx, Pos.y - size.y - size.y / 5), sy, "BotLeft", Effect, font, TextmaxL, player.getColors()[0]) ;
+		DP.DrawFitText(new Point(Pos.x + sx, Pos.y - size.y - size.y / 10), sy, "BotLeft", Description, font, TextmaxL - 6, player.getColors()[0]) ;		
+		DP.DrawText(new Point(Pos.x + size.x, Pos.y), "TopRight", OverallAngle, "Pontos: " +  player.getSkillPoints(), font, player.getColors()[0]) ;		
 	}
 	
 
@@ -1874,10 +1877,11 @@ public class DrawFunctions
 	{
 		Font font = new Font("SansSerif", Font.BOLD, 20) ;
 		int TextCat = AllTextCat[29] ;
-		Point Pos = new Point((int)(0.3*WinDim[0]), (int)(0.8*WinDim[1])) ;
-		int L = (int)(0.5*WinDim[0]), H = (int)(0.6*WinDim[1]), Sy = H/12 ;
-		Point TextPos = new Point(Pos.x + (int)(0.05*L), Pos.y - (int)(0.95*H)) ;
-		DrawMenuWindow(Pos, L, H, null, 0, ColorPalette[18], ColorPalette[7]) ;
+		Point Pos = new Point((int)(0.3*screenSize.x), (int)(0.8*screenSize.y)) ;
+		Size size = new Size((int)(0.5*screenSize.x), (int)(0.6*screenSize.y)) ;
+		int Sy = size.y / 12 ;
+		Point TextPos = new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y)) ;
+		DrawMenuWindow(Pos, size, null, 0, ColorPalette[18], ColorPalette[7]) ;
 		DP.DrawText(TextPos, "BotLeft", OverallAngle, AllText[TextCat][1], font, TextColor) ;
 		if (counter < duration/3)
 		{
@@ -1914,19 +1918,19 @@ public class DrawFunctions
 		{			
 			if (counter % (3*DotsDelay) < DotsDelay)
 			{
-				DP.DrawText(new Point(Pos.x + (int)(0.05*WinDim[0]) - L/2, Pos.y - (int)(0.05*WinDim[1])), "BotLeft", OverallAngle, AllText[TextCat][1] + " " + CollectibleName[CollectibleType] + ".", font, CollectibleColor[CollectibleType]) ;
+				DP.DrawText(new Point(Pos.x + (int)(0.05*screenSize.x) - L/2, Pos.y - (int)(0.05*screenSize.y)), "BotLeft", OverallAngle, AllText[TextCat][1] + " " + CollectibleName[CollectibleType] + ".", font, CollectibleColor[CollectibleType]) ;
 			} else if (counter % (3*DotsDelay) < 2*DotsDelay)
 			{
-				DP.DrawText(new Point(Pos.x + (int)(0.05*WinDim[0]) - L/2, Pos.y - (int)(0.05*WinDim[1])), "BotLeft", OverallAngle, AllText[TextCat][1] + " " + CollectibleName[CollectibleType] + "..", font, CollectibleColor[CollectibleType]) ;
+				DP.DrawText(new Point(Pos.x + (int)(0.05*screenSize.x) - L/2, Pos.y - (int)(0.05*screenSize.y)), "BotLeft", OverallAngle, AllText[TextCat][1] + " " + CollectibleName[CollectibleType] + "..", font, CollectibleColor[CollectibleType]) ;
 			} else
 			{
-				DP.DrawText(new Point(Pos.x + (int)(0.05*WinDim[0]) - L/2, Pos.y - (int)(0.05*WinDim[1])), "BotLeft", OverallAngle, AllText[TextCat][1] + " " + CollectibleName[CollectibleType] + "...", font, CollectibleColor[CollectibleType]) ;				
+				DP.DrawText(new Point(Pos.x + (int)(0.05*screenSize.x) - L/2, Pos.y - (int)(0.05*screenSize.y)), "BotLeft", OverallAngle, AllText[TextCat][1] + " " + CollectibleName[CollectibleType] + "...", font, CollectibleColor[CollectibleType]) ;				
 			}	
 			DrawTimeBar(Pos, counter, delay, L, new int[] {0, 0}, "Right", "Horizontal", CollectibleColor[CollectibleType]) ;
 		}
 		else
 		{
-			DP.DrawText(new Point(Pos.x + (int)(0.05*WinDim[0]) - L/2, Pos.y - (int)(0.05*WinDim[1])), "BotLeft", OverallAngle, Message, font, CollectibleColor[CollectibleType]) ;			
+			DP.DrawText(new Point(Pos.x + (int)(0.05*screenSize.x) - L/2, Pos.y - (int)(0.05*screenSize.y)), "BotLeft", OverallAngle, Message, font, CollectibleColor[CollectibleType]) ;			
 		}	
 	}
 	public void TentAnimation(Point Pos, int counter, int delay, Image TentImage)
@@ -1964,17 +1968,17 @@ public class DrawFunctions
 	{
 		int TextCat = AllTextCat[10] ;
 		Font font = new Font("SansSerif", Font.BOLD, 14) ;
-		Point Pos = new Point((int) (0.5*WinDim[0]), (int) (0.25*WinDim[1])) ;
+		Point Pos = new Point((int) (0.5*screenSize.x), (int) (0.25*screenSize.y)) ;
 		int[] ValidItemIDs = Utg.ArrayWithValuesGreaterThan(ItemIDs, -1) ;
-		int L = (int) (1.2*Utg.TextL(items[ItemIDs[0]].getName(), font, G)), H = (int) (3.5*Utg.TextH(font.getSize())*ValidItemIDs.length) ;
+		Size size = new Size((int) (1.2*Utg.TextL(items[ItemIDs[0]].getName(), font, G)), (int) (3.5*Utg.TextH(font.getSize())*ValidItemIDs.length)) ;
 		int sy = (int) (1.2*Utg.TextH(font.getSize())) ;
 		if (counter < delay)
 		{
-			DrawMenuWindow(new Point(Pos.x - L/2, Pos.y + H/2), L, H, null, 0, ColorPalette[8], ColorPalette[7]) ;
-			DP.DrawText(new Point(Pos.x, Pos.y - H/2 + sy), "Center", OverallAngle, AllText[TextCat][3], font, textColor) ;
+			DrawMenuWindow(new Point(Pos.x - size.x / 2, Pos.y + size.y / 2), size, null, 0, ColorPalette[8], ColorPalette[7]) ;
+			DP.DrawText(new Point(Pos.x, Pos.y - size.y / 2 + sy), "Center", OverallAngle, AllText[TextCat][3], font, textColor) ;
 			for (int i = 0 ; i <= ValidItemIDs.length - 1 ; i += 1)
 			{
-				DP.DrawText(new Point(Pos.x, Pos.y - H/2 + (i + 2)*sy), "Center", OverallAngle, items[ValidItemIDs[i]].getName(), font, textColor) ;
+				DP.DrawText(new Point(Pos.x, Pos.y - size.y / 2 + (i + 2)*sy), "Center", OverallAngle, items[ValidItemIDs[i]].getName(), font, textColor) ;
 				
 			}
 		}
@@ -1983,10 +1987,11 @@ public class DrawFunctions
 	{
 		int WinCat = AllTextCat[10] ;
 		Font font = new Font("SansSerif", Font.BOLD, 16) ;
-		Point Pos = new Point((int)(0.25 * WinDim[0]), (int)(0.6 * WinDim[1])) ;
-		int L = (int)(0.3 * WinDim[0]), H = (int)(0.4 * WinDim[1]), Sy = H / 10 ;
-		Point TextPos = new Point(Pos.x + (int)(0.05 * L), Pos.y - H + Utg.TextH(font.getSize()) + 10) ;
-		DrawMenuWindow(Pos, L, H, null, 0, MenuColor[1], ColorPalette[7]) ;
+		Point Pos = new Point((int)(0.25 * screenSize.x), (int)(0.6 * screenSize.y)) ;
+		Size size = new Size((int)(0.3 * screenSize.x),  (int)(0.4 * screenSize.y)) ;
+		int Sy = size.y / 10 ;
+		Point TextPos = new Point(Pos.x + (int)(0.05 * size.x), Pos.y - size.y + Utg.TextH(font.getSize()) + 10) ;
+		DrawMenuWindow(Pos, size, null, 0, MenuColor[1], ColorPalette[7]) ;
 		DP.DrawText(TextPos, "BotLeft", OverallAngle, AllText[WinCat][2], font, textColor) ;
 		if (counter < duration / 3)
 		{
@@ -2008,10 +2013,11 @@ public class DrawFunctions
 	{
 		int LevelUpCat = AllTextCat[10], AtributosCat = AllTextCat[6] ;
 		Font font = new Font("SansSerif", Font.BOLD, 16) ;
-		int L = (int)(0.4*WinDim[0]), H = (int)(0.4*WinDim[1]), Sy = H/10 ;
-		Point Pos = new Point((int)(0.25*WinDim[0]), (int)(0.6*WinDim[1])) ;
-		Point TextPos = new Point(Pos.x + (int)(0.05*L), Pos.y - H + Utg.TextH(font.getSize()) + 10) ;
-		DrawMenuWindow(Pos, L, H, null, 0, MenuColor[1], ColorPalette[7]) ;
+		Size size = new Size((int)(0.4*screenSize.x), (int)(0.4*screenSize.y)) ;
+		int Sy = size.y / 10 ;
+		Point Pos = new Point((int)(0.25*screenSize.x), (int)(0.6*screenSize.y)) ;
+		Point TextPos = new Point(Pos.x + (int)(0.05 * size.x), Pos.y - size.y + Utg.TextH(font.getSize()) + 10) ;
+		DrawMenuWindow(Pos, size, null, 0, MenuColor[1], ColorPalette[7]) ;
 		DP.DrawText(TextPos, "BotLeft", OverallAngle, AllText[LevelUpCat][1], font, textColor) ;
 		if (counter < duration)
 		{
@@ -2032,21 +2038,22 @@ public class DrawFunctions
 	{
 		Font font = new Font("SansSerif", Font.BOLD, 20) ;
 		int AttCat = AllTextCat[6], WinCat = AllTextCat[10] ;
-		Point Pos = new Point((int)(0.25*WinDim[0]), (int)(0.8*WinDim[1])) ;
-		int L = (int)(0.5*WinDim[0]), H = (int)(0.6*WinDim[1]), Sy = H/10 ;
-		DrawMenuWindow(Pos, L, H, null, 0, ColorPalette[pet.getJob()], ColorPalette[7]) ;
-		DP.DrawText(new Point(Pos.x + (int)(0.05*L), Pos.y - (int)(0.95*H)), "BotLeft", OverallAngle, AllText[WinCat][1], font, pet.getColor()) ;
+		Point Pos = new Point((int)(0.25*screenSize.x), (int)(0.8*screenSize.y)) ;
+		Size size = new Size((int)(0.5*screenSize.x), (int)(0.6*screenSize.y)) ;
+		int Sy = size.y / 10 ;
+		DrawMenuWindow(Pos, size, null, 0, ColorPalette[pet.getJob()], ColorPalette[7]) ;
+		DP.DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y)), "BotLeft", OverallAngle, AllText[WinCat][1], font, pet.getColor()) ;
 		if (counter % duration < duration/3)
 		{
-			DP.DrawText(new Point(Pos.x + (int)(0.05*L), Pos.y - (int)(0.95*H) + Sy), "BotLeft", OverallAngle, AllText[AttCat][1] + " " + pet.getLevel(), font, pet.getColor()) ;		
+			DP.DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y) + Sy), "BotLeft", OverallAngle, AllText[AttCat][1] + " " + pet.getLevel(), font, pet.getColor()) ;		
 		} else if (counter % duration < 2*duration/3)
 		{
-			DP.DrawText(new Point(Pos.x + (int)(0.05*L), Pos.y - (int)(0.95*H) + Sy), "BotLeft", OverallAngle, AllText[AttCat][1] + " " + pet.getLevel(), font, pet.getColor()) ;					
+			DP.DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y) + Sy), "BotLeft", OverallAngle, AllText[AttCat][1] + " " + pet.getLevel(), font, pet.getColor()) ;					
 			for (int i = 0 ; i <= AttributeIncrease.length - 1 ; ++i)
 			{
 				if (duration/3 + duration/15*i < counter % duration)
 				{
-					DP.DrawText(new Point(Pos.x + (int)(0.05*L), Pos.y - (int)(0.95*H) + (i + 2)*Sy), "BotLeft", OverallAngle, AllText[AttCat][i + 2] + " + " + AttributeIncrease[i], font, pet.getColor()) ;								
+					DP.DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y) + (i + 2)*Sy), "BotLeft", OverallAngle, AllText[AttCat][i + 2] + " + " + AttributeIncrease[i], font, pet.getColor()) ;								
 				}
 			}
 		}
@@ -2057,9 +2064,9 @@ public class DrawFunctions
 		int NPCLength = npc.getImage().getWidth(null), NPCHeight = npc.getImage().getHeight(null) ;
 		if (Destination.equals("Island"))
 		{
-			Point InitialPos = new Point(Step, (int)(0.5*WinDim[1])) ;	
-			Point Pos = new Point(Math.abs((InitialPos.x + Step*counter)) % WinDim[0], InitialPos.y) ;
-			if (Pos.x + Step < WinDim[0])
+			Point InitialPos = new Point(Step, (int)(0.5*screenSize.y)) ;	
+			Point Pos = new Point(Math.abs((InitialPos.x + Step*counter)) % screenSize.x, InitialPos.y) ;
+			if (Pos.x + Step < screenSize.x)
 			{
 				DP.DrawImage(BoatImage, Pos, OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
 				DP.DrawImage(npc.getImage(), new Point(Pos.x + NPCLength, (int) (Pos.y - 0.5*NPCHeight)), OverallAngle, new float[] {(float)0.5, (float)0.5}, new boolean[] {false, false}, "Center", 1) ;
@@ -2082,8 +2089,8 @@ public class DrawFunctions
 		}
 		else if (Destination.equals("Forest"))
 		{
-			Point InitialPos = new Point(WinDim[0] - Step, (int)(0.5*WinDim[1])) ;
-			Point Pos = new Point((InitialPos.x - Step*(counter % (WinDim[0]/Step - 1))) % WinDim[0], InitialPos.y) ;
+			Point InitialPos = new Point(screenSize.x - Step, (int)(0.5*screenSize.y)) ;
+			Point Pos = new Point((InitialPos.x - Step*(counter % (screenSize.x/Step - 1))) % screenSize.x, InitialPos.y) ;
 			if (0 < Pos.x - Step)
 			{
 				DP.DrawImage(BoatImage, Pos, OverallAngle, new float[] {(float)1, (float)1}, new boolean[] {false, false}, "BotLeft", 1) ;
@@ -2130,36 +2137,36 @@ public class DrawFunctions
 	}
 	public void PterodactileAnimation(int counter, int duration, Image SpeakingBubbleImage, Image PterodactileImage)
 	{
-		Point InitialPos = new Point(WinDim[0] + PterodactileImage.getWidth(null)/2, (int)(0.25*WinDim[1])) ;
+		Point InitialPos = new Point(screenSize.x + PterodactileImage.getWidth(null)/2, (int)(0.25*screenSize.y)) ;
 		Font font = new Font("SansSerif", Font.BOLD, 15) ;
 		int TextCat = AllTextCat[31] ;
 		if (counter < 0.25*duration)
 		{
-			InitialPos.x += -0.5*(WinDim[0] + PterodactileImage.getWidth(null))*counter/(0.25*duration) ;
-			InitialPos.y += 0.25*WinDim[0]*counter/(0.25*duration) ;
+			InitialPos.x += -0.5*(screenSize.x + PterodactileImage.getWidth(null))*counter/(0.25*duration) ;
+			InitialPos.y += 0.25*screenSize.x*counter/(0.25*duration) ;
 		} else if (counter < 0.5*duration)
 		{
-			InitialPos.x += -0.5*(WinDim[0] + PterodactileImage.getWidth(null)) ;
-			InitialPos.y += 0.25*WinDim[0] ;
-			DrawSpeech(new Point(InitialPos.x - (int)(0.07*WinDim[0]), InitialPos.y - (int)(0.09*WinDim[1])), AllText[TextCat][1], font, PterodactileImage, SpeakingBubbleImage, ColorPalette[19]) ;
+			InitialPos.x += -0.5*(screenSize.x + PterodactileImage.getWidth(null)) ;
+			InitialPos.y += 0.25*screenSize.x ;
+			DrawSpeech(new Point(InitialPos.x - (int)(0.07*screenSize.x), InitialPos.y - (int)(0.09*screenSize.y)), AllText[TextCat][1], font, PterodactileImage, SpeakingBubbleImage, ColorPalette[19]) ;
 		} else if (counter < 0.75*duration)
 		{
-			InitialPos.x += -0.5*(WinDim[0] + PterodactileImage.getWidth(null)) ;
-			InitialPos.y += 0.25*WinDim[0] ;
-			DrawSpeech(new Point(InitialPos.x - (int)(0.07*WinDim[0]), InitialPos.y - (int)(0.09*WinDim[1])), AllText[TextCat][2], font, PterodactileImage, SpeakingBubbleImage, ColorPalette[19]) ;
+			InitialPos.x += -0.5*(screenSize.x + PterodactileImage.getWidth(null)) ;
+			InitialPos.y += 0.25*screenSize.x ;
+			DrawSpeech(new Point(InitialPos.x - (int)(0.07*screenSize.x), InitialPos.y - (int)(0.09*screenSize.y)), AllText[TextCat][2], font, PterodactileImage, SpeakingBubbleImage, ColorPalette[19]) ;
 		} else if (counter < duration)
 		{
-			InitialPos.x += -0.5*(WinDim[0] + PterodactileImage.getWidth(null))*(counter - 0.75*duration)/(0.25*duration) - 0.5*(WinDim[0] + PterodactileImage.getWidth(null)) ;
-			InitialPos.y += -0.25*WinDim[0]*(counter - 0.75*duration)/(0.25*duration) + 0.25*WinDim[0] ;
+			InitialPos.x += -0.5*(screenSize.x + PterodactileImage.getWidth(null))*(counter - 0.75*duration)/(0.25*duration) - 0.5*(screenSize.x + PterodactileImage.getWidth(null)) ;
+			InitialPos.y += -0.25*screenSize.x*(counter - 0.75*duration)/(0.25*duration) + 0.25*screenSize.x ;
 		}
 		DP.DrawImage(PterodactileImage, InitialPos, 1, new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
 	}
 	public void RainAnimation(int counter)
 	{
-		float x0 = (float)0*WinDim[0], y0 = -20 ;
+		float x0 = (float)0*screenSize.x, y0 = -20 ;
 		int delay = 10, duration = 1000 ;
 		int thickness = 2 ;
-		float h = 20, sx = (float)0.02*WinDim[0], sy = 0 ;
+		float h = 20, sx = (float)0.02*screenSize.x, sy = 0 ;
 		float y ;
 		counter += -60000 ;
 		if (counter <= duration)
@@ -2186,33 +2193,33 @@ public class DrawFunctions
 		float dx = 0, dh = 0 ;
 		if (map == 0)
 		{
-			InitialPos = new Point((int) (0.5*WinDim[0]), (int) (0.5*WinDim[1])) ;
+			InitialPos = new Point((int) (0.5*screenSize.x), (int) (0.5*screenSize.y)) ;
 			angle = 0 ;
-			dx = (float) (0.005*WinDim[0]) ;
+			dx = (float) (0.005*screenSize.x) ;
 		}
 		else if (map == 1)
 		{
-			InitialPos = new Point((int) (0.5*WinDim[0]), (int) (0.5*WinDim[1])) ;
+			InitialPos = new Point((int) (0.5*screenSize.x), (int) (0.5*screenSize.y)) ;
 			angle = 90 ;
-			dh = (float) (0.005*WinDim[1]) ;
+			dh = (float) (0.005*screenSize.y) ;
 		}
 		else if (map == 2)
 		{
-			InitialPos = new Point((int) (0.5*WinDim[0]), (int) (0.5*WinDim[1])) ;
+			InitialPos = new Point((int) (0.5*screenSize.x), (int) (0.5*screenSize.y)) ;
 			angle = 180 ;
-			dx = (float) (0.005*WinDim[0]) ;
+			dx = (float) (0.005*screenSize.x) ;
 		}
 		else if (map == 3)
 		{
-			InitialPos = new Point((int) (0.5*WinDim[0]), (int) (0.8*WinDim[1])) ;
+			InitialPos = new Point((int) (0.5*screenSize.x), (int) (0.8*screenSize.y)) ;
 			angle = 180 ;
-			dx = (float) (0.005*WinDim[0]) ;
+			dx = (float) (0.005*screenSize.x) ;
 		}
 		else if (map == 4)
 		{
-			InitialPos = new Point((int) (0.5*WinDim[0]), (int) (0.5*WinDim[1])) ;
+			InitialPos = new Point((int) (0.5*screenSize.x), (int) (0.5*screenSize.y)) ;
 			angle = 90 ;
-			dh = (float) (0.005*WinDim[1]) ;
+			dh = (float) (0.005*screenSize.y) ;
 		}
 		dx = dx*Uts.UpAndDownCounter(counter, looptime) ;
 		dh = dh*Uts.UpAndDownCounter(counter, looptime) ;

@@ -8,19 +8,20 @@ import java.util.Arrays ;
 
 import Actions.Battle ;
 import GameComponents.Buildings ;
-import GameComponents.Creatures ;
 import GameComponents.Items ;
 import GameComponents.Maps ;
 import GameComponents.NPCs ;
-import GameComponents.Pet ;
 import GameComponents.PetSpells ;
-import GameComponents.Player ;
 import GameComponents.Quests ;
 import GameComponents.Screen ;
+import GameComponents.Size;
 import GameComponents.Spells ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Graphics.DrawPrimitives ;
+import LiveBeings.Creatures;
+import LiveBeings.Pet;
+import LiveBeings.Player;
 
 public class Uts 
 {
@@ -451,7 +452,7 @@ public class Uts
 		
 	public static int ClosestCreatureInRange(Player player, Creatures[] creature, Maps[] maps)
 	{	
-		int[] WinDim = Game.getScreen().getDimensions() ;
+		Size screenSize = Game.getScreen().getSize() ;
 		if (maps[player.getMap()].getCreatureIDs() != null)	// Map has creatures
 		{
 			int NumberOfCreaturesInMap = 0 ;
@@ -463,7 +464,7 @@ public class Uts
 				}
 			}
 			float[] dist = new float[NumberOfCreaturesInMap] ;
-			float MinDist = WinDim[0] + WinDim[1] ;
+			float MinDist = screenSize.x + screenSize.y ;
 			for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 			{
 				int ID = maps[player.getMap()].getCreatureIDs()[i] ;

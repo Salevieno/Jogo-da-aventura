@@ -1,4 +1,4 @@
-package GameComponents;
+package LiveBeings;
 
 public class AttributeBonus
 {

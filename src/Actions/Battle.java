@@ -5,17 +5,18 @@ import java.awt.Point;
 import java.util.Arrays ;
 import javax.sound.sampled.Clip ;
 import javax.swing.ImageIcon ;
-import GameComponents.BattleAttributes ;
-import GameComponents.Creatures ;
+
 import GameComponents.Items ;
-import GameComponents.Pet ;
 import GameComponents.PetSpells ;
-import GameComponents.Player ;
 import GameComponents.Quests;
 import GameComponents.Screen;
 import GameComponents.Spells ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
+import LiveBeings.BattleAttributes;
+import LiveBeings.Creatures;
+import LiveBeings.Pet;
+import LiveBeings.Player;
 import Main.Uts ;
 import Main.Utg ;
 

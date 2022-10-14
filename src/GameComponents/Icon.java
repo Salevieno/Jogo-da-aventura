@@ -14,7 +14,7 @@ public class Icon
 	private int id ;
 	private String Name ;
 	private Point Pos ;		// [x, y]
-	private int[] Size ;	// [width, height]
+	private Size size ;	// [width, height]
 	public boolean isActive ;
 	private String description ;
 	private Image image ;
@@ -25,7 +25,7 @@ public class Icon
 		this.id = id ;
 		this.Name = Name ;
 		this.Pos = Pos ;
-		Size = new int[] {10 * Name.length(), 30} ;
+		size = new Size(10 * Name.length(), 30) ;
 		isActive = false ;
 		this.description = description ;
 		this.image = image ;
@@ -33,8 +33,8 @@ public class Icon
 		
 		if (image != null)
 		{
-			Size[0] = image.getWidth(null) ;
-			Size[1] = image.getHeight(null) ;
+			size.x = image.getWidth(null) ;
+			size.y = image.getHeight(null) ;
 		}
 	}
 
@@ -51,7 +51,7 @@ public class Icon
 	
 	public boolean ishovered(Point MousePos)
 	{
-		if (Utg.isInside(MousePos, new Point(Pos.x - Size[0] / 2, Pos.y - Size[1] / 2), Size[0], Size[1]))
+		if (Utg.isInside(MousePos, new Point(Pos.x - size.x / 2, Pos.y - size.y / 2), size.x, size.y))
 		{
 			return true ;
 		}
@@ -151,7 +151,7 @@ public class Icon
 			}
 			else
 			{
-				DP.DrawRoundRect(Pos, "Center", Size[0], Size[1], 5, Color.lightGray, Color.gray, true) ;
+				DP.DrawRoundRect(Pos, "Center", size, 5, Color.lightGray, Color.gray, true) ;
 				DP.DrawText(Pos, "Center", 0, Name, new Font("Scheherazade Bold", Font.BOLD, 28), Color.blue) ;
 			}
 		}
@@ -163,7 +163,7 @@ public class Icon
 			}
 			else
 			{
-				DP.DrawRoundRect(Pos, "Center", Size[0], Size[1], 2, Color.lightGray, Color.gray, true) ;
+				DP.DrawRoundRect(Pos, "Center", size, 2, Color.lightGray, Color.gray, true) ;
 				DP.DrawText(Pos, "Center", 0, Name, new Font("Scheherazade Bold", Font.BOLD, 28), Color.blue) ;
 			}
 		}
@@ -172,7 +172,7 @@ public class Icon
 	{
 		if (description != null)
 		{
-			DP.DrawRoundRect(new Point(Pos.x + 20, Pos.y - 10), "Center", Size[0], Size[1], 5, Color.lightGray, Color.gray, true) ;
+			DP.DrawRoundRect(new Point(Pos.x + 20, Pos.y - 10), "Center", size, 5, Color.lightGray, Color.gray, true) ;
 			DP.DrawFitText(new Point(Pos.x + 20, Pos.y - 10), 14, "Center", description, new Font("Scheherazade Bold", Font.BOLD, 12), 20, Color.blue) ;
 		}
 	}
@@ -186,7 +186,7 @@ public class Icon
 		System.out.println("id: " + id) ;
 		System.out.println("name: " + Name) ;
 		System.out.println("pos: " + Pos) ;
-		System.out.println("size: " + Arrays.toString(Size)) ;
+		System.out.println("size: " + size) ;
 		System.out.println("image: " + image) ;
 		System.out.println("selected image: " + SelectedImage) ;
 	}

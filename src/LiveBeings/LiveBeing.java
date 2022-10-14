@@ -1,18 +1,24 @@
-package GameComponents;
+package LiveBeings;
+
+import Windows.AttributesWindow;
 
 public class LiveBeing
 {
 	protected PersonalAttributes PA ;	// Personal attributes
 	protected BattleAttributes BA ;		// Battle attributes
+	protected AttributesWindow attWindow ;		// Attributes window
 	protected int level;
 	
-	public LiveBeing(int level, PersonalAttributes PA, BattleAttributes BA)
+	public LiveBeing(int level, PersonalAttributes PA, BattleAttributes BA, AttributesWindow attWindow)
 	{
 		this.level = level;
 		this.PA = PA;
 		this.BA = BA;
+		this.attWindow = attWindow ;
 	}
 
+	public AttributesWindow getAttWindow() {return attWindow ;}
+	
 	public void IncActionCounters()
 	{
 		for (int a = 0 ; a <= PA.Actions.length - 1 ; a += 1)
@@ -39,17 +45,10 @@ public class LiveBeing
 		BA.getBattleActions()[0][2] = 0 ;
 	}
 	
-	
-	
-	
 	public boolean isAlive()
 	{
 		return 0 < PA.getLife()[0] ;
 	}
-	
-	
-	
-	
 	public boolean canAtk()
 	{
 		if (BA.getBattleActions()[0][2] == 1 & !BA.isStun())
@@ -89,5 +88,10 @@ public class LiveBeing
 	{
 		BA.getPhyDef()[1] += -BA.getPhyDef()[0] ;
 		BA.getMagDef()[1] += -BA.getMagDef()[0] ;
+	}
+
+	public void display()
+	{
+		
 	}
 }

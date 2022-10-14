@@ -4,6 +4,9 @@ import java.awt.Image ;
 import java.awt.Point;
 
 import Graphics.DrawPrimitives ;
+import LiveBeings.Creatures;
+import LiveBeings.Pet;
+import LiveBeings.Player;
 import Main.Utg ;
 import Main.Uts ;
 

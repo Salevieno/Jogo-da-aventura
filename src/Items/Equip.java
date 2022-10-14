@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import javax.swing.ImageIcon;
 
-import GameComponents.AttributeBonus;
+import LiveBeings.AttributeBonus;
 import Main.Game;
 import Main.Utg;
 
