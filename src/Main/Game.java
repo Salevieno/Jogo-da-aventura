@@ -159,13 +159,13 @@ public class Game extends JPanel implements ActionListener
     	OPbuttons[4] = new Icon(4, "Male", new Point(screen.getSize().x / 2 - 50, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[5] = new Icon(5, "Female", new Point(screen.getSize().x / 2 + 50, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[6] = new Icon(6, "Baixo", new Point(screen.getSize().x / 2 - 100, screen.getSize().y / 4), null, null, null) ;
-    	OPbuttons[7] = new Icon(7, "Médio", new Point(screen.getSize().x / 2 + 0, screen.getSize().y / 4), null, null, null) ;
+    	OPbuttons[7] = new Icon(7, "Mï¿½dio", new Point(screen.getSize().x / 2 + 0, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[8] = new Icon(8, "Alto", new Point(screen.getSize().x / 2 + 100, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[9] = new Icon(9, "Cavaleiro", new Point(screen.getSize().x / 2 - 200, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[10] = new Icon(10, "Mago", new Point(screen.getSize().x / 2 - 100, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[11] = new Icon(11, "Arqueiro", new Point(screen.getSize().x / 2 + 0, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[12] = new Icon(12, "Animal", new Point(screen.getSize().x / 2 + 100, screen.getSize().y / 4), null, null, null) ;
-    	OPbuttons[13] = new Icon(13, "Ladrão", new Point(screen.getSize().x / 2 + 200, screen.getSize().y / 4), null, null, null) ;
+    	OPbuttons[13] = new Icon(13, "Ladrï¿½o", new Point(screen.getSize().x / 2 + 200, screen.getSize().y / 4), null, null, null) ;
     	
     	Ani = new Animations(null, null) ;
 		Ani.SetAniVars(20, new Object[] {147, OpeningGif}) ;
@@ -432,7 +432,7 @@ public class Game extends JPanel implements ActionListener
 			int[] StatusCounter = creatureTypes[type].getStatusCounter() ;
 			String[] Combo = new String[1] ;
 			creature[c] = new Creatures(type, image, idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif, Map, Size, Skill, PA, BA, Bag, Gold, color, StatusCounter, Combo) ;	
-			if (creature[c].getName().equals("Dragão") | creature[c].getName().equals("Dragon"))
+			if (creature[c].getName().equals("Dragï¿½o") | creature[c].getName().equals("Dragon"))
 			{
 				creature[c].getPersonalAtt().setPos(new Point((int)(0.5*screenSize.x), (int)(0.5*screenSize.y))) ;
 			}
@@ -748,7 +748,7 @@ public class Game extends JPanel implements ActionListener
     public Icon[] InitializeIcons(Size screenSize)
     {
 		/* Icons' position */
-		Image IconOptions = new ImageIcon(ImagesPath + "Icon0_Options.png").getImage() ;
+		Image IconOptions = new ImageIcon(ImagesPath + "Icon_settings.png").getImage() ;
 		Image IconBag = new ImageIcon(ImagesPath + "Icon1_Bag.png").getImage() ;
 		Image IconQuest = new ImageIcon(ImagesPath + "Icon2_Quest.png").getImage() ;
 		Image IconMap = new ImageIcon(ImagesPath + "Icon3_Map.png").getImage() ;
@@ -757,7 +757,7 @@ public class Game extends JPanel implements ActionListener
     	Image PlayerImage = new ImageIcon(ImagesPath + "Player.png").getImage() ;
     	Image PetImage = new ImageIcon(ImagesPath + "PetType" + pet.getJob() + ".png").getImage() ;
 		Image IconSkillsTree = new ImageIcon(ImagesPath + "Icon8_SkillsTree.png").getImage() ;
-		Image IconSelectedOptions = new ImageIcon(ImagesPath + "Icon0_OptionsSelected.png").getImage() ;
+		Image IconSelectedOptions = new ImageIcon(ImagesPath + "Icon_settingsSelected.png").getImage() ;
 		Image IconSelectedBag = new ImageIcon(ImagesPath + "Icon1_BagSelected.png").getImage() ;
 		Image IconSelectedQuest = new ImageIcon(ImagesPath + "Icon2_QuestSelected.png").getImage() ;
 		Image IconSelectedMap = new ImageIcon(ImagesPath + "Icon3_MapSelected.png").getImage() ;
@@ -1583,7 +1583,7 @@ public class Game extends JPanel implements ActionListener
 			RunGame(DF) ;
 			
 			
-        	// teste de funções
+        	// teste de funï¿½ï¿½es
         	//player.getBag().display(screen.getSize(), MousePos, DF) ;
 			
 			/*IncrementCounters(player, pet, creature) ;
