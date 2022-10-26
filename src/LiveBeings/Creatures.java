@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import Actions.BattleActions;
 import GameComponents.Maps;
+import GameComponents.MovingAnimations;
 import GameComponents.Screen;
 import GameComponents.Spells;
 import Graphics.DrawFunctions ;
@@ -17,9 +18,7 @@ import Windows.AttributesWindow;
 
 public class Creatures extends LiveBeing
 {
-	private int Type ;
-	private Image image ;
-	private Image idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif ;
+	private CreatureTypes type ;
 	private int Map ;
 	private int[] Size ;
 	private int[] Skill ;
@@ -34,29 +33,20 @@ public class Creatures extends LiveBeing
 	private static Color[] skinColor = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1]} ;
 	private static Color[] shadeColor = new Color[] {Game.ColorPalette[2], Game.ColorPalette[3]} ;
 	
- 	public Creatures(int Type, Image image, Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif, int Map, int[] Size, int[] Skill, PersonalAttributes PA, BattleAttributes BA, int[] Bag, int Gold, Color color, int[] StatusCounter, String[] Combo)
+ 	public Creatures(CreatureTypes CT)
 	{
-		super(Type, PA, BA, new AttributesWindow()) ;
-		this.Type = Type ;
-		this.image = image ;
-		this.idleGif = idleGif ; 
-		this.movingUpGif = movingUpGif ; 
-		this.movingDownGif = movingDownGif ; 
-		this.movingLeftGif = movingLeftGif ; 
-		this.movingRightGif = movingRightGif ;
-		this.Map = Map ;
-		this.Size = Size ;
-		this.Skill = Skill ;
-		this.Bag = Bag ;
-		this.Gold = Gold ;
-		this.color = color ;
-		this.StatusCounter = StatusCounter ;
-		this.Combo = Combo ;
+ 		// int Type, Image image, Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif, int Map, int[] Size, int[] Skill, PersonalAttributes PA, BattleAttributes BA, int[] Bag, int Gold, Color color, int[] StatusCounter, String[] Combo
+		super(CT.getID(), CT.getPersonalAtt(), CT.getBattleAtt(), CT.getMovingAnimations(), new AttributesWindow()) ;
+		this.type = CT ;
+		this.Skill = CT.getSkill() ;
+		this.Bag = CT.getBag() ;
+		this.Gold = CT.getGold() ;
+		this.color = CT.getColor() ;
+		this.StatusCounter = CT.getStatusCounter() ;
 		Follow = false ;
 	}
 
-	public int getType() {return Type ;}
-	public Image getimage() {return image ;}
+	public CreatureTypes getType() {return type ;}
 	public String getName() {return PA.getName() ;}
 	public int getLevel() {return PA.getLevel() ;}
 	public int getMap() {return Map ;}
@@ -91,6 +81,7 @@ public class Creatures extends LiveBeing
 	public String getAction() {return BA.getCurrentAction() ;}
 	public String[] getCombo() {return Combo ;}
 	public boolean getFollow() {return Follow ;}
+	public void setPos(Point newValue) {PA.setPos(newValue) ;}
 	public void setCombo(String[] C) {Combo = C ;}
 	public void setFollow(boolean F) {Follow = F ;}
 	public static Color[] getskinColor() {return skinColor ;}
@@ -102,29 +93,29 @@ public class Creatures extends LiveBeing
 		return (MPcost <= PA.getMp()[0]) ;
 	}
 	
-	public void Draw(DrawFunctions DF)
+	public void display(DrawFunctions DF)
 	{
 		if (PA.getThought().equals("Exist"))
 		{
-			DF.DrawCreature(PA.getPos(), PA.getSize(), idleGif, color) ;
+			DF.DrawCreature(PA.getPos(), PA.getSize(), type.movingAni.idleGif, color) ;
 		}
 		else if (PA.getThought().equals("Move"))
 		{
 			if (PA.getDir().equals("Acima"))
 			{
-				DF.DrawCreature(PA.getPos(), PA.getSize(), movingUpGif, color) ;
+				DF.DrawCreature(PA.getPos(), PA.getSize(), type.movingAni.movingUpGif, color) ;
 			}
 			if (PA.getDir().equals("Abaixo"))
 			{
-				DF.DrawCreature(PA.getPos(), PA.getSize(), movingDownGif, color) ;
+				DF.DrawCreature(PA.getPos(), PA.getSize(), type.movingAni.movingDownGif, color) ;
 			}
 			if (PA.getDir().equals("Esquerda"))
 			{
-				DF.DrawCreature(PA.getPos(), PA.getSize(), movingLeftGif, color) ;
+				DF.DrawCreature(PA.getPos(), PA.getSize(), type.movingAni.movingLeftGif, color) ;
 			}
 			if (PA.getDir().equals("Direita"))
 			{
-				DF.DrawCreature(PA.getPos(), PA.getSize(), movingRightGif, color) ;
+				DF.DrawCreature(PA.getPos(), PA.getSize(), type.movingAni.movingRightGif, color) ;
 			}
 		}
 	}
@@ -132,7 +123,7 @@ public class Creatures extends LiveBeing
 	{
 		Screen screen = Game.getScreen() ;
 		float[] MinCoord = new float[] {0, (float) (0.2)} ;
-		float[] Range = new float[] {1, 1 - (float) (screen.getSkyHeight()) / screen.getSize().y} ;
+		float[] Range = new float[] {1, (float) screen.getSize().y / (screen.getBorders()[1] - screen.getBorders()[3])} ;
 		int[] step = new int[] {1, 1} ;
 		PA.setPos(Utg.RandomPos(screen.getSize(), MinCoord, Range, step)) ;
 	}
@@ -140,15 +131,17 @@ public class Creatures extends LiveBeing
 	{
 		return new Point((int) (PA.getPos().x + 0.5 * Size[0]), (int) (PA.getPos().y - 0.5 * Size[1])) ;
 	}
-	public void updatePos(String move, Point CurrentPos, int step, Maps[] maps, int map)
+	public void updatePos(String move, Point CurrentPos, int step, Maps map)
 	{
 		Screen screen = Game.getScreen() ;
 		Point NewPos = PA.CalcNewPos(move, CurrentPos, step) ;
 		// First check if the new pos is inside the screen, then check if it is walkable
 		boolean NewPosIsInsideScreen = (screen.getBorders()[0] < NewPos.x & screen.getBorders()[1] < NewPos.y & NewPos.x < screen.getBorders()[2] & NewPos.y < screen.getBorders()[3]) ;
+		// if (rectTopLeftPos.x <= objPos.x & objPos.y <= rectTopLeftPos.y + rectSize.y & objPos.x <= rectTopLeftPos.x + rectSize.x & rectTopLeftPos.y <= objPos.y)
+		//boolean NewPosIsInsideScreen = Utg.isInside(NewPos, screen.getBorders(), screen.getBorders()) ;
 		if (NewPosIsInsideScreen)
 		{
-			boolean NewPosIsWalkable = maps[map].GroundIsWalkable(NewPos, null) ;
+			boolean NewPosIsWalkable = map.GroundIsWalkable(NewPos, null) ;
 			if (NewPosIsWalkable)
 			{
 				PA.setPos(NewPos) ;
@@ -163,12 +156,12 @@ public class Creatures extends LiveBeing
 			//setPos(CurrentPos) ;
 		}
 	}
-	public void act(Point playerPos, int map, Maps[] maps, DrawFunctions DF)
+	public void act(Point playerPos, Maps map)
 	{
 		Think() ;	
 		if (getPersonalAtt().getThought().equals("Move"))
 		{
-			Move(playerPos, getFollow(), map, maps) ;
+			Move(playerPos, getFollow(), map) ;
 			if (countmove % 5 == 0)
 			{
 				getPersonalAtt().setdir(getPersonalAtt().randomDir()) ;	// set random direction
@@ -178,7 +171,6 @@ public class Creatures extends LiveBeing
 				ResetActions() ;
 			}
 		}
-		Draw(DF) ;
 	}
 	public void fight(String[] ActionKeys)
 	{
@@ -206,7 +198,7 @@ public class Creatures extends LiveBeing
 	}
 	public int useSkill(int skillID, Player player)
 	{
-		int magicalType = Type % 5 ;
+		int magicalType = type.getID() % 5 ;
 		int MPCost = 10 ;
 		int effect = -1 ;
 		int damage = -1 ;
@@ -300,7 +292,7 @@ public class Creatures extends LiveBeing
 		}
 		PA.setPos(pos) ;
 	}
-	public void Move(Point PlayerPos, boolean FollowPlayer, int map, Maps[] maps)
+	public void Move(Point PlayerPos, boolean FollowPlayer, Maps map)
 	{
 		if (PA.Actions[0][2] == 1 & !PA.getName().equals("Dragão") & !PA.getName().equals("Dragon"))	// If the creature can move
 		{
@@ -311,8 +303,7 @@ public class Creatures extends LiveBeing
 			}
 			else
 			{
-				String move = PA.getDir() ;
-				updatePos(move, PA.getPos(), PA.getStep(), maps, map) ;
+				updatePos(PA.getDir(), PA.getPos(), PA.getStep(), map) ;
 			}				
 		}
 	}
@@ -482,13 +473,13 @@ public class Creatures extends LiveBeing
 	}
 
 	
-	/* Print methods */
-	public void PrintAllAttributes()
-	{
-		System.out.println();
-		System.out.println("** Creature attributes **");
-		PA.printAtt();
-		BA.printAtt();
-		System.out.println("Elem: " + Arrays.toString(PA.Elem));
+	@Override
+	public String toString() {
+		return "Creatures [type=" + type + ", Map=" + Map + ", Size=" + Arrays.toString(Size) + ", Skill="
+				+ Arrays.toString(Skill) + ", Bag=" + Arrays.toString(Bag) + ", Gold=" + Gold + ", color=" + color
+				+ ", StatusCounter=" + Arrays.toString(StatusCounter) + ", Combo=" + Arrays.toString(Combo)
+				+ ", Follow=" + Follow + ", countmove=" + countmove + "]";
 	}
+
+	
 }

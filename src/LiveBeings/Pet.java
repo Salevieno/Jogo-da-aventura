@@ -10,6 +10,8 @@ import java.util.Arrays;
 import javax.swing.ImageIcon ;
 
 import GameComponents.Maps;
+import GameComponents.MovingAnimations;
+import Graphics.DrawPrimitives;
 import Main.Uts ;
 import Windows.AttributesWindow;
 import Main.Game;
@@ -35,9 +37,15 @@ public class Pet extends LiveBeing
 	
 	public Pet(int Job)
 	{
-		super(Job, InitializePersonalAttributes(Job), InitializeBattleAttributes(Job), new AttributesWindow()) ;
+		super(Job, InitializePersonalAttributes(Job), InitializeBattleAttributes(Job),
+				new MovingAnimations(new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage(),
+				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage(),
+				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage(),
+				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage(),
+				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage()),
+				new AttributesWindow()) ;
 		this.Job = Job ;
-		Color[] ColorPalette = Uts.ReadColorPalette(new ImageIcon(Game.ImagesPath + "ColorPalette.png").getImage(), "Normal") ;
+		Color[] ColorPalette = Game.ColorPalette ;
 		Color[] PetColor = new Color[] {ColorPalette[3], ColorPalette[1], ColorPalette[18], ColorPalette[18]} ;
 		color = PetColor[Job] ;
 		Skill = new int[Pet.NumberOfSkills] ;
@@ -60,15 +68,13 @@ public class Pet extends LiveBeing
 	private static PersonalAttributes InitializePersonalAttributes(int Job)
 	{
 		String Name = PetProperties[Job][0] ;
-		Image image = new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage() ;
 		int Level = 1 ;
 		int ProJob = 0 ;
-		int Continent = 0 ;
-		int Map = 0 ;
+		Maps Map = null ;
 		Point Pos = new Point(0, 0) ;
 		String dir = Player.MoveKeys[0] ;
 		String Thought = "Exist" ;
-		int[] Size = new int[] {image.getWidth(null), image.getHeight(null)} ;	
+		int[] Size = new int[] {new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getWidth(null), new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getHeight(null)} ;	
 		float[] Life = new float[] {Integer.parseInt(PetProperties[Job][2]), Integer.parseInt(PetProperties[Job][2])} ;
 		float[] Mp = new float[] {Integer.parseInt(PetProperties[Job][3]), Integer.parseInt(PetProperties[Job][3])} ;
 		int Range = Integer.parseInt(PetProperties[Job][4]) ;
@@ -80,7 +86,7 @@ public class Pet extends LiveBeing
 		int[][] Actions = new int[][] {{0, Integer.parseInt(PetProperties[Job][33]), 0}, {0, Integer.parseInt(PetProperties[Job][34]), 0}, {0, Integer.parseInt(PetProperties[Job][35]), 0}} ;
 		String currentAction = "" ;
 		int countmove = 0 ;
-		return  new PersonalAttributes(Name, new Image[] {image}, Level, Job, ProJob, Continent, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
+		return new PersonalAttributes(Name, Level, Job, ProJob, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
 	}
 	
 	private static BattleAttributes InitializeBattleAttributes(int Job)
@@ -107,6 +113,7 @@ public class Pet extends LiveBeing
 	public int[] getSize() {return PA.getSize() ;}
 	public Color getColor() {return color ;}
 	public int getJob() {return Job ;}
+	public MovingAnimations getMovingAnimations() {return movingAni ;}
 	public Point getPos() {return PA.getPos() ;}
 	public int[] getSkill() {return Skill ;}
 	public int getSkillPoints() {return SkillPoints ;}
@@ -206,7 +213,7 @@ public class Pet extends LiveBeing
 	{
 		Point NextPos = new Point(0, 0) ;
 		Follow(PA.getPos(), player.getPos(), PA.getStep(), PA.getStep()) ;
-		if (maps[player.getMap()].GroundIsWalkable(NextPos, player.getElem()[4]))
+		if (player.getMap().GroundIsWalkable(NextPos, player.getElem()[4]))
 		{
 			PA.setPos(NextPos) ;
 		}
@@ -390,13 +397,21 @@ public class Pet extends LiveBeing
 		StatusCounter = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 32)]), "String", "int") ;
 	}
 	
-	/* Printing methods */
-	public void PrintAllAttributes()
+	
+	/* Drawing methods */
+	public void display(Point Pos, float[] Scale, DrawPrimitives DP)
 	{
-		System.out.println();
-		System.out.println("** Player attributes **");
-		PA.printAtt();
-		BA.printAtt();
-		System.out.println("Elem: " + Arrays.toString(PA.Elem));
+		//	TODO add moving animations
+		float OverallAngle = DrawPrimitives.OverallAngle ;
+		DP.DrawImage(movingAni.idleGif, Pos, OverallAngle, Scale, new boolean[] {false, false}, "Center", 1) ;
 	}
+
+	
+	@Override
+	public String toString() {
+		return "Pet [color=" + color + ", Job=" + Job + ", Skill=" + Arrays.toString(Skill) + ", SkillPoints="
+				+ SkillPoints + ", ElemMult=" + Arrays.toString(ElemMult) + ", StatusCounter="
+				+ Arrays.toString(StatusCounter) + ", Combo=" + Arrays.toString(Combo) + ", action=" + action + "]";
+	}
+	
 }

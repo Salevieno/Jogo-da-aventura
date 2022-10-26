@@ -1,13 +1,19 @@
 package GameComponents ;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon ;
 
+import Graphics.DrawPrimitives;
+import LiveBeings.CreatureTypes;
 import LiveBeings.Creatures;
 import Main.Game;
 import Main.Utg ;
+import Main.Uts;
 
 public class Maps 
 {
@@ -17,22 +23,22 @@ public class Maps
 	private Image image ;
 	private MapElements[] MapElem ;		// 0 = free, 1 = wall, 2 = water, 3 = tree, 4 = grass, 5 = rock, 6 = crystal, 7 = stalactite, 8 = volcano, 9 = lava, 10 = ice, 11 = chest, 12 = berry, 13 = herb, 14 = wood, 15 = metal, 16 = invisible wall
 	private String[][] Type ;			// 2 = water, 9 = lava, 10 = ice, 12 = berry, 13 = herb, 14 = wood, 15 = metal
-	//private Point[] invisible_wall, wall, water, lava, ice ;
 	private Object[] groundType ;
 	private int CollectibleLevel ;
 	private int[] CollectibleCounter ;	// [Berry, herb, wood, metal]
     private int[] CollectibleDelay ;	// [Berry, herb, wood, metal]
 	private int[] Connections ;
-	private int[] CreatureTypes ;
-	private int[] CreatureIDs ;
-	public int[] NPCsInMap ;
+	private CreatureTypes[] creatureTypes ;
+	private Creatures[] creatures ;
+	public Buildings[] building ;
+	public NPCs[] NPCsInMap ;
 	
 	public static int[] Music = new int[] {0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 11, 11, 11, 11, 11, 11} ;  	 
 	public static Image[] CollectibleImage ;
 	public static Image[] GroundImage ;
 	public static String[] CollectibleTypes = new String[] {"Berry", "Herb", "Wood", "Metal"} ;
 	
-	public Maps(String Name, int id, int Continent, Image image, MapElements[] MapElem, int CollectibleLevel, int[] CollectibleDelay, int[] Connections, int[] CreatureTypes, int[] CreatureIDs)
+	public Maps(String Name, int id, int Continent, Image image, MapElements[] MapElem, int CollectibleLevel, int[] CollectibleDelay, int[] Connections, CreatureTypes[] creatureTypes, Creatures[] creatures)
 	{
 		this.Name = Name ;
 		this.id = id ;
@@ -43,8 +49,9 @@ public class Maps
 		CollectibleCounter = new int[CollectibleTypes.length] ;
 		this.CollectibleDelay = CollectibleDelay ;
 		this.Connections = Connections ;
-		this.CreatureTypes = CreatureTypes ;
-		this.CreatureIDs = CreatureIDs ;
+		this.creatureTypes = creatureTypes ;
+		this.creatures = creatures ;
+		building = null ;
 		
 	    Image BerryImage = new ImageIcon(Utg.ReadTextFile("Paths.txt", 3)[1][0] + "Col0_Berry.png").getImage() ;
 	    Image HerbImage = new ImageIcon(Utg.ReadTextFile("Paths.txt", 3)[1][0] + "Col1_Herb.png").getImage() ;
@@ -64,9 +71,11 @@ public class Maps
 	public int[] getConnections() {return Connections ;}	
 	public int[] getCollectibleCounter() {return CollectibleCounter ;}	
 	public int[] getCollectibleDelay() {return CollectibleDelay ;}
-	public int[] getCreatureTypes() {return CreatureTypes ;}
-	public int[] getCreatureIDs() {return CreatureIDs ;}
-	public void setCreatureIDs(int[] C) {CreatureIDs = C ;}
+	public CreatureTypes[] getCreatureTypes() {return creatureTypes ;}
+	public Creatures[] getCreatures() {return creatures ;}
+	public NPCs[] getNPCs() {return NPCsInMap ;}
+	public Buildings[] getBuildings() {return building ;}
+	public void setCreatures(Creatures[] newValue) {creatures = newValue ;}
 	
 	public static void InitializeStaticVars(String ImagesPath)
 	{
@@ -217,10 +226,82 @@ public class Maps
 		}*/
  	}
 	
+ 	public void display(DrawPrimitives DP)
+ 	{
+ 		DP.DrawImage(image, Game.getScreen().getMapCenter(), "Center") ;
+ 	}
+ 	
+ 	public void displayElements(DrawPrimitives DP)
+ 	{
+ 		if (groundType != null)
+		{
+			for (int gt = 0 ; gt <= groundType.length - 1 ; gt += 1)
+			{
+				Object[] o = (Object[]) groundType[gt] ;
+				String type = (String) o[0] ;
+				Point p = (Point) o[1] ;
+				if (type.equals("water"))
+				{
+					DP.DrawRect(new Point(p.x, p.y), "center", new Size(10, 10), 0, Color.blue, null, false);
+				}
+			}
+		}
+		if (MapElem != null)
+		{
+			for (int me = 0 ; me <= MapElem.length - 1 ; me += 1)
+			{
+				MapElem[me].DrawImage(DrawPrimitives.OverallAngle, DP) ;
+			}
+		}
+ 	}
+	
+ 	public void displayBuildings(Point playerPos, String[] AllText, DrawPrimitives DP)
+ 	{
+ 		float overallAngle = DrawPrimitives.OverallAngle ;
+ 		Color[] colorPalette = Game.ColorPalette ;
+		//int[][] NPCsInBuildings = Uts.NPCsInBuildings(npc, building, id, BuildingsInCity) ;
+		Font font = new Font("SansSerif", Font.BOLD, 13) ;
+		if (building != null)
+		{
+			for (int b = 0 ; b <= building.length - 1 ; b += 1)
+			{
+				building[id].display(playerPos, overallAngle, new float[] {1, 1}, DP) ;
+			}
+			
+			//TODO essa é uma função da sign building
+			Point SignPos = Uts.BuildingPos(building, id, "Sign") ;
+			if (building[5].playerIsInside(playerPos))
+			{			
+				int[][] SignTextPos = new int[][] {{SignPos.x - 200, SignPos.y - 150}, {SignPos.x + 50, SignPos.y - 50}, {SignPos.x + 50, SignPos.y - 50}, {SignPos.x + 100, SignPos.y - 50}, {SignPos.x - 540, SignPos.y - 50}} ;
+				Point Pos = new Point(SignTextPos[id][0], SignTextPos[id][1]) ;			
+				//Size menuSize = new Size((int)(0.25*Utg.TextL(AllText[id + 1], font, G)), (int)(7*Utg.TextH(font.getSize()))) ;
+				Size menuSize = new Size(200, 200) ;
+				DP.DrawRoundRect(Pos, "TopLeft", menuSize, 3, colorPalette[4], colorPalette[4], true) ;			
+				DP.DrawFitText(new Point(Pos.x + 10, Pos.y - (int)(5.5*Utg.TextH(font.getSize()))), Utg.TextH(font.getSize()), "BotLeft", AllText[id + 1], font, 35, colorPalette[5]) ;		
+			}
+		}
+ 	}
+	
+	public void displayNPCs(DrawPrimitives DP)
+	{
+		if (NPCsInMap != null)	// Map has NPCs
+		{
+			for (int i = 0 ; i <= NPCsInMap.length - 1 ; i += 1)
+			{
+				if (NPCsInMap[i].getPosRelToBuilding().equals("Outside"))
+				{
+					NPCsInMap[i].display(DP) ;		
+				}
+			}
+		}
+	}
+	
+	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
+ 	
 	public boolean IsACity() {if (Name.contains("City")) {return true ;} else {return false ;}}
 	public boolean hasCreatures()
 	{
-		return (getCreatureIDs() != null) ;
+		return (getCreatures() != null) ;
 	}
 	public String groundTypeAtPoint(Point pos)
 	{
@@ -265,16 +346,21 @@ public class Maps
 		return true ;
 	}
 	
-	public void CalcNPCsInMap(NPCs[] npc)
+	public void InitializeNPCsInMap(NPCs[] npc)
     {
 		for (int j = 0 ; j <= npc.length - 1 ; j += 1)
 		{
 			if (npc[j].getMap() == id)
 			{
-				NPCsInMap = Utg.AddElem(NPCsInMap, j) ;
+				NPCsInMap = Utg.AddElem(NPCsInMap, npc[j]) ;
 			}
 		}
     }
+	public void InitializeBuildings(Buildings[] AllBuildings)
+	{
+		building = Uts.BuildingsInCity(AllBuildings, id) ;
+	}
+	
 	public void IncCollectiblesCounter()
 	{
 		for (int m = 0 ; m <= CollectibleCounter.length - 1 ; m += 1)
@@ -288,7 +374,7 @@ public class Maps
 	public void CreateCollectible(int MapID, int CollectibleID)
 	{
 		Screen screen = Game.getScreen() ;
-		float MinX = (float) (0.1), MinY = (float) ((float) (screen.getSkyHeight()) / screen.getSize().y + 0.1) ; 
+		float MinX = (float) (0.1), MinY = (float) ((float) screen.getSize().y / (screen.getBorders()[1] - screen.getBorders()[3]) + 0.1) ; 
     	float RangeX = (float) (0.8), RangeY = (float) (1 - MinY) ;
     	if (MapID == 13 | MapID == 17)
 		{ 
@@ -316,16 +402,16 @@ public class Maps
 			}
 		}
 	}
-	public Creatures[] creaturesinmap(Creatures[] creature)
+	/*public Creatures[] creaturesinmap(Creatures[] creature)
 	{
 		Creatures[] creaturesinmap = null ;
-		for (int i = 0 ; i <= CreatureIDs.length - 1 ; i += 1)
+		for (int i = 0 ; i <= creatures.length - 1 ; i += 1)
 		{
-			creaturesinmap = Utg.AddElem(creaturesinmap, creature[CreatureIDs[i]]) ;
+			creaturesinmap = Utg.AddElem(creaturesinmap, creatures[i]) ;
 		}
 
 		return creaturesinmap ;
-	}
+	}*/
 	
 	
 	/* print methods */
@@ -342,5 +428,17 @@ public class Maps
 				}
 			}
 		}
+	}
+
+
+	@Override
+	public String toString() {
+		return "Maps [Name=" + Name + ", id=" + id + ", Continent=" + Continent + ", image=" + image + ", MapElem="
+				+ Arrays.toString(MapElem) + ", Type=" + Arrays.toString(Type) + ", groundType="
+				+ Arrays.toString(groundType) + ", CollectibleLevel=" + CollectibleLevel + ", CollectibleCounter="
+				+ Arrays.toString(CollectibleCounter) + ", CollectibleDelay=" + Arrays.toString(CollectibleDelay)
+				+ ", Connections=" + Arrays.toString(Connections) + ", creatureTypes=" + Arrays.toString(creatureTypes)
+				+ ", creatures=" + Arrays.toString(creatures) + ", building=" + Arrays.toString(building)
+				+ ", NPCsInMap=" + Arrays.toString(NPCsInMap) + "]";
 	}
 }

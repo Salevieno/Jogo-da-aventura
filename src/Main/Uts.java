@@ -450,15 +450,15 @@ public class Uts
  		return false ;
  	}
 		
-	public static int ClosestCreatureInRange(Player player, Creatures[] creature, Maps[] maps)
+	public static int ClosestCreatureInRange(Player player, Creatures[] creatures, Maps[] maps)
 	{	
 		Size screenSize = Game.getScreen().getSize() ;
-		if (maps[player.getMap()].getCreatureIDs() != null)	// Map has creatures
+		if (player.getMap().getCreatures() != null)	// Map has creatures
 		{
 			int NumberOfCreaturesInMap = 0 ;
-			for (int i = 0 ; i <= maps[player.getMap()].getCreatureTypes().length - 1 ; ++i)
+			for (int i = 0 ; i <= player.getMap().getCreatureTypes().length - 1 ; ++i)
 			{
-				if (-1 < maps[player.getMap()].getCreatureTypes()[i])
+				if (-1 < player.getMap().getCreatureTypes()[i].getID())
 				{
 					NumberOfCreaturesInMap += 1 ;
 				}
@@ -467,18 +467,18 @@ public class Uts
 			float MinDist = screenSize.x + screenSize.y ;
 			for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 			{
-				int ID = maps[player.getMap()].getCreatureIDs()[i] ;
-				if (-1 < ID)
+				Creatures creature = player.getMap().getCreatures()[i] ;
+				if (player.getMap().getCreatures()[i] != null)
 				{
-					dist[i] = (float) new Point(player.getPos().x, player.getPos().y).distance(new Point(creature[ID].getPos().x, creature[ID].getPos().y)) ;				
+					dist[i] = (float) new Point(player.getPos().x, player.getPos().y).distance(new Point(creature.getPos().x, creature.getPos().y)) ;				
 					MinDist = Math.min(MinDist, dist[i]) ;
 				}	
 			}
 			for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 			{
-				if (dist[i] == MinDist & -1 < maps[player.getMap()].getCreatureIDs()[i] & dist[i] <= player.getRange())
+				if (dist[i] == MinDist & player.getMap().getCreatures() != null & dist[i] <= player.getRange())
 				{
-					return maps[player.getMap()].getCreatureIDs()[i] ;	// Closest creature ID
+					return i ;	// Closest creature ID
 				}
 			}
 		}
@@ -871,17 +871,30 @@ public class Uts
 		return IDs ;
 	}
 	
-	public static int[] BuildingsInCity(Buildings[] buildings, int map)
+	public static NPCs[] NPCsInBuilding(NPCs[] npc, String buildingName, int map)
 	{
-		int[] IDs = null ;
-		for (int b = 0 ; b <= buildings.length - 1 ; b += 1)
+		NPCs[] npcs = null ;
+		for (int n = 0 ; n <= npc.length - 1 ; n += 1)
 		{
-			if (buildings[b].getMap() == map)
+			if (npc[n].getMap() == map & npc[n].getPosRelToBuilding().equals(buildingName))
 			{
-				IDs = Utg.AddElem(IDs, buildings[b].getID()) ;
+				npcs = Utg.AddElem(npcs, npc[n]) ;
 			}
 		}
-		return IDs ;
+		return npcs ;
+	}
+	
+	public static Buildings[] BuildingsInCity(Buildings[] AllBuildings, int map)
+	{
+		Buildings[] buildingsInCity = null ;
+		for (int b = 0 ; b <= AllBuildings.length - 1 ; b += 1)
+		{
+			if (AllBuildings[b].getMap() == map)
+			{
+				buildingsInCity = Utg.AddElem(buildingsInCity, AllBuildings[b]) ;
+			}
+		}
+		return buildingsInCity ;
 	}
 	
 	public static Point BuildingPos(Buildings[] buildings, int map, String Name)

@@ -51,7 +51,7 @@ public class Icon
 	
 	public boolean ishovered(Point MousePos)
 	{
-		if (Utg.isInside(MousePos, new Point(Pos.x - size.x / 2, Pos.y - size.y / 2), size.x, size.y))
+		if (Utg.isInside(MousePos, new Point(Pos.x - size.x / 2, Pos.y - size.y / 2), size))
 		{
 			return true ;
 		}

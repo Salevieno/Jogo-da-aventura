@@ -41,7 +41,7 @@ public class Bestiary extends Window
 		int L = (int)(0.6*screenSize.x), H = (int)(0.6*screenSize.y) ;
 		float offset = 5 ;	// Offset from the edges
 		float Sx = offset, Sy = offset ;
-		int l = (int) ((L - 2*offset - (NumCreatureWindows[0] - 1)*Sx)/NumCreatureWindows[0]), h = (int) (H - 2*offset - (NumCreatureWindows[1] - 1)*Sy)/NumCreatureWindows[1] ;
+		Size size = new Size((int) ((L - 2*offset - (NumCreatureWindows[0] - 1)*Sx)/NumCreatureWindows[0]), (int) (H - 2*offset - (NumCreatureWindows[1] - 1)*Sy)/NumCreatureWindows[1]) ;
 		int thickness = 2 ;
 		//DF.DrawMenuWindow(Pos, L, H, AllText[AllTextCat[1]][1], 0, ColorPalette[7], ColorPalette[2]) ;
 		//DF.DrawWindowArray(NumCreatureWindows, new Point((int) (Pos.x + offset), (int) (Pos.y - H + h + offset)), "BotLeft", l, h, Sx, Sy, thickness, new Color[] {ColorPalette[7], ColorPalette[0]}, NumberOfCreaturesInWindow) ;
@@ -56,8 +56,8 @@ public class Bestiary extends Window
 					if (cx*NumCreatureWindows[0] + cy + NumberOfCreaturesPerWindow*window < creaturesDiscovered.length)
 					{
 						int CreatureID = creaturesDiscovered[cx*NumCreatureWindows[0] + cy + NumberOfCreaturesPerWindow*window] ;
-						Point InitPos = new Point((int) (Pos.x + offset + cx*(l + Sx)), (int) (Pos.y - H + h + offset + cy*(h + Sy))) ;
-						if (Utg.isInside(MousePos, InitPos, l, h))
+						Point InitPos = new Point((int) (Pos.x + offset + cx * (size.x + Sx)), (int) (Pos.y - H + size.y + offset + cy * (size.y + Sy))) ;
+						if (Utg.isInside(MousePos, InitPos, size))
 						{
 							SelectedCreature = CreatureID ;
 						}

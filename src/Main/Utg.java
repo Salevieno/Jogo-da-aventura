@@ -22,6 +22,7 @@ import java.io.InputStreamReader ;
 import java.math.BigDecimal ;
 import java.math.RoundingMode ;
 import java.nio.charset.StandardCharsets ;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.sound.sampled.AudioInputStream ;
@@ -29,12 +30,15 @@ import javax.sound.sampled.AudioSystem ;
 import javax.sound.sampled.Clip ;
 import javax.swing.JPanel ;
 
+import GameComponents.Buildings;
 import GameComponents.Icon ;
+import GameComponents.NPCs;
 import GameComponents.Projectiles ;
 import GameComponents.Size;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives ;
 import Items.Potion;
+import LiveBeings.CreatureTypes;
 import LiveBeings.Creatures;
 
 public abstract class Utg 
@@ -139,6 +143,65 @@ public abstract class Utg
 		}
 		return color ;
 	}
+	
+	public void DrawColorPalette(Point Pos, Color[] Pallete, DrawPrimitives DP)
+	{
+		Size size = new Size(20, 20) ;
+		DP.DrawRoundRect(Pos, "TopLeft", new Size(6 * size.x + 10, (Pallete.length / 6 + 1) * size.y + 10), 1, Color.white, Color.white, true) ;
+		for (int i = 0 ; i <= Pallete.length - 1 ; i += 1)
+		{
+			Point ColorPos = new Point((int) (Pos.x + 5 + size.x / 2 + (i % 6) * size.x), (int) (Pos.y + 5 + size.y / 2 + i / 6 * size.y)) ;
+			DP.DrawRoundRect(ColorPos, "Center", size, 1, Pallete[i], Pallete[i], false) ;
+		}
+	}
+	
+	public void DrawColorScheme(DrawPrimitives DP)
+	{
+		Point Pos = new Point(130, 30) ;
+		for (int j = 0 ; j <= 4 - 1 ; j += 1)
+		{
+			for (int i = 0 ; i <= 12 - 1 ; i += 1)
+			{
+				Color[] palette = Utg.ColorPalette(2) ;
+				if (j == 0)
+				{
+					palette = Utg.AddHue(palette, i * 30 / 360.0, 0, 0) ;
+				}
+				if (j == 1)
+				{
+					palette = Utg.AddHue(palette, i * 30 / 360.0, 1, 0) ;
+				}
+				if (j == 2)
+				{
+					palette = Utg.AddHue(palette, i * 30 / 360.0, 0, 1) ;
+				}
+				if (j == 3)
+				{
+					palette = Utg.toGrayScale(palette) ;
+				}
+				DrawColorPalette(new Point(Pos.x + 100 * i, Pos.y + 160 * j), palette, DP) ;
+			}
+		}
+	}
+	public void DrawAllFonts(DrawPrimitives DP)
+	{		
+		Font fonts[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+		int numrows = 60 ;
+		int sx = 100, sy = 14 ;
+		DP.DrawRect(new Point(0, 0), "TopLeft", new Size(500, 500), 1, Color.white, Color.black, true) ;
+		for (int i = 0 ; i <= fonts.length / numrows - 1 ; i += 1)
+		{
+			for (int j = 0 ; j <= numrows - 1 ; j += 1)
+			{
+				int id = i * numrows + j ;
+				if (id < fonts.length)
+				{
+					DP.DrawText(new Point(5 + i * sx, 5 + j * sy), "TopLeft", 0, "Estilo", new Font(fonts[id].getFontName(), Font.BOLD, 13), Color.blue) ;
+				}
+			}
+		}
+	}
+	
 	
 	public static double GamaDecompress(double color)
 	{
@@ -459,6 +522,8 @@ public abstract class Utg
 		return new Point(MouseInfo.getPointerInfo().getLocation().x - PanelLocation.x, MouseInfo.getPointerInfo().getLocation().y - PanelLocation.y) ;
  	} 	 	
 	
+ 	
+ 	// Reading files
 	public static String[][] ReadTextFile(String Language)
 	{
 		String fileName = "Texto-PT-br.txt" ;
@@ -524,6 +589,32 @@ public abstract class Utg
         }
 		return true ;
 	}
+	
+	/*public static void ReadJSON()
+	{
+	// need to use the JSON library
+		JSONParser parser = new JSONParser() ;
+	    try
+	    {
+	       Object obj = parser.parse(new FileReader("/Users/User/Desktop/course.json")) ;
+	       JSONObject jsonObject = (JSONObject)obj ;
+	       String name = (String)jsonObject.get("Name") ;
+	       String course = (String)jsonObject.get("Course") ;
+	       JSONArray subjects = (JSONArray)jsonObject.get("Subjects") ;
+	       System.out.println("Name: " + name) ;
+	       System.out.println("Course: " + course) ;
+	       System.out.println("Subjects:") ;
+	       Iterator iterator = subjects.iterator() ;
+	       while (iterator.hasNext())
+	       {
+	          System.out.println(iterator.next()) ;
+	       }
+	    }
+	    catch(Exception e)
+	    {
+	       e.printStackTrace() ;
+	    }
+	}*/
 	
 	public static int count(String filename) throws IOException
 	{
@@ -760,6 +851,24 @@ public abstract class Utg
 		return NewArray ;
 	}
 	
+	public static Buildings[] AddElem(Buildings[] OriginalArray, Buildings NewElem)
+	{
+		if (OriginalArray == null)
+		{
+			return new Buildings[] {NewElem} ;
+		}
+		else
+		{
+			Buildings[] NewArray = new Buildings[OriginalArray.length + 1] ;
+			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
+			{
+				NewArray[i] = OriginalArray[i] ;
+			}
+			NewArray[OriginalArray.length] = NewElem ;
+			return NewArray ;
+		}
+	}
+	
 	public static Image[] AddElem(Image[] OriginalArray, Image NewElem)
 	{
 		if (OriginalArray == null)
@@ -905,6 +1014,24 @@ public abstract class Utg
 		}
 	}
 
+	public static NPCs[] AddElem(NPCs[] OriginalArray, NPCs NewElem)
+	{
+		if (OriginalArray == null)
+		{
+			return new NPCs[] {NewElem} ;
+		}
+		else
+		{
+			NPCs[] NewArray = new NPCs[OriginalArray.length + 1] ;
+			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
+			{
+				NewArray[i] = OriginalArray[i] ;
+			}
+			NewArray[OriginalArray.length] = NewElem ;
+			return NewArray ;
+		}
+	}
+	
 	public static Color[] AddElem(Color[] OriginalArray, Color NewElem)
 	{
 		if (OriginalArray == null)
@@ -1104,6 +1231,42 @@ public abstract class Utg
 		}
 		result[input.length] = NewMember ;
 		return result ;
+	}
+	
+	public static Creatures[] AddVectorElem(Creatures[] OriginalArray, Creatures NewElem)
+	{
+		if (OriginalArray == null)
+		{
+			return new Creatures[] {NewElem} ;
+		}
+		else
+		{
+			Creatures[] NewArray = new Creatures[OriginalArray.length + 1] ;
+			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
+			{
+				NewArray[i] = OriginalArray[i] ;
+			}
+			NewArray[OriginalArray.length] = NewElem ;
+			return NewArray ;
+		}
+	}
+	
+	public static CreatureTypes[] AddVectorElem(CreatureTypes[] OriginalArray, CreatureTypes NewElem)
+	{
+		if (OriginalArray == null)
+		{
+			return new CreatureTypes[] {NewElem} ;
+		}
+		else
+		{
+			CreatureTypes[] NewArray = new CreatureTypes[OriginalArray.length + 1] ;
+			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
+			{
+				NewArray[i] = OriginalArray[i] ;
+			}
+			NewArray[OriginalArray.length] = NewElem ;
+			return NewArray ;
+		}
 	}
 	
 	public static int[] AddVectorElem(int[] OriginalArray, int NewElem)
@@ -1314,9 +1477,9 @@ public abstract class Utg
 		return s ;
 	}
 	
-	public static boolean isInside(Point ObjPos, Point RectTopLeftPos, int L, int H)
+	public static boolean isInside(Point objPos, Point rectTopLeftPos, Size rectSize)
 	{
-		if (RectTopLeftPos.x <= ObjPos.x & ObjPos.y <= RectTopLeftPos.y + H & ObjPos.x <= RectTopLeftPos.x + L & RectTopLeftPos.y <= ObjPos.y)
+		if (rectTopLeftPos.x <= objPos.x & objPos.y <= rectTopLeftPos.y + rectSize.y & objPos.x <= rectTopLeftPos.x + rectSize.x & rectTopLeftPos.y <= objPos.y)
 		{
 			return true ;
 		} 
@@ -1326,7 +1489,7 @@ public abstract class Utg
 		}
 	}
 
-	public static boolean isInside(double[] ObjPos, double[] RectBotLeftPos, double L, double H)
+	/*public static boolean isInside(double[] ObjPos, double[] RectBotLeftPos, double L, double H)
 	{
 		if (RectBotLeftPos[0] <= ObjPos[0] & ObjPos[1] <= RectBotLeftPos[1] & ObjPos[0] <= RectBotLeftPos[0] + L & RectBotLeftPos[1] - H <= ObjPos[1])
 		{
@@ -1336,7 +1499,7 @@ public abstract class Utg
 		{
 			return false ;
 		}
-	}
+	}*/
 		
 	public static boolean isNumeric(String str) 
 	{ 

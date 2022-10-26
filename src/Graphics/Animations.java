@@ -375,7 +375,7 @@ public class Animations
 				{
 					UtilGeral.SwitchMusic(Music[MusicInMap[player.getMap()]], Music[11]) ;
 				}*/
-				player.setMap(64, maps) ;
+				player.setMap(maps[64]) ;
 			}
 			DF.SailingAnimation(player, npc[86], maps, "Forest", Anicounter[19], Aniduration[19], BoatImage) ;
 		} else if (player.getContinent() == 0)
@@ -386,7 +386,7 @@ public class Animations
 				{
 					UtilGeral.SwitchMusic(Music[MusicInMap[player.getMap()]], Music[11]) ;
 				}*/
-				player.setMap(61, maps) ;
+				player.setMap(maps[61]) ;
 			}
 			DF.SailingAnimation(player, npc[88], maps, "Island", Anicounter[19], Aniduration[19], BoatImage) ;
 		}

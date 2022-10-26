@@ -21,6 +21,7 @@ import Items.Item;
 import Items.PetItem;
 import Items.Potion;
 import Items.QuestItem;
+import LiveBeings.LiveBeing;
 import LiveBeings.Player;
 import Main.Game;
 import Main.Utg;
@@ -134,7 +135,25 @@ public class Bag extends Window
 			setItem(0) ;
 		}
 	}
-	
+	public void useItem(Player user, Item item)
+	{
+		if (item != null)	// if the item is valid
+		{
+			if (item instanceof Potion)	// potions
+			{
+				Potion pot = (Potion) item ;
+				float PotMult = 1 ;
+				if (user.getPA().getJob() == 3)
+				{
+					PotMult += 0.06 * user.getSpell()[7] ;
+				}
+				
+				user.getPA().incLife(pot.getLifeHeal() * user.getPA().getLife()[1] * PotMult) ;
+				user.getPA().incMP(pot.getMPHeal() * user.getPA().getMp()[1] * PotMult) ;					
+			}
+			user.getBag().remove(user.getBag().getItem());	
+		}
+	}
 	public void display(Point MousePos, int[] AllTextCat, String[][] AllText, DrawFunctions DF)
 	{
 		DrawPrimitives DP = DF.getDrawPrimitives() ;

@@ -14,6 +14,7 @@ import GameComponents.Maps;
 import GameComponents.NPCs ;
 import GameComponents.Quests ;
 import GameComponents.Screen;
+import GameComponents.Size;
 import GameComponents.Spells ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
@@ -650,17 +651,17 @@ public class NPCsMethods
 			{
 				int[] Pos = new int[] {(int)(0.1*ScreenL), (int)(0.9*ScreenH)} ;
 				int H = (int)(0.66*ScreenH) ;
-				int l = (int)(0.2*ScreenL), h = (int)(0.1*ScreenH) ;
-				int Sx = l/10, Sy = h/10 ;
+				Size size = new Size((int)(0.2*ScreenL), (int)(0.1*ScreenH)) ;
+				int Sx = size.x / 10, Sy = size.y / 10 ;
 				int[] Sequence = player.GetSpellSequence() ;
-				int[] x0 = new int[] {(int)(0.03*ScreenL + l + Sx), (int)(0.03*ScreenL + l/2 + Sx/2), (int)(0.03*ScreenL)} ;
+				int[] x0 = new int[] {(int)(0.03*ScreenL + size.x + Sx), (int)(0.03*ScreenL + size.x / 2 + Sx / 2), (int)(0.03*ScreenL)} ;
 				int id = 0 ;
 				for (int row = 0 ; row <= Sequence.length - 1 ; row += 1)
 				{
 					for (int col = 0 ; col <= Sequence[row] - 1 ; col += 1)
 					{
-						int[] RectCenter = new int[] {(int) (Pos[0] + x0[Sequence[row] - 1] + (l + Sx)*col + l/2), (int) (Pos[1] - H + h/2 + Sy/2 + (h + Sy)*row)} ;
-						if (Utg.isInside(MousePos, new Point(RectCenter[0] - l/2, RectCenter[1] - h/2), l, h))
+						int[] RectCenter = new int[] {(int) (Pos[0] + x0[Sequence[row] - 1] + (size.x + Sx)*col + size.x/2), (int) (Pos[1] - H + size.y/2 + Sy/2 + (size.y + Sy)*row)} ;
+						if (Utg.isInside(MousePos, new Point(RectCenter[0] - size.x/2, RectCenter[1] - size.y/2), size))
 						{
 							SelectedSkill = id ;
 						}

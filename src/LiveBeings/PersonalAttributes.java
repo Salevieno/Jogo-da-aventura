@@ -4,15 +4,18 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.util.Arrays;
 
+import GameComponents.Maps;
+import GameComponents.MovingAnimations;
+import Main.Game;
+
 public class PersonalAttributes
 {
 	private String Name ;
-	private Image[] image ;
 	private int Level ;
 	protected int Job ;
 	protected int ProJob ;
 	private int continent ;
-	private int map ;
+	private Maps map ;
 	private Point Pos ;
 	private String dir ;			// direction of the movement
 	private String Thought ;		// current thought
@@ -29,14 +32,16 @@ public class PersonalAttributes
 	protected String currentAction; 
 	protected int countmove ;
 	
-	public PersonalAttributes(String Name, Image[] image, int Level, int Job, int ProJob, int continent, int map, Point Pos, String dir, String Thought, int[] Size, float[] Life, float[] Mp, float Range, int Step, float[] Exp, float[] Satiation, float[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
+	public PersonalAttributes(String Name, int Level, int Job, int ProJob, Maps map, Point Pos, String dir, String Thought, int[] Size, float[] Life, float[] Mp, float Range, int Step, float[] Exp, float[] Satiation, float[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
 	{
 		this.Name = Name ;
-		this.image = image ;
 		this.Level = Level ;
 		this.Job = Job ;
 		this.ProJob = ProJob ;
-		this.continent = continent ;
+		if (map != null)
+		{
+			this.continent = map.getContinent() ;
+		}
 		this.map = map ;
 		this.Pos = Pos ;
 		this.dir = dir ;
@@ -56,12 +61,11 @@ public class PersonalAttributes
 	}
 
 	public String getName() {return Name ;}
-	public Image[] getimage() {return image ;}
 	public int getLevel() {return Level ;}
 	public int getJob() {return Job ;}
 	public int getProJob() {return ProJob ;}
 	public int getContinent() {return continent ;}
-	public int getMap() {return map ;}
+	public Maps getMap() {return map ;}
 	public String getDir() {return dir ;}
 	public String getThought() {return Thought ;}
 	public Point getPos() {return Pos ;}
@@ -79,12 +83,11 @@ public class PersonalAttributes
 	public int getCountmove() {return countmove ;}
 	
 	public void setName(String newValue) {Name = newValue ;}
-	public void setimage(Image[] newValue) {image = newValue ;}
 	public void setLevel(int newValue) {Level = newValue ;}
 	public void setJob(int newValue) {Job = newValue ;}
 	public void setProJob(int newValue) {ProJob = newValue ;}
 	public void setContinent(int newValue) {continent = newValue ;}
-	public void setMap(int newValue) {map = newValue ;}
+	public void setMap(Maps newValue) {map = newValue ;}
 	public void setdir(String newValue) {dir = newValue ;}
 	public void setThought(String newValue) {Thought = newValue ;}
 	public void setPos(Point newValue) {Pos = newValue ;}
@@ -149,6 +152,29 @@ public class PersonalAttributes
 		
 		return newPos ;
 	}
+	public Point CalcNewPos()
+	{
+		Point newPos = new Point(0, 0) ;
+		Step = 1 ;
+		if (dir.equals(Player.MoveKeys[0]))	// North
+		{
+			newPos = new Point(Pos.x, Pos.y - Step) ;
+		}
+		if (dir.equals(Player.MoveKeys[1]))	// West
+		{
+			newPos = new Point(Pos.x - Step, Pos.y) ;
+		}
+		if (dir.equals(Player.MoveKeys[2]))	// South
+		{
+			newPos = new Point(Pos.x, Pos.y + Step) ;	
+		}
+		if (dir.equals(Player.MoveKeys[3]))	// East
+		{
+			newPos = new Point(Pos.x + Step, Pos.y) ;
+		}
+		
+		return newPos ;
+	}
 	/*public int[] CenterPos()
 	{
 		return new int[] {(int) (Pos[0]), (int) (Pos[1] - 0.5 * Size[1])} ;
@@ -175,7 +201,6 @@ public class PersonalAttributes
 	public void printAtt()
 	{
 		System.out.println("Name: " + Name);
-		System.out.println("Image: " + Arrays.toString(image));
 		System.out.println("Level: " + Level);
 		System.out.println("Continent: " + continent);
 		System.out.println("Map: " + map);

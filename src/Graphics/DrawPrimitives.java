@@ -16,14 +16,13 @@ import Main.Utg ;
 public class DrawPrimitives 
 {
 	public static float OverallAngle = 0 ;
-	private int StdThickness ;
+	public static int StdThickness = 1;
 	private Graphics2D G ;
 	
 	public static Color[] ColorPalette ;
 	
-	public DrawPrimitives(int StdThickness, Color[] colorPalette, Graphics2D G)
+	public DrawPrimitives(Color[] colorPalette, Graphics2D G)
 	{
-		this.StdThickness = StdThickness ;
 		this.G = G ;
 		ColorPalette = colorPalette ;
 	}
@@ -110,7 +109,7 @@ public class DrawPrimitives
 			Text.getChars(0, maxlength - 4, chararray, 0) ;
 			ShortText = String.valueOf(chararray) ;
 		}
-		if (Text.length() <= maxlength | Utg.isInside(MousePos, new Point(Pos.x + offset[0], Pos.y + offset[1]), Utg.TextL(ShortText, font, G), Utg.TextH(font.getSize())))
+		if (Text.length() <= maxlength | Utg.isInside(MousePos, new Point(Pos.x + offset[0], Pos.y + offset[1]), new Size(Utg.TextL(ShortText, font, G), Utg.TextH(font.getSize()))))
 		{
 			DrawText(Pos, Alignment, OverallAngle, Text, font, color) ;
 		}

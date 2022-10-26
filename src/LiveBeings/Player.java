@@ -16,6 +16,7 @@ import Actions.Battle ;
 import GameComponents.Icon;
 import GameComponents.Items;
 import GameComponents.Maps;
+import GameComponents.MovingAnimations;
 import GameComponents.NPCs;
 import GameComponents.Quests;
 import GameComponents.Screen;
@@ -31,7 +32,6 @@ import Items.Food;
 import Items.Forge;
 import Items.Equip;
 import Items.GeneralItem;
-import Items.Item;
 import Items.PetItem;
 import Items.Potion;
 import Items.QuestItem;
@@ -54,7 +54,6 @@ public class Player extends LiveBeing
 	private Color[] color ;	// 0: Hair, 1: Eyes, 2: Neck, 3: Sleeves, 4: Shirt, 5: Legs, 6: Shoes, 7: Skin]
 	private int[] Spell ;
 	private int[] Quest ;
-	//private int[] Bag ;
 	private Bag bag ;
 	private Quest quest ;
 	private Book fab ;
@@ -114,16 +113,9 @@ public class Player extends LiveBeing
 	public static Image PlayerFront = new ImageIcon(Game.ImagesPath + "PlayerFront.png").getImage() ;
 	public static Image PlayerLeft = new ImageIcon(Game.ImagesPath + "PlayerLeft.png").getImage() ;
 	public static Image PlayerRight = new ImageIcon(Game.ImagesPath + "PlayerRight.png").getImage() ;
-	public static Image PlayerBack2 = new ImageIcon(Game.ImagesPath + "PlayerBack2.png").getImage() ;
-	public static Image PlayerFront2 = new ImageIcon(Game.ImagesPath + "PlayerFront2.png").getImage() ;
-	public static Image PlayerLeft2 = new ImageIcon(Game.ImagesPath + "PlayerLeft2.png").getImage() ;
-	public static Image PlayerRight2 = new ImageIcon(Game.ImagesPath + "PlayerRight2.png").getImage() ;
-	public static Image[] Images = new Image[] {PlayerBack, PlayerFront, PlayerLeft, PlayerRight, PlayerBack2, PlayerFront2, PlayerLeft2, PlayerRight2} ;
     
     public static Image TentImage = new ImageIcon(Game.ImagesPath + "Tent.png").getImage() ;   
     public static Image DragonAuraImage = new ImageIcon(Game.ImagesPath + "DragonAura.png").getImage() ;
-    //public static Image BagMenuImage = new ImageIcon(Game.ImagesPath + "BagMenu.png").getImage() ;
-    //public static Image BagSlotImage = new ImageIcon(Game.ImagesPath + "BagSlot.png").getImage() ;
 	private static Image PterodactileImage = new ImageIcon(Game.ImagesPath + "Pterodactile.png").getImage() ;
 	private static Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "SpeakingBubble.png").getImage() ;
     
@@ -132,7 +124,7 @@ public class Player extends LiveBeing
 	
 	public Player(String Name, String Language, String Sex, int Job)
 	{
-		super(Job, InitializePersonalAttributes(Name, Job), InitializeBattleAttributes(Job), new AttributesWindow()) ;
+		super(Job, InitializePersonalAttributes(Name, Job), InitializeBattleAttributes(Job), new MovingAnimations(PlayerBack, PlayerBack, PlayerFront, PlayerLeft, PlayerRight), new AttributesWindow()) ;
 		this.Language = Language ;
 		this.Sex = Sex ;
 		Spell = new int[NumberOfSkillsPerJob[PA.Job]] ;
@@ -192,12 +184,10 @@ public class Player extends LiveBeing
 	{
     	int Level = 1 ;
     	int ProJob = 0 ;
-		int Continent = 0 ;
-		int Map = Job ;
 		Point Pos = new Point(0, 0) ;
 		String dir = Player.MoveKeys[0] ;
 		String Thought = "Exist" ;
-		int[] Size = new int[] {Images[0].getWidth(null), Images[0].getHeight(null)} ;
+		int[] Size = new int[] {PlayerBack.getWidth(null), PlayerBack.getHeight(null)} ;
 		float[] Life = new float[] {Float.parseFloat(Properties[Job][2]), Float.parseFloat(Properties[Job][2])} ;
 		float[] Mp = new float[] {Float.parseFloat(Properties[Job][3]), Float.parseFloat(Properties[Job][3])} ;
 		float Range = Float.parseFloat(Properties[Job][4]) ;
@@ -209,7 +199,7 @@ public class Player extends LiveBeing
 		int[][] Actions = new int[][] {{0, Integer.parseInt(Properties[Job][37]), 0}, {0, Integer.parseInt(Properties[Job][38]), 0}, {0, Integer.parseInt(Properties[Job][39]), 0}, {0, Integer.parseInt(Properties[Job][40]), 0}} ;
 		String currentAction = "existing" ;
 		int countmove = 0 ;
-		return new PersonalAttributes(Name, Images, Level, Job, ProJob, Continent, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
+		return new PersonalAttributes(Name, Level, Job, ProJob, Game.getMaps()[Job], Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
 	}
 	
 	private static BattleAttributes InitializeBattleAttributes(int Job)
@@ -244,11 +234,10 @@ public class Player extends LiveBeing
 	public int getJob() {return PA.getJob() ;}
 	public int getProJob() {return PA.getProJob() ;}	
 	public int getContinent() {return PA.getContinent() ;}
-	public int getMap() {return PA.getMap() ;}
+	public Maps getMap() {return PA.getMap() ;}
 	public Point getPos() {return PA.getPos() ;}
 	public int[] getSpell() {return Spell ;}
 	public int[] getQuest() {return Quest ;}
-	//public int[] getBag() {return Bag ;}
 	public Bag getBag() {return bag ;}
 	public int[] getEquips() {return Equips ;}
 	public int getSkillPoints() {return SkillPoints ;}
@@ -291,13 +280,79 @@ public class Player extends LiveBeing
 	public Settings getSettings() {return settings ;}
 	public void setSize(int[] S) {PA.setSize(S) ;}
 	public void setProJob(int PJ) {PA.setProJob(PJ) ;}
-	public void setMap(int M, Maps[] maps) {PA.setMap(M) ; PA.setContinent(maps[PA.getMap()].getContinent()) ;}
+	public void setMap(Maps M) {PA.setMap(M) ; PA.setContinent(M.getContinent()) ;}
 	public void setPos(Point P) {PA.setPos(P) ;}
-	//public void setBag(int[] B) {Bag = B ;}
 	public void setBag(Bag b) {bag = b ;}
 	public void setStep(int S) {PA.setStep(S) ;}
 	public void setCurrentAction(String CA) {PA.currentAction = CA ;}
 	public void setCombo(String[] C) {Combo = C ;}
+	
+	
+	
+	
+	
+	
+	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
+	
+
+	public int GetNumberOfSpells()
+	{
+		int NumberOfSkills = 0 ;
+		int[] Sequence = GetSpellSequence() ;
+		for (int i = 0 ; i <= Sequence.length - 1 ; i += 1)
+		{
+			NumberOfSkills += Sequence[i] ;
+		}
+		return NumberOfSkills ;
+	}
+	public int GetNumberOfProSpells()
+	{
+		int NumberOfProSkills = 0 ;
+		int[] ProSequence = GetProSpellSequence() ;
+		for (int i = 0 ; i <= ProSequence.length - 1 ; i += 1)
+		{
+			NumberOfProSkills += ProSequence[i] ;
+		}
+		return NumberOfProSkills ;
+	}
+	public int[] GetActiveSpells(Spells[] spell)
+	{
+		int[] ActiveSkills = null ;
+		for (int i = 0 ; i <= spell.length - 1 ; i += 1)
+		{
+			if ((spell[i].getType().equals("Active") | spell[i].getType().equals("Support") | spell[i].getType().equals("Offensive")) & 0 < Spell[i])
+			{
+				ActiveSkills = Utg.AddElem(ActiveSkills, i) ;
+			}
+		}
+		return ActiveSkills ;
+	}
+	public int[] GetSpellSequence()
+	{
+		// Sequence: [Player job][Number of skills per line]
+		int[][] Sequence = new int[][] {{1, 3, 3, 3, 3, 1}, {3, 3, 3, 3, 3}, {3, 3, 3, 3, 3}, {2, 3, 3, 3, 3}, {2, 3, 3, 3, 3}} ;
+		return Sequence[PA.Job] ;
+	}
+	public int[] GetProSpellSequence()
+	{
+		// Sequence: [Player job][Number of skills per line]
+		int[][] Sequence = new int[][] {{1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}} ;
+		return Sequence[PA.ProJob] ;
+	}
+	public int[] GetActiveQuests()
+	{
+		int[] ActiveQuests = null ;
+		for (int i = 0 ; i <= Quest.length - 1 ; i += 1)
+		{
+			if (-1 < Quest[i])
+			{
+				ActiveQuests = Utg.AddElem(ActiveQuests, i) ;
+			}
+		}
+		return ActiveQuests ;
+	}	
+	
+	
 	
 	public void addSkillPoint(int amount)
 	{
@@ -336,15 +391,14 @@ public class Player extends LiveBeing
 			PA.setdir(Player.MoveKeys[3]) ;
 		}
 	}
-	public void Move(Pet pet, Maps[] maps, Clip[] Music, boolean MusicIsOn, Animations Ani)
+	public void Move(Pet pet, Clip[] Music, boolean MusicIsOn, Animations Ani)
 	{
-		Point NewPos = PA.CalcNewPos(getDir(), PA.getPos(), PA.getStep()) ;
-		Screen screen = Game.getScreen() ;
-		if (screen.posIsInMap(NewPos))	// if the player's new position is inside the map
+		Point NewPos = PA.CalcNewPos() ;
+		if (Game.getScreen().posIsInMap(NewPos))	// if the player's new position is inside the map
 		{	
 			if (!Ani.isActive(10) & !Ani.isActive(12) & !Ani.isActive(13) & !Ani.isActive(15) & !Ani.isActive(18))
 			{
-				boolean NewPosIsWalkable = maps[PA.getMap()].GroundIsWalkable(NewPos, PA.Elem[4]) ;
+				boolean NewPosIsWalkable = PA.getMap().GroundIsWalkable(NewPos, PA.Elem[4]) ;
 				if (NewPosIsWalkable)
 				{
 					setPos(NewPos) ;
@@ -356,7 +410,7 @@ public class Player extends LiveBeing
 			//boolean NewPosIsWalkable = Uts.GroundIsWalkable(maps[PA.getMap()].getType()[NewPos[0]][NewPos[1]], Elem[4]) ; -> this has to be on the new map
 			if (true)
 			{
-				MoveToNewMap(pet, maps, action, Music, MusicIsOn, Ani) ;
+				MoveToNewMap(pet, action, Music, MusicIsOn, Ani) ;
 			}
 		}
 		
@@ -366,6 +420,22 @@ public class Player extends LiveBeing
 			PA.countmove = 0 ;
 		}
 	}
+	public void AddCreatureToBestiary(int CreatureID)
+	{
+		if (CreaturesDiscovered != null)
+		{
+			if (!Utg.ArrayContains(CreaturesDiscovered, CreatureID))
+			{
+				CreaturesDiscovered = Utg.AddElem(CreaturesDiscovered, CreatureID) ;
+			}
+		}
+		else
+		{
+			CreaturesDiscovered = new int[] {CreatureID} ;
+		}
+	}
+
+	
 	public void act(Pet pet, Maps[] maps, Spells[] spell, Point MousePos, Icon Selectedbutton, Icon[] sideBarIcons, Animations Ani, DrawFunctions DF)
 	{
 		if (ActionIsAMove(action))
@@ -457,15 +527,19 @@ public class Player extends LiveBeing
 		}
 		
 		// support skills
-		if (Uts.ActionIsSkill(SkillKeys, action) & (!isInBattle() | canAtk()) & Utg.IndexOf(SkillKeys, action) < activeSpells(spell).length)
+		if (Uts.ActionIsSkill(SkillKeys, action) & (!isInBattle() | canAtk()) & Utg.IndexOf(SkillKeys, action) < GetActiveSpells(spell).length)
 		{
-			SupSpell(pet, activeSpells(spell)[Utg.IndexOf(SkillKeys, action)], spell) ;
+			SupSpell(pet, GetActiveSpells(spell)[Utg.IndexOf(SkillKeys, action)], spell) ;
 		}
 		
-		// navigating through bag
+		// navigating through open windows
 		if (bag.isOpen())
 		{
 			bag.navigate(action) ;
+		}
+		if (settings.isOpen())
+		{
+			settings.navigate(action) ;
 		}
 		
 		// if meets creature, enters battle
@@ -481,24 +555,14 @@ public class Player extends LiveBeing
 		// Check if there is an animation on, if not, check if there is some ground effect to apply
 		if (!Ani.SomeAnimationIsActive())
 		{
-			AdjacentGroundEffect(maps[PA.getMap()]) ;
+			receiveAdjacentGroundEffect(PA.getMap()) ;
 		}
 		
 		setCombo(Uts.RecordCombo(Combo, action, 10)) ;
 	}
-	public void AdjacentGroundEffect(Maps map)
-	{
-		if (Uts.CheckAdjacentGround(PA.getPos(), map, "Lava").equals("Inside") & !PA.Elem[4].equals("f"))
-		{
-			PA.incLife(-5) ;
-		}
-		if (Uts.isAdjacentTo(PA.getPos(),  map, "Water"))
-		{
-			PA.incThirst(1) ;
-		}
-	}
 	
-	public int[] meet(Creatures[] creature, NPCs[] npc, Maps map, int CreatureInBattle, Animations Ani)
+
+	public int[] meet(Creatures[] creatures, NPCs[] npc, Maps map, int CreatureInBattle, Animations Ani)
 	{
 		float distx, disty ;
 		String groundType = map.groundTypeAtPoint(PA.getPos()) ;
@@ -534,21 +598,21 @@ public class Player extends LiveBeing
 			/* Meeting with creatures */
 			if (isInBattle())
 			{
-				distx = Math.abs(PA.getPos().x - creature[CreatureInBattle].getPos().x) ;
-				disty = Math.abs(PA.getPos().y - PA.getSize()[1] / 2 - creature[CreatureInBattle].getPos().y) ;
-				if (distx <= (PA.getSize()[0] + creature[CreatureInBattle].getSize()[0]) / 2 & disty <= (PA.getSize()[1] + creature[CreatureInBattle].getSize()[1]) / 2 & !Ani.isActive(10) & !Ani.isActive(19))
+				distx = Math.abs(PA.getPos().x - creatures[CreatureInBattle].getPos().x) ;
+				disty = Math.abs(PA.getPos().y - PA.getSize()[1] / 2 - creatures[CreatureInBattle].getPos().y) ;
+				if (distx <= (PA.getSize()[0] + creatures[CreatureInBattle].getSize()[0]) / 2 & disty <= (PA.getSize()[1] + creatures[CreatureInBattle].getSize()[1]) / 2 & !Ani.isActive(10) & !Ani.isActive(19))
 				{
 					return new int[] {0, CreatureInBattle} ;
 				}
 			}
-			for (int i = 0 ; i <= map.getCreatureIDs().length - 1 ; ++i)
+			for (int i = 0 ; i <= map.getCreatures().length - 1 ; ++i)
 			{
-				int ID = map.getCreatureIDs()[i] ;
-				distx = Utg.dist1D(PA.getPos().x, creature[ID].getPos().x) ;
-				disty = Utg.dist1D(PA.getPos().y - PA.getSize()[1] / 2, creature[ID].getPos().y) ;
-				if (distx <= (PA.getSize()[0] + creature[ID].getSize()[0]) / 2 & disty <= (PA.getSize()[1] + creature[ID].getSize()[1]) / 2 & !Ani.isActive(10) & !Ani.isActive(19))
+				Creatures creature = map.getCreatures()[i] ;
+				distx = Utg.dist1D(PA.getPos().x, creature.getPos().x) ;
+				disty = Utg.dist1D(PA.getPos().y - PA.getSize()[1] / 2, creature.getPos().y) ;
+				if (distx <= (PA.getSize()[0] + creature.getSize()[0]) / 2 & disty <= (PA.getSize()[1] + creature.getSize()[1]) / 2 & !Ani.isActive(10) & !Ani.isActive(19))
 				{
-					return new int[] {0, ID} ;
+					return new int[] {0, i} ;
 				}
 			}
 		}	
@@ -558,14 +622,14 @@ public class Player extends LiveBeing
 		{
 			for (int i = 0 ; i <= map.NPCsInMap.length - 1 ; i += 1)
 			{
-				int NPCID = map.NPCsInMap[i] ;
-				if (-1 < NPCID)
+				NPCs NPC = map.NPCsInMap[i] ;
+				if (-1 < NPC.getID())
 				{
-					distx = (float) Math.abs(PA.getPos().x - npc[NPCID].getPos().x) ;	
-					disty = (float) Math.abs(PA.getPos().y - npc[NPCID].getPos().y) ;
+					distx = (float) Math.abs(PA.getPos().x - NPC.getPos().x) ;	
+					disty = (float) Math.abs(PA.getPos().y - NPC.getPos().y) ;
 					if (distx <= 0.5*PA.getSize()[0] & disty <= 0.5*PA.getSize()[1])
 					{
-						return new int[] {1, NPCID} ;
+						return new int[] {1, NPC.getID()} ;
 					}
 				}
 			}	
@@ -586,12 +650,12 @@ public class Player extends LiveBeing
 		Ani.SetAniVars(10, new Object[] {100, PA.getPos(), 10, Coltype, CollectMessage}) ;
 		Ani.StartAni(10) ;
 		
-		maps[PA.getMap()].getType()[PA.getPos().x][PA.getPos().y] = "free" ;	// Make the ground where the player is standing free
+		PA.getMap().getType()[PA.getPos().x][PA.getPos().y] = "free" ;	// Make the ground where the player is standing free
 		
 		// The collecting act itself
 		int CollectibleID = -1 ;
-		float CollectChance = (float) ((maps[getMap()].getCollectibleLevel() + 2)*Math.random()) ;
-		int MapCollectLevel = maps[getMap()].getCollectibleLevel() ;
+		float CollectChance = (float) ((getMap().getCollectibleLevel() + 2)*Math.random()) ;
+		int MapCollectLevel = getMap().getCollectibleLevel() ;
 		float PlayerCollectLevel = -1 ;
 		if (Coltype == 0)	// Berry
 		{
@@ -637,9 +701,20 @@ public class Player extends LiveBeing
 			CollectibleID = -1 ;
 		}
 		
-		maps[PA.getMap()].CreateCollectible(PA.getMap(), CollectibleID) ;	
+		PA.getMap().CreateCollectible(PA.getMap().getid(), CollectibleID) ;	
 	}
-	public void MoveToNewMap(Pet pet, Maps[] maps, String action, Clip[] Music, boolean MusicIsOn, Animations Ani)
+	public void receiveAdjacentGroundEffect(Maps map)
+	{
+		if (Uts.CheckAdjacentGround(PA.getPos(), map, "Lava").equals("Inside") & !PA.Elem[4].equals("f"))
+		{
+			PA.incLife(-5) ;
+		}
+		if (Uts.isAdjacentTo(PA.getPos(),  map, "Water"))
+		{
+			PA.incThirst(1) ;
+		}
+	}
+	public void MoveToNewMap(Pet pet, String action, Clip[] Music, boolean MusicIsOn, Animations Ani)
 	{
 		Screen screen = Game.getScreen() ;
 		Size screenSize = screen.getSize() ;
@@ -647,7 +722,7 @@ public class Player extends LiveBeing
 		int nextMap = -1 ;
 		int step = PA.getStep() ;
 		Point currentPos = new Point(PA.getPos().x, PA.getPos().y), nextPos = new Point(0, 0) ;
-		int[] mapCon = maps[PA.getMap()].getConnections() ;
+		int[] mapCon = PA.getMap().getConnections() ;
 		if (action.equals(MoveKeys[0]))	 // Up
 		{
 			nextPos = new Point(currentPos.x, borders[3] - step) ;
@@ -698,20 +773,20 @@ public class Player extends LiveBeing
 		}
 		if (-1 < nextMap)
 		{
-			if (maps[nextMap].GroundIsWalkable(nextPos, PA.Elem[4]))
+			if (Game.getMaps()[nextMap].GroundIsWalkable(nextPos, PA.Elem[4]))
 			{
-				if (MusicIsOn & Maps.Music[PA.getMap()] != Maps.Music[nextMap])
+				if (MusicIsOn & Maps.Music[PA.getMap().getid()] != Maps.Music[nextMap])
 				{
-					Utg.SwitchMusic(Music[Maps.Music[PA.getMap()]], Music[Maps.Music[nextMap]]) ;
+					Utg.SwitchMusic(Music[Maps.Music[PA.getMap().getid()]], Music[Maps.Music[nextMap]]) ;
 				}
-				PA.setMap(nextMap) ;
-				PA.setContinent(maps[PA.getMap()].getContinent()) ;
+				PA.setMap(Game.getMaps()[nextMap]) ;
+				PA.setContinent(PA.getMap().getContinent()) ;
 				PA.setPos(nextPos) ;	
 				if (0 < pet.getLife()[0])
 				{
 					pet.getPersonalAtt().setPos(nextPos) ;
 				}
-				if (maps[PA.getMap()].IsACity())
+				if (PA.getMap().IsACity())
 				{
 					PA.currentAction = "existing" ;
 				}
@@ -758,126 +833,10 @@ public class Player extends LiveBeing
 			}
 		}
 	}
-	
-
-	public int GetNumberOfSpells()
-	{
-		int NumberOfSkills = 0 ;
-		int[] Sequence = GetSpellSequence() ;
-		for (int i = 0 ; i <= Sequence.length - 1 ; i += 1)
-		{
-			NumberOfSkills += Sequence[i] ;
-		}
-		return NumberOfSkills ;
-	}
-	public int GetNumberOfProSpells()
-	{
-		int NumberOfProSkills = 0 ;
-		int[] ProSequence = GetProSpellSequence() ;
-		for (int i = 0 ; i <= ProSequence.length - 1 ; i += 1)
-		{
-			NumberOfProSkills += ProSequence[i] ;
-		}
-		return NumberOfProSkills ;
-	}
-	public int[] activeSpells(Spells[] spell)
-	{
-		int[] ActiveSkills = null ;
-		for (int i = 0 ; i <= spell.length - 1 ; i += 1)
-		{
-			if ((spell[i].getType().equals("Active") | spell[i].getType().equals("Support") | spell[i].getType().equals("Offensive")) & 0 < Spell[i])
-			{
-				ActiveSkills = Utg.AddElem(ActiveSkills, i) ;
-			}
-		}
-		return ActiveSkills ;
-	}
-	public int[] GetSpellSequence()
-	{
-		// Sequence: [Player job][Number of skills per line]
-		int[][] Sequence = new int[][] {{1, 3, 3, 3, 3, 1}, {3, 3, 3, 3, 3}, {3, 3, 3, 3, 3}, {2, 3, 3, 3, 3}, {2, 3, 3, 3, 3}} ;
-		return Sequence[PA.Job] ;
-	}
-	public int[] GetProSpellSequence()
-	{
-		// Sequence: [Player job][Number of skills per line]
-		int[][] Sequence = new int[][] {{1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}} ;
-		return Sequence[PA.ProJob] ;
-	}
-	public int[] GetActiveQuests()
-	{
-		int[] ActiveQuests = null ;
-		for (int i = 0 ; i <= Quest.length - 1 ; i += 1)
-		{
-			if (-1 < Quest[i])
-			{
-				ActiveQuests = Utg.AddElem(ActiveQuests, i) ;
-			}
-		}
-		return ActiveQuests ;
-	}	
-	
-
-	/*public int Collect(Maps[] maps, Items[] item, int[] Pos, int CollectibleType, int[] BagIDs, int CollectResult, boolean PlayerIsCollecting, DrawFunctions DF)
-	{	
-		float CollectChance = (float) ((maps[getMap()].getCollectibleLevel() + 2)*Math.random()) ;
-		int MapCollectLevel = maps[getMap()].getCollectibleLevel() ;
-		float PlayerCollectLevel = -1 ;
-		if (CollectibleType == 0)	// Berry
-		{
-			Bag[BagIDs[3] - 1 + MapCollectLevel + CollectibleType] += 1 ;
-			if (PA.Job == 3 & Math.random() <= 0.14*Skill[4])	// Double collect
-			{
-				Bag[BagIDs[3] - 1 + MapCollectLevel + CollectibleType] += 1 ;	
-			}
-			CollectResult = 0 ;
-		}
-		else if (MapCollectLevel <= PlayerCollectLevel + 1 & PlayerCollectLevel + 1 < CollectChance)
-		{					
-			Bag[BagIDs[0] + 3*(MapCollectLevel - 1) + CollectibleType - 1] += 1 ;
-			Collect[CollectibleType - 1] += 0.25/(PlayerCollectLevel + 1) ;
-			if (PA.Job == 3 & Math.random() <= 0.14*Skill[4])	// Double collect
-			{
-				Bag[BagIDs[0] + 3*(MapCollectLevel - 1) + CollectibleType - 1] += 1 ;
-				Collect[CollectibleType - 1] += 0.25/(PlayerCollectLevel + 1) ;	
-			}
-			CollectResult = 0 ;
-		}
-		else if (MapCollectLevel <= PlayerCollectLevel + 1)
-		{
-			CollectResult = 1 ;
-		}
-		else
-		{
-			CollectResult = 2 ;
-		}	
-		if (!PlayerIsCollecting)
-		{
-			if (CollectResult == 0)
-			{
-				return -1 ;
-			}
-			else
-			{
-				return CollectibleType ;
-			}
-		}
-		return -1 ;
-	}*/
 	public void Tent()
 	{
 		PA.setLife(new float[] {PA.getLife()[0], PA.getLife()[1]}) ;
 	}
-	
-	public void QuestWindow(CreatureTypes[] creatureTypes, Creatures[] creatures, Quests[] quest, Items[] items, Point MousePos, DrawFunctions DF)
-	{
-		int[] windowLimit = new int[] {8, 0, 0, 1, 0, 0} ;
-		int[] ActiveQuests = Utg.ArrayWithValuesGreaterThan(Quest, -1) ;
-		//windowLimit[player.getContinent()] = Math.max(ActiveQuests.length - 1, 0)/5 ;
-		SelectedWindow[3] = Uts.MenuSelection(ActionKeys[1], ActionKeys[3], action, SelectedWindow[3], windowLimit[PA.getContinent()]) ;
-		//DF.DrawQuestWindow(creatureTypes, creatures, quest, items, Language, PA.getContinent(), Bag, MousePos, ActiveQuests, SelectedWindow[3], windowLimit, QuestImage) ;
-	}
-	
 	public void ActivateRide()
 	{
 		if (IsRiding)
@@ -890,7 +849,6 @@ public class Player extends LiveBeing
 		}
 		IsRiding = !IsRiding ;
 	}
-	
 	public void ActivateActionCounters(boolean SomeAnimationIsOn)
 	{
 		if (PA.Actions[0][0] % PA.Actions[0][1] == 0 & !SomeAnimationIsOn)
@@ -921,7 +879,6 @@ public class Player extends LiveBeing
 			PA.Actions[3][0] = 0 ;
 		}
 	}
-	
 	public void ActivateBattleActionCounters()
 	{
 		if (BA.getBattleActions()[0][0] == BA.getBattleActions()[0][1])
@@ -929,11 +886,6 @@ public class Player extends LiveBeing
 			BA.getBattleActions()[0][2] = 1 ;	// Player can atk
 		}
 	}
-	
-	/*public boolean usedSkill()
-	{
-		return Utg.isNumeric(BA.getCurrentAction()) ;
-	}*/
 	
 	
 	
@@ -982,8 +934,8 @@ public class Player extends LiveBeing
 		}
 		if (settings.isOpen())
 		{
-			settings.display(AllTextCat, AllText, DF.getDrawPrimitives()) ;
-			OptionsWindow(Music, DF) ;
+			settings.display(AllText[AllTextCat[36]], DF.getDrawPrimitives()) ;
+			//OptionsWindow(Music, DF) ;
 			//Object[] OptionStatus = OptionsWindow(Music, DF) ;
 			/*MusicIsOn = (boolean) OptionStatus[0] ;
 			SoundEffectsAreOn = (boolean) OptionStatus[1] ;
@@ -1022,10 +974,13 @@ public class Player extends LiveBeing
 		{
 			Gold[0] += GoldRewards[ChestID][j] ;
 		}
-		maps[PA.getMap()].getType()[PA.getPos().x][PA.getPos().y] = "free" ;
+		PA.getMap().getType()[PA.getPos().x][PA.getPos().y] = "free" ;
 		//Ani.SetAniVars(18, new Object[] {100, items, ItemRewards, GoldRewards, color[0], CoinIcon}) ;
 		//Ani.StartAni(18) ;
 	}
+	
+	
+	// battle functions
 	public void SpendArrow()
 	{
 		//if (0 < Equips[3] & 0 < Bag[Equips[3]])
@@ -1430,7 +1385,7 @@ public class Player extends LiveBeing
 		{
 			for (int q = 0 ; q <= GetActiveQuests().length - 1 ; q += 1)
 			{
-				quest[GetActiveQuests()[q]].IncReqCreaturesCounter(creature.getType()) ;
+				quest[GetActiveQuests()[q]].IncReqCreaturesCounter(creature.getType().getID()) ;
 			}
 		}
 		Ani.SetAniVars(12, new Object[] {100, ItemsObtained, color[0]}) ;
@@ -1455,7 +1410,7 @@ public class Player extends LiveBeing
 	}
 	public void ResetPosition()
 	{
-		PA.setMap(PA.Job) ;
+		PA.setMap(Game.getMaps()[PA.Job]) ;
 		PA.setContinent(0) ;
 		if (PA.Job == 0)
 		{
@@ -1490,20 +1445,7 @@ public class Player extends LiveBeing
 		PA.getSatiation()[0] = PA.getSatiation()[1] ;
 		ResetPosition() ;
 	}
-	public void AddCreatureToBestiary(int CreatureID)
-	{
-		if (CreaturesDiscovered != null)
-		{
-			if (!Utg.ArrayContains(CreaturesDiscovered, CreatureID))
-			{
-				CreaturesDiscovered = Utg.AddElem(CreaturesDiscovered, CreatureID) ;
-			}
-		}
-		else
-		{
-			CreaturesDiscovered = new int[] {CreatureID} ;
-		}
-	}
+	
 
 	
 	/* Get current state methods */
@@ -1543,10 +1485,7 @@ public class Player extends LiveBeing
 		}
 		return false ;
 	}
-	public Maps currentMap(Maps[] maps)
-	{
-		return maps[getMap()] ;
-	}
+	
 	
 	/* Action windows */
 	public void AttWindow(String[][] AllText, int[] AllTextCat, Icon[] icons, int[] MainWinDim, float[] PlayerAttributeIncrease, Point MousePos, Image GoldCoinImage, DrawPrimitives DP)
@@ -1599,122 +1538,6 @@ public class Player extends LiveBeing
 		//DrawAttWindow(MainWinDim, WinPos, MousePos, AllText, AllTextCat, SelectedWindow[0], GoldCoinImage, icons, DP) ;
 		attWindow.display(this, AllTextCat, AllText, Equips, EquipsBonus, AttPoints, MousePos, PA, BA, DP) ;
 	}
-	public Settings OptionsWindow(Clip[] Music, DrawFunctions DF)
-	{
-		boolean CustomKeyIsActionKey = false ;
-		if (SelectedMenu[0] == 0)
-		{
-			SelectedItem[0] = Uts.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedItem[0], 5) ;
-			if (action.equals("Enter") | action.equals("MouseLeftClick"))
-			{
-				if (SelectedItem[0] == 0)
-				{
-					settings.setMusicIsOn(!settings.getMusicIsOn());
-					Utg.PlayMusic(Music[Maps.Music[PA.getMap()]]) ;
-				}
-				if (SelectedItem[0] == 1)
-				{
-					settings.setSoundEffectsAreOn(!settings.getSoundEffectsAreOn());
-				}
-				if (SelectedItem[0] == 2)
-				{
-					settings.setShowPlayerRange(!settings.getShowPlayerRange()) ;
-				}
-				if (SelectedItem[0] == 3)
-				{
-					settings.setAttDisplay((settings.getAttDisplay() + 1) % 2) ;
-				}
-				if (SelectedItem[0] == 4)
-				{
-					settings.setDamageAnimation((settings.getDamageAnimation() + 1) % 4);
-				}
-				if (4 < SelectedItem[0] & SelectedItem[0] <= 4 + Player.ActionKeys.length)
-				{
-					SelectedMenu[0] = 1 ;
-					SelectedItem[0] = 0 ;
-				}
-				/*if (SelectedItem[0] <= 2)
-				{
-					OptionStatus[SelectedItem[0]] = !(boolean)OptionStatus[SelectedItem[0]] ;
-					if (SelectedItem[0] == 0)
-					{
-						Utg.PlayMusic(Music[Maps.Music[PA.getMap()]]) ;
-					}
-				}
-				else if (SelectedItem[0] == 3)
-				{
-					OptionStatus[3] = ((int)OptionStatus[3] + 1) % 2 ;
-				}
-				else if (SelectedItem[0] == 4)
-				{
-					OptionStatus[4] = ((int)OptionStatus[4] + 1) % 4 ;
-				}*/
-				else if (3 < SelectedItem[0] & SelectedItem[0] <= 3 + Player.ActionKeys.length)
-				{
-					SelectedMenu[0] = 1 ;
-					SelectedItem[0] = 0 ;
-				}
-			}
-		}
-		else if (1 <= SelectedMenu[0])
-		{
-			if (SelectedMenu[0] == 1)
-			{
-				SelectedItem[0] = Uts.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedItem[0], Player.ActionKeys.length - 1) ;
-			}
-			if (!action.equals(""))
-			{
-				if (SelectedMenu[0] == 2)
-				{
-					for (int i = 0 ; i <= Player.ActionKeys.length - 1 ; i += 1)
-					{
-						if (action.equals(Player.ActionKeys[i]) | action.equals("Enter") | action.equals("MouseLeftClick") | action.equals("Escape"))
-						{
-							CustomKeyIsActionKey = true ;
-						}
-					}
-					if (!CustomKeyIsActionKey)
-					{
-						CustomKey = action ;
-						Player.ActionKeys[SelectedItem[0]] = CustomKey ;
-						SelectedMenu[0] = 1 ;
-					}
-				}
-			}
-			if (action.equals("Enter"))
-			{
-				SelectedMenu[0] = 2 ;
-			}
-			if (action.equals("Escape"))
-			{
-				if (SelectedMenu[0] == 1)
-				{
-					SelectedItem[0] = 0 ;
-				}
-				SelectedMenu[0] += -1 ;
-			}
-		}
-		//DF.DrawOptionsWindow(SelectedItem[0], SelectedMenu[0], Player.ActionKeys, settings) ;
-		return settings ;
-	}
-	/*public void HintsMenu(Point MousePos, Color ClassColor, DrawFunctions DF)
-	{
-		int NumberOfHints = 15 ;
-		Size screenSize = Game.getScreen().getSize() ;
-		int[] Pos = new int[] {(int)(0.19 * screenSize.x), (int)(0.5 * screenSize.y)} ;
-		int L = (int)(0.62 * screenSize.x), H = (int)(0.2 * screenSize.y) ;
-		int[] OkButtonPos = new int[] {(int) (Pos[0] + 0.7*L), (int) (Pos[1] - 0.125*H)} ;
-		float OkButtonL = (float) (0.05*L), OkButtonH = (float) (0.125*H) ;
-		if (action.equals(Player.ActionKeys[1]) | action.equals(Player.ActionKeys[3]))
-		{
-			SelectedWindow[6] = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, SelectedWindow[6], NumberOfHints - 1) ;
-		}
-		if (action.equals("Enter") | (Utg.isInside(MousePos, new Point((int) (OkButtonPos[0] - OkButtonL/2), (int) (OkButtonPos[1] + OkButtonH/2)), (int) (OkButtonL), (int) (OkButtonH)) & action.equals("MouseLeftClick")))
-		{
-			//return false ;
-		}
-		DF.DrawHintsMenu(MousePos, SelectedWindow[6], NumberOfHints, ClassColor) ;
-	}*/
 	public void ApplyEquipsBonus(int ID, float ActionMult)
 	{
 		PA.getLife()[1] += EquipsBonus[ID][2]*ActionMult ;
@@ -1800,260 +1623,7 @@ public class Player extends LiveBeing
 			BA.getSpecialStatus()[4] = 0 ;
 		}
 	}
-	public void UseItem(LiveBeing user, Item item)
-	{
-		float PotMult = 1 ;
-		if (PA.Job == 3)
-		{
-			PotMult += 0.06 * Spell[7] ;
-		}
-		if (item != null)	// if the item is valid
-		{
-			
-			
-			//if (0 < Bag[itemID])	// if the player has the item in the bag
-			//{
-				if (item instanceof Potion)	// potions
-				{
-					Potion pot = (Potion) item ;
-					float HealPower = pot.getLifeHeal() * PotMult ;
-					
-					user.PA.incLife(HealPower * user.PA.getLife()[1]) ;
-					user.PA.incMP(HealPower * user.PA.getMp()[1]) ;
-					
-					bag.remove(bag.getItem());
-					//Bag[itemID] += -1 ;			
-				}
-				/*else if (items[itemID].getType().equals("Alchemy"))	// alchemy (using herbs heal half of their equivalent pot)
-				{
-					float HealPower = Items.PotionsHealing[itemID / 3 - Items.BagIDs[0] / 3 + 1][1] / 2 * PotMult ;
-					
-					PA.incLife(HealPower * PA.getLife()[1]) ;
-					if (0 < pet.getLife()[0])
-					{
-						pet.getPersonalAtt().incLife(HealPower * pet.getLife()[1]) ;
-						pet.getPersonalAtt().incMP(HealPower * pet.getMp()[1]) ;
-						
-						// Animal's skill "natural help": gives 20% bonus on the pet attributes. The enhanced attributes depend on the collectible used
-						if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & PA.Job == 3 & (itemID - Items.BagIDs[1] + 1) % 3 < Spell[10])
-						{
-							int ItemsWithEffectsID = -1 ;
-							for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
-							{
-								if (itemID == Items.ItemsWithEffects[i])
-								{
-									ItemsWithEffectsID = i ;
-								}
-							}
-							if (-1 < ItemsWithEffectsID)
-							{
-								B.ItemEffectInBattle(getBattleAtt(), pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
-							}
-						}
-					}
-					//Bag[itemID] += -1 ;
-				}
-				else if (items[itemID].getType().equals("Pet"))		// pet items
-				{
-					pet.getPersonalAtt().incLife(Items.PetItems[itemID - Items.BagIDs[3] + 1][1] * pet.getLife()[1]) ;
-					pet.getPersonalAtt().incMP(Items.PetItems[itemID - Items.BagIDs[3] + 1][2] * pet.getMp()[1]) ;
-					pet.getPersonalAtt().incSatiation(Items.PetItems[itemID - Items.BagIDs[3] + 1][3]) ;
-					//Bag[itemID] += -1 ;
-				}
-				else if (items[itemID].getType().equals("Food"))	// food
-				{
-					PA.incSatiation(Items.FoodSatiation[itemID - Items.BagIDs[4] + 1][3] * PA.getSatiation()[2]) ;
-					//Bag[itemID] += -1 ;
-				}
-				else if (items[itemID].getType().equals("Arrow"))	// arrows
-				{
-					//if (0 < Bag[itemID] & PA.Job == 2)
-					//{
-						if (itemID == Items.BagIDs[5] | itemID <= Items.BagIDs[5] + 3 & 1 <= Spell[4] | itemID == Items.BagIDs[5] + 4 & 2 <= Spell[4]  | itemID == Items.BagIDs[5] + 5 & 3 <= Spell[4]  | Items.BagIDs[5] + 6 <= itemID & itemID <= Items.BagIDs[5] + 14 & 4 <= Spell[4]  | Items.BagIDs[5] + 14 <= itemID & 5 <= Spell[4])
-						{
-							if (0 == Equips[3])
-							{
-								Equips[3] = itemID ;	// Equipped arrow
-								PA.Elem[0] = bag.getArrow()[itemID - Items.BagIDs[5]].getElem() ;
-							}
-							else
-							{
-								Equips[3] = 0 ;	// Unequipped arrow
-								PA.Elem[0] = "n" ;
-							}
-						}
-					//}
-				}
-				else if (items[itemID].getType().equals("Equip"))	// equipment
-				{
-					if (isEquippable(itemID))
-					{
-						Equip(items, itemID) ;
-					}
-				}
-				else if (items[itemID].getType().equals("Item"))	// items
-				{
-					if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & PA.Job == 4 & 0 < Spell[8])
-					{		
-						int ItemsWithEffectsID = -1 ;
-						for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
-						{
-							if (itemID == Items.ItemsWithEffects[i])
-							{
-								ItemsWithEffectsID = i ;
-							}
-						}
-						if (-1 < ItemsWithEffectsID)
-						{
-							B.ItemEffectInBattle(getBattleAtt(), pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
-						}
-						//Bag[itemID] += -1 ;
-						BA.getBattleActions()[0][0] = 0 ;
-						BA.getBattleActions()[0][2] = 0 ;
-					}
-					else
-					{
-						ItemEffect(itemID) ;
-						//Bag[itemID] += -1 ;
-					}
-				}*/
-			//}			
-		}
-	}
-	/*public void UseItem(Pet pet, Creatures[] creature, int creatureID, int itemID, Items[] items, Battle B)
-	{
-		float PotMult = 1 ;
-		if (PA.Job == 3)
-		{
-			PotMult += 0.06 * Spell[7] ;
-		}
-		if (-1 < itemID)	// if the item is valid
-		{
-			//if (0 < Bag[itemID])	// if the player has the item in the bag
-			//{
-				if (items[itemID].getType().equals("Potion"))	// potions
-				{
-					float HealPower = Items.PotionsHealing[itemID][1] * PotMult ;
-					
-					PA.incLife(HealPower * PA.getLife()[1]) ;
-					PA.incMP(HealPower * PA.getMp()[1]) ;
-					//Bag[itemID] += -1 ;			
-				}
-				else if (items[itemID].getType().equals("Alchemy"))	// alchemy (using herbs heal half of their equivalent pot)
-				{
-					float HealPower = Items.PotionsHealing[itemID / 3 - Items.BagIDs[0] / 3 + 1][1] / 2 * PotMult ;
-					
-					PA.incLife(HealPower * PA.getLife()[1]) ;
-					if (0 < pet.getLife()[0])
-					{
-						pet.getPersonalAtt().incLife(HealPower * pet.getLife()[1]) ;
-						pet.getPersonalAtt().incMP(HealPower * pet.getMp()[1]) ;
-						
-						// Animal's skill "natural help": gives 20% bonus on the pet attributes. The enhanced attributes depend on the collectible used
-						if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & PA.Job == 3 & (itemID - Items.BagIDs[1] + 1) % 3 < Spell[10])
-						{
-							int ItemsWithEffectsID = -1 ;
-							for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
-							{
-								if (itemID == Items.ItemsWithEffects[i])
-								{
-									ItemsWithEffectsID = i ;
-								}
-							}
-							if (-1 < ItemsWithEffectsID)
-							{
-								B.ItemEffectInBattle(getBattleAtt(), pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
-							}
-						}
-					}
-					//Bag[itemID] += -1 ;
-				}
-				else if (items[itemID].getType().equals("Pet"))		// pet items
-				{
-					pet.getPersonalAtt().incLife(Items.PetItems[itemID - Items.BagIDs[3] + 1][1] * pet.getLife()[1]) ;
-					pet.getPersonalAtt().incMP(Items.PetItems[itemID - Items.BagIDs[3] + 1][2] * pet.getMp()[1]) ;
-					pet.getPersonalAtt().incSatiation(Items.PetItems[itemID - Items.BagIDs[3] + 1][3]) ;
-					//Bag[itemID] += -1 ;
-				}
-				else if (items[itemID].getType().equals("Food"))	// food
-				{
-					PA.incSatiation(Items.FoodSatiation[itemID - Items.BagIDs[4] + 1][3] * PA.getSatiation()[2]) ;
-					//Bag[itemID] += -1 ;
-				}
-				else if (items[itemID].getType().equals("Arrow"))	// arrows
-				{
-					//if (0 < Bag[itemID] & PA.Job == 2)
-					//{
-						if (itemID == Items.BagIDs[5] | itemID <= Items.BagIDs[5] + 3 & 1 <= Spell[4] | itemID == Items.BagIDs[5] + 4 & 2 <= Spell[4]  | itemID == Items.BagIDs[5] + 5 & 3 <= Spell[4]  | Items.BagIDs[5] + 6 <= itemID & itemID <= Items.BagIDs[5] + 14 & 4 <= Spell[4]  | Items.BagIDs[5] + 14 <= itemID & 5 <= Spell[4])
-						{
-							if (0 == Equips[3])
-							{
-								Equips[3] = itemID ;	// Equipped arrow
-								PA.Elem[0] = bag.getArrow()[itemID - Items.BagIDs[5]].getElem() ;
-							}
-							else
-							{
-								Equips[3] = 0 ;	// Unequipped arrow
-								PA.Elem[0] = "n" ;
-							}
-						}
-					//}
-				}
-				else if (items[itemID].getType().equals("Equip"))	// equipment
-				{
-					if (isEquippable(itemID))
-					{
-						Equip(items, itemID) ;
-					}
-				}
-				else if (items[itemID].getType().equals("Item"))	// items
-				{
-					if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & PA.Job == 4 & 0 < Spell[8])
-					{		
-						int ItemsWithEffectsID = -1 ;
-						for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
-						{
-							if (itemID == Items.ItemsWithEffects[i])
-							{
-								ItemsWithEffectsID = i ;
-							}
-						}
-						if (-1 < ItemsWithEffectsID)
-						{
-							B.ItemEffectInBattle(getBattleAtt(), pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
-						}
-						//Bag[itemID] += -1 ;
-						BA.getBattleActions()[0][0] = 0 ;
-						BA.getBattleActions()[0][2] = 0 ;
-					}
-					else
-					{
-						ItemEffect(itemID) ;
-						//Bag[itemID] += -1 ;
-					}
-				}
-			//}			
-		}
-	}*/
 	
-	/*public void FabBook(Items[] items, Point MousePos, DrawFunctions DF)
-	{
-		int[][] Ingredients = Items.CraftingIngredients, Products = Items.CraftingProducts ;
-		int NumberOfPages = Ingredients.length - 1 ;
-		SelectedWindow[2] = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, SelectedWindow[2], NumberOfPages) ;
-		DF.DrawFabBook(BookImage, items, SelectedWindow[2], Ingredients, Products, MousePos) ;
-	}*/
-	/*public void Bestiary(CreatureTypes[] creatureTypes, Items[] items, int[] CreaturesDiscovered, Point MousePos, DrawFunctions DF)
-	{
-		int windowLimit = 0 ;
-		if (CreaturesDiscovered != null)
-		{
-			windowLimit = Math.max(CreaturesDiscovered.length - 1, 0)/5 ;
-		}
-		SelectedWindow[8] = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, SelectedWindow[8], windowLimit) ;
-		DF.DrawBestiary(creatureTypes, CreaturesDiscovered, items, MousePos, SelectedWindow[8]) ;
-	}*/
-
 	
 	/* Drawing methods */
 	public void DrawStats(String[][] AllText, int[] AllTextCat, Point Pos, int L, int H, float[] PlayerStats, DrawPrimitives DP)
@@ -2141,6 +1711,114 @@ public class Player extends LiveBeing
 		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 19*sy)), "BotLeft", OverallAngle, AllText[AttrCat][14] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(BA.getPoison()[8], 2), font, AttributeColor[3]) ;	
 		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 20*sy)), "BotLeft", OverallAngle, AllText[AttrCat][15] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(BA.getSilence()[4], 2), font, AttributeColor[4]) ;				
 	}
+	public void DrawSpellsBar(Player player, Spells[] spells, String[][] AllText, int[] AllTextCat, Image CooldownImage, Image SlotImage, Point MousePos, DrawPrimitives DP)
+	{
+		Font Titlefont = new Font("SansSerif", Font.BOLD, 10) ;
+		Font font = new Font("SansSerif", Font.BOLD, 9) ;
+		Size screenSize = Game.getScreen().getSize() ;
+		Color[] colorPalette = Game.ColorPalette ;
+		float OverallAngle = DrawPrimitives.OverallAngle ;
+		String Title = AllText[AllTextCat[61]][1] ;
+		Point Pos = new Point(screenSize.x + 1, (int) (0.99 * screenSize.y) - 70) ;
+		int[] ActiveSpells = player.GetActiveSpells(spells) ;
+		Size size = new Size(36, 130) ;
+		int slotW = SlotImage.getWidth(null), slotH = SlotImage.getHeight(null) ;	// Bar size
+		int Ncols = Math.max(ActiveSpells.length / 11 + 1, 1) ;
+		int Nrows = ActiveSpells.length / Ncols + 1 ;
+		int Sx = (int) Utg.spacing(size.x, Ncols, slotW, 3), Sy = (int) Utg.spacing(size.y, Nrows, slotH, 5) ;		
+		String[] Key = Player.SkillKeys ;
+		Color BGcolor = Player.ClassColors[player.getJob()] ;
+		Color TextColor = player.getColors()[0] ;
+		int[] Counter = Utg.ArrayInPos(player.getSkillCounter(), 1) ;
+		
+		DP.DrawRoundRect(Pos, "BotLeft", size, 1, colorPalette[7], BGcolor, true) ;
+		DP.DrawText(new Point(Pos.x + size.x / 2, Pos.y - size.y + 3), "TopCenter", OverallAngle, Title, Titlefont, colorPalette[5]) ;
+		for (int i = 0 ; i <= ActiveSpells.length - 1 ; ++i)
+		{
+			if (0 < player.getSpell()[ActiveSpells[i]])
+			{
+				Point slotCenter = new Point(Pos.x + slotW / 2 + (i / Nrows) * Sx + 3, Pos.y - size.y + slotH / 2 + (i % Nrows) * Sy + Titlefont.getSize() + 5) ;
+				if (player.getMp()[0] < spells[ActiveSpells[i]].getMpCost())
+				{
+					DP.DrawImage(SlotImage, slotCenter, "Center") ;
+				}
+				else
+				{
+					DP.DrawImage(SlotImage, slotCenter, "Center") ;
+				}
+				DP.DrawText(slotCenter, "Center", OverallAngle, Key[i], font, TextColor) ;
+				Size imgSize = new Size(CooldownImage.getWidth(null), CooldownImage.getHeight(null)) ;
+				if (Counter[ActiveSpells[i]] < spells[ActiveSpells[i]].getCooldown())
+				{
+					float[] Imscale = new float[] {1, 1 - (float) Counter[ActiveSpells[i]] / spells[ActiveSpells[i]].getCooldown()} ;
+					DP.DrawImage(CooldownImage, new Point(slotCenter.x - imgSize.x / 2, slotCenter.y + imgSize.y / 2), OverallAngle, Imscale, new boolean[] {false, false}, "BotLeft", 1) ;
+				}
+				if (Utg.isInside(MousePos, new Point(slotCenter.x - imgSize.x / 2, slotCenter.y - imgSize.y / 2), imgSize))
+				{
+					DP.DrawText(new Point(slotCenter.x - imgSize.x - 10, slotCenter.y), "CenterRight", OverallAngle, spells[ActiveSpells[i]].getName(), Titlefont, TextColor) ;
+				}
+			}
+		}
+	}
+	public void DrawSideBar(Player player, Pet pet, String[][] AllText, int[] AllTextCat, Point MousePos, Spells[] spells, Icon[] icons, Image SkillCooldownImage, Image SlotImage, DrawPrimitives DP)
+	{
+		// icons: 0: Options 1: Bag 2: Quest 3: Map 4: Book, 5: player, 6: pet
+		Size screenSize = Game.getScreen().getSize() ;
+		Color[] colorPalette = Game.ColorPalette ;
+		float OverallAngle = DrawPrimitives.OverallAngle ;
+		Font font = new Font("SansSerif", Font.BOLD, 13) ;
+		String[] IconKey = new String[] {Player.ActionKeys[9], Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7]} ;
+		Color TextColor = colorPalette[7] ;
+		
+		DP.DrawRect(new Point(screenSize.x, screenSize.y), "BotLeft", new Size(40, screenSize.y), 1, colorPalette[9], colorPalette[9], false) ;	// Background
+		DrawSpellsBar(player, spells, AllText, AllTextCat, SkillCooldownImage, SlotImage, MousePos, DP) ;
+		for (int i = 0 ; i <= 3 - 1 ; i += 1)	// Options, bag, and quest
+		{
+			icons[i].DrawImage(OverallAngle, -1, MousePos, DP) ;
+			if (IconKey[i] != null)
+			{
+				DP.DrawText(icons[i].getPos(), "BotLeft", OverallAngle, IconKey[i], font, TextColor) ;
+			}
+		}
+		if (player.getQuestSkills()[player.getContinent()])	// Map
+		{
+			icons[3].DrawImage(OverallAngle, 0, MousePos, DP) ;
+			DP.DrawText(icons[3].getPos(), "BotLeft", OverallAngle, IconKey[3], font, TextColor) ;
+		}
+		if (fab != null)	// book
+		{
+			icons[4].DrawImage(OverallAngle, 0, MousePos, DP) ;
+		}
+		player.display(icons[5].getPos(), new float[] {1, 1}, Player.MoveKeys[0], false, DP) ;						// Player
+		DP.DrawText(icons[5].getPos(), "BotLeft", OverallAngle, Player.ActionKeys[5], font, TextColor) ;
+		if (0 < player.getAttPoints())
+		{
+			DP.DrawImage(icons[5].getImage(), new Point(icons[5].getPos().x - icons[5].getImage().getWidth(null), icons[5].getPos().y), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
+		}
+		if (0 < pet.getLife()[0])
+		{
+			pet.display(icons[6].getPos(), new float[] {1, 1}, DP) ;
+			DP.DrawText(icons[6].getPos(), "BotLeft", OverallAngle, Player.ActionKeys[8], font, TextColor) ;
+		}
+		
+		// Hotkeys
+		DP.DrawRoundRect(new Point(screenSize.x + 1, screenSize.y - 70), "TopLeft", new Size(36, 60), 1, colorPalette[7], colorPalette[19], true) ;
+		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
+		{
+			Point slotCenter = new Point(screenSize.x + 10, screenSize.y - 60 + 20 * i) ;
+			Size slotSize = new Size(SlotImage.getWidth(null), SlotImage.getHeight(null)) ;
+			DP.DrawImage(SlotImage, slotCenter, "Center") ;
+			DP.DrawText(new Point(slotCenter.x + slotSize.x / 2 + 5, slotCenter.y + slotSize.y / 2), "BotLeft", OverallAngle, Player.HotKeys[i], font, TextColor) ;
+			if (player.hotkeyItem[i] != null)
+			{
+				DP.DrawImage(player.hotkeyItem[i].getImage(), slotCenter, "Center") ;
+				if (Utg.isInside(MousePos, slotCenter, slotSize))
+				{
+					DP.DrawText(new Point(slotCenter.x - slotSize.x - 10, slotCenter.y), "CenterRight", OverallAngle, player.hotkeyItem[i].getName(), font, TextColor) ;
+				}
+			}
+		}
+	}
 	public void DrawRange(DrawPrimitives DP)
 	{
 		DP.DrawCircle(PA.getPos(), (int)(2 * PA.getRange()), 2, Game.ColorPalette[PA.Job], false, true) ;
@@ -2179,6 +1857,10 @@ public class Player extends LiveBeing
 			DrawEquips(EqPos, PA.Job, 0, Equips[0] - Items.BagIDs[5], Items.EquipsBonus, scale, angle[PA.Job], DP) ;
 		}	
 	}
+	public void DrawAttributes(DrawFunctions DF)
+	{
+		DF.DrawPlayerAttributes(this, settings.getAttDisplay()) ;
+	}
 	public void display(Point PlayerPos, float[] scale, String dir, boolean ShowPlayerRange, DrawPrimitives DP)
 	{
 		// BP = Body part
@@ -2196,28 +1878,28 @@ public class Player extends LiveBeing
 		if (dir.equals("Acima"))
 		{
 			mirror = new boolean[] {false, false} ;
-			DP.DrawImage(PA.getimage()[0], new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+			DP.DrawImage(movingAni.idleGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Abaixo"))
 		{
 			mirror = new boolean[] {false, false} ;
-			DP.DrawImage(PA.getimage()[1], new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+			DP.DrawImage(movingAni.movingDownGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Esquerda"))
 		{
 			mirror = new boolean[] {false, false} ;
-			DP.DrawImage(PA.getimage()[2], new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+			DP.DrawImage(movingAni.movingLeftGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Direita"))
 		{
 			mirror = new boolean[] {false, false} ;
 			if (PA.countmove % 2 == 0)
 			{
-				DP.DrawImage(PA.getimage()[3], new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+				DP.DrawImage(movingAni.movingRightGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
 			}
 			else
 			{
-				DP.DrawImage(PA.getimage()[7], new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+				DP.DrawImage(movingAni.movingUpGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
 			}
 		}
 		if (ShowPlayerRange)
@@ -2240,10 +1922,271 @@ public class Player extends LiveBeing
 		//DP.DrawRect(player.getPos(), "Center", (int)(player.getSize()[0]*scale[0]), (int)(player.getSize()[1]*scale[1]), 1, null, ColorPalette[9], true) ;	// Player contour
 		//DrawCircle(player.getPos(), 2, 2, ColorPalette[6], false, true) ;	// Player center
 	}
-	public void DrawAttributes(DrawFunctions DF)
+	
+	
+	/* Save and load methods */
+	public void Save(String fileName, Pet pet)
 	{
-		DF.DrawPlayerAttributes(this, settings.getAttDisplay()) ;
+		try
+		{	
+			FileWriter fileWriter = new FileWriter(fileName) ;
+			BufferedWriter bw = new BufferedWriter(fileWriter) ; 
+			bw.write("Save version: 3.41 \n" + getName()) ;
+			bw.write("\nPlayer name: \n" + getName()) ;
+			bw.write("\nPlayer language: \n" + getLanguage()) ;
+			bw.write("\nPlayer sex: \n" + getSex()) ;
+			bw.write("\nPlayer size: \n" + Arrays.toString(getSize())) ;
+			bw.write("\nPlayer colors: \n" + Arrays.toString(getColors())) ;
+			bw.write("\nPlayer job: \n" + getJob()) ;
+			bw.write("\nPlayer PA.ProJob: \n" + PA.ProJob) ;
+			bw.write("\nPlayer continent: \n" + getContinent()) ;
+			bw.write("\nPlayer map: \n" + getMap()) ;
+			bw.write("\nPlayer pos: \n" + getPos()) ;
+			bw.write("\nPlayer skill: \n" + Arrays.toString(getSpell())) ;
+			bw.write("\nPlayer quest: \n" + Arrays.toString(getQuest())) ;
+			//bw.write("\nPlayer bag: \n" + Arrays.toString(getBag())) ;
+			bw.write("\nPlayer equips: \n" + Arrays.toString(getEquips())) ;
+			bw.write("\nPlayer skillPoints: \n" + getSkillPoints()) ;
+			bw.write("\nPlayer life: \n" + Arrays.toString(getLife())) ;
+			bw.write("\nPlayer mp: \n" + Arrays.toString(getMp())) ;
+			bw.write("\nPlayer range: \n" + getRange()) ;
+			bw.write("\nPlayer phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
+			bw.write("\nPlayer magAtk: \n" + Arrays.toString(getMagAtk())) ;
+			bw.write("\nPlayer phyDef: \n" + Arrays.toString(getPhyDef())) ;
+			bw.write("\nPlayer magDef: \n" + Arrays.toString(getMagDef())) ;
+			bw.write("\nPlayer dex: \n" + Arrays.toString(getDex())) ;
+			bw.write("\nPlayer agi: \n" + Arrays.toString(getAgi())) ;
+			bw.write("\nPlayer crit: \n" + Arrays.toString(getCrit())) ;
+			bw.write("\nPlayer stun: \n" + Arrays.toString(getStun())) ;
+			bw.write("\nPlayer block: \n" + Arrays.toString(getBlock())) ;
+			bw.write("\nPlayer blood: \n" + Arrays.toString(getBlood())) ;
+			bw.write("\nPlayer poison: \n" + Arrays.toString(getPoison())) ;
+			bw.write("\nPlayer silence: \n" + Arrays.toString(getSilence())) ;
+			bw.write("\nPlayer elem: \n" + Arrays.toString(getElem())) ;
+			bw.write("\nPlayer elem mult: \n" + Arrays.toString(getElemMult())) ;
+			bw.write("\nPlayer collect: \n" + Arrays.toString(getCollect())) ;
+			bw.write("\nPlayer level: \n" + getLevel()) ;
+			bw.write("\nPlayer gold: \n" + Arrays.toString(getGold())) ;
+			bw.write("\nPlayer step: \n" + getStep()) ;
+			bw.write("\nPlayer exp: \n" + Arrays.toString(getExp())) ;
+			bw.write("\nPlayer satiation: \n" + Arrays.toString(getSatiation())) ;
+			bw.write("\nPlayer quest skills: \n" + Arrays.toString(QuestSkills)) ;
+			bw.write("\nPlayer status: \n" + Arrays.toString(BA.getSpecialStatus())) ; 
+			bw.write("\nPlayer actions: \n" + Arrays.deepToString(getActions())) ; 
+			bw.write("\nPlayer battle actions: \n" + Arrays.deepToString(BA.getBattleActions())) ; 
+			bw.write("\nPlayer status counter: \n" + Arrays.toString(getStatusCounter())) ; 		
+			bw.write("\nPlayer stats: \n" + Arrays.toString(getStats())) ;
+			bw.write("\nPlayer available attribute points: \n" + getAttPoints()) ;
+			bw.write("\nPlayer attribute increase: \n" + Arrays.deepToString(getAttIncrease())) ;
+			bw.write("\nPlayer chance increase: \n" + Arrays.deepToString(getChanceIncrease())) ;
+			bw.write("\nPlayer creatures discovered: \n" + Arrays.toString(getCreaturesDiscovered())) ;
+			pet.Save(bw) ;	
+			
+			bw.write("\nEquips bonus: \n" + Arrays.deepToString(Items.EquipsBonus)) ;
+			//bufferedWriter.write("\nNPCs contact: \n" + Arrays.toString(FirstNPCContact)) ;
+			bw.write("\nDifficult level: \n" + DifficultLevel) ;
+			bw.close() ;
+		}		
+		catch(IOException ex) 
+		{
+            System.out.println("Error writing to file '" + fileName + "'") ;
+        }
 	}
+	public void Load(String FileName, Pet pet, Maps[] maps)
+	{
+		int Nrows = 1600 ;
+		String[][] ReadFile = Utg.ReadTextFile(FileName, Nrows) ;
+		if (ReadFile[2*0][0].equals("3.41"))	// Save version
+		{
+			PA.setName(ReadFile[2*1][0]) ;
+			Language = ReadFile[2*2][0] ;
+			Sex = ReadFile[2*3][0] ;
+			setSize((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*4]), "String", "int")) ;
+			color = Utg.toColor(ReadFile[2*6]) ;
+			PA.Job = Integer.parseInt(ReadFile[2*7][0]) ;
+			PA.setProJob(Integer.parseInt(ReadFile[2*8][0])) ;
+			setMap(Game.getMaps()[Integer.parseInt(ReadFile[2*10][0])]) ;
+			setPos((Point) Utg.ConvertArray(Utg.toString(ReadFile[2*11]), "String", "int")) ;
+			Spell = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*12]), "String", "int") ;
+			Quest = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*13]), "String", "int") ;
+			//setBag((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*14]), "String", "int")) ;
+			Equips = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*15]), "String", "int") ;
+			SkillPoints = Integer.parseInt(ReadFile[2*16][0]) ;
+			PA.setLife((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*17]), "String", "float")) ;
+			PA.setMp((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*18]), "String", "float")) ;
+			PA.setRange(Float.parseFloat(ReadFile[2*19][0])) ;
+			BA.setPhyAtk((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*20]), "String", "float")) ;
+			BA.setMagAtk((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*21]), "String", "float")) ;
+			BA.setPhyDef((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*22]), "String", "float")) ;
+			BA.setMagDef((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*23]), "String", "float")) ;
+			BA.setDex((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*24]), "String", "float")) ;
+			BA.setAgi((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*25]), "String", "float")) ;
+			BA.setCrit((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*26]), "String", "float")) ;
+			BA.setStun((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*27]), "String", "float")) ;
+			BA.setBlock((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*28]), "String", "float")) ;
+			BA.setBlood((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*29]), "String", "float")) ;
+			BA.setPoison((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*30]), "String", "float")) ;
+			BA.setSilence((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*31]), "String", "float")) ;
+			PA.Elem = Utg.toString(ReadFile[2*32]) ;
+			ElemMult = (float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*33]), "String", "float") ;
+			Collect = (float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*34]), "String", "float") ;
+			PA.setLevel(Integer.parseInt(ReadFile[2*35][0])) ;
+			Gold = (float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*36]), "String", "float") ;
+			setStep(Integer.parseInt(ReadFile[2*37][0])) ;
+			PA.setExp((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*38]), "String", "float")) ;
+			PA.setSatiation((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*39]), "String", "float")) ;
+			QuestSkills = (boolean[]) Utg.ConvertArray(Utg.toString(ReadFile[2*40]), "String", "boolean") ;
+			BA.setSpecialStatus((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*41]), "String", "int")) ;
+			PA.Actions = (int[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*42], 3), "String", "int") ;
+			BA.setBattleActions((int[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*43], 3), "String", "int")) ;
+			SpellIsActive = new boolean[getSpell().length] ;
+			SpellCounter = new int[getSpell().length][2] ;
+			StatusCounter = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*44]), "String", "int") ;
+			Stats = (float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*45]), "String", "float") ;
+			AttPoints = Integer.parseInt(ReadFile[2*46][0]) ;
+			AttIncrease = (float[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*47], 8), "String", "float") ;
+			ChanceIncrease = (float[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*48], 8), "String", "float") ;
+			if (!Utg.toString(ReadFile[2*49])[0].equals("null"))
+			{
+				CreaturesDiscovered = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*49]), "String", "int") ;
+			}
+			else
+			{
+				CreaturesDiscovered = null ;
+			}
+			pet.Load(ReadFile) ;
+		}
+	}
+	
+	
+	/* Printing methods */
+	public void PrintAllAttributes()
+	{
+		System.out.println();
+		System.out.println("** Player attributes **");
+		System.out.println("Language: " + Language);
+		System.out.println("Sex: " + Sex);
+		System.out.println("color: " + Arrays.toString(color));
+		System.out.println("PA.Job: " + PA.Job);
+		System.out.println("PA.ProJob: " + PA.ProJob);
+		System.out.println("Skill: " + Arrays.toString(Spell));
+		System.out.println("Quest: " + Arrays.toString(Quest));
+		//System.out.println("Bag: " + Arrays.toString(Bag));
+		System.out.println("Equips: " + Arrays.toString(Equips));
+		System.out.println("SkillPoints: " + SkillPoints);
+		System.out.println("** Personal attributes **");
+		PA.printAtt();
+		System.out.println("** Battle attributes **");
+		BA.printAtt();
+		System.out.println("Elem: " + Arrays.toString(PA.Elem));
+		System.out.println("ElemMult: " + Arrays.toString(ElemMult));
+		System.out.println("Collect: " + Arrays.toString(Collect));
+		System.out.println("Gold: " + Arrays.toString(Gold));
+		System.out.println("QuestSkills: " + Arrays.toString(QuestSkills));
+		System.out.println("PA.Actions: " + Arrays.deepToString(PA.Actions));
+		System.out.println("PA.currentAction: " + PA.currentAction);
+		System.out.println("IsRiding: " + IsRiding);
+		System.out.println("SkillIsActive: " + Arrays.toString(SpellIsActive));
+		System.out.println("SkillCounter: " + Arrays.deepToString(SpellCounter));
+		System.out.println("StatusCounter: " + Arrays.toString(StatusCounter));
+		System.out.println("Stats: " + Arrays.toString(Stats));
+		System.out.println("Combo: " + Arrays.toString(Combo));
+		System.out.println("AttPoints: " + AttPoints);
+		System.out.println("AttIncrease: " + Arrays.deepToString(AttIncrease));
+		System.out.println("ChanceIncrease: " + Arrays.deepToString(ChanceIncrease));
+		System.out.println("CreaturesDiscovered: " + Arrays.toString(CreaturesDiscovered));
+		System.out.println("SelectedWindow: " + Arrays.toString(SelectedWindow));
+		System.out.println("SelectedMenu: " + Arrays.toString(SelectedMenu));
+		System.out.println("SelectedItem: " + Arrays.toString(SelectedItem));
+		System.out.println("ItemsMenu: " + ItemsMenu);
+		System.out.println("CustomKey: " + CustomKey);
+		System.out.println("OptionStatus: " + settings);
+		System.out.println("ClosestCreature: " + ClosestCreature);
+		System.out.println("CreatureInBattle: " + CreatureInBattle);
+		System.out.println("DifficultLevel: " + DifficultLevel);
+		System.out.println("RidingImage: " + RidingImage);
+		System.out.println("action: " + action);
+		System.out.println("countmove: " + PA.countmove);
+		System.out.println("SelectedOption: " + SelectedOption);
+		System.out.println("EquipsBonus: " + Arrays.deepToString(EquipsBonus));
+		System.out.println("WindowIsOpen: " + Arrays.toString(WindowIsOpen));
+		System.out.println("hotkeyItem: " + Arrays.toString(hotkeyItem));
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	/*public void QuestWindow(CreatureTypes[] creatureTypes, Creatures[] creatures, Quests[] quest, Items[] items, Point MousePos, DrawFunctions DF)
+	{
+		int[] windowLimit = new int[] {8, 0, 0, 1, 0, 0} ;
+		int[] ActiveQuests = Utg.ArrayWithValuesGreaterThan(Quest, -1) ;
+		//windowLimit[player.getContinent()] = Math.max(ActiveQuests.length - 1, 0)/5 ;
+		SelectedWindow[3] = Uts.MenuSelection(ActionKeys[1], ActionKeys[3], action, SelectedWindow[3], windowLimit[PA.getContinent()]) ;
+		//DF.DrawQuestWindow(creatureTypes, creatures, quest, items, Language, PA.getContinent(), Bag, MousePos, ActiveQuests, SelectedWindow[3], windowLimit, QuestImage) ;
+	}*/
+	/*public int Collect(Maps[] maps, Items[] item, int[] Pos, int CollectibleType, int[] BagIDs, int CollectResult, boolean PlayerIsCollecting, DrawFunctions DF)
+	{	
+		float CollectChance = (float) ((maps[getMap()].getCollectibleLevel() + 2)*Math.random()) ;
+		int MapCollectLevel = maps[getMap()].getCollectibleLevel() ;
+		float PlayerCollectLevel = -1 ;
+		if (CollectibleType == 0)	// Berry
+		{
+			Bag[BagIDs[3] - 1 + MapCollectLevel + CollectibleType] += 1 ;
+			if (PA.Job == 3 & Math.random() <= 0.14*Skill[4])	// Double collect
+			{
+				Bag[BagIDs[3] - 1 + MapCollectLevel + CollectibleType] += 1 ;	
+			}
+			CollectResult = 0 ;
+		}
+		else if (MapCollectLevel <= PlayerCollectLevel + 1 & PlayerCollectLevel + 1 < CollectChance)
+		{					
+			Bag[BagIDs[0] + 3*(MapCollectLevel - 1) + CollectibleType - 1] += 1 ;
+			Collect[CollectibleType - 1] += 0.25/(PlayerCollectLevel + 1) ;
+			if (PA.Job == 3 & Math.random() <= 0.14*Skill[4])	// Double collect
+			{
+				Bag[BagIDs[0] + 3*(MapCollectLevel - 1) + CollectibleType - 1] += 1 ;
+				Collect[CollectibleType - 1] += 0.25/(PlayerCollectLevel + 1) ;	
+			}
+			CollectResult = 0 ;
+		}
+		else if (MapCollectLevel <= PlayerCollectLevel + 1)
+		{
+			CollectResult = 1 ;
+		}
+		else
+		{
+			CollectResult = 2 ;
+		}	
+		if (!PlayerIsCollecting)
+		{
+			if (CollectResult == 0)
+			{
+				return -1 ;
+			}
+			else
+			{
+				return CollectibleType ;
+			}
+		}
+		return -1 ;
+	}*/
+	/*public boolean usedSkill()
+	{
+		return Utg.isNumeric(BA.getCurrentAction()) ;
+	}*/
 	/*public void DrawAttWindow(int[] MainWinDim, Point WindowPos, Point MousePos, String[][] AllText, int[] AllTextCat, int Tab, Image GoldCoinImage, Icon[] icons, DrawPrimitives DP)
 	{
 		float TextAngle = DrawPrimitives.OverallAngle ;
@@ -2380,194 +2323,252 @@ public class Player extends LiveBeing
 			DrawStats(AllText, AllTextCat, WindowPos, L, H, Stats, DP) ;
 		}
 	}*/
-
-	
-	/* Save and load methods */
-	public void Save(String fileName, Pet pet)
+	/*public void UseItem(Pet pet, Creatures[] creature, int creatureID, int itemID, Items[] items, Battle B)
 	{
-		try
-		{	
-			FileWriter fileWriter = new FileWriter(fileName) ;
-			BufferedWriter bw = new BufferedWriter(fileWriter) ; 
-			bw.write("Save version: 3.41 \n" + getName()) ;
-			bw.write("\nPlayer name: \n" + getName()) ;
-			bw.write("\nPlayer language: \n" + getLanguage()) ;
-			bw.write("\nPlayer sex: \n" + getSex()) ;
-			bw.write("\nPlayer size: \n" + Arrays.toString(getSize())) ;
-			bw.write("\nPlayer colors: \n" + Arrays.toString(getColors())) ;
-			bw.write("\nPlayer job: \n" + getJob()) ;
-			bw.write("\nPlayer PA.ProJob: \n" + PA.ProJob) ;
-			bw.write("\nPlayer continent: \n" + getContinent()) ;
-			bw.write("\nPlayer map: \n" + getMap()) ;
-			bw.write("\nPlayer pos: \n" + getPos()) ;
-			bw.write("\nPlayer skill: \n" + Arrays.toString(getSpell())) ;
-			bw.write("\nPlayer quest: \n" + Arrays.toString(getQuest())) ;
-			//bw.write("\nPlayer bag: \n" + Arrays.toString(getBag())) ;
-			bw.write("\nPlayer equips: \n" + Arrays.toString(getEquips())) ;
-			bw.write("\nPlayer skillPoints: \n" + getSkillPoints()) ;
-			bw.write("\nPlayer life: \n" + Arrays.toString(getLife())) ;
-			bw.write("\nPlayer mp: \n" + Arrays.toString(getMp())) ;
-			bw.write("\nPlayer range: \n" + getRange()) ;
-			bw.write("\nPlayer phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
-			bw.write("\nPlayer magAtk: \n" + Arrays.toString(getMagAtk())) ;
-			bw.write("\nPlayer phyDef: \n" + Arrays.toString(getPhyDef())) ;
-			bw.write("\nPlayer magDef: \n" + Arrays.toString(getMagDef())) ;
-			bw.write("\nPlayer dex: \n" + Arrays.toString(getDex())) ;
-			bw.write("\nPlayer agi: \n" + Arrays.toString(getAgi())) ;
-			bw.write("\nPlayer crit: \n" + Arrays.toString(getCrit())) ;
-			bw.write("\nPlayer stun: \n" + Arrays.toString(getStun())) ;
-			bw.write("\nPlayer block: \n" + Arrays.toString(getBlock())) ;
-			bw.write("\nPlayer blood: \n" + Arrays.toString(getBlood())) ;
-			bw.write("\nPlayer poison: \n" + Arrays.toString(getPoison())) ;
-			bw.write("\nPlayer silence: \n" + Arrays.toString(getSilence())) ;
-			bw.write("\nPlayer elem: \n" + Arrays.toString(getElem())) ;
-			bw.write("\nPlayer elem mult: \n" + Arrays.toString(getElemMult())) ;
-			bw.write("\nPlayer collect: \n" + Arrays.toString(getCollect())) ;
-			bw.write("\nPlayer level: \n" + getLevel()) ;
-			bw.write("\nPlayer gold: \n" + Arrays.toString(getGold())) ;
-			bw.write("\nPlayer step: \n" + getStep()) ;
-			bw.write("\nPlayer exp: \n" + Arrays.toString(getExp())) ;
-			bw.write("\nPlayer satiation: \n" + Arrays.toString(getSatiation())) ;
-			bw.write("\nPlayer quest skills: \n" + Arrays.toString(QuestSkills)) ;
-			bw.write("\nPlayer status: \n" + Arrays.toString(BA.getSpecialStatus())) ; 
-			bw.write("\nPlayer actions: \n" + Arrays.deepToString(getActions())) ; 
-			bw.write("\nPlayer battle actions: \n" + Arrays.deepToString(BA.getBattleActions())) ; 
-			bw.write("\nPlayer status counter: \n" + Arrays.toString(getStatusCounter())) ; 		
-			bw.write("\nPlayer stats: \n" + Arrays.toString(getStats())) ;
-			bw.write("\nPlayer available attribute points: \n" + getAttPoints()) ;
-			bw.write("\nPlayer attribute increase: \n" + Arrays.deepToString(getAttIncrease())) ;
-			bw.write("\nPlayer chance increase: \n" + Arrays.deepToString(getChanceIncrease())) ;
-			bw.write("\nPlayer creatures discovered: \n" + Arrays.toString(getCreaturesDiscovered())) ;
-			pet.Save(bw) ;	
-			
-			bw.write("\nEquips bonus: \n" + Arrays.deepToString(Items.EquipsBonus)) ;
-			//bufferedWriter.write("\nNPCs contact: \n" + Arrays.toString(FirstNPCContact)) ;
-			bw.write("\nDifficult level: \n" + DifficultLevel) ;
-			bw.close() ;
-		}		
-		catch(IOException ex) 
+		float PotMult = 1 ;
+		if (PA.Job == 3)
 		{
-            System.out.println("Error writing to file '" + fileName + "'") ;
-        }
-	}
-	public void Load(String FileName, Pet pet, Maps[] maps)
-	{
-		int Nrows = 1600 ;
-		String[][] ReadFile = Utg.ReadTextFile(FileName, Nrows) ;
-		if (ReadFile[2*0][0].equals("3.41"))	// Save version
-		{
-			PA.setName(ReadFile[2*1][0]) ;
-			Language = ReadFile[2*2][0] ;
-			Sex = ReadFile[2*3][0] ;
-			setSize((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*4]), "String", "int")) ;
-			color = Utg.toColor(ReadFile[2*6]) ;
-			PA.Job = Integer.parseInt(ReadFile[2*7][0]) ;
-			PA.setProJob(Integer.parseInt(ReadFile[2*8][0])) ;
-			setMap(Integer.parseInt(ReadFile[2*10][0]), maps) ;
-			setPos((Point) Utg.ConvertArray(Utg.toString(ReadFile[2*11]), "String", "int")) ;
-			Spell = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*12]), "String", "int") ;
-			Quest = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*13]), "String", "int") ;
-			//setBag((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*14]), "String", "int")) ;
-			Equips = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*15]), "String", "int") ;
-			SkillPoints = Integer.parseInt(ReadFile[2*16][0]) ;
-			PA.setLife((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*17]), "String", "float")) ;
-			PA.setMp((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*18]), "String", "float")) ;
-			PA.setRange(Float.parseFloat(ReadFile[2*19][0])) ;
-			BA.setPhyAtk((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*20]), "String", "float")) ;
-			BA.setMagAtk((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*21]), "String", "float")) ;
-			BA.setPhyDef((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*22]), "String", "float")) ;
-			BA.setMagDef((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*23]), "String", "float")) ;
-			BA.setDex((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*24]), "String", "float")) ;
-			BA.setAgi((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*25]), "String", "float")) ;
-			BA.setCrit((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*26]), "String", "float")) ;
-			BA.setStun((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*27]), "String", "float")) ;
-			BA.setBlock((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*28]), "String", "float")) ;
-			BA.setBlood((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*29]), "String", "float")) ;
-			BA.setPoison((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*30]), "String", "float")) ;
-			BA.setSilence((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*31]), "String", "float")) ;
-			PA.Elem = Utg.toString(ReadFile[2*32]) ;
-			ElemMult = (float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*33]), "String", "float") ;
-			Collect = (float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*34]), "String", "float") ;
-			PA.setLevel(Integer.parseInt(ReadFile[2*35][0])) ;
-			Gold = (float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*36]), "String", "float") ;
-			setStep(Integer.parseInt(ReadFile[2*37][0])) ;
-			PA.setExp((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*38]), "String", "float")) ;
-			PA.setSatiation((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*39]), "String", "float")) ;
-			QuestSkills = (boolean[]) Utg.ConvertArray(Utg.toString(ReadFile[2*40]), "String", "boolean") ;
-			BA.setSpecialStatus((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*41]), "String", "int")) ;
-			PA.Actions = (int[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*42], 3), "String", "int") ;
-			BA.setBattleActions((int[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*43], 3), "String", "int")) ;
-			SpellIsActive = new boolean[getSpell().length] ;
-			SpellCounter = new int[getSpell().length][2] ;
-			StatusCounter = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*44]), "String", "int") ;
-			Stats = (float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*45]), "String", "float") ;
-			AttPoints = Integer.parseInt(ReadFile[2*46][0]) ;
-			AttIncrease = (float[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*47], 8), "String", "float") ;
-			ChanceIncrease = (float[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*48], 8), "String", "float") ;
-			if (!Utg.toString(ReadFile[2*49])[0].equals("null"))
-			{
-				CreaturesDiscovered = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*49]), "String", "int") ;
-			}
-			else
-			{
-				CreaturesDiscovered = null ;
-			}
-			pet.Load(ReadFile) ;
+			PotMult += 0.06 * Spell[7] ;
 		}
-	}
-	
-	
-	/* Printing methods */
-	public void PrintAllAttributes()
+		if (-1 < itemID)	// if the item is valid
+		{
+			//if (0 < Bag[itemID])	// if the player has the item in the bag
+			//{
+				if (items[itemID].getType().equals("Potion"))	// potions
+				{
+					float HealPower = Items.PotionsHealing[itemID][1] * PotMult ;
+					
+					PA.incLife(HealPower * PA.getLife()[1]) ;
+					PA.incMP(HealPower * PA.getMp()[1]) ;
+					//Bag[itemID] += -1 ;			
+				}
+				else if (items[itemID].getType().equals("Alchemy"))	// alchemy (using herbs heal half of their equivalent pot)
+				{
+					float HealPower = Items.PotionsHealing[itemID / 3 - Items.BagIDs[0] / 3 + 1][1] / 2 * PotMult ;
+					
+					PA.incLife(HealPower * PA.getLife()[1]) ;
+					if (0 < pet.getLife()[0])
+					{
+						pet.getPersonalAtt().incLife(HealPower * pet.getLife()[1]) ;
+						pet.getPersonalAtt().incMP(HealPower * pet.getMp()[1]) ;
+						
+						// Animal's skill "natural help": gives 20% bonus on the pet attributes. The enhanced attributes depend on the collectible used
+						if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & PA.Job == 3 & (itemID - Items.BagIDs[1] + 1) % 3 < Spell[10])
+						{
+							int ItemsWithEffectsID = -1 ;
+							for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
+							{
+								if (itemID == Items.ItemsWithEffects[i])
+								{
+									ItemsWithEffectsID = i ;
+								}
+							}
+							if (-1 < ItemsWithEffectsID)
+							{
+								B.ItemEffectInBattle(getBattleAtt(), pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
+							}
+						}
+					}
+					//Bag[itemID] += -1 ;
+				}
+				else if (items[itemID].getType().equals("Pet"))		// pet items
+				{
+					pet.getPersonalAtt().incLife(Items.PetItems[itemID - Items.BagIDs[3] + 1][1] * pet.getLife()[1]) ;
+					pet.getPersonalAtt().incMP(Items.PetItems[itemID - Items.BagIDs[3] + 1][2] * pet.getMp()[1]) ;
+					pet.getPersonalAtt().incSatiation(Items.PetItems[itemID - Items.BagIDs[3] + 1][3]) ;
+					//Bag[itemID] += -1 ;
+				}
+				else if (items[itemID].getType().equals("Food"))	// food
+				{
+					PA.incSatiation(Items.FoodSatiation[itemID - Items.BagIDs[4] + 1][3] * PA.getSatiation()[2]) ;
+					//Bag[itemID] += -1 ;
+				}
+				else if (items[itemID].getType().equals("Arrow"))	// arrows
+				{
+					//if (0 < Bag[itemID] & PA.Job == 2)
+					//{
+						if (itemID == Items.BagIDs[5] | itemID <= Items.BagIDs[5] + 3 & 1 <= Spell[4] | itemID == Items.BagIDs[5] + 4 & 2 <= Spell[4]  | itemID == Items.BagIDs[5] + 5 & 3 <= Spell[4]  | Items.BagIDs[5] + 6 <= itemID & itemID <= Items.BagIDs[5] + 14 & 4 <= Spell[4]  | Items.BagIDs[5] + 14 <= itemID & 5 <= Spell[4])
+						{
+							if (0 == Equips[3])
+							{
+								Equips[3] = itemID ;	// Equipped arrow
+								PA.Elem[0] = bag.getArrow()[itemID - Items.BagIDs[5]].getElem() ;
+							}
+							else
+							{
+								Equips[3] = 0 ;	// Unequipped arrow
+								PA.Elem[0] = "n" ;
+							}
+						}
+					//}
+				}
+				else if (items[itemID].getType().equals("Equip"))	// equipment
+				{
+					if (isEquippable(itemID))
+					{
+						Equip(items, itemID) ;
+					}
+				}
+				else if (items[itemID].getType().equals("Item"))	// items
+				{
+					if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & PA.Job == 4 & 0 < Spell[8])
+					{		
+						int ItemsWithEffectsID = -1 ;
+						for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
+						{
+							if (itemID == Items.ItemsWithEffects[i])
+							{
+								ItemsWithEffectsID = i ;
+							}
+						}
+						if (-1 < ItemsWithEffectsID)
+						{
+							B.ItemEffectInBattle(getBattleAtt(), pet.getBattleAtt(), creature[creatureID].getBattleAtt(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
+						}
+						//Bag[itemID] += -1 ;
+						BA.getBattleActions()[0][0] = 0 ;
+						BA.getBattleActions()[0][2] = 0 ;
+					}
+					else
+					{
+						ItemEffect(itemID) ;
+						//Bag[itemID] += -1 ;
+					}
+				}
+			//}			
+		}
+	}*/
+	/*public Settings OptionsWindow(Clip[] Music, DrawFunctions DF)
 	{
-		System.out.println();
-		System.out.println("** Player attributes **");
-		System.out.println("Language: " + Language);
-		System.out.println("Sex: " + Sex);
-		System.out.println("color: " + Arrays.toString(color));
-		System.out.println("PA.Job: " + PA.Job);
-		System.out.println("PA.ProJob: " + PA.ProJob);
-		System.out.println("Skill: " + Arrays.toString(Spell));
-		System.out.println("Quest: " + Arrays.toString(Quest));
-		//System.out.println("Bag: " + Arrays.toString(Bag));
-		System.out.println("Equips: " + Arrays.toString(Equips));
-		System.out.println("SkillPoints: " + SkillPoints);
-		System.out.println("** Personal attributes **");
-		PA.printAtt();
-		System.out.println("** Battle attributes **");
-		BA.printAtt();
-		System.out.println("Elem: " + Arrays.toString(PA.Elem));
-		System.out.println("ElemMult: " + Arrays.toString(ElemMult));
-		System.out.println("Collect: " + Arrays.toString(Collect));
-		System.out.println("Gold: " + Arrays.toString(Gold));
-		System.out.println("QuestSkills: " + Arrays.toString(QuestSkills));
-		System.out.println("PA.Actions: " + Arrays.deepToString(PA.Actions));
-		System.out.println("PA.currentAction: " + PA.currentAction);
-		System.out.println("IsRiding: " + IsRiding);
-		System.out.println("SkillIsActive: " + Arrays.toString(SpellIsActive));
-		System.out.println("SkillCounter: " + Arrays.deepToString(SpellCounter));
-		System.out.println("StatusCounter: " + Arrays.toString(StatusCounter));
-		System.out.println("Stats: " + Arrays.toString(Stats));
-		System.out.println("Combo: " + Arrays.toString(Combo));
-		System.out.println("AttPoints: " + AttPoints);
-		System.out.println("AttIncrease: " + Arrays.deepToString(AttIncrease));
-		System.out.println("ChanceIncrease: " + Arrays.deepToString(ChanceIncrease));
-		System.out.println("CreaturesDiscovered: " + Arrays.toString(CreaturesDiscovered));
-		System.out.println("SelectedWindow: " + Arrays.toString(SelectedWindow));
-		System.out.println("SelectedMenu: " + Arrays.toString(SelectedMenu));
-		System.out.println("SelectedItem: " + Arrays.toString(SelectedItem));
-		System.out.println("ItemsMenu: " + ItemsMenu);
-		System.out.println("CustomKey: " + CustomKey);
-		System.out.println("OptionStatus: " + settings);
-		System.out.println("ClosestCreature: " + ClosestCreature);
-		System.out.println("CreatureInBattle: " + CreatureInBattle);
-		System.out.println("DifficultLevel: " + DifficultLevel);
-		System.out.println("RidingImage: " + RidingImage);
-		System.out.println("action: " + action);
-		System.out.println("countmove: " + PA.countmove);
-		System.out.println("SelectedOption: " + SelectedOption);
-		System.out.println("EquipsBonus: " + Arrays.deepToString(EquipsBonus));
-		System.out.println("WindowIsOpen: " + Arrays.toString(WindowIsOpen));
-		System.out.println("hotkeyItem: " + Arrays.toString(hotkeyItem));
-	}
+		boolean CustomKeyIsActionKey = false ;
+		if (SelectedMenu[0] == 0)
+		{
+			SelectedItem[0] = Uts.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedItem[0], 5) ;
+			if (action.equals("Enter") | action.equals("MouseLeftClick"))
+			{
+				if (SelectedItem[0] == 0)
+				{
+					settings.setMusicIsOn(!settings.getMusicIsOn());
+					Utg.PlayMusic(Music[Maps.Music[PA.getMap()]]) ;
+				}
+				if (SelectedItem[0] == 1)
+				{
+					settings.setSoundEffectsAreOn(!settings.getSoundEffectsAreOn());
+				}
+				if (SelectedItem[0] == 2)
+				{
+					settings.setShowPlayerRange(!settings.getShowPlayerRange()) ;
+				}
+				if (SelectedItem[0] == 3)
+				{
+					settings.setAttDisplay((settings.getAttDisplay() + 1) % 2) ;
+				}
+				if (SelectedItem[0] == 4)
+				{
+					settings.setDamageAnimation((settings.getDamageAnimation() + 1) % 4);
+				}
+				if (4 < SelectedItem[0] & SelectedItem[0] <= 4 + Player.ActionKeys.length)
+				{
+					SelectedMenu[0] = 1 ;
+					SelectedItem[0] = 0 ;
+				}
+				if (SelectedItem[0] <= 2)
+				{
+					OptionStatus[SelectedItem[0]] = !(boolean)OptionStatus[SelectedItem[0]] ;
+					if (SelectedItem[0] == 0)
+					{
+						Utg.PlayMusic(Music[Maps.Music[PA.getMap()]]) ;
+					}
+				}
+				else if (SelectedItem[0] == 3)
+				{
+					OptionStatus[3] = ((int)OptionStatus[3] + 1) % 2 ;
+				}
+				else if (SelectedItem[0] == 4)
+				{
+					OptionStatus[4] = ((int)OptionStatus[4] + 1) % 4 ;
+				}
+				else if (3 < SelectedItem[0] & SelectedItem[0] <= 3 + Player.ActionKeys.length)
+				{
+					SelectedMenu[0] = 1 ;
+					SelectedItem[0] = 0 ;
+				}
+			}
+		}
+		else if (1 <= SelectedMenu[0])
+		{
+			if (SelectedMenu[0] == 1)
+			{
+				SelectedItem[0] = Uts.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedItem[0], Player.ActionKeys.length - 1) ;
+			}
+			if (!action.equals(""))
+			{
+				if (SelectedMenu[0] == 2)
+				{
+					for (int i = 0 ; i <= Player.ActionKeys.length - 1 ; i += 1)
+					{
+						if (action.equals(Player.ActionKeys[i]) | action.equals("Enter") | action.equals("MouseLeftClick") | action.equals("Escape"))
+						{
+							CustomKeyIsActionKey = true ;
+						}
+					}
+					if (!CustomKeyIsActionKey)
+					{
+						CustomKey = action ;
+						Player.ActionKeys[SelectedItem[0]] = CustomKey ;
+						SelectedMenu[0] = 1 ;
+					}
+				}
+			}
+			if (action.equals("Enter"))
+			{
+				SelectedMenu[0] = 2 ;
+			}
+			if (action.equals("Escape"))
+			{
+				if (SelectedMenu[0] == 1)
+				{
+					SelectedItem[0] = 0 ;
+				}
+				SelectedMenu[0] += -1 ;
+			}
+		}
+		//DF.DrawOptionsWindow(SelectedItem[0], SelectedMenu[0], Player.ActionKeys, settings) ;
+		return settings ;
+	}*/
+	/*public void HintsMenu(Point MousePos, Color ClassColor, DrawFunctions DF)
+	{
+		int NumberOfHints = 15 ;
+		Size screenSize = Game.getScreen().getSize() ;
+		int[] Pos = new int[] {(int)(0.19 * screenSize.x), (int)(0.5 * screenSize.y)} ;
+		int L = (int)(0.62 * screenSize.x), H = (int)(0.2 * screenSize.y) ;
+		int[] OkButtonPos = new int[] {(int) (Pos[0] + 0.7*L), (int) (Pos[1] - 0.125*H)} ;
+		float OkButtonL = (float) (0.05*L), OkButtonH = (float) (0.125*H) ;
+		if (action.equals(Player.ActionKeys[1]) | action.equals(Player.ActionKeys[3]))
+		{
+			SelectedWindow[6] = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, SelectedWindow[6], NumberOfHints - 1) ;
+		}
+		if (action.equals("Enter") | (Utg.isInside(MousePos, new Point((int) (OkButtonPos[0] - OkButtonL/2), (int) (OkButtonPos[1] + OkButtonH/2)), (int) (OkButtonL), (int) (OkButtonH)) & action.equals("MouseLeftClick")))
+		{
+			//return false ;
+		}
+		DF.DrawHintsMenu(MousePos, SelectedWindow[6], NumberOfHints, ClassColor) ;
+	}*/
+	/*public void FabBook(Items[] items, Point MousePos, DrawFunctions DF)
+	{
+		int[][] Ingredients = Items.CraftingIngredients, Products = Items.CraftingProducts ;
+		int NumberOfPages = Ingredients.length - 1 ;
+		SelectedWindow[2] = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, SelectedWindow[2], NumberOfPages) ;
+		DF.DrawFabBook(BookImage, items, SelectedWindow[2], Ingredients, Products, MousePos) ;
+	}*/
+	/*public void Bestiary(CreatureTypes[] creatureTypes, Items[] items, int[] CreaturesDiscovered, Point MousePos, DrawFunctions DF)
+	{
+		int windowLimit = 0 ;
+		if (CreaturesDiscovered != null)
+		{
+			windowLimit = Math.max(CreaturesDiscovered.length - 1, 0)/5 ;
+		}
+		SelectedWindow[8] = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, SelectedWindow[8], windowLimit) ;
+		DF.DrawBestiary(creatureTypes, CreaturesDiscovered, items, MousePos, SelectedWindow[8]) ;
+	}*/
 }

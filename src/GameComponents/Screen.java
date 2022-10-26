@@ -6,23 +6,23 @@ public class Screen
 {
 	private Size size ;	// Length, height
 	private int[] borders ;	// Min x, Min y, Max x, Max y
-	private Point center ;
-    private int skyHeight ;
+	private Point center ;	// center of the entire screen, including the sky
+	private Point mapCenter ;	// center of the walkable map, excluding the sky
 
-	public Screen(Size Size, int[] Borders)
+	public Screen(Size size, int[] borders)
 	{
-		this.size = Size ;
-		this.borders = Borders ;
-		center = new Point(Size.x / 2, Size.y / 2) ;
-		skyHeight = (int)(0.2 * Size.x) ;
+		this.size = size ;
+		this.borders = borders ;
 	}
 
 	public Size getSize() {return size ;}
 	public int[] getBorders() {return borders ;}
 	public Point getCenter() {return center ;}
-	public int getSkyHeight() {return skyHeight ;}
+	public Point getMapCenter() {return mapCenter ;}
 	public void setSize(Size D) {size = D ;}
 	public void setBorders(int[] B) {borders = B ;}
+	public void setCenter() {center = new Point(size.x / 2, size.y / 2) ;}
+	public void setMapCenter() {mapCenter = new Point(size.x / 2, (size.y + borders[1]) / 2) ;}
 	
 	public boolean posIsInMap(Point pos)
 	{

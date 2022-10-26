@@ -27,6 +27,7 @@ import GameComponents.Buildings ;
 import GameComponents.Icon ;
 import GameComponents.MapElements ;
 import GameComponents.Maps ;
+import GameComponents.MovingAnimations;
 import GameComponents.NPCs ;
 import GameComponents.PetSpells ;
 import GameComponents.Projectiles ;
@@ -34,7 +35,6 @@ import GameComponents.Quests ;
 import GameComponents.Screen ;
 import GameComponents.Size;
 import GameComponents.Spells ;
-import GameComponents.SkyComponents ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Graphics.DrawPrimitives ;
@@ -54,6 +54,8 @@ import LiveBeings.Creatures;
 import LiveBeings.PersonalAttributes;
 import LiveBeings.Pet;
 import LiveBeings.Player;
+import SkyComponents.Sky;
+import SkyComponents.SkyComponent;
 
 public class Game extends JPanel implements ActionListener
 {
@@ -72,7 +74,6 @@ public class Game extends JPanel implements ActionListener
     private int OPSelectedButton ;
 	private int LoadingSelectedSlot, LoadingGameTab ;
     private int[] DamageAnimationType ;
-    private int DayCounter, DayDuration ;
 	private int OpeningStep, TutorialStep ;
     private String GameLanguage, PlayerName, PlayerSex ;
     private int PlayerJob ;
@@ -87,25 +88,29 @@ public class Game extends JPanel implements ActionListener
 	private Clip MusicIntro ;
 	private Clip[] Music, SoundEffects ;
 
-	private static Screen screen ;
-	private SkyComponents[] Cloud, Star ;
+	private Sky sky ;
 	private NPCsMethods NPC ;
 	private DrawFunctions DF ;
 	private Animations Ani ;
 	private Battle bat ;
 	private Icon[] OPbuttons, SideBarIcons, plusSignIcon ;
-	private CreatureTypes[] creatureTypes ;
 	private Player player ;
 	private Pet pet ;
 	private Creatures[] creature ;
-	private NPCs[] npc ;
 	//private Items[] items ;
-	private Buildings[] buildings ;
-	private Maps[] maps ;
 	private Spells[] spells ;
 	private PetSpells[] petspells ;
 	private Quests[] quest ;
 	private Projectiles[] proj ;
+	
+
+	private static Screen screen ;
+	private static CreatureTypes[] creatureTypes ;
+	private static Maps[] maps ;
+	private static Buildings[] buildings ;
+	private static NPCs[] npc ;
+	
+	public static int DayDuration ;
 	
 	public Game(int[] WinDim) 
 	{         	
@@ -115,12 +120,19 @@ public class Game extends JPanel implements ActionListener
 		addKeyListener(new TAdapter()) ;
 		setFocusable(true) ;
 	}
+	
 	public static Screen getScreen(){return screen ;}
-    
+	public static CreatureTypes[] getCreatureTypes(){return creatureTypes ;}
+	public static Maps[] getMaps(){return maps ;}
+	public static Buildings[] getBuildings(){return buildings ;}
+	public static NPCs[] getNPCs(){return npc ;}
+	
+	
     public void FirstInitialization(int[] WinDim)
     {
 		timer = new Timer(10, this) ;	// timer of the game, first number = delay
-    	screen = new Screen(new Size(WinDim[0] - 40 - 15, WinDim[1] - 39), new int[] {0, 140, WinDim[0] - 40 - 15, WinDim[1] - 39}) ;
+    	screen = new Screen(new Size(WinDim[0] - 40 - 15, WinDim[1] - 39), null) ;
+    	screen.setCenter() ;
 		CSVPath = ".\\csv files\\" ;
 		ImagesPath = ".\\images\\" ;
 		MusicPath = ".\\music\\" ;
@@ -141,7 +153,7 @@ public class Game extends JPanel implements ActionListener
     	OpeningIsOn = true ; 
     	SoundEffectsAreOn = true ;
     	
-    	player = InitializePlayer("", 0, "", "") ;
+    	//player = InitializePlayer("", 0, "", "") ;
     	
 		Image ButtonPort = new ImageIcon(ImagesPath + "ButtonPort.png").getImage() ;
 		Image ButtonEn = new ImageIcon(ImagesPath + "ButtonEn.png").getImage() ;
@@ -159,13 +171,13 @@ public class Game extends JPanel implements ActionListener
     	OPbuttons[4] = new Icon(4, "Male", new Point(screen.getSize().x / 2 - 50, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[5] = new Icon(5, "Female", new Point(screen.getSize().x / 2 + 50, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[6] = new Icon(6, "Baixo", new Point(screen.getSize().x / 2 - 100, screen.getSize().y / 4), null, null, null) ;
-    	OPbuttons[7] = new Icon(7, "Mï¿½dio", new Point(screen.getSize().x / 2 + 0, screen.getSize().y / 4), null, null, null) ;
+    	OPbuttons[7] = new Icon(7, "Médio", new Point(screen.getSize().x / 2 + 0, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[8] = new Icon(8, "Alto", new Point(screen.getSize().x / 2 + 100, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[9] = new Icon(9, "Cavaleiro", new Point(screen.getSize().x / 2 - 200, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[10] = new Icon(10, "Mago", new Point(screen.getSize().x / 2 - 100, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[11] = new Icon(11, "Arqueiro", new Point(screen.getSize().x / 2 + 0, screen.getSize().y / 4), null, null, null) ;
     	OPbuttons[12] = new Icon(12, "Animal", new Point(screen.getSize().x / 2 + 100, screen.getSize().y / 4), null, null, null) ;
-    	OPbuttons[13] = new Icon(13, "Ladrï¿½o", new Point(screen.getSize().x / 2 + 200, screen.getSize().y / 4), null, null, null) ;
+    	OPbuttons[13] = new Icon(13, "Ladrão", new Point(screen.getSize().x / 2 + 200, screen.getSize().y / 4), null, null, null) ;
     	
     	Ani = new Animations(null, null) ;
 		Ani.SetAniVars(20, new Object[] {147, OpeningGif}) ;
@@ -173,24 +185,10 @@ public class Game extends JPanel implements ActionListener
     }
     public void InitializeGeneralVariables(Size screenSize)
     {
-    	Cloud = new SkyComponents[5] ;
-    	Star = new SkyComponents[50] ;
-		for (int c = 0 ; c <= Cloud.length - 1 ; c += 1)
-		{
-			Image CloudImage = new ImageIcon(ImagesPath + "Cloud" + String.valueOf(1 + (int) (3 * Math.random())) + ".png").getImage() ;
-			Point InitialCloudPos = new Point((int)(Math.random() * screenSize.x), 2 + (int) ((screen.getSkyHeight() - CloudImage.getHeight(mainpanel)) * Math.random())) ;
-			float[] CloudSpeed = new float[] {(float)(1 + 1.5 * Math.random()), 0} ;
-	    	Cloud[c] = new SkyComponents(CloudImage, "Cloud", InitialCloudPos, CloudSpeed, new Color[] {ColorPalette[4]}) ;
-		}
-		Image StarImage = new ImageIcon(ImagesPath + "Star.png").getImage() ;
-		for (int s = 0 ; s <= Star.length - 1 ; s += 1)
-		{
-			Point StarPos = new Point((int)(Math.random() * screenSize.x), (int)(Math.random() * screen.getSkyHeight())) ;
-			Color[] StarColor = new Color[] {ColorPalette[(int)((ColorPalette.length - 1)*Math.random())]} ;
-	    	Star[s] = new SkyComponents(StarImage, "Cloud", StarPos, new float[2], StarColor) ;
-		}	
-    	DayCounter = 60000 ;
     	DayDuration = 120000 ;
+    	sky = new Sky() ;
+    	screen.setBorders(new int[] {0, sky.height, screen.getSize().x, screen.getSize().y});
+    	screen.setMapCenter() ;
     	
     	OpeningStep = 0 ;
     	TutorialStep = 0 ;
@@ -229,6 +227,215 @@ public class Game extends JPanel implements ActionListener
     	SoundEffects = new Clip[] {SoundEffectSwordHit} ;
 	}
     
+    
+    public NPCs[] InitializeNPCs(String Language, Size screenSize)
+    {
+    	int NumberOfNPCs = 149 ;
+    	// Doutor, Equips Seller, Items Seller, Smuggle Seller, Banker, Alchemist, Woodcrafter, Forger, Crafter, Elemental, Saver, Master, Quest 0, Citizen 0, Citizen 1, Citizen 2, Citizen 3
+		NPCs[] npc = new NPCs[NumberOfNPCs] ;
+		String[][] NPCsInput = Utg.ReadTextFile(CSVPath + "NPCs.csv", NumberOfNPCs) ;
+		String Name = "" ;
+		String Info = "" ;
+		int[] ColorID = new int[] {6, 10, 20, 16, 3, 23, 27, 0, 25, 7, 5, 0, 26, 18, 15, 14, 21} ;
+		for (int i = 0 ; i <= NumberOfNPCs - 1 ; i += 1)
+		{
+			int ID = Integer.parseInt(NPCsInput[i][0]) ;
+			int step = 1;
+			Point Pos = new Point((int)(Utg.Round(Float.parseFloat(NPCsInput[i][3]) * screenSize.x / step, 0) * step), (int)(Utg.Round(Float.parseFloat(NPCsInput[i][4]) * screenSize.y / step, 0) * step)) ;
+			Image image = null ;
+			int Map = Integer.parseInt(NPCsInput[i][5]) ;
+			String PosReltoBuilding = NPCsInput[i][6] ;
+			if (Language.equals("P"))
+			{
+				Name = NPCsInput[i][1] ;
+				Info = NPCsInput[i][7] ;
+			}
+			else if (Language.equals("E"))
+			{
+				Name = NPCsInput[i][2] ;
+				Info = NPCsInput[i][8] ;
+			}
+			Color color ;
+			if (i < 17*4)
+			{
+				color = ColorPalette[ColorID[i % 17]] ;
+			}
+			else
+			{
+				color = ColorPalette[(int)((ColorPalette.length - 1)*Math.random())] ;
+			}
+			if (!Name.equals("Master") & !Name.equals("Mestre") & i != 85 & i != 87)
+			{
+				image = Utg.ChangeImageColor(new ImageIcon(ImagesPath + "NPC.png").getImage(), new float[] {0, 0, 1, 1}, color, ColorPalette[6]) ;
+			}
+			if (Name.equals("Master") | Name.equals("Mestre"))
+			{
+				image = Utg.ChangeImageColor(new ImageIcon(ImagesPath + "PlayerFront.png").getImage(), new float[] {0, 0, 1, 1}, color, ColorPalette[6]) ;
+			}
+			if (i == 85)
+			{
+				image = new ImageIcon(ImagesPath + "NPCHole.png").getImage() ;
+			}
+			if (i == 87)
+			{
+				image = new ImageIcon(ImagesPath + "NPCHoleInCave.png").getImage() ;
+			}
+			npc[i] = new NPCs(ID, Name, Pos, image, Map, PosReltoBuilding, Info, color) ;
+		}
+    	
+		return npc ;
+    }
+    public Buildings[] InitializeBuildings(Size screenSize, NPCs[] npc)
+    {
+		int NumberOfBuildings = 30 ;
+    	Buildings[] buildings = new Buildings[NumberOfBuildings] ;
+		String[][] BuildingsInput = Utg.ReadTextFile(CSVPath + "Buildings.csv", NumberOfBuildings) ;
+		int[] ColorID = new int[] {6, 3, 13, 3, 0, 0} ;
+		for (int i = 0 ; i <= NumberOfBuildings - 1 ; i += 1)
+		{
+			int ID = Integer.parseInt(BuildingsInput[i][0]) ;
+			String name = BuildingsInput[i][1] ;
+			int map = Integer.parseInt(BuildingsInput[i][2]) ;
+			Point Pos = new Point((int)(Float.parseFloat(BuildingsInput[i][3])*screenSize.x), (int)(Float.parseFloat(BuildingsInput[i][4])*screenSize.y)) ;
+			Image[] Images = new Image[] {new ImageIcon(ImagesPath + "Building.png").getImage(), new ImageIcon(ImagesPath + "Building" + name + "Inside.png").getImage()} ;
+			Image[] OrnamentImages = new Image[] {new ImageIcon(ImagesPath + "Building" + name + "Ornament.png").getImage()} ;
+			NPCs[] NPCsInBuilding = Uts.NPCsInBuilding(npc, name, map) ;
+			Color color = ColorPalette[ColorID[i % 6]] ;
+			buildings[i] = new Buildings(ID, name, map, Pos, Images, OrnamentImages, NPCsInBuilding, color) ;
+		}
+		return buildings ;
+    }
+    public CreatureTypes[] InitializeCreatureTypes(String Language, float DiffMult)
+    {
+    	CreatureTypes.setNumberOfCreatureTypes(CSVPath);
+		CreatureTypes[] creatureTypes = new CreatureTypes[CreatureTypes.getNumberOfCreatureTypes()] ;
+		String[][] Input = Utg.ReadTextFile(CSVPath + "CreatureTypes.csv", CreatureTypes.getNumberOfCreatureTypes()) ;
+		String Name = "" ;
+		Color[] color = new Color[creatureTypes.length] ;
+		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
+		{			
+			if (Language.equals("P"))
+			{
+				Name = Input[ct][1] ;
+			}
+			else if (Language.equals("E"))
+			{
+				Name = Input[ct][2] ;
+			}
+			int colorid = (int)((Creatures.getskinColor().length - 1)*Math.random()) ;
+			color[ct] = Creatures.getskinColor()[colorid] ;
+			if (270 < ct & ct <= 299)	// Ocean creatures
+			{
+				color[ct] = ColorPalette[5] ;
+			}
+			
+			Image image = new ImageIcon(ImagesPath + "creature.png").getImage() ;
+			MovingAnimations animations = new MovingAnimations(new ImageIcon(ImagesPath + "creature_idle.gif").getImage(),
+					new ImageIcon(ImagesPath + "creature_movingup.gif").getImage(),
+					new ImageIcon(ImagesPath + "creature_movingdown.gif").getImage(),
+					new ImageIcon(ImagesPath + "creature_movingleft.gif").getImage(),
+					new ImageIcon(ImagesPath + "creature_movingright.gif").getImage()) ;
+			
+			int Level = Integer.parseInt(Input[ct][3]) ;			
+			String dir = Player.MoveKeys[0] ;
+			String Thought = "Exist" ;
+			int[] Size = new int[] {42, 30} ;
+			float[] Life = new float[] {Float.parseFloat(Input[ct][5]) * DiffMult, Float.parseFloat(Input[ct][5]) * DiffMult} ;
+			float[] Mp = new float[] {Float.parseFloat(Input[ct][6]) * DiffMult, Float.parseFloat(Input[ct][6]) * DiffMult} ;
+			float Range = Float.parseFloat(Input[ct][7]) * DiffMult ;
+			int Step = Integer.parseInt(Input[ct][48]) ;
+			float[] Exp = new float[] {Integer.parseInt(Input[ct][36])} ;
+			float[] Satiation = new float[] {100, 100, 1} ;
+			float[] Thirst = new float[] {100, 100, 0} ;		
+			String[] Elem = new String[] {Input[ct][35]} ;
+			int[][] Actions = new int[][] {{0, Integer.parseInt(Input[ct][49]), 0}, {0, Integer.parseInt(Input[ct][50]), 0}} ;
+			String currentAction = "" ;
+			int countmove = 0 ;
+			PersonalAttributes PA = new PersonalAttributes(Name, Level, ct, 0, null, null, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
+
+			float[] PhyAtk = new float[] {Float.parseFloat(Input[ct][8]) * DiffMult, 0, 0} ;
+			float[] MagAtk = new float[] {Float.parseFloat(Input[ct][9]) * DiffMult, 0, 0} ;
+			float[] PhyDef = new float[] {Float.parseFloat(Input[ct][10]) * DiffMult, 0, 0} ;
+			float[] MagDef = new float[] {Float.parseFloat(Input[ct][11]) * DiffMult, 0, 0} ;
+			float[] Dex = new float[] {Float.parseFloat(Input[ct][12]) * DiffMult, 0, 0} ;
+			float[] Agi = new float[] {Float.parseFloat(Input[ct][13]) * DiffMult, 0, 0} ;
+			float[] Crit = new float[] {Float.parseFloat(Input[ct][14]) * DiffMult, 0, Float.parseFloat(Input[ct][15]) * DiffMult, 0} ;
+			float[] Stun = new float[] {Float.parseFloat(Input[ct][16]) * DiffMult, 0, Float.parseFloat(Input[ct][17]) * DiffMult, 0, Float.parseFloat(Input[ct][18]) * DiffMult} ;
+			float[] Block = new float[] {Float.parseFloat(Input[ct][19]) * DiffMult, 0, Float.parseFloat(Input[ct][20]) * DiffMult, 0, Float.parseFloat(Input[ct][21]) * DiffMult} ;
+			float[] Blood = new float[] {Float.parseFloat(Input[ct][22]) * DiffMult, 0, Float.parseFloat(Input[ct][23]) * DiffMult, 0, Float.parseFloat(Input[ct][24]) * DiffMult, 0, Float.parseFloat(Input[ct][25]) * DiffMult, 0, Float.parseFloat(Input[ct][26]) * DiffMult} ;
+			float[] Poison = new float[] {Float.parseFloat(Input[ct][27]) * DiffMult, 0, Float.parseFloat(Input[ct][28]) * DiffMult, 0, Float.parseFloat(Input[ct][29]) * DiffMult, 0, Float.parseFloat(Input[ct][30]) * DiffMult, 0, Float.parseFloat(Input[ct][31]) * DiffMult} ;
+			float[] Silence = new float[] {Float.parseFloat(Input[ct][32]) * DiffMult, 0, Float.parseFloat(Input[ct][33]) * DiffMult, 0, Float.parseFloat(Input[ct][34]) * DiffMult} ;
+			int[] Status = new int[8] ;
+			int[] SpecialStatus = new int[5] ;
+			int[][] BattleActions = new int[][] {{0, Integer.parseInt(Input[ct][51]), 0}} ;
+			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
+						
+			int[] Skill = new int[] {Integer.parseInt(Input[ct][4])} ;
+			int[] Bag = new int[] {Integer.parseInt(Input[ct][37]), Integer.parseInt(Input[ct][38]), Integer.parseInt(Input[ct][39]), Integer.parseInt(Input[ct][40]), Integer.parseInt(Input[ct][41]), Integer.parseInt(Input[ct][42]), Integer.parseInt(Input[ct][43]), Integer.parseInt(Input[ct][44]), Integer.parseInt(Input[ct][45]), Integer.parseInt(Input[ct][46])} ;
+			int Gold = Integer.parseInt(Input[ct][47]) ;
+			int[] StatusCounter = new int[8] ;
+			image = Utg.ChangeImageColor(image, new float[] {0, 0, 1, 1}, color[ct], ColorPalette[20]) ;
+			image = Utg.ChangeImageColor(image, new float[] {0, 0, 1, 1}, Creatures.getshadeColor()[colorid], ColorPalette[19]) ;
+			creatureTypes[ct] = new CreatureTypes(ct, animations, PA, BA, Skill, Bag, Gold, color[ct], StatusCounter) ;	
+		}
+		return creatureTypes ;
+    }
+    public Maps[] InitializeMaps(Screen screen, Buildings[] buildings, CreatureTypes[] creatureTypes, Sky sky)
+    {
+    	int NumberOfMaps = 67 ;
+		Maps[] maps = new Maps[NumberOfMaps] ;
+		String[][] MapsInput = Utg.ReadTextFile(CSVPath + "Maps.csv", NumberOfMaps) ;	
+		for (int map = 0 ; map <= NumberOfMaps - 1 ; map += 1)
+		{
+			String Name = MapsInput[map][1] ;
+			int Continent = Integer.parseInt(MapsInput[map][2]) ;
+			Image image = new ImageIcon(ImagesPath + "Map" + String.valueOf(map) + ".png").getImage() ;
+			int CollectibleLevel = Integer.parseInt(MapsInput[map][3]) ;
+			int[] CollectibleDelay = new int[] {Integer.parseInt(MapsInput[map][4]), Integer.parseInt(MapsInput[map][5]), Integer.parseInt(MapsInput[map][6]), Integer.parseInt(MapsInput[map][7])} ;
+			int[] Connections = new int[] {Integer.parseInt(MapsInput[map][8]), Integer.parseInt(MapsInput[map][9]), Integer.parseInt(MapsInput[map][10]), Integer.parseInt(MapsInput[map][11]), Integer.parseInt(MapsInput[map][12]), Integer.parseInt(MapsInput[map][13]), Integer.parseInt(MapsInput[map][14]), Integer.parseInt(MapsInput[map][15])} ;
+			Creatures[] creatures = null ;
+			CreatureTypes[] creatureType = null ;
+			for (int c = 0 ; c <= 10 - 1 ; c += 1)
+			{
+				if (-1 < Integer.parseInt(MapsInput[map][16 + c]))
+				{
+					creatureType = Utg.AddVectorElem(creatureType, creatureTypes[Integer.parseInt(MapsInput[map][16 + c])]) ;
+				}
+			}
+			
+			// Creating map elements
+			MapElements[] MapElem = null ;
+			if (!Name.contains("City"))
+			{
+				MapElem = new MapElements[5] ;
+				float MinX = (float) 0.1 ;
+				float MinY = (float)((float)(sky.height)/screen.getSize().y + 0.1) ;
+				float RangeX = (float) 0.8 ;
+				float RangeY = (float)(1 - MinY) ;
+				for (int j = 0 ; j <= 4 ; ++j)
+				{
+					Point randomPos = new Point(Utg.RandomCoord1D(screen.getSize().x, MinX, RangeX, 1), Utg.RandomCoord1D(screen.getSize().y, MinY, RangeY, 1)) ;
+					MapElem[j] = new MapElements(j, "ForestTree", randomPos, new ImageIcon(ImagesPath + "MapElem6_TreeForest.png").getImage()) ;				
+				}	
+			}
+			
+			
+			maps[map] = new Maps(Name, map, Continent, image, MapElem, CollectibleLevel, CollectibleDelay, Connections, creatureType, creatures) ;
+			maps[map].InitializeGroundTypes(sky.height, screen.getSize()) ;
+			
+			// Creating collectibles
+			if (!maps[map].IsACity() & maps[map].getContinent() != 5 & map != 60)
+			{
+				for (int i = 0 ; i <= Maps.CollectibleTypes.length - 1 ; i += 1)
+				{
+					maps[map].CreateCollectible(map, i) ;
+				}
+			}
+		}
+		return maps ;
+    }
+    
+        
     public Player InitializePlayer(String Name, int Job, String GameLanguage, String Sex)
     {
     	Player player = new Player(Name, GameLanguage, Sex, Job) ;
@@ -269,177 +476,74 @@ public class Game extends JPanel implements ActionListener
     	pet.getLife()[0] = 0 ;
 		return pet ;
     }
-    public Buildings[] InitializeBuildings(Size screenSize)
-    {
-		int NumberOfBuildings = 30 ;
-    	Buildings[] buildings = new Buildings[NumberOfBuildings] ;
-		String[][] BuildingsInput = Utg.ReadTextFile(CSVPath + "Buildings.csv", NumberOfBuildings) ;
-		int[] ColorID = new int[] {6, 3, 13, 3, 0, 0} ;
-		/*Image Dock = new ImageIcon(ImagesPath + "Dock.png").getImage() ;
-		Image ForgingTable = new ImageIcon(ImagesPath + "BuildingForgingTable.png").getImage() ;
-		Image Sign = new ImageIcon(ImagesPath + "Sign.png").getImage() ;*/
-		for (int i = 0 ; i <= NumberOfBuildings - 1 ; i += 1)
+    public void InitializeCreaturesInMap()
+    {		
+		// Setting creatures in map
+		for (int map = 0 ; map <= maps.length - 1 ; map += 1)
 		{
-			int ID = Integer.parseInt(BuildingsInput[i][0]) ;
-			String Name = BuildingsInput[i][1] ;
-			int Map = Integer.parseInt(BuildingsInput[i][2]) ;
-			Point Pos = new Point((int)(Float.parseFloat(BuildingsInput[i][3])*screenSize.x), (int)(Float.parseFloat(BuildingsInput[i][4])*screenSize.y)) ;
-			Image[] Images = new Image[] {new ImageIcon(ImagesPath + "Building.png").getImage(), new ImageIcon(ImagesPath + "Building" + Name + "Inside.png").getImage()} ;
-			Image[] OrnamentImages = new Image[] {new ImageIcon(ImagesPath + "Building" + Name + "Ornament.png").getImage()} ;
-			Color color = ColorPalette[ColorID[i % 6]] ;
-			buildings[i] = new Buildings(ID, Name, Map, Pos, Images, OrnamentImages, color) ;
+			if (maps[map].getCreatureTypes() != null)
+			{
+				Creatures[] creaturesInMap = null ;
+				for (int c = 0 ; c <= maps[map].getCreatureTypes().length - 1 ; c += 1)
+				{
+					CreatureTypes creatureType = maps[map].getCreatureTypes()[c];
+					if (-1 < creatureType.getID())
+					{
+						Creatures creature = new Creatures(creatureType) ;
+						creaturesInMap = Utg.AddVectorElem(creaturesInMap, creature) ;
+						maps[map].setCreatures(creaturesInMap) ;
+					}
+				}
+			}
 		}
-		return buildings ;
-    }
-    public CreatureTypes[] InitializeCreatureTypes(String Language, float DiffMult)
-    {
-    	CreatureTypes.setNumberOfCreatureTypes(CSVPath);
-		CreatureTypes[] creatureTypes = new CreatureTypes[CreatureTypes.getNumberOfCreatureTypes()] ;
-		String[][] Input = Utg.ReadTextFile(CSVPath + "CreatureTypes.csv", CreatureTypes.getNumberOfCreatureTypes()) ;
-		String Name = "" ;
-		Color[] color = new Color[creatureTypes.length] ;
-		/*for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
-		{
-		}*/
-		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
-		{			
-			if (Language.equals("P"))
-			{
-				Name = Input[ct][1] ;
-			}
-			else if (Language.equals("E"))
-			{
-				Name = Input[ct][2] ;
-			}
-			int colorid = (int)((Creatures.getskinColor().length - 1)*Math.random()) ;
-			color[ct] = Creatures.getskinColor()[colorid] ;
-			if (270 < ct & ct <= 299)	// Ocean creatures
-			{
-				color[ct] = ColorPalette[5] ;
-			}
-			Image image = new ImageIcon(ImagesPath + "creature.png").getImage() ;
-			Image[] animations = new Image[] {new ImageIcon(ImagesPath + "creature_idle.gif").getImage(), new ImageIcon(ImagesPath + "creature_movingup.gif").getImage(), new ImageIcon(ImagesPath + "creature_movingdown.gif").getImage(), new ImageIcon(ImagesPath + "creature_movingleft.gif").getImage(), new ImageIcon(ImagesPath + "creature_movingright.gif").getImage()} ;
-			int Level = Integer.parseInt(Input[ct][3]) ;
-			int Map = Integer.parseInt(Input[ct][4]) ;
-			int[] Size = new int[] {42, 30} ;
-			int[] Skill = new int[] {Integer.parseInt(Input[ct][5])} ;
-			float[] Life = new float[] {Float.parseFloat(Input[ct][6]) * DiffMult, Float.parseFloat(Input[ct][6]) * DiffMult} ;
-			float[] MP = new float[] {Float.parseFloat(Input[ct][7]) * DiffMult, Float.parseFloat(Input[ct][7]) * DiffMult} ;
-			float Range = Float.parseFloat(Input[ct][8]) * DiffMult ;
-			float[] PhyAtk = new float[] {Float.parseFloat(Input[ct][9]) * DiffMult, 0, 0} ;
-			float[] MagAtk = new float[] {Float.parseFloat(Input[ct][10]) * DiffMult, 0, 0} ;
-			float[] PhyDef = new float[] {Float.parseFloat(Input[ct][11]) * DiffMult, 0, 0} ;
-			float[] MagDef = new float[] {Float.parseFloat(Input[ct][12]) * DiffMult, 0, 0} ;
-			float[] Dex = new float[] {Float.parseFloat(Input[ct][13]) * DiffMult, 0, 0} ;
-			float[] Agi = new float[] {Float.parseFloat(Input[ct][14]) * DiffMult, 0, 0} ;
-			float[] Crit = new float[] {Float.parseFloat(Input[ct][15]) * DiffMult, 0, Float.parseFloat(Input[ct][16]) * DiffMult, 0} ;
-			float[] Stun = new float[] {Float.parseFloat(Input[ct][17]) * DiffMult, 0, Float.parseFloat(Input[ct][18]) * DiffMult, 0, Float.parseFloat(Input[ct][19]) * DiffMult} ;
-			float[] Block = new float[] {Float.parseFloat(Input[ct][20]) * DiffMult, 0, Float.parseFloat(Input[ct][21]) * DiffMult, 0, Float.parseFloat(Input[ct][22]) * DiffMult} ;
-			float[] Blood = new float[] {Float.parseFloat(Input[ct][23]) * DiffMult, 0, Float.parseFloat(Input[ct][24]) * DiffMult, 0, Float.parseFloat(Input[ct][25]) * DiffMult, 0, Float.parseFloat(Input[ct][26]) * DiffMult, 0, Float.parseFloat(Input[ct][27]) * DiffMult} ;
-			float[] Poison = new float[] {Float.parseFloat(Input[ct][28]) * DiffMult, 0, Float.parseFloat(Input[ct][29]) * DiffMult, 0, Float.parseFloat(Input[ct][30]) * DiffMult, 0, Float.parseFloat(Input[ct][31]) * DiffMult, 0, Float.parseFloat(Input[ct][32]) * DiffMult} ;
-			float[] Silence = new float[] {Float.parseFloat(Input[ct][33]) * DiffMult, 0, Float.parseFloat(Input[ct][34]) * DiffMult, 0, Float.parseFloat(Input[ct][35]) * DiffMult} ;						
-			String[] Elem = new String[] {Input[ct][36]} ;
-			int Exp = Integer.parseInt(Input[ct][37]) ;
-			int[] Bag = new int[] {Integer.parseInt(Input[ct][38]), Integer.parseInt(Input[ct][39]), Integer.parseInt(Input[ct][40]), Integer.parseInt(Input[ct][41]), Integer.parseInt(Input[ct][42]), Integer.parseInt(Input[ct][43]), Integer.parseInt(Input[ct][44]), Integer.parseInt(Input[ct][45]), Integer.parseInt(Input[ct][46]), Integer.parseInt(Input[ct][47])} ;
-			int Gold = Integer.parseInt(Input[ct][48]) ;
-			int Step = Integer.parseInt(Input[ct][49]) ;
-			int[] Status = new int[8] ;
-			int[] SpecialStatus = new int[5] ;
-			int[][] Actions = new int[][] {{0, Integer.parseInt(Input[ct][50]), 0}, {0, Integer.parseInt(Input[ct][51]), 0}} ;
-			int[][] BattleActions = new int[][] {{0, Integer.parseInt(Input[ct][52]), 0}} ;
-			int[] StatusCounter = new int[8] ;
-			image = Utg.ChangeImageColor(image, new float[] {0, 0, 1, 1}, color[ct], ColorPalette[20]) ;
-			image = Utg.ChangeImageColor(image, new float[] {0, 0, 1, 1}, Creatures.getshadeColor()[colorid], ColorPalette[19]) ;
-			creatureTypes[ct] = new CreatureTypes(ct, image, animations, Name, Level, Map, Size, Skill, Life, MP, Range, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Elem, Exp, Bag, Gold, Step, Status, SpecialStatus, color[ct], Actions, BattleActions, StatusCounter) ;	
-		}
-		return creatureTypes ;
     }
     public Creatures[] InitializeCreatures(CreatureTypes[] creatureTypes, Size screenSize, Maps[] maps, int PlayerStep)
     {    	
-    	int NumberOfCreatures = 575 ;
-		Creatures[] creature = new Creatures[NumberOfCreatures] ;
-		String Name = "" ;
-		for (int c = 0 ; c <= creature.length - 1 ; c += 1)
+    	int NumberOfCreatures = 0 ;
+    	
+    	// calculate number of creatures based on the creatures in each map
+    	for (int map = 0 ; map <= maps.length - 1 ; map += 1)
 		{
-			int type = -1 ;
-			for (int map = 0 ; map <= maps.length - 1 ; map += 1)
+			if (maps[map].getCreatures() != null)	// Map has creatures
 			{
-				if (maps[map].getCreatureIDs() != null)	// Map has creatures
-				{
-					for (int j = 0 ; j <= maps[map].getCreatureIDs().length - 1 ; j += 1)
-					{
-						if (c == maps[map].getCreatureIDs()[j])
-						{
-							type = maps[map].getCreatureTypes()[j] ;
-						}
-					}
-				}
-			}			
-			Image image = creatureTypes[type].getimage() ;
-			Image idleGif = creatureTypes[type].getanimations()[0]; 
-			Image movingUpGif = creatureTypes[type].getanimations()[1]; 
-			Image movingDownGif = creatureTypes[type].getanimations()[2]; 
-			Image movingLeftGif = creatureTypes[type].getanimations()[3]; 
-			Image movingRightGif = creatureTypes[type].getanimations()[4] ;
-			Color color = creatureTypes[type].getColor() ;	
-			int[] Skill = creatureTypes[type].getSkill() ;
-
-			Name = creatureTypes[type].getName() ;
-			int Level = creatureTypes[type].getLevel() ;
-			int proJob = 0 ;
-			int Map = creatureTypes[type].getMap() ;
-			int Continent = maps[Map].getContinent() ;
-			Point Pos = Utg.RandomPos(screenSize, new float[] {0, (float)(0.2)}, new float[] {1, 1 - (float)(screen.getSkyHeight())/screenSize.y}, new int[] {PlayerStep, PlayerStep}) ;
-			if (Map == 13 | Map == 17)	// Shore creatures
-			{
-				Pos = Utg.RandomPos(new Size((int)(0.8*screenSize.x), screenSize.y), new float[] {0, (float)0.2}, new float[] {1, 1 - (float)(screen.getSkyHeight())/screenSize.y}, new int[] {PlayerStep, PlayerStep}) ;
+				NumberOfCreatures += maps[map].getCreatures().length ;
 			}
-			String dir = Player.MoveKeys[0] ;
-			String Thought = "Exist" ;
-			int[] Size = creatureTypes[type].getSize() ;
-			float[] Life = creatureTypes[type].getLife() ;
-			float[] Mp = creatureTypes[type].getMp() ;
-			float Range = creatureTypes[type].getRange() ;
-			int Step = creatureTypes[type].getStep() ;
-			float[] Exp = new float[] {creatureTypes[type].getExp()} ;
-			float[] Satiation = new float[] {100, 100, 1} ;
-			float[] Thirst = new float[] {100, 100, 0} ;		
-			String[] Elem = creatureTypes[type].getElem() ;
-			int[][] Actions = creatureTypes[type].getActions() ;
-			String currentAction = "" ;
-			int countmove = 0 ;
-			PersonalAttributes PA = new PersonalAttributes(Name, new Image[] {image}, Level, type, proJob, Continent, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
-
-			float[] PhyAtk = creatureTypes[type].getPhyAtk() ;
-			float[] MagAtk = creatureTypes[type].getMagAtk() ;
-			float[] PhyDef = creatureTypes[type].getPhyDef() ;
-			float[] MagDef = creatureTypes[type].getMagDef() ;
-			float[] Dex = creatureTypes[type].getDex() ;
-			float[] Agi = creatureTypes[type].getAgi() ;
-			float[] Crit = creatureTypes[type].getCrit() ;
-			float[] Stun = creatureTypes[type].getStun() ;
-			float[] Block = creatureTypes[type].getBlock() ;
-			float[] Blood = creatureTypes[type].getBlood() ;
-			float[] Poison = creatureTypes[type].getPoison() ;
-			float[] Silence = creatureTypes[type].getSilence() ;
-			int[] Status = creatureTypes[type].getStatus() ;
-			int[] SpecialStatus = creatureTypes[type].getSpecialStatus() ;
-			int[][] BattleActions = creatureTypes[type].getBattleActions() ;
-			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
-			
-			int[] Bag = creatureTypes[type].getBag() ;
-			int Gold = creatureTypes[type].getGold() ;
-			int[] StatusCounter = creatureTypes[type].getStatusCounter() ;
-			String[] Combo = new String[1] ;
-			creature[c] = new Creatures(type, image, idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif, Map, Size, Skill, PA, BA, Bag, Gold, color, StatusCounter, Combo) ;	
-			if (creature[c].getName().equals("Dragï¿½o") | creature[c].getName().equals("Dragon"))
+		}
+    	
+    	// create the creatures in each map
+		Creatures[] creature = new Creatures[NumberOfCreatures] ;
+    	int creatureID = 0 ;
+    	for (int map = 0 ; map <= maps.length - 1 ; map += 1)
+		{
+			if (maps[map].getCreatures() != null)	// Map has creatures
 			{
-				creature[c].getPersonalAtt().setPos(new Point((int)(0.5*screenSize.x), (int)(0.5*screenSize.y))) ;
+				CreatureTypes cType = null ;
+				Maps creatureMap = null ;
+				for (int j = 0 ; j <= maps[map].getCreatures().length - 1 ; j += 1)
+				{
+					cType = creatureTypes[maps[map].getCreatures()[j].getType().getID()] ;
+					creatureMap = maps[map] ;
+					
+					creature[creatureID] = new Creatures(cType) ;
+					
+					Point Pos = Utg.RandomPos(screenSize, new float[] {0, (float)(0.2)}, new float[] {1, 1 - (float)(sky.height)/screenSize.y}, new int[] {PlayerStep, PlayerStep}) ;
+					if (creatureMap.getid() == 13 | creatureMap.getid() == 17)	// Shore creatures
+					{
+						Pos = Utg.RandomPos(new Size((int)(0.8*screenSize.x), screenSize.y), new float[] {0, (float)0.2}, new float[] {1, 1 - (float)(sky.height)/screenSize.y}, new int[] {PlayerStep, PlayerStep}) ;
+					}
+					creature[creatureID].setPos(Pos) ;
+					if (creature[creatureID].getName().equals("Dragão") | creature[creatureID].getName().equals("Dragon"))
+					{
+						creature[creatureID].getPersonalAtt().setPos(new Point((int)(0.5*screenSize.x), (int)(0.5*screenSize.y))) ;
+					}
+					
+					creatureID += 1;
+				}
 			}
 		}
 		return creature ;
     }
-    public Spells[] InitializeSkills(String Language)
+    public Spells[] InitializeSpells(String Language)
     {
     	int NumberOfAllSkills = 178 ;
     	int NumberOfSkills = Player.NumberOfSkillsPerJob[player.getJob()] ;
@@ -512,7 +616,7 @@ public class Game extends JPanel implements ActionListener
 		//System.out.println(Arrays.toString(ActivePlayerSkills)) ;
 		return skills ;
     }
-    public PetSpells[] InitializePetSkills()
+    public PetSpells[] InitializePetSpells()
     {
 		PetSpells[] petskills = new PetSpells[Pet.NumberOfSkills] ;
 		String[][] PetSkillsInput = Utg.ReadTextFile(CSVPath + "PetSkills.csv", 20) ;	
@@ -565,135 +669,6 @@ public class Game extends JPanel implements ActionListener
 			petskills[i] = new PetSpells(PetSkillsInput[ID][4], Integer.parseInt(PetSkillsInput[ID][5]), Float.parseFloat(PetSkillsInput[ID][6]), PetSkillsInput[ID][7], new int[][] {{Integer.parseInt(PetSkillsInput[ID][8]), Integer.parseInt(PetSkillsInput[ID][9])}, {Integer.parseInt(PetSkillsInput[ID][10]), Integer.parseInt(PetSkillsInput[ID][11])}, {Integer.parseInt(PetSkillsInput[ID][12]), Integer.parseInt(PetSkillsInput[ID][13])}}, Integer.parseInt(PetSkillsInput[ID][14]), PetSkillBuffs[i], PetSkillNerfs[i], PetSkillsInput[ID][16], new String[] {PetSkillsInput[ID][17], PetSkillsInput[ID][18]}) ;	
 		}
 		return petskills ;
-    }
-    public NPCs[] InitializeNPCs(String Language, Size screenSize)
-    {
-    	int NumberOfNPCs = 149 ;
-    	// Doutor, Equips Seller, Items Seller, Smuggle Seller, Banker, Alchemist, Woodcrafter, Forger, Crafter, Elemental, Saver, Master, Quest 0, Citizen 0, Citizen 1, Citizen 2, Citizen 3
-		NPCs[] npc = new NPCs[NumberOfNPCs] ;
-		String[][] NPCsInput = Utg.ReadTextFile(CSVPath + "NPCs.csv", NumberOfNPCs) ;
-		String Name = "" ;
-		String Info = "" ;
-		int[] ColorID = new int[] {6, 10, 20, 16, 3, 23, 27, 0, 25, 7, 5, 0, 26, 18, 15, 14, 21} ;
-		for (int i = 0 ; i <= NumberOfNPCs - 1 ; i += 1)
-		{
-			int ID = Integer.parseInt(NPCsInput[i][0]) ;
-			Point Pos = new Point((int)(Utg.Round(Float.parseFloat(NPCsInput[i][3]) * screenSize.x / player.getStep(), 0) * player.getStep()), (int)(Utg.Round(Float.parseFloat(NPCsInput[i][4]) * screenSize.y / player.getStep(), 0) * player.getStep())) ;
-			Image image = null ;
-			int Map = Integer.parseInt(NPCsInput[i][5]) ;
-			String PosReltoBuilding = NPCsInput[i][6] ;
-			if (Language.equals("P"))
-			{
-				Name = NPCsInput[i][1] ;
-				Info = NPCsInput[i][7] ;
-			}
-			else if (Language.equals("E"))
-			{
-				Name = NPCsInput[i][2] ;
-				Info = NPCsInput[i][8] ;
-			}
-			Color color ;
-			if (i < 17*4)
-			{
-				color = ColorPalette[ColorID[i % 17]] ;
-			}
-			else
-			{
-				color = ColorPalette[(int)((ColorPalette.length - 1)*Math.random())] ;
-			}
-			if (!Name.equals("Master") & !Name.equals("Mestre") & i != 85 & i != 87)
-			{
-				image = Utg.ChangeImageColor(new ImageIcon(ImagesPath + "NPC.png").getImage(), new float[] {0, 0, 1, 1}, color, ColorPalette[6]) ;
-			}
-			if (Name.equals("Master") | Name.equals("Mestre"))
-			{
-				image = Utg.ChangeImageColor(new ImageIcon(ImagesPath + "PlayerFront.png").getImage(), new float[] {0, 0, 1, 1}, color, ColorPalette[6]) ;
-			}
-			if (i == 85)
-			{
-				image = new ImageIcon(ImagesPath + "NPCHole.png").getImage() ;
-			}
-			if (i == 87)
-			{
-				image = new ImageIcon(ImagesPath + "NPCHoleInCave.png").getImage() ;
-			}
-			npc[i] = new NPCs(ID, Name, Pos, image, Map, PosReltoBuilding, Info, color) ;
-		}
-    	
-		return npc ;
-    }
-    public Maps[] InitializeMaps(Size screenSize, Buildings[] buildings)
-    {
-    	int NumberOfMaps = 67 ;
-		Maps[] maps = new Maps[NumberOfMaps] ;
-		String[][] MapsInput = Utg.ReadTextFile(CSVPath + "Maps.csv", NumberOfMaps) ;	
-		for (int map = 0 ; map <= NumberOfMaps - 1 ; map += 1)
-		{
-			String Name = MapsInput[map][1] ;
-			int Continent = Integer.parseInt(MapsInput[map][2]) ;
-			Image image = new ImageIcon(ImagesPath + "Map" + String.valueOf(map) + ".png").getImage() ;
-			int CollectibleLevel = Integer.parseInt(MapsInput[map][3]) ;
-			int[] CollectibleDelay = new int[] {Integer.parseInt(MapsInput[map][4]), Integer.parseInt(MapsInput[map][5]), Integer.parseInt(MapsInput[map][6]), Integer.parseInt(MapsInput[map][7])} ;
-			int[] Connections = new int[] {Integer.parseInt(MapsInput[map][8]), Integer.parseInt(MapsInput[map][9]), Integer.parseInt(MapsInput[map][10]), Integer.parseInt(MapsInput[map][11]), Integer.parseInt(MapsInput[map][12]), Integer.parseInt(MapsInput[map][13]), Integer.parseInt(MapsInput[map][14]), Integer.parseInt(MapsInput[map][15])} ;
-			int[] CreatureTypes = null ;
-			int[] CreatureIDs = null ;
-			for (int c = 0 ; c <= 10 - 1 ; c += 1)
-			{
-				if (-1 < Integer.parseInt(MapsInput[map][16 + c]))
-				{
-					CreatureTypes = Utg.AddVectorElem(CreatureTypes, Integer.parseInt(MapsInput[map][16 + c])) ;
-				}
-			}
-			
-			// Creating map elements
-			MapElements[] MapElem = null ;
-			if (!Name.contains("City"))
-			{
-				MapElem = new MapElements[5] ;
-				float MinX = (float) 0.1 ;
-				float MinY = (float)((float)(screen.getSkyHeight())/screenSize.y + 0.1) ;
-				float RangeX = (float) 0.8 ;
-				float RangeY = (float)(1 - MinY) ;
-				for (int j = 0 ; j <= 4 ; ++j)
-				{
-					Point randomPos = new Point(Utg.RandomCoord1D(screenSize.x, MinX, RangeX, 1), Utg.RandomCoord1D(screenSize.y, MinY, RangeY, 1)) ;
-					MapElem[j] = new MapElements(j, "ForestTree", randomPos, new ImageIcon(ImagesPath + "MapElem6_TreeForest.png").getImage()) ;				
-				}	
-			}
-			
-			
-			maps[map] = new Maps(Name, map, Continent, image, MapElem, CollectibleLevel, CollectibleDelay, Connections, CreatureTypes, CreatureIDs) ;
-			maps[map].InitializeGroundTypes(screen.getSkyHeight(), screen.getSize()) ;
-			
-			// Creating collectibles
-			if (!maps[map].IsACity() & maps[map].getContinent() != 5 & map != 60)
-			{
-				for (int i = 0 ; i <= Maps.CollectibleTypes.length - 1 ; i += 1)
-				{
-					maps[map].CreateCollectible(map, i) ;
-				}
-			}
-		}
-		
-		// Setting creatures in map
-		int[][] CreaturesInMapID = new int[maps.length][] ;
-		int cont = 0 ;
-		for (int map = 0 ; map <= maps.length - 1 ; map += 1)
-		{
-			if (maps[map].getCreatureTypes() != null)
-			{
-				for (int c = 0 ; c <= maps[map].getCreatureTypes().length - 1 ; c += 1)
-				{
-					if (-1 < maps[map].getCreatureTypes()[c])
-					{
-						CreaturesInMapID[map] = Utg.AddVectorElem(CreaturesInMapID[map], cont) ;
-						maps[map].setCreatureIDs(CreaturesInMapID[map]) ;
-						cont += 1 ;
-					}
-				}
-			}
-		}
-		return maps ;
     }
     /*public Items[] InitializeItems(int DifficultLevel, String Language)
     {
@@ -777,7 +752,15 @@ public class Game extends JPanel implements ActionListener
 		SBpos[0] = new Point(screenSize.x + 20, screenSize.y - 230) ;
     	for (int i = 1 ; i <= 6 - 1 ; i += 1)
     	{
-    		SBpos[i] = new Point(SBpos[0].x, SBpos[i - 1].y - SideBarIconsImages[i - 1].getHeight(null) / 2 - sy) ;
+    		if (SideBarIconsImages[i - 1] != null)
+    		{
+        		SBpos[i] = new Point(SBpos[0].x, SBpos[i - 1].y - SideBarIconsImages[i - 1].getHeight(null) / 2 - sy) ;
+    		}
+    		else
+    		{
+
+        		SBpos[i] = new Point(SBpos[0].x, SBpos[i - 1].y - sy) ;
+    		}
     	}
     	SBpos[6] = new Point(SBpos[0].x, SBpos[5].y - SideBarIconsImages[5].getHeight(null)/2 - sy) ;
     	SBpos[7] = new Point(SBpos[0].x, SBpos[6].y - (int)PlayerImage.getHeight(mainpanel) - SideBarIconsImages[4].getHeight(null)/2 - 20/2 - sy) ;
@@ -802,19 +785,48 @@ public class Game extends JPanel implements ActionListener
  	public void MainInitialization()
 	{
  		InitializeGeneralVariables(screen.getSize()) ;
+		npc = InitializeNPCs(GameLanguage, screen.getSize()) ;
+		/*System.out.println("*** All NPCs ***");
+		for (int i = 0; i <= npc.length - 1; i += 1)
+		{
+			System.out.println(npc[i].toString()) ;
+		}*/
+		buildings = InitializeBuildings(screen.getSize(), npc) ;
+		/*System.out.println("*** All buildings ***");
+		for (int i = 0; i <= buildings.length - 1; i += 1)
+		{
+			System.out.println(buildings[i].toString()) ;
+		}*/
+		creatureTypes = InitializeCreatureTypes(GameLanguage, 1) ;	// player.DifficultLevel
+		/*System.out.println("*** All creature types ***");
+		for (int i = 0; i <= creatureTypes.length - 1; i += 1)
+		{
+			System.out.println(creatureTypes[i].toString()) ;
+		}*/
+		maps = InitializeMaps(screen, buildings, creatureTypes, sky) ;
+		/*System.out.println("*** All maps ***");
+		for (int i = 0; i <= maps.length - 1; i += 1)
+		{
+			System.out.println(maps[i].toString()) ;
+		}*/
  		player = InitializePlayer(PlayerName, PlayerJob, GameLanguage, PlayerSex) ;
 		//items = InitializeItems(player.DifficultLevel, GameLanguage) ;
-		creatureTypes = InitializeCreatureTypes(GameLanguage, player.DifficultLevel) ;
 		pet = InitializePet() ;
-		buildings = InitializeBuildings(screen.getSize()) ;
-		maps = InitializeMaps(screen.getSize(), buildings) ;
+		//System.out.println("*** Pet ***");
+		//System.out.println(pet.toString());
+		InitializeCreaturesInMap() ;
 		creature = InitializeCreatures(creatureTypes, screen.getSize(), maps, player.getStep()) ;
-		spells = InitializeSkills(GameLanguage) ;
-		petspells = InitializePetSkills() ;
-		npc = InitializeNPCs(GameLanguage, screen.getSize()) ;
+		/*System.out.println("*** All creatures ***");
+		for (int i = 0; i <= creature.length - 1; i += 1)
+		{
+			System.out.println(creature[i].toString()) ;
+		}*/
+		spells = InitializeSpells(GameLanguage) ;
+		petspells = InitializePetSpells() ;
 		for (int map = 0 ; map <= maps.length - 1 ; map += 1)
 		{
-			maps[map].CalcNPCsInMap(npc) ;
+			maps[map].InitializeNPCsInMap(npc) ;
+			maps[map].InitializeBuildings(buildings) ;
 		}
 		quest = InitializeQuests(GameLanguage, player.getJob()) ;
 		plusSignIcon = InitializeIcons(screen.getSize()) ;
@@ -1000,16 +1012,17 @@ public class Game extends JPanel implements ActionListener
 		 		GameLanguage = player.getLanguage() ;
 		 		AllText = Utg.ReadTextFile(GameLanguage) ;
 				AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
-		 		buildings = InitializeBuildings(screen.getSize()) ;
-				maps = InitializeMaps(screen.getSize(), buildings) ;
+				npc = InitializeNPCs(GameLanguage, screen.getSize()) ;
+		 		buildings = InitializeBuildings(screen.getSize(), npc) ;
+				maps = InitializeMaps(screen, buildings, creatureTypes, sky) ;
 				creatureTypes = InitializeCreatureTypes(GameLanguage, player.DifficultLevel) ;
 				creature = InitializeCreatures(creatureTypes, screen.getSize(), maps, player.getStep()) ;
-				spells = InitializeSkills(GameLanguage) ;
-				petspells = InitializePetSkills() ;
-				npc = InitializeNPCs(GameLanguage, screen.getSize()) ;
+				spells = InitializeSpells(GameLanguage) ;
+				petspells = InitializePetSpells() ;
 				for (int map = 0 ; map <= maps.length - 1 ; map += 1)
 				{
-					maps[map].CalcNPCsInMap(npc) ;
+					maps[map].InitializeNPCsInMap(npc) ;
+					maps[map].InitializeBuildings(buildings) ;
 				}
 				//items = InitializeItems(player.DifficultLevel, GameLanguage) ;
 				quest = InitializeQuests(GameLanguage, player.getJob()) ;
@@ -1128,7 +1141,7 @@ public class Game extends JPanel implements ActionListener
 		}
 		else if (TutorialStep == 8)
 		{
-			DF.DrawNPCsIntro(player, npc, new float[] {1, 1}, player.currentMap(maps).NPCsInMap) ;
+			//DF.DrawNPCsIntro(player, npc, new float[] {1, 1}, player.currentMap(maps).NPCsInMap) ;
 			if (player.action.equals("Enter"))
 			{
 				TutorialStep += 1 ;
@@ -1138,7 +1151,7 @@ public class Game extends JPanel implements ActionListener
 		{
 			//Ani.SetAniVars(17, new Object[] {10, player.getMap(), CrazyArrowImage}) ;
 			//Ani.StartAni(17) ;
-			if (!player.currentMap(maps).IsACity())
+			if (!player.getMap().IsACity())
 			{
 				TutorialStep += 1 ;
 			}
@@ -1248,7 +1261,7 @@ public class Game extends JPanel implements ActionListener
 	public void Customization()
 	{
 		//player.Customization(Player.ActionKeys, Player.MoveKeys) ;
-		player.setSize(new int[] {player.getPersonalAtt().getimage()[0].getWidth(mainpanel), player.getPersonalAtt().getimage()[0].getHeight(mainpanel)}) ;
+		//player.setSize(new int[] {player.getPersonalAtt()()[0].getWidth(mainpanel), player.getPersonalAtt().getimage()[0].getHeight(mainpanel)}) ;
 		int SelectedOption = player.SelectedOption ;
 		int[] CurrentColorValues = new int[] {player.getColors()[0].getRed(), player.getColors()[0].getGreen(), player.getColors()[0].getBlue()} ;
 		DF.DrawCustomizationMenu(player, SelectedOption, CurrentColorValues) ;	
@@ -1258,27 +1271,22 @@ public class Game extends JPanel implements ActionListener
 			RunGame = true ;
 			if (MusicIsOn)
 			{
-				Utg.SwitchMusic(MusicIntro, Music[Maps.Music[player.getMap()]]) ;
+				Utg.SwitchMusic(MusicIntro, Music[Maps.Music[player.getMap().getid()]]) ;
 			}
 		}
 	}
 		
-	public void IncrementCounters(Player player, Pet pet, Creatures[] creature)
+	public void IncrementCounters(Player player, Pet pet, Creatures[] creatures)
 	{
-		DayCounter += 1 ;
-		for (int c = 0 ; c <= Cloud.length - 1 ; c += 1)
-		{
-			Cloud[c].IncCounter(700) ;
-		}
+		sky.incDayTime();
 		player.IncActionCounters() ;
-		player.SupSkillCounters(spells, creature, player.CreatureInBattle) ;
+		player.SupSkillCounters(spells, creatures, player.CreatureInBattle) ;
 		pet.IncActionCounters() ;
-		if (player.currentMap(maps).hasCreatures())
+		if (player.getMap().hasCreatures())
 		{
-			for (int c = 0 ; c <= player.currentMap(maps).getCreatureIDs().length - 1 ; c += 1)
+			for (int c = 0 ; c <= player.getMap().getCreatures().length - 1 ; c += 1)
 			{
-				int ID = player.currentMap(maps).getCreatureIDs()[c] ;
-				creature[ID].IncActionCounters() ;
+				player.getMap().getCreatures()[c].IncActionCounters() ;
 			}
 		}
 		if (player.isInBattle())
@@ -1290,39 +1298,34 @@ public class Game extends JPanel implements ActionListener
 				int ID = player.currentMap(maps).getCreatureIDs()[c] ;
 				creature[ID].IncBattleActionCounters() ;
 			}*/
-			creature[player.CreatureInBattle].IncBattleActionCounters() ;
+			creatures[player.CreatureInBattle].IncBattleActionCounters() ;
 		}
-		if (!player.currentMap(maps).IsACity())
+		if (!player.getMap().IsACity())
 		{
-			player.currentMap(maps).IncCollectiblesCounter() ;
+			player.getMap().IncCollectiblesCounter() ;
 		}
 	}
 	
-	public void ActivateCounters(Player player, Pet pet, Creatures[] creature, int DayCounter, int DayDuration)
+	public void ActivateCounters(Player player, Pet pet, Creatures[] creature)
 	{	
-		if (DayCounter % DayDuration == 0)
-		{
-			DayCounter = 0 ;
-		}
 		player.ActivateActionCounters(Ani.SomeAnimationIsActive()) ;
 		if (0 < pet.getLife()[0])
 		{
 			pet.ActivateActionCounters(Ani.SomeAnimationIsActive()) ;
 		}
-		if (!player.currentMap(maps).IsACity())	// player is out of the cities
+		if (!player.getMap().IsACity())	// player is out of the cities
 		{
-			for (int i = 0 ; i <= player.currentMap(maps).getCreatureIDs().length - 1 ; ++i)
+			for (int i = 0 ; i <= player.getMap().getCreatures().length - 1 ; ++i)
 			{
-				int ID = player.currentMap(maps).getCreatureIDs()[i] ;
 				if (!Ani.isActive(12) & !Ani.isActive(13) & !Ani.isActive(14) & !Ani.isActive(18))
 				{
-					creature[ID].ActivateActionCounters() ;
+					player.getMap().getCreatures()[i].ActivateActionCounters() ;
 				}
 			}
 		}
-		if (!player.currentMap(maps).IsACity())
+		if (!player.getMap().IsACity())
 		{
-			player.currentMap(maps).CreateCollectibles() ;
+			player.getMap().CreateCollectibles() ;
 		}
 	}
 	
@@ -1330,11 +1333,11 @@ public class Game extends JPanel implements ActionListener
 	{
 		//OpeningScreenImages[2] = ElementalCircle ;
 		ColorPalette = Uts.ReadColorPalette(new ImageIcon(ImagesPath + "ColorPalette.png").getImage(), "Konami") ;
-		if (DayCounter % 1200 <= 300)
+		if (sky.dayTime % 1200 <= 300)
 		{
 			DrawPrimitives.OverallAngle += 0.04 ;
 		}
-		else if (DayCounter % 1200 <= 900)
+		else if (sky.dayTime % 1200 <= 900)
 		{
 			DrawPrimitives.OverallAngle -= 0.04 ;
 		}
@@ -1347,31 +1350,31 @@ public class Game extends JPanel implements ActionListener
 	public void RunGame(DrawFunctions DF)
 	{	
 		IncrementCounters(player, pet, creature) ;
-		ActivateCounters(player, pet, creature, DayCounter, DayDuration) ;
+		ActivateCounters(player, pet, creature) ;
 		if (Uts.KonamiCodeActivated(player.getCombo()))
 		{
 			KonamiCode() ;
 		}
-		DF.DrawFullMap(player, pet, maps, npc, buildings, spells, SideBarIcons, MousePos, DayCounter, Cloud, Star, SkillCooldownImage, SkillSlotImage) ;
+		DF.DrawFullMap(player, pet, player.getMap(), npc, buildings, spells, sky, SideBarIcons, MousePos, sky.dayTime, SkillCooldownImage, SkillSlotImage) ;
 		//if (TutorialIsOn)
 		//{
 		//	Tutorial(player, meet) ;
 		//}
 		
 		// Creatures act
-		if (player.currentMap(maps).hasCreatures())
+		if (player.getMap().hasCreatures())
 		{
-			for (int c = 0 ; c <= player.currentMap(maps).getCreatureIDs().length - 1 ; c += 1)
+			for (int c = 0 ; c <= player.getMap().getCreatures().length - 1 ; c += 1)
 			{				
-				int id = player.currentMap(maps).getCreatureIDs()[c] ;
-				creature[id].act(player.getPos(), player.getMap(), maps, DF) ;
+				player.getMap().getCreatures()[c].act(player.getPos(), player.getMap()) ;
+				player.getMap().getCreatures()[c].display() ;
 			}
 		}
 		// Player acts
 		player.act(pet, maps, spells, MousePos, OPbuttons[OPSelectedButton], SideBarIcons, Ani, DF) ;
 		if (player.ActionIsAMove(player.action) | 0 < player.getPersonalAtt().getCountmove())	// countmove becomes greater than 0 when the player moves, then starts to increase by 1 and returns to 0 when it reaches 20
 		{
-			player.Move(pet, maps, Music, MusicIsOn, Ani) ;
+			player.Move(pet, Music, MusicIsOn, Ani) ;
 		}
 		
 		// Draw player stuff
@@ -1392,7 +1395,7 @@ public class Game extends JPanel implements ActionListener
 				pet.action = pet.Action(Player.ActionKeys) ;
 			}
 			DF.DrawPetAttributes(pet) ;
-			DF.DrawPet(pet.getPos(), new float[] {1, 1}, pet.getPersonalAtt().getimage()[0]) ;
+			DF.DrawPet(pet.getPos(), new float[] {1, 1}, pet.getMovingAnimations().idleGif) ;
 		}
 		
 		
@@ -1401,7 +1404,7 @@ public class Game extends JPanel implements ActionListener
 		// check if the player met something
 		if (!player.isInBattle())
 		{
-			int[] meet = player.meet(creature, npc, player.currentMap(maps), player.CreatureInBattle, Ani) ;	// meet[0] is the encounter and meet[1] is its id
+			int[] meet = player.meet(creature, npc, player.getMap(), player.CreatureInBattle, Ani) ;	// meet[0] is the encounter and meet[1] is its id
 			if (meet[0] == 0 & 0 <= meet[1])	// meet with creature
 			{
 				creature[meet[1]].setFollow(true) ;
@@ -1426,7 +1429,7 @@ public class Game extends JPanel implements ActionListener
 		// if the player is in battle, run battle
 		if (player.isInBattle() & !Ani.isActive(12) & !Ani.isActive(13) & !Ani.isActive(14) & !Ani.isActive(16))	// only enter battle if the animations for win (12), level up (13), pet level up (14), and pterodactile (16) are off
 		{
-			bat.RunBattle(player, pet, creature[player.CreatureInBattle], spells, petspells, player.activeSpells(spells), quest, SoundEffectsAreOn, MousePos, DF) ;
+			bat.RunBattle(player, pet, creature[player.CreatureInBattle], spells, petspells, player.GetActiveSpells(spells), quest, SoundEffectsAreOn, MousePos, DF) ;
 		}
 		
 		// check if the player and the pet have leveled up
@@ -1456,7 +1459,7 @@ public class Game extends JPanel implements ActionListener
 		}		
 		
 		// move the active projectiles and check if they collide with something
-		if (proj != null)
+		/*if (proj != null)
 		{
 			for (int p = 0 ; p <= proj.length - 1 ; p += 1)
 			{
@@ -1466,7 +1469,7 @@ public class Game extends JPanel implements ActionListener
 			{
 				proj = null ;
 			}
-		}
+		}*/
 		//repaint() ;
 	}
 	
@@ -1475,7 +1478,7 @@ public class Game extends JPanel implements ActionListener
 	{
         super.paintComponent(g) ;
 		MousePos = Utg.GetMousePos(mainpanel) ;
-        DF = new DrawFunctions(g, DayDuration, AllText, AllTextCat) ;
+        DF = new DrawFunctions(g, AllText, AllTextCat) ;
         DF.InitializeVariables(ImagesPath) ;
 		
     	if (OpeningIsOn)
@@ -1493,17 +1496,6 @@ public class Game extends JPanel implements ActionListener
     		try {GeneralItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the general items
     		try {Fab.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the fabrication items
     		try {QuestItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the quest items
-    		/*Bag b = new Bag(Potion.getAll(), Alchemy.getAll(), Forge.getAll(), PetItem.getAll(), Food.getAll(), Arrow.getAll(), Equip.getAll(), GeneralItem.getAll(), Fab.getAll(), Quest.getAll()) ;
-    		b.getPotions()[9].printAtt();
-    		b.getAlchemy()[2].printAtt();
-    		b.getForge()[3].printAtt();
-    		b.getPetItem()[4].printAtt();
-    		b.getFood()[5].printAtt();
-    		b.getArrow()[6].printAtt();
-    		b.getEquip()[7].printAtt();
-    		b.getGenItem()[8].printAtt();
-    		b.getFab()[9].printAtt();
-    		b.getQuest()[10].printAtt();*/
     		GameLanguage = "P" ;
     		AllText = Utg.ReadTextFile(GameLanguage) ;
     		AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
@@ -1511,10 +1503,9 @@ public class Game extends JPanel implements ActionListener
         	PlayerJob = 2 ;
         	PlayerSex = "N" ;
     		MainInitialization() ;
-        	player.setMap(8, maps) ;
+        	player.setMap(maps[1]) ;
         	DF.setAllText(AllText) ;
         	DF.setAllTextCat(AllTextCat) ;
-        	
         	
         	
         	//Arrays.fill(player.getSkill(), 5) ;
@@ -1532,7 +1523,7 @@ public class Game extends JPanel implements ActionListener
         	}
         	if (MusicIsOn)
 			{
-				Utg.PlayMusic(Music[Maps.Music[player.getMap()]]) ;
+				Utg.PlayMusic(Music[Maps.Music[player.getMap().getid()]]) ;
 			}
         	RunGame = true ;
     		
