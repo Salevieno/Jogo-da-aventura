@@ -8,12 +8,12 @@ import java.awt.Point;
 import javax.swing.ImageIcon;
 
 import GameComponents.Items;
-import GameComponents.Size;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
 import LiveBeings.Player;
 import Main.Game;
-import Main.Uts;
+import Utilities.Size;
+import Utilities.UtilS;
 
 public class Book extends Window
 {

@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.util.Arrays;
 
 import GameComponents.Maps;
-import GameComponents.MovingAnimations;
 import Main.Game;
 
 public class PersonalAttributes

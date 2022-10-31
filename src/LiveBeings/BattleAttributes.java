@@ -2,7 +2,7 @@ package LiveBeings ;
 
 import java.util.Arrays;
 
-import Main.Utg;
+import Utilities.UtilG;
 
 public class BattleAttributes
 {
@@ -192,7 +192,7 @@ public class BattleAttributes
 	}
 	public boolean actionisskill()
 	{
-		return Utg.isNumeric(CurrentAction) ;
+		return UtilG.isNumeric(CurrentAction) ;
 	}
 	
 	

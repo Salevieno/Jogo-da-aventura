@@ -7,7 +7,6 @@ import java.awt.Point;
 
 import javax.swing.ImageIcon;
 
-import GameComponents.Size;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
 import Items.Alchemy;
@@ -24,7 +23,8 @@ import Items.QuestItem;
 import LiveBeings.LiveBeing;
 import LiveBeings.Player;
 import Main.Game;
-import Main.Utg;
+import Utilities.Size;
+import Utilities.UtilG;
 
 public class Bag extends Window
 {	
@@ -71,7 +71,7 @@ public class Bag extends Window
 
 	public void Add(Potion newPot)
 	{
-		pot = Utg.AddElem(pot, newPot) ;
+		pot = UtilG.AddElem(pot, newPot) ;
 	}
 	public void remove(int itemID)
 	{

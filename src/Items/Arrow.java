@@ -3,7 +3,7 @@ package Items;
 import java.io.IOException;
 
 import Main.Game;
-import Main.Utg;
+import Utilities.UtilG;
 
 public class Arrow extends Item
 {
@@ -28,8 +28,8 @@ public class Arrow extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		int NumArrow = Utg.count(Game.CSVPath + "Item_Arrow.csv") ;
-		String[][] Input = Utg.ReadTextFile(Game.CSVPath + "Item_Arrow.csv", NumArrow) ;
+		int NumArrow = UtilG.count(Game.CSVPath + "Item_Arrow.csv") ;
+		String[][] Input = UtilG.ReadTextFile(Game.CSVPath + "Item_Arrow.csv", NumArrow) ;
 		AllArrow = new Arrow[NumArrow] ;
 		for (int p = 0; p <= NumArrow - 1; p += 1)
 		{

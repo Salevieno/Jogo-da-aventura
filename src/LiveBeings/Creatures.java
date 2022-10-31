@@ -7,13 +7,12 @@ import java.util.Arrays;
 
 import Actions.BattleActions;
 import GameComponents.Maps;
-import GameComponents.MovingAnimations;
-import GameComponents.Screen;
 import GameComponents.Spells;
 import Graphics.DrawFunctions ;
 import Main.Game;
-import Main.Utg ;
-import Main.Uts ;
+import Screen.Screen;
+import Utilities.UtilG;
+import Utilities.UtilS;
 import Windows.AttributesWindow;
 
 public class Creatures extends LiveBeing
@@ -125,7 +124,7 @@ public class Creatures extends LiveBeing
 		float[] MinCoord = new float[] {0, (float) (0.2)} ;
 		float[] Range = new float[] {1, (float) screen.getSize().y / (screen.getBorders()[1] - screen.getBorders()[3])} ;
 		int[] step = new int[] {1, 1} ;
-		PA.setPos(Utg.RandomPos(screen.getSize(), MinCoord, Range, step)) ;
+		PA.setPos(UtilG.RandomPos(screen.getSize(), MinCoord, Range, step)) ;
 	}
 	public Point CenterPos()
 	{
@@ -207,7 +206,7 @@ public class Creatures extends LiveBeing
 		if (skillID == 0)	// magical atk
 		{
 			effect = BattleActions.CalcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock()[1]) ;
-			damage = BattleActions.CalcAtk(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {PA.Elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, player.getElemMult()[Uts.ElementID(PA.Elem[0])]) ;
+			damage = BattleActions.CalcAtk(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {PA.Elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
 		}
 		if (magicalType == 0)
 		{

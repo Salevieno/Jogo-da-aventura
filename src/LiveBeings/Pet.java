@@ -10,12 +10,11 @@ import java.util.Arrays;
 import javax.swing.ImageIcon ;
 
 import GameComponents.Maps;
-import GameComponents.MovingAnimations;
 import Graphics.DrawPrimitives;
-import Main.Uts ;
+import Utilities.UtilG;
+import Utilities.UtilS;
 import Windows.AttributesWindow;
 import Main.Game;
-import Main.Utg ;
 
 public class Pet extends LiveBeing
 {
@@ -32,8 +31,8 @@ public class Pet extends LiveBeing
 	public static float[] AttributeIncrease ;
 	public static float[] ChanceIncrease ;
 	
-	private static String[][] PetProperties = Utg.ReadTextFile(Game.CSVPath + "PetInitialStats.csv", 4) ;
-	private static String[][] PetEvolutionProperties = Utg.ReadTextFile(Game.CSVPath + "PetEvolution.csv", 5) ;
+	private static String[][] PetProperties = UtilG.ReadTextFile(Game.CSVPath + "PetInitialStats.csv", 4) ;
+	private static String[][] PetEvolutionProperties = UtilG.ReadTextFile(Game.CSVPath + "PetEvolution.csv", 5) ;
 	
 	public Pet(int Job)
 	{
@@ -251,7 +250,7 @@ public class Pet extends LiveBeing
 
 	public boolean usedSkill()
 	{
-		return Utg.isNumeric(BA.getCurrentAction()) ;
+		return UtilG.isNumeric(BA.getCurrentAction()) ;
 	}
 	public void TakeBloodAndPoisonDamage(Creatures creature)
 	{
@@ -364,37 +363,37 @@ public class Pet extends LiveBeing
 	{
 		int NumberOfPlayerAttributes = 49 ;
 		PA.setName(ReadFile[2*(NumberOfPlayerAttributes + 1)][0]) ;
-		PA.setSize((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 2)]), "String", "int")) ;
-		color = Utg.toColor(ReadFile[2*(NumberOfPlayerAttributes + 3)])[0] ;
+		PA.setSize((int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 2)]), "String", "int")) ;
+		color = UtilG.toColor(ReadFile[2*(NumberOfPlayerAttributes + 3)])[0] ;
 		Job = Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 4)][0]) ;
-		PA.setPos((Point) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 5)]), "String", "int")) ;
-		Skill = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 6)]), "String", "int") ;
+		PA.setPos((Point) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 5)]), "String", "int")) ;
+		Skill = (int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 6)]), "String", "int") ;
 		SkillPoints = Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 7)][0]) ;
-		PA.setLife((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 8)]), "String", "float")) ;
-		PA.setMp((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 9)]), "String", "float")) ;
+		PA.setLife((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 8)]), "String", "float")) ;
+		PA.setMp((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 9)]), "String", "float")) ;
 		PA.setRange(Float.parseFloat(ReadFile[2*(NumberOfPlayerAttributes + 10)][0])) ;
-		BA.setPhyAtk((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 11)]), "String", "float")) ;
-		BA.setMagAtk((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 12)]), "String", "float")) ;
-		BA.setPhyDef((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 13)]), "String", "float")) ;
-		BA.setMagDef((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 14)]), "String", "float")) ;
-		BA.setDex((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 15)]), "String", "float")) ;
-		BA.setAgi((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 16)]), "String", "float")) ;
-		BA.setCrit((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 17)]), "String", "float")) ;
-		BA.setStun((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 18)]), "String", "float")) ;
-		BA.setBlock((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 19)]), "String", "float")) ;
-		BA.setBlood((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 20)]), "String", "float")) ;
-		BA.setPoison((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 21)]), "String", "float")) ;
-		BA.setSilence((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 22)]), "String", "float")) ;
-		PA.Elem = (String[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 23)]), "String", "String") ;
-		ElemMult = (float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 24)]), "String", "float") ;
+		BA.setPhyAtk((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 11)]), "String", "float")) ;
+		BA.setMagAtk((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 12)]), "String", "float")) ;
+		BA.setPhyDef((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 13)]), "String", "float")) ;
+		BA.setMagDef((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 14)]), "String", "float")) ;
+		BA.setDex((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 15)]), "String", "float")) ;
+		BA.setAgi((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 16)]), "String", "float")) ;
+		BA.setCrit((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 17)]), "String", "float")) ;
+		BA.setStun((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 18)]), "String", "float")) ;
+		BA.setBlock((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 19)]), "String", "float")) ;
+		BA.setBlood((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 20)]), "String", "float")) ;
+		BA.setPoison((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 21)]), "String", "float")) ;
+		BA.setSilence((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 22)]), "String", "float")) ;
+		PA.Elem = (String[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 23)]), "String", "String") ;
+		ElemMult = (float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 24)]), "String", "float") ;
 		PA.setLevel(Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 25)][0])) ;
 		PA.setStep(Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 26)][0])) ;
-		PA.setSatiation((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 27)]), "String", "float")) ;
-		PA.setExp((float[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 28)]), "String", "float")) ;
-		BA.setSpecialStatus((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 29)]), "String", "int")) ;
-		PA.Actions = (int[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 30)], 3), "String", "int") ;
-		BA.setBattleActions((int[][]) Utg.ConvertDoubleArray(Utg.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 31)], 3), "String", "int")) ;
-		StatusCounter = (int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*(NumberOfPlayerAttributes + 32)]), "String", "int") ;
+		PA.setSatiation((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 27)]), "String", "float")) ;
+		PA.setExp((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 28)]), "String", "float")) ;
+		BA.setSpecialStatus((int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 29)]), "String", "int")) ;
+		PA.Actions = (int[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 30)], 3), "String", "int") ;
+		BA.setBattleActions((int[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 31)], 3), "String", "int")) ;
+		StatusCounter = (int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 32)]), "String", "int") ;
 	}
 	
 	

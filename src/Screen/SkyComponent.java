@@ -1,11 +1,11 @@
-package SkyComponents;
+package Screen;
 
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 
-import GameComponents.Size;
 import Graphics.DrawPrimitives;
+import Utilities.Size;
 
 public class SkyComponent
 {

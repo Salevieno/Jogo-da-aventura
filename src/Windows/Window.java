@@ -5,11 +5,11 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 
-import GameComponents.Size;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
 import Main.Game;
-import Main.Utg;
+import Utilities.Size;
+import Utilities.UtilG;
 
 public class Window
 {
@@ -115,8 +115,8 @@ public class Window
 		Point pos = new Point((int) (0.5 * screenDim.x), (int) (0.5 * screenDim.y)) ;
 		Font font = new Font("SansSerif", Font.BOLD, screenDim.x * screenDim.y / 3500) ;
 		String Title = "Janela genérica" ;
-		Size size = new Size((int)(0.3*screenDim.x), (int)(3*Utg.TextH(font.getSize()))) ;
-		Point windowCenter = new Point((int) (pos.x + 0.5*screenDim.x), (int) (pos.y - screenDim.y - 0.5*3*Utg.TextH(font.getSize()))) ;
+		Size size = new Size((int)(0.3*screenDim.x), (int)(3*UtilG.TextH(font.getSize()))) ;
+		Point windowCenter = new Point((int) (pos.x + 0.5*screenDim.x), (int) (pos.y - screenDim.y - 0.5*3*UtilG.TextH(font.getSize()))) ;
 		//if (type == 0)
 		//{
 			DP.DrawRoundRect(pos, "TopLeft", size, 3, Game.ColorPalette[7], Game.ColorPalette[2], true) ;

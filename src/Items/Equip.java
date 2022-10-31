@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 
 import LiveBeings.AttributeBonus;
 import Main.Game;
-import Main.Utg;
+import Utilities.UtilG;
 
 public class Equip extends Item
 {
@@ -45,8 +45,8 @@ public class Equip extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		int NumEquip = Utg.count(Game.CSVPath + "Item_Equip.csv") ;
-		String[][] Input = Utg.ReadTextFile(Game.CSVPath + "Item_Equip.csv", NumEquip) ;
+		int NumEquip = UtilG.count(Game.CSVPath + "Item_Equip.csv") ;
+		String[][] Input = UtilG.ReadTextFile(Game.CSVPath + "Item_Equip.csv", NumEquip) ;
 		AllEquip = new Equip[NumEquip] ;
 		for (int p = 0; p <= NumEquip - 1; p += 1)
 		{

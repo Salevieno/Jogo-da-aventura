@@ -1,6 +1,8 @@
-package GameComponents ;
+package Screen ;
 
 import java.awt.Point;
+
+import Utilities.Size;
 
 public class Screen
 {

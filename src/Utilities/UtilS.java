@@ -1,4 +1,4 @@
-package Main ;
+package Utilities ;
 
 import java.awt.Color ;
 import java.awt.Font ;
@@ -13,8 +13,6 @@ import GameComponents.Maps ;
 import GameComponents.NPCs ;
 import GameComponents.PetSpells ;
 import GameComponents.Quests ;
-import GameComponents.Screen ;
-import GameComponents.Size;
 import GameComponents.Spells ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
@@ -22,8 +20,10 @@ import Graphics.DrawPrimitives ;
 import LiveBeings.Creatures;
 import LiveBeings.Pet;
 import LiveBeings.Player;
+import Main.Game;
+import Screen.Screen;
 
-public class Uts 
+public class UtilS 
 {
 	private static int TypingCounter = 0 ;
 	private static String[] TypingText = new String[1] ;
@@ -39,7 +39,7 @@ public class Uts
 			{
 				for (int x = 0 ; x <= 4 - 1 ; x += 1)
 				{
-					Palette = Utg.AddElem(Palette, Utg.GetPixelColor(Utg.toBufferedImage(ColorPaletteImage), new Point(x, y))) ;
+					Palette = UtilG.AddElem(Palette, UtilG.GetPixelColor(UtilG.toBufferedImage(ColorPaletteImage), new Point(x, y))) ;
 				}
 			}
 		}
@@ -49,7 +49,7 @@ public class Uts
 			{
 				for (int y = 0 ; y <= 7 - 1 ; y += 1)
 				{
-					Palette = Utg.AddElem(Palette, Utg.GetPixelColor(Utg.toBufferedImage(ColorPaletteImage), new Point(x, y))) ;
+					Palette = UtilG.AddElem(Palette, UtilG.GetPixelColor(UtilG.toBufferedImage(ColorPaletteImage), new Point(x, y))) ;
 				}
 			}
 		}
@@ -67,9 +67,9 @@ public class Uts
 	
 	public static String LiveTyping(Point Pos, float angle, String Input, Font font, Color color, DrawPrimitives DP)
 	{
-		if (Utg.IsAlphaNumeric(Input))
+		if (UtilG.IsAlphaNumeric(Input))
 		{
-			TypingText = Utg.AddString(TypingText, Input) ;	
+			TypingText = UtilG.AddString(TypingText, Input) ;	
 			++TypingCounter ;
 			if(2 <= TypingCounter)
 			{
@@ -78,7 +78,7 @@ public class Uts
 		} else if (Input.equals("Backspace") & 0 < TypedText.length())
 		{			
 			--TypingCounter ;
-			TypingText = Utg.RemoveString(TypingText) ;	
+			TypingText = UtilG.RemoveString(TypingText) ;	
 			TypedText = TypedText.substring(0, TypedText.length() - 1) ;
 		} else if (Input.equals("Enter"))
 		{
@@ -487,7 +487,7 @@ public class Uts
 	
 	public static boolean ActionIsSkill(String[] SkillKeys, String playerMove)
 	{
-		if(-1 < Utg.IndexOf(SkillKeys, playerMove))
+		if(-1 < UtilG.IndexOf(SkillKeys, playerMove))
 		{
 			return true ;
 		}
@@ -601,7 +601,7 @@ public class Uts
 	public static int ElementID(String Elem)
 	{
 		String[] ElementNames = new String[] {"n", "w", "f", "p", "e", "a", "t", "l", "d", "s"} ;
-		return Utg.IndexOf(ElementNames, Elem) ;
+		return UtilG.IndexOf(ElementNames, Elem) ;
 	}
 	
 	public static String ElementName(int ElemID)
@@ -859,12 +859,12 @@ public class Uts
 		int[][] IDs = null ;
 		for (int b = 0 ; b <= BuildingsInCity.length - 1 ; b += 1)
 		{
-			IDs = Utg.IncreaseArraySize(IDs, 1) ;
+			IDs = UtilG.IncreaseArraySize(IDs, 1) ;
 			for (int n = 0 ; n <= npc.length - 1 ; n += 1)
 			{
 				if (npc[n].getMap() == map & npc[n].getPosRelToBuilding().equals(buildings[BuildingsInCity[b]].getName()))
 				{
-					IDs[b] = Utg.AddElem(IDs[b], npc[n].getID()) ;
+					IDs[b] = UtilG.AddElem(IDs[b], npc[n].getID()) ;
 				}
 			}
 		}
@@ -878,7 +878,7 @@ public class Uts
 		{
 			if (npc[n].getMap() == map & npc[n].getPosRelToBuilding().equals(buildingName))
 			{
-				npcs = Utg.AddElem(npcs, npc[n]) ;
+				npcs = UtilG.AddElem(npcs, npc[n]) ;
 			}
 		}
 		return npcs ;
@@ -891,7 +891,7 @@ public class Uts
 		{
 			if (AllBuildings[b].getMap() == map)
 			{
-				buildingsInCity = Utg.AddElem(buildingsInCity, AllBuildings[b]) ;
+				buildingsInCity = UtilG.AddElem(buildingsInCity, AllBuildings[b]) ;
 			}
 		}
 		return buildingsInCity ;
@@ -1013,7 +1013,7 @@ public class Uts
 		{
 			if (CurrentCombo == null)
 			{
-				newCombo = Utg.AddElem(newCombo, move) ;
+				newCombo = UtilG.AddElem(newCombo, move) ;
 			}
 			else
 			{
@@ -1206,7 +1206,7 @@ public class Uts
 						NumberOfPetMagAtks += 1 ;
 					}
 				}
-				B.RunBattle(player, pet, creature, skills, petskills, ActivePlayerSkills, quest, true, new Point(0, 0), DF) ;
+				B.RunBattle(player, pet, creature, skills, petskills, quest, new Point(0, 0), DF) ;
 				if (0 == BattleResults[0])
 				{
 					if (0 < player.getLife()[0])

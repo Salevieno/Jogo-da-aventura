@@ -1,6 +1,5 @@
 package LiveBeings;
 
-import GameComponents.MovingAnimations;
 import Windows.AttributesWindow;
 
 public class LiveBeing
@@ -8,7 +7,7 @@ public class LiveBeing
 	protected int level;
 	protected PersonalAttributes PA ;		// Personal attributes
 	protected BattleAttributes BA ;			// Battle attributes
-	protected static MovingAnimations movingAni ;	// Moving animations
+	protected MovingAnimations movingAni ;	// Moving animations
 	protected AttributesWindow attWindow ;	// Attributes window
 	
 	public LiveBeing(int level, PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, AttributesWindow attWindow)
@@ -16,14 +15,14 @@ public class LiveBeing
 		this.level = level;
 		this.PA = PA;
 		this.BA = BA;
-		LiveBeing.movingAni = movingAni ;
+		this.movingAni = movingAni ;
 		this.attWindow = attWindow ;
 	}
 
 	public PersonalAttributes getPA() {return PA ;}
 	public BattleAttributes getBA() {return BA ;}
 	public AttributesWindow getAttWindow() {return attWindow ;}
-	public static MovingAnimations getMovingAni() {return movingAni ;}
+	public MovingAnimations getMovingAni() {return movingAni ;}
 	
 	public void IncActionCounters()
 	{

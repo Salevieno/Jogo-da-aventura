@@ -4,10 +4,10 @@ import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 
-import GameComponents.Size;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
 import Main.Game;
+import Utilities.Size;
 
 public class Quest extends Window
 {

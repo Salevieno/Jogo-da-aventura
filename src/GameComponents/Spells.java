@@ -1,5 +1,11 @@
 package GameComponents ;
 
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+import Main.Game;
+
 public class Spells 
 {
 	private String Name ;
@@ -25,6 +31,10 @@ public class Spells
 	private String Elem ;
 	private String[] Info ;	// Effect and description
 	
+	public static Image SpellCooldownImage ;	
+	public static  Image SpellSlotImage ;	
+	public static  Image ElementalCicle ;
+	
 	public Spells(String Name, int MaxLevel, float MpCost, String Type, int[][] PreRequisites, int Cooldown, int Duration, float[][] Buffs, float[][] Nerfs, float[] AtkMod, float[] DefMod, float[] DexMod, float[] AgiMod, float[] AtkCritMod, float[] DefCritMod, float[] StunMod, float[] BlockMod, float[] BloodMod, float[] PoisonMod, float[] SilenceMod, String Elem, String[] Info)
 	{
 		this.Name = Name ;
@@ -49,6 +59,10 @@ public class Spells
 		this.SilenceMod = SilenceMod ;
 		this.Elem = Elem ;
 		this.Info = Info ;
+		
+		SpellCooldownImage = new ImageIcon(Game.ImagesPath + "Cooldown.png").getImage() ;
+		SpellSlotImage = new ImageIcon(Game.ImagesPath + "SkillSlot.png").getImage() ;
+		ElementalCicle = new ImageIcon(Game.ImagesPath + "ElementalCicle.png").getImage() ;
 	}
 	
 	public String getName() {return Name ;}

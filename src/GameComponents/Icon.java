@@ -7,7 +7,8 @@ import java.awt.Point;
 import java.util.Arrays ;
 
 import Graphics.DrawPrimitives ;
-import Main.Utg ;
+import Utilities.Size;
+import Utilities.UtilG;
 
 public class Icon
 {
@@ -51,7 +52,7 @@ public class Icon
 	
 	public boolean ishovered(Point MousePos)
 	{
-		if (Utg.isInside(MousePos, new Point(Pos.x - size.x / 2, Pos.y - size.y / 2), size))
+		if (UtilG.isInside(MousePos, new Point(Pos.x - size.x / 2, Pos.y - size.y / 2), size))
 		{
 			return true ;
 		}

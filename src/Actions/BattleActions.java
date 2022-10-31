@@ -2,7 +2,7 @@ package Actions;
 import java.awt.Point;
 
 import LiveBeings.PersonalAttributes;
-import Main.Utg;
+import Utilities.UtilG;
 
 public abstract class BattleActions
 {
@@ -14,7 +14,7 @@ public abstract class BattleActions
 		int NumElem = 10 ;
     	ElemID = new String[NumElem] ;
 		ElemMult = new float[NumElem][NumElem] ;
-		String[][] ElemInput = Utg.ReadTextFile(CSVPath + "Elem.csv", NumElem) ;
+		String[][] ElemInput = UtilG.ReadTextFile(CSVPath + "Elem.csv", NumElem) ;
 		for (int i = 0 ; i <= NumElem - 1 ; ++i)
 		{
 			ElemID[i] = ElemInput[i][0] ;
@@ -30,7 +30,7 @@ public abstract class BattleActions
 	
 	public static float BasicElemMult(String Atk, String Def)
 	{
-		return ElemMult[Utg.IndexOf(ElemID, Atk)][Utg.IndexOf(ElemID, Def)] ;
+		return ElemMult[UtilG.IndexOf(ElemID, Atk)][UtilG.IndexOf(ElemID, Def)] ;
 	}
 	
 	public static boolean Hit(float Dex, float Agi)
@@ -111,7 +111,7 @@ public abstract class BattleActions
 		}
 		else if (effect == 1)	// crit
 		{
-			double randomMult = Utg.RandomMult(randomAmp) ;
+			double randomMult = UtilG.RandomMult(randomAmp) ;
 			float elemMult = CalcElemMult(AtkElem[0], AtkElem[1], DefElem[0], DefElem[0], AtkElem[2]) ;
 			damage = (int)(randomMult*elemMult*ElemModifier*Atk) ;
 		}

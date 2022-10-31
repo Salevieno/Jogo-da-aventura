@@ -3,7 +3,7 @@ package Items;
 import java.io.IOException;
 
 import Main.Game;
-import Main.Utg;
+import Utilities.UtilG;
 
 public class Alchemy extends Item
 {
@@ -26,8 +26,8 @@ public class Alchemy extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		int NumAlchemy = Utg.count(Game.CSVPath + "Item_Alchemy.csv") ;
-		String[][] Input = Utg.ReadTextFile(Game.CSVPath + "Item_Alchemy.csv", NumAlchemy) ;
+		int NumAlchemy = UtilG.count(Game.CSVPath + "Item_Alchemy.csv") ;
+		String[][] Input = UtilG.ReadTextFile(Game.CSVPath + "Item_Alchemy.csv", NumAlchemy) ;
 		AllAlchemy = new Alchemy[NumAlchemy] ;
 		for (int a = 0; a <= NumAlchemy - 1; a += 1)
 		{

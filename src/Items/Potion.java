@@ -2,7 +2,7 @@ package Items;
 
 import java.io.IOException;
 import Main.Game;
-import Main.Utg;
+import Utilities.UtilG;
 
 public class Potion extends Item
 {
@@ -27,8 +27,8 @@ public class Potion extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		int NumPotions = Utg.count(Game.CSVPath + "Item_Potions.csv") ;
-		String[][] Input = Utg.ReadTextFile(Game.CSVPath + "Item_Potions.csv", NumPotions) ;
+		int NumPotions = UtilG.count(Game.CSVPath + "Item_Potions.csv") ;
+		String[][] Input = UtilG.ReadTextFile(Game.CSVPath + "Item_Potions.csv", NumPotions) ;
 		AllPotions = new Potion[NumPotions] ;
 		for (int p = 0; p <= NumPotions - 1; p += 1)
 		{

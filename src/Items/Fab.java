@@ -3,7 +3,7 @@ package Items;
 import java.io.IOException;
 
 import Main.Game;
-import Main.Utg;
+import Utilities.UtilG;
 
 public class Fab extends Item
 {
@@ -22,8 +22,8 @@ public class Fab extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		int NumFabs = Utg.count(Game.CSVPath + "Item_Fab.csv") ;
-		String[][] Input = Utg.ReadTextFile(Game.CSVPath + "Item_Fab.csv", NumFabs) ;
+		int NumFabs = UtilG.count(Game.CSVPath + "Item_Fab.csv") ;
+		String[][] Input = UtilG.ReadTextFile(Game.CSVPath + "Item_Fab.csv", NumFabs) ;
 		AllFabs = new Fab[NumFabs] ;
 		for (int p = 0; p <= NumFabs - 1; p += 1)
 		{

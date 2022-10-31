@@ -3,7 +3,7 @@ package Items;
 import java.io.IOException;
 
 import Main.Game;
-import Main.Utg;
+import Utilities.UtilG;
 
 public class Forge extends Item
 {
@@ -22,8 +22,8 @@ public class Forge extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		int NumForge = Utg.count(Game.CSVPath + "Item_Forge.csv") ;
-		String[][] Input = Utg.ReadTextFile(Game.CSVPath + "Item_Forge.csv", NumForge) ;
+		int NumForge = UtilG.count(Game.CSVPath + "Item_Forge.csv") ;
+		String[][] Input = UtilG.ReadTextFile(Game.CSVPath + "Item_Forge.csv", NumForge) ;
 		AllForge = new Forge[NumForge] ;
 		for (int p = 0; p <= NumForge - 1; p += 1)
 		{

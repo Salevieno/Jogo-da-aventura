@@ -5,11 +5,11 @@ import java.awt.Font;
 import java.awt.Point;
 import java.util.Arrays;
 
-import GameComponents.Size;
 import Graphics.DrawPrimitives;
 import LiveBeings.Player;
 import Main.Game;
-import Main.Utg;
+import Utilities.Size;
+import Utilities.UtilG;
 
 public class Settings extends Window
 {
@@ -126,11 +126,11 @@ public class Settings extends Window
 		Size screenSize = Game.getScreen().getSize() ;
 		Color[] colorPalette = Game.ColorPalette ;
 		float overallAngle = DrawPrimitives.OverallAngle ;
-		Size size = new Size((int)(0.5*screenSize.x), (int)Math.max(0.34*screenSize.y, Player.ActionKeys.length*(Utg.TextH(screenSize.x / 40 + 2) + 4) + 8)) ;
+		Size size = new Size((int)(0.5*screenSize.x), (int)Math.max(0.34*screenSize.y, Player.ActionKeys.length*(UtilG.TextH(screenSize.x / 40 + 2) + 4) + 8)) ;
 		Font font = new Font("SansSerif", Font.BOLD, size.x / 20 + 2) ;
 		Point Pos = new Point((int)(0.4*screenSize.x), (int)(0.4*screenSize.y)) ;
 		Point TextPos = new Point(Pos.x + 5, Pos.y + 5) ;
-		int TextH = Utg.TextH(font.getSize()) ;
+		int TextH = UtilG.TextH(font.getSize()) ;
 		int Sx = 7 * size.x / 8, Sy = TextH + 4 ;
 		Color[] TextColor = new Color[3 + Player.ActionKeys.length] ;
 		Arrays.fill(TextColor, colorPalette[5]) ;

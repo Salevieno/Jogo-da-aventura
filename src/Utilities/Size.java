@@ -1,4 +1,4 @@
-package GameComponents;
+package Utilities;
 
 public class Size
 {

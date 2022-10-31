@@ -1,4 +1,4 @@
-package SkyComponents ;
+package Screen ;
 
 import java.awt.Color ;
 import java.awt.Image ;
@@ -6,10 +6,9 @@ import java.awt.Point;
 
 import javax.swing.ImageIcon;
 
-import GameComponents.Screen;
-import GameComponents.Size;
 import Graphics.DrawPrimitives ;
 import Main.Game;
+import Utilities.Size;
 
 public class Sky 
 {

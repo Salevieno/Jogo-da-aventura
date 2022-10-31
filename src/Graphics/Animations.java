@@ -9,14 +9,14 @@ import java.util.Arrays ;
 import GameComponents.Items ;
 import GameComponents.Maps;
 import GameComponents.NPCs ;
-import GameComponents.Screen;
-import GameComponents.Size;
 import GameComponents.Spells ;
 import LiveBeings.Pet;
 import LiveBeings.Player;
-import Main.Uts ;
+import Screen.Screen;
+import Utilities.Size;
+import Utilities.UtilG;
+import Utilities.UtilS;
 import Main.Game;
-import Main.Utg ;
 
 public class Animations 
 {
@@ -180,11 +180,11 @@ public class Animations
 		Font font = new Font("SansSerif", Font.BOLD, 14) ;
 		int TextCat = AllTextCat[10] ;
 		int[] Pos = new int[] {(int) (0.5*ScreenL), (int) (0.25*ScreenH)} ;
-		int[] ValidItemIDs = Utg.ArrayWithValuesGreaterThan(ItemIDs, -1) ;
-		Size size = new Size((int) (1.2*Utg.TextL(Items.LongestName, font, DF.getGraphs())), (int) (10 + (ValidItemIDs.length + 1)*Utg.TextH(font.getSize()))) ;
-		int sy = (int) (1.2*Utg.TextH(font.getSize())) ;
+		int[] ValidItemIDs = UtilG.ArrayWithValuesGreaterThan(ItemIDs, -1) ;
+		Size size = new Size((int) (1.2*UtilG.TextL(Items.LongestName, font, DF.getGraphs())), (int) (10 + (ValidItemIDs.length + 1)*UtilG.TextH(font.getSize()))) ;
+		int sy = (int) (1.2*UtilG.TextH(font.getSize())) ;
 		Point WindowPos = new Point(Pos[0] - size.x / 2, Pos[1] + size.y / 2) ;
-		Point TextPos = new Point(WindowPos.x + size.x / 2, Pos[1] - size.y / 2 + 5 + Utg.TextH(font.getSize())/2) ;
+		Point TextPos = new Point(WindowPos.x + size.x / 2, Pos[1] - size.y / 2 + 5 + UtilG.TextH(font.getSize())/2) ;
 		DF.DrawMenuWindow(WindowPos, size, null, 0, Color.white, Color.gray) ;
 		DP.DrawText(TextPos, "Center", 0, AllText[TextCat][3], font, Color.blue) ;
 		for (int i = 0 ; i <= ValidItemIDs.length - 1 ; i += 1)
@@ -198,7 +198,7 @@ public class Animations
 		Point TargetPos = (Point) AniVars1[1] ;
 		int[] TargetSize = (int[]) AniVars1[2] ;
 		int[] AtkResult = (int[]) AniVars1[3] ;
-		int[] AnimationStyle = (int[]) AniVars1[4] ;
+		int AnimationStyle = (int) AniVars1[4] ;
 		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize[1] - 25) ;
 		DF.DrawDamageAnimation(Pos, AtkResult[0], AtkResult[1], Anicounter[1], Aniduration[1], AnimationStyle, Color.red) ;
 	}
@@ -240,7 +240,7 @@ public class Animations
 		Point TargetPos = (Point) AniVars5[1] ;
 		int[] TargetSize = (int[]) AniVars5[2] ;
 		int[] AtkResult = (int[]) AniVars5[3] ;
-		int[] AnimationStyle = (int[]) AniVars5[4] ;
+		int AnimationStyle = (int) AniVars5[4] ;
 		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize[1] - 50) ;
 		DF.DrawDamageAnimation(Pos, AtkResult[0], AtkResult[1], Anicounter[5], Aniduration[5], AnimationStyle, Color.red) ;
 	}
@@ -274,7 +274,7 @@ public class Animations
 		Point TargetPos = (Point) AniVars8[1] ;
 		int[] TargetSize = (int[]) AniVars8[2] ;
 		int[] AtkResult = (int[]) AniVars8[3] ;
-		int[] AnimationStyle = (int[]) AniVars8[4] ;
+		int AnimationStyle = (int) AniVars8[4] ;
 		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize[1] - 50) ;
 		DF.DrawDamageAnimation(Pos, AtkResult[0], AtkResult[1], Anicounter[8], Aniduration[8], AnimationStyle, Color.red) ;
 	}

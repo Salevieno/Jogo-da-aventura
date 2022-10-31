@@ -9,7 +9,6 @@ import javax.swing.ImageIcon;
 
 import GameComponents.Icon;
 import GameComponents.Items;
-import GameComponents.Size;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
 import Items.Equip;
@@ -18,8 +17,9 @@ import LiveBeings.LiveBeing;
 import LiveBeings.PersonalAttributes;
 import LiveBeings.Player;
 import Main.Game;
-import Main.Utg;
-import Main.Uts;
+import Utilities.Size;
+import Utilities.UtilG;
+import Utilities.UtilS;
 
 public class AttributesWindow extends Window
 {
@@ -46,7 +46,7 @@ public class AttributesWindow extends Window
 		Color[] ColorPalette = Game.ColorPalette ;
 		Color[] TabColor = new Color[] {ColorPalette[7], ColorPalette[7], ColorPalette[7]}, TabTextColor = new Color[] {ColorPalette[5], ColorPalette[5], ColorPalette[5]} ;
 		Color TextColor = ColorPalette[2] ;
-		int TextH = Utg.TextH(font.getSize()) ;
+		int TextH = UtilG.TextH(font.getSize()) ;
 		if (AllTextCat != null)
 		{
 			ClassesCat = AllTextCat[4] ;
@@ -89,7 +89,7 @@ public class AttributesWindow extends Window
 					new Point(WindowPos.x + 53, WindowPos.y + 90)} ;	// Weapon, armor, shield, arrow
 			for (int eq = 0 ; eq <= 4 - 1 ; eq += 1)
 			{
-				Image ElemImage = DrawFunctions.ElementImages[Uts.ElementID(PA.getElem()[eq + 1])] ;
+				Image ElemImage = DrawFunctions.ElementImages[UtilS.ElementID(PA.getElem()[eq + 1])] ;
 				if (0 < Equips[eq])
 				{
 					if (eq <= 2)
@@ -119,21 +119,21 @@ public class AttributesWindow extends Window
 			// Super element
 			if (PA.getElem()[1].equals(PA.getElem()[2]) & PA.getElem()[2].equals(PA.getElem()[3]))
 			{
-				DP.DrawImage(DrawFunctions.ElementImages[Uts.ElementID(PA.getElem()[4])], new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.45*H)), TextAngle, new float[] {(float) 0.3, (float) 0.3}, new boolean[] {false, false}, "Center", 1) ;
+				DP.DrawImage(DrawFunctions.ElementImages[UtilS.ElementID(PA.getElem()[4])], new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.45*H)), TextAngle, new float[] {(float) 0.3, (float) 0.3}, new boolean[] {false, false}, "Center", 1) ;
 			}
 			
 			//	Attributes
 			float[] Attributes = new float[] {BA.TotalPhyAtk(), BA.TotalMagAtk(), BA.TotalPhyDef(), BA.TotalMagDef(), BA.TotalDex(), BA.TotalAgi()} ;
 			int AttSy = 22 ;
-			DP.DrawText(new Point(WindowPos.x + 15, WindowPos.y + 30), "BotLeft", TextAngle, AllText[AttCat][2] + ": " + Utg.Round(PA.getLife()[0], 1), font, ColorPalette[6]) ;	// Life text	
-			DP.DrawText(new Point(WindowPos.x + 15, WindowPos.y + 40), "BotLeft", TextAngle, AllText[AttCat][3] + ": " + Utg.Round(PA.getMp()[0], 1), font, ColorPalette[5]) ;	// MP text
+			DP.DrawText(new Point(WindowPos.x + 15, WindowPos.y + 30), "BotLeft", TextAngle, AllText[AttCat][2] + ": " + UtilG.Round(PA.getLife()[0], 1), font, ColorPalette[6]) ;	// Life text	
+			DP.DrawText(new Point(WindowPos.x + 15, WindowPos.y + 40), "BotLeft", TextAngle, AllText[AttCat][3] + ": " + UtilG.Round(PA.getMp()[0], 1), font, ColorPalette[5]) ;	// MP text
 
 			DP.DrawImage(Equip.SwordImage, new Point(WindowPos.x + 30, WindowPos.y + 134 + 1 * AttSy), new float[] {(float) (11 / 38.0), (float) (11 / 38.0)}, "Center") ;	// Draw sword icon
 			for (int i = 0; i <= Attributes.length - 1; i += 1)
 			{
-				DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + (i + 1) * AttSy), "BotLeft", TextAngle, AllText[AttCat][4] + ": " + Utg.Round(Attributes[i], 1), font, TextColor) ;
+				DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + (i + 1) * AttSy), "BotLeft", TextAngle, AllText[AttCat][4] + ": " + UtilG.Round(Attributes[i], 1), font, TextColor) ;
 			}	
-			DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + 7 * AttSy), "BotLeft", TextAngle, AllText[AttCat][10] + ": " + Utg.Round(100 * BA.TotalCritAtkChance(), 1) + "%", font, ColorPalette[6]) ;		
+			DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + 7 * AttSy), "BotLeft", TextAngle, AllText[AttCat][10] + ": " + UtilG.Round(100 * BA.TotalCritAtkChance(), 1) + "%", font, ColorPalette[6]) ;		
 			
 			//	Collection
 			//if (Language.equals("P"))

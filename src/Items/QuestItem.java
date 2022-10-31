@@ -3,7 +3,7 @@ package Items;
 import java.io.IOException;
 
 import Main.Game;
-import Main.Utg;
+import Utilities.UtilG;
 
 public class QuestItem extends Item
 {
@@ -22,8 +22,8 @@ private int id ;
 	
 	public static void Initialize() throws IOException
 	{
-		int NumQuests = Utg.count(Game.CSVPath + "Item_Quest.csv") ;
-		String[][] Input = Utg.ReadTextFile(Game.CSVPath + "Item_Quest.csv", NumQuests) ;
+		int NumQuests = UtilG.count(Game.CSVPath + "Item_Quest.csv") ;
+		String[][] Input = UtilG.ReadTextFile(Game.CSVPath + "Item_Quest.csv", NumQuests) ;
 		AllQuests = new QuestItem[NumQuests] ;
 		for (int p = 0; p <= NumQuests - 1; p += 1)
 		{

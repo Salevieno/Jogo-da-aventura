@@ -7,8 +7,8 @@ import Graphics.DrawPrimitives ;
 import LiveBeings.Creatures;
 import LiveBeings.Pet;
 import LiveBeings.Player;
-import Main.Utg ;
-import Main.Uts ;
+import Utilities.UtilG;
+import Utilities.UtilS;
 
 public class Projectiles
 {
@@ -44,7 +44,7 @@ public class Projectiles
 	
 	public void DrawImage(DrawPrimitives DP)
 	{
-		DP.DrawImage(image, Pos, Utg.getAngle(speed), new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
+		DP.DrawImage(image, Pos, UtilG.getAngle(speed), new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
 	}
 	public void move()
 	{
@@ -53,17 +53,17 @@ public class Projectiles
 	}
 	public int collidedwith(Player player, Creatures[] creature, Pet pet)
 	{
-		if (Uts.IsInRange(Pos, player.getPos(), range) & Type == 1)
+		if (UtilS.IsInRange(Pos, player.getPos(), range) & Type == 1)
 		{
 			return -1 ;
 		}
-		if (Uts.IsInRange(Pos, pet.getPos(), range) & Type == 1)
+		if (UtilS.IsInRange(Pos, pet.getPos(), range) & Type == 1)
 		{
 			return -2 ;
 		}
 		for (int c = 0 ; c <= creature.length - 1 ; c += 1)
 		{
-			if (Uts.IsInRange(Pos, creature[c].getPos(), range))
+			if (UtilS.IsInRange(Pos, creature[c].getPos(), range))
 			{
 				return c ;
 			}

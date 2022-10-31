@@ -6,7 +6,8 @@ import java.awt.Point;
 import java.util.Arrays;
 
 import Graphics.DrawPrimitives ;
-import Main.Utg ;
+import Utilities.Size;
+import Utilities.UtilG;
 
 public class Buildings
 {
@@ -52,7 +53,7 @@ public class Buildings
 		Size imgSize = new Size(Images[0].getWidth(null), Images[0].getHeight(null)) ;
 		boolean PlayerIsInside = false ;
 		Point PlayerPos = new Point(playerPos.x, playerPos.y) ;
-		if (Utg.isInside(PlayerPos, Pos, imgSize))
+		if (UtilG.isInside(PlayerPos, Pos, imgSize))
 		{
 			PlayerIsInside = true ;
 		}

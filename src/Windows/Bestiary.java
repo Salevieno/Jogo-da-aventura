@@ -3,11 +3,11 @@ package Windows;
 import java.awt.Color;
 import java.awt.Point;
 
-import GameComponents.Size;
 import LiveBeings.Player;
 import Main.Game;
-import Main.Utg;
-import Main.Uts;
+import Utilities.Size;
+import Utilities.UtilG;
+import Utilities.UtilS;
 
 public class Bestiary extends Window
 {
@@ -23,7 +23,7 @@ public class Bestiary extends Window
 		{
 			windowLimit = Math.max(creaturesDiscovered.length - 1, 0)/5 ;
 		}
-		window = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, windowLimit) ;
+		window = UtilS.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, windowLimit) ;
 	}
 	
 	public void display(int[] creaturesDiscovered, Point MousePos, int[] AllTextCat, String[][] AllText)
@@ -57,7 +57,7 @@ public class Bestiary extends Window
 					{
 						int CreatureID = creaturesDiscovered[cx*NumCreatureWindows[0] + cy + NumberOfCreaturesPerWindow*window] ;
 						Point InitPos = new Point((int) (Pos.x + offset + cx * (size.x + Sx)), (int) (Pos.y - H + size.y + offset + cy * (size.y + Sy))) ;
-						if (Utg.isInside(MousePos, InitPos, size))
+						if (UtilG.isInside(MousePos, InitPos, size))
 						{
 							SelectedCreature = CreatureID ;
 						}

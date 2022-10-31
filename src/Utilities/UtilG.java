@@ -1,4 +1,4 @@
-package Main ;
+package Utilities ;
 
 import java.awt.Color ;
 import java.awt.Font ;
@@ -34,14 +34,13 @@ import GameComponents.Buildings;
 import GameComponents.Icon ;
 import GameComponents.NPCs;
 import GameComponents.Projectiles ;
-import GameComponents.Size;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives ;
 import Items.Potion;
 import LiveBeings.CreatureTypes;
 import LiveBeings.Creatures;
 
-public abstract class Utg 
+public abstract class UtilG 
 {	
 	/* Color and image methods */
 	
@@ -162,22 +161,22 @@ public abstract class Utg
 		{
 			for (int i = 0 ; i <= 12 - 1 ; i += 1)
 			{
-				Color[] palette = Utg.ColorPalette(2) ;
+				Color[] palette = UtilG.ColorPalette(2) ;
 				if (j == 0)
 				{
-					palette = Utg.AddHue(palette, i * 30 / 360.0, 0, 0) ;
+					palette = UtilG.AddHue(palette, i * 30 / 360.0, 0, 0) ;
 				}
 				if (j == 1)
 				{
-					palette = Utg.AddHue(palette, i * 30 / 360.0, 1, 0) ;
+					palette = UtilG.AddHue(palette, i * 30 / 360.0, 1, 0) ;
 				}
 				if (j == 2)
 				{
-					palette = Utg.AddHue(palette, i * 30 / 360.0, 0, 1) ;
+					palette = UtilG.AddHue(palette, i * 30 / 360.0, 0, 1) ;
 				}
 				if (j == 3)
 				{
-					palette = Utg.toGrayScale(palette) ;
+					palette = UtilG.toGrayScale(palette) ;
 				}
 				DrawColorPalette(new Point(Pos.x + 100 * i, Pos.y + 160 * j), palette, DP) ;
 			}

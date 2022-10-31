@@ -12,8 +12,10 @@ import Graphics.DrawPrimitives;
 import LiveBeings.CreatureTypes;
 import LiveBeings.Creatures;
 import Main.Game;
-import Main.Utg ;
-import Main.Uts;
+import Screen.Screen;
+import Utilities.Size;
+import Utilities.UtilG;
+import Utilities.UtilS;
 
 public class Maps 
 {
@@ -33,7 +35,7 @@ public class Maps
 	public Buildings[] building ;
 	public NPCs[] NPCsInMap ;
 	
-	public static int[] Music = new int[] {0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 11, 11, 11, 11, 11, 11} ;  	 
+	public static int[] MusicID = new int[] {0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 11, 11, 11, 11, 11, 11} ;  	 
 	public static Image[] CollectibleImage ;
 	public static Image[] GroundImage ;
 	public static String[] CollectibleTypes = new String[] {"Berry", "Herb", "Wood", "Metal"} ;
@@ -53,10 +55,10 @@ public class Maps
 		this.creatures = creatures ;
 		building = null ;
 		
-	    Image BerryImage = new ImageIcon(Utg.ReadTextFile("Paths.txt", 3)[1][0] + "Col0_Berry.png").getImage() ;
-	    Image HerbImage = new ImageIcon(Utg.ReadTextFile("Paths.txt", 3)[1][0] + "Col1_Herb.png").getImage() ;
-	    Image WoodImage = new ImageIcon(Utg.ReadTextFile("Paths.txt", 3)[1][0] + "Col2_Wood.png").getImage() ;
-	    Image MetalImage = new ImageIcon(Utg.ReadTextFile("Paths.txt", 3)[1][0] + "Col3_Metal.png").getImage() ;
+	    Image BerryImage = new ImageIcon(UtilG.ReadTextFile("Paths.txt", 3)[1][0] + "Col0_Berry.png").getImage() ;
+	    Image HerbImage = new ImageIcon(UtilG.ReadTextFile("Paths.txt", 3)[1][0] + "Col1_Herb.png").getImage() ;
+	    Image WoodImage = new ImageIcon(UtilG.ReadTextFile("Paths.txt", 3)[1][0] + "Col2_Wood.png").getImage() ;
+	    Image MetalImage = new ImageIcon(UtilG.ReadTextFile("Paths.txt", 3)[1][0] + "Col3_Metal.png").getImage() ;
 	    CollectibleImage = new Image[] {BerryImage, HerbImage, WoodImage, MetalImage} ;
 	}
 
@@ -269,7 +271,7 @@ public class Maps
 			}
 			
 			//TODO essa é uma função da sign building
-			Point SignPos = Uts.BuildingPos(building, id, "Sign") ;
+			Point SignPos = UtilS.BuildingPos(building, id, "Sign") ;
 			if (building[5].playerIsInside(playerPos))
 			{			
 				int[][] SignTextPos = new int[][] {{SignPos.x - 200, SignPos.y - 150}, {SignPos.x + 50, SignPos.y - 50}, {SignPos.x + 50, SignPos.y - 50}, {SignPos.x + 100, SignPos.y - 50}, {SignPos.x - 540, SignPos.y - 50}} ;
@@ -277,7 +279,7 @@ public class Maps
 				//Size menuSize = new Size((int)(0.25*Utg.TextL(AllText[id + 1], font, G)), (int)(7*Utg.TextH(font.getSize()))) ;
 				Size menuSize = new Size(200, 200) ;
 				DP.DrawRoundRect(Pos, "TopLeft", menuSize, 3, colorPalette[4], colorPalette[4], true) ;			
-				DP.DrawFitText(new Point(Pos.x + 10, Pos.y - (int)(5.5*Utg.TextH(font.getSize()))), Utg.TextH(font.getSize()), "BotLeft", AllText[id + 1], font, 35, colorPalette[5]) ;		
+				DP.DrawFitText(new Point(Pos.x + 10, Pos.y - (int)(5.5*UtilG.TextH(font.getSize()))), UtilG.TextH(font.getSize()), "BotLeft", AllText[id + 1], font, 35, colorPalette[5]) ;		
 			}
 		}
  	}
@@ -352,13 +354,13 @@ public class Maps
 		{
 			if (npc[j].getMap() == id)
 			{
-				NPCsInMap = Utg.AddElem(NPCsInMap, npc[j]) ;
+				NPCsInMap = UtilG.AddElem(NPCsInMap, npc[j]) ;
 			}
 		}
     }
 	public void InitializeBuildings(Buildings[] AllBuildings)
 	{
-		building = Uts.BuildingsInCity(AllBuildings, id) ;
+		building = UtilS.BuildingsInCity(AllBuildings, id) ;
 	}
 	
 	public void IncCollectiblesCounter()

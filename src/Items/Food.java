@@ -3,7 +3,7 @@ package Items;
 import java.io.IOException;
 
 import Main.Game;
-import Main.Utg;
+import Utilities.UtilG;
 
 public class Food extends Item
 {
@@ -31,8 +31,8 @@ public class Food extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		int NumFood = Utg.count(Game.CSVPath + "Item_Food.csv") ;
-		String[][] Input = Utg.ReadTextFile(Game.CSVPath + "Item_Food.csv", NumFood) ;
+		int NumFood = UtilG.count(Game.CSVPath + "Item_Food.csv") ;
+		String[][] Input = UtilG.ReadTextFile(Game.CSVPath + "Item_Food.csv", NumFood) ;
 		AllFood = new Food[NumFood] ;
 		for (int p = 0; p <= NumFood - 1; p += 1)
 		{

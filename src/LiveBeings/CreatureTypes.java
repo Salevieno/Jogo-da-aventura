@@ -5,8 +5,7 @@ import java.awt.Image ;
 import java.io.IOException;
 import java.util.Arrays;
 
-import GameComponents.MovingAnimations;
-import Main.Utg;
+import Utilities.UtilG;
 
 public class CreatureTypes 
 {
@@ -59,7 +58,7 @@ public class CreatureTypes
 	{
 		try
 		{
-			NumberOfCreatureTypes = Utg.count(CSVPath + "CreatureTypes.csv") ;
+			NumberOfCreatureTypes = UtilG.count(CSVPath + "CreatureTypes.csv") ;
 		}
 		catch (IOException e)
 		{

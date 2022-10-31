@@ -10,8 +10,8 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.awt.geom.AffineTransform ;
 
-import GameComponents.Size;
-import Main.Utg ;
+import Utilities.Size;
+import Utilities.UtilG;
 
 public class DrawPrimitives 
 {
@@ -31,7 +31,7 @@ public class DrawPrimitives
 		if (icon != null)
 		{
 			int l = (int)(icon.getWidth(null)), h = (int)(icon.getHeight(null)) ;
-			int[] offset = Utg.OffsetFromPos(Alignment, l, h) ;
+			int[] offset = UtilG.OffsetFromPos(Alignment, l, h) ;
 			G.drawImage(icon, Pos.x + offset[0], Pos.y + offset[1], l, h, null) ;
 	        //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "An image is being drawn outside window") ;
 		}
@@ -41,7 +41,7 @@ public class DrawPrimitives
 		if (icon != null)
 		{
 			int l = (int)(scale[0] * icon.getWidth(null)), h = (int)(scale[1] * icon.getHeight(null)) ;
-			int[] offset = Utg.OffsetFromPos(Alignment, l, h) ;
+			int[] offset = UtilG.OffsetFromPos(Alignment, l, h) ;
 			G.drawImage(icon, Pos.x + offset[0], Pos.y + offset[1], l, h, null) ;
 	        //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "An image is being drawn outside window") ;
 		}
@@ -51,7 +51,7 @@ public class DrawPrimitives
 		if (icon != null)
 		{
 			int l = (int)(scale[0] * icon.getWidth(null)), h = (int)(scale[1] * icon.getHeight(null)) ;
-			int[] offset = Utg.OffsetFromPos(Alignment, l, h) ;
+			int[] offset = UtilG.OffsetFromPos(Alignment, l, h) ;
 			int[] m = new int[] {1, 1} ;
 			if (mirror[0])
 			{
@@ -73,14 +73,14 @@ public class DrawPrimitives
 	public void DrawGif(Image icon, Point Pos, String Alignment)
 	{
 		int l = (int)(icon.getWidth(null)), h = (int)(icon.getHeight(null)) ;
-		int[] offset = Utg.OffsetFromPos(Alignment, l, h) ;
+		int[] offset = UtilG.OffsetFromPos(Alignment, l, h) ;
 		G.drawImage(icon, Pos.x + offset[0], Pos.y + offset[1], null) ;
 	}
 	public void DrawText(Point Pos, String Alignment, float angle, String Text, Font font, Color color)
 	{
 		// Rectangle by default starts at the left bottom
-		int TextL = Utg.TextL(Text, font, G), TextH = Utg.TextH(font.getSize()) ;
-		int[] offset = Utg.OffsetFromPos(Alignment, TextL, TextH) ;
+		int TextL = UtilG.TextL(Text, font, G), TextH = UtilG.TextH(font.getSize()) ;
+		int[] offset = UtilG.OffsetFromPos(Alignment, TextL, TextH) ;
 		AffineTransform backup = G.getTransform() ;		
 		G.setColor(color) ;
 		G.setFont(font) ;
@@ -91,7 +91,7 @@ public class DrawPrimitives
 	}
 	public void DrawFitText(Point Pos, int sy, String Alignment, String Text, Font font, int length, Color color)
 	{
-		String[] FitText = Utg.FitText(Text, length) ;
+		String[] FitText = UtilG.FitText(Text, length) ;
 		for (int i = 0 ; i <= FitText.length - 1 ; i += 1)
 		{
 			//System.out.println(FitText[i]);
@@ -101,7 +101,7 @@ public class DrawPrimitives
 	}
 	public void DrawTextUntil(Point Pos, String Alignment, float angle, String Text, Font font, Color color, int maxlength, Point MousePos)
 	{
-		int[] offset = Utg.OffsetFromPos(Alignment, maxlength, Utg.TextH(font.getSize())) ;
+		int[] offset = UtilG.OffsetFromPos(Alignment, maxlength, UtilG.TextH(font.getSize())) ;
 		String ShortText = Text ;
 		if (maxlength < Text.length())
 		{
@@ -109,7 +109,7 @@ public class DrawPrimitives
 			Text.getChars(0, maxlength - 4, chararray, 0) ;
 			ShortText = String.valueOf(chararray) ;
 		}
-		if (Text.length() <= maxlength | Utg.isInside(MousePos, new Point(Pos.x + offset[0], Pos.y + offset[1]), new Size(Utg.TextL(ShortText, font, G), Utg.TextH(font.getSize()))))
+		if (Text.length() <= maxlength | UtilG.isInside(MousePos, new Point(Pos.x + offset[0], Pos.y + offset[1]), new Size(UtilG.TextL(ShortText, font, G), UtilG.TextH(font.getSize()))))
 		{
 			DrawText(Pos, Alignment, OverallAngle, Text, font, color) ;
 		}
@@ -133,7 +133,7 @@ public class DrawPrimitives
 	public void DrawRect(Point Pos, String Alignment, Size size, int Thickness, Color color, Color contourColor, boolean contour)
 	{
 		// Rectangle by default starts at the left top
-		int[] offset = Utg.OffsetFromPos(Alignment, size.x, size.y) ;
+		int[] offset = UtilG.OffsetFromPos(Alignment, size.x, size.y) ;
 		int[] Corner = new int[] {Pos.x + offset[0], Pos.y + offset[1]} ;
 		G.setStroke(new BasicStroke(Thickness)) ;
 		if (color != null)
@@ -153,7 +153,7 @@ public class DrawPrimitives
 	{
 		// Round rectangle by default starts at the left top
 		int ArcWidth = 10, ArcHeight = 10 ;
-		int[] offset = Utg.OffsetFromPos(Alignment, size.x, size.y) ;
+		int[] offset = UtilG.OffsetFromPos(Alignment, size.x, size.y) ;
 		int[] Corner = new int[] {Pos.x + offset[0], Pos.y + offset[1]} ;
 		G.setStroke(new BasicStroke(Thickness)) ;
 		if (color0 != null & color1 != null)
