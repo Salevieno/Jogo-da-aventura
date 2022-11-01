@@ -432,7 +432,7 @@ public class Creatures extends LiveBeing
 		{
 			player.getStats()[20] += PoisonDamage ;
 		}
-		if (player.getJob() == 4 & 0 < player.getSpell()[6] & SkillBuffIsActive[6][0])	// Tasty
+		if (player.getJob() == 4 & 0 < player.getSpell()[6].getLevel() & SkillBuffIsActive[6][0])	// Tasty
 		{
 			player.getLife()[0] += BloodDamage ;
 			if (player.getLife()[1] < player.getLife()[0])

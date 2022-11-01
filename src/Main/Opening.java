@@ -62,7 +62,7 @@ public class Opening
 		Ani.StartAni(20) ;
 	}
 	
-	public int Run(int[] AllTextCat, String[][] AllText, String action, Point MousePos, Music music, Animations Ani, DrawFunctions DF)
+	public int Run(String[] text, String action, Point MousePos, Music music, Animations Ani, DrawFunctions DF)
 	{
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
@@ -71,10 +71,8 @@ public class Opening
 		int TextCat = -1 ;
 		Color TextColor = Game.ColorPalette[5] ;
 		String InitialLanguage = "P" ;
-		if (AllTextCat != null)
-		{
-			TextCat = AllTextCat[2] ;
-		}
+		
+		
 		if (!Ani.isActive(20))
 		{
 	    	OPbuttons[0].activate() ;
@@ -82,7 +80,9 @@ public class Opening
 	    	OPbuttons[2].activate() ;
 	    	OPbuttons[3].activate() ;
 		}
-		DP.DrawImage(OpeningBG, new Point(0, 0), 0, new float[] {1, 1}, new boolean[] {false, false}, "TopLeft", 1) ;
+		
+		
+		DP.DrawImage(OpeningBG, new Point(0, 0), 0, new float[] {1, 1}, new boolean[] {false, false}, "TopLeft", 1) ;		
 		for (int i = 0 ; i <= OPbuttons.length - 1 ; i += 1)
 		{
 			if (OPbuttons[i].isActive)
@@ -90,10 +90,21 @@ public class Opening
 				OPbuttons[i].DrawImage(0, OPSelectedButton, MousePos, DP) ;
 			}
 		}
+		
+		// Defining button behavior
+		for (int i = 0 ; i <= OPbuttons.length - 1 ; i += 1)
+		{
+			if (OPbuttons[i].isActive & OPbuttons[i].ishovered(MousePos))
+			{
+				OPSelectedButton = i ;
+			}
+		}		
 		if (action.equals("Enter"))
 		{
 			action = (String) OPbuttons[OPSelectedButton].startaction() ;
 		}
+		
+		
 		OPSelectedButton = UtilS.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, OPSelectedButton, OPbuttons.length) ;
 		if (OpeningStep == 0)
 		{
@@ -107,18 +118,14 @@ public class Opening
 		{
 			if (action.equals("N"))
 			{
-				//TutorialIsOn = true ;
-				AllText = UtilG.ReadTextFile(InitialLanguage) ;
-				AllTextCat = UtilS.FindAllTextCat(AllText, InitialLanguage) ;
+				//AllText = UtilG.ReadTextFile(InitialLanguage) ;
+				//AllTextCat = UtilS.FindAllTextCat(AllText, InitialLanguage) ;
 		    	OPbuttons[2].deactivate() ;
 		    	OPbuttons[3].deactivate() ;
 				OpeningStep += 1 ;
 			}	
 			if (action.equals("L"))
 			{
-				//player = new Player("", InitialLanguage, PlayerSex, PlayerJob) ;
-				//Items.InitializeStaticVars(ImagesPath) ;
-				//pet = new Pet(0) ;
 		    	OPbuttons[2].deactivate() ;
 		    	OPbuttons[3].deactivate() ;
 				
@@ -128,7 +135,7 @@ public class Opening
 		else if (OpeningStep == 2)
 		{
 			Font Largefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-			DP.DrawText(new Point((int)(0.5*ScreenW) + 20, (int)(0.25*ScreenH)), "Center", Textangle, AllText[TextCat][1], font, TextColor) ;
+			DP.DrawText(new Point((int)(0.5*ScreenW) + 20, (int)(0.25*ScreenH)), "Center", Textangle, text[1], font, TextColor) ;
 			if (action.equals("Enter"))
 			{
 				UtilS.LiveTyping(new Point((int)(0.4*ScreenW), (int)(0.3*ScreenH)), Textangle, action, Largefont, TextColor, DP) ;
@@ -175,13 +182,13 @@ public class Opening
 			int TextL = 15 ;
 			int sx = (int)(0.21*ScreenW), sy = 20 ;
 			Font smallfont = new Font("BoldSansSerif", Font.BOLD, 12) ;
-			DP.DrawText(new Point((int)(0.35*ScreenW), (int)(0.1*ScreenH)), "BotLeft", Textangle, AllText[TextCat][5], font, TextColor) ;		
+			DP.DrawText(new Point((int)(0.35*ScreenW), (int)(0.1*ScreenH)), "BotLeft", Textangle, text[5], font, TextColor) ;		
 			for (int i = 0 ; i <= 5 - 1 ; i += 1)
 			{
 				Point Pos = new Point((int) (0.01 * ScreenW + i * sx), (int) (0.28 * ScreenH)) ;
 				Size size = new Size(TextL * font.getSize() * 9 / 20, (int) (12.4 * sy)) ;
 				DF.DrawMenuWindow(Pos, size, null, 0, Player.ClassColors[i], Game.ColorPalette[7]) ;
-				DP.DrawFitText(new Point(Pos.x + 5, Pos.y + 5), sy, "TopLeft", AllText[TextCat][11 + i], smallfont, TextL, TextColor) ;	
+				DP.DrawFitText(new Point(Pos.x + 5, Pos.y + 5), sy, "TopLeft", text[11 + i], smallfont, TextL, TextColor) ;	
 			}
 			if (action.equals("0") | action.equals("1") | action.equals("2") | action.equals("3") | action.equals("4"))
 			{

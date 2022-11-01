@@ -23,24 +23,16 @@ public class Animations
 	private int[] Anicounter ;
 	private int[] Aniduration ;
 	private boolean[] AniIsActive ;
-	private int ScreenL, ScreenH ;
-	private String[][] AllText ;
-	private int[] AllTextCat ;
 	private Object[][] AniVars ;
 	
-	public Animations(int[] AllTextCat, String[][] AllText)
+	public Animations()
 	{
-		Size screenDim = Game.getScreen().getSize() ;
 		int NumberOfAni = 21 ;
 		Anicounter = new int[NumberOfAni] ;
 		Aniduration = new int[NumberOfAni] ;
 		Arrays.fill(Aniduration, 100) ;
 		AniIsActive = new boolean[NumberOfAni] ;
 		AniVars = new Object[NumberOfAni][] ;
-		this.ScreenL = screenDim.x ;
-		this.ScreenH = screenDim.y ;
-		this.AllTextCat = AllTextCat ;
-		this.AllText = AllText ;
 	}
 	
 	public void StartAni(int AniID)
@@ -177,9 +169,9 @@ public class Animations
 		Items[] items = (Items[]) AniVars0[1] ;
 		int[] ItemIDs = (int[]) AniVars0[2] ;
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
-		Font font = new Font("SansSerif", Font.BOLD, 14) ;
-		int TextCat = AllTextCat[10] ;
-		int[] Pos = new int[] {(int) (0.5*ScreenL), (int) (0.25*ScreenH)} ;
+		/*Font font = new Font("SansSerif", Font.BOLD, 14) ;
+		int TextCat = allText ;
+		int[] Pos = new int[] {(int) (0.5*Game.getScreen().getSize().x), (int) (0.25*Game.getScreen().getSize().y)} ;
 		int[] ValidItemIDs = UtilG.ArrayWithValuesGreaterThan(ItemIDs, -1) ;
 		Size size = new Size((int) (1.2*UtilG.TextL(Items.LongestName, font, DF.getGraphs())), (int) (10 + (ValidItemIDs.length + 1)*UtilG.TextH(font.getSize()))) ;
 		int sy = (int) (1.2*UtilG.TextH(font.getSize())) ;
@@ -190,7 +182,7 @@ public class Animations
 		for (int i = 0 ; i <= ValidItemIDs.length - 1 ; i += 1)
 		{
 			DP.DrawText(new Point(TextPos.x, TextPos.y + (i + 1)*sy), "Center", 0, items[ValidItemIDs[i]].getName(), font, Color.blue) ;
-		}
+		}*/
 	}
 	
 	public void PlayerDamageAnimation(Object[] AniVars1, DrawFunctions DF)

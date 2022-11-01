@@ -1,14 +1,16 @@
 package GameComponents ;
 
 import java.awt.Image;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 
 import Main.Game;
 
 public class Spells 
-{
+{	
 	private String Name ;
+	private int level ;
 	private int MaxLevel ;
 	private float MpCost ;
 	private String Type ;
@@ -31,13 +33,14 @@ public class Spells
 	private String Elem ;
 	private String[] Info ;	// Effect and description
 	
-	public static Image SpellCooldownImage ;	
-	public static  Image SpellSlotImage ;	
-	public static  Image ElementalCicle ;
+	public static Image cooldownImage ;	
+	public static Image slotImage ;	
+	public static Image ElementalCicle ;
 	
 	public Spells(String Name, int MaxLevel, float MpCost, String Type, int[][] PreRequisites, int Cooldown, int Duration, float[][] Buffs, float[][] Nerfs, float[] AtkMod, float[] DefMod, float[] DexMod, float[] AgiMod, float[] AtkCritMod, float[] DefCritMod, float[] StunMod, float[] BlockMod, float[] BloodMod, float[] PoisonMod, float[] SilenceMod, String Elem, String[] Info)
 	{
 		this.Name = Name ;
+		level = 0 ;
 		this.MaxLevel = MaxLevel ;
 		this.MpCost = MpCost ;
 		this.Type = Type ;
@@ -60,12 +63,13 @@ public class Spells
 		this.Elem = Elem ;
 		this.Info = Info ;
 		
-		SpellCooldownImage = new ImageIcon(Game.ImagesPath + "Cooldown.png").getImage() ;
-		SpellSlotImage = new ImageIcon(Game.ImagesPath + "SkillSlot.png").getImage() ;
+		cooldownImage = new ImageIcon(Game.ImagesPath + "Cooldown.png").getImage() ;
+		slotImage = new ImageIcon(Game.ImagesPath + "SkillSlot.png").getImage() ;
 		ElementalCicle = new ImageIcon(Game.ImagesPath + "ElementalCicle.png").getImage() ;
 	}
 	
 	public String getName() {return Name ;}
+	public int getLevel() {return level ;}
 	public int getMaxLevel() {return MaxLevel ;}
 	public float getMpCost() {return MpCost ;}
 	public String getType() {return Type ;}
@@ -109,4 +113,25 @@ public class Spells
 	public void setSilenceMod(float[] S) {SilenceMod = S ;}
 	public void setElem(String E) {Elem = E ;}
 	public void setInfo(String[] I) {Info = I ;}
+	
+	public void incLevel(int increment)
+	{
+		if (level + increment <= MaxLevel)
+		{
+			level += increment ;
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "Spells [Name=" + Name + ", level=" + level + ", MaxLevel=" + MaxLevel + ", MpCost=" + MpCost + ", Type="
+				+ Type + ", PreRequisites=" + Arrays.toString(PreRequisites) + ", Cooldown=" + Cooldown + ", Duration="
+				+ Duration + ", Buffs=" + Arrays.toString(Buffs) + ", Nerfs=" + Arrays.toString(Nerfs) + ", AtkMod="
+				+ Arrays.toString(AtkMod) + ", DefMod=" + Arrays.toString(DefMod) + ", DexMod="
+				+ Arrays.toString(DexMod) + ", AgiMod=" + Arrays.toString(AgiMod) + ", AtkCritMod="
+				+ Arrays.toString(AtkCritMod) + ", DefCritMod=" + Arrays.toString(DefCritMod) + ", StunMod="
+				+ Arrays.toString(StunMod) + ", BlockMod=" + Arrays.toString(BlockMod) + ", BloodMod="
+				+ Arrays.toString(BloodMod) + ", PoisonMod=" + Arrays.toString(PoisonMod) + ", SilenceMod="
+				+ Arrays.toString(SilenceMod) + ", Elem=" + Elem + ", Info=" + Arrays.toString(Info) + "]";
+	}
 }

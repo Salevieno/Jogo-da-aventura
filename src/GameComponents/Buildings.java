@@ -3,6 +3,7 @@ package GameComponents ;
 import java.awt.Color ;
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import Graphics.DrawPrimitives ;
@@ -15,12 +16,12 @@ public class Buildings
 	private String Name ;
 	private int Map ;
 	private Point Pos ;
-	private NPCs[] npc ;	// NPCs in the building
+	private ArrayList<NPCs> npc ;	// NPCs in the building
 	private Color color ;	// [Outside, inside, door, top]
 
 	public Image[] Images ;
 	public Image[] OrnamentImages ;
-	public Buildings(int ID, String Name, int Map, Point Pos, Image[] Images, Image[] OrnamentImages, NPCs[] npc, Color color)
+	public Buildings(int ID, String Name, int Map, Point Pos, Image[] Images, Image[] OrnamentImages, ArrayList<NPCs> npc, Color color)
 	{
 		this.ID = ID ;
 		this.Name = Name ;
@@ -36,7 +37,7 @@ public class Buildings
 	public String getName() {return Name ;}
 	public int getMap() {return Map ;}
 	public Point getPos() {return Pos ;}
-	public NPCs[] getNPCs() {return npc ;}
+	public ArrayList<NPCs> getNPCs() {return npc ;}
 	public Color getColors() {return color ;}
 	public void setID(int I) {ID = I ;}
 	public void setName(String N) {Name = N ;}
@@ -69,9 +70,9 @@ public class Buildings
 			DP.DrawImage(Images[1], Pos, angle, scale, new boolean[] {false, false}, "BotLeft", 1) ;
 			if (npc != null)
 			{
-				for (int n = 0 ; n <= npc.length - 1 ; n += 1)
+				for (int n = 0 ; n <= npc.size() - 1 ; n += 1)
 				{
-					npc[n].display(DP) ;
+					npc.get(n).display(DP) ;
 				}
 			}
 		}
@@ -83,8 +84,8 @@ public class Buildings
 
 	@Override
 	public String toString() {
-		return "Buildings [ID=" + ID + ", Name=" + Name + ", Map=" + Map + ", Pos=" + Pos + ", npc="
-				+ Arrays.toString(npc) + ", color=" + color + ", Images=" + Arrays.toString(Images)
-				+ ", OrnamentImages=" + Arrays.toString(OrnamentImages) + "]";
+		return "Buildings [ID=" + ID + ", Name=" + Name + ", Map=" + Map + ", Pos=" + Pos + ", npc=" + npc + ", color="
+				+ color + ", Images=" + Arrays.toString(Images) + ", OrnamentImages=" + Arrays.toString(OrnamentImages)
+				+ "]";
 	}
 }

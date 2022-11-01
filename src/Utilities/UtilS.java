@@ -4,7 +4,10 @@ import java.awt.Color ;
 import java.awt.Font ;
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays ;
+import java.util.HashMap;
+import java.util.Map;
 
 import Actions.Battle ;
 import GameComponents.Buildings ;
@@ -621,7 +624,7 @@ public class UtilS
 				int PreReqID = spells[SelectedSkill].getPreRequisites()[i][0] ;
 				if (0 <= PreReqID)
 				{
-					if (player.getSpell()[spells[SelectedSkill].getPreRequisites()[i][0]] < spells[SelectedSkill].getPreRequisites()[i][1])
+					if (player.getSpell()[spells[SelectedSkill].getPreRequisites()[i][0]].getLevel() < spells[SelectedSkill].getPreRequisites()[i][1])
 					{
 						++cont ;
 					}
@@ -703,6 +706,24 @@ public class UtilS
 			}
 		}
 		return -1 ;
+	}
+	
+	public static Map<String, String[]> loadAllText(String GameLanguage)
+	{
+		Map<String, String[]> allText = new HashMap<String, String[]>();
+		String[][] allTextString = UtilG.ReadTextFile(GameLanguage) ;
+		
+		for (int i = 0; i <= allTextString.length - 1; i += 1)
+		{
+			String[] catText = new String[allTextString[i].length - 1] ;
+			for (int j = 1; j <= allTextString[i].length - 1; j += 1)
+			{
+				catText[j - 1] = allTextString[i][j] ;
+			}
+			allText.put(allTextString[i][0], catText) ;
+		}
+		
+		return allText ;
 	}
 	
 	public static int[] FindAllTextCat(String[][] AllText, String Language)
@@ -871,14 +892,14 @@ public class UtilS
 		return IDs ;
 	}
 	
-	public static NPCs[] NPCsInBuilding(NPCs[] npc, String buildingName, int map)
+	public static ArrayList<NPCs> NPCsInBuilding(NPCs[] npc, String buildingName, int map)
 	{
-		NPCs[] npcs = null ;
+		ArrayList<NPCs> npcs = new ArrayList<NPCs>() ;
 		for (int n = 0 ; n <= npc.length - 1 ; n += 1)
 		{
 			if (npc[n].getMap() == map & npc[n].getPosRelToBuilding().equals(buildingName))
 			{
-				npcs = UtilG.AddElem(npcs, npc[n]) ;
+				npcs.add(npc[n]) ;
 			}
 		}
 		return npcs ;

@@ -7,6 +7,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image ;
 import java.awt.Point;
 import java.util.Arrays ;
+import java.util.Map;
 
 import javax.swing.ImageIcon ;
 
@@ -35,8 +36,6 @@ import Main.Game;
 public class DrawFunctions
 {
 	private Size screenSize ;
-	private String[][] AllText ;
-	private int[] AllTextCat ;
 	private Color[] ColorPalette ;
 	private DrawPrimitives DP ;
 	private Graphics2D G ;
@@ -51,11 +50,9 @@ public class DrawFunctions
 	public static Color[] ContinentsColor ;	// 0: Forest, 1: Cave, 2: Island, 3: Volcano, 4: Snowland, 5: Special
 	public static Color[] ElementColor ; 	// 0: neutral, 1: water, 2: fire, 3: plant, 4: earth, 5: air, 6: thunder, 7: light, 8: dark, 9: snow
 	
-	public DrawFunctions(Graphics g, String[][] AllText, int[] AllTextCat)
+	public DrawFunctions(Graphics g)
 	{
 		this.screenSize = Game.getScreen().getSize() ;
-		this.AllText = AllText ;
-		this.AllTextCat = AllTextCat ;
 		this.ColorPalette = Game.ColorPalette ;
 		G = (Graphics2D)(g) ;
 		DP = new DrawPrimitives(ColorPalette, G) ;
@@ -84,8 +81,6 @@ public class DrawFunctions
 		ElementImages = new Image[] {ElemNeutral, ElemWater, ElemFire, ElemPlant, ElemEarth, ElemAir, ElemThunder, ElemLight, ElemDark, ElemSnow} ;
 	}	
 	public float getOverallAngle() {return OverallAngle ;}
-	public void setAllText(String[][] newValue) {AllText = newValue ;}
-	public void setAllTextCat(int[] newValue) {AllTextCat = newValue ;}
 
 	public void paint(Graphics g) 
 	{ 
@@ -503,7 +498,7 @@ public class DrawFunctions
 	{
 		DP.DrawGif(LoadingGif, Pos, "Center");
 	}
-	public void DrawLoadingGameScreen(Player player, Pet pet, Icon[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
+	public void DrawLoadingGameScreen(Player player, Pet pet, Map<String, String[]> allText, Icon[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
 	{
 		Point[] WindowPos = new Point[] {new Point((int)(0.15*screenSize.x), (int)(0.2*screenSize.y)),
 				new Point((int)(0.65*screenSize.x), (int)(0.2*screenSize.y)),
@@ -511,15 +506,12 @@ public class DrawFunctions
 		Font font = new Font("SansSerif", Font.BOLD, 28) ;
 		
 		DP.DrawText(new Point((int)(0.5*screenSize.x), (int)(0.05*screenSize.y)), "Center", OverallAngle, "Slot " + (SlotID + 1), font, ColorPalette[5]) ;
- 		if (AllText != null)
- 		{
- 			//player.DrawAttWindow(MainWinDim, WindowPos[0], null, AllText, AllTextCat, 0, GoldCoinImage, icons, DP) ;
- 			player.getAttWindow().display(player, AllTextCat, AllText, player.getEquips(), player.getEquipsBonus(), player.getAttPoints(), new Point(0, 0), player.getPersonalAtt(), player.getBattleAtt(), DP) ;
- 			if (0 < pet.getLife()[0])
- 			{
- 	 			DrawPetWindow(pet, WindowPos[0]) ;
- 			}
- 		}
+		//player.DrawAttWindow(MainWinDim, WindowPos[0], null, AllText, AllTextCat, 0, GoldCoinImage, icons, DP) ;
+		player.getAttWindow().display(player, allText, player.getEquips(), player.getEquipsBonus(), player.getAttPoints(), new Point(0, 0), player.getPersonalAtt(), player.getBattleAtt(), DP) ;
+		if (0 < pet.getLife()[0])
+		{
+ 			DrawPetWindow(pet, WindowPos[0]) ;
+		}
  		if (ArrowIconImage != null)
  		{
  			DrawWindowArrows(WindowPos[2], (int)(0.5*screenSize.x), 0, SlotID, NumberOfUsedSlots - 1) ;
@@ -536,7 +528,7 @@ public class DrawFunctions
 	}
 	public void DrawCustomizationMenu(Player player, int SelectedOption, int[] CurrentColorValue)
 	{
-		Font Titlefont = new Font("SansSerif", Font.BOLD, 16) ;
+		/*Font Titlefont = new Font("SansSerif", Font.BOLD, 16) ;
 		Font font = new Font("SansSerif", Font.BOLD, 16) ;
 		int CustomCat = AllTextCat[34] ;	// Main text category
 		int ColorsCat = AllTextCat[39] ;	// Colors text category
@@ -576,6 +568,7 @@ public class DrawFunctions
 		DP.DrawImage(ArrowIconImage, new Point(ColorBarsPos.x - (int)(0.5 * BarSize + BarSize/10) + SelectedOption * Sx, ColorBarsPos.y + 220 - (int)(0.5 * BarSize)), 0, ArrowScale, new boolean[] {true, false}, "Center", 1) ;	// left arrow
 		DP.DrawImage(ArrowIconImage, new Point(ColorBarsPos.x + SelectedOption * Sx + BarSize/20, ColorBarsPos.y + 220 + (int)(0.2 * BarSize)), 90, ArrowScale, new boolean[] {false, true}, "Center", 1) ;						// up arrow
 		DP.DrawImage(ArrowIconImage, new Point(ColorBarsPos.x + SelectedOption * Sx + BarSize/20, ColorBarsPos.y + 220 + (int)(0.6 * BarSize)), 270, ArrowScale, new boolean[] {false, true}, "Center", 1) ;						// down arrow
+	*/
 	}
 	
 	
@@ -847,19 +840,19 @@ public class DrawFunctions
 			}							
 		}
 	}	
-	public void DrawFullMap(Player player, Pet pet, Maps map, NPCs[] npc, Buildings[] buildings, Spells[] spells, Sky sky, Icon[] SBicons, Point MousePos, int DayCounter)
+	public void DrawFullMap(Player player, Pet pet, NPCs[] npc, Buildings[] buildings, Sky sky, Icon[] SBicons, Point MousePos)
 	{
 		sky.display(DP) ;
-		map.display(DP) ;
-		map.displayElements(DP) ;
-		map.displayBuildings(player.getPos(), AllText[AllTextCat[33]], DP) ;
-		map.displayNPCs(DP) ;	
+		player.getMap().display(DP) ;
+		player.getMap().displayElements(DP) ;
+		player.getMap().displayBuildings(player.getPos(), player.allText.get("* Mensagem das placas *"), DP) ;
+		player.getMap().displayNPCs(DP) ;	
 		//DrawGrid(new int[] {20, 20}) ;
-		player.DrawSideBar(player, pet, AllText, AllTextCat, MousePos, spells, SBicons, DP) ;
+		player.DrawSideBar(player, pet,  MousePos, player.getSpell(), SBicons, DP) ;
 		
 		// draw time
 		Font font = new Font("SansSerif", Font.BOLD, 14) ;
-		float time = (float)(DayCounter) / Game.DayDuration ;
+		float time = (float)(sky.dayTime) / Game.DayDuration ;
 		DP.DrawText(new Point(0, (int) (0.99*screenSize.y)), "BotLeft", OverallAngle, (int)(24*time) + ":" + (int)(24*60*time % 60), font, ColorPalette[5]) ;
 	}
 	public void DrawTimeBar(Point Pos, int Counter, int Delay, int size2, int[] offset, String relPos, String dir, Color color)
@@ -1203,12 +1196,12 @@ public class DrawFunctions
 	}*/
 	public void DrawPetWindow(Pet pet, Point Pos)
 	{
-		Font Namefont = new Font("SansSerif", Font.BOLD, 16) ;
+		//	 TODO decide what to do with the text here
+		/*Font Namefont = new Font("SansSerif", Font.BOLD, 16) ;
 		Font font = new Font("SansSerif", Font.BOLD, 14) ;
 		Size size = new Size((int)(0.35*screenSize.x), (int)(0.5*screenSize.y)) ;
 		int sy = (int)(0.07 * size.y) ;
 		float angle = OverallAngle ;
-		int TextCat = AllTextCat[6] ;
 		Color TextColor = ColorPalette[5] ;
 		DP.DrawRoundRect(Pos, "BotLeft", size, 1, pet.getColor(), ColorPalette[7], true) ;
 		DrawPet(new Point(Pos.x + (int)(0.5 * size.x), Pos.y - (int)(0.7 * size.y)), new float[] {(float)2, (float)2}, pet.getMovingAnimations().idleGif) ;
@@ -1224,7 +1217,8 @@ public class DrawFunctions
 		DP.DrawText(new Point(Pos.x + (int)(0.025 * size.x), Pos.y - 3*sy/2), "BotLeft", angle, AllText[TextCat][9] + ": " + UtilG.Round(pet.getAgi()[0], 1) + " + " + UtilG.Round(pet.getAgi()[1], 1) + " + " + UtilG.Round(pet.getAgi()[2], 1), font, TextColor) ;		
 		DP.DrawText(new Point(Pos.x + (int)(0.025 * size.x), Pos.y - sy/2), "BotLeft", angle, AllText[TextCat][10] + ": " + (int)(100*pet.getCrit()[0]) + "% + " + (int)(100*pet.getCrit()[1]) + "%", font, ColorPalette[6]) ;		
 		DP.DrawImage(ElementImages[UtilS.ElementID(pet.getElem()[1])], new Point(Pos.x + (int)(0.5 * size.x), Pos.y - (int)(0.52 * size.y)), angle, new float[] {(float) 0.5, (float) 0.5}, new boolean[] {false, false}, "Center", 1) ;
-	}
+	*/
+		}
 	/*public void DrawOptionsWindow(int SelectedItem, int SelectedMenu, String[] ActionKeys, Settings settings)
 	{
 		int TextCat = AllTextCat[36] ;
@@ -1532,7 +1526,7 @@ public class DrawFunctions
 			DP.DrawText(new Point(TextPos.x, TextPos.y + i*sy), "BotLeft", OverallAngle, items[Ingredients[i]].getName(), font, TextColor[i]) ;	
 		}
 	}*/
-	public void DrawSpellsTree(Player player, Spells[] spells, Point MousePos, int SelectedSpell, Icon SpellsTreeIcon)
+	/*public void DrawSpellsTree(Player player, Spells[] spells, Point MousePos, int SelectedSpell, Icon SpellsTreeIcon)
 	{
 		int ClassesCat = AllTextCat[4], ProClassesCat = AllTextCat[5] ;
 		Font font = new Font("SansSerif", Font.BOLD, 10) ;
@@ -1611,7 +1605,7 @@ public class DrawFunctions
 		DP.DrawFitText(new Point(Pos.x + sx, Pos.y - Size.y - Size.y / 5), sy, "BotLeft", Effect, font, TextmaxL, player.getColors()[0]) ;
 		DP.DrawFitText(new Point(Pos.x + sx, Pos.y - Size.y - Size.y / 10), sy, "BotLeft", Description, font, TextmaxL - 6, player.getColors()[0]) ;		
 		DP.DrawText(new Point(Pos.x + Size.x, Pos.y), "TopRight", OverallAngle, "Pontos: " +  player.getSkillPoints(), font, player.getColors()[0]) ;		
-	}
+	}*/
 	
 
 	/* Battle animations */
@@ -1699,7 +1693,7 @@ public class DrawFunctions
 	/* Animations */
 	public void ChestRewardsAnimation(Items[] items, int counter, int duration, int[] ItemRewards, int[] GoldRewards, Color TextColor, Image CoinIcon)
 	{
-		Font font = new Font("SansSerif", Font.BOLD, 20) ;
+		/*Font font = new Font("SansSerif", Font.BOLD, 20) ;
 		int TextCat = AllTextCat[29] ;
 		Point Pos = new Point((int)(0.3*screenSize.x), (int)(0.8*screenSize.y)) ;
 		Size size = new Size((int)(0.5*screenSize.x), (int)(0.6*screenSize.y)) ;
@@ -1729,10 +1723,11 @@ public class DrawFunctions
 				}
 			}
 		}
+		*/
 	}
 	public void CollectingAnimation(Point Pos, int counter, int delay, int MessageTime, int CollectibleType, String Message)
 	{
-		int TextCat = AllTextCat[9] ;
+		/*int TextCat = AllTextCat[9] ;
 		Font font = new Font("SansSerif", Font.BOLD, 20) ;
 		int DotsDelay = 10 ;
 		int L = 200 ;
@@ -1755,7 +1750,8 @@ public class DrawFunctions
 		else
 		{
 			DP.DrawText(new Point(Pos.x + (int)(0.05*screenSize.x) - L/2, Pos.y - (int)(0.05*screenSize.y)), "BotLeft", OverallAngle, Message, font, CollectibleColor[CollectibleType]) ;			
-		}	
+		}
+		*/
 	}
 	public void TentAnimation(Point Pos, int counter, int delay, Image TentImage)
 	{
@@ -1809,7 +1805,7 @@ public class DrawFunctions
 	}*/
 	public void WinAnimation(int counter, int duration, String[] ItemsObtained, Color textColor)
 	{
-		int WinCat = AllTextCat[10] ;
+		/*int WinCat = AllTextCat[10] ;
 		Font font = new Font("SansSerif", Font.BOLD, 16) ;
 		Point Pos = new Point((int)(0.25 * screenSize.x), (int)(0.6 * screenSize.y)) ;
 		Size size = new Size((int)(0.3 * screenSize.x),  (int)(0.4 * screenSize.y)) ;
@@ -1832,10 +1828,11 @@ public class DrawFunctions
 				}
 			}
 		}
+		*/
 	}
 	public void PlayerLevelUpAnimation(int counter, int duration, float[] AttributeIncrease, int playerLevel, Color textColor)
 	{
-		int LevelUpCat = AllTextCat[10], AtributosCat = AllTextCat[6] ;
+		/*int LevelUpCat = AllTextCat[10], AtributosCat = AllTextCat[6] ;
 		Font font = new Font("SansSerif", Font.BOLD, 16) ;
 		Size size = new Size((int)(0.4*screenSize.x), (int)(0.4*screenSize.y)) ;
 		int Sy = size.y / 10 ;
@@ -1857,10 +1854,11 @@ public class DrawFunctions
 				}
 			}	
 		}
+		*/
 	}
 	public void PetLevelUpAnimation(Pet pet, int counter, int duration, float[] AttributeIncrease)
 	{
-		Font font = new Font("SansSerif", Font.BOLD, 20) ;
+		/*Font font = new Font("SansSerif", Font.BOLD, 20) ;
 		int AttCat = AllTextCat[6], WinCat = AllTextCat[10] ;
 		Point Pos = new Point((int)(0.25*screenSize.x), (int)(0.8*screenSize.y)) ;
 		Size size = new Size((int)(0.5*screenSize.x), (int)(0.6*screenSize.y)) ;
@@ -1881,10 +1879,11 @@ public class DrawFunctions
 				}
 			}
 		}
+		*/
 	}
 	public void SailingAnimation(Player player, NPCs npc, Maps[] maps, String Destination, int counter, int Duration, Image BoatImage)
 	{
-		int Step = player.getStep()/2 ;
+		/*int Step = player.getStep()/2 ;
 		int NPCLength = npc.getImage().getWidth(null), NPCHeight = npc.getImage().getHeight(null) ;
 		if (Destination.equals("Island"))
 		{
@@ -1904,10 +1903,10 @@ public class DrawFunctions
 				{
 					player.setPos(new Point(20, 500)) ;
 					player.setMap(maps[40]) ;
-					/*if (MusicIsOn)
-					{
-						UtilGeral.SwitchMusic(Music[11], Music[MusicInMap[player.getMap()]]) ;
-					}*/
+					/if (MusicIsOn)
+					///{
+					//	UtilGeral.SwitchMusic(Music[11], Music[MusicInMap[player.getMap()]]) ;
+					//}
 				}
 			}
 		}
@@ -1929,13 +1928,14 @@ public class DrawFunctions
 				{
 					player.setPos(new Point(640, 500)) ;
 					player.setMap(maps[13]) ;
-					/*if (MusicIsOn)
-					{
-						UtilGeral.SwitchMusic(Music[11], Music[MusicInMap[player.getMap()]]) ;
-					}*/
+					//if (MusicIsOn)
+					//{
+					//	UtilGeral.SwitchMusic(Music[11], Music[MusicInMap[player.getMap()]]) ;
+					//}
 				}
 			}
 		}
+		*/
 	}
 	public void FishingAnimation(Point playerPos, Image FishingGif, String WaterPos)
 	{
@@ -1961,7 +1961,7 @@ public class DrawFunctions
 	}
 	public void PterodactileAnimation(int counter, int duration, Image SpeakingBubbleImage, Image PterodactileImage)
 	{
-		Point InitialPos = new Point(screenSize.x + PterodactileImage.getWidth(null)/2, (int)(0.25*screenSize.y)) ;
+		/*Point InitialPos = new Point(screenSize.x + PterodactileImage.getWidth(null)/2, (int)(0.25*screenSize.y)) ;
 		Font font = new Font("SansSerif", Font.BOLD, 15) ;
 		int TextCat = AllTextCat[31] ;
 		if (counter < 0.25*duration)
@@ -1984,6 +1984,7 @@ public class DrawFunctions
 			InitialPos.y += -0.25*screenSize.x*(counter - 0.75*duration)/(0.25*duration) + 0.25*screenSize.x ;
 		}
 		DP.DrawImage(PterodactileImage, InitialPos, 1, new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
+		*/
 	}
 	/*public void RainAnimation(int counter)
 	{

@@ -9,6 +9,7 @@ import java.awt.Graphics2D ;
 import java.awt.Image ;
 import java.awt.Point;
 import java.awt.geom.AffineTransform ;
+import java.util.ArrayList;
 
 import Utilities.Size;
 import Utilities.UtilG;
@@ -91,11 +92,11 @@ public class DrawPrimitives
 	}
 	public void DrawFitText(Point Pos, int sy, String Alignment, String Text, Font font, int length, Color color)
 	{
-		String[] FitText = UtilG.FitText(Text, length) ;
-		for (int i = 0 ; i <= FitText.length - 1 ; i += 1)
+		ArrayList<String> FitText = UtilG.FitText(Text, length) ;
+		for (int i = 0 ; i <= FitText.size() - 1 ; i += 1)
 		{
 			//System.out.println(FitText[i]);
-			DrawText(new Point(Pos.x, Pos.y + i*sy), Alignment, OverallAngle, FitText[i], font, color) ;						
+			DrawText(new Point(Pos.x, Pos.y + i*sy), Alignment, OverallAngle, FitText.get(i), font, color) ;						
 		}
         //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL, ScreenH}, "A fit text is being drawn outside window") ;
 	}

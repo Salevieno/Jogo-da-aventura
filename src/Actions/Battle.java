@@ -385,7 +385,7 @@ public class Battle
 	
 	public int[] OffensiveSkills(Player player, Creatures creature, Spells skills, int SkillID)
 	{
-		int skilllevel = player.getSpell()[SkillID] ;
+		int skilllevel = player.getSpell()[SkillID].getLevel() ;
 		int damage = -1 ;
 		int effect = -1 ;
 		float PhyAtk = player.getBattleAtt().TotalPhyAtk() ;
@@ -472,7 +472,7 @@ public class Battle
 	public int[] PlayerSkill(Player player, Pet pet, Creatures creature, Spells[] skills, int[] ActivePlayerSkills, int SelectedSkill)
 	{
 		int[] AtkResult = new int[] {-1, 0} ;	// [damage, effect]
-		int skilllevel = player.getSpell()[SelectedSkill] ;
+		int skilllevel = player.getSpell()[SelectedSkill].getLevel() ;
 		if (skills[SelectedSkill].getMpCost() <= player.getMp()[0] & 0 < skilllevel)
 		{
 			SkillIsReady[SelectedSkill] = false ;
@@ -610,7 +610,7 @@ public class Battle
 				}
 				else if (SkillIsReady[SkillID])
 				{
-					if (player.hasEnoughMP(skills, SkillID) & 0 < player.getSpell()[SkillID])
+					if (player.hasEnoughMP(skills, SkillID) & 0 < player.getSpell()[SkillID].getLevel())
 					{
 						int[] AtkResult = PlayerSkill(player, pet, creature, skills, ActivePlayerSkills, SkillID) ;
 						damage = AtkResult[0] ;
@@ -840,7 +840,7 @@ public class Battle
 			if (player.canAtk() & UtilS.IsInRange(player.getPos(), creature.getPos(), player.getRange()))
 			{
 				//int[] PlayerAtkResult = PlayerAtk(player, pet, creature, skills, items, ActivePlayerSkills) ;
-				Object[] PlayerAtkResult = PlayerAtk(player, pet, creature, spells, player.GetActiveSpells(spells)) ;
+				Object[] PlayerAtkResult = PlayerAtk(player, pet, creature, spells, player.GetActiveSpells()) ;
 				int damage = (int) PlayerAtkResult[0] ;
 				//int effect = (int) PlayerAtkResult[1] ;
 				//int[] statusinflicted = (int[]) PlayerAtkResult[2] ;
@@ -903,7 +903,7 @@ public class Battle
 				{
 					SkillBuffIsActive[11][0] = false ;
 				}
-				if (player.getJob() == 4 & Math.random() < 0.2*player.getSpell()[11] & CreatureAtkResult[1] == 1)	// Surprise attack
+				if (player.getJob() == 4 & Math.random() < 0.2*player.getSpell()[11].getLevel() & CreatureAtkResult[1] == 1)	// Surprise attack
 				{
 					creature.getLife()[0] += -Math.min(0.5*CreatureAtkResult[0], 2*player.getPhyAtk()[0]) ;
 					// needs to show the atk animation
@@ -951,11 +951,11 @@ public class Battle
 		}
 		
 		// deactivate survivor's instinct (skill of the animals)
-		if (player.getJob() == 3 & 0 < player.getSpell()[12] & SkillBuffIsActive[12][0])	// Survivor's instinct
+		if (player.getJob() == 3 & 0 < player.getSpell()[12].getLevel() & SkillBuffIsActive[12][0])	// Survivor's instinct
 		{
 			for (int i = 0 ; i <= skills[12].getBuffs().length - 1 ; ++i)
 			{
-				BuffsAndNerfs(player, pet, creature, skills[12].getBuffs(), player.getSpell()[12], i, false, "Player", "deactivate") ;
+				BuffsAndNerfs(player, pet, creature, skills[12].getBuffs(), player.getSpell()[12].getLevel(), i, false, "Player", "deactivate") ;
 			}
 			SkillBuffIsActive[12][0] = false ;
 		}

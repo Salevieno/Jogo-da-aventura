@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
@@ -28,21 +29,22 @@ import Utilities.UtilG;
 
 public class Bag extends Window
 {	
-	private Potion[] pot ;
-	private Alchemy[] alch ;
-	private Forge[] forge ;
-	private PetItem[] petItem ;
-	private Food[] food ;
-	private Arrow[] arrow ;
-	private Equip[] equip ;
-	private GeneralItem[] genItem ;
-	private Fab[] fab ;
-	private QuestItem[] quest ;
+	private ArrayList<Potion> pot ;
+	private ArrayList<Alchemy> alch ;
+	private ArrayList<Forge> forge ;
+	private ArrayList<PetItem> petItem ;
+	private ArrayList<Food> food ;
+	private ArrayList<Arrow> arrow ;
+	private ArrayList<Equip> equip ;
+	private ArrayList<GeneralItem> genItem ;
+	private ArrayList<Fab> fab ;
+	private ArrayList<QuestItem> quest ;
 	
 	public static Image MenuImage = new ImageIcon(Game.ImagesPath + "BagMenu.png").getImage() ;
     public static Image SlotImage = new ImageIcon(Game.ImagesPath + "BagSlot.png").getImage() ;
 	
-	public Bag(Potion[] pot, Alchemy[] alch, Forge[] forge, PetItem[] petItem, Food[] food, Arrow[] arrow, Equip[] equip, GeneralItem[] genItem, Fab[] fab, QuestItem[] quest)
+	public Bag(ArrayList<Potion> pot, ArrayList<Alchemy> alch, ArrayList<Forge> forge, ArrayList<PetItem> petItem,
+			ArrayList<Food> food, ArrayList<Arrow> arrow, ArrayList<Equip> equip, ArrayList<GeneralItem> genItem, ArrayList<Fab> fab, ArrayList<QuestItem> quest)
 	{
 		super(null, 10, 2, 0, 0) ;
 		this.pot = pot ;
@@ -57,32 +59,36 @@ public class Bag extends Window
 		this.quest = quest ;
 	}
 	
-	public Potion[] getPotions() {return pot ;}
-	public Alchemy[] getAlchemy() {return alch ;}
-	public Forge[] getForge() {return forge ;}
-	public PetItem[] getPetItem() {return petItem ;}
-	public Food[] getFood() {return food ;}
-	public Arrow[] getArrow() {return arrow ;}
-	public Equip[] getEquip() {return equip ;}
-	public GeneralItem[] getGenItem() {return genItem ;}
-	public Fab[] getFab() {return fab ;}
-	public QuestItem[] getQuest() {return quest ;}
+	public ArrayList<Potion> getPotions() {return pot ;}
+	public ArrayList<Alchemy> getAlchemy() {return alch ;}
+	public ArrayList<Forge> getForge() {return forge ;}
+	public ArrayList<PetItem> getPetItem() {return petItem ;}
+	public ArrayList<Food> getFood() {return food ;}
+	public ArrayList<Arrow> getArrow() {return arrow ;}
+	public ArrayList<Equip> getEquip() {return equip ;}
+	public ArrayList<GeneralItem> getGenItem() {return genItem ;}
+	public ArrayList<Fab> getFab() {return fab ;}
+	public ArrayList<QuestItem> getQuest() {return quest ;}
 	
 
 	public void Add(Potion newPot)
 	{
-		pot = UtilG.AddElem(pot, newPot) ;
+		pot.add(newPot) ;
+	}
+	public void addItem(Arrow newArrow)
+	{
+		arrow.add(newArrow) ;
 	}
 	public void remove(int itemID)
 	{
-		System.arraycopy(pot, itemID + 1, pot, itemID, pot.length - itemID - 1); ;
+		//System.arraycopy(pot, itemID + 1, pot, itemID, pot.length - itemID - 1); ;
 	}
 	
 	public Item getSelectedItem()
 	{
 		if (menu == 0)
 		{
-			return pot[item] ;
+			return pot.get(item) ;
 		}
 		
 		return null ;
@@ -145,7 +151,7 @@ public class Bag extends Window
 				float PotMult = 1 ;
 				if (user.getPA().getJob() == 3)
 				{
-					PotMult += 0.06 * user.getSpell()[7] ;
+					PotMult += 0.06 * user.getSpell()[7].getLevel() ;
 				}
 				
 				user.getPA().incLife(pot.getLifeHeal() * user.getPA().getLife()[1] * PotMult) ;
@@ -154,7 +160,7 @@ public class Bag extends Window
 			user.getBag().remove(user.getBag().getItem());	
 		}
 	}
-	public void display(Point MousePos, int[] AllTextCat, String[][] AllText, DrawFunctions DF)
+	public void display(Point MousePos, String[] allText, DrawFunctions DF)
 	{
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
 		float OverallAngle = DF.getOverallAngle() ;
@@ -165,7 +171,6 @@ public class Bag extends Window
 		Color[] ColorPalette = Game.ColorPalette ;
 		//DF.DrawBag(pos, size, this, MenuImage, SlotImage, 0, 0, 0, 10, 0, MousePos) ;
 		
-		int MenusCat = AllTextCat[30] ;
 		Font MenuFont = new Font("SansSerif", Font.BOLD, 13) ;
 		Font ItemFont = new Font("SansSerif", Font.BOLD, 10) ;
 		Color BGColor = ColorPalette[11] ;
@@ -179,7 +184,7 @@ public class Bag extends Window
 		// Draw menus
 		int MenuL = MenuImage.getWidth(null) ;
 		int MenuH = MenuImage.getHeight(null) ;
-		for (int m = 0 ; m <= AllText[MenusCat].length - 3 ; m += 1)
+		for (int m = 0 ; m <= allText.length - 3 ; m += 1)
 		{
 			Point MenuPos = new Point(pos.x + 8, pos.y + m * (MenuH - 1)) ;
 			Color TextColor = ColorPalette[12] ;
@@ -189,7 +194,7 @@ public class Bag extends Window
 				MenuPos.x += 3 ;
 			}
 			DP.DrawImage(MenuImage, MenuPos, "TopRight") ;
-			DP.DrawText(new Point(MenuPos.x - MenuL / 2, MenuPos.y + MenuH / 2), "Center", OverallAngle, AllText[MenusCat][m + 1],
+			DP.DrawText(new Point(MenuPos.x - MenuL / 2, MenuPos.y + MenuH / 2), "Center", OverallAngle, allText[m + 1],
 					MenuFont, TextColor) ;
 		}
 		
@@ -198,7 +203,7 @@ public class Bag extends Window
 		
 		
 		// Draw items
-		Item[] ActiveItems = null;
+		/*ArrayList<Item> ActiveItems = null;
 		if (menu == 0)
 		{
 			ActiveItems = getPotions() ;
@@ -210,7 +215,7 @@ public class Bag extends Window
 		else
 		{
 			numberItems = 0 ;
-		}
+		}*/
 		
 		int slotW = SlotImage.getWidth(null) ;
 		int slotH = SlotImage.getHeight(null) ;
@@ -226,7 +231,7 @@ public class Bag extends Window
 		
 		for (int i = 0 ; i <= numberItems - 1 ; i += 1)
 		{
-			String text = ActiveItems[i].getName() ;//+ " (x" + bag[i] + ")" ;
+			//String text = ActiveItems[i].getName() ;//+ " (x" + bag[i] + ")" ;
 			Color TextColor = ColorPalette[3] ;
 			if (i == item)
 			{
@@ -234,7 +239,7 @@ public class Bag extends Window
 			}
 			DP.DrawImage(SlotImage, slotCenter[i], "Center") ;				// Draw slots
 			//DP.DrawImage(items[i].getImage(), slotCenter[i], "Center") ;	// Draw items
-			DP.DrawTextUntil(textPos[i], "CenterLeft", OverallAngle, text, ItemFont, TextColor, 10, MousePos) ;	
+			//DP.DrawTextUntil(textPos[i], "CenterLeft", OverallAngle, text, ItemFont, TextColor, 10, MousePos) ;	
 		}
 		if (0 < windowLimit)
 		{

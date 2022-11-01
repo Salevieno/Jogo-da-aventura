@@ -9,10 +9,10 @@ import Graphics.DrawPrimitives;
 import Main.Game;
 import Utilities.Size;
 
-public class Quest extends Window
+public class QuestWindow extends Window
 {
 	public static Image image = new ImageIcon(Game.ImagesPath + "Quest.png").getImage() ;
-	public Quest()
+	public QuestWindow()
 	{
 		super(image, 0, 0, 0, 0) ;
 	}

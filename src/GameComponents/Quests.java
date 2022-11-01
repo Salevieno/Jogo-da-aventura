@@ -9,6 +9,7 @@ public class Quests
 	private int ID ;
 	private String Name ;
 	private String Type ;
+	private boolean isActive ;
 	private int[] Counter ;				// Counter for the creatures killed
 	private int[] ReqCreatures ;
 	private int[] ReqCreaturesAmounts ;
@@ -54,6 +55,20 @@ public class Quests
 	public void setItemsRewardAmounts(int[] IRA) {ItemsRewardAmounts = IRA ;}
 	public void setDescription(String D) {Description = D ;}
 	
+	public boolean isActive()
+	{
+		return isActive ;
+	}
+	
+	public void activate()
+	{
+		isActive = true ;
+	}
+	public void deactivate()
+	{
+		isActive = false ;
+	}
+	
 	public static void CalcNumberOfQuests(String CSVPath)
 	{
 		try
@@ -77,20 +92,20 @@ public class Quests
 		}
 	}
 
-	public void Initialize(String CSVPath, String Language, int id, int PlayerJob)
+	public void Initialize(String[] Input, String Language, int id, int PlayerJob)
 	{
-		String[][] Input = UtilG.ReadTextFile(CSVPath + "Quests.csv", Quests.NumberOfQuests) ;
 		Name = String.valueOf("Quest " + id) ;
-		Type = Input[id][1] ;
-		ReqCreatures = new int[] {Integer.parseInt(Input[id][2]), Integer.parseInt(Input[id][4]), Integer.parseInt(Input[id][6])} ;
-		ReqCreaturesAmounts = new int[] {Integer.parseInt(Input[id][3]), Integer.parseInt(Input[id][5]), Integer.parseInt(Input[id][7])} ;
-		ReqItems = new int[] {Integer.parseInt(Input[id][8]), Integer.parseInt(Input[id][10]), Integer.parseInt(Input[id][12]), Integer.parseInt(Input[id][14]), Integer.parseInt(Input[id][16])} ;
-		ReqItemsAmounts = new int[] {Integer.parseInt(Input[id][9]), Integer.parseInt(Input[id][11]), Integer.parseInt(Input[id][13]), Integer.parseInt(Input[id][15]), Integer.parseInt(Input[id][17])} ;
+		Type = Input[1] ;
+		isActive = false ;
+		ReqCreatures = new int[] {Integer.parseInt(Input[2]), Integer.parseInt(Input[4]), Integer.parseInt(Input[6])} ;
+		ReqCreaturesAmounts = new int[] {Integer.parseInt(Input[3]), Integer.parseInt(Input[5]), Integer.parseInt(Input[7])} ;
+		ReqItems = new int[] {Integer.parseInt(Input[8]), Integer.parseInt(Input[10]), Integer.parseInt(Input[12]), Integer.parseInt(Input[14]), Integer.parseInt(Input[16])} ;
+		ReqItemsAmounts = new int[] {Integer.parseInt(Input[9]), Integer.parseInt(Input[11]), Integer.parseInt(Input[13]), Integer.parseInt(Input[15]), Integer.parseInt(Input[17])} ;
 		Counter = new int[ReqCreatures.length] ;
-		GoldReward = Integer.parseInt(Input[id][18]) ;
-		ExpReward = Integer.parseInt(Input[id][19]) ;
-		ItemsReward = new int[] {Integer.parseInt(Input[id][20]), Integer.parseInt(Input[id][22]), Integer.parseInt(Input[id][24]), Integer.parseInt(Input[id][26]), Integer.parseInt(Input[id][28])} ;
-		ItemsRewardAmounts = new int[] {Integer.parseInt(Input[id][21]), Integer.parseInt(Input[id][23]), Integer.parseInt(Input[id][25]), Integer.parseInt(Input[id][27]), Integer.parseInt(Input[id][29])} ;
+		GoldReward = Integer.parseInt(Input[18]) ;
+		ExpReward = Integer.parseInt(Input[19]) ;
+		ItemsReward = new int[] {Integer.parseInt(Input[20]), Integer.parseInt(Input[22]), Integer.parseInt(Input[24]), Integer.parseInt(Input[26]), Integer.parseInt(Input[28])} ;
+		ItemsRewardAmounts = new int[] {Integer.parseInt(Input[21]), Integer.parseInt(Input[23]), Integer.parseInt(Input[25]), Integer.parseInt(Input[27]), Integer.parseInt(Input[29])} ;
 		for (int item = 0 ; item <= ItemsReward.length - 1 ; item += 1)
 		{
 			if (Items.BagIDs[5] <= ItemsReward[item] & ItemsReward[item] < Items.BagIDs[6])
@@ -100,11 +115,11 @@ public class Quests
 		}
 		if (Language.equals("P"))
 		{
-			Description = Input[id][30] ;
+			Description = Input[30] ;
 		}
 		else if (Language.equals("E"))
 		{
-			Description = Input[id][31] ;
+			Description = Input[31] ;
 		}
 	}
 }

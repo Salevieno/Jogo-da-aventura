@@ -4,6 +4,8 @@ import java.awt.Color ;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
@@ -125,10 +127,9 @@ public class NPCs
 	public void setColor(Color C) {color = C ;}
 	
 
-	public void Contact(Player player, Pet pet, String[][] AllText, CreatureTypes[] creatureTypes, Creatures[] creatures, Spells[] skills, Maps[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawFunctions DF)
+	public void Contact(Player player, Pet pet, CreatureTypes[] creatureTypes, Creatures[] creatures, Spells[] skills, Maps[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawFunctions DF)
 	{
 		String Choice = player.action ;
-		int TextCat = UtilS.FindTextPos(AllText, "* " + Name + " *") ;
 		if (Choice.equals("Escape") & 0 < menu)
 		{
 			menu += -1 ;
@@ -180,7 +181,7 @@ public class NPCs
 		}*/
 		if (Name.equals("Master") | Name.equals("Mestre"))
 		{
-			masterAction(Choice, AllText[TextCat], player, pet, skills, MousePos, DF) ;
+			masterAction(Choice, player.allText.get("* " + Name + " *"), player, pet, skills, MousePos, DF) ;
 		}/*
 		if (npc.getName().contains("Quest") | npc.getName().contains("Quest"))
 		{

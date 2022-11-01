@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 
@@ -32,14 +33,13 @@ public class AttributesWindow extends Window
 		AddAttIcon = new Icon(0, "Plus sign", new Point(0, 0), null, PlusSignImage, SelectedPlusSignImage) ;
 	}
 	
-	public void display(LiveBeing user, int[] AllTextCat, String[][] AllText, int[] Equips, float[][] EquipsBonus, int AttPoints, Point MousePos, PersonalAttributes PA, BattleAttributes BA, DrawPrimitives DP)
+	public void display(LiveBeing user, Map<String, String[]> allText, int[] Equips, float[][] EquipsBonus, int AttPoints, Point MousePos, PersonalAttributes PA, BattleAttributes BA, DrawPrimitives DP)
 	{
 		Size screenSize = Game.getScreen().getSize() ;
 		Point WindowPos = new Point((int) (0.2 * screenSize.x), (int)(0.3 * screenSize.y)) ;
 		float TextAngle = DrawPrimitives.OverallAngle ;
 		int L = Player.AttWindowImages[0].getWidth(null), H = Player.AttWindowImages[0].getHeight(null) ;
 		Point PlayerImagePos = new Point(WindowPos.x + (int) (0.55 * L), WindowPos.y - (int) (0.85 * H)) ;
-		int ClassesCat = -1, ProClassesCat = -1, AttCat = -1, CollectCat = -1, EquipsCat = -1, TabsCat = -1 ;
 		Font Namefont = new Font("GothicE", Font.BOLD, L / 28 + 1) ;
 		Font font = new Font("GothicE", Font.BOLD, L / 28 + 2) ;
 		Font Equipfont = new Font("GothicE", Font.BOLD, L / 28) ;
@@ -47,37 +47,34 @@ public class AttributesWindow extends Window
 		Color[] TabColor = new Color[] {ColorPalette[7], ColorPalette[7], ColorPalette[7]}, TabTextColor = new Color[] {ColorPalette[5], ColorPalette[5], ColorPalette[5]} ;
 		Color TextColor = ColorPalette[2] ;
 		int TextH = UtilG.TextH(font.getSize()) ;
-		if (AllTextCat != null)
-		{
-			ClassesCat = AllTextCat[4] ;
-			ProClassesCat = AllTextCat[5] ;
-			AttCat = AllTextCat[6] ;
-			CollectCat = AllTextCat[9] ;
-			EquipsCat = AllTextCat[11] ;
-			TabsCat = AllTextCat[40] ;
-		}
+		String[] classesText = allText.get("* Classes *") ;
+		String[] proClassesText = allText.get("* ProClasses *") ;
+		String[] attText = allText.get("* Atributos *") ;
+		String[] collectText = allText.get("* Coleta *") ;
+		String[] equipsText = allText.get("* Equipamentos *") ;
+		String[] tabsText = allText.get("* Janela do jogador *") ;
 		TabColor[tab] = ColorPalette[19] ;
 		TabTextColor[tab] = ColorPalette[3] ;
 		
 		// Main window
 		DP.DrawImage(Player.AttWindowImages[tab], WindowPos, "TopLeft") ;
-		DP.DrawText(new Point(WindowPos.x + 5, WindowPos.y + (int)(0.05*H)), "Center", 90, AllText[TabsCat][1], Namefont, TabTextColor[0]) ;				// Tab 0 text	
-		DP.DrawText(new Point(WindowPos.x + 5, WindowPos.y + (int)(0.15*H)), "Center", 90, AllText[TabsCat][2], Namefont, TabTextColor[1]) ;				// Tab 1 text	
-		DP.DrawText(new Point(WindowPos.x + 5, WindowPos.y + (int)(0.25*H)), "Center", 90, AllText[TabsCat][3], Namefont, TabTextColor[2]) ;				// Tab 2 text	
+		DP.DrawText(new Point(WindowPos.x + 5, WindowPos.y + (int)(0.05*H)), "Center", 90, tabsText[1], Namefont, TabTextColor[0]) ;				// Tab 0 text	
+		DP.DrawText(new Point(WindowPos.x + 5, WindowPos.y + (int)(0.15*H)), "Center", 90, tabsText[2], Namefont, TabTextColor[1]) ;				// Tab 1 text	
+		DP.DrawText(new Point(WindowPos.x + 5, WindowPos.y + (int)(0.25*H)), "Center", 90, tabsText[3], Namefont, TabTextColor[2]) ;				// Tab 2 text	
 		if (tab == 0)
 		{
 			//	Player
 			//user.display(PlayerImagePos, new float[] {(float) 1.8, (float) 1.8}, PA.getDir(), false, DP) ;
 			user.display() ;
 			DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.1*H)), "Center", TextAngle, PA.getName(), Namefont, TextColor) ;						// Name text			
-			DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.03*H)), "Center", TextAngle, AllText[AttCat][1] + ": " + PA.getLevel(), font, ColorPalette[6]) ;	// Level text		
+			DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.03*H)), "Center", TextAngle, attText[1] + ": " + PA.getLevel(), font, ColorPalette[6]) ;	// Level text		
 			if(PA.getProJob() == 0)
 			{
-				DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.06*H)), "Center", TextAngle, AllText[ClassesCat][PA.getJob() + 1], font, ColorPalette[5]) ;	// Job text			
+				DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.06*H)), "Center", TextAngle, classesText[PA.getJob() + 1], font, ColorPalette[5]) ;	// Job text			
 			}
 			else
 			{
-				DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.15*H + TextH/2)), "Center", TextAngle, AllText[ProClassesCat][PA.getProJob() + 2*PA.getJob()], font, ColorPalette[5]) ;	// Pro job text					
+				DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.15*H + TextH/2)), "Center", TextAngle, proClassesText[PA.getProJob() + 2*PA.getJob()], font, ColorPalette[5]) ;	// Pro job text					
 			}
 			
 			//	Equips
@@ -96,10 +93,7 @@ public class AttributesWindow extends Window
 					{
 						if (0 < EquipsBonus[Equips[eq] - Items.BagIDs[6]][0])
 						{
-							if (-1 < EquipsCat)
-							{
-								DP.DrawText(new Point(EqRectPos[eq].x, EqRectPos[eq].y - EqRectH[eq] / 2 - TextH), "Center", TextAngle, AllText[EquipsCat][eq + 1] + " + " + (int)(EquipsBonus[Equips[eq] - Items.BagIDs[6]][1]), font, TextColor) ;					
-							}
+							DP.DrawText(new Point(EqRectPos[eq].x, EqRectPos[eq].y - EqRectH[eq] / 2 - TextH), "Center", TextAngle, equipsText[eq + 1] + " + " + (int)(EquipsBonus[Equips[eq] - Items.BagIDs[6]][1]), font, TextColor) ;					
 						}
 						//DF.DrawEquips(EqRectPos[eq], PA.getJob(), eq, Equips[eq] - Items.BagIDs[6], EquipsBonus, new float[] {1, 1}, TextAngle) ;
 					}
@@ -112,7 +106,7 @@ public class AttributesWindow extends Window
 				}
 				else
 				{
-					DP.DrawText(new Point(EqRectPos[eq].x + EqRectL[eq]/2, EqRectPos[eq].y - EqRectH[eq] / 2 - TextH), "Center", TextAngle, AllText[EquipsCat][eq + 1], font, TextColor) ;
+					DP.DrawText(new Point(EqRectPos[eq].x + EqRectL[eq]/2, EqRectPos[eq].y - EqRectH[eq] / 2 - TextH), "Center", TextAngle, equipsText[eq + 1], font, TextColor) ;
 				}
 			}
 			
@@ -125,15 +119,15 @@ public class AttributesWindow extends Window
 			//	Attributes
 			float[] Attributes = new float[] {BA.TotalPhyAtk(), BA.TotalMagAtk(), BA.TotalPhyDef(), BA.TotalMagDef(), BA.TotalDex(), BA.TotalAgi()} ;
 			int AttSy = 22 ;
-			DP.DrawText(new Point(WindowPos.x + 15, WindowPos.y + 30), "BotLeft", TextAngle, AllText[AttCat][2] + ": " + UtilG.Round(PA.getLife()[0], 1), font, ColorPalette[6]) ;	// Life text	
-			DP.DrawText(new Point(WindowPos.x + 15, WindowPos.y + 40), "BotLeft", TextAngle, AllText[AttCat][3] + ": " + UtilG.Round(PA.getMp()[0], 1), font, ColorPalette[5]) ;	// MP text
+			DP.DrawText(new Point(WindowPos.x + 15, WindowPos.y + 30), "BotLeft", TextAngle, attText[2] + ": " + UtilG.Round(PA.getLife()[0], 1), font, ColorPalette[6]) ;	// Life text	
+			DP.DrawText(new Point(WindowPos.x + 15, WindowPos.y + 40), "BotLeft", TextAngle, attText[3] + ": " + UtilG.Round(PA.getMp()[0], 1), font, ColorPalette[5]) ;	// MP text
 
 			DP.DrawImage(Equip.SwordImage, new Point(WindowPos.x + 30, WindowPos.y + 134 + 1 * AttSy), new float[] {(float) (11 / 38.0), (float) (11 / 38.0)}, "Center") ;	// Draw sword icon
 			for (int i = 0; i <= Attributes.length - 1; i += 1)
 			{
-				DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + (i + 1) * AttSy), "BotLeft", TextAngle, AllText[AttCat][4] + ": " + UtilG.Round(Attributes[i], 1), font, TextColor) ;
+				DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + (i + 1) * AttSy), "BotLeft", TextAngle, attText[4] + ": " + UtilG.Round(Attributes[i], 1), font, TextColor) ;
 			}	
-			DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + 7 * AttSy), "BotLeft", TextAngle, AllText[AttCat][10] + ": " + UtilG.Round(100 * BA.TotalCritAtkChance(), 1) + "%", font, ColorPalette[6]) ;		
+			DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + 7 * AttSy), "BotLeft", TextAngle, attText[10] + ": " + UtilG.Round(100 * BA.TotalCritAtkChance(), 1) + "%", font, ColorPalette[6]) ;		
 			
 			//	Collection
 			//if (Language.equals("P"))

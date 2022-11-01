@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon ;
@@ -33,7 +34,7 @@ public class Maps
 	private CreatureTypes[] creatureTypes ;
 	private Creatures[] creatures ;
 	public Buildings[] building ;
-	public NPCs[] NPCsInMap ;
+	public ArrayList<NPCs> NPCsInMap ;
 	
 	public static int[] MusicID = new int[] {0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 11, 11, 11, 11, 11, 11} ;  	 
 	public static Image[] CollectibleImage ;
@@ -54,6 +55,7 @@ public class Maps
 		this.creatureTypes = creatureTypes ;
 		this.creatures = creatures ;
 		building = null ;
+		NPCsInMap = new ArrayList<NPCs>() ;
 		
 	    Image BerryImage = new ImageIcon(UtilG.ReadTextFile("Paths.txt", 3)[1][0] + "Col0_Berry.png").getImage() ;
 	    Image HerbImage = new ImageIcon(UtilG.ReadTextFile("Paths.txt", 3)[1][0] + "Col1_Herb.png").getImage() ;
@@ -75,7 +77,7 @@ public class Maps
 	public int[] getCollectibleDelay() {return CollectibleDelay ;}
 	public CreatureTypes[] getCreatureTypes() {return creatureTypes ;}
 	public Creatures[] getCreatures() {return creatures ;}
-	public NPCs[] getNPCs() {return NPCsInMap ;}
+	public ArrayList<NPCs> getNPCs() {return NPCsInMap ;}
 	public Buildings[] getBuildings() {return building ;}
 	public void setCreatures(Creatures[] newValue) {creatures = newValue ;}
 	
@@ -257,7 +259,7 @@ public class Maps
 		}
  	}
 	
- 	public void displayBuildings(Point playerPos, String[] AllText, DrawPrimitives DP)
+ 	public void displayBuildings(Point playerPos, String[] signMessage, DrawPrimitives DP)
  	{
  		float overallAngle = DrawPrimitives.OverallAngle ;
  		Color[] colorPalette = Game.ColorPalette ;
@@ -279,7 +281,7 @@ public class Maps
 				//Size menuSize = new Size((int)(0.25*Utg.TextL(AllText[id + 1], font, G)), (int)(7*Utg.TextH(font.getSize()))) ;
 				Size menuSize = new Size(200, 200) ;
 				DP.DrawRoundRect(Pos, "TopLeft", menuSize, 3, colorPalette[4], colorPalette[4], true) ;			
-				DP.DrawFitText(new Point(Pos.x + 10, Pos.y - (int)(5.5*UtilG.TextH(font.getSize()))), UtilG.TextH(font.getSize()), "BotLeft", AllText[id + 1], font, 35, colorPalette[5]) ;		
+				DP.DrawFitText(new Point(Pos.x + 10, Pos.y - (int)(5.5*UtilG.TextH(font.getSize()))), UtilG.TextH(font.getSize()), "BotLeft", signMessage[id + 1], font, 35, colorPalette[5]) ;		
 			}
 		}
  	}
@@ -288,11 +290,11 @@ public class Maps
 	{
 		if (NPCsInMap != null)	// Map has NPCs
 		{
-			for (int i = 0 ; i <= NPCsInMap.length - 1 ; i += 1)
+			for (int i = 0 ; i <= NPCsInMap.size() - 1 ; i += 1)
 			{
-				if (NPCsInMap[i].getPosRelToBuilding().equals("Outside"))
+				if (NPCsInMap.get(i).getPosRelToBuilding().equals("Outside"))
 				{
-					NPCsInMap[i].display(DP) ;		
+					NPCsInMap.get(i).display(DP) ;		
 				}
 			}
 		}
@@ -354,7 +356,7 @@ public class Maps
 		{
 			if (npc[j].getMap() == id)
 			{
-				NPCsInMap = UtilG.AddElem(NPCsInMap, npc[j]) ;
+				NPCsInMap.add(npc[j]) ;
 			}
 		}
     }
@@ -432,7 +434,6 @@ public class Maps
 		}
 	}
 
-
 	@Override
 	public String toString() {
 		return "Maps [Name=" + Name + ", id=" + id + ", Continent=" + Continent + ", image=" + image + ", MapElem="
@@ -441,6 +442,6 @@ public class Maps
 				+ Arrays.toString(CollectibleCounter) + ", CollectibleDelay=" + Arrays.toString(CollectibleDelay)
 				+ ", Connections=" + Arrays.toString(Connections) + ", creatureTypes=" + Arrays.toString(creatureTypes)
 				+ ", creatures=" + Arrays.toString(creatures) + ", building=" + Arrays.toString(building)
-				+ ", NPCsInMap=" + Arrays.toString(NPCsInMap) + "]";
+				+ ", NPCsInMap=" + NPCsInMap + "]";
 	}
 }

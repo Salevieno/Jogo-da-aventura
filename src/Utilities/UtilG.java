@@ -36,6 +36,7 @@ import GameComponents.NPCs;
 import GameComponents.Projectiles ;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives ;
+import Items.Arrow;
 import Items.Potion;
 import LiveBeings.CreatureTypes;
 import LiveBeings.Creatures;
@@ -526,6 +527,7 @@ public abstract class UtilG
 	public static String[][] ReadTextFile(String Language)
 	{
 		String fileName = "Texto-PT-br.txt" ;
+		//ArrayList<ArrayList<String>> text ;
 		String[][] Text = null ; // [Cat][Pos]
 		int cat = -1 ;
 		if (Language.equals("E"))
@@ -868,115 +870,7 @@ public abstract class UtilG
 		}
 	}
 	
-	public static Image[] AddElem(Image[] OriginalArray, Image NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new Image[] {NewElem} ;
-		}
-		else
-		{
-			Image[] NewArray = new Image[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
-	
-	public static Potion[] AddElem(Potion[] OriginalArray, Potion NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new Potion[] {NewElem} ;
-		}
-		else
-		{
-			Potion[] NewArray = new Potion[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
 
-			return NewArray ;
-		}
-	}
-	
-	public static Point[] AddElem(Point[] OriginalArray, Point NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new Point[] {NewElem} ;
-		}
-		else
-		{
-			Point[] NewArray = new Point[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
-
-	public static Projectiles[] AddElem(Projectiles[] OriginalArray, Projectiles NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new Projectiles[] {NewElem} ;
-		}
-		else
-		{
-			Projectiles[] NewArray = new Projectiles[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
-
-	public static Creatures[] AddElem(Creatures[] OriginalArray, Creatures NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new Creatures[] {NewElem} ;
-		}
-		else
-		{
-			Creatures[] NewArray = new Creatures[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
-	
-	public static Icon[] AddElem(Icon[] OriginalArray, Icon NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new Icon[] {NewElem} ;
-		}
-		else
-		{
-			Icon[] NewArray = new Icon[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
-	
 	public static String[] AddElem(String[] OriginalArray, String NewElem)
 	{
 		if (OriginalArray == null)
@@ -994,7 +888,7 @@ public abstract class UtilG
 			return NewArray ;
 		}
 	}
-
+	
 	public static int[] AddElem(int[] OriginalArray, int NewElem)
 	{
 		if (OriginalArray == null)
@@ -1004,24 +898,6 @@ public abstract class UtilG
 		else
 		{
 			int[] NewArray = new int[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
-
-	public static NPCs[] AddElem(NPCs[] OriginalArray, NPCs NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new NPCs[] {NewElem} ;
-		}
-		else
-		{
-			NPCs[] NewArray = new NPCs[OriginalArray.length + 1] ;
 			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
 			{
 				NewArray[i] = OriginalArray[i] ;
@@ -1134,9 +1010,9 @@ public abstract class UtilG
 		return newstring2 ;
 	}*/
 	
-	public static String[] FitText(String inputstring, int NumberOfChars)
+	public static ArrayList<String> FitText(String inputstring, int NumberOfChars)
 	{
-		String[] newstring = null ;
+		ArrayList<String> newstring = new ArrayList<String>() ;
 		int CharsExeeding = 0 ;		
 		int i = 0 ;
 		int FirstChar = 0 ;
@@ -1159,7 +1035,7 @@ public abstract class UtilG
 						int af2 = Math.min(Math.max(0, FirstChar), inputstring.length()) ;
 						char[] chararray2 = new char[LastChar - af2] ;
 						inputstring.getChars(Math.min(Math.max(0, FirstChar), inputstring.length()), LastChar, chararray2, 0) ;
-						newstring = AddElem(newstring, String.valueOf(chararray2)) ;
+						newstring.add(String.valueOf(chararray2)) ;
 						CharsExeeding += -1 ;
 						j = 0 ;
 					}
@@ -1169,14 +1045,14 @@ public abstract class UtilG
 			{
 				chararray = new char[LastChar - FirstChar] ;
 				inputstring.getChars(FirstChar, LastChar, chararray, 0) ;
-				newstring = AddElem(newstring, String.valueOf(chararray)) ;
+				newstring.add(String.valueOf(chararray)) ;
 			}
 			i += 1 ;
 		} while(LastChar != inputstring.length() & i != inputstring.length()) ;
-		String[] newstring2 = new String[i] ;
-		for (int j = 0 ; j <= newstring2.length - 1 ; j += 1)
+		ArrayList<String> newstring2 = new ArrayList<>(i) ;
+		for (int j = 0 ; j <= newstring2.size() - 1 ; j += 1)
 		{
-			newstring2[j] = newstring[j] ;
+			newstring2.set(j, newstring.get(j)) ;
 		}
 		return newstring2 ;
 	}
