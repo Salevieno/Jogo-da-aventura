@@ -21,8 +21,6 @@ public class Quests
 	private int[] ItemsRewardAmounts ;
 	private String Description ;
 	
-	public static int NumberOfQuests ;
-	
 	public Quests(int ID)
 	{
 		this.ID = ID ;
@@ -69,17 +67,18 @@ public class Quests
 		isActive = false ;
 	}
 	
-	public static void CalcNumberOfQuests(String CSVPath)
+	public static int CalcNumberOfQuests(String CSVPath)
 	{
 		try
 		{
-			NumberOfQuests = UtilG.count(CSVPath + "Quests.csv") ;
+			return UtilG.count(CSVPath + "Quests.csv") ;
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace() ;
 		}
+		
+		return - 1;
 	}
 	public void IncReqCreaturesCounter(int CreatureType)
 	{

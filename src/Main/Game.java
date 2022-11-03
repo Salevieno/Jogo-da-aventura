@@ -19,6 +19,9 @@ import javax.swing.ImageIcon ;
 import javax.swing.JPanel ;
 import javax.swing.Timer ;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import Actions.Battle ;
 import Actions.BattleActions;
 import GameComponents.Buildings ;
@@ -59,7 +62,7 @@ public class Game extends JPanel implements ActionListener
 	private static final long serialVersionUID = 1L ;
 	
 	private Timer timer ;		// Main timer of the game
-    private Point MousePos ;
+    private Point mousePos ;
 	private JPanel mainpanel = this ;
 
 	public static String CSVPath, ImagesPath, MusicPath ;
@@ -105,8 +108,7 @@ public class Game extends JPanel implements ActionListener
 	public static Maps[] getMaps(){return maps ;}
 	public static Buildings[] getBuildings(){return buildings ;}
 	public static NPCs[] getNPCs(){return npc ;}
-	public static Quests[] getQuests(){return quest ;}
-	
+	public static Quests[] getQuests(){return quest ;}	
 	
     public void FirstInitialization(int[] WinDim)
     {
@@ -185,6 +187,7 @@ public class Game extends JPanel implements ActionListener
     	
 		return npc ;
     }
+    
     public Buildings[] InitializeBuildings(Size screenSize, NPCs[] npc)
     {
 		int NumberOfBuildings = 30 ;
@@ -206,6 +209,7 @@ public class Game extends JPanel implements ActionListener
 		
 		return buildings ;
     }
+    
     public CreatureTypes[] InitializeCreatureTypes(String Language, float DiffMult)
     {
     	CreatureTypes.setNumberOfCreatureTypes(CSVPath);
@@ -281,6 +285,7 @@ public class Game extends JPanel implements ActionListener
 		}
 		return creatureTypes ;
     }
+    
     public Maps[] InitializeMaps(Screen screen, CreatureTypes[] creatureTypes, Sky sky)
     {
     	int NumberOfMaps = 67 ;
@@ -352,39 +357,18 @@ public class Game extends JPanel implements ActionListener
 		}
 		return maps ;
     }
-    
-        
+            
     public Player InitializePlayer(String Name, int Job, String GameLanguage, String Sex)
     {
 		return new Player(Name, GameLanguage, Sex, Job) ;
     }
+    
     public Pet InitializePet()
     {
     	Pet pet = new Pet((int) (4 * Math.random())) ;
-    	pet.getLife()[0] = 0 ;
 		return pet ;
     }
-    /*public void InitializeCreaturesInMap()
-    {		
-		// Setting creatures in map
-		for (int map = 0 ; map <= maps.length - 1 ; map += 1)
-		{
-			if (maps[map].getCreatureTypes() != null)
-			{
-				Creatures[] creaturesInMap = null ;
-				for (int c = 0 ; c <= maps[map].getCreatureTypes().length - 1 ; c += 1)
-				{
-					CreatureTypes creatureType = maps[map].getCreatureTypes()[c];
-					if (-1 < creatureType.getID())
-					{
-						Creatures creature = new Creatures(creatureType) ;
-						creaturesInMap = UtilG.AddVectorElem(creaturesInMap, creature) ;
-						maps[map].setCreatures(creaturesInMap) ;
-					}
-				}
-			}
-		}
-    }*/
+    
     public Creatures[] InitializeCreatures(CreatureTypes[] creatureTypes, Size screenSize, Maps[] maps)
     {    	
     	int NumberOfCreatures = 0 ;
@@ -415,13 +399,13 @@ public class Game extends JPanel implements ActionListener
 					creature[creatureID] = new Creatures(cType) ;
 					
 					int posStep = 1 ;
-					Point Pos = UtilG.RandomPos(screenSize, new float[] {0, (float)(0.2)}, new float[] {1, 1 - (float)(sky.height)/screenSize.y}, new int[] {posStep, posStep}) ;
+					Point Pos = UtilG.RandomPos(new Point(0, (int) (0.2*screenSize.x)), new Size(1, (int) (1 - (float)(sky.height)/screenSize.y)), new Size(posStep, posStep)) ;
 					if (creatureMap.getid() == 13 | creatureMap.getid() == 17)	// Shore creatures
 					{
-						Pos = UtilG.RandomPos(new Size((int)(0.8*screenSize.x), screenSize.y), new float[] {0, (float)0.2}, new float[] {1, 1 - (float)(sky.height)/screenSize.y}, new int[] {posStep, posStep}) ;
+						Pos = UtilG.RandomPos(new Point(0, (int) (0.2*screenSize.x)), new Size((int) (0.8*screenSize.x), (int) (1 - (float)(sky.height)/screenSize.y)), new Size(posStep, posStep)) ;
 					}
 					creature[creatureID].setPos(Pos) ;
-					if (creature[creatureID].getName().equals("Dragï¿½o") | creature[creatureID].getName().equals("Dragon"))
+					if (creature[creatureID].getName().equals("Dragão") | creature[creatureID].getName().equals("Dragon"))
 					{
 						creature[creatureID].getPersonalAtt().setPos(new Point((int)(0.5*screenSize.x), (int)(0.5*screenSize.y))) ;
 					}
@@ -432,123 +416,13 @@ public class Game extends JPanel implements ActionListener
 		}
 		return creature ;
     }
-    /*public Spells[] InitializeSpells(String Language)
-    {
-    	int NumberOfAllSkills = 178 ;
-    	int NumberOfSkills = Player.NumberOfSkillsPerJob[player.getJob()] ;
-    	int NumberOfAtt = 14 ;
-    	int NumberOfBuffs = 12 ;
-		Spells[] skills = new Spells[NumberOfSkills] ;
-		String[][] SkillsInput = UtilG.ReadTextFile(CSVPath + "Skills.csv", NumberOfAllSkills) ;	
-		String[][] SkillsBuffsInput = UtilG.ReadTextFile(CSVPath + "SkillsBuffs.csv", NumberOfAllSkills) ;
-		String[][] SkillsNerfsInput = UtilG.ReadTextFile(CSVPath + "SkillsNerfs.csv", NumberOfAllSkills) ;
-		float[][][] SkillBuffs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
-		float[][][] SkillNerfs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
-		String[][] SkillsInfo = new String[NumberOfSkills][2] ;
-		for (int i = 0 ; i <= NumberOfSkills - 1 ; i += 1)
-		{
-			int ID = i + Player.CumNumberOfSkillsPerJob[player.getJob()] ;
-			int BuffCont = 0, NerfCont = 0 ;
-			for (int j = 0 ; j <= NumberOfAtt - 1 ; j += 1)
-			{
-				if (j == 11 | j == 12)
-				{
-					for (int k = 0 ; k <= NumberOfBuffs - 1 ; k += 1)
-					{
-						SkillBuffs[i][j][k] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 3]) ;
-						SkillNerfs[i][j][k] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 3]) ;
-						NerfCont += 1 ;
-						BuffCont += 1 ;
-					}
-				}
-				else
-				{
-					SkillBuffs[i][j][0] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 3]) ;
-					SkillBuffs[i][j][1] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 4]) ;
-					SkillBuffs[i][j][2] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 5]) ;
-					SkillNerfs[i][j][0] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 3]) ;
-					SkillNerfs[i][j][1] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 4]) ;
-					SkillNerfs[i][j][2] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 5]) ;
-					NerfCont += 3 ;
-					BuffCont += 3 ;
-				}
-			}
-			if (Language.equals("P"))
-			{
-				SkillsInfo[i] = new String[] {SkillsInput[ID][42], SkillsInput[ID][43]} ;
-			}
-			else if (Language.equals("E"))
-			{
-				SkillsInfo[i] = new String[] {SkillsInput[ID][44], SkillsInput[ID][45]} ;
-			}
-			String Name = SkillsInput[ID][4] ;
-			int MaxLevel = Integer.parseInt(SkillsInput[ID][5]) ;
-			float MpCost = Float.parseFloat(SkillsInput[ID][6]) ;
-			String Type = SkillsInput[ID][7] ;
-			int[][] PreRequisites = new int[][] {{Integer.parseInt(SkillsInput[ID][8]), Integer.parseInt(SkillsInput[ID][9])}, {Integer.parseInt(SkillsInput[ID][10]), Integer.parseInt(SkillsInput[ID][11])}, {Integer.parseInt(SkillsInput[ID][12]), Integer.parseInt(SkillsInput[ID][13])}} ;
-			int Cooldown = Integer.parseInt(SkillsInput[ID][14]) ;
-			int Duration = Integer.parseInt(SkillsInput[ID][15]) ;
-			float[] Atk = new float[] {Float.parseFloat(SkillsInput[ID][16]), Float.parseFloat(SkillsInput[ID][17])} ;
-			float[] Def = new float[] {Float.parseFloat(SkillsInput[ID][18]), Float.parseFloat(SkillsInput[ID][19])} ;
-			float[] Dex = new float[] {Float.parseFloat(SkillsInput[ID][20]), Float.parseFloat(SkillsInput[ID][21])} ;
-			float[] Agi = new float[] {Float.parseFloat(SkillsInput[ID][22]), Float.parseFloat(SkillsInput[ID][23])} ;
-			float[] AtkCrit = new float[] {Float.parseFloat(SkillsInput[ID][24])} ;
-			float[] DefCrit = new float[] {Float.parseFloat(SkillsInput[ID][25])} ;
-			float[] Stun = new float[] {Float.parseFloat(SkillsInput[ID][26]), Float.parseFloat(SkillsInput[ID][27]), Float.parseFloat(SkillsInput[ID][28])} ;
-			float[] Block = new float[] {Float.parseFloat(SkillsInput[ID][29]), Float.parseFloat(SkillsInput[ID][30]), Float.parseFloat(SkillsInput[ID][31])} ;
-			float[] Blood = new float[] {Float.parseFloat(SkillsInput[ID][32]), Float.parseFloat(SkillsInput[ID][33]), Float.parseFloat(SkillsInput[ID][34])} ;
-			float[] Poison = new float[] {Float.parseFloat(SkillsInput[ID][35]), Float.parseFloat(SkillsInput[ID][36]), Float.parseFloat(SkillsInput[ID][37])} ;
-			float[] Silence = new float[] {Float.parseFloat(SkillsInput[ID][38]), Float.parseFloat(SkillsInput[ID][39]), Float.parseFloat(SkillsInput[ID][40])} ;
-			String Elem = SkillsInput[ID][41] ;
-			skills[i] = new Spells(Name, MaxLevel, MpCost, Type, PreRequisites, Cooldown, Duration, SkillBuffs[i], SkillNerfs[i], Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, SkillsInfo[i]) ;	
-		}
-		//System.out.println(Arrays.toString(ActivePlayerSkills)) ;
-		return skills ;
-    }*/
     
-    /*public Items[] InitializeItems(int DifficultLevel, String Language)
-    {
-    	Items[] items = new Items[Items.NumberOfAllItems] ;
-		String[][] Input = Utg.ReadTextFile(CSVPath + "Items.csv", Items.NumberOfAllItems) ;
-		String[] Name = new String[Items.NumberOfAllItems] ;
-		String[] Description = new String[Items.NumberOfAllItems] ;
-		for (int i = 0 ; i <= Items.NumberOfAllItems - 1 ; ++i)
-		{
-			if (Language.equals("P"))
-			{
-				Name[i] = Input[i][2] ;
-				Description[i] = Input[i][5] ;
-			}
-			if (Language.equals("E"))
-			{
-				Name[i] = Input[i][1] ;
-				Description[i] = Input[i][6] ;
-			}
-			Image image = new ImageIcon(ImagesPath + "items.png").getImage() ;
-			int Price = (int)(Integer.parseInt(Input[i][3]) * Player.DifficultMult[DifficultLevel]) ;
-			float DropChance = Integer.parseInt(Input[i][4]) / Player.DifficultMult[DifficultLevel] ;
-			float[][] Buffs = new float[14][13] ;
-			String Type = Input[i][7] ;
-			items[i] = new Items(i, Name[i], image, Price, DropChance, Buffs, Description[i], Type) ;
-		}
-		
-
-		Items.LongestName = "";
-		for (int i = 0 ; i <= items.length - 1 ; i += 1)
-		{
-			if (Items.LongestName.length() < items[i].getName().length())
-			{
-				Items.LongestName = items[i].getName() ;
-			}
-		}
-		
-		return items ;
-    }*/
     public Quests[] InitializeQuests(String Language, int PlayerJob)
     {
-		Quests[] quest = new Quests[Quests.NumberOfQuests] ;
-		String[][] Input = UtilG.ReadTextFile(CSVPath + "Quests.csv", Quests.NumberOfQuests) ;
-		for (int i = 0 ; i <= Quests.NumberOfQuests - 1 ; i += 1)
+		int numberOfQuests = Quests.CalcNumberOfQuests(CSVPath) ;
+		Quests[] quest = new Quests[numberOfQuests] ;
+		String[][] Input = UtilG.ReadTextFile(CSVPath + "Quests.csv", numberOfQuests) ;
+		for (int i = 0 ; i <= numberOfQuests - 1 ; i += 1)
 		{
 			int id = Integer.parseInt(Input[i][0]) ;
 			quest[i] = new Quests(Integer.parseInt(Input[i][0])) ;
@@ -557,6 +431,7 @@ public class Game extends JPanel implements ActionListener
 		
 		return quest ;
     }
+   
     public Icon[] InitializeIcons(Size screenSize)
     {
 		/* Icons' position */
@@ -619,13 +494,13 @@ public class Game extends JPanel implements ActionListener
 		
     	return plusSignIcon ;
     }
- 	public void MainInitialization()
+ 	
+    public void MainInitialization()
 	{
  		DayDuration = 120000 ;
     	sky = new Sky() ;
     	screen.setBorders(new int[] {0, sky.height, screen.getSize().x, screen.getSize().y});
-    	screen.setMapCenter() ;    	
-		Quests.CalcNumberOfQuests(CSVPath) ;		
+    	screen.setMapCenter() ;    			
     	Maps.InitializeStaticVars(ImagesPath) ;
     	BattleActions.InitializeStaticVars(CSVPath) ;
 		npc = InitializeNPCs(GameLanguage, screen.getSize()) ;
@@ -633,7 +508,7 @@ public class Game extends JPanel implements ActionListener
 		creatureTypes = InitializeCreatureTypes(GameLanguage, 1) ;
 		maps = InitializeMaps(screen, creatureTypes, sky) ;
  		//player = InitializePlayer(PlayerInitialName, PlayerInitialJob, GameLanguage, PlayerInitialSex) ;
-		pet = InitializePet() ;
+		//pet = InitializePet() ;
 		creature = InitializeCreatures(creatureTypes, screen.getSize(), maps) ;
 		for (int map = 0 ; map <= maps.length - 1 ; map += 1)
 		{
@@ -649,7 +524,7 @@ public class Game extends JPanel implements ActionListener
   	
 	public void Opening()
 	{
-		int openingStatus = opening.Run(player.allText.get("* Novo jogo *"), player.action, MousePos, music, ani, DF) ;
+		int openingStatus = opening.Run(player.allText.get("* Novo jogo *"), player.getPA().getCurrentAction(), mousePos, music, ani, DF) ;
 		if (openingStatus == 1)
 		{
 			LoadingGameIsOn = true ;
@@ -660,11 +535,6 @@ public class Game extends JPanel implements ActionListener
 		{
 			OpeningIsOn = false ;
 		}
-	}
-	
-	public void runLoading()
-	{
-		loading.Run(DF) ;
 	}
 	
 	public void Tutorial(Player player, int[] meet)
@@ -832,9 +702,9 @@ public class Game extends JPanel implements ActionListener
 		//player.Customization(Player.ActionKeys, Player.MoveKeys) ;
 		//player.setSize(new int[] {player.getPersonalAtt()()[0].getWidth(mainpanel), player.getPersonalAtt().getimage()[0].getHeight(mainpanel)}) ;
 		int SelectedOption = player.SelectedOption ;
-		int[] CurrentColorValues = new int[] {player.getColors()[0].getRed(), player.getColors()[0].getGreen(), player.getColors()[0].getBlue()} ;
+		int[] CurrentColorValues = new int[] {player.getColor().getRed(), player.getColor().getGreen(), player.getColor().getBlue()} ;
 		DF.DrawCustomizationMenu(player, SelectedOption, CurrentColorValues) ;	
-		if (player.action.equals("Enter"))
+		if (player.getPA().getCurrentAction().equals("Enter"))
 		{
 			CustomizationIsOn = false ;
 			RunGame = true ;
@@ -849,7 +719,7 @@ public class Game extends JPanel implements ActionListener
 	{
 		sky.incDayTime();
 		player.IncActionCounters() ;
-		player.SupSkillCounters(creature, player.CreatureInBattle) ;
+		player.SupSkillCounters(creature, player.opponent) ;
 		if (pet != null)
 		{
 			pet.IncActionCounters() ;
@@ -870,7 +740,7 @@ public class Game extends JPanel implements ActionListener
 				int ID = player.currentMap(maps).getCreatureIDs()[c] ;
 				creature[ID].IncBattleActionCounters() ;
 			}*/
-			creature[player.CreatureInBattle].IncBattleActionCounters() ;
+			player.opponent.IncBattleActionCounters() ;
 		}
 		if (!player.getMap().IsACity())
 		{
@@ -924,46 +794,47 @@ public class Game extends JPanel implements ActionListener
 	
 	public void RunGame(DrawFunctions DF)
 	{	
+		// increment and activate counters
+		// check for the Konami code
 		IncrementCounters() ;
 		ActivateCounters() ;
 		if (UtilS.KonamiCodeActivated(player.getCombo()))
 		{
 			KonamiCode() ;
 		}
-		DF.DrawFullMap(player, pet, npc, buildings, sky, SideBarIcons, MousePos) ;
-		//if (TutorialIsOn)
-		//{
-		//	Tutorial(player, meet) ;
-		//}
 		
-		// Creatures act
+		// draw the map (cities, forest, etc.)
+		DF.DrawFullMap(pet, player.getPos(), player.allText.get("* Mensagem das placas *"), player.getMap(), npc, buildings, sky, SideBarIcons, mousePos) ;	// TODO essa função pode sair
+		player.DrawSideBar(pet, mousePos, SideBarIcons, DF.getDrawPrimitives()) ;
+		
+		// creatures act
 		if (player.getMap().hasCreatures())
 		{
-			for (int c = 0 ; c <= player.getMap().getCreatures().length - 1 ; c += 1)
+			Creatures[] creaturesInMap = player.getMap().getCreatures() ;
+			for (int c = 0 ; c <= creaturesInMap.length - 1 ; c += 1)
 			{				
-				player.getMap().getCreatures()[c].act(player.getPos(), player.getMap()) ;
-				player.getMap().getCreatures()[c].display() ;
+				creaturesInMap[c].act(player.getPos(), player.getMap()) ;
+				creaturesInMap[c].display() ;
 			}
 		}
-		// Player acts
-		player.act(pet, maps, MousePos, SideBarIcons, ani, DF) ;
-		if (player.ActionIsAMove(player.action) | 0 < player.getPersonalAtt().getCountmove())	// countmove becomes greater than 0 when the player moves, then starts to increase by 1 and returns to 0 when it reaches 20
-		{
-			player.Move(pet, music.getMusicClip(), player.getSettings().getMusicIsOn(), ani) ;
-		}
 		
-		// Draw player stuff
-		player.DrawAttributes(DF) ;
+		// player acts
+		player.act(pet, maps, mousePos, SideBarIcons, ani, DF) ;
+		if (player.ActionIsAMove(player.getPA().getCurrentAction()) | 0 < player.getPersonalAtt().getCountmove())	// countmove becomes greater than 0 when the player moves, then starts to increase by 1 and returns to 0 when it reaches 20
+		{
+			player.move(pet, music.getMusicClip(), ani) ;
+		}
+		player.drawAttributes(DF.getDrawPrimitives()) ;
 		player.display(player.getPos(), new float[] {1, 1}, player.getDir(), player.getSettings().getShowPlayerRange(), DF.getDrawPrimitives()) ;
-		if (0 < player.getEquips()[0])	// If the player is equipped
+		if (player.weaponIsEquipped())	// if the player is equipped with a weapon
 		{
 			DF.DrawPlayerWeapon(player, player.getPos(), new float[] {1, 1}) ;
 		}
 		
-		// Draw pet stuff
+		// pet acts
 		if (pet != null)
 		{
-			if (0 < pet.getLife()[0])		// If the pet is alive
+			if (0 < pet.getLife()[0])		// if the pet is alive
 			{
 				pet.setCombo(UtilS.RecordCombo(pet.getCombo(), pet.action, 1)) ;
 				pet.Move(player, maps) ;
@@ -976,23 +847,26 @@ public class Game extends JPanel implements ActionListener
 			}
 		}
 		
-		
-		player.ClosestCreature = UtilS.ClosestCreatureInRange(player, creature, maps) ;	// find the closest creature to the player
+		// find the closest creature to the player
+		if (player.getMap().hasCreatures())
+		{
+			player.closestCreature = UtilS.ClosestCreatureInRange(player, creature, maps) ;
+		}
 		
 		// check if the player met something
 		if (!player.isInBattle())
 		{
-			int[] meet = player.meet(creature, npc, player.getMap(), player.CreatureInBattle, ani) ;	// meet[0] is the encounter and meet[1] is its id
+			int[] meet = player.meet(creature, npc, ani) ;	// meet[0] is the encounter and meet[1] is its id
 			if (meet[0] == 0 & 0 <= meet[1])	// meet with creature
 			{
 				creature[meet[1]].setFollow(true) ;
 				player.setCurrentAction("Fighting") ;	
-				player.CreatureInBattle = meet[1] ;
+				player.opponent = creature[meet[1]] ;
 				player.AddCreatureToBestiary(meet[1]) ;
 			}
 			if (meet[0] == 1 & 0 <= meet[1])	// meet with npc
 			{
-				npc[meet[1]].Contact(player, pet, creatureTypes, creature, player.getSpell(), maps, quest, MousePos, TutorialIsOn, ani, DF) ;				
+				npc[meet[1]].Contact(player, pet, creature, maps, quest, mousePos, TutorialIsOn, ani, DF) ;				
 			}
 			if (meet[0] == 2 & 0 <= meet[1])	// meet with collectibles
 			{
@@ -1007,7 +881,7 @@ public class Game extends JPanel implements ActionListener
 		// if the player is in battle, run battle
 		if (player.isInBattle() & !ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(16))	// only enter battle if the animations for win (12), level up (13), pet level up (14), and pterodactile (16) are off
 		{
-			bat.RunBattle(player, pet, creature[player.CreatureInBattle], player.getSpell(), pet.getSpells(), quest, MousePos, DF) ;
+			bat.RunBattle(player, pet, player.opponent, quest, mousePos, DF) ;
 		}
 		
 		// check if the player and the pet have leveled up
@@ -1015,7 +889,7 @@ public class Game extends JPanel implements ActionListener
 		{
 			float[] AttributesIncrease = UtilS.LevelUpIncAtt(player.getAttIncrease()[player.getProJob()], player.getChanceIncrease()[player.getProJob()], player.getLevel()) ;
 			player.LevelUp(AttributesIncrease) ;
-			ani.SetAniVars(13, new Object[] {150, AttributesIncrease, player.getLevel(), player.getColors()[0]}) ;
+			ani.SetAniVars(13, new Object[] {150, AttributesIncrease, player.getLevel(), player.getColor()}) ;
 			ani.StartAni(13) ;
 		}
 		if (pet != null)
@@ -1029,9 +903,8 @@ public class Game extends JPanel implements ActionListener
 			}
 		}
 		
-		// Draw player windows
-		//ShowPlayerWindows() ;
-		player.ShowWindows(pet, creature, creatureTypes, quest, maps, plusSignIcon, bat, music.getMusicClip(), MousePos, DF) ;
+		// show the active player windows
+		player.ShowWindows(pet, creature, creatureTypes, quest, maps, plusSignIcon, bat, music.getMusicClip(), mousePos, DF) ;
 		
 		// if tutorial is on, draw tutorial animations
 		if (TutorialIsOn)
@@ -1059,15 +932,16 @@ public class Game extends JPanel implements ActionListener
 	public void paintComponent(Graphics g)
 	{
         super.paintComponent(g) ;
-		MousePos = UtilG.GetMousePos(mainpanel) ;
+		mousePos = UtilG.GetMousePos(mainpanel) ;
         DF = new DrawFunctions(g) ;
         DF.InitializeVariables(ImagesPath) ;
 		
     	if (OpeningIsOn)
 		{
     		//opening.Animation(DF) ;
-    		
         	
+    		// player.Load("./Save1.json", pet, maps) ;
+    		
     		// Quick start
     		try {Potion.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the potions
     		try {Alchemy.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the alchemy items
@@ -1188,7 +1062,7 @@ public class Game extends JPanel implements ActionListener
         	//player.AttWindow(AllText, AllTextCat, items, plusSignIcon, screen.getSize(), player.getAttIncrease()[player.getProJob()], MousePos, CoinIcon, DF.getDrawPrimitives()) ;			
     	}
 		ani.RunAnimation(DF) ;	// run all the active animations
-    	player.action = "" ;
+		player.setCurrentAction("") ;
         Toolkit.getDefaultToolkit().sync() ;
         g.dispose() ;  
     }
@@ -1201,28 +1075,30 @@ public class Game extends JPanel implements ActionListener
 	        int key = e.getKeyCode() ;
             if (key == KeyEvent.VK_LEFT | key == KeyEvent.VK_UP | key == KeyEvent.VK_DOWN | key == KeyEvent.VK_RIGHT) 
             {
-            	if (CustomizationIsOn | player.getActions()[0][2] == 1)	// If the player can move
+            	if (CustomizationIsOn | player.getActions()[0][2] == 1)	// If the player can act
     			{
-                	player.action = KeyEvent.getKeyText(key) ;
-                	//player.setActions(new int[][] {{0, player.getActions()[0][1], 0}, {player.getActions()[1][0], player.getActions()[1][1], player.getActions()[1][2]}, {player.getActions()[2][0], player.getActions()[2][1], player.getActions()[2][2]}}) ;
-    			}
-            } else if (key == KeyEvent.VK_ENTER | key == KeyEvent.VK_ESCAPE | key == KeyEvent.VK_BACK_SPACE | key == KeyEvent.VK_F1 | key == KeyEvent.VK_F2 | key == KeyEvent.VK_F3 | key == KeyEvent.VK_F4 | key == KeyEvent.VK_F5 | key == KeyEvent.VK_F6 | key == KeyEvent.VK_F7 | key == KeyEvent.VK_F8 | key == KeyEvent.VK_F9 | key == KeyEvent.VK_F10 | key == KeyEvent.VK_F11 | key == KeyEvent.VK_F12 | key == KeyEvent.VK_A | key == KeyEvent.VK_B | key == KeyEvent.VK_C | key == KeyEvent.VK_D | key == KeyEvent.VK_E | key == KeyEvent.VK_F | key == KeyEvent.VK_G | key == KeyEvent.VK_H | key == KeyEvent.VK_I | key == KeyEvent.VK_J | key == KeyEvent.VK_K | key == KeyEvent.VK_L | key == KeyEvent.VK_M | key == KeyEvent.VK_N | key == KeyEvent.VK_O | key == KeyEvent.VK_P | key == KeyEvent.VK_Q | key == KeyEvent.VK_R | key == KeyEvent.VK_S | key == KeyEvent.VK_T | key == KeyEvent.VK_U | key == KeyEvent.VK_V | key == KeyEvent.VK_W | key == KeyEvent.VK_X | key == KeyEvent.VK_Y | key == KeyEvent.VK_Z | key == KeyEvent.VK_0 | key == KeyEvent.VK_1 | key == KeyEvent.VK_2 | key == KeyEvent.VK_3 | key == KeyEvent.VK_4 | key == KeyEvent.VK_5 | key == KeyEvent.VK_6 | key == KeyEvent.VK_7 | key == KeyEvent.VK_8 | key == KeyEvent.VK_9) 
+            		player.setCurrentAction(KeyEvent.getKeyText(key)) ;
+                }
+            }
+            else if (key == KeyEvent.VK_ENTER | key == KeyEvent.VK_ESCAPE | key == KeyEvent.VK_BACK_SPACE | key == KeyEvent.VK_F1 | key == KeyEvent.VK_F2 | key == KeyEvent.VK_F3 | key == KeyEvent.VK_F4 | key == KeyEvent.VK_F5 | key == KeyEvent.VK_F6 | key == KeyEvent.VK_F7 | key == KeyEvent.VK_F8 | key == KeyEvent.VK_F9 | key == KeyEvent.VK_F10 | key == KeyEvent.VK_F11 | key == KeyEvent.VK_F12 | key == KeyEvent.VK_A | key == KeyEvent.VK_B | key == KeyEvent.VK_C | key == KeyEvent.VK_D | key == KeyEvent.VK_E | key == KeyEvent.VK_F | key == KeyEvent.VK_G | key == KeyEvent.VK_H | key == KeyEvent.VK_I | key == KeyEvent.VK_J | key == KeyEvent.VK_K | key == KeyEvent.VK_L | key == KeyEvent.VK_M | key == KeyEvent.VK_N | key == KeyEvent.VK_O | key == KeyEvent.VK_P | key == KeyEvent.VK_Q | key == KeyEvent.VK_R | key == KeyEvent.VK_S | key == KeyEvent.VK_T | key == KeyEvent.VK_U | key == KeyEvent.VK_V | key == KeyEvent.VK_W | key == KeyEvent.VK_X | key == KeyEvent.VK_Y | key == KeyEvent.VK_Z | key == KeyEvent.VK_0 | key == KeyEvent.VK_1 | key == KeyEvent.VK_2 | key == KeyEvent.VK_3 | key == KeyEvent.VK_4 | key == KeyEvent.VK_5 | key == KeyEvent.VK_6 | key == KeyEvent.VK_7 | key == KeyEvent.VK_8 | key == KeyEvent.VK_9) 
             {
-            	player.action = KeyEvent.getKeyText(key) ;
+        		player.setCurrentAction(KeyEvent.getKeyText(key)) ;
             }
             else if (key == KeyEvent.VK_SPACE)
             {
-            	player.action = "Space" ;
-            } else if (key == KeyEvent.VK_NUMPAD0 | key == KeyEvent.VK_NUMPAD1 | key == KeyEvent.VK_NUMPAD2 | key == KeyEvent.VK_NUMPAD3 | key == KeyEvent.VK_NUMPAD4 | key == KeyEvent.VK_NUMPAD5 | key == KeyEvent.VK_NUMPAD6 | key == KeyEvent.VK_NUMPAD7 | key == KeyEvent.VK_NUMPAD8 | key == KeyEvent.VK_NUMPAD9)
+        		player.setCurrentAction(KeyEvent.getKeyText(key)) ;
+            }
+            else if (key == KeyEvent.VK_NUMPAD0 | key == KeyEvent.VK_NUMPAD1 | key == KeyEvent.VK_NUMPAD2 | key == KeyEvent.VK_NUMPAD3 | key == KeyEvent.VK_NUMPAD4 | key == KeyEvent.VK_NUMPAD5 | key == KeyEvent.VK_NUMPAD6 | key == KeyEvent.VK_NUMPAD7 | key == KeyEvent.VK_NUMPAD8 | key == KeyEvent.VK_NUMPAD9)
             {
-            	player.action = String.valueOf(key - 96) ;
+        		player.setCurrentAction(String.valueOf(key - 96)) ;
             }
             else if (key == KeyEvent.VK_PAUSE) 
             {
                 if (timer.isRunning()) 
                 {
                    timer.stop() ;
-                } else 
+                }
+                else 
                 {
                    timer.start() ;
                 }
@@ -1233,7 +1109,7 @@ public class Game extends JPanel implements ActionListener
 	    @Override
 	    public void keyReleased(KeyEvent e) 
 	    {
-	        player.action = "" ;
+    		player.setCurrentAction("") ;
 	    }
 	}
 
@@ -1244,10 +1120,10 @@ public class Game extends JPanel implements ActionListener
 		{
 			if (evt.getButton() == 1)	// Left click
 			{
-				player.action = "MouseLeftClick" ;
+        		player.setCurrentAction("MouseLeftClick") ;
 				for (int i = 0 ; i <= OPbuttons.length - 1 ; i += 1)
 				{
-					if (OPbuttons[i].ishovered(MousePos) & OPbuttons[i].isActive)
+					if (OPbuttons[i].ishovered(mousePos) & OPbuttons[i].isActive)
 					{
 						OPbuttons[i].startaction() ;
 						if (OPbuttons[i].getid() == 0 | OPbuttons[i].getid() == 1)
@@ -1259,14 +1135,14 @@ public class Game extends JPanel implements ActionListener
 						}
 						if (2 <= OPbuttons[i].getid() & OPbuttons[i].getid() <= 13)
 						{
-							player.action = (String) OPbuttons[i].startaction() ;
+			        		player.setCurrentAction((String) OPbuttons[i].startaction()) ;
 						}
 					}
 				}
 			}
 			if (evt.getButton() == 3)	// Right click
 			{
-				player.action = "MouseRightClick" ;
+        		player.setCurrentAction("MouseRightClick") ;
 			}
 			//repaint() ;
 		}
@@ -1291,7 +1167,7 @@ public class Game extends JPanel implements ActionListener
 		@Override
 		public void mouseReleased(MouseEvent e) 
 		{
-			player.action = "" ;
+    		player.setCurrentAction("") ;
 		}		
 	}
 	
@@ -1300,4 +1176,138 @@ public class Game extends JPanel implements ActionListener
 	{
 		repaint() ;
 	}
+
+	/*public void InitializeCreaturesInMap()
+    {		
+		// Setting creatures in map
+		for (int map = 0 ; map <= maps.length - 1 ; map += 1)
+		{
+			if (maps[map].getCreatureTypes() != null)
+			{
+				Creatures[] creaturesInMap = null ;
+				for (int c = 0 ; c <= maps[map].getCreatureTypes().length - 1 ; c += 1)
+				{
+					CreatureTypes creatureType = maps[map].getCreatureTypes()[c];
+					if (-1 < creatureType.getID())
+					{
+						Creatures creature = new Creatures(creatureType) ;
+						creaturesInMap = UtilG.AddVectorElem(creaturesInMap, creature) ;
+						maps[map].setCreatures(creaturesInMap) ;
+					}
+				}
+			}
+		}
+    }*/
+	/*public Spells[] InitializeSpells(String Language)
+    {
+    	int NumberOfAllSkills = 178 ;
+    	int NumberOfSkills = Player.NumberOfSkillsPerJob[player.getJob()] ;
+    	int NumberOfAtt = 14 ;
+    	int NumberOfBuffs = 12 ;
+		Spells[] skills = new Spells[NumberOfSkills] ;
+		String[][] SkillsInput = UtilG.ReadTextFile(CSVPath + "Skills.csv", NumberOfAllSkills) ;	
+		String[][] SkillsBuffsInput = UtilG.ReadTextFile(CSVPath + "SkillsBuffs.csv", NumberOfAllSkills) ;
+		String[][] SkillsNerfsInput = UtilG.ReadTextFile(CSVPath + "SkillsNerfs.csv", NumberOfAllSkills) ;
+		float[][][] SkillBuffs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+		float[][][] SkillNerfs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+		String[][] SkillsInfo = new String[NumberOfSkills][2] ;
+		for (int i = 0 ; i <= NumberOfSkills - 1 ; i += 1)
+		{
+			int ID = i + Player.CumNumberOfSkillsPerJob[player.getJob()] ;
+			int BuffCont = 0, NerfCont = 0 ;
+			for (int j = 0 ; j <= NumberOfAtt - 1 ; j += 1)
+			{
+				if (j == 11 | j == 12)
+				{
+					for (int k = 0 ; k <= NumberOfBuffs - 1 ; k += 1)
+					{
+						SkillBuffs[i][j][k] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 3]) ;
+						SkillNerfs[i][j][k] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 3]) ;
+						NerfCont += 1 ;
+						BuffCont += 1 ;
+					}
+				}
+				else
+				{
+					SkillBuffs[i][j][0] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 3]) ;
+					SkillBuffs[i][j][1] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 4]) ;
+					SkillBuffs[i][j][2] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 5]) ;
+					SkillNerfs[i][j][0] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 3]) ;
+					SkillNerfs[i][j][1] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 4]) ;
+					SkillNerfs[i][j][2] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 5]) ;
+					NerfCont += 3 ;
+					BuffCont += 3 ;
+				}
+			}
+			if (Language.equals("P"))
+			{
+				SkillsInfo[i] = new String[] {SkillsInput[ID][42], SkillsInput[ID][43]} ;
+			}
+			else if (Language.equals("E"))
+			{
+				SkillsInfo[i] = new String[] {SkillsInput[ID][44], SkillsInput[ID][45]} ;
+			}
+			String Name = SkillsInput[ID][4] ;
+			int MaxLevel = Integer.parseInt(SkillsInput[ID][5]) ;
+			float MpCost = Float.parseFloat(SkillsInput[ID][6]) ;
+			String Type = SkillsInput[ID][7] ;
+			int[][] PreRequisites = new int[][] {{Integer.parseInt(SkillsInput[ID][8]), Integer.parseInt(SkillsInput[ID][9])}, {Integer.parseInt(SkillsInput[ID][10]), Integer.parseInt(SkillsInput[ID][11])}, {Integer.parseInt(SkillsInput[ID][12]), Integer.parseInt(SkillsInput[ID][13])}} ;
+			int Cooldown = Integer.parseInt(SkillsInput[ID][14]) ;
+			int Duration = Integer.parseInt(SkillsInput[ID][15]) ;
+			float[] Atk = new float[] {Float.parseFloat(SkillsInput[ID][16]), Float.parseFloat(SkillsInput[ID][17])} ;
+			float[] Def = new float[] {Float.parseFloat(SkillsInput[ID][18]), Float.parseFloat(SkillsInput[ID][19])} ;
+			float[] Dex = new float[] {Float.parseFloat(SkillsInput[ID][20]), Float.parseFloat(SkillsInput[ID][21])} ;
+			float[] Agi = new float[] {Float.parseFloat(SkillsInput[ID][22]), Float.parseFloat(SkillsInput[ID][23])} ;
+			float[] AtkCrit = new float[] {Float.parseFloat(SkillsInput[ID][24])} ;
+			float[] DefCrit = new float[] {Float.parseFloat(SkillsInput[ID][25])} ;
+			float[] Stun = new float[] {Float.parseFloat(SkillsInput[ID][26]), Float.parseFloat(SkillsInput[ID][27]), Float.parseFloat(SkillsInput[ID][28])} ;
+			float[] Block = new float[] {Float.parseFloat(SkillsInput[ID][29]), Float.parseFloat(SkillsInput[ID][30]), Float.parseFloat(SkillsInput[ID][31])} ;
+			float[] Blood = new float[] {Float.parseFloat(SkillsInput[ID][32]), Float.parseFloat(SkillsInput[ID][33]), Float.parseFloat(SkillsInput[ID][34])} ;
+			float[] Poison = new float[] {Float.parseFloat(SkillsInput[ID][35]), Float.parseFloat(SkillsInput[ID][36]), Float.parseFloat(SkillsInput[ID][37])} ;
+			float[] Silence = new float[] {Float.parseFloat(SkillsInput[ID][38]), Float.parseFloat(SkillsInput[ID][39]), Float.parseFloat(SkillsInput[ID][40])} ;
+			String Elem = SkillsInput[ID][41] ;
+			skills[i] = new Spells(Name, MaxLevel, MpCost, Type, PreRequisites, Cooldown, Duration, SkillBuffs[i], SkillNerfs[i], Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, SkillsInfo[i]) ;	
+		}
+		//System.out.println(Arrays.toString(ActivePlayerSkills)) ;
+		return skills ;
+    }*/
+    
+    /*public Items[] InitializeItems(int DifficultLevel, String Language)
+    {
+    	Items[] items = new Items[Items.NumberOfAllItems] ;
+		String[][] Input = Utg.ReadTextFile(CSVPath + "Items.csv", Items.NumberOfAllItems) ;
+		String[] Name = new String[Items.NumberOfAllItems] ;
+		String[] Description = new String[Items.NumberOfAllItems] ;
+		for (int i = 0 ; i <= Items.NumberOfAllItems - 1 ; ++i)
+		{
+			if (Language.equals("P"))
+			{
+				Name[i] = Input[i][2] ;
+				Description[i] = Input[i][5] ;
+			}
+			if (Language.equals("E"))
+			{
+				Name[i] = Input[i][1] ;
+				Description[i] = Input[i][6] ;
+			}
+			Image image = new ImageIcon(ImagesPath + "items.png").getImage() ;
+			int Price = (int)(Integer.parseInt(Input[i][3]) * Player.DifficultMult[DifficultLevel]) ;
+			float DropChance = Integer.parseInt(Input[i][4]) / Player.DifficultMult[DifficultLevel] ;
+			float[][] Buffs = new float[14][13] ;
+			String Type = Input[i][7] ;
+			items[i] = new Items(i, Name[i], image, Price, DropChance, Buffs, Description[i], Type) ;
+		}
+		
+
+		Items.LongestName = "";
+		for (int i = 0 ; i <= items.length - 1 ; i += 1)
+		{
+			if (Items.LongestName.length() < items[i].getName().length())
+			{
+				Items.LongestName = items[i].getName() ;
+			}
+		}
+		
+		return items ;
+    }*/
 }

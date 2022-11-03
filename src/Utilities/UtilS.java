@@ -18,6 +18,7 @@ import GameComponents.Quests ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Graphics.DrawPrimitives ;
+import Items.Equip;
 import LiveBeings.Creatures;
 import LiveBeings.Pet;
 import LiveBeings.Player;
@@ -93,9 +94,9 @@ public class UtilS
 		return TypedText ;
 	}
 	
-	public static boolean SetIsFormed(int[] EquipID)
+	public static boolean SetIsFormed(Equip[] EquipID)
 	{
-		if ((EquipID[0] + 1) == EquipID[1] & (EquipID[1] + 1) == EquipID[2])
+		if ((EquipID[0].getId() + 1) == EquipID[1].getId() & (EquipID[1].getId() + 1) == EquipID[2].getId())
 		{
 			return true ;
 		}
@@ -153,223 +154,6 @@ public class UtilS
 		}
 		return false ;
 	}
-	
- 	/*public static String[][] GroundTypes(int map, String name, int Continent, int step, int SkyHeight, Buildings[] building, int[] screenDim)
- 	{
- 		String[][] GroundType = new String[screenDim[0] + 1][screenDim[1] + 1] ;
- 		
-		for (int j = 0 ; j <= GroundType.length - 1 ; ++j)
-		{
-			Arrays.fill(GroundType[j], "free") ;
-		}
-		float Skyratio = SkyHeight / (float) screenDim[1] ;
-		float MinX = (float)(0.1), MinY = (float)(Skyratio + 0.1) ; 
-		float RangeX = (float)(0.8), RangeY = (float)(1 - MinY) ;
-		//int[] BuildingsInCity = Uts.BuildingsInCity(building, map) ;
- 		if (name.contains("City"))
-		{
-			float[] Scale = new float[] {1, 1} ;
-			int[][] FurniturePos = new int[][] {{2*step, 2*step}, {0, 2*step}, {0, 2*step}, {0, 1*step}, {0, 0}, {0, 0}} ;
-			for (int b = 0 ; b <= 4 - 1 ; b += 1)	// Number of buildings
-			{
-				int BuildingID = 5*b + map ;
-				int[] BuildingPos = new int[] {300, 300} ;
-				float[] BuildingSize = new float[] {building[BuildingsInCity.length + b].Images[0].getWidth(null), building[BuildingsInCity.length + b].Images[0].getHeight(null)} ;
-				int[] PosInSteps = new int[] {(BuildingPos[0]/step + 1)*step, BuildingPos[1]/step*step} ;
-				int[] SizeInSteps = new int[] {(int) ((Scale[0]*BuildingSize[0])/step - 1)*step, (int)((Scale[1]*BuildingSize[1])/step - 1)*step} ;
-				int DoorPos = (int)(0.8*SizeInSteps[0])/step*step ;
-				int DoorL = step/2 ;
-				if (b == 0)	// Hospital
-				{
-					DoorPos += -step ;
-					DoorL = 2*step ;
-				}
-				if (b == 3)	// Bank
-				{
-					DoorPos += -2*step ;
-				}
-				for (int k = 0 ; k <= SizeInSteps[0] ; k += step)
-				{
-					MapsType[PosInSteps[0] + k][PosInSteps[1] - SizeInSteps[1]] = "Invisible wall" ;	// Top wall
-					if (k < DoorPos | DoorPos + DoorL < k)	// Door
-					{
-						MapsType[PosInSteps[0] + k][PosInSteps[1]] = "Invisible wall" ;	// Bottom wall					
-					}
-				}
-				for (int k = 0 ; k <= SizeInSteps[1] ; k += step)
-				{
-					MapsType[PosInSteps[0]][PosInSteps[1] - k] = "Invisible wall" ;	// Left wall
-					MapsType[PosInSteps[0] + SizeInSteps[0]][PosInSteps[1] - k] = "Invisible wall" ;	// Right wall
-				}
-				for (int k = 0 ; k <= SizeInSteps[0] - FurniturePos[b][0] ; k += step)
-				{
-					MapsType[PosInSteps[0] + k + FurniturePos[b][0]][PosInSteps[1] - FurniturePos[b][1]] = "Invisible wall" ;	// Furniture wall
-				}
-			}
-		}
-		if (Continent == 0)
-		{
-			if (map == 2)
-			{
-				for (int j = SkyHeight ; j <= screenDim[1] ; j += 1)
-				{
-					for (int k = (int) (0.8 * screenDim[0]) ; k <= screenDim[0] ; k += 1)
-					{
-						GroundType[k][j] = "Water" ;
-					}
-				}
-			}
-			if (map == 4)
-			{
-				for (int k = 10 ; k <= 20 ; k += 1)
-				{
-					GroundType[3*step][k*step] = "Wall" ;	// Outside wall
-					GroundType[21*step][k*step] = "Wall" ;	// Outside wall
-				}
-				for (int k = 3 ; k <= 21 ; k += 1)
-				{
-					GroundType[k*step][10*step] = "Wall" ;	// Outside wall
-				}
-				for (int k = 16 ; k <= 23 ; k += 1)
-				{
-					GroundType[8*step][k*step] = "Wall" ;	// Inside wall
-					GroundType[26*step][k*step] = "Wall" ;	// Inside wall
-				}
-				for (int k = 8 ; k <= 26 ; k += 1)
-				{
-					GroundType[k*step][23*step] = "Wall" ;	// Inside wall
-				}
-			}
-			if (map == 13 | map == 17)
-			{ 
-				RangeX = (float)(0.6) ;
-				for (double j = Skyratio ; j <= 1.0 ; j += 1.0 / screenDim[1])
-				{
-					for (double k = 0.8 ; k <= 1.0 ; k += 1.0 / screenDim[0])
-					{
-						if (!Utg.isInside(new double[] {k, j}, new double[] {0.8, 0.8}, 0.1, 0.08) & !Utg.isInside(new double[] {k, j}, new double[] {0.9, 0.808}, 0.05, 0.16))
-						{
-							GroundType[(int) (k * screenDim[0])][(int) (j * screenDim[1])] = "Water" ;
-						}
-					}
-				}
-			}
-			if (map == 25)
-			{
-				for (int j = 0 ; j <= screenDim[1] - 1 ; j += step)
-				{
-					for (int k = 0 ; k <= 5 ; ++k)
-					{
-						GroundType[k*step][j] = "Tree" ;
-					}
-				}
-				for (int k = 0 ; k <= 5 ; ++k)
-				{
-					GroundType[k*step][screenDim[1] - 1] = "Tree" ;
-				}
-			}
-			else
-			{
-				if (!name.contains("City"))
-				{
-					MapElements[] MapElem = new MapElements[5] ;
-					for (int j = 0 ; j <= 4 ; ++j)
-					{
-						int[] Pos = new int[] {Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step), Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)} ;
-						//MapElem[j] = new MapElements(j, "ForestTree", Pos, new ImageIcon(ImagesPath + "MapElem6_TreeForest.png").getImage()) ;
-						//MapsType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Tree" ;					
-					}	
-				}
-			}
-			if (!name.contains("City"))
-			{
-				for (int j = 0 ; j <= 4 ; ++j)
-				{
-					GroundType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Grass" ;
-					GroundType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Rock" ;	
-				}
-			}
-		}
-		if (Continent == 1)
-		{
-			if (map == 36)
-			{
-				 Positions of the maze walls are in % of the screen size
-				int[] MazeStartPos = new int[] {10, 15, 51, 15, 39, 2, 35, 17, 77, 92, 67, 17, 57, 88, 49, 4, 81, 2, 5, 54, 71, 15, 58, 11, 39, 12, 80, 59, 5, 3, 0, 54} ;
-				int[] MazeEndPos = new int[] {93, 88, 77, 39, 51, 27, 77, 67, 81, 100, 77, 46, 71, 100, 70, 25, 96, 70, 25, 77, 100, 25, 71, 20, 45, 61, 94, 80, 20, 20, 42, 100} ;
-				int[] MazeHorizontalWallsPos = new int[] {2, 5, 12, 15, 16, 32, 32, 39, 42, 42, 45, 54, 54, 54, 74, 77, 80} ;
-				int[] MazeVerticalWallsPos = new int[] {10, 15, 17, 38, 39, 45, 51, 67, 77, 81, 85, 88, 93, 100, 100} ;
-				for (int j = 0 ; j <= MazeHorizontalWallsPos.length - 1 ; j += 1)
-				{
-					for (int k = MazeStartPos[j] ; k <= MazeEndPos[j] ; k += 1)
-					{
-						GroundType[k*35/100*step][MazeHorizontalWallsPos[j]*35/100*step] = "Invisible wall" ;	
-					}
-				}
-				for (int j = 0 ; j <= MazeVerticalWallsPos.length - 1 ; j += 1)
-				{
-					for (int k = MazeStartPos[j + MazeHorizontalWallsPos.length] ; k <= MazeEndPos[j + MazeHorizontalWallsPos.length] ; k += 1)
-					{
-						GroundType[MazeVerticalWallsPos[j]*35/100*step][k*35/100*step] = "Invisible wall" ;
-					}
-				}
-			}
-			if (map == 39)
-			{
-				GroundType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Chest " + String.valueOf(0) ;										
-			}
-			for (int j = 0 ; j <= 4 ; ++j)
-			{
-				if (map != 36)
-				{
-					GroundType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Crystal" ;					
-					GroundType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Stalactite" ;										
-				}
-			}
-		}
-		if (Continent == 2)
-		{
-			//GroundType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Tree" ;
-			//GroundType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Rock" ;						
-		}
-		if (Continent == 3)
-		{
-			for (int j = 0 ; j <= 4 ; ++j)
-			{
-				//GroundType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Volcano" ;					
-			}
-			for (int j = 0 ; j <= 40 ; ++j)
-			{
-				GroundType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Lava" ;					
-			}
-		}
-		if (Continent == 4)
-		{
-			for (int j = 0 ; j <= 4 ; ++j)
-			{
-				GroundType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Ice" ;					
-			}
-		}
-		if (map == 60)
-		{
-			for (int j = 0 ; j <= 4 ; ++j)
-			{
-				//GroundType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Tree" ;					
-			}
-			for (int j = 0 ; j <= 5 ; ++j)
-			{
-				//GroundType[Utg.RandomCoord1D(screenDim[0], MinX, RangeX, step)][Utg.RandomCoord1D(screenDim[1], MinY, RangeY, step)] = "Chest " + String.valueOf(j + 1) ;					
-			}
-		}
-		if (60 < map & map <= 66)
-		{
-			for (int j = 0 ; j <= GroundType.length - 1 ; ++j)
-			{
-				Arrays.fill(GroundType[j], "Water") ;
-			}
-		}
-		return GroundType ;
- 	}*/
 	
  	public static String CheckAdjacentGround(Point playerPos, Maps map, String GroundType)
 	{
@@ -452,7 +236,7 @@ public class UtilS
  		return false ;
  	}
 		
-	public static int ClosestCreatureInRange(Player player, Creatures[] creatures, Maps[] maps)
+	public static Creatures ClosestCreatureInRange(Player player, Creatures[] creatures, Maps[] maps)
 	{	
 		Size screenSize = Game.getScreen().getSize() ;
 		if (player.getMap().getCreatures() != null)	// Map has creatures
@@ -478,13 +262,14 @@ public class UtilS
 			}
 			for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 			{
+				Creatures creature = player.getMap().getCreatures()[i] ;
 				if (dist[i] == MinDist & player.getMap().getCreatures() != null & dist[i] <= player.getRange())
 				{
-					return i ;	// Closest creature ID
+					return creature ;	// Closest creature ID
 				}
 			}
 		}
-		return -1 ;
+		return null ;
 	}
 	
 	public static boolean ActionIsSkill(String[] SkillKeys, String playerMove)
@@ -1194,17 +979,17 @@ public class UtilS
 					move = (int)(3*Math.random() - 0.01) ;
 					if (move == 0)
 					{
-						player.action = ActionKeys[1] ;
+		        		player.setCurrentAction(ActionKeys[1]) ;
 						NumberOfPlayerPhyAtks += 1 ;
 					}
 					if (move == 1)
 					{
-						player.action = ActionKeys[3] ;
+		        		player.setCurrentAction(ActionKeys[3]) ;
 						NumberOfPlayerDefs += 1 ;
 					}
 					if (move == 2)
 					{
-						player.action = String.valueOf((int)(1*Math.random() - 0.01)) ;
+		        		player.setCurrentAction(String.valueOf((int)(1*Math.random() - 0.01))) ;
 						NumberOfPlayerMagAtks += 1 ;
 					}
 				}
@@ -1227,7 +1012,7 @@ public class UtilS
 						NumberOfPetMagAtks += 1 ;
 					}
 				}
-				B.RunBattle(player, pet, creature, skills, petskills, quest, new Point(0, 0), DF) ;
+				B.RunBattle(player, pet, creature, quest, new Point(0, 0), DF) ;
 				if (0 == BattleResults[0])
 				{
 					if (0 < player.getLife()[0])

@@ -24,11 +24,16 @@ import java.math.RoundingMode ;
 import java.nio.charset.StandardCharsets ;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 import javax.sound.sampled.AudioInputStream ;
 import javax.sound.sampled.AudioSystem ;
 import javax.sound.sampled.Clip ;
 import javax.swing.JPanel ;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import GameComponents.Buildings;
 import GameComponents.Icon ;
@@ -43,6 +48,37 @@ import LiveBeings.Creatures;
 
 public abstract class UtilG 
 {	
+	public static JSONObject readJson(String filePath)
+    {
+        JSONParser parser = new JSONParser();
+        try
+        {
+            Object object = parser.parse(new FileReader(filePath));
+            
+            //convert Object to JSONObject
+            JSONObject jsonObject = (JSONObject)object;
+            
+            //Reading the String
+            //String name = (String) jsonObject.get("Name");
+            //Long level = (Long) jsonObject.get("Level");
+            
+            //Reading the array
+           // JSONArray countries = (JSONArray)jsonObject.get("Countries");
+            
+            return jsonObject ;
+        }
+        catch(FileNotFoundException fe)
+        {
+            fe.printStackTrace();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null ;
+    }
+	
 	/* Color and image methods */
 	
 	public static Color[] ColorPalette(int Palette)
@@ -1142,9 +1178,9 @@ public abstract class UtilG
 		return (int)(size*(Range*Math.random() + MinCoord)/step)*step ;
 	}
 	
-	public static Point RandomPos(Size size, float[] MinCoord, float[] Range, int[] step)
+	public static Point RandomPos(Point minCoord, Size range, Size step)
 	{
-		return new Point((int)(size.x*(Range[0]*Math.random() + MinCoord[0])/step[0])*step[0], (int)(size.y*(Range[1]*Math.random() + MinCoord[1])/step[1])*step[1]) ;
+		return new Point((int)((range.x*Math.random() + minCoord.x)/step.x)*step.x, (int)((range.y*Math.random() + minCoord.y)/step.y)*step.y) ;
 	}
 	
 	public static void ResetMusic(Clip MusicFile)

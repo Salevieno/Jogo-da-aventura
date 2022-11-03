@@ -264,9 +264,9 @@ public class DrawFunctions
 		float[] scale = new float[] {(float) 0.6, (float) 0.6} ;
 		float[] angle = new float[] {50, 30, 0, 0, 0} ;
 		Point EqPos = new Point((int)(Pos.x + 0.16*player.getSize()[0]*playerscale[0]), (int)(Pos.y - 0.4*player.getSize()[1]*playerscale[1])) ;
-		if (0 < player.getEquips()[0])
+		if (player.getEquips()[0] != null)
 		{
-			DrawEquips(EqPos, player.getJob(), 0, player.getEquips()[0] - Items.BagIDs[6], Items.EquipsBonus, scale, angle[player.getJob()]) ;
+			DrawEquips(EqPos, player.getJob(), 0, player.getEquips()[0].getId() - Items.BagIDs[6], Items.EquipsBonus, scale, angle[player.getJob()]) ;
 		}	
 	}
 	/*public void DrawSpecialAttributesWindow(Player player, Point Pos, Size size, float[] Stun, float[] Block, float[] Blood, float[] Poison, float[] Silence)
@@ -354,36 +354,6 @@ public class DrawFunctions
 			TextPos.y += 0.95 * size.y / player.getStats().length ;
 		}
 	}*/
-	public void DrawPlayerAttributes(Player player, int design)
-	{
-		float[] attRate = new float[] {player.getLife()[0] / player.getLife()[1], player.getMp()[0] / player.getMp()[1], player.getExp()[0] / player.getExp()[1], player.getSatiation()[0] / player.getSatiation()[1], player.getThirst()[0] / player.getThirst()[1]} ;
-		Color attColor[] = new Color[] {ColorPalette[6], ColorPalette[5], ColorPalette[1], ColorPalette[2], ColorPalette[0]} ;
-		
-		if (design == 0)
-		{
-			Point Pos = new Point((int)(player.getPos().x - player.getSize()[0]/2), (int)(player.getPos().y - player.getSize()[1] - 10)) ;
-			Size size = new Size((int)(0.05*screenSize.x), (int)(0.01*screenSize.y)) ;
-			int Sy = (int)(0.01*screenSize.y) ;
-			int barthick = 1 ;
-			for (int att = 0; att <= attRate.length - 1; att += 1)
-			{
-				DP.DrawRect(new Point(Pos.x, Pos.y + (att + 1) * Sy), "TopLeft", new Size((int)(attRate[0] * size.x), size.y), barthick, attColor[att], ColorPalette[9], true) ;
-			}
-		}
-		if (design == 1)
-		{
-			Point Pos = new Point((int)(0.01*screenSize.x), (int)(0.03*screenSize.y)) ;
-			Size size = new Size((int)(0.13*screenSize.x), (int)(0.013*screenSize.y)) ;
-			int Sy = size.y ;
-			int barthick = 1 ;
-			DP.DrawRoundRect(Pos, "TopLeft", new Size((int)(1.4 * size.x), (attRate.length + 1) * Sy), barthick, ColorPalette[8], ColorPalette[4], true) ;
-			for (int att = 0; att <= attRate.length - 1; att += 1)
-			{
-				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.x), Pos.y + (att + 1) * Sy), "CenterLeft", size, barthick, null, ColorPalette[9], true) ;
-				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.x), Pos.y + (att + 1) * Sy), "CenterLeft", new Size((int)(attRate[att] * size.x), size.y), barthick, attColor[att], ColorPalette[9], true) ;
-			}
-		}
-	}	
 	public void DrawPetAttributes(Pet pet)
 	{
 		Color color[] = new Color[] {ColorPalette[6], ColorPalette[5], ColorPalette[1], ColorPalette[2]} ;
@@ -840,15 +810,14 @@ public class DrawFunctions
 			}							
 		}
 	}	
-	public void DrawFullMap(Player player, Pet pet, NPCs[] npc, Buildings[] buildings, Sky sky, Icon[] SBicons, Point MousePos)
+	public void DrawFullMap(Pet pet, Point playerPos, String[] signMessage, Maps map, NPCs[] npc, Buildings[] buildings, Sky sky, Icon[] SBicons, Point MousePos)
 	{
 		sky.display(DP) ;
-		player.getMap().display(DP) ;
-		player.getMap().displayElements(DP) ;
-		player.getMap().displayBuildings(player.getPos(), player.allText.get("* Mensagem das placas *"), DP) ;
-		player.getMap().displayNPCs(DP) ;	
+		map.display(DP) ;
+		map.displayElements(DP) ;
+		map.displayBuildings(playerPos, signMessage, DP) ;
+		map.displayNPCs(DP) ;	
 		//DrawGrid(new int[] {20, 20}) ;
-		player.DrawSideBar(player, pet,  MousePos, player.getSpell(), SBicons, DP) ;
 		
 		// draw time
 		Font font = new Font("SansSerif", Font.BOLD, 14) ;

@@ -128,9 +128,9 @@ public class NPCs
 	public void setColor(Color C) {color = C ;}
 	
 
-	public void Contact(Player player, Pet pet, CreatureTypes[] creatureTypes, Creatures[] creatures, Spells[] skills, Maps[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawFunctions DF)
+	public void Contact(Player player, Pet pet, Creatures[] creatures, Maps[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawFunctions DF)
 	{
-		String Choice = player.action ;
+		String Choice = player.getPA().getCurrentAction() ;
 		if (Choice.equals("Escape") & 0 < menu)
 		{
 			menu += -1 ;
@@ -182,7 +182,7 @@ public class NPCs
 		}*/
 		if (Name.equals("Master") | Name.equals("Mestre"))
 		{
-			masterAction(Choice, player.allText.get("* " + Name + " *"), player, pet, skills, MousePos, DF) ;
+			masterAction(Choice, player, pet, MousePos, DF) ;
 		}/*
 		if (npc.getName().contains("Quest") | npc.getName().contains("Quest"))
 		{
@@ -202,20 +202,21 @@ public class NPCs
 		}*/
 	}
 	
-	public void masterAction(String Choice, String[] AllText, Player player, Pet pet, Spells[] skills, Point MousePos, DrawFunctions DF)
+	public void masterAction(String Choice, Player player, Pet pet, Point MousePos, DrawFunctions DF)
 	{
-		int[] NumberOfSkillsAvailable = new int[] {14, 15, 15, 14, 14} ;
+		String[] speech = player.allText.get("* " + Name + " *") ;
+		int[] numberOfSpellsAvailablePerPlayerJob = new int[] {14, 15, 15, 14, 14} ;	// TODO olha esse nome...
 		Font NPCTextFont = new Font(Game.MainFontName, Font.BOLD, 20) ;
 		Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "SpeakingBubble.png").getImage() ;
 		if (menu == 0)
 		{
 			if (player.getProJob() == 0 & 50 <= player.getLevel())
 			{
-				DF.DrawSpeech(Pos,  AllText[3], NPCTextFont, image, SpeakingBubbleImage, color) ;
+				DF.DrawSpeech(Pos,  speech[3], NPCTextFont, image, SpeakingBubbleImage, color) ;
 			}
 			else
 			{
-				DF.DrawSpeech(Pos,  AllText[1], NPCTextFont, image, SpeakingBubbleImage, color) ;
+				DF.DrawSpeech(Pos,  speech[1], NPCTextFont, image, SpeakingBubbleImage, color) ;
 			}
 			//DF.DrawChoicesWindow(Pos, NPCTextFont, AcceptedChoices[0], image, color) ;
 			if (Choice.equals("1"))
@@ -296,7 +297,7 @@ public class NPCs
 		{
 			if (player.getProJob() == 0 & 50 <= player.getLevel())
 			{
-				DF.DrawSpeech(Pos, AllText[6], NPCTextFont, image, SpeakingBubbleImage, color) ;
+				DF.DrawSpeech(Pos, speech[6], NPCTextFont, image, SpeakingBubbleImage, color) ;
 				//DF.DrawChoicesWindow(Pos, NPCTextFont, AcceptedChoices[0], image, color) ;
 				if (Choice.equals("1"))
 				{ 
@@ -305,11 +306,11 @@ public class NPCs
 			}
 			else
 			{
-				DF.DrawSpeech(Pos, AllText[2], NPCTextFont, image, SpeakingBubbleImage, color) ;
+				DF.DrawSpeech(Pos, speech[2], NPCTextFont, image, SpeakingBubbleImage, color) ;
 			}
 		} else if (menu == 3)
 		{
-			DF.DrawSpeech(Pos, AllText[5] + " " + AllText[player.getProJob() + 2*player.getJob()] + "!", NPCTextFont, image, SpeakingBubbleImage, color) ;
+			DF.DrawSpeech(Pos, speech[5] + " " + speech[player.getProJob() + 2*player.getJob()] + "!", NPCTextFont, image, SpeakingBubbleImage, color) ;
 		}
 	}
 	

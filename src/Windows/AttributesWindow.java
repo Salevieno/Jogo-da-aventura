@@ -33,7 +33,7 @@ public class AttributesWindow extends Window
 		AddAttIcon = new Icon(0, "Plus sign", new Point(0, 0), null, PlusSignImage, SelectedPlusSignImage) ;
 	}
 	
-	public void display(LiveBeing user, Map<String, String[]> allText, int[] Equips, float[][] EquipsBonus, int AttPoints, Point MousePos, PersonalAttributes PA, BattleAttributes BA, DrawPrimitives DP)
+	public void display(LiveBeing user, Map<String, String[]> allText, Equip[] Equips, float[][] EquipsBonus, int AttPoints, Point MousePos, PersonalAttributes PA, BattleAttributes BA, DrawPrimitives DP)
 	{
 		Size screenSize = Game.getScreen().getSize() ;
 		Point WindowPos = new Point((int) (0.2 * screenSize.x), (int)(0.3 * screenSize.y)) ;
@@ -87,13 +87,13 @@ public class AttributesWindow extends Window
 			for (int eq = 0 ; eq <= 4 - 1 ; eq += 1)
 			{
 				Image ElemImage = DrawFunctions.ElementImages[UtilS.ElementID(PA.getElem()[eq + 1])] ;
-				if (0 < Equips[eq])
+				if (Equips[eq] != null)
 				{
 					if (eq <= 2)
 					{
-						if (0 < EquipsBonus[Equips[eq] - Items.BagIDs[6]][0])
+						if (0 < EquipsBonus[Equips[eq].getId() - Items.BagIDs[6]][0])
 						{
-							DP.DrawText(new Point(EqRectPos[eq].x, EqRectPos[eq].y - EqRectH[eq] / 2 - TextH), "Center", TextAngle, equipsText[eq + 1] + " + " + (int)(EquipsBonus[Equips[eq] - Items.BagIDs[6]][1]), font, TextColor) ;					
+							DP.DrawText(new Point(EqRectPos[eq].x, EqRectPos[eq].y - EqRectH[eq] / 2 - TextH), "Center", TextAngle, equipsText[eq + 1] + " + " + (int)(EquipsBonus[Equips[eq].getId() - Items.BagIDs[6]][1]), font, TextColor) ;					
 						}
 						//DF.DrawEquips(EqRectPos[eq], PA.getJob(), eq, Equips[eq] - Items.BagIDs[6], EquipsBonus, new float[] {1, 1}, TextAngle) ;
 					}
