@@ -134,6 +134,7 @@ Você obteve:
 Arma
 Escudo
 Armadura
+Flecha
 
 * Doutor *
 Olá, gostaria de tratar esses ferimentos?

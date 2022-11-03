@@ -272,7 +272,7 @@ public class Maps
 				building[id].display(playerPos, overallAngle, new float[] {1, 1}, DP) ;
 			}
 			
-			//TODO essa é uma função da sign building
+			//TODO essa ï¿½ uma funï¿½ï¿½o da sign building
 			Point SignPos = UtilS.BuildingPos(building, id, "Sign") ;
 			if (building[5].playerIsInside(playerPos))
 			{			
@@ -362,7 +362,8 @@ public class Maps
     }
 	public void InitializeBuildings(Buildings[] AllBuildings)
 	{
-		building = UtilS.BuildingsInCity(AllBuildings, id) ;
+		Buildings[] allBuildings = Arrays.copyOf(AllBuildings, AllBuildings.length) ;
+		building = UtilS.BuildingsInCity(allBuildings, id) ;
 	}
 	
 	public void IncCollectiblesCounter()

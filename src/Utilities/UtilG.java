@@ -851,25 +851,7 @@ public abstract class UtilG
 		}
 		return NewArray ;
 	}
-	
-	public static Buildings[] AddElem(Buildings[] OriginalArray, Buildings NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new Buildings[] {NewElem} ;
-		}
-		else
-		{
-			Buildings[] NewArray = new Buildings[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
-	
+
 
 	public static String[] AddElem(String[] OriginalArray, String NewElem)
 	{
@@ -889,60 +871,8 @@ public abstract class UtilG
 		}
 	}
 	
-	public static int[] AddElem(int[] OriginalArray, int NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new int[] {NewElem} ;
-		}
-		else
-		{
-			int[] NewArray = new int[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
 	
-	public static Color[] AddElem(Color[] OriginalArray, Color NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new Color[] {NewElem} ;
-		}
-		else
-		{
-			Color[] NewArray = new Color[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
 
-	public static Image[][] AddElem(Image[][] OriginalArray, Image[] NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new Image[][] {NewElem} ;
-		}
-		else
-		{
-			Image[][] NewArray = new Image[OriginalArray.length + 1][] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
-	
 	public static int TextL(String Text, Font font, Graphics G)
 	{
 		FontMetrics metrics = G.getFontMetrics(font) ;

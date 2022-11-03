@@ -53,22 +53,24 @@ public class Projectiles
 	}
 	public int collidedwith(Player player, Creatures[] creature, Pet pet)
 	{
+		// Type 0 is friendly (shot by the player or the pet)
+		// Type 1 is hostile (shot by the creature)
 		if (UtilS.IsInRange(Pos, player.getPos(), range) & Type == 1)
 		{
-			return -1 ;
+			return -1 ;	// if a hostile projectile hits the player
 		}
 		if (UtilS.IsInRange(Pos, pet.getPos(), range) & Type == 1)
 		{
-			return -2 ;
+			return -2 ;	// if a hostile projectile hits the pet
 		}
 		for (int c = 0 ; c <= creature.length - 1 ; c += 1)
 		{
-			if (UtilS.IsInRange(Pos, creature[c].getPos(), range))
+			if (UtilS.IsInRange(Pos, creature[c].getPos(), range) & Type == 0)
 			{
-				return c ;
+				return c ;	// if a friendly projectile hits the creature
 			}
 		}
-		return -3 ;
+		return -3 ;	// if the projectile has not hit anything
 	}
 	public void go(Player player, Creatures[] creature, Pet pet, DrawPrimitives DP)
 	{
@@ -92,7 +94,7 @@ public class Projectiles
 				pet.getLife()[0] = 0 ;
 			}
 		}
-		else if (-1 < hit)
+		else if (-1 < hit & Type == 0)
 		{
 			creature[hit].getLife()[0] += -damage ;
 			if (creature[hit].getLife()[0] < 0)

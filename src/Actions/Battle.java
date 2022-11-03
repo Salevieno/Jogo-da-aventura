@@ -2,20 +2,20 @@ package Actions ;
 
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays ;
 import javax.sound.sampled.Clip ;
 import javax.swing.ImageIcon ;
 
 import GameComponents.Items ;
-import GameComponents.PetSpells ;
 import GameComponents.Quests;
-import GameComponents.Spells ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import LiveBeings.BattleAttributes;
 import LiveBeings.Creatures;
 import LiveBeings.Pet;
 import LiveBeings.Player;
+import LiveBeings.Spells;
 import Screen.Screen;
 import Utilities.UtilG;
 import Utilities.UtilS;
@@ -39,7 +39,7 @@ public class Battle
 	private static String[] ElemID ;
 	private static float[][] ElemMult ;
 	
-	public Battle(String CSVPath, String ImagesPath, Spells[] skills, PetSpells[] petskills, int DamageAnimation, Clip[] SoundEffects, int[] DamageDelay, Animations Ani)
+	public Battle(String CSVPath, String ImagesPath, Spells[] skills, Spells[] petskills, int DamageAnimation, Clip[] SoundEffects, int[] DamageDelay, Animations Ani)
 	{	
 		this.DamageAnimation = DamageAnimation ;
 		this.SoundEffects = SoundEffects ;
@@ -119,7 +119,7 @@ public class Battle
 		return (-1 < UtilG.IndexOf(Player.SkillKeys, action)) ;
 	}
 	
-	public void IncrementCounters(Player player, Pet pet, Creatures creature, Spells[] skills, PetSpells[] petskills)
+	public void IncrementCounters(Player player, Pet pet, Creatures creature, Spells[] skills, Spells[] petskills)
 	{	
 		for (int i = 0 ; i <= ShowAtkCounters.length - 1 ; i += 1)
 		{
@@ -469,7 +469,7 @@ public class Battle
 		return new int[] {damage, effect} ;
 	}
 	
-	public int[] PlayerSkill(Player player, Pet pet, Creatures creature, Spells[] skills, int[] ActivePlayerSkills, int SelectedSkill)
+	public int[] PlayerSkill(Player player, Pet pet, Creatures creature, Spells[] skills, ArrayList<Integer> ActivePlayerSkills, int SelectedSkill)
 	{
 		int[] AtkResult = new int[] {-1, 0} ;	// [damage, effect]
 		int skilllevel = player.getSpell()[SelectedSkill].getLevel() ;
@@ -518,11 +518,11 @@ public class Battle
 		return new int[] {AtkResult[0], AtkResult[1]} ;
 	}
 	
-	public int[] PetSkill(Pet pet, Creatures creature, PetSpells[] skills, int SelectedSkill)
+	public int[] PetSpell(Pet pet, Creatures creature, Spells[] spells, int selectedSpell)
 	{
 		int damage = -1 ;
 		int effect = -1 ;
-		int level = pet.getSkill()[SelectedSkill] ;
+		int level = pet.getSpells()[selectedSpell].getLevel() ;
 		float BasicPhyAtk = pet.getBattleAtt().TotalPhyAtk() ;
 		float BasicMagAtk = pet.getBattleAtt().TotalMagAtk() ;
 		float BasicPhyDef = creature.getBattleAtt().TotalPhyDef() ;
@@ -532,11 +532,11 @@ public class Battle
 		float BasicAtkCrit = pet.getBattleAtt().TotalCritAtkChance() ;
 		float BasicDefCrit = creature.getBattleAtt().TotalCritDefChance() ;
 		float CreatureElemModif = 1 ;
-		if (skills[SelectedSkill].getMpCost() <= pet.getMp()[0])
+		if (spells[selectedSpell].getMpCost() <= pet.getMp()[0])
 		{
 			if (pet.getJob() == 0)
 			{
-				if (SelectedSkill == 0)
+				if (selectedSpell == 0)
 				{	
 					effect = BattleActions.CalcEffect(BasicAtkDex, BasicDefAgi, BasicAtkCrit, BasicDefCrit, creature.getBattleAtt().getSpecialStatus()[1]) ;
 					damage = BattleActions.CalcAtk(effect, BasicPhyAtk*(float)(1 + 0.02*level) + level, BasicPhyDef, new String[] {pet.getElem()[0], pet.getElem()[1], pet.getElem()[4]}, new String[] {creature.getElem()[0], creature.getElem()[0]}, CreatureElemModif) ;															
@@ -544,7 +544,7 @@ public class Battle
 			}
 			if (pet.getJob() == 1)
 			{
-				if (SelectedSkill == 0)
+				if (selectedSpell == 0)
 				{				
 					effect = BattleActions.CalcEffect(BasicAtkDex, BasicDefAgi, BasicAtkCrit, BasicDefCrit, creature.getBattleAtt().getSpecialStatus()[1]) ;
 					damage = BattleActions.CalcAtk(effect, BasicMagAtk*(float)(1 + 0.02*level) + level, BasicMagDef, new String[] {pet.getElem()[0], pet.getElem()[1], pet.getElem()[4]}, new String[] {creature.getElem()[0], creature.getElem()[0]}, CreatureElemModif) ;															
@@ -560,7 +560,7 @@ public class Battle
 			}
 			damage = Math.max(0, damage) ;
 			creature.getLife()[0] += -UtilG.RandomMult(randomAmp) * damage ;		
-			pet.getMp()[0] += -skills[SelectedSkill].getMpCost() ;	
+			pet.getMp()[0] += -spells[selectedSpell].getMpCost() ;	
 		}		
 		return new int[] {damage, effect} ;
 	}
@@ -570,7 +570,7 @@ public class Battle
 		return (float)(0.025/(Attribute + 1)) ;
 	}
 	
-	public Object[] PlayerAtk(Player player, Pet pet, Creatures creature, Spells[] skills, int[] ActivePlayerSkills)
+	public Object[] PlayerAtk(Player player, Pet pet, Creatures creature, Spells[] skills, ArrayList<Integer> ActivePlayerSkills)
 	{
 		int damage = -1 ;
 		int effect = 0 ;	// 0 = hit, 1 = crit, 2 = miss, 3 = block
@@ -601,9 +601,9 @@ public class Battle
 		else if (isSpell(player.action) & !player.isSilent())	// Magical atk, if not silent
 		{
 			atkType = "Spell" ;
-			if (UtilG.IndexOf(Player.SkillKeys, player.action) < ActivePlayerSkills.length)
+			if (UtilG.IndexOf(Player.SkillKeys, player.action) < ActivePlayerSkills.size())
 			{
-				int SkillID = ActivePlayerSkills[UtilG.IndexOf(Player.SkillKeys, player.action)] ;
+				int SkillID = ActivePlayerSkills.get(UtilG.IndexOf(Player.SkillKeys, player.action)) ;
 				if (BattleActions.Block(creatureBA.getSpecialStatus()[1]))
 				{
 					effect = 3 ;	// Block
@@ -632,7 +632,7 @@ public class Battle
 	}
 	
 
-	public Object[] PetAtk(Pet pet, PetSpells[] petskills, Creatures creature, DrawFunctions DF)
+	public Object[] PetAtk(Pet pet, Spells[] petskills, Creatures creature, DrawFunctions DF)
 	{
 		int damage = -1 ;
 		int effect = 0 ;
@@ -678,7 +678,7 @@ public class Battle
 					{
 						Show[1][0] = true ;
 						ShowAtkCounters[1][0] = 0 ;
-						damage = PetSkill(pet, creature, petskills, Integer.parseInt(pet.action))[0] ;
+						damage = PetSpell(pet, creature, petskills, Integer.parseInt(pet.action))[0] ;
 						pet.ResetBattleActions() ;
 						SkillIsReady[UtilG.IndexOf(Player.SkillKeys, pet.action)] = false ;
 						pet.getMagAtk()[2] += Train(pet.getMagAtk()[2]) ;
@@ -828,7 +828,7 @@ public class Battle
 	}*/
 	
 	
-	public void RunBattle(Player player, Pet pet, Creatures creature, Spells[] spells, PetSpells[] petskills, Quests[] quest, Point MousePos, DrawFunctions DF)
+	public void RunBattle(Player player, Pet pet, Creatures creature, Spells[] spells, Spells[] petskills, Quests[] quest, Point MousePos, DrawFunctions DF)
 	{	
 		ShowAtkDurations[2][0] = creature.getBattleAtt().getBattleActions()[0][1]/2 ;
 		IncrementCounters(player, pet, creature, spells, petskills) ;

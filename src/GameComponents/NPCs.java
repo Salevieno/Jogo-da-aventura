@@ -16,6 +16,7 @@ import LiveBeings.CreatureTypes;
 import LiveBeings.Creatures;
 import LiveBeings.Pet;
 import LiveBeings.Player;
+import LiveBeings.Spells;
 import Main.Game;
 import Utilities.Size;
 import Utilities.UtilG;
@@ -81,9 +82,9 @@ public class NPCs
 		AcceptedChoices = new String[6][] ;
 		if (player.getLanguage().equals("P"))
 		{
-			AcceptedChoices[0] = new String[] {"Sim", "Não"} ;
+			AcceptedChoices[0] = new String[] {"Sim", "Nï¿½o"} ;
 			AcceptedChoices[1] = new String[] {"Vender", "Comprar", "Nada"} ;
-			AcceptedChoices[2] = new String[] {"Colocar dinheiro", "Sacar dinheiro", "Só estou passando"} ;
+			AcceptedChoices[2] = new String[] {"Colocar dinheiro", "Sacar dinheiro", "Sï¿½ estou passando"} ;
 			AcceptedChoices[3] = new String[] {"Arma", "Escudo/Bandana", "Vestimenta"} ;
 			AcceptedChoices[4] = new String[] {"Slot 1", "Slot 2", "Slot 3"} ;
 			AcceptedChoices[5] = new String[] {"Enter"} ;
@@ -195,7 +196,7 @@ public class NPCs
 		{
 			Sailor(Choice, player, npc, BoatImage, Ani, DF) ;
 		}
-		if (npc.getName().contains("Citizen") | npc.getName().contains("Cidadão"))
+		if (npc.getName().contains("Citizen") | npc.getName().contains("Cidadï¿½o"))
 		{
 			Citizen(Choice, npc, DF) ;
 		}*/

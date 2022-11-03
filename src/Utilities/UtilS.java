@@ -14,15 +14,14 @@ import GameComponents.Buildings ;
 import GameComponents.Items ;
 import GameComponents.Maps ;
 import GameComponents.NPCs ;
-import GameComponents.PetSpells ;
 import GameComponents.Quests ;
-import GameComponents.Spells ;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Graphics.DrawPrimitives ;
 import LiveBeings.Creatures;
 import LiveBeings.Pet;
 import LiveBeings.Player;
+import LiveBeings.Spells;
 import Main.Game;
 import Screen.Screen;
 
@@ -34,7 +33,7 @@ public class UtilS
 	
 	public static Color[] ReadColorPalette(Image ColorPaletteImage, String mode)
 	{
-		Color[] Palette = null ;	// 28 color palette
+		Color[] Palette = new Color[28] ;	// 28 color palette
 
 		if (mode.equals("Normal"))
 		{
@@ -42,7 +41,7 @@ public class UtilS
 			{
 				for (int x = 0 ; x <= 4 - 1 ; x += 1)
 				{
-					Palette = UtilG.AddElem(Palette, UtilG.GetPixelColor(UtilG.toBufferedImage(ColorPaletteImage), new Point(x, y))) ;
+					Palette[x + 4 * y] = UtilG.GetPixelColor(UtilG.toBufferedImage(ColorPaletteImage), new Point(x, y)) ;
 				}
 			}
 		}
@@ -52,7 +51,7 @@ public class UtilS
 			{
 				for (int y = 0 ; y <= 7 - 1 ; y += 1)
 				{
-					Palette = UtilG.AddElem(Palette, UtilG.GetPixelColor(UtilG.toBufferedImage(ColorPaletteImage), new Point(x, y))) ;
+					Palette[7 * x + y] = UtilG.GetPixelColor(UtilG.toBufferedImage(ColorPaletteImage), new Point(x, y)) ;
 				}
 			}
 		}
@@ -733,16 +732,16 @@ public class UtilS
 		if (Language.equals("P"))
 		{
 			Cats[0] = "* *" ;
-			Cats[1] = "* Bestiário *" ;
+			Cats[1] = "* Bestiï¿½rio *" ;
 			Cats[2] = "* Novo jogo *" ;
 			Cats[3] = "* Tutorial *" ;
 			Cats[4] = "* Classes *" ;
 			Cats[5] = "* ProClasses *" ;
 			Cats[6] = "* Atributos *" ;
-			Cats[7] = "* Estatísticas do jogador *" ;
+			Cats[7] = "* Estatï¿½sticas do jogador *" ;
 			Cats[8] = "* Propriedades dos atributos especiais *" ;
 			Cats[9] = "* Coleta *" ;
-			Cats[10] = "* Vitória *" ;
+			Cats[10] = "* Vitï¿½ria *" ;
 			Cats[11] = "* Equipamentos *" ;
 			Cats[12] = "* Doutor *" ;
 			Cats[13] = "* Vendedor de equipamentos *" ;
@@ -766,33 +765,33 @@ public class UtilS
 			Cats[31] = "* Pterodactile *" ;
 			Cats[32] = "* Nomes dos continentes *" ;
 			Cats[33] = "* Mensagem das placas *" ;
-			Cats[34] = "* Menu de personalização *" ;
+			Cats[34] = "* Menu de personalizaï¿½ï¿½o *" ;
 			Cats[35] = "* Menu de quest *" ;
-			Cats[36] = "* Menu de opções *" ;
+			Cats[36] = "* Menu de opï¿½ï¿½es *" ;
 			Cats[37] = "* Menu de dicas *" ;
-			Cats[38] = "* Dimensões *" ;
+			Cats[38] = "* Dimensï¿½es *" ;
 			Cats[39] = "* Cores *" ;
 			Cats[40] = "* Janela do jogador *" ;
-			Cats[41] = "* Cidadão 0 *" ;
-			Cats[42] = "* Cidadão 1 *" ;
-			Cats[43] = "* Cidadão 2 *" ;
-			Cats[44] = "* Cidadão 3 *" ;
-			Cats[45] = "* Cidadão 4 *" ;
-			Cats[46] = "* Cidadão 5 *" ;
-			Cats[47] = "* Cidadão 6 *" ;
-			Cats[48] = "* Cidadão 7 *" ;
-			Cats[49] = "* Cidadão 8 *" ;
-			Cats[50] = "* Cidadão 9 *" ;
-			Cats[51] = "* Cidadão 10 *" ;
-			Cats[52] = "* Cidadão 11 *" ;
-			Cats[53] = "* Cidadão 12 *" ;
-			Cats[54] = "* Cidadão 13 *" ;
-			Cats[55] = "* Cidadão 14 *" ;
-			Cats[56] = "* Cidadão 15 *" ;
-			Cats[57] = "* Cidadão 16 *" ;
-			Cats[58] = "* Cidadão 17 *" ;
-			Cats[59] = "* Cidadão 18 *" ;
-			Cats[60] = "* Cidadão 19 *" ;
+			Cats[41] = "* Cidadï¿½o 0 *" ;
+			Cats[42] = "* Cidadï¿½o 1 *" ;
+			Cats[43] = "* Cidadï¿½o 2 *" ;
+			Cats[44] = "* Cidadï¿½o 3 *" ;
+			Cats[45] = "* Cidadï¿½o 4 *" ;
+			Cats[46] = "* Cidadï¿½o 5 *" ;
+			Cats[47] = "* Cidadï¿½o 6 *" ;
+			Cats[48] = "* Cidadï¿½o 7 *" ;
+			Cats[49] = "* Cidadï¿½o 8 *" ;
+			Cats[50] = "* Cidadï¿½o 9 *" ;
+			Cats[51] = "* Cidadï¿½o 10 *" ;
+			Cats[52] = "* Cidadï¿½o 11 *" ;
+			Cats[53] = "* Cidadï¿½o 12 *" ;
+			Cats[54] = "* Cidadï¿½o 13 *" ;
+			Cats[55] = "* Cidadï¿½o 14 *" ;
+			Cats[56] = "* Cidadï¿½o 15 *" ;
+			Cats[57] = "* Cidadï¿½o 16 *" ;
+			Cats[58] = "* Cidadï¿½o 17 *" ;
+			Cats[59] = "* Cidadï¿½o 18 *" ;
+			Cats[60] = "* Cidadï¿½o 19 *" ;
 			Cats[61] = "* Barra de habilidades *" ;
 			Cats[62] = "* Navegador 2*" ;
 			for (int i = 0 ; i <= AllText.length - 1 ; i += 1)
@@ -875,7 +874,7 @@ public class UtilS
 		return null ;	
 	}
 	
-	public static int[][] NPCsInBuildings(NPCs[] npc, Buildings[] buildings, int map, int[] BuildingsInCity)
+	/*public static int[][] NPCsInBuildings(NPCs[] npc, Buildings[] buildings, int map, int[] BuildingsInCity)
 	{
 		int[][] IDs = null ;
 		for (int b = 0 ; b <= BuildingsInCity.length - 1 ; b += 1)
@@ -890,7 +889,7 @@ public class UtilS
 			}
 		}
 		return IDs ;
-	}
+	}*/
 	
 	public static ArrayList<NPCs> NPCsInBuilding(NPCs[] npc, String buildingName, int map)
 	{
@@ -907,15 +906,16 @@ public class UtilS
 	
 	public static Buildings[] BuildingsInCity(Buildings[] AllBuildings, int map)
 	{
-		Buildings[] buildingsInCity = null ;
+		ArrayList<Buildings> buildingsInCity = new ArrayList<Buildings>() ;
+
 		for (int b = 0 ; b <= AllBuildings.length - 1 ; b += 1)
 		{
 			if (AllBuildings[b].getMap() == map)
 			{
-				buildingsInCity = UtilG.AddElem(buildingsInCity, AllBuildings[b]) ;
+				buildingsInCity.add(AllBuildings[b]) ;
 			}
 		}
-		return buildingsInCity ;
+		return buildingsInCity.toArray(AllBuildings) ;
 	}
 	
 	public static Point BuildingPos(Buildings[] buildings, int map, String Name)
@@ -1102,7 +1102,7 @@ public class UtilS
 		}
 	}	*/
 		
-	public void BattleSimulation(Player player, Pet pet, Creatures creature, Spells[] skills, PetSpells[] petskills, int[] ActivePlayerSkills, String[] MoveKeys, Items[] items, Quests[] quest, int NumberOfSimulations, String[] ActionKeys, String[] SkillKeys, Battle B, DrawFunctions DF)
+	public void BattleSimulation(Player player, Pet pet, Creatures creature, Spells[] skills, Spells[] petskills, int[] ActivePlayerSkills, String[] MoveKeys, Items[] items, Quests[] quest, int NumberOfSimulations, String[] ActionKeys, String[] SkillKeys, Battle B, DrawFunctions DF)
 	{
 		int move = 0 ;
 		//String[] ItemsObtained = new String[10] ;

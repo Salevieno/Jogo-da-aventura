@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 import Actions.BattleActions;
 import GameComponents.Maps;
-import GameComponents.Spells;
 import Graphics.DrawFunctions ;
 import Main.Game;
 import Screen.Screen;
@@ -293,7 +292,7 @@ public class Creatures extends LiveBeing
 	}
 	public void Move(Point PlayerPos, boolean FollowPlayer, Maps map)
 	{
-		if (PA.Actions[0][2] == 1 & !PA.getName().equals("Dragão") & !PA.getName().equals("Dragon"))	// If the creature can move
+		if (PA.Actions[0][2] == 1 & !PA.getName().equals("Dragï¿½o") & !PA.getName().equals("Dragon"))	// If the creature can move
 		{
 			countmove = (countmove + 1) % 5 ;
 			if (FollowPlayer)

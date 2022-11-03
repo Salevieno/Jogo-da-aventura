@@ -25,7 +25,7 @@ public class Opening
     private int OpeningStep ;
     private String[] selectedPlayerAttributes ;
 	
-	public Opening(Animations Ani)
+	public Opening()
 	{
 		OpeningBG = new ImageIcon(Game.ImagesPath + "Opening.png").getImage() ;
 		OpeningGif = new ImageIcon(Game.ImagesPath + "Opening.gif").getImage() ;
@@ -49,17 +49,21 @@ public class Opening
     	OPbuttons[4] = new Icon(4, "Male", new Point(Game.getScreen().getSize().x / 2 - 50, Game.getScreen().getSize().y / 4), null, null, null) ;
     	OPbuttons[5] = new Icon(5, "Female", new Point(Game.getScreen().getSize().x / 2 + 50, Game.getScreen().getSize().y / 4), null, null, null) ;
     	OPbuttons[6] = new Icon(6, "Baixo", new Point(Game.getScreen().getSize().x / 2 - 100, Game.getScreen().getSize().y / 4), null, null, null) ;
-    	OPbuttons[7] = new Icon(7, "Médio", new Point(Game.getScreen().getSize().x / 2 + 0, Game.getScreen().getSize().y / 4), null, null, null) ;
+    	OPbuttons[7] = new Icon(7, "Mï¿½dio", new Point(Game.getScreen().getSize().x / 2 + 0, Game.getScreen().getSize().y / 4), null, null, null) ;
     	OPbuttons[8] = new Icon(8, "Alto", new Point(Game.getScreen().getSize().x / 2 + 100, Game.getScreen().getSize().y / 4), null, null, null) ;
     	OPbuttons[9] = new Icon(9, "Cavaleiro", new Point(Game.getScreen().getSize().x / 2 - 200, Game.getScreen().getSize().y / 4), null, null, null) ;
     	OPbuttons[10] = new Icon(10, "Mago", new Point(Game.getScreen().getSize().x / 2 - 100, Game.getScreen().getSize().y / 4), null, null, null) ;
     	OPbuttons[11] = new Icon(11, "Arqueiro", new Point(Game.getScreen().getSize().x / 2 + 0, Game.getScreen().getSize().y / 4), null, null, null) ;
     	OPbuttons[12] = new Icon(12, "Animal", new Point(Game.getScreen().getSize().x / 2 + 100, Game.getScreen().getSize().y / 4), null, null, null) ;
-    	OPbuttons[13] = new Icon(13, "Ladrão", new Point(Game.getScreen().getSize().x / 2 + 200, Game.getScreen().getSize().y / 4), null, null, null) ;
+    	OPbuttons[13] = new Icon(13, "Ladrï¿½o", new Point(Game.getScreen().getSize().x / 2 + 200, Game.getScreen().getSize().y / 4), null, null, null) ;
     	
+		//Ani.SetAniVars(20, new Object[] {147, OpeningGif}) ;
+		//Ani.StartAni(20) ;
+	}
 
-		Ani.SetAniVars(20, new Object[] {147, OpeningGif}) ;
-		Ani.StartAni(20) ;
+	public void Animation(DrawFunctions DF)
+	{
+    	DF.DrawOpeningScreen(OpeningGif) ;
 	}
 	
 	public int Run(String[] text, String action, Point MousePos, Music music, Animations Ani, DrawFunctions DF)
