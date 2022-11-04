@@ -12,7 +12,7 @@ import Utilities.UtilG;
 
 public class Buildings
 {
-	private int ID ;
+	private int id ;
 	private String Name ;
 	private int Map ;
 	private Point Pos ;
@@ -23,7 +23,7 @@ public class Buildings
 	public Image[] OrnamentImages ;
 	public Buildings(int ID, String Name, int Map, Point Pos, Image[] Images, Image[] OrnamentImages, ArrayList<NPCs> npc, Color color)
 	{
-		this.ID = ID ;
+		this.id = ID ;
 		this.Name = Name ;
 		this.Map = Map ;
 		this.Pos = Pos ;
@@ -33,13 +33,13 @@ public class Buildings
 		this.color = color ;
 	}
 
-	public int getID() {return ID ;}
+	public int getID() {return id ;}
 	public String getName() {return Name ;}
 	public int getMap() {return Map ;}
 	public Point getPos() {return Pos ;}
 	public ArrayList<NPCs> getNPCs() {return npc ;}
 	public Color getColors() {return color ;}
-	public void setID(int I) {ID = I ;}
+	public void setID(int I) {id = I ;}
 	public void setName(String N) {Name = N ;}
 	public void setMap(int M) {Map = M ;}
 	public void setPos(Point P) {Pos = P ;}
@@ -84,7 +84,7 @@ public class Buildings
 
 	@Override
 	public String toString() {
-		return "Buildings [ID=" + ID + ", Name=" + Name + ", Map=" + Map + ", Pos=" + Pos + ", npc=" + npc + ", color="
+		return "Buildings [ID=" + id + ", Name=" + Name + ", Map=" + Map + ", Pos=" + Pos + ", npc=" + npc + ", color="
 				+ color + ", Images=" + Arrays.toString(Images) + ", OrnamentImages=" + Arrays.toString(OrnamentImages)
 				+ "]";
 	}

@@ -689,20 +689,6 @@ public class UtilS
 		return npcs ;
 	}
 	
-	public static Buildings[] BuildingsInCity(Buildings[] AllBuildings, int map)
-	{
-		ArrayList<Buildings> buildingsInCity = new ArrayList<Buildings>() ;
-
-		for (int b = 0 ; b <= AllBuildings.length - 1 ; b += 1)
-		{
-			if (AllBuildings[b].getMap() == map)
-			{
-				buildingsInCity.add(AllBuildings[b]) ;
-			}
-		}
-		return buildingsInCity.toArray(AllBuildings) ;
-	}
-	
 	public static Point BuildingPos(Buildings[] buildings, int map, String Name)
 	{
 		for (int b = 0 ; b <= buildings.length - 1 ; b += 1)

@@ -10,6 +10,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import java.util.HashMap;
+
 import javax.sound.sampled.Clip ;
 import javax.swing.ImageIcon ;
 
@@ -69,10 +71,14 @@ public class Player extends LiveBeing
 	private float[] collectLevel ;	// 0: herb, 1: wood, 2: metal
 	private float[] gold ;			// 0: current, 1: stored, 2: multiplier
 	private boolean isRiding ;		// true if the player is riding
-	private boolean[] questSkills ;	// 0: Forest map, 1: Cave map, 2: Island map, 3: Volcano map, 4: Snowland map, 5: Shovel, 6: Book, 7: Ride, 8: Dragon's aura, 9: Bestiary
+	private Map<String, Boolean> questSkills ;	// 0: Forest map, 1: Cave map, 2: Island map, 3: Volcano map, 4: Snowland map, 5: Shovel, 6: Book, 7: Ride, 8: Dragon's aura, 9: Bestiary	// TODO essa está como map, enquanto as outras estão como array
 	private String[] combo ;		// record of the last 10 movements
     public Creatures closestCreature ;	// creature that is currently closest to the player
     public Creatures opponent ;		// creature that is currently in battle with the player
+	private ArrayList<Integer> CreaturesDiscovered ;	// Creatures that the player has encountered. Will appear in the bestiary
+    public Map<String, String[]> allText ;	// All the text in the game in the player language
+	public Items[] hotkeyItem ;
+    public int difficultLevel ;
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 	
@@ -91,15 +97,7 @@ public class Player extends LiveBeing
 	
 	private float[][] AttIncrease ;	// Amount of increase in each attribute when the player levels up
 	private float[][] ChanceIncrease ;	// Chance of increase of these attributes
-	private ArrayList<Integer> CreaturesDiscovered ;	// Creatures that the player has encountered. Will appear in the bestiary
-    public Map<String, String[]> allText ;	// All the text in the game in the player language
-		
-	//private String CustomKey ;
-    public int DifficultLevel ;
-	public Image RidingImage ;
-	public int SelectedOption = 0 ;
 	public float[][] EquipsBonus ;
-	public Items[] hotkeyItem ;
 	
 	public static String[] MoveKeys = new String[] {KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
 	public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Pet window, Map, Quest, Hint, Tent, Bestiary]
@@ -110,7 +108,6 @@ public class Player extends LiveBeing
 	public static int[] NumberOfSkillsPerJob = new int[] {14 + 20, 15 + 20, 15 + 20, 14 + 20, 14 + 20} ;
 	public static int[] CumNumberOfSkillsPerJob = new int[] {0, 34, 69, 104, 138} ;
 	public static int NumberOfEquipTypes = 4 ;
-    public static float[] DifficultMult = new float[] {(float) 0.5, (float) 0.7, (float) 1.0} ;
     public static Image[] AttWindowImages = new Image[] {new ImageIcon(Game.ImagesPath + "PlayerAttWindow1.png").getImage(), new ImageIcon(Game.ImagesPath + "PlayerAttWindow2.png").getImage(), new ImageIcon(Game.ImagesPath + "PlayerAttWindow3.png").getImage()} ;
     public static Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
 
@@ -120,6 +117,7 @@ public class Player extends LiveBeing
 	public static Image PlayerRight = new ImageIcon(Game.ImagesPath + "PlayerRight.png").getImage() ;    
     public static Image TentImage = new ImageIcon(Game.ImagesPath + "Tent.png").getImage() ;   
     public static Image DragonAuraImage = new ImageIcon(Game.ImagesPath + "DragonAura.png").getImage() ;
+    public static Image RidingImage = new ImageIcon(Game.ImagesPath + "Tiger.png").getImage() ;
     public static Image PterodactileImage = new ImageIcon(Game.ImagesPath + "Pterodactile.png").getImage() ;
     public static Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "SpeakingBubble.png").getImage() ;
 	public static Image CoinIcon = new ImageIcon(Game.ImagesPath + "CoinIcon.png").getImage() ;    
@@ -158,7 +156,17 @@ public class Player extends LiveBeing
 		//Arrays.fill(ElemMult, 1) ;
 		collectLevel = new float[3] ;
 		gold = new float[] {0, 0, Float.parseFloat(Properties[PA.Job][32])} ;
-		questSkills = new boolean[9] ;
+		questSkills = new HashMap<String, Boolean>() ;
+		questSkills.put("Floresta", false) ;	// TODO parte dos nomes em port, parte em inglês
+		questSkills.put("Caverna", false) ;
+		questSkills.put("Ilha", false) ;
+		questSkills.put("Vulcão", false) ;
+		questSkills.put("Terra das neves", false) ;
+		questSkills.put("Shovel", false) ;
+		questSkills.put("Book", false) ;
+		questSkills.put("Ride", false) ;
+		questSkills.put("Dragon's aura", false) ;
+		questSkills.put("Bestiary", false) ;
 		isRiding = false ;
 		if (spell != null)
 		{
@@ -184,7 +192,7 @@ public class Player extends LiveBeing
 		RidingImage = new ImageIcon(Game.ImagesPath + "Tiger.png").getImage() ;
 		closestCreature = null ;
 	    opponent = null ;
-	    DifficultLevel = 1 ;
+	    difficultLevel = 1 ;
 		EquipsBonus = Items.EquipsBonus ;
 		settings = new Settings(true, true, false, 1, 1) ;
 		hotkeyItem = new Items[3] ;
@@ -355,7 +363,7 @@ public class Player extends LiveBeing
 	public float[] getExp() {return PA.getExp() ;}
 	public float[] getSatiation() {return PA.getSatiation() ;}
 	public float[] getThirst() {return PA.getThirst() ;}
-	public boolean[] getQuestSkills() {return questSkills ;}
+	public Map<String, Boolean> getQuestSkills() {return questSkills ;}
 	public int[][] getActions() {return PA.Actions ;}	
 	public int[][] getSkillCounter() {return SpellCounter ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
@@ -549,11 +557,11 @@ public class Player extends LiveBeing
 					{
 						questWindow.open() ;	// Quest window
 					}
-					if (i == 3 & questSkills[getContinent()])
+					if (i == 3 & questSkills.get(PA.getMap().getContinentName(this)))
 					{
 						map.open() ;	// Map
 					}
-					if (i == 4 & questSkills[6])
+					if (i == 4 & questSkills.get("Fab window"))
 					{
 						fabWindow.open() ;	// Fab window
 					}
@@ -585,7 +593,7 @@ public class Player extends LiveBeing
 				Ani.StartAni(15) ;
 			}
 		}*/
-		if (PA.currentAction.equals(ActionKeys[7]) & questSkills[getContinent()])	// Map
+		if (PA.currentAction.equals(ActionKeys[7]) & questSkills.get(PA.getMap().getContinentName(this)))	// Map
 		{
 			map.open() ;
 		}
@@ -601,7 +609,7 @@ public class Player extends LiveBeing
 		{			
 			hintsWindow.open() ;
 		}
-		if (PA.currentAction.equals(ActionKeys[11]) & questSkills[7])			// Ride
+		if (PA.currentAction.equals(ActionKeys[11]) & questSkills.get("Ride"))			// Ride
 		{
 			ActivateRide() ;
 		}
@@ -610,7 +618,7 @@ public class Player extends LiveBeing
 			Ani.SetAniVars(11, new Object[] {100, getPos(), TentImage}) ;
 			Ani.StartAni(11) ;
 		}
-		if (PA.currentAction.equals(ActionKeys[13]) & questSkills[8])	// Bestiary
+		if (PA.currentAction.equals(ActionKeys[13]) & questSkills.get("Bestiary"))	// Bestiary
 		{
 			bestiary.open() ;
 		}
@@ -1587,47 +1595,46 @@ public class Player extends LiveBeing
 	{
 		int WindowLimit = 2 ;
 		//SelectedWindow[0] = UtilS.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedWindow[0], WindowLimit) ;
-		for (int i = 0 ; i <= 7 - 1 ; i += 1)
+		for (int selectedItem = 0 ; selectedItem <= 7 - 1 ; selectedItem += 1)
 		{
-			if (icons[i].ishovered(MousePos) & (PA.currentAction.equals("Enter") | PA.currentAction.equals("MouseLeftClick")) & 0 < attPoints)
-			{
-				int SelectedItem = i ;
-				if (SelectedItem == 0)
+			//if (icons[i].ishovered(MousePos) & (PA.currentAction.equals("Enter") | PA.currentAction.equals("MouseLeftClick")) & 0 < attPoints)
+			//{
+				if (selectedItem == 0)
 				{
-					PA.getLife()[0] += PlayerAttributeIncrease[SelectedItem] ;
-					PA.getLife()[1] += PlayerAttributeIncrease[SelectedItem] ;
+					PA.getLife()[0] += PlayerAttributeIncrease[selectedItem] ;
+					PA.getLife()[1] += PlayerAttributeIncrease[selectedItem] ;
 				}
-				else if (SelectedItem == 1)
+				else if (selectedItem == 1)
 				{
-					PA.getMp()[0] += PlayerAttributeIncrease[SelectedItem] ;
-					PA.getMp()[1] += PlayerAttributeIncrease[SelectedItem] ;
+					PA.getMp()[0] += PlayerAttributeIncrease[selectedItem] ;
+					PA.getMp()[1] += PlayerAttributeIncrease[selectedItem] ;
 				}
-				else if (SelectedItem == 2)
+				else if (selectedItem == 2)
 				{
-					BA.getPhyAtk()[0] += PlayerAttributeIncrease[SelectedItem] ;
+					BA.getPhyAtk()[0] += PlayerAttributeIncrease[selectedItem] ;
 				}
-				else if (SelectedItem == 3)
+				else if (selectedItem == 3)
 				{
-					BA.getMagAtk()[0] += PlayerAttributeIncrease[SelectedItem] ;
+					BA.getMagAtk()[0] += PlayerAttributeIncrease[selectedItem] ;
 				}
-				else if (SelectedItem == 4)
+				else if (selectedItem == 4)
 				{
-					BA.getPhyDef()[0] += PlayerAttributeIncrease[SelectedItem] ;
+					BA.getPhyDef()[0] += PlayerAttributeIncrease[selectedItem] ;
 				}
-				else if (SelectedItem == 5)
+				else if (selectedItem == 5)
 				{
-					BA.getMagDef()[0] += PlayerAttributeIncrease[SelectedItem] ;
+					BA.getMagDef()[0] += PlayerAttributeIncrease[selectedItem] ;
 				}
-				else if (SelectedItem == 6)
+				else if (selectedItem == 6)
 				{
-					BA.getDex()[0] += PlayerAttributeIncrease[SelectedItem] ;
+					BA.getDex()[0] += PlayerAttributeIncrease[selectedItem] ;
 				}
-				else if (SelectedItem == 7)
+				else if (selectedItem == 7)
 				{
-					BA.getAgi()[0] += PlayerAttributeIncrease[SelectedItem] ;
+					BA.getAgi()[0] += PlayerAttributeIncrease[selectedItem] ;
 				}
 				attPoints += -1 ;
-			}
+			//}
 		}
 		Point WinPos = new Point((int) (0.3 * MainWinDim[0]), (int) (0.2 * MainWinDim[1])) ;
 		//DrawAttWindow(MainWinDim, WinPos, MousePos, AllText, AllTextCat, SelectedWindow[0], GoldCoinImage, icons, DP) ;
@@ -1874,7 +1881,7 @@ public class Player extends LiveBeing
 				DP.DrawText(icons[i].getPos(), "BotLeft", OverallAngle, IconKey[i], font, TextColor) ;
 			}
 		}
-		if (questSkills[PA.getContinent()])	// Map
+		if (questSkills.get(PA.getMap().getContinentName(this)))	// Map
 		{
 			icons[3].DrawImage(OverallAngle, 0, MousePos, DP) ;
 			DP.DrawText(icons[3].getPos(), "BotLeft", OverallAngle, IconKey[3], font, TextColor) ;
@@ -2085,7 +2092,7 @@ public class Player extends LiveBeing
 		//Image[] PlayerImages = new Image[] {PA.getimage()} ;
 		//float[][] BPScale = new float[PA.getimage().length][2] ;
 		boolean[] mirror = new boolean[] {false, false} ;
-		if (questSkills[8])
+		if (questSkills.get("Dragon's aura"))
 		{
 			DP.DrawImage(DragonAuraImage, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 0.5) ;					
 		}
@@ -2176,7 +2183,7 @@ public class Player extends LiveBeing
 			bw.write("\nPlayer step: \n" + getStep()) ;
 			bw.write("\nPlayer exp: \n" + Arrays.toString(getExp())) ;
 			bw.write("\nPlayer satiation: \n" + Arrays.toString(getSatiation())) ;
-			bw.write("\nPlayer quest skills: \n" + Arrays.toString(questSkills)) ;
+			//bw.write("\nPlayer quest skills: \n" + Arrays.toString(questSkills)) ;
 			bw.write("\nPlayer status: \n" + Arrays.toString(BA.getSpecialStatus())) ; 
 			bw.write("\nPlayer actions: \n" + Arrays.deepToString(getActions())) ; 
 			bw.write("\nPlayer battle actions: \n" + Arrays.deepToString(BA.getBattleActions())) ; 
@@ -2190,7 +2197,7 @@ public class Player extends LiveBeing
 			
 			bw.write("\nEquips bonus: \n" + Arrays.deepToString(Items.EquipsBonus)) ;
 			//bufferedWriter.write("\nNPCs contact: \n" + Arrays.toString(FirstNPCContact)) ;
-			bw.write("\nDifficult level: \n" + DifficultLevel) ;
+			bw.write("\nDifficult level: \n" + difficultLevel) ;
 			bw.close() ;
 		}		
 		catch(IOException ex) 

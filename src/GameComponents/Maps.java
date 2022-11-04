@@ -12,6 +12,7 @@ import javax.swing.ImageIcon ;
 import Graphics.DrawPrimitives;
 import LiveBeings.CreatureTypes;
 import LiveBeings.Creatures;
+import LiveBeings.Player;
 import Main.Game;
 import Screen.Screen;
 import Utilities.Size;
@@ -79,6 +80,11 @@ public class Maps
 	public Creatures[] getCreatures() {return creatures ;}
 	public ArrayList<NPCs> getNPCs() {return NPCsInMap ;}
 	public Buildings[] getBuildings() {return building ;}
+	public String getContinentName(Player player)
+	{ 
+		String[] ContinentNames = player.allText.get("* Nomes dos continentes *") ;
+		return ContinentNames[Continent] ;
+	}
 	public void setCreatures(Creatures[] newValue) {creatures = newValue ;}
 	
 	public static void InitializeStaticVars(String ImagesPath)
@@ -269,7 +275,7 @@ public class Maps
 		{
 			for (int b = 0 ; b <= building.length - 1 ; b += 1)
 			{
-				building[id].display(playerPos, overallAngle, new float[] {1, 1}, DP) ;
+				building[b].display(playerPos, overallAngle, new float[] {1, 1}, DP) ;
 			}
 			
 			//TODO essa � uma fun��o da sign building
@@ -360,10 +366,21 @@ public class Maps
 			}
 		}
     }
-	public void InitializeBuildings(Buildings[] AllBuildings)
+	
+	public void InitializeBuildingsInMap(Buildings[] AllBuildings)
 	{
 		Buildings[] allBuildings = Arrays.copyOf(AllBuildings, AllBuildings.length) ;
-		building = UtilS.BuildingsInCity(allBuildings, id) ;
+		ArrayList<Buildings> buildingsInCity = new ArrayList<Buildings>() ;
+
+		for (int b = 0 ; b <= allBuildings.length - 1 ; b += 1)
+		{
+			if (allBuildings[b].getMap() == id)
+			{
+				buildingsInCity.add(allBuildings[b]) ;
+			}
+		}
+
+		building = buildingsInCity.toArray(new Buildings[buildingsInCity.size()]) ;
 	}
 	
 	public void IncCollectiblesCounter()
