@@ -35,11 +35,11 @@ public class Pet extends LiveBeing
 	public Pet(int Job)
 	{
 		super(Job, InitializePersonalAttributes(Job), InitializeBattleAttributes(Job),
-				new MovingAnimations(new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage(),
-				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage(),
-				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage(),
-				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage(),
-				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage()),
+				new MovingAnimations(new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
+				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
+				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
+				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
+				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage()),
 				new AttributesWindow()) ;
 		this.Job = Job ;
 		Color[] ColorPalette = Game.ColorPalette ;

@@ -194,7 +194,8 @@ public class Player extends LiveBeing
 	    opponent = null ;
 	    difficultLevel = 1 ;
 		EquipsBonus = Items.EquipsBonus ;
-		settings = new Settings(true, true, false, 1, 1) ;
+		Image windowSettings = new ImageIcon(Game.ImagesPath + "windowSettings.png").getImage() ;
+		settings = new Settings(windowSettings, true, true, false, 1, 1) ;
 		hotkeyItem = new Items[3] ;
 	}
 	
@@ -596,6 +597,10 @@ public class Player extends LiveBeing
 		if (PA.currentAction.equals(ActionKeys[7]) & questSkills.get(PA.getMap().getContinentName(this)))	// Map
 		{
 			map.open() ;
+		}
+		if (PA.currentAction.equals(ActionKeys[8]))				// Pet window
+		{
+			settings.open() ;
 		}
 		if (PA.currentAction.equals(ActionKeys[8]) & pet != null)				// Pet window
 		{
@@ -1037,7 +1042,7 @@ public class Player extends LiveBeing
 		}
 		if (settings.isOpen())
 		{
-			settings.display(allText.get("* Menu de opï¿½ï¿½es *"), DF.getDrawPrimitives()) ;
+			settings.display(allText.get("* Menu de opções *"), DF.getDrawPrimitives()) ;
 			//OptionsWindow(Music, DF) ;
 			//Object[] OptionStatus = OptionsWindow(Music, DF) ;
 			/*MusicIsOn = (boolean) OptionStatus[0] ;

@@ -1,5 +1,6 @@
 package LiveBeings;
 
+import Graphics.DrawPrimitives;
 import Windows.AttributesWindow;
 
 public class LiveBeing
@@ -95,7 +96,7 @@ public class LiveBeing
 		BA.getMagDef()[1] += -BA.getMagDef()[0] ;
 	}
 
-	public void display()
+	public void display(DrawPrimitives DP)
 	{
 		
 	}

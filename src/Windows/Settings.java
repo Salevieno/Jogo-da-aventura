@@ -2,6 +2,7 @@ package Windows;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.Arrays;
 
@@ -20,9 +21,9 @@ public class Settings extends Window
 	private int damageAnimation ;
 	private String[] actionKeys ;
 	
-	public Settings(boolean musicIsOn, boolean soundEffectsAreOn, boolean showPlayerRange, int attDisplay, int damageAnimation)
+	public Settings(Image image, boolean musicIsOn, boolean soundEffectsAreOn, boolean showPlayerRange, int attDisplay, int damageAnimation)
 	{
-		super(null, 3, 0, 6, 0) ;
+		super(image, 3, 0, 6, 0) ;
 		this.musicIsOn = musicIsOn ;
 		this.soundEffectsAreOn = soundEffectsAreOn ;
 		this.showPlayerRange = showPlayerRange ;

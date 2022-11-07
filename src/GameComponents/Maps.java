@@ -58,10 +58,10 @@ public class Maps
 		building = null ;
 		NPCsInMap = new ArrayList<NPCs>() ;
 		
-	    Image BerryImage = new ImageIcon(UtilG.ReadTextFile("Paths.txt", 3)[1][0] + "Col0_Berry.png").getImage() ;
-	    Image HerbImage = new ImageIcon(UtilG.ReadTextFile("Paths.txt", 3)[1][0] + "Col1_Herb.png").getImage() ;
-	    Image WoodImage = new ImageIcon(UtilG.ReadTextFile("Paths.txt", 3)[1][0] + "Col2_Wood.png").getImage() ;
-	    Image MetalImage = new ImageIcon(UtilG.ReadTextFile("Paths.txt", 3)[1][0] + "Col3_Metal.png").getImage() ;
+	    Image BerryImage = new ImageIcon(Game.ImagesPath + "Col0_Berry.png").getImage() ;
+	    Image HerbImage = new ImageIcon(Game.ImagesPath + "Col1_Herb.png").getImage() ;
+	    Image WoodImage = new ImageIcon(Game.ImagesPath + "Col2_Wood.png").getImage() ;
+	    Image MetalImage = new ImageIcon(Game.ImagesPath + "Col3_Metal.png").getImage() ;
 	    CollectibleImage = new Image[] {BerryImage, HerbImage, WoodImage, MetalImage} ;
 	}
 

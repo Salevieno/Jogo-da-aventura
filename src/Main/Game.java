@@ -817,7 +817,7 @@ public class Game extends JPanel implements ActionListener
 			for (int c = 0 ; c <= creaturesInMap.length - 1 ; c += 1)
 			{				
 				creaturesInMap[c].act(player.getPos(), player.getMap()) ;
-				creaturesInMap[c].display() ;
+				creaturesInMap[c].display(DF.getDrawPrimitives()) ;
 			}
 		}
 		
@@ -845,8 +845,9 @@ public class Game extends JPanel implements ActionListener
 				{
 					pet.action = pet.Action(Player.ActionKeys) ;
 				}
+				pet.display(player.getPos(), new float[] {1, 1}, DF.getDrawPrimitives()) ;
 				DF.DrawPetAttributes(pet) ;
-				DF.DrawPet(pet.getPos(), new float[] {1, 1}, pet.getMovingAnimations().idleGif) ;
+				//DF.DrawPet(pet.getPos(), new float[] {1, 1}, pet.getMovingAnimations().idleGif) ;
 			}
 		}
 		
@@ -981,6 +982,9 @@ public class Game extends JPanel implements ActionListener
     			allMaps[map].InitializeNPCsInMap(allNPCs) ;
     			allMaps[map].InitializeBuildingsInMap(allBuildings) ;
     		}
+        	pet = InitializePet() ;
+        	pet.getPA().setLife(new float[] {100, 100, 0});
+        	pet.getPA().setPos(player.getPos());
 
         	player.setMap(allMaps[1]) ;
         	
@@ -1130,7 +1134,7 @@ public class Game extends JPanel implements ActionListener
 			if (evt.getButton() == 1)	// Left click
 			{
         		player.setCurrentAction("MouseLeftClick") ;
-				for (int i = 0 ; i <= OPbuttons.length - 1 ; i += 1)
+				/*for (int i = 0 ; i <= OPbuttons.length - 1 ; i += 1)
 				{
 					if (OPbuttons[i].ishovered(mousePos) & OPbuttons[i].isActive)
 					{
@@ -1147,7 +1151,7 @@ public class Game extends JPanel implements ActionListener
 			        		player.setCurrentAction((String) OPbuttons[i].startaction()) ;
 						}
 					}
-				}
+				}*/
 			}
 			if (evt.getButton() == 3)	// Right click
 			{
