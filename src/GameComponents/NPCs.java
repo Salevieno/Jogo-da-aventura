@@ -31,12 +31,16 @@ public class NPCs
 	private int Map ;
 	private String PosRelToBuilding ;
 	private String Info ;
-	private Color color ;	
+	private Color color ;
+	private String[] options ;
+	private int selOption ;
 	private int menu ;
 	private int window ;
 	public boolean Firstcontact ;
+
+	public static Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "SpeakingBubble.png").getImage() ;
 	
-	public NPCs(int ID, String Name, Point Pos, Image image, int Map, String PosRelToBuilding, String Info, Color color)
+	public NPCs(int ID, String Name, Point Pos, Image image, int Map, String PosRelToBuilding, String Info, Color color, String[] options)
 	{
 		this.id = ID ;
 		this.Name = Name ;
@@ -46,6 +50,8 @@ public class NPCs
 		this.PosRelToBuilding = PosRelToBuilding ;
 		this.Info = Info ;
 		this.color = color ;
+		this.options = options ;
+		selOption = 0 ;
 		menu = 0 ;
 		Firstcontact = true ;
 		
@@ -130,12 +136,8 @@ public class NPCs
 
 	public void Contact(Player player, Pet pet, Creatures[] creatures, Maps[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawFunctions DF)
 	{
-		String Choice = player.getPA().getCurrentAction() ;
-		if (Choice.equals("Escape") & 0 < menu)
-		{
-			menu += -1 ;
-			window = 0 ;
-		}
+		String action = player.getPA().getCurrentAction() ;
+		navigate(action) ;
 		/*if (npc.getName().equals("Doctor") | npc.getName().equals("Doutor"))
 		{
 			Doctor(Choice, player, pet, npc, DF) ;
@@ -182,7 +184,7 @@ public class NPCs
 		}*/
 		if (Name.equals("Master") | Name.equals("Mestre"))
 		{
-			masterAction(Choice, player, pet, MousePos, DF) ;
+			masterAction(player, pet, MousePos, DF) ;
 		}/*
 		if (npc.getName().contains("Quest") | npc.getName().contains("Quest"))
 		{
@@ -202,30 +204,60 @@ public class NPCs
 		}*/
 	}
 	
-	public void masterAction(String Choice, Player player, Pet pet, Point MousePos, DrawFunctions DF)
+	public void navigate(String action)
+	{
+		switchOption(action) ;
+		if (action.equals("Enter"))
+		{
+			enterMenu() ;
+		}
+		if (action.equals("Escape") & 0 < menu)
+		{
+			menu += -1 ;
+			window = 0 ;
+		}
+	}
+	
+	public void switchOption(String action)
+	{
+		if (action.equals(Player.ActionKeys[2]))
+		{
+			if (selOption <= options.length - 1)
+			{
+				selOption += 1 ;
+			}
+		}
+		if (action.equals(Player.ActionKeys[0]))
+		{
+			if (0 < selOption)
+			{
+				selOption += -1 ;
+			}
+		}
+	}
+	
+	public void enterMenu()
+	{
+		menu = selOption ;
+	}
+	
+	public void masterAction(Player player, Pet pet, Point MousePos, DrawFunctions DF)
 	{
 		String[] speech = player.allText.get("* " + Name + " *") ;
 		int[] numberOfSpellsAvailablePerPlayerJob = new int[] {14, 15, 15, 14, 14} ;	// TODO olha esse nome...
 		Font NPCTextFont = new Font(Game.MainFontName, Font.BOLD, 20) ;
-		Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "SpeakingBubble.png").getImage() ;
 		if (menu == 0)
 		{
 			if (player.getProJob() == 0 & 50 <= player.getLevel())
 			{
-				DF.DrawSpeech(Pos,  speech[3], NPCTextFont, image, SpeakingBubbleImage, color) ;
+				DF.DrawSpeech(Pos, speech[3], NPCTextFont, image, SpeakingBubbleImage, color) ;
 			}
 			else
 			{
-				DF.DrawSpeech(Pos,  speech[1], NPCTextFont, image, SpeakingBubbleImage, color) ;
+				DF.DrawSpeech(Pos, speech[1], NPCTextFont, image, SpeakingBubbleImage, color) ;
 			}
-			//DF.DrawChoicesWindow(Pos, NPCTextFont, AcceptedChoices[0], image, color) ;
-			if (Choice.equals("1"))
-			{ 
-				menu = 1 ;
-			} else if (Choice.equals("2"))
-			{ 
-				menu = 2 ;
-			}
+			DF.DrawOptionsWindow(Pos, NPCTextFont, selOption, options, image, color) ;
+			
 		}
 		/*else if (menu == 1)
 		{
@@ -299,10 +331,10 @@ public class NPCs
 			{
 				DF.DrawSpeech(Pos, speech[6], NPCTextFont, image, SpeakingBubbleImage, color) ;
 				//DF.DrawChoicesWindow(Pos, NPCTextFont, AcceptedChoices[0], image, color) ;
-				if (Choice.equals("1"))
+				/*if (Choice.equals("1"))
 				{ 
 					menu = 1 ;
-				}
+				}*/
 			}
 			else
 			{

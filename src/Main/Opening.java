@@ -191,7 +191,7 @@ public class Opening
 			{
 				Point Pos = new Point((int) (0.01 * ScreenW + i * sx), (int) (0.28 * ScreenH)) ;
 				Size size = new Size(TextL * font.getSize() * 9 / 20, (int) (12.4 * sy)) ;
-				DF.DrawMenuWindow(Pos, size, null, 0, Player.ClassColors[i], Game.ColorPalette[7]) ;
+				//DF.DrawMenuWindow(Pos, size, null, 0, Player.ClassColors[i], Game.ColorPalette[7]) ;
 				DP.DrawFitText(new Point(Pos.x + 5, Pos.y + 5), sy, "TopLeft", text[11 + i], smallfont, TextL, TextColor) ;	
 			}
 			if (action.equals("0") | action.equals("1") | action.equals("2") | action.equals("3") | action.equals("4"))

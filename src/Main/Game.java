@@ -183,7 +183,8 @@ public class Game extends JPanel implements ActionListener
 			{
 				image = new ImageIcon(ImagesPath + "NPCHoleInCave.png").getImage() ;
 			}
-			npc[i] = new NPCs(ID, Name, Pos, image, Map, PosReltoBuilding, Info, color) ;
+			String[] options = new String[] {"Sim", "Não1545145415"} ;
+			npc[i] = new NPCs(ID, Name, Pos, image, Map, PosReltoBuilding, Info, color, options) ;
 		}
     	
 		return npc ;

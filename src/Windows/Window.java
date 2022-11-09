@@ -117,17 +117,8 @@ public class Window
 		String Title = "Janela genérica" ;
 		Size size = new Size((int)(0.3*screenDim.x), (int)(3*UtilG.TextH(font.getSize()))) ;
 		Point windowCenter = new Point((int) (pos.x + 0.5*screenDim.x), (int) (pos.y - screenDim.y - 0.5*3*UtilG.TextH(font.getSize()))) ;
-		//if (type == 0)
-		//{
-			DP.DrawRoundRect(pos, "TopLeft", size, 3, Game.ColorPalette[7], Game.ColorPalette[2], true) ;
-			//DP.DrawRoundRect(windowCenter, "Center", size[0], size[1], 3, Game.ColorPalette[7], Game.ColorPalette[2], true) ;
-			DP.DrawText(windowCenter, "Center", DrawPrimitives.OverallAngle, Title, font, Game.ColorPalette[9]) ;
-		//}
-		//if (type == 1)
-		//{
-		//	int ImageW = MenuWindow1.getWidth(null), ImageH = MenuWindow1.getHeight(null) ;
-		//	DP.DrawImage(MenuWindow1, pos, new float[] {(float) L / ImageW, (float) H / ImageH}, "TopLeft") ;
-		//}
+		DP.DrawRoundRect(pos, "TopLeft", size, 3, Game.ColorPalette[7], Game.ColorPalette[2], true) ;
+		DP.DrawText(windowCenter, "Center", DrawPrimitives.OverallAngle, Title, font, Game.ColorPalette[9]) ;
 	}
 	
 	public void display(DrawPrimitives DP)
@@ -141,7 +132,6 @@ public class Window
 		else
 		{
 			drawGenericWindow(DP) ;
-			//System.out.println("Tentando mostrar uma janela que não possui imagem") ;
 		}
 	}
 }

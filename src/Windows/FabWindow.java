@@ -15,10 +15,10 @@ import Main.Game;
 import Utilities.Size;
 import Utilities.UtilS;
 
-public class BookWindow extends Window
+public class FabWindow extends Window
 {
     public static Image image ;
-	public BookWindow()
+	public FabWindow()
 	{
 		super(null, 0, 0, 0, 0) ;
 		image = new ImageIcon(Game.ImagesPath + "Book.png").getImage() ;

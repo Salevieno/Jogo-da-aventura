@@ -129,14 +129,14 @@ public class Settings extends Window
 		float overallAngle = DrawPrimitives.OverallAngle ;
 		Size size = new Size((int)(0.5*screenSize.x), (int)Math.max(0.34*screenSize.y, Player.ActionKeys.length*(UtilG.TextH(screenSize.x / 40 + 2) + 4) + 8)) ;
 		Font font = new Font("SansSerif", Font.BOLD, size.x / 20 + 2) ;
-		Point Pos = new Point((int)(0.4*screenSize.x), (int)(0.4*screenSize.y)) ;
-		Point TextPos = new Point(Pos.x + 5, Pos.y + 5) ;
+		Point pos = new Point((int)(0.4*screenSize.x), (int)(0.4*screenSize.y)) ;
+		Point TextPos = new Point(pos.x + 5, pos.y + 5) ;
 		int TextH = UtilG.TextH(font.getSize()) ;
 		int Sx = 7 * size.x / 8, Sy = TextH + 4 ;
 		Color[] TextColor = new Color[3 + Player.ActionKeys.length] ;
 		Arrays.fill(TextColor, colorPalette[5]) ;
 		TextColor[item] = colorPalette[3] ;
-		DP.DrawRoundRect(Pos, "TopLeft", size, 3, colorPalette[7], colorPalette[8], true) ;
+		DP.DrawImage(image, pos, "Center") ;
 		if (menu == 0)
 		{
 			for (int i = 0 ; i <= numberItems - 1 ; i += 1)

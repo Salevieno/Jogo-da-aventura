@@ -44,7 +44,7 @@ import Utilities.UtilS;
 import Windows.AttributesWindow;
 import Windows.Bag;
 import Windows.Bestiary;
-import Windows.BookWindow;
+import Windows.FabWindow;
 import Windows.HintsWindow;
 import Windows.MapWindow;
 import Windows.QuestWindow;
@@ -61,7 +61,7 @@ public class Player extends LiveBeing
 	private Bag bag ;
 	private Settings settings ;
 	private MapWindow map ;
-	private BookWindow fabWindow ;
+	private FabWindow fabWindow ;
 	private QuestWindow questWindow ;
 	private HintsWindow hintsWindow ;
 	private Bestiary bestiary ;
@@ -143,7 +143,7 @@ public class Player extends LiveBeing
 			}
 		}
 		quest = null ;
-		fabWindow = new BookWindow() ;
+		fabWindow = new FabWindow() ;
 		map = new MapWindow() ;
 		hintsWindow = new HintsWindow() ;
 		bestiary = new Bestiary() ;
@@ -163,7 +163,7 @@ public class Player extends LiveBeing
 		questSkills.put("Vulcão", false) ;
 		questSkills.put("Terra das neves", false) ;
 		questSkills.put("Shovel", false) ;
-		questSkills.put("Book", false) ;
+		questSkills.put("Fab window", false) ;
 		questSkills.put("Ride", false) ;
 		questSkills.put("Dragon's aura", false) ;
 		questSkills.put("Bestiary", false) ;
@@ -1873,41 +1873,39 @@ public class Player extends LiveBeing
 		Color[] colorPalette = Game.ColorPalette ;
 		float OverallAngle = DrawPrimitives.OverallAngle ;
 		Font font = new Font("SansSerif", Font.BOLD, 13) ;
-		String[] IconKey = new String[] {Player.ActionKeys[9], Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7]} ;
+		String[] IconKey = new String[] {Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7]} ;
 		Color TextColor = colorPalette[7] ;
 		
 		DP.DrawRect(new Point(screen.getSize().x, screen.getSize().y), "BotLeft", new Size(40, screen.getSize().y), 1, colorPalette[9], colorPalette[9], false) ;	// Background
 		DrawSpellsBar(this, spell, Spells.cooldownImage, Spells.slotImage, MousePos, DP) ;
-		for (int i = 0 ; i <= 3 - 1 ; i += 1)	// Options, bag, and quest
-		{
-			icons[i].DrawImage(OverallAngle, -1, MousePos, DP) ;
-			if (IconKey[i] != null)
-			{
-				DP.DrawText(icons[i].getPos(), "BotLeft", OverallAngle, IconKey[i], font, TextColor) ;
-			}
-		}
-		if (questSkills.get(PA.getMap().getContinentName(this)))	// Map
+		icons[0].DrawImage(OverallAngle, -1, MousePos, DP) ;		// settings
+		icons[1].DrawImage(OverallAngle, -1, MousePos, DP) ;		// bag
+		DP.DrawText(icons[1].getPos(), "BotLeft", OverallAngle, IconKey[0], font, TextColor) ;
+		icons[2].DrawImage(OverallAngle, -1, MousePos, DP) ;		// quest
+		DP.DrawText(icons[2].getPos(), "BotLeft", OverallAngle, IconKey[1], font, TextColor) ;
+		if (questSkills.get(PA.getMap().getContinentName(this)))	// map
 		{
 			icons[3].DrawImage(OverallAngle, 0, MousePos, DP) ;
-			DP.DrawText(icons[3].getPos(), "BotLeft", OverallAngle, IconKey[3], font, TextColor) ;
+			DP.DrawText(icons[3].getPos(), "BotLeft", OverallAngle, IconKey[2], font, TextColor) ;
 		}
-		if (fabWindow != null)	// book
+		if (fabWindow != null)										// book
 		{
 			icons[4].DrawImage(OverallAngle, 0, MousePos, DP) ;
 		}
-		display(icons[5].getPos(), new float[] {1, 1}, Player.MoveKeys[0], false, DP) ;						// Player
+		
+		// player
+		display(icons[5].getPos(), new float[] {1, 1}, Player.MoveKeys[0], false, DP) ;
 		DP.DrawText(icons[5].getPos(), "BotLeft", OverallAngle, Player.ActionKeys[5], font, TextColor) ;
 		if (0 < attPoints)
 		{
 			DP.DrawImage(icons[5].getImage(), new Point(icons[5].getPos().x - icons[5].getImage().getWidth(null), icons[5].getPos().y), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
 		}
+		
+		// pet
 		if (pet != null)
 		{
-			if (0 < pet.getLife()[0])
-			{
-				pet.display(icons[6].getPos(), new float[] {1, 1}, DP) ;
-				DP.DrawText(icons[6].getPos(), "BotLeft", OverallAngle, Player.ActionKeys[8], font, TextColor) ;
-			}
+			pet.display(icons[6].getPos(), new float[] {1, 1}, DP) ;
+			DP.DrawText(icons[6].getPos(), "BotLeft", OverallAngle, Player.ActionKeys[8], font, TextColor) ;
 		}
 		
 		// Hotkeys

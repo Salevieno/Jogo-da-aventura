@@ -3,10 +3,8 @@ import java.awt.Color ;
 import java.awt.Font ;
 import java.awt.Graphics ;
 import java.awt.Graphics2D ;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image ;
 import java.awt.Point;
-import java.util.Arrays ;
 import java.util.Map;
 
 import javax.swing.ImageIcon ;
@@ -16,21 +14,12 @@ import GameComponents.Icon ;
 import GameComponents.Items ;
 import GameComponents.Maps ;
 import GameComponents.NPCs ;
-import GameComponents.Quests ;
-import Items.Item;
-import LiveBeings.CreatureTypes;
-import LiveBeings.Creatures;
 import LiveBeings.Pet;
 import LiveBeings.Player;
-import LiveBeings.Spells;
-import Screen.Screen;
 import Screen.Sky;
-import Screen.SkyComponent;
 import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
-import Windows.Bag;
-import Windows.Settings;
 import Main.Game;
 
 public class DrawFunctions
@@ -41,14 +30,14 @@ public class DrawFunctions
 	private Graphics2D G ;
 
 	private float OverallAngle ;
-	private Color[] MenuColor ;		// Colors for menus
-	private Image MenuWindow1 ;
 	private Image ArrowIconImage ;
 	
 	public static Image[] ElementImages ;
 	public static Color[] MapsTypeColor ;	// 0: free, 1: wall, 2: water, 3: tree, 4: grass, 5: rock, 6: crystal, 7: stalactite, 8: volcano, 9: lava, 10: ice, 11: chest, 12: berry, 13: herb, 14: wood, 15: metal, 16: invisible wall
 	public static Color[] ContinentsColor ;	// 0: Forest, 1: Cave, 2: Island, 3: Volcano, 4: Snowland, 5: Special
 	public static Color[] ElementColor ; 	// 0: neutral, 1: water, 2: fire, 3: plant, 4: earth, 5: air, 6: thunder, 7: light, 8: dark, 9: snow
+	private static Image menuWindow ;
+	private static Image buttonGeneral ;
 	
 	public DrawFunctions(Graphics g)
 	{
@@ -60,8 +49,6 @@ public class DrawFunctions
 	public void InitializeVariables(String ImagesPath)
 	{
 		OverallAngle = DrawPrimitives.OverallAngle ;
-		MenuColor = new Color[] {ColorPalette[20], ColorPalette[0], ColorPalette[20]} ;		
-		MenuWindow1 = new ImageIcon(ImagesPath + "MenuWindow1.png").getImage() ;
 		ArrowIconImage = new ImageIcon(ImagesPath + "ArrowIcon.png").getImage() ;
 		
 		ElementColor = new Color[10] ;
@@ -79,6 +66,8 @@ public class DrawFunctions
 		Image ElemDark = new ImageIcon(ImagesPath + "ElementDark.png").getImage() ;
 		Image ElemSnow = new ImageIcon(ImagesPath + "ElementSnow.png").getImage() ;
 		ElementImages = new Image[] {ElemNeutral, ElemWater, ElemFire, ElemPlant, ElemEarth, ElemAir, ElemThunder, ElemLight, ElemDark, ElemSnow} ;
+		menuWindow = new ImageIcon(ImagesPath + "MenuWindow.png").getImage() ;
+		buttonGeneral = new ImageIcon(ImagesPath + "ButtonGeneral.png").getImage() ;
 	}	
 	public float getOverallAngle() {return OverallAngle ;}
 
@@ -104,9 +93,10 @@ public class DrawFunctions
 	
 	
 
-	public void DrawMenuWindow(Point Pos, Size size, String Title, int type, Color color1, Color color2)
+	public void DrawMenuWindow(Point Pos, float[] scale, String Title, int type, Color color1, Color color2)
 	{
-		if (type == 0)
+		DP.DrawImage(menuWindow, Pos, scale, "TopLeft") ;
+		/*if (type == 0)
 		{
 			DP.DrawRoundRect(Pos, "TopLeft", size, 3, color1, color2, true) ;
 			if (Title != null)
@@ -120,9 +110,7 @@ public class DrawFunctions
 		}
 		if (type == 1)
 		{
-			int ImageW = MenuWindow1.getWidth(null), ImageH = MenuWindow1.getHeight(null) ;
-			DP.DrawImage(MenuWindow1, Pos, new float[] {(float) size.x / ImageW, (float) size.y / ImageH}, "TopLeft") ;
-		}
+		}*/
 	}
 	/*public void DrawWindowArray(int[] NumberOfWindows, Point InitialPos, String Alignment, Size size, float sx, float sy, int thickness, Color[] colors, int maxwindows)
 	{
@@ -138,27 +126,31 @@ public class DrawFunctions
 			}
 		}
 	}*/
-	public void DrawChoicesWindow(Point NPCPos, Font font, int selChoice, String[] Choices, Image NPCimage, Color color)
+	public void DrawOptionsWindow(Point NPCPos, Font font, int selOption, String[] options, Image NPCimage, Color color)
 	{
 		Point Pos = new Point((int) (NPCPos.x - NPCimage.getWidth(null) - 10), NPCPos.y) ;
-		float Lmax = 0 ;
-		for (int i = 0 ; i <= Choices.length - 1 ; i += 1)
+		Size offset = new Size(10, 10) ;
+		int Lmax = 0 ;
+		for (int i = 0 ; i <= options.length - 1 ; i += 1)
 		{
-			Lmax = Math.max(Lmax, Choices[i].length()) ;
+			Lmax = Math.max(Lmax, UtilG.TextL(options[i], font, G)) ;
 		}
 		int Sy = 2 * UtilG.TextH(font.getSize()) ;
-		Size size = new Size((int)(Lmax * 0.012 * screenSize.x + 0.01 * screenSize.x), 10 + Choices.length * Sy) ;
-		
-		DrawMenuWindow(Pos, size, null, 0, ColorPalette[7], ColorPalette[7]) ;
-		for (int i = 0 ; i <= Choices.length - 1 ; i += 1)
+		Size windowSize = new Size(Lmax + offset.x, options.length * Sy + offset.y) ;
+
+		int ImageW = menuWindow.getWidth(null), ImageH = menuWindow.getHeight(null) ;
+		DrawMenuWindow(Pos, new float[] {1, 1}, null, 0, ColorPalette[7], ColorPalette[7]) ;	// (float) windowSize.x / ImageW, (float) windowSize.y / ImageH
+		for (int i = 0 ; i <= options.length - 1 ; i += 1)
 		{
-			if (i == selChoice)
+			Point textPos = new Point(Pos.x + 5, Pos.y + 5 + i * Sy) ;
+			if (i == selOption)
 			{
-				DP.DrawText(new Point(Pos.x + 5, Pos.y + 5 + i * Sy), "TopLeft", 0, Choices[i], font, ColorPalette[6]) ;
+				DP.DrawImage(buttonGeneral, textPos, new float[] {Lmax / 42, 1}, "TopLeft") ;
+				DP.DrawText(textPos, "TopLeft", OverallAngle, options[i], font, ColorPalette[5]) ;
 			}
 			else
 			{
-				DP.DrawText(new Point(Pos.x + 5, Pos.y + 5 + i * Sy), "TopLeft", 0, Choices[i], font, color) ;	
+				DP.DrawText(textPos, "TopLeft", OverallAngle, options[i], font, color) ;	
 			}
 		}
 	}
