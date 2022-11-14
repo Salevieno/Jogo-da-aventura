@@ -1,6 +1,7 @@
 package Items;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import Main.Game;
 import Utilities.UtilG;
@@ -22,12 +23,11 @@ public class GeneralItem extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		int NumGeneralItems = UtilG.count(Game.CSVPath + "Item_GeneralItem.csv") ;
-		String[][] Input = UtilG.ReadTextFile(Game.CSVPath + "Item_GeneralItem.csv", NumGeneralItems) ;
-		AllGeneralItems = new GeneralItem[NumGeneralItems] ;
-		for (int p = 0; p <= NumGeneralItems - 1; p += 1)
+		ArrayList<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_GeneralItem.csv") ;
+		AllGeneralItems = new GeneralItem[input.size()] ;
+		for (int p = 0; p <= AllGeneralItems.length - 1; p += 1)
 		{
-			AllGeneralItems[p] = new GeneralItem(Integer.parseInt(Input[p][0]), Input[p][1], Input[p][3], Integer.parseInt(Input[p][5]), Float.parseFloat(Input[p][6]));
+			AllGeneralItems[p] = new GeneralItem(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]));
 		}		
 	}
 

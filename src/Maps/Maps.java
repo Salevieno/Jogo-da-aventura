@@ -1,4 +1,4 @@
-package GameComponents ;
+package Maps ;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -9,6 +9,9 @@ import java.util.Arrays;
 
 import javax.swing.ImageIcon ;
 
+import GameComponents.Buildings;
+import GameComponents.MapElements;
+import GameComponents.NPCs;
 import Graphics.DrawPrimitives;
 import LiveBeings.CreatureTypes;
 import LiveBeings.Creatures;
@@ -22,7 +25,6 @@ import Utilities.UtilS;
 public class Maps 
 {
 	private String Name ;
-	private int id ;
 	private int Continent ;
 	private Image image ;
 	private MapElements[] MapElem ;		// 0 = free, 1 = wall, 2 = water, 3 = tree, 4 = grass, 5 = rock, 6 = crystal, 7 = stalactite, 8 = volcano, 9 = lava, 10 = ice, 11 = chest, 12 = berry, 13 = herb, 14 = wood, 15 = metal, 16 = invisible wall
@@ -32,20 +34,53 @@ public class Maps
 	private int[] CollectibleCounter ;	// [Berry, herb, wood, metal]
     private int[] CollectibleDelay ;	// [Berry, herb, wood, metal]
 	private int[] Connections ;
-	private CreatureTypes[] creatureTypes ;
-	private Creatures[] creatures ;
+	private ArrayList<CreatureTypes> creatureTypes ;
 	public Buildings[] building ;
 	public ArrayList<NPCs> NPCsInMap ;
-	
+	// TODO criar classes City, Field e SpecialField extending Map ?
 	public static int[] MusicID = new int[] {0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 11, 11, 11, 11, 11, 11} ;  	 
 	public static Image[] CollectibleImage ;
 	public static Image[] GroundImage ;
 	public static String[] CollectibleTypes = new String[] {"Berry", "Herb", "Wood", "Metal"} ;
 	
-	public Maps(String Name, int id, int Continent, Image image, MapElements[] MapElem, int CollectibleLevel, int[] CollectibleDelay, int[] Connections, CreatureTypes[] creatureTypes, Creatures[] creatures)
+	
+	/*
+	 * buildings pos
+	 * ID	Name	Map	Pos x	Pos y
+0	Hospital	0	0.1	0.7
+1	Hospital	1	0.5	0.7
+2	Hospital	2	0.18	0.4
+3	Hospital	3	0.06	0.46
+4	Hospital	4	0.2	0.7
+5	Store	0	0.05	0.64
+6	Store	1	0.1	0.8
+7	Store	2	0.2	0.8
+8	Store	3	0.45	0.8
+9	Store	4	0.26	0.58
+10	Craft	0	0.36	0.44
+11	Craft	1	0.03	0.46
+12	Craft	2	0.3	0.64
+13	Craft	3	0.74	0.71
+14	Craft	4	0.14	0.8
+15	Bank	0	0.6	0.48
+16	Bank	1	0.26	0.49
+17	Bank	2	0.6	0.72
+18	Bank	3	0.71	0.46
+19	Bank	4	0.56	0.58
+20	Forge	0	0.8	0.35
+21	Forge	1	0.8	0.6
+22	Forge	2	0.67	0.9
+23	Forge	3	0.26	0.6
+24	Forge	4	0.79	0.42
+25	Sign	0	0.8	0.62
+26	Sign	1	0.55	0.26
+27	Sign	2	0.05	0.55
+28	Sign	3	0.09	0.54
+29	Sign	4	0.7	0.26
+	 * */
+	public Maps(String Name, int Continent, int[] Connections, Image image)
 	{
 		this.Name = Name ;
-		this.id = id ;
 		this.Continent = Continent ;
 		this.image = image ;
 		this.MapElem = MapElem ;
@@ -54,7 +89,7 @@ public class Maps
 		this.CollectibleDelay = CollectibleDelay ;
 		this.Connections = Connections ;
 		this.creatureTypes = creatureTypes ;
-		this.creatures = creatures ;
+		//this.creatures = creatures ;
 		building = null ;
 		NPCsInMap = new ArrayList<NPCs>() ;
 		
@@ -66,7 +101,6 @@ public class Maps
 	}
 
 	public String getName() {return Name ;}
-	public int getid() {return id ;}
 	public int getContinent() {return Continent ;}
 	public Image getimage() {return image ;}
 	public MapElements[] getMapElem() {return MapElem ;}
@@ -76,16 +110,16 @@ public class Maps
 	public int[] getConnections() {return Connections ;}	
 	public int[] getCollectibleCounter() {return CollectibleCounter ;}	
 	public int[] getCollectibleDelay() {return CollectibleDelay ;}
-	public CreatureTypes[] getCreatureTypes() {return creatureTypes ;}
-	public Creatures[] getCreatures() {return creatures ;}
+	public ArrayList<CreatureTypes> getCreatureTypes() {return creatureTypes ;}
 	public ArrayList<NPCs> getNPCs() {return NPCsInMap ;}
 	public Buildings[] getBuildings() {return building ;}
 	public String getContinentName(Player player)
 	{ 
 		String[] ContinentNames = player.allText.get("* Nomes dos continentes *") ;
+		System.out.println(player.allText);
+		System.out.println(Arrays.toString(player.allText.get("* Nomes dos continentes *")));
 		return ContinentNames[Continent] ;
 	}
-	public void setCreatures(Creatures[] newValue) {creatures = newValue ;}
 	
 	public static void InitializeStaticVars(String ImagesPath)
 	{
@@ -115,7 +149,7 @@ public class Maps
 		//float RangeX = (float)(0.8), RangeY = (float)(1 - MinY) ;
 		if (Continent == 0)
 		{
-			if (id == 2)	// archers' city
+			if (Name.equals("City of archers"))
 			{
 				groundType = new Object[(screenDim.y - SkyHeight) * (screenDim.x * 1 / 5)] ;
 				for (int j = SkyHeight ; j <= screenDim.y - 1 ; j += 1)
@@ -126,7 +160,7 @@ public class Maps
 					}
 				}
 			}
-			if (id == 4)	// thieves' city
+			if (Name.equals("City of thieves"))
 			{
 				groundType = new Object[76] ;
 				for (int j = 3 ; j <= 21 ; j += 1)
@@ -279,7 +313,7 @@ public class Maps
 			}
 			
 			//TODO essa � uma fun��o da sign building
-			Point SignPos = UtilS.BuildingPos(building, id, "Sign") ;
+			/*Point SignPos = UtilS.BuildingPos(building, id, "Sign") ;
 			if (building[5].playerIsInside(playerPos))
 			{			
 				int[][] SignTextPos = new int[][] {{SignPos.x - 200, SignPos.y - 150}, {SignPos.x + 50, SignPos.y - 50}, {SignPos.x + 50, SignPos.y - 50}, {SignPos.x + 100, SignPos.y - 50}, {SignPos.x - 540, SignPos.y - 50}} ;
@@ -288,7 +322,7 @@ public class Maps
 				Size menuSize = new Size(200, 200) ;
 				DP.DrawRoundRect(Pos, "TopLeft", menuSize, 3, colorPalette[4], colorPalette[4], true) ;			
 				DP.DrawFitText(new Point(Pos.x + 10, Pos.y - (int)(5.5*UtilG.TextH(font.getSize()))), UtilG.TextH(font.getSize()), "BotLeft", signMessage[id + 1], font, 35, colorPalette[5]) ;		
-			}
+			}*/
 		}
  	}
 	
@@ -309,9 +343,9 @@ public class Maps
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
  	
 	public boolean IsACity() {if (Name.contains("City")) {return true ;} else {return false ;}}
-	public boolean hasCreatures()
+	public boolean isAField()
 	{
-		return (getCreatures() != null) ;
+		return (this instanceof FieldMap) ;
 	}
 	public String groundTypeAtPoint(Point pos)
 	{
@@ -360,16 +394,16 @@ public class Maps
     {
 		for (int j = 0 ; j <= npc.length - 1 ; j += 1)
 		{
-			if (npc[j].getMap() == id)
+			/*if (npc[j].getMap() == id)
 			{
 				NPCsInMap.add(npc[j]) ;
-			}
+			}*/
 		}
     }
 	
 	public void InitializeBuildingsInMap(Buildings[] AllBuildings)
 	{
-		Buildings[] allBuildings = Arrays.copyOf(AllBuildings, AllBuildings.length) ;
+		/*Buildings[] allBuildings = Arrays.copyOf(AllBuildings, AllBuildings.length) ;
 		ArrayList<Buildings> buildingsInCity = new ArrayList<Buildings>() ;
 
 		for (int b = 0 ; b <= allBuildings.length - 1 ; b += 1)
@@ -380,20 +414,10 @@ public class Maps
 			}
 		}
 
-		building = buildingsInCity.toArray(new Buildings[buildingsInCity.size()]) ;
+		building = buildingsInCity.toArray(new Buildings[buildingsInCity.size()]) ;*/
 	}
 	
-	public void IncCollectiblesCounter()
-	{
-		for (int m = 0 ; m <= CollectibleCounter.length - 1 ; m += 1)
-		{
-			if (CollectibleCounter[m] < CollectibleDelay[m])
-			{
-				CollectibleCounter[m] += 1 ;
-			}	
-		}
-	}
-	public void CreateCollectible(int MapID, int CollectibleID)
+	/*public void CreateCollectible(int MapID, int CollectibleID)
 	{
 		Screen screen = Game.getScreen() ;
 		float MinX = (float) (0.1), MinY = (float) ((float) screen.getSize().y / (screen.getBorders()[1] - screen.getBorders()[3]) + 0.1) ; 
@@ -409,8 +433,8 @@ public class Maps
     		//int[] randomPos = new int[] {Utg.RandomCoord1D(screen.getDimensions()[0], MinX, RangeX, 1), Utg.RandomCoord1D(screen.getDimensions()[1], MinY, RangeY, 1)} ;
 			//invisible_wall = Utg.AddElem(invisible_wall, new Point(randomPos[0], randomPos[1])) ;	// collider
     	}
-	}
-	public void CreateCollectibles()
+	}*/
+	/*public void CreateCollectibles()
 	{
 		if (id <= 59 & id != 36 & id != 39)
 		{
@@ -423,7 +447,7 @@ public class Maps
 				}	
 			}
 		}
-	}
+	}*/
 	/*public Creatures[] creaturesinmap(Creatures[] creature)
 	{
 		Creatures[] creaturesinmap = null ;
@@ -450,16 +474,5 @@ public class Maps
 				}
 			}
 		}
-	}
-
-	@Override
-	public String toString() {
-		return "Maps [Name=" + Name + ", id=" + id + ", Continent=" + Continent + ", image=" + image + ", MapElem="
-				+ Arrays.toString(MapElem) + ", Type=" + Arrays.toString(Type) + ", groundType="
-				+ Arrays.toString(groundType) + ", CollectibleLevel=" + CollectibleLevel + ", CollectibleCounter="
-				+ Arrays.toString(CollectibleCounter) + ", CollectibleDelay=" + Arrays.toString(CollectibleDelay)
-				+ ", Connections=" + Arrays.toString(Connections) + ", creatureTypes=" + Arrays.toString(creatureTypes)
-				+ ", creatures=" + Arrays.toString(creatures) + ", building=" + Arrays.toString(building)
-				+ ", NPCsInMap=" + NPCsInMap + "]";
 	}
 }

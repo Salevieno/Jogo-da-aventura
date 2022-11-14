@@ -2,6 +2,8 @@ package GameComponents ;
 
 import java.awt.Image ;
 import java.io.IOException ;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon ;
 
 import Utilities.UtilG;
@@ -71,18 +73,6 @@ public class Items
 			NumberOfAllItems += NumberOfItems[i] ;
 		}
 	}
-	public static void CalcNumberOfCraftingItems(String CSVPath)
-	{
-		try
-		{
-			NumberOfCraftingItems = UtilG.count(CSVPath + "Craft.csv") ;
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace() ;
-		}
-	}
 	public static void CalcBagIDs()
 	{
 		BagIDs[0] = 0 ;
@@ -103,47 +93,47 @@ public class Items
 		ArrowElem = new String[NumberOfItems[5]] ;		// [ID]
 		EquipsBonus = new float[NumberOfItems[6]][32] ;	// [ID, Forge level, Life bonus, Mp bonus, PhyAtk bonus, MagAtk bonus, PhyDef bonus, MagDef bonus, Dex bonus, Agi bonus, Crit bonus, Stun bonus, Block bonus, Blood bonus, Poison bonus]
 		EquipsElem = new String[NumberOfItems[6]] ;
-		String[][] PotionsInput = UtilG.ReadTextFile(CSVPath + "Potions.csv", Items.NumberOfItems[0]) ;	
+		ArrayList<String[]> PotionsInput = UtilG.ReadcsvFile(CSVPath + "Potions.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[0] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= 3 - 1 ; ++j)
 			{
-				PotionsHealing[i][j] = Float.parseFloat(PotionsInput[i][j]) ;
+				PotionsHealing[i][j] = Float.parseFloat(PotionsInput.get(i)[j]) ;
 			}
 		}
-		String[][] PetItemsInput = UtilG.ReadTextFile(CSVPath + "PetItems.csv", Items.NumberOfItems[3]) ;	
+		ArrayList<String[]> PetItemsInput = UtilG.ReadcsvFile(CSVPath + "PetItems.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[3] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= 4 - 1 ; ++j)
 			{
-				PetItems[i][j] = Float.parseFloat(PetItemsInput[i][j]) ;
+				PetItems[i][j] = Float.parseFloat(PetItemsInput.get(i)[j]) ;
 			}
 		}
-		String[][] FoodInput = UtilG.ReadTextFile(CSVPath + "Food.csv", Items.NumberOfItems[4]) ;	
+		ArrayList<String[]> FoodInput = UtilG.ReadcsvFile(CSVPath + "Food.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[4] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= 4 - 1 ; ++j)
 			{
-				FoodSatiation[i][j] = Float.parseFloat(FoodInput[i][j]) ;
+				FoodSatiation[i][j] = Float.parseFloat(FoodInput.get(i)[j]) ;
 			}
 		}
-		String[][] ArrowInput = UtilG.ReadTextFile(CSVPath + "ArrowPower.csv", Items.NumberOfItems[5]) ;	
+		ArrayList<String[]> ArrowInput = UtilG.ReadcsvFile(CSVPath + "ArrowPower.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[5] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= ArrowPower[i].length - 1 ; ++j)
 			{
-				ArrowPower[i][j] = Float.parseFloat(ArrowInput[i][j + 1]) ;
+				ArrowPower[i][j] = Float.parseFloat(ArrowInput.get(i)[j + 1]) ;
 			}
-			ArrowElem[i] = ArrowInput[i][2] ;
+			ArrowElem[i] = ArrowInput.get(i)[2] ;
 		}
-		String[][] EquipsInput = UtilG.ReadTextFile(CSVPath + "Equips.csv", Items.NumberOfItems[6]) ;	
+		ArrayList<String[]> EquipsInput = UtilG.ReadcsvFile(CSVPath + "Equips.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[6] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= 31 - 1 ; ++j)
 			{
-				EquipsBonus[i][j] = Float.parseFloat(EquipsInput[i][j]) ;
+				EquipsBonus[i][j] = Float.parseFloat(EquipsInput.get(i)[j]) ;
 			}
-			EquipsElem[i] = EquipsInput[i][31] ;
+			EquipsElem[i] = EquipsInput.get(i)[31] ;
 		}
 	}
 	public static void CalcCrafting(String CSVPath)
@@ -153,16 +143,16 @@ public class Items
 		CraftingIngredientAmounts = new int[Items.NumberOfCraftingItems][10] ;
 		CraftingProducts = new int[Items.NumberOfCraftingItems][10] ;
 		CraftingProductAmounts = new int[Items.NumberOfCraftingItems][10] ;
-		String[][] CraftingInput = UtilG.ReadTextFile(CSVPath + "Craft.csv", Items.NumberOfCraftingItems) ;	
+		ArrayList<String[]> CraftingInput = UtilG.ReadcsvFile(CSVPath + "Craft.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfCraftingItems - 1 ; i += 1)
 		{
-			CraftingNPCIDs[i] = Integer.parseInt(CraftingInput[i][0]) ;
+			CraftingNPCIDs[i] = Integer.parseInt(CraftingInput.get(i)[0]) ;
 			for (int j = 0 ; j <= 10 - 1 ; ++j)
 			{
-				CraftingIngredients[i][j] = Integer.parseInt(CraftingInput[i][2*j + 1]) ;
-				CraftingIngredientAmounts[i][j] = Integer.parseInt(CraftingInput[i][2*j + 2]) ;
-				CraftingProducts[i][j] = Integer.parseInt(CraftingInput[i][2*j + 21]) ;
-				CraftingProductAmounts[i][j] = Integer.parseInt(CraftingInput[i][2*j + 22]) ;
+				CraftingIngredients[i][j] = Integer.parseInt(CraftingInput.get(i)[2*j + 1]) ;
+				CraftingIngredientAmounts[i][j] = Integer.parseInt(CraftingInput.get(i)[2*j + 2]) ;
+				CraftingProducts[i][j] = Integer.parseInt(CraftingInput.get(i)[2*j + 21]) ;
+				CraftingProductAmounts[i][j] = Integer.parseInt(CraftingInput.get(i)[2*j + 22]) ;
 			}
 		}
 	}
@@ -173,10 +163,10 @@ public class Items
 		ItemsElement = new String[ItemsWithEffects.length] ;
 		ItemsEffects = new float[ItemsWithEffects.length][15][3] ;
 		ItemsBuffs = new float[ItemsWithEffects.length][14][13] ;
-		String[][] ItemsEffectsInput = UtilG.ReadTextFile(CSVPath + "ItemsEffects.csv", ItemsWithEffects.length) ;
+		ArrayList<String[]> ItemsEffectsInput = UtilG.ReadcsvFile(CSVPath + "ItemsEffects.csv") ;
 		for (int i = 0 ; i <= ItemsWithEffects.length - 1 ; ++i)
 		{
-			ItemsWithEffects[i] = Integer.parseInt(ItemsEffectsInput[i][0]) ;
+			ItemsWithEffects[i] = Integer.parseInt(ItemsEffectsInput.get(i)[0]) ;
 			int BuffCont = 0 ;
 			for (int j = 0 ; j <= 14 - 1 ; j += 1)
 			{
@@ -184,22 +174,22 @@ public class Items
 				{
 					for (int k = 0 ; k <= 13 - 1 ; k += 1)
 					{
-						ItemsBuffs[i][j][k] = Float.parseFloat(ItemsEffectsInput[i][BuffCont + 18]) ;
+						ItemsBuffs[i][j][k] = Float.parseFloat(ItemsEffectsInput.get(i)[BuffCont + 18]) ;
 						BuffCont += 1 ;
 					}
 				}
 				else
 				{
-					ItemsBuffs[i][j][0] = Float.parseFloat(ItemsEffectsInput[i][BuffCont + 18]) ;
-					ItemsBuffs[i][j][1] = Float.parseFloat(ItemsEffectsInput[i][BuffCont + 19]) ;
-					ItemsBuffs[i][j][2] = Float.parseFloat(ItemsEffectsInput[i][BuffCont + 20]) ;
-					ItemsBuffs[i][j][12] = Float.parseFloat(ItemsEffectsInput[i][BuffCont + 21]) ;
+					ItemsBuffs[i][j][0] = Float.parseFloat(ItemsEffectsInput.get(i)[BuffCont + 18]) ;
+					ItemsBuffs[i][j][1] = Float.parseFloat(ItemsEffectsInput.get(i)[BuffCont + 19]) ;
+					ItemsBuffs[i][j][2] = Float.parseFloat(ItemsEffectsInput.get(i)[BuffCont + 20]) ;
+					ItemsBuffs[i][j][12] = Float.parseFloat(ItemsEffectsInput.get(i)[BuffCont + 21]) ;
 					BuffCont += 4 ;
 				}
 			}
-			ItemsTargets[i] = ItemsEffectsInput[i][1] ;
-			ItemsElement[i] = ItemsEffectsInput[i][2] ;
-			ItemsEffects[i] = new float[][] {{1, Float.parseFloat(ItemsEffectsInput[i][3]), 0}, {1, Float.parseFloat(ItemsEffectsInput[i][4]), Float.parseFloat(ItemsEffectsInput[i][5])}, {1, Float.parseFloat(ItemsEffectsInput[i][6]), Float.parseFloat(ItemsEffectsInput[i][7])}, {Float.parseFloat(ItemsEffectsInput[i][8]), Float.parseFloat(ItemsEffectsInput[i][9]), Float.parseFloat(ItemsEffectsInput[i][10])}, {Float.parseFloat(ItemsEffectsInput[i][11]), Float.parseFloat(ItemsEffectsInput[i][12]), Float.parseFloat(ItemsEffectsInput[i][13])}, {1, Float.parseFloat(ItemsEffectsInput[i][14]), Float.parseFloat(ItemsEffectsInput[i][15])}, {1, Float.parseFloat(ItemsEffectsInput[i][16]), Float.parseFloat(ItemsEffectsInput[i][17])}} ;			
+			ItemsTargets[i] = ItemsEffectsInput.get(i)[1] ;
+			ItemsElement[i] = ItemsEffectsInput.get(i)[2] ;
+			ItemsEffects[i] = new float[][] {{1, Float.parseFloat(ItemsEffectsInput.get(i)[3]), 0}, {1, Float.parseFloat(ItemsEffectsInput.get(i)[4]), Float.parseFloat(ItemsEffectsInput.get(i)[5])}, {1, Float.parseFloat(ItemsEffectsInput.get(i)[6]), Float.parseFloat(ItemsEffectsInput.get(i)[7])}, {Float.parseFloat(ItemsEffectsInput.get(i)[8]), Float.parseFloat(ItemsEffectsInput.get(i)[9]), Float.parseFloat(ItemsEffectsInput.get(i)[10])}, {Float.parseFloat(ItemsEffectsInput.get(i)[11]), Float.parseFloat(ItemsEffectsInput.get(i)[12]), Float.parseFloat(ItemsEffectsInput.get(i)[13])}, {1, Float.parseFloat(ItemsEffectsInput.get(i)[14]), Float.parseFloat(ItemsEffectsInput.get(i)[15])}, {1, Float.parseFloat(ItemsEffectsInput.get(i)[16]), Float.parseFloat(ItemsEffectsInput.get(i)[17])}} ;			
 		}
 	}
 

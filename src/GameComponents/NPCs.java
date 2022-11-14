@@ -18,6 +18,7 @@ import LiveBeings.Pet;
 import LiveBeings.Player;
 import LiveBeings.Spells;
 import Main.Game;
+import Maps.Maps;
 import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
@@ -222,7 +223,7 @@ public class NPCs
 	{
 		if (action.equals(Player.ActionKeys[2]))
 		{
-			if (selOption <= options.length - 1)
+			if (selOption <= options.length - 2)
 			{
 				selOption += 1 ;
 			}
@@ -246,17 +247,18 @@ public class NPCs
 		String[] speech = player.allText.get("* " + Name + " *") ;
 		int[] numberOfSpellsAvailablePerPlayerJob = new int[] {14, 15, 15, 14, 14} ;	// TODO olha esse nome...
 		Font NPCTextFont = new Font(Game.MainFontName, Font.BOLD, 20) ;
+		//System.out.println(selOption + " " + menu) ;
 		if (menu == 0)
 		{
 			if (player.getProJob() == 0 & 50 <= player.getLevel())
 			{
-				DF.DrawSpeech(Pos, speech[3], NPCTextFont, image, SpeakingBubbleImage, color) ;
+				//DF.DrawSpeech(Pos, speech[3], NPCTextFont, image, SpeakingBubbleImage, color) ;
 			}
 			else
 			{
-				DF.DrawSpeech(Pos, speech[1], NPCTextFont, image, SpeakingBubbleImage, color) ;
+				//DF.DrawSpeech(Pos, speech[1], NPCTextFont, image, SpeakingBubbleImage, color) ;
 			}
-			DF.DrawOptionsWindow(Pos, NPCTextFont, selOption, options, image, color) ;
+			//DF.DrawOptionsWindow(Pos, NPCTextFont, selOption, options, image, color) ;
 			
 		}
 		/*else if (menu == 1)
@@ -325,11 +327,12 @@ public class NPCs
 					}
 				}
 			}	
-		}*/ else if (menu == 2)
+		}*/
+		else if (menu == 2)
 		{
 			if (player.getProJob() == 0 & 50 <= player.getLevel())
 			{
-				DF.DrawSpeech(Pos, speech[6], NPCTextFont, image, SpeakingBubbleImage, color) ;
+				//DF.DrawSpeech(Pos, speech[6], NPCTextFont, image, SpeakingBubbleImage, color) ;
 				//DF.DrawChoicesWindow(Pos, NPCTextFont, AcceptedChoices[0], image, color) ;
 				/*if (Choice.equals("1"))
 				{ 
@@ -338,11 +341,12 @@ public class NPCs
 			}
 			else
 			{
-				DF.DrawSpeech(Pos, speech[2], NPCTextFont, image, SpeakingBubbleImage, color) ;
+				//DF.DrawSpeech(Pos, speech[2], NPCTextFont, image, SpeakingBubbleImage, color) ;
 			}
-		} else if (menu == 3)
+		}
+		else if (menu == 3)
 		{
-			DF.DrawSpeech(Pos, speech[5] + " " + speech[player.getProJob() + 2*player.getJob()] + "!", NPCTextFont, image, SpeakingBubbleImage, color) ;
+			//DF.DrawSpeech(Pos, speech[5] + " " + speech[player.getProJob() + 2*player.getJob()] + "!", NPCTextFont, image, SpeakingBubbleImage, color) ;
 		}
 	}
 	

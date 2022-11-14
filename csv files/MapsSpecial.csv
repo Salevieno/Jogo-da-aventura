@@ -1,0 +1,3 @@
+ID,Name,Continent,Collectible level,Berry delay,Herb delay,Wood delay,Metal delay,Top left map ID,Left top map ID,Left bottom map ID,Bottom left map ID,Bottom right map ID,Right bottom map ID,Right top map ID,Top right map ID
+39,Cave 10,1,-1,4000,12800,15360,25600,-1,37,38,-1,-1,-1,-1,-1
+60,Secret island 1,5,-1,4000,12800,15360,25600,66,-1,-1,-1,-1,-1,-1,66

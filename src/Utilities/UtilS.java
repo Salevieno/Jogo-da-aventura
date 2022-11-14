@@ -12,7 +12,6 @@ import java.util.Map;
 import Actions.Battle ;
 import GameComponents.Buildings ;
 import GameComponents.Items ;
-import GameComponents.Maps ;
 import GameComponents.NPCs ;
 import GameComponents.Quests ;
 import Graphics.Animations ;
@@ -24,6 +23,8 @@ import LiveBeings.Pet;
 import LiveBeings.Player;
 import LiveBeings.Spells;
 import Main.Game;
+import Maps.FieldMap;
+import Maps.Maps;
 import Screen.Screen;
 
 public class UtilS 
@@ -239,22 +240,23 @@ public class UtilS
 	public static Creatures ClosestCreatureInRange(Player player, Creatures[] creatures, Maps[] maps)
 	{	
 		Size screenSize = Game.getScreen().getSize() ;
-		if (player.getMap().getCreatures() != null)	// Map has creatures
+		if (player.getMap().isAField())	// map is a field, so it has creatures
 		{
-			int NumberOfCreaturesInMap = 0 ;
-			for (int i = 0 ; i <= player.getMap().getCreatureTypes().length - 1 ; ++i)
+			FieldMap fm = (FieldMap) player.getMap() ;
+			int NumberOfCreaturesInMap = player.getMap().getCreatureTypes().size() ;
+			/*for (int i = 0 ; i <= player.getMap().getCreatureTypes().size() - 1 ; ++i)
 			{
-				if (-1 < player.getMap().getCreatureTypes()[i].getID())
+				if (-1 < player.getMap().getCreatureTypes().get(i).getID())
 				{
 					NumberOfCreaturesInMap += 1 ;
 				}
-			}
+			}*/
 			float[] dist = new float[NumberOfCreaturesInMap] ;
 			float MinDist = screenSize.x + screenSize.y ;
 			for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 			{
-				Creatures creature = player.getMap().getCreatures()[i] ;
-				if (player.getMap().getCreatures()[i] != null)
+				Creatures creature = fm.getCreatures().get(i) ;
+				if (fm.getCreatures().get(i) != null)
 				{
 					dist[i] = (float) new Point(player.getPos().x, player.getPos().y).distance(new Point(creature.getPos().x, creature.getPos().y)) ;				
 					MinDist = Math.min(MinDist, dist[i]) ;
@@ -262,8 +264,8 @@ public class UtilS
 			}
 			for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 			{
-				Creatures creature = player.getMap().getCreatures()[i] ;
-				if (dist[i] == MinDist & player.getMap().getCreatures() != null & dist[i] <= player.getRange())
+				Creatures creature = fm.getCreatures().get(i) ;
+				if (dist[i] == MinDist & fm.getCreatures() != null & dist[i] <= player.getRange())
 				{
 					return creature ;	// Closest creature ID
 				}
@@ -494,8 +496,8 @@ public class UtilS
 	
 	public static Map<String, String[]> loadAllText(String GameLanguage)
 	{
-		Map<String, String[]> allText = new HashMap<String, String[]>();
-		String[][] allTextString = UtilG.ReadTextFile(GameLanguage) ;
+		Map<String, String[]> allText = UtilG.ReadTextFile(GameLanguage);
+		/*String[][] allTextString = UtilG.ReadTextFile(GameLanguage) ;
 		
 		for (int i = 0; i <= allTextString.length - 1; i += 1)
 		{
@@ -505,7 +507,7 @@ public class UtilS
 				catText[j - 1] = allTextString[i][j] ;
 			}
 			allText.put(allTextString[i][0], catText) ;
-		}
+		}*/
 		
 		return allText ;
 	}
@@ -676,7 +678,7 @@ public class UtilS
 		return IDs ;
 	}*/
 	
-	public static ArrayList<NPCs> NPCsInBuilding(NPCs[] npc, String buildingName, int map)
+	/*public static ArrayList<NPCs> NPCsInBuilding(NPCs[] npc, String buildingName)
 	{
 		ArrayList<NPCs> npcs = new ArrayList<NPCs>() ;
 		for (int n = 0 ; n <= npc.length - 1 ; n += 1)
@@ -687,9 +689,9 @@ public class UtilS
 			}
 		}
 		return npcs ;
-	}
+	}*/
 	
-	public static Point BuildingPos(Buildings[] buildings, int map, String Name)
+	/*public static Point BuildingPos(Buildings[] buildings, int map, String Name)
 	{
 		for (int b = 0 ; b <= buildings.length - 1 ; b += 1)
 		{
@@ -699,7 +701,7 @@ public class UtilS
 			}
 		}
 		return null ;
-	}
+	}*/
 
 	public static float[] LevelUpIncAtt(float[] AttributeIncrease, float[] ChanceIncrease, int Level)
 	{

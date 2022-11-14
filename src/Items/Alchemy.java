@@ -1,6 +1,7 @@
 package Items;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import Main.Game;
 import Utilities.UtilG;
@@ -26,12 +27,11 @@ public class Alchemy extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		int NumAlchemy = UtilG.count(Game.CSVPath + "Item_Alchemy.csv") ;
-		String[][] Input = UtilG.ReadTextFile(Game.CSVPath + "Item_Alchemy.csv", NumAlchemy) ;
-		AllAlchemy = new Alchemy[NumAlchemy] ;
-		for (int a = 0; a <= NumAlchemy - 1; a += 1)
+		ArrayList<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Alchemy.csv") ;
+		AllAlchemy = new Alchemy[input.size()] ;
+		for (int a = 0; a <= AllAlchemy.length - 1; a += 1)
 		{
-			AllAlchemy[a] = new Alchemy(Integer.parseInt(Input[a][0]), Input[a][1], Input[a][3], Integer.parseInt(Input[a][5]), Float.parseFloat(Input[a][6]), Float.parseFloat(Input[a][7]), Float.parseFloat(Input[a][8]));
+			AllAlchemy[a] = new Alchemy(Integer.parseInt(input.get(a)[0]), input.get(a)[1], input.get(a)[3], Integer.parseInt(input.get(a)[5]), Float.parseFloat(input.get(a)[6]), Float.parseFloat(input.get(a)[7]), Float.parseFloat(input.get(a)[8]));
 		}
 	}
 	

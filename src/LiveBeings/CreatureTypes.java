@@ -54,17 +54,9 @@ public class CreatureTypes
 	{
 		return NumberOfCreatureTypes ;
 	}
-	public static void setNumberOfCreatureTypes(String CSVPath)
+	public static void setNumberOfCreatureTypes(int num)
 	{
-		try
-		{
-			NumberOfCreatureTypes = UtilG.count(CSVPath + "CreatureTypes.csv") ;
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace() ;
-		}
+		NumberOfCreatureTypes = num ;
 	}
 	
 	/* Print methods */

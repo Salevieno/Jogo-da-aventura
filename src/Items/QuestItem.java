@@ -1,6 +1,7 @@
 package Items;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import Main.Game;
 import Utilities.UtilG;
@@ -22,12 +23,11 @@ private int id ;
 	
 	public static void Initialize() throws IOException
 	{
-		int NumQuests = UtilG.count(Game.CSVPath + "Item_Quest.csv") ;
-		String[][] Input = UtilG.ReadTextFile(Game.CSVPath + "Item_Quest.csv", NumQuests) ;
-		AllQuests = new QuestItem[NumQuests] ;
-		for (int p = 0; p <= NumQuests - 1; p += 1)
+		ArrayList<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Quest.csv") ;
+		AllQuests = new QuestItem[input.size()] ;
+		for (int p = 0; p <= AllQuests.length - 1; p += 1)
 		{
-			AllQuests[p] = new QuestItem(Integer.parseInt(Input[p][0]), Input[p][1], Input[p][3], Integer.parseInt(Input[p][5]), Float.parseFloat(Input[p][6]));
+			AllQuests[p] = new QuestItem(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]));
 		}		
 	}
 

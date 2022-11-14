@@ -20,7 +20,7 @@ public class QuestWindow extends Window
 	public void display(DrawFunctions DF)
 	{
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
-		float OverallAngle = DF.getOverallAngle() ;
+		float OverallAngle = DrawPrimitives.OverallAngle ;
 		Size screenSize = Game.getScreen().getSize() ;
 		Point pos = new Point((int)(0.5*screenSize.x), (int)(0.55*screenSize.y)) ;
 		DP.DrawImage(image, pos, OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;

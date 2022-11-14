@@ -14,36 +14,36 @@ public class Buildings
 {
 	private int id ;
 	private String Name ;
-	private int Map ;
+	//private int Map ;
 	private Point Pos ;
 	private ArrayList<NPCs> npc ;	// NPCs in the building
-	private Color color ;	// [Outside, inside, door, top]
+	//private Color color ;	// [Outside, inside, door, top]
 
 	public Image[] Images ;
 	public Image[] OrnamentImages ;
-	public Buildings(int ID, String Name, int Map, Point Pos, Image[] Images, Image[] OrnamentImages, ArrayList<NPCs> npc, Color color)
+	public Buildings(int ID, String Name, Image[] Images, Image[] OrnamentImages)
 	{
 		this.id = ID ;
 		this.Name = Name ;
-		this.Map = Map ;
-		this.Pos = Pos ;
+		//this.Map = Map ;
+		//this.Pos = Pos ;
 		this.Images = Images ;
 		this.OrnamentImages = OrnamentImages ;
-		this.npc = npc ;
-		this.color = color ;
+		//this.npc = npc ;
+		//this.color = color ;
 	}
 
 	public int getID() {return id ;}
 	public String getName() {return Name ;}
-	public int getMap() {return Map ;}
+	//public int getMap() {return Map ;}
 	public Point getPos() {return Pos ;}
 	public ArrayList<NPCs> getNPCs() {return npc ;}
-	public Color getColors() {return color ;}
+	//public Color getColors() {return color ;}
 	public void setID(int I) {id = I ;}
 	public void setName(String N) {Name = N ;}
-	public void setMap(int M) {Map = M ;}
+	//public void setMap(int M) {Map = M ;}
 	public void setPos(Point P) {Pos = P ;}
-	public void setColors(Color C) {color = C ;}
+	//public void setColors(Color C) {color = C ;}
 	
 	public boolean hasNPCs()
 	{
@@ -84,8 +84,8 @@ public class Buildings
 
 	@Override
 	public String toString() {
-		return "Buildings [ID=" + id + ", Name=" + Name + ", Map=" + Map + ", Pos=" + Pos + ", npc=" + npc + ", color="
-				+ color + ", Images=" + Arrays.toString(Images) + ", OrnamentImages=" + Arrays.toString(OrnamentImages)
+		return "Buildings [ID=" + id + ", Name=" + Name + ", Pos=" + Pos + ", npc=" + npc +
+				", Images=" + Arrays.toString(Images) + ", OrnamentImages=" + Arrays.toString(OrnamentImages)
 				+ "]";
 	}
 }

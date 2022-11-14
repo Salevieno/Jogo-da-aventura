@@ -1,5 +1,6 @@
 package Actions;
 import java.awt.Point;
+import java.util.ArrayList;
 
 import LiveBeings.PersonalAttributes;
 import Utilities.UtilG;
@@ -14,13 +15,13 @@ public abstract class BattleActions
 		int NumElem = 10 ;
     	ElemID = new String[NumElem] ;
 		ElemMult = new float[NumElem][NumElem] ;
-		String[][] ElemInput = UtilG.ReadTextFile(CSVPath + "Elem.csv", NumElem) ;
+		ArrayList<String[]> ElemInput = UtilG.ReadcsvFile(CSVPath + "Elem.csv") ;
 		for (int i = 0 ; i <= NumElem - 1 ; ++i)
 		{
-			ElemID[i] = ElemInput[i][0] ;
+			ElemID[i] = ElemInput.get(i)[0] ;
 			for (int j = 0 ; j <= NumElem - 1 ; ++j)
 			{
-				ElemMult[i][j] = Float.parseFloat(ElemInput[i][j + 1]) ;
+				ElemMult[i][j] = Float.parseFloat(ElemInput.get(i)[j + 1]) ;
 			}				
 		}
 		

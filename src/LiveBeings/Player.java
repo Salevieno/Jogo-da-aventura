@@ -21,7 +21,6 @@ import java.util.Map;
 import Actions.Battle ;
 import GameComponents.Icon;
 import GameComponents.Items;
-import GameComponents.Maps;
 import GameComponents.NPCs;
 import GameComponents.Quests;
 import Graphics.Animations ;
@@ -50,6 +49,8 @@ import Windows.MapWindow;
 import Windows.QuestWindow;
 import Windows.Settings;
 import Main.Game ;
+import Maps.FieldMap;
+import Maps.Maps;
 
 public class Player extends LiveBeing
 {
@@ -103,8 +104,8 @@ public class Player extends LiveBeing
 	public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Pet window, Map, Quest, Hint, Tent, Bestiary]
 	public static String[] HotKeys = new String[] {"E", "X", "V"} ;	// [Hotkey 1, Hotkey 2, Hotkey 3]
 	public static String[] SkillKeys = new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"} ;
-	public static String[][] Properties = UtilG.ReadTextFile(Game.CSVPath + "PlayerInitialStats.csv", 5) ;
-	public static String[][] EvolutionProperties = UtilG.ReadTextFile(Game.CSVPath + "PlayerEvolution.csv", 16) ;	
+	public static ArrayList<String[]> Properties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
+	public static ArrayList<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public static int[] NumberOfSkillsPerJob = new int[] {14 + 20, 15 + 20, 15 + 20, 14 + 20, 14 + 20} ;
 	public static int[] CumNumberOfSkillsPerJob = new int[] {0, 34, 69, 104, 138} ;
 	public static int NumberOfEquipTypes = 4 ;
@@ -131,6 +132,7 @@ public class Player extends LiveBeing
 		this.Sex = Sex ;
 		InitializeSpells() ;
 		allText = UtilS.loadAllText(Language) ;
+
 		//Bag = new int[Items.NumberOfAllItems] ;
 		questWindow = new QuestWindow() ;
 		bag = new Bag(new ArrayList<Potion>(), new ArrayList<Alchemy>(), new ArrayList<Forge>(), new ArrayList<PetItem>(), new ArrayList<Food>(),
@@ -155,7 +157,7 @@ public class Player extends LiveBeing
 		//ElemMult = new float[10] ;
 		//Arrays.fill(ElemMult, 1) ;
 		collectLevel = new float[3] ;
-		gold = new float[] {0, 0, Float.parseFloat(Properties[PA.Job][32])} ;
+		gold = new float[] {0, 0, Float.parseFloat(Properties.get(PA.Job)[32])} ;
 		questSkills = new HashMap<String, Boolean>() ;
 		questSkills.put("Floresta", false) ;	// TODO parte dos nomes em port, parte em inglês
 		questSkills.put("Caverna", false) ;
@@ -184,8 +186,8 @@ public class Player extends LiveBeing
 		{
 			for (int j = 0 ; j <= 7 ; ++j)
 			{
-				AttIncrease[i][j] = Float.parseFloat(EvolutionProperties[3*PA.Job + i][j + 2]) ;
-				ChanceIncrease[i][j] = Float.parseFloat(EvolutionProperties[3*PA.Job + i][j + 10]) ;
+				AttIncrease[i][j] = Float.parseFloat(EvolutionProperties.get(3*PA.Job + i)[j + 2]) ;
+				ChanceIncrease[i][j] = Float.parseFloat(EvolutionProperties.get(3*PA.Job + i)[j + 10]) ;
 			}
 		}
 		CreaturesDiscovered = new ArrayList<Integer>() ;
@@ -213,15 +215,15 @@ public class Player extends LiveBeing
 		String dir = Player.MoveKeys[0] ;
 		String Thought = "Exist" ;
 		int[] Size = new int[] {PlayerBack.getWidth(null), PlayerBack.getHeight(null)} ;
-		float[] Life = new float[] {Float.parseFloat(Properties[Job][2]), Float.parseFloat(Properties[Job][2])} ;
-		float[] Mp = new float[] {Float.parseFloat(Properties[Job][3]), Float.parseFloat(Properties[Job][3])} ;
-		float Range = Float.parseFloat(Properties[Job][4]) ;
-		int Step = Integer.parseInt(Properties[Job][33]) ;
-		float[] Exp = new float[] {0, 5, Float.parseFloat(Properties[Job][34])} ;
-		float[] Satiation = new float[] {100, 100, Float.parseFloat(Properties[Job][35])} ;
-		float[] Thirst = new float[] {100, 100, Float.parseFloat(Properties[Job][36])} ;
+		float[] Life = new float[] {Float.parseFloat(Properties.get(Job)[2]), Float.parseFloat(Properties.get(Job)[2])} ;
+		float[] Mp = new float[] {Float.parseFloat(Properties.get(Job)[3]), Float.parseFloat(Properties.get(Job)[3])} ;
+		float Range = Float.parseFloat(Properties.get(Job)[4]) ;
+		int Step = Integer.parseInt(Properties.get(Job)[33]) ;
+		float[] Exp = new float[] {0, 5, Float.parseFloat(Properties.get(Job)[34])} ;
+		float[] Satiation = new float[] {100, 100, Float.parseFloat(Properties.get(Job)[35])} ;
+		float[] Thirst = new float[] {100, 100, Float.parseFloat(Properties.get(Job)[36])} ;
 		String[] Elem = new String[] {"n", "n", "n", "n", "n"} ;
-		int[][] Actions = new int[][] {{0, Integer.parseInt(Properties[Job][37]), 0}, {0, Integer.parseInt(Properties[Job][38]), 0}, {0, Integer.parseInt(Properties[Job][39]), 0}, {0, Integer.parseInt(Properties[Job][40]), 0}} ;
+		int[][] Actions = new int[][] {{0, Integer.parseInt(Properties.get(Job)[37]), 0}, {0, Integer.parseInt(Properties.get(Job)[38]), 0}, {0, Integer.parseInt(Properties.get(Job)[39]), 0}, {0, Integer.parseInt(Properties.get(Job)[40]), 0}} ;
 		String currentAction = "existing" ;
 		int countmove = 0 ;
 		return new PersonalAttributes(Name, Level, Job, ProJob, map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
@@ -230,21 +232,21 @@ public class Player extends LiveBeing
 	private static BattleAttributes InitializeBattleAttributes(int Job)
 	{
 
-		float[] PhyAtk = new float[] {Float.parseFloat(Properties[Job][5]), 0, 0} ;
-		float[] MagAtk = new float[] {Float.parseFloat(Properties[Job][6]), 0, 0} ;
-		float[] PhyDef = new float[] {Float.parseFloat(Properties[Job][7]), 0, 0} ;
-		float[] MagDef = new float[] {Float.parseFloat(Properties[Job][8]), 0, 0} ;
-		float[] Dex = new float[] {Float.parseFloat(Properties[Job][9]), 0, 0} ;	
-		float[] Agi = new float[] {Float.parseFloat(Properties[Job][10]), 0, 0} ;
-		float[] Crit = new float[] {Float.parseFloat(Properties[Job][11]), 0, Float.parseFloat(Properties[Job][12]), 0} ;
-		float[] Stun = new float[] {Float.parseFloat(Properties[Job][13]), 0, Float.parseFloat(Properties[Job][14]), 0, Float.parseFloat(Properties[Job][15])} ;
-		float[] Block = new float[] {Float.parseFloat(Properties[Job][16]), 0, Float.parseFloat(Properties[Job][17]), 0, Float.parseFloat(Properties[Job][18])} ;
-		float[] Blood = new float[] {Float.parseFloat(Properties[Job][19]), 0, Float.parseFloat(Properties[Job][20]), 0, Float.parseFloat(Properties[Job][21]), 0, Float.parseFloat(Properties[Job][22]), 0, Float.parseFloat(Properties[Job][23])} ;
-		float[] Poison = new float[] {Float.parseFloat(Properties[Job][24]), 0, Float.parseFloat(Properties[Job][25]), 0, Float.parseFloat(Properties[Job][26]), 0, Float.parseFloat(Properties[Job][27]), 0, Float.parseFloat(Properties[Job][28])} ;
-		float[] Silence = new float[] {Float.parseFloat(Properties[Job][29]), 0, Float.parseFloat(Properties[Job][30]), 0, Float.parseFloat(Properties[Job][31])} ;
+		float[] PhyAtk = new float[] {Float.parseFloat(Properties.get(Job)[5]), 0, 0} ;
+		float[] MagAtk = new float[] {Float.parseFloat(Properties.get(Job)[6]), 0, 0} ;
+		float[] PhyDef = new float[] {Float.parseFloat(Properties.get(Job)[7]), 0, 0} ;
+		float[] MagDef = new float[] {Float.parseFloat(Properties.get(Job)[8]), 0, 0} ;
+		float[] Dex = new float[] {Float.parseFloat(Properties.get(Job)[9]), 0, 0} ;	
+		float[] Agi = new float[] {Float.parseFloat(Properties.get(Job)[10]), 0, 0} ;
+		float[] Crit = new float[] {Float.parseFloat(Properties.get(Job)[11]), 0, Float.parseFloat(Properties.get(Job)[12]), 0} ;
+		float[] Stun = new float[] {Float.parseFloat(Properties.get(Job)[13]), 0, Float.parseFloat(Properties.get(Job)[14]), 0, Float.parseFloat(Properties.get(Job)[15])} ;
+		float[] Block = new float[] {Float.parseFloat(Properties.get(Job)[16]), 0, Float.parseFloat(Properties.get(Job)[17]), 0, Float.parseFloat(Properties.get(Job)[18])} ;
+		float[] Blood = new float[] {Float.parseFloat(Properties.get(Job)[19]), 0, Float.parseFloat(Properties.get(Job)[20]), 0, Float.parseFloat(Properties.get(Job)[21]), 0, Float.parseFloat(Properties.get(Job)[22]), 0, Float.parseFloat(Properties.get(Job)[23])} ;
+		float[] Poison = new float[] {Float.parseFloat(Properties.get(Job)[24]), 0, Float.parseFloat(Properties.get(Job)[25]), 0, Float.parseFloat(Properties.get(Job)[26]), 0, Float.parseFloat(Properties.get(Job)[27]), 0, Float.parseFloat(Properties.get(Job)[28])} ;
+		float[] Silence = new float[] {Float.parseFloat(Properties.get(Job)[29]), 0, Float.parseFloat(Properties.get(Job)[30]), 0, Float.parseFloat(Properties.get(Job)[31])} ;
 		int[] Status = new int[9] ;
 		int[] SpecialStatus = new int[5] ;
-		int[][] BattleActions = new int[][] {{0, Integer.parseInt(Properties[Job][41]), 0}} ;
+		int[][] BattleActions = new int[][] {{0, Integer.parseInt(Properties.get(Job)[41]), 0}} ;
 		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
 	}
 	
@@ -256,9 +258,9 @@ public class Player extends LiveBeing
     	int NumberOfSkills = Player.NumberOfSkillsPerJob[PA.Job] ;
     	int NumberOfAtt = 14 ;
     	int NumberOfBuffs = 12 ;
-		String[][] spellsInput = UtilG.ReadTextFile(Game.CSVPath + "Spells.csv", NumberOfAllSkills) ;	
-		String[][] spellsBuffsInput = UtilG.ReadTextFile(Game.CSVPath + "SpellsBuffs.csv", NumberOfAllSkills) ;
-		String[][] spellsNerfsInput = UtilG.ReadTextFile(Game.CSVPath + "SpellsNerfs.csv", NumberOfAllSkills) ;
+    	ArrayList<String[]> spellsInput = UtilG.ReadcsvFile(Game.CSVPath + "Spells.csv") ;	
+    	ArrayList<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
+    	ArrayList<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
 		float[][][] spellBuffs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
 		float[][][] spellNerfs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
 		String[][] spellsInfo = new String[NumberOfSkills][2] ;
@@ -272,51 +274,51 @@ public class Player extends LiveBeing
 				{
 					for (int k = 0 ; k <= NumberOfBuffs - 1 ; k += 1)
 					{
-						spellBuffs[i][j][k] = Float.parseFloat(spellsBuffsInput[ID][BuffCont + 3]) ;
-						spellNerfs[i][j][k] = Float.parseFloat(spellsNerfsInput[ID][NerfCont + 3]) ;
+						spellBuffs[i][j][k] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
+						spellNerfs[i][j][k] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
 						NerfCont += 1 ;
 						BuffCont += 1 ;
 					}
 				}
 				else
 				{
-					spellBuffs[i][j][0] = Float.parseFloat(spellsBuffsInput[ID][BuffCont + 3]) ;
-					spellBuffs[i][j][1] = Float.parseFloat(spellsBuffsInput[ID][BuffCont + 4]) ;
-					spellBuffs[i][j][2] = Float.parseFloat(spellsBuffsInput[ID][BuffCont + 5]) ;
-					spellNerfs[i][j][0] = Float.parseFloat(spellsNerfsInput[ID][NerfCont + 3]) ;
-					spellNerfs[i][j][1] = Float.parseFloat(spellsNerfsInput[ID][NerfCont + 4]) ;
-					spellNerfs[i][j][2] = Float.parseFloat(spellsNerfsInput[ID][NerfCont + 5]) ;
+					spellBuffs[i][j][0] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
+					spellBuffs[i][j][1] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 4]) ;
+					spellBuffs[i][j][2] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 5]) ;
+					spellNerfs[i][j][0] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
+					spellNerfs[i][j][1] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 4]) ;
+					spellNerfs[i][j][2] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 5]) ;
 					NerfCont += 3 ;
 					BuffCont += 3 ;
 				}
 			}
 			if (Language.equals("P"))
 			{
-				spellsInfo[i] = new String[] {spellsInput[ID][42], spellsInput[ID][43]} ;
+				spellsInfo[i] = new String[] {spellsInput.get(ID)[42], spellsInput.get(ID)[43]} ;
 			}
 			else if (Language.equals("E"))
 			{
-				spellsInfo[i] = new String[] {spellsInput[ID][44], spellsInput[ID][45]} ;
+				spellsInfo[i] = new String[] {spellsInput.get(ID)[44], spellsInput.get(ID)[45]} ;
 			}
-			String Name = spellsInput[ID][4] ;
-			int MaxLevel = Integer.parseInt(spellsInput[ID][5]) ;
-			float MpCost = Float.parseFloat(spellsInput[ID][6]) ;
-			String Type = spellsInput[ID][7] ;
-			int[][] PreRequisites = new int[][] {{Integer.parseInt(spellsInput[ID][8]), Integer.parseInt(spellsInput[ID][9])}, {Integer.parseInt(spellsInput[ID][10]), Integer.parseInt(spellsInput[ID][11])}, {Integer.parseInt(spellsInput[ID][12]), Integer.parseInt(spellsInput[ID][13])}} ;
-			int Cooldown = Integer.parseInt(spellsInput[ID][14]) ;
-			int Duration = Integer.parseInt(spellsInput[ID][15]) ;
-			float[] Atk = new float[] {Float.parseFloat(spellsInput[ID][16]), Float.parseFloat(spellsInput[ID][17])} ;
-			float[] Def = new float[] {Float.parseFloat(spellsInput[ID][18]), Float.parseFloat(spellsInput[ID][19])} ;
-			float[] Dex = new float[] {Float.parseFloat(spellsInput[ID][20]), Float.parseFloat(spellsInput[ID][21])} ;
-			float[] Agi = new float[] {Float.parseFloat(spellsInput[ID][22]), Float.parseFloat(spellsInput[ID][23])} ;
-			float[] AtkCrit = new float[] {Float.parseFloat(spellsInput[ID][24])} ;
-			float[] DefCrit = new float[] {Float.parseFloat(spellsInput[ID][25])} ;
-			float[] Stun = new float[] {Float.parseFloat(spellsInput[ID][26]), Float.parseFloat(spellsInput[ID][27]), Float.parseFloat(spellsInput[ID][28])} ;
-			float[] Block = new float[] {Float.parseFloat(spellsInput[ID][29]), Float.parseFloat(spellsInput[ID][30]), Float.parseFloat(spellsInput[ID][31])} ;
-			float[] Blood = new float[] {Float.parseFloat(spellsInput[ID][32]), Float.parseFloat(spellsInput[ID][33]), Float.parseFloat(spellsInput[ID][34])} ;
-			float[] Poison = new float[] {Float.parseFloat(spellsInput[ID][35]), Float.parseFloat(spellsInput[ID][36]), Float.parseFloat(spellsInput[ID][37])} ;
-			float[] Silence = new float[] {Float.parseFloat(spellsInput[ID][38]), Float.parseFloat(spellsInput[ID][39]), Float.parseFloat(spellsInput[ID][40])} ;
-			String Elem = spellsInput[ID][41] ;
+			String Name = spellsInput.get(ID)[4] ;
+			int MaxLevel = Integer.parseInt(spellsInput.get(ID)[5]) ;
+			float MpCost = Float.parseFloat(spellsInput.get(ID)[6]) ;
+			String Type = spellsInput.get(ID)[7] ;
+			int[][] PreRequisites = new int[][] {{Integer.parseInt(spellsInput.get(ID)[8]), Integer.parseInt(spellsInput.get(ID)[9])}, {Integer.parseInt(spellsInput.get(ID)[10]), Integer.parseInt(spellsInput.get(ID)[11])}, {Integer.parseInt(spellsInput.get(ID)[12]), Integer.parseInt(spellsInput.get(ID)[13])}} ;
+			int Cooldown = Integer.parseInt(spellsInput.get(ID)[14]) ;
+			int Duration = Integer.parseInt(spellsInput.get(ID)[15]) ;
+			float[] Atk = new float[] {Float.parseFloat(spellsInput.get(ID)[16]), Float.parseFloat(spellsInput.get(ID)[17])} ;
+			float[] Def = new float[] {Float.parseFloat(spellsInput.get(ID)[18]), Float.parseFloat(spellsInput.get(ID)[19])} ;
+			float[] Dex = new float[] {Float.parseFloat(spellsInput.get(ID)[20]), Float.parseFloat(spellsInput.get(ID)[21])} ;
+			float[] Agi = new float[] {Float.parseFloat(spellsInput.get(ID)[22]), Float.parseFloat(spellsInput.get(ID)[23])} ;
+			float[] AtkCrit = new float[] {Float.parseFloat(spellsInput.get(ID)[24])} ;
+			float[] DefCrit = new float[] {Float.parseFloat(spellsInput.get(ID)[25])} ;
+			float[] Stun = new float[] {Float.parseFloat(spellsInput.get(ID)[26]), Float.parseFloat(spellsInput.get(ID)[27]), Float.parseFloat(spellsInput.get(ID)[28])} ;
+			float[] Block = new float[] {Float.parseFloat(spellsInput.get(ID)[29]), Float.parseFloat(spellsInput.get(ID)[30]), Float.parseFloat(spellsInput.get(ID)[31])} ;
+			float[] Blood = new float[] {Float.parseFloat(spellsInput.get(ID)[32]), Float.parseFloat(spellsInput.get(ID)[33]), Float.parseFloat(spellsInput.get(ID)[34])} ;
+			float[] Poison = new float[] {Float.parseFloat(spellsInput.get(ID)[35]), Float.parseFloat(spellsInput.get(ID)[36]), Float.parseFloat(spellsInput.get(ID)[37])} ;
+			float[] Silence = new float[] {Float.parseFloat(spellsInput.get(ID)[38]), Float.parseFloat(spellsInput.get(ID)[39]), Float.parseFloat(spellsInput.get(ID)[40])} ;
+			String Elem = spellsInput.get(ID)[41] ;
 			spell[i] = new Spells(Name, MaxLevel, MpCost, Type, PreRequisites, Cooldown, Duration, spellBuffs[i], spellNerfs[i], Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i]) ;	
 		}
 		spell[0].incLevel(1) ;
@@ -594,11 +596,11 @@ public class Player extends LiveBeing
 				Ani.StartAni(15) ;
 			}
 		}*/
-		if (PA.currentAction.equals(ActionKeys[7]) & questSkills.get(PA.getMap().getContinentName(this)))	// Map
-		{
+		//if (PA.currentAction.equals(ActionKeys[7]) & questSkills.get(PA.getMap().getContinentName(this)))	// Map
+		//{
 			map.open() ;
-		}
-		if (PA.currentAction.equals(ActionKeys[8]))				// Pet window
+		//}
+		if (PA.currentAction.equals(ActionKeys[8]))				// settings window
 		{
 			settings.open() ;
 		}
@@ -708,12 +710,13 @@ public class Player extends LiveBeing
 					return new int[] {0, opponent.getType().getID()} ;
 				}
 			}
-			if (currentMap.hasCreatures())
+			if (!currentMap.IsACity())
 			{
-				Creatures[] creaturesInMap = currentMap.getCreatures() ;
-				for (int i = 0 ; i <= creaturesInMap.length - 1 ; i += 1)
+				FieldMap fm = (FieldMap) getMap() ;
+				ArrayList<Creatures> creaturesInMap = fm.getCreatures() ;
+				for (int i = 0 ; i <= creaturesInMap.size() - 1 ; i += 1)
 				{
-					Creatures creature = creaturesInMap[i] ;
+					Creatures creature = creaturesInMap.get(i) ;
 					distx = UtilG.dist1D(PA.getPos().x, creature.getPos().x) ;
 					disty = UtilG.dist1D(PA.getPos().y - PA.getSize()[1] / 2, creature.getPos().y) ;
 					if (distx <= (PA.getSize()[0] + creature.getSize()[0]) / 2 & disty <= (PA.getSize()[1] + creature.getSize()[1]) / 2 & !Ani.isActive(10) & !Ani.isActive(19))
@@ -727,12 +730,12 @@ public class Player extends LiveBeing
 		/* Meeting with NPCs */
 		if (currentMap.NPCsInMap != null)	// Map has NPCs
 		{
-			for (int i = 0 ; i <= currentMap.NPCsInMap.size()- 1 ; i += 1)
+			for (int i = 0 ; i <= currentMap.NPCsInMap.size() - 1 ; i += 1)
 			{
 				NPCs NPC = currentMap.NPCsInMap.get(i) ;
 				if (-1 < NPC.getID())
 				{
-					distx = (float) Math.abs(PA.getPos().x - NPC.getPos().x) ;	
+					distx = (float) Math.abs(PA.getPos().x - NPC.getPos().x) ;
 					disty = (float) Math.abs(PA.getPos().y - NPC.getPos().y) ;
 					if (distx <= 0.5*PA.getSize()[0] & disty <= 0.5*PA.getSize()[1])
 					{
@@ -741,6 +744,7 @@ public class Player extends LiveBeing
 				}
 			}	
 		}
+		
 		return new int[] {-1, -1} ;
 	}
 	public void Collect(int Coltype, Maps[] maps, DrawFunctions DF, Animations Ani)
@@ -807,7 +811,7 @@ public class Player extends LiveBeing
 			CollectibleID = -1 ;
 		}
 		
-		PA.getMap().CreateCollectible(PA.getMap().getid(), CollectibleID) ;	
+		//PA.getMap().CreateCollectible(PA.getMap().getid(), CollectibleID) ;	
 	}
 	public void receiveAdjacentGroundEffect(Maps map)
 	{
@@ -880,10 +884,10 @@ public class Player extends LiveBeing
 		{
 			if (Game.getMaps()[nextMap].GroundIsWalkable(nextPos, PA.Elem[4]))
 			{
-				if (MusicIsOn & Maps.MusicID[PA.getMap().getid()] != Maps.MusicID[nextMap])
+				/*if (MusicIsOn & Maps.MusicID[PA.getMap().getid()] != Maps.MusicID[nextMap])
 				{
 					UtilG.SwitchMusic(Music[Maps.MusicID[PA.getMap().getid()]], Music[Maps.MusicID[nextMap]]) ;
-				}
+				}*/
 				PA.setMap(Game.getMaps()[nextMap]) ;
 				PA.setContinent(PA.getMap().getContinent()) ;
 				PA.setPos(nextPos) ;	
@@ -1962,6 +1966,32 @@ public class Player extends LiveBeing
 		if (equips[0] != null)
 		{
 			DrawEquips(EqPos, PA.Job, 0, equips[0].getId() - Items.BagIDs[5], Items.EquipsBonus, scale, angle[PA.Job], DP) ;
+		}	
+		
+		/*
+		 * int bonus = 0 ;
+		if (EquipsBonus[EquipID][1] == 10)
+		{
+			bonus = 8 ;
+		}
+		if (equiptype == 0)	// 0: weapon
+		{
+			DP.DrawImage(Items.EquipImage[Job + bonus], Pos, angle, scale, new boolean[] {false, false}, "Center", 1) ;
+		}
+		if (1 <= equiptype)	// 1: shield, 2: armor, 3: arrow
+		{
+			DP.DrawImage(Items.EquipImage[equiptype + 1 + bonus], Pos, angle, scale, new boolean[] {false, false}, "Center", 1) ;
+		}
+		 * */
+	}
+	public void DrawWeapon(Point Pos, float[] playerscale, DrawPrimitives DP)
+	{
+		float[] scale = new float[] {(float) 0.6, (float) 0.6} ;
+		float[] angle = new float[] {50, 30, 0, 0, 0} ;
+		Point EqPos = new Point((int)(Pos.x + 0.16*PA.getSize()[0]*playerscale[0]), (int)(Pos.y - 0.4*PA.getSize()[1]*playerscale[1])) ;
+		if (getEquips()[0] != null)
+		{
+			DrawEquips(EqPos, PA.Job, 0, getEquips()[0].getId() - Items.BagIDs[6], Items.EquipsBonus, scale, angle[PA.Job], DP) ;
 		}	
 	}
 	public void drawAttributes(DrawPrimitives DP)

@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.util.Arrays ;
 
 import GameComponents.Items ;
-import GameComponents.Maps;
 import GameComponents.NPCs ;
 import LiveBeings.Pet;
 import LiveBeings.Player;
@@ -17,6 +16,7 @@ import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
 import Main.Game;
+import Maps.Maps;
 
 public class Animations 
 {

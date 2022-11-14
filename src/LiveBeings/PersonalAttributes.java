@@ -4,8 +4,8 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.util.Arrays;
 
-import GameComponents.Maps;
 import Main.Game;
+import Maps.Maps;
 
 public class PersonalAttributes
 {

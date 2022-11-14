@@ -6,9 +6,10 @@ import java.awt.Point;
 import java.util.Arrays;
 
 import Actions.BattleActions;
-import GameComponents.Maps;
 import Graphics.DrawFunctions ;
+import Graphics.DrawPrimitives;
 import Main.Game;
+import Maps.Maps;
 import Screen.Screen;
 import Utilities.Size;
 import Utilities.UtilG;
@@ -42,6 +43,7 @@ public class Creatures extends LiveBeing
 		this.Gold = CT.getGold() ;
 		this.color = CT.getColor() ;
 		this.StatusCounter = CT.getStatusCounter() ;
+		PA.setPos(UtilG.RandomPos(new Point(0, (int) (0.2*Game.getScreen().getSize().x)), new Size(1, (int) (1 - (float)(Game.getSky().height)/Game.getScreen().getSize().y)), new Size(1, 1))) ;
 		Follow = false ;
 	}
 
@@ -92,29 +94,29 @@ public class Creatures extends LiveBeing
 		return (MPcost <= PA.getMp()[0]) ;
 	}
 	
-	public void display(DrawFunctions DF)
+	public void display(DrawPrimitives DP)
 	{
 		if (PA.getThought().equals("Exist"))
 		{
-			DF.DrawCreature(PA.getPos(), PA.getSize(), type.movingAni.idleGif, color) ;
+			DP.DrawImage(type.movingAni.idleGif, PA.getPos(), "Center") ;
 		}
 		else if (PA.getThought().equals("Move"))
 		{
 			if (PA.getDir().equals("Acima"))
 			{
-				DF.DrawCreature(PA.getPos(), PA.getSize(), type.movingAni.movingUpGif, color) ;
+				DP.DrawImage(type.movingAni.movingUpGif, PA.getPos(), "Center") ;
 			}
 			if (PA.getDir().equals("Abaixo"))
 			{
-				DF.DrawCreature(PA.getPos(), PA.getSize(), type.movingAni.movingDownGif, color) ;
+				DP.DrawImage(type.movingAni.movingDownGif, PA.getPos(), "Center") ;
 			}
 			if (PA.getDir().equals("Esquerda"))
 			{
-				DF.DrawCreature(PA.getPos(), PA.getSize(), type.movingAni.movingLeftGif, color) ;
+				DP.DrawImage(type.movingAni.movingLeftGif, PA.getPos(), "Center") ;
 			}
 			if (PA.getDir().equals("Direita"))
 			{
-				DF.DrawCreature(PA.getPos(), PA.getSize(), type.movingAni.movingRightGif, color) ;
+				DP.DrawImage(type.movingAni.movingRightGif, PA.getPos(), "Center") ;
 			}
 		}
 	}

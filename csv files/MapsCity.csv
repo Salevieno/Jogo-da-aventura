@@ -1,0 +1,6 @@
+Name,Continent,Top left map ID,Left top map ID,Left bottom map ID,Bottom left map ID,Bottom right map ID,Right bottom map ID,Right top map ID,Top right map ID
+City of the knights,0,-1,-1,-1,-1,-1,14,14,-1
+City of the mages,0,8,5,5,-1,-1,-1,-1,8
+City of the archers,0,24,20,20,17,17,-1,-1,24
+City of the animals,0,46,29,27,24,-1,-1,45,47
+City of the assassins,0,6,-1,-1,-1,-1,5,5,6

@@ -24,6 +24,7 @@ import java.math.RoundingMode ;
 import java.nio.charset.StandardCharsets ;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.sound.sampled.AudioInputStream ;
@@ -560,12 +561,10 @@ public abstract class UtilG
 	
  	
  	// Reading files
-	public static String[][] ReadTextFile(String Language)
+	public static Map<String, String[]> ReadTextFile(String Language)
 	{
 		String fileName = "Texto-PT-br.txt" ;
-		//ArrayList<ArrayList<String>> text ;
-		String[][] Text = null ; // [Cat][Pos]
-		int cat = -1 ;
+		Map<String, String[]> Text = new HashMap<String, String[]>() ;
 		if (Language.equals("E"))
 		{
 			fileName = "Text-EN.txt" ;
@@ -576,14 +575,18 @@ public abstract class UtilG
 			InputStreamReader streamReader = new InputStreamReader(fileReader, StandardCharsets.UTF_8) ;
 			BufferedReader bufferedReader = new BufferedReader(streamReader) ; 					
 			String Line = bufferedReader.readLine() ;
-			while (!Line.equals("_"))
+			String key = "" ;
+			ArrayList<String> content = new ArrayList<>() ;
+			while (Line != null)
 			{
 				if (Line.contains("*"))
 				{
-					cat += 1 ;
-					Text = IncreaseArraySize(Text, 1) ;
+					Text.put(key, content.toArray(new String[content.size()])) ;
+					System.out.println(key + " " + content);
+					key = Line ;
+					content = new ArrayList<>() ;
 	            }
-				Text[cat] = AddElem(Text[cat], Line) ;
+				content.add(Line) ;
 				Line = bufferedReader.readLine() ;
 			}
 			bufferedReader.close() ;
@@ -598,158 +601,20 @@ public abstract class UtilG
         }
 		return Text ;
 	}
-	
-	public static boolean FindFile(String FileName)
-	{
-		BufferedReader br = null ;
-		try 
-        {
-            br = new BufferedReader(new FileReader(FileName)) ;
-        } 
-        catch (FileNotFoundException e) 
-        {
-            return false ;
-        }
-        finally
-        {
-            if (br != null)
-            {
-                try
-                {
-                    br.close() ;
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace() ;
-                }
-            }
-        }
-		return true ;
-	}
-	
-	/*public static void ReadJSON()
-	{
-	// need to use the JSON library
-		JSONParser parser = new JSONParser() ;
-	    try
-	    {
-	       Object obj = parser.parse(new FileReader("/Users/User/Desktop/course.json")) ;
-	       JSONObject jsonObject = (JSONObject)obj ;
-	       String name = (String)jsonObject.get("Name") ;
-	       String course = (String)jsonObject.get("Course") ;
-	       JSONArray subjects = (JSONArray)jsonObject.get("Subjects") ;
-	       System.out.println("Name: " + name) ;
-	       System.out.println("Course: " + course) ;
-	       System.out.println("Subjects:") ;
-	       Iterator iterator = subjects.iterator() ;
-	       while (iterator.hasNext())
-	       {
-	          System.out.println(iterator.next()) ;
-	       }
-	    }
-	    catch(Exception e)
-	    {
-	       e.printStackTrace() ;
-	    }
-	}*/
-	
-	public static int count(String filename) throws IOException
-	{
-		InputStream is = new BufferedInputStream(new FileInputStream(filename)) ;
-		try
-		{
-			byte[] c = new byte[1024] ;
-			int count = -1 ;
-			int readChars = 0 ;
-			boolean empty = true ;
-			while ((readChars = is.read(c)) != -1)
-			{
-			    empty = false ;
-			    for (int i = 0 ; i < readChars ; i += 1)
-			    {
-			        if (c[i] == '\n')
-			        {
-			            count += 1 ;
-			        }
-			    }
-			}
-			
-		    return (count == 0 && !empty) ? 1 : count ;
-		    
-	    }
-	    finally
-	    {
-	    	is.close() ;
-	    }
-	}
-	
-	public static String[][] IncreaseArraySize(String[][] OriginalArray, int size)
-	{
-		if (OriginalArray == null)
-		{
-			return new String[size][] ;
-		}
-		else
-		{
-			String[][] NewArray = new String[OriginalArray.length + size][] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			return NewArray ;
-		}
-	}
-	
-	public static int[][] IncreaseArraySize(int[][] OriginalArray, int size)
-	{
-		if (OriginalArray == null)
-		{
-			return new int[size][] ;
-		}
-		else
-		{
-			int[][] NewArray = new int[OriginalArray.length + size][] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			return NewArray ;
-		}
-	}
-	
-	public static Clip MusicFileToClip(File MusicFile)
-	{
-		Clip MusicClip = null ;
-		try 
- 		{
-	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(MusicFile) ;
-	        MusicClip = AudioSystem.getClip() ;
-	        MusicClip.open(audioInputStream) ;
- 	    } 
- 		catch(Exception ex) 
- 		{
- 	        System.out.println("Error loading clip.") ;
- 	        ex.printStackTrace() ;
- 	    }
-		
-		return MusicClip ;
-	}
-	
-	public static String[][] ReadTextFile(String FileName, int Nrows)
+
+	public static ArrayList<String[]> ReadcsvFile(String FileName)
 	{
 		BufferedReader br = null ;
         String line = "" ;
         String separator = "," ;
-        int cont = 0 ;
-        String[][] Input = new String[Nrows][] ;
+        ArrayList<String[]> Input = new ArrayList<String[]>() ;
         try 
         {
             br = new BufferedReader(new FileReader(FileName)) ;
             line = br.readLine() ;
             while ((line = br.readLine()) != null) 
             {
-                Input[cont] = line.split(separator) ;
-                ++cont ;
+                Input.add(line.split(separator)) ;
             }
         } 
         catch (FileNotFoundException e) 
@@ -817,6 +682,95 @@ public abstract class UtilG
             }
         }
         return Input ;
+	}
+	
+	public static boolean FindFile(String FileName)
+	{
+		BufferedReader br = null ;
+		try 
+        {
+            br = new BufferedReader(new FileReader(FileName)) ;
+        } 
+        catch (FileNotFoundException e) 
+        {
+            return false ;
+        }
+        finally
+        {
+            if (br != null)
+            {
+                try
+                {
+                    br.close() ;
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace() ;
+                }
+            }
+        }
+		return true ;
+	}
+	
+	/*public static void ReadJSON()
+	{
+	// need to use the JSON library
+		JSONParser parser = new JSONParser() ;
+	    try
+	    {
+	       Object obj = parser.parse(new FileReader("/Users/User/Desktop/course.json")) ;
+	       JSONObject jsonObject = (JSONObject)obj ;
+	       String name = (String)jsonObject.get("Name") ;
+	       String course = (String)jsonObject.get("Course") ;
+	       JSONArray subjects = (JSONArray)jsonObject.get("Subjects") ;
+	       System.out.println("Name: " + name) ;
+	       System.out.println("Course: " + course) ;
+	       System.out.println("Subjects:") ;
+	       Iterator iterator = subjects.iterator() ;
+	       while (iterator.hasNext())
+	       {
+	          System.out.println(iterator.next()) ;
+	       }
+	    }
+	    catch(Exception e)
+	    {
+	       e.printStackTrace() ;
+	    }
+	}*/
+	
+	public static String[][] IncreaseArraySize(String[][] OriginalArray, int size)
+	{
+		if (OriginalArray == null)
+		{
+			return new String[size][] ;
+		}
+		else
+		{
+			String[][] NewArray = new String[OriginalArray.length + size][] ;
+			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
+			{
+				NewArray[i] = OriginalArray[i] ;
+			}
+			return NewArray ;
+		}
+	}
+
+	public static Clip MusicFileToClip(File MusicFile)
+	{
+		Clip MusicClip = null ;
+		try 
+ 		{
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(MusicFile) ;
+	        MusicClip = AudioSystem.getClip() ;
+	        MusicClip.open(audioInputStream) ;
+ 	    } 
+ 		catch(Exception ex) 
+ 		{
+ 	        System.out.println("Error loading clip.") ;
+ 	        ex.printStackTrace() ;
+ 	    }
+		
+		return MusicClip ;
 	}
 	
 	public static int[] ArrayWithValuesGreaterThan(int[] OriginalArray, int MinValue)
@@ -1073,61 +1027,6 @@ public abstract class UtilG
 		result[input.length] = NewMember ;
 		return result ;
 	}
-	
-	public static Creatures[] AddVectorElem(Creatures[] OriginalArray, Creatures NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new Creatures[] {NewElem} ;
-		}
-		else
-		{
-			Creatures[] NewArray = new Creatures[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
-	
-	public static CreatureTypes[] AddVectorElem(CreatureTypes[] OriginalArray, CreatureTypes NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new CreatureTypes[] {NewElem} ;
-		}
-		else
-		{
-			CreatureTypes[] NewArray = new CreatureTypes[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
-	
-	public static int[] AddVectorElem(int[] OriginalArray, int NewElem)
-	{
-		if (OriginalArray == null)
-		{
-			return new int[] {NewElem} ;
-		}
-		else
-		{
-			int[] NewArray = new int[OriginalArray.length + 1] ;
-			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
-			{
-				NewArray[i] = OriginalArray[i] ;
-			}
-			NewArray[OriginalArray.length] = NewElem ;
-			return NewArray ;
-		}
-	}
-	
 	public static float Round(float num, int decimals)
 	{
 		return BigDecimal.valueOf(num).setScale(decimals, RoundingMode.HALF_EVEN).floatValue() ;

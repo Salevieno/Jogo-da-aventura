@@ -2,6 +2,7 @@ package GameComponents ;
 
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.ArrayList;
 
 import Graphics.DrawPrimitives ;
 import LiveBeings.Creatures;
@@ -51,7 +52,7 @@ public class Projectiles
 		Pos.x += speed[0] ;
 		Pos.y += speed[1] ;
 	}
-	public int collidedwith(Player player, Creatures[] creature, Pet pet)
+	public int collidedwith(Player player, ArrayList<Creatures> creature, Pet pet)
 	{
 		// Type 0 is friendly (shot by the player or the pet)
 		// Type 1 is hostile (shot by the creature)
@@ -63,16 +64,16 @@ public class Projectiles
 		{
 			return -2 ;	// if a hostile projectile hits the pet
 		}
-		for (int c = 0 ; c <= creature.length - 1 ; c += 1)
+		for (int c = 0 ; c <= creature.size() - 1 ; c += 1)
 		{
-			if (UtilS.IsInRange(Pos, creature[c].getPos(), range) & Type == 0)
+			if (UtilS.IsInRange(Pos, creature.get(c).getPos(), range) & Type == 0)
 			{
 				return c ;	// if a friendly projectile hits the creature
 			}
 		}
 		return -3 ;	// if the projectile has not hit anything
 	}
-	public void go(Player player, Creatures[] creature, Pet pet, DrawPrimitives DP)
+	public void go(Player player, ArrayList<Creatures> creature, Pet pet, DrawPrimitives DP)
 	{
 		DrawImage(DP) ;
 		move() ;
@@ -96,12 +97,12 @@ public class Projectiles
 		}
 		else if (-1 < hit & Type == 0)
 		{
-			creature[hit].getLife()[0] += -damage ;
-			if (creature[hit].getLife()[0] < 0)
+			creature.get(hit).getLife()[0] += -damage ;
+			if (creature.get(hit).getLife()[0] < 0)
 			{
-				creature[hit].getLife()[0] = creature[hit].getLife()[1] ;
-				creature[hit].getMp()[0] = creature[hit].getMp()[1] ;
-				creature[hit].setFollow(false) ;
+				creature.get(hit).getLife()[0] = creature.get(hit).getLife()[1] ;
+				creature.get(hit).getMp()[0] = creature.get(hit).getMp()[1] ;
+				creature.get(hit).setFollow(false) ;
 				//creature[hit].setPos(Utg.RandomPos(screen.getDimensions(), new float[] {0, (float)(0.2)}, new float[] {1, 1 - (float)(SkyHeight)/screen.getDimensions()[1]}, new int[] {1, 1})) ;
 			}
 		}

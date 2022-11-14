@@ -163,7 +163,7 @@ public class Bag extends Window
 	public void display(Point MousePos, String[] allText, DrawFunctions DF)
 	{
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
-		float OverallAngle = DF.getOverallAngle() ;
+		float OverallAngle = DrawPrimitives.OverallAngle ;
 		Size screenSize = Game.getScreen().getSize() ;
 		Point pos = new Point((int)(0.35 * screenSize.x), (int)(0.48 * screenSize.y)) ;
 		Size size = new Size((int)(0.52 * screenSize.x), (int)(0.4 * screenSize.y)) ;

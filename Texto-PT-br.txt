@@ -471,4 +471,3 @@ Vida
 Exp
 Ouro
 Itens
-_

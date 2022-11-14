@@ -67,7 +67,7 @@ public class Quests
 		isActive = false ;
 	}
 	
-	public static int CalcNumberOfQuests(String CSVPath)
+	/*public static int CalcNumberOfQuests(String CSVPath)
 	{
 		try
 		{
@@ -79,7 +79,7 @@ public class Quests
 		}
 		
 		return - 1;
-	}
+	}*/
 	public void IncReqCreaturesCounter(int CreatureType)
 	{
 		for (int c = 0 ; c <= ReqCreaturesAmounts.length - 1 ; c += 1)

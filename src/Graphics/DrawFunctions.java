@@ -12,7 +12,6 @@ import javax.swing.ImageIcon ;
 import GameComponents.Buildings ;
 import GameComponents.Icon ;
 import GameComponents.Items ;
-import GameComponents.Maps ;
 import GameComponents.NPCs ;
 import LiveBeings.Pet;
 import LiveBeings.Player;
@@ -21,6 +20,7 @@ import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
 import Main.Game;
+import Maps.Maps;
 
 public class DrawFunctions
 {
@@ -69,7 +69,6 @@ public class DrawFunctions
 		menuWindow = new ImageIcon(ImagesPath + "MenuWindow.png").getImage() ;
 		buttonGeneral = new ImageIcon(ImagesPath + "ButtonGeneral.png").getImage() ;
 	}	
-	public float getOverallAngle() {return OverallAngle ;}
 
 	public void paint(Graphics g) 
 	{ 
@@ -79,10 +78,6 @@ public class DrawFunctions
 	{
 		
 	}	
-	public Graphics2D getGraphs()
-	{
-		return G ;
-	}
 	public DrawPrimitives getDrawPrimitives()
 	{
 		return DP ;
@@ -231,11 +226,11 @@ public class DrawFunctions
 	
 	
 	/* Player, pet, and creature windows */
-	public void DrawPlayerRange(Player player)
+	/*public void DrawPlayerRange(Player player)
 	{
 		DP.DrawCircle(player.getPos(), (int)(2*player.getRange()), 2, ColorPalette[player.getJob()], false, true) ;
-	}
-	public void DrawEquips(Point Pos, int Job, int equiptype, int EquipID, float[][] EquipsBonus, float[] scale, float angle)
+	}*/
+	/*public void DrawEquips(Point Pos, int Job, int equiptype, int EquipID, float[][] EquipsBonus, float[] scale, float angle)
 	{
 		int bonus = 0 ;
 		if (EquipsBonus[EquipID][1] == 10)
@@ -250,8 +245,8 @@ public class DrawFunctions
 		{
 			DP.DrawImage(Items.EquipImage[equiptype + 1 + bonus], Pos, angle, scale, new boolean[] {false, false}, "Center", 1) ;
 		}
-	}
-	public void DrawPlayerWeapon(Player player, Point Pos, float[] playerscale)
+	}*/
+	/*public void DrawPlayerWeapon(Player player, Point Pos, float[] playerscale)
 	{
 		float[] scale = new float[] {(float) 0.6, (float) 0.6} ;
 		float[] angle = new float[] {50, 30, 0, 0, 0} ;
@@ -260,7 +255,7 @@ public class DrawFunctions
 		{
 			DrawEquips(EqPos, player.getJob(), 0, player.getEquips()[0].getId() - Items.BagIDs[6], Items.EquipsBonus, scale, angle[player.getJob()]) ;
 		}	
-	}
+	}*/
 	/*public void DrawSpecialAttributesWindow(Player player, Point Pos, Size size, float[] Stun, float[] Block, float[] Blood, float[] Poison, float[] Silence)
 	{
 		int SpecialAttrPropCat = AllTextCat[8], AttrCat = AllTextCat[6] ;	
@@ -346,7 +341,7 @@ public class DrawFunctions
 			TextPos.y += 0.95 * size.y / player.getStats().length ;
 		}
 	}*/
-	public void DrawPetAttributes(Pet pet)
+	/*public void DrawPetAttributes(Pet pet)
 	{
 		Color color[] = new Color[] {ColorPalette[6], ColorPalette[5], ColorPalette[1], ColorPalette[2]} ;
 		Point Pos = new Point((int)(pet.getPos().x - pet.getSize()[0]/2), (int)(pet.getPos().y - 0.6*pet.getSize()[1])) ;
@@ -357,7 +352,7 @@ public class DrawFunctions
 		DP.DrawRect(new Point(Pos.x, Pos.y - 2*Sy), "BotLeft", new Size((int)(L*pet.getMp()[0]/pet.getMp()[1]), H), RectThickness, color[1], ColorPalette[9], true) ;
 		DP.DrawRect(new Point(Pos.x, Pos.y - Sy), "BotLeft", new Size((int)(L*pet.getExp()[0]/pet.getExp()[1]), H), RectThickness, color[2], ColorPalette[9], true) ;
 		DP.DrawRect(new Point(Pos.x, Pos.y), "BotLeft", new Size((int)(L*pet.getSatiation()[0]/pet.getSatiation()[1]), H), RectThickness, color[3], ColorPalette[9], true) ;
-	}
+	}*/
 	/*public void DrawCreatureAttributes(Creatures creature)
 	{
 		Color color[] = new Color[] {ColorPalette[6], ColorPalette[5]} ;
@@ -413,14 +408,14 @@ public class DrawFunctions
 		DP.DrawText(new Point(Pos.x + (int)(0.025*W), Pos.y - (int)(0.45*H - 6*sy)), "BotLeft", OverallAngle, AllText[TextCat][10] + ": " + Utg.Round(creature.getCrit()[0], 1) + " + " + Utg.Round(creature.getCrit()[1], 1), font, ColorPalette[6]) ;		
 		DP.DrawText(new Point(Pos.x + (int)(0.5*W), Pos.y - (int)(0.55*H)), "Center", OverallAngle, AllText[TextCat][16] + ": " + creature.getElem()[0], font, creature.getColor()) ;	
 	}*/
-	public void DrawPet(Point Pos, float[] Scale, Image PetImage)
+	/*public void DrawPet(Point Pos, float[] Scale, Image PetImage)
 	{
 		DP.DrawImage(PetImage, Pos, OverallAngle, Scale, new boolean[] {false, false}, "Center", 1) ;
-	}
-	public void DrawCreature(Point Pos, int[] Scale, Image CreatureImage, Color color)
+	}*/
+	/*public void DrawCreature(Point Pos, int[] Scale, Image CreatureImage, Color color)
 	{
 		DP.DrawImage(CreatureImage, Pos, 0, new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
-	}
+	}*/
 	/*public void DrawCreatureInfoWindow(Point Pos, CreatureTypes creatureType, Items[] items)
 	{
 		int TextCat = AllTextCat[1] ;

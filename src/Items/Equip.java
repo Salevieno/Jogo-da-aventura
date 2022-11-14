@@ -2,6 +2,7 @@ package Items;
 
 import java.awt.Image;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
@@ -45,23 +46,22 @@ public class Equip extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		int NumEquip = UtilG.count(Game.CSVPath + "Item_Equip.csv") ;
-		String[][] Input = UtilG.ReadTextFile(Game.CSVPath + "Item_Equip.csv", NumEquip) ;
-		AllEquip = new Equip[NumEquip] ;
-		for (int p = 0; p <= NumEquip - 1; p += 1)
+		ArrayList<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Equip.csv") ;
+		AllEquip = new Equip[input.size()] ;
+		for (int p = 0; p <= AllEquip.length - 1; p += 1)
 		{
-			AllEquip[p] = new Equip(Integer.parseInt(Input[p][0]), Input[p][1], Input[p][3], Integer.parseInt(Input[p][5]), Float.parseFloat(Input[p][6]),
-					Integer.parseInt(Input[p][7]),																																	// forge level
-					new AttributeBonus(Integer.parseInt(Input[p][8]), Integer.parseInt(Input[p][9]),																				// life and mp
-					Integer.parseInt(Input[p][10]),	Integer.parseInt(Input[p][11]), Integer.parseInt(Input[p][12]), Integer.parseInt(Input[p][13]),									// phyatk magatk phydef magdef
-					Integer.parseInt(Input[p][14]), Integer.parseInt(Input[p][15]),																									// dex and agi
-					Float.parseFloat(Input[p][16]), Float.parseFloat(Input[p][17]),																									// crit atk and def chance
-					Float.parseFloat(Input[p][18]), Float.parseFloat(Input[p][19]), Integer.parseInt(Input[p][20]),																	// stun
-					Float.parseFloat(Input[p][21]), Float.parseFloat(Input[p][22]), Integer.parseInt(Input[p][23]),																	// block
-					Float.parseFloat(Input[p][24]), Float.parseFloat(Input[p][25]), Integer.parseInt(Input[p][26]), Integer.parseInt(Input[p][27]), Integer.parseInt(Input[p][28]),	// blood
-					Float.parseFloat(Input[p][29]), Float.parseFloat(Input[p][30]), Integer.parseInt(Input[p][31]), Integer.parseInt(Input[p][32]), Integer.parseInt(Input[p][33]),	// poison
-					Float.parseFloat(Input[p][34]), Float.parseFloat(Input[p][35]), Integer.parseInt(Input[p][36])),																// silence
-					Input[p][37]);																																					// elem
+			AllEquip[p] = new Equip(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]),
+					Integer.parseInt(input.get(p)[7]),																																	// forge level
+					new AttributeBonus(Integer.parseInt(input.get(p)[8]), Integer.parseInt(input.get(p)[9]),																				// life and mp
+					Integer.parseInt(input.get(p)[10]),	Integer.parseInt(input.get(p)[11]), Integer.parseInt(input.get(p)[12]), Integer.parseInt(input.get(p)[13]),									// phyatk magatk phydef magdef
+					Integer.parseInt(input.get(p)[14]), Integer.parseInt(input.get(p)[15]),																									// dex and agi
+					Float.parseFloat(input.get(p)[16]), Float.parseFloat(input.get(p)[17]),																									// crit atk and def chance
+					Float.parseFloat(input.get(p)[18]), Float.parseFloat(input.get(p)[19]), Integer.parseInt(input.get(p)[20]),																	// stun
+					Float.parseFloat(input.get(p)[21]), Float.parseFloat(input.get(p)[22]), Integer.parseInt(input.get(p)[23]),																	// block
+					Float.parseFloat(input.get(p)[24]), Float.parseFloat(input.get(p)[25]), Integer.parseInt(input.get(p)[26]), Integer.parseInt(input.get(p)[27]), Integer.parseInt(input.get(p)[28]),	// blood
+					Float.parseFloat(input.get(p)[29]), Float.parseFloat(input.get(p)[30]), Integer.parseInt(input.get(p)[31]), Integer.parseInt(input.get(p)[32]), Integer.parseInt(input.get(p)[33]),	// poison
+					Float.parseFloat(input.get(p)[34]), Float.parseFloat(input.get(p)[35]), Integer.parseInt(input.get(p)[36])),																// silence
+					input.get(p)[37]);																																					// elem
 		}		
 	}
 
