@@ -20,7 +20,6 @@ public class Creatures extends LiveBeing
 {
 	private CreatureTypes type ;
 	private int Map ;
-	private int[] Size ;
 	private int[] Skill ;
 	private int[] Bag ;
 	private int Gold ;
@@ -43,7 +42,11 @@ public class Creatures extends LiveBeing
 		this.Gold = CT.getGold() ;
 		this.color = CT.getColor() ;
 		this.StatusCounter = CT.getStatusCounter() ;
-		PA.setPos(UtilG.RandomPos(new Point(0, (int) (0.2*Game.getScreen().getSize().x)), new Size(1, (int) (1 - (float)(Game.getSky().height)/Game.getScreen().getSize().y)), new Size(1, 1))) ;
+		
+		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().x)) ;
+		Size range = new Size(Game.getScreen().getSize().x, (int) ((1 - (float)(Game.getSky().height)/Game.getScreen().getSize().y) * Game.getScreen().getSize().y)) ;
+		Point initialPos = UtilG.RandomPos(minCoord, range, new Size(1, 1)) ;
+		PA.setPos(initialPos) ;
 		Follow = false ;
 	}
 
@@ -51,7 +54,7 @@ public class Creatures extends LiveBeing
 	public String getName() {return PA.getName() ;}
 	public int getLevel() {return PA.getLevel() ;}
 	public int getMap() {return Map ;}
-	public int[] getSize() {return Size ;}
+	public int[] getSize() {return PA.getSize() ;}
 	public Point getPos() {return PA.getPos() ;}
 	public int[] getSkill() {return Skill ;}
 	public float[] getLife() {return PA.getLife() ;}
@@ -130,7 +133,7 @@ public class Creatures extends LiveBeing
 	}
 	public Point CenterPos()
 	{
-		return new Point((int) (PA.getPos().x + 0.5 * Size[0]), (int) (PA.getPos().y - 0.5 * Size[1])) ;
+		return new Point((int) (PA.getPos().x + 0.5 * PA.getSize()[0]), (int) (PA.getPos().y - 0.5 * PA.getSize()[1])) ;
 	}
 	public void updatePos(String move, Point CurrentPos, int step, Maps map)
 	{
@@ -476,7 +479,7 @@ public class Creatures extends LiveBeing
 	
 	@Override
 	public String toString() {
-		return "Creatures [type=" + type + ", Map=" + Map + ", Size=" + Arrays.toString(Size) + ", Skill="
+		return "Creatures [type=" + type + ", Map=" + Map + ", Size=" + Arrays.toString(PA.getSize()) + ", Skill="
 				+ Arrays.toString(Skill) + ", Bag=" + Arrays.toString(Bag) + ", Gold=" + Gold + ", color=" + color
 				+ ", StatusCounter=" + Arrays.toString(StatusCounter) + ", Combo=" + Arrays.toString(Combo)
 				+ ", Follow=" + Follow + ", countmove=" + countmove + "]";

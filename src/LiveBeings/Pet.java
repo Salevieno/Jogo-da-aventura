@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import javax.swing.ImageIcon ;
 
+import Graphics.Animations;
 import Graphics.DrawPrimitives;
 import Utilities.Size;
 import Utilities.UtilG;
@@ -386,21 +387,47 @@ public class Pet extends LiveBeing
 	{
 		PA.getExp()[0] += creature.getExp()[0]*PA.getExp()[2] ;
 	}
-	public void LevelUp(float[] AttributesIncrease)
+	public boolean ShouldLevelUP()
 	{
+		if (getExp()[1] <= getExp()[0])
+		{
+			return true ;
+		}
+		return false ;
+	}
+	public void LevelUp(Animations ani)
+	{
+		float[] attributesIncrease = CalcAttIncrease() ;
 		PA.setLevel(PA.getLevel() + 1) ;
 		spellPoints += 1 ;
-		PA.getLife()[1] += AttributesIncrease[0] ;
+		PA.getLife()[1] += attributesIncrease[0] ;
 		PA.getLife()[0] = PA.getLife()[1] ;
-		PA.getMp()[1] += AttributesIncrease[1] ;	
+		PA.getMp()[1] += attributesIncrease[1] ;	
 		PA.getMp()[0] = PA.getMp()[1] ;
-		BA.getPhyAtk()[0] += AttributesIncrease[2] ;
-		BA.getMagAtk()[0] += AttributesIncrease[3] ;
-		BA.getPhyDef()[0] += AttributesIncrease[4] ;
-		BA.getMagDef()[0] += AttributesIncrease[5] ;
-		BA.getAgi()[0] += AttributesIncrease[6] ;
-		BA.getDex()[0] += AttributesIncrease[7] ;
-		PA.getExp()[1] += AttributesIncrease[8] ;
+		BA.getPhyAtk()[0] += attributesIncrease[2] ;
+		BA.getMagAtk()[0] += attributesIncrease[3] ;
+		BA.getPhyDef()[0] += attributesIncrease[4] ;
+		BA.getMagDef()[0] += attributesIncrease[5] ;
+		BA.getAgi()[0] += attributesIncrease[6] ;
+		BA.getDex()[0] += attributesIncrease[7] ;
+		PA.getExp()[1] += attributesIncrease[8] ;		
+
+		ani.SetAniVars(14, new Object[] {150, this, attributesIncrease}) ;
+		ani.StartAni(14) ;
+	}
+	public float[] CalcAttIncrease()
+	{
+		// Life, Mp, Phyatk, Magatk, Phydef, Magdef, Dex, Agi, Exp
+		float[] Increase = new float[AttributeIncrease.length + 1] ;
+		for (int i = 0 ; i <= AttributeIncrease.length - 1 ; ++i)
+		{
+			if (Math.random() <= ChanceIncrease[i])
+			{
+				Increase[i] = AttributeIncrease[i] ;
+			}
+		}
+		Increase[AttributeIncrease.length] = (float) (10*(3*Math.pow(PA.getLevel() - 1, 2) + 3*(PA.getLevel() - 1) + 1) - 5) ;
+		return Increase ;
 	}
 
 	/* Save and load methods */

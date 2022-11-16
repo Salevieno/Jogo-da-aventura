@@ -72,7 +72,7 @@ public class Player extends LiveBeing
 	private float[] collectLevel ;	// 0: herb, 1: wood, 2: metal
 	private float[] gold ;			// 0: current, 1: stored, 2: multiplier
 	private boolean isRiding ;		// true if the player is riding
-	private Map<String, Boolean> questSkills ;	// 0: Forest map, 1: Cave map, 2: Island map, 3: Volcano map, 4: Snowland map, 5: Shovel, 6: Book, 7: Ride, 8: Dragon's aura, 9: Bestiary	// TODO essa está como map, enquanto as outras estão como array
+	private Map<String, Boolean> questSkills ;	// 0: Forest map, 1: Cave map, 2: Island map, 3: Volcano map, 4: Snowland map, 5: Shovel, 6: Book, 7: Ride, 8: Dragon's aura, 9: Bestiary	// TODO essa estï¿½ como map, enquanto as outras estï¿½o como array
 	private String[] combo ;		// record of the last 10 movements
     public Creatures closestCreature ;	// creature that is currently closest to the player
     public Creatures opponent ;		// creature that is currently in battle with the player
@@ -86,7 +86,7 @@ public class Player extends LiveBeing
 	
 	//private float[] ElemMult ;	// 0: Neutral, 1: Water, 2: Fire, 3: Plant, 4: Earth, 5: Air, 6: Thunder, 7: Light, 8: Dark, 9: Snow
 	
-	// TODO essas variáveis vão para spells
+	// TODO essas variï¿½veis vï¿½o para spells
 	private boolean[] SpellIsActive ;	// Tells if the skill is currently active
 	private int[][] SpellCounter ;	// [0: skill 0, 1: skill 1...] [0: duration, 1: cooldown]
 	private int[] StatusCounter ;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence, Drunk]
@@ -159,10 +159,10 @@ public class Player extends LiveBeing
 		collectLevel = new float[3] ;
 		gold = new float[] {0, 0, Float.parseFloat(Properties.get(PA.Job)[32])} ;
 		questSkills = new HashMap<String, Boolean>() ;
-		questSkills.put("Floresta", false) ;	// TODO parte dos nomes em port, parte em inglês
+		questSkills.put("Floresta", false) ;	// TODO parte dos nomes em port, parte em inglï¿½s
 		questSkills.put("Caverna", false) ;
 		questSkills.put("Ilha", false) ;
-		questSkills.put("Vulcão", false) ;
+		questSkills.put("Vulcï¿½o", false) ;
 		questSkills.put("Terra das neves", false) ;
 		questSkills.put("Shovel", false) ;
 		questSkills.put("Fab window", false) ;
@@ -505,6 +505,7 @@ public class Player extends LiveBeing
 	public void move(Pet pet, Clip[] Music, Animations Ani)
 	{
 		Point NewPos = PA.CalcNewPos() ;
+		int moveRange = 20 ;
 		if (Game.getScreen().posIsInMap(NewPos))	// if the player's new position is inside the map
 		{	
 			if (!Ani.isActive(10) & !Ani.isActive(12) & !Ani.isActive(13) & !Ani.isActive(15) & !Ani.isActive(18))
@@ -524,8 +525,8 @@ public class Player extends LiveBeing
 				MoveToNewMap(pet, PA.currentAction, Music, settings.getMusicIsOn(), Ani) ;
 			}
 		}
-		
-		PA.countmove = (PA.countmove + 1) % PA.getStep() ;
+
+		PA.countmove = (PA.countmove + 1) % moveRange ;
 	}
 	public void AddCreatureToBestiary(int CreatureID)
 	{
@@ -596,10 +597,10 @@ public class Player extends LiveBeing
 				Ani.StartAni(15) ;
 			}
 		}*/
-		//if (PA.currentAction.equals(ActionKeys[7]) & questSkills.get(PA.getMap().getContinentName(this)))	// Map
-		//{
+		if (PA.currentAction.equals(ActionKeys[7]) & questSkills.get(PA.getMap().getContinentName(this)))	// Map
+		{
 			map.open() ;
-		//}
+		}
 		if (PA.currentAction.equals(ActionKeys[8]))				// settings window
 		{
 			settings.open() ;
@@ -1046,7 +1047,7 @@ public class Player extends LiveBeing
 		}
 		if (settings.isOpen())
 		{
-			settings.display(allText.get("* Menu de opções *"), DF.getDrawPrimitives()) ;
+			settings.display(allText.get("* Menu de opÃ§Ãµes *"), DF.getDrawPrimitives()) ;
 			//OptionsWindow(Music, DF) ;
 			//Object[] OptionStatus = OptionsWindow(Music, DF) ;
 			/*MusicIsOn = (boolean) OptionStatus[0] ;
@@ -1503,22 +1504,51 @@ public class Player extends LiveBeing
 		Ani.SetAniVars(12, new Object[] {100, ItemsObtained, color}) ;
 		Ani.StartAni(12) ;
 	}
-	public void LevelUp(float[] AttributesIncrease)
+	public boolean ShouldLevelUP()
 	{
+		if (getExp()[1] <= getExp()[0])
+		{
+			return true ;
+		}
+		return false ;
+	}	
+	public void LevelUp(Animations ani)
+	{
+		float[] attributesIncrease = CalcAttIncrease() ;
 		PA.setLevel(PA.getLevel() + 1) ;
 		spellPoints += 1 ;
-		PA.getLife()[1] += AttributesIncrease[0] ;
+		PA.getLife()[1] += attributesIncrease[0] ;
 		PA.getLife()[0] = PA.getLife()[1] ;
-		PA.getMp()[1] += AttributesIncrease[1] ;	
+		PA.getMp()[1] += attributesIncrease[1] ;	
 		PA.getMp()[0] = PA.getMp()[1] ;
-		BA.getPhyAtk()[0] += AttributesIncrease[2] ;
-		BA.getMagAtk()[0] += AttributesIncrease[3] ;
-		BA.getPhyDef()[0] += AttributesIncrease[4] ;
-		BA.getMagDef()[0] += AttributesIncrease[5] ;
-		BA.getAgi()[0] += AttributesIncrease[6] ;
-		BA.getDex()[0] += AttributesIncrease[7] ;
-		PA.getExp()[1] += AttributesIncrease[8] ;
+		BA.getPhyAtk()[0] += attributesIncrease[2] ;
+		BA.getMagAtk()[0] += attributesIncrease[3] ;
+		BA.getPhyDef()[0] += attributesIncrease[4] ;
+		BA.getMagDef()[0] += attributesIncrease[5] ;
+		BA.getAgi()[0] += attributesIncrease[6] ;
+		BA.getDex()[0] += attributesIncrease[7] ;
+		PA.getExp()[1] += attributesIncrease[8] ;
 		attPoints += 2 ;
+		
+
+		ani.SetAniVars(13, new Object[] {150, attributesIncrease, getLevel(), getColor()}) ;
+		ani.StartAni(13) ;
+	}
+	public float[] CalcAttIncrease()
+	{
+		// Life, Mp, Phyatk, Magatk, Phydef, Magdef, Dex, Agi, Exp
+		float[] attributeIncrease = getAttIncrease()[getProJob()] ;
+		float[] chanceIncrease = getChanceIncrease()[getProJob()] ;
+		float[] increase = new float[attributeIncrease.length + 1] ;
+		for (int i = 0 ; i <= attributeIncrease.length - 1 ; ++i)
+		{
+			if (Math.random() <= chanceIncrease[i])
+			{
+				increase[i] = attributeIncrease[i] ;
+			}
+		}
+		increase[attributeIncrease.length] = (float) (10*(3*Math.pow(PA.getLevel() - 1, 2) + 3*(PA.getLevel() - 1) + 1) - 5) ;
+		return increase ;
 	}
 	public void ResetPosition()
 	{

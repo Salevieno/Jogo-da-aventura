@@ -582,7 +582,6 @@ public abstract class UtilG
 				if (Line.contains("*"))
 				{
 					Text.put(key, content.toArray(new String[content.size()])) ;
-					System.out.println(key + " " + content);
 					key = Line ;
 					content = new ArrayList<>() ;
 	            }

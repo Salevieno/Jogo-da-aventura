@@ -138,24 +138,6 @@ public class UtilS
 		return SelectedMenu ;
 	}
 	
-	public static boolean CheckLevelUP(Player player, Animations Ani)
-	{
-		if (player.getExp()[1] <= player.getExp()[0] & !Ani.isActive(12))
-		{
-			return true ;
-		}
-		return false ;
-	}
-	
-	public static boolean CheckLevelUP(Pet pet, Animations Ani)
-	{
-		if (pet.getExp()[1] <= pet.getExp()[0] & !Ani.isActive(13))
-		{
-			return true ;
-		}
-		return false ;
-	}
-	
  	public static String CheckAdjacentGround(Point playerPos, Maps map, String GroundType)
 	{
  		Point PlayerPos = new Point(playerPos.x, playerPos.y) ;
@@ -243,7 +225,7 @@ public class UtilS
 		if (player.getMap().isAField())	// map is a field, so it has creatures
 		{
 			FieldMap fm = (FieldMap) player.getMap() ;
-			int NumberOfCreaturesInMap = player.getMap().getCreatureTypes().size() ;
+			int NumberOfCreaturesInMap = fm.getCreatures().size() ;
 			/*for (int i = 0 ; i <= player.getMap().getCreatureTypes().size() - 1 ; ++i)
 			{
 				if (-1 < player.getMap().getCreatureTypes().get(i).getID())

@@ -187,7 +187,7 @@ public class Game extends JPanel implements ActionListener
 			{
 				image = new ImageIcon(ImagesPath + "NPCHoleInCave.png").getImage() ;
 			}
-			String[] options = new String[] {"Sim", "Não1545145415"} ;
+			String[] options = new String[] {"Sim", "Nï¿½o1545145415"} ;
 			npc[i] = new NPCs(ID, Name, Pos, image, Map, PosReltoBuilding, Info, color, options) ;
 		}
     	
@@ -406,7 +406,7 @@ public class Game extends JPanel implements ActionListener
 			maps[map].InitializeGroundTypes(sky.height, screen.getSize()) ;
 			
 			// Setting creatures in map
-			if (maps[map].getCreatureTypes() != null)
+			/*if (maps[map].getCreatureTypes() != null)
 			{
 				ArrayList<Creatures> creaturesInMap = new ArrayList<Creatures>() ;
 				for (int c = 0 ; c <= maps[map].getCreatureTypes().size() - 1 ; c += 1)
@@ -419,7 +419,7 @@ public class Game extends JPanel implements ActionListener
 					}
 				}
 				//maps[map].setCreatures(creaturesInMap) ;
-			}
+			}*/
 			
 			
 			// Creating collectibles
@@ -482,7 +482,7 @@ public class Game extends JPanel implements ActionListener
 						Pos = UtilG.RandomPos(new Point(0, (int) (0.2*screenSize.x)), new Size((int) (0.8*screenSize.x), (int) (1 - (float)(sky.height)/screenSize.y)), new Size(posStep, posStep)) ;
 					}*/
 					//creature[creatureID].setPos(Pos) ;
-					if (creature[creatureID].getName().equals("Dragão") | creature[creatureID].getName().equals("Dragon"))
+					if (creature[creatureID].getName().equals("Dragï¿½o") | creature[creatureID].getName().equals("Dragon"))
 					{
 						creature[creatureID].getPersonalAtt().setPos(new Point((int)(0.5*screenSize.x), (int)(0.5*screenSize.y))) ;
 					}
@@ -889,8 +889,8 @@ public class Game extends JPanel implements ActionListener
 		}
 		
 		// draw the map (cities, forest, etc.)
-		player.getMap().display(DF.getDrawPrimitives());
-		//DF.DrawFullMap(pet, player.getPos(), player.allText.get("* Mensagem das placas *"), player.getMap(), allNPCs, allBuildings, sky, SideBarIcons, mousePos) ;	// TODO essa função pode sair
+		//player.getMap().display(DF.getDrawPrimitives());
+		DF.DrawFullMap(pet, player.getPos(), player.allText.get("* Mensagem das placas *"), player.getMap(), allNPCs, allBuildings, sky, SideBarIcons, mousePos) ;	// TODO essa funï¿½ï¿½o pode sair
 		//player.DrawSideBar(pet, mousePos, SideBarIcons, DF.getDrawPrimitives()) ;
 		
 		// creatures act
@@ -900,9 +900,9 @@ public class Game extends JPanel implements ActionListener
 			ArrayList<Creatures> creaturesInMap = fm.getCreatures() ;
 			for (int c = 0 ; c <= creaturesInMap.size() - 1 ; c += 1)
 			{				
-				System.out.println(creaturesInMap.get(c).getPos()) ;
+				//System.out.println(creaturesInMap.get(c).getPos()) ;
 				creaturesInMap.get(c).act(player.getPos(), player.getMap()) ;
-				//creaturesInMap[c].display(DF.getDrawPrimitives()) ;
+				creaturesInMap.get(c).display(DF.getDrawPrimitives()) ;
 			}
 		}
 		
@@ -912,11 +912,11 @@ public class Game extends JPanel implements ActionListener
 		{
 			player.move(pet, music.getMusicClip(), ani) ;
 		}
-		//player.drawAttributes(DF.getDrawPrimitives()) ;
-		//player.display(player.getPos(), new float[] {1, 1}, player.getDir(), player.getSettings().getShowPlayerRange(), DF.getDrawPrimitives()) ;
+		player.drawAttributes(DF.getDrawPrimitives()) ;
+		player.display(player.getPos(), new float[] {1, 1}, player.getDir(), player.getSettings().getShowPlayerRange(), DF.getDrawPrimitives()) ;
 		if (player.weaponIsEquipped())	// if the player is equipped with a weapon
 		{
-			//player.DrawWeapon(player.getPos(), new float[] {1, 1}, DF.getDrawPrimitives()) ;
+			player.DrawWeapon(player.getPos(), new float[] {1, 1}, DF.getDrawPrimitives()) ;
 		}
 		
 		// pet acts
@@ -948,9 +948,12 @@ public class Game extends JPanel implements ActionListener
 			int[] meet = player.meet(creature, allNPCs, ani) ;	// meet[0] is the encounter and meet[1] is its id
 			if (meet[0] == 0 & 0 <= meet[1])	// meet with creature
 			{
-				creature[meet[1]].setFollow(true) ;
+				FieldMap fm = (FieldMap) player.getMap() ;
+				ArrayList<Creatures> creaturesInMap = fm.getCreatures() ;
+				Creatures opponent = creaturesInMap.get(meet[1]) ;
+				opponent.setFollow(true) ;
 				player.setCurrentAction("Fighting") ;	
-				player.opponent = creature[meet[1]] ;
+				player.opponent = opponent ;
 				player.AddCreatureToBestiary(meet[1]) ;
 			}
 			if (meet[0] == 1 & 0 <= meet[1])	// meet with npc
@@ -973,27 +976,21 @@ public class Game extends JPanel implements ActionListener
 			bat.RunBattle(player, pet, player.opponent, allQuests, mousePos, DF) ;
 		}
 		
-		// check if the player and the pet have leveled up
-		if (!ani.isActive(12) & UtilS.CheckLevelUP(player, ani))
+		// level up the player and the pet if they should
+		if (!ani.isActive(12) & player.ShouldLevelUP())
 		{
-			float[] AttributesIncrease = UtilS.LevelUpIncAtt(player.getAttIncrease()[player.getProJob()], player.getChanceIncrease()[player.getProJob()], player.getLevel()) ;
-			player.LevelUp(AttributesIncrease) ;
-			ani.SetAniVars(13, new Object[] {150, AttributesIncrease, player.getLevel(), player.getColor()}) ;
-			ani.StartAni(13) ;
+			player.LevelUp(ani) ;
 		}
 		if (pet != null)
 		{
-			if (UtilS.CheckLevelUP(pet, ani))
+			if (!ani.isActive(13) & pet.ShouldLevelUP())
 			{
-				float[] AttributesIncrease = UtilS.LevelUpIncAtt(Pet.AttributeIncrease, Pet.ChanceIncrease, pet.getLevel()) ;
-				pet.LevelUp(AttributesIncrease) ;
-				ani.SetAniVars(14, new Object[] {150, pet, AttributesIncrease}) ;
-				ani.StartAni(14) ;
+				pet.LevelUp(ani) ;
 			}
 		}
 		
 		// show the active player windows
-		//player.ShowWindows(pet, creature, allCreatureTypes, allQuests, allMaps, plusSignIcon, bat, music.getMusicClip(), mousePos, DF) ;
+		player.ShowWindows(pet, creature, allCreatureTypes, allQuests, allMaps, plusSignIcon, bat, music.getMusicClip(), mousePos, DF) ;
 		
 		// if tutorial is on, draw tutorial animations
 		if (TutorialIsOn)
@@ -1080,11 +1077,12 @@ public class Game extends JPanel implements ActionListener
     	pet = InitializePet() ;
     	pet.getPA().setLife(new float[] {100, 100, 0});
     	pet.getPA().setPos(player.getPos());
-
+    	bat = new Battle(CSVPath, ImagesPath, player.getSpell(), pet.getSpells(), player.getSettings().getDamageAnimation(), music.getSoundEffect(), new int[] {player.getBattleAtt().getBattleActions()[0][1]/2, pet.getBattleAtt().getBattleActions()[0][1]/2}, ani) ;
+    	
     	
     	
     	player.setMap(fieldMaps[2]) ;
-    	player.setPos(new Point(screen.getSize().x / 2 + 160, screen.getSize().y / 2)) ;
+    	player.setPos(new Point(60, screen.getSize().y / 2)) ;
     	OpeningIsOn = false ;
     	InitializationIsOn = false ;
     	LoadingGameIsOn = false ;
@@ -1102,7 +1100,7 @@ public class Game extends JPanel implements ActionListener
 	
 	public void testing()
 	{
-		player.setPos(new Point(503, 221));
+		//player.setPos(new Point(503, 221));
 	}
 	
 	@Override

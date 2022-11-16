@@ -110,15 +110,15 @@ public class Maps
 	public int[] getConnections() {return Connections ;}	
 	public int[] getCollectibleCounter() {return CollectibleCounter ;}	
 	public int[] getCollectibleDelay() {return CollectibleDelay ;}
-	public ArrayList<CreatureTypes> getCreatureTypes() {return creatureTypes ;}
+	//public ArrayList<CreatureTypes> getCreatureTypes() {return creatureTypes ;}
 	public ArrayList<NPCs> getNPCs() {return NPCsInMap ;}
 	public Buildings[] getBuildings() {return building ;}
 	public String getContinentName(Player player)
 	{ 
 		String[] ContinentNames = player.allText.get("* Nomes dos continentes *") ;
-		System.out.println(player.allText);
-		System.out.println(Arrays.toString(player.allText.get("* Nomes dos continentes *")));
-		return ContinentNames[Continent] ;
+		//System.out.println(Continent);
+		//System.out.println(ContinentNames[Continent]);
+		return ContinentNames[Continent + 1] ;
 	}
 	
 	public static void InitializeStaticVars(String ImagesPath)
