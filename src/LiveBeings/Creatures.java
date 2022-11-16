@@ -1,6 +1,7 @@
 package LiveBeings ;
 
 import java.awt.Color ;
+import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
 import java.util.Arrays;
@@ -47,6 +48,13 @@ public class Creatures extends LiveBeing
 		Size range = new Size(Game.getScreen().getSize().x, (int) ((1 - (float)(Game.getSky().height)/Game.getScreen().getSize().y) * Game.getScreen().getSize().y)) ;
 		Point initialPos = UtilG.RandomPos(minCoord, range, new Size(1, 1)) ;
 		PA.setPos(initialPos) ;
+		
+
+		if (getName().equals("Dragão") | getName().equals("Dragon"))
+		{
+			getPersonalAtt().setPos(Game.getScreen().getCenter()) ;
+		}
+		
 		Follow = false ;
 	}
 
@@ -122,7 +130,10 @@ public class Creatures extends LiveBeing
 				DP.DrawImage(type.movingAni.movingRightGif, PA.getPos(), "Center") ;
 			}
 		}
+		DP.DrawText(getPos(), "Center", 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
 	}
+	
+
 	public void setRandomPos()
 	{
 		Screen screen = Game.getScreen() ;

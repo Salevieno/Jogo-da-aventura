@@ -11,12 +11,12 @@ public class SkyComponent
 {
 	private Image image ;
 	private Point pos ;
-	private float[] speed ;
+	private int[] speed ;
 	private Size size ;
 	private Color[] color ;
 	private int counter ;
 	
-	public SkyComponent(Image image, Point pos, float[] speed, Color[] color)
+	public SkyComponent(Image image, Point pos, int[] speed, Color[] color)
 	{
 		this.image = image ;
 		this.pos = pos ;
@@ -33,13 +33,13 @@ public class SkyComponent
 
 	public Image getImage() {return image ;}
 	public Point getPos() {return pos ;}
-	public float[] getSpeed() {return speed ;}
+	public int[] getSpeed() {return speed ;}
 	public Size getSize() {return size ;}
 	public Color[] getColor() {return color ;}
 	public int getCounter() {return counter ;}
 	public void setImage(Image I) {image = I ;}
 	public void setPos(Point P) {pos = P ;}
-	public void setSpeed(float[] S) {speed = S ;}
+	public void setSpeed(int[] S) {speed = S ;}
 	public void setColor(Color[] C) {color = C ;}
 	public void setCounter(int C) {counter = C ;}
 	

@@ -13,20 +13,15 @@ import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays ;
 
 import javax.swing.ImageIcon ;
 import javax.swing.JPanel ;
 import javax.swing.Timer ;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import Actions.Battle ;
 import Actions.BattleActions;
 import GameComponents.Buildings ;
 import GameComponents.Icon ;
-import GameComponents.MapElements ;
 import GameComponents.NPCs ;
 import GameComponents.Projectiles ;
 import GameComponents.Quests ;
@@ -79,7 +74,7 @@ public class Game extends JPanel implements ActionListener
 
 	private Music music ;
 	private DrawFunctions DF ;
-	private Icon[] OPbuttons, SideBarIcons, plusSignIcon ;
+	private Icon[] SideBarIcons, plusSignIcon ;
 	private Player player ;
 	private Pet pet ;
 	private Creatures[] creature ;
@@ -352,89 +347,13 @@ public class Game extends JPanel implements ActionListener
 											Integer.parseInt(input.get(id)[23]),
 											Integer.parseInt(input.get(id)[24])
 											} ;
-			Image image = new ImageIcon(ImagesPath + "Map" + String.valueOf(id) + ".png").getImage() ;
+			Image image = new ImageIcon(ImagesPath + "Map" + String.valueOf(id + cityMaps.length) + ".png").getImage() ;
 			fieldMap[id] = new FieldMap(name, continent, Connections, image, collectibleLevel, new int[] {berryDelay, herbDelay, woodDelay, metalDelay}, creatureIDs) ;
 		}
 		
 		return fieldMap ;
     }
-    
-    public Maps[] InitializeMaps(Screen screen, CreatureTypes[] creatureTypes, Sky sky)
-    {
-
-    	
-		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "Maps.csv") ;
-		Maps[] maps = new Maps[input.size()] ;	
-		for (int map = 0 ; map <= maps.length - 1 ; map += 1)
-		{
-			String Name = input.get(map)[1] ;
-			int Continent = Integer.parseInt(input.get(map)[2]) ;
-			Image image = new ImageIcon(ImagesPath + "Map" + String.valueOf(map) + ".png").getImage() ;
-			int CollectibleLevel = Integer.parseInt(input.get(map)[3]) ;
-			int[] CollectibleDelay = new int[] {Integer.parseInt(input.get(map)[4]), Integer.parseInt(input.get(map)[5]), Integer.parseInt(input.get(map)[6]), Integer.parseInt(input.get(map)[7])} ;
-			int[] Connections = new int[] {Integer.parseInt(input.get(map)[8]), Integer.parseInt(input.get(map)[9]), Integer.parseInt(input.get(map)[10]), Integer.parseInt(input.get(map)[11]), Integer.parseInt(input.get(map)[12]), Integer.parseInt(input.get(map)[13]), Integer.parseInt(input.get(map)[14]), Integer.parseInt(input.get(map)[15])} ;
-			ArrayList<Creatures> creatures = null ;
-			ArrayList<CreatureTypes> creatureType = new ArrayList<CreatureTypes>() ;
-			for (int c = 0 ; c <= 10 - 1 ; c += 1)
-			{
-				if (-1 < Integer.parseInt(input.get(map)[16 + c]))
-				{
-					creatureType.add(creatureTypes[Integer.parseInt(input.get(map)[16 + c])]) ;
-				}
-			}
-			
-			
-			// Creating map elements
-			MapElements[] MapElem = null ;
-			if (!Name.contains("City"))
-			{
-				MapElem = new MapElements[5] ;
-				Point minPos = new Point((int) (0.1 * screen.getSize().x), (int) (((float)(sky.height)/screen.getSize().y + 0.1) * screen.getSize().y)) ;
-				Size range = new Size((int) (0.8 * screen.getSize().x), (int) (0.2 * screen.getSize().y)) ;
-				// adding 5 forest trees at random points if the map is a field
-				for (int j = 0 ; j <= 4 ; ++j)
-				{
-					Point randomPos = UtilG.RandomPos(minPos, range, new Size(1, 1)) ;
-							//new Point(UtilG.RandomCoord1D(screen.getSize().x, MinX, RangeX, 1), UtilG.RandomCoord1D(screen.getSize().y, MinY, RangeY, 1)) ;
-					MapElem[j] = new MapElements(j, "ForestTree", randomPos, new ImageIcon(ImagesPath + "MapElem6_TreeForest.png").getImage()) ;				
-				}	
-			}
-			
-			// MapElements[] MapElem, int CollectibleLevel, int[] CollectibleDelay, int[] Connections, ArrayList<CreatureTypes> creatureTypes, ArrayList<Creatures> creatures
-			//maps[map] = new Maps(Name, map, Continent, image, MapElem, CollectibleLevel, CollectibleDelay, Connections, creatureType, creatures) ;
-			//maps[map] = new CityMap(Name, map, Continent, image);
-			maps[map].InitializeGroundTypes(sky.height, screen.getSize()) ;
-			
-			// Setting creatures in map
-			/*if (maps[map].getCreatureTypes() != null)
-			{
-				ArrayList<Creatures> creaturesInMap = new ArrayList<Creatures>() ;
-				for (int c = 0 ; c <= maps[map].getCreatureTypes().size() - 1 ; c += 1)
-				{
-					CreatureTypes creatureTyp = maps[map].getCreatureTypes().get(c);
-					if (-1 < creatureTyp.getID())
-					{
-						Creatures creature = new Creatures(creatureTyp) ;
-						creaturesInMap.add(creature) ;
-					}
-				}
-				//maps[map].setCreatures(creaturesInMap) ;
-			}*/
-			
-			
-			// Creating collectibles
-			/*if (!maps[map].IsACity() & maps[map].getContinent() != 5 & map != 60)
-			{
-				for (int i = 0 ; i <= Maps.CollectibleTypes.length - 1 ; i += 1)
-				{
-					maps[map].CreateCollectible(map, i) ;
-				}
-			}*/
-			
-		}
-		return maps ;
-    }
-            
+                
     public Player InitializePlayer(String Name, int Job, String GameLanguage, String Sex)
     {
 		return new Player(Name, GameLanguage, Sex, Job) ;
@@ -466,31 +385,16 @@ public class Game extends JPanel implements ActionListener
 		{
 			if (fieldMap[map].getCreatures() != null)	// Map has creatures
 			{
-				CreatureTypes cType = null ;
-				Maps creatureMap = null ;
 				for (int j = 0 ; j <= fieldMap[map].getCreatures().size() - 1 ; j += 1)
 				{
-					cType = creatureTypes[fieldMap[map].getCreatures().get(j).getType().getID()] ;
-					creatureMap = fieldMap[map] ;
-					
-					creature[creatureID] = new Creatures(cType) ;
-					
-					//int posStep = 1 ;
-					//Point Pos = UtilG.RandomPos(new Point(0, (int) (0.2*screenSize.x)), new Size(1, (int) (1 - (float)(sky.height)/screenSize.y)), new Size(posStep, posStep)) ;
-					/*if (creatureMap.getid() == 13 | creatureMap.getid() == 17)	// Shore creatures
-					{
-						Pos = UtilG.RandomPos(new Point(0, (int) (0.2*screenSize.x)), new Size((int) (0.8*screenSize.x), (int) (1 - (float)(sky.height)/screenSize.y)), new Size(posStep, posStep)) ;
-					}*/
-					//creature[creatureID].setPos(Pos) ;
-					if (creature[creatureID].getName().equals("Drag�o") | creature[creatureID].getName().equals("Dragon"))
-					{
-						creature[creatureID].getPersonalAtt().setPos(new Point((int)(0.5*screenSize.x), (int)(0.5*screenSize.y))) ;
-					}
+					CreatureTypes cType = fieldMap[map].getCreatures().get(j).getType() ;					
+					creature[creatureID] = new Creatures(cType) ;					
 					
 					creatureID += 1;
 				}
 			}
 		}
+    	
 		return creature ;
     }
     
@@ -582,7 +486,11 @@ public class Game extends JPanel implements ActionListener
 		allNPCs = InitializeNPCs(GameLanguage, screen.getSize()) ;
 		allBuildings = InitializeBuildings(screen.getSize()) ;
 		allCreatureTypes = InitializeCreatureTypes(GameLanguage, 1) ;
-		allMaps = InitializeMaps(screen, allCreatureTypes, sky) ;
+		cityMaps = InitializeCityMaps() ;
+		fieldMaps = InitializeFieldMaps() ;
+		allMaps = new Maps[cityMaps.length + fieldMaps.length] ;
+		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
+		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
 		DifficultMult = new float[] {(float) 0.5, (float) 0.7, (float) 1.0} ;
  		//player = InitializePlayer(PlayerInitialName, PlayerInitialJob, GameLanguage, PlayerInitialSex) ;
 		//pet = InitializePet() ;
@@ -891,7 +799,7 @@ public class Game extends JPanel implements ActionListener
 		// draw the map (cities, forest, etc.)
 		//player.getMap().display(DF.getDrawPrimitives());
 		DF.DrawFullMap(pet, player.getPos(), player.allText.get("* Mensagem das placas *"), player.getMap(), allNPCs, allBuildings, sky, SideBarIcons, mousePos) ;	// TODO essa fun��o pode sair
-		//player.DrawSideBar(pet, mousePos, SideBarIcons, DF.getDrawPrimitives()) ;
+		player.DrawSideBar(pet, mousePos, SideBarIcons, DF.getDrawPrimitives()) ;
 		
 		// creatures act
 		if (!player.getMap().IsACity())
@@ -938,7 +846,6 @@ public class Game extends JPanel implements ActionListener
 		// find the closest creature to the player
 		if (!player.getMap().IsACity())
 		{
-			FieldMap fm = (FieldMap) player.getMap() ;
 			player.closestCreature = UtilS.ClosestCreatureInRange(player, creature, allMaps) ;
 		}
 		
@@ -1069,6 +976,9 @@ public class Game extends JPanel implements ActionListener
     	//allMaps = InitializeMaps(screen, allCreatureTypes, sky) ;
 		cityMaps = InitializeCityMaps() ;
 		fieldMaps = InitializeFieldMaps() ;
+		allMaps = new Maps[cityMaps.length + fieldMaps.length] ;
+		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
+		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
     	/*for (int map = 0 ; map <= allMaps.length - 1 ; map += 1)
 		{
 			allMaps[map].InitializeNPCsInMap(allNPCs) ;
@@ -1081,7 +991,7 @@ public class Game extends JPanel implements ActionListener
     	
     	
     	
-    	player.setMap(fieldMaps[2]) ;
+    	player.setMap(cityMaps[2]) ;
     	player.setPos(new Point(60, screen.getSize().y / 2)) ;
     	OpeningIsOn = false ;
     	InitializationIsOn = false ;
@@ -1113,6 +1023,7 @@ public class Game extends JPanel implements ActionListener
 		
     	if (OpeningIsOn)
 		{
+    		opening.Animation(DF) ;
     		testingInitialization() ;
         	RunGame = true ;  
 		/*} else if (LoadingScreenIsOn)
@@ -1264,138 +1175,4 @@ public class Game extends JPanel implements ActionListener
 		repaint() ;
 	}
 
-	/*public void InitializeCreaturesInMap()
-	{		
-		// Setting creatures in map
-		for (int map = 0 ; map <= maps.length - 1 ; map += 1)
-		{
-			if (maps[map].getCreatureTypes() != null)
-			{
-				Creatures[] creaturesInMap = null ;
-				for (int c = 0 ; c <= maps[map].getCreatureTypes().length - 1 ; c += 1)
-				{
-					CreatureTypes creatureType = maps[map].getCreatureTypes()[c];
-					if (-1 < creatureType.getID())
-					{
-						Creatures creature = new Creatures(creatureType) ;
-						creaturesInMap = UtilG.AddVectorElem(creaturesInMap, creature) ;
-						maps[map].setCreatures(creaturesInMap) ;
-					}
-				}
-			}
-		}
-	}*/
-	
-	/*public Spells[] InitializeSpells(String Language)
-    {
-    	int NumberOfAllSkills = 178 ;
-    	int NumberOfSkills = Player.NumberOfSkillsPerJob[player.getJob()] ;
-    	int NumberOfAtt = 14 ;
-    	int NumberOfBuffs = 12 ;
-		Spells[] skills = new Spells[NumberOfSkills] ;
-		String[][] SkillsInput = UtilG.ReadTextFile(CSVPath + "Skills.csv", NumberOfAllSkills) ;	
-		String[][] SkillsBuffsInput = UtilG.ReadTextFile(CSVPath + "SkillsBuffs.csv", NumberOfAllSkills) ;
-		String[][] SkillsNerfsInput = UtilG.ReadTextFile(CSVPath + "SkillsNerfs.csv", NumberOfAllSkills) ;
-		float[][][] SkillBuffs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
-		float[][][] SkillNerfs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
-		String[][] SkillsInfo = new String[NumberOfSkills][2] ;
-		for (int i = 0 ; i <= NumberOfSkills - 1 ; i += 1)
-		{
-			int ID = i + Player.CumNumberOfSkillsPerJob[player.getJob()] ;
-			int BuffCont = 0, NerfCont = 0 ;
-			for (int j = 0 ; j <= NumberOfAtt - 1 ; j += 1)
-			{
-				if (j == 11 | j == 12)
-				{
-					for (int k = 0 ; k <= NumberOfBuffs - 1 ; k += 1)
-					{
-						SkillBuffs[i][j][k] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 3]) ;
-						SkillNerfs[i][j][k] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 3]) ;
-						NerfCont += 1 ;
-						BuffCont += 1 ;
-					}
-				}
-				else
-				{
-					SkillBuffs[i][j][0] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 3]) ;
-					SkillBuffs[i][j][1] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 4]) ;
-					SkillBuffs[i][j][2] = Float.parseFloat(SkillsBuffsInput[ID][BuffCont + 5]) ;
-					SkillNerfs[i][j][0] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 3]) ;
-					SkillNerfs[i][j][1] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 4]) ;
-					SkillNerfs[i][j][2] = Float.parseFloat(SkillsNerfsInput[ID][NerfCont + 5]) ;
-					NerfCont += 3 ;
-					BuffCont += 3 ;
-				}
-			}
-			if (Language.equals("P"))
-			{
-				SkillsInfo[i] = new String[] {SkillsInput[ID][42], SkillsInput[ID][43]} ;
-			}
-			else if (Language.equals("E"))
-			{
-				SkillsInfo[i] = new String[] {SkillsInput[ID][44], SkillsInput[ID][45]} ;
-			}
-			String Name = SkillsInput[ID][4] ;
-			int MaxLevel = Integer.parseInt(SkillsInput[ID][5]) ;
-			float MpCost = Float.parseFloat(SkillsInput[ID][6]) ;
-			String Type = SkillsInput[ID][7] ;
-			int[][] PreRequisites = new int[][] {{Integer.parseInt(SkillsInput[ID][8]), Integer.parseInt(SkillsInput[ID][9])}, {Integer.parseInt(SkillsInput[ID][10]), Integer.parseInt(SkillsInput[ID][11])}, {Integer.parseInt(SkillsInput[ID][12]), Integer.parseInt(SkillsInput[ID][13])}} ;
-			int Cooldown = Integer.parseInt(SkillsInput[ID][14]) ;
-			int Duration = Integer.parseInt(SkillsInput[ID][15]) ;
-			float[] Atk = new float[] {Float.parseFloat(SkillsInput[ID][16]), Float.parseFloat(SkillsInput[ID][17])} ;
-			float[] Def = new float[] {Float.parseFloat(SkillsInput[ID][18]), Float.parseFloat(SkillsInput[ID][19])} ;
-			float[] Dex = new float[] {Float.parseFloat(SkillsInput[ID][20]), Float.parseFloat(SkillsInput[ID][21])} ;
-			float[] Agi = new float[] {Float.parseFloat(SkillsInput[ID][22]), Float.parseFloat(SkillsInput[ID][23])} ;
-			float[] AtkCrit = new float[] {Float.parseFloat(SkillsInput[ID][24])} ;
-			float[] DefCrit = new float[] {Float.parseFloat(SkillsInput[ID][25])} ;
-			float[] Stun = new float[] {Float.parseFloat(SkillsInput[ID][26]), Float.parseFloat(SkillsInput[ID][27]), Float.parseFloat(SkillsInput[ID][28])} ;
-			float[] Block = new float[] {Float.parseFloat(SkillsInput[ID][29]), Float.parseFloat(SkillsInput[ID][30]), Float.parseFloat(SkillsInput[ID][31])} ;
-			float[] Blood = new float[] {Float.parseFloat(SkillsInput[ID][32]), Float.parseFloat(SkillsInput[ID][33]), Float.parseFloat(SkillsInput[ID][34])} ;
-			float[] Poison = new float[] {Float.parseFloat(SkillsInput[ID][35]), Float.parseFloat(SkillsInput[ID][36]), Float.parseFloat(SkillsInput[ID][37])} ;
-			float[] Silence = new float[] {Float.parseFloat(SkillsInput[ID][38]), Float.parseFloat(SkillsInput[ID][39]), Float.parseFloat(SkillsInput[ID][40])} ;
-			String Elem = SkillsInput[ID][41] ;
-			skills[i] = new Spells(Name, MaxLevel, MpCost, Type, PreRequisites, Cooldown, Duration, SkillBuffs[i], SkillNerfs[i], Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, SkillsInfo[i]) ;	
-		}
-		//System.out.println(Arrays.toString(ActivePlayerSkills)) ;
-		return skills ;
-    }*/
-    
-    /*public Items[] InitializeItems(int DifficultLevel, String Language)
-    {
-    	Items[] items = new Items[Items.NumberOfAllItems] ;
-		String[][] Input = Utg.ReadTextFile(CSVPath + "Items.csv", Items.NumberOfAllItems) ;
-		String[] Name = new String[Items.NumberOfAllItems] ;
-		String[] Description = new String[Items.NumberOfAllItems] ;
-		for (int i = 0 ; i <= Items.NumberOfAllItems - 1 ; ++i)
-		{
-			if (Language.equals("P"))
-			{
-				Name[i] = Input[i][2] ;
-				Description[i] = Input[i][5] ;
-			}
-			if (Language.equals("E"))
-			{
-				Name[i] = Input[i][1] ;
-				Description[i] = Input[i][6] ;
-			}
-			Image image = new ImageIcon(ImagesPath + "items.png").getImage() ;
-			int Price = (int)(Integer.parseInt(Input[i][3]) * Player.DifficultMult[DifficultLevel]) ;
-			float DropChance = Integer.parseInt(Input[i][4]) / Player.DifficultMult[DifficultLevel] ;
-			float[][] Buffs = new float[14][13] ;
-			String Type = Input[i][7] ;
-			items[i] = new Items(i, Name[i], image, Price, DropChance, Buffs, Description[i], Type) ;
-		}
-		
-
-		Items.LongestName = "";
-		for (int i = 0 ; i <= items.length - 1 ; i += 1)
-		{
-			if (Items.LongestName.length() < items[i].getName().length())
-			{
-				Items.LongestName = items[i].getName() ;
-			}
-		}
-		
-		return items ;
-    }*/
 }

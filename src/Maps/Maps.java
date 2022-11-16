@@ -27,13 +27,14 @@ public class Maps
 	private String Name ;
 	private int Continent ;
 	private Image image ;
-	private MapElements[] MapElem ;		// 0 = free, 1 = wall, 2 = water, 3 = tree, 4 = grass, 5 = rock, 6 = crystal, 7 = stalactite, 8 = volcano, 9 = lava, 10 = ice, 11 = chest, 12 = berry, 13 = herb, 14 = wood, 15 = metal, 16 = invisible wall
+	//private MapElements[] MapElem ;		// 0 = free, 1 = wall, 2 = water, 3 = tree, 4 = grass, 5 = rock, 6 = crystal, 7 = stalactite, 8 = volcano, 9 = lava, 10 = ice, 11 = chest, 12 = berry, 13 = herb, 14 = wood, 15 = metal, 16 = invisible wall
 	private String[][] Type ;			// 2 = water, 9 = lava, 10 = ice, 12 = berry, 13 = herb, 14 = wood, 15 = metal
 	private Object[] groundType ;
 	private int CollectibleLevel ;
 	private int[] CollectibleCounter ;	// [Berry, herb, wood, metal]
     private int[] CollectibleDelay ;	// [Berry, herb, wood, metal]
 	private int[] Connections ;
+	protected ArrayList<MapElements> mapElem ;
 	private ArrayList<CreatureTypes> creatureTypes ;
 	public Buildings[] building ;
 	public ArrayList<NPCs> NPCsInMap ;
@@ -83,12 +84,15 @@ public class Maps
 		this.Name = Name ;
 		this.Continent = Continent ;
 		this.image = image ;
-		this.MapElem = MapElem ;
-		this.CollectibleLevel = CollectibleLevel ;
+		//this.CollectibleLevel = CollectibleLevel ;
 		CollectibleCounter = new int[CollectibleTypes.length] ;
-		this.CollectibleDelay = CollectibleDelay ;
+		//this.CollectibleDelay = CollectibleDelay ;
 		this.Connections = Connections ;
-		this.creatureTypes = creatureTypes ;
+		
+		mapElem = new ArrayList<MapElements>() ;
+		
+		
+		//this.creatureTypes = creatureTypes ;
 		//this.creatures = creatures ;
 		building = null ;
 		NPCsInMap = new ArrayList<NPCs>() ;
@@ -103,13 +107,13 @@ public class Maps
 	public String getName() {return Name ;}
 	public int getContinent() {return Continent ;}
 	public Image getimage() {return image ;}
-	public MapElements[] getMapElem() {return MapElem ;}
 	public String[][] getType() {return Type ;}
 	public Object[] getgroundType() {return groundType ;}
 	public int getCollectibleLevel() {return CollectibleLevel ;}
 	public int[] getConnections() {return Connections ;}	
 	public int[] getCollectibleCounter() {return CollectibleCounter ;}	
 	public int[] getCollectibleDelay() {return CollectibleDelay ;}
+	public ArrayList<MapElements> getMapElem() {return mapElem ;}
 	//public ArrayList<CreatureTypes> getCreatureTypes() {return creatureTypes ;}
 	public ArrayList<NPCs> getNPCs() {return NPCsInMap ;}
 	public Buildings[] getBuildings() {return building ;}
@@ -276,29 +280,13 @@ public class Maps
  	}
  	
  	public void displayElements(DrawPrimitives DP)
- 	{
- 		if (groundType != null)
+ 	{ 		
+ 		for (int me = 0 ; me <= mapElem.size() - 1 ; me += 1)
 		{
-			for (int gt = 0 ; gt <= groundType.length - 1 ; gt += 1)
-			{
-				Object[] o = (Object[]) groundType[gt] ;
-				String type = (String) o[0] ;
-				Point p = (Point) o[1] ;
-				if (type.equals("water"))
-				{
-					DP.DrawRect(new Point(p.x, p.y), "center", new Size(10, 10), 0, Color.blue, null, false);
-				}
-			}
-		}
-		if (MapElem != null)
-		{
-			for (int me = 0 ; me <= MapElem.length - 1 ; me += 1)
-			{
-				MapElem[me].DrawImage(DrawPrimitives.OverallAngle, DP) ;
-			}
+			mapElem.get(me).DrawImage(DrawPrimitives.OverallAngle, DP) ;
 		}
  	}
-	
+ 	
  	public void displayBuildings(Point playerPos, String[] signMessage, DrawPrimitives DP)
  	{
  		float overallAngle = DrawPrimitives.OverallAngle ;

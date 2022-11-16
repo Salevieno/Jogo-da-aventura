@@ -111,11 +111,7 @@ public class Player extends LiveBeing
 	public static int NumberOfEquipTypes = 4 ;
     public static Image[] AttWindowImages = new Image[] {new ImageIcon(Game.ImagesPath + "PlayerAttWindow1.png").getImage(), new ImageIcon(Game.ImagesPath + "PlayerAttWindow2.png").getImage(), new ImageIcon(Game.ImagesPath + "PlayerAttWindow3.png").getImage()} ;
     public static Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
-
-    public static Image PlayerBack = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
-	public static Image PlayerFront = new ImageIcon(Game.ImagesPath + "PlayerFront.png").getImage() ;
-	public static Image PlayerLeft = new ImageIcon(Game.ImagesPath + "PlayerLeft.png").getImage() ;
-	public static Image PlayerRight = new ImageIcon(Game.ImagesPath + "PlayerRight.png").getImage() ;    
+   
     public static Image TentImage = new ImageIcon(Game.ImagesPath + "Tent.png").getImage() ;   
     public static Image DragonAuraImage = new ImageIcon(Game.ImagesPath + "DragonAura.png").getImage() ;
     public static Image RidingImage = new ImageIcon(Game.ImagesPath + "Tiger.png").getImage() ;
@@ -127,7 +123,7 @@ public class Player extends LiveBeing
 	
 	public Player(String Name, String Language, String Sex, int Job)
 	{
-		super(1, InitializePersonalAttributes(Name, Job), InitializeBattleAttributes(Job), new MovingAnimations(PlayerBack, PlayerBack, PlayerFront, PlayerLeft, PlayerRight), new AttributesWindow()) ;
+		super(1, InitializePersonalAttributes(Name, Job), InitializeBattleAttributes(Job), InitializeMovingAnimations(), new AttributesWindow()) ;
 		this.Language = Language ;
 		this.Sex = Sex ;
 		InitializeSpells() ;
@@ -214,6 +210,7 @@ public class Player extends LiveBeing
 		Point Pos = new Point(0, 0) ;
 		String dir = Player.MoveKeys[0] ;
 		String Thought = "Exist" ;
+	    Image PlayerBack = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
 		int[] Size = new int[] {PlayerBack.getWidth(null), PlayerBack.getHeight(null)} ;
 		float[] Life = new float[] {Float.parseFloat(Properties.get(Job)[2]), Float.parseFloat(Properties.get(Job)[2])} ;
 		float[] Mp = new float[] {Float.parseFloat(Properties.get(Job)[3]), Float.parseFloat(Properties.get(Job)[3])} ;
@@ -248,6 +245,17 @@ public class Player extends LiveBeing
 		int[] SpecialStatus = new int[5] ;
 		int[][] BattleActions = new int[][] {{0, Integer.parseInt(Properties.get(Job)[41]), 0}} ;
 		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
+	}
+	
+	private static MovingAnimations InitializeMovingAnimations()
+	{
+	    Image idleGif = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
+	    Image movingUpGif = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
+		Image movingDownGif = new ImageIcon(Game.ImagesPath + "PlayerFront.png").getImage() ;
+		Image movingLeftGif = new ImageIcon(Game.ImagesPath + "PlayerLeft.png").getImage() ;
+		Image movingRightGif = new ImageIcon(Game.ImagesPath + "PlayerRight.png").getImage() ;
+		
+		return new MovingAnimations(idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif) ;
 	}
 	
 	private void InitializeSpells()
