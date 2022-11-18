@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 import GameComponents.MapElements;
+import Graphics.DrawPrimitives;
 import LiveBeings.CreatureTypes;
 import LiveBeings.Creatures;
 import Main.Game;
@@ -16,14 +17,17 @@ import Utilities.UtilG;
 
 public class FieldMap extends Maps
 {
-	private ArrayList<Collectible> collectible ;
+	private ArrayList<Collectible> collectibles ;
 	private ArrayList<Creatures> creatures ;
+	private int level ;
+	private int[] collectibleDelay ;
 	
 	public FieldMap(String name, int continent, int[] connections, Image image, int collectibleLevel, int[] collectibleDelay, int[] creatureTypeIDs)
 	{
 		super(name, continent, connections, image) ;
-
-
+		this.level = collectibleLevel ;
+		this.collectibleDelay = collectibleDelay ;
+		
 		Screen screen = Game.getScreen() ;
 		Point minCoord = new Point((int) (0.1 * screen.getSize().x), Game.getSky().height + 10) ;
 		Size range = new Size(this.getimage().getWidth(null), screen.getSize().y - Game.getSky().height) ;
@@ -34,11 +38,8 @@ public class FieldMap extends Maps
 			mapElem.add(new MapElements(me, "ForestTree", randomPos, new ImageIcon(Game.ImagesPath + "MapElem6_TreeForest.png").getImage())) ;				
 		}
 		
-		collectible = new ArrayList<Collectible>() ;
-		collectible.add(new Collectible(collectibleLevel, 0, collectibleDelay[0])) ;
-		collectible.add(new Collectible(collectibleLevel, 0, collectibleDelay[1])) ;
-		collectible.add(new Collectible(collectibleLevel, 0, collectibleDelay[2])) ;
-		collectible.add(new Collectible(collectibleLevel, 0, collectibleDelay[3])) ;
+		collectibles = new ArrayList<Collectible>() ;
+		AddCollectibles() ;
 		
 		creatures = new ArrayList<Creatures>() ;
 		for (int c = 0 ; c <= creatureTypeIDs.length - 1 ; c += 1)
@@ -53,15 +54,27 @@ public class FieldMap extends Maps
 	}
 
 	public ArrayList<Creatures> getCreatures() {return creatures ;}
+	public ArrayList<Collectible> getCollectibles() {return collectibles ;}
 	public void setCreatures(ArrayList<Creatures> newValue) {creatures = newValue ;}
 	
 	public void IncCollectiblesCounter()
 	{
-		for (int m = 0 ; m <= collectible.size() - 1 ; m += 1)
+		for (int m = 0 ; m <= collectibles.size() - 1 ; m += 1)
 		{
-			if (collectible.get(m).getCounter() < collectible.get(m).getDelay())
+			if (collectibles.get(m).getCounter() <= collectibles.get(m).getDelay())
 			{
-				collectible.get(m).incCounter() ;
+				collectibles.get(m).incCounter() ;
+			}	
+		}
+	}
+	
+	public void ActivateCollectiblesCounter()
+	{
+		for (int m = 0 ; m <= collectibles.size() - 1 ; m += 1)
+		{
+			if (collectibles.get(m).getCounter() == collectibles.get(m).getDelay() - 1)
+			{
+				AddCollectibles() ;
 			}	
 		}
 	}
@@ -87,6 +100,25 @@ public class FieldMap extends Maps
     		Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
     	}
 	}
+	
+	public void AddCollectibles()
+	{
+		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().y)) ;
+		Size range = new Size(Game.getScreen().getSize().x, (int) ((1 - (float)(Game.getSky().height)/Game.getScreen().getSize().y) * Game.getScreen().getSize().y)) ;
+		
+		collectibles.add(new Collectible(0, level, UtilG.RandomPos(minCoord, range, new Size(1, 1)), 0, collectibleDelay[0])) ;
+		collectibles.add(new Collectible(1, level, UtilG.RandomPos(minCoord, range, new Size(1, 1)), 0, collectibleDelay[1])) ;
+		collectibles.add(new Collectible(2, level, UtilG.RandomPos(minCoord, range, new Size(1, 1)), 0, collectibleDelay[2])) ;
+		collectibles.add(new Collectible(3, level, UtilG.RandomPos(minCoord, range, new Size(1, 1)), 0, collectibleDelay[3])) ;
+	} 	
+	
+ 	public void displayCollectibles(DrawPrimitives DP)
+ 	{
+ 		for (int col = 0 ; col <= collectibles.size() - 1 ; col += 1)
+		{
+ 			collectibles.get(col).display(DP) ;
+		}
+ 	}
 
 	public void displayGroundType()
 	{

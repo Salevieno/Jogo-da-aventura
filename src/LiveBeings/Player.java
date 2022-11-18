@@ -49,6 +49,7 @@ import Windows.MapWindow;
 import Windows.QuestWindow;
 import Windows.Settings;
 import Main.Game ;
+import Maps.Collectible;
 import Maps.FieldMap;
 import Maps.Maps;
 
@@ -407,7 +408,12 @@ public class Player extends LiveBeing
 		return (equips[3] != null) ;
 	}
 	
-	
+	public void Collect(int collectibleType, Animations ani)
+	{
+		System.out.println(PA.currentAction) ;
+		ani.SetAniVars(10, new Object[] {100, PA.getPos(), 10, collectibleType, "Coletando"}) ;
+		ani.StartAni(10) ;
+	}
 	
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
@@ -679,30 +685,27 @@ public class Player extends LiveBeing
 	{
 		float distx, disty ;
 		Maps currentMap = PA.getMap() ;
-		String groundType = currentMap.groundTypeAtPoint(PA.getPos()) ;
-		if (!currentMap.IsACity())	// Map is not a city
+		if (currentMap.isAField())
 		{
-			if (groundType != null)
+			FieldMap fm = (FieldMap) getMap() ;
+			
+			/* Meeting with collectibles */
+			ArrayList<Collectible> collectibles = fm.getCollectibles() ;
+			for (int c = 0 ; c <= collectibles.size() - 1 ; c += 1)
 			{
-				/* Meeting with collectibles */
-				if (groundType.equals("Berry"))
+				distx = (float) Math.abs(PA.getPos().x - collectibles.get(c).getPos().x) ;
+				disty = (float) Math.abs(PA.getPos().y - collectibles.get(c).getPos().y) ;
+				if (distx <= 0.5*PA.getSize()[0] & disty <= 0.5*PA.getSize()[1])
 				{
-					return new int[] {2, 0} ;
+					setCurrentAction("Collecting") ;	
+					return new int[] {2, collectibles.get(c).getType()} ;
 				}
-				if (groundType.equals("Herb"))
-				{
-					return new int[] {2, 1} ;
-				}
-				if (groundType.equals("Wood"))
-				{
-					return new int[] {2, 2} ;
-				}
-				if (groundType.equals("Metal"))
-				{
-					return new int[] {2, 3} ;
-				}
-				
-				/* Meeting with chests */
+			}
+
+			/* Meeting with chests */
+			String groundType = currentMap.groundTypeAtPoint(PA.getPos()) ;
+			if (groundType != null)	// TODO are we going to use groundType?
+			{
 				if (groundType.contains("Chest"))
 				{
 					return new int[] {3, Integer.parseInt(groundType.substring(groundType.length() - 1))} ;
@@ -719,9 +722,8 @@ public class Player extends LiveBeing
 					return new int[] {0, opponent.getType().getID()} ;
 				}
 			}
-			if (!currentMap.IsACity())
+			else
 			{
-				FieldMap fm = (FieldMap) getMap() ;
 				ArrayList<Creatures> creaturesInMap = fm.getCreatures() ;
 				for (int i = 0 ; i <= creaturesInMap.size() - 1 ; i += 1)
 				{
@@ -756,7 +758,8 @@ public class Player extends LiveBeing
 		
 		return new int[] {-1, -1} ;
 	}
-	public void Collect(int Coltype, Maps[] maps, DrawFunctions DF, Animations Ani)
+	
+	/*public void Collect(int Coltype, Maps[] maps, DrawFunctions DF, Animations Ani)
 	{
 		String CollectMessage = "";
 		if (Coltype == 0)	// Collectible type
@@ -821,7 +824,8 @@ public class Player extends LiveBeing
 		}
 		
 		//PA.getMap().CreateCollectible(PA.getMap().getid(), CollectibleID) ;	
-	}
+	}*/
+	
 	public void receiveAdjacentGroundEffect(Maps map)
 	{
 		if (UtilS.CheckAdjacentGround(PA.getPos(), map, "Lava").equals("Inside") & !PA.Elem[4].equals("f"))

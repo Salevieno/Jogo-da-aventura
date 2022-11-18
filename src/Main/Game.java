@@ -732,10 +732,6 @@ public class Game extends JPanel implements ActionListener
 		{
 			fieldMaps[i].IncCollectiblesCounter() ;
 		}
-		/*if (!player.getMap().IsACity())
-		{
-			player.getMap().IncCollectiblesCounter() ;
-		}*/
 	}
 	
 	public void ActivateCounters()
@@ -748,9 +744,8 @@ public class Game extends JPanel implements ActionListener
 				pet.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
 			}
 		}
-		if (!player.getMap().IsACity())	// player is out of the cities
+		if (!player.getMap().IsACity())
 		{
-			// TODO check function IsACity
 			FieldMap fm = (FieldMap) player.getMap() ;
 			for (int i = 0 ; i <= fm.getCreatures().size() - 1 ; ++i)
 			{
@@ -760,10 +755,10 @@ public class Game extends JPanel implements ActionListener
 				}
 			}
 		}
-		/*if (!player.getMap().IsACity())
+		for (int i = 0; i <= fieldMaps.length - 1; i += 1)
 		{
-			player.getMap().CreateCollectibles() ;
-		}*/
+			fieldMaps[i].ActivateCollectiblesCounter() ;
+		}
 	}
 	
 	public void KonamiCode()
@@ -869,7 +864,7 @@ public class Game extends JPanel implements ActionListener
 			}
 			if (meet[0] == 2 & 0 <= meet[1])	// meet with collectibles
 			{
-				player.Collect(meet[1], allMaps, DF, ani) ;
+				player.Collect(meet[1], ani) ;
 			}
 			if (meet[0] == 3 & 0 <= meet[1])	// meet with chest
 			{

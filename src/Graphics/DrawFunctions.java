@@ -20,6 +20,7 @@ import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
 import Main.Game;
+import Maps.FieldMap;
 import Maps.Maps;
 
 public class DrawFunctions
@@ -803,7 +804,12 @@ public class DrawFunctions
 		map.display(DP) ;
 		map.displayElements(DP) ;
 		map.displayBuildings(playerPos, signMessage, DP) ;
-		map.displayNPCs(DP) ;	
+		map.displayNPCs(DP) ;
+		if (map instanceof FieldMap)
+		{
+			FieldMap fm = (FieldMap) map ;
+			fm.displayCollectibles(DP) ;
+		}
 		//DrawGrid(new int[] {20, 20}) ;
 		
 		// draw time

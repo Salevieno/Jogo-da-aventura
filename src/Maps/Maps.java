@@ -38,11 +38,9 @@ public class Maps
 	private ArrayList<CreatureTypes> creatureTypes ;
 	public Buildings[] building ;
 	public ArrayList<NPCs> NPCsInMap ;
-	// TODO criar classes City, Field e SpecialField extending Map ?
 	public static int[] MusicID = new int[] {0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 11, 11, 11, 11, 11, 11} ;  	 
 	public static Image[] CollectibleImage ;
 	public static Image[] GroundImage ;
-	public static String[] CollectibleTypes = new String[] {"Berry", "Herb", "Wood", "Metal"} ;
 	
 	
 	/*
@@ -85,7 +83,7 @@ public class Maps
 		this.Continent = Continent ;
 		this.image = image ;
 		//this.CollectibleLevel = CollectibleLevel ;
-		CollectibleCounter = new int[CollectibleTypes.length] ;
+		//CollectibleCounter = new int[CollectibleTypes.length] ;
 		//this.CollectibleDelay = CollectibleDelay ;
 		this.Connections = Connections ;
 		
@@ -96,12 +94,6 @@ public class Maps
 		//this.creatures = creatures ;
 		building = null ;
 		NPCsInMap = new ArrayList<NPCs>() ;
-		
-	    Image BerryImage = new ImageIcon(Game.ImagesPath + "Col0_Berry.png").getImage() ;
-	    Image HerbImage = new ImageIcon(Game.ImagesPath + "Col1_Herb.png").getImage() ;
-	    Image WoodImage = new ImageIcon(Game.ImagesPath + "Col2_Wood.png").getImage() ;
-	    Image MetalImage = new ImageIcon(Game.ImagesPath + "Col3_Metal.png").getImage() ;
-	    CollectibleImage = new Image[] {BerryImage, HerbImage, WoodImage, MetalImage} ;
 	}
 
 	public String getName() {return Name ;}
@@ -330,7 +322,10 @@ public class Maps
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
  	
-	public boolean IsACity() {if (Name.contains("City")) {return true ;} else {return false ;}}
+	public boolean IsACity()
+	{
+		return (this instanceof CityMap) ;
+	}
 	public boolean isAField()
 	{
 		return (this instanceof FieldMap) ;

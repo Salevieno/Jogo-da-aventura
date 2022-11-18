@@ -44,7 +44,7 @@ public class Creatures extends LiveBeing
 		this.color = CT.getColor() ;
 		this.StatusCounter = CT.getStatusCounter() ;
 		
-		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().x)) ;
+		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().y)) ;
 		Size range = new Size(Game.getScreen().getSize().x, (int) ((1 - (float)(Game.getSky().height)/Game.getScreen().getSize().y) * Game.getScreen().getSize().y)) ;
 		Point initialPos = UtilG.RandomPos(minCoord, range, new Size(1, 1)) ;
 		PA.setPos(initialPos) ;
