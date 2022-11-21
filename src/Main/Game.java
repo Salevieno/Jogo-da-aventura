@@ -113,13 +113,14 @@ public class Game extends JPanel implements ActionListener
 	
     public void FirstInitialization(int[] WinDim)
     {
+    	// "Scheherazade Bold"
 		timer = new Timer(10, this) ;	// timer of the game, first number = delay
     	screen = new Screen(new Size(WinDim[0] - 40 - 15, WinDim[1] - 39), null) ;
     	screen.setCenter() ;
 		CSVPath = ".\\csv files\\" ;
 		ImagesPath = ".\\images\\" ;
 		MusicPath = ".\\music\\" ;
-		MainFontName = "Scheherazade Bold" ;
+		MainFontName = "Comics" ;
 		ColorPalette = UtilS.ReadColorPalette(new ImageIcon(ImagesPath + "ColorPalette.png").getImage(), "Normal") ;    	
     	ani = new Animations() ;
 		opening = new Opening() ;

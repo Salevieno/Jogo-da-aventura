@@ -483,6 +483,8 @@ public class Player extends LiveBeing
 		spellPoints += amount;
 	}
 	public void incRange(float incR) {PA.setRange(PA.getRange() + incR) ;}
+	public void incAttPoints(int amount) {attPoints += amount ;}
+	public void decAttPoints(int amount) {attPoints += -amount ;}
 	
 	public boolean ActionIsAMove(String move)
 	{
@@ -2162,36 +2164,36 @@ public class Player extends LiveBeing
 		float OverallAngle = DrawPrimitives.OverallAngle ;
 		if (IsRiding())	// If the player is mounted
 		{
-			DP.DrawImage(RidingImage, new Point(PA.getPos().x - RidingImage.getWidth(null)/2, PA.getPos().y + RidingImage.getHeight(null)/2), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
+			DP.DrawImage(RidingImage, new Point(PA.getPos().x - RidingImage.getWidth(null)/2, PA.getPos().y + RidingImage.getHeight(null)/2), OverallAngle, scale, new boolean[] {false, false}, "BotLeft", 1) ;
 		}
 		//Image[] PlayerImages = new Image[] {PA.getimage()} ;
 		//float[][] BPScale = new float[PA.getimage().length][2] ;
 		boolean[] mirror = new boolean[] {false, false} ;
 		if (questSkills.get("Dragon's aura"))
 		{
-			DP.DrawImage(DragonAuraImage, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 0.5) ;					
+			DP.DrawImage(DragonAuraImage, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, scale, mirror, "Center", 0.5) ;					
 		}
 		if (dir.equals("Acima"))
 		{
-			DP.DrawImage(movingAni.idleGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+			DP.DrawImage(movingAni.idleGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, scale, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Abaixo"))
 		{
-			DP.DrawImage(movingAni.movingDownGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+			DP.DrawImage(movingAni.movingDownGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, scale, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Esquerda"))
 		{
-			DP.DrawImage(movingAni.movingLeftGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+			DP.DrawImage(movingAni.movingLeftGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, scale, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Direita"))
 		{
 			if (PA.countmove % 2 == 0)
 			{
-				DP.DrawImage(movingAni.movingRightGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+				DP.DrawImage(movingAni.movingRightGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, scale, mirror, "Center", 1) ;
 			}
 			else
 			{
-				DP.DrawImage(movingAni.movingUpGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, new float[] {1, 1}, mirror, "Center", 1) ;
+				DP.DrawImage(movingAni.movingUpGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, scale, mirror, "Center", 1) ;
 			}
 		}
 		if (ShowPlayerRange)
