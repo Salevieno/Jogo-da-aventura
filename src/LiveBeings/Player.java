@@ -81,6 +81,8 @@ public class Player extends LiveBeing
     public Map<String, String[]> allText ;	// All the text in the game in the player language
 	public Items[] hotkeyItem ;
     public int difficultLevel ;
+    
+    public static Image collectingMessage ;
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 	
@@ -196,6 +198,8 @@ public class Player extends LiveBeing
 		Image windowSettings = new ImageIcon(Game.ImagesPath + "windowSettings.png").getImage() ;
 		settings = new Settings(windowSettings, true, true, false, 1, 1) ;
 		hotkeyItem = new Items[3] ;
+		
+		collectingMessage = new ImageIcon(Game.ImagesPath + "CollectingMessage.gif").getImage() ;
 	}
 	
 
@@ -408,11 +412,23 @@ public class Player extends LiveBeing
 		return (equips[3] != null) ;
 	}
 	
-	public void Collect(int collectibleType, Animations ani)
-	{
-		System.out.println(PA.currentAction) ;
-		ani.SetAniVars(10, new Object[] {100, PA.getPos(), 10, collectibleType, "Coletando"}) ;
-		ani.StartAni(10) ;
+	public void Collect(Collectible collectible, DrawPrimitives DP, Animations ani)
+	{		
+		if (!ani.isActive(10))
+		{
+			// start animation
+			ani.SetAniVars(10, new Object[] {100, PA.getPos(), 10, collectible.getType(), "Coletando"}) ;
+			ani.StartAni(10) ;
+		}
+		if (!ani.isActive(10))
+		{
+			// end collecting			
+			FieldMap fm = (FieldMap) getMap() ;
+			ArrayList<Collectible> collectibles = fm.getCollectibles() ;
+			collectibles.remove(collectible) ;
+			System.out.println("a") ;
+		}
+		DP.DrawGif(collectingMessage, getPos(), "Center") ;
 	}
 	
 	
@@ -683,7 +699,7 @@ public class Player extends LiveBeing
 	}
 	
 
-	public int[] meet(Creatures[] creatures, NPCs[] npc, Animations Ani)
+	public int[] meet(Creatures[] creatures, NPCs[] npc, DrawPrimitives DP, Animations ani)
 	{
 		float distx, disty ;
 		Maps currentMap = PA.getMap() ;
@@ -693,13 +709,15 @@ public class Player extends LiveBeing
 			
 			/* Meeting with collectibles */
 			ArrayList<Collectible> collectibles = fm.getCollectibles() ;
+			//System.out.println(collectibles) ;
 			for (int c = 0 ; c <= collectibles.size() - 1 ; c += 1)
 			{
 				distx = (float) Math.abs(PA.getPos().x - collectibles.get(c).getPos().x) ;
 				disty = (float) Math.abs(PA.getPos().y - collectibles.get(c).getPos().y) ;
 				if (distx <= 0.5*PA.getSize()[0] & disty <= 0.5*PA.getSize()[1])
 				{
-					setCurrentAction("Collecting") ;	
+					setCurrentAction("Collecting") ;
+					Collect(collectibles.get(c), DP, ani) ;
 					return new int[] {2, collectibles.get(c).getType()} ;
 				}
 			}
@@ -719,7 +737,7 @@ public class Player extends LiveBeing
 			{
 				distx = Math.abs(PA.getPos().x - opponent.getPos().x) ;
 				disty = Math.abs(PA.getPos().y - PA.getSize()[1] / 2 - opponent.getPos().y) ;
-				if (distx <= (PA.getSize()[0] + opponent.getSize()[0]) / 2 & disty <= (PA.getSize()[1] + opponent.getSize()[1]) / 2 & !Ani.isActive(10) & !Ani.isActive(19))
+				if (distx <= (PA.getSize()[0] + opponent.getSize()[0]) / 2 & disty <= (PA.getSize()[1] + opponent.getSize()[1]) / 2 & !ani.isActive(10) & !ani.isActive(19))
 				{
 					return new int[] {0, opponent.getType().getID()} ;
 				}
@@ -732,7 +750,7 @@ public class Player extends LiveBeing
 					Creatures creature = creaturesInMap.get(i) ;
 					distx = UtilG.dist1D(PA.getPos().x, creature.getPos().x) ;
 					disty = UtilG.dist1D(PA.getPos().y - PA.getSize()[1] / 2, creature.getPos().y) ;
-					if (distx <= (PA.getSize()[0] + creature.getSize()[0]) / 2 & disty <= (PA.getSize()[1] + creature.getSize()[1]) / 2 & !Ani.isActive(10) & !Ani.isActive(19))
+					if (distx <= (PA.getSize()[0] + creature.getSize()[0]) / 2 & disty <= (PA.getSize()[1] + creature.getSize()[1]) / 2 & !ani.isActive(10) & !ani.isActive(19))
 					{
 						return new int[] {0, i} ;
 					}

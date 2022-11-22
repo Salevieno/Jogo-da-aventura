@@ -13,6 +13,8 @@ import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon ;
 import javax.swing.JPanel ;
@@ -848,7 +850,7 @@ public class Game extends JPanel implements ActionListener
 		// check if the player met something
 		if (!player.isInBattle())
 		{
-			int[] meet = player.meet(creature, allNPCs, ani) ;	// meet[0] is the encounter and meet[1] is its id
+			int[] meet = player.meet(creature, allNPCs, DF.getDrawPrimitives(), ani) ;	// meet[0] is the encounter and meet[1] is its id
 			if (meet[0] == 0 & 0 <= meet[1])	// meet with creature
 			{
 				FieldMap fm = (FieldMap) player.getMap() ;
@@ -865,7 +867,7 @@ public class Game extends JPanel implements ActionListener
 			}
 			if (meet[0] == 2 & 0 <= meet[1])	// meet with collectibles
 			{
-				player.Collect(meet[1], ani) ;
+				//player.Collect(meet[1], DF.getDrawPrimitives(), ani) ;
 			}
 			if (meet[0] == 3 & 0 <= meet[1])	// meet with chest
 			{
