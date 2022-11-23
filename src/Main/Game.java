@@ -237,12 +237,11 @@ public class Game extends JPanel implements ActionListener
 				color[ct] = ColorPalette[5] ;
 			}
 			
-			Image image = new ImageIcon(ImagesPath + "creature.png").getImage() ;
-			MovingAnimations animations = new MovingAnimations(new ImageIcon(ImagesPath + "creature_idle.gif").getImage(),
-					new ImageIcon(ImagesPath + "creature_movingup.gif").getImage(),
-					new ImageIcon(ImagesPath + "creature_movingdown.gif").getImage(),
-					new ImageIcon(ImagesPath + "creature_movingleft.gif").getImage(),
-					new ImageIcon(ImagesPath + "creature_movingright.gif").getImage()) ;
+			MovingAnimations animations = new MovingAnimations(new ImageIcon(ImagesPath + "creature2_idle.gif").getImage(),
+					new ImageIcon(ImagesPath + "creature2_movingup.gif").getImage(),
+					new ImageIcon(ImagesPath + "creature2_movingdown.gif").getImage(),
+					new ImageIcon(ImagesPath + "creature2_movingleft.gif").getImage(),
+					new ImageIcon(ImagesPath + "creature2_movingright.gif").getImage()) ;
 			
 			int Level = Integer.parseInt(Input.get(ct)[3]) ;			
 			String dir = Player.MoveKeys[0] ;
@@ -282,8 +281,6 @@ public class Game extends JPanel implements ActionListener
 			int[] Bag = new int[] {Integer.parseInt(Input.get(ct)[37]), Integer.parseInt(Input.get(ct)[38]), Integer.parseInt(Input.get(ct)[39]), Integer.parseInt(Input.get(ct)[40]), Integer.parseInt(Input.get(ct)[41]), Integer.parseInt(Input.get(ct)[42]), Integer.parseInt(Input.get(ct)[43]), Integer.parseInt(Input.get(ct)[44]), Integer.parseInt(Input.get(ct)[45]), Integer.parseInt(Input.get(ct)[46])} ;
 			int Gold = Integer.parseInt(Input.get(ct)[47]) ;
 			int[] StatusCounter = new int[8] ;
-			image = UtilG.ChangeImageColor(image, new float[] {0, 0, 1, 1}, color[ct], ColorPalette[20]) ;
-			image = UtilG.ChangeImageColor(image, new float[] {0, 0, 1, 1}, Creatures.getshadeColor()[colorid], ColorPalette[19]) ;
 			creatureTypes[ct] = new CreatureTypes(ct, animations, PA, BA, Skill, Bag, Gold, color[ct], StatusCounter) ;	
 		}
 		return creatureTypes ;
@@ -486,7 +483,6 @@ public class Game extends JPanel implements ActionListener
     	screen.setBorders(new int[] {0, sky.height, screen.getSize().x, screen.getSize().y});
     	screen.setMapCenter() ;    			
     	Maps.InitializeStaticVars(ImagesPath) ;
-    	BattleActions.InitializeStaticVars() ;
 		allNPCs = InitializeNPCs(GameLanguage, screen.getSize()) ;
 		allBuildings = InitializeBuildings(screen.getSize()) ;
 		allCreatureTypes = InitializeCreatureTypes(GameLanguage, 1) ;
@@ -819,7 +815,7 @@ public class Game extends JPanel implements ActionListener
 		{
 			player.move(pet, music.getMusicClip(), ani) ;
 		}
-		player.drawAttributes(DF.getDrawPrimitives()) ;
+		player.drawAttributes(0, DF.getDrawPrimitives()) ;
 		player.display(player.getPos(), new float[] {1, 1}, player.getDir(), player.getSettings().getShowPlayerRange(), DF.getDrawPrimitives()) ;
 		if (player.weaponIsEquipped())	// if the player is equipped with a weapon
 		{
@@ -838,7 +834,7 @@ public class Game extends JPanel implements ActionListener
 					pet.action = pet.Action(Player.ActionKeys) ;
 				}
 				//pet.display(player.getPos(), new float[] {1, 1}, DF.getDrawPrimitives()) ;
-				//pet.drawAttributes(DF.getDrawPrimitives()) ;
+				//pet.drawAttributes(0, DF.getDrawPrimitives()) ;
 			}
 		}
 		
@@ -978,7 +974,6 @@ public class Game extends JPanel implements ActionListener
 		allMaps = new Maps[cityMaps.length + fieldMaps.length] ;
 		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
-    	BattleActions.InitializeStaticVars() ;
     	/*for (int map = 0 ; map <= allMaps.length - 1 ; map += 1)
 		{
 			allMaps[map].InitializeNPCsInMap(allNPCs) ;
@@ -1046,7 +1041,6 @@ public class Game extends JPanel implements ActionListener
 	    	screen.setMapCenter() ;    	
 			//Quests.CalcNumberOfQuests(CSVPath) ;		
 	    	Maps.InitializeStaticVars(ImagesPath) ;
-	    	BattleActions.InitializeStaticVars() ;
 	    	
 			loading.Run(DF) ;
 		}

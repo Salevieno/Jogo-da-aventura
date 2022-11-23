@@ -512,20 +512,6 @@ public class Pet extends LiveBeing
 	
 	
 	/* Drawing methods */
-	public void drawAttributes(DrawPrimitives DP)
-	{
-		Color[] colorPalette = Game.ColorPalette ;
-		Size screenSize = Game.getScreen().getSize() ;
-		Color color[] = new Color[] {colorPalette[6], colorPalette[5], colorPalette[1], colorPalette[2]} ;
-		Point Pos = new Point((int)(getPos().x - getSize()[0]/2), (int)(getPos().y - 0.6*getSize()[1])) ;
-		int L = (int)(0.025*screenSize.x), H = (int)(0.005*screenSize.y), Sy = H ;
-		int RectThickness = 1 ;
-		DP.DrawRect(new Point(Pos.x, Pos.y), "BotLeft", new Size(L, 3 * H), RectThickness, null, colorPalette[9], true) ;
-		DP.DrawRect(new Point(Pos.x, Pos.y - 3*Sy), "BotLeft", new Size((int)(L*getLife()[0]/getLife()[1]), H), RectThickness, color[0], colorPalette[9], true) ;
-		DP.DrawRect(new Point(Pos.x, Pos.y - 2*Sy), "BotLeft", new Size((int)(L*getMp()[0]/getMp()[1]), H), RectThickness, color[1], colorPalette[9], true) ;
-		DP.DrawRect(new Point(Pos.x, Pos.y - Sy), "BotLeft", new Size((int)(L*getExp()[0]/getExp()[1]), H), RectThickness, color[2], colorPalette[9], true) ;
-		DP.DrawRect(new Point(Pos.x, Pos.y), "BotLeft", new Size((int)(L*getSatiation()[0]/getSatiation()[1]), H), RectThickness, color[3], colorPalette[9], true) ;
-	}
 	public void display(Point Pos, float[] Scale, DrawPrimitives DP)
 	{
 		//	TODO add moving animations

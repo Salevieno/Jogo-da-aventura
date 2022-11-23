@@ -1,38 +1,14 @@
 package Actions;
 import java.awt.Point;
-import java.util.ArrayList;
 
 import LiveBeings.PersonalAttributes;
-import Main.Game;
 import Utilities.UtilG;
 
 public abstract class BattleActions
-{
-	private static String[] ElemID ;
-	private static float[][] ElemMult ;
-	private static float randomAmp ;
-	
-	public static void InitializeStaticVars()
-	{
-		int NumElem = 10 ;
-    	ElemID = new String[NumElem] ;
-		ElemMult = new float[NumElem][NumElem] ;
-		ArrayList<String[]> ElemInput = UtilG.ReadcsvFile(Game.CSVPath + "Elem.csv") ;
-		for (int i = 0 ; i <= NumElem - 1 ; ++i)
-		{
-			ElemID[i] = ElemInput.get(i)[0] ;
-			for (int j = 0 ; j <= NumElem - 1 ; ++j)
-			{
-				ElemMult[i][j] = Float.parseFloat(ElemInput.get(i)[j + 1]) ;
-			}				
-		}
-		
-		randomAmp = (float)0.1 ;
-	}	
-	
+{	
 	public static float BasicElemMult(String Atk, String Def)
 	{
-		return ElemMult[UtilG.IndexOf(ElemID, Atk)][UtilG.IndexOf(ElemID, Def)] ;
+		return Battle.ElemMult[UtilG.IndexOf(Battle.ElemID, Atk)][UtilG.IndexOf(Battle.ElemID, Def)] ;
 	}
 	
 	public static boolean Hit(float Dex, float Agi)
@@ -100,7 +76,7 @@ public abstract class BattleActions
 		return effect;
 	}
 	
-	public static int CalcAtk(int effect, float Atk, float Def, String[] AtkElem, String[] DefElem, float ElemModifier)
+	public static int CalcAtk(int effect, float Atk, float Def, String[] AtkElem, String[] DefElem, float ElemModifier, float randomAmp)
 	{
 		int damage = -1 ;
 		if (effect == 2 | effect == 3)	// miss or block

@@ -131,6 +131,7 @@ public class Creatures extends LiveBeing
 			}
 		}
 		DP.DrawText(getPos(), "Center", 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
+		drawAttributes(0, DP) ;
 	}
 	
 
@@ -217,12 +218,13 @@ public class Creatures extends LiveBeing
 		int MPCost = 10 ;
 		int effect = -1 ;
 		int damage = -1 ;
+		float randomAmp = (float) 0.1 ;
 		BattleAttributes playerBA = player.getBattleAtt() ;
 		
 		if (skillID == 0)	// magical atk
 		{
 			effect = BattleActions.CalcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock()[1]) ;
-			damage = BattleActions.CalcAtk(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {PA.Elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, 1) ; // player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
+			damage = BattleActions.CalcAtk(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {PA.Elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, 1, randomAmp) ; // player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
 		}
 		if (magicalType == 0)
 		{

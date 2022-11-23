@@ -475,6 +475,7 @@ public class Player extends LiveBeing
 	}
 	public ArrayList<Integer> GetActiveQuests()
 	{
+		// TODO quest is null
 		ArrayList<Integer> ActiveQuests = new ArrayList<Integer>() ;
 		for (int i = 0 ; i <= quest.length - 1 ; i += 1)
 		{
@@ -1508,18 +1509,18 @@ public class Player extends LiveBeing
 			statistics[11] += 1 ;						// total number of hits the player has dogded
 		}
 	}
-	public void Win(Creatures creature, Items[] items, Quests[] quest, Animations Ani)
+	public void Win(Creatures creature, Quests[] quest, Animations Ani)
 	{		
 		ArrayList<String> GetItemsObtained = new ArrayList<String>(Arrays.asList(new String[0])) ;		
 		for (int i = 0 ; i <= 9 ; ++i)
 		{
 			if(-1 < creature.getBag()[i])
 			{
-				if(Math.random() <= 0.01*items[creature.getBag()[i]].getDropChance())
+				/*if(Math.random() <= 0.01*tems[creature.getBag()[i]].getDropChance())
 				{
 					//Bag[creature.getBag()[i]] += 1 ;	
 					GetItemsObtained.add(items[creature.getBag()[i]].getName()) ;
-				}
+				}*/
 			}
 		}
 		String[] ItemsObtained = new String[GetItemsObtained.size()] ;
@@ -2056,40 +2057,7 @@ public class Player extends LiveBeing
 			DrawEquips(EqPos, PA.Job, 0, getEquips()[0].getId() - Items.BagIDs[6], Items.EquipsBonus, scale, angle[PA.Job], DP) ;
 		}	
 	}
-	public void drawAttributes(DrawPrimitives DP)
-	{
-		Color[] colorPalette = Game.ColorPalette ;
-		Size screenSize = Game.getScreen().getSize() ;
-		int attStyle = 0 ;
-		
-		float[] attRate = new float[] {getLife()[0] / getLife()[1], getMp()[0] / getMp()[1], getExp()[0] / getExp()[1], getSatiation()[0] / getSatiation()[1], getThirst()[0] / getThirst()[1]} ;
-		Color attColor[] = new Color[] {colorPalette[6], colorPalette[5], colorPalette[1], colorPalette[2], colorPalette[0]} ;
-		
-		if (attStyle == 0)
-		{
-			Point Pos = new Point((int)(getPos().x - getSize()[0]/2), (int)(getPos().y - getSize()[1] - 10)) ;
-			Size size = new Size((int)(0.05*screenSize.x), (int)(0.01*screenSize.y)) ;
-			int Sy = (int)(0.01*screenSize.y) ;
-			int barthick = 1 ;
-			for (int att = 0; att <= attRate.length - 1; att += 1)
-			{
-				DP.DrawRect(new Point(Pos.x, Pos.y + (att + 1) * Sy), "TopLeft", new Size((int)(attRate[0] * size.x), size.y), barthick, attColor[att], colorPalette[9], true) ;
-			}
-		}
-		if (attStyle == 1)
-		{
-			Point Pos = new Point((int)(0.01*screenSize.x), (int)(0.03*screenSize.y)) ;
-			Size size = new Size((int)(0.13*screenSize.x), (int)(0.013*screenSize.y)) ;
-			int Sy = size.y ;
-			int barthick = 1 ;
-			DP.DrawRoundRect(Pos, "TopLeft", new Size((int)(1.4 * size.x), (attRate.length + 1) * Sy), barthick, colorPalette[8], colorPalette[4], true) ;
-			for (int att = 0; att <= attRate.length - 1; att += 1)
-			{
-				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.x), Pos.y + (att + 1) * Sy), "CenterLeft", size, barthick, null, colorPalette[9], true) ;
-				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.x), Pos.y + (att + 1) * Sy), "CenterLeft", new Size((int)(attRate[att] * size.x), size.y), barthick, attColor[att], colorPalette[9], true) ;
-			}
-		}
-	}
+
 	public void DrawSpellsTree(Player player, Spells[] spells, Point MousePos, int SelectedSpell, Icon SpellsTreeIcon, DrawFunctions DF)
 	{
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
