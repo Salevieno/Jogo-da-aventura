@@ -416,12 +416,6 @@ public class Player extends LiveBeing
 	{		
 		if (!ani.isActive(10))
 		{
-			// start animation
-			ani.SetAniVars(10, new Object[] {100, PA.getPos(), 10, collectible.getType(), "Coletando"}) ;
-			ani.StartAni(10) ;
-		}
-		if (!ani.isActive(10))
-		{
 			// end collecting			
 			FieldMap fm = (FieldMap) getMap() ;
 			ArrayList<Collectible> collectibles = fm.getCollectibles() ;
@@ -716,6 +710,12 @@ public class Player extends LiveBeing
 				disty = (float) Math.abs(PA.getPos().y - collectibles.get(c).getPos().y) ;
 				if (distx <= 0.5*PA.getSize()[0] & disty <= 0.5*PA.getSize()[1])
 				{
+					if (!ani.isActive(10))
+					{
+						// start animation
+						ani.SetAniVars(10, new Object[] {100, PA.getPos(), 10, collectibles.get(c).getType(), "Coletando"}) ;
+						ani.StartAni(10) ;
+					}
 					setCurrentAction("Collecting") ;
 					Collect(collectibles.get(c), DP, ani) ;
 					return new int[] {2, collectibles.get(c).getType()} ;
@@ -1653,7 +1653,7 @@ public class Player extends LiveBeing
 	}
 	public boolean isInBattle()
 	{
-		if (PA.currentAction.equals("Fighting"))
+		if (PA.getThought().equals("Fighting"))
 		{
 			return true ;
 		}

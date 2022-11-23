@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -485,7 +486,7 @@ public class Game extends JPanel implements ActionListener
     	screen.setBorders(new int[] {0, sky.height, screen.getSize().x, screen.getSize().y});
     	screen.setMapCenter() ;    			
     	Maps.InitializeStaticVars(ImagesPath) ;
-    	BattleActions.InitializeStaticVars(CSVPath) ;
+    	BattleActions.InitializeStaticVars() ;
 		allNPCs = InitializeNPCs(GameLanguage, screen.getSize()) ;
 		allBuildings = InitializeBuildings(screen.getSize()) ;
 		allCreatureTypes = InitializeCreatureTypes(GameLanguage, 1) ;
@@ -857,7 +858,7 @@ public class Game extends JPanel implements ActionListener
 				ArrayList<Creatures> creaturesInMap = fm.getCreatures() ;
 				Creatures opponent = creaturesInMap.get(meet[1]) ;
 				opponent.setFollow(true) ;
-				player.setCurrentAction("Fighting") ;	
+				player.getPA().setThought("Fighting") ;	
 				player.opponent = opponent ;
 				player.AddCreatureToBestiary(meet[1]) ;
 			}
@@ -977,6 +978,7 @@ public class Game extends JPanel implements ActionListener
 		allMaps = new Maps[cityMaps.length + fieldMaps.length] ;
 		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
+    	BattleActions.InitializeStaticVars() ;
     	/*for (int map = 0 ; map <= allMaps.length - 1 ; map += 1)
 		{
 			allMaps[map].InitializeNPCsInMap(allNPCs) ;
@@ -1044,7 +1046,7 @@ public class Game extends JPanel implements ActionListener
 	    	screen.setMapCenter() ;    	
 			//Quests.CalcNumberOfQuests(CSVPath) ;		
 	    	Maps.InitializeStaticVars(ImagesPath) ;
-	    	BattleActions.InitializeStaticVars(CSVPath) ;
+	    	BattleActions.InitializeStaticVars() ;
 	    	
 			loading.Run(DF) ;
 		}

@@ -941,7 +941,7 @@ public class Battle
 		System.out.println("Battle is over!");
 		System.out.println();
 		Spells[] playerSpell = player.getSpell() ;
-		player.setCurrentAction("existing") ;
+		player.getPA().setThought("existing") ;
 		player.opponent = null ;
 		creature.getLife()[0] = creature.getLife()[1] ;
 		creature.getMp()[0] = creature.getMp()[1] ;

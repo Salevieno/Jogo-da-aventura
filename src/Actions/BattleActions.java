@@ -3,6 +3,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import LiveBeings.PersonalAttributes;
+import Main.Game;
 import Utilities.UtilG;
 
 public abstract class BattleActions
@@ -10,12 +11,13 @@ public abstract class BattleActions
 	private static String[] ElemID ;
 	private static float[][] ElemMult ;
 	private static float randomAmp ;
-	public static void InitializeStaticVars(String CSVPath)
+	
+	public static void InitializeStaticVars()
 	{
 		int NumElem = 10 ;
     	ElemID = new String[NumElem] ;
 		ElemMult = new float[NumElem][NumElem] ;
-		ArrayList<String[]> ElemInput = UtilG.ReadcsvFile(CSVPath + "Elem.csv") ;
+		ArrayList<String[]> ElemInput = UtilG.ReadcsvFile(Game.CSVPath + "Elem.csv") ;
 		for (int i = 0 ; i <= NumElem - 1 ; ++i)
 		{
 			ElemID[i] = ElemInput.get(i)[0] ;
@@ -26,8 +28,7 @@ public abstract class BattleActions
 		}
 		
 		randomAmp = (float)0.1 ;
-	}
-	
+	}	
 	
 	public static float BasicElemMult(String Atk, String Def)
 	{
