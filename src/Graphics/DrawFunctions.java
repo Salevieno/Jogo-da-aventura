@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.swing.ImageIcon ;
 
-import GameComponents.Buildings ;
 import GameComponents.Icon ;
 import GameComponents.Items ;
 import GameComponents.NPCs ;
@@ -125,16 +124,16 @@ public class DrawFunctions
 	public void DrawOptionsWindow(Point NPCPos, Font font, int selOption, String[] options, Image NPCimage, Color color)
 	{
 		Point Pos = new Point((int) (NPCPos.x - NPCimage.getWidth(null) - 10), NPCPos.y) ;
-		Size offset = new Size(10, 10) ;
+		//Size offset = new Size(10, 10) ;
 		int Lmax = 0 ;
 		for (int i = 0 ; i <= options.length - 1 ; i += 1)
 		{
 			Lmax = Math.max(Lmax, UtilG.TextL(options[i], font, G)) ;
 		}
 		int Sy = 2 * UtilG.TextH(font.getSize()) ;
-		Size windowSize = new Size(Lmax + offset.x, options.length * Sy + offset.y) ;
+		//Size windowSize = new Size(Lmax + offset.x, options.length * Sy + offset.y) ;
 
-		int ImageW = menuWindow.getWidth(null), ImageH = menuWindow.getHeight(null) ;
+		//int ImageW = menuWindow.getWidth(null), ImageH = menuWindow.getHeight(null) ;
 		DrawMenuWindow(Pos, new float[] {1, 1}, null, 0, ColorPalette[7], ColorPalette[7]) ;	// (float) windowSize.x / ImageW, (float) windowSize.y / ImageH
 		for (int i = 0 ; i <= options.length - 1 ; i += 1)
 		{
@@ -797,25 +796,26 @@ public class DrawFunctions
 				DP.DrawLine(new int[] {0, screenSize.x}, new int[] {j*spacing[1], j*spacing[1]}, LineThickness, color) ;
 			}							
 		}
-	}	
-	public void DrawFullMap(Pet pet, Point playerPos, String[] signMessage, Maps map, NPCs[] npc, Buildings[] buildings, Sky sky, Icon[] SBicons, Point MousePos)
+	}
+	public void DrawTime(Sky sky)
+	{
+		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
+		float time = (float)(sky.dayTime) / Game.DayDuration ;
+		DP.DrawText(new Point(0, (int) (0.99*screenSize.y)), "BotLeft", OverallAngle, (int)(24*time) + ":" + (int)(24*60*time % 60), font, ColorPalette[5]) ;
+	}
+	public void DrawFullMap(Point playerPos, Pet pet, Maps map, Sky sky, Point MousePos)
 	{
 		sky.display(DP) ;
 		map.display(DP) ;
 		map.displayElements(DP) ;
-		map.displayBuildings(playerPos, signMessage, DP) ;
+		map.displayBuildings(playerPos, DP) ;
 		map.displayNPCs(DP) ;
 		if (map instanceof FieldMap)
 		{
 			FieldMap fm = (FieldMap) map ;
 			fm.displayCollectibles(DP) ;
 		}
-		//DrawGrid(new int[] {20, 20}) ;
-		
-		// draw time
-		Font font = new Font("SansSerif", Font.BOLD, 14) ;
-		float time = (float)(sky.dayTime) / Game.DayDuration ;
-		DP.DrawText(new Point(0, (int) (0.99*screenSize.y)), "BotLeft", OverallAngle, (int)(24*time) + ":" + (int)(24*60*time % 60), font, ColorPalette[5]) ;
+		DrawTime(sky) ;
 	}
 	public void DrawTimeBar(Point Pos, int Counter, int Delay, int size2, int[] offset, String relPos, String dir, Color color)
 	{

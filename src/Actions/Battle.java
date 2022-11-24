@@ -581,11 +581,12 @@ public class Battle
 		String effect = "" ;
 		String atkType = "";
 		int[] inflictedStatus = new int[5] ;	// [Stun, block, blood, poison, silence]
-		BattleAttributes playerBA = player.getBattleAtt(), creatureBA = creature.getBattleAtt() ;
-		float CreatureElemModif = 1 ;
+		String action = player.getPA().getCurrentAction() ;
+		BattleAttributes playerBA = player.getBattleAtt() ;
+		BattleAttributes creatureBA = creature.getBattleAtt() ;
 
-		playerBA.setCurrentAction(player.getPA().getCurrentAction()) ;
-		if (isPhysicalAtk(player.getPA().getCurrentAction()))	// Physical atk
+		playerBA.setCurrentAction(action) ;
+		if (isPhysicalAtk(action))	// Physical atk
 		{
 			atkType = "Physical" ;
 			float ArrowAtk = 0 ;
@@ -595,20 +596,24 @@ public class Battle
 				player.SpendArrow() ;
 			}
 			effect = BattleActions.CalcEffect(playerBA.TotalDex(), creatureBA.TotalAgi(), playerBA.TotalCritAtkChance(), creatureBA.TotalCritDefChance(), creatureBA.getSpecialStatus()[1]) ;
-			damage = BattleActions.CalcAtk(effect, playerBA.TotalPhyAtk() + ArrowAtk, creature.getPhyDef()[0], new String[] {player.getElem()[0], player.getElem()[1], player.getElem()[4]}, new String[] {creature.getElem()[0], creature.getElem()[0]}, CreatureElemModif, randomAmp) ;
+			damage = BattleActions.CalcAtk(effect, playerBA.TotalPhyAtk() + ArrowAtk, creature.getPhyDef()[0], player.getAtkElems(), creature.getDefElems(), 1, randomAmp) ;
 			if (effect.equals("Hit"))
 			{
-				creature.getLife()[0] += -damage ;
-				inflictedStatus = BattleActions.CalcStatus(new float[] {playerBA.TotalStunAtkChance(), creatureBA.TotalStunDefChance(), playerBA.StunDuration()}, new float[] {playerBA.TotalBlockAtkChance(), creatureBA.TotalBlockDefChance(), playerBA.BlockDuration()}, new float[] {playerBA.TotalBloodAtkChance(), creatureBA.TotalBloodDefChance(), playerBA.BloodDuration()}, new float[] {playerBA.TotalPoisonAtkChance(), creatureBA.TotalPoisonDefChance(), playerBA.PoisonDuration()}, new float[] {playerBA.TotalSilenceAtkChance(), creatureBA.TotalSilenceDefChance(), playerBA.SilenceDuration()}) ;
-				creatureBA.receiveStatus(inflictedStatus) ;
+				creature.getPA().incLife(-damage) ;
+				inflictedStatus = BattleActions.CalcStatus(new float[] {playerBA.TotalStunAtkChance(), creatureBA.TotalStunDefChance(), playerBA.StunDuration()},
+						new float[] {playerBA.TotalBlockAtkChance(), creatureBA.TotalBlockDefChance(), playerBA.BlockDuration()},
+						new float[] {playerBA.TotalBloodAtkChance(), creatureBA.TotalBloodDefChance(), playerBA.BloodDuration()},
+						new float[] {playerBA.TotalPoisonAtkChance(), creatureBA.TotalPoisonDefChance(), playerBA.PoisonDuration()},
+						new float[] {playerBA.TotalSilenceAtkChance(), creatureBA.TotalSilenceDefChance(), playerBA.SilenceDuration()}) ;
+				creature.getBattleAtt().receiveStatus(inflictedStatus) ;
 			}
 		}
-		else if (isSpell(player.getPA().getCurrentAction()) & !player.isSilent())	// Magical atk, if not silent
+		else if (isSpell(action) & !player.isSilent())	// Magical atk, if not silent
 		{
 			atkType = "Spell" ;
-			if (UtilG.IndexOf(Player.SpellKeys, player.getPA().getCurrentAction()) < ActivePlayerSkills.size())
+			if (UtilG.IndexOf(Player.SpellKeys, action) < ActivePlayerSkills.size())	// if the player has the spell and it is active
 			{
-				int SkillID = ActivePlayerSkills.get(UtilG.IndexOf(Player.SpellKeys, player.getPA().getCurrentAction())) ;
+				int SkillID = ActivePlayerSkills.get(UtilG.IndexOf(Player.SpellKeys, action)) ;
 				if (BattleActions.Block(creatureBA.getSpecialStatus()[1]))
 				{
 					effect = "Block" ;
@@ -624,12 +629,12 @@ public class Battle
 				}
 			}
 		}
-		else if (player.getPA().getCurrentAction().equals(Player.ActionKeys[3]))										// Defense
+		else if (action.equals(Player.ActionKeys[3]))										// Defense
 		{
 			atkType = "Defense" ;
  			player.ActivateDef() ;
 		}
-		if (player.getPA().getCurrentAction().equals(Player.ActionKeys[1]) | player.getPA().getCurrentAction().equals(Player.ActionKeys[3]))
+		if (action.equals(Player.ActionKeys[1]) | action.equals(Player.ActionKeys[3]))
 		{
 			player.ResetBattleActions() ;
 		}

@@ -99,6 +99,10 @@ public class Creatures extends LiveBeing
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
 
+	public String[] getDefElems()
+	{
+		return new String[] {PA.Elem[0], PA.Elem[0]} ;
+	}
 	public boolean hasEnoughMP(int skillID)
 	{
 		int MPcost = 10 * skillID ;

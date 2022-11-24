@@ -26,35 +26,34 @@ import Utilities.UtilS;
 public class NPCs
 {
 	private int id ;
-	private String Name ;
+	private NPCType type ;
+	//private String Name ;
 	private Point Pos ;
-	private Image image ;
-	private int Map ;
-	private String PosRelToBuilding ;
-	private String Info ;
-	private Color color ;
+	//private int Map ;
+	//private String PosRelToBuilding ;
 	private String[] options ;
 	private int selOption ;
 	private int menu ;
 	private int window ;
-	public boolean Firstcontact ;
+	//public boolean Firstcontact ;
 
 	public static Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "SpeakingBubble.png").getImage() ;
 	
-	public NPCs(int ID, String Name, Point Pos, Image image, int Map, String PosRelToBuilding, String Info, Color color, String[] options)
+	public NPCs (int id, NPCType type, Point Pos, String[] options)
 	{
-		this.id = ID ;
-		this.Name = Name ;
+		this.id = id ;
+		this.type = type ;
+		//this.Name = Name ;
 		this.Pos = Pos ;
-		this.image = image ;
-		this.Map = Map ;
-		this.PosRelToBuilding = PosRelToBuilding ;
-		this.Info = Info ;
-		this.color = color ;
+		//this.image = image ;
+		//this.Map = Map ;
+		//this.PosRelToBuilding = PosRelToBuilding ;
+		//this.Info = Info ;
+		//this.color = color ;
 		this.options = options ;
 		selOption = 0 ;
 		menu = 0 ;
-		Firstcontact = true ;
+		//Firstcontact = true ;
 		
 		/*
 		 * private int ScreenL, ScreenH ;
@@ -118,21 +117,21 @@ public class NPCs
 	}
 
 	public int getID() {return id ;}
-	public String getName() {return Name ;}
+	//public String getName() {return Name ;}
 	public Point getPos() {return Pos ;}
-	public Image getImage() {return image ;}
-	public int getMap() {return Map ;}
-	public String getPosRelToBuilding() {return PosRelToBuilding ;}
-	public String getInfo() {return Info ;}
-	public Color getColor() {return color ;}
+	//public Image getImage() {return image ;}
+	//public int getMap() {return Map ;}
+	//public String getPosRelToBuilding() {return PosRelToBuilding ;}
+	//public String getInfo() {return Info ;}
+	//public Color getColor() {return color ;}
 	public void setID(int I) {id = I ;}
-	public void setName(String N) {Name = N ;}
+	//public void setName(String N) {Name = N ;}
 	public void setPos(Point P) {Pos = P ;}
-	public void setImage(Image I) {image = I ;}
-	public void setMap(int M) {Map = M ;}
-	public void setPosRelToBuilding(String P) {PosRelToBuilding = P ;}
-	public void setInfo(String I) {Info = I ;}
-	public void setColor(Color C) {color = C ;}
+	//public void setImage(Image I) {image = I ;}
+	//public void setMap(int M) {Map = M ;}
+	//public void setPosRelToBuilding(String P) {PosRelToBuilding = P ;}
+	//public void setInfo(String I) {Info = I ;}
+	//public void setColor(Color C) {color = C ;}
 	
 
 	public void Contact(Player player, Pet pet, Creatures[] creatures, Maps[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawFunctions DF)
@@ -183,7 +182,7 @@ public class NPCs
 		{
 			Saver(Choice, player, pet, npc, DF) ;
 		}*/
-		if (Name.equals("Master") | Name.equals("Mestre"))
+		if (type.getName().equals("Master") | type.getName().equals("Mestre"))
 		{
 			masterAction(player, pet, MousePos, DF) ;
 		}/*
@@ -244,7 +243,7 @@ public class NPCs
 	
 	public void masterAction(Player player, Pet pet, Point MousePos, DrawFunctions DF)
 	{
-		String[] speech = player.allText.get("* " + Name + " *") ;
+		String[] speech = player.allText.get("* " + type.getName() + " *") ;
 		int[] numberOfSpellsAvailablePerPlayerJob = new int[] {14, 15, 15, 14, 14} ;	// TODO olha esse nome...
 		Font NPCTextFont = new Font(Game.MainFontName, Font.BOLD, 20) ;
 		//System.out.println(selOption + " " + menu) ;
@@ -358,18 +357,9 @@ public class NPCs
 		//}
 		//else
 		//{
-		DP.DrawImage(image, Pos, DrawPrimitives.OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotCenter", 1) ;
-		DP.DrawText(Pos, "BotCenter", DrawPrimitives.OverallAngle, String.valueOf(id), new Font("SansSerif", Font.BOLD, 10), Color.blue) ;				
-		//}
+		DP.DrawImage(type.getImage(), Pos, DrawPrimitives.OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotCenter", 1) ;
+		DP.DrawText(Pos, "BotCenter", DrawPrimitives.OverallAngle, String.valueOf(id), new Font("SansSerif", Font.BOLD, 12), Color.blue) ;				
 	}
-	
-	@Override
-	public String toString() {
-		return "NPCs [id=" + id + ", Name=" + Name + ", Pos=" + Pos + ", image=" + image + ", Map=" + Map
-				+ ", PosRelToBuilding=" + PosRelToBuilding + ", Info=" + Info + ", color=" + color + ", Firstcontact="
-				+ Firstcontact + "]";
-	}
-
 
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 

@@ -1,11 +1,8 @@
 package Maps ;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.ImageIcon ;
 
@@ -13,14 +10,9 @@ import GameComponents.Buildings;
 import GameComponents.MapElements;
 import GameComponents.NPCs;
 import Graphics.DrawPrimitives;
-import LiveBeings.CreatureTypes;
-import LiveBeings.Creatures;
 import LiveBeings.Player;
 import Main.Game;
-import Screen.Screen;
 import Utilities.Size;
-import Utilities.UtilG;
-import Utilities.UtilS;
 
 public class Maps 
 {
@@ -35,9 +27,8 @@ public class Maps
     private int[] CollectibleDelay ;	// [Berry, herb, wood, metal]
 	private int[] Connections ;
 	protected ArrayList<MapElements> mapElem ;
-	private ArrayList<CreatureTypes> creatureTypes ;
-	public Buildings[] building ;
-	public ArrayList<NPCs> NPCsInMap ;
+	public ArrayList<Buildings> building ;
+	public ArrayList<NPCs> npc ;
 	public static int[] MusicID = new int[] {0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 11, 11, 11, 11, 11, 11} ;  	 
 	public static Image[] CollectibleImage ;
 	public static Image[] GroundImage ;
@@ -77,23 +68,16 @@ public class Maps
 28	Sign	3	0.09	0.54
 29	Sign	4	0.7	0.26
 	 * */
-	public Maps(String Name, int Continent, int[] Connections, Image image)
+	public Maps(String Name, int Continent, int[] Connections, Image image, ArrayList<Buildings> building, ArrayList<NPCs> npc)
 	{
 		this.Name = Name ;
 		this.Continent = Continent ;
 		this.image = image ;
-		//this.CollectibleLevel = CollectibleLevel ;
-		//CollectibleCounter = new int[CollectibleTypes.length] ;
-		//this.CollectibleDelay = CollectibleDelay ;
+		this.building = building ;
+		this.npc = npc ;
 		this.Connections = Connections ;
 		
 		mapElem = new ArrayList<MapElements>() ;
-		
-		
-		//this.creatureTypes = creatureTypes ;
-		//this.creatures = creatures ;
-		building = null ;
-		NPCsInMap = new ArrayList<NPCs>() ;
 	}
 
 	public String getName() {return Name ;}
@@ -107,8 +91,8 @@ public class Maps
 	public int[] getCollectibleDelay() {return CollectibleDelay ;}
 	public ArrayList<MapElements> getMapElem() {return mapElem ;}
 	//public ArrayList<CreatureTypes> getCreatureTypes() {return creatureTypes ;}
-	public ArrayList<NPCs> getNPCs() {return NPCsInMap ;}
-	public Buildings[] getBuildings() {return building ;}
+	public ArrayList<NPCs> getNPCs() {return npc ;}
+	public ArrayList<Buildings> getBuildings() {return building ;}
 	public String getContinentName(Player player)
 	{ 
 		String[] ContinentNames = player.allText.get("* Nomes dos continentes *") ;
@@ -279,20 +263,20 @@ public class Maps
 		}
  	}
  	
- 	public void displayBuildings(Point playerPos, String[] signMessage, DrawPrimitives DP)
+ 	public void displayBuildings(Point playerPos, DrawPrimitives DP)
  	{
- 		float overallAngle = DrawPrimitives.OverallAngle ;
- 		Color[] colorPalette = Game.ColorPalette ;
+ 		//Color[] colorPalette = Game.ColorPalette ;
 		//int[][] NPCsInBuildings = Uts.NPCsInBuildings(npc, building, id, BuildingsInCity) ;
-		Font font = new Font("SansSerif", Font.BOLD, 13) ;
+		//Font font = new Font("SansSerif", Font.BOLD, 13) ;
 		if (building != null)
 		{
-			for (int b = 0 ; b <= building.length - 1 ; b += 1)
+			for (int b = 0 ; b <= building.size() - 1 ; b += 1)
 			{
-				building[b].display(playerPos, overallAngle, new float[] {1, 1}, DP) ;
+				building.get(b).display(playerPos, DrawPrimitives.OverallAngle, new float[] {1, 1}, DP) ;
 			}
 			
 			//TODO essa � uma fun��o da sign building
+			//player.allText.get("* Mensagem das placas *") ;
 			/*Point SignPos = UtilS.BuildingPos(building, id, "Sign") ;
 			if (building[5].playerIsInside(playerPos))
 			{			
@@ -308,14 +292,14 @@ public class Maps
 	
 	public void displayNPCs(DrawPrimitives DP)
 	{
-		if (NPCsInMap != null)	// Map has NPCs
+		if (npc != null)	// Map has NPCs
 		{
-			for (int i = 0 ; i <= NPCsInMap.size() - 1 ; i += 1)
+			for (int i = 0 ; i <= npc.size() - 1 ; i += 1)
 			{
-				if (NPCsInMap.get(i).getPosRelToBuilding().equals("Outside"))
-				{
-					NPCsInMap.get(i).display(DP) ;		
-				}
+				//if (NPCsInMap.get(i).getPosRelToBuilding().equals("Outside"))
+				//{
+					npc.get(i).display(DP) ;		
+				//}
 			}
 		}
 	}

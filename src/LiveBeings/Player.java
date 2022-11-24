@@ -268,7 +268,7 @@ public class Player extends LiveBeing
     {
 		spell = new Spells[NumberOfSkillsPerJob[PA.Job]] ;
 		
-    	int NumberOfAllSkills = 178 ;
+    	//int NumberOfAllSkills = 178 ;
     	int NumberOfSkills = Player.NumberOfSkillsPerJob[PA.Job] ;
     	int NumberOfAtt = 14 ;
     	int NumberOfBuffs = 12 ;
@@ -403,7 +403,11 @@ public class Player extends LiveBeing
 	public void setStep(int S) {PA.setStep(S) ;}
 	public void setCurrentAction(String CA) {PA.currentAction = CA ;}
 	public void setCombo(String[] C) {combo = C ;}
-	
+
+	public String[] getAtkElems()
+	{
+		return new String[] {PA.Elem[0], PA.Elem[1], PA.Elem[4]} ;
+	}
 	public boolean weaponIsEquipped()
 	{
 		return (equips[0] != null) ;
@@ -711,7 +715,7 @@ public class Player extends LiveBeing
 	}
 	
 
-	public int[] meet(Creatures[] creatures, NPCs[] npc, DrawPrimitives DP, Animations ani)
+	public int[] meet(Creatures[] creatures, ArrayList<NPCs> npc, DrawPrimitives DP, Animations ani)
 	{
 		float distx, disty ;
 		Maps currentMap = PA.getMap() ;
@@ -777,11 +781,11 @@ public class Player extends LiveBeing
 		}	
 		
 		/* Meeting with NPCs */
-		if (currentMap.NPCsInMap != null)	// Map has NPCs
+		if (currentMap.getNPCs() != null)	// Map has NPCs
 		{
-			for (int i = 0 ; i <= currentMap.NPCsInMap.size() - 1 ; i += 1)
+			for (int i = 0 ; i <= currentMap.getNPCs().size() - 1 ; i += 1)
 			{
-				NPCs NPC = currentMap.NPCsInMap.get(i) ;
+				NPCs NPC = currentMap.getNPCs().get(i) ;
 				if (-1 < NPC.getID())
 				{
 					distx = (float) Math.abs(PA.getPos().x - NPC.getPos().x) ;
@@ -1369,7 +1373,7 @@ public class Player extends LiveBeing
 		{
 			if (getJob() == 2)
 			{
-				getCrit()[1] += 0.000212*0.025 / (getCrit()[1] + 1) ;	// 100% after 10,000 hits starting from 0.12
+				getCrit()[1] += 0.025 * 0.000212 / (getCrit()[1] + 1) ;	// 100% after 10,000 hits starting from 0.12
 			}
 		}
 		if (effect.equals("Hit"))
@@ -1682,7 +1686,7 @@ public class Player extends LiveBeing
 	/* Action windows */
 	public void AttWindow(Icon[] icons, int[] MainWinDim, float[] PlayerAttributeIncrease, Point MousePos, Image GoldCoinImage, DrawPrimitives DP)
 	{
-		int WindowLimit = 2 ;
+		//int WindowLimit = 2 ;
 		//SelectedWindow[0] = UtilS.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedWindow[0], WindowLimit) ;
 		for (int selectedItem = 0 ; selectedItem <= 7 - 1 ; selectedItem += 1)
 		{
@@ -1725,7 +1729,7 @@ public class Player extends LiveBeing
 				attPoints += -1 ;
 			//}
 		}
-		Point WinPos = new Point((int) (0.3 * MainWinDim[0]), (int) (0.2 * MainWinDim[1])) ;
+		//Point WinPos = new Point((int) (0.3 * MainWinDim[0]), (int) (0.2 * MainWinDim[1])) ;
 		//DrawAttWindow(MainWinDim, WinPos, MousePos, AllText, AllTextCat, SelectedWindow[0], GoldCoinImage, icons, DP) ;
 		attWindow.display(this, allText, equips, EquipsBonus, attPoints, MousePos, PA, BA, DP) ;
 	}

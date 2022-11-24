@@ -9,7 +9,7 @@ public class SpecialMap extends Maps
 {
 	public SpecialMap(String Name, int Continent, int[] Connections, Image image)
 	{
-		super(Name, Continent, Connections, image) ;
+		super(Name, Continent, Connections, image, null, null) ;
 	}
 	
 	
