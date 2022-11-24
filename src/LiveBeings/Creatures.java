@@ -50,7 +50,7 @@ public class Creatures extends LiveBeing
 		PA.setPos(initialPos) ;
 		
 
-		if (getName().equals("Dragão") | getName().equals("Dragon"))
+		if (getName().equals("Dragï¿½o") | getName().equals("Dragon"))
 		{
 			getPersonalAtt().setPos(Game.getScreen().getCenter()) ;
 		}
@@ -62,7 +62,7 @@ public class Creatures extends LiveBeing
 	public String getName() {return PA.getName() ;}
 	public int getLevel() {return PA.getLevel() ;}
 	public int getMap() {return Map ;}
-	public int[] getSize() {return PA.getSize() ;}
+	public Size getSize() {return PA.getSize() ;}
 	public Point getPos() {return PA.getPos() ;}
 	public int[] getSkill() {return Skill ;}
 	public float[] getLife() {return PA.getLife() ;}
@@ -145,7 +145,7 @@ public class Creatures extends LiveBeing
 	}
 	public Point CenterPos()
 	{
-		return new Point((int) (PA.getPos().x + 0.5 * PA.getSize()[0]), (int) (PA.getPos().y - 0.5 * PA.getSize()[1])) ;
+		return new Point((int) (PA.getPos().x + 0.5 * PA.getSize().x), (int) (PA.getPos().y - 0.5 * PA.getSize().y)) ;
 	}
 	public void updatePos(String move, Point CurrentPos, int step, Maps map)
 	{
@@ -216,7 +216,7 @@ public class Creatures extends LiveBeing
 	{
 		int magicalType = type.getID() % 5 ;
 		int MPCost = 10 ;
-		int effect = -1 ;
+		String effect = "" ;
 		int damage = -1 ;
 		float randomAmp = (float) 0.1 ;
 		BattleAttributes playerBA = player.getBattleAtt() ;
@@ -492,7 +492,7 @@ public class Creatures extends LiveBeing
 	
 	@Override
 	public String toString() {
-		return "Creatures [type=" + type + ", Map=" + Map + ", Size=" + Arrays.toString(PA.getSize()) + ", Skill="
+		return "Creatures [type=" + type + ", Map=" + Map + ", Size=" + PA.getSize() + ", Skill="
 				+ Arrays.toString(Skill) + ", Bag=" + Arrays.toString(Bag) + ", Gold=" + Gold + ", color=" + color
 				+ ", StatusCounter=" + Arrays.toString(StatusCounter) + ", Combo=" + Arrays.toString(Combo)
 				+ ", Follow=" + Follow + ", countmove=" + countmove + "]";

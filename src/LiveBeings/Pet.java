@@ -74,7 +74,7 @@ public class Pet extends LiveBeing
 		Point Pos = new Point(0, 0) ;
 		String dir = Player.MoveKeys[0] ;
 		String Thought = "Exist" ;
-		int[] Size = new int[] {new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getWidth(null), new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getHeight(null)} ;	
+		Size size = new Size (new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getWidth(null), new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getHeight(null)) ;	
 		float[] Life = new float[] {Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2])} ;
 		float[] Mp = new float[] {Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3])} ;
 		int Range = Integer.parseInt(PetProperties.get(Job)[4]) ;
@@ -86,7 +86,7 @@ public class Pet extends LiveBeing
 		int[][] Actions = new int[][] {{0, Integer.parseInt(PetProperties.get(Job)[33]), 0}, {0, Integer.parseInt(PetProperties.get(Job)[34]), 0}, {0, Integer.parseInt(PetProperties.get(Job)[35]), 0}} ;
 		String currentAction = "" ;
 		int countmove = 0 ;
-		return new PersonalAttributes(Name, Level, Job, ProJob, Map, Pos, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
+		return new PersonalAttributes(Name, Level, Job, ProJob, Map, Pos, dir, Thought, size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
 	}
 	
 	private static BattleAttributes InitializeBattleAttributes(int Job)
@@ -197,7 +197,7 @@ public class Pet extends LiveBeing
     }
 	
 	public String getName() {return PA.getName() ;}
-	public int[] getSize() {return PA.getSize() ;}
+	public Size getSize() {return PA.getSize() ;}
 	public Color getColor() {return color ;}
 	public int getJob() {return Job ;}
 	public MovingAnimations getMovingAnimations() {return movingAni ;}
@@ -237,7 +237,7 @@ public class Pet extends LiveBeing
 	
 	public Point CenterPos()
 	{
-		return new Point((int) (PA.getPos().x + 0.5 * PA.getSize()[0]), (int) (PA.getPos().y - 0.5 * PA.getSize()[1])) ;
+		return new Point((int) (PA.getPos().x + 0.5 * PA.getSize().x), (int) (PA.getPos().y - 0.5 * PA.getSize().y)) ;
 	}
 
 	public String Action(String[] ActionKeys)
@@ -436,7 +436,7 @@ public class Pet extends LiveBeing
 		try
 		{
 			bW.write("\nPet name: \n" + getName()) ;
-			bW.write("\nPet size: \n" + Arrays.toString(getSize())) ;
+			bW.write("\nPet size: \n" + getSize()) ;
 			bW.write("\nPet color: \n" + getColor()) ;
 			bW.write("\nPet job: \n" + getJob()) ;
 			bW.write("\nPet coords: \n" + getPos()) ;
@@ -477,7 +477,7 @@ public class Pet extends LiveBeing
 	{
 		int NumberOfPlayerAttributes = 49 ;
 		PA.setName(ReadFile[2*(NumberOfPlayerAttributes + 1)][0]) ;
-		PA.setSize((int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 2)]), "String", "int")) ;
+		PA.setSize((Size) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 2)]), "String", "int")) ;
 		color = UtilG.toColor(ReadFile[2*(NumberOfPlayerAttributes + 3)])[0] ;
 		Job = Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 4)][0]) ;
 		PA.setPos((Point) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 5)]), "String", "int")) ;

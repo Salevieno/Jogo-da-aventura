@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import Main.Game;
 import Maps.Maps;
+import Utilities.Size;
 
 public class PersonalAttributes
 {
@@ -18,7 +19,7 @@ public class PersonalAttributes
 	private Point Pos ;
 	private String dir ;			// direction of the movement
 	private String Thought ;		// current thought
-	private int[] Size ;
+	private Size size ;
 	private float[] Life ;		// 0: Current life, 1: max life]
 	private float[] Mp ;			// 0: Current mp, 1: max mp]
 	private float Range ;
@@ -31,7 +32,7 @@ public class PersonalAttributes
 	protected String currentAction; 
 	protected int countmove ;
 	
-	public PersonalAttributes(String Name, int Level, int Job, int ProJob, Maps map, Point Pos, String dir, String Thought, int[] Size, float[] Life, float[] Mp, float Range, int Step, float[] Exp, float[] Satiation, float[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
+	public PersonalAttributes(String Name, int Level, int Job, int ProJob, Maps map, Point Pos, String dir, String Thought, Size size, float[] Life, float[] Mp, float Range, int Step, float[] Exp, float[] Satiation, float[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
 	{
 		this.Name = Name ;
 		this.Level = Level ;
@@ -45,7 +46,7 @@ public class PersonalAttributes
 		this.Pos = Pos ;
 		this.dir = dir ;
 		this.Thought = Thought ;
-		this.Size = Size ;
+		this.size = size ;
 		this.Life = Life ;
 		this.Mp = Mp ;
 		this.Range = Range ;
@@ -68,7 +69,7 @@ public class PersonalAttributes
 	public String getDir() {return dir ;}
 	public String getThought() {return Thought ;}
 	public Point getPos() {return Pos ;}
-	public int[] getSize() {return Size ;}
+	public Size getSize() {return size ;}
 	public float[] getLife() {return Life ;}
 	public float[] getMp() {return Mp ;}
 	public float getRange() {return Range ;}
@@ -90,7 +91,7 @@ public class PersonalAttributes
 	public void setdir(String newValue) {dir = newValue ;}
 	public void setThought(String newValue) {Thought = newValue ;}
 	public void setPos(Point newValue) {Pos = newValue ;}
-	public void setSize(int[] newValue) {Size = newValue ;}
+	public void setSize(Size newValue) {size = newValue ;}
 	public void setLife(float[] newValue) {Life = newValue ;}
 	public void setMp(float[] newValue) {Mp = newValue ;}
 	public void setRange(float newValue) {Range = newValue ;}
@@ -206,7 +207,7 @@ public class PersonalAttributes
 		System.out.println("Pos: " + Pos);
 		System.out.println("dir: " + dir);
 		System.out.println("Thought: " + Thought);
-		System.out.println("Size: " + Arrays.toString(Size));
+		System.out.println("Size: " + size);
 		System.out.println("Life: " + Arrays.toString(Life));
 		System.out.println("Mp: " + Arrays.toString(Mp));
 		System.out.println("Range: " + Range);

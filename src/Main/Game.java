@@ -237,7 +237,7 @@ public class Game extends JPanel implements ActionListener
 				color[ct] = ColorPalette[5] ;
 			}
 			
-			MovingAnimations animations = new MovingAnimations(new ImageIcon(ImagesPath + "creature2_idle.gif").getImage(),
+			MovingAnimations moveAni = new MovingAnimations(new ImageIcon(ImagesPath + "creature2_idle.gif").getImage(),
 					new ImageIcon(ImagesPath + "creature2_movingup.gif").getImage(),
 					new ImageIcon(ImagesPath + "creature2_movingdown.gif").getImage(),
 					new ImageIcon(ImagesPath + "creature2_movingleft.gif").getImage(),
@@ -246,7 +246,7 @@ public class Game extends JPanel implements ActionListener
 			int Level = Integer.parseInt(Input.get(ct)[3]) ;			
 			String dir = Player.MoveKeys[0] ;
 			String Thought = "Exist" ;
-			int[] Size = new int[] {42, 30} ;
+			Size Size = new Size(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;
 			float[] Life = new float[] {Float.parseFloat(Input.get(ct)[5]) * DiffMult, Float.parseFloat(Input.get(ct)[5]) * DiffMult} ;
 			float[] Mp = new float[] {Float.parseFloat(Input.get(ct)[6]) * DiffMult, Float.parseFloat(Input.get(ct)[6]) * DiffMult} ;
 			float Range = Float.parseFloat(Input.get(ct)[7]) * DiffMult ;
@@ -281,7 +281,7 @@ public class Game extends JPanel implements ActionListener
 			int[] Bag = new int[] {Integer.parseInt(Input.get(ct)[37]), Integer.parseInt(Input.get(ct)[38]), Integer.parseInt(Input.get(ct)[39]), Integer.parseInt(Input.get(ct)[40]), Integer.parseInt(Input.get(ct)[41]), Integer.parseInt(Input.get(ct)[42]), Integer.parseInt(Input.get(ct)[43]), Integer.parseInt(Input.get(ct)[44]), Integer.parseInt(Input.get(ct)[45]), Integer.parseInt(Input.get(ct)[46])} ;
 			int Gold = Integer.parseInt(Input.get(ct)[47]) ;
 			int[] StatusCounter = new int[8] ;
-			creatureTypes[ct] = new CreatureTypes(ct, animations, PA, BA, Skill, Bag, Gold, color[ct], StatusCounter) ;	
+			creatureTypes[ct] = new CreatureTypes(ct, moveAni, PA, BA, Skill, Bag, Gold, color[ct], StatusCounter) ;	
 		}
 		return creatureTypes ;
     }
@@ -811,7 +811,7 @@ public class Game extends JPanel implements ActionListener
 		
 		// player acts
 		player.act(pet, allMaps, mousePos, SideBarIcons, ani, DF) ;
-		if (player.ActionIsAMove(player.getPA().getCurrentAction()) | 0 < player.getPersonalAtt().getCountmove())	// countmove becomes greater than 0 when the player moves, then starts to increase by 1 and returns to 0 when it reaches 20
+		if (player.actionIsAMove() | 0 < player.getPersonalAtt().getCountmove())	// countmove becomes greater than 0 when the player moves, then starts to increase by 1 and returns to 0 when it reaches 20
 		{
 			player.move(pet, music.getMusicClip(), ani) ;
 		}

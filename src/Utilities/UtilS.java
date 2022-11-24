@@ -278,7 +278,7 @@ public class UtilS
 	public static void PrintBattleActions2(String useraction, String receiveraction, String user, String receiver, Object[] AtkResult, String[] elem)
 	{
 		int damage = (int) AtkResult[0] ;
-		int effect = (int) AtkResult[1] ;
+		String effect = (String) AtkResult[1] ;
 		int[] status = (int[]) AtkResult[2] ;
 
 		if (!useraction.equals(""))
@@ -295,19 +295,19 @@ public class UtilS
 			if (0 <= damage)
 			{
 				System.out.println(user + " inflicts status on2 " + receiver + " " + Arrays.toString(status)) ;
-				if (effect == 0)
+				if (effect.equals("Hit"))
 				{
 					System.out.println(user + " deals damage on2 " + receiver + " ! Damage = " + damage) ;
 				}
-				else if (effect == 1)
+				else if (effect.equals("Crit"))
 				{
 					System.out.println(user + " deals critical damage on2 " + receiver + " ! Damage = " + damage) ;
 				}
-				else if (effect == 2)
+				else if (effect.equals("Miss"))
 				{
 					System.out.println(user + " misses2 " + receiver + "!") ;
 				} 
-				else if (effect == 3)
+				else if (effect.equals("Block"))
 				{
 					System.out.println(receiver + " blocks2 " + user + "!") ;
 				}

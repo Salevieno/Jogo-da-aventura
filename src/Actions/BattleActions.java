@@ -54,40 +54,40 @@ public abstract class BattleActions
 		return mult ;
 	}
 	
-	public static int CalcEffect(float Dex, float Agi, float CritAtk, float CritDef, float BlockDef)
+	public static String CalcEffect(float Dex, float Agi, float CritAtk, float CritDef, float BlockDef)
 	{
-		int effect = -1 ;
+		String effect = "" ;
 		if (Block(BlockDef))
 		{
-			effect = 3 ;	// block
+			effect = "Block" ;
 		} 
 		else if (Hit(Dex, Agi))
 		{
-			effect = 0 ;	// hit
+			effect = "Hit" ;
 			if (CriticalAtk(CritAtk, CritDef))
 			{
-				effect = 1 ;	// crit
+				effect = "Crit" ;
 			}
 		}
 		else
 		{
-			effect = 2 ;	// miss
+			effect = "Miss" ;
 		}
 		return effect;
 	}
 	
-	public static int CalcAtk(int effect, float Atk, float Def, String[] AtkElem, String[] DefElem, float ElemModifier, float randomAmp)
+	public static int CalcAtk(String effect, float Atk, float Def, String[] AtkElem, String[] DefElem, float ElemModifier, float randomAmp)
 	{
 		int damage = -1 ;
-		if (effect == 2 | effect == 3)	// miss or block
+		if (effect.equals("Miss") | effect.equals("Block"))
 		{
 			damage = 0 ;
 		} 
-		else if (effect == 0)	// hit
+		else if (effect.equals("Hit"))
 		{
 			damage = Math.max(0, (int)(Atk - Def)) ;
 		}
-		else if (effect == 1)	// crit
+		else if (effect.equals("Crit"))
 		{
 			double randomMult = UtilG.RandomMult(randomAmp) ;
 			float elemMult = CalcElemMult(AtkElem[0], AtkElem[1], DefElem[0], DefElem[0], AtkElem[2]) ;

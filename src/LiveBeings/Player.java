@@ -104,9 +104,10 @@ public class Player extends LiveBeing
 	public float[][] EquipsBonus ;
 	
 	public static String[] MoveKeys = new String[] {KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
+	public static String[] AtkKeys = new String[] {"A", "D"} ;
 	public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Pet window, Map, Quest, Hint, Tent, Bestiary]
 	public static String[] HotKeys = new String[] {"E", "X", "V"} ;	// [Hotkey 1, Hotkey 2, Hotkey 3]
-	public static String[] SkillKeys = new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"} ;
+	public static String[] SpellKeys = new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"} ;
 	public static ArrayList<String[]> Properties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
 	public static ArrayList<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public static int[] NumberOfSkillsPerJob = new int[] {14 + 20, 15 + 20, 15 + 20, 14 + 20, 14 + 20} ;
@@ -216,7 +217,7 @@ public class Player extends LiveBeing
 		String dir = Player.MoveKeys[0] ;
 		String Thought = "Exist" ;
 	    Image PlayerBack = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
-		int[] Size = new int[] {PlayerBack.getWidth(null), PlayerBack.getHeight(null)} ;
+		Size Size = new Size (PlayerBack.getWidth(null), PlayerBack.getHeight(null)) ;
 		float[] Life = new float[] {Float.parseFloat(Properties.get(Job)[2]), Float.parseFloat(Properties.get(Job)[2])} ;
 		float[] Mp = new float[] {Float.parseFloat(Properties.get(Job)[3]), Float.parseFloat(Properties.get(Job)[3])} ;
 		float Range = Float.parseFloat(Properties.get(Job)[4]) ;
@@ -341,7 +342,7 @@ public class Player extends LiveBeing
 	public String getName() {return PA.getName() ;}
 	public String getSex() {return Sex ;}
 	public String getDir() {return PA.getDir() ;}
-	public int[] getSize() {return PA.getSize() ;}
+	public Size getSize() {return PA.getSize() ;}
 	public Color getColor() {return color ;}
 	public PersonalAttributes getPersonalAtt() {return PA ;}
 	public BattleAttributes getBattleAtt() {return BA ;}
@@ -394,7 +395,7 @@ public class Player extends LiveBeing
 	public Settings getSettings() {return settings ;}
 	public void setName(String newValue) {PA.setName(newValue) ;}
 	public void setLevel(int newValue) {PA.setLevel(newValue) ;}
-	public void setSize(int[] S) {PA.setSize(S) ;}
+	public void setSize(Size S) {PA.setSize(S) ;}
 	public void setProJob(int PJ) {PA.setProJob(PJ) ;}
 	public void setMap(Maps M) {PA.setMap(M) ; PA.setContinent(M.getContinent()) ;}
 	public void setPos(Point P) {PA.setPos(P) ;}
@@ -497,9 +498,25 @@ public class Player extends LiveBeing
 	public void incAttPoints(int amount) {attPoints += amount ;}
 	public void decAttPoints(int amount) {attPoints += -amount ;}
 	
-	public boolean ActionIsAMove(String move)
+	public boolean actionIsAMove()
 	{
-		if (UtilG.ArrayContains(Player.MoveKeys, move))
+		if (UtilG.ArrayContains(Player.MoveKeys, PA.getCurrentAction()))
+		{
+			return true ;
+		}
+		return false ;
+	}
+	public boolean actionIsAnSpell()
+	{
+		if (UtilG.ArrayContains(Player.SpellKeys, PA.getCurrentAction()))
+		{
+			return true ;
+		}
+		return false ;
+	}
+	public boolean actionIsAnAtk()
+	{
+		if (UtilG.ArrayContains(Player.AtkKeys, PA.getCurrentAction()))
 		{
 			return true ;
 		}
@@ -566,7 +583,7 @@ public class Player extends LiveBeing
 	
 	public void act(Pet pet, Maps[] maps, Point MousePos, Icon[] sideBarIcons, Animations Ani, DrawFunctions DF)
 	{
-		if (ActionIsAMove(PA.currentAction))
+		if (actionIsAMove())
 		{
 			updateDir(PA.currentAction) ;
 		}
@@ -659,9 +676,9 @@ public class Player extends LiveBeing
 		}
 		
 		// support skills
-		if (UtilS.ActionIsSkill(SkillKeys, PA.currentAction) & (!isInBattle() | canAtk()) & UtilG.IndexOf(SkillKeys, PA.currentAction) < GetActiveSpells().size())
+		if (UtilS.ActionIsSkill(SpellKeys, PA.currentAction) & (!isInBattle() | canAtk()) & UtilG.IndexOf(SpellKeys, PA.currentAction) < GetActiveSpells().size())
 		{
-			SupSpell(pet, GetActiveSpells().get(UtilG.IndexOf(SkillKeys, PA.currentAction))) ;
+			SupSpell(pet, GetActiveSpells().get(UtilG.IndexOf(SpellKeys, PA.currentAction))) ;
 		}
 		
 		// navigating through open windows
@@ -675,7 +692,7 @@ public class Player extends LiveBeing
 		}
 		
 		// if meets creature, enters battle
-		if (closestCreature != null & (PA.currentAction.equals(ActionKeys[1]) | UtilS.ActionIsSkill(SkillKeys, PA.currentAction)) & !isInBattle())
+		if (closestCreature != null & (PA.currentAction.equals(ActionKeys[1]) | UtilS.ActionIsSkill(SpellKeys, PA.currentAction)) & !isInBattle())
 		{
 			if (PA.Job != 2 | (PA.Job == 2 & equips[3] != null))
 			{
@@ -709,7 +726,7 @@ public class Player extends LiveBeing
 			{
 				distx = (float) Math.abs(PA.getPos().x - collectibles.get(c).getPos().x) ;
 				disty = (float) Math.abs(PA.getPos().y - collectibles.get(c).getPos().y) ;
-				if (distx <= 0.5*PA.getSize()[0] & disty <= 0.5*PA.getSize()[1])
+				if (distx <= 0.5*PA.getSize().x & disty <= 0.5*PA.getSize().y)
 				{
 					if (!ani.isActive(10))
 					{
@@ -737,8 +754,8 @@ public class Player extends LiveBeing
 			if (isInBattle())
 			{
 				distx = Math.abs(PA.getPos().x - opponent.getPos().x) ;
-				disty = Math.abs(PA.getPos().y - PA.getSize()[1] / 2 - opponent.getPos().y) ;
-				if (distx <= (PA.getSize()[0] + opponent.getSize()[0]) / 2 & disty <= (PA.getSize()[1] + opponent.getSize()[1]) / 2 & !ani.isActive(10) & !ani.isActive(19))
+				disty = Math.abs(PA.getPos().y - PA.getSize().y / 2 - opponent.getPos().y) ;
+				if (distx <= (PA.getSize().x + opponent.getSize().x) / 2 & disty <= (PA.getSize().y + opponent.getSize().y) / 2 & !ani.isActive(10) & !ani.isActive(19))
 				{
 					return new int[] {0, opponent.getType().getID()} ;
 				}
@@ -750,8 +767,8 @@ public class Player extends LiveBeing
 				{
 					Creatures creature = creaturesInMap.get(i) ;
 					distx = UtilG.dist1D(PA.getPos().x, creature.getPos().x) ;
-					disty = UtilG.dist1D(PA.getPos().y - PA.getSize()[1] / 2, creature.getPos().y) ;
-					if (distx <= (PA.getSize()[0] + creature.getSize()[0]) / 2 & disty <= (PA.getSize()[1] + creature.getSize()[1]) / 2 & !ani.isActive(10) & !ani.isActive(19))
+					disty = UtilG.dist1D(PA.getPos().y - PA.getSize().y / 2, creature.getPos().y) ;
+					if (distx <= (PA.getSize().x + creature.getSize().x) / 2 & disty <= (PA.getSize().y + creature.getSize().y) / 2 & !ani.isActive(10) & !ani.isActive(19))
 					{
 						return new int[] {0, i} ;
 					}
@@ -769,7 +786,7 @@ public class Player extends LiveBeing
 				{
 					distx = (float) Math.abs(PA.getPos().x - NPC.getPos().x) ;
 					disty = (float) Math.abs(PA.getPos().y - NPC.getPos().y) ;
-					if (distx <= 0.5*PA.getSize()[0] & disty <= 0.5*PA.getSize()[1])
+					if (distx <= 0.5*PA.getSize().x & disty <= 0.5*PA.getSize().y)
 					{
 						return new int[] {1, NPC.getID()} ;
 					}
@@ -1342,20 +1359,20 @@ public class Player extends LiveBeing
 	}
 	public void train(Object[] playerAtkResult)
 	{
-		int effect = (int) playerAtkResult[1] ;
+		String effect = (String) playerAtkResult[1] ;
 		String atkType = (String) playerAtkResult[3] ;
 		if (atkType.equals("Physical"))	// Physical atk
 		{
 			getPhyAtk()[2] += 0.025 / (getPhyAtk()[2] + 1) ;					
 		}
-		if (effect == 1)	// crit
+		if (effect.equals("Crit"))
 		{
 			if (getJob() == 2)
 			{
 				getCrit()[1] += 0.000212*0.025 / (getCrit()[1] + 1) ;	// 100% after 10,000 hits starting from 0.12
 			}
 		}
-		if (effect <= 1)	// hit
+		if (effect.equals("Hit"))
 		{
 			getDex()[2] += 0.025 / (getDex()[2] + 1) ;
 		}
@@ -1396,7 +1413,7 @@ public class Player extends LiveBeing
 		 * 22: total silence
 		*/
 		int damage = (int) playerAtkResult[0] ;
-		int effect = (int) playerAtkResult[1] ;
+		String effect = (String) playerAtkResult[1] ;
 		if (!PA.currentAction.equals(""))				// player has performed an action
 		{
 			if (0 <= damage)							// player inflicted damage
@@ -1412,7 +1429,7 @@ public class Player extends LiveBeing
 					statistics[3] += damage ;					// Total physical damage inflicted by the player
 				}
 			}		
-			if (effect <= 1)							// player performed a successful hit
+			if (effect.equals("Hit"))							// player performed a successful hit
 			{
 				statistics[9] += 1 ;								// total number of successful hits performed by the player
 				// for the status, dividing the duration of the status by the duration applied to get the number of times the status was applied
@@ -1445,7 +1462,7 @@ public class Player extends LiveBeing
 					statistics[22] += creature.getBattleAtt().getSpecialStatus()[4] / BA.getSilence()[4] ;	// total number of silence inflicted by the player
 				}
 			}
-			if (effect == 1)				// player performed a critical atk (physical or magical)
+			if (effect.equals("Crit"))				// player performed a critical atk (physical or magical)
 			{
 				statistics[12] += 1 ;							// total number of critical hits performed by the player
 				statistics[13] += damage ;						// total critical damage (physical + magical) performed by the player
@@ -1456,7 +1473,7 @@ public class Player extends LiveBeing
 			}
 		}
 	}
-	public void updatedefensiveStats(int[] creatureAtkResult, boolean creaturePhyAtk, Creatures creature)
+	public void updatedefensiveStats(int damage, String effect, boolean creaturePhyAtk, Creatures creature)
 	{
 		/* 0: Number of phy attacks, 
 		 * 1: number of spells used, 
@@ -1482,17 +1499,17 @@ public class Player extends LiveBeing
 		 * 21: total poison def, 
 		 * 22: total silence
 		*/
-		if (creatureAtkResult[1] <= 1)	// Hit
+		if (effect.equals("Hit"))
 		{			
 			statistics[10] += 1 ;						// number of hits the player has taken
 			if (creaturePhyAtk)	// Creature physical atk
 			{				
-				statistics[4] += creatureAtkResult[0] ;	// total phy damage received by the player
+				statistics[4] += damage ;				// total phy damage received by the player
 				statistics[7] += BA.TotalPhyDef() ;		// total phy damage defended by the player
 			}
 			else				// Creature magical atk
 			{
-				statistics[6] += creatureAtkResult[0] ;	// total mag damage received by the player
+				statistics[6] += damage ;				// total mag damage received by the player
 				statistics[8] += BA.TotalMagDef() ;		// total mag damage defended by the player
 			}
 			if (0 < BA.getSpecialStatus()[2])
@@ -1899,7 +1916,7 @@ public class Player extends LiveBeing
 		int Ncols = Math.max(ActiveSpells.size() / 11 + 1, 1) ;
 		int Nrows = ActiveSpells.size() / Ncols + 1 ;
 		int Sx = (int) UtilG.spacing(size.x, Ncols, slotW, 3), Sy = (int) UtilG.spacing(size.y, Nrows, slotH, 5) ;		
-		String[] Key = Player.SkillKeys ;
+		String[] Key = Player.SpellKeys ;
 		Color BGcolor = Player.ClassColors[player.getJob()] ;
 		Color TextColor = player.getColor() ;
 		int[] Counter = UtilG.ArrayInPos(player.getSkillCounter(), 1) ;
@@ -2025,7 +2042,7 @@ public class Player extends LiveBeing
 	{
 		float[] scale = new float[] {(float) 0.6, (float) 0.6} ;
 		float[] angle = new float[] {50, 30, 0, 0, 0} ;
-		Point EqPos = new Point((int)(Pos[0] + 0.16 * PA.getSize()[0] * playerscale[0]), (int)(Pos[1] - 0.4 * PA.getSize()[1] * playerscale[1])) ;
+		Point EqPos = new Point((int)(Pos[0] + 0.16 * PA.getSize().x * playerscale[0]), (int)(Pos[1] - 0.4 * PA.getSize().y * playerscale[1])) ;
 		if (equips[0] != null)
 		{
 			DrawEquips(EqPos, PA.Job, 0, equips[0].getId() - Items.BagIDs[5], Items.EquipsBonus, scale, angle[PA.Job], DP) ;
@@ -2051,7 +2068,7 @@ public class Player extends LiveBeing
 	{
 		float[] scale = new float[] {(float) 0.6, (float) 0.6} ;
 		float[] angle = new float[] {50, 30, 0, 0, 0} ;
-		Point EqPos = new Point((int)(Pos.x + 0.16*PA.getSize()[0]*playerscale[0]), (int)(Pos.y - 0.4*PA.getSize()[1]*playerscale[1])) ;
+		Point EqPos = new Point((int)(Pos.x + 0.16*PA.getSize().x*playerscale[0]), (int)(Pos.y - 0.4*PA.getSize().y*playerscale[1])) ;
 		if (getEquips()[0] != null)
 		{
 			DrawEquips(EqPos, PA.Job, 0, getEquips()[0].getId() - Items.BagIDs[6], Items.EquipsBonus, scale, angle[PA.Job], DP) ;
@@ -2157,29 +2174,29 @@ public class Player extends LiveBeing
 		boolean[] mirror = new boolean[] {false, false} ;
 		if (questSkills.get("Dragon's aura"))
 		{
-			DP.DrawImage(DragonAuraImage, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, scale, mirror, "Center", 0.5) ;					
+			DP.DrawImage(DragonAuraImage, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 0.5) ;					
 		}
 		if (dir.equals("Acima"))
 		{
-			DP.DrawImage(movingAni.idleGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, scale, mirror, "Center", 1) ;
+			DP.DrawImage(movingAni.idleGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Abaixo"))
 		{
-			DP.DrawImage(movingAni.movingDownGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, scale, mirror, "Center", 1) ;
+			DP.DrawImage(movingAni.movingDownGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Esquerda"))
 		{
-			DP.DrawImage(movingAni.movingLeftGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, scale, mirror, "Center", 1) ;
+			DP.DrawImage(movingAni.movingLeftGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Direita"))
 		{
 			if (PA.countmove % 2 == 0)
 			{
-				DP.DrawImage(movingAni.movingRightGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, scale, mirror, "Center", 1) ;
+				DP.DrawImage(movingAni.movingRightGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
 			}
 			else
 			{
-				DP.DrawImage(movingAni.movingUpGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])), OverallAngle, scale, mirror, "Center", 1) ;
+				DP.DrawImage(movingAni.movingUpGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
 			}
 		}
 		if (ShowPlayerRange)
@@ -2193,9 +2210,9 @@ public class Player extends LiveBeing
 		}*/
 		/*for (int i = 0 ; i <= PlayerImages.length - 1 ; i += 1)						
 		{
-			DP.DrawImage(PlayerImages[i], new int[] {PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize()[1])}, OverallAngle, BPScale[i], mirror, "Center") ;
+			DP.DrawImage(PlayerImages[i], new int[] {PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)}, OverallAngle, BPScale[i], mirror, "Center") ;
 		}*/
-		//DP.DrawRect(player.getPos(), "Center", (int)(player.getSize()[0]*scale[0]), (int)(player.getSize()[1]*scale[1]), 1, null, ColorPalette[9], true) ;	// Player contour
+		//DP.DrawRect(player.getPos(), "Center", (int)(player.getSize().x*scale[0]), (int)(player.getSize().y*scale[1]), 1, null, ColorPalette[9], true) ;	// Player contour
 		//DrawCircle(player.getPos(), 2, 2, ColorPalette[6], false, true) ;	// Player center
 	}
 	
@@ -2211,7 +2228,7 @@ public class Player extends LiveBeing
 			bw.write("\nPlayer name: \n" + getName()) ;
 			bw.write("\nPlayer language: \n" + getLanguage()) ;
 			bw.write("\nPlayer sex: \n" + getSex()) ;
-			bw.write("\nPlayer size: \n" + Arrays.toString(getSize())) ;
+			bw.write("\nPlayer size: \n" + getSize()) ;
 			bw.write("\nPlayer colors: \n" + getColor()) ;
 			bw.write("\nPlayer job: \n" + getJob()) ;
 			bw.write("\nPlayer PA.ProJob: \n" + PA.ProJob) ;

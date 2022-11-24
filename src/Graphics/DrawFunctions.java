@@ -1571,34 +1571,34 @@ public class DrawFunctions
 	
 
 	/* Battle animations */
-	public void DrawDamageAnimation(Point Pos, int damage, int effect, int counter, int duration, int damageAnimation, Color color)
+	public void DrawDamageAnimation(Point Pos, int damage, String effect, int counter, int duration, int aniStyle, Color color)
 	{
-		Font font = new Font("SansSerif", Font.BOLD, 18) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 18) ;
 		float anirate = counter / (float) duration ;
 		int dx = 0, dh = 0 ;
-		if (damageAnimation == 1)
+		if (aniStyle == 1)
 		{
 			dh = (int) (10 * anirate) ;
 		}
-		if (damageAnimation == 2)
+		if (aniStyle == 2)
 		{
 			dx = (int) (40 * Math.pow(anirate, 2)) ;
 			dh = (int) (10 * anirate) ;
 		}
-		if (damageAnimation == 3)
+		if (aniStyle == 3)
 		{
 			dx = (int) (Math.pow(40 * anirate, 2)) ;
 			dh = (int) (10 * anirate) ;
 		}
-		if (effect == 1)		// Crit
+		if (effect.equals("Crit"))
 		{
 			DP.DrawText(new Point(Pos.x + dx, Pos.y - dh), "Center", OverallAngle, String.valueOf(UtilG.Round(damage, 1)) + "!", font, color) ;
 		}
-		else if (effect == 2)	// Miss
+		else if (effect.equals("Miss"))
 		{
 			DP.DrawText(new Point(Pos.x + dx, Pos.y - dh), "Center", OverallAngle, "Miss", font, color) ;		
 		}
-		else if (effect == 3)	// Block
+		else if (effect.equals("Block"))
 		{
 			DP.DrawText(new Point(Pos.x + dx, Pos.y - dh), "Center", OverallAngle, "Block", font, ColorPalette[5]) ;	
 		}

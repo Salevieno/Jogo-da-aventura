@@ -188,11 +188,12 @@ public class Animations
 	public void PlayerDamageAnimation(Object[] AniVars1, DrawFunctions DF)
 	{
 		Point TargetPos = (Point) AniVars1[1] ;
-		int[] TargetSize = (int[]) AniVars1[2] ;
-		int[] AtkResult = (int[]) AniVars1[3] ;
-		int AnimationStyle = (int) AniVars1[4] ;
-		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize[1] - 25) ;
-		DF.DrawDamageAnimation(Pos, AtkResult[0], AtkResult[1], Anicounter[1], Aniduration[1], AnimationStyle, Color.red) ;
+		Size TargetSize = (Size) AniVars1[2] ;
+		int damage = (int) AniVars1[3] ;
+		String effect = (String) AniVars1[4] ;
+		int AnimationStyle = (int) AniVars1[5] ;
+		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize.y - 25) ;
+		DF.DrawDamageAnimation(Pos, damage, effect, Anicounter[1], Aniduration[1], AnimationStyle, Color.red) ;
 	}
 	
 	public void PlayerPhyAtkAnimation(Object[] AniVars2, DrawFunctions DF)
@@ -231,10 +232,11 @@ public class Animations
 	{
 		Point TargetPos = (Point) AniVars5[1] ;
 		int[] TargetSize = (int[]) AniVars5[2] ;
-		int[] AtkResult = (int[]) AniVars5[3] ;
-		int AnimationStyle = (int) AniVars5[4] ;
+		int damage = (int) AniVars5[3] ;
+		String effect = (String) AniVars5[4] ;
+		int AnimationStyle = (int) AniVars5[5] ;
 		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize[1] - 50) ;
-		DF.DrawDamageAnimation(Pos, AtkResult[0], AtkResult[1], Anicounter[5], Aniduration[5], AnimationStyle, Color.red) ;
+		DF.DrawDamageAnimation(Pos, damage, effect, Anicounter[5], Aniduration[5], AnimationStyle, Color.red) ;
 	}
 	
 	public void PetPhyAtkAnimation(Object[] AniVars6, DrawFunctions DF)
@@ -265,10 +267,11 @@ public class Animations
 	{
 		Point TargetPos = (Point) AniVars8[1] ;
 		int[] TargetSize = (int[]) AniVars8[2] ;
-		int[] AtkResult = (int[]) AniVars8[3] ;
-		int AnimationStyle = (int) AniVars8[4] ;
+		int damage = (int) AniVars8[3] ;
+		String effect = (String) AniVars8[4] ;
+		int AnimationStyle = (int) AniVars8[5] ;
 		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize[1] - 50) ;
-		DF.DrawDamageAnimation(Pos, AtkResult[0], AtkResult[1], Anicounter[8], Aniduration[8], AnimationStyle, Color.red) ;
+		DF.DrawDamageAnimation(Pos, damage, effect, Anicounter[8], Aniduration[8], AnimationStyle, Color.red) ;
 	}
 	
 	public void CreaturePhyAtkAnimation(Object[] AniVars9, DrawFunctions DF)

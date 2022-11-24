@@ -137,7 +137,7 @@ public class LiveBeing
 		
 		if (style == 0)
 		{
-			Point Pos = new Point((int)(PA.getPos().x - PA.getSize()[0]/2), (int)(PA.getPos().y - PA.getSize()[1] - 5 * (1 + attRate.size()))) ;
+			Point Pos = new Point((int)(PA.getPos().x - PA.getSize().x / 2), (int)(PA.getPos().y - PA.getSize().y - 5 * (1 + attRate.size()))) ;
 			Size size = new Size((int)(0.05*screenSize.x), (int)(0.01*screenSize.y)) ;
 			int Sy = (int)(0.01*screenSize.y) ;
 			int barthick = 1 ;
