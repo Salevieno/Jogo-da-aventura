@@ -46,6 +46,7 @@ import LiveBeings.MovingAnimations;
 import LiveBeings.PersonalAttributes;
 import LiveBeings.Pet;
 import LiveBeings.Player;
+import LiveBeings.Spells;
 import Maps.CityMap;
 import Maps.FieldMap;
 import Maps.Maps;
@@ -272,11 +273,13 @@ public class Game extends JPanel implements ActionListener
 			int[][] BattleActions = new int[][] {{0, Integer.parseInt(Input.get(ct)[51]), 0}} ;
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
 						
-			int[] Skill = new int[] {Integer.parseInt(Input.get(ct)[4])} ;
+			Spells[] spell = new Spells[] {
+											new Spells("Spell " + Integer.parseInt(Input.get(ct)[4]), 5, 10, "Offensive", null, 100, -1, null, null, null, null, null, null, null, null, null, null, null, null, null, "n", new String[] {"Spell info"})
+										} ;
 			int[] Bag = new int[] {Integer.parseInt(Input.get(ct)[37]), Integer.parseInt(Input.get(ct)[38]), Integer.parseInt(Input.get(ct)[39]), Integer.parseInt(Input.get(ct)[40]), Integer.parseInt(Input.get(ct)[41]), Integer.parseInt(Input.get(ct)[42]), Integer.parseInt(Input.get(ct)[43]), Integer.parseInt(Input.get(ct)[44]), Integer.parseInt(Input.get(ct)[45]), Integer.parseInt(Input.get(ct)[46])} ;
 			int Gold = Integer.parseInt(Input.get(ct)[47]) ;
 			int[] StatusCounter = new int[8] ;
-			creatureTypes[ct] = new CreatureTypes(ct, moveAni, PA, BA, Skill, Bag, Gold, color[ct], StatusCounter) ;	
+			creatureTypes[ct] = new CreatureTypes(ct, moveAni, PA, BA, spell, Bag, Gold, color[ct], StatusCounter) ;	
 		}
 		return creatureTypes ;
     }
@@ -543,7 +546,7 @@ public class Game extends JPanel implements ActionListener
 		plusSignIcon = InitializeIcons(screen.getSize()) ;
 
 		// Initialize classes
-    	bat = new Battle(CSVPath, ImagesPath, player.getSpell(), pet.getSpells(), player.getSettings().getDamageAnimation(), music.getSoundEffect(), new int[] {player.getBattleAtt().getBattleActions()[0][1]/2, pet.getBattleAtt().getBattleActions()[0][1]/2}, ani) ;
+    	bat = new Battle(player.getSpell(), pet.getSpells(), music.getSoundEffect(), new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
 	}
   	
 	public void Opening()
@@ -743,7 +746,7 @@ public class Game extends JPanel implements ActionListener
 	{
 		sky.incDayTime();
 		player.IncActionCounters() ;
-		player.SupSkillCounters(creature, player.opponent) ;
+		player.SupSpellCounters(creature, player.opponent) ;
 		if (pet != null)
 		{
 			pet.IncActionCounters() ;
@@ -853,11 +856,11 @@ public class Game extends JPanel implements ActionListener
 		
 		// player acts
 		player.act(pet, allMaps, mousePos, SideBarIcons, ani, DF) ;
-		if (player.actionIsAMove() | 0 < player.getPersonalAtt().getCountmove())	// countmove becomes greater than 0 when the player moves, then starts to increase by 1 and returns to 0 when it reaches 20
+		if (player.actionIsAMove() | 0 < player.getPA().getCountmove())	// countmove becomes greater than 0 when the player moves, then starts to increase by 1 and returns to 0 when it reaches 20
 		{
 			player.move(pet, music.getMusicClip(), ani) ;
 		}
-		player.drawAttributes(0, DF.getDrawPrimitives()) ;
+		player.DrawAttributes(0, DF.getDrawPrimitives()) ;
 		player.display(player.getPos(), new float[] {1, 1}, player.getDir(), player.getSettings().getShowPlayerRange(), DF.getDrawPrimitives()) ;
 		if (player.weaponIsEquipped())	// if the player is equipped with a weapon
 		{
@@ -987,7 +990,7 @@ public class Game extends JPanel implements ActionListener
 		//creatureTypes[creature[player.CreatureInBattle].getType()].printAtt() ;
 		player.setPos(creature[player.CreatureInBattle].getPos()) ;
 		player.setPos(new int[] {player.getPos()[0] + 20, player.getPos()[1] + 15});
-		//player.getBattleAtt().setStun(new float[] {1, 0, 0, 0, 500});
+		//player.getBA().setStun(new float[] {1, 0, 0, 0, 500});
 		player.getEquips()[0] = 301 ;
 		player.getEquips()[1] = 302 ;
 		player.getEquips()[2] = 303 ;
@@ -1035,11 +1038,11 @@ public class Game extends JPanel implements ActionListener
     	pet = InitializePet() ;
     	pet.getPA().setLife(new float[] {100, 100, 0});
     	pet.getPA().setPos(player.getPos());
-    	bat = new Battle(CSVPath, ImagesPath, player.getSpell(), pet.getSpells(), player.getSettings().getDamageAnimation(), music.getSoundEffect(), new int[] {player.getBattleAtt().getBattleActions()[0][1]/2, pet.getBattleAtt().getBattleActions()[0][1]/2}, ani) ;
+    	bat = new Battle(player.getSpell(), pet.getSpells(), music.getSoundEffect(), new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
     	
     	
     	
-    	player.setMap(cityMaps[2]) ;
+    	player.setMap(fieldMaps[9]) ;
     	player.setPos(new Point(60, screen.getSize().y / 2)) ;
     	OpeningIsOn = false ;
     	InitializationIsOn = false ;

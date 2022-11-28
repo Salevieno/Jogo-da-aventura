@@ -464,7 +464,7 @@ public class DrawFunctions
 		
 		DP.DrawText(new Point((int)(0.5*screenSize.x), (int)(0.05*screenSize.y)), "Center", OverallAngle, "Slot " + (SlotID + 1), font, ColorPalette[5]) ;
 		//player.DrawAttWindow(MainWinDim, WindowPos[0], null, AllText, AllTextCat, 0, GoldCoinImage, icons, DP) ;
-		player.getAttWindow().display(player, allText, player.getEquips(), player.getEquipsBonus(), player.getAttPoints(), new Point(0, 0), player.getPersonalAtt(), player.getBattleAtt(), DP) ;
+		player.getAttWindow().display(player, allText, player.getEquips(), player.getEquipsBonus(), player.getAttPoints(), new Point(0, 0), player.getPA(), player.getBA(), DP) ;
 		if (0 < pet.getLife()[0])
 		{
  			DrawPetWindow(pet, WindowPos[0]) ;
@@ -1624,32 +1624,7 @@ public class DrawFunctions
 			DP.DrawText(new Point(Pos.x, Pos.y + 20), "BotLeft", OverallAngle, String.valueOf(Utg.Round(damage[1], 1)), font, ColorPalette[3]) ;
 		}
 	}*/
-	/*public void ShowEffectsAndStatusAnimation(Point Pos, int mirror, int[] offset, Image[] IconImages, int[] effect, boolean[] status)
-	{
-		// effect 0: Stun, 1: Block, 2: Blood, 3: Poison, 4: Silence
-		int Sy = (int)(1.1 * IconImages[0].getHeight(null)) ;
-		if (status[0])	// Defending
-		{
-			int ImageW = IconImages[0].getWidth(null) ;
-			Point ImagePos = new Point(Pos.x + mirror * (ImageW + offset[0]), Pos.y - offset[1]) ;
-			DP.DrawImage(IconImages[0], ImagePos, "Center") ;
-		}
-		if (0 < effect[0])	// Stun
-		{
-			Point ImagePos = new Point(Pos.x, Pos.y + mirror * offset[1]) ;
-			DP.DrawImage(IconImages[1], ImagePos, "Center") ;
-		}
-		for (int e = 1 ; e <= 4 - 1 ; e += 1)	// Block, blood, poison and silence
-		{
-			if (0 < effect[e])
-			{
-				int ImageW = IconImages[e + 1].getWidth(null) ;
-				Point ImagePos = new Point(Pos.x + mirror * (ImageW + offset[0]), Pos.y - offset[1] + Sy) ;
-				DP.DrawImage(IconImages[e + 1], ImagePos, "Center") ;
-				Sy += IconImages[e + 1].getHeight(null) + 2 ;
-			}
-		}
-	}	*/
+
 	
 	
 	/* Animations */
@@ -1719,11 +1694,11 @@ public class DrawFunctions
 	{
 		DP.DrawImage(TentImage, Pos, "Center") ;
 	}
-	public void AttackAnimation(Point PlayerPos, Point CreaturePos, int[] CreatureSize, int effect, String elem, int counter, int duration)
+	public void AttackAnimation(Point PlayerPos, Point CreaturePos, Size CreatureSize, int effect, String elem, int counter, int duration)
 	{
 		if (effect == 0)
 		{
-			Point Pos = new Point(CreaturePos.x - CreatureSize[0]/2, CreaturePos.y + CreatureSize[1]/2) ;
+			Point Pos = new Point(CreaturePos.x - CreatureSize.x / 2, CreaturePos.y + CreatureSize.y / 2) ;
 			DP.DrawLine(new int[] {Pos.x, Pos.x + counter*50/duration}, new int[] {Pos.y - 15, Pos.y - 15 - counter*50/duration}, 1, ColorPalette[9]) ;
 			DP.DrawLine(new int[] {Pos.x, Pos.x + counter*50/duration}, new int[] {Pos.y, Pos.y - counter*50/duration}, 1, ColorPalette[9]) ;
 			DP.DrawLine(new int[] {Pos.x, Pos.x + counter*50/duration}, new int[] {Pos.y + 15, Pos.y + 15 - counter*50/duration}, 1, ColorPalette[9]) ;

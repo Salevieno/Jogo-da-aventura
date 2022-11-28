@@ -21,7 +21,6 @@ public class Pet extends LiveBeing
 {
 	private Color color ;
 	private int Job ;
-	private Spells[] spell ;
 	private int spellPoints ;
 	private float[] ElemMult ;		// [Neutral, Water, Fire, Plant, Earth, Air, Thunder, Light, Dark, Snow]
 	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
@@ -207,8 +206,6 @@ public class Pet extends LiveBeing
 	public float[] getLife() {return PA.getLife() ;}
 	public float[] getMp() {return PA.getMp() ;}
 	public float getRange() {return PA.getRange() ;}
-	public PersonalAttributes getPersonalAtt() {return PA ;}
-	public BattleAttributes getBattleAtt() {return BA ;}
 	public float[] getPhyAtk() {return BA.getPhyAtk() ;}
 	public float[] getMagAtk() {return BA.getMagAtk() ;}
 	public float[] getPhyDef() {return BA.getPhyDef() ;}
@@ -305,7 +302,22 @@ public class Pet extends LiveBeing
 			PA.setPos(NextPos) ;
 		}
 	}
-
+	public boolean actionIsAnAtk()
+	{
+		if (PA.getCurrentAction().equals(Player.BattleKeys[0]))
+		{
+			return true ;
+		}
+		return false ;
+	}
+	public boolean actionIsASpell()
+	{
+		if (UtilG.ArrayContains(Player.SpellKeys, PA.getCurrentAction()))
+		{
+			return true ;
+		}
+		return false ;
+	}
 	public void ActivateActionCounters(boolean SomeAnimationIsOn)
 	{
 		if (PA.Actions[1][0] % PA.Actions[1][1] == 0)
@@ -346,42 +358,13 @@ public class Pet extends LiveBeing
 		float PoisonDamage = 0 ;
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
-			BloodDamage = Math.max(creature.getBattleAtt().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
+			BloodDamage = Math.max(creature.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
 		}
 		if (0 < BA.getSpecialStatus()[3])	// Poison
 		{
-			PoisonDamage = Math.max(creature.getBattleAtt().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
+			PoisonDamage = Math.max(creature.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
 		}
 		PA.getLife()[0] += -BloodDamage - PoisonDamage ;
-	}
-	public void train(Object[] PetAtkResult)
-	{
-		int effect = (int) PetAtkResult[1] ;
-		String atkType = (String) PetAtkResult[3] ;
-		if (atkType.equals("Physical"))	// Physical atk
-		{
-			getPhyAtk()[2] += 0.025 / (getPhyAtk()[2] + 1) ;					
-		}
-		if (effect == 1)	// crit
-		{
-			if (getJob() == 2)
-			{
-				getCrit()[1] += 0.000212*0.025 / (getCrit()[1] + 1) ;	// 100% after 10,000 hits starting from 0.12
-			}
-		}
-		if (effect <= 1)	// hit
-		{
-			getDex()[2] += 0.025 / (getDex()[2] + 1) ;
-		}
-		if (atkType.equals("Spell"))
-		{
-			getMagAtk()[2] += 0.025 / (getMagAtk()[2] + 1) ;
-		}
-		if (atkType.equals("Defense"))
-		{
-			getPhyDef()[2] += 0.025 / (getPhyDef()[2] + 1) ;
-			getMagDef()[2] += 0.025 / (getMagDef()[2] + 1) ;
-		}
 	}
 	public void Win(Creatures creature)
 	{
@@ -463,9 +446,9 @@ public class Pet extends LiveBeing
 			bW.write("\nPet step: \n" + getStep()) ;
 			bW.write("\nPet satiation: \n" + Arrays.toString(getSatiation())) ;
 			bW.write("\nPet exp: \n" + Arrays.toString(getExp())) ;
-			bW.write("\nPet status: \n" + Arrays.toString(getBattleAtt().getSpecialStatus())) ; 
+			bW.write("\nPet status: \n" + Arrays.toString(getBA().getSpecialStatus())) ; 
 			bW.write("\nPet actions: \n" + Arrays.deepToString(getActions())) ; 
-			bW.write("\nPet battle actions: \n" + Arrays.deepToString(getBattleAtt().getBattleActions())) ; 
+			bW.write("\nPet battle actions: \n" + Arrays.deepToString(getBA().getBattleActions())) ; 
 			bW.write("\nPet status counter: \n" + Arrays.toString(getStatusCounter())) ;
 		}
 		catch (IOException e)

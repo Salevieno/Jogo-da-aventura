@@ -21,7 +21,6 @@ public class Creatures extends LiveBeing
 {
 	private CreatureTypes type ;
 	private int Map ;
-	private int[] Skill ;
 	private int[] Bag ;
 	private int Gold ;
 	private Color color ;
@@ -36,9 +35,9 @@ public class Creatures extends LiveBeing
  	public Creatures(CreatureTypes CT)
 	{
  		// int Type, Image image, Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif, int Map, int[] Size, int[] Skill, PersonalAttributes PA, BattleAttributes BA, int[] Bag, int Gold, Color color, int[] StatusCounter, String[] Combo
-		super(CT.getID(), CT.getPersonalAtt(), CT.getBattleAtt(), CT.getMovingAnimations(), new AttributesWindow()) ;
+		super(CT.getID(), CT.getPA(), CT.getBA(), CT.getMovingAnimations(), new AttributesWindow()) ;
 		this.type = CT ;
-		this.Skill = CT.getSkill() ;
+		spell = CT.getSkill() ;
 		this.Bag = CT.getBag() ;
 		this.Gold = CT.getGold() ;
 		this.color = CT.getColor() ;
@@ -50,9 +49,9 @@ public class Creatures extends LiveBeing
 		PA.setPos(initialPos) ;
 		
 
-		if (getName().equals("Dragï¿½o") | getName().equals("Dragon"))
+		if (getName().equals("Dragão") | getName().equals("Dragon"))
 		{
-			getPersonalAtt().setPos(Game.getScreen().getCenter()) ;
+			getPA().setPos(Game.getScreen().getCenter()) ;
 		}
 		
 		Follow = false ;
@@ -64,12 +63,10 @@ public class Creatures extends LiveBeing
 	public int getMap() {return Map ;}
 	public Size getSize() {return PA.getSize() ;}
 	public Point getPos() {return PA.getPos() ;}
-	public int[] getSkill() {return Skill ;}
+	public Spells[] getSkill() {return spell ;}
 	public float[] getLife() {return PA.getLife() ;}
 	public float[] getMp() {return PA.getMp() ;}
 	public float getRange() {return PA.getRange() ;}
-	public PersonalAttributes getPersonalAtt() {return PA ;}
-	public BattleAttributes getBattleAtt() {return BA ;}
 	public float[] getPhyAtk() {return BA.getPhyAtk() ;}
 	public float[] getMagAtk() {return BA.getMagAtk() ;}
 	public float[] getPhyDef() {return BA.getPhyDef() ;}
@@ -135,7 +132,7 @@ public class Creatures extends LiveBeing
 			}
 		}
 		DP.DrawText(getPos(), "Center", 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
-		drawAttributes(0, DP) ;
+		DrawAttributes(0, DP) ;
 	}
 	
 
@@ -179,12 +176,12 @@ public class Creatures extends LiveBeing
 	public void act(Point playerPos, Maps map)
 	{
 		Think() ;	
-		if (getPersonalAtt().getThought().equals("Move"))
+		if (getPA().getThought().equals("Move"))
 		{
 			Move(playerPos, getFollow(), map) ;
 			if (countmove % 5 == 0)
 			{
-				getPersonalAtt().setdir(getPersonalAtt().randomDir()) ;	// set random direction
+				getPA().setdir(getPA().randomDir()) ;	// set random direction
 			}
 			if (getActions()[0][2] == 1)	// If the creature can move
 			{
@@ -223,7 +220,7 @@ public class Creatures extends LiveBeing
 		String effect = "" ;
 		int damage = -1 ;
 		float randomAmp = (float) 0.1 ;
-		BattleAttributes playerBA = player.getBattleAtt() ;
+		BattleAttributes playerBA = player.getBA() ;
 		
 		if (skillID == 0)	// magical atk
 		{
@@ -439,11 +436,11 @@ public class Creatures extends LiveBeing
 		float PoisonDamage = 0 ;
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
-			BloodDamage = Math.max(player.getBattleAtt().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
+			BloodDamage = Math.max(player.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
 		}
 		if (0 < BA.getSpecialStatus()[3])	// Poison
 		{
-			PoisonDamage = Math.max(player.getBattleAtt().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
+			PoisonDamage = Math.max(player.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
 		}
 		PA.getLife()[0] += -BloodDamage - PoisonDamage ;
 		if (0 < BloodDamage)
@@ -469,11 +466,11 @@ public class Creatures extends LiveBeing
 		float PoisonDamage = 0 ;
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
-			BloodDamage = Math.max(pet.getBattleAtt().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
+			BloodDamage = Math.max(pet.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
 		}
 		if (0 < BA.getSpecialStatus()[3])	// Poison
 		{
-			PoisonDamage = Math.max(pet.getBattleAtt().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
+			PoisonDamage = Math.max(pet.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
 		}
 		PA.getLife()[0] += -BloodDamage - PoisonDamage ;
 	}
@@ -491,15 +488,6 @@ public class Creatures extends LiveBeing
 				PA.setThought("Exist") ;
 			}
 		}
-	}
-
-	
-	@Override
-	public String toString() {
-		return "Creatures [type=" + type + ", Map=" + Map + ", Size=" + PA.getSize() + ", Skill="
-				+ Arrays.toString(Skill) + ", Bag=" + Arrays.toString(Bag) + ", Gold=" + Gold + ", color=" + color
-				+ ", StatusCounter=" + Arrays.toString(StatusCounter) + ", Combo=" + Arrays.toString(Combo)
-				+ ", Follow=" + Follow + ", countmove=" + countmove + "]";
 	}
 
 	

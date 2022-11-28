@@ -27,7 +27,7 @@ public class AttributesWindow extends Window
 	Icon[] addAttIcon ;
 	public AttributesWindow()
 	{
-		super(null, 0, 0, 0, 0) ;
+		super(null, 0, 3, 0, 0) ;
 		Image PlusSignImage = new ImageIcon(Game.ImagesPath + "PlusSign.png").getImage() ;
 		Image SelectedPlusSignImage = new ImageIcon(Game.ImagesPath + "ShiningPlusSign.png").getImage() ;
 		addAttIcon = new Icon[7] ;
@@ -249,7 +249,76 @@ public class AttributesWindow extends Window
 		}
 		else if (tab == 1)
 		{
-			//DF.DrawSpecialAttributesWindow(AllText, AllTextCat, WindowPos, L, H, DP) ;
+			int SpecialAttrPropCat = AllTextCat[8], AttrCat = AllTextCat[6] ;	
+			Font font = new Font("SansSerif", Font.BOLD, 13) ;
+			int Linewidth = 2 ;
+			int L = size.x, H = size.y ;
+			float sx = (float)0.15*L, sy = (float)(1.8*Utg.TextH(font.getSize())) ;
+			Color TextColor = ColorPalette[5], LineColor = ColorPalette[9] ;
+			Color[] AttributeColor = new Color[] {ColorPalette[5], ColorPalette[5], ColorPalette[6], ColorPalette[3], ColorPalette[9]} ;
+			DP.DrawRoundRect(Pos, "BotLeft", size, 1, ColorPalette[0], ColorPalette[7], true) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.025*L), WindowPos.x + (int)(0.025*L)}, new int[] {(int)(WindowPos.y - H + 0.5*sy), (int)(WindowPos.y - H + 8.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.375*L), WindowPos.x + (int)(0.375*L)}, new int[] {(int)(WindowPos.y - H + 0.5*sy), (int)(WindowPos.y - H + 3.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.975*L), WindowPos.x + (int)(0.975*L)}, new int[] {(int)(WindowPos.y - H + 0.5*sy), (int)(WindowPos.y - H + 8.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.025*L), WindowPos.x + (int)(0.975*L)}, new int[] {(int)(WindowPos.y - H + 0.5*sy), (int)(WindowPos.y - H + 0.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.025*L), WindowPos.x + (int)(0.975*L)}, new int[] {(int)(WindowPos.y - H + 8.5*sy), (int)(WindowPos.y - H + 8.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.025*L), WindowPos.x + (int)(0.975*L)}, new int[] {(int)(WindowPos.y - H + 1.5*sy), (int)(WindowPos.y - H + 1.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.025*L), WindowPos.x + (int)(0.975*L)}, new int[] {(int)(WindowPos.y - H + 2.5*sy), (int)(WindowPos.y - H + 2.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.375*L + 2*sx), WindowPos.x + (int)(0.375*L + 2*sx)}, new int[] {(int)(WindowPos.y - H + 1.5*sy), (int)(WindowPos.y - H + 2.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawText(new Point(WindowPos.x + (int)(0.65*L), (int)(WindowPos.y - H + sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][1], font, TextColor) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.375*L + sx), (int)(WindowPos.y - H + 2*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][2], font, TextColor) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.375*L + 3*sx), (int)(WindowPos.y - H + 2*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][3], font, TextColor) ;
+			DP.DrawText(new Point(WindowPos.x + (int)(0.45*L), (int)(WindowPos.y - H + 3*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][4], font, TextColor) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + sx), (int)(WindowPos.y - H + 3*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][5], font, TextColor) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + 2*sx), (int)(WindowPos.y - H + 3*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][4], font, TextColor) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + 3*sx), (int)(WindowPos.y - H + 3*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][5], font, TextColor) ;	
+			for (int i = 0 ; i <= 4 ; ++i)
+			{
+				DP.DrawLine(new int[] {WindowPos.x + (int)(0.025*L), WindowPos.x + (int)(0.975*L)}, new int[] {(int)(WindowPos.y - H + (i + 3.5)*sy), (int)(WindowPos.y - H + (i + 3.5)*sy)}, Linewidth, LineColor) ;
+				DP.DrawText(new Point(WindowPos.x + (int)(0.2*L), (int)(WindowPos.y - H + (i + 4)*sy)), "Center", OverallAngle, AllText[AttrCat][i + 11], font, AttributeColor[i]) ;	
+			}
+			for (int i = 0 ; i <= 3 ; ++i)
+			{
+				DP.DrawLine(new int[] {WindowPos.x + (int)(0.375*L + i*sx), WindowPos.x + (int)(0.375*L + i*sx)}, new int[] {(int)(WindowPos.y - H + 2*sy + sy/2), (int)(WindowPos.y - H + 8*sy + sy/2)}, Linewidth, LineColor) ;
+				DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + i*sx), (int)(WindowPos.y - H + 4*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(Stun[i], 2)), font, AttributeColor[0]) ;	
+				DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + i*sx), (int)(WindowPos.y - H + 5*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(Block[i], 2)), font, AttributeColor[1]) ;	
+				DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + i*sx), (int)(WindowPos.y - H + 6*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(Blood[i], 2)), font, AttributeColor[2]) ;	
+				DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + i*sx), (int)(WindowPos.y - H + 7*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(Poison[i], 2)), font, AttributeColor[3]) ;	
+				DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + i*sx), (int)(WindowPos.y - H + 8*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(Silence[i], 2)), font, AttributeColor[4]) ;				
+			}
+			
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.025*L), WindowPos.x + (int)(0.025*L)}, new int[] {(int)(WindowPos.y - H + 9.5*sy), (int)(WindowPos.y - H + 14.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.375*L), WindowPos.x + (int)(0.375*L)}, new int[] {(int)(WindowPos.y - H + 9.5*sy), (int)(WindowPos.y - H + 12.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.975*L), WindowPos.x + (int)(0.975*L)}, new int[] {(int)(WindowPos.y - H + 9.5*sy), (int)(WindowPos.y - H + 14.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.025*L), WindowPos.x + (int)(0.975*L)}, new int[] {(int)(WindowPos.y - H + 9.5*sy), (int)(WindowPos.y - H + 9.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.025*L), WindowPos.x + (int)(0.975*L)}, new int[] {(int)(WindowPos.y - H + 14.5*sy), (int)(WindowPos.y - H + 14.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.025*L), WindowPos.x + (int)(0.975*L)}, new int[] {(int)(WindowPos.y - H + 10.5*sy), (int)(WindowPos.y - H + 10.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.025*L), WindowPos.x + (int)(0.975*L)}, new int[] {(int)(WindowPos.y - H + 11.5*sy), (int)(WindowPos.y - H + 11.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawLine(new int[] {WindowPos.x + (int)(0.375*L + 2*sx), WindowPos.x + (int)(0.375*L + 2*sx)}, new int[] {(int)(WindowPos.y - H + 10.5*sy), (int)(WindowPos.y - H + 12.5*sy)}, Linewidth, LineColor) ;
+			DP.DrawText(new Point(WindowPos.x + (int)(0.65*L), (int)(WindowPos.y - H + 10*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][6], font, TextColor) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.375*L + sx), (int)(WindowPos.y - H + 11*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][2], font, TextColor) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.375*L + 3*sx), (int)(WindowPos.y - H + 11*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][3], font, TextColor) ;
+			DP.DrawText(new Point(WindowPos.x + (int)(0.45*L), (int)(WindowPos.y - H + 12*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][4], font, TextColor) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + sx), (int)(WindowPos.y - H + 12*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][5], font, TextColor) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + 2*sx), (int)(WindowPos.y - H + 12*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][4], font, TextColor) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + 3*sx), (int)(WindowPos.y - H + 12*sy)), "Center", OverallAngle, AllText[SpecialAttrPropCat][5], font, TextColor) ;	
+			for (int i = 0 ; i <= 1 ; ++i)
+			{
+				DP.DrawLine(new int[] {WindowPos.x + (int)(0.025*L), WindowPos.x + (int)(0.975*L)}, new int[] {(int)(WindowPos.y - H + (i + 12.5)*sy), (int)(WindowPos.y - H + (i + 12.5)*sy)}, Linewidth, LineColor) ;
+				DP.DrawText(new Point(WindowPos.x + (int)(0.2*L), (int)(WindowPos.y - H + (i + 13)*sy)), "Center", OverallAngle, AllText[AttrCat][i + 13], font, AttributeColor[i + 2]) ;	
+			}
+			for (int i = 0 ; i <= 3 ; ++i)
+			{
+				DP.DrawLine(new int[] {WindowPos.x + (int)(0.375*L + i*sx), WindowPos.x + (int)(0.375*L + i*sx)}, new int[] {(int)(WindowPos.y - H + 11.5*sy), (int)(WindowPos.y - H + 14.5*sy)}, Linewidth, LineColor) ;
+				DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + i*sx), (int)(WindowPos.y - H + 13*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(Blood[i + 4], 2)), font, AttributeColor[2]) ;	
+				DP.DrawText(new Point(WindowPos.x + (int)(0.45*L + i*sx), (int)(WindowPos.y - H + 14*sy)), "Center", OverallAngle, String.valueOf(Utg.Round(Poison[i + 4], 2)), font, AttributeColor[3]) ;	
+			}
+			
+			DP.DrawText(new Point(WindowPos.x + (int)(0.025*L), (int)(WindowPos.y - H + 16*sy)), "BotLeft", OverallAngle, AllText[AttrCat][11] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(Stun[4], 2), font, AttributeColor[0]) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.025*L), (int)(WindowPos.y - H + 17*sy)), "BotLeft", OverallAngle, AllText[AttrCat][12] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(Block[4], 2), font, AttributeColor[1]) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.025*L), (int)(WindowPos.y - H + 18*sy)), "BotLeft", OverallAngle, AllText[AttrCat][13] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(Blood[8], 2), font, AttributeColor[2]) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.025*L), (int)(WindowPos.y - H + 19*sy)), "BotLeft", OverallAngle, AllText[AttrCat][14] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(Poison[8], 2), font, AttributeColor[3]) ;	
+			DP.DrawText(new Point(WindowPos.x + (int)(0.025*L), (int)(WindowPos.y - H + 20*sy)), "BotLeft", OverallAngle, AllText[AttrCat][15] + " " + AllText[SpecialAttrPropCat][7] + " = " + Utg.Round(Silence[4], 2), font, AttributeColor[4]) ;	
 		}
 		else if (tab == 2)
 		{

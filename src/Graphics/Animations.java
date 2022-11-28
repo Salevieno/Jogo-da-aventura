@@ -189,9 +189,9 @@ public class Animations
 	{
 		Point TargetPos = (Point) AniVars1[1] ;
 		Size TargetSize = (Size) AniVars1[2] ;
-		int damage = (int) AniVars1[3] ;
-		String effect = (String) AniVars1[4] ;
-		int AnimationStyle = (int) AniVars1[5] ;
+		int damage = (int)((Object[]) AniVars1[3])[0] ;
+		String effect = (String)((Object[]) AniVars1[3])[1] ;
+		int AnimationStyle = (int) AniVars1[4] ;
 		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize.y - 25) ;
 		DF.DrawDamageAnimation(Pos, damage, effect, Anicounter[1], Aniduration[1], AnimationStyle, Color.red) ;
 	}
@@ -200,7 +200,7 @@ public class Animations
 	{
 		Point AtkPos = (Point) AniVars2[1] ;
 		Point TargetPos = (Point) AniVars2[2] ;
-		int[] TargetSize = (int[]) AniVars2[3] ;
+		Size TargetSize = (Size) AniVars2[3] ;
 		DF.AttackAnimation(AtkPos, TargetPos, TargetSize, 0, null, Anicounter[2], Aniduration[2]) ;
 	}
 	
@@ -209,12 +209,12 @@ public class Animations
 		boolean ShowSpellName = (boolean) AniVars3[1] ;
 		Point AttackerPos = (Point) AniVars3[2] ;
 		Point TargetPos = (Point) AniVars3[3] ;
-		int[] AttackerSize = (int[]) AniVars3[4] ;
-		int[] TargetSize = (int[]) AniVars3[5] ;
+		Size AttackerSize = (Size) AniVars3[4] ;
+		Size TargetSize = (Size) AniVars3[5] ;
 		Spells skills = (Spells) AniVars3[6] ;
 		if (ShowSpellName)	// Spell name animation
 		{
-			Point Pos = new Point(AttackerPos.x, AttackerPos.y - AttackerSize[1] / 2 - 50) ;
+			Point Pos = new Point(AttackerPos.x, AttackerPos.y - AttackerSize.y / 2 - 50) ;
 			DF.DrawSkillNameAnimation(Pos, skills.getName(), Color.blue) ;	
 		}
 		DF.AttackAnimation(AttackerPos, TargetPos, TargetSize, 1, skills.getElem(), Anicounter[3], Aniduration[3]) ;
@@ -224,7 +224,7 @@ public class Animations
 	{
 		Point AtkPos = (Point) AniVars4[1] ;
 		Point DefPos = (Point) AniVars4[2] ;
-		int[] DefSize = (int[]) AniVars4[3] ;
+		Size DefSize = (Size) AniVars4[3] ;
 		DF.AttackAnimation(AtkPos, DefPos, DefSize, 2, null, Anicounter[4], Aniduration[4]) ;
 	}
 
@@ -243,7 +243,7 @@ public class Animations
 	{
 		Point AtkPos = (Point) AniVars6[1] ;
 		Point TargetPos = (Point) AniVars6[2] ;
-		int[] TargetSize = (int[]) AniVars6[3] ;
+		Size TargetSize = (Size) AniVars6[3] ;
 		DF.AttackAnimation(AtkPos, TargetPos, TargetSize, 0, null, Anicounter[6], Aniduration[6]) ;
 	}
 	
@@ -252,12 +252,12 @@ public class Animations
 		boolean ShowSpellName = (boolean) AniVars7[1] ;
 		Point AttackerPos = (Point) AniVars7[2] ;
 		Point TargetPos = (Point) AniVars7[3] ;
-		int[] AttackerSize = (int[]) AniVars7[4] ;
-		int[] TargetSize = (int[]) AniVars7[5] ;
+		Size AttackerSize = (Size) AniVars7[4] ;
+		Size TargetSize = (Size) AniVars7[5] ;
 		Spells skills = (Spells) AniVars7[6] ;
 		if (ShowSpellName)	// Skill name animation
 		{
-			Point Pos = new Point(AttackerPos.x, AttackerPos.y - AttackerSize[1] - 50) ;
+			Point Pos = new Point(AttackerPos.x, AttackerPos.y - AttackerSize.y - 50) ;
 			DF.DrawSkillNameAnimation(Pos, skills.getName(), Color.blue) ;	
 		}
 		DF.AttackAnimation(AttackerPos, TargetPos, TargetSize, 1, skills.getElem(), Anicounter[7], Aniduration[7]) ;
@@ -278,7 +278,7 @@ public class Animations
 	{
 		Point AtkPos = (Point) AniVars9[1] ;
 		Point TargetPos = (Point) AniVars9[2] ;
-		int[] TargetSize = (int[]) AniVars9[3] ;
+		Size TargetSize = (Size) AniVars9[3] ;
 		DF.AttackAnimation(AtkPos, TargetPos, TargetSize, 0, null, Anicounter[9], Aniduration[9]) ;
 	}
 	

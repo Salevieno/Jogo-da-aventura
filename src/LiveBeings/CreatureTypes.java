@@ -13,7 +13,7 @@ public class CreatureTypes
 	protected MovingAnimations movingAni ;
 	protected PersonalAttributes PA ;
 	protected BattleAttributes BA ;
-	private int[] Skill ;
+	private Spells[] spell ;
 	private int[] Bag ;
 	private int Gold ;
 	private Color color ;
@@ -21,13 +21,13 @@ public class CreatureTypes
 	
 	private static int NumberOfCreatureTypes ;
 	
-	public CreatureTypes(int Type, MovingAnimations movingAni, PersonalAttributes PA, BattleAttributes BA, int[] Skill, int[] Bag, int Gold, Color color, int[] StatusCounter)
+	public CreatureTypes(int Type, MovingAnimations movingAni, PersonalAttributes PA, BattleAttributes BA, Spells[] spell, int[] Bag, int Gold, Color color, int[] StatusCounter)
 	{
 		this.Type = Type ;
 		this.movingAni = movingAni ;
 		this.PA = PA ;
 		this.BA = BA ;
-		this.Skill = Skill ;
+		this.spell = spell ;
 		this.Bag = Bag ;
 		this.Gold = Gold ;
 		this.color = color ;
@@ -36,15 +36,15 @@ public class CreatureTypes
 
 	public int getID() {return Type ;}
 	public MovingAnimations getMovingAnimations() {return movingAni ;}
-	public PersonalAttributes getPersonalAtt() {return PA ;}
-	public BattleAttributes getBattleAtt() {return BA ;}
-	public int[] getSkill() {return Skill ;}
+	public PersonalAttributes getPA() {return PA ;}
+	public BattleAttributes getBA() {return BA ;}
+	public Spells[] getSkill() {return spell ;}
 	public int[] getBag() {return Bag ;}
 	public int getGold() {return Gold ;}
 	public Color getColor() {return color ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public void setID(int I) {Type = I ;}
-	public void setSkill(int[] S) {Skill = S ;}
+	public void setSkill(Spells[] S) {spell = S ;}
 	public void setBag(int[] B) {Bag = B ;}
 	public void setGold(int G) {Gold = G ;}
 	public void setColor(Color C) {color = C ;}
@@ -70,7 +70,7 @@ public class CreatureTypes
 	@Override
 	public String toString() {
 		return "CreatureTypes [Type=" + Type + ", movingAni=" + movingAni + ", PA=" + PA + ", BA=" + BA + ", Skill="
-				+ Arrays.toString(Skill) + ", Bag=" + Arrays.toString(Bag) + ", Gold=" + Gold + ", color=" + color
+				+ Arrays.toString(spell) + ", Bag=" + Arrays.toString(Bag) + ", Gold=" + Gold + ", color=" + color
 				+ ", StatusCounter=" + Arrays.toString(StatusCounter) + "]";
 	}
 }

@@ -104,9 +104,9 @@ public class UtilS
 		return false ;
 	}
 	
-	/*public static String RelPos(int[] RefPos, int[] Pos2)
+	public static String RelPos(Point RefPos, Point Pos2)
 	{
-		if (Pos2[0] < RefPos[0])
+		if (Pos2.x < RefPos.x)
 		{
 			return "Right" ;
 		}
@@ -114,7 +114,7 @@ public class UtilS
 		{
 			return "Left" ;
 		}
-	}*/
+	}
 	
 	public static int MirrorFromRelPos(String relPos)
 	{
@@ -893,34 +893,34 @@ public class UtilS
 						creature.getActions()[j][0] += 1 ;
 					}
 				}
-				for (int j = 0 ; j <= player.getBattleAtt().getBattleActions().length - 1 ; ++j)
+				for (int j = 0 ; j <= player.getBA().getBattleActions().length - 1 ; ++j)
 				{
-					if(player.getBattleAtt().getBattleActions()[j][0] < player.getBattleAtt().getBattleActions()[j][1])
+					if(player.getBA().getBattleActions()[j][0] < player.getBA().getBattleActions()[j][1])
 					{
-						player.getBattleAtt().getBattleActions()[j][0] += 1 ;
+						player.getBA().getBattleActions()[j][0] += 1 ;
 					}	
 				}
-				for (int j = 0 ; j <= pet.getBattleAtt().getBattleActions().length - 1 ; ++j)
+				for (int j = 0 ; j <= pet.getBA().getBattleActions().length - 1 ; ++j)
 				{
-					if(pet.getBattleAtt().getBattleActions()[j][0] < pet.getBattleAtt().getBattleActions()[j][1])
+					if(pet.getBA().getBattleActions()[j][0] < pet.getBA().getBattleActions()[j][1])
 					{
-						pet.getBattleAtt().getBattleActions()[j][0] += 1 ;
+						pet.getBA().getBattleActions()[j][0] += 1 ;
 					}	
 				}
-				for (int j = 0 ; j <= creature.getBattleAtt().getBattleActions().length - 1 ; ++j)
+				for (int j = 0 ; j <= creature.getBA().getBattleActions().length - 1 ; ++j)
 				{
-					if(creature.getBattleAtt().getBattleActions()[j][0] < creature.getBattleAtt().getBattleActions()[j][1])
+					if(creature.getBA().getBattleActions()[j][0] < creature.getBA().getBattleActions()[j][1])
 					{
-						creature.getBattleAtt().getBattleActions()[j][0] += 1 ;
+						creature.getBA().getBattleActions()[j][0] += 1 ;
 					}	
 				}
-				if (player.getBattleAtt().getBattleActions()[0][0] % player.getBattleAtt().getBattleActions()[0][1] == 0)
+				if (player.getBA().getBattleActions()[0][0] % player.getBA().getBattleActions()[0][1] == 0)
 				{
-					player.getBattleAtt().getBattleActions()[0][2] = 1 ;	// Player can atk
+					player.getBA().getBattleActions()[0][2] = 1 ;	// Player can atk
 				}
-				if (0 < pet.getLife()[0] & pet.getBattleAtt().getBattleActions()[0][0] % pet.getBattleAtt().getBattleActions()[0][1] == 0)
+				if (0 < pet.getLife()[0] & pet.getBA().getBattleActions()[0][0] % pet.getBA().getBattleActions()[0][1] == 0)
 				{
-					pet.getBattleAtt().getBattleActions()[0][2] = 1 ;		// pet can atk
+					pet.getBA().getBattleActions()[0][2] = 1 ;		// pet can atk
 				}
 				if (player.getActions()[2][0] % player.getActions()[2][1] == 0)	// Player heals mp
 				{
@@ -932,11 +932,11 @@ public class UtilS
 					pet.getMp()[0] = (float)(Math.min(pet.getMp()[0] + 0.02*pet.getMp()[1], pet.getMp()[1])) ;	
 					pet.getActions()[2][0] = 0 ;
 				}
-				for (int j = 0 ; j <= creature.getBattleAtt().getBattleActions().length - 1 ; ++j)
+				for (int j = 0 ; j <= creature.getBA().getBattleActions().length - 1 ; ++j)
 				{
-					if (creature.getBattleAtt().getBattleActions()[j][0] % creature.getBattleAtt().getBattleActions()[j][1] == 0)
+					if (creature.getBA().getBattleActions()[j][0] % creature.getBA().getBattleActions()[j][1] == 0)
 					{
-						creature.getBattleAtt().getBattleActions()[j][2] = 1 ;	// Creature can atk
+						creature.getBA().getBattleActions()[j][2] = 1 ;	// Creature can atk
 					}	
 					if (creature.getActions()[1][0] % creature.getActions()[1][1] == 0)
 					{
@@ -944,7 +944,7 @@ public class UtilS
 						creature.getActions()[1][0] = 0 ;
 					}	
 				}	
-				if (0 < player.getLife()[0] & 0 < player.getBattleAtt().getBattleActions()[0][2])
+				if (0 < player.getLife()[0] & 0 < player.getBA().getBattleActions()[0][2])
 				{				
 					move = (int)(3*Math.random() - 0.01) ;
 					if (move == 0)
@@ -963,7 +963,7 @@ public class UtilS
 						NumberOfPlayerMagAtks += 1 ;
 					}
 				}
-				if (0 < pet.getLife()[0] & 0 < pet.getBattleAtt().getBattleActions()[0][2])
+				if (0 < pet.getLife()[0] & 0 < pet.getBA().getBattleActions()[0][2])
 				{
 					move = (int)(3*Math.random() - 0.01) ;
 					if (move == 0)

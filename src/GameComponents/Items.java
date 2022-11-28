@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon ;
 
+import Main.Game;
 import Utilities.UtilG;
 
 public class Items
@@ -32,8 +33,19 @@ public class Items
 	public static int[] ItemsWithEffects ;
 	public static String[] ItemsTargets, ItemsElement ;
 	public static float[][][] ItemsEffects ;
-	public static float[][][] ItemsBuffs ;	 
-	public static Image[] EquipImage, EquipGif ;
+	public static float[][][] ItemsBuffs ;	
+
+	// Equip images
+	private static Image Sword = new ImageIcon(Game.ImagesPath + "Eq0_Sword.png").getImage() ;
+	private static Image Staff = new ImageIcon(Game.ImagesPath + "Eq1_Staff.png").getImage() ;
+	private static Image Bow = new ImageIcon(Game.ImagesPath + "Eq2_Bow.png").getImage() ;
+	private static Image Claws = new ImageIcon(Game.ImagesPath + "Eq3_Claws.png").getImage() ;
+	private static Image Dagger = new ImageIcon(Game.ImagesPath + "Eq4_Dagger.png").getImage() ;
+	private static Image Shield = new ImageIcon(Game.ImagesPath + "Eq5_Shield.png").getImage() ;
+	private static Image Armor = new ImageIcon(Game.ImagesPath + "Eq6_Armor.png").getImage() ;
+	private static Image Arrow = new ImageIcon(Game.ImagesPath + "Eq7_Arrow.png").getImage() ;
+	public static Image[] EquipImage = new Image[] {Sword, Staff, Bow, Claws, Dagger, Shield, Armor, Arrow} ; 
+	public static Image[] EquipGif ;
 	
 	public Items(int ID, String Name, Image image, int Price, float DropChance, float[][] Buffs, String Description, String Type)
 	{
@@ -44,7 +56,7 @@ public class Items
 		this.DropChance = DropChance ;
 		this.Buffs = Buffs ;
 		this.Description = Description ;
-		this.Type = Type ;
+		this.Type = Type ;		
 	}
 	
 	
@@ -195,16 +207,6 @@ public class Items
 
 	public static void InitializeStaticVars(String ImagesPath)
 	{		
-		// Equip images
-		Image Sword = new ImageIcon(ImagesPath + "Eq0_Sword.png").getImage() ;
-		Image Staff = new ImageIcon(ImagesPath + "Eq1_Staff.png").getImage() ;
-		Image Bow = new ImageIcon(ImagesPath + "Eq2_Bow.png").getImage() ;
-		Image Claws = new ImageIcon(ImagesPath + "Eq3_Claws.png").getImage() ;
-		Image Dagger = new ImageIcon(ImagesPath + "Eq4_Dagger.png").getImage() ;
-		Image Shield = new ImageIcon(ImagesPath + "Eq5_Shield.png").getImage() ;
-		Image Armor = new ImageIcon(ImagesPath + "Eq6_Armor.png").getImage() ;
-		Image Arrow = new ImageIcon(ImagesPath + "Eq7_Arrow.png").getImage() ;
-		EquipImage = new Image[] {Sword, Staff, Bow, Claws, Dagger, Shield, Armor, Arrow} ;
 		
 		// Equip gifs
 		/*Image SwordGif = new ImageIcon(ImagesPath + "Eq0_Sword.gif").getImage() ;
