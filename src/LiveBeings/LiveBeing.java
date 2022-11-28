@@ -11,7 +11,7 @@ import Graphics.DrawPrimitives;
 import Main.Game;
 import Utilities.Size;
 import Utilities.UtilS;
-import Windows.AttributesWindow;
+import Windows.PlayerAttributesWindow;
 
 public class LiveBeing
 {
@@ -20,11 +20,11 @@ public class LiveBeing
 	protected PersonalAttributes PA ;		// Personal attributes
 	protected BattleAttributes BA ;			// Battle attributes
 	protected MovingAnimations movingAni ;	// Moving animations
-	protected AttributesWindow attWindow ;	// Attributes window
+	protected PlayerAttributesWindow attWindow ;	// Attributes window
 	
 	public static Image[] StatusImages ;	// 0: Shield, 1: Stun, 2: Block, 3: Blood, 4: Poison, 5: Silence
 	
-	public LiveBeing(int level, PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, AttributesWindow attWindow)
+	public LiveBeing(int level, PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, PlayerAttributesWindow attWindow)
 	{
 		this.level = level;
 		this.PA = PA;
@@ -43,7 +43,7 @@ public class LiveBeing
 
 	public PersonalAttributes getPA() {return PA ;}
 	public BattleAttributes getBA() {return BA ;}
-	public AttributesWindow getAttWindow() {return attWindow ;}
+	public PlayerAttributesWindow getAttWindow() {return attWindow ;}
 	public MovingAnimations getMovingAni() {return movingAni ;}
 	
 	public void IncActionCounters()

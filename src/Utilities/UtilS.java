@@ -507,7 +507,7 @@ public class UtilS
 			Cats[4] = "* Classes *" ;
 			Cats[5] = "* ProClasses *" ;
 			Cats[6] = "* Atributos *" ;
-			Cats[7] = "* Estat�sticas do jogador *" ;
+			Cats[7] = "* Estatísticas do jogador *" ;
 			Cats[8] = "* Propriedades dos atributos especiais *" ;
 			Cats[9] = "* Coleta *" ;
 			Cats[10] = "* Vit�ria *" ;

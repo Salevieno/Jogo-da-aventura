@@ -13,7 +13,7 @@ import Graphics.Animations;
 import Graphics.DrawPrimitives;
 import Utilities.Size;
 import Utilities.UtilG;
-import Windows.AttributesWindow;
+import Windows.PlayerAttributesWindow;
 import Main.Game;
 import Maps.Maps;
 
@@ -42,7 +42,7 @@ public class Pet extends LiveBeing
 				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
 				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
 				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage()),
-				new AttributesWindow()) ;
+				new PlayerAttributesWindow()) ;
 		this.Job = Job ;
 		Color[] ColorPalette = Game.ColorPalette ;
 		Color[] PetColor = new Color[] {ColorPalette[3], ColorPalette[1], ColorPalette[18], ColorPalette[18]} ;

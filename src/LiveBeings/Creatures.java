@@ -15,7 +15,7 @@ import Screen.Screen;
 import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
-import Windows.AttributesWindow;
+import Windows.PlayerAttributesWindow;
 
 public class Creatures extends LiveBeing
 {
@@ -35,7 +35,7 @@ public class Creatures extends LiveBeing
  	public Creatures(CreatureTypes CT)
 	{
  		// int Type, Image image, Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif, int Map, int[] Size, int[] Skill, PersonalAttributes PA, BattleAttributes BA, int[] Bag, int Gold, Color color, int[] StatusCounter, String[] Combo
-		super(CT.getID(), CT.getPA(), CT.getBA(), CT.getMovingAnimations(), new AttributesWindow()) ;
+		super(CT.getID(), CT.getPA(), CT.getBA(), CT.getMovingAnimations(), new PlayerAttributesWindow()) ;
 		this.type = CT ;
 		spell = CT.getSkill() ;
 		this.Bag = CT.getBag() ;
@@ -49,7 +49,7 @@ public class Creatures extends LiveBeing
 		PA.setPos(initialPos) ;
 		
 
-		if (getName().equals("Dragão") | getName().equals("Dragon"))
+		if (getName().equals("Dragï¿½o") | getName().equals("Dragon"))
 		{
 			getPA().setPos(Game.getScreen().getCenter()) ;
 		}

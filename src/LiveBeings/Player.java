@@ -40,7 +40,7 @@ import Screen.Screen;
 import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
-import Windows.AttributesWindow;
+import Windows.PlayerAttributesWindow;
 import Windows.Bag;
 import Windows.Bestiary;
 import Windows.FabWindow;
@@ -127,7 +127,7 @@ public class Player extends LiveBeing
 	
 	public Player(String Name, String Language, String Sex, int Job)
 	{
-		super(1, InitializePersonalAttributes(Name, Job), InitializeBattleAttributes(Job), InitializeMovingAnimations(), new AttributesWindow()) ;
+		super(1, InitializePersonalAttributes(Name, Job), InitializeBattleAttributes(Job), InitializeMovingAnimations(), new PlayerAttributesWindow()) ;
 		this.Language = Language ;
 		this.Sex = Sex ;
 		InitializeSpells() ;
@@ -417,18 +417,20 @@ public class Player extends LiveBeing
 		return (equips[3] != null) ;
 	}
 	
-	public void Collect(Collectible collectible, DrawPrimitives DP, Animations ani)
-	{		
-		if (!ani.isActive(10))
-		{
-			// end collecting			
-			FieldMap fm = (FieldMap) getMap() ;
-			ArrayList<Collectible> collectibles = fm.getCollectibles() ;
-			collectibles.remove(collectible) ;
-			System.out.println("a") ;
-		}
-		DP.DrawGif(collectingMessage, getPos(), "Center") ;
-	}
+	public void Collect(int collectibleType, DrawPrimitives DP, Animations ani)
+    {        
+        Image collectingGif = new ImageIcon(Game.ImagesPath + "Sprite-0001.gif").getImage() ;
+        //System.out.println(PA.currentAction) ;
+        DP.DrawGif(collectingGif, getPos(), "Center");
+        if (PA.getCurrentAction().equals("W"))
+        {
+            System.out.println(PA.getCurrentAction());
+            collectingGif.flush() ;
+        }
+        //ani.SetAniVars(10, new Object[] {100, PA.getPos(), 10, collectibleType, "Coletando"}) ;
+        //ani.StartAni(10) ;
+    }
+
 	
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
@@ -755,7 +757,7 @@ public class Player extends LiveBeing
 						ani.StartAni(10) ;
 					}
 					setCurrentAction("Collecting") ;
-					Collect(collectibles.get(c), DP, ani) ;
+					Collect(collectibles.get(c).getType(), DP, ani) ;
 					return new int[] {2, collectibles.get(c).getType()} ;
 				}
 			}

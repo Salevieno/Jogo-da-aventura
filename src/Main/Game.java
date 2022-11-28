@@ -346,7 +346,7 @@ public class Game extends JPanel implements ActionListener
 				int NPCPosX = (int) (screen.getSize().x * Double.parseDouble(input.get(id)[29 + 3 * i])) ;
 				int NPCPosY = (int) (screen.getSize().y * Double.parseDouble(input.get(id)[30 + 3 * i])) ;
 				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
-				npcs.add(new NPCs(i, NPCType, NPCPos, new String[] {"Sim", "Não"})) ;
+				npcs.add(new NPCs(i, NPCType, NPCPos, new String[] {"Sim", "Nï¿½o"})) ;
 			}
 			
 			cityMap[id] = new CityMap(name, continent, connections, image, buildings, npcs);
@@ -912,7 +912,7 @@ public class Game extends JPanel implements ActionListener
 			}
 			if (meet[0] == 2 & 0 <= meet[1])	// meet with collectibles
 			{
-				//player.Collect(meet[1], DF.getDrawPrimitives(), ani) ;
+                player.Collect(meet[1], DF.getDrawPrimitives(), ani) ;
 			}
 			if (meet[0] == 3 & 0 <= meet[1])	// meet with chest
 			{
