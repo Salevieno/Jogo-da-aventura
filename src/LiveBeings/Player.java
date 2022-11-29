@@ -74,7 +74,9 @@ public class Player extends LiveBeing
 	private boolean isRiding ;		// true if the player is riding
 	private Map<String, Boolean> questSkills ;	// 0: Forest map, 1: Cave map, 2: Island map, 3: Volcano map, 4: Snowland map, 5: Shovel, 6: Book, 7: Ride, 8: Dragon's aura, 9: Bestiary	// TODO essa est� como map, enquanto as outras est�o como array
 	private String[] combo ;		// record of the last 10 movements
-    public Creatures closestCreature ;	// creature that is currently closest to the player
+    private int collectingCounter ;	// counts the progress of the player's collection
+    private int collectingDelay ;	// time that the player takes to collect
+	public Creatures closestCreature ;	// creature that is currently closest to the player
     public Creatures opponent ;		// creature that is currently in battle with the player
 	private ArrayList<Integer> CreaturesDiscovered ;	// Creatures that the player has encountered. Will appear in the bestiary
     public Map<String, String[]> allText ;	// All the text in the game in the player language
@@ -179,6 +181,8 @@ public class Player extends LiveBeing
 		statusCounter = new int[8] ;
 		statistics = new float[23] ;
 		combo = null ;
+		collectingCounter = 0 ;
+		collectingDelay = 300 ;
 		Arrays.fill(BA.getSpecialStatus(), -1) ;
 		attPoints = 0 ;
 		attIncrease = new float[3][8] ;
@@ -417,18 +421,29 @@ public class Player extends LiveBeing
 		return (equips[3] != null) ;
 	}
 	
-	public void Collect(int collectibleType, DrawPrimitives DP, Animations ani)
-    {        
-        Image collectingGif = new ImageIcon(Game.ImagesPath + "Sprite-0001.gif").getImage() ;
-        //System.out.println(PA.currentAction) ;
+	public void resetCollectingCounter() { collectingCounter = 0 ;}
+	public void incCollectingCounter() { collectingCounter = (collectingCounter + 1 ) % collectingDelay ;}
+	public boolean collectingIsOver() { return (collectingCounter == collectingDelay - 1) ;}
+	
+	public void Collect(Collectible collectible, DrawPrimitives DP, Animations ani)
+    {
+		incCollectingCounter() ;
+        Image collectingGif = new ImageIcon(Game.ImagesPath + "Collecting.gif").getImage() ;
         DP.DrawGif(collectingGif, getPos(), "Center");
-        if (PA.getCurrentAction().equals("W"))
+        if (collectingIsOver())
         {
-            System.out.println(PA.getCurrentAction());
+    		resetCollectingCounter() ;
             collectingGif.flush() ;
+            
+            // remove the collectible from the list
+            Maps currentMap = PA.getMap() ;
+			if (currentMap.isAField())
+			{
+				FieldMap fm = (FieldMap) getMap() ;
+				ArrayList<Collectible> collectibles = fm.getCollectibles() ;
+				collectibles.remove(collectible) ;
+			}
         }
-        //ani.SetAniVars(10, new Object[] {100, PA.getPos(), 10, collectibleType, "Coletando"}) ;
-        //ani.StartAni(10) ;
     }
 
 	
@@ -757,7 +772,7 @@ public class Player extends LiveBeing
 						ani.StartAni(10) ;
 					}
 					setCurrentAction("Collecting") ;
-					Collect(collectibles.get(c).getType(), DP, ani) ;
+					Collect(collectibles.get(c), DP, ani) ;
 					return new int[] {2, collectibles.get(c).getType()} ;
 				}
 			}

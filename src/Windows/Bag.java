@@ -141,7 +141,7 @@ public class Bag extends Window
 			setItem(0) ;
 		}
 	}
-	public void useItem(Player user, Item item)
+	public void useItem(Player player, Item item)
 	{
 		if (item != null)	// if the item is valid
 		{
@@ -149,15 +149,15 @@ public class Bag extends Window
 			{
 				Potion pot = (Potion) item ;
 				float PotMult = 1 ;
-				if (user.getPA().getJob() == 3)
+				if (player.getPA().getJob() == 3)
 				{
-					PotMult += 0.06 * user.getSpell()[7].getLevel() ;
+					PotMult += 0.06 * player.getSpell()[7].getLevel() ;
 				}
 				
-				user.getPA().incLife(pot.getLifeHeal() * user.getPA().getLife()[1] * PotMult) ;
-				user.getPA().incMP(pot.getMPHeal() * user.getPA().getMp()[1] * PotMult) ;					
+				player.getPA().incLife(pot.getLifeHeal() * player.getPA().getLife()[1] * PotMult) ;
+				player.getPA().incMP(pot.getMPHeal() * player.getPA().getMp()[1] * PotMult) ;					
 			}
-			user.getBag().remove(user.getBag().getItem());	
+			player.getBag().remove(player.getBag().getItem());	
 		}
 	}
 	public void display(Point MousePos, String[] allText, DrawFunctions DF)

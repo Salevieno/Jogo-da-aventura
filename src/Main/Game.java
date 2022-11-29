@@ -912,7 +912,7 @@ public class Game extends JPanel implements ActionListener
 			}
 			if (meet[0] == 2 & 0 <= meet[1])	// meet with collectibles
 			{
-                player.Collect(meet[1], DF.getDrawPrimitives(), ani) ;
+                //player.Collect(meet[1], DF.getDrawPrimitives(), ani) ;
 			}
 			if (meet[0] == 3 & 0 <= meet[1])	// meet with chest
 			{

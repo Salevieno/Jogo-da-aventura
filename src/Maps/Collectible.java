@@ -50,6 +50,7 @@ public class Collectible
 	
 	public void incCounter() { counter = (counter + 1) % delay ;}
 	public void resetCounter() { counter = 0 ;}
+	public boolean collectingIsOver() {return (counter == 0) ;}
 	
 	public void display(DrawPrimitives DP) {DP.DrawImage(image, pos, "Center") ;}
 }
