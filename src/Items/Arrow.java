@@ -15,7 +15,7 @@ public class Arrow extends Item
 	private static Arrow[] AllArrow ;
 	public Arrow(int id, String Name, String Description, int price, float dropChance, float atkPower, String elem)
 	{
-		super(Name, Description, price, dropChance) ;
+		super(Name, Description, null, price, dropChance) ;
 		this.id = id ;
 		this.atkPower = atkPower ;
 		this.elem = elem ;

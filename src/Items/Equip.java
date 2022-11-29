@@ -30,7 +30,7 @@ public class Equip extends Item
 	//public static Image[] EquipImage = new Image[] {Sword, Staff, Bow, Claws, Dagger, Shield, Armor, Arrow} ;
 	public Equip(int id, String Name, String Description, int price, float dropChance, int forgeLevel, AttributeBonus attBonus, String elem)
 	{
-		super(Name, Description, price, dropChance) ;
+		super(Name, Description, null, price, dropChance) ;
 		this.id = id ;
 		this.forgeLevel = forgeLevel ;
 		this.attBonus = attBonus ;

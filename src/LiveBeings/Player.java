@@ -137,7 +137,7 @@ public class Player extends LiveBeing
 
 		//Bag = new int[Items.NumberOfAllItems] ;
 		questWindow = new QuestWindow() ;
-		bag = new Bag(new ArrayList<Potion>(), new ArrayList<Alchemy>(), new ArrayList<Forge>(), new ArrayList<PetItem>(), new ArrayList<Food>(),
+		bag = new Bag(new HashMap<Potion, Integer>(), new HashMap<Alchemy, Integer>(), new ArrayList<Forge>(), new ArrayList<PetItem>(), new ArrayList<Food>(),
 				new ArrayList<Arrow>(), new ArrayList<Equip>(), new ArrayList<GeneralItem>(), new ArrayList<Fab>(), new ArrayList<QuestItem>()) ;
 		if (Job == 2)
 		{

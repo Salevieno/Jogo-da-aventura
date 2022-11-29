@@ -13,7 +13,7 @@ public class Fab extends Item
 	private static Fab[] AllFabs ;
 	public Fab(int id, String Name, String Description, int price, float dropChance)
 	{
-		super(Name, Description, price, dropChance) ;
+		super(Name, Description, null, price, dropChance) ;
 		this.id = id ;
 	}
 

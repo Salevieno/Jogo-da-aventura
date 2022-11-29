@@ -16,7 +16,7 @@ public class PetItem extends Item
 	private static PetItem[] AllPetItems ;
 	public PetItem(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal, int SatiationHeal)
 	{
-		super(Name, Description, price, dropChance) ;
+		super(Name, Description, null, price, dropChance) ;
 		this.id = id ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;

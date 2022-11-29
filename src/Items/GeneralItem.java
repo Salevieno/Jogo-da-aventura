@@ -13,7 +13,7 @@ public class GeneralItem extends Item
 	private static GeneralItem[] AllGeneralItems ;
 	public GeneralItem(int id, String Name, String Description, int price, float dropChance)
 	{
-		super(Name, Description, price, dropChance) ;
+		super(Name, Description, null, price, dropChance) ;
 		this.id = id ;
 	}
 

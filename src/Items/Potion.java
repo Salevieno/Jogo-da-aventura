@@ -3,6 +3,8 @@ package Items;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 import Main.Game;
 import Utilities.UtilG;
 
@@ -15,7 +17,7 @@ public class Potion extends Item
 	private static Potion[] AllPotions ;
 	public Potion(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal)
 	{
-		super(Name, Description, price, dropChance) ;
+		super(Name, Description, new ImageIcon(Game.ImagesPath + "items.png").getImage(), price, dropChance) ;
 		this.id = id ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;

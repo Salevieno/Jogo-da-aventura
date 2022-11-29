@@ -1049,10 +1049,18 @@ public class Game extends JPanel implements ActionListener
     	LoadingGameIsOn = false ;
     	CustomizationIsOn = false ;
     	player.getSettings().setMusicIsOn(false) ;
-    	for (int i = 0; i <= 10 - 1; i += 1)
+    	for (int i = 0; i <= 2 - 1; i += 1)
     	{
-    		player.getBag().Add(Potion.getAll()[i]) ;
+    		player.getBag().Add(Potion.getAll()[i], 1) ;
     	}
+    	/*System.out.println(player.getBag().getPotions()) ;
+    	player.getBag().Add(Potion.getAll()[0], 4) ;
+    	player.getBag().Add(Alchemy.getAll()[0], 1) ;
+    	System.out.println(player.getBag().getPotions()) ;
+    	player.getBag().Remove(Potion.getAll()[0], 3) ;
+    	System.out.println(player.getBag().getPotions()) ;
+    	player.getBag().useItem(player, Potion.getAll()[0]) ;
+    	System.out.println(player.getBag().getPotions()) ;*/
     	if (player.getSettings().getMusicIsOn())
 		{
 			//music.PlayMusic(music.getMusicClip()[Maps.MusicID[player.getMap().getid()]]) ;

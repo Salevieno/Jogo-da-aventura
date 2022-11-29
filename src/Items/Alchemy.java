@@ -3,6 +3,8 @@ package Items;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 import Main.Game;
 import Utilities.UtilG;
 
@@ -15,7 +17,7 @@ public class Alchemy extends Item
 	private static Alchemy[] AllAlchemy ;
 	public Alchemy(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal)
 	{
-		super(Name, Description, price, dropChance) ;
+		super(Name, Description, new ImageIcon(Game.ImagesPath + "Col0__Berry.png").getImage(), price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
 		
