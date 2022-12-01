@@ -409,7 +409,7 @@ public class Game extends JPanel implements ActionListener
 		return pet ;
     }
     
-    public Creatures[] InitializeCreatures(CreatureTypes[] creatureTypes, Size screenSize, FieldMap[] fieldMap)
+    /*public Creatures[] InitializeCreatures(CreatureTypes[] creatureTypes, Size screenSize, FieldMap[] fieldMap)
     {    	
     	int NumberOfCreatures = 0 ;
     	
@@ -440,7 +440,7 @@ public class Game extends JPanel implements ActionListener
 		}
     	
 		return creature ;
-    }
+    }*/
     
     public Quests[] InitializeQuests(String Language, int PlayerJob)
     {
@@ -537,7 +537,7 @@ public class Game extends JPanel implements ActionListener
 		DifficultMult = new float[] {(float) 0.5, (float) 0.7, (float) 1.0} ;
  		//player = InitializePlayer(PlayerInitialName, PlayerInitialJob, GameLanguage, PlayerInitialSex) ;
 		//pet = InitializePet() ;
-		creature = InitializeCreatures(creatureTypes, screen.getSize(), fieldMaps) ;
+		//creature = InitializeCreatures(creatureTypes, screen.getSize(), fieldMaps) ;
 		for (int map = 0 ; map <= allMaps.length - 1 ; map += 1)
 		{
 			//allMaps[map].InitializeNPCsInMap(allNPCs) ;
@@ -848,8 +848,9 @@ public class Game extends JPanel implements ActionListener
 			for (int c = 0 ; c <= creaturesInMap.size() - 1 ; c += 1)
 			{				
 				//System.out.println(creaturesInMap.get(c).getPos()) ;
-				creaturesInMap.get(c).act(player.getPos(), player.getMap()) ;
-				creaturesInMap.get(c).display(DF.getDrawPrimitives()) ;
+				Creatures creature = creaturesInMap.get(c) ;
+				creature.act(player.getPos(), player.getMap()) ;
+				creature.display(creature.getPos(), new float[] {1, 1}, DF.getDrawPrimitives()) ;
 			}
 		}
 		
@@ -895,8 +896,8 @@ public class Game extends JPanel implements ActionListener
 		// check if the player met something
 		if (!player.isInBattle())
 		{
-			int[] meet = player.meet(creature, player.getMap().getNPCs(), DF.getDrawPrimitives(), ani) ;	// meet[0] is the encounter and meet[1] is its id
-			if (meet[0] == 0 & 0 <= meet[1])	// meet with creature
+			player.meet(creature, player.getMap().getNPCs(), DF.getDrawPrimitives(), ani) ;	// meet[0] is the encounter and meet[1] is its id
+			/*if (meet[0] == 0 & 0 <= meet[1])	// meet with creature
 			{
 				FieldMap fm = (FieldMap) player.getMap() ;
 				ArrayList<Creatures> creaturesInMap = fm.getCreatures() ;
@@ -917,7 +918,7 @@ public class Game extends JPanel implements ActionListener
 			if (meet[0] == 3 & 0 <= meet[1])	// meet with chest
 			{
 				player.TreasureChestReward(meet[1], allMaps, ani) ;
-			}
+			}*/
 		}
 		
 		
@@ -1053,6 +1054,10 @@ public class Game extends JPanel implements ActionListener
     	{
     		player.getBag().Add(Potion.getAll()[i], 1) ;
     	}
+    	FieldMap fm = (FieldMap) player.getMap() ;
+    	ArrayList<Creatures> fmCreatures = fm.getCreatures();
+    	player.bestiary.addDiscoveredCreature(fmCreatures.get(0)) ;
+    	player.bestiary.addDiscoveredCreature(fmCreatures.get(2)) ;
     	/*System.out.println(player.getBag().getPotions()) ;
     	player.getBag().Add(Potion.getAll()[0], 4) ;
     	player.getBag().Add(Alchemy.getAll()[0], 1) ;

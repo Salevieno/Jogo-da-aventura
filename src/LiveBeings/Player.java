@@ -42,12 +42,12 @@ import Utilities.UtilG;
 import Utilities.UtilS;
 import Windows.PlayerAttributesWindow;
 import Windows.Bag;
-import Windows.Bestiary;
+import Windows.BestiaryWindow;
 import Windows.FabWindow;
 import Windows.HintsWindow;
 import Windows.MapWindow;
 import Windows.QuestWindow;
-import Windows.Settings;
+import Windows.SettingsWindow;
 import Main.Game ;
 import Maps.Collectible;
 import Maps.FieldMap;
@@ -60,12 +60,12 @@ public class Player extends LiveBeing
 	private Color color ;
 	private Quests[] quest ;	
 	private Bag bag ;
-	private Settings settings ;
+	private SettingsWindow settings ;
 	private MapWindow map ;
 	private FabWindow fabWindow ;
 	private QuestWindow questWindow ;
 	private HintsWindow hintsWindow ;
-	private Bestiary bestiary ;
+	public BestiaryWindow bestiary ;
 	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor, 3: arrow
 	private int attPoints ;			// attribute points available (to upgrade the attributes)
 	private int spellPoints ;		// spell points available (to upgrade the spells)
@@ -83,7 +83,7 @@ public class Player extends LiveBeing
 	public Items[] hotkeyItem ;
     public int difficultLevel ;
     
-    public static Image collectingMessage ;
+    public static Image collectingMessage = new ImageIcon(Game.ImagesPath + "CollectingMessage.gif").getImage() ;
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 	
@@ -114,7 +114,6 @@ public class Player extends LiveBeing
 	public static ArrayList<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public static int[] NumberOfSkillsPerJob = new int[] {14 + 20, 15 + 20, 15 + 20, 14 + 20, 14 + 20} ;
 	public static int[] CumNumberOfSkillsPerJob = new int[] {0, 34, 69, 104, 138} ;
-	public static int NumberOfEquipTypes = 4 ;
     public static Image[] AttWindowImages = new Image[] {new ImageIcon(Game.ImagesPath + "PlayerAttWindow1.png").getImage(), new ImageIcon(Game.ImagesPath + "PlayerAttWindow2.png").getImage(), new ImageIcon(Game.ImagesPath + "PlayerAttWindow3.png").getImage()} ;
     public static Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
    
@@ -150,8 +149,8 @@ public class Player extends LiveBeing
 		fabWindow = new FabWindow() ;
 		map = new MapWindow() ;
 		hintsWindow = new HintsWindow() ;
-		bestiary = new Bestiary() ;
-		equips = new Equip[NumberOfEquipTypes] ;
+		bestiary = new BestiaryWindow() ;
+		equips = new Equip[4] ;	// 0: weapon, 1: shield, 2: armor, 3: arrow
 		spellPoints = 0 ;
 		color = Game.ColorPalette[12] ;
 
@@ -202,10 +201,9 @@ public class Player extends LiveBeing
 	    difficultLevel = 1 ;
 		equipsBonus = Items.EquipsBonus ;
 		Image windowSettings = new ImageIcon(Game.ImagesPath + "windowSettings.png").getImage() ;
-		settings = new Settings(windowSettings, true, true, false, 1, 1) ;
+		settings = new SettingsWindow(windowSettings, true, true, false, 1, 1) ;
 		hotkeyItem = new Items[3] ;
 		
-		collectingMessage = new ImageIcon(Game.ImagesPath + "CollectingMessage.gif").getImage() ;
 	}
 	
 
@@ -396,7 +394,7 @@ public class Player extends LiveBeing
 	public ArrayList<Integer> getCreaturesDiscovered() {return CreaturesDiscovered ;}
 	public String getAction() {return PA.currentAction ;}
 	public float[][] getEquipsBonus() {return equipsBonus ;}
-	public Settings getSettings() {return settings ;}
+	public SettingsWindow getSettings() {return settings ;}
 	public void setName(String newValue) {PA.setName(newValue) ;}
 	public void setLevel(int newValue) {PA.setLevel(newValue) ;}
 	public void setSize(Size S) {PA.setSize(S) ;}
@@ -605,14 +603,6 @@ public class Player extends LiveBeing
 
 		PA.countmove = (PA.countmove + 1) % moveRange ;
 	}
-	public void AddCreatureToBestiary(int CreatureID)
-	{
-		if (!CreaturesDiscovered.contains(CreatureID))
-		{
-			CreaturesDiscovered.add(CreatureID) ;
-		}
-	}
-
 	
 	public void act(Pet pet, Maps[] maps, Point MousePos, Icon[] sideBarIcons, Animations Ani, DrawFunctions DF)
 	{
@@ -628,7 +618,7 @@ public class Player extends LiveBeing
 				{
 					if (i == 0)
 					{
-						settings.open() ;	// Options window
+						settings.open() ;
 					}	
 					if (i == 1)
 					{
@@ -636,23 +626,23 @@ public class Player extends LiveBeing
 					}
 					if (i == 2)
 					{
-						questWindow.open() ;	// Quest window
+						questWindow.open() ;
 					}
 					if (i == 3 & questSkills.get(PA.getMap().getContinentName(this)))
 					{
-						map.open() ;	// Map
+						map.open() ;
 					}
 					if (i == 4 & questSkills.get("Fab window"))
 					{
-						fabWindow.open() ;	// Fab window
+						fabWindow.open() ;
 					}
 					if (i == 5)
 					{
-						attWindow.open() ;	// Player window
+						attWindow.open() ;
 					}
 					if (i == 6 & 0 < pet.getLife()[0])
 					{
-						pet.getAttWindow().open() ;	// Pet window
+						pet.getAttWindow().open() ;
 					}
 				}
 			}
@@ -703,7 +693,7 @@ public class Player extends LiveBeing
 			Ani.SetAniVars(11, new Object[] {100, getPos(), TentImage}) ;
 			Ani.StartAni(11) ;
 		}
-		if (PA.currentAction.equals(ActionKeys[13]) & questSkills.get("Bestiary"))	// Bestiary
+		if (PA.currentAction.equals(ActionKeys[13]))	// Bestiary questSkills.get("Bestiary")
 		{
 			bestiary.open() ;
 		}
@@ -748,7 +738,7 @@ public class Player extends LiveBeing
 	}
 	
 
-	public int[] meet(Creatures[] creatures, ArrayList<NPCs> npc, DrawPrimitives DP, Animations ani)
+	public void meet(Creatures[] creatures, ArrayList<NPCs> npc, DrawPrimitives DP, Animations ani)
 	{
 		float distx, disty ;
 		Maps currentMap = PA.getMap() ;
@@ -765,15 +755,15 @@ public class Player extends LiveBeing
 				disty = (float) Math.abs(PA.getPos().y - collectibles.get(c).getPos().y) ;
 				if (distx <= 0.5*PA.getSize().x & disty <= 0.5*PA.getSize().y)
 				{
-					if (!ani.isActive(10))
+					/*if (!ani.isActive(10))
 					{
 						// start animation
 						ani.SetAniVars(10, new Object[] {100, PA.getPos(), 10, collectibles.get(c).getType(), "Coletando"}) ;
 						ani.StartAni(10) ;
-					}
+					}*/
 					setCurrentAction("Collecting") ;
 					Collect(collectibles.get(c), DP, ani) ;
-					return new int[] {2, collectibles.get(c).getType()} ;
+					//return new int[] {2, collectibles.get(c).getType()} ;
 				}
 			}
 
@@ -783,7 +773,7 @@ public class Player extends LiveBeing
 			{
 				if (groundType.contains("Chest"))
 				{
-					return new int[] {3, Integer.parseInt(groundType.substring(groundType.length() - 1))} ;
+					//return new int[] {3, Integer.parseInt(groundType.substring(groundType.length() - 1))} ;
 				}
 			}
 			
@@ -794,7 +784,7 @@ public class Player extends LiveBeing
 				disty = Math.abs(PA.getPos().y - PA.getSize().y / 2 - opponent.getPos().y) ;
 				if (distx <= (PA.getSize().x + opponent.getSize().x) / 2 & disty <= (PA.getSize().y + opponent.getSize().y) / 2 & !ani.isActive(10) & !ani.isActive(19))
 				{
-					return new int[] {0, opponent.getType().getID()} ;
+					//return new int[] {0, opponent.getType().getID()} ;
 				}
 			}
 			else
@@ -807,7 +797,10 @@ public class Player extends LiveBeing
 					disty = UtilG.dist1D(PA.getPos().y - PA.getSize().y / 2, creature.getPos().y) ;
 					if (distx <= (PA.getSize().x + creature.getSize().x) / 2 & disty <= (PA.getSize().y + creature.getSize().y) / 2 & !ani.isActive(10) & !ani.isActive(19))
 					{
-						return new int[] {0, i} ;
+						opponent = creaturesInMap.get(i) ;
+						opponent.setFollow(true) ;
+						getPA().setThought("Fighting") ;
+						bestiary.addDiscoveredCreature(opponent) ;
 					}
 				}
 			}
@@ -825,13 +818,13 @@ public class Player extends LiveBeing
 					disty = (float) Math.abs(PA.getPos().y - NPC.getPos().y) ;
 					if (distx <= 0.5*PA.getSize().x & disty <= 0.5*PA.getSize().y)
 					{
-						return new int[] {1, NPC.getID()} ;
+						//return new int[] {1, NPC.getID()} ;
 					}
 				}
 			}	
 		}
 		
-		return new int[] {-1, -1} ;
+		//return new int[] {-1, -1} ;
 	}
 	
 	/*public void Collect(int Coltype, Maps[] maps, DrawFunctions DF, Animations Ani)
@@ -1137,7 +1130,7 @@ public class Player extends LiveBeing
 		}
 		if (bestiary.isOpen())
 		{
-			bestiary.display(DF.getDrawPrimitives()) ;
+			bestiary.display(MousePos, DF.getDrawPrimitives()) ;
 			//Bestiary(creatureTypes, items, getCreaturesDiscovered(), MousePos, DF) ;
 		}
 		if (settings.isOpen())

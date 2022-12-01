@@ -12,7 +12,7 @@ import Main.Game;
 import Utilities.Size;
 import Utilities.UtilG;
 
-public class Settings extends Window
+public class SettingsWindow extends Window
 {
 	private boolean musicIsOn ;
 	private boolean soundEffectsAreOn ;
@@ -21,7 +21,7 @@ public class Settings extends Window
 	private int damageAnimation ;
 	private String[] actionKeys ;
 	
-	public Settings(Image image, boolean musicIsOn, boolean soundEffectsAreOn, boolean showPlayerRange, int attDisplay, int damageAnimation)
+	public SettingsWindow(Image image, boolean musicIsOn, boolean soundEffectsAreOn, boolean showPlayerRange, int attDisplay, int damageAnimation)
 	{
 		super(image, 3, 0, 6, 0) ;
 		this.musicIsOn = musicIsOn ;

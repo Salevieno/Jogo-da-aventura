@@ -106,29 +106,29 @@ public class Creatures extends LiveBeing
 		return (MPcost <= PA.getMp()[0]) ;
 	}
 	
-	public void display(DrawPrimitives DP)
+	public void display(Point pos, float[] scale, DrawPrimitives DP)
 	{
 		if (PA.getThought().equals("Exist"))
 		{
-			DP.DrawImage(type.movingAni.idleGif, PA.getPos(), "Center") ;
+			DP.DrawImage(type.movingAni.idleGif, pos, scale, "Center") ;
 		}
 		else if (PA.getThought().equals("Move"))
 		{
 			if (PA.getDir().equals("Acima"))
 			{
-				DP.DrawImage(type.movingAni.movingUpGif, PA.getPos(), "Center") ;
+				DP.DrawImage(type.movingAni.movingUpGif, pos, scale, "Center") ;
 			}
 			if (PA.getDir().equals("Abaixo"))
 			{
-				DP.DrawImage(type.movingAni.movingDownGif, PA.getPos(), "Center") ;
+				DP.DrawImage(type.movingAni.movingDownGif, pos, scale, "Center") ;
 			}
 			if (PA.getDir().equals("Esquerda"))
 			{
-				DP.DrawImage(type.movingAni.movingLeftGif, PA.getPos(), "Center") ;
+				DP.DrawImage(type.movingAni.movingLeftGif, pos, scale, "Center") ;
 			}
 			if (PA.getDir().equals("Direita"))
 			{
-				DP.DrawImage(type.movingAni.movingRightGif, PA.getPos(), "Center") ;
+				DP.DrawImage(type.movingAni.movingRightGif, pos, scale, "Center") ;
 			}
 		}
 		DP.DrawText(getPos(), "Center", 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
