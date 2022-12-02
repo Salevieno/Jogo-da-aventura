@@ -4,10 +4,9 @@ import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 
-import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
 import Main.Game;
-import Utilities.Size;
+import Utilities.Scale;
 
 public class QuestWindow extends Window
 {
@@ -17,12 +16,9 @@ public class QuestWindow extends Window
 		super(image, 0, 0, 0, 0) ;
 	}
 	
-	public void display(DrawFunctions DF)
+	public void display(DrawPrimitives DP)
 	{
-		DrawPrimitives DP = DF.getDrawPrimitives() ;
-		float OverallAngle = DrawPrimitives.OverallAngle ;
-		Size screenSize = Game.getScreen().getSize() ;
-		Point pos = new Point((int)(0.5*screenSize.x), (int)(0.55*screenSize.y)) ;
-		DP.DrawImage(image, pos, OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
+		Point pos = new Point((int)(0.5 * Game.getScreen().getSize().x), (int)(0.55 * Game.getScreen().getSize().y)) ;
+		DP.DrawImage(image, pos, DrawPrimitives.OverallAngle, new Scale(1, 1), new boolean[] {false, false}, "Center", 1) ;
 	}
 }

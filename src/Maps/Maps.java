@@ -12,6 +12,7 @@ import GameComponents.NPCs;
 import Graphics.DrawPrimitives;
 import LiveBeings.Player;
 import Main.Game;
+import Utilities.Scale;
 import Utilities.Size;
 
 public class Maps 
@@ -272,7 +273,7 @@ public class Maps
 		{
 			for (int b = 0 ; b <= building.size() - 1 ; b += 1)
 			{
-				building.get(b).display(playerPos, DrawPrimitives.OverallAngle, new float[] {1, 1}, DP) ;
+				building.get(b).display(playerPos, DrawPrimitives.OverallAngle, new Scale(1, 1), DP) ;
 			}
 			
 			//TODO essa � uma fun��o da sign building

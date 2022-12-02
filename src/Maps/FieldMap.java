@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import GameComponents.MapElements;
 import Graphics.DrawPrimitives;
 import LiveBeings.CreatureTypes;
-import LiveBeings.Creatures;
+import LiveBeings.Creature;
 import Main.Game;
 import Screen.Screen;
 import Utilities.Size;
@@ -18,7 +18,7 @@ import Utilities.UtilG;
 public class FieldMap extends Maps
 {
 	private ArrayList<Collectible> collectibles ;
-	private ArrayList<Creatures> creatures ;
+	private ArrayList<Creature> creatures ;
 	private int level ;
 	private int[] collectibleDelay ;
 	
@@ -47,21 +47,21 @@ public class FieldMap extends Maps
 		
 		
 		// add creatures
-		creatures = new ArrayList<Creatures>() ;
+		creatures = new ArrayList<Creature>() ;
 		for (int c = 0 ; c <= creatureTypeIDs.length - 1 ; c += 1)
 		{
 			if (-1 < creatureTypeIDs[c])
 			{
 				CreatureTypes creatureType = Game.getCreatureTypes()[creatureTypeIDs[c]];
-				Creatures creature = new Creatures(creatureType) ;
+				Creature creature = new Creature(creatureType) ;
 				creatures.add(creature) ;
 			}
 		}
 	}
 
-	public ArrayList<Creatures> getCreatures() {return creatures ;}
+	public ArrayList<Creature> getCreatures() {return creatures ;}
 	public ArrayList<Collectible> getCollectibles() {return collectibles ;}
-	public void setCreatures(ArrayList<Creatures> newValue) {creatures = newValue ;}
+	public void setCreatures(ArrayList<Creature> newValue) {creatures = newValue ;}
 	
 	public void IncCollectiblesCounter()
 	{

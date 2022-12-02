@@ -15,6 +15,7 @@ import GameComponents.NPCs ;
 import LiveBeings.Pet;
 import LiveBeings.Player;
 import Screen.Sky;
+import Utilities.Scale;
 import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
@@ -88,7 +89,7 @@ public class DrawFunctions
 	
 	
 
-	public void DrawMenuWindow(Point Pos, float[] scale, String Title, int type, Color color1, Color color2)
+	public void DrawMenuWindow(Point Pos, Scale scale, String Title, int type, Color color1, Color color2)
 	{
 		DP.DrawImage(menuWindow, Pos, scale, "TopLeft") ;
 		/*if (type == 0)
@@ -107,20 +108,6 @@ public class DrawFunctions
 		{
 		}*/
 	}
-	/*public void DrawWindowArray(int[] NumberOfWindows, Point InitialPos, String Alignment, Size size, float sx, float sy, int thickness, Color[] colors, int maxwindows)
-	{
-		for (int nx = 0 ; nx <= NumberOfWindows[0] - 1 ; nx += 1)
-		{
-			for (int ny = 0 ; ny <= NumberOfWindows[1] - 1 ; ny += 1)
-			{
-				if (nx * NumberOfWindows[0] + ny < maxwindows)
-				{
-					Point WindowPos = new Point((int) (InitialPos.x + nx * (size.x + sx)), (int) (InitialPos.y + ny * (size.y + sy))) ;
-					DP.DrawRoundRect(WindowPos, Alignment, size, thickness, colors[0], colors[1], true) ;
-				}
-			}
-		}
-	}*/
 	public void DrawOptionsWindow(Point NPCPos, Font font, int selOption, String[] options, Image NPCimage, Color color)
 	{
 		Point Pos = new Point((int) (NPCPos.x - NPCimage.getWidth(null) - 10), NPCPos.y) ;
@@ -134,13 +121,13 @@ public class DrawFunctions
 		//Size windowSize = new Size(Lmax + offset.x, options.length * Sy + offset.y) ;
 
 		//int ImageW = menuWindow.getWidth(null), ImageH = menuWindow.getHeight(null) ;
-		DrawMenuWindow(Pos, new float[] {1, 1}, null, 0, ColorPalette[7], ColorPalette[7]) ;	// (float) windowSize.x / ImageW, (float) windowSize.y / ImageH
+		DrawMenuWindow(Pos, new Scale(1, 1), null, 0, ColorPalette[7], ColorPalette[7]) ;	// (float) windowSize.x / ImageW, (float) windowSize.y / ImageH
 		for (int i = 0 ; i <= options.length - 1 ; i += 1)
 		{
 			Point textPos = new Point(Pos.x + 5, Pos.y + 5 + i * Sy) ;
 			if (i == selOption)
 			{
-				DP.DrawImage(buttonGeneral, textPos, new float[] {Lmax / 42, 1}, "TopLeft") ;
+				DP.DrawImage(buttonGeneral, textPos, new Scale(Lmax / 42, 1), "TopLeft") ;
 				DP.DrawText(textPos, "TopLeft", OverallAngle, options[i], font, ColorPalette[5]) ;
 			}
 			else
@@ -156,11 +143,11 @@ public class DrawFunctions
 		int MaxTextL = 20 ;
 		if (0.7 * screenSize.x < Pos.x)
 		{
-			DP.DrawImage(SpeakingBubble, new Point(Pos.x + ImageL, Pos.y), OverallAngle, new float[] {1, 1}, new boolean[] {true, false}, "BotCenter", 1) ;
+			DP.DrawImage(SpeakingBubble, new Point(Pos.x + ImageL, Pos.y), OverallAngle, new Scale(1, 1), new boolean[] {true, false}, "BotCenter", 1) ;
 		}
 		else
 		{
-			DP.DrawImage(SpeakingBubble, Pos, OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotCenter", 1) ;
+			DP.DrawImage(SpeakingBubble, Pos, OverallAngle, new Scale(1, 1), new boolean[] {false, false}, "BotCenter", 1) ;
 		}
 		DP.DrawFitText(new Point((int) (Pos.x - ImageL / 2 + 14), (int) (Pos.y - ImageH + 5)), UtilG.TextH(font.getSize() + 1), "TopLeft", text, font, MaxTextL, color) ;		
 	}
@@ -173,12 +160,12 @@ public class DrawFunctions
 		Point LeftArrowPos = new Point(Pos.x + (int)(0.1 * L), Pos.y + ImageH / 2 + 3) ;
 		if (0 < SelectedWindow)
 		{
-			DP.DrawImage(ArrowIconImage, LeftArrowPos, OverallAngle + angle, new float[] {-1, -1}, new boolean[] {false, false}, "Center", 1) ;
+			DP.DrawImage(ArrowIconImage, LeftArrowPos, OverallAngle + angle, new Scale(-1, -1), new boolean[] {false, false}, "Center", 1) ;
 			DP.DrawText(new Point(LeftArrowPos.x + 2 * TextL, LeftArrowPos.y), "TopRight", OverallAngle + angle, Player.ActionKeys[1], font, ColorPalette[5]) ;			
 		}
 		if (SelectedWindow < MaxWindow)
 		{
-			DP.DrawImage(ArrowIconImage, RightArrowPos, OverallAngle + angle, new float[] {1, -1}, new boolean[] {false, false}, "Center", 1) ;
+			DP.DrawImage(ArrowIconImage, RightArrowPos, OverallAngle + angle, new Scale(-1, -1), new boolean[] {false, false}, "Center", 1) ;
 			DP.DrawText(new Point(RightArrowPos.x - TextL, RightArrowPos.y), "TopRight", OverallAngle + angle, Player.ActionKeys[3], font, ColorPalette[5]) ;		
 		}
 	}
@@ -975,7 +962,7 @@ public class DrawFunctions
 		int sy = H/15 ;
 		int IngredientsCont = 0, ProductsCont = 0 ;
 		int MaxTextL = 10 ;
-		DP.DrawImage(BookImage, Pos, OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
+		DP.DrawImage(BookImage, Pos, OverallAngle, new Scale(1, 1), new boolean[] {false, false}, "Center", 1) ;
 		DP.DrawText(new Point(Pos.x - 3*L/8, Pos.y - H/5 - sy/4), "BotLeft", OverallAngle, "Ingredients:", Titlefont, ColorPalette[5]) ;
 		DP.DrawText(new Point(Pos.x + 3*L/8, Pos.y - H/5 - sy/4), "TopRight", OverallAngle, "Products:", Titlefont, ColorPalette[5]) ;		
 		for (int j = 0 ; j <= Ingredients[SelectedPage].length - 1 ; ++j)
@@ -1705,7 +1692,9 @@ public class DrawFunctions
 		}
 		else if (effect == 1 & -1 < UtilS.ElementID(elem))
 		{
-			DP.DrawImage(ElementImages[UtilS.ElementID(elem)], new Point(PlayerPos.x + (CreaturePos.x - PlayerPos.x)*counter/duration, PlayerPos.y + (CreaturePos.y - PlayerPos.y)*counter/duration), 0, new float[] {(float) 1.5, (float) 1.5}, new boolean[] {false, false}, "Center", 1) ;
+			DP.DrawImage(ElementImages[UtilS.ElementID(elem)],
+					new Point(PlayerPos.x + (CreaturePos.x - PlayerPos.x)*counter/duration, PlayerPos.y + (CreaturePos.y - PlayerPos.y)*counter/duration),
+					0, new Scale(1.5, 1.5), new boolean[] {false, false}, "Center", 1) ;
 		}
 		else if (effect == 2)
 		{
@@ -1718,7 +1707,8 @@ public class DrawFunctions
 			{
 				angle = (float) (angle*180/Math.PI - 90) ;
 			}
-			DP.DrawImage(Items.EquipImage[7], new Point(PlayerPos.x + (CreaturePos.x - PlayerPos.x)*counter/duration, PlayerPos.y + (CreaturePos.y - PlayerPos.y)*counter/duration), angle, new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
+			DP.DrawImage(Items.EquipImage[7], new Point(PlayerPos.x + (CreaturePos.x - PlayerPos.x)*counter/duration, PlayerPos.y + (CreaturePos.y - PlayerPos.y)*counter/duration),
+					angle, new Scale(1, 1), new boolean[] {false, false}, "Center", 1) ;
 		}
 	}
 	/*public void GainItemAnimation(Items[] items, int[] ItemIDs, int counter, int delay, Color textColor)
@@ -1985,7 +1975,7 @@ public class DrawFunctions
 		}
 		dx = dx*UtilS.UpAndDownCounter(counter, looptime) ;
 		dh = dh*UtilS.UpAndDownCounter(counter, looptime) ;
-		DP.DrawImage(CrazyArrowImage, new Point((int) (InitialPos.x + dx), (int) (InitialPos.y + dh)), angle, new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
+		DP.DrawImage(CrazyArrowImage, new Point((int) (InitialPos.x + dx), (int) (InitialPos.y + dh)), angle, new Scale(1, 1), new boolean[] {false, false}, "Center", 1) ;
 	}
 	public void TutorialAnimations()
 	{

@@ -18,7 +18,7 @@ import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Graphics.DrawPrimitives ;
 import Items.Equip;
-import LiveBeings.Creatures;
+import LiveBeings.Creature;
 import LiveBeings.Pet;
 import LiveBeings.Player;
 import LiveBeings.Spells;
@@ -219,7 +219,7 @@ public class UtilS
  		return false ;
  	}
 		
-	public static Creatures ClosestCreatureInRange(Player player, Creatures[] creatures, Maps[] maps)
+	public static Creature ClosestCreatureInRange(Player player, Creature[] creatures, Maps[] maps)
 	{	
 		Size screenSize = Game.getScreen().getSize() ;
 		if (player.getMap().isAField())	// map is a field, so it has creatures
@@ -237,7 +237,7 @@ public class UtilS
 			float MinDist = screenSize.x + screenSize.y ;
 			for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 			{
-				Creatures creature = fm.getCreatures().get(i) ;
+				Creature creature = fm.getCreatures().get(i) ;
 				if (fm.getCreatures().get(i) != null)
 				{
 					dist[i] = (float) new Point(player.getPos().x, player.getPos().y).distance(new Point(creature.getPos().x, creature.getPos().y)) ;				
@@ -246,7 +246,7 @@ public class UtilS
 			}
 			for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 			{
-				Creatures creature = fm.getCreatures().get(i) ;
+				Creature creature = fm.getCreatures().get(i) ;
 				if (dist[i] == MinDist & fm.getCreatures() != null & dist[i] <= player.getRange())
 				{
 					return creature ;	// Closest creature ID
@@ -476,23 +476,6 @@ public class UtilS
 		return -1 ;
 	}
 	
-	public static Map<String, String[]> loadAllText(String GameLanguage)
-	{
-		Map<String, String[]> allText = UtilG.ReadTextFile(GameLanguage);
-		/*String[][] allTextString = UtilG.ReadTextFile(GameLanguage) ;
-		
-		for (int i = 0; i <= allTextString.length - 1; i += 1)
-		{
-			String[] catText = new String[allTextString[i].length - 1] ;
-			for (int j = 1; j <= allTextString[i].length - 1; j += 1)
-			{
-				catText[j - 1] = allTextString[i][j] ;
-			}
-			allText.put(allTextString[i][0], catText) ;
-		}*/
-		
-		return allText ;
-	}
 	
 	public static int[] FindAllTextCat(String[][] AllText, String Language)
 	{
@@ -501,7 +484,7 @@ public class UtilS
 		if (Language.equals("P"))
 		{
 			Cats[0] = "* *" ;
-			Cats[1] = "* Bestiï¿½rio *" ;
+			Cats[1] = "* Bestiário *" ;
 			Cats[2] = "* Novo jogo *" ;
 			Cats[3] = "* Tutorial *" ;
 			Cats[4] = "* Classes *" ;
@@ -857,7 +840,7 @@ public class UtilS
 		}
 	}	*/
 		
-	public void BattleSimulation(Player player, Pet pet, Creatures creature, Spells[] skills, Spells[] petskills, int[] ActivePlayerSkills, String[] MoveKeys, Items[] items, Quests[] quest, int NumberOfSimulations, String[] ActionKeys, String[] SkillKeys, Battle B, DrawFunctions DF)
+	public void BattleSimulation(Player player, Pet pet, Creature creature, Spells[] skills, Spells[] petskills, int[] ActivePlayerSkills, String[] MoveKeys, Items[] items, Quests[] quest, int NumberOfSimulations, String[] ActionKeys, String[] SkillKeys, Battle B, DrawFunctions DF)
 	{
 		int move = 0 ;
 		//String[] ItemsObtained = new String[10] ;

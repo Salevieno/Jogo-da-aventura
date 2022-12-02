@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Point;
 
 import Graphics.DrawPrimitives;
+import Utilities.Scale;
 import Utilities.Size;
 
 public class SkyComponent
@@ -50,6 +51,6 @@ public class SkyComponent
 	}
 	public void display(float angle, DrawPrimitives DP)
 	{
-		DP.DrawImage(image, pos, angle, new float[] {1, 1}, new boolean[] {false, false}, "TopLeft", 1) ;
+		DP.DrawImage(image, pos, angle, new Scale(1, 1), new boolean[] {false, false}, "TopLeft", 1) ;
 	}
 }

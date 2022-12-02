@@ -4,6 +4,7 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.util.Arrays ;
 import Graphics.DrawPrimitives ;
+import Utilities.Scale;
 
 public class MapElements
 {
@@ -42,7 +43,7 @@ public class MapElements
 
 	public void DrawImage(float angle, DrawPrimitives DP)
 	{
-		DP.DrawImage(image, Pos, angle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
+		DP.DrawImage(image, Pos, angle, new Scale(1, 1), new boolean[] {false, false}, "BotLeft", 1) ;
 	}
 
 	public void PrintProperties()

@@ -25,9 +25,6 @@ public class Items
 	public static int[] NumberOfItems = new int[] {60, 60, 40, 60, 60, 20, 1000, 400, 100, 200} ;	// Potions, Alchemy, Forge, Pet, Food, Arrows, Equips, General items, Fab, Quest
 	public static int[] BagIDs = new int[NumberOfItems.length + 1] ;	// First id of: Potions, Alchemy, Forge, Pet, Food, Arrows, Equips, General items, Fab, Quest ; and last id of Quest
 	public static float[][] PotionsHealing, PetItems, FoodSatiation, ArrowPower, EquipsBonus ;
-	public static int NumberOfCraftingItems ;
-	public static int[] CraftingNPCIDs ;
-	public static int[][] CraftingIngredients, CraftingIngredientAmounts, CraftingProducts, CraftingProductAmounts ;
 	public static String[] ArrowElem ;
 	public static String[] EquipsElem ;
 	public static int[] ItemsWithEffects ;
@@ -148,7 +145,7 @@ public class Items
 			EquipsElem[i] = EquipsInput.get(i)[31] ;
 		}
 	}
-	public static void CalcCrafting(String CSVPath)
+	/*public static void CalcCrafting(String CSVPath)
 	{
 		CraftingNPCIDs = new int[Items.NumberOfCraftingItems] ;
 		CraftingIngredients = new int[Items.NumberOfCraftingItems][10] ;
@@ -167,7 +164,7 @@ public class Items
 				CraftingProductAmounts[i][j] = Integer.parseInt(CraftingInput.get(i)[2*j + 22]) ;
 			}
 		}
-	}
+	}*/
 	public static void CalcItemsWithEffects(String CSVPath)
 	{
 		ItemsWithEffects = new int[111] ;

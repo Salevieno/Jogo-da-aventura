@@ -45,7 +45,7 @@ import Graphics.DrawPrimitives ;
 import Items.Arrow;
 import Items.Potion;
 import LiveBeings.CreatureTypes;
-import LiveBeings.Creatures;
+import LiveBeings.Creature;
 
 public abstract class UtilG 
 {	
@@ -588,6 +588,7 @@ public abstract class UtilG
 				content.add(Line) ;
 				Line = bufferedReader.readLine() ;
 			}
+			Text.put(key, content.toArray(new String[content.size()])) ;
 			bufferedReader.close() ;
 		}
 		catch(FileNotFoundException ex) 

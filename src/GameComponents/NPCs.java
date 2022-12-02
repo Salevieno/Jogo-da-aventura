@@ -13,12 +13,13 @@ import Graphics.Animations;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
 import LiveBeings.CreatureTypes;
-import LiveBeings.Creatures;
+import LiveBeings.Creature;
 import LiveBeings.Pet;
 import LiveBeings.Player;
 import LiveBeings.Spells;
 import Main.Game;
 import Maps.Maps;
+import Utilities.Scale;
 import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
@@ -134,7 +135,7 @@ public class NPCs
 	//public void setColor(Color C) {color = C ;}
 	
 
-	public void Contact(Player player, Pet pet, Creatures[] creatures, Maps[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawFunctions DF)
+	public void Contact(Player player, Pet pet, Creature[] creatures, Maps[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawFunctions DF)
 	{
 		String action = player.getPA().getCurrentAction() ;
 		navigate(action) ;
@@ -357,7 +358,7 @@ public class NPCs
 		//}
 		//else
 		//{
-		DP.DrawImage(type.getImage(), Pos, DrawPrimitives.OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotCenter", 1) ;
+		DP.DrawImage(type.getImage(), Pos, DrawPrimitives.OverallAngle, new Scale(1, 1), new boolean[] {false, false}, "BotCenter", 1) ;
 		DP.DrawText(Pos, "BotCenter", DrawPrimitives.OverallAngle, String.valueOf(id), new Font("SansSerif", Font.BOLD, 12), Color.blue) ;				
 	}
 

@@ -13,6 +13,7 @@ import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
 import LiveBeings.Pet;
 import LiveBeings.Player;
+import Utilities.Scale;
 import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
@@ -86,7 +87,7 @@ public class Opening
 		}
 		
 		
-		DP.DrawImage(OpeningBG, new Point(0, 0), 0, new float[] {1, 1}, new boolean[] {false, false}, "TopLeft", 1) ;		
+		DP.DrawImage(OpeningBG, new Point(0, 0), 0, new Scale(1, 1), new boolean[] {false, false}, "TopLeft", 1) ;		
 		for (int i = 0 ; i <= OPbuttons.length - 1 ; i += 1)
 		{
 			if (OPbuttons[i].isActive)

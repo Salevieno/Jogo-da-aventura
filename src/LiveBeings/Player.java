@@ -37,6 +37,7 @@ import Items.PetItem;
 import Items.Potion;
 import Items.QuestItem;
 import Screen.Screen;
+import Utilities.Scale;
 import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
@@ -76,8 +77,8 @@ public class Player extends LiveBeing
 	private String[] combo ;		// record of the last 10 movements
     private int collectingCounter ;	// counts the progress of the player's collection
     private int collectingDelay ;	// time that the player takes to collect
-	public Creatures closestCreature ;	// creature that is currently closest to the player
-    public Creatures opponent ;		// creature that is currently in battle with the player
+	public Creature closestCreature ;	// creature that is currently closest to the player
+    public Creature opponent ;		// creature that is currently in battle with the player
 	private ArrayList<Integer> CreaturesDiscovered ;	// Creatures that the player has encountered. Will appear in the bestiary
     public Map<String, String[]> allText ;	// All the text in the game in the player language
 	public Items[] hotkeyItem ;
@@ -132,7 +133,7 @@ public class Player extends LiveBeing
 		this.Language = Language ;
 		this.Sex = Sex ;
 		InitializeSpells() ;
-		allText = UtilS.loadAllText(Language) ;
+		allText = UtilG.ReadTextFile(Language) ;
 
 		//Bag = new int[Items.NumberOfAllItems] ;
 		questWindow = new QuestWindow() ;
@@ -225,9 +226,9 @@ public class Player extends LiveBeing
 		float[] Mp = new float[] {Float.parseFloat(Properties.get(Job)[3]), Float.parseFloat(Properties.get(Job)[3])} ;
 		float Range = Float.parseFloat(Properties.get(Job)[4]) ;
 		int Step = Integer.parseInt(Properties.get(Job)[33]) ;
-		float[] Exp = new float[] {0, 5, Float.parseFloat(Properties.get(Job)[34])} ;
-		float[] Satiation = new float[] {100, 100, Float.parseFloat(Properties.get(Job)[35])} ;
-		float[] Thirst = new float[] {100, 100, Float.parseFloat(Properties.get(Job)[36])} ;
+		int[] Exp = new int[] {0, 5, Integer.parseInt(Properties.get(Job)[34])} ;
+		int[] Satiation = new int[] {100, 100, Integer.parseInt(Properties.get(Job)[35])} ;
+		int[] Thirst = new int[] {100, 100, Integer.parseInt(Properties.get(Job)[36])} ;
 		String[] Elem = new String[] {"n", "n", "n", "n", "n"} ;
 		int[][] Actions = new int[][] {{0, Integer.parseInt(Properties.get(Job)[37]), 0}, {0, Integer.parseInt(Properties.get(Job)[38]), 0}, {0, Integer.parseInt(Properties.get(Job)[39]), 0}, {0, Integer.parseInt(Properties.get(Job)[40]), 0}} ;
 		String currentAction = "existing" ;
@@ -378,9 +379,9 @@ public class Player extends LiveBeing
 	public int getLevel() {return PA.getLevel() ;}
 	public float[] getGold() {return gold ;}
 	public int getStep() {return PA.getStep() ;}
-	public float[] getExp() {return PA.getExp() ;}
-	public float[] getSatiation() {return PA.getSatiation() ;}
-	public float[] getThirst() {return PA.getThirst() ;}
+	public int[] getExp() {return PA.getExp() ;}
+	public int[] getSatiation() {return PA.getSatiation() ;}
+	public int[] getThirst() {return PA.getThirst() ;}
 	public Map<String, Boolean> getQuestSkills() {return questSkills ;}
 	public int[][] getActions() {return PA.Actions ;}	
 	public int[] getSkillDurationCounter() {return spellDurationCounter ;}
@@ -632,7 +633,7 @@ public class Player extends LiveBeing
 					{
 						map.open() ;
 					}
-					if (i == 4 & questSkills.get("Fab window"))
+					if (i == 4)	// questSkills.get("Fab window")
 					{
 						fabWindow.open() ;
 					}
@@ -738,7 +739,7 @@ public class Player extends LiveBeing
 	}
 	
 
-	public void meet(Creatures[] creatures, ArrayList<NPCs> npc, DrawPrimitives DP, Animations ani)
+	public void meet(Creature[] creatures, ArrayList<NPCs> npc, DrawPrimitives DP, Animations ani)
 	{
 		float distx, disty ;
 		Maps currentMap = PA.getMap() ;
@@ -789,10 +790,10 @@ public class Player extends LiveBeing
 			}
 			else
 			{
-				ArrayList<Creatures> creaturesInMap = fm.getCreatures() ;
+				ArrayList<Creature> creaturesInMap = fm.getCreatures() ;
 				for (int i = 0 ; i <= creaturesInMap.size() - 1 ; i += 1)
 				{
-					Creatures creature = creaturesInMap.get(i) ;
+					Creature creature = creaturesInMap.get(i) ;
 					distx = UtilG.dist1D(PA.getPos().x, creature.getPos().x) ;
 					disty = UtilG.dist1D(PA.getPos().y - PA.getSize().y / 2, creature.getPos().y) ;
 					if (distx <= (PA.getSize().x + creature.getSize().x) / 2 & disty <= (PA.getSize().y + creature.getSize().y) / 2 & !ani.isActive(10) & !ani.isActive(19))
@@ -993,7 +994,7 @@ public class Player extends LiveBeing
 			}
 		}
 	}
-	public void SupSpellCounters(Creatures[] creature, Creatures creatureID)
+	public void SupSpellCounters(Creature[] creature, Creature creatureID)
 	{
 		for (int s = 0 ; s <= spell.length - 1 ; s += 1)
 		{
@@ -1092,7 +1093,7 @@ public class Player extends LiveBeing
 	
 	
 	// called every time the window is repainted
-	public void ShowWindows(Pet pet, Creatures[] creature, CreatureTypes[] creatureTypes, Quests[] quests, Maps[] maps, Icon[] icon, Battle B, Clip[] Music, Point MousePos, DrawFunctions DF)
+	public void ShowWindows(Pet pet, Creature[] creature, CreatureTypes[] creatureTypes, Quests[] quests, Maps[] maps, Icon[] icon, Battle B, Clip[] Music, Point MousePos, DrawFunctions DF)
 	{
 		if (bag.isOpen())
 		{
@@ -1125,12 +1126,12 @@ public class Player extends LiveBeing
 		}		
 		if (questWindow.isOpen())
 		{
-			questWindow.display(DF) ;
+			questWindow.display(DF.getDrawPrimitives()) ;
 			//QuestWindow(creatureTypes, creature, quest, items, MousePos, DF) ;
 		}
 		if (bestiary.isOpen())
 		{
-			bestiary.display(MousePos, DF.getDrawPrimitives()) ;
+			bestiary.display(this, MousePos, DF.getDrawPrimitives()) ;
 			//Bestiary(creatureTypes, items, getCreaturesDiscovered(), MousePos, DF) ;
 		}
 		if (settings.isOpen())
@@ -1197,7 +1198,7 @@ public class Player extends LiveBeing
 			equips[3] = null ;
 		//}
 	}
-	public int StealItem(Creatures creature, Items[] items, int spellLevel)
+	public int StealItem(Creature creature, Items[] items, int spellLevel)
 	{	
 		int ID = (int)(UtilG.ArrayWithValuesGreaterThan(creature.getBag(), -1).length*Math.random() - 0.01) ;
 		int StolenItemID = -1 ;
@@ -1211,7 +1212,7 @@ public class Player extends LiveBeing
 		}
 		return StolenItemID ;
 	}
-	public void OffensiveSpell(Creatures creature, int SpellID)
+	public void OffensiveSpell(Creature creature, int SpellID)
 	{
 		PA.getMp()[0] += -spell[SpellID].getMpCost() ;
 		ResetSpellCooldownCounter(SpellID) ;
@@ -1270,7 +1271,7 @@ public class Player extends LiveBeing
 			spellIsActive[SpellID] = true ;
 		}
 	}
-	public void autoSpells(Creatures creature, Spells[] spell)
+	public void autoSpells(Creature creature, Spells[] spell)
 	{		
 		/*if (PA.Job == 3 & PA.getLife()[0] < 0.2 * PA.getLife()[1] & 0 < Skill[12] & !SkillBuffIsActive[12][0])	// Survivor's instinct
 		{
@@ -1395,7 +1396,7 @@ public class Player extends LiveBeing
 			statistics[21] += BA.TotalPoisonDef() ;
 		}
 	}
-	public void updateoffensiveStats(Object[] playerAtkResult, Creatures creature)
+	public void updateoffensiveStats(Object[] playerAtkResult, Creature creature)
 	{
 		/* 0: Number of phy attacks, 
 		 * 1: number of spells used, 
@@ -1482,7 +1483,7 @@ public class Player extends LiveBeing
 			}
 		}
 	}
-	public void updatedefensiveStats(int damage, String effect, boolean creaturePhyAtk, Creatures creature)
+	public void updatedefensiveStats(int damage, String effect, boolean creaturePhyAtk, Creature creature)
 	{
 		/* 0: Number of phy attacks, 
 		 * 1: number of spells used, 
@@ -1535,7 +1536,7 @@ public class Player extends LiveBeing
 			statistics[11] += 1 ;						// total number of hits the player has dogded
 		}
 	}
-	public void Win(Creatures creature, Quests[] quest, Animations Ani)
+	public void Win(Creature creature, Quests[] quest, Animations Ani)
 	{		
 		ArrayList<String> GetItemsObtained = new ArrayList<String>(Arrays.asList(new String[0])) ;		
 		for (int i = 0 ; i <= 9 ; ++i)
@@ -1948,7 +1949,7 @@ public class Player extends LiveBeing
 				Size imgSize = new Size(CooldownImage.getWidth(null), CooldownImage.getHeight(null)) ;
 				if (spellCooldownCounter[ActiveSpells.get(i)] < spells[ActiveSpells.get(i)].getCooldown())
 				{
-					float[] Imscale = new float[] {1, 1 - (float) spellCooldownCounter[ActiveSpells.get(i)] / spells[ActiveSpells.get(i)].getCooldown()} ;
+					Scale Imscale = new Scale(1, 1 - (double) spellCooldownCounter[ActiveSpells.get(i)] / spells[ActiveSpells.get(i)].getCooldown()) ;
 					DP.DrawImage(CooldownImage, new Point(slotCenter.x - imgSize.x / 2, slotCenter.y + imgSize.y / 2), OverallAngle, Imscale, new boolean[] {false, false}, "BotLeft", 1) ;
 				}
 				if (UtilG.isInside(MousePos, new Point(slotCenter.x - imgSize.x / 2, slotCenter.y - imgSize.y / 2), imgSize))
@@ -1986,17 +1987,17 @@ public class Player extends LiveBeing
 		}
 		
 		// player
-		display(icons[5].getPos(), new float[] {1, 1}, Player.MoveKeys[0], false, DP) ;
+		display(icons[5].getPos(), new Scale(1, 1), Player.MoveKeys[0], false, DP) ;
 		DP.DrawText(icons[5].getPos(), "BotLeft", OverallAngle, Player.ActionKeys[5], font, TextColor) ;
 		if (0 < attPoints)
 		{
-			DP.DrawImage(icons[5].getImage(), new Point(icons[5].getPos().x - icons[5].getImage().getWidth(null), icons[5].getPos().y), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
+			DP.DrawImage(icons[5].getImage(), new Point(icons[5].getPos().x - icons[5].getImage().getWidth(null), icons[5].getPos().y), OverallAngle, new Scale(1, 1), new boolean[] {false, false}, "BotLeft", 1) ;
 		}
 		
 		// pet
 		if (pet != null)
 		{
-			pet.display(icons[6].getPos(), new float[] {1, 1}, DP) ;
+			pet.display(icons[6].getPos(), new Scale(1, 1), DP) ;
 			DP.DrawText(icons[6].getPos(), "BotLeft", OverallAngle, Player.ActionKeys[8], font, TextColor) ;
 		}
 		
@@ -2022,7 +2023,7 @@ public class Player extends LiveBeing
 	{
 		DP.DrawCircle(PA.getPos(), (int)(2 * PA.getRange()), 2, Game.ColorPalette[PA.Job], false, true) ;
 	}
-	public void DrawEquips(Point Pos, int Job, int equiptype, int EquipID, float[][] EquipsBonus, float[] scale, float angle, DrawPrimitives DP)
+	public void DrawEquips(Point Pos, int Job, int equiptype, int EquipID, float[][] EquipsBonus, Scale scale, float angle, DrawPrimitives DP)
 	{
 		int bonus = 0 ;
 		if (EquipsBonus[EquipID][1] == 10)
@@ -2048,7 +2049,7 @@ public class Player extends LiveBeing
 	}
 	public void DrawPlayerEquips(int[] Pos, float[] playerscale, DrawPrimitives DP)
 	{
-		float[] scale = new float[] {(float) 0.6, (float) 0.6} ;
+		Scale scale = new Scale(0.6, 0.6) ;
 		float[] angle = new float[] {50, 30, 0, 0, 0} ;
 		Point EqPos = new Point((int)(Pos[0] + 0.16 * PA.getSize().x * playerscale[0]), (int)(Pos[1] - 0.4 * PA.getSize().y * playerscale[1])) ;
 		if (equips[0] != null)
@@ -2074,7 +2075,7 @@ public class Player extends LiveBeing
 	}
 	public void DrawWeapon(Point Pos, float[] playerscale, DrawPrimitives DP)
 	{
-		float[] scale = new float[] {(float) 0.6, (float) 0.6} ;
+		Scale scale = new Scale(0.6, 0.6) ;
 		float[] angle = new float[] {50, 30, 0, 0, 0} ;
 		Point EqPos = new Point((int)(Pos.x + 0.16*PA.getSize().x*playerscale[0]), (int)(Pos.y - 0.4*PA.getSize().y*playerscale[1])) ;
 		if (getEquips()[0] != null)
@@ -2082,7 +2083,7 @@ public class Player extends LiveBeing
 			DrawEquips(EqPos, PA.Job, 0, getEquips()[0].getId() - Items.BagIDs[6], Items.EquipsBonus, scale, angle[PA.Job], DP) ;
 		}	
 	}
-	public void DrawTimeBar(Creatures creature, DrawPrimitives DP)
+	public void DrawTimeBar(Creature creature, DrawPrimitives DP)
 	{
 		String relPos = UtilS.RelPos(PA.getPos(), creature.getPos()) ;
 		DrawTimeBar(relPos, Game.ColorPalette[9], DP) ;
@@ -2170,7 +2171,7 @@ public class Player extends LiveBeing
 		DP.DrawFitText(new Point(Pos.x + sx, Pos.y - Size.y - Size.y / 10), sy, "BotLeft", Description, font, TextmaxL - 6, player.getColor()) ;		
 		DP.DrawText(new Point(Pos.x + Size.x, Pos.y), "TopRight", DrawPrimitives.OverallAngle, "Pontos: " +  player.getSkillPoints(), font, player.getColor()) ;		
 	}	
-	public void display(Point PlayerPos, float[] scale, String dir, boolean ShowPlayerRange, DrawPrimitives DP)
+	public void display(Point PlayerPos, Scale scale, String dir, boolean ShowPlayerRange, DrawPrimitives DP)
 	{
 		// BP = Body part
 		// 0,0 on shoes tip
@@ -2179,36 +2180,38 @@ public class Player extends LiveBeing
 		float OverallAngle = DrawPrimitives.OverallAngle ;
 		if (IsRiding())	// If the player is mounted
 		{
-			DP.DrawImage(RidingImage, new Point(PA.getPos().x - RidingImage.getWidth(null)/2, PA.getPos().y + RidingImage.getHeight(null)/2), OverallAngle, scale, new boolean[] {false, false}, "BotLeft", 1) ;
+			DP.DrawImage(RidingImage,
+					new Point(PA.getPos().x - RidingImage.getWidth(null)/2, PA.getPos().y + RidingImage.getHeight(null)/2),
+					OverallAngle, scale, new boolean[] {false, false}, "BotLeft", 1) ;
 		}
 		//Image[] PlayerImages = new Image[] {PA.getimage()} ;
 		//float[][] BPScale = new float[PA.getimage().length][2] ;
 		boolean[] mirror = new boolean[] {false, false} ;
 		if (questSkills.get("Dragon's aura"))
 		{
-			DP.DrawImage(DragonAuraImage, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 0.5) ;					
+			DP.DrawImage(DragonAuraImage, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale.y * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 0.5) ;					
 		}
 		if (dir.equals("Acima"))
 		{
-			DP.DrawImage(movingAni.idleGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
+			DP.DrawImage(movingAni.idleGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale.y * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Abaixo"))
 		{
-			DP.DrawImage(movingAni.movingDownGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
+			DP.DrawImage(movingAni.movingDownGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale.y * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Esquerda"))
 		{
-			DP.DrawImage(movingAni.movingLeftGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
+			DP.DrawImage(movingAni.movingLeftGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale.y * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
 		}
 		if (dir.equals("Direita"))
 		{
 			if (PA.countmove % 2 == 0)
 			{
-				DP.DrawImage(movingAni.movingRightGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
+				DP.DrawImage(movingAni.movingRightGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale.y * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
 			}
 			else
 			{
-				DP.DrawImage(movingAni.movingUpGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
+				DP.DrawImage(movingAni.movingUpGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale.y * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
 			}
 		}
 		if (ShowPlayerRange)
@@ -2228,7 +2231,7 @@ public class Player extends LiveBeing
 		//DrawCircle(player.getPos(), 2, 2, ColorPalette[6], false, true) ;	// Player center
 	}
 
-	public void ShowEffectsAndStatusAnimation(Creatures creature, DrawPrimitives DP)
+	public void ShowEffectsAndStatusAnimation(Creature creature, DrawPrimitives DP)
 	{
 		int mirror = UtilS.MirrorFromRelPos(UtilS.RelPos(getPos(), creature.getPos())) ;
 		Size offset = new Size(8, (int)(0.8*getSize().y)) ;

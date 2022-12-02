@@ -41,7 +41,7 @@ import Items.Potion;
 import Items.QuestItem;
 import LiveBeings.BattleAttributes;
 import LiveBeings.CreatureTypes;
-import LiveBeings.Creatures;
+import LiveBeings.Creature;
 import LiveBeings.MovingAnimations;
 import LiveBeings.PersonalAttributes;
 import LiveBeings.Pet;
@@ -52,9 +52,11 @@ import Maps.FieldMap;
 import Maps.Maps;
 import Screen.Screen;
 import Screen.Sky;
+import Utilities.Scale;
 import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
+import Windows.FabWindow;
 
 public class Game extends JPanel implements ActionListener
 {
@@ -79,7 +81,7 @@ public class Game extends JPanel implements ActionListener
 	private Icon[] SideBarIcons, plusSignIcon ;
 	private Player player ;
 	private Pet pet ;
-	private Creatures[] creature ;
+	private Creature[] creature ;
 	private Projectiles[] proj ;	
 
 	private static Screen screen ;
@@ -226,8 +228,8 @@ public class Game extends JPanel implements ActionListener
 			{
 				Name = Input.get(ct)[2] ;
 			}
-			int colorid = (int)((Creatures.getskinColor().length - 1)*Math.random()) ;
-			color[ct] = Creatures.getskinColor()[colorid] ;
+			int colorid = (int)((Creature.getskinColor().length - 1)*Math.random()) ;
+			color[ct] = Creature.getskinColor()[colorid] ;
 			if (270 < ct & ct <= 299)	// Ocean creatures
 			{
 				color[ct] = ColorPalette[5] ;
@@ -247,9 +249,9 @@ public class Game extends JPanel implements ActionListener
 			float[] Mp = new float[] {Float.parseFloat(Input.get(ct)[6]) * DiffMult, Float.parseFloat(Input.get(ct)[6]) * DiffMult} ;
 			float Range = Float.parseFloat(Input.get(ct)[7]) * DiffMult ;
 			int Step = Integer.parseInt(Input.get(ct)[48]) ;
-			float[] Exp = new float[] {Integer.parseInt(Input.get(ct)[36])} ;
-			float[] Satiation = new float[] {100, 100, 1} ;
-			float[] Thirst = new float[] {100, 100, 0} ;		
+			int[] Exp = new int[] {Integer.parseInt(Input.get(ct)[36])} ;
+			int[] Satiation = new int[] {100, 100, 1} ;
+			int[] Thirst = new int[] {100, 100, 0} ;		
 			String[] Elem = new String[] {Input.get(ct)[35]} ;
 			int[][] Actions = new int[][] {{0, Integer.parseInt(Input.get(ct)[49]), 0}, {0, Integer.parseInt(Input.get(ct)[50]), 0}} ;
 			String currentAction = "" ;
@@ -844,13 +846,13 @@ public class Game extends JPanel implements ActionListener
 		if (!player.getMap().IsACity())
 		{
 			FieldMap fm = (FieldMap) player.getMap() ;
-			ArrayList<Creatures> creaturesInMap = fm.getCreatures() ;
+			ArrayList<Creature> creaturesInMap = fm.getCreatures() ;
 			for (int c = 0 ; c <= creaturesInMap.size() - 1 ; c += 1)
 			{				
 				//System.out.println(creaturesInMap.get(c).getPos()) ;
-				Creatures creature = creaturesInMap.get(c) ;
+				Creature creature = creaturesInMap.get(c) ;
 				creature.act(player.getPos(), player.getMap()) ;
-				creature.display(creature.getPos(), new float[] {1, 1}, DF.getDrawPrimitives()) ;
+				creature.display(creature.getPos(), new Scale(1, 1), DF.getDrawPrimitives()) ;
 			}
 		}
 		
@@ -862,7 +864,7 @@ public class Game extends JPanel implements ActionListener
 			player.move(pet, music.getMusicClip(), ani) ;
 		}
 		player.DrawAttributes(0, DF.getDrawPrimitives()) ;
-		player.display(player.getPos(), new float[] {1, 1}, player.getDir(), player.getSettings().getShowPlayerRange(), DF.getDrawPrimitives()) ;
+		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DF.getDrawPrimitives()) ;
 		if (player.weaponIsEquipped())	// if the player is equipped with a weapon
 		{
 			player.DrawWeapon(player.getPos(), new float[] {1, 1}, DF.getDrawPrimitives()) ;
@@ -957,7 +959,7 @@ public class Game extends JPanel implements ActionListener
 		// move the active projectiles and check if they collide with something
 		if (proj != null)
 		{
-			ArrayList<Creatures> creaturesInMap = new ArrayList<>() ;
+			ArrayList<Creature> creaturesInMap = new ArrayList<>() ;
 			if (!player.getMap().IsACity())
 			{
 				FieldMap fm = (FieldMap) player.getMap() ;
@@ -1054,10 +1056,15 @@ public class Game extends JPanel implements ActionListener
     	{
     		player.getBag().Add(Potion.getAll()[i], 1) ;
     	}
+    	FabWindow fabWindow = new FabWindow() ;
+    	fabWindow.LoadCraftingRecipes() ;
+    	
     	FieldMap fm = (FieldMap) player.getMap() ;
-    	ArrayList<Creatures> fmCreatures = fm.getCreatures();
-    	player.bestiary.addDiscoveredCreature(fmCreatures.get(0)) ;
-    	player.bestiary.addDiscoveredCreature(fmCreatures.get(2)) ;
+    	ArrayList<Creature> fmCreatures = fm.getCreatures();
+    	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
+    	{
+        	player.bestiary.addDiscoveredCreature(fieldMaps[i].getCreatures().get(0)) ;
+    	}
     	/*System.out.println(player.getBag().getPotions()) ;
     	player.getBag().Add(Potion.getAll()[0], 4) ;
     	player.getBag().Add(Alchemy.getAll()[0], 1) ;

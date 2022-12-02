@@ -12,12 +12,13 @@ import Graphics.DrawPrimitives;
 import Main.Game;
 import Maps.Maps;
 import Screen.Screen;
+import Utilities.Scale;
 import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
 import Windows.PlayerAttributesWindow;
 
-public class Creatures extends LiveBeing
+public class Creature extends LiveBeing
 {
 	private CreatureTypes type ;
 	private int Map ;
@@ -32,7 +33,7 @@ public class Creatures extends LiveBeing
 	private static Color[] skinColor = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1]} ;
 	private static Color[] shadeColor = new Color[] {Game.ColorPalette[2], Game.ColorPalette[3]} ;
 	
- 	public Creatures(CreatureTypes CT)
+ 	public Creature(CreatureTypes CT)
 	{
  		// int Type, Image image, Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif, int Map, int[] Size, int[] Skill, PersonalAttributes PA, BattleAttributes BA, int[] Bag, int Gold, Color color, int[] StatusCounter, String[] Combo
 		super(CT.getID(), CT.getPA(), CT.getBA(), CT.getMovingAnimations(), new PlayerAttributesWindow()) ;
@@ -80,7 +81,7 @@ public class Creatures extends LiveBeing
 	public float[] getPoison() {return BA.getPoison() ;}
 	public float[] getSilence() {return BA.getSilence() ;}
 	public String[] getElem() {return PA.Elem ;}
-	public float[] getExp() {return PA.getExp() ;}
+	public int[] getExp() {return PA.getExp() ;}
 	public int[] getBag() {return Bag ;}
 	public int getGold() {return Gold ;}
 	public int getStep() {return PA.getStep() ;}
@@ -106,9 +107,10 @@ public class Creatures extends LiveBeing
 		return (MPcost <= PA.getMp()[0]) ;
 	}
 	
-	public void display(Point pos, float[] scale, DrawPrimitives DP)
+	public void display(Point pos, Scale scale, DrawPrimitives DP)
 	{
-		if (PA.getThought().equals("Exist"))
+		DP.DrawImage(type.movingAni.idleGif, pos, scale, "Center") ;
+		/*if (PA.getThought().equals("Exist"))
 		{
 			DP.DrawImage(type.movingAni.idleGif, pos, scale, "Center") ;
 		}
@@ -132,7 +134,7 @@ public class Creatures extends LiveBeing
 			}
 		}
 		DP.DrawText(getPos(), "Center", 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
-		DrawAttributes(0, DP) ;
+		DrawAttributes(0, DP) ;*/
 	}
 	
 

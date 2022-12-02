@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.geom.AffineTransform ;
 import java.util.ArrayList;
 
+import Utilities.Scale;
 import Utilities.Size;
 import Utilities.UtilG;
 
@@ -37,21 +38,21 @@ public class DrawPrimitives
 	        //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "An image is being drawn outside window") ;
 		}
 	}
-	public void DrawImage(Image icon, Point Pos, float[] scale, String Alignment)
+	public void DrawImage(Image icon, Point Pos, Scale scale, String Alignment)
 	{       
 		if (icon != null)
 		{
-			int l = (int)(scale[0] * icon.getWidth(null)), h = (int)(scale[1] * icon.getHeight(null)) ;
+			int l = (int)(scale.x * icon.getWidth(null)), h = (int)(scale.y * icon.getHeight(null)) ;
 			int[] offset = UtilG.OffsetFromPos(Alignment, l, h) ;
 			G.drawImage(icon, Pos.x + offset[0], Pos.y + offset[1], l, h, null) ;
 	        //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "An image is being drawn outside window") ;
 		}
 	}
-	public void DrawImage(Image icon, Point Pos, float angle, float[] scale, boolean[] mirror, String Alignment, double alpha)
+	public void DrawImage(Image icon, Point Pos, float angle, Scale scale, boolean[] mirror, String Alignment, double alpha)
 	{       
 		if (icon != null)
 		{
-			int l = (int)(scale[0] * icon.getWidth(null)), h = (int)(scale[1] * icon.getHeight(null)) ;
+			int l = (int)(scale.x * icon.getWidth(null)), h = (int)(scale.y * icon.getHeight(null)) ;
 			int[] offset = UtilG.OffsetFromPos(Alignment, l, h) ;
 			int[] m = new int[] {1, 1} ;
 			if (mirror[0])
@@ -150,16 +151,16 @@ public class DrawPrimitives
 		G.setStroke(new BasicStroke(StdThickness)) ;
         //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "A rect is being drawn outside window") ;
 	}
-	public void DrawRoundRect(Point Pos, String Alignment, Size size, int Thickness, Color color0, Color color1, boolean contour)
+	public void DrawRoundRect(Point Pos, String Alignment, Size size, int Thickness, Color topColor, Color botColor, boolean contour)
 	{
 		// Round rectangle by default starts at the left top
 		int ArcWidth = 10, ArcHeight = 10 ;
 		int[] offset = UtilG.OffsetFromPos(Alignment, size.x, size.y) ;
 		int[] Corner = new int[] {Pos.x + offset[0], Pos.y + offset[1]} ;
 		G.setStroke(new BasicStroke(Thickness)) ;
-		if (color0 != null & color1 != null)
+		if (topColor != null & botColor != null)
 		{
-		    GradientPaint gradient = new GradientPaint(Corner[0], Corner[1], color0, Corner[0], Corner[1] + size.y, color1) ;
+		    GradientPaint gradient = new GradientPaint(Corner[0], Corner[1], topColor, Corner[0], Corner[1] + size.y, botColor) ;
 		    G.setPaint(gradient) ;
 			G.fillRoundRect(Corner[0], Corner[1], size.x, size.y, ArcWidth, ArcHeight) ;
 		}

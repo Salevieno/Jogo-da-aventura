@@ -10,7 +10,7 @@ import GameComponents.Quests;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import LiveBeings.BattleAttributes;
-import LiveBeings.Creatures;
+import LiveBeings.Creature;
 import LiveBeings.Pet;
 import LiveBeings.Player;
 import LiveBeings.Spells;
@@ -123,7 +123,7 @@ public class Battle
 		}*/
 	}	
 	
-	public void ActivateCounters(Player player, Pet pet, Creatures creature)
+	public void ActivateCounters(Player player, Pet pet, Creature creature)
 	{
 		for (int i = 0 ; i <= ShowAtkCounters.length - 1 ; i += 1)
 		{
@@ -172,7 +172,7 @@ public class Battle
 		}*/
 	}
 
-	public void BuffsAndNerfs(Player player, Pet pet, Creatures creature, float[][] Buffs, int BuffNerfLevel, int effect, boolean SkillIsActive, String Target, String action)
+	public void BuffsAndNerfs(Player player, Pet pet, Creature creature, float[][] Buffs, int BuffNerfLevel, int effect, boolean SkillIsActive, String Target, String action)
 	{
 		int ActionMult = 1 ;
 		float[][] Buff = new float[14][5] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
@@ -343,7 +343,7 @@ public class Battle
 		}
 	}
 	
-	public void OffensiveSkillsStatus(Player player, Creatures creature, Spells skills)
+	public void OffensiveSkillsStatus(Player player, Creature creature, Spells skills)
 	{
 		BattleAttributes playerBA = player.getBA();		// Battle attributes of the player
 		BattleAttributes creatureBA = creature.getBA();	// Battle attributes of the creature
@@ -362,7 +362,7 @@ public class Battle
 		creatureBA.receiveStatus(SkillStatus) ;
 	}
 	
-	public Object[] OffensiveSkills(Player player, Creatures creature, Spells skills, int SkillID)
+	public Object[] OffensiveSkills(Player player, Creature creature, Spells skills, int SkillID)
 	{
 		int skilllevel = player.getSpell()[SkillID].getLevel() ;
 		int damage = -1 ;
@@ -448,7 +448,7 @@ public class Battle
 		return new Object[] {damage, effect} ;
 	}
 	
-	public Object[] PlayerSpell(Player player, Pet pet, Creatures creature, int spellID)
+	public Object[] PlayerSpell(Player player, Pet pet, Creature creature, int spellID)
 	{
 		Object[] atkResult = new Object[] {-1, ""} ;	// [damage, effect]
 		int spellLevel = player.getSpell()[spellID].getLevel() ;
@@ -497,7 +497,7 @@ public class Battle
 		return atkResult ;
 	}
 	
-	public Object[] PetSpell(Pet pet, Creatures creature, int selectedSpell)
+	public Object[] PetSpell(Pet pet, Creature creature, int selectedSpell)
 	{
 		Spells spell = pet.getSpells()[selectedSpell] ;
 		int damage = -1 ;
@@ -546,7 +546,7 @@ public class Battle
 	}
 	
 	
-	public Object[] PlayerAtk(Player player, Pet pet, Creatures creature)
+	public Object[] PlayerAtk(Player player, Pet pet, Creature creature)
 	{
 		int damage = -1 ;
 		String effect = "" ;
@@ -603,7 +603,7 @@ public class Battle
 	}
 	
 
-	public Object[] PetAtk(Pet pet, Creatures creature, DrawFunctions DF)
+	public Object[] PetAtk(Pet pet, Creature creature, DrawFunctions DF)
 	{
 		int damage = -1 ;
 		int effect = 0 ;
@@ -664,7 +664,7 @@ public class Battle
 	}
 	
 	
-	public Object[] CreatureAtk(Player player, Pet pet, Creatures creature)
+	public Object[] CreatureAtk(Player player, Pet pet, Creature creature)
 	{
 		int damage = -1 ;
 		String effect = "" ;
@@ -792,7 +792,7 @@ public class Battle
 	}*/
 	
 	
-	public void RunBattle(Player player, Pet pet, Creatures creature, Quests[] quest, Point MousePos, DrawFunctions DF)
+	public void RunBattle(Player player, Pet pet, Creature creature, Quests[] quest, Point MousePos, DrawFunctions DF)
 	{	
 		ShowAtkDurations[2][0] = creature.getBA().getBattleActions()[0][1]/2 ;
 		IncrementCounters() ;
@@ -904,7 +904,7 @@ public class Battle
 	}
 	
 	
-	public void FinishBattle(Player player, Pet pet, Creatures creature, Quests[] quest)
+	public void FinishBattle(Player player, Pet pet, Creature creature, Quests[] quest)
 	{
 		System.out.println("Battle is over!");
 		System.out.println();

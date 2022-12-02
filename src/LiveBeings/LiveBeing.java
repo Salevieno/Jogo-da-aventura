@@ -165,17 +165,17 @@ public class LiveBeing
 		}
 		if (2 <= PA.getExp().length)
 		{
-			attRate.add(PA.getExp()[0] / PA.getExp()[1]) ;
+			attRate.add((float) (PA.getExp()[0] / PA.getExp()[1])) ;
 			attColor.add(colorPalette[1]) ;
 		}
 		if (2 <= PA.getSatiation().length)
 		{
-			attRate.add(PA.getSatiation()[0] / PA.getSatiation()[1]) ;
+			attRate.add((float) (PA.getSatiation()[0] / PA.getSatiation()[1])) ;
 			attColor.add(colorPalette[2]) ;
 		}
 		if (2 <= PA.getThirst().length)
 		{
-			attRate.add(PA.getThirst()[0] / PA.getThirst()[1]) ;
+			attRate.add((float) (PA.getThirst()[0] / PA.getThirst()[1])) ;
 			attColor.add(colorPalette[0]) ;
 		}
 		

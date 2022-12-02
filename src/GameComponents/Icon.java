@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.util.Arrays ;
 
 import Graphics.DrawPrimitives ;
+import Utilities.Scale;
 import Utilities.Size;
 import Utilities.UtilG;
 
@@ -148,7 +149,7 @@ public class Icon
 		{
 			if (SelectedImage != null)
 			{
-				DP.DrawImage(SelectedImage, Pos, angle, new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
+				DP.DrawImage(SelectedImage, Pos, angle, new Scale(1, 1), new boolean[] {false, false}, "Center", 1) ;
 			}
 			else
 			{
@@ -160,7 +161,7 @@ public class Icon
 		{
 			if (image != null)
 			{
-				DP.DrawImage(image, Pos, angle, new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
+				DP.DrawImage(image, Pos, angle, new Scale(1, 1), new boolean[] {false, false}, "Center", 1) ;
 			}
 			else
 			{

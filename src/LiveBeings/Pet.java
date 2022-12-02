@@ -11,6 +11,7 @@ import javax.swing.ImageIcon ;
 
 import Graphics.Animations;
 import Graphics.DrawPrimitives;
+import Utilities.Scale;
 import Utilities.Size;
 import Utilities.UtilG;
 import Windows.PlayerAttributesWindow;
@@ -78,9 +79,9 @@ public class Pet extends LiveBeing
 		float[] Mp = new float[] {Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3])} ;
 		int Range = Integer.parseInt(PetProperties.get(Job)[4]) ;
 		int Step = Integer.parseInt(PetProperties.get(Job)[32]) ;
-		float[] Exp = new float[] {0, 50, 1} ;
-		float[] Satiation = new float[] {100, 100, 1} ;
-		float[] Thirst = new float[] {100, 100, 0} ;
+		int[] Exp = new int[] {0, 50, 1} ;
+		int[] Satiation = new int[] {100, 100, 1} ;
+		int[] Thirst = new int[] {100, 100, 0} ;
 		String[] Elem = new String[] {"n", "n", "n", "n", "n"} ;
 		int[][] Actions = new int[][] {{0, Integer.parseInt(PetProperties.get(Job)[33]), 0}, {0, Integer.parseInt(PetProperties.get(Job)[34]), 0}, {0, Integer.parseInt(PetProperties.get(Job)[35]), 0}} ;
 		String currentAction = "" ;
@@ -222,8 +223,8 @@ public class Pet extends LiveBeing
 	public float[] getElemMult() {return ElemMult ;}
 	public int getLevel() {return PA.getLevel() ;}
 	public int getStep() {return PA.getStep() ;}
-	public float[] getExp() {return PA.getExp() ;}
-	public float[] getSatiation() {return PA.getSatiation() ;}
+	public int[] getExp() {return PA.getExp() ;}
+	public int[] getSatiation() {return PA.getSatiation() ;}
 	public int[][] getActions() {return PA.Actions ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public String[] getCombo() {return Combo ;}
@@ -352,7 +353,7 @@ public class Pet extends LiveBeing
 	{
 		return UtilG.isNumeric(BA.getCurrentAction()) ;
 	}
-	public void TakeBloodAndPoisonDamage(Creatures creature)
+	public void TakeBloodAndPoisonDamage(Creature creature)
 	{
 		float BloodDamage = 0 ;
 		float PoisonDamage = 0 ;
@@ -366,7 +367,7 @@ public class Pet extends LiveBeing
 		}
 		PA.getLife()[0] += -BloodDamage - PoisonDamage ;
 	}
-	public void Win(Creatures creature)
+	public void Win(Creature creature)
 	{
 		PA.getExp()[0] += creature.getExp()[0]*PA.getExp()[2] ;
 	}
@@ -458,7 +459,7 @@ public class Pet extends LiveBeing
 	}
 	public void Load(String[][] ReadFile)
 	{
-		int NumberOfPlayerAttributes = 49 ;
+		/*int NumberOfPlayerAttributes = 49 ;
 		PA.setName(ReadFile[2*(NumberOfPlayerAttributes + 1)][0]) ;
 		PA.setSize((Size) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 2)]), "String", "int")) ;
 		color = UtilG.toColor(ReadFile[2*(NumberOfPlayerAttributes + 3)])[0] ;
@@ -490,16 +491,16 @@ public class Pet extends LiveBeing
 		BA.setSpecialStatus((int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 29)]), "String", "int")) ;
 		PA.Actions = (int[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 30)], 3), "String", "int") ;
 		BA.setBattleActions((int[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 31)], 3), "String", "int")) ;
-		StatusCounter = (int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 32)]), "String", "int") ;
+		StatusCounter = (int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 32)]), "String", "int") ;*/
 	}
 	
 	
 	/* Drawing methods */
-	public void display(Point Pos, float[] Scale, DrawPrimitives DP)
+	public void display(Point Pos, Scale scale, DrawPrimitives DP)
 	{
 		//	TODO add moving animations
 		float OverallAngle = DrawPrimitives.OverallAngle ;
-		DP.DrawImage(movingAni.idleGif, Pos, OverallAngle, Scale, new boolean[] {false, false}, "Center", 1) ;
+		DP.DrawImage(movingAni.idleGif, Pos, OverallAngle, scale, new boolean[] {false, false}, "Center", 1) ;
 	}
 
 	

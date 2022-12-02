@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import Graphics.DrawPrimitives ;
+import Utilities.Scale;
 import Utilities.Size;
 import Utilities.UtilG;
 
@@ -45,7 +46,7 @@ public class Buildings
 	
 	
 	/* Drawing methods */
-	public void display(Point playerPos, float angle, float[] scale, DrawPrimitives DP)
+	public void display(Point playerPos, float angle, Scale scale, DrawPrimitives DP)
 	{
 		if (playerIsInside(playerPos))
 		{				

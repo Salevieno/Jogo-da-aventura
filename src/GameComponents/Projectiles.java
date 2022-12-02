@@ -5,9 +5,10 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import Graphics.DrawPrimitives ;
-import LiveBeings.Creatures;
+import LiveBeings.Creature;
 import LiveBeings.Pet;
 import LiveBeings.Player;
+import Utilities.Scale;
 import Utilities.UtilG;
 import Utilities.UtilS;
 
@@ -45,14 +46,14 @@ public class Projectiles
 	
 	public void DrawImage(DrawPrimitives DP)
 	{
-		DP.DrawImage(image, Pos, UtilG.getAngle(speed), new float[] {1, 1}, new boolean[] {false, false}, "Center", 1) ;
+		DP.DrawImage(image, Pos, UtilG.getAngle(speed), new Scale(1, 1), new boolean[] {false, false}, "Center", 1) ;
 	}
 	public void move()
 	{
 		Pos.x += speed[0] ;
 		Pos.y += speed[1] ;
 	}
-	public int collidedwith(Player player, ArrayList<Creatures> creature, Pet pet)
+	public int collidedwith(Player player, ArrayList<Creature> creature, Pet pet)
 	{
 		// Type 0 is friendly (shot by the player or the pet)
 		// Type 1 is hostile (shot by the creature)
@@ -73,7 +74,7 @@ public class Projectiles
 		}
 		return -3 ;	// if the projectile has not hit anything
 	}
-	public void go(Player player, ArrayList<Creatures> creature, Pet pet, DrawPrimitives DP)
+	public void go(Player player, ArrayList<Creature> creature, Pet pet, DrawPrimitives DP)
 	{
 		DrawImage(DP) ;
 		move() ;
