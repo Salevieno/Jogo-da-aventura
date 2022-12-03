@@ -67,19 +67,6 @@ public class Quests
 		isActive = false ;
 	}
 	
-	/*public static int CalcNumberOfQuests(String CSVPath)
-	{
-		try
-		{
-			return UtilG.count(CSVPath + "Quests.csv") ;
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace() ;
-		}
-		
-		return - 1;
-	}*/
 	public void IncReqCreaturesCounter(int CreatureType)
 	{
 		for (int c = 0 ; c <= ReqCreaturesAmounts.length - 1 ; c += 1)
@@ -96,6 +83,7 @@ public class Quests
 		Name = String.valueOf("Quest " + id) ;
 		Type = Input[1] ;
 		isActive = false ;
+		// TODO change reqCreatures e items to Map<Creature, Amount>
 		ReqCreatures = new int[] {Integer.parseInt(Input[2]), Integer.parseInt(Input[4]), Integer.parseInt(Input[6])} ;
 		ReqCreaturesAmounts = new int[] {Integer.parseInt(Input[3]), Integer.parseInt(Input[5]), Integer.parseInt(Input[7])} ;
 		ReqItems = new int[] {Integer.parseInt(Input[8]), Integer.parseInt(Input[10]), Integer.parseInt(Input[12]), Integer.parseInt(Input[14]), Integer.parseInt(Input[16])} ;

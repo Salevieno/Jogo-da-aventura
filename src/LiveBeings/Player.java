@@ -36,6 +36,7 @@ import Items.GeneralItem;
 import Items.PetItem;
 import Items.Potion;
 import Items.QuestItem;
+import Items.Recipe;
 import Screen.Screen;
 import Utilities.Scale;
 import Utilities.Size;
@@ -59,11 +60,12 @@ public class Player extends LiveBeing
 	private String Language ;
 	private String Sex ;
 	private Color color ;
-	private Quests[] quest ;	
 	private Bag bag ;
 	private SettingsWindow settings ;
 	private MapWindow map ;
+	private ArrayList<Recipe> recipes ;
 	private FabWindow fabWindow ;
+	private ArrayList<Quests> quest ;	
 	private QuestWindow questWindow ;
 	private HintsWindow hintsWindow ;
 	public BestiaryWindow bestiary ;
@@ -146,7 +148,8 @@ public class Player extends LiveBeing
 				bag.getArrow().add(Arrow.getAll()[0]) ;	// TODO how to add multiple items at the same time?
 			}
 		}
-		quest = null ;
+		quest = new ArrayList<>() ;
+		recipes = new ArrayList<>() ;
 		fabWindow = new FabWindow() ;
 		map = new MapWindow() ;
 		hintsWindow = new HintsWindow() ;
@@ -354,7 +357,7 @@ public class Player extends LiveBeing
 	public Maps getMap() {return PA.getMap() ;}
 	public Point getPos() {return PA.getPos() ;}
 	public Spells[] getSpell() {return spell ;}
-	public Quests[] getQuest() {return quest ;}
+	public ArrayList<Quests> getQuest() {return quest ;}
 	public Bag getBag() {return bag ;}
 	public Equip[] getEquips() {return equips ;}
 	public int getSkillPoints() {return spellPoints ;}
@@ -496,11 +499,10 @@ public class Player extends LiveBeing
 	}
 	public ArrayList<Integer> GetActiveQuests()
 	{
-		// TODO quest is null
 		ArrayList<Integer> ActiveQuests = new ArrayList<Integer>() ;
-		for (int i = 0 ; i <= quest.length - 1 ; i += 1)
+		for (int i = 0 ; i <= quest.size() - 1 ; i += 1)
 		{
-			if (quest[i].isActive())
+			if (quest.get(i).isActive())
 			{
 				ActiveQuests.add(i) ;
 			}
@@ -679,6 +681,7 @@ public class Player extends LiveBeing
 		}
 		if (PA.currentAction.equals(ActionKeys[9]))							// Quest window
 		{
+			quest.add(Game.getAllQuests()[0]) ;
 			questWindow.open() ;
 		}
 		if (PA.currentAction.equals(ActionKeys[10]))							// Hints window
@@ -709,6 +712,10 @@ public class Player extends LiveBeing
 		if (bag.isOpen())
 		{
 			bag.navigate(PA.currentAction) ;
+		}
+		if (fabWindow.isOpen())
+		{
+			fabWindow.navigate(PA.currentAction) ;
 		}
 		if (settings.isOpen())
 		{
@@ -1093,7 +1100,7 @@ public class Player extends LiveBeing
 	
 	
 	// called every time the window is repainted
-	public void ShowWindows(Pet pet, Creature[] creature, CreatureTypes[] creatureTypes, Quests[] quests, Maps[] maps, Icon[] icon, Battle B, Clip[] Music, Point MousePos, DrawFunctions DF)
+	public void ShowWindows(Pet pet, Creature[] creature, CreatureTypes[] creatureTypes, Maps[] maps, Icon[] icon, Battle B, Clip[] Music, Point MousePos, DrawFunctions DF)
 	{
 		if (bag.isOpen())
 		{
@@ -1107,7 +1114,7 @@ public class Player extends LiveBeing
 		}
 		if (fabWindow.isOpen())
 		{		
-			fabWindow.display(MousePos, DF) ;
+			fabWindow.display(recipes, MousePos, DF) ;
 			//FabBook(items, MousePos, DF) ;
 		}
 		Tent() ;
@@ -1126,7 +1133,7 @@ public class Player extends LiveBeing
 		}		
 		if (questWindow.isOpen())
 		{
-			questWindow.display(DF.getDrawPrimitives()) ;
+			questWindow.display(quest, DF.getDrawPrimitives()) ;
 			//QuestWindow(creatureTypes, creature, quest, items, MousePos, DF) ;
 		}
 		if (bestiary.isOpen())
@@ -2258,7 +2265,7 @@ public class Player extends LiveBeing
 			bw.write("\nPlayer map: \n" + getMap()) ;
 			bw.write("\nPlayer pos: \n" + getPos()) ;
 			bw.write("\nPlayer skill: \n" + Arrays.toString(getSpell())) ;
-			bw.write("\nPlayer quest: \n" + Arrays.toString(getQuest())) ;
+			//bw.write("\nPlayer quest: \n" + Arrays.toString(getQuest())) ;
 			//bw.write("\nPlayer bag: \n" + Arrays.toString(getBag())) ;
 			bw.write("\nPlayer equips: \n" + Arrays.toString(getEquips())) ;
 			bw.write("\nPlayer skillPoints: \n" + getSkillPoints()) ;

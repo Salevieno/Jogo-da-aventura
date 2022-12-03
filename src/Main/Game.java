@@ -36,6 +36,7 @@ import Items.Fab;
 import Items.Food;
 import Items.Forge;
 import Items.GeneralItem;
+import Items.Item;
 import Items.PetItem;
 import Items.Potion;
 import Items.QuestItem;
@@ -94,6 +95,7 @@ public class Game extends JPanel implements ActionListener
 	private static Maps[] allMaps ;
 	private static BuildingType[] buildingTypes ;
 	private static NPCType[] NPCTypes ;
+	private static Item[] allItems ;
 	//private static NPCs[] allNPCs ;
 	private static Quests[] allQuests ;
 	private static Battle bat ;
@@ -114,7 +116,8 @@ public class Game extends JPanel implements ActionListener
 	public static BuildingType[] getBuildingTypes(){return buildingTypes ;}
 	public static Maps[] getMaps(){return allMaps ;}
 	//public static NPCs[] getNPCs(){return allNPCs ;}
-	public static Quests[] getQuests(){return allQuests ;}	
+	public static Quests[] getAllQuests(){return allQuests ;}
+	public static Item[] getAllItems() {return allItems ;}
 	
     public void FirstInitialization(int[] WinDim)
     {
@@ -946,7 +949,7 @@ public class Game extends JPanel implements ActionListener
 		
 		
 		// show the active player windows
-		player.ShowWindows(pet, creature, creatureTypes, allQuests, allMaps, plusSignIcon, bat, music.getMusicClip(), mousePos, DF) ;
+		player.ShowWindows(pet, creature, creatureTypes, allMaps, plusSignIcon, bat, music.getMusicClip(), mousePos, DF) ;
 		
 		
 		// if tutorial is on, draw tutorial animations
@@ -1000,6 +1003,53 @@ public class Game extends JPanel implements ActionListener
 		player.setCurrentAction("Fighting");*/
 	}
 	
+	public Item[] InitializeAllItems()
+	{
+		ArrayList<Item> allItems = new ArrayList<>() ;
+		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Potion.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= Alchemy.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Alchemy.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= Forge.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Forge.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= PetItem.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(PetItem.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= Food.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Food.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= Arrow.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Arrow.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= Equip.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Equip.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= GeneralItem.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(GeneralItem.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= Fab.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Fab.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= QuestItem.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(QuestItem.getAll()[i]) ;
+		}
+		
+		return (Item[]) allItems.toArray(new Item[allItems.size()]) ;
+	}
+	
 	public void testingInitialization()
 	{
 		// Quick start
@@ -1022,6 +1072,7 @@ public class Game extends JPanel implements ActionListener
     	screen.setMapCenter() ;
 		creatureTypes = InitializeCreatureTypes(GameLanguage, 1) ;
 		plusSignIcon = InitializeIcons(screen.getSize()) ;
+		allItems = InitializeAllItems() ;
 		//allNPCs = InitializeNPCTypes(GameLanguage, screen.getSize()) ;
 		NPCTypes = InitializeNPCTypes(GameLanguage) ;
 		buildingTypes = InitializeBuildingTypes() ;
@@ -1030,6 +1081,7 @@ public class Game extends JPanel implements ActionListener
     	//allMaps = InitializeMaps(screen, allCreatureTypes, sky) ;
 		cityMaps = InitializeCityMaps() ;
 		fieldMaps = InitializeFieldMaps() ;
+		allQuests = InitializeQuests(GameLanguage, player.getJob()) ;
 		allMaps = new Maps[cityMaps.length + fieldMaps.length] ;
 		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
@@ -1056,11 +1108,7 @@ public class Game extends JPanel implements ActionListener
     	{
     		player.getBag().Add(Potion.getAll()[i], 1) ;
     	}
-    	FabWindow fabWindow = new FabWindow() ;
-    	fabWindow.LoadCraftingRecipes() ;
     	
-    	FieldMap fm = (FieldMap) player.getMap() ;
-    	ArrayList<Creature> fmCreatures = fm.getCreatures();
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
         	player.bestiary.addDiscoveredCreature(fieldMaps[i].getCreatures().get(0)) ;

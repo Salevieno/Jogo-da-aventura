@@ -220,6 +220,7 @@ public abstract class UtilG
 			}
 		}
 	}
+	
 	public void DrawAllFonts(DrawPrimitives DP)
 	{		
 		Font fonts[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
@@ -861,7 +862,10 @@ public abstract class UtilG
 		}
 	}
 	
-	
+	public static Point Translate(Point originalPoint, int dx, int dy)
+	{
+		return new Point(originalPoint.x + dx, originalPoint.y + dy) ;
+	}
 
 	public static int TextL(String Text, Font font, Graphics G)
 	{

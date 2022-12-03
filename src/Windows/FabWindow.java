@@ -5,13 +5,11 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import GameComponents.Items;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
 import Items.Item;
@@ -21,117 +19,124 @@ import Main.Game;
 import Utilities.Scale;
 import Utilities.Size;
 import Utilities.UtilG;
-import Utilities.UtilS;
 
 public class FabWindow extends Window
 {
     public static Image image ;
-    private static ArrayList<Recipe> recipes ;
+    //private static ArrayList<Recipe> recipes ;
     
 	public FabWindow()
 	{
-		super(null, 0, 0, 0, 0) ;
+		super(null, 0, 0, 0, 3) ;
 		image = new ImageIcon(Game.ImagesPath + "Book.png").getImage() ;
+		//LoadCraftingRecipes() ;
+		//numberWindows = recipes.size() ;
 	}
 
-	public void LoadCraftingRecipes()
+	public void navigate(String action)
+	{
+		if (action.equals(Player.ActionKeys[3]))
+		{
+			windowUp() ;
+		}
+		if (action.equals(Player.ActionKeys[1]))
+		{
+			windowDown() ;
+		}
+	}
+	
+	public ArrayList<Recipe> LoadCraftingRecipes()
 	{
 		ArrayList<String[]> CraftingInput = UtilG.ReadcsvFile(Game.CSVPath + "Craft.csv") ;
 			
-		recipes = new ArrayList<>() ;
+		ArrayList<Recipe> recipes = new ArrayList<>() ;
+		Item[] allItems = Game.getAllItems() ;
 		for (int i = 0 ; i <= CraftingInput.size() - 1 ; i += 1)
 		{			
 			// adding ingredients
-			Map<Integer, Integer> ingredients = new HashMap<>() ;
+			Map<Item, Integer> ingredients = new HashMap<>() ;
 			for (int j = 0 ; j <= 10 - 1 ; j += 1)
 			{
-				if (0 < Integer.parseInt(CraftingInput.get(i)[2 * j]))
+				if (0 < Integer.parseInt(CraftingInput.get(i)[2 * j + 2]))
 				{
-					int ingredientID = Integer.parseInt(CraftingInput.get(i)[2 * j + 1]) ;
-					int ingredientAmount = Integer.parseInt(CraftingInput.get(i)[2 * j]) ;
-					ingredients.put(ingredientID, ingredientAmount) ;
+					Item ingredient = allItems[Integer.parseInt(CraftingInput.get(i)[2 * j + 1])] ;
+					int ingredientAmount = Integer.parseInt(CraftingInput.get(i)[2 * j + 2]) ;
+					ingredients.put(ingredient, ingredientAmount) ;
 				}
 			}
 			
 			// adding products
-			Map<Integer, Integer> products = new HashMap<>() ;
-			for (int j = 20 ; j <= 30 - 1 ; j += 1)
+			Map<Item, Integer> products = new HashMap<>() ;
+			for (int j = 10 ; j <= 20 - 1 ; j += 1)
 			{
-				if (0 < Integer.parseInt(CraftingInput.get(i)[2 * j]))
+				if (0 < Integer.parseInt(CraftingInput.get(i)[2 * j + 2]))
 				{
-					int productID = Integer.parseInt(CraftingInput.get(i)[2 * j + 1]) ;
-					int productAmount = Integer.parseInt(CraftingInput.get(i)[2 * j]) ;
-					products.put(productID, productAmount) ;
+					Item product = allItems[Integer.parseInt(CraftingInput.get(i)[2 * j + 1])] ;
+					int productAmount = Integer.parseInt(CraftingInput.get(i)[2 * j + 2]) ;
+					products.put(product, productAmount) ;
 				}
 			}
 			
 			// adding recipe
-			recipes.add(ingredients, products) ;
-			System.out.println(recipes.get(i));
+			recipes.add(new Recipe(ingredients, products)) ;
 		}
+		
+		return recipes ;
 	}
 	
-	public void display(Point MousePos, DrawFunctions DF)
+	public void display(ArrayList<Recipe> recipes, Point MousePos, DrawFunctions DF)
 	{
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
 		Size screenSize = Game.getScreen().getSize() ;
 		Color[] ColorPalette = Game.ColorPalette ;
 		float OverallAngle = DrawPrimitives.OverallAngle ;
-		int NumberOfPages = 0 ;
+		
+		Point windowPos = new Point((int)(0.5*screenSize.x), (int)(0.5*screenSize.y)) ;
+		Point ingredientsCol = UtilG.Translate(windowPos, -image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
+		Point productsCol = UtilG.Translate(windowPos, image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
+		Color textColor = ColorPalette[1] ;
 		/*if (Ingredients != null)
 		{
 			NumberOfPages = Ingredients.length - 1 ;
 		}*/
+		
 		//window = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, NumberOfPages) ;
-		Point Pos = new Point((int)(0.5*screenSize.x), (int)(0.5*screenSize.y)) ;
-		Font Titlefont = new Font("SansSerif", Font.BOLD, 16) ;
-		Font font = new Font("SansSerif", Font.BOLD, 14) ;
-		int imageL = image.getWidth(null), imageH = image.getHeight(null);
-		int sy = imageH / 15 ;
-		int IngredientsCont = 0, ProductsCont = 0 ;
-		int MaxTextL = 10 ;
-		DP.DrawImage(image, Pos, OverallAngle, new Scale(1, 1), new boolean[] {false, false}, "Center", 1) ;
-		DP.DrawText(new Point(Pos.x - 3 * imageL / 8, Pos.y - imageH / 5 - sy/4), "BotLeft", OverallAngle, "Ingredients:", Titlefont, ColorPalette[5]) ;
-		DP.DrawText(new Point(Pos.x + 3 * imageL / 8, Pos.y - imageH / 5 - sy/4), "TopRight", OverallAngle, "Products:", Titlefont, ColorPalette[5]) ;		
+		//Font titleFont = new Font(Game.MainFontName, Font.BOLD, 16) ;
+		
+		DP.DrawImage(image, windowPos, OverallAngle, new Scale(1, 1), new boolean[] {false, false}, "Center", 1) ;
+		//DP.DrawText(new Point(windowPos.x - 3 * imageL / 8, windowPos.y - imageH / 5 - sy/4), "BotLeft", OverallAngle, "Ingredientes:", titleFont, ColorPalette[5]) ;
+		//DP.DrawText(new Point(windowPos.x + 3 * imageL / 8, windowPos.y - imageH / 5 - sy/4), "TopRight", OverallAngle, "Produtos", titleFont, ColorPalette[5]) ;		
 		if (recipes != null)
 		{
-			/*for (int j = 0 ; j <= Ingredients[window].length - 1 ; ++j)
+			int sy = font.getSize() + 1 ;
+			int id = window ;
+			
+			// draw ingredients
+			Item[] ingredients = new Item[0];
+			ingredients = recipes.get(id).getIngredients().keySet().toArray(ingredients) ;
+			for (int i = 0 ; i <= ingredients.length - 1 ; ++i)
 			{
-				if (-1 < Ingredients[window][j])
-				{
-					if (Utg.MouseIsInside(MousePos, new int[] {Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2}, MaxTextL*font.getSize()/2, Utg.TextH(font.getSize())))
-					{
-						DP.DrawText(new Point(Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2}, "BotLeft", OverallAngle, items[Ingredients[window][j]].getName(), font, ColorPalette[5]) ;
-					}
-					else
-					{
-						//DP.DrawTextUntil(new Point(Pos.x - 3 * imageL / 8, Pos.y - imageH / 5 + IngredientsCont*sy + sy/2), "BotLeft", OverallAngle, items[Ingredients[window][j]].getName(), font, ColorPalette[5], MaxTextL, MousePos) ;
-					//}
-					IngredientsCont += 1 ;
-				}
-			}*/
-		}
-		/*if (Products != null)
-		{
-			for (int j = 0 ; j <= Products[window].length - 1 ; ++j)
-			{
-				if (-1 < Products[window][j])
-				{
-					if (Utg.MouseIsInside(MousePos, new int[] {Pos.x + 3*L/8 - MaxTextL*font.getSize()/2, Pos.y - H/5 + ProductsCont*sy + sy/2}, MaxTextL*font.getSize()/2, Utg.TextH(font.getSize())))
-					{
-						DP.DrawText(new Point(Pos.x + 3*L/8, Pos.y - H/5 + ProductsCont*sy + sy/2}, "TopRight", OverallAngle, items[Products[window][j]].getName(), font, ColorPalette[5]) ;
-					}
-					else
-					{
-						//DP.DrawTextUntil(new Point(Pos.x + 3 * imageL / 8, Pos.y - imageH / 5 + ProductsCont*sy + sy/2), "TopRight", OverallAngle, items[Products[window][j]].getName(), font, ColorPalette[5], MaxTextL, MousePos) ;
-					//}
-					ProductsCont += 1 ;
-				}
+				Point textPos = new Point(ingredientsCol.x, ingredientsCol.y + i*sy) ;
+				String ingredientName = ingredients[i].getName() ;
+				int ingredientAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
+				String text = ingredientAmount + " " + ingredientName ;
+				DP.DrawTextUntil(textPos, "TopLeft", OverallAngle, text, font, textColor, 10, MousePos) ;
 			}
-		}*/
-		/*if (Ingredients != null)
-		{
-			DF.DrawWindowArrows(new Point(Pos.x, Pos.y + 15 * imageH / 32), imageL, 0, window, Ingredients.length - 1) ;
-		}*/
+			
+			// draw products
+			Item[] products = new Item[0];
+			products = recipes.get(id).getProducts().keySet().toArray(products) ;
+			for (int i = 0 ; i <= products.length - 1 ; ++i)
+			{
+				Point textPos = new Point(productsCol.x, productsCol.y + i*sy) ;
+				String productsName = products[i].getName() ;
+				int productsAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
+				String text = productsAmount + " " + productsName ;
+				DP.DrawTextUntil(textPos, "TopRight", OverallAngle, text, font, textColor, 10, MousePos) ;
+			}
+		}
+		Point arrowsPos = UtilG.Translate(windowPos, 0, image.getHeight(null) / 2) ;
+		DF.DrawWindowArrows(arrowsPos, image.getWidth(null), window, numberWindows - 1) ;
 	}
 }

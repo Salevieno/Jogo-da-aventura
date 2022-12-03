@@ -48,6 +48,19 @@ public class DrawPrimitives
 	        //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "An image is being drawn outside window") ;
 		}
 	}
+	public void DrawImage(Image icon, Point Pos, float angle, Scale scale, String Alignment)
+	{       
+		if (icon != null)
+		{
+			int l = (int)(scale.x * icon.getWidth(null)), h = (int)(scale.y * icon.getHeight(null)) ;
+			int[] offset = UtilG.OffsetFromPos(Alignment, l, h) ;
+			AffineTransform backup = G.getTransform() ;
+			G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, Pos.x + offset[0], Pos.y + offset[1])) ;	 // Rotate image
+			G.drawImage(icon, Pos.x + offset[0], Pos.y + offset[1], l, h, null) ;
+			G.setTransform(backup) ;
+	        // Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "An image is being drawn outside window") ;
+		}
+	}
 	public void DrawImage(Image icon, Point Pos, float angle, Scale scale, boolean[] mirror, String Alignment, double alpha)
 	{       
 		if (icon != null)

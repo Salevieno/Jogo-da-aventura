@@ -86,9 +86,6 @@ public class DrawFunctions
 	
 	
 	/* General drawing */
-	
-	
-
 	public void DrawMenuWindow(Point Pos, Scale scale, String Title, int type, Color color1, Color color2)
 	{
 		DP.DrawImage(menuWindow, Pos, scale, "TopLeft") ;
@@ -151,22 +148,20 @@ public class DrawFunctions
 		}
 		DP.DrawFitText(new Point((int) (Pos.x - ImageL / 2 + 14), (int) (Pos.y - ImageH + 5)), UtilG.TextH(font.getSize() + 1), "TopLeft", text, font, MaxTextL, color) ;		
 	}
-	public void DrawWindowArrows(Point Pos, int L, float angle, int SelectedWindow, int MaxWindow)
+	public void DrawWindowArrows(Point Pos, int L, int SelectedWindow, int MaxWindow)
 	{
-		Font font = new Font("SansSerif", Font.BOLD, 11) ;
-		int TextL = UtilG.TextL(Player.ActionKeys[1], font, G) ;
-		int ImageH = ArrowIconImage.getHeight(null) ;
-		Point RightArrowPos = new Point(Pos.x + (int)(0.9 * L), Pos.y + ImageH / 2 + 3) ;
-		Point LeftArrowPos = new Point(Pos.x + (int)(0.1 * L), Pos.y + ImageH / 2 + 3) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		if (0 < SelectedWindow)
 		{
-			DP.DrawImage(ArrowIconImage, LeftArrowPos, OverallAngle + angle, new Scale(-1, -1), new boolean[] {false, false}, "Center", 1) ;
-			DP.DrawText(new Point(LeftArrowPos.x + 2 * TextL, LeftArrowPos.y), "TopRight", OverallAngle + angle, Player.ActionKeys[1], font, ColorPalette[5]) ;			
+			Point LeftArrowPos = new Point(Pos.x - (int)(0.5 * L), Pos.y) ;
+			DP.DrawImage(ArrowIconImage, LeftArrowPos, OverallAngle, new Scale(-1, -1), "Center") ;
+			DP.DrawText(LeftArrowPos, "TopRight", OverallAngle, Player.ActionKeys[1], font, ColorPalette[5]) ;			
 		}
 		if (SelectedWindow < MaxWindow)
 		{
-			DP.DrawImage(ArrowIconImage, RightArrowPos, OverallAngle + angle, new Scale(-1, -1), new boolean[] {false, false}, "Center", 1) ;
-			DP.DrawText(new Point(RightArrowPos.x - TextL, RightArrowPos.y), "TopRight", OverallAngle + angle, Player.ActionKeys[3], font, ColorPalette[5]) ;		
+			Point RightArrowPos = new Point(Pos.x + (int)(0.5 * L), Pos.y) ;
+			DP.DrawImage(ArrowIconImage, RightArrowPos, OverallAngle, new Scale(1, -1), "Center") ;
+			DP.DrawText(RightArrowPos, "TopRight", OverallAngle, Player.ActionKeys[3], font, ColorPalette[5]) ;		
 		}
 	}
 	public void DrawOrganogram(int[] Sequence, Point Pos, int sx, int sy, Size size, String[][] Text1, String[] Text2, Icon SlotIcon, Font font, Color[] TextColor, Point MousePos)
@@ -458,7 +453,7 @@ public class DrawFunctions
 		}
  		if (ArrowIconImage != null)
  		{
- 			DrawWindowArrows(WindowPos[2], (int)(0.5*screenSize.x), 0, SlotID, NumberOfUsedSlots - 1) ;
+ 			DrawWindowArrows(WindowPos[2], (int)(0.5*screenSize.x), SlotID, NumberOfUsedSlots - 1) ;
  		}
 	}
 	public void DrawEmptyLoadingSlot(int SlotID, int NumSlots)
@@ -468,7 +463,7 @@ public class DrawFunctions
 				new Point((int)(0.5*screenSize.x), (int)(0.2*screenSize.y))} ;
 		DP.DrawRoundRect(WindowPos[0], "TopLeft", new Size(screenSize.x / 3, screenSize.y / 2), 2, Color.white, Color.lightGray, true) ;
 		DP.DrawText(new Point(WindowPos[0].x + screenSize.x / 6, WindowPos[0].y + screenSize.y / 4), "Center", OverallAngle, "Slot " + String.valueOf(SlotID + 1) + " is empty", new Font("SansSerif", Font.BOLD, 20), ColorPalette[5]) ;
-		DrawWindowArrows(new Point(WindowPos[0].x, WindowPos[0].y + screenSize.y / 2), screenSize.x / 3, 0, SlotID, NumSlots) ;
+		DrawWindowArrows(new Point(WindowPos[0].x, WindowPos[0].y + screenSize.y / 2), screenSize.x / 3, SlotID, NumSlots) ;
 	}
 	public void DrawCustomizationMenu(Player player, int SelectedOption, int[] CurrentColorValue)
 	{
@@ -995,7 +990,7 @@ public class DrawFunctions
 				ProductsCont += 1 ;
 			}
 		}
-		DrawWindowArrows(new Point(Pos.x, Pos.y + 15*H/32), L, 0, SelectedPage, Ingredients.length - 1) ;
+		DrawWindowArrows(new Point(Pos.x, Pos.y + 15*H/32), L, SelectedPage, Ingredients.length - 1) ;
 	}
 	/*public void DrawMap(int playerMap, String playerDir, Maps[] maps)
 	{

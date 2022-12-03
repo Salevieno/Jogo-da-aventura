@@ -296,7 +296,7 @@ public class Bag extends Window
 		// draw window arrows
 		if (0 < windowLimit)
 		{
-			DF.DrawWindowArrows(new Point(pos.x, pos.y + size.y), size.x, 0, window, windowLimit) ;
+			DF.DrawWindowArrows(new Point(pos.x, pos.y + size.y), size.x, window, windowLimit) ;
 		}
 	}
 
