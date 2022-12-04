@@ -1,7 +1,10 @@
 package GameComponents ;
 
 import java.io.IOException ;
+import java.util.Map;
 
+import LiveBeings.CreatureTypes;
+import Main.Game;
 import Utilities.UtilG;
 
 public class Quests
@@ -11,8 +14,9 @@ public class Quests
 	private String Type ;
 	private boolean isActive ;
 	private int[] Counter ;				// Counter for the creatures killed
-	private int[] ReqCreatures ;
-	private int[] ReqCreaturesAmounts ;
+	private Map<CreatureTypes, Integer> reqCreatureTypes;
+	//private int[] ReqCreatures ;
+	//private int[] ReqCreaturesAmounts ;
 	private int[] ReqItems ;
 	private int[] ReqItemsAmounts ;
 	private int GoldReward ;
@@ -30,8 +34,8 @@ public class Quests
 	public String getName() {return Name ;}
 	public String getType() {return Type ;}
 	public int[] getCounter() {return Counter ;}
-	public int[] getReqCreatures() {return ReqCreatures ;}
-	public int[] getReqCreaturesAmounts() {return ReqCreaturesAmounts ;}
+	public Map<CreatureTypes, Integer> getReqCreatures() {return reqCreatureTypes ;}
+	//public int[] getReqCreaturesAmounts() {return ReqCreaturesAmounts ;}
 	public int[] getReqItems() {return ReqItems ;}
 	public int[] getReqItemsAmounts() {return ReqItemsAmounts ;}
 	public int getGoldReward() {return GoldReward ;}
@@ -43,8 +47,8 @@ public class Quests
 	public void setName(String N) {Name = N ;}
 	public void setType(String T) {Type = T ;}
 	public void setCounter(int[] C) {Counter = C ;}
-	public void setReqCreatures(int[] RC) {ReqCreatures = RC ;}
-	public void setReqCreaturesAmounts(int[] RCA) {ReqCreaturesAmounts = RCA ;}
+	//public void setReqCreatures(int[] RC) {ReqCreatures = RC ;}
+	//public void setReqCreaturesAmounts(int[] RCA) {ReqCreaturesAmounts = RCA ;}
 	public void setReqItems(int[] RI) {ReqItems = RI ;}
 	public void setReqItemsAmounts(int[] RIA) {ReqItemsAmounts = RIA ;}
 	public void setGoldReward(int GR) {GoldReward = GR ;}
@@ -67,15 +71,15 @@ public class Quests
 		isActive = false ;
 	}
 	
-	public void IncReqCreaturesCounter(int CreatureType)
+	public void IncReqCreaturesCounter(CreatureTypes creatureType)
 	{
-		for (int c = 0 ; c <= ReqCreaturesAmounts.length - 1 ; c += 1)
+		/*for (int c = 0 ; c <= reqCreatureTypes.size() - 1 ; c += 1)
 		{
-			if (CreatureType == ReqCreatures[c])
+			if (creatureType == reqCreatureTypes.get(creatureType))
 			{
 				Counter[c] += 1 ;				
 			}
-		}
+		}*/
 	}
 
 	public void Initialize(String[] Input, String Language, int id, int PlayerJob)
@@ -84,11 +88,18 @@ public class Quests
 		Type = Input[1] ;
 		isActive = false ;
 		// TODO change reqCreatures e items to Map<Creature, Amount>
-		ReqCreatures = new int[] {Integer.parseInt(Input[2]), Integer.parseInt(Input[4]), Integer.parseInt(Input[6])} ;
-		ReqCreaturesAmounts = new int[] {Integer.parseInt(Input[3]), Integer.parseInt(Input[5]), Integer.parseInt(Input[7])} ;
+		for (int i = 0 ; i <= 6 - 1 ; i += 2)
+		{
+			if (0 <= Integer.parseInt(Input[i + 3]))	// TODO quando o input for para o JSon, essa condição pode sair
+			{
+				reqCreatureTypes.put(Game.getCreatureTypes()[Integer.parseInt(Input[i + 2])], Integer.parseInt(Input[i + 3])) ;
+			}
+		}
+		//ReqCreatures = new int[] {Integer.parseInt(Input[2]), Integer.parseInt(Input[4]), Integer.parseInt(Input[6])} ;
+		//ReqCreaturesAmounts = new int[] {Integer.parseInt(Input[3]), Integer.parseInt(Input[5]), Integer.parseInt(Input[7])} ;
 		ReqItems = new int[] {Integer.parseInt(Input[8]), Integer.parseInt(Input[10]), Integer.parseInt(Input[12]), Integer.parseInt(Input[14]), Integer.parseInt(Input[16])} ;
 		ReqItemsAmounts = new int[] {Integer.parseInt(Input[9]), Integer.parseInt(Input[11]), Integer.parseInt(Input[13]), Integer.parseInt(Input[15]), Integer.parseInt(Input[17])} ;
-		Counter = new int[ReqCreatures.length] ;
+		Counter = new int[reqCreatureTypes.size()] ;
 		GoldReward = Integer.parseInt(Input[18]) ;
 		ExpReward = Integer.parseInt(Input[19]) ;
 		ItemsReward = new int[] {Integer.parseInt(Input[20]), Integer.parseInt(Input[22]), Integer.parseInt(Input[24]), Integer.parseInt(Input[26]), Integer.parseInt(Input[28])} ;

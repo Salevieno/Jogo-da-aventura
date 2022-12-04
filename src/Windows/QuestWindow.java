@@ -5,11 +5,13 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 
 import GameComponents.Quests;
 import Graphics.DrawPrimitives;
+import Items.Item;
 import LiveBeings.CreatureTypes;
 import Main.Game;
 import Utilities.Scale;
@@ -36,23 +38,27 @@ public class QuestWindow extends Window
 		// draw quests
 		//int ExpTextCat = [26] ;
 		//int ItemsTextCat = AllTextCat[27] ;
-		int[] reqCreatureTypeID = quests.get(window).getReqCreatures() ;
+		Map<CreatureTypes, Integer> reqCreatureTypes = quests.get(window).getReqCreatures() ;
 		int[] ReqItems = quests.get(window).getReqItems() ;
 		
 		Quests quest = quests.get(window) ;
 		Point questPos = UtilG.Translate(windowPos, 0, - image.getHeight(null) / 3) ;
 		DP.DrawText(questPos, "Center", angle, quest.getName(), font, textColor) ;
 		
-		if (reqCreatureTypeID != null)
+		if (reqCreatureTypes != null)
 		{
 			//Size size = new Size((int)(0.23*screenSize.x), (int) (0.2*screenSize.y)) ;
 			//int sy = size.y / 5 ;
 			//Point WindowPos = new Point((int) (0.4*screenSize.x), (int) (0.6*screenSize.y)) ;
 			//DrawMenuWindow(WindowPos, size, null, 0, MenuColor[0], ColorPalette[7]) ;
 			//DP.DrawText(new Point((int) (WindowPos.x + 0.5 * size.x), (int) (WindowPos.y - size.y + 1.1*Utg.TextH(font.getSize()))), "Center", OverallAngle, AllText[ExpTextCat][3], font, ColorPalette[0]) ;
-			for (int i = 0 ; i <= reqCreatureTypeID.length - 1 ; i += 1)
+			
+			// draw CreatureTypes
+			CreatureTypes[] reqCreatureType = new CreatureTypes[0];
+			reqCreatureType = reqCreatureTypes.keySet().toArray(reqCreatureType) ;
+			for (int i = 0 ; i <= reqCreatureType.length - 1 ; i += 1)
 			{
-				CreatureTypes creatureType = Game.getCreatureTypes()[reqCreatureTypeID[i]] ;
+				CreatureTypes creatureType = reqCreatureType[i] ;
 				String creatureName = creatureType.getPA().getName() ;
 				Point textPos = UtilG.Translate(windowPos, 15, i * font.getSize()) ;
 				//Point Pos2 = new Point((int) (WindowPos.x + Utg.TextL("Creature 299: ", font, G)) + creatureTypes[CreatureType].getSize()[0]/2, (int) (WindowPos.y - size.y + 1.1*Utg.TextH(font.getSize()) + (i + 1.5)*sy)) ;

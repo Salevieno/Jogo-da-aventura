@@ -1565,7 +1565,7 @@ public class Player extends LiveBeing
 		{
 			for (int q = 0 ; q <= GetActiveQuests().size() - 1 ; q += 1)
 			{
-				quest[GetActiveQuests().get(q)].IncReqCreaturesCounter(creature.getType().getID()) ;
+				quest[GetActiveQuests().get(q)].IncReqCreaturesCounter(creature.getType()) ;
 			}
 		}
 		Ani.SetAniVars(12, new Object[] {100, ItemsObtained, color}) ;
