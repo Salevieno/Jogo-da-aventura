@@ -2,7 +2,6 @@ package Windows;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Map;
@@ -20,10 +19,9 @@ import Utilities.UtilG;
 
 public class QuestWindow extends Window
 {
-	public static Image image = new ImageIcon(Game.ImagesPath + "Quest.png").getImage() ;
 	public QuestWindow()
 	{
-		super(image, 0, 0, 0, 0) ;
+		super(new ImageIcon(Game.ImagesPath + "Quest.png").getImage(), 0, 0, 0, 0) ;
 	}
 	
 	public void navigate(String action)

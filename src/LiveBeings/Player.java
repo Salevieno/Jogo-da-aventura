@@ -738,6 +738,10 @@ public class Player extends LiveBeing
 		{
 			attWindow.navigate(this, PA.currentAction, MousePos) ;
 		}
+		if (hintsWindow.isOpen())
+		{
+			hintsWindow.navigate(PA.currentAction) ;
+		}
 		
 		// if meets creature, enters battle
 		if (closestCreature != null & (PA.currentAction.equals(ActionKeys[1]) | UtilS.ActionIsSkill(SpellKeys, PA.currentAction)) & !isInBattle())
@@ -1169,7 +1173,7 @@ public class Player extends LiveBeing
 		}
 		if (hintsWindow.isOpen())
 		{
-			hintsWindow.display(DF.getDrawPrimitives()) ;
+			hintsWindow.display(this, DF) ;
 			//HintsMenu(MousePos, ClassColors[getJob()], DF) ;
 		}
 	}

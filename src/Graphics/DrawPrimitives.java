@@ -109,7 +109,6 @@ public class DrawPrimitives
 		ArrayList<String> FitText = UtilG.FitText(Text, length) ;
 		for (int i = 0 ; i <= FitText.size() - 1 ; i += 1)
 		{
-			//System.out.println(FitText[i]);
 			DrawText(new Point(Pos.x, Pos.y + i*sy), Alignment, OverallAngle, FitText.get(i), font, color) ;						
 		}
         //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL, ScreenH}, "A fit text is being drawn outside window") ;

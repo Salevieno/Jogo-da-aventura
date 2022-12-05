@@ -42,7 +42,7 @@ public class BestiaryWindow extends Window
 	{
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String[] text = player.allText.get("* Besti·rio *") ;
+		String[] text = player.allText.get("* Besti√°rio *") ;
 		Color textColor = Game.ColorPalette[9] ;
 		float angle = DrawPrimitives.OverallAngle ;
 		

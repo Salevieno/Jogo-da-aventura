@@ -23,6 +23,7 @@ public class Window
 	protected int numberItems ;
 	protected int window ;
 	protected int numberWindows ;
+	protected Size size ;
 	
 	public Window(Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
 	{
@@ -36,6 +37,14 @@ public class Window
 		tab = 0 ;
 		item = 0 ;
 		window = 0 ;
+		if (image != null)
+		{
+			size = new Size(image.getWidth(null), image.getHeight(null)) ;
+		}
+		else
+		{
+			size = new Size(0, 0) ;
+		}
 	}
 	public boolean isOpen() {return isOpen ;}
 	public int getMenu() {return menu ;}
@@ -114,7 +123,7 @@ public class Window
 		Size screenDim = Game.getScreen().getSize() ;
 		Point pos = new Point((int) (0.5 * screenDim.x), (int) (0.5 * screenDim.y)) ;
 		Font font = new Font("SansSerif", Font.BOLD, screenDim.x * screenDim.y / 3500) ;
-		String Title = "Janela genérica" ;
+		String Title = "Janela genï¿½rica" ;
 		Size size = new Size((int)(0.3*screenDim.x), (int)(3*UtilG.TextH(font.getSize()))) ;
 		Point windowCenter = new Point((int) (pos.x + 0.5*screenDim.x), (int) (pos.y - screenDim.y - 0.5*3*UtilG.TextH(font.getSize()))) ;
 		DP.DrawRoundRect(pos, "TopLeft", size, 3, Game.ColorPalette[7], Game.ColorPalette[2], true) ;

@@ -973,10 +973,10 @@ public abstract class UtilG
 			}
 			i += 1 ;
 		} while(LastChar != inputstring.length() & i != inputstring.length()) ;
-		ArrayList<String> newstring2 = new ArrayList<>(i) ;
-		for (int j = 0 ; j <= newstring2.size() - 1 ; j += 1)
+		ArrayList<String> newstring2 = new ArrayList<>() ;
+		for (int j = 0 ; j <= i - 1 ; j += 1)
 		{
-			newstring2.set(j, newstring.get(j)) ;
+			newstring2.add(newstring.get(j)) ;
 		}
 		return newstring2 ;
 	}
