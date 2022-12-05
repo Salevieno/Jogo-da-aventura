@@ -500,7 +500,7 @@ public abstract class UtilG
 	
 	public static float RandomMult(float amplitude)
 	{
-		return (float)(Math.max(0, 1 - amplitude + 2*amplitude*Math.random())) ;
+		return (float)(Math.max(0, 1 - amplitude + 2 * amplitude * Math.random())) ;
 	}
 
 	public static int[] OffsetFromPos(String Alignment, int l, int h)

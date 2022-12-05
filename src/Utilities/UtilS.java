@@ -765,51 +765,14 @@ public class UtilS
 		return null ;
 	}*/
 	
-	public static String[] RecordCombo(String[] CurrentCombo, String move, int length)
-	{
-		String[] newCombo = null ;
-		if (!move.equals(""))
-		{
-			if (CurrentCombo == null)
-			{
-				newCombo = UtilG.AddElem(newCombo, move) ;
-			}
-			else
-			{
-				if (CurrentCombo.length < length)
-				{
-					newCombo = new String[CurrentCombo.length + 1] ;
-					newCombo[0] = move ;
-					for (int i = 1 ; i <= CurrentCombo.length ; i += 1)
-					{
-						newCombo[i] = CurrentCombo[i - 1] ;
-					}
-				}
-				else
-				{
-					newCombo = new String[length] ;
-					newCombo[0] = move ;
-					for (int i = 1 ; i <= length - 1 ; i += 1)
-					{
-						newCombo[i] = CurrentCombo[i - 1] ;
-					}
-				}
-			}
-			return newCombo ;
-		}
-		else
-		{
-			return CurrentCombo ;
-		}
-	}
-	
-	public static boolean KonamiCodeActivated(String[] Combo)
+	public static boolean KonamiCodeActivated(ArrayList<String> Combo)
 	{
 		String[] KonamiCode = new String[] {"A", "B", "Direita", "Esquerda", "Direita", "Esquerda", "Abaixo", "Abaixo", "Acima", "Acima"} ;
+		String[] combo = Combo.toArray(new String[Combo.size()]) ;
 		
 		if (Combo != null)
 		{
-			if (Arrays.equals(Combo, KonamiCode))
+			if (Arrays.equals(combo, KonamiCode))
 			{
 				return true ;
 			}

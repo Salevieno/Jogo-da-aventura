@@ -1,10 +1,8 @@
 package LiveBeings ;
 
-import java.awt.Image ;
 import java.awt.Point;
-import java.util.Arrays;
+import java.util.ArrayList;
 
-import Main.Game;
 import Maps.Maps;
 import Utilities.Size;
 
@@ -17,22 +15,23 @@ public class PersonalAttributes
 	private int continent ;
 	private Maps map ;
 	private Point Pos ;
-	private String dir ;			// direction of the movement
-	private String Thought ;		// current thought
+	private String dir ;		// direction of the movement
+	private States state ;		// current state
 	private Size size ;
 	private float[] Life ;		// 0: Current life, 1: max life]
-	private float[] Mp ;			// 0: Current mp, 1: max mp]
+	private float[] Mp ;		// 0: Current mp, 1: max mp]
 	private float Range ;
 	private int Step ;
-	private int[] Exp ;		// 0: Current exp, 1: max exp, 2: multiplier
+	private int[] Exp ;			// 0: Current exp, 1: max exp, 2: multiplier
 	private int[] Satiation ;	// 0: Current satiation, 1: max satiation, 2: multiplier
-	private int[] Thirst ;	// 0: Current satiation, 1: max satiation, 2: multiplier
+	private int[] Thirst ;		// 0: Current satiation, 1: max satiation, 2: multiplier
 	protected String[] Elem ;	// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
 	protected int[][] Actions ;	// [Move, Satiation, Mp][Counter, delay, permission]
 	protected String currentAction; 
 	protected int countmove ;
+	private ArrayList<String> combo ;		// record of the last 10 movements
 	
-	public PersonalAttributes(String Name, int Level, int Job, int ProJob, Maps map, Point Pos, String dir, String Thought, Size size, float[] Life, float[] Mp, float Range, int Step, int[] Exp, int[] Satiation, int[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
+	public PersonalAttributes(String Name, int Level, int Job, int ProJob, Maps map, Point Pos, String dir, States state, Size size, float[] Life, float[] Mp, float Range, int Step, int[] Exp, int[] Satiation, int[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
 	{
 		this.Name = Name ;
 		this.Level = Level ;
@@ -45,7 +44,7 @@ public class PersonalAttributes
 		this.map = map ;
 		this.Pos = Pos ;
 		this.dir = dir ;
-		this.Thought = Thought ;
+		this.state = state ;
 		this.size = size ;
 		this.Life = Life ;
 		this.Mp = Mp ;
@@ -58,6 +57,7 @@ public class PersonalAttributes
 		this.Actions = Actions ;
 		this.currentAction = currentAction ;
 		this.countmove = countmove ;
+		combo = new ArrayList<>() ;
 	}
 
 	public String getName() {return Name ;}
@@ -67,7 +67,7 @@ public class PersonalAttributes
 	public int getContinent() {return continent ;}
 	public Maps getMap() {return map ;}
 	public String getDir() {return dir ;}
-	public String getThought() {return Thought ;}
+	public States getState() {return state ;}
 	public Point getPos() {return Pos ;}
 	public Size getSize() {return size ;}
 	public float[] getLife() {return Life ;}
@@ -81,6 +81,7 @@ public class PersonalAttributes
 	public int[][] getActions() {return Actions ;}
 	public String getCurrentAction() {return currentAction ;}
 	public int getCountmove() {return countmove ;}
+	public ArrayList<String> getCombo() {return combo ;}
 	
 	public void setName(String newValue) {Name = newValue ;}
 	public void setLevel(int newValue) {Level = newValue ;}
@@ -89,7 +90,7 @@ public class PersonalAttributes
 	public void setContinent(int newValue) {continent = newValue ;}
 	public void setMap(Maps newValue) {map = newValue ;}
 	public void setdir(String newValue) {dir = newValue ;}
-	public void setThought(String newValue) {Thought = newValue ;}
+	public void setState(States newValue) {state = newValue ;}
 	public void setPos(Point newValue) {Pos = newValue ;}
 	public void setSize(Size newValue) {size = newValue ;}
 	public void setLife(float[] newValue) {Life = newValue ;}
@@ -99,6 +100,7 @@ public class PersonalAttributes
 	public void setExp(int[] newValue) {Exp = newValue ;}
 	public void setSatiation(int[] newValue) {Satiation = newValue ;}
 	public void setThirst(int[] newValue) {Thirst = newValue ;}
+	public void setCombo(ArrayList<String> newValue) {combo = newValue ;}
 
 	public String randomDir()
 	{

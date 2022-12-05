@@ -14,6 +14,7 @@ import LiveBeings.Creature;
 import LiveBeings.Pet;
 import LiveBeings.Player;
 import LiveBeings.Spells;
+import LiveBeings.States;
 import Main.Game;
 import Utilities.Size;
 import Utilities.UtilG;
@@ -673,7 +674,7 @@ public class Battle
 		BattleAttributes creatureBA = creature.getBA(), playerBA = player.getBA(), petBA = pet.getBA() ;
 		
 		creature.fight(Player.ActionKeys) ;
-		creature.setCombo(UtilS.RecordCombo(creature.getCombo(), String.valueOf(creature.getAction()), 1)) ;
+		creature.UpdateCombo() ;
 		CreatureTarget = 0 ;
 		if (0 < pet.getLife()[0])
 		{
@@ -909,7 +910,7 @@ public class Battle
 		System.out.println("Battle is over!");
 		System.out.println();
 		Spells[] playerSpell = player.getSpell() ;
-		player.getPA().setThought("existing") ;
+		player.getPA().setState(States.idle) ;
 		player.opponent = null ;
 		creature.getLife()[0] = creature.getLife()[1] ;
 		creature.getMp()[0] = creature.getMp()[1] ;

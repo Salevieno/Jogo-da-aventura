@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import Graphics.DrawPrimitives;
 import LiveBeings.Creature;
+import LiveBeings.CreatureTypes;
 import LiveBeings.Player;
 import Main.Game;
 import Utilities.Scale;
@@ -16,7 +17,7 @@ import Utilities.UtilS;
 
 public class BestiaryWindow extends Window
 {
-	private ArrayList<Creature> discoveredCreatures ;
+	private ArrayList<CreatureTypes> discoveredCreatures ;
 	
 	public BestiaryWindow()
 	{
@@ -24,8 +25,8 @@ public class BestiaryWindow extends Window
 		discoveredCreatures = new ArrayList<>() ;
 	}
 	
-	public ArrayList<Creature> getDiscoveredCreatures() { return discoveredCreatures ; }
-	public void addDiscoveredCreature(Creature newCreature) { discoveredCreatures.add(newCreature) ; }
+	public ArrayList<CreatureTypes> getDiscoveredCreatures() { return discoveredCreatures ; }
+	public void addDiscoveredCreature(CreatureTypes newCreature) { discoveredCreatures.add(newCreature) ; }
 	
 	public void navigate(String action)
 	{
@@ -37,7 +38,7 @@ public class BestiaryWindow extends Window
 		window = UtilS.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, windowLimit) ;
 	}
 	
-	public void displayCreatureInfo(Point windowPos, Player player, Creature creature, DrawPrimitives DP)
+	public void displayCreatureInfo(Point windowPos, Player player, CreatureTypes creature, DrawPrimitives DP)
 	{
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -54,9 +55,9 @@ public class BestiaryWindow extends Window
 		
 		// draw text
 		ArrayList<String> textInfo = new ArrayList<>() ;
-		textInfo.add(text[2] + ": " + creature.getLevel()) ;
-		textInfo.add(text[3] + ": " + (int)creature.getLife()[0]) ;
-		textInfo.add(text[4] + ": " + creature.getExp()[0]) ;
+		textInfo.add(text[2] + ": " + creature.getPA().getLevel()) ;
+		textInfo.add(text[3] + ": " + (int)creature.getPA().getLife()[0]) ;
+		textInfo.add(text[4] + ": " + creature.getPA().getExp()[0]) ;
 		textInfo.add(text[5] + ": " + creature.getGold()) ;
 		textInfo.add(text[6] + ": ") ;
 		for (int i = 0 ; i <= creature.getBag().length - 1 ; i += 1)
@@ -64,10 +65,10 @@ public class BestiaryWindow extends Window
 			textInfo.add(String.valueOf(creature.getBag()[i])) ;
 		}
 		
-		DP.DrawText(new Point(windowPos.x + offset, (int) (windowPos.y + creature.getSize().y + offset)), "TopLeft", angle, creature.getName(), namefont, textColor) ;		// Name
+		DP.DrawText(new Point(windowPos.x + offset, (int) (windowPos.y + creature.getPA().getSize().y + offset)), "TopLeft", angle, creature.getPA().getName(), namefont, textColor) ;		// Name
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
-			DP.DrawText(new Point(windowPos.x + offset, (int) (windowPos.y + creature.getSize().y + (i + 2) * sy + offset)), "TopLeft", angle, textInfo.get(i), infoFont, textColor) ;
+			DP.DrawText(new Point(windowPos.x + offset, (int) (windowPos.y + creature.getPA().getSize().y + (i + 2) * sy + offset)), "TopLeft", angle, textInfo.get(i), infoFont, textColor) ;
 		}
 	}
 	
@@ -88,7 +89,7 @@ public class BestiaryWindow extends Window
 		if (discoveredCreatures != null)
 		{
 			int numSlotsInWindow = Math.min(discoveredCreatures.size(), numRows * numCols) ;
-			Creature selectedCreature = null ;
+			CreatureTypes selectedCreature = null ;
 			for (int slot = 0 ; slot <= numSlotsInWindow - 1 ; slot += 1)
 			{
 				// draw slots
@@ -96,14 +97,14 @@ public class BestiaryWindow extends Window
 				DP.DrawRoundRect(slotPos, "Center", slotSize, 2, Game.ColorPalette[20], Game.ColorPalette[7], true) ;
 
 				// draw creatures
-				Creature creature = discoveredCreatures.get(slot) ;
-				double scaleFactor = Math.min((float) (slotSize.x) / creature.getSize().x, (float) (slotSize.y) / creature.getSize().y) ;
-				creature.display(slotPos, new Scale(scaleFactor, scaleFactor), DP) ;
+				CreatureTypes creatureType = discoveredCreatures.get(slot) ;
+				double scaleFactor = Math.min((float) (slotSize.x) / creatureType.getPA().getSize().x, (float) (slotSize.y) / creatureType.getPA().getSize().y) ;
+				creatureType.display(slotPos, new Scale(1, 1), DP) ;
 				
 				// determine if a creature is selected
 				if (UtilG.isInside(MousePos, slotPos, slotSize))
 				{
-					selectedCreature = creature ;
+					selectedCreature = creatureType ;
 				}
 			}
 			if (selectedCreature != null)

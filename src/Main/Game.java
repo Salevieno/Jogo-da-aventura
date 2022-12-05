@@ -48,6 +48,7 @@ import LiveBeings.PersonalAttributes;
 import LiveBeings.Pet;
 import LiveBeings.Player;
 import LiveBeings.Spells;
+import LiveBeings.States;
 import Maps.CityMap;
 import Maps.FieldMap;
 import Maps.Maps;
@@ -216,7 +217,7 @@ public class Game extends JPanel implements ActionListener
 			
 			int Level = Integer.parseInt(Input.get(ct)[3]) ;			
 			String dir = Player.MoveKeys[0] ;
-			String Thought = "Exist" ;
+			States state = States.idle ;
 			Size Size = new Size(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;
 			float[] Life = new float[] {Float.parseFloat(Input.get(ct)[5]) * DiffMult, Float.parseFloat(Input.get(ct)[5]) * DiffMult} ;
 			float[] Mp = new float[] {Float.parseFloat(Input.get(ct)[6]) * DiffMult, Float.parseFloat(Input.get(ct)[6]) * DiffMult} ;
@@ -229,7 +230,7 @@ public class Game extends JPanel implements ActionListener
 			int[][] Actions = new int[][] {{0, Integer.parseInt(Input.get(ct)[49]), 0}, {0, Integer.parseInt(Input.get(ct)[50]), 0}} ;
 			String currentAction = "" ;
 			int countmove = 0 ;
-			PersonalAttributes PA = new PersonalAttributes(Name, Level, ct, 0, null, null, dir, Thought, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
+			PersonalAttributes PA = new PersonalAttributes(Name, Level, ct, 0, null, null, dir, state, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
 
 			float[] PhyAtk = new float[] {Float.parseFloat(Input.get(ct)[8]) * DiffMult, 0, 0} ;
 			float[] MagAtk = new float[] {Float.parseFloat(Input.get(ct)[9]) * DiffMult, 0, 0} ;
@@ -849,7 +850,7 @@ public class Game extends JPanel implements ActionListener
 		{
 			if (0 < pet.getLife()[0])		// if the pet is alive
 			{
-				pet.setCombo(UtilS.RecordCombo(pet.getCombo(), pet.action, 1)) ;
+				pet.UpdateCombo() ;
 				pet.Move(player, allMaps) ;
 				if (player.isInBattle())
 				{
@@ -1081,7 +1082,7 @@ public class Game extends JPanel implements ActionListener
     	
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
-        	player.bestiary.addDiscoveredCreature(fieldMaps[i].getCreatures().get(0)) ;
+        	player.bestiary.addDiscoveredCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
     	}
     	/*System.out.println(player.getBag().getPotions()) ;
     	player.getBag().Add(Potion.getAll()[0], 4) ;

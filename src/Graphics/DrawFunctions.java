@@ -1140,7 +1140,6 @@ public class DrawFunctions
 	}*/
 	public void DrawPetWindow(Pet pet, Point Pos)
 	{
-		//	 TODO decide what to do with the text here
 		/*Font Namefont = new Font("SansSerif", Font.BOLD, 16) ;
 		Font font = new Font("SansSerif", Font.BOLD, 14) ;
 		Size size = new Size((int)(0.35*screenSize.x), (int)(0.5*screenSize.y)) ;

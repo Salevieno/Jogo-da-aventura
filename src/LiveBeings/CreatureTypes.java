@@ -2,9 +2,12 @@ package LiveBeings ;
 
 import java.awt.Color ;
 import java.awt.Image ;
+import java.awt.Point;
 import java.io.IOException;
 import java.util.Arrays;
 
+import Graphics.DrawPrimitives;
+import Utilities.Scale;
 import Utilities.UtilG;
 
 public class CreatureTypes 
@@ -57,6 +60,11 @@ public class CreatureTypes
 	public static void setNumberOfCreatureTypes(int num)
 	{
 		NumberOfCreatureTypes = num ;
+	}
+	
+	public void display(Point pos, Scale scale, DrawPrimitives DP)
+	{
+		DP.DrawImage(movingAni.idleGif, pos, scale, "TopLeft") ;
 	}
 	
 	/* Print methods */

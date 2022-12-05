@@ -25,7 +25,6 @@ public class Pet extends LiveBeing
 	private int spellPoints ;
 	private float[] ElemMult ;		// [Neutral, Water, Fire, Plant, Earth, Air, Thunder, Light, Dark, Snow]
 	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
-	private String[] Combo ;		// Record of the last movement
 	
 	public static int NumberOfSpells = 5 ;
 	public String action = "" ;
@@ -54,7 +53,6 @@ public class Pet extends LiveBeing
 		
 		ElemMult = new float[10] ;
 		StatusCounter = new int[8] ;
-		Combo = new String[1] ;
 			
     	AttributeIncrease = new float[8] ;
     	ChanceIncrease = new float[8] ;
@@ -73,7 +71,7 @@ public class Pet extends LiveBeing
 		Maps Map = null ;
 		Point Pos = new Point(0, 0) ;
 		String dir = Player.MoveKeys[0] ;
-		String Thought = "Exist" ;
+		States state = States.idle ;
 		Size size = new Size (new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getWidth(null), new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getHeight(null)) ;	
 		float[] Life = new float[] {Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2])} ;
 		float[] Mp = new float[] {Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3])} ;
@@ -86,7 +84,7 @@ public class Pet extends LiveBeing
 		int[][] Actions = new int[][] {{0, Integer.parseInt(PetProperties.get(Job)[33]), 0}, {0, Integer.parseInt(PetProperties.get(Job)[34]), 0}, {0, Integer.parseInt(PetProperties.get(Job)[35]), 0}} ;
 		String currentAction = "" ;
 		int countmove = 0 ;
-		return new PersonalAttributes(Name, Level, Job, ProJob, Map, Pos, dir, Thought, size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
+		return new PersonalAttributes(Name, Level, Job, ProJob, Map, Pos, dir, state, size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
 	}
 	
 	private static BattleAttributes InitializeBattleAttributes(int Job)
@@ -227,9 +225,9 @@ public class Pet extends LiveBeing
 	public int[] getSatiation() {return PA.getSatiation() ;}
 	public int[][] getActions() {return PA.Actions ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
-	public String[] getCombo() {return Combo ;}
+	public ArrayList<String> getCombo() {return PA.getCombo() ;}
 	public String getAction() {return action ;}
-	public void setCombo(String[] C) {Combo = C ;}
+	public void setCombo(ArrayList<String> newValue) {PA.setCombo(newValue); ;}
 
 	
 	
@@ -501,14 +499,6 @@ public class Pet extends LiveBeing
 		//	TODO add moving animations
 		float OverallAngle = DrawPrimitives.OverallAngle ;
 		DP.DrawImage(movingAni.idleGif, Pos, OverallAngle, scale, new boolean[] {false, false}, "Center", 1) ;
-	}
-
-	
-	@Override
-	public String toString() {
-		return "Pet [color=" + color + ", Job=" + Job + ", Skill=" + Arrays.toString(spell) + ", SkillPoints="
-				+ spellPoints + ", ElemMult=" + Arrays.toString(ElemMult) + ", StatusCounter="
-				+ Arrays.toString(StatusCounter) + ", Combo=" + Arrays.toString(Combo) + ", action=" + action + "]";
 	}
 	
 }

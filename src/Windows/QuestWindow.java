@@ -65,7 +65,7 @@ public class QuestWindow extends Window
 				String creatureName = creatureType.getPA().getName() ;
 				Point textPos = UtilG.Translate(windowPos, 15, 55 + i * font.getSize()) ;
 				DP.DrawText(textPos, "BotLeft", angle, creatureName + ":" + reqCreatureTypes.get(creatureType), font, textColor) ;
-				DP.DrawImage(creatureType.getMovingAnimations().idleGif, textPos, "TopLeft") ;
+				creatureType.display(textPos, new Scale(1, 1), DP) ;
 			}
 		}
 		

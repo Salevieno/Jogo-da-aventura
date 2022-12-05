@@ -72,6 +72,22 @@ public class LiveBeing
 		BA.getBattleActions()[0][2] = 0 ;
 	}
 	
+	public void UpdateCombo()
+	{
+		if (!PA.currentAction.equals(""))
+		{
+			if (PA.getCombo().size() <= 9)
+			{
+				PA.getCombo().add(PA.currentAction) ;
+			}
+			else
+			{
+				PA.getCombo().add(0, PA.currentAction) ;
+				PA.getCombo().remove(PA.getCombo().size() - 1) ;
+			}
+		}
+	}
+	
 	public boolean isAlive()
 	{
 		return 0 < PA.getLife()[0] ;

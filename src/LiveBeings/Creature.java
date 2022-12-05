@@ -178,7 +178,7 @@ public class Creature extends LiveBeing
 	public void act(Point playerPos, Maps map)
 	{
 		Think() ;	
-		if (getPA().getThought().equals("Move"))
+		if (getPA().getState().equals(States.moving))
 		{
 			Move(playerPos, getFollow(), map) ;
 			if (countmove % 5 == 0)
@@ -480,14 +480,13 @@ public class Creature extends LiveBeing
 	{
 		if (0.3 < Math.random())
 		{
-			String CurrentThought = PA.getThought() ;
-			if (CurrentThought.equals("Exist"))
+			if (PA.getState().equals(States.idle))
 			{
-				PA.setThought("Move") ;
+				PA.setState(States.moving) ;
 			}
-			else if (CurrentThought.equals("Move"))
+			else if (PA.getState().equals(States.moving))
 			{
-				PA.setThought("Exist") ;
+				PA.setState(States.idle) ;
 			}
 		}
 	}
