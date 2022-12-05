@@ -41,7 +41,7 @@ public class QuestWindow extends Window
 	public void display(ArrayList<Quests> quests, DrawPrimitives DP)
 	{
 		Point windowPos = new Point((int)(0.3 * Game.getScreen().getSize().x), (int)(0.15 * Game.getScreen().getSize().y)) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		float angle = DrawPrimitives.OverallAngle ;
 		Color textColor = Game.ColorPalette[0] ;
 		numberWindows = quests.size() ;
@@ -65,9 +65,7 @@ public class QuestWindow extends Window
 				String creatureName = creatureType.getPA().getName() ;
 				Point textPos = UtilG.Translate(windowPos, 15, 55 + i * font.getSize()) ;
 				DP.DrawText(textPos, "BotLeft", angle, creatureName + ":" + reqCreatureTypes.get(creatureType), font, textColor) ;
-				//Point Pos2 = new Point((int) (WindowPos.x + Utg.TextL("Creature 299: ", font, G)) + creatureTypes[CreatureType].getSize()[0]/2, (int) (WindowPos.y - size.y + 1.1*Utg.TextH(font.getSize()) + (i + 1.5)*sy)) ;
-				/*DrawCreature(Pos2, new int[] {creatureType.getPA().getSize().x / 2, creatureType.getPA().getSize().y / 2},
-						creatureType.getMovingAnimations().idleGif, creatureType.getColor()) ;*/
+				DP.DrawImage(creatureType.getMovingAnimations().idleGif, textPos, "TopLeft") ;
 			}
 		}
 		
@@ -80,10 +78,10 @@ public class QuestWindow extends Window
 			for (int i = 0 ; i <= reqItem.length - 1 ; i += 1)
 			{
 				Item item = reqItem[i] ;
-				Point textPos = UtilG.Translate(windowPos, 55, 55 + i * font.getSize()) ;
+				Point textPos = UtilG.Translate(windowPos, 65, 55 + i * font.getSize()) ;
 				DP.DrawText(textPos, "BotLeft", angle, item.getName(), font, textColor) ;
+				DP.DrawImage(item.getImage(), textPos, "TopLeft") ;
 			}
-			// TODO adicionar a imagem do item
 		}
 	}
 }

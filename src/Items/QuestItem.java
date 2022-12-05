@@ -3,6 +3,8 @@ package Items;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 import Main.Game;
 import Utilities.UtilG;
 
@@ -13,7 +15,7 @@ private int id ;
 	private static QuestItem[] AllQuests ;
 	public QuestItem(int id, String Name, String Description, int price, float dropChance)
 	{
-		super(Name, Description, null, price, dropChance) ;
+		super(Name, Description, new ImageIcon(Game.ImagesPath + "items.png").getImage(), price, dropChance) ;
 		this.id = id ;
 	}
 
