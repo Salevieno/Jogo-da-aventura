@@ -29,7 +29,7 @@ import Main.Game;
 import Utilities.Size;
 import Utilities.UtilG;
 
-public class Bag extends Window
+public class BagWindow extends Window
 {	
 	//private ArrayList<Map<Item, Integer>> menus ;
 	private Map<Potion, Integer> pot ;
@@ -46,7 +46,7 @@ public class Bag extends Window
 	public static Image MenuImage = new ImageIcon(Game.ImagesPath + "BagMenu.png").getImage() ;
     public static Image SlotImage = new ImageIcon(Game.ImagesPath + "BagSlot.png").getImage() ;
 	
-	public Bag(Map<Potion, Integer> pot, Map<Alchemy, Integer> alch, ArrayList<Forge> forge, ArrayList<PetItem> petItem,
+	public BagWindow(Map<Potion, Integer> pot, Map<Alchemy, Integer> alch, ArrayList<Forge> forge, ArrayList<PetItem> petItem,
 			ArrayList<Food> food, ArrayList<Arrow> arrow, ArrayList<Equip> equip, ArrayList<GeneralItem> genItem, ArrayList<Fab> fab, ArrayList<QuestItem> quest)
 	{
 		super(null, 10, 2, 0, 0) ;

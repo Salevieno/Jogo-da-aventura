@@ -43,7 +43,7 @@ import Utilities.Size;
 import Utilities.UtilG;
 import Utilities.UtilS;
 import Windows.PlayerAttributesWindow;
-import Windows.Bag;
+import Windows.BagWindow;
 import Windows.BestiaryWindow;
 import Windows.FabWindow;
 import Windows.HintsWindow;
@@ -60,7 +60,7 @@ public class Player extends LiveBeing
 	private String Language ;
 	private String Sex ;
 	private Color color ;
-	private Bag bag ;
+	private BagWindow bag ;
 	private SettingsWindow settings ;
 	private MapWindow map ;
 	private ArrayList<Recipe> recipes ;
@@ -139,7 +139,7 @@ public class Player extends LiveBeing
 
 		//Bag = new int[Items.NumberOfAllItems] ;
 		questWindow = new QuestWindow() ;
-		bag = new Bag(new HashMap<Potion, Integer>(), new HashMap<Alchemy, Integer>(), new ArrayList<Forge>(), new ArrayList<PetItem>(), new ArrayList<Food>(),
+		bag = new BagWindow(new HashMap<Potion, Integer>(), new HashMap<Alchemy, Integer>(), new ArrayList<Forge>(), new ArrayList<PetItem>(), new ArrayList<Food>(),
 				new ArrayList<Arrow>(), new ArrayList<Equip>(), new ArrayList<GeneralItem>(), new ArrayList<Fab>(), new ArrayList<QuestItem>()) ;
 		if (Job == 2)
 		{
@@ -358,7 +358,7 @@ public class Player extends LiveBeing
 	public Point getPos() {return PA.getPos() ;}
 	public Spells[] getSpell() {return spell ;}
 	public ArrayList<Quests> getQuest() {return quest ;}
-	public Bag getBag() {return bag ;}
+	public BagWindow getBag() {return bag ;}
 	public Equip[] getEquips() {return equips ;}
 	public int getSkillPoints() {return spellPoints ;}
 	public float[] getLife() {return PA.getLife() ;}
@@ -405,7 +405,7 @@ public class Player extends LiveBeing
 	public void setProJob(int PJ) {PA.setProJob(PJ) ;}
 	public void setMap(Maps M) {PA.setMap(M) ; PA.setContinent(M.getContinent()) ;}
 	public void setPos(Point P) {PA.setPos(P) ;}
-	public void setBag(Bag b) {bag = b ;}
+	public void setBag(BagWindow b) {bag = b ;}
 	public void setStep(int S) {PA.setStep(S) ;}
 	public void setCurrentAction(String CA) {PA.currentAction = CA ;}
 	public void setCombo(String[] C) {combo = C ;}
@@ -681,7 +681,14 @@ public class Player extends LiveBeing
 		}
 		if (PA.currentAction.equals(ActionKeys[9]))							// Quest window
 		{
+			//TODO
 			quest.add(Game.getAllQuests()[0]) ;
+			quest.add(Game.getAllQuests()[1]) ;
+			quest.add(Game.getAllQuests()[2]) ;
+			quest.add(Game.getAllQuests()[3]) ;
+			quest.add(Game.getAllQuests()[4]) ;
+			quest.add(Game.getAllQuests()[5]) ;
+			quest.add(Game.getAllQuests()[6]) ;
 			questWindow.open() ;
 		}
 		if (PA.currentAction.equals(ActionKeys[10]))							// Hints window
@@ -716,6 +723,10 @@ public class Player extends LiveBeing
 		if (fabWindow.isOpen())
 		{
 			fabWindow.navigate(PA.currentAction) ;
+		}
+		if (questWindow.isOpen())
+		{
+			questWindow.navigate(PA.currentAction) ;
 		}
 		if (settings.isOpen())
 		{

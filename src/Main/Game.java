@@ -450,15 +450,15 @@ public class Game extends JPanel implements ActionListener
     public Quests[] InitializeQuests(String Language, int PlayerJob)
     {
 		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
-		Quests[] quest = new Quests[input.size()] ;
-		for (int i = 0 ; i <= quest.length - 1 ; i += 1)
+		Quests[] quests = new Quests[input.size()] ;
+		for (int i = 0 ; i <= quests.length - 1 ; i += 1)
 		{
 			int id = Integer.parseInt(input.get(i)[0]) ;
-			quest[i] = new Quests(Integer.parseInt(input.get(i)[0])) ;
-			quest[i].Initialize(input.get(id), Language, id, PlayerJob) ;
+			quests[i] = new Quests(Integer.parseInt(input.get(i)[0])) ;
+			quests[i].Initialize(input.get(id), Language, id, PlayerJob) ;
 		}
 		
-		return quest ;
+		return quests ;
     }
    
     public Icon[] InitializeIcons(Size screenSize)
