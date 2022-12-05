@@ -148,11 +148,6 @@ public class Game extends JPanel implements ActionListener
 		//int[] ColorID = new int[] {6, 10, 20, 16, 3, 23, 27, 0, 25, 7, 5, 0, 26, 18, 15, 14, 21} ;
 		for (int i = 0 ; i <= npcType.length - 1 ; i += 1)
 		{
-			//int ID = Integer.parseInt(input.get(i)[0]) ;
-			//int step = 1;
-			//Point Pos = new Point((int)(UtilG.Round(Float.parseFloat(input.get(i)[3]) * screenSize.x / step, 0) * step), (int)(UtilG.Round(Float.parseFloat(input.get(i)[4]) * screenSize.y / step, 0) * step)) ;
-			//int Map = Integer.parseInt(input.get(i)[5]) ;
-			//String PosReltoBuilding = input.get(i)[6] ;
 			String Name = "" ;
 			String Info = "" ;
 			//if (Language.equals("P"))
@@ -167,31 +162,6 @@ public class Game extends JPanel implements ActionListener
 			//}
 			Color color = ColorPalette[0] ;
 			Image image = new ImageIcon(ImagesPath + "NPC_" + Name + ".png").getImage() ;
-			/*if (i < 17*4)
-			{
-				color = ColorPalette[ColorID[i % 17]] ;
-			}
-			else
-			{
-				color = ColorPalette[(int)((ColorPalette.length - 1)*Math.random())] ;
-			}*/
-			/*if (!Name.equals("Master") & !Name.equals("Mestre") & i != 85 & i != 87)
-			{
-				image = UtilG.ChangeImageColor(new ImageIcon(ImagesPath + "NPC.png").getImage(), new float[] {0, 0, 1, 1}, color, ColorPalette[6]) ;
-			}
-			if (Name.equals("Master") | Name.equals("Mestre"))
-			{
-				image = UtilG.ChangeImageColor(new ImageIcon(ImagesPath + "PlayerFront.png").getImage(), new float[] {0, 0, 1, 1}, color, ColorPalette[6]) ;
-			}*/
-			/*if (i == 85)
-			{
-				image = new ImageIcon(ImagesPath + "NPCHole.png").getImage() ;
-			}
-			if (i == 87)
-			{
-				image = new ImageIcon(ImagesPath + "NPCHoleInCave.png").getImage() ;
-			}*/
-			//String[] options = new String[] {"Sim", "N�o1545145415"} ;
 			npcType[i] = new NPCType(Name, Info, color, image) ;
 		}
     	
@@ -238,11 +208,11 @@ public class Game extends JPanel implements ActionListener
 				color[ct] = ColorPalette[5] ;
 			}
 			
-			MovingAnimations moveAni = new MovingAnimations(new ImageIcon(ImagesPath + "creature2_idle.gif").getImage(),
-					new ImageIcon(ImagesPath + "creature2_movingup.gif").getImage(),
-					new ImageIcon(ImagesPath + "creature2_movingdown.gif").getImage(),
-					new ImageIcon(ImagesPath + "creature2_movingleft.gif").getImage(),
-					new ImageIcon(ImagesPath + "creature2_movingright.gif").getImage()) ;
+			MovingAnimations moveAni = new MovingAnimations(new ImageIcon(ImagesPath + "creature" + (ct % 5) + "_idle.gif").getImage(),
+					new ImageIcon(ImagesPath + "creature" + (ct % 5) + "_movingup.gif").getImage(),
+					new ImageIcon(ImagesPath + "creature" + (ct % 5) + "_movingdown.gif").getImage(),
+					new ImageIcon(ImagesPath + "creature" + (ct % 5) + "_movingleft.gif").getImage(),
+					new ImageIcon(ImagesPath + "creature" + (ct % 5) + "_movingright.gif").getImage()) ;
 			
 			int Level = Integer.parseInt(Input.get(ct)[3]) ;			
 			String dir = Player.MoveKeys[0] ;
