@@ -10,7 +10,7 @@ import GameComponents.Items ;
 import GameComponents.NPCs ;
 import LiveBeings.Pet;
 import LiveBeings.Player;
-import LiveBeings.Spells;
+import LiveBeings.Spell;
 import Screen.Screen;
 import Utilities.Size;
 import Utilities.UtilG;
@@ -211,7 +211,7 @@ public class Animations
 		Point TargetPos = (Point) AniVars3[3] ;
 		Size AttackerSize = (Size) AniVars3[4] ;
 		Size TargetSize = (Size) AniVars3[5] ;
-		Spells skills = (Spells) AniVars3[6] ;
+		Spell skills = (Spell) AniVars3[6] ;
 		if (ShowSpellName)	// Spell name animation
 		{
 			Point Pos = new Point(AttackerPos.x, AttackerPos.y - AttackerSize.y / 2 - 50) ;
@@ -254,7 +254,7 @@ public class Animations
 		Point TargetPos = (Point) AniVars7[3] ;
 		Size AttackerSize = (Size) AniVars7[4] ;
 		Size TargetSize = (Size) AniVars7[5] ;
-		Spells skills = (Spells) AniVars7[6] ;
+		Spell skills = (Spell) AniVars7[6] ;
 		if (ShowSpellName)	// Skill name animation
 		{
 			Point Pos = new Point(AttackerPos.x, AttackerPos.y - AttackerSize.y - 50) ;

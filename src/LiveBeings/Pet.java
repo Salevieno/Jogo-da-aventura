@@ -6,9 +6,12 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon ;
 
+import GameComponents.SpellTypes;
 import Graphics.Animations;
 import Graphics.DrawPrimitives;
 import Utilities.Scale;
@@ -47,7 +50,7 @@ public class Pet extends LiveBeing
 		Color[] ColorPalette = Game.ColorPalette ;
 		Color[] PetColor = new Color[] {ColorPalette[3], ColorPalette[1], ColorPalette[18], ColorPalette[18]} ;
 		color = PetColor[Job] ;
-		spell = InitializePetSpells();
+		spells = InitializePetSpells();
 		spellPoints = 0 ;
 
 		
@@ -107,10 +110,12 @@ public class Pet extends LiveBeing
 		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
 	}
 
-	public Spells[] InitializePetSpells()
+	public ArrayList<Spell> InitializePetSpells()
     {
-		Spells[] petspells = new Spells[Pet.NumberOfSpells] ;
-		ArrayList<String[]> PetSpellsInput = UtilG.ReadcsvFile(Game.CSVPath + "PetSpells.csv") ;	
+		SpellType[] allSpellTypes = Game.getAllSpellTypes() ;
+		
+		ArrayList<Spell> petspells = new ArrayList<>() ;
+		//ArrayList<String[]> PetSpellsInput = UtilG.ReadcsvFile(Game.CSVPath + "PetSpells.csv") ;	
 		ArrayList<String[]> PetSpellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "PetSpellsBuffs.csv") ;
 		ArrayList<String[]> PetSpellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "PetSpellsNerfs.csv") ;
 		float[][][] PetSpellBuffs = new float[Pet.NumberOfSpells][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]		
@@ -160,18 +165,41 @@ public class Pet extends LiveBeing
 			}
 			//if (Language.equals("P"))
 			//{
-				spellsInfo[i] = new String[] {PetSpellsInput.get(ID)[42], PetSpellsInput.get(ID)[43]} ;
+				//spellsInfo[i] = new String[] {PetSpellsInput.get(ID)[42], PetSpellsInput.get(ID)[43]} ;
 			//}
 			//else if (Language.equals("E"))
 			//{
 			//	spellsInfo[i] = new String[] {PetSpellsInput.get(ID)[44], PetSpellsInput.get(ID)[45]} ;
 			//}
 			//String Name, int MaxLevel, float MpCost, String Type, int[][] PreRequisites, int Cooldown, int Duration, float[][] Buffs, float[][] Nerfs, float[] AtkMod, float[] DefMod, float[] DexMod, float[] AgiMod, float[] AtkCritMod, float[] DefCritMod, float[] StunMod, float[] BlockMod, float[] BloodMod, float[] PoisonMod, float[] SilenceMod, String Elem, String[] Info
-			String Name = PetSpellsInput.get(ID)[4] ;
+			/*String Name = PetSpellsInput.get(ID)[4] ;
 			int MaxLevel = Integer.parseInt(PetSpellsInput.get(ID)[5]) ;
 			float MpCost = Float.parseFloat(PetSpellsInput.get(ID)[6]) ;
-			String Type = PetSpellsInput.get(ID)[7] ;
-			int[][] PreRequisites = new int[][] {{Integer.parseInt(PetSpellsInput.get(ID)[8]), Integer.parseInt(PetSpellsInput.get(ID)[9])}, {Integer.parseInt(PetSpellsInput.get(ID)[10]), Integer.parseInt(PetSpellsInput.get(ID)[11])}, {Integer.parseInt(PetSpellsInput.get(ID)[12]), Integer.parseInt(PetSpellsInput.get(ID)[13])}} ;
+			SpellTypes Type ;
+			if (PetSpellsInput.get(ID)[7].equals("Active"))
+			{
+				Type = SpellTypes.active ;
+			}
+			else if (PetSpellsInput.get(ID)[7].equals("Passive"))
+			{
+				Type = SpellTypes.passive ;
+			}
+			else if (PetSpellsInput.get(ID)[7].equals("Offensive"))
+			{
+				Type = SpellTypes.offensive ;
+			}
+			else
+			{
+				Type = SpellTypes.support ;
+			}
+			Map<Spell, Integer> preRequisites = new HashMap<>() ;
+			for (int p = 0 ; p <= 6 - 1 ; p += 2)
+			{
+				if (-1 < Integer.parseInt(PetSpellsInput.get(ID)[p + 8]))
+				{
+					preRequisites.put(spell.get(Integer.parseInt(PetSpellsInput.get(ID)[p + 8])), Integer.parseInt(PetSpellsInput.get(ID)[p + 9])) ;
+				}
+			}
 			int Cooldown = Integer.parseInt(PetSpellsInput.get(ID)[14]) ;
 			int Duration = Integer.parseInt(PetSpellsInput.get(ID)[15]) ;
 			float[] Atk = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[16]), Float.parseFloat(PetSpellsInput.get(ID)[17])} ;
@@ -185,12 +213,12 @@ public class Pet extends LiveBeing
 			float[] Blood = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[32]), Float.parseFloat(PetSpellsInput.get(ID)[33]), Float.parseFloat(PetSpellsInput.get(ID)[34])} ;
 			float[] Poison = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[35]), Float.parseFloat(PetSpellsInput.get(ID)[36]), Float.parseFloat(PetSpellsInput.get(ID)[37])} ;
 			float[] Silence = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[38]), Float.parseFloat(PetSpellsInput.get(ID)[39]), Float.parseFloat(PetSpellsInput.get(ID)[40])} ;
-			String Elem = PetSpellsInput.get(ID)[41] ;
+			String Elem = PetSpellsInput.get(ID)[41] ;*/
 			
-			petspells[i] = new Spells(Name, MaxLevel, MpCost, Type, PreRequisites, Cooldown, Duration, PetSpellBuffs[i], PetSpellNerfs[i], Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i]) ;	
+			petspells.add(new Spell(allSpellTypes[ID])) ;	
 		}
 		
-		petspells[0].incLevel(1) ;
+		petspells.get(0).incLevel(1) ;
 		return petspells ;
     }
 	
@@ -200,7 +228,7 @@ public class Pet extends LiveBeing
 	public int getJob() {return Job ;}
 	public MovingAnimations getMovingAnimations() {return movingAni ;}
 	public Point getPos() {return PA.getPos() ;}
-	public Spells[] getSpells() {return spell ;}
+	public ArrayList<Spell> getSpells() {return spells ;}
 	public int getSpellPoints() {return spellPoints ;}
 	public float[] getLife() {return PA.getLife() ;}
 	public float[] getMp() {return PA.getMp() ;}
@@ -422,7 +450,7 @@ public class Pet extends LiveBeing
 			bW.write("\nPet color: \n" + getColor()) ;
 			bW.write("\nPet job: \n" + getJob()) ;
 			bW.write("\nPet coords: \n" + getPos()) ;
-			bW.write("\nPet skill: \n" + Arrays.toString(getSpells())) ;
+			//bW.write("\nPet skill: \n" + Arrays.toString(getSpells())) ;
 			bW.write("\nPet skillPoints: \n" + getSpellPoints()) ;
 			bW.write("\nPet life: \n" + Arrays.toString(getLife())) ;
 			bW.write("\nPet mp: \n" + Arrays.toString(getMp())) ;

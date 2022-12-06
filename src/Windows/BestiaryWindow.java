@@ -30,12 +30,12 @@ public class BestiaryWindow extends Window
 	
 	public void navigate(String action)
 	{
-		int windowLimit = 0 ;
+		/*int windowLimit = 0 ;
 		if (discoveredCreatures != null)
 		{
-			windowLimit = Math.max(discoveredCreatures.size() - 1, 0)/5 ;
+			windowLimit = Math.max(discoveredCreatures.size() - 1, 0) / 5 ;
 		}
-		window = UtilS.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, windowLimit) ;
+		window = UtilS.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, windowLimit) ;*/
 	}
 	
 	public void displayCreatureInfo(Point windowPos, Player player, CreatureTypes creature, DrawPrimitives DP)

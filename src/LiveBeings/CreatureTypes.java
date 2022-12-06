@@ -4,6 +4,7 @@ import java.awt.Color ;
 import java.awt.Image ;
 import java.awt.Point;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import Graphics.DrawPrimitives;
@@ -16,7 +17,7 @@ public class CreatureTypes
 	protected MovingAnimations movingAni ;
 	protected PersonalAttributes PA ;
 	protected BattleAttributes BA ;
-	private Spells[] spell ;
+	private ArrayList<Spell> spell ;
 	private int[] Bag ;
 	private int Gold ;
 	private Color color ;
@@ -24,7 +25,7 @@ public class CreatureTypes
 	
 	private static int NumberOfCreatureTypes ;
 	
-	public CreatureTypes(int Type, MovingAnimations movingAni, PersonalAttributes PA, BattleAttributes BA, Spells[] spell, int[] Bag, int Gold, Color color, int[] StatusCounter)
+	public CreatureTypes(int Type, MovingAnimations movingAni, PersonalAttributes PA, BattleAttributes BA, ArrayList<Spell> spell, int[] Bag, int Gold, Color color, int[] StatusCounter)
 	{
 		this.Type = Type ;
 		this.movingAni = movingAni ;
@@ -41,13 +42,13 @@ public class CreatureTypes
 	public MovingAnimations getMovingAnimations() {return movingAni ;}
 	public PersonalAttributes getPA() {return PA ;}
 	public BattleAttributes getBA() {return BA ;}
-	public Spells[] getSkill() {return spell ;}
+	public ArrayList<Spell> getSpell() {return spell ;}
 	public int[] getBag() {return Bag ;}
 	public int getGold() {return Gold ;}
 	public Color getColor() {return color ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public void setID(int I) {Type = I ;}
-	public void setSkill(Spells[] S) {spell = S ;}
+	public void setSpell(ArrayList<Spell> S) {spell = S ;}
 	public void setBag(int[] B) {Bag = B ;}
 	public void setGold(int G) {Gold = G ;}
 	public void setColor(Color C) {color = C ;}
@@ -73,12 +74,5 @@ public class CreatureTypes
 		//TODO print attributes
 		System.out.println();
 		System.out.println("** Creature attributes **");
-	}
-
-	@Override
-	public String toString() {
-		return "CreatureTypes [Type=" + Type + ", movingAni=" + movingAni + ", PA=" + PA + ", BA=" + BA + ", Skill="
-				+ Arrays.toString(spell) + ", Bag=" + Arrays.toString(Bag) + ", Gold=" + Gold + ", color=" + color
-				+ ", StatusCounter=" + Arrays.toString(StatusCounter) + "]";
 	}
 }

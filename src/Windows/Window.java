@@ -1,11 +1,9 @@
 package Windows;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 
-import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
 import Main.Game;
 import Utilities.Size;
@@ -118,7 +116,7 @@ public class Window
 		}
 	}
 	
-	public void drawGenericWindow(DrawPrimitives DP)
+	/*public void drawGenericWindow(DrawPrimitives DP)
 	{
 		Size screenDim = Game.getScreen().getSize() ;
 		Point pos = new Point((int) (0.5 * screenDim.x), (int) (0.5 * screenDim.y)) ;
@@ -142,5 +140,5 @@ public class Window
 		{
 			drawGenericWindow(DP) ;
 		}
-	}
+	}*/
 }

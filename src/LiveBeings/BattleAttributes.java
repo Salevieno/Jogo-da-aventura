@@ -190,7 +190,7 @@ public class BattleAttributes
 	{
 		return 0 < SpecialStatus[0] ;
 	}
-	public boolean actionisskill()
+	public boolean actionIsSpell()
 	{
 		return UtilG.isNumeric(CurrentAction) ;
 	}

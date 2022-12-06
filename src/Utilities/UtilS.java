@@ -21,7 +21,7 @@ import Items.Equip;
 import LiveBeings.Creature;
 import LiveBeings.Pet;
 import LiveBeings.Player;
-import LiveBeings.Spells;
+import LiveBeings.Spell;
 import Main.Game;
 import Maps.FieldMap;
 import Maps.Maps;
@@ -256,15 +256,6 @@ public class UtilS
 		return null ;
 	}
 	
-	public static boolean ActionIsSkill(String[] SkillKeys, String playerMove)
-	{
-		if(-1 < UtilG.IndexOf(SkillKeys, playerMove))
-		{
-			return true ;
-		}
-		return false ;
-	}
-	
 	public static boolean IsInRange(Point Pos1, Point Pos2, float Range)
 	{
 		boolean isInRange = false ;
@@ -381,30 +372,7 @@ public class UtilS
 		return ElementNames[ElemID] ;
 	}
 	
-	public static boolean SpellIsAvailable(Player player, Spells[] spells, int SelectedSkill)
-	{
-		boolean SkillAvailability = false ;
-		int cont = 0 ;	
-		if (0 <= SelectedSkill)
-		{
-			for (int i = 0 ; i <= spells[SelectedSkill].getPreRequisites().length - 1 ; ++i)
-			{
-				int PreReqID = spells[SelectedSkill].getPreRequisites()[i][0] ;
-				if (0 <= PreReqID)
-				{
-					if (player.getSpell()[spells[SelectedSkill].getPreRequisites()[i][0]].getLevel() < spells[SelectedSkill].getPreRequisites()[i][1])
-					{
-						++cont ;
-					}
-				}	
-			}
-			if (cont == 0)
-			{
-				SkillAvailability = true ;
-			}	
-		}
-		return SkillAvailability ;
-	}
+	
 
 	public static boolean PlayerHasTheIngredients(int[] Bag, int[][] Ingredients, int[][] IngredientAmounts, int FabAmount, int SelectedItem)
 	{
@@ -803,7 +771,7 @@ public class UtilS
 		}
 	}	*/
 		
-	public void BattleSimulation(Player player, Pet pet, Creature creature, Spells[] skills, Spells[] petskills, int[] ActivePlayerSkills, String[] MoveKeys, Items[] items, Quests[] quest, int NumberOfSimulations, String[] ActionKeys, String[] SkillKeys, Battle B, DrawFunctions DF)
+	public void BattleSimulation(Player player, Pet pet, Creature creature, Spell[] skills, Spell[] petskills, int[] ActivePlayerSkills, String[] MoveKeys, Items[] items, Quests[] quest, int NumberOfSimulations, String[] ActionKeys, String[] SkillKeys, Battle B, DrawFunctions DF)
 	{
 		int move = 0 ;
 		//String[] ItemsObtained = new String[10] ;

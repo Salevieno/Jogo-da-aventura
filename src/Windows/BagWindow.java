@@ -193,7 +193,7 @@ public class BagWindow extends Window
 				float PotMult = 1 ;
 				if (player.getPA().getJob() == 3)
 				{
-					PotMult += 0.06 * player.getSpell()[7].getLevel() ;
+					PotMult += 0.06 * player.getSpell().get(7).getLevel() ;
 				}
 				
 				player.getPA().incLife(pot.getLifeHeal() * player.getPA().getLife()[1] * PotMult) ;

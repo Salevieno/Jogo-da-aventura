@@ -13,6 +13,8 @@ import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon ;
 import javax.swing.JPanel ;
@@ -26,6 +28,7 @@ import GameComponents.NPCType;
 import GameComponents.NPCs ;
 import GameComponents.Projectiles ;
 import GameComponents.Quests ;
+import GameComponents.SpellTypes;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Graphics.DrawPrimitives ;
@@ -47,7 +50,8 @@ import LiveBeings.MovingAnimations;
 import LiveBeings.PersonalAttributes;
 import LiveBeings.Pet;
 import LiveBeings.Player;
-import LiveBeings.Spells;
+import LiveBeings.Spell;
+import LiveBeings.SpellType;
 import LiveBeings.States;
 import Maps.CityMap;
 import Maps.FieldMap;
@@ -97,6 +101,7 @@ public class Game extends JPanel implements ActionListener
 	private static BuildingType[] buildingTypes ;
 	private static NPCType[] NPCTypes ;
 	private static Item[] allItems ;
+	private static SpellType[] allSpellTypes ;
 	//private static NPCs[] allNPCs ;
 	private static Quests[] allQuests ;
 	private static Battle bat ;
@@ -119,6 +124,7 @@ public class Game extends JPanel implements ActionListener
 	//public static NPCs[] getNPCs(){return allNPCs ;}
 	public static Quests[] getAllQuests(){return allQuests ;}
 	public static Item[] getAllItems() {return allItems ;}
+	public static SpellType[] getAllSpellTypes() {return allSpellTypes ;}
 	
     public void FirstInitialization(int[] WinDim)
     {
@@ -249,9 +255,12 @@ public class Game extends JPanel implements ActionListener
 			int[][] BattleActions = new int[][] {{0, Integer.parseInt(Input.get(ct)[51]), 0}} ;
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
 						
-			Spells[] spell = new Spells[] {
-											new Spells("Spell " + Integer.parseInt(Input.get(ct)[4]), 5, 10, "Offensive", null, 100, -1, null, null, null, null, null, null, null, null, null, null, null, null, null, "n", new String[] {"Spell info"})
-										} ;
+			ArrayList<Spell> spell = new ArrayList<>() ;
+			spell.add(new Spell(allSpellTypes[0])
+						/*new Spell("Spell " + Integer.parseInt(Input.get(ct)[4]), 5, 10, SpellTypes.offensive,
+								null, 100, -1, null, null, null, null, null, null, null, null, null, null, null, null, null, "n", new String[] {"Spell info"}*/
+						
+					) ;
 			int[] Bag = new int[] {Integer.parseInt(Input.get(ct)[37]), Integer.parseInt(Input.get(ct)[38]), Integer.parseInt(Input.get(ct)[39]), Integer.parseInt(Input.get(ct)[40]), Integer.parseInt(Input.get(ct)[41]), Integer.parseInt(Input.get(ct)[42]), Integer.parseInt(Input.get(ct)[43]), Integer.parseInt(Input.get(ct)[44]), Integer.parseInt(Input.get(ct)[45]), Integer.parseInt(Input.get(ct)[46])} ;
 			int Gold = Integer.parseInt(Input.get(ct)[47]) ;
 			int[] StatusCounter = new int[8] ;
@@ -495,6 +504,107 @@ public class Game extends JPanel implements ActionListener
     	return plusSignIcon ;
     }
  	
+    private SpellType[] InitializeSpellTypes(String Language)
+    {
+    	// TODO
+    	//int NumberOfAllSkills = 178 ;
+    	//int NumberOfSpells = Player.NumberOfSpellsPerJob[PA.Job] ;
+    	int NumberOfAtt = 14 ;
+    	int NumberOfBuffs = 12 ;
+    	ArrayList<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;	
+    	SpellType[] allSpellTypes = new SpellType[spellTypesInput.size()] ;
+    	
+    	
+    	ArrayList<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
+    	ArrayList<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
+		float[][][] spellBuffs = new float[allSpellTypes.length][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+		float[][][] spellNerfs = new float[allSpellTypes.length][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+		String[][] spellsInfo = new String[allSpellTypes.length][2] ;
+		for (int i = 0 ; i <= allSpellTypes.length - 1 ; i += 1)
+		{
+			int ID = i ;
+			int BuffCont = 0, NerfCont = 0 ;
+			for (int j = 0 ; j <= NumberOfAtt - 1 ; j += 1)
+			{
+				if (j == 11 | j == 12)
+				{
+					for (int k = 0 ; k <= NumberOfBuffs - 1 ; k += 1)
+					{
+						spellBuffs[i][j][k] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
+						spellNerfs[i][j][k] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
+						NerfCont += 1 ;
+						BuffCont += 1 ;
+					}
+				}
+				else
+				{
+					spellBuffs[i][j][0] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
+					spellBuffs[i][j][1] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 4]) ;
+					spellBuffs[i][j][2] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 5]) ;
+					spellNerfs[i][j][0] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
+					spellNerfs[i][j][1] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 4]) ;
+					spellNerfs[i][j][2] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 5]) ;
+					NerfCont += 3 ;
+					BuffCont += 3 ;
+				}
+			}
+			if (Language.equals("P"))
+			{
+				spellsInfo[i] = new String[] {spellTypesInput.get(ID)[42], spellTypesInput.get(ID)[43]} ;
+			}
+			else if (Language.equals("E"))
+			{
+				spellsInfo[i] = new String[] {spellTypesInput.get(ID)[44], spellTypesInput.get(ID)[45]} ;
+			}
+			String Name = spellTypesInput.get(ID)[4] ;
+			int MaxLevel = Integer.parseInt(spellTypesInput.get(ID)[5]) ;
+			float MpCost = Float.parseFloat(spellTypesInput.get(ID)[6]) ;
+			SpellTypes Type ;
+			if (spellTypesInput.get(ID)[7].equals("Active"))
+			{
+				Type = SpellTypes.active ;
+			}
+			else if (spellTypesInput.get(ID)[7].equals("Passive"))
+			{
+				Type = SpellTypes.passive ;
+			}
+			else if (spellTypesInput.get(ID)[7].equals("Offensive"))
+			{
+				Type = SpellTypes.offensive ;
+			}
+			else
+			{
+				Type = SpellTypes.support ;
+			}
+			Map<SpellType, Integer> preRequisites = new HashMap<>() ;
+			for (int p = 0 ; p <= 6 - 1 ; p += 2)
+			{
+				if (-1 < Integer.parseInt(spellTypesInput.get(ID)[p + 8]))
+				{
+					preRequisites.put(allSpellTypes[Integer.parseInt(spellTypesInput.get(ID)[p + 8])], Integer.parseInt(spellTypesInput.get(ID)[p + 9])) ;
+				}
+			}
+			int Cooldown = Integer.parseInt(spellTypesInput.get(ID)[14]) ;
+			int Duration = Integer.parseInt(spellTypesInput.get(ID)[15]) ;
+			float[] Atk = new float[] {Float.parseFloat(spellTypesInput.get(ID)[16]), Float.parseFloat(spellTypesInput.get(ID)[17])} ;
+			float[] Def = new float[] {Float.parseFloat(spellTypesInput.get(ID)[18]), Float.parseFloat(spellTypesInput.get(ID)[19])} ;
+			float[] Dex = new float[] {Float.parseFloat(spellTypesInput.get(ID)[20]), Float.parseFloat(spellTypesInput.get(ID)[21])} ;
+			float[] Agi = new float[] {Float.parseFloat(spellTypesInput.get(ID)[22]), Float.parseFloat(spellTypesInput.get(ID)[23])} ;
+			float[] AtkCrit = new float[] {Float.parseFloat(spellTypesInput.get(ID)[24])} ;
+			float[] DefCrit = new float[] {Float.parseFloat(spellTypesInput.get(ID)[25])} ;
+			float[] Stun = new float[] {Float.parseFloat(spellTypesInput.get(ID)[26]), Float.parseFloat(spellTypesInput.get(ID)[27]), Float.parseFloat(spellTypesInput.get(ID)[28])} ;
+			float[] Block = new float[] {Float.parseFloat(spellTypesInput.get(ID)[29]), Float.parseFloat(spellTypesInput.get(ID)[30]), Float.parseFloat(spellTypesInput.get(ID)[31])} ;
+			float[] Blood = new float[] {Float.parseFloat(spellTypesInput.get(ID)[32]), Float.parseFloat(spellTypesInput.get(ID)[33]), Float.parseFloat(spellTypesInput.get(ID)[34])} ;
+			float[] Poison = new float[] {Float.parseFloat(spellTypesInput.get(ID)[35]), Float.parseFloat(spellTypesInput.get(ID)[36]), Float.parseFloat(spellTypesInput.get(ID)[37])} ;
+			float[] Silence = new float[] {Float.parseFloat(spellTypesInput.get(ID)[38]), Float.parseFloat(spellTypesInput.get(ID)[39]), Float.parseFloat(spellTypesInput.get(ID)[40])} ;
+			String Elem = spellTypesInput.get(ID)[41] ;
+			allSpellTypes[i] = new SpellType(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, spellBuffs[i], spellNerfs[i],
+					Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i]) ;	
+		}
+		
+		return allSpellTypes ;
+    }
+    
     public void MainInitialization()
 	{
  		DayDuration = 120000 ;
@@ -522,7 +632,7 @@ public class Game extends JPanel implements ActionListener
 		plusSignIcon = InitializeIcons(screen.getSize()) ;
 
 		// Initialize classes
-    	bat = new Battle(player.getSpell(), pet.getSpells(), music.getSoundEffect(), new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
+    	bat = new Battle(music.getSoundEffect(), new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
 	}
   	
 	public void Opening()
@@ -1041,6 +1151,7 @@ public class Game extends JPanel implements ActionListener
     	sky = new Sky() ;
     	screen.setBorders(new int[] {0, sky.height, screen.getSize().x, screen.getSize().y});
     	screen.setMapCenter() ;
+    	allSpellTypes = InitializeSpellTypes(GameLanguage) ;
 		creatureTypes = InitializeCreatureTypes(GameLanguage, 1) ;
 		plusSignIcon = InitializeIcons(screen.getSize()) ;
 		allItems = InitializeAllItems() ;
@@ -1064,10 +1175,10 @@ public class Game extends JPanel implements ActionListener
     	pet = InitializePet() ;
     	pet.getPA().setLife(new float[] {100, 100, 0});
     	pet.getPA().setPos(player.getPos());
-    	bat = new Battle(player.getSpell(), pet.getSpells(), music.getSoundEffect(), new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
+    	bat = new Battle(music.getSoundEffect(), new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
     	
     	
-    	
+    	player.InitializeSpells() ;
     	player.setMap(fieldMaps[9]) ;
     	player.setPos(new Point(60, screen.getSize().y / 2)) ;
     	OpeningIsOn = false ;

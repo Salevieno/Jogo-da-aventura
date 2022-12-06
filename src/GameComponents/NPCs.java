@@ -16,7 +16,7 @@ import LiveBeings.CreatureTypes;
 import LiveBeings.Creature;
 import LiveBeings.Pet;
 import LiveBeings.Player;
-import LiveBeings.Spells;
+import LiveBeings.Spell;
 import Main.Game;
 import Maps.Maps;
 import Utilities.Scale;

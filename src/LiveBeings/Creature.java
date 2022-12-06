@@ -4,6 +4,7 @@ import java.awt.Color ;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import Actions.BattleActions;
@@ -35,10 +36,10 @@ public class Creature extends LiveBeing
 	
  	public Creature(CreatureTypes CT)
 	{
- 		// int Type, Image image, Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif, int Map, int[] Size, int[] Skill, PersonalAttributes PA, BattleAttributes BA, int[] Bag, int Gold, Color color, int[] StatusCounter, String[] Combo
+ 		// int Type, Image image, Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif, int Map, int[] Size, int[] Spell, PersonalAttributes PA, BattleAttributes BA, int[] Bag, int Gold, Color color, int[] StatusCounter, String[] Combo
 		super(CT.getID(), CT.getPA(), CT.getBA(), CT.getMovingAnimations(), new PlayerAttributesWindow()) ;
 		this.type = CT ;
-		spell = CT.getSkill() ;
+		spells = CT.getSpell() ;
 		this.Bag = CT.getBag() ;
 		this.Gold = CT.getGold() ;
 		this.color = CT.getColor() ;
@@ -64,7 +65,7 @@ public class Creature extends LiveBeing
 	public int getMap() {return Map ;}
 	public Size getSize() {return PA.getSize() ;}
 	public Point getPos() {return PA.getPos() ;}
-	public Spells[] getSkill() {return spell ;}
+	public ArrayList<Spell> getSpell() {return spells ;}
 	public float[] getLife() {return PA.getLife() ;}
 	public float[] getMp() {return PA.getMp() ;}
 	public float getRange() {return PA.getRange() ;}
@@ -101,9 +102,9 @@ public class Creature extends LiveBeing
 	{
 		return new String[] {PA.Elem[0], PA.Elem[0]} ;
 	}
-	public boolean hasEnoughMP(int skillID)
+	public boolean hasEnoughMP(int spellID)
 	{
-		int MPcost = 10 * skillID ;
+		int MPcost = 10 * spellID ;
 		return (MPcost <= PA.getMp()[0]) ;
 	}
 	
@@ -212,10 +213,10 @@ public class Creature extends LiveBeing
 		}
 		if (move == 2)
 		{
-			BA.setCurrentAction(String.valueOf((int)(5 * Math.random() - 0.01))) ;	// Skill
+			BA.setCurrentAction(String.valueOf((int)(5 * Math.random() - 0.01))) ;	// Spell
 		}
 	}
-	public int useSkill(int skillID, Player player)
+	public int useSpell(int spellID, Player player)
 	{
 		int magicalType = type.getID() % 5 ;
 		int MPCost = 10 ;
@@ -224,7 +225,7 @@ public class Creature extends LiveBeing
 		float randomAmp = (float) 0.1 ;
 		BattleAttributes playerBA = player.getBA() ;
 		
-		if (skillID == 0)	// magical atk
+		if (spellID == 0)	// magical atk
 		{
 			effect = BattleActions.CalcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock()[1]) ;
 			damage = BattleActions.CalcAtk(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {PA.Elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, 1, randomAmp) ; // player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
@@ -235,44 +236,44 @@ public class Creature extends LiveBeing
 		}
 		if (magicalType == 1)
 		{
-			if (skillID == 1)	// heal
+			if (spellID == 1)	// heal
 			{
 				PA.incLife(BA.TotalMagAtk());
 			}
-			if (skillID == 2)	// knockback
+			if (spellID == 2)	// knockback
 			{
 				player.setPos(BattleActions.knockback(player.getPos(), 6 * PA.getStep(), PA)) ;
 			}
 		}
 		if (magicalType == 2)
 		{
-			if (skillID == 1)	// stun
+			if (spellID == 1)	// stun
 			{
 				
 			}
-			if (skillID == 2)	// blood
+			if (spellID == 2)	// blood
 			{
 				
 			}
 		}
 		if (magicalType == 3)
 		{
-			if (skillID == 1)	// poison
+			if (spellID == 1)	// poison
 			{
 				
 			}
-			if (skillID == 2)	// silence
+			if (spellID == 2)	// silence
 			{
 				
 			}
 		}
 		if (magicalType == 4)
 		{
-			if (skillID == 1)	// double physical atk
+			if (spellID == 1)	// double physical atk
 			{
 				
 			}
-			if (skillID == 2)	// critical magical atk
+			if (spellID == 2)	// critical magical atk
 			{
 				
 			}
@@ -354,7 +355,7 @@ public class Creature extends LiveBeing
 		}	
 	}
 
-	public void ApplyBuffsAndNerfs(String action, String type, int att, int BuffNerfLevel, Spells skills, boolean SkillIsActive)
+	public void ApplyBuffsAndNerfs(String action, String type, int att, int BuffNerfLevel, Spell spells, boolean SpellIsActive)
 	{
 		int ActionMult = 1 ;
 		float[][] Buff = new float[14][5] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
@@ -362,11 +363,11 @@ public class Creature extends LiveBeing
 		float[][] Buffs = null ;
 		if (type.equals("buffs"))
 		{
-			Buffs = skills.getBuffs() ;
+			Buffs = spells.getBuffs() ;
 		}
 		else if (type.equals("nerfs"))
 		{
-			Buffs = skills.getNerfs() ;
+			Buffs = spells.getNerfs() ;
 		}
 		OriginalValue = new float[] {PA.getLife()[1], PA.getMp()[1], BA.getPhyAtk()[0], BA.getMagAtk()[0], BA.getPhyDef()[0], BA.getMagDef()[0], BA.getDex()[0], BA.getAgi()[0], BA.getCrit()[0], BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2], BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
 		if (action.equals("deactivate"))
@@ -406,7 +407,7 @@ public class Creature extends LiveBeing
 		{
 			Buff[att][0] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
 		}
-		if (!SkillIsActive)
+		if (!SpellIsActive)
 		{
 			PA.getLife()[0] += Buff[0][0] ;
 			PA.getMp()[0] += Buff[1][0] ;
@@ -432,7 +433,7 @@ public class Creature extends LiveBeing
 			BA.getSilence()[1] += Buff[13][0] ;
 		}	
 	}
-	public void TakeBloodAndPoisonDamage(Player player, boolean[][] SkillBuffIsActive)
+	public void TakeBloodAndPoisonDamage(Player player, boolean[][] SpellBuffIsActive)
 	{
 		float BloodDamage = 0 ;
 		float PoisonDamage = 0 ;
@@ -453,7 +454,7 @@ public class Creature extends LiveBeing
 		{
 			player.getStats()[20] += PoisonDamage ;
 		}
-		if (player.getJob() == 4 & 0 < player.getSpell()[6].getLevel() & SkillBuffIsActive[6][0])	// Tasty
+		if (player.getJob() == 4 & 0 < player.getSpell().get(6).getLevel() & SpellBuffIsActive[6][0])	// Tasty
 		{
 			player.getLife()[0] += BloodDamage ;
 			if (player.getLife()[1] < player.getLife()[0])

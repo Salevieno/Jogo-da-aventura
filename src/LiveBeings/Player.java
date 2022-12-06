@@ -23,6 +23,7 @@ import GameComponents.Icon;
 import GameComponents.Items;
 import GameComponents.NPCs;
 import GameComponents.Quests;
+import GameComponents.SpellTypes;
 import Graphics.Animations ;
 import Graphics.DrawFunctions ;
 import Graphics.DrawPrimitives ;
@@ -50,6 +51,7 @@ import Windows.HintsWindow;
 import Windows.MapWindow;
 import Windows.QuestWindow;
 import Windows.SettingsWindow;
+import Windows.Window;
 import Main.Game ;
 import Maps.Collectible;
 import Maps.FieldMap;
@@ -96,9 +98,9 @@ public class Player extends LiveBeing
 	//private float[] ElemMult ;	// 0: Neutral, 1: Water, 2: Fire, 3: Plant, 4: Earth, 5: Air, 6: Thunder, 7: Light, 8: Dark, 9: Snow
 	
 	// TODO essas vari�veis v�o para spells
-	private boolean[] spellIsActive ;	// Tells if the spell is currently active
-	private int[] spellDurationCounter ;	// [0: skill 0, 1: skill 1...]
-	private int[] spellCooldownCounter ;	// [0: skill 0, 1: skill 1...]
+	//private boolean[] spellIsActive ;	// Tells if the spell is currently active
+	//private int[] spellDurationCounter ;	// [0: skill 0, 1: skill 1...]
+	//private int[] spellCooldownCounter ;	// [0: skill 0, 1: skill 1...]
 	private int[] statusCounter ;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence, Drunk]
 	
 	
@@ -117,12 +119,12 @@ public class Player extends LiveBeing
 	public static String[] SpellKeys = new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"} ;
 	public static ArrayList<String[]> Properties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
 	public static ArrayList<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
-	public static int[] NumberOfSkillsPerJob = new int[] {14 + 20, 15 + 20, 15 + 20, 14 + 20, 14 + 20} ;
-	public static int[] CumNumberOfSkillsPerJob = new int[] {0, 34, 69, 104, 138} ;
+	public static int[] NumberOfSpellsPerJob = new int[] {14 + 20, 15 + 20, 15 + 20, 14 + 20, 14 + 20} ;
+	public static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public static Image[] AttWindowImages = new Image[] {new ImageIcon(Game.ImagesPath + "PlayerAttWindow1.png").getImage(), new ImageIcon(Game.ImagesPath + "PlayerAttWindow2.png").getImage(), new ImageIcon(Game.ImagesPath + "PlayerAttWindow3.png").getImage()} ;
     public static Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
    
-    public static Image TentImage = new ImageIcon(Game.ImagesPath + "Tent.png").getImage() ;   
+    public static Image TentImage = new ImageIcon(Game.ImagesPath + "Icon5_Tent.png").getImage() ; 
     public static Image DragonAuraImage = new ImageIcon(Game.ImagesPath + "DragonAura.png").getImage() ;
     public static Image RidingImage = new ImageIcon(Game.ImagesPath + "Tiger.png").getImage() ;
     public static Image PterodactileImage = new ImageIcon(Game.ImagesPath + "Pterodactile.png").getImage() ;
@@ -136,7 +138,7 @@ public class Player extends LiveBeing
 		super(1, InitializePersonalAttributes(Name, Job), InitializeBattleAttributes(Job), InitializeMovingAnimations(), new PlayerAttributesWindow()) ;
 		this.Language = Language ;
 		this.Sex = Sex ;
-		InitializeSpells() ;
+		spells = new ArrayList<Spell>() ;
 		allText = UtilG.ReadTextFile(Language) ;
 
 		//Bag = new int[Items.NumberOfAllItems] ;
@@ -178,12 +180,12 @@ public class Player extends LiveBeing
 		questSkills.put("Dragon's aura", false) ;
 		questSkills.put("Bestiary", false) ;
 		isRiding = false ;
-		if (spell != null)
+		/*if (spell != null)
 		{
-			spellIsActive = new boolean[spell.length] ;
-			spellDurationCounter = new int[spell.length] ;
-			spellCooldownCounter = new int[spell.length] ;
-		}
+			spellIsActive = new boolean[spell.size()] ;
+			spellDurationCounter = new int[spell.size()] ;
+			spellCooldownCounter = new int[spell.size()] ;
+		}*/
 		statusCounter = new int[8] ;
 		statistics = new float[23] ;
 		collectingCounter = 0 ;
@@ -273,23 +275,24 @@ public class Player extends LiveBeing
 		return new MovingAnimations(idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif) ;
 	}
 	
-	private void InitializeSpells()
+	public void InitializeSpells()
     {
-		spell = new Spells[NumberOfSkillsPerJob[PA.Job]] ;
+		spells = new ArrayList<>() ;
+		SpellType[] allSpellTypes = Game.getAllSpellTypes() ;
 		
     	//int NumberOfAllSkills = 178 ;
-    	int NumberOfSkills = Player.NumberOfSkillsPerJob[PA.Job] ;
-    	int NumberOfAtt = 14 ;
-    	int NumberOfBuffs = 12 ;
-    	ArrayList<String[]> spellsInput = UtilG.ReadcsvFile(Game.CSVPath + "Spells.csv") ;	
-    	ArrayList<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
+    	int NumberOfSpells = Player.NumberOfSpellsPerJob[PA.Job] ;
+    	//int NumberOfAtt = 14 ;
+    	//int NumberOfBuffs = 12 ;
+    	//ArrayList<String[]> spellsInput = UtilG.ReadcsvFile(Game.CSVPath + "Spells.csv") ;	
+    	/*ArrayList<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
     	ArrayList<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
-		float[][][] spellBuffs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
-		float[][][] spellNerfs = new float[NumberOfSkills][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
-		String[][] spellsInfo = new String[NumberOfSkills][2] ;
-		for (int i = 0 ; i <= NumberOfSkills - 1 ; i += 1)
+		float[][][] spellBuffs = new float[NumberOfSpells][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+		float[][][] spellNerfs = new float[NumberOfSpells][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+		String[][] spellsInfo = new String[NumberOfSpells][2] ;
+		*/for (int i = 0 ; i <= NumberOfSpells - 1 ; i += 1)
 		{
-			int ID = i + Player.CumNumberOfSkillsPerJob[PA.Job] ;
+			/*int ID = i + Player.CumNumberOfSpellsPerJob[PA.Job] ;
 			int BuffCont = 0, NerfCont = 0 ;
 			for (int j = 0 ; j <= NumberOfAtt - 1 ; j += 1)
 			{
@@ -314,8 +317,8 @@ public class Player extends LiveBeing
 					NerfCont += 3 ;
 					BuffCont += 3 ;
 				}
-			}
-			if (Language.equals("P"))
+			}*/
+			/*if (Language.equals("P"))
 			{
 				spellsInfo[i] = new String[] {spellsInput.get(ID)[42], spellsInput.get(ID)[43]} ;
 			}
@@ -326,8 +329,31 @@ public class Player extends LiveBeing
 			String Name = spellsInput.get(ID)[4] ;
 			int MaxLevel = Integer.parseInt(spellsInput.get(ID)[5]) ;
 			float MpCost = Float.parseFloat(spellsInput.get(ID)[6]) ;
-			String Type = spellsInput.get(ID)[7] ;
-			int[][] PreRequisites = new int[][] {{Integer.parseInt(spellsInput.get(ID)[8]), Integer.parseInt(spellsInput.get(ID)[9])}, {Integer.parseInt(spellsInput.get(ID)[10]), Integer.parseInt(spellsInput.get(ID)[11])}, {Integer.parseInt(spellsInput.get(ID)[12]), Integer.parseInt(spellsInput.get(ID)[13])}} ;
+			SpellTypes Type ;
+			if (spellsInput.get(ID)[7].equals("Active"))
+			{
+				Type = SpellTypes.active ;
+			}
+			else if (spellsInput.get(ID)[7].equals("Passive"))
+			{
+				Type = SpellTypes.passive ;
+			}
+			else if (spellsInput.get(ID)[7].equals("Offensive"))
+			{
+				Type = SpellTypes.offensive ;
+			}
+			else
+			{
+				Type = SpellTypes.support ;
+			}
+			Map<Spell, Integer> preRequisites = new HashMap<>() ;
+			for (int p = 0 ; p <= 6 - 1 ; p += 2)
+			{
+				if (-1 < Integer.parseInt(spellsInput.get(ID)[p + 8]))
+				{
+					preRequisites.put(spell.get(Integer.parseInt(spellsInput.get(ID)[p + 8])), Integer.parseInt(spellsInput.get(ID)[p + 9])) ;
+				}
+			}
 			int Cooldown = Integer.parseInt(spellsInput.get(ID)[14]) ;
 			int Duration = Integer.parseInt(spellsInput.get(ID)[15]) ;
 			float[] Atk = new float[] {Float.parseFloat(spellsInput.get(ID)[16]), Float.parseFloat(spellsInput.get(ID)[17])} ;
@@ -341,10 +367,13 @@ public class Player extends LiveBeing
 			float[] Blood = new float[] {Float.parseFloat(spellsInput.get(ID)[32]), Float.parseFloat(spellsInput.get(ID)[33]), Float.parseFloat(spellsInput.get(ID)[34])} ;
 			float[] Poison = new float[] {Float.parseFloat(spellsInput.get(ID)[35]), Float.parseFloat(spellsInput.get(ID)[36]), Float.parseFloat(spellsInput.get(ID)[37])} ;
 			float[] Silence = new float[] {Float.parseFloat(spellsInput.get(ID)[38]), Float.parseFloat(spellsInput.get(ID)[39]), Float.parseFloat(spellsInput.get(ID)[40])} ;
-			String Elem = spellsInput.get(ID)[41] ;
-			spell[i] = new Spells(Name, MaxLevel, MpCost, Type, PreRequisites, Cooldown, Duration, spellBuffs[i], spellNerfs[i], Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i]) ;	
+			String Elem = spellsInput.get(ID)[41] ;*/
+			spells.add(new Spell(allSpellTypes[i])) ;	
+			
+			// new Spell(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, spellBuffs[i], spellNerfs[i],
+			//Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i])
 		}
-		spell[0].incLevel(1) ;
+		spells.get(0).incLevel(1) ;
     }
 	
 	public String getLanguage() {return Language ;}
@@ -358,11 +387,11 @@ public class Player extends LiveBeing
 	public int getContinent() {return PA.getContinent() ;}
 	public Maps getMap() {return PA.getMap() ;}
 	public Point getPos() {return PA.getPos() ;}
-	public Spells[] getSpell() {return spell ;}
+	public ArrayList<Spell> getSpell() {return spells ;}
 	public ArrayList<Quests> getQuest() {return quest ;}
 	public BagWindow getBag() {return bag ;}
 	public Equip[] getEquips() {return equips ;}
-	public int getSkillPoints() {return spellPoints ;}
+	public int getSpellPoints() {return spellPoints ;}
 	public float[] getLife() {return PA.getLife() ;}
 	public float[] getMp() {return PA.getMp() ;}
 	public float getRange() {return PA.getRange() ;}
@@ -389,8 +418,8 @@ public class Player extends LiveBeing
 	public int[] getThirst() {return PA.getThirst() ;}
 	public Map<String, Boolean> getQuestSkills() {return questSkills ;}
 	public int[][] getActions() {return PA.Actions ;}	
-	public int[] getSkillDurationCounter() {return spellDurationCounter ;}
-	public int[] getSkillCooldownCounter() {return spellCooldownCounter ;}
+	//public int[] getSpellDurationCounter() {return spellDurationCounter ;}
+	//public int[] getSpellCooldownCounter() {return spellCooldownCounter ;}
 	public int[] getStatusCounter() {return statusCounter ;}
 	public float[] getStats() {return statistics ;}
 	public ArrayList<String> getCombo() {return PA.getCombo() ;}
@@ -457,45 +486,46 @@ public class Player extends LiveBeing
 
 	public int GetNumberOfSpells()
 	{
-		int NumberOfSkills = 0 ;
+		int NumberOfSpells = 0 ;
 		int[] Sequence = GetSpellSequence() ;
 		for (int i = 0 ; i <= Sequence.length - 1 ; i += 1)
 		{
-			NumberOfSkills += Sequence[i] ;
+			NumberOfSpells += Sequence[i] ;
 		}
-		return NumberOfSkills ;
+		return NumberOfSpells ;
 	}
 	public int GetNumberOfProSpells()
 	{
-		int NumberOfProSkills = 0 ;
+		int NumberOfProSpells = 0 ;
 		int[] ProSequence = GetProSpellSequence() ;
 		for (int i = 0 ; i <= ProSequence.length - 1 ; i += 1)
 		{
-			NumberOfProSkills += ProSequence[i] ;
+			NumberOfProSpells += ProSequence[i] ;
 		}
-		return NumberOfProSkills ;
+		return NumberOfProSpells ;
 	}
-	public ArrayList<Integer> GetActiveSpells()
+	public ArrayList<Spell> GetActiveSpells()
 	{
-		ArrayList<Integer> ActiveSkills = new ArrayList<Integer>() ;
-		for (int i = 0 ; i <= spell.length - 1 ; i += 1)
+		// TODO this active means the spell type
+		ArrayList<Spell> ActiveSpells = new ArrayList<Spell>() ;
+		for (int i = 0 ; i <= spells.size() - 1 ; i += 1)
 		{
-			if ((spell[i].getType().equals("Active") | spell[i].getType().equals("Support") | spell[i].getType().equals("Offensive")) & 0 < spell[i].getLevel())
+			if ((spells.get(i).getType().equals(SpellTypes.active) | spells.get(i).getType().equals(SpellTypes.support) | spells.get(i).getType().equals(SpellTypes.offensive)) & 0 < spells.get(i).getLevel())
 			{
-				ActiveSkills.add(i) ;
+				ActiveSpells.add(spells.get(i)) ;
 			}
 		}
-		return ActiveSkills ;
+		return ActiveSpells ;
 	}
 	public int[] GetSpellSequence()
 	{
-		// Sequence: [Player job][Number of skills per line]
+		// Sequence: [Player job][Number of spells per line]
 		int[][] Sequence = new int[][] {{1, 3, 3, 3, 3, 1}, {3, 3, 3, 3, 3}, {3, 3, 3, 3, 3}, {2, 3, 3, 3, 3}, {2, 3, 3, 3, 3}} ;
 		return Sequence[PA.Job] ;
 	}
 	public int[] GetProSpellSequence()
 	{
-		// Sequence: [Player job][Number of skills per line]
+		// Sequence: [Player job][Number of spells per line]
 		int[][] Sequence = new int[][] {{1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}, {1, 2, 2, 2, 2, 1}} ;
 		return Sequence[PA.ProJob] ;
 	}
@@ -514,7 +544,7 @@ public class Player extends LiveBeing
 	
 	
 	
-	public void addSkillPoint(int amount)
+	public void addSpellPoint(int amount)
 	{
 		spellPoints += amount;
 	}
@@ -532,6 +562,7 @@ public class Player extends LiveBeing
 	}
 	public boolean actionIsASpell()
 	{
+		// TODO tem actionIsASpell here e em BA
 		if (UtilG.ArrayContains(Player.SpellKeys, PA.getCurrentAction()))
 		{
 			return true ;
@@ -554,14 +585,11 @@ public class Player extends LiveBeing
 		}
 		return false ;
 	}
-	public boolean hasEnoughMP(int spellID)
+	public boolean hasEnoughMP(Spell spell)
 	{
-		return (spell[spellID].getMpCost() <= PA.getMp()[0]);
+		return (spell.getMpCost() <= PA.getMp()[0]);
 	}
-	public int getSpellID(String action)
-	{
-		return GetActiveSpells().get(UtilG.IndexOf(SpellKeys, action)) ;
-	}
+
 	
 	public void updateDir(String move)
 	{
@@ -683,14 +711,6 @@ public class Player extends LiveBeing
 		}
 		if (PA.currentAction.equals(ActionKeys[9]))							// Quest window
 		{
-			//TODO
-			quest.add(Game.getAllQuests()[0]) ;
-			quest.add(Game.getAllQuests()[1]) ;
-			quest.add(Game.getAllQuests()[2]) ;
-			quest.add(Game.getAllQuests()[3]) ;
-			quest.add(Game.getAllQuests()[4]) ;
-			quest.add(Game.getAllQuests()[5]) ;
-			quest.add(Game.getAllQuests()[6]) ;
 			questWindow.open() ;
 		}
 		if (PA.currentAction.equals(ActionKeys[10]))							// Hints window
@@ -711,11 +731,26 @@ public class Player extends LiveBeing
 			bestiary.open() ;
 		}
 		
-		// support skills
-		if (UtilS.ActionIsSkill(SpellKeys, PA.currentAction) & (!isInBattle() | canAtk()) & UtilG.IndexOf(SpellKeys, PA.currentAction) < GetActiveSpells().size())
+		// support spells
+		if (actionIsASpell() & (!isInBattle() | canAtk()) & UtilG.IndexOf(SpellKeys, PA.currentAction) < GetActiveSpells().size())
 		{
 			SupSpell(pet, GetActiveSpells().get(UtilG.IndexOf(SpellKeys, PA.currentAction))) ;
 		}
+		
+		/*ArrayList<Window> playerWindows = new ArrayList<>() ;
+		playerWindows.add(bag) ;
+		playerWindows.add(fabWindow) ;
+		playerWindows.add(questWindow) ;
+		playerWindows.add(settings) ;
+		playerWindows.add(attWindow) ;
+		playerWindows.add(hintsWindow) ;
+		for (Window window : playerWindows)
+		{
+			if (window.isOpen())
+			{
+				window.navigate(PA.currentAction) ;
+			}
+		}*/
 		
 		// navigating through open windows
 		if (bag.isOpen())
@@ -744,7 +779,7 @@ public class Player extends LiveBeing
 		}
 		
 		// if meets creature, enters battle
-		if (closestCreature != null & (PA.currentAction.equals(ActionKeys[1]) | UtilS.ActionIsSkill(SpellKeys, PA.currentAction)) & !isInBattle())
+		if (closestCreature != null & (PA.currentAction.equals(ActionKeys[1]) | actionIsASpell()) & !isInBattle())
 		{
 			if (PA.Job != 2 | (PA.Job == 2 & equips[3] != null))
 			{
@@ -1020,41 +1055,33 @@ public class Player extends LiveBeing
 	}
 	public void SupSpellCounters(Creature[] creature, Creature creatureID)
 	{
-		for (int s = 0 ; s <= spell.length - 1 ; s += 1)
+		for (Spell spell : spells)
 		{
-			if (spellDurationCounter[s] < spell[s].getDuration() & spellIsActive[s])
+			if (spell.getDurationCounter() < spell.getDuration() & spell.isActive())
 			{
-				spellDurationCounter[s] += 1 ;
+				spell.incDurationCounter() ;
 			}
-			if (spellDurationCounter[s] == spell[s].getDuration())
+			if (spell.getDurationCounter() == spell.getDuration())
 			{
-				ResetSpellDurationCounter(s) ;
-				for (int i = 0 ; i <= spell[s].getBuffs().length - 1 ; ++i)
+				/*ResetSpellDurationCounter(s) ;
+				for (int i = 0 ; i <= spells.get(s).getBuffs().length - 1 ; ++i)
 				{
 					ApplyBuffsAndNerfs("deactivate", "buffs", i, s, SpellIsActive(s)) ;
 				}
-				for (int i = 0 ; i <= spell[s].getNerfs().length - 1 ; ++i)
+				for (int i = 0 ; i <= spells.get(s).getNerfs().length - 1 ; ++i)
 				{
 					if (creatureID != null)
 					{
-						creatureID.ApplyBuffsAndNerfs("deactivate", "nerfs", i, spell[s].getLevel(), spell[s], SpellIsActive(s)) ;
+						creatureID.ApplyBuffsAndNerfs("deactivate", "nerfs", i, spells.get(s).getLevel(), spells.get(s), SpellIsActive(s)) ;
 					}
-				}
-				spellIsActive[s] = false ;
+				}*/
+				spell.deactivate() ;
 			}
-			if (spellCooldownCounter[s] < spell[s].getCooldown())
+			if (spell.getCooldownCounter() < spell.getCooldown())
 			{
-				spellCooldownCounter[s] += 1 ;
+				spell.incCooldownCounter() ;
 			}
 		}
-	}
-	public void ResetSpellDurationCounter(int spellID)
-	{
-		spellDurationCounter[spellID] = 0 ;
-	}
-	public void ResetSpellCooldownCounter(int spellID)
-	{
-		spellCooldownCounter[spellID] = 0 ;
 	}
 	public void Tent()
 	{
@@ -1212,7 +1239,7 @@ public class Player extends LiveBeing
 		//if (0 < Equips[3] & 0 < Bag[Equips[3]])
 		//{
 			//Bag[Equips[3]] += -1 ;
-			if (PA.Job == 2 & Math.random() <= 0.1*spell[13].getLevel())
+			if (PA.Job == 2 & Math.random() <= 0.1*spells.get(13).getLevel())
 			{
 				//Bag[Equips[3]] += 1 ;
 			}
@@ -1236,11 +1263,11 @@ public class Player extends LiveBeing
 		}
 		return StolenItemID ;
 	}
-	public void OffensiveSpell(Creature creature, int SpellID)
+	public void OffensiveSpell(Creature creature, Spell spell)
 	{
-		PA.getMp()[0] += -spell[SpellID].getMpCost() ;
-		ResetSpellCooldownCounter(SpellID) ;
-		spellIsActive[SpellID] = true ;
+		PA.getMp()[0] += -spell.getMpCost() ;
+		//ResetSpellCooldownCounter(spellID) ; activate spell
+		spell.activate() ;
 		if (PA.Job == 0)
 		{
 			
@@ -1251,51 +1278,51 @@ public class Player extends LiveBeing
 		}
 		if (PA.Job == 2)
 		{
-			if (SpellID == 3)
+			/*if (spellID == 3)
 			{
 				
-			}
+			}*/
 		}
-		for (int i = 0 ; i <= spell[SpellID].getBuffs().length - 1 ; ++i)
+		for (int i = 0 ; i <= spell.getBuffs().length - 1 ; ++i)
 		{
-			ApplyBuffsAndNerfs("activate", "buffs", i, SpellID, SpellIsActive(SpellID)) ;
-			creature.ApplyBuffsAndNerfs("activate", "nerfs", i, spell[SpellID].getLevel(), spell[SpellID], SpellIsActive(SpellID)) ;
+			//ApplyBuffsAndNerfs("activate", "buffs", i, spellID, SpellIsActive(spellID)) ;
+			creature.ApplyBuffsAndNerfs("activate", "nerfs", i, spell.getLevel(), spell, spell.isActive()) ;
 		}
 	}
-	public void SupSpell(Pet pet, int SpellID)
+	public void SupSpell(Pet pet, Spell spell)
 	{
-		int skillLevel = spell[SpellID].getLevel() ;
-		if (spell[SpellID].getMpCost() <= PA.getMp()[0] & 0 < skillLevel)
+		int spellLevel = spell.getLevel() ;
+		spell.activate() ;
+		if (spell.getMpCost() <= PA.getMp()[0] & 0 < spellLevel)
 		{
 			getStats()[1] += 1 ;	// Number of mag atks
 			ResetBattleActions() ;			
-			PA.getMp()[0] += -spell[SpellID].getMpCost() ;
+			PA.getMp()[0] += -spell.getMpCost() ;
 			if (PA.Job == 0)
 			{
 				
 			}
 			if (PA.Job == 1)
 			{
-				if (SpellID == 10)
+				/*if (spellID == 10)
 				{
-					PA.getLife()[0] += (float)Math.min((0.04*skillLevel + 0.002*BA.TotalMagAtk()), 0.3)*PA.getLife()[1] ;
+					PA.getLife()[0] += (float)Math.min((0.04*spellLevel + 0.002*BA.TotalMagAtk()), 0.3)*PA.getLife()[1] ;
 					PA.getLife()[0] = (float)Math.min(PA.getLife()[0], PA.getLife()[1]) ;
-					if (0 < pet.getLife()[0] & spell[SpellID].getMpCost() <= pet.getMp()[0])
+					if (0 < pet.getLife()[0] & spell.getMpCost() <= pet.getMp()[0])
 					{
-						pet.getMp()[0] += -spell[SpellID].getMpCost() ;
-						pet.getLife()[0] += (float)Math.min(Math.min((0.02*skillLevel + 0.002*(pet.getBA().TotalMagAtk())), 0.15)*pet.getLife()[1], pet.getLife()[1]) ;
+						pet.getMp()[0] += -spell.getMpCost() ;
+						pet.getLife()[0] += (float)Math.min(Math.min((0.02*spellLevel + 0.002*(pet.getBA().TotalMagAtk())), 0.15)*pet.getLife()[1], pet.getLife()[1]) ;
 						pet.getLife()[0] = (float)Math.min(pet.getLife()[0], pet.getLife()[1]) ;
 					}
-				}
+				}*/
 			}
-			for (int i = 0 ; i <= spell[SpellID].getBuffs().length - 1 ; ++i)
+			for (int i = 0 ; i <= spell.getBuffs().length - 1 ; ++i)
 			{
-				ApplyBuffsAndNerfs("activate", "buffs", i, SpellID, SpellIsActive(SpellID)) ;
+				//ApplyBuffsAndNerfs("activate", "buffs", i, spellID, spell.isActive()s) ;
 			}
-			spellIsActive[SpellID] = true ;
 		}
 	}
-	public void autoSpells(Creature creature, Spells[] spell)
+	public void autoSpells(Creature creature, ArrayList<Spell> spell)
 	{		
 		/*if (PA.Job == 3 & PA.getLife()[0] < 0.2 * PA.getLife()[1] & 0 < Skill[12] & !SkillBuffIsActive[12][0])	// Survivor's instinct
 		{
@@ -1314,20 +1341,20 @@ public class Player extends LiveBeing
 			SkillBuffIsActive[12][0] = false ;
 		}*/
 	}
-	public void ApplyBuffsAndNerfs(String action, String type, int att, int SkillID, boolean SkillIsActive)
+	public void ApplyBuffsAndNerfs(String action, String type, int att, int spellID, boolean spellIsActive)
 	{
 		int ActionMult = 1 ;
 		float[][] Buff = new float[14][5] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
 		float[] OriginalValue = new float[14] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 		float[][] Buffs = null ;
-		int BuffNerfLevel = spell[SkillID].getLevel() ;
+		int BuffNerfLevel = spells.get(spellID).getLevel() ;
 		if (type.equals("buffs"))
 		{
-			Buffs = spell[SkillID].getBuffs() ;
+			Buffs = spells.get(spellID).getBuffs() ;
 		}
 		else if (type.equals("nerfs"))
 		{
-			Buffs = spell[SkillID].getNerfs() ;
+			Buffs = spells.get(spellID).getNerfs() ;
 		}
 		OriginalValue = new float[] {PA.getLife()[1], PA.getMp()[1], BA.getPhyAtk()[0], BA.getMagAtk()[0], BA.getPhyDef()[0], BA.getMagDef()[0], BA.getDex()[0], BA.getAgi()[0], BA.getCrit()[0], BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2], BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
 		if (action.equals("deactivate"))
@@ -1367,7 +1394,7 @@ public class Player extends LiveBeing
 		{
 			Buff[att][0] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
 		}
-		if (!SkillIsActive)
+		if (!spellIsActive)
 		{
 			PA.getLife()[0] += Buff[0][0] ;
 			PA.getMp()[0] += Buff[1][0] ;
@@ -1400,7 +1427,7 @@ public class Player extends LiveBeing
 		float BloodMult = 1, PoisonMult = 1 ;
 		if (PA.Job == 4)
 		{
-			PoisonMult += -0.1*spell[13].getLevel() ;
+			PoisonMult += -0.1*spells.get(13).getLevel() ;
 		}
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
@@ -1452,7 +1479,7 @@ public class Player extends LiveBeing
 		{
 			if (0 <= damage)							// player inflicted damage
 			{	
-				if (BA.actionisskill())					// player performed a magical atk
+				if (actionIsASpell())					// player performed a magical atk
 				{
 					statistics[1] += 1 ;							// Total number of magical atks (spells) performed by the player
 					statistics[5] += damage ;					// Total magical damage inflicted by the player
@@ -1674,7 +1701,7 @@ public class Player extends LiveBeing
 	
 
 	
-	/* Get current state methods */
+	/* Get current state methods 
 	public boolean SpellIsActive(int spellID)
 	{
 		if (spellDurationCounter[spellID] != 0)
@@ -1685,12 +1712,12 @@ public class Player extends LiveBeing
 	}
 	public boolean SpellIsReady(int spellID)
 	{
-		if (spellCooldownCounter[spellID] == spell[spellID].getCooldown())
+		if (spellCooldownCounter[spellID] == spells.get(spellID).getCooldown())
 		{
 			return true ;
 		}
 		return false ;
-	}
+	}*/
 	public boolean isEquippable(int ItemID)
 	{
 		if ((Items.BagIDs[6] + Items.NumberOfItems[6] / 5 * PA.Job) <= ItemID & ItemID <= Items.BagIDs[6] + Items.NumberOfItems[6] / 5 * (PA.Job + 1))
@@ -1936,7 +1963,7 @@ public class Player extends LiveBeing
 		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 19*sy)), "BotLeft", OverallAngle, AllText[AttrCat][14] + " " + AllText[SpecialAttrPropCat][7] + " = " + UtilG.Round(BA.getPoison()[8], 2), font, AttributeColor[3]) ;	
 		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 20*sy)), "BotLeft", OverallAngle, AllText[AttrCat][15] + " " + AllText[SpecialAttrPropCat][7] + " = " + UtilG.Round(BA.getSilence()[4], 2), font, AttributeColor[4]) ;				
 	}
-	public void DrawSpellsBar(Player player, Spells[] spells, Image CooldownImage, Image SlotImage, Point MousePos, DrawPrimitives DP)
+	public void DrawSpellsBar(Player player, ArrayList<Spell> spells, Image CooldownImage, Image SlotImage, Point MousePos, DrawPrimitives DP)
 	{
 		Font Titlefont = new Font("SansSerif", Font.BOLD, 10) ;
 		Font font = new Font("SansSerif", Font.BOLD, 9) ;
@@ -1944,7 +1971,7 @@ public class Player extends LiveBeing
 		Color[] colorPalette = Game.ColorPalette ;
 		float OverallAngle = DrawPrimitives.OverallAngle ;
 		Point Pos = new Point(screen.getSize().x + 1, (int) (0.99 * screen.getSize().y) - 70) ;
-		ArrayList<Integer> ActiveSpells = player.GetActiveSpells() ;
+		ArrayList<Spell> ActiveSpells = player.GetActiveSpells() ;
 		Size size = new Size(36, 130) ;
 		int slotW = SlotImage.getWidth(null), slotH = SlotImage.getHeight(null) ;	// Bar size
 		int Ncols = Math.max(ActiveSpells.size() / 11 + 1, 1) ;
@@ -1958,10 +1985,11 @@ public class Player extends LiveBeing
 		DP.DrawText(new Point(Pos.x + size.x / 2, Pos.y - size.y + 3), "TopCenter", OverallAngle, allText.get("* Barra de habilidades *")[1], Titlefont, colorPalette[5]) ;
 		for (int i = 0 ; i <= ActiveSpells.size() - 1 ; ++i)
 		{
-			if (0 < player.getSpell()[ActiveSpells.get(i)].getLevel())
+			Spell spell = spells.get(i) ;
+			if (0 < player.getSpell().get(i).getLevel())
 			{
 				Point slotCenter = new Point(Pos.x + slotW / 2 + (i / Nrows) * Sx + 3, Pos.y - size.y + slotH / 2 + (i % Nrows) * Sy + Titlefont.getSize() + 5) ;
-				if (player.getMp()[0] < spells[ActiveSpells.get(i)].getMpCost())
+				if (player.getMp()[0] < spell.getMpCost())
 				{
 					DP.DrawImage(SlotImage, slotCenter, "Center") ;
 				}
@@ -1971,14 +1999,14 @@ public class Player extends LiveBeing
 				}
 				DP.DrawText(slotCenter, "Center", OverallAngle, Key[i], font, TextColor) ;
 				Size imgSize = new Size(CooldownImage.getWidth(null), CooldownImage.getHeight(null)) ;
-				if (spellCooldownCounter[ActiveSpells.get(i)] < spells[ActiveSpells.get(i)].getCooldown())
+				if (spell.getCooldownCounter() < spell.getCooldown())
 				{
-					Scale Imscale = new Scale(1, 1 - (double) spellCooldownCounter[ActiveSpells.get(i)] / spells[ActiveSpells.get(i)].getCooldown()) ;
+					Scale Imscale = new Scale(1, 1 - (double) spell.getCooldownCounter() / spell.getCooldown()) ;
 					DP.DrawImage(CooldownImage, new Point(slotCenter.x - imgSize.x / 2, slotCenter.y + imgSize.y / 2), OverallAngle, Imscale, new boolean[] {false, false}, "BotLeft", 1) ;
 				}
 				if (UtilG.isInside(MousePos, new Point(slotCenter.x - imgSize.x / 2, slotCenter.y - imgSize.y / 2), imgSize))
 				{
-					DP.DrawText(new Point(slotCenter.x - imgSize.x - 10, slotCenter.y), "CenterRight", OverallAngle, spells[ActiveSpells.get(i)].getName(), Titlefont, TextColor) ;
+					DP.DrawText(new Point(slotCenter.x - imgSize.x - 10, slotCenter.y), "CenterRight", OverallAngle, spell.getName(), Titlefont, TextColor) ;
 				}
 			}
 		}
@@ -1994,7 +2022,7 @@ public class Player extends LiveBeing
 		Color TextColor = colorPalette[7] ;
 		
 		DP.DrawRect(new Point(screen.getSize().x, screen.getSize().y), "BotLeft", new Size(40, screen.getSize().y), 1, colorPalette[9], colorPalette[9], false) ;	// Background
-		DrawSpellsBar(this, spell, Spells.cooldownImage, Spells.slotImage, MousePos, DP) ;
+		DrawSpellsBar(this, spells, SpellType.cooldownImage, SpellType.slotImage, MousePos, DP) ;
 		icons[0].DrawImage(OverallAngle, -1, MousePos, DP) ;		// settings
 		icons[1].DrawImage(OverallAngle, -1, MousePos, DP) ;		// bag
 		DP.DrawText(icons[1].getPos(), "BotLeft", OverallAngle, IconKey[0], font, TextColor) ;
@@ -2030,8 +2058,8 @@ public class Player extends LiveBeing
 		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 		{
 			Point slotCenter = new Point(screen.getSize().x + 10, screen.getSize().y - 60 + 20 * i) ;
-			Size slotSize = new Size(Spells.slotImage.getWidth(null), Spells.slotImage.getHeight(null)) ;
-			DP.DrawImage(Spells.slotImage, slotCenter, "Center") ;
+			Size slotSize = new Size(SpellType.slotImage.getWidth(null), SpellType.slotImage.getHeight(null)) ;
+			DP.DrawImage(SpellType.slotImage, slotCenter, "Center") ;
 			DP.DrawText(new Point(slotCenter.x + slotSize.x / 2 + 5, slotCenter.y + slotSize.y / 2), "BotLeft", OverallAngle, Player.HotKeys[i], font, TextColor) ;
 			if (hotkeyItem[i] != null)
 			{
@@ -2112,7 +2140,7 @@ public class Player extends LiveBeing
 		String relPos = UtilS.RelPos(PA.getPos(), creature.getPos()) ;
 		DrawTimeBar(relPos, Game.ColorPalette[9], DP) ;
 	}
-	public void DrawSpellsTree(Player player, Spells[] spells, Point MousePos, int SelectedSpell, Icon SpellsTreeIcon, DrawFunctions DF)
+	public void DrawSpellsTree(Player player, Spell[] spells, Point MousePos, int SelectedSpell, Icon SpellsTreeIcon, DrawFunctions DF)
 	{
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
 		Screen screen = Game.getScreen() ;
@@ -2142,7 +2170,7 @@ public class Player extends LiveBeing
 		for (int i = 0 ; i <= spells.length - 1 ; i += 1)
 		{
 			color[i] = Game.ColorPalette[4] ;
-			if(UtilS.SpellIsAvailable(player, spells, i))
+			if (spells[i].hasPreRequisitesMet())
 			{
 				color[i] = Game.ColorPalette[5] ;
 			}
@@ -2162,7 +2190,7 @@ public class Player extends LiveBeing
 		
 		// Organogram
 		//String[] SkillNames = null ;
-		String[][] SpellNames = new String[2][] ;
+		/*String[][] SpellNames = new String[2][] ;
 		String[] SpellLevels = null ;
 		if (tab == 0)
 		{
@@ -2186,14 +2214,14 @@ public class Player extends LiveBeing
 		}
 		SpellsColors[SelectedSpell - tab*NumberOfSpells] = Game.ColorPalette[3] ;
 		DF.DrawOrganogram(Sequence, new Point(Pos.x, Pos.y - Size.y), Sx, Sy, size, SpellNames, SpellLevels, SpellsTreeIcon, font, SpellsColors, MousePos) ;
-		
+		*/
 		// Skill info
 		int TextmaxL = Size.x / 5, sx = 10, sy = UtilG.TextH(font.getSize()) + 2 ;
 		String Description = spells[SelectedSpell].getInfo()[0], Effect = spells[SelectedSpell].getInfo()[1] ;
 		DP.DrawRoundRect(new Point(Pos.x, Pos.y - Size.y), "BotLeft", new Size(Size.x, Size.y / 4), 1, Game.ColorPalette[7], Game.ColorPalette[7], true) ;
 		DP.DrawFitText(new Point(Pos.x + sx, Pos.y - Size.y - Size.y / 5), sy, "BotLeft", Effect, font, TextmaxL, player.getColor()) ;
 		DP.DrawFitText(new Point(Pos.x + sx, Pos.y - Size.y - Size.y / 10), sy, "BotLeft", Description, font, TextmaxL - 6, player.getColor()) ;		
-		DP.DrawText(new Point(Pos.x + Size.x, Pos.y), "TopRight", DrawPrimitives.OverallAngle, "Pontos: " +  player.getSkillPoints(), font, player.getColor()) ;		
+		DP.DrawText(new Point(Pos.x + Size.x, Pos.y), "TopRight", DrawPrimitives.OverallAngle, "Pontos: " +  player.getSpellPoints(), font, player.getColor()) ;		
 	}	
 	public void display(Point PlayerPos, Scale scale, String dir, boolean ShowPlayerRange, DrawPrimitives DP)
 	{
@@ -2281,11 +2309,11 @@ public class Player extends LiveBeing
 			bw.write("\nPlayer continent: \n" + getContinent()) ;
 			bw.write("\nPlayer map: \n" + getMap()) ;
 			bw.write("\nPlayer pos: \n" + getPos()) ;
-			bw.write("\nPlayer skill: \n" + Arrays.toString(getSpell())) ;
+			//bw.write("\nPlayer skill: \n" + Arrays.toString(getSpell())) ;
 			//bw.write("\nPlayer quest: \n" + Arrays.toString(getQuest())) ;
 			//bw.write("\nPlayer bag: \n" + Arrays.toString(getBag())) ;
 			bw.write("\nPlayer equips: \n" + Arrays.toString(getEquips())) ;
-			bw.write("\nPlayer skillPoints: \n" + getSkillPoints()) ;
+			bw.write("\nPlayer skillPoints: \n" + getSpellPoints()) ;
 			bw.write("\nPlayer life: \n" + Arrays.toString(getLife())) ;
 			bw.write("\nPlayer mp: \n" + Arrays.toString(getMp())) ;
 			bw.write("\nPlayer range: \n" + getRange()) ;

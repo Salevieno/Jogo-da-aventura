@@ -16,7 +16,7 @@ import Windows.PlayerAttributesWindow;
 public class LiveBeing
 {
 	protected int level;
-	protected Spells[] spell ;
+	protected ArrayList<Spell> spells ;
 	protected PersonalAttributes PA ;		// Personal attributes
 	protected BattleAttributes BA ;			// Battle attributes
 	protected MovingAnimations movingAni ;	// Moving animations
