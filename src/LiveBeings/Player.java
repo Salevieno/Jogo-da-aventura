@@ -241,12 +241,12 @@ public class Player extends LiveBeing
 	private static BattleAttributes InitializeBattleAttributes(int Job)
 	{
 
-		double[] PhyAtk = new double[] {Double.parseDouble(Properties.get(Job)[5]), 0, 0} ;
-		double[] MagAtk = new double[] {Double.parseDouble(Properties.get(Job)[6]), 0, 0} ;
-		double[] PhyDef = new double[] {Double.parseDouble(Properties.get(Job)[7]), 0, 0} ;
-		double[] MagDef = new double[] {Double.parseDouble(Properties.get(Job)[8]), 0, 0} ;
-		double[] Dex = new double[] {Double.parseDouble(Properties.get(Job)[9]), 0, 0} ;	
-		double[] Agi = new double[] {Double.parseDouble(Properties.get(Job)[10]), 0, 0} ;
+		BasicBattleAttribute PhyAtk = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[5]), 0, 0) ;
+		BasicBattleAttribute MagAtk = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[6]), 0, 0) ;
+		BasicBattleAttribute PhyDef = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[7]), 0, 0) ;
+		BasicBattleAttribute MagDef = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[8]), 0, 0) ;
+		BasicBattleAttribute Dex = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[9]), 0, 0) ;	
+		BasicBattleAttribute Agi = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[10]), 0, 0) ;
 		double[] Crit = new double[] {Double.parseDouble(Properties.get(Job)[11]), 0, Double.parseDouble(Properties.get(Job)[12]), 0} ;
 		double[] Stun = new double[] {Double.parseDouble(Properties.get(Job)[13]), 0, Double.parseDouble(Properties.get(Job)[14]), 0, Double.parseDouble(Properties.get(Job)[15])} ;
 		double[] Block = new double[] {Double.parseDouble(Properties.get(Job)[16]), 0, Double.parseDouble(Properties.get(Job)[17]), 0, Double.parseDouble(Properties.get(Job)[18])} ;
@@ -256,7 +256,9 @@ public class Player extends LiveBeing
 		int[] Status = new int[9] ;
 		int[] SpecialStatus = new int[5] ;
 		int[][] BattleActions = new int[][] {{0, Integer.parseInt(Properties.get(Job)[41]), 0}} ;
+		
 		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
+	
 	}
 	
 	private static MovingAnimations InitializeMovingAnimations()
@@ -390,12 +392,12 @@ public class Player extends LiveBeing
 	public double[] getLife() {return PA.getLife() ;}
 	public double[] getMp() {return PA.getMp() ;}
 	public double getRange() {return PA.getRange() ;}
-	public double[] getPhyAtk() {return BA.getPhyAtk() ;}
-	public double[] getMagAtk() {return BA.getMagAtk() ;}
-	public double[] getPhyDef() {return BA.getPhyDef() ;}
-	public double[] getMagDef() {return BA.getMagDef() ;}
-	public double[] getDex() {return BA.getDex() ;}
-	public double[] getAgi() {return BA.getAgi() ;}
+	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
+	public BasicBattleAttribute getMagAtk() {return BA.getMagAtk() ;}
+	public BasicBattleAttribute getPhyDef() {return BA.getPhyDef() ;}
+	public BasicBattleAttribute getMagDef() {return BA.getMagDef() ;}
+	public BasicBattleAttribute getDex() {return BA.getDex() ;}
+	public BasicBattleAttribute getAgi() {return BA.getAgi() ;}
 	public double[] getCrit() {return BA.getCrit() ;}
 	public double[] getStun() {return BA.getStun() ;}
 	public double[] getBlock() {return BA.getBlock() ;}
@@ -1351,7 +1353,7 @@ public class Player extends LiveBeing
 		{
 			Buffs = spells.get(spellID).getNerfs() ;
 		}
-		OriginalValue = new double[] {PA.getLife()[1], PA.getMp()[1], BA.getPhyAtk()[0], BA.getMagAtk()[0], BA.getPhyDef()[0], BA.getMagDef()[0], BA.getDex()[0], BA.getAgi()[0], BA.getCrit()[0], BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2], BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
+		OriginalValue = new double[] {PA.getLife()[1], PA.getMp()[1], BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(), BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(), BA.getCrit()[0], BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2], BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
 		if (action.equals("deactivate"))
 		{
 			ActionMult = -1 ;
@@ -1393,12 +1395,12 @@ public class Player extends LiveBeing
 		{
 			PA.getLife()[0] += Buff[0][0] ;
 			PA.getMp()[0] += Buff[1][0] ;
-			BA.getPhyAtk()[1] += Buff[2][0] ;
-			BA.getMagAtk()[1] += Buff[3][0] ;
-			BA.getPhyDef()[1] += Buff[4][0] ;
-			BA.getMagDef()[1] += Buff[5][0] ;
-			BA.getDex()[1] += Buff[6][0] ;
-			BA.getAgi()[1] += Buff[7][0] ;
+			BA.getPhyAtk().incBonus(Buff[2][0]) ;
+			BA.getMagAtk().incBonus(Buff[3][0]) ;
+			BA.getPhyDef().incBonus(Buff[4][0]) ;
+			BA.getMagDef().incBonus(Buff[5][0]) ;
+			BA.getDex().incBonus(Buff[6][0]) ;
+			BA.getAgi().incBonus(Buff[7][0]) ;
 			BA.getCrit()[1] += Buff[8][0] ;
 			BA.getStun()[1] += Buff[9][0] ;
 			BA.getBlock()[1] += Buff[10][0] ;
@@ -1627,12 +1629,12 @@ public class Player extends LiveBeing
 		PA.getLife()[0] = PA.getLife()[1] ;
 		PA.getMp()[1] += attributesIncrease[1] ;	
 		PA.getMp()[0] = PA.getMp()[1] ;
-		BA.getPhyAtk()[0] += attributesIncrease[2] ;
-		BA.getMagAtk()[0] += attributesIncrease[3] ;
-		BA.getPhyDef()[0] += attributesIncrease[4] ;
-		BA.getMagDef()[0] += attributesIncrease[5] ;
-		BA.getAgi()[0] += attributesIncrease[6] ;
-		BA.getDex()[0] += attributesIncrease[7] ;
+		BA.getPhyAtk().incBaseValue(attributesIncrease[2]) ;
+		BA.getMagAtk().incBaseValue(attributesIncrease[3]) ;
+		BA.getPhyDef().incBaseValue(attributesIncrease[4]) ;
+		BA.getMagDef().incBaseValue(attributesIncrease[5]) ;
+		BA.getAgi().incBaseValue(attributesIncrease[6]) ;
+		BA.getDex().incBaseValue(attributesIncrease[7]) ;
 		PA.getExp()[1] += attributesIncrease[8] ;
 		attPoints += 2 ;
 		
@@ -1756,27 +1758,27 @@ public class Player extends LiveBeing
 				}
 				else if (selectedItem == 2)
 				{
-					BA.getPhyAtk()[0] += PlayerAttributeIncrease[selectedItem] ;
+					BA.getPhyAtk().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
 				}
 				else if (selectedItem == 3)
 				{
-					BA.getMagAtk()[0] += PlayerAttributeIncrease[selectedItem] ;
+					BA.getMagAtk().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
 				}
 				else if (selectedItem == 4)
 				{
-					BA.getPhyDef()[0] += PlayerAttributeIncrease[selectedItem] ;
+					BA.getPhyDef().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
 				}
 				else if (selectedItem == 5)
 				{
-					BA.getMagDef()[0] += PlayerAttributeIncrease[selectedItem] ;
+					BA.getMagDef().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
 				}
 				else if (selectedItem == 6)
 				{
-					BA.getDex()[0] += PlayerAttributeIncrease[selectedItem] ;
+					BA.getDex().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
 				}
 				else if (selectedItem == 7)
 				{
-					BA.getAgi()[0] += PlayerAttributeIncrease[selectedItem] ;
+					BA.getAgi().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
 				}
 				attPoints += -1 ;
 			//}
@@ -1789,12 +1791,12 @@ public class Player extends LiveBeing
 	{
 		PA.getLife()[1] += equipsBonus[ID][2]*ActionMult ;
 		PA.getMp()[1] += equipsBonus[ID][3]*ActionMult ;
-		BA.getPhyAtk()[1] += equipsBonus[ID][4]*ActionMult ;
-		BA.getMagAtk()[1] += equipsBonus[ID][5]*ActionMult ;
-		BA.getPhyDef()[1] += equipsBonus[ID][6]*ActionMult ;
-		BA.getMagDef()[1] += equipsBonus[ID][7]*ActionMult ;
-		BA.getDex()[1] += equipsBonus[ID][8]*ActionMult ;
-		BA.getAgi()[1] += equipsBonus[ID][9]*ActionMult ;
+		BA.getPhyAtk().incBonus(equipsBonus[ID][4]*ActionMult) ;
+		BA.getMagAtk().incBonus(equipsBonus[ID][5]*ActionMult) ;
+		BA.getPhyDef().incBonus(equipsBonus[ID][6]*ActionMult) ;
+		BA.getMagDef().incBonus(equipsBonus[ID][7]*ActionMult) ;
+		BA.getDex().incBonus(equipsBonus[ID][8]*ActionMult) ;
+		BA.getAgi().incBonus(equipsBonus[ID][9]*ActionMult) ;
 		BA.getCrit()[0] += equipsBonus[ID][10]*ActionMult ;
 		BA.getCrit()[2] += equipsBonus[ID][11]*ActionMult ;
 		BA.getStun()[0] += equipsBonus[ID][12]*ActionMult ;
@@ -2312,12 +2314,12 @@ public class Player extends LiveBeing
 			bw.write("\nPlayer life: \n" + Arrays.toString(getLife())) ;
 			bw.write("\nPlayer mp: \n" + Arrays.toString(getMp())) ;
 			bw.write("\nPlayer range: \n" + getRange()) ;
-			bw.write("\nPlayer phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
-			bw.write("\nPlayer magAtk: \n" + Arrays.toString(getMagAtk())) ;
-			bw.write("\nPlayer phyDef: \n" + Arrays.toString(getPhyDef())) ;
-			bw.write("\nPlayer magDef: \n" + Arrays.toString(getMagDef())) ;
-			bw.write("\nPlayer dex: \n" + Arrays.toString(getDex())) ;
-			bw.write("\nPlayer agi: \n" + Arrays.toString(getAgi())) ;
+			//bw.write("\nPlayer phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
+			//bw.write("\nPlayer magAtk: \n" + Arrays.toString(getMagAtk())) ;
+			//bw.write("\nPlayer phyDef: \n" + Arrays.toString(getPhyDef())) ;
+			//bw.write("\nPlayer magDef: \n" + Arrays.toString(getMagDef())) ;
+			//bw.write("\nPlayer dex: \n" + Arrays.toString(getDex())) ;
+			//bw.write("\nPlayer agi: \n" + Arrays.toString(getAgi())) ;
 			bw.write("\nPlayer crit: \n" + Arrays.toString(getCrit())) ;
 			bw.write("\nPlayer stun: \n" + Arrays.toString(getStun())) ;
 			bw.write("\nPlayer block: \n" + Arrays.toString(getBlock())) ;

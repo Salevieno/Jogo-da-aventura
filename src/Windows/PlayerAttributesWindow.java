@@ -13,6 +13,7 @@ import GameComponents.Items;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
 import Items.Equip;
+import LiveBeings.BasicBattleAttribute;
 import LiveBeings.BattleAttributes;
 import LiveBeings.LiveBeing;
 import LiveBeings.PersonalAttributes;
@@ -80,27 +81,27 @@ public class PlayerAttributesWindow extends Window
 					}
 					else if (attIcon == 2)
 					{
-						BA.getPhyAtk()[0] += PlayerAttributeIncrease[attIcon] ;
+						BA.getPhyAtk().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
 					}
 					else if (attIcon == 3)
 					{
-						BA.getMagAtk()[0] += PlayerAttributeIncrease[attIcon] ;
+						BA.getMagAtk().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
 					}
 					else if (attIcon == 4)
 					{
-						BA.getPhyDef()[0] += PlayerAttributeIncrease[attIcon] ;
+						BA.getPhyDef().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
 					}
 					else if (attIcon == 5)
 					{
-						BA.getMagDef()[0] += PlayerAttributeIncrease[attIcon] ;
+						BA.getMagDef().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
 					}
 					else if (attIcon == 6)
 					{
-						BA.getDex()[0] += PlayerAttributeIncrease[attIcon] ;
+						BA.getDex().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
 					}
 					else if (attIcon == 7)
 					{
-						BA.getAgi()[0] += PlayerAttributeIncrease[attIcon] ;
+						BA.getAgi().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
 					}
 					player.decAttPoints(1) ;
 				}
@@ -207,7 +208,7 @@ public class PlayerAttributesWindow extends Window
 			
 			//	Attributes
 			double[] attributes = new double[] {BA.TotalPhyAtk(), BA.TotalMagAtk(), BA.TotalPhyDef(), BA.TotalMagDef(), BA.TotalDex(), BA.TotalAgi()} ;
-			double[][] attDetails = new double[][] {BA.getPhyAtk(), BA.getMagAtk(), BA.getPhyDef(), BA.getMagDef(), BA.getDex(), BA.getAgi()} ;
+			BasicBattleAttribute[] attDetails = new BasicBattleAttribute[] {BA.getPhyAtk(), BA.getMagAtk(), BA.getPhyDef(), BA.getMagDef(), BA.getDex(), BA.getAgi()} ;
 			int AttSy = 22 ;
 			DP.DrawText(new Point(WindowPos.x + 20, WindowPos.y + (int)(0.10*attWindowSize.y)), "BotLeft", TextAngle, attText[2] + ": " + UtilG.Round(PA.getLife()[0], 1), font, ColorPalette[6]) ;	// Life text	
 			DP.DrawText(new Point(WindowPos.x + 20, WindowPos.y + (int)(0.15*attWindowSize.y)), "BotLeft", TextAngle, attText[3] + ": " + UtilG.Round(PA.getMp()[0], 1), font, ColorPalette[5]) ;	// MP text
@@ -216,7 +217,7 @@ public class PlayerAttributesWindow extends Window
 			
 			for (int i = 0; i <= attributes.length - 1; i += 1)
 			{
-				DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + (i + 1) * AttSy), "BotLeft", TextAngle, UtilG.Round(attDetails[i][0], 1) + " + "+ UtilG.Round(attDetails[i][1], 1) + " + " + UtilG.Round(attDetails[i][2], 1), font, TextColor) ;
+				DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + (i + 1) * AttSy), "BotLeft", TextAngle, UtilG.Round(attDetails[i].getBaseValue(), 1) + " + "+ UtilG.Round(attDetails[i].getBonus(), 1) + " + " + UtilG.Round(attDetails[i].getTrain(), 1), font, TextColor) ;
 			}	
 			DP.DrawText(new Point(WindowPos.x + 45, (int) (WindowPos.y + 136 + 7.6 * AttSy)), "BotLeft", TextAngle, attText[10] + ": " + UtilG.Round(100 * BA.TotalCritAtkChance(), 1) + "%", font, ColorPalette[6]) ;		
 			

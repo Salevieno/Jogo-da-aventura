@@ -92,12 +92,12 @@ public class Pet extends LiveBeing
 	
 	private static BattleAttributes InitializeBattleAttributes(int Job)
 	{
-		double[] PhyAtk = new double[] {Double.parseDouble(PetProperties.get(Job)[5]), 0, 0} ;
-		double[] MagAtk = new double[] {Double.parseDouble(PetProperties.get(Job)[6]), 0, 0} ;
-		double[] PhyDef = new double[] {Double.parseDouble(PetProperties.get(Job)[7]), 0, 0} ;
-		double[] MagDef = new double[] {Double.parseDouble(PetProperties.get(Job)[8]), 0, 0} ;
-		double[] Dex = new double[] {Double.parseDouble(PetProperties.get(Job)[9]), 0, 0} ;
-		double[] Agi = new double[] {Double.parseDouble(PetProperties.get(Job)[10]), 0, 0} ;
+		BasicBattleAttribute PhyAtk = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[5]), 0, 0) ;
+		BasicBattleAttribute MagAtk = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[6]), 0, 0) ;
+		BasicBattleAttribute PhyDef = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[7]), 0, 0) ;
+		BasicBattleAttribute MagDef = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[8]), 0, 0) ;
+		BasicBattleAttribute Dex = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[9]), 0, 0) ;
+		BasicBattleAttribute Agi = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[10]), 0, 0) ;
 		double[] Crit = new double[] {Double.parseDouble(PetProperties.get(Job)[11]), 0, Double.parseDouble(PetProperties.get(Job)[12]), 0} ;
 		double[] Stun = new double[] {Double.parseDouble(PetProperties.get(Job)[13]), 0, Double.parseDouble(PetProperties.get(Job)[14]), 0, Double.parseDouble(PetProperties.get(Job)[15])} ;
 		double[] Block = new double[] {Double.parseDouble(PetProperties.get(Job)[16]), 0, Double.parseDouble(PetProperties.get(Job)[17]), 0, Double.parseDouble(PetProperties.get(Job)[18])} ;
@@ -233,12 +233,12 @@ public class Pet extends LiveBeing
 	public double[] getLife() {return PA.getLife() ;}
 	public double[] getMp() {return PA.getMp() ;}
 	public double getRange() {return PA.getRange() ;}
-	public double[] getPhyAtk() {return BA.getPhyAtk() ;}
-	public double[] getMagAtk() {return BA.getMagAtk() ;}
-	public double[] getPhyDef() {return BA.getPhyDef() ;}
-	public double[] getMagDef() {return BA.getMagDef() ;}
-	public double[] getDex() {return BA.getDex() ;}
-	public double[] getAgi() {return BA.getAgi() ;}
+	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
+	public BasicBattleAttribute getMagAtk() {return BA.getMagAtk() ;}
+	public BasicBattleAttribute getPhyDef() {return BA.getPhyDef() ;}
+	public BasicBattleAttribute getMagDef() {return BA.getMagDef() ;}
+	public BasicBattleAttribute getDex() {return BA.getDex() ;}
+	public BasicBattleAttribute getAgi() {return BA.getAgi() ;}
 	public double[] getCrit() {return BA.getCrit() ;}
 	public double[] getStun() {return BA.getStun() ;}
 	public double[] getBlock() {return BA.getBlock() ;}
@@ -414,12 +414,12 @@ public class Pet extends LiveBeing
 		PA.getLife()[0] = PA.getLife()[1] ;
 		PA.getMp()[1] += attributesIncrease[1] ;	
 		PA.getMp()[0] = PA.getMp()[1] ;
-		BA.getPhyAtk()[0] += attributesIncrease[2] ;
-		BA.getMagAtk()[0] += attributesIncrease[3] ;
-		BA.getPhyDef()[0] += attributesIncrease[4] ;
-		BA.getMagDef()[0] += attributesIncrease[5] ;
-		BA.getAgi()[0] += attributesIncrease[6] ;
-		BA.getDex()[0] += attributesIncrease[7] ;
+		BA.getPhyAtk().incBaseValue(attributesIncrease[2]) ;
+		BA.getMagAtk().incBaseValue(attributesIncrease[3]) ;
+		BA.getPhyDef().incBaseValue(attributesIncrease[4]) ;
+		BA.getMagDef().incBaseValue(attributesIncrease[5]) ;
+		BA.getAgi().incBaseValue(attributesIncrease[6]) ;
+		BA.getDex().incBaseValue(attributesIncrease[7]) ;
 		PA.getExp()[1] += attributesIncrease[8] ;		
 
 		ani.SetAniVars(14, new Object[] {150, this, attributesIncrease}) ;
@@ -455,12 +455,12 @@ public class Pet extends LiveBeing
 			bW.write("\nPet life: \n" + Arrays.toString(getLife())) ;
 			bW.write("\nPet mp: \n" + Arrays.toString(getMp())) ;
 			bW.write("\nPet range: \n" + getRange()) ;
-			bW.write("\nPet phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
-			bW.write("\nPet magAtk: \n" + Arrays.toString(getMagAtk())) ;
-			bW.write("\nPet phyDef: \n" + Arrays.toString(getPhyDef())) ;
-			bW.write("\nPet magDef: \n" + Arrays.toString(getMagDef())) ;
-			bW.write("\nPet dex: \n" + Arrays.toString(getDex())) ;
-			bW.write("\nPet agi: \n" + Arrays.toString(getAgi())) ;
+			//bW.write("\nPet phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
+			//bW.write("\nPet magAtk: \n" + Arrays.toString(getMagAtk())) ;
+			//bW.write("\nPet phyDef: \n" + Arrays.toString(getPhyDef())) ;
+			//bW.write("\nPet magDef: \n" + Arrays.toString(getMagDef())) ;
+			//bW.write("\nPet dex: \n" + Arrays.toString(getDex())) ;
+			//bW.write("\nPet agi: \n" + Arrays.toString(getAgi())) ;
 			bW.write("\nPet crit: \n" + Arrays.toString(getCrit())) ;
 			bW.write("\nPet stun: \n" + Arrays.toString(getStun())) ;
 			bW.write("\nPet block: \n" + Arrays.toString(getBlock())) ;

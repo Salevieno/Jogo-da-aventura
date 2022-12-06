@@ -185,15 +185,15 @@ public class Battle
 		}
 		if (Target.equals("Player"))
 		{
-			OriginalValue = new double[] {player.getLife()[1], player.getMp()[1], player.getBA().getPhyAtk().getBaseValue(), player.getBA().getMagAtk()[0], player.getBA().getPhyDef()[0], player.getBA().getMagDef()[0], player.getBA().getDex()[0], player.getBA().getAgi()[0], player.getBA().getCrit()[0], player.getBA().getStun()[0], player.getBA().getBlock()[0], player.getBA().getBlood()[0], player.getBA().getBlood()[2], player.getBA().getBlood()[4], player.getBA().getBlood()[6], player.getBA().getPoison()[0], player.getBA().getPoison()[2], player.getBA().getPoison()[4], player.getBA().getPoison()[6], player.getBA().getSilence()[0]} ;
+			OriginalValue = new double[] {player.getLife()[1], player.getMp()[1], player.getBA().getPhyAtk().getBaseValue(), player.getBA().getMagAtk().getBaseValue(), player.getBA().getPhyDef().getBaseValue(), player.getBA().getMagDef().getBaseValue(), player.getBA().getDex().getBaseValue(), player.getBA().getAgi().getBaseValue(), player.getBA().getCrit()[0], player.getBA().getStun()[0], player.getBA().getBlock()[0], player.getBA().getBlood()[0], player.getBA().getBlood()[2], player.getBA().getBlood()[4], player.getBA().getBlood()[6], player.getBA().getPoison()[0], player.getBA().getPoison()[2], player.getBA().getPoison()[4], player.getBA().getPoison()[6], player.getBA().getSilence()[0]} ;
 		}
 		if (Target.equals("Pet"))
 		{
-			OriginalValue = new double[] {pet.getLife()[1], pet.getMp()[1], pet.getPhyAtk().getBaseValue(), pet.getMagAtk()[0], pet.getPhyDef()[0], pet.getMagDef()[0], pet.getDex()[0], pet.getAgi()[0], pet.getCrit()[0], pet.getStun()[0], pet.getBlock()[0], pet.getBlood()[0], pet.getBlood()[2], pet.getBlood()[4], pet.getBlood()[6], pet.getPoison()[0], pet.getPoison()[2], pet.getPoison()[4], pet.getPoison()[6], pet.getSilence()[0]} ;
+			OriginalValue = new double[] {pet.getLife()[1], pet.getMp()[1], pet.getPhyAtk().getBaseValue(), pet.getMagAtk().getBaseValue(), pet.getPhyDef().getBaseValue(), pet.getMagDef().getBaseValue(), pet.getDex().getBaseValue(), pet.getAgi().getBaseValue(), pet.getCrit()[0], pet.getStun()[0], pet.getBlock()[0], pet.getBlood()[0], pet.getBlood()[2], pet.getBlood()[4], pet.getBlood()[6], pet.getPoison()[0], pet.getPoison()[2], pet.getPoison()[4], pet.getPoison()[6], pet.getSilence()[0]} ;
 		}
 		if (Target.equals("Creature"))
 		{
-			OriginalValue = new double[] {creature.getLife()[1], creature.getMp()[1], creature.getPhyAtk().getBaseValue(), creature.getMagAtk()[0], creature.getPhyDef()[0], creature.getMagDef()[0], creature.getDex()[0], creature.getAgi()[0], creature.getCrit()[0], creature.getStun()[0], creature.getBlock()[0], creature.getBlood()[0], creature.getBlood()[2], creature.getBlood()[4], creature.getBlood()[6], creature.getPoison()[0], creature.getPoison()[2], creature.getPoison()[4], creature.getPoison()[6], creature.getSilence()[0]} ;
+			OriginalValue = new double[] {creature.getLife()[1], creature.getMp()[1], creature.getPhyAtk().getBaseValue(), creature.getMagAtk().getBaseValue(), creature.getPhyDef().getBaseValue(), creature.getMagDef().getBaseValue(), creature.getDex().getBaseValue(), creature.getAgi().getBaseValue(), creature.getCrit()[0], creature.getStun()[0], creature.getBlock()[0], creature.getBlood()[0], creature.getBlood()[2], creature.getBlood()[4], creature.getBlood()[6], creature.getPoison()[0], creature.getPoison()[2], creature.getPoison()[4], creature.getPoison()[6], creature.getSilence()[0]} ;
 		}
 		if (effect == 11 | effect == 12)
 		{
@@ -234,12 +234,12 @@ public class Battle
 		{
 			player.getLife()[0] += Buff[0][0] ;
 			player.getMp()[0] += Buff[1][0] ;
-			player.getPhyAtk()[1] += Buff[2][0] ;
-			player.getMagAtk()[1] += Buff[3][0] ;
-			player.getPhyDef()[1] += Buff[4][0] ;
-			player.getMagDef()[1] += Buff[5][0] ;
-			player.getDex()[1] += Buff[6][0] ;
-			player.getAgi()[1] += Buff[7][0] ;
+			player.getPhyAtk().incBonus(Buff[2][0]) ;
+			player.getMagAtk().incBonus(Buff[3][0]) ;
+			player.getPhyDef().incBonus(Buff[4][0]) ;
+			player.getMagDef().incBonus(Buff[5][0]) ;
+			player.getDex().incBonus(Buff[6][0]) ;
+			player.getAgi().incBonus(Buff[7][0]) ;
 			player.getCrit()[1] += Buff[8][0] ;
 			player.getStun()[1] += Buff[9][0] ;
 			player.getBlock()[1] += Buff[10][0] ;
@@ -259,12 +259,12 @@ public class Battle
 		{
 			pet.getLife()[0] += Buff[0][0] ;
 			pet.getMp()[0] += Buff[1][0] ;
-			pet.getPhyAtk()[1] += Buff[2][0] ;
-			pet.getMagAtk()[1] += Buff[3][0] ;
-			pet.getPhyDef()[1] += Buff[4][0] ;
-			pet.getMagDef()[1] += Buff[5][0] ;
-			pet.getDex()[1] += Buff[6][0] ;
-			pet.getAgi()[1] += Buff[7][0] ;
+			pet.getPhyAtk().incBonus(Buff[2][0]) ;
+			pet.getMagAtk().incBonus(Buff[3][0]) ;
+			pet.getPhyDef().incBonus(Buff[4][0]) ;
+			pet.getMagDef().incBonus(Buff[5][0]) ;
+			pet.getDex().incBonus(Buff[6][0]) ;
+			pet.getAgi().incBonus(Buff[7][0]) ;
 			pet.getCrit()[1] += Buff[8][0] ;
 			pet.getStun()[1] += Buff[9][0] ;
 			pet.getBlock()[1] += Buff[10][0] ;
@@ -284,12 +284,12 @@ public class Battle
 		{
 			creature.getLife()[0] += -Buff[0][0] ;
 			creature.getMp()[0] += -Buff[1][0] ;
-			creature.getPhyAtk()[1] += -Buff[2][0] ;
-			creature.getMagAtk()[1] += -Buff[3][0] ;
-			creature.getPhyDef()[1] += -Buff[4][0] ;
-			creature.getMagDef()[1] += -Buff[5][0] ;
-			creature.getDex()[1] += -Buff[6][0] ;
-			creature.getAgi()[1] += -Buff[7][0] ;
+			creature.getPhyAtk().incBonus(-Buff[2][0]) ;
+			creature.getMagAtk().incBonus(-Buff[3][0]) ;
+			creature.getPhyDef().incBonus(-Buff[4][0]) ;
+			creature.getMagDef().incBonus(-Buff[5][0]) ;
+			creature.getDex().incBonus(-Buff[6][0]) ;
+			creature.getAgi().incBonus(-Buff[7][0]) ;
 			creature.getCrit()[1] += -Buff[8][0] ;
 			creature.getStun()[1] += -Buff[9][0] ;
 			creature.getBlock()[1] += -Buff[10][0] ;
@@ -457,7 +457,7 @@ public class Battle
 		ArrayList<Spell> spells = player.getSpell() ;
 		//player.ResetSpellCooldownCounter(spellID) ;
 		player.ResetBattleActions() ;
-		// TODO spell de suporte não é usado na batalha?
+		// TODO spell de suporte nï¿½o ï¿½ usado na batalha?
 		if (spell.getType().equals(SpellTypes.offensive))
 		{
 			/*atkResult = OffensiveSkills(player, creature, spell, spellID) ;

@@ -18,7 +18,8 @@ public class BasicBattleAttribute
 	public double getTrain() {return train ;}
 	public void setBonus(double newValue) {bonus = newValue ;}
 	public void setTrain(double newValue) {train = newValue ;}
-	
+
+	public void incBaseValue(double inc) {baseValue += inc ;}
 	public void incBonus(double inc) {bonus += inc ;}
 	public void incTrain(double inc) {train += inc ;}
 	
