@@ -30,7 +30,7 @@ public class DrawFunctions
 	private DrawPrimitives DP ;
 	private Graphics2D G ;
 
-	private float OverallAngle ;
+	private double OverallAngle ;
 	private Image ArrowIconImage ;
 	
 	public static Image[] ElementImages ;

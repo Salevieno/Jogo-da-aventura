@@ -69,7 +69,7 @@ public class UtilS
 		return false ;
 	}*/
 	
-	public static String LiveTyping(Point Pos, float angle, String Input, Font font, Color color, DrawPrimitives DP)
+	public static String LiveTyping(Point Pos, double angle, String Input, Font font, Color color, DrawPrimitives DP)
 	{
 		if (UtilG.IsAlphaNumeric(Input))
 		{
@@ -233,14 +233,14 @@ public class UtilS
 					NumberOfCreaturesInMap += 1 ;
 				}
 			}*/
-			float[] dist = new float[NumberOfCreaturesInMap] ;
-			float MinDist = screenSize.x + screenSize.y ;
+			double[] dist = new double[NumberOfCreaturesInMap] ;
+			double MinDist = screenSize.x + screenSize.y ;
 			for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 			{
 				Creature creature = fm.getCreatures().get(i) ;
 				if (fm.getCreatures().get(i) != null)
 				{
-					dist[i] = (float) new Point(player.getPos().x, player.getPos().y).distance(new Point(creature.getPos().x, creature.getPos().y)) ;				
+					dist[i] = (double) new Point(player.getPos().x, player.getPos().y).distance(new Point(creature.getPos().x, creature.getPos().y)) ;				
 					MinDist = Math.min(MinDist, dist[i]) ;
 				}	
 			}
@@ -256,7 +256,7 @@ public class UtilS
 		return null ;
 	}
 	
-	public static boolean IsInRange(Point Pos1, Point Pos2, float Range)
+	public static boolean IsInRange(Point Pos1, Point Pos2, double Range)
 	{
 		boolean isInRange = false ;
 		if (Pos1.distance(Pos2) < Range)
@@ -636,10 +636,10 @@ public class UtilS
 		return null ;
 	}*/
 
-	public static float[] LevelUpIncAtt(float[] AttributeIncrease, float[] ChanceIncrease, int Level)
+	public static double[] LevelUpIncAtt(double[] AttributeIncrease, double[] ChanceIncrease, int Level)
 	{
 		// Life, Mp, Phyatk, Magatk, Phydef, Magdef, Dex, Agi, Exp
-		float[] Increase = new float[AttributeIncrease.length + 1] ;
+		double[] Increase = new double[AttributeIncrease.length + 1] ;
 		for (int i = 0 ; i <= AttributeIncrease.length - 1 ; ++i)
 		{
 			if (Math.random() <= ChanceIncrease[i])
@@ -647,11 +647,11 @@ public class UtilS
 				Increase[i] = AttributeIncrease[i] ;
 			}
 		}
-		Increase[AttributeIncrease.length] = (float) (10*(3*Math.pow(Level - 1, 2) + 3*(Level - 1) + 1) - 5) ;
+		Increase[AttributeIncrease.length] = (double) (10*(3*Math.pow(Level - 1, 2) + 3*(Level - 1) + 1) - 5) ;
 		return Increase ;
 	}		
 		
-	/*public static String IdentifySave(Player player, Pet pet, float[][] EquipsBonus, int NumberOfSlots, Maps[] maps)
+	/*public static String IdentifySave(Player player, Pet pet, double[][] EquipsBonus, int NumberOfSlots, Maps[] maps)
 	{
 		for (int i = 0 ; i <= NumberOfSlots - 1 ; i += 1)
 		{
@@ -776,8 +776,8 @@ public class UtilS
 		int move = 0 ;
 		//String[] ItemsObtained = new String[10] ;
 		int NumberOfPlayerWins = 0, NumberOfPlayerPhyAtks = 0, NumberOfPetPhyAtks = 0, NumberOfPlayerMagAtks = 0, NumberOfPetMagAtks = 0, NumberOfPlayerDefs = 0, NumberOfPetDefs = 0 ;
-		float[] BattleResults = new float[5] ;
-		System.out.println("Creature life: " + creature.getLife()[0] + " Creature phy atk: " + creature.getPhyAtk()[0]) ;
+		double[] BattleResults = new double[5] ;
+		System.out.println("Creature life: " + creature.getLife()[0] + " Creature phy atk: " + creature.getPhyAtk().getBaseValue()) ;
 		
 		for (int i = 0 ; i <= NumberOfSimulations - 1 ; ++i)
 		{
@@ -838,12 +838,12 @@ public class UtilS
 				}
 				if (player.getActions()[2][0] % player.getActions()[2][1] == 0)	// Player heals mp
 				{
-					player.getMp()[0] = (float)(Math.min(player.getMp()[0] + 0.02*player.getMp()[1], player.getMp()[1])) ;	
+					player.getMp()[0] = (double)(Math.min(player.getMp()[0] + 0.02*player.getMp()[1], player.getMp()[1])) ;	
 					player.getActions()[2][0] = 0 ;
 				}
 				if (pet.getActions()[2][0] % pet.getActions()[2][1] == 0)	// Pet heals mp
 				{
-					pet.getMp()[0] = (float)(Math.min(pet.getMp()[0] + 0.02*pet.getMp()[1], pet.getMp()[1])) ;	
+					pet.getMp()[0] = (double)(Math.min(pet.getMp()[0] + 0.02*pet.getMp()[1], pet.getMp()[1])) ;	
 					pet.getActions()[2][0] = 0 ;
 				}
 				for (int j = 0 ; j <= creature.getBA().getBattleActions().length - 1 ; ++j)
@@ -854,7 +854,7 @@ public class UtilS
 					}	
 					if (creature.getActions()[1][0] % creature.getActions()[1][1] == 0)
 					{
-						creature.getMp()[0] = (float)(Math.min(creature.getMp()[0] + 0.02*creature.getMp()[1], creature.getMp()[1])) ;	// Creature heals mp
+						creature.getMp()[0] = (double)(Math.min(creature.getMp()[0] + 0.02*creature.getMp()[1], creature.getMp()[1])) ;	// Creature heals mp
 						creature.getActions()[1][0] = 0 ;
 					}	
 				}	

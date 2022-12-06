@@ -2,58 +2,46 @@ package GameComponents ;
 
 import java.awt.Image ;
 import java.awt.Point;
-import java.util.Arrays ;
 import Graphics.DrawPrimitives ;
 import Utilities.Scale;
 
 public class MapElements
 {
-	private int id ;
-	private String Name ;
-	private Point Pos ;
-	private Image image ;
-	private int[][] block ;
+	private int id ;			// id of the element
+	private String name ;		// name of the element
+	private Point pos ;			// topLeft position of the element
+	private Image image ;		// image of the element
+	private Point[] collider ;	// points in the element with colliders
 	
 	public MapElements(int id, String Name, Point Pos, Image image)
 	{
 		this.id = id ;
-		this.Name = Name ;
-		this.Pos = Pos ;
+		this.name = Name ;
+		this.pos = Pos ;
 		this.image = image ;
 		if (Name.equals("ForestTree"))
 		{
-			block = new int[75 - 18][] ;
+			collider = new Point[75 - 18] ;
 			for (int i = 18 ; i <= 75 - 1 ; i += 1)
 			{
-				block[i - 18] = new int[] {i, 15} ;
+				collider[i - 18] = new Point(i, 15) ;
 			}
 		}
 	}
 
 	public int getid() {return id ;}
-	public String getName() {return Name ;}
-	public Point getPos() {return Pos ;}
+	public String getName() {return name ;}
+	public Point getPos() {return pos ;}
 	public Image getImage() {return image ;}
-	public int[][] getBlock() {return block ;}
+	public Point[] getBlock() {return collider ;}
 	public void setid(int I) {id = I ;}
-	public void setName(String N) {Name = N ;}
-	public void setPos(Point P) {Pos = P ;}
+	public void setName(String N) {name = N ;}
+	public void setPos(Point P) {pos = P ;}
 	public void setImage(Image I) {image = I ;}
-	public void setBlock(int[][] B) {block = B ;}
+	public void setBlock(Point[] B) {collider = B ;}
 
-	public void DrawImage(float angle, DrawPrimitives DP)
+	public void DrawImage(double angle, DrawPrimitives DP)
 	{
-		DP.DrawImage(image, Pos, angle, new Scale(1, 1), new boolean[] {false, false}, "BotLeft", 1) ;
-	}
-
-	public void PrintProperties()
-	{
-		System.out.println() ;
-		System.out.println(" *** icon properties ***") ;
-		System.out.println("id: " + id) ;
-		System.out.println("name: " + Name) ;
-		System.out.println("pos: " + Pos) ;
-		System.out.println("image: " + image) ;
-		System.out.println("blocks: " + Arrays.deepToString(block)) ;
+		DP.DrawImage(image, pos, angle, new Scale(1, 1), "TopLeft") ;
 	}
 }

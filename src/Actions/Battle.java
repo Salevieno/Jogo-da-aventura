@@ -30,12 +30,12 @@ public class Battle
 	private int[][] ShowAtkCounters, ShowAtkDurations ;
 	private boolean[][] Show ;
 	private int CreatureTarget ;
-	private float randomAmp ;
+	private double randomAmp ;
 	private int[][] PlayerSkillBuffCounter, PlayerSkillNerfCounter, PetSkillBuffCounter, PetSkillNerfCounter, PlayerItemEffectCounter ;
 	private boolean[][] SkillBuffIsActive, ItemEffectIsActive ;
 
 	protected static String[] ElemID ;
-	protected static float[][] ElemMult ;
+	protected static double[][] ElemMult ;
 	
 	public Battle(Clip[] SoundEffects, int[] DamageDelay, Animations Ani)
 	{	
@@ -44,17 +44,17 @@ public class Battle
 
 		int NumElem = 10 ;
     	ElemID = new String[NumElem] ;
-		ElemMult = new float[NumElem][NumElem] ;
+		ElemMult = new double[NumElem][NumElem] ;
 		ArrayList<String[]> ElemInput = UtilG.ReadcsvFile(Game.CSVPath + "Elem.csv") ;
 		for (int i = 0 ; i <= NumElem - 1 ; ++i)
 		{
 			ElemID[i] = ElemInput.get(i)[0] ;
 			for (int j = 0 ; j <= NumElem - 1 ; ++j)
 			{
-				ElemMult[i][j] = Float.parseFloat(ElemInput.get(i)[j + 1]) ;
+				ElemMult[i][j] = Double.parseDouble(ElemInput.get(i)[j + 1]) ;
 			}				
 		}
-		randomAmp = (float)0.1 ;
+		randomAmp = (double)0.1 ;
 		
 		ShowAtkCounters = new int[3][4] ;
 		ShowAtkDurations = new int[3][4] ;
@@ -174,26 +174,26 @@ public class Battle
 		}*/
 	}
 
-	public void BuffsAndNerfs(Player player, Pet pet, Creature creature, float[][] Buffs, int BuffNerfLevel, int effect, boolean SkillIsActive, String Target, String action)
+	public void BuffsAndNerfs(Player player, Pet pet, Creature creature, double[][] Buffs, int BuffNerfLevel, int effect, boolean SkillIsActive, String Target, String action)
 	{
 		int ActionMult = 1 ;
-		float[][] Buff = new float[14][5] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
-		float[] OriginalValue = new float[14] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
+		double[][] Buff = new double[14][5] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
+		double[] OriginalValue = new double[14] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 		if (action.equals("deactivate"))
 		{
 			ActionMult = -1 ;
 		}
 		if (Target.equals("Player"))
 		{
-			OriginalValue = new float[] {player.getLife()[1], player.getMp()[1], player.getBA().getPhyAtk()[0], player.getBA().getMagAtk()[0], player.getBA().getPhyDef()[0], player.getBA().getMagDef()[0], player.getBA().getDex()[0], player.getBA().getAgi()[0], player.getBA().getCrit()[0], player.getBA().getStun()[0], player.getBA().getBlock()[0], player.getBA().getBlood()[0], player.getBA().getBlood()[2], player.getBA().getBlood()[4], player.getBA().getBlood()[6], player.getBA().getPoison()[0], player.getBA().getPoison()[2], player.getBA().getPoison()[4], player.getBA().getPoison()[6], player.getBA().getSilence()[0]} ;
+			OriginalValue = new double[] {player.getLife()[1], player.getMp()[1], player.getBA().getPhyAtk().getBaseValue(), player.getBA().getMagAtk()[0], player.getBA().getPhyDef()[0], player.getBA().getMagDef()[0], player.getBA().getDex()[0], player.getBA().getAgi()[0], player.getBA().getCrit()[0], player.getBA().getStun()[0], player.getBA().getBlock()[0], player.getBA().getBlood()[0], player.getBA().getBlood()[2], player.getBA().getBlood()[4], player.getBA().getBlood()[6], player.getBA().getPoison()[0], player.getBA().getPoison()[2], player.getBA().getPoison()[4], player.getBA().getPoison()[6], player.getBA().getSilence()[0]} ;
 		}
 		if (Target.equals("Pet"))
 		{
-			OriginalValue = new float[] {pet.getLife()[1], pet.getMp()[1], pet.getPhyAtk()[0], pet.getMagAtk()[0], pet.getPhyDef()[0], pet.getMagDef()[0], pet.getDex()[0], pet.getAgi()[0], pet.getCrit()[0], pet.getStun()[0], pet.getBlock()[0], pet.getBlood()[0], pet.getBlood()[2], pet.getBlood()[4], pet.getBlood()[6], pet.getPoison()[0], pet.getPoison()[2], pet.getPoison()[4], pet.getPoison()[6], pet.getSilence()[0]} ;
+			OriginalValue = new double[] {pet.getLife()[1], pet.getMp()[1], pet.getPhyAtk().getBaseValue(), pet.getMagAtk()[0], pet.getPhyDef()[0], pet.getMagDef()[0], pet.getDex()[0], pet.getAgi()[0], pet.getCrit()[0], pet.getStun()[0], pet.getBlock()[0], pet.getBlood()[0], pet.getBlood()[2], pet.getBlood()[4], pet.getBlood()[6], pet.getPoison()[0], pet.getPoison()[2], pet.getPoison()[4], pet.getPoison()[6], pet.getSilence()[0]} ;
 		}
 		if (Target.equals("Creature"))
 		{
-			OriginalValue = new float[] {creature.getLife()[1], creature.getMp()[1], creature.getPhyAtk()[0], creature.getMagAtk()[0], creature.getPhyDef()[0], creature.getMagDef()[0], creature.getDex()[0], creature.getAgi()[0], creature.getCrit()[0], creature.getStun()[0], creature.getBlock()[0], creature.getBlood()[0], creature.getBlood()[2], creature.getBlood()[4], creature.getBlood()[6], creature.getPoison()[0], creature.getPoison()[2], creature.getPoison()[4], creature.getPoison()[6], creature.getSilence()[0]} ;
+			OriginalValue = new double[] {creature.getLife()[1], creature.getMp()[1], creature.getPhyAtk().getBaseValue(), creature.getMagAtk()[0], creature.getPhyDef()[0], creature.getMagDef()[0], creature.getDex()[0], creature.getAgi()[0], creature.getCrit()[0], creature.getStun()[0], creature.getBlock()[0], creature.getBlood()[0], creature.getBlood()[2], creature.getBlood()[4], creature.getBlood()[6], creature.getPoison()[0], creature.getPoison()[2], creature.getPoison()[4], creature.getPoison()[6], creature.getSilence()[0]} ;
 		}
 		if (effect == 11 | effect == 12)
 		{
@@ -307,9 +307,9 @@ public class Battle
 		}
 	}
 	
-	public void ItemEffectInBattle(BattleAttributes PlayerBA, BattleAttributes PetBA, BattleAttributes creatureBA, String[] creatureElem, float[] creatureLife, Items[] items, int ItemID, String target, String Elem, float[][] Effects, float[][] Buffs, String action)
+	public void ItemEffectInBattle(BattleAttributes PlayerBA, BattleAttributes PetBA, BattleAttributes creatureBA, String[] creatureElem, double[] creatureLife, Items[] items, int ItemID, String target, String Elem, double[][] Effects, double[][] Buffs, String action)
 	{
-		float elemMult = BattleActions.CalcElemMult(Elem, "n", creatureElem[0], creatureElem[0], "n") ;
+		double elemMult = BattleActions.CalcElemMult(Elem, "n", creatureElem[0], creatureElem[0], "n") ;
 		creatureLife[0] += -Math.max(0, Effects[0][1])*elemMult*UtilG.RandomMult(randomAmp) ;
 		if (target.equals("Player"))
 		{
@@ -350,16 +350,16 @@ public class Battle
 		BattleAttributes playerBA = player.getBA();		// Battle attributes of the player
 		BattleAttributes creatureBA = creature.getBA();	// Battle attributes of the creature
 		
-		float[] StunMod = skills.getStunMod() ;
-		float[] BlockMod = skills.getBlockMod() ;
-		float[] BloodMod = skills.getBloodMod() ;
-		float[] PoisonMod = skills.getPoisonMod() ;
-		float[] SilenceMod = skills.getSilenceMod() ;
-		float[] Stun = new float[] {playerBA.TotalStunAtkChance() + StunMod[0], creatureBA.TotalStunDefChance() + StunMod[1], playerBA.StunDuration() + StunMod[2]} ;
-		float[] Block = new float[] {playerBA.TotalBlockAtkChance() + BlockMod[0], creatureBA.TotalBlockDefChance() + BlockMod[1], playerBA.BlockDuration() + BlockMod[2]} ;
-		float[] Blood = new float[] {playerBA.TotalBloodAtkChance() + BloodMod[0], creatureBA.TotalBloodDefChance() + BloodMod[1], playerBA.BloodDuration() + BloodMod[2]} ;
-		float[] Poison = new float[] {playerBA.TotalPoisonAtkChance() + PoisonMod[0], creatureBA.TotalPoisonDefChance() + PoisonMod[1], playerBA.PoisonDuration() + PoisonMod[2]} ;
-		float[] Silence = new float[] {playerBA.TotalSilenceAtkChance() + SilenceMod[0], creatureBA.TotalSilenceDefChance() + SilenceMod[1], playerBA.SilenceDuration() + SilenceMod[2]} ;
+		double[] StunMod = skills.getStunMod() ;
+		double[] BlockMod = skills.getBlockMod() ;
+		double[] BloodMod = skills.getBloodMod() ;
+		double[] PoisonMod = skills.getPoisonMod() ;
+		double[] SilenceMod = skills.getSilenceMod() ;
+		double[] Stun = new double[] {playerBA.TotalStunAtkChance() + StunMod[0], creatureBA.TotalStunDefChance() + StunMod[1], playerBA.StunDuration() + StunMod[2]} ;
+		double[] Block = new double[] {playerBA.TotalBlockAtkChance() + BlockMod[0], creatureBA.TotalBlockDefChance() + BlockMod[1], playerBA.BlockDuration() + BlockMod[2]} ;
+		double[] Blood = new double[] {playerBA.TotalBloodAtkChance() + BloodMod[0], creatureBA.TotalBloodDefChance() + BloodMod[1], playerBA.BloodDuration() + BloodMod[2]} ;
+		double[] Poison = new double[] {playerBA.TotalPoisonAtkChance() + PoisonMod[0], creatureBA.TotalPoisonDefChance() + PoisonMod[1], playerBA.PoisonDuration() + PoisonMod[2]} ;
+		double[] Silence = new double[] {playerBA.TotalSilenceAtkChance() + SilenceMod[0], creatureBA.TotalSilenceDefChance() + SilenceMod[1], playerBA.SilenceDuration() + SilenceMod[2]} ;
 		int[] SkillStatus = BattleActions.CalcStatus(Stun, Block, Blood, Poison, Silence) ;
 		creatureBA.receiveStatus(SkillStatus) ;
 	}
@@ -369,25 +369,25 @@ public class Battle
 		int skilllevel = player.getSpell().get(spellID).getLevel() ;
 		int damage = -1 ;
 		String effect = "" ;
-		float PhyAtk = player.getBA().TotalPhyAtk() ;
-		float MagAtk = player.getBA().TotalMagAtk() ;
-		float PhyDef = creature.getBA().TotalPhyDef() ;
-		float MagDef = creature.getBA().TotalMagDef() ;
-		float AtkDex = player.getBA().TotalDex() ;
-		float DefAgi = creature.getBA().TotalAgi() ;
-		float AtkCrit = player.getBA().TotalCritAtkChance() ;
-		float DefCrit = creature.getBA().TotalCritDefChance() ;
-		float CreatureElemMod = 1 ;
-		float ArrowAtk = 0 ;
-		float[] AtkMod = new float[] {skills.getAtkMod()[0] * skilllevel, 1 + skills.getAtkMod()[1] * skilllevel} ;	// Atk modifier
-		float[] DefMod = new float[] {skills.getDefMod()[0] * skilllevel, 1 + skills.getDefMod()[1] * skilllevel} ;	// Def modifier
-		float[] DexMod = new float[] {skills.getDexMod()[0] * skilllevel, 1 + skills.getDexMod()[1] * skilllevel} ;	// Dex modifier
-		float[] AgiMod = new float[] {skills.getAgiMod()[0] * skilllevel, 1 + skills.getAgiMod()[1] * skilllevel} ;	// Agi modifier
-		float AtkCritMod = skills.getAtkCritMod()[0] * skilllevel ;	// Critical atk modifier
-		float DefCritMod = skills.getDefCritMod()[0] * skilllevel ;	// Critical def modifier
-		float BlockDef = creature.getBA().getSpecialStatus()[1] ;
-		float BasicAtk = 0 ;
-		float BasicDef = 0 ;
+		double PhyAtk = player.getBA().TotalPhyAtk() ;
+		double MagAtk = player.getBA().TotalMagAtk() ;
+		double PhyDef = creature.getBA().TotalPhyDef() ;
+		double MagDef = creature.getBA().TotalMagDef() ;
+		double AtkDex = player.getBA().TotalDex() ;
+		double DefAgi = creature.getBA().TotalAgi() ;
+		double AtkCrit = player.getBA().TotalCritAtkChance() ;
+		double DefCrit = creature.getBA().TotalCritDefChance() ;
+		double CreatureElemMod = 1 ;
+		double ArrowAtk = 0 ;
+		double[] AtkMod = new double[] {skills.getAtkMod()[0] * skilllevel, 1 + skills.getAtkMod()[1] * skilllevel} ;	// Atk modifier
+		double[] DefMod = new double[] {skills.getDefMod()[0] * skilllevel, 1 + skills.getDefMod()[1] * skilllevel} ;	// Def modifier
+		double[] DexMod = new double[] {skills.getDexMod()[0] * skilllevel, 1 + skills.getDexMod()[1] * skilllevel} ;	// Dex modifier
+		double[] AgiMod = new double[] {skills.getAgiMod()[0] * skilllevel, 1 + skills.getAgiMod()[1] * skilllevel} ;	// Agi modifier
+		double AtkCritMod = skills.getAtkCritMod()[0] * skilllevel ;	// Critical atk modifier
+		double DefCritMod = skills.getDefCritMod()[0] * skilllevel ;	// Critical def modifier
+		double BlockDef = creature.getBA().getSpecialStatus()[1] ;
+		double BasicAtk = 0 ;
+		double BasicDef = 0 ;
 		String[] AtkElem = new String[] {skills.getElem(), player.getElem()[1], player.getElem()[4]} ;
 		String[] DefElem = new String[] {creature.getElem()[0], creature.getElem()[0]} ;
 
@@ -415,8 +415,8 @@ public class Battle
 			}
 			if (spellID == 2 | spellID == 5 | spellID == 11)
 			{
-				BasicAtk = (float) ((PhyAtk + MagAtk) / 2.0 + ArrowAtk) ;
-				BasicDef = (float) ((PhyDef + MagDef) / 2.0) ;
+				BasicAtk = (double) ((PhyAtk + MagAtk) / 2.0 + ArrowAtk) ;
+				BasicDef = (double) ((PhyDef + MagDef) / 2.0) ;
 			}
 			if (spellID == 14)
 			{
@@ -503,15 +503,15 @@ public class Battle
 		int damage = -1 ;
 		String effect = "" ;
 		int level = pet.getSpells().get(selectedSpell).getLevel() ;
-		float BasicPhyAtk = pet.getBA().TotalPhyAtk() ;
-		float BasicMagAtk = pet.getBA().TotalMagAtk() ;
-		float BasicPhyDef = creature.getBA().TotalPhyDef() ;
-		float BasicMagDef = creature.getBA().TotalMagDef() ;
-		float BasicAtkDex = pet.getBA().TotalDex() ;
-		float BasicDefAgi = creature.getBA().TotalAgi() ;
-		float BasicAtkCrit = pet.getBA().TotalCritAtkChance() ;
-		float BasicDefCrit = creature.getBA().TotalCritDefChance() ;
-		float CreatureElemModif = 1 ;
+		double BasicPhyAtk = pet.getBA().TotalPhyAtk() ;
+		double BasicMagAtk = pet.getBA().TotalMagAtk() ;
+		double BasicPhyDef = creature.getBA().TotalPhyDef() ;
+		double BasicMagDef = creature.getBA().TotalMagDef() ;
+		double BasicAtkDex = pet.getBA().TotalDex() ;
+		double BasicDefAgi = creature.getBA().TotalAgi() ;
+		double BasicAtkCrit = pet.getBA().TotalCritAtkChance() ;
+		double BasicDefCrit = creature.getBA().TotalCritDefChance() ;
+		double CreatureElemModif = 1 ;
 		if (spell.getMpCost() <= pet.getMp()[0])
 		{
 			if (pet.getJob() == 0)
@@ -519,7 +519,7 @@ public class Battle
 				if (selectedSpell == 0)
 				{	
 					effect = BattleActions.CalcEffect(BasicAtkDex, BasicDefAgi, BasicAtkCrit, BasicDefCrit, creature.getBA().getSpecialStatus()[1]) ;
-					damage = BattleActions.CalcAtk(effect, BasicPhyAtk*(float)(1 + 0.02*level) + level, BasicPhyDef, new String[] {pet.getElem()[0], pet.getElem()[1], pet.getElem()[4]}, new String[] {creature.getElem()[0], creature.getElem()[0]}, CreatureElemModif, randomAmp) ;															
+					damage = BattleActions.CalcAtk(effect, BasicPhyAtk*(double)(1 + 0.02*level) + level, BasicPhyDef, new String[] {pet.getElem()[0], pet.getElem()[1], pet.getElem()[4]}, new String[] {creature.getElem()[0], creature.getElem()[0]}, CreatureElemModif, randomAmp) ;															
 				}
 			}
 			if (pet.getJob() == 1)
@@ -527,7 +527,7 @@ public class Battle
 				if (selectedSpell == 0)
 				{				
 					effect = BattleActions.CalcEffect(BasicAtkDex, BasicDefAgi, BasicAtkCrit, BasicDefCrit, creature.getBA().getSpecialStatus()[1]) ;
-					damage = BattleActions.CalcAtk(effect, BasicMagAtk*(float)(1 + 0.02*level) + level, BasicMagDef, new String[] {pet.getElem()[0], pet.getElem()[1], pet.getElem()[4]}, new String[] {creature.getElem()[0], creature.getElem()[0]}, CreatureElemModif, randomAmp) ;															
+					damage = BattleActions.CalcAtk(effect, BasicMagAtk*(double)(1 + 0.02*level) + level, BasicMagDef, new String[] {pet.getElem()[0], pet.getElem()[1], pet.getElem()[4]}, new String[] {creature.getElem()[0], creature.getElem()[0]}, CreatureElemModif, randomAmp) ;															
 				}
 			}
 			if (pet.getJob() == 2)
@@ -557,7 +557,7 @@ public class Battle
 		if (player.actionIsAnAtk())	// Physical atk
 		{
 			atkType = "Physical" ;	// TODO arrow atks can be physical and magical at the same time
-			float ArrowAtk = 0 ;
+			double ArrowAtk = 0 ;
 			if (player.getJob() == 2 & player.arrowIsEquipped())
 			{
 				ArrowAtk = Items.ArrowPower[player.getEquips()[3].getId() - Items.BagIDs[4]][0] ;
@@ -568,11 +568,11 @@ public class Battle
 			if (effect.equals("Hit"))
 			{
 				creature.getPA().incLife(-damage) ;
-				int[] inflictedStatus = BattleActions.CalcStatus(new float[] {player.getBA().TotalStunAtkChance(), creature.getBA().TotalStunDefChance(), player.getBA().StunDuration()},
-						new float[] {player.getBA().TotalBlockAtkChance(), creature.getBA().TotalBlockDefChance(), player.getBA().BlockDuration()},
-						new float[] {player.getBA().TotalBloodAtkChance(), creature.getBA().TotalBloodDefChance(), player.getBA().BloodDuration()},
-						new float[] {player.getBA().TotalPoisonAtkChance(), creature.getBA().TotalPoisonDefChance(), player.getBA().PoisonDuration()},
-						new float[] {player.getBA().TotalSilenceAtkChance(), creature.getBA().TotalSilenceDefChance(), player.getBA().SilenceDuration()}) ;
+				int[] inflictedStatus = BattleActions.CalcStatus(new double[] {player.getBA().TotalStunAtkChance(), creature.getBA().TotalStunDefChance(), player.getBA().StunDuration()},
+						new double[] {player.getBA().TotalBlockAtkChance(), creature.getBA().TotalBlockDefChance(), player.getBA().BlockDuration()},
+						new double[] {player.getBA().TotalBloodAtkChance(), creature.getBA().TotalBloodDefChance(), player.getBA().BloodDuration()},
+						new double[] {player.getBA().TotalPoisonAtkChance(), creature.getBA().TotalPoisonDefChance(), player.getBA().PoisonDuration()},
+						new double[] {player.getBA().TotalSilenceAtkChance(), creature.getBA().TotalSilenceDefChance(), player.getBA().SilenceDuration()}) ;
 				creature.getBA().receiveStatus(inflictedStatus) ;
 			}
 			player.ResetBattleActions() ;
@@ -623,7 +623,7 @@ public class Battle
 				if (effect <= 1)
 				{
 					creature.getLife()[0] += -damage ;
-					inflictedStatus = BattleActions.CalcStatus(new float[] {petBA.TotalStunAtkChance(), creatureBA.TotalStunDefChance(), petBA.StunDuration()}, new float[] {petBA.TotalBlockAtkChance(), creatureBA.TotalBlockDefChance(), petBA.BlockDuration()}, new float[] {petBA.TotalBloodAtkChance(), creatureBA.TotalBloodDefChance(), petBA.BloodDuration()}, new float[] {petBA.TotalPoisonAtkChance(), creatureBA.TotalPoisonDefChance(), petBA.PoisonDuration()}, new float[] {petBA.TotalSilenceAtkChance(), creatureBA.TotalSilenceDefChance(), petBA.SilenceDuration()}) ;
+					inflictedStatus = BattleActions.CalcStatus(new double[] {petBA.TotalStunAtkChance(), creatureBA.TotalStunDefChance(), petBA.StunDuration()}, new double[] {petBA.TotalBlockAtkChance(), creatureBA.TotalBlockDefChance(), petBA.BlockDuration()}, new double[] {petBA.TotalBloodAtkChance(), creatureBA.TotalBloodDefChance(), petBA.BloodDuration()}, new double[] {petBA.TotalPoisonAtkChance(), creatureBA.TotalPoisonDefChance(), petBA.PoisonDuration()}, new double[] {petBA.TotalSilenceAtkChance(), creatureBA.TotalSilenceDefChance(), petBA.SilenceDuration()}) ;
 					creatureBA.receiveStatus(inflictedStatus) ;
 				}
 				Show[1][0] = true ;
@@ -703,7 +703,7 @@ public class Battle
 					if (effect.equals("Hit"))	// Hit
 					{
 						player.getLife()[0] += -damage ;
-						Status = BattleActions.CalcStatus(new float[] {creatureBA.TotalStunAtkChance(), playerBA.TotalStunDefChance(), creatureBA.StunDuration()}, new float[] {creatureBA.TotalBlockAtkChance(), playerBA.TotalBlockDefChance(), creatureBA.BlockDuration()}, new float[] {creatureBA.TotalBloodAtkChance(), playerBA.TotalBloodDefChance(), creatureBA.BloodDuration()}, new float[] {creatureBA.TotalPoisonAtkChance(), playerBA.TotalPoisonDefChance(), creatureBA.PoisonDuration()}, new float[] {creatureBA.TotalSilenceAtkChance(), playerBA.TotalSilenceDefChance(), creatureBA.SilenceDuration()}) ;
+						Status = BattleActions.CalcStatus(new double[] {creatureBA.TotalStunAtkChance(), playerBA.TotalStunDefChance(), creatureBA.StunDuration()}, new double[] {creatureBA.TotalBlockAtkChance(), playerBA.TotalBlockDefChance(), creatureBA.BlockDuration()}, new double[] {creatureBA.TotalBloodAtkChance(), playerBA.TotalBloodDefChance(), creatureBA.BloodDuration()}, new double[] {creatureBA.TotalPoisonAtkChance(), playerBA.TotalPoisonDefChance(), creatureBA.PoisonDuration()}, new double[] {creatureBA.TotalSilenceAtkChance(), playerBA.TotalSilenceDefChance(), creatureBA.SilenceDuration()}) ;
 						playerBA.receiveStatus(Status) ;
 					}
 					/*else if (effect.equals("Miss"))	// Miss
@@ -728,7 +728,7 @@ public class Battle
 					if (effect.equals("Hit"))	// Hit
 					{
 						pet.getLife()[0] += -damage ;
-						Status = BattleActions.CalcStatus(new float[] {creatureBA.TotalStunAtkChance(), petBA.TotalStunDefChance(), creatureBA.StunDuration()}, new float[] {creatureBA.TotalBlockAtkChance(), petBA.TotalBlockDefChance(), creatureBA.BlockDuration()}, new float[] {creatureBA.TotalBloodAtkChance(), petBA.TotalBloodDefChance(), creatureBA.BloodDuration()}, new float[] {creatureBA.TotalPoisonAtkChance(), petBA.TotalPoisonDefChance(), creatureBA.PoisonDuration()}, new float[] {creatureBA.TotalSilenceAtkChance(), petBA.TotalSilenceDefChance(), creatureBA.SilenceDuration()}) ;
+						Status = BattleActions.CalcStatus(new double[] {creatureBA.TotalStunAtkChance(), petBA.TotalStunDefChance(), creatureBA.StunDuration()}, new double[] {creatureBA.TotalBlockAtkChance(), petBA.TotalBlockDefChance(), creatureBA.BlockDuration()}, new double[] {creatureBA.TotalBloodAtkChance(), petBA.TotalBloodDefChance(), creatureBA.BloodDuration()}, new double[] {creatureBA.TotalPoisonAtkChance(), petBA.TotalPoisonDefChance(), creatureBA.PoisonDuration()}, new double[] {creatureBA.TotalSilenceAtkChance(), petBA.TotalSilenceDefChance(), creatureBA.SilenceDuration()}) ;
 						petBA.receiveStatus(Status) ;
 					}
 					/*else if (effect.equals("Miss"))
@@ -876,7 +876,7 @@ public class Battle
 				}
 				if (player.getJob() == 4 & Math.random() < 0.2*player.getSpell().get(11).getLevel() & effect.equals("Crit"))	// Surprise attack
 				{
-					creature.getLife()[0] += -Math.min(0.5 * damage, 2*player.getPhyAtk()[0]) ;
+					creature.getLife()[0] += -Math.min(0.5 * damage, 2*player.getPhyAtk().getBaseValue()) ;
 					// needs to show the atk animation
 					SkillBuffIsActive[11][0] = true ;
 				}
@@ -891,7 +891,7 @@ public class Battle
 				System.out.println("creature life: " + creature.getLife()[0]);
 				System.out.println("creature mp: " + creature.getMp()[0]);
 				System.out.println("creature action: " + creature.getAction());
-				System.out.println("creature def: " + creature.getMagDef()[1]);
+				System.out.println("creature def: " + creature.getMagDef().getBonus());
 				System.out.println("player life: " + player.getLife()[0]);
 				System.out.println("player pos: " + player.getPos());
 			}

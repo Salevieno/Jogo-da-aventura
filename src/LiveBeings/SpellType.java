@@ -12,24 +12,25 @@ public class SpellType
 {	
 	private String name ;
 	private int maxLevel ;
-	private float mpCost ;
+	private double mpCost ;
 	private SpellTypes type ;
 	private Map<SpellType, Integer> preRequisites ;
 	private int cooldown ;
-	private int duration ;
-	private float[][] Buffs ;
-	private float[][] Nerfs ;
-	private float[] AtkMod ;
-	private float[] DefMod ;
-	private float[] DexMod ;
-	private float[] AgiMod ;
-	private float[] AtkCritMod ;
-	private float[] DefCritMod ;
-	private float[] StunMod ;
-	private float[] BlockMod ;
-	private float[] BloodMod ;
-	private float[] PoisonMod ;
-	private float[] SilenceMod ;
+	private int cooldownDuration ;
+	private int effectDuration ;
+	private double[][] Buffs ;
+	private double[][] Nerfs ;
+	private double[] AtkMod ;
+	private double[] DefMod ;
+	private double[] DexMod ;
+	private double[] AgiMod ;
+	private double[] AtkCritMod ;
+	private double[] DefCritMod ;
+	private double[] StunMod ;
+	private double[] BlockMod ;
+	private double[] BloodMod ;
+	private double[] PoisonMod ;
+	private double[] SilenceMod ;
 	private String elem ;
 	private String[] info ;	// Effect and description
 	
@@ -37,9 +38,9 @@ public class SpellType
 	public static Image slotImage = new ImageIcon(Game.ImagesPath + "SkillSlot.png").getImage() ;
 	public static Image ElementalCicle = new ImageIcon(Game.ImagesPath + "ElementalCicle.png").getImage() ;
 	
-	public SpellType(String Name, int MaxLevel, float MpCost, SpellTypes type, Map<SpellType, Integer> preRequisites, int Cooldown, int Duration, float[][] Buffs, float[][] Nerfs,
-			float[] AtkMod, float[] DefMod, float[] DexMod, float[] AgiMod, float[] AtkCritMod, float[] DefCritMod, float[] StunMod, float[] BlockMod, float[] BloodMod,
-			float[] PoisonMod, float[] SilenceMod, String Elem, String[] Info)
+	public SpellType(String Name, int MaxLevel, double MpCost, SpellTypes type, Map<SpellType, Integer> preRequisites, int Cooldown, int Duration, double[][] Buffs, double[][] Nerfs,
+			double[] AtkMod, double[] DefMod, double[] DexMod, double[] AgiMod, double[] AtkCritMod, double[] DefCritMod, double[] StunMod, double[] BlockMod, double[] BloodMod,
+			double[] PoisonMod, double[] SilenceMod, String Elem, String[] Info)
 	{
 		this.name = Name ;
 		this.maxLevel = MaxLevel ;
@@ -47,7 +48,8 @@ public class SpellType
 		this.type = type ;
 		this.preRequisites = preRequisites ;
 		this.cooldown = Cooldown ;
-		this.duration = Duration ;
+		this.cooldownDuration = Duration ;
+		this.effectDuration = Duration ;
 		this.Buffs = Buffs ;
 		this.Nerfs = Nerfs ;
 		this.AtkMod = AtkMod ;
@@ -67,24 +69,25 @@ public class SpellType
 	
 	public String getName() {return name ;}
 	public int getMaxLevel() {return maxLevel ;}
-	public float getMpCost() {return mpCost ;}
+	public double getMpCost() {return mpCost ;}
 	public SpellTypes getType() {return type ;}
 	public Map<SpellType, Integer> getPreRequisites() {return preRequisites ;}
 	public int getCooldown() {return cooldown ;}
-	public int getDuration() {return duration ;}
-	public float[][] getBuffs() {return Buffs ;}
-	public float[][] getNerfs() {return Nerfs ;}
-	public float[] getAtkMod() {return AtkMod ;}
-	public float[] getDefMod() {return DefMod ;}
-	public float[] getDexMod() {return DexMod ;}
-	public float[] getAgiMod() {return AgiMod ;}
-	public float[] getAtkCritMod() {return AtkCritMod ;}
-	public float[] getDefCritMod() {return DefCritMod ;}
-	public float[] getStunMod() {return StunMod ;}
-	public float[] getBlockMod() {return BlockMod ;}
-	public float[] getBloodMod() {return BloodMod ;}
-	public float[] getPoisonMod() {return PoisonMod ;}
-	public float[] getSilenceMod() {return SilenceMod ;}
+	public int getCooldownDuration() {return cooldownDuration ;}
+	public int getEffectDuration() {return effectDuration ;}
+	public double[][] getBuffs() {return Buffs ;}
+	public double[][] getNerfs() {return Nerfs ;}
+	public double[] getAtkMod() {return AtkMod ;}
+	public double[] getDefMod() {return DefMod ;}
+	public double[] getDexMod() {return DexMod ;}
+	public double[] getAgiMod() {return AgiMod ;}
+	public double[] getAtkCritMod() {return AtkCritMod ;}
+	public double[] getDefCritMod() {return DefCritMod ;}
+	public double[] getStunMod() {return StunMod ;}
+	public double[] getBlockMod() {return BlockMod ;}
+	public double[] getBloodMod() {return BloodMod ;}
+	public double[] getPoisonMod() {return PoisonMod ;}
+	public double[] getSilenceMod() {return SilenceMod ;}
 	public String getElem() {return elem ;}
 	public String[] getInfo() {return info ;}
 	

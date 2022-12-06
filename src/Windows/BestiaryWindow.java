@@ -44,7 +44,7 @@ public class BestiaryWindow extends Window
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String[] text = player.allText.get("* Bestiário *") ;
 		Color textColor = Game.ColorPalette[9] ;
-		float angle = DrawPrimitives.OverallAngle ;
+		double angle = DrawPrimitives.OverallAngle ;
 		
 		int H = (int) (0.5*Game.getScreen().getSize().y) ;
 		int offset = 5 ;
@@ -98,7 +98,7 @@ public class BestiaryWindow extends Window
 
 				// draw creatures
 				CreatureTypes creatureType = discoveredCreatures.get(slot) ;
-				double scaleFactor = Math.min((float) (slotSize.x) / creatureType.getPA().getSize().x, (float) (slotSize.y) / creatureType.getPA().getSize().y) ;
+				double scaleFactor = Math.min((double) (slotSize.x) / creatureType.getPA().getSize().x, (double) (slotSize.y) / creatureType.getPA().getSize().y) ;
 				creatureType.display(slotPos, new Scale(1, 1), DP) ;
 				
 				// determine if a creature is selected

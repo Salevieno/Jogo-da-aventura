@@ -46,7 +46,7 @@ public class Buildings
 	
 	
 	/* Drawing methods */
-	public void display(Point playerPos, float angle, Scale scale, DrawPrimitives DP)
+	public void display(Point playerPos, double angle, Scale scale, DrawPrimitives DP)
 	{
 		if (playerIsInside(playerPos))
 		{				

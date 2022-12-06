@@ -443,7 +443,7 @@ public abstract class UtilG
 		return false ;
 	}
 	
-	public static Image ChangeImageColor(Image image, float[] area, Color newColor, Color OriginalColor)
+	public static Image ChangeImageColor(Image image, double[] area, Color newColor, Color OriginalColor)
 	{
 		int l = (int)(image.getWidth(null)), h = (int)(image.getHeight(null)) ;
 		BufferedImage BufferedFile = toBufferedImage(image) ;
@@ -498,9 +498,9 @@ public abstract class UtilG
 		DF.getDrawPrimitives().DrawText(new Point(200, 200), "TopLeft", 0, String.valueOf(562) + ": " + AllFonts[fontid].getFontName(), new Font(AllFonts[562].getFontName(), Font.BOLD, 20), Color.blue) ;	
 	}
 	
-	public static float RandomMult(float amplitude)
+	public static double RandomMult(double amplitude)
 	{
-		return (float)(Math.max(0, 1 - amplitude + 2 * amplitude * Math.random())) ;
+		return (double)(Math.max(0, 1 - amplitude + 2 * amplitude * Math.random())) ;
 	}
 
 	public static int[] OffsetFromPos(String Alignment, int l, int h)
@@ -1031,9 +1031,9 @@ public abstract class UtilG
 		result[input.length] = NewMember ;
 		return result ;
 	}
-	public static float Round(float num, int decimals)
+	public static double Round(double num, int decimals)
 	{
-		return BigDecimal.valueOf(num).setScale(decimals, RoundingMode.HALF_EVEN).floatValue() ;
+		return BigDecimal.valueOf(num).setScale(decimals, RoundingMode.HALF_EVEN).doubleValue() ;
 	}
 
 	public static boolean ArrayContains(String[] Array, String value)
@@ -1076,7 +1076,7 @@ public abstract class UtilG
 		return NewArray ;
 	}
 	
-	public static int RandomCoord1D(int size, float MinCoord, float Range, int step)
+	public static int RandomCoord1D(int size, double MinCoord, double Range, int step)
 	{
 		return (int)(size*(Range*Math.random() + MinCoord)/step)*step ;
 	}
@@ -1139,27 +1139,27 @@ public abstract class UtilG
 		return BufferedFile ;
 	}*/
 
-	public static float dist1D(int PosA, int PosB)
+	public static double dist1D(int PosA, int PosB)
 	{
 		return Math.abs(PosA - PosB) ;
 	}
 	
-	public static float dist3D(int[] PosA, int[] PosB)
+	public static double dist3D(int[] PosA, int[] PosB)
 	{
-		return (float)(Math.sqrt(Math.pow(PosB[0] - PosA[0], 2) + Math.pow(PosB[1] - PosA[1], 2) + Math.pow(PosB[2] - PosA[2], 2))) ;
+		return (double)(Math.sqrt(Math.pow(PosB[0] - PosA[0], 2) + Math.pow(PosB[1] - PosA[1], 2) + Math.pow(PosB[2] - PosA[2], 2))) ;
 	}
 	
-	public static float getAngle(float[] speed)
+	public static double getAngle(double[] speed)
 	{
 		if (speed[0] == 0)
 		{
 			if (0 < speed[1])
 			{
-				return (float) (Math.PI / 2) ;
+				return (double) (Math.PI / 2) ;
 			}
 			else
 			{
-				return (float) (-Math.PI / 2) ;
+				return (double) (-Math.PI / 2) ;
 			}
 		}
 		else
@@ -1168,30 +1168,30 @@ public abstract class UtilG
 			{
 				if (0 < speed[1])	// 1st quadrant
 				{
-					return (float) Math.atan(speed[1] / speed[0]) ;
+					return (double) Math.atan(speed[1] / speed[0]) ;
 				}
 				else				// 4th quadrant
 				{
-					return (float) (2 * Math.PI - Math.atan(speed[1] / speed[0])) ;
+					return (double) (2 * Math.PI - Math.atan(speed[1] / speed[0])) ;
 				}
 			}
 			else
 			{
 				if (0 < speed[1])	// 2st quadrant
 				{
-					return (float) (Math.PI - Math.atan(speed[1] / speed[0])) ;
+					return (double) (Math.PI - Math.atan(speed[1] / speed[0])) ;
 				}
 				else				// 3rd quadrant
 				{
-					return (float) (Math.PI + Math.atan(speed[1] / speed[0])) ;
+					return (double) (Math.PI + Math.atan(speed[1] / speed[0])) ;
 				}
 			}
 		}
 	}
 	
-	public static float spacing(float L, int n, float size, float offset)
+	public static double spacing(double L, int n, double size, double offset)
 	{
-		float s = -1 ;
+		double s = -1 ;
 		
 		if (1 < n)
 		{
@@ -1205,9 +1205,9 @@ public abstract class UtilG
 		return s ;
 	}
 
-	public static float clearspacing(float L, int n, float size, float offset)
+	public static double clearspacing(double L, int n, double size, double offset)
 	{
-		float s = -1 ;
+		double s = -1 ;
 		
 		if (1 < n)
 		{
@@ -1272,14 +1272,14 @@ public abstract class UtilG
 					}
 					return IntArray ;
 				}
-				else if (From.equals("String") & To.equals("float"))
+				else if (From.equals("String") & To.equals("double"))
 				{
-					float[] FloatArray = new float[OriginalArray.length] ;
+					double[] doubleArray = new double[OriginalArray.length] ;
 					for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
 					{
-						FloatArray[i] = Float.parseFloat((String) OriginalArray[i]) ;
+						doubleArray[i] = Double.parseDouble((String) OriginalArray[i]) ;
 					}
-					return FloatArray ;
+					return doubleArray ;
 				}
 				else if (From.equals("String") & To.equals("boolean"))
 				{
@@ -1320,17 +1320,17 @@ public abstract class UtilG
 			}
 			return IntArray ;
 		}
-		else if (From.equals("String") & To.equals("float"))
+		else if (From.equals("String") & To.equals("double"))
 		{
-			float[][] FloatArray = new float[OriginalArray.length][OriginalArray[0].length] ;
+			double[][] doubleArray = new double[OriginalArray.length][OriginalArray[0].length] ;
 			for (int i = 0 ; i <= OriginalArray.length - 1 ; i += 1)
 			{
 				for (int j = 0 ; j <= OriginalArray[i].length - 1 ; j += 1)
 				{
-					FloatArray[i][j] = Float.parseFloat((String) OriginalArray[i][j]) ;
+					doubleArray[i][j] = Double.parseDouble((String) OriginalArray[i][j]) ;
 				}
 			}
-			return FloatArray ;
+			return doubleArray ;
 		}
 		else
 		{

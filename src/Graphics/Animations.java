@@ -1,7 +1,6 @@
 package Graphics ;
 
 import java.awt.Color ;
-import java.awt.Font ;
 import java.awt.Image ;
 import java.awt.Point;
 import java.util.Arrays ;
@@ -11,11 +10,7 @@ import GameComponents.NPCs ;
 import LiveBeings.Pet;
 import LiveBeings.Player;
 import LiveBeings.Spell;
-import Screen.Screen;
 import Utilities.Size;
-import Utilities.UtilG;
-import Utilities.UtilS;
-import Main.Game;
 import Maps.Maps;
 
 public class Animations 

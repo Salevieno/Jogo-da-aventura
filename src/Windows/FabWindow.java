@@ -89,7 +89,7 @@ public class FabWindow extends Window
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
 		Size screenSize = Game.getScreen().getSize() ;
 		Color[] ColorPalette = Game.ColorPalette ;
-		float OverallAngle = DrawPrimitives.OverallAngle ;
+		double OverallAngle = DrawPrimitives.OverallAngle ;
 		
 		Point windowPos = new Point((int)(0.5*screenSize.x), (int)(0.5*screenSize.y)) ;
 		Point ingredientsCol = UtilG.Translate(windowPos, -image.getWidth(null) / 3, -image.getHeight(null) / 3) ;

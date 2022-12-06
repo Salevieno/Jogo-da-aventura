@@ -72,7 +72,7 @@ public class Opening
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 		int ScreenW = Game.getScreen().getSize().x, ScreenH = Game.getScreen().getSize().y ;
-		float Textangle = DrawPrimitives.OverallAngle ;
+		double Textangle = DrawPrimitives.OverallAngle ;
 		int TextCat = -1 ;
 		Color TextColor = Game.ColorPalette[5] ;
 		String InitialLanguage = "P" ;

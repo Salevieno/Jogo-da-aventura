@@ -17,7 +17,7 @@ import Utilities.UtilG;
 
 public class DrawPrimitives 
 {
-	public static float OverallAngle = 0 ;
+	public static double OverallAngle = 0 ;
 	public static int StdThickness = 1;
 	private Graphics2D G ;
 	
@@ -48,7 +48,7 @@ public class DrawPrimitives
 	        //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "An image is being drawn outside window") ;
 		}
 	}
-	public void DrawImage(Image icon, Point Pos, float angle, Scale scale, String Alignment)
+	public void DrawImage(Image icon, Point Pos, double angle, Scale scale, String Alignment)
 	{       
 		if (icon != null)
 		{
@@ -61,7 +61,7 @@ public class DrawPrimitives
 	        // Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL + 55, ScreenH + 19}, "An image is being drawn outside window") ;
 		}
 	}
-	public void DrawImage(Image icon, Point Pos, float angle, Scale scale, boolean[] mirror, String Alignment, double alpha)
+	public void DrawImage(Image icon, Point Pos, double angle, Scale scale, boolean[] mirror, String Alignment, double alpha)
 	{       
 		if (icon != null)
 		{
@@ -91,7 +91,7 @@ public class DrawPrimitives
 		int[] offset = UtilG.OffsetFromPos(Alignment, l, h) ;
 		G.drawImage(icon, Pos.x + offset[0], Pos.y + offset[1], null) ;
 	}
-	public void DrawText(Point Pos, String Alignment, float angle, String Text, Font font, Color color)
+	public void DrawText(Point Pos, String Alignment, double angle, String Text, Font font, Color color)
 	{
 		// Rectangle by default starts at the left bottom
 		int TextL = UtilG.TextL(Text, font, G), TextH = UtilG.TextH(font.getSize()) ;
@@ -113,7 +113,7 @@ public class DrawPrimitives
 		}
         //Ut.CheckIfPosIsOutsideScreen(Pos, new int[] {ScreenL, ScreenH}, "A fit text is being drawn outside window") ;
 	}
-	public void DrawTextUntil(Point Pos, String Alignment, float angle, String Text, Font font, Color color, int maxlength, Point MousePos)
+	public void DrawTextUntil(Point Pos, String Alignment, double angle, String Text, Font font, Color color, int maxlength, Point MousePos)
 	{
 		int[] offset = UtilG.OffsetFromPos(Alignment, maxlength, UtilG.TextH(font.getSize())) ;
 		String ShortText = Text ;

@@ -26,13 +26,13 @@ public class Pet extends LiveBeing
 	private Color color ;
 	private int Job ;
 	private int spellPoints ;
-	private float[] ElemMult ;		// [Neutral, Water, Fire, Plant, Earth, Air, Thunder, Light, Dark, Snow]
+	private double[] ElemMult ;		// [Neutral, Water, Fire, Plant, Earth, Air, Thunder, Light, Dark, Snow]
 	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 	
 	public static int NumberOfSpells = 5 ;
 	public String action = "" ;
-	public static float[] AttributeIncrease ;
-	public static float[] ChanceIncrease ;
+	public static double[] AttributeIncrease ;
+	public static double[] ChanceIncrease ;
 	
 	private static ArrayList<String[]> PetProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
 	private static ArrayList<String[]> PetEvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
@@ -54,15 +54,15 @@ public class Pet extends LiveBeing
 		spellPoints = 0 ;
 
 		
-		ElemMult = new float[10] ;
+		ElemMult = new double[10] ;
 		StatusCounter = new int[8] ;
 			
-    	AttributeIncrease = new float[8] ;
-    	ChanceIncrease = new float[8] ;
+    	AttributeIncrease = new double[8] ;
+    	ChanceIncrease = new double[8] ;
 		for (int i = 0 ; i <= 7 ; ++i)
 		{
-			AttributeIncrease[i] = Float.parseFloat(PetEvolutionProperties.get(Job)[i + 1]) ;
-			ChanceIncrease[i] = Float.parseFloat(PetEvolutionProperties.get(Job)[i + 9]) ;
+			AttributeIncrease[i] = Double.parseDouble(PetEvolutionProperties.get(Job)[i + 1]) ;
+			ChanceIncrease[i] = Double.parseDouble(PetEvolutionProperties.get(Job)[i + 9]) ;
 		}
 	}
 	
@@ -76,8 +76,8 @@ public class Pet extends LiveBeing
 		String dir = Player.MoveKeys[0] ;
 		States state = States.idle ;
 		Size size = new Size (new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getWidth(null), new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getHeight(null)) ;	
-		float[] Life = new float[] {Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2])} ;
-		float[] Mp = new float[] {Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3])} ;
+		double[] Life = new double[] {Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2])} ;
+		double[] Mp = new double[] {Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3])} ;
 		int Range = Integer.parseInt(PetProperties.get(Job)[4]) ;
 		int Step = Integer.parseInt(PetProperties.get(Job)[32]) ;
 		int[] Exp = new int[] {0, 50, 1} ;
@@ -92,18 +92,18 @@ public class Pet extends LiveBeing
 	
 	private static BattleAttributes InitializeBattleAttributes(int Job)
 	{
-		float[] PhyAtk = new float[] {Float.parseFloat(PetProperties.get(Job)[5]), 0, 0} ;
-		float[] MagAtk = new float[] {Float.parseFloat(PetProperties.get(Job)[6]), 0, 0} ;
-		float[] PhyDef = new float[] {Float.parseFloat(PetProperties.get(Job)[7]), 0, 0} ;
-		float[] MagDef = new float[] {Float.parseFloat(PetProperties.get(Job)[8]), 0, 0} ;
-		float[] Dex = new float[] {Float.parseFloat(PetProperties.get(Job)[9]), 0, 0} ;
-		float[] Agi = new float[] {Float.parseFloat(PetProperties.get(Job)[10]), 0, 0} ;
-		float[] Crit = new float[] {Float.parseFloat(PetProperties.get(Job)[11]), 0, Float.parseFloat(PetProperties.get(Job)[12]), 0} ;
-		float[] Stun = new float[] {Float.parseFloat(PetProperties.get(Job)[13]), 0, Float.parseFloat(PetProperties.get(Job)[14]), 0, Float.parseFloat(PetProperties.get(Job)[15])} ;
-		float[] Block = new float[] {Float.parseFloat(PetProperties.get(Job)[16]), 0, Float.parseFloat(PetProperties.get(Job)[17]), 0, Float.parseFloat(PetProperties.get(Job)[18])} ;
-		float[] Blood = new float[] {Float.parseFloat(PetProperties.get(Job)[19]), 0, Float.parseFloat(PetProperties.get(Job)[20]), 0, Float.parseFloat(PetProperties.get(Job)[21]), 0, Float.parseFloat(PetProperties.get(Job)[22]), 0, Float.parseFloat(PetProperties.get(Job)[23])} ;
-		float[] Poison = new float[] {Float.parseFloat(PetProperties.get(Job)[24]), 0, Float.parseFloat(PetProperties.get(Job)[25]), 0, Float.parseFloat(PetProperties.get(Job)[26]), 0, Float.parseFloat(PetProperties.get(Job)[27]), 0, Float.parseFloat(PetProperties.get(Job)[28])} ;
-		float[] Silence = new float[] {Float.parseFloat(PetProperties.get(Job)[29]), 0, Float.parseFloat(PetProperties.get(Job)[30]), 0, Float.parseFloat(PetProperties.get(Job)[31])} ;
+		double[] PhyAtk = new double[] {Double.parseDouble(PetProperties.get(Job)[5]), 0, 0} ;
+		double[] MagAtk = new double[] {Double.parseDouble(PetProperties.get(Job)[6]), 0, 0} ;
+		double[] PhyDef = new double[] {Double.parseDouble(PetProperties.get(Job)[7]), 0, 0} ;
+		double[] MagDef = new double[] {Double.parseDouble(PetProperties.get(Job)[8]), 0, 0} ;
+		double[] Dex = new double[] {Double.parseDouble(PetProperties.get(Job)[9]), 0, 0} ;
+		double[] Agi = new double[] {Double.parseDouble(PetProperties.get(Job)[10]), 0, 0} ;
+		double[] Crit = new double[] {Double.parseDouble(PetProperties.get(Job)[11]), 0, Double.parseDouble(PetProperties.get(Job)[12]), 0} ;
+		double[] Stun = new double[] {Double.parseDouble(PetProperties.get(Job)[13]), 0, Double.parseDouble(PetProperties.get(Job)[14]), 0, Double.parseDouble(PetProperties.get(Job)[15])} ;
+		double[] Block = new double[] {Double.parseDouble(PetProperties.get(Job)[16]), 0, Double.parseDouble(PetProperties.get(Job)[17]), 0, Double.parseDouble(PetProperties.get(Job)[18])} ;
+		double[] Blood = new double[] {Double.parseDouble(PetProperties.get(Job)[19]), 0, Double.parseDouble(PetProperties.get(Job)[20]), 0, Double.parseDouble(PetProperties.get(Job)[21]), 0, Double.parseDouble(PetProperties.get(Job)[22]), 0, Double.parseDouble(PetProperties.get(Job)[23])} ;
+		double[] Poison = new double[] {Double.parseDouble(PetProperties.get(Job)[24]), 0, Double.parseDouble(PetProperties.get(Job)[25]), 0, Double.parseDouble(PetProperties.get(Job)[26]), 0, Double.parseDouble(PetProperties.get(Job)[27]), 0, Double.parseDouble(PetProperties.get(Job)[28])} ;
+		double[] Silence = new double[] {Double.parseDouble(PetProperties.get(Job)[29]), 0, Double.parseDouble(PetProperties.get(Job)[30]), 0, Double.parseDouble(PetProperties.get(Job)[31])} ;
 		int[] Status = new int[8] ;
 		int[] SpecialStatus = new int[5] ;
 		int[][] BattleActions = new int[][] {{0, Integer.parseInt(PetProperties.get(Job)[36]), 0}} ;
@@ -118,8 +118,8 @@ public class Pet extends LiveBeing
 		//ArrayList<String[]> PetSpellsInput = UtilG.ReadcsvFile(Game.CSVPath + "PetSpells.csv") ;	
 		ArrayList<String[]> PetSpellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "PetSpellsBuffs.csv") ;
 		ArrayList<String[]> PetSpellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "PetSpellsNerfs.csv") ;
-		float[][][] PetSpellBuffs = new float[Pet.NumberOfSpells][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]		
-		float[][][] PetSpellNerfs = new float[Pet.NumberOfSpells][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]	
+		double[][][] PetSpellBuffs = new double[Pet.NumberOfSpells][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]		
+		double[][][] PetSpellNerfs = new double[Pet.NumberOfSpells][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]	
 		String[][] spellsInfo = new String[NumberOfSpells][2] ;
 		for (int i = 0 ; i <= Pet.NumberOfSpells - 1 ; i += 1)
 		{
@@ -131,16 +131,16 @@ public class Pet extends LiveBeing
 				{
 					for (int k = 0 ; k <= 13 - 1 ; k += 1)
 					{
-						PetSpellBuffs[i][j][k] = Float.parseFloat(PetSpellsBuffsInput.get(ID)[BuffCont + 3]) ;
+						PetSpellBuffs[i][j][k] = Double.parseDouble(PetSpellsBuffsInput.get(ID)[BuffCont + 3]) ;
 						BuffCont += 1 ;
 					}
 				}
 				else
 				{
-					PetSpellBuffs[i][j][0] = Float.parseFloat(PetSpellsBuffsInput.get(ID)[BuffCont + 3]) ;
-					PetSpellBuffs[i][j][1] = Float.parseFloat(PetSpellsBuffsInput.get(ID)[BuffCont + 4]) ;
-					PetSpellBuffs[i][j][2] = Float.parseFloat(PetSpellsBuffsInput.get(ID)[BuffCont + 5]) ;
-					PetSpellBuffs[i][j][12] = Float.parseFloat(PetSpellsBuffsInput.get(ID)[BuffCont + 6]) ;
+					PetSpellBuffs[i][j][0] = Double.parseDouble(PetSpellsBuffsInput.get(ID)[BuffCont + 3]) ;
+					PetSpellBuffs[i][j][1] = Double.parseDouble(PetSpellsBuffsInput.get(ID)[BuffCont + 4]) ;
+					PetSpellBuffs[i][j][2] = Double.parseDouble(PetSpellsBuffsInput.get(ID)[BuffCont + 5]) ;
+					PetSpellBuffs[i][j][12] = Double.parseDouble(PetSpellsBuffsInput.get(ID)[BuffCont + 6]) ;
 					BuffCont += 4 ;
 				}
 			}
@@ -150,16 +150,16 @@ public class Pet extends LiveBeing
 				{
 					for (int k = 0 ; k <= 13 - 1 ; k += 1)
 					{
-						PetSpellNerfs[i][j][k] = Float.parseFloat(PetSpellsNerfsInput.get(ID)[NerfCont + 3]) ;
+						PetSpellNerfs[i][j][k] = Double.parseDouble(PetSpellsNerfsInput.get(ID)[NerfCont + 3]) ;
 						NerfCont += 1 ;
 					}
 				}
 				else
 				{
-					PetSpellNerfs[i][j][0] = Float.parseFloat(PetSpellsNerfsInput.get(ID)[NerfCont + 3]) ;
-					PetSpellNerfs[i][j][1] = Float.parseFloat(PetSpellsNerfsInput.get(ID)[NerfCont + 4]) ;
-					PetSpellNerfs[i][j][2] = Float.parseFloat(PetSpellsNerfsInput.get(ID)[NerfCont + 5]) ;
-					PetSpellNerfs[i][j][12] = Float.parseFloat(PetSpellsNerfsInput.get(ID)[NerfCont + 6]) ;
+					PetSpellNerfs[i][j][0] = Double.parseDouble(PetSpellsNerfsInput.get(ID)[NerfCont + 3]) ;
+					PetSpellNerfs[i][j][1] = Double.parseDouble(PetSpellsNerfsInput.get(ID)[NerfCont + 4]) ;
+					PetSpellNerfs[i][j][2] = Double.parseDouble(PetSpellsNerfsInput.get(ID)[NerfCont + 5]) ;
+					PetSpellNerfs[i][j][12] = Double.parseDouble(PetSpellsNerfsInput.get(ID)[NerfCont + 6]) ;
 					NerfCont += 4 ;
 				}
 			}
@@ -171,10 +171,10 @@ public class Pet extends LiveBeing
 			//{
 			//	spellsInfo[i] = new String[] {PetSpellsInput.get(ID)[44], PetSpellsInput.get(ID)[45]} ;
 			//}
-			//String Name, int MaxLevel, float MpCost, String Type, int[][] PreRequisites, int Cooldown, int Duration, float[][] Buffs, float[][] Nerfs, float[] AtkMod, float[] DefMod, float[] DexMod, float[] AgiMod, float[] AtkCritMod, float[] DefCritMod, float[] StunMod, float[] BlockMod, float[] BloodMod, float[] PoisonMod, float[] SilenceMod, String Elem, String[] Info
+			//String Name, int MaxLevel, double MpCost, String Type, int[][] PreRequisites, int Cooldown, int Duration, double[][] Buffs, double[][] Nerfs, double[] AtkMod, double[] DefMod, double[] DexMod, double[] AgiMod, double[] AtkCritMod, double[] DefCritMod, double[] StunMod, double[] BlockMod, double[] BloodMod, double[] PoisonMod, double[] SilenceMod, String Elem, String[] Info
 			/*String Name = PetSpellsInput.get(ID)[4] ;
 			int MaxLevel = Integer.parseInt(PetSpellsInput.get(ID)[5]) ;
-			float MpCost = Float.parseFloat(PetSpellsInput.get(ID)[6]) ;
+			double MpCost = Double.parseDouble(PetSpellsInput.get(ID)[6]) ;
 			SpellTypes Type ;
 			if (PetSpellsInput.get(ID)[7].equals("Active"))
 			{
@@ -202,17 +202,17 @@ public class Pet extends LiveBeing
 			}
 			int Cooldown = Integer.parseInt(PetSpellsInput.get(ID)[14]) ;
 			int Duration = Integer.parseInt(PetSpellsInput.get(ID)[15]) ;
-			float[] Atk = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[16]), Float.parseFloat(PetSpellsInput.get(ID)[17])} ;
-			float[] Def = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[18]), Float.parseFloat(PetSpellsInput.get(ID)[19])} ;
-			float[] Dex = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[20]), Float.parseFloat(PetSpellsInput.get(ID)[21])} ;
-			float[] Agi = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[22]), Float.parseFloat(PetSpellsInput.get(ID)[23])} ;
-			float[] AtkCrit = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[24])} ;
-			float[] DefCrit = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[25])} ;
-			float[] Stun = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[26]), Float.parseFloat(PetSpellsInput.get(ID)[27]), Float.parseFloat(PetSpellsInput.get(ID)[28])} ;
-			float[] Block = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[29]), Float.parseFloat(PetSpellsInput.get(ID)[30]), Float.parseFloat(PetSpellsInput.get(ID)[31])} ;
-			float[] Blood = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[32]), Float.parseFloat(PetSpellsInput.get(ID)[33]), Float.parseFloat(PetSpellsInput.get(ID)[34])} ;
-			float[] Poison = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[35]), Float.parseFloat(PetSpellsInput.get(ID)[36]), Float.parseFloat(PetSpellsInput.get(ID)[37])} ;
-			float[] Silence = new float[] {Float.parseFloat(PetSpellsInput.get(ID)[38]), Float.parseFloat(PetSpellsInput.get(ID)[39]), Float.parseFloat(PetSpellsInput.get(ID)[40])} ;
+			double[] Atk = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[16]), Double.parseDouble(PetSpellsInput.get(ID)[17])} ;
+			double[] Def = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[18]), Double.parseDouble(PetSpellsInput.get(ID)[19])} ;
+			double[] Dex = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[20]), Double.parseDouble(PetSpellsInput.get(ID)[21])} ;
+			double[] Agi = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[22]), Double.parseDouble(PetSpellsInput.get(ID)[23])} ;
+			double[] AtkCrit = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[24])} ;
+			double[] DefCrit = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[25])} ;
+			double[] Stun = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[26]), Double.parseDouble(PetSpellsInput.get(ID)[27]), Double.parseDouble(PetSpellsInput.get(ID)[28])} ;
+			double[] Block = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[29]), Double.parseDouble(PetSpellsInput.get(ID)[30]), Double.parseDouble(PetSpellsInput.get(ID)[31])} ;
+			double[] Blood = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[32]), Double.parseDouble(PetSpellsInput.get(ID)[33]), Double.parseDouble(PetSpellsInput.get(ID)[34])} ;
+			double[] Poison = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[35]), Double.parseDouble(PetSpellsInput.get(ID)[36]), Double.parseDouble(PetSpellsInput.get(ID)[37])} ;
+			double[] Silence = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[38]), Double.parseDouble(PetSpellsInput.get(ID)[39]), Double.parseDouble(PetSpellsInput.get(ID)[40])} ;
 			String Elem = PetSpellsInput.get(ID)[41] ;*/
 			
 			petspells.add(new Spell(allSpellTypes[ID])) ;	
@@ -230,23 +230,23 @@ public class Pet extends LiveBeing
 	public Point getPos() {return PA.getPos() ;}
 	public ArrayList<Spell> getSpells() {return spells ;}
 	public int getSpellPoints() {return spellPoints ;}
-	public float[] getLife() {return PA.getLife() ;}
-	public float[] getMp() {return PA.getMp() ;}
-	public float getRange() {return PA.getRange() ;}
-	public float[] getPhyAtk() {return BA.getPhyAtk() ;}
-	public float[] getMagAtk() {return BA.getMagAtk() ;}
-	public float[] getPhyDef() {return BA.getPhyDef() ;}
-	public float[] getMagDef() {return BA.getMagDef() ;}
-	public float[] getDex() {return BA.getDex() ;}
-	public float[] getAgi() {return BA.getAgi() ;}
-	public float[] getCrit() {return BA.getCrit() ;}
-	public float[] getStun() {return BA.getStun() ;}
-	public float[] getBlock() {return BA.getBlock() ;}
-	public float[] getBlood() {return BA.getBlood() ;}
-	public float[] getPoison() {return BA.getPoison() ;}
-	public float[] getSilence() {return BA.getSilence() ;}
+	public double[] getLife() {return PA.getLife() ;}
+	public double[] getMp() {return PA.getMp() ;}
+	public double getRange() {return PA.getRange() ;}
+	public double[] getPhyAtk() {return BA.getPhyAtk() ;}
+	public double[] getMagAtk() {return BA.getMagAtk() ;}
+	public double[] getPhyDef() {return BA.getPhyDef() ;}
+	public double[] getMagDef() {return BA.getMagDef() ;}
+	public double[] getDex() {return BA.getDex() ;}
+	public double[] getAgi() {return BA.getAgi() ;}
+	public double[] getCrit() {return BA.getCrit() ;}
+	public double[] getStun() {return BA.getStun() ;}
+	public double[] getBlock() {return BA.getBlock() ;}
+	public double[] getBlood() {return BA.getBlood() ;}
+	public double[] getPoison() {return BA.getPoison() ;}
+	public double[] getSilence() {return BA.getSilence() ;}
 	public String[] getElem() {return PA.Elem ;}
-	public float[] getElemMult() {return ElemMult ;}
+	public double[] getElemMult() {return ElemMult ;}
 	public int getLevel() {return PA.getLevel() ;}
 	public int getStep() {return PA.getStep() ;}
 	public int[] getExp() {return PA.getExp() ;}
@@ -289,10 +289,10 @@ public class Pet extends LiveBeing
 		}
 		return "" ;
 	}
-	public void Follow(Point Pos, Point Target, int step, float mindist)
+	public void Follow(Point Pos, Point Target, int step, double mindist)
 	{
 		Point pos = new Point(Pos.x, Pos.y) ; // Prevent the method from modifying the original variable Pos
-		float verdist = Math.abs(pos.y - Target.y), hordist = Math.abs(pos.x - Target.x) ;
+		double verdist = Math.abs(pos.y - Target.y), hordist = Math.abs(pos.x - Target.x) ;
 		if (mindist < pos.distance(Target))
 		{
 			if (verdist < hordist)
@@ -358,7 +358,7 @@ public class Pet extends LiveBeing
 		}
 		if (PA.Actions[2][0] % PA.Actions[2][1] == 0)	// Pet heals mp
 		{
-			PA.getMp()[0] = (float)(Math.min(PA.getMp()[0] + 0.02*PA.getMp()[1], PA.getMp()[1])) ;	
+			PA.getMp()[0] = (double)(Math.min(PA.getMp()[0] + 0.02*PA.getMp()[1], PA.getMp()[1])) ;	
 			PA.Actions[2][0] = 0 ;
 		}
 		if (PA.Actions[0][0] % PA.Actions[0][1] == 0 & !SomeAnimationIsOn)
@@ -381,8 +381,8 @@ public class Pet extends LiveBeing
 	}
 	public void TakeBloodAndPoisonDamage(Creature creature)
 	{
-		float BloodDamage = 0 ;
-		float PoisonDamage = 0 ;
+		double BloodDamage = 0 ;
+		double PoisonDamage = 0 ;
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
 			BloodDamage = Math.max(creature.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
@@ -407,7 +407,7 @@ public class Pet extends LiveBeing
 	}
 	public void LevelUp(Animations ani)
 	{
-		float[] attributesIncrease = CalcAttIncrease() ;
+		double[] attributesIncrease = CalcAttIncrease() ;
 		PA.setLevel(PA.getLevel() + 1) ;
 		spellPoints += 1 ;
 		PA.getLife()[1] += attributesIncrease[0] ;
@@ -425,10 +425,10 @@ public class Pet extends LiveBeing
 		ani.SetAniVars(14, new Object[] {150, this, attributesIncrease}) ;
 		ani.StartAni(14) ;
 	}
-	public float[] CalcAttIncrease()
+	public double[] CalcAttIncrease()
 	{
 		// Life, Mp, Phyatk, Magatk, Phydef, Magdef, Dex, Agi, Exp
-		float[] Increase = new float[AttributeIncrease.length + 1] ;
+		double[] Increase = new double[AttributeIncrease.length + 1] ;
 		for (int i = 0 ; i <= AttributeIncrease.length - 1 ; ++i)
 		{
 			if (Math.random() <= ChanceIncrease[i])
@@ -436,7 +436,7 @@ public class Pet extends LiveBeing
 				Increase[i] = AttributeIncrease[i] ;
 			}
 		}
-		Increase[AttributeIncrease.length] = (float) (10*(3*Math.pow(PA.getLevel() - 1, 2) + 3*(PA.getLevel() - 1) + 1) - 5) ;
+		Increase[AttributeIncrease.length] = (double) (10*(3*Math.pow(PA.getLevel() - 1, 2) + 3*(PA.getLevel() - 1) + 1) - 5) ;
 		return Increase ;
 	}
 
@@ -493,27 +493,27 @@ public class Pet extends LiveBeing
 		PA.setPos((Point) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 5)]), "String", "int")) ;
 		spell = (Spells[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 6)]), "String", "int") ;
 		spellPoints = Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 7)][0]) ;
-		PA.setLife((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 8)]), "String", "float")) ;
-		PA.setMp((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 9)]), "String", "float")) ;
-		PA.setRange(Float.parseFloat(ReadFile[2*(NumberOfPlayerAttributes + 10)][0])) ;
-		BA.setPhyAtk((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 11)]), "String", "float")) ;
-		BA.setMagAtk((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 12)]), "String", "float")) ;
-		BA.setPhyDef((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 13)]), "String", "float")) ;
-		BA.setMagDef((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 14)]), "String", "float")) ;
-		BA.setDex((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 15)]), "String", "float")) ;
-		BA.setAgi((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 16)]), "String", "float")) ;
-		BA.setCrit((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 17)]), "String", "float")) ;
-		BA.setStun((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 18)]), "String", "float")) ;
-		BA.setBlock((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 19)]), "String", "float")) ;
-		BA.setBlood((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 20)]), "String", "float")) ;
-		BA.setPoison((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 21)]), "String", "float")) ;
-		BA.setSilence((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 22)]), "String", "float")) ;
+		PA.setLife((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 8)]), "String", "double")) ;
+		PA.setMp((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 9)]), "String", "double")) ;
+		PA.setRange(Double.parseDouble(ReadFile[2*(NumberOfPlayerAttributes + 10)][0])) ;
+		BA.setPhyAtk((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 11)]), "String", "double")) ;
+		BA.setMagAtk((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 12)]), "String", "double")) ;
+		BA.setPhyDef((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 13)]), "String", "double")) ;
+		BA.setMagDef((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 14)]), "String", "double")) ;
+		BA.setDex((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 15)]), "String", "double")) ;
+		BA.setAgi((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 16)]), "String", "double")) ;
+		BA.setCrit((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 17)]), "String", "double")) ;
+		BA.setStun((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 18)]), "String", "double")) ;
+		BA.setBlock((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 19)]), "String", "double")) ;
+		BA.setBlood((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 20)]), "String", "double")) ;
+		BA.setPoison((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 21)]), "String", "double")) ;
+		BA.setSilence((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 22)]), "String", "double")) ;
 		PA.Elem = (String[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 23)]), "String", "String") ;
-		ElemMult = (float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 24)]), "String", "float") ;
+		ElemMult = (double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 24)]), "String", "double") ;
 		PA.setLevel(Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 25)][0])) ;
 		PA.setStep(Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 26)][0])) ;
-		PA.setSatiation((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 27)]), "String", "float")) ;
-		PA.setExp((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 28)]), "String", "float")) ;
+		PA.setSatiation((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 27)]), "String", "double")) ;
+		PA.setExp((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 28)]), "String", "double")) ;
 		BA.setSpecialStatus((int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 29)]), "String", "int")) ;
 		PA.Actions = (int[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 30)], 3), "String", "int") ;
 		BA.setBattleActions((int[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 31)], 3), "String", "int")) ;
@@ -525,7 +525,7 @@ public class Pet extends LiveBeing
 	public void display(Point Pos, Scale scale, DrawPrimitives DP)
 	{
 		//	TODO add moving animations
-		float OverallAngle = DrawPrimitives.OverallAngle ;
+		double OverallAngle = DrawPrimitives.OverallAngle ;
 		DP.DrawImage(movingAni.idleGif, Pos, OverallAngle, scale, new boolean[] {false, false}, "Center", 1) ;
 	}
 	

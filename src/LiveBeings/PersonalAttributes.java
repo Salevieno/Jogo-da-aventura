@@ -18,9 +18,9 @@ public class PersonalAttributes
 	private String dir ;		// direction of the movement
 	private States state ;		// current state
 	private Size size ;
-	private float[] Life ;		// 0: Current life, 1: max life]
-	private float[] Mp ;		// 0: Current mp, 1: max mp]
-	private float Range ;
+	private double[] Life ;		// 0: Current life, 1: max life]
+	private double[] Mp ;		// 0: Current mp, 1: max mp]
+	private double Range ;
 	private int Step ;
 	private int[] Exp ;			// 0: Current exp, 1: max exp, 2: multiplier
 	private int[] Satiation ;	// 0: Current satiation, 1: max satiation, 2: multiplier
@@ -31,7 +31,7 @@ public class PersonalAttributes
 	protected int countmove ;
 	private ArrayList<String> combo ;		// record of the last 10 movements
 	
-	public PersonalAttributes(String Name, int Level, int Job, int ProJob, Maps map, Point Pos, String dir, States state, Size size, float[] Life, float[] Mp, float Range, int Step, int[] Exp, int[] Satiation, int[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
+	public PersonalAttributes(String Name, int Level, int Job, int ProJob, Maps map, Point Pos, String dir, States state, Size size, double[] Life, double[] Mp, double Range, int Step, int[] Exp, int[] Satiation, int[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
 	{
 		this.Name = Name ;
 		this.Level = Level ;
@@ -70,9 +70,9 @@ public class PersonalAttributes
 	public States getState() {return state ;}
 	public Point getPos() {return Pos ;}
 	public Size getSize() {return size ;}
-	public float[] getLife() {return Life ;}
-	public float[] getMp() {return Mp ;}
-	public float getRange() {return Range ;}
+	public double[] getLife() {return Life ;}
+	public double[] getMp() {return Mp ;}
+	public double getRange() {return Range ;}
 	public int getStep() {return Step ;}
 	public int[] getExp() {return Exp ;}
 	public int[] getSatiation() {return Satiation ;}
@@ -93,9 +93,9 @@ public class PersonalAttributes
 	public void setState(States newValue) {state = newValue ;}
 	public void setPos(Point newValue) {Pos = newValue ;}
 	public void setSize(Size newValue) {size = newValue ;}
-	public void setLife(float[] newValue) {Life = newValue ;}
-	public void setMp(float[] newValue) {Mp = newValue ;}
-	public void setRange(float newValue) {Range = newValue ;}
+	public void setLife(double[] newValue) {Life = newValue ;}
+	public void setMp(double[] newValue) {Mp = newValue ;}
+	public void setRange(double newValue) {Range = newValue ;}
 	public void setStep(int newValue) {Step = newValue ;}
 	public void setExp(int[] newValue) {Exp = newValue ;}
 	public void setSatiation(int[] newValue) {Satiation = newValue ;}
@@ -182,11 +182,11 @@ public class PersonalAttributes
 		return new int[] {(int) (Pos[0]), (int) (Pos[1] - 0.5 * Size[1])} ;
 	}*/
 	
-	public void incLife(float amount)
+	public void incLife(double amount)
 	{
 		Life[0] = Math.max(0, Math.min(Life[0] + amount, Life[1])) ;	
 	}
-	public void incMP(float amount)
+	public void incMP(double amount)
 	{
 		Mp[0] = Math.max(0, Math.min(Mp[0] + amount, Mp[1])) ;	
 	}

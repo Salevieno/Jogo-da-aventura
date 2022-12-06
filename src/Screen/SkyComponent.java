@@ -49,8 +49,8 @@ public class SkyComponent
 	{
 		counter = (counter + 1) % MaxCounter ;
 	}
-	public void display(float angle, DrawPrimitives DP)
+	public void display(double angle, DrawPrimitives DP)
 	{
-		DP.DrawImage(image, pos, angle, new Scale(1, 1), new boolean[] {false, false}, "TopLeft", 1) ;
+		DP.DrawImage(image, pos, angle, new Scale(1, 1), "TopLeft") ;
 	}
 }

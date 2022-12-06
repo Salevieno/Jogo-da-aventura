@@ -190,7 +190,7 @@ public class BagWindow extends Window
 			if (item instanceof Potion)	// potions
 			{
 				Potion pot = (Potion) item ;
-				float PotMult = 1 ;
+				double PotMult = 1 ;
 				if (player.getPA().getJob() == 3)
 				{
 					PotMult += 0.06 * player.getSpell().get(7).getLevel() ;
@@ -206,7 +206,7 @@ public class BagWindow extends Window
 	public void display(Point MousePos, String[] allText, DrawFunctions DF)
 	{
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
-		float OverallAngle = DrawPrimitives.OverallAngle ;
+		double OverallAngle = DrawPrimitives.OverallAngle ;
 		Size screenSize = Game.getScreen().getSize() ;
 		Point pos = new Point((int)(0.35 * screenSize.x), (int)(0.48 * screenSize.y)) ;
 		Size size = new Size((int)(0.52 * screenSize.x), (int)(0.4 * screenSize.y)) ;

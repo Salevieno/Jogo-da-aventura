@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
-import java.util.Arrays ;
 
 import Graphics.DrawPrimitives ;
 import Utilities.Scale;
@@ -143,7 +142,7 @@ public class Icon
 	
 	
 	/* Draw methods */
-	public void DrawImage(float angle, int selectedButton, Point MousePos, DrawPrimitives DP)
+	public void DrawImage(double angle, int selectedButton, Point MousePos, DrawPrimitives DP)
 	{
 		if (ishovered(MousePos) | isselected(selectedButton))
 		{

@@ -4,25 +4,18 @@ import java.awt.Color ;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
-import java.util.Map;
-import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
 import Graphics.Animations;
 import Graphics.DrawFunctions;
 import Graphics.DrawPrimitives;
-import LiveBeings.CreatureTypes;
 import LiveBeings.Creature;
 import LiveBeings.Pet;
 import LiveBeings.Player;
-import LiveBeings.Spell;
 import Main.Game;
 import Maps.Maps;
 import Utilities.Scale;
-import Utilities.Size;
-import Utilities.UtilG;
-import Utilities.UtilS;
 
 public class NPCs
 {

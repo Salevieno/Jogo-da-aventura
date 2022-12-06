@@ -6,12 +6,12 @@ import Utilities.UtilG;
 
 public abstract class BattleActions
 {	
-	public static float BasicElemMult(String Atk, String Def)
+	public static double BasicElemMult(String Atk, String Def)
 	{
 		return Battle.ElemMult[UtilG.IndexOf(Battle.ElemID, Atk)][UtilG.IndexOf(Battle.ElemID, Def)] ;
 	}
 	
-	public static boolean Hit(float Dex, float Agi)
+	public static boolean Hit(double Dex, double Agi)
 	{
 		boolean hit = false ;
 		
@@ -23,7 +23,7 @@ public abstract class BattleActions
 		return hit ;
 	}
 	
-	public static boolean Block(float BlockDef)
+	public static boolean Block(double BlockDef)
 	{
 		if (Math.random() < BlockDef)
 		{
@@ -32,7 +32,7 @@ public abstract class BattleActions
 		return false ;
 	}
 
-	public static boolean CriticalAtk(float CritAtk, float CritDef)
+	public static boolean CriticalAtk(double CritAtk, double CritDef)
 	{
 		boolean Crit = false ;
 		if (Math.random() + CritDef <= CritAtk)
@@ -42,9 +42,9 @@ public abstract class BattleActions
 		return Crit ;
 	}
 		
-	public static float CalcElemMult(String Atk, String Weapon, String Armor, String Shield, String SuperElem)
+	public static double CalcElemMult(String Atk, String Weapon, String Armor, String Shield, String SuperElem)
 	{
-		float mult = 1 ;
+		double mult = 1 ;
 		mult = BasicElemMult(Atk, Armor)*mult ;
 		mult = BasicElemMult(Atk, Shield)*mult ;
 		mult = BasicElemMult(Weapon, Armor)*mult ;
@@ -54,7 +54,7 @@ public abstract class BattleActions
 		return mult ;
 	}
 	
-	public static String CalcEffect(float Dex, float Agi, float CritAtk, float CritDef, float BlockDef)
+	public static String CalcEffect(double Dex, double Agi, double CritAtk, double CritDef, double BlockDef)
 	{
 		String effect = "" ;
 		if (Block(BlockDef))
@@ -76,7 +76,7 @@ public abstract class BattleActions
 		return effect;
 	}
 	
-	public static int CalcAtk(String effect, float Atk, float Def, String[] AtkElem, String[] DefElem, float ElemModifier, float randomAmp)
+	public static int CalcAtk(String effect, double Atk, double Def, String[] AtkElem, String[] DefElem, double ElemModifier, double randomAmp)
 	{
 		int damage = -1 ;
 		if (effect.equals("Miss") | effect.equals("Block"))
@@ -90,13 +90,13 @@ public abstract class BattleActions
 		else if (effect.equals("Crit"))
 		{
 			double randomMult = UtilG.RandomMult(randomAmp) ;
-			float elemMult = CalcElemMult(AtkElem[0], AtkElem[1], DefElem[0], DefElem[0], AtkElem[2]) ;
+			double elemMult = CalcElemMult(AtkElem[0], AtkElem[1], DefElem[0], DefElem[0], AtkElem[2]) ;
 			damage = (int)(randomMult*elemMult*ElemModifier*Atk) ;
 		}
 		return damage ;
 	}
 	
-	public static int[] CalcStatus(float[] Stun, float[] Block, float[] Blood, float[] Poison, float[] Silence)
+	public static int[] CalcStatus(double[] Stun, double[] Block, double[] Blood, double[] Poison, double[] Silence)
 	{
 		// for each status 0: atk, 1: def, 2: duration
 		int[] Status = new int[5] ;	// Stun, Block, Blood, Poison, Silence
@@ -127,7 +127,7 @@ public abstract class BattleActions
 	/* Attack and spell effects */
 	public static Point knockback(Point SourcePos, int step, PersonalAttributes PA)
 	{
-		int angletan = (int)((PA.getPos().y - SourcePos.y) / (float)(PA.getPos().x - SourcePos.x)) ;
+		int angletan = (int)((PA.getPos().y - SourcePos.y) / (double)(PA.getPos().x - SourcePos.x)) ;
 		int dirx = (int)Math.signum(PA.getPos().x - SourcePos.x) ;
 		int diry = (int)Math.signum(PA.getPos().y - SourcePos.y) ;
 		//PA.setPos(new int[] {PA.getPos()[0] + step * dirx, PA.getPos()[1] + step * diry * angletan}) ;

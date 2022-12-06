@@ -5,22 +5,22 @@ import java.awt.Image;
 
 public class NPCType
 {
-	private String Name ;
-	private String Info ;
-	private Color color ;
-	private Image image ;
+	private String name ;	// npc name
+	private String info ;	// info about the npc
+	private Color color ;	// npc text color
+	private Image image ;	// npc image
 	
-	public NPCType(String Name, String Info, Color color, Image image)
+	public NPCType(String name, String info, Color color, Image image)
 	{
-		this.Name = Name ;
-		this.Info = Info ;
+		this.name = name ;
+		this.info = info ;
 		this.color = color ;
 		this.image = image ;
 	}
 	
 
-	public String getName() {return Name ;}
-	public String getInfo() {return Info ;}
+	public String getName() {return name ;}
+	public String getInfo() {return info ;}
 	public Color getNColor() {return color ;}
 	public Image getImage() {return image ;}
 }

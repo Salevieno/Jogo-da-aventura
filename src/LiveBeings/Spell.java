@@ -1,40 +1,36 @@
 package LiveBeings ;
 
-import java.awt.Image;
-import java.util.Arrays;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
-
 import GameComponents.SpellTypes;
-import Main.Game;
 
 public class Spell 
 {	
 	private String name ;
 	private int level ;
 	private int maxLevel ;
-	private float mpCost ;
+	private double mpCost ;
 	private SpellTypes type ;
 	private Map<SpellType, Integer> preRequisites ;
 	private int cooldown ;
-	private int duration ;
-	private float[][] Buffs ;
-	private float[][] Nerfs ;
-	private float[] AtkMod ;
-	private float[] DefMod ;
-	private float[] DexMod ;
-	private float[] AgiMod ;
-	private float[] AtkCritMod ;
-	private float[] DefCritMod ;
-	private float[] StunMod ;
-	private float[] BlockMod ;
-	private float[] BloodMod ;
-	private float[] PoisonMod ;
-	private float[] SilenceMod ;
+	private int cooldownDuration ;
+	private int effectDuration ;
+	private double[][] Buffs ;
+	private double[][] Nerfs ;
+	private double[] AtkMod ;
+	private double[] DefMod ;
+	private double[] DexMod ;
+	private double[] AgiMod ;
+	private double[] AtkCritMod ;
+	private double[] DefCritMod ;
+	private double[] StunMod ;
+	private double[] BlockMod ;
+	private double[] BloodMod ;
+	private double[] PoisonMod ;
+	private double[] SilenceMod ;
 	private boolean isActive ;
 	private int cooldownCounter ;
-	private int durationCounter ;
+	private int effectCounter ;
 	private String elem ;
 	private String[] info ;	// Effect and description
 	
@@ -47,7 +43,8 @@ public class Spell
 		this.type = spellType.getType() ;
 		this.preRequisites = spellType.getPreRequisites() ;
 		this.cooldown = spellType.getCooldown() ;
-		this.duration = spellType.getDuration() ;
+		this.cooldownDuration = spellType.getCooldownDuration() ;
+		this.effectDuration = spellType.getEffectDuration() ;
 		this.Buffs = spellType.getBuffs() ;
 		this.Nerfs = spellType.getNerfs() ;
 		this.AtkMod = spellType.getAtkMod() ;
@@ -63,7 +60,7 @@ public class Spell
 		this.SilenceMod = spellType.getSilenceMod() ;
 		isActive = false ;
 		cooldownCounter = 0 ;
-		durationCounter = 0 ;
+		effectCounter = 0 ;
 		this.elem = spellType.getElem() ;
 		this.info = spellType.getInfo() ;
 	}
@@ -71,35 +68,35 @@ public class Spell
 	public String getName() {return name ;}
 	public int getLevel() {return level ;}
 	public int getMaxLevel() {return maxLevel ;}
-	public float getMpCost() {return mpCost ;}
+	public double getMpCost() {return mpCost ;}
 	public SpellTypes getType() {return type ;}
 	public Map<SpellType, Integer> getPreRequisites() {return preRequisites ;}
 	public int getCooldown() {return cooldown ;}
-	public int getDuration() {return duration ;}
-	public float[][] getBuffs() {return Buffs ;}
-	public float[][] getNerfs() {return Nerfs ;}
-	public float[] getAtkMod() {return AtkMod ;}
-	public float[] getDefMod() {return DefMod ;}
-	public float[] getDexMod() {return DexMod ;}
-	public float[] getAgiMod() {return AgiMod ;}
-	public float[] getAtkCritMod() {return AtkCritMod ;}
-	public float[] getDefCritMod() {return DefCritMod ;}
-	public float[] getStunMod() {return StunMod ;}
-	public float[] getBlockMod() {return BlockMod ;}
-	public float[] getBloodMod() {return BloodMod ;}
-	public float[] getPoisonMod() {return PoisonMod ;}
-	public float[] getSilenceMod() {return SilenceMod ;}
+	public int getDuration() {return cooldownDuration ;}
+	public double[][] getBuffs() {return Buffs ;}
+	public double[][] getNerfs() {return Nerfs ;}
+	public double[] getAtkMod() {return AtkMod ;}
+	public double[] getDefMod() {return DefMod ;}
+	public double[] getDexMod() {return DexMod ;}
+	public double[] getAgiMod() {return AgiMod ;}
+	public double[] getAtkCritMod() {return AtkCritMod ;}
+	public double[] getDefCritMod() {return DefCritMod ;}
+	public double[] getStunMod() {return StunMod ;}
+	public double[] getBlockMod() {return BlockMod ;}
+	public double[] getBloodMod() {return BloodMod ;}
+	public double[] getPoisonMod() {return PoisonMod ;}
+	public double[] getSilenceMod() {return SilenceMod ;}
 	public String getElem() {return elem ;}
 	public int getCooldownCounter() {return cooldownCounter ;}
-	public int getDurationCounter() {return durationCounter ;}
+	public int getDurationCounter() {return effectCounter ;}
 	public String[] getInfo() {return info ;}
 
 	public boolean isReady() {return cooldownCounter == 0 ;}
 	public boolean isActive() {return isActive ;}
 	public void activate() {isActive = true ;}
 	public void deactivate() {isActive = false ;}
-	public void incCooldownCounter() {cooldownCounter = (cooldownCounter + 1) % duration ;}	// TODO mesmo tempo para duration e cooldown
-	public void incDurationCounter() {durationCounter = (durationCounter + 1) % duration ;}
+	public void incCooldownCounter() {cooldownCounter = (cooldownCounter + 1) % cooldownDuration ;}
+	public void incDurationCounter() {effectCounter = (effectCounter + 1) % effectDuration ;}
 
 	public void incLevel(int increment)
 	{

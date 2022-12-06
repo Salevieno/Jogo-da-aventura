@@ -17,11 +17,11 @@ public class Projectiles
 	private Point Pos ;
 	private int Type ;		// 0: friendly, 1: hostile
 	private int damage ;
-	private float[] speed ;	// [vx, vy]
+	private double[] speed ;	// [vx, vy]
 	private int range ;
 	private Image image ;
 	
-	public Projectiles(Point Pos, int Type, int damage, float[] speed, int range, Image image)
+	public Projectiles(Point Pos, int Type, int damage, double[] speed, int range, Image image)
 	{
 		this.Pos = Pos ;
 		this.Type = Type ;
@@ -34,19 +34,19 @@ public class Projectiles
 	public Point getPos() {return Pos ;}
 	public int getType() {return Type ;}
 	public int getdamage() {return damage ;}
-	public float[] getSpeed() {return speed ;}
+	public double[] getSpeed() {return speed ;}
 	public int getrange() {return range ;}
 	public Image getImage() {return image ;}
 	public void setPos(Point P) {Pos = P ;}
 	public void setType(int T) {Type = T ;}
 	public void setdamage(int D) {damage = D ;}
-	public void setSpeed(float[] S) {speed = S ;}
+	public void setSpeed(double[] S) {speed = S ;}
 	public void setrange(int R) {range = R ;}
 	public void setImage(Image I) {image = I ;}
 	
 	public void DrawImage(DrawPrimitives DP)
 	{
-		DP.DrawImage(image, Pos, UtilG.getAngle(speed), new Scale(1, 1), new boolean[] {false, false}, "Center", 1) ;
+		DP.DrawImage(image, Pos, UtilG.getAngle(speed), new Scale(1, 1), "Center") ;
 	}
 	public void move()
 	{
@@ -104,7 +104,7 @@ public class Projectiles
 				creature.get(hit).getLife()[0] = creature.get(hit).getLife()[1] ;
 				creature.get(hit).getMp()[0] = creature.get(hit).getMp()[1] ;
 				creature.get(hit).setFollow(false) ;
-				//creature[hit].setPos(Utg.RandomPos(screen.getDimensions(), new float[] {0, (float)(0.2)}, new float[] {1, 1 - (float)(SkyHeight)/screen.getDimensions()[1]}, new int[] {1, 1})) ;
+				//creature[hit].setPos(Utg.RandomPos(screen.getDimensions(), new double[] {0, (double)(0.2)}, new double[] {1, 1 - (double)(SkyHeight)/screen.getDimensions()[1]}, new int[] {1, 1})) ;
 			}
 		}
 	}

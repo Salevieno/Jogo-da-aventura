@@ -110,7 +110,7 @@ public class SettingsWindow extends Window
 		}
 	}
 	
-	public void displayValue(boolean value, Point TextPos, float OverallAngle, Font font, DrawPrimitives DP)
+	public void displayValue(boolean value, Point TextPos, double OverallAngle, Font font, DrawPrimitives DP)
 	{
 		Color[] ColorPalette = Game.ColorPalette ;
 		if (value)
@@ -126,7 +126,7 @@ public class SettingsWindow extends Window
 	{
 		Size screenSize = Game.getScreen().getSize() ;
 		Color[] colorPalette = Game.ColorPalette ;
-		float overallAngle = DrawPrimitives.OverallAngle ;
+		double overallAngle = DrawPrimitives.OverallAngle ;
 		Size size = new Size((int)(0.5*screenSize.x), (int)Math.max(0.34*screenSize.y, Player.ActionKeys.length*(UtilG.TextH(screenSize.x / 40 + 2) + 4) + 8)) ;
 		Font font = new Font("SansSerif", Font.BOLD, size.x / 20 + 2) ;
 		Point pos = new Point((int)(0.4*screenSize.x), (int)(0.4*screenSize.y)) ;

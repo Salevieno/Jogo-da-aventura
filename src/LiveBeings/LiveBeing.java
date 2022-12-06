@@ -124,13 +124,13 @@ public class LiveBeing
 	}
 	public void ActivateDef()
 	{
-		BA.getPhyDef()[1] += BA.getPhyDef()[0] ;
-		BA.getMagDef()[1] += BA.getMagDef()[0] ;
+		BA.getPhyDef().incBonus(BA.getPhyDef().getBaseValue()) ;
+		BA.getMagDef().incBonus(BA.getMagDef().getBaseValue()) ;
 	}
 	public void DeactivateDef()
 	{
-		BA.getPhyDef()[1] += -BA.getPhyDef()[0] ;
-		BA.getMagDef()[1] += -BA.getMagDef()[0] ;
+		BA.getPhyDef().incBonus(-BA.getPhyDef().getBaseValue()) ;
+		BA.getMagDef().incBonus(-BA.getMagDef().getBaseValue()) ;
 	}
 	public void train(Object[] playerAtkResult)
 	{
@@ -138,7 +138,7 @@ public class LiveBeing
 		String atkType = (String) playerAtkResult[2] ;
 		if (atkType.equals("Physical"))	// Physical atk
 		{
-			BA.getPhyAtk()[2] += 0.025 / (BA.getPhyAtk()[2] + 1) ;					
+			BA.getPhyAtk().incTrain(0.025 / (BA.getPhyAtk().getTrain() + 1)) ;					
 		}
 		if (effect.equals("Crit"))
 		{
@@ -149,16 +149,16 @@ public class LiveBeing
 		}
 		if (effect.equals("Hit"))
 		{
-			BA.getDex()[2] += 0.025 / (BA.getDex()[2] + 1) ;
+			BA.getDex().incTrain(0.025 / (BA.getDex().getTrain() + 1)) ;
 		}
 		if (atkType.equals("Spell"))
 		{
-			BA.getMagAtk()[2] += 0.025 / (BA.getMagAtk()[2] + 1) ;
+			BA.getMagAtk().incTrain(0.025 / (BA.getMagAtk().getTrain() + 1)) ;
 		}
 		if (atkType.equals("Defense"))
 		{
-			BA.getPhyDef()[2] += 0.025 / (BA.getPhyDef()[2] + 1) ;
-			BA.getMagDef()[2] += 0.025 / (BA.getMagDef()[2] + 1) ;
+			BA.getPhyDef().incTrain(0.025 / (BA.getPhyDef().getTrain() + 1)) ;
+			BA.getMagDef().incTrain(0.025 / (BA.getMagDef().getTrain() + 1)) ;
 		}
 	}
 	
@@ -167,7 +167,7 @@ public class LiveBeing
 		Color[] colorPalette = Game.ColorPalette ;
 		Size screenSize = Game.getScreen().getSize() ;
 		
-		ArrayList<Float> attRate = new ArrayList<>() ;
+		ArrayList<Double> attRate = new ArrayList<>() ;
 		ArrayList<Color> attColor = new ArrayList<>() ;
 		if (2 <= PA.getLife().length)
 		{
@@ -181,17 +181,17 @@ public class LiveBeing
 		}
 		if (2 <= PA.getExp().length)
 		{
-			attRate.add((float) (PA.getExp()[0] / PA.getExp()[1])) ;
+			attRate.add((double) (PA.getExp()[0] / PA.getExp()[1])) ;
 			attColor.add(colorPalette[1]) ;
 		}
 		if (2 <= PA.getSatiation().length)
 		{
-			attRate.add((float) (PA.getSatiation()[0] / PA.getSatiation()[1])) ;
+			attRate.add((double) (PA.getSatiation()[0] / PA.getSatiation()[1])) ;
 			attColor.add(colorPalette[2]) ;
 		}
 		if (2 <= PA.getThirst().length)
 		{
-			attRate.add((float) (PA.getThirst()[0] / PA.getThirst()[1])) ;
+			attRate.add((double) (PA.getThirst()[0] / PA.getThirst()[1])) ;
 			attColor.add(colorPalette[0]) ;
 		}
 		

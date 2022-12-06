@@ -51,7 +51,6 @@ import Windows.HintsWindow;
 import Windows.MapWindow;
 import Windows.QuestWindow;
 import Windows.SettingsWindow;
-import Windows.Window;
 import Main.Game ;
 import Maps.Collectible;
 import Maps.FieldMap;
@@ -75,7 +74,7 @@ public class Player extends LiveBeing
 	
 	private int attPoints ;			// attribute points available (to upgrade the attributes)
 	private int spellPoints ;		// spell points available (to upgrade the spells)
-	private float[] collectLevel ;	// 0: herb, 1: wood, 2: metal
+	private double[] collectLevel ;	// 0: herb, 1: wood, 2: metal
     private int collectingCounter ;	// counts the progress of the player's collection
     private int collectingDelay ;	// time that the player takes to collect
 	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor, 3: arrow
@@ -95,22 +94,18 @@ public class Player extends LiveBeing
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 	
 	
-	//private float[] ElemMult ;	// 0: Neutral, 1: Water, 2: Fire, 3: Plant, 4: Earth, 5: Air, 6: Thunder, 7: Light, 8: Dark, 9: Snow
+	//private double[] ElemMult ;	// 0: Neutral, 1: Water, 2: Fire, 3: Plant, 4: Earth, 5: Air, 6: Thunder, 7: Light, 8: Dark, 9: Snow
 	
-	// TODO essas vari�veis v�o para spells
-	//private boolean[] spellIsActive ;	// Tells if the spell is currently active
-	//private int[] spellDurationCounter ;	// [0: skill 0, 1: skill 1...]
-	//private int[] spellCooldownCounter ;	// [0: skill 0, 1: skill 1...]
-	private int[] statusCounter ;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence, Drunk]
+	//private int[] statusCounter ;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence, Drunk]
 	
 	
 	// TODO essa pode virar um Map
-	private float[] statistics ;	// 0: Number of phy attacks, 1: number of skills used, 2: number of defenses, 3: total phy damage inflicted, 4: total phy damage received, 5: total mag damage inflicted, 6: total mag damage received, 7: total phy damage defended, 8: total mag damage defended, 9: total hits inflicted, 10: total hits received, 11: total dodges, 12: number of crit, 13: total crit damage, 14: total stun, 15: total block, 16: total blood, 17: total blood damage, 18: total blood def, 19: total poison, 20: total poison damage, 21: total poison def, 22: total silence
+	private double[] statistics ;	// 0: Number of phy attacks, 1: number of skills used, 2: number of defenses, 3: total phy damage inflicted, 4: total phy damage received, 5: total mag damage inflicted, 6: total mag damage received, 7: total phy damage defended, 8: total mag damage defended, 9: total hits inflicted, 10: total hits received, 11: total dodges, 12: number of crit, 13: total crit damage, 14: total stun, 15: total block, 16: total blood, 17: total blood damage, 18: total blood def, 19: total poison, 20: total poison damage, 21: total poison def, 22: total silence
 	
 	
-	private float[][] attIncrease ;	// Amount of increase in each attribute when the player levels up
-	private float[][] chanceIncrease ;	// Chance of increase of these attributes
-	public float[][] equipsBonus ;
+	private double[][] attIncrease ;	// Amount of increase in each attribute when the player levels up
+	private double[][] chanceIncrease ;	// Chance of increase of these attributes
+	public double[][] equipsBonus ;
 	
 	public static String[] MoveKeys = new String[] {KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
 	public static String[] BattleKeys = new String[] {"A", "D"} ;
@@ -163,9 +158,9 @@ public class Player extends LiveBeing
 		color = Game.ColorPalette[12] ;
 
     	
-		//ElemMult = new float[10] ;
+		//ElemMult = new double[10] ;
 		//Arrays.fill(ElemMult, 1) ;
-		collectLevel = new float[3] ;
+		collectLevel = new double[3] ;
 		gold = new int[2] ;
 		goldMultiplier = Integer.parseInt(Properties.get(PA.Job)[32]) ; 
 		questSkills = new HashMap<String, Boolean>() ;
@@ -186,20 +181,20 @@ public class Player extends LiveBeing
 			spellDurationCounter = new int[spell.size()] ;
 			spellCooldownCounter = new int[spell.size()] ;
 		}*/
-		statusCounter = new int[8] ;
-		statistics = new float[23] ;
+		//statusCounter = new int[8] ;
+		statistics = new double[23] ;
 		collectingCounter = 0 ;
 		collectingDelay = 300 ;
 		Arrays.fill(BA.getSpecialStatus(), -1) ;
 		attPoints = 0 ;
-		attIncrease = new float[3][8] ;
-		chanceIncrease = new float[3][8] ;
+		attIncrease = new double[3][8] ;
+		chanceIncrease = new double[3][8] ;
 		for (int i = 0 ; i <= 3 - 1 ; ++i)	// PA.Job, PA.ProJob 1, PA.ProJob 2
 		{
 			for (int j = 0 ; j <= 7 ; ++j)
 			{
-				attIncrease[i][j] = Float.parseFloat(EvolutionProperties.get(3*PA.Job + i)[j + 2]) ;
-				chanceIncrease[i][j] = Float.parseFloat(EvolutionProperties.get(3*PA.Job + i)[j + 10]) ;
+				attIncrease[i][j] = Double.parseDouble(EvolutionProperties.get(3*PA.Job + i)[j + 2]) ;
+				chanceIncrease[i][j] = Double.parseDouble(EvolutionProperties.get(3*PA.Job + i)[j + 10]) ;
 			}
 		}
 		//CreaturesDiscovered = new ArrayList<CreatureTypes>() ;
@@ -229,9 +224,9 @@ public class Player extends LiveBeing
 		States state = States.idle ;
 	    Image PlayerBack = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
 		Size Size = new Size (PlayerBack.getWidth(null), PlayerBack.getHeight(null)) ;
-		float[] Life = new float[] {Float.parseFloat(Properties.get(Job)[2]), Float.parseFloat(Properties.get(Job)[2])} ;
-		float[] Mp = new float[] {Float.parseFloat(Properties.get(Job)[3]), Float.parseFloat(Properties.get(Job)[3])} ;
-		float Range = Float.parseFloat(Properties.get(Job)[4]) ;
+		double[] Life = new double[] {Double.parseDouble(Properties.get(Job)[2]), Double.parseDouble(Properties.get(Job)[2])} ;
+		double[] Mp = new double[] {Double.parseDouble(Properties.get(Job)[3]), Double.parseDouble(Properties.get(Job)[3])} ;
+		double Range = Double.parseDouble(Properties.get(Job)[4]) ;
 		int Step = Integer.parseInt(Properties.get(Job)[33]) ;
 		int[] Exp = new int[] {0, 5, Integer.parseInt(Properties.get(Job)[34])} ;
 		int[] Satiation = new int[] {100, 100, Integer.parseInt(Properties.get(Job)[35])} ;
@@ -246,18 +241,18 @@ public class Player extends LiveBeing
 	private static BattleAttributes InitializeBattleAttributes(int Job)
 	{
 
-		float[] PhyAtk = new float[] {Float.parseFloat(Properties.get(Job)[5]), 0, 0} ;
-		float[] MagAtk = new float[] {Float.parseFloat(Properties.get(Job)[6]), 0, 0} ;
-		float[] PhyDef = new float[] {Float.parseFloat(Properties.get(Job)[7]), 0, 0} ;
-		float[] MagDef = new float[] {Float.parseFloat(Properties.get(Job)[8]), 0, 0} ;
-		float[] Dex = new float[] {Float.parseFloat(Properties.get(Job)[9]), 0, 0} ;	
-		float[] Agi = new float[] {Float.parseFloat(Properties.get(Job)[10]), 0, 0} ;
-		float[] Crit = new float[] {Float.parseFloat(Properties.get(Job)[11]), 0, Float.parseFloat(Properties.get(Job)[12]), 0} ;
-		float[] Stun = new float[] {Float.parseFloat(Properties.get(Job)[13]), 0, Float.parseFloat(Properties.get(Job)[14]), 0, Float.parseFloat(Properties.get(Job)[15])} ;
-		float[] Block = new float[] {Float.parseFloat(Properties.get(Job)[16]), 0, Float.parseFloat(Properties.get(Job)[17]), 0, Float.parseFloat(Properties.get(Job)[18])} ;
-		float[] Blood = new float[] {Float.parseFloat(Properties.get(Job)[19]), 0, Float.parseFloat(Properties.get(Job)[20]), 0, Float.parseFloat(Properties.get(Job)[21]), 0, Float.parseFloat(Properties.get(Job)[22]), 0, Float.parseFloat(Properties.get(Job)[23])} ;
-		float[] Poison = new float[] {Float.parseFloat(Properties.get(Job)[24]), 0, Float.parseFloat(Properties.get(Job)[25]), 0, Float.parseFloat(Properties.get(Job)[26]), 0, Float.parseFloat(Properties.get(Job)[27]), 0, Float.parseFloat(Properties.get(Job)[28])} ;
-		float[] Silence = new float[] {Float.parseFloat(Properties.get(Job)[29]), 0, Float.parseFloat(Properties.get(Job)[30]), 0, Float.parseFloat(Properties.get(Job)[31])} ;
+		double[] PhyAtk = new double[] {Double.parseDouble(Properties.get(Job)[5]), 0, 0} ;
+		double[] MagAtk = new double[] {Double.parseDouble(Properties.get(Job)[6]), 0, 0} ;
+		double[] PhyDef = new double[] {Double.parseDouble(Properties.get(Job)[7]), 0, 0} ;
+		double[] MagDef = new double[] {Double.parseDouble(Properties.get(Job)[8]), 0, 0} ;
+		double[] Dex = new double[] {Double.parseDouble(Properties.get(Job)[9]), 0, 0} ;	
+		double[] Agi = new double[] {Double.parseDouble(Properties.get(Job)[10]), 0, 0} ;
+		double[] Crit = new double[] {Double.parseDouble(Properties.get(Job)[11]), 0, Double.parseDouble(Properties.get(Job)[12]), 0} ;
+		double[] Stun = new double[] {Double.parseDouble(Properties.get(Job)[13]), 0, Double.parseDouble(Properties.get(Job)[14]), 0, Double.parseDouble(Properties.get(Job)[15])} ;
+		double[] Block = new double[] {Double.parseDouble(Properties.get(Job)[16]), 0, Double.parseDouble(Properties.get(Job)[17]), 0, Double.parseDouble(Properties.get(Job)[18])} ;
+		double[] Blood = new double[] {Double.parseDouble(Properties.get(Job)[19]), 0, Double.parseDouble(Properties.get(Job)[20]), 0, Double.parseDouble(Properties.get(Job)[21]), 0, Double.parseDouble(Properties.get(Job)[22]), 0, Double.parseDouble(Properties.get(Job)[23])} ;
+		double[] Poison = new double[] {Double.parseDouble(Properties.get(Job)[24]), 0, Double.parseDouble(Properties.get(Job)[25]), 0, Double.parseDouble(Properties.get(Job)[26]), 0, Double.parseDouble(Properties.get(Job)[27]), 0, Double.parseDouble(Properties.get(Job)[28])} ;
+		double[] Silence = new double[] {Double.parseDouble(Properties.get(Job)[29]), 0, Double.parseDouble(Properties.get(Job)[30]), 0, Double.parseDouble(Properties.get(Job)[31])} ;
 		int[] Status = new int[9] ;
 		int[] SpecialStatus = new int[5] ;
 		int[][] BattleActions = new int[][] {{0, Integer.parseInt(Properties.get(Job)[41]), 0}} ;
@@ -287,8 +282,8 @@ public class Player extends LiveBeing
     	//ArrayList<String[]> spellsInput = UtilG.ReadcsvFile(Game.CSVPath + "Spells.csv") ;	
     	/*ArrayList<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
     	ArrayList<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
-		float[][][] spellBuffs = new float[NumberOfSpells][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
-		float[][][] spellNerfs = new float[NumberOfSpells][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+		double[][][] spellBuffs = new double[NumberOfSpells][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+		double[][][] spellNerfs = new double[NumberOfSpells][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
 		String[][] spellsInfo = new String[NumberOfSpells][2] ;
 		*/for (int i = 0 ; i <= NumberOfSpells - 1 ; i += 1)
 		{
@@ -300,20 +295,20 @@ public class Player extends LiveBeing
 				{
 					for (int k = 0 ; k <= NumberOfBuffs - 1 ; k += 1)
 					{
-						spellBuffs[i][j][k] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
-						spellNerfs[i][j][k] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
+						spellBuffs[i][j][k] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
+						spellNerfs[i][j][k] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
 						NerfCont += 1 ;
 						BuffCont += 1 ;
 					}
 				}
 				else
 				{
-					spellBuffs[i][j][0] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
-					spellBuffs[i][j][1] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 4]) ;
-					spellBuffs[i][j][2] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 5]) ;
-					spellNerfs[i][j][0] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
-					spellNerfs[i][j][1] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 4]) ;
-					spellNerfs[i][j][2] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 5]) ;
+					spellBuffs[i][j][0] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
+					spellBuffs[i][j][1] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 4]) ;
+					spellBuffs[i][j][2] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 5]) ;
+					spellNerfs[i][j][0] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
+					spellNerfs[i][j][1] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 4]) ;
+					spellNerfs[i][j][2] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 5]) ;
 					NerfCont += 3 ;
 					BuffCont += 3 ;
 				}
@@ -328,7 +323,7 @@ public class Player extends LiveBeing
 			}
 			String Name = spellsInput.get(ID)[4] ;
 			int MaxLevel = Integer.parseInt(spellsInput.get(ID)[5]) ;
-			float MpCost = Float.parseFloat(spellsInput.get(ID)[6]) ;
+			double MpCost = Double.parseDouble(spellsInput.get(ID)[6]) ;
 			SpellTypes Type ;
 			if (spellsInput.get(ID)[7].equals("Active"))
 			{
@@ -356,17 +351,17 @@ public class Player extends LiveBeing
 			}
 			int Cooldown = Integer.parseInt(spellsInput.get(ID)[14]) ;
 			int Duration = Integer.parseInt(spellsInput.get(ID)[15]) ;
-			float[] Atk = new float[] {Float.parseFloat(spellsInput.get(ID)[16]), Float.parseFloat(spellsInput.get(ID)[17])} ;
-			float[] Def = new float[] {Float.parseFloat(spellsInput.get(ID)[18]), Float.parseFloat(spellsInput.get(ID)[19])} ;
-			float[] Dex = new float[] {Float.parseFloat(spellsInput.get(ID)[20]), Float.parseFloat(spellsInput.get(ID)[21])} ;
-			float[] Agi = new float[] {Float.parseFloat(spellsInput.get(ID)[22]), Float.parseFloat(spellsInput.get(ID)[23])} ;
-			float[] AtkCrit = new float[] {Float.parseFloat(spellsInput.get(ID)[24])} ;
-			float[] DefCrit = new float[] {Float.parseFloat(spellsInput.get(ID)[25])} ;
-			float[] Stun = new float[] {Float.parseFloat(spellsInput.get(ID)[26]), Float.parseFloat(spellsInput.get(ID)[27]), Float.parseFloat(spellsInput.get(ID)[28])} ;
-			float[] Block = new float[] {Float.parseFloat(spellsInput.get(ID)[29]), Float.parseFloat(spellsInput.get(ID)[30]), Float.parseFloat(spellsInput.get(ID)[31])} ;
-			float[] Blood = new float[] {Float.parseFloat(spellsInput.get(ID)[32]), Float.parseFloat(spellsInput.get(ID)[33]), Float.parseFloat(spellsInput.get(ID)[34])} ;
-			float[] Poison = new float[] {Float.parseFloat(spellsInput.get(ID)[35]), Float.parseFloat(spellsInput.get(ID)[36]), Float.parseFloat(spellsInput.get(ID)[37])} ;
-			float[] Silence = new float[] {Float.parseFloat(spellsInput.get(ID)[38]), Float.parseFloat(spellsInput.get(ID)[39]), Float.parseFloat(spellsInput.get(ID)[40])} ;
+			double[] Atk = new double[] {Double.parseDouble(spellsInput.get(ID)[16]), Double.parseDouble(spellsInput.get(ID)[17])} ;
+			double[] Def = new double[] {Double.parseDouble(spellsInput.get(ID)[18]), Double.parseDouble(spellsInput.get(ID)[19])} ;
+			double[] Dex = new double[] {Double.parseDouble(spellsInput.get(ID)[20]), Double.parseDouble(spellsInput.get(ID)[21])} ;
+			double[] Agi = new double[] {Double.parseDouble(spellsInput.get(ID)[22]), Double.parseDouble(spellsInput.get(ID)[23])} ;
+			double[] AtkCrit = new double[] {Double.parseDouble(spellsInput.get(ID)[24])} ;
+			double[] DefCrit = new double[] {Double.parseDouble(spellsInput.get(ID)[25])} ;
+			double[] Stun = new double[] {Double.parseDouble(spellsInput.get(ID)[26]), Double.parseDouble(spellsInput.get(ID)[27]), Double.parseDouble(spellsInput.get(ID)[28])} ;
+			double[] Block = new double[] {Double.parseDouble(spellsInput.get(ID)[29]), Double.parseDouble(spellsInput.get(ID)[30]), Double.parseDouble(spellsInput.get(ID)[31])} ;
+			double[] Blood = new double[] {Double.parseDouble(spellsInput.get(ID)[32]), Double.parseDouble(spellsInput.get(ID)[33]), Double.parseDouble(spellsInput.get(ID)[34])} ;
+			double[] Poison = new double[] {Double.parseDouble(spellsInput.get(ID)[35]), Double.parseDouble(spellsInput.get(ID)[36]), Double.parseDouble(spellsInput.get(ID)[37])} ;
+			double[] Silence = new double[] {Double.parseDouble(spellsInput.get(ID)[38]), Double.parseDouble(spellsInput.get(ID)[39]), Double.parseDouble(spellsInput.get(ID)[40])} ;
 			String Elem = spellsInput.get(ID)[41] ;*/
 			spells.add(new Spell(allSpellTypes[i])) ;	
 			
@@ -392,24 +387,24 @@ public class Player extends LiveBeing
 	public BagWindow getBag() {return bag ;}
 	public Equip[] getEquips() {return equips ;}
 	public int getSpellPoints() {return spellPoints ;}
-	public float[] getLife() {return PA.getLife() ;}
-	public float[] getMp() {return PA.getMp() ;}
-	public float getRange() {return PA.getRange() ;}
-	public float[] getPhyAtk() {return BA.getPhyAtk() ;}
-	public float[] getMagAtk() {return BA.getMagAtk() ;}
-	public float[] getPhyDef() {return BA.getPhyDef() ;}
-	public float[] getMagDef() {return BA.getMagDef() ;}
-	public float[] getDex() {return BA.getDex() ;}
-	public float[] getAgi() {return BA.getAgi() ;}
-	public float[] getCrit() {return BA.getCrit() ;}
-	public float[] getStun() {return BA.getStun() ;}
-	public float[] getBlock() {return BA.getBlock() ;}
-	public float[] getBlood() {return BA.getBlood() ;}
-	public float[] getPoison() {return BA.getPoison() ;}
-	public float[] getSilence() {return BA.getSilence() ;}
+	public double[] getLife() {return PA.getLife() ;}
+	public double[] getMp() {return PA.getMp() ;}
+	public double getRange() {return PA.getRange() ;}
+	public double[] getPhyAtk() {return BA.getPhyAtk() ;}
+	public double[] getMagAtk() {return BA.getMagAtk() ;}
+	public double[] getPhyDef() {return BA.getPhyDef() ;}
+	public double[] getMagDef() {return BA.getMagDef() ;}
+	public double[] getDex() {return BA.getDex() ;}
+	public double[] getAgi() {return BA.getAgi() ;}
+	public double[] getCrit() {return BA.getCrit() ;}
+	public double[] getStun() {return BA.getStun() ;}
+	public double[] getBlock() {return BA.getBlock() ;}
+	public double[] getBlood() {return BA.getBlood() ;}
+	public double[] getPoison() {return BA.getPoison() ;}
+	public double[] getSilence() {return BA.getSilence() ;}
 	public String[] getElem() {return PA.Elem ;}
-	//public float[] getElemMult() {return ElemMult ;}
-	public float[] getCollect() {return collectLevel ;}
+	//public double[] getElemMult() {return ElemMult ;}
+	public double[] getCollect() {return collectLevel ;}
 	public int getLevel() {return PA.getLevel() ;}
 	public int[] getGold() {return gold ;}
 	public int getStep() {return PA.getStep() ;}
@@ -420,15 +415,15 @@ public class Player extends LiveBeing
 	public int[][] getActions() {return PA.Actions ;}	
 	//public int[] getSpellDurationCounter() {return spellDurationCounter ;}
 	//public int[] getSpellCooldownCounter() {return spellCooldownCounter ;}
-	public int[] getStatusCounter() {return statusCounter ;}
-	public float[] getStats() {return statistics ;}
+	//public int[] getStatusCounter() {return statusCounter ;}
+	public double[] getStats() {return statistics ;}
 	public ArrayList<String> getCombo() {return PA.getCombo() ;}
 	public int getAttPoints() {return attPoints ;}
-	public float[][] getAttIncrease() {return attIncrease ;}
-	public float[][] getChanceIncrease() {return chanceIncrease ;}
+	public double[][] getAttIncrease() {return attIncrease ;}
+	public double[][] getChanceIncrease() {return chanceIncrease ;}
 	//public ArrayList<CreatureTypes> getCreaturesDiscovered() {return CreaturesDiscovered ;}
 	public String getAction() {return PA.currentAction ;}
-	public float[][] getEquipsBonus() {return equipsBonus ;}
+	public double[][] getEquipsBonus() {return equipsBonus ;}
 	public SettingsWindow getSettings() {return settings ;}
 	public void setName(String newValue) {PA.setName(newValue) ;}
 	public void setLevel(int newValue) {PA.setLevel(newValue) ;}
@@ -548,7 +543,7 @@ public class Player extends LiveBeing
 	{
 		spellPoints += amount;
 	}
-	public void incRange(float incR) {PA.setRange(PA.getRange() + incR) ;}
+	public void incRange(double incR) {PA.setRange(PA.getRange() + incR) ;}
 	public void incAttPoints(int amount) {attPoints += amount ;}
 	public void decAttPoints(int amount) {attPoints += -amount ;}
 	
@@ -800,7 +795,7 @@ public class Player extends LiveBeing
 
 	public void meet(Creature[] creatures, ArrayList<NPCs> npc, DrawPrimitives DP, Animations ani)
 	{
-		float distx, disty ;
+		double distx, disty ;
 		Maps currentMap = PA.getMap() ;
 		if (currentMap.isAField())
 		{
@@ -811,8 +806,8 @@ public class Player extends LiveBeing
 			//System.out.println(collectibles) ;
 			for (int c = 0 ; c <= collectibles.size() - 1 ; c += 1)
 			{
-				distx = (float) Math.abs(PA.getPos().x - collectibles.get(c).getPos().x) ;
-				disty = (float) Math.abs(PA.getPos().y - collectibles.get(c).getPos().y) ;
+				distx = (double) Math.abs(PA.getPos().x - collectibles.get(c).getPos().x) ;
+				disty = (double) Math.abs(PA.getPos().y - collectibles.get(c).getPos().y) ;
 				if (distx <= 0.5*PA.getSize().x & disty <= 0.5*PA.getSize().y)
 				{
 					/*if (!ani.isActive(10))
@@ -874,8 +869,8 @@ public class Player extends LiveBeing
 				NPCs NPC = currentMap.getNPCs().get(i) ;
 				if (-1 < NPC.getID())
 				{
-					distx = (float) Math.abs(PA.getPos().x - NPC.getPos().x) ;
-					disty = (float) Math.abs(PA.getPos().y - NPC.getPos().y) ;
+					distx = (double) Math.abs(PA.getPos().x - NPC.getPos().x) ;
+					disty = (double) Math.abs(PA.getPos().y - NPC.getPos().y) ;
 					if (distx <= 0.5*PA.getSize().x & disty <= 0.5*PA.getSize().y)
 					{
 						//return new int[] {1, NPC.getID()} ;
@@ -904,9 +899,9 @@ public class Player extends LiveBeing
 		
 		// The collecting act itself
 		int CollectibleID = -1 ;
-		float CollectChance = (float) ((getMap().getCollectibleLevel() + 2)*Math.random()) ;
+		double CollectChance = (double) ((getMap().getCollectibleLevel() + 2)*Math.random()) ;
 		int MapCollectLevel = getMap().getCollectibleLevel() ;
-		float PlayerCollectLevel = -1 ;
+		double PlayerCollectLevel = -1 ;
 		if (Coltype == 0)	// Berry
 		{
 			//Bag[Items.BagIDs[3] - 1 + MapCollectLevel + Coltype] += 1 ;
@@ -1085,7 +1080,7 @@ public class Player extends LiveBeing
 	}
 	public void Tent()
 	{
-		PA.setLife(new float[] {PA.getLife()[0], PA.getLife()[1]}) ;
+		PA.setLife(new double[] {PA.getLife()[0], PA.getLife()[1]}) ;
 	}
 	public void ActivateRide()
 	{
@@ -1107,7 +1102,7 @@ public class Player extends LiveBeing
 		}
 		if (PA.Actions[1][0] % PA.Actions[1][1] == 0)
 		{
-			PA.incMP((float) 0.02 * PA.getMp()[1]) ;	// Player heals Mp
+			PA.incMP((double) 0.02 * PA.getMp()[1]) ;	// Player heals Mp
 			PA.Actions[1][0] = 0 ;
 		}
 		if (PA.Actions[2][0] % PA.Actions[2][1] == 0)
@@ -1306,13 +1301,13 @@ public class Player extends LiveBeing
 			{
 				/*if (spellID == 10)
 				{
-					PA.getLife()[0] += (float)Math.min((0.04*spellLevel + 0.002*BA.TotalMagAtk()), 0.3)*PA.getLife()[1] ;
-					PA.getLife()[0] = (float)Math.min(PA.getLife()[0], PA.getLife()[1]) ;
+					PA.getLife()[0] += (double)Math.min((0.04*spellLevel + 0.002*BA.TotalMagAtk()), 0.3)*PA.getLife()[1] ;
+					PA.getLife()[0] = (double)Math.min(PA.getLife()[0], PA.getLife()[1]) ;
 					if (0 < pet.getLife()[0] & spell.getMpCost() <= pet.getMp()[0])
 					{
 						pet.getMp()[0] += -spell.getMpCost() ;
-						pet.getLife()[0] += (float)Math.min(Math.min((0.02*spellLevel + 0.002*(pet.getBA().TotalMagAtk())), 0.15)*pet.getLife()[1], pet.getLife()[1]) ;
-						pet.getLife()[0] = (float)Math.min(pet.getLife()[0], pet.getLife()[1]) ;
+						pet.getLife()[0] += (double)Math.min(Math.min((0.02*spellLevel + 0.002*(pet.getBA().TotalMagAtk())), 0.15)*pet.getLife()[1], pet.getLife()[1]) ;
+						pet.getLife()[0] = (double)Math.min(pet.getLife()[0], pet.getLife()[1]) ;
 					}
 				}*/
 			}
@@ -1344,9 +1339,9 @@ public class Player extends LiveBeing
 	public void ApplyBuffsAndNerfs(String action, String type, int att, int spellID, boolean spellIsActive)
 	{
 		int ActionMult = 1 ;
-		float[][] Buff = new float[14][5] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
-		float[] OriginalValue = new float[14] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
-		float[][] Buffs = null ;
+		double[][] Buff = new double[14][5] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
+		double[] OriginalValue = new double[14] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
+		double[][] Buffs = null ;
 		int BuffNerfLevel = spells.get(spellID).getLevel() ;
 		if (type.equals("buffs"))
 		{
@@ -1356,7 +1351,7 @@ public class Player extends LiveBeing
 		{
 			Buffs = spells.get(spellID).getNerfs() ;
 		}
-		OriginalValue = new float[] {PA.getLife()[1], PA.getMp()[1], BA.getPhyAtk()[0], BA.getMagAtk()[0], BA.getPhyDef()[0], BA.getMagDef()[0], BA.getDex()[0], BA.getAgi()[0], BA.getCrit()[0], BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2], BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
+		OriginalValue = new double[] {PA.getLife()[1], PA.getMp()[1], BA.getPhyAtk()[0], BA.getMagAtk()[0], BA.getPhyDef()[0], BA.getMagDef()[0], BA.getDex()[0], BA.getAgi()[0], BA.getCrit()[0], BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2], BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
 		if (action.equals("deactivate"))
 		{
 			ActionMult = -1 ;
@@ -1420,11 +1415,11 @@ public class Player extends LiveBeing
 			BA.getSilence()[1] += Buff[13][0] ;
 		}	
 	}
-	public void TakeBloodAndPoisonDamage(float TotalBloodAtk, float TotalPoisonAtk)
+	public void TakeBloodAndPoisonDamage(double TotalBloodAtk, double TotalPoisonAtk)
 	{
-		float BloodDamage = 0 ;
-		float PoisonDamage = 0 ;
-		float BloodMult = 1, PoisonMult = 1 ;
+		double BloodDamage = 0 ;
+		double PoisonDamage = 0 ;
+		double BloodMult = 1, PoisonMult = 1 ;
 		if (PA.Job == 4)
 		{
 			PoisonMult += -0.1*spells.get(13).getLevel() ;
@@ -1603,7 +1598,7 @@ public class Player extends LiveBeing
 		}
 		String[] ItemsObtained = new String[GetItemsObtained.size()] ;
 		ItemsObtained = GetItemsObtained.toArray(ItemsObtained) ;
-		gold[0] += creature.getGold()*UtilG.RandomMult( (float) (0.1 * goldMultiplier)) ;
+		gold[0] += creature.getGold()*UtilG.RandomMult( (double) (0.1 * goldMultiplier)) ;
 		PA.getExp()[0] += creature.getExp()[0]*PA.getExp()[2] ;
 		if (GetActiveQuests() != null)
 		{
@@ -1625,7 +1620,7 @@ public class Player extends LiveBeing
 	}	
 	public void LevelUp(Animations ani)
 	{
-		float[] attributesIncrease = CalcAttIncrease() ;
+		double[] attributesIncrease = CalcAttIncrease() ;
 		PA.setLevel(PA.getLevel() + 1) ;
 		spellPoints += 1 ;
 		PA.getLife()[1] += attributesIncrease[0] ;
@@ -1645,12 +1640,12 @@ public class Player extends LiveBeing
 		ani.SetAniVars(13, new Object[] {150, attributesIncrease, getLevel(), getColor()}) ;
 		ani.StartAni(13) ;
 	}
-	public float[] CalcAttIncrease()
+	public double[] CalcAttIncrease()
 	{
 		// Life, Mp, Phyatk, Magatk, Phydef, Magdef, Dex, Agi, Exp
-		float[] attributeIncrease = getAttIncrease()[getProJob()] ;
-		float[] chanceIncrease = getChanceIncrease()[getProJob()] ;
-		float[] increase = new float[attributeIncrease.length + 1] ;
+		double[] attributeIncrease = getAttIncrease()[getProJob()] ;
+		double[] chanceIncrease = getChanceIncrease()[getProJob()] ;
+		double[] increase = new double[attributeIncrease.length + 1] ;
 		for (int i = 0 ; i <= attributeIncrease.length - 1 ; ++i)
 		{
 			if (Math.random() <= chanceIncrease[i])
@@ -1658,7 +1653,7 @@ public class Player extends LiveBeing
 				increase[i] = attributeIncrease[i] ;
 			}
 		}
-		increase[attributeIncrease.length] = (float) (10*(3*Math.pow(PA.getLevel() - 1, 2) + 3*(PA.getLevel() - 1) + 1) - 5) ;
+		increase[attributeIncrease.length] = (double) (10*(3*Math.pow(PA.getLevel() - 1, 2) + 3*(PA.getLevel() - 1) + 1) - 5) ;
 		return increase ;
 	}
 	public void ResetPosition()
@@ -1741,7 +1736,7 @@ public class Player extends LiveBeing
 	
 	
 	/* Action windows */
-	public void AttWindow(Icon[] icons, int[] MainWinDim, float[] PlayerAttributeIncrease, Point MousePos, Image GoldCoinImage, DrawPrimitives DP)
+	public void AttWindow(Icon[] icons, int[] MainWinDim, double[] PlayerAttributeIncrease, Point MousePos, Image GoldCoinImage, DrawPrimitives DP)
 	{
 		//int WindowLimit = 2 ;
 		//SelectedWindow[0] = UtilS.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedWindow[0], WindowLimit) ;
@@ -1790,7 +1785,7 @@ public class Player extends LiveBeing
 		//DrawAttWindow(MainWinDim, WinPos, MousePos, AllText, AllTextCat, SelectedWindow[0], GoldCoinImage, icons, DP) ;
 		attWindow.display(this, allText, equips, equipsBonus, attPoints, MousePos, PA, BA, DP) ;
 	}
-	public void ApplyEquipsBonus(int ID, float ActionMult)
+	public void ApplyEquipsBonus(int ID, double ActionMult)
 	{
 		PA.getLife()[1] += equipsBonus[ID][2]*ActionMult ;
 		PA.getMp()[1] += equipsBonus[ID][3]*ActionMult ;
@@ -1834,9 +1829,9 @@ public class Player extends LiveBeing
 			{
 				if (UtilS.SetIsFormed(equips))	// if the set was formed, remove the 20% bonus
 				{
-					ApplyEquipsBonus(equips[0].getId() - FirstEquipID, (float)-0.2) ;
-					ApplyEquipsBonus(equips[1].getId() - FirstEquipID, (float)-0.2) ;
-					ApplyEquipsBonus(equips[2].getId() - FirstEquipID, (float)-0.2) ;
+					ApplyEquipsBonus(equips[0].getId() - FirstEquipID, (double)-0.2) ;
+					ApplyEquipsBonus(equips[1].getId() - FirstEquipID, (double)-0.2) ;
+					ApplyEquipsBonus(equips[2].getId() - FirstEquipID, (double)-0.2) ;
 				}
 				equips[EquipType] = null ;
 				PA.Elem[EquipType + 1] = "n" ;
@@ -1849,9 +1844,9 @@ public class Player extends LiveBeing
 				ApplyEquipsBonus(EquipID - FirstEquipID, 1) ;
 				if (UtilS.SetIsFormed(equips))	// if the set is formed, add the 20% bonus
 				{
-					ApplyEquipsBonus(equips[0].getId() - FirstEquipID, (float)0.2) ;
-					ApplyEquipsBonus(equips[1].getId() - FirstEquipID, (float)0.2) ;
-					ApplyEquipsBonus(equips[2].getId() - FirstEquipID, (float)0.2) ;
+					ApplyEquipsBonus(equips[0].getId() - FirstEquipID, (double)0.2) ;
+					ApplyEquipsBonus(equips[1].getId() - FirstEquipID, (double)0.2) ;
+					ApplyEquipsBonus(equips[2].getId() - FirstEquipID, (double)0.2) ;
 				}
 			}
 		//}
@@ -1878,10 +1873,10 @@ public class Player extends LiveBeing
 	
 	
 	/* Drawing methods */
-	public void DrawStats(String[][] AllText, int[] AllTextCat, Point Pos, int L, int H, float[] PlayerStats, DrawPrimitives DP)
+	public void DrawStats(String[][] AllText, int[] AllTextCat, Point Pos, int L, int H, double[] PlayerStats, DrawPrimitives DP)
 	{
 		Font font = new Font("SansSerif", Font.BOLD, L / 28) ;
-		float OverallAngle = DrawPrimitives.OverallAngle ;
+		double OverallAngle = DrawPrimitives.OverallAngle ;
 		int TextCat = AllTextCat[7] ;
 		Point TextPos = new Point((int) (Pos.x + 5 + 0.05*L), (int) (Pos.y + 0.05*H)) ;
 		for (int i = 0 ; i <= PlayerStats.length - 1 ; i += 1)
@@ -1893,10 +1888,10 @@ public class Player extends LiveBeing
 	public void DrawSpecialAttributesWindow(String[][] AllText, int[] AllTextCat, Point Pos, int L, int H, DrawPrimitives DP)
 	{
 		Font font = new Font("SansSerif", Font.BOLD, L / 20) ;
-		float OverallAngle = DrawPrimitives.OverallAngle ;
+		double OverallAngle = DrawPrimitives.OverallAngle ;
 		int SpecialAttrPropCat = AllTextCat[8], AttrCat = AllTextCat[6] ;
 		int lineW = 2 ;
-		float sx = (float)0.15*L, sy = (float)(1.8*UtilG.TextH(font.getSize())) ;
+		double sx = (double)0.15*L, sy = (double)(1.8*UtilG.TextH(font.getSize())) ;
 		Color TextColor = Game.ColorPalette[5], LineColor = Game.ColorPalette[9] ;
 		Color[] AttributeColor = new Color[] {Game.ColorPalette[5], Game.ColorPalette[5], Game.ColorPalette[6], Game.ColorPalette[3], Game.ColorPalette[9]} ;
 		Pos.y += H ;
@@ -1969,7 +1964,7 @@ public class Player extends LiveBeing
 		Font font = new Font("SansSerif", Font.BOLD, 9) ;
 		Screen screen = Game.getScreen() ;
 		Color[] colorPalette = Game.ColorPalette ;
-		float OverallAngle = DrawPrimitives.OverallAngle ;
+		double OverallAngle = DrawPrimitives.OverallAngle ;
 		Point Pos = new Point(screen.getSize().x + 1, (int) (0.99 * screen.getSize().y) - 70) ;
 		ArrayList<Spell> ActiveSpells = player.GetActiveSpells() ;
 		Size size = new Size(36, 130) ;
@@ -2016,7 +2011,7 @@ public class Player extends LiveBeing
 		// icons: 0: Options 1: Bag 2: Quest 3: Map 4: Book, 5: player, 6: pet
 		Screen screen = Game.getScreen() ;
 		Color[] colorPalette = Game.ColorPalette ;
-		float OverallAngle = DrawPrimitives.OverallAngle ;
+		double OverallAngle = DrawPrimitives.OverallAngle ;
 		Font font = new Font("SansSerif", Font.BOLD, 13) ;
 		String[] IconKey = new String[] {Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7]} ;
 		Color TextColor = colorPalette[7] ;
@@ -2075,7 +2070,7 @@ public class Player extends LiveBeing
 	{
 		DP.DrawCircle(PA.getPos(), (int)(2 * PA.getRange()), 2, Game.ColorPalette[PA.Job], false, true) ;
 	}
-	public void DrawEquips(Point Pos, int Job, int equiptype, int EquipID, float[][] EquipsBonus, Scale scale, float angle, DrawPrimitives DP)
+	public void DrawEquips(Point Pos, int Job, int equiptype, int EquipID, double[][] EquipsBonus, Scale scale, double angle, DrawPrimitives DP)
 	{
 		int bonus = 0 ;
 		if (EquipsBonus[EquipID][1] == 10)
@@ -2099,10 +2094,10 @@ public class Player extends LiveBeing
 			DP.DrawImage(Items.EquipImage[7], Pos, angle, scale, new boolean[] {false, false}, "Center", 1) ;
 		}
 	}
-	public void DrawPlayerEquips(int[] Pos, float[] playerscale, DrawPrimitives DP)
+	public void DrawPlayerEquips(int[] Pos, double[] playerscale, DrawPrimitives DP)
 	{
 		Scale scale = new Scale(0.6, 0.6) ;
-		float[] angle = new float[] {50, 30, 0, 0, 0} ;
+		double[] angle = new double[] {50, 30, 0, 0, 0} ;
 		Point EqPos = new Point((int)(Pos[0] + 0.16 * PA.getSize().x * playerscale[0]), (int)(Pos[1] - 0.4 * PA.getSize().y * playerscale[1])) ;
 		if (equips[0] != null)
 		{
@@ -2125,10 +2120,10 @@ public class Player extends LiveBeing
 		}
 		 * */
 	}
-	public void DrawWeapon(Point Pos, float[] playerscale, DrawPrimitives DP)
+	public void DrawWeapon(Point Pos, double[] playerscale, DrawPrimitives DP)
 	{
 		Scale scale = new Scale(0.6, 0.6) ;
-		float[] angle = new float[] {50, 30, 0, 0, 0} ;
+		double[] angle = new double[] {50, 30, 0, 0, 0} ;
 		Point EqPos = new Point((int)(Pos.x + 0.16*PA.getSize().x*playerscale[0]), (int)(Pos.y - 0.4*PA.getSize().y*playerscale[1])) ;
 		if (getEquips()[0] != null)
 		{
@@ -2229,7 +2224,7 @@ public class Player extends LiveBeing
 		// 0,0 on shoes tip
 		// 0: Legs, 1: Shoes, 2: Shirt, 3: Arms, 4: Head, 5: Eyes, 6: Hair
 
-		float OverallAngle = DrawPrimitives.OverallAngle ;
+		double OverallAngle = DrawPrimitives.OverallAngle ;
 		if (IsRiding())	// If the player is mounted
 		{
 			DP.DrawImage(RidingImage,
@@ -2237,7 +2232,7 @@ public class Player extends LiveBeing
 					OverallAngle, scale, new boolean[] {false, false}, "BotLeft", 1) ;
 		}
 		//Image[] PlayerImages = new Image[] {PA.getimage()} ;
-		//float[][] BPScale = new float[PA.getimage().length][2] ;
+		//double[][] BPScale = new double[PA.getimage().length][2] ;
 		boolean[] mirror = new boolean[] {false, false} ;
 		if (questSkills.get("Dragon's aura"))
 		{
@@ -2272,8 +2267,8 @@ public class Player extends LiveBeing
 		}
 		/*for (int i = 0 ; i <= PlayerImages.length - 1 ; i += 1)
 		{
-			BPScale[i][0] = (float)0.01*scale[0]*BodyPartsSizes[i][0] ;
-			BPScale[i][1] = (float)0.01*scale[1]*BodyPartsSizes[i][1] ;
+			BPScale[i][0] = (double)0.01*scale[0]*BodyPartsSizes[i][0] ;
+			BPScale[i][1] = (double)0.01*scale[1]*BodyPartsSizes[i][1] ;
 		}*/
 		/*for (int i = 0 ; i <= PlayerImages.length - 1 ; i += 1)						
 		{
@@ -2341,7 +2336,7 @@ public class Player extends LiveBeing
 			bw.write("\nPlayer status: \n" + Arrays.toString(BA.getSpecialStatus())) ; 
 			bw.write("\nPlayer actions: \n" + Arrays.deepToString(getActions())) ; 
 			bw.write("\nPlayer battle actions: \n" + Arrays.deepToString(BA.getBattleActions())) ; 
-			bw.write("\nPlayer status counter: \n" + Arrays.toString(getStatusCounter())) ; 		
+			//bw.write("\nPlayer status counter: \n" + Arrays.toString(getStatusCounter())) ; 		
 			bw.write("\nPlayer stats: \n" + Arrays.toString(getStats())) ;
 			bw.write("\nPlayer available attribute points: \n" + getAttPoints()) ;
 			bw.write("\nPlayer attribute increase: \n" + Arrays.deepToString(getAttIncrease())) ;
@@ -2394,29 +2389,29 @@ public class Player extends LiveBeing
 			//setBag((int[]) Utg.ConvertArray(Utg.toString(ReadFile[2*14]), "String", "int")) ;
 			Equips = (int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*15]), "String", "int") ;
 			SpellPoints = Integer.parseInt(ReadFile[2*16][0]) ;
-			PA.setLife((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*17]), "String", "float")) ;
-			PA.setMp((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*18]), "String", "float")) ;
-			PA.setRange(Float.parseFloat(ReadFile[2*19][0])) ;
-			BA.setPhyAtk((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*20]), "String", "float")) ;
-			BA.setMagAtk((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*21]), "String", "float")) ;
-			BA.setPhyDef((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*22]), "String", "float")) ;
-			BA.setMagDef((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*23]), "String", "float")) ;
-			BA.setDex((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*24]), "String", "float")) ;
-			BA.setAgi((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*25]), "String", "float")) ;
-			BA.setCrit((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*26]), "String", "float")) ;
-			BA.setStun((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*27]), "String", "float")) ;
-			BA.setBlock((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*28]), "String", "float")) ;
-			BA.setBlood((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*29]), "String", "float")) ;
-			BA.setPoison((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*30]), "String", "float")) ;
-			BA.setSilence((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*31]), "String", "float")) ;
+			PA.setLife((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*17]), "String", "double")) ;
+			PA.setMp((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*18]), "String", "double")) ;
+			PA.setRange(Double.parseDouble(ReadFile[2*19][0])) ;
+			BA.setPhyAtk((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*20]), "String", "double")) ;
+			BA.setMagAtk((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*21]), "String", "double")) ;
+			BA.setPhyDef((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*22]), "String", "double")) ;
+			BA.setMagDef((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*23]), "String", "double")) ;
+			BA.setDex((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*24]), "String", "double")) ;
+			BA.setAgi((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*25]), "String", "double")) ;
+			BA.setCrit((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*26]), "String", "double")) ;
+			BA.setStun((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*27]), "String", "double")) ;
+			BA.setBlock((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*28]), "String", "double")) ;
+			BA.setBlood((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*29]), "String", "double")) ;
+			BA.setPoison((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*30]), "String", "double")) ;
+			BA.setSilence((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*31]), "String", "double")) ;
 			PA.Elem = UtilG.toString(ReadFile[2*32]) ;
-			ElemMult = (float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*33]), "String", "float") ;
-			Collect = (float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*34]), "String", "float") ;
+			ElemMult = (double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*33]), "String", "double") ;
+			Collect = (double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*34]), "String", "double") ;
 			PA.setLevel(Integer.parseInt(ReadFile[2*35][0])) ;
-			Gold = (float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*36]), "String", "float") ;
+			Gold = (double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*36]), "String", "double") ;
 			setStep(Integer.parseInt(ReadFile[2*37][0])) ;
-			PA.setExp((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*38]), "String", "float")) ;
-			PA.setSatiation((float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*39]), "String", "float")) ;
+			PA.setExp((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*38]), "String", "double")) ;
+			PA.setSatiation((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*39]), "String", "double")) ;
 			QuestSkills = (boolean[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*40]), "String", "boolean") ;
 			BA.setSpecialStatus((int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*41]), "String", "int")) ;
 			PA.Actions = (int[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*42], 3), "String", "int") ;
@@ -2424,10 +2419,10 @@ public class Player extends LiveBeing
 			SpellIsActive = new boolean[getSpell().length] ;
 			SpellCounter = new int[getSpell().length][2] ;
 			StatusCounter = (int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*44]), "String", "int") ;
-			Stats = (float[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*45]), "String", "float") ;
+			Stats = (double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*45]), "String", "double") ;
 			AttPoints = Integer.parseInt(ReadFile[2*46][0]) ;
-			AttIncrease = (float[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*47], 8), "String", "float") ;
-			ChanceIncrease = (float[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*48], 8), "String", "float") ;
+			AttIncrease = (double[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*47], 8), "String", "double") ;
+			ChanceIncrease = (double[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*48], 8), "String", "double") ;
 			if (!UtilG.toString(ReadFile[2*49])[0].equals("null"))
 			{
 				//CreaturesDiscovered = (int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*49]), "String", "int") ;
@@ -2452,9 +2447,9 @@ public class Player extends LiveBeing
 	}*/
 	/*public int Collect(Maps[] maps, Items[] item, int[] Pos, int CollectibleType, int[] BagIDs, int CollectResult, boolean PlayerIsCollecting, DrawFunctions DF)
 	{	
-		float CollectChance = (float) ((maps[getMap()].getCollectibleLevel() + 2)*Math.random()) ;
+		double CollectChance = (double) ((maps[getMap()].getCollectibleLevel() + 2)*Math.random()) ;
 		int MapCollectLevel = maps[getMap()].getCollectibleLevel() ;
-		float PlayerCollectLevel = -1 ;
+		double PlayerCollectLevel = -1 ;
 		if (CollectibleType == 0)	// Berry
 		{
 			Bag[BagIDs[3] - 1 + MapCollectLevel + CollectibleType] += 1 ;
@@ -2502,7 +2497,7 @@ public class Player extends LiveBeing
 	}*/
 	/*public void DrawAttWindow(int[] MainWinDim, Point WindowPos, Point MousePos, String[][] AllText, int[] AllTextCat, int Tab, Image GoldCoinImage, Icon[] icons, DrawPrimitives DP)
 	{
-		float TextAngle = DrawPrimitives.OverallAngle ;
+		double TextAngle = DrawPrimitives.OverallAngle ;
 		int L = Player.AttWindow[0].getWidth(null), H = Player.AttWindow[0].getHeight(null) ;
 		Point PlayerImagePos = new Point(WindowPos.x + (int) (0.55 * L), WindowPos.y - (int) (0.85 * H)) ;
 		int ClassesCat = -1, ProClassesCat = -1, AttCat = -1, CollectCat = -1, EquipsCat = -1, TabsCat = -1 ;
@@ -2533,7 +2528,7 @@ public class Player extends LiveBeing
 		if (Tab == 0)
 		{
 			//	Player
-			display(PlayerImagePos, new float[] {(float) 1.8, (float) 1.8}, PA.getDir(), false, DP) ;
+			display(PlayerImagePos, new double[] {(double) 1.8, (double) 1.8}, PA.getDir(), false, DP) ;
 			DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.1*H)), "Center", TextAngle, PA.getName(), Namefont, TextColor) ;						// Name text			
 			DP.DrawText(new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.03*H)), "Center", TextAngle, AllText[AttCat][1] + ": " + PA.getLevel(), font, ColorPalette[6]) ;	// Level text		
 			if(PA.ProJob == 0)
@@ -2566,13 +2561,13 @@ public class Player extends LiveBeing
 								DP.DrawText(new Point(EqRectPos[eq].x, EqRectPos[eq].y - EqRectH[eq] / 2 - TextH), "Center", TextAngle, AllText[EquipsCat][eq + 1] + " + " + (int)(EquipsBonus[Equips[eq] - Items.BagIDs[6]][1]), font, TextColor) ;					
 							}
 						}
-						DrawEquips(EqRectPos[eq], PA.Job, eq, Equips[eq] - Items.BagIDs[6], EquipsBonus, new float[] {1, 1}, TextAngle, DP) ;
+						DrawEquips(EqRectPos[eq], PA.Job, eq, Equips[eq] - Items.BagIDs[6], EquipsBonus, new double[] {1, 1}, TextAngle, DP) ;
 					}
 					else if (eq == 3)
 					{
-						DrawEquips(EqRectPos[eq], PA.Job, eq, Equips[0] - Items.BagIDs[6], EquipsBonus, new float[] {1, 1}, TextAngle, DP) ;
+						DrawEquips(EqRectPos[eq], PA.Job, eq, Equips[0] - Items.BagIDs[6], EquipsBonus, new double[] {1, 1}, TextAngle, DP) ;
 					}
-					DP.DrawImage(ElemImage, new Point((int) (EqRectPos[eq].x + 0.3*EqRectL[eq]), (int) (EqRectPos[eq].y + 0.3*EqRectH[eq])), TextAngle, new float[] {(float) 0.12, (float) 0.12}, new boolean[] {false, false}, "Center", 1) ;					
+					DP.DrawImage(ElemImage, new Point((int) (EqRectPos[eq].x + 0.3*EqRectL[eq]), (int) (EqRectPos[eq].y + 0.3*EqRectH[eq])), TextAngle, new double[] {(double) 0.12, (double) 0.12}, new boolean[] {false, false}, "Center", 1) ;					
 					//DP.DrawTextUntil(new Point(EqRectPos[eq].x - EqRectL[eq] / 2, EqRectPos[eq].y + EqRectH[eq] / 2 + TextH), "BotLeft", TextAngle, items[Equips[eq]].getName(), Equipfont, TextColor, 14, MousePos) ;	// Equip text	
 				}
 				else
@@ -2584,16 +2579,16 @@ public class Player extends LiveBeing
 			// Super element
 			if (PA.Elem[1].equals(PA.Elem[2]) & PA.Elem[2].equals(PA.Elem[3]))
 			{
-				DP.DrawImage(DrawFunctions.ElementImages[Uts.ElementID(PA.Elem[4])], new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.45*H)), TextAngle, new float[] {(float) 0.3, (float) 0.3}, new boolean[] {false, false}, "Center", 1) ;
+				DP.DrawImage(DrawFunctions.ElementImages[Uts.ElementID(PA.Elem[4])], new Point(WindowPos.x + (int)(0.5*L), WindowPos.y + (int)(0.45*H)), TextAngle, new double[] {(double) 0.3, (double) 0.3}, new boolean[] {false, false}, "Center", 1) ;
 			}
 			
 			//	Attributes
-			float[] Attributes = new float[] {BA.TotalPhyAtk(), BA.TotalMagAtk(), BA.TotalPhyDef(), BA.TotalMagDef(), BA.TotalDex(), BA.TotalAgi()} ;
+			double[] Attributes = new double[] {BA.TotalPhyAtk(), BA.TotalMagAtk(), BA.TotalPhyDef(), BA.TotalMagDef(), BA.TotalDex(), BA.TotalAgi()} ;
 			int AttSy = 22 ;
 			DP.DrawText(new Point(WindowPos.x + 15, WindowPos.y + 30), "BotLeft", TextAngle, AllText[AttCat][2] + ": " + Utg.Round(PA.getLife()[0], 1), font, ColorPalette[6]) ;	// Life text	
 			DP.DrawText(new Point(WindowPos.x + 15, WindowPos.y + 40), "BotLeft", TextAngle, AllText[AttCat][3] + ": " + Utg.Round(PA.getMp()[0], 1), font, ColorPalette[5]) ;	// MP text
 
-			DP.DrawImage(Equip.SwordImage, new Point(WindowPos.x + 30, WindowPos.y + 134 + 1 * AttSy), new float[] {(float) (11 / 38.0), (float) (11 / 38.0)}, "Center") ;	// Draw sword icon
+			DP.DrawImage(Equip.SwordImage, new Point(WindowPos.x + 30, WindowPos.y + 134 + 1 * AttSy), new double[] {(double) (11 / 38.0), (double) (11 / 38.0)}, "Center") ;	// Draw sword icon
 			for (int i = 0; i <= Attributes.length - 1; i += 1)
 			{
 				DP.DrawText(new Point(WindowPos.x + 45, WindowPos.y + 136 + (i + 1) * AttSy), "BotLeft", TextAngle, AllText[AttCat][4] + ": " + Utg.Round(Attributes[i], 1), font, TextColor) ;
@@ -2615,7 +2610,7 @@ public class Player extends LiveBeing
 			}
 			
 			//	Gold
-			DP.DrawImage(GoldCoinImage, new Point(WindowPos.x + (int)(0.04*L), WindowPos.y + (int)(0.975*H)), TextAngle, new float[] {(float) 1.2, (float) 1.2}, new boolean[] {false, false}, "BotLeft", 1) ;
+			DP.DrawImage(GoldCoinImage, new Point(WindowPos.x + (int)(0.04*L), WindowPos.y + (int)(0.975*H)), TextAngle, new double[] {(double) 1.2, (double) 1.2}, new boolean[] {false, false}, "BotLeft", 1) ;
 			DP.DrawText(new Point(WindowPos.x + (int)(0.18*L), WindowPos.y + (int)(0.96*H) - TextH/2), "BotLeft", TextAngle, String.valueOf(Utg.Round(Gold[0], 1)), font, ColorPalette[18]) ;	// Gold text
 		
 			//	Plus sign
@@ -2638,7 +2633,7 @@ public class Player extends LiveBeing
 	}*/
 	/*public void UseItem(Pet pet, Creatures[] creature, int creatureID, int itemID, Items[] items, Battle B)
 	{
-		float PotMult = 1 ;
+		double PotMult = 1 ;
 		if (PA.Job == 3)
 		{
 			PotMult += 0.06 * Spell[7] ;
@@ -2649,7 +2644,7 @@ public class Player extends LiveBeing
 			//{
 				if (items[itemID].getType().equals("Potion"))	// potions
 				{
-					float HealPower = Items.PotionsHealing[itemID][1] * PotMult ;
+					double HealPower = Items.PotionsHealing[itemID][1] * PotMult ;
 					
 					PA.incLife(HealPower * PA.getLife()[1]) ;
 					PA.incMP(HealPower * PA.getMp()[1]) ;
@@ -2657,7 +2652,7 @@ public class Player extends LiveBeing
 				}
 				else if (items[itemID].getType().equals("Alchemy"))	// alchemy (using herbs heal half of their equivalent pot)
 				{
-					float HealPower = Items.PotionsHealing[itemID / 3 - Items.BagIDs[0] / 3 + 1][1] / 2 * PotMult ;
+					double HealPower = Items.PotionsHealing[itemID / 3 - Items.BagIDs[0] / 3 + 1][1] / 2 * PotMult ;
 					
 					PA.incLife(HealPower * PA.getLife()[1]) ;
 					if (0 < pet.getLife()[0])
@@ -2856,7 +2851,7 @@ public class Player extends LiveBeing
 		int[] Pos = new int[] {(int)(0.19 * screen.getSize().x), (int)(0.5 * screen.getSize().y)} ;
 		int L = (int)(0.62 * screen.getSize().x), H = (int)(0.2 * screen.getSize().y) ;
 		int[] OkButtonPos = new int[] {(int) (Pos[0] + 0.7*L), (int) (Pos[1] - 0.125*H)} ;
-		float OkButtonL = (float) (0.05*L), OkButtonH = (float) (0.125*H) ;
+		double OkButtonL = (double) (0.05*L), OkButtonH = (double) (0.125*H) ;
 		if (action.equals(Player.ActionKeys[1]) | action.equals(Player.ActionKeys[3]))
 		{
 			SelectedWindow[6] = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, SelectedWindow[6], NumberOfHints - 1) ;

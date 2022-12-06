@@ -40,7 +40,7 @@ public class QuestWindow extends Window
 	{
 		Point windowPos = new Point((int)(0.3 * Game.getScreen().getSize().x), (int)(0.15 * Game.getScreen().getSize().y)) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		float angle = DrawPrimitives.OverallAngle ;
+		double angle = DrawPrimitives.OverallAngle ;
 		Color textColor = Game.ColorPalette[0] ;
 		numberWindows = quests.size() ;
 		

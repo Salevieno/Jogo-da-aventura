@@ -63,7 +63,7 @@ public class PlayerAttributesWindow extends Window
 		{
 			PersonalAttributes PA = player.getPA() ;
 			BattleAttributes BA = player.getBA() ;
-			float[] PlayerAttributeIncrease = player.getAttIncrease()[player.getProJob()] ;
+			double[] PlayerAttributeIncrease = player.getAttIncrease()[player.getProJob()] ;
 			for (int attIcon = 0 ; attIcon <= addAttIcon.length - 1 ; attIcon += 1)
 			{
 				if (addAttIcon[attIcon].ishovered(MousePos) & (PA.getCurrentAction().equals("Enter") | PA.getCurrentAction().equals("MouseLeftClick")))
@@ -108,13 +108,13 @@ public class PlayerAttributesWindow extends Window
 		}
 	}
 	
-	public void display(LiveBeing user, Map<String, String[]> allText, Equip[] Equips, float[][] EquipsBonus, int AttPoints, Point MousePos, PersonalAttributes PA, BattleAttributes BA, DrawPrimitives DP)
+	public void display(LiveBeing user, Map<String, String[]> allText, Equip[] Equips, double[][] EquipsBonus, int AttPoints, Point MousePos, PersonalAttributes PA, BattleAttributes BA, DrawPrimitives DP)
 	{
 		// Font "GothicE"
 		Size screenSize = Game.getScreen().getSize() ;
 		Point WindowPos = new Point((int) (0.2 * screenSize.x), (int)(0.3 * screenSize.y)) ;
 		Size attWindowSize = new Size(Player.AttWindowImages[0].getWidth(null), Player.AttWindowImages[0].getHeight(null)) ;
-		float TextAngle = DrawPrimitives.OverallAngle ;
+		double TextAngle = DrawPrimitives.OverallAngle ;
 		
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, attWindowSize.x / 24) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, attWindowSize.x / 24 + 1) ;
@@ -180,11 +180,11 @@ public class PlayerAttributesWindow extends Window
 						{
 							DP.DrawText(textPos, "Center", TextAngle, equipsText[eq + 1] + " + " + eqBonus, font, TextColor) ;					
 						}
-						//DF.DrawEquips(EqRectPos[eq], PA.getJob(), eq, Equips[eq] - Items.BagIDs[6], EquipsBonus, new float[] {1, 1}, TextAngle) ;
+						//DF.DrawEquips(EqRectPos[eq], PA.getJob(), eq, Equips[eq] - Items.BagIDs[6], EquipsBonus, new double[] {1, 1}, TextAngle) ;
 					}
 					else if (eq == 3)
 					{
-						//DF.DrawEquips(EqRectPos[eq], PA.getJob(), eq, Equips[0] - Items.BagIDs[6], EquipsBonus, new float[] {1, 1}, TextAngle) ;
+						//DF.DrawEquips(EqRectPos[eq], PA.getJob(), eq, Equips[0] - Items.BagIDs[6], EquipsBonus, new double[] {1, 1}, TextAngle) ;
 					}
 					DP.DrawImage(ElemImage, new Point((int) (EqRectPos[eq].x + 0.44*EqRectL[eq]), (int) (EqRectPos[eq].y + 0.15*EqRectH[eq])), TextAngle, new Scale(0.12, 0.12), new boolean[] {false, false}, "Center", 1) ;					
 					//DP.DrawTextUntil(new Point(EqRectPos[eq].x - EqRectL[eq] / 2, EqRectPos[eq].y + EqRectH[eq] / 2 + TextH), "BotLeft", TextAngle, items[Equips[eq]].getName(), Equipfont, TextColor, 14, MousePos) ;	// Equip text	
@@ -206,8 +206,8 @@ public class PlayerAttributesWindow extends Window
 			
 			
 			//	Attributes
-			float[] attributes = new float[] {BA.TotalPhyAtk(), BA.TotalMagAtk(), BA.TotalPhyDef(), BA.TotalMagDef(), BA.TotalDex(), BA.TotalAgi()} ;
-			float[][] attDetails = new float[][] {BA.getPhyAtk(), BA.getMagAtk(), BA.getPhyDef(), BA.getMagDef(), BA.getDex(), BA.getAgi()} ;
+			double[] attributes = new double[] {BA.TotalPhyAtk(), BA.TotalMagAtk(), BA.TotalPhyDef(), BA.TotalMagDef(), BA.TotalDex(), BA.TotalAgi()} ;
+			double[][] attDetails = new double[][] {BA.getPhyAtk(), BA.getMagAtk(), BA.getPhyDef(), BA.getMagDef(), BA.getDex(), BA.getAgi()} ;
 			int AttSy = 22 ;
 			DP.DrawText(new Point(WindowPos.x + 20, WindowPos.y + (int)(0.10*attWindowSize.y)), "BotLeft", TextAngle, attText[2] + ": " + UtilG.Round(PA.getLife()[0], 1), font, ColorPalette[6]) ;	// Life text	
 			DP.DrawText(new Point(WindowPos.x + 20, WindowPos.y + (int)(0.15*attWindowSize.y)), "BotLeft", TextAngle, attText[3] + ": " + UtilG.Round(PA.getMp()[0], 1), font, ColorPalette[5]) ;	// MP text
@@ -253,7 +253,7 @@ public class PlayerAttributesWindow extends Window
 		{
 			String[] specialAttrPropText = allText.get("* Propriedades dos atributos especiais *") ;
 			int L = attWindowSize.x ;
-			float sx = (float)0.15*L, sy = (float)(1.8*UtilG.TextH(font.getSize())) ;
+			double sx = (double)0.15*L, sy = (double)(1.8*UtilG.TextH(font.getSize())) ;
 			Color[] AttributeColor = new Color[] {ColorPalette[5], ColorPalette[5], ColorPalette[6], ColorPalette[3], ColorPalette[9]} ;
 			DP.DrawText(new Point(WindowPos.x + (int)(0.65*L), (int)(WindowPos.y + sy)), "Center", TextAngle, specialAttrPropText[1], font, TextColor) ;	
 			DP.DrawText(new Point(WindowPos.x + (int)(0.375*L + sx), (int)(WindowPos.y + 2*sy)), "Center", TextAngle, specialAttrPropText[2], font, TextColor) ;	

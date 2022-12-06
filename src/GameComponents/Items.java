@@ -1,7 +1,6 @@
 package GameComponents ;
 
 import java.awt.Image ;
-import java.io.IOException ;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon ;
@@ -15,8 +14,8 @@ public class Items
 	private String Name ;
 	private Image image ;
 	private int Price ;
-	private float DropChance ;
-	private float[][] Buffs ;
+	private double DropChance ;
+	private double[][] Buffs ;
 	private String Description ;
 	private String Type ;
 
@@ -24,13 +23,13 @@ public class Items
 	public static int NumberOfAllItems ;
 	public static int[] NumberOfItems = new int[] {60, 60, 40, 60, 60, 20, 1000, 400, 100, 200} ;	// Potions, Alchemy, Forge, Pet, Food, Arrows, Equips, General items, Fab, Quest
 	public static int[] BagIDs = new int[NumberOfItems.length + 1] ;	// First id of: Potions, Alchemy, Forge, Pet, Food, Arrows, Equips, General items, Fab, Quest ; and last id of Quest
-	public static float[][] PotionsHealing, PetItems, FoodSatiation, ArrowPower, EquipsBonus ;
+	public static double[][] PotionsHealing, PetItems, FoodSatiation, ArrowPower, EquipsBonus ;
 	public static String[] ArrowElem ;
 	public static String[] EquipsElem ;
 	public static int[] ItemsWithEffects ;
 	public static String[] ItemsTargets, ItemsElement ;
-	public static float[][][] ItemsEffects ;
-	public static float[][][] ItemsBuffs ;	
+	public static double[][][] ItemsEffects ;
+	public static double[][][] ItemsBuffs ;	
 
 	// Equip images
 	private static Image Sword = new ImageIcon(Game.ImagesPath + "Eq0_Sword.png").getImage() ;
@@ -44,7 +43,7 @@ public class Items
 	public static Image[] EquipImage = new Image[] {Sword, Staff, Bow, Claws, Dagger, Shield, Armor, Arrow} ; 
 	public static Image[] EquipGif ;
 	
-	public Items(int ID, String Name, Image image, int Price, float DropChance, float[][] Buffs, String Description, String Type)
+	public Items(int ID, String Name, Image image, int Price, double DropChance, double[][] Buffs, String Description, String Type)
 	{
 		this.id = ID ;
 		this.Name = Name ;
@@ -62,16 +61,16 @@ public class Items
 	public String getName() {return Name ;}
 	public Image getImage() {return image ;}
 	public int getPrice() {return Price ;}
-	public float getDropChance() {return DropChance ;}
-	public float[][] getBuffs() {return Buffs ;}
+	public double getDropChance() {return DropChance ;}
+	public double[][] getBuffs() {return Buffs ;}
 	public String getDescription() {return Description ;}
 	public String getType() {return Type ;}
 	public void setID(int I) {id = I ;}
 	public void setName(String N) {Name = N ;}
 	public void setImage(Image I) {image = I ;}
 	public void setPrice(int P) {Price = P ;}
-	public void setDropChance(float DC) {DropChance = DC ;}
-	public void setBuffs(float[][] B) {Buffs = B ;}
+	public void setDropChance(double DC) {DropChance = DC ;}
+	public void setBuffs(double[][] B) {Buffs = B ;}
 	public void setDescription(String D) {Description = D ;}
 
 	public static void CalcNumberOfAllItems()
@@ -95,19 +94,19 @@ public class Items
 	}
 	public static void CalcItemEffects(String CSVPath)
 	{
-		PotionsHealing = new float[NumberOfItems[0]][3] ;// [ID, life healing, mp healing]
-		PetItems = new float[NumberOfItems[3]][4] ;		// [ID, life healing, mp healing, satiation]
-		FoodSatiation = new float[NumberOfItems[4]][4] ;	// [ID, life healing, mp healing, satiation]
-		ArrowPower = new float[NumberOfItems[5]][1] ;	// [ID, atk power]
+		PotionsHealing = new double[NumberOfItems[0]][3] ;// [ID, life healing, mp healing]
+		PetItems = new double[NumberOfItems[3]][4] ;		// [ID, life healing, mp healing, satiation]
+		FoodSatiation = new double[NumberOfItems[4]][4] ;	// [ID, life healing, mp healing, satiation]
+		ArrowPower = new double[NumberOfItems[5]][1] ;	// [ID, atk power]
 		ArrowElem = new String[NumberOfItems[5]] ;		// [ID]
-		EquipsBonus = new float[NumberOfItems[6]][32] ;	// [ID, Forge level, Life bonus, Mp bonus, PhyAtk bonus, MagAtk bonus, PhyDef bonus, MagDef bonus, Dex bonus, Agi bonus, Crit bonus, Stun bonus, Block bonus, Blood bonus, Poison bonus]
+		EquipsBonus = new double[NumberOfItems[6]][32] ;	// [ID, Forge level, Life bonus, Mp bonus, PhyAtk bonus, MagAtk bonus, PhyDef bonus, MagDef bonus, Dex bonus, Agi bonus, Crit bonus, Stun bonus, Block bonus, Blood bonus, Poison bonus]
 		EquipsElem = new String[NumberOfItems[6]] ;
 		ArrayList<String[]> PotionsInput = UtilG.ReadcsvFile(CSVPath + "Potions.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[0] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= 3 - 1 ; ++j)
 			{
-				PotionsHealing[i][j] = Float.parseFloat(PotionsInput.get(i)[j]) ;
+				PotionsHealing[i][j] = Double.parseDouble(PotionsInput.get(i)[j]) ;
 			}
 		}
 		ArrayList<String[]> PetItemsInput = UtilG.ReadcsvFile(CSVPath + "PetItems.csv") ;	
@@ -115,7 +114,7 @@ public class Items
 		{
 			for (int j = 0 ; j <= 4 - 1 ; ++j)
 			{
-				PetItems[i][j] = Float.parseFloat(PetItemsInput.get(i)[j]) ;
+				PetItems[i][j] = Double.parseDouble(PetItemsInput.get(i)[j]) ;
 			}
 		}
 		ArrayList<String[]> FoodInput = UtilG.ReadcsvFile(CSVPath + "Food.csv") ;	
@@ -123,7 +122,7 @@ public class Items
 		{
 			for (int j = 0 ; j <= 4 - 1 ; ++j)
 			{
-				FoodSatiation[i][j] = Float.parseFloat(FoodInput.get(i)[j]) ;
+				FoodSatiation[i][j] = Double.parseDouble(FoodInput.get(i)[j]) ;
 			}
 		}
 		ArrayList<String[]> ArrowInput = UtilG.ReadcsvFile(CSVPath + "ArrowPower.csv") ;	
@@ -131,7 +130,7 @@ public class Items
 		{
 			for (int j = 0 ; j <= ArrowPower[i].length - 1 ; ++j)
 			{
-				ArrowPower[i][j] = Float.parseFloat(ArrowInput.get(i)[j + 1]) ;
+				ArrowPower[i][j] = Double.parseDouble(ArrowInput.get(i)[j + 1]) ;
 			}
 			ArrowElem[i] = ArrowInput.get(i)[2] ;
 		}
@@ -140,7 +139,7 @@ public class Items
 		{
 			for (int j = 0 ; j <= 31 - 1 ; ++j)
 			{
-				EquipsBonus[i][j] = Float.parseFloat(EquipsInput.get(i)[j]) ;
+				EquipsBonus[i][j] = Double.parseDouble(EquipsInput.get(i)[j]) ;
 			}
 			EquipsElem[i] = EquipsInput.get(i)[31] ;
 		}
@@ -170,8 +169,8 @@ public class Items
 		ItemsWithEffects = new int[111] ;
 		ItemsTargets = new String[ItemsWithEffects.length] ;
 		ItemsElement = new String[ItemsWithEffects.length] ;
-		ItemsEffects = new float[ItemsWithEffects.length][15][3] ;
-		ItemsBuffs = new float[ItemsWithEffects.length][14][13] ;
+		ItemsEffects = new double[ItemsWithEffects.length][15][3] ;
+		ItemsBuffs = new double[ItemsWithEffects.length][14][13] ;
 		ArrayList<String[]> ItemsEffectsInput = UtilG.ReadcsvFile(CSVPath + "ItemsEffects.csv") ;
 		for (int i = 0 ; i <= ItemsWithEffects.length - 1 ; ++i)
 		{
@@ -183,22 +182,22 @@ public class Items
 				{
 					for (int k = 0 ; k <= 13 - 1 ; k += 1)
 					{
-						ItemsBuffs[i][j][k] = Float.parseFloat(ItemsEffectsInput.get(i)[BuffCont + 18]) ;
+						ItemsBuffs[i][j][k] = Double.parseDouble(ItemsEffectsInput.get(i)[BuffCont + 18]) ;
 						BuffCont += 1 ;
 					}
 				}
 				else
 				{
-					ItemsBuffs[i][j][0] = Float.parseFloat(ItemsEffectsInput.get(i)[BuffCont + 18]) ;
-					ItemsBuffs[i][j][1] = Float.parseFloat(ItemsEffectsInput.get(i)[BuffCont + 19]) ;
-					ItemsBuffs[i][j][2] = Float.parseFloat(ItemsEffectsInput.get(i)[BuffCont + 20]) ;
-					ItemsBuffs[i][j][12] = Float.parseFloat(ItemsEffectsInput.get(i)[BuffCont + 21]) ;
+					ItemsBuffs[i][j][0] = Double.parseDouble(ItemsEffectsInput.get(i)[BuffCont + 18]) ;
+					ItemsBuffs[i][j][1] = Double.parseDouble(ItemsEffectsInput.get(i)[BuffCont + 19]) ;
+					ItemsBuffs[i][j][2] = Double.parseDouble(ItemsEffectsInput.get(i)[BuffCont + 20]) ;
+					ItemsBuffs[i][j][12] = Double.parseDouble(ItemsEffectsInput.get(i)[BuffCont + 21]) ;
 					BuffCont += 4 ;
 				}
 			}
 			ItemsTargets[i] = ItemsEffectsInput.get(i)[1] ;
 			ItemsElement[i] = ItemsEffectsInput.get(i)[2] ;
-			ItemsEffects[i] = new float[][] {{1, Float.parseFloat(ItemsEffectsInput.get(i)[3]), 0}, {1, Float.parseFloat(ItemsEffectsInput.get(i)[4]), Float.parseFloat(ItemsEffectsInput.get(i)[5])}, {1, Float.parseFloat(ItemsEffectsInput.get(i)[6]), Float.parseFloat(ItemsEffectsInput.get(i)[7])}, {Float.parseFloat(ItemsEffectsInput.get(i)[8]), Float.parseFloat(ItemsEffectsInput.get(i)[9]), Float.parseFloat(ItemsEffectsInput.get(i)[10])}, {Float.parseFloat(ItemsEffectsInput.get(i)[11]), Float.parseFloat(ItemsEffectsInput.get(i)[12]), Float.parseFloat(ItemsEffectsInput.get(i)[13])}, {1, Float.parseFloat(ItemsEffectsInput.get(i)[14]), Float.parseFloat(ItemsEffectsInput.get(i)[15])}, {1, Float.parseFloat(ItemsEffectsInput.get(i)[16]), Float.parseFloat(ItemsEffectsInput.get(i)[17])}} ;			
+			ItemsEffects[i] = new double[][] {{1, Double.parseDouble(ItemsEffectsInput.get(i)[3]), 0}, {1, Double.parseDouble(ItemsEffectsInput.get(i)[4]), Double.parseDouble(ItemsEffectsInput.get(i)[5])}, {1, Double.parseDouble(ItemsEffectsInput.get(i)[6]), Double.parseDouble(ItemsEffectsInput.get(i)[7])}, {Double.parseDouble(ItemsEffectsInput.get(i)[8]), Double.parseDouble(ItemsEffectsInput.get(i)[9]), Double.parseDouble(ItemsEffectsInput.get(i)[10])}, {Double.parseDouble(ItemsEffectsInput.get(i)[11]), Double.parseDouble(ItemsEffectsInput.get(i)[12]), Double.parseDouble(ItemsEffectsInput.get(i)[13])}, {1, Double.parseDouble(ItemsEffectsInput.get(i)[14]), Double.parseDouble(ItemsEffectsInput.get(i)[15])}, {1, Double.parseDouble(ItemsEffectsInput.get(i)[16]), Double.parseDouble(ItemsEffectsInput.get(i)[17])}} ;			
 		}
 	}
 

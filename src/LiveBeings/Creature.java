@@ -46,7 +46,7 @@ public class Creature extends LiveBeing
 		this.StatusCounter = CT.getStatusCounter() ;
 		
 		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().y)) ;
-		Size range = new Size(Game.getScreen().getSize().x, (int) ((1 - (float)(Game.getSky().height)/Game.getScreen().getSize().y) * Game.getScreen().getSize().y)) ;
+		Size range = new Size(Game.getScreen().getSize().x, (int) ((1 - (double)(Game.getSky().height)/Game.getScreen().getSize().y) * Game.getScreen().getSize().y)) ;
 		Point initialPos = UtilG.RandomPos(minCoord, range, new Size(1, 1)) ;
 		PA.setPos(initialPos) ;
 		
@@ -66,21 +66,21 @@ public class Creature extends LiveBeing
 	public Size getSize() {return PA.getSize() ;}
 	public Point getPos() {return PA.getPos() ;}
 	public ArrayList<Spell> getSpell() {return spells ;}
-	public float[] getLife() {return PA.getLife() ;}
-	public float[] getMp() {return PA.getMp() ;}
-	public float getRange() {return PA.getRange() ;}
-	public float[] getPhyAtk() {return BA.getPhyAtk() ;}
-	public float[] getMagAtk() {return BA.getMagAtk() ;}
-	public float[] getPhyDef() {return BA.getPhyDef() ;}
-	public float[] getMagDef() {return BA.getMagDef() ;}
-	public float[] getDex() {return BA.getDex() ;}
-	public float[] getAgi() {return BA.getAgi() ;}
-	public float[] getCrit() {return BA.getCrit() ;}
-	public float[] getStun() {return BA.getStun() ;}
-	public float[] getBlock() {return BA.getBlock() ;}
-	public float[] getBlood() {return BA.getBlood() ;}
-	public float[] getPoison() {return BA.getPoison() ;}
-	public float[] getSilence() {return BA.getSilence() ;}
+	public double[] getLife() {return PA.getLife() ;}
+	public double[] getMp() {return PA.getMp() ;}
+	public double getRange() {return PA.getRange() ;}
+	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
+	public BasicBattleAttribute getMagAtk() {return BA.getMagAtk() ;}
+	public BasicBattleAttribute getPhyDef() {return BA.getPhyDef() ;}
+	public BasicBattleAttribute getMagDef() {return BA.getMagDef() ;}
+	public BasicBattleAttribute getDex() {return BA.getDex() ;}
+	public BasicBattleAttribute getAgi() {return BA.getAgi() ;}
+	public double[] getCrit() {return BA.getCrit() ;}
+	public double[] getStun() {return BA.getStun() ;}
+	public double[] getBlock() {return BA.getBlock() ;}
+	public double[] getBlood() {return BA.getBlood() ;}
+	public double[] getPoison() {return BA.getPoison() ;}
+	public double[] getSilence() {return BA.getSilence() ;}
 	public String[] getElem() {return PA.Elem ;}
 	public int[] getExp() {return PA.getExp() ;}
 	public int[] getBag() {return Bag ;}
@@ -222,7 +222,7 @@ public class Creature extends LiveBeing
 		int MPCost = 10 ;
 		String effect = "" ;
 		int damage = -1 ;
-		float randomAmp = (float) 0.1 ;
+		double randomAmp = (double) 0.1 ;
 		BattleAttributes playerBA = player.getBA() ;
 		
 		if (spellID == 0)	// magical atk
@@ -282,10 +282,10 @@ public class Creature extends LiveBeing
 		PA.getMp()[0] += -MPCost ;
 		return damage ;
 	}
-	public void Follow(Point Pos, Point Target, int step, float mindist)
+	public void Follow(Point Pos, Point Target, int step, double mindist)
 	{
 		Point pos = new Point(Pos.x, Pos.y) ; // Prevent the method from modifying the original variable Pos
-		float verdist = Math.abs(pos.y - Target.y), hordist = Math.abs(pos.x - Target.x) ;
+		double verdist = Math.abs(pos.y - Target.y), hordist = Math.abs(pos.x - Target.x) ;
 		if (mindist < pos.distance(Target))
 		{
 			if (verdist < hordist)
@@ -350,7 +350,7 @@ public class Creature extends LiveBeing
 		}
 		if (PA.Actions[1][0] % PA.Actions[1][1] == 0)
 		{
-			PA.getMp()[0] = (float)(Math.min(PA.getMp()[0] + 0.02*PA.getMp()[1], PA.getMp()[1])) ;	// Creature heals mp
+			PA.getMp()[0] = (double)(Math.min(PA.getMp()[0] + 0.02*PA.getMp()[1], PA.getMp()[1])) ;	// Creature heals mp
 			PA.Actions[1][0] = 0 ;
 		}	
 	}
@@ -358,9 +358,9 @@ public class Creature extends LiveBeing
 	public void ApplyBuffsAndNerfs(String action, String type, int att, int BuffNerfLevel, Spell spells, boolean SpellIsActive)
 	{
 		int ActionMult = 1 ;
-		float[][] Buff = new float[14][5] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
-		float[] OriginalValue = new float[14] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
-		float[][] Buffs = null ;
+		double[][] Buff = new double[14][5] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
+		double[] OriginalValue = new double[14] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
+		double[][] Buffs = null ;
 		if (type.equals("buffs"))
 		{
 			Buffs = spells.getBuffs() ;
@@ -369,7 +369,9 @@ public class Creature extends LiveBeing
 		{
 			Buffs = spells.getNerfs() ;
 		}
-		OriginalValue = new float[] {PA.getLife()[1], PA.getMp()[1], BA.getPhyAtk()[0], BA.getMagAtk()[0], BA.getPhyDef()[0], BA.getMagDef()[0], BA.getDex()[0], BA.getAgi()[0], BA.getCrit()[0], BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2], BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
+		OriginalValue = new double[] {PA.getLife()[1], PA.getMp()[1], BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(), BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(),
+				BA.getCrit()[0],
+				BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2], BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
 		if (action.equals("deactivate"))
 		{
 			ActionMult = -1 ;
@@ -411,12 +413,12 @@ public class Creature extends LiveBeing
 		{
 			PA.getLife()[0] += Buff[0][0] ;
 			PA.getMp()[0] += Buff[1][0] ;
-			BA.getPhyAtk()[1] += Buff[2][0] ;
-			BA.getMagAtk()[1] += Buff[3][0] ;
-			BA.getPhyDef()[1] += Buff[4][0] ;
-			BA.getMagDef()[1] += Buff[5][0] ;
-			BA.getDex()[1] += Buff[6][0] ;
-			BA.getAgi()[1] += Buff[7][0] ;
+			BA.getPhyAtk().incBonus(Buff[2][0]) ;
+			BA.getMagAtk().incBonus(Buff[3][0]) ;
+			BA.getPhyDef().incBonus(Buff[4][0]) ;
+			BA.getMagDef().incBonus(Buff[5][0]) ;
+			BA.getDex().incBonus(Buff[6][0]) ;
+			BA.getAgi().incBonus(Buff[7][0]) ;
 			BA.getCrit()[1] += Buff[8][0] ;
 			BA.getStun()[1] += Buff[9][0] ;
 			BA.getBlock()[1] += Buff[10][0] ;
@@ -435,8 +437,8 @@ public class Creature extends LiveBeing
 	}
 	public void TakeBloodAndPoisonDamage(Player player, boolean[][] SpellBuffIsActive)
 	{
-		float BloodDamage = 0 ;
-		float PoisonDamage = 0 ;
+		double BloodDamage = 0 ;
+		double PoisonDamage = 0 ;
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
 			BloodDamage = Math.max(player.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
@@ -465,8 +467,8 @@ public class Creature extends LiveBeing
 	}
 	public void TakeBloodAndPoisonDamage(Pet pet)
 	{
-		float BloodDamage = 0 ;
-		float PoisonDamage = 0 ;
+		double BloodDamage = 0 ;
+		double PoisonDamage = 0 ;
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
 			BloodDamage = Math.max(pet.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;

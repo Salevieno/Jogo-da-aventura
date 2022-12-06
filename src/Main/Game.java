@@ -43,6 +43,7 @@ import Items.Item;
 import Items.PetItem;
 import Items.Potion;
 import Items.QuestItem;
+import LiveBeings.BasicBattleAttribute;
 import LiveBeings.BattleAttributes;
 import LiveBeings.CreatureTypes;
 import LiveBeings.Creature;
@@ -76,7 +77,7 @@ public class Game extends JPanel implements ActionListener
 	public static String MainFontName ;
 	public static Color[] ColorPalette ;	
 	public static int DayDuration ;
-    public static float[] DifficultMult ;
+    public static double[] DifficultMult ;
 	
 	private boolean OpeningIsOn, LoadingGameIsOn, InitializationIsOn, CustomizationIsOn, TutorialIsOn ;
     private boolean RunGame ;
@@ -116,13 +117,13 @@ public class Game extends JPanel implements ActionListener
 		setFocusable(true) ;
 	}
 	
-	public static Screen getScreen(){return screen ;}
-	public static Sky getSky(){return sky ;}
-	public static CreatureTypes[] getCreatureTypes(){return creatureTypes ;}
-	public static BuildingType[] getBuildingTypes(){return buildingTypes ;}
-	public static Maps[] getMaps(){return allMaps ;}
+	public static Screen getScreen() {return screen ;}
+	public static Sky getSky() {return sky ;}
+	public static CreatureTypes[] getCreatureTypes() {return creatureTypes ;}
+	public static BuildingType[] getBuildingTypes() {return buildingTypes ;}
+	public static Maps[] getMaps() {return allMaps ;}
 	//public static NPCs[] getNPCs(){return allNPCs ;}
-	public static Quests[] getAllQuests(){return allQuests ;}
+	public static Quests[] getAllQuests() {return allQuests ;}
 	public static Item[] getAllItems() {return allItems ;}
 	public static SpellType[] getAllSpellTypes() {return allSpellTypes ;}
 	
@@ -191,7 +192,7 @@ public class Game extends JPanel implements ActionListener
 		return buildings ;
     }
     
-    public CreatureTypes[] InitializeCreatureTypes(String Language, float DiffMult)
+    public CreatureTypes[] InitializeCreatureTypes(String Language, double DiffMult)
     {
 		ArrayList<String[]> Input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
     	CreatureTypes.setNumberOfCreatureTypes(Input.size());
@@ -225,9 +226,9 @@ public class Game extends JPanel implements ActionListener
 			String dir = Player.MoveKeys[0] ;
 			States state = States.idle ;
 			Size Size = new Size(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;
-			float[] Life = new float[] {Float.parseFloat(Input.get(ct)[5]) * DiffMult, Float.parseFloat(Input.get(ct)[5]) * DiffMult} ;
-			float[] Mp = new float[] {Float.parseFloat(Input.get(ct)[6]) * DiffMult, Float.parseFloat(Input.get(ct)[6]) * DiffMult} ;
-			float Range = Float.parseFloat(Input.get(ct)[7]) * DiffMult ;
+			double[] Life = new double[] {Double.parseDouble(Input.get(ct)[5]) * DiffMult, Double.parseDouble(Input.get(ct)[5]) * DiffMult} ;
+			double[] Mp = new double[] {Double.parseDouble(Input.get(ct)[6]) * DiffMult, Double.parseDouble(Input.get(ct)[6]) * DiffMult} ;
+			double Range = Double.parseDouble(Input.get(ct)[7]) * DiffMult ;
 			int Step = Integer.parseInt(Input.get(ct)[48]) ;
 			int[] Exp = new int[] {Integer.parseInt(Input.get(ct)[36])} ;
 			int[] Satiation = new int[] {100, 100, 1} ;
@@ -238,18 +239,18 @@ public class Game extends JPanel implements ActionListener
 			int countmove = 0 ;
 			PersonalAttributes PA = new PersonalAttributes(Name, Level, ct, 0, null, null, dir, state, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
 
-			float[] PhyAtk = new float[] {Float.parseFloat(Input.get(ct)[8]) * DiffMult, 0, 0} ;
-			float[] MagAtk = new float[] {Float.parseFloat(Input.get(ct)[9]) * DiffMult, 0, 0} ;
-			float[] PhyDef = new float[] {Float.parseFloat(Input.get(ct)[10]) * DiffMult, 0, 0} ;
-			float[] MagDef = new float[] {Float.parseFloat(Input.get(ct)[11]) * DiffMult, 0, 0} ;
-			float[] Dex = new float[] {Float.parseFloat(Input.get(ct)[12]) * DiffMult, 0, 0} ;
-			float[] Agi = new float[] {Float.parseFloat(Input.get(ct)[13]) * DiffMult, 0, 0} ;
-			float[] Crit = new float[] {Float.parseFloat(Input.get(ct)[14]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[15]) * DiffMult, 0} ;
-			float[] Stun = new float[] {Float.parseFloat(Input.get(ct)[16]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[17]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[18]) * DiffMult} ;
-			float[] Block = new float[] {Float.parseFloat(Input.get(ct)[19]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[20]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[21]) * DiffMult} ;
-			float[] Blood = new float[] {Float.parseFloat(Input.get(ct)[22]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[23]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[24]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[25]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[26]) * DiffMult} ;
-			float[] Poison = new float[] {Float.parseFloat(Input.get(ct)[27]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[28]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[29]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[30]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[31]) * DiffMult} ;
-			float[] Silence = new float[] {Float.parseFloat(Input.get(ct)[32]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[33]) * DiffMult, 0, Float.parseFloat(Input.get(ct)[34]) * DiffMult} ;
+			BasicBattleAttribute PhyAtk = new BasicBattleAttribute(Double.parseDouble(Input.get(ct)[8]) * DiffMult, 0, 0) ;
+			BasicBattleAttribute MagAtk = new BasicBattleAttribute(Double.parseDouble(Input.get(ct)[9]) * DiffMult, 0, 0) ;
+			BasicBattleAttribute PhyDef = new BasicBattleAttribute(Double.parseDouble(Input.get(ct)[10]) * DiffMult, 0, 0) ;
+			BasicBattleAttribute MagDef = new BasicBattleAttribute(Double.parseDouble(Input.get(ct)[11]) * DiffMult, 0, 0) ;
+			BasicBattleAttribute Dex = new BasicBattleAttribute(Double.parseDouble(Input.get(ct)[12]) * DiffMult, 0, 0) ;
+			BasicBattleAttribute Agi = new BasicBattleAttribute(Double.parseDouble(Input.get(ct)[13]) * DiffMult, 0, 0) ;
+			double[] Crit = new double[] {Double.parseDouble(Input.get(ct)[14]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[15]) * DiffMult, 0} ;
+			double[] Stun = new double[] {Double.parseDouble(Input.get(ct)[16]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[17]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[18]) * DiffMult} ;
+			double[] Block = new double[] {Double.parseDouble(Input.get(ct)[19]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[20]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[21]) * DiffMult} ;
+			double[] Blood = new double[] {Double.parseDouble(Input.get(ct)[22]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[23]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[24]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[25]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[26]) * DiffMult} ;
+			double[] Poison = new double[] {Double.parseDouble(Input.get(ct)[27]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[28]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[29]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[30]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[31]) * DiffMult} ;
+			double[] Silence = new double[] {Double.parseDouble(Input.get(ct)[32]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[33]) * DiffMult, 0, Double.parseDouble(Input.get(ct)[34]) * DiffMult} ;
 			int[] Status = new int[8] ;
 			int[] SpecialStatus = new int[5] ;
 			int[][] BattleActions = new int[][] {{0, Integer.parseInt(Input.get(ct)[51]), 0}} ;
@@ -517,8 +518,8 @@ public class Game extends JPanel implements ActionListener
     	
     	ArrayList<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
     	ArrayList<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
-		float[][][] spellBuffs = new float[allSpellTypes.length][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
-		float[][][] spellNerfs = new float[allSpellTypes.length][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+		double[][][] spellBuffs = new double[allSpellTypes.length][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+		double[][][] spellNerfs = new double[allSpellTypes.length][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
 		String[][] spellsInfo = new String[allSpellTypes.length][2] ;
 		for (int i = 0 ; i <= allSpellTypes.length - 1 ; i += 1)
 		{
@@ -530,20 +531,20 @@ public class Game extends JPanel implements ActionListener
 				{
 					for (int k = 0 ; k <= NumberOfBuffs - 1 ; k += 1)
 					{
-						spellBuffs[i][j][k] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
-						spellNerfs[i][j][k] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
+						spellBuffs[i][j][k] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
+						spellNerfs[i][j][k] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
 						NerfCont += 1 ;
 						BuffCont += 1 ;
 					}
 				}
 				else
 				{
-					spellBuffs[i][j][0] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
-					spellBuffs[i][j][1] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 4]) ;
-					spellBuffs[i][j][2] = Float.parseFloat(spellsBuffsInput.get(ID)[BuffCont + 5]) ;
-					spellNerfs[i][j][0] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
-					spellNerfs[i][j][1] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 4]) ;
-					spellNerfs[i][j][2] = Float.parseFloat(spellsNerfsInput.get(ID)[NerfCont + 5]) ;
+					spellBuffs[i][j][0] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
+					spellBuffs[i][j][1] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 4]) ;
+					spellBuffs[i][j][2] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 5]) ;
+					spellNerfs[i][j][0] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
+					spellNerfs[i][j][1] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 4]) ;
+					spellNerfs[i][j][2] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 5]) ;
 					NerfCont += 3 ;
 					BuffCont += 3 ;
 				}
@@ -558,7 +559,7 @@ public class Game extends JPanel implements ActionListener
 			}
 			String Name = spellTypesInput.get(ID)[4] ;
 			int MaxLevel = Integer.parseInt(spellTypesInput.get(ID)[5]) ;
-			float MpCost = Float.parseFloat(spellTypesInput.get(ID)[6]) ;
+			double MpCost = Double.parseDouble(spellTypesInput.get(ID)[6]) ;
 			SpellTypes Type ;
 			if (spellTypesInput.get(ID)[7].equals("Active"))
 			{
@@ -586,17 +587,17 @@ public class Game extends JPanel implements ActionListener
 			}
 			int Cooldown = Integer.parseInt(spellTypesInput.get(ID)[14]) ;
 			int Duration = Integer.parseInt(spellTypesInput.get(ID)[15]) ;
-			float[] Atk = new float[] {Float.parseFloat(spellTypesInput.get(ID)[16]), Float.parseFloat(spellTypesInput.get(ID)[17])} ;
-			float[] Def = new float[] {Float.parseFloat(spellTypesInput.get(ID)[18]), Float.parseFloat(spellTypesInput.get(ID)[19])} ;
-			float[] Dex = new float[] {Float.parseFloat(spellTypesInput.get(ID)[20]), Float.parseFloat(spellTypesInput.get(ID)[21])} ;
-			float[] Agi = new float[] {Float.parseFloat(spellTypesInput.get(ID)[22]), Float.parseFloat(spellTypesInput.get(ID)[23])} ;
-			float[] AtkCrit = new float[] {Float.parseFloat(spellTypesInput.get(ID)[24])} ;
-			float[] DefCrit = new float[] {Float.parseFloat(spellTypesInput.get(ID)[25])} ;
-			float[] Stun = new float[] {Float.parseFloat(spellTypesInput.get(ID)[26]), Float.parseFloat(spellTypesInput.get(ID)[27]), Float.parseFloat(spellTypesInput.get(ID)[28])} ;
-			float[] Block = new float[] {Float.parseFloat(spellTypesInput.get(ID)[29]), Float.parseFloat(spellTypesInput.get(ID)[30]), Float.parseFloat(spellTypesInput.get(ID)[31])} ;
-			float[] Blood = new float[] {Float.parseFloat(spellTypesInput.get(ID)[32]), Float.parseFloat(spellTypesInput.get(ID)[33]), Float.parseFloat(spellTypesInput.get(ID)[34])} ;
-			float[] Poison = new float[] {Float.parseFloat(spellTypesInput.get(ID)[35]), Float.parseFloat(spellTypesInput.get(ID)[36]), Float.parseFloat(spellTypesInput.get(ID)[37])} ;
-			float[] Silence = new float[] {Float.parseFloat(spellTypesInput.get(ID)[38]), Float.parseFloat(spellTypesInput.get(ID)[39]), Float.parseFloat(spellTypesInput.get(ID)[40])} ;
+			double[] Atk = new double[] {Double.parseDouble(spellTypesInput.get(ID)[16]), Double.parseDouble(spellTypesInput.get(ID)[17])} ;
+			double[] Def = new double[] {Double.parseDouble(spellTypesInput.get(ID)[18]), Double.parseDouble(spellTypesInput.get(ID)[19])} ;
+			double[] Dex = new double[] {Double.parseDouble(spellTypesInput.get(ID)[20]), Double.parseDouble(spellTypesInput.get(ID)[21])} ;
+			double[] Agi = new double[] {Double.parseDouble(spellTypesInput.get(ID)[22]), Double.parseDouble(spellTypesInput.get(ID)[23])} ;
+			double[] AtkCrit = new double[] {Double.parseDouble(spellTypesInput.get(ID)[24])} ;
+			double[] DefCrit = new double[] {Double.parseDouble(spellTypesInput.get(ID)[25])} ;
+			double[] Stun = new double[] {Double.parseDouble(spellTypesInput.get(ID)[26]), Double.parseDouble(spellTypesInput.get(ID)[27]), Double.parseDouble(spellTypesInput.get(ID)[28])} ;
+			double[] Block = new double[] {Double.parseDouble(spellTypesInput.get(ID)[29]), Double.parseDouble(spellTypesInput.get(ID)[30]), Double.parseDouble(spellTypesInput.get(ID)[31])} ;
+			double[] Blood = new double[] {Double.parseDouble(spellTypesInput.get(ID)[32]), Double.parseDouble(spellTypesInput.get(ID)[33]), Double.parseDouble(spellTypesInput.get(ID)[34])} ;
+			double[] Poison = new double[] {Double.parseDouble(spellTypesInput.get(ID)[35]), Double.parseDouble(spellTypesInput.get(ID)[36]), Double.parseDouble(spellTypesInput.get(ID)[37])} ;
+			double[] Silence = new double[] {Double.parseDouble(spellTypesInput.get(ID)[38]), Double.parseDouble(spellTypesInput.get(ID)[39]), Double.parseDouble(spellTypesInput.get(ID)[40])} ;
 			String Elem = spellTypesInput.get(ID)[41] ;
 			allSpellTypes[i] = new SpellType(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, spellBuffs[i], spellNerfs[i],
 					Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i]) ;	
@@ -620,7 +621,7 @@ public class Game extends JPanel implements ActionListener
 		allMaps = new Maps[cityMaps.length + fieldMaps.length] ;
 		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
-		DifficultMult = new float[] {(float) 0.5, (float) 0.7, (float) 1.0} ;
+		DifficultMult = new double[] {(double) 0.5, (double) 0.7, (double) 1.0} ;
  		//player = InitializePlayer(PlayerInitialName, PlayerInitialJob, GameLanguage, PlayerInitialSex) ;
 		//pet = InitializePet() ;
 		//creature = InitializeCreatures(creatureTypes, screen.getSize(), fieldMaps) ;
@@ -735,7 +736,7 @@ public class Game extends JPanel implements ActionListener
 		}
 		else if (TutorialStep == 8)
 		{
-			//DF.DrawNPCsIntro(player, npc, new float[] {1, 1}, player.currentMap(maps).NPCsInMap) ;
+			//DF.DrawNPCsIntro(player, npc, new double[] {1, 1}, player.currentMap(maps).NPCsInMap) ;
 			if (player.action.equals("Enter"))
 			{
 				TutorialStep += 1 ;
@@ -951,7 +952,7 @@ public class Game extends JPanel implements ActionListener
 		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DF.getDrawPrimitives()) ;
 		if (player.weaponIsEquipped())	// if the player is equipped with a weapon
 		{
-			player.DrawWeapon(player.getPos(), new float[] {1, 1}, DF.getDrawPrimitives()) ;
+			player.DrawWeapon(player.getPos(), new double[] {1, 1}, DF.getDrawPrimitives()) ;
 		}
 		
 		
@@ -966,7 +967,7 @@ public class Game extends JPanel implements ActionListener
 				{
 					pet.action = pet.Action(Player.ActionKeys) ;
 				}
-				//pet.display(player.getPos(), new float[] {1, 1}, DF.getDrawPrimitives()) ;
+				//pet.display(player.getPos(), new double[] {1, 1}, DF.getDrawPrimitives()) ;
 				//pet.drawAttributes(0, DF.getDrawPrimitives()) ;
 			}
 		}
@@ -1077,7 +1078,7 @@ public class Game extends JPanel implements ActionListener
 		//creatureTypes[creature[player.CreatureInBattle].getType()].printAtt() ;
 		player.setPos(creature[player.CreatureInBattle].getPos()) ;
 		player.setPos(new int[] {player.getPos()[0] + 20, player.getPos()[1] + 15});
-		//player.getBA().setStun(new float[] {1, 0, 0, 0, 500});
+		//player.getBA().setStun(new double[] {1, 0, 0, 0, 500});
 		player.getEquips()[0] = 301 ;
 		player.getEquips()[1] = 302 ;
 		player.getEquips()[2] = 303 ;
@@ -1173,7 +1174,7 @@ public class Game extends JPanel implements ActionListener
 			allMaps[map].InitializeBuildingsInMap(allBuildings) ;
 		}*/
     	pet = InitializePet() ;
-    	pet.getPA().setLife(new float[] {100, 100, 0});
+    	pet.getPA().setLife(new double[] {100, 100, 0});
     	pet.getPA().setPos(player.getPos());
     	bat = new Battle(music.getSoundEffect(), new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
     	
