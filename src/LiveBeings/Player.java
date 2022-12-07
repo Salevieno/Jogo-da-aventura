@@ -41,6 +41,7 @@ import Items.Recipe;
 import Screen.Screen;
 import Utilities.Scale;
 import Utilities.Size;
+import Utilities.TimeCounter;
 import Utilities.UtilG;
 import Utilities.UtilS;
 import Windows.PlayerAttributesWindow;
@@ -75,18 +76,17 @@ public class Player extends LiveBeing
 	private int attPoints ;			// attribute points available (to upgrade the attributes)
 	private int spellPoints ;		// spell points available (to upgrade the spells)
 	private double[] collectLevel ;	// 0: herb, 1: wood, 2: metal
-    private int collectingCounter ;	// counts the progress of the player's collection
-    private int collectingDelay ;	// time that the player takes to collect
+	private TimeCounter collectCounter ;	// counts the progress of the player's collection
 	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor, 3: arrow
 	private int[] gold ;			// 0: current, 1: stored
-	private int goldMultiplier ;	// multiplies the amount of gold the player wins
+	private double goldMultiplier ;	// multiplies the amount of gold the player wins
 	private Map<String, Boolean> questSkills ;	// skills gained with quests
 	private boolean isRiding ;		// true if the player is riding
     
 	public Creature closestCreature ;	// creature that is currently closest to the player
     public Creature opponent ;		// creature that is currently in battle with the player
     public Map<String, String[]> allText ;	// All the text in the game in the player language
-	public Items[] hotkeyItem ;
+	public Items[] hotItem ;		// items on the hotkeys
     public int difficultLevel ;
     
     public static Image collectingMessage = new ImageIcon(Game.ImagesPath + "CollectingMessage.gif").getImage() ;
@@ -183,8 +183,7 @@ public class Player extends LiveBeing
 		}*/
 		//statusCounter = new int[8] ;
 		statistics = new double[23] ;
-		collectingCounter = 0 ;
-		collectingDelay = 300 ;
+		collectCounter = new TimeCounter(0, 300) ;
 		Arrays.fill(BA.getSpecialStatus(), -1) ;
 		attPoints = 0 ;
 		attIncrease = new double[3][8] ;
@@ -205,7 +204,7 @@ public class Player extends LiveBeing
 		equipsBonus = Items.EquipsBonus ;
 		Image windowSettings = new ImageIcon(Game.ImagesPath + "windowSettings.png").getImage() ;
 		settings = new SettingsWindow(windowSettings, true, true, false, 1, 1) ;
-		hotkeyItem = new Items[3] ;
+		hotItem = new Items[3] ;
 		
 	}
 	
@@ -221,7 +220,7 @@ public class Player extends LiveBeing
     	int ProJob = 0 ;
 		Point Pos = new Point(0, 0) ;
 		String dir = Player.MoveKeys[0] ;
-		States state = States.idle ;
+		LiveBeingStates state = LiveBeingStates.idle ;
 	    Image PlayerBack = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
 		Size Size = new Size (PlayerBack.getWidth(null), PlayerBack.getHeight(null)) ;
 		double[] Life = new double[] {Double.parseDouble(Properties.get(Job)[2]), Double.parseDouble(Properties.get(Job)[2])} ;
@@ -232,10 +231,13 @@ public class Player extends LiveBeing
 		int[] Satiation = new int[] {100, 100, Integer.parseInt(Properties.get(Job)[35])} ;
 		int[] Thirst = new int[] {100, 100, Integer.parseInt(Properties.get(Job)[36])} ;
 		String[] Elem = new String[] {"n", "n", "n", "n", "n"} ;
-		int[][] Actions = new int[][] {{0, Integer.parseInt(Properties.get(Job)[37]), 0}, {0, Integer.parseInt(Properties.get(Job)[38]), 0}, {0, Integer.parseInt(Properties.get(Job)[39]), 0}, {0, Integer.parseInt(Properties.get(Job)[40]), 0}} ;
+		int mpDuration = Integer.parseInt(Properties.get(Job)[37]) ;
+		int satiationDuration = Integer.parseInt(Properties.get(Job)[38]) ;
+		int moveDuration = Integer.parseInt(Properties.get(Job)[39]) ;
+		int stepCounter = 0 ;
 		String currentAction = "" ;
-		int countmove = 0 ;
-		return new PersonalAttributes(Name, Level, Job, ProJob, map, Pos, dir, state, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
+		return new PersonalAttributes(Name, Level, Job, ProJob, map, Pos, dir, state, Size, Life, Mp, Range, Step, Exp, Satiation,
+				Thirst, Elem, mpDuration, satiationDuration, moveDuration, stepCounter, currentAction) ;
 	}
 	
 	private static BattleAttributes InitializeBattleAttributes(int Job)
@@ -414,7 +416,7 @@ public class Player extends LiveBeing
 	public int[] getSatiation() {return PA.getSatiation() ;}
 	public int[] getThirst() {return PA.getThirst() ;}
 	public Map<String, Boolean> getQuestSkills() {return questSkills ;}
-	public int[][] getActions() {return PA.Actions ;}	
+	//public int[][] getActions() {return PA.Actions ;}	
 	//public int[] getSpellDurationCounter() {return spellDurationCounter ;}
 	//public int[] getSpellCooldownCounter() {return spellCooldownCounter ;}
 	//public int[] getStatusCounter() {return statusCounter ;}
@@ -435,7 +437,7 @@ public class Player extends LiveBeing
 	public void setPos(Point P) {PA.setPos(P) ;}
 	public void setBag(BagWindow b) {bag = b ;}
 	public void setStep(int S) {PA.setStep(S) ;}
-	public void setCurrentAction(String CA) {PA.currentAction = CA ;}
+	public void setCurrentAction(String newValue) {PA.currentAction = newValue ;}
 	public void setCombo(ArrayList<String> newValue) {PA.setCombo(newValue) ;}
 
 	public String[] getAtkElems()
@@ -451,18 +453,18 @@ public class Player extends LiveBeing
 		return (equips[3] != null) ;
 	}
 	
-	public void resetCollectingCounter() { collectingCounter = 0 ;}
-	public void incCollectingCounter() { collectingCounter = (collectingCounter + 1 ) % collectingDelay ;}
-	public boolean collectingIsOver() { return (collectingCounter == collectingDelay - 1) ;}
+	//public void resetCollectingCounter() { collectingCounter = 0 ;}
+	//public void incCollectingCounter() { collectingCounter = (collectingCounter + 1 ) % collectingDelay ;}
+	//public boolean collectingIsOver() { return (collectingCounter == collectingDelay - 1) ;}
 	
 	public void Collect(Collectible collectible, DrawPrimitives DP, Animations ani)
     {
-		incCollectingCounter() ;
+		collectCounter.inc() ;
         Image collectingGif = new ImageIcon(Game.ImagesPath + "Collecting.gif").getImage() ;
         DP.DrawGif(collectingGif, getPos(), "Center");
-        if (collectingIsOver())
+        if (collectCounter.finished())
         {
-    		resetCollectingCounter() ;
+        	collectCounter.reset() ;
             collectingGif.flush() ;
             
             // remove the collectible from the list
@@ -559,7 +561,6 @@ public class Player extends LiveBeing
 	}
 	public boolean actionIsASpell()
 	{
-		// TODO tem actionIsASpell here e em BA
 		if (UtilG.ArrayContains(Player.SpellKeys, PA.getCurrentAction()))
 		{
 			return true ;
@@ -631,7 +632,7 @@ public class Player extends LiveBeing
 			}
 		}
 
-		PA.countmove = (PA.countmove + 1) % moveRange ;
+		PA.stepCounter = (PA.stepCounter + 1) % moveRange ;
 	}
 	
 	public void act(Pet pet, Maps[] maps, Point MousePos, Icon[] sideBarIcons, Animations Ani, DrawFunctions DF)
@@ -781,7 +782,7 @@ public class Player extends LiveBeing
 			if (PA.Job != 2 | (PA.Job == 2 & equips[3] != null))
 			{
 				opponent = closestCreature ;
-				PA.setState(States.fighting) ;
+				PA.setState(LiveBeingStates.fighting) ;
 			}
 		}
 		
@@ -818,7 +819,7 @@ public class Player extends LiveBeing
 						ani.SetAniVars(10, new Object[] {100, PA.getPos(), 10, collectibles.get(c).getType(), "Coletando"}) ;
 						ani.StartAni(10) ;
 					}*/
-					PA.setState(States.collecting);
+					PA.setState(LiveBeingStates.collecting);
 					Collect(collectibles.get(c), DP, ani) ;
 					//return new int[] {2, collectibles.get(c).getType()} ;
 				}
@@ -856,7 +857,7 @@ public class Player extends LiveBeing
 					{
 						opponent = creaturesInMap.get(i) ;
 						opponent.setFollow(true) ;
-						getPA().setState(States.fighting) ;
+						getPA().setState(LiveBeingStates.fighting) ;
 						bestiary.addDiscoveredCreature(opponent.getType()) ;
 					}
 				}
@@ -1098,7 +1099,7 @@ public class Player extends LiveBeing
 	}
 	public void ActivateActionCounters(boolean SomeAnimationIsOn)
 	{
-		if (PA.Actions[0][0] % PA.Actions[0][1] == 0 & !SomeAnimationIsOn)
+		/*if (PA.Actions[0][0] % PA.Actions[0][1] == 0 & !SomeAnimationIsOn)
 		{
 			PA.Actions[0][2] = 1 ;							// Player can move
 		}
@@ -1124,7 +1125,7 @@ public class Player extends LiveBeing
 				PA.incLife(-1) ;
 			}
 			PA.Actions[3][0] = 0 ;
-		}
+		}*/
 	}
 	public void ActivateBattleActionCounters()
 	{
@@ -1729,7 +1730,7 @@ public class Player extends LiveBeing
 	}
 	public boolean isInBattle()
 	{
-		if (PA.getState().equals(States.fighting))
+		if (PA.getState().equals(LiveBeingStates.fighting))
 		{
 			return true ;
 		}
@@ -2058,12 +2059,12 @@ public class Player extends LiveBeing
 			Size slotSize = new Size(SpellType.slotImage.getWidth(null), SpellType.slotImage.getHeight(null)) ;
 			DP.DrawImage(SpellType.slotImage, slotCenter, "Center") ;
 			DP.DrawText(new Point(slotCenter.x + slotSize.x / 2 + 5, slotCenter.y + slotSize.y / 2), "BotLeft", OverallAngle, Player.HotKeys[i], font, TextColor) ;
-			if (hotkeyItem[i] != null)
+			if (hotItem[i] != null)
 			{
-				DP.DrawImage(hotkeyItem[i].getImage(), slotCenter, "Center") ;
+				DP.DrawImage(hotItem[i].getImage(), slotCenter, "Center") ;
 				if (UtilG.isInside(MousePos, slotCenter, slotSize))
 				{
-					DP.DrawText(new Point(slotCenter.x - slotSize.x - 10, slotCenter.y), "CenterRight", OverallAngle, hotkeyItem[i].getName(), font, TextColor) ;
+					DP.DrawText(new Point(slotCenter.x - slotSize.x - 10, slotCenter.y), "CenterRight", OverallAngle, hotItem[i].getName(), font, TextColor) ;
 				}
 			}
 		}
@@ -2254,7 +2255,7 @@ public class Player extends LiveBeing
 		}
 		if (dir.equals("Direita"))
 		{
-			if (PA.countmove % 2 == 0)
+			if (PA.stepCounter % 2 == 0)
 			{
 				DP.DrawImage(movingAni.movingRightGif, new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale.y * PA.getSize().y)), OverallAngle, scale, mirror, "Center", 1) ;
 			}
@@ -2336,7 +2337,7 @@ public class Player extends LiveBeing
 			bw.write("\nPlayer satiation: \n" + Arrays.toString(getSatiation())) ;
 			//bw.write("\nPlayer quest skills: \n" + Arrays.toString(questSkills)) ;
 			bw.write("\nPlayer status: \n" + Arrays.toString(BA.getSpecialStatus())) ; 
-			bw.write("\nPlayer actions: \n" + Arrays.deepToString(getActions())) ; 
+			//bw.write("\nPlayer actions: \n" + Arrays.deepToString(getActions())) ; 
 			bw.write("\nPlayer battle actions: \n" + Arrays.deepToString(BA.getBattleActions())) ; 
 			//bw.write("\nPlayer status counter: \n" + Arrays.toString(getStatusCounter())) ; 		
 			bw.write("\nPlayer stats: \n" + Arrays.toString(getStats())) ;

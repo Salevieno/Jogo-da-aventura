@@ -9,17 +9,18 @@ import javax.swing.ImageIcon;
 import Graphics.DrawPrimitives ;
 import Main.Game;
 import Utilities.Size;
+import Utilities.TimeCounter;
 
 public class Sky 
 {
-	public int dayTime ;
+	public TimeCounter dayTime ;
 	public int height ;
 	private SkyComponent[] Cloud;
 	private SkyComponent[] Star ;
 	
 	public Sky ()
 	{
-		dayTime = Game.DayDuration / 2 ;
+		dayTime = new TimeCounter(Game.DayDuration / 2, Game.DayDuration) ;
 		height = (int)(0.2 * Game.getScreen().getSize().y) ;
     	
     	// initialize clouds
@@ -43,19 +44,11 @@ public class Sky
 		}	
 	}
 
-	public void incDayTime()
-	{
-		dayTime += 1 ;
-		if (dayTime % Game.DayDuration == 0)
-		{
-			dayTime = 0 ;
-		}
-	}
-	public void DrawStar(Point Pos, float size, Color color, DrawPrimitives DP)
+	public void DrawStar(Point Pos, double size, Color color, DrawPrimitives DP)
 	{
 		int NumberOfPoints = 8 ;
 		int[][] Coords = new int[NumberOfPoints][2] ;
-		float t = size/10 ;
+		double t = size/10 ;
 		Coords[0] = new int[] {0, (int)(t), (int)(size/2), (int)(t), 0, (int)(-t), (int)(-size/2), (int)(-t)} ;
 		Coords[1] = new int[] {(int)(-size/2), (int)(-t), 0, (int)(t), (int)(size/2), (int)(t), 0, (int)(-t)} ;
 		for (int i = 0 ; i <= NumberOfPoints - 1 ; ++i)
@@ -68,14 +61,13 @@ public class Sky
 	
 	public void display(DrawPrimitives DP)
 	{
-		int DayDuration = Game.DayDuration ;
-    	Screen screen = Game.getScreen() ;
-		float ColorMult = (1 - (float)(1.8 * Math.abs(dayTime - DayDuration / 2)) / DayDuration) ;		
-		DP.DrawRect(new Point(0, height), "BotLeft", new Size(screen.getSize().x, height), 1,
-				new Color(Game.ColorPalette[0].getRed(), (int)(Game.ColorPalette[0].getGreen()*ColorMult), (int)(Game.ColorPalette[0].getBlue()*ColorMult)), Game.ColorPalette[9], false) ;
+		double ColorMult = (1 - 1.8 * Math.abs(dayTime.getCounter() - Game.DayDuration / 2) / Game.DayDuration) ;
+		Color skyColor = new Color(Game.ColorPalette[0].getRed(), (int)(Game.ColorPalette[0].getGreen() * ColorMult), (int)(Game.ColorPalette[0].getBlue() * ColorMult)) ;
+		
+		DP.DrawRect(new Point(0, height), "BotLeft", new Size(Game.getScreen().getSize().x, height), 1, skyColor, Game.ColorPalette[9], false) ;
 		
 		// if it is daylight
-		if (DayDuration / 4 <= dayTime & dayTime <= 3 * DayDuration / 4)
+		if (Game.DayDuration / 4 <= dayTime.getCounter() & dayTime.getCounter() <= 3 * Game.DayDuration / 4)
 		{
 			// move and display clouds
 			for (int c = 0 ; c <= Cloud.length - 1 ; c += 1)
@@ -84,7 +76,7 @@ public class Sky
 				Cloud[c].setPos(newPos) ;
 
 				// if the cloud has passed the screen, reset its position
-				if (screen.getSize().x <= Cloud[c].getPos().x)
+				if (Game.getScreen().getSize().x <= Cloud[c].getPos().x)
 				{
 					Point originPos = new Point(-Cloud[c].getImage().getWidth(null), Cloud[c].getPos().y) ;
 					Cloud[c].setPos(originPos) ;

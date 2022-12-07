@@ -34,6 +34,8 @@ public class Creature extends LiveBeing
 	private static Color[] skinColor = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1]} ;
 	private static Color[] shadeColor = new Color[] {Game.ColorPalette[2], Game.ColorPalette[3]} ;
 	
+	public static String[] SpellKeys = new String[] {"0", "1", "2", "3"} ;
+	
  	public Creature(CreatureTypes CT)
 	{
  		// int Type, Image image, Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif, int Map, int[] Size, int[] Spell, PersonalAttributes PA, BattleAttributes BA, int[] Bag, int Gold, Color color, int[] StatusCounter, String[] Combo
@@ -87,9 +89,9 @@ public class Creature extends LiveBeing
 	public int getGold() {return Gold ;}
 	public int getStep() {return PA.getStep() ;}
 	public Color getColor() {return color ;}
-	public int[][] getActions() {return PA.Actions ;}
+	//public int[][] getActions() {return PA.Actions ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
-	public String getAction() {return BA.getCurrentAction() ;}
+	public String getAction() {return PA.getCurrentAction() ;}
 	public String[] getCombo() {return Combo ;}
 	public boolean getFollow() {return Follow ;}
 	public void setPos(Point newValue) {PA.setPos(newValue) ;}
@@ -97,6 +99,7 @@ public class Creature extends LiveBeing
 	public void setFollow(boolean F) {Follow = F ;}
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
+	public void setCurrentAction(String newValue) {PA.currentAction = newValue ;}
 
 	public String[] getDefElems()
 	{
@@ -106,6 +109,14 @@ public class Creature extends LiveBeing
 	{
 		int MPcost = 10 * spellID ;
 		return (MPcost <= PA.getMp()[0]) ;
+	}
+	public boolean actionIsASpell()
+	{
+		if (UtilG.ArrayContains(Creature.SpellKeys, PA.getCurrentAction()))
+		{
+			return true ;
+		}
+		return false ;
 	}
 	
 	public void display(Point pos, Scale scale, DrawPrimitives DP)
@@ -179,17 +190,17 @@ public class Creature extends LiveBeing
 	public void act(Point playerPos, Maps map)
 	{
 		Think() ;	
-		if (getPA().getState().equals(States.moving))
+		if (getPA().getState().equals(LiveBeingStates.moving))
 		{
 			Move(playerPos, getFollow(), map) ;
 			if (countmove % 5 == 0)
 			{
 				getPA().setdir(getPA().randomDir()) ;	// set random direction
 			}
-			if (getActions()[0][2] == 1)	// If the creature can move
+			/*if (getActions()[0][2] == 1)	// If the creature can move
 			{
 				ResetActions() ;
-			}
+			}*/
 		}
 	}
 	public void fight(String[] ActionKeys)
@@ -205,15 +216,15 @@ public class Creature extends LiveBeing
 		}
 		if (move == 0)
 		{
-			BA.setCurrentAction(ActionKeys[1]) ;	// Physical attack
+			setCurrentAction(ActionKeys[1]) ;	// Physical attack
 		}
 		if (move == 1)
 		{
-			BA.setCurrentAction(ActionKeys[3]) ;	// Magical attack
+			setCurrentAction(ActionKeys[3]) ;	// Magical attack
 		}
 		if (move == 2)
 		{
-			BA.setCurrentAction(String.valueOf((int)(5 * Math.random() - 0.01))) ;	// Spell
+			setCurrentAction(String.valueOf((int)(5 * Math.random() - 0.01))) ;	// Spell
 		}
 	}
 	public int useSpell(int spellID, Player player)
@@ -315,8 +326,8 @@ public class Creature extends LiveBeing
 	}
 	public void Move(Point PlayerPos, boolean FollowPlayer, Maps map)
 	{
-		if (PA.Actions[0][2] == 1 & !PA.getName().equals("Drag�o") & !PA.getName().equals("Dragon"))	// If the creature can move
-		{
+		//if (PA.Actions[0][2] == 1 & !PA.getName().equals("Drag�o") & !PA.getName().equals("Dragon"))	// If the creature can move
+		//{
 			countmove = (countmove + 1) % 5 ;
 			if (FollowPlayer)
 			{
@@ -326,25 +337,25 @@ public class Creature extends LiveBeing
 			{
 				updatePos(PA.getDir(), PA.getPos(), PA.getStep(), map) ;
 			}				
-		}
+		//}
 	}
 
 
 	public void ActivateActionCounters()
 	{
-		if (PA.Actions[0][0] % PA.Actions[0][1] == 0)
+		/*if (PA.Actions[0][0] % PA.Actions[0][1] == 0)
 		{
 			PA.Actions[0][2] = 1 ;	// Creature can move
-		}
+		}*/
 	}
-	public void ResetActions()
+	/*public void ResetActions()
 	{
 		PA.Actions = new int[][] {{0, PA.Actions[0][1], 0}, {PA.Actions[1][0], PA.Actions[1][1], PA.Actions[1][2]}} ;
-	}
+	}*/
 
 	public void ActivateBattleActionCounters()
 	{
-		if (BA.getBattleActions()[0][0] == BA.getBattleActions()[0][1])
+		/*if (BA.getBattleActions()[0][0] == BA.getBattleActions()[0][1])
 		{
 			BA.getBattleActions()[0][2] = 1 ;	// Creature can atk
 		}
@@ -352,7 +363,7 @@ public class Creature extends LiveBeing
 		{
 			PA.getMp()[0] = (double)(Math.min(PA.getMp()[0] + 0.02*PA.getMp()[1], PA.getMp()[1])) ;	// Creature heals mp
 			PA.Actions[1][0] = 0 ;
-		}	
+		}	*/
 	}
 
 	public void ApplyBuffsAndNerfs(String action, String type, int att, int BuffNerfLevel, Spell spells, boolean SpellIsActive)
@@ -483,13 +494,13 @@ public class Creature extends LiveBeing
 	{
 		if (0.3 < Math.random())
 		{
-			if (PA.getState().equals(States.idle))
+			if (PA.getState().equals(LiveBeingStates.idle))
 			{
-				PA.setState(States.moving) ;
+				PA.setState(LiveBeingStates.moving) ;
 			}
-			else if (PA.getState().equals(States.moving))
+			else if (PA.getState().equals(LiveBeingStates.moving))
 			{
-				PA.setState(States.idle) ;
+				PA.setState(LiveBeingStates.idle) ;
 			}
 		}
 	}

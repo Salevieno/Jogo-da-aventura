@@ -48,13 +48,16 @@ public class LiveBeing
 	
 	public void IncActionCounters()
 	{
-		for (int a = 0 ; a <= PA.Actions.length - 1 ; a += 1)
+		/*for (int a = 0 ; a <= PA.Actions.length - 1 ; a += 1)
 		{
 			if (PA.Actions[a][0] < PA.Actions[a][1])
 			{
 				PA.Actions[a][0] += 1 ;
 			}	
-		}
+		}*/
+		PA.mpCounter.inc() ;
+		PA.satiationCounter.inc() ;
+		PA.moveCounter.inc() ;
 	}
 	public void IncBattleActionCounters()
 	{
@@ -113,7 +116,8 @@ public class LiveBeing
 	}
 	public boolean isDefending()
 	{
-		if (BA.getCurrentAction().equals("D") & !canAtk())
+		// TODO
+		if (PA.getCurrentAction().equals("D") & !canAtk())
 		{
 			return true ;
 		}

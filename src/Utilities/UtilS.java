@@ -786,7 +786,7 @@ public class UtilS
 			BattleResults[0] = 1 ;
 			do
 			{
-				for (int j = 0 ; j <= player.getActions().length - 1 ; ++j)
+				/*for (int j = 0 ; j <= player.getActions().length - 1 ; ++j)
 				{
 					if(player.getActions()[j][0] < player.getActions()[j][1])
 					{
@@ -806,7 +806,7 @@ public class UtilS
 					{
 						creature.getActions()[j][0] += 1 ;
 					}
-				}
+				}*/
 				for (int j = 0 ; j <= player.getBA().getBattleActions().length - 1 ; ++j)
 				{
 					if(player.getBA().getBattleActions()[j][0] < player.getBA().getBattleActions()[j][1])
@@ -836,7 +836,7 @@ public class UtilS
 				{
 					pet.getBA().getBattleActions()[0][2] = 1 ;		// pet can atk
 				}
-				if (player.getActions()[2][0] % player.getActions()[2][1] == 0)	// Player heals mp
+				/*if (player.getActions()[2][0] % player.getActions()[2][1] == 0)	// Player heals mp
 				{
 					player.getMp()[0] = (double)(Math.min(player.getMp()[0] + 0.02*player.getMp()[1], player.getMp()[1])) ;	
 					player.getActions()[2][0] = 0 ;
@@ -857,7 +857,7 @@ public class UtilS
 						creature.getMp()[0] = (double)(Math.min(creature.getMp()[0] + 0.02*creature.getMp()[1], creature.getMp()[1])) ;	// Creature heals mp
 						creature.getActions()[1][0] = 0 ;
 					}	
-				}	
+				}	*/
 				if (0 < player.getLife()[0] & 0 < player.getBA().getBattleActions()[0][2])
 				{				
 					move = (int)(3*Math.random() - 0.01) ;
@@ -882,17 +882,17 @@ public class UtilS
 					move = (int)(3*Math.random() - 0.01) ;
 					if (move == 0)
 					{
-						pet.action = ActionKeys[1] ;
+						pet.setCurrentAction(ActionKeys[1]) ;
 						NumberOfPetPhyAtks += 1 ;
 					}
 					if (move == 1)
 					{
-						pet.action = ActionKeys[3] ;
+						pet.setCurrentAction(ActionKeys[3]) ;
 						NumberOfPetDefs += 1 ;
 					}
 					if (move == 2)
 					{
-						pet.action = String.valueOf((int)(10*Math.random() - 0.01)) ;
+						pet.setCurrentAction(String.valueOf((int)(10*Math.random() - 0.01))) ;
 						NumberOfPetMagAtks += 1 ;
 					}
 				}

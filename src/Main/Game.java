@@ -53,7 +53,7 @@ import LiveBeings.Pet;
 import LiveBeings.Player;
 import LiveBeings.Spell;
 import LiveBeings.SpellType;
-import LiveBeings.States;
+import LiveBeings.LiveBeingStates;
 import Maps.CityMap;
 import Maps.FieldMap;
 import Maps.Maps;
@@ -224,7 +224,7 @@ public class Game extends JPanel implements ActionListener
 			
 			int Level = Integer.parseInt(Input.get(ct)[3]) ;			
 			String dir = Player.MoveKeys[0] ;
-			States state = States.idle ;
+			LiveBeingStates state = LiveBeingStates.idle ;
 			Size Size = new Size(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;
 			double[] Life = new double[] {Double.parseDouble(Input.get(ct)[5]) * DiffMult, Double.parseDouble(Input.get(ct)[5]) * DiffMult} ;
 			double[] Mp = new double[] {Double.parseDouble(Input.get(ct)[6]) * DiffMult, Double.parseDouble(Input.get(ct)[6]) * DiffMult} ;
@@ -234,10 +234,13 @@ public class Game extends JPanel implements ActionListener
 			int[] Satiation = new int[] {100, 100, 1} ;
 			int[] Thirst = new int[] {100, 100, 0} ;		
 			String[] Elem = new String[] {Input.get(ct)[35]} ;
-			int[][] Actions = new int[][] {{0, Integer.parseInt(Input.get(ct)[49]), 0}, {0, Integer.parseInt(Input.get(ct)[50]), 0}} ;
+			int mpDuration = Integer.parseInt(Input.get(ct)[49]) ;
+			int satiationDuration = 100 ;
+			int moveDuration = Integer.parseInt(Input.get(ct)[50]) ;
 			String currentAction = "" ;
-			int countmove = 0 ;
-			PersonalAttributes PA = new PersonalAttributes(Name, Level, ct, 0, null, null, dir, state, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
+			int stepCounter = 0 ;
+			PersonalAttributes PA = new PersonalAttributes(Name, Level, ct, 0, null, null, dir, state, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem,
+					mpDuration, satiationDuration, moveDuration, stepCounter, currentAction) ;
 
 			BasicBattleAttribute PhyAtk = new BasicBattleAttribute(Double.parseDouble(Input.get(ct)[8]) * DiffMult, 0, 0) ;
 			BasicBattleAttribute MagAtk = new BasicBattleAttribute(Double.parseDouble(Input.get(ct)[9]) * DiffMult, 0, 0) ;
@@ -831,7 +834,7 @@ public class Game extends JPanel implements ActionListener
 		
 	public void IncrementCounters()
 	{
-		sky.incDayTime();
+		sky.dayTime.inc() ;
 		player.IncActionCounters() ;
 		player.SupSpellCounters(creature, player.opponent) ;
 		if (pet != null)
@@ -893,12 +896,13 @@ public class Game extends JPanel implements ActionListener
 	public void KonamiCode()
 	{
 		//OpeningScreenImages[2] = ElementalCircle ;
+		DayDuration = 12 ;
 		ColorPalette = UtilS.ReadColorPalette(new ImageIcon(ImagesPath + "ColorPalette.png").getImage(), "Konami") ;
-		if (sky.dayTime % 1200 <= 300)
+		if (sky.dayTime.getCounter() % 1200 <= 300)
 		{
 			DrawPrimitives.OverallAngle += 0.04 ;
 		}
-		else if (sky.dayTime % 1200 <= 900)
+		else if (sky.dayTime.getCounter() % 1200 <= 900)
 		{
 			DrawPrimitives.OverallAngle -= 0.04 ;
 		}
@@ -944,7 +948,8 @@ public class Game extends JPanel implements ActionListener
 		
 		// player acts
 		player.act(pet, allMaps, mousePos, SideBarIcons, ani, DF) ;
-		if (player.actionIsAMove() | 0 < player.getPA().getCountmove())	// countmove becomes greater than 0 when the player moves, then starts to increase by 1 and returns to 0 when it reaches 20
+		// TODO step counter is 0 here
+		if (player.actionIsAMove() | 0 < player.getPA().getStepCounter())	// countmove becomes greater than 0 when the player moves, then starts to increase by 1 and returns to 0 when it reaches 20
 		{
 			player.move(pet, music.getMusicClip(), ani) ;
 		}
@@ -954,6 +959,7 @@ public class Game extends JPanel implements ActionListener
 		{
 			player.DrawWeapon(player.getPos(), new double[] {1, 1}, DF.getDrawPrimitives()) ;
 		}
+        System.out.println(player.getPA().getMoveCounter().toString());
 		
 		
 		// pet acts
@@ -965,7 +971,7 @@ public class Game extends JPanel implements ActionListener
 				pet.Move(player, allMaps) ;
 				if (player.isInBattle())
 				{
-					pet.action = pet.Action(Player.ActionKeys) ;
+					pet.setCurrentAction(pet.Action(Player.ActionKeys)) ;
 				}
 				//pet.display(player.getPos(), new double[] {1, 1}, DF.getDrawPrimitives()) ;
 				//pet.drawAttributes(0, DF.getDrawPrimitives()) ;
@@ -1272,9 +1278,14 @@ public class Game extends JPanel implements ActionListener
 	    public void keyPressed(KeyEvent e) 
 	    {
 	        int key = e.getKeyCode() ;
+	        
+	        if (player.getPA().getMoveCounter().finished())
+	        {
+	        	player.getPA().getMoveCounter().reset() ;
+	        }
             if (key == KeyEvent.VK_LEFT | key == KeyEvent.VK_UP | key == KeyEvent.VK_DOWN | key == KeyEvent.VK_RIGHT) 
             {
-            	if (CustomizationIsOn | player.getActions()[0][2] == 1)	// If the player can act
+            	if (CustomizationIsOn | player.getPA().getMoveCounter().finished())	// If the player can act
     			{
             		player.setCurrentAction(KeyEvent.getKeyText(key)) ;
                 }

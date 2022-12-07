@@ -1,6 +1,6 @@
 package LiveBeings;
 
-public enum States
+public enum LiveBeingStates
 {
 	idle,
 	moving,

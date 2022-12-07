@@ -782,7 +782,7 @@ public class DrawFunctions
 	public void DrawTime(Sky sky)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
-		float time = (float)(sky.dayTime) / Game.DayDuration ;
+		float time = (float)(sky.dayTime.getCounter()) / Game.DayDuration ;
 		DP.DrawText(new Point(0, (int) (0.99*screenSize.y)), "BotLeft", OverallAngle, (int)(24*time) + ":" + (int)(24*60*time % 60), font, ColorPalette[5]) ;
 	}
 	public void DrawFullMap(Point playerPos, Pet pet, Maps map, Sky sky, Point MousePos)

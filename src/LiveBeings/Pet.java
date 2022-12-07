@@ -6,12 +6,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.ImageIcon ;
 
-import GameComponents.SpellTypes;
 import Graphics.Animations;
 import Graphics.DrawPrimitives;
 import Utilities.Scale;
@@ -30,12 +27,14 @@ public class Pet extends LiveBeing
 	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 	
 	public static int NumberOfSpells = 5 ;
-	public String action = "" ;
 	public static double[] AttributeIncrease ;
 	public static double[] ChanceIncrease ;
 	
 	private static ArrayList<String[]> PetProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
 	private static ArrayList<String[]> PetEvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
+	
+	public static String[] BattleKeys = new String[] {"A", "D"} ;
+	public static String[] SpellKeys = new String[] {"0", "1", "2", "3"} ;
 	
 	public Pet(int Job)
 	{
@@ -74,7 +73,7 @@ public class Pet extends LiveBeing
 		Maps Map = null ;
 		Point Pos = new Point(0, 0) ;
 		String dir = Player.MoveKeys[0] ;
-		States state = States.idle ;
+		LiveBeingStates state = LiveBeingStates.idle ;
 		Size size = new Size (new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getWidth(null), new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getHeight(null)) ;	
 		double[] Life = new double[] {Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2])} ;
 		double[] Mp = new double[] {Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3])} ;
@@ -84,10 +83,13 @@ public class Pet extends LiveBeing
 		int[] Satiation = new int[] {100, 100, 1} ;
 		int[] Thirst = new int[] {100, 100, 0} ;
 		String[] Elem = new String[] {"n", "n", "n", "n", "n"} ;
-		int[][] Actions = new int[][] {{0, Integer.parseInt(PetProperties.get(Job)[33]), 0}, {0, Integer.parseInt(PetProperties.get(Job)[34]), 0}, {0, Integer.parseInt(PetProperties.get(Job)[35]), 0}} ;
+		int mpDuration = Integer.parseInt(PetProperties.get(Job)[33]) ;
+		int satiationDuration = Integer.parseInt(PetProperties.get(Job)[34]) ;
+		int moveDuration = Integer.parseInt(PetProperties.get(Job)[35]) ;
+		int stepCounter = 0 ;
 		String currentAction = "" ;
-		int countmove = 0 ;
-		return new PersonalAttributes(Name, Level, Job, ProJob, Map, Pos, dir, state, size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem, Actions, currentAction, countmove) ;
+		return new PersonalAttributes(Name, Level, Job, ProJob, Map, Pos, dir, state, size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem,
+				mpDuration, satiationDuration, moveDuration, stepCounter, currentAction) ;
 	}
 	
 	private static BattleAttributes InitializeBattleAttributes(int Job)
@@ -251,10 +253,10 @@ public class Pet extends LiveBeing
 	public int getStep() {return PA.getStep() ;}
 	public int[] getExp() {return PA.getExp() ;}
 	public int[] getSatiation() {return PA.getSatiation() ;}
-	public int[][] getActions() {return PA.Actions ;}
+	//public int[][] getActions() {return PA.Actions ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public ArrayList<String> getCombo() {return PA.getCombo() ;}
-	public String getAction() {return action ;}
+	public void setCurrentAction(String newValue) {PA.currentAction = newValue ;}
 	public void setCombo(ArrayList<String> newValue) {PA.setCombo(newValue); ;}
 
 	
@@ -331,7 +333,7 @@ public class Pet extends LiveBeing
 	}
 	public boolean actionIsAnAtk()
 	{
-		if (PA.getCurrentAction().equals(Player.BattleKeys[0]))
+		if (PA.getCurrentAction().equals(Pet.BattleKeys[0]))
 		{
 			return true ;
 		}
@@ -339,7 +341,7 @@ public class Pet extends LiveBeing
 	}
 	public boolean actionIsASpell()
 	{
-		if (UtilG.ArrayContains(Player.SpellKeys, PA.getCurrentAction()))
+		if (UtilG.ArrayContains(Pet.SpellKeys, PA.getCurrentAction()))
 		{
 			return true ;
 		}
@@ -347,7 +349,7 @@ public class Pet extends LiveBeing
 	}
 	public void ActivateActionCounters(boolean SomeAnimationIsOn)
 	{
-		if (PA.Actions[1][0] % PA.Actions[1][1] == 0)
+		/*if (PA.Actions[1][0] % PA.Actions[1][1] == 0)
 		{
 			PA.getSatiation()[0] = Math.max(PA.getSatiation()[0] - 1, 0) ;
 			if (PA.getSatiation()[0] == 0)	// pet is hungry
@@ -364,7 +366,7 @@ public class Pet extends LiveBeing
 		if (PA.Actions[0][0] % PA.Actions[0][1] == 0 & !SomeAnimationIsOn)
 		{
 			PA.Actions[0][2] = 1 ;	// pet can move
-		}
+		}*/
 	}
 
 	public void ActivateBattleActionCounters()
@@ -375,10 +377,6 @@ public class Pet extends LiveBeing
 		}
 	}
 
-	public boolean usedSkill()
-	{
-		return UtilG.isNumeric(BA.getCurrentAction()) ;
-	}
 	public void TakeBloodAndPoisonDamage(Creature creature)
 	{
 		double BloodDamage = 0 ;
@@ -474,7 +472,7 @@ public class Pet extends LiveBeing
 			bW.write("\nPet satiation: \n" + Arrays.toString(getSatiation())) ;
 			bW.write("\nPet exp: \n" + Arrays.toString(getExp())) ;
 			bW.write("\nPet status: \n" + Arrays.toString(getBA().getSpecialStatus())) ; 
-			bW.write("\nPet actions: \n" + Arrays.deepToString(getActions())) ; 
+			//bW.write("\nPet actions: \n" + Arrays.deepToString(getActions())) ; 
 			bW.write("\nPet battle actions: \n" + Arrays.deepToString(getBA().getBattleActions())) ; 
 			bW.write("\nPet status counter: \n" + Arrays.toString(getStatusCounter())) ;
 		}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import Maps.Maps;
 import Utilities.Size;
+import Utilities.TimeCounter;
 
 public class PersonalAttributes
 {
@@ -15,23 +16,27 @@ public class PersonalAttributes
 	private int continent ;
 	private Maps map ;
 	private Point Pos ;
-	private String dir ;		// direction of the movement
-	private States state ;		// current state
+	private String dir ;				// direction of the movement
+	private LiveBeingStates state ;		// current state
 	private Size size ;
 	private double[] Life ;		// 0: Current life, 1: max life]
 	private double[] Mp ;		// 0: Current mp, 1: max mp]
 	private double Range ;
 	private int Step ;
-	private int[] Exp ;			// 0: Current exp, 1: max exp, 2: multiplier
+	private int[] Exp ;			// 0: Current exp, 1: max exp, 2: multiplier	TODO classe, incluindo gold
 	private int[] Satiation ;	// 0: Current satiation, 1: max satiation, 2: multiplier
 	private int[] Thirst ;		// 0: Current satiation, 1: max satiation, 2: multiplier
 	protected String[] Elem ;	// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
-	protected int[][] Actions ;	// [Move, Satiation, Mp][Counter, delay, permission]
+	protected TimeCounter mpCounter ;			// counts the mp reduction
+	protected TimeCounter satiationCounter ;	// counts the satiation reduction
+	protected TimeCounter moveCounter ;			// counts the move
+	protected int stepCounter ;					// counts the steps in the movement	TODO -> TimeCounter ? (não é tempo, é step)
 	protected String currentAction; 
-	protected int countmove ;
 	private ArrayList<String> combo ;		// record of the last 10 movements
 	
-	public PersonalAttributes(String Name, int Level, int Job, int ProJob, Maps map, Point Pos, String dir, States state, Size size, double[] Life, double[] Mp, double Range, int Step, int[] Exp, int[] Satiation, int[] Thirst, String[] Elem, int[][] Actions, String currentAction, int countmove)
+	public PersonalAttributes(String Name, int Level, int Job, int ProJob, Maps map, Point Pos, String dir, LiveBeingStates state, Size size,
+			double[] Life, double[] Mp, double Range, int Step, int[] Exp, int[] Satiation, int[] Thirst, String[] Elem, int mpDuration, int satiationDuration, int moveDuration,
+			int stepCounter, String currentAction)
 	{
 		this.Name = Name ;
 		this.Level = Level ;
@@ -54,9 +59,12 @@ public class PersonalAttributes
 		this.Satiation = Satiation ;
 		this.Thirst = Thirst ;
 		this.Elem = Elem ;
-		this.Actions = Actions ;
+		//this.Actions = Actions ;
 		this.currentAction = currentAction ;
-		this.countmove = countmove ;
+		mpCounter = new TimeCounter(0, mpDuration) ;
+		satiationCounter = new TimeCounter(0, satiationDuration) ;
+		moveCounter = new TimeCounter(0, moveDuration) ;
+		this.stepCounter = stepCounter ;
 		combo = new ArrayList<>() ;
 	}
 
@@ -67,7 +75,7 @@ public class PersonalAttributes
 	public int getContinent() {return continent ;}
 	public Maps getMap() {return map ;}
 	public String getDir() {return dir ;}
-	public States getState() {return state ;}
+	public LiveBeingStates getState() {return state ;}
 	public Point getPos() {return Pos ;}
 	public Size getSize() {return size ;}
 	public double[] getLife() {return Life ;}
@@ -78,9 +86,12 @@ public class PersonalAttributes
 	public int[] getSatiation() {return Satiation ;}
 	public int[] getThirst() {return Thirst ;}
 	public String[] getElem() {return Elem ;}
-	public int[][] getActions() {return Actions ;}
+	//public int[][] getActions() {return Actions ;}
 	public String getCurrentAction() {return currentAction ;}
-	public int getCountmove() {return countmove ;}
+	public TimeCounter getMpCounter() {return mpCounter ;}
+	public TimeCounter getSatiationCounter() {return satiationCounter ;}
+	public TimeCounter getMoveCounter() {return moveCounter ;}
+	public int getStepCounter() {return stepCounter ;}
 	public ArrayList<String> getCombo() {return combo ;}
 	
 	public void setName(String newValue) {Name = newValue ;}
@@ -90,7 +101,7 @@ public class PersonalAttributes
 	public void setContinent(int newValue) {continent = newValue ;}
 	public void setMap(Maps newValue) {map = newValue ;}
 	public void setdir(String newValue) {dir = newValue ;}
-	public void setState(States newValue) {state = newValue ;}
+	public void setState(LiveBeingStates newValue) {state = newValue ;}
 	public void setPos(Point newValue) {Pos = newValue ;}
 	public void setSize(Size newValue) {size = newValue ;}
 	public void setLife(double[] newValue) {Life = newValue ;}

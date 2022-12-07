@@ -1,9 +1,5 @@
 package LiveBeings ;
 
-import java.util.Arrays;
-
-import Utilities.UtilG;
-
 public class BattleAttributes
 {
 	private BasicBattleAttribute PhyAtk ;	// 0: Base atk, 1: bonus, 2: train
@@ -12,16 +8,19 @@ public class BattleAttributes
 	private BasicBattleAttribute MagDef ;	// 0: Base def, 1: bonus, 2: train
 	private BasicBattleAttribute Dex ;		// 0: Base dex, 1: bonus, 2: train
 	private BasicBattleAttribute Agi ;		// 0: Base agi, 1: bonus, 2: train
+	
 	private double[] Crit ;		// 0: Base crit atk chance, 1: bonus, 2: basic crit def chance, 3: bonus
+	
 	private double[] Stun ;		// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: duration
 	private double[] Block ;		// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: duration
 	private double[] Blood ;		// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: basic atk, 5: bonus, 6: basic def, 7: bonus, 8: duration
 	private double[] Poison ;	// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: basic atk, 5: bonus, 6: basic def, 7: bonus, 8: duration
 	private double[] Silence ;	// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: duration
+	
 	private int[] Status ; 		// 0: Life, 1: Mp, 2: Phy atk, 3: Phy def, 4: Mag atk, 5: Mag def, 6: Dex, 7: Agi
 	private int[] SpecialStatus ; 	// 0: Stun, 1: Block, 2: Blood, 3: Poison, 4: Silence
+	
 	private int[][] BattleActions ;	// [Atk][Counter, delay, permission]
-	private String CurrentAction ;	// Current battle action (atk, def, skill)
 	
 	public BattleAttributes(BasicBattleAttribute PhyAtk, BasicBattleAttribute MagAtk, BasicBattleAttribute PhyDef, BasicBattleAttribute MagDef, BasicBattleAttribute Dex, BasicBattleAttribute Agi,
 			double[] Crit,
@@ -42,7 +41,6 @@ public class BattleAttributes
 		this.Status = Status ;
 		this.SpecialStatus = SpecialStatus ;
 		this.BattleActions = BattleActions ;
-		CurrentAction = "" ;
 	}
 
 	public BasicBattleAttribute getPhyAtk() {return PhyAtk ;}
@@ -60,23 +58,6 @@ public class BattleAttributes
 	public int[] getStatus() {return Status ;}
 	public int[] getSpecialStatus() {return SpecialStatus ;}
 	public int[][] getBattleActions() {return BattleActions ;}
-	public String getCurrentAction() {return CurrentAction ;}
-	public void setPhyAtk(BasicBattleAttribute PA) {PhyAtk = PA ;}
-	public void setMagAtk(BasicBattleAttribute MA) {MagAtk = MA ;}
-	public void setPhyDef(BasicBattleAttribute PD) {PhyDef = PD ;}
-	public void setMagDef(BasicBattleAttribute MD) {MagDef = MD ;}
-	public void setDex(BasicBattleAttribute D) {Dex = D ;}
-	public void setAgi(BasicBattleAttribute A) {Agi = A ;}
-	public void setCrit(double[] C) {Crit = C ;}
-	public void setStun(double[] S) {Stun = S ;}
-	public void setBlock(double[] B) {Block = B ;}
-	public void setBlood(double[] B) {Blood = B ;}
-	public void setPoison(double[] P) {Poison = P ;}
-	public void setSilence(double[] S) {Silence = S ;}
-	public void setStatus(int[] S) {Status = S ;}
-	public void setSpecialStatus(int[] S) {SpecialStatus = S ;}
-	public void setBattleActions(int[][] A) {BattleActions = A ;}
-	public void setCurrentAction(String A) {CurrentAction = A ;}
 	
 	public double TotalPhyAtk()
 	{
@@ -191,10 +172,6 @@ public class BattleAttributes
 	public boolean isStun()
 	{
 		return 0 < SpecialStatus[0] ;
-	}
-	public boolean actionIsSpell()
-	{
-		return UtilG.isNumeric(CurrentAction) ;
 	}
 	
 	
