@@ -7,74 +7,72 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 
-import utilities.AlignmentPoints;
+import main.Game;
+import utilities.Align;
 
-public class Gif extends JLabel
+public class Gif
 {
-	private static final long serialVersionUID = 1L;
+	private Image image ;
+	private int timeCounter ;
+	private int duration ;
+	private boolean loop ;
+	private boolean timeStopper ;
 	
-	Image image ;
-	boolean loop ;
-	boolean stopsTime ;
-	boolean isDonePlaying ;
-	
-	public Gif(Image image, boolean loop, boolean stopsTime)
+	public Gif(Image image, int duration, boolean loop, boolean timeStopper)
 	{
-		super();
 		this.image = image;
+		timeCounter = 0 ;
+		this.duration = duration;
 		this.loop = loop;
-		this.stopsTime = stopsTime;
-		isDonePlaying = false;
+		this.timeStopper = timeStopper;
 	}
 	
 	public Image getImage()
 	{
 		return image;
 	}
+	public void resetTimeCounter()
+	{
+		timeCounter = 0 ;
+	}
+	public void incTimeCounter()
+	{
+		timeCounter += 1 ;
+	}
 	public boolean isLoop()
 	{
 		return loop;
 	}
-	public boolean isStopsTime()
+	public boolean isTimeStopper()
 	{
-		return stopsTime;
+		return timeStopper;
+	}
+	public boolean isStarting()
+	{
+		return (timeCounter == 0);
 	}
 	public boolean isDonePlaying()
 	{
-		return isDonePlaying;
+		return (timeCounter == duration);
 	}
-    
-	protected void fireActionPerformed() {
-        ActionListener[] listeners = listenerList.getListeners(ActionListener.class);
-        if (0 < listeners.length)
-        {
-            ActionEvent evt = new ActionEvent(this, 0, "stopped");
-            for (ActionListener listener : listeners)
-            {
-                listener.actionPerformed(evt);
-            }
-        }
-    }
 	
-	@Override
-    public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h)
+	public void play(Point pos, Align alignment, DrawingOnPanel DP)
 	{
-        boolean finished = super.imageUpdate(img, infoflags, x, y, w, h);
-        if (!finished)
-        {
-            fireActionPerformed();
-        }
-        return finished;
-    }
-	
-	public boolean play(Point pos, AlignmentPoints alignment, DrawingOnPanel DP)
-	{
-		return imageUpdate(image, 10, 0, 0, 100, 100) ;
-		/*isDonePlaying = imageUpdate() ;
-		DP.DrawGif(image, pos, alignment) ;
-		if (true)
+		if (!isDonePlaying())
 		{
-			isDonePlaying = true ;
-		}*/
+			if (isStarting() & timeStopper)
+			{
+				Game.playStopTimeGif();
+			}
+			DP.DrawGif(image, pos, alignment) ;
+			incTimeCounter();
+		}
+		else
+		{
+			if (timeStopper)
+			{
+				Game.resumeGame();
+			}
+		}
 	}
 }

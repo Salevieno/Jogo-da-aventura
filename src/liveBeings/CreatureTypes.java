@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import graphics.DrawingOnPanel;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 
@@ -66,7 +66,7 @@ public class CreatureTypes
 	
 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
 	{
-		DP.DrawImage(movingAni.idleGif, pos, scale, AlignmentPoints.topLeft) ;
+		DP.DrawImage(movingAni.idleGif, pos, scale, Align.center) ;
 	}
 	
 	/* Print methods */
@@ -75,5 +75,10 @@ public class CreatureTypes
 		//TODO print attributes
 		System.out.println();
 		System.out.println("** Creature attributes **");
+	}
+
+	@Override
+	public String toString() {
+		return "CreatureTypes [Type=" + Type + "]";
 	}
 }

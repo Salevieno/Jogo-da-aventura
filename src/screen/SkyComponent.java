@@ -6,7 +6,7 @@ import java.awt.Image;
 import java.awt.Point;
 
 import graphics.DrawingOnPanel;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.Scale;
 
 public class SkyComponent
@@ -52,6 +52,6 @@ public class SkyComponent
 	}
 	public void display(double angle, DrawingOnPanel DP)
 	{
-		DP.DrawImage(image, pos, angle, new Scale(1, 1), AlignmentPoints.topLeft) ;
+		DP.DrawImage(image, pos, angle, new Scale(1, 1), Align.topLeft) ;
 	}
 }

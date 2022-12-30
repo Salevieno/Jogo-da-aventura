@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 
 import graphics.DrawingOnPanel;
 import main.Game;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.TimeCounter;
 
 public class Sky 
@@ -65,7 +65,7 @@ public class Sky
 		double ColorMult = (1 - 1.8 * Math.abs(dayTime.getCounter() - Game.DayDuration / 2) / Game.DayDuration) ;
 		Color skyColor = new Color(Game.ColorPalette[0].getRed(), (int)(Game.ColorPalette[0].getGreen() * ColorMult), (int)(Game.ColorPalette[0].getBlue() * ColorMult)) ;
 		
-		DP.DrawRect(new Point(0, height), AlignmentPoints.bottomLeft, new Dimension(Game.getScreen().getSize().width, height), 1, skyColor, null) ;
+		DP.DrawRect(new Point(0, height), Align.bottomLeft, new Dimension(Game.getScreen().getSize().width, height), 1, skyColor, null) ;
 		
 		// if it is daylight
 		if (Game.DayDuration / 4 <= dayTime.getCounter() & dayTime.getCounter() <= 3 * Game.DayDuration / 4)

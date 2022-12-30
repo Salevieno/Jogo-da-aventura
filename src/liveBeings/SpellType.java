@@ -90,5 +90,9 @@ public class SpellType
 	public double[] getSilenceMod() {return SilenceMod ;}
 	public String getElem() {return elem ;}
 	public String[] getInfo() {return info ;}
-	
+
+	@Override
+	public String toString() {
+		return "SpellType [name=" + name + "]";
+	}
 }

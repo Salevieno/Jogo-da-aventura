@@ -56,7 +56,7 @@ public class Typing
 		}
 		if (TypedText != null)
 		{
-			DP.DrawText(Pos, AlignmentPoints.bottomLeft, angle, TypedText.toString(), font, color) ;									
+			DP.DrawText(Pos, Align.bottomLeft, angle, TypedText.toString(), font, color) ;									
 		}	
 		return TypedText ;
 	}

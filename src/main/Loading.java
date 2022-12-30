@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
-import utilities.AlignmentPoints;
+import utilities.Align;
 
 public class Loading
 {
@@ -105,6 +105,6 @@ public class Loading
 	
 	public void displayText(DrawingOnPanel DP)
 	{
-		DP.DrawGif(LoadingGif, Game.getScreen().getCenter(), AlignmentPoints.center) ;
+		DP.DrawGif(LoadingGif, Game.getScreen().getCenter(), Align.center) ;
 	}
 }

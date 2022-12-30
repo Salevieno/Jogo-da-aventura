@@ -17,7 +17,7 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import main.Game;
 import maps.FieldMap;
-import maps.Maps;
+import maps.GameMap;
 import screen.Sky;
 import utilities.Scale;
 import utilities.UtilG;
@@ -45,7 +45,7 @@ public class DrawFunctions
 		this.screenSize = Game.getScreen().getSize() ;
 		this.ColorPalette = Game.ColorPalette ;
 		G = (Graphics2D)(g) ;
-		DP = new DrawingOnPanel(ColorPalette, G) ;
+		DP = new DrawingOnPanel() ;
 	}
 	public void InitializeVariables(String ImagesPath)
 	{

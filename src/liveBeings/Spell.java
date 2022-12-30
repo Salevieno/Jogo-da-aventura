@@ -32,6 +32,7 @@ public class Spell
 	private int cooldownCounter ;
 	private int effectCounter ;
 	private String elem ;
+
 	private String[] info ;	// Effect and description
 	
 	public Spell(SpellType spellType)
@@ -120,5 +121,9 @@ public class Spell
 		
 		return preRequisitesMet ;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Spell [name=" + name + ", level=" + level + "]";
+	}
 }

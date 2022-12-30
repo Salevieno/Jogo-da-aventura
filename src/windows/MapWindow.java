@@ -2,7 +2,7 @@ package windows;
 
 import graphics.DrawingOnPanel;
 
-public class MapWindow extends Window
+public class MapWindow extends GameWindow
 {
 	public MapWindow()
 	{

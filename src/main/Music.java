@@ -9,13 +9,16 @@ import javax.sound.sampled.Clip;
 public class Music
 {
 	private boolean isOn ;
-	private Clip[] musicClip, soundEffect ;
+	private Clip clip ;
 	
-	private Clip musicIntro ;
+	private static Clip currentlyPlayingClip = null ;
 	
-	public Music()
+	public static final Clip intro = musicFileToClip(new File(Game.MusicPath + "1-Intro.wav").getAbsoluteFile()) ; ;
+	
+	public Music(Clip clip)
 	{
-		Clip MusicKnightCity = musicFileToClip(new File(Game.MusicPath + "2-Knight city.wav").getAbsoluteFile()) ;
+		this.clip = clip ;
+		/*Clip MusicKnightCity = musicFileToClip(new File(Game.MusicPath + "2-Knight city.wav").getAbsoluteFile()) ;
     	Clip MusicMageCity = musicFileToClip(new File(Game.MusicPath + "3-Mage city.wav").getAbsoluteFile()) ;
     	Clip MusicArcherCity = musicFileToClip(new File(Game.MusicPath + "4-Archer city.wav").getAbsoluteFile()) ;
     	Clip MusicAnimalCity = musicFileToClip(new File(Game.MusicPath + "5-Animal city.wav").getAbsoluteFile()) ;
@@ -32,18 +35,15 @@ public class Music
     	musicClip = new Clip[] {MusicKnightCity, MusicMageCity, MusicArcherCity, MusicAnimalCity, MusicAssassinCity, MusicForest, MusicCave, MusicIsland, MusicVolcano, MusicSnowland, MusicSpecial, MusicSailing, MusicPlayerEvolution, MusicDrumRoll} ;
 	
     	Clip SoundEffectSwordHit = musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
-    	soundEffect = new Clip[] {SoundEffectSwordHit} ;
-    	
-    	musicIntro = musicFileToClip(new File(Game.MusicPath + "1-Intro.wav").getAbsoluteFile()) ;
+    	soundEffect = new Clip[] {SoundEffectSwordHit} ;*/
 	}
 	
 	public boolean isOn()
 	{
 		return isOn ;
 	}
-	public Clip[] getMusicClip() { return musicClip ; }
-	public Clip[] getSoundEffect() { return soundEffect ; }
-	public Clip getMusicIntro() { return musicIntro ; }
+	
+	public Clip getClip() { return clip ; }
 	
 	public static Clip musicFileToClip(File MusicFile)
 	{
@@ -63,7 +63,7 @@ public class Music
 		return MusicClip ;
 	}
 	
-	public static void ResetMusic(Clip MusicFile)
+	/*public static void ResetMusic(Clip MusicFile)
  	{
  		try 
  		{
@@ -74,12 +74,13 @@ public class Music
  	        System.out.println("Error with starting sound.") ;
  	        ex.printStackTrace() ;
  	    }
- 	}
+ 	}*/
 	
 	public static void PlayMusic(Clip MusicFile)
  	{
  		try 
  		{
+ 			currentlyPlayingClip = MusicFile ;
 	        MusicFile.loop(999) ;
  	    } 
  		catch(Exception ex) 
@@ -93,7 +94,7 @@ public class Music
  	{
  		try 
  		{
-	        MusicFile.stop() ;
+	        MusicFile.close() ;
  	    } 
  		catch(Exception ex) 
  		{
@@ -102,10 +103,10 @@ public class Music
  	    }
  	}
  	
- 	public static void SwitchMusic(Clip MusicFile1, Clip MusicFile2)
+ 	public static void SwitchMusic(Clip newClip)
  	{
- 		ResetMusic(MusicFile1) ;
- 		StopMusic(MusicFile1) ;
-		PlayMusic(MusicFile2) ;
+ 		//ResetMusic(MusicFile1) ;
+ 		StopMusic(currentlyPlayingClip) ;
+		PlayMusic(newClip) ;
  	}
 }

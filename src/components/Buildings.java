@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import graphics.DrawingOnPanel;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 
@@ -52,7 +52,7 @@ public class Buildings
 		if (playerIsInside(playerPos))
 		{				
 			Image image = buildingType.getInsideImage() ;
-			DP.DrawImage(image, pos, angle, scale, AlignmentPoints.bottomLeft) ;
+			DP.DrawImage(image, pos, angle, scale, Align.bottomLeft) ;
 			if (npc != null)
 			{
 				for (int n = 0 ; n <= npc.size() - 1 ; n += 1)
@@ -64,7 +64,7 @@ public class Buildings
 		else
 		{
 			Image image = buildingType.getOutsideImage() ;
-			DP.DrawImage(image, pos, angle, scale, AlignmentPoints.bottomLeft) ;
+			DP.DrawImage(image, pos, angle, scale, Align.bottomLeft) ;
 		}
 	}
 }

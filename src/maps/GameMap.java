@@ -5,6 +5,7 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon ;
 
 import components.Buildings;
@@ -13,25 +14,28 @@ import components.NPCs;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
 import main.Game;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.Scale;
 
-public class Maps 
+public class GameMap 
 {
 	private String Name ;
 	private int Continent ;
+	private int[] Connections ;
 	private Image image ;
+	private Clip music ;
 	//private MapElements[] MapElem ;		// 0 = free, 1 = wall, 2 = water, 3 = tree, 4 = grass, 5 = rock, 6 = crystal, 7 = stalactite, 8 = volcano, 9 = lava, 10 = ice, 11 = chest, 12 = berry, 13 = herb, 14 = wood, 15 = metal, 16 = invisible wall
 	private String[][] Type ;			// 2 = water, 9 = lava, 10 = ice, 12 = berry, 13 = herb, 14 = wood, 15 = metal
 	private Object[] groundType ;
 	private int CollectibleLevel ;
 	private int[] CollectibleCounter ;	// [Berry, herb, wood, metal]
     private int[] CollectibleDelay ;	// [Berry, herb, wood, metal]
-	private int[] Connections ;
 	protected ArrayList<MapElements> mapElem ;
 	public ArrayList<Buildings> building ;
 	public ArrayList<NPCs> npc ;
-	public static int[] MusicID = new int[] {0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 11, 11, 11, 11, 11, 11} ;  	 
+	
+	
+	//public static int[] MusicID = new int[] {0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 11, 11, 11, 11, 11, 11} ;  	 
 	public static Image[] CollectibleImage ;
 	public static Image[] GroundImage ;
 	
@@ -70,11 +74,12 @@ public class Maps
 28	Sign	3	0.09	0.54
 29	Sign	4	0.7	0.26
 	 * */
-	public Maps(String Name, int Continent, int[] Connections, Image image, ArrayList<Buildings> building, ArrayList<NPCs> npc)
+	public GameMap(String Name, int Continent, int[] Connections, Image image, Clip music, ArrayList<Buildings> building, ArrayList<NPCs> npc)
 	{
 		this.Name = Name ;
 		this.Continent = Continent ;
 		this.image = image ;
+		this.music = music ;
 		this.building = building ;
 		this.npc = npc ;
 		this.Connections = Connections ;
@@ -85,6 +90,8 @@ public class Maps
 	public String getName() {return Name ;}
 	public int getContinent() {return Continent ;}
 	public Image getimage() {return image ;}
+	public Clip getMusic() { return music ;}
+
 	public String[][] getType() {return Type ;}
 	public Object[] getgroundType() {return groundType ;}
 	public int getCollectibleLevel() {return CollectibleLevel ;}
@@ -254,7 +261,7 @@ public class Maps
 	
  	public void display(DrawingOnPanel DP)
  	{
- 		DP.DrawImage(image, Game.getScreen().getMapCenter(), AlignmentPoints.center) ;
+ 		DP.DrawImage(image, Game.getScreen().getMapCenter(), Align.center) ;
  	}
  	
  	public void displayElements(DrawingOnPanel DP)

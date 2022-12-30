@@ -6,13 +6,11 @@ import java.awt.Font ;
 import java.awt.FontMetrics ;
 import java.awt.Graphics ;
 import java.awt.Graphics2D ;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image ;
 import java.awt.MouseInfo ;
 import java.awt.Point;
 import java.awt.image.BufferedImage ;
 import java.io.BufferedReader ;
-import java.io.File ;
 import java.io.FileInputStream ;
 import java.io.FileNotFoundException ;
 import java.io.FileReader ;
@@ -25,19 +23,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.sound.sampled.AudioInputStream ;
-import javax.sound.sampled.AudioSystem ;
-import javax.sound.sampled.Clip ;
 import javax.swing.JPanel ;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 
 public abstract class UtilG 
 {	
+	public static Point GetMousePos(JPanel panel)
+ 	{
+ 		Point panelLocation = new Point(panel.getLocationOnScreen().x, panel.getLocationOnScreen().y) ;
+		return new Point(MouseInfo.getPointerInfo().getLocation().x - panelLocation.x, MouseInfo.getPointerInfo().getLocation().y - panelLocation.y) ;
+ 	} 	
+	
 	// reading file methods
 	
 	public static Map<String, String[]> ReadTextFile(String Language)
@@ -634,7 +634,7 @@ public abstract class UtilG
 	*/
 	public static void PlayGif(Point Pos, Image gif, DrawingOnPanel DP)
 	{
-		DP.DrawGif(gif, Pos, AlignmentPoints.center) ;
+		DP.DrawGif(gif, Pos, Align.center) ;
 	}
 	/*
 	public static void TestFont(int fontid, DrawFunctions DF)
@@ -653,7 +653,7 @@ public abstract class UtilG
 		return (double)(Math.max(0, 1 - amplitude + 2 * amplitude * Math.random())) ;
 	}
 
-	public static Point OffsetFromPos(AlignmentPoints Alignment, int l, int h)
+	public static Point OffsetFromPos(Align Alignment, int l, int h)
 	{
 		Point offset = new Point(0, 0) ;
 		switch (Alignment)

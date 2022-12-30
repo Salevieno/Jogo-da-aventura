@@ -9,7 +9,7 @@ import graphics.DrawingOnPanel;
 import main.Game;
 import utilities.UtilG;
 
-public class Window
+public class GameWindow
 {
 	protected Image image ;
 	protected boolean isOpen ;
@@ -23,7 +23,7 @@ public class Window
 	protected int numberWindows ;
 	protected Dimension size ;
 	
-	public Window(Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
+	public GameWindow(Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
 	{
 		this.image = image ;
 		this.numberMenus = numberMenus ;

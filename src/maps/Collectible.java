@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 
 import graphics.DrawingOnPanel;
 import main.Game;
-import utilities.AlignmentPoints;
+import utilities.Align;
 
 public class Collectible
 {
@@ -53,5 +53,5 @@ public class Collectible
 	public void resetCounter() { counter = 0 ;}
 	public boolean collectingIsOver() {return (counter == 0) ;}
 	
-	public void display(DrawingOnPanel DP) {DP.DrawImage(image, pos, AlignmentPoints.center) ;}
+	public void display(DrawingOnPanel DP) {DP.DrawImage(image, pos, Align.center) ;}
 }

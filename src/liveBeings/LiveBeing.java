@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 
 import graphics.DrawingOnPanel;
 import main.Game;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.UtilS;
 import windows.PlayerAttributesWindow;
 
@@ -208,7 +208,7 @@ public class LiveBeing
 			int barthick = 1 ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
-				DP.DrawRect(new Point(Pos.x, Pos.y + (att + 1) * Sy), AlignmentPoints.topLeft, new Dimension((int)(attRate.get(att) * size.width), size.height), barthick, attColor.get(att), colorPalette[9]) ;
+				DP.DrawRect(new Point(Pos.x, Pos.y + (att + 1) * Sy), Align.topLeft, new Dimension((int)(attRate.get(att) * size.width), size.height), barthick, attColor.get(att), colorPalette[9]) ;
 			}
 		}
 		if (style == 1)
@@ -217,11 +217,11 @@ public class LiveBeing
 			Dimension size = new Dimension((int)(0.13*screenSize.width), (int)(0.013*screenSize.height)) ;
 			int Sy = size.height ;
 			int barthick = 1 ;
-			DP.DrawRoundRect(Pos, AlignmentPoints.topLeft, new Dimension((int)(1.4 * size.width), (attRate.size() + 1) * Sy), barthick, colorPalette[8], colorPalette[4], true) ;
+			DP.DrawRoundRect(Pos, Align.topLeft, new Dimension((int)(1.4 * size.width), (attRate.size() + 1) * Sy), barthick, colorPalette[8], colorPalette[4], true) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
-				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.width), Pos.y + (att + 1) * Sy), AlignmentPoints.centerLeft, size, barthick, null, colorPalette[9]) ;
-				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.width), Pos.y + (att + 1) * Sy), AlignmentPoints.centerLeft, new Dimension((int)(attRate.get(att) * size.width), size.height), barthick, attColor.get(att), colorPalette[9]) ;
+				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.width), Pos.y + (att + 1) * Sy), Align.centerLeft, size, barthick, null, colorPalette[9]) ;
+				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.width), Pos.y + (att + 1) * Sy), Align.centerLeft, new Dimension((int)(attRate.get(att) * size.width), size.height), barthick, attColor.get(att), colorPalette[9]) ;
 			}
 		}
 	}
@@ -235,8 +235,8 @@ public class LiveBeing
 		int mirror = UtilS.MirrorFromRelPos(relPos) ;
 		Dimension offset = new Dimension (PA.getSize().width / 2 + (StatusImages[0].getWidth(null) + 5), -PA.getSize().height / 2) ;
 		Point rectPos = new Point(PA.getPos().x + mirror * offset.width, PA.getPos().y + offset.height) ;
-		DP.DrawRect(rectPos, AlignmentPoints.center, size, RectT, BackgroundColor, Game.ColorPalette[9]) ;
-		DP.DrawRect(new Point(PA.getPos().x - size.width / 2, PA.getPos().y + size.height / 2), AlignmentPoints.bottomLeft, new Dimension(size.width, size.height * counter / delay), RectT, color, null) ;
+		DP.DrawRect(rectPos, Align.center, size, RectT, BackgroundColor, Game.ColorPalette[9]) ;
+		DP.DrawRect(new Point(PA.getPos().x - size.width / 2, PA.getPos().y + size.height / 2), Align.bottomLeft, new Dimension(size.width, size.height * counter / delay), RectT, color, null) ;
 	}
 	public void ShowEffectsAndStatusAnimation(Point Pos, int mirror, Dimension offset, Image[] IconImages, int[] effect, boolean isDefending, DrawingOnPanel DP)
 	{
@@ -246,12 +246,12 @@ public class LiveBeing
 		{
 			int ImageW = IconImages[0].getWidth(null) ;
 			Point ImagePos = new Point(Pos.x + mirror * (ImageW + offset.width), Pos.y - offset.height) ;
-			DP.DrawImage(IconImages[0], ImagePos, AlignmentPoints.center) ;
+			DP.DrawImage(IconImages[0], ImagePos, Align.center) ;
 		}
 		if (0 < effect[0])	// Stun
 		{
 			Point ImagePos = new Point(Pos.x, Pos.y + mirror * offset.height) ;
-			DP.DrawImage(IconImages[1], ImagePos, AlignmentPoints.center) ;
+			DP.DrawImage(IconImages[1], ImagePos, Align.center) ;
 		}
 		for (int e = 1 ; e <= 4 - 1 ; e += 1)	// Block, blood, poison and silence
 		{
@@ -259,7 +259,7 @@ public class LiveBeing
 			{
 				int ImageW = IconImages[e + 1].getWidth(null) ;
 				Point ImagePos = new Point(Pos.x + mirror * (ImageW + offset.width), Pos.y - offset.height + Sy) ;
-				DP.DrawImage(IconImages[e + 1], ImagePos, AlignmentPoints.center) ;
+				DP.DrawImage(IconImages[e + 1], ImagePos, Align.center) ;
 				Sy += IconImages[e + 1].getHeight(null) + 2 ;
 			}
 		}

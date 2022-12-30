@@ -14,11 +14,11 @@ import items.Item;
 import liveBeings.CreatureTypes;
 import liveBeings.Player;
 import main.Game;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 
-public class QuestWindow extends Window
+public class QuestWindow extends GameWindow
 {
 	public QuestWindow()
 	{
@@ -45,12 +45,12 @@ public class QuestWindow extends Window
 		Color textColor = Game.ColorPalette[0] ;
 		numberWindows = quests.size() ;
 		
-		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), AlignmentPoints.topLeft) ;
+		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
 		
 		// draw quest name
 		Quests quest = quests.get(window) ;
 		Point questPos = UtilG.Translate(windowPos, 0, - image.getHeight(null) / 3) ;
-		DP.DrawText(questPos, AlignmentPoints.center, angle, quest.getName(), font, textColor) ;
+		DP.DrawText(questPos, Align.center, angle, quest.getName(), font, textColor) ;
 
 		// draw required creatures
 		Map<CreatureTypes, Integer> reqCreatureTypes = quests.get(window).getReqCreatures() ;
@@ -63,7 +63,7 @@ public class QuestWindow extends Window
 				CreatureTypes creatureType = reqCreatureType[i] ;
 				String creatureName = creatureType.getPA().getName() ;
 				Point textPos = UtilG.Translate(windowPos, 15, 55 + i * font.getSize()) ;
-				DP.DrawText(textPos, AlignmentPoints.bottomLeft, angle, creatureName + ":" + reqCreatureTypes.get(creatureType), font, textColor) ;
+				DP.DrawText(textPos, Align.bottomLeft, angle, creatureName + ":" + reqCreatureTypes.get(creatureType), font, textColor) ;
 				creatureType.display(textPos, new Scale(1, 1), DP) ;
 			}
 		}
@@ -78,8 +78,8 @@ public class QuestWindow extends Window
 			{
 				Item item = reqItem[i] ;
 				Point textPos = UtilG.Translate(windowPos, 65, 55 + i * font.getSize()) ;
-				DP.DrawText(textPos, AlignmentPoints.bottomLeft, angle, item.getName(), font, textColor) ;
-				DP.DrawImage(item.getImage(), textPos, AlignmentPoints.topLeft) ;
+				DP.DrawText(textPos, Align.bottomLeft, angle, item.getName(), font, textColor) ;
+				DP.DrawImage(item.getImage(), textPos, Align.topLeft) ;
 			}
 		}
 	}

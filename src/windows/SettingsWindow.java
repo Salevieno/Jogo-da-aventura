@@ -10,10 +10,10 @@ import java.util.Arrays;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
 import main.Game;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.UtilG;
 
-public class SettingsWindow extends Window
+public class SettingsWindow extends GameWindow
 {
 	private boolean musicIsOn ;
 	private boolean soundEffectsAreOn ;
@@ -116,11 +116,11 @@ public class SettingsWindow extends Window
 		Color[] ColorPalette = Game.ColorPalette ;
 		if (value)
 		{
-			DP.DrawText(TextPos, AlignmentPoints.bottomCenter, OverallAngle, "On", font, ColorPalette[5]) ;							
+			DP.DrawText(TextPos, Align.bottomCenter, OverallAngle, "On", font, ColorPalette[5]) ;							
 		}
 		else
 		{
-			DP.DrawText(TextPos, AlignmentPoints.bottomCenter, OverallAngle, "Off", font, ColorPalette[4]) ;							
+			DP.DrawText(TextPos, Align.bottomCenter, OverallAngle, "Off", font, ColorPalette[4]) ;							
 		}
 	}
 	public void display(String[] SettingsText, DrawingOnPanel DP)
@@ -137,25 +137,25 @@ public class SettingsWindow extends Window
 		Color[] TextColor = new Color[3 + Player.ActionKeys.length] ;
 		Arrays.fill(TextColor, colorPalette[5]) ;
 		TextColor[item] = colorPalette[3] ;
-		DP.DrawImage(image, pos, AlignmentPoints.center) ;
+		DP.DrawImage(image, pos, Align.center) ;
 		if (menu == 0)
 		{
 			for (int i = 0 ; i <= numberItems - 1 ; i += 1)
 			{
-				DP.DrawText(new Point(TextPos.x, TextPos.y + (i + 1)*Sy), AlignmentPoints.bottomLeft, overallAngle, SettingsText[i + 1], font, TextColor[i]) ;
+				DP.DrawText(new Point(TextPos.x, TextPos.y + (i + 1)*Sy), Align.bottomLeft, overallAngle, SettingsText[i + 1], font, TextColor[i]) ;
 			}
 			displayValue(getMusicIsOn(), new Point(TextPos.x + Sx, TextPos.y + Sy), overallAngle, font, DP) ;
 			displayValue(getSoundEffectsAreOn(), new Point(TextPos.x + Sx, TextPos.y + 2 * Sy), overallAngle, font, DP) ;
 			displayValue(getShowPlayerRange(), new Point(TextPos.x + Sx, TextPos.y + 3 * Sy), overallAngle, font, DP) ;
-			DP.DrawText(new Point(TextPos.x + Sx, TextPos.y + (3 + 1)*Sy), AlignmentPoints.bottomCenter, overallAngle, String.valueOf(getAttDisplay()), font, TextColor[3]) ;
-			DP.DrawText(new Point(TextPos.x + Sx, TextPos.y + (4 + 1)*Sy), AlignmentPoints.bottomCenter, overallAngle, String.valueOf(getDamageAnimation()), font, TextColor[4]) ;				
+			DP.DrawText(new Point(TextPos.x + Sx, TextPos.y + (3 + 1)*Sy), Align.bottomCenter, overallAngle, String.valueOf(getAttDisplay()), font, TextColor[3]) ;
+			DP.DrawText(new Point(TextPos.x + Sx, TextPos.y + (4 + 1)*Sy), Align.bottomCenter, overallAngle, String.valueOf(getDamageAnimation()), font, TextColor[4]) ;				
 		}
 		else if (menu == 1)
 		{
 			for (int i = 0 ; i <= Player.ActionKeys.length - 1 ; i += 1)
 			{
-				DP.DrawText(new Point(TextPos.x, TextPos.y + (i + 1)*Sy), AlignmentPoints.bottomLeft, overallAngle, SettingsText[i + 7], font, TextColor[i]) ;
-				DP.DrawText(new Point(TextPos.x + Sx, TextPos.y + (i + 1)*Sy - TextH/2), AlignmentPoints.center, overallAngle, Player.ActionKeys[i], font, colorPalette[5]) ;			
+				DP.DrawText(new Point(TextPos.x, TextPos.y + (i + 1)*Sy), Align.bottomLeft, overallAngle, SettingsText[i + 7], font, TextColor[i]) ;
+				DP.DrawText(new Point(TextPos.x + Sx, TextPos.y + (i + 1)*Sy - TextH/2), Align.center, overallAngle, Player.ActionKeys[i], font, colorPalette[5]) ;			
 			}
 		}
 		else if (menu == 2)
@@ -163,8 +163,8 @@ public class SettingsWindow extends Window
 			//DrawMenuWindow(Pos, L, (int)Math.max(0.34*screenDim[1], Player.ActionKeys.length*(Utg.TextH(L / 20 + 2) + 4) + 8), null, 0, ColorPalette[8], ColorPalette[7]) ;
 			for (int i = 0 ; i <= Player.ActionKeys.length - 1 ; i += 1)
 			{
-				DP.DrawText(new Point(TextPos.x, TextPos.y + (i + 1)*Sy), AlignmentPoints.bottomLeft, overallAngle, SettingsText[i + 7], font, TextColor[i]) ;
-				DP.DrawText(new Point(TextPos.x + Sx, TextPos.y + (i + 1)*Sy - TextH/2), AlignmentPoints.center, overallAngle, Player.ActionKeys[i], font, TextColor[i]) ;			
+				DP.DrawText(new Point(TextPos.x, TextPos.y + (i + 1)*Sy), Align.bottomLeft, overallAngle, SettingsText[i + 7], font, TextColor[i]) ;
+				DP.DrawText(new Point(TextPos.x + Sx, TextPos.y + (i + 1)*Sy - TextH/2), Align.center, overallAngle, Player.ActionKeys[i], font, TextColor[i]) ;			
 			}
 		}
 	}

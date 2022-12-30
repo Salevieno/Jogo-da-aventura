@@ -27,10 +27,10 @@ import items.QuestItem;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.UtilG;
 
-public class BagWindow extends Window
+public class BagWindow extends GameWindow
 {	
 	//private ArrayList<Map<Item, Integer>> menus ;
 	private Map<Potion, Integer> pot ;
@@ -235,12 +235,12 @@ public class BagWindow extends Window
 				TextColor = ColorPalette[3] ;
 				MenuPos.x += 3 ;
 			}
-			DP.DrawImage(MenuImage, MenuPos, AlignmentPoints.topRight) ;
-			DP.DrawText(MenuPos, AlignmentPoints.topLeft, OverallAngle, allText[m + 1], MenuFont, TextColor) ;
+			DP.DrawImage(MenuImage, MenuPos, Align.topRight) ;
+			DP.DrawText(MenuPos, Align.topLeft, OverallAngle, allText[m + 1], MenuFont, TextColor) ;
 		}
 		
 		// Draw bag
-		DP.DrawRoundRect(pos, AlignmentPoints.topLeft, size, 1, BGColor, BGColor, true) ;
+		DP.DrawRoundRect(pos, Align.topLeft, size, 1, BGColor, BGColor, true) ;
 		
 		
 		// determine items in the selected menu
@@ -287,9 +287,9 @@ public class BagWindow extends Window
 				TextColor = ColorPalette[6] ;
 			}
 			
-			DP.DrawImage(SlotImage, slotCenter, AlignmentPoints.center) ;							// Draw slots
-			DP.DrawImage(activeItem.getKey().getImage(), slotCenter, AlignmentPoints.center) ;	// Draw items
-			DP.DrawTextUntil(textPos, AlignmentPoints.centerLeft, OverallAngle, activeItem.getKey().getName(), ItemFont, TextColor, 10, MousePos) ;
+			DP.DrawImage(SlotImage, slotCenter, Align.center) ;							// Draw slots
+			DP.DrawImage(activeItem.getKey().getImage(), slotCenter, Align.center) ;	// Draw items
+			DP.DrawTextUntil(textPos, Align.centerLeft, OverallAngle, activeItem.getKey().getName(), ItemFont, TextColor, 10, MousePos) ;
 			i += 1 ;
 		}
 		

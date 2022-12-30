@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 
 import components.MapElements;
@@ -15,16 +16,16 @@ import main.Game;
 import screen.Screen;
 import utilities.UtilG;
 
-public class FieldMap extends Maps
+public class FieldMap extends GameMap
 {
 	private ArrayList<Collectible> collectibles ;
 	private ArrayList<Creature> creatures ;
 	private int level ;
 	private int[] collectibleDelay ;
 	
-	public FieldMap(String name, int continent, int[] connections, Image image, int collectibleLevel, int[] collectibleDelay, int[] creatureTypeIDs)
+	public FieldMap(String name, int continent, int[] connections, Image image, Clip music, int collectibleLevel, int[] collectibleDelay, int[] creatureTypeIDs)
 	{
-		super(name, continent, connections, image, null, null) ;
+		super(name, continent, connections, image, music, null, null) ;
 		this.level = collectibleLevel ;
 		this.collectibleDelay = collectibleDelay ;
 		

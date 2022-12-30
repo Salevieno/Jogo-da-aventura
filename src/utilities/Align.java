@@ -1,6 +1,6 @@
 package utilities;
 
-public enum AlignmentPoints
+public enum Align
 {
 	topLeft,
 	topCenter,

@@ -37,9 +37,9 @@ public class Battle
 	protected static String[] ElemID ;
 	protected static double[][] ElemMult ;
 	
-	public Battle(Clip[] SoundEffects, int[] DamageDelay, Animations Ani)
+	public Battle(int[] DamageDelay, Animations Ani)
 	{	
-		this.SoundEffects = SoundEffects ;
+		//this.SoundEffects = SoundEffects ;
 		this.Ani = Ani ;
 
 		int NumElem = 10 ;
@@ -913,7 +913,7 @@ public class Battle
 		System.out.println();
 		ArrayList<Spell> playerSpell = player.getSpell() ;
 		player.getPA().setState(LiveBeingStates.idle) ;
-		player.opponent = null ;
+		player.resetOpponent() ;
 		creature.getLife()[0] = creature.getLife()[1] ;
 		creature.getMp()[0] = creature.getMp()[1] ;
 		creature.setFollow(false) ;

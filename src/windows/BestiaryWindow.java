@@ -11,12 +11,12 @@ import liveBeings.Creature;
 import liveBeings.CreatureTypes;
 import liveBeings.Player;
 import main.Game;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
 
-public class BestiaryWindow extends Window
+public class BestiaryWindow extends GameWindow
 {
 	private ArrayList<CreatureTypes> discoveredCreatures ;
 	
@@ -43,7 +43,7 @@ public class BestiaryWindow extends Window
 	{
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String[] text = player.allText.get("* Besti√°rio *") ;
+		String[] text = player.allText.get("* Besti·rio *") ;
 		Color textColor = Game.ColorPalette[9] ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
@@ -66,10 +66,10 @@ public class BestiaryWindow extends Window
 			textInfo.add(String.valueOf(creature.getBag()[i])) ;
 		}
 		
-		DP.DrawText(new Point(windowPos.x + offset, (int) (windowPos.y + creature.getPA().getSize().height + offset)), AlignmentPoints.topLeft, angle, creature.getPA().getName(), namefont, textColor) ;		// Name
+		DP.DrawText(new Point(windowPos.x + offset, (int) (windowPos.y + creature.getPA().getSize().height + offset)), Align.topLeft, angle, creature.getPA().getName(), namefont, textColor) ;		// Name
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
-			DP.DrawText(new Point(windowPos.x + offset, (int) (windowPos.y + creature.getPA().getSize().height + (i + 2) * sy + offset)), AlignmentPoints.topLeft, angle, textInfo.get(i), infoFont, textColor) ;
+			DP.DrawText(new Point(windowPos.x + offset, (int) (windowPos.y + creature.getPA().getSize().height + (i + 2) * sy + offset)), Align.topLeft, angle, textInfo.get(i), infoFont, textColor) ;
 		}
 	}
 	
@@ -85,7 +85,8 @@ public class BestiaryWindow extends Window
 		int sy = (int) UtilG.spacing(windowSize.height, numRows, slotSize.height, offset) ;
 
 		
-		DP.DrawRoundRect(windowPos, AlignmentPoints.topLeft, windowSize, 3, Game.ColorPalette[14], Game.ColorPalette[5], true) ;
+		// draw window
+		DP.DrawRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.ColorPalette[14], Game.ColorPalette[5], true) ;
 		
 		if (discoveredCreatures != null)
 		{
@@ -94,16 +95,16 @@ public class BestiaryWindow extends Window
 			for (int slot = 0 ; slot <= numSlotsInWindow - 1 ; slot += 1)
 			{
 				// draw slots
-				Point slotPos = new Point((int) (windowPos.x + slotSize.width / 2 + (slot / numCols) * sx + offset), (int) (windowPos.y + slotSize.height / 2 + (slot % numRows) * sy + offset)) ;
-				DP.DrawRoundRect(slotPos, AlignmentPoints.center, slotSize, 2, Game.ColorPalette[20], Game.ColorPalette[7], true) ;
+				Point slotCenter = new Point((int) (windowPos.x + slotSize.width / 2 + (slot / numCols) * sx + offset), (int) (windowPos.y + slotSize.height / 2 + (slot % numRows) * sy + offset)) ;
+				DP.DrawRoundRect(slotCenter, Align.center, slotSize, 2, Game.ColorPalette[20], Game.ColorPalette[7], true) ;
 
 				// draw creatures
 				CreatureTypes creatureType = discoveredCreatures.get(slot) ;
-				double scaleFactor = Math.min((double) (slotSize.width) / creatureType.getPA().getSize().width, (double) (slotSize.height) / creatureType.getPA().getSize().height) ;
-				creatureType.display(slotPos, new Scale(1, 1), DP) ;
+				double scaleFactor = Math.min((double) (slotSize.width - 10) / creatureType.getPA().getSize().width, (double) (slotSize.height - 10) / creatureType.getPA().getSize().height) ;
+				creatureType.display(slotCenter, new Scale(scaleFactor, scaleFactor), DP) ;
 				
 				// determine if a creature is selected
-				if (UtilG.isInside(MousePos, slotPos, slotSize))
+				if (UtilG.isInside(MousePos, slotCenter, slotSize))
 				{
 					selectedCreature = creatureType ;
 				}

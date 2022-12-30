@@ -25,7 +25,7 @@ import liveBeings.Spell;
 import main.Battle;
 import main.Game;
 import maps.FieldMap;
-import maps.Maps;
+import maps.GameMap;
 import screen.Screen;
 
 public abstract class UtilS 
@@ -101,7 +101,7 @@ public abstract class UtilS
 		return SelectedMenu ;
 	}
 	
- 	public static String CheckAdjacentGround(Point playerPos, Maps map, String GroundType)
+ 	public static String CheckAdjacentGround(Point playerPos, GameMap map, String GroundType)
 	{
  		Point PlayerPos = new Point(playerPos.x, playerPos.y) ;
 		if (map.getgroundType() != null)
@@ -172,7 +172,7 @@ public abstract class UtilS
 		return "";
 	}
  	
- 	public static boolean isAdjacentTo(Point pos, Maps maps, String GroundType)
+ 	public static boolean isAdjacentTo(Point pos, GameMap maps, String GroundType)
  	{
  		String adjGround = CheckAdjacentGround(pos, maps, GroundType) ;
  		if (adjGround.equals("Inside") | adjGround.equals("Touching Left") | adjGround.equals("Touching Right") | adjGround.equals("Touching Up") | adjGround.equals("Touching Down"))
@@ -182,7 +182,7 @@ public abstract class UtilS
  		return false ;
  	}
 		
-	public static Creature ClosestCreatureInRange(Player player, Creature[] creatures, Maps[] maps)
+	public static Creature ClosestCreatureInRange(Player player, Creature[] creatures, GameMap[] maps)
 	{	
 		Dimension screenSize = Game.getScreen().getSize() ;
 		if (player.getMap().isAField())	// map is a field, so it has creatures

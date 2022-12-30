@@ -13,8 +13,8 @@ import javax.swing.ImageIcon ;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
 import main.Game;
-import maps.Maps;
-import utilities.AlignmentPoints;
+import maps.GameMap;
+import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 import windows.PlayerAttributesWindow;
@@ -71,9 +71,9 @@ public class Pet extends LiveBeing
 		String Name = PetProperties.get(Job)[0] ;
 		int Level = 1 ;
 		int ProJob = 0 ;
-		Maps Map = null ;
+		GameMap Map = null ;
 		Point Pos = new Point(0, 0) ;
-		String dir = Player.MoveKeys[0] ;
+		String dir = Player.MoveKeys.get(0) ;
 		LiveBeingStates state = LiveBeingStates.idle ;
 		Dimension size = new Dimension (new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getWidth(null), new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getHeight(null)) ;	
 		double[] Life = new double[] {Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2])} ;
@@ -260,7 +260,10 @@ public class Pet extends LiveBeing
 	public void setCurrentAction(String newValue) {PA.currentAction = newValue ;}
 	public void setCombo(ArrayList<String> newValue) {PA.setCombo(newValue); ;}
 
-	
+	public boolean isAlive()
+	{
+		return (0 < PA.getLife()[0]) ;
+	}
 	
 	public Point CenterPos()
 	{
@@ -323,7 +326,7 @@ public class Pet extends LiveBeing
 		}
 		PA.setPos(pos) ;
 	}
-	public void Move(Player player, Maps[] maps)
+	public void Move(Player player, GameMap[] maps)
 	{
 		Point NextPos = new Point(0, 0) ;
 		Follow(PA.getPos(), player.getPos(), PA.getStep(), PA.getStep()) ;
@@ -525,7 +528,7 @@ public class Pet extends LiveBeing
 	{
 		//	TODO add moving animations
 		double OverallAngle = DrawingOnPanel.stdAngle ;
-		DP.DrawImage(movingAni.idleGif, Pos, OverallAngle, scale, AlignmentPoints.center) ;
+		DP.DrawImage(movingAni.idleGif, Pos, OverallAngle, scale, Align.center) ;
 	}
 	
 }

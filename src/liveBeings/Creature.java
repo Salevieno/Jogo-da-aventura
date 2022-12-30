@@ -12,9 +12,9 @@ import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import main.BattleActions;
 import main.Game;
-import maps.Maps;
+import maps.GameMap;
 import screen.Screen;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -122,7 +122,7 @@ public class Creature extends LiveBeing
 	
 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
 	{
-		DP.DrawImage(type.movingAni.idleGif, pos, scale, AlignmentPoints.center) ;
+		DP.DrawImage(type.movingAni.idleGif, pos, scale, Align.center) ;
 		/*if (PA.getThought().equals("Exist"))
 		{
 			DP.DrawImage(type.movingAni.idleGif, pos, scale, "Center") ;
@@ -163,7 +163,7 @@ public class Creature extends LiveBeing
 	{
 		return new Point((int) (PA.getPos().x + 0.5 * PA.getSize().width), (int) (PA.getPos().y - 0.5 * PA.getSize().height)) ;
 	}
-	public void updatePos(String move, Point CurrentPos, int step, Maps map)
+	public void updatePos(String move, Point CurrentPos, int step, GameMap map)
 	{
 		Screen screen = Game.getScreen() ;
 		Point NewPos = PA.CalcNewPos(move, CurrentPos, step) ;
@@ -188,7 +188,7 @@ public class Creature extends LiveBeing
 			//setPos(CurrentPos) ;
 		}
 	}
-	public void act(Point playerPos, Maps map)
+	public void act(Point playerPos, GameMap map)
 	{
 		Think() ;	
 		if (getPA().getState().equals(LiveBeingStates.moving))
@@ -325,7 +325,7 @@ public class Creature extends LiveBeing
 		}
 		PA.setPos(pos) ;
 	}
-	public void Move(Point PlayerPos, boolean FollowPlayer, Maps map)
+	public void Move(Point PlayerPos, boolean FollowPlayer, GameMap map)
 	{
 		//if (PA.Actions[0][2] == 1 & !PA.getName().equals("Drag�o") & !PA.getName().equals("Dragon"))	// If the creature can move
 		//{

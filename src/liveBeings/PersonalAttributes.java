@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import maps.Maps;
+import maps.GameMap;
 import utilities.TimeCounter;
 
 public class PersonalAttributes
@@ -14,7 +14,7 @@ public class PersonalAttributes
 	protected int Job ;
 	protected int ProJob ;
 	private int continent ;
-	private Maps map ;
+	private GameMap map ;
 	private Point Pos ;
 	private String dir ;				// direction of the movement
 	private LiveBeingStates state ;		// current state
@@ -34,7 +34,7 @@ public class PersonalAttributes
 	protected String currentAction; 
 	private ArrayList<String> combo ;		// record of the last 10 movements
 	
-	public PersonalAttributes(String Name, int Level, int Job, int ProJob, Maps map, Point Pos, String dir, LiveBeingStates state, Dimension size,
+	public PersonalAttributes(String Name, int Level, int Job, int ProJob, GameMap map, Point Pos, String dir, LiveBeingStates state, Dimension size,
 			double[] Life, double[] Mp, double Range, int Step, int[] Exp, int[] Satiation, int[] Thirst, String[] Elem, int mpDuration, int satiationDuration, int moveDuration,
 			int stepCounter, String currentAction)
 	{
@@ -73,7 +73,7 @@ public class PersonalAttributes
 	public int getJob() {return Job ;}
 	public int getProJob() {return ProJob ;}
 	public int getContinent() {return continent ;}
-	public Maps getMap() {return map ;}
+	public GameMap getMap() {return map ;}
 	public String getDir() {return dir ;}
 	public LiveBeingStates getState() {return state ;}
 	public Point getPos() {return Pos ;}
@@ -99,7 +99,7 @@ public class PersonalAttributes
 	public void setJob(int newValue) {Job = newValue ;}
 	public void setProJob(int newValue) {ProJob = newValue ;}
 	public void setContinent(int newValue) {continent = newValue ;}
-	public void setMap(Maps newValue) {map = newValue ;}
+	public void setMap(GameMap newValue) {map = newValue ;}
 	public void setdir(String newValue) {dir = newValue ;}
 	public void setState(LiveBeingStates newValue) {state = newValue ;}
 	public void setPos(Point newValue) {Pos = newValue ;}
@@ -117,7 +117,7 @@ public class PersonalAttributes
 	{
 		int dir = (int)(4*Math.random() - 0.01) ;
 
-		return Player.MoveKeys[dir] ;
+		return Player.MoveKeys.get(dir) ;
 	}
 	public int[] CalcNewPos(int move, int[] CurrentPos, int step)
 	{
@@ -146,19 +146,19 @@ public class PersonalAttributes
 	{
 		Point newPos = new Point(0, 0) ;
 		step = 1 ;
-		if (dir.equals(Player.MoveKeys[0]))	// North
+		if (dir.equals(Player.MoveKeys.get(0)))	// North
 		{
 			newPos = new Point(CurrentPos.x, CurrentPos.y - step) ;
 		}
-		if (dir.equals(Player.MoveKeys[1]))	// West
+		if (dir.equals(Player.MoveKeys.get(1)))	// West
 		{
 			newPos = new Point(CurrentPos.x - step, CurrentPos.y) ;
 		}
-		if (dir.equals(Player.MoveKeys[2]))	// South
+		if (dir.equals(Player.MoveKeys.get(2)))	// South
 		{
 			newPos = new Point(CurrentPos.x, CurrentPos.y + step) ;	
 		}
-		if (dir.equals(Player.MoveKeys[3]))	// East
+		if (dir.equals(Player.MoveKeys.get(3)))	// East
 		{
 			newPos = new Point(CurrentPos.x + step, CurrentPos.y) ;
 		}
@@ -169,19 +169,19 @@ public class PersonalAttributes
 	{
 		Point newPos = new Point(0, 0) ;
 		Step = 1 ;
-		if (dir.equals(Player.MoveKeys[0]))	// North
+		if (dir.equals(Player.MoveKeys.get(0)))	// North
 		{
 			newPos = new Point(Pos.x, Pos.y - Step) ;
 		}
-		if (dir.equals(Player.MoveKeys[1]))	// West
+		if (dir.equals(Player.MoveKeys.get(1)))	// West
 		{
 			newPos = new Point(Pos.x - Step, Pos.y) ;
 		}
-		if (dir.equals(Player.MoveKeys[2]))	// South
+		if (dir.equals(Player.MoveKeys.get(2)))	// South
 		{
 			newPos = new Point(Pos.x, Pos.y + Step) ;	
 		}
-		if (dir.equals(Player.MoveKeys[3]))	// East
+		if (dir.equals(Player.MoveKeys.get(3)))	// East
 		{
 			newPos = new Point(Pos.x + Step, Pos.y) ;
 		}

@@ -8,7 +8,7 @@ import graphics.DrawingOnPanel;
 import liveBeings.Creature;
 import liveBeings.Pet;
 import liveBeings.Player;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -47,7 +47,7 @@ public class Projectiles
 	
 	public void DrawImage(DrawingOnPanel DP)
 	{
-		DP.DrawImage(image, Pos, UtilG.getAngle(speed), new Scale(1, 1), AlignmentPoints.center) ;
+		DP.DrawImage(image, Pos, UtilG.getAngle(speed), new Scale(1, 1), Align.center) ;
 	}
 	public void move()
 	{

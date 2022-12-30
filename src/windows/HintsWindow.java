@@ -10,10 +10,10 @@ import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
 import main.Game;
-import utilities.AlignmentPoints;
+import utilities.Align;
 import utilities.UtilG;
 
-public class HintsWindow extends Window
+public class HintsWindow extends GameWindow
 {
 	public HintsWindow()
 	{
@@ -44,13 +44,13 @@ public class HintsWindow extends Window
 		int sy = font.getSize() + 2 ;
 		numberWindows = text.length - 6 ;
 		
-		DP.DrawImage(image, windowPos, AlignmentPoints.topLeft) ;
+		DP.DrawImage(image, windowPos, Align.topLeft) ;
 		
-		DP.DrawText(UtilG.Translate(windowPos, size.width / 2, 20), AlignmentPoints.center, angle, text[1], font, textColor) ;
-		DP.DrawText(UtilG.Translate(textPos, 10, size.height - 35), AlignmentPoints.topLeft, angle, text[2], font, textColor) ;
-		DP.DrawText(UtilG.Translate(textPos, (int)(0.9 * size.width), size.height - 35), AlignmentPoints.topRight, angle, text[3], font, textColor) ;
-		DP.DrawText(UtilG.Translate(textPos, size.width / 2, size.height - 40), AlignmentPoints.center, angle, text[4], font, textColor) ;
-		DP.DrawFitText(UtilG.Translate(textPos, 0, 30), sy, AlignmentPoints.topLeft, text[window + 5], font, 70, textColor) ;
+		DP.DrawText(UtilG.Translate(windowPos, size.width / 2, 20), Align.center, angle, text[1], font, textColor) ;
+		DP.DrawText(UtilG.Translate(textPos, 10, size.height - 35), Align.topLeft, angle, text[2], font, textColor) ;
+		DP.DrawText(UtilG.Translate(textPos, (int)(0.9 * size.width), size.height - 35), Align.topRight, angle, text[3], font, textColor) ;
+		DP.DrawText(UtilG.Translate(textPos, size.width / 2, size.height - 40), Align.center, angle, text[4], font, textColor) ;
+		DP.DrawFitText(UtilG.Translate(textPos, 0, 30), sy, Align.topLeft, text[window + 5], font, 70, textColor) ;
 		
 		DP.DrawWindowArrows(UtilG.Translate(windowPos, size.width / 2, size.height - 23), (int) (0.92 * size.width), window, numberWindows - 1) ;
 	}

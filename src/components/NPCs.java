@@ -14,8 +14,8 @@ import liveBeings.Creature;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.Game;
-import maps.Maps;
-import utilities.AlignmentPoints;
+import maps.GameMap;
+import utilities.Align;
 import utilities.Scale;
 
 public class NPCs
@@ -129,7 +129,7 @@ public class NPCs
 	//public void setColor(Color C) {color = C ;}
 	
 
-	public void Contact(Player player, Pet pet, Creature[] creatures, Maps[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawFunctions DF)
+	public void Contact(Player player, Pet pet, Creature[] creatures, GameMap[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawFunctions DF)
 	{
 		String action = player.getPA().getCurrentAction() ;
 		navigate(action) ;
@@ -352,8 +352,8 @@ public class NPCs
 		//}
 		//else
 		//{
-		DP.DrawImage(type.getImage(), Pos, DrawingOnPanel.stdAngle, new Scale(1, 1), AlignmentPoints.bottomCenter) ;
-		DP.DrawText(Pos, AlignmentPoints.bottomCenter, DrawingOnPanel.stdAngle, String.valueOf(id), new Font("SansSerif", Font.BOLD, 12), Color.blue) ;				
+		DP.DrawImage(type.getImage(), Pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomCenter) ;
+		DP.DrawText(Pos, Align.bottomCenter, DrawingOnPanel.stdAngle, String.valueOf(id), new Font("SansSerif", Font.BOLD, 12), Color.blue) ;				
 	}
 
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/

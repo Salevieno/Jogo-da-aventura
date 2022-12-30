@@ -2,14 +2,13 @@ package maps;
 
 import java.awt.Image;
 
-import main.Game;
-import screen.Screen;
+import javax.sound.sampled.Clip;
 
-public class SpecialMap extends Maps
+public class SpecialMap extends GameMap
 {
-	public SpecialMap(String Name, int Continent, int[] Connections, Image image)
+	public SpecialMap(String Name, int Continent, int[] Connections, Image image, Clip music)
 	{
-		super(Name, Continent, Connections, image, null, null) ;
+		super(Name, Continent, Connections, image, music, null, null) ;
 	}
 	
 	

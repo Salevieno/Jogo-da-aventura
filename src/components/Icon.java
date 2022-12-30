@@ -5,9 +5,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import graphics.DrawingOnPanel;
-import utilities.AlignmentPoints;
+import main.Game;
+import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 
@@ -15,45 +20,127 @@ public class Icon
 {
 	private int id ;
 	private String Name ;
-	private Point Pos ;
+	private Point topLeftCorner ;
 	private Dimension size ;
-	public boolean isActive ;
+	private boolean isActive ;
 	private String description ;
 	private Image image ;
 	private Image SelectedImage ;	// Image when selected
+	private String value ;	// return value for when the icon is clicked
+	
+	public static int selectedIconID ;
+	public static List<Icon> allIcons = new ArrayList<>() ;	// isn't it insane to create a list of all items of a class inside the class itself?
 	
 	public Icon(int id, String Name, Point Pos, String description, Image image, Image SelectedImage)
 	{
 		this.id = id ;
 		this.Name = Name ;
-		this.Pos = Pos ;
+		this.topLeftCorner = Pos ;
 		size = new Dimension(10 * Name.length(), 30) ;
 		isActive = false ;
 		this.description = description ;
 		this.image = image ;
 		this.SelectedImage = SelectedImage ;
-		
+
 		if (image != null)
 		{
 			size.width = image.getWidth(null) ;
 			size.height = image.getHeight(null) ;
 		}
+
+		if (id == 0)
+		{
+			value = "P" ;	// Language = Portuguese
+		}
+		if (id == 1)
+		{
+			value = "E" ;	// Language = English
+		}
+		if (id == 2)
+		{
+			value = "N" ;	// Game = new game
+		}
+		if (id == 3)
+		{
+			value = "L" ;	// Game = load game
+		}
+		if (id == 4)
+		{
+			value = "M" ;	// Sex = male
+		}
+		if (id == 5)
+		{
+			value = "F" ;	// Sex = female
+		}
+		if (id == 6)
+		{
+			value = "0" ;	// Ousadia = baixo
+		}
+		if (id == 7)
+		{
+			value = "1" ;	// Ousadia = médio
+		}
+		if (id == 8)
+		{
+			value = "2" ;	// Ousadia = alto
+		}
+		if (id == 9)
+		{
+			value = "0" ;	// Classe = cavaleiro
+		}
+		if (id == 10)
+		{
+			value = "1" ;	// Classe = mago
+		}
+		if (id == 11)
+		{
+			value = "2" ;	// Classe = arqueiro
+		}
+		if (id == 12)
+		{
+			value = "3" ;	// Classe = animal
+		}
+		if (id == 13)
+		{
+			value = "4" ;	// Classe = ladrão
+		}
 	}
 
 	public int getid() {return id ;}
 	public String getName() {return Name ;}
-	public Point getPos() {return Pos ;}
+	public Point getPos() {return topLeftCorner ;}
+	public boolean getIsActive() { return isActive ;}
 	public Image getImage() {return image ;}
 	public Image getSelectedImage() {return SelectedImage ;}
-	public void setid(int I) {id = I ;}
-	public void setName(String N) {Name = N ;}
-	public void setPos(Point P) {Pos = P ;}
-	public void setImage(Image I) {image = I ;}
-	public void setSelectedImage(Image S) {SelectedImage = S ;}
+	public void setPos(Point P) {topLeftCorner = P ;}
 	
-	public boolean ishovered(Point MousePos)
+	public static void addToAllIconsList(Icon icon)
 	{
-		if (UtilG.isInside(MousePos, new Point(Pos.x - size.width / 2, Pos.y - size.height / 2), size))
+		allIcons.add(icon) ;
+	}
+	public static void iconIsClicked(Point mousePos)
+	{
+		for (Icon icon : allIcons)
+		{
+			if (icon.isActive & icon.ishovered(mousePos))
+			{
+				icon.getValue() ;
+			}
+		}
+	}
+	
+	public Point getCenter() {return new Point(topLeftCorner.x + size.width / 2, topLeftCorner.y + size.height / 2) ;}
+	
+	public void select(Point mousePos)
+	{
+		if (isActive & ishovered(mousePos))
+		{
+			selectedIconID = id ;
+		}
+	}
+	public boolean ishovered(Point mousePos)
+	{
+		if (UtilG.isInside(mousePos, new Point(topLeftCorner.x, topLeftCorner.y), size))
 		{
 			return true ;
 		}
@@ -62,9 +149,9 @@ public class Icon
 			return false ;
 		}
 	}
-	public boolean isselected(int selectedButton)
+	public boolean isselected()
 	{
-		if (selectedButton == id)
+		if (selectedIconID == id)
 		{
 			return true ;
 		}
@@ -79,117 +166,50 @@ public class Icon
 	{
 		isActive = false ;
 	}
-	public Object startaction()
+	public String getValue() { return value ;}
+	
+	
+	// Draw methods
+	public void display(double angle, Align alignment, Point mousePos, DrawingOnPanel DP)
 	{
-		if (id == 0)
-		{
-			return "P" ;	// Language = Portuguese
-		}
-		if (id == 1)
-		{
-			return "E" ;	// Language = English
-		}
-		if (id == 2)
-		{
-			return "N" ;	// Game = new game
-		}
-		if (id == 3)
-		{
-			return "L" ;	// Game = load game
-		}
-		if (id == 4)
-		{
-			return "M" ;	// Sex = male
-		}
-		if (id == 5)
-		{
-			return "F" ;	// Sex = female
-		}
-		if (id == 6)
-		{
-			return "0" ;	// Ousadia = baixo
-		}
-		if (id == 7)
-		{
-			return "1" ;	// Ousadia = médio
-		}
-		if (id == 8)
-		{
-			return "2" ;	// Ousadia = alto
-		}
-		if (id == 9)
-		{
-			return "0" ;	// Classe = cavaleiro
-		}
-		if (id == 10)
-		{
-			return "1" ;	// Classe = mago
-		}
-		if (id == 11)
-		{
-			return "2" ;	// Classe = arqueiro
-		}
-		if (id == 12)
-		{
-			return "3" ;	// Classe = animal
-		}
-		if (id == 13)
-		{
-			return "4" ;	// Classe = ladrão
-		}
+		Font font = new Font("Scheherazade Bold", Font.BOLD, 16) ;
+		Color textColor = Game.ColorPalette[0] ;
+		Color selectedTextColor = Game.ColorPalette[1] ;
 		
-		return null ;
-	}
-	
-	
-	/* Draw methods */
-	public void DrawImage(double angle, int selectedButton, Point MousePos, DrawingOnPanel DP)
-	{
-		if (ishovered(MousePos) | isselected(selectedButton))
+		select(mousePos) ;
+		if (isselected())	// ishovered(MousePos)
 		{
 			if (SelectedImage != null)
 			{
-				DP.DrawImage(SelectedImage, Pos, angle, new Scale(1, 1), AlignmentPoints.center) ;
+				DP.DrawImage(SelectedImage, topLeftCorner, angle, new Scale(1, 1), alignment) ;
+				//DP.DrawText(getCenter(), AlignmentPoints.center, 0, Name, font, selectedTextColor) ;
 			}
 			else
 			{
-				DP.DrawRoundRect(Pos, AlignmentPoints.center, size, 5, Color.lightGray, Color.gray, true) ;
-				DP.DrawText(Pos, AlignmentPoints.center, 0, Name, new Font("Scheherazade Bold", Font.BOLD, 28), Color.blue) ;
+				DP.DrawRoundRect(topLeftCorner, alignment, size, 5, Game.ColorPalette[5], Game.ColorPalette[6], true) ;
+				DP.DrawText(getCenter(), Align.center, 0, Name, font, selectedTextColor) ;
 			}
 		}
 		else
 		{
 			if (image != null)
 			{
-				DP.DrawImage(image, Pos, angle, new Scale(1, 1), AlignmentPoints.center) ;
+				DP.DrawImage(image, topLeftCorner, angle, new Scale(1, 1), alignment) ;
+				//DP.DrawText(getCenter(), AlignmentPoints.center, 0, Name, font, textColor) ;
 			}
 			else
 			{
-				DP.DrawRoundRect(Pos, AlignmentPoints.center, size, 2, Color.lightGray, Color.gray, true) ;
-				DP.DrawText(Pos, AlignmentPoints.center, 0, Name, new Font("Scheherazade Bold", Font.BOLD, 28), Color.blue) ;
+				DP.DrawRoundRect(topLeftCorner, alignment, size, 2, Game.ColorPalette[5], Game.ColorPalette[6], true) ;
+				DP.DrawText(getCenter(), Align.center, 0, Name, font, textColor) ;
 			}
 		}
 	}
-	public void DrawHoverMessage(DrawingOnPanel DP)
+	public void displayHoverMessage(Align alignment, DrawingOnPanel DP)
 	{
 		if (description != null)
 		{
-			DP.DrawRoundRect(new Point(Pos.x + 20, Pos.y - 10), AlignmentPoints.center, size, 5, Color.lightGray, Color.gray, true) ;
-			DP.DrawFitText(new Point(Pos.x + 20, Pos.y - 10), 14, AlignmentPoints.center, description, new Font("Scheherazade Bold", Font.BOLD, 12), 20, Color.blue) ;
+			DP.DrawRoundRect(new Point(topLeftCorner.x + 20, topLeftCorner.y - 10), alignment, size, 5, Color.lightGray, Color.gray, true) ;
+			DP.DrawFitText(new Point(topLeftCorner.x + 20, topLeftCorner.y - 10), 14, alignment, description, new Font("Scheherazade Bold", Font.BOLD, 12), 20, Color.blue) ;
 		}
-	}
-	
-	
-	/* Print methods */
-	public void PrintProperties()
-	{
-		System.out.println() ;
-		System.out.println(" *** icon properties ***") ;
-		System.out.println("id: " + id) ;
-		System.out.println("name: " + Name) ;
-		System.out.println("pos: " + Pos) ;
-		System.out.println("size: " + size) ;
-		System.out.println("image: " + image) ;
-		System.out.println("selected image: " + SelectedImage) ;
 	}
 }

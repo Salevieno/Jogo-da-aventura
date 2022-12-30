@@ -11,7 +11,7 @@ import components.NPCs;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Spell;
-import maps.Maps;
+import maps.GameMap;
 import utilities.AttackEffects;
 
 public class Animations 
@@ -353,7 +353,7 @@ public class Animations
 		Player player = (Player) AniVars19[1] ;
 		NPCs[] npc = (NPCs[]) AniVars19[2] ;
 		Image BoatImage = (Image) AniVars19[3] ;
-		Maps[] maps = (Maps[]) AniVars19[4] ;
+		GameMap[] maps = (GameMap[]) AniVars19[4] ;
 		/*if (0 < pet.getLife()[0])
 		{
 			pet.setPos(player.getPos()) ;

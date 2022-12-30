@@ -23,6 +23,7 @@ public class MainGame3_4 extends JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         setSize(WinDim) ;
         setLocation(500, 200) ;
+        setVisible(true) ;
         add(new Game(WinDim)) ;							// adding game panel on the JFrame
     }
     
@@ -33,6 +34,6 @@ public class MainGame3_4 extends JFrame
 		
 		//GameTest g = new GameTest() ;
 		//g.WhereEverythingHappens() ;
-		EventQueue.invokeLater(() -> {MainGame3_4 game = new MainGame3_4() ; game.setVisible(true) ;}) ;
+		EventQueue.invokeLater(() -> {new MainGame3_4() ; }) ;
 	}
 }
