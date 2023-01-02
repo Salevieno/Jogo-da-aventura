@@ -18,32 +18,12 @@ public class Music
 	public Music(Clip clip)
 	{
 		this.clip = clip ;
-		/*Clip MusicKnightCity = musicFileToClip(new File(Game.MusicPath + "2-Knight city.wav").getAbsoluteFile()) ;
-    	Clip MusicMageCity = musicFileToClip(new File(Game.MusicPath + "3-Mage city.wav").getAbsoluteFile()) ;
-    	Clip MusicArcherCity = musicFileToClip(new File(Game.MusicPath + "4-Archer city.wav").getAbsoluteFile()) ;
-    	Clip MusicAnimalCity = musicFileToClip(new File(Game.MusicPath + "5-Animal city.wav").getAbsoluteFile()) ;
-    	Clip MusicAssassinCity = musicFileToClip(new File(Game.MusicPath + "6-Assassin city.wav").getAbsoluteFile()) ;
-    	Clip MusicForest = musicFileToClip(new File(Game.MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
-    	Clip MusicCave = musicFileToClip(new File(Game.MusicPath + "8-Cave.wav").getAbsoluteFile()) ;
-    	Clip MusicIsland = musicFileToClip(new File(Game.MusicPath + "9-Island.wav").getAbsoluteFile()) ;
-    	Clip MusicVolcano = musicFileToClip(new File(Game.MusicPath + "10-Volcano.wav").getAbsoluteFile()) ;
-    	Clip MusicSnowland = musicFileToClip(new File(Game.MusicPath + "11-Snowland.wav").getAbsoluteFile()) ;
-    	Clip MusicSpecial = musicFileToClip(new File(Game.MusicPath + "12-Special.wav").getAbsoluteFile()) ;
-    	Clip MusicSailing = musicFileToClip(new File(Game.MusicPath + "13-Sailing.wav").getAbsoluteFile()) ;
-    	Clip MusicPlayerEvolution = musicFileToClip(new File(Game.MusicPath + "14-Player evolution.wav").getAbsoluteFile()) ;
-    	Clip MusicDrumRoll = musicFileToClip(new File(Game.MusicPath + "15-Drumroll.wav").getAbsoluteFile()) ;
-    	musicClip = new Clip[] {MusicKnightCity, MusicMageCity, MusicArcherCity, MusicAnimalCity, MusicAssassinCity, MusicForest, MusicCave, MusicIsland, MusicVolcano, MusicSnowland, MusicSpecial, MusicSailing, MusicPlayerEvolution, MusicDrumRoll} ;
-	
-    	Clip SoundEffectSwordHit = musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
-    	soundEffect = new Clip[] {SoundEffectSwordHit} ;*/
+		isOn = false ;
 	}
 	
-	public boolean isOn()
-	{
-		return isOn ;
-	}
+	public boolean isOn() {return isOn ;}
 	
-	public Clip getClip() { return clip ; }
+	public Clip getClip() {return clip ;}
 	
 	public static Clip musicFileToClip(File MusicFile)
 	{
@@ -62,19 +42,6 @@ public class Music
 		
 		return MusicClip ;
 	}
-	
-	/*public static void ResetMusic(Clip MusicFile)
- 	{
- 		try 
- 		{
-	        MusicFile.setMicrosecondPosition(0) ; ;
- 	    } 
- 		catch(Exception ex) 
- 		{
- 	        System.out.println("Error with starting sound.") ;
- 	        ex.printStackTrace() ;
- 	    }
- 	}*/
 	
 	public static void PlayMusic(Clip MusicFile)
  	{
@@ -105,8 +72,10 @@ public class Music
  	
  	public static void SwitchMusic(Clip newClip)
  	{
- 		//ResetMusic(MusicFile1) ;
- 		StopMusic(currentlyPlayingClip) ;
+ 		if (currentlyPlayingClip != null)
+ 		{
+ 			StopMusic(currentlyPlayingClip) ;
+ 		}
 		PlayMusic(newClip) ;
  	}
 }

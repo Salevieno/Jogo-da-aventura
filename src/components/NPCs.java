@@ -353,7 +353,7 @@ public class NPCs
 		//else
 		//{
 		DP.DrawImage(type.getImage(), Pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomCenter) ;
-		DP.DrawText(Pos, Align.bottomCenter, DrawingOnPanel.stdAngle, String.valueOf(id), new Font("SansSerif", Font.BOLD, 12), Color.blue) ;				
+		//DP.DrawText(Pos, Align.bottomCenter, DrawingOnPanel.stdAngle, String.valueOf(id), new Font("SansSerif", Font.BOLD, 12), Color.blue) ;				
 	}
 
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/

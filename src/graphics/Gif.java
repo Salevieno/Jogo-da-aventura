@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 
 import main.Game;
+import main.MainGame3_4;
 import utilities.Align;
 
 public class Gif
@@ -71,7 +72,7 @@ public class Gif
 		{
 			if (timeStopper)
 			{
-				Game.resumeGame();
+				MainGame3_4.resumeGame();
 			}
 		}
 	}

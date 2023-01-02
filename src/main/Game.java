@@ -17,6 +17,7 @@ import java.awt.event.MouseListener ;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,17 +67,17 @@ import maps.GameMap;
 import screen.Screen;
 import screen.Sky;
 import utilities.Align;
+import utilities.Directions;
 import utilities.GameStates;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
 
-public class Game extends JPanel implements ActionListener
+public class Game extends JPanel
 {
 	private static final long serialVersionUID = 1L ;
 
 	private JPanel mainPanel = this ;
-	private static Timer timer ;		// Main timer of the game
     private static Point mousePos ;
 
 	public static String CSVPath ;
@@ -88,12 +89,12 @@ public class Game extends JPanel implements ActionListener
     //public static double[] DifficultMult ;
 	
 	//private boolean OpeningIsOn, LoadingGameIsOn, InitializationIsOn, CustomizationIsOn, TutorialIsOn ;
-	private static GameStates gameState ;
+	protected static GameStates state ;
 	private static boolean shouldRepaint ;	// tells if the panel should be repainted, created to handle multiple repaint requests at once
     //private boolean RunGame ;
 	private String GameLanguage ;
 
-	private Music music ;
+	//private Music music ;
 	private DrawingOnPanel DP ;
 	private DrawFunctions DF ;
 	private Icon[] SideBarIcons;
@@ -122,7 +123,6 @@ public class Game extends JPanel implements ActionListener
 	
 	public Game(Dimension windowDimension) 
 	{
-		timer = new Timer(10, this) ;	// timer of the game, first number = delay
     	screen = new Screen(new Dimension(windowDimension.width - 40 - 15, windowDimension.height - 39), null) ;
     	screen.calcCenter() ;
 		CSVPath = ".\\csv files\\" ;
@@ -134,7 +134,7 @@ public class Game extends JPanel implements ActionListener
 		opening = new Opening() ;
 		DP = new DrawingOnPanel() ;
 		GameLanguage = "P" ;
-		gameState = GameStates.loading;
+		state = GameStates.loading;
 		shouldRepaint = false ;
 		
     	//OpeningIsOn = true ; 
@@ -145,7 +145,6 @@ public class Game extends JPanel implements ActionListener
 		addMouseListener(new MouseEventDemo()) ;
 		addKeyListener(new TAdapter()) ;
 		setFocusable(true) ;
-		timer.start() ;	// Game will start checking for keyboard events and go to the method paintComponent every "timer" miliseconds
 	}
 
 	public static Screen getScreen() {return screen ;}
@@ -153,31 +152,20 @@ public class Game extends JPanel implements ActionListener
 	public static CreatureTypes[] getCreatureTypes() {return creatureTypes ;}
 	public static BuildingType[] getBuildingTypes() {return buildingTypes ;}
 	public static GameMap[] getMaps() {return allMaps ;}
-	//public static NPCs[] getNPCs(){return allNPCs ;}
 	public static Quests[] getAllQuests() {return allQuests ;}
 	public static Item[] getAllItems() {return allItems ;}
 	public static SpellType[] getAllSpellTypes() {return allSpellTypes ;}
-	
-	public static void shouldRepaint() { shouldRepaint = true ; }
-	
-	public static void playStopTimeGif()
+	public static boolean getShouldRepaint() {return shouldRepaint ;}
+	public static Point getMousePos()
 	{
-		gameState = GameStates.playingStopTimeGif;
+		return mousePos ;
 	}
 	
-	public static void pauseGame()
-	{
-        timer.stop() ;
-        gameState = GameStates.paused;
-	}
+	public static void playStopTimeGif() {state = GameStates.playingStopTimeGif ;}
+	public static void shouldRepaint() {shouldRepaint = true ;}
+
 	
-	public static void resumeGame()
-	{
-        timer.start() ;
-        gameState = GameStates.opening;
-	}
-	
-    private NPCType[] InitializeNPCTypes(String language)
+    private NPCType[] initializeNPCTypes(String language)
     {
     	// Doutor, Equips Seller, Items Seller, Smuggle Seller, Banker, Alchemist, Woodcrafter, Forger, Crafter, Elemental, Saver, Master, Quest 0, Citizen 0, Citizen 1, Citizen 2, Citizen 3
 		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "NPCTypes.csv") ;
@@ -205,7 +193,7 @@ public class Game extends JPanel implements ActionListener
 		return npcType ;
     }
     
-    private BuildingType[] InitializeBuildingTypes()
+    private BuildingType[] initializeBuildingTypes()
     {
 		ArrayList<String[]> BuildingsInput = UtilG.ReadcsvFile(CSVPath + "Buildings.csv") ;
 		BuildingType[] buildings = new BuildingType[BuildingsInput.size()] ;
@@ -221,7 +209,7 @@ public class Game extends JPanel implements ActionListener
 		return buildings ;
     }
     
-    private CreatureTypes[] InitializeCreatureTypes(String language, double diffMult)
+    private CreatureTypes[] initializeCreatureTypes(String language, double diffMult)
     {
 		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
     	CreatureTypes.setNumberOfCreatureTypes(input.size());
@@ -252,7 +240,7 @@ public class Game extends JPanel implements ActionListener
 					new ImageIcon(ImagesPath + "creature" + (ct % 5) + "_movingright.gif").getImage()) ;
 			
 			int Level = Integer.parseInt(input.get(ct)[3]) ;			
-			String dir = Player.MoveKeys.get(0) ;
+			Directions dir = Directions.up ;
 			LiveBeingStates state = LiveBeingStates.idle ;
 			Dimension Size = new Dimension(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;
 			double[] Life = new double[] {Double.parseDouble(input.get(ct)[5]) * diffMult, Double.parseDouble(input.get(ct)[5]) * diffMult} ;
@@ -302,7 +290,7 @@ public class Game extends JPanel implements ActionListener
 		return creatureTypes ;
     }
     
-    private CityMap[] InitializeCityMaps()
+    private CityMap[] initializeCityMaps()
     {
 		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsCity.csv") ;
 		CityMap[] cityMap = new CityMap[input.size()] ;
@@ -322,7 +310,7 @@ public class Game extends JPanel implements ActionListener
 											Integer.parseInt(input.get(id)[9])
 											} ;
 			Image image = new ImageIcon(ImagesPath + "Map" + String.valueOf(id) + ".png").getImage() ;
-			Clip music = Music.musicFileToClip(new File(Game.MusicPath + (id + 2) + "-" + name + ".wav").getAbsoluteFile()) ;
+			Clip music = Music.musicFileToClip(new File(MusicPath + (id + 2) + "-" + name + ".wav").getAbsoluteFile()) ;
 			ArrayList<Buildings> buildings = new ArrayList<>() ;
 			for (int i = 0; i <= 6 - 1; i += 1)
 			{
@@ -365,7 +353,7 @@ public class Game extends JPanel implements ActionListener
 				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29 + 3 * i])) ;
 				int NPCPosY = (int) (screen.getSize().height * Double.parseDouble(input.get(id)[30 + 3 * i])) ;
 				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
-				npcs.add(new NPCs(i, NPCType, NPCPos, new String[] {"Sim", "Nï¿½o"})) ;
+				npcs.add(new NPCs(i, NPCType, NPCPos, new String[] {"Sim", "Não"})) ;
 			}
 			
 			cityMap[id] = new CityMap(name, continent, connections, image, music, buildings, npcs);
@@ -374,7 +362,7 @@ public class Game extends JPanel implements ActionListener
 		return cityMap ;
     }
     
-    private FieldMap[] InitializeFieldMaps()
+    private FieldMap[] initializeFieldMaps()
     {
     	ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsField.csv") ;
     	FieldMap[] fieldMap = new FieldMap[input.size()] ;
@@ -411,14 +399,14 @@ public class Game extends JPanel implements ActionListener
 											Integer.parseInt(input.get(id)[24])
 											} ;
 			Image image = new ImageIcon(ImagesPath + "Map" + String.valueOf(id + cityMaps.length) + ".png").getImage() ;
-			Clip music = Music.musicFileToClip(new File(Game.MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
+			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
 			fieldMap[id] = new FieldMap(name, continent, Connections, image, music, collectibleLevel, new int[] {berryDelay, herbDelay, woodDelay, metalDelay}, creatureIDs) ;
 		}
 		
 		return fieldMap ;
     }
     
-    private Quests[] InitializeQuests(String language, int playerJob)
+    private Quests[] initializeQuests(String language, int playerJob)
     {
 		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
 		Quests[] quests = new Quests[input.size()] ;
@@ -432,9 +420,9 @@ public class Game extends JPanel implements ActionListener
 		return quests ;
     }
    
-    private Icon[] InitializeIcons(Dimension screenSize)
+    private Icon[] initializeIcons(Dimension screenSize)
     {
-		/* Icons' position */
+		// Icons' position
 		Image IconOptions = new ImageIcon(ImagesPath + "Icon_settings.png").getImage() ;
 		Image IconBag = new ImageIcon(ImagesPath + "Icon1_Bag.png").getImage() ;
 		Image IconQuest = new ImageIcon(ImagesPath + "Icon2_Quest.png").getImage() ;
@@ -456,12 +444,12 @@ public class Game extends JPanel implements ActionListener
 		Image[] SideBarIconsImages = new Image[] {IconOptions, IconBag, IconQuest, IconMap, IconBook, IconTent, PlayerImage, PetImage, IconSkillsTree} ;
 		Image[] SideBarIconsSelectedImages = new Image[] {IconSelectedOptions, IconSelectedBag, IconSelectedQuest, IconSelectedMap, IconSelectedBook, IconSelectedTent, PlayerSelectedImage, PetSelectedImage, IconSelectedSkillsTree} ;
 
-		/* Side bar icons */
+		// Side bar icons
 		SideBarIcons = new Icon[8] ;
 		String[] SBname = new String[] {"Options", "Bag", "Quest", "Map", "Book", "Tent", "Player", "Pet"} ;
 		Point[] SBpos = new Point[SBname.length] ;
 		int sy = 20 ;
-		SBpos[0] = new Point(screenSize.width + 20, screenSize.height - 230) ;
+		SBpos[0] = new Point(screenSize.width, screenSize.height - 250) ;
     	for (int i = 1 ; i <= 6 - 1 ; i += 1)
     	{
     		if (SideBarIconsImages[i - 1] != null)
@@ -483,7 +471,7 @@ public class Game extends JPanel implements ActionListener
      		Icon.addToAllIconsList(newIcon) ;
     	}
 
-		/* Plus sign icons */
+		// Plus sign icons
      	plusSignIcon = new Icon[8] ;
      	Point[] PlusSignPos = new Point[] {new Point(175, 206), new Point(175, 225), new Point(175, 450),
      			new Point(175, 475), new Point(175, 500), new Point(175, 525), new Point(175, 550), new Point(175, 575)} ;
@@ -499,7 +487,7 @@ public class Game extends JPanel implements ActionListener
     	return plusSignIcon ;
     }
  	
-    private SpellType[] InitializeSpellTypes(String language)
+    private SpellType[] initializeSpellTypes(String language)
     {
     	// TODO
     	//int NumberOfAllSkills = 178 ;
@@ -600,7 +588,7 @@ public class Game extends JPanel implements ActionListener
 		return allSpellTypes ;
     }
 
-	private Item[] InitializeAllItems()
+	private Item[] initializeAllItems()
 	{
 		ArrayList<Item> allItems = new ArrayList<>() ;
 		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
@@ -647,7 +635,7 @@ public class Game extends JPanel implements ActionListener
 		return (Item[]) allItems.toArray(new Item[allItems.size()]) ;
 	}
 	
-    private void MainInitialization()
+    private void mainInitialization()
 	{
  		DayDuration = 120000 ;
     	sky = new Sky() ;
@@ -655,10 +643,10 @@ public class Game extends JPanel implements ActionListener
     	screen.setMapCenter() ;    			
     	GameMap.InitializeStaticVars(ImagesPath) ;
 		//allNPCs = InitializeNPCTypes(GameLanguage, screen.getSize()) ;
-		buildingTypes = InitializeBuildingTypes() ;
-		creatureTypes = InitializeCreatureTypes(GameLanguage, 1) ;
-		cityMaps = InitializeCityMaps() ;
-		fieldMaps = InitializeFieldMaps() ;
+		buildingTypes = initializeBuildingTypes() ;
+		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
+		cityMaps = initializeCityMaps() ;
+		fieldMaps = initializeFieldMaps() ;
 		allMaps = new GameMap[cityMaps.length + fieldMaps.length] ;
 		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
@@ -670,29 +658,16 @@ public class Game extends JPanel implements ActionListener
 		{
 			//allMaps[map].InitializeNPCsInMap(allNPCs) ;
 		}
-		allQuests = InitializeQuests(GameLanguage, player.getJob()) ;
-		plusSignIcon = InitializeIcons(screen.getSize()) ;
+		allQuests = initializeQuests(GameLanguage, player.getJob()) ;
+		plusSignIcon = initializeIcons(screen.getSize()) ;
 
 		// Initialize classes
     	bat = new Battle(new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
 	}
   	
-	/*public void Opening()
-	{
-		int openingStatus = opening.Run(player.allText.get("* Novo jogo *"), player.getPA().getCurrentAction(), mousePos, music, ani, DP) ;
-		if (openingStatus == 1)
-		{
-			LoadingGameIsOn = true ;
-			InitializationIsOn = false ;
-			OpeningIsOn = false ;
-		}
-		else if (openingStatus == 2)
-		{
-			OpeningIsOn = false ;
-		}
-	}*/
-			
-	private void IncrementCounters()
+
+    
+	private void incrementCounters()
 	{
 		sky.dayTime.inc() ;
 		player.IncActionCounters() ;
@@ -726,7 +701,7 @@ public class Game extends JPanel implements ActionListener
 		}
 	}
 	
-	private void ActivateCounters()
+	private void activateCounters()
 	{	
 		player.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
 		if (pet != null)
@@ -753,7 +728,9 @@ public class Game extends JPanel implements ActionListener
 		}
 	}
 	
-	private void KonamiCode()
+	
+	
+	private void konamiCode()
 	{
 		//OpeningScreenImages[2] = ElementalCircle ;
 		DayDuration = 12 ;
@@ -770,6 +747,21 @@ public class Game extends JPanel implements ActionListener
 		{
 			DrawingOnPanel.stdAngle += 0.04 ;
 		}
+	}
+	
+	public boolean konamiCodeActivated(ArrayList<String> Combo)
+	{
+		String[] KonamiCode = new String[] {"A", "B", "Direita", "Esquerda", "Direita", "Esquerda", "Abaixo", "Abaixo", "Acima", "Acima"} ;
+		String[] combo = Combo.toArray(new String[Combo.size()]) ;
+		
+		if (Combo != null)
+		{
+			if (Arrays.equals(combo, KonamiCode))
+			{
+				return true ;
+			}
+		}
+		return false ;
 	}
 	
 	private void playStopTimeGifs()
@@ -792,23 +784,24 @@ public class Game extends JPanel implements ActionListener
 		}*/
 	}
 	
-	private void RunGame(DrawingOnPanel DP)
-	{		
+	
+	
+	private void runGame(DrawingOnPanel DP)
+	{
 		// increment and activate counters
-		IncrementCounters() ;
-		ActivateCounters() ;
+		incrementCounters() ;
+		activateCounters() ;
 		
 
 		// check for the Konami code
-		if (UtilS.KonamiCodeActivated(player.getCombo()))
+		if (konamiCodeActivated(player.getCombo()))
 		{
-			KonamiCode() ;
+			konamiCode() ;
 		}
 		
 		
 		// draw the map (cities, forest, etc.)
 		DP.DrawFullMap(player.getPos(), pet, player.getMap(), sky, mousePos) ;
-		shouldRepaint = true ;
 		player.DrawSideBar(pet, mousePos, SideBarIcons, DP) ;
 		
 		
@@ -816,11 +809,8 @@ public class Game extends JPanel implements ActionListener
 		if (!player.getMap().IsACity())
 		{
 			FieldMap fm = (FieldMap) player.getMap() ;
-			ArrayList<Creature> creaturesInMap = fm.getCreatures() ;
-			for (int c = 0 ; c <= creaturesInMap.size() - 1 ; c += 1)
+			for (Creature creature : fm.getCreatures())
 			{				
-				//System.out.println(creaturesInMap.get(c).getPos()) ;
-				Creature creature = creaturesInMap.get(c) ;
 				creature.act(player.getPos(), player.getMap()) ;
 				creature.display(creature.getPos(), new Scale(1, 1), DP) ;
 			}
@@ -831,12 +821,14 @@ public class Game extends JPanel implements ActionListener
 		// player acts
 		if (player.canAct())
 		{
-			player.act(pet, allMaps, mousePos, SideBarIcons, ani, DF) ;
-		}
-		
-		// TODO step counter is 0 here
-		//System.out.println("dir = " + player.getDir());
-		if (player.actionIsAMove() | 0 < player.getPA().getStepCounter())	// countmove becomes greater than 0 when the player moves, then starts to increase by 1 and returns to 0 when it reaches 20
+			player.act(pet, allMaps, mousePos, SideBarIcons, ani, DF) ;			
+
+	        if (player.getPA().getMoveCounter().finished())
+	        {
+	        	player.getPA().getMoveCounter().reset() ;
+	        }
+		}		
+		if (player.isMoving())
 		{
 			player.move(pet, ani) ;
 		}
@@ -924,6 +916,8 @@ public class Game extends JPanel implements ActionListener
 		}
 	}
 	
+	
+	
 	/*private void battleSimulation()
 	{
     	GameLanguage = "P" ;
@@ -967,16 +961,16 @@ public class Game extends JPanel implements ActionListener
     	sky = new Sky() ;
     	screen.setBorders(new int[] {0, sky.height, screen.getSize().width, screen.getSize().height});
     	screen.setMapCenter() ;
-    	allSpellTypes = InitializeSpellTypes(GameLanguage) ;
-		creatureTypes = InitializeCreatureTypes(GameLanguage, 1) ;
-		plusSignIcon = InitializeIcons(screen.getSize()) ;
-		allItems = InitializeAllItems() ;
-		NPCTypes = InitializeNPCTypes(GameLanguage) ;
-		buildingTypes = InitializeBuildingTypes() ;
+    	allSpellTypes = initializeSpellTypes(GameLanguage) ;
+		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
+		plusSignIcon = initializeIcons(screen.getSize()) ;
+		allItems = initializeAllItems() ;
+		NPCTypes = initializeNPCTypes(GameLanguage) ;
+		buildingTypes = initializeBuildingTypes() ;
 		
-		cityMaps = InitializeCityMaps() ;
-		fieldMaps = InitializeFieldMaps() ;
-		allQuests = InitializeQuests(GameLanguage, player.getJob()) ;
+		cityMaps = initializeCityMaps() ;
+		fieldMaps = initializeFieldMaps() ;
+		allQuests = initializeQuests(GameLanguage, player.getJob()) ;
 		allMaps = new GameMap[cityMaps.length + fieldMaps.length] ;
 		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
@@ -1011,7 +1005,7 @@ public class Game extends JPanel implements ActionListener
     	if (player.getSettings().getMusicIsOn())
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
-		}  	
+		}
 	}
 	
 	private void testing()
@@ -1021,10 +1015,10 @@ public class Game extends JPanel implements ActionListener
 		//player.bestiary.display(player, mousePos, DP);
 	}
 	
-	public static Point getMousePos()
-	{
-		return mousePos ;
-	}
+
+	
+	
+	
 	
 	@Override
 	protected void paintComponent(Graphics g)
@@ -1034,7 +1028,7 @@ public class Game extends JPanel implements ActionListener
         DP.setGraphics((Graphics2D) g);
 
     	//System.out.println("game is " + gameState);
-        switch (gameState)
+        switch (state)
         {
 	        case opening:
 	        {
@@ -1047,9 +1041,9 @@ public class Game extends JPanel implements ActionListener
 		    		opening.Run(player.getPA().getCurrentAction(), mousePos, ani, DP) ;
 		    		if (opening.isOver())
 		    		{
-		    			gameState = GameStates.loading ;
+		    			state = GameStates.loading ;
 		    		}
-					player.setCurrentAction("") ;
+					player.getPA().setCurrentAction("") ;
 	        	}
 				shouldRepaint = true ;
 	    		
@@ -1060,7 +1054,7 @@ public class Game extends JPanel implements ActionListener
 	        	//loading.displayText(DP) ;
 				//MainInitialization() ;
 	    		testingInitialization() ;
-				gameState = GameStates.running;
+				state = GameStates.running;
 				
 				shouldRepaint = true ;
 	    		//repaint();
@@ -1069,10 +1063,10 @@ public class Game extends JPanel implements ActionListener
 	        }
 	        case running:
 	        {
-	        	RunGame(DP) ;
+	        	runGame(DP) ;
 	        	ani.RunAnimation(DP) ;	// run all the active animations
 				testing() ;
-				player.setCurrentAction("") ;
+				//player.getPA().setCurrentAction("") ;
 				playGifs() ;
 
 	    		break ;
@@ -1103,45 +1097,31 @@ public class Game extends JPanel implements ActionListener
 	        
             if (key == KeyEvent.VK_LEFT | key == KeyEvent.VK_UP | key == KeyEvent.VK_DOWN | key == KeyEvent.VK_RIGHT) 
             {
-            	if (player.getPA().getMoveCounter().finished())	// If the player can act
-    			{
-            		player.setCurrentAction(KeyEvent.getKeyText(key)) ;
-                }
+            	player.getPA().setCurrentAction(KeyEvent.getKeyText(key)) ;
             }
             else if (key == KeyEvent.VK_ENTER | key == KeyEvent.VK_ESCAPE | key == KeyEvent.VK_BACK_SPACE | key == KeyEvent.VK_F1 | key == KeyEvent.VK_F2 | key == KeyEvent.VK_F3 | key == KeyEvent.VK_F4 | key == KeyEvent.VK_F5 | key == KeyEvent.VK_F6 | key == KeyEvent.VK_F7 | key == KeyEvent.VK_F8 | key == KeyEvent.VK_F9 | key == KeyEvent.VK_F10 | key == KeyEvent.VK_F11 | key == KeyEvent.VK_F12 | key == KeyEvent.VK_A | key == KeyEvent.VK_B | key == KeyEvent.VK_C | key == KeyEvent.VK_D | key == KeyEvent.VK_E | key == KeyEvent.VK_F | key == KeyEvent.VK_G | key == KeyEvent.VK_H | key == KeyEvent.VK_I | key == KeyEvent.VK_J | key == KeyEvent.VK_K | key == KeyEvent.VK_L | key == KeyEvent.VK_M | key == KeyEvent.VK_N | key == KeyEvent.VK_O | key == KeyEvent.VK_P | key == KeyEvent.VK_Q | key == KeyEvent.VK_R | key == KeyEvent.VK_S | key == KeyEvent.VK_T | key == KeyEvent.VK_U | key == KeyEvent.VK_V | key == KeyEvent.VK_W | key == KeyEvent.VK_X | key == KeyEvent.VK_Y | key == KeyEvent.VK_Z | key == KeyEvent.VK_0 | key == KeyEvent.VK_1 | key == KeyEvent.VK_2 | key == KeyEvent.VK_3 | key == KeyEvent.VK_4 | key == KeyEvent.VK_5 | key == KeyEvent.VK_6 | key == KeyEvent.VK_7 | key == KeyEvent.VK_8 | key == KeyEvent.VK_9) 
             {
-        		player.setCurrentAction(KeyEvent.getKeyText(key)) ;	// TODO this should only happen if the player can act
+        		player.getPA().setCurrentAction(KeyEvent.getKeyText(key)) ;
             }
             else if (key == KeyEvent.VK_SPACE)
             {
-        		player.setCurrentAction(KeyEvent.getKeyText(key)) ;
+        		player.getPA().setCurrentAction(KeyEvent.getKeyText(key)) ;
             }
             else if (key == KeyEvent.VK_NUMPAD0 | key == KeyEvent.VK_NUMPAD1 | key == KeyEvent.VK_NUMPAD2 | key == KeyEvent.VK_NUMPAD3 | key == KeyEvent.VK_NUMPAD4 | key == KeyEvent.VK_NUMPAD5 | key == KeyEvent.VK_NUMPAD6 | key == KeyEvent.VK_NUMPAD7 | key == KeyEvent.VK_NUMPAD8 | key == KeyEvent.VK_NUMPAD9)
             {
-        		player.setCurrentAction(String.valueOf(key - 96)) ;
+        		player.getPA().setCurrentAction(String.valueOf(key - 96)) ;
             }
             else if (key == KeyEvent.VK_PAUSE) 
             {
-                if (timer.isRunning()) 
-                {
-                   pauseGame();
-                }
-                else 
-                {
-                   resumeGame();	// TODO this can bug if used during opening
-                }
+            	
             }
-	        if (player.getPA().getMoveCounter().finished())
-	        {
-	        	player.getPA().getMoveCounter().reset() ;
-	        }
             shouldRepaint = true ;
 	    }
 	
 	    @Override
 	    public void keyReleased(KeyEvent e) 
 	    {
-    		player.setCurrentAction("") ;
+
 	    }
 	}
 	
@@ -1169,30 +1149,11 @@ public class Game extends JPanel implements ActionListener
 		{
 			if (evt.getButton() == 1)	// Left click
 			{
-        		player.setCurrentAction("MouseLeftClick") ;
-				/*for (int i = 0 ; i <= OPbuttons.length - 1 ; i += 1)
-				{
-					if (OPbuttons[i].ishovered(mousePos) & OPbuttons[i].isActive)
-					{
-						OPbuttons[i].startaction() ;
-						if (OPbuttons[i].getid() == 0 | OPbuttons[i].getid() == 1)
-						{
-							GameLanguage = (String) OPbuttons[i].startaction() ;
-							// TODO update text
-							//AllText = UtilG.ReadTextFile(GameLanguage) ;
-							//AllTextCat = UtilS.FindAllTextCat(AllText, GameLanguage) ;
-						}
-						if (2 <= OPbuttons[i].getid() & OPbuttons[i].getid() <= 13)
-						{
-			        		player.setCurrentAction((String) OPbuttons[i].startaction()) ;
-						}
-					}
-				}*/
-        		//Icon.iconIsClicked(mousePos) ;
+        		player.getPA().setCurrentAction("MouseLeftClick") ;
 			}
 			if (evt.getButton() == 3)	// Right click
 			{
-        		player.setCurrentAction("MouseRightClick") ;
+        		player.getPA().setCurrentAction("MouseRightClick") ;
 			}
             shouldRepaint = true ;
 		}
@@ -1200,23 +1161,9 @@ public class Game extends JPanel implements ActionListener
 		@Override
 		public void mouseReleased(MouseEvent e) 
 		{
-    		player.setCurrentAction("") ;
+
 		}		
 	}
 	
-	@Override
-    public void actionPerformed(ActionEvent e) 
-	{        
-        if (shouldRepaint)
-        {
-        	repaint() ;
-        	shouldRepaint = false ;
-        }
-		if (e.getSource() != timer)
-		{
-			System.out.println("action performed = " + e);
-			repaint() ;
-		}
-		//RunGame(DP) ;
-	}
+
 }

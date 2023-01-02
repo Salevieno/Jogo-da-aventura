@@ -15,6 +15,7 @@ import graphics.DrawingOnPanel;
 import main.Game;
 import maps.GameMap;
 import utilities.Align;
+import utilities.Directions;
 import utilities.Scale;
 import utilities.UtilG;
 import windows.PlayerAttributesWindow;
@@ -73,7 +74,7 @@ public class Pet extends LiveBeing
 		int ProJob = 0 ;
 		GameMap Map = null ;
 		Point Pos = new Point(0, 0) ;
-		String dir = Player.MoveKeys.get(0) ;
+		Directions dir = Directions.up ;
 		LiveBeingStates state = LiveBeingStates.idle ;
 		Dimension size = new Dimension (new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getWidth(null), new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getHeight(null)) ;	
 		double[] Life = new double[] {Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2])} ;

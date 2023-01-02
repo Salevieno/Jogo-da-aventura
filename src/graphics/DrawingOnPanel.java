@@ -442,6 +442,7 @@ public class DrawingOnPanel
 			fm.displayCollectibles(this) ;
 		}
 		DrawTime(sky) ;
+		Game.shouldRepaint() ;
 	}
 	public void DrawTimeBar(Point pos, int counter, int delay, int size2, Point offset, String relPos, String dir, Color color)
 	{

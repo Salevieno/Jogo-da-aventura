@@ -953,7 +953,7 @@ public class Battle
 				pet.Win(creature) ;
 			}
 			creature.setRandomPos() ;
-			player.setCurrentAction("") ;
+			player.getPA().setCurrentAction("") ;
 		}
 		else	// if the player is dead
 		{

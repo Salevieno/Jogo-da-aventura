@@ -47,6 +47,7 @@ import maps.FieldMap;
 import maps.GameMap;
 import screen.Screen;
 import utilities.Align;
+import utilities.Directions;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
@@ -87,6 +88,7 @@ public class Player extends LiveBeing
 	private double goldMultiplier ;	// multiplies the amount of gold the player wins
 	private Map<String, Boolean> questSkills ;	// skills gained with quests
 	private boolean isRiding ;		// true if the player is riding
+	private int moveRange ;			// number of steps the player moves per action
     
 	public Creature closestCreature ;	// creature that is currently closest to the player
     private Creature opponent ;		// creature that is currently in battle with the player
@@ -116,7 +118,7 @@ public class Player extends LiveBeing
 	private double[][] chanceIncrease ;	// Chance of increase of these attributes
 	public double[][] equipsBonus ;
 	
-	public static final List<String> MoveKeys = new ArrayList<>(Arrays.asList(new String[]  {KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)})) ;
+	public static final String[] MoveKeys = new String[] {KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
 	public static String[] BattleKeys = new String[] {"A", "D"} ;
 	public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Pet window, Map, Quest, Hint, Tent, Bestiary]
 	public static String[] HotKeys = new String[] {"E", "X", "V"} ;	// [Hotkey 1, Hotkey 2, Hotkey 3]
@@ -183,6 +185,7 @@ public class Player extends LiveBeing
 		questSkills.put("Dragon's aura", false) ;
 		questSkills.put("Bestiary", false) ;
 		isRiding = false ;
+		moveRange = 20 ;
 		/*if (spell != null)
 		{
 			spellIsActive = new boolean[spell.size()] ;
@@ -248,7 +251,7 @@ public class Player extends LiveBeing
     	}
     	int ProJob = 0 ;
 		Point Pos = new Point(0, 0) ;
-		String dir = Player.MoveKeys.get(0) ;
+		Directions dir = Directions.up ;
 		LiveBeingStates state = LiveBeingStates.idle ;
 	    Image PlayerBack = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
 	    Dimension Size = new Dimension (PlayerBack.getWidth(null), PlayerBack.getHeight(null)) ;
@@ -407,7 +410,7 @@ public class Player extends LiveBeing
 	public String getLanguage() {return language ;}
 	public String getName() {return PA.getName() ;}
 	public String getSex() {return sex ;}
-	public String getDir() {return PA.getDir() ;}
+	public Directions getDir() {return PA.getDir() ;}
 	public Dimension getSize() {return PA.getSize() ;}
 	public Color getColor() {return color ;}
 	public int getJob() {return PA.getJob() ;}
@@ -459,8 +462,8 @@ public class Player extends LiveBeing
 	public void setMap(GameMap M) {PA.setMap(M) ; PA.setContinent(M.getContinent()) ;}
 	public void setPos(Point P) {PA.setPos(P) ;}
 	private void setStep(int S) {PA.setStep(S) ;}
-	public void setCurrentAction(String newValue) {PA.currentAction = newValue ;}
-
+	private Point feetPos() {return new Point(PA.getPos().x, (int) (PA.getPos().y - PA.getSize().height)) ;}
+	
 	public static SpellType[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpellTypes(), 14) ;}
 	public static SpellType[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 34, 49) ;}
 	public static SpellType[] getArcherSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 70, 84) ;}
@@ -482,9 +485,6 @@ public class Player extends LiveBeing
 		return (equips[3] != null) ;
 	}
 	
-	//public void resetCollectingCounter() { collectingCounter = 0 ;}
-	//public void incCollectingCounter() { collectingCounter = (collectingCounter + 1 ) % collectingDelay ;}
-	//public boolean collectingIsOver() { return (collectingCounter == collectingDelay - 1) ;}
 	public boolean canAct()
 	{
 		return PA.getMoveCounter().finished() ;
@@ -510,7 +510,23 @@ public class Player extends LiveBeing
         }
     }
 
+	public boolean actionIsAMove()
+	{
+		List<String> moveKeys = Arrays.asList(MoveKeys) ;
+		return moveKeys.contains(PA.currentAction) ;
+	}
 	
+	public void startMoving()
+	{
+		PA.stepCounter = 1 ;
+	}
+	
+	public boolean isMoving()
+	{
+		return (0 < PA.stepCounter & PA.stepCounter <= moveRange) ;
+	}
+	
+	public void ResetAction() {PA.currentAction = "" ;}
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 	
@@ -583,14 +599,7 @@ public class Player extends LiveBeing
 	public void incAttPoints(int amount) {attPoints += amount ;}
 	public void decAttPoints(int amount) {attPoints += -amount ;}
 	
-	public boolean actionIsAMove()
-	{
-		if (Player.MoveKeys.contains(PA.currentAction))
-		{
-			return true ;
-		}
-		return false ;
-	}
+	
 	public boolean actionIsASpell()
 	{
 		if (UtilG.ArrayContains(Player.SpellKeys, PA.getCurrentAction()))
@@ -621,30 +630,11 @@ public class Player extends LiveBeing
 	}
 
 	
-	public void updateDir(String move)
-	{
-		/*if (move.equals(Player.MoveKeys.get(0)))	// North
-		{
-			PA.setdir(Player.MoveKeys.get(0)) ;
-		}
-		if (move.equals(Player.MoveKeys.get(1)))	// West
-		{
-			PA.setdir(Player.MoveKeys.get(1)) ;
-		}
-		if (move.equals(Player.MoveKeys[2]))	// South
-		{
-			PA.setdir(Player.MoveKeys[2]) ;
-		}
-		if (move.equals(Player.MoveKeys[3]))	// East
-		{
-			PA.setdir(Player.MoveKeys[3]) ;
-		}*/
-		PA.setdir(move) ;
-	}
+	
+
 	public void move(Pet pet, Animations Ani)
 	{
 		Point NewPos = PA.CalcNewPos() ;
-		int moveRange = 20 ;
 		if (Game.getScreen().posIsInMap(NewPos))	// if the player's new position is inside the map
 		{	
 			if (!Ani.isActive(10) & !Ani.isActive(12) & !Ani.isActive(13) & !Ani.isActive(15) & !Ani.isActive(18))
@@ -672,7 +662,14 @@ public class Player extends LiveBeing
 	{
 		if (actionIsAMove())
 		{
-			updateDir(PA.currentAction) ;
+			switch (PA.currentAction)
+			{
+				case "Acima": PA.setdir(Directions.up) ; break ;
+				case "Abaixo": PA.setdir(Directions.down) ; break ;
+				case "Esquerda": PA.setdir(Directions.left) ; break ;
+				case "Direita": PA.setdir(Directions.right) ; break ;
+			}
+			startMoving() ;
 		}
 		if (PA.currentAction.equals("MouseLeftClick"))
 		{
@@ -680,33 +677,15 @@ public class Player extends LiveBeing
 			{
 				if (sideBarIcons[i].ishovered(MousePos))
 				{
-					if (i == 0)
+					switch (i)
 					{
-						settings.open() ;
-					}	
-					if (i == 1)
-					{
-						bag.open() ;
-					}
-					if (i == 2)
-					{
-						questWindow.open() ;
-					}
-					if (i == 3 & questSkills.get(PA.getMap().getContinentName(this)))
-					{
-						map.open() ;
-					}
-					if (i == 4)	// questSkills.get("Fab window")
-					{
-						fabWindow.open() ;
-					}
-					if (i == 5)
-					{
-						attWindow.open() ;
-					}
-					if (i == 6 & 0 < pet.getLife()[0])
-					{
-						pet.getAttWindow().open() ;
+						case 0: settings.open() ; break ;
+						case 1: bag.open() ; break ;
+						case 2: questWindow.open() ; break ;
+						case 3: if (questSkills.get(PA.getMap().getContinentName(this))) map.open() ; break ;
+						case 4: fabWindow.open() ; break ;
+						case 5: attWindow.open() ; break ;
+						case 6: if (0 < pet.getLife()[0]) pet.getAttWindow().open() ; break ;
 					}
 				}
 			}
@@ -767,22 +746,7 @@ public class Player extends LiveBeing
 		{
 			SupSpell(pet, GetActiveSpells().get(UtilG.IndexOf(SpellKeys, PA.currentAction))) ;
 		}
-		
-		/*ArrayList<Window> playerWindows = new ArrayList<>() ;
-		playerWindows.add(bag) ;
-		playerWindows.add(fabWindow) ;
-		playerWindows.add(questWindow) ;
-		playerWindows.add(settings) ;
-		playerWindows.add(attWindow) ;
-		playerWindows.add(hintsWindow) ;
-		for (Window window : playerWindows)
-		{
-			if (window.isOpen())
-			{
-				window.navigate(PA.currentAction) ;
-			}
-		}*/
-		
+
 		// navigating through open windows
 		if (bag.isOpen())
 		{
@@ -826,6 +790,7 @@ public class Player extends LiveBeing
 		}
 		
 		UpdateCombo() ;
+		ResetAction() ;
 	}
 	
 
@@ -1004,7 +969,7 @@ public class Player extends LiveBeing
 		Point currentPos = new Point(PA.getPos().x, PA.getPos().y) ;
 		Point nextPos = new Point(0, 0) ;
 		int[] mapCon = PA.getMap().getConnections() ;
-		if (action.equals(MoveKeys.get(0)))	 // Up
+		if (action.equals(MoveKeys[0]))	 // Up
 		{
 			nextPos = new Point(currentPos.x, screen.getBorders()[3] - step) ;
 			if (-1 < mapCon[0] & currentPos.x <= screen.getSize().width / 2)
@@ -1016,7 +981,7 @@ public class Player extends LiveBeing
 				nextMap = mapCon[7] ;
 			}			
 		}
-		if (action.equals(MoveKeys.get(1)))	 // Left
+		if (action.equals(MoveKeys[1]))	 // Left
 		{
 			nextPos = new Point(screen.getBorders()[2] - step, currentPos.y) ;
 			if (-1 < mapCon[1] & currentPos.y <= screen.getSize().height / 2)
@@ -1028,7 +993,7 @@ public class Player extends LiveBeing
 				nextMap = mapCon[2] ;
 			}		
 		}
-		if (action.equals(MoveKeys.get(2)))	 // Down
+		if (action.equals(MoveKeys[2]))	 // Down
 		{
 			nextPos = new Point(currentPos.x, screen.getBorders()[1] + step) ;
 			if(-1 < mapCon[3] & currentPos.x <= screen.getSize().width / 2)
@@ -1040,7 +1005,7 @@ public class Player extends LiveBeing
 				nextMap = mapCon[4] ;	
 			}
 		}
-		if (action.equals(MoveKeys.get(3)))	 // Right
+		if (action.equals(MoveKeys[3]))	 // Right
 		{			
 			nextPos = new Point(screen.getBorders()[0] + step, currentPos.y) ;
 			if(-1 < mapCon[5] & screen.getSize().height / 2 < currentPos.y)
@@ -1180,60 +1145,43 @@ public class Player extends LiveBeing
 	{
 		if (bag.isOpen())
 		{
-			//Bag(pet, creature, screen.getSize(), AllTextCat, AllText, items, B, MousePos, DF) ;
 			bag.display(MousePos, allText.get("* Menus da mochila *"), DP) ;
 		}
 		if (attWindow.isOpen())
 		{
 			attWindow.display(this, allText, equips, equipsBonus, attPoints, MousePos, PA, BA, DP);
-			//AttWindow(AllText, AllTextCat, icon, screenDim, getAttIncrease()[PA.ProJob], MousePos, CoinIcon, DF) ;
 		}
 		if (fabWindow.isOpen())
 		{		
 			fabWindow.display(recipes, MousePos, DP) ;
-			//FabBook(items, MousePos, DF) ;
 		}
-		Tent() ;
+		Tent() ;	// TODO
 		if (pet != null)
 		{
 			if (pet.getAttWindow().isOpen())
 			{
 				pet.getAttWindow().display(pet, allText, null, null, 0, MousePos, pet.getPA(), pet.getBA(), DP);
-				//DF.DrawPetWindow(pet, new Point((int)(0.1*screenDim[0]), (int)(0.9*screenDim[1]))) ;
 			}
 		}
 		if (map.isOpen())
 		{
 			map.display(DP) ;
-			//DF.DrawMap(PA.getMap(), PA.getDir(), maps) ;
 		}		
 		if (questWindow.isOpen())
 		{
 			questWindow.display(quest, DP) ;
-			//QuestWindow(creatureTypes, creature, quest, items, MousePos, DF) ;
 		}
 		if (bestiary.isOpen())
 		{
 			bestiary.display(this, MousePos, DP) ;
-			//Bestiary(creatureTypes, items, getCreaturesDiscovered(), MousePos, DF) ;
 		}
 		if (settings.isOpen())
 		{
 			settings.display(allText.get("* Menu de opções *"), DP) ;
-			//OptionsWindow(Music, DF) ;
-			//Object[] OptionStatus = OptionsWindow(Music, DF) ;
-			/*MusicIsOn = (boolean) OptionStatus[0] ;
-			SoundEffectsAreOn = (boolean) OptionStatus[1] ;
-			
-			if (!MusicIsOn)
-			{
-				Utg.StopMusic(Music[Maps.Music[getMap()]]) ;
-			}*/
 		}
 		if (hintsWindow.isOpen())
 		{
 			hintsWindow.display(this, DP) ;
-			//HintsMenu(MousePos, ClassColors[getJob()], DF) ;
 		}
 	}
 	
@@ -2058,41 +2006,41 @@ public class Player extends LiveBeing
 		// icons: 0: Options 1: Bag 2: Quest 3: Map 4: Book, 5: player, 6: pet
 		Screen screen = Game.getScreen() ;
 		Color[] colorPalette = Game.ColorPalette ;
-		double OverallAngle = DrawingOnPanel.stdAngle ;
+		double stdAngle = DrawingOnPanel.stdAngle ;
 		Font font = new Font("SansSerif", Font.BOLD, 13) ;
 		String[] IconKey = new String[] {Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7]} ;
 		Color TextColor = colorPalette[7] ;
 		
 		DP.DrawRect(new Point(screen.getSize().width, screen.getSize().height), Align.bottomLeft, new Dimension(40, screen.getSize().height), 1, colorPalette[9], null) ;	// Background
 		DrawSpellsBar(this, spells, SpellType.cooldownImage, SpellType.slotImage, MousePos, DP) ;
-		icons[0].display(OverallAngle, Align.center, MousePos, DP) ;		// settings
-		icons[1].display(OverallAngle, Align.center, MousePos, DP) ;		// bag
-		DP.DrawText(icons[1].getPos(), Align.bottomLeft, OverallAngle, IconKey[0], font, TextColor) ;
-		icons[2].display(OverallAngle, Align.center, MousePos, DP) ;		// quest
-		DP.DrawText(icons[2].getPos(), Align.bottomLeft, OverallAngle, IconKey[1], font, TextColor) ;
+		icons[0].display(stdAngle, Align.topLeft, MousePos, DP) ;		// settings
+		icons[1].display(stdAngle, Align.topLeft, MousePos, DP) ;		// bag
+		DP.DrawText(icons[1].getPos(), Align.bottomLeft, stdAngle, IconKey[0], font, TextColor) ;
+		icons[2].display(stdAngle, Align.topLeft, MousePos, DP) ;		// quest
+		DP.DrawText(icons[2].getPos(), Align.bottomLeft, stdAngle, IconKey[1], font, TextColor) ;
 		if (questSkills.get(PA.getMap().getContinentName(this)))	// map
 		{
-			icons[3].display(OverallAngle, Align.center, MousePos, DP) ;
-			DP.DrawText(icons[3].getPos(), Align.bottomLeft, OverallAngle, IconKey[2], font, TextColor) ;
+			icons[3].display(stdAngle, Align.topLeft, MousePos, DP) ;
+			DP.DrawText(icons[3].getPos(), Align.bottomLeft, stdAngle, IconKey[2], font, TextColor) ;
 		}
 		if (fabWindow != null)										// book
 		{
-			icons[4].display(OverallAngle, Align.center, MousePos, DP) ;
+			icons[4].display(stdAngle, Align.topLeft, MousePos, DP) ;
 		}
 		
 		// player
-		display(icons[5].getPos(), new Scale(1, 1), Player.MoveKeys.get(0), false, DP) ;
-		DP.DrawText(icons[5].getPos(), Align.bottomLeft, OverallAngle, Player.ActionKeys[5], font, TextColor) ;
+		display(icons[5].getPos(), new Scale(1, 1), Directions.up, false, DP) ;
+		DP.DrawText(icons[5].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[5], font, TextColor) ;
 		if (0 < attPoints)
 		{
-			DP.DrawImage(icons[5].getImage(), new Point(icons[5].getPos().x - icons[5].getImage().getWidth(null), icons[5].getPos().y), OverallAngle, new Scale(1, 1), Align.bottomLeft) ;
+			DP.DrawImage(icons[5].getImage(), new Point(icons[5].getPos().x - icons[5].getImage().getWidth(null), icons[5].getPos().y), stdAngle, new Scale(1, 1), Align.bottomLeft) ;
 		}
 		
 		// pet
 		if (pet != null)
 		{
 			pet.display(icons[6].getPos(), new Scale(1, 1), DP) ;
-			DP.DrawText(icons[6].getPos(), Align.bottomLeft, OverallAngle, Player.ActionKeys[8], font, TextColor) ;
+			DP.DrawText(icons[6].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[8], font, TextColor) ;
 		}
 		
 		// Hotkeys
@@ -2102,13 +2050,13 @@ public class Player extends LiveBeing
 			Point slotCenter = new Point(screen.getSize().width + 10, screen.getSize().height - 60 + 20 * i) ;
 			Dimension slotSize = new Dimension(SpellType.slotImage.getWidth(null), SpellType.slotImage.getHeight(null)) ;
 			DP.DrawImage(SpellType.slotImage, slotCenter, Align.center) ;
-			DP.DrawText(new Point(slotCenter.x + slotSize.width / 2 + 5, slotCenter.y + slotSize.height / 2), Align.bottomLeft, OverallAngle, Player.HotKeys[i], font, TextColor) ;
+			DP.DrawText(new Point(slotCenter.x + slotSize.width / 2 + 5, slotCenter.y + slotSize.height / 2), Align.bottomLeft, stdAngle, Player.HotKeys[i], font, TextColor) ;
 			if (hotItem[i] != null)
 			{
 				DP.DrawImage(hotItem[i].getImage(), slotCenter, Align.center) ;
 				if (UtilG.isInside(MousePos, slotCenter, slotSize))
 				{
-					DP.DrawText(new Point(slotCenter.x - slotSize.width - 10, slotCenter.y), Align.centerRight, OverallAngle, hotItem[i].getName(), font, TextColor) ;
+					DP.DrawText(new Point(slotCenter.x - slotSize.width - 10, slotCenter.y), Align.centerRight, stdAngle, hotItem[i].getName(), font, TextColor) ;
 				}
 			}
 		}
@@ -2265,59 +2213,25 @@ public class Player extends LiveBeing
 		DP.DrawFitText(new Point(Pos.x + sx, Pos.y - Size.height - Size.height / 10), sy, Align.bottomLeft, Description, font, TextmaxL - 6, getColor()) ;		
 		DP.DrawText(new Point(Pos.x + Size.width, Pos.y), Align.topRight, DrawingOnPanel.stdAngle, "Pontos: " +  getSpellPoints(), font, getColor()) ;		
 	}	
-	public void display(Point PlayerPos, Scale scale, String dir, boolean ShowPlayerRange, DrawingOnPanel DP)
+	public void display(Point pos, Scale scale, Directions direction, boolean showRange, DrawingOnPanel DP)
 	{
 		double angle = DrawingOnPanel.stdAngle ;
-		if (IsRiding())	// If the player is mounted
+		if (IsRiding())
 		{
 			Point ridePos = new Point(PA.getPos().x - RidingImage.getWidth(null)/2, PA.getPos().y + RidingImage.getHeight(null)/2) ;
 			DP.DrawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
 		}
-		//Image[] PlayerImages = new Image[] {PA.getimage()} ;
-		//double[][] BPScale = new double[PA.getimage().length][2] ;
-		Point feetPos = new Point(PlayerPos.x, (int) (PlayerPos.y - 0.5*scale.y * PA.getSize().height)) ;
+		
+		movingAni.display(direction, pos, angle, scale, DP) ;
+		
 		if (questSkills.get("Dragon's aura"))
 		{
-			DP.DrawImage(DragonAuraImage, feetPos, angle, scale, Align.center) ;					
+			DP.DrawImage(DragonAuraImage, feetPos(), angle, scale, Align.center) ;					
 		}
-		if (dir.equals("Acima"))
-		{
-			DP.DrawImage(movingAni.idleGif, feetPos, angle, scale, Align.center) ;
-		}
-		if (dir.equals("Abaixo"))
-		{
-			DP.DrawImage(movingAni.movingDownGif, feetPos, angle, scale, Align.center) ;
-		}
-		if (dir.equals("Esquerda"))
-		{
-			DP.DrawImage(movingAni.movingLeftGif, feetPos, angle, scale, Align.center) ;
-		}
-		if (dir.equals("Direita"))
-		{
-			if (PA.stepCounter % 2 == 0)
-			{
-				DP.DrawImage(movingAni.movingRightGif, feetPos, angle, scale, Align.center) ;
-			}
-			else
-			{
-				DP.DrawImage(movingAni.movingUpGif, feetPos, angle, scale, Align.center) ;
-			}
-		}
-		if (ShowPlayerRange)
+		if (showRange)
 		{
 			DrawRange(DP) ;
 		}
-		/*for (int i = 0 ; i <= PlayerImages.length - 1 ; i += 1)
-		{
-			BPScale[i][0] = (double)0.01*scale[0]*BodyPartsSizes[i][0] ;
-			BPScale[i][1] = (double)0.01*scale[1]*BodyPartsSizes[i][1] ;
-		}*/
-		/*for (int i = 0 ; i <= PlayerImages.length - 1 ; i += 1)						
-		{
-			DP.DrawImage(PlayerImages[i], new int[] {PlayerPos.x, (int) (PlayerPos.y - 0.5*scale[1] * PA.getSize().y)}, OverallAngle, BPScale[i], mirror, AlignmentPoints.center) ;
-		}*/
-		//DP.DrawRect(player.getPos(), AlignmentPoints.center, (int)(player.getSize().x*scale[0]), (int)(player.getSize().y*scale[1]), 1, null, ColorPalette[9], true) ;	// Player contour
-		//DrawCircle(player.getPos(), 2, 2, ColorPalette[6], false, true) ;	// Player center
 	}
 
 	public void ShowEffectsAndStatusAnimation(Creature creature, DrawingOnPanel DP)

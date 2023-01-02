@@ -104,6 +104,7 @@ public class Icon
 		{
 			value = "4" ;	// Classe = ladrão
 		}
+		description = Name ;
 	}
 
 	public int getid() {return id ;}
@@ -140,7 +141,7 @@ public class Icon
 	}
 	public boolean ishovered(Point mousePos)
 	{
-		if (UtilG.isInside(mousePos, new Point(topLeftCorner.x, topLeftCorner.y), size))
+		if (UtilG.isInside(mousePos, topLeftCorner, size))
 		{
 			return true ;
 		}
@@ -172,7 +173,7 @@ public class Icon
 	// Draw methods
 	public void display(double angle, Align alignment, Point mousePos, DrawingOnPanel DP)
 	{
-		Font font = new Font("Scheherazade Bold", Font.BOLD, 16) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 16) ;
 		Color textColor = Game.ColorPalette[0] ;
 		Color selectedTextColor = Game.ColorPalette[1] ;
 		

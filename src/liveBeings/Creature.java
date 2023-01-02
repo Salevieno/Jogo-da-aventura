@@ -15,6 +15,7 @@ import main.Game;
 import maps.GameMap;
 import screen.Screen;
 import utilities.Align;
+import utilities.Directions;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -163,10 +164,10 @@ public class Creature extends LiveBeing
 	{
 		return new Point((int) (PA.getPos().x + 0.5 * PA.getSize().width), (int) (PA.getPos().y - 0.5 * PA.getSize().height)) ;
 	}
-	public void updatePos(String move, Point CurrentPos, int step, GameMap map)
+	public void updatePos(Directions dir, Point CurrentPos, int step, GameMap map)
 	{
 		Screen screen = Game.getScreen() ;
-		Point NewPos = PA.CalcNewPos(move, CurrentPos, step) ;
+		Point NewPos = PA.CalcNewPos(dir, CurrentPos, step) ;
 		// First check if the new pos is inside the screen, then check if it is walkable
 		boolean NewPosIsInsideScreen = (screen.getBorders()[0] < NewPos.x & screen.getBorders()[1] < NewPos.y & NewPos.x < screen.getBorders()[2] & NewPos.y < screen.getBorders()[3]) ;
 		// if (rectTopLeftPos.x <= objPos.x & objPos.y <= rectTopLeftPos.y + rectSize.y & objPos.x <= rectTopLeftPos.x + rectSize.x & rectTopLeftPos.y <= objPos.y)

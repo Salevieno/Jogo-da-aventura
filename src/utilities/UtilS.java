@@ -571,20 +571,7 @@ public abstract class UtilS
 		return Increase ;
 	}		
 		*/
-	public static boolean KonamiCodeActivated(ArrayList<String> Combo)
-	{
-		String[] KonamiCode = new String[] {"A", "B", "Direita", "Esquerda", "Direita", "Esquerda", "Abaixo", "Abaixo", "Acima", "Acima"} ;
-		String[] combo = Combo.toArray(new String[Combo.size()]) ;
-		
-		if (Combo != null)
-		{
-			if (Arrays.equals(combo, KonamiCode))
-			{
-				return true ;
-			}
-		}
-		return false ;
-	}
+	
 /*
 	public static void BattleSimulation(Player player, Pet pet, Creature creature, Spell[] skills, Spell[] petskills, int[] ActivePlayerSkills, String[] MoveKeys, Items[] items, Quests[] quest, int NumberOfSimulations, String[] ActionKeys, String[] SkillKeys, Battle B, DrawFunctions DF)
 	{
