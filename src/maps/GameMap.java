@@ -9,7 +9,6 @@ import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon ;
 
 import components.Buildings;
-import components.MapElements;
 import components.NPCs;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;

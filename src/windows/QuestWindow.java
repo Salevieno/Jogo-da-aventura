@@ -22,7 +22,7 @@ public class QuestWindow extends GameWindow
 {
 	public QuestWindow()
 	{
-		super(new ImageIcon(Game.ImagesPath + "Quest.png").getImage(), 0, 0, 0, 0) ;
+		super(new ImageIcon(Game.ImagesPath + "\\Windows\\" + "Quest.png").getImage(), 0, 0, 0, 0) ;
 	}
 	
 	public void navigate(String action)

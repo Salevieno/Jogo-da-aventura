@@ -23,25 +23,26 @@ public class Sky
 	{
 		dayTime = new TimeCounter(Game.DayDuration / 2, Game.DayDuration) ;
 		height = (int)(0.2 * Game.getScreen().getSize().height) ;
+		String path = Game.ImagesPath  + "\\Sky\\";
     	
     	// initialize clouds
     	Cloud = new SkyComponent[5] ;
 		for (int c = 0 ; c <= Cloud.length - 1 ; c += 1)
 		{
-			Image CloudImage = new ImageIcon(Game.ImagesPath + "Cloud" + String.valueOf(1 + (int) (3 * Math.random())) + ".png").getImage() ;
+			Image CloudImage = new ImageIcon(path + "Cloud" + String.valueOf(1 + (int) (3 * Math.random())) + ".png").getImage() ;
 			Point InitialCloudPos = new Point((int)(Math.random() * Game.getScreen().getSize().width), 2 + (int) ((height - CloudImage.getHeight(null)) * Math.random())) ;
-			int[] CloudSpeed = new int[] {(int) (1 + 2 * Math.random()), 0} ;
+			Point CloudSpeed = new Point((int) (1 + 2 * Math.random()), 0) ;
 	    	Cloud[c] = new SkyComponent(CloudImage, InitialCloudPos, CloudSpeed, new Color[] {Game.ColorPalette[4]}) ;
 		}
 		
 		// initialize stars
     	Star = new SkyComponent[50] ;
-		Image StarImage = new ImageIcon(Game.ImagesPath + "Star.png").getImage() ;
+		Image StarImage = new ImageIcon(path + "Star.png").getImage() ;
 		for (int s = 0 ; s <= Star.length - 1 ; s += 1)
 		{
 			Point StarPos = new Point((int)(Math.random() * Game.getScreen().getSize().width), (int)(Math.random() * height)) ;
 			Color[] StarColor = new Color[] {Game.ColorPalette[(int)((Game.ColorPalette.length - 1)*Math.random())]} ;
-	    	Star[s] = new SkyComponent(StarImage, StarPos, new int[2], StarColor) ;
+	    	Star[s] = new SkyComponent(StarImage, StarPos, new Point(0, 0), StarColor) ;
 		}	
 	}
 
@@ -73,7 +74,7 @@ public class Sky
 			// move and display clouds
 			for (int c = 0 ; c <= Cloud.length - 1 ; c += 1)
 			{
-				Point newPos = new Point((int) (Cloud[c].getPos().x + Cloud[c].getSpeed()[0]), (int) Cloud[c].getPos().y) ;
+				Point newPos = new Point((int) (Cloud[c].getPos().x + Cloud[c].getSpeed().x), (int) Cloud[c].getPos().y + Cloud[c].getSpeed().y) ;
 				Cloud[c].setPos(newPos) ;
 
 				// if the cloud has passed the screen, reset its position

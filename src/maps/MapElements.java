@@ -1,4 +1,4 @@
-package components ;
+package maps ;
 
 import java.awt.Image ;
 import java.awt.Point;

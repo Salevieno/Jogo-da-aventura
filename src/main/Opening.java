@@ -31,35 +31,38 @@ public class Opening
 	
 	public Opening()
 	{
-		backgroundImage = new ImageIcon(Game.ImagesPath + "Opening.png").getImage() ;
-		openingGif = new Gif(new ImageIcon(Game.ImagesPath + "Opening.gif").getImage(), 1375, false, true) ;
+		String path = Game.ImagesPath  + "\\Opening\\";
+		backgroundImage = new ImageIcon(path + "Opening.png").getImage() ;
+		openingGif = new Gif(new ImageIcon(path + "Opening.gif").getImage(), 1375, false, true) ;
 		Icon.selectedIconID = 2 ;
     	step = 0 ;
     	playerInfo = new String[4] ;
 
     	buttons = new Icon[14] ;
-		Image ButtonPort = new ImageIcon(Game.ImagesPath + "ButtonPort.png").getImage() ;
-		Image ButtonEn = new ImageIcon(Game.ImagesPath + "ButtonEn.png").getImage() ;
-		Image ButtonPortSelected = new ImageIcon(Game.ImagesPath + "ButtonPortSelected.png").getImage() ;
-		Image ButtonEnSelected = new ImageIcon(Game.ImagesPath + "ButtonEnSelected.png").getImage() ;
-		Image ButtonNewGame = new ImageIcon(Game.ImagesPath + "Button_newGame.png").getImage() ;
-		Image ButtonNewGameSelected = new ImageIcon(Game.ImagesPath + "Button_newGameSelected.gif").getImage() ;
-		Image ButtonLoadGame = new ImageIcon(Game.ImagesPath + "Button_loadGame.png").getImage() ;
-		Image ButtonLoadGameSelected = new ImageIcon(Game.ImagesPath + "Button_loadGameSelected.gif").getImage() ;
-    	buttons[0] = new Icon(0, "Port", new Point(Game.getScreen().getSize().width - 50, 30), null, ButtonPort, ButtonPortSelected) ;
-    	buttons[1] = new Icon(1, "En", new Point(Game.getScreen().getSize().width - 0, 30), null, ButtonEn, ButtonEnSelected) ;
-    	buttons[2] = new Icon(2, "New game", new Point(Game.getScreen().getSize().width / 2 - 80, Game.getScreen().getSize().height / 4), null, ButtonNewGame, ButtonNewGameSelected) ;
-    	buttons[3] = new Icon(3, "Load game", new Point(Game.getScreen().getSize().width / 2 + 80, Game.getScreen().getSize().height / 4), null, ButtonLoadGame, ButtonLoadGameSelected) ;
-    	buttons[4] = new Icon(4, "Male", new Point(Game.getScreen().getSize().width / 2 - 50, Game.getScreen().getSize().height / 4), null, null, null) ;
-    	buttons[5] = new Icon(5, "Female", new Point(Game.getScreen().getSize().width / 2 + 50, Game.getScreen().getSize().height / 4), null, null, null) ;
-    	buttons[6] = new Icon(6, "Baixo", new Point(Game.getScreen().getSize().width / 2 - 100, Game.getScreen().getSize().height / 4), null, null, null) ;
-    	buttons[7] = new Icon(7, "Mï¿½dio", new Point(Game.getScreen().getSize().width / 2 + 0, Game.getScreen().getSize().height / 4), null, null, null) ;
-    	buttons[8] = new Icon(8, "Alto", new Point(Game.getScreen().getSize().width / 2 + 100, Game.getScreen().getSize().height / 4), null, null, null) ;
-    	buttons[9] = new Icon(9, "Cavaleiro", new Point(Game.getScreen().getSize().width / 2 - 200, Game.getScreen().getSize().height / 4), null, null, null) ;
-    	buttons[10] = new Icon(10, "Mago", new Point(Game.getScreen().getSize().width / 2 - 100, Game.getScreen().getSize().height / 4), null, null, null) ;
-    	buttons[11] = new Icon(11, "Arqueiro", new Point(Game.getScreen().getSize().width / 2 + 0, Game.getScreen().getSize().height / 4), null, null, null) ;
-    	buttons[12] = new Icon(12, "Animal", new Point(Game.getScreen().getSize().width / 2 + 100, Game.getScreen().getSize().height / 4), null, null, null) ;
-    	buttons[13] = new Icon(13, "Ladrï¿½o", new Point(Game.getScreen().getSize().width / 2 + 200, Game.getScreen().getSize().height / 4), null, null, null) ;
+		Image btPort = new ImageIcon(path + "btPort.png").getImage() ;
+		Image btEn = new ImageIcon(path + "btEn.png").getImage() ;
+		Image btPortSelected = new ImageIcon(path + "btPortSelected.png").getImage() ;
+		Image btEnSelected = new ImageIcon(path + "btEnSelected.png").getImage() ;
+		Image btNewGame = new ImageIcon(path + "bt_newGame.png").getImage() ;
+		Image btNewGameSelected = new ImageIcon(path + "bt_newGameSelected.gif").getImage() ;
+		Image btLoadGame = new ImageIcon(path + "bt_loadGame.png").getImage() ;
+		Image btLoadGameSelected = new ImageIcon(path + "bt_loadGameSelected.gif").getImage() ;
+		
+		Dimension screenSize = Game.getScreen().getSize() ;
+		buttons[0] = new Icon(0, "Port", new Point(screenSize.width - 50, 30), null, btPort, btPortSelected) ;
+		buttons[1] = new Icon(1, "En", new Point(screenSize.width - 0, 30), null, btEn, btEnSelected) ;
+		buttons[2] = new Icon(2, "New game", new Point(screenSize.width / 2 - 80, screenSize.height / 4), null, btNewGame, btNewGameSelected) ;
+		buttons[3] = new Icon(3, "Load game", new Point(screenSize.width / 2 + 80, screenSize.height / 4), null, btLoadGame, btLoadGameSelected) ;
+		buttons[4] = new Icon(4, "Male", new Point(screenSize.width / 2 - 50, screenSize.height / 4), null, null, null) ;
+		buttons[5] = new Icon(5, "Female", new Point(screenSize.width / 2 + 50, screenSize.height / 4), null, null, null) ;
+    	buttons[6] = new Icon(6, "Baixo", new Point(screenSize.width / 2 - 100, screenSize.height / 4), null, null, null) ;
+    	buttons[7] = new Icon(7, "Médio", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
+    	buttons[8] = new Icon(8, "Alto", new Point(screenSize.width / 2 + 100, screenSize.height / 4), null, null, null) ;
+    	buttons[9] = new Icon(9, "Cavaleiro", new Point(screenSize.width / 2 - 200, screenSize.height / 4), null, null, null) ;
+    	buttons[10] = new Icon(10, "Mago", new Point(screenSize.width / 2 - 100, screenSize.height / 4), null, null, null) ;
+    	buttons[11] = new Icon(11, "Arqueiro", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
+    	buttons[12] = new Icon(12, "Animal", new Point(screenSize.width / 2 + 100, screenSize.height / 4), null, null, null) ;
+    	buttons[13] = new Icon(13, "Ladrão", new Point(screenSize.width / 2 + 200, screenSize.height / 4), null, null, null) ;
     	
     	for (Icon button : buttons)
     	{

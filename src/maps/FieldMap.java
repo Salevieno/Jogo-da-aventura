@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 
-import components.MapElements;
 import graphics.DrawingOnPanel;
 import liveBeings.Creature;
 import liveBeings.CreatureTypes;
@@ -38,7 +37,7 @@ public class FieldMap extends GameMap
 		for (int me = 0 ; me <= 4 ; ++me)
 		{
 			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
-			mapElem.add(new MapElements(me, "ForestTree", randomPos, new ImageIcon(Game.ImagesPath + "MapElem6_TreeForest.png").getImage())) ;				
+			mapElem.add(new MapElements(me, "ForestTree", randomPos, new ImageIcon(Game.ImagesPath + "\\MapElements\\" + "MapElem6_TreeForest.png").getImage())) ;				
 		}
 		
 		

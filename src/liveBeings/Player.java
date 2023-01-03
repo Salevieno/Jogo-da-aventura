@@ -96,16 +96,16 @@ public class Player extends LiveBeing
 	public Items[] hotItem ;		// items on the hotkeys
     public int difficultLevel ;
     
-    public static final Image CollectingMessage = new ImageIcon(Game.ImagesPath + "CollectingMessage.gif").getImage() ;   
-    public static final Image TentImage = new ImageIcon(Game.ImagesPath + "Icon5_Tent.png").getImage() ; 
-    public static final Image DragonAuraImage = new ImageIcon(Game.ImagesPath + "DragonAura.png").getImage() ;
-    public static final Image RidingImage = new ImageIcon(Game.ImagesPath + "Tiger.png").getImage() ;
-    public static final Image PterodactileImage = new ImageIcon(Game.ImagesPath + "Pterodactile.png").getImage() ;
-    public static final Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "SpeakingBubble.png").getImage() ;
-	public static final Image CoinIcon = new ImageIcon(Game.ImagesPath + "CoinIcon.png").getImage() ;    
-	public static final Image MagicBlissGif = new ImageIcon(Game.ImagesPath + "MagicBliss.gif").getImage() ;
-    public static final Image FishingGif = new ImageIcon(Game.ImagesPath + "Fishing.gif").getImage() ;
-    public static final Icon SpellsTreeIcon = new Icon(0, "", new Point(200, 200), "", new ImageIcon(Game.ImagesPath + "SpellsTreeIcon.gif").getImage(), null) ;
+    public static final Image CollectingMessage = new ImageIcon(Game.ImagesPath + "\\Player\\" + "CollectingMessage.gif").getImage() ;   
+    public static final Image TentImage = new ImageIcon(Game.ImagesPath + "\\Player\\" + "Icon5_Tent.png").getImage() ; 
+    public static final Image DragonAuraImage = new ImageIcon(Game.ImagesPath + "\\Player\\" + "DragonAura.png").getImage() ;
+    public static final Image RidingImage = new ImageIcon(Game.ImagesPath + "\\Player\\" + "Tiger.png").getImage() ;
+    public static final Image PterodactileImage = new ImageIcon(Game.ImagesPath + "\\Player\\" + "Pterodactile.png").getImage() ;
+    //public static final Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "\\Player\\" + "SpeakingBubble.png").getImage() ;
+	public static final Image CoinIcon = new ImageIcon(Game.ImagesPath + "\\Player\\" + "CoinIcon.png").getImage() ;    
+	public static final Image MagicBlissGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "MagicBliss.gif").getImage() ;
+    public static final Image FishingGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "Fishing.gif").getImage() ;
+    public static final Icon SpellsTreeIcon = new Icon(0, "", new Point(200, 200), "", new ImageIcon(Game.ImagesPath + "\\Icons\\" + "SpellsTreeIcon.gif").getImage(), null) ;
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
     
@@ -131,9 +131,9 @@ public class Player extends LiveBeing
 	public final static int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public final static Image[] AttWindowImages = new Image[] {
-    		new ImageIcon(Game.ImagesPath + "PlayerAttWindow1.png").getImage(),
-    		new ImageIcon(Game.ImagesPath + "PlayerAttWindow2.png").getImage(),
-    		new ImageIcon(Game.ImagesPath + "PlayerAttWindow3.png").getImage()} ;
+    		new ImageIcon(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png").getImage(),
+    		new ImageIcon(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png").getImage(),
+    		new ImageIcon(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png").getImage()} ;
     public static final Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
 	
 	public Player(String Name, String Language, String Sex, int Job)
@@ -253,7 +253,7 @@ public class Player extends LiveBeing
 		Point Pos = new Point(0, 0) ;
 		Directions dir = Directions.up ;
 		LiveBeingStates state = LiveBeingStates.idle ;
-	    Image PlayerBack = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
+	    Image PlayerBack = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerBack.png").getImage() ;
 	    Dimension Size = new Dimension (PlayerBack.getWidth(null), PlayerBack.getHeight(null)) ;
 		double[] Life = new double[] {Double.parseDouble(Properties.get(Job)[2]), Double.parseDouble(Properties.get(Job)[2])} ;
 		double[] Mp = new double[] {Double.parseDouble(Properties.get(Job)[3]), Double.parseDouble(Properties.get(Job)[3])} ;
@@ -297,11 +297,11 @@ public class Player extends LiveBeing
 	
 	private static MovingAnimations InitializeMovingAnimations()
 	{
-	    Image idleGif = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
-	    Image movingUpGif = new ImageIcon(Game.ImagesPath + "PlayerBack.png").getImage() ;
-		Image movingDownGif = new ImageIcon(Game.ImagesPath + "PlayerFront.png").getImage() ;
-		Image movingLeftGif = new ImageIcon(Game.ImagesPath + "PlayerLeft.png").getImage() ;
-		Image movingRightGif = new ImageIcon(Game.ImagesPath + "PlayerRight.png").getImage() ;
+	    Image idleGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerBack.png").getImage() ;
+	    Image movingUpGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerBack.png").getImage() ;
+		Image movingDownGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerFront.png").getImage() ;
+		Image movingLeftGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerLeft.png").getImage() ;
+		Image movingRightGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerRight.png").getImage() ;
 		
 		return new MovingAnimations(idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif) ;
 	}
@@ -658,7 +658,7 @@ public class Player extends LiveBeing
 		PA.stepCounter = (PA.stepCounter + 1) % moveRange ;
 	}
 	
-	public void act(Pet pet, GameMap[] maps, Point MousePos, Icon[] sideBarIcons, Animations Ani, DrawFunctions DF)
+	public void act(Pet pet, GameMap[] maps, Point MousePos, Icon[] sideBarIcons, Animations Ani)
 	{
 		if (actionIsAMove())
 		{
@@ -1044,8 +1044,9 @@ public class Player extends LiveBeing
 			{
 				if (getContinent() == 3)
 				{
-					Ani.SetAniVars(16, new Object[] {500, PterodactileImage, SpeakingBubbleImage}) ;
-					Ani.StartAni(16) ;
+					// TODO Pterodactile should be its own entity
+					//Ani.SetAniVars(16, new Object[] {500, PterodactileImage, SpeakingBubbleImage}) ;
+					//Ani.StartAni(16) ;
 				}
 			}
 		}
@@ -1141,7 +1142,7 @@ public class Player extends LiveBeing
 	
 	
 	// called every time the window is repainted
-	public void ShowWindows(Pet pet, Creature[] creature, CreatureTypes[] creatureTypes, GameMap[] maps, Icon[] icon, Battle B, Point MousePos, DrawingOnPanel DP)
+	public void ShowWindows(Pet pet, Creature[] creature, CreatureTypes[] creatureTypes, GameMap[] maps, Battle B, Point MousePos, DrawingOnPanel DP)
 	{
 		if (bag.isOpen())
 		{
@@ -1149,7 +1150,7 @@ public class Player extends LiveBeing
 		}
 		if (attWindow.isOpen())
 		{
-			attWindow.display(this, allText, equips, equipsBonus, attPoints, MousePos, PA, BA, DP);
+			attWindow.display(this, allText, equips, equipsBonus,  MousePos, DP);
 		}
 		if (fabWindow.isOpen())
 		{		
@@ -1160,7 +1161,7 @@ public class Player extends LiveBeing
 		{
 			if (pet.getAttWindow().isOpen())
 			{
-				pet.getAttWindow().display(pet, allText, null, null, 0, MousePos, pet.getPA(), pet.getBA(), DP);
+				pet.getAttWindow().display(pet, allText, null, null, MousePos, DP);
 			}
 		}
 		if (map.isOpen())
@@ -1768,7 +1769,7 @@ public class Player extends LiveBeing
 		}
 		//Point WinPos = new Point((int) (0.3 * MainWinDim[0]), (int) (0.2 * MainWinDim[1])) ;
 		//DrawAttWindow(MainWinDim, WinPos, MousePos, AllText, AllTextCat, SelectedWindow[0], GoldCoinImage, icons, DP) ;
-		attWindow.display(this, allText, equips, equipsBonus, attPoints, MousePos, PA, BA, DP) ;
+		attWindow.display(this, allText, equips, equipsBonus, MousePos, DP) ;
 	}
 	public void ApplyEquipsBonus(int ID, double ActionMult)
 	{

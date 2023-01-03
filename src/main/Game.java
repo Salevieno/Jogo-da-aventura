@@ -5,11 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics ;
 import java.awt.Graphics2D;
 import java.awt.Image ;
-import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Toolkit ;
-import java.awt.event.ActionEvent ;
-import java.awt.event.ActionListener ;
 import java.awt.event.KeyAdapter ;
 import java.awt.event.KeyEvent ;
 import java.awt.event.MouseEvent ;
@@ -23,9 +20,7 @@ import java.util.Map;
 
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon ;
-import javax.swing.JButton;
 import javax.swing.JPanel ;
-import javax.swing.Timer ;
 
 import components.BuildingType;
 import components.Buildings;
@@ -36,9 +31,7 @@ import components.Projectiles;
 import components.Quests;
 import components.SpellTypes;
 import graphics.Animations;
-import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
-import graphics.Gif;
 import items.Alchemy;
 import items.Arrow;
 import items.Equip;
@@ -94,20 +87,18 @@ public class Game extends JPanel
     //private boolean RunGame ;
 	private String GameLanguage ;
 
-	//private Music music ;
 	private DrawingOnPanel DP ;
-	private DrawFunctions DF ;
-	private Icon[] SideBarIcons;
-	private Icon[] plusSignIcon ;
+	private Icon[] sideBarIcons;
+	//private Icon[] plusSignIcon ;
 	private Player player ;
 	private Pet pet ;
 	private Creature[] creature ;
-	private Projectiles[] proj ;	
+	private Projectiles[] proj ;	// TODO todos os projectiles do jogo numa lista? ou cada liveBeing com os seus proj	
 
 	private static Screen screen ;
 	private static Sky sky ;
 	private static Opening opening ;
-	private static Loading loading ;
+	//private static Loading loading ;
 	private static CreatureTypes[] creatureTypes ;
 	private static CityMap[] cityMaps;
 	private static FieldMap[] fieldMaps;
@@ -167,10 +158,9 @@ public class Game extends JPanel
 	
     private NPCType[] initializeNPCTypes(String language)
     {
-    	// Doutor, Equips Seller, Items Seller, Smuggle Seller, Banker, Alchemist, Woodcrafter, Forger, Crafter, Elemental, Saver, Master, Quest 0, Citizen 0, Citizen 1, Citizen 2, Citizen 3
-		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "NPCTypes.csv") ;
+    	ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "NPCTypes.csv") ;
+		String path = ImagesPath + "\\NPCs\\";
 		NPCType[] npcType = new NPCType[input.size()] ;
-		//int[] ColorID = new int[] {6, 10, 20, 16, 3, 23, 27, 0, 25, 7, 5, 0, 26, 18, 15, 14, 21} ;
 		for (int i = 0 ; i <= npcType.length - 1 ; i += 1)
 		{
 			String Name = "" ;
@@ -186,7 +176,7 @@ public class Game extends JPanel
 				Info = input.get(i)[4] ;
 			//}
 			Color color = ColorPalette[0] ;
-			Image image = new ImageIcon(ImagesPath + "NPC_" + Name + ".png").getImage() ;
+			Image image = new ImageIcon(path + "NPC_" + Name + ".png").getImage() ;
 			npcType[i] = new NPCType(Name, Info, color, image) ;
 		}
     	
@@ -197,12 +187,13 @@ public class Game extends JPanel
     {
 		ArrayList<String[]> BuildingsInput = UtilG.ReadcsvFile(CSVPath + "Buildings.csv") ;
 		BuildingType[] buildings = new BuildingType[BuildingsInput.size()] ;
+		String path = ImagesPath + "\\Buildings\\";
 		for (int type = 0 ; type <= buildings.length - 1 ; type += 1)
 		{
 			String name = BuildingsInput.get(type)[1] ;
-			Image outsideImage = new ImageIcon(ImagesPath + "Building" + type + "_" + name + ".png").getImage() ;
-			Image insideImage = new ImageIcon(ImagesPath + "Building" + type + "_" + name + "Inside.png").getImage() ;
-			Image[] OrnamentImages = new Image[] {new ImageIcon(ImagesPath + "Building" + name + "Ornament.png").getImage()} ;
+			Image outsideImage = new ImageIcon(path + "Building" + type + "_" + name + ".png").getImage() ;
+			Image insideImage = new ImageIcon(path + "Building" + type + "_" + name + "Inside.png").getImage() ;
+			Image[] OrnamentImages = new Image[] {new ImageIcon(path + "Building" + name + "Ornament.png").getImage()} ;
 			buildings[type] = new BuildingType(name, outsideImage, insideImage, OrnamentImages) ;
 		}
 		
@@ -212,6 +203,7 @@ public class Game extends JPanel
     private CreatureTypes[] initializeCreatureTypes(String language, double diffMult)
     {
 		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
+		String path = ImagesPath + "\\Creatures\\";
     	CreatureTypes.setNumberOfCreatureTypes(input.size());
 		CreatureTypes[] creatureTypes = new CreatureTypes[CreatureTypes.getNumberOfCreatureTypes()] ;
 		String name = "" ;
@@ -233,11 +225,11 @@ public class Game extends JPanel
 				color[ct] = ColorPalette[5] ;
 			}
 			
-			MovingAnimations moveAni = new MovingAnimations(new ImageIcon(ImagesPath + "creature" + (ct % 5) + "_idle.gif").getImage(),
-					new ImageIcon(ImagesPath + "creature" + (ct % 5) + "_movingup.gif").getImage(),
-					new ImageIcon(ImagesPath + "creature" + (ct % 5) + "_movingdown.gif").getImage(),
-					new ImageIcon(ImagesPath + "creature" + (ct % 5) + "_movingleft.gif").getImage(),
-					new ImageIcon(ImagesPath + "creature" + (ct % 5) + "_movingright.gif").getImage()) ;
+			MovingAnimations moveAni = new MovingAnimations(new ImageIcon(path + "creature" + (ct % 5) + "_idle.gif").getImage(),
+					new ImageIcon(path + "creature" + (ct % 5) + "_movingup.gif").getImage(),
+					new ImageIcon(path + "creature" + (ct % 5) + "_movingdown.gif").getImage(),
+					new ImageIcon(path + "creature" + (ct % 5) + "_movingleft.gif").getImage(),
+					new ImageIcon(path + "creature" + (ct % 5) + "_movingright.gif").getImage()) ;
 			
 			int Level = Integer.parseInt(input.get(ct)[3]) ;			
 			Directions dir = Directions.up ;
@@ -293,6 +285,7 @@ public class Game extends JPanel
     private CityMap[] initializeCityMaps()
     {
 		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsCity.csv") ;
+		String path = ImagesPath + "\\Maps\\";
 		CityMap[] cityMap = new CityMap[input.size()] ;
 		
 		for (int id = 0 ; id <= cityMap.length - 1 ; id += 1)
@@ -309,7 +302,11 @@ public class Game extends JPanel
 											Integer.parseInt(input.get(id)[8]),
 											Integer.parseInt(input.get(id)[9])
 											} ;
-			Image image = new ImageIcon(ImagesPath + "Map" + String.valueOf(id) + ".png").getImage() ;
+			Image image = new ImageIcon(path + "Map" + String.valueOf(id) + ".png").getImage() ;
+			if (id == 2)
+			{
+				image = new ImageIcon(path + "Map" + String.valueOf(id) + ".gif").getImage() ;
+			}
 			Clip music = Music.musicFileToClip(new File(MusicPath + (id + 2) + "-" + name + ".wav").getAbsoluteFile()) ;
 			ArrayList<Buildings> buildings = new ArrayList<>() ;
 			for (int i = 0; i <= 6 - 1; i += 1)
@@ -365,6 +362,7 @@ public class Game extends JPanel
     private FieldMap[] initializeFieldMaps()
     {
     	ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsField.csv") ;
+    	String path = ImagesPath + "\\Maps\\";
     	FieldMap[] fieldMap = new FieldMap[input.size()] ;
 		
 		for (int id = 0 ; id <= fieldMap.length - 1 ; id += 1)
@@ -398,7 +396,7 @@ public class Game extends JPanel
 											Integer.parseInt(input.get(id)[23]),
 											Integer.parseInt(input.get(id)[24])
 											} ;
-			Image image = new ImageIcon(ImagesPath + "Map" + String.valueOf(id + cityMaps.length) + ".png").getImage() ;
+			Image image = new ImageIcon(path + "Map" + String.valueOf(id + cityMaps.length) + ".png").getImage() ;
 			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
 			fieldMap[id] = new FieldMap(name, continent, Connections, image, music, collectibleLevel, new int[] {berryDelay, herbDelay, woodDelay, metalDelay}, creatureIDs) ;
 		}
@@ -423,29 +421,30 @@ public class Game extends JPanel
     private Icon[] initializeIcons(Dimension screenSize)
     {
 		// Icons' position
-		Image IconOptions = new ImageIcon(ImagesPath + "Icon_settings.png").getImage() ;
-		Image IconBag = new ImageIcon(ImagesPath + "Icon1_Bag.png").getImage() ;
-		Image IconQuest = new ImageIcon(ImagesPath + "Icon2_Quest.png").getImage() ;
-		Image IconMap = new ImageIcon(ImagesPath + "Icon3_Map.png").getImage() ;
-		Image IconBook = new ImageIcon(ImagesPath + "Icon4_Book.png").getImage() ;
-    	Image IconTent = new ImageIcon(ImagesPath + "Icon5_Tent.png").getImage() ;
-    	Image PlayerImage = new ImageIcon(ImagesPath + "Player.png").getImage() ;
-    	Image PetImage = new ImageIcon(ImagesPath + "PetType" + 0 + ".png").getImage() ;
-		Image IconSkillsTree = new ImageIcon(ImagesPath + "Icon8_SkillsTree.png").getImage() ;
-		Image IconSelectedOptions = new ImageIcon(ImagesPath + "Icon_settingsSelected.png").getImage() ;
-		Image IconSelectedBag = new ImageIcon(ImagesPath + "Icon1_BagSelected.png").getImage() ;
-		Image IconSelectedQuest = new ImageIcon(ImagesPath + "Icon2_QuestSelected.png").getImage() ;
-		Image IconSelectedMap = new ImageIcon(ImagesPath + "Icon3_MapSelected.png").getImage() ;
-		Image IconSelectedBook = new ImageIcon(ImagesPath + "Icon4_BookSelected.png").getImage() ;
-    	Image IconSelectedTent = new ImageIcon(ImagesPath + "Icon5_TentSelected.png").getImage() ;
-    	Image PlayerSelectedImage = new ImageIcon(ImagesPath + "Player.png").getImage() ;
-    	Image PetSelectedImage = new ImageIcon(ImagesPath + "PetType" + 0 + ".png").getImage() ;
-		Image IconSelectedSkillsTree = new ImageIcon(ImagesPath + "Icon8_SelectedSkillsTree.png").getImage() ;
-		Image[] SideBarIconsImages = new Image[] {IconOptions, IconBag, IconQuest, IconMap, IconBook, IconTent, PlayerImage, PetImage, IconSkillsTree} ;
-		Image[] SideBarIconsSelectedImages = new Image[] {IconSelectedOptions, IconSelectedBag, IconSelectedQuest, IconSelectedMap, IconSelectedBook, IconSelectedTent, PlayerSelectedImage, PetSelectedImage, IconSelectedSkillsTree} ;
+    	String path = ImagesPath + "\\Icons\\";
+		Image Options = new ImageIcon(path + "Icon_settings.png").getImage() ;
+		Image Bag = new ImageIcon(path + "Icon1_Bag.png").getImage() ;
+		Image Quest = new ImageIcon(path + "Icon2_Quest.png").getImage() ;
+		Image Map = new ImageIcon(path + "Icon3_Map.png").getImage() ;
+		Image Book = new ImageIcon(path + "Icon4_Book.png").getImage() ;
+    	Image Tent = new ImageIcon(path + "Icon5_Tent.png").getImage() ;
+    	Image PlayerImage = new ImageIcon(path + "Player.png").getImage() ;
+    	Image PetImage = new ImageIcon(path + "PetType" + 0 + ".png").getImage() ;
+		Image SkillsTree = new ImageIcon(path + "Icon8_SkillsTree.png").getImage() ;
+		Image SelectedOptions = new ImageIcon(path + "Icon_settingsSelected.png").getImage() ;
+		Image SelectedBag = new ImageIcon(path + "Icon1_BagSelected.png").getImage() ;
+		Image SelectedQuest = new ImageIcon(path + "Icon2_QuestSelected.png").getImage() ;
+		Image SelectedMap = new ImageIcon(path + "Icon3_MapSelected.png").getImage() ;
+		Image SelectedBook = new ImageIcon(path + "Icon4_BookSelected.png").getImage() ;
+    	Image SelectedTent = new ImageIcon(path + "Icon5_TentSelected.png").getImage() ;
+    	Image PlayerSelectedImage = new ImageIcon(path + "Player.png").getImage() ;
+    	Image PetSelectedImage = new ImageIcon(path + "PetType" + 0 + ".png").getImage() ;
+		Image SelectedSkillsTree = new ImageIcon(path + "Icon8_SelectedSkillsTree.png").getImage() ;
+		Image[] SideBarIconsImages = new Image[] {Options, Bag, Quest, Map, Book, Tent, PlayerImage, PetImage, SkillsTree} ;
+		Image[] SideBarIconsSelectedImages = new Image[] {SelectedOptions, SelectedBag, SelectedQuest, SelectedMap, SelectedBook, SelectedTent, PlayerSelectedImage, PetSelectedImage, SelectedSkillsTree} ;
 
 		// Side bar icons
-		SideBarIcons = new Icon[8] ;
+		sideBarIcons = new Icon[8] ;
 		String[] SBname = new String[] {"Options", "Bag", "Quest", "Map", "Book", "Tent", "Player", "Pet"} ;
 		Point[] SBpos = new Point[SBname.length] ;
 		int sy = 20 ;
@@ -464,27 +463,27 @@ public class Game extends JPanel
     	}
     	SBpos[6] = new Point(SBpos[0].x, SBpos[5].y - SideBarIconsImages[5].getHeight(null)/2 - sy) ;
     	SBpos[7] = new Point(SBpos[0].x, SBpos[6].y - (int)PlayerImage.getHeight(null) - SideBarIconsImages[4].getHeight(null)/2 - 20/2 - sy) ;
-     	for (int i = 0 ; i <= SideBarIcons.length - 1 ; i += 1)
+     	for (int i = 0 ; i <= sideBarIcons.length - 1 ; i += 1)
     	{
      		Icon newIcon = new Icon(i, SBname[i], SBpos[i], null, SideBarIconsImages[i], SideBarIconsSelectedImages[i]);
-     		SideBarIcons[i] = newIcon ;
+     		sideBarIcons[i] = newIcon ;
      		Icon.addToAllIconsList(newIcon) ;
     	}
 
 		// Plus sign icons
-     	plusSignIcon = new Icon[8] ;
+     	//plusSignIcon = new Icon[8] ;
      	Point[] PlusSignPos = new Point[] {new Point(175, 206), new Point(175, 225), new Point(175, 450),
      			new Point(175, 475), new Point(175, 500), new Point(175, 525), new Point(175, 550), new Point(175, 575)} ;
-		Image PlusSignImage = new ImageIcon(ImagesPath + "PlusSign.png").getImage() ;
-		Image SelectedPlusSignImage = new ImageIcon(ImagesPath + "ShiningPlusSign.png").getImage() ;
+		Image PlusSignImage = new ImageIcon(path + "PlusSign.png").getImage() ;
+		Image SelectedPlusSignImage = new ImageIcon(path + "ShiningPlusSign.png").getImage() ;
 		for (int i = 0 ; i <= PlusSignPos.length - 1 ; i += 1)
     	{
      		Icon newIcon = new Icon(i + SBname.length, "Plus sign", PlusSignPos[i], null, PlusSignImage, SelectedPlusSignImage) ;
-    		plusSignIcon[i] = newIcon;
+    		//plusSignIcon[i] = newIcon;
      		Icon.addToAllIconsList(newIcon) ;
     	}
 		
-    	return plusSignIcon ;
+    	return sideBarIcons ;
     }
  	
     private SpellType[] initializeSpellTypes(String language)
@@ -635,35 +634,35 @@ public class Game extends JPanel
 		return (Item[]) allItems.toArray(new Item[allItems.size()]) ;
 	}
 	
-    private void mainInitialization()
-	{
- 		DayDuration = 120000 ;
-    	sky = new Sky() ;
-    	screen.setBorders(new int[] {0, sky.height, screen.getSize().width, screen.getSize().height});
-    	screen.setMapCenter() ;    			
-    	GameMap.InitializeStaticVars(ImagesPath) ;
-		//allNPCs = InitializeNPCTypes(GameLanguage, screen.getSize()) ;
-		buildingTypes = initializeBuildingTypes() ;
-		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
-		cityMaps = initializeCityMaps() ;
-		fieldMaps = initializeFieldMaps() ;
-		allMaps = new GameMap[cityMaps.length + fieldMaps.length] ;
-		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
-		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
-		//DifficultMult = new double[] {(double) 0.5, (double) 0.7, (double) 1.0} ;
- 		//player = InitializePlayer(PlayerInitialName, PlayerInitialJob, GameLanguage, PlayerInitialSex) ;
-		//pet = InitializePet() ;
-		//creature = InitializeCreatures(creatureTypes, screen.getSize(), fieldMaps) ;
-		for (int map = 0 ; map <= allMaps.length - 1 ; map += 1)
-		{
-			//allMaps[map].InitializeNPCsInMap(allNPCs) ;
-		}
-		allQuests = initializeQuests(GameLanguage, player.getJob()) ;
-		plusSignIcon = initializeIcons(screen.getSize()) ;
-
-		// Initialize classes
-    	bat = new Battle(new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
-	}
+//    private void mainInitialization()
+//	{
+// 		DayDuration = 120000 ;
+//    	sky = new Sky() ;
+//    	screen.setBorders(new int[] {0, sky.height, screen.getSize().width, screen.getSize().height});
+//    	screen.setMapCenter() ;    			
+//    	GameMap.InitializeStaticVars(ImagesPath) ;
+//		//allNPCs = InitializeNPCTypes(GameLanguage, screen.getSize()) ;
+//		buildingTypes = initializeBuildingTypes() ;
+//		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
+//		cityMaps = initializeCityMaps() ;
+//		fieldMaps = initializeFieldMaps() ;
+//		allMaps = new GameMap[cityMaps.length + fieldMaps.length] ;
+//		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
+//		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
+//		//DifficultMult = new double[] {(double) 0.5, (double) 0.7, (double) 1.0} ;
+// 		//player = InitializePlayer(PlayerInitialName, PlayerInitialJob, GameLanguage, PlayerInitialSex) ;
+//		//pet = InitializePet() ;
+//		//creature = InitializeCreatures(creatureTypes, screen.getSize(), fieldMaps) ;
+//		for (int map = 0 ; map <= allMaps.length - 1 ; map += 1)
+//		{
+//			//allMaps[map].InitializeNPCsInMap(allNPCs) ;
+//		}
+//		allQuests = initializeQuests(GameLanguage, player.getJob()) ;
+//		initializeIcons(screen.getSize()) ;
+//
+//		// Initialize classes
+//    	bat = new Battle(new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
+//	}
   	
 
     
@@ -802,7 +801,7 @@ public class Game extends JPanel
 		
 		// draw the map (cities, forest, etc.)
 		DP.DrawFullMap(player.getPos(), pet, player.getMap(), sky, mousePos) ;
-		player.DrawSideBar(pet, mousePos, SideBarIcons, DP) ;
+		player.DrawSideBar(pet, mousePos, sideBarIcons, DP) ;
 		
 		
 		// creatures act
@@ -821,7 +820,7 @@ public class Game extends JPanel
 		// player acts
 		if (player.canAct())
 		{
-			player.act(pet, allMaps, mousePos, SideBarIcons, ani, DF) ;			
+			player.act(pet, allMaps, mousePos, sideBarIcons, ani) ;			
 
 	        if (player.getPA().getMoveCounter().finished())
 	        {
@@ -893,7 +892,7 @@ public class Game extends JPanel
 		
 		
 		// show the active player windows
-		player.ShowWindows(pet, creature, creatureTypes, allMaps, plusSignIcon, bat, mousePos, DP) ;
+		player.ShowWindows(pet, creature, creatureTypes, allMaps, bat, mousePos, DP) ;
 		
 		
 		// move the active projectiles and check if they collide with something
@@ -963,7 +962,7 @@ public class Game extends JPanel
     	screen.setMapCenter() ;
     	allSpellTypes = initializeSpellTypes(GameLanguage) ;
 		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
-		plusSignIcon = initializeIcons(screen.getSize()) ;
+		initializeIcons(screen.getSize()) ;
 		allItems = initializeAllItems() ;
 		NPCTypes = initializeNPCTypes(GameLanguage) ;
 		buildingTypes = initializeBuildingTypes() ;
@@ -982,7 +981,7 @@ public class Game extends JPanel
     	
     	player.InitializeSpells() ;
     	player.getSpellsTreeWindow().setSpells(player.getSpell().toArray(new Spell[0])) ;
-    	player.setMap(cityMaps[0]) ;
+    	player.setMap(fieldMaps[2]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
     	player.getSettings().setMusicIsOn(true) ;
     	for (int i = 0; i <= 2 - 1; i += 1)

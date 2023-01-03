@@ -29,7 +29,7 @@ public class FabWindow extends GameWindow
 	public FabWindow()
 	{
 		super(null, 0, 0, 0, 3) ;
-		image = new ImageIcon(Game.ImagesPath + "Book.png").getImage() ;
+		image = new ImageIcon(Game.ImagesPath + "\\Windows\\" + "Book.png").getImage() ;
 		//LoadCraftingRecipes() ;
 		//numberWindows = recipes.size() ;
 	}

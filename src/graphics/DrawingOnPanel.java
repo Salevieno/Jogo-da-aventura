@@ -42,16 +42,16 @@ public class DrawingOnPanel
 	private static Image buttonGeneral = new ImageIcon(Game.ImagesPath + "ButtonGeneral.png").getImage() ;
 	private static Image ArrowIconImage = new ImageIcon(Game.ImagesPath + "ArrowIcon.png").getImage() ;
 	public static Image[] ElementImages = new Image[] {
-			new ImageIcon(Game.ImagesPath + "ElementNeutral.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "ElementWater.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "ElementFire.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "ElementPlant.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "ElementEarth.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "ElementAir.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "ElementThunder.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "ElementLight.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "ElementDark.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "ElementSnow.png").getImage()} ;
+			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementNeutral.png").getImage(),
+			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementWater.png").getImage(),
+			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementFire.png").getImage(),
+			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementPlant.png").getImage(),
+			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementEarth.png").getImage(),
+			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementAir.png").getImage(),
+			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementThunder.png").getImage(),
+			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementLight.png").getImage(),
+			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementDark.png").getImage(),
+			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementSnow.png").getImage()} ;
 	
 	public DrawingOnPanel()
 	{
@@ -370,7 +370,7 @@ public class DrawingOnPanel
 		
 		DrawText(new Point((int)(0.5*screenSize.width), (int)(0.05*screenSize.height)), Align.center, stdAngle, "Slot " + (SlotID + 1), font, colorPalette[5]) ;
 		//player.DrawAttWindow(MainWinDim, WindowPos[0], null, AllText, AllTextCat, 0, GoldCoinImage, icons, DP) ;
-		player.getAttWindow().display(player, allText, player.getEquips(), player.getEquipsBonus(), player.getAttPoints(), new Point(0, 0), player.getPA(), player.getBA(), this) ;
+		player.getAttWindow().display(player, allText, player.getEquips(), player.getEquipsBonus(), new Point(0, 0), this) ;
 		if (0 < pet.getLife()[0])
 		{
  			//pet.getAttWindow().display(pet, allText, null, null, NumberOfUsedSlots, null, null, null, null);

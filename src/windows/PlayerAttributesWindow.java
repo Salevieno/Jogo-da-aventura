@@ -27,12 +27,13 @@ import utilities.UtilS;
 
 public class PlayerAttributesWindow extends GameWindow
 {
-	Icon[] addAttIcon ;
+	private Icon[] addAttIcon ;
+	
 	public PlayerAttributesWindow()
 	{
 		super(null, 0, 3, 0, 0) ;
-		Image PlusSignImage = new ImageIcon(Game.ImagesPath + "PlusSign.png").getImage() ;
-		Image SelectedPlusSignImage = new ImageIcon(Game.ImagesPath + "ShiningPlusSign.png").getImage() ;
+		Image PlusSignImage = new ImageIcon(Game.ImagesPath + "\\Icons\\" + "PlusSign.png").getImage() ;
+		Image SelectedPlusSignImage = new ImageIcon(Game.ImagesPath + "\\Icons\\" + "ShiningPlusSign.png").getImage() ;
 		addAttIcon = new Icon[7] ;
 		addAttIcon[0] = new Icon(0, "Plus sign", new Point(100, 100), null, PlusSignImage, SelectedPlusSignImage) ;
 		addAttIcon[1] = new Icon(1, "Plus sign", new Point(100, 120), null, PlusSignImage, SelectedPlusSignImage) ;
@@ -110,9 +111,11 @@ public class PlayerAttributesWindow extends GameWindow
 		}
 	}
 	
-	public void display(LiveBeing user, Map<String, String[]> allText, Equip[] Equips, double[][] EquipsBonus, int AttPoints, Point MousePos, PersonalAttributes PA, BattleAttributes BA, DrawingOnPanel DP)
+	public void display(LiveBeing user, Map<String, String[]> allText, Equip[] Equips, double[][] EquipsBonus, Point MousePos, DrawingOnPanel DP)
 	{
 		// Font "GothicE"
+		PersonalAttributes PA = user.getPA() ;
+		BattleAttributes BA = user.getBA() ; 
 		Dimension screenSize = Game.getScreen().getSize() ;
 		Point WindowPos = new Point((int) (0.2 * screenSize.width), (int)(0.3 * screenSize.height)) ;
 		Dimension attWindowSize = new Dimension(Player.AttWindowImages[0].getWidth(null), Player.AttWindowImages[0].getHeight(null)) ;
@@ -243,19 +246,20 @@ public class PlayerAttributesWindow extends GameWindow
 			
 		
 			//	Plus sign
-			if (0 < AttPoints)
-			{
-				for (int i = 0 ; i <= addAttIcon.length - 1 ; i += 1)
-				{
-					addAttIcon[i].display(TextAngle, Align.center, MousePos, DP) ;
-				}
-			}
+//			if (0 < AttPoints)
+//			{
+//				for (int i = 0 ; i <= addAttIcon.length - 1 ; i += 1)
+//				{
+//					addAttIcon[i].display(TextAngle, Align.center, MousePos, DP) ;
+//				}
+//			}
 		}
 		else if (tab == 1)
 		{
 			String[] specialAttrPropText = allText.get("* Propriedades dos atributos especiais *") ;
 			int L = attWindowSize.width ;
-			double sx = (double)0.15*L, sy = (double)(1.8*UtilG.TextH(font.getSize())) ;
+			double sx = 0.15 * L ;
+			double sy = 1.8 * font.getSize() ;
 			Color[] AttributeColor = new Color[] {ColorPalette[5], ColorPalette[5], ColorPalette[6], ColorPalette[3], ColorPalette[9]} ;
 			DP.DrawText(new Point(WindowPos.x + (int)(0.65*L), (int)(WindowPos.y + sy)), Align.center, TextAngle, specialAttrPropText[1], font, TextColor) ;	
 			DP.DrawText(new Point(WindowPos.x + (int)(0.375*L + sx), (int)(WindowPos.y + 2*sy)), Align.center, TextAngle, specialAttrPropText[2], font, TextColor) ;	

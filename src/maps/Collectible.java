@@ -19,7 +19,7 @@ public class Collectible
 	private int delay ;
 	private Image image ;
 
-	public static String[] CollectibleNames ;
+	public static final String[] CollectibleNames = new String[] {"Berry", "Herb", "Wood", "Metal"} ;
 	public static Image[] collectibleImages ;
 	
 	public Collectible(int type, int level, Point pos, int counter, int delay)
@@ -28,16 +28,15 @@ public class Collectible
 		this.level = level ;
 		this.pos = pos ;
 		this.counter = counter ;
-		this.delay = delay ;
-		
-		CollectibleNames = new String[] {"Berry", "Herb", "Wood", "Metal"} ;
+		this.delay = delay ;		
 
 		name = CollectibleNames[type] ;
 		
-	    Image BerryImage = new ImageIcon(Game.ImagesPath + "Col0_Berry.png").getImage() ;
-	    Image HerbImage = new ImageIcon(Game.ImagesPath + "Col1_Herb.png").getImage() ;
-	    Image WoodImage = new ImageIcon(Game.ImagesPath + "Col2_Wood.png").getImage() ;
-	    Image MetalImage = new ImageIcon(Game.ImagesPath + "Col3_Metal.png").getImage() ;
+		String path = Game.ImagesPath  + "\\Collect\\";
+	    Image BerryImage = new ImageIcon(path + "Col0_" + name + ".png").getImage() ;
+	    Image HerbImage = new ImageIcon(path + "Col1_" + name + ".png").getImage() ;
+	    Image WoodImage = new ImageIcon(path + "Col2_" + name + ".png").getImage() ;
+	    Image MetalImage = new ImageIcon(path + "Col3_" + name + ".png").getImage() ;
 		collectibleImages = new Image[] {BerryImage, HerbImage, WoodImage, MetalImage};
 		
 		image = collectibleImages[type] ;

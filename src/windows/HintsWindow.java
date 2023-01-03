@@ -17,7 +17,7 @@ public class HintsWindow extends GameWindow
 {
 	public HintsWindow()
 	{
-		super(new ImageIcon(Game.ImagesPath + "Hints.png").getImage(), 0, 0, 0, 0) ;
+		super(new ImageIcon(Game.ImagesPath + "\\Windows\\" + "Hints.png").getImage(), 0, 0, 0, 0) ;
 	}
 	
 	public void navigate(String action)

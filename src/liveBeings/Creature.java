@@ -55,7 +55,7 @@ public class Creature extends LiveBeing
 		PA.setPos(initialPos) ;
 		
 
-		if (getName().equals("Dragï¿½o") | getName().equals("Dragon"))
+		if (getName().equals("Dragão") | getName().equals("Dragon"))
 		{
 			getPA().setPos(Game.getScreen().getCenter()) ;
 		}
