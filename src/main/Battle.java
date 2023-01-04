@@ -311,6 +311,7 @@ public class Battle
 
 	public void BuffsAndNerfs(Player player, Pet pet, Creature creature, double[][] Buffs, int BuffNerfLevel, int effect, boolean SkillIsActive, String Target, String action)
 	{
+		// TODO reprogramar buffs and nerfs
 		int ActionMult = 1 ;
 		double[][] Buff = new double[14][5] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
 		double[] OriginalValue = new double[14] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
@@ -320,13 +321,14 @@ public class Battle
 		}
 		if (Target.equals("Player"))
 		{
-			// TODO criar método em battleatt que retorna lista com os basevalues
-			OriginalValue = new double[] {player.getLife().getMaxValue(), player.getMp().getMaxValue(), player.getBA().getPhyAtk().getBaseValue(),
+			OriginalValue = new double[] {player.getLife().getMaxValue(), player.getMp().getMaxValue(), 
+					player.getBA().getPhyAtk().getBaseValue(),
 					player.getBA().getMagAtk().getBaseValue(), player.getBA().getPhyDef().getBaseValue(), player.getBA().getMagDef().getBaseValue(),
 					player.getBA().getDex().getBaseValue(), player.getBA().getAgi().getBaseValue(), player.getBA().getCrit()[0], player.getBA().getStun()[0],
 					player.getBA().getBlock()[0], player.getBA().getBlood()[0], player.getBA().getBlood()[2], player.getBA().getBlood()[4],
 					player.getBA().getBlood()[6], player.getBA().getPoison()[0], player.getBA().getPoison()[2], player.getBA().getPoison()[4],
 					player.getBA().getPoison()[6], player.getBA().getSilence()[0]} ;
+			double[] battleAttValues = player.getBA().getBaseValues() ;
 		}
 		if (Target.equals("Pet"))
 		{
@@ -334,6 +336,7 @@ public class Battle
 					pet.getPhyDef().getBaseValue(), pet.getMagDef().getBaseValue(), pet.getDex().getBaseValue(), pet.getAgi().getBaseValue(),
 					pet.getCrit()[0], pet.getStun()[0], pet.getBlock()[0], pet.getBlood()[0], pet.getBlood()[2], pet.getBlood()[4], pet.getBlood()[6],
 					pet.getPoison()[0], pet.getPoison()[2], pet.getPoison()[4], pet.getPoison()[6], pet.getSilence()[0]} ;
+			double[] battleAttValues = pet.getBA().getBaseValues() ;
 		}
 		if (Target.equals("Creature"))
 		{
@@ -342,6 +345,7 @@ public class Battle
 					creature.getDex().getBaseValue(), creature.getAgi().getBaseValue(), creature.getCrit()[0], creature.getStun()[0],
 					creature.getBlock()[0], creature.getBlood()[0], creature.getBlood()[2], creature.getBlood()[4], creature.getBlood()[6],
 					creature.getPoison()[0], creature.getPoison()[2], creature.getPoison()[4], creature.getPoison()[6], creature.getSilence()[0]} ;
+			double[] battleAttValues = creature.getBA().getBaseValues() ;
 		}
 		if (effect == 11 | effect == 12)
 		{

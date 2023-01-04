@@ -1,5 +1,7 @@
 package liveBeings ;
 
+import java.util.List;
+
 public class BattleAttributes
 {
 	private BasicBattleAttribute PhyAtk ;	// 0: Base atk, 1: bonus, 2: train
@@ -174,6 +176,11 @@ public class BattleAttributes
 		return 0 < SpecialStatus[0] ;
 	}
 	
+	public double[] getBaseValues()
+	{
+		return new double[] {PhyAtk.getBaseValue(), MagAtk.getBaseValue(), PhyDef.getBaseValue(), MagDef.getBaseValue(), Dex.getBaseValue(), Agi.getBaseValue(),
+				Crit[0], Stun[0], Block[0], Blood[0], Blood[2], Blood[4], Blood[6], Poison[0], Poison[2], Poison[4],Poison[6], Silence[0]} ;
+	}
 	
 	public void receiveStatus(int[] AppliedStatus)
 	{
