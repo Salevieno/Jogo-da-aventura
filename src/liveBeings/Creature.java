@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
-import main.BattleActions;
+import main.Battle;
 import main.Game;
 import maps.GameMap;
 import screen.Screen;
@@ -241,8 +241,8 @@ public class Creature extends LiveBeing
 		
 		if (spellID == 0)	// magical atk
 		{
-			effect = BattleActions.CalcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock()[1]) ;
-			damage = BattleActions.CalcAtk(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {PA.Elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, 1, randomAmp) ; // player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
+			effect = Battle.CalcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock()[1]) ;
+			damage = Battle.CalcAtk(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {PA.Elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, 1, randomAmp) ; // player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
 		}
 		if (magicalType == 0)
 		{
@@ -256,7 +256,7 @@ public class Creature extends LiveBeing
 			}
 			if (spellID == 2)	// knockback
 			{
-				player.setPos(BattleActions.knockback(player.getPos(), 6 * PA.getStep(), PA)) ;
+				player.setPos(Battle.knockback(player.getPos(), 6 * PA.getStep(), PA)) ;
 			}
 		}
 		if (magicalType == 2)
