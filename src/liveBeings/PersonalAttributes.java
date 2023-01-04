@@ -17,26 +17,26 @@ public class PersonalAttributes
 	private int continent ;
 	private GameMap map ;
 	private Point Pos ;
-	private Directions dir ;				// direction of the movement
+	private Directions dir ;			// direction of the movement
 	private LiveBeingStates state ;		// current state
 	private Dimension size ;
-	private double[] Life ;		// 0: Current life, 1: max life]
-	private double[] Mp ;		// 0: Current mp, 1: max mp]
+	private BasicAttribute Life ;
+	private BasicAttribute Mp ;
 	private double Range ;
 	private int Step ;
-	private int[] Exp ;			// 0: Current exp, 1: max exp, 2: multiplier	TODO classe, incluindo gold
-	private int[] Satiation ;	// 0: Current satiation, 1: max satiation, 2: multiplier
-	private int[] Thirst ;		// 0: Current satiation, 1: max satiation, 2: multiplier
-	protected String[] Elem ;	// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
+	private BasicAttribute Exp ;
+	private BasicAttribute Satiation ;
+	private BasicAttribute Thirst ;
+	protected String[] Elem ;					// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
 	protected TimeCounter mpCounter ;			// counts the mp reduction
 	protected TimeCounter satiationCounter ;	// counts the satiation reduction
 	protected TimeCounter moveCounter ;			// counts the move
 	protected int stepCounter ;					// counts the steps in the movement	TODO -> TimeCounter ? (não é tempo, é step)
 	protected String currentAction; 
-	private ArrayList<String> combo ;		// record of the last 10 movements
+	private ArrayList<String> combo ;			// record of the last 10 movements
 	
 	public PersonalAttributes(String Name, int Level, int Job, int ProJob, GameMap map, Point Pos, Directions dir, LiveBeingStates state, Dimension size,
-			double[] Life, double[] Mp, double Range, int Step, int[] Exp, int[] Satiation, int[] Thirst, String[] Elem, int mpDuration, int satiationDuration,
+			BasicAttribute Life, BasicAttribute Mp, double Range, int Step, BasicAttribute Exp, BasicAttribute Satiation, BasicAttribute Thirst, String[] Elem, int mpDuration, int satiationDuration,
 			int moveDuration, int stepCounter, String currentAction)
 	{
 		this.Name = Name ;
@@ -79,13 +79,13 @@ public class PersonalAttributes
 	public LiveBeingStates getState() {return state ;}
 	public Point getPos() {return Pos ;}
 	public Dimension getSize() {return size ;}
-	public double[] getLife() {return Life ;}
-	public double[] getMp() {return Mp ;}
+	public BasicAttribute getLife() {return Life ;}
+	public BasicAttribute getMp() {return Mp ;}
 	public double getRange() {return Range ;}
 	public int getStep() {return Step ;}
-	public int[] getExp() {return Exp ;}
-	public int[] getSatiation() {return Satiation ;}
-	public int[] getThirst() {return Thirst ;}
+	public BasicAttribute getExp() {return Exp ;}
+	public BasicAttribute getSatiation() {return Satiation ;}
+	public BasicAttribute getThirst() {return Thirst ;}
 	public String[] getElem() {return Elem ;}
 	//public int[][] getActions() {return Actions ;}
 	public String getCurrentAction() {return currentAction ;}
@@ -106,13 +106,13 @@ public class PersonalAttributes
 	public void setState(LiveBeingStates newValue) {state = newValue ;}
 	public void setPos(Point newValue) {Pos = newValue ;}
 	public void setSize(Dimension newValue) {size = newValue ;}
-	public void setLife(double[] newValue) {Life = newValue ;}
-	public void setMp(double[] newValue) {Mp = newValue ;}
+	public void setLife(BasicAttribute newValue) {Life = newValue ;}
+	public void setMp(BasicAttribute newValue) {Mp = newValue ;}
 	public void setRange(double newValue) {Range = newValue ;}
 	public void setStep(int newValue) {Step = newValue ;}
-	public void setExp(int[] newValue) {Exp = newValue ;}
-	public void setSatiation(int[] newValue) {Satiation = newValue ;}
-	public void setThirst(int[] newValue) {Thirst = newValue ;}
+	public void setExp(BasicAttribute newValue) {Exp = newValue ;}
+	public void setSatiation(BasicAttribute newValue) {Satiation = newValue ;}
+	public void setThirst(BasicAttribute newValue) {Thirst = newValue ;}
 	public void setCombo(ArrayList<String> newValue) {combo = newValue ;}
 
 	public Directions randomDir()
@@ -150,11 +150,11 @@ public class PersonalAttributes
 		return newPos ;
 	}
 	
-	public void incLife(double amount)
+	/*public void incLife(int amount)
 	{
 		Life[0] = Math.max(0, Math.min(Life[0] + amount, Life[1])) ;	
 	}
-	public void incMP(double amount)
+	public void incMP(int amount)
 	{
 		Mp[0] = Math.max(0, Math.min(Mp[0] + amount, Mp[1])) ;	
 	}
@@ -165,6 +165,6 @@ public class PersonalAttributes
 	public void incThirst(int amount)
 	{
 		Thirst[0] = Math.max(0, Math.min(Thirst[0] + amount, Thirst[1])) ;	
-	}
+	}*/
 
 }

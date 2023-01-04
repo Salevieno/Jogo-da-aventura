@@ -197,8 +197,8 @@ public class BagWindow extends GameWindow
 					PotMult += 0.06 * player.getSpell().get(7).getLevel() ;
 				}
 				
-				player.getPA().incLife(pot.getLifeHeal() * player.getPA().getLife()[1] * PotMult) ;
-				player.getPA().incMP(pot.getMPHeal() * player.getPA().getMp()[1] * PotMult) ;
+				player.getPA().getLife().incCurrentValue((int) (pot.getLifeHeal() * player.getPA().getLife().getMaxValue() * PotMult)); ;
+				player.getPA().getMp().incCurrentValue((int) (pot.getMPHeal() * player.getPA().getMp().getMaxValue() * PotMult)); ;
 				
 				player.getBag().Remove(pot, 1);				
 			}

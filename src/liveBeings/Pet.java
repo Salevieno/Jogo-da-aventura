@@ -77,13 +77,13 @@ public class Pet extends LiveBeing
 		Directions dir = Directions.up ;
 		LiveBeingStates state = LiveBeingStates.idle ;
 		Dimension size = new Dimension (new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getWidth(null), new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getHeight(null)) ;	
-		double[] Life = new double[] {Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2])} ;
-		double[] Mp = new double[] {Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3])} ;
+		BasicAttribute Life = new BasicAttribute(Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2]), 1) ;
+		BasicAttribute Mp = new BasicAttribute(Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3]), 1) ;
 		int Range = Integer.parseInt(PetProperties.get(Job)[4]) ;
 		int Step = Integer.parseInt(PetProperties.get(Job)[32]) ;
-		int[] Exp = new int[] {0, 50, 1} ;
-		int[] Satiation = new int[] {100, 100, 1} ;
-		int[] Thirst = new int[] {100, 100, 0} ;
+		BasicAttribute Exp = new BasicAttribute(0, 50, 1) ;
+		BasicAttribute Satiation = new BasicAttribute(100, 100, 1) ;
+		BasicAttribute Thirst = new BasicAttribute(100, 100, 1) ;
 		String[] Elem = new String[] {"n", "n", "n", "n", "n"} ;
 		int mpDuration = Integer.parseInt(PetProperties.get(Job)[33]) ;
 		int satiationDuration = Integer.parseInt(PetProperties.get(Job)[34]) ;
@@ -234,8 +234,8 @@ public class Pet extends LiveBeing
 	public Point getPos() {return PA.getPos() ;}
 	public ArrayList<Spell> getSpells() {return spells ;}
 	public int getSpellPoints() {return spellPoints ;}
-	public double[] getLife() {return PA.getLife() ;}
-	public double[] getMp() {return PA.getMp() ;}
+	public BasicAttribute getLife() {return PA.getLife() ;}
+	public BasicAttribute getMp() {return PA.getMp() ;}
 	public double getRange() {return PA.getRange() ;}
 	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
 	public BasicBattleAttribute getMagAtk() {return BA.getMagAtk() ;}
@@ -253,8 +253,8 @@ public class Pet extends LiveBeing
 	public double[] getElemMult() {return ElemMult ;}
 	public int getLevel() {return PA.getLevel() ;}
 	public int getStep() {return PA.getStep() ;}
-	public int[] getExp() {return PA.getExp() ;}
-	public int[] getSatiation() {return PA.getSatiation() ;}
+	public BasicAttribute getExp() {return PA.getExp() ;}
+	public BasicAttribute getSatiation() {return PA.getSatiation() ;}
 	//public int[][] getActions() {return PA.Actions ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public ArrayList<String> getCombo() {return PA.getCombo() ;}
@@ -263,7 +263,7 @@ public class Pet extends LiveBeing
 
 	public boolean isAlive()
 	{
-		return (0 < PA.getLife()[0]) ;
+		return (0 < PA.getLife().getCurrentValue()) ;
 	}
 	
 	public Point CenterPos()
@@ -274,7 +274,7 @@ public class Pet extends LiveBeing
 	public String Action(String[] ActionKeys)
 	{
 		int move = -1 ;
-		if (10 <= PA.getMp()[0])	// if there is enough mp
+		if (10 <= PA.getMp().getCurrentValue())	// if there is enough mp
 		{
 			move = (int)(3*Math.random() - 0.01) ;	// consider using spell
 		}
@@ -336,6 +336,10 @@ public class Pet extends LiveBeing
 			PA.setPos(NextPos) ;
 		}
 	}
+	public void Dies()
+	{
+		PA.getLife().incCurrentValue(-PA.getLife().getMaxValue()) ;
+	}
 	public boolean actionIsAnAtk()
 	{
 		if (PA.getCurrentAction().equals(Pet.BattleKeys[0]))
@@ -384,46 +388,39 @@ public class Pet extends LiveBeing
 
 	public void TakeBloodAndPoisonDamage(Creature creature)
 	{
-		double BloodDamage = 0 ;
-		double PoisonDamage = 0 ;
+		int BloodDamage = 0 ;
+		int PoisonDamage = 0 ;
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
-			BloodDamage = Math.max(creature.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
+			BloodDamage = (int) Math.max(creature.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
 		}
 		if (0 < BA.getSpecialStatus()[3])	// Poison
 		{
-			PoisonDamage = Math.max(creature.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
+			PoisonDamage = (int) Math.max(creature.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
 		}
-		PA.getLife()[0] += -BloodDamage - PoisonDamage ;
+		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage) ;
 	}
 	public void Win(Creature creature)
 	{
-		PA.getExp()[0] += creature.getExp()[0]*PA.getExp()[2] ;
+		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())); ;
 	}
-	public boolean ShouldLevelUP()
-	{
-		if (getExp()[1] <= getExp()[0])
-		{
-			return true ;
-		}
-		return false ;
-	}
+	public boolean ShouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	public void LevelUp(Animations ani)
 	{
 		double[] attributesIncrease = CalcAttIncrease() ;
 		PA.setLevel(PA.getLevel() + 1) ;
 		spellPoints += 1 ;
-		PA.getLife()[1] += attributesIncrease[0] ;
-		PA.getLife()[0] = PA.getLife()[1] ;
-		PA.getMp()[1] += attributesIncrease[1] ;	
-		PA.getMp()[0] = PA.getMp()[1] ;
+		PA.getLife().incMaxValue((int) attributesIncrease[0]) ;
+		PA.getLife().setToMaximum() ;
+		PA.getMp().incMaxValue((int) attributesIncrease[1]) ;	
+		PA.getMp().setToMaximum() ;
 		BA.getPhyAtk().incBaseValue(attributesIncrease[2]) ;
 		BA.getMagAtk().incBaseValue(attributesIncrease[3]) ;
 		BA.getPhyDef().incBaseValue(attributesIncrease[4]) ;
 		BA.getMagDef().incBaseValue(attributesIncrease[5]) ;
 		BA.getAgi().incBaseValue(attributesIncrease[6]) ;
 		BA.getDex().incBaseValue(attributesIncrease[7]) ;
-		PA.getExp()[1] += attributesIncrease[8] ;		
+		PA.getExp().incMaxValue((int) attributesIncrease[8]) ;		
 
 		ani.SetAniVars(14, new Object[] {150, this, attributesIncrease}) ;
 		ani.StartAni(14) ;
@@ -455,8 +452,8 @@ public class Pet extends LiveBeing
 			bW.write("\nPet coords: \n" + getPos()) ;
 			//bW.write("\nPet skill: \n" + Arrays.toString(getSpells())) ;
 			bW.write("\nPet skillPoints: \n" + getSpellPoints()) ;
-			bW.write("\nPet life: \n" + Arrays.toString(getLife())) ;
-			bW.write("\nPet mp: \n" + Arrays.toString(getMp())) ;
+			//bW.write("\nPet life: \n" + Arrays.toString(getLife())) ;
+			//bW.write("\nPet mp: \n" + Arrays.toString(getMp())) ;
 			bW.write("\nPet range: \n" + getRange()) ;
 			//bW.write("\nPet phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
 			//bW.write("\nPet magAtk: \n" + Arrays.toString(getMagAtk())) ;
@@ -474,8 +471,8 @@ public class Pet extends LiveBeing
 			bW.write("\nPet elem mult: \n" + Arrays.toString(getElemMult())) ;
 			bW.write("\nPet level: \n" + getLevel()) ;
 			bW.write("\nPet step: \n" + getStep()) ;
-			bW.write("\nPet satiation: \n" + Arrays.toString(getSatiation())) ;
-			bW.write("\nPet exp: \n" + Arrays.toString(getExp())) ;
+			//bW.write("\nPet satiation: \n" + Arrays.toString(getSatiation())) ;
+			//bW.write("\nPet exp: \n" + Arrays.toString(getExp())) ;
 			bW.write("\nPet status: \n" + Arrays.toString(getBA().getSpecialStatus())) ; 
 			//bW.write("\nPet actions: \n" + Arrays.deepToString(getActions())) ; 
 			bW.write("\nPet battle actions: \n" + Arrays.deepToString(getBA().getBattleActions())) ; 

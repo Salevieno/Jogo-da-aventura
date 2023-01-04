@@ -125,7 +125,5 @@ public class FieldMap extends GameMap
 			}
 		}*/
 	}
-	
- 	
- 	
+	 	
 }

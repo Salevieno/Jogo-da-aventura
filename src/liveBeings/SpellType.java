@@ -12,7 +12,7 @@ public class SpellType
 {	
 	private String name ;
 	private int maxLevel ;
-	private double mpCost ;
+	private int mpCost ;
 	private SpellTypes type ;
 	private Map<SpellType, Integer> preRequisites ;
 	private int cooldown ;
@@ -38,7 +38,7 @@ public class SpellType
 	public static Image slotImage = new ImageIcon(Game.ImagesPath + "SkillSlot.png").getImage() ;
 	public static Image ElementalCicle = new ImageIcon(Game.ImagesPath + "ElementalCicle.png").getImage() ;
 	
-	public SpellType(String Name, int MaxLevel, double MpCost, SpellTypes type, Map<SpellType, Integer> preRequisites, int Cooldown, int Duration, double[][] Buffs, double[][] Nerfs,
+	public SpellType(String Name, int MaxLevel, int MpCost, SpellTypes type, Map<SpellType, Integer> preRequisites, int Cooldown, int Duration, double[][] Buffs, double[][] Nerfs,
 			double[] AtkMod, double[] DefMod, double[] DexMod, double[] AgiMod, double[] AtkCritMod, double[] DefCritMod, double[] StunMod, double[] BlockMod, double[] BloodMod,
 			double[] PoisonMod, double[] SilenceMod, String Elem, String[] Info)
 	{
@@ -69,7 +69,7 @@ public class SpellType
 	
 	public String getName() {return name ;}
 	public int getMaxLevel() {return maxLevel ;}
-	public double getMpCost() {return mpCost ;}
+	public int getMpCost() {return mpCost ;}
 	public SpellTypes getType() {return type ;}
 	public Map<SpellType, Integer> getPreRequisites() {return preRequisites ;}
 	public int getCooldown() {return cooldown ;}

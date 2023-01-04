@@ -57,8 +57,8 @@ public class BestiaryWindow extends GameWindow
 		// draw text
 		ArrayList<String> textInfo = new ArrayList<>() ;
 		textInfo.add(text[2] + ": " + creature.getPA().getLevel()) ;
-		textInfo.add(text[3] + ": " + (int)creature.getPA().getLife()[0]) ;
-		textInfo.add(text[4] + ": " + creature.getPA().getExp()[0]) ;
+		textInfo.add(text[3] + ": " + (int)creature.getPA().getLife().getCurrentValue()) ;
+		textInfo.add(text[4] + ": " + creature.getPA().getExp().getCurrentValue()) ;
 		textInfo.add(text[5] + ": " + creature.getGold()) ;
 		textInfo.add(text[6] + ": ") ;
 		for (int i = 0 ; i <= creature.getBag().length - 1 ; i += 1)

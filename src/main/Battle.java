@@ -185,15 +185,28 @@ public class Battle
 		}
 		if (Target.equals("Player"))
 		{
-			OriginalValue = new double[] {player.getLife()[1], player.getMp()[1], player.getBA().getPhyAtk().getBaseValue(), player.getBA().getMagAtk().getBaseValue(), player.getBA().getPhyDef().getBaseValue(), player.getBA().getMagDef().getBaseValue(), player.getBA().getDex().getBaseValue(), player.getBA().getAgi().getBaseValue(), player.getBA().getCrit()[0], player.getBA().getStun()[0], player.getBA().getBlock()[0], player.getBA().getBlood()[0], player.getBA().getBlood()[2], player.getBA().getBlood()[4], player.getBA().getBlood()[6], player.getBA().getPoison()[0], player.getBA().getPoison()[2], player.getBA().getPoison()[4], player.getBA().getPoison()[6], player.getBA().getSilence()[0]} ;
+			// TODO criar método em battleatt que retorna lista com os basevalues
+			OriginalValue = new double[] {player.getLife().getMaxValue(), player.getMp().getMaxValue(), player.getBA().getPhyAtk().getBaseValue(),
+					player.getBA().getMagAtk().getBaseValue(), player.getBA().getPhyDef().getBaseValue(), player.getBA().getMagDef().getBaseValue(),
+					player.getBA().getDex().getBaseValue(), player.getBA().getAgi().getBaseValue(), player.getBA().getCrit()[0], player.getBA().getStun()[0],
+					player.getBA().getBlock()[0], player.getBA().getBlood()[0], player.getBA().getBlood()[2], player.getBA().getBlood()[4],
+					player.getBA().getBlood()[6], player.getBA().getPoison()[0], player.getBA().getPoison()[2], player.getBA().getPoison()[4],
+					player.getBA().getPoison()[6], player.getBA().getSilence()[0]} ;
 		}
 		if (Target.equals("Pet"))
 		{
-			OriginalValue = new double[] {pet.getLife()[1], pet.getMp()[1], pet.getPhyAtk().getBaseValue(), pet.getMagAtk().getBaseValue(), pet.getPhyDef().getBaseValue(), pet.getMagDef().getBaseValue(), pet.getDex().getBaseValue(), pet.getAgi().getBaseValue(), pet.getCrit()[0], pet.getStun()[0], pet.getBlock()[0], pet.getBlood()[0], pet.getBlood()[2], pet.getBlood()[4], pet.getBlood()[6], pet.getPoison()[0], pet.getPoison()[2], pet.getPoison()[4], pet.getPoison()[6], pet.getSilence()[0]} ;
+			OriginalValue = new double[] {pet.getLife().getMaxValue(), pet.getMp().getMaxValue(), pet.getPhyAtk().getBaseValue(), pet.getMagAtk().getBaseValue(),
+					pet.getPhyDef().getBaseValue(), pet.getMagDef().getBaseValue(), pet.getDex().getBaseValue(), pet.getAgi().getBaseValue(),
+					pet.getCrit()[0], pet.getStun()[0], pet.getBlock()[0], pet.getBlood()[0], pet.getBlood()[2], pet.getBlood()[4], pet.getBlood()[6],
+					pet.getPoison()[0], pet.getPoison()[2], pet.getPoison()[4], pet.getPoison()[6], pet.getSilence()[0]} ;
 		}
 		if (Target.equals("Creature"))
 		{
-			OriginalValue = new double[] {creature.getLife()[1], creature.getMp()[1], creature.getPhyAtk().getBaseValue(), creature.getMagAtk().getBaseValue(), creature.getPhyDef().getBaseValue(), creature.getMagDef().getBaseValue(), creature.getDex().getBaseValue(), creature.getAgi().getBaseValue(), creature.getCrit()[0], creature.getStun()[0], creature.getBlock()[0], creature.getBlood()[0], creature.getBlood()[2], creature.getBlood()[4], creature.getBlood()[6], creature.getPoison()[0], creature.getPoison()[2], creature.getPoison()[4], creature.getPoison()[6], creature.getSilence()[0]} ;
+			OriginalValue = new double[] {creature.getLife().getMaxValue(), creature.getMp().getMaxValue(), creature.getPhyAtk().getBaseValue(),
+					creature.getMagAtk().getBaseValue(), creature.getPhyDef().getBaseValue(), creature.getMagDef().getBaseValue(),
+					creature.getDex().getBaseValue(), creature.getAgi().getBaseValue(), creature.getCrit()[0], creature.getStun()[0],
+					creature.getBlock()[0], creature.getBlood()[0], creature.getBlood()[2], creature.getBlood()[4], creature.getBlood()[6],
+					creature.getPoison()[0], creature.getPoison()[2], creature.getPoison()[4], creature.getPoison()[6], creature.getSilence()[0]} ;
 		}
 		if (effect == 11 | effect == 12)
 		{
@@ -232,8 +245,8 @@ public class Battle
 		}
 		if (Target.equals("Player") & !SkillIsActive)
 		{
-			player.getLife()[0] += Buff[0][0] ;
-			player.getMp()[0] += Buff[1][0] ;
+			player.getLife().incCurrentValue((int) Buff[0][0]); ;
+			player.getMp().incCurrentValue((int) Buff[1][0]); ;
 			player.getPhyAtk().incBonus(Buff[2][0]) ;
 			player.getMagAtk().incBonus(Buff[3][0]) ;
 			player.getPhyDef().incBonus(Buff[4][0]) ;
@@ -257,8 +270,8 @@ public class Battle
 		}
 		if (Target.equals("Pet") & !SkillIsActive)
 		{
-			pet.getLife()[0] += Buff[0][0] ;
-			pet.getMp()[0] += Buff[1][0] ;
+			pet.getLife().incCurrentValue((int) Buff[0][0]); ;
+			pet.getMp().incCurrentValue((int) Buff[1][0]); ;
 			pet.getPhyAtk().incBonus(Buff[2][0]) ;
 			pet.getMagAtk().incBonus(Buff[3][0]) ;
 			pet.getPhyDef().incBonus(Buff[4][0]) ;
@@ -282,8 +295,8 @@ public class Battle
 		}
 		if (Target.equals("Creature") & !SkillIsActive)
 		{
-			creature.getLife()[0] += -Buff[0][0] ;
-			creature.getMp()[0] += -Buff[1][0] ;
+			creature.getLife().incCurrentValue((int) -Buff[0][0]); ;
+			creature.getMp().incCurrentValue((int) -Buff[1][0]); ;
 			creature.getPhyAtk().incBonus(-Buff[2][0]) ;
 			creature.getMagAtk().incBonus(-Buff[3][0]) ;
 			creature.getPhyDef().incBonus(-Buff[4][0]) ;
@@ -512,7 +525,7 @@ public class Battle
 		double BasicAtkCrit = pet.getBA().TotalCritAtkChance() ;
 		double BasicDefCrit = creature.getBA().TotalCritDefChance() ;
 		double CreatureElemModif = 1 ;
-		if (spell.getMpCost() <= pet.getMp()[0])
+		if (spell.getMpCost() <= pet.getMp().getCurrentValue())
 		{
 			if (pet.getJob() == 0)
 			{
@@ -539,8 +552,8 @@ public class Battle
 				
 			}
 			damage = Math.max(0, damage) ;
-			creature.getLife()[0] += -UtilG.RandomMult(randomAmp) * damage ;		
-			pet.getMp()[0] += -spell.getMpCost() ;	
+			creature.getLife().incCurrentValue((int) (-UtilG.RandomMult(randomAmp) * damage)); ;		
+			pet.getMp().incCurrentValue(-spell.getMpCost()); ;	
 		}		
 		return new Object[] {damage, effect} ;
 	}
@@ -566,7 +579,7 @@ public class Battle
 			damage = BattleActions.CalcAtk(effect, player.getBA().TotalPhyAtk() + ArrowAtk, creature.getBA().TotalPhyDef(), player.getAtkElems(), creature.getDefElems(), 1, randomAmp) ;
 			if (effect.equals("Hit"))
 			{
-				creature.getPA().incLife(-damage) ;
+				creature.getPA().getLife().incCurrentValue(-damage);;
 				int[] inflictedStatus = BattleActions.CalcStatus(new double[] {player.getBA().TotalStunAtkChance(), creature.getBA().TotalStunDefChance(), player.getBA().StunDuration()},
 						new double[] {player.getBA().TotalBlockAtkChance(), creature.getBA().TotalBlockDefChance(), player.getBA().BlockDuration()},
 						new double[] {player.getBA().TotalBloodAtkChance(), creature.getBA().TotalBloodDefChance(), player.getBA().BloodDuration()},
@@ -622,7 +635,7 @@ public class Battle
 				//effect = AtkResult[1] ;
 				if (effect <= 1)
 				{
-					creature.getLife()[0] += -damage ;
+					creature.getLife().incCurrentValue(-damage); ;
 					inflictedStatus = BattleActions.CalcStatus(new double[] {petBA.TotalStunAtkChance(), creatureBA.TotalStunDefChance(), petBA.StunDuration()}, new double[] {petBA.TotalBlockAtkChance(), creatureBA.TotalBlockDefChance(), petBA.BlockDuration()}, new double[] {petBA.TotalBloodAtkChance(), creatureBA.TotalBloodDefChance(), petBA.BloodDuration()}, new double[] {petBA.TotalPoisonAtkChance(), creatureBA.TotalPoisonDefChance(), petBA.PoisonDuration()}, new double[] {petBA.TotalSilenceAtkChance(), creatureBA.TotalSilenceDefChance(), petBA.SilenceDuration()}) ;
 					creatureBA.receiveStatus(inflictedStatus) ;
 				}
@@ -676,7 +689,7 @@ public class Battle
 		creature.fight(Player.ActionKeys) ;
 		creature.UpdateCombo() ;
 		CreatureTarget = 0 ;
-		if (0 < pet.getLife()[0])
+		if (pet.isAlive())
 		{
 			CreatureTarget = (int)(2*Math.random() - 0.01) ;
 		}
@@ -703,7 +716,7 @@ public class Battle
 					}
 					if (effect.equals("Hit"))	// Hit
 					{
-						player.getLife()[0] += -damage ;
+						player.getLife().incCurrentValue(-damage); ;
 						Status = BattleActions.CalcStatus(new double[] {creatureBA.TotalStunAtkChance(), playerBA.TotalStunDefChance(), creatureBA.StunDuration()}, new double[] {creatureBA.TotalBlockAtkChance(), playerBA.TotalBlockDefChance(), creatureBA.BlockDuration()}, new double[] {creatureBA.TotalBloodAtkChance(), playerBA.TotalBloodDefChance(), creatureBA.BloodDuration()}, new double[] {creatureBA.TotalPoisonAtkChance(), playerBA.TotalPoisonDefChance(), creatureBA.PoisonDuration()}, new double[] {creatureBA.TotalSilenceAtkChance(), playerBA.TotalSilenceDefChance(), creatureBA.SilenceDuration()}) ;
 						playerBA.receiveStatus(Status) ;
 					}
@@ -719,16 +732,16 @@ public class Battle
 						effect = BattleActions.CalcEffect(creatureBA.TotalDex(), petBA.TotalAgi(), creatureBA.TotalCritAtkChance(), petBA.TotalCritDefChance(), pet.getBlock()[1]) ;
 						damage = BattleActions.CalcAtk(effect, creatureBA.TotalPhyAtk(), petBA.TotalPhyDef(), new String[] {creature.getElem()[0], "n", "n"}, new String[] {pet.getElem()[2], pet.getElem()[3]}, pet.getElemMult()[UtilS.ElementID(creature.getElem()[0])], randomAmp) ;
 					}
-					else if (-1 < UtilG.IndexOf(Player.SpellKeys, creature.getAction()) & !creature.isSilent() & MpCost <= creature.getMp()[0])	// Magical atk
+					else if (-1 < UtilG.IndexOf(Player.SpellKeys, creature.getAction()) & !creature.isSilent() & MpCost <= creature.getMp().getCurrentValue())	// Magical atk
 					{	
 						effect = BattleActions.CalcEffect(creatureBA.TotalDex(), petBA.TotalAgi(), creatureBA.TotalCritAtkChance(), petBA.TotalCritDefChance(), pet.getBlock()[1]) ;
 						damage = BattleActions.CalcAtk(effect, creatureBA.TotalMagAtk(), petBA.TotalMagDef(), new String[] {creature.getElem()[0], "n", "n"}, new String[] {pet.getElem()[2], pet.getElem()[3]}, pet.getElemMult()[UtilS.ElementID(creature.getElem()[0])], randomAmp) ;
-						creature.getMp()[0] += -MpCost ;
+						creature.getMp().incCurrentValue(-MpCost); ;
 						creature.ResetBattleActions() ;
 					}
 					if (effect.equals("Hit"))	// Hit
 					{
-						pet.getLife()[0] += -damage ;
+						pet.getLife().incCurrentValue(-damage); ;
 						Status = BattleActions.CalcStatus(new double[] {creatureBA.TotalStunAtkChance(), petBA.TotalStunDefChance(), creatureBA.StunDuration()}, new double[] {creatureBA.TotalBlockAtkChance(), petBA.TotalBlockDefChance(), creatureBA.BlockDuration()}, new double[] {creatureBA.TotalBloodAtkChance(), petBA.TotalBloodDefChance(), creatureBA.BloodDuration()}, new double[] {creatureBA.TotalPoisonAtkChance(), petBA.TotalPoisonDefChance(), creatureBA.PoisonDuration()}, new double[] {creatureBA.TotalSilenceAtkChance(), petBA.TotalSilenceDefChance(), creatureBA.SilenceDuration()}) ;
 						petBA.receiveStatus(Status) ;
 					}
@@ -799,7 +812,7 @@ public class Battle
 		ShowAtkDurations[2][0] = creature.getBA().getBattleActions()[0][1]/2 ;
 		IncrementCounters() ;
 		ActivateCounters(player, pet, creature) ;
-		if (0 < player.getLife()[0])
+		if (player.isAlive())
 		{
 			player.DrawTimeBar(creature, DP) ;
 			player.TakeBloodAndPoisonDamage(creature.getBA().TotalBloodAtk(), creature.getBA().TotalPoisonAtk()) ;
@@ -841,7 +854,7 @@ public class Battle
 			player.ShowEffectsAndStatusAnimation(creature, DP) ;
 			player.getBA().decreaseStatus() ;
 		}
-		if (0 < pet.getLife()[0])
+		if (pet.isAlive())
 		{
 			//DF.DrawTimeBar(pet.getPos(), pet.getBA().getBattleActions()[0][0], pet.getBA().getBattleActions()[0][1], pet.getSize()[1], new int[] {(BattleIconImages[0].getWidth(null) + 5), 0}, Uts.RelPos(pet.getPos(), creature.getPos()), "Vertical", Color.green) ;
 			pet.TakeBloodAndPoisonDamage(creature) ;
@@ -861,7 +874,7 @@ public class Battle
 			//DF.ShowEffectsAndStatusAnimation(pet.getPos(), Uts.MirrorFromRelPos(Uts.RelPos(pet.getPos(), creature.getPos())), new int[] {10, (int)(0.8*pet.getSize()[1])}, BattleIconImages, pet.getBA().getSpecialStatus(), new boolean[] {pet.isDefending()}) ;
 			pet.getBA().decreaseStatus() ;
 		}
-		if (0 < creature.getLife()[0])
+		if (creature.isAlive())
 		{
 			//DF.DrawTimeBar(creature.getPos(), creature.getBA().getBattleActions()[0][0], creature.getBA().getBattleActions()[0][1], creature.getSize()[1], new int[] {creature.getSize()[0] / 2 + (BattleIconImages[0].getWidth(null) + 5), -creature.getSize()[1] / 6}, Uts.RelPos(creature.getPos(), player.getPos()), "Vertical", Color.blue) ;
 			//creature.TakeBloodAndPoisonDamage(player, SkillBuffIsActive) ;
@@ -877,7 +890,7 @@ public class Battle
 				}
 				if (player.getJob() == 4 & Math.random() < 0.2*player.getSpell().get(11).getLevel() & effect.equals("Crit"))	// Surprise attack
 				{
-					creature.getLife()[0] += -Math.min(0.5 * damage, 2*player.getPhyAtk().getBaseValue()) ;
+					creature.getLife().incCurrentValue((int) -Math.min(0.5 * damage, 2*player.getPhyAtk().getBaseValue())); ;
 					// needs to show the atk animation
 					SkillBuffIsActive[11][0] = true ;
 				}
@@ -889,18 +902,18 @@ public class Battle
 				player.updatedefensiveStats(damage, effect, creature.actionIsASpell(), creature) ;
 				
 				System.out.println();
-				System.out.println("creature life: " + creature.getLife()[0]);
-				System.out.println("creature mp: " + creature.getMp()[0]);
+				System.out.println("creature life: " + creature.getLife().getCurrentValue());
+				System.out.println("creature mp: " + creature.getMp().getCurrentValue());
 				System.out.println("creature action: " + creature.getAction());
 				System.out.println("creature def: " + creature.getMagDef().getBonus());
-				System.out.println("player life: " + player.getLife()[0]);
+				System.out.println("player life: " + player.getLife().getCurrentValue());
 				System.out.println("player pos: " + player.getPos());
 			}
 			//DF.ShowEffectsAndStatusAnimation(creature.getPos(), Uts.MirrorFromRelPos(Uts.RelPos(creature.getPos(), player.getPos())), new int[] {13, (int)(0.8*creature.getSize()[1])}, BattleIconImages, creature.getBA().getSpecialStatus(), new boolean[] {creature.isDefending()}) ;
 			creature.getBA().decreaseStatus() ;
 			//DF.DrawCreatureAttributes(creature) ;
 		}
-		if (creature.getLife()[0] <= 0 | player.getLife()[0] <= 0)
+		if (!creature.isAlive() | !player.isAlive())
 		{	
 			FinishBattle(player, pet, creature, quest) ;
 		}
@@ -914,9 +927,7 @@ public class Battle
 		ArrayList<Spell> playerSpell = player.getSpell() ;
 		player.getPA().setState(LiveBeingStates.idle) ;
 		player.resetOpponent() ;
-		creature.getLife()[0] = creature.getLife()[1] ;
-		creature.getMp()[0] = creature.getMp()[1] ;
-		creature.setFollow(false) ;
+		creature.Dies();
 		
 		// reset buffs
 		for (int i = 0 ; i <= playerSpell.get(0).getBuffs().length - 1 ; ++i)
@@ -945,20 +956,20 @@ public class Battle
 		Show[1][0] = false ;
 		Show[2][0] = false ;
 		
-		if (0 < player.getLife()[0])	// If the player is alive
+		if (player.isAlive())
 		{
 			player.Win(creature, quest, Ani) ;
-			if (0 < pet.getLife()[0])
+			if (pet.isAlive())
 			{
 				pet.Win(creature) ;
 			}
 			creature.setRandomPos() ;
 			player.getPA().setCurrentAction("") ;
 		}
-		else	// if the player is dead
+		else
 		{
 			player.Dies() ;
-			if (0 < pet.getLife()[0])
+			if (pet.isAlive())
 			{
 				pet.getPA().setPos(player.getPos()) ;
 			}			

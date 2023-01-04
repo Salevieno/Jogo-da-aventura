@@ -92,29 +92,9 @@ public class LiveBeing
 		}
 	}
 	
-	public boolean isAlive()
-	{
-		return 0 < PA.getLife()[0] ;
-	}
-	public boolean canAtk()
-	{
-		if (BA.getBattleActions()[0][2] == 1 & !BA.isStun())
-		{
-			return true ;
-		}
-		else
-		{
-			return false ;
-		}
-	}
-	public boolean isSilent()
-	{
-		if (BA.getSpecialStatus()[4] <= 0)
-		{
-			return false ;
-		}
-		return true ;
-	}
+	public boolean isAlive() {return 0 < PA.getLife().getCurrentValue() ;}
+	public boolean canAtk() {return BA.getBattleActions()[0][2] == 1 & !BA.isStun() ;}
+	public boolean isSilent() {return BA.getSpecialStatus()[4] <= 0 ;}
 	public boolean isDefending()
 	{
 		// TODO
@@ -174,31 +154,17 @@ public class LiveBeing
 		
 		ArrayList<Double> attRate = new ArrayList<>() ;
 		ArrayList<Color> attColor = new ArrayList<>() ;
-		if (2 <= PA.getLife().length)
-		{
-			attRate.add(PA.getLife()[0] / PA.getLife()[1]) ;
-			attColor.add(colorPalette[6]) ;
-		}
-		if (2 <= PA.getMp().length)
-		{
-			attRate.add(PA.getMp()[0] / PA.getMp()[1]) ;
-			attColor.add(colorPalette[5]) ;
-		}
-		if (2 <= PA.getExp().length)
-		{
-			attRate.add((double) (PA.getExp()[0] / PA.getExp()[1])) ;
-			attColor.add(colorPalette[1]) ;
-		}
-		if (2 <= PA.getSatiation().length)
-		{
-			attRate.add((double) (PA.getSatiation()[0] / PA.getSatiation()[1])) ;
-			attColor.add(colorPalette[2]) ;
-		}
-		if (2 <= PA.getThirst().length)
-		{
-			attRate.add((double) (PA.getThirst()[0] / PA.getThirst()[1])) ;
-			attColor.add(colorPalette[0]) ;
-		}
+		
+		attRate.add(PA.getLife().getRate()) ;
+		attColor.add(colorPalette[6]) ;
+		attRate.add(PA.getMp().getRate()) ;
+		attColor.add(colorPalette[5]) ;
+		attRate.add(PA.getExp().getRate()) ;
+		attColor.add(colorPalette[1]) ;
+		attRate.add(PA.getSatiation().getRate()) ;
+		attColor.add(colorPalette[2]) ;
+		attRate.add(PA.getThirst().getRate()) ;
+		attColor.add(colorPalette[0]) ;
 		
 		if (style == 0)
 		{

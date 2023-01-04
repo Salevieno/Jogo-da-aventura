@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel ;
 
 import org.json.simple.JSONObject;
@@ -256,6 +257,19 @@ public abstract class UtilG
 		}
 	}	
 */
+	
+	public static Image loadImage(String path, String name, String extension) throws Exception
+	{
+		try
+		{
+			return new ImageIcon(path + name + extension).getImage() ;
+		}
+		catch (Exception FileNotFoundException)
+		{
+			System.out.println("Tentando carregar uma imagem não encontrada!") ;
+			return null ;
+		}
+	}
 	
 	public static BufferedImage toBufferedImage(Image img)
 	{

@@ -30,13 +30,13 @@ public class Creature extends LiveBeing
 	private Color color ;
 	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 	private String[] Combo ;		// Record of the last movement
-	private boolean Follow ;	
-	public int countmove = 0 ;
+	private boolean follow ;	
+	public int countmove ;
 	
 	private static Color[] skinColor = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1]} ;
 	private static Color[] shadeColor = new Color[] {Game.ColorPalette[2], Game.ColorPalette[3]} ;
 	
-	public static String[] SpellKeys = new String[] {"0", "1", "2", "3"} ;
+	public static final String[] SpellKeys = new String[] {"0", "1", "2", "3"} ;
 	
  	public Creature(CreatureTypes CT)
 	{
@@ -60,7 +60,8 @@ public class Creature extends LiveBeing
 			getPA().setPos(Game.getScreen().getCenter()) ;
 		}
 		
-		Follow = false ;
+		follow = false ;
+		countmove = 0 ;
 	}
 
 	public CreatureTypes getType() {return type ;}
@@ -70,8 +71,8 @@ public class Creature extends LiveBeing
 	public Dimension getSize() {return PA.getSize() ;}
 	public Point getPos() {return PA.getPos() ;}
 	public ArrayList<Spell> getSpell() {return spells ;}
-	public double[] getLife() {return PA.getLife() ;}
-	public double[] getMp() {return PA.getMp() ;}
+	public BasicAttribute getLife() {return PA.getLife() ;}
+	public BasicAttribute getMp() {return PA.getMp() ;}
 	public double getRange() {return PA.getRange() ;}
 	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
 	public BasicBattleAttribute getMagAtk() {return BA.getMagAtk() ;}
@@ -86,7 +87,7 @@ public class Creature extends LiveBeing
 	public double[] getPoison() {return BA.getPoison() ;}
 	public double[] getSilence() {return BA.getSilence() ;}
 	public String[] getElem() {return PA.Elem ;}
-	public int[] getExp() {return PA.getExp() ;}
+	public BasicAttribute getExp() {return PA.getExp() ;}
 	public int[] getBag() {return Bag ;}
 	public int getGold() {return Gold ;}
 	public int getStep() {return PA.getStep() ;}
@@ -95,10 +96,10 @@ public class Creature extends LiveBeing
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public String getAction() {return PA.getCurrentAction() ;}
 	public String[] getCombo() {return Combo ;}
-	public boolean getFollow() {return Follow ;}
+	public boolean getFollow() {return follow ;}
 	public void setPos(Point newValue) {PA.setPos(newValue) ;}
 	public void setCombo(String[] C) {Combo = C ;}
-	public void setFollow(boolean F) {Follow = F ;}
+	public void setFollow(boolean F) {follow = F ;}
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
 	public void setCurrentAction(String newValue) {PA.currentAction = newValue ;}
@@ -110,7 +111,7 @@ public class Creature extends LiveBeing
 	public boolean hasEnoughMP(int spellID)
 	{
 		int MPcost = 10 * spellID ;
-		return (MPcost <= PA.getMp()[0]) ;
+		return (MPcost <= PA.getMp().getCurrentValue()) ;
 	}
 	public boolean actionIsASpell()
 	{
@@ -208,7 +209,7 @@ public class Creature extends LiveBeing
 	public void fight(String[] ActionKeys)
 	{
 		int move = -1 ;
-		if (10 <= PA.getMp()[0])
+		if (10 <= PA.getMp().getCurrentValue())
 		{
 			move = (int)(3*Math.random() - 0.01) ;
 		}
@@ -251,7 +252,7 @@ public class Creature extends LiveBeing
 		{
 			if (spellID == 1)	// heal
 			{
-				PA.incLife(BA.TotalMagAtk());
+				PA.getLife().incCurrentValue((int) BA.TotalMagAtk());;
 			}
 			if (spellID == 2)	// knockback
 			{
@@ -292,7 +293,8 @@ public class Creature extends LiveBeing
 			}
 		}
 
-		PA.getMp()[0] += -MPCost ;
+		PA.getMp().incCurrentValue(-MPCost) ;
+		
 		return damage ;
 	}
 	public void Follow(Point Pos, Point Target, int step, double mindist)
@@ -342,7 +344,12 @@ public class Creature extends LiveBeing
 		//}
 	}
 
-
+	public void Dies()
+	{
+		PA.getLife().setToMaximum() ;
+		PA.getMp().setToMaximum() ;
+		follow = false ;
+	}
 	public void ActivateActionCounters()
 	{
 		/*if (PA.Actions[0][0] % PA.Actions[0][1] == 0)
@@ -382,7 +389,7 @@ public class Creature extends LiveBeing
 		{
 			Buffs = spells.getNerfs() ;
 		}
-		OriginalValue = new double[] {PA.getLife()[1], PA.getMp()[1], BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(), BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(),
+		OriginalValue = new double[] {PA.getLife().getMaxValue(), PA.getMp().getMaxValue(), BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(), BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(),
 				BA.getCrit()[0],
 				BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2], BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
 		if (action.equals("deactivate"))
@@ -424,8 +431,8 @@ public class Creature extends LiveBeing
 		}
 		if (!SpellIsActive)
 		{
-			PA.getLife()[0] += Buff[0][0] ;
-			PA.getMp()[0] += Buff[1][0] ;
+			PA.getLife().incCurrentValue((int) Buff[0][0]) ;
+			PA.getMp().incCurrentValue((int) Buff[1][0]) ;
 			BA.getPhyAtk().incBonus(Buff[2][0]) ;
 			BA.getMagAtk().incBonus(Buff[3][0]) ;
 			BA.getPhyDef().incBonus(Buff[4][0]) ;
@@ -450,17 +457,17 @@ public class Creature extends LiveBeing
 	}
 	public void TakeBloodAndPoisonDamage(Player player, boolean[][] SpellBuffIsActive)
 	{
-		double BloodDamage = 0 ;
-		double PoisonDamage = 0 ;
+		int BloodDamage = 0 ;
+		int PoisonDamage = 0 ;
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
-			BloodDamage = Math.max(player.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
+			BloodDamage = (int) Math.max(player.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
 		}
 		if (0 < BA.getSpecialStatus()[3])	// Poison
 		{
-			PoisonDamage = Math.max(player.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
+			PoisonDamage = (int) Math.max(player.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
 		}
-		PA.getLife()[0] += -BloodDamage - PoisonDamage ;
+		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage); ;
 		if (0 < BloodDamage)
 		{
 			player.getStats()[17] += BloodDamage ;
@@ -471,26 +478,22 @@ public class Creature extends LiveBeing
 		}
 		if (player.getJob() == 4 & 0 < player.getSpell().get(6).getLevel() & SpellBuffIsActive[6][0])	// Tasty
 		{
-			player.getLife()[0] += BloodDamage ;
-			if (player.getLife()[1] < player.getLife()[0])
-			{
-				player.getLife()[0] = player.getLife()[1] ;
-			}
+			player.getLife().incCurrentValue(BloodDamage) ;	// TODO add ALL blood damage?
 		}
 	}
 	public void TakeBloodAndPoisonDamage(Pet pet)
 	{
-		double BloodDamage = 0 ;
-		double PoisonDamage = 0 ;
+		int BloodDamage = 0 ;
+		int PoisonDamage = 0 ;
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
-			BloodDamage = Math.max(pet.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
+			BloodDamage = (int) Math.max(pet.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
 		}
 		if (0 < BA.getSpecialStatus()[3])	// Poison
 		{
-			PoisonDamage = Math.max(pet.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
+			PoisonDamage = (int) Math.max(pet.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
 		}
-		PA.getLife()[0] += -BloodDamage - PoisonDamage ;
+		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage); ;
 	}
 	public void Think()
 	{

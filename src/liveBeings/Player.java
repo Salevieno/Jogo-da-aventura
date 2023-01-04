@@ -14,7 +14,6 @@ import java.util.Arrays ;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.sound.sampled.Clip ;
 import javax.swing.ImageIcon ;
 
 import org.json.simple.JSONObject;
@@ -27,7 +26,6 @@ import components.NPCs;
 import components.Quests;
 import components.SpellTypes;
 import graphics.Animations;
-import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import items.Alchemy;
 import items.Arrow;
@@ -255,13 +253,13 @@ public class Player extends LiveBeing
 		LiveBeingStates state = LiveBeingStates.idle ;
 	    Image PlayerBack = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerBack.png").getImage() ;
 	    Dimension Size = new Dimension (PlayerBack.getWidth(null), PlayerBack.getHeight(null)) ;
-		double[] Life = new double[] {Double.parseDouble(Properties.get(Job)[2]), Double.parseDouble(Properties.get(Job)[2])} ;
-		double[] Mp = new double[] {Double.parseDouble(Properties.get(Job)[3]), Double.parseDouble(Properties.get(Job)[3])} ;
+	    BasicAttribute Life = new BasicAttribute(Integer.parseInt(Properties.get(Job)[2]), Integer.parseInt(Properties.get(Job)[2]), 1) ;
+	    BasicAttribute Mp = new BasicAttribute(Integer.parseInt(Properties.get(Job)[3]), Integer.parseInt(Properties.get(Job)[3]), 1) ;
 		double Range = Double.parseDouble(Properties.get(Job)[4]) ;
 		int Step = Integer.parseInt(Properties.get(Job)[33]) ;
-		int[] Exp = new int[] {0, 5, Integer.parseInt(Properties.get(Job)[34])} ;
-		int[] Satiation = new int[] {100, 100, Integer.parseInt(Properties.get(Job)[35])} ;
-		int[] Thirst = new int[] {100, 100, Integer.parseInt(Properties.get(Job)[36])} ;
+		BasicAttribute Exp = new BasicAttribute(0, 5, Integer.parseInt(Properties.get(Job)[34])) ;
+		BasicAttribute Satiation = new BasicAttribute(100, 100, Integer.parseInt(Properties.get(Job)[35])) ;
+		BasicAttribute Thirst = new BasicAttribute(100, 100, Integer.parseInt(Properties.get(Job)[36])) ;
 		String[] Elem = new String[] {"n", "n", "n", "n", "n"} ;
 		int mpDuration = Integer.parseInt(Properties.get(Job)[37]) ;
 		int satiationDuration = Integer.parseInt(Properties.get(Job)[38]) ;
@@ -423,8 +421,8 @@ public class Player extends LiveBeing
 	public BagWindow getBag() {return bag ;}
 	public Equip[] getEquips() {return equips ;}
 	public int getSpellPoints() {return spellPoints ;}
-	public double[] getLife() {return PA.getLife() ;}
-	public double[] getMp() {return PA.getMp() ;}
+	public BasicAttribute getLife() {return PA.getLife() ;}
+	public BasicAttribute getMp() {return PA.getMp() ;}
 	public double getRange() {return PA.getRange() ;}
 	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
 	public BasicBattleAttribute getMagAtk() {return BA.getMagAtk() ;}
@@ -443,9 +441,9 @@ public class Player extends LiveBeing
 	public int getLevel() {return PA.getLevel() ;}
 	public int[] getGold() {return gold ;}
 	public int getStep() {return PA.getStep() ;}
-	public int[] getExp() {return PA.getExp() ;}
-	public int[] getSatiation() {return PA.getSatiation() ;}
-	public int[] getThirst() {return PA.getThirst() ;}
+	public BasicAttribute getExp() {return PA.getExp() ;}
+	public BasicAttribute getSatiation() {return PA.getSatiation() ;}
+	public BasicAttribute getThirst() {return PA.getThirst() ;}
 	public Map<String, Boolean> getQuestSkills() {return questSkills ;}
 	public double[] getStats() {return statistics ;}
 	public ArrayList<String> getCombo() {return PA.getCombo() ;}
@@ -591,45 +589,15 @@ public class Player extends LiveBeing
 	
 	
 	
-	public void addSpellPoint(int amount)
-	{
-		spellPoints += amount;
-	}
+	public void addSpellPoint(int amount) {spellPoints += amount ;}
 	public void incRange(double incR) {PA.setRange(PA.getRange() + incR) ;}
 	public void incAttPoints(int amount) {attPoints += amount ;}
-	public void decAttPoints(int amount) {attPoints += -amount ;}
-	
-	
-	public boolean actionIsASpell()
-	{
-		if (UtilG.ArrayContains(Player.SpellKeys, PA.getCurrentAction()))
-		{
-			return true ;
-		}
-		return false ;
-	}
-	public boolean actionIsAnAtk()
-	{
-		if (PA.getCurrentAction().equals(Player.BattleKeys[0]))
-		{
-			return true ;
-		}
-		return false ;
-	}
-	public boolean hasTheSpell(String action)
-	{
-		if (UtilG.IndexOf(Player.SpellKeys, action) < GetActiveSpells().size())
-		{
-			return true ;
-		}
-		return false ;
-	}
-	public boolean hasEnoughMP(Spell spell)
-	{
-		return (spell.getMpCost() <= PA.getMp()[0]);
-	}
-
-	
+	public void decAttPoints(int amount) {attPoints += -amount ;}	
+	public boolean actionIsASpell()	{return UtilG.ArrayContains(Player.SpellKeys, PA.getCurrentAction()) ;}
+	public boolean actionIsAnAtk() {return PA.getCurrentAction().equals(Player.BattleKeys[0]) ;}
+	public boolean hasTheSpell(String action) {return UtilG.IndexOf(Player.SpellKeys, action) < GetActiveSpells().size() ;}
+	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
+	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}	
 	
 
 	public void move(Pet pet, Animations Ani)
@@ -657,7 +625,6 @@ public class Player extends LiveBeing
 		
 		PA.stepCounter = (PA.stepCounter + 1) % moveRange ;
 	}
-	
 	public void act(Pet pet, GameMap[] maps, Point MousePos, Icon[] sideBarIcons, Animations Ani)
 	{
 		if (actionIsAMove())
@@ -685,7 +652,7 @@ public class Player extends LiveBeing
 						case 3: if (questSkills.get(PA.getMap().getContinentName(this))) map.open() ; break ;
 						case 4: fabWindow.open() ; break ;
 						case 5: attWindow.open() ; break ;
-						case 6: if (0 < pet.getLife()[0]) pet.getAttWindow().open() ; break ;
+						case 6: if (pet.isAlive()) pet.getAttWindow().open() ; break ;
 					}
 				}
 			}
@@ -792,9 +759,7 @@ public class Player extends LiveBeing
 		UpdateCombo() ;
 		ResetAction() ;
 	}
-	
-
-	public void meet(Creature[] creatures, ArrayList<NPCs> npc, DrawingOnPanel DP, Animations ani)
+	public void meet(Creature[] creatures, List<NPCs> npc, DrawingOnPanel DP, Animations ani)
 	{
 		double distx, disty ;
 		GameMap currentMap = PA.getMap() ;
@@ -802,9 +767,8 @@ public class Player extends LiveBeing
 		{
 			FieldMap fm = (FieldMap) getMap() ;
 			
-			/* Meeting with collectibles */
-			ArrayList<Collectible> collectibles = fm.getCollectibles() ;
-			//System.out.println(collectibles) ;
+			// Meeting with collectibles
+			List<Collectible> collectibles = fm.getCollectibles() ;
 			for (int c = 0 ; c <= collectibles.size() - 1 ; c += 1)
 			{
 				distx = (double) Math.abs(PA.getPos().x - collectibles.get(c).getPos().x) ;
@@ -823,7 +787,7 @@ public class Player extends LiveBeing
 				}
 			}
 
-			/* Meeting with chests */
+			// Meeting with chests
 			String groundType = currentMap.groundTypeAtPoint(PA.getPos()) ;
 			if (groundType != null)	// TODO are we going to use groundType?
 			{
@@ -833,7 +797,7 @@ public class Player extends LiveBeing
 				}
 			}
 			
-			/* Meeting with creatures */
+			// Meeting with creatures
 			if (isInBattle())
 			{
 				distx = Math.abs(PA.getPos().x - opponent.getPos().x) ;
@@ -862,8 +826,8 @@ public class Player extends LiveBeing
 			}
 		}	
 		
-		/* Meeting with NPCs */
-		if (currentMap.getNPCs() != null)	// Map has NPCs
+		// Meeting with NPCs
+		if (currentMap.getNPCs() != null)
 		{
 			for (int i = 0 ; i <= currentMap.getNPCs().size() - 1 ; i += 1)
 			{
@@ -954,11 +918,11 @@ public class Player extends LiveBeing
 	{
 		if (UtilS.CheckAdjacentGround(PA.getPos(), map, "Lava").equals("Inside") & !PA.Elem[4].equals("f"))
 		{
-			PA.incLife(-5) ;
+			PA.getLife().incCurrentValue(-5) ;
 		}
 		if (UtilS.isAdjacentTo(PA.getPos(),  map, "Water"))
 		{
-			PA.incThirst(1) ;
+			PA.getThirst().incCurrentValue(1) ;
 		}
 	}
 	public void MoveToNewMap(Pet pet, String action, boolean MusicIsOn, Animations Ani)
@@ -1029,7 +993,7 @@ public class Player extends LiveBeing
 				PA.setMap(Game.getMaps()[nextMap]) ;
 				PA.setContinent(PA.getMap().getContinent()) ;
 				PA.setPos(nextPos) ;	
-				if (0 < pet.getLife()[0])
+				if (pet.isAlive())
 				{
 					pet.getPA().setPos(nextPos) ;
 				}
@@ -1083,7 +1047,7 @@ public class Player extends LiveBeing
 	}
 	public void Tent()
 	{
-		PA.setLife(new double[] {PA.getLife()[0], PA.getLife()[1]}) ;
+		PA.getLife().setToMaximum() ;
 	}
 	public void ActivateRide()
 	{
@@ -1136,9 +1100,7 @@ public class Player extends LiveBeing
 	}
 	
 	
-	
-	
-	
+		
 	
 	
 	// called every time the window is repainted
@@ -1186,8 +1148,7 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	
-	
+		
 	
 	
 	
@@ -1246,7 +1207,7 @@ public class Player extends LiveBeing
 	}
 	public void OffensiveSpell(Creature creature, Spell spell)
 	{
-		PA.getMp()[0] += -spell.getMpCost() ;
+		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
 		//ResetSpellCooldownCounter(spellID) ; activate spell
 		spell.activate() ;
 		if (PA.Job == 0)
@@ -1274,11 +1235,11 @@ public class Player extends LiveBeing
 	{
 		int spellLevel = spell.getLevel() ;
 		spell.activate() ;
-		if (spell.getMpCost() <= PA.getMp()[0] & 0 < spellLevel)
+		if (spell.getMpCost() <= PA.getMp().getCurrentValue() & 0 < spellLevel)
 		{
 			getStats()[1] += 1 ;	// Number of mag atks
 			ResetBattleActions() ;			
-			PA.getMp()[0] += -spell.getMpCost() ;
+			PA.getMp().incCurrentValue(-spell.getMpCost()) ;
 			if (PA.Job == 0)
 			{
 				
@@ -1337,7 +1298,7 @@ public class Player extends LiveBeing
 		{
 			Buffs = spells.get(spellID).getNerfs() ;
 		}
-		OriginalValue = new double[] {PA.getLife()[1], PA.getMp()[1], BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(), BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(), BA.getCrit()[0], BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2], BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
+		OriginalValue = new double[] {PA.getLife().getMaxValue(), PA.getMp().getMaxValue(), BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(), BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(), BA.getCrit()[0], BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2], BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
 		if (action.equals("deactivate"))
 		{
 			ActionMult = -1 ;
@@ -1377,8 +1338,8 @@ public class Player extends LiveBeing
 		}
 		if (!spellIsActive)
 		{
-			PA.getLife()[0] += Buff[0][0] ;
-			PA.getMp()[0] += Buff[1][0] ;
+			PA.getLife().incCurrentValue((int) Buff[0][0]); ;
+			PA.getMp().incCurrentValue((int) Buff[1][0]); ;
 			BA.getPhyAtk().incBonus(Buff[2][0]) ;
 			BA.getMagAtk().incBonus(Buff[3][0]) ;
 			BA.getPhyDef().incBonus(Buff[4][0]) ;
@@ -1403,8 +1364,8 @@ public class Player extends LiveBeing
 	}
 	public void TakeBloodAndPoisonDamage(double TotalBloodAtk, double TotalPoisonAtk)
 	{
-		double BloodDamage = 0 ;
-		double PoisonDamage = 0 ;
+		int BloodDamage = 0 ;
+		int PoisonDamage = 0 ;
 		double BloodMult = 1, PoisonMult = 1 ;
 		if (PA.Job == 4)
 		{
@@ -1412,13 +1373,13 @@ public class Player extends LiveBeing
 		}
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
-			BloodDamage = Math.max(TotalBloodAtk*BloodMult - BA.TotalBloodDef(), 0) ;
+			BloodDamage = (int) Math.max(TotalBloodAtk * BloodMult - BA.TotalBloodDef(), 0) ;
 		}
 		if (0 < BA.getSpecialStatus()[3])	// Poison
 		{
-			PoisonDamage = Math.max(TotalPoisonAtk*PoisonMult - BA.TotalPoisonDef(), 0) ;
+			PoisonDamage = (int) Math.max(TotalPoisonAtk * PoisonMult - BA.TotalPoisonDef(), 0) ;
 		}
-		PA.getLife()[0] += -BloodDamage - PoisonDamage ;
+		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage); ;
 		if (0 < BloodDamage)
 		{
 			statistics[18] += BA.TotalBloodDef() ;
@@ -1585,7 +1546,7 @@ public class Player extends LiveBeing
 		String[] ItemsObtained = new String[GetItemsObtained.size()] ;
 		ItemsObtained = GetItemsObtained.toArray(ItemsObtained) ;
 		gold[0] += creature.getGold()*UtilG.RandomMult( (double) (0.1 * goldMultiplier)) ;
-		PA.getExp()[0] += creature.getExp()[0]*PA.getExp()[2] ;
+		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier()))  ;
 		if (GetActiveQuests() != null)
 		{
 			for (int q = 0 ; q <= GetActiveQuests().size() - 1 ; q += 1)
@@ -1596,30 +1557,22 @@ public class Player extends LiveBeing
 		Ani.SetAniVars(12, new Object[] {100, ItemsObtained, color}) ;
 		Ani.StartAni(12) ;
 	}
-	public boolean ShouldLevelUP()
-	{
-		if (getExp()[1] <= getExp()[0])
-		{
-			return true ;
-		}
-		return false ;
-	}	
 	public void LevelUp(Animations ani)
 	{
 		double[] attributesIncrease = CalcAttIncrease() ;
 		PA.setLevel(PA.getLevel() + 1) ;
-		spellPoints += 1 ;
-		PA.getLife()[1] += attributesIncrease[0] ;
-		PA.getLife()[0] = PA.getLife()[1] ;
-		PA.getMp()[1] += attributesIncrease[1] ;	
-		PA.getMp()[0] = PA.getMp()[1] ;
+		PA.getLife().incMaxValue((int) attributesIncrease[0]) ;
+		PA.getMp().incMaxValue((int) attributesIncrease[1]); ;	
 		BA.getPhyAtk().incBaseValue(attributesIncrease[2]) ;
 		BA.getMagAtk().incBaseValue(attributesIncrease[3]) ;
 		BA.getPhyDef().incBaseValue(attributesIncrease[4]) ;
 		BA.getMagDef().incBaseValue(attributesIncrease[5]) ;
 		BA.getAgi().incBaseValue(attributesIncrease[6]) ;
 		BA.getDex().incBaseValue(attributesIncrease[7]) ;
-		PA.getExp()[1] += attributesIncrease[8] ;
+		PA.getExp().incMaxValue((int) attributesIncrease[8]); ;
+		PA.getLife().setToMaximum() ;
+		PA.getMp().setToMaximum() ;
+		spellPoints += 1 ;
 		attPoints += 2 ;
 		
 
@@ -1674,9 +1627,9 @@ public class Player extends LiveBeing
 	public void Dies()
 	{
 		gold[0] = (int)(0.8*gold[0]) ;
-		PA.getLife()[0] = PA.getLife()[1] ;
-		PA.getMp()[0] = PA.getMp()[1] ;
-		PA.getSatiation()[0] = PA.getSatiation()[1] ;
+		PA.getLife().setToMaximum(); ;
+		PA.getMp().setToMaximum(); ;
+		PA.getSatiation().setToMaximum(); ;
 		ResetPosition() ;
 	}
 	
@@ -1732,13 +1685,13 @@ public class Player extends LiveBeing
 			//{
 				if (selectedItem == 0)
 				{
-					PA.getLife()[0] += PlayerAttributeIncrease[selectedItem] ;
-					PA.getLife()[1] += PlayerAttributeIncrease[selectedItem] ;
+					PA.getLife().incCurrentValue((int) PlayerAttributeIncrease[selectedItem]); ;
+					PA.getLife().incMaxValue((int) PlayerAttributeIncrease[selectedItem]); ;
 				}
 				else if (selectedItem == 1)
 				{
-					PA.getMp()[0] += PlayerAttributeIncrease[selectedItem] ;
-					PA.getMp()[1] += PlayerAttributeIncrease[selectedItem] ;
+					PA.getMp().incCurrentValue((int) PlayerAttributeIncrease[selectedItem]); ;
+					PA.getMp().incMaxValue((int) PlayerAttributeIncrease[selectedItem]); ;
 				}
 				else if (selectedItem == 2)
 				{
@@ -1773,8 +1726,8 @@ public class Player extends LiveBeing
 	}
 	public void ApplyEquipsBonus(int ID, double ActionMult)
 	{
-		PA.getLife()[1] += equipsBonus[ID][2]*ActionMult ;
-		PA.getMp()[1] += equipsBonus[ID][3]*ActionMult ;
+		PA.getLife().incMaxValue((int) (equipsBonus[ID][2]*ActionMult)); ;
+		PA.getMp().incMaxValue((int) (equipsBonus[ID][3]*ActionMult)); ;
 		BA.getPhyAtk().incBonus(equipsBonus[ID][4]*ActionMult) ;
 		BA.getMagAtk().incBonus(equipsBonus[ID][5]*ActionMult) ;
 		BA.getPhyDef().incBonus(equipsBonus[ID][6]*ActionMult) ;
@@ -1881,7 +1834,7 @@ public class Player extends LiveBeing
 			TextPos.y += 0.95*H/PlayerStats.length ;
 		}
 	}
-	public void DrawSpecialAttributesWindow(String[][] AllText, int[] AllTextCat, Point Pos, int L, int H, DrawingOnPanel DP)
+	/*public void DrawSpecialAttributesWindow(String[][] AllText, int[] AllTextCat, Point Pos, int L, int H, DrawingOnPanel DP)
 	{
 		Font font = new Font("SansSerif", Font.BOLD, L / 20) ;
 		double OverallAngle = DrawingOnPanel.stdAngle ;
@@ -1953,7 +1906,7 @@ public class Player extends LiveBeing
 		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 18*sy)), Align.bottomLeft, OverallAngle, AllText[AttrCat][13] + " " + AllText[SpecialAttrPropCat][7] + " = " + UtilG.Round(BA.getBlood()[8], 2), font, AttributeColor[2]) ;	
 		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 19*sy)), Align.bottomLeft, OverallAngle, AllText[AttrCat][14] + " " + AllText[SpecialAttrPropCat][7] + " = " + UtilG.Round(BA.getPoison()[8], 2), font, AttributeColor[3]) ;	
 		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 20*sy)), Align.bottomLeft, OverallAngle, AllText[AttrCat][15] + " " + AllText[SpecialAttrPropCat][7] + " = " + UtilG.Round(BA.getSilence()[4], 2), font, AttributeColor[4]) ;				
-	}
+	}*/
 	public void DrawSpellsBar(Player player, ArrayList<Spell> spells, Image CooldownImage, Image SlotImage, Point MousePos, DrawingOnPanel DP)
 	{
 		Font Titlefont = new Font("SansSerif", Font.BOLD, 10) ;
@@ -1980,7 +1933,7 @@ public class Player extends LiveBeing
 			if (0 < player.getSpell().get(i).getLevel())
 			{
 				Point slotCenter = new Point(Pos.x + slotW / 2 + (i / Nrows) * Sx + 3, Pos.y - size.height + slotH / 2 + (i % Nrows) * Sy + Titlefont.getSize() + 5) ;
-				if (player.getMp()[0] < spell.getMpCost())
+				if (player.getMp().getCurrentValue() < spell.getMpCost())
 				{
 					DP.DrawImage(SlotImage, slotCenter, Align.center) ;
 				}
@@ -2131,7 +2084,7 @@ public class Player extends LiveBeing
 		String relPos = UtilS.RelPos(PA.getPos(), creature.getPos()) ;
 		DrawTimeBar(relPos, Game.ColorPalette[9], DP) ;
 	}
-	public void DrawSpellsTree(ArrayList<Spell> spells, Point MousePos, int SelectedSpell, DrawingOnPanel DP)
+	/*public void DrawSpellsTree(ArrayList<Spell> spells, Point MousePos, int SelectedSpell, DrawingOnPanel DP)
 	{
 		Screen screen = Game.getScreen() ;
 		int[] Sequence = GetSpellSequence() ;
@@ -2180,31 +2133,31 @@ public class Player extends LiveBeing
 		
 		// Organogram
 		//String[] SkillNames = null ;
-		/*String[][] SpellNames = new String[2][] ;
-		String[] SpellLevels = null ;
-		if (tab == 0)
-		{
-			for (int spell = 0 ; spell <= NumberOfSpells - 1 ; spell += 1)
-			{
-				SpellNames[0] = UtilG.AddElem(SpellNames[0], spells[spell].getName()) ;
-				SpellNames[1] = UtilG.AddElem(SpellNames[1], spells[spell].getType()) ;
-				SpellLevels = UtilG.AddElem(SpellLevels, String.valueOf(player.getSpell()[spell])) ;
-				SpellsColors[spell] = color[spell] ;
-			}
-		}
-		if (tab == 1)
-		{
-			for (int spell = NumberOfSpells ; spell <= NumberOfSpells + NumberOfProSpells - 1 ; spell += 1)
-			{
-				SpellNames[0] = UtilG.AddElem(SpellNames[0], spells[spell].getName()) ;
-				SpellNames[1] = UtilG.AddElem(SpellNames[1], spells[spell].getType()) ;
-				SpellLevels = UtilG.AddElem(SpellLevels, String.valueOf(player.getSpell()[spell])) ;
-				SpellsColors[spell] = color[spell] ;
-			}
-		}
-		SpellsColors[SelectedSpell - tab*NumberOfSpells] = Game.ColorPalette[3] ;
-		DF.DrawOrganogram(Sequence, new Point(Pos.x, Pos.y - Size.y), Sx, Sy, size, SpellNames, SpellLevels, SpellsTreeIcon, font, SpellsColors, MousePos) ;
-		*/
+//		String[][] SpellNames = new String[2][] ;
+//		String[] SpellLevels = null ;
+//		if (tab == 0)
+//		{
+//			for (int spell = 0 ; spell <= NumberOfSpells - 1 ; spell += 1)
+//			{
+//				SpellNames[0] = UtilG.AddElem(SpellNames[0], spells[spell].getName()) ;
+//				SpellNames[1] = UtilG.AddElem(SpellNames[1], spells[spell].getType()) ;
+//				SpellLevels = UtilG.AddElem(SpellLevels, String.valueOf(player.getSpell()[spell])) ;
+//				SpellsColors[spell] = color[spell] ;
+//			}
+//		}
+//		if (tab == 1)
+//		{
+//			for (int spell = NumberOfSpells ; spell <= NumberOfSpells + NumberOfProSpells - 1 ; spell += 1)
+//			{
+//				SpellNames[0] = UtilG.AddElem(SpellNames[0], spells[spell].getName()) ;
+//				SpellNames[1] = UtilG.AddElem(SpellNames[1], spells[spell].getType()) ;
+//				SpellLevels = UtilG.AddElem(SpellLevels, String.valueOf(player.getSpell()[spell])) ;
+//				SpellsColors[spell] = color[spell] ;
+//			}
+//		}
+//		SpellsColors[SelectedSpell - tab*NumberOfSpells] = Game.ColorPalette[3] ;
+//		DF.DrawOrganogram(Sequence, new Point(Pos.x, Pos.y - Size.y), Sx, Sy, size, SpellNames, SpellLevels, SpellsTreeIcon, font, SpellsColors, MousePos) ;
+		
 		
 		// spell info
 		int TextmaxL = Size.width / 5, sx = 10, sy = UtilG.TextH(font.getSize()) + 2 ;
@@ -2213,7 +2166,7 @@ public class Player extends LiveBeing
 		DP.DrawFitText(new Point(Pos.x + sx, Pos.y - Size.height - Size.height / 5), sy, Align.bottomLeft, Effect, font, TextmaxL, getColor()) ;
 		DP.DrawFitText(new Point(Pos.x + sx, Pos.y - Size.height - Size.height / 10), sy, Align.bottomLeft, Description, font, TextmaxL - 6, getColor()) ;		
 		DP.DrawText(new Point(Pos.x + Size.width, Pos.y), Align.topRight, DrawingOnPanel.stdAngle, "Pontos: " +  getSpellPoints(), font, getColor()) ;		
-	}	
+	}	*/
 	public void display(Point pos, Scale scale, Directions direction, boolean showRange, DrawingOnPanel DP)
 	{
 		double angle = DrawingOnPanel.stdAngle ;
@@ -2243,7 +2196,7 @@ public class Player extends LiveBeing
 	}
 	
 	
-	/* Save and load methods */
+	// Save and load methods
 	public void Save(String filePath, Pet pet)
 	{
 		try
@@ -2266,8 +2219,8 @@ public class Player extends LiveBeing
 			//bw.write("\nPlayer bag: \n" + Arrays.toString(getBag())) ;
 			bw.write("\nPlayer equips: \n" + Arrays.toString(getEquips())) ;
 			bw.write("\nPlayer skillPoints: \n" + getSpellPoints()) ;
-			bw.write("\nPlayer life: \n" + Arrays.toString(getLife())) ;
-			bw.write("\nPlayer mp: \n" + Arrays.toString(getMp())) ;
+			//bw.write("\nPlayer life: \n" + Arrays.toString(getLife())) ;
+			//bw.write("\nPlayer mp: \n" + Arrays.toString(getMp())) ;
 			bw.write("\nPlayer range: \n" + getRange()) ;
 			//bw.write("\nPlayer phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
 			//bw.write("\nPlayer magAtk: \n" + Arrays.toString(getMagAtk())) ;
@@ -2287,8 +2240,8 @@ public class Player extends LiveBeing
 			bw.write("\nPlayer level: \n" + getLevel()) ;
 			bw.write("\nPlayer gold: \n" + Arrays.toString(getGold())) ;
 			bw.write("\nPlayer step: \n" + getStep()) ;
-			bw.write("\nPlayer exp: \n" + Arrays.toString(getExp())) ;
-			bw.write("\nPlayer satiation: \n" + Arrays.toString(getSatiation())) ;
+			//bw.write("\nPlayer exp: \n" + Arrays.toString(getExp())) ;
+			//bw.write("\nPlayer satiation: \n" + Arrays.toString(getSatiation())) ;
 			//bw.write("\nPlayer quest skills: \n" + Arrays.toString(questSkills)) ;
 			bw.write("\nPlayer status: \n" + Arrays.toString(BA.getSpecialStatus())) ; 
 			//bw.write("\nPlayer actions: \n" + Arrays.deepToString(getActions())) ; 

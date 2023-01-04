@@ -83,28 +83,30 @@ public class Projectiles
 		System.out.println(hit) ;
 		if (hit == -1 & Type == 1)
 		{
-			player.getLife()[0] += -damage ;
-			if (player.getLife()[0] < 0)
+			player.getLife().incCurrentValue(-damage); ;
+			if (player.getLife().getCurrentValue() < 0)
 			{
 				player.Dies() ;
 			}
 		}
 		else if (hit == -2 & Type == 1)
 		{
-			pet.getLife()[0] += -damage ;
-			if (pet.getLife()[0] < 0)
+			pet.getLife().incCurrentValue(-damage); ;
+			if (pet.getLife().getCurrentValue() < 0)
 			{
-				pet.getLife()[0] = 0 ;
+				pet.Dies() ;
 			}
 		}
 		else if (-1 < hit & Type == 0)
 		{
-			creature.get(hit).getLife()[0] += -damage ;
-			if (creature.get(hit).getLife()[0] < 0)
+			Creature creatureHit = creature.get(hit) ;
+			creatureHit.getLife().incCurrentValue(-damage); ;
+			if (creatureHit.getLife().getCurrentValue() < 0)
 			{
-				creature.get(hit).getLife()[0] = creature.get(hit).getLife()[1] ;
-				creature.get(hit).getMp()[0] = creature.get(hit).getMp()[1] ;
-				creature.get(hit).setFollow(false) ;
+				creatureHit.Dies() ;
+				//creature.get(hit).getLife()[0] = creature.get(hit).getLife()[1] ;
+				//creature.get(hit).getMp()[0] = creature.get(hit).getMp()[1] ;
+				//creature.get(hit).setFollow(false) ;
 				//creature[hit].setPos(Utg.RandomPos(screen.getDimensions(), new double[] {0, (double)(0.2)}, new double[] {1, 1 - (double)(SkyHeight)/screen.getDimensions()[1]}, new int[] {1, 1})) ;
 			}
 		}

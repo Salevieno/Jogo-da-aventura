@@ -9,7 +9,7 @@ public class Spell
 	private String name ;
 	private int level ;
 	private int maxLevel ;
-	private double mpCost ;
+	private int mpCost ;
 	private SpellTypes type ;
 	private Map<SpellType, Integer> preRequisites ;
 	private int cooldown ;
@@ -69,7 +69,7 @@ public class Spell
 	public String getName() {return name ;}
 	public int getLevel() {return level ;}
 	public int getMaxLevel() {return maxLevel ;}
-	public double getMpCost() {return mpCost ;}
+	public int getMpCost() {return mpCost ;}
 	public SpellTypes getType() {return type ;}
 	public Map<SpellType, Integer> getPreRequisites() {return preRequisites ;}
 	public int getCooldown() {return cooldown ;}

@@ -73,13 +73,13 @@ public class PlayerAttributesWindow extends GameWindow
 				{
 					if (attIcon == 0)
 					{
-						PA.getLife()[0] += PlayerAttributeIncrease[attIcon] ;
-						PA.getLife()[1] += PlayerAttributeIncrease[attIcon] ;
+						PA.getLife().incCurrentValue((int) PlayerAttributeIncrease[attIcon]); ;
+						PA.getLife().incCurrentValue((int) PlayerAttributeIncrease[attIcon]); ;
 					}
 					else if (attIcon == 1)
 					{
-						PA.getMp()[0] += PlayerAttributeIncrease[attIcon] ;
-						PA.getMp()[1] += PlayerAttributeIncrease[attIcon] ;
+						PA.getMp().incCurrentValue((int) PlayerAttributeIncrease[attIcon]); ;
+						PA.getMp().incCurrentValue((int) PlayerAttributeIncrease[attIcon]); ;
 					}
 					else if (attIcon == 2)
 					{
@@ -174,7 +174,7 @@ public class PlayerAttributesWindow extends GameWindow
 					new Point(WindowPos.x + 53, WindowPos.y + 140)} ;	// Weapon, armor, shield, arrow
 			for (int eq = 0 ; eq <= 4 - 1 ; eq += 1)
 			{
-				Image ElemImage = DrawFunctions.ElementImages[UtilS.ElementID(PA.getElem()[eq + 1])] ;
+				Image ElemImage = DrawingOnPanel.ElementImages[UtilS.ElementID(PA.getElem()[eq + 1])] ;
 				if (Equips[eq] != null)
 				{
 					Point textPos = new Point(EqRectPos[eq].x, EqRectPos[eq].y - EqRectH[eq] / 2) ;
@@ -204,7 +204,7 @@ public class PlayerAttributesWindow extends GameWindow
 			// Super element
 			if (PA.getElem()[1].equals(PA.getElem()[2]) & PA.getElem()[2].equals(PA.getElem()[3]))
 			{
-				DP.DrawImage(DrawFunctions.ElementImages[UtilS.ElementID(PA.getElem()[4])],
+				DP.DrawImage(DrawingOnPanel.ElementImages[UtilS.ElementID(PA.getElem()[4])],
 						new Point(WindowPos.x + (int)(0.55*attWindowSize.width), WindowPos.y + (int)(0.4*attWindowSize.height)), TextAngle, new Scale(0.3, 0.3),
 						Align.center) ;
 			}
@@ -214,8 +214,8 @@ public class PlayerAttributesWindow extends GameWindow
 			double[] attributes = new double[] {BA.TotalPhyAtk(), BA.TotalMagAtk(), BA.TotalPhyDef(), BA.TotalMagDef(), BA.TotalDex(), BA.TotalAgi()} ;
 			BasicBattleAttribute[] attDetails = new BasicBattleAttribute[] {BA.getPhyAtk(), BA.getMagAtk(), BA.getPhyDef(), BA.getMagDef(), BA.getDex(), BA.getAgi()} ;
 			int AttSy = 22 ;
-			DP.DrawText(new Point(WindowPos.x + 20, WindowPos.y + (int)(0.10*attWindowSize.height)), Align.bottomLeft, TextAngle, attText[2] + ": " + UtilG.Round(PA.getLife()[0], 1), font, ColorPalette[6]) ;	// Life text	
-			DP.DrawText(new Point(WindowPos.x + 20, WindowPos.y + (int)(0.15*attWindowSize.height)), Align.bottomLeft, TextAngle, attText[3] + ": " + UtilG.Round(PA.getMp()[0], 1), font, ColorPalette[5]) ;	// MP text
+			DP.DrawText(new Point(WindowPos.x + 20, WindowPos.y + (int)(0.10*attWindowSize.height)), Align.bottomLeft, TextAngle, attText[2] + ": " + UtilG.Round(PA.getLife().getCurrentValue(), 1), font, ColorPalette[6]) ;	// Life text	
+			DP.DrawText(new Point(WindowPos.x + 20, WindowPos.y + (int)(0.15*attWindowSize.height)), Align.bottomLeft, TextAngle, attText[3] + ": " + UtilG.Round(PA.getMp().getCurrentValue(), 1), font, ColorPalette[5]) ;	// MP text
 			
 			DP.DrawImage(Equip.SwordImage, new Point(WindowPos.x + 30, WindowPos.y + 134 + 1 * AttSy), new Scale(13 / 38.0, 13 / 38.0), Align.center) ;	// Draw sword icon
 			
@@ -229,9 +229,9 @@ public class PlayerAttributesWindow extends GameWindow
 			if (user instanceof Player)
 			{
 				Player player = (Player) user ;
-				DP.DrawText(new Point(WindowPos.x + (int)(0.80 * attWindowSize.width), WindowPos.y + (int)(0.46 * attWindowSize.height)), Align.topRight, TextAngle, String.valueOf(UtilG.Round(player.getCollect()[0], 1)), font, DrawFunctions.MapsTypeColor[13]) ;		
-				DP.DrawText(new Point(WindowPos.x + (int)(0.80 * attWindowSize.width), WindowPos.y + (int)(0.53 * attWindowSize.height)), Align.topRight, TextAngle, String.valueOf(UtilG.Round(player.getCollect()[1], 1)), font, DrawFunctions.MapsTypeColor[14]) ;		
-				DP.DrawText(new Point(WindowPos.x + (int)(0.80 * attWindowSize.width), WindowPos.y + (int)(0.60 * attWindowSize.height)), Align.topRight, TextAngle, String.valueOf(UtilG.Round(player.getCollect()[2], 1)), font, DrawFunctions.MapsTypeColor[15]) ;
+				DP.DrawText(new Point(WindowPos.x + (int)(0.80 * attWindowSize.width), WindowPos.y + (int)(0.46 * attWindowSize.height)), Align.topRight, TextAngle, String.valueOf(UtilG.Round(player.getCollect()[0], 1)), font, ColorPalette[1]) ;		
+				DP.DrawText(new Point(WindowPos.x + (int)(0.80 * attWindowSize.width), WindowPos.y + (int)(0.53 * attWindowSize.height)), Align.topRight, TextAngle, String.valueOf(UtilG.Round(player.getCollect()[1], 1)), font, ColorPalette[19]) ;		
+				DP.DrawText(new Point(WindowPos.x + (int)(0.80 * attWindowSize.width), WindowPos.y + (int)(0.60 * attWindowSize.height)), Align.topRight, TextAngle, String.valueOf(UtilG.Round(player.getCollect()[2], 1)), font, ColorPalette[4]) ;
 
 				//	Gold
 				DP.DrawImage(Player.CoinIcon, new Point(WindowPos.x + (int)(0.64 * attWindowSize.width), WindowPos.y + (int)(0.92 * attWindowSize.height)), TextAngle, new Scale(1.2, 1.2), Align.centerLeft) ;
@@ -304,7 +304,7 @@ public class PlayerAttributesWindow extends GameWindow
 		}
 		else if (tab == 2)
 		{
-			String[] statsText = allText.get("* EstatÃ­sticas do jogador *") ;
+			String[] statsText = allText.get("* Estatísticas do jogador *") ;
 			Dimension offset = new Dimension(25, 20) ;
 			Point textPos = new Point(WindowPos.x + offset.width, WindowPos.y + offset.height) ;
 			if (user instanceof Player)

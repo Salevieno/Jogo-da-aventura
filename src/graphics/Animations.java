@@ -303,7 +303,7 @@ public class Animations
 	
 	public void LevelUpAnimation(Object[] AniVars13, DrawingOnPanel DP)
 	{
-		float[] AttributesIncrease = (float[]) AniVars13[1] ;
+		double[] AttributesIncrease = (double[]) AniVars13[1] ;
 		int playerLevel = (int) AniVars13[2] ;
 		Color textColor = (Color) AniVars13[3] ;
 		DP.PlayerLevelUpAnimation(Anicounter[13], Aniduration[13], AttributesIncrease, playerLevel, textColor) ;
@@ -312,7 +312,7 @@ public class Animations
 	public void PetLevelUpAnimation(Object[] AniVars14, DrawingOnPanel DP)
 	{
 		Pet pet = (Pet) AniVars14[1] ;
-		float[] AttributesIncrease = (float[]) AniVars14[2] ;
+		double[] AttributesIncrease = (double[]) AniVars14[2] ;
 		DP.PetLevelUpAnimation(pet, Anicounter[14], Aniduration[14], AttributesIncrease) ;
 	}
 	

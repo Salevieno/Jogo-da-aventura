@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sound.sampled.Clip;
@@ -43,6 +44,7 @@ import items.Item;
 import items.PetItem;
 import items.Potion;
 import items.QuestItem;
+import liveBeings.BasicAttribute;
 import liveBeings.BasicBattleAttribute;
 import liveBeings.BattleAttributes;
 import liveBeings.Creature;
@@ -57,6 +59,9 @@ import liveBeings.SpellType;
 import maps.CityMap;
 import maps.FieldMap;
 import maps.GameMap;
+import maps.MapElements;
+import maps.SpecialMap;
+import maps.TreasureChest;
 import screen.Screen;
 import screen.Sky;
 import utilities.Align;
@@ -102,6 +107,7 @@ public class Game extends JPanel
 	private static CreatureTypes[] creatureTypes ;
 	private static CityMap[] cityMaps;
 	private static FieldMap[] fieldMaps;
+	private static SpecialMap[] specialMaps;
 	private static GameMap[] allMaps ;
 	private static BuildingType[] buildingTypes ;
 	private static NPCType[] NPCTypes ;
@@ -235,13 +241,13 @@ public class Game extends JPanel
 			Directions dir = Directions.up ;
 			LiveBeingStates state = LiveBeingStates.idle ;
 			Dimension Size = new Dimension(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;
-			double[] Life = new double[] {Double.parseDouble(input.get(ct)[5]) * diffMult, Double.parseDouble(input.get(ct)[5]) * diffMult} ;
-			double[] Mp = new double[] {Double.parseDouble(input.get(ct)[6]) * diffMult, Double.parseDouble(input.get(ct)[6]) * diffMult} ;
+			BasicAttribute Life = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[5]) * diffMult), (int) (Integer.parseInt(input.get(ct)[5]) * diffMult), 1) ;
+			BasicAttribute Mp = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[6]) * diffMult), (int) (Integer.parseInt(input.get(ct)[6]) * diffMult), 1) ;
 			double Range = Double.parseDouble(input.get(ct)[7]) * diffMult ;
 			int Step = Integer.parseInt(input.get(ct)[48]) ;
-			int[] Exp = new int[] {Integer.parseInt(input.get(ct)[36])} ;
-			int[] Satiation = new int[] {100, 100, 1} ;
-			int[] Thirst = new int[] {100, 100, 0} ;		
+			BasicAttribute Exp = new BasicAttribute(Integer.parseInt(input.get(ct)[36]), 999999999, 1) ;
+			BasicAttribute Satiation = new BasicAttribute(100, 100, 1) ;
+			BasicAttribute Thirst = new BasicAttribute(100, 100, 1) ;		
 			String[] Elem = new String[] {input.get(ct)[35]} ;
 			int mpDuration = Integer.parseInt(input.get(ct)[49]) ;
 			int satiationDuration = 100 ;
@@ -404,6 +410,53 @@ public class Game extends JPanel
 		return fieldMap ;
     }
     
+    private SpecialMap[] initializeSpecialMaps()
+    {
+    	ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;
+		String path = ImagesPath + "\\Maps\\";
+		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
+		
+		for (int id = 0 ; id <= specialMaps.length - 1 ; id += 1)
+		{
+			String name = input.get(id)[0] ;
+			int continent = Integer.parseInt(input.get(id)[1]) ;
+			int[] connections = new int[] {
+											Integer.parseInt(input.get(id)[2]),
+											Integer.parseInt(input.get(id)[3]),
+											Integer.parseInt(input.get(id)[4]),
+											Integer.parseInt(input.get(id)[5]),
+											Integer.parseInt(input.get(id)[6]),
+											Integer.parseInt(input.get(id)[7]),
+											Integer.parseInt(input.get(id)[8]),
+											Integer.parseInt(input.get(id)[9])
+											} ;
+			Image image = new ImageIcon(path + "MapSpecial" + String.valueOf(id) + ".png").getImage() ;
+			Clip music = Music.musicFileToClip(new File(MusicPath + "12-Special.wav").getAbsoluteFile()) ;
+			
+			// adding treasure chests
+			List<TreasureChest> treasureChests = new ArrayList<>() ;
+			Image treasureChestsImage = new ImageIcon(ImagesPath + "\\MapElements\\" + "MapElem15_Chest.png").getImage() ;
+			for (int chest = 0 ; chest <= 5 - 1; chest += 1)
+			{
+				Point pos = new Point((int) (Double.parseDouble(input.get(id)[10 + 13 * chest]) * screen.getSize().width), (int) (Double.parseDouble(input.get(id)[11 + 13 * chest]) * screen.getSize().height)) ;
+				List<Item> itemRewards = new ArrayList<>() ;
+				for (int item = 0 ; item <= 10 - 1; item += 1)
+				{
+					int itemID = Integer.parseInt(input.get(id)[12 + 13 * chest + item]) ;
+					if (-1 < itemID)
+					{
+						itemRewards.add(allItems[itemID]) ;
+					}
+				}
+				int goldReward = Integer.parseInt(input.get(id)[22 + 13 * chest]) ;
+				treasureChests.add(new TreasureChest(chest, pos, treasureChestsImage, itemRewards, goldReward)) ;
+			}
+			specialMaps[id] = new SpecialMap(name, continent, connections, image, music, treasureChests) ;
+		}
+		
+		return specialMaps ;
+    }
+    
     private Quests[] initializeQuests(String language, int playerJob)
     {
 		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
@@ -540,7 +593,7 @@ public class Game extends JPanel
 			}
 			String Name = spellTypesInput.get(ID)[4] ;
 			int MaxLevel = Integer.parseInt(spellTypesInput.get(ID)[5]) ;
-			double MpCost = Double.parseDouble(spellTypesInput.get(ID)[6]) ;
+			int MpCost = Integer.parseInt(spellTypesInput.get(ID)[6]) ;
 			SpellTypes Type ;
 			if (spellTypesInput.get(ID)[7].equals("Active"))
 			{
@@ -677,10 +730,13 @@ public class Game extends JPanel
 		}
 		if (!player.getMap().IsACity())	// player is out of the cities
 		{
-			FieldMap fm = (FieldMap) player.getMap() ;
-			for (int c = 0 ; c <= fm.getCreatures().size() - 1 ; c += 1)
+			if (player.getMap() instanceof FieldMap)
 			{
-				fm.getCreatures().get(c).IncActionCounters() ;
+				FieldMap fm = (FieldMap) player.getMap() ;
+				for (int c = 0 ; c <= fm.getCreatures().size() - 1 ; c += 1)
+				{
+					fm.getCreatures().get(c).IncActionCounters() ;
+				}
 			}
 		}
 		if (player.isInBattle())
@@ -705,19 +761,22 @@ public class Game extends JPanel
 		player.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
 		if (pet != null)
 		{
-			if (0 < pet.getLife()[0])
+			if (0 < pet.getLife().getCurrentValue())
 			{
 				pet.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
 			}
 		}
 		if (!player.getMap().IsACity())
 		{
-			FieldMap fm = (FieldMap) player.getMap() ;
-			for (Creature creature : fm.getCreatures())
+			if (player.getMap() instanceof FieldMap)
 			{
-				if (!ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(18))	// TODO
+				FieldMap fm = (FieldMap) player.getMap() ;
+				for (Creature creature : fm.getCreatures())
 				{
-					creature.ActivateActionCounters() ;
+					if (!ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(18))	// TODO
+					{
+						creature.ActivateActionCounters() ;
+					}
 				}
 			}
 		}
@@ -807,13 +866,16 @@ public class Game extends JPanel
 		// creatures act
 		if (!player.getMap().IsACity())
 		{
-			FieldMap fm = (FieldMap) player.getMap() ;
-			for (Creature creature : fm.getCreatures())
-			{				
-				creature.act(player.getPos(), player.getMap()) ;
-				creature.display(creature.getPos(), new Scale(1, 1), DP) ;
+			if (player.getMap() instanceof FieldMap)
+			{
+				FieldMap fm = (FieldMap) player.getMap() ;
+				for (Creature creature : fm.getCreatures())
+				{				
+					creature.act(player.getPos(), player.getMap()) ;
+					creature.display(creature.getPos(), new Scale(1, 1), DP) ;
+				}
+				shouldRepaint = true ;
 			}
-			shouldRepaint = true ;
 		}
 		
 		
@@ -878,7 +940,7 @@ public class Game extends JPanel
 		
 		
 		// level up the player and the pet if they should
-		if (!ani.isActive(12) & player.ShouldLevelUP())
+		if (!ani.isActive(12) & player.shouldLevelUP())
 		{
 			player.LevelUp(ani) ;
 		}
@@ -969,25 +1031,27 @@ public class Game extends JPanel
 		
 		cityMaps = initializeCityMaps() ;
 		fieldMaps = initializeFieldMaps() ;
+		specialMaps = initializeSpecialMaps() ;
 		allQuests = initializeQuests(GameLanguage, player.getJob()) ;
 		allMaps = new GameMap[cityMaps.length + fieldMaps.length] ;
 		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
 		pet = new Pet((int) (4 * Math.random())) ;
-    	pet.getPA().setLife(new double[] {100, 100, 0});
+    	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
     	pet.getPA().setPos(player.getPos());
     	bat = new Battle(new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
     	
     	
     	player.InitializeSpells() ;
     	player.getSpellsTreeWindow().setSpells(player.getSpell().toArray(new Spell[0])) ;
-    	player.setMap(fieldMaps[2]) ;
+    	player.setMap(specialMaps[0]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
     	player.getSettings().setMusicIsOn(true) ;
     	for (int i = 0; i <= 2 - 1; i += 1)
     	{
     		player.getBag().Add(Potion.getAll()[i], 1) ;
     	}
+    	player.getPA().setExp(new BasicAttribute(50, 50, 1)) ;
     	
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{

@@ -371,7 +371,7 @@ public class DrawingOnPanel
 		DrawText(new Point((int)(0.5*screenSize.width), (int)(0.05*screenSize.height)), Align.center, stdAngle, "Slot " + (SlotID + 1), font, colorPalette[5]) ;
 		//player.DrawAttWindow(MainWinDim, WindowPos[0], null, AllText, AllTextCat, 0, GoldCoinImage, icons, DP) ;
 		player.getAttWindow().display(player, allText, player.getEquips(), player.getEquipsBonus(), new Point(0, 0), this) ;
-		if (0 < pet.getLife()[0])
+		if (0 < pet.getLife().getCurrentValue())
 		{
  			//pet.getAttWindow().display(pet, allText, null, null, NumberOfUsedSlots, null, null, null, null);
 		}
@@ -682,7 +682,7 @@ public class DrawingOnPanel
 		}
 		*/
 	}
-	public void PlayerLevelUpAnimation(int counter, int duration, float[] AttributeIncrease, int playerLevel, Color textColor)
+	public void PlayerLevelUpAnimation(int counter, int duration, double[] AttributeIncrease, int playerLevel, Color textColor)
 	{
 		/*int LevelUpCat = AllTextCat[10], AtributosCat = AllTextCat[6] ;
 		Font font = new Font("SansSerif", Font.BOLD, 16) ;
@@ -708,7 +708,7 @@ public class DrawingOnPanel
 		}
 		*/
 	}
-	public void PetLevelUpAnimation(Pet pet, int counter, int duration, float[] AttributeIncrease)
+	public void PetLevelUpAnimation(Pet pet, int counter, int duration, double[] AttributeIncrease)
 	{
 		/*Font font = new Font("SansSerif", Font.BOLD, 20) ;
 		int AttCat = AllTextCat[6], WinCat = AllTextCat[10] ;
