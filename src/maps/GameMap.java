@@ -103,6 +103,7 @@ public class GameMap
 	public ArrayList<Buildings> getBuildings() {return building ;}
 	public String getContinentName(Player player)
 	{ 
+		// TODO nomes dos continentes pode ser um enum
 		String[] ContinentNames = player.allText.get("* Nomes dos continentes *") ;
 		//System.out.println(Continent);
 		//System.out.println(ContinentNames[Continent]);

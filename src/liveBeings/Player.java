@@ -23,6 +23,7 @@ import java.util.Map;
 import components.Icon;
 import components.Items;
 import components.NPCs;
+import components.QuestSkills;
 import components.Quests;
 import components.SpellTypes;
 import graphics.Animations;
@@ -84,7 +85,7 @@ public class Player extends LiveBeing
 	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor, 3: arrow
 	private int[] gold ;			// 0: current, 1: stored
 	private double goldMultiplier ;	// multiplies the amount of gold the player wins
-	private Map<String, Boolean> questSkills ;	// skills gained with quests
+	private Map<QuestSkills, Boolean> questSkills ;	// skills gained with quests
 	private boolean isRiding ;		// true if the player is riding
 	private int moveRange ;			// number of steps the player moves per action
     
@@ -171,17 +172,17 @@ public class Player extends LiveBeing
 		collectLevel = new double[3] ;
 		gold = new int[2] ;
 		goldMultiplier = Integer.parseInt(Properties.get(PA.Job)[32]) ; 
-		questSkills = new HashMap<String, Boolean>() ;
-		questSkills.put("Floresta", false) ;	// TODO parte dos nomes em port, parte em ingl�s
-		questSkills.put("Caverna", false) ;
-		questSkills.put("Ilha", false) ;
-		questSkills.put("Vulc�o", false) ;
-		questSkills.put("Terra das neves", false) ;
-		questSkills.put("Shovel", false) ;
-		questSkills.put("Fab window", false) ;
-		questSkills.put("Ride", false) ;
-		questSkills.put("Dragon's aura", false) ;
-		questSkills.put("Bestiary", false) ;
+		questSkills = new HashMap<QuestSkills, Boolean>() ;
+		questSkills.put(QuestSkills.forestMap, false) ;
+		questSkills.put(QuestSkills.caveMap, false) ;
+		questSkills.put(QuestSkills.islandMap, false) ;
+		questSkills.put(QuestSkills.volcanoMap, false) ;
+		questSkills.put(QuestSkills.snowlandMap, false) ;
+		questSkills.put(QuestSkills.shovel, false) ;
+		questSkills.put(QuestSkills.craftWindow, false) ;
+		questSkills.put(QuestSkills.ride, false) ;
+		questSkills.put(QuestSkills.dragonAura, false) ;
+		questSkills.put(QuestSkills.bestiary, false) ;
 		isRiding = false ;
 		moveRange = 20 ;
 		/*if (spell != null)
@@ -444,7 +445,7 @@ public class Player extends LiveBeing
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public BasicAttribute getSatiation() {return PA.getSatiation() ;}
 	public BasicAttribute getThirst() {return PA.getThirst() ;}
-	public Map<String, Boolean> getQuestSkills() {return questSkills ;}
+	public Map<QuestSkills, Boolean> getQuestSkills() {return questSkills ;}
 	public double[] getStats() {return statistics ;}
 	public ArrayList<String> getCombo() {return PA.getCombo() ;}
 	public int getAttPoints() {return attPoints ;}
@@ -649,7 +650,7 @@ public class Player extends LiveBeing
 						case 0: settings.open() ; break ;
 						case 1: bag.open() ; break ;
 						case 2: questWindow.open() ; break ;
-						case 3: if (questSkills.get(PA.getMap().getContinentName(this))) map.open() ; break ;
+						case 3: if (questSkills.get(QuestSkills.getContinentMap(PA.getMap().getContinentName(this)))) map.open() ; break ;
 						case 4: fabWindow.open() ; break ;
 						case 5: attWindow.open() ; break ;
 						case 6: if (pet.isAlive()) pet.getAttWindow().open() ; break ;
@@ -674,36 +675,36 @@ public class Player extends LiveBeing
 				Ani.StartAni(15) ;
 			}
 		}*/
-		if (PA.currentAction.equals(ActionKeys[7]) & questSkills.get(PA.getMap().getContinentName(this)))	// Map
+		if (PA.currentAction.equals(ActionKeys[7]) & questSkills.get(QuestSkills.getContinentMap(PA.getMap().getContinentName(this))))	// Map
 		{
 			map.open() ;
 		}
-		if (PA.currentAction.equals(ActionKeys[8]))				// settings window
+		if (PA.currentAction.equals(ActionKeys[8]))												// settings window
 		{
 			settings.open() ;
 		}
-		if (PA.currentAction.equals(ActionKeys[8]) & pet != null)				// Pet window
+		if (PA.currentAction.equals(ActionKeys[8]) & pet != null)								// Pet window
 		{
 			pet.getAttWindow().open() ;
 		}
-		if (PA.currentAction.equals(ActionKeys[9]))							// Quest window
+		if (PA.currentAction.equals(ActionKeys[9]))												// Quest window
 		{
 			questWindow.open() ;
 		}
-		if (PA.currentAction.equals(ActionKeys[10]))							// Hints window
+		if (PA.currentAction.equals(ActionKeys[10]))											// Hints window
 		{			
 			hintsWindow.open() ;
 		}
-		if (PA.currentAction.equals(ActionKeys[11]) & questSkills.get("Ride"))			// Ride
+		if (PA.currentAction.equals(ActionKeys[11]) & questSkills.get(QuestSkills.ride))		// Ride
 		{
 			ActivateRide() ;
 		}
-		if (PA.currentAction.equals(ActionKeys[12]) & !isInBattle())			// Tent
+		if (PA.currentAction.equals(ActionKeys[12]) & !isInBattle())							// Tent
 		{
 			Ani.SetAniVars(11, new Object[] {100, getPos(), TentImage}) ;
 			Ani.StartAni(11) ;
 		}
-		if (PA.currentAction.equals(ActionKeys[13]))	// Bestiary questSkills.get("Bestiary")
+		if (PA.currentAction.equals(ActionKeys[13]) &  questSkills.get(QuestSkills.bestiary))	// Bestiary
 		{
 			bestiary.open() ;
 		}
@@ -1972,11 +1973,13 @@ public class Player extends LiveBeing
 		DP.DrawText(icons[1].getPos(), Align.bottomLeft, stdAngle, IconKey[0], font, TextColor) ;
 		icons[2].display(stdAngle, Align.topLeft, MousePos, DP) ;		// quest
 		DP.DrawText(icons[2].getPos(), Align.bottomLeft, stdAngle, IconKey[1], font, TextColor) ;
-		if (questSkills.get(PA.getMap().getContinentName(this)))	// map
+		
+		if (questSkills.get(QuestSkills.getContinentMap(PA.getMap().getContinentName(this))))	// map
 		{
 			icons[3].display(stdAngle, Align.topLeft, MousePos, DP) ;
 			DP.DrawText(icons[3].getPos(), Align.bottomLeft, stdAngle, IconKey[2], font, TextColor) ;
 		}
+		
 		if (fabWindow != null)										// book
 		{
 			icons[4].display(stdAngle, Align.topLeft, MousePos, DP) ;
@@ -2178,7 +2181,7 @@ public class Player extends LiveBeing
 		
 		movingAni.display(direction, pos, angle, scale, DP) ;
 		
-		if (questSkills.get("Dragon's aura"))
+		if (questSkills.get(QuestSkills.dragonAura))
 		{
 			DP.DrawImage(DragonAuraImage, feetPos(), angle, scale, Align.center) ;					
 		}

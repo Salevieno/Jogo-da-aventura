@@ -25,8 +25,8 @@ public class SpellsTreeWindow extends GameWindow
 	private Point windowBotLeft ;
 	private Dimension windowSize ;
 	
-	private static final Font regularFont = new Font("SansSerif", Font.BOLD, 10) ;
-	private static final Font largeFont = new Font("SansSerif", Font.BOLD, 12) ;
+	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
+	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	private static final int[][] numberSpellsPerRow = new int[][] {{2, 3, 3, 3, 3}} ;
 	
 	public SpellsTreeWindow(Spell[] spells, int spellPoints, Color textColor)
@@ -39,11 +39,11 @@ public class SpellsTreeWindow extends GameWindow
 		windowSize = new Dimension((int)(0.7 * Game.getScreen().getSize().width), (int)(0.66 * Game.getScreen().getSize().height)) ;
 		spellBoxes = new ArrayList<>();
 	}
-	
-	
-	public void setSpells(Spell[] spells) { this.spells = spells ; setSpellBoxes() ;}
+		
+	public void setSpells(Spell[] spells) {this.spells = spells ; setSpellBoxes() ;}
 	public void setSpellBoxes()
 	{
+		// creating of spellboxes as icons at pos (0, 0)
 		for (int spell = 0 ; spell <= spells.length - 1 ; spell += 1)
 		{
 			Icon newIcon = new Icon(spell, spells[spell].getName(), new Point(0, 0), spells[spell].getInfo()[0], image, image) ;
@@ -67,8 +67,7 @@ public class SpellsTreeWindow extends GameWindow
 			}
 		}
 	}
-	
-	
+		
 	public void display(Point MousePos, int SelectedSpell, DrawingOnPanel DP)
 	{
 		//System.out.println(Game.getAllSpellTypes().length);

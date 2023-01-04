@@ -239,7 +239,6 @@ public class NPCs
 	public void masterAction(Player player, Pet pet, Point MousePos, DrawFunctions DF)
 	{
 		String[] speech = player.allText.get("* " + type.getName() + " *") ;
-		int[] numberOfSpellsAvailablePerPlayerJob = new int[] {14, 15, 15, 14, 14} ;	// TODO olha esse nome...
 		Font NPCTextFont = new Font(Game.MainFontName, Font.BOLD, 20) ;
 		//System.out.println(selOption + " " + menu) ;
 		if (menu == 0)
