@@ -35,7 +35,6 @@ public class Pet extends LiveBeing
 	private static ArrayList<String[]> PetProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
 	private static ArrayList<String[]> PetEvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
 	
-	public static String[] BattleKeys = new String[] {"A", "D"} ;
 	public static String[] SpellKeys = new String[] {"0", "1", "2", "3"} ;
 	
 	public Pet(int Job)
@@ -404,26 +403,29 @@ public class Pet extends LiveBeing
 	{
 		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())); ;
 	}
-	public boolean ShouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
-	public void LevelUp(Animations ani)
+	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
+	public void checkLevelUp(Animations ani)
 	{
-		double[] attributesIncrease = CalcAttIncrease() ;
-		PA.setLevel(PA.getLevel() + 1) ;
-		spellPoints += 1 ;
-		PA.getLife().incMaxValue((int) attributesIncrease[0]) ;
-		PA.getLife().setToMaximum() ;
-		PA.getMp().incMaxValue((int) attributesIncrease[1]) ;	
-		PA.getMp().setToMaximum() ;
-		BA.getPhyAtk().incBaseValue(attributesIncrease[2]) ;
-		BA.getMagAtk().incBaseValue(attributesIncrease[3]) ;
-		BA.getPhyDef().incBaseValue(attributesIncrease[4]) ;
-		BA.getMagDef().incBaseValue(attributesIncrease[5]) ;
-		BA.getAgi().incBaseValue(attributesIncrease[6]) ;
-		BA.getDex().incBaseValue(attributesIncrease[7]) ;
-		PA.getExp().incMaxValue((int) attributesIncrease[8]) ;		
+		if (shouldLevelUP())
+		{
+			double[] attributesIncrease = CalcAttIncrease() ;
+			PA.setLevel(PA.getLevel() + 1) ;
+			spellPoints += 1 ;
+			PA.getLife().incMaxValue((int) attributesIncrease[0]) ;
+			PA.getLife().setToMaximum() ;
+			PA.getMp().incMaxValue((int) attributesIncrease[1]) ;	
+			PA.getMp().setToMaximum() ;
+			BA.getPhyAtk().incBaseValue(attributesIncrease[2]) ;
+			BA.getMagAtk().incBaseValue(attributesIncrease[3]) ;
+			BA.getPhyDef().incBaseValue(attributesIncrease[4]) ;
+			BA.getMagDef().incBaseValue(attributesIncrease[5]) ;
+			BA.getAgi().incBaseValue(attributesIncrease[6]) ;
+			BA.getDex().incBaseValue(attributesIncrease[7]) ;
+			PA.getExp().incMaxValue((int) attributesIncrease[8]) ;		
 
-		ani.SetAniVars(14, new Object[] {150, this, attributesIncrease}) ;
-		ani.StartAni(14) ;
+			ani.SetAniVars(14, new Object[] {150, this, attributesIncrease}) ;
+			ani.StartAni(14) ;
+		}
 	}
 	public double[] CalcAttIncrease()
 	{

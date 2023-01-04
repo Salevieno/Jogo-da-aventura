@@ -68,29 +68,29 @@ public class DrawingOnPanel
 	{       
 		if (image != null)
 		{
-			int l = (int)(image.getWidth(null)), h = (int)(image.getHeight(null)) ;
-			Point offset = UtilG.OffsetFromPos(align, l, h) ;
-			G.drawImage(image, pos.x + offset.x, pos.y + offset.y, l, h, null) ;
+			Dimension size = new Dimension(image.getWidth(null), image.getHeight(null)) ;
+			Point offset = UtilG.OffsetFromPos(align, size) ;
+			G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 		}
 	}
 	public void DrawImage(Image image, Point pos, Scale scale, Align align)
 	{       
 		if (image != null)
 		{
-			int l = (int)(scale.x * image.getWidth(null)), h = (int)(scale.y * image.getHeight(null)) ;
-			Point offset = UtilG.OffsetFromPos(align, l, h) ;
-			G.drawImage(image, pos.x + offset.x, pos.y + offset.y, l, h, null) ;
+			Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
+			Point offset = UtilG.OffsetFromPos(align, size) ;
+			G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 		}
 	}
 	public void DrawImage(Image image, Point pos, double angle, Scale scale, Align align)
 	{       
 		if (image != null)
 		{
-			int l = (int)(scale.x * image.getWidth(null)), h = (int)(scale.y * image.getHeight(null)) ;
-			Point offset = UtilG.OffsetFromPos(align, l, h) ;
+			Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
+			Point offset = UtilG.OffsetFromPos(align, size) ;
 			AffineTransform backup = G.getTransform() ;
 			G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;	 // Rotate image
-			G.drawImage(image, pos.x + offset.x, pos.y + offset.y, l, h, null) ;
+			G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 			G.setTransform(backup) ;
 		}
 	}
@@ -98,8 +98,8 @@ public class DrawingOnPanel
 	{       
 		if (image != null)
 		{
-			int l = (int)(scale.x * image.getWidth(null)), h = (int)(scale.y * image.getHeight(null)) ;
-			Point offset = UtilG.OffsetFromPos(align, l, h) ;
+			Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
+			Point offset = UtilG.OffsetFromPos(align, size) ;
 			int[] m = new int[] {1, 1} ;
 			if (mirrorX)
 			{
@@ -112,27 +112,27 @@ public class DrawingOnPanel
 			AffineTransform backup = G.getTransform() ;
 			G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;	 // Rotate image
 			G.setComposite(AlphaComposite.SrcOver.derive((float) alpha)) ;
-			G.drawImage(image, pos.x + offset.x, pos.y + offset.y, m[0] * l, m[1] * h, null) ;
+			G.drawImage(image, pos.x + offset.x, pos.y + offset.y, m[0] * size.width, m[1] * size.height, null) ;
 			G.setComposite(AlphaComposite.SrcOver.derive((float) 1.0)) ;
 	        G.setTransform(backup) ;
 		}
 	}
 	public void DrawGif(Image gif, Point pos, Align align)
 	{
-		int l = (int)(gif.getWidth(null)), h = (int)(gif.getHeight(null)) ;
-		Point offset = UtilG.OffsetFromPos(align, l, h) ;
+		Dimension size = new Dimension(gif.getWidth(null), gif.getHeight(null)) ;
+		Point offset = UtilG.OffsetFromPos(align, size) ;
 		G.drawImage(gif, pos.x + offset.x, pos.y + offset.y, null) ;
 	}
 	public void DrawText(Point pos, Align align, double angle, String text, Font font, Color color)
 	{
 		// by default starts at the left bottom
-		int TextL = UtilG.TextL(text, font, G), TextH = UtilG.TextH(font.getSize()) ;
-		Point offset = UtilG.OffsetFromPos(align, TextL, TextH) ;
+		Dimension size = new Dimension(UtilG.TextL(text, font, G), UtilG.TextH(font.getSize())) ;
+		Point offset = UtilG.OffsetFromPos(align, size) ;
 		AffineTransform backup = G.getTransform() ;		
 		G.setColor(color) ;
 		G.setFont(font) ;
 		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;	// Rotate text
-		G.drawString(text, pos.x + offset.x, pos.y + offset.y + TextH) ;
+		G.drawString(text, pos.x + offset.x, pos.y + offset.y + size.height) ;
         G.setTransform(backup) ;
 	}
 	public void DrawFitText(Point pos, int sy, Align align, String text, Font font, int maxLength, Color color)
@@ -145,7 +145,7 @@ public class DrawingOnPanel
 	}
 	public void DrawTextUntil(Point pos, Align align, double angle, String text, Font font, Color color, int maxLength, Point mousePos)
 	{
-		Point offset = UtilG.OffsetFromPos(align, maxLength, UtilG.TextH(font.getSize())) ;
+		Point offset = UtilG.OffsetFromPos(align, new Dimension(maxLength, UtilG.TextH(font.getSize()))) ;
 		int minlength = 3 ;	// 3 is the length of "..."
 		String shortText = text ;
 		maxLength = Math.max(maxLength, minlength) ;
@@ -176,7 +176,7 @@ public class DrawingOnPanel
 	public void DrawRect(Point pos, Align align, Dimension size, int stroke, Color color, Color contourColor)
 	{
 		// Rectangle by default starts at the left top
-		Point offset = UtilG.OffsetFromPos(align, size.width, size.height) ;
+		Point offset = UtilG.OffsetFromPos(align, size) ;
 		int[] Corner = new int[] {pos.x + offset.x, pos.y + offset.y} ;
 		G.setStroke(new BasicStroke(stroke)) ;
 		if (color != null)
@@ -198,7 +198,7 @@ public class DrawingOnPanel
 	{
 		// Round rectangle by default starts at the left top
 		int ArcWidth = 10, ArcHeight = 10 ;
-		Point offset = UtilG.OffsetFromPos(align, size.width, size.height) ;
+		Point offset = UtilG.OffsetFromPos(align, size) ;
 		int[] Corner = new int[] {pos.x + offset.x, pos.y + offset.y} ;
 		G.setStroke(new BasicStroke(stroke)) ;
 		if (topColor != null & botColor != null)

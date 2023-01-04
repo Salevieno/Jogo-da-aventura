@@ -101,13 +101,9 @@ public class GameMap
 	//public ArrayList<CreatureTypes> getCreatureTypes() {return creatureTypes ;}
 	public ArrayList<NPCs> getNPCs() {return npc ;}
 	public ArrayList<Buildings> getBuildings() {return building ;}
-	public String getContinentName(Player player)
+	public Continents getContinentName(Player player)
 	{ 
-		// TODO nomes dos continentes pode ser um enum
-		String[] ContinentNames = player.allText.get("* Nomes dos continentes *") ;
-		//System.out.println(Continent);
-		//System.out.println(ContinentNames[Continent]);
-		return ContinentNames[Continent + 1] ;
+		return Continents.getAll()[Continent + 1] ;
 	}
 	
 	public static void InitializeStaticVars(String ImagesPath)

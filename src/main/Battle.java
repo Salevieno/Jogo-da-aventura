@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays ;
+import java.util.List;
+
 import javax.sound.sampled.Clip ;
 
 import components.Items;
@@ -825,7 +827,7 @@ public class Battle
 		String creatureAction = creature.getPA().getCurrentAction() ;
 		BattleAttributes creatureBA = creature.getBA(), playerBA = player.getBA(), petBA = pet.getBA() ;
 		
-		creature.fight(Player.ActionKeys) ;
+		creature.fight() ;
 		creature.UpdateCombo() ;
 		CreatureTarget = 0 ;
 		if (pet.isAlive())
@@ -909,7 +911,7 @@ public class Battle
 
 	
 	public void AtkAnimations(Point AttackerPos, Point TargetPos, Dimension AttackerSize, Dimension TargetSize, boolean UsedSkill, Object[] PlayerAtkResult, int DamageAnimation,
-			boolean[] Show, int[] Durations, ArrayList<Spell> spells, ArrayList<Spell> activePlayerSpells, String PlayerMove)
+			boolean[] Show, int[] Durations, List<Spell> spells, List<Spell> activePlayerSpells, String PlayerMove)
 	{
 		if (0 <= (int)PlayerAtkResult[0])
 		{
@@ -986,7 +988,7 @@ public class Battle
 				}
 				//HighestPlayerInflictedDamage = Math.max(HighestPlayerInflictedDamage, PlayerAtkResult[0]) ;
 				//Uts.PrintBattleActions2(player.getAction(), creature.getAction(), "player", "creature", new Object[] {PlayerAtkResult[0], PlayerAtkResult[1], creature.getBA().getSpecialStatus()}, creature.getElem()) ;
-				player.autoSpells(creature, player.getSpell());
+				player.autoSpells(creature, player.getSpell());	// TODO automatically activated player spells currently not doing anything
 				player.train(PlayerAtkResult) ;
 				player.updateoffensiveStats(PlayerAtkResult, creature) ;
 			}
@@ -1107,7 +1109,7 @@ public class Battle
 		}
 		else
 		{
-			player.Dies() ;
+			player.dies() ;
 			if (pet.isAlive())
 			{
 				pet.getPA().setPos(player.getPos()) ;

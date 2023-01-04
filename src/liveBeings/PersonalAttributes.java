@@ -5,8 +5,10 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import maps.GameMap;
+import utilities.Align;
 import utilities.Directions;
 import utilities.TimeCounter;
+import utilities.UtilG;
 
 public class PersonalAttributes
 {
@@ -16,7 +18,7 @@ public class PersonalAttributes
 	protected int ProJob ;
 	private int continent ;
 	private GameMap map ;
-	private Point Pos ;
+	private Point pos ;					// bottomCenter of the liveBeing
 	private Directions dir ;			// direction of the movement
 	private LiveBeingStates state ;		// current state
 	private Dimension size ;
@@ -48,7 +50,7 @@ public class PersonalAttributes
 			this.continent = map.getContinent() ;
 		}
 		this.map = map ;
-		this.Pos = Pos ;
+		this.pos = Pos ;
 		this.dir = dir ;
 		this.state = state ;
 		this.size = size ;
@@ -77,7 +79,7 @@ public class PersonalAttributes
 	public GameMap getMap() {return map ;}
 	public Directions getDir() {return dir ;}
 	public LiveBeingStates getState() {return state ;}
-	public Point getPos() {return Pos ;}
+	public Point getPos() {return pos ;}
 	public Dimension getSize() {return size ;}
 	public BasicAttribute getLife() {return Life ;}
 	public BasicAttribute getMp() {return Mp ;}
@@ -104,7 +106,7 @@ public class PersonalAttributes
 	public void setMap(GameMap newValue) {map = newValue ;}
 	public void setdir(Directions newValue) {dir = newValue ;}
 	public void setState(LiveBeingStates newValue) {state = newValue ;}
-	public void setPos(Point newValue) {Pos = newValue ;}
+	public void setPos(Point newValue) {pos = newValue ;}
 	public void setSize(Dimension newValue) {size = newValue ;}
 	public void setLife(BasicAttribute newValue) {Life = newValue ;}
 	public void setMp(BasicAttribute newValue) {Mp = newValue ;}
@@ -115,6 +117,7 @@ public class PersonalAttributes
 	public void setThirst(BasicAttribute newValue) {Thirst = newValue ;}
 	public void setCombo(ArrayList<String> newValue) {combo = newValue ;}
 
+	
 	public Directions randomDir()
 	{
 		int dir = (int)(4*Math.random() - 0.01) ;
@@ -141,10 +144,10 @@ public class PersonalAttributes
 		Step = 1 ;
 		switch (dir)
 		{
-			case up: newPos = new Point(Pos.x, Pos.y - Step) ; break ;
-			case down: newPos = new Point(Pos.x, Pos.y + Step) ; break ;
-			case left: newPos = new Point(Pos.x - Step, Pos.y) ; break ;
-			case right: newPos = new Point(Pos.x + Step, Pos.y) ; break ;		
+			case up: newPos = new Point(pos.x, pos.y - Step) ; break ;
+			case down: newPos = new Point(pos.x, pos.y + Step) ; break ;
+			case left: newPos = new Point(pos.x - Step, pos.y) ; break ;
+			case right: newPos = new Point(pos.x + Step, pos.y) ; break ;		
 		}
 		
 		return newPos ;

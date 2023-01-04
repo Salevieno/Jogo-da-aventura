@@ -2,7 +2,7 @@ package components ;
 
 import java.awt.Image ;
 import java.awt.Point;
-import java.util.ArrayList;
+import java.util.List;
 
 import graphics.DrawingOnPanel;
 import liveBeings.Creature;
@@ -54,7 +54,7 @@ public class Projectiles
 		Pos.x += speed[0] ;
 		Pos.y += speed[1] ;
 	}
-	public int collidedwith(Player player, ArrayList<Creature> creature, Pet pet)
+	public int collidedwith(Player player, List<Creature> creature, Pet pet)
 	{
 		// Type 0 is friendly (shot by the player or the pet)
 		// Type 1 is hostile (shot by the creature)
@@ -75,18 +75,17 @@ public class Projectiles
 		}
 		return -3 ;	// if the projectile has not hit anything
 	}
-	public void go(Player player, ArrayList<Creature> creature, Pet pet, DrawingOnPanel DP)
+	public void go(Player player, List<Creature> creature, Pet pet, DrawingOnPanel DP)
 	{
 		DrawImage(DP) ;
 		move() ;
 		int hit = collidedwith(player, creature, pet) ;
-		System.out.println(hit) ;
 		if (hit == -1 & Type == 1)
 		{
 			player.getLife().incCurrentValue(-damage); ;
-			if (player.getLife().getCurrentValue() < 0)
+			if (!player.isAlive())
 			{
-				player.Dies() ;
+				player.dies() ;
 			}
 		}
 		else if (hit == -2 & Type == 1)
@@ -104,10 +103,6 @@ public class Projectiles
 			if (creatureHit.getLife().getCurrentValue() < 0)
 			{
 				creatureHit.Dies() ;
-				//creature.get(hit).getLife()[0] = creature.get(hit).getLife()[1] ;
-				//creature.get(hit).getMp()[0] = creature.get(hit).getMp()[1] ;
-				//creature.get(hit).setFollow(false) ;
-				//creature[hit].setPos(Utg.RandomPos(screen.getDimensions(), new double[] {0, (double)(0.2)}, new double[] {1, 1 - (double)(SkyHeight)/screen.getDimensions()[1]}, new int[] {1, 1})) ;
 			}
 		}
 	}

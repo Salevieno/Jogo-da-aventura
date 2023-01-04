@@ -206,7 +206,7 @@ public class Creature extends LiveBeing
 			}*/
 		}
 	}
-	public void fight(String[] ActionKeys)
+	public void fight()
 	{
 		int move = -1 ;
 		if (10 <= PA.getMp().getCurrentValue())
@@ -219,11 +219,11 @@ public class Creature extends LiveBeing
 		}
 		if (move == 0)
 		{
-			setCurrentAction(ActionKeys[1]) ;	// Physical attack
+			setCurrentAction(BattleKeys[1]) ;	// Physical attack
 		}
 		if (move == 1)
 		{
-			setCurrentAction(ActionKeys[3]) ;	// Magical attack
+			setCurrentAction(BattleKeys[3]) ;	// Magical attack
 		}
 		if (move == 2)
 		{

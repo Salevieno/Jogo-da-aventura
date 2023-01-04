@@ -68,14 +68,6 @@ public class CreatureTypes
 	{
 		DP.DrawImage(movingAni.idleGif, pos, scale, Align.center) ;
 	}
-	
-	/* Print methods */
-	public void printAtt()
-	{
-		//TODO print attributes
-		System.out.println();
-		System.out.println("** Creature attributes **");
-	}
 
 	@Override
 	public String toString() {

@@ -59,7 +59,6 @@ import liveBeings.SpellType;
 import maps.CityMap;
 import maps.FieldMap;
 import maps.GameMap;
-import maps.MapElements;
 import maps.SpecialMap;
 import maps.TreasureChest;
 import screen.Screen;
@@ -84,12 +83,9 @@ public class Game extends JPanel
 	public static String MainFontName ;
 	public static Color[] ColorPalette ;	
 	public static int DayDuration ;
-    //public static double[] DifficultMult ;
 	
-	//private boolean OpeningIsOn, LoadingGameIsOn, InitializationIsOn, CustomizationIsOn, TutorialIsOn ;
 	protected static GameStates state ;
 	private static boolean shouldRepaint ;	// tells if the panel should be repainted, created to handle multiple repaint requests at once
-    //private boolean RunGame ;
 	private String GameLanguage ;
 
 	private DrawingOnPanel DP ;
@@ -98,12 +94,11 @@ public class Game extends JPanel
 	private Player player ;
 	private Pet pet ;
 	private Creature[] creature ;
-	private Projectiles[] proj ;	// TODO todos os projectiles do jogo numa lista? ou cada liveBeing com os seus proj	
+	private List<Projectiles> proj ;
 
 	private static Screen screen ;
 	private static Sky sky ;
 	private static Opening opening ;
-	//private static Loading loading ;
 	private static CreatureTypes[] creatureTypes ;
 	private static CityMap[] cityMaps;
 	private static FieldMap[] fieldMaps;
@@ -117,6 +112,8 @@ public class Game extends JPanel
 	private static Quests[] allQuests ;
 	private static Battle bat ;
 	private static Animations ani ;
+	
+	private final String[] konamiCode = new String[] {"A", "B", "Direita", "Esquerda", "Direita", "Esquerda", "Abaixo", "Abaixo", "Acima", "Acima"} ;
 	
 	public Game(Dimension windowDimension) 
 	{
@@ -541,17 +538,14 @@ public class Game extends JPanel
  	
     private SpellType[] initializeSpellTypes(String language)
     {
-    	// TODO
-    	//int NumberOfAllSkills = 178 ;
-    	//int NumberOfSpells = Player.NumberOfSpellsPerJob[PA.Job] ;
     	int NumberOfAtt = 14 ;
     	int NumberOfBuffs = 12 ;
-    	ArrayList<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;	
+    	List<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;	
     	SpellType[] allSpellTypes = new SpellType[spellTypesInput.size()] ;
     	
     	
-    	ArrayList<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
-    	ArrayList<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
+    	List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
+    	List<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
 		double[][][] spellBuffs = new double[allSpellTypes.length][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
 		double[][][] spellNerfs = new double[allSpellTypes.length][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
 		String[][] spellsInfo = new String[allSpellTypes.length][2] ;
@@ -594,23 +588,7 @@ public class Game extends JPanel
 			String Name = spellTypesInput.get(ID)[4] ;
 			int MaxLevel = Integer.parseInt(spellTypesInput.get(ID)[5]) ;
 			int MpCost = Integer.parseInt(spellTypesInput.get(ID)[6]) ;
-			SpellTypes Type ;
-			if (spellTypesInput.get(ID)[7].equals("Active"))
-			{
-				Type = SpellTypes.active ;
-			}
-			else if (spellTypesInput.get(ID)[7].equals("Passive"))
-			{
-				Type = SpellTypes.passive ;
-			}
-			else if (spellTypesInput.get(ID)[7].equals("Offensive"))
-			{
-				Type = SpellTypes.offensive ;
-			}
-			else
-			{
-				Type = SpellTypes.support ;
-			}
+			SpellTypes Type = SpellTypes.getByName(spellTypesInput.get(ID)[7]) ;
 			Map<SpellType, Integer> preRequisites = new HashMap<>() ;
 			for (int p = 0 ; p <= 6 - 1 ; p += 2)
 			{
@@ -758,7 +736,7 @@ public class Game extends JPanel
 	
 	private void activateCounters()
 	{	
-		player.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
+		//player.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
 		if (pet != null)
 		{
 			if (0 < pet.getLife().getCurrentValue())
@@ -773,7 +751,7 @@ public class Game extends JPanel
 				FieldMap fm = (FieldMap) player.getMap() ;
 				for (Creature creature : fm.getCreatures())
 				{
-					if (!ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(18))	// TODO
+					if (!ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(18))	// TODO define which animations stop the run
 					{
 						creature.ActivateActionCounters() ;
 					}
@@ -790,7 +768,6 @@ public class Game extends JPanel
 	
 	private void konamiCode()
 	{
-		//OpeningScreenImages[2] = ElementalCircle ;
 		DayDuration = 12 ;
 		ColorPalette = UtilS.ReadColorPalette(new ImageIcon(ImagesPath + "ColorPalette.png").getImage(), "Konami") ;
 		if (sky.dayTime.getCounter() % 1200 <= 300)
@@ -807,19 +784,10 @@ public class Game extends JPanel
 		}
 	}
 	
-	public boolean konamiCodeActivated(ArrayList<String> Combo)
+	private boolean konamiCodeActivated(List<String> Combo)
 	{
-		String[] KonamiCode = new String[] {"A", "B", "Direita", "Esquerda", "Direita", "Esquerda", "Abaixo", "Abaixo", "Acima", "Acima"} ;
-		String[] combo = Combo.toArray(new String[Combo.size()]) ;
-		
-		if (Combo != null)
-		{
-			if (Arrays.equals(combo, KonamiCode))
-			{
-				return true ;
-			}
-		}
-		return false ;
+		String[] combo = Combo.toArray(new String[Combo.size()]) ;		
+		return Arrays.equals(combo, konamiCode) ;
 	}
 	
 	private void playStopTimeGifs()
@@ -882,7 +850,7 @@ public class Game extends JPanel
 		// player acts
 		if (player.canAct())
 		{
-			player.act(pet, allMaps, mousePos, sideBarIcons, ani) ;			
+			player.acts(pet, allMaps, mousePos, sideBarIcons, ani) ;			
 
 	        if (player.getPA().getMoveCounter().finished())
 	        {
@@ -928,7 +896,7 @@ public class Game extends JPanel
 		// check if the player met something
 		if (!player.isInBattle())
 		{
-			player.meet(creature, player.getMap().getNPCs(), DP, ani) ;
+			player.meet(creature, DP, ani) ;
 		}
 		
 		
@@ -939,17 +907,14 @@ public class Game extends JPanel
 		}
 		
 		
-		// level up the player and the pet if they should
-		if (!ani.isActive(12) & player.shouldLevelUP())
+		// level up the player and the pet if they should		
+		if (!ani.isActive(12))
 		{
-			player.LevelUp(ani) ;
+			player.checkLevelUp(ani) ;
 		}
-		if (pet != null)
+		if (pet != null & !ani.isActive(13))
 		{
-			if (!ani.isActive(13) & pet.ShouldLevelUP())
-			{
-				pet.LevelUp(ani) ;
-			}
+			pet.checkLevelUp(ani) ;
 		}
 		
 		
@@ -960,19 +925,19 @@ public class Game extends JPanel
 		// move the active projectiles and check if they collide with something
 		if (proj != null)
 		{
-			ArrayList<Creature> creaturesInMap = new ArrayList<>() ;
+			List<Creature> creaturesInMap = new ArrayList<>() ;
 			if (!player.getMap().IsACity())
 			{
 				FieldMap fm = (FieldMap) player.getMap() ;
 				creaturesInMap = fm.getCreatures() ;
 			}
-			for (int p = 0 ; p <= proj.length - 1 ; p += 1)
+			for (int p = 0 ; p <= proj.size() - 1 ; p += 1)
 			{
-				proj[p].go(player, creaturesInMap, pet, DP) ;
-			}
-			if (proj[0].collidedwith(player, creaturesInMap, pet) != - 3)	// if the projectile has hit something
-			{
-				proj[0] = null ;	// destroy the projectile
+				proj.get(p).go(player, creaturesInMap, pet, DP) ;
+				if (proj.get(0).collidedwith(player, creaturesInMap, pet) != - 3)	// if the projectile has hit something
+				{
+					proj.remove(p) ;
+				}
 			}
 		}
 	}
@@ -1044,7 +1009,7 @@ public class Game extends JPanel
     	
     	player.InitializeSpells() ;
     	player.getSpellsTreeWindow().setSpells(player.getSpell().toArray(new Spell[0])) ;
-    	player.setMap(specialMaps[0]) ;
+    	player.setMap(cityMaps[0]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
     	player.getSettings().setMusicIsOn(true) ;
     	for (int i = 0; i <= 2 - 1; i += 1)

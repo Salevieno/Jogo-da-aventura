@@ -373,7 +373,7 @@ public abstract class UtilG
 		return (double)(Math.max(0, 1 - amplitude + 2 * amplitude * Math.random())) ;
 	}
 
-	public static Point OffsetFromPos(Align Alignment, int l, int h)
+	public static Point OffsetFromPos(Align Alignment, Dimension size)
 	{
 		Point offset = new Point(0, 0) ;
 		switch (Alignment)
@@ -386,49 +386,49 @@ public abstract class UtilG
 			}
 			case centerLeft:
 			{
-				offset = new Point(0, -h / 2) ;
+				offset = new Point(0, -size.height / 2) ;
 				
 				break ;
 			}
 			case bottomLeft:
 			{
-				offset = new Point(0, -h) ;
+				offset = new Point(0, -size.height) ;
 				
 				break ;
 			}
 			case topCenter:
 			{
-				offset = new Point(-l / 2, 0) ;
+				offset = new Point(-size.width / 2, 0) ;
 				
 				break ;
 			}
 			case center:
 			{
-				offset = new Point(-l / 2, -h / 2) ;
+				offset = new Point(-size.width / 2, -size.height / 2) ;
 				
 				break ;
 			}
 			case bottomCenter:
 			{
-				offset = new Point(-l / 2, -h) ;
+				offset = new Point(-size.width / 2, -size.height) ;
 				
 				break ;
 			}
 			case topRight:
 			{
-				offset = new Point(-l, 0) ;
+				offset = new Point(-size.width, 0) ;
 				
 				break ;
 			}
 			case centerRight:
 			{
-				offset = new Point(-l,  -h / 2) ;
+				offset = new Point(-size.width,  -size.height / 2) ;
 				
 				break ;
 			}
 			case bottomRight:
 			{
-				offset = new Point(-l,  -h) ;
+				offset = new Point(-size.width,  -size.height) ;
 				
 				break ;
 			}
@@ -438,6 +438,12 @@ public abstract class UtilG
 		return offset ;
 	}
 
+	public static Point getPosAt(Point pos, Align alignment, Dimension size)
+	{
+		Point offset = UtilG.OffsetFromPos(alignment, size) ;
+		return UtilG.Translate(pos, -offset.x, -offset.y) ;
+	}
+	
 	public static int[] ArrayWithValuesGreaterThan(int[] OriginalArray, int MinValue)
 	{
 		int NewArrayLength = 0 ;

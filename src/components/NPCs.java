@@ -112,6 +112,7 @@ public class NPCs
 	}
 
 	public int getID() {return id ;}
+	public NPCType getType() {return type ;}
 	//public String getName() {return Name ;}
 	public Point getPos() {return Pos ;}
 	//public Image getImage() {return image ;}

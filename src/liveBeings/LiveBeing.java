@@ -24,6 +24,7 @@ public class LiveBeing
 	protected PlayerAttributesWindow attWindow ;	// Attributes window
 	
 	public static Image[] StatusImages ;	// 0: Shield, 1: Stun, 2: Block, 3: Blood, 4: Poison, 5: Silence
+	public static final String[] BattleKeys = new String[] {"A", "D"} ;
 	
 	public LiveBeing(int level, PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, PlayerAttributesWindow attWindow)
 	{
@@ -62,6 +63,7 @@ public class LiveBeing
 	}
 	public void IncBattleActionCounters()
 	{
+		// TODO get rid of battle action counters
 		for (int a = 0 ; a <= BA.getBattleActions().length - 1 ; a += 1)
 		{
 			if (BA.getBattleActions()[a][0] < BA.getBattleActions()[a][1])
@@ -95,18 +97,8 @@ public class LiveBeing
 	public boolean isAlive() {return 0 < PA.getLife().getCurrentValue() ;}
 	public boolean canAtk() {return BA.getBattleActions()[0][2] == 1 & !BA.isStun() ;}
 	public boolean isSilent() {return BA.getSpecialStatus()[4] <= 0 ;}
-	public boolean isDefending()
-	{
-		// TODO
-		if (PA.getCurrentAction().equals("D") & !canAtk())
-		{
-			return true ;
-		}
-		else
-		{
-			return false ;
-		}
-	}
+	public boolean isDefending() {return (PA.getCurrentAction().equals(BattleKeys[1]) & !canAtk()) ;}
+	
 	public void ActivateDef()
 	{
 		BA.getPhyDef().incBonus(BA.getPhyDef().getBaseValue()) ;

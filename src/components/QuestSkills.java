@@ -17,25 +17,29 @@ public enum QuestSkills
 	{
 		switch (continent)
 		{
-			case "Floresta":
+			case "forest":
 			{
 				return forestMap ;
 			}
-			case "Caverna":
+			case "cave":
 			{
 				return caveMap ;
 			}
-			case "Ilha":
+			case "island":
 			{
 				return islandMap ;
 			}
-			case "Vulcão":
+			case "volcano":
 			{
 				return volcanoMap ;
 			}
-			case "Terra das neves":
+			case "snowland":
 			{
 				return snowlandMap ;
+			}
+			case "special":
+			{
+				return null ;
 			}
 			default: 
 				return null ;
