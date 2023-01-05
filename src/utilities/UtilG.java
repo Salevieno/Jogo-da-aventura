@@ -20,7 +20,9 @@ import java.math.BigDecimal ;
 import java.math.RoundingMode ;
 import java.nio.charset.StandardCharsets ;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -56,7 +58,7 @@ public abstract class UtilG
 			BufferedReader bufferedReader = new BufferedReader(streamReader) ; 					
 			String Line = bufferedReader.readLine() ;
 			String key = "" ;
-			ArrayList<String> content = new ArrayList<>() ;
+			List<String> content = new ArrayList<>() ;
 			while (Line != null)
 			{
 				if (Line.contains("*"))

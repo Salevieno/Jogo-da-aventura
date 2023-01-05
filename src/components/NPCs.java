@@ -1,9 +1,9 @@
 package components ;
 
-import java.awt.Color ;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 
@@ -28,11 +28,13 @@ public class NPCs
 	//private String PosRelToBuilding ;
 	private String[] options ;
 	private int selOption ;
+	private int numberMenus ;
 	private int menu ;
-	private int window ;
+	//private int window ;
 	//public boolean Firstcontact ;
 
-	public static Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "SpeakingBubble.png").getImage() ;
+	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	public static final Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "\\NPCs\\" + "SpeakingBubble.png").getImage() ;
 	
 	public NPCs (int id, NPCType type, Point Pos, String[] options)
 	{
@@ -48,6 +50,7 @@ public class NPCs
 		this.options = options ;
 		selOption = 0 ;
 		menu = 0 ;
+		numberMenus = type.getSpeech().length - 1 ;
 		//Firstcontact = true ;
 		
 		/*
@@ -130,10 +133,17 @@ public class NPCs
 	//public void setColor(Color C) {color = C ;}
 	
 
-	public void Contact(Player player, Pet pet, Creature[] creatures, GameMap[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawFunctions DF)
+	public void Contact(Player player, Pet pet, Creature[] creatures, GameMap[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawingOnPanel DP)
 	{
 		String action = player.getPA().getCurrentAction() ;
 		navigate(action) ;
+		speak(Pos, DP) ;
+		switch (type.getJob())
+		{
+			case doctor: break ;
+			//case master: masterAction(player, pet, MousePos, DF) ; break ;
+			default: break;
+		}
 		/*if (npc.getName().equals("Doctor") | npc.getName().equals("Doutor"))
 		{
 			Doctor(Choice, player, pet, npc, DF) ;
@@ -180,7 +190,7 @@ public class NPCs
 		}*/
 		if (type.getName().equals("Master") | type.getName().equals("Mestre"))
 		{
-			masterAction(player, pet, MousePos, DF) ;
+			//masterAction(player, pet, MousePos, DF) ;
 		}/*
 		if (npc.getName().contains("Quest") | npc.getName().contains("Quest"))
 		{
@@ -203,14 +213,14 @@ public class NPCs
 	public void navigate(String action)
 	{
 		switchOption(action) ;
-		if (action.equals("Enter"))
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)))
 		{
 			enterMenu() ;
 		}
-		if (action.equals("Escape") & 0 < menu)
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) & 0 < menu)
 		{
 			menu += -1 ;
-			window = 0 ;
+			//window = 0 ;
 		}
 	}
 	
@@ -234,13 +244,26 @@ public class NPCs
 	
 	public void enterMenu()
 	{
-		menu = selOption ;
+		if (menu <= numberMenus - 2)
+		{
+			menu += 1;
+		}
+			
+		//menu = selOption ;
+	}
+		
+	public void speak(Point pos, DrawingOnPanel DP)
+	{
+		if (!type.getSpeech()[menu + 1].equals(""))
+		{
+			DP.DrawSpeech(pos, type.getSpeech()[menu + 1], NPCfont, type.getImage(), SpeakingBubbleImage, type.getColor()) ;
+		}
 	}
 	
 	public void masterAction(Player player, Pet pet, Point MousePos, DrawFunctions DF)
 	{
-		String[] speech = player.allText.get("* " + type.getName() + " *") ;
-		Font NPCTextFont = new Font(Game.MainFontName, Font.BOLD, 20) ;
+		//String[] speech = player.allText.get("* " + type.getName() + " *") ;
+		//Font NPCTextFont = new Font(Game.MainFontName, Font.BOLD, 20) ;
 		//System.out.println(selOption + " " + menu) ;
 		if (menu == 0)
 		{

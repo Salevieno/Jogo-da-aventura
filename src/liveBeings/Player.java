@@ -523,7 +523,7 @@ public class Player extends LiveBeing
 		return (0 < PA.stepCounter & PA.stepCounter <= moveRange) ;
 	}
 	
-	private void ResetAction() {PA.currentAction = "" ;}
+	public void ResetAction() {PA.currentAction = "" ;}
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 	
@@ -759,7 +759,7 @@ public class Player extends LiveBeing
 		}
 		
 		UpdateCombo() ;
-		ResetAction() ;
+		//ResetAction() ;
 	}
 	public void meet(Creature[] creatures, DrawingOnPanel DP, Animations ani)
 	{
@@ -833,21 +833,13 @@ public class Player extends LiveBeing
 		{
 			for (NPCs npc : currentMap.getNPCs())
 			{
-				//System.out.println(npc + " " + npc.getPos() + " " + this.getPos() + " " + this.getSize());
-				if (UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()))
+				boolean meetingNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
+				if (meetingNPC)
 				{
-					System.out.println("meeting with " + npc.getType().getName());
-				}
-				distx = (double) Math.abs(PA.getPos().x - npc.getPos().x) ;
-				disty = (double) Math.abs(PA.getPos().y - npc.getPos().y) ;
-				if (distx <= 0.5*PA.getSize().width & disty <= 0.5*PA.getSize().height)
-				{
-					//return new int[] {1, NPC.getID()} ;
+					npc.Contact(this, null, creatures, null, null, null, false, ani, DP) ;
 				}
 			}	
 		}
-		
-		//return new int[] {-1, -1} ;
 	}
 	
 	/*private void Collect(int Coltype, Maps[] maps, DrawFunctions DF, Animations Ani)

@@ -295,9 +295,10 @@ public class DrawingOnPanel
 	}
 	public void DrawSpeech(Point Pos, String text, Font font, Image NPCimage, Image SpeakingBubble, Color color)
 	{
+		// obs: text must end with . , ? or ! for this function to work
 		int ImageL = SpeakingBubble.getWidth(null), ImageH = SpeakingBubble.getHeight(null) ;
 		Pos = new Point (Pos.x, Pos.y - NPCimage.getHeight(null)) ;
-		int MaxTextL = 20 ;
+		int maxTextL = 20 ;
 		if (0.7 * screenSize.width < Pos.x)
 		{
 			DrawImage(SpeakingBubble, new Point(Pos.x + ImageL, Pos.y), stdAngle, new Scale(1, 1), true, false, Align.bottomCenter, 1) ;
@@ -306,7 +307,9 @@ public class DrawingOnPanel
 		{
 			DrawImage(SpeakingBubble, Pos, stdAngle, new Scale(1, 1), Align.bottomCenter) ;
 		}
-		DrawFitText(new Point((int) (Pos.x - ImageL / 2 + 14), (int) (Pos.y - ImageH + 5)), UtilG.TextH(font.getSize() + 1), Align.topLeft, text, font, MaxTextL, color) ;		
+		Point pos = new Point((int) (Pos.x - ImageL / 2 + 14), (int) (Pos.y - ImageH + 5)) ;
+		int sy = UtilG.TextH(font.getSize() + 1) ;
+		DrawFitText(pos, sy, Align.topLeft, text, font, maxTextL, color) ;		
 	}
 	public void DrawWindowArrows(Point Pos, int L, int SelectedWindow, int MaxWindow)
 	{

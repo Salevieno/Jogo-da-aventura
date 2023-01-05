@@ -26,6 +26,7 @@ import javax.swing.JPanel ;
 import components.BuildingType;
 import components.Buildings;
 import components.Icon;
+import components.NPCJobs;
 import components.NPCType;
 import components.NPCs;
 import components.Projectiles;
@@ -168,6 +169,7 @@ public class Game extends JPanel
 		{
 			String Name = "" ;
 			String Info = "" ;
+			NPCJobs job = null ;
 			//if (Language.equals("P"))
 			//{
 			//	Name = input.get(i)[0] ;
@@ -175,12 +177,32 @@ public class Game extends JPanel
 			//}
 			//else if (Language.equals("E"))
 			//{
-				Name = input.get(i)[1] ;
-				Info = input.get(i)[4] ;
+				Name = input.get(i)[0] ;
+				Info = input.get(i)[3] ;
 			//}
+			switch (input.get(i)[2])
+			{
+				case "doctor": job = NPCJobs.doctor ; break ;
+				case "equipsSeller": job = NPCJobs.equipsSeller ; break ;
+				case "itemsSeller": job = NPCJobs.itemsSeller ; break ;
+				case "smuggleSeller": job = NPCJobs.smuggleSeller ; break ;
+				case "banker": job = NPCJobs.banker ; break ;
+				case "alchemist": job = NPCJobs.alchemist ; break ;
+				case "woodcrafter": job = NPCJobs.woodcrafter ; break ;
+				case "crafter": job = NPCJobs.crafter ; break ;
+				case "forger": job = NPCJobs.forger ; break ;
+				case "elemental": job = NPCJobs.elemental ; break ;
+				case "saver": job = NPCJobs.saver ; break ;
+				case "master": job = NPCJobs.master ; break ;
+				case "quest": job = NPCJobs.quest ; break ;
+				case "citizen": job = NPCJobs.citizen ; break ;
+				case "caveEntry": job = NPCJobs.caveEntry ; break ;
+				case "caveExit": job = NPCJobs.caveExit ; break ;
+				case "sailor": job = NPCJobs.sailor ; break ;
+			}
 			Color color = ColorPalette[0] ;
-			Image image = new ImageIcon(path + "NPC_" + Name + ".png").getImage() ;
-			npcType[i] = new NPCType(Name, Info, color, image) ;
+			Image image = new ImageIcon(path + "NPC_" + job.toString() + ".png").getImage() ;
+			npcType[i] = new NPCType(Name, job, Info, color, image, player.allText.get("* " + Name + " *")) ;
 		}
     	
 		return npcType ;
@@ -311,6 +333,9 @@ public class Game extends JPanel
 				image = new ImageIcon(path + "Map" + String.valueOf(id) + ".gif").getImage() ;
 			}
 			Clip music = Music.musicFileToClip(new File(MusicPath + (id + 2) + "-" + name + ".wav").getAbsoluteFile()) ;
+			
+			
+			// adding buildings top map
 			ArrayList<Buildings> buildings = new ArrayList<>() ;
 			for (int i = 0; i <= 6 - 1; i += 1)
 			{
@@ -337,21 +362,23 @@ public class Game extends JPanel
 				buildings.add(new Buildings(buildingType, buildingPos, buildingNPCs)) ;
 			}
 
+			
+			// adding npcs to map
 			ArrayList<NPCs> npcs = new ArrayList<NPCs>() ;
 			for (int i = 0; i <= 17 - 1; i += 1)
 			{
-				String NPCName = input.get(id)[28 + 3 * i] ;
+				String npcJob = input.get(id)[28 + 3 * i] ;
 				NPCType NPCType = null ;
 				for (int j = 0 ; j <= NPCTypes.length - 1 ; j += 1)
 				{
-					if (NPCName.equals(NPCTypes[j].getName()))
+					if (npcJob.equals(NPCTypes[j].getJob().toString()))
 					{
 						NPCType = NPCTypes[j] ;
 					}
 				}
 				
 				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29 + 3 * i])) ;
-				int NPCPosY = (int) (screen.getSize().height * Double.parseDouble(input.get(id)[30 + 3 * i])) ;
+				int NPCPosY = (int) (sky.height + screen.getSize().height * Double.parseDouble(input.get(id)[30 + 3 * i])) ;
 				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
 				npcs.add(new NPCs(i, NPCType, NPCPos, new String[] {"Sim", "Não"})) ;
 			}
@@ -850,12 +877,15 @@ public class Game extends JPanel
 		// player acts
 		if (player.canAct())
 		{
-			player.acts(pet, allMaps, mousePos, sideBarIcons, ani) ;			
+			if (!player.getPA().getCurrentAction().equals(""))
+			{
+				player.acts(pet, allMaps, mousePos, sideBarIcons, ani) ;			
 
-	        if (player.getPA().getMoveCounter().finished())
-	        {
-	        	player.getPA().getMoveCounter().reset() ;
-	        }
+		        if (player.getPA().getMoveCounter().finished())
+		        {
+		        	player.getPA().getMoveCounter().reset() ;
+		        }
+			}
 		}		
 		if (player.isMoving())
 		{
@@ -940,6 +970,8 @@ public class Game extends JPanel
 				}
 			}
 		}
+		
+		player.ResetAction() ;
 	}
 	
 	
