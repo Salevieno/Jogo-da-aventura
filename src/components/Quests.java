@@ -90,7 +90,7 @@ public class Quests
 		}*/
 	}
 
-	public void Initialize(String[] Input, Languages Language, int id, int PlayerJob)
+	public void Initialize(String[] Input, Languages language, int id, int PlayerJob)
 	{
 		Name = String.valueOf("Quest " + id) ;
 		Type = Input[1] ;
@@ -119,13 +119,6 @@ public class Quests
 			}
 		}
 		Counter = new int[reqCreatureTypes.size()] ;
-		if (Language.equals(Languages.portugues))
-		{
-			Description = Input[30] ;
-		}
-		else if (Language.equals(Languages.english))
-		{
-			Description = Input[31] ;
-		}
+		Description = Input[30 + language.ordinal()] ;
 	}
 }

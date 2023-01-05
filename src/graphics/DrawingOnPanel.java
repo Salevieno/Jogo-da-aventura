@@ -265,34 +265,6 @@ public class DrawingOnPanel
 		{
 		}*/
 	}
-	public void DrawOptionsWindow(Point NPCPos, Font font, int selOption, String[] options, Image NPCimage, Color color)
-	{
-		Point Pos = new Point((int) (NPCPos.x - NPCimage.getWidth(null) - 10), NPCPos.y) ;
-		//Size offset = new Size(10, 10) ;
-		int Lmax = 0 ;
-		for (int i = 0 ; i <= options.length - 1 ; i += 1)
-		{
-			Lmax = Math.max(Lmax, UtilG.TextL(options[i], font, G)) ;
-		}
-		int Sy = 2 * UtilG.TextH(font.getSize()) ;
-		//Size windowSize = new Size(Lmax + offset.x, options.length * Sy + offset.y) ;
-
-		//int ImageW = menuWindow.getWidth(null), ImageH = menuWindow.getHeight(null) ;
-		DrawMenuWindow(Pos, new Scale(1, 1), null, 0, colorPalette[7], colorPalette[7]) ;	// (float) windowSize.x / ImageW, (float) windowSize.y / ImageH
-		for (int i = 0 ; i <= options.length - 1 ; i += 1)
-		{
-			Point textPos = new Point(Pos.x + 5, Pos.y + 5 + i * Sy) ;
-			if (i == selOption)
-			{
-				DrawImage(buttonGeneral, textPos, new Scale(Lmax / 42, 1), Align.topLeft) ;
-				DrawText(textPos, Align.topLeft, stdAngle, options[i], font, colorPalette[5]) ;
-			}
-			else
-			{
-				DrawText(textPos, Align.topLeft, stdAngle, options[i], font, color) ;	
-			}
-		}
-	}
 	public void DrawSpeech(Point Pos, String text, Font font, Image NPCimage, Image SpeakingBubble, Color color)
 	{
 		// obs: text must end with . , ? or ! for this function to work

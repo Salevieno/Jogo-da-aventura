@@ -78,6 +78,11 @@ public class LiveBeing
 		BA.getBattleActions()[0][2] = 0 ;
 	}
 	
+	public void resetCombo()
+	{
+		PA.setCombo(new ArrayList<String>()) ;
+	}
+	
 	public void UpdateCombo()
 	{
 		if (!PA.currentAction.equals(""))

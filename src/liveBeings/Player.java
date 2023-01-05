@@ -1929,14 +1929,14 @@ public class Player extends LiveBeing
 	public void DrawSideBar(Pet pet, Point MousePos, Icon[] icons, DrawingOnPanel DP)
 	{
 		// icons: 0: Options 1: Bag 2: Quest 3: Map 4: Book, 5: player, 6: pet
-		Screen screen = Game.getScreen() ;
+		Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
 		Color[] colorPalette = Game.ColorPalette ;
 		double stdAngle = DrawingOnPanel.stdAngle ;
 		Font font = new Font("SansSerif", Font.BOLD, 13) ;
 		String[] IconKey = new String[] {Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7]} ;
 		Color TextColor = colorPalette[7] ;
 		
-		DP.DrawRect(new Point(screen.getSize().width, screen.getSize().height), Align.bottomLeft, new Dimension(40, screen.getSize().height), 1, colorPalette[9], null) ;	// Background
+		DP.DrawRect(new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height), Align.bottomLeft, size, 1, colorPalette[9], null) ;
 		DrawSpellsBar(this, spells, SpellType.cooldownImage, SpellType.slotImage, MousePos, DP) ;
 		icons[0].display(stdAngle, Align.topLeft, MousePos, DP) ;		// settings
 		icons[1].display(stdAngle, Align.topLeft, MousePos, DP) ;		// bag
@@ -1971,10 +1971,10 @@ public class Player extends LiveBeing
 		}
 		
 		// Hotkeys
-		DP.DrawRoundRect(new Point(screen.getSize().width + 1, screen.getSize().height - 70), Align.topLeft, new Dimension(36, 60), 1, colorPalette[7], colorPalette[19], true) ;
+		DP.DrawRoundRect(new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70), Align.topLeft, new Dimension(36, 60), 1, colorPalette[7], colorPalette[19], true) ;
 		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 		{
-			Point slotCenter = new Point(screen.getSize().width + 10, screen.getSize().height - 60 + 20 * i) ;
+			Point slotCenter = new Point(Game.getScreen().getSize().width + 10, Game.getScreen().getSize().height - 60 + 20 * i) ;
 			Dimension slotSize = new Dimension(SpellType.slotImage.getWidth(null), SpellType.slotImage.getHeight(null)) ;
 			DP.DrawImage(SpellType.slotImage, slotCenter, Align.center) ;
 			DP.DrawText(new Point(slotCenter.x + slotSize.width / 2 + 5, slotCenter.y + slotSize.height / 2), Align.bottomLeft, stdAngle, Player.HotKeys[i], font, TextColor) ;

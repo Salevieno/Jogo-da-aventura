@@ -91,6 +91,7 @@ public class Game extends JPanel
 	protected static GameStates state ;
 	private static boolean shouldRepaint ;	// tells if the panel should be repainted, created to handle multiple repaint requests at once
 	private Languages GameLanguage ;
+	private static boolean konamiCodeActive ;
 
 	private DrawingOnPanel DP ;
 	private Icon[] sideBarIcons;
@@ -117,7 +118,7 @@ public class Game extends JPanel
 	private static Battle bat ;
 	private static Animations ani ;
 	
-	private final String[] konamiCode = new String[] {"A", "B", "Direita", "Esquerda", "Direita", "Esquerda", "Abaixo", "Abaixo", "Acima", "Acima"} ;
+	private final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 	
 	public Game(Dimension windowDimension) 
 	{
@@ -133,6 +134,7 @@ public class Game extends JPanel
 		DP = new DrawingOnPanel() ;
 		GameLanguage = Languages.portugues ;
 		state = GameStates.loading;
+		konamiCodeActive = false ;
 		shouldRepaint = false ;
 		
     	//OpeningIsOn = true ; 
@@ -198,6 +200,7 @@ public class Game extends JPanel
 			Color color = ColorPalette[0] ;
 			Image image = new ImageIcon(path + "NPC_" + job.toString() + ".png").getImage() ;
 			String[] speech = player.allText.get("* " + name + " *") ;
+			// TODO NPC options vai ser uma lista de listas, cada uma correspondendo a uma speech
 			String[] options = new String[] {"Sim", "Não"} ;
 			
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
@@ -251,14 +254,7 @@ public class Game extends JPanel
 		Color[] color = new Color[creatureTypes.length] ;
 		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
 		{			
-			if (language.equals(Languages.portugues))
-			{
-				name = input.get(ct)[1] ;
-			}
-			else if (language.equals(Languages.english))
-			{
-				name = input.get(ct)[2] ;
-			}
+			name = input.get(ct)[1 + language.ordinal()] ;
 			int colorid = (int)((Creature.getskinColor().length - 1)*Math.random()) ;
 			color[ct] = Creature.getskinColor()[colorid] ;
 			if (270 < ct & ct <= 299)	// Ocean creatures
@@ -614,14 +610,7 @@ public class Game extends JPanel
 					BuffCont += 3 ;
 				}
 			}
-			if (language.equals(Languages.portugues))
-			{
-				spellsInfo[i] = new String[] {spellTypesInput.get(ID)[42], spellTypesInput.get(ID)[43]} ;
-			}
-			else if (language.equals(Languages.english))
-			{
-				spellsInfo[i] = new String[] {spellTypesInput.get(ID)[44], spellTypesInput.get(ID)[45]} ;
-			}
+			spellsInfo[i] = new String[] {spellTypesInput.get(ID)[42], spellTypesInput.get(ID)[43 + 2 * language.ordinal()]} ;
 			String Name = spellTypesInput.get(ID)[4] ;
 			int MaxLevel = Integer.parseInt(spellTypesInput.get(ID)[5]) ;
 			int MpCost = Integer.parseInt(spellTypesInput.get(ID)[6]) ;
@@ -805,7 +794,7 @@ public class Game extends JPanel
 	
 	private void konamiCode()
 	{
-		DayDuration = 12 ;
+		DayDuration = 120000 ;
 		ColorPalette = UtilS.ReadColorPalette(new ImageIcon(ImagesPath + "ColorPalette.png").getImage(), "Konami") ;
 		if (sky.dayTime.getCounter() % 1200 <= 300)
 		{
@@ -821,10 +810,14 @@ public class Game extends JPanel
 		}
 	}
 	
-	private boolean konamiCodeActivated(List<String> Combo)
+	private void checkKonamiCode(List<String> Combo)
 	{
-		String[] combo = Combo.toArray(new String[Combo.size()]) ;		
-		return Arrays.equals(combo, konamiCode) ;
+		String[] combo = Combo.toArray(new String[Combo.size()]) ;
+		if (Arrays.equals(combo, konamiCode))
+		{
+			konamiCodeActive = !konamiCodeActive ;
+			player.resetCombo() ;
+		}
 	}
 	
 	private void playStopTimeGifs()
@@ -857,7 +850,8 @@ public class Game extends JPanel
 		
 
 		// check for the Konami code
-		if (konamiCodeActivated(player.getCombo()))
+		checkKonamiCode(player.getCombo()) ;
+		if (konamiCodeActive)
 		{
 			konamiCode() ;
 		}
@@ -1051,7 +1045,7 @@ public class Game extends JPanel
     	
     	player.InitializeSpells() ;
     	player.getSpellsTreeWindow().setSpells(player.getSpell().toArray(new Spell[0])) ;
-    	player.setMap(cityMaps[0]) ;
+    	player.setMap(cityMaps[2]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
     	player.getSettings().setMusicIsOn(true) ;
     	for (int i = 0; i <= 2 - 1; i += 1)

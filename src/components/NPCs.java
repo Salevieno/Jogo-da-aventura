@@ -1,5 +1,6 @@
 package components ;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
@@ -17,13 +18,14 @@ import main.Game;
 import maps.GameMap;
 import utilities.Align;
 import utilities.Scale;
+import utilities.UtilG;
 
 public class NPCs
 {
 	private int id ;
 	private NPCType type ;
 	//private String Name ;
-	private Point Pos ;
+	private Point pos ;
 	//private int Map ;
 	//private String PosRelToBuilding ;
 	private int selOption ;
@@ -40,7 +42,7 @@ public class NPCs
 		this.id = id ;
 		this.type = type ;
 		//this.Name = Name ;
-		this.Pos = Pos ;
+		this.pos = Pos ;
 		//this.image = image ;
 		//this.Map = Map ;
 		//this.PosRelToBuilding = PosRelToBuilding ;
@@ -115,7 +117,7 @@ public class NPCs
 	public int getID() {return id ;}
 	public NPCType getType() {return type ;}
 	//public String getName() {return Name ;}
-	public Point getPos() {return Pos ;}
+	public Point getPos() {return pos ;}
 	//public Image getImage() {return image ;}
 	//public int getMap() {return Map ;}
 	//public String getPosRelToBuilding() {return PosRelToBuilding ;}
@@ -123,7 +125,7 @@ public class NPCs
 	//public Color getColor() {return color ;}
 	public void setID(int I) {id = I ;}
 	//public void setName(String N) {Name = N ;}
-	public void setPos(Point P) {Pos = P ;}
+	public void setPos(Point P) {pos = P ;}
 	//public void setImage(Image I) {image = I ;}
 	//public void setMap(int M) {Map = M ;}
 	//public void setPosRelToBuilding(String P) {PosRelToBuilding = P ;}
@@ -147,7 +149,7 @@ public class NPCs
 	{
 		String action = player.getPA().getCurrentAction() ;
 		navigate(action) ;
-		speak(Pos, DP) ;
+		speak(pos, DP) ;
 		switch (type.getJob())
 		{
 			case doctor: break ;
@@ -268,6 +270,10 @@ public class NPCs
 		{
 			DP.DrawSpeech(pos, type.getSpeech()[menu + 1], NPCfont, type.getImage(), SpeakingBubbleImage, type.getColor()) ;
 		}
+		if (type.getOptions() != null)
+		{
+			drawOptions(selOption, type.getOptions(), type.getColor(), DP);
+		}
 	}
 	
 	public void masterAction(Player player, Pet pet, Point MousePos, DrawFunctions DF)
@@ -385,10 +391,30 @@ public class NPCs
 		//}
 		//else
 		//{
-		DP.DrawImage(type.getImage(), Pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomCenter) ;
+		DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomCenter) ;
 		//DP.DrawText(Pos, Align.bottomCenter, DrawingOnPanel.stdAngle, String.valueOf(id), new Font("SansSerif", Font.BOLD, 12), Color.blue) ;				
 	}
 
+	public void drawOptions(int selOption, String[] options, Color color, DrawingOnPanel DP)
+	{
+		Point windowPos = new Point((int) (pos.x - type.getImage().getWidth(null) - 10), pos.y) ;		
+		DP.DrawMenuWindow(windowPos, new Scale(1, 1), null, 0, Game.ColorPalette[7], Game.ColorPalette[7]) ;
+		
+		int sy = 2 * UtilG.TextH(NPCfont.getSize()) ;
+		for (int i = 0 ; i <= options.length - 1 ; i += 1)
+		{
+			Point textPos = new Point(windowPos.x + 5, windowPos.y + 5 + i * sy) ;
+			if (i == selOption)
+			{
+				DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, String.valueOf(i) + " - " + options[i], NPCfont, Game.ColorPalette[5]) ;
+			}
+			else
+			{
+				DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, String.valueOf(i) + " - " + options[i], NPCfont, color) ;	
+			}
+		}
+	}
+	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 
 	/*public String ChoicesMenu(String playerAction, NPCs npc, String[] choiceOption, DrawFunctions DF)
