@@ -6,6 +6,7 @@ import java.util.Map;
 import items.Item;
 import liveBeings.CreatureTypes;
 import main.Game;
+import main.Languages;
 
 public class Quests
 {
@@ -89,7 +90,7 @@ public class Quests
 		}*/
 	}
 
-	public void Initialize(String[] Input, String Language, int id, int PlayerJob)
+	public void Initialize(String[] Input, Languages Language, int id, int PlayerJob)
 	{
 		Name = String.valueOf("Quest " + id) ;
 		Type = Input[1] ;
@@ -118,11 +119,11 @@ public class Quests
 			}
 		}
 		Counter = new int[reqCreatureTypes.size()] ;
-		if (Language.equals("P"))
+		if (Language.equals(Languages.portugues))
 		{
 			Description = Input[30] ;
 		}
-		else if (Language.equals("E"))
+		else if (Language.equals(Languages.english))
 		{
 			Description = Input[31] ;
 		}

@@ -2239,7 +2239,7 @@ public class Player extends LiveBeing
 	}
 	private void Load(String filePath, Pet pet, GameMap[] maps)
 	{
-		JSONObject JsonData = UtilG.readJson(filePath) ;
+		JSONObject JsonData = UtilG.readJsonObject(filePath) ;
 		setName((String) JsonData.get("Name")) ;
 		setLevel(Math.toIntExact((Long) JsonData.get("Level"))) ;
 	}

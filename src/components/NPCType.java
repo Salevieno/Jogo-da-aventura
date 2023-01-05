@@ -11,8 +11,9 @@ public class NPCType
 	private Color color ;	// npc text color
 	private Image image ;	// npc image
 	private String[] speech ;	// npc speech
+	private String[] options ;	// options given by the NPC
 	
-	public NPCType(String name, NPCJobs job, String info, Color color, Image image, String[] speech)
+	public NPCType(String name, NPCJobs job, String info, Color color, Image image, String[] speech, String[] options)
 	{
 		this.name = name ;
 		this.job = job ;
@@ -20,6 +21,7 @@ public class NPCType
 		this.color = color ;
 		this.image = image ;
 		this.speech = speech ;
+		this.options = options ;
 	}
 	
 
@@ -29,4 +31,5 @@ public class NPCType
 	public Color getColor() {return color ;}
 	public Image getImage() {return image ;}
 	public String[] getSpeech() {return speech ;}
+	public String[] getOptions() {return options ;}
 }

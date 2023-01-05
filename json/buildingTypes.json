@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Hospital",
+    "npcs": [{"job": "doctor", "pos": [0, 0]}]
+  },  
+  {
+    "name": "Store",
+    "npcs": [{"job": "equipsSeller", "pos": [0, 0]}, {"job": "itemsSeller", "pos": [0, 0]}]
+  },  
+  {
+    "name": "Craft",
+    "npcs": [{"job": "crafter", "pos": [0, 0]}]
+  },  
+  {
+    "name": "Bank",
+    "npcs": [{"job": "banker", "pos": [0, 0]}]
+  },  
+  {
+    "name": "Forge",
+    "npcs": [{"job": "forger", "pos": [0, 0]}]
+  },  
+  {
+    "name": "Sign",
+    "npcs": []
+  }
+]

@@ -1,25 +1,39 @@
 package components;
 
 import java.awt.Image;
+import java.util.Arrays;
+import java.util.List;
 
 public class BuildingType
 {
 	private String name ;
-	private Image outsideImage ;
+	private Image image ;
 	private Image insideImage ;
 	private Image[] ornamentImages ;
+	private List<NPCs> npc ;	// NPCs in the building
 	
-	public BuildingType(String name, Image outsideImage, Image insideImage, Image[] ornamentImages)
+	public BuildingType(String name, Image image, Image insideImage, Image[] ornamentImages, List<NPCs> npc)
 	{
 		this.name = name ;
-		this.outsideImage = outsideImage ;
+		this.image = image ;
 		this.insideImage = insideImage ;
 		this.ornamentImages = ornamentImages ;
+		this.npc = npc ;
 	}
 	
 
 	public String getName() {return name ;}
-	public Image getOutsideImage() {return outsideImage ;}
+	public Image getImage() {return image ;}
 	public Image getInsideImage() {return insideImage ;}
 	public Image[] getOrnamentImages() {return ornamentImages ;}
+	public List<NPCs> getNPCs() {return npc ;}
+	
+	public boolean hasNPCs() {return npc != null ;}
+
+
+	@Override
+	public String toString() {
+		return "BuildingType [name=" + name + ", image=" + image + ", insideImage=" + insideImage + ", ornamentImages="
+				+ Arrays.toString(ornamentImages) + ", npc=" + npc + "]";
+	}
 }

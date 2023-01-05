@@ -26,7 +26,6 @@ public class NPCs
 	private Point Pos ;
 	//private int Map ;
 	//private String PosRelToBuilding ;
-	private String[] options ;
 	private int selOption ;
 	private int numberMenus ;
 	private int menu ;
@@ -36,7 +35,7 @@ public class NPCs
 	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 	public static final Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "\\NPCs\\" + "SpeakingBubble.png").getImage() ;
 	
-	public NPCs (int id, NPCType type, Point Pos, String[] options)
+	public NPCs (int id, NPCType type, Point Pos)
 	{
 		this.id = id ;
 		this.type = type ;
@@ -47,7 +46,6 @@ public class NPCs
 		//this.PosRelToBuilding = PosRelToBuilding ;
 		//this.Info = Info ;
 		//this.color = color ;
-		this.options = options ;
 		selOption = 0 ;
 		menu = 0 ;
 		numberMenus = type.getSpeech().length - 1 ;
@@ -131,7 +129,19 @@ public class NPCs
 	//public void setPosRelToBuilding(String P) {PosRelToBuilding = P ;}
 	//public void setInfo(String I) {Info = I ;}
 	//public void setColor(Color C) {color = C ;}
-	
+	public static NPCType typeFromJob(NPCJobs job)
+	{
+		NPCType NPCType = null ;
+		for (int j = 0 ; j <= Game.getNPCTypes().length - 1 ; j += 1)
+		{
+			if (job.equals(Game.getNPCTypes()[j].getJob()))
+			{
+				NPCType =  Game.getNPCTypes()[j] ;
+			}
+		}
+		
+		return NPCType ;
+	}
 
 	public void Contact(Player player, Pet pet, Creature[] creatures, GameMap[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawingOnPanel DP)
 	{
@@ -228,7 +238,7 @@ public class NPCs
 	{
 		if (action.equals(Player.ActionKeys[2]))
 		{
-			if (selOption <= options.length - 2)
+			if (selOption <= type.getOptions().length - 2)
 			{
 				selOption += 1 ;
 			}

@@ -23,6 +23,9 @@ import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon ;
 import javax.swing.JPanel ;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import components.BuildingType;
 import components.Buildings;
 import components.Icon;
@@ -87,7 +90,7 @@ public class Game extends JPanel
 	
 	protected static GameStates state ;
 	private static boolean shouldRepaint ;	// tells if the panel should be repainted, created to handle multiple repaint requests at once
-	private String GameLanguage ;
+	private Languages GameLanguage ;
 
 	private DrawingOnPanel DP ;
 	private Icon[] sideBarIcons;
@@ -128,7 +131,7 @@ public class Game extends JPanel
     	ani = new Animations() ;
 		opening = new Opening() ;
 		DP = new DrawingOnPanel() ;
-		GameLanguage = "P" ;
+		GameLanguage = Languages.portugues ;
 		state = GameStates.loading;
 		shouldRepaint = false ;
 		
@@ -145,6 +148,8 @@ public class Game extends JPanel
 	public static Screen getScreen() {return screen ;}
 	public static Sky getSky() {return sky ;}
 	public static CreatureTypes[] getCreatureTypes() {return creatureTypes ;}
+	public static NPCType[] getNPCTypes() {return NPCTypes ;}
+
 	public static BuildingType[] getBuildingTypes() {return buildingTypes ;}
 	public static GameMap[] getMaps() {return allMaps ;}
 	public static Quests[] getAllQuests() {return allQuests ;}
@@ -160,26 +165,15 @@ public class Game extends JPanel
 	public static void shouldRepaint() {shouldRepaint = true ;}
 
 	
-    private NPCType[] initializeNPCTypes(String language)
+    private NPCType[] initializeNPCTypes(Languages language)
     {
     	ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "NPCTypes.csv") ;
 		String path = ImagesPath + "\\NPCs\\";
 		NPCType[] npcType = new NPCType[input.size()] ;
 		for (int i = 0 ; i <= npcType.length - 1 ; i += 1)
 		{
-			String Name = "" ;
-			String Info = "" ;
+			String  name = input.get(i)[language.ordinal()] ;
 			NPCJobs job = null ;
-			//if (Language.equals("P"))
-			//{
-			//	Name = input.get(i)[0] ;
-			//	Info = input.get(i)[3] ;
-			//}
-			//else if (Language.equals("E"))
-			//{
-				Name = input.get(i)[0] ;
-				Info = input.get(i)[3] ;
-			//}
 			switch (input.get(i)[2])
 			{
 				case "doctor": job = NPCJobs.doctor ; break ;
@@ -200,9 +194,13 @@ public class Game extends JPanel
 				case "caveExit": job = NPCJobs.caveExit ; break ;
 				case "sailor": job = NPCJobs.sailor ; break ;
 			}
+			String info = input.get(i)[3 + language.ordinal()] ;
 			Color color = ColorPalette[0] ;
 			Image image = new ImageIcon(path + "NPC_" + job.toString() + ".png").getImage() ;
-			npcType[i] = new NPCType(Name, job, Info, color, image, player.allText.get("* " + Name + " *")) ;
+			String[] speech = player.allText.get("* " + name + " *") ;
+			String[] options = new String[] {"Sim", "Não"} ;
+			
+			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}
     	
 		return npcType ;
@@ -210,22 +208,40 @@ public class Game extends JPanel
     
     private BuildingType[] initializeBuildingTypes()
     {
-		ArrayList<String[]> BuildingsInput = UtilG.ReadcsvFile(CSVPath + "Buildings.csv") ;
-		BuildingType[] buildings = new BuildingType[BuildingsInput.size()] ;
+    	JSONArray input = UtilG.readJsonArray("./json/buildingTypes.json") ;
+    	BuildingType[] buildingTypes = new BuildingType[input.size()] ;
 		String path = ImagesPath + "\\Buildings\\";
-		for (int type = 0 ; type <= buildings.length - 1 ; type += 1)
-		{
-			String name = BuildingsInput.get(type)[1] ;
-			Image outsideImage = new ImageIcon(path + "Building" + type + "_" + name + ".png").getImage() ;
-			Image insideImage = new ImageIcon(path + "Building" + type + "_" + name + "Inside.png").getImage() ;
+    	for (int i = 0 ; i <= input.size() - 1; i += 1)
+    	{
+    		JSONObject type = (JSONObject) input.get(i) ;
+    		String name = (String) type.get("name") ;
+			Image outsideImage = new ImageIcon(path + "Building" + i + "_" + name + ".png").getImage() ;
+			Image insideImage = new ImageIcon(path + "Building" + i + "_" + name + "Inside.png").getImage() ;
 			Image[] OrnamentImages = new Image[] {new ImageIcon(path + "Building" + name + "Ornament.png").getImage()} ;
-			buildings[type] = new BuildingType(name, outsideImage, insideImage, OrnamentImages) ;
-		}
+			
+			// adding npcs to the building
+			List<NPCs> npcs = new ArrayList<>() ;
+			JSONArray arrayNPCs = (JSONArray) type.get("npcs") ;
+			for (int j = 0; j <= arrayNPCs.size() - 1; j += 1)
+			{
+				JSONObject newNPC = (JSONObject) arrayNPCs.get(j) ;
+				NPCJobs npcJob = NPCJobs.valueOf((String) newNPC.get("job")) ;
+				NPCType npcType = NPCs.typeFromJob(npcJob) ;
+				JSONArray arrayPos = (JSONArray) newNPC.get("pos") ;
+				Point npcPos = new Point((int) (long) arrayPos.get(0), (int) (long) arrayPos.get(1)) ;
+				if (npcType != null)
+				{
+					npcs.add(new NPCs(0, npcType, npcPos)) ;
+				}
+			}
+			
+    		buildingTypes[i] = new BuildingType(name, outsideImage, insideImage, OrnamentImages, npcs) ;
+    	}
 		
-		return buildings ;
+		return buildingTypes ;
     }
     
-    private CreatureTypes[] initializeCreatureTypes(String language, double diffMult)
+    private CreatureTypes[] initializeCreatureTypes(Languages language, double diffMult)
     {
 		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
 		String path = ImagesPath + "\\Creatures\\";
@@ -235,11 +251,11 @@ public class Game extends JPanel
 		Color[] color = new Color[creatureTypes.length] ;
 		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
 		{			
-			if (language.equals("P"))
+			if (language.equals(Languages.portugues))
 			{
 				name = input.get(ct)[1] ;
 			}
-			else if (language.equals("E"))
+			else if (language.equals(Languages.english))
 			{
 				name = input.get(ct)[2] ;
 			}
@@ -352,35 +368,29 @@ public class Game extends JPanel
 				int buildingPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[11 + 3 * i])) ;
 				int buildingPosY = (int) (screen.getSize().height * Double.parseDouble(input.get(id)[12 + 3 * i])) ;
 				Point buildingPos = new Point(buildingPosX, buildingPosY) ;
-				ArrayList<NPCs> buildingNPCs = null ;
-				// TODO adicionar npcs nas buildings
-				/*for (int j = 0; j <= 6 - 1; j += 1)
-				{
-					buildingNPCs.add(new NPCs(id, type, Pos, options)) ;
-				}*/
 				
-				buildings.add(new Buildings(buildingType, buildingPos, buildingNPCs)) ;
+				buildings.add(new Buildings(buildingType, buildingPos)) ;
 			}
 
 			
 			// adding npcs to map
-			ArrayList<NPCs> npcs = new ArrayList<NPCs>() ;
+			List<NPCs> npcs = new ArrayList<NPCs>() ;
 			for (int i = 0; i <= 17 - 1; i += 1)
 			{
 				String npcJob = input.get(id)[28 + 3 * i] ;
 				NPCType NPCType = null ;
-				for (int j = 0 ; j <= NPCTypes.length - 1 ; j += 1)
+				for (int j = 0 ; j <= getNPCTypes().length - 1 ; j += 1)
 				{
-					if (npcJob.equals(NPCTypes[j].getJob().toString()))
+					if (npcJob.equals(getNPCTypes()[j].getJob().toString()))
 					{
-						NPCType = NPCTypes[j] ;
+						NPCType = getNPCTypes()[j] ;
 					}
 				}
 				
 				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29 + 3 * i])) ;
 				int NPCPosY = (int) (sky.height + screen.getSize().height * Double.parseDouble(input.get(id)[30 + 3 * i])) ;
 				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
-				npcs.add(new NPCs(i, NPCType, NPCPos, new String[] {"Sim", "Não"})) ;
+				npcs.add(new NPCs(i, NPCType, NPCPos)) ;
 			}
 			
 			cityMap[id] = new CityMap(name, continent, connections, image, music, buildings, npcs);
@@ -481,7 +491,7 @@ public class Game extends JPanel
 		return specialMaps ;
     }
     
-    private Quests[] initializeQuests(String language, int playerJob)
+    private Quests[] initializeQuests(Languages language, int playerJob)
     {
 		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
 		Quests[] quests = new Quests[input.size()] ;
@@ -563,7 +573,7 @@ public class Game extends JPanel
     	return sideBarIcons ;
     }
  	
-    private SpellType[] initializeSpellTypes(String language)
+    private SpellType[] initializeSpellTypes(Languages language)
     {
     	int NumberOfAtt = 14 ;
     	int NumberOfBuffs = 12 ;
@@ -604,11 +614,11 @@ public class Game extends JPanel
 					BuffCont += 3 ;
 				}
 			}
-			if (language.equals("P"))
+			if (language.equals(Languages.portugues))
 			{
 				spellsInfo[i] = new String[] {spellTypesInput.get(ID)[42], spellTypesInput.get(ID)[43]} ;
 			}
-			else if (language.equals("E"))
+			else if (language.equals(Languages.english))
 			{
 				spellsInfo[i] = new String[] {spellTypesInput.get(ID)[44], spellTypesInput.get(ID)[45]} ;
 			}

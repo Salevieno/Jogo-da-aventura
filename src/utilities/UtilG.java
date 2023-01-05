@@ -28,6 +28,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel ;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -154,7 +155,7 @@ public abstract class UtilG
 	}
 		*/
 	
-	public static JSONObject readJson(String filePath)
+	public static JSONObject readJsonObject(String filePath)
     {
         JSONParser parser = new JSONParser();
         try
@@ -163,6 +164,37 @@ public abstract class UtilG
             
             //convert Object to JSONObject
             JSONObject jsonObject = (JSONObject)object;
+            
+            //Reading the String
+            //String name = (String) jsonObject.get("Name");
+            //Long level = (Long) jsonObject.get("Level");
+            
+            //Reading the array
+           // JSONArray countries = (JSONArray)jsonObject.get("Countries");
+            
+            return jsonObject ;
+        }
+        catch(FileNotFoundException fe)
+        {
+            fe.printStackTrace();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        return null ;
+    }
+	
+	public static JSONArray readJsonArray(String filePath)
+    {
+        JSONParser parser = new JSONParser();
+        try
+        {
+            Object object = parser.parse(new FileReader(filePath));
+            
+            //convert Object to JSONObject
+            JSONArray jsonObject = (JSONArray)object;
             
             //Reading the String
             //String name = (String) jsonObject.get("Name");

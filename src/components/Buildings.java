@@ -3,7 +3,6 @@ package components ;
 import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
-import java.util.ArrayList;
 
 import graphics.DrawingOnPanel;
 import utilities.Align;
@@ -12,58 +11,39 @@ import utilities.UtilG;
 
 public class Buildings
 {
-	private BuildingType buildingType ;
+	private BuildingType type ;
 	private Point pos ;
-	private ArrayList<NPCs> npc ;	// NPCs in the building
 	
-	public Buildings(BuildingType type, Point pos, ArrayList<NPCs> npc)
+	public Buildings(BuildingType type, Point pos)
 	{
-		this.buildingType = type ;
+		this.type = type ;
 		this.pos = pos ;
-		this.npc = npc ;
 	}
 
 	
-	public BuildingType getType() {return buildingType ;}
+	public BuildingType getType() {return type ;}
 	public Point getPos() {return pos ;}
-	public ArrayList<NPCs> getNPCs() {return npc ;}
-	
-	public boolean hasNPCs()
-	{
-		return (npc != null) ;
-	}
-	public boolean playerIsInside(Point playerPos)
-	{
-		Image image = buildingType.getOutsideImage() ;
-		Dimension imgSize = new Dimension(image.getWidth(null), image.getHeight(null)) ;
-		boolean PlayerIsInside = false ;
-		Point PlayerPos = new Point(playerPos.x, playerPos.y) ;
-		if (UtilG.isInside(PlayerPos, pos, imgSize))
-		{
-			PlayerIsInside = true ;
-		}
-		return PlayerIsInside ;
-	}
+	public boolean isInside(Point pos) {return UtilG.isInside(this.pos, pos, new Dimension(type.getImage().getWidth(null), type.getImage().getHeight(null))) ;}
 	
 	
 	/* Drawing methods */
 	public void display(Point playerPos, double angle, Scale scale, DrawingOnPanel DP)
 	{
-		if (playerIsInside(playerPos))
+		if (isInside(playerPos))
 		{				
-			Image image = buildingType.getInsideImage() ;
+			Image image = type.getInsideImage() ;
 			DP.DrawImage(image, pos, angle, scale, Align.bottomLeft) ;
-			if (npc != null)
+			if (type.getNPCs() != null)
 			{
-				for (int n = 0 ; n <= npc.size() - 1 ; n += 1)
+				for (int n = 0 ; n <= type.getNPCs().size() - 1 ; n += 1)
 				{
-					npc.get(n).display(DP) ;
+					type.getNPCs().get(n).display(DP) ;
 				}
 			}
 		}
 		else
 		{
-			Image image = buildingType.getOutsideImage() ;
+			Image image = type.getImage() ;
 			DP.DrawImage(image, pos, angle, scale, Align.bottomLeft) ;
 		}
 	}

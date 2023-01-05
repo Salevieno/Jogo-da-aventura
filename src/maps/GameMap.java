@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon ;
@@ -29,9 +30,9 @@ public class GameMap
 	private int CollectibleLevel ;
 	private int[] CollectibleCounter ;	// [Berry, herb, wood, metal]
     private int[] CollectibleDelay ;	// [Berry, herb, wood, metal]
-	protected ArrayList<MapElements> mapElem ;
-	public ArrayList<Buildings> building ;
-	public ArrayList<NPCs> npc ;
+	protected List<MapElements> mapElem ;
+	public List<Buildings> building ;
+	public List<NPCs> npc ;
 	
 	
 	//public static int[] MusicID = new int[] {0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 11, 11, 11, 11, 11, 11} ;  	 
@@ -73,7 +74,7 @@ public class GameMap
 28	Sign	3	0.09	0.54
 29	Sign	4	0.7	0.26
 	 * */
-	public GameMap(String Name, int Continent, int[] Connections, Image image, Clip music, ArrayList<Buildings> building, ArrayList<NPCs> npc)
+	public GameMap(String Name, int Continent, int[] Connections, Image image, Clip music, List<Buildings> building, List<NPCs> npc)
 	{
 		this.Name = Name ;
 		this.Continent = Continent ;
@@ -97,10 +98,10 @@ public class GameMap
 	public int[] getConnections() {return Connections ;}	
 	public int[] getCollectibleCounter() {return CollectibleCounter ;}	
 	public int[] getCollectibleDelay() {return CollectibleDelay ;}
-	public ArrayList<MapElements> getMapElem() {return mapElem ;}
+	public List<MapElements> getMapElem() {return mapElem ;}
 	//public ArrayList<CreatureTypes> getCreatureTypes() {return creatureTypes ;}
-	public ArrayList<NPCs> getNPCs() {return npc ;}
-	public ArrayList<Buildings> getBuildings() {return building ;}
+	public List<NPCs> getNPCs() {return npc ;}
+	public List<Buildings> getBuildings() {return building ;}
 	public Continents getContinentName(Player player)
 	{ 
 		return Continents.getAll()[Continent + 1] ;
