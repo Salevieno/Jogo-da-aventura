@@ -17,6 +17,7 @@ import maps.GameMap;
 import utilities.Align;
 import utilities.Directions;
 import utilities.Scale;
+import utilities.TimeCounter;
 import utilities.UtilG;
 import windows.PlayerAttributesWindow;
 
@@ -39,13 +40,34 @@ public class Pet extends LiveBeing
 	
 	public Pet(int Job)
 	{
-		super(Job, InitializePersonalAttributes(Job), InitializeBattleAttributes(Job),
+		super(
+				InitializePersonalAttributes(Job),
+				InitializeBattleAttributes(Job),
 				new MovingAnimations(new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
 				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
 				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
 				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
 				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage()),
-				new PlayerAttributesWindow()) ;
+				new PlayerAttributesWindow()
+			) ;
+		
+		name = PetProperties.get(Job)[0] ;
+		level = 1 ;
+		proJob = 0 ;
+		map = null ;
+		pos = new Point(0, 0) ;
+		dir = Directions.up ;
+		state = LiveBeingStates.idle ;
+		size = new Dimension (new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getWidth(null), new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getHeight(null)) ;	
+		range = Integer.parseInt(PetProperties.get(Job)[4]) ;
+		step = Integer.parseInt(PetProperties.get(Job)[32]) ;
+		elem = new String[] {"n", "n", "n", "n", "n"} ;
+		mpCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[33])) ;
+		satiationCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[34])) ;
+		moveCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[35])) ;
+		stepCounter = 0 ;
+		currentAction = "" ;
+		
 		this.Job = Job ;
 		Color[] ColorPalette = Game.ColorPalette ;
 		Color[] PetColor = new Color[] {ColorPalette[3], ColorPalette[1], ColorPalette[18], ColorPalette[18]} ;
@@ -68,29 +90,12 @@ public class Pet extends LiveBeing
 	
 	private static PersonalAttributes InitializePersonalAttributes(int Job)
 	{
-		String Name = PetProperties.get(Job)[0] ;
-		int Level = 1 ;
-		int ProJob = 0 ;
-		GameMap Map = null ;
-		Point Pos = new Point(0, 0) ;
-		Directions dir = Directions.up ;
-		LiveBeingStates state = LiveBeingStates.idle ;
-		Dimension size = new Dimension (new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getWidth(null), new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getHeight(null)) ;	
 		BasicAttribute Life = new BasicAttribute(Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2]), 1) ;
 		BasicAttribute Mp = new BasicAttribute(Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3]), 1) ;
-		int Range = Integer.parseInt(PetProperties.get(Job)[4]) ;
-		int Step = Integer.parseInt(PetProperties.get(Job)[32]) ;
 		BasicAttribute Exp = new BasicAttribute(0, 50, 1) ;
 		BasicAttribute Satiation = new BasicAttribute(100, 100, 1) ;
 		BasicAttribute Thirst = new BasicAttribute(100, 100, 1) ;
-		String[] Elem = new String[] {"n", "n", "n", "n", "n"} ;
-		int mpDuration = Integer.parseInt(PetProperties.get(Job)[33]) ;
-		int satiationDuration = Integer.parseInt(PetProperties.get(Job)[34]) ;
-		int moveDuration = Integer.parseInt(PetProperties.get(Job)[35]) ;
-		int stepCounter = 0 ;
-		String currentAction = "" ;
-		return new PersonalAttributes(Name, Level, Job, ProJob, Map, Pos, dir, state, size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem,
-				mpDuration, satiationDuration, moveDuration, stepCounter, currentAction) ;
+		return new PersonalAttributes(Life, Mp, Exp, Satiation, Thirst) ;
 	}
 	
 	private static BattleAttributes InitializeBattleAttributes(int Job)
@@ -225,17 +230,13 @@ public class Pet extends LiveBeing
 		return petspells ;
     }
 	
-	public String getName() {return PA.getName() ;}
-	public Dimension getSize() {return PA.getSize() ;}
 	public Color getColor() {return color ;}
 	public int getJob() {return Job ;}
 	public MovingAnimations getMovingAnimations() {return movingAni ;}
-	public Point getPos() {return PA.getPos() ;}
 	public ArrayList<Spell> getSpells() {return spells ;}
 	public int getSpellPoints() {return spellPoints ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
 	public BasicAttribute getMp() {return PA.getMp() ;}
-	public double getRange() {return PA.getRange() ;}
 	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
 	public BasicBattleAttribute getMagAtk() {return BA.getMagAtk() ;}
 	public BasicBattleAttribute getPhyDef() {return BA.getPhyDef() ;}
@@ -248,17 +249,11 @@ public class Pet extends LiveBeing
 	public double[] getBlood() {return BA.getBlood() ;}
 	public double[] getPoison() {return BA.getPoison() ;}
 	public double[] getSilence() {return BA.getSilence() ;}
-	public String[] getElem() {return PA.Elem ;}
 	public double[] getElemMult() {return ElemMult ;}
-	public int getLevel() {return PA.getLevel() ;}
-	public int getStep() {return PA.getStep() ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public BasicAttribute getSatiation() {return PA.getSatiation() ;}
 	//public int[][] getActions() {return PA.Actions ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
-	public ArrayList<String> getCombo() {return PA.getCombo() ;}
-	public void setCurrentAction(String newValue) {PA.currentAction = newValue ;}
-	public void setCombo(ArrayList<String> newValue) {PA.setCombo(newValue); ;}
 
 	public boolean isAlive()
 	{
@@ -267,7 +262,7 @@ public class Pet extends LiveBeing
 	
 	public Point CenterPos()
 	{
-		return new Point((int) (PA.getPos().x + 0.5 * PA.getSize().width), (int) (PA.getPos().y - 0.5 * PA.getSize().height)) ;
+		return new Point((int) (pos.x + 0.5 * size.width), (int) (pos.y - 0.5 * size.height)) ;
 	}
 
 	public String Action(String[] ActionKeys)
@@ -324,15 +319,15 @@ public class Pet extends LiveBeing
 				}
 			}
 		}
-		PA.setPos(pos) ;
+		setPos(pos) ;
 	}
 	public void Move(Player player, GameMap[] maps)
 	{
 		Point NextPos = new Point(0, 0) ;
-		Follow(PA.getPos(), player.getPos(), PA.getStep(), PA.getStep()) ;
+		Follow(pos, player.getPos(), step, step) ;
 		if (player.getMap().GroundIsWalkable(NextPos, player.getElem()[4]))
 		{
-			PA.setPos(NextPos) ;
+			setPos(NextPos) ;
 		}
 	}
 	public void Dies()
@@ -341,7 +336,7 @@ public class Pet extends LiveBeing
 	}
 	public boolean actionIsAnAtk()
 	{
-		if (PA.getCurrentAction().equals(Pet.BattleKeys[0]))
+		if (currentAction.equals(Pet.BattleKeys[0]))
 		{
 			return true ;
 		}
@@ -349,7 +344,7 @@ public class Pet extends LiveBeing
 	}
 	public boolean actionIsASpell()
 	{
-		if (UtilG.ArrayContains(Pet.SpellKeys, PA.getCurrentAction()))
+		if (UtilG.ArrayContains(Pet.SpellKeys, currentAction))
 		{
 			return true ;
 		}
@@ -409,7 +404,7 @@ public class Pet extends LiveBeing
 		if (shouldLevelUP())
 		{
 			double[] attributesIncrease = CalcAttIncrease() ;
-			PA.setLevel(PA.getLevel() + 1) ;
+			setLevel(level + 1) ;
 			spellPoints += 1 ;
 			PA.getLife().incMaxValue((int) attributesIncrease[0]) ;
 			PA.getLife().setToMaximum() ;
@@ -438,7 +433,7 @@ public class Pet extends LiveBeing
 				Increase[i] = AttributeIncrease[i] ;
 			}
 		}
-		Increase[AttributeIncrease.length] = (double) (10*(3*Math.pow(PA.getLevel() - 1, 2) + 3*(PA.getLevel() - 1) + 1) - 5) ;
+		Increase[AttributeIncrease.length] = (double) (10*(3*Math.pow(level - 1, 2) + 3*(level - 1) + 1) - 5) ;
 		return Increase ;
 	}
 
@@ -492,7 +487,7 @@ public class Pet extends LiveBeing
 		PA.setSize((Size) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 2)]), "String", "int")) ;
 		color = UtilG.toColor(ReadFile[2*(NumberOfPlayerAttributes + 3)])[0] ;
 		Job = Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 4)][0]) ;
-		PA.setPos((Point) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 5)]), "String", "int")) ;
+		setPos((Point) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 5)]), "String", "int")) ;
 		spell = (Spells[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 6)]), "String", "int") ;
 		spellPoints = Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 7)][0]) ;
 		PA.setLife((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 8)]), "String", "double")) ;

@@ -1,6 +1,7 @@
 package liveBeings ;
 
 import java.awt.Color ;
+import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 import java.io.IOException;
@@ -8,13 +9,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import graphics.DrawingOnPanel;
+import maps.GameMap;
 import utilities.Align;
+import utilities.Directions;
 import utilities.Scale;
-import utilities.UtilG;
+import utilities.TimeCounter;
 
 public class CreatureTypes 
 {
 	private int Type ;
+	
+	protected String name ;
+	protected int level;
+	protected Dimension size ;
+	protected double range ;
+	protected int step ;
+	protected String[] elem ;			// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
+	protected int mpDuration ;			// counts the mp reduction
+	protected int satiationDuration ;	// counts the satiation reduction
+	protected int moveDuration ;		// counts the move
+	protected int stepCounter ;			// counts the steps in the movement	TODO -> TimeCounter ? (não é tempo, é step)
+	
 	protected MovingAnimations movingAni ;
 	protected PersonalAttributes PA ;
 	protected BattleAttributes BA ;
@@ -26,9 +41,40 @@ public class CreatureTypes
 	
 	private static int NumberOfCreatureTypes ;
 	
-	public CreatureTypes(int Type, MovingAnimations movingAni, PersonalAttributes PA, BattleAttributes BA, ArrayList<Spell> spell, int[] Bag, int Gold, Color color, int[] StatusCounter)
+	public CreatureTypes(
+			int Type,
+			String name,
+			int level,
+			Dimension size,
+			double range,
+			int step,
+			String[] elem,
+			int mpDuration,
+			int satiationDuration,
+			int moveDuration,
+			int stepCounter,
+			MovingAnimations movingAni,
+			PersonalAttributes PA,
+			BattleAttributes BA,
+			ArrayList<Spell> spell,
+			int[] Bag,
+			int Gold,
+			Color color,
+			int[] StatusCounter)
 	{
 		this.Type = Type ;
+		
+		this.name = name;
+		this.level = level;
+		this.size = size;
+		this.range = range;
+		this.step = step;
+		this.elem = elem;
+		this.mpDuration = mpDuration;
+		this.satiationDuration = satiationDuration;
+		this.moveDuration = moveDuration;
+		this.stepCounter = stepCounter;
+		
 		this.movingAni = movingAni ;
 		this.PA = PA ;
 		this.BA = BA ;

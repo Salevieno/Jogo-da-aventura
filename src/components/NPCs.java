@@ -147,7 +147,7 @@ public class NPCs
 
 	public void Contact(Player player, Pet pet, Creature[] creatures, GameMap[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawingOnPanel DP)
 	{
-		String action = player.getPA().getCurrentAction() ;
+		String action = player.getCurrentAction() ;
 		navigate(action) ;
 		speak(pos, DP) ;
 		switch (type.getJob())

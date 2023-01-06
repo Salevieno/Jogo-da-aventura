@@ -2,13 +2,9 @@ package liveBeings ;
 
 import java.awt.Color ;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Image ;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import main.Battle;
 import main.Game;
@@ -17,19 +13,17 @@ import screen.Screen;
 import utilities.Align;
 import utilities.Directions;
 import utilities.Scale;
+import utilities.TimeCounter;
 import utilities.UtilG;
-import utilities.UtilS;
 import windows.PlayerAttributesWindow;
 
 public class Creature extends LiveBeing
 {
 	private CreatureTypes type ;
-	private int Map ;
 	private int[] Bag ;
 	private int Gold ;
 	private Color color ;
 	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
-	private String[] Combo ;		// Record of the last movement
 	private boolean follow ;	
 	public int countmove ;
 	
@@ -40,9 +34,29 @@ public class Creature extends LiveBeing
 	
  	public Creature(CreatureTypes CT)
 	{
- 		// int Type, Image image, Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif, int Map, int[] Size, int[] Spell, PersonalAttributes PA, BattleAttributes BA, int[] Bag, int Gold, Color color, int[] StatusCounter, String[] Combo
-		super(CT.getID(), CT.getPA(), CT.getBA(), CT.getMovingAnimations(), new PlayerAttributesWindow()) ;
+ 		super(
+				CT.getPA(),
+				CT.getBA(),
+				CT.getMovingAnimations(),
+				new PlayerAttributesWindow()
+			) ;
+		
 		this.type = CT ;
+		
+		this.name = CT.name;
+		this.level = CT.level;
+		this.size = CT.size;
+		this.range = CT.range;
+		this.step = CT.step;
+		this.elem = CT.elem;
+		mpCounter = new TimeCounter(0, CT.mpDuration);
+		satiationCounter = new TimeCounter(0, CT.satiationDuration);
+		moveCounter = new TimeCounter(0, CT.moveDuration) ;
+		this.stepCounter = CT.stepCounter;
+		
+		dir = Directions.up ;
+		state = LiveBeingStates.idle ;
+		currentAction = "" ;
 		spells = CT.getSpell() ;
 		this.Bag = CT.getBag() ;
 		this.Gold = CT.getGold() ;
@@ -52,12 +66,12 @@ public class Creature extends LiveBeing
 		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
 		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Game.getSky().height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
 		Point initialPos = UtilG.RandomPos(minCoord, range, new Dimension(1, 1)) ;
-		PA.setPos(initialPos) ;
+		setPos(initialPos) ;
 		
 
 		if (getName().equals("Dragão") | getName().equals("Dragon"))
 		{
-			getPA().setPos(Game.getScreen().getCenter()) ;
+			setPos(Game.getScreen().getCenter()) ;
 		}
 		
 		follow = false ;
@@ -65,15 +79,9 @@ public class Creature extends LiveBeing
 	}
 
 	public CreatureTypes getType() {return type ;}
-	public String getName() {return PA.getName() ;}
-	public int getLevel() {return PA.getLevel() ;}
-	public int getMap() {return Map ;}
-	public Dimension getSize() {return PA.getSize() ;}
-	public Point getPos() {return PA.getPos() ;}
 	public ArrayList<Spell> getSpell() {return spells ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
 	public BasicAttribute getMp() {return PA.getMp() ;}
-	public double getRange() {return PA.getRange() ;}
 	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
 	public BasicBattleAttribute getMagAtk() {return BA.getMagAtk() ;}
 	public BasicBattleAttribute getPhyDef() {return BA.getPhyDef() ;}
@@ -86,27 +94,21 @@ public class Creature extends LiveBeing
 	public double[] getBlood() {return BA.getBlood() ;}
 	public double[] getPoison() {return BA.getPoison() ;}
 	public double[] getSilence() {return BA.getSilence() ;}
-	public String[] getElem() {return PA.Elem ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public int[] getBag() {return Bag ;}
 	public int getGold() {return Gold ;}
-	public int getStep() {return PA.getStep() ;}
 	public Color getColor() {return color ;}
 	//public int[][] getActions() {return PA.Actions ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
-	public String getAction() {return PA.getCurrentAction() ;}
-	public String[] getCombo() {return Combo ;}
 	public boolean getFollow() {return follow ;}
-	public void setPos(Point newValue) {PA.setPos(newValue) ;}
-	public void setCombo(String[] C) {Combo = C ;}
+	public void setPos(Point newValue) {pos = newValue ;}
 	public void setFollow(boolean F) {follow = F ;}
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
-	public void setCurrentAction(String newValue) {PA.currentAction = newValue ;}
 
 	public String[] getDefElems()
 	{
-		return new String[] {PA.Elem[0], PA.Elem[0]} ;
+		return new String[] {elem[0], elem[0]} ;
 	}
 	public boolean hasEnoughMP(int spellID)
 	{
@@ -115,7 +117,7 @@ public class Creature extends LiveBeing
 	}
 	public boolean actionIsASpell()
 	{
-		if (UtilG.ArrayContains(Creature.SpellKeys, PA.getCurrentAction()))
+		if (UtilG.ArrayContains(Creature.SpellKeys, currentAction))
 		{
 			return true ;
 		}
@@ -131,19 +133,19 @@ public class Creature extends LiveBeing
 		}
 		else if (PA.getThought().equals("Move"))
 		{
-			if (PA.getDir().equals("Acima"))
+			if (dir.equals("Acima"))
 			{
 				DP.DrawImage(type.movingAni.movingUpGif, pos, scale, "Center") ;
 			}
-			if (PA.getDir().equals("Abaixo"))
+			if (dir.equals("Abaixo"))
 			{
 				DP.DrawImage(type.movingAni.movingDownGif, pos, scale, "Center") ;
 			}
-			if (PA.getDir().equals("Esquerda"))
+			if (dir.equals("Esquerda"))
 			{
 				DP.DrawImage(type.movingAni.movingLeftGif, pos, scale, "Center") ;
 			}
-			if (PA.getDir().equals("Direita"))
+			if (dir.equals("Direita"))
 			{
 				DP.DrawImage(type.movingAni.movingRightGif, pos, scale, "Center") ;
 			}
@@ -159,11 +161,11 @@ public class Creature extends LiveBeing
 		Point MinCoord = new Point(0, (int) (0.2*screen.getSize().height)) ;
 		Dimension Range = new Dimension(1, (int) screen.getSize().height / (screen.getBorders()[1] - screen.getBorders()[3])) ;
 		Dimension step = new Dimension(1, 1) ;
-		PA.setPos(UtilG.RandomPos(MinCoord, Range, step)) ;
+		setPos(UtilG.RandomPos(MinCoord, Range, step)) ;
 	}
 	public Point CenterPos()
 	{
-		return new Point((int) (PA.getPos().x + 0.5 * PA.getSize().width), (int) (PA.getPos().y - 0.5 * PA.getSize().height)) ;
+		return new Point((int) (pos.x + 0.5 * size.width), (int) (pos.y - 0.5 * size.height)) ;
 	}
 	public void updatePos(Directions dir, Point CurrentPos, int step, GameMap map)
 	{
@@ -178,7 +180,7 @@ public class Creature extends LiveBeing
 			boolean NewPosIsWalkable = map.GroundIsWalkable(NewPos, null) ;
 			if (NewPosIsWalkable)
 			{
-				PA.setPos(NewPos) ;
+				setPos(NewPos) ;
 			}
 			else
 			{
@@ -193,12 +195,12 @@ public class Creature extends LiveBeing
 	public void act(Point playerPos, GameMap map)
 	{
 		Think() ;	
-		if (getPA().getState().equals(LiveBeingStates.moving))
+		if (state.equals(LiveBeingStates.moving))
 		{
 			Move(playerPos, getFollow(), map) ;
 			if (countmove % 5 == 0)
 			{
-				getPA().setdir(getPA().randomDir()) ;	// set random direction
+				setDir(PA.randomDir()) ;	// set random direction
 			}
 			/*if (getActions()[0][2] == 1)	// If the creature can move
 			{
@@ -242,7 +244,7 @@ public class Creature extends LiveBeing
 		if (spellID == 0)	// magical atk
 		{
 			effect = Battle.CalcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock()[1]) ;
-			damage = Battle.CalcAtk(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {PA.Elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, 1, randomAmp) ; // player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
+			damage = Battle.CalcAtk(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, 1, randomAmp) ; // player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
 		}
 		if (magicalType == 0)
 		{
@@ -256,7 +258,7 @@ public class Creature extends LiveBeing
 			}
 			if (spellID == 2)	// knockback
 			{
-				player.setPos(Battle.knockback(player.getPos(), 6 * PA.getStep(), PA)) ;
+				player.setPos(Battle.knockback(player.getPos(), 6 * step, PA)) ;
 			}
 		}
 		if (magicalType == 2)
@@ -326,7 +328,7 @@ public class Creature extends LiveBeing
 				}
 			}
 		}
-		PA.setPos(pos) ;
+		setPos(pos) ;
 	}
 	public void Move(Point PlayerPos, boolean FollowPlayer, GameMap map)
 	{
@@ -335,11 +337,11 @@ public class Creature extends LiveBeing
 			countmove = (countmove + 1) % 5 ;
 			if (FollowPlayer)
 			{
-				Follow(PA.getPos(), PlayerPos, PA.getStep(), PA.getRange()) ;
+				Follow(pos, PlayerPos, step, range) ;
 			}
 			else
 			{
-				updatePos(PA.getDir(), PA.getPos(), PA.getStep(), map) ;
+				updatePos(dir, pos, step, map) ;
 			}				
 		//}
 	}
@@ -499,13 +501,13 @@ public class Creature extends LiveBeing
 	{
 		if (0.3 < Math.random())
 		{
-			if (PA.getState().equals(LiveBeingStates.idle))
+			if (state.equals(LiveBeingStates.idle))
 			{
-				PA.setState(LiveBeingStates.moving) ;
+				setState(LiveBeingStates.moving) ;
 			}
-			else if (PA.getState().equals(LiveBeingStates.moving))
+			else if (state.equals(LiveBeingStates.moving))
 			{
-				PA.setState(LiveBeingStates.idle) ;
+				setState(LiveBeingStates.idle) ;
 			}
 		}
 	}

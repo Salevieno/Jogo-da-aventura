@@ -284,11 +284,9 @@ public class Game extends JPanel
 		String path = ImagesPath + "\\Creatures\\";
     	CreatureTypes.setNumberOfCreatureTypes(input.size());
 		CreatureTypes[] creatureTypes = new CreatureTypes[CreatureTypes.getNumberOfCreatureTypes()] ;
-		String name = "" ;
 		Color[] color = new Color[creatureTypes.length] ;
 		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
-		{			
-			name = input.get(ct)[1 + language.ordinal()] ;
+		{
 			int colorid = (int)((Creature.getskinColor().length - 1)*Math.random()) ;
 			color[ct] = Creature.getskinColor()[colorid] ;
 			if (270 < ct & ct <= 299)	// Ocean creatures
@@ -302,25 +300,12 @@ public class Game extends JPanel
 					new ImageIcon(path + "creature" + (ct % 5) + "_movingleft.gif").getImage(),
 					new ImageIcon(path + "creature" + (ct % 5) + "_movingright.gif").getImage()) ;
 			
-			int Level = Integer.parseInt(input.get(ct)[3]) ;			
-			Directions dir = Directions.up ;
-			LiveBeingStates state = LiveBeingStates.idle ;
-			Dimension Size = new Dimension(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;
 			BasicAttribute Life = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[5]) * diffMult), (int) (Integer.parseInt(input.get(ct)[5]) * diffMult), 1) ;
 			BasicAttribute Mp = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[6]) * diffMult), (int) (Integer.parseInt(input.get(ct)[6]) * diffMult), 1) ;
-			double Range = Double.parseDouble(input.get(ct)[7]) * diffMult ;
-			int Step = Integer.parseInt(input.get(ct)[48]) ;
 			BasicAttribute Exp = new BasicAttribute(Integer.parseInt(input.get(ct)[36]), 999999999, 1) ;
 			BasicAttribute Satiation = new BasicAttribute(100, 100, 1) ;
-			BasicAttribute Thirst = new BasicAttribute(100, 100, 1) ;		
-			String[] Elem = new String[] {input.get(ct)[35]} ;
-			int mpDuration = Integer.parseInt(input.get(ct)[49]) ;
-			int satiationDuration = 100 ;
-			int moveDuration = Integer.parseInt(input.get(ct)[50]) ;
-			String currentAction = "" ;
-			int stepCounter = 0 ;
-			PersonalAttributes PA = new PersonalAttributes(name, Level, ct, 0, null, null, dir, state, Size, Life, Mp, Range, Step, Exp, Satiation, Thirst, Elem,
-					mpDuration, satiationDuration, moveDuration, stepCounter, currentAction) ;
+			BasicAttribute Thirst = new BasicAttribute(100, 100, 1) ;	
+			PersonalAttributes PA = new PersonalAttributes(Life, Mp, Exp, Satiation, Thirst) ;
 
 			BasicBattleAttribute PhyAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[8]) * diffMult, 0, 0) ;
 			BasicBattleAttribute MagAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[9]) * diffMult, 0, 0) ;
@@ -340,15 +325,24 @@ public class Game extends JPanel
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
 						
 			ArrayList<Spell> spell = new ArrayList<>() ;
-			spell.add(new Spell(allSpellTypes[0])
-						/*new Spell("Spell " + Integer.parseInt(Input.get(ct)[4]), 5, 10, SpellTypes.offensive,
-								null, 100, -1, null, null, null, null, null, null, null, null, null, null, null, null, null, "n", new String[] {"Spell info"}*/
-						
-					) ;
+			spell.add(new Spell(allSpellTypes[0])) ;
 			int[] Bag = new int[] {Integer.parseInt(input.get(ct)[37]), Integer.parseInt(input.get(ct)[38]), Integer.parseInt(input.get(ct)[39]), Integer.parseInt(input.get(ct)[40]), Integer.parseInt(input.get(ct)[41]), Integer.parseInt(input.get(ct)[42]), Integer.parseInt(input.get(ct)[43]), Integer.parseInt(input.get(ct)[44]), Integer.parseInt(input.get(ct)[45]), Integer.parseInt(input.get(ct)[46])} ;
 			int Gold = Integer.parseInt(input.get(ct)[47]) ;
 			int[] StatusCounter = new int[8] ;
-			creatureTypes[ct] = new CreatureTypes(ct, moveAni, PA, BA, spell, Bag, Gold, color[ct], StatusCounter) ;	
+
+			String name = input.get(ct)[1 + language.ordinal()] ;
+			int level = Integer.parseInt(input.get(ct)[3]) ;
+			Dimension size = new Dimension(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;	
+			double range = Double.parseDouble(input.get(ct)[7]) * diffMult ;
+			int step = Integer.parseInt(input.get(ct)[48]) ;
+			String[] elem = new String[] {input.get(ct)[35]} ;
+			int mpDuration = Integer.parseInt(input.get(ct)[49]) ;
+			int satiationDuration = 100 ;
+			int moveDuration = Integer.parseInt(input.get(ct)[50]) ;
+			int stepCounter = 0 ;
+			
+			creatureTypes[ct] = new CreatureTypes(ct, name, level, size, range, step, elem, mpDuration, satiationDuration, moveDuration, stepCounter,
+					moveAni, PA, BA, spell, Bag, Gold, color[ct], StatusCounter) ;	
 		}
 		return creatureTypes ;
     }
@@ -915,13 +909,13 @@ public class Game extends JPanel
 		// player acts
 		if (player.canAct())
 		{
-			if (!player.getPA().getCurrentAction().equals(""))
+			if (!player.getCurrentAction().equals(""))
 			{
 				player.acts(pet, allMaps, mousePos, sideBarIcons, ani) ;			
 
-		        if (player.getPA().getMoveCounter().finished())
+		        if (player.getMoveCounter().finished())
 		        {
-		        	player.getPA().getMoveCounter().reset() ;
+		        	player.getMoveCounter().reset() ;
 		        }
 			}
 		}		
@@ -1074,7 +1068,7 @@ public class Game extends JPanel
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
 		pet = new Pet((int) (4 * Math.random())) ;
     	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
-    	pet.getPA().setPos(player.getPos());
+    	pet.setPos(player.getPos());
     	bat = new Battle(new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
     	
     	
@@ -1133,12 +1127,12 @@ public class Game extends JPanel
 	        	}
 	        	else
 	        	{
-		    		opening.Run(player.getPA().getCurrentAction(), mousePos, ani, DP) ;
+		    		opening.Run(player.getCurrentAction(), mousePos, ani, DP) ;
 		    		if (opening.isOver())
 		    		{
 		    			state = GameStates.loading ;
 		    		}
-					player.getPA().setCurrentAction("") ;
+					player.ResetAction(); ;
 	        	}
 				shouldRepaint = true ;
 	    		
@@ -1192,19 +1186,19 @@ public class Game extends JPanel
 	        
             if (key == KeyEvent.VK_LEFT | key == KeyEvent.VK_UP | key == KeyEvent.VK_DOWN | key == KeyEvent.VK_RIGHT) 
             {
-            	player.getPA().setCurrentAction(KeyEvent.getKeyText(key)) ;
+            	player.setCurrentAction(KeyEvent.getKeyText(key)) ;
             }
             else if (key == KeyEvent.VK_ENTER | key == KeyEvent.VK_ESCAPE | key == KeyEvent.VK_BACK_SPACE | key == KeyEvent.VK_F1 | key == KeyEvent.VK_F2 | key == KeyEvent.VK_F3 | key == KeyEvent.VK_F4 | key == KeyEvent.VK_F5 | key == KeyEvent.VK_F6 | key == KeyEvent.VK_F7 | key == KeyEvent.VK_F8 | key == KeyEvent.VK_F9 | key == KeyEvent.VK_F10 | key == KeyEvent.VK_F11 | key == KeyEvent.VK_F12 | key == KeyEvent.VK_A | key == KeyEvent.VK_B | key == KeyEvent.VK_C | key == KeyEvent.VK_D | key == KeyEvent.VK_E | key == KeyEvent.VK_F | key == KeyEvent.VK_G | key == KeyEvent.VK_H | key == KeyEvent.VK_I | key == KeyEvent.VK_J | key == KeyEvent.VK_K | key == KeyEvent.VK_L | key == KeyEvent.VK_M | key == KeyEvent.VK_N | key == KeyEvent.VK_O | key == KeyEvent.VK_P | key == KeyEvent.VK_Q | key == KeyEvent.VK_R | key == KeyEvent.VK_S | key == KeyEvent.VK_T | key == KeyEvent.VK_U | key == KeyEvent.VK_V | key == KeyEvent.VK_W | key == KeyEvent.VK_X | key == KeyEvent.VK_Y | key == KeyEvent.VK_Z | key == KeyEvent.VK_0 | key == KeyEvent.VK_1 | key == KeyEvent.VK_2 | key == KeyEvent.VK_3 | key == KeyEvent.VK_4 | key == KeyEvent.VK_5 | key == KeyEvent.VK_6 | key == KeyEvent.VK_7 | key == KeyEvent.VK_8 | key == KeyEvent.VK_9) 
             {
-        		player.getPA().setCurrentAction(KeyEvent.getKeyText(key)) ;
+        		player.setCurrentAction(KeyEvent.getKeyText(key)) ;
             }
             else if (key == KeyEvent.VK_SPACE)
             {
-        		player.getPA().setCurrentAction(KeyEvent.getKeyText(key)) ;
+        		player.setCurrentAction(KeyEvent.getKeyText(key)) ;
             }
             else if (key == KeyEvent.VK_NUMPAD0 | key == KeyEvent.VK_NUMPAD1 | key == KeyEvent.VK_NUMPAD2 | key == KeyEvent.VK_NUMPAD3 | key == KeyEvent.VK_NUMPAD4 | key == KeyEvent.VK_NUMPAD5 | key == KeyEvent.VK_NUMPAD6 | key == KeyEvent.VK_NUMPAD7 | key == KeyEvent.VK_NUMPAD8 | key == KeyEvent.VK_NUMPAD9)
             {
-        		player.getPA().setCurrentAction(String.valueOf(key - 96)) ;
+        		player.setCurrentAction(String.valueOf(key - 96)) ;
             }
             else if (key == KeyEvent.VK_PAUSE) 
             {
@@ -1244,11 +1238,11 @@ public class Game extends JPanel
 		{
 			if (evt.getButton() == 1)	// Left click
 			{
-        		player.getPA().setCurrentAction("MouseLeftClick") ;
+        		player.setCurrentAction("MouseLeftClick") ;
 			}
 			if (evt.getButton() == 3)	// Right click
 			{
-        		player.getPA().setCurrentAction("MouseRightClick") ;
+        		player.setCurrentAction("MouseRightClick") ;
 			}
             shouldRepaint = true ;
 		}

@@ -61,10 +61,11 @@ public class QuestWindow extends GameWindow
 			for (int i = 0 ; i <= reqCreatureType.length - 1 ; i += 1)
 			{
 				CreatureTypes creatureType = reqCreatureType[i] ;
-				String creatureName = creatureType.getPA().getName() ;
-				Point textPos = UtilG.Translate(windowPos, 15, 55 + i * font.getSize()) ;
-				DP.DrawText(textPos, Align.bottomLeft, angle, creatureName + ":" + reqCreatureTypes.get(creatureType), font, textColor) ;
-				creatureType.display(textPos, new Scale(1, 1), DP) ;
+				// TODO get creature name
+//				String creatureName = creatureType.getName() ;
+//				Point textPos = UtilG.Translate(windowPos, 15, 55 + i * font.getSize()) ;
+//				DP.DrawText(textPos, Align.bottomLeft, angle, creatureName + ":" + reqCreatureTypes.get(creatureType), font, textColor) ;
+//				creatureType.display(textPos, new Scale(1, 1), DP) ;
 			}
 		}
 		

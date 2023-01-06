@@ -192,7 +192,7 @@ public class BagWindow extends GameWindow
 			{
 				Potion pot = (Potion) item ;
 				double PotMult = 1 ;
-				if (player.getPA().getJob() == 3)
+				if (player.getJob() == 3)
 				{
 					PotMult += 0.06 * player.getSpell().get(7).getLevel() ;
 				}

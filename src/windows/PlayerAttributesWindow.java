@@ -69,7 +69,7 @@ public class PlayerAttributesWindow extends GameWindow
 			double[] PlayerAttributeIncrease = player.getAttIncrease()[player.getProJob()] ;
 			for (int attIcon = 0 ; attIcon <= addAttIcon.length - 1 ; attIcon += 1)
 			{
-				if (addAttIcon[attIcon].ishovered(MousePos) & (PA.getCurrentAction().equals("Enter") | PA.getCurrentAction().equals("MouseLeftClick")))
+				if (addAttIcon[attIcon].ishovered(MousePos) & (player.getCurrentAction().equals("Enter") | player.getCurrentAction().equals("MouseLeftClick")))
 				{
 					if (attIcon == 0)
 					{
@@ -148,20 +148,20 @@ public class PlayerAttributesWindow extends GameWindow
 			{
 				Player player = (Player) user ;
 				Point PlayerImagePos = new Point(WindowPos.x + (int) (0.55 * attWindowSize.width), WindowPos.y + (int) (0.35 * attWindowSize.height)) ;
-				player.display(PlayerImagePos, new Scale(1, 1), PA.getDir(), false, DP) ;
+				player.display(PlayerImagePos, new Scale(1, 1), player.getDir(), false, DP) ;
 			}
 
-			DP.DrawText(new Point(WindowPos.x + (int)(0.5*attWindowSize.width), WindowPos.y + (int)(0.03*attWindowSize.height)), Align.center, TextAngle, PA.getName(), namefont, TextColor) ;							// Name text			
-			DP.DrawText(new Point(WindowPos.x + (int)(0.5*attWindowSize.width), WindowPos.y + (int)(0.06*attWindowSize.height)), Align.center, TextAngle, attText[1] + ": " + PA.getLevel(), font, ColorPalette[6]) ;	// Level text		
-			if (PA.getProJob() == 0)
+			DP.DrawText(new Point(WindowPos.x + (int)(0.5*attWindowSize.width), WindowPos.y + (int)(0.03*attWindowSize.height)), Align.center, TextAngle, user.getName(), namefont, TextColor) ;						// Name text			
+			DP.DrawText(new Point(WindowPos.x + (int)(0.5*attWindowSize.width), WindowPos.y + (int)(0.06*attWindowSize.height)), Align.center, TextAngle, attText[1] + ": " + user.getLevel(), font, ColorPalette[6]) ;	// Level text		
+			if (user.getProJob() == 0)
 			{
 				Point jobTextPos = new Point(WindowPos.x + (int)(0.5*attWindowSize.width), WindowPos.y + (int)(0.10*attWindowSize.height)) ;
-				DP.DrawText(jobTextPos, Align.center, TextAngle, classesText[PA.getJob() + 1], font, ColorPalette[5]) ;	// Job text			
+				DP.DrawText(jobTextPos, Align.center, TextAngle, classesText[user.getJob() + 1], font, ColorPalette[5]) ;	// Job text			
 			}
 			else
 			{
 				Point proJobTextPos = new Point(WindowPos.x + (int)(0.5*attWindowSize.width), WindowPos.y + (int)(0.12*attWindowSize.height)) ;
-				DP.DrawText(proJobTextPos, Align.center, TextAngle, proClassesText[PA.getProJob() + 2*PA.getJob()], font, ColorPalette[5]) ;	// Pro job text					
+				DP.DrawText(proJobTextPos, Align.center, TextAngle, proClassesText[user.getProJob() + 2*user.getJob()], font, ColorPalette[5]) ;	// Pro job text					
 			}
 			
 			
@@ -174,7 +174,7 @@ public class PlayerAttributesWindow extends GameWindow
 					new Point(WindowPos.x + 53, WindowPos.y + 140)} ;	// Weapon, armor, shield, arrow
 			for (int eq = 0 ; eq <= 4 - 1 ; eq += 1)
 			{
-				Image ElemImage = DrawingOnPanel.ElementImages[UtilS.ElementID(PA.getElem()[eq + 1])] ;
+				Image ElemImage = DrawingOnPanel.ElementImages[UtilS.ElementID(user.getElem()[eq + 1])] ;
 				if (Equips[eq] != null)
 				{
 					Point textPos = new Point(EqRectPos[eq].x, EqRectPos[eq].y - EqRectH[eq] / 2) ;
@@ -202,9 +202,9 @@ public class PlayerAttributesWindow extends GameWindow
 			
 			
 			// Super element
-			if (PA.getElem()[1].equals(PA.getElem()[2]) & PA.getElem()[2].equals(PA.getElem()[3]))
+			if (user.getElem()[1].equals(user.getElem()[2]) & user.getElem()[2].equals(user.getElem()[3]))
 			{
-				DP.DrawImage(DrawingOnPanel.ElementImages[UtilS.ElementID(PA.getElem()[4])],
+				DP.DrawImage(DrawingOnPanel.ElementImages[UtilS.ElementID(user.getElem()[4])],
 						new Point(WindowPos.x + (int)(0.55*attWindowSize.width), WindowPos.y + (int)(0.4*attWindowSize.height)), TextAngle, new Scale(0.3, 0.3),
 						Align.center) ;
 			}
