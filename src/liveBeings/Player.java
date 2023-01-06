@@ -664,7 +664,7 @@ public class Player extends LiveBeing
 				Ani.StartAni(15) ;
 			}
 		}*/
-		if (currentAction.equals(ActionKeys[7]) & questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name())))	// Map
+		if (currentAction.equals(ActionKeys[7]))	// Map  & questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))
 		{
 			mapWindow.open() ;
 		}
@@ -1069,7 +1069,7 @@ public class Player extends LiveBeing
 		}
 		if (mapWindow.isOpen())
 		{
-			mapWindow.display(DP) ;
+			mapWindow.display(map, DP) ;
 		}		
 		if (questWindow.isOpen())
 		{
@@ -1593,7 +1593,7 @@ public class Player extends LiveBeing
 	public boolean isInBattle() {return state.equals(LiveBeingStates.fighting) ;}
 	
 	
-	/* Action windows */
+	// Action windows
 	private void AttWindow(Icon[] icons, int[] MainWinDim, double[] PlayerAttributeIncrease, Point MousePos, Image GoldCoinImage, DrawingOnPanel DP)
 	{
 		//int WindowLimit = 2 ;

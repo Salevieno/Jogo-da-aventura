@@ -890,7 +890,6 @@ public class Game extends JPanel
 		DP.DrawFullMap(player.getPos(), pet, player.getMap(), sky, mousePos) ;
 		player.DrawSideBar(pet, mousePos, sideBarIcons, DP) ;
 		
-		
 		// creatures act
 		if (!player.getMap().IsACity())
 		{

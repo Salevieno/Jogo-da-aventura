@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon ;
@@ -255,7 +257,12 @@ public class GameMap
 			}
 		}*/
  	}
-	
+
+ 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
+ 	{
+ 		DP.DrawImage(image, pos, scale, Align.bottomLeft) ;
+ 	}
+ 	
  	public void display(DrawingOnPanel DP)
  	{
  		DP.DrawImage(image, Game.getScreen().getMapCenter(), Align.center) ;
@@ -389,6 +396,39 @@ public class GameMap
 
 		building = buildingsInCity.toArray(new Buildings[buildingsInCity.size()]) ;*/
 	}
+
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(CollectibleCounter);
+		result = prime * result + Arrays.hashCode(CollectibleDelay);
+		result = prime * result + Arrays.hashCode(Connections);
+		result = prime * result + Arrays.deepHashCode(Type);
+		result = prime * result + Arrays.deepHashCode(groundType);
+		result = prime * result + Objects.hash(CollectibleLevel, Continent, Name, building, image, mapElem, music, npc);
+		return result;
+	}
+	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GameMap other = (GameMap) obj;
+		return Arrays.equals(CollectibleCounter, other.CollectibleCounter)
+				&& Arrays.equals(CollectibleDelay, other.CollectibleDelay) && CollectibleLevel == other.CollectibleLevel
+				&& Arrays.equals(Connections, other.Connections) && Continent == other.Continent
+				&& Objects.equals(Name, other.Name) && Arrays.deepEquals(Type, other.Type)
+				&& Objects.equals(building, other.building) && Arrays.deepEquals(groundType, other.groundType)
+				&& Objects.equals(image, other.image) && Objects.equals(mapElem, other.mapElem)
+				&& Objects.equals(music, other.music) && Objects.equals(npc, other.npc);
+	}
 	
 	/*public void CreateCollectible(int MapID, int CollectibleID)
 	{
@@ -431,21 +471,5 @@ public class GameMap
 
 		return creaturesinmap ;
 	}*/
-	
-	
-	/* print methods */
-	
-	public void printProperties()
-	{
-		for (int i = 0 ; i <= Type.length - 1 ; i += 1)
-		{
-			for (int j = 0 ; j <= Type[i].length - 1 ; j += 1)
-			{
-				if (!Type[i][j].equals("free"))
-				{
-					System.out.println(i + " " + j + " " + Type[i][j]) ;
-				}
-			}
-		}
-	}
+
 }

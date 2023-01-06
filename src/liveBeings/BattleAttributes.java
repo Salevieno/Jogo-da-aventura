@@ -17,12 +17,14 @@ public class BattleAttributes
 	private double[] Poison ;	// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: basic atk, 5: bonus, 6: basic def, 7: bonus, 8: duration
 	private double[] Silence ;	// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: duration
 	
+	// TODO status viram mapa
 	private int[] Status ; 		// 0: Life, 1: Mp, 2: Phy atk, 3: Phy def, 4: Mag atk, 5: Mag def, 6: Dex, 7: Agi
 	private int[] SpecialStatus ; 	// 0: Stun, 1: Block, 2: Blood, 3: Poison, 4: Silence
 	
 	public BattleAttributes(BasicBattleAttribute PhyAtk, BasicBattleAttribute MagAtk, BasicBattleAttribute PhyDef, BasicBattleAttribute MagDef, BasicBattleAttribute Dex, BasicBattleAttribute Agi,
 			double[] Crit,
-			double[] Stun, double[] Block, double[] Blood, double[] Poison, double[] Silence, int[] Status, int[] SpecialStatus)
+			double[] Stun, double[] Block, double[] Blood, double[] Poison, double[] Silence,
+			int[] Status, int[] SpecialStatus)
 	{
 		this.PhyAtk = PhyAtk ;
 		this.MagAtk = MagAtk ;
@@ -186,11 +188,11 @@ public class BattleAttributes
 	}
 	public void decreaseStatus()
 	{
-		for (int s = 0 ; s <= SpecialStatus.length - 1 ; s += 1)
+		for (int status : SpecialStatus)
 		{
-			if (-1 < SpecialStatus[s])
+			if (-1 < status)
 			{
-				SpecialStatus[s] += -1 ;		
+				status += -1 ;		
 			}
 		}
 	}
