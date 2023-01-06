@@ -24,9 +24,8 @@ public class MapWindow extends GameWindow
 	public void display(GameMap playerMap, DrawingOnPanel DP)
 	{
 		Point windowPos = new Point(60, 60) ;
-		size = new Dimension(240, 320) ;
-		Point offset = new Point(10, 15) ;
-		Point clearSpacing = new Point (38, 38) ;
+		Point offset = new Point(30, 15) ;
+		Point spacing = new Point (29 + 5, 19 + 5) ;
 		
 		DP.DrawImage(image, windowPos, Align.topLeft) ;
 		for (GameMap map : Game.getMaps())
@@ -43,7 +42,7 @@ public class MapWindow extends GameWindow
 						case "City of the knights": row = 3 ; col = 0 ; break ;
 						case "City of the mages": row = 0 ; col = 2 ; break ;
 						case "City of the archers": row = 4 ; col = 4 ; break ;
-						case "City of the animals": row = 6 ; col = 4 ; scale = new Scale(0.1, 0.1) ; break ;
+						case "City of the animals": row = 6 ; col = 4 ; break ;
 						case "City of the assassins": row = 0 ; col = 0 ; break ;
 						case "Forest 1": row = 0 ; col = 1 ; break ;
 						case "Forest 2": row = 1 ; col = 0 ; break ;
@@ -65,14 +64,14 @@ public class MapWindow extends GameWindow
 						case "Forest 18": row = 5 ; col = 2 ; break ;
 						case "Forest 19": row = 5 ; col = 3 ; break ;
 						case "Forest 20": row = 5 ; col = 4 ; break ;
-						case "Forest 21": row = 6 ; col = 1 ; scale = new Scale(0.05, 0.1) ; break ;
+						case "Forest 21": row = 6 ; col = 1 ; break ;
 						case "Forest 22": row = 6 ; col = 2 ; break ;
 						case "Forest 23": row = 6 ; col = 3 ; break ;
 						case "Forest 24": row = 7 ; col = 2 ; break ;
 						case "Forest 25": row = 7 ; col = 3 ; break ;
 					}
 					
-					Point pos = new Point(windowPos.x + offset.x + clearSpacing.x * col, windowPos.y + size.height - offset.y - clearSpacing.y * row) ;
+					Point pos = new Point(windowPos.x + offset.x + spacing.x * col, windowPos.y + size.height - offset.y - spacing.y * row) ;
 					map.display(pos, scale, DP) ;
 					
 					if (map.equals(playerMap))
