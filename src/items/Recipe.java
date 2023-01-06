@@ -15,4 +15,9 @@ public class Recipe
 	
 	public Map<Item, Integer> getIngredients() { return Ingredients ; }
 	public Map<Item, Integer> getProducts() { return Products ; }
+
+	@Override
+	public String toString() {
+		return "Recipe [Ingredients=" + Ingredients + ", Products=" + Products + "]";
+	}
 }

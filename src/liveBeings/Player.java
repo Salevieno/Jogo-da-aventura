@@ -71,7 +71,7 @@ public class Player extends LiveBeing
 	private SettingsWindow settings ;
 	private SpellsTreeWindow spellsTree ;
 	private MapWindow map ;
-	private ArrayList<Recipe> recipes ;
+	private ArrayList<Recipe> knownRecipes ;
 	private FabWindow fabWindow ;
 	private ArrayList<Quests> quest ;	
 	private QuestWindow questWindow ;
@@ -155,7 +155,7 @@ public class Player extends LiveBeing
 			}
 		}
 		quest = new ArrayList<>() ;
-		recipes = new ArrayList<>() ;
+		knownRecipes = new ArrayList<>() ;
 		fabWindow = new FabWindow() ;
 		map = new MapWindow() ;
 		hintsWindow = new HintsWindow() ;
@@ -1110,7 +1110,7 @@ public class Player extends LiveBeing
 		}
 		if (fabWindow.isOpen())
 		{		
-			fabWindow.display(recipes, MousePos, DP) ;
+			fabWindow.display(knownRecipes, MousePos, DP) ;
 		}
 		Tent() ;	// TODO create tent
 		if (pet != null)

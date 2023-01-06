@@ -6,12 +6,9 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import items.Item;
 import items.Recipe;
@@ -45,46 +42,7 @@ public class FabWindow extends GameWindow
 			windowDown() ;
 		}
 	}
-	
-	public ArrayList<Recipe> LoadCraftingRecipes()
-	{
-		ArrayList<String[]> CraftingInput = UtilG.ReadcsvFile(Game.CSVPath + "Craft.csv") ;
-			
-		ArrayList<Recipe> recipes = new ArrayList<>() ;
-		Item[] allItems = Game.getAllItems() ;
-		for (int i = 0 ; i <= CraftingInput.size() - 1 ; i += 1)
-		{			
-			// adding ingredients
-			Map<Item, Integer> ingredients = new HashMap<>() ;
-			for (int j = 0 ; j <= 10 - 1 ; j += 1)
-			{
-				if (0 < Integer.parseInt(CraftingInput.get(i)[2 * j + 2]))
-				{
-					Item ingredient = allItems[Integer.parseInt(CraftingInput.get(i)[2 * j + 1])] ;
-					int ingredientAmount = Integer.parseInt(CraftingInput.get(i)[2 * j + 2]) ;
-					ingredients.put(ingredient, ingredientAmount) ;
-				}
-			}
-			
-			// adding products
-			Map<Item, Integer> products = new HashMap<>() ;
-			for (int j = 10 ; j <= 20 - 1 ; j += 1)
-			{
-				if (0 < Integer.parseInt(CraftingInput.get(i)[2 * j + 2]))
-				{
-					Item product = allItems[Integer.parseInt(CraftingInput.get(i)[2 * j + 1])] ;
-					int productAmount = Integer.parseInt(CraftingInput.get(i)[2 * j + 2]) ;
-					products.put(product, productAmount) ;
-				}
-			}
-			
-			// adding recipe
-			recipes.add(new Recipe(ingredients, products)) ;
-		}
-		
-		return recipes ;
-	}
-	
+
 	public void display(ArrayList<Recipe> recipes, Point MousePos, DrawingOnPanel DP)
 	{
 		Dimension screenSize = Game.getScreen().getSize() ;

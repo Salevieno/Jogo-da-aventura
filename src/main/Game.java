@@ -48,6 +48,7 @@ import items.Item;
 import items.PetItem;
 import items.Potion;
 import items.QuestItem;
+import items.Recipe;
 import liveBeings.BasicAttribute;
 import liveBeings.BasicBattleAttribute;
 import liveBeings.BattleAttributes;
@@ -81,6 +82,7 @@ public class Game extends JPanel
 	private JPanel mainPanel = this ;
     private static Point mousePos ;
 
+	public static String JSONPath ;
 	public static String CSVPath ;
 	public static String ImagesPath ;
 	public static String MusicPath ;
@@ -99,6 +101,7 @@ public class Game extends JPanel
 	private Player player ;
 	private Pet pet ;
 	private Creature[] creature ;
+	private ArrayList<Recipe> allRecipes ;
 	private List<Projectiles> proj ;
 
 	private static Screen screen ;
@@ -124,6 +127,7 @@ public class Game extends JPanel
 	{
     	screen = new Screen(new Dimension(windowDimension.width - 40 - 15, windowDimension.height - 39), null) ;
     	screen.calcCenter() ;
+    	JSONPath = ".\\json\\" ;
 		CSVPath = ".\\csv files\\" ;
 		ImagesPath = ".\\images\\" ;
 		MusicPath = ".\\music\\" ;
@@ -166,6 +170,36 @@ public class Game extends JPanel
 	public static void playStopTimeGif() {state = GameStates.playingStopTimeGif ;}
 	public static void shouldRepaint() {shouldRepaint = true ;}
 
+	public ArrayList<Recipe> LoadCraftingRecipes()
+	{
+		ArrayList<Recipe> recipes = new ArrayList<>() ;
+		
+		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "CraftRecipes.json") ;		
+		for (int i = 0 ; i <= input.size() - 1 ; i += 1)
+		{
+			JSONObject recipe = (JSONObject) input.get(i) ;
+			
+			JSONArray listIngredients = (JSONArray) recipe.get("IngredientIDs") ;
+			JSONArray listIngredientAmounts = (JSONArray) recipe.get("IngredientAmounts") ;
+			Map<Item, Integer> ingredients = new HashMap<>() ;
+			for (int ing = 0 ; ing <= listIngredients.size() - 1 ; ing += 1)
+			{
+				ingredients.put(allItems[(int) (long) listIngredients.get(ing)], (int) (long) listIngredientAmounts.get(ing)) ;
+			}
+
+			JSONArray listProducts = (JSONArray) recipe.get("ProductIDs") ;
+			JSONArray listProductAmounts = (JSONArray) recipe.get("ProductAmounts") ;
+			Map<Item, Integer> products = new HashMap<>() ;
+			for (int prod = 0 ; prod <= listProducts.size() - 1 ; prod += 1)
+			{
+				products.put(allItems[(int) (long) listProducts.get(prod)], (int) (long) listProductAmounts.get(prod)) ;
+			}
+			
+			recipes.add(new Recipe(ingredients, products)) ;
+		}
+
+		return recipes ;
+	}
 	
     private NPCType[] initializeNPCTypes(Languages language)
     {
@@ -794,7 +828,7 @@ public class Game extends JPanel
 	
 	private void konamiCode()
 	{
-		DayDuration = 120000 ;
+		DayDuration = 12 ;
 		ColorPalette = UtilS.ReadColorPalette(new ImageIcon(ImagesPath + "ColorPalette.png").getImage(), "Konami") ;
 		if (sky.dayTime.getCounter() % 1200 <= 300)
 		{
@@ -1027,6 +1061,7 @@ public class Game extends JPanel
 		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
 		initializeIcons(screen.getSize()) ;
 		allItems = initializeAllItems() ;
+		allRecipes = LoadCraftingRecipes() ;
 		NPCTypes = initializeNPCTypes(GameLanguage) ;
 		buildingTypes = initializeBuildingTypes() ;
 		
@@ -1078,10 +1113,6 @@ public class Game extends JPanel
 		//player.getSpellsTreeWindow().display(mousePos, Icon.selectedIconID, DP) ;
 		//player.bestiary.display(player, mousePos, DP);
 	}
-	
-
-	
-	
 	
 	
 	@Override
@@ -1229,5 +1260,4 @@ public class Game extends JPanel
 		}		
 	}
 	
-
 }
