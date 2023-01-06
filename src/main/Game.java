@@ -321,8 +321,7 @@ public class Game extends JPanel
 			double[] Silence = new double[] {Double.parseDouble(input.get(ct)[32]) * diffMult, 0, Double.parseDouble(input.get(ct)[33]) * diffMult, 0, Double.parseDouble(input.get(ct)[34]) * diffMult} ;
 			int[] Status = new int[8] ;
 			int[] SpecialStatus = new int[5] ;
-			int[][] BattleActions = new int[][] {{0, Integer.parseInt(input.get(ct)[51]), 0}} ;
-			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
+			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus) ;
 						
 			ArrayList<Spell> spell = new ArrayList<>() ;
 			spell.add(new Spell(allSpellTypes[0])) ;
@@ -339,9 +338,11 @@ public class Game extends JPanel
 			int mpDuration = Integer.parseInt(input.get(ct)[49]) ;
 			int satiationDuration = 100 ;
 			int moveDuration = Integer.parseInt(input.get(ct)[50]) ;
+			int battleActionDuration = Integer.parseInt(input.get(ct)[51]) ;
 			int stepCounter = 0 ;
 			
-			creatureTypes[ct] = new CreatureTypes(ct, name, level, size, range, step, elem, mpDuration, satiationDuration, moveDuration, stepCounter,
+			creatureTypes[ct] = new CreatureTypes(ct, name, level, size, range, step, elem,
+					mpDuration, satiationDuration, moveDuration, battleActionDuration, stepCounter,
 					moveAni, PA, BA, spell, Bag, Gold, color[ct], StatusCounter) ;	
 		}
 		return creatureTypes ;
@@ -795,7 +796,7 @@ public class Game extends JPanel
 		{
 			if (0 < pet.getLife().getCurrentValue())
 			{
-				pet.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
+				//pet.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
 			}
 		}
 		if (!player.getMap().IsACity())
@@ -807,7 +808,7 @@ public class Game extends JPanel
 				{
 					if (!ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(18))	// TODO define which animations stop the run
 					{
-						creature.ActivateActionCounters() ;
+						//creature.ActivateActionCounters() ;
 					}
 				}
 			}
@@ -1069,7 +1070,7 @@ public class Game extends JPanel
 		pet = new Pet((int) (4 * Math.random())) ;
     	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
     	pet.setPos(player.getPos());
-    	bat = new Battle(new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
+    	bat = new Battle(ani) ;
     	
     	
     	player.InitializeSpells() ;

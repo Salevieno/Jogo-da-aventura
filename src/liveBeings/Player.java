@@ -160,6 +160,7 @@ public class Player extends LiveBeing
 		mpCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[37])) ;
 		satiationCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[38])) ;
 		moveCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[39])) ;
+		battleActionCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[41])) ;
 		stepCounter = 0 ;
 		combo = new ArrayList<>() ;
 	    
@@ -292,9 +293,8 @@ public class Player extends LiveBeing
 		double[] Silence = new double[] {Double.parseDouble(Properties.get(Job)[29]), 0, Double.parseDouble(Properties.get(Job)[30]), 0, Double.parseDouble(Properties.get(Job)[31])} ;
 		int[] Status = new int[9] ;
 		int[] SpecialStatus = new int[5] ;
-		int[][] BattleActions = new int[][] {{0, Integer.parseInt(Properties.get(Job)[41]), 0}} ;
 		
-		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
+		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus) ;
 	
 	}
 	
@@ -1041,46 +1041,6 @@ public class Player extends LiveBeing
 		}
 		isRiding = !isRiding ;
 	}
-	public void ActivateActionCounters(boolean SomeAnimationIsOn)
-	{
-		/*if (PA.Actions[0][0] % PA.Actions[0][1] == 0 & !SomeAnimationIsOn)
-		{
-			PA.Actions[0][2] = 1 ;							// Player can move
-		}
-		if (PA.Actions[1][0] % PA.Actions[1][1] == 0)
-		{
-			PA.incMP((double) 0.02 * PA.getMp()[1]) ;	// Player heals Mp
-			PA.Actions[1][0] = 0 ;
-		}
-		if (PA.Actions[2][0] % PA.Actions[2][1] == 0)
-		{
-			PA.incSatiation(-1) ;					// decrease satiation
-			if (PA.getSatiation()[0] == 0)				// Player is hungry
-			{
-				PA.incLife(-1) ;
-			}
-			PA.Actions[2][0] = 0 ;
-		}
-		if (PA.Actions[3][0] % PA.Actions[3][1] == 0)
-		{
-			PA.incThirst(-1) ;						// decrease thrist
-			if (PA.getThirst()[0] == 0)					// Player is thirsty
-			{
-				PA.incLife(-1) ;
-			}
-			PA.Actions[3][0] = 0 ;
-		}*/
-	}
-	public void ActivateBattleActionCounters()
-	{
-		// TODO get rid of battle action counters
-		if (BA.getBattleActions()[0][0] == BA.getBattleActions()[0][1])
-		{
-			BA.getBattleActions()[0][2] = 1 ;	// Player can atk
-		}
-	}
-	
-	
 		
 	
 	
@@ -1129,9 +1089,7 @@ public class Player extends LiveBeing
 		}
 	}
 	
-		
-	
-	
+			
 	
 	private void TreasureChestReward(int ChestID, GameMap[] maps, Animations Ani)
 	{
@@ -2208,7 +2166,7 @@ public class Player extends LiveBeing
 			//bw.write("\nPlayer quest skills: \n" + Arrays.toString(questSkills)) ;
 			bw.write("\nPlayer status: \n" + Arrays.toString(BA.getSpecialStatus())) ; 
 			//bw.write("\nPlayer actions: \n" + Arrays.deepToString(getActions())) ; 
-			bw.write("\nPlayer battle actions: \n" + Arrays.deepToString(BA.getBattleActions())) ; 
+			//bw.write("\nPlayer battle actions: \n" + Arrays.deepToString(BA.getBattleActions())) ; 
 			//bw.write("\nPlayer status counter: \n" + Arrays.toString(getStatusCounter())) ; 		
 			bw.write("\nPlayer stats: \n" + Arrays.toString(getStats())) ;
 			bw.write("\nPlayer available attribute points: \n" + getAttPoints()) ;

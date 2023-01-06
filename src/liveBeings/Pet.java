@@ -65,6 +65,7 @@ public class Pet extends LiveBeing
 		mpCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[33])) ;
 		satiationCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[34])) ;
 		moveCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[35])) ;
+		battleActionCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[36])) ;
 		stepCounter = 0 ;
 		currentAction = "" ;
 		
@@ -114,8 +115,7 @@ public class Pet extends LiveBeing
 		double[] Silence = new double[] {Double.parseDouble(PetProperties.get(Job)[29]), 0, Double.parseDouble(PetProperties.get(Job)[30]), 0, Double.parseDouble(PetProperties.get(Job)[31])} ;
 		int[] Status = new int[8] ;
 		int[] SpecialStatus = new int[5] ;
-		int[][] BattleActions = new int[][] {{0, Integer.parseInt(PetProperties.get(Job)[36]), 0}} ;
-		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus, BattleActions) ;
+		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus) ;
 	}
 
 	public ArrayList<Spell> InitializePetSpells()
@@ -372,14 +372,6 @@ public class Pet extends LiveBeing
 		}*/
 	}
 
-	public void ActivateBattleActionCounters()
-	{
-		if (BA.getBattleActions()[0][0] == BA.getBattleActions()[0][1])
-		{
-			BA.getBattleActions()[0][2] = 1 ;	// Pet can atk
-		}
-	}
-
 	public void TakeBloodAndPoisonDamage(Creature creature)
 	{
 		int BloodDamage = 0 ;
@@ -472,7 +464,7 @@ public class Pet extends LiveBeing
 			//bW.write("\nPet exp: \n" + Arrays.toString(getExp())) ;
 			bW.write("\nPet status: \n" + Arrays.toString(getBA().getSpecialStatus())) ; 
 			//bW.write("\nPet actions: \n" + Arrays.deepToString(getActions())) ; 
-			bW.write("\nPet battle actions: \n" + Arrays.deepToString(getBA().getBattleActions())) ; 
+			//bW.write("\nPet battle actions: \n" + Arrays.deepToString(getBA().getBattleActions())) ; 
 			bW.write("\nPet status counter: \n" + Arrays.toString(getStatusCounter())) ;
 		}
 		catch (IOException e)

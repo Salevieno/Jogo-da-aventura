@@ -35,6 +35,7 @@ public class LiveBeing
 	protected TimeCounter mpCounter ;			// counts the mp reduction
 	protected TimeCounter satiationCounter ;	// counts the satiation reduction
 	protected TimeCounter moveCounter ;			// counts the move
+	protected TimeCounter battleActionCounter ;	// counts the actions in battle
 	protected int stepCounter ;					// counts the steps in the movement	TODO -> TimeCounter ? (não é tempo, é step)
 	protected String currentAction; 
 	protected ArrayList<String> combo ;			// record of the last 10 movements
@@ -94,7 +95,7 @@ public class LiveBeing
 	public String getName() {return name ;}
 	public LiveBeing(String name, int job, int proJob, int level, GameMap map, Point pos, Directions dir,
 			LiveBeingStates state, Dimension size, double range, int step, String[] elem, TimeCounter mpCounter,
-			TimeCounter satiationCounter, TimeCounter moveCounter, int stepCounter, String currentAction,
+			TimeCounter satiationCounter, TimeCounter moveCounter, TimeCounter battleActionCounter, int stepCounter, String currentAction,
 			ArrayList<String> combo, ArrayList<Spell> spells, PersonalAttributes PA, BattleAttributes BA,
 			MovingAnimations movingAni, PlayerAttributesWindow attWindow)
 	{
@@ -113,6 +114,7 @@ public class LiveBeing
 		this.mpCounter = mpCounter;
 		this.satiationCounter = satiationCounter;
 		this.moveCounter = moveCounter;
+		this.battleActionCounter = battleActionCounter ;
 		this.stepCounter = stepCounter;
 		this.currentAction = currentAction;
 		this.combo = combo;
@@ -148,6 +150,7 @@ public class LiveBeing
 	public TimeCounter getMpCounter() {return mpCounter ;}
 	public TimeCounter getSatiationCounter() {return satiationCounter ;}
 	public TimeCounter getMoveCounter() {return moveCounter ;}
+	public TimeCounter getBattleActionCounter() {return battleActionCounter ;}
 	public int getStepCounter() {return stepCounter ;}
 	public ArrayList<String> getCombo() {return combo ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
@@ -198,22 +201,8 @@ public class LiveBeing
 		satiationCounter.inc() ;
 		moveCounter.inc() ;
 	}
-	public void IncBattleActionCounters()
-	{
-		// TODO get rid of battle action counters
-		for (int a = 0 ; a <= BA.getBattleActions().length - 1 ; a += 1)
-		{
-			if (BA.getBattleActions()[a][0] < BA.getBattleActions()[a][1])
-			{
-				BA.getBattleActions()[a][0] += 1 ;
-			}	
-		}
-	}
-	public void ResetBattleActions()
-	{
-		BA.getBattleActions()[0][0] = 0 ;
-		BA.getBattleActions()[0][2] = 0 ;
-	}
+	public void IncBattleActionCounters() {battleActionCounter.inc() ;}
+	public void ResetBattleActions() {battleActionCounter.reset() ;}
 	
 	public void resetCombo()
 	{
@@ -237,9 +226,14 @@ public class LiveBeing
 	}
 	
 	public boolean isAlive() {return 0 < PA.getLife().getCurrentValue() ;}
-	public boolean canAtk() {return BA.getBattleActions()[0][2] == 1 & !BA.isStun() ;}
+	public boolean canAtk() {return battleActionCounter.finished() & !BA.isStun() ;}
 	public boolean isSilent() {return BA.getSpecialStatus()[4] <= 0 ;}
 	public boolean isDefending() {return (getCurrentAction().equals(BattleKeys[1]) & !canAtk()) ;}
+	
+	public void ActivateBattleActionCounters()
+	{
+		// TODO battle action counters
+	}
 	
 	public void applyBuff()
 	{
@@ -334,15 +328,16 @@ public class LiveBeing
 	{
 		Dimension barSize = new Dimension(2 + size.height / 20, size.height) ;
 		Color BackgroundColor = Game.ColorPalette[7] ;
-		int counter = BA.getBattleActions()[0][0] ;
-		int delay = BA.getBattleActions()[0][1] ;
+		//int counter = BA.getBattleActions()[0][0] ;
+		//int delay = BA.getBattleActions()[0][1] ;
+		double rate = battleActionCounter.rate() ;
 		int mirror = UtilS.MirrorFromRelPos(relPos) ;
 		Dimension offset = new Dimension (barSize.width / 2 + (StatusImages[0].getWidth(null) + 5), -barSize.height / 2) ;
 		Point rectPos = new Point(pos.x + mirror * offset.width, pos.y + offset.height) ;
 		Point rectCenter = new Point(pos.x - barSize.width / 2, pos.y + barSize.height / 2) ;
 		
 		DP.DrawRect(rectPos, Align.center, barSize, DrawingOnPanel.stdStroke, BackgroundColor, Game.ColorPalette[9]) ;
-		DP.DrawRect(rectCenter, Align.bottomLeft, new Dimension(barSize.width, barSize.height * counter / delay), DrawingOnPanel.stdStroke, color, null) ;
+		DP.DrawRect(rectCenter, Align.bottomLeft, new Dimension(barSize.width, (int) (barSize.height * rate)), DrawingOnPanel.stdStroke, color, null) ;
 	}
 	public void ShowEffectsAndStatusAnimation(Point Pos, int mirror, Dimension offset, Image[] IconImages, int[] effect, boolean isDefending, DrawingOnPanel DP)
 	{

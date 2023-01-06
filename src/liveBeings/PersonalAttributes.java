@@ -1,14 +1,7 @@
 package liveBeings ;
 
-import java.awt.Dimension;
 import java.awt.Point;
-import java.util.ArrayList;
-
-import maps.GameMap;
-import utilities.Align;
 import utilities.Directions;
-import utilities.TimeCounter;
-import utilities.UtilG;
 
 public class PersonalAttributes
 {

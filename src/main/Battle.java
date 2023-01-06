@@ -40,7 +40,7 @@ public class Battle
 	protected static String[] ElemID ;
 	protected static double[][] ElemMult ;
 	
-	public Battle(int[] DamageDelay, Animations Ani)
+	public Battle(Animations Ani)
 	{	
 		//this.SoundEffects = SoundEffects ;
 		this.Ani = Ani ;
@@ -62,11 +62,11 @@ public class Battle
 		ShowAtkCounters = new int[3][4] ;
 		ShowAtkDurations = new int[3][4] ;
 		Show = new boolean[3][5] ;
-		ShowAtkDurations[0][0] = DamageDelay[0] ;
-		ShowAtkDurations[0][1] = DamageDelay[0] ;
-		ShowAtkDurations[0][3] = DamageDelay[0] ;
-		ShowAtkDurations[0][2] = DamageDelay[0] ;
-		ShowAtkDurations[1][0] = DamageDelay[1] ;
+//		ShowAtkDurations[0][0] = DamageDelay[0] ;
+//		ShowAtkDurations[0][1] = DamageDelay[0] ;
+//		ShowAtkDurations[0][3] = DamageDelay[0] ;
+//		ShowAtkDurations[0][2] = DamageDelay[0] ;
+//		ShowAtkDurations[1][0] = DamageDelay[1] ;
 		ShowAtkCounters[1][3] = 0 ;
 		Show[1][3] = false ;
 //		PlayerSkillBuffCounter = new int[skills.length][skills[0].getBuffs().length] ;
@@ -97,7 +97,7 @@ public class Battle
 //				PetSkillNerfCounter[i][j] = 0 ;
 //			}
 //		}
-		ShowAtkDurations[1][3] = DamageDelay[1] ;
+		//ShowAtkDurations[1][3] = DamageDelay[1] ;
 		//SkillIsReady = new boolean[skills.length] ;
 //		SkillBuffIsActive = new boolean[skills.length][skills[0].getBuffs().length] ;
 		//ItemEffectIsActive = new boolean[Items.ItemsWithEffects.length][items[0].getBuffs().length] ;
@@ -275,17 +275,17 @@ public class Battle
 				}
 			}
 		}
-		if (player.getBA().getBattleActions()[0][0] == player.getBA().getBattleActions()[0][1] & player.isDefending())
+		if (player.getBattleActionCounter().finished() & player.isDefending())
 		{
 			player.DeactivateDef() ;
 			UtilS.PrintBattleActions(6, "Player", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
 		}
-		if (pet.getBA().getBattleActions()[0][0] == pet.getBA().getBattleActions()[0][1] & pet.isDefending())
+		if (pet.getBattleActionCounter().finished() & pet.isDefending())
 		{
 			UtilS.PrintBattleActions(6, "Pet", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
  			pet.DeactivateDef() ;
 		}
-		if (creature.getBA().getBattleActions()[0][0] == creature.getBA().getBattleActions()[0][1] & creature.isDefending())
+		if (creature.getBattleActionCounter().finished() & creature.isDefending())
 		{
 			UtilS.PrintBattleActions(6, "Creature", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
  			creature.DeactivateDef() ;
@@ -468,7 +468,7 @@ public class Battle
 		creatureLife[0] += -Math.max(0, Effects[0][1])*elemMult*UtilG.RandomMult(randomAmp) ;
 		if (target.equals("Player"))
 		{
-			PlayerBA.getBattleActions()[0][1] += -Effects[1][1] ;	// Atk speed
+			//PlayerBA.getBattleActions()[0][1] += -Effects[1][1] ;	// Atk speed
 			PlayerBA.getSpecialStatus()[0] += Effects[2][2] ;	// Stun
 			PlayerBA.getSpecialStatus()[2] += Effects[3][2] ;	// Blood
 			PlayerBA.getSpecialStatus()[3] += Effects[4][2] ;	// Poison
@@ -477,7 +477,7 @@ public class Battle
 		}
 		if (target.equals("Pet"))
 		{
-			PetBA.getBattleActions()[0][1] += -Effects[1][1] ;	// Atk speed
+			//PetBA.getBattleActions()[0][1] += -Effects[1][1] ;	// Atk speed
 			PetBA.getSpecialStatus()[0] += Effects[2][2] ;	// Stun
 			PetBA.getSpecialStatus()[2] += Effects[3][2] ;	// Blood
 			PetBA.getSpecialStatus()[3] += Effects[4][2] ;	// Poison
@@ -485,7 +485,7 @@ public class Battle
 		}
 		if (target.equals("Creature"))
 		{
-			creatureBA.getBattleActions()[0][1] += -Effects[1][1] ;	// Atk speed
+			//creatureBA.getBattleActions()[0][1] += -Effects[1][1] ;	// Atk speed
 			creatureBA.getSpecialStatus()[0] += Effects[2][2] ;	// Stun
 			creatureBA.getSpecialStatus()[2] += Effects[3][2] ;	// Blood
 			//PlayerBloodItemBonus = Effects[3][1] ;		// Blood atk
@@ -951,7 +951,7 @@ public class Battle
 	
 	public void RunBattle(Player player, Pet pet, Creature creature, Quests[] quest, Point MousePos, DrawingOnPanel DP)
 	{	
-		ShowAtkDurations[2][0] = creature.getBA().getBattleActions()[0][1]/2 ;
+		//ShowAtkDurations[2][0] = creature.getBA().getBattleActions()[0][1]/2 ;
 		IncrementCounters() ;
 		ActivateCounters(player, pet, creature) ;
 		if (player.isAlive())

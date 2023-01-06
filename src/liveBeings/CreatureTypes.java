@@ -28,6 +28,7 @@ public class CreatureTypes
 	protected int mpDuration ;			// counts the mp reduction
 	protected int satiationDuration ;	// counts the satiation reduction
 	protected int moveDuration ;		// counts the move
+	protected int battleActionDuration ;// counts the battle actions
 	protected int stepCounter ;			// counts the steps in the movement	TODO -> TimeCounter ? (não é tempo, é step)
 	
 	protected MovingAnimations movingAni ;
@@ -52,6 +53,7 @@ public class CreatureTypes
 			int mpDuration,
 			int satiationDuration,
 			int moveDuration,
+			int battleActionDuration,
 			int stepCounter,
 			MovingAnimations movingAni,
 			PersonalAttributes PA,
@@ -73,6 +75,7 @@ public class CreatureTypes
 		this.mpDuration = mpDuration;
 		this.satiationDuration = satiationDuration;
 		this.moveDuration = moveDuration;
+		this.battleActionDuration = battleActionDuration ;
 		this.stepCounter = stepCounter;
 		
 		this.movingAni = movingAni ;

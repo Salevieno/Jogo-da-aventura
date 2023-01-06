@@ -352,30 +352,6 @@ public class Creature extends LiveBeing
 		PA.getMp().setToMaximum() ;
 		follow = false ;
 	}
-	public void ActivateActionCounters()
-	{
-		/*if (PA.Actions[0][0] % PA.Actions[0][1] == 0)
-		{
-			PA.Actions[0][2] = 1 ;	// Creature can move
-		}*/
-	}
-	/*public void ResetActions()
-	{
-		PA.Actions = new int[][] {{0, PA.Actions[0][1], 0}, {PA.Actions[1][0], PA.Actions[1][1], PA.Actions[1][2]}} ;
-	}*/
-
-	public void ActivateBattleActionCounters()
-	{
-		/*if (BA.getBattleActions()[0][0] == BA.getBattleActions()[0][1])
-		{
-			BA.getBattleActions()[0][2] = 1 ;	// Creature can atk
-		}
-		if (PA.Actions[1][0] % PA.Actions[1][1] == 0)
-		{
-			PA.getMp()[0] = (double)(Math.min(PA.getMp()[0] + 0.02*PA.getMp()[1], PA.getMp()[1])) ;	// Creature heals mp
-			PA.Actions[1][0] = 0 ;
-		}	*/
-	}
 
 	public void ApplyBuffsAndNerfs(String action, String type, int att, int BuffNerfLevel, Spell spells, boolean SpellIsActive)
 	{

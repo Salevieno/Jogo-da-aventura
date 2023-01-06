@@ -1,7 +1,5 @@
 package liveBeings ;
 
-import java.util.List;
-
 public class BattleAttributes
 {
 	private BasicBattleAttribute PhyAtk ;	// 0: Base atk, 1: bonus, 2: train
@@ -14,19 +12,17 @@ public class BattleAttributes
 	private double[] Crit ;		// 0: Base crit atk chance, 1: bonus, 2: basic crit def chance, 3: bonus
 	
 	private double[] Stun ;		// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: duration
-	private double[] Block ;		// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: duration
-	private double[] Blood ;		// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: basic atk, 5: bonus, 6: basic def, 7: bonus, 8: duration
+	private double[] Block ;	// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: duration
+	private double[] Blood ;	// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: basic atk, 5: bonus, 6: basic def, 7: bonus, 8: duration
 	private double[] Poison ;	// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: basic atk, 5: bonus, 6: basic def, 7: bonus, 8: duration
 	private double[] Silence ;	// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: duration
 	
 	private int[] Status ; 		// 0: Life, 1: Mp, 2: Phy atk, 3: Phy def, 4: Mag atk, 5: Mag def, 6: Dex, 7: Agi
 	private int[] SpecialStatus ; 	// 0: Stun, 1: Block, 2: Blood, 3: Poison, 4: Silence
 	
-	private int[][] BattleActions ;	// [Atk][Counter, delay, permission]
-	
 	public BattleAttributes(BasicBattleAttribute PhyAtk, BasicBattleAttribute MagAtk, BasicBattleAttribute PhyDef, BasicBattleAttribute MagDef, BasicBattleAttribute Dex, BasicBattleAttribute Agi,
 			double[] Crit,
-			double[] Stun, double[] Block, double[] Blood, double[] Poison, double[] Silence, int[] Status, int[] SpecialStatus, int[][] BattleActions)
+			double[] Stun, double[] Block, double[] Blood, double[] Poison, double[] Silence, int[] Status, int[] SpecialStatus)
 	{
 		this.PhyAtk = PhyAtk ;
 		this.MagAtk = MagAtk ;
@@ -42,7 +38,6 @@ public class BattleAttributes
 		this.Silence = Silence ;
 		this.Status = Status ;
 		this.SpecialStatus = SpecialStatus ;
-		this.BattleActions = BattleActions ;
 	}
 
 	public BasicBattleAttribute getPhyAtk() {return PhyAtk ;}
@@ -59,7 +54,6 @@ public class BattleAttributes
 	public double[] getSilence() {return Silence ;}
 	public int[] getStatus() {return Status ;}
 	public int[] getSpecialStatus() {return SpecialStatus ;}
-	public int[][] getBattleActions() {return BattleActions ;}
 	
 	public double TotalPhyAtk()
 	{
