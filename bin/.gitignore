@@ -1,8 +1,9 @@
-/components/
 /graphics/
-/liveBeings/
 /main/
+/windows/
+/components/
+/utilities/
+/items/
+/liveBeings/
 /maps/
 /screen/
-/utilities/
-/windows/

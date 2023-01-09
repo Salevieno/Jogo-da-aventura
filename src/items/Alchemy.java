@@ -17,7 +17,7 @@ public class Alchemy extends Item
 	private static Alchemy[] AllAlchemy ;
 	public Alchemy(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal)
 	{
-		super(Name, Description, new ImageIcon(Game.ImagesPath + "Col0__Berry.png").getImage(), price, dropChance) ;
+		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "Col0__Berry.png"), price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
 		

@@ -38,20 +38,20 @@ public class DrawingOnPanel
 	
 	private static Color[] colorPalette = Game.ColorPalette;
 	private Dimension screenSize = Game.getScreen().getSize() ;
-	private static Image menuWindow = new ImageIcon(Game.ImagesPath + "MenuWindow.png").getImage() ;
-	private static Image buttonGeneral = new ImageIcon(Game.ImagesPath + "ButtonGeneral.png").getImage() ;
-	private static Image ArrowIconImage = new ImageIcon(Game.ImagesPath + "ArrowIcon.png").getImage() ;
+	private static Image menuWindow = UtilG.loadImage(Game.ImagesPath + "MenuWindow.png") ;
+	private static Image buttonGeneral = UtilG.loadImage(Game.ImagesPath + "ButtonGeneral.png") ;
+	private static Image ArrowIconImage = UtilG.loadImage(Game.ImagesPath + "ArrowIcon.png") ;
 	public static Image[] ElementImages = new Image[] {
-			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementNeutral.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementWater.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementFire.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementPlant.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementEarth.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementAir.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementThunder.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementLight.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementDark.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "\\Elements\\" + "ElementSnow.png").getImage()} ;
+			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementNeutral.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementWater.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementFire.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementPlant.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementEarth.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementAir.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementThunder.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementLight.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementDark.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementSnow.png")} ;
 	
 	public DrawingOnPanel()
 	{
@@ -710,7 +710,7 @@ public class DrawingOnPanel
 	public void SailingAnimation(Player player, NPCs npc, GameMap[] maps, String Destination, int counter, int Duration, Image BoatImage)
 	{
 		/*int Step = player.getStep()/2 ;
-		int NPCLength = npc.getImage().getWidth(null), NPCHeight = npc.getImage().getHeight(null) ;
+		int NPCLength = npc.getWidth(null), NPCHeight = npc.getHeight(null) ;
 		if (Destination.equals("Island"))
 		{
 			Point InitialPos = new Point(Step, (int)(0.5*screenSize.height)) ;	
@@ -718,7 +718,7 @@ public class DrawingOnPanel
 			if (Pos.x + Step < screenSize.width)
 			{
 				DrawImage(BoatImage, Pos, OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, alignPoints.bottomLeft, 1) ;
-				DrawImage(npc.getImage(), new Point(Pos.x + NPCLength, (int) (Pos.y - 0.5*NPCHeight)), OverallAngle, new float[] {(float)0.5, (float)0.5}, new boolean[] {false, false}, alignPoints.center, 1) ;
+				DrawImage(npc, new Point(Pos.x + NPCLength, (int) (Pos.y - 0.5*NPCHeight)), OverallAngle, new float[] {(float)0.5, (float)0.5}, new boolean[] {false, false}, alignPoints.center, 1) ;
 				player.setPos(new Point(Pos.x + Step, Pos.y)) ;
 			}
 			else
@@ -743,7 +743,7 @@ public class DrawingOnPanel
 			if (0 < Pos.x - Step)
 			{
 				DrawImage(BoatImage, Pos, OverallAngle, new float[] {(float)1, (float)1}, new boolean[] {false, false}, alignPoints.bottomLeft, 1) ;
-				DrawImage(npc.getImage(), new Point(Pos.x + NPCLength, (int) (Pos.y - 0.5*NPCHeight)), OverallAngle, new float[] {(float)0.5, (float)0.5}, new boolean[] {false, false}, alignPoints.center, 1) ;
+				DrawImage(npc, new Point(Pos.x + NPCLength, (int) (Pos.y - 0.5*NPCHeight)), OverallAngle, new float[] {(float)0.5, (float)0.5}, new boolean[] {false, false}, alignPoints.center, 1) ;
 				player.setPos(new Point(Pos.x - Step, Pos.y)) ;
 			}
 			else

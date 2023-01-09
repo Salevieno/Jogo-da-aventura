@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import graphics.DrawingOnPanel;
 import main.Game;
 import utilities.Align;
+import utilities.UtilG;
 
 public class Collectible
 {
@@ -33,10 +34,10 @@ public class Collectible
 		name = CollectibleNames[type] ;
 		
 		String path = Game.ImagesPath  + "\\Collect\\";
-	    Image BerryImage = new ImageIcon(path + "Col0_" + name + ".png").getImage() ;
-	    Image HerbImage = new ImageIcon(path + "Col1_" + name + ".png").getImage() ;
-	    Image WoodImage = new ImageIcon(path + "Col2_" + name + ".png").getImage() ;
-	    Image MetalImage = new ImageIcon(path + "Col3_" + name + ".png").getImage() ;
+	    Image BerryImage = UtilG.loadImage(path + "Col0_" + name + ".png") ;
+	    Image HerbImage = UtilG.loadImage(path + "Col1_" + name + ".png") ;
+	    Image WoodImage = UtilG.loadImage(path + "Col2_" + name + ".png") ;
+	    Image MetalImage = UtilG.loadImage(path + "Col3_" + name + ".png") ;
 		collectibleImages = new Image[] {BerryImage, HerbImage, WoodImage, MetalImage};
 		
 		image = collectibleImages[type] ;

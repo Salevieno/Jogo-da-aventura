@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 
 import components.SpellTypes;
 import main.Game;
+import utilities.UtilG;
 
 public class SpellType 
 {	
@@ -34,9 +35,9 @@ public class SpellType
 	private String elem ;
 	private String[] info ;	// Effect and description
 	
-	public static Image cooldownImage = new ImageIcon(Game.ImagesPath + "Cooldown.png").getImage() ;	
-	public static Image slotImage = new ImageIcon(Game.ImagesPath + "SkillSlot.png").getImage() ;
-	public static Image ElementalCicle = new ImageIcon(Game.ImagesPath + "ElementalCicle.png").getImage() ;
+	public static Image cooldownImage = UtilG.loadImage(Game.ImagesPath + "Cooldown.png") ;	
+	public static Image slotImage = UtilG.loadImage(Game.ImagesPath + "SkillSlot.png") ;
+	public static Image ElementalCicle = UtilG.loadImage(Game.ImagesPath + "ElementalCicle.png") ;
 	
 	public SpellType(String Name, int MaxLevel, int MpCost, SpellTypes type, Map<SpellType, Integer> preRequisites, int Cooldown, int Duration, double[][] Buffs, double[][] Nerfs,
 			double[] AtkMod, double[] DefMod, double[] DexMod, double[] AgiMod, double[] AtkCritMod, double[] DefCritMod, double[] StunMod, double[] BlockMod, double[] BloodMod,

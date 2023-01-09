@@ -44,8 +44,8 @@ public class BagWindow extends GameWindow
 	private ArrayList<Fab> fab ;
 	private ArrayList<QuestItem> quest ;
 	
-	public static Image MenuImage = new ImageIcon(Game.ImagesPath + "\\Windows\\" + "BagMenu.png").getImage() ;
-    public static Image SlotImage = new ImageIcon(Game.ImagesPath + "\\Windows\\" + "BagSlot.png").getImage() ;
+	public static Image MenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagMenu.png") ;
+    public static Image SlotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
 	
 	public BagWindow(Map<Potion, Integer> pot, Map<Alchemy, Integer> alch, ArrayList<Forge> forge, ArrayList<PetItem> petItem,
 			ArrayList<Food> food, ArrayList<Arrow> arrow, ArrayList<Equip> equip, ArrayList<GeneralItem> genItem, ArrayList<Fab> fab, ArrayList<QuestItem> quest)

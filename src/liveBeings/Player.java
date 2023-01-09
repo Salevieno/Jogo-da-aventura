@@ -95,15 +95,15 @@ public class Player extends LiveBeing
 	public Items[] hotItem ;		// items on the hotkeys
     public int difficultLevel ;
     
-    public static final Image CollectingMessage = new ImageIcon(Game.ImagesPath + "\\Player\\" + "CollectingMessage.gif").getImage() ;   
-    public static final Image TentImage = new ImageIcon(Game.ImagesPath + "\\Player\\" + "Icon5_Tent.png").getImage() ; 
-    public static final Image DragonAuraImage = new ImageIcon(Game.ImagesPath + "\\Player\\" + "DragonAura.png").getImage() ;
-    public static final Image RidingImage = new ImageIcon(Game.ImagesPath + "\\Player\\" + "Tiger.png").getImage() ;
-    //public static final Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "\\Player\\" + "SpeakingBubble.png").getImage() ;
-	public static final Image CoinIcon = new ImageIcon(Game.ImagesPath + "\\Player\\" + "CoinIcon.png").getImage() ;    
-	public static final Image MagicBlissGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "MagicBliss.gif").getImage() ;
-    public static final Image FishingGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "Fishing.gif").getImage() ;
-    public static final Icon SpellsTreeIcon = new Icon(0, "", new Point(200, 200), "", new ImageIcon(Game.ImagesPath + "\\Icons\\" + "SpellsTreeIcon.gif").getImage(), null) ;
+    public static final Image CollectingMessage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "CollectingMessage.gif") ;   
+    public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Icon5_Tent.png") ; 
+    public static final Image DragonAuraImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "DragonAura.png") ;
+    public static final Image RidingImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Tiger.png") ;
+    //public static final Image SpeakingBubbleImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "SpeakingBubble.png") ;
+	public static final Image CoinIcon = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "CoinIcon.png") ;    
+	public static final Image MagicBlissGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "MagicBliss.gif") ;
+    public static final Image FishingGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Fishing.gif") ;
+    public static final Icon SpellsTreeIcon = new Icon(0, "", new Point(200, 200), "", UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "SpellsTreeIcon.gif"), null) ;
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
     
@@ -128,9 +128,9 @@ public class Player extends LiveBeing
 	public final static int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public final static Image[] AttWindowImages = new Image[] {
-    		new ImageIcon(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png").getImage(),
-    		new ImageIcon(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png").getImage(),
-    		new ImageIcon(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png").getImage()} ;
+    		UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"),
+    		UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"),
+    		UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")} ;
     public static final Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
 	
 	public Player(String name, String Language, String Sex, int job)
@@ -152,7 +152,7 @@ public class Player extends LiveBeing
 		pos = new Point();
 		dir = Directions.up;
 		state = LiveBeingStates.idle;
-		Image PlayerBack = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerBack.png").getImage() ;
+		Image PlayerBack = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerBack.png") ;
 	    size = new Dimension (PlayerBack.getWidth(null), PlayerBack.getHeight(null));
 		range = Double.parseDouble(Properties.get(job)[4]) ;
 		step = Integer.parseInt(Properties.get(job)[33]);
@@ -237,7 +237,7 @@ public class Player extends LiveBeing
 	    opponent = null ;
 	    difficultLevel = 1 ;
 		equipsBonus = Items.EquipsBonus ;
-		settings = new SettingsWindow(new ImageIcon(Game.ImagesPath + "windowSettings.png").getImage(), false, true, false, 1, 1) ;
+		settings = new SettingsWindow(UtilG.loadImage(Game.ImagesPath + "windowSettings.png"), false, true, false, 1, 1) ;
 		/*switch (Job)
 		{
 			case 0:
@@ -300,11 +300,11 @@ public class Player extends LiveBeing
 	
 	private static MovingAnimations InitializeMovingAnimations()
 	{
-	    Image idleGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerBack.png").getImage() ;
-	    Image movingUpGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerBack.png").getImage() ;
-		Image movingDownGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerFront.png").getImage() ;
-		Image movingLeftGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerLeft.png").getImage() ;
-		Image movingRightGif = new ImageIcon(Game.ImagesPath + "\\Player\\" + "PlayerRight.png").getImage() ;
+	    Image idleGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerBack.png") ;
+	    Image movingUpGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerBack.png") ;
+		Image movingDownGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerFront.png") ;
+		Image movingLeftGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerLeft.png") ;
+		Image movingRightGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerRight.png") ;
 		
 		return new MovingAnimations(idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif) ;
 	}
@@ -477,7 +477,7 @@ public class Player extends LiveBeing
 	private void Collect(Collectible collectible, DrawingOnPanel DP, Animations ani)
     {
 		collectCounter.inc() ;
-        Image collectingGif = new ImageIcon(Game.ImagesPath + "Collecting.gif").getImage() ;
+        Image collectingGif = UtilG.loadImage(Game.ImagesPath + "Collecting.gif") ;
         DP.DrawGif(collectingGif, getPos(), Align.center);
         if (collectCounter.finished())
         {
@@ -1904,17 +1904,17 @@ public class Player extends LiveBeing
 		}
 		
 		// player
-		//display(UtilG.Translate(icons[5].getPos(), icons[5].getImage().getWidth(null) / 2, 0), new Scale(1, 1), Directions.up, false, DP) ;
+		//display(UtilG.Translate(icons[5].getPos(), icons[5].getWidth(null) / 2, 0), new Scale(1, 1), Directions.up, false, DP) ;
 		DP.DrawText(icons[5].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[5], font, TextColor) ;
 //		if (0 < attPoints)
 //		{
-//			DP.DrawImage(icons[5].getImage(), UtilG.Translate(icons[5].getPos(), icons[5].getImage().getWidth(null) / 2, 0), stdAngle, new Scale(1, 1), Align.bottomLeft) ;
+//			DP.DrawImage(icons[5], UtilG.Translate(icons[5].getPos(), icons[5].getWidth(null) / 2, 0), stdAngle, new Scale(1, 1), Align.bottomLeft) ;
 //		}
 		
 		// pet
 		if (pet != null)
 		{
-			//pet.display(UtilG.Translate(icons[6].getPos(), icons[6].getImage().getWidth(null) / 2, 0), new Scale(1, 1), DP) ;
+			//pet.display(UtilG.Translate(icons[6].getPos(), icons[6].getWidth(null) / 2, 0), new Scale(1, 1), DP) ;
 			DP.DrawText(icons[6].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[8], font, TextColor) ;
 		}
 		

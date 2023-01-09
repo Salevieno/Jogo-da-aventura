@@ -19,18 +19,18 @@ public class Equip extends Item
 	
 	private static Equip[] allEquips ;
 	
-	public static Image SwordImage = new ImageIcon(Game.ImagesPath + "\\Equips\\" + "Eq0_Sword.png").getImage() ;
-	public static Image StaffImage = new ImageIcon(Game.ImagesPath + "\\Equips\\" + "Eq1_Staff.png").getImage() ;
-	public static Image BowImage = new ImageIcon(Game.ImagesPath + "\\Equips\\" + "Eq2_Bow.png").getImage() ;
-	public static Image ClawsImage = new ImageIcon(Game.ImagesPath + "\\Equips\\" + "Eq3_Claws.png").getImage() ;
-	public static Image DaggerImage = new ImageIcon(Game.ImagesPath + "\\Equips\\" + "Eq4_Dagger.png").getImage() ;
-	public static Image ShieldImage = new ImageIcon(Game.ImagesPath + "\\Equips\\" + "Eq5_Shield.png").getImage() ;
-	public static Image ArmorImage = new ImageIcon(Game.ImagesPath + "\\Equips\\" + "Eq6_Armor.png").getImage() ;
-	public static Image ArrowImage = new ImageIcon(Game.ImagesPath + "\\Equips\\" + "Eq7_Arrow.png").getImage() ;
+	public static Image SwordImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq0_Sword.png") ;
+	public static Image StaffImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq1_Staff.png") ;
+	public static Image BowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq2_Bow.png") ;
+	public static Image ClawsImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq3_Claws.png") ;
+	public static Image DaggerImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq4_Dagger.png") ;
+	public static Image ShieldImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq5_Shield.png") ;
+	public static Image ArmorImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq6_Armor.png") ;
+	public static Image ArrowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq7_Arrow.png") ;
 
 	public Equip(int id, String name, String description, int price, float dropChance, int forgeLevel, AttributeBonus attBonus, String elem)
 	{
-		super(name, description, new ImageIcon(Game.ImagesPath + "items.png").getImage(), price, dropChance) ;
+		super(name, description, UtilG.loadImage(Game.ImagesPath + "items.png"), price, dropChance) ;
 		this.id = id ;
 		this.forgeLevel = forgeLevel ;
 		this.attBonus = attBonus ;

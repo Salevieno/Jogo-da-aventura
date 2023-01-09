@@ -15,7 +15,7 @@ private int id ;
 	private static QuestItem[] AllQuests ;
 	public QuestItem(int id, String Name, String Description, int price, float dropChance)
 	{
-		super(Name, Description, new ImageIcon(Game.ImagesPath + "items.png").getImage(), price, dropChance) ;
+		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "items.png"), price, dropChance) ;
 		this.id = id ;
 	}
 

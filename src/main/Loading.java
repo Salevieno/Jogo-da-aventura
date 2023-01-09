@@ -10,6 +10,7 @@ import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
 import utilities.Align;
+import utilities.UtilG;
 
 public class Loading
 {
@@ -20,7 +21,7 @@ public class Loading
 	{
 		selectedSlot = 0 ;
 		tab = 0 ;
-		LoadingGif = new ImageIcon(Game.ImagesPath + "Loading.gif").getImage() ;
+		LoadingGif = UtilG.loadImage(Game.ImagesPath + "Loading.gif") ;
     	
 	}
 	

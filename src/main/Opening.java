@@ -32,21 +32,21 @@ public class Opening
 	public Opening()
 	{
 		String path = Game.ImagesPath  + "\\Opening\\";
-		backgroundImage = new ImageIcon(path + "Opening.png").getImage() ;
-		openingGif = new Gif(new ImageIcon(path + "Opening.gif").getImage(), 1375, false, true) ;
+		backgroundImage = UtilG.loadImage(path + "Opening.png") ;
+		openingGif = new Gif(UtilG.loadImage(path + "Opening.gif"), 1375, false, true) ;
 		Icon.selectedIconID = 2 ;
     	step = 0 ;
     	playerInfo = new String[4] ;
 
     	buttons = new Icon[14] ;
-		Image btPort = new ImageIcon(path + "btPort.png").getImage() ;
-		Image btEn = new ImageIcon(path + "btEn.png").getImage() ;
-		Image btPortSelected = new ImageIcon(path + "btPortSelected.png").getImage() ;
-		Image btEnSelected = new ImageIcon(path + "btEnSelected.png").getImage() ;
-		Image btNewGame = new ImageIcon(path + "bt_newGame.png").getImage() ;
-		Image btNewGameSelected = new ImageIcon(path + "bt_newGameSelected.gif").getImage() ;
-		Image btLoadGame = new ImageIcon(path + "bt_loadGame.png").getImage() ;
-		Image btLoadGameSelected = new ImageIcon(path + "bt_loadGameSelected.gif").getImage() ;
+		Image btPort = UtilG.loadImage(path + "btPort.png") ;
+		Image btEn = UtilG.loadImage(path + "btEn.png") ;
+		Image btPortSelected = UtilG.loadImage(path + "btPortSelected.png") ;
+		Image btEnSelected = UtilG.loadImage(path + "btEnSelected.png") ;
+		Image btNewGame = UtilG.loadImage(path + "bt_newGame.png") ;
+		Image btNewGameSelected = UtilG.loadImage(path + "bt_newGameSelected.gif") ;
+		Image btLoadGame = UtilG.loadImage(path + "bt_loadGame.png") ;
+		Image btLoadGameSelected = UtilG.loadImage(path + "bt_loadGameSelected.gif") ;
 		
 		Dimension screenSize = Game.getScreen().getSize() ;
 		buttons[0] = new Icon(0, "Port", new Point(screenSize.width - 50, 30), null, btPort, btPortSelected) ;

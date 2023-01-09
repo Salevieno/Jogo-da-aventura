@@ -137,7 +137,7 @@ public class Game extends JPanel
 		ImagesPath = ".\\images\\" ;
 		MusicPath = ".\\music\\" ;
 		MainFontName = "Comics" ;
-		ColorPalette = UtilS.ReadColorPalette(new ImageIcon(ImagesPath + "ColorPalette.png").getImage(), "Normal") ;    	
+		ColorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette.png"), "Normal") ;    	
     	ani = new Animations() ;
 		opening = new Opening() ;
 		DP = new DrawingOnPanel() ;
@@ -146,7 +146,7 @@ public class Game extends JPanel
 		konamiCodeActive = false ;
 		shouldRepaint = false ;
 		testGif = new Gif(UtilG.loadImage(ImagesPath + "test.gif"), 100, false, false) ;
-		testGif2 = new Gif(new ImageIcon(ImagesPath + "test2.gif").getImage(), 0, true, false) ;
+		testGif2 = new Gif(UtilG.loadImage(ImagesPath + "test2.gif"), 0, true, false) ;
     	//OpeningIsOn = true ; 
 
     	player = new Player("", "", "", 0) ;
@@ -239,7 +239,7 @@ public class Game extends JPanel
 
 			String info = input.get(i)[3 + language.ordinal()] ;
 			Color color = ColorPalette[0] ;
-			Image image = new ImageIcon(path + "NPC_" + job.toString() + ".png").getImage() ;
+			Image image = UtilG.loadImage(path + "NPC_" + job.toString() + ".png") ;
 			String[] speech = player.allText.get("* " + name + " *") ;
 
 			// TODO NPC options vai ser uma lista de listas, cada uma correspondendo a uma speech
@@ -260,9 +260,9 @@ public class Game extends JPanel
     	{
     		JSONObject type = (JSONObject) input.get(i) ;
     		String name = (String) type.get("name") ;
-			Image outsideImage = new ImageIcon(path + "Building" + i + "_" + name + ".png").getImage() ;
-			Image insideImage = new ImageIcon(path + "Building" + i + "_" + name + "Inside.png").getImage() ;
-			Image[] OrnamentImages = new Image[] {new ImageIcon(path + "Building" + name + "Ornament.png").getImage()} ;
+			Image outsideImage = UtilG.loadImage(path + "Building" + i + "_" + name + ".png") ;
+			Image insideImage = UtilG.loadImage(path + "Building" + i + "_" + name + "Inside.png") ;
+			Image[] OrnamentImages = new Image[] {UtilG.loadImage(path + "Building" + name + "Ornament.png")} ;
 			
 			// adding npcs to the building
 			List<NPCs> npcs = new ArrayList<>() ;
@@ -302,11 +302,11 @@ public class Game extends JPanel
 				color[ct] = ColorPalette[5] ;
 			}
 			
-			MovingAnimations moveAni = new MovingAnimations(new ImageIcon(path + "creature" + (ct % 5) + "_idle.gif").getImage(),
-					new ImageIcon(path + "creature" + (ct % 5) + "_movingup.gif").getImage(),
-					new ImageIcon(path + "creature" + (ct % 5) + "_movingdown.gif").getImage(),
-					new ImageIcon(path + "creature" + (ct % 5) + "_movingleft.gif").getImage(),
-					new ImageIcon(path + "creature" + (ct % 5) + "_movingright.gif").getImage()) ;
+			MovingAnimations moveAni = new MovingAnimations(UtilG.loadImage(path + "creature" + (ct % 5) + "_idle.gif"),
+					UtilG.loadImage(path + "creature" + (ct % 5) + "_movingup.gif"),
+					UtilG.loadImage(path + "creature" + (ct % 5) + "_movingdown.gif"),
+					UtilG.loadImage(path + "creature" + (ct % 5) + "_movingleft.gif"),
+					UtilG.loadImage(path + "creature" + (ct % 5) + "_movingright.gif")) ;
 			
 			BasicAttribute Life = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[5]) * diffMult), (int) (Integer.parseInt(input.get(ct)[5]) * diffMult), 1) ;
 			BasicAttribute Mp = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[6]) * diffMult), (int) (Integer.parseInt(input.get(ct)[6]) * diffMult), 1) ;
@@ -376,7 +376,7 @@ public class Game extends JPanel
 											Integer.parseInt(input.get(id)[8]),
 											Integer.parseInt(input.get(id)[9])
 											} ;
-			Image image = new ImageIcon(path + "Map" + String.valueOf(id) + ".png").getImage() ;
+			Image image = UtilG.loadImage(path + "Map" + String.valueOf(id) + ".png") ;
 			Clip music = Music.musicFileToClip(new File(MusicPath + (id + 2) + "-" + name + ".wav").getAbsoluteFile()) ;
 			
 			
@@ -465,7 +465,7 @@ public class Game extends JPanel
 											Integer.parseInt(input.get(id)[23]),
 											Integer.parseInt(input.get(id)[24])
 											} ;
-			Image image = new ImageIcon(path + "Map" + String.valueOf(id + cityMaps.length) + ".png").getImage() ;
+			Image image = UtilG.loadImage(path + "Map" + String.valueOf(id + cityMaps.length) + ".png") ;
 			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
 			fieldMap[id] = new FieldMap(name, continent, Connections, image, music, collectibleLevel, new int[] {berryDelay, herbDelay, woodDelay, metalDelay}, creatureIDs) ;
 		}
@@ -493,12 +493,12 @@ public class Game extends JPanel
 											Integer.parseInt(input.get(id)[8]),
 											Integer.parseInt(input.get(id)[9])
 											} ;
-			Image image = new ImageIcon(path + "MapSpecial" + String.valueOf(id) + ".png").getImage() ;
+			Image image = UtilG.loadImage(path + "MapSpecial" + String.valueOf(id) + ".png") ;
 			Clip music = Music.musicFileToClip(new File(MusicPath + "12-Special.wav").getAbsoluteFile()) ;
 			
 			// adding treasure chests
 			List<TreasureChest> treasureChests = new ArrayList<>() ;
-			Image treasureChestsImage = new ImageIcon(ImagesPath + "\\MapElements\\" + "MapElem15_Chest.png").getImage() ;
+			Image treasureChestsImage = UtilG.loadImage(ImagesPath + "\\MapElements\\" + "MapElem15_Chest.png") ;
 			for (int chest = 0 ; chest <= 5 - 1; chest += 1)
 			{
 				Point pos = new Point((int) (Double.parseDouble(input.get(id)[10 + 13 * chest]) * screen.getSize().width), (int) (Double.parseDouble(input.get(id)[11 + 13 * chest]) * screen.getSize().height)) ;
@@ -538,24 +538,24 @@ public class Game extends JPanel
     {
 		// Icons' position
     	String path = ImagesPath + "\\Icons\\";
-		Image Options = new ImageIcon(path + "Icon_settings.png").getImage() ;
-		Image Bag = new ImageIcon(path + "Icon1_Bag.png").getImage() ;
-		Image Quest = new ImageIcon(path + "Icon2_Quest.png").getImage() ;
-		Image Map = new ImageIcon(path + "Icon3_Map.png").getImage() ;
-		Image Book = new ImageIcon(path + "Icon4_Book.png").getImage() ;
-    	Image Tent = new ImageIcon(path + "Icon5_Tent.png").getImage() ;
-    	Image PlayerImage = new ImageIcon(path + "Player.png").getImage() ;
-    	Image PetImage = new ImageIcon(path + "PetType" + 0 + ".png").getImage() ;
-		Image SkillsTree = new ImageIcon(path + "Icon8_SkillsTree.png").getImage() ;
-		Image SelectedOptions = new ImageIcon(path + "Icon_settingsSelected.png").getImage() ;
-		Image SelectedBag = new ImageIcon(path + "Icon1_BagSelected.png").getImage() ;
-		Image SelectedQuest = new ImageIcon(path + "Icon2_QuestSelected.png").getImage() ;
-		Image SelectedMap = new ImageIcon(path + "Icon3_MapSelected.png").getImage() ;
-		Image SelectedBook = new ImageIcon(path + "Icon4_BookSelected.png").getImage() ;
-    	Image SelectedTent = new ImageIcon(path + "Icon5_TentSelected.png").getImage() ;
-    	Image PlayerSelectedImage = new ImageIcon(path + "Player.png").getImage() ;
-    	Image PetSelectedImage = new ImageIcon(path + "PetType" + 0 + ".png").getImage() ;
-		Image SelectedSkillsTree = new ImageIcon(path + "Icon8_SelectedSkillsTree.png").getImage() ;
+		Image Options = UtilG.loadImage(path + "Icon_settings.png") ;
+		Image Bag = UtilG.loadImage(path + "Icon1_Bag.png") ;
+		Image Quest = UtilG.loadImage(path + "Icon2_Quest.png") ;
+		Image Map = UtilG.loadImage(path + "Icon3_Map.png") ;
+		Image Book = UtilG.loadImage(path + "Icon4_Book.png") ;
+    	Image Tent = UtilG.loadImage(path + "Icon5_Tent.png") ;
+    	Image PlayerImage = UtilG.loadImage(path + "Player.png") ;
+    	Image PetImage = UtilG.loadImage(path + "PetType" + 0 + ".png") ;
+		Image SkillsTree = UtilG.loadImage(path + "Icon8_SkillsTree.png") ;
+		Image SelectedOptions = UtilG.loadImage(path + "Icon_settingsSelected.png") ;
+		Image SelectedBag = UtilG.loadImage(path + "Icon1_BagSelected.png") ;
+		Image SelectedQuest = UtilG.loadImage(path + "Icon2_QuestSelected.png") ;
+		Image SelectedMap = UtilG.loadImage(path + "Icon3_MapSelected.png") ;
+		Image SelectedBook = UtilG.loadImage(path + "Icon4_BookSelected.png") ;
+    	Image SelectedTent = UtilG.loadImage(path + "Icon5_TentSelected.png") ;
+    	Image PlayerSelectedImage = UtilG.loadImage(path + "Player.png") ;
+    	Image PetSelectedImage = UtilG.loadImage(path + "PetType" + 0 + ".png") ;
+		Image SelectedSkillsTree = UtilG.loadImage(path + "Icon8_SelectedSkillsTree.png") ;
 		Image[] SideBarIconsImages = new Image[] {Options, Bag, Quest, Map, Book, Tent, PlayerImage, PetImage, SkillsTree} ;
 		Image[] SideBarIconsSelectedImages = new Image[] {SelectedOptions, SelectedBag, SelectedQuest, SelectedMap, SelectedBook, SelectedTent, PlayerSelectedImage, PetSelectedImage, SelectedSkillsTree} ;
 
@@ -582,8 +582,8 @@ public class Game extends JPanel
      	//plusSignIcon = new Icon[8] ;
      	Point[] PlusSignPos = new Point[] {new Point(175, 206), new Point(175, 225), new Point(175, 450),
      			new Point(175, 475), new Point(175, 500), new Point(175, 525), new Point(175, 550), new Point(175, 575)} ;
-		Image PlusSignImage = new ImageIcon(path + "PlusSign.png").getImage() ;
-		Image SelectedPlusSignImage = new ImageIcon(path + "ShiningPlusSign.png").getImage() ;
+		Image PlusSignImage = UtilG.loadImage(path + "PlusSign.png") ;
+		Image SelectedPlusSignImage = UtilG.loadImage(path + "ShiningPlusSign.png") ;
 		for (int i = 0 ; i <= PlusSignPos.length - 1 ; i += 1)
     	{
      		Icon newIcon = new Icon(i + SBname.length, "Plus sign", PlusSignPos[i], null, PlusSignImage, SelectedPlusSignImage) ;
@@ -790,7 +790,7 @@ public class Game extends JPanel
 	private void konamiCode()
 	{
 		DayDuration = 12 ;
-		ColorPalette = UtilS.ReadColorPalette(new ImageIcon(ImagesPath + "ColorPalette.png").getImage(), "Konami") ;
+		ColorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette.png"), "Konami") ;
 		if (sky.dayTime.getCounter() % 1200 <= 300)
 		{
 			DrawingOnPanel.stdAngle += 0.04 ;

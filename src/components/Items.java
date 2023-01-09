@@ -32,14 +32,14 @@ public class Items
 	public static double[][][] ItemsBuffs ;	
 
 	// Equip images
-	private static Image Sword = new ImageIcon(Game.ImagesPath + "Eq0_Sword.png").getImage() ;
-	private static Image Staff = new ImageIcon(Game.ImagesPath + "Eq1_Staff.png").getImage() ;
-	private static Image Bow = new ImageIcon(Game.ImagesPath + "Eq2_Bow.png").getImage() ;
-	private static Image Claws = new ImageIcon(Game.ImagesPath + "Eq3_Claws.png").getImage() ;
-	private static Image Dagger = new ImageIcon(Game.ImagesPath + "Eq4_Dagger.png").getImage() ;
-	private static Image Shield = new ImageIcon(Game.ImagesPath + "Eq5_Shield.png").getImage() ;
-	private static Image Armor = new ImageIcon(Game.ImagesPath + "Eq6_Armor.png").getImage() ;
-	private static Image Arrow = new ImageIcon(Game.ImagesPath + "Eq7_Arrow.png").getImage() ;
+	private static Image Sword = UtilG.loadImage(Game.ImagesPath + "Eq0_Sword.png") ;
+	private static Image Staff = UtilG.loadImage(Game.ImagesPath + "Eq1_Staff.png") ;
+	private static Image Bow = UtilG.loadImage(Game.ImagesPath + "Eq2_Bow.png") ;
+	private static Image Claws = UtilG.loadImage(Game.ImagesPath + "Eq3_Claws.png") ;
+	private static Image Dagger = UtilG.loadImage(Game.ImagesPath + "Eq4_Dagger.png") ;
+	private static Image Shield = UtilG.loadImage(Game.ImagesPath + "Eq5_Shield.png") ;
+	private static Image Armor = UtilG.loadImage(Game.ImagesPath + "Eq6_Armor.png") ;
+	private static Image Arrow = UtilG.loadImage(Game.ImagesPath + "Eq7_Arrow.png") ;
 	public static Image[] EquipImage = new Image[] {Sword, Staff, Bow, Claws, Dagger, Shield, Armor, Arrow} ; 
 	public static Image[] EquipGif ;
 	
@@ -205,14 +205,14 @@ public class Items
 	{		
 		
 		// Equip gifs
-		/*Image SwordGif = new ImageIcon(ImagesPath + "Eq0_Sword.gif").getImage() ;
-		Image StaffGif = new ImageIcon(ImagesPath + "Eq1_Staff.gif").getImage() ;
-		Image BowGif = new ImageIcon(ImagesPath + "Eq2_Bow.gif").getImage() ;
-		Image ClawsGif = new ImageIcon(ImagesPath + "Eq3_Claws.gif").getImage() ;
-		Image DaggerGif = new ImageIcon(ImagesPath + "Eq4_Dagger.gif").getImage() ;
-		Image ShieldGif = new ImageIcon(ImagesPath + "Eq5_Shield.gif").getImage() ;
-		Image ArmorGif = new ImageIcon(ImagesPath + "Eq6_Armor.gif").getImage() ;
-		Image ArrowGif = new ImageIcon(ImagesPath + "Eq7_Arrow.gif").getImage() ;
+		/*Image SwordGif = UtilG.loadImage(ImagesPath + "Eq0_Sword.gif") ;
+		Image StaffGif = UtilG.loadImage(ImagesPath + "Eq1_Staff.gif") ;
+		Image BowGif = UtilG.loadImage(ImagesPath + "Eq2_Bow.gif") ;
+		Image ClawsGif = UtilG.loadImage(ImagesPath + "Eq3_Claws.gif") ;
+		Image DaggerGif = UtilG.loadImage(ImagesPath + "Eq4_Dagger.gif") ;
+		Image ShieldGif = UtilG.loadImage(ImagesPath + "Eq5_Shield.gif") ;
+		Image ArmorGif = UtilG.loadImage(ImagesPath + "Eq6_Armor.gif") ;
+		Image ArrowGif = UtilG.loadImage(ImagesPath + "Eq7_Arrow.gif") ;
 		EquipGif = new Image[] {SwordGif, StaffGif, BowGif, ClawsGif, DaggerGif, ShieldGif, ArmorGif, ArrowGif} ;*/
 	}
 }

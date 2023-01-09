@@ -43,11 +43,11 @@ public class Pet extends LiveBeing
 		super(
 				InitializePersonalAttributes(Job),
 				InitializeBattleAttributes(Job),
-				new MovingAnimations(new ImageIcon(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png").getImage(),
-				new ImageIcon(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png").getImage(),
-				new ImageIcon(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png").getImage(),
-				new ImageIcon(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png").getImage(),
-				new ImageIcon(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png").getImage()),
+				new MovingAnimations(UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png")),
 				new PlayerAttributesWindow()
 			) ;
 		
@@ -58,7 +58,7 @@ public class Pet extends LiveBeing
 		pos = new Point(0, 0) ;
 		dir = Directions.up ;
 		state = LiveBeingStates.idle ;
-		size = new Dimension (new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getWidth(null), new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getImage().getHeight(null)) ;	
+		size = new Dimension (UtilG.loadImage(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getWidth(null), UtilG.loadImage(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getHeight(null)) ;	
 		range = Integer.parseInt(PetProperties.get(Job)[4]) ;
 		step = Integer.parseInt(PetProperties.get(Job)[32]) ;
 		elem = new String[] {"n", "n", "n", "n", "n"} ;

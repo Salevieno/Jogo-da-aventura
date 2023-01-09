@@ -17,7 +17,7 @@ public class Arrow extends Item
 	private static Arrow[] AllArrow ;
 	public Arrow(int id, String Name, String Description, int price, float dropChance, float atkPower, String elem)
 	{
-		super(Name, Description, new ImageIcon(Game.ImagesPath + "items.png").getImage(), price, dropChance) ;
+		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "items.png"), price, dropChance) ;
 		this.id = id ;
 		this.atkPower = atkPower ;
 		this.elem = elem ;

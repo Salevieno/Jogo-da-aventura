@@ -224,7 +224,7 @@ public abstract class UtilG
 		Image image = new ImageIcon(filePath).getImage() ;
 		if (image.getWidth(null) != -1 & image.getHeight(null) != -1)
 		{
-			return new ImageIcon(filePath).getImage() ;
+			return image ;
 		}
 		else
 		{
@@ -306,19 +306,6 @@ public abstract class UtilG
 		}
 	}	
 */
-	
-	public static Image loadImage(String path, String name, String extension) throws Exception
-	{
-		try
-		{
-			return new ImageIcon(path + name + extension).getImage() ;
-		}
-		catch (Exception FileNotFoundException)
-		{
-			System.out.println("Tentando carregar uma imagem n�o encontrada!") ;
-			return null ;
-		}
-	}
 	
 	public static BufferedImage toBufferedImage(Image img)
 	{

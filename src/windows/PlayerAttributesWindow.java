@@ -32,8 +32,8 @@ public class PlayerAttributesWindow extends GameWindow
 	public PlayerAttributesWindow()
 	{
 		super(null, 0, 3, 0, 0) ;
-		Image PlusSignImage = new ImageIcon(Game.ImagesPath + "\\Icons\\" + "PlusSign.png").getImage() ;
-		Image SelectedPlusSignImage = new ImageIcon(Game.ImagesPath + "\\Icons\\" + "ShiningPlusSign.png").getImage() ;
+		Image PlusSignImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "PlusSign.png") ;
+		Image SelectedPlusSignImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "ShiningPlusSign.png") ;
 		addAttIcon = new Icon[7] ;
 		addAttIcon[0] = new Icon(0, "Plus sign", new Point(100, 100), null, PlusSignImage, SelectedPlusSignImage) ;
 		addAttIcon[1] = new Icon(1, "Plus sign", new Point(100, 120), null, PlusSignImage, SelectedPlusSignImage) ;

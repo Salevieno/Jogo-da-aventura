@@ -35,7 +35,7 @@ public class NPCs
 	//public boolean Firstcontact ;
 
 	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-	public static final Image SpeakingBubbleImage = new ImageIcon(Game.ImagesPath + "\\NPCs\\" + "SpeakingBubble.png").getImage() ;
+	public static final Image SpeakingBubbleImage = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeakingBubble.png") ;
 	
 	public NPCs (int id, NPCType type, Point Pos)
 	{
@@ -109,8 +109,8 @@ public class NPCs
 		ForgeEquip = -1;
 		
 		NPCTextFont = new Font(NPCTextFontName, Font.BOLD, 20) ;
-		SpeakingBubbleImage = new ImageIcon(ImagesPath + "SpeakingBubble.png").getImage() ;
-		BoatImage = new ImageIcon(ImagesPath + "Boat.png").getImage() ;
+		SpeakingBubbleImage = UtilG.loadImage(ImagesPath + "SpeakingBubble.png") ;
+		BoatImage = UtilG.loadImage(ImagesPath + "Boat.png") ;
 		 * */
 	}
 
@@ -419,7 +419,7 @@ public class NPCs
 
 	/*public String ChoicesMenu(String playerAction, NPCs npc, String[] choiceOption, DrawFunctions DF)
 	{
-		DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, selChoice, choiceOption, npc.getImage(), npc.getColor()) ;
+		DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, selChoice, choiceOption, npc, npc.getColor()) ;
 		selChoice = UtilS.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], playerAction, selChoice, choiceOption.length - 1) ;
 		System.out.println(selChoice);
 		for (int c = 0; c <= choiceOption.length - 1; c += 1)
@@ -439,14 +439,14 @@ public class NPCs
 		{
 			if (player.getLife()[0] < player.getLife()[1] | (pet.isAlive() & pet.getLife()[0] < pet.getLife()[1]))
 			{
-				DF.DrawSpeech(npc.getPos(), AllText[TextCat][1], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;	
-				//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc.getImage(), npc.getColor()) ;
+				DF.DrawSpeech(npc.getPos(), AllText[TextCat][1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;	
+				//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc, npc.getColor()) ;
 				if (Choice.equals("1"))
 				{
 					Menu[npc.getID()] = 1 ;
 				} else if (Choice.equals("2"))
 				{
-					DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+					DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 					Menu[npc.getID()] = 2 ;
 				}
 			}
@@ -462,11 +462,11 @@ public class NPCs
 			{
 				pet.getLife()[0] = pet.getLife()[1] ;
 			}
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 		}
 		if (2 <= Menu[npc.getID()])
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()]], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;	
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()]], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;	
 		}
 		return Menu[npc.getID()] ;
 	}	*/
@@ -493,24 +493,24 @@ public class NPCs
 		}
 		if (Menu[npc.getID()] == 0)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][1], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
-			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[1], npc.getImage(), npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
+			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[1], npc, npc.getColor()) ;
 			if (Choice.equals("1"))
 			{
 				ItemsOnSale = player.getBag() ;
 				Menu[npc.getID()] = 1 ;
 			} else if (Choice.equals("2"))
 			{
-				DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+				DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 				Menu[npc.getID()] = 2 ;
 			} else if (Choice.equals("3"))
 			{
-				DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+				DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 				Menu[npc.getID()] = 3 ;
 			}
 		} else if (Menu[npc.getID()] == 1)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 			ItemsOnSale = Utg.ArrayWithIndexesGreaterThan(player.getBag(), 0) ;
 			if (0 < ItemsOnSale.length)
 			{
@@ -518,12 +518,12 @@ public class NPCs
 			}
 		} else if (Menu[npc.getID()] == 2)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 			ItemsOnSale = Utg.ArrayWithValuesGreaterThan(ItemsOnSale, 0) ;
 			Menu[npc.getID()] = Shopping(Choice, player, npc, items, "Buying", ItemsOnSale, MousePos, Player.CoinIcon, DF) ;
 		} else if (Menu[npc.getID()] == 3)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 		}
 		return Menu[npc.getID()] ;
 	}*/
@@ -535,8 +535,8 @@ public class NPCs
 		DrawPrimitives DP = DF.getDrawPrimitives() ;
 		if (Menu[npc.getID()] == 0)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][1], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
-			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[2], npc.getImage(), npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
+			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[2], npc, npc.getColor()) ;
 			if (Choice.equals("1"))
 			{			
 				Menu[npc.getID()] = 1 ;
@@ -554,7 +554,7 @@ public class NPCs
 				Point WindowPos = new Point((int)(0.5*ScreenL) - 10, (int)(0.5*ScreenH)) ;
 				//DP.DrawRoundRect(WindowPos, "BotLeft", 40 + 10*TypedDeposit.length(), (int)(1.8*Utg.TextH(FontSize)), 1, Color.white, Color.lightGray, true) ;
 				DP.DrawImage(Player.CoinIcon, WindowPos, Textangle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
-				DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+				DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 				if (!Choice.equals("Enter"))
 				{
 					TypedDeposit = UtilS.LiveTyping(new Point(WindowPos.x + 30, WindowPos.y - 8), Textangle, Choice, NPCTextFont, npc.getColor(), DP) ;			
@@ -596,7 +596,7 @@ public class NPCs
 			Point WindowPos = new Point((int)(0.5*ScreenL) - 10, (int)(0.5*ScreenH)) ;
 			//DP.DrawRoundRect(WindowPos, "BotLeft", 40 + 10*TypedWithdraw.length(), (int)(1.8*Utg.TextH(FontSize)), 1, Color.white, Color.lightGray, true) ;
 			DP.DrawImage(Player.CoinIcon, WindowPos, Textangle, new float[] {1, 1}, new boolean[] {false, false}, "BotLeft", 1) ;
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 			if (!Choice.equals("Enter"))
 			{
 				TypedWithdraw = UtilS.LiveTyping(new Point(WindowPos.x + 30, WindowPos.y - 8), Textangle, Choice, NPCTextFont, Color.yellow, DP) ;			
@@ -626,10 +626,10 @@ public class NPCs
 			}
 		} else if (Menu[npc.getID()] == 3)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][9], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][9], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 		} else if (3 < Menu[npc.getID()])
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()]], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()]], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 		}
 		return Menu[npc.getID()] ;
 	}*/
@@ -638,8 +638,8 @@ public class NPCs
 		int ForgeResult = 0 ;	// 0: Forge has not been attempted yet, 1: forge was successful, 2: the player doesn't have the rune, 3: the equip is not equipped, 4: forge failed
 		if (Menu[npc.getID()] == 0)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][1], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
-			DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc.getImage(), npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc, npc.getColor()) ;
 			if (Choice.equals("1"))
 			{
 				Menu[npc.getID()] = 1 ;
@@ -649,8 +649,8 @@ public class NPCs
 			}
 		} else if (Menu[npc.getID()] == 1)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
-			DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[3], npc.getImage(), npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[3], npc, npc.getColor()) ;
 			if (Choice.equals("1") | Choice.equals("2") | Choice.equals("3"))
 			{
 				ForgeEquip = player.getEquips()[Integer.parseInt(Choice) - 1] ;
@@ -658,7 +658,7 @@ public class NPCs
 			} 
 		} else if (Menu[npc.getID()] == 2)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][7], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][7], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 		} 
 		if (Menu[npc.getID()] == 3)
 		{
@@ -667,7 +667,7 @@ public class NPCs
 		}
 		if (Menu[npc.getID()] == 4)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][ForgeResult + 2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][ForgeResult + 2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 		}
 		return Menu[npc.getID()] ;
 	}*/
@@ -677,15 +677,15 @@ public class NPCs
 		String[] choices = AcceptedChoices[0] ;
 		if (Menu[npc.getID()] == 0)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][1], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 			if (ChoicesMenu(Choice, npc, choices, DF) != null)
 			{
 				Menu[npc.getID()] = Integer.parseInt(ChoicesMenu(Choice, npc, AcceptedChoices[0], DF)) ;
 			}
 		} else if (Menu[npc.getID()] == 1)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
-			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[3], npc.getImage(), npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
+			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[3], npc, npc.getColor()) ;
 			if (Choice.equals(choices[0]) | Choice.equals(choices[1]) | Choice.equals(choices[2]))
 			{
 				ForgeEquip = player.getEquips()[Integer.parseInt(Choice) - 1] ;
@@ -693,7 +693,7 @@ public class NPCs
 			} 
 		} else if (Menu[npc.getID()] == 2)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][7], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][7], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 		} 
 		if (Menu[npc.getID()] == 3)
 		{
@@ -702,7 +702,7 @@ public class NPCs
 		}
 		if (Menu[npc.getID()] == 4)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][ForgeResult + 2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][ForgeResult + 2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 		}
 		return Menu[npc.getID()] ;
 	}*/
@@ -731,8 +731,8 @@ public class NPCs
 		}
 		if (Menu[npc.getID()] == 0)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][1], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
-			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc.getImage(), npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
+			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc, npc.getColor()) ;
 			if (Choice.equals("1"))
 			{
 				Menu[npc.getID()] = 1 ;
@@ -742,7 +742,7 @@ public class NPCs
 			}
 		} if (Menu[npc.getID()] == 1)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()] + 1], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()] + 1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 			PlayerHasTheIngredients = Crafting(Choice, player, npc, items, NPCCraftingIngredients, NPCCraftingIngredientAmounts, NPCCraftingProducts, NPCCraftingProductAmounts, MousePos, DF) ;			
 			if (Choice.equals("Enter") | Choice.equals("MouseLeftClick"))
 			{
@@ -752,16 +752,16 @@ public class NPCs
 		{
 			if (PlayerHasTheIngredients)
 			{
-				DF.DrawSpeech(npc.getPos(), AllText[TextCat][4], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+				DF.DrawSpeech(npc.getPos(), AllText[TextCat][4], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 				Menu[npc.getID()] = 3 ;
 			}
 			else
 			{
-				DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+				DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 			}
 		} if (Menu[npc.getID()] == 3)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][4], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][4], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 		}
 	}*/
 	/*public int Elemental(String Choice, Player player, NPCs npc, Items[] items, DrawFunctions DF)
@@ -770,8 +770,8 @@ public class NPCs
 		SelectedItem[0] = Uts.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], Choice, SelectedItem[0], Ingredients.length - 1) ;
 		if (Menu[npc.getID()] == 0)
 		{
-			DF.DrawSpeech(npc.getPos(),  AllText[TextCat][1], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
-			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc.getImage(), npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(),  AllText[TextCat][1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
+			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc, npc.getColor()) ;
 			if (Choice.equals("1"))
 			{ 
 				Menu[npc.getID()] = 1 ;
@@ -782,8 +782,8 @@ public class NPCs
 			}
 		} else if (Menu[npc.getID()] == 1)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, new Color(200, 200, 200)) ;
-			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[3], npc.getImage(), npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, new Color(200, 200, 200)) ;
+			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[3], npc, npc.getColor()) ;
 			if (Choice.equals("1") | Choice.equals("2") | Choice.equals("3"))
 			{
 				if (0 < player.getEquips()[Integer.parseInt(Choice) - 1])
@@ -798,10 +798,10 @@ public class NPCs
 			} 
 		} else if (Menu[npc.getID()] == 2)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][7], NPCTextFont, npc.getImage(), SpeakingBubbleImage, new Color(200, 200, 200)) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][7], NPCTextFont, npc, SpeakingBubbleImage, new Color(200, 200, 200)) ;
 		} else if (Menu[npc.getID()] == 3)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc.getImage(), SpeakingBubbleImage, new Color(200, 200, 200)) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc, SpeakingBubbleImage, new Color(200, 200, 200)) ;
 			DF.DrawElementalNPCScreen(SelectedItem[0], items, Ingredients) ;
 			if (Choice.equals("Enter"))
 			{
@@ -820,7 +820,7 @@ public class NPCs
 			} 
 		} else if (4 <= Menu[npc.getID()])
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()]], NPCTextFont, npc.getImage(), SpeakingBubbleImage, new Color(200, 200, 200)) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()]], NPCTextFont, npc, SpeakingBubbleImage, new Color(200, 200, 200)) ;
 		}
 		return Menu[npc.getID()] ;
 	}*/
@@ -829,8 +829,8 @@ public class NPCs
 		String FileName = "" ;
 		if (Menu[npc.getID()] == 0)
 		{
-			DF.DrawSpeech(npc.getPos(),  AllText[TextCat][1], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
-			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc.getImage(), npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(),  AllText[TextCat][1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
+			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc, npc.getColor()) ;
 			if (Choice.equals("1"))
 			{ 
 				Menu[npc.getID()] = 1 ;
@@ -842,8 +842,8 @@ public class NPCs
 		}
 		else if (Menu[npc.getID()] == 1)	// Save the game
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
-			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[4], npc.getImage(), npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
+			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[4], npc, npc.getColor()) ;
 			if (Choice.equals("1") | Choice.equals("2") | Choice.equals("3"))
 			{ 
 				FileName = "save" + Choice + ".txt" ;
@@ -852,10 +852,10 @@ public class NPCs
 			}
 		} else if (Menu[npc.getID()] == 2)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][4], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][4], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 		} else if (Menu[npc.getID()] == 3)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 		}
 		return Menu[npc.getID()] ;
 	}*/
@@ -898,8 +898,8 @@ public class NPCs
 		{
 			if (player.getQuest()[npcID] == -1)	// Player has not gotten the quest
 			{
-				DF.DrawSpeech(npc.getPos(),  AllText[TextCat][1], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;	
-				//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc.getImage(), npc.getColor()) ;
+				DF.DrawSpeech(npc.getPos(),  AllText[TextCat][1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;	
+				//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc, npc.getColor()) ;
 				if (Choice.equals("1"))
 				{ 
 					Menu[npc.getID()] = 1 ;
@@ -909,8 +909,8 @@ public class NPCs
 				}
 			} else if (QuestIsComplete(player, quest, npcID))	// Quest is complete
 			{
-				DF.DrawSpeech(npc.getPos(), AllText[TextCat][5], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
-				//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc.getImage(), npc.getColor()) ;
+				DF.DrawSpeech(npc.getPos(), AllText[TextCat][5], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
+				//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc, npc.getColor()) ;
 				if (Choice.equals("1"))
 				{ 
 					QuestReward(player, pet, quest, npcID) ;
@@ -921,17 +921,17 @@ public class NPCs
 				}
 			} else	// Quest is active but not complete
 			{
-				DF.DrawSpeech(npc.getPos(), AllText[TextCat][4], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
-				DF.DrawQuestRequirementsList(creatureTypes, creatures, items, quest[npcID], npc, new int[] {npc.getPos()[0] - npc.getImage().getWidth(null), npc.getPos()[1] - npc.getImage().getHeight(null)}, QuestHasCreatures, QuestHasItems, SpeakingBubbleImage) ;
+				DF.DrawSpeech(npc.getPos(), AllText[TextCat][4], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
+				DF.DrawQuestRequirementsList(creatureTypes, creatures, items, quest[npcID], npc, new int[] {npc.getPos()[0] - npc.getWidth(null), npc.getPos()[1] - npc.getHeight(null)}, QuestHasCreatures, QuestHasItems, SpeakingBubbleImage) ;
 			}
 		} else if (Menu[npc.getID()] == 1)	// Player accepted the quest
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
-			DF.DrawQuestRequirementsList(creatureTypes, creatures, items, quest[npcID], npc, new int[] {npc.getPos()[0] - npc.getImage().getWidth(null), npc.getPos()[1] - npc.getImage().getHeight(null)}, QuestHasCreatures, QuestHasItems, SpeakingBubbleImage) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawQuestRequirementsList(creatureTypes, creatures, items, quest[npcID], npc, new int[] {npc.getPos()[0] - npc.getWidth(null), npc.getPos()[1] - npc.getHeight(null)}, QuestHasCreatures, QuestHasItems, SpeakingBubbleImage) ;
 			player.getQuest()[npcID] = npcID ;
 		} else if (Menu[npc.getID()] == 2)	// Player refused the quest
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][6], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][6], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 		}
 		return Menu[npc.getID()] ;
 	}*/
@@ -951,8 +951,8 @@ public class NPCs
 	{
 		if (Menu[npc.getID()] == 0)
 		{
-			DF.DrawSpeech(npc.getPos(),  AllText[TextCat][1], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;	
-			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc.getImage(), npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(),  AllText[TextCat][1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;	
+			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[0], npc, npc.getColor()) ;
 		}
 		if (Choice.equals("1"))
 		{
@@ -967,7 +967,7 @@ public class NPCs
 			Ani.StartAni(19) ;
 		} else if (Menu[npc.getID()] == 2)
 		{
-			DF.DrawSpeech(npc.getPos(),  AllText[TextCat][2], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;	
+			DF.DrawSpeech(npc.getPos(),  AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;	
 		}
 		return Menu[npc.getID()] ;
 	}*/
@@ -979,8 +979,8 @@ public class NPCs
 		}
 		if (Menu[npc.getID()] <= AllText[TextCat].length - 3)
 		{
-			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()] + 1], NPCTextFont, npc.getImage(), SpeakingBubbleImage, npc.getColor()) ;	
-			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[5], npc.getImage(), npc.getColor()) ;
+			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()] + 1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;	
+			//DF.DrawChoicesWindow(npc.getPos(), NPCTextFont, AcceptedChoices[5], npc, npc.getColor()) ;
 		}
 		return Menu[npc.getID()] ;
 	}*/

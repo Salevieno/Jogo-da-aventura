@@ -18,6 +18,7 @@ import liveBeings.Player;
 import main.Game;
 import utilities.Align;
 import utilities.Scale;
+import utilities.UtilG;
 
 public class GameMap 
 {
@@ -42,7 +43,7 @@ public class GameMap
 	public static Image[] GroundImage ;
 	
 	
-	private static final Image beachGif = new ImageIcon(Game.ImagesPath + "\\Maps\\" + "Map2_beach.gif").getImage() ;
+	private static final Image beachGif = UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map2_beach.gif") ;
 	
 	/*
 	 * buildings pos
@@ -113,22 +114,22 @@ public class GameMap
 	
 	public static void InitializeStaticVars(String ImagesPath)
 	{
-		Image Water = new ImageIcon(ImagesPath + "MapElem0_Water.png").getImage() ;
-		/*Image Wall = new ImageIcon(ImagesPath + "MapElem1_Wall.png").getImage() ;
-		Image Berry = new ImageIcon(ImagesPath + "MapElem2_Berry.png").getImage() ;
-		Image Herb = new ImageIcon(ImagesPath + "MapElem3_Herb.png").getImage() ;
-		Image Wood = new ImageIcon(ImagesPath + "MapElem4_Wood.png").getImage() ;
-		Image Metal = new ImageIcon(ImagesPath + "MapElem5_Metal.png").getImage() ;
-		Image TreeForest = new ImageIcon(ImagesPath + "MapElem6_TreeForest.png").getImage() ;
-		Image PalmTree = new ImageIcon(ImagesPath + "MapElem7_PalmTree.png").getImage() ;
-		Image Grass = new ImageIcon(ImagesPath + "MapElem8_Grass.png").getImage() ;
-		Image Rock = new ImageIcon(ImagesPath + "MapElem9_Rock.png").getImage() ;
-		Image Crystal = new ImageIcon(ImagesPath + "MapElem10_Crystal.png").getImage() ;
-		Image Stalactite = new ImageIcon(ImagesPath + "MapElem11_Stalactite.png").getImage() ;
-		Image Volcano = new ImageIcon(ImagesPath + "MapElem12_Volcano.png").getImage() ;*/
-		Image Lava = new ImageIcon(ImagesPath + "MapElem13_Lava.png").getImage() ;
-		Image Ice = new ImageIcon(ImagesPath + "MapElem14_Ice.png").getImage() ;
-		//Image Chest = new ImageIcon(ImagesPath + "MapElem15_Chest.png").getImage() ;	
+		Image Water = UtilG.loadImage(ImagesPath + "MapElem0_Water.png") ;
+		/*Image Wall = UtilG.loadImage(ImagesPath + "MapElem1_Wall.png") ;
+		Image Berry = UtilG.loadImage(ImagesPath + "MapElem2_Berry.png") ;
+		Image Herb = UtilG.loadImage(ImagesPath + "MapElem3_Herb.png") ;
+		Image Wood = UtilG.loadImage(ImagesPath + "MapElem4_Wood.png") ;
+		Image Metal = UtilG.loadImage(ImagesPath + "MapElem5_Metal.png") ;
+		Image TreeForest = UtilG.loadImage(ImagesPath + "MapElem6_TreeForest.png") ;
+		Image PalmTree = UtilG.loadImage(ImagesPath + "MapElem7_PalmTree.png") ;
+		Image Grass = UtilG.loadImage(ImagesPath + "MapElem8_Grass.png") ;
+		Image Rock = UtilG.loadImage(ImagesPath + "MapElem9_Rock.png") ;
+		Image Crystal = UtilG.loadImage(ImagesPath + "MapElem10_Crystal.png") ;
+		Image Stalactite = UtilG.loadImage(ImagesPath + "MapElem11_Stalactite.png") ;
+		Image Volcano = UtilG.loadImage(ImagesPath + "MapElem12_Volcano.png") ;*/
+		Image Lava = UtilG.loadImage(ImagesPath + "MapElem13_Lava.png") ;
+		Image Ice = UtilG.loadImage(ImagesPath + "MapElem14_Ice.png") ;
+		//Image Chest = UtilG.loadImage(ImagesPath + "MapElem15_Chest.png") ;	
 		GroundImage = new Image[] {Water, Lava, Ice} ;
 	}
 	

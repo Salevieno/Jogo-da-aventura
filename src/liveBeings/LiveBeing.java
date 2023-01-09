@@ -14,6 +14,7 @@ import maps.GameMap;
 import utilities.Align;
 import utilities.Directions;
 import utilities.TimeCounter;
+import utilities.UtilG;
 import utilities.UtilS;
 import windows.PlayerAttributesWindow;
 
@@ -47,12 +48,12 @@ public class LiveBeing
 	protected PlayerAttributesWindow attWindow ;	// Attributes window
 	
 	public static final Image[] StatusImages = new Image[] {
-			new ImageIcon(Game.ImagesPath + "ShieldIcon.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "StunIcon.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "BlockIcon.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "BloodIcon.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "PoisonIcon.png").getImage(),
-			new ImageIcon(Game.ImagesPath + "SilenceIcon.png").getImage()
+			UtilG.loadImage(Game.ImagesPath + "ShieldIcon.png"),
+			UtilG.loadImage(Game.ImagesPath + "StunIcon.png"),
+			UtilG.loadImage(Game.ImagesPath + "BlockIcon.png"),
+			UtilG.loadImage(Game.ImagesPath + "BloodIcon.png"),
+			UtilG.loadImage(Game.ImagesPath + "PoisonIcon.png"),
+			UtilG.loadImage(Game.ImagesPath + "SilenceIcon.png")
 			};
 	public static final String[] BattleKeys = new String[] {"A", "D"} ;
 	

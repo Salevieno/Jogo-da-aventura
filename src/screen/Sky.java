@@ -11,6 +11,7 @@ import graphics.DrawingOnPanel;
 import main.Game;
 import utilities.Align;
 import utilities.TimeCounter;
+import utilities.UtilG;
 
 public class Sky 
 {
@@ -29,7 +30,7 @@ public class Sky
     	Cloud = new SkyComponent[5] ;
 		for (int c = 0 ; c <= Cloud.length - 1 ; c += 1)
 		{
-			Image CloudImage = new ImageIcon(path + "Cloud" + String.valueOf(1 + (int) (3 * Math.random())) + ".png").getImage() ;
+			Image CloudImage = UtilG.loadImage(path + "Cloud" + String.valueOf(1 + (int) (3 * Math.random())) + ".png") ;
 			Point InitialCloudPos = new Point((int)(Math.random() * Game.getScreen().getSize().width), 2 + (int) ((height - CloudImage.getHeight(null)) * Math.random())) ;
 			Point CloudSpeed = new Point((int) (1 + 2 * Math.random()), 0) ;
 	    	Cloud[c] = new SkyComponent(CloudImage, InitialCloudPos, CloudSpeed, new Color[] {Game.ColorPalette[4]}) ;
@@ -37,7 +38,7 @@ public class Sky
 		
 		// initialize stars
     	Star = new SkyComponent[50] ;
-		Image StarImage = new ImageIcon(path + "Star.png").getImage() ;
+		Image StarImage = UtilG.loadImage(path + "Star.png") ;
 		for (int s = 0 ; s <= Star.length - 1 ; s += 1)
 		{
 			Point StarPos = new Point((int)(Math.random() * Game.getScreen().getSize().width), (int)(Math.random() * height)) ;
