@@ -42,6 +42,8 @@ public class GameMap
 	public static Image[] GroundImage ;
 	
 	
+	private static final Image beachGif = new ImageIcon(Game.ImagesPath + "\\Maps\\" + "Map2_beach.gif").getImage() ;
+	
 	/*
 	 * buildings pos
 	 * ID	Name	Map	Pos x	Pos y
@@ -266,6 +268,10 @@ public class GameMap
  	public void display(DrawingOnPanel DP)
  	{
  		DP.DrawImage(image, Game.getScreen().getMapCenter(), Align.center) ;
+ 		if (Name.equals("City of the archers"))
+ 		{
+ 	 		DP.DrawImage(beachGif, new Point(Game.getScreen().getSize().width, 96), Align.topRight) ;
+ 		}
  	}
  	
  	public void displayElements(DrawingOnPanel DP)
@@ -316,9 +322,7 @@ public class GameMap
 			}
 		}
 	}
-	
-	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
- 	
+	 	
 	public boolean IsACity()
 	{
 		return (this instanceof CityMap) ;
@@ -327,6 +331,42 @@ public class GameMap
 	{
 		return (this instanceof FieldMap) ;
 	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GameMap other = (GameMap) obj;
+		return Arrays.equals(CollectibleCounter, other.CollectibleCounter)
+				&& Arrays.equals(CollectibleDelay, other.CollectibleDelay) && CollectibleLevel == other.CollectibleLevel
+				&& Arrays.equals(Connections, other.Connections) && Continent == other.Continent
+				&& Objects.equals(Name, other.Name) && Arrays.deepEquals(Type, other.Type)
+				&& Objects.equals(building, other.building) && Arrays.deepEquals(groundType, other.groundType)
+				&& Objects.equals(image, other.image) && Objects.equals(mapElem, other.mapElem)
+				&& Objects.equals(music, other.music) && Objects.equals(npc, other.npc);
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(CollectibleCounter);
+		result = prime * result + Arrays.hashCode(CollectibleDelay);
+		result = prime * result + Arrays.hashCode(Connections);
+		result = prime * result + Arrays.deepHashCode(Type);
+		result = prime * result + Arrays.deepHashCode(groundType);
+		result = prime * result + Objects.hash(CollectibleLevel, Continent, Name, building, image, mapElem, music, npc);
+		return result;
+	}
+
+	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
+	
 	public String groundTypeAtPoint(Point pos)
 	{
 		if (groundType != null)
@@ -345,6 +385,7 @@ public class GameMap
 		
 		return null ;
 	}
+	
 	public boolean GroundIsWalkable(Point Pos, String SuperElem)
 	{
 		Point point = new Point(Pos.x, Pos.y) ;
@@ -369,67 +410,7 @@ public class GameMap
 		}
 		return true ;
 	}
-	
-	public void InitializeNPCsInMap(NPCs[] npc)
-    {
-		for (int j = 0 ; j <= npc.length - 1 ; j += 1)
-		{
-			/*if (npc[j].getMap() == id)
-			{
-				NPCsInMap.add(npc[j]) ;
-			}*/
-		}
-    }
-	
-	public void InitializeBuildingsInMap(Buildings[] AllBuildings)
-	{
-		/*Buildings[] allBuildings = Arrays.copyOf(AllBuildings, AllBuildings.length) ;
-		ArrayList<Buildings> buildingsInCity = new ArrayList<Buildings>() ;
 
-		for (int b = 0 ; b <= allBuildings.length - 1 ; b += 1)
-		{
-			if (allBuildings[b].getMap() == id)
-			{
-				buildingsInCity.add(allBuildings[b]) ;
-			}
-		}
-
-		building = buildingsInCity.toArray(new Buildings[buildingsInCity.size()]) ;*/
-	}
-
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(CollectibleCounter);
-		result = prime * result + Arrays.hashCode(CollectibleDelay);
-		result = prime * result + Arrays.hashCode(Connections);
-		result = prime * result + Arrays.deepHashCode(Type);
-		result = prime * result + Arrays.deepHashCode(groundType);
-		result = prime * result + Objects.hash(CollectibleLevel, Continent, Name, building, image, mapElem, music, npc);
-		return result;
-	}
-	
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		GameMap other = (GameMap) obj;
-		return Arrays.equals(CollectibleCounter, other.CollectibleCounter)
-				&& Arrays.equals(CollectibleDelay, other.CollectibleDelay) && CollectibleLevel == other.CollectibleLevel
-				&& Arrays.equals(Connections, other.Connections) && Continent == other.Continent
-				&& Objects.equals(Name, other.Name) && Arrays.deepEquals(Type, other.Type)
-				&& Objects.equals(building, other.building) && Arrays.deepEquals(groundType, other.groundType)
-				&& Objects.equals(image, other.image) && Objects.equals(mapElem, other.mapElem)
-				&& Objects.equals(music, other.music) && Objects.equals(npc, other.npc);
-	}
-	
 	/*public void CreateCollectible(int MapID, int CollectibleID)
 	{
 		Screen screen = Game.getScreen() ;

@@ -26,16 +26,24 @@ public class MainGame3_4 extends JFrame implements ActionListener
 	public MainGame3_4() 
     {
 		// initialize the UI
-		timer = new Timer(10, this) ;	// timer of the game, first number = delay
-		timer.start() ;	// Game will start checking for keyboard events and go to the method paintComponent every "timer" miliseconds
-		Dimension WinDim = new Dimension(600 + 40, 480 + 39) ;	// frame dimensions (0, 39) and give an extra space on the right (40, 0)
-        setTitle("Jogo da aventura") ;          
-        setSize(WinDim) ;
-        setLocation(500, 200) ;
+		Dimension windowSize = new Dimension(640, 480) ;	// frame dimensions (0, 39) and give an extra space on the right (40, 0)
+        setTitle("Jogo da aventura") ;
+        // TODO throw exception when image does not load
+        // setting the window size
+        setPreferredSize(windowSize) ;
+        pack() ;
+        Dimension actualWindowSize = getContentPane().getSize() ;
+        Dimension extraSize = new Dimension(windowSize.width - actualWindowSize.width, windowSize.height - actualWindowSize.height) ;
+        setSize(new Dimension(windowSize.width + extraSize.width, windowSize.height + extraSize.height)) ;
+        
+        
+        setLocation(500, 200) ;			// window location
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         setVisible(true) ;
-        previousState = GameStates.opening ;
-        add(new Game(WinDim)) ;							// adding game panel on the JFrame
+        timer = new Timer(10, this) ;	// timer of the game, first number = delay
+		timer.start() ;					// Game will start checking for keyboard events and go to the method paintComponent every "timer" miliseconds
+		previousState = GameStates.opening ;
+        add(new Game(windowSize)) ;			// adding game panel on the JFrame
     }
     
 	public static void pauseGame()

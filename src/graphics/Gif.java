@@ -48,6 +48,7 @@ public class Gif
 	{
 		return timeStopper;
 	}
+	public void start() {timeCounter = 1 ;}
 	public boolean isStarting()
 	{
 		return (timeCounter == 0);
@@ -55,6 +56,11 @@ public class Gif
 	public boolean isDonePlaying()
 	{
 		return (timeCounter == duration);
+	}
+	
+	public boolean isPlaying()
+	{
+		return (0 < timeCounter & !isDonePlaying()) ;
 	}
 	
 	public void play(Point pos, Align alignment, DrawingOnPanel DP)

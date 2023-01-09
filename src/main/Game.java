@@ -2,6 +2,7 @@ package main ;
 
 import java.awt.Color ;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics ;
 import java.awt.Graphics2D;
 import java.awt.Image ;
@@ -37,6 +38,7 @@ import components.Quests;
 import components.SpellTypes;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
+import graphics.Gif;
 import items.Alchemy;
 import items.Arrow;
 import items.Equip;
@@ -123,9 +125,12 @@ public class Game extends JPanel
 	
 	private final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 	
+	private Gif testGif ;
+	private Gif testGif2 ;
+	
 	public Game(Dimension windowDimension) 
 	{
-    	screen = new Screen(new Dimension(windowDimension.width - 40 - 15, windowDimension.height - 39), null) ;
+    	screen = new Screen(new Dimension(windowDimension.width - 40, windowDimension.height), null) ;
     	screen.calcCenter() ;
     	JSONPath = ".\\json\\" ;
 		CSVPath = ".\\csv files\\" ;
@@ -140,7 +145,8 @@ public class Game extends JPanel
 		state = GameStates.loading;
 		konamiCodeActive = false ;
 		shouldRepaint = false ;
-		
+		testGif = new Gif(UtilG.loadImage(ImagesPath + "test.gif"), 100, false, false) ;
+		testGif2 = new Gif(new ImageIcon(ImagesPath + "test2.gif").getImage(), 0, true, false) ;
     	//OpeningIsOn = true ; 
 
     	player = new Player("", "", "", 0) ;
@@ -230,12 +236,14 @@ public class Game extends JPanel
 				case "caveExit": job = NPCJobs.caveExit ; break ;
 				case "sailor": job = NPCJobs.sailor ; break ;
 			}
+
 			String info = input.get(i)[3 + language.ordinal()] ;
 			Color color = ColorPalette[0] ;
 			Image image = new ImageIcon(path + "NPC_" + job.toString() + ".png").getImage() ;
 			String[] speech = player.allText.get("* " + name + " *") ;
+
 			// TODO NPC options vai ser uma lista de listas, cada uma correspondendo a uma speech
-			String[] options = new String[] {"Sim", "Não"} ;
+			String[] options = new String[] {"Sim", "Nï¿½o"} ;
 			
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}
@@ -369,10 +377,6 @@ public class Game extends JPanel
 											Integer.parseInt(input.get(id)[9])
 											} ;
 			Image image = new ImageIcon(path + "Map" + String.valueOf(id) + ".png").getImage() ;
-			if (id == 2)
-			{
-				image = new ImageIcon(path + "Map" + String.valueOf(id) + ".gif").getImage() ;
-			}
 			Clip music = Music.musicFileToClip(new File(MusicPath + (id + 2) + "-" + name + ".wav").getAbsoluteFile()) ;
 			
 			
@@ -563,15 +567,7 @@ public class Game extends JPanel
 		SBpos[0] = new Point(screenSize.width, screenSize.height - 250) ;
     	for (int i = 1 ; i <= 6 - 1 ; i += 1)
     	{
-    		if (SideBarIconsImages[i - 1] != null)
-    		{
-        		SBpos[i] = new Point(SBpos[0].x, SBpos[i - 1].y - SideBarIconsImages[i - 1].getHeight(null) / 2 - sy) ;
-    		}
-    		else
-    		{
-
-        		SBpos[i] = new Point(SBpos[0].x, SBpos[i - 1].y - sy) ;
-    		}
+    		SBpos[i] = new Point(SBpos[0].x, SBpos[i - 1].y - SideBarIconsImages[i - 1].getHeight(null) / 2 - sy) ;
     	}
     	SBpos[6] = new Point(SBpos[0].x, SBpos[5].y - SideBarIconsImages[5].getHeight(null)/2 - sy) ;
     	SBpos[7] = new Point(SBpos[0].x, SBpos[6].y - (int)PlayerImage.getHeight(null) - SideBarIconsImages[4].getHeight(null)/2 - 20/2 - sy) ;
@@ -720,36 +716,6 @@ public class Game extends JPanel
 		return (Item[]) allItems.toArray(new Item[allItems.size()]) ;
 	}
 	
-//    private void mainInitialization()
-//	{
-// 		DayDuration = 120000 ;
-//    	sky = new Sky() ;
-//    	screen.setBorders(new int[] {0, sky.height, screen.getSize().width, screen.getSize().height});
-//    	screen.setMapCenter() ;    			
-//    	GameMap.InitializeStaticVars(ImagesPath) ;
-//		//allNPCs = InitializeNPCTypes(GameLanguage, screen.getSize()) ;
-//		buildingTypes = initializeBuildingTypes() ;
-//		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
-//		cityMaps = initializeCityMaps() ;
-//		fieldMaps = initializeFieldMaps() ;
-//		allMaps = new GameMap[cityMaps.length + fieldMaps.length] ;
-//		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
-//		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
-//		//DifficultMult = new double[] {(double) 0.5, (double) 0.7, (double) 1.0} ;
-// 		//player = InitializePlayer(PlayerInitialName, PlayerInitialJob, GameLanguage, PlayerInitialSex) ;
-//		//pet = InitializePet() ;
-//		//creature = InitializeCreatures(creatureTypes, screen.getSize(), fieldMaps) ;
-//		for (int map = 0 ; map <= allMaps.length - 1 ; map += 1)
-//		{
-//			//allMaps[map].InitializeNPCsInMap(allNPCs) ;
-//		}
-//		allQuests = initializeQuests(GameLanguage, player.getJob()) ;
-//		initializeIcons(screen.getSize()) ;
-//
-//		// Initialize classes
-//    	bat = new Battle(new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
-//	}
-  	
 
     
 	private void incrementCounters()
@@ -859,7 +825,7 @@ public class Game extends JPanel
 		}
 	}
 	
-	private void playGifs()
+	private void playGifs(DrawingOnPanel DP)
 	{
 		/*if (!testGif.isTimeStopper())
 		{
@@ -867,6 +833,16 @@ public class Game extends JPanel
 			
 			repaint();
 		}*/
+		if (testGif.isPlaying())
+		{
+			testGif.play(mousePos, Align.center, DP);
+			shouldRepaint = true ;
+		}
+		if (testGif2.isPlaying())
+		{
+			testGif2.play(new Point(300, 100), Align.center, DP);
+			shouldRepaint = true ;
+		}
 	}
 	
 	
@@ -942,8 +918,8 @@ public class Game extends JPanel
 				{
 					pet.setCurrentAction(pet.Action(Player.ActionKeys)) ;
 				}
-				//pet.display(player.getPos(), new double[] {1, 1}, DP) ;
-				//pet.drawAttributes(0, DP) ;
+				pet.display(player.getPos(), new Scale(1, 1), DP) ;
+				pet.DrawAttributes(0, DP) ;
 			}
 		}
 		
@@ -1076,7 +1052,6 @@ public class Game extends JPanel
     	player.getSpellsTreeWindow().setSpells(player.getSpell().toArray(new Spell[0])) ;
     	player.setMap(cityMaps[2]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
-    	player.getSettings().setMusicIsOn(true) ;
     	for (int i = 0; i <= 2 - 1; i += 1)
     	{
     		player.getBag().Add(Potion.getAll()[i], 1) ;
@@ -1146,7 +1121,6 @@ public class Game extends JPanel
 				state = GameStates.running;
 				
 				shouldRepaint = true ;
-	    		//repaint();
 				
 	    		break ;
 	        }
@@ -1155,8 +1129,7 @@ public class Game extends JPanel
 	        	runGame(DP) ;
 	        	ani.RunAnimation(DP) ;	// run all the active animations
 				testing() ;
-				//player.getPA().setCurrentAction("") ;
-				playGifs() ;
+				playGifs(DP) ;
 
 	    		break ;
 	        }
@@ -1171,7 +1144,7 @@ public class Game extends JPanel
 
 	    		break ;
 	        }
-        }
+        }        
         
         Toolkit.getDefaultToolkit().sync() ;
         g.dispose() ;  
@@ -1239,10 +1212,12 @@ public class Game extends JPanel
 			if (evt.getButton() == 1)	// Left click
 			{
         		player.setCurrentAction("MouseLeftClick") ;
+        		testGif.start();
 			}
 			if (evt.getButton() == 3)	// Right click
 			{
         		player.setCurrentAction("MouseRightClick") ;
+        		testGif2.start();
 			}
             shouldRepaint = true ;
 		}
@@ -1253,5 +1228,35 @@ public class Game extends JPanel
 
 		}		
 	}
+
+//  private void mainInitialization()
+//	{
+//		DayDuration = 120000 ;
+//  	sky = new Sky() ;
+//  	screen.setBorders(new int[] {0, sky.height, screen.getSize().width, screen.getSize().height});
+//  	screen.setMapCenter() ;    			
+//  	GameMap.InitializeStaticVars(ImagesPath) ;
+//		//allNPCs = InitializeNPCTypes(GameLanguage, screen.getSize()) ;
+//		buildingTypes = initializeBuildingTypes() ;
+//		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
+//		cityMaps = initializeCityMaps() ;
+//		fieldMaps = initializeFieldMaps() ;
+//		allMaps = new GameMap[cityMaps.length + fieldMaps.length] ;
+//		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
+//		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
+//		//DifficultMult = new double[] {(double) 0.5, (double) 0.7, (double) 1.0} ;
+//		//player = InitializePlayer(PlayerInitialName, PlayerInitialJob, GameLanguage, PlayerInitialSex) ;
+//		//pet = InitializePet() ;
+//		//creature = InitializeCreatures(creatureTypes, screen.getSize(), fieldMaps) ;
+//		for (int map = 0 ; map <= allMaps.length - 1 ; map += 1)
+//		{
+//			//allMaps[map].InitializeNPCsInMap(allNPCs) ;
+//		}
+//		allQuests = initializeQuests(GameLanguage, player.getJob()) ;
+//		initializeIcons(screen.getSize()) ;
+//
+//		// Initialize classes
+//  	bat = new Battle(new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
+//	}
 	
 }

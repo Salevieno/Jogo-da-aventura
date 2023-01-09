@@ -237,7 +237,7 @@ public class Player extends LiveBeing
 	    opponent = null ;
 	    difficultLevel = 1 ;
 		equipsBonus = Items.EquipsBonus ;
-		settings = new SettingsWindow(new ImageIcon(Game.ImagesPath + "windowSettings.png").getImage(), true, true, false, 1, 1) ;
+		settings = new SettingsWindow(new ImageIcon(Game.ImagesPath + "windowSettings.png").getImage(), false, true, false, 1, 1) ;
 		/*switch (Job)
 		{
 			case 0:
@@ -965,7 +965,6 @@ public class Player extends LiveBeing
 		}
 		if (-1 < nextMap)
 		{
-			System.out.println(nextPos);
 			if (Game.getMaps()[nextMap].GroundIsWalkable(nextPos, elem[4]))
 			{
 				/*if (MusicIsOn & Maps.MusicID[map.getid()] != Maps.MusicID[nextMap])
@@ -1081,7 +1080,7 @@ public class Player extends LiveBeing
 		}
 		if (settings.isOpen())
 		{
-			settings.display(allText.get("* Menu de opções *"), DP) ;
+			settings.display(allText.get("* Menu de opï¿½ï¿½es *"), DP) ;
 		}
 		if (hintsWindow.isOpen())
 		{
@@ -1877,6 +1876,7 @@ public class Player extends LiveBeing
 	public void DrawSideBar(Pet pet, Point MousePos, Icon[] icons, DrawingOnPanel DP)
 	{
 		// icons: 0: Options 1: Bag 2: Quest 3: Map 4: Book, 5: player, 6: pet
+		Point barPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height);
 		Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
 		Color[] colorPalette = Game.ColorPalette ;
 		double stdAngle = DrawingOnPanel.stdAngle ;
@@ -1884,7 +1884,7 @@ public class Player extends LiveBeing
 		String[] IconKey = new String[] {Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7]} ;
 		Color TextColor = colorPalette[7] ;
 		
-		DP.DrawRect(new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height), Align.bottomLeft, size, 1, colorPalette[9], null) ;
+		DP.DrawRect(barPos, Align.bottomLeft, size, 1, colorPalette[9], null) ;
 		DrawSpellsBar(this, spells, SpellType.cooldownImage, SpellType.slotImage, MousePos, DP) ;
 		icons[0].display(stdAngle, Align.topLeft, MousePos, DP) ;		// settings
 		icons[1].display(stdAngle, Align.topLeft, MousePos, DP) ;		// bag
@@ -1904,17 +1904,17 @@ public class Player extends LiveBeing
 		}
 		
 		// player
-		display(icons[5].getPos(), new Scale(1, 1), Directions.up, false, DP) ;
+		//display(UtilG.Translate(icons[5].getPos(), icons[5].getImage().getWidth(null) / 2, 0), new Scale(1, 1), Directions.up, false, DP) ;
 		DP.DrawText(icons[5].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[5], font, TextColor) ;
-		if (0 < attPoints)
-		{
-			DP.DrawImage(icons[5].getImage(), new Point(icons[5].getPos().x - icons[5].getImage().getWidth(null), icons[5].getPos().y), stdAngle, new Scale(1, 1), Align.bottomLeft) ;
-		}
+//		if (0 < attPoints)
+//		{
+//			DP.DrawImage(icons[5].getImage(), UtilG.Translate(icons[5].getPos(), icons[5].getImage().getWidth(null) / 2, 0), stdAngle, new Scale(1, 1), Align.bottomLeft) ;
+//		}
 		
 		// pet
 		if (pet != null)
 		{
-			pet.display(icons[6].getPos(), new Scale(1, 1), DP) ;
+			//pet.display(UtilG.Translate(icons[6].getPos(), icons[6].getImage().getWidth(null) / 2, 0), new Scale(1, 1), DP) ;
 			DP.DrawText(icons[6].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[8], font, TextColor) ;
 		}
 		

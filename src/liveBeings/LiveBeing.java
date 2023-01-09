@@ -36,7 +36,7 @@ public class LiveBeing
 	protected TimeCounter satiationCounter ;	// counts the satiation reduction
 	protected TimeCounter moveCounter ;			// counts the move
 	protected TimeCounter battleActionCounter ;	// counts the actions in battle
-	protected int stepCounter ;					// counts the steps in the movement	TODO -> TimeCounter ? (não é tempo, é step)
+	protected int stepCounter ;					// counts the steps in the movement	TODO -> TimeCounter ? (nï¿½o ï¿½ tempo, ï¿½ step)
 	protected String currentAction; 
 	protected ArrayList<String> combo ;			// record of the last 10 movements
 	protected ArrayList<Spell> spells ;

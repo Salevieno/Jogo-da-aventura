@@ -48,39 +48,42 @@ public class QuestWindow extends GameWindow
 		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
 		
 		// draw quest name
-		Quests quest = quests.get(window) ;
-		Point questPos = UtilG.Translate(windowPos, 0, - image.getHeight(null) / 3) ;
-		DP.DrawText(questPos, Align.center, angle, quest.getName(), font, textColor) ;
+		if (0 < quests.size())
+		{
+			Quests quest = quests.get(window) ;
+			Point questPos = UtilG.Translate(windowPos, 0, - image.getHeight(null) / 3) ;
+			DP.DrawText(questPos, Align.center, angle, quest.getName(), font, textColor) ;
 
-		// draw required creatures
-		Map<CreatureTypes, Integer> reqCreatureTypes = quests.get(window).getReqCreatures() ;
-		if (reqCreatureTypes != null)
-		{
-			CreatureTypes[] reqCreatureType = new CreatureTypes[0];
-			reqCreatureType = reqCreatureTypes.keySet().toArray(reqCreatureType) ;
-			for (int i = 0 ; i <= reqCreatureType.length - 1 ; i += 1)
+			// draw required creatures
+			Map<CreatureTypes, Integer> reqCreatureTypes = quests.get(window).getReqCreatures() ;
+			if (reqCreatureTypes != null)
 			{
-				CreatureTypes creatureType = reqCreatureType[i] ;
-				// TODO get creature name
-//				String creatureName = creatureType.getName() ;
-//				Point textPos = UtilG.Translate(windowPos, 15, 55 + i * font.getSize()) ;
-//				DP.DrawText(textPos, Align.bottomLeft, angle, creatureName + ":" + reqCreatureTypes.get(creatureType), font, textColor) ;
-//				creatureType.display(textPos, new Scale(1, 1), DP) ;
+				CreatureTypes[] reqCreatureType = new CreatureTypes[0];
+				reqCreatureType = reqCreatureTypes.keySet().toArray(reqCreatureType) ;
+				for (int i = 0 ; i <= reqCreatureType.length - 1 ; i += 1)
+				{
+					CreatureTypes creatureType = reqCreatureType[i] ;
+					// TODO get creature name
+//					String creatureName = creatureType.getName() ;
+//					Point textPos = UtilG.Translate(windowPos, 15, 55 + i * font.getSize()) ;
+//					DP.DrawText(textPos, Align.bottomLeft, angle, creatureName + ":" + reqCreatureTypes.get(creatureType), font, textColor) ;
+//					creatureType.display(textPos, new Scale(1, 1), DP) ;
+				}
 			}
-		}
-		
-		// draw required items
-		Map<Item, Integer> reqItems = quests.get(window).getReqItems() ;
-		if (reqItems != null)
-		{
-			Item[] reqItem = new Item[0];
-			reqItem = reqItems.keySet().toArray(reqItem) ;
-			for (int i = 0 ; i <= reqItem.length - 1 ; i += 1)
+			
+			// draw required items
+			Map<Item, Integer> reqItems = quests.get(window).getReqItems() ;
+			if (reqItems != null)
 			{
-				Item item = reqItem[i] ;
-				Point textPos = UtilG.Translate(windowPos, 65, 55 + i * font.getSize()) ;
-				DP.DrawText(textPos, Align.bottomLeft, angle, item.getName(), font, textColor) ;
-				DP.DrawImage(item.getImage(), textPos, Align.topLeft) ;
+				Item[] reqItem = new Item[0];
+				reqItem = reqItems.keySet().toArray(reqItem) ;
+				for (int i = 0 ; i <= reqItem.length - 1 ; i += 1)
+				{
+					Item item = reqItem[i] ;
+					Point textPos = UtilG.Translate(windowPos, 65, 55 + i * font.getSize()) ;
+					DP.DrawText(textPos, Align.bottomLeft, angle, item.getName(), font, textColor) ;
+					DP.DrawImage(item.getImage(), textPos, Align.topLeft) ;
+				}
 			}
 		}
 	}

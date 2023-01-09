@@ -52,7 +52,9 @@ public class Creature extends LiveBeing
 		mpCounter = new TimeCounter(0, CT.mpDuration);
 		satiationCounter = new TimeCounter(0, CT.satiationDuration);
 		moveCounter = new TimeCounter(0, CT.moveDuration) ;
+		battleActionCounter = new TimeCounter(0, CT.battleActionDuration) ;
 		this.stepCounter = CT.stepCounter;
+		combo = new ArrayList<>() ;
 		
 		dir = Directions.up ;
 		state = LiveBeingStates.idle ;
@@ -69,7 +71,7 @@ public class Creature extends LiveBeing
 		setPos(initialPos) ;
 		
 
-		if (getName().equals("Dragão") | getName().equals("Dragon"))
+		if (getName().equals("Dragï¿½o") | getName().equals("Dragon"))
 		{
 			setPos(Game.getScreen().getCenter()) ;
 		}
@@ -221,11 +223,11 @@ public class Creature extends LiveBeing
 		}
 		if (move == 0)
 		{
-			setCurrentAction(BattleKeys[1]) ;	// Physical attack
+			setCurrentAction(BattleKeys[0]) ;	// Physical attack
 		}
 		if (move == 1)
 		{
-			setCurrentAction(BattleKeys[3]) ;	// Magical attack
+			setCurrentAction(BattleKeys[1]) ;	// Defense
 		}
 		if (move == 2)
 		{

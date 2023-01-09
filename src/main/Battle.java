@@ -103,7 +103,7 @@ public class Battle
 		//ItemEffectIsActive = new boolean[Items.ItemsWithEffects.length][items[0].getBuffs().length] ;
 	}
 
-	// métodos de cálculo de batalha válidos para todos os participantes
+	// mï¿½todos de cï¿½lculo de batalha vï¿½lidos para todos os participantes
 	public static double BasicElemMult(String Atk, String Def)
 	{
 		return Battle.ElemMult[UtilG.IndexOf(Battle.ElemID, Atk)][UtilG.IndexOf(Battle.ElemID, Def)] ;
@@ -1026,7 +1026,7 @@ public class Battle
 				Object[] CreatureAtkResult = CreatureAtk(player, pet, creature) ;
 				int damage = (int) CreatureAtkResult[0] ;
 				String effect = (String) CreatureAtkResult[1] ;
-				if (player.getJob() == 4 & SkillBuffIsActive[11][0])	// Surprise attack
+				if (player.getJob() == 4)	// Surprise attack & SkillBuffIsActive[11][0]
 				{
 					SkillBuffIsActive[11][0] = false ;
 				}

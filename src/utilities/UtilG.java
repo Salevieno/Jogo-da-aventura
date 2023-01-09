@@ -18,6 +18,7 @@ import java.io.IOException ;
 import java.io.InputStreamReader ;
 import java.math.BigDecimal ;
 import java.math.RoundingMode ;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets ;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,7 +94,7 @@ public abstract class UtilG
         ArrayList<String[]> Input = new ArrayList<String[]>() ;
         try 
         {
-            br = new BufferedReader(new FileReader(FileName)) ;
+            br = new BufferedReader(new FileReader(FileName, Charset.forName("UTF-8"))) ;
             line = br.readLine() ;
             while ((line = br.readLine()) != null) 
             {
@@ -217,6 +218,20 @@ public abstract class UtilG
         return null ;
     }
 	
+	public static Image loadImage(String filePath)
+	{
+		// this is not throwing an exception because it's not loading a file, it's creating a new ImageIcon
+		Image image = new ImageIcon(filePath).getImage() ;
+		if (image.getWidth(null) != -1 & image.getHeight(null) != -1)
+		{
+			return new ImageIcon(filePath).getImage() ;
+		}
+		else
+		{
+			System.out.println("Image not found at " + filePath);
+			return null ;
+		}
+	}
 	/*
 	
 	// color methods
@@ -300,7 +315,7 @@ public abstract class UtilG
 		}
 		catch (Exception FileNotFoundException)
 		{
-			System.out.println("Tentando carregar uma imagem não encontrada!") ;
+			System.out.println("Tentando carregar uma imagem nï¿½o encontrada!") ;
 			return null ;
 		}
 	}

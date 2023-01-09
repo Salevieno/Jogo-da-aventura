@@ -62,7 +62,7 @@ public class DrawingOnPanel
 		this.G = G ;
 	}
 
-
+	// TODO fix rotation
 	// primitive methods
 	public void DrawImage(Image image, Point pos, Align align)
 	{       
@@ -89,9 +89,9 @@ public class DrawingOnPanel
 			Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
 			Point offset = UtilG.OffsetFromPos(align, size) ;
 			AffineTransform backup = G.getTransform() ;
-			G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;	 // Rotate image
+			//G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;	 // Rotate image
 			G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
-			G.setTransform(backup) ;
+			//G.setTransform(backup) ;
 		}
 	}
 	public void DrawImage(Image image, Point pos, double angle, Scale scale, boolean mirrorX, boolean mirrorY, Align align, double alpha)
@@ -110,11 +110,11 @@ public class DrawingOnPanel
 				m[1] = -1 ;
 			}			
 			AffineTransform backup = G.getTransform() ;
-			G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;	 // Rotate image
+			//G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;	 // Rotate image
 			G.setComposite(AlphaComposite.SrcOver.derive((float) alpha)) ;
 			G.drawImage(image, pos.x + offset.x, pos.y + offset.y, m[0] * size.width, m[1] * size.height, null) ;
 			G.setComposite(AlphaComposite.SrcOver.derive((float) 1.0)) ;
-	        G.setTransform(backup) ;
+	        //G.setTransform(backup) ;
 		}
 	}
 	public void DrawGif(Image gif, Point pos, Align align)
@@ -131,9 +131,9 @@ public class DrawingOnPanel
 		AffineTransform backup = G.getTransform() ;		
 		G.setColor(color) ;
 		G.setFont(font) ;
-		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;	// Rotate text
+		//G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;	// Rotate text
 		G.drawString(text, pos.x + offset.x, pos.y + offset.y + size.height) ;
-        G.setTransform(backup) ;
+        //G.setTransform(backup) ;
 	}
 	public void DrawFitText(Point pos, int sy, Align align, String text, Font font, int maxLength, Color color)
 	{
@@ -417,7 +417,6 @@ public class DrawingOnPanel
 			fm.displayCollectibles(this) ;
 		}
 		DrawTime(sky) ;
-		Game.shouldRepaint() ;
 	}
 	public void DrawTimeBar(Point pos, int counter, int delay, int size2, Point offset, String relPos, String dir, Color color)
 	{

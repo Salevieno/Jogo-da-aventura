@@ -43,11 +43,11 @@ public class Pet extends LiveBeing
 		super(
 				InitializePersonalAttributes(Job),
 				InitializeBattleAttributes(Job),
-				new MovingAnimations(new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
-				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
-				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
-				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage(),
-				new ImageIcon(Game.ImagesPath + "PetType" + String.valueOf(Job) + ".png").getImage()),
+				new MovingAnimations(new ImageIcon(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png").getImage(),
+				new ImageIcon(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png").getImage(),
+				new ImageIcon(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png").getImage(),
+				new ImageIcon(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png").getImage(),
+				new ImageIcon(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png").getImage()),
 				new PlayerAttributesWindow()
 			) ;
 		
@@ -68,6 +68,7 @@ public class Pet extends LiveBeing
 		battleActionCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[36])) ;
 		stepCounter = 0 ;
 		currentAction = "" ;
+		combo = new ArrayList<>();
 		
 		this.Job = Job ;
 		Color[] ColorPalette = Game.ColorPalette ;
