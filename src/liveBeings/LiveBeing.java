@@ -48,12 +48,12 @@ public class LiveBeing
 	protected PlayerAttributesWindow attWindow ;	// Attributes window
 	
 	public static final Image[] StatusImages = new Image[] {
-			UtilG.loadImage(Game.ImagesPath + "ShieldIcon.png"),
-			UtilG.loadImage(Game.ImagesPath + "StunIcon.png"),
-			UtilG.loadImage(Game.ImagesPath + "BlockIcon.png"),
-			UtilG.loadImage(Game.ImagesPath + "BloodIcon.png"),
-			UtilG.loadImage(Game.ImagesPath + "PoisonIcon.png"),
-			UtilG.loadImage(Game.ImagesPath + "SilenceIcon.png")
+			UtilG.loadImage(Game.ImagesPath + "\\Battle\\" + "ShieldIcon.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Stun.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Block.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Blood.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Poison.png"),
+			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Silence.png")
 			};
 	public static final String[] BattleKeys = new String[] {"A", "D"} ;
 	

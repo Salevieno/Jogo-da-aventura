@@ -21,6 +21,10 @@ public class Collectible
 	private Image image ;
 
 	public static final String[] CollectibleNames = new String[] {"Berry", "Herb", "Wood", "Metal"} ;
+	public static Image BerryImage = UtilG.loadImage(Game.ImagesPath  + "\\Collect\\" + "Col0_Berry" + ".png") ;
+	public static Image HerbImage = UtilG.loadImage(Game.ImagesPath  + "\\Collect\\" + "Col1_Herb" + ".png") ;
+	public static Image WoodImage = UtilG.loadImage(Game.ImagesPath  + "\\Collect\\" + "Col2_Wood" + ".png") ;
+	public static Image MetalImage = UtilG.loadImage(Game.ImagesPath  + "\\Collect\\" + "Col3_Metal" + ".png") ;
 	public static Image[] collectibleImages ;
 	
 	public Collectible(int type, int level, Point pos, int counter, int delay)
@@ -33,11 +37,11 @@ public class Collectible
 
 		name = CollectibleNames[type] ;
 		
-		String path = Game.ImagesPath  + "\\Collect\\";
-	    Image BerryImage = UtilG.loadImage(path + "Col0_" + name + ".png") ;
-	    Image HerbImage = UtilG.loadImage(path + "Col1_" + name + ".png") ;
-	    Image WoodImage = UtilG.loadImage(path + "Col2_" + name + ".png") ;
-	    Image MetalImage = UtilG.loadImage(path + "Col3_" + name + ".png") ;
+//		String path = Game.ImagesPath  + "\\Collect\\";
+//	    Image BerryImage = UtilG.loadImage(path + "Col0_" + name + ".png") ;
+//	    Image HerbImage = UtilG.loadImage(path + "Col1_" + name + ".png") ;
+//	    Image WoodImage = UtilG.loadImage(path + "Col2_" + name + ".png") ;
+//	    Image MetalImage = UtilG.loadImage(path + "Col3_" + name + ".png") ;
 		collectibleImages = new Image[] {BerryImage, HerbImage, WoodImage, MetalImage};
 		
 		image = collectibleImages[type] ;

@@ -29,7 +29,7 @@ import org.json.simple.JSONObject;
 
 import components.BuildingType;
 import components.Buildings;
-import components.Icon;
+import components.GameIcon;
 import components.NPCJobs;
 import components.NPCType;
 import components.NPCs;
@@ -69,6 +69,7 @@ import maps.GameMap;
 import maps.SpecialMap;
 import maps.TreasureChest;
 import screen.Screen;
+import screen.SideBar;
 import screen.Sky;
 import utilities.Align;
 import utilities.Directions;
@@ -98,7 +99,7 @@ public class Game extends JPanel
 	private static boolean konamiCodeActive ;
 
 	private DrawingOnPanel DP ;
-	private Icon[] sideBarIcons;
+	private GameIcon[] sideBarIcons;
 	//private Icon[] plusSignIcon ;
 	private Player player ;
 	private Pet pet ;
@@ -108,6 +109,7 @@ public class Game extends JPanel
 
 	private static Screen screen ;
 	private static Sky sky ;
+	private static SideBar sideBar ;
 	private static Opening opening ;
 	private static CreatureTypes[] creatureTypes ;
 	private static CityMap[] cityMaps;
@@ -260,8 +262,9 @@ public class Game extends JPanel
     	{
     		JSONObject type = (JSONObject) input.get(i) ;
     		String name = (String) type.get("name") ;
-			Image outsideImage = UtilG.loadImage(path + "Building" + i + "_" + name + ".png") ;
-			Image insideImage = UtilG.loadImage(path + "Building" + i + "_" + name + "Inside.png") ;
+    		// TODO buildings that don't have inside and ornament images
+			Image outsideImage = UtilG.loadImage(path + "Building" + name + ".png") ;
+			Image insideImage = UtilG.loadImage(path + "Building" + name + "Inside.png") ;
 			Image[] OrnamentImages = new Image[] {UtilG.loadImage(path + "Building" + name + "Ornament.png")} ;
 			
 			// adding npcs to the building
@@ -434,6 +437,7 @@ public class Game extends JPanel
     	String path = ImagesPath + "\\Maps\\";
     	FieldMap[] fieldMap = new FieldMap[input.size()] ;
 		
+    	// TODO mapas 39 e 64 estão entrando como fieldmaps e specialmaps
 		for (int id = 0 ; id <= fieldMap.length - 1 ; id += 1)
 		{
 			String name = input.get(id)[0] ;
@@ -534,50 +538,10 @@ public class Game extends JPanel
 		return quests ;
     }
    
-    private Icon[] initializeIcons(Dimension screenSize)
+    private GameIcon[] initializeIcons(Dimension screenSize)
     {
-		// Icons' position
-    	String path = ImagesPath + "\\Icons\\";
-		Image Options = UtilG.loadImage(path + "Icon_settings.png") ;
-		Image Bag = UtilG.loadImage(path + "Icon1_Bag.png") ;
-		Image Quest = UtilG.loadImage(path + "Icon2_Quest.png") ;
-		Image Map = UtilG.loadImage(path + "Icon3_Map.png") ;
-		Image Book = UtilG.loadImage(path + "Icon4_Book.png") ;
-    	Image Tent = UtilG.loadImage(path + "Icon5_Tent.png") ;
-    	Image PlayerImage = UtilG.loadImage(path + "Player.png") ;
-    	Image PetImage = UtilG.loadImage(path + "PetType" + 0 + ".png") ;
-		Image SkillsTree = UtilG.loadImage(path + "Icon8_SkillsTree.png") ;
-		Image SelectedOptions = UtilG.loadImage(path + "Icon_settingsSelected.png") ;
-		Image SelectedBag = UtilG.loadImage(path + "Icon1_BagSelected.png") ;
-		Image SelectedQuest = UtilG.loadImage(path + "Icon2_QuestSelected.png") ;
-		Image SelectedMap = UtilG.loadImage(path + "Icon3_MapSelected.png") ;
-		Image SelectedBook = UtilG.loadImage(path + "Icon4_BookSelected.png") ;
-    	Image SelectedTent = UtilG.loadImage(path + "Icon5_TentSelected.png") ;
-    	Image PlayerSelectedImage = UtilG.loadImage(path + "Player.png") ;
-    	Image PetSelectedImage = UtilG.loadImage(path + "PetType" + 0 + ".png") ;
-		Image SelectedSkillsTree = UtilG.loadImage(path + "Icon8_SelectedSkillsTree.png") ;
-		Image[] SideBarIconsImages = new Image[] {Options, Bag, Quest, Map, Book, Tent, PlayerImage, PetImage, SkillsTree} ;
-		Image[] SideBarIconsSelectedImages = new Image[] {SelectedOptions, SelectedBag, SelectedQuest, SelectedMap, SelectedBook, SelectedTent, PlayerSelectedImage, PetSelectedImage, SelectedSkillsTree} ;
-
-		// Side bar icons
-		sideBarIcons = new Icon[8] ;
-		String[] SBname = new String[] {"Options", "Bag", "Quest", "Map", "Book", "Tent", "Player", "Pet"} ;
-		Point[] SBpos = new Point[SBname.length] ;
-		int sy = 20 ;
-		SBpos[0] = new Point(screenSize.width, screenSize.height - 250) ;
-    	for (int i = 1 ; i <= 6 - 1 ; i += 1)
-    	{
-    		SBpos[i] = new Point(SBpos[0].x, SBpos[i - 1].y - SideBarIconsImages[i - 1].getHeight(null) / 2 - sy) ;
-    	}
-    	SBpos[6] = new Point(SBpos[0].x, SBpos[5].y - SideBarIconsImages[5].getHeight(null)/2 - sy) ;
-    	SBpos[7] = new Point(SBpos[0].x, SBpos[6].y - (int)PlayerImage.getHeight(null) - SideBarIconsImages[4].getHeight(null)/2 - 20/2 - sy) ;
-     	for (int i = 0 ; i <= sideBarIcons.length - 1 ; i += 1)
-    	{
-     		Icon newIcon = new Icon(i, SBname[i], SBpos[i], null, SideBarIconsImages[i], SideBarIconsSelectedImages[i]);
-     		sideBarIcons[i] = newIcon ;
-     		Icon.addToAllIconsList(newIcon) ;
-    	}
-
+    	String path = Game.ImagesPath + "\\Icons\\";
+    	
 		// Plus sign icons
      	//plusSignIcon = new Icon[8] ;
      	Point[] PlusSignPos = new Point[] {new Point(175, 206), new Point(175, 225), new Point(175, 450),
@@ -586,9 +550,9 @@ public class Game extends JPanel
 		Image SelectedPlusSignImage = UtilG.loadImage(path + "ShiningPlusSign.png") ;
 		for (int i = 0 ; i <= PlusSignPos.length - 1 ; i += 1)
     	{
-     		Icon newIcon = new Icon(i + SBname.length, "Plus sign", PlusSignPos[i], null, PlusSignImage, SelectedPlusSignImage) ;
+     		GameIcon newIcon = new GameIcon(i + 8, "Plus sign", PlusSignPos[i], null, PlusSignImage, SelectedPlusSignImage) ;
     		//plusSignIcon[i] = newIcon;
-     		Icon.addToAllIconsList(newIcon) ;
+     		GameIcon.addToAllIconsList(newIcon) ;
     	}
 		
     	return sideBarIcons ;
@@ -864,7 +828,8 @@ public class Game extends JPanel
 		
 		// draw the map (cities, forest, etc.)
 		DP.DrawFullMap(player.getPos(), pet, player.getMap(), sky, mousePos) ;
-		player.DrawSideBar(pet, mousePos, sideBarIcons, DP) ;
+		//player.DrawSideBar(pet, mousePos, sideBarIcons, DP) ;
+		sideBar.display(player, pet, mousePos, DP);
 		
 		// creatures act
 		if (!player.getMap().IsACity())
@@ -1045,6 +1010,7 @@ public class Game extends JPanel
 		pet = new Pet((int) (4 * Math.random())) ;
     	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
     	pet.setPos(player.getPos());
+    	sideBar = new SideBar(player.getMovingAni().idleGif, pet.getMovingAni().idleGif) ;
     	bat = new Battle(ani) ;
     	
     	

@@ -10,7 +10,7 @@ import java.util.Map;
 
 import javax.swing.ImageIcon ;
 
-import components.Icon;
+import components.GameIcon;
 import components.Items;
 import components.NPCs;
 import liveBeings.Pet;

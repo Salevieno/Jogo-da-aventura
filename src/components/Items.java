@@ -32,15 +32,15 @@ public class Items
 	public static double[][][] ItemsBuffs ;	
 
 	// Equip images
-	private static Image Sword = UtilG.loadImage(Game.ImagesPath + "Eq0_Sword.png") ;
-	private static Image Staff = UtilG.loadImage(Game.ImagesPath + "Eq1_Staff.png") ;
-	private static Image Bow = UtilG.loadImage(Game.ImagesPath + "Eq2_Bow.png") ;
-	private static Image Claws = UtilG.loadImage(Game.ImagesPath + "Eq3_Claws.png") ;
-	private static Image Dagger = UtilG.loadImage(Game.ImagesPath + "Eq4_Dagger.png") ;
-	private static Image Shield = UtilG.loadImage(Game.ImagesPath + "Eq5_Shield.png") ;
-	private static Image Armor = UtilG.loadImage(Game.ImagesPath + "Eq6_Armor.png") ;
-	private static Image Arrow = UtilG.loadImage(Game.ImagesPath + "Eq7_Arrow.png") ;
-	public static Image[] EquipImage = new Image[] {Sword, Staff, Bow, Claws, Dagger, Shield, Armor, Arrow} ; 
+//	private static Image Sword = UtilG.loadImage(Game.ImagesPath + "Eq0_Sword.png") ;
+//	private static Image Staff = UtilG.loadImage(Game.ImagesPath + "Eq1_Staff.png") ;
+//	private static Image Bow = UtilG.loadImage(Game.ImagesPath + "Eq2_Bow.png") ;
+//	private static Image Claws = UtilG.loadImage(Game.ImagesPath + "Eq3_Claws.png") ;
+//	private static Image Dagger = UtilG.loadImage(Game.ImagesPath + "Eq4_Dagger.png") ;
+//	private static Image Shield = UtilG.loadImage(Game.ImagesPath + "Eq5_Shield.png") ;
+//	private static Image Armor = UtilG.loadImage(Game.ImagesPath + "Eq6_Armor.png") ;
+//	private static Image Arrow = UtilG.loadImage(Game.ImagesPath + "Eq7_Arrow.png") ;
+//	public static Image[] EquipImage = new Image[] {Sword, Staff, Bow, Claws, Dagger, Shield, Armor, Arrow} ; 
 	public static Image[] EquipGif ;
 	
 	public Items(int ID, String Name, Image image, int Price, double DropChance, double[][] Buffs, String Description, String Type)

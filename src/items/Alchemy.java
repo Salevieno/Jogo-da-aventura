@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 import main.Game;
+import maps.Collectible;
 import utilities.UtilG;
 
 public class Alchemy extends Item
@@ -17,7 +18,7 @@ public class Alchemy extends Item
 	private static Alchemy[] AllAlchemy ;
 	public Alchemy(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal)
 	{
-		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "Col0__Berry.png"), price, dropChance) ;
+		super(Name, Description, Collectible.BerryImage, price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
 		

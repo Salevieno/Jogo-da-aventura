@@ -15,9 +15,10 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import components.Icon;
+import components.GameIcon;
 import components.Items;
 import components.NPCs;
+import items.Equip;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.Game;
@@ -40,7 +41,7 @@ public class DrawingOnPanel
 	private Dimension screenSize = Game.getScreen().getSize() ;
 	private static Image menuWindow = UtilG.loadImage(Game.ImagesPath + "MenuWindow.png") ;
 	private static Image buttonGeneral = UtilG.loadImage(Game.ImagesPath + "ButtonGeneral.png") ;
-	private static Image ArrowIconImage = UtilG.loadImage(Game.ImagesPath + "ArrowIcon.png") ;
+	private static Image ArrowIconImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "ArrowIcon.png") ;
 	public static Image[] ElementImages = new Image[] {
 			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementNeutral.png"),
 			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementWater.png"),
@@ -299,7 +300,7 @@ public class DrawingOnPanel
 			DrawText(RightArrowPos, Align.topRight, stdAngle, Player.ActionKeys[3], font, colorPalette[5]) ;		
 		}
 	}
-	public void DrawOrganogram(int[] Sequence, Point Pos, int sx, int sy, Dimension size, String[][] Text1, String[] Text2, Icon SlotIcon, Font font, Color[] TextColor, Point MousePos)
+	public void DrawOrganogram(int[] Sequence, Point Pos, int sx, int sy, Dimension size, String[][] Text1, String[] Text2, GameIcon SlotIcon, Font font, Color[] TextColor, Point MousePos)
 	{
 		int[] x0 = new int[] {screenSize.width / 30 + size.width + sx, screenSize.width / 30 + size.width / 2 + sx / 2, screenSize.width / 30} ;
 		int IconH = SlotIcon.getImage().getHeight(null) ;
@@ -336,7 +337,7 @@ public class DrawingOnPanel
 	{
 		DrawGif(LoadingGif, Pos, Align.center);
 	}
-	public void DrawLoadingGameScreen(Player player, Pet pet, Map<String, String[]> allText, Icon[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
+	public void DrawLoadingGameScreen(Player player, Pet pet, Map<String, String[]> allText, GameIcon[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
 	{
 		Point[] WindowPos = new Point[] {new Point((int)(0.15*screenSize.width), (int)(0.2*screenSize.height)),
 				new Point((int)(0.65*screenSize.width), (int)(0.2*screenSize.height)),
@@ -625,7 +626,7 @@ public class DrawingOnPanel
 			{
 				angle = (float) (angle*180/Math.PI - 90) ;
 			}
-			DrawImage(Items.EquipImage[7], new Point(attackerPos.x + (targetPos.x - attackerPos.x) * rate, attackerPos.y + (targetPos.y - attackerPos.y) * rate),
+			DrawImage(Equip.ArrowImage, new Point(attackerPos.x + (targetPos.x - attackerPos.x) * rate, attackerPos.y + (targetPos.y - attackerPos.y) * rate),
 					angle, new Scale(1, 1), Align.center) ;
 		}
 	}

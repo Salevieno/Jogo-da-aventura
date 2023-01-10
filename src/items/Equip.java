@@ -30,7 +30,7 @@ public class Equip extends Item
 
 	public Equip(int id, String name, String description, int price, float dropChance, int forgeLevel, AttributeBonus attBonus, String elem)
 	{
-		super(name, description, UtilG.loadImage(Game.ImagesPath + "items.png"), price, dropChance) ;
+		super(name, description, UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "items.png"), price, dropChance) ;
 		this.id = id ;
 		this.forgeLevel = forgeLevel ;
 		this.attBonus = attBonus ;

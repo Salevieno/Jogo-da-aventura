@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import components.Icon;
+import components.GameIcon;
 import components.Items;
 import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
@@ -27,21 +27,21 @@ import utilities.UtilS;
 
 public class PlayerAttributesWindow extends GameWindow
 {
-	private Icon[] addAttIcon ;
+	private GameIcon[] addAttIcon ;
 	
 	public PlayerAttributesWindow()
 	{
 		super(null, 0, 3, 0, 0) ;
 		Image PlusSignImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "PlusSign.png") ;
 		Image SelectedPlusSignImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "ShiningPlusSign.png") ;
-		addAttIcon = new Icon[7] ;
-		addAttIcon[0] = new Icon(0, "Plus sign", new Point(100, 100), null, PlusSignImage, SelectedPlusSignImage) ;
-		addAttIcon[1] = new Icon(1, "Plus sign", new Point(100, 120), null, PlusSignImage, SelectedPlusSignImage) ;
-		addAttIcon[2] = new Icon(2, "Plus sign", new Point(100, 140), null, PlusSignImage, SelectedPlusSignImage) ;
-		addAttIcon[3] = new Icon(3, "Plus sign", new Point(100, 160), null, PlusSignImage, SelectedPlusSignImage) ;
-		addAttIcon[4] = new Icon(4, "Plus sign", new Point(100, 180), null, PlusSignImage, SelectedPlusSignImage) ;
-		addAttIcon[5] = new Icon(5, "Plus sign", new Point(100, 200), null, PlusSignImage, SelectedPlusSignImage) ;
-		addAttIcon[6] = new Icon(6, "Plus sign", new Point(100, 220), null, PlusSignImage, SelectedPlusSignImage) ;
+		addAttIcon = new GameIcon[7] ;
+		addAttIcon[0] = new GameIcon(0, "Plus sign", new Point(100, 100), null, PlusSignImage, SelectedPlusSignImage) ;
+		addAttIcon[1] = new GameIcon(1, "Plus sign", new Point(100, 120), null, PlusSignImage, SelectedPlusSignImage) ;
+		addAttIcon[2] = new GameIcon(2, "Plus sign", new Point(100, 140), null, PlusSignImage, SelectedPlusSignImage) ;
+		addAttIcon[3] = new GameIcon(3, "Plus sign", new Point(100, 160), null, PlusSignImage, SelectedPlusSignImage) ;
+		addAttIcon[4] = new GameIcon(4, "Plus sign", new Point(100, 180), null, PlusSignImage, SelectedPlusSignImage) ;
+		addAttIcon[5] = new GameIcon(5, "Plus sign", new Point(100, 200), null, PlusSignImage, SelectedPlusSignImage) ;
+		addAttIcon[6] = new GameIcon(6, "Plus sign", new Point(100, 220), null, PlusSignImage, SelectedPlusSignImage) ;
 	}
 	
 	public void navigate(Player player, String action, Point MousePos)

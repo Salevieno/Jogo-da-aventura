@@ -20,7 +20,7 @@ import org.json.simple.JSONObject;
 
 import java.util.Map;
 
-import components.Icon;
+import components.GameIcon;
 import components.Items;
 import components.NPCs;
 import components.QuestSkills;
@@ -95,15 +95,14 @@ public class Player extends LiveBeing
 	public Items[] hotItem ;		// items on the hotkeys
     public int difficultLevel ;
     
-    public static final Image CollectingMessage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "CollectingMessage.gif") ;   
-    public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Icon5_Tent.png") ; 
+    public static final Image CollectingMessage = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "CollectingMessage.gif") ;   
+    public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "Icon5_Tent.png") ; 
     public static final Image DragonAuraImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "DragonAura.png") ;
     public static final Image RidingImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Tiger.png") ;
     //public static final Image SpeakingBubbleImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "SpeakingBubble.png") ;
 	public static final Image CoinIcon = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "CoinIcon.png") ;    
 	public static final Image MagicBlissGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "MagicBliss.gif") ;
     public static final Image FishingGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Fishing.gif") ;
-    public static final Icon SpellsTreeIcon = new Icon(0, "", new Point(200, 200), "", UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "SpellsTreeIcon.gif"), null) ;
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
     
@@ -237,7 +236,7 @@ public class Player extends LiveBeing
 	    opponent = null ;
 	    difficultLevel = 1 ;
 		equipsBonus = Items.EquipsBonus ;
-		settings = new SettingsWindow(UtilG.loadImage(Game.ImagesPath + "windowSettings.png"), false, true, false, 1, 1) ;
+		settings = new SettingsWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "windowSettings.png"), false, true, false, 1, 1) ;
 		/*switch (Job)
 		{
 			case 0:
@@ -615,7 +614,7 @@ public class Player extends LiveBeing
 		
 		stepCounter = (stepCounter + 1) % moveRange ;
 	}
-	public void acts(Pet pet, GameMap[] maps, Point MousePos, Icon[] sideBarIcons, Animations Ani)
+	public void acts(Pet pet, GameMap[] maps, Point MousePos, GameIcon[] sideBarIcons, Animations Ani)
 	{
 		if (actionIsAMove())
 		{
@@ -1593,7 +1592,7 @@ public class Player extends LiveBeing
 	
 	
 	// Action windows
-	private void AttWindow(Icon[] icons, int[] MainWinDim, double[] PlayerAttributeIncrease, Point MousePos, Image GoldCoinImage, DrawingOnPanel DP)
+	private void AttWindow(GameIcon[] icons, int[] MainWinDim, double[] PlayerAttributeIncrease, Point MousePos, Image GoldCoinImage, DrawingOnPanel DP)
 	{
 		//int WindowLimit = 2 ;
 		//SelectedWindow[0] = UtilS.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedWindow[0], WindowLimit) ;
@@ -1825,117 +1824,117 @@ public class Player extends LiveBeing
 		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 19*sy)), Align.bottomLeft, OverallAngle, AllText[AttrCat][14] + " " + AllText[SpecialAttrPropCat][7] + " = " + UtilG.Round(BA.getPoison()[8], 2), font, AttributeColor[3]) ;	
 		DP.DrawText(new Point(Pos.x + (int)(0.025*L), (int)(Pos.y - H + 20*sy)), Align.bottomLeft, OverallAngle, AllText[AttrCat][15] + " " + AllText[SpecialAttrPropCat][7] + " = " + UtilG.Round(BA.getSilence()[4], 2), font, AttributeColor[4]) ;				
 	}*/
-	private void DrawSpellsBar(Player player, ArrayList<Spell> spells, Image CooldownImage, Image SlotImage, Point MousePos, DrawingOnPanel DP)
-	{
-		Font Titlefont = new Font("SansSerif", Font.BOLD, 10) ;
-		Font font = new Font("SansSerif", Font.BOLD, 9) ;
-		Screen screen = Game.getScreen() ;
-		Color[] colorPalette = Game.ColorPalette ;
-		double OverallAngle = DrawingOnPanel.stdAngle ;
-		Point Pos = new Point(screen.getSize().width + 1, (int) (0.99 * screen.getSize().height) - 70) ;
-		List<Spell> ActiveSpells = player.GetActiveSpells() ;
-		Dimension size = new Dimension(36, 130) ;
-		int slotW = SlotImage.getWidth(null), slotH = SlotImage.getHeight(null) ;	// Bar size
-		int Ncols = Math.max(ActiveSpells.size() / 11 + 1, 1) ;
-		int Nrows = ActiveSpells.size() / Ncols + 1 ;
-		int Sx = (int) UtilG.spacing(size.width, Ncols, slotW, 3), Sy = (int) UtilG.spacing(size.height, Nrows, slotH, 5) ;		
-		String[] Key = Player.SpellKeys ;
-		Color BGcolor = Player.ClassColors[player.getJob()] ;
-		Color TextColor = player.getColor() ;
-		
-		DP.DrawRoundRect(Pos, Align.bottomLeft, size, 1, colorPalette[7], BGcolor, true) ;
-		DP.DrawText(new Point(Pos.x + size.width / 2, Pos.y - size.height + 3), Align.topCenter, OverallAngle, allText.get("* Barra de habilidades *")[1], Titlefont, colorPalette[5]) ;
-		for (int i = 0 ; i <= ActiveSpells.size() - 1 ; ++i)
-		{
-			Spell spell = spells.get(i) ;
-			if (0 < player.getSpell().get(i).getLevel())
-			{
-				Point slotCenter = new Point(Pos.x + slotW / 2 + (i / Nrows) * Sx + 3, Pos.y - size.height + slotH / 2 + (i % Nrows) * Sy + Titlefont.getSize() + 5) ;
-				if (player.getMp().getCurrentValue() < spell.getMpCost())
-				{
-					DP.DrawImage(SlotImage, slotCenter, Align.center) ;
-				}
-				else
-				{
-					DP.DrawImage(SlotImage, slotCenter, Align.center) ;
-				}
-				DP.DrawText(slotCenter, Align.center, OverallAngle, Key[i], font, TextColor) ;
-				Dimension imgSize = new Dimension(CooldownImage.getWidth(null), CooldownImage.getHeight(null)) ;
-				if (spell.getCooldownCounter() < spell.getCooldown())
-				{
-					Scale Imscale = new Scale(1, 1 - (double) spell.getCooldownCounter() / spell.getCooldown()) ;
-					DP.DrawImage(CooldownImage, new Point(slotCenter.x - imgSize.width / 2, slotCenter.y + imgSize.height / 2), OverallAngle, Imscale, Align.bottomLeft) ;
-				}
-				if (UtilG.isInside(MousePos, new Point(slotCenter.x - imgSize.width / 2, slotCenter.y - imgSize.height / 2), imgSize))
-				{
-					DP.DrawText(new Point(slotCenter.x - imgSize.width - 10, slotCenter.y), Align.centerRight, OverallAngle, spell.getName(), Titlefont, TextColor) ;
-				}
-			}
-		}
-	}
-	public void DrawSideBar(Pet pet, Point MousePos, Icon[] icons, DrawingOnPanel DP)
-	{
-		// icons: 0: Options 1: Bag 2: Quest 3: Map 4: Book, 5: player, 6: pet
-		Point barPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height);
-		Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
-		Color[] colorPalette = Game.ColorPalette ;
-		double stdAngle = DrawingOnPanel.stdAngle ;
-		Font font = new Font("SansSerif", Font.BOLD, 13) ;
-		String[] IconKey = new String[] {Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7]} ;
-		Color TextColor = colorPalette[7] ;
-		
-		DP.DrawRect(barPos, Align.bottomLeft, size, 1, colorPalette[9], null) ;
-		DrawSpellsBar(this, spells, SpellType.cooldownImage, SpellType.slotImage, MousePos, DP) ;
-		icons[0].display(stdAngle, Align.topLeft, MousePos, DP) ;		// settings
-		icons[1].display(stdAngle, Align.topLeft, MousePos, DP) ;		// bag
-		DP.DrawText(icons[1].getPos(), Align.bottomLeft, stdAngle, IconKey[0], font, TextColor) ;
-		icons[2].display(stdAngle, Align.topLeft, MousePos, DP) ;		// quest
-		DP.DrawText(icons[2].getPos(), Align.bottomLeft, stdAngle, IconKey[1], font, TextColor) ;
-		
-		if (questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name())))	// map
-		{
-			icons[3].display(stdAngle, Align.topLeft, MousePos, DP) ;
-			DP.DrawText(icons[3].getPos(), Align.bottomLeft, stdAngle, IconKey[2], font, TextColor) ;
-		}
-		
-		if (fabWindow != null)										// book
-		{
-			icons[4].display(stdAngle, Align.topLeft, MousePos, DP) ;
-		}
-		
-		// player
-		//display(UtilG.Translate(icons[5].getPos(), icons[5].getWidth(null) / 2, 0), new Scale(1, 1), Directions.up, false, DP) ;
-		DP.DrawText(icons[5].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[5], font, TextColor) ;
-//		if (0 < attPoints)
+//	private void DrawSpellsBar(Player player, ArrayList<Spell> spells, Image CooldownImage, Image SlotImage, Point MousePos, DrawingOnPanel DP)
+//	{
+//		Font Titlefont = new Font("SansSerif", Font.BOLD, 10) ;
+//		Font font = new Font("SansSerif", Font.BOLD, 9) ;
+//		Screen screen = Game.getScreen() ;
+//		Color[] colorPalette = Game.ColorPalette ;
+//		double OverallAngle = DrawingOnPanel.stdAngle ;
+//		Point Pos = new Point(screen.getSize().width + 1, (int) (0.99 * screen.getSize().height) - 70) ;
+//		List<Spell> ActiveSpells = player.GetActiveSpells() ;
+//		Dimension size = new Dimension(36, 130) ;
+//		int slotW = SlotImage.getWidth(null), slotH = SlotImage.getHeight(null) ;	// Bar size
+//		int Ncols = Math.max(ActiveSpells.size() / 11 + 1, 1) ;
+//		int Nrows = ActiveSpells.size() / Ncols + 1 ;
+//		int Sx = (int) UtilG.spacing(size.width, Ncols, slotW, 3), Sy = (int) UtilG.spacing(size.height, Nrows, slotH, 5) ;		
+//		String[] Key = Player.SpellKeys ;
+//		Color BGcolor = Player.ClassColors[player.getJob()] ;
+//		Color TextColor = player.getColor() ;
+//		
+//		DP.DrawRoundRect(Pos, Align.bottomLeft, size, 1, colorPalette[7], BGcolor, true) ;
+//		DP.DrawText(new Point(Pos.x + size.width / 2, Pos.y - size.height + 3), Align.topCenter, OverallAngle, allText.get("* Barra de habilidades *")[1], Titlefont, colorPalette[5]) ;
+//		for (int i = 0 ; i <= ActiveSpells.size() - 1 ; ++i)
 //		{
-//			DP.DrawImage(icons[5], UtilG.Translate(icons[5].getPos(), icons[5].getWidth(null) / 2, 0), stdAngle, new Scale(1, 1), Align.bottomLeft) ;
+//			Spell spell = spells.get(i) ;
+//			if (0 < player.getSpell().get(i).getLevel())
+//			{
+//				Point slotCenter = new Point(Pos.x + slotW / 2 + (i / Nrows) * Sx + 3, Pos.y - size.height + slotH / 2 + (i % Nrows) * Sy + Titlefont.getSize() + 5) ;
+//				if (player.getMp().getCurrentValue() < spell.getMpCost())
+//				{
+//					DP.DrawImage(SlotImage, slotCenter, Align.center) ;
+//				}
+//				else
+//				{
+//					DP.DrawImage(SlotImage, slotCenter, Align.center) ;
+//				}
+//				DP.DrawText(slotCenter, Align.center, OverallAngle, Key[i], font, TextColor) ;
+//				Dimension imgSize = new Dimension(CooldownImage.getWidth(null), CooldownImage.getHeight(null)) ;
+//				if (spell.getCooldownCounter() < spell.getCooldown())
+//				{
+//					Scale Imscale = new Scale(1, 1 - (double) spell.getCooldownCounter() / spell.getCooldown()) ;
+//					DP.DrawImage(CooldownImage, new Point(slotCenter.x - imgSize.width / 2, slotCenter.y + imgSize.height / 2), OverallAngle, Imscale, Align.bottomLeft) ;
+//				}
+//				if (UtilG.isInside(MousePos, new Point(slotCenter.x - imgSize.width / 2, slotCenter.y - imgSize.height / 2), imgSize))
+//				{
+//					DP.DrawText(new Point(slotCenter.x - imgSize.width - 10, slotCenter.y), Align.centerRight, OverallAngle, spell.getName(), Titlefont, TextColor) ;
+//				}
+//			}
 //		}
-		
-		// pet
-		if (pet != null)
-		{
-			//pet.display(UtilG.Translate(icons[6].getPos(), icons[6].getWidth(null) / 2, 0), new Scale(1, 1), DP) ;
-			DP.DrawText(icons[6].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[8], font, TextColor) ;
-		}
-		
-		// Hotkeys
-		DP.DrawRoundRect(new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70), Align.topLeft, new Dimension(36, 60), 1, colorPalette[7], colorPalette[19], true) ;
-		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
-		{
-			Point slotCenter = new Point(Game.getScreen().getSize().width + 10, Game.getScreen().getSize().height - 60 + 20 * i) ;
-			Dimension slotSize = new Dimension(SpellType.slotImage.getWidth(null), SpellType.slotImage.getHeight(null)) ;
-			DP.DrawImage(SpellType.slotImage, slotCenter, Align.center) ;
-			DP.DrawText(new Point(slotCenter.x + slotSize.width / 2 + 5, slotCenter.y + slotSize.height / 2), Align.bottomLeft, stdAngle, Player.HotKeys[i], font, TextColor) ;
-			if (hotItem[i] != null)
-			{
-				DP.DrawImage(hotItem[i].getImage(), slotCenter, Align.center) ;
-				if (UtilG.isInside(MousePos, slotCenter, slotSize))
-				{
-					DP.DrawText(new Point(slotCenter.x - slotSize.width - 10, slotCenter.y), Align.centerRight, stdAngle, hotItem[i].getName(), font, TextColor) ;
-				}
-			}
-		}
-	}
+//	}
+//	public void DrawSideBar(Pet pet, Point MousePos, GameIcon[] icons, DrawingOnPanel DP)
+//	{
+//		// icons: 0: Options 1: Bag 2: Quest 3: Map 4: Book, 5: player, 6: pet
+//		Point barPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height);
+//		Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
+//		Color[] colorPalette = Game.ColorPalette ;
+//		double stdAngle = DrawingOnPanel.stdAngle ;
+//		Font font = new Font("SansSerif", Font.BOLD, 13) ;
+//		String[] IconKey = new String[] {Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7]} ;
+//		Color TextColor = colorPalette[7] ;
+//		
+//		DP.DrawRect(barPos, Align.bottomLeft, size, 1, colorPalette[9], null) ;
+//		DrawSpellsBar(this, spells, SpellType.cooldownImage, SpellType.slotImage, MousePos, DP) ;
+//		icons[0].display(stdAngle, Align.topLeft, MousePos, DP) ;		// settings
+//		icons[1].display(stdAngle, Align.topLeft, MousePos, DP) ;		// bag
+//		DP.DrawText(icons[1].getPos(), Align.bottomLeft, stdAngle, IconKey[0], font, TextColor) ;
+//		icons[2].display(stdAngle, Align.topLeft, MousePos, DP) ;		// quest
+//		DP.DrawText(icons[2].getPos(), Align.bottomLeft, stdAngle, IconKey[1], font, TextColor) ;
+//		
+//		if (questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name())))	// map
+//		{
+//			icons[3].display(stdAngle, Align.topLeft, MousePos, DP) ;
+//			DP.DrawText(icons[3].getPos(), Align.bottomLeft, stdAngle, IconKey[2], font, TextColor) ;
+//		}
+//		
+//		if (fabWindow != null)										// book
+//		{
+//			icons[4].display(stdAngle, Align.topLeft, MousePos, DP) ;
+//		}
+//		
+//		// player
+//		//display(UtilG.Translate(icons[5].getPos(), icons[5].getWidth(null) / 2, 0), new Scale(1, 1), Directions.up, false, DP) ;
+//		DP.DrawText(icons[5].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[5], font, TextColor) ;
+////		if (0 < attPoints)
+////		{
+////			DP.DrawImage(icons[5], UtilG.Translate(icons[5].getPos(), icons[5].getWidth(null) / 2, 0), stdAngle, new Scale(1, 1), Align.bottomLeft) ;
+////		}
+//		
+//		// pet
+//		if (pet != null)
+//		{
+//			//pet.display(UtilG.Translate(icons[6].getPos(), icons[6].getWidth(null) / 2, 0), new Scale(1, 1), DP) ;
+//			DP.DrawText(icons[6].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[8], font, TextColor) ;
+//		}
+//		
+//		// Hotkeys
+//		DP.DrawRoundRect(new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70), Align.topLeft, new Dimension(36, 60), 1, colorPalette[7], colorPalette[19], true) ;
+//		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
+//		{
+//			Point slotCenter = new Point(Game.getScreen().getSize().width + 10, Game.getScreen().getSize().height - 60 + 20 * i) ;
+//			Dimension slotSize = new Dimension(SpellType.slotImage.getWidth(null), SpellType.slotImage.getHeight(null)) ;
+//			DP.DrawImage(SpellType.slotImage, slotCenter, Align.center) ;
+//			DP.DrawText(new Point(slotCenter.x + slotSize.width / 2 + 5, slotCenter.y + slotSize.height / 2), Align.bottomLeft, stdAngle, Player.HotKeys[i], font, TextColor) ;
+//			if (hotItem[i] != null)
+//			{
+//				DP.DrawImage(hotItem[i].getImage(), slotCenter, Align.center) ;
+//				if (UtilG.isInside(MousePos, slotCenter, slotSize))
+//				{
+//					DP.DrawText(new Point(slotCenter.x - slotSize.width - 10, slotCenter.y), Align.centerRight, stdAngle, hotItem[i].getName(), font, TextColor) ;
+//				}
+//			}
+//		}
+//	}
 	private void DrawRange(DrawingOnPanel DP)
 	{
 		DP.DrawCircle(pos, (int)(2 * range), 2, null, Game.ColorPalette[job]) ;
@@ -1949,19 +1948,19 @@ public class Player extends LiveBeing
 		}
 		if (equiptype == 0)
 		{
-			DP.DrawImage(Items.EquipImage[job + bonus], Pos, angle, scale, Align.center) ;
+			DP.DrawImage(Equip.SwordImage, Pos, angle, scale, Align.center) ;	// Items.EquipImage[job + bonus]
 		}
 		if (equiptype == 1)
 		{
-			DP.DrawImage(Items.EquipImage[5 + bonus], Pos, angle, scale, Align.center) ;
+			DP.DrawImage(Equip.ShieldImage, Pos, angle, scale, Align.center) ;	// Items.EquipImage[5 + bonus]
 		}
 		if (equiptype == 2)
 		{
-			DP.DrawImage(Items.EquipImage[6 + bonus], Pos, angle, scale, Align.center) ;
+			DP.DrawImage(Equip.ArmorImage, Pos, angle, scale, Align.center) ;	// Items.EquipImage[6 + bonus]
 		}
 		if (equiptype == 3)
 		{
-			DP.DrawImage(Items.EquipImage[7], Pos, angle, scale, Align.center) ;
+			DP.DrawImage(Equip.ArrowImage, Pos, angle, scale, Align.center) ;	// Items.EquipImage[7]
 		}
 	}
 	private void DrawPlayerEquips(int[] Pos, double[] playerscale, DrawingOnPanel DP)

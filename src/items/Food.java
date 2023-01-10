@@ -18,7 +18,7 @@ public class Food extends Item
 	private static Food[] AllFood ;
 	public Food(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal, int SatiationHeal)
 	{
-		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "items.png"), price, dropChance) ;
+		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "items.png"), price, dropChance) ;
 		this.id = id ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;

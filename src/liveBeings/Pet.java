@@ -58,7 +58,7 @@ public class Pet extends LiveBeing
 		pos = new Point(0, 0) ;
 		dir = Directions.up ;
 		state = LiveBeingStates.idle ;
-		size = new Dimension (UtilG.loadImage(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getWidth(null), UtilG.loadImage(Game.ImagesPath + "PetType" + String.valueOf(Job) + "png").getHeight(null)) ;	
+		size = new Dimension (movingAni.idleGif.getWidth(null), movingAni.idleGif.getHeight(null)) ;	
 		range = Integer.parseInt(PetProperties.get(Job)[4]) ;
 		step = Integer.parseInt(PetProperties.get(Job)[32]) ;
 		elem = new String[] {"n", "n", "n", "n", "n"} ;

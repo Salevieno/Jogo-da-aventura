@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import components.Icon;
+import components.GameIcon;
 import graphics.DrawingOnPanel;
 import liveBeings.Spell;
 import main.Game;
@@ -21,7 +21,7 @@ public class SpellsTreeWindow extends GameWindow
 	private Spell[] spells ;
 	private int spellPoints ;
 	private Color textColor ;
-	public List<Icon> spellBoxes ;
+	public List<GameIcon> spellBoxes ;
 	private Point windowBotLeft ;
 	private Dimension windowSize ;
 	
@@ -46,7 +46,7 @@ public class SpellsTreeWindow extends GameWindow
 		// creating of spellboxes as icons at pos (0, 0)
 		for (int spell = 0 ; spell <= spells.length - 1 ; spell += 1)
 		{
-			Icon newIcon = new Icon(spell, spells[spell].getName(), new Point(0, 0), spells[spell].getInfo()[0], image, image) ;
+			GameIcon newIcon = new GameIcon(spell, spells[spell].getName(), new Point(0, 0), spells[spell].getInfo()[0], image, image) ;
 			newIcon.activate();
 			spellBoxes.add(newIcon) ;
 		}

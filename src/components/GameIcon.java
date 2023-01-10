@@ -16,7 +16,7 @@ import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 
-public class Icon
+public class GameIcon
 {
 	private int id ;
 	private String Name ;
@@ -29,9 +29,9 @@ public class Icon
 	private String value ;	// return value for when the icon is clicked
 	
 	public static int selectedIconID ;
-	public static List<Icon> allIcons = new ArrayList<>() ;	// isn't it insane to create a list of all items of a class inside the class itself?
+	public static List<GameIcon> allIcons = new ArrayList<>() ;	// isn't it insane to create a list of all items of a class inside the class itself?
 	
-	public Icon(int id, String Name, Point Pos, String description, Image image, Image SelectedImage)
+	public GameIcon(int id, String Name, Point Pos, String description, Image image, Image SelectedImage)
 	{
 		this.id = id ;
 		this.Name = Name ;
@@ -115,13 +115,13 @@ public class Icon
 	public Image getSelectedImage() {return SelectedImage ;}
 	public void setPos(Point P) {topLeftCorner = P ;}
 	
-	public static void addToAllIconsList(Icon icon)
+	public static void addToAllIconsList(GameIcon icon)
 	{
 		allIcons.add(icon) ;
 	}
 	public static void iconIsClicked(Point mousePos)
 	{
-		for (Icon icon : allIcons)
+		for (GameIcon icon : allIcons)
 		{
 			if (icon.isActive & icon.ishovered(mousePos))
 			{

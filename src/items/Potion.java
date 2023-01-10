@@ -17,7 +17,7 @@ public class Potion extends Item
 	private static Potion[] AllPotions ;
 	public Potion(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal)
 	{
-		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "items.png"), price, dropChance) ;
+		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "items.png"), price, dropChance) ;
 		this.id = id ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;

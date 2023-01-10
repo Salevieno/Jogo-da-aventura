@@ -15,7 +15,7 @@ public class Forge extends Item
 	private static Forge[] AllForge ;
 	public Forge(int id, String Name, String Description, int price, float dropChance)
 	{
-		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "items.png"), price, dropChance) ;
+		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "items.png"), price, dropChance) ;
 		this.id = id ;
 	}
 
