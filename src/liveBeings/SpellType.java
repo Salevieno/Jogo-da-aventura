@@ -35,8 +35,7 @@ public class SpellType
 	private String elem ;
 	private String[] info ;	// Effect and description
 	
-	public static Image cooldownImage = UtilG.loadImage(Game.ImagesPath + "Cooldown.png") ;	
-	public static Image slotImage = UtilG.loadImage(Game.ImagesPath + "SkillSlot.png") ;
+	public static final Image cooldownImage = UtilG.loadImage(Game.ImagesPath + "Cooldown.png") ;	
 	//public static Image ElementalCicle = UtilG.loadImage(Game.ImagesPath + "ElementalCicle.png") ;
 	
 	public SpellType(String Name, int MaxLevel, int MpCost, SpellTypes type, Map<SpellType, Integer> preRequisites, int Cooldown, int Duration, double[][] Buffs, double[][] Nerfs,

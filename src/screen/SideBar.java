@@ -11,10 +11,12 @@ import java.util.List;
 import components.GameIcon;
 import components.QuestSkills;
 import graphics.DrawingOnPanel;
+import liveBeings.HotKeysBar;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Spell;
 import liveBeings.SpellType;
+import liveBeings.SpellsBar;
 import main.Game;
 import utilities.Align;
 import utilities.Directions;
@@ -24,6 +26,8 @@ import utilities.UtilG;
 public class SideBar
 {
 	private GameIcon[] icons ;
+	// TODO criar classe spell bar e hotkeys
+	
 	
 	public SideBar(Image playerImage, Image petImage)
 	{
@@ -49,26 +53,32 @@ public class SideBar
 		Image[] SideBarIconsImages = new Image[] {Options, Bag, Quest, Map, Book, Tent, playerImage, petImage, SkillsTree} ;
 		Image[] SideBarIconsSelectedImages = new Image[] {SelectedOptions, SelectedBag, SelectedQuest, SelectedMap, SelectedBook, SelectedTent, playerImage, petImage, SelectedSkillsTree} ;
 
+		Point botLeftPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height - 250) ;
 		icons = new GameIcon[8] ;
-		String[] SBname = new String[] {"Options", "Bag", "Quest", "Map", "Book", "Tent", "Player", "Pet"} ;
-		Point[] SBpos = new Point[SBname.length] ;
-		int sy = 20 ;
-		SBpos[0] = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height - 250) ;
-    	for (int i = 1 ; i <= 6 - 1 ; i += 1)
-    	{
-    		SBpos[i] = new Point(SBpos[0].x, SBpos[i - 1].y - SideBarIconsImages[i - 1].getHeight(null) / 2 - sy) ;
-    	}
-    	SBpos[6] = new Point(SBpos[0].x, SBpos[5].y - SideBarIconsImages[5].getHeight(null)/2 - sy) ;
-    	SBpos[7] = new Point(SBpos[0].x, SBpos[6].y - (int)playerImage.getHeight(null) - SideBarIconsImages[4].getHeight(null)/2 - 20/2 - sy) ;
-     	for (int i = 0 ; i <= icons.length - 1 ; i += 1)
-    	{
-     		GameIcon newIcon = new GameIcon(i, SBname[i], SBpos[i], null, SideBarIconsImages[i], SideBarIconsSelectedImages[i]);
-     		icons[i] = newIcon ;
-     		GameIcon.addToAllIconsList(newIcon) ;
-    	}
+		icons[0] = new GameIcon(0, "Options", UtilG.Translate(botLeftPos, 0, -10), "description", UtilG.loadImage(path + "Icon_settings.png"), UtilG.loadImage(path + "Icon_settingsSelected.png")) ;
+		icons[1] = new GameIcon(1, "Bag", UtilG.Translate(botLeftPos, 0, -80), "description", UtilG.loadImage(path + "Icon1_Bag.png"), UtilG.loadImage(path + "Icon1_BagSelected.png")) ;
+		
+		icons[0].activate() ;
+		icons[1].activate() ;
+//		String[] SBname = new String[] {"Options", "Bag", "Quest", "Map", "Book", "Tent", "Player", "Pet"} ;
+//		Point[] SBpos = new Point[SBname.length] ;
+//		int sy = 20 ;
+//		SBpos[0] = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height - 250) ;
+//    	for (int i = 1 ; i <= 6 - 1 ; i += 1)
+//    	{
+//    		SBpos[i] = new Point(SBpos[0].x, SBpos[i - 1].y - SideBarIconsImages[i - 1].getHeight(null) / 2 - sy) ;
+//    	}
+//    	SBpos[6] = new Point(SBpos[0].x, SBpos[5].y - SideBarIconsImages[5].getHeight(null)/2 - sy) ;
+//    	SBpos[7] = new Point(SBpos[0].x, SBpos[6].y - (int)playerImage.getHeight(null) - SideBarIconsImages[4].getHeight(null)/2 - 20/2 - sy) ;
+//     	for (int i = 0 ; i <= icons.length - 1 ; i += 1)
+//    	{
+//     		GameIcon newIcon = new GameIcon(i, SBname[i], SBpos[i], null, SideBarIconsImages[i], SideBarIconsSelectedImages[i]);
+//     		icons[i] = newIcon ;
+//     		GameIcon.addToAllIconsList(newIcon) ;
+//    	}
 	}
 	
-	private void DrawSpellsBar(Player player, Image CooldownImage, Image SlotImage, Point MousePos, DrawingOnPanel DP)
+	/*private void DrawSpellsBar(Player player, Image CooldownImage, Image SlotImage, Point MousePos, DrawingOnPanel DP)
 	{
 		Font Titlefont = new Font("SansSerif", Font.BOLD, 10) ;
 		Font font = new Font("SansSerif", Font.BOLD, 9) ;
@@ -115,7 +125,7 @@ public class SideBar
 				}
 			}
 		}
-	}
+	}*/
 	
 	public void display(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
 	{
@@ -125,59 +135,88 @@ public class SideBar
 		Color[] colorPalette = Game.ColorPalette ;
 		double stdAngle = DrawingOnPanel.stdAngle ;
 		Font font = new Font("SansSerif", Font.BOLD, 13) ;
-		String[] IconKey = new String[] {Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7]} ;
+		String[] IconKey = new String[] {null, Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7], null, null, null, null} ;
 		Color TextColor = colorPalette[7] ;
 		
 		DP.DrawRect(barPos, Align.bottomLeft, size, 1, colorPalette[9], null) ;
-		DrawSpellsBar(player, SpellType.cooldownImage, SpellType.slotImage, mousePos, DP) ;
-		icons[0].display(stdAngle, Align.topLeft, mousePos, DP) ;		// settings
-		icons[1].display(stdAngle, Align.topLeft, mousePos, DP) ;		// bag
-		DP.DrawText(icons[1].getPos(), Align.bottomLeft, stdAngle, IconKey[0], font, TextColor) ;
-		icons[2].display(stdAngle, Align.topLeft, mousePos, DP) ;		// quest
-		DP.DrawText(icons[2].getPos(), Align.bottomLeft, stdAngle, IconKey[1], font, TextColor) ;
 		
-		if (player.getQuestSkills().get(QuestSkills.getContinentMap(player.getMap().getContinentName(player).name())))	// map
-		{
-			icons[3].display(stdAngle, Align.topLeft, mousePos, DP) ;
-			DP.DrawText(icons[3].getPos(), Align.bottomLeft, stdAngle, IconKey[2], font, TextColor) ;
-		}
+//		for (GameIcon icon : icons)
+//		{
+//			if (icon != null)
+//			{
+//				icon.display(stdAngle, Align.topLeft, mousePos, DP);
+//			}
+//		}
+//		icons[0].display(stdAngle, Align.topLeft, mousePos, DP) ;		// settings
+//		
+//		for (String key : IconKey)
+//		{
+//			DP.DrawText(icon.getPos(), Align.bottomLeft, stdAngle, IconKey[0], font, TextColor) ;
+//		}
 		
-		if (player.getQuestSkills().get(QuestSkills.craftWindow))										// book
+		for (int i = 0 ; i <= icons.length - 1; i += 1)
 		{
-			icons[4].display(stdAngle, Align.topLeft, mousePos, DP) ;
-		}
-		
-		// player
-		player.display(UtilG.Translate(icons[5].getPos(), icons[5].getImage().getWidth(null) / 2, 0), new Scale(1, 1), Directions.up, false, DP) ;
-		DP.DrawText(icons[5].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[5], font, TextColor) ;
-		if (0 < player.getAttPoints())
-		{
-			DP.DrawImage(icons[5].getImage(), UtilG.Translate(icons[5].getPos(), icons[5].getImage().getWidth(null) / 2, 0), stdAngle, new Scale(1, 1), Align.bottomLeft) ;
-		}
-		
-		// pet
-		if (pet != null)
-		{
-			pet.display(UtilG.Translate(icons[6].getPos(), icons[6].getImage().getWidth(null) / 2, 0), new Scale(1, 1), DP) ;
-			DP.DrawText(icons[6].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[8], font, TextColor) ;
-		}
-		
-		// Hotkeys
-		DP.DrawRoundRect(new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70), Align.topLeft, new Dimension(36, 60), 1, colorPalette[7], colorPalette[19], true) ;
-		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
-		{
-			Point slotCenter = new Point(Game.getScreen().getSize().width + 10, Game.getScreen().getSize().height - 60 + 20 * i) ;
-			Dimension slotSize = new Dimension(SpellType.slotImage.getWidth(null), SpellType.slotImage.getHeight(null)) ;
-			DP.DrawImage(SpellType.slotImage, slotCenter, Align.center) ;
-			DP.DrawText(new Point(slotCenter.x + slotSize.width / 2 + 5, slotCenter.y + slotSize.height / 2), Align.bottomLeft, stdAngle, Player.HotKeys[i], font, TextColor) ;
-			if (Player.HotKeys[i] != null)
+			if (icons[i] != null)
 			{
-				DP.DrawImage(SpellType.slotImage, slotCenter, Align.center) ;
-				if (UtilG.isInside(mousePos, slotCenter, slotSize))
+				icons[i].display(stdAngle, Align.topLeft, mousePos, DP);
+				if (IconKey[i] != null)
 				{
-					DP.DrawText(new Point(slotCenter.x - slotSize.width - 10, slotCenter.y), Align.centerRight, stdAngle, Player.HotKeys[i], font, TextColor) ;
+					DP.DrawText(icons[i].getPos(), Align.bottomLeft, stdAngle, IconKey[i], font, TextColor) ;
 				}
 			}
 		}
+		
+		SpellsBar.display(player.getMp().getCurrentValue(), player.getSpell(), player.GetActiveSpells(), player.allText.get("* Barra de habilidades *"), mousePos, TextColor, TextColor, DP);
+//		DrawSpellsBar(player, SpellType.cooldownImage, SpellType.slotImage, mousePos, DP) ;
+//		
+//		icons[1].display(stdAngle, Align.topLeft, mousePos, DP) ;		// bag
+//		DP.DrawText(icons[1].getPos(), Align.bottomLeft, stdAngle, IconKey[0], font, TextColor) ;
+//		icons[2].display(stdAngle, Align.topLeft, mousePos, DP) ;		// quest
+//		DP.DrawText(icons[2].getPos(), Align.bottomLeft, stdAngle, IconKey[1], font, TextColor) ;
+//		
+//		if (player.getQuestSkills().get(QuestSkills.getContinentMap(player.getMap().getContinentName(player).name())))	// map
+//		{
+//			icons[3].display(stdAngle, Align.topLeft, mousePos, DP) ;
+//			DP.DrawText(icons[3].getPos(), Align.bottomLeft, stdAngle, IconKey[2], font, TextColor) ;
+//		}
+//		
+//		if (player.getQuestSkills().get(QuestSkills.craftWindow))										// book
+//		{
+//			icons[4].display(stdAngle, Align.topLeft, mousePos, DP) ;
+//		}
+//		
+//		// player
+//		player.display(UtilG.Translate(icons[5].getPos(), icons[5].getImage().getWidth(null) / 2, 0), new Scale(1, 1), Directions.up, false, DP) ;
+//		DP.DrawText(icons[5].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[5], font, TextColor) ;
+//		if (0 < player.getAttPoints())
+//		{
+//			DP.DrawImage(icons[5].getImage(), UtilG.Translate(icons[5].getPos(), icons[5].getImage().getWidth(null) / 2, 0), stdAngle, new Scale(1, 1), Align.bottomLeft) ;
+//		}
+//		
+//		// pet
+//		if (pet != null)
+//		{
+//			pet.display(UtilG.Translate(icons[6].getPos(), icons[6].getImage().getWidth(null) / 2, 0), new Scale(1, 1), DP) ;
+//			DP.DrawText(icons[6].getPos(), Align.bottomLeft, stdAngle, Player.ActionKeys[8], font, TextColor) ;
+//		}
+//		
+//		// Hotkeys
+		HotKeysBar.display(mousePos, DP) ;
+//		DP.DrawRoundRect(new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70), Align.topLeft, new Dimension(36, 60), 1, colorPalette[7], colorPalette[19], true) ;
+//		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
+//		{
+//			Point slotCenter = new Point(Game.getScreen().getSize().width + 10, Game.getScreen().getSize().height - 60 + 20 * i) ;
+//			Dimension slotSize = new Dimension(SpellType.slotImage.getWidth(null), SpellType.slotImage.getHeight(null)) ;
+//			DP.DrawImage(SpellType.slotImage, slotCenter, Align.center) ;
+//			DP.DrawText(new Point(slotCenter.x + slotSize.width / 2 + 5, slotCenter.y + slotSize.height / 2), Align.bottomLeft, stdAngle, Player.HotKeys[i], font, TextColor) ;
+//			if (Player.HotKeys[i] != null)
+//			{
+//				DP.DrawImage(SpellType.slotImage, slotCenter, Align.center) ;
+//				if (UtilG.isInside(mousePos, slotCenter, slotSize))
+//				{
+//					DP.DrawText(new Point(slotCenter.x - slotSize.width - 10, slotCenter.y), Align.centerRight, stdAngle, Player.HotKeys[i], font, TextColor) ;
+//				}
+//			}
+//		}
 	}
 }

@@ -125,7 +125,8 @@ public class Game extends JPanel
 	private static Battle bat ;
 	private static Animations ani ;
 	
-	private final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
+	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
+	public static final Image slotImage = UtilG.loadImage(".\\images\\" + "SkillSlot.png") ;
 	
 	private Gif testGif ;
 	private Gif testGif2 ;
@@ -1004,9 +1005,10 @@ public class Game extends JPanel
 		fieldMaps = initializeFieldMaps() ;
 		specialMaps = initializeSpecialMaps() ;
 		allQuests = initializeQuests(GameLanguage, player.getJob()) ;
-		allMaps = new GameMap[cityMaps.length + fieldMaps.length] ;
+		allMaps = new GameMap[cityMaps.length + fieldMaps.length + specialMaps.length] ;
 		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
+		System.arraycopy(specialMaps, 0, allMaps, cityMaps.length + fieldMaps.length, specialMaps.length) ;
 		pet = new Pet((int) (4 * Math.random())) ;
     	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
     	pet.setPos(player.getPos());

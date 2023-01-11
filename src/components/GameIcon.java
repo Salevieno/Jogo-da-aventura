@@ -210,7 +210,7 @@ public class GameIcon
 		if (description != null)
 		{
 			DP.DrawRoundRect(new Point(topLeftCorner.x + 20, topLeftCorner.y - 10), alignment, size, 5, Color.lightGray, Color.gray, true) ;
-			DP.DrawFitText(new Point(topLeftCorner.x + 20, topLeftCorner.y - 10), 14, alignment, description, new Font("Scheherazade Bold", Font.BOLD, 12), 20, Color.blue) ;
+			DP.DrawFitText(new Point(topLeftCorner.x + 20, topLeftCorner.y - 10), 14, alignment, description, new Font(Game.MainFontName, Font.BOLD, 12), 20, Color.blue) ;
 		}
 	}
 }
