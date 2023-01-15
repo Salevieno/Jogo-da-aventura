@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 
@@ -243,17 +244,21 @@ public class LiveBeing
 		// TODO battle action counters
 	}
 	
-	public void applyBuff(boolean activate, Buff buff)
+	public void applyBuff(boolean activate, Buff buff, int level)
 	{
 		int mult = 1 ;
 		if (!activate)
 		{
 			mult = -1 ;
 		}
-		int level = 1 ;
-		double increment = PA.getLife().getMaxValue() * buff.getPercentIncrease().get(Attributes.life)
-				+ buff.getValueIncrease().get(Attributes.life) ;
-		PA.getLife().incCurrentValue((int) increment * level * mult);
+		Map<Attributes, Double> percIncrease = buff.getPercentIncrease() ;
+		Map<Attributes, Double> valueIncrease = buff.getValueIncrease() ;
+		double increment = PA.getLife().getMaxValue() * percIncrease.get(Attributes.life) + valueIncrease.get(Attributes.life) ;
+		PA.getLife().incCurrentValue((int) Math.round(increment * level * mult));
+		increment = BA.getPhyAtk().getBaseValue() * percIncrease.get(Attributes.phyAtk) + valueIncrease.get(Attributes.phyAtk) ;
+		BA.getPhyAtk().incBonus(increment * level * mult);
+		increment = BA.getMagAtk().getBaseValue() * percIncrease.get(Attributes.magAtk) + valueIncrease.get(Attributes.magAtk) ;
+		BA.getMagAtk().incBonus(increment * level * mult);
 	}
 	
 	public void ActivateDef()

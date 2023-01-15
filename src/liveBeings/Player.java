@@ -292,7 +292,7 @@ public class Player extends LiveBeing
 		double[] Silence = new double[] {Double.parseDouble(Properties.get(Job)[29]), 0, Double.parseDouble(Properties.get(Job)[30]), 0, Double.parseDouble(Properties.get(Job)[31])} ;
 		int[] Status = new int[9] ;
 		int[] SpecialStatus = new int[5] ;
-		
+
 		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus) ;
 	
 	}
@@ -707,11 +707,11 @@ public class Player extends LiveBeing
 			int spellID = UtilG.IndexOf(SpellKeys, currentAction) ;
 			Spell spell = spells.get(spellID);
 			//System.out.println("spell cooldown " + spell.getCooldownCounter());
-			if (spell.isReady())
+			if (spell.isReady() & spell.getMpCost() <= PA.getMp().getCurrentValue() & 0 < spell.getLevel())
 			{
-				spell.getCooldownCounter().reset();
 				System.out.println("Used a support spell = " + spells.get(spellID));
-				SupSpell(pet, spells.get(spellID)) ;
+				UseSupportSpell(pet, spells.get(spellID)) ;
+				getStats()[1] += 1 ;	// Number of mag atks
 			}
 		}
 		//		if (actionIsASpell() & (!isInBattle() | canAtk()) & UtilG.IndexOf(SpellKeys, currentAction) < GetActiveSpells().size())
@@ -1036,6 +1036,10 @@ public class Player extends LiveBeing
 					}
 				}*/
 				spell.getDurationCounter().reset();
+				for (Buff buff : spell.getBuffs())
+				{
+					applyBuff(false, buff, spell.getLevel());
+				}
 				spell.deactivate() ;
 			}
 			spell.getCooldownCounter().inc() ;
@@ -1186,43 +1190,39 @@ public class Player extends LiveBeing
 			creature.ApplyBuffsAndNerfs("activate", "nerfs", i, spell.getLevel(), spell, spell.isActive()) ;
 		}
 	}
-	private void SupSpell(Pet pet, Spell spell)
-	{
-		int spellLevel = spell.getLevel() ;
-		spell.activate() ;
-		if (spell.getMpCost() <= PA.getMp().getCurrentValue() & 0 < spellLevel)
+	private void UseSupportSpell(Pet pet, Spell spell)
+	{	
+		spell.getCooldownCounter().reset();
+		spell.activate() ;		
+		ResetBattleActions() ;
+		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
+		if (job == 0)
 		{
-			getStats()[1] += 1 ;	// Number of mag atks
-			ResetBattleActions() ;			
-			PA.getMp().incCurrentValue(-spell.getMpCost()) ;
-			if (job == 0)
+			
+		}
+		if (job == 1)
+		{
+			switch (spell.getName())
 			{
-				
+				case "Cura": getLife().incCurrentValue(5 * spell.getLevel()); break ;
+				case "Inspiração mística": break ;
+				default: break ;
 			}
-			if (job == 1)
+			/*if (spellID == 10)
 			{
-				switch (spell.getName())
+				PA.getLife()[0] += (double)Math.min((0.04*spellLevel + 0.002*BA.TotalMagAtk()), 0.3)*PA.getLife()[1] ;
+				PA.getLife()[0] = (double)Math.min(PA.getLife()[0], PA.getLife()[1]) ;
+				if (0 < pet.getLife()[0] & spell.getMpCost() <= pet.getMp()[0])
 				{
-					case "Cura": getLife().incCurrentValue(5 * spellLevel); break ;
-					case "Inspiração mística": break ;
-					default: break ;
+					pet.getMp()[0] += -spell.getMpCost() ;
+					pet.getLife()[0] += (double)Math.min(Math.min((0.02*spellLevel + 0.002*(pet.getBA().TotalMagAtk())), 0.15)*pet.getLife()[1], pet.getLife()[1]) ;
+					pet.getLife()[0] = (double)Math.min(pet.getLife()[0], pet.getLife()[1]) ;
 				}
-				/*if (spellID == 10)
-				{
-					PA.getLife()[0] += (double)Math.min((0.04*spellLevel + 0.002*BA.TotalMagAtk()), 0.3)*PA.getLife()[1] ;
-					PA.getLife()[0] = (double)Math.min(PA.getLife()[0], PA.getLife()[1]) ;
-					if (0 < pet.getLife()[0] & spell.getMpCost() <= pet.getMp()[0])
-					{
-						pet.getMp()[0] += -spell.getMpCost() ;
-						pet.getLife()[0] += (double)Math.min(Math.min((0.02*spellLevel + 0.002*(pet.getBA().TotalMagAtk())), 0.15)*pet.getLife()[1], pet.getLife()[1]) ;
-						pet.getLife()[0] = (double)Math.min(pet.getLife()[0], pet.getLife()[1]) ;
-					}
-				}*/
-			}
-			for (int i = 0 ; i <= spell.getBuffs().size() - 1 ; ++i)
-			{
-				//ApplyBuffsAndNerfs("activate", "buffs", i, spellID, spell.isActive()s) ;
-			}
+			}*/
+		}
+		for (int i = 0 ; i <= spell.getBuffs().size() - 1 ; ++i)
+		{
+			applyBuff(true, spell.getBuffs().get(i), spell.getLevel());
 		}
 	}
 	public void autoSpells(Creature creature, ArrayList<Spell> spell)

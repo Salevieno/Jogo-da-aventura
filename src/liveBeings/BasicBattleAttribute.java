@@ -8,6 +8,7 @@ public class BasicBattleAttribute extends LiveBeingAttribute
 	public BasicBattleAttribute(double baseValue, double bonus, double train)
 	{
 		super(bonus);
+		this.baseValue = baseValue;
 		this.train = train ;
 	}
 
@@ -28,4 +29,12 @@ public class BasicBattleAttribute extends LiveBeingAttribute
 	public void incTrain(double inc) {train += inc ;}
 	
 	public double getTotal() {return baseValue + bonus + train ;}
+
+	@Override
+	public String toString()
+	{
+		return "BasicBattleAttribute [baseValue=" + baseValue + ", bonus=" + bonus + ", train=" + train + "]";
+	}
+	
+	
 }

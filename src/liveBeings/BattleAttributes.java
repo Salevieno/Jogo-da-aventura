@@ -1,5 +1,7 @@
 package liveBeings ;
 
+import java.util.Arrays;
+
 public class BattleAttributes
 {
 	private BasicBattleAttribute PhyAtk ;	// 0: Base atk, 1: bonus, 2: train
@@ -196,4 +198,16 @@ public class BattleAttributes
 			}
 		}
 	}
+
+	@Override
+	public String toString()
+	{
+		return "BattleAttributes [PhyAtk=" + PhyAtk + ", MagAtk=" + MagAtk + ", PhyDef=" + PhyDef + ", MagDef=" + MagDef
+				+ ", Dex=" + Dex + ", Agi=" + Agi + ", Crit=" + Arrays.toString(Crit) + ", Stun="
+				+ Arrays.toString(Stun) + ", Block=" + Arrays.toString(Block) + ", Blood=" + Arrays.toString(Blood)
+				+ ", Poison=" + Arrays.toString(Poison) + ", Silence=" + Arrays.toString(Silence) + ", Status="
+				+ Arrays.toString(Status) + ", SpecialStatus=" + Arrays.toString(SpecialStatus) + "]";
+	}
+	
+	
 }

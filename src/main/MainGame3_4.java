@@ -11,7 +11,7 @@ import javax.swing.Timer;
 import utilities.GameStates;
 
 /**
- * made with love by
+ * made with love by Salevieno
  * @author Salevieno
  * @version 3.4
  * @since 2022
