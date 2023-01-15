@@ -363,7 +363,7 @@ public class Creature extends LiveBeing
 		double[][] Buffs = null ;
 		if (type.equals("buffs"))
 		{
-			Buffs = spells.getBuffs() ;
+			//Buffs = spells.getBuffs() ;
 		}
 		else if (type.equals("nerfs"))
 		{

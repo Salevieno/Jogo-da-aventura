@@ -401,7 +401,7 @@ public class Player extends LiveBeing
 			double[] Poison = new double[] {Double.parseDouble(spellsInput.get(ID)[35]), Double.parseDouble(spellsInput.get(ID)[36]), Double.parseDouble(spellsInput.get(ID)[37])} ;
 			double[] Silence = new double[] {Double.parseDouble(spellsInput.get(ID)[38]), Double.parseDouble(spellsInput.get(ID)[39]), Double.parseDouble(spellsInput.get(ID)[40])} ;
 			String Elem = spellsInput.get(ID)[41] ;*/
-			spells.add(new Spell(allSpellTypes[i])) ;	
+			spells.add(new Spell(allSpellTypes[CumNumberOfSpellsPerJob[job] + i])) ;	
 			
 			// new Spell(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, spellBuffs[i], spellNerfs[i],
 			//Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i])
@@ -698,10 +698,26 @@ public class Player extends LiveBeing
 		}
 		
 		// support spells
-		if (actionIsASpell() & (!isInBattle() | canAtk()) & UtilG.IndexOf(SpellKeys, currentAction) < GetActiveSpells().size())
+//		System.out.println("isInBattle() = " + isInBattle());
+//		System.out.println("canAtk() = " + canAtk());
+//		System.out.println("UtilG.IndexOf(SpellKeys, currentAction) < GetActiveSpells().size() = " + (UtilG.IndexOf(SpellKeys, currentAction)));
+		if (actionIsASpell())
 		{
-			SupSpell(pet, GetActiveSpells().get(UtilG.IndexOf(SpellKeys, currentAction))) ;
+//			System.out.println("actionIsASpell() = " + actionIsASpell());
+			int spellID = UtilG.IndexOf(SpellKeys, currentAction) ;
+			Spell spell = spells.get(spellID);
+			//System.out.println("spell cooldown " + spell.getCooldownCounter());
+			if (spell.isReady())
+			{
+				spell.getCooldownCounter().reset();
+				System.out.println("Used a support spell = " + spells.get(spellID));
+				SupSpell(pet, spells.get(spellID)) ;
+			}
 		}
+		//		if (actionIsASpell() & (!isInBattle() | canAtk()) & UtilG.IndexOf(SpellKeys, currentAction) < GetActiveSpells().size())
+//		{
+//			SupSpell(pet, GetActiveSpells().get(UtilG.IndexOf(SpellKeys, currentAction))) ;
+//		}
 
 		// navigating through open windows
 		if (bag.isOpen())
@@ -910,20 +926,23 @@ public class Player extends LiveBeing
 	private void MoveToNewMap(Pet pet, String action, boolean MusicIsOn, Animations Ani)
 	{
 		Screen screen = Game.getScreen() ;
-		int nextMap = -1 ;
+		int nextMapID = -1 ;
 		Point currentPos = new Point(pos.x, pos.y) ;
 		Point nextPos = new Point(0, 0) ;
+//		System.out.println("\nmoving to new map \n");
+//		System.out.println("current map: " + map);
+//		System.out.println("map connections: " + Arrays.toString(map.getConnections()));
 		int[] mapCon = map.getConnections() ;
 		if (action.equals(MoveKeys[0]))	 // Up
 		{
 			nextPos = new Point(currentPos.x, screen.getBorders()[3] - step) ;
 			if (-1 < mapCon[0] & currentPos.x <= screen.getSize().width / 2)
 			{
-				nextMap = mapCon[0] ;
+				nextMapID = mapCon[0] ;
 			}
 			else if (-1 < mapCon[7] & screen.getSize().width / 2 < currentPos.x)
 			{
-				nextMap = mapCon[7] ;
+				nextMapID = mapCon[7] ;
 			}			
 		}
 		if (action.equals(MoveKeys[1]))	 // Left
@@ -931,23 +950,24 @@ public class Player extends LiveBeing
 			nextPos = new Point(screen.getBorders()[2] - step, currentPos.y) ;
 			if (-1 < mapCon[1] & currentPos.y <= screen.getSize().height / 2)
 			{
-				nextMap = mapCon[1] ;
+				nextMapID = mapCon[1] ;
 			}
 			else if (-1 < mapCon[2] & screen.getSize().height / 2 < currentPos.y)
 			{
-				nextMap = mapCon[2] ;
+				nextMapID = mapCon[2] ;
 			}		
+			System.out.println("new map: " + nextMapID);
 		}
 		if (action.equals(MoveKeys[2]))	 // Down
 		{
 			nextPos = new Point(currentPos.x, screen.getBorders()[1] + step) ;
 			if(-1 < mapCon[3] & currentPos.x <= screen.getSize().width / 2)
 			{
-				nextMap = mapCon[3] ;
+				nextMapID = mapCon[3] ;
 			}
 			else if(-1 < mapCon[4] & screen.getSize().width / 2 < currentPos.x)
 			{
-				nextMap = mapCon[4] ;	
+				nextMapID = mapCon[4] ;	
 			}
 		}
 		if (action.equals(MoveKeys[3]))	 // Right
@@ -955,22 +975,22 @@ public class Player extends LiveBeing
 			nextPos = new Point(screen.getBorders()[0] + step, currentPos.y) ;
 			if(-1 < mapCon[5] & screen.getSize().height / 2 < currentPos.y)
 			{
-				nextMap = mapCon[5] ;
+				nextMapID = mapCon[5] ;
 			}
 			else if(-1 < mapCon[6] & currentPos.y <= screen.getSize().height / 2)
 			{
-				nextMap = mapCon[6] ;
+				nextMapID = mapCon[6] ;
 			}
 		}
-		if (-1 < nextMap)
+		if (-1 < nextMapID)
 		{
-			if (Game.getMaps()[nextMap].GroundIsWalkable(nextPos, elem[4]))
+			if (Game.getMaps()[nextMapID].GroundIsWalkable(nextPos, elem[4]))
 			{
 				/*if (MusicIsOn & Maps.MusicID[map.getid()] != Maps.MusicID[nextMap])
 				{
 					UtilG.SwitchMusic(Music[Maps.MusicID[map.getid()]], Music[Maps.MusicID[nextMap]]) ;
 				}*/
-				setMap(Game.getMaps()[nextMap]) ;
+				setMap(Game.getMaps()[nextMapID]) ;
 				//setContinent(map.getContinent()) ;
 				setPos(nextPos) ;	
 				if (pet.isAlive())
@@ -997,11 +1017,11 @@ public class Player extends LiveBeing
 	{
 		for (Spell spell : spells)
 		{
-			if (spell.getDurationCounter() < spell.getDuration() & spell.isActive())
+			if (spell.isActive())
 			{
-				spell.incDurationCounter() ;
+				spell.getDurationCounter().inc() ;
 			}
-			if (spell.getDurationCounter() == spell.getDuration())
+			if (spell.getDurationCounter().finished())
 			{
 				/*ResetSpellDurationCounter(s) ;
 				for (int i = 0 ; i <= spells.get(s).getBuffs().length - 1 ; ++i)
@@ -1015,12 +1035,10 @@ public class Player extends LiveBeing
 						creatureID.ApplyBuffsAndNerfs("deactivate", "nerfs", i, spells.get(s).getLevel(), spells.get(s), SpellIsActive(s)) ;
 					}
 				}*/
+				spell.getDurationCounter().reset();
 				spell.deactivate() ;
 			}
-			if (spell.getCooldownCounter() < spell.getCooldown())
-			{
-				spell.incCooldownCounter() ;
-			}
+			spell.getCooldownCounter().inc() ;
 		}
 	}
 	private void Tent()
@@ -1057,7 +1075,7 @@ public class Player extends LiveBeing
 		{		
 			fabWindow.display(knownRecipes, MousePos, DP) ;
 		}
-		Tent() ;	// TODO create tent
+		//Tent() ;	// TODO create tent
 		if (pet != null)
 		{
 			if (pet.getAttWindow().isOpen())
@@ -1162,7 +1180,7 @@ public class Player extends LiveBeing
 				
 			}*/
 		}
-		for (int i = 0 ; i <= spell.getBuffs().length - 1 ; ++i)
+		for (int i = 0 ; i <= spell.getBuffs().size() - 1 ; ++i)
 		{
 			//ApplyBuffsAndNerfs("activate", "buffs", i, spellID, SpellIsActive(spellID)) ;
 			creature.ApplyBuffsAndNerfs("activate", "nerfs", i, spell.getLevel(), spell, spell.isActive()) ;
@@ -1183,6 +1201,12 @@ public class Player extends LiveBeing
 			}
 			if (job == 1)
 			{
+				switch (spell.getName())
+				{
+					case "Cura": getLife().incCurrentValue(5 * spellLevel); break ;
+					case "Inspiração mística": break ;
+					default: break ;
+				}
 				/*if (spellID == 10)
 				{
 					PA.getLife()[0] += (double)Math.min((0.04*spellLevel + 0.002*BA.TotalMagAtk()), 0.3)*PA.getLife()[1] ;
@@ -1195,7 +1219,7 @@ public class Player extends LiveBeing
 					}
 				}*/
 			}
-			for (int i = 0 ; i <= spell.getBuffs().length - 1 ; ++i)
+			for (int i = 0 ; i <= spell.getBuffs().size() - 1 ; ++i)
 			{
 				//ApplyBuffsAndNerfs("activate", "buffs", i, spellID, spell.isActive()s) ;
 			}
@@ -1220,16 +1244,18 @@ public class Player extends LiveBeing
 			SkillBuffIsActive[12][0] = false ;
 		}*/
 	}
-	private void ApplyBuffsAndNerfs(String action, String type, int att, int spellID, boolean spellIsActive)
+	public void ApplyBuffsAndNerfs(String action, String type, int att, Buff buff, int spellID, boolean spellIsActive)
 	{
 		int ActionMult = 1 ;
 		double[][] Buff = new double[14][5] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
 		double[] OriginalValue = new double[14] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 		double[][] Buffs = null ;
+		List<Buff> buffs = spells.get(spellID).getBuffs() ;
+		System.out.println("buffs = " + buffs);
 		int BuffNerfLevel = spells.get(spellID).getLevel() ;
 		if (type.equals("buffs"))
 		{
-			Buffs = spells.get(spellID).getBuffs() ;
+			//Buffs = spells.get(spellID).getBuffs() ;
 		}
 		else if (type.equals("nerfs"))
 		{
@@ -1243,64 +1269,72 @@ public class Player extends LiveBeing
 		{
 			ActionMult = -1 ;
 		}
-		if (att == 11 | att == 12)
-		{
-			if (action.equals("deactivate"))
-			{
-				Buff[att][0] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
-				Buff[att][1] += (OriginalValue[att]*Buffs[att][3] + Buffs[att][4])*BuffNerfLevel*ActionMult ;
-				Buff[att][2] += (OriginalValue[att]*Buffs[att][6] + Buffs[att][7])*BuffNerfLevel*ActionMult ;
-				Buff[att][3] += (OriginalValue[att]*Buffs[att][9] + Buffs[att][10])*BuffNerfLevel*ActionMult ;
-			}
-			else
-			{
-				if (Math.random() <= Buffs[att][2])
-				{
-					Buff[att][1] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
-				}
-				if (Math.random() <= Buffs[att][5])
-				{
-					Buff[att][1] += (OriginalValue[att]*Buffs[att][3] + Buffs[att][4])*BuffNerfLevel*ActionMult ;
-				}
-				if (Math.random() <= Buffs[att][8])
-				{
-					Buff[att][2] += (OriginalValue[att]*Buffs[att][6] + Buffs[att][7])*BuffNerfLevel*ActionMult ;
-				}
-				if (Math.random() <= Buffs[att][11])
-				{
-					Buff[att][3] += (OriginalValue[att]*Buffs[att][9] + Buffs[att][10])*BuffNerfLevel*ActionMult ;
-				}
-			}
-		}
-		else if (action.equals("deactivate") | Math.random() <= Buffs[att][2])
-		{
-			Buff[att][0] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
-		}
+		
 		if (!spellIsActive)
 		{
-			PA.getLife().incCurrentValue((int) Buff[0][0]); ;
-			PA.getMp().incCurrentValue((int) Buff[1][0]); ;
-			BA.getPhyAtk().incBonus(Buff[2][0]) ;
-			BA.getMagAtk().incBonus(Buff[3][0]) ;
-			BA.getPhyDef().incBonus(Buff[4][0]) ;
-			BA.getMagDef().incBonus(Buff[5][0]) ;
-			BA.getDex().incBonus(Buff[6][0]) ;
-			BA.getAgi().incBonus(Buff[7][0]) ;
-			BA.getCrit()[1] += Buff[8][0] ;
-			BA.getStun()[1] += Buff[9][0] ;
-			BA.getBlock()[1] += Buff[10][0] ;
-			BA.getBlood()[1] += Buff[11][0] ;
-			BA.getBlood()[3] += Buff[11][1] ;
-			BA.getBlood()[5] += Buff[11][2] ;
-			BA.getBlood()[7] += Buff[11][3] ;
-			BA.getBlood()[8] += Buff[11][4] ;
-			BA.getPoison()[1] += Buff[12][0] ;
-			BA.getPoison()[3] += Buff[12][1] ;
-			BA.getPoison()[5] += Buff[12][2] ;
-			BA.getPoison()[7] += Buff[12][3] ;
-			BA.getPoison()[8] += Buff[12][4] ;
-			BA.getSilence()[1] += Buff[13][0] ;
-		}	
+			int level = 1 ;
+			double increment = PA.getLife().getMaxValue() * buff.getPercentIncrease().get(Attributes.life)
+					+ buff.getValueIncrease().get(Attributes.life) ;
+			PA.getLife().incCurrentValue((int) increment * level * ActionMult);
+		}
+//		if (att == 11 | att == 12)
+//		{
+//			if (action.equals("deactivate"))
+//			{
+//				Buff[att][0] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
+//				Buff[att][1] += (OriginalValue[att]*Buffs[att][3] + Buffs[att][4])*BuffNerfLevel*ActionMult ;
+//				Buff[att][2] += (OriginalValue[att]*Buffs[att][6] + Buffs[att][7])*BuffNerfLevel*ActionMult ;
+//				Buff[att][3] += (OriginalValue[att]*Buffs[att][9] + Buffs[att][10])*BuffNerfLevel*ActionMult ;
+//			}
+//			else
+//			{
+//				if (Math.random() <= Buffs[att][2])
+//				{
+//					Buff[att][1] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
+//				}
+//				if (Math.random() <= Buffs[att][5])
+//				{
+//					Buff[att][1] += (OriginalValue[att]*Buffs[att][3] + Buffs[att][4])*BuffNerfLevel*ActionMult ;
+//				}
+//				if (Math.random() <= Buffs[att][8])
+//				{
+//					Buff[att][2] += (OriginalValue[att]*Buffs[att][6] + Buffs[att][7])*BuffNerfLevel*ActionMult ;
+//				}
+//				if (Math.random() <= Buffs[att][11])
+//				{
+//					Buff[att][3] += (OriginalValue[att]*Buffs[att][9] + Buffs[att][10])*BuffNerfLevel*ActionMult ;
+//				}
+//			}
+//		}
+//		else if (action.equals("deactivate") | Math.random() <= Buffs[att][2])
+//		{
+//			Buff[att][0] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
+//		}
+//		if (!spellIsActive)
+//		{
+//			PA.getLife().incCurrentValue((int) Buff[0][0]); ;
+//			PA.getMp().incCurrentValue((int) Buff[1][0]); ;
+//			BA.getPhyAtk().incBonus(Buff[2][0]) ;
+//			BA.getMagAtk().incBonus(Buff[3][0]) ;
+//			BA.getPhyDef().incBonus(Buff[4][0]) ;
+//			BA.getMagDef().incBonus(Buff[5][0]) ;
+//			BA.getDex().incBonus(Buff[6][0]) ;
+//			BA.getAgi().incBonus(Buff[7][0]) ;
+//			BA.getCrit()[1] += Buff[8][0] ;
+//			BA.getStun()[1] += Buff[9][0] ;
+//			BA.getBlock()[1] += Buff[10][0] ;
+//			BA.getBlood()[1] += Buff[11][0] ;
+//			BA.getBlood()[3] += Buff[11][1] ;
+//			BA.getBlood()[5] += Buff[11][2] ;
+//			BA.getBlood()[7] += Buff[11][3] ;
+//			BA.getBlood()[8] += Buff[11][4] ;
+//			BA.getPoison()[1] += Buff[12][0] ;
+//			BA.getPoison()[3] += Buff[12][1] ;
+//			BA.getPoison()[5] += Buff[12][2] ;
+//			BA.getPoison()[7] += Buff[12][3] ;
+//			BA.getPoison()[8] += Buff[12][4] ;
+//			BA.getSilence()[1] += Buff[13][0] ;
+//		}	
 	}
 	public void TakeBloodAndPoisonDamage(double TotalBloodAtk, double TotalPoisonAtk)
 	{
@@ -1639,6 +1673,7 @@ public class Player extends LiveBeing
 		}
 		//Point WinPos = new Point((int) (0.3 * MainWinDim[0]), (int) (0.2 * MainWinDim[1])) ;
 		//DrawAttWindow(MainWinDim, WinPos, MousePos, AllText, AllTextCat, SelectedWindow[0], GoldCoinImage, icons, DP) ;
+
 		attWindow.display(this, allText, equips, equipsBonus, MousePos, DP) ;
 	}
 	private void ApplyEquipsBonus(int ID, double ActionMult)

@@ -1,6 +1,7 @@
 package liveBeings ;
 
 import java.awt.Image;
+import java.util.Arrays;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -17,7 +18,7 @@ public class SpellType
 	private SpellTypes type ;
 	private Map<SpellType, Integer> preRequisites ;
 	private int cooldown ;
-	private int cooldownDuration ;
+	//private int cooldownDuration ;
 	private int effectDuration ;
 	private double[][] Buffs ;
 	private double[][] Nerfs ;
@@ -48,7 +49,7 @@ public class SpellType
 		this.type = type ;
 		this.preRequisites = preRequisites ;
 		this.cooldown = Cooldown ;
-		this.cooldownDuration = Duration ;
+		//this.cooldownDuration = Duration ;
 		this.effectDuration = Duration ;
 		this.Buffs = Buffs ;
 		this.Nerfs = Nerfs ;
@@ -73,7 +74,7 @@ public class SpellType
 	public SpellTypes getType() {return type ;}
 	public Map<SpellType, Integer> getPreRequisites() {return preRequisites ;}
 	public int getCooldown() {return cooldown ;}
-	public int getCooldownDuration() {return cooldownDuration ;}
+	//public int getCooldownDuration() {return cooldownDuration ;}
 	public int getEffectDuration() {return effectDuration ;}
 	public double[][] getBuffs() {return Buffs ;}
 	public double[][] getNerfs() {return Nerfs ;}
@@ -92,7 +93,10 @@ public class SpellType
 	public String[] getInfo() {return info ;}
 
 	@Override
-	public String toString() {
-		return "SpellType [name=" + name + "]";
+	public String toString()
+	{
+		return "SpellType [name=" + name + ", maxLevel=" + maxLevel + ", mpCost=" + mpCost + ", type=" + type
+				+ ", preRequisites=" + preRequisites + ", cooldown=" + cooldown + ", effectDuration=" + effectDuration + "]";
 	}
+
 }

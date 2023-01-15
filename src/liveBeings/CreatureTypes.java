@@ -17,7 +17,7 @@ import utilities.TimeCounter;
 
 public class CreatureTypes 
 {
-	private int Type ;
+	private int id ;
 	
 	protected String name ;
 	protected int level;
@@ -29,7 +29,7 @@ public class CreatureTypes
 	protected int satiationDuration ;	// counts the satiation reduction
 	protected int moveDuration ;		// counts the move
 	protected int battleActionDuration ;// counts the battle actions
-	protected int stepCounter ;			// counts the steps in the movement	TODO -> TimeCounter ? (não é tempo, é step)
+	protected int stepCounter ;			// counts the steps in the movement	TODO -> TimeCounter ? (nï¿½o ï¿½ tempo, ï¿½ step)
 	
 	protected MovingAnimations movingAni ;
 	protected PersonalAttributes PA ;
@@ -64,7 +64,7 @@ public class CreatureTypes
 			Color color,
 			int[] StatusCounter)
 	{
-		this.Type = Type ;
+		this.id = Type ;
 		
 		this.name = name;
 		this.level = level;
@@ -88,7 +88,8 @@ public class CreatureTypes
 		this.StatusCounter = StatusCounter ;
 	}
 
-	public int getID() {return Type ;}
+	public int getID() {return id ;}
+	public int getLevel() { return level ;}
 	public MovingAnimations getMovingAnimations() {return movingAni ;}
 	public PersonalAttributes getPA() {return PA ;}
 	public BattleAttributes getBA() {return BA ;}
@@ -97,7 +98,7 @@ public class CreatureTypes
 	public int getGold() {return Gold ;}
 	public Color getColor() {return color ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
-	public void setID(int I) {Type = I ;}
+	public void setID(int I) {id = I ;}
 	public void setSpell(ArrayList<Spell> S) {spell = S ;}
 	public void setBag(int[] B) {Bag = B ;}
 	public void setGold(int G) {Gold = G ;}
@@ -120,6 +121,6 @@ public class CreatureTypes
 
 	@Override
 	public String toString() {
-		return "CreatureTypes [Type=" + Type + "]";
+		return "CreatureTypes [Type=" + id + "]";
 	}
 }

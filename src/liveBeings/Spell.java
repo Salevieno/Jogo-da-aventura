@@ -1,8 +1,12 @@
 package liveBeings ;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import components.SpellTypes;
+import utilities.TimeCounter;
 
 public class Spell 
 {	
@@ -12,9 +16,9 @@ public class Spell
 	private int mpCost ;
 	private SpellTypes type ;
 	private Map<SpellType, Integer> preRequisites ;
-	private int cooldown ;
-	private int cooldownDuration ;
-	private int effectDuration ;
+	//private int cooldown ;
+	//private int effectDuration ;
+	private List<Buff> buffs;
 	private double[][] Buffs ;
 	private double[][] Nerfs ;
 	private double[] AtkMod ;
@@ -29,8 +33,10 @@ public class Spell
 	private double[] PoisonMod ;
 	private double[] SilenceMod ;
 	private boolean isActive ;
-	private int cooldownCounter ;
-	private int effectCounter ;
+	//private int cooldownCounter ;
+	//private int effectCounter ;
+	private TimeCounter cooldownCounter ;
+	private TimeCounter effectCounter ;
 	private String elem ;
 
 	private String[] info ;	// Effect and description
@@ -43,9 +49,8 @@ public class Spell
 		this.mpCost = spellType.getMpCost() ;
 		this.type = spellType.getType() ;
 		this.preRequisites = spellType.getPreRequisites() ;
-		this.cooldown = spellType.getCooldown() ;
-		this.cooldownDuration = spellType.getCooldownDuration() ;
-		this.effectDuration = spellType.getEffectDuration() ;
+		//this.cooldown = spellType.getCooldown() ;
+		//this.effectDuration = spellType.getEffectDuration() ;
 		this.Buffs = spellType.getBuffs() ;
 		this.Nerfs = spellType.getNerfs() ;
 		this.AtkMod = spellType.getAtkMod() ;
@@ -60,10 +65,12 @@ public class Spell
 		this.PoisonMod = spellType.getPoisonMod() ;
 		this.SilenceMod = spellType.getSilenceMod() ;
 		isActive = false ;
-		cooldownCounter = 0 ;
-		effectCounter = 0 ;
+		cooldownCounter = new TimeCounter(0, spellType.getCooldown()) ;
+		effectCounter = new TimeCounter(0, spellType.getEffectDuration()) ;
 		this.elem = spellType.getElem() ;
 		this.info = spellType.getInfo() ;
+		buffs = new ArrayList<>();
+		buffs.add(new Buff(new HashMap<>(), new HashMap<>(), new HashMap<>()));
 	}
 	
 	public String getName() {return name ;}
@@ -72,9 +79,9 @@ public class Spell
 	public int getMpCost() {return mpCost ;}
 	public SpellTypes getType() {return type ;}
 	public Map<SpellType, Integer> getPreRequisites() {return preRequisites ;}
-	public int getCooldown() {return cooldown ;}
-	public int getDuration() {return cooldownDuration ;}
-	public double[][] getBuffs() {return Buffs ;}
+	public int getCooldown() {return cooldownCounter.getDuration() ;}
+	public List<Buff> getBuffs() {return buffs ;}
+	//public double[][] getBuffs() {return Buffs ;}
 	public double[][] getNerfs() {return Nerfs ;}
 	public double[] getAtkMod() {return AtkMod ;}
 	public double[] getDefMod() {return DefMod ;}
@@ -88,16 +95,16 @@ public class Spell
 	public double[] getPoisonMod() {return PoisonMod ;}
 	public double[] getSilenceMod() {return SilenceMod ;}
 	public String getElem() {return elem ;}
-	public int getCooldownCounter() {return cooldownCounter ;}
-	public int getDurationCounter() {return effectCounter ;}
+	public TimeCounter getCooldownCounter() {return cooldownCounter ;}
+	public TimeCounter getDurationCounter() {return effectCounter ;}
 	public String[] getInfo() {return info ;}
 
-	public boolean isReady() {return cooldownCounter == 0 ;}
+	public boolean isReady() {return cooldownCounter.finished() ;}
 	public boolean isActive() {return isActive ;}
 	public void activate() {isActive = true ;}
 	public void deactivate() {isActive = false ;}
-	public void incCooldownCounter() {cooldownCounter = (cooldownCounter + 1) % cooldownDuration ;}
-	public void incDurationCounter() {effectCounter = (effectCounter + 1) % effectDuration ;}
+	//public void incCooldownCounter() {cooldownCounter = (cooldownCounter + 1) % cooldownDuration ;}
+	//public void incDurationCounter() {effectCounter = (effectCounter + 1) % effectDuration ;}
 
 	public void incLevel(int increment)
 	{

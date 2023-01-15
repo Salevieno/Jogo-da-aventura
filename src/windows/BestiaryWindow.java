@@ -43,7 +43,7 @@ public class BestiaryWindow extends GameWindow
 	{
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String[] text = player.allText.get("* Bestiário *") ;
+		String[] text = player.allText.get("* Bestiï¿½rio *") ;
 		Color textColor = Game.ColorPalette[9] ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
@@ -56,7 +56,7 @@ public class BestiaryWindow extends GameWindow
 		
 		// draw text
 		ArrayList<String> textInfo = new ArrayList<>() ;
-		//textInfo.add(text[2] + ": " + creature.getLevel()) ;	// TODO pegar level da criatura
+		textInfo.add(text[2] + ": " + creature.getLevel()) ;
 		textInfo.add(text[3] + ": " + (int)creature.getPA().getLife().getCurrentValue()) ;
 		textInfo.add(text[4] + ": " + creature.getPA().getExp().getCurrentValue()) ;
 		textInfo.add(text[5] + ": " + creature.getGold()) ;

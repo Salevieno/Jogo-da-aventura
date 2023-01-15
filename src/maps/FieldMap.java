@@ -32,9 +32,7 @@ public class FieldMap extends GameMap
 		// add map elements
 		Screen screen = Game.getScreen() ;
 		Point minCoord = new Point((int) (0.1 * screen.getSize().width), Game.getSky().height + 10) ;
-		// TODO fix range
-		//Dimension range = new Dimension(this.getimage().getWidth(null), screen.getSize().height - Game.getSky().height) ;
-		Dimension range = Game.getScreen().getSize() ;
+		Dimension range = new Dimension((int) (0.8 * screen.getSize().width), (int) (0.8 * screen.getSize().height)) ;
 		Dimension step = new Dimension(1, 1) ;
 		for (int me = 0 ; me <= 4 ; ++me)
 		{

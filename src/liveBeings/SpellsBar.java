@@ -53,9 +53,9 @@ public class SpellsBar
 				}
 				DP.DrawText(slotCenter, Align.center, OverallAngle, Key[i], font, TextColor) ;
 				Dimension imgSize = new Dimension(SpellType.cooldownImage.getWidth(null), SpellType.cooldownImage.getHeight(null)) ;
-				if (spell.getCooldownCounter() < spell.getCooldown())
+				if (!spell.getCooldownCounter().finished())
 				{
-					Scale Imscale = new Scale(1, 1 - (double) spell.getCooldownCounter() / spell.getCooldown()) ;
+					Scale Imscale = new Scale(1, 1 - spell.getCooldownCounter().rate()) ;
 					DP.DrawImage(SpellType.cooldownImage, new Point(slotCenter.x - imgSize.width / 2, slotCenter.y + imgSize.height / 2), OverallAngle, Imscale, Align.bottomLeft) ;
 				}
 				if (UtilG.isInside(mousePos, new Point(slotCenter.x - imgSize.width / 2, slotCenter.y - imgSize.height / 2), imgSize))

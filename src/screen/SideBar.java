@@ -26,7 +26,6 @@ import utilities.UtilG;
 public class SideBar
 {
 	private GameIcon[] icons ;
-	// TODO criar classe spell bar e hotkeys
 	
 	
 	public SideBar(Image playerImage, Image petImage)
@@ -166,7 +165,9 @@ public class SideBar
 			}
 		}
 		
-		SpellsBar.display(player.getMp().getCurrentValue(), player.getSpell(), player.GetActiveSpells(), player.allText.get("* Barra de habilidades *"), mousePos, TextColor, TextColor, DP);
+		SpellsBar.display(player.getMp().getCurrentValue(), player.getSpell(),
+				player.getSpell(), player.allText.get("* Barra de habilidades *"),
+				mousePos, TextColor, TextColor, DP);
 //		DrawSpellsBar(player, SpellType.cooldownImage, SpellType.slotImage, mousePos, DP) ;
 //		
 //		icons[1].display(stdAngle, Align.topLeft, mousePos, DP) ;		// bag

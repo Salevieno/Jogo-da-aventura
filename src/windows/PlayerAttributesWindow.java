@@ -304,7 +304,7 @@ public class PlayerAttributesWindow extends GameWindow
 		}
 		else if (tab == 2)
 		{
-			String[] statsText = allText.get("* Estatísticas do jogador *") ;
+			String[] statsText = allText.get("* Estatï¿½sticas do jogador *") ;
 			Dimension offset = new Dimension(25, 20) ;
 			Point textPos = new Point(WindowPos.x + offset.width, WindowPos.y + offset.height) ;
 			if (user instanceof Player)

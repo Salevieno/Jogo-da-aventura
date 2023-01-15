@@ -1,6 +1,5 @@
 package components ;
 
-import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 
@@ -23,14 +22,14 @@ public class Buildings
 	
 	public BuildingType getType() {return type ;}
 	public Point getPos() {return pos ;}
-	public boolean isInside(Point pos) {return UtilG.isInside(this.pos, pos, new Dimension(type.getImage().getWidth(null), type.getImage().getHeight(null))) ;}
+	public boolean isInside(Point pos) {return UtilG.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null)), UtilG.getImageSize(type.getImage())) ;}
 	
 	
-	/* Drawing methods */
+	// Drawing methods
 	public void display(Point playerPos, double angle, Scale scale, DrawingOnPanel DP)
 	{
 		if (isInside(playerPos))
-		{				
+		{
 			Image image = type.getInsideImage() ;
 			DP.DrawImage(image, pos, angle, scale, Align.bottomLeft) ;
 			if (type.getNPCs() != null)

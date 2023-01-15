@@ -326,6 +326,11 @@ public abstract class UtilG
 	    return bimage ;
 	}
 
+	public static Dimension getImageSize(Image image)
+	{
+		return new Dimension(image.getWidth(null), image.getHeight(null));
+	}
+	
 	public static Color GetPixelColor(BufferedImage Bufferedimage, Point Pos)
 	{
 		int clr = Bufferedimage.getRGB(Pos.x, Pos.y) ; 
@@ -399,9 +404,9 @@ public abstract class UtilG
 
 	*/
 	
-	public static void PlayGif(Point Pos, Image gif, DrawingOnPanel DP)
+	public static void PlayGif(Point pos, Image gif, DrawingOnPanel DP)
 	{
-		DP.DrawGif(gif, Pos, Align.center) ;
+		DP.DrawGif(gif, pos, Align.center) ;
 	}
 
 	public static double RandomMult(double amplitude)
@@ -409,10 +414,10 @@ public abstract class UtilG
 		return (double)(Math.max(0, 1 - amplitude + 2 * amplitude * Math.random())) ;
 	}
 
-	public static Point OffsetFromPos(Align Alignment, Dimension size)
+	public static Point OffsetFromPos(Align alignment, Dimension size)
 	{
 		Point offset = new Point(0, 0) ;
-		switch (Alignment)
+		switch (alignment)
 		{
 			case topLeft:
 			{
@@ -474,10 +479,10 @@ public abstract class UtilG
 		return offset ;
 	}
 
-	public static Point getPosAt(Point pos, Align alignment, Dimension size)
+	public static Point getPosAt(Point topLeftPos, Align alignment, Dimension size)
 	{
 		Point offset = UtilG.OffsetFromPos(alignment, size) ;
-		return UtilG.Translate(pos, -offset.x, -offset.y) ;
+		return UtilG.Translate(topLeftPos, -offset.x, -offset.y) ;
 	}
 	
 	public static int[] ArrayWithValuesGreaterThan(int[] OriginalArray, int MinValue)
@@ -699,16 +704,7 @@ public abstract class UtilG
 	
 	public static boolean isInside(Point objPos, Point topLeftPos, Dimension size)
 	{
-		if (topLeftPos.x <= objPos.x &
-			objPos.x <= topLeftPos.x + size.width &
-			objPos.y <= topLeftPos.y + size.height &
-			topLeftPos.y <= objPos.y)
-		{
-			return true ;
-		} 
-		else
-		{
-			return false ;
-		}
+		return (topLeftPos.x <= objPos.x & objPos.x <= topLeftPos.x + size.width &
+				objPos.y <= topLeftPos.y + size.height & topLeftPos.y <= objPos.y);
 	}
 }

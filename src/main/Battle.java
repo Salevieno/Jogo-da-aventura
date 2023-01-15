@@ -1072,7 +1072,7 @@ public class Battle
 		creature.Dies();
 		
 		// reset buffs
-		for (int i = 0 ; i <= playerSpell.get(0).getBuffs().length - 1 ; ++i)
+		for (int i = 0 ; i <= playerSpell.get(0).getBuffs().size() - 1 ; ++i)
 		{
 			Arrays.fill(PlayerSkillBuffCounter[i], 0) ;
 		}
@@ -1083,9 +1083,10 @@ public class Battle
 			Spell survivorInstinct = player.getSpell().get(12) ;
 			if (0 <survivorInstinct.getLevel() & SkillBuffIsActive[12][0])
 			{
-				for (int i = 0 ; i <= survivorInstinct.getBuffs().length - 1 ; ++i)
+				for (int i = 0 ; i <= survivorInstinct.getBuffs().size() - 1 ; ++i)
 				{
-					BuffsAndNerfs(player, pet, creature, survivorInstinct.getBuffs(), survivorInstinct.getLevel(), i, false, "Player", "deactivate") ;
+					// TODO survivor instinct
+					//BuffsAndNerfs(player, pet, creature, survivorInstinct.getBuffs(), survivorInstinct.getLevel(), i, false, "Player", "deactivate") ;
 				}
 				SkillBuffIsActive[12][0] = false ;
 			}

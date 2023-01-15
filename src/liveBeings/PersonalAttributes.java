@@ -52,6 +52,12 @@ public class PersonalAttributes
 		
 		return newPos ;
 	}
+	@Override
+	public String toString()
+	{
+		return "PersonalAttributes [Life=" + Life + ", Mp=" + Mp + ", Exp=" + Exp + ", Satiation=" + Satiation
+				+ ", Thirst=" + Thirst + "]";
+	}
 	
 	/*public void incLife(int amount)
 	{

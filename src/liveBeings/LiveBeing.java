@@ -202,6 +202,13 @@ public class LiveBeing
 		satiationCounter.inc() ;
 		moveCounter.inc() ;
 	}
+	public void activateCounters()
+	{
+		if (mpCounter.finished())
+		{
+			PA.getMp().incCurrentValue(1);
+		}
+	}
 	public void IncBattleActionCounters() {battleActionCounter.inc() ;}
 	public void ResetBattleActions() {battleActionCounter.reset() ;}
 	
@@ -236,9 +243,17 @@ public class LiveBeing
 		// TODO battle action counters
 	}
 	
-	public void applyBuff()
+	public void applyBuff(boolean activate, Buff buff)
 	{
-		
+		int mult = 1 ;
+		if (!activate)
+		{
+			mult = -1 ;
+		}
+		int level = 1 ;
+		double increment = PA.getLife().getMaxValue() * buff.getPercentIncrease().get(Attributes.life)
+				+ buff.getValueIncrease().get(Attributes.life) ;
+		PA.getLife().incCurrentValue((int) increment * level * mult);
 	}
 	
 	public void ActivateDef()

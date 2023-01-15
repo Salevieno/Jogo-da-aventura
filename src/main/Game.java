@@ -54,6 +54,7 @@ import items.Recipe;
 import liveBeings.BasicAttribute;
 import liveBeings.BasicBattleAttribute;
 import liveBeings.BattleAttributes;
+import liveBeings.Buff;
 import liveBeings.Creature;
 import liveBeings.CreatureTypes;
 import liveBeings.LiveBeingStates;
@@ -126,7 +127,7 @@ public class Game extends JPanel
 	private static Animations ani ;
 	
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
-	public static final Image slotImage = UtilG.loadImage(".\\images\\" + "SkillSlot.png") ;
+	public static final Image slotImage = UtilG.loadImage(".\\images\\" + "slot.png") ;
 	
 	private Gif testGif ;
 	private Gif testGif2 ;
@@ -152,7 +153,7 @@ public class Game extends JPanel
 		testGif2 = new Gif(UtilG.loadImage(ImagesPath + "test2.gif"), 0, true, false) ;
     	//OpeningIsOn = true ; 
 
-    	player = new Player("", "", "", 0) ;
+    	player = new Player("", "", "", 1) ;
     	//music = new Music() ;
     	
 		addMouseListener(new MouseEventDemo()) ;
@@ -246,7 +247,7 @@ public class Game extends JPanel
 			String[] speech = player.allText.get("* " + name + " *") ;
 
 			// TODO NPC options vai ser uma lista de listas, cada uma correspondendo a uma speech
-			String[] options = new String[] {"Sim", "Nï¿½o"} ;
+			String[] options = new String[] {"Sim", "NÃ£o"} ;
 			
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}
@@ -385,7 +386,7 @@ public class Game extends JPanel
 			
 			
 			// adding buildings top map
-			ArrayList<Buildings> buildings = new ArrayList<>() ;
+			List<Buildings> buildings = new ArrayList<>() ;
 			for (int i = 0; i <= 6 - 1; i += 1)
 			{
 				String buildingName = input.get(id)[10 + 3 * i] ;
@@ -399,7 +400,7 @@ public class Game extends JPanel
 				}
 				
 				int buildingPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[11 + 3 * i])) ;
-				int buildingPosY = (int) (screen.getSize().height * Double.parseDouble(input.get(id)[12 + 3 * i])) ;
+				int buildingPosY = (int) (sky.height + screen.getSize().height * Double.parseDouble(input.get(id)[12 + 3 * i])) ;
 				Point buildingPos = new Point(buildingPosX, buildingPosY) ;
 				
 				buildings.add(new Buildings(buildingType, buildingPos)) ;
@@ -438,7 +439,7 @@ public class Game extends JPanel
     	String path = ImagesPath + "\\Maps\\";
     	FieldMap[] fieldMap = new FieldMap[input.size()] ;
 		
-    	// TODO mapas 39 e 64 estão entrando como fieldmaps e specialmaps
+    	// TODO mapas 39 e 64 estï¿½o entrando como fieldmaps e specialmaps
 		for (int id = 0 ; id <= fieldMap.length - 1 ; id += 1)
 		{
 			String name = input.get(id)[0] ;
@@ -628,9 +629,8 @@ public class Game extends JPanel
 			double[] Silence = new double[] {Double.parseDouble(spellTypesInput.get(ID)[38]), Double.parseDouble(spellTypesInput.get(ID)[39]), Double.parseDouble(spellTypesInput.get(ID)[40])} ;
 			String Elem = spellTypesInput.get(ID)[41] ;
 			allSpellTypes[i] = new SpellType(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, spellBuffs[i], spellNerfs[i],
-					Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i]) ;	
+					Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i]) ;
 		}
-		
 		return allSpellTypes ;
     }
 
@@ -722,6 +722,7 @@ public class Game extends JPanel
 	
 	private void activateCounters()
 	{	
+		player.activateCounters();
 		//player.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
 		if (pet != null)
 		{
@@ -818,7 +819,6 @@ public class Game extends JPanel
 		incrementCounters() ;
 		activateCounters() ;
 		
-
 		// check for the Konami code
 		checkKonamiCode(player.getCombo()) ;
 		if (konamiCodeActive)
@@ -1015,7 +1015,6 @@ public class Game extends JPanel
     	sideBar = new SideBar(player.getMovingAni().idleGif, pet.getMovingAni().idleGif) ;
     	bat = new Battle(ani) ;
     	
-    	
     	player.InitializeSpells() ;
     	player.getSpellsTreeWindow().setSpells(player.getSpell().toArray(new Spell[0])) ;
     	player.setMap(cityMaps[2]) ;
@@ -1024,7 +1023,27 @@ public class Game extends JPanel
     	{
     		player.getBag().Add(Potion.getAll()[i], 1) ;
     	}
-    	player.getPA().setExp(new BasicAttribute(50, 50, 1)) ;
+    	//player.getPA().setExp(new BasicAttribute(50, 50, 1)) ;	// level up
+    	//System.out.println("player life = " + player.getLife().getCurrentValue());
+    	player.getLife().incCurrentValue(-10);
+    	//System.out.println("player life = " + player.getLife().getCurrentValue());
+		//System.out.println("player PA = " + player.getPA());
+    	player.getSpell().get(10).incLevel(1) ;
+    	player.getSpell().get(11).incLevel(1) ;
+    	//System.out.println("player spells = " + player.getSpell());
+    	//player.getSpell().add(new Spell(allSpellTypes[0])) ;
+    	//player.getLife().incCurrentValue(-20);
+    	
+    	/*System.out.println("\nplayer life");
+    	System.out.println(player.getLife());
+    	player.applyBuff(true, player.getSpell().get(0).getBuffs().get(0));
+    	//player.ApplyBuffsAndNerfs("activate", "", 0, player.getSpell().get(0).getBuffs().get(0), 0, false);
+    	System.out.println("\nbuff activated");
+    	System.out.println(player.getLife());
+    	player.applyBuff(false, player.getSpell().get(0).getBuffs().get(0));
+    	//player.ApplyBuffsAndNerfs("deactivate", "", 0, player.getSpell().get(0).getBuffs().get(0), 0, false);
+    	System.out.println("\nbuff deactivated");
+    	System.out.println(player.getLife());*/
     	
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{

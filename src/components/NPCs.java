@@ -6,8 +6,6 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
-
 import graphics.Animations;
 import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
