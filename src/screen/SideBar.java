@@ -6,7 +6,9 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import components.GameIcon;
 import components.QuestSkills;
@@ -25,7 +27,7 @@ import utilities.UtilG;
 
 public class SideBar
 {
-	private GameIcon[] icons ;
+	private Set<GameIcon> icons ;
 	
 	
 	public SideBar(Image playerImage, Image petImage)
@@ -53,12 +55,11 @@ public class SideBar
 		Image[] SideBarIconsSelectedImages = new Image[] {SelectedOptions, SelectedBag, SelectedQuest, SelectedMap, SelectedBook, SelectedTent, playerImage, petImage, SelectedSkillsTree} ;
 
 		Point botLeftPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height - 250) ;
-		icons = new GameIcon[8] ;
-		icons[0] = new GameIcon(0, "Options", UtilG.Translate(botLeftPos, 0, -10), "description", UtilG.loadImage(path + "Icon_settings.png"), UtilG.loadImage(path + "Icon_settingsSelected.png")) ;
-		icons[1] = new GameIcon(1, "Bag", UtilG.Translate(botLeftPos, 0, -80), "description", UtilG.loadImage(path + "Icon1_Bag.png"), UtilG.loadImage(path + "Icon1_BagSelected.png")) ;
+		icons = new HashSet<>() ;
+		icons.add(new GameIcon(0, "Settings", UtilG.Translate(botLeftPos, 0, -10), "description", UtilG.loadImage(path + "Icon_settings.png"), UtilG.loadImage(path + "Icon_settingsSelected.png"))) ;
+		icons.add(new GameIcon(1, "Bag", UtilG.Translate(botLeftPos, 0, -80), "description", UtilG.loadImage(path + "Icon1_Bag.png"), UtilG.loadImage(path + "Icon1_BagSelected.png"))) ;
 		
-		icons[0].activate() ;
-		icons[1].activate() ;
+		icons.forEach(GameIcon::activate);
 //		String[] SBname = new String[] {"Options", "Bag", "Quest", "Map", "Book", "Tent", "Player", "Pet"} ;
 //		Point[] SBpos = new Point[SBname.length] ;
 //		int sy = 20 ;
@@ -125,6 +126,18 @@ public class SideBar
 			}
 		}
 	}*/
+
+
+	public Set<GameIcon> getIcons()
+	{
+		return icons;
+	}
+
+	public void setIcons(Set<GameIcon> icons)
+	{
+		this.icons = icons;
+	}
+	
 	
 	public void display(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
 	{
@@ -133,7 +146,7 @@ public class SideBar
 		Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
 		Color[] colorPalette = Game.ColorPalette ;
 		double stdAngle = DrawingOnPanel.stdAngle ;
-		Font font = new Font("SansSerif", Font.BOLD, 13) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String[] IconKey = new String[] {null, Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7], null, null, null, null} ;
 		Color TextColor = colorPalette[7] ;
 		
@@ -153,17 +166,14 @@ public class SideBar
 //			DP.DrawText(icon.getPos(), Align.bottomLeft, stdAngle, IconKey[0], font, TextColor) ;
 //		}
 		
-		for (int i = 0 ; i <= icons.length - 1; i += 1)
+		icons.forEach(icon -> icon.display(stdAngle, Align.topLeft, mousePos, DP));	// TODO desenhar as icon keys
+		/*for (int i = 0 ; i <= icons.length - 1; i += 1)
 		{
-			if (icons[i] != null)
+			if (IconKey[i] != null)
 			{
-				icons[i].display(stdAngle, Align.topLeft, mousePos, DP);
-				if (IconKey[i] != null)
-				{
-					DP.DrawText(icons[i].getPos(), Align.bottomLeft, stdAngle, IconKey[i], font, TextColor) ;
-				}
+				DP.DrawText(icons[i].getPos(), Align.bottomLeft, stdAngle, IconKey[i], font, TextColor) ;
 			}
-		}
+		}*/
 		
 		SpellsBar.display(player.getMp().getCurrentValue(), player.getSpell(),
 				player.getSpell(), player.allText.get("* Barra de habilidades *"),
@@ -220,4 +230,6 @@ public class SideBar
 //			}
 //		}
 	}
+
+	
 }

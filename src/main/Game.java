@@ -799,7 +799,7 @@ public class Game extends JPanel
 			
 			repaint();
 		}*/
-		if (testGif.isPlaying())
+		/*if (testGif.isPlaying())
 		{
 			testGif.play(mousePos, Align.center, DP);
 			shouldRepaint = true ;
@@ -808,7 +808,7 @@ public class Game extends JPanel
 		{
 			testGif2.play(new Point(300, 100), Align.center, DP);
 			shouldRepaint = true ;
-		}
+		}*/
 	}
 	
 	
@@ -853,7 +853,7 @@ public class Game extends JPanel
 		{
 			if (!player.getCurrentAction().equals(""))
 			{
-				player.acts(pet, allMaps, mousePos, sideBarIcons, ani) ;			
+				player.acts(pet, mousePos, sideBar, ani) ;			
 
 		        if (player.getMoveCounter().finished())
 		        {
@@ -1200,14 +1200,14 @@ public class Game extends JPanel
 			if (evt.getButton() == 1)	// Left click
 			{
         		player.setCurrentAction("MouseLeftClick") ;
-        		testGif.start();
+        		//testGif.start();
 			}
 			if (evt.getButton() == 3)	// Right click
 			{
         		player.setCurrentAction("MouseRightClick") ;
-        		testGif2.start();
+        		//testGif2.start();
 			}
-            shouldRepaint = true ;
+            //shouldRepaint = true ;
 		}
 
 		@Override

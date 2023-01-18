@@ -45,6 +45,7 @@ import maps.Collectible;
 import maps.FieldMap;
 import maps.GameMap;
 import screen.Screen;
+import screen.SideBar;
 import utilities.Align;
 import utilities.Directions;
 import utilities.Scale;
@@ -614,7 +615,7 @@ public class Player extends LiveBeing
 		
 		stepCounter = (stepCounter + 1) % moveRange ;
 	}
-	public void acts(Pet pet, GameMap[] maps, Point MousePos, GameIcon[] sideBarIcons, Animations Ani)
+	public void acts(Pet pet, Point MousePos, SideBar sideBar, Animations Ani)
 	{
 		if (actionIsAMove())
 		{
@@ -629,9 +630,25 @@ public class Player extends LiveBeing
 		}
 		if (currentAction.equals("MouseLeftClick"))
 		{
-			for (int i = 0 ; i <= sideBarIcons.length - 1 ; i += 1)	// + 2 to account for player and pet
+			sideBar.getIcons().forEach(icon ->
 			{
-				if (sideBarIcons[i].ishovered(MousePos))
+				if (icon.ishovered(MousePos))
+				{
+					switch (icon.getName())
+					{
+						case "Settings":  settings.open() ; break ;
+						case "Bag": bag.open() ; break ;
+						case "QuestWindow": questWindow.open() ; break ;
+						case "QuestSkills": if (questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) mapWindow.open() ; break ;
+						case "FabWindow": fabWindow.open() ; break ;
+						case "AttWindow": attWindow.open() ; break ;
+						case "Pet": if (pet.isAlive()) pet.getAttWindow().open() ; break ;
+					}
+				}
+			});
+			/*for (int i = 0 ; i <= sideBar.getIcons().size() - 1 ; i += 1)	// + 2 to account for player and pet
+			{
+				if (sideBar.getIcons()[i].ishovered(MousePos))
 				{
 					switch (i)
 					{
@@ -644,7 +661,7 @@ public class Player extends LiveBeing
 						case 6: if (pet.isAlive()) pet.getAttWindow().open() ; break ;
 					}
 				}
-			}
+			}*/
 		}
 		if (currentAction.equals(ActionKeys[4]))	// Bag
 		{
@@ -1101,7 +1118,7 @@ public class Player extends LiveBeing
 		}
 		if (settings.isOpen())
 		{
-			settings.display(allText.get("* Menu de op��es *"), DP) ;
+			settings.display(allText.get("* Menu de opções *"), DP) ;
 		}
 		if (hintsWindow.isOpen())
 		{

@@ -5,6 +5,7 @@ import java.awt.Image;
 
 public class GameWindow
 {
+	// TODO add name and use as title
 	protected Image image ;
 	protected boolean isOpen ;
 	protected int menu ;
@@ -48,6 +49,11 @@ public class GameWindow
 	public void open()
 	{
 		isOpen = !isOpen ;	
+	}
+	
+	public void close()
+	{
+		isOpen = false ;	
 	}
 	
 	public void menuUp()
