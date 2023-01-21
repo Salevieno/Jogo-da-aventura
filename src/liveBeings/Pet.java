@@ -48,7 +48,7 @@ public class Pet extends LiveBeing
 				UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png"),
 				UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png"),
 				UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png")),
-				new PlayerAttributesWindow()
+				new PlayerAttributesWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PetAttWindow1.png"))
 			) ;
 		
 		name = PetProperties.get(Job)[0] ;

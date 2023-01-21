@@ -14,15 +14,15 @@ public class Buff
 		this.percentIncrease = percentIncrease;
 		this.valueIncrease = valueIncrease;
 		this.chance = chance;
-		percentIncrease.put(Attributes.life, 0.1);
-		valueIncrease.put(Attributes.life, 10.0);
-		chance.put(Attributes.life, 1.0);
-		percentIncrease.put(Attributes.phyAtk, 0.4);
-		valueIncrease.put(Attributes.phyAtk, 10.0);
-		chance.put(Attributes.phyAtk, 1.0);
-		percentIncrease.put(Attributes.magAtk, 0.4);
-		valueIncrease.put(Attributes.magAtk, 10.0);
-		chance.put(Attributes.magAtk, 1.0);
+//		percentIncrease.put(Attributes.life, 0.1);
+//		valueIncrease.put(Attributes.life, 10.0);
+//		chance.put(Attributes.life, 1.0);
+//		percentIncrease.put(Attributes.phyAtk, 0.4);
+//		valueIncrease.put(Attributes.phyAtk, 10.0);
+//		chance.put(Attributes.phyAtk, 1.0);
+//		percentIncrease.put(Attributes.magAtk, 0.4);
+//		valueIncrease.put(Attributes.magAtk, 10.0);
+//		chance.put(Attributes.magAtk, 1.0);
 	}
 	public Map<Attributes, Double> getPercentIncrease()
 	{

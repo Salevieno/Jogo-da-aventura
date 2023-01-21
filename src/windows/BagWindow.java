@@ -114,7 +114,7 @@ public class BagWindow extends GameWindow
 			Potion potion = (Potion) item ;
 			if (pot.get(potion) != null)
 			{
-				if (amount < pot.get(potion))
+				if (amount <= pot.get(potion))
 				{
 					pot.put(potion, pot.get(potion) - amount) ;
 				}
@@ -129,9 +129,48 @@ public class BagWindow extends GameWindow
 	
 	public Item getSelectedItem()
 	{
+		int NSlotsmax = 20 ;
+		// determine items in the selected menu
+		Map<Item, Integer> ActiveItems = new HashMap<>() ;
 		if (menu == 0)
 		{
-			// TODO
+			Map<Potion, Integer> potions = getPotions() ;
+			for (Map.Entry<Potion, Integer> potion : potions.entrySet())
+			{
+				if (0 < potion.getValue())
+				{
+					ActiveItems.put(potion.getKey(), potion.getValue()) ;
+				}
+			}
+		}
+		if (menu == 1)
+		{
+			Map<Alchemy, Integer> alchemys = getAlchemy() ;
+			for (Map.Entry<Alchemy, Integer> alchemy : alchemys.entrySet())
+			{
+				if (0 < alchemy.getValue())
+				{
+					ActiveItems.put(alchemy.getKey(), alchemy.getValue()) ;
+				}
+			}
+		}
+		if (!ActiveItems.isEmpty())
+		{
+			numberItems = Math.min(NSlotsmax, ActiveItems.size() - NSlotsmax * window) ;
+		}
+		else
+		{
+			numberItems = 0 ;
+		}
+		
+		int i = 0 ;
+		for (Map.Entry<Item, Integer> activeItem : ActiveItems.entrySet())
+		{
+			if (i == item)
+			{
+				return activeItem.getKey() ;
+			}			
+			i += 1 ;
 		}
 		
 		return null ;
@@ -168,10 +207,6 @@ public class BagWindow extends GameWindow
 			{
 				windowDown() ;
 			}
-			if (action.equals("Enter") | action.equals("MouseLeftClick"))
-			{
-				//UseItem(this, getSelectedItem()) ;
-			}
 		}
 		
 		if (action.equals("Enter") | action.equals("MouseLeftClick"))
@@ -182,26 +217,6 @@ public class BagWindow extends GameWindow
 		{
 			tabDown() ;
 			setItem(0) ;
-		}
-	}
-	public void useItem(Player player, Item item)
-	{
-		if (item != null)	// if the item is valid
-		{
-			if (item instanceof Potion)	// potions
-			{
-				Potion pot = (Potion) item ;
-				double PotMult = 1 ;
-				if (player.getJob() == 3)
-				{
-					PotMult += 0.06 * player.getSpell().get(7).getLevel() ;
-				}
-				
-				player.getPA().getLife().incCurrentValue((int) (pot.getLifeHeal() * player.getPA().getLife().getMaxValue() * PotMult)); ;
-				player.getPA().getMp().incCurrentValue((int) (pot.getMPHeal() * player.getPA().getMp().getMaxValue() * PotMult)); ;
-				
-				player.getBag().Remove(pot, 1);				
-			}
 		}
 	}
 	public void display(Point MousePos, String[] allText, DrawingOnPanel DP)
@@ -250,7 +265,10 @@ public class BagWindow extends GameWindow
 			Map<Potion, Integer> potions = getPotions() ;
 			for (Map.Entry<Potion, Integer> potion : potions.entrySet())
 			{
-				ActiveItems.put(potion.getKey(), potion.getValue()) ;
+				if (0 < potion.getValue())
+				{
+					ActiveItems.put(potion.getKey(), potion.getValue()) ;
+				}
 			}
 		}
 		if (menu == 1)
@@ -258,7 +276,10 @@ public class BagWindow extends GameWindow
 			Map<Alchemy, Integer> alchemys = getAlchemy() ;
 			for (Map.Entry<Alchemy, Integer> alchemy : alchemys.entrySet())
 			{
-				ActiveItems.put(alchemy.getKey(), alchemy.getValue()) ;
+				if (0 < alchemy.getValue())
+				{
+					ActiveItems.put(alchemy.getKey(), alchemy.getValue()) ;
+				}
 			}
 		}
 		if (!ActiveItems.isEmpty())

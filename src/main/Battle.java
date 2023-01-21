@@ -2,6 +2,7 @@ package main ;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays ;
 import java.util.List;
@@ -27,14 +28,13 @@ import utilities.UtilS;
 public class Battle 
 {
 	//private int[] PlayerAtkResult, PetAtkResult, CreatureAtkResult ;
-	private Clip[] SoundEffects ;
+	private Clip hitSound ;
 	private Animations Ani ;
 	
 	private int[][] ShowAtkCounters, ShowAtkDurations ;
 	private boolean[][] Show ;
 	private int CreatureTarget ;
 	private double randomAmp ;
-	private int[][] PlayerSkillBuffCounter, PlayerSkillNerfCounter, PetSkillBuffCounter, PetSkillNerfCounter, PlayerItemEffectCounter ;
 	private boolean[][] SkillBuffIsActive, ItemEffectIsActive ;
 
 	protected static String[] ElemID ;
@@ -43,6 +43,7 @@ public class Battle
 	public Battle(Animations Ani)
 	{	
 		//this.SoundEffects = SoundEffects ;
+		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
 		this.Ani = Ani ;
 
 		int NumElem = 10 ;
@@ -956,7 +957,7 @@ public class Battle
 		ActivateCounters(player, pet, creature) ;
 		if (player.isAlive())
 		{
-			player.DrawTimeBar(creature, DP) ;
+			player.DrawTimeBar(UtilS.RelPos(player.getPos(), creature.getPos()), Game.ColorPalette[9], DP) ;
 			player.TakeBloodAndPoisonDamage(creature.getBA().TotalBloodAtk(), creature.getBA().TotalPoisonAtk()) ;
 			if (player.canAtk() & UtilS.IsInRange(player.getPos(), creature.getPos(), player.getRange()))
 			{
@@ -965,8 +966,8 @@ public class Battle
 				String effect = (String) PlayerAtkResult[1] ;
 				if (player.getCurrentAction().equals(Player.BattleKeys[0]) | player.actionIsASpell())
 				{
-					AtkAnimations(player.getPos(), creature.getPos(), player.getSize(), creature.getSize(), player.actionIsASpell(), PlayerAtkResult, player.getSettings().getDamageAnimation(),
-							Show[0], ShowAtkDurations[0], player.getSpell(), player.GetActiveSpells(), player.getCurrentAction()) ;
+					//AtkAnimations(player.getPos(), creature.getPos(), player.getSize(), creature.getSize(), player.actionIsASpell(), PlayerAtkResult, player.getSettings().getDamageAnimation(),
+					//		Show[0], ShowAtkDurations[0], player.getSpell(), player.GetActiveSpells(), player.getCurrentAction()) ;
 				}
 				//int effect = (int) PlayerAtkResult[1] ;
 				//int[] statusinflicted = (int[]) PlayerAtkResult[2] ;
@@ -980,12 +981,12 @@ public class Battle
 					//System.out.println("player life: " + player.getLife()[0]);
 					if (player.getSettings().getSoundEffectsAreOn())
 					{
-						SoundEffects[0].start() ;	// Hit sound effect
+						Music.PlayMusic(hitSound) ;	// Hit sound effect
 					}
-					if (player.getSettings().getSoundEffectsAreOn() & !SoundEffects[0].isActive())
-					{
-						SoundEffects[0].setMicrosecondPosition(0) ;
-					}
+//					if (player.getSettings().getSoundEffectsAreOn() & !hitSound.isActive())
+//					{
+//						hitSound.setMicrosecondPosition(0) ;
+//					}
 				}
 				//HighestPlayerInflictedDamage = Math.max(HighestPlayerInflictedDamage, PlayerAtkResult[0]) ;
 				//Uts.PrintBattleActions2(player.getAction(), creature.getAction(), "player", "creature", new Object[] {PlayerAtkResult[0], PlayerAtkResult[1], creature.getBA().getSpecialStatus()}, creature.getElem()) ;
@@ -1018,6 +1019,7 @@ public class Battle
 		}
 		if (creature.isAlive())
 		{
+			creature.DrawTimeBar(UtilS.RelPos(creature.getPos(), player.getPos()), Game.ColorPalette[9], DP) ;
 			//DF.DrawTimeBar(creature.getPos(), creature.getBA().getBattleActions()[0][0], creature.getBA().getBattleActions()[0][1], creature.getSize()[1], new int[] {creature.getSize()[0] / 2 + (BattleIconImages[0].getWidth(null) + 5), -creature.getSize()[1] / 6}, Uts.RelPos(creature.getPos(), player.getPos()), "Vertical", Color.blue) ;
 			//creature.TakeBloodAndPoisonDamage(player, SkillBuffIsActive) ;
 			creature.TakeBloodAndPoisonDamage(pet) ;
@@ -1072,10 +1074,11 @@ public class Battle
 		creature.Dies();
 		
 		// reset buffs
-		for (int i = 0 ; i <= playerSpell.get(0).getBuffs().size() - 1 ; ++i)
+		// TODO
+		/*for (int i = 0 ; i <= playerSpell.get(0).getBuffs().size() - 1 ; ++i)
 		{
 			Arrays.fill(PlayerSkillBuffCounter[i], 0) ;
-		}
+		}*/
 		
 		// deactivate survivor's instinct (skill of the animals)
 		if (player.getJob() == 3)	// Survivor's instinct

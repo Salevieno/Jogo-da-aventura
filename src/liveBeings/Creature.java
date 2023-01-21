@@ -38,7 +38,7 @@ public class Creature extends LiveBeing
 				CT.getPA(),
 				CT.getBA(),
 				CT.getMovingAnimations(),
-				new PlayerAttributesWindow()
+				new PlayerAttributesWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PetAttWindow1.png"))
 			) ;
 		
 		this.type = CT ;

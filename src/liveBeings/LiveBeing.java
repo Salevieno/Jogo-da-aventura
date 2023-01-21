@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import graphics.DrawingOnPanel;
+import items.Item;
+import items.Potion;
 import main.Game;
 import maps.GameMap;
 import utilities.Align;
@@ -212,6 +214,7 @@ public class LiveBeing
 	}
 	public void IncBattleActionCounters() {battleActionCounter.inc() ;}
 	public void ResetBattleActions() {battleActionCounter.reset() ;}
+	
 	
 	public void resetCombo()
 	{

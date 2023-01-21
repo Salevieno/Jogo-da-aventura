@@ -1030,7 +1030,7 @@ public class Game extends JPanel
 		//System.out.println("player PA = " + player.getPA());
     	player.getSpell().get(10).incLevel(1) ;
     	player.getSpell().get(11).incLevel(1) ;
-    	
+
     	//System.out.println("player spells = " + player.getSpell());
     	//player.getSpell().add(new Spell(allSpellTypes[0])) ;
     	//player.getLife().incCurrentValue(-20);
