@@ -16,6 +16,7 @@ import main.Game;
 import maps.GameMap;
 import utilities.Align;
 import utilities.Directions;
+import utilities.Elements;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
@@ -291,13 +292,14 @@ public class Pet extends LiveBeing
 		}
 		return "" ;
 	}
-	public void Follow(Point Pos, Point Target, int step, double mindist)
+	public Point Follow(Point Pos, Point Target, int step, double mindist)
 	{
 		Point pos = new Point(Pos.x, Pos.y) ; // Prevent the method from modifying the original variable Pos
-		double verdist = Math.abs(pos.y - Target.y), hordist = Math.abs(pos.x - Target.x) ;
+		double distY = Math.abs(pos.y - Target.y) ;
+		double distX = Math.abs(pos.x - Target.x) ;
 		if (mindist < pos.distance(Target))
 		{
-			if (verdist < hordist)
+			if (distY < distX)
 			{
 				if (pos.x < Target.x)
 				{
@@ -320,15 +322,30 @@ public class Pet extends LiveBeing
 				}
 			}
 		}
-		setPos(pos) ;
+		return pos ;
 	}
-	public void Move(Player player, GameMap[] maps)
+	public boolean closeToPlayer(Point playerPos)
 	{
-		Point NextPos = new Point(0, 0) ;
-		Follow(pos, player.getPos(), step, step) ;
-		if (player.getMap().GroundIsWalkable(NextPos, player.getElem()[4]))
+		return (Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2)) <= 20) ;
+	}
+	public void Move(Point playerPos, GameMap playerMap, String playerElem)
+	{
+		Point nextPos ;
+		if (closeToPlayer(playerPos))
 		{
-			setPos(NextPos) ;
+			if (Math.random() <= 0.6)
+			{
+				dir = PA.randomDir() ;
+			}
+			nextPos = PA.CalcNewPos(dir, pos, step) ;
+		}
+		else
+		{
+			nextPos = Follow(pos, playerPos, step, step) ;
+		}
+		if (playerMap.GroundIsWalkable(nextPos, playerElem))
+		{
+			setPos(nextPos) ;
 		}
 	}
 	public void Dies()

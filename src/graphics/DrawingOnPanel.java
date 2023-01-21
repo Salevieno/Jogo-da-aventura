@@ -405,7 +405,7 @@ public class DrawingOnPanel
 		float time = (float)(sky.dayTime.getCounter()) / Game.DayDuration ;
 		DrawText(new Point(0, (int) (0.99*screenSize.height)), Align.bottomLeft, stdAngle, (int)(24*time) + ":" + (int)(24*60*time % 60), font, colorPalette[5]) ;
 	}
-	public void DrawFullMap(Point playerPos, Pet pet, GameMap map, Sky sky, Point MousePos)
+	public void DrawFullMap(Point playerPos, GameMap map, Sky sky)
 	{
 		sky.display(this) ;
 		map.display(this) ;

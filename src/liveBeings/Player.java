@@ -502,6 +502,7 @@ public class Player extends LiveBeing
 			if (item instanceof Potion)	// potions
 			{
 				Potion pot = (Potion) item ;
+				System.out.println("player used " + pot.getName() + " selected item is " + item.getName());
 				double PotMult = 1 ;
 				if (getJob() == 3)
 				{
@@ -513,7 +514,6 @@ public class Player extends LiveBeing
 				
 				bag.Remove(pot, 1);				
 			}
-			System.out.println(bag);
 		}
 	}	
 	private boolean actionIsAMove()

@@ -828,7 +828,7 @@ public class Game extends JPanel
 		
 		
 		// draw the map (cities, forest, etc.)
-		DP.DrawFullMap(player.getPos(), pet, player.getMap(), sky, mousePos) ;
+		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
 		//player.DrawSideBar(pet, mousePos, sideBarIcons, DP) ;
 		sideBar.display(player, pet, mousePos, DP);
 		
@@ -879,12 +879,12 @@ public class Game extends JPanel
 			if (pet.isAlive())
 			{
 				pet.UpdateCombo() ;
-				pet.Move(player, allMaps) ;
+				pet.Move(player.getPos(), player.getMap(), player.getElem()[4]) ;
 				if (player.isInBattle())
 				{
 					pet.setCurrentAction(pet.Action(Player.ActionKeys)) ;
 				}
-				pet.display(player.getPos(), new Scale(1, 1), DP) ;
+				pet.display(pet.getPos(), new Scale(1, 1), DP) ;
 				pet.DrawAttributes(0, DP) ;
 			}
 		}
@@ -1019,9 +1019,9 @@ public class Game extends JPanel
     	player.getSpellsTreeWindow().setSpells(player.getSpell().toArray(new Spell[0])) ;
     	player.setMap(cityMaps[2]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
-    	for (int i = 0; i <= 2 - 1; i += 1)
+    	for (int i = 0; i <= 20 - 1; i += 1)
     	{
-    		player.getBag().Add(Potion.getAll()[i], 1) ;
+    		player.getBag().Add(Potion.getAll()[i], 3) ;
     	}
     	//player.getPA().setExp(new BasicAttribute(50, 50, 1)) ;	// level up
     	//System.out.println("player life = " + player.getLife().getCurrentValue());

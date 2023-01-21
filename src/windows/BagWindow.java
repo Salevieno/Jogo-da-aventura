@@ -43,6 +43,10 @@ public class BagWindow extends GameWindow
 	private ArrayList<GeneralItem> genItem ;
 	private ArrayList<Fab> fab ;
 	private ArrayList<QuestItem> quest ;
+	private Item selectedItem ;
+	private int numberSlotMax ;
+	private int windowLimit ;
+	private Map<Item, Integer> activeItems ;
 	
 	public static Image MenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagMenu.png") ;
     public static Image SlotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
@@ -61,6 +65,10 @@ public class BagWindow extends GameWindow
 		this.genItem = genItem ;
 		this.fab = fab ;
 		this.quest = quest ;
+		selectedItem = null ;
+		numberSlotMax = 20 ;
+		windowLimit = 20 ;
+		activeItems = new HashMap<>() ;
 		
 		//menus.add(pot) ;
 	}
@@ -127,11 +135,9 @@ public class BagWindow extends GameWindow
 		}
 	}
 	
-	public Item getSelectedItem()
+	public void getActiveItems()
 	{
-		int NSlotsmax = 20 ;
-		// determine items in the selected menu
-		Map<Item, Integer> ActiveItems = new HashMap<>() ;
+		activeItems = new HashMap<>() ;
 		if (menu == 0)
 		{
 			Map<Potion, Integer> potions = getPotions() ;
@@ -139,7 +145,7 @@ public class BagWindow extends GameWindow
 			{
 				if (0 < potion.getValue())
 				{
-					ActiveItems.put(potion.getKey(), potion.getValue()) ;
+					activeItems.put(potion.getKey(), potion.getValue()) ;
 				}
 			}
 		}
@@ -150,13 +156,18 @@ public class BagWindow extends GameWindow
 			{
 				if (0 < alchemy.getValue())
 				{
-					ActiveItems.put(alchemy.getKey(), alchemy.getValue()) ;
+					activeItems.put(alchemy.getKey(), alchemy.getValue()) ;
 				}
 			}
 		}
-		if (!ActiveItems.isEmpty())
+	}
+	
+	public Item getSelectedItem()
+	{
+		getActiveItems() ;
+		if (!activeItems.isEmpty())
 		{
-			numberItems = Math.min(NSlotsmax, ActiveItems.size() - NSlotsmax * window) ;
+			numberItems = Math.min(numberSlotMax, activeItems.size() - numberSlotMax * window) ;
 		}
 		else
 		{
@@ -164,16 +175,18 @@ public class BagWindow extends GameWindow
 		}
 		
 		int i = 0 ;
-		for (Map.Entry<Item, Integer> activeItem : ActiveItems.entrySet())
+		for (Map.Entry<Item, Integer> activeItem : activeItems.entrySet())
 		{
 			if (i == item)
 			{
-				return activeItem.getKey() ;
+				selectedItem = activeItem.getKey() ;
+				
+				break ;
 			}			
 			i += 1 ;
 		}
 		
-		return null ;
+		return selectedItem ;
 	}
 	
 	public void navigate(String action)
@@ -221,21 +234,18 @@ public class BagWindow extends GameWindow
 	}
 	public void display(Point MousePos, String[] allText, DrawingOnPanel DP)
 	{
-		double OverallAngle = DrawingOnPanel.stdAngle ;
 		Dimension screenSize = Game.getScreen().getSize() ;
 		Point pos = new Point((int)(0.35 * screenSize.width), (int)(0.48 * screenSize.height)) ;
 		Dimension size = new Dimension((int)(0.52 * screenSize.width), (int)(0.4 * screenSize.height)) ;
-		int windowLimit = 20 ;
-		Color[] ColorPalette = Game.ColorPalette ;
+		Color[] colorPalette = Game.ColorPalette ;
 		//DF.DrawBag(pos, size, this, MenuImage, SlotImage, 0, 0, 0, 10, 0, MousePos) ;
 		
-		Font MenuFont = new Font("SansSerif", Font.BOLD, 13) ;
-		Font ItemFont = new Font("SansSerif", Font.BOLD, 10) ;
-		Color BGColor = ColorPalette[11] ;
-		int NSlotsmax = 20 ;
+		Font MenuFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		Font ItemFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
+		Color BGColor = colorPalette[11] ;
 		if (tab == 1)
 		{
-			BGColor = ColorPalette[19] ;
+			BGColor = colorPalette[19] ;
 		}
 		
 		
@@ -244,14 +254,14 @@ public class BagWindow extends GameWindow
 		for (int m = 0 ; m <= allText.length - 3 ; m += 1)
 		{
 			Point MenuPos = new Point(pos.x + 8, pos.y + m * (MenuH - 1)) ;
-			Color TextColor = ColorPalette[12] ;
+			Color TextColor = colorPalette[12] ;
 			if (m == menu)
 			{
-				TextColor = ColorPalette[3] ;
+				TextColor = colorPalette[3] ;
 				MenuPos.x += 3 ;
 			}
 			DP.DrawImage(MenuImage, MenuPos, Align.topRight) ;
-			DP.DrawText(MenuPos, Align.topLeft, OverallAngle, allText[m + 1], MenuFont, TextColor) ;
+			DP.DrawText(MenuPos, Align.topLeft, DrawingOnPanel.stdAngle, allText[m + 1], MenuFont, TextColor) ;
 		}
 		
 		// Draw bag
@@ -259,7 +269,7 @@ public class BagWindow extends GameWindow
 		
 		
 		// determine items in the selected menu
-		Map<Item, Integer> ActiveItems = new HashMap<>() ;
+		/*Map<Item, Integer> ActiveItems = new HashMap<>() ;
 		if (menu == 0)
 		{
 			Map<Potion, Integer> potions = getPotions() ;
@@ -289,28 +299,34 @@ public class BagWindow extends GameWindow
 		else
 		{
 			numberItems = 0 ;
-		}
+		}*/
 		
 		
 		// draw items
 		int slotW = SlotImage.getWidth(null) ;
 		int slotH = SlotImage.getHeight(null) ;
 		int i = 0 ;
-		for (Map.Entry<Item, Integer> activeItem : ActiveItems.entrySet())
+		if (activeItems.isEmpty())
 		{
-			int sx = size.width / 2, sy = (size.height - 6 - slotH) / 9 ;
-			int row = i % (NSlotsmax / 2), col = i / (NSlotsmax / 2) ;
+			getActiveItems() ;
+		}
+		for (Map.Entry<Item, Integer> activeItem : activeItems.entrySet())
+		{
+			int sx = size.width / 2 ;
+			int sy = (size.height - 6 - slotH) / 9 ;
+			int row = i % (numberSlotMax / 2) ;
+			int col = i / (numberSlotMax / 2) ;
 			Point slotCenter = new Point((int) (pos.x + 5 + slotW / 2 + col * sx), (int) (pos.y + 3 + slotH / 2 + row * sy)) ;
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
-			Color TextColor = ColorPalette[3] ;
+			Color TextColor = colorPalette[3] ;
 			if (i == item)
 			{
-				TextColor = ColorPalette[6] ;
+				TextColor = colorPalette[6] ;
 			}
 			
 			DP.DrawImage(SlotImage, slotCenter, Align.center) ;							// Draw slots
 			DP.DrawImage(activeItem.getKey().getImage(), slotCenter, Align.center) ;	// Draw items
-			DP.DrawTextUntil(textPos, Align.centerLeft, OverallAngle, activeItem.getKey().getName(), ItemFont, TextColor, 10, MousePos) ;
+			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, activeItem.getKey().getName(), ItemFont, TextColor, 10, MousePos) ;
 			i += 1 ;
 		}
 		

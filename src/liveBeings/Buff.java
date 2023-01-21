@@ -14,6 +14,12 @@ public class Buff
 		this.percentIncrease = percentIncrease;
 		this.valueIncrease = valueIncrease;
 		this.chance = chance;
+		for (Attributes att : Attributes.values())
+		{
+			percentIncrease.put(att, 0.0);
+			valueIncrease.put(att, 0.0);
+			chance.put(att, 0.0);
+		}
 //		percentIncrease.put(Attributes.life, 0.1);
 //		valueIncrease.put(Attributes.life, 10.0);
 //		chance.put(Attributes.life, 1.0);
