@@ -295,6 +295,7 @@ public class Pet extends LiveBeing
 	public Point Follow(Point Pos, Point Target, int step, double mindist)
 	{
 		Point pos = new Point(Pos.x, Pos.y) ; // Prevent the method from modifying the original variable Pos
+		step = 1 ;
 		double distY = Math.abs(pos.y - Target.y) ;
 		double distX = Math.abs(pos.x - Target.x) ;
 		if (mindist < pos.distance(Target))
@@ -326,14 +327,14 @@ public class Pet extends LiveBeing
 	}
 	public boolean closeToPlayer(Point playerPos)
 	{
-		return (Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2)) <= 20) ;
+		return (Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2)) <= 40) ;
 	}
 	public void Move(Point playerPos, GameMap playerMap, String playerElem)
 	{
 		Point nextPos ;
 		if (closeToPlayer(playerPos))
 		{
-			if (Math.random() <= 0.6)
+			if (Math.random() <= 0.2)
 			{
 				dir = PA.randomDir() ;
 			}
