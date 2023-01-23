@@ -246,8 +246,8 @@ public class Creature extends LiveBeing
 		
 		if (spellID == 0)	// magical atk
 		{
-			effect = Battle.CalcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock()[1]) ;
-			damage = Battle.CalcAtk(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, 1, randomAmp) ; // player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
+			effect = Battle.calcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock()[1]) ;
+			damage = Battle.calcDamage(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, 1, randomAmp) ; // player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
 		}
 		if (magicalType == 0)
 		{
@@ -353,6 +353,7 @@ public class Creature extends LiveBeing
 	{
 		PA.getLife().setToMaximum() ;
 		PA.getMp().setToMaximum() ;
+		setRandomPos() ;
 		follow = false ;
 	}
 
@@ -436,45 +437,35 @@ public class Creature extends LiveBeing
 			BA.getSilence()[1] += Buff[13][0] ;
 		}	
 	}
-	public void TakeBloodAndPoisonDamage(Player player, boolean[][] SpellBuffIsActive)
+	public void TakeBloodAndPoisonDamage(LiveBeing attacker)
 	{
 		int BloodDamage = 0 ;
 		int PoisonDamage = 0 ;
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
-			BloodDamage = (int) Math.max(player.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
+			BloodDamage = (int) Math.max(attacker.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
 		}
 		if (0 < BA.getSpecialStatus()[3])	// Poison
 		{
-			PoisonDamage = (int) Math.max(player.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
+			PoisonDamage = (int) Math.max(attacker.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
 		}
-		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage); ;
-		if (0 < BloodDamage)
+		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage) ;
+		if (attacker instanceof Player)
 		{
-			player.getStats()[17] += BloodDamage ;
+			Player player = (Player) attacker ;
+			if (0 < BloodDamage)
+			{
+				player.getStats()[17] += BloodDamage ;
+			}
+			if (0 < PoisonDamage)
+			{
+				player.getStats()[20] += PoisonDamage ;
+			}
+			if (player.getJob() == 4 & 0 < player.getSpell().get(6).getLevel() & player.getSpell().get(6).isActive())	// Tasty
+			{
+				player.getLife().incCurrentValue(BloodDamage) ;
+			}
 		}
-		if (0 < PoisonDamage)
-		{
-			player.getStats()[20] += PoisonDamage ;
-		}
-		if (player.getJob() == 4 & 0 < player.getSpell().get(6).getLevel() & SpellBuffIsActive[6][0])	// Tasty
-		{
-			player.getLife().incCurrentValue(BloodDamage) ;	// TODO add ALL blood damage?
-		}
-	}
-	public void TakeBloodAndPoisonDamage(Pet pet)
-	{
-		int BloodDamage = 0 ;
-		int PoisonDamage = 0 ;
-		if (0 < BA.getSpecialStatus()[2])	// Blood
-		{
-			BloodDamage = (int) Math.max(pet.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
-		}
-		if (0 < BA.getSpecialStatus()[3])	// Poison
-		{
-			PoisonDamage = (int) Math.max(pet.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
-		}
-		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage); ;
 	}
 	public void Think()
 	{

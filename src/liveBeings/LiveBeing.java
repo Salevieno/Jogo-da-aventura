@@ -60,48 +60,13 @@ public class LiveBeing
 			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Poison.png"),
 			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Silence.png")
 			};
-	public static final String[] BattleKeys = new String[] {"A", "D"} ;
-	
-	/*public LiveBeing(int level, PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, PlayerAttributesWindow attWindow)
-	{
-		this.level = level;
-		this.PA = PA;
-		this.BA = BA;
-		this.movingAni = movingAni ;
-		this.attWindow = attWindow ;
-		
-		
-		
-		this.name = Name ;
-		this.Level = Level ;
-		this.Job = Job ;
-		this.ProJob = ProJob ;
-		if (map != null)
-		{
-			this.continent = map.getContinent() ;
-		}
-		this.map = map ;
-		this.pos = Pos ;
-		this.dir = dir ;
-		this.state = state ;
-		this.size = size ;
-		this.currentAction = currentAction ;
-		mpCounter = new TimeCounter(0, mpDuration) ;
-		satiationCounter = new TimeCounter(0, satiationDuration) ;
-		moveCounter = new TimeCounter(0, moveDuration) ;
-		this.stepCounter = stepCounter ;
-		combo = new ArrayList<>() ;
-		this.Elem = Elem ;
-		this.Range = Range ;
-		this.Step = Step ;
-	}*/
-	
+	public static final String[] BattleKeys = new String[] {"A", "D"} ;	
 	
 
 	public String getName() {return name ;}
-	public LiveBeing(String name, int job, int proJob, int level, GameMap map, Point pos, Directions dir,
+	/*public LiveBeing(String name, int job, int proJob, int level, GameMap map, Point pos, Directions dir,
 			LiveBeingStates state, Dimension size, double range, int step, String[] elem, TimeCounter mpCounter,
-			TimeCounter satiationCounter, TimeCounter moveCounter, TimeCounter battleActionCounter, int stepCounter, String currentAction,
+			TimeCounter satiationCounter, TimeCounter moveCounter, TimeCounter battleActionCounter, 
 			ArrayList<String> combo, ArrayList<Spell> spells, PersonalAttributes PA, BattleAttributes BA,
 			MovingAnimations movingAni, PlayerAttributesWindow attWindow)
 	{
@@ -121,15 +86,15 @@ public class LiveBeing
 		this.satiationCounter = satiationCounter;
 		this.moveCounter = moveCounter;
 		this.battleActionCounter = battleActionCounter ;
-		this.stepCounter = stepCounter;
-		this.currentAction = currentAction;
+		this.stepCounter = 0;
+		this.currentAction = "";
 		this.combo = combo;
 		this.spells = spells;
 		this.PA = PA;
 		this.BA = BA;
 		this.movingAni = movingAni;
 		this.attWindow = attWindow;
-	}
+	}*/
 	
 	public LiveBeing(PersonalAttributes PA, BattleAttributes BA,
 			MovingAnimations movingAni, PlayerAttributesWindow attWindow)
@@ -138,6 +103,7 @@ public class LiveBeing
 		this.BA = BA;
 		this.movingAni = movingAni;
 		this.attWindow = attWindow;
+		currentAction = "" ;
 	}
 	
 	public int getLevel() {return level ;}
@@ -352,21 +318,18 @@ public class LiveBeing
 				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.width), Pos.y + (att + 1) * Sy), Align.centerLeft, new Dimension((int)(attRate.get(att) * size.width), size.height), barthick, attColor.get(att), colorPalette[9]) ;
 			}
 		}
-	}
+	}	
 	public void DrawTimeBar(String relPos, Color color, DrawingOnPanel DP)
 	{
-		Dimension barSize = new Dimension(2 + size.height / 20, size.height) ;
-		Color BackgroundColor = Game.ColorPalette[7] ;
-		//int counter = BA.getBattleActions()[0][0] ;
-		//int delay = BA.getBattleActions()[0][1] ;
 		int stroke = DrawingOnPanel.stdStroke ;
 		double rate = battleActionCounter.rate() ;
 		int mirror = UtilS.MirrorFromRelPos(relPos) ;
+		Dimension barSize = new Dimension(2 + size.height / 20, size.height) ;
 		Dimension offset = new Dimension (barSize.width / 2 + (StatusImages[0].getWidth(null) + 5), -barSize.height / 2) ;
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
 		Point rectPos = new Point(pos.x + mirror * offset.width, pos.y + offset.height) ;
 		
-		DP.DrawRect(rectPos, Align.bottomLeft, barSize, stroke, BackgroundColor, Game.ColorPalette[2]) ;
+		DP.DrawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.ColorPalette[9]) ;
 		DP.DrawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null) ;
 	}
 	public void ShowEffectsAndStatusAnimation(Point Pos, int mirror, Dimension offset, Image[] IconImages, int[] effect, boolean isDefending, DrawingOnPanel DP)

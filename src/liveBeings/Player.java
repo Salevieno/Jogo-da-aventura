@@ -14,8 +14,6 @@ import java.util.Arrays ;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.ImageIcon ;
-
 import org.json.simple.JSONObject;
 
 import java.util.Map;
@@ -97,7 +95,6 @@ public class Player extends LiveBeing
     private Creature opponent ;		// creature that is currently in battle with the player
     public Map<String, String[]> allText ;	// All the text in the game in the player language
 	public Items[] hotItem ;		// items on the hotkeys
-    public int difficultLevel ;
     
     public static final Image CollectingMessage = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "CollectingMessage.gif") ;   
     public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "Icon5_Tent.png") ; 
@@ -238,7 +235,7 @@ public class Player extends LiveBeing
 
 		closestCreature = null ;
 	    opponent = null ;
-	    difficultLevel = 1 ;
+	    //difficultLevel = 1 ;
 		equipsBonus = Items.EquipsBonus ;
 		settings = new SettingsWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "windowSettings.png"), false, true, false, 1, 1) ;
 		/*switch (Job)
@@ -480,7 +477,7 @@ public class Player extends LiveBeing
 	private void Collect(Collectible collectible, DrawingOnPanel DP, Animations ani)
     {
 		collectCounter.inc() ;
-        Image collectingGif = UtilG.loadImage(Game.ImagesPath + "Collecting.gif") ;
+        Image collectingGif = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "Collecting.gif") ;
         DP.DrawGif(collectingGif, getPos(), Align.center);
         if (collectCounter.finished())
         {
@@ -576,7 +573,9 @@ public class Player extends LiveBeing
 	
 	public void decAttPoints(int amount) {attPoints += -amount ;}	
 	public boolean actionIsASpell()	{return UtilG.ArrayContains(Player.SpellKeys, currentAction) ;}
-	public boolean actionIsAnAtk() {return currentAction.equals(Player.BattleKeys[0]) ;}
+	public boolean actionIsAtk() {return currentAction.equals(Player.BattleKeys[0]) ;}
+	public boolean actionIsDef() {return currentAction.equals(Player.BattleKeys[1]) ;}
+	
 	public boolean hasTheSpell(String action) {return UtilG.IndexOf(Player.SpellKeys, action) < GetActiveSpells().size() ;}
 	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}	
@@ -1834,6 +1833,7 @@ public class Player extends LiveBeing
 	// Save and load methods
 	private void Save(String filePath, Pet pet)
 	{
+		// TODO save method
 		try
 		{	
 			FileWriter fileWriter = new FileWriter(filePath) ;
@@ -1891,7 +1891,7 @@ public class Player extends LiveBeing
 			
 			bw.write("\nEquips bonus: \n" + Arrays.deepToString(Items.EquipsBonus)) ;
 			//bufferedWriter.write("\nNPCs contact: \n" + Arrays.toString(FirstNPCContact)) ;
-			bw.write("\nDifficult level: \n" + difficultLevel) ;
+			bw.write("\nDifficult level: \n" + Game.difficultLevel) ;
 			bw.close() ;
 		}		
 		catch(IOException ex) 

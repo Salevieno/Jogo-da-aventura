@@ -2,7 +2,6 @@ package main ;
 
 import java.awt.Color ;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics ;
 import java.awt.Graphics2D;
 import java.awt.Image ;
@@ -21,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.sound.sampled.Clip;
-import javax.swing.ImageIcon ;
 import javax.swing.JPanel ;
 
 import org.json.simple.JSONArray;
@@ -38,7 +36,6 @@ import components.Quests;
 import components.SpellTypes;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
-import graphics.Gif;
 import items.Alchemy;
 import items.Arrow;
 import items.Equip;
@@ -54,10 +51,8 @@ import items.Recipe;
 import liveBeings.BasicAttribute;
 import liveBeings.BasicBattleAttribute;
 import liveBeings.BattleAttributes;
-import liveBeings.Buff;
 import liveBeings.Creature;
 import liveBeings.CreatureTypes;
-import liveBeings.LiveBeingStates;
 import liveBeings.MovingAnimations;
 import liveBeings.PersonalAttributes;
 import liveBeings.Pet;
@@ -73,7 +68,6 @@ import screen.Screen;
 import screen.SideBar;
 import screen.Sky;
 import utilities.Align;
-import utilities.Directions;
 import utilities.GameStates;
 import utilities.Scale;
 import utilities.UtilG;
@@ -105,8 +99,9 @@ public class Game extends JPanel
 	private Player player ;
 	private Pet pet ;
 	private Creature[] creature ;
-	private ArrayList<Recipe> allRecipes ;
+	//private ArrayList<Recipe> allRecipes ;
 	private List<Projectiles> proj ;
+	public static int difficultLevel ;
 
 	private static Screen screen ;
 	private static Sky sky ;
@@ -129,9 +124,6 @@ public class Game extends JPanel
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 	public static final Image slotImage = UtilG.loadImage(".\\images\\" + "slot.png") ;
 	
-	private Gif testGif ;
-	private Gif testGif2 ;
-	
 	public Game(Dimension windowDimension) 
 	{
     	screen = new Screen(new Dimension(windowDimension.width - 40, windowDimension.height), null) ;
@@ -149,8 +141,6 @@ public class Game extends JPanel
 		state = GameStates.loading;
 		konamiCodeActive = false ;
 		shouldRepaint = false ;
-		testGif = new Gif(UtilG.loadImage(ImagesPath + "test.gif"), 100, false, false) ;
-		testGif2 = new Gif(UtilG.loadImage(ImagesPath + "test2.gif"), 0, true, false) ;
     	//OpeningIsOn = true ; 
 
     	player = new Player("", "", "", 1) ;
@@ -737,20 +727,20 @@ public class Game extends JPanel
 				//pet.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
 			}
 		}
-		if (!player.getMap().IsACity())
-		{
-			if (player.getMap() instanceof FieldMap)
-			{
-				FieldMap fm = (FieldMap) player.getMap() ;
-				for (Creature creature : fm.getCreatures())
-				{
-					if (!ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(18))	// TODO define which animations stop the run
-					{
-						//creature.ActivateActionCounters() ;
-					}
-				}
-			}
-		}
+//		if (!player.getMap().IsACity())
+//		{
+//			if (player.getMap() instanceof FieldMap)
+//			{
+//				FieldMap fm = (FieldMap) player.getMap() ;
+//				for (Creature creature : fm.getCreatures())
+//				{
+//					if (!ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(18))	// TODO define which animations stop the run
+//					{
+//						creature.ActivateActionCounters() ;
+//					}
+//				}
+//			}
+//		}
 		for (int i = 0; i <= fieldMaps.length - 1; i += 1)
 		{
 			fieldMaps[i].ActivateCollectiblesCounter() ;
@@ -835,7 +825,6 @@ public class Game extends JPanel
 		
 		// draw the map (cities, forest, etc.)
 		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
-		//player.DrawSideBar(pet, mousePos, sideBarIcons, DP) ;
 		sideBar.display(player, pet, mousePos, DP);
 		
 		// creatures act
@@ -848,6 +837,7 @@ public class Game extends JPanel
 				{				
 					creature.act(player.getPos(), player.getMap()) ;
 					creature.display(creature.getPos(), new Scale(1, 1), DP) ;
+					creature.DrawAttributes(0, DP) ;
 				}
 				shouldRepaint = true ;
 			}
@@ -902,7 +892,6 @@ public class Game extends JPanel
 			player.closestCreature = UtilS.ClosestCreatureInRange(player, creature, allMaps) ;
 		}
 		
-		
 		// check if the player met something
 		if (!player.isInBattle())
 		{
@@ -913,7 +902,7 @@ public class Game extends JPanel
 		// if the player is in battle, run battle
 		if (player.isInBattle() & !ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(16))	// only enter battle if the animations for win (12), level up (13), pet level up (14), and pterodactile (16) are off
 		{
-			bat.RunBattle(player, pet, player.getOpponent(), allQuests, mousePos, DP) ;
+			bat.RunBattle(player, pet, player.getOpponent(), DP) ;
 		}
 		
 		
@@ -1003,7 +992,7 @@ public class Game extends JPanel
 		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
 		initializeIcons(screen.getSize()) ;
 		allItems = initializeAllItems() ;
-		allRecipes = LoadCraftingRecipes() ;
+		//allRecipes = LoadCraftingRecipes() ;
 		NPCTypes = initializeNPCTypes(GameLanguage) ;
 		buildingTypes = initializeBuildingTypes() ;
 		
@@ -1023,7 +1012,7 @@ public class Game extends JPanel
     	
     	player.InitializeSpells() ;
     	player.getSpellsTreeWindow().setSpells(player.getSpell().toArray(new Spell[0])) ;
-    	player.setMap(cityMaps[2]) ;
+    	player.setMap(fieldMaps[0]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
     	for (int i = 0; i <= 20 - 1; i += 1)
     	{

@@ -351,7 +351,7 @@ public class Pet extends LiveBeing
 	}
 	public void Dies()
 	{
-		PA.getLife().incCurrentValue(-PA.getLife().getMaxValue()) ;
+		PA.getLife().incCurrentValue(-PA.getLife().getCurrentValue()) ;
 	}
 	public boolean actionIsAnAtk()
 	{
