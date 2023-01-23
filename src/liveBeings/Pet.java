@@ -327,7 +327,7 @@ public class Pet extends LiveBeing
 	}
 	public boolean closeToPlayer(Point playerPos)
 	{
-		return (Math.sqrt(Math.pow(pos.x - playerPos.x, 2) + Math.pow(pos.y - playerPos.y, 2)) <= 40) ;
+		return UtilG.dist(pos, playerPos) <= 40 ;
 	}
 	public void Move(Point playerPos, GameMap playerMap, String playerElem)
 	{

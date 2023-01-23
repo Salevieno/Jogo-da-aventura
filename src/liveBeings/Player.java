@@ -40,6 +40,7 @@ import items.PetItem;
 import items.Potion;
 import items.QuestItem;
 import items.Recipe;
+import main.AtkResults;
 import main.Battle;
 import main.Game;
 import maps.Collectible;
@@ -48,6 +49,7 @@ import maps.GameMap;
 import screen.Screen;
 import screen.SideBar;
 import utilities.Align;
+import utilities.AttackEffects;
 import utilities.Directions;
 import utilities.Scale;
 import utilities.TimeCounter;
@@ -1308,7 +1310,7 @@ public class Player extends LiveBeing
 			statistics[21] += BA.TotalPoisonDef() ;
 		}
 	}
-	public void updateoffensiveStats(Object[] playerAtkResult, Creature creature)
+	public void updateoffensiveStats(AtkResults playerAtkResult, Creature creature)
 	{
 		/* 0: Number of phy attacks, 
 		 * 1: number of spells used, 
@@ -1334,8 +1336,8 @@ public class Player extends LiveBeing
 		 * 21: total poison def, 
 		 * 22: total silence
 		*/
-		int damage = (int) playerAtkResult[0] ;
-		String effect = (String) playerAtkResult[1] ;
+		int damage = (int) playerAtkResult.getDamage() ;
+		AttackEffects effect = (AttackEffects) playerAtkResult.getEffect() ;
 		if (!currentAction.equals(""))				// player has performed an action
 		{
 			if (0 <= damage)							// player inflicted damage
@@ -1351,7 +1353,7 @@ public class Player extends LiveBeing
 					statistics[3] += damage ;					// Total physical damage inflicted by the player
 				}
 			}		
-			if (effect.equals("Hit"))							// player performed a successful hit
+			if (effect.equals(AttackEffects.hit))							// player performed a successful hit
 			{
 				statistics[9] += 1 ;								// total number of successful hits performed by the player
 				// for the status, dividing the duration of the status by the duration applied to get the number of times the status was applied
@@ -1395,7 +1397,7 @@ public class Player extends LiveBeing
 			}
 		}
 	}
-	public void updatedefensiveStats(int damage, String effect, boolean creaturePhyAtk, Creature creature)
+	public void updatedefensiveStats(int damage, AttackEffects effect, boolean creaturePhyAtk, Creature creature)
 	{
 		/* 0: Number of phy attacks, 
 		 * 1: number of spells used, 
@@ -1421,7 +1423,7 @@ public class Player extends LiveBeing
 		 * 21: total poison def, 
 		 * 22: total silence
 		*/
-		if (effect.equals("Hit"))
+		if (effect.equals(AttackEffects.hit))
 		{			
 			statistics[10] += 1 ;						// number of hits the player has taken
 			if (creaturePhyAtk)	// Creature physical atk

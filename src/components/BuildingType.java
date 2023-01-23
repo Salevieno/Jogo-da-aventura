@@ -12,12 +12,12 @@ public class BuildingType
 	private Image[] ornamentImages ;
 	private List<NPCs> npc ;	// NPCs in the building
 	
-	public BuildingType(String name, Image image, Image insideImage, Image[] ornamentImages, List<NPCs> npc)
+	public BuildingType(String name, Image image, List<NPCs> npc)
 	{
 		this.name = name ;
 		this.image = image ;
-		this.insideImage = insideImage ;
-		this.ornamentImages = ornamentImages ;
+		this.insideImage = null ;
+		this.ornamentImages = null ;
 		this.npc = npc ;
 	}
 	
@@ -28,6 +28,18 @@ public class BuildingType
 	public Image[] getOrnamentImages() {return ornamentImages ;}
 	public List<NPCs> getNPCs() {return npc ;}
 	
+	public void setInsideImage(Image insideImage)
+	{
+		this.insideImage = insideImage;
+	}
+
+
+	public void setOrnamentImages(Image[] ornamentImages)
+	{
+		this.ornamentImages = ornamentImages;
+	}
+
+
 	public boolean hasNPCs() {return npc != null ;}
 
 

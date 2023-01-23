@@ -646,6 +646,11 @@ public abstract class UtilG
 		return Math.abs(PosA - PosB) ;
 	}
 	
+	public static double dist(Point pos1, Point pos2)
+	{
+		return Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2)) ;
+	}
+	
 	public static double getAngle(double[] speed)
 	{
 		if (speed[0] == 0)

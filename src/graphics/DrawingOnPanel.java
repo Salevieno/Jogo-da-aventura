@@ -419,7 +419,7 @@ public class DrawingOnPanel
 		}
 		DrawTime(sky) ;
 	}
-	public void DrawTimeBar(Point pos, int counter, int delay, int size2, Point offset, String relPos, String dir, Color color)
+	/*public void DrawTimeBar(Point pos, int counter, int delay, int size2, Point offset, String relPos, String dir, Color color)
 	{
 		Dimension size = new Dimension((int)(2 + size2/20), (int)(size2)) ;
 		int mirror = UtilS.MirrorFromRelPos(relPos) ;
@@ -428,16 +428,16 @@ public class DrawingOnPanel
 		if (dir.equals("Vertical"))
 		{
 			pos = new Point(pos.x + mirror*offset.x, pos.y + offset.y) ;
-			DrawRect(pos, Align.center, size, RectT, BackgroundColor, colorPalette[9]) ;
-			DrawRect(new Point(pos.x - size.width / 2, pos.y + size.height / 2), Align.bottomLeft, new Dimension(size.width, size.height * counter / delay), RectT, color, null) ;	
+			DrawRect(pos, Align.bottomLeft, size, RectT, BackgroundColor, colorPalette[9]) ;
+			DrawRect(pos, Align.bottomLeft, new Dimension(size.width, size.height * counter / delay), RectT, color, null) ;	
 		}
 		if (dir.equals("Horizontal"))
 		{
 			pos = new Point(pos.x + offset.x, pos.y + mirror*offset.y) ;
-			DrawRect(pos, Align.center, new Dimension(size.height, size.width), RectT, BackgroundColor, colorPalette[9]) ;
+			DrawRect(pos, Align.bottomLeft, new Dimension(size.height, size.width), RectT, BackgroundColor, colorPalette[9]) ;
 			DrawRect(new Point(pos.x - size.height / 2, pos.y + size.width / 2), Align.bottomLeft, new Dimension(size.height * counter / delay, size.width), RectT, color, null) ;	
 		}			
-	}
+	}*/
 	public void DrawFabBook(Image BookImage, Items[] items, int SelectedPage, int[][] Ingredients, int[][] Products, Point MousePos)
 	{
 		Point Pos = new Point((int)(0.5*screenSize.width), (int)(0.5*screenSize.height)) ;

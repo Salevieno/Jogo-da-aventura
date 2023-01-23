@@ -264,10 +264,7 @@ public class Game extends JPanel
     	{
     		JSONObject type = (JSONObject) input.get(i) ;
     		String name = (String) type.get("name") ;
-    		// TODO buildings that don't have inside and ornament images
 			Image outsideImage = UtilG.loadImage(path + "Building" + name + ".png") ;
-			Image insideImage = UtilG.loadImage(path + "Building" + name + "Inside.png") ;
-			Image[] OrnamentImages = new Image[] {UtilG.loadImage(path + "Building" + name + "Ornament.png")} ;
 			
 			// adding npcs to the building
 			List<NPCs> npcs = new ArrayList<>() ;
@@ -285,7 +282,16 @@ public class Game extends JPanel
 				}
 			}
 			
-    		buildingTypes[i] = new BuildingType(name, outsideImage, insideImage, OrnamentImages, npcs) ;
+    		buildingTypes[i] = new BuildingType(name, outsideImage, npcs) ;
+    		
+    		boolean hasInterior = (boolean) type.get("hasInterior") ;
+			if (hasInterior)
+			{
+				Image insideImage = UtilG.loadImage(path + "Building" + name + "Inside.png") ;
+				Image[] OrnamentImages = new Image[] {UtilG.loadImage(path + "Building" + name + "Ornament.png")} ;
+				buildingTypes[i].setInsideImage(insideImage) ;
+				buildingTypes[i].setOrnamentImages(OrnamentImages) ;
+			}
     	}
 		
 		return buildingTypes ;

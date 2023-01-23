@@ -11,6 +11,7 @@ import main.Game;
 import maps.GameMap;
 import screen.Screen;
 import utilities.Align;
+import utilities.AttackEffects;
 import utilities.Directions;
 import utilities.Scale;
 import utilities.TimeCounter;
@@ -238,7 +239,7 @@ public class Creature extends LiveBeing
 	{
 		int magicalType = type.getID() % 5 ;
 		int MPCost = 10 ;
-		String effect = "" ;
+		AttackEffects effect = null ;
 		int damage = -1 ;
 		double randomAmp = (double) 0.1 ;
 		BattleAttributes playerBA = player.getBA() ;

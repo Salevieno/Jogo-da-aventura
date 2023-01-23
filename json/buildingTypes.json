@@ -1,26 +1,32 @@
 [
   {
     "name": "Hospital",
-    "npcs": [{"job": "doctor", "pos": [0, 0]}]
+    "npcs": [{"job": "doctor", "pos": [0, 0]}],
+    "hasInterior": true    
   },  
   {
     "name": "Store",
-    "npcs": [{"job": "equipsSeller", "pos": [0, 0]}, {"job": "itemsSeller", "pos": [0, 0]}]
+    "npcs": [{"job": "equipsSeller", "pos": [0, 0]}, {"job": "itemsSeller", "pos": [0, 0]}],
+    "hasInterior": true    
   },  
   {
     "name": "Craft",
-    "npcs": [{"job": "crafter", "pos": [0, 0]}]
+    "npcs": [{"job": "crafter", "pos": [0, 0]}],
+    "hasInterior": true    
   },  
   {
     "name": "Bank",
-    "npcs": [{"job": "banker", "pos": [0, 0]}]
+    "npcs": [{"job": "banker", "pos": [0, 0]}],
+    "hasInterior": true    
   },  
   {
     "name": "Forge",
-    "npcs": [{"job": "forger", "pos": [0, 0]}]
+    "npcs": [{"job": "forger", "pos": [0, 0]}],
+    "hasInterior": false    
   },  
   {
     "name": "Sign",
-    "npcs": []
+    "npcs": [],
+    "hasInterior": false    
   }
 ]

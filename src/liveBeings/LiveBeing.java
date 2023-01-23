@@ -12,9 +12,11 @@ import javax.swing.ImageIcon;
 import graphics.DrawingOnPanel;
 import items.Item;
 import items.Potion;
+import main.AtkResults;
 import main.Game;
 import maps.GameMap;
 import utilities.Align;
+import utilities.AttackEffects;
 import utilities.Directions;
 import utilities.TimeCounter;
 import utilities.UtilG;
@@ -274,24 +276,27 @@ public class LiveBeing
 		BA.getPhyDef().incBonus(-BA.getPhyDef().getBaseValue()) ;
 		BA.getMagDef().incBonus(-BA.getMagDef().getBaseValue()) ;
 	}
-	public void train(Object[] playerAtkResult)
+	public void train(AtkResults playerAtkResult)
 	{
-		String effect = (String) playerAtkResult[1] ;
-		String atkType = (String) playerAtkResult[2] ;
+		AttackEffects effect = (AttackEffects) playerAtkResult.getEffect() ;
+		String atkType = (String) playerAtkResult.getAtkType() ;
 		if (atkType.equals("Physical"))	// Physical atk
 		{
 			BA.getPhyAtk().incTrain(0.025 / (BA.getPhyAtk().getTrain() + 1)) ;					
 		}
-		if (effect.equals("Crit"))
+		if (effect != null)
 		{
-			if (job == 2)
+			if (effect.equals(AttackEffects.crit))
 			{
-				BA.getCrit()[1] += 0.025 * 0.000212 / (BA.getCrit()[1] + 1) ;	// 100% after 10,000 hits starting from 0.12
+				if (job == 2)
+				{
+					BA.getCrit()[1] += 0.025 * 0.000212 / (BA.getCrit()[1] + 1) ;	// 100% after 10,000 hits starting from 0.12
+				}
 			}
-		}
-		if (effect.equals("Hit"))
-		{
-			BA.getDex().incTrain(0.025 / (BA.getDex().getTrain() + 1)) ;
+			if (effect.equals(AttackEffects.hit))
+			{
+				BA.getDex().incTrain(0.025 / (BA.getDex().getTrain() + 1)) ;
+			}
 		}
 		if (atkType.equals("Spell"))
 		{
@@ -354,14 +359,15 @@ public class LiveBeing
 		Color BackgroundColor = Game.ColorPalette[7] ;
 		//int counter = BA.getBattleActions()[0][0] ;
 		//int delay = BA.getBattleActions()[0][1] ;
+		int stroke = DrawingOnPanel.stdStroke ;
 		double rate = battleActionCounter.rate() ;
 		int mirror = UtilS.MirrorFromRelPos(relPos) ;
 		Dimension offset = new Dimension (barSize.width / 2 + (StatusImages[0].getWidth(null) + 5), -barSize.height / 2) ;
+		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
 		Point rectPos = new Point(pos.x + mirror * offset.width, pos.y + offset.height) ;
-		Point rectCenter = new Point(pos.x - barSize.width / 2, pos.y + barSize.height / 2) ;
 		
-		DP.DrawRect(rectPos, Align.center, barSize, DrawingOnPanel.stdStroke, BackgroundColor, Game.ColorPalette[9]) ;
-		DP.DrawRect(rectCenter, Align.bottomLeft, new Dimension(barSize.width, (int) (barSize.height * rate)), DrawingOnPanel.stdStroke, color, null) ;
+		DP.DrawRect(rectPos, Align.bottomLeft, barSize, stroke, BackgroundColor, Game.ColorPalette[2]) ;
+		DP.DrawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null) ;
 	}
 	public void ShowEffectsAndStatusAnimation(Point Pos, int mirror, Dimension offset, Image[] IconImages, int[] effect, boolean isDefending, DrawingOnPanel DP)
 	{
