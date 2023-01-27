@@ -206,9 +206,10 @@ public class LiveBeing
 	}
 	
 	public boolean isAlive() {return 0 < PA.getLife().getCurrentValue() ;}
+	public boolean hasActed() {return currentAction != null ;}
 	public boolean canAtk() {return battleActionCounter.finished() & !BA.isStun() ;}
 	public boolean isSilent() {return BA.getSpecialStatus()[4] <= 0 ;}
-	public boolean isDefending() {return (getCurrentAction().equals(BattleKeys[1]) & !canAtk()) ;}
+	public boolean isDefending() {return hasActed() ? (getCurrentAction().equals(BattleKeys[1]) & !canAtk()) : false ;}
 	
 	public void ActivateBattleActionCounters()
 	{

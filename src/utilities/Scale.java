@@ -2,6 +2,8 @@ package utilities;
 
 public class Scale
 {
+	public final static Scale unit = new Scale(1, 1) ;
+	
 	public double x ;
 	public double y ;
 	

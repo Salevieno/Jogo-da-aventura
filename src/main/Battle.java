@@ -971,8 +971,7 @@ public class Battle
 	}
 	
 	public void RunBattle(Player player, Pet pet, Creature creature, DrawingOnPanel DP)
-	{	
-		System.out.println("Battle is running");
+	{
 		IncrementCounters() ;
 		ActivateCounters(player, pet, creature) ;
 		if (player.isAlive())

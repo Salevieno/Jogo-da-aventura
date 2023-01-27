@@ -531,7 +531,7 @@ public class Player extends LiveBeing
 		return (0 < stepCounter & stepCounter <= moveRange) ;
 	}
 	
-	public void ResetAction() {currentAction = "" ;}
+	public void ResetAction() {currentAction = null ;}
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 	
@@ -571,10 +571,10 @@ public class Player extends LiveBeing
 //	private void incRange(double incR) {PA.setRange(PA.getRange() + incR) ;}
 //	private void incAttPoints(int amount) {attPoints += amount ;}
 	
-	public void decAttPoints(int amount) {attPoints += -amount ;}	
-	public boolean actionIsASpell()	{return UtilG.ArrayContains(Player.SpellKeys, currentAction) ;}
-	public boolean actionIsAtk() {return currentAction.equals(Player.BattleKeys[0]) ;}
-	public boolean actionIsDef() {return currentAction.equals(Player.BattleKeys[1]) ;}
+	public void decAttPoints(int amount) {attPoints += -amount ;}
+	public boolean actionIsASpell()	{return hasActed() ? UtilG.ArrayContains(Player.SpellKeys, currentAction) : false ;}
+	public boolean actionIsAtk() {return hasActed() ? currentAction.equals(Player.BattleKeys[0]) : false ;}
+	public boolean actionIsDef() {return hasActed() ? currentAction.equals(Player.BattleKeys[1]) : false ;}
 	
 	public boolean hasTheSpell(String action) {return UtilG.IndexOf(Player.SpellKeys, action) < GetActiveSpells().size() ;}
 	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
@@ -1536,7 +1536,8 @@ public class Player extends LiveBeing
 		gold[0] = (int)(0.8*gold[0]) ;
 		PA.getLife().setToMaximum(); ;
 		PA.getMp().setToMaximum(); ;
-		PA.getSatiation().setToMaximum(); ;
+		PA.getSatiation().setToMaximum() ;
+		state = LiveBeingStates.idle ;
 		resetPosition() ;
 	}
 	

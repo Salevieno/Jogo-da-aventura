@@ -836,7 +836,7 @@ public class Game extends JPanel
 				for (Creature creature : fm.getCreatures())
 				{				
 					creature.act(player.getPos(), player.getMap()) ;
-					creature.display(creature.getPos(), new Scale(1, 1), DP) ;
+					creature.display(creature.getPos(), Scale.unit, DP) ;
 					creature.DrawAttributes(0, DP) ;
 				}
 				shouldRepaint = true ;
@@ -847,7 +847,7 @@ public class Game extends JPanel
 		// player acts
 		if (player.canAct())
 		{
-			if (!player.getCurrentAction().equals(""))
+			if (player.hasActed())
 			{
 				player.acts(pet, mousePos, sideBar, ani) ;			
 
