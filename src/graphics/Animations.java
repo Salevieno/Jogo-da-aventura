@@ -11,8 +11,11 @@ import components.NPCs;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Spell;
+import main.AtkResults;
+import main.Game;
 import maps.GameMap;
 import utilities.AttackEffects;
+import utilities.TimeCounter;
 
 public class Animations 
 {
@@ -36,7 +39,7 @@ public class Animations
 		AniIsActive[AniID] = true ;
 	}
 	
-	public void IncAnimationCounter(int AniID)
+	private void IncAnimationCounter(int AniID)
 	{
 		Anicounter[AniID] = (Anicounter[AniID] + 1) % (Aniduration[AniID] + 1) ;
 	}
@@ -66,13 +69,13 @@ public class Animations
 			{
 				if (Anicounter[ani] < Aniduration[ani])
 				{
-					if (ani == 0)
+//					if (ani == 0)
+//					{
+//						GainItemAnimation(AniVars[ani], DP) ;
+//					}
+					if (ani == 1)
 					{
-						GainItemAnimation(AniVars[ani], DP) ;
-					}
-					else if (ani == 1)
-					{
-						PlayerDamageAnimation(AniVars[ani], DP) ;
+						DamageAnimation(AniVars[ani], DP) ;
 					}
 					else if (ani == 2)
 					{
@@ -86,30 +89,30 @@ public class Animations
 					{
 						PlayerArrowAtkAnimation(AniVars[ani], DP) ;
 					}
-					else if (ani == 5)
-					{
-						PetDamageAnimation(AniVars[ani], DP) ;
-					}
-					else if (ani == 6)
-					{
-						PetPhyAtkAnimation(AniVars[ani], DP) ;
-					}
-					else if (ani == 7)
-					{
-						PetMagAtkAnimation(AniVars[ani], DP) ;
-					}
-					else if (ani == 8)
-					{
-						CreatureDamageAnimation(AniVars[ani], DP) ;
-					}
-					else if (ani == 9)
-					{
-						CreaturePhyAtkAnimation(AniVars[ani], DP) ;
-					}
-					else if (ani == 10)
-					{
-						CollectAnimation(AniVars[ani], DP) ;
-					}
+//					else if (ani == 5)
+//					{
+//						PetDamageAnimation(AniVars[ani], DP) ;
+//					}
+//					else if (ani == 6)
+//					{
+//						PetPhyAtkAnimation(AniVars[ani], DP) ;
+//					}
+//					else if (ani == 7)
+//					{
+//						PetMagAtkAnimation(AniVars[ani], DP) ;
+//					}
+//					else if (ani == 8)
+//					{
+//						CreatureDamageAnimation(AniVars[ani], DP) ;
+//					}
+//					else if (ani == 9)
+//					{
+//						CreaturePhyAtkAnimation(AniVars[ani], DP) ;
+//					}
+//					else if (ani == 10)
+//					{
+//						CollectAnimation(AniVars[ani], DP) ;
+//					}
 					else if (ani == 11)
 					{
 						TentAnimation(AniVars[ani], DP) ;
@@ -126,18 +129,18 @@ public class Animations
 					{
 						PetLevelUpAnimation(AniVars[ani], DP) ;
 					}
-					else if (ani == 15)
-					{
-						FishingAnimation(AniVars[ani], DP) ;
-					}
+//					else if (ani == 15)
+//					{
+//						FishingAnimation(AniVars[ani], DP) ;
+//					}
 					else if (ani == 16)
 					{
 						PterodactileAnimation(AniVars[ani], DP) ;
 					}
-					else if (ani == 20)
-					{
-						OpeningAnimation(AniVars[ani], DP) ;
-					}
+//					else if (ani == 20)
+//					{
+//						OpeningAnimation(AniVars[ani], DP) ;
+//					}
 					IncAnimationCounter(ani) ;
 				}
 				else
@@ -148,7 +151,7 @@ public class Animations
 		}
 	}
 	
-	public void EndAnimation(int AniID)
+	private void EndAnimation(int AniID)
 	{
 		Anicounter[AniID] = 0 ;
 		AniIsActive[AniID] = false ;
@@ -160,7 +163,7 @@ public class Animations
 		Aniduration[ani] = (int) AniVars[0] ;
 	}
 	
-	public void GainItemAnimation(Object[] AniVars0, DrawingOnPanel DP)
+	private void GainItemAnimation(Object[] AniVars0, DrawingOnPanel DP)
 	{
 		Items[] items = (Items[]) AniVars0[1] ;
 		int[] ItemIDs = (int[]) AniVars0[2] ;
@@ -181,18 +184,18 @@ public class Animations
 		}*/
 	}
 	
-	public void PlayerDamageAnimation(Object[] AniVars1, DrawingOnPanel DP)
+	private void DamageAnimation(Object[] AniVars1, DrawingOnPanel DP)
 	{
-		Point TargetPos = (Point) AniVars1[1] ;
-		Dimension TargetSize = (Dimension) AniVars1[2] ;
-		int damage = (int)((Object[]) AniVars1[3])[0] ;
-		AttackEffects effect = (AttackEffects)((Object[]) AniVars1[3])[1] ;
-		int AnimationStyle = (int) AniVars1[4] ;
-		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize.height - 25) ;
-		DP.DrawDamageAnimation(Pos, damage, effect, Anicounter[1], Aniduration[1], AnimationStyle, Color.red) ;
+		Point targetPos = (Point) AniVars1[1] ;
+		Dimension targetSize = (Dimension) AniVars1[2] ;
+		AtkResults atkResults = (AtkResults) AniVars1[3] ;
+		int style = (int) AniVars1[4] ;
+		Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
+		TimeCounter counter = new TimeCounter(0, Aniduration[1]) ;
+		DP.DrawDamageAnimation(pos, atkResults, counter, style, Game.ColorPalette[6]) ;
 	}
 	
-	public void PlayerPhyAtkAnimation(Object[] AniVars2, DrawingOnPanel DP)
+	private void PlayerPhyAtkAnimation(Object[] AniVars2, DrawingOnPanel DP)
 	{
 		Point AtkPos = (Point) AniVars2[1] ;
 		Point TargetPos = (Point) AniVars2[2] ;
@@ -200,7 +203,7 @@ public class Animations
 		DP.AttackAnimation(AtkPos, TargetPos, TargetSize, 0, null, Anicounter[2], Aniduration[2]) ;
 	}
 	
-	public void PlayerMagAtkAnimation(Object[] AniVars3, DrawingOnPanel DP)
+	private void PlayerMagAtkAnimation(Object[] AniVars3, DrawingOnPanel DP)
 	{
 		boolean ShowSpellName = (boolean) AniVars3[1] ;
 		Point AttackerPos = (Point) AniVars3[2] ;
@@ -216,7 +219,7 @@ public class Animations
 		DP.AttackAnimation(AttackerPos, TargetPos, TargetSize, 1, skills.getElem(), Anicounter[3], Aniduration[3]) ;
 	}
 	
-	public void PlayerArrowAtkAnimation(Object[] AniVars4, DrawingOnPanel DP)
+	private void PlayerArrowAtkAnimation(Object[] AniVars4, DrawingOnPanel DP)
 	{
 		Point AtkPos = (Point) AniVars4[1] ;
 		Point DefPos = (Point) AniVars4[2] ;
@@ -224,18 +227,18 @@ public class Animations
 		DP.AttackAnimation(AtkPos, DefPos, DefSize, 2, null, Anicounter[4], Aniduration[4]) ;
 	}
 
-	public void PetDamageAnimation(Object[] AniVars5, DrawingOnPanel DP)
+	private void PetDamageAnimation(Object[] AniVars5, DrawingOnPanel DP)
 	{
-		Point TargetPos = (Point) AniVars5[1] ;
-		int[] TargetSize = (int[]) AniVars5[2] ;
-		int damage = (int) AniVars5[3] ;
-		AttackEffects effect = (AttackEffects) AniVars5[4] ;
-		int AnimationStyle = (int) AniVars5[5] ;
-		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize[1] - 50) ;
-		DP.DrawDamageAnimation(Pos, damage, effect, Anicounter[5], Aniduration[5], AnimationStyle, Color.red) ;
+//		Point TargetPos = (Point) AniVars5[1] ;
+//		int[] TargetSize = (int[]) AniVars5[2] ;
+//		int damage = (int) AniVars5[3] ;
+//		AttackEffects effect = (AttackEffects) AniVars5[4] ;
+//		int AnimationStyle = (int) AniVars5[5] ;
+//		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize[1] - 50) ;
+//		DP.DrawDamageAnimation(Pos, damage, effect, Anicounter[5], Aniduration[5], AnimationStyle, Color.red) ;
 	}
 	
-	public void PetPhyAtkAnimation(Object[] AniVars6, DrawingOnPanel DP)
+	private void PetPhyAtkAnimation(Object[] AniVars6, DrawingOnPanel DP)
 	{
 		Point AtkPos = (Point) AniVars6[1] ;
 		Point TargetPos = (Point) AniVars6[2] ;
@@ -243,7 +246,7 @@ public class Animations
 		DP.AttackAnimation(AtkPos, TargetPos, TargetSize, 0, null, Anicounter[6], Aniduration[6]) ;
 	}
 	
-	public void PetMagAtkAnimation(Object[] AniVars7, DrawingOnPanel DP)
+	private void PetMagAtkAnimation(Object[] AniVars7, DrawingOnPanel DP)
 	{
 		boolean ShowSpellName = (boolean) AniVars7[1] ;
 		Point AttackerPos = (Point) AniVars7[2] ;
@@ -259,18 +262,18 @@ public class Animations
 		DP.AttackAnimation(AttackerPos, TargetPos, TargetSize, 1, skills.getElem(), Anicounter[7], Aniduration[7]) ;
 	}
 
-	public void CreatureDamageAnimation(Object[] AniVars8, DrawingOnPanel DP)
+	private void CreatureDamageAnimation(Object[] AniVars8, DrawingOnPanel DP)
 	{
-		Point TargetPos = (Point) AniVars8[1] ;
-		int[] TargetSize = (int[]) AniVars8[2] ;
-		int damage = (int) AniVars8[3] ;
-		AttackEffects effect = (AttackEffects) AniVars8[4] ;
-		int AnimationStyle = (int) AniVars8[5] ;
-		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize[1] - 50) ;
-		DP.DrawDamageAnimation(Pos, damage, effect, Anicounter[8], Aniduration[8], AnimationStyle, Color.red) ;
+//		Point TargetPos = (Point) AniVars8[1] ;
+//		int[] TargetSize = (int[]) AniVars8[2] ;
+//		int damage = (int) AniVars8[3] ;
+//		AttackEffects effect = (AttackEffects) AniVars8[4] ;
+//		int AnimationStyle = (int) AniVars8[5] ;
+//		Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize[1] - 50) ;
+//		DP.DrawDamageAnimation(Pos, damage, effect, Anicounter[8], Aniduration[8], AnimationStyle, Color.red) ;
 	}
 	
-	public void CreaturePhyAtkAnimation(Object[] AniVars9, DrawingOnPanel DP)
+	private void CreaturePhyAtkAnimation(Object[] AniVars9, DrawingOnPanel DP)
 	{
 		Point AtkPos = (Point) AniVars9[1] ;
 		Point TargetPos = (Point) AniVars9[2] ;
@@ -278,7 +281,7 @@ public class Animations
 		DP.AttackAnimation(AtkPos, TargetPos, TargetSize, 0, null, Anicounter[9], Aniduration[9]) ;
 	}
 	
-	public void CollectAnimation(Object[] AniVars10, DrawingOnPanel DP)
+	private void CollectAnimation(Object[] AniVars10, DrawingOnPanel DP)
 	{
 		Point Pos = (Point) AniVars10[1] ;
 		int MessageTime = (int) AniVars10[2] ;
@@ -287,21 +290,21 @@ public class Animations
 		DP.CollectingAnimation(Pos, Anicounter[10], Aniduration[10], MessageTime, CollectibleType, Message) ;
 	}
 
-	public void TentAnimation(Object[] AniVars11, DrawingOnPanel DP)
+	private void TentAnimation(Object[] AniVars11, DrawingOnPanel DP)
 	{
 		Point Pos = (Point) AniVars11[1] ;
 		Image TentImage = (Image) AniVars11[2] ;
 		DP.TentAnimation(Pos, Anicounter[11], Aniduration[11], TentImage) ;
 	}
 	
-	public void WinAnimation(Object[] AniVars12, DrawingOnPanel DP)
+	private void WinAnimation(Object[] AniVars12, DrawingOnPanel DP)
 	{
 		String[] ItemsObtained = (String[]) AniVars12[1] ;
 		Color textColor = (Color) AniVars12[2] ;
 		DP.WinAnimation(Anicounter[12], Aniduration[12], ItemsObtained, textColor) ;
 	}
 	
-	public void LevelUpAnimation(Object[] AniVars13, DrawingOnPanel DP)
+	private void LevelUpAnimation(Object[] AniVars13, DrawingOnPanel DP)
 	{
 		double[] AttributesIncrease = (double[]) AniVars13[1] ;
 		int playerLevel = (int) AniVars13[2] ;
@@ -309,14 +312,14 @@ public class Animations
 		DP.PlayerLevelUpAnimation(Anicounter[13], Aniduration[13], AttributesIncrease, playerLevel, textColor) ;
 	}
 	
-	public void PetLevelUpAnimation(Object[] AniVars14, DrawingOnPanel DP)
+	private void PetLevelUpAnimation(Object[] AniVars14, DrawingOnPanel DP)
 	{
 		Pet pet = (Pet) AniVars14[1] ;
 		double[] AttributesIncrease = (double[]) AniVars14[2] ;
 		DP.PetLevelUpAnimation(pet, Anicounter[14], Aniduration[14], AttributesIncrease) ;
 	}
 	
-	public void FishingAnimation(Object[] AniVars15, DrawingOnPanel DP)
+	private void FishingAnimation(Object[] AniVars15, DrawingOnPanel DP)
 	{
 		Point playerPos = (Point) AniVars15[1] ;
 		Image FishingGif = (Image) AniVars15[2] ;
@@ -324,21 +327,21 @@ public class Animations
 		DP.FishingAnimation(playerPos, FishingGif, WaterPos) ;
 	}
 	
-	public void PterodactileAnimation(Object[] AniVars16, DrawingOnPanel DP)
+	private void PterodactileAnimation(Object[] AniVars16, DrawingOnPanel DP)
 	{
 		Image PterodactileImage = (Image) AniVars16[1] ;
 		Image SpeakingBubbleImage = (Image) AniVars16[2] ;
 		DP.PterodactileAnimation(Anicounter[16], Aniduration[16], PterodactileImage, SpeakingBubbleImage) ;
 	}
 
-	public void CrazyArrowAnimation(Object[] AniVars17, DrawingOnPanel DP)
+	private void CrazyArrowAnimation(Object[] AniVars17, DrawingOnPanel DP)
 	{
 		int map = (int) AniVars17[1] ;
 		Image CrazyArrowImage = (Image) AniVars17[2] ;
 		//DP.CrazyArrowAnimation(map, Anicounter[17], Aniduration[17], CrazyArrowImage) ;
 	}
 	
-	public void ChestRewardAnimation(Object[] AniVars18, DrawingOnPanel DP)
+	private void ChestRewardAnimation(Object[] AniVars18, DrawingOnPanel DP)
 	{
 		Items[] items = (Items[]) AniVars18[1] ;
 		int[] ItemRewards = (int[]) AniVars18[2] ;
@@ -348,7 +351,7 @@ public class Animations
 		DP.ChestRewardsAnimation(items, Anicounter[18], Aniduration[18], ItemRewards, GoldRewards, TextColor, CoinIcon) ;
 	}
 
-	public void SailingAnimation(Object[] AniVars19, DrawingOnPanel DP)
+	private void SailingAnimation(Object[] AniVars19, DrawingOnPanel DP)
 	{
 		Player player = (Player) AniVars19[1] ;
 		NPCs[] npc = (NPCs[]) AniVars19[2] ;
@@ -383,7 +386,7 @@ public class Animations
 		}
 	}
 
-	public void OpeningAnimation(Object[] AniVars20, DrawingOnPanel DP)
+	private void OpeningAnimation(Object[] AniVars20, DrawingOnPanel DP)
 	{
 		Image OpeningGif = (Image) AniVars20[1] ;
 		//DP.DrawOpeningScreen(OpeningGif) ;

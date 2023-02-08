@@ -48,6 +48,20 @@ public class Music
  		try 
  		{
  			currentlyPlayingClip = MusicFile ;
+	        MusicFile.start() ;
+ 	    } 
+ 		catch(Exception ex) 
+ 		{
+ 	        System.out.println("Error with playing sound.") ;
+ 	        ex.printStackTrace() ;
+ 	    }
+ 	}
+	
+	public static void LoopMusic(Clip MusicFile)
+ 	{
+ 		try 
+ 		{
+ 			currentlyPlayingClip = MusicFile ;
 	        MusicFile.loop(999) ;
  	    } 
  		catch(Exception ex) 

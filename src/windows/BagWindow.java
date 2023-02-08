@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
-
 import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import items.Alchemy;

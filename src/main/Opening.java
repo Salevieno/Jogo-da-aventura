@@ -7,8 +7,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
-
 import components.GameIcon;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
@@ -56,13 +54,13 @@ public class Opening
 		buttons[4] = new GameIcon(4, "Male", new Point(screenSize.width / 2 - 50, screenSize.height / 4), null, null, null) ;
 		buttons[5] = new GameIcon(5, "Female", new Point(screenSize.width / 2 + 50, screenSize.height / 4), null, null, null) ;
     	buttons[6] = new GameIcon(6, "Baixo", new Point(screenSize.width / 2 - 100, screenSize.height / 4), null, null, null) ;
-    	buttons[7] = new GameIcon(7, "Médio", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
+    	buttons[7] = new GameIcon(7, "Mï¿½dio", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
     	buttons[8] = new GameIcon(8, "Alto", new Point(screenSize.width / 2 + 100, screenSize.height / 4), null, null, null) ;
     	buttons[9] = new GameIcon(9, "Cavaleiro", new Point(screenSize.width / 2 - 200, screenSize.height / 4), null, null, null) ;
     	buttons[10] = new GameIcon(10, "Mago", new Point(screenSize.width / 2 - 100, screenSize.height / 4), null, null, null) ;
     	buttons[11] = new GameIcon(11, "Arqueiro", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
     	buttons[12] = new GameIcon(12, "Animal", new Point(screenSize.width / 2 + 100, screenSize.height / 4), null, null, null) ;
-    	buttons[13] = new GameIcon(13, "Ladrão", new Point(screenSize.width / 2 + 200, screenSize.height / 4), null, null, null) ;
+    	buttons[13] = new GameIcon(13, "Ladrï¿½o", new Point(screenSize.width / 2 + 200, screenSize.height / 4), null, null, null) ;
     	
     	for (GameIcon button : buttons)
     	{

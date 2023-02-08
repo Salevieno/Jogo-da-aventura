@@ -145,9 +145,13 @@ public class NPCs
 
 	public void Contact(Player player, Pet pet, Creature[] creatures, GameMap[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawingOnPanel DP)
 	{
-		String action = player.getCurrentAction() ;
-		navigate(action) ;
+		String action = player.getCurrentAction() ;		
+		if (action != null)
+		{
+			navigate(action) ;
+		}
 		speak(pos, DP) ;
+		
 		switch (type.getJob())
 		{
 			case doctor: break ;
@@ -230,7 +234,6 @@ public class NPCs
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) & 0 < menu)
 		{
 			menu += -1 ;
-			//window = 0 ;
 		}
 	}
 	
@@ -264,9 +267,10 @@ public class NPCs
 		
 	public void speak(Point pos, DrawingOnPanel DP)
 	{
-		if (!type.getSpeech()[menu + 1].equals(""))
+		String content = type.getSpeech()[menu + 1] ;
+		if (!content.equals(""))
 		{
-			DP.DrawSpeech(pos, type.getSpeech()[menu + 1], NPCfont, type.getImage(), SpeakingBubbleImage, type.getColor()) ;
+			DP.DrawSpeech(pos, content, NPCfont, type.getImage(), SpeakingBubbleImage, type.getColor()) ;
 		}
 		if (type.getOptions() != null)
 		{

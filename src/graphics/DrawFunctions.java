@@ -8,8 +8,6 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.util.Map;
 
-import javax.swing.ImageIcon ;
-
 import components.GameIcon;
 import components.Items;
 import components.NPCs;
@@ -50,25 +48,25 @@ public class DrawFunctions
 	public void InitializeVariables(String ImagesPath)
 	{
 		stdAngle = DrawingOnPanel.stdAngle ;
-		ArrowIconImage = new ImageIcon(ImagesPath + "ArrowIcon.png").getImage() ;
-		
-		ElementColor = new Color[10] ;
-		MapsTypeColor = new Color[] {null, ColorPalette[4], ColorPalette[5], ColorPalette[3], ColorPalette[3], ColorPalette[4], ColorPalette[0], ColorPalette[19], ColorPalette[6], ColorPalette[10], ColorPalette[7], ColorPalette[3], ColorPalette[6], ColorPalette[1], ColorPalette[19], ColorPalette[4], null} ;
-		ContinentsColor = new Color[] {MapsTypeColor[4], ColorPalette[19], ColorPalette[20], ColorPalette[10], ColorPalette[8], ColorPalette[5]} ;
-		ElementColor = new Color[] {ColorPalette[7], ColorPalette[5], ColorPalette[2], ColorPalette[3], ColorPalette[19], ColorPalette[8], ColorPalette[2], ColorPalette[7], ColorPalette[9], ColorPalette[8]} ;
-		Image ElemNeutral = new ImageIcon(ImagesPath + "ElementNeutral.png").getImage() ;
-		Image ElemWater = new ImageIcon(ImagesPath + "ElementWater.png").getImage() ;
-		Image ElemFire = new ImageIcon(ImagesPath + "ElementFire.png").getImage() ;
-		Image ElemPlant = new ImageIcon(ImagesPath + "ElementPlant.png").getImage() ;
-		Image ElemEarth = new ImageIcon(ImagesPath + "ElementEarth.png").getImage() ;
-		Image ElemAir = new ImageIcon(ImagesPath + "ElementAir.png").getImage() ;
-		Image ElemThunder = new ImageIcon(ImagesPath + "ElementThunder.png").getImage() ;
-		Image ElemLight = new ImageIcon(ImagesPath + "ElementLight.png").getImage() ;
-		Image ElemDark = new ImageIcon(ImagesPath + "ElementDark.png").getImage() ;
-		Image ElemSnow = new ImageIcon(ImagesPath + "ElementSnow.png").getImage() ;
-		ElementImages = new Image[] {ElemNeutral, ElemWater, ElemFire, ElemPlant, ElemEarth, ElemAir, ElemThunder, ElemLight, ElemDark, ElemSnow} ;
-		menuWindow = new ImageIcon(ImagesPath + "MenuWindow.png").getImage() ;
-		buttonGeneral = new ImageIcon(ImagesPath + "ButtonGeneral.png").getImage() ;
+//		ArrowIconImage = new ImageIcon(ImagesPath + "ArrowIcon.png").getImage() ;
+//		
+//		ElementColor = new Color[10] ;
+//		MapsTypeColor = new Color[] {null, ColorPalette[4], ColorPalette[5], ColorPalette[3], ColorPalette[3], ColorPalette[4], ColorPalette[0], ColorPalette[19], ColorPalette[6], ColorPalette[10], ColorPalette[7], ColorPalette[3], ColorPalette[6], ColorPalette[1], ColorPalette[19], ColorPalette[4], null} ;
+//		ContinentsColor = new Color[] {MapsTypeColor[4], ColorPalette[19], ColorPalette[20], ColorPalette[10], ColorPalette[8], ColorPalette[5]} ;
+//		ElementColor = new Color[] {ColorPalette[7], ColorPalette[5], ColorPalette[2], ColorPalette[3], ColorPalette[19], ColorPalette[8], ColorPalette[2], ColorPalette[7], ColorPalette[9], ColorPalette[8]} ;
+//		Image ElemNeutral = new ImageIcon(ImagesPath + "ElementNeutral.png").getImage() ;
+//		Image ElemWater = new ImageIcon(ImagesPath + "ElementWater.png").getImage() ;
+//		Image ElemFire = new ImageIcon(ImagesPath + "ElementFire.png").getImage() ;
+//		Image ElemPlant = new ImageIcon(ImagesPath + "ElementPlant.png").getImage() ;
+//		Image ElemEarth = new ImageIcon(ImagesPath + "ElementEarth.png").getImage() ;
+//		Image ElemAir = new ImageIcon(ImagesPath + "ElementAir.png").getImage() ;
+//		Image ElemThunder = new ImageIcon(ImagesPath + "ElementThunder.png").getImage() ;
+//		Image ElemLight = new ImageIcon(ImagesPath + "ElementLight.png").getImage() ;
+//		Image ElemDark = new ImageIcon(ImagesPath + "ElementDark.png").getImage() ;
+//		Image ElemSnow = new ImageIcon(ImagesPath + "ElementSnow.png").getImage() ;
+//		ElementImages = new Image[] {ElemNeutral, ElemWater, ElemFire, ElemPlant, ElemEarth, ElemAir, ElemThunder, ElemLight, ElemDark, ElemSnow} ;
+//		menuWindow = new ImageIcon(ImagesPath + "MenuWindow.png").getImage() ;
+//		buttonGeneral = new ImageIcon(ImagesPath + "ButtonGeneral.png").getImage() ;
 	}	
 
 	public void paint(Graphics g) 

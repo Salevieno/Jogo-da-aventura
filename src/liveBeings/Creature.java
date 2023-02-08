@@ -118,14 +118,6 @@ public class Creature extends LiveBeing
 		int MPcost = 10 * spellID ;
 		return (MPcost <= PA.getMp().getCurrentValue()) ;
 	}
-	public boolean actionIsASpell()
-	{
-		if (UtilG.ArrayContains(Creature.SpellKeys, currentAction))
-		{
-			return true ;
-		}
-		return false ;
-	}
 	
 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
 	{
@@ -249,6 +241,7 @@ public class Creature extends LiveBeing
 			effect = Battle.calcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock()[1]) ;
 			damage = Battle.calcDamage(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, 1, randomAmp) ; // player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
 		}
+		// TODO creature spells
 		if (magicalType == 0)
 		{
 			

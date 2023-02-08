@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.sound.sampled.Clip;
-import javax.swing.ImageIcon ;
 
 import components.Buildings;
 import components.NPCs;

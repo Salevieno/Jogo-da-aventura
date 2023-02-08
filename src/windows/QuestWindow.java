@@ -6,8 +6,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
-
 import components.Quests;
 import graphics.DrawingOnPanel;
 import items.Item;

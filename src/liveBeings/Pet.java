@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.ImageIcon ;
-
 import graphics.Animations;
 import graphics.DrawingOnPanel;
 import main.Game;
@@ -68,7 +66,7 @@ public class Pet extends LiveBeing
 		moveCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[35])) ;
 		battleActionCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[36])) ;
 		stepCounter = 0 ;
-		currentAction = "" ;
+		currentAction = null ;
 		combo = new ArrayList<>();
 		
 		this.Job = Job ;
@@ -267,7 +265,7 @@ public class Pet extends LiveBeing
 		return new Point((int) (pos.x + 0.5 * size.width), (int) (pos.y - 0.5 * size.height)) ;
 	}
 
-	public String Action(String[] ActionKeys)
+	public String fight(String[] ActionKeys)
 	{
 		int move = -1 ;
 		if (10 <= PA.getMp().getCurrentValue())	// if there is enough mp
@@ -352,22 +350,6 @@ public class Pet extends LiveBeing
 	public void Dies()
 	{
 		PA.getLife().incCurrentValue(-PA.getLife().getCurrentValue()) ;
-	}
-	public boolean actionIsAnAtk()
-	{
-		if (currentAction.equals(Pet.BattleKeys[0]))
-		{
-			return true ;
-		}
-		return false ;
-	}
-	public boolean actionIsASpell()
-	{
-		if (UtilG.ArrayContains(Pet.SpellKeys, currentAction))
-		{
-			return true ;
-		}
-		return false ;
 	}
 	public void ActivateActionCounters(boolean SomeAnimationIsOn)
 	{

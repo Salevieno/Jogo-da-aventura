@@ -13,14 +13,13 @@ import java.awt.geom.AffineTransform ;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
-
 import components.GameIcon;
 import components.Items;
 import components.NPCs;
 import items.Equip;
 import liveBeings.Pet;
 import liveBeings.Player;
+import main.AtkResults;
 import main.Game;
 import maps.FieldMap;
 import maps.GameMap;
@@ -28,6 +27,7 @@ import screen.Sky;
 import utilities.Align;
 import utilities.AttackEffects;
 import utilities.Scale;
+import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 
@@ -482,47 +482,50 @@ public class DrawingOnPanel
 		}
 		DrawWindowArrows(new Point(Pos.x, Pos.y + 15*H/32), L, SelectedPage, Ingredients.length - 1) ;
 	}
-	public void DrawDamageAnimation(Point Pos, int damage, AttackEffects effect, int counter, int duration, int aniStyle, Color color)
+	public void DrawDamageAnimation(Point pos, AtkResults atkResults, TimeCounter counter, int aniStyle, Color color)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 18) ;
-		float anirate = counter / (float) duration ;
-		Point animationPos = new Point(Pos.x, Pos.y) ;
+		Point aniPos = new Point(pos.x, pos.y) ;
+		int damage = atkResults.getDamage() ;
+		AttackEffects effect = atkResults.getEffect() ;
 		if (aniStyle == 1)
 		{
-			animationPos = new Point(Pos.x, Pos.y - (int) (10 * anirate)) ;
+			aniPos = new Point(pos.x, pos.y - (int) (10 * counter.rate())) ;
 		}
 		if (aniStyle == 2)
 		{
-			animationPos = new Point(Pos.x + (int) (40 * Math.pow(anirate, 2)), Pos.y - (int) (10 * anirate)) ;
+			aniPos = new Point(pos.x + (int) (40 * Math.pow(counter.rate(), 2)), pos.y - (int) (10 * counter.rate())) ;
 		}
 		if (aniStyle == 3)
 		{
-			animationPos = new Point(Pos.x + (int) (Math.pow(anirate, 2)), Pos.y - (int) (10 * anirate)) ;
+			aniPos = new Point(pos.x + (int) (Math.pow(counter.rate(), 2)), pos.y - (int) (10 * counter.rate())) ;
 		}
+		
+		if (effect == null) { return ;}
 		
 		switch (effect)
 		{
 			case miss:
 			{
-				DrawText(animationPos, Align.center, stdAngle, "Miss", font, color) ;
+				DrawText(aniPos, Align.center, stdAngle, "Miss", font, color) ;
 				
 				break;
 			}
 			case hit:
 			{
-				DrawText(animationPos, Align.center, stdAngle, String.valueOf(UtilG.Round(damage, 1)), font, color) ;
+				DrawText(aniPos, Align.center, stdAngle, String.valueOf(UtilG.Round(damage, 1)), font, color) ;
 				
 				break;
 			}
 			case crit:
 			{
-				DrawText(animationPos, Align.center, stdAngle, String.valueOf(UtilG.Round(damage, 1)) + "!", font, color) ;
+				DrawText(aniPos, Align.center, stdAngle, String.valueOf(UtilG.Round(damage, 1)) + "!", font, color) ;
 				
 				break;
 			}
 			case block:
 			{
-				DrawText(animationPos, Align.center, stdAngle, "Block", font, colorPalette[5]) ;	
+				DrawText(aniPos, Align.center, stdAngle, "Block", font, colorPalette[5]) ;	
 				
 				break;
 			}

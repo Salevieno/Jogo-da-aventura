@@ -7,8 +7,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
-
 import components.GameIcon;
 import components.Items;
 import graphics.DrawFunctions;

@@ -152,7 +152,7 @@ public class Player extends LiveBeing
 		pos = new Point();
 		dir = Directions.up;
 		state = LiveBeingStates.idle;
-		Image PlayerBack = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerBack.png") ;
+		Image PlayerBack = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerBack.gif") ;
 	    size = new Dimension (PlayerBack.getWidth(null), PlayerBack.getHeight(null));
 		range = Double.parseDouble(Properties.get(job)[4]) ;
 		step = Integer.parseInt(Properties.get(job)[33]);
@@ -301,10 +301,10 @@ public class Player extends LiveBeing
 	private static MovingAnimations InitializeMovingAnimations()
 	{
 	    Image idleGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerIdle.gif") ;
-	    Image movingUpGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerBack.png") ;
-		Image movingDownGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerFront.png") ;
+	    Image movingUpGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerBack.gif") ;
+		Image movingDownGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerFront.gif") ;
 		Image movingLeftGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerMovingLeft.gif") ;
-		Image movingRightGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerRight.png") ;
+		Image movingRightGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerRight.gif") ;
 		
 		return new MovingAnimations(idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif) ;
 	}
@@ -523,15 +523,45 @@ public class Player extends LiveBeing
 	
 	private void startMoving()
 	{
+		state = LiveBeingStates.moving ;
 		stepCounter = 1 ;
 	}
 	
 	public boolean isMoving()
 	{
-		return (0 < stepCounter & stepCounter <= moveRange) ;
+		return (state.equals(LiveBeingStates.moving)) ;
+	}
+	
+	public boolean isDoneMoving()
+	{
+		return (moveRange - 1 <= stepCounter) ;
 	}
 	
 	public void ResetAction() {currentAction = null ;}
+	
+
+	public void move(Pet pet, Animations Ani)
+	{
+		if (Ani.isActive(10) | Ani.isActive(12) | Ani.isActive(13) | Ani.isActive(15) | Ani.isActive(18))
+		{
+			return ;
+		}	
+		
+		Point newPos = CalcNewPos() ;
+		if (Game.getScreen().posIsInMap(newPos))
+		{	
+			if (map.GroundIsWalkable(newPos, elem[4]))
+			{
+				setPos(newPos) ;
+			}	
+		}
+		else
+		{
+			MoveToNewMap(pet, currentAction, settings.getMusicIsOn(), Ani) ;
+		}
+		
+		stepCounter = (stepCounter + 1) % moveRange ;
+	}
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 	
@@ -572,40 +602,12 @@ public class Player extends LiveBeing
 //	private void incAttPoints(int amount) {attPoints += amount ;}
 	
 	public void decAttPoints(int amount) {attPoints += -amount ;}
-	public boolean actionIsASpell()	{return hasActed() ? UtilG.ArrayContains(Player.SpellKeys, currentAction) : false ;}
-	public boolean actionIsAtk() {return hasActed() ? currentAction.equals(Player.BattleKeys[0]) : false ;}
-	public boolean actionIsDef() {return hasActed() ? currentAction.equals(Player.BattleKeys[1]) : false ;}
 	
 	public boolean hasTheSpell(String action) {return UtilG.IndexOf(Player.SpellKeys, action) < GetActiveSpells().size() ;}
 	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}	
 	
 
-	public void move(Pet pet, Animations Ani)
-	{
-		Point NewPos = CalcNewPos() ;
-		if (Game.getScreen().posIsInMap(NewPos))	// if the player's new position is inside the map
-		{	
-			if (!Ani.isActive(10) & !Ani.isActive(12) & !Ani.isActive(13) & !Ani.isActive(15) & !Ani.isActive(18))
-			{
-				boolean NewPosIsWalkable = map.GroundIsWalkable(NewPos, elem[4]) ;
-				if (NewPosIsWalkable)
-				{
-					setPos(NewPos) ;
-				}	
-			}			
-		}
-		else
-		{
-			//boolean NewPosIsWalkable = Uts.GroundIsWalkable(maps[map].getType()[NewPos[0]][NewPos[1]], Elem[4]) ; -> this has to be on the new map
-			if (true)
-			{
-				MoveToNewMap(pet, currentAction, settings.getMusicIsOn(), Ani) ;
-			}
-		}
-		
-		stepCounter = (stepCounter + 1) % moveRange ;
-	}
 	public void acts(Pet pet, Point MousePos, SideBar sideBar, Animations Ani)
 	{
 		if (actionIsAMove())
@@ -709,7 +711,7 @@ public class Player extends LiveBeing
 //		System.out.println("isInBattle() = " + isInBattle());
 //		System.out.println("canAtk() = " + canAtk());
 //		System.out.println("UtilG.IndexOf(SpellKeys, currentAction) < GetActiveSpells().size() = " + (UtilG.IndexOf(SpellKeys, currentAction)));
-		if (actionIsASpell())
+		if (actionIsSpell())
 		{
 //			System.out.println("actionIsASpell() = " + actionIsASpell());
 			int spellID = UtilG.IndexOf(SpellKeys, currentAction) ;
@@ -758,7 +760,7 @@ public class Player extends LiveBeing
 		}
 		
 		// if meets creature, enters battle
-		if (closestCreature != null & (currentAction.equals(ActionKeys[1]) | actionIsASpell()) & !isInBattle())
+		if (closestCreature != null & (currentAction.equals(ActionKeys[1]) | actionIsSpell()) & !isInBattle())
 		{
 			if (job != 2 | (job == 2 & equips[3] != null))
 			{
@@ -874,12 +876,11 @@ public class Player extends LiveBeing
 		int nextMapID = -1 ;
 		Point currentPos = new Point(pos.x, pos.y) ;
 		Point nextPos = new Point(0, 0) ;
-//		System.out.println("\nmoving to new map \n");
-//		System.out.println("current map: " + map);
-//		System.out.println("map connections: " + Arrays.toString(map.getConnections()));
 		int[] mapCon = map.getConnections() ;
-		if (action.equals(MoveKeys[0]))	 // Up
+
+		switch (dir)
 		{
+			case up:
 			nextPos = new Point(currentPos.x, screen.getBorders()[3] - step) ;
 			if (-1 < mapCon[0] & currentPos.x <= screen.getSize().width / 2)
 			{
@@ -888,10 +889,11 @@ public class Player extends LiveBeing
 			else if (-1 < mapCon[7] & screen.getSize().width / 2 < currentPos.x)
 			{
 				nextMapID = mapCon[7] ;
-			}			
-		}
-		if (action.equals(MoveKeys[1]))	 // Left
-		{
+			}
+			
+			break ;
+			
+			case left:
 			nextPos = new Point(screen.getBorders()[2] - step, currentPos.y) ;
 			if (-1 < mapCon[1] & currentPos.y <= screen.getSize().height / 2)
 			{
@@ -900,11 +902,11 @@ public class Player extends LiveBeing
 			else if (-1 < mapCon[2] & screen.getSize().height / 2 < currentPos.y)
 			{
 				nextMapID = mapCon[2] ;
-			}		
-			System.out.println("new map: " + nextMapID);
-		}
-		if (action.equals(MoveKeys[2]))	 // Down
-		{
+			}
+			
+			break ;
+			
+			case down:
 			nextPos = new Point(currentPos.x, screen.getBorders()[1] + step) ;
 			if(-1 < mapCon[3] & currentPos.x <= screen.getSize().width / 2)
 			{
@@ -914,9 +916,10 @@ public class Player extends LiveBeing
 			{
 				nextMapID = mapCon[4] ;	
 			}
-		}
-		if (action.equals(MoveKeys[3]))	 // Right
-		{			
+			
+			break ;
+			
+			case right:
 			nextPos = new Point(screen.getBorders()[0] + step, currentPos.y) ;
 			if(-1 < mapCon[5] & screen.getSize().height / 2 < currentPos.y)
 			{
@@ -926,35 +929,30 @@ public class Player extends LiveBeing
 			{
 				nextMapID = mapCon[6] ;
 			}
+			
+			break ;
+			
 		}
 		if (-1 < nextMapID)
 		{
 			if (Game.getMaps()[nextMapID].GroundIsWalkable(nextPos, elem[4]))
 			{
-				/*if (MusicIsOn & Maps.MusicID[map.getid()] != Maps.MusicID[nextMap])
-				{
-					UtilG.SwitchMusic(Music[Maps.MusicID[map.getid()]], Music[Maps.MusicID[nextMap]]) ;
-				}*/
 				setMap(Game.getMaps()[nextMapID]) ;
-				//setContinent(map.getContinent()) ;
 				setPos(nextPos) ;	
-				if (pet.isAlive())
-				{
-					pet.setPos(nextPos) ;
-				}
-				if (map.IsACity())
-				{
-					currentAction = "" ;
-				}
+//				if (pet.isAlive())
+//				{
+//					pet.setPos(nextPos) ;
+//				}
+//				if (map.IsACity())
+//				{
+//					ResetAction() ;
+//				}
 			}
 			
 
-			if (!isInBattle())
+			if (!isInBattle() & getContinent() == 3)
 			{
-				if (getContinent() == 3)
-				{
-					Pterodactile.speak(Ani) ;
-				}
+				Pterodactile.speak(Ani) ;
 			}
 		}
 	}
@@ -1335,13 +1333,14 @@ public class Player extends LiveBeing
 		 * 21: total poison def, 
 		 * 22: total silence
 		*/
+		// TODO HighestPlayerInflictedDamage = Math.max(HighestPlayerInflictedDamage, PlayerAtkResult[0]) ;
 		int damage = (int) playerAtkResult.getDamage() ;
 		AttackEffects effect = (AttackEffects) playerAtkResult.getEffect() ;
-		if (!currentAction.equals(""))				// player has performed an action
+		if (currentAction != null)				// player has performed an action
 		{
 			if (0 <= damage)							// player inflicted damage
 			{	
-				if (actionIsASpell())					// player performed a magical atk
+				if (actionIsSpell())					// player performed a magical atk
 				{
 					statistics[1] += 1 ;							// Total number of magical atks (spells) performed by the player
 					statistics[5] += damage ;					// Total magical damage inflicted by the player

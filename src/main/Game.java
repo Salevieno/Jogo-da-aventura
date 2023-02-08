@@ -53,6 +53,7 @@ import liveBeings.BasicBattleAttribute;
 import liveBeings.BattleAttributes;
 import liveBeings.Creature;
 import liveBeings.CreatureTypes;
+import liveBeings.LiveBeingStates;
 import liveBeings.MovingAnimations;
 import liveBeings.PersonalAttributes;
 import liveBeings.Pet;
@@ -860,6 +861,10 @@ public class Game extends JPanel
 		if (player.isMoving())
 		{
 			player.move(pet, ani) ;
+			if (player.isDoneMoving())
+			{
+				player.setState(LiveBeingStates.idle) ;
+			}
 		}
 		player.DrawAttributes(0, DP) ;
 		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
@@ -867,6 +872,7 @@ public class Game extends JPanel
 		{
 			player.DrawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
 		}
+		player.displayState(DP) ;
 		
 		
 		// pet acts
@@ -876,10 +882,6 @@ public class Game extends JPanel
 			{
 				pet.UpdateCombo() ;
 				pet.Move(player.getPos(), player.getMap(), player.getElem()[4]) ;
-				if (player.isInBattle())
-				{
-					pet.setCurrentAction(pet.Action(Player.ActionKeys)) ;
-				}
 				pet.display(pet.getPos(), new Scale(1, 1), DP) ;
 				pet.DrawAttributes(0, DP) ;
 			}

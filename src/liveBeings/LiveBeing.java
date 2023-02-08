@@ -2,16 +2,13 @@ package liveBeings;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
-
 import graphics.DrawingOnPanel;
-import items.Item;
-import items.Potion;
 import main.AtkResults;
 import main.Game;
 import maps.GameMap;
@@ -32,7 +29,7 @@ public class LiveBeing
 	//private int continent ;
 	protected GameMap map ;
 	protected Point pos ;					// bottomCenter of the liveBeing
-	protected Directions dir ;			// direction of the movement
+	protected Directions dir ;				// direction of the movement
 	protected LiveBeingStates state ;		// current state
 	protected Dimension size ;
 	protected double range ;
@@ -42,6 +39,7 @@ public class LiveBeing
 	protected TimeCounter satiationCounter ;	// counts the satiation reduction
 	protected TimeCounter moveCounter ;			// counts the move
 	protected TimeCounter battleActionCounter ;	// counts the actions in battle
+	protected TimeCounter displayDamage ;		// counts the time the damage taken is on the screen
 	protected int stepCounter ;					// counts the steps in the movement	TODO -> TimeCounter ? (n�o � tempo, � step)
 	protected String currentAction; 
 	protected ArrayList<String> combo ;			// record of the last 10 movements
@@ -103,7 +101,8 @@ public class LiveBeing
 		this.BA = BA;
 		this.movingAni = movingAni;
 		this.attWindow = attWindow;
-		currentAction = "" ;
+		displayDamage = new TimeCounter(0, 100) ;
+		currentAction = null ;
 	}
 	
 	public int getLevel() {return level ;}
@@ -123,6 +122,7 @@ public class LiveBeing
 	public TimeCounter getSatiationCounter() {return satiationCounter ;}
 	public TimeCounter getMoveCounter() {return moveCounter ;}
 	public TimeCounter getBattleActionCounter() {return battleActionCounter ;}
+	public TimeCounter getDisplayDamage() {return displayDamage ;}
 	public int getStepCounter() {return stepCounter ;}
 	public ArrayList<String> getCombo() {return combo ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
@@ -145,6 +145,15 @@ public class LiveBeing
 	public PlayerAttributesWindow getAttWindow() {return attWindow ;}
 	public MovingAnimations getMovingAni() {return movingAni ;}
 
+	public void displayState(DrawingOnPanel DP)
+	{
+		Point pos = new Point(540, 100) ;
+		Dimension size = new Dimension(60, 20) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		DP.DrawRoundRect(pos, Align.center, size, 1, Game.ColorPalette[8], Game.ColorPalette[8], true);
+		DP.DrawText(pos, Align.center, 0, state.toString(), font, Game.ColorPalette[9]) ;
+	}
+	
 	public Point CalcNewPos()
 	{
 		Point newPos = new Point(0, 0) ;
@@ -180,7 +189,7 @@ public class LiveBeing
 			PA.getMp().incCurrentValue(1);
 		}
 	}
-	public void IncBattleActionCounters() {battleActionCounter.inc() ;}
+	public void IncBattleActionCounters() {battleActionCounter.inc() ; displayDamage.inc() ;}
 	public void ResetBattleActions() {battleActionCounter.reset() ;}
 	
 	
@@ -191,7 +200,7 @@ public class LiveBeing
 	
 	public void UpdateCombo()
 	{
-		if (!currentAction.equals(""))
+		if (currentAction != null)
 		{
 			if (getCombo().size() <= 9)
 			{
@@ -207,14 +216,33 @@ public class LiveBeing
 	
 	public boolean isAlive() {return 0 < PA.getLife().getCurrentValue() ;}
 	public boolean hasActed() {return currentAction != null ;}
+	public boolean actionIsSpell()	{return hasActed() ? UtilG.ArrayContains(Player.SpellKeys, currentAction) : false ;}
+	public boolean actionIsAtk() {return hasActed() ? currentAction.equals(Player.BattleKeys[0]) : false ;}
+	public boolean actionIsDef() {return hasActed() ? currentAction.equals(Player.BattleKeys[1]) : false ;}
+	
 	public boolean canAtk() {return battleActionCounter.finished() & !BA.isStun() ;}
 	public boolean isSilent() {return BA.getSpecialStatus()[4] <= 0 ;}
-	public boolean isDefending() {return hasActed() ? (getCurrentAction().equals(BattleKeys[1]) & !canAtk()) : false ;}
+	public boolean isDefending() {return hasActed() ? (getCurrentAction().equals(BattleKeys[1])) : false ;}
 	
 	public void ActivateBattleActionCounters()
 	{
 		// TODO battle action counters
 	}
+//	public void displayDamageTaken(AtkResults atkResults, int animationStyle, DrawingOnPanel DP)
+//	{
+//		System.out.println(displayDamage);
+//		if (!displayDamage.finished())
+//		{
+////			Point TargetPos = (Point) AniVars1[1] ;
+////			Dimension TargetSize = (Dimension) AniVars1[2] ;
+////			int damage = (int)((Object[]) AniVars1[3])[0] ;
+////			AttackEffects effect = (AttackEffects)((Object[]) AniVars1[3])[1] ;
+////			int AnimationStyle = (int) AniVars1[4] ;
+////			Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize.height - 25) ;
+//			Point pos = new Point(this.pos.x, this.pos.y - size.height - 20) ;
+//			DP.DrawDamageAnimation(pos, atkResults, displayDamage, animationStyle, Game.ColorPalette[6]) ;
+//		}
+//	}
 	
 	public void applyBuff(boolean activate, Buff buff, int level)
 	{

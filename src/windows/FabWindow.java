@@ -7,8 +7,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-
 import graphics.DrawingOnPanel;
 import items.Item;
 import items.Recipe;

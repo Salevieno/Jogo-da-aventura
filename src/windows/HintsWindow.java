@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
 
-import javax.swing.ImageIcon;
-
 import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
