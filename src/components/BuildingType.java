@@ -25,23 +25,12 @@ public class BuildingType
 	public String getName() {return name ;}
 	public Image getImage() {return image ;}
 	public Image getInsideImage() {return insideImage ;}
+	public void setInsideImage(Image insideImage) { this.insideImage = insideImage ;}
 	public Image[] getOrnamentImages() {return ornamentImages ;}
-	public List<NPCs> getNPCs() {return npc ;}
-	
-	public void setInsideImage(Image insideImage)
-	{
-		this.insideImage = insideImage;
-	}
-
-
-	public void setOrnamentImages(Image[] ornamentImages)
-	{
-		this.ornamentImages = ornamentImages;
-	}
-
+	public void setOrnamentImages(Image[] ornamentImages) { this.ornamentImages = ornamentImages ;}
+	public List<NPCs> getNPCs() {return npc ;}	
 
 	public boolean hasNPCs() {return npc != null ;}
-
 
 	@Override
 	public String toString() {
