@@ -699,8 +699,9 @@ public class Player extends LiveBeing
 		}
 		if (currentAction.equals(ActionKeys[12]) & !isInBattle())							// Tent
 		{
-			Ani.SetAniVars(11, new Object[] {100, getPos(), TentImage}) ;
-			Ani.StartAni(11) ;
+			//	 TODO add tent gif
+//			Ani.SetAniVars(11, new Object[] {100, getPos(), TentImage}) ;
+//			Ani.StartAni(11) ;
 		}
 		if (currentAction.equals(ActionKeys[13]) &  questSkills.get(QuestSkills.bestiary))	// Bestiary
 		{
@@ -1497,7 +1498,7 @@ public class Player extends LiveBeing
 			attPoints += 2 ;
 			
 
-			ani.SetAniVars(13, new Object[] {150, attributesIncrease, getLevel(), getColor()}) ;
+			ani.SetAniVars(13, new Object[] {150, attributesIncrease, level, color}) ;
 			ani.StartAni(13) ;
 		}
 	}

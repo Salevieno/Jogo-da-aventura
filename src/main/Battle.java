@@ -907,18 +907,18 @@ public class Battle
 		{
 			
 		}
-		Ani.SetAniVars(2, new Object[] {Durations[1], AttackerPos, TargetPos, TargetSize, DamageAnimation}) ;
-		Ani.StartAni(2) ;
-		if ( UsedSkill)	// Mag atk animation
-		{
-			Ani.SetAniVars(3, new Object[] {Durations[2], Show[3], AttackerPos, TargetPos, AttackerSize, TargetSize, activePlayerSpells.get(UtilG.IndexOf(Player.SpellKeys, PlayerMove))}) ;
-			Ani.StartAni(3) ;
-		}
-		if (Show[4])	// Arrow atk animation
-		{
-		}
-		Ani.SetAniVars(4, new Object[] {Durations[0], AttackerPos, TargetPos, TargetSize}) ;
-		Ani.StartAni(4) ;
+//		Ani.SetAniVars(2, new Object[] {Durations[1], AttackerPos, TargetPos, TargetSize, DamageAnimation}) ;
+//		Ani.StartAni(2) ;
+//		if ( UsedSkill)	// Mag atk animation
+//		{
+//			Ani.SetAniVars(3, new Object[] {Durations[2], Show[3], AttackerPos, TargetPos, AttackerSize, TargetSize, activePlayerSpells.get(UtilG.IndexOf(Player.SpellKeys, PlayerMove))}) ;
+//			Ani.StartAni(3) ;
+//		}
+//		if (Show[4])	// Arrow atk animation
+//		{
+//		}
+//		Ani.SetAniVars(4, new Object[] {Durations[0], AttackerPos, TargetPos, TargetSize}) ;
+//		Ani.StartAni(4) ;
 	}
 	
 	

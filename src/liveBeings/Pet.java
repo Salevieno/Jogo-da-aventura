@@ -411,8 +411,8 @@ public class Pet extends LiveBeing
 			BA.getDex().incBaseValue(attributesIncrease[7]) ;
 			PA.getExp().incMaxValue((int) attributesIncrease[8]) ;		
 
-			ani.SetAniVars(14, new Object[] {150, this, attributesIncrease}) ;
-			ani.StartAni(14) ;
+			ani.SetAniVars(13, new Object[] {150, attributesIncrease, level, Game.ColorPalette[5]}) ;
+			ani.StartAni(13) ;
 		}
 	}
 	public double[] CalcAttIncrease()

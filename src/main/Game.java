@@ -58,6 +58,7 @@ import liveBeings.MovingAnimations;
 import liveBeings.PersonalAttributes;
 import liveBeings.Pet;
 import liveBeings.Player;
+import liveBeings.Pterodactile;
 import liveBeings.Spell;
 import liveBeings.SpellType;
 import maps.CityMap;
@@ -69,6 +70,7 @@ import screen.Screen;
 import screen.SideBar;
 import screen.Sky;
 import utilities.Align;
+import utilities.AttackEffects;
 import utilities.GameStates;
 import utilities.Scale;
 import utilities.UtilG;
@@ -1014,7 +1016,7 @@ public class Game extends JPanel
     	
     	player.InitializeSpells() ;
     	player.getSpellsTreeWindow().setSpells(player.getSpell().toArray(new Spell[0])) ;
-    	player.setMap(fieldMaps[0]) ;
+    	player.setMap(cityMaps[1]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
     	for (int i = 0; i <= 20 - 1; i += 1)
     	{
@@ -1047,6 +1049,7 @@ public class Game extends JPanel
     	{
         	player.bestiary.addDiscoveredCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
     	}
+    	Pterodactile.setMessage(player.allText.get("* Pterodactile *")) ;
     	/*System.out.println(player.getBag().getPotions()) ;
     	player.getBag().Add(Potion.getAll()[0], 4) ;
     	player.getBag().Add(Alchemy.getAll()[0], 1) ;
@@ -1059,6 +1062,7 @@ public class Game extends JPanel
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
+    	
 	}
 	
 	private void testing()
