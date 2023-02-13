@@ -75,6 +75,8 @@ import utilities.GameStates;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
+import windows.CraftWindow;
+import windows.ShoppingWindow;
 
 public class Game extends JPanel
 {
@@ -1070,6 +1072,36 @@ public class Game extends JPanel
 		//System.out.println(player.getSpell());
 		//player.getSpellsTreeWindow().display(mousePos, Icon.selectedIconID, DP) ;
 		//player.bestiary.display(player, mousePos, DP);
+		List<Item> ItemsOnSale = new ArrayList<>() ;
+		ItemsOnSale.add(allItems[0]) ;
+		ItemsOnSale.add(allItems[1]) ;
+		ItemsOnSale.add(allItems[2]) ;
+		ItemsOnSale.add(allItems[10]) ;
+		ItemsOnSale.add(allItems[3]) ;
+		ItemsOnSale.add(allItems[50]) ;
+		ItemsOnSale.add(allItems[60]) ;
+		ItemsOnSale.add(allItems[73]) ;
+		ItemsOnSale.add(allItems[24]) ;
+		ItemsOnSale.add(allItems[35]) ;
+		ItemsOnSale.add(allItems[14]) ;
+		ShoppingWindow SW = new ShoppingWindow(ItemsOnSale) ;
+		SW.display(mousePos, DP) ;
+		
+
+		List<Item> ItemsForCrafting = new ArrayList<>() ;
+		ItemsForCrafting.add(allItems[0]) ;
+		ItemsForCrafting.add(allItems[1]) ;
+		ItemsForCrafting.add(allItems[2]) ;
+		ItemsForCrafting.add(allItems[10]) ;
+		ItemsForCrafting.add(allItems[3]) ;
+		ItemsForCrafting.add(allItems[50]) ;
+		ItemsForCrafting.add(allItems[60]) ;
+		ItemsForCrafting.add(allItems[73]) ;
+		ItemsForCrafting.add(allItems[24]) ;
+		ItemsForCrafting.add(allItems[35]) ;
+		ItemsForCrafting.add(allItems[14]) ;
+		CraftWindow CW = new CraftWindow(ItemsForCrafting) ;
+		CW.display(mousePos, DP) ;
 	}
 	
 	
