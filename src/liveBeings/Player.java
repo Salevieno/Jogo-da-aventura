@@ -16,6 +16,14 @@ import java.util.List;
 
 import org.json.simple.JSONObject;
 
+import attributes.Attributes;
+import attributes.BasicAttribute;
+import attributes.BasicBattleAttribute;
+import attributes.BattleAttributes;
+import attributes.BattleSpecialAttribute;
+import attributes.BattleSpecialAttributeWithDamage;
+import attributes.PersonalAttributes;
+
 import java.util.Map;
 
 import components.GameIcon;
@@ -286,11 +294,11 @@ public class Player extends LiveBeing
 		BasicBattleAttribute Dex = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[9]), 0, 0) ;	
 		BasicBattleAttribute Agi = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[10]), 0, 0) ;
 		double[] Crit = new double[] {Double.parseDouble(Properties.get(Job)[11]), 0, Double.parseDouble(Properties.get(Job)[12]), 0} ;
-		double[] Stun = new double[] {Double.parseDouble(Properties.get(Job)[13]), 0, Double.parseDouble(Properties.get(Job)[14]), 0, Double.parseDouble(Properties.get(Job)[15])} ;
-		double[] Block = new double[] {Double.parseDouble(Properties.get(Job)[16]), 0, Double.parseDouble(Properties.get(Job)[17]), 0, Double.parseDouble(Properties.get(Job)[18])} ;
-		double[] Blood = new double[] {Double.parseDouble(Properties.get(Job)[19]), 0, Double.parseDouble(Properties.get(Job)[20]), 0, Double.parseDouble(Properties.get(Job)[21]), 0, Double.parseDouble(Properties.get(Job)[22]), 0, Double.parseDouble(Properties.get(Job)[23])} ;
-		double[] Poison = new double[] {Double.parseDouble(Properties.get(Job)[24]), 0, Double.parseDouble(Properties.get(Job)[25]), 0, Double.parseDouble(Properties.get(Job)[26]), 0, Double.parseDouble(Properties.get(Job)[27]), 0, Double.parseDouble(Properties.get(Job)[28])} ;
-		double[] Silence = new double[] {Double.parseDouble(Properties.get(Job)[29]), 0, Double.parseDouble(Properties.get(Job)[30]), 0, Double.parseDouble(Properties.get(Job)[31])} ;
+		BattleSpecialAttribute Stun = new BattleSpecialAttribute(Double.parseDouble(Properties.get(Job)[13]), 0, Double.parseDouble(Properties.get(Job)[14]), 0, Integer.parseInt(Properties.get(Job)[15])) ;
+		BattleSpecialAttribute Block = new BattleSpecialAttribute(Double.parseDouble(Properties.get(Job)[16]), 0, Double.parseDouble(Properties.get(Job)[17]), 0, Integer.parseInt(Properties.get(Job)[18])) ;
+		BattleSpecialAttributeWithDamage Blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(Properties.get(Job)[19]), 0, Double.parseDouble(Properties.get(Job)[20]), 0, Integer.parseInt(Properties.get(Job)[21]), 0, Integer.parseInt(Properties.get(Job)[22]), 0, Integer.parseInt(Properties.get(Job)[23])) ;
+		BattleSpecialAttributeWithDamage Poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(Properties.get(Job)[24]), 0, Double.parseDouble(Properties.get(Job)[25]), 0, Integer.parseInt(Properties.get(Job)[26]), 0, Integer.parseInt(Properties.get(Job)[27]), 0, Integer.parseInt(Properties.get(Job)[28])) ;
+		BattleSpecialAttribute Silence = new BattleSpecialAttribute(Double.parseDouble(Properties.get(Job)[29]), 0, Double.parseDouble(Properties.get(Job)[30]), 0, Integer.parseInt(Properties.get(Job)[31])) ;
 		int[] Status = new int[9] ;
 		int[] SpecialStatus = new int[5] ;
 
@@ -428,11 +436,11 @@ public class Player extends LiveBeing
 	public BasicBattleAttribute getDex() {return BA.getDex() ;}
 	public BasicBattleAttribute getAgi() {return BA.getAgi() ;}
 	public double[] getCrit() {return BA.getCrit() ;}
-	public double[] getStun() {return BA.getStun() ;}
-	public double[] getBlock() {return BA.getBlock() ;}
-	public double[] getBlood() {return BA.getBlood() ;}
-	public double[] getPoison() {return BA.getPoison() ;}
-	public double[] getSilence() {return BA.getSilence() ;}
+	public BattleSpecialAttribute getStun() {return BA.getStun() ;}
+	public BattleSpecialAttribute getBlock() {return BA.getBlock() ;}
+	public BattleSpecialAttributeWithDamage getBlood() {return BA.getBlood() ;}
+	public BattleSpecialAttributeWithDamage getPoison() {return BA.getPoison() ;}
+	public BattleSpecialAttribute getSilence() {return BA.getSilence() ;}
 	public double[] getCollect() {return collectLevel ;}
 	public int[] getGold() {return gold ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
@@ -699,8 +707,9 @@ public class Player extends LiveBeing
 		}
 		if (currentAction.equals(ActionKeys[12]) & !isInBattle())							// Tent
 		{
-			Ani.SetAniVars(11, new Object[] {100, getPos(), TentImage}) ;
-			Ani.StartAni(11) ;
+			//	 TODO add tent gif
+//			Ani.SetAniVars(11, new Object[] {100, getPos(), TentImage}) ;
+//			Ani.StartAni(11) ;
 		}
 		if (currentAction.equals(ActionKeys[13]) &  questSkills.get(QuestSkills.bestiary))	// Bestiary
 		{
@@ -1205,9 +1214,14 @@ public class Player extends LiveBeing
 			Buffs = spells.get(spellID).getNerfs() ;
 		}
 		OriginalValue = new double[] {PA.getLife().getMaxValue(), PA.getMp().getMaxValue(), BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(),
-				BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(), BA.getCrit()[0],
-				BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2],
-				BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
+				BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(),
+				BA.getCrit()[0],
+				BA.getStun().getBasicAtkChance(),
+				BA.getBlock().getBasicAtkChance(),
+				BA.getBlood().getBasicAtkChance(), BA.getBlood().getBasicDefChance(), BA.getBlood().getBasicAtk(), BA.getBlood().getBasicDef(),
+				BA.getPoison().getBasicAtkChance(), BA.getPoison().getBasicDefChance(),
+				BA.getPoison().getBasicAtk(), BA.getPoison().getBasicDef(),
+				BA.getSilence().getBasicAtkChance()} ;
 		if (action.equals("deactivate"))
 		{
 			ActionMult = -1 ;
@@ -1291,20 +1305,20 @@ public class Player extends LiveBeing
 		}
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
-			BloodDamage = (int) Math.max(TotalBloodAtk * BloodMult - BA.TotalBloodDef(), 0) ;
+			BloodDamage = (int) Math.max(TotalBloodAtk * BloodMult - BA.getBlood().TotalDef(), 0) ;
 		}
 		if (0 < BA.getSpecialStatus()[3])	// Poison
 		{
-			PoisonDamage = (int) Math.max(TotalPoisonAtk * PoisonMult - BA.TotalPoisonDef(), 0) ;
+			PoisonDamage = (int) Math.max(TotalPoisonAtk * PoisonMult - BA.getPoison().TotalDef(), 0) ;
 		}
 		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage); ;
 		if (0 < BloodDamage)
 		{
-			statistics[18] += BA.TotalBloodDef() ;
+			statistics[18] += BA.getBlood().TotalDef() ;
 		}
 		if (0 < PoisonDamage)
 		{
-			statistics[21] += BA.TotalPoisonDef() ;
+			statistics[21] += BA.getPoison().TotalDef() ;
 		}
 	}
 	public void updateoffensiveStats(AtkResults playerAtkResult, Creature creature)
@@ -1353,36 +1367,37 @@ public class Player extends LiveBeing
 			}		
 			if (effect.equals(AttackEffects.hit))							// player performed a successful hit
 			{
+				// TODO verificar lógica
 				statistics[9] += 1 ;								// total number of successful hits performed by the player
 				// for the status, dividing the duration of the status by the duration applied to get the number of times the status was applied
-				if (0 < BA.getStun()[4])
-				{
-					statistics[14] += creature.getBA().getSpecialStatus()[0] / BA.getStun()[4] ;	// total number of stun inflicted by the player
-				}
-				if (0 < BA.getBlock()[4])
-				{
-					statistics[15] += creature.getBA().getSpecialStatus()[1] / BA.getBlock()[4] ;	// total number of block performed by the player
-				}
-				if (0 < BA.getBlood()[8])
-				{
-					statistics[16] += creature.getBA().getSpecialStatus()[2] / BA.getBlood()[8] ;	// total number of blood inflicted by the player
-					if (0 < creature.getBA().getSpecialStatus()[2])
-					{
-						statistics[17] += 1 ;	// total number of blood inflicted by the player
-					}
-				}
-				if (0 < BA.getPoison()[8])
-				{
-					statistics[19] += creature.getBA().getSpecialStatus()[3] / BA.getPoison()[8] ;	// total number of poison inflicted by the player
-					if (0 < creature.getBA().getSpecialStatus()[3])
-					{
-						statistics[20] += 1 ;	// total number of blood inflicted by the player
-					}
-				}
-				if (0 < BA.getSilence()[4])
-				{
-					statistics[22] += creature.getBA().getSpecialStatus()[4] / BA.getSilence()[4] ;	// total number of silence inflicted by the player
-				}
+//				if (0 < BA.getStun().getDuration())
+//				{
+//					statistics[14] += creature.getBA().getSpecialStatus()[0] / BA.getStun().getDuration() ;	// total number of stun inflicted by the player
+//				}
+//				if (0 < BA.getBlock().getDuration())
+//				{
+//					statistics[15] += creature.getBA().getSpecialStatus()[1] / BA.getBlock().getDuration() ;	// total number of block performed by the player
+//				}
+//				if (0 < BA.getBlood().getDuration())
+//				{
+//					statistics[16] += creature.getBA().getSpecialStatus()[2] / BA.getBlood().getDuration() ;	// total number of blood inflicted by the player
+//					if (0 < creature.getBA().getSpecialStatus()[2])
+//					{
+//						statistics[17] += 1 ;	// total number of blood inflicted by the player
+//					}
+//				}
+//				if (0 < BA.getPoison().getDuration())
+//				{
+//					statistics[19] += creature.getBA().getSpecialStatus()[3] / BA.getPoison().getDuration() ;	// total number of poison inflicted by the player
+//					if (0 < creature.getBA().getSpecialStatus()[3])
+//					{
+//						statistics[20] += 1 ;	// total number of blood inflicted by the player
+//					}
+//				}
+//				if (0 < BA.getSilence().getDuration())
+//				{
+//					statistics[22] += creature.getBA().getSpecialStatus()[4] / BA.getSilence().getDuration() ;	// total number of silence inflicted by the player
+//				}
 			}
 			if (effect.equals("Crit"))				// player performed a critical atk (physical or magical)
 			{
@@ -1434,14 +1449,15 @@ public class Player extends LiveBeing
 				statistics[6] += damage ;				// total mag damage received by the player
 				statistics[8] += BA.TotalMagDef() ;		// total mag damage defended by the player
 			}
-			if (0 < BA.getSpecialStatus()[2])
-			{
-				statistics[18] += BA.getBlood()[3] + BA.getBlood()[4] ;		// total number of blood defended by the player
-			}
-			if (0 < BA.getSpecialStatus()[3])
-			{
-				statistics[21] += BA.getPoison()[3] + BA.getPoison()[4] ;	// total number of blood defended by the player
-			}
+			// TODO verificar lógica
+//			if (0 < BA.getSpecialStatus()[2])
+//			{
+//				statistics[18] += BA.getBlood()[3] + BA.getBlood()[4] ;		// total number of blood defended by the player
+//			}
+//			if (0 < BA.getSpecialStatus()[3])
+//			{
+//				statistics[21] += BA.getPoison()[3] + BA.getPoison()[4] ;	// total number of blood defended by the player
+//			}
 		}
 		else
 		{
@@ -1497,7 +1513,7 @@ public class Player extends LiveBeing
 			attPoints += 2 ;
 			
 
-			ani.SetAniVars(13, new Object[] {150, attributesIncrease, getLevel(), getColor()}) ;
+			ani.SetAniVars(13, new Object[] {150, attributesIncrease, level, color}) ;
 			ani.StartAni(13) ;
 		}
 	}
@@ -1633,25 +1649,25 @@ public class Player extends LiveBeing
 		BA.getAgi().incBonus(equipsBonus[ID][9]*ActionMult) ;
 		BA.getCrit()[0] += equipsBonus[ID][10]*ActionMult ;
 		BA.getCrit()[2] += equipsBonus[ID][11]*ActionMult ;
-		BA.getStun()[0] += equipsBonus[ID][12]*ActionMult ;
-		BA.getStun()[2] += equipsBonus[ID][13]*ActionMult ;
-		BA.getStun()[4] += equipsBonus[ID][14]*ActionMult ;
-		BA.getBlock()[0] += equipsBonus[ID][15]*ActionMult ;
-		BA.getBlock()[2] += equipsBonus[ID][16]*ActionMult ;
-		BA.getBlock()[4] += equipsBonus[ID][17]*ActionMult ;
-		BA.getBlood()[0] += equipsBonus[ID][18]*ActionMult ;
-		BA.getBlood()[2] += equipsBonus[ID][19]*ActionMult ;
-		BA.getBlood()[4] += equipsBonus[ID][20]*ActionMult ;
-		BA.getBlood()[6] += equipsBonus[ID][21]*ActionMult ;
-		BA.getBlood()[8] += equipsBonus[ID][22]*ActionMult ;
-		BA.getPoison()[0] += equipsBonus[ID][23]*ActionMult ;
-		BA.getPoison()[2] += equipsBonus[ID][24]*ActionMult ;
-		BA.getPoison()[4] += equipsBonus[ID][25]*ActionMult ;
-		BA.getPoison()[6] += equipsBonus[ID][26]*ActionMult ;
-		BA.getPoison()[8] += equipsBonus[ID][27]*ActionMult ;
-		BA.getSilence()[0] += equipsBonus[ID][28]*ActionMult ;
-		BA.getSilence()[2] += equipsBonus[ID][29]*ActionMult ;
-		BA.getSilence()[4] += equipsBonus[ID][30]*ActionMult ;
+		BA.getStun().incAtkChanceBonus(equipsBonus[ID][12]*ActionMult) ;
+		BA.getStun().incDefChanceBonus(equipsBonus[ID][13]*ActionMult) ;
+		BA.getStun().incDuration(equipsBonus[ID][14]*ActionMult) ;
+		BA.getBlock().incAtkChanceBonus(equipsBonus[ID][15]*ActionMult) ;
+		BA.getBlock().incDefChanceBonus(equipsBonus[ID][16]*ActionMult) ;
+		BA.getBlock().incDuration(equipsBonus[ID][17]*ActionMult) ;
+		BA.getBlood().incAtkChanceBonus(equipsBonus[ID][18]*ActionMult) ;
+		BA.getBlood().incDefChanceBonus(equipsBonus[ID][19]*ActionMult) ;
+		BA.getBlood().incAtkBonus(equipsBonus[ID][20]*ActionMult) ;
+		BA.getBlood().incDefBonus(equipsBonus[ID][21]*ActionMult) ;
+		BA.getBlood().incDuration(equipsBonus[ID][22]*ActionMult) ;
+		BA.getPoison().incAtkChanceBonus(equipsBonus[ID][23]*ActionMult) ;
+		BA.getPoison().incDefChanceBonus(equipsBonus[ID][24]*ActionMult) ;
+		BA.getPoison().incAtkBonus(equipsBonus[ID][25]*ActionMult) ;
+		BA.getPoison().incDefBonus(equipsBonus[ID][26]*ActionMult) ;
+		BA.getPoison().incDuration(equipsBonus[ID][27]*ActionMult) ;
+		BA.getSilence().incAtkChanceBonus(equipsBonus[ID][28]*ActionMult) ;
+		BA.getSilence().incDefChanceBonus(equipsBonus[ID][29]*ActionMult) ;
+		BA.getSilence().incDuration(equipsBonus[ID][30]*ActionMult) ;
 	}
 	
 	private static boolean SetIsFormed(Equip[] EquipID)
@@ -1864,11 +1880,11 @@ public class Player extends LiveBeing
 			//bw.write("\nPlayer dex: \n" + Arrays.toString(getDex())) ;
 			//bw.write("\nPlayer agi: \n" + Arrays.toString(getAgi())) ;
 			bw.write("\nPlayer crit: \n" + Arrays.toString(getCrit())) ;
-			bw.write("\nPlayer stun: \n" + Arrays.toString(getStun())) ;
-			bw.write("\nPlayer block: \n" + Arrays.toString(getBlock())) ;
-			bw.write("\nPlayer blood: \n" + Arrays.toString(getBlood())) ;
-			bw.write("\nPlayer poison: \n" + Arrays.toString(getPoison())) ;
-			bw.write("\nPlayer silence: \n" + Arrays.toString(getSilence())) ;
+//			bw.write("\nPlayer stun: \n" + Arrays.toString(getStun())) ;
+//			bw.write("\nPlayer block: \n" + Arrays.toString(getBlock())) ;
+//			bw.write("\nPlayer blood: \n" + Arrays.toString(getBlood())) ;
+//			bw.write("\nPlayer poison: \n" + Arrays.toString(getPoison())) ;
+//			bw.write("\nPlayer silence: \n" + Arrays.toString(getSilence())) ;
 			bw.write("\nPlayer elem: \n" + Arrays.toString(getElem())) ;
 			//bw.write("\nPlayer elem mult: \n" + Arrays.toString(getElemMult())) ;
 			bw.write("\nPlayer collect: \n" + Arrays.toString(getCollect())) ;

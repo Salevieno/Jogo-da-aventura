@@ -1,4 +1,4 @@
-package liveBeings;
+package attributes;
 
 public class BasicAttribute extends LiveBeingAttribute
 {

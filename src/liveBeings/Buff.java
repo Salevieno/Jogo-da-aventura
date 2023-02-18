@@ -2,6 +2,8 @@ package liveBeings;
 
 import java.util.Map;
 
+import attributes.Attributes;
+
 public class Buff
 {
 	Map<Attributes, Double> percentIncrease;

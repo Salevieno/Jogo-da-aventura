@@ -22,15 +22,10 @@ public class NPCs
 {
 	private int id ;
 	private NPCType type ;
-	//private String Name ;
 	private Point pos ;
-	//private int Map ;
-	//private String PosRelToBuilding ;
 	private int selOption ;
 	private int numberMenus ;
 	private int menu ;
-	//private int window ;
-	//public boolean Firstcontact ;
 
 	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 	public static final Image SpeakingBubbleImage = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeakingBubble.png") ;
@@ -113,22 +108,11 @@ public class NPCs
 	}
 
 	public int getID() {return id ;}
-	public NPCType getType() {return type ;}
-	//public String getName() {return Name ;}
-	public Point getPos() {return pos ;}
-	//public Image getImage() {return image ;}
-	//public int getMap() {return Map ;}
-	//public String getPosRelToBuilding() {return PosRelToBuilding ;}
-	//public String getInfo() {return Info ;}
-	//public Color getColor() {return color ;}
 	public void setID(int I) {id = I ;}
-	//public void setName(String N) {Name = N ;}
+	public NPCType getType() {return type ;}
+	public Point getPos() {return pos ;}
 	public void setPos(Point P) {pos = P ;}
-	//public void setImage(Image I) {image = I ;}
-	//public void setMap(int M) {Map = M ;}
-	//public void setPosRelToBuilding(String P) {PosRelToBuilding = P ;}
-	//public void setInfo(String I) {Info = I ;}
-	//public void setColor(Color C) {color = C ;}
+	
 	public static NPCType typeFromJob(NPCJobs job)
 	{
 		NPCType NPCType = null ;

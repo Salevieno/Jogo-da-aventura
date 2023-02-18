@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-import liveBeings.AttributeBonus;
+import attributes.AttributeBonus;
 import main.Game;
 import utilities.UtilG;
 

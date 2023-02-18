@@ -25,6 +25,12 @@ import javax.swing.JPanel ;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import attributes.BasicAttribute;
+import attributes.BasicBattleAttribute;
+import attributes.BattleAttributes;
+import attributes.BattleSpecialAttribute;
+import attributes.BattleSpecialAttributeWithDamage;
+import attributes.PersonalAttributes;
 import components.BuildingType;
 import components.Buildings;
 import components.GameIcon;
@@ -48,16 +54,13 @@ import items.PetItem;
 import items.Potion;
 import items.QuestItem;
 import items.Recipe;
-import liveBeings.BasicAttribute;
-import liveBeings.BasicBattleAttribute;
-import liveBeings.BattleAttributes;
 import liveBeings.Creature;
 import liveBeings.CreatureTypes;
 import liveBeings.LiveBeingStates;
 import liveBeings.MovingAnimations;
-import liveBeings.PersonalAttributes;
 import liveBeings.Pet;
 import liveBeings.Player;
+import liveBeings.Pterodactile;
 import liveBeings.Spell;
 import liveBeings.SpellType;
 import maps.CityMap;
@@ -69,10 +72,13 @@ import screen.Screen;
 import screen.SideBar;
 import screen.Sky;
 import utilities.Align;
+import utilities.AttackEffects;
 import utilities.GameStates;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
+import windows.CraftWindow;
+import windows.ShoppingWindow;
 
 public class Game extends JPanel
 {
@@ -324,11 +330,11 @@ public class Game extends JPanel
 			BasicBattleAttribute Dex = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[12]) * diffMult, 0, 0) ;
 			BasicBattleAttribute Agi = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[13]) * diffMult, 0, 0) ;
 			double[] Crit = new double[] {Double.parseDouble(input.get(ct)[14]) * diffMult, 0, Double.parseDouble(input.get(ct)[15]) * diffMult, 0} ;
-			double[] Stun = new double[] {Double.parseDouble(input.get(ct)[16]) * diffMult, 0, Double.parseDouble(input.get(ct)[17]) * diffMult, 0, Double.parseDouble(input.get(ct)[18]) * diffMult} ;
-			double[] Block = new double[] {Double.parseDouble(input.get(ct)[19]) * diffMult, 0, Double.parseDouble(input.get(ct)[20]) * diffMult, 0, Double.parseDouble(input.get(ct)[21]) * diffMult} ;
-			double[] Blood = new double[] {Double.parseDouble(input.get(ct)[22]) * diffMult, 0, Double.parseDouble(input.get(ct)[23]) * diffMult, 0, Double.parseDouble(input.get(ct)[24]) * diffMult, 0, Double.parseDouble(input.get(ct)[25]) * diffMult, 0, Double.parseDouble(input.get(ct)[26]) * diffMult} ;
-			double[] Poison = new double[] {Double.parseDouble(input.get(ct)[27]) * diffMult, 0, Double.parseDouble(input.get(ct)[28]) * diffMult, 0, Double.parseDouble(input.get(ct)[29]) * diffMult, 0, Double.parseDouble(input.get(ct)[30]) * diffMult, 0, Double.parseDouble(input.get(ct)[31]) * diffMult} ;
-			double[] Silence = new double[] {Double.parseDouble(input.get(ct)[32]) * diffMult, 0, Double.parseDouble(input.get(ct)[33]) * diffMult, 0, Double.parseDouble(input.get(ct)[34]) * diffMult} ;
+			BattleSpecialAttribute Stun = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[16]) * diffMult, 0, Double.parseDouble(input.get(ct)[17]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[18]) * diffMult)) ;
+			BattleSpecialAttribute Block = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[19]) * diffMult, 0, Double.parseDouble(input.get(ct)[20]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[21]) * diffMult)) ;
+			BattleSpecialAttributeWithDamage Blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(input.get(ct)[22]) * diffMult, 0, Double.parseDouble(input.get(ct)[23]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[24]) * diffMult), 0, (int) (Double.parseDouble(input.get(ct)[25]) * diffMult), 0, (int) (Integer.parseInt(input.get(ct)[26]) * diffMult)) ;
+			BattleSpecialAttributeWithDamage Poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(input.get(ct)[27]) * diffMult, 0, Double.parseDouble(input.get(ct)[28]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[29]) * diffMult), 0, (int) (Double.parseDouble(input.get(ct)[30]) * diffMult), 0, (int) (Integer.parseInt(input.get(ct)[31]) * diffMult)) ;
+			BattleSpecialAttribute Silence = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[32]) * diffMult, 0, Double.parseDouble(input.get(ct)[33]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[34]) * diffMult)) ;
 			int[] Status = new int[8] ;
 			int[] SpecialStatus = new int[5] ;
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus) ;
@@ -1014,7 +1020,7 @@ public class Game extends JPanel
     	
     	player.InitializeSpells() ;
     	player.getSpellsTreeWindow().setSpells(player.getSpell().toArray(new Spell[0])) ;
-    	player.setMap(fieldMaps[0]) ;
+    	player.setMap(cityMaps[1]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
     	for (int i = 0; i <= 20 - 1; i += 1)
     	{
@@ -1047,6 +1053,7 @@ public class Game extends JPanel
     	{
         	player.bestiary.addDiscoveredCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
     	}
+    	Pterodactile.setMessage(player.allText.get("* Pterodactile *")) ;
     	/*System.out.println(player.getBag().getPotions()) ;
     	player.getBag().Add(Potion.getAll()[0], 4) ;
     	player.getBag().Add(Alchemy.getAll()[0], 1) ;
@@ -1059,6 +1066,7 @@ public class Game extends JPanel
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
+    	
 	}
 	
 	private void testing()
@@ -1066,6 +1074,36 @@ public class Game extends JPanel
 		//System.out.println(player.getSpell());
 		//player.getSpellsTreeWindow().display(mousePos, Icon.selectedIconID, DP) ;
 		//player.bestiary.display(player, mousePos, DP);
+		List<Item> ItemsOnSale = new ArrayList<>() ;
+		ItemsOnSale.add(allItems[0]) ;
+		ItemsOnSale.add(allItems[1]) ;
+		ItemsOnSale.add(allItems[2]) ;
+		ItemsOnSale.add(allItems[10]) ;
+		ItemsOnSale.add(allItems[3]) ;
+		ItemsOnSale.add(allItems[50]) ;
+		ItemsOnSale.add(allItems[60]) ;
+		ItemsOnSale.add(allItems[73]) ;
+		ItemsOnSale.add(allItems[24]) ;
+		ItemsOnSale.add(allItems[35]) ;
+		ItemsOnSale.add(allItems[14]) ;
+		ShoppingWindow SW = new ShoppingWindow(ItemsOnSale) ;
+		SW.display(mousePos, DP) ;
+		
+
+		List<Item> ItemsForCrafting = new ArrayList<>() ;
+		ItemsForCrafting.add(allItems[0]) ;
+		ItemsForCrafting.add(allItems[1]) ;
+		ItemsForCrafting.add(allItems[2]) ;
+		ItemsForCrafting.add(allItems[10]) ;
+		ItemsForCrafting.add(allItems[3]) ;
+		ItemsForCrafting.add(allItems[50]) ;
+		ItemsForCrafting.add(allItems[60]) ;
+		ItemsForCrafting.add(allItems[73]) ;
+		ItemsForCrafting.add(allItems[24]) ;
+		ItemsForCrafting.add(allItems[35]) ;
+		ItemsForCrafting.add(allItems[14]) ;
+		CraftWindow CW = new CraftWindow(ItemsForCrafting) ;
+		CW.display(mousePos, DP) ;
 	}
 	
 	

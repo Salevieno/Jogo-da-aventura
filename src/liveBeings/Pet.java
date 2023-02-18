@@ -8,6 +8,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import attributes.BasicAttribute;
+import attributes.BasicBattleAttribute;
+import attributes.BattleAttributes;
+import attributes.BattleSpecialAttribute;
+import attributes.BattleSpecialAttributeWithDamage;
+import attributes.PersonalAttributes;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
 import main.Game;
@@ -108,11 +114,11 @@ public class Pet extends LiveBeing
 		BasicBattleAttribute Dex = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[9]), 0, 0) ;
 		BasicBattleAttribute Agi = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[10]), 0, 0) ;
 		double[] Crit = new double[] {Double.parseDouble(PetProperties.get(Job)[11]), 0, Double.parseDouble(PetProperties.get(Job)[12]), 0} ;
-		double[] Stun = new double[] {Double.parseDouble(PetProperties.get(Job)[13]), 0, Double.parseDouble(PetProperties.get(Job)[14]), 0, Double.parseDouble(PetProperties.get(Job)[15])} ;
-		double[] Block = new double[] {Double.parseDouble(PetProperties.get(Job)[16]), 0, Double.parseDouble(PetProperties.get(Job)[17]), 0, Double.parseDouble(PetProperties.get(Job)[18])} ;
-		double[] Blood = new double[] {Double.parseDouble(PetProperties.get(Job)[19]), 0, Double.parseDouble(PetProperties.get(Job)[20]), 0, Double.parseDouble(PetProperties.get(Job)[21]), 0, Double.parseDouble(PetProperties.get(Job)[22]), 0, Double.parseDouble(PetProperties.get(Job)[23])} ;
-		double[] Poison = new double[] {Double.parseDouble(PetProperties.get(Job)[24]), 0, Double.parseDouble(PetProperties.get(Job)[25]), 0, Double.parseDouble(PetProperties.get(Job)[26]), 0, Double.parseDouble(PetProperties.get(Job)[27]), 0, Double.parseDouble(PetProperties.get(Job)[28])} ;
-		double[] Silence = new double[] {Double.parseDouble(PetProperties.get(Job)[29]), 0, Double.parseDouble(PetProperties.get(Job)[30]), 0, Double.parseDouble(PetProperties.get(Job)[31])} ;
+		BattleSpecialAttribute Stun = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[13]), 0, Double.parseDouble(PetProperties.get(Job)[14]), 0, Integer.parseInt(PetProperties.get(Job)[15])) ;
+		BattleSpecialAttribute Block = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[16]), 0, Double.parseDouble(PetProperties.get(Job)[17]), 0, Integer.parseInt(PetProperties.get(Job)[18])) ;
+		BattleSpecialAttributeWithDamage Blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(PetProperties.get(Job)[19]), 0, Double.parseDouble(PetProperties.get(Job)[20]), 0, Integer.parseInt(PetProperties.get(Job)[21]), 0, Integer.parseInt(PetProperties.get(Job)[22]), 0, Integer.parseInt(PetProperties.get(Job)[23])) ;
+		BattleSpecialAttributeWithDamage Poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(PetProperties.get(Job)[24]), 0, Double.parseDouble(PetProperties.get(Job)[25]), 0, Integer.parseInt(PetProperties.get(Job)[26]), 0, Integer.parseInt(PetProperties.get(Job)[27]), 0, Integer.parseInt(PetProperties.get(Job)[28])) ;
+		BattleSpecialAttribute Silence = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[29]), 0, Double.parseDouble(PetProperties.get(Job)[30]), 0, Integer.parseInt(PetProperties.get(Job)[31])) ;
 		int[] Status = new int[8] ;
 		int[] SpecialStatus = new int[5] ;
 		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus) ;
@@ -244,11 +250,11 @@ public class Pet extends LiveBeing
 	public BasicBattleAttribute getDex() {return BA.getDex() ;}
 	public BasicBattleAttribute getAgi() {return BA.getAgi() ;}
 	public double[] getCrit() {return BA.getCrit() ;}
-	public double[] getStun() {return BA.getStun() ;}
-	public double[] getBlock() {return BA.getBlock() ;}
-	public double[] getBlood() {return BA.getBlood() ;}
-	public double[] getPoison() {return BA.getPoison() ;}
-	public double[] getSilence() {return BA.getSilence() ;}
+	public BattleSpecialAttribute getStun() {return BA.getStun() ;}
+	public BattleSpecialAttribute getBlock() {return BA.getBlock() ;}
+	public BattleSpecialAttributeWithDamage getBlood() {return BA.getBlood() ;}
+	public BattleSpecialAttributeWithDamage getPoison() {return BA.getPoison() ;}
+	public BattleSpecialAttribute getSilence() {return BA.getSilence() ;}
 	public double[] getElemMult() {return ElemMult ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public BasicAttribute getSatiation() {return PA.getSatiation() ;}
@@ -379,11 +385,11 @@ public class Pet extends LiveBeing
 		int PoisonDamage = 0 ;
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
-			BloodDamage = (int) Math.max(creature.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
+			BloodDamage = (int) Math.max(creature.getBA().getBlood().TotalAtk() - BA.getBlood().TotalDef(), 0) ;
 		}
 		if (0 < BA.getSpecialStatus()[3])	// Poison
 		{
-			PoisonDamage = (int) Math.max(creature.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
+			PoisonDamage = (int) Math.max(creature.getBA().getPoison().TotalAtk() - BA.getPoison().TotalDef(), 0) ;
 		}
 		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage) ;
 	}
@@ -411,8 +417,8 @@ public class Pet extends LiveBeing
 			BA.getDex().incBaseValue(attributesIncrease[7]) ;
 			PA.getExp().incMaxValue((int) attributesIncrease[8]) ;		
 
-			ani.SetAniVars(14, new Object[] {150, this, attributesIncrease}) ;
-			ani.StartAni(14) ;
+			ani.SetAniVars(13, new Object[] {150, attributesIncrease, level, Game.ColorPalette[5]}) ;
+			ani.StartAni(13) ;
 		}
 	}
 	public double[] CalcAttIncrease()
@@ -452,11 +458,11 @@ public class Pet extends LiveBeing
 			//bW.write("\nPet dex: \n" + Arrays.toString(getDex())) ;
 			//bW.write("\nPet agi: \n" + Arrays.toString(getAgi())) ;
 			bW.write("\nPet crit: \n" + Arrays.toString(getCrit())) ;
-			bW.write("\nPet stun: \n" + Arrays.toString(getStun())) ;
-			bW.write("\nPet block: \n" + Arrays.toString(getBlock())) ;
-			bW.write("\nPet blood: \n" + Arrays.toString(getBlood())) ;
-			bW.write("\nPet poison: \n" + Arrays.toString(getPoison())) ;
-			bW.write("\nPet silence: \n" + Arrays.toString(getSilence())) ;
+//			bW.write("\nPet stun: \n" + Arrays.toString(getStun())) ;
+//			bW.write("\nPet block: \n" + Arrays.toString(getBlock())) ;
+//			bW.write("\nPet blood: \n" + Arrays.toString(getBlood())) ;
+//			bW.write("\nPet poison: \n" + Arrays.toString(getPoison())) ;
+//			bW.write("\nPet silence: \n" + Arrays.toString(getSilence())) ;
 			bW.write("\nPet elem: \n" + Arrays.toString(getElem())) ;
 			bW.write("\nPet elem mult: \n" + Arrays.toString(getElemMult())) ;
 			bW.write("\nPet level: \n" + getLevel()) ;

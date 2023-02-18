@@ -5,6 +5,11 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import attributes.BasicAttribute;
+import attributes.BasicBattleAttribute;
+import attributes.BattleAttributes;
+import attributes.BattleSpecialAttribute;
+import attributes.BattleSpecialAttributeWithDamage;
 import graphics.DrawingOnPanel;
 import main.Battle;
 import main.Game;
@@ -92,11 +97,11 @@ public class Creature extends LiveBeing
 	public BasicBattleAttribute getDex() {return BA.getDex() ;}
 	public BasicBattleAttribute getAgi() {return BA.getAgi() ;}
 	public double[] getCrit() {return BA.getCrit() ;}
-	public double[] getStun() {return BA.getStun() ;}
-	public double[] getBlock() {return BA.getBlock() ;}
-	public double[] getBlood() {return BA.getBlood() ;}
-	public double[] getPoison() {return BA.getPoison() ;}
-	public double[] getSilence() {return BA.getSilence() ;}
+	public BattleSpecialAttribute getStun() {return BA.getStun() ;}
+	public BattleSpecialAttribute getBlock() {return BA.getBlock() ;}
+	public BattleSpecialAttributeWithDamage getBlood() {return BA.getBlood() ;}
+	public BattleSpecialAttributeWithDamage getPoison() {return BA.getPoison() ;}
+	public BattleSpecialAttribute getSilence() {return BA.getSilence() ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public int[] getBag() {return Bag ;}
 	public int getGold() {return Gold ;}
@@ -238,7 +243,7 @@ public class Creature extends LiveBeing
 		
 		if (spellID == 0)	// magical atk
 		{
-			effect = Battle.calcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock()[1]) ;
+			effect = Battle.calcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock().getBasicAtkChanceBonus()) ;
 			damage = Battle.calcDamage(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, 1, randomAmp) ; // player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
 		}
 		// TODO creature spells
@@ -366,7 +371,11 @@ public class Creature extends LiveBeing
 		}
 		OriginalValue = new double[] {PA.getLife().getMaxValue(), PA.getMp().getMaxValue(), BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(), BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(),
 				BA.getCrit()[0],
-				BA.getStun()[0], BA.getBlock()[0], BA.getBlood()[0], BA.getBlood()[2], BA.getBlood()[4], BA.getBlood()[6], BA.getPoison()[0], BA.getPoison()[2], BA.getPoison()[4], BA.getPoison()[6], BA.getSilence()[0]} ;
+				BA.getStun().getBasicAtkChance(),
+				BA.getBlock().getBasicAtkChance(),
+				BA.getBlood().getBasicAtkChance(), BA.getBlood().getBasicDefChance(), BA.getBlood().getBasicAtk(), BA.getBlood().getBasicDef(),
+				BA.getPoison().getBasicAtkChance(), BA.getPoison().getBasicDefChance(), BA.getPoison().getBasicAtk(), BA.getPoison().getBasicDef(),
+				BA.getSilence().getBasicAtkChance()} ;
 		if (action.equals("deactivate"))
 		{
 			ActionMult = -1 ;
@@ -406,28 +415,29 @@ public class Creature extends LiveBeing
 		}
 		if (!SpellIsActive)
 		{
-			PA.getLife().incCurrentValue((int) Buff[0][0]) ;
-			PA.getMp().incCurrentValue((int) Buff[1][0]) ;
-			BA.getPhyAtk().incBonus(Buff[2][0]) ;
-			BA.getMagAtk().incBonus(Buff[3][0]) ;
-			BA.getPhyDef().incBonus(Buff[4][0]) ;
-			BA.getMagDef().incBonus(Buff[5][0]) ;
-			BA.getDex().incBonus(Buff[6][0]) ;
-			BA.getAgi().incBonus(Buff[7][0]) ;
-			BA.getCrit()[1] += Buff[8][0] ;
-			BA.getStun()[1] += Buff[9][0] ;
-			BA.getBlock()[1] += Buff[10][0] ;
-			BA.getBlood()[1] += Buff[11][0] ;
-			BA.getBlood()[3] += Buff[11][1] ;
-			BA.getBlood()[5] += Buff[11][2] ;
-			BA.getBlood()[7] += Buff[11][3] ;
-			BA.getBlood()[8] += Buff[11][4] ;
-			BA.getPoison()[1] += Buff[12][0] ;
-			BA.getPoison()[3] += Buff[12][1] ;
-			BA.getPoison()[5] += Buff[12][2] ;
-			BA.getPoison()[7] += Buff[12][3] ;
-			BA.getPoison()[8] += Buff[12][4] ;
-			BA.getSilence()[1] += Buff[13][0] ;
+			// TODO verificar repetição
+//			PA.getLife().incCurrentValue((int) Buff[0][0]) ;
+//			PA.getMp().incCurrentValue((int) Buff[1][0]) ;
+//			BA.getPhyAtk().incBonus(Buff[2][0]) ;
+//			BA.getMagAtk().incBonus(Buff[3][0]) ;
+//			BA.getPhyDef().incBonus(Buff[4][0]) ;
+//			BA.getMagDef().incBonus(Buff[5][0]) ;
+//			BA.getDex().incBonus(Buff[6][0]) ;
+//			BA.getAgi().incBonus(Buff[7][0]) ;
+//			BA.getCrit()[1] += Buff[8][0] ;
+//			BA.getStun().incAtkChanceBonus(Buff[9][0]);  ;
+//			BA.getBlock().incAtkChanceBonus(Buff[10][0]) ;
+//			BA.getBlood()[1] += Buff[11][0] ;
+//			BA.getBlood()[3] += Buff[11][1] ;
+//			BA.getBlood()[5] += Buff[11][2] ;
+//			BA.getBlood()[7] += Buff[11][3] ;
+//			BA.getBlood()[8] += Buff[11][4] ;
+//			BA.getPoison()[1] += Buff[12][0] ;
+//			BA.getPoison()[3] += Buff[12][1] ;
+//			BA.getPoison()[5] += Buff[12][2] ;
+//			BA.getPoison()[7] += Buff[12][3] ;
+//			BA.getPoison()[8] += Buff[12][4] ;
+//			BA.getSilence().incAtkChanceBonus(Buff[13][0]) ;
 		}	
 	}
 	public void TakeBloodAndPoisonDamage(LiveBeing attacker)
@@ -436,11 +446,11 @@ public class Creature extends LiveBeing
 		int PoisonDamage = 0 ;
 		if (0 < BA.getSpecialStatus()[2])	// Blood
 		{
-			BloodDamage = (int) Math.max(attacker.getBA().TotalBloodAtk() - BA.TotalBloodDef(), 0) ;
+			BloodDamage = (int) Math.max(attacker.getBA().getBlood().TotalAtk() - BA.getBlood().TotalDef(), 0) ;
 		}
 		if (0 < BA.getSpecialStatus()[3])	// Poison
 		{
-			PoisonDamage = (int) Math.max(attacker.getBA().TotalPoisonAtk() - BA.TotalPoisonDef(), 0) ;
+			PoisonDamage = (int) Math.max(attacker.getBA().getPoison().TotalAtk() - BA.getPoison().TotalDef(), 0) ;
 		}
 		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage) ;
 		if (attacker instanceof Player)

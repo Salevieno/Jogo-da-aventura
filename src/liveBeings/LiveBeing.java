@@ -8,6 +8,9 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Map;
 
+import attributes.Attributes;
+import attributes.BattleAttributes;
+import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
 import main.AtkResults;
 import main.Game;

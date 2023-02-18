@@ -19,14 +19,14 @@ import utilities.UtilG;
 public class GameIcon
 {
 	private int id ;
-	private String Name ;
+	private String name ;
 	private Point topLeftCorner ;
 	private Dimension size ;
 	private boolean isActive ;
 	private String description ;
 	private Image image ;
-	private Image SelectedImage ;	// Image when selected
-	private String value ;	// return value for when the icon is clicked
+	private Image selectedImage ;	// Image when selected
+	private String value ;			// return value for when the icon is clicked
 	
 	public static int selectedIconID ;
 	public static List<GameIcon> allIcons = new ArrayList<>() ;	// isn't it insane to create a list of all items of a class inside the class itself?
@@ -34,13 +34,13 @@ public class GameIcon
 	public GameIcon(int id, String Name, Point Pos, String description, Image image, Image SelectedImage)
 	{
 		this.id = id ;
-		this.Name = Name ;
+		this.name = Name ;
 		this.topLeftCorner = Pos ;
 		size = new Dimension(10 * Name.length(), 30) ;
 		isActive = false ;
 		this.description = description ;
 		this.image = image ;
-		this.SelectedImage = SelectedImage ;
+		this.selectedImage = SelectedImage ;
 
 		if (image != null)
 		{
@@ -78,7 +78,7 @@ public class GameIcon
 		}
 		if (id == 7)
 		{
-			value = "1" ;	// Ousadia = médio
+			value = "1" ;	// Ousadia = mï¿½dio
 		}
 		if (id == 8)
 		{
@@ -102,17 +102,17 @@ public class GameIcon
 		}
 		if (id == 13)
 		{
-			value = "4" ;	// Classe = ladrão
+			value = "4" ;	// Classe = ladrï¿½o
 		}
 		description = Name ;
 	}
 
 	public int getid() {return id ;}
-	public String getName() {return Name ;}
+	public String getName() {return name ;}
 	public Point getPos() {return topLeftCorner ;}
 	public boolean getIsActive() { return isActive ;}
 	public Image getImage() {return image ;}
-	public Image getSelectedImage() {return SelectedImage ;}
+	public Image getSelectedImage() {return selectedImage ;}
 	public void setPos(Point P) {topLeftCorner = P ;}
 	
 	public static void addToAllIconsList(GameIcon icon)
@@ -169,8 +169,6 @@ public class GameIcon
 	}
 	public String getValue() { return value ;}
 	
-	
-	// Draw methods
 	public void display(double angle, Align alignment, Point mousePos, DrawingOnPanel DP)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 16) ;
@@ -180,15 +178,15 @@ public class GameIcon
 		select(mousePos) ;
 		if (isselected())	// ishovered(MousePos)
 		{
-			if (SelectedImage != null)
+			if (selectedImage != null)
 			{
-				DP.DrawImage(SelectedImage, topLeftCorner, angle, new Scale(1, 1), alignment) ;
+				DP.DrawImage(selectedImage, topLeftCorner, angle, new Scale(1, 1), alignment) ;
 				//DP.DrawText(getCenter(), AlignmentPoints.center, 0, Name, font, selectedTextColor) ;
 			}
 			else
 			{
 				DP.DrawRoundRect(topLeftCorner, alignment, size, 5, Game.ColorPalette[5], Game.ColorPalette[6], true) ;
-				DP.DrawText(getCenter(), Align.center, 0, Name, font, selectedTextColor) ;
+				DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 			}
 		}
 		else
@@ -201,7 +199,7 @@ public class GameIcon
 			else
 			{
 				DP.DrawRoundRect(topLeftCorner, alignment, size, 2, Game.ColorPalette[5], Game.ColorPalette[6], true) ;
-				DP.DrawText(getCenter(), Align.center, 0, Name, font, textColor) ;
+				DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
 			}
 		}
 	}

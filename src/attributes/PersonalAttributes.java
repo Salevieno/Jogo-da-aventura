@@ -1,6 +1,7 @@
-package liveBeings ;
+package attributes ;
 
 import java.awt.Point;
+
 import utilities.Directions;
 
 public class PersonalAttributes

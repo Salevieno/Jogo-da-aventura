@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import attributes.BattleAttributes;
+import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
 import maps.GameMap;
 import utilities.Align;
