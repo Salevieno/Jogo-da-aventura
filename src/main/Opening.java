@@ -85,7 +85,7 @@ public class Opening
 		return openingGif.isDonePlaying();
 	}*/
 	
-	public void Run(String action, Point MousePos, Animations Ani, DrawingOnPanel DP)
+	public void Run(String action, Point MousePos, DrawingOnPanel DP)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 		Dimension screenSize = Game.getScreen().getSize() ;
@@ -93,13 +93,13 @@ public class Opening
 		Color textColor = Game.ColorPalette[5] ;
 		
 
-		if (!Ani.isActive(20))
-		{
-	    	buttons[0].activate() ;
-	    	buttons[1].activate() ;
-	    	buttons[2].activate() ;
-	    	buttons[3].activate() ;
-		}
+//		if (!Ani.isActive(20))
+//		{
+//	    	buttons[0].activate() ;
+//	    	buttons[1].activate() ;
+//	    	buttons[2].activate() ;
+//	    	buttons[3].activate() ;
+//		}
 		
 		// draw background
 		DP.DrawImage(backgroundImage, new Point(0, 0), 0, new Scale(1, 1), Align.topLeft) ;		

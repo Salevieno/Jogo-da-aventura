@@ -1,5 +1,6 @@
 package attributes ;
 
+import liveBeings.LiveBeingStatus;
 
 public class BattleAttributes
 {
@@ -12,20 +13,18 @@ public class BattleAttributes
 	
 	private double[] crit ;		// 0: Base crit atk chance, 1: bonus, 2: basic crit def chance, 3: bonus
 	
-	private BattleSpecialAttribute stun ;		// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: duration
-	private BattleSpecialAttribute block ;	// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: duration
-	private BattleSpecialAttributeWithDamage blood ;	// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: basic atk, 5: bonus, 6: basic def, 7: bonus, 8: duration
-	private BattleSpecialAttributeWithDamage poison ;	// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: basic atk, 5: bonus, 6: basic def, 7: bonus, 8: duration
-	private BattleSpecialAttribute silence ;	// 0: Basic atk chance, 1: bonus, 2: basic def chance, 3: bonus, 4: duration
+	private BattleSpecialAttribute stun ;
+	private BattleSpecialAttribute block ;
+	private BattleSpecialAttributeWithDamage blood ;
+	private BattleSpecialAttributeWithDamage poison ;
+	private BattleSpecialAttribute silence ;
 	
-	// TODO status viram mapa
-	private int[] status ; 		// 0: Life, 1: Mp, 2: Phy atk, 3: Phy def, 4: Mag atk, 5: Mag def, 6: Dex, 7: Agi
-	private int[] specialStatus ; 	// 0: Stun, 1: Block, 2: Blood, 3: Poison, 4: Silence
+	private LiveBeingStatus status ;
 	
 	public BattleAttributes(BasicBattleAttribute PhyAtk, BasicBattleAttribute MagAtk, BasicBattleAttribute PhyDef, BasicBattleAttribute MagDef, BasicBattleAttribute Dex, BasicBattleAttribute Agi,
 			double[] Crit,
 			BattleSpecialAttribute Stun, BattleSpecialAttribute Block, BattleSpecialAttributeWithDamage Blood, BattleSpecialAttributeWithDamage Poison, BattleSpecialAttribute Silence,
-			int[] Status, int[] SpecialStatus)
+			LiveBeingStatus status)
 	{
 		this.phyAtk = PhyAtk ;
 		this.magAtk = MagAtk ;
@@ -39,8 +38,7 @@ public class BattleAttributes
 		this.blood = Blood ;
 		this.poison = Poison ;
 		this.silence = Silence ;
-		this.status = Status ;
-		this.specialStatus = SpecialStatus ;
+		this.status = status ;
 	}
 
 	public BasicBattleAttribute getPhyAtk() {return phyAtk ;}
@@ -55,8 +53,7 @@ public class BattleAttributes
 	public BattleSpecialAttributeWithDamage getBlood() {return blood ;}
 	public BattleSpecialAttributeWithDamage getPoison() {return poison ;}
 	public BattleSpecialAttribute getSilence() {return silence ;}
-	public int[] getStatus() {return status ;}
-	public int[] getSpecialStatus() {return specialStatus ;}
+	public LiveBeingStatus getStatus() {return status ;}
 	
 	public double TotalPhyAtk()
 	{
@@ -94,7 +91,7 @@ public class BattleAttributes
 	
 	public boolean isStun()
 	{
-		return 0 < specialStatus[0] ;
+		return 0 < status.getStun() ;
 	}
 	
 	public double[] getBaseValues()
@@ -110,24 +107,17 @@ public class BattleAttributes
 				silence.getBasicAtkChance()
 				} ;
 	}
-	
-	public void receiveStatus(int[] AppliedStatus)
+	public double[] baseAtkChances()
 	{
-		specialStatus[0] = Math.max(specialStatus[0], AppliedStatus[0]) ;
-		specialStatus[1] = Math.max(specialStatus[1], AppliedStatus[1]) ;
-		specialStatus[2] = Math.max(specialStatus[2], AppliedStatus[2]) ;
-		specialStatus[3] = Math.max(specialStatus[3], AppliedStatus[3]) ;
-		specialStatus[4] = Math.max(specialStatus[4], AppliedStatus[4]) ;
+		return new double[] {stun.TotalAtkChance(), block.TotalAtkChance(), blood.TotalAtkChance(), poison.TotalAtkChance(), silence.TotalAtkChance()} ;
 	}
-	public void decreaseStatus()
+	public double[] baseDefChances()
 	{
-		for (int status : specialStatus)
-		{
-			if (-1 < status)
-			{
-				status += -1 ;		
-			}
-		}
+		return new double[] {stun.TotalDefChance(), block.TotalDefChance(), blood.TotalDefChance(), poison.TotalDefChance(), silence.TotalDefChance()} ;
+	}
+	public int[] baseDurations()
+	{
+		return new int[] {stun.getDuration(), block.getDuration(), blood.getDuration(), poison.getDuration(), silence.getDuration()} ;
 	}
 
 	

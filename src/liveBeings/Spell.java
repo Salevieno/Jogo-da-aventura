@@ -1,6 +1,7 @@
 package liveBeings ;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,7 +131,18 @@ public class Spell
 	}
 
 	@Override
-	public String toString() {
-		return "Spell [name=" + name + ", level=" + level + "]";
+	public String toString()
+	{
+		return "Spell [name=" + name + ", level=" + level + ", maxLevel=" + maxLevel + ", mpCost=" + mpCost + ", type="
+				+ type + ", preRequisites=" + preRequisites + ", buffs=" + buffs + ", Buffs=" + Arrays.toString(Buffs)
+				+ ", Nerfs=" + Arrays.toString(Nerfs) + ", AtkMod=" + Arrays.toString(AtkMod) + ", DefMod="
+				+ Arrays.toString(DefMod) + ", DexMod=" + Arrays.toString(DexMod) + ", AgiMod="
+				+ Arrays.toString(AgiMod) + ", AtkCritMod=" + Arrays.toString(AtkCritMod) + ", DefCritMod="
+				+ Arrays.toString(DefCritMod) + ", StunMod=" + Arrays.toString(StunMod) + ", BlockMod="
+				+ Arrays.toString(BlockMod) + ", BloodMod=" + Arrays.toString(BloodMod) + ", PoisonMod="
+				+ Arrays.toString(PoisonMod) + ", SilenceMod=" + Arrays.toString(SilenceMod) + ", isActive=" + isActive
+				+ ", cooldownCounter=" + cooldownCounter + ", effectCounter=" + effectCounter + ", elem=" + elem
+				+ ", info=" + Arrays.toString(info) + "]";
 	}
+
 }

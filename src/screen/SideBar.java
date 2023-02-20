@@ -175,8 +175,8 @@ public class SideBar
 			}
 		}*/
 		
-		SpellsBar.display(player.getMp().getCurrentValue(), player.getSpell(),
-				player.getSpell(), player.allText.get("* Barra de habilidades *"),
+		SpellsBar.display(player.getMp().getCurrentValue(), player.getSpells(),
+				player.getSpells(), player.allText.get("* Barra de habilidades *"),
 				mousePos, TextColor, TextColor, DP);
 //		DrawSpellsBar(player, SpellType.cooldownImage, SpellType.slotImage, mousePos, DP) ;
 //		

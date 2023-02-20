@@ -57,36 +57,10 @@ public abstract class UtilS
 		}
 		return Palette ;
 	}
-		/*
-	public static boolean SetIsFormed(Equip[] EquipID)
-	{
-		if ((EquipID[0].getId() + 1) == EquipID[1].getId() & (EquipID[1].getId() + 1) == EquipID[2].getId())
-		{
-			return true ;
-		}
-		return false ;
-	}
-	*/
-	public static String RelPos(Point RefPos, Point Pos2)
-	{
-		if (Pos2.x < RefPos.x)
-		{
-			return "Right" ;
-		}
-		else
-		{
-			return "Left" ;
-		}
-	}
+
+	public static String RelPos(Point RefPos, Point Pos2) { return Pos2.x < RefPos.x ? "Right" : "Left" ;}
 	
-	public static int MirrorFromRelPos(String relPos)
-	{
-		if (relPos.equals("Left"))
-		{
-			return -1 ;
-		}
-		return 1 ;
-	}
+	public static int MirrorFromRelPos(String relPos) { return relPos.equals("Left") ? -1 : 1 ;}
 	
 	public static int MenuSelection(String UpKey, String DownKey, String Choice, int SelectedMenu, int MenuLength)
 	{
@@ -217,16 +191,6 @@ public abstract class UtilS
 			}
 		}
 		return null ;
-	}
-	
-	public static boolean IsInRange(Point Pos1, Point Pos2, double Range)
-	{
-		boolean isInRange = false ;
-		if (Pos1.distance(Pos2) < Range)
-		{
-			isInRange = true ;
-		}
-		return isInRange ;
 	}
 	
 	/*public static void PrintBattleActions2(String useraction, String receiveraction, String user, String receiver, Object[] AtkResult, String[] elem)
@@ -414,7 +378,7 @@ public abstract class UtilS
 		if (Language.equals("P"))
 		{
 			Cats[0] = "* *" ;
-			Cats[1] = "* Bestiário *" ;
+			Cats[1] = "* Bestiï¿½rio *" ;
 			Cats[2] = "* Novo jogo *" ;
 			Cats[3] = "* Tutorial *" ;
 			Cats[4] = "* Classes *" ;

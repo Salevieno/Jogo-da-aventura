@@ -217,11 +217,12 @@ public class PlayerAttributesWindow extends GameWindow
 			
 			DP.DrawImage(Equip.SwordImage, new Point(windowPos.x + 30, windowPos.y + 134 + 1 * AttSy), new Scale(13 / 38.0, 13 / 38.0), Align.center) ;	// Draw sword icon
 			
+			Point initialAttPos = new Point(windowPos.x + 45, windowPos.y + 136 + AttSy) ;
 			for (int i = 0; i <= attributes.length - 1; i += 1)
 			{
-				DP.DrawText(new Point(windowPos.x + 45, windowPos.y + 136 + (i + 1) * AttSy), Align.bottomLeft, TextAngle, UtilG.Round(attDetails[i].getBaseValue(), 1) + " + "+ UtilG.Round(attDetails[i].getBonus(), 1) + " + " + UtilG.Round(attDetails[i].getTrain(), 1), font, TextColor) ;
+				DP.DrawText(UtilG.Translate(initialAttPos, 0, i * AttSy), Align.bottomLeft, TextAngle, UtilG.Round(attDetails[i].getBaseValue(), 1) + " + "+ UtilG.Round(attDetails[i].getBonus(), 1) + " + " + UtilG.Round(attDetails[i].getTrain(), 1), font, TextColor) ;
 			}	
-			DP.DrawText(new Point(windowPos.x + 45, (int) (windowPos.y + 136 + 7.6 * AttSy)), Align.bottomLeft, TextAngle, attText[10] + ": " + UtilG.Round(100 * BA.TotalCritAtkChance(), 1) + "%", font, ColorPalette[6]) ;		
+			DP.DrawText(UtilG.Translate(initialAttPos, 0, (attributes.length - 1) * AttSy + 7 * AttSy), Align.bottomLeft, TextAngle, attText[10] + ": " + UtilG.Round(100 * BA.TotalCritAtkChance(), 1) + "%", font, ColorPalette[6]) ;		
 			
 			//	Collecting
 			if (user instanceof Player)

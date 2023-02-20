@@ -52,7 +52,8 @@ public class DrawingOnPanel
 			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementThunder.png"),
 			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementLight.png"),
 			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementDark.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementSnow.png")} ;
+			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementSnow.png")
+			} ;
 	
 	public DrawingOnPanel()
 	{
@@ -481,6 +482,32 @@ public class DrawingOnPanel
 	}
 	public void DrawDamageAnimation(Point initialPos, AtkResults atkResults, TimeCounter counter, int style, Color color)
 	{
+		AttackEffects effect = atkResults.getEffect() ;
+		
+		if (effect == null) { return ;}
+
+		String message = null ;
+		int damage = atkResults.getDamage() ;
+		switch (effect)
+		{
+			case miss:
+			{
+				message = "Miss" ; break;
+			}
+			case hit:
+			{
+				message = String.valueOf(UtilG.Round(damage, 1)) ; break;
+			}
+			case crit:
+			{
+				message = String.valueOf(UtilG.Round(damage, 1)) + "!" ; break;
+			}
+			case block:
+			{
+				message = "Block" ;	break;
+			}
+		}		
+
 		Font font = new Font(Game.MainFontName, Font.BOLD, 18) ;
 		double rate = Math.pow(counter.rate(), 0.6) ;
 		Point[] movement = new Point[] {
@@ -489,40 +516,6 @@ public class DrawingOnPanel
 				new Point((int) (Math.pow(rate, 2)), (int) (-20 * rate))
 		};
 		Point currentPos = UtilG.Translate(initialPos, movement[style].x, movement[style].y) ;
-		int damage = atkResults.getDamage() ;
-		AttackEffects effect = atkResults.getEffect() ;
-		String message = null ;
-		
-		if (effect == null) { return ;}
-		
-		switch (effect)
-		{
-			case miss:
-			{
-				message = "Miss" ;
-				
-				break;
-			}
-			case hit:
-			{
-				message = String.valueOf(UtilG.Round(damage, 1)) ;
-				
-				break;
-			}
-			case crit:
-			{
-				message = String.valueOf(UtilG.Round(damage, 1)) + "!" ;
-				
-				break;
-			}
-			case block:
-			{
-				message = "Block" ;	
-				
-				break;
-			}
-		}		
-
 		DrawText(currentPos, Align.center, stdAngle, message, font, color) ;
 		
 	}
@@ -628,13 +621,13 @@ public class DrawingOnPanel
 //					angle, new Scale(1, 1), Align.center) ;
 //		}
 //	}
-	public void WinAnimation(TimeCounter counter, String[] itemNames, Color textColor)
+	public void winAnimation(TimeCounter counter, String[] itemNames, Color textColor)
 	{
 		Point pos = new Point((int)(0.45 * screenSize.width), (int)(0.2 * screenSize.height)) ;
 		Scale scale = new Scale(1, 1) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		
-		DrawMenuWindow(pos, scale, null, 0, Color.white, Color.black) ;
+
+		DrawImage(menuWindow, pos, scale, Align.topLeft) ;
 		Point textPos = UtilG.Translate(pos, 5, font.getSize() + 5) ;
 		DrawText(textPos, Align.bottomLeft, stdAngle, "Você venceu!", font, textColor) ;
 		
@@ -642,35 +635,36 @@ public class DrawingOnPanel
 		
 		for (int i = 0 ; i <= itemNames.length - 1 ; i += 1)
 		{
-			Point newTextPos = UtilG.Translate(textPos, 0, (i + 1) * (font.getSize() + 2)) ;
-			DrawText(newTextPos, Align.bottomLeft, stdAngle, itemNames[i], font, textColor) ;
+			if ( 0.3 + 0.5 * i / (itemNames.length - 1) <= counter.rate() )
+			{
+				Point newTextPos = UtilG.Translate(textPos, 0, (i + 1) * (font.getSize() + 2)) ;
+				DrawText(newTextPos, Align.bottomLeft, stdAngle, "Você obteve: " + itemNames[i], font, textColor) ;
+			}
 		}
 	}
-	public void PlayerLevelUpAnimation(TimeCounter counter, double[] AttributeIncrease, int playerLevel, Color textColor)
+	public void levelUpAnimation(TimeCounter counter, double[] AttributeIncrease, int playerLevel, Color textColor)
 	{
-		/*int LevelUpCat = AllTextCat[10], AtributosCat = AllTextCat[6] ;
-		Font font = new Font("SansSerif", Font.BOLD, 16) ;
-		Size size = new Size((int)(0.4*screenSize.width), (int)(0.4*screenSize.height)) ;
-		int Sy = size.y / 10 ;
-		Point Pos = new Point((int)(0.25*screenSize.width), (int)(0.6*screenSize.height)) ;
-		Point TextPos = new Point(Pos.x + (int)(0.05 * size.x), Pos.y - size.y + UtilG.TextH(font.getSize()) + 10) ;
-		DrawMenuWindow(Pos, size, null, 0, MenuColor[1], ColorPalette[7]) ;
-		DrawText(TextPos, alignPoints.bottomLeft, OverallAngle, AllText[LevelUpCat][1], font, textColor) ;
-		if (counter < duration)
+
+		Point pos = new Point((int)(0.45 * screenSize.width), (int)(0.2 * screenSize.height)) ;
+		Scale scale = new Scale(1, 1) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		
+		DrawImage(menuWindow, pos, scale, Align.topLeft) ;
+		Point textPos = UtilG.Translate(pos, 5, font.getSize() + 5) ;
+		DrawText(textPos, Align.bottomLeft, stdAngle, "Nível " + playerLevel + "!", font, textColor) ;
+		
+		if ( counter.rate() <= 0.3 ) { return ;}
+		
+		String[] attNames = new String[] {"Vida", "MP", "Ataque físico", "Ataque mágico", "Defesa física", "Defesa mágica", "Destreza", "Agilidade"} ;
+		for (int i = 0 ; i <= AttributeIncrease.length - 1 ; i += 1)
 		{
-			DrawText(new Point(TextPos.x, TextPos.y + Sy), alignPoints.bottomLeft, OverallAngle, AllText[AtributosCat][1] + " " + playerLevel, font, ColorPalette[6]) ;
-			if (duration/3 < counter)
-			{				
-				for (int i = 0 ; i <= AttributeIncrease.length - 1 ; i += 1)
-				{
-					if (duration/3 + duration*i*2/3/Math.max(1, AttributeIncrease.length - 1) < counter)
-					{
-						DrawText(new Point(TextPos.x, TextPos.y + (i + 2)*Sy), alignPoints.bottomLeft, OverallAngle, AllText[AtributosCat][i + 2] + " + " + AttributeIncrease[i], font, textColor) ;								
-					}
-				}
-			}	
+			if ( 0.3 + 0.5 * i / (AttributeIncrease.length - 1) <= counter.rate() )
+			{
+				Point newTextPos = UtilG.Translate(textPos, 0, (i + 1) * (font.getSize() + 2)) ;
+				DrawText(newTextPos, Align.bottomLeft, stdAngle, attNames[i] + " + " + AttributeIncrease[i], font, textColor) ;
+			}
 		}
-		*/
+		
 	}
 	public void PetLevelUpAnimation(Pet pet, int counter, int duration, double[] AttributeIncrease)
 	{

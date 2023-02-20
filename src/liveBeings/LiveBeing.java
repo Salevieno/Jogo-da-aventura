@@ -6,13 +6,16 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import attributes.Attributes;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
+import components.SpellTypes;
 import graphics.DrawingOnPanel;
 import main.AtkResults;
+import main.AtkTypes;
 import main.Game;
 import maps.GameMap;
 import utilities.Align;
@@ -38,13 +41,13 @@ public class LiveBeing
 	protected double range ;
 	protected int step ;
 	protected String[] elem ;					// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
-	protected TimeCounter mpCounter ;			// counts the mp reduction
-	protected TimeCounter satiationCounter ;	// counts the satiation reduction
-	protected TimeCounter moveCounter ;			// counts the move
-	protected TimeCounter battleActionCounter ;	// counts the actions in battle
-	protected TimeCounter displayDamage ;		// counts the time the damage taken is on the screen
+	protected TimeCounter mpCounter ;
+	protected TimeCounter satiationCounter ;
+	protected TimeCounter moveCounter ;
+	protected TimeCounter battleActionCounter ;
+	protected TimeCounter displayDamage ;
 	protected int stepCounter ;					// counts the steps in the movement	TODO -> TimeCounter ? (n�o � tempo, � step)
-	protected String currentAction; 
+	protected String currentAction ;
 	protected ArrayList<String> combo ;			// record of the last 10 movements
 	protected ArrayList<Spell> spells ;
 	
@@ -54,13 +57,13 @@ public class LiveBeing
 	protected PlayerAttributesWindow attWindow ;	// Attributes window
 	
 	public static final Image[] StatusImages = new Image[] {
-			UtilG.loadImage(Game.ImagesPath + "\\Battle\\" + "ShieldIcon.png"),
 			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Stun.png"),
 			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Block.png"),
 			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Blood.png"),
 			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Poison.png"),
 			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Silence.png")
 			};
+	public static final Image defendingImage = UtilG.loadImage(Game.ImagesPath + "\\Battle\\" + "ShieldIcon.png") ;
 	public static final String[] BattleKeys = new String[] {"A", "D"} ;	
 	
 
@@ -128,6 +131,7 @@ public class LiveBeing
 	public TimeCounter getDisplayDamage() {return displayDamage ;}
 	public int getStepCounter() {return stepCounter ;}
 	public ArrayList<String> getCombo() {return combo ;}
+	public ArrayList<Spell> getSpells() {return spells ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
 
 	public void setName(String newValue) {name = newValue ;}
@@ -154,7 +158,8 @@ public class LiveBeing
 		Dimension size = new Dimension(60, 20) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		DP.DrawRoundRect(pos, Align.center, size, 1, Game.ColorPalette[8], Game.ColorPalette[8], true);
-		DP.DrawText(pos, Align.center, 0, state.toString(), font, Game.ColorPalette[9]) ;
+		if (combo == null) {DP.DrawText(pos, Align.center, 0, "null", font, Game.ColorPalette[9]) ;}
+		else if (0 < combo.size()) { DP.DrawText(pos, Align.center, 0, combo.get(0).toString(), font, Game.ColorPalette[9]) ;}		
 	}
 	
 	public Point CalcNewPos()
@@ -193,7 +198,7 @@ public class LiveBeing
 		}
 	}
 	public void IncBattleActionCounters() {battleActionCounter.inc() ; displayDamage.inc() ;}
-	public void ResetBattleActions() {battleActionCounter.reset() ;}
+	public void ResetBattleActions() {battleActionCounter.reset() ; }
 	
 	
 	public void resetCombo()
@@ -201,7 +206,7 @@ public class LiveBeing
 		setCombo(new ArrayList<String>()) ;
 	}
 	
-	public void UpdateCombo()
+	public void updateCombo()
 	{
 		if (currentAction != null)
 		{
@@ -217,15 +222,61 @@ public class LiveBeing
 		}
 	}
 	
+	public List<Spell> GetActiveSpells()
+	{
+		List<Spell> activeSpells = new ArrayList<Spell>() ;
+		for (int i = 0 ; i <= spells.size() - 1 ; i += 1)
+		{
+			if (spells.get(i).getType() != null)	// TODO every spell should have a type, update input file
+			{
+				if (!spells.get(i).getType().equals(SpellTypes.passive) & 0 < spells.get(i).getLevel())
+				{
+					activeSpells.add(spells.get(i)) ;
+				}
+			}
+		}
+		return activeSpells ;
+	}
+	
 	public boolean isAlive() {return 0 < PA.getLife().getCurrentValue() ;}
+	public boolean hasTheSpell(String action) {return Player.SpellKeys.indexOf(action) < GetActiveSpells().size() ;}
+	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
 	public boolean hasActed() {return currentAction != null ;}
-	public boolean actionIsSpell()	{return hasActed() ? UtilG.ArrayContains(Player.SpellKeys, currentAction) : false ;}
+	public boolean actionIsSpell()	{return hasActed() ? Player.SpellKeys.contains(currentAction) : false ;}
 	public boolean actionIsAtk() {return hasActed() ? currentAction.equals(Player.BattleKeys[0]) : false ;}
 	public boolean actionIsDef() {return hasActed() ? currentAction.equals(Player.BattleKeys[1]) : false ;}
 	
 	public boolean canAtk() {return battleActionCounter.finished() & !BA.isStun() ;}
-	public boolean isSilent() {return BA.getSpecialStatus()[4] <= 0 ;}
-	public boolean isDefending() {return hasActed() ? (getCurrentAction().equals(BattleKeys[1])) : false ;}
+	public boolean isSilent() {return 0 < BA.getStatus().getSilence() ;}
+	public boolean isDefending()
+	{
+		if (combo == null) { return false ;}
+		if (combo.size() == 0) { return false ;}
+		
+		if (this instanceof Player)
+		{
+			return (!battleActionCounter.finished() & combo.get(0).equals(BattleKeys[1])) ;
+		}
+		return actionIsDef() ;
+	}
+	public boolean isInRange(Point target) {return pos.distance(target) <= range ;}
+	
+	public String[] atkElems()
+	{
+		if (this instanceof Player) { return new String[] {elem[0], elem[1], elem[4]} ;}
+		else if (this instanceof Pet) { return new String[] {elem[0], elem[1], elem[4]} ;}
+		else if (this instanceof Creature) { return new String[] {elem[0], "n", "n"} ;}
+		
+		return null ;
+	}
+	public String[] defElems()
+	{
+		if (this instanceof Player) { return new String[] {elem[2], elem[3]} ;}
+		else if (this instanceof Pet) { return new String[] {elem[2], elem[3]} ;}
+		else if (this instanceof Creature) { return new String[] {elem[0], elem[0]} ;}
+		
+		return null ;
+	}
 	
 	public void ActivateBattleActionCounters()
 	{
@@ -263,6 +314,14 @@ public class LiveBeing
 		increment = BA.getMagAtk().getBaseValue() * percIncrease.get(Attributes.magAtk) + valueIncrease.get(Attributes.magAtk) ;
 		BA.getMagAtk().incBonus(increment * level * mult);
 	}
+	public AtkResults useSpell(Spell spell)
+	{
+		AtkResults atkResults = new AtkResults() ;
+		int damage = 0 ;
+		if (spell.getName().equals("Chama")) { damage = 5; }
+		
+		return new AtkResults(AtkTypes.magical, AttackEffects.hit, damage) ;
+	}
 	
 	public void ActivateDef()
 	{
@@ -274,11 +333,11 @@ public class LiveBeing
 		BA.getPhyDef().incBonus(-BA.getPhyDef().getBaseValue()) ;
 		BA.getMagDef().incBonus(-BA.getMagDef().getBaseValue()) ;
 	}
-	public void train(AtkResults playerAtkResult)
+	public void train(AtkResults atkResult)
 	{
-		AttackEffects effect = (AttackEffects) playerAtkResult.getEffect() ;
-		String atkType = (String) playerAtkResult.getAtkType() ;
-		if (atkType.equals("Physical"))	// Physical atk
+		AttackEffects effect = (AttackEffects) atkResult.getEffect() ;
+		AtkTypes atkType = atkResult.getAtkType() ;
+		if (atkType.equals(AtkTypes.physical))
 		{
 			BA.getPhyAtk().incTrain(0.025 / (BA.getPhyAtk().getTrain() + 1)) ;					
 		}
@@ -296,11 +355,11 @@ public class LiveBeing
 				BA.getDex().incTrain(0.025 / (BA.getDex().getTrain() + 1)) ;
 			}
 		}
-		if (atkType.equals("Spell"))
+		if (atkType.equals(AtkTypes.magical))
 		{
 			BA.getMagAtk().incTrain(0.025 / (BA.getMagAtk().getTrain() + 1)) ;
 		}
-		if (atkType.equals("Defense"))
+		if (atkType.equals(AtkTypes.defense))
 		{
 			BA.getPhyDef().incTrain(0.025 / (BA.getPhyDef().getTrain() + 1)) ;
 			BA.getMagDef().incTrain(0.025 / (BA.getMagDef().getTrain() + 1)) ;
@@ -364,30 +423,30 @@ public class LiveBeing
 		DP.DrawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.ColorPalette[9]) ;
 		DP.DrawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null) ;
 	}
-	public void ShowEffectsAndStatusAnimation(Point Pos, int mirror, Dimension offset, Image[] IconImages, int[] effect, boolean isDefending, DrawingOnPanel DP)
+
+	public void TakeBloodAndPoisonDamage(double totalBloodAtk, double totalPoisonAtk)
 	{
-		// effect 0: Stun, 1: Block, 2: Blood, 3: Poison, 4: Silence
-		int Sy = (int)(1.1 * IconImages[0].getHeight(null)) ;
-		if (isDefending)	// Defending
+		int BloodDamage = 0 ;
+		int PoisonDamage = 0 ;
+		double BloodMult = 1, PoisonMult = 1 ;
+		if (job == 4)
 		{
-			int ImageW = IconImages[0].getWidth(null) ;
-			Point ImagePos = new Point(Pos.x + mirror * (ImageW + offset.width), Pos.y - offset.height) ;
-			DP.DrawImage(IconImages[0], ImagePos, Align.center) ;
+			PoisonMult += -0.1*spells.get(13).getLevel() ;
 		}
-		if (0 < effect[0])	// Stun
+		if (0 < BA.getStatus().getBlood())
 		{
-			Point ImagePos = new Point(Pos.x, Pos.y + mirror * offset.height) ;
-			DP.DrawImage(IconImages[1], ImagePos, Align.center) ;
+			BloodDamage = (int) Math.max(totalBloodAtk * BloodMult - BA.getBlood().TotalDef(), 0) ;
 		}
-		for (int e = 1 ; e <= 4 - 1 ; e += 1)	// Block, blood, poison and silence
+		if (0 < BA.getStatus().getPoison())
 		{
-			if (0 < effect[e])
-			{
-				int ImageW = IconImages[e + 1].getWidth(null) ;
-				Point ImagePos = new Point(Pos.x + mirror * (ImageW + offset.width), Pos.y - offset.height + Sy) ;
-				DP.DrawImage(IconImages[e + 1], ImagePos, Align.center) ;
-				Sy += IconImages[e + 1].getHeight(null) + 2 ;
-			}
+			PoisonDamage = (int) Math.max(totalPoisonAtk * PoisonMult - BA.getPoison().TotalDef(), 0) ;
 		}
+		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage) ;
+	}
+	public void displayDefending(DrawingOnPanel DP)
+	{
+		int ImageW = defendingImage.getWidth(null) ;
+		Point ImagePos = UtilG.Translate(pos, ImageW, 0) ;
+		DP.DrawImage(defendingImage, ImagePos, Align.center) ;
 	}
 }

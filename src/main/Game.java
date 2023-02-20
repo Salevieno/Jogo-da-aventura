@@ -57,6 +57,7 @@ import items.Recipe;
 import liveBeings.Creature;
 import liveBeings.CreatureTypes;
 import liveBeings.LiveBeingStates;
+import liveBeings.LiveBeingStatus;
 import liveBeings.MovingAnimations;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -71,6 +72,7 @@ import maps.TreasureChest;
 import screen.Screen;
 import screen.SideBar;
 import screen.Sky;
+import testing.TestingAnimations;
 import utilities.Align;
 import utilities.AttackEffects;
 import utilities.GameStates;
@@ -126,7 +128,7 @@ public class Game extends JPanel
 	//private static NPCs[] allNPCs ;
 	private static Quests[] allQuests ;
 	private static Battle bat ;
-	private static Animations ani ;
+	private static Animations[] ani ;
 	
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 	public static final Image slotImage = UtilG.loadImage(".\\images\\" + "slot.png") ;
@@ -141,7 +143,14 @@ public class Game extends JPanel
 		MusicPath = ".\\music\\" ;
 		MainFontName = "Comics" ;
 		ColorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette.png"), "Normal") ;    	
-    	ani = new Animations() ;
+    	ani = new Animations[] {
+    			new Animations(),
+    			new Animations(),
+    			new Animations(),
+    			new Animations(),
+    			new Animations(),
+    			new Animations()
+    	};
 		opening = new Opening() ;
 		DP = new DrawingOnPanel() ;
 		GameLanguage = Languages.portugues ;
@@ -175,8 +184,9 @@ public class Game extends JPanel
 	}
 	
 	public static void playStopTimeGif() {state = GameStates.playingStopTimeGif ;}
+	public boolean SomeAnimationIsActive() { return (ani[3].isActive() | ani[4].isActive() | ani[5].isActive()) ;}
 	public static void shouldRepaint() {shouldRepaint = true ;}
-
+	
 	public ArrayList<Recipe> LoadCraftingRecipes()
 	{
 		ArrayList<Recipe> recipes = new ArrayList<>() ;
@@ -335,12 +345,15 @@ public class Game extends JPanel
 			BattleSpecialAttributeWithDamage Blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(input.get(ct)[22]) * diffMult, 0, Double.parseDouble(input.get(ct)[23]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[24]) * diffMult), 0, (int) (Double.parseDouble(input.get(ct)[25]) * diffMult), 0, (int) (Integer.parseInt(input.get(ct)[26]) * diffMult)) ;
 			BattleSpecialAttributeWithDamage Poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(input.get(ct)[27]) * diffMult, 0, Double.parseDouble(input.get(ct)[28]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[29]) * diffMult), 0, (int) (Double.parseDouble(input.get(ct)[30]) * diffMult), 0, (int) (Integer.parseInt(input.get(ct)[31]) * diffMult)) ;
 			BattleSpecialAttribute Silence = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[32]) * diffMult, 0, Double.parseDouble(input.get(ct)[33]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[34]) * diffMult)) ;
-			int[] Status = new int[8] ;
-			int[] SpecialStatus = new int[5] ;
-			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus) ;
+			LiveBeingStatus status = new LiveBeingStatus() ;
+			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, status) ;
 						
 			ArrayList<Spell> spell = new ArrayList<>() ;
 			spell.add(new Spell(allSpellTypes[0])) ;
+			spell.add(new Spell(allSpellTypes[1])) ;
+			spell.add(new Spell(allSpellTypes[2])) ;
+			spell.add(new Spell(allSpellTypes[3])) ;
+			spell.add(new Spell(allSpellTypes[4])) ;
 			int[] Bag = new int[] {Integer.parseInt(input.get(ct)[37]), Integer.parseInt(input.get(ct)[38]), Integer.parseInt(input.get(ct)[39]), Integer.parseInt(input.get(ct)[40]), Integer.parseInt(input.get(ct)[41]), Integer.parseInt(input.get(ct)[42]), Integer.parseInt(input.get(ct)[43]), Integer.parseInt(input.get(ct)[44]), Integer.parseInt(input.get(ct)[45]), Integer.parseInt(input.get(ct)[46])} ;
 			int Gold = Integer.parseInt(input.get(ct)[47]) ;
 			int[] StatusCounter = new int[8] ;
@@ -691,9 +704,11 @@ public class Game extends JPanel
 		sky.dayTime.inc() ;
 		player.IncActionCounters() ;
 		player.SupSpellCounters(creature, player.getOpponent()) ;
+		player.getBA().getStatus().decreaseStatus() ;
 		if (pet != null)
 		{
 			pet.IncActionCounters() ;
+			pet.getBA().getStatus().decreaseStatus() ;
 		}
 		if (!player.getMap().IsACity())	// player is out of the cities
 		{
@@ -703,6 +718,7 @@ public class Game extends JPanel
 				for (int c = 0 ; c <= fm.getCreatures().size() - 1 ; c += 1)
 				{
 					fm.getCreatures().get(c).IncActionCounters() ;
+					fm.getCreatures().get(c).getBA().getStatus().decreaseStatus() ;
 				}
 			}
 		}
@@ -856,7 +872,7 @@ public class Game extends JPanel
 		{
 			if (player.hasActed())
 			{
-				player.acts(pet, mousePos, sideBar, ani) ;			
+				player.acts(pet, mousePos, sideBar) ;			
 
 		        if (player.getMoveCounter().finished())
 		        {
@@ -866,7 +882,7 @@ public class Game extends JPanel
 		}		
 		if (player.isMoving())
 		{
-			player.move(pet, ani) ;
+			player.move(pet) ;
 			if (player.isDoneMoving())
 			{
 				player.setState(LiveBeingStates.idle) ;
@@ -886,7 +902,7 @@ public class Game extends JPanel
 		{
 			if (pet.isAlive())
 			{
-				pet.UpdateCombo() ;
+				pet.updateCombo() ;
 				pet.Move(player.getPos(), player.getMap(), player.getElem()[4]) ;
 				pet.display(pet.getPos(), new Scale(1, 1), DP) ;
 				pet.DrawAttributes(0, DP) ;
@@ -903,26 +919,28 @@ public class Game extends JPanel
 		// check if the player met something
 		if (!player.isInBattle())
 		{
-			player.meet(creature, DP, ani) ;
+			player.meet(creature, DP) ;
 		}
 		
 		
 		// if the player is in battle, run battle
-		if (player.isInBattle() & !ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(16))	// only enter battle if the animations for win (12), level up (13), pet level up (14), and pterodactile (16) are off
+		if (player.isInBattle())	// & !ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(16) only enter battle if the animations for win (12), level up (13), pet level up (14), and pterodactile (16) are off
 		{
-			bat.RunBattle(player, pet, player.getOpponent(), DP) ;
+			bat.RunBattle(player, pet, player.getOpponent(), ani, DP) ;
 		}
 		
 		
-		// level up the player and the pet if they should		
-		if (!ani.isActive(12))
-		{
-			player.checkLevelUp(ani) ;
-		}
-		if (pet != null & !ani.isActive(13))
-		{
-			pet.checkLevelUp(ani) ;
-		}
+		// level up the player and the pet if they should
+		player.checkLevelUp(ani[4]) ;
+		pet.checkLevelUp(ani[4]) ;
+//		if (!ani.isActive(12))
+//		{
+//			player.checkLevelUp(ani) ;
+//		}
+//		if (pet != null & !ani.isActive(13))
+//		{
+//			pet.checkLevelUp(ani) ;
+//		}
 		
 		
 		// show the active player windows
@@ -948,7 +966,9 @@ public class Game extends JPanel
 			}
 		}
 		
-		player.ResetAction() ;
+		player.resetAction() ;
+
+    	for (int i = 0 ; i <= ani.length - 1 ; i += 1) { ani[i].run(i, DP) ;}
 	}
 	
 	
@@ -1016,11 +1036,11 @@ public class Game extends JPanel
     	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
     	pet.setPos(player.getPos());
     	sideBar = new SideBar(player.getMovingAni().idleGif, pet.getMovingAni().idleGif) ;
-    	bat = new Battle(ani) ;
+    	bat = new Battle() ;
     	
     	player.InitializeSpells() ;
-    	player.getSpellsTreeWindow().setSpells(player.getSpell().toArray(new Spell[0])) ;
-    	player.setMap(cityMaps[1]) ;
+    	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
+    	player.setMap(fieldMaps[9]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
     	for (int i = 0; i <= 20 - 1; i += 1)
     	{
@@ -1031,8 +1051,8 @@ public class Game extends JPanel
     	player.getLife().incCurrentValue(-10);
     	//System.out.println("player life = " + player.getLife().getCurrentValue());
 		//System.out.println("player PA = " + player.getPA());
-    	player.getSpell().get(10).incLevel(1) ;
-    	player.getSpell().get(11).incLevel(1) ;
+    	player.getSpells().get(10).incLevel(1) ;
+    	player.getSpells().get(11).incLevel(1) ;
 
     	//System.out.println("player spells = " + player.getSpell());
     	//player.getSpell().add(new Spell(allSpellTypes[0])) ;
@@ -1065,45 +1085,41 @@ public class Game extends JPanel
     	if (player.getSettings().getMusicIsOn())
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
-		}
-    	
+		}    	
 	}
 	
 	private void testing()
 	{
-		//System.out.println(player.getSpell());
-		//player.getSpellsTreeWindow().display(mousePos, Icon.selectedIconID, DP) ;
-		//player.bestiary.display(player, mousePos, DP);
-		List<Item> ItemsOnSale = new ArrayList<>() ;
-		ItemsOnSale.add(allItems[0]) ;
-		ItemsOnSale.add(allItems[1]) ;
-		ItemsOnSale.add(allItems[2]) ;
-		ItemsOnSale.add(allItems[10]) ;
-		ItemsOnSale.add(allItems[3]) ;
-		ItemsOnSale.add(allItems[50]) ;
-		ItemsOnSale.add(allItems[60]) ;
-		ItemsOnSale.add(allItems[73]) ;
-		ItemsOnSale.add(allItems[24]) ;
-		ItemsOnSale.add(allItems[35]) ;
-		ItemsOnSale.add(allItems[14]) ;
-		ShoppingWindow SW = new ShoppingWindow(ItemsOnSale) ;
-		SW.display(mousePos, DP) ;
-		
-
-		List<Item> ItemsForCrafting = new ArrayList<>() ;
-		ItemsForCrafting.add(allItems[0]) ;
-		ItemsForCrafting.add(allItems[1]) ;
-		ItemsForCrafting.add(allItems[2]) ;
-		ItemsForCrafting.add(allItems[10]) ;
-		ItemsForCrafting.add(allItems[3]) ;
-		ItemsForCrafting.add(allItems[50]) ;
-		ItemsForCrafting.add(allItems[60]) ;
-		ItemsForCrafting.add(allItems[73]) ;
-		ItemsForCrafting.add(allItems[24]) ;
-		ItemsForCrafting.add(allItems[35]) ;
-		ItemsForCrafting.add(allItems[14]) ;
-		CraftWindow CW = new CraftWindow(ItemsForCrafting) ;
-		CW.display(mousePos, DP) ;
+//		List<Item> ItemsOnSale = new ArrayList<>() ;
+//		ItemsOnSale.add(allItems[0]) ;
+//		ItemsOnSale.add(allItems[1]) ;
+//		ItemsOnSale.add(allItems[2]) ;
+//		ItemsOnSale.add(allItems[10]) ;
+//		ItemsOnSale.add(allItems[3]) ;
+//		ItemsOnSale.add(allItems[50]) ;
+//		ItemsOnSale.add(allItems[60]) ;
+//		ItemsOnSale.add(allItems[73]) ;
+//		ItemsOnSale.add(allItems[24]) ;
+//		ItemsOnSale.add(allItems[35]) ;
+//		ItemsOnSale.add(allItems[14]) ;
+//		ShoppingWindow SW = new ShoppingWindow(ItemsOnSale) ;
+//		SW.display(mousePos, DP) ;
+//		
+//
+//		List<Item> ItemsForCrafting = new ArrayList<>() ;
+//		ItemsForCrafting.add(allItems[0]) ;
+//		ItemsForCrafting.add(allItems[1]) ;
+//		ItemsForCrafting.add(allItems[2]) ;
+//		ItemsForCrafting.add(allItems[10]) ;
+//		ItemsForCrafting.add(allItems[3]) ;
+//		ItemsForCrafting.add(allItems[50]) ;
+//		ItemsForCrafting.add(allItems[60]) ;
+//		ItemsForCrafting.add(allItems[73]) ;
+//		ItemsForCrafting.add(allItems[24]) ;
+//		ItemsForCrafting.add(allItems[35]) ;
+//		ItemsForCrafting.add(allItems[14]) ;
+//		CraftWindow CW = new CraftWindow(ItemsForCrafting) ;
+//		CW.display(mousePos, DP) ;
 	}
 	
 	
@@ -1125,12 +1141,12 @@ public class Game extends JPanel
 	        	}
 	        	else
 	        	{
-		    		opening.Run(player.getCurrentAction(), mousePos, ani, DP) ;
+		    		opening.Run(player.getCurrentAction(), mousePos, DP) ;
 		    		if (opening.isOver())
 		    		{
 		    			state = GameStates.loading ;
 		    		}
-					player.ResetAction(); ;
+					player.resetAction(); ;
 	        	}
 				shouldRepaint = true ;
 	    		
@@ -1150,7 +1166,6 @@ public class Game extends JPanel
 	        case running:
 	        {
 	        	runGame(DP) ;
-	        	ani.RunAnimation(DP) ;	// run all the active animations
 				testing() ;
 				playGifs(DP) ;
 
@@ -1235,6 +1250,8 @@ public class Game extends JPanel
 			if (evt.getButton() == 1)	// Left click
 			{
         		player.setCurrentAction("MouseLeftClick") ;
+
+//        		TestingAnimations.runTests(ani) ;
         		//testGif.start();
 			}
 			if (evt.getButton() == 3)	// Right click

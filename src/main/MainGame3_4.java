@@ -40,7 +40,7 @@ public class MainGame3_4 extends JFrame implements ActionListener
         setLocation(500, 200) ;			// window location
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         setVisible(true) ;
-        timer = new Timer(10, this) ;	// timer of the game, first number = delay
+        timer = new Timer(20, this) ;	// timer of the game, first number = delay
 		timer.start() ;					// Game will start checking for keyboard events and go to the method paintComponent every "timer" miliseconds
 		previousState = GameStates.opening ;
         add(new Game(windowSize)) ;			// adding game panel on the JFrame

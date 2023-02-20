@@ -2,6 +2,7 @@ package liveBeings ;
 
 import java.awt.Color ;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -77,7 +78,7 @@ public class Creature extends LiveBeing
 		setPos(initialPos) ;
 		
 
-		if (getName().equals("Drag�o") | getName().equals("Dragon"))
+		if (getName().equals("Dragão") | getName().equals("Dragon"))
 		{
 			setPos(Game.getScreen().getCenter()) ;
 		}
@@ -114,10 +115,6 @@ public class Creature extends LiveBeing
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
 
-	public String[] getDefElems()
-	{
-		return new String[] {elem[0], elem[0]} ;
-	}
 	public boolean hasEnoughMP(int spellID)
 	{
 		int MPcost = 10 * spellID ;
@@ -149,9 +146,8 @@ public class Creature extends LiveBeing
 			{
 				DP.DrawImage(type.movingAni.movingRightGif, pos, scale, "Center") ;
 			}
-		}
-		DP.DrawText(getPos(), "Center", 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
-		DrawAttributes(0, DP) ;*/
+		}*/
+//		DP.DrawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
 	}
 	
 
@@ -159,7 +155,7 @@ public class Creature extends LiveBeing
 	{
 		Screen screen = Game.getScreen() ;
 		Point MinCoord = new Point(0, (int) (0.2*screen.getSize().height)) ;
-		Dimension Range = new Dimension(1, (int) screen.getSize().height / (screen.getBorders()[1] - screen.getBorders()[3])) ;
+		Dimension Range = new Dimension(screen.getSize().width, (int) (screen.getBorders()[3] - screen.getBorders()[1])) ;
 		Dimension step = new Dimension(1, 1) ;
 		setPos(UtilG.RandomPos(MinCoord, Range, step)) ;
 	}
@@ -191,6 +187,11 @@ public class Creature extends LiveBeing
 		{
 			//setPos(CurrentPos) ;
 		}
+	}
+	public String chooseTarget()
+	{
+		if (0.5 <= Math.random()) { return "player" ;}
+		else { return "pet" ;}
 	}
 	public void act(Point playerPos, GameMap map)
 	{
@@ -229,7 +230,7 @@ public class Creature extends LiveBeing
 		}
 		if (move == 2)
 		{
-			setCurrentAction(String.valueOf((int)(5 * Math.random() - 0.01))) ;	// Spell
+			setCurrentAction(String.valueOf((int)((spells.size()) * Math.random() - 0.01))) ;
 		}
 	}
 	public int useSpell(int spellID, Player player)
@@ -444,11 +445,11 @@ public class Creature extends LiveBeing
 	{
 		int BloodDamage = 0 ;
 		int PoisonDamage = 0 ;
-		if (0 < BA.getSpecialStatus()[2])	// Blood
+		if (0 < BA.getStatus().getBlood())
 		{
 			BloodDamage = (int) Math.max(attacker.getBA().getBlood().TotalAtk() - BA.getBlood().TotalDef(), 0) ;
 		}
-		if (0 < BA.getSpecialStatus()[3])	// Poison
+		if (0 < BA.getStatus().getPoison())
 		{
 			PoisonDamage = (int) Math.max(attacker.getBA().getPoison().TotalAtk() - BA.getPoison().TotalDef(), 0) ;
 		}
@@ -464,7 +465,7 @@ public class Creature extends LiveBeing
 			{
 				player.getStats()[20] += PoisonDamage ;
 			}
-			if (player.getJob() == 4 & 0 < player.getSpell().get(6).getLevel() & player.getSpell().get(6).isActive())	// Tasty
+			if (player.getJob() == 4 & 0 < player.getSpells().get(6).getLevel() & player.getSpells().get(6).isActive())	// Tasty
 			{
 				player.getLife().incCurrentValue(BloodDamage) ;
 			}

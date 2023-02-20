@@ -30,7 +30,7 @@ public class SpellsBar
 		int Ncols = Math.max(ActiveSpells.size() / 11 + 1, 1) ;
 		int Nrows = ActiveSpells.size() / Ncols + 1 ;
 		int Sx = (int) UtilG.spacing(size.width, Ncols, slotW, 3), Sy = (int) UtilG.spacing(size.height, Nrows, slotH, 5) ;		
-		String[] Key = Player.SpellKeys ;
+		List<String> Keys = Player.SpellKeys ;
 		
 		//Color BGcolor = Player.ClassColors[player.getJob()] ;
 		//Color TextColor = player.getColor() ;
@@ -51,7 +51,7 @@ public class SpellsBar
 				{
 					DP.DrawImage(Game.slotImage, slotCenter, Align.center) ;
 				}
-				DP.DrawText(slotCenter, Align.center, OverallAngle, Key[i], font, TextColor) ;
+				DP.DrawText(slotCenter, Align.center, OverallAngle, Keys.get(i), font, TextColor) ;
 				Dimension imgSize = new Dimension(SpellType.cooldownImage.getWidth(null), SpellType.cooldownImage.getHeight(null)) ;
 				if (!spell.getCooldownCounter().finished())
 				{

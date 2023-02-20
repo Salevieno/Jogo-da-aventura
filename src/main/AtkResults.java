@@ -4,18 +4,25 @@ import utilities.AttackEffects;
 
 public class AtkResults
 {
-	private String atkType ;
+	private AtkTypes atkType ;
 	private AttackEffects effect ;
 	private int damage ;
+
+	public AtkResults()
+	{
+		this.atkType = null;
+		this.effect = null;
+		this.damage = 0;
+	}
 	
-	public AtkResults(String atkType, AttackEffects effect, int damage)
+	public AtkResults(AtkTypes atkType, AttackEffects effect, int damage)
 	{
 		this.atkType = atkType;
 		this.effect = effect;
 		this.damage = damage;
 	}
 
-	public String getAtkType()
+	public AtkTypes getAtkType()
 	{
 		return atkType;
 	}
@@ -28,6 +35,12 @@ public class AtkResults
 	public int getDamage()
 	{
 		return damage;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "AtkResults [atkType=" + atkType + ", effect=" + effect + ", damage=" + damage + "]";
 	}
 	
 	

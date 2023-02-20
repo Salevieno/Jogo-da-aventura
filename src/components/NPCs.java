@@ -127,7 +127,7 @@ public class NPCs
 		return NPCType ;
 	}
 
-	public void Contact(Player player, Pet pet, Creature[] creatures, GameMap[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, Animations Ani, DrawingOnPanel DP)
+	public void Contact(Player player, Pet pet, Creature[] creatures, GameMap[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, DrawingOnPanel DP)
 	{
 		String action = player.getCurrentAction() ;		
 		if (action != null)

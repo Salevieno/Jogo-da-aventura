@@ -4,24 +4,119 @@ import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
-import java.util.Arrays ;
 
 import components.Items;
-import components.NPCs;
-import liveBeings.Pet;
-import liveBeings.Player;
-import liveBeings.Spell;
 import main.AtkResults;
 import main.Game;
-import maps.GameMap;
-import utilities.AttackEffects;
 import utilities.TimeCounter;
 
 public class Animations 
 {
-	private TimeCounter[] counter ;
-//	private int[] Anicounter ;
-//	private int[] Aniduration ;
+	private TimeCounter counter ;
+	private boolean isActive ;
+	private Object[] vars ;
+	
+	public Animations()
+	{
+		counter = new TimeCounter(0, 0) ;
+		isActive = false ;
+		vars = null ;
+	}
+	
+	public void start(Object[] Vars)
+	{
+		isActive = true ;
+		vars = Vars ;
+		counter = new TimeCounter(0, (int) vars[0]) ;
+	}
+	
+	private void IncAnimationCounter()
+	{
+		counter.inc() ;
+	}
+	
+	public boolean isActive()
+	{
+		return isActive ;
+	}
+	 	
+	public void run(int aniID, DrawingOnPanel DP)
+	{	
+		if (isActive)
+		{
+			if (!counter.finished())
+			{
+				if (aniID <= 2)
+				{
+					DamageAnimation(vars, DP) ;
+				}
+				else if (aniID == 3)
+				{
+					winAnimation(vars, DP) ;
+				}
+				else if (aniID == 4)
+				{
+					levelUpAnimation(vars, DP) ;
+				}
+				else if (aniID == 5)
+				{
+					PterodactileAnimation(vars, DP) ;
+				}
+				IncAnimationCounter() ;
+			}
+			else
+			{
+				 EndAnimation() ;
+			}
+		}
+	}
+	
+	private void EndAnimation()
+	{
+		counter.reset() ;
+		isActive = false ;
+	}
+		
+	private void DamageAnimation(Object[] vars, DrawingOnPanel DP)
+	{
+		Point targetPos = (Point) vars[1] ;
+		Dimension targetSize = (Dimension) vars[2] ;
+		AtkResults atkResults = (AtkResults) vars[3] ;
+		int style = (int) vars[4] ;
+		Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
+		DP.DrawDamageAnimation(pos, atkResults, counter, style, Game.ColorPalette[6]) ;
+	}
+
+	private void winAnimation(Object[] vars, DrawingOnPanel DP)
+	{
+		String[] ItemsObtained = (String[]) vars[1] ;
+		Color textColor = Game.ColorPalette[8] ;
+		DP.winAnimation(counter, ItemsObtained, textColor) ;
+	}
+	
+	private void levelUpAnimation(Object[] vars, DrawingOnPanel DP)
+	{
+		double[] AttributesIncrease = (double[]) vars[1] ;
+		int playerLevel = (int) vars[2] ;
+		Color textColor = Game.ColorPalette[6] ;
+		DP.levelUpAnimation(counter, AttributesIncrease, playerLevel, textColor) ;
+	}
+
+	private void PterodactileAnimation(Object[] vars, DrawingOnPanel DP)
+	{
+		Image PterodactileImage = (Image) vars[1] ;
+		Image SpeakingBubbleImage = (Image) vars[2] ;
+		String[] message = (String[]) vars[3] ;
+		DP.PterodactileAnimation(counter, PterodactileImage, SpeakingBubbleImage, message) ;
+	}
+	
+	
+	
+	
+	
+	
+	/*
+	 * private TimeCounter[] counter ;
 	private boolean[] AniIsActive ;
 	private Object[][] AniVars ;
 	
@@ -42,7 +137,6 @@ public class Animations
 	
 	private void IncAnimationCounter(int AniID)
 	{
-//		Anicounter[AniID] = (Anicounter[AniID] + 1) % (Aniduration[AniID] + 1) ;
 		counter[AniID].inc() ;
 	}
 	
@@ -71,54 +165,10 @@ public class Animations
 			{
 				if (!counter[ani].finished())
 				{
-//					if (ani == 0)
-//					{
-//						GainItemAnimation(AniVars[ani], DP) ;
-//					}
 					if (ani == 1)
 					{
 						DamageAnimation(AniVars[ani], DP) ;
 					}
-//					else if (ani == 2)
-//					{
-//						PlayerPhyAtkAnimation(AniVars[ani], DP) ;
-//					}
-//					else if (ani == 3)
-//					{
-//						PlayerMagAtkAnimation(AniVars[ani], DP) ;
-//					}
-//					else if (ani == 4)
-//					{
-//						PlayerArrowAtkAnimation(AniVars[ani], DP) ;
-//					}
-//					else if (ani == 5)
-//					{
-//						PetDamageAnimation(AniVars[ani], DP) ;
-//					}
-//					else if (ani == 6)
-//					{
-//						PetPhyAtkAnimation(AniVars[ani], DP) ;
-//					}
-//					else if (ani == 7)
-//					{
-//						PetMagAtkAnimation(AniVars[ani], DP) ;
-//					}
-//					else if (ani == 8)
-//					{
-//						CreatureDamageAnimation(AniVars[ani], DP) ;
-//					}
-//					else if (ani == 9)
-//					{
-//						CreaturePhyAtkAnimation(AniVars[ani], DP) ;
-//					}
-//					else if (ani == 10)
-//					{
-//						CollectAnimation(AniVars[ani], DP) ;
-//					}
-//					else if (ani == 11)
-//					{
-//						TentAnimation(AniVars[ani], DP) ;
-//					}
 					else if (ani == 12)
 					{
 						WinAnimation(AniVars[ani], DP) ;
@@ -127,22 +177,10 @@ public class Animations
 					{
 						LevelUpAnimation(AniVars[ani], DP) ;
 					}
-//					else if (ani == 14)
-//					{
-//						PetLevelUpAnimation(AniVars[ani], DP) ;
-//					}
-//					else if (ani == 15)
-//					{
-//						FishingAnimation(AniVars[ani], DP) ;
-//					}
 					else if (ani == 16)
 					{
 						PterodactileAnimation(AniVars[ani], DP) ;
 					}
-//					else if (ani == 20)
-//					{
-//						OpeningAnimation(AniVars[ani], DP) ;
-//					}
 					IncAnimationCounter(ani) ;
 				}
 				else
@@ -156,14 +194,12 @@ public class Animations
 	private void EndAnimation(int AniID)
 	{
 		counter[AniID].reset() ;
-//		Anicounter[AniID] = 0 ;
 		AniIsActive[AniID] = false ;
 	}
 	
 	public void SetAniVars(int ani, Object[] AniVars)
 	{
 		this.AniVars[ani] = AniVars ;
-//		Aniduration[ani] = (int) AniVars[0] ;
 		counter[ani] = new TimeCounter(0, (int) AniVars[0]) ;
 	}
 	
@@ -199,6 +235,11 @@ public class Animations
 		String[] message = (String[]) AniVars16[3] ;
 		DP.PterodactileAnimation(counter[16], PterodactileImage, SpeakingBubbleImage, message) ;
 	}
+	
+	 * */
+	
+	
+	
 	
 	private void GainItemAnimation(Object[] AniVars0, DrawingOnPanel DP)
 	{

@@ -119,9 +119,8 @@ public class Pet extends LiveBeing
 		BattleSpecialAttributeWithDamage Blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(PetProperties.get(Job)[19]), 0, Double.parseDouble(PetProperties.get(Job)[20]), 0, Integer.parseInt(PetProperties.get(Job)[21]), 0, Integer.parseInt(PetProperties.get(Job)[22]), 0, Integer.parseInt(PetProperties.get(Job)[23])) ;
 		BattleSpecialAttributeWithDamage Poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(PetProperties.get(Job)[24]), 0, Double.parseDouble(PetProperties.get(Job)[25]), 0, Integer.parseInt(PetProperties.get(Job)[26]), 0, Integer.parseInt(PetProperties.get(Job)[27]), 0, Integer.parseInt(PetProperties.get(Job)[28])) ;
 		BattleSpecialAttribute Silence = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[29]), 0, Double.parseDouble(PetProperties.get(Job)[30]), 0, Integer.parseInt(PetProperties.get(Job)[31])) ;
-		int[] Status = new int[8] ;
-		int[] SpecialStatus = new int[5] ;
-		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, Status, SpecialStatus) ;
+		LiveBeingStatus status = new LiveBeingStatus() ;
+		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, status) ;
 	}
 
 	public ArrayList<Spell> InitializePetSpells()
@@ -383,11 +382,11 @@ public class Pet extends LiveBeing
 	{
 		int BloodDamage = 0 ;
 		int PoisonDamage = 0 ;
-		if (0 < BA.getSpecialStatus()[2])	// Blood
+		if (0 < BA.getStatus().getBlood())
 		{
 			BloodDamage = (int) Math.max(creature.getBA().getBlood().TotalAtk() - BA.getBlood().TotalDef(), 0) ;
 		}
-		if (0 < BA.getSpecialStatus()[3])	// Poison
+		if (0 < BA.getStatus().getPoison())
 		{
 			PoisonDamage = (int) Math.max(creature.getBA().getPoison().TotalAtk() - BA.getPoison().TotalDef(), 0) ;
 		}
@@ -417,8 +416,8 @@ public class Pet extends LiveBeing
 			BA.getDex().incBaseValue(attributesIncrease[7]) ;
 			PA.getExp().incMaxValue((int) attributesIncrease[8]) ;		
 
-			ani.SetAniVars(13, new Object[] {150, attributesIncrease, level, Game.ColorPalette[5]}) ;
-			ani.StartAni(13) ;
+//			ani.SetAniVars(13, new Object[] {150, attributesIncrease, level, Game.ColorPalette[5]}) ;
+//			ani.StartAni(13) ;
 		}
 	}
 	public double[] CalcAttIncrease()
@@ -469,7 +468,7 @@ public class Pet extends LiveBeing
 			bW.write("\nPet step: \n" + getStep()) ;
 			//bW.write("\nPet satiation: \n" + Arrays.toString(getSatiation())) ;
 			//bW.write("\nPet exp: \n" + Arrays.toString(getExp())) ;
-			bW.write("\nPet status: \n" + Arrays.toString(getBA().getSpecialStatus())) ; 
+//			bW.write("\nPet status: \n" + Arrays.toString(getBA().getSpecialStatus())) ; 
 			//bW.write("\nPet actions: \n" + Arrays.deepToString(getActions())) ; 
 			//bW.write("\nPet battle actions: \n" + Arrays.deepToString(getBA().getBattleActions())) ; 
 			bW.write("\nPet status counter: \n" + Arrays.toString(getStatusCounter())) ;
