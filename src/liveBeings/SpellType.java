@@ -2,6 +2,7 @@ package liveBeings ;
 
 import java.awt.Image;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -20,8 +21,7 @@ public class SpellType
 	private int cooldown ;
 	//private int cooldownDuration ;
 	private int effectDuration ;
-	private double[][] Buffs ;
-	private double[][] Nerfs ;
+	private List<Buff> buffs;
 	private double[] AtkMod ;
 	private double[] DefMod ;
 	private double[] DexMod ;
@@ -39,7 +39,7 @@ public class SpellType
 	public static final Image cooldownImage = UtilG.loadImage(Game.ImagesPath + "Cooldown.png") ;	
 	//public static Image ElementalCicle = UtilG.loadImage(Game.ImagesPath + "ElementalCicle.png") ;
 	
-	public SpellType(String Name, int MaxLevel, int MpCost, SpellTypes type, Map<SpellType, Integer> preRequisites, int Cooldown, int Duration, double[][] Buffs, double[][] Nerfs,
+	public SpellType(String Name, int MaxLevel, int MpCost, SpellTypes type, Map<SpellType, Integer> preRequisites, int Cooldown, int Duration, List<Buff> buffs,
 			double[] AtkMod, double[] DefMod, double[] DexMod, double[] AgiMod, double[] AtkCritMod, double[] DefCritMod, double[] StunMod, double[] BlockMod, double[] BloodMod,
 			double[] PoisonMod, double[] SilenceMod, String Elem, String[] Info)
 	{
@@ -51,8 +51,7 @@ public class SpellType
 		this.cooldown = Cooldown ;
 		//this.cooldownDuration = Duration ;
 		this.effectDuration = Duration ;
-		this.Buffs = Buffs ;
-		this.Nerfs = Nerfs ;
+		this.buffs = buffs ;
 		this.AtkMod = AtkMod ;
 		this.DefMod = DefMod ;
 		this.DexMod = DexMod ;
@@ -76,8 +75,7 @@ public class SpellType
 	public int getCooldown() {return cooldown ;}
 	//public int getCooldownDuration() {return cooldownDuration ;}
 	public int getEffectDuration() {return effectDuration ;}
-	public double[][] getBuffs() {return Buffs ;}
-	public double[][] getNerfs() {return Nerfs ;}
+	public List<Buff> getBuffs() {return buffs ;}
 	public double[] getAtkMod() {return AtkMod ;}
 	public double[] getDefMod() {return DefMod ;}
 	public double[] getDexMod() {return DexMod ;}
@@ -96,7 +94,13 @@ public class SpellType
 	public String toString()
 	{
 		return "SpellType [name=" + name + ", maxLevel=" + maxLevel + ", mpCost=" + mpCost + ", type=" + type
-				+ ", preRequisites=" + preRequisites + ", cooldown=" + cooldown + ", effectDuration=" + effectDuration + "]";
+				+ ", preRequisites=" + preRequisites + ", cooldown=" + cooldown + ", effectDuration=" + effectDuration
+				+ ", buffs=" + buffs + ", AtkMod=" + Arrays.toString(AtkMod) + ", DefMod=" + Arrays.toString(DefMod)
+				+ ", DexMod=" + Arrays.toString(DexMod) + ", AgiMod=" + Arrays.toString(AgiMod) + ", AtkCritMod="
+				+ Arrays.toString(AtkCritMod) + ", DefCritMod=" + Arrays.toString(DefCritMod) + ", StunMod="
+				+ Arrays.toString(StunMod) + ", BlockMod=" + Arrays.toString(BlockMod) + ", BloodMod="
+				+ Arrays.toString(BloodMod) + ", PoisonMod=" + Arrays.toString(PoisonMod) + ", SilenceMod="
+				+ Arrays.toString(SilenceMod) + ", elem=" + elem + ", info=" + Arrays.toString(info) + "]";
 	}
 
 }

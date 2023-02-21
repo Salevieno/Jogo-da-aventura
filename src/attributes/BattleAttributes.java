@@ -1,5 +1,7 @@
 package attributes ;
 
+import java.util.Arrays;
+
 import liveBeings.LiveBeingStatus;
 
 public class BattleAttributes
@@ -54,6 +56,35 @@ public class BattleAttributes
 	public BattleSpecialAttributeWithDamage getPoison() {return poison ;}
 	public BattleSpecialAttribute getSilence() {return silence ;}
 	public LiveBeingStatus getStatus() {return status ;}
+
+	public BasicBattleAttribute mapAttributes(Attributes att)
+	{
+		switch (att)
+		{
+			case phyAtk: return phyAtk ;
+			case magAtk: return magAtk ;
+			case phyDef: return phyDef ;
+			case magDef: return magDef ;
+			case dex: return dex ;
+			case agi: return agi ;
+			
+			default: return null ;
+		}
+	}
+	
+	public BattleSpecialAttribute mapSpecialAttributes(Attributes att)
+	{
+		switch (att)
+		{
+			case stun: return stun ;
+			case block: return block ;
+			case blood: return blood ;
+			case poison: return poison ;
+			case silence: return silence ;
+			
+			default: return null ;
+		}
+	}
 	
 	public double TotalPhyAtk()
 	{
@@ -118,6 +149,15 @@ public class BattleAttributes
 	public int[] baseDurations()
 	{
 		return new int[] {stun.getDuration(), block.getDuration(), blood.getDuration(), poison.getDuration(), silence.getDuration()} ;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "BattleAttributes [phyAtk=" + phyAtk + ", magAtk=" + magAtk + ", phyDef=" + phyDef + ", magDef=" + magDef
+				+ ", dex=" + dex + ", agi=" + agi + ", crit=" + Arrays.toString(crit) + ", stun=" + stun + ", block="
+				+ block + ", blood=" + blood + ", poison=" + poison + ", silence=" + silence + ", status=" + status
+				+ "]";
 	}
 
 	

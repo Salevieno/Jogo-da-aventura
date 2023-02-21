@@ -223,16 +223,8 @@ public class Player extends LiveBeing
 		isRiding = false ;
 		moveRange = 20 ;
 		currentBattleAction = null ;
-		/*if (spell != null)
-		{
-			spellIsActive = new boolean[spell.size()] ;
-			spellDurationCounter = new int[spell.size()] ;
-			spellCooldownCounter = new int[spell.size()] ;
-		}*/
-		//statusCounter = new int[8] ;
 		statistics = new double[23] ;
 		collectCounter = new TimeCounter(0, 300) ;
-//		Arrays.fill(BA.getSpecialStatus(), -1) ;
 		attPoints = 0 ;
 		attIncrease = new double[3][8] ;
 		chanceIncrease = new double[3][8] ;
@@ -247,31 +239,8 @@ public class Player extends LiveBeing
 
 		closestCreature = null ;
 	    opponent = null ;
-	    //difficultLevel = 1 ;
 		equipsBonus = Items.EquipsBonus ;
 		settings = new SettingsWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "windowSettings.png"), false, true, false, 1, 1) ;
-		/*switch (Job)
-		{
-			case 0:
-			{
-				spellsTree = new SpellsTreeWindow(getKnightSpells(), spellPoints, color) ;
-			}
-			case 1:
-			{
-				spellsTree = new SpellsTreeWindow(spells, spellPoints, color) ;
-			}
-			case 2:
-			{
-				spellsTree = new SpellsTreeWindow(spells, spellPoints, color) ;
-			}
-			case 3:
-			{
-				spellsTree = new SpellsTreeWindow(spells, spellPoints, color) ;
-			}
-			case 4:
-			{
-			}
-		}*/
 		spellsTree = new SpellsTreeWindow(spells.toArray(new Spell[0]), spellPoints, color) ;
 		hotItem = new Items[3] ;
 		
@@ -335,7 +304,10 @@ public class Player extends LiveBeing
 		double[][][] spellBuffs = new double[NumberOfSpells][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
 		double[][][] spellNerfs = new double[NumberOfSpells][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
 		String[][] spellsInfo = new String[NumberOfSpells][2] ;
-		*/for (int i = 0 ; i <= NumberOfSpells - 1 ; i += 1)
+		*/
+
+    	System.out.println(new Spell(allSpellTypes[45]));
+    	for (int i = 0 ; i <= NumberOfSpells - 1 ; i += 1)
 		{
 			/*int ID = i + Player.CumNumberOfSpellsPerJob[job] ;
 			int BuffCont = 0, NerfCont = 0 ;
@@ -413,7 +385,9 @@ public class Player extends LiveBeing
 			double[] Poison = new double[] {Double.parseDouble(spellsInput.get(ID)[35]), Double.parseDouble(spellsInput.get(ID)[36]), Double.parseDouble(spellsInput.get(ID)[37])} ;
 			double[] Silence = new double[] {Double.parseDouble(spellsInput.get(ID)[38]), Double.parseDouble(spellsInput.get(ID)[39]), Double.parseDouble(spellsInput.get(ID)[40])} ;
 			String Elem = spellsInput.get(ID)[41] ;*/
-			spells.add(new Spell(allSpellTypes[CumNumberOfSpellsPerJob[job] + i])) ;	
+
+    		int spellID = CumNumberOfSpellsPerJob[job] + i ;
+			spells.add(new Spell(allSpellTypes[spellID])) ;	
 			
 			// new Spell(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, spellBuffs[i], spellNerfs[i],
 			//Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i])
@@ -593,7 +567,13 @@ public class Player extends LiveBeing
 	
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}	
 	
-
+	public void engageInFight(Creature opponent)
+	{
+		opponent = closestCreature ;
+		opponent.setFollow(true) ;
+		setState(LiveBeingStates.fighting) ;
+	}
+	
 	public void acts(Pet pet, Point MousePos, SideBar sideBar)
 	{
 		if (actionIsAMove())
@@ -626,96 +606,75 @@ public class Player extends LiveBeing
 				}
 			});
 		}
-		if (currentAction.equals(ActionKeys[4]))	// Bag
+		if (currentAction.equals(ActionKeys[4]))
 		{
 			bag.open() ;
 		}
-		if (currentAction.equals(ActionKeys[5]))	// Player window
+		if (currentAction.equals(ActionKeys[5]))
 		{
 			attWindow.open() ;
 		}
-		/*if (action.equals(ActionKeys[6]))	// Fishing
-		{
-			String WaterPos = Uts.CheckAdjacentGround(getPos(), screen, maps[getMap()], "Water");
-			if (0 < getBag()[1340] & (WaterPos.contains("Touching") | WaterPos.equals("Inside")))
-			{
-				Ani.SetAniVars(15, new Object[] {200, getPos(), FishingGif, WaterPos}) ;
-				Ani.StartAni(15) ;
-			}
-		}*/
+//		if (currentAction.equals(ActionKeys[6]))
+//		{
+//			String WaterPos = Uts.CheckAdjacentGround(getPos(), screen, maps[getMap()], "Water");
+//			if (0 < getBag()[1340] & (WaterPos.contains("Touching") | WaterPos.equals("Inside")))
+//			{
+//				// TODO fishing gif
+//			}
+//		}
 		if (currentAction.equals(ActionKeys[7]))	// Map  & questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))
 		{
 			mapWindow.open() ;
 		}
-		/*if (currentAction.equals(ActionKeys[8]))												// settings window
-		{
-			settings.open() ;
-		}*/
-		if (currentAction.equals(ActionKeys[8]) & pet != null)								// Pet window
+		if (currentAction.equals(ActionKeys[8]) & pet != null)
 		{
 			pet.getAttWindow().open() ;
 		}
-		if (currentAction.equals(ActionKeys[9]))												// Quest window
+		if (currentAction.equals(ActionKeys[9]))
 		{
 			questWindow.open() ;
 		}
-		if (currentAction.equals(ActionKeys[10]))											// Hints window
+		if (currentAction.equals(ActionKeys[10]))
 		{			
 			hintsWindow.open() ;
 		}
-		if (currentAction.equals(ActionKeys[11]) & questSkills.get(QuestSkills.ride))		// Ride
+		if (currentAction.equals(ActionKeys[11]) & questSkills.get(QuestSkills.ride))
 		{
 			ActivateRide() ;
 		}
-		if (currentAction.equals(ActionKeys[12]) & !isInBattle())							// Tent
+		if (currentAction.equals(ActionKeys[12]) & !isInBattle())
 		{
 			//	 TODO add tent gif
-//			Ani.SetAniVars(11, new Object[] {100, getPos(), TentImage}) ;
-//			Ani.StartAni(11) ;
 		}
-		if (currentAction.equals(ActionKeys[13]) &  questSkills.get(QuestSkills.bestiary))	// Bestiary
+		if (currentAction.equals(ActionKeys[13]) &  questSkills.get(QuestSkills.bestiary))
 		{
 			bestiary.open() ;
 		}
 		
-		// support spells
-//		System.out.println("isInBattle() = " + isInBattle());
-//		System.out.println("canAtk() = " + canAtk());
-//		System.out.println("UtilG.IndexOf(SpellKeys, currentAction) < GetActiveSpells().size() = " + (UtilG.IndexOf(SpellKeys, currentAction)));
 		if (actionIsSpell())
 		{
-//			System.out.println("actionIsASpell() = " + actionIsASpell());
 			Spell spell = spells.get(SpellKeys.indexOf(currentAction));
 			
 			if (spell.getType().equals(SpellTypes.support))
 			{
 				if (spell.isReady() & spell.getMpCost() <= PA.getMp().getCurrentValue() & 0 < spell.getLevel())
 				{
-					System.out.println("Used a support spell = " + spell);
 					UseSupportSpell(pet, spell) ;
 					train(new AtkResults(AtkTypes.magical, null, 0)) ;
 					getStats()[1] += 1 ;	// Number of mag atks
 				}
 			}
-			
-			//System.out.println("spell cooldown " + spell.getCooldownCounter());
-		}
-		
-		// if hits creature, enters battle
-		if (closestCreature != null & (currentAction.equals(ActionKeys[1]) | actionIsSpell()) & !isInBattle())
-		{
-			if (job != 2 | (job == 2 & equips[3] != null))
+			else
 			{
-				opponent = closestCreature ;
-				opponent.setFollow(true) ;
-				setState(LiveBeingStates.fighting) ;
+				engageInFight(opponent) ;
 			}
 		}
 		
-		//		if (actionIsASpell() & (!isInBattle() | canAtk()) & UtilG.IndexOf(SpellKeys, currentAction) < GetActiveSpells().size())
-//		{
-//			SupSpell(pet, GetActiveSpells().get(UtilG.IndexOf(SpellKeys, currentAction))) ;
-//		}
+		// if hits creature, enters battle
+		if (actionIsAtk() & closestCreature != null & !isInBattle())
+		{
+			engageInFight(opponent) ;
+		}
 
 		// navigating through open windows
 		if (bag.isOpen())
@@ -944,23 +903,8 @@ public class Player extends LiveBeing
 			}
 			if (spell.getDurationCounter().finished())
 			{
-				/*ResetSpellDurationCounter(s) ;
-				for (int i = 0 ; i <= spells.get(s).getBuffs().length - 1 ; ++i)
-				{
-					ApplyBuffsAndNerfs("deactivate", "buffs", i, s, SpellIsActive(s)) ;
-				}
-				for (int i = 0 ; i <= spells.get(s).getNerfs().length - 1 ; ++i)
-				{
-					if (creatureID != null)
-					{
-						creatureID.ApplyBuffsAndNerfs("deactivate", "nerfs", i, spells.get(s).getLevel(), spells.get(s), SpellIsActive(s)) ;
-					}
-				}*/
-				spell.getDurationCounter().reset();
-				for (Buff buff : spell.getBuffs())
-				{
-					applyBuff(false, buff, spell.getLevel());
-				}
+				spell.getDurationCounter().reset() ;
+				spell.applyBuffs(false, this) ;
 				spell.deactivate() ;
 			}
 			spell.getCooldownCounter().inc() ;
@@ -1085,38 +1029,13 @@ public class Player extends LiveBeing
 		}
 		return StolenItemID ;
 	}
-	private void OffensiveSpell(Creature creature, Spell spell)
-	{
-		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
-		//ResetSpellCooldownCounter(spellID) ; activate spell
-		spell.activate() ;
-		if (job == 0)
-		{
-			
-		}
-		if (job == 1)
-		{
-			
-		}
-		if (job == 2)
-		{
-			/*if (spellID == 3)
-			{
-				
-			}*/
-		}
-		for (int i = 0 ; i <= spell.getBuffs().size() - 1 ; ++i)
-		{
-			//ApplyBuffsAndNerfs("activate", "buffs", i, spellID, SpellIsActive(spellID)) ;
-			creature.ApplyBuffsAndNerfs("activate", "nerfs", i, spell.getLevel(), spell, spell.isActive()) ;
-		}
-	}
 	private void UseSupportSpell(Pet pet, Spell spell)
 	{	
 		spell.getCooldownCounter().reset();
 		spell.activate() ;		
 		ResetBattleActions() ;
 		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
+		// TODO spells 
 		if (job == 0)
 		{
 			
@@ -1141,10 +1060,7 @@ public class Player extends LiveBeing
 				}
 			}*/
 		}
-		for (int i = 0 ; i <= spell.getBuffs().size() - 1 ; ++i)
-		{
-			applyBuff(true, spell.getBuffs().get(i), spell.getLevel());
-		}
+		spell.applyBuffs(true, this);
 	}
 	public void autoSpells(Creature creature, ArrayList<Spell> spell)
 	{		
@@ -1178,10 +1094,10 @@ public class Player extends LiveBeing
 		{
 			//Buffs = spells.get(spellID).getBuffs() ;
 		}
-		else if (type.equals("nerfs"))
-		{
-			Buffs = spells.get(spellID).getNerfs() ;
-		}
+//		else if (type.equals("nerfs"))
+//		{
+//			Buffs = spells.get(spellID).getNerfs() ;
+//		}
 		OriginalValue = new double[] {PA.getLife().getMaxValue(), PA.getMp().getMaxValue(), BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(),
 				BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(),
 				BA.getCrit()[0],
@@ -1262,7 +1178,7 @@ public class Player extends LiveBeing
 //			BA.getSilence()[1] += Buff[13][0] ;
 //		}	
 	}
-	public void updateoffensiveStats(AtkResults playerAtkResult, Creature creature)
+	public void updateoffensiveStats(AtkResults playerAtkResult, LiveBeing creature)
 	{
 		/* 0: Number of phy attacks, 
 		 * 1: number of spells used, 
@@ -1340,6 +1256,14 @@ public class Player extends LiveBeing
 //					statistics[22] += creature.getBA().getSpecialStatus()[4] / BA.getSilence().getDuration() ;	// total number of silence inflicted by the player
 //				}
 			}
+//			if (0 < BloodDamage)
+//			{
+//				statistics[18] += BA.getBlood().TotalDef() ;
+//			}
+//			if (0 < PoisonDamage)
+//			{
+//				statistics[21] += BA.getPoison().TotalDef() ;
+//			}
 			if (effect.equals("Crit"))				// player performed a critical atk (physical or magical)
 			{
 				statistics[12] += 1 ;							// total number of critical hits performed by the player
@@ -1493,26 +1417,96 @@ public class Player extends LiveBeing
 		state = LiveBeingStates.idle ;
 		resetPosition() ;
 	}
-	
-
-	
-	/* Get current state methods 
-	private boolean SpellIsActive(int spellID)
+		
+	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
-		if (spellDurationCounter[spellID] != 0)
+		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
+		spell.activate() ;
+		
+		int spellLevel = spell.getLevel() ;
+		int spellID = spells.indexOf(spell) ;
+		int damage = -1 ;
+		AttackEffects effect = null ;
+		double PhyAtk = BA.TotalPhyAtk() ;
+		double MagAtk = BA.TotalMagAtk() ;
+		double PhyDef = receiver.getBA().TotalPhyDef() ;
+		double MagDef = receiver.getBA().TotalMagDef() ;
+		double AtkDex = BA.TotalDex() ;
+		double DefAgi = receiver.getBA().TotalAgi() ;
+		double AtkCrit = BA.TotalCritAtkChance() ;
+		double DefCrit = receiver.getBA().TotalCritDefChance() ;
+		double receiverElemMod = 1 ;
+		double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
+		double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
+		double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
+		double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
+		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;	// Critical atk modifier
+		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;	// Critical def modifier
+		double BlockDef = receiver.getBA().getStatus().getBlock() ;
+		double BasicAtk = 0 ;
+		double BasicDef = 0 ;
+		String[] AtkElem = new String[] {spell.getElem(), elem[1], elem[4]} ;
+		String[] DefElem = receiver.defElems() ;
+		
+		if (job == 0)
 		{
-			return true ;
+			BasicAtk = PhyAtk ;
+			BasicDef = PhyDef ;
 		}
-		return false ;
+		if (job == 1)
+		{
+			BasicAtk = MagAtk ;
+			BasicDef = MagDef ;
+		}
+		if (job == 2)
+		{
+			double arrowAtk = 0 ;
+			if (arrowIsEquipped())
+			{
+				arrowAtk = Items.ArrowPower[equips[3].getId() - Items.BagIDs[4]][0] ;
+			}
+			if (spellID == 0 | spellID == 3 | spellID == 6 | spellID == 9 | spellID == 12)
+			{
+				BasicAtk = PhyAtk + arrowAtk ;
+				BasicDef = PhyDef ;
+			}
+			if (spellID == 2 | spellID == 5 | spellID == 11)
+			{
+				BasicAtk = (double) ((PhyAtk + MagAtk) / 2.0 + arrowAtk) ;
+				BasicDef = (double) ((PhyDef + MagDef) / 2.0) ;
+			}
+			if (spellID == 14)
+			{
+				BasicAtk = MagAtk + arrowAtk ;
+				BasicDef = MagDef ;
+			}
+		}
+		if (job == 3)
+		{
+			BasicAtk = PhyAtk ;
+			BasicDef = PhyDef ;
+		}
+		if (job == 4)
+		{
+			BasicAtk = PhyAtk ;
+			BasicDef = PhyDef ;
+		}
+		
+		effect = Battle.calcEffect(DexMod[0] + AtkDex*DexMod[1], AgiMod[0] + DefAgi*AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
+		damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
+		
+//		for (int i = 0 ; i <= spell.getBuffs().size() - 1 ; ++i)
+//		{
+//			ApplyBuffsAndNerfs("activate", "buffs", i, spellID, SpellIsActive(spellID)) ;
+//			receiver.ApplyBuffsAndNerfs("activate", "nerfs", i, spell.getLevel(), spell, spell.isActive()) ;
+//		}
+		spell.applyBuffsAndNerfs("activate", receiver) ;
+		
+		System.out.println(damage);
+		return new AtkResults(AtkTypes.magical, effect, damage) ;
+		
 	}
-	private boolean SpellIsReady(int spellID)
-	{
-		if (spellCooldownCounter[spellID] == spells.get(spellID).getCooldown())
-		{
-			return true ;
-		}
-		return false ;
-	}*/
+	
 	public boolean isEquippable(int ItemID)
 	{
 		if ((Items.BagIDs[6] + Items.NumberOfItems[6] / 5 * job) <= ItemID & ItemID <= Items.BagIDs[6] + Items.NumberOfItems[6] / 5 * (job + 1))

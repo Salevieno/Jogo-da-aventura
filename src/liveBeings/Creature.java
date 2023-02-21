@@ -12,6 +12,8 @@ import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import graphics.DrawingOnPanel;
+import main.AtkResults;
+import main.AtkTypes;
 import main.Battle;
 import main.Game;
 import maps.GameMap;
@@ -188,8 +190,12 @@ public class Creature extends LiveBeing
 			//setPos(CurrentPos) ;
 		}
 	}
-	public String chooseTarget()
+	public String chooseTarget(boolean playerIsAlive, boolean petIsAlive)
 	{
+		if (!playerIsAlive & !petIsAlive) { return null ;}		
+		if (!playerIsAlive) { return "pet"  ;}
+		if (!petIsAlive) { return "player" ;}
+
 		if (0.5 <= Math.random()) { return "player" ;}
 		else { return "pet" ;}
 	}
@@ -233,73 +239,38 @@ public class Creature extends LiveBeing
 			setCurrentAction(String.valueOf((int)((spells.size()) * Math.random() - 0.01))) ;
 		}
 	}
-	public int useSpell(int spellID, Player player)
+	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
-		int magicalType = type.getID() % 5 ;
-		int MPCost = 10 ;
-		AttackEffects effect = null ;
+		int spellLevel = spell.getLevel() ;
 		int damage = -1 ;
-		double randomAmp = (double) 0.1 ;
-		BattleAttributes playerBA = player.getBA() ;
-		
-		if (spellID == 0)	// magical atk
-		{
-			effect = Battle.calcEffect(BA.TotalDex(), playerBA.TotalAgi(), BA.TotalCritAtkChance(), playerBA.TotalCritDefChance(), player.getBlock().getBasicAtkChanceBonus()) ;
-			damage = Battle.calcDamage(effect, BA.TotalMagAtk(), playerBA.TotalMagDef(), new String[] {elem[0], "n", "n"}, new String[] {player.getElem()[2], player.getElem()[3]}, 1, randomAmp) ; // player.getElemMult()[UtilS.ElementID(PA.Elem[0])]) ;
-		}
-		// TODO creature spells
-		if (magicalType == 0)
-		{
-			
-		}
-		if (magicalType == 1)
-		{
-			if (spellID == 1)	// heal
-			{
-				PA.getLife().incCurrentValue((int) BA.TotalMagAtk());;
-			}
-			if (spellID == 2)	// knockback
-			{
-				player.setPos(Battle.knockback(player.getPos(), 6 * step, PA)) ;
-			}
-		}
-		if (magicalType == 2)
-		{
-			if (spellID == 1)	// stun
-			{
-				
-			}
-			if (spellID == 2)	// blood
-			{
-				
-			}
-		}
-		if (magicalType == 3)
-		{
-			if (spellID == 1)	// poison
-			{
-				
-			}
-			if (spellID == 2)	// silence
-			{
-				
-			}
-		}
-		if (magicalType == 4)
-		{
-			if (spellID == 1)	// double physical atk
-			{
-				
-			}
-			if (spellID == 2)	// critical magical atk
-			{
-				
-			}
-		}
+		AttackEffects effect = null ;
 
-		PA.getMp().incCurrentValue(-MPCost) ;
+		double MagAtk = BA.TotalMagAtk() ;
+		double MagDef = receiver.getBA().TotalMagDef() ;
+		double AtkDex = BA.TotalDex() ;
+		double DefAgi = receiver.getBA().TotalAgi() ;
+		double AtkCrit = BA.TotalCritAtkChance() ;
+		double DefCrit = receiver.getBA().TotalCritDefChance() ;
+		double receiverElemMod = 1 ;
+		double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
+		double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
+		double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
+		double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
+		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;	// Critical atk modifier
+		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;	// Critical def modifier
+		double BlockDef = receiver.getBA().getStatus().getBlock() ;
+		double BasicAtk = 0 ;
+		double BasicDef = 0 ;
+		String[] AtkElem = new String[] {spell.getElem(), elem[1], elem[4]} ;
+		String[] DefElem = receiver.defElems() ;
 		
-		return damage ;
+		BasicAtk = MagAtk ;
+		BasicDef = MagDef ;
+		
+		effect = Battle.calcEffect(DexMod[0] + AtkDex*DexMod[1], AgiMod[0] + DefAgi*AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
+		damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
+		
+		return new AtkResults(AtkTypes.magical, effect, damage) ;
 	}
 	public void Follow(Point Pos, Point Target, int step, double mindist)
 	{
@@ -366,10 +337,10 @@ public class Creature extends LiveBeing
 		{
 			//Buffs = spells.getBuffs() ;
 		}
-		else if (type.equals("nerfs"))
-		{
-			Buffs = spells.getNerfs() ;
-		}
+//		else if (type.equals("nerfs"))
+//		{
+//			Buffs = spells.getNerfs() ;
+//		}
 		OriginalValue = new double[] {PA.getLife().getMaxValue(), PA.getMp().getMaxValue(), BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(), BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(),
 				BA.getCrit()[0],
 				BA.getStun().getBasicAtkChance(),

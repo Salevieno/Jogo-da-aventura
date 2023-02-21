@@ -9,28 +9,12 @@ public class Buff
 	Map<Attributes, Double> percentIncrease;
 	Map<Attributes, Double> valueIncrease;
 	Map<Attributes, Double> chance;
-//	List<SpecialBattleAttribute> duration;
-	public Buff(Map<Attributes, Double> percentIncrease, Map<Attributes, Double> valueIncrease,
-			Map<Attributes, Double> chance)
+	
+	public Buff(Map<Attributes, Double> percentIncrease, Map<Attributes, Double> valueIncrease, Map<Attributes, Double> chance)
 	{
 		this.percentIncrease = percentIncrease;
 		this.valueIncrease = valueIncrease;
 		this.chance = chance;
-		for (Attributes att : Attributes.values())
-		{
-			percentIncrease.put(att, 0.0);
-			valueIncrease.put(att, 0.0);
-			chance.put(att, 0.0);
-		}
-//		percentIncrease.put(Attributes.life, 0.1);
-//		valueIncrease.put(Attributes.life, 10.0);
-//		chance.put(Attributes.life, 1.0);
-//		percentIncrease.put(Attributes.phyAtk, 0.4);
-//		valueIncrease.put(Attributes.phyAtk, 10.0);
-//		chance.put(Attributes.phyAtk, 1.0);
-//		percentIncrease.put(Attributes.magAtk, 0.4);
-//		valueIncrease.put(Attributes.magAtk, 10.0);
-//		chance.put(Attributes.magAtk, 1.0);
 	}
 	public Map<Attributes, Double> getPercentIncrease()
 	{
@@ -56,6 +40,7 @@ public class Buff
 	{
 		this.chance = chance;
 	}
+	
 	@Override
 	public String toString()
 	{

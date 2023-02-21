@@ -16,9 +16,13 @@ import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
+import main.AtkResults;
+import main.AtkTypes;
+import main.Battle;
 import main.Game;
 import maps.GameMap;
 import utilities.Align;
+import utilities.AttackEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.Scale;
@@ -377,7 +381,41 @@ public class Pet extends LiveBeing
 			PA.Actions[0][2] = 1 ;	// pet can move
 		}*/
 	}
+	
+	public AtkResults useSpell(Spell spell, LiveBeing receiver)
+	{
+		int spellLevel = spell.getLevel() ;
+		int damage = -1 ;
+		AttackEffects effect = null ;
 
+		double MagAtk = BA.TotalMagAtk() ;
+		double MagDef = receiver.getBA().TotalMagDef() ;
+		double AtkDex = BA.TotalDex() ;
+		double DefAgi = receiver.getBA().TotalAgi() ;
+		double AtkCrit = BA.TotalCritAtkChance() ;
+		double DefCrit = receiver.getBA().TotalCritDefChance() ;
+		double receiverElemMod = 1 ;
+		double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
+		double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
+		double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
+		double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
+		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;	// Critical atk modifier
+		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;	// Critical def modifier
+		double BlockDef = receiver.getBA().getStatus().getBlock() ;
+		double BasicAtk = 0 ;
+		double BasicDef = 0 ;
+		String[] AtkElem = new String[] {spell.getElem(), elem[1], elem[4]} ;
+		String[] DefElem = receiver.defElems() ;
+		
+		BasicAtk = MagAtk ;
+		BasicDef = MagDef ;
+		
+		effect = Battle.calcEffect(DexMod[0] + AtkDex*DexMod[1], AgiMod[0] + DefAgi*AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
+		damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
+		
+		return new AtkResults(AtkTypes.magical, effect, damage) ;
+	}
+	
 	public void TakeBloodAndPoisonDamage(Creature creature)
 	{
 		int BloodDamage = 0 ;

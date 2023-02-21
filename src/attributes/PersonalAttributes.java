@@ -32,6 +32,19 @@ public class PersonalAttributes
 	public void setSatiation(BasicAttribute newValue) {Satiation = newValue ;}
 	public void setThirst(BasicAttribute newValue) {Thirst = newValue ;}
 
+	public BasicAttribute mapAttributes(Attributes att)
+	{
+		switch (att)
+		{
+			case life: return Life ;
+			case mp: return Mp ;
+			case exp: return Exp ;
+			case satiation: return Satiation ;
+			case thirst: return Thirst ;
+			
+			default: return null ;
+		}
+	}
 	
 	public Directions randomDir()
 	{
@@ -59,22 +72,4 @@ public class PersonalAttributes
 		return "PersonalAttributes [Life=" + Life + ", Mp=" + Mp + ", Exp=" + Exp + ", Satiation=" + Satiation
 				+ ", Thirst=" + Thirst + "]";
 	}
-	
-	/*public void incLife(int amount)
-	{
-		Life[0] = Math.max(0, Math.min(Life[0] + amount, Life[1])) ;	
-	}
-	public void incMP(int amount)
-	{
-		Mp[0] = Math.max(0, Math.min(Mp[0] + amount, Mp[1])) ;	
-	}
-	public void incSatiation(int amount)
-	{
-		Satiation[0] = Math.max(0, Math.min(Satiation[0] + amount, Satiation[1])) ;	
-	}
-	public void incThirst(int amount)
-	{
-		Thirst[0] = Math.max(0, Math.min(Thirst[0] + amount, Thirst[1])) ;	
-	}*/
-
 }

@@ -25,6 +25,7 @@ import javax.swing.JPanel ;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
@@ -54,6 +55,7 @@ import items.PetItem;
 import items.Potion;
 import items.QuestItem;
 import items.Recipe;
+import liveBeings.Buff;
 import liveBeings.Creature;
 import liveBeings.CreatureTypes;
 import liveBeings.LiveBeingStates;
@@ -578,45 +580,46 @@ public class Game extends JPanel
  	
     private SpellType[] initializeSpellTypes(Languages language)
     {
-    	int NumberOfAtt = 14 ;
-    	int NumberOfBuffs = 12 ;
     	List<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;	
     	SpellType[] allSpellTypes = new SpellType[spellTypesInput.size()] ;
-    	
-    	
     	List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
-    	List<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
-		double[][][] spellBuffs = new double[allSpellTypes.length][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
-		double[][][] spellNerfs = new double[allSpellTypes.length][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
+//    	List<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
+
 		String[][] spellsInfo = new String[allSpellTypes.length][2] ;
 		for (int i = 0 ; i <= allSpellTypes.length - 1 ; i += 1)
 		{
 			int ID = i ;
-			int BuffCont = 0, NerfCont = 0 ;
-			for (int j = 0 ; j <= NumberOfAtt - 1 ; j += 1)
+			
+			Map<Attributes, Double> percentIncrease = new HashMap<>() ;
+			Map<Attributes, Double> valueIncrease = new HashMap<>() ;
+			Map<Attributes, Double> chance = new HashMap<>() ;
+			int BuffCont = 0 ;
+			String[] spellsBuffsInp = spellsBuffsInput.get(ID) ;
+			for (Attributes att : Attributes.values())
 			{
-				if (j == 11 | j == 12)
+				if (att.equals(Attributes.exp) | att.equals(Attributes.satiation) | att.equals(Attributes.thirst))
 				{
-					for (int k = 0 ; k <= NumberOfBuffs - 1 ; k += 1)
-					{
-						spellBuffs[i][j][k] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
-						spellNerfs[i][j][k] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
-						NerfCont += 1 ;
-						BuffCont += 1 ;
-					}
+					continue ;
+				}
+				if (att.equals(Attributes.blood) | att.equals(Attributes.poison))
+				{
+					// TODO ajustar o csv e fazer a leitura correta
+					percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
+					valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
+					chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
+					BuffCont += 12 ;
 				}
 				else
 				{
-					spellBuffs[i][j][0] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
-					spellBuffs[i][j][1] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 4]) ;
-					spellBuffs[i][j][2] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 5]) ;
-					spellNerfs[i][j][0] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
-					spellNerfs[i][j][1] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 4]) ;
-					spellNerfs[i][j][2] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 5]) ;
-					NerfCont += 3 ;
+					percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
+					valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
+					chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
 					BuffCont += 3 ;
 				}
 			}
+			List<Buff> buffs = new ArrayList<>() ;
+			buffs.add(new Buff(percentIncrease, valueIncrease, chance)) ;
+
 			spellsInfo[i] = new String[] {spellTypesInput.get(ID)[42], spellTypesInput.get(ID)[43 + 2 * language.ordinal()]} ;
 			String Name = spellTypesInput.get(ID)[4] ;
 			int MaxLevel = Integer.parseInt(spellTypesInput.get(ID)[5]) ;
@@ -644,7 +647,8 @@ public class Game extends JPanel
 			double[] Poison = new double[] {Double.parseDouble(spellTypesInput.get(ID)[35]), Double.parseDouble(spellTypesInput.get(ID)[36]), Double.parseDouble(spellTypesInput.get(ID)[37])} ;
 			double[] Silence = new double[] {Double.parseDouble(spellTypesInput.get(ID)[38]), Double.parseDouble(spellTypesInput.get(ID)[39]), Double.parseDouble(spellTypesInput.get(ID)[40])} ;
 			String Elem = spellTypesInput.get(ID)[41] ;
-			allSpellTypes[i] = new SpellType(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, spellBuffs[i], spellNerfs[i],
+			
+			allSpellTypes[i] = new SpellType(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, buffs,
 					Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i]) ;
 		}
 		return allSpellTypes ;
@@ -1051,8 +1055,10 @@ public class Game extends JPanel
     	player.getLife().incCurrentValue(-10);
     	//System.out.println("player life = " + player.getLife().getCurrentValue());
 		//System.out.println("player PA = " + player.getPA());
-    	player.getSpells().get(10).incLevel(1) ;
-    	player.getSpells().get(11).incLevel(1) ;
+    	for (int i = 0 ; i <= Player.NumberOfSpellsPerJob[player.getJob()] - 1 ; i += 1)
+    	{
+        	player.getSpells().get(i).incLevel(1) ;
+    	}
 
     	//System.out.println("player spells = " + player.getSpell());
     	//player.getSpell().add(new Spell(allSpellTypes[0])) ;

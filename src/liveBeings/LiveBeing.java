@@ -16,6 +16,7 @@ import components.SpellTypes;
 import graphics.DrawingOnPanel;
 import main.AtkResults;
 import main.AtkTypes;
+import main.Battle;
 import main.Game;
 import maps.GameMap;
 import utilities.Align;
@@ -26,7 +27,7 @@ import utilities.UtilG;
 import utilities.UtilS;
 import windows.PlayerAttributesWindow;
 
-public class LiveBeing
+public abstract class LiveBeing
 {
 	protected String name ;
 	protected int job ;
@@ -297,31 +298,8 @@ public class LiveBeing
 //			DP.DrawDamageAnimation(pos, atkResults, displayDamage, animationStyle, Game.ColorPalette[6]) ;
 //		}
 //	}
-	
-	public void applyBuff(boolean activate, Buff buff, int level)
-	{
-		int mult = 1 ;
-		if (!activate)
-		{
-			mult = -1 ;
-		}
-		Map<Attributes, Double> percIncrease = buff.getPercentIncrease() ;
-		Map<Attributes, Double> valueIncrease = buff.getValueIncrease() ;
-		double increment = PA.getLife().getMaxValue() * percIncrease.get(Attributes.life) + valueIncrease.get(Attributes.life) ;
-		PA.getLife().incCurrentValue((int) Math.round(increment * level * mult));
-		increment = BA.getPhyAtk().getBaseValue() * percIncrease.get(Attributes.phyAtk) + valueIncrease.get(Attributes.phyAtk) ;
-		BA.getPhyAtk().incBonus(increment * level * mult);
-		increment = BA.getMagAtk().getBaseValue() * percIncrease.get(Attributes.magAtk) + valueIncrease.get(Attributes.magAtk) ;
-		BA.getMagAtk().incBonus(increment * level * mult);
-	}
-	public AtkResults useSpell(Spell spell)
-	{
-		AtkResults atkResults = new AtkResults() ;
-		int damage = 0 ;
-		if (spell.getName().equals("Chama")) { damage = 5; }
 		
-		return new AtkResults(AtkTypes.magical, AttackEffects.hit, damage) ;
-	}
+	public abstract AtkResults useSpell(Spell spell, LiveBeing receiver) ;
 	
 	public void ActivateDef()
 	{
