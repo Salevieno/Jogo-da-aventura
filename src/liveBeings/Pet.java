@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
@@ -242,7 +243,7 @@ public class Pet extends LiveBeing
 	public Color getColor() {return color ;}
 	public int getJob() {return Job ;}
 	public MovingAnimations getMovingAnimations() {return movingAni ;}
-	public ArrayList<Spell> getSpells() {return spells ;}
+	public List<Spell> getSpells() {return spells ;}
 	public int getSpellPoints() {return spellPoints ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
 	public BasicAttribute getMp() {return PA.getMp() ;}
@@ -336,10 +337,14 @@ public class Pet extends LiveBeing
 	{
 		return UtilG.dist(pos, playerPos) <= 40 ;
 	}
-	public void Move(Point playerPos, GameMap playerMap, String playerElem)
+	public void Move(Point playerPos, GameMap playerMap, Creature opponent, String playerElem)
 	{
 		Point nextPos ;
-		if (closeToPlayer(playerPos))
+		if (opponent != null)
+		{
+			nextPos = Follow(pos, opponent.getPos(), step, step) ;
+		}
+		else if (closeToPlayer(playerPos))
 		{
 			if (Math.random() <= 0.2)
 			{

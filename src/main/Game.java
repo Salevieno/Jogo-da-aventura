@@ -16,8 +16,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.sound.sampled.Clip;
 import javax.swing.JPanel ;
@@ -350,13 +352,20 @@ public class Game extends JPanel
 			LiveBeingStatus status = new LiveBeingStatus() ;
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, status) ;
 						
-			ArrayList<Spell> spell = new ArrayList<>() ;
+			List<Spell> spell = new ArrayList<>() ;
 			spell.add(new Spell(allSpellTypes[0])) ;
 			spell.add(new Spell(allSpellTypes[1])) ;
 			spell.add(new Spell(allSpellTypes[2])) ;
 			spell.add(new Spell(allSpellTypes[3])) ;
 			spell.add(new Spell(allSpellTypes[4])) ;
-			int[] Bag = new int[] {Integer.parseInt(input.get(ct)[37]), Integer.parseInt(input.get(ct)[38]), Integer.parseInt(input.get(ct)[39]), Integer.parseInt(input.get(ct)[40]), Integer.parseInt(input.get(ct)[41]), Integer.parseInt(input.get(ct)[42]), Integer.parseInt(input.get(ct)[43]), Integer.parseInt(input.get(ct)[44]), Integer.parseInt(input.get(ct)[45]), Integer.parseInt(input.get(ct)[46])} ;
+			
+			Set<Item> Bag = new HashSet<>() ;
+			for (int i = 0 ; i <= 10 - 1; i += 1)
+			{
+				int itemID = Integer.parseInt(input.get(ct)[37 + i]) ;
+				if (-1 < itemID) { Bag.add(allItems[itemID]) ;}
+			}
+
 			int Gold = Integer.parseInt(input.get(ct)[47]) ;
 			int[] StatusCounter = new int[8] ;
 
@@ -834,8 +843,7 @@ public class Game extends JPanel
 		}*/
 	}
 	
-	
-	
+		
 	private void runGame(DrawingOnPanel DP)
 	{
 		// increment and activate counters
@@ -889,7 +897,8 @@ public class Game extends JPanel
 			player.move(pet) ;
 			if (player.isDoneMoving())
 			{
-				player.setState(LiveBeingStates.idle) ;
+				if (player.getOpponent() == null) { player.setState(LiveBeingStates.idle) ;}
+				else { player.setState(LiveBeingStates.fighting) ;};
 			}
 		}
 		player.DrawAttributes(0, DP) ;
@@ -907,7 +916,7 @@ public class Game extends JPanel
 			if (pet.isAlive())
 			{
 				pet.updateCombo() ;
-				pet.Move(player.getPos(), player.getMap(), player.getElem()[4]) ;
+				pet.Move(player.getPos(), player.getMap(), player.getOpponent(), player.getElem()[4]) ;
 				pet.display(pet.getPos(), new Scale(1, 1), DP) ;
 				pet.DrawAttributes(0, DP) ;
 			}
@@ -974,32 +983,7 @@ public class Game extends JPanel
 
     	for (int i = 0 ; i <= ani.length - 1 ; i += 1) { ani[i].run(i, DP) ;}
 	}
-	
-	
-	
-	/*private void battleSimulation()
-	{
-    	GameLanguage = "P" ;
-		AllText = Utg.ReadTextFile(GameLanguage) ;
-		AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
-    	PlayerName = "" ;
-    	PlayerJob = 1 ;
-    	PlayerSex = "N" ;
-    	MainInitialization() ;
-    	OpeningIsOn = false ;
-    	RunGame = true ;
-		//player.PrintAllAttributes();
-		player.CreatureInBattle = 85;
-		//creatureTypes[creature[player.CreatureInBattle].getType()].printAtt() ;
-		player.setPos(creature[player.CreatureInBattle].getPos()) ;
-		player.setPos(new int[] {player.getPos()[0] + 20, player.getPos()[1] + 15});
-		//player.getBA().setStun(new double[] {1, 0, 0, 0, 500});
-		player.getEquips()[0] = 301 ;
-		player.getEquips()[1] = 302 ;
-		player.getEquips()[2] = 303 ;
-		player.setCurrentAction("Fighting");
-	}*/
-	
+			
 	private void testingInitialization()
 	{
 		// Quick start
@@ -1021,9 +1005,9 @@ public class Game extends JPanel
     	screen.setBorders(new int[] {0, sky.height, screen.getSize().width, screen.getSize().height});
     	screen.setMapCenter() ;
     	allSpellTypes = initializeSpellTypes(GameLanguage) ;
+		allItems = initializeAllItems() ;
 		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
 		initializeIcons(screen.getSize()) ;
-		allItems = initializeAllItems() ;
 		//allRecipes = LoadCraftingRecipes() ;
 		NPCTypes = initializeNPCTypes(GameLanguage) ;
 		buildingTypes = initializeBuildingTypes() ;
@@ -1044,12 +1028,20 @@ public class Game extends JPanel
     	
     	player.InitializeSpells() ;
     	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
-    	player.setMap(fieldMaps[9]) ;
+    	player.setMap(cityMaps[1]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
-    	for (int i = 0; i <= 20 - 1; i += 1)
-    	{
-    		player.getBag().Add(Potion.getAll()[i], 3) ;
-    	}
+//    	player.getBag().Add(Potion.getAll()[0], 3) ;
+//    	player.getBag().Add(Potion.getAll()[0], 2) ;
+//    	player.getBag().Add(Potion.getAll()[1], 2) ;
+//    	player.getBag().Add(Potion.getAll()[2], 2) ;
+//    	player.getBag().Add(Alchemy.getAll()[0], 2) ;
+//    	player.getBag().Add(Alchemy.getAll()[2], 2) ;
+//    	player.getBag().Add(Forge.getAll()[2], 3) ;
+//    	System.out.println(player.getBag().numberItems);
+//    	for (int i = 0; i <= 20 - 1; i += 1)
+//    	{
+//    		player.getBag().Add(Potion.getAll()[i], 3) ;
+//    	}
     	//player.getPA().setExp(new BasicAttribute(50, 50, 1)) ;	// level up
     	//System.out.println("player life = " + player.getLife().getCurrentValue());
     	player.getLife().incCurrentValue(-10);
@@ -1128,6 +1120,30 @@ public class Game extends JPanel
 //		CW.display(mousePos, DP) ;
 	}
 	
+
+	
+	/*private void battleSimulation()
+	{
+    	GameLanguage = "P" ;
+		AllText = Utg.ReadTextFile(GameLanguage) ;
+		AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
+    	PlayerName = "" ;
+    	PlayerJob = 1 ;
+    	PlayerSex = "N" ;
+    	MainInitialization() ;
+    	OpeningIsOn = false ;
+    	RunGame = true ;
+		//player.PrintAllAttributes();
+		player.CreatureInBattle = 85;
+		//creatureTypes[creature[player.CreatureInBattle].getType()].printAtt() ;
+		player.setPos(creature[player.CreatureInBattle].getPos()) ;
+		player.setPos(new int[] {player.getPos()[0] + 20, player.getPos()[1] + 15});
+		//player.getBA().setStun(new double[] {1, 0, 0, 0, 500});
+		player.getEquips()[0] = 301 ;
+		player.getEquips()[1] = 302 ;
+		player.getEquips()[2] = 303 ;
+		player.setCurrentAction("Fighting");
+	}*/
 	
 	@Override
 	protected void paintComponent(Graphics g)

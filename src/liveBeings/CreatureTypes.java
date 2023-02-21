@@ -2,20 +2,16 @@ package liveBeings ;
 
 import java.awt.Color ;
 import java.awt.Dimension;
-import java.awt.Image ;
 import java.awt.Point;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
-import maps.GameMap;
+import items.Item;
 import utilities.Align;
-import utilities.Directions;
 import utilities.Scale;
-import utilities.TimeCounter;
 
 public class CreatureTypes 
 {
@@ -36,8 +32,8 @@ public class CreatureTypes
 	protected MovingAnimations movingAni ;
 	protected PersonalAttributes PA ;
 	protected BattleAttributes BA ;
-	private ArrayList<Spell> spell ;
-	private int[] Bag ;
+	private List<Spell> spell ;
+	private Set<Item> Bag ;
 	private int Gold ;
 	private Color color ;
 	private int[] StatusCounter ;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]	
@@ -60,8 +56,8 @@ public class CreatureTypes
 			MovingAnimations movingAni,
 			PersonalAttributes PA,
 			BattleAttributes BA,
-			ArrayList<Spell> spell,
-			int[] Bag,
+			List<Spell> spell,
+			Set<Item> Bag,
 			int Gold,
 			Color color,
 			int[] StatusCounter)
@@ -95,14 +91,14 @@ public class CreatureTypes
 	public MovingAnimations getMovingAnimations() {return movingAni ;}
 	public PersonalAttributes getPA() {return PA ;}
 	public BattleAttributes getBA() {return BA ;}
-	public ArrayList<Spell> getSpell() {return spell ;}
-	public int[] getBag() {return Bag ;}
+	public List<Spell> getSpell() {return spell ;}
+	public Set<Item> getBag() {return Bag ;}
 	public int getGold() {return Gold ;}
 	public Color getColor() {return color ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public void setID(int I) {id = I ;}
-	public void setSpell(ArrayList<Spell> S) {spell = S ;}
-	public void setBag(int[] B) {Bag = B ;}
+	public void setSpell(List<Spell> S) {spell = S ;}
+	public void setBag(Set<Item> B) {Bag = B ;}
 	public void setGold(int G) {Gold = G ;}
 	public void setColor(Color C) {color = C ;}
 	public void setStatusCounter(int[] S) {StatusCounter = S ;}

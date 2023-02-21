@@ -2,16 +2,17 @@ package liveBeings ;
 
 import java.awt.Color ;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
-import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import graphics.DrawingOnPanel;
+import items.Item;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
@@ -29,7 +30,7 @@ import windows.PlayerAttributesWindow;
 public class Creature extends LiveBeing
 {
 	private CreatureTypes type ;
-	private int[] Bag ;
+	private Set<Item> Bag ;
 	private int Gold ;
 	private Color color ;
 	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
@@ -90,7 +91,7 @@ public class Creature extends LiveBeing
 	}
 
 	public CreatureTypes getType() {return type ;}
-	public ArrayList<Spell> getSpell() {return spells ;}
+	public List<Spell> getSpell() {return spells ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
 	public BasicAttribute getMp() {return PA.getMp() ;}
 	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
@@ -106,7 +107,7 @@ public class Creature extends LiveBeing
 	public BattleSpecialAttributeWithDamage getPoison() {return BA.getPoison() ;}
 	public BattleSpecialAttribute getSilence() {return BA.getSilence() ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
-	public int[] getBag() {return Bag ;}
+	public Set<Item> getBag() {return Bag ;}
 	public int getGold() {return Gold ;}
 	public Color getColor() {return color ;}
 	//public int[][] getActions() {return PA.Actions ;}

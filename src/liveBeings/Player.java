@@ -184,14 +184,11 @@ public class Player extends LiveBeing
 
 		//Bag = new int[Items.NumberOfAllItems] ;
 		questWindow = new QuestWindow() ;
-		bag = new BagWindow(new HashMap<Potion, Integer>(), new HashMap<Alchemy, Integer>(), new ArrayList<Forge>(), new ArrayList<PetItem>(), new ArrayList<Food>(),
-				new ArrayList<Arrow>(), new ArrayList<Equip>(), new ArrayList<GeneralItem>(), new ArrayList<Fab>(), new ArrayList<QuestItem>()) ;
+		bag = new BagWindow(new HashMap<Potion, Integer>(), new HashMap<Alchemy, Integer>(), new HashMap<Forge, Integer>(), new HashMap<PetItem, Integer>(), new HashMap<Food, Integer>(),
+				new HashMap<Arrow, Integer>(), new HashMap<Equip, Integer>(), new HashMap<GeneralItem, Integer>(), new HashMap<Fab, Integer>(), new HashMap<QuestItem, Integer>()) ;
 		if (job == 2)
 		{
-			for (int i = 0; i <= 100 - 1; i += 1)
-			{
-				bag.getArrow().add(Arrow.getAll()[0]) ;	// TODO how to add multiple items at the same time?
-			}
+			bag.Add(Arrow.getAll()[0], 100) ;
 		}
 		quest = new ArrayList<>() ;
 		knownRecipes = new ArrayList<>() ;
@@ -306,7 +303,7 @@ public class Player extends LiveBeing
 		String[][] spellsInfo = new String[NumberOfSpells][2] ;
 		*/
 
-    	System.out.println(new Spell(allSpellTypes[45]));
+
     	for (int i = 0 ; i <= NumberOfSpells - 1 ; i += 1)
 		{
 			/*int ID = i + Player.CumNumberOfSpellsPerJob[job] ;
@@ -471,23 +468,23 @@ public class Player extends LiveBeing
     }
 	public void useItem(Item item)
 	{
-		if (item != null)	// if the item is valid
+		// TODO use all items
+		if (item == null) { return ;}
+
+		System.out.println("player used " + item.getName());
+		if (item instanceof Potion)	// potions
 		{
-			if (item instanceof Potion)	// potions
+			Potion pot = (Potion) item ;
+			double PotMult = 1 ;
+			if (getJob() == 3)
 			{
-				Potion pot = (Potion) item ;
-				System.out.println("player used " + pot.getName() + " selected item is " + item.getName());
-				double PotMult = 1 ;
-				if (getJob() == 3)
-				{
-					PotMult += 0.06 * spells.get(7).getLevel() ;
-				}
-				
-				PA.getLife().incCurrentValue((int) (pot.getLifeHeal() * PA.getLife().getMaxValue() * PotMult)); ;
-				PA.getMp().incCurrentValue((int) (pot.getMPHeal() * PA.getMp().getMaxValue() * PotMult)); ;
-				
-				bag.Remove(pot, 1);				
+				PotMult += 0.06 * spells.get(7).getLevel() ;
 			}
+			
+			PA.getLife().incCurrentValue((int) (pot.getLifeHeal() * PA.getLife().getMaxValue() * PotMult)); ;
+			PA.getMp().incCurrentValue((int) (pot.getMPHeal() * PA.getMp().getMaxValue() * PotMult)); ;
+			
+			bag.Remove(pot, 1);				
 		}
 	}	
 	private boolean actionIsAMove()
@@ -567,9 +564,9 @@ public class Player extends LiveBeing
 	
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}	
 	
-	public void engageInFight(Creature opponent)
+	public void engageInFight(Creature Opponent)
 	{
-		opponent = closestCreature ;
+		opponent = Opponent ;
 		opponent.setFollow(true) ;
 		setState(LiveBeingStates.fighting) ;
 	}
@@ -664,16 +661,16 @@ public class Player extends LiveBeing
 					getStats()[1] += 1 ;	// Number of mag atks
 				}
 			}
-			else
+			else if (closestCreature != null & !isInBattle())
 			{
-				engageInFight(opponent) ;
+				engageInFight(closestCreature) ;
 			}
 		}
 		
 		// if hits creature, enters battle
 		if (actionIsAtk() & closestCreature != null & !isInBattle())
 		{
-			engageInFight(opponent) ;
+			engageInFight(closestCreature) ;
 		}
 
 		// navigating through open windows
@@ -1017,17 +1014,20 @@ public class Player extends LiveBeing
 	}
 	private int StealItem(Creature creature, Items[] items, int spellLevel)
 	{	
-		int ID = (int)(UtilG.ArrayWithValuesGreaterThan(creature.getBag(), -1).length*Math.random() - 0.01) ;
-		int StolenItemID = -1 ;
-		if(-1 < creature.getBag()[ID])
-		{
-			if(Math.random() <= 0.01*items[creature.getBag()[ID]].getDropChance() + 0.01*spellLevel)
-			{
-				//Bag[creature.getBag()[ID]] += 1 ;
-				StolenItemID = items[creature.getBag()[ID]].getID() ;
-			}
-		}
-		return StolenItemID ;
+		// TODO steal item
+//		int ID = (int)(UtilG.ArrayWithValuesGreaterThan(creature.getBag(), -1).length*Math.random() - 0.01) ;
+//		int StolenItemID = -1 ;
+//		if(-1 < creature.getBag()[ID])
+//		{
+//			if(Math.random() <= 0.01*items[creature.getBag()[ID]].getDropChance() + 0.01*spellLevel)
+//			{
+//				//Bag[creature.getBag()[ID]] += 1 ;
+//				StolenItemID = items[creature.getBag()[ID]].getID() ;
+//			}
+//		}
+//		return StolenItemID ;
+		
+		return 0 ;
 	}
 	private void UseSupportSpell(Pet pet, Spell spell)
 	{	
@@ -1207,72 +1207,76 @@ public class Player extends LiveBeing
 		// TODO HighestPlayerInflictedDamage = Math.max(HighestPlayerInflictedDamage, PlayerAtkResult[0]) ;
 		int damage = (int) playerAtkResult.getDamage() ;
 		AttackEffects effect = (AttackEffects) playerAtkResult.getEffect() ;
-		if (currentAction != null)				// player has performed an action
+		
+		if (currentAction == null) { return ;}
+		
+		if (0 <= damage)							// player inflicted damage
+		{	
+			if (actionIsSpell())					// player performed a magical atk
+			{
+				statistics[1] += 1 ;							// Total number of magical atks (spells) performed by the player
+				statistics[5] += damage ;					// Total magical damage inflicted by the player
+			}
+			else									// player performed a physical atk
+			{
+				statistics[0] += 1 ;							// Total number of physical atks performed by the player
+				statistics[3] += damage ;					// Total physical damage inflicted by the player
+			}
+		}
+		
+		if (currentAction.equals(Player.ActionKeys[3]))	// player defended
 		{
-			if (0 <= damage)							// player inflicted damage
-			{	
-				if (actionIsSpell())					// player performed a magical atk
-				{
-					statistics[1] += 1 ;							// Total number of magical atks (spells) performed by the player
-					statistics[5] += damage ;					// Total magical damage inflicted by the player
-				}
-				else									// player performed a physical atk
-				{
-					statistics[0] += 1 ;							// Total number of physical atks performed by the player
-					statistics[3] += damage ;					// Total physical damage inflicted by the player
-				}
-			}		
-			if (effect.equals(AttackEffects.hit))							// player performed a successful hit
-			{
-				// TODO verificar lógica
-				statistics[9] += 1 ;								// total number of successful hits performed by the player
-				// for the status, dividing the duration of the status by the duration applied to get the number of times the status was applied
-//				if (0 < BA.getStun().getDuration())
-//				{
-//					statistics[14] += creature.getBA().getSpecialStatus()[0] / BA.getStun().getDuration() ;	// total number of stun inflicted by the player
-//				}
-//				if (0 < BA.getBlock().getDuration())
-//				{
-//					statistics[15] += creature.getBA().getSpecialStatus()[1] / BA.getBlock().getDuration() ;	// total number of block performed by the player
-//				}
-//				if (0 < BA.getBlood().getDuration())
-//				{
-//					statistics[16] += creature.getBA().getSpecialStatus()[2] / BA.getBlood().getDuration() ;	// total number of blood inflicted by the player
-//					if (0 < creature.getBA().getSpecialStatus()[2])
-//					{
-//						statistics[17] += 1 ;	// total number of blood inflicted by the player
-//					}
-//				}
-//				if (0 < BA.getPoison().getDuration())
-//				{
-//					statistics[19] += creature.getBA().getSpecialStatus()[3] / BA.getPoison().getDuration() ;	// total number of poison inflicted by the player
-//					if (0 < creature.getBA().getSpecialStatus()[3])
-//					{
-//						statistics[20] += 1 ;	// total number of blood inflicted by the player
-//					}
-//				}
-//				if (0 < BA.getSilence().getDuration())
-//				{
-//					statistics[22] += creature.getBA().getSpecialStatus()[4] / BA.getSilence().getDuration() ;	// total number of silence inflicted by the player
-//				}
-			}
-//			if (0 < BloodDamage)
+			statistics[2] += 1 ;								// Number of defenses performed by the player
+		}
+		
+		if (effect == null) { return ;}
+		
+		if (effect.equals(AttackEffects.hit))							// player performed a successful hit
+		{
+			// TODO verificar lógica
+			statistics[9] += 1 ;								// total number of successful hits performed by the player
+			// for the status, dividing the duration of the status by the duration applied to get the number of times the status was applied
+//			if (0 < BA.getStun().getDuration())
 //			{
-//				statistics[18] += BA.getBlood().TotalDef() ;
+//				statistics[14] += creature.getBA().getSpecialStatus()[0] / BA.getStun().getDuration() ;	// total number of stun inflicted by the player
 //			}
-//			if (0 < PoisonDamage)
+//			if (0 < BA.getBlock().getDuration())
 //			{
-//				statistics[21] += BA.getPoison().TotalDef() ;
+//				statistics[15] += creature.getBA().getSpecialStatus()[1] / BA.getBlock().getDuration() ;	// total number of block performed by the player
 //			}
-			if (effect.equals("Crit"))				// player performed a critical atk (physical or magical)
-			{
-				statistics[12] += 1 ;							// total number of critical hits performed by the player
-				statistics[13] += damage ;						// total critical damage (physical + magical) performed by the player
-			}
-			if (currentAction.equals(Player.ActionKeys[3]))	// player defended
-			{
-				statistics[2] += 1 ;								// Number of defenses performed by the player
-			}
+//			if (0 < BA.getBlood().getDuration())
+//			{
+//				statistics[16] += creature.getBA().getSpecialStatus()[2] / BA.getBlood().getDuration() ;	// total number of blood inflicted by the player
+//				if (0 < creature.getBA().getSpecialStatus()[2])
+//				{
+//					statistics[17] += 1 ;	// total number of blood inflicted by the player
+//				}
+//			}
+//			if (0 < BA.getPoison().getDuration())
+//			{
+//				statistics[19] += creature.getBA().getSpecialStatus()[3] / BA.getPoison().getDuration() ;	// total number of poison inflicted by the player
+//				if (0 < creature.getBA().getSpecialStatus()[3])
+//				{
+//					statistics[20] += 1 ;	// total number of blood inflicted by the player
+//				}
+//			}
+//			if (0 < BA.getSilence().getDuration())
+//			{
+//				statistics[22] += creature.getBA().getSpecialStatus()[4] / BA.getSilence().getDuration() ;	// total number of silence inflicted by the player
+//			}
+		}
+//		if (0 < BloodDamage)
+//		{
+//			statistics[18] += BA.getBlood().TotalDef() ;
+//		}
+//		if (0 < PoisonDamage)
+//		{
+//			statistics[21] += BA.getPoison().TotalDef() ;
+//		}
+		if (effect.equals(AttackEffects.crit))				// player performed a critical atk (physical or magical)
+		{
+			statistics[12] += 1 ;							// total number of critical hits performed by the player
+			statistics[13] += damage ;						// total critical damage (physical + magical) performed by the player
 		}
 	}
 	public void updatedefensiveStats(int damage, AttackEffects effect, boolean creaturePhyAtk, Creature creature)
@@ -1331,22 +1335,20 @@ public class Player extends LiveBeing
 	}
 	public void Win(Creature creature, Quests[] quest, Animations winAnimation)
 	{		
-		ArrayList<String> GetItemsObtained = new ArrayList<String>(Arrays.asList(new String[0])) ;		
-		for (int i = 0 ; i <= 9 ; ++i)
+		List<String> GetItemsObtained = new ArrayList<>() ;
+		for (Item item : creature.getBag())
 		{
-			if(-1 < creature.getBag()[i])
+			if (Math.random() <= 0.01 * item.getDropChance())
 			{
-				/*if(Math.random() <= 0.01*tems[creature.getBag()[i]].getDropChance())
-				{
-					//Bag[creature.getBag()[i]] += 1 ;	
-					GetItemsObtained.add(items[creature.getBag()[i]].getName()) ;
-				}*/
+				GetItemsObtained.add(item.getName()) ;
+				bag.Add(item, 1) ;				
 			}
-		}
-		String[] ItemsObtained = new String[GetItemsObtained.size()] ;
-		ItemsObtained = GetItemsObtained.toArray(ItemsObtained) ;
+		}		
+		
 		gold[0] += creature.getGold()*UtilG.RandomMult( (double) (0.1 * goldMultiplier)) ;
-		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier()))  ;
+		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())) ;
+		
+		// TODO check quests at win
 		if (GetActiveQuests() != null)
 		{
 			for (int q = 0 ; q <= GetActiveQuests().size() - 1 ; q += 1)
@@ -1354,6 +1356,8 @@ public class Player extends LiveBeing
 				quest[GetActiveQuests().get(q)].IncReqCreaturesCounter(creature.getType()) ;
 			}
 		}
+		
+		String[] ItemsObtained = GetItemsObtained.toArray(new String[] {}) ;
 		winAnimation.start(new Object[] {100, ItemsObtained, color}) ;
 	}
 	public void checkLevelUp(Animations ani)
@@ -1502,7 +1506,6 @@ public class Player extends LiveBeing
 //		}
 		spell.applyBuffsAndNerfs("activate", receiver) ;
 		
-		System.out.println(damage);
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 		
 	}

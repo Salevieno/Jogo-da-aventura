@@ -13,7 +13,7 @@ public class GameWindow
 	protected int tab ;
 	protected int numberTabs ;
 	protected int item ;
-	protected int numberItems ;
+	public int numberItems ;
 	protected int window ;
 	protected int numberWindows ;
 	protected Dimension size ;

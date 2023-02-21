@@ -508,7 +508,7 @@ public class DrawingOnPanel
 			}
 		}		
 
-		Font font = new Font(Game.MainFontName, Font.BOLD, 18) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 16) ;
 		double rate = Math.pow(counter.rate(), 0.6) ;
 		Point[] movement = new Point[] {
 				new Point(0, (int) (-20 * rate)),

@@ -7,16 +7,13 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import attributes.Attributes;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import components.SpellTypes;
 import graphics.DrawingOnPanel;
 import main.AtkResults;
 import main.AtkTypes;
-import main.Battle;
 import main.Game;
 import maps.GameMap;
 import utilities.Align;
@@ -49,8 +46,8 @@ public abstract class LiveBeing
 	protected TimeCounter displayDamage ;
 	protected int stepCounter ;					// counts the steps in the movement	TODO -> TimeCounter ? (n�o � tempo, � step)
 	protected String currentAction ;
-	protected ArrayList<String> combo ;			// record of the last 10 movements
-	protected ArrayList<Spell> spells ;
+	protected List<String> combo ;			// record of the last 10 movements
+	protected List<Spell> spells ;
 	
 	protected PersonalAttributes PA ;		// Personal attributes
 	protected BattleAttributes BA ;			// Battle attributes
@@ -131,8 +128,8 @@ public abstract class LiveBeing
 	public TimeCounter getBattleActionCounter() {return battleActionCounter ;}
 	public TimeCounter getDisplayDamage() {return displayDamage ;}
 	public int getStepCounter() {return stepCounter ;}
-	public ArrayList<String> getCombo() {return combo ;}
-	public ArrayList<Spell> getSpells() {return spells ;}
+	public List<String> getCombo() {return combo ;}
+	public List<Spell> getSpells() {return spells ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
 
 	public void setName(String newValue) {name = newValue ;}

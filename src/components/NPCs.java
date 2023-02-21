@@ -6,7 +6,6 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 
-import graphics.Animations;
 import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import liveBeings.Creature;
@@ -28,7 +27,8 @@ public class NPCs
 	private int menu ;
 
 	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-	public static final Image SpeakingBubbleImage = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeakingBubble.png") ;
+	public static final Image SpeakingBubble = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeakingBubble.png") ;
+	public static final Image ChoicesWindow = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "ChoicesWindow.png") ;
 	
 	public NPCs (int id, NPCType type, Point Pos)
 	{
@@ -115,16 +115,15 @@ public class NPCs
 	
 	public static NPCType typeFromJob(NPCJobs job)
 	{
-		NPCType NPCType = null ;
-		for (int j = 0 ; j <= Game.getNPCTypes().length - 1 ; j += 1)
+		for (NPCType npcType : Game.getNPCTypes())
 		{
-			if (job.equals(Game.getNPCTypes()[j].getJob()))
+			if (job.equals(npcType.getJob()))
 			{
-				NPCType =  Game.getNPCTypes()[j] ;
+				return npcType ;
 			}
 		}
 		
-		return NPCType ;
+		return null ;
 	}
 
 	public void Contact(Player player, Pet pet, Creature[] creatures, GameMap[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, DrawingOnPanel DP)
@@ -211,42 +210,32 @@ public class NPCs
 	public void navigate(String action)
 	{
 		switchOption(action) ;
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)))
+		navigateMenu(action) ;
+	}
+	
+	public void switchOption(String action)
+	{
+		if (action.equals(Player.ActionKeys[2]) & selOption <= type.getOptions().length - 2)
 		{
-			enterMenu() ;
+			selOption += 1 ;
+		}
+		if (action.equals(Player.ActionKeys[0]) & 0 < selOption)
+		{
+			selOption += -1 ;
+		}
+	}
+	
+	public void navigateMenu(String action)
+	{
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) & menu <= numberMenus - 2)
+		{
+			menu += 1;
+			//menu = selOption ;
 		}
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) & 0 < menu)
 		{
 			menu += -1 ;
 		}
-	}
-	
-	public void switchOption(String action)
-	{
-		if (action.equals(Player.ActionKeys[2]))
-		{
-			if (selOption <= type.getOptions().length - 2)
-			{
-				selOption += 1 ;
-			}
-		}
-		if (action.equals(Player.ActionKeys[0]))
-		{
-			if (0 < selOption)
-			{
-				selOption += -1 ;
-			}
-		}
-	}
-	
-	public void enterMenu()
-	{
-		if (menu <= numberMenus - 2)
-		{
-			menu += 1;
-		}
-			
-		//menu = selOption ;
 	}
 		
 	public void speak(Point pos, DrawingOnPanel DP)
@@ -254,7 +243,7 @@ public class NPCs
 		String content = type.getSpeech()[menu + 1] ;
 		if (!content.equals(""))
 		{
-			DP.DrawSpeech(pos, content, NPCfont, type.getImage(), SpeakingBubbleImage, type.getColor()) ;
+			DP.DrawSpeech(pos, content, NPCfont, type.getImage(), SpeakingBubble, type.getColor()) ;
 		}
 		if (type.getOptions() != null)
 		{
@@ -371,20 +360,13 @@ public class NPCs
 	
 	public void display(DrawingOnPanel DP)
 	{
-		//if (id == 11 + 17*player.getMap())	// Master
-		//{
-		//	player.display(Pos, new float[] {1, 1}, Player.MoveKeys[3], false, DP) ;
-		//}
-		//else
-		//{
 		DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomCenter) ;
-		//DP.DrawText(Pos, Align.bottomCenter, DrawingOnPanel.stdAngle, String.valueOf(id), new Font("SansSerif", Font.BOLD, 12), Color.blue) ;				
 	}
 
 	public void drawOptions(int selOption, String[] options, Color color, DrawingOnPanel DP)
 	{
 		Point windowPos = new Point((int) (pos.x - type.getImage().getWidth(null) - 10), pos.y) ;		
-		DP.DrawMenuWindow(windowPos, new Scale(1, 1), null, 0, Game.ColorPalette[7], Game.ColorPalette[7]) ;
+		DP.DrawImage(ChoicesWindow, windowPos, Align.topLeft) ;
 		
 		int sy = 2 * UtilG.TextH(NPCfont.getSize()) ;
 		for (int i = 0 ; i <= options.length - 1 ; i += 1)

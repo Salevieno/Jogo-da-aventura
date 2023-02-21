@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import graphics.DrawingOnPanel;
+import items.Item;
 import liveBeings.Creature;
 import liveBeings.CreatureTypes;
 import liveBeings.Player;
@@ -61,10 +62,10 @@ public class BestiaryWindow extends GameWindow
 		textInfo.add(text[4] + ": " + creature.getPA().getExp().getCurrentValue()) ;
 		textInfo.add(text[5] + ": " + creature.getGold()) ;
 		textInfo.add(text[6] + ": ") ;
-		for (int i = 0 ; i <= creature.getBag().length - 1 ; i += 1)
+		creature.getBag().forEach(item ->
 		{
-			textInfo.add(String.valueOf(creature.getBag()[i])) ;
-		}
+			textInfo.add(item.getName()) ;
+		});
 		
 		// TODO pegar size da criatura
 //		DP.DrawText(new Point(windowPos.x + offset, (int) (windowPos.y + creature.getSize().height + offset)), Align.topLeft, angle, creature.getPA().getName(), namefont, textColor) ;		// Name

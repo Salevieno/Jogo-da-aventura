@@ -132,10 +132,7 @@ public class Spell
 
 	public void applyBuffs(boolean activate, LiveBeing receiver)
 	{
-		int mult = 1 ;
-		if (!activate) { mult = -1 ;}
-		PersonalAttributes PA = receiver.getPA() ;
-		BattleAttributes BA = receiver.getBA() ;
+		int mult = activate ? 1 : -1 ;
 
 		for (Buff buff : buffs)
 		{
@@ -148,7 +145,7 @@ public class Spell
 					continue ;
 				}
 				
-				BasicAttribute personalAttribute = PA.mapAttributes(att) ;
+				BasicAttribute personalAttribute = receiver.getPA().mapAttributes(att) ;
 				if (personalAttribute != null)
 				{
 					double increment = personalAttribute.getMaxValue() * percIncrease.get(att) + valueIncrease.get(att) ;
@@ -157,7 +154,7 @@ public class Spell
 					continue ;
 				}
 				
-				BasicBattleAttribute battleAttribute = BA.mapAttributes(att) ;
+				BasicBattleAttribute battleAttribute = receiver.getBA().mapAttributes(att) ;
 				if (battleAttribute != null)
 				{
 					double increment = battleAttribute.getBaseValue() * 10*percIncrease.get(att) + valueIncrease.get(att) ;
@@ -166,7 +163,7 @@ public class Spell
 					continue ;
 				}
 				
-				BattleSpecialAttribute battleSpecialAttribute = BA.mapSpecialAttributes(att) ;
+				BattleSpecialAttribute battleSpecialAttribute = receiver.getBA().mapSpecialAttributes(att) ;
 				if (battleSpecialAttribute != null)
 				{
 					battleSpecialAttribute.incAtkChanceBonus(Math.round(percIncrease.get(att) * level * mult));
