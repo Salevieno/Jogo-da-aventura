@@ -14,6 +14,7 @@ import attributes.BattleSpecialAttribute;
 import attributes.LiveBeingAttribute;
 import attributes.PersonalAttributes;
 import components.SpellTypes;
+import utilities.Elements;
 import utilities.TimeCounter;
 
 public class Spell 
@@ -43,7 +44,7 @@ public class Spell
 	//private int effectCounter ;
 	private TimeCounter cooldownCounter ;
 	private TimeCounter effectCounter ;
-	private String elem ;
+	private Elements elem ;
 
 	private String[] info ;	// Effect and description
 	
@@ -95,7 +96,7 @@ public class Spell
 	public double[] getBloodMod() {return BloodMod ;}
 	public double[] getPoisonMod() {return PoisonMod ;}
 	public double[] getSilenceMod() {return SilenceMod ;}
-	public String getElem() {return elem ;}
+	public Elements getElem() {return elem ;}
 	public TimeCounter getCooldownCounter() {return cooldownCounter ;}
 	public TimeCounter getDurationCounter() {return effectCounter ;}
 	public String[] getInfo() {return info ;}

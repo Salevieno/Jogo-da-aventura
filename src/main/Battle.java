@@ -1,10 +1,8 @@
 package main ;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays ;
 import java.util.List;
 
 import javax.sound.sampled.Clip ;
@@ -14,7 +12,6 @@ import attributes.BattleSpecialAttribute;
 import attributes.PersonalAttributes;
 import components.Items;
 import components.Quests;
-import components.SpellTypes;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
 import liveBeings.Creature;
@@ -24,28 +21,28 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Spell;
 import utilities.AttackEffects;
+import utilities.Elements;
 import utilities.UtilG;
 import utilities.UtilS;
 
 public class Battle 
 {
-	private Clip hitSound ;	
 	private static double randomAmp ;
-	protected static String[] ElemID ;
+	protected static List<Elements> ElemID ;
 	protected static double[][] ElemMult ;
 	
 	public Battle()
 	{	
 		//this.SoundEffects = SoundEffects ;
-		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
+//		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
 
 		int NumElem = 10 ;
-    	ElemID = new String[NumElem] ;
+    	ElemID = new ArrayList<>() ;
 		ElemMult = new double[NumElem][NumElem] ;
-		ArrayList<String[]> ElemInput = UtilG.ReadcsvFile(Game.CSVPath + "Elem.csv") ;
+		List<String[]> ElemInput = UtilG.ReadcsvFile(Game.CSVPath + "Elem.csv") ;
 		for (int i = 0 ; i <= NumElem - 1 ; ++i)
 		{
-			ElemID[i] = ElemInput.get(i)[0] ;
+			ElemID.add(Elements.valueOf(ElemInput.get(i)[0])) ;
 			for (int j = 0 ; j <= NumElem - 1 ; ++j)
 			{
 				ElemMult[i][j] = Double.parseDouble(ElemInput.get(i)[j + 1]) ;
@@ -55,9 +52,9 @@ public class Battle
 	}
 
 	// métodos de cálculo de batalha válidos para todos os participantes
-	private static double basicElemMult(String Atk, String Def)
+	private static double basicElemMult(Elements Atk, Elements Def)
 	{
-		return Battle.ElemMult[UtilG.IndexOf(Battle.ElemID, Atk)][UtilG.IndexOf(Battle.ElemID, Def)] ;
+		return Battle.ElemMult[Battle.ElemID.indexOf(Atk)][Battle.ElemID.indexOf(Def)] ;
 	}
 	
 	private static boolean hit(double Dex, double Agi)
@@ -86,7 +83,7 @@ public class Battle
 		return (Math.random() + CritDef <= CritAtk) ;
 	}
 		
-	private static double calcElemMult(String Atk, String Weapon, String Armor, String Shield, String SuperElem)
+	private static double calcElemMult(Elements Atk, Elements Weapon, Elements Armor, Elements Shield, Elements SuperElem)
 	{
 		double mult = 1 ;
 		mult = basicElemMult(Atk, Armor) * mult ;
@@ -128,7 +125,7 @@ public class Battle
 		return effect;
 	}
 	
-	public static int calcDamage(AttackEffects effect, double Atk, double Def, String[] AtkElem, String[] DefElem, double ElemModifier)
+	public static int calcDamage(AttackEffects effect, double Atk, double Def, Elements[] AtkElem, Elements[] DefElem, double ElemModifier)
 	{
 		int damage = -1 ;
 		if (effect.equals(AttackEffects.miss) | effect.equals(AttackEffects.block))
@@ -574,9 +571,10 @@ public class Battle
 //		}
 	}
 	
-	private void ItemEffectInBattle(BattleAttributes PlayerBA, BattleAttributes PetBA, BattleAttributes creatureBA, String[] creatureElem, double[] creatureLife, Items[] items, int ItemID, String target, String Elem, double[][] Effects, double[][] Buffs, String action)
+	private void ItemEffectInBattle(BattleAttributes PlayerBA, BattleAttributes PetBA, BattleAttributes creatureBA, Elements[] creatureElem, double[] creatureLife, Items[] items, int ItemID, String target, Elements Elem, double[][] Effects, double[][] Buffs, String action)
 	{
-		double elemMult = calcElemMult(Elem, "n", creatureElem[0], creatureElem[0], "n") ;
+		// TODO item effect in battle check elem mult
+		double elemMult = calcElemMult(Elem, Elements.neutral, creatureElem[0], creatureElem[0], Elements.neutral) ;
 		creatureLife[0] += -Math.max(0, Effects[0][1])*elemMult*UtilG.RandomMult(randomAmp) ;
 		if (target.equals("Player"))
 		{

@@ -11,6 +11,7 @@ import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
 import items.Item;
 import utilities.Align;
+import utilities.Elements;
 import utilities.Scale;
 
 public class CreatureTypes 
@@ -22,7 +23,7 @@ public class CreatureTypes
 	protected Dimension size ;
 	protected double range ;
 	protected int step ;
-	protected String[] elem ;			// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
+	protected Elements[] elem ;			// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
 	protected int mpDuration ;			// counts the mp reduction
 	protected int satiationDuration ;	// counts the satiation reduction
 	protected int moveDuration ;		// counts the move
@@ -47,7 +48,7 @@ public class CreatureTypes
 			Dimension size,
 			double range,
 			int step,
-			String[] elem,
+			Elements[] elem,
 			int mpDuration,
 			int satiationDuration,
 			int moveDuration,

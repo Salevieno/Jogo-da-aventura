@@ -16,6 +16,7 @@ import graphics.DrawingOnPanel;
 import liveBeings.Player;
 import main.Game;
 import utilities.Align;
+import utilities.Elements;
 import utilities.Scale;
 import utilities.UtilG;
 
@@ -386,28 +387,27 @@ public class GameMap
 		return null ;
 	}
 	
-	public boolean GroundIsWalkable(Point Pos, String SuperElem)
+	public boolean GroundIsWalkable(Point Pos, Elements SuperElem)
 	{
-		Point point = new Point(Pos.x, Pos.y) ;
-		if (groundType == null)
+		// TODO ground is walkable organizar
+		if (groundType == null) { return true ; }
+
+		Point point = new Point(Pos) ;
+		for (int i = 0; i <= groundType.length - 1; i += 1)
 		{
-			return true ;
-		}
-		else
-		{
-			for (int i = 0; i <= groundType.length - 1; i += 1)
+			Object[] o = (Object[]) groundType[i] ;
+			if (point.equals((Point) o[1]))
 			{
-				Object[] o = (Object[]) groundType[i] ;
-				if (point.equals((Point) o[1]))
+				String gtype = (String) o[0] ;
+				if ((gtype.equals("water") & !SuperElem.equals(Elements.water)) |
+						((gtype.equals("tree") |
+						(gtype.equals("rock"))) & !SuperElem.equals(Elements.air)))
 				{
-					String gtype = (String) o[0] ;
-					if ((gtype.equals("water") & !SuperElem.equals("w")) | ((gtype.equals("tree") | (gtype.equals("rock"))) & !SuperElem.equals("a")))
-					{
-						return false ;
-					}
+					return false ;
 				}
 			}
 		}
+		
 		return true ;
 	}
 

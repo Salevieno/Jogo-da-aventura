@@ -2,10 +2,12 @@ package components ;
 
 import java.awt.Image ;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon ;
 
 import main.Game;
+import utilities.Elements;
 import utilities.UtilG;
 
 public class Items
@@ -24,8 +26,8 @@ public class Items
 	public static int[] NumberOfItems = new int[] {60, 60, 40, 60, 60, 20, 1000, 400, 100, 200} ;	// Potions, Alchemy, Forge, Pet, Food, Arrows, Equips, General items, Fab, Quest
 	public static int[] BagIDs = new int[NumberOfItems.length + 1] ;	// First id of: Potions, Alchemy, Forge, Pet, Food, Arrows, Equips, General items, Fab, Quest ; and last id of Quest
 	public static double[][] PotionsHealing, PetItems, FoodSatiation, ArrowPower, EquipsBonus ;
-	public static String[] ArrowElem ;
-	public static String[] EquipsElem ;
+	public static Elements[] ArrowElem ;
+	public static Elements[] EquipsElem ;
 	public static int[] ItemsWithEffects ;
 	public static String[] ItemsTargets, ItemsElement ;
 	public static double[][][] ItemsEffects ;
@@ -94,14 +96,17 @@ public class Items
 	}
 	public static void CalcItemEffects(String CSVPath)
 	{
-		PotionsHealing = new double[NumberOfItems[0]][3] ;// [ID, life healing, mp healing]
+		// TODO calc item effects is reading a csv during gameplay time
+		// TODO check names of elements in csvs for arrow and equips
+		PotionsHealing = new double[NumberOfItems[0]][3] ;	// [ID, life healing, mp healing]
 		PetItems = new double[NumberOfItems[3]][4] ;		// [ID, life healing, mp healing, satiation]
 		FoodSatiation = new double[NumberOfItems[4]][4] ;	// [ID, life healing, mp healing, satiation]
-		ArrowPower = new double[NumberOfItems[5]][1] ;	// [ID, atk power]
-		ArrowElem = new String[NumberOfItems[5]] ;		// [ID]
+		ArrowPower = new double[NumberOfItems[5]][1] ;		// [ID, atk power]
+		ArrowElem = new Elements[NumberOfItems[5]] ;		// [ID]
 		EquipsBonus = new double[NumberOfItems[6]][32] ;	// [ID, Forge level, Life bonus, Mp bonus, PhyAtk bonus, MagAtk bonus, PhyDef bonus, MagDef bonus, Dex bonus, Agi bonus, Crit bonus, Stun bonus, Block bonus, Blood bonus, Poison bonus]
-		EquipsElem = new String[NumberOfItems[6]] ;
-		ArrayList<String[]> PotionsInput = UtilG.ReadcsvFile(CSVPath + "Potions.csv") ;	
+		EquipsElem = new Elements[NumberOfItems[6]] ;
+		
+		List<String[]> PotionsInput = UtilG.ReadcsvFile(CSVPath + "Potions.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[0] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= 3 - 1 ; ++j)
@@ -109,7 +114,7 @@ public class Items
 				PotionsHealing[i][j] = Double.parseDouble(PotionsInput.get(i)[j]) ;
 			}
 		}
-		ArrayList<String[]> PetItemsInput = UtilG.ReadcsvFile(CSVPath + "PetItems.csv") ;	
+		List<String[]> PetItemsInput = UtilG.ReadcsvFile(CSVPath + "PetItems.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[3] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= 4 - 1 ; ++j)
@@ -117,7 +122,7 @@ public class Items
 				PetItems[i][j] = Double.parseDouble(PetItemsInput.get(i)[j]) ;
 			}
 		}
-		ArrayList<String[]> FoodInput = UtilG.ReadcsvFile(CSVPath + "Food.csv") ;	
+		List<String[]> FoodInput = UtilG.ReadcsvFile(CSVPath + "Food.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[4] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= 4 - 1 ; ++j)
@@ -125,14 +130,14 @@ public class Items
 				FoodSatiation[i][j] = Double.parseDouble(FoodInput.get(i)[j]) ;
 			}
 		}
-		ArrayList<String[]> ArrowInput = UtilG.ReadcsvFile(CSVPath + "ArrowPower.csv") ;	
+		List<String[]> ArrowInput = UtilG.ReadcsvFile(CSVPath + "ArrowPower.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[5] - 1 ; ++i)
 		{
 			for (int j = 0 ; j <= ArrowPower[i].length - 1 ; ++j)
 			{
 				ArrowPower[i][j] = Double.parseDouble(ArrowInput.get(i)[j + 1]) ;
 			}
-			ArrowElem[i] = ArrowInput.get(i)[2] ;
+			ArrowElem[i] = Elements.valueOf(ArrowInput.get(i)[2]) ;
 		}
 		ArrayList<String[]> EquipsInput = UtilG.ReadcsvFile(CSVPath + "Equips.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[6] - 1 ; ++i)
@@ -141,7 +146,7 @@ public class Items
 			{
 				EquipsBonus[i][j] = Double.parseDouble(EquipsInput.get(i)[j]) ;
 			}
-			EquipsElem[i] = EquipsInput.get(i)[31] ;
+			EquipsElem[i] = Elements.valueOf(EquipsInput.get(i)[31]) ;
 		}
 	}
 	/*public static void CalcCrafting(String CSVPath)

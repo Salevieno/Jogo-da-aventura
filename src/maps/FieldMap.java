@@ -6,7 +6,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.sound.sampled.Clip;
-import javax.swing.ImageIcon;
 
 import graphics.DrawingOnPanel;
 import liveBeings.Creature;
@@ -65,23 +64,17 @@ public class FieldMap extends GameMap
 	
 	public void IncCollectiblesCounter()
 	{
-		for (int m = 0 ; m <= collectibles.size() - 1 ; m += 1)
+		for (Collectible collectible : collectibles)
 		{
-			if (collectibles.get(m).getCounter() <= collectibles.get(m).getDelay())
-			{
-				collectibles.get(m).incCounter() ;
-			}	
+			if (collectible.getCounter() <= collectible.getDelay()) { collectible.incCounter() ;}
 		}
 	}
 	
 	public void ActivateCollectiblesCounter()
 	{
-		for (int m = 0 ; m <= collectibles.size() - 1 ; m += 1)
+		for (Collectible collectible : collectibles)
 		{
-			if (collectibles.get(m).getCounter() == collectibles.get(m).getDelay() - 1)
-			{
-				AddCollectibles() ;
-			}	
+			if (collectible.getCounter() == collectible.getDelay() - 1) { AddCollectibles() ;}
 		}
 	}
 	
@@ -103,27 +96,28 @@ public class FieldMap extends GameMap
 	
  	public void displayCollectibles(DrawingOnPanel DP)
  	{
- 		for (int col = 0 ; col <= collectibles.size() - 1 ; col += 1)
+ 		for (Collectible collectible : collectibles)
 		{
- 			collectibles.get(col).display(DP) ;
+ 			collectible.display(DP) ;
 		}
  	}
 
 	public void displayGroundType()
 	{
-		/*if (groundType != null)
-		{
-			for (int gt = 0 ; gt <= groundType.length - 1 ; gt += 1)
-			{
-				Object[] o = (Object[]) groundType[gt] ;
-				String type = (String) o[0] ;
-				Point p = (Point) o[1] ;
-				if (type.equals("water"))
-				{
-					DP.DrawRect(new Point(p.x, p.y), "center", new Size(10, 10), 0, Color.blue, null, false);
-				}
-			}
-		}*/
+		// TODO display ground type
+//		if (groundType != null)
+//		{
+//			for (int gt = 0 ; gt <= groundType.length - 1 ; gt += 1)
+//			{
+//				Object[] o = (Object[]) groundType[gt] ;
+//				String type = (String) o[0] ;
+//				Point p = (Point) o[1] ;
+//				if (type.equals("water"))
+//				{
+//					DP.DrawRect(new Point(p.x, p.y), "center", new Size(10, 10), 0, Color.blue, null, false);
+//				}
+//			}
+//		}
 	}
 	 	
 }

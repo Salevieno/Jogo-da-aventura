@@ -287,11 +287,7 @@ public abstract class UtilS
 		System.out.println() ;
 	}
 	
-	public static int ElementID(String Elem)
-	{
-		String[] ElementNames = new String[] {"n", "w", "f", "p", "e", "a", "t", "l", "d", "s"} ;
-		return UtilG.IndexOf(ElementNames, Elem) ;
-	}
+	public static int ElementID(Elements Elem) { return Arrays.asList(Elements.values()).indexOf(Elem) ;}
 	/*
 	public static String ElementName(int ElemID)
 	{

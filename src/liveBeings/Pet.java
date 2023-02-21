@@ -71,7 +71,7 @@ public class Pet extends LiveBeing
 		size = new Dimension (movingAni.idleGif.getWidth(null), movingAni.idleGif.getHeight(null)) ;	
 		range = Integer.parseInt(PetProperties.get(Job)[4]) ;
 		step = Integer.parseInt(PetProperties.get(Job)[32]) ;
-		elem = new String[] {"n", "n", "n", "n", "n"} ;
+		elem = new Elements[] {Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral} ;
 		mpCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[33])) ;
 		satiationCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[34])) ;
 		moveCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[35])) ;
@@ -337,7 +337,7 @@ public class Pet extends LiveBeing
 	{
 		return UtilG.dist(pos, playerPos) <= 40 ;
 	}
-	public void Move(Point playerPos, GameMap playerMap, Creature opponent, String playerElem)
+	public void Move(Point playerPos, GameMap playerMap, Creature opponent, Elements playerElem)
 	{
 		Point nextPos ;
 		if (opponent != null)
@@ -409,8 +409,8 @@ public class Pet extends LiveBeing
 		double BlockDef = receiver.getBA().getStatus().getBlock() ;
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
-		String[] AtkElem = new String[] {spell.getElem(), elem[1], elem[4]} ;
-		String[] DefElem = receiver.defElems() ;
+		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[1], elem[4]} ;
+		Elements[] DefElem = receiver.defElems() ;
 		
 		BasicAtk = MagAtk ;
 		BasicDef = MagDef ;

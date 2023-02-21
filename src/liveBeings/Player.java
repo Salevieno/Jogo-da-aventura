@@ -59,6 +59,7 @@ import screen.SideBar;
 import utilities.Align;
 import utilities.AttackEffects;
 import utilities.Directions;
+import utilities.Elements;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
@@ -167,7 +168,7 @@ public class Player extends LiveBeing
 	    size = new Dimension (PlayerBack.getWidth(null), PlayerBack.getHeight(null));
 		range = Double.parseDouble(Properties.get(job)[4]) ;
 		step = Integer.parseInt(Properties.get(job)[33]);
-	    elem = new String[] {"n", "n", "n", "n", "n"};
+	    elem = new Elements[] {Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral};
 		mpCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[37])) ;
 		satiationCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[38])) ;
 		moveCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[39])) ;
@@ -472,7 +473,7 @@ public class Player extends LiveBeing
 		if (item == null) { return ;}
 
 		System.out.println("player used " + item.getName());
-		if (item instanceof Potion)	// potions
+		if (item instanceof Potion)
 		{
 			Potion pot = (Potion) item ;
 			double PotMult = 1 ;
@@ -485,6 +486,10 @@ public class Player extends LiveBeing
 			PA.getMp().incCurrentValue((int) (pot.getMPHeal() * PA.getMp().getMaxValue() * PotMult)); ;
 			
 			bag.Remove(pot, 1);				
+		}
+		if (item instanceof Equip)
+		{
+			Equip(((Equip) item).getId()) ;
 		}
 	}	
 	private boolean actionIsAMove()
@@ -1449,8 +1454,8 @@ public class Player extends LiveBeing
 		double BlockDef = receiver.getBA().getStatus().getBlock() ;
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
-		String[] AtkElem = new String[] {spell.getElem(), elem[1], elem[4]} ;
-		String[] DefElem = receiver.defElems() ;
+		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[1], elem[4]} ;
+		Elements[] DefElem = receiver.defElems() ;
 		
 		if (job == 0)
 		{
@@ -1614,7 +1619,7 @@ public class Player extends LiveBeing
 		return false ;
 	}
 	
-	private void Equip(Items[] items, int EquipID)
+	private void Equip(int EquipID)
 	{
 		int NumberOfEquipTypes = 3 ;	// Sword/Staff/Bow/Claws/Dagger, shield, armor/robe (Archers have bow, bandana, and armor)
 		int FirstEquipID = Items.BagIDs[6] ;
@@ -1631,9 +1636,10 @@ public class Player extends LiveBeing
 					ApplyEquipsBonus(equips[2].getId() - FirstEquipID, (double)-0.2) ;
 				}
 				equips[EquipType] = null ;
-				elem[EquipType + 1] = "n" ;
+				elem[EquipType + 1] = Elements.neutral ;
 				ApplyEquipsBonus(currentEquipID - FirstEquipID, -1) ;
 			}
+			
 			if (currentEquipID != EquipID & equips[(EquipID + job) % NumberOfEquipTypes].getId() == 0)	// Equip
 			{
 				equips[EquipType] = Equip.getAll()[EquipID] ;
@@ -1647,14 +1653,9 @@ public class Player extends LiveBeing
 				}
 			}
 		//}
-		if (elem[1].equals(elem[2]) & elem[2].equals(elem[3]))	// if the elements of all equips are the same, activate the superelement
-		{
-			elem[4] = elem[1] ;
-		}
-		else
-		{
-			elem[4] = "n" ;
-		}
+			
+		// if the elements of all equips are the same, activate the superelement
+		elem[4] = (elem[1].equals(elem[2]) & elem[2].equals(elem[3])) ? elem[1] : Elements.neutral ;
 	}
 	private void ItemEffect(int ItemID)
 	{

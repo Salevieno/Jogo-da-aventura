@@ -22,6 +22,7 @@ import screen.Screen;
 import utilities.Align;
 import utilities.AttackEffects;
 import utilities.Directions;
+import utilities.Elements;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
@@ -262,8 +263,8 @@ public class Creature extends LiveBeing
 		double BlockDef = receiver.getBA().getStatus().getBlock() ;
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
-		String[] AtkElem = new String[] {spell.getElem(), elem[1], elem[4]} ;
-		String[] DefElem = receiver.defElems() ;
+		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[1], elem[4]} ;
+		Elements[] DefElem = receiver.defElems() ;
 		
 		BasicAtk = MagAtk ;
 		BasicDef = MagDef ;

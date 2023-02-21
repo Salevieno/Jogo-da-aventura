@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 
 import components.SpellTypes;
 import main.Game;
+import utilities.Elements;
 import utilities.UtilG;
 
 public class SpellType 
@@ -33,7 +34,7 @@ public class SpellType
 	private double[] BloodMod ;
 	private double[] PoisonMod ;
 	private double[] SilenceMod ;
-	private String elem ;
+	private Elements elem ;
 	private String[] info ;	// Effect and description
 	
 	public static final Image cooldownImage = UtilG.loadImage(Game.ImagesPath + "Cooldown.png") ;	
@@ -41,7 +42,7 @@ public class SpellType
 	
 	public SpellType(String Name, int MaxLevel, int MpCost, SpellTypes type, Map<SpellType, Integer> preRequisites, int Cooldown, int Duration, List<Buff> buffs,
 			double[] AtkMod, double[] DefMod, double[] DexMod, double[] AgiMod, double[] AtkCritMod, double[] DefCritMod, double[] StunMod, double[] BlockMod, double[] BloodMod,
-			double[] PoisonMod, double[] SilenceMod, String Elem, String[] Info)
+			double[] PoisonMod, double[] SilenceMod, Elements Elem, String[] Info)
 	{
 		this.name = Name ;
 		this.maxLevel = MaxLevel ;
@@ -87,7 +88,7 @@ public class SpellType
 	public double[] getBloodMod() {return BloodMod ;}
 	public double[] getPoisonMod() {return PoisonMod ;}
 	public double[] getSilenceMod() {return SilenceMod ;}
-	public String getElem() {return elem ;}
+	public Elements getElem() {return elem ;}
 	public String[] getInfo() {return info ;}
 
 	@Override

@@ -1,21 +1,21 @@
-ID,Nome,Name,DescriÁ„o,Description,Price,Drop chance,Atk power,Elem
-0,flecha de madeira,wood arrow,-,-,5,30,3,n
-1,flecha de aÁo,steel arrow,-,-,15,30,8,n
-2,flecha da montanha,mountain arrow,-,-,30,30,15,n
-3,flecha lunar,lunar arrow,-,-,50,30,25,n
-4,flecha do oceano,ocean arrow,-,-,60,30,50,n
-5,flecha de magma,magma arrow,-,-,80,30,80,n
-6,flecha de ·gua,water arrow,-,-,50,30,50,w
-7,flecha de fogo,fire arrow,-,-,50,30,50,f
-8,flecha de planta,plant arrow,-,-,50,30,50,p
-9,flecha de terra,earth arrow,-,-,50,30,50,e
-10,flecha de ar,air arrow,-,-,50,30,50,a
-11,flecha de trov„o,thunder arrow,-,-,50,30,50,t
-12,flecha de luz,light arrow,-,-,50,30,50,l
-13,flecha de escurid„o,dark arrow,-,-,50,30,50,d
-14,flecha de neve,snow arrow,-,-,50,30,50,s
-15,flecha retardadora,slowing arrow,-,-,50,30,50,n
-16,flecha atordoante,stunning arrow,-,-,50,30,50,n
-17,flecha sangrenta,bloody arrow,-,-,50,30,50,n
-18,flecha venenosa,poison arrow,-,-,50,30,50,n
-19,flecha silenciosa,silent arrow,-,-,50,30,50,n
+ID,Nome,Name,Descri√ß√£o,Description,Price,Drop chance,Atk power,Elem
+0,flecha de madeira,wood arrow,-,-,5,30,3,neutral
+1,flecha de a√ßo,steel arrow,-,-,15,30,8,neutral
+2,flecha da montanha,mountain arrow,-,-,30,30,15,neutral
+3,flecha lunar,lunar arrow,-,-,50,30,25,neutral
+4,flecha do oceano,ocean arrow,-,-,60,30,50,neutral
+5,flecha de magma,magma arrow,-,-,80,30,80,neutral
+6,flecha de √°gua,water arrow,-,-,50,30,50,water
+7,flecha de fogo,fire arrow,-,-,50,30,50,fire
+8,flecha de planta,plant arrow,-,-,50,30,50,plant
+9,flecha de terra,earth arrow,-,-,50,30,50,earth
+10,flecha de ar,air arrow,-,-,50,30,50,air
+11,flecha de trov√£o,thunder arrow,-,-,50,30,50,thunder
+12,flecha de luz,light arrow,-,-,50,30,50,light
+13,flecha de escurid√£o,dark arrow,-,-,50,30,50,dark
+14,flecha de neve,snow arrow,-,-,50,30,50,snow
+15,flecha retardadora,slowing arrow,-,-,50,30,50,neutral
+16,flecha atordoante,stunning arrow,-,-,50,30,50,neutral
+17,flecha sangrenta,bloody arrow,-,-,50,30,50,neutral
+18,flecha venenosa,poison arrow,-,-,50,30,50,neutral
+19,flecha silenciosa,silent arrow,-,-,50,30,50,neutral

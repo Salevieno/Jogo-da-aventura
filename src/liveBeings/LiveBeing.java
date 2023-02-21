@@ -19,6 +19,7 @@ import maps.GameMap;
 import utilities.Align;
 import utilities.AttackEffects;
 import utilities.Directions;
+import utilities.Elements;
 import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -38,7 +39,7 @@ public abstract class LiveBeing
 	protected Dimension size ;
 	protected double range ;
 	protected int step ;
-	protected String[] elem ;					// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
+	protected Elements[] elem ;					// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
 	protected TimeCounter mpCounter ;
 	protected TimeCounter satiationCounter ;
 	protected TimeCounter moveCounter ;
@@ -118,7 +119,7 @@ public abstract class LiveBeing
 	public LiveBeingStates getState() {return state ;}
 	public Point getPos() {return pos ;}
 	public Dimension getSize() {return size ;}
-	public String[] getElem() {return elem ;}
+	public Elements[] getElem() {return elem ;}
 	public double getRange() {return range ;}
 	public int getStep() {return step ;}
 	public String getCurrentAction() {return currentAction ;}
@@ -259,19 +260,19 @@ public abstract class LiveBeing
 	}
 	public boolean isInRange(Point target) {return pos.distance(target) <= range ;}
 	
-	public String[] atkElems()
+	public Elements[] atkElems()
 	{
-		if (this instanceof Player) { return new String[] {elem[0], elem[1], elem[4]} ;}
-		else if (this instanceof Pet) { return new String[] {elem[0], elem[1], elem[4]} ;}
-		else if (this instanceof Creature) { return new String[] {elem[0], "n", "n"} ;}
+		if (this instanceof Player) { return new Elements[] {elem[0], elem[1], elem[4]} ;}
+		else if (this instanceof Pet) { return new Elements[] {elem[0], elem[1], elem[4]} ;}
+		else if (this instanceof Creature) { return new Elements[] {elem[0], Elements.neutral, Elements.neutral} ;}
 		
 		return null ;
 	}
-	public String[] defElems()
+	public Elements[] defElems()
 	{
-		if (this instanceof Player) { return new String[] {elem[2], elem[3]} ;}
-		else if (this instanceof Pet) { return new String[] {elem[2], elem[3]} ;}
-		else if (this instanceof Creature) { return new String[] {elem[0], elem[0]} ;}
+		if (this instanceof Player) { return new Elements[] {elem[2], elem[3]} ;}
+		else if (this instanceof Pet) { return new Elements[] {elem[2], elem[3]} ;}
+		else if (this instanceof Creature) { return new Elements[] {elem[0], elem[0]} ;}
 		
 		return null ;
 	}

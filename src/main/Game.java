@@ -79,6 +79,7 @@ import screen.Sky;
 import testing.TestingAnimations;
 import utilities.Align;
 import utilities.AttackEffects;
+import utilities.Elements;
 import utilities.GameStates;
 import utilities.Scale;
 import utilities.UtilG;
@@ -374,7 +375,7 @@ public class Game extends JPanel
 			Dimension size = new Dimension(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;	
 			double range = Double.parseDouble(input.get(ct)[7]) * diffMult ;
 			int step = Integer.parseInt(input.get(ct)[48]) ;
-			String[] elem = new String[] {input.get(ct)[35]} ;
+			Elements[] elem = new Elements[] {Elements.valueOf(input.get(ct)[35])} ;
 			int mpDuration = Integer.parseInt(input.get(ct)[49]) ;
 			int satiationDuration = 100 ;
 			int moveDuration = Integer.parseInt(input.get(ct)[50]) ;
@@ -589,6 +590,7 @@ public class Game extends JPanel
  	
     private SpellType[] initializeSpellTypes(Languages language)
     {
+    	// TODO check spelltypes csv elements names
     	List<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;	
     	SpellType[] allSpellTypes = new SpellType[spellTypesInput.size()] ;
     	List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
@@ -655,7 +657,7 @@ public class Game extends JPanel
 			double[] Blood = new double[] {Double.parseDouble(spellTypesInput.get(ID)[32]), Double.parseDouble(spellTypesInput.get(ID)[33]), Double.parseDouble(spellTypesInput.get(ID)[34])} ;
 			double[] Poison = new double[] {Double.parseDouble(spellTypesInput.get(ID)[35]), Double.parseDouble(spellTypesInput.get(ID)[36]), Double.parseDouble(spellTypesInput.get(ID)[37])} ;
 			double[] Silence = new double[] {Double.parseDouble(spellTypesInput.get(ID)[38]), Double.parseDouble(spellTypesInput.get(ID)[39]), Double.parseDouble(spellTypesInput.get(ID)[40])} ;
-			String Elem = spellTypesInput.get(ID)[41] ;
+			Elements Elem = Elements.valueOf(spellTypesInput.get(ID)[41]) ;
 			
 			allSpellTypes[i] = new SpellType(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, buffs,
 					Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i]) ;
@@ -718,37 +720,33 @@ public class Game extends JPanel
 		player.IncActionCounters() ;
 		player.SupSpellCounters(creature, player.getOpponent()) ;
 		player.getBA().getStatus().decreaseStatus() ;
+		
 		if (pet != null)
 		{
 			pet.IncActionCounters() ;
 			pet.getBA().getStatus().decreaseStatus() ;
 		}
-		if (!player.getMap().IsACity())	// player is out of the cities
+		
+		if (player.getMap() instanceof FieldMap)
 		{
-			if (player.getMap() instanceof FieldMap)
+			FieldMap fm = (FieldMap) player.getMap() ;
+			fm.getCreatures().forEach(creature ->
 			{
-				FieldMap fm = (FieldMap) player.getMap() ;
-				for (int c = 0 ; c <= fm.getCreatures().size() - 1 ; c += 1)
-				{
-					fm.getCreatures().get(c).IncActionCounters() ;
-					fm.getCreatures().get(c).getBA().getStatus().decreaseStatus() ;
-				}
-			}
+				creature.IncActionCounters() ;
+				creature.getBA().getStatus().decreaseStatus() ;
+			});
 		}
+		
 		if (player.isInBattle())
 		{
 			player.IncBattleActionCounters() ;
 			pet.IncBattleActionCounters() ;
-			/*for (int c = 0 ; c <= player.currentMap(maps).getCreatureIDs().length - 1 ; c += 1)
-			{
-				int ID = player.currentMap(maps).getCreatureIDs()[c] ;
-				creature[ID].IncBattleActionCounters() ;
-			}*/
 			player.getOpponent().IncBattleActionCounters() ;
 		}
-		for (int i = 0; i <= fieldMaps.length - 1; i += 1)
+
+		for (FieldMap fieldMap : fieldMaps)
 		{
-			fieldMaps[i].IncCollectiblesCounter() ;
+			if (player.getMap().equals(fieldMap)) { fieldMap.IncCollectiblesCounter() ;}
 		}
 	}
 	
@@ -777,9 +775,9 @@ public class Game extends JPanel
 //				}
 //			}
 //		}
-		for (int i = 0; i <= fieldMaps.length - 1; i += 1)
+		for (FieldMap fieldMap : fieldMaps)
 		{
-			fieldMaps[i].ActivateCollectiblesCounter() ;
+			fieldMap.ActivateCollectiblesCounter() ;
 		}
 	}
 	

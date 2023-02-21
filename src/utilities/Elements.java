@@ -5,11 +5,11 @@ public enum Elements
 	neutral,
 	water,
 	fire,
-	air,
-	earth,
 	plant,
+	earth,
+	air,
 	thunder,
-	dark,
 	light,
+	dark,
 	snow
 }
