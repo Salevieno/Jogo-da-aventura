@@ -240,6 +240,11 @@ public abstract class LiveBeing
 	public boolean isAlive() {return 0 < PA.getLife().getCurrentValue() ;}
 	public boolean hasTheSpell(String action) {return Player.SpellKeys.indexOf(action) < GetActiveSpells().size() ;}
 	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
+	public boolean hasSuperElement()
+	{
+		if (elem[1] == null | elem[2] == null | elem[3] == null) { return false ;}
+		return elem[1].equals(elem[2]) & elem[2].equals(elem[3]) ;
+	}
 	public boolean hasActed() {return currentAction != null ;}
 	public boolean actionIsSpell()	{return hasActed() ? Player.SpellKeys.contains(currentAction) : false ;}
 	public boolean actionIsAtk() {return hasActed() ? currentAction.equals(Player.BattleKeys[0]) : false ;}

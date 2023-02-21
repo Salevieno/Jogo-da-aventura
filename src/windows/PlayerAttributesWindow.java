@@ -19,6 +19,7 @@ import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
 import utilities.Align;
+import utilities.Elements;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -169,14 +170,13 @@ public class PlayerAttributesWindow extends GameWindow
 						new Point(windowPos.x + 53, windowPos.y + 140)} ;	// Weapon, armor, shield, arrow
 				for (int eq = 0 ; eq <= Equips.length - 1 ; eq += 1)
 				{
-					Image ElemImage = DrawingOnPanel.ElementImages[UtilS.ElementID(user.getElem()[eq + 1])] ;
 					if (Equips[eq] != null)
 					{
 						Point textPos = new Point(EqRectPos[eq].x, EqRectPos[eq].y - EqRectH[eq] / 2) ;
-						int eqBonus = (int)(EquipsBonus[Equips[eq].getId() - Items.BagIDs[6]][1]) ;
+						int eqBonus = (int)(EquipsBonus[Equips[eq].getId()][1]) ;
 						if (eq <= 2)
 						{
-							if (0 < EquipsBonus[Equips[eq].getId() - Items.BagIDs[6]][0])
+							if (0 < EquipsBonus[Equips[eq].getId()][0])
 							{
 								DP.DrawText(textPos, Align.center, TextAngle, equipsText[eq + 1] + " + " + eqBonus, font, TextColor) ;					
 							}
@@ -186,7 +186,12 @@ public class PlayerAttributesWindow extends GameWindow
 						{
 							//DF.DrawEquips(EqRectPos[eq], PA.getJob(), eq, Equips[0] - Items.BagIDs[6], EquipsBonus, new double[] {1, 1}, TextAngle) ;
 						}
-						DP.DrawImage(ElemImage, new Point((int) (EqRectPos[eq].x + 0.44*EqRectL[eq]), (int) (EqRectPos[eq].y + 0.15*EqRectH[eq])), TextAngle, new Scale(0.12, 0.12), Align.center) ;					
+						Elements userElem = user.getElem()[eq + 1] ;
+						if (userElem != null)
+						{
+							Image ElemImage = DrawingOnPanel.ElementImages[UtilS.ElementID(userElem)] ;
+							DP.DrawImage(ElemImage, new Point((int) (EqRectPos[eq].x + 0.44*EqRectL[eq]), (int) (EqRectPos[eq].y + 0.15*EqRectH[eq])), TextAngle, new Scale(0.12, 0.12), Align.center) ;					
+						}
 						//DP.DrawTextUntil(new Point(EqRectPos[eq].x - EqRectL[eq] / 2, EqRectPos[eq].y + EqRectH[eq] / 2 + TextH), AlignmentPoints.bottomLeft, TextAngle, items[Equips[eq]].getName(), Equipfont, TextColor, 14, MousePos) ;	// Equip text	
 					}
 					else
@@ -198,7 +203,7 @@ public class PlayerAttributesWindow extends GameWindow
 			
 			
 			// Super element
-			if (user.getElem()[1].equals(user.getElem()[2]) & user.getElem()[2].equals(user.getElem()[3]))
+			if (user.hasSuperElement())
 			{
 				DP.DrawImage(DrawingOnPanel.ElementImages[UtilS.ElementID(user.getElem()[4])],
 						new Point(windowPos.x + (int)(0.55*attWindowSize.width), windowPos.y + (int)(0.4*attWindowSize.height)), TextAngle, new Scale(0.3, 0.3),

@@ -1035,6 +1035,7 @@ public class Game extends JPanel
 //    	player.getBag().Add(Alchemy.getAll()[0], 2) ;
 //    	player.getBag().Add(Alchemy.getAll()[2], 2) ;
 //    	player.getBag().Add(Forge.getAll()[2], 3) ;
+    	player.getBag().Add(Equip.getAll()[2], 3) ;
 //    	System.out.println(player.getBag().numberItems);
 //    	for (int i = 0; i <= 20 - 1; i += 1)
 //    	{

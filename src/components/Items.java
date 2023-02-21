@@ -23,11 +23,15 @@ public class Items
 
 	public static String LongestName ;
 	public static int NumberOfAllItems ;
-	public static int[] NumberOfItems = new int[] {60, 60, 40, 60, 60, 20, 1000, 400, 100, 200} ;	// Potions, Alchemy, Forge, Pet, Food, Arrows, Equips, General items, Fab, Quest
-	public static int[] BagIDs = new int[NumberOfItems.length + 1] ;	// First id of: Potions, Alchemy, Forge, Pet, Food, Arrows, Equips, General items, Fab, Quest ; and last id of Quest
-	public static double[][] PotionsHealing, PetItems, FoodSatiation, ArrowPower, EquipsBonus ;
-	public static Elements[] ArrowElem ;
-	public static Elements[] EquipsElem ;
+	public static int[] NumberOfItems = new int[] {60, 60, 40, 60, 60, 20, 1000, 400, 100, 200} ;
+	public static int[] BagIDs = new int[] {0, 60, 120, 160, 220, 280, 300, 1300, 1700, 1800, 2000} ;
+	public static double[][] PotionsHealing = new double[NumberOfItems[0]][3] ;
+	public static double[][] PetItems = new double[NumberOfItems[3]][4] ;
+	public static double[][] FoodSatiation = new double[NumberOfItems[4]][4] ;
+	public static double[][] ArrowPower = new double[NumberOfItems[5]][1] ;
+	public static double[][] EquipsBonus = new double[NumberOfItems[6]][32] ;
+	public static Elements[] ArrowElem = new Elements[NumberOfItems[5]] ;
+	public static Elements[] EquipsElem = new Elements[NumberOfItems[6]] ;
 	public static int[] ItemsWithEffects ;
 	public static String[] ItemsTargets, ItemsElement ;
 	public static double[][][] ItemsEffects ;
@@ -47,6 +51,7 @@ public class Items
 	
 	public Items(int ID, String Name, Image image, int Price, double DropChance, double[][] Buffs, String Description, String Type)
 	{
+		// TODO revisar inicialização dos itens
 		this.id = ID ;
 		this.Name = Name ;
 		this.image = image ;
@@ -54,7 +59,33 @@ public class Items
 		this.DropChance = DropChance ;
 		this.Buffs = Buffs ;
 		this.Description = Description ;
-		this.Type = Type ;		
+		this.Type = Type ;
+		
+		NumberOfItems = new int[] {60, 60, 40, 60, 60, 20, 1000, 400, 100, 200} ;	// Potions, Alchemy, Forge, Pet, Food, Arrows, Equips, General items, Fab, Quest
+		BagIDs = new int[NumberOfItems.length + 1] ;	// First id of: Potions, Alchemy, Forge, Pet, Food, Arrows, Equips, General items, Fab, Quest ; and last id of Quest
+		PotionsHealing = new double[NumberOfItems[0]][3] ;	// [ID, life healing, mp healing]
+		PetItems = new double[NumberOfItems[3]][4] ;		// [ID, life healing, mp healing, satiation]
+		FoodSatiation = new double[NumberOfItems[4]][4] ;	// [ID, life healing, mp healing, satiation]
+		ArrowPower = new double[NumberOfItems[5]][1] ;		// [ID, atk power]
+		EquipsBonus = new double[NumberOfItems[6]][32] ;	// [ID, Forge level, Life bonus, Mp bonus, PhyAtk bonus, MagAtk bonus, PhyDef bonus, MagDef bonus, Dex bonus, Agi bonus, Crit bonus, Stun bonus, Block bonus, Blood bonus, Poison bonus]
+		ArrowElem = new Elements[NumberOfItems[5]] ;		// [ID]
+		EquipsElem = new Elements[NumberOfItems[6]] ;
+//		ItemsWithEffects ;
+//		ItemsTargets ;
+//		ItemsElement ;
+//		ItemsEffects ;
+//		ItemsBuffs ;
+
+		// Equip gifs
+		/*Image SwordGif = UtilG.loadImage(ImagesPath + "Eq0_Sword.gif") ;
+		Image StaffGif = UtilG.loadImage(ImagesPath + "Eq1_Staff.gif") ;
+		Image BowGif = UtilG.loadImage(ImagesPath + "Eq2_Bow.gif") ;
+		Image ClawsGif = UtilG.loadImage(ImagesPath + "Eq3_Claws.gif") ;
+		Image DaggerGif = UtilG.loadImage(ImagesPath + "Eq4_Dagger.gif") ;
+		Image ShieldGif = UtilG.loadImage(ImagesPath + "Eq5_Shield.gif") ;
+		Image ArmorGif = UtilG.loadImage(ImagesPath + "Eq6_Armor.gif") ;
+		Image ArrowGif = UtilG.loadImage(ImagesPath + "Eq7_Arrow.gif") ;
+		EquipGif = new Image[] {SwordGif, StaffGif, BowGif, ClawsGif, DaggerGif, ShieldGif, ArmorGif, ArrowGif} ;*/
 	}
 	
 	
@@ -98,13 +129,6 @@ public class Items
 	{
 		// TODO calc item effects is reading a csv during gameplay time
 		// TODO check names of elements in csvs for arrow and equips
-		PotionsHealing = new double[NumberOfItems[0]][3] ;	// [ID, life healing, mp healing]
-		PetItems = new double[NumberOfItems[3]][4] ;		// [ID, life healing, mp healing, satiation]
-		FoodSatiation = new double[NumberOfItems[4]][4] ;	// [ID, life healing, mp healing, satiation]
-		ArrowPower = new double[NumberOfItems[5]][1] ;		// [ID, atk power]
-		ArrowElem = new Elements[NumberOfItems[5]] ;		// [ID]
-		EquipsBonus = new double[NumberOfItems[6]][32] ;	// [ID, Forge level, Life bonus, Mp bonus, PhyAtk bonus, MagAtk bonus, PhyDef bonus, MagDef bonus, Dex bonus, Agi bonus, Crit bonus, Stun bonus, Block bonus, Blood bonus, Poison bonus]
-		EquipsElem = new Elements[NumberOfItems[6]] ;
 		
 		List<String[]> PotionsInput = UtilG.ReadcsvFile(CSVPath + "Potions.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[0] - 1 ; ++i)
@@ -204,20 +228,5 @@ public class Items
 			ItemsElement[i] = ItemsEffectsInput.get(i)[2] ;
 			ItemsEffects[i] = new double[][] {{1, Double.parseDouble(ItemsEffectsInput.get(i)[3]), 0}, {1, Double.parseDouble(ItemsEffectsInput.get(i)[4]), Double.parseDouble(ItemsEffectsInput.get(i)[5])}, {1, Double.parseDouble(ItemsEffectsInput.get(i)[6]), Double.parseDouble(ItemsEffectsInput.get(i)[7])}, {Double.parseDouble(ItemsEffectsInput.get(i)[8]), Double.parseDouble(ItemsEffectsInput.get(i)[9]), Double.parseDouble(ItemsEffectsInput.get(i)[10])}, {Double.parseDouble(ItemsEffectsInput.get(i)[11]), Double.parseDouble(ItemsEffectsInput.get(i)[12]), Double.parseDouble(ItemsEffectsInput.get(i)[13])}, {1, Double.parseDouble(ItemsEffectsInput.get(i)[14]), Double.parseDouble(ItemsEffectsInput.get(i)[15])}, {1, Double.parseDouble(ItemsEffectsInput.get(i)[16]), Double.parseDouble(ItemsEffectsInput.get(i)[17])}} ;			
 		}
-	}
-
-	public static void InitializeStaticVars(String ImagesPath)
-	{		
-		
-		// Equip gifs
-		/*Image SwordGif = UtilG.loadImage(ImagesPath + "Eq0_Sword.gif") ;
-		Image StaffGif = UtilG.loadImage(ImagesPath + "Eq1_Staff.gif") ;
-		Image BowGif = UtilG.loadImage(ImagesPath + "Eq2_Bow.gif") ;
-		Image ClawsGif = UtilG.loadImage(ImagesPath + "Eq3_Claws.gif") ;
-		Image DaggerGif = UtilG.loadImage(ImagesPath + "Eq4_Dagger.gif") ;
-		Image ShieldGif = UtilG.loadImage(ImagesPath + "Eq5_Shield.gif") ;
-		Image ArmorGif = UtilG.loadImage(ImagesPath + "Eq6_Armor.gif") ;
-		Image ArrowGif = UtilG.loadImage(ImagesPath + "Eq7_Arrow.gif") ;
-		EquipGif = new Image[] {SwordGif, StaffGif, BowGif, ClawsGif, DaggerGif, ShieldGif, ArmorGif, ArrowGif} ;*/
 	}
 }
