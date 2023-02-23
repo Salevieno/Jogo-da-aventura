@@ -26,7 +26,7 @@ public class SettingsWindow extends GameWindow
 	
 	public SettingsWindow(Image image, boolean musicIsOn, boolean soundEffectsAreOn, boolean showPlayerRange, int attDisplay, int damageAnimation)
 	{
-		super(image, 3, 0, 6, 0) ;
+		super("Opções", image, 3, 0, 6, 0) ;
 		deeperMenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "settingsDeeperWindow.png") ;
 		this.musicIsOn = musicIsOn ;
 		this.soundEffectsAreOn = soundEffectsAreOn ;

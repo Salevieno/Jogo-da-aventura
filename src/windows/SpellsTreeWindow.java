@@ -31,7 +31,7 @@ public class SpellsTreeWindow extends GameWindow
 	
 	public SpellsTreeWindow(Spell[] spells, int spellPoints, Color textColor)
 	{
-		super(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTreeIcon.png"), 0, 0, 0, 1);
+		super("Árvore de magias", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTreeIcon.png"), 0, 0, 0, 1);
 		this.spells = spells ;
 		this.spellPoints = spellPoints ;
 		this.textColor = textColor ;

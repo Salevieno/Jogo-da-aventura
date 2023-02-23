@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 
 import graphics.DrawingOnPanel;
 import items.Item;
@@ -23,7 +24,7 @@ public class FabWindow extends GameWindow
     
 	public FabWindow()
 	{
-		super(null, 0, 0, 0, 3) ;
+		super("Livro", null, 0, 0, 0, 3) ;
 		image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Book.png") ;
 		//LoadCraftingRecipes() ;
 		//numberWindows = recipes.size() ;
@@ -41,7 +42,7 @@ public class FabWindow extends GameWindow
 		}
 	}
 
-	public void display(ArrayList<Recipe> recipes, Point MousePos, DrawingOnPanel DP)
+	public void display(List<Recipe> recipes, Point MousePos, DrawingOnPanel DP)
 	{
 		Dimension screenSize = Game.getScreen().getSize() ;
 		Color[] ColorPalette = Game.ColorPalette ;

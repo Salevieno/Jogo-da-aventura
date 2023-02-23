@@ -74,9 +74,9 @@ public class Pet extends LiveBeing
 		elem = new Elements[] {Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral} ;
 		mpCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[33])) ;
 		satiationCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[34])) ;
-		moveCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[35])) ;
+		actionCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[35])) ;
 		battleActionCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[36])) ;
-		stepCounter = 0 ;
+		stepCounter = new TimeCounter(0, 20) ;
 		currentAction = null ;
 		combo = new ArrayList<>();
 		
@@ -300,39 +300,7 @@ public class Pet extends LiveBeing
 		}
 		return "" ;
 	}
-	public Point Follow(Point Pos, Point Target, int step, double mindist)
-	{
-		Point pos = new Point(Pos.x, Pos.y) ; // Prevent the method from modifying the original variable Pos
-		step = 1 ;
-		double distY = Math.abs(pos.y - Target.y) ;
-		double distX = Math.abs(pos.x - Target.x) ;
-		if (mindist < pos.distance(Target))
-		{
-			if (distY < distX)
-			{
-				if (pos.x < Target.x)
-				{
-					pos.x += step ;
-				}
-				else
-				{
-					pos.x += -step ;
-				}
-			}
-			else
-			{
-				if (pos.y < Target.y)
-				{
-					pos.y += step ;
-				}
-				else
-				{
-					pos.y += -step ;
-				}
-			}
-		}
-		return pos ;
-	}
+	
 	public boolean closeToPlayer(Point playerPos)
 	{
 		return UtilG.dist(pos, playerPos) <= 40 ;

@@ -66,7 +66,8 @@ public class FieldMap extends GameMap
 	{
 		for (Collectible collectible : collectibles)
 		{
-			if (collectible.getCounter() <= collectible.getDelay()) { collectible.incCounter() ;}
+			collectible.getCounter().inc() ;
+//			if (collectible.getCounter() <= collectible.getDelay()) { }
 		}
 	}
 	
@@ -74,7 +75,7 @@ public class FieldMap extends GameMap
 	{
 		for (Collectible collectible : collectibles)
 		{
-			if (collectible.getCounter() == collectible.getDelay() - 1) { AddCollectibles() ;}
+			if (collectible.getCounter().finished()) { AddCollectibles() ;}
 		}
 	}
 	
@@ -88,10 +89,10 @@ public class FieldMap extends GameMap
 		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
 		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (float)(Game.getSky().height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
 		
-		collectibles.add(new Collectible(0, level, UtilG.RandomPos(minCoord, range, new Dimension(1, 1)), 0, collectibleDelay[0])) ;
-		collectibles.add(new Collectible(1, level, UtilG.RandomPos(minCoord, range, new Dimension(1, 1)), 0, collectibleDelay[1])) ;
-		collectibles.add(new Collectible(2, level, UtilG.RandomPos(minCoord, range, new Dimension(1, 1)), 0, collectibleDelay[2])) ;
-		collectibles.add(new Collectible(3, level, UtilG.RandomPos(minCoord, range, new Dimension(1, 1)), 0, collectibleDelay[3])) ;
+		collectibles.add(new Collectible(0, level, UtilG.RandomPos(minCoord, range, new Dimension(1, 1)), collectibleDelay[0])) ;
+		collectibles.add(new Collectible(1, level, UtilG.RandomPos(minCoord, range, new Dimension(1, 1)), collectibleDelay[1])) ;
+		collectibles.add(new Collectible(2, level, UtilG.RandomPos(minCoord, range, new Dimension(1, 1)), collectibleDelay[2])) ;
+		collectibles.add(new Collectible(3, level, UtilG.RandomPos(minCoord, range, new Dimension(1, 1)), collectibleDelay[3])) ;
 	} 	
 	
  	public void displayCollectibles(DrawingOnPanel DP)
@@ -102,9 +103,8 @@ public class FieldMap extends GameMap
 		}
  	}
 
-	public void displayGroundType()
-	{
-		// TODO display ground type
+//	public void displayGroundType()
+//	{
 //		if (groundType != null)
 //		{
 //			for (int gt = 0 ; gt <= groundType.length - 1 ; gt += 1)
@@ -118,6 +118,6 @@ public class FieldMap extends GameMap
 //				}
 //			}
 //		}
-	}
+//	}
 	 	
 }

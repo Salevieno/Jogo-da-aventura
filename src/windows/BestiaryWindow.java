@@ -23,7 +23,7 @@ public class BestiaryWindow extends GameWindow
 	
 	public BestiaryWindow()
 	{
-		super(null, 0, 0, 0, 0) ;
+		super("Bestiário", null, 0, 0, 0, 0) ;
 		discoveredCreatures = new ArrayList<>() ;
 	}
 	
@@ -40,39 +40,37 @@ public class BestiaryWindow extends GameWindow
 		window = UtilS.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, windowLimit) ;*/
 	}
 	
-	public void displayCreatureInfo(Point windowPos, Player player, CreatureTypes creature, DrawingOnPanel DP)
+	public void displayCreatureInfo(Point windowPos, Player player, CreatureTypes creatureType, DrawingOnPanel DP)
 	{
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String[] text = player.allText.get("* Bestiï¿½rio *") ;
+		String[] text = player.allText.get("* Bestiário *") ;
 		Color textColor = Game.ColorPalette[9] ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
-		int H = (int) (0.5*Game.getScreen().getSize().height) ;
 		int offset = 5 ;
 		int sy = infoFont.getSize() ;
 		
-		windowPos.y += - H ;
-		creature.display(new Point(windowPos.x + 40, windowPos.y + offset), new Scale(1, 1), DP) ;
+		windowPos.y += - (int) (0.5 * Game.getScreen().getSize().height) ;
+		creatureType.display(UtilG.Translate(windowPos, 40, offset), new Scale(1, 1), DP) ;
 		
-		// draw text
 		ArrayList<String> textInfo = new ArrayList<>() ;
-		textInfo.add(text[2] + ": " + creature.getLevel()) ;
-		textInfo.add(text[3] + ": " + (int)creature.getPA().getLife().getCurrentValue()) ;
-		textInfo.add(text[4] + ": " + creature.getPA().getExp().getCurrentValue()) ;
-		textInfo.add(text[5] + ": " + creature.getGold()) ;
+		textInfo.add(text[2] + ": " + creatureType.getLevel()) ;
+		textInfo.add(text[3] + ": " + (int)creatureType.getPA().getLife().getCurrentValue()) ;
+		textInfo.add(text[4] + ": " + creatureType.getPA().getExp().getCurrentValue()) ;
+		textInfo.add(text[5] + ": " + creatureType.getGold()) ;
 		textInfo.add(text[6] + ": ") ;
-		creature.getBag().forEach(item ->
+		creatureType.getBag().forEach(item -> textInfo.add(item.getName())) ;
+
+		// draw text
+		Point textPos = new Point(windowPos.x + offset, (int) (windowPos.y + creatureType.getSize().height + offset)) ;
+		DP.DrawText(textPos, Align.topLeft, angle, creatureType.getName(), namefont, textColor) ;
+		textPos = UtilG.Translate(textPos, 0, sy) ;
+		for (int i = 0 ; i <= text.length - 1 ; i += 1)
 		{
-			textInfo.add(item.getName()) ;
-		});
-		
-		// TODO pegar size da criatura
-//		DP.DrawText(new Point(windowPos.x + offset, (int) (windowPos.y + creature.getSize().height + offset)), Align.topLeft, angle, creature.getPA().getName(), namefont, textColor) ;		// Name
-//		for (int i = 0 ; i <= 5 - 1 ; i += 1)
-//		{
-//			DP.DrawText(new Point(windowPos.x + offset, (int) (windowPos.y + creature.getSize().height + (i + 2) * sy + offset)), Align.topLeft, angle, textInfo.get(i), infoFont, textColor) ;
-//		}
+			textPos = UtilG.Translate(textPos, 0, sy) ;
+			DP.DrawText(textPos, Align.topLeft, angle, textInfo.get(i), infoFont, textColor) ;
+		}
 	}
 	
 	public void display(Player player, Point MousePos, DrawingOnPanel DP)
@@ -97,17 +95,17 @@ public class BestiaryWindow extends GameWindow
 			for (int slot = 0 ; slot <= numSlotsInWindow - 1 ; slot += 1)
 			{
 				// draw slots
-				Point slotCenter = new Point((int) (windowPos.x + slotSize.width / 2 + (slot / numCols) * sx + offset), (int) (windowPos.y + slotSize.height / 2 + (slot % numRows) * sy + offset)) ;
+				Point slotTopLeft = new Point((int) (windowPos.x + (slot / numCols) * sx + offset), (int) (windowPos.y + (slot % numRows) * sy + offset)) ;
+				Point slotCenter = UtilG.Translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
 				DP.DrawRoundRect(slotCenter, Align.center, slotSize, 2, Game.ColorPalette[20], Game.ColorPalette[7], true) ;
 
 				// draw creatures
 				CreatureTypes creatureType = discoveredCreatures.get(slot) ;
-				// TODO pegar size da criatura
-//				double scaleFactor = Math.min((double) (slotSize.width - 10) / creatureType.getSize().width, (double) (slotSize.height - 10) / creatureType.getPA().getSize().height) ;
-//				creatureType.display(slotCenter, new Scale(scaleFactor, scaleFactor), DP) ;
+				double scaleFactor = Math.min((double) (slotSize.width - 10) / creatureType.getSize().width, (double) (slotSize.height - 10) / creatureType.getSize().height) ;
+				creatureType.display(slotCenter, new Scale(scaleFactor, scaleFactor), DP) ;
 				
 				// determine if a creature is selected
-				if (UtilG.isInside(MousePos, slotCenter, slotSize))
+				if (UtilG.isInside(MousePos, slotTopLeft, slotSize))
 				{
 					selectedCreature = creatureType ;
 				}

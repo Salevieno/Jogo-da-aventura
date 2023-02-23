@@ -10,7 +10,7 @@ import java.util.Arrays ;
 import java.util.HashMap;
 import java.util.Map;
 
-import components.Buildings;
+import components.Building;
 import components.Items;
 import components.NPCs;
 import components.Quests;

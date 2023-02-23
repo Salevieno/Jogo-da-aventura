@@ -18,7 +18,7 @@ public class MapWindow extends GameWindow
 {
 	public MapWindow()
 	{
-		super(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "MapWindow.png"), 0, 0, 0, 0) ;
+		super("Mapa", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "MapWindow.png"), 0, 0, 0, 0) ;
 	}
 	
 	public void display(GameMap playerMap, DrawingOnPanel DP)

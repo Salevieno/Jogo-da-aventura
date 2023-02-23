@@ -10,7 +10,7 @@ import java.util.Objects;
 
 import javax.sound.sampled.Clip;
 
-import components.Buildings;
+import components.Building;
 import components.NPCs;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
@@ -34,8 +34,8 @@ public class GameMap
 	private int[] CollectibleCounter ;	// [Berry, herb, wood, metal]
     private int[] CollectibleDelay ;	// [Berry, herb, wood, metal]
 	protected List<MapElements> mapElem ;
-	public List<Buildings> building ;
-	public List<NPCs> npc ;
+	public List<Building> buildings ;
+	public List<NPCs> npcs ;
 	
 	
 	//public static int[] MusicID = new int[] {0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 11, 11, 11, 11, 11, 11} ;  	 
@@ -79,14 +79,14 @@ public class GameMap
 28	Sign	3	0.09	0.54
 29	Sign	4	0.7	0.26
 	 * */
-	public GameMap(String Name, int Continent, int[] Connections, Image image, Clip music, List<Buildings> building, List<NPCs> npc)
+	public GameMap(String Name, int Continent, int[] Connections, Image image, Clip music, List<Building> building, List<NPCs> npc)
 	{
 		this.Name = Name ;
 		this.Continent = Continent ;
 		this.image = image ;
 		this.music = music ;
-		this.building = building ;
-		this.npc = npc ;
+		this.buildings = building ;
+		this.npcs = npc ;
 		this.Connections = Connections ;
 		
 		mapElem = new ArrayList<MapElements>() ;
@@ -105,8 +105,8 @@ public class GameMap
 	public int[] getCollectibleDelay() {return CollectibleDelay ;}
 	public List<MapElements> getMapElem() {return mapElem ;}
 	//public ArrayList<CreatureTypes> getCreatureTypes() {return creatureTypes ;}
-	public List<NPCs> getNPCs() {return npc ;}
-	public List<Buildings> getBuildings() {return building ;}
+	public List<NPCs> getNPCs() {return npcs ;}
+	public List<Building> getBuildings() {return buildings ;}
 	public Continents getContinentName(Player player)
 	{ 
 		return Continents.getAll()[Continent + 1] ;
@@ -285,40 +285,23 @@ public class GameMap
  	
  	public void displayBuildings(Point playerPos, DrawingOnPanel DP)
  	{
- 		//Color[] colorPalette = Game.ColorPalette ;
-		//int[][] NPCsInBuildings = Uts.NPCsInBuildings(npc, building, id, BuildingsInCity) ;
-		//Font font = new Font("SansSerif", Font.BOLD, 13) ;
-		if (building != null)
+		if (buildings == null) { return ;}
+		
+		for (Building building : buildings)
 		{
-			for (int b = 0 ; b <= building.size() - 1 ; b += 1)
-			{
-				building.get(b).display(playerPos, DrawingOnPanel.stdAngle, new Scale(1, 1), DP) ;
-			}
-			
-			//TODO essa � uma fun��o da sign building
-			//player.allText.get("* Mensagem das placas *") ;
-			/*Point SignPos = UtilS.BuildingPos(building, id, "Sign") ;
-			if (building[5].playerIsInside(playerPos))
-			{			
-				int[][] SignTextPos = new int[][] {{SignPos.x - 200, SignPos.y - 150}, {SignPos.x + 50, SignPos.y - 50}, {SignPos.x + 50, SignPos.y - 50}, {SignPos.x + 100, SignPos.y - 50}, {SignPos.x - 540, SignPos.y - 50}} ;
-				Point Pos = new Point(SignTextPos[id][0], SignTextPos[id][1]) ;			
-				//Size menuSize = new Size((int)(0.25*Utg.TextL(AllText[id + 1], font, G)), (int)(7*Utg.TextH(font.getSize()))) ;
-				Size menuSize = new Size(200, 200) ;
-				DP.DrawRoundRect(Pos, "TopLeft", menuSize, 3, colorPalette[4], colorPalette[4], true) ;			
-				DP.DrawFitText(new Point(Pos.x + 10, Pos.y - (int)(5.5*UtilG.TextH(font.getSize()))), UtilG.TextH(font.getSize()), "BotLeft", signMessage[id + 1], font, 35, colorPalette[5]) ;		
-			}*/
+			building.display(playerPos, DrawingOnPanel.stdAngle, new Scale(1, 1), DP) ;
 		}
  	}
 	
 	public void displayNPCs(DrawingOnPanel DP)
 	{
-		if (npc != null)	// Map has NPCs
+		if (npcs != null)	// Map has NPCs
 		{
-			for (int i = 0 ; i <= npc.size() - 1 ; i += 1)
+			for (int i = 0 ; i <= npcs.size() - 1 ; i += 1)
 			{
 				//if (NPCsInMap.get(i).getPosRelToBuilding().equals("Outside"))
 				//{
-					npc.get(i).display(DP) ;		
+					npcs.get(i).display(DP) ;		
 				//}
 			}
 		}
@@ -347,9 +330,9 @@ public class GameMap
 				&& Arrays.equals(CollectibleDelay, other.CollectibleDelay) && CollectibleLevel == other.CollectibleLevel
 				&& Arrays.equals(Connections, other.Connections) && Continent == other.Continent
 				&& Objects.equals(Name, other.Name) && Arrays.deepEquals(Type, other.Type)
-				&& Objects.equals(building, other.building) && Arrays.deepEquals(groundType, other.groundType)
+				&& Objects.equals(buildings, other.buildings) && Arrays.deepEquals(groundType, other.groundType)
 				&& Objects.equals(image, other.image) && Objects.equals(mapElem, other.mapElem)
-				&& Objects.equals(music, other.music) && Objects.equals(npc, other.npc);
+				&& Objects.equals(music, other.music) && Objects.equals(npcs, other.npcs);
 	}
 	
 	@Override
@@ -362,7 +345,7 @@ public class GameMap
 		result = prime * result + Arrays.hashCode(Connections);
 		result = prime * result + Arrays.deepHashCode(Type);
 		result = prime * result + Arrays.deepHashCode(groundType);
-		result = prime * result + Objects.hash(CollectibleLevel, Continent, Name, building, image, mapElem, music, npc);
+		result = prime * result + Objects.hash(CollectibleLevel, Continent, Name, buildings, image, mapElem, music, npcs);
 		return result;
 	}
 
@@ -409,6 +392,16 @@ public class GameMap
 		}
 		
 		return true ;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "GameMap [Name=" + Name + ", Continent=" + Continent + ", Connections=" + Arrays.toString(Connections)
+				+ ", image=" + image + ", music=" + music + ", Type=" + Arrays.toString(Type) + ", groundType="
+				+ Arrays.toString(groundType) + ", CollectibleLevel=" + CollectibleLevel + ", CollectibleCounter="
+				+ Arrays.toString(CollectibleCounter) + ", CollectibleDelay=" + Arrays.toString(CollectibleDelay)
+				+ ", mapElem=" + mapElem + ", buildings=" + buildings + ", npcs=" + npcs + "]";
 	}
 
 	/*public void CreateCollectible(int MapID, int CollectibleID)

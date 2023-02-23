@@ -166,7 +166,10 @@ public class SideBar
 //			DP.DrawText(icon.getPos(), Align.bottomLeft, stdAngle, IconKey[0], font, TextColor) ;
 //		}
 		
-		icons.forEach(icon -> icon.display(stdAngle, Align.topLeft, mousePos, DP));	// TODO desenhar as icon keys
+		icons.forEach(icon -> {
+			icon.display(stdAngle, Align.topLeft, mousePos, DP) ;
+			if (IconKey[icon.getid()] != null) { DP.DrawText(icon.getPos(), Align.bottomLeft, stdAngle, IconKey[icon.getid()], font, TextColor) ;}
+		});
 		/*for (int i = 0 ; i <= icons.length - 1; i += 1)
 		{
 			if (IconKey[i] != null)

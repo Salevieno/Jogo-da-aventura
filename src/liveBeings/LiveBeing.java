@@ -33,26 +33,26 @@ public abstract class LiveBeing
 	protected int level;
 	//private int continent ;
 	protected GameMap map ;
-	protected Point pos ;					// bottomCenter of the liveBeing
-	protected Directions dir ;				// direction of the movement
-	protected LiveBeingStates state ;		// current state
+	protected Point pos ;						// bottomCenter of the liveBeing
+	protected Directions dir ;					// direction of the movement
+	protected LiveBeingStates state ;			// current state
 	protected Dimension size ;
-	protected double range ;
+	protected int range ;
 	protected int step ;
 	protected Elements[] elem ;					// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
 	protected TimeCounter mpCounter ;
 	protected TimeCounter satiationCounter ;
-	protected TimeCounter moveCounter ;
+	protected TimeCounter actionCounter ;
 	protected TimeCounter battleActionCounter ;
 	protected TimeCounter displayDamage ;
-	protected int stepCounter ;					// counts the steps in the movement	TODO -> TimeCounter ? (n�o � tempo, � step)
+	protected TimeCounter stepCounter ;			// counts the steps in the movement
 	protected String currentAction ;
-	protected List<String> combo ;			// record of the last 10 movements
+	protected List<String> combo ;				// record of the last 10 movements
 	protected List<Spell> spells ;
 	
-	protected PersonalAttributes PA ;		// Personal attributes
-	protected BattleAttributes BA ;			// Battle attributes
-	protected MovingAnimations movingAni ;	// Moving animations
+	protected PersonalAttributes PA ;				// Personal attributes
+	protected BattleAttributes BA ;					// Battle attributes
+	protected MovingAnimations movingAni ;			// Moving animations
 	protected PlayerAttributesWindow attWindow ;	// Attributes window
 	
 	public static final Image[] StatusImages = new Image[] {
@@ -125,10 +125,10 @@ public abstract class LiveBeing
 	public String getCurrentAction() {return currentAction ;}
 	public TimeCounter getMpCounter() {return mpCounter ;}
 	public TimeCounter getSatiationCounter() {return satiationCounter ;}
-	public TimeCounter getMoveCounter() {return moveCounter ;}
+	public TimeCounter getMoveCounter() {return actionCounter ;}
 	public TimeCounter getBattleActionCounter() {return battleActionCounter ;}
 	public TimeCounter getDisplayDamage() {return displayDamage ;}
-	public int getStepCounter() {return stepCounter ;}
+	public TimeCounter getStepCounter() {return stepCounter ;}
 	public List<String> getCombo() {return combo ;}
 	public List<Spell> getSpells() {return spells ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
@@ -142,7 +142,7 @@ public abstract class LiveBeing
 	public void setState(LiveBeingStates newValue) {state = newValue ;}
 	public void setPos(Point newValue) {pos = newValue ;}
 	public void setSize(Dimension newValue) {size = newValue ;}
-	public void setRange(double newValue) {range = newValue ;}
+	public void setRange(int newValue) {range = newValue ;}
 	public void setStep(int newValue) {step = newValue ;}
 	public void setCombo(ArrayList<String> newValue) {combo = newValue ;}
 	
@@ -158,7 +158,7 @@ public abstract class LiveBeing
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		DP.DrawRoundRect(pos, Align.center, size, 1, Game.ColorPalette[8], Game.ColorPalette[8], true);
 		if (combo == null) {DP.DrawText(pos, Align.center, 0, "null", font, Game.ColorPalette[9]) ;}
-		else if (0 < combo.size()) { DP.DrawText(pos, Align.center, 0, combo.get(0).toString(), font, Game.ColorPalette[9]) ;}		
+		else if (0 < combo.size()) { DP.DrawText(pos, Align.center, 0, state.toString(), font, Game.ColorPalette[9]) ;}		
 	}
 	
 	public Point CalcNewPos()
@@ -187,7 +187,7 @@ public abstract class LiveBeing
 		}*/
 		mpCounter.inc() ;
 		satiationCounter.inc() ;
-		moveCounter.inc() ;
+		actionCounter.inc() ;
 	}
 	public void activateCounters()
 	{
@@ -224,16 +224,14 @@ public abstract class LiveBeing
 	public List<Spell> GetActiveSpells()
 	{
 		List<Spell> activeSpells = new ArrayList<Spell>() ;
-		for (int i = 0 ; i <= spells.size() - 1 ; i += 1)
+		for (Spell spell : spells)
 		{
-			if (spells.get(i).getType() != null)	// TODO every spell should have a type, update input file
+			if (!spell.getType().equals(SpellTypes.passive) & 0 < spell.getLevel())
 			{
-				if (!spells.get(i).getType().equals(SpellTypes.passive) & 0 < spells.get(i).getLevel())
-				{
-					activeSpells.add(spells.get(i)) ;
-				}
+				activeSpells.add(spell) ;
 			}
 		}
+		
 		return activeSpells ;
 	}
 	
@@ -282,10 +280,10 @@ public abstract class LiveBeing
 		return null ;
 	}
 	
-	public void ActivateBattleActionCounters()
-	{
-		// TODO battle action counters
-	}
+//	public void ActivateBattleActionCounters()
+//	{
+//		
+//	}
 //	public void displayDamageTaken(AtkResults atkResults, int animationStyle, DrawingOnPanel DP)
 //	{
 //		System.out.println(displayDamage);
@@ -302,6 +300,28 @@ public abstract class LiveBeing
 //		}
 //	}
 		
+	public Point Follow(Point Pos, Point Target, int step, int minDist)
+	{
+		Point pos = new Point(Pos) ;
+		step = 1 ;
+		double distY = Math.abs(pos.y - Target.y) ;
+		double distX = Math.abs(pos.x - Target.x) ;
+		
+		if (minDist < pos.distance(Target)) { return pos ;}
+		
+		if (distY < distX)
+		{
+			if (pos.x < Target.x) { return new Point(pos.x + step, pos.y) ;}
+			
+			return new Point(pos.x - step, pos.y) ;
+		}
+		
+		if (pos.y < Target.y) { return new Point(pos.x, pos.y + step) ;}
+		
+		return new Point(pos.x, pos.y - step) ;
+
+	}
+	
 	public abstract AtkResults useSpell(Spell spell, LiveBeing receiver) ;
 	
 	public void ActivateDef()

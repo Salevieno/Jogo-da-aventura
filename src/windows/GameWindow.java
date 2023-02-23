@@ -5,7 +5,7 @@ import java.awt.Image;
 
 public class GameWindow
 {
-	// TODO add name and use as title
+	protected String name ;
 	protected Image image ;
 	protected boolean isOpen ;
 	protected int menu ;
@@ -18,8 +18,9 @@ public class GameWindow
 	protected int numberWindows ;
 	protected Dimension size ;
 	
-	public GameWindow(Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
+	public GameWindow(String name, Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
 	{
+		this.name = name ;
 		this.image = image ;
 		this.numberMenus = numberMenus ;
 		this.numberTabs = numberTabs ;
@@ -30,14 +31,7 @@ public class GameWindow
 		tab = 0 ;
 		item = 0 ;
 		window = 0 ;
-		if (image != null)
-		{
-			size = new Dimension(image.getWidth(null), image.getHeight(null)) ;
-		}
-		else
-		{
-			size = new Dimension(0, 0) ;
-		}
+		size = image != null ? new Dimension(image.getWidth(null), image.getHeight(null)) : new Dimension(0, 0) ;
 	}
 	public boolean isOpen() {return isOpen ;}
 	public int getMenu() {return menu ;}
@@ -46,15 +40,9 @@ public class GameWindow
 	public int getItem() {return item ;}
 	public void setItem(int newValue) {item = newValue ;}
 	
-	public void open()
-	{
-		isOpen = !isOpen ;	
-	}
+	public void open() { isOpen = !isOpen ;}
 	
-	public void close()
-	{
-		isOpen = false ;	
-	}
+	public void close() { isOpen = false ;}
 	
 	public void menuUp()
 	{
@@ -116,29 +104,4 @@ public class GameWindow
 		}
 	}
 	
-	/*public void drawGenericWindow(DrawPrimitives DP)
-	{
-		Size screenDim = Game.getScreen().getSize() ;
-		Point pos = new Point((int) (0.5 * screenDim.x), (int) (0.5 * screenDim.y)) ;
-		Font font = new Font("SansSerif", Font.BOLD, screenDim.x * screenDim.y / 3500) ;
-		String Title = "Janela gen�rica" ;
-		Size size = new Size((int)(0.3*screenDim.x), (int)(3*UtilG.TextH(font.getSize()))) ;
-		Point windowCenter = new Point((int) (pos.x + 0.5*screenDim.x), (int) (pos.y - screenDim.y - 0.5*3*UtilG.TextH(font.getSize()))) ;
-		DP.DrawRoundRect(pos, "TopLeft", size, 3, Game.ColorPalette[7], Game.ColorPalette[2], true) ;
-		DP.DrawText(windowCenter, "Center", DrawPrimitives.OverallAngle, Title, font, Game.ColorPalette[9]) ;
-	}
-	
-	public void display(DrawPrimitives DP)
-	{
-		if (image != null)
-		{
-			Size screenDim = Game.getScreen().getSize() ;
-			Point pos = new Point((int) (0.5 * screenDim.x), (int) (0.5 * screenDim.y)) ;
-			DP.DrawImage(image, pos, "Center") ;
-		}
-		else
-		{
-			drawGenericWindow(DP) ;
-		}
-	}*/
 }

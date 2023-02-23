@@ -35,7 +35,7 @@ import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import components.BuildingType;
-import components.Buildings;
+import components.Building;
 import components.GameIcon;
 import components.NPCJobs;
 import components.NPCType;
@@ -45,6 +45,7 @@ import components.Quests;
 import components.SpellTypes;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
+import graphics.Gif;
 import items.Alchemy;
 import items.Arrow;
 import items.Equip;
@@ -114,7 +115,7 @@ public class Game extends JPanel
 	private Pet pet ;
 	private Creature[] creature ;
 	//private ArrayList<Recipe> allRecipes ;
-	private List<Projectiles> proj ;
+	private List<Projectiles> projs ;
 	public static int difficultLevel ;
 
 	private static Screen screen ;
@@ -133,6 +134,7 @@ public class Game extends JPanel
 	//private static NPCs[] allNPCs ;
 	private static Quests[] allQuests ;
 	private static Battle bat ;
+	private static Gif[] allGifs ;
 	private static Animations[] ani ;
 	
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
@@ -353,6 +355,7 @@ public class Game extends JPanel
 			LiveBeingStatus status = new LiveBeingStatus() ;
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, status) ;
 						
+			// TODO spells para as criaturas
 			List<Spell> spell = new ArrayList<>() ;
 			spell.add(new Spell(allSpellTypes[0])) ;
 			spell.add(new Spell(allSpellTypes[1])) ;
@@ -373,7 +376,7 @@ public class Game extends JPanel
 			String name = input.get(ct)[1 + language.ordinal()] ;
 			int level = Integer.parseInt(input.get(ct)[3]) ;
 			Dimension size = new Dimension(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;	
-			double range = Double.parseDouble(input.get(ct)[7]) * diffMult ;
+			int range = (int) (Integer.parseInt(input.get(ct)[7]) * diffMult) ;
 			int step = Integer.parseInt(input.get(ct)[48]) ;
 			Elements[] elem = new Elements[] {Elements.valueOf(input.get(ct)[35])} ;
 			int mpDuration = Integer.parseInt(input.get(ct)[49]) ;
@@ -414,7 +417,7 @@ public class Game extends JPanel
 			
 			
 			// adding buildings top map
-			List<Buildings> buildings = new ArrayList<>() ;
+			List<Building> buildings = new ArrayList<>() ;
 			for (int i = 0; i <= 6 - 1; i += 1)
 			{
 				String buildingName = input.get(id)[10 + 3 * i] ;
@@ -431,7 +434,7 @@ public class Game extends JPanel
 				int buildingPosY = (int) (sky.height + screen.getSize().height * Double.parseDouble(input.get(id)[12 + 3 * i])) ;
 				Point buildingPos = new Point(buildingPosX, buildingPosY) ;
 				
-				buildings.add(new Buildings(buildingType, buildingPos)) ;
+				buildings.add(new Building(buildingType, buildingPos)) ;
 			}
 
 			
@@ -467,10 +470,15 @@ public class Game extends JPanel
     	String path = ImagesPath + "\\Maps\\";
     	FieldMap[] fieldMap = new FieldMap[input.size()] ;
 		
-    	// TODO mapas 39 e 64 est�o entrando como fieldmaps e specialmaps
-		for (int id = 0 ; id <= fieldMap.length - 1 ; id += 1)
+    	int mod = 0 ;
+		for (int id = 0 ; id <=  fieldMap.length - 1 ; id += 1)
 		{
+			int mapID = id + cityMaps.length ;
+			
 			String name = input.get(id)[0] ;
+			
+			if (name.contains("Special")) { mod += 1 ;}
+			
 			int continent = Integer.parseInt(input.get(id)[1]) ;
 			int collectibleLevel = Integer.parseInt(input.get(id)[2]) ;
 			int berryDelay = Integer.parseInt(input.get(id)[3]) ;
@@ -498,9 +506,10 @@ public class Game extends JPanel
 											Integer.parseInt(input.get(id)[22]),
 											Integer.parseInt(input.get(id)[23]),
 											Integer.parseInt(input.get(id)[24])
-											} ;
-			Image image = UtilG.loadImage(path + "Map" + String.valueOf(id + cityMaps.length) + ".png") ;
+											} ;			
+			Image image = UtilG.loadImage(path + "Map" + String.valueOf(mapID + mod) + ".png") ;
 			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
+			
 			fieldMap[id] = new FieldMap(name, continent, Connections, image, music, collectibleLevel, new int[] {berryDelay, herbDelay, woodDelay, metalDelay}, creatureIDs) ;
 		}
 		
@@ -590,7 +599,6 @@ public class Game extends JPanel
  	
     private SpellType[] initializeSpellTypes(Languages language)
     {
-    	// TODO check spelltypes csv elements names
     	List<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;	
     	SpellType[] allSpellTypes = new SpellType[spellTypesInput.size()] ;
     	List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
@@ -614,7 +622,6 @@ public class Game extends JPanel
 				}
 				if (att.equals(Attributes.blood) | att.equals(Attributes.poison))
 				{
-					// TODO ajustar o csv e fazer a leitura correta
 					percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
 					valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
 					chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
@@ -635,7 +642,7 @@ public class Game extends JPanel
 			String Name = spellTypesInput.get(ID)[4] ;
 			int MaxLevel = Integer.parseInt(spellTypesInput.get(ID)[5]) ;
 			int MpCost = Integer.parseInt(spellTypesInput.get(ID)[6]) ;
-			SpellTypes Type = SpellTypes.getByName(spellTypesInput.get(ID)[7]) ;
+			SpellTypes Type = SpellTypes.valueOf(spellTypesInput.get(ID)[7]) ;
 			Map<SpellType, Integer> preRequisites = new HashMap<>() ;
 			for (int p = 0 ; p <= 6 - 1 ; p += 2)
 			{
@@ -735,6 +742,8 @@ public class Game extends JPanel
 				creature.IncActionCounters() ;
 				creature.getBA().getStatus().decreaseStatus() ;
 			});
+			
+			fm.IncCollectiblesCounter() ;
 		}
 		
 		if (player.isInBattle())
@@ -742,11 +751,6 @@ public class Game extends JPanel
 			player.IncBattleActionCounters() ;
 			pet.IncBattleActionCounters() ;
 			player.getOpponent().IncBattleActionCounters() ;
-		}
-
-		for (FieldMap fieldMap : fieldMaps)
-		{
-			if (player.getMap().equals(fieldMap)) { fieldMap.IncCollectiblesCounter() ;}
 		}
 	}
 	
@@ -761,23 +765,15 @@ public class Game extends JPanel
 				//pet.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
 			}
 		}
-//		if (!player.getMap().IsACity())
-//		{
-//			if (player.getMap() instanceof FieldMap)
-//			{
-//				FieldMap fm = (FieldMap) player.getMap() ;
-//				for (Creature creature : fm.getCreatures())
-//				{
-//					if (!ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(18))	// TODO define which animations stop the run
-//					{
-//						creature.ActivateActionCounters() ;
-//					}
-//				}
-//			}
-//		}
-		for (FieldMap fieldMap : fieldMaps)
+		if (player.getMap() instanceof FieldMap)
 		{
-			fieldMap.ActivateCollectiblesCounter() ;
+			FieldMap fm = (FieldMap) player.getMap() ;
+			for (Creature creature : fm.getCreatures())
+			{
+//				creature.ActivateActionCounters() ;
+			}
+			
+			fm.ActivateCollectiblesCounter() ;
 		}
 	}
 	
@@ -959,7 +955,7 @@ public class Game extends JPanel
 		
 		
 		// move the active projectiles and check if they collide with something
-		if (proj != null)
+		if (projs != null)
 		{
 			List<Creature> creaturesInMap = new ArrayList<>() ;
 			if (!player.getMap().IsACity())
@@ -967,18 +963,20 @@ public class Game extends JPanel
 				FieldMap fm = (FieldMap) player.getMap() ;
 				creaturesInMap = fm.getCreatures() ;
 			}
-			for (int p = 0 ; p <= proj.size() - 1 ; p += 1)
+			for (Projectiles proj : projs)
 			{
-				proj.get(p).go(player, creaturesInMap, pet, DP) ;
-				if (proj.get(0).collidedwith(player, creaturesInMap, pet) != - 3)	// if the projectile has hit something
+				proj.go(player, creaturesInMap, pet, DP) ;
+				if (proj.collidedwith(player, creaturesInMap, pet) != - 3)	// if the projectile has hit some live being
 				{
-					proj.remove(p) ;
+					projs.remove(proj) ;
 				}
 			}
 		}
 		
 		player.resetAction() ;
 
+//		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
+		
     	for (int i = 0 ; i <= ani.length - 1 ; i += 1) { ani[i].run(i, DP) ;}
 	}
 			
@@ -1008,8 +1006,7 @@ public class Game extends JPanel
 		initializeIcons(screen.getSize()) ;
 		//allRecipes = LoadCraftingRecipes() ;
 		NPCTypes = initializeNPCTypes(GameLanguage) ;
-		buildingTypes = initializeBuildingTypes() ;
-		
+		buildingTypes = initializeBuildingTypes() ;		
 		cityMaps = initializeCityMaps() ;
 		fieldMaps = initializeFieldMaps() ;
 		specialMaps = initializeSpecialMaps() ;
@@ -1018,12 +1015,15 @@ public class Game extends JPanel
 		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
 		System.arraycopy(specialMaps, 0, allMaps, cityMaps.length + fieldMaps.length, specialMaps.length) ;
+		
+    	Pterodactile.setMessage(player.allText.get("* Pterodactile *")) ;
+    	sideBar = new SideBar(player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
+    	bat = new Battle() ;
+		
 		pet = new Pet((int) (4 * Math.random())) ;
     	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
     	pet.setPos(player.getPos());
-    	sideBar = new SideBar(player.getMovingAni().idleGif, pet.getMovingAni().idleGif) ;
-    	bat = new Battle() ;
-    	
+
     	player.InitializeSpells() ;
     	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
     	player.setMap(cityMaps[1]) ;
@@ -1065,12 +1065,15 @@ public class Game extends JPanel
     	//player.ApplyBuffsAndNerfs("deactivate", "", 0, player.getSpell().get(0).getBuffs().get(0), 0, false);
     	System.out.println("\nbuff deactivated");
     	System.out.println(player.getLife());*/
-    	
+    	player.addQuest(allQuests[0]) ;
+    	player.addQuest(allQuests[5]) ;
+    	player.addQuest(allQuests[6]) ;
+    	player.addQuest(allQuests[7]) ;
+    	player.getQuest().get(0).activate() ;
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
         	player.bestiary.addDiscoveredCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
     	}
-    	Pterodactile.setMessage(player.allText.get("* Pterodactile *")) ;
     	/*System.out.println(player.getBag().getPotions()) ;
     	player.getBag().Add(Potion.getAll()[0], 4) ;
     	player.getBag().Add(Alchemy.getAll()[0], 1) ;
@@ -1082,7 +1085,16 @@ public class Game extends JPanel
     	if (player.getSettings().getMusicIsOn())
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
-		}    	
+		}
+    	
+    	
+    	
+    	Battle.knockback(new Point(200, 200), new Point(210, 220), 10) ;
+    	
+    	allGifs = new Gif[2] ;
+    	allGifs[0] = Player.TentGif ;
+    	
+    	Player.TentGif.play(mousePos, Align.center, DP) ;
 	}
 	
 	private void testing()

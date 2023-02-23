@@ -55,7 +55,7 @@ public class BagWindow extends GameWindow
 			Map<Food, Integer> food, Map<Arrow, Integer> arrow, Map<Equip, Integer> equip, Map<GeneralItem, Integer> genItem,
 			Map<Fab, Integer> fab, Map<QuestItem, Integer> quest)
 	{
-		super(null, 10, 2, 0, 0) ;
+		super("Mochila", null, 10, 2, 0, 0) ;
 		this.pot = pot ;
 		this.alch = alch ;
 		this.forge = forge ;

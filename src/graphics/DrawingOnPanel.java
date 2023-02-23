@@ -16,7 +16,6 @@ import java.util.Map;
 import components.GameIcon;
 import components.Items;
 import components.NPCs;
-import items.Equip;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.AtkResults;
@@ -29,7 +28,6 @@ import utilities.AttackEffects;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
-import utilities.UtilS;
 
 public class DrawingOnPanel 
 {
@@ -40,7 +38,7 @@ public class DrawingOnPanel
 	private static Color[] colorPalette = Game.ColorPalette;
 	private Dimension screenSize = Game.getScreen().getSize() ;
 	private static Image menuWindow = UtilG.loadImage(Game.ImagesPath + "MenuWindow.png") ;
-	private static Image buttonGeneral = UtilG.loadImage(Game.ImagesPath + "ButtonGeneral.png") ;
+//	private static Image buttonGeneral = UtilG.loadImage(Game.ImagesPath + "ButtonGeneral.png") ;
 	private static Image ArrowIconImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "ArrowIcon.png") ;
 	public static Image[] ElementImages = new Image[] {
 			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementNeutral.png"),
@@ -64,8 +62,6 @@ public class DrawingOnPanel
 		this.G = G ;
 	}
 
-	// TODO fix rotation
-	
 	// primitive methods
 	public void DrawImage(Image image, Point pos, Align align)
 	{       
@@ -90,31 +86,27 @@ public class DrawingOnPanel
 		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
 		Point offset = UtilG.OffsetFromPos(align, size) ;
 		AffineTransform backup = G.getTransform() ;
-		//G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;	 // Rotate image
+		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;
+		
 		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
-		//G.setTransform(backup) ;
+		
+		G.setTransform(backup) ;
 	}
-	public void DrawImage(Image image, Point pos, double angle, Scale scale, boolean mirrorX, boolean mirrorY, Align align, double alpha)
+	public void DrawImage(Image image, Point pos, double angle, Scale scale, boolean flipH, boolean flipV, Align align, double alpha)
 	{       
 		if (image == null) { System.out.println("Tentando desenhar imagem nula") ; return ; }
 		
 		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
+		size = new Dimension (!flipH ? 1 : -1 * size.width, !flipV ? 1 : -1 * size.height) ;
 		Point offset = UtilG.OffsetFromPos(align, size) ;
-		int[] m = new int[] {1, 1} ;
-		if (mirrorX)
-		{
-			m[0] = -1 ;
-		}
-		if (mirrorY)
-		{
-			m[1] = -1 ;
-		}			
 		AffineTransform backup = G.getTransform() ;
-		//G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;	 // Rotate image
+		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
 		G.setComposite(AlphaComposite.SrcOver.derive((float) alpha)) ;
-		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, m[0] * size.width, m[1] * size.height, null) ;
+		
+		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
+		
 		G.setComposite(AlphaComposite.SrcOver.derive((float) 1.0)) ;
-        //G.setTransform(backup) ;
+        G.setTransform(backup) ;
 	}
 	public void DrawGif(Image gif, Point pos, Align align)
 	{
@@ -130,9 +122,11 @@ public class DrawingOnPanel
 		AffineTransform backup = G.getTransform() ;		
 		G.setColor(color) ;
 		G.setFont(font) ;
-		//G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;	// Rotate text
+		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
+		
 		G.drawString(text, pos.x + offset.x, pos.y + offset.y + size.height) ;
-        //G.setTransform(backup) ;
+        
+		G.setTransform(backup) ;
 	}
 	public void DrawFitText(Point pos, int sy, Align align, String text, Font font, int maxLength, Color color)
 	{
@@ -154,7 +148,10 @@ public class DrawingOnPanel
 			text.getChars(0, maxLength - 4, chararray, 0) ;
 			shortText = String.valueOf(chararray) ;
 		}
-		if (text.length() <= maxLength | UtilG.isInside(mousePos, new Point(pos.x + offset.x, pos.y + offset.y), new Dimension(UtilG.TextL(shortText, font, G), UtilG.TextH(font.getSize()))))
+		
+		Point topLeftPos = UtilG.Translate(pos, offset.x, offset.y) ;
+		Dimension textSize = new Dimension(UtilG.TextL(shortText, font, G), UtilG.TextH(font.getSize())) ;
+		if (text.length() <= maxLength | UtilG.isInside(mousePos, topLeftPos, textSize))
 		{
 			DrawText(pos, align, stdAngle, text, font, color) ;
 		}
@@ -167,7 +164,9 @@ public class DrawingOnPanel
 	{
 		G.setColor(color) ;
 		G.setStroke(new BasicStroke(stroke)) ;
+		
 		G.drawLine(p1.x, p1.y, p2.x, p2.y) ;
+		
 		G.setStroke(new BasicStroke(stdStroke)) ;
         //Ut.CheckIfPosIsOutsideScreen(new int[] {x[0], y[0]}, new int[] {ScreenL + 55, ScreenH + 19}, "A line is being drawn outside window") ;
 		//Ut.CheckIfPosIsOutsideScreen(new int[] {x[1], y[1]}, new int[] {ScreenL + 55, ScreenH + 19}, "A line is being drawn outside window") ;
@@ -245,25 +244,6 @@ public class DrawingOnPanel
 	
 	
 	// composed methods
-	public void DrawMenuWindow(Point Pos, Scale scale, String Title, int type, Color color1, Color color2)
-	{
-		DrawImage(menuWindow, Pos, scale, Align.topLeft) ;
-		/*if (type == 0)
-		{
-			DrawRoundRect(Pos, alignPoints.topLeft, size, 3, color1, color2, true) ;
-			if (Title != null)
-			{
-				Font font = new Font("SansSerif", Font.BOLD, size.x * size.y / 3500) ;
-				Point WindowPos = new Point((int) (Pos.x + 0.5 * size.x), (int) (Pos.y - size.y - 0.5*3*UtilG.TextH(font.getSize()))) ;
-				Color TextColor = ColorPalette[9] ;
-				DrawRoundRect(WindowPos, alignPoints.center, new Size((int)(0.6 * size.x), (int)(3*UtilG.TextH(font.getSize()))), 3, color1, color2, true) ;
-				DrawText(WindowPos, alignPoints.center, OverallAngle, Title, font, TextColor) ;
-			}
-		}
-		if (type == 1)
-		{
-		}*/
-	}
 	public void DrawSpeech(Point Pos, String text, Font font, Image NPCimage, Image SpeakingBubble, Color color)
 	{
 		// obs: text must end with . , ? or ! for this function to work
@@ -282,6 +262,7 @@ public class DrawingOnPanel
 		int sy = UtilG.TextH(font.getSize() + 1) ;
 		DrawFitText(pos, sy, Align.topLeft, text, font, maxTextL, color) ;		
 	}
+	
 	public void DrawWindowArrows(Point Pos, int L, int SelectedWindow, int MaxWindow)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
@@ -298,6 +279,7 @@ public class DrawingOnPanel
 			DrawText(RightArrowPos, Align.topRight, stdAngle, Player.ActionKeys[3], font, colorPalette[5]) ;		
 		}
 	}
+	
 	public void DrawOrganogram(int[] Sequence, Point Pos, int sx, int sy, Dimension size, String[][] Text1, String[] Text2, GameIcon SlotIcon, Font font, Color[] TextColor, Point MousePos)
 	{
 		int[] x0 = new int[] {screenSize.width / 30 + size.width + sx, screenSize.width / 30 + size.width / 2 + sx / 2, screenSize.width / 30} ;
@@ -331,10 +313,12 @@ public class DrawingOnPanel
 			}
 		}
 	}
+	
 	public void DrawLoadingText(Image LoadingGif, Point Pos)
 	{
 		DrawGif(LoadingGif, Pos, Align.center);
 	}
+	
 	public void DrawLoadingGameScreen(Player player, Pet pet, Map<String, String[]> allText, GameIcon[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
 	{
 		Point[] WindowPos = new Point[] {new Point((int)(0.15*screenSize.width), (int)(0.2*screenSize.height)),
@@ -354,6 +338,7 @@ public class DrawingOnPanel
  			DrawWindowArrows(WindowPos[2], (int)(0.5*screenSize.width), SlotID, NumberOfUsedSlots - 1) ;
  		}
 	}
+	
 	public void DrawEmptyLoadingSlot(int SlotID, int NumSlots)
 	{
 		Point[] WindowPos = new Point[] {new Point((int)(0.35*screenSize.width), (int)(0.2*screenSize.height)),
@@ -397,12 +382,14 @@ public class DrawingOnPanel
 			}							
 		}
 	}
+	
 	public void DrawTime(Sky sky)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 		float time = (float)(sky.dayTime.getCounter()) / Game.DayDuration ;
 		DrawText(new Point(0, (int) (0.99*screenSize.height)), Align.bottomLeft, stdAngle, (int)(24*time) + ":" + (int)(24*60*time % 60), font, colorPalette[5]) ;
 	}
+	
 	public void DrawFullMap(Point playerPos, GameMap map, Sky sky)
 	{
 		sky.display(this) ;
@@ -417,25 +404,7 @@ public class DrawingOnPanel
 		}
 		DrawTime(sky) ;
 	}
-	/*public void DrawTimeBar(Point pos, int counter, int delay, int size2, Point offset, String relPos, String dir, Color color)
-	{
-		Dimension size = new Dimension((int)(2 + size2/20), (int)(size2)) ;
-		int mirror = UtilS.MirrorFromRelPos(relPos) ;
-		int RectT = 1 ;
-		Color BackgroundColor = colorPalette[7] ;
-		if (dir.equals("Vertical"))
-		{
-			pos = new Point(pos.x + mirror*offset.x, pos.y + offset.y) ;
-			DrawRect(pos, Align.bottomLeft, size, RectT, BackgroundColor, colorPalette[9]) ;
-			DrawRect(pos, Align.bottomLeft, new Dimension(size.width, size.height * counter / delay), RectT, color, null) ;	
-		}
-		if (dir.equals("Horizontal"))
-		{
-			pos = new Point(pos.x + offset.x, pos.y + mirror*offset.y) ;
-			DrawRect(pos, Align.bottomLeft, new Dimension(size.height, size.width), RectT, BackgroundColor, colorPalette[9]) ;
-			DrawRect(new Point(pos.x - size.height / 2, pos.y + size.width / 2), Align.bottomLeft, new Dimension(size.height * counter / delay, size.width), RectT, color, null) ;	
-		}			
-	}*/
+
 	public void DrawFabBook(Image BookImage, Items[] items, int SelectedPage, int[][] Ingredients, int[][] Products, Point MousePos)
 	{
 		Point Pos = new Point((int)(0.5*screenSize.width), (int)(0.5*screenSize.height)) ;
@@ -480,6 +449,7 @@ public class DrawingOnPanel
 		}
 		DrawWindowArrows(new Point(Pos.x, Pos.y + 15*H/32), L, SelectedPage, Ingredients.length - 1) ;
 	}
+	
 	public void DrawDamageAnimation(Point initialPos, AtkResults atkResults, TimeCounter counter, int style, Color color)
 	{
 		AttackEffects effect = atkResults.getEffect() ;
@@ -519,11 +489,13 @@ public class DrawingOnPanel
 		DrawText(currentPos, Align.center, stdAngle, message, font, color) ;
 		
 	}
+	
 	public void DrawSkillNameAnimation(Point Pos, String SkillName, Color color)
 	{
 		Font font = new Font("SansSerif", Font.BOLD, 18) ;
 		DrawText(Pos, Align.center, stdAngle, SkillName, font, color) ;
 	}
+	
 	public void ChestRewardsAnimation(Items[] items, int counter, int duration, int[] ItemRewards, int[] GoldRewards, Color TextColor, Image CoinIcon)
 	{
 		/*Font font = new Font("SansSerif", Font.BOLD, 20) ;
@@ -558,6 +530,7 @@ public class DrawingOnPanel
 		}
 		*/
 	}
+	
 	public void CollectingAnimation(Point Pos, int counter, int delay, int MessageTime, int CollectibleType, String Message)
 	{
 		/*int TextCat = AllTextCat[9] ;
@@ -586,41 +559,12 @@ public class DrawingOnPanel
 		}
 		*/
 	}
+	
 	public void TentAnimation(Point Pos, int counter, int delay, Image TentImage)
 	{
 		DrawImage(TentImage, Pos, Align.center) ;
 	}
-//	public void AttackAnimation(Point attackerPos, Point targetPos, Dimension targetSize, int effect, String elem, int counter, int duration)
-//	{
-//		int rate = counter / duration ;
-//		if (effect == 0)
-//		{
-//			targetPos = new Point(targetPos.x - targetSize.width / 2, targetPos.y + targetSize.height / 2) ;
-//			Color lineColor = colorPalette[9] ;
-//			DrawLine(new Point(targetPos.x, targetPos.y - 15), new Point(targetPos.x + 50 * rate, targetPos.y - 15 - 50 * rate), 1, lineColor) ;
-//			DrawLine(new Point(targetPos.x, targetPos.y), new Point(targetPos.x + 50 * rate, targetPos.y - 50 * rate), 1, lineColor) ;
-//			DrawLine(new Point(targetPos.x, targetPos.y + 15), new Point(targetPos.x + 50 * rate, targetPos.y + 15 - 50 * rate), 1, lineColor) ;
-//		}
-//		else if (effect == 1 & -1 < UtilS.ElementID(elem))
-//		{
-//			Point imagePos = new Point(attackerPos.x + (targetPos.x - attackerPos.x) * rate, attackerPos.y + (targetPos.y - attackerPos.y) * rate) ;
-//			DrawImage(ElementImages[UtilS.ElementID(elem)], imagePos, 0, new Scale(1.5, 1.5), Align.center) ;
-//		}
-//		else if (effect == 2)
-//		{
-//			float angle = (float) Math.atan((targetPos.y - attackerPos.y)/(targetPos.x - attackerPos.x)) ;
-//			if (targetPos.x < attackerPos.x)
-//			{
-//				angle = (float) (angle*180/Math.PI) ;
-//			}
-//			else
-//			{
-//				angle = (float) (angle*180/Math.PI - 90) ;
-//			}
-//			DrawImage(Equip.ArrowImage, new Point(attackerPos.x + (targetPos.x - attackerPos.x) * rate, attackerPos.y + (targetPos.y - attackerPos.y) * rate),
-//					angle, new Scale(1, 1), Align.center) ;
-//		}
-//	}
+
 	public void winAnimation(TimeCounter counter, String[] itemNames, Color textColor)
 	{
 		Point pos = new Point((int)(0.45 * screenSize.width), (int)(0.2 * screenSize.height)) ;
@@ -642,6 +586,7 @@ public class DrawingOnPanel
 			}
 		}
 	}
+	
 	public void levelUpAnimation(TimeCounter counter, double[] AttributeIncrease, int playerLevel, Color textColor)
 	{
 
@@ -666,31 +611,7 @@ public class DrawingOnPanel
 		}
 		
 	}
-	public void PetLevelUpAnimation(Pet pet, int counter, int duration, double[] AttributeIncrease)
-	{
-		/*Font font = new Font("SansSerif", Font.BOLD, 20) ;
-		int AttCat = AllTextCat[6], WinCat = AllTextCat[10] ;
-		Point Pos = new Point((int)(0.25*screenSize.width), (int)(0.8*screenSize.height)) ;
-		Size size = new Size((int)(0.5*screenSize.width), (int)(0.6*screenSize.height)) ;
-		int Sy = size.y / 10 ;
-		DrawMenuWindow(Pos, size, null, 0, ColorPalette[pet.getJob()], ColorPalette[7]) ;
-		DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y)), alignPoints.bottomLeft, OverallAngle, AllText[WinCat][1], font, pet.getColor()) ;
-		if (counter % duration < duration/3)
-		{
-			DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y) + Sy), alignPoints.bottomLeft, OverallAngle, AllText[AttCat][1] + " " + pet.getLevel(), font, pet.getColor()) ;		
-		} else if (counter % duration < 2*duration/3)
-		{
-			DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y) + Sy), alignPoints.bottomLeft, OverallAngle, AllText[AttCat][1] + " " + pet.getLevel(), font, pet.getColor()) ;					
-			for (int i = 0 ; i <= AttributeIncrease.length - 1 ; ++i)
-			{
-				if (duration/3 + duration/15*i < counter % duration)
-				{
-					DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y) + (i + 2)*Sy), alignPoints.bottomLeft, OverallAngle, AllText[AttCat][i + 2] + " + " + AttributeIncrease[i], font, pet.getColor()) ;								
-				}
-			}
-		}
-		*/
-	}
+	
 	public void SailingAnimation(Player player, NPCs npc, GameMap[] maps, String Destination, int counter, int Duration, Image BoatImage)
 	{
 		/*int Step = player.getStep()/2 ;
@@ -747,6 +668,7 @@ public class DrawingOnPanel
 		}
 		*/
 	}
+	
 	public void FishingAnimation(Point playerPos, Image FishingGif, String WaterPos)
 	{
 		Point Pos = new Point(playerPos.x, playerPos.y) ;
@@ -769,6 +691,7 @@ public class DrawingOnPanel
 		}
 		UtilG.PlayGif(Pos, FishingGif, this) ;
 	}
+	
 	public void PterodactileAnimation(TimeCounter counter, Image pterodactile, Image speakingBubble, String[] message)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 15) ;
@@ -803,6 +726,111 @@ public class DrawingOnPanel
 		DrawImage(pterodactile, currentPos, Align.center) ;
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	public void PetLevelUpAnimation(Pet pet, int counter, int duration, double[] AttributeIncrease)
+//	{
+//		Font font = new Font("SansSerif", Font.BOLD, 20) ;
+//		int AttCat = AllTextCat[6], WinCat = AllTextCat[10] ;
+//		Point Pos = new Point((int)(0.25*screenSize.width), (int)(0.8*screenSize.height)) ;
+//		Size size = new Size((int)(0.5*screenSize.width), (int)(0.6*screenSize.height)) ;
+//		int Sy = size.y / 10 ;
+//		DrawMenuWindow(Pos, size, null, 0, ColorPalette[pet.getJob()], ColorPalette[7]) ;
+//		DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y)), alignPoints.bottomLeft, OverallAngle, AllText[WinCat][1], font, pet.getColor()) ;
+//		if (counter % duration < duration/3)
+//		{
+//			DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y) + Sy), alignPoints.bottomLeft, OverallAngle, AllText[AttCat][1] + " " + pet.getLevel(), font, pet.getColor()) ;		
+//		} else if (counter % duration < 2*duration/3)
+//		{
+//			DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y) + Sy), alignPoints.bottomLeft, OverallAngle, AllText[AttCat][1] + " " + pet.getLevel(), font, pet.getColor()) ;					
+//			for (int i = 0 ; i <= AttributeIncrease.length - 1 ; ++i)
+//			{
+//				if (duration/3 + duration/15*i < counter % duration)
+//				{
+//					DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y) + (i + 2)*Sy), alignPoints.bottomLeft, OverallAngle, AllText[AttCat][i + 2] + " + " + AttributeIncrease[i], font, pet.getColor()) ;								
+//				}
+//			}
+//		}
+//		
+//	}
+//	public void DrawMenuWindow(Point Pos, Scale scale, String Title, int type, Color color1, Color color2)
+//	{
+//		DrawImage(menuWindow, Pos, scale, Align.topLeft) ;
+		/*if (type == 0)
+		{
+			DrawRoundRect(Pos, alignPoints.topLeft, size, 3, color1, color2, true) ;
+			if (Title != null)
+			{
+				Font font = new Font("SansSerif", Font.BOLD, size.x * size.y / 3500) ;
+				Point WindowPos = new Point((int) (Pos.x + 0.5 * size.x), (int) (Pos.y - size.y - 0.5*3*UtilG.TextH(font.getSize()))) ;
+				Color TextColor = ColorPalette[9] ;
+				DrawRoundRect(WindowPos, alignPoints.center, new Size((int)(0.6 * size.x), (int)(3*UtilG.TextH(font.getSize()))), 3, color1, color2, true) ;
+				DrawText(WindowPos, alignPoints.center, OverallAngle, Title, font, TextColor) ;
+			}
+		}
+		if (type == 1)
+		{
+		}*/
+//	}
+//	public void DrawTimeBar(Point pos, int counter, int delay, int size2, Point offset, String relPos, String dir, Color color)
+//	{
+//		Dimension size = new Dimension((int)(2 + size2/20), (int)(size2)) ;
+//		int mirror = UtilS.MirrorFromRelPos(relPos) ;
+//		int RectT = 1 ;
+//		Color BackgroundColor = colorPalette[7] ;
+//		if (dir.equals("Vertical"))
+//		{
+//			pos = new Point(pos.x + mirror*offset.x, pos.y + offset.y) ;
+//			DrawRect(pos, Align.bottomLeft, size, RectT, BackgroundColor, colorPalette[9]) ;
+//			DrawRect(pos, Align.bottomLeft, new Dimension(size.width, size.height * counter / delay), RectT, color, null) ;	
+//		}
+//		if (dir.equals("Horizontal"))
+//		{
+//			pos = new Point(pos.x + offset.x, pos.y + mirror*offset.y) ;
+//			DrawRect(pos, Align.bottomLeft, new Dimension(size.height, size.width), RectT, BackgroundColor, colorPalette[9]) ;
+//			DrawRect(new Point(pos.x - size.height / 2, pos.y + size.width / 2), Align.bottomLeft, new Dimension(size.height * counter / delay, size.width), RectT, color, null) ;	
+//		}			
+//	}
+//	public void AttackAnimation(Point attackerPos, Point targetPos, Dimension targetSize, int effect, String elem, int counter, int duration)
+//	{
+//		int rate = counter / duration ;
+//		if (effect == 0)
+//		{
+//			targetPos = new Point(targetPos.x - targetSize.width / 2, targetPos.y + targetSize.height / 2) ;
+//			Color lineColor = colorPalette[9] ;
+//			DrawLine(new Point(targetPos.x, targetPos.y - 15), new Point(targetPos.x + 50 * rate, targetPos.y - 15 - 50 * rate), 1, lineColor) ;
+//			DrawLine(new Point(targetPos.x, targetPos.y), new Point(targetPos.x + 50 * rate, targetPos.y - 50 * rate), 1, lineColor) ;
+//			DrawLine(new Point(targetPos.x, targetPos.y + 15), new Point(targetPos.x + 50 * rate, targetPos.y + 15 - 50 * rate), 1, lineColor) ;
+//		}
+//		else if (effect == 1 & -1 < UtilS.ElementID(elem))
+//		{
+//			Point imagePos = new Point(attackerPos.x + (targetPos.x - attackerPos.x) * rate, attackerPos.y + (targetPos.y - attackerPos.y) * rate) ;
+//			DrawImage(ElementImages[UtilS.ElementID(elem)], imagePos, 0, new Scale(1.5, 1.5), Align.center) ;
+//		}
+//		else if (effect == 2)
+//		{
+//			float angle = (float) Math.atan((targetPos.y - attackerPos.y)/(targetPos.x - attackerPos.x)) ;
+//			if (targetPos.x < attackerPos.x)
+//			{
+//				angle = (float) (angle*180/Math.PI) ;
+//			}
+//			else
+//			{
+//				angle = (float) (angle*180/Math.PI - 90) ;
+//			}
+//			DrawImage(Equip.ArrowImage, new Point(attackerPos.x + (targetPos.x - attackerPos.x) * rate, attackerPos.y + (targetPos.y - attackerPos.y) * rate),
+//					angle, new Scale(1, 1), Align.center) ;
+//		}
+//	}
 	/*public void CrazyArrowAnimation(int map, int counter, int looptime, Image CrazyArrowImage)
 	{
 		Point InitialPos = new Point(0, 0) ;

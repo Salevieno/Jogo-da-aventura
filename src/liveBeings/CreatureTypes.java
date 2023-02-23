@@ -21,14 +21,13 @@ public class CreatureTypes
 	protected String name ;
 	protected int level;
 	protected Dimension size ;
-	protected double range ;
+	protected int range ;
 	protected int step ;
 	protected Elements[] elem ;			// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
 	protected int mpDuration ;			// counts the mp reduction
 	protected int satiationDuration ;	// counts the satiation reduction
 	protected int moveDuration ;		// counts the move
 	protected int battleActionDuration ;// counts the battle actions
-	protected int stepCounter ;			// counts the steps in the movement	TODO -> TimeCounter ? (n�o � tempo, � step)
 	
 	protected MovingAnimations movingAni ;
 	protected PersonalAttributes PA ;
@@ -46,7 +45,7 @@ public class CreatureTypes
 			String name,
 			int level,
 			Dimension size,
-			double range,
+			int range,
 			int step,
 			Elements[] elem,
 			int mpDuration,
@@ -75,7 +74,7 @@ public class CreatureTypes
 		this.satiationDuration = satiationDuration;
 		this.moveDuration = moveDuration;
 		this.battleActionDuration = battleActionDuration ;
-		this.stepCounter = stepCounter;
+//		this.stepCounter = stepCounter;
 		
 		this.movingAni = movingAni ;
 		this.PA = PA ;
@@ -88,6 +87,8 @@ public class CreatureTypes
 	}
 
 	public int getID() {return id ;}
+	public String getName() {return name ;}
+	public Dimension getSize() {return size ;}
 	public int getLevel() { return level ;}
 	public MovingAnimations getMovingAnimations() {return movingAni ;}
 	public PersonalAttributes getPA() {return PA ;}

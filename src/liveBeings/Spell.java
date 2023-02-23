@@ -100,6 +100,7 @@ public class Spell
 	public TimeCounter getCooldownCounter() {return cooldownCounter ;}
 	public TimeCounter getDurationCounter() {return effectCounter ;}
 	public String[] getInfo() {return info ;}
+	public TimeCounter getEffectCounter() { return effectCounter ;}
 
 	public boolean isReady() {return cooldownCounter.finished() ;}
 	public boolean isActive() {return isActive ;}

@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Map;
 
 import attributes.BasicBattleAttribute;
@@ -17,6 +19,7 @@ import graphics.DrawingOnPanel;
 import items.Equip;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
+import liveBeings.Statistics;
 import main.Game;
 import utilities.Align;
 import utilities.Elements;
@@ -30,7 +33,7 @@ public class PlayerAttributesWindow extends GameWindow
 	
 	public PlayerAttributesWindow(Image image)
 	{
-		super(image, 0, 3, 0, 0) ;
+		super("Atributos", image, 0, 3, 0, 0) ;
 		Image PlusSignImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "PlusSign.png") ;
 		Image SelectedPlusSignImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "ShiningPlusSign.png") ;
 		addAttIcon = new GameIcon[7] ;
@@ -308,17 +311,18 @@ public class PlayerAttributesWindow extends GameWindow
 		}
 		else if (tab == 2)
 		{
-			String[] statsText = allText.get("* Estatísticas do jogador *") ;
-			Dimension offset = new Dimension(25, 20) ;
-			Point textPos = new Point(windowPos.x + offset.width, windowPos.y + offset.height) ;
 			if (user instanceof Player)
 			{
 				Player player = (Player) user ;
-				for (int i = 0 ; i <= player.getStats().length - 1 ; i += 1)
+				Map<String, Double> allStats = player.getStatistics().allStatistics() ;
+				Dimension offset = new Dimension(25, 20) ;
+				Point textPos = new Point(windowPos.x + offset.width, windowPos.y + offset.height) ;
+				int sy = 20 ;
+				for (String key : allStats.keySet())
 				{
-					String text = statsText[i + 1] + " " + String.valueOf(UtilG.Round(player.getStats()[i], 1)) ;
+					String text = key + ": " + String.valueOf(UtilG.Round((double) allStats.get(key), 1)) ;
 					DP.DrawText(textPos, Align.bottomLeft, TextAngle, text, namefont, ColorPalette[5]) ;
-					textPos.y += (attWindowSize.height - offset.height) / player.getStats().length ;
+					textPos = UtilG.Translate(textPos, 0, sy) ;
 				}
 			}
 		}

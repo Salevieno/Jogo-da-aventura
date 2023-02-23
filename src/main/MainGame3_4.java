@@ -28,8 +28,6 @@ public class MainGame3_4 extends JFrame implements ActionListener
 		// initialize the UI
 		Dimension windowSize = new Dimension(640, 480) ;	// frame dimensions (0, 39) and give an extra space on the right (40, 0)
         setTitle("Jogo da aventura") ;
-        // TODO throw exception when image does not load
-        // setting the window size
         setPreferredSize(windowSize) ;
         pack() ;
         Dimension actualWindowSize = getContentPane().getSize() ;
@@ -37,13 +35,13 @@ public class MainGame3_4 extends JFrame implements ActionListener
         setSize(new Dimension(windowSize.width + extraSize.width, windowSize.height + extraSize.height)) ;
         
         
-        setLocation(500, 200) ;			// window location
+        setLocation(500, 200) ;					// window location
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         setVisible(true) ;
-        timer = new Timer(10, this) ;	// timer of the game, first number = delay
-		timer.start() ;					// Game will start checking for keyboard events and go to the method paintComponent every "timer" miliseconds
+        timer = new Timer(10, this) ;			// timer of the game, first number = frame duration
+		timer.start() ;							// Game will start checking for keyboard events every "timer" miliseconds
 		previousState = GameStates.opening ;
-        add(new Game(windowSize)) ;			// adding game panel on the JFrame
+        add(new Game(windowSize)) ;				// adding game panel on the JFrame
     }
     
 	public static void pauseGame()

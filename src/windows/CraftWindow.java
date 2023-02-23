@@ -21,7 +21,7 @@ public class CraftWindow extends GameWindow
 
 	public CraftWindow(List<Item> ItemsForCrafting)
 	{
-		super(null, 1, 1, NumberItemsPerWindow, ItemsForCrafting.size() / NumberItemsPerWindow + 1) ;
+		super("Criação", null, 1, 1, NumberItemsPerWindow, ItemsForCrafting.size() / NumberItemsPerWindow + 1) ;
 		image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Craft.png") ;
 		this.ItemsForCrafting = ItemsForCrafting ;
 	}

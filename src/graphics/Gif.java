@@ -65,21 +65,19 @@ public class Gif
 	
 	public void play(Point pos, Align alignment, DrawingOnPanel DP)
 	{
-		if (!isDonePlaying())
+		if (isDonePlaying())
 		{
-			if (isStarting() & timeStopper)
-			{
-				Game.playStopTimeGif();
-			}
-			DP.DrawGif(image, pos, alignment) ;
-			incTimeCounter();
+			if (timeStopper) { MainGame3_4.resumeGame() ;}
+			
+			return ;
 		}
-		else
+		
+
+		if (isStarting() & timeStopper)
 		{
-			if (timeStopper)
-			{
-				MainGame3_4.resumeGame();
-			}
+			Game.playStopTimeGif() ;
 		}
+		DP.DrawGif(image, pos, alignment) ;
+		incTimeCounter() ;
 	}
 }

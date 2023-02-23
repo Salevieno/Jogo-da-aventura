@@ -34,6 +34,7 @@ import components.Quests;
 import components.SpellTypes;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
+import graphics.Gif;
 import items.Alchemy;
 import items.Arrow;
 import items.Equip;
@@ -49,7 +50,6 @@ import items.Recipe;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
-import main.BattleActions;
 import main.Game;
 import maps.Collectible;
 import maps.FieldMap;
@@ -84,9 +84,9 @@ public class Player extends LiveBeing
 	private SettingsWindow settings ;
 	private SpellsTreeWindow spellsTree ;
 	private MapWindow mapWindow ;
-	private ArrayList<Recipe> knownRecipes ;
+	private List<Recipe> knownRecipes ;
 	private FabWindow fabWindow ;
-	private ArrayList<Quests> quest ;	
+	private List<Quests> quests ;	
 	private QuestWindow questWindow ;
 	private HintsWindow hintsWindow ;
 	public BestiaryWindow bestiary ;
@@ -100,7 +100,6 @@ public class Player extends LiveBeing
 	private double goldMultiplier ;	// multiplies the amount of gold the player wins
 	private Map<QuestSkills, Boolean> questSkills ;	// skills gained with quests
 	private boolean isRiding ;		// true if the player is riding
-	private int moveRange ;			// number of steps the player moves per action
 	private AtkTypes currentBattleAction ;
     
 	public Creature closestCreature ;	// creature that is currently closest to the player
@@ -109,10 +108,10 @@ public class Player extends LiveBeing
 	public Items[] hotItem ;		// items on the hotkeys
     
     public static final Image CollectingMessage = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "CollectingMessage.gif") ;   
-    public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "Icon5_Tent.png") ; 
+    public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "Icon5_Tent.png") ;
+    public static final Gif TentGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Icon5_Tent.gif"), 1000, false, false) ;
     public static final Image DragonAuraImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "DragonAura.png") ;
     public static final Image RidingImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Tiger.png") ;
-    //public static final Image SpeakingBubbleImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "SpeakingBubble.png") ;
 	public static final Image CoinIcon = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "CoinIcon.png") ;    
 	public static final Image MagicBlissGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "MagicBliss.gif") ;
     public static final Image FishingGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Fishing.gif") ;
@@ -120,8 +119,7 @@ public class Player extends LiveBeing
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
     
     
-	// TODO essa pode virar um Map
-	private double[] statistics ;	// 0: Number of phy attacks, 1: number of skills used, 2: number of defenses, 3: total phy damage inflicted, 4: total phy damage received, 5: total mag damage inflicted, 6: total mag damage received, 7: total phy damage defended, 8: total mag damage defended, 9: total hits inflicted, 10: total hits received, 11: total dodges, 12: number of crit, 13: total crit damage, 14: total stun, 15: total block, 16: total blood, 17: total blood damage, 18: total blood def, 19: total poison, 20: total poison damage, 21: total poison def, 22: total silence
+	private Statistics stats ;
 	
 	
 	private double[][] attIncrease ;	// Amount of increase in each attribute when the player levels up
@@ -166,14 +164,14 @@ public class Player extends LiveBeing
 		state = LiveBeingStates.idle;
 		Image PlayerBack = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerBack.gif") ;
 	    size = new Dimension (PlayerBack.getWidth(null), PlayerBack.getHeight(null));
-		range = Double.parseDouble(Properties.get(job)[4]) ;
+		range = Integer.parseInt(Properties.get(job)[4]) ;
 		step = Integer.parseInt(Properties.get(job)[33]);
 	    elem = new Elements[] {Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral};
 		mpCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[37])) ;
 		satiationCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[38])) ;
-		moveCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[39])) ;
+		actionCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[39])) ;
 		battleActionCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[41])) ;
-		stepCounter = 0 ;
+		stepCounter = new TimeCounter(0, 20) ;
 		combo = new ArrayList<>() ;
 	    
 		this.language = Language ;
@@ -191,7 +189,7 @@ public class Player extends LiveBeing
 		{
 			bag.Add(Arrow.getAll()[0], 100) ;
 		}
-		quest = new ArrayList<>() ;
+		quests = new ArrayList<>() ;
 		knownRecipes = new ArrayList<>() ;
 		fabWindow = new FabWindow() ;
 		mapWindow = new MapWindow() ;
@@ -219,9 +217,8 @@ public class Player extends LiveBeing
 		questSkills.put(QuestSkills.dragonAura, false) ;
 		questSkills.put(QuestSkills.bestiary, false) ;
 		isRiding = false ;
-		moveRange = 20 ;
 		currentBattleAction = null ;
-		statistics = new double[23] ;
+		stats = new Statistics() ;
 		collectCounter = new TimeCounter(0, 300) ;
 		attPoints = 0 ;
 		attIncrease = new double[3][8] ;
@@ -397,7 +394,7 @@ public class Player extends LiveBeing
 	public String getSex() {return sex ;}
 	public Directions getDir() {return dir ;}
 	public Color getColor() {return color ;}
-	public ArrayList<Quests> getQuest() {return quest ;}
+	public List<Quests> getQuest() {return quests ;}
 	public BagWindow getBag() {return bag ;}
 	public Equip[] getEquips() {return equips ;}
 	public int getSpellPoints() {return spellPoints ;}
@@ -422,7 +419,7 @@ public class Player extends LiveBeing
 	public BasicAttribute getThirst() {return PA.getThirst() ;}
 	public Map<QuestSkills, Boolean> getQuestSkills() {return questSkills ;}
 	public AtkTypes getCurrentBattleAction() { return currentBattleAction ;}
-	public double[] getStats() {return statistics ;}
+	public Statistics getStats() {return stats ;}
 	public int getAttPoints() {return attPoints ;}
 	public double[][] getAttIncrease() {return attIncrease ;}
 	public double[][] getChanceIncrease() {return chanceIncrease ;}
@@ -430,7 +427,10 @@ public class Player extends LiveBeing
 	public SettingsWindow getSettings() {return settings ;}
 	public SpellsTreeWindow getSpellsTreeWindow() {return spellsTree ;}
 	public Creature getOpponent() { return opponent ;}
+	public Statistics getStatistics() { return stats ;}
 	public void setBattleAction(AtkTypes ba) { currentBattleAction = ba ;}
+	
+	public void addQuest(Quests newQuest) { quests.add(newQuest) ;}
 	
 	
 	private Point feetPos() {return new Point(pos.x, (int) (pos.y - size.height)) ;}
@@ -445,7 +445,7 @@ public class Player extends LiveBeing
 	
 	public boolean weaponIsEquipped() { return (equips[0] != null) ; }
 	public boolean arrowIsEquipped() { return (equips[3] != null) ; }	
-	public boolean canAct() { return moveCounter.finished() ; }
+	public boolean canAct() { return actionCounter.finished() ; }
 	
 	private void Collect(Collectible collectible, DrawingOnPanel DP)
     {
@@ -501,7 +501,7 @@ public class Player extends LiveBeing
 	private void startMoving()
 	{
 		state = LiveBeingStates.moving ;
-		stepCounter = 1 ;
+		stepCounter.reset() ;
 	}
 	
 	public boolean isMoving()
@@ -511,7 +511,7 @@ public class Player extends LiveBeing
 	
 	public boolean isDoneMoving()
 	{
-		return (moveRange - 1 <= stepCounter) ;
+		return stepCounter.finished() ;
 	}
 	
 	public void resetAction() { currentAction = null ;}
@@ -538,7 +538,7 @@ public class Player extends LiveBeing
 			MoveToNewMap(pet, currentAction, settings.getMusicIsOn()) ;
 		}
 		
-		stepCounter = (stepCounter + 1) % moveRange ;
+		stepCounter.inc() ;
 	}
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
@@ -549,9 +549,9 @@ public class Player extends LiveBeing
 	private ArrayList<Integer> GetActiveQuests()
 	{
 		ArrayList<Integer> ActiveQuests = new ArrayList<Integer>() ;
-		for (int i = 0 ; i <= quest.size() - 1 ; i += 1)
+		for (int i = 0 ; i <= quests.size() - 1 ; i += 1)
 		{
-			if (quest.get(i).isActive())
+			if (quests.get(i).isActive())
 			{
 				ActiveQuests.add(i) ;
 			}
@@ -575,6 +575,10 @@ public class Player extends LiveBeing
 		opponent.setFollow(true) ;
 		setState(LiveBeingStates.fighting) ;
 	}
+	
+	
+	
+	
 	
 	public void acts(Pet pet, Point MousePos, SideBar sideBar)
 	{
@@ -646,9 +650,10 @@ public class Player extends LiveBeing
 		}
 		if (currentAction.equals(ActionKeys[12]) & !isInBattle())
 		{
-			//	 TODO add tent gif
+			PA.getLife().setToMaximum() ;
+			TentGif.start() ;
 		}
-		if (currentAction.equals(ActionKeys[13]) &  questSkills.get(QuestSkills.bestiary))
+		if (currentAction.equals(ActionKeys[13]) & questSkills.get(QuestSkills.bestiary))
 		{
 			bestiary.open() ;
 		}
@@ -663,7 +668,7 @@ public class Player extends LiveBeing
 				{
 					UseSupportSpell(pet, spell) ;
 					train(new AtkResults(AtkTypes.magical, null, 0)) ;
-					getStats()[1] += 1 ;	// Number of mag atks
+					stats.incNumberMagAtk() ;
 				}
 			}
 			else if (closestCreature != null & !isInBattle())
@@ -746,14 +751,14 @@ public class Player extends LiveBeing
 			}
 
 			// Meeting with chests
-			String groundType = currentMap.groundTypeAtPoint(pos) ;
-			if (groundType != null)	// TODO are we going to use groundType?
-			{
-				if (groundType.contains("Chest"))
-				{
-					//return new int[] {3, Integer.parseInt(groundType.substring(groundType.length() - 1))} ;
-				}
-			}
+//			String groundType = currentMap.groundTypeAtPoint(pos) ;
+//			if (groundType != null)
+//			{
+//				if (groundType.contains("Chest"))
+//				{
+//					//return new int[] {3, Integer.parseInt(groundType.substring(groundType.length() - 1))} ;
+//				}
+//			}
 			
 			// Meeting with creatures
 			if (isInBattle())
@@ -797,6 +802,10 @@ public class Player extends LiveBeing
 			}	
 		}
 	}
+	
+	
+	
+	
 	
 	private void receiveAdjacentGroundEffect(GameMap map)
 	{
@@ -912,20 +921,9 @@ public class Player extends LiveBeing
 			spell.getCooldownCounter().inc() ;
 		}
 	}
-	private void Tent()
-	{
-		PA.getLife().setToMaximum() ;
-	}
 	private void ActivateRide()
 	{
-		if (isRiding)
-		{
-			setStep(step / 2) ;
-		}
-		else
-		{
-			setStep(2 * step) ;
-		}
+		step = isRiding ? step / 2 : 2 * step ;
 		isRiding = !isRiding ;
 	}
 		
@@ -960,7 +958,7 @@ public class Player extends LiveBeing
 		}		
 		if (questWindow.isOpen())
 		{
-			questWindow.display(quest, DP) ;
+			questWindow.display(quests, DP) ;
 		}
 		if (bestiary.isOpen())
 		{
@@ -1040,7 +1038,7 @@ public class Player extends LiveBeing
 		spell.activate() ;		
 		ResetBattleActions() ;
 		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
-		// TODO spells 
+		// TODO support spells 
 		if (job == 0)
 		{
 			
@@ -1182,161 +1180,6 @@ public class Player extends LiveBeing
 //			BA.getPoison()[8] += Buff[12][4] ;
 //			BA.getSilence()[1] += Buff[13][0] ;
 //		}	
-	}
-	public void updateoffensiveStats(AtkResults playerAtkResult, LiveBeing creature)
-	{
-		/* 0: Number of phy attacks, 
-		 * 1: number of spells used, 
-		 * 2: number of defenses, 
-		 * 3: total phy damage inflicted, 
-		 * 4: total phy damage received, 
-		 * 5: total mag damage inflicted, 
-		 * 6: total mag damage received, 
-		 * 7: total phy damage defended, 
-		 * 8: total mag damage defended, 
-		 * 9: total hits inflicted, 
-		 * 10: total hits received, 
-		 * 11: total dodges, 
-		 * 12: number of crit, 
-		 * 13: total crit damage, 
-		 * 14: total stun, 
-		 * 15: total block, 
-		 * 16: total blood, 
-		 * 17: total blood damage, 
-		 * 18: total blood def, 
-		 * 19: total poison, 
-		 * 20: total poison damage, 
-		 * 21: total poison def, 
-		 * 22: total silence
-		*/
-		// TODO HighestPlayerInflictedDamage = Math.max(HighestPlayerInflictedDamage, PlayerAtkResult[0]) ;
-		int damage = (int) playerAtkResult.getDamage() ;
-		AttackEffects effect = (AttackEffects) playerAtkResult.getEffect() ;
-		
-		if (currentAction == null) { return ;}
-		
-		if (0 <= damage)							// player inflicted damage
-		{	
-			if (actionIsSpell())					// player performed a magical atk
-			{
-				statistics[1] += 1 ;							// Total number of magical atks (spells) performed by the player
-				statistics[5] += damage ;					// Total magical damage inflicted by the player
-			}
-			else									// player performed a physical atk
-			{
-				statistics[0] += 1 ;							// Total number of physical atks performed by the player
-				statistics[3] += damage ;					// Total physical damage inflicted by the player
-			}
-		}
-		
-		if (currentAction.equals(Player.ActionKeys[3]))	// player defended
-		{
-			statistics[2] += 1 ;								// Number of defenses performed by the player
-		}
-		
-		if (effect == null) { return ;}
-		
-		if (effect.equals(AttackEffects.hit))							// player performed a successful hit
-		{
-			// TODO verificar lógica
-			statistics[9] += 1 ;								// total number of successful hits performed by the player
-			// for the status, dividing the duration of the status by the duration applied to get the number of times the status was applied
-//			if (0 < BA.getStun().getDuration())
-//			{
-//				statistics[14] += creature.getBA().getSpecialStatus()[0] / BA.getStun().getDuration() ;	// total number of stun inflicted by the player
-//			}
-//			if (0 < BA.getBlock().getDuration())
-//			{
-//				statistics[15] += creature.getBA().getSpecialStatus()[1] / BA.getBlock().getDuration() ;	// total number of block performed by the player
-//			}
-//			if (0 < BA.getBlood().getDuration())
-//			{
-//				statistics[16] += creature.getBA().getSpecialStatus()[2] / BA.getBlood().getDuration() ;	// total number of blood inflicted by the player
-//				if (0 < creature.getBA().getSpecialStatus()[2])
-//				{
-//					statistics[17] += 1 ;	// total number of blood inflicted by the player
-//				}
-//			}
-//			if (0 < BA.getPoison().getDuration())
-//			{
-//				statistics[19] += creature.getBA().getSpecialStatus()[3] / BA.getPoison().getDuration() ;	// total number of poison inflicted by the player
-//				if (0 < creature.getBA().getSpecialStatus()[3])
-//				{
-//					statistics[20] += 1 ;	// total number of blood inflicted by the player
-//				}
-//			}
-//			if (0 < BA.getSilence().getDuration())
-//			{
-//				statistics[22] += creature.getBA().getSpecialStatus()[4] / BA.getSilence().getDuration() ;	// total number of silence inflicted by the player
-//			}
-		}
-//		if (0 < BloodDamage)
-//		{
-//			statistics[18] += BA.getBlood().TotalDef() ;
-//		}
-//		if (0 < PoisonDamage)
-//		{
-//			statistics[21] += BA.getPoison().TotalDef() ;
-//		}
-		if (effect.equals(AttackEffects.crit))				// player performed a critical atk (physical or magical)
-		{
-			statistics[12] += 1 ;							// total number of critical hits performed by the player
-			statistics[13] += damage ;						// total critical damage (physical + magical) performed by the player
-		}
-	}
-	public void updatedefensiveStats(int damage, AttackEffects effect, boolean creaturePhyAtk, Creature creature)
-	{
-		/* 0: Number of phy attacks, 
-		 * 1: number of spells used, 
-		 * 2: number of defenses, 
-		 * 3: total phy damage inflicted, 
-		 * 4: total phy damage received, 
-		 * 5: total mag damage inflicted, 
-		 * 6: total mag damage received, 
-		 * 7: total phy damage defended, 
-		 * 8: total mag damage defended, 
-		 * 9: total hits inflicted, 
-		 * 10: total hits received, 
-		 * 11: total dodges, 
-		 * 12: number of crit, 
-		 * 13: total crit damage, 
-		 * 14: total stun, 
-		 * 15: total block, 
-		 * 16: total blood, 
-		 * 17: total blood damage, 
-		 * 18: total blood def, 
-		 * 19: total poison, 
-		 * 20: total poison damage, 
-		 * 21: total poison def, 
-		 * 22: total silence
-		*/
-		if (effect.equals(AttackEffects.hit))
-		{			
-			statistics[10] += 1 ;						// number of hits the player has taken
-			if (creaturePhyAtk)	// Creature physical atk
-			{				
-				statistics[4] += damage ;				// total phy damage received by the player
-				statistics[7] += BA.TotalPhyDef() ;		// total phy damage defended by the player
-			}
-			else				// Creature magical atk
-			{
-				statistics[6] += damage ;				// total mag damage received by the player
-				statistics[8] += BA.TotalMagDef() ;		// total mag damage defended by the player
-			}
-			// TODO verificar lógica
-//			if (0 < BA.getSpecialStatus()[2])
-//			{
-//				statistics[18] += BA.getBlood()[3] + BA.getBlood()[4] ;		// total number of blood defended by the player
-//			}
-//			if (0 < BA.getSpecialStatus()[3])
-//			{
-//				statistics[21] += BA.getPoison()[3] + BA.getPoison()[4] ;	// total number of blood defended by the player
-//			}
-		}
-		else
-		{
-			statistics[11] += 1 ;						// total number of hits the player has dogded
-		}
 	}
 	public void Win(Creature creature, Quests[] quest, Animations winAnimation)
 	{		
@@ -1839,7 +1682,7 @@ public class Player extends LiveBeing
 			//bw.write("\nPlayer actions: \n" + Arrays.deepToString(getActions())) ; 
 			//bw.write("\nPlayer battle actions: \n" + Arrays.deepToString(BA.getBattleActions())) ; 
 			//bw.write("\nPlayer status counter: \n" + Arrays.toString(getStatusCounter())) ; 		
-			bw.write("\nPlayer stats: \n" + Arrays.toString(getStats())) ;
+//			bw.write("\nPlayer stats: \n" + Arrays.toString(getStats())) ;
 			bw.write("\nPlayer available attribute points: \n" + getAttPoints()) ;
 			bw.write("\nPlayer attribute increase: \n" + Arrays.deepToString(getAttIncrease())) ;
 			bw.write("\nPlayer chance increase: \n" + Arrays.deepToString(getChanceIncrease())) ;

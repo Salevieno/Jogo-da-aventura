@@ -128,7 +128,6 @@ public class Items
 	public static void CalcItemEffects(String CSVPath)
 	{
 		// TODO calc item effects is reading a csv during gameplay time
-		// TODO check names of elements in csvs for arrow and equips
 		
 		List<String[]> PotionsInput = UtilG.ReadcsvFile(CSVPath + "Potions.csv") ;	
 		for (int i = 0 ; i <= Items.NumberOfItems[0] - 1 ; ++i)

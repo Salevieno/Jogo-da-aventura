@@ -21,7 +21,7 @@ public class ShoppingWindow extends GameWindow
 	
 	public ShoppingWindow(List<Item> ItemsForSale)
 	{
-		super(null, 1, 1, NumberItemsPerWindow, ItemsForSale.size() / NumberItemsPerWindow + 1) ;
+		super("Shopping", null, 1, 1, NumberItemsPerWindow, ItemsForSale.size() / NumberItemsPerWindow + 1) ;
 		image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Shopping.png") ;
 		this.ItemsForSale = ItemsForSale ;
 	}

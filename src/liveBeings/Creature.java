@@ -36,7 +36,7 @@ public class Creature extends LiveBeing
 	private Color color ;
 	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 	private boolean follow ;	
-	public int countmove ;
+//	public int countmove ;
 	
 	private static Color[] skinColor = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1]} ;
 	private static Color[] shadeColor = new Color[] {Game.ColorPalette[2], Game.ColorPalette[3]} ;
@@ -62,9 +62,9 @@ public class Creature extends LiveBeing
 		this.elem = CT.elem;
 		mpCounter = new TimeCounter(0, CT.mpDuration);
 		satiationCounter = new TimeCounter(0, CT.satiationDuration);
-		moveCounter = new TimeCounter(0, CT.moveDuration) ;
+//		actionCounter = new TimeCounter(0, CT.moveDuration) ;
 		battleActionCounter = new TimeCounter(0, CT.battleActionDuration) ;
-		this.stepCounter = CT.stepCounter;
+		this.stepCounter = new TimeCounter(0, CT.moveDuration) ;
 		combo = new ArrayList<>() ;
 		
 		dir = Directions.up ;
@@ -88,7 +88,6 @@ public class Creature extends LiveBeing
 		}
 		
 		follow = false ;
-		countmove = 0 ;
 	}
 
 	public CreatureTypes getType() {return type ;}
@@ -207,7 +206,7 @@ public class Creature extends LiveBeing
 		if (state.equals(LiveBeingStates.moving))
 		{
 			Move(playerPos, getFollow(), map) ;
-			if (countmove % 5 == 0)
+			if (stepCounter.getCounter() % 5 == 0)
 			{
 				setDir(PA.randomDir()) ;	// set random direction
 			}
@@ -274,50 +273,67 @@ public class Creature extends LiveBeing
 		
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 	}
-	public void Follow(Point Pos, Point Target, int step, double mindist)
+	
+
+	public void Think()
 	{
-		Point pos = new Point(Pos.x, Pos.y) ; // Prevent the method from modifying the original variable Pos
-		double verdist = Math.abs(pos.y - Target.y), hordist = Math.abs(pos.x - Target.x) ;
-		if (mindist < pos.distance(Target))
+		if (0.3 < Math.random())
 		{
-			if (verdist < hordist)
+			if (state.equals(LiveBeingStates.idle))
 			{
-				if (pos.x < Target.x)
-				{
-					pos.x += step ;
-				}
-				else
-				{
-					pos.x += -step ;
-				}
+				setState(LiveBeingStates.moving) ;
 			}
-			else
+			else if (state.equals(LiveBeingStates.moving))
 			{
-				if (pos.y < Target.y)
-				{
-					pos.y += step ;
-				}
-				else
-				{
-					pos.y += -step ;
-				}
+				setState(LiveBeingStates.idle) ;
 			}
 		}
-		setPos(pos) ;
 	}
+	
+//	public void Follow(Point Pos, Point Target, int step, double mindist)
+//	{
+//		Point pos = new Point(Pos.x, Pos.y) ; // Prevent the method from modifying the original variable Pos
+//		double verdist = Math.abs(pos.y - Target.y), hordist = Math.abs(pos.x - Target.x) ;
+//		if (mindist < pos.distance(Target))
+//		{
+//			if (verdist < hordist)
+//			{
+//				if (pos.x < Target.x)
+//				{
+//					pos.x += step ;
+//				}
+//				else
+//				{
+//					pos.x += -step ;
+//				}
+//			}
+//			else
+//			{
+//				if (pos.y < Target.y)
+//				{
+//					pos.y += step ;
+//				}
+//				else
+//				{
+//					pos.y += -step ;
+//				}
+//			}
+//		}
+//		setPos(pos) ;
+//	}
 	public void Move(Point PlayerPos, boolean FollowPlayer, GameMap map)
 	{
 		//if (PA.Actions[0][2] == 1 & !PA.getName().equals("Drag�o") & !PA.getName().equals("Dragon"))	// If the creature can move
 		//{
-			countmove = (countmove + 1) % 5 ;
 			if (FollowPlayer)
 			{
-				Follow(pos, PlayerPos, step, range) ;
+				setPos(Follow(pos, PlayerPos, step, range)) ;
 			}
 			else
 			{
 				updatePos(dir, pos, step, map) ;
-			}				
+			}
+			stepCounter.inc() ;		
 		//}
 	}
 
@@ -329,67 +345,70 @@ public class Creature extends LiveBeing
 		follow = false ;
 	}
 
-	public void ApplyBuffsAndNerfs(String action, String type, int att, int BuffNerfLevel, Spell spells, boolean SpellIsActive)
-	{
-		int ActionMult = 1 ;
-		double[][] Buff = new double[14][5] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
-		double[] OriginalValue = new double[14] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
-		double[][] Buffs = null ;
-		if (type.equals("buffs"))
-		{
-			//Buffs = spells.getBuffs() ;
-		}
+	
+	
+	
+	
+//	public void ApplyBuffsAndNerfs(String action, String type, int att, int BuffNerfLevel, Spell spells, boolean SpellIsActive)
+//	{
+//		int ActionMult = 1 ;
+//		double[][] Buff = new double[14][5] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
+//		double[] OriginalValue = new double[14] ;	// [Life, Mp, PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
+//		double[][] Buffs = null ;
+//		if (type.equals("buffs"))
+//		{
+//			Buffs = spells.getBuffs() ;
+//		}
 //		else if (type.equals("nerfs"))
 //		{
 //			Buffs = spells.getNerfs() ;
 //		}
-		OriginalValue = new double[] {PA.getLife().getMaxValue(), PA.getMp().getMaxValue(), BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(), BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(),
-				BA.getCrit()[0],
-				BA.getStun().getBasicAtkChance(),
-				BA.getBlock().getBasicAtkChance(),
-				BA.getBlood().getBasicAtkChance(), BA.getBlood().getBasicDefChance(), BA.getBlood().getBasicAtk(), BA.getBlood().getBasicDef(),
-				BA.getPoison().getBasicAtkChance(), BA.getPoison().getBasicDefChance(), BA.getPoison().getBasicAtk(), BA.getPoison().getBasicDef(),
-				BA.getSilence().getBasicAtkChance()} ;
-		if (action.equals("deactivate"))
-		{
-			ActionMult = -1 ;
-		}
-		if (att == 11 | att == 12)
-		{
-			if (action.equals("deactivate"))
-			{
-				Buff[att][0] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
-				Buff[att][1] += (OriginalValue[att]*Buffs[att][3] + Buffs[att][4])*BuffNerfLevel*ActionMult ;
-				Buff[att][2] += (OriginalValue[att]*Buffs[att][6] + Buffs[att][7])*BuffNerfLevel*ActionMult ;
-				Buff[att][3] += (OriginalValue[att]*Buffs[att][9] + Buffs[att][10])*BuffNerfLevel*ActionMult ;
-			}
-			else
-			{
-				if (Math.random() <= Buffs[att][2])
-				{
-					Buff[att][1] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
-				}
-				if (Math.random() <= Buffs[att][5])
-				{
-					Buff[att][1] += (OriginalValue[att]*Buffs[att][3] + Buffs[att][4])*BuffNerfLevel*ActionMult ;
-				}
-				if (Math.random() <= Buffs[att][8])
-				{
-					Buff[att][2] += (OriginalValue[att]*Buffs[att][6] + Buffs[att][7])*BuffNerfLevel*ActionMult ;
-				}
-				if (Math.random() <= Buffs[att][11])
-				{
-					Buff[att][3] += (OriginalValue[att]*Buffs[att][9] + Buffs[att][10])*BuffNerfLevel*ActionMult ;
-				}
-			}
-		}
-		else if (action.equals("deactivate") | Math.random() <= Buffs[att][2])
-		{
-			Buff[att][0] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
-		}
-		if (!SpellIsActive)
-		{
-			// TODO verificar repetição
+//		OriginalValue = new double[] {PA.getLife().getMaxValue(), PA.getMp().getMaxValue(), BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(), BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(),
+//				BA.getCrit()[0],
+//				BA.getStun().getBasicAtkChance(),
+//				BA.getBlock().getBasicAtkChance(),
+//				BA.getBlood().getBasicAtkChance(), BA.getBlood().getBasicDefChance(), BA.getBlood().getBasicAtk(), BA.getBlood().getBasicDef(),
+//				BA.getPoison().getBasicAtkChance(), BA.getPoison().getBasicDefChance(), BA.getPoison().getBasicAtk(), BA.getPoison().getBasicDef(),
+//				BA.getSilence().getBasicAtkChance()} ;
+//		if (action.equals("deactivate"))
+//		{
+//			ActionMult = -1 ;
+//		}
+//		if (att == 11 | att == 12)
+//		{
+//			if (action.equals("deactivate"))
+//			{
+//				Buff[att][0] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
+//				Buff[att][1] += (OriginalValue[att]*Buffs[att][3] + Buffs[att][4])*BuffNerfLevel*ActionMult ;
+//				Buff[att][2] += (OriginalValue[att]*Buffs[att][6] + Buffs[att][7])*BuffNerfLevel*ActionMult ;
+//				Buff[att][3] += (OriginalValue[att]*Buffs[att][9] + Buffs[att][10])*BuffNerfLevel*ActionMult ;
+//			}
+//			else
+//			{
+//				if (Math.random() <= Buffs[att][2])
+//				{
+//					Buff[att][1] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
+//				}
+//				if (Math.random() <= Buffs[att][5])
+//				{
+//					Buff[att][1] += (OriginalValue[att]*Buffs[att][3] + Buffs[att][4])*BuffNerfLevel*ActionMult ;
+//				}
+//				if (Math.random() <= Buffs[att][8])
+//				{
+//					Buff[att][2] += (OriginalValue[att]*Buffs[att][6] + Buffs[att][7])*BuffNerfLevel*ActionMult ;
+//				}
+//				if (Math.random() <= Buffs[att][11])
+//				{
+//					Buff[att][3] += (OriginalValue[att]*Buffs[att][9] + Buffs[att][10])*BuffNerfLevel*ActionMult ;
+//				}
+//			}
+//		}
+//		else if (action.equals("deactivate") | Math.random() <= Buffs[att][2])
+//		{
+//			Buff[att][0] += (OriginalValue[att]*Buffs[att][0] + Buffs[att][1])*BuffNerfLevel*ActionMult ;
+//		}
+//		if (!SpellIsActive)
+//		{
 //			PA.getLife().incCurrentValue((int) Buff[0][0]) ;
 //			PA.getMp().incCurrentValue((int) Buff[1][0]) ;
 //			BA.getPhyAtk().incBonus(Buff[2][0]) ;
@@ -412,52 +431,38 @@ public class Creature extends LiveBeing
 //			BA.getPoison()[7] += Buff[12][3] ;
 //			BA.getPoison()[8] += Buff[12][4] ;
 //			BA.getSilence().incAtkChanceBonus(Buff[13][0]) ;
-		}	
-	}
-	public void TakeBloodAndPoisonDamage(LiveBeing attacker)
-	{
-		int BloodDamage = 0 ;
-		int PoisonDamage = 0 ;
-		if (0 < BA.getStatus().getBlood())
-		{
-			BloodDamage = (int) Math.max(attacker.getBA().getBlood().TotalAtk() - BA.getBlood().TotalDef(), 0) ;
-		}
-		if (0 < BA.getStatus().getPoison())
-		{
-			PoisonDamage = (int) Math.max(attacker.getBA().getPoison().TotalAtk() - BA.getPoison().TotalDef(), 0) ;
-		}
-		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage) ;
-		if (attacker instanceof Player)
-		{
-			Player player = (Player) attacker ;
-			if (0 < BloodDamage)
-			{
-				player.getStats()[17] += BloodDamage ;
-			}
-			if (0 < PoisonDamage)
-			{
-				player.getStats()[20] += PoisonDamage ;
-			}
-			if (player.getJob() == 4 & 0 < player.getSpells().get(6).getLevel() & player.getSpells().get(6).isActive())	// Tasty
-			{
-				player.getLife().incCurrentValue(BloodDamage) ;
-			}
-		}
-	}
-	public void Think()
-	{
-		if (0.3 < Math.random())
-		{
-			if (state.equals(LiveBeingStates.idle))
-			{
-				setState(LiveBeingStates.moving) ;
-			}
-			else if (state.equals(LiveBeingStates.moving))
-			{
-				setState(LiveBeingStates.idle) ;
-			}
-		}
-	}
+//		}	
+//	}
+//	public void TakeBloodAndPoisonDamage(LiveBeing attacker)
+//	{
+//		int BloodDamage = 0 ;
+//		int PoisonDamage = 0 ;
+//		if (0 < BA.getStatus().getBlood())
+//		{
+//			BloodDamage = (int) Math.max(attacker.getBA().getBlood().TotalAtk() - BA.getBlood().TotalDef(), 0) ;
+//		}
+//		if (0 < BA.getStatus().getPoison())
+//		{
+//			PoisonDamage = (int) Math.max(attacker.getBA().getPoison().TotalAtk() - BA.getPoison().TotalDef(), 0) ;
+//		}
+//		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage) ;
+//		if (attacker instanceof Player)
+//		{
+//			Player player = (Player) attacker ;
+//			if (0 < BloodDamage)
+//			{
+//				player.getStats()[17] += BloodDamage ;
+//			}
+//			if (0 < PoisonDamage)
+//			{
+//				player.getStats()[20] += PoisonDamage ;
+//			}
+//			if (player.getJob() == 4 & 0 < player.getSpells().get(6).getLevel() & player.getSpells().get(6).isActive())	// Tasty
+//			{
+//				player.getLife().incCurrentValue(BloodDamage) ;
+//			}
+//		}
+//	}
 
 	
 }

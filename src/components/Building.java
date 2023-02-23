@@ -1,19 +1,22 @@
 package components ;
 
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
 
 import graphics.DrawingOnPanel;
+import main.Game;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 
-public class Buildings
+public class Building
 {
 	private BuildingType type ;
 	private Point pos ;
 	
-	public Buildings(BuildingType type, Point pos)
+	public Building(BuildingType type, Point pos)
 	{
 		this.type = type ;
 		this.pos = pos ;
@@ -39,9 +42,19 @@ public class Buildings
 		
 		if (type.getNPCs() == null) { return ;}
 		
-		for (int n = 0 ; n <= type.getNPCs().size() - 1 ; n += 1)
+		for (NPCs npc : type.getNPCs())
 		{
-			type.getNPCs().get(n).display(DP) ;
+			npc.display(DP) ;
+		}
+		
+		if (type.getName().equals("Sign"))
+		{
+			Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+			Point messagePos = UtilG.Translate(pos, 10, 20) ;
+//			String message = player.allText.get("* Mensagem das placas *") signMessage[id + 1] ;
+			String message = "Oi!" ;
+			DP.DrawRoundRect(pos, Align.topLeft, new Dimension(300, 200), 3, Game.ColorPalette[4], Game.ColorPalette[4], true) ;			
+			DP.DrawFitText(messagePos, font.getSize() + 2, Align.bottomLeft, message, font, 35, Game.ColorPalette[5]) ;			
 		}
 	}
 }
