@@ -739,7 +739,7 @@ public class Game extends JPanel
 			FieldMap fm = (FieldMap) player.getMap() ;
 			fm.getCreatures().forEach(creature ->
 			{
-				creature.IncActionCounters() ;
+//				creature.IncActionCounters() ;
 				creature.getBA().getStatus().decreaseStatus() ;
 			});
 			
@@ -1026,7 +1026,7 @@ public class Game extends JPanel
 
     	player.InitializeSpells() ;
     	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
-    	player.setMap(cityMaps[1]) ;
+    	player.setMap(fieldMaps[3]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
 //    	player.getBag().Add(Potion.getAll()[0], 3) ;
 //    	player.getBag().Add(Potion.getAll()[0], 2) ;
@@ -1065,11 +1065,12 @@ public class Game extends JPanel
     	//player.ApplyBuffsAndNerfs("deactivate", "", 0, player.getSpell().get(0).getBuffs().get(0), 0, false);
     	System.out.println("\nbuff deactivated");
     	System.out.println(player.getLife());*/
-    	player.addQuest(allQuests[0]) ;
+    	player.addQuest(allQuests[1]) ;
     	player.addQuest(allQuests[5]) ;
     	player.addQuest(allQuests[6]) ;
     	player.addQuest(allQuests[7]) ;
     	player.getQuest().get(0).activate() ;
+    	player.getQuest().get(1).activate() ;
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
         	player.bestiary.addDiscoveredCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
@@ -1088,8 +1089,35 @@ public class Game extends JPanel
 		}
     	
     	
-    	
+
+    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
     	Battle.knockback(new Point(200, 200), new Point(210, 220), 10) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
+    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
+    	System.out.println(player.getQuest().get(0).isComplete());
+    	System.out.println(player.getQuest().get(1).isComplete());
     	
     	allGifs = new Gif[2] ;
     	allGifs[0] = Player.TentGif ;

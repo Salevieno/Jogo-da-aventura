@@ -36,7 +36,7 @@ public class QuestWindow extends GameWindow
 		}
 	}
 	
-	public void display(List<Quests> quests, DrawingOnPanel DP)
+	public void display(List<Quests> quests, BagWindow bag, DrawingOnPanel DP)
 	{		
 		if (quests.size() <= 0) { return ;}
 
@@ -67,7 +67,7 @@ public class QuestWindow extends GameWindow
 				String creatureName = reqCreatureType[i].getName() ;
 				creaturePos = UtilG.Translate(creaturePos, 0, reqCreatureType[i].getSize().height + 4) ;
 				Point textPos = UtilG.Translate(creaturePos, 25, 0) ;
-				DP.DrawText(textPos, Align.centerLeft, angle, creatureName + " : " + quest.getCounter()[i] + " / " + reqCreatureTypes.get(reqCreatureType[i]), font, Game.ColorPalette[9]) ;
+				DP.DrawText(textPos, Align.centerLeft, angle, creatureName + " : " + quest.getCounter().get(reqCreatureType[i]) + " / " + reqCreatureTypes.get(reqCreatureType[i]), font, Game.ColorPalette[9]) ;
 				reqCreatureType[i].display(creaturePos, new Scale(1, 1), DP) ;
 			}
 		}
@@ -82,13 +82,16 @@ public class QuestWindow extends GameWindow
 		Point itemsSectionPos = UtilG.Translate(windowPos, size.width / 2, 180) ;
 		DP.DrawText(itemsSectionPos, Align.center, angle, "Itens necessários", font, Game.ColorPalette[9]) ;
 		DP.DrawLine(UtilG.Translate(itemsSectionPos, -60, 20), UtilG.Translate(itemsSectionPos, 60, 20), 1, Game.ColorPalette[9]) ;
-		Point itemPos = UtilG.Translate(windowPos, 50, 200) ;
-		for (int i = 0 ; i <= reqItem.length - 1 ; i += 1)
+		Point circlePos = UtilG.Translate(windowPos, 50, 200) ;
+		Point itemPos = UtilG.Translate(circlePos, 10, 0) ;
+		for (Item item : reqItem)
 		{
 			itemPos = UtilG.Translate(itemPos, 0, font.getSize() + 4) ;
+			circlePos = UtilG.Translate(circlePos, 0, font.getSize() + 4) ;
 			Point textPos = UtilG.Translate(itemPos, 15, 0) ;
-			DP.DrawText(textPos, Align.centerLeft, angle, reqItem[i].getName(), font, Game.ColorPalette[9]) ;
-			DP.DrawImage(reqItem[i].getImage(), itemPos, Align.center) ;
+			DP.DrawCircle(circlePos, 10, 0, bag.contains(item) ? Game.ColorPalette[3] : Game.ColorPalette[6], null) ;
+			DP.DrawImage(item.getImage(), itemPos, Align.center) ;
+			DP.DrawText(textPos, Align.centerLeft, angle, item.getName(), font, Game.ColorPalette[9]) ;
 		}
 		
 		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height), size.width, window, numberWindows) ;

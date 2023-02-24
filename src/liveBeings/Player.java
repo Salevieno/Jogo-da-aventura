@@ -958,7 +958,7 @@ public class Player extends LiveBeing
 		}		
 		if (questWindow.isOpen())
 		{
-			questWindow.display(quests, DP) ;
+			questWindow.display(quests, bag, DP) ;
 		}
 		if (bestiary.isOpen())
 		{
@@ -1181,7 +1181,7 @@ public class Player extends LiveBeing
 //			BA.getSilence()[1] += Buff[13][0] ;
 //		}	
 	}
-	public void Win(Creature creature, Quests[] quest, Animations winAnimation)
+	public void Win(Creature creature, Animations winAnimation)
 	{		
 		List<String> GetItemsObtained = new ArrayList<>() ;
 		for (Item item : creature.getBag())
@@ -1194,19 +1194,19 @@ public class Player extends LiveBeing
 		}		
 		
 		gold[0] += creature.getGold()*UtilG.RandomMult( (double) (0.1 * goldMultiplier)) ;
-		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())) ;
+//		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())) ;
 		
-		// TODO check quests at win
 		if (GetActiveQuests() != null)
 		{
 			for (int q = 0 ; q <= GetActiveQuests().size() - 1 ; q += 1)
 			{
-				quest[GetActiveQuests().get(q)].IncReqCreaturesCounter(creature.getType()) ;
+				quests.get(GetActiveQuests().get(q)).IncReqCreaturesCounter(creature.getType()) ;
+				quests.get(GetActiveQuests().get(q)).checkCompletion(bag) ;
 			}
 		}
 		
 		String[] ItemsObtained = GetItemsObtained.toArray(new String[] {}) ;
-		winAnimation.start(new Object[] {100, ItemsObtained, color}) ;
+//		winAnimation.start(new Object[] {100, ItemsObtained, color}) ;
 	}
 	public void checkLevelUp(Animations ani)
 	{

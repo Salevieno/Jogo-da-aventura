@@ -323,10 +323,10 @@ public class Battle
 		
 		if (creature.isAlive() & (player.isAlive() | pet.isAlive())) { return ;}
 		
-		FinishBattle(player, pet, creature, Game.getAllQuests(), ani[3]) ;
+		FinishBattle(player, pet, creature, ani[3]) ;
 	}
 	
-	private void FinishBattle(Player player, Pet pet, Creature creature, Quests[] quest, Animations winAni)
+	private void FinishBattle(Player player, Pet pet, Creature creature, Animations winAni)
 	{
 		player.setState(LiveBeingStates.idle) ;
 		player.resetOpponent() ;
@@ -355,7 +355,7 @@ public class Battle
 		{
 			if (player.isAlive())
 			{
-				player.Win(creature, quest, winAni) ;
+				player.Win(creature, winAni) ;
 			}
 			if (pet.isAlive())
 			{

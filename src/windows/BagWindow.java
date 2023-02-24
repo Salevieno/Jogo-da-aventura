@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -227,6 +228,23 @@ public class BagWindow extends GameWindow
 		}
 		
 		return selectedItem ;
+	}
+	
+	public boolean contains(Item item)
+	{
+		if (item instanceof Potion) { return pot.containsKey(item) ;}
+		if (item instanceof Alchemy) { return alch.containsKey((Alchemy) item) ;}
+		if (item instanceof Forge) { return forge.containsKey((Forge) item) ;}
+		if (item instanceof PetItem) { return petItem.containsKey((PetItem) item) ;}
+		if (item instanceof Food) { return food.containsKey((Food) item) ;}
+		if (item instanceof Arrow) { return arrow.containsKey(item) ;}
+		if (item instanceof Equip) { return equip.containsKey(item) ;}
+		if (item instanceof GeneralItem) { return genItem.containsKey(item) ;}
+		if (item instanceof Fab) { return fab.containsKey(item) ;}
+		if (item instanceof QuestItem) { return quest.containsKey(item) ;}
+		
+		System.out.println("Item procurado na mochila não pertence a uma categoria válida");
+		return false ;
 	}
 	
 	public void navigate(String action)
