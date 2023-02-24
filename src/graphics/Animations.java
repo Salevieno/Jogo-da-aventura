@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 
-import components.Items;
+import items.Item;
 import main.AtkResults;
 import main.Game;
 import utilities.TimeCounter;
@@ -243,7 +243,7 @@ public class Animations
 	
 	private void GainItemAnimation(Object[] AniVars0, DrawingOnPanel DP)
 	{
-		Items[] items = (Items[]) AniVars0[1] ;
+		Item[] items = (Item[]) AniVars0[1] ;
 		int[] ItemIDs = (int[]) AniVars0[2] ;
 		//DrawPrimitives DP = DP.getDrawPrimitives() ;
 		/*Font font = new Font("SansSerif", Font.BOLD, 14) ;

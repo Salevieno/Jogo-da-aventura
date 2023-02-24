@@ -2,15 +2,15 @@ package items;
 
 import java.awt.Image;
 
-public class Item
+public abstract class Item
 {
 	protected String name ;
 	protected String description ;
 	protected Image image ;
 	protected int price ;
-	protected float dropChance ;
+	protected double dropChance ;
 	
-	public Item(String Name, String Description, Image image, int price, float dropChance)
+	public Item(String Name, String Description, Image image, int price, double dropChance)
 	{
 		this.name = Name ;
 		this.description = Description ;
@@ -23,5 +23,5 @@ public class Item
 	public String getDescription() {return description ;}
 	public Image getImage() {return image ;}
 	public int getPrice() {return price ;}
-	public float getDropChance() {return dropChance ;}
+	public double getDropChance() {return dropChance ;}
 }

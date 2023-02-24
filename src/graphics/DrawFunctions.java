@@ -9,7 +9,6 @@ import java.awt.Point;
 import java.util.Map;
 
 import components.GameIcon;
-import components.Items;
 import components.NPCs;
 import liveBeings.Pet;
 import liveBeings.Player;

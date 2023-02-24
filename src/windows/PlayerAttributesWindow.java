@@ -9,11 +9,11 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Map;
 
+import attributes.AttributeBonus;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import components.GameIcon;
-import components.Items;
 import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import items.Equip;
@@ -68,52 +68,52 @@ public class PlayerAttributesWindow extends GameWindow
 		{
 			PersonalAttributes PA = player.getPA() ;
 			BattleAttributes BA = player.getBA() ;
-			double[] PlayerAttributeIncrease = player.getAttIncrease()[player.getProJob()] ;
+			AttributeBonus PlayerAttributeIncrease = player.getAttIncrease() ;
 			for (int attIcon = 0 ; attIcon <= addAttIcon.length - 1 ; attIcon += 1)
 			{
 				if (addAttIcon[attIcon].ishovered(MousePos) & (player.getCurrentAction().equals("Enter") | player.getCurrentAction().equals("MouseLeftClick")))
 				{
-					if (attIcon == 0)
-					{
-						PA.getLife().incCurrentValue((int) PlayerAttributeIncrease[attIcon]); ;
-						PA.getLife().incCurrentValue((int) PlayerAttributeIncrease[attIcon]); ;
-					}
-					else if (attIcon == 1)
-					{
-						PA.getMp().incCurrentValue((int) PlayerAttributeIncrease[attIcon]); ;
-						PA.getMp().incCurrentValue((int) PlayerAttributeIncrease[attIcon]); ;
-					}
-					else if (attIcon == 2)
-					{
-						BA.getPhyAtk().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
-					}
-					else if (attIcon == 3)
-					{
-						BA.getMagAtk().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
-					}
-					else if (attIcon == 4)
-					{
-						BA.getPhyDef().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
-					}
-					else if (attIcon == 5)
-					{
-						BA.getMagDef().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
-					}
-					else if (attIcon == 6)
-					{
-						BA.getDex().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
-					}
-					else if (attIcon == 7)
-					{
-						BA.getAgi().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
-					}
+//					if (attIcon == 0)
+//					{
+//						PA.getLife().incCurrentValue((int) PlayerAttributeIncrease[attIcon]); ;
+//						PA.getLife().incCurrentValue((int) PlayerAttributeIncrease[attIcon]); ;
+//					}
+//					else if (attIcon == 1)
+//					{
+//						PA.getMp().incCurrentValue((int) PlayerAttributeIncrease[attIcon]); ;
+//						PA.getMp().incCurrentValue((int) PlayerAttributeIncrease[attIcon]); ;
+//					}
+//					else if (attIcon == 2)
+//					{
+//						BA.getPhyAtk().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
+//					}
+//					else if (attIcon == 3)
+//					{
+//						BA.getMagAtk().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
+//					}
+//					else if (attIcon == 4)
+//					{
+//						BA.getPhyDef().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
+//					}
+//					else if (attIcon == 5)
+//					{
+//						BA.getMagDef().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
+//					}
+//					else if (attIcon == 6)
+//					{
+//						BA.getDex().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
+//					}
+//					else if (attIcon == 7)
+//					{
+//						BA.getAgi().incBaseValue(PlayerAttributeIncrease[attIcon]) ;
+//					}
 					player.decAttPoints(1) ;
 				}
 			}
 		}
 	}
 	
-	public void display(LiveBeing user, Map<String, String[]> allText, Equip[] Equips, double[][] EquipsBonus, Point MousePos, DrawingOnPanel DP)
+	public void display(LiveBeing user, Map<String, String[]> allText, Equip[] equips, Point mousePos, DrawingOnPanel DP)
 	{
 		// Font "GothicE"
 		Dimension screenSize = Game.getScreen().getSize() ;
@@ -163,7 +163,7 @@ public class PlayerAttributesWindow extends GameWindow
 			
 			
 			//	Equips
-			if (Equips != null)
+			if (equips != null)
 			{
 				int[] EqRectL = new int[] {51, 51, 51, 8} ;
 				int[] EqRectH = new int[] {51, 51, 51, 24} ;
@@ -171,17 +171,16 @@ public class PlayerAttributesWindow extends GameWindow
 						new Point(windowPos.x + 180, windowPos.y + 50),
 						new Point(windowPos.x + 180, windowPos.y + 115), 
 						new Point(windowPos.x + 53, windowPos.y + 140)} ;	// Weapon, armor, shield, arrow
-				for (int eq = 0 ; eq <= Equips.length - 1 ; eq += 1)
+				for (int eq = 0 ; eq <= equips.length - 1 ; eq += 1)
 				{
-					if (Equips[eq] != null)
+					if (equips[eq] != null)
 					{
 						Point textPos = new Point(EqRectPos[eq].x, EqRectPos[eq].y - EqRectH[eq] / 2) ;
-						int eqBonus = (int)(EquipsBonus[Equips[eq].getId()][1]) ;
 						if (eq <= 2)
 						{
-							if (0 < EquipsBonus[Equips[eq].getId()][0])
+							if (0 < equips[eq].getForgeLevel())
 							{
-								DP.DrawText(textPos, Align.center, TextAngle, equipsText[eq + 1] + " + " + eqBonus, font, TextColor) ;					
+								DP.DrawText(textPos, Align.center, TextAngle, equipsText[eq + 1] + " + " + equips[eq].getForgeLevel(), font, TextColor) ;					
 							}
 							//DF.DrawEquips(EqRectPos[eq], PA.getJob(), eq, Equips[eq] - Items.BagIDs[6], EquipsBonus, new double[] {1, 1}, TextAngle) ;
 						}

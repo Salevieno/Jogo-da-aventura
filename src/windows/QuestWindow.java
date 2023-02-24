@@ -1,9 +1,7 @@
 package windows;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -62,13 +60,15 @@ public class QuestWindow extends GameWindow
 			DP.DrawText(creaturesSectionPos, Align.center, angle, "Criaturas necessárias", font, Game.ColorPalette[9]) ;
 			DP.DrawLine(UtilG.Translate(creaturesSectionPos, -60, 20), UtilG.Translate(creaturesSectionPos, 60, 20), 1, Game.ColorPalette[9]) ;
 			Point creaturePos = UtilG.Translate(windowPos, 50, 80) ;
-			for (int i = 0 ; i <= reqCreatureType.length - 1 ; i += 1)
+			for (CreatureTypes creatureType : reqCreatureType)
 			{
-				String creatureName = reqCreatureType[i].getName() ;
-				creaturePos = UtilG.Translate(creaturePos, 0, reqCreatureType[i].getSize().height + 4) ;
+				String creatureName = creatureType.getName() ;
+				creaturePos = UtilG.Translate(creaturePos, 0, creatureType.getSize().height + 4) ;
 				Point textPos = UtilG.Translate(creaturePos, 25, 0) ;
-				DP.DrawText(textPos, Align.centerLeft, angle, creatureName + " : " + quest.getCounter().get(reqCreatureType[i]) + " / " + reqCreatureTypes.get(reqCreatureType[i]), font, Game.ColorPalette[9]) ;
-				reqCreatureType[i].display(creaturePos, new Scale(1, 1), DP) ;
+				int numberReq = reqCreatureTypes.get(creatureType) ;
+				int numberCounter = quest.getCounter().get(creatureType) ;
+				creatureType.display(creaturePos, new Scale(1, 1), DP) ;
+				DP.DrawText(textPos, Align.centerLeft, angle, creatureName + " : " + numberCounter + " / " + numberReq, font, Game.ColorPalette[9]) ;
 			}
 		}
 		
@@ -77,7 +77,7 @@ public class QuestWindow extends GameWindow
 		
 		if (reqItems == null) { return ;}
 		
-		Item[] reqItem = new Item[0];
+		Item[] reqItem = new Item[0] ;
 		reqItem = reqItems.keySet().toArray(reqItem) ;
 		Point itemsSectionPos = UtilG.Translate(windowPos, size.width / 2, 180) ;
 		DP.DrawText(itemsSectionPos, Align.center, angle, "Itens necessários", font, Game.ColorPalette[9]) ;

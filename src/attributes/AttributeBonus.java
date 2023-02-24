@@ -10,37 +10,42 @@ public class AttributeBonus
 	private int magDef ;
 	private int dex ;
 	private int agi ;
-	private float critAtkChance ;
-	private float critDefChance ;
-	private float stunAtkChance ;
-	private float stunDefChance ;
+	private double critAtkChance ;
+	private double critDefChance ;
+	private double stunAtkChance ;
+	private double stunDefChance ;
 	private int stunDuration ;
-	private float blockAtkChance ;
-	private float blockDefChance ;
+	private double blockAtkChance ;
+	private double blockDefChance ;
 	private int blockDuration ;
-	private float bloodAtkChance ;
-	private float bloodDefChance ;
+	private double bloodAtkChance ;
+	private double bloodDefChance ;
 	private int bloodAtk ;
 	private int bloodDef ;
 	private int bloodDuration ;
-	private float poisonAtkChance ;
-	private float poisonDefChance ;
+	private double poisonAtkChance ;
+	private double poisonDefChance ;
 	private int poisonAtk ;
 	private int poisonDef ;
 	private int poisonDuration ;
-	private float silenceAtkChance ;
-	private float silenceDefChance ;
+	private double silenceAtkChance ;
+	private double silenceDefChance ;
 	private int silenceDuration ;
+	
+	public AttributeBonus()
+	{
+		
+	}
 	
 	public AttributeBonus(int life, int MP,
 			int phyAtk, int magAtk, int phyDef,	int magDef,
 			int dex, int agi,
-			float critAtkChance, float critDefChance,
-			float stunAtkChance, float stunDefChance, int stunDuration,
-			float blockAtkChance, float blockDefChance,	int blockDuration,
-			float bloodAtkChance, float bloodDefChance, int bloodAtk, int bloodDef, int bloodDuration,
-			float poisonAtkChance, float poisonDefChance, int poisonAtk, int poisonDef,	int poisonDuration,
-			float silenceAtkChance,	float silenceDefChance,	int silenceDuration)
+			double critAtkChance, double critDefChance,
+			double stunAtkChance, double stunDefChance, int stunDuration,
+			double blockAtkChance, double blockDefChance,	int blockDuration,
+			double bloodAtkChance, double bloodDefChance, int bloodAtk, int bloodDef, int bloodDuration,
+			double poisonAtkChance, double poisonDefChance, int poisonAtk, int poisonDef,	int poisonDuration,
+			double silenceAtkChance,	double silenceDefChance,	int silenceDuration)
 	{
 		this.life = life ;
 		this.MP = MP ;
@@ -81,28 +86,45 @@ public class AttributeBonus
 	public int getMagDef() {return magDef ;}
 	public int getDex() {return dex ;}
 	public int getAgi() {return agi ;}
-	public float getCritAtkChance() {return critAtkChance ;}
-	public float getCritDefChance() {return critDefChance ;}
-	public float getStunAtkChance() {return stunAtkChance ;}
-	public float getStunDefChance() {return stunDefChance ;}
+	public double getCritAtkChance() {return critAtkChance ;}
+	public double getCritDefChance() {return critDefChance ;}
+	public double getStunAtkChance() {return stunAtkChance ;}
+	public double getStunDefChance() {return stunDefChance ;}
 	public int getStunDuration() {return stunDuration ;}
-	public float getBlockAtkChance() {return blockAtkChance ;}
-	public float getBlockDefChance() {return blockDefChance ;}
+	public double getBlockAtkChance() {return blockAtkChance ;}
+	public double getBlockDefChance() {return blockDefChance ;}
 	public int getBlockDuration() {return blockDuration ;}
-	public float getBloodAtkChance() {return bloodAtkChance ;}
-	public float getBloodDefChance() {return bloodDefChance ;}
+	public double getBloodAtkChance() {return bloodAtkChance ;}
+	public double getBloodDefChance() {return bloodDefChance ;}
 	public int getBloodAtk() {return bloodAtk ;}
 	public int getBloodDef() {return bloodDef ;}
 	public int getBloodDuration() {return bloodDuration ;}
-	public float getPoisonAtkChance() {return poisonAtkChance ;}
-	public float getPoisonDefChance() {return poisonDefChance ;}
+	public double getPoisonAtkChance() {return poisonAtkChance ;}
+	public double getPoisonDefChance() {return poisonDefChance ;}
 	public int getPoisonAtk() {return poisonAtk ;}
 	public int getPoisonDef() {return poisonDef ;}
 	public int getPoisonDuration() {return poisonDuration ;}
-	public float getSilenceAtkChance() {return silenceAtkChance ;}
-	public float getSilenceDefChance() {return silenceDefChance ;}
+	public double getSilenceAtkChance() {return silenceAtkChance ;}
+	public double getSilenceDefChance() {return silenceDefChance ;}
 	public int getSilenceDuration() {return silenceDuration ;}
 
+	public void setBasic(double[] basicAttInc)
+	{
+		life = (int) basicAttInc[0] ;
+		MP = (int) basicAttInc[1] ;
+		phyAtk = (int) basicAttInc[2] ;
+		magAtk = (int) basicAttInc[3] ;
+		phyDef = (int) basicAttInc[4] ;
+		magDef = (int) basicAttInc[5] ;
+		dex = (int) basicAttInc[6] ;
+		agi = (int) basicAttInc[7] ;
+	}
+	
+	public double[] basic()
+	{
+		return new double[] {life, MP, phyAtk, magAtk, phyDef, magDef, dex, agi} ;
+	}
+	
 	public void printAtt()
 	{
 		System.out.println("   life bonus: " + life +

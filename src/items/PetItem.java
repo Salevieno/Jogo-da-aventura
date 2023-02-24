@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import liveBeings.Pet;
 import main.Game;
 import utilities.UtilG;
 
@@ -40,6 +41,11 @@ public class PetItem extends Item
 		{
 			AllPetItems[p] = new PetItem(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]), Float.parseFloat(input.get(p)[7]), Float.parseFloat(input.get(p)[8]), Integer.parseInt(input.get(p)[9]));
 		}		
+	}
+	
+	public void use(Pet pet)
+	{
+		
 	}
 
 	public void printAtt()

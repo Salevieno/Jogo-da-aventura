@@ -565,13 +565,44 @@ public class Game extends JPanel
     
     private Quests[] initializeQuests(Languages language, int playerJob)
     {
-		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
-		Quests[] quests = new Quests[input.size()] ;
+		ArrayList<String[]> inputs = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
+		Quests[] quests = new Quests[inputs.size()] ;
 		for (int i = 0 ; i <= quests.length - 1 ; i += 1)
 		{
-			int id = Integer.parseInt(input.get(i)[0]) ;
-			quests[i] = new Quests(Integer.parseInt(input.get(i)[0])) ;
-			quests[i].Initialize(input.get(id), language, id, playerJob) ;
+			String[] input = inputs.get(i) ;
+			int id = Integer.parseInt(input[0]) ;
+			String type = input[1] ;
+			Map<CreatureTypes, Integer> reqCreaturesCounter = new HashMap<>() ;
+			Map<CreatureTypes, Integer> reqCreatureTypes = new HashMap<>() ;
+			Map<Item, Integer> reqItems = new HashMap<>() ;
+			Map<Item, Integer> rewardItems = new HashMap<>() ;
+			String description ;
+		
+			for (int j = 2 ; j <= 8 - 1 ; j += 2)
+			{
+				if (Integer.parseInt(input[j]) <= -1) { continue ;}
+				reqCreaturesCounter.put(Game.getCreatureTypes()[Integer.parseInt(input[j])], 0) ;
+				reqCreatureTypes.put(Game.getCreatureTypes()[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
+			}
+			
+			for (int j = 8 ; j <= 18 - 1 ; j += 2)
+			{
+				if (Integer.parseInt(input[j]) <= -1) { continue ;}
+				reqItems.put(Game.getAllItems()[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
+			}
+			
+			int goldReward = Integer.parseInt(input[18]) ;
+			int expReward = Integer.parseInt(input[19]) ;
+			
+			for (int j = 20 ; j <= 28 - 1 ; j += 2)
+			{
+				if (Integer.parseInt(input[j + 1]) <= -1) { continue ;}
+				rewardItems.put(Game.getAllItems()[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
+			}
+			
+			description = input[30 + language.ordinal()] ;
+			
+			quests[i] = new Quests(id, type, reqCreaturesCounter, reqCreatureTypes, reqItems, goldReward, expReward, rewardItems, description) ;
 		}
 		
 		return quests ;
@@ -920,7 +951,7 @@ public class Game extends JPanel
 		// find the closest creature to the player
 		if (!player.getMap().IsACity())
 		{
-			player.closestCreature = UtilS.ClosestCreatureInRange(player, creature, allMaps) ;
+			player.setClosestCreature(UtilS.ClosestCreatureInRange(player, creature, allMaps)) ;
 		}
 		
 		// check if the player met something
@@ -1073,7 +1104,7 @@ public class Game extends JPanel
     	player.getQuest().get(1).activate() ;
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
-        	player.bestiary.addDiscoveredCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
+        	player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
     	}
     	/*System.out.println(player.getBag().getPotions()) ;
     	player.getBag().Add(Potion.getAll()[0], 4) ;

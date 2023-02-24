@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import components.GameIcon;
-import components.Items;
 import components.NPCs;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -328,7 +327,7 @@ public class DrawingOnPanel
 		
 		DrawText(new Point((int)(0.5*screenSize.width), (int)(0.05*screenSize.height)), Align.center, stdAngle, "Slot " + (SlotID + 1), font, colorPalette[5]) ;
 		//player.DrawAttWindow(MainWinDim, WindowPos[0], null, AllText, AllTextCat, 0, GoldCoinImage, icons, DP) ;
-		player.getAttWindow().display(player, allText, player.getEquips(), player.getEquipsBonus(), new Point(0, 0), this) ;
+		player.getAttWindow().display(player, allText, player.getEquips(), new Point(0, 0), this) ;
 		if (0 < pet.getLife().getCurrentValue())
 		{
  			//pet.getAttWindow().display(pet, allText, null, null, NumberOfUsedSlots, null, null, null, null);
@@ -405,50 +404,50 @@ public class DrawingOnPanel
 		DrawTime(sky) ;
 	}
 
-	public void DrawFabBook(Image BookImage, Items[] items, int SelectedPage, int[][] Ingredients, int[][] Products, Point MousePos)
-	{
-		Point Pos = new Point((int)(0.5*screenSize.width), (int)(0.5*screenSize.height)) ;
-		Font Titlefont = new Font("SansSerif", Font.BOLD, 16) ;
-		Font font = new Font("SansSerif", Font.BOLD, 14) ;
-		int L = BookImage.getWidth(null), H = BookImage.getHeight(null) ;
-		int sy = H/15 ;
-		int IngredientsCont = 0, ProductsCont = 0 ;
-		int MaxTextL = 10 ;
-		DrawImage(BookImage, Pos, stdAngle, new Scale(1, 1), Align.center) ;
-		DrawText(new Point(Pos.x - 3*L/8, Pos.y - H/5 - sy/4), Align.bottomLeft, stdAngle, "Ingredients:", Titlefont, colorPalette[5]) ;
-		DrawText(new Point(Pos.x + 3*L/8, Pos.y - H/5 - sy/4), Align.topRight, stdAngle, "Products:", Titlefont, colorPalette[5]) ;		
-		for (int j = 0 ; j <= Ingredients[SelectedPage].length - 1 ; ++j)
-		{
-			if (-1 < Ingredients[SelectedPage][j])
-			{
-				/*if (Utg.MouseIsInside(MousePos, new int[] {Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2}, MaxTextL*font.getSize()/2, Utg.TextH(font.getSize())))
-				{
-					DrawText(new Point(Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2}, alignPoints.bottomLeft, OverallAngle, items[Ingredients[SelectedPage][j]].getName(), font, ColorPalette[5]) ;
-				}
-				else
-				{*/
-					DrawTextUntil(new Point(Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2), Align.bottomLeft, stdAngle, items[Ingredients[SelectedPage][j]].getName(), font, colorPalette[5], MaxTextL, MousePos) ;
-				//}
-				IngredientsCont += 1 ;
-			}
-		}
-		for (int j = 0 ; j <= Products[SelectedPage].length - 1 ; ++j)
-		{
-			if (-1 < Products[SelectedPage][j])
-			{
-				/*if (Utg.MouseIsInside(MousePos, new int[] {Pos.x + 3*L/8 - MaxTextL*font.getSize()/2, Pos.y - H/5 + ProductsCont*sy + sy/2}, MaxTextL*font.getSize()/2, Utg.TextH(font.getSize())))
-				{
-					DrawText(new Point(Pos.x + 3*L/8, Pos.y - H/5 + ProductsCont*sy + sy/2}, alignPoints.topRight, OverallAngle, items[Products[SelectedPage][j]].getName(), font, ColorPalette[5]) ;
-				}
-				else
-				{*/
-					DrawTextUntil(new Point(Pos.x + 3*L/8, Pos.y - H/5 + ProductsCont*sy + sy/2), Align.topRight, stdAngle, items[Products[SelectedPage][j]].getName(), font, colorPalette[5], MaxTextL, MousePos) ;
-				//}
-				ProductsCont += 1 ;
-			}
-		}
-		DrawWindowArrows(new Point(Pos.x, Pos.y + 15*H/32), L, SelectedPage, Ingredients.length - 1) ;
-	}
+//	public void DrawFabBook(Image BookImage, Item[] items, int SelectedPage, int[][] Ingredients, int[][] Products, Point MousePos)
+//	{
+//		Point Pos = new Point((int)(0.5*screenSize.width), (int)(0.5*screenSize.height)) ;
+//		Font Titlefont = new Font("SansSerif", Font.BOLD, 16) ;
+//		Font font = new Font("SansSerif", Font.BOLD, 14) ;
+//		int L = BookImage.getWidth(null), H = BookImage.getHeight(null) ;
+//		int sy = H/15 ;
+//		int IngredientsCont = 0, ProductsCont = 0 ;
+//		int MaxTextL = 10 ;
+//		DrawImage(BookImage, Pos, stdAngle, new Scale(1, 1), Align.center) ;
+//		DrawText(new Point(Pos.x - 3*L/8, Pos.y - H/5 - sy/4), Align.bottomLeft, stdAngle, "Ingredients:", Titlefont, colorPalette[5]) ;
+//		DrawText(new Point(Pos.x + 3*L/8, Pos.y - H/5 - sy/4), Align.topRight, stdAngle, "Products:", Titlefont, colorPalette[5]) ;		
+//		for (int j = 0 ; j <= Ingredients[SelectedPage].length - 1 ; ++j)
+//		{
+//			if (-1 < Ingredients[SelectedPage][j])
+//			{
+//				/*if (Utg.MouseIsInside(MousePos, new int[] {Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2}, MaxTextL*font.getSize()/2, Utg.TextH(font.getSize())))
+//				{
+//					DrawText(new Point(Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2}, alignPoints.bottomLeft, OverallAngle, items[Ingredients[SelectedPage][j]].getName(), font, ColorPalette[5]) ;
+//				}
+//				else
+//				{*/
+////					DrawTextUntil(new Point(Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2), Align.bottomLeft, stdAngle, items[Ingredients[SelectedPage][j]].getName(), font, colorPalette[5], MaxTextL, MousePos) ;
+//				//}
+//				IngredientsCont += 1 ;
+//			}
+//		}
+//		for (int j = 0 ; j <= Products[SelectedPage].length - 1 ; ++j)
+//		{
+//			if (-1 < Products[SelectedPage][j])
+//			{
+//				/*if (Utg.MouseIsInside(MousePos, new int[] {Pos.x + 3*L/8 - MaxTextL*font.getSize()/2, Pos.y - H/5 + ProductsCont*sy + sy/2}, MaxTextL*font.getSize()/2, Utg.TextH(font.getSize())))
+//				{
+//					DrawText(new Point(Pos.x + 3*L/8, Pos.y - H/5 + ProductsCont*sy + sy/2}, alignPoints.topRight, OverallAngle, items[Products[SelectedPage][j]].getName(), font, ColorPalette[5]) ;
+//				}
+//				else
+//				{*/
+////					DrawTextUntil(new Point(Pos.x + 3*L/8, Pos.y - H/5 + ProductsCont*sy + sy/2), Align.topRight, stdAngle, items[Products[SelectedPage][j]].getName(), font, colorPalette[5], MaxTextL, MousePos) ;
+//				//}
+//				ProductsCont += 1 ;
+//			}
+//		}
+//		DrawWindowArrows(new Point(Pos.x, Pos.y + 15*H/32), L, SelectedPage, Ingredients.length - 1) ;
+//	}
 	
 	public void DrawDamageAnimation(Point initialPos, AtkResults atkResults, TimeCounter counter, int style, Color color)
 	{
@@ -496,8 +495,8 @@ public class DrawingOnPanel
 		DrawText(Pos, Align.center, stdAngle, SkillName, font, color) ;
 	}
 	
-	public void ChestRewardsAnimation(Items[] items, int counter, int duration, int[] ItemRewards, int[] GoldRewards, Color TextColor, Image CoinIcon)
-	{
+//	public void ChestRewardsAnimation(Items[] items, int counter, int duration, int[] ItemRewards, int[] GoldRewards, Color TextColor, Image CoinIcon)
+//	{
 		/*Font font = new Font("SansSerif", Font.BOLD, 20) ;
 		int TextCat = AllTextCat[29] ;
 		Point Pos = new Point((int)(0.3*screenSize.width), (int)(0.8*screenSize.height)) ;
@@ -529,7 +528,7 @@ public class DrawingOnPanel
 			}
 		}
 		*/
-	}
+//	}
 	
 	public void CollectingAnimation(Point Pos, int counter, int delay, int MessageTime, int CollectibleType, String Message)
 	{

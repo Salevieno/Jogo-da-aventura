@@ -1,12 +1,9 @@
 package components ;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import items.Item;
 import liveBeings.CreatureTypes;
-import main.Game;
-import main.Languages;
 import windows.BagWindow;
 
 public class Quests
@@ -21,19 +18,26 @@ public class Quests
 	private Map<Item, Integer> reqItems;
 	private int goldReward ;
 	private int expReward ;
-	private Map<Item, Integer> rewardItems;
+	private Map<Item, Integer> rewardItems ;
 	private String description ;
 	
-	public Quests(int ID)
+	public Quests(int id, String type, Map<CreatureTypes, Integer> reqCreaturesCounter, 
+			Map<CreatureTypes, Integer> reqCreatureTypes, Map<Item, Integer> reqItems,
+			int goldReward, int expReward, Map<Item, Integer> rewardItems, String description)
 	{
-		this.id = ID ;
+		this.id = id ;
 		name = String.valueOf("Quest " + id) ;
+		this.type = type ;
 		isActive = false ;
 		isComplete = false ;
-		reqCreaturesCounter = new HashMap<>() ;
-		reqCreatureTypes = new HashMap<>() ;
-		reqItems = new HashMap<>() ;
-		rewardItems = new HashMap<>() ;
+		this.reqCreaturesCounter = reqCreaturesCounter ;
+		this.reqCreatureTypes = reqCreatureTypes ;
+		this.reqItems = reqItems ;
+		this.goldReward = goldReward ;
+		this.expReward = expReward ;
+		this.rewardItems = rewardItems ;
+		this.description = description ;
+		
 	}
 
 	public int getID() {return id ;}
@@ -81,35 +85,5 @@ public class Quests
 		reqItems.keySet().forEach(item -> {
 			if (!bag.contains(item)) {isComplete = false ;}
 		});
-	}
-
-	public void Initialize(String[] Input, Languages language, int id, int PlayerJob)
-	{
-		type = Input[1] ;
-		for (int i = 2 ; i <= 8 - 1 ; i += 2)
-		{
-			if (0 <= Integer.parseInt(Input[i + 1]))	// TODO quando o input for para o JSon, essa condição pode sair
-			{
-				reqCreatureTypes.put(Game.getCreatureTypes()[Integer.parseInt(Input[i])], Integer.parseInt(Input[i + 1])) ;
-				reqCreaturesCounter.put(Game.getCreatureTypes()[Integer.parseInt(Input[i])], 0) ;
-			}
-		}
-		for (int i = 8 ; i <= 18 - 1 ; i += 2)
-		{
-			if (0 <= Integer.parseInt(Input[i + 1]))	// TODO quando o input for para o JSon, essa condição pode sair
-			{
-				reqItems.put(Game.getAllItems()[Integer.parseInt(Input[i])], Integer.parseInt(Input[i + 1])) ;
-			}
-		}
-		goldReward = Integer.parseInt(Input[18]) ;
-		expReward = Integer.parseInt(Input[19]) ;
-		for (int i = 20 ; i <= 28 - 1 ; i += 2)
-		{
-			if (0 <= Integer.parseInt(Input[i + 1]))	// TODO quando o input for para o JSon, essa condição pode sair
-			{
-				rewardItems.put(Game.getAllItems()[Integer.parseInt(Input[i])], Integer.parseInt(Input[i + 1])) ;
-			}
-		}
-		description = Input[30 + language.ordinal()] ;
 	}
 }

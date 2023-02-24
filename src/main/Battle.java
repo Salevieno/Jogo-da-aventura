@@ -10,7 +10,6 @@ import javax.sound.sampled.Clip ;
 import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.PersonalAttributes;
-import components.Items;
 import components.Quests;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
@@ -667,7 +666,7 @@ public class Battle
 //		}
 	}
 	
-	private void ItemEffectInBattle(BattleAttributes PlayerBA, BattleAttributes PetBA, BattleAttributes creatureBA, Elements[] creatureElem, double[] creatureLife, Items[] items, int ItemID, String target, Elements Elem, double[][] Effects, double[][] Buffs, String action)
+	private void ItemEffectInBattle(BattleAttributes PlayerBA, BattleAttributes PetBA, BattleAttributes creatureBA, Elements[] creatureElem, double[] creatureLife, int ItemID, String target, Elements Elem, double[][] Effects, double[][] Buffs, String action)
 	{
 		// TODO item effect in battle check elem mult
 		double elemMult = calcElemMult(Elem, Elements.neutral, creatureElem[0], creatureElem[0], Elements.neutral) ;
@@ -699,11 +698,11 @@ public class Battle
 //			//PlayerPoisonItemBonus = Effects[4][1] ;		// Poison atk
 //			creatureBA.getSpecialStatus()[4] += Effects[5][2] ;	// Silence
 		}	
-		for (int i = 0 ; i <= items[0].getBuffs().length - 1 ; i += 1)
-		{
+//		for (int i = 0 ; i <= items[0].getBuffs() - 1 ; i += 1)
+//		{
 			//BuffsAndNerfs(player, pet, creature, Buffs, 1, i, false, target, action) ;	
 			//ItemEffectIsActive[ItemID][i] = true ;
-		}
+//		}
 	}
 	
 	private void OffensiveSkillsStatus(Player player, Creature creature, Spell skills)

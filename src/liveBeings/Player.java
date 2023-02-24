@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.json.simple.JSONObject;
 
+import attributes.AttributeBonus;
 import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
@@ -27,7 +28,6 @@ import attributes.PersonalAttributes;
 import java.util.Map;
 
 import components.GameIcon;
-import components.Items;
 import components.NPCs;
 import components.QuestSkills;
 import components.Quests;
@@ -89,7 +89,7 @@ public class Player extends LiveBeing
 	private List<Quests> quests ;	
 	private QuestWindow questWindow ;
 	private HintsWindow hintsWindow ;
-	public BestiaryWindow bestiary ;
+	private BestiaryWindow bestiary ;
 	
 	private int attPoints ;			// attribute points available (to upgrade the attributes)
 	private int spellPoints ;		// spell points available (to upgrade the spells)
@@ -101,11 +101,15 @@ public class Player extends LiveBeing
 	private Map<QuestSkills, Boolean> questSkills ;	// skills gained with quests
 	private boolean isRiding ;		// true if the player is riding
 	private AtkTypes currentBattleAction ;
-    
-	public Creature closestCreature ;	// creature that is currently closest to the player
-    private Creature opponent ;		// creature that is currently in battle with the player
+
+	private AttributeBonus attIncrease ;	// Amount of increase in each attribute when the player levels up
+	private AttributeBonus attChanceIncrease ;	// Chance of increase of these attributes
+	
+	private Creature closestCreature ;		// creature that is currently closest to the player
+    private Creature opponent ;				// creature that is currently in battle with the player
     public Map<String, String[]> allText ;	// All the text in the game in the player language
-	public Items[] hotItem ;		// items on the hotkeys
+    private Item[] hotItem ;				// items on the hotkeys
+	private Statistics stats ;
     
     public static final Image CollectingMessage = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "CollectingMessage.gif") ;   
     public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "Icon5_Tent.png") ;
@@ -115,33 +119,21 @@ public class Player extends LiveBeing
 	public static final Image CoinIcon = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "CoinIcon.png") ;    
 	public static final Image MagicBlissGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "MagicBliss.gif") ;
     public static final Image FishingGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Fishing.gif") ;
-	
-	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
     
-    
-	private Statistics stats ;
-	
-	
-	private double[][] attIncrease ;	// Amount of increase in each attribute when the player levels up
-	private double[][] chanceIncrease ;	// Chance of increase of these attributes
-	public double[][] equipsBonus ;
-	
-	public static final String[] MoveKeys = new String[] {KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
-	public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Pet window, Map, Quest, Hint, Tent, Bestiary]
-	public static String[] HotKeys = new String[] {"E", "X", "V"} ;	// [Hotkey 1, Hotkey 2, Hotkey 3]
-	public static List<String> SpellKeys = new ArrayList<>(Arrays.asList(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"})) ;
-	
-	
-	
 	public final static ArrayList<String[]> Properties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
 	public final static ArrayList<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public final static int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
-    public final static Image[] AttWindowImages = new Image[] {
-    		UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"),
-    		UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"),
-    		UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")} ;
-    public static final Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
+    public final static Image[] AttWindowImages = new Image[] {UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")} ;
+    public final static Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
+    
+    public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Pet window, Map, Quest, Hint, Tent, Bestiary]
+	public static final String[] MoveKeys = new String[] {KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
+	public static final String[] HotKeys = new String[] {"E", "X", "V"} ;
+	public static final List<String> SpellKeys = new ArrayList<>(Arrays.asList(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"})) ;
+	
+	
+	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 	
 	public Player(String name, String Language, String Sex, int job)
 	{
@@ -221,23 +213,26 @@ public class Player extends LiveBeing
 		stats = new Statistics() ;
 		collectCounter = new TimeCounter(0, 300) ;
 		attPoints = 0 ;
-		attIncrease = new double[3][8] ;
-		chanceIncrease = new double[3][8] ;
-		for (int i = 0 ; i <= 3 - 1 ; ++i)	// job, PA.ProJob 1, PA.ProJob 2
+		
+		
+		double [] basicAttInc = new double[8] ;
+		double [] basicAttChanceInc = new double[8] ;
+		for (int att = 0 ; att <= basicAttInc.length - 1 ; att += 1)
 		{
-			for (int j = 0 ; j <= 7 ; ++j)
-			{
-				attIncrease[i][j] = Double.parseDouble(EvolutionProperties.get(3 * job + i)[j + 2]) ;
-				chanceIncrease[i][j] = Double.parseDouble(EvolutionProperties.get(3 * job + i)[j + 10]) ;
-			}
+			basicAttInc[att] = Double.parseDouble(EvolutionProperties.get(3 * job)[att + 2]) ;
+			basicAttChanceInc[att] = Double.parseDouble(EvolutionProperties.get(3 * job)[att + 10]) ;
 		}
+		attIncrease = new AttributeBonus() ;
+		attIncrease.setBasic(basicAttInc) ;
+		attChanceIncrease = new AttributeBonus() ;
+		attChanceIncrease.setBasic(basicAttChanceInc) ;
 
 		closestCreature = null ;
 	    opponent = null ;
-		equipsBonus = Items.EquipsBonus ;
+//		equipsBonus = Items.EquipsBonus ;
 		settings = new SettingsWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "windowSettings.png"), false, true, false, 1, 1) ;
 		spellsTree = new SpellsTreeWindow(spells.toArray(new Spell[0]), spellPoints, color) ;
-		hotItem = new Items[3] ;
+		hotItem = new Item[3] ;
 		
 	}
 	
@@ -421,13 +416,14 @@ public class Player extends LiveBeing
 	public AtkTypes getCurrentBattleAction() { return currentBattleAction ;}
 	public Statistics getStats() {return stats ;}
 	public int getAttPoints() {return attPoints ;}
-	public double[][] getAttIncrease() {return attIncrease ;}
-	public double[][] getChanceIncrease() {return chanceIncrease ;}
-	public double[][] getEquipsBonus() {return equipsBonus ;}
+	public AttributeBonus getAttIncrease() {return attIncrease ;}
+	public AttributeBonus getChanceIncrease() {return attChanceIncrease ;}
+//	public double[][] getEquipsBonus() {return equipsBonus ;}
 	public SettingsWindow getSettings() {return settings ;}
 	public SpellsTreeWindow getSpellsTreeWindow() {return spellsTree ;}
 	public Creature getOpponent() { return opponent ;}
 	public Statistics getStatistics() { return stats ;}
+	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
 	public void setBattleAction(AtkTypes ba) { currentBattleAction = ba ;}
 	
 	public void addQuest(Quests newQuest) { quests.add(newQuest) ;}
@@ -441,6 +437,7 @@ public class Player extends LiveBeing
 	public static SpellType[] getAnimalSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 105, 118) ;}
 	public static SpellType[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 139, 152) ;}
 	
+	public void discoverCreature(CreatureTypes creatureType) { bestiary.addDiscoveredCreature(creatureType) ;}
 	public void resetOpponent() { opponent = null ;}
 	
 	public boolean weaponIsEquipped() { return (equips[0] != null) ; }
@@ -476,20 +473,66 @@ public class Player extends LiveBeing
 		if (item instanceof Potion)
 		{
 			Potion pot = (Potion) item ;
-			double PotMult = 1 ;
-			if (getJob() == 3)
-			{
-				PotMult += 0.06 * spells.get(7).getLevel() ;
-			}
+			double powerMult = job == 3 ? 1.06 * spells.get(7).getLevel() : 1 ;
 			
-			PA.getLife().incCurrentValue((int) (pot.getLifeHeal() * PA.getLife().getMaxValue() * PotMult)); ;
-			PA.getMp().incCurrentValue((int) (pot.getMPHeal() * PA.getMp().getMaxValue() * PotMult)); ;
+			pot.use(this, powerMult) ;
+			bag.Remove(pot, 1) ;
 			
-			bag.Remove(pot, 1);				
+			return ;			
+		}
+		if (item instanceof Alchemy)
+		{
+			Alchemy alch = (Alchemy) item ;
+			double powerMult = job == 3 ? 1.06 * spells.get(7).getLevel() : 1 ;
+			
+			alch.use(this, powerMult) ;
+			bag.Remove(alch, 1) ;
+			
+			return ;			
+		}
+		if (item instanceof Forge)
+		{
+			return ;
+		}
+		if (item instanceof Food)
+		{
+			Food food = (Food) item ;
+			
+			food.use(this) ;
+			bag.Remove(food, 1);
+		}
+		if (item instanceof PetItem)
+		{
+//			PetItem petItem = (PetItem) item ;
+			
+//			petItem.use(pet) ;
+			
+			return ;			
+		}
+		if (item instanceof Arrow)
+		{
+			return ;
 		}
 		if (item instanceof Equip)
 		{
-			Equip(((Equip) item).getId()) ;
+//			Equip(((Equip) item).getId()) ;
+			Equip equip = (Equip) item ;
+			
+			equip.use(this) ;
+			
+			return ;			
+		}
+		if (item instanceof GeneralItem)
+		{
+			return ;
+		}
+		if (item instanceof Fab)
+		{
+			return ;
+		}
+		if (item instanceof QuestItem)
+		{
+			return ;
 		}
 	}	
 	private boolean actionIsAMove()
@@ -938,7 +981,7 @@ public class Player extends LiveBeing
 		}
 		if (attWindow.isOpen())
 		{
-			attWindow.display(this, allText, equips, equipsBonus,  MousePos, DP);
+			attWindow.display(this, allText, equips, MousePos, DP);
 		}
 		if (fabWindow.isOpen())
 		{		
@@ -949,7 +992,7 @@ public class Player extends LiveBeing
 		{
 			if (pet.getAttWindow().isOpen())
 			{
-				pet.getAttWindow().display(pet, allText, null, null, MousePos, DP);
+				pet.getAttWindow().display(pet, allText, null, MousePos, DP);
 			}
 		}
 		if (mapWindow.isOpen())
@@ -966,7 +1009,7 @@ public class Player extends LiveBeing
 		}
 		if (settings.isOpen())
 		{
-			settings.display(allText.get("* Menu de opÃ§Ãµes *"), DP) ;
+			settings.display(allText.get("* Menu de opções *"), DP) ;
 		}
 		if (hintsWindow.isOpen())
 		{
@@ -976,27 +1019,27 @@ public class Player extends LiveBeing
 	
 			
 	
-	private void TreasureChestReward(int ChestID, GameMap[] maps, Animations Ani)
-	{
-		int[][] ItemRewards = new int[][] {{}, {455 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * job}, {456 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * job}, {457 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * job}, {}, {134, 134, 134, 134, 134, 135, 135, 135, 135, 135}, {1346, 1348, 1349, 1350, 1351}} ;
-		int[][] GoldRewards = new int[][] {{2000, 2000, 2000, 2000, 2000}, {}, {}, {}, {4000, 4000, 4000, 4000, 4000}, {}, {}} ;
-		if (job == 2)
-		{
-			ItemRewards = new int[][] {{}, {456 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * job}, {457 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * job}, {32, 33, 34, 35, 36, 37, 38, 39}, {}, {134, 134, 134, 134, 134, 135, 135, 135, 135, 135}, {1346, 1348, 1349, 1350, 1351}} ;
-		}
+//	private void TreasureChestReward(int ChestID, GameMap[] maps, Animations Ani)
+//	{
+//		int[][] ItemRewards = new int[][] {{}, {455 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * job}, {456 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * job}, {457 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * job}, {}, {134, 134, 134, 134, 134, 135, 135, 135, 135, 135}, {1346, 1348, 1349, 1350, 1351}} ;
+//		int[][] GoldRewards = new int[][] {{2000, 2000, 2000, 2000, 2000}, {}, {}, {}, {4000, 4000, 4000, 4000, 4000}, {}, {}} ;
+//		if (job == 2)
+//		{
+//			ItemRewards = new int[][] {{}, {456 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * job}, {457 + (Items.BagIDs[6] - Items.BagIDs[5]) / 5 * job}, {32, 33, 34, 35, 36, 37, 38, 39}, {}, {134, 134, 134, 134, 134, 135, 135, 135, 135, 135}, {1346, 1348, 1349, 1350, 1351}} ;
+//		}
 		
-		for (int j = 0 ; j <= ItemRewards.length - 1 ; j += 1)
-		{
-			//Bag[ItemRewards[ChestID][j]] += 1 ;
-		}
-		for (int j = 0 ; j <= GoldRewards.length - 1 ; j += 1)
-		{
-			gold[0] += GoldRewards[ChestID][j] ;
-		}
-		map.getType()[pos.x][pos.y] = "free" ;
+//		for (int j = 0 ; j <= ItemRewards.length - 1 ; j += 1)
+//		{
+//			//Bag[ItemRewards[ChestID][j]] += 1 ;
+//		}
+//		for (int j = 0 ; j <= GoldRewards.length - 1 ; j += 1)
+//		{
+//			gold[0] += GoldRewards[ChestID][j] ;
+//		}
+//		map.getType()[pos.x][pos.y] = "free" ;
 		//Ani.SetAniVars(18, new Object[] {100, items, ItemRewards, GoldRewards, color[0], CoinIcon}) ;
 		//Ani.StartAni(18) ;
-	}
+//	}
 	
 	
 	// battle functions
@@ -1015,7 +1058,7 @@ public class Player extends LiveBeing
 			equips[3] = null ;
 		//}
 	}
-	private int StealItem(Creature creature, Items[] items, int spellLevel)
+	private int StealItem(Creature creature, Item[] items, int spellLevel)
 	{	
 		// TODO steal item
 //		int ID = (int)(UtilG.ArrayWithValuesGreaterThan(creature.getBag(), -1).length*Math.random() - 0.01) ;
@@ -1233,18 +1276,18 @@ public class Player extends LiveBeing
 	}
 	private double[] CalcAttIncrease()
 	{
-		// Life, Mp, Phyatk, Magatk, Phydef, Magdef, Dex, Agi, Exp
-		double[] attributeIncrease = getAttIncrease()[getProJob()] ;
-		double[] chanceIncrease = getChanceIncrease()[getProJob()] ;
+		double[] attributeIncrease = attIncrease.basic() ;
+		double[] chanceIncrease = attChanceIncrease.basic() ;
 		double[] increase = new double[attributeIncrease.length + 1] ;
-		for (int i = 0 ; i <= attributeIncrease.length - 1 ; ++i)
+		for (int i = 0 ; i <= attributeIncrease.length - 1 ; i += 1)
 		{
-			if (Math.random() <= chanceIncrease[i])
-			{
-				increase[i] = attributeIncrease[i] ;
-			}
+			if (chanceIncrease[i] <= Math.random()) { continue ;}
+			
+			increase[i] = attributeIncrease[i] ;
 		}
+		
 		increase[attributeIncrease.length] = (double) (10*(3*Math.pow(level - 1, 2) + 3*(level - 1) + 1) - 5) ;
+		
 		return increase ;
 	}
 	private void resetPosition()
@@ -1315,7 +1358,8 @@ public class Player extends LiveBeing
 			double arrowAtk = 0 ;
 			if (arrowIsEquipped())
 			{
-				arrowAtk = Items.ArrowPower[equips[3].getId() - Items.BagIDs[4]][0] ;
+				// TODO arrow power
+//				arrowAtk = Items.ArrowPower[equips[3].getId() - Items.BagIDs[4]][0] ;
 			}
 			if (spellID == 0 | spellID == 3 | spellID == 6 | spellID == 9 | spellID == 12)
 			{
@@ -1360,98 +1404,100 @@ public class Player extends LiveBeing
 	
 	public boolean isEquippable(int ItemID)
 	{
-		if ((Items.BagIDs[6] + Items.NumberOfItems[6] / 5 * job) <= ItemID & ItemID <= Items.BagIDs[6] + Items.NumberOfItems[6] / 5 * (job + 1))
-		{
-			return true ;
-		}
+		// TODO is equippable
+//		if ((Items.BagIDs[6] + Items.NumberOfItems[6] / 5 * job) <= ItemID & ItemID <= Items.BagIDs[6] + Items.NumberOfItems[6] / 5 * (job + 1))
+//		{
+//			return true ;
+//		}
 		return false ;
 	}
 	public boolean isInBattle() {return state.equals(LiveBeingStates.fighting) ;}
 	
 	
 	// Action windows
-	private void AttWindow(GameIcon[] icons, int[] MainWinDim, double[] PlayerAttributeIncrease, Point MousePos, Image GoldCoinImage, DrawingOnPanel DP)
+//	private void AttWindow(GameIcon[] icons, int[] MainWinDim, double[] PlayerAttributeIncrease, Point MousePos, Image GoldCoinImage, DrawingOnPanel DP)
+//	{
+//		//int WindowLimit = 2 ;
+//		//SelectedWindow[0] = UtilS.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedWindow[0], WindowLimit) ;
+//		for (int selectedItem = 0 ; selectedItem <= 7 - 1 ; selectedItem += 1)
+//		{
+//			//if (icons[i].ishovered(MousePos) & (currentAction.equals("Enter") | currentAction.equals("MouseLeftClick")) & 0 < attPoints)
+//			//{
+//				if (selectedItem == 0)
+//				{
+//					PA.getLife().incCurrentValue((int) PlayerAttributeIncrease[selectedItem]); ;
+//					PA.getLife().incMaxValue((int) PlayerAttributeIncrease[selectedItem]); ;
+//				}
+//				else if (selectedItem == 1)
+//				{
+//					PA.getMp().incCurrentValue((int) PlayerAttributeIncrease[selectedItem]); ;
+//					PA.getMp().incMaxValue((int) PlayerAttributeIncrease[selectedItem]); ;
+//				}
+//				else if (selectedItem == 2)
+//				{
+//					BA.getPhyAtk().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
+//				}
+//				else if (selectedItem == 3)
+//				{
+//					BA.getMagAtk().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
+//				}
+//				else if (selectedItem == 4)
+//				{
+//					BA.getPhyDef().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
+//				}
+//				else if (selectedItem == 5)
+//				{
+//					BA.getMagDef().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
+//				}
+//				else if (selectedItem == 6)
+//				{
+//					BA.getDex().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
+//				}
+//				else if (selectedItem == 7)
+//				{
+//					BA.getAgi().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
+//				}
+//				attPoints += -1 ;
+//			//}
+//		}
+//		//Point WinPos = new Point((int) (0.3 * MainWinDim[0]), (int) (0.2 * MainWinDim[1])) ;
+//		//DrawAttWindow(MainWinDim, WinPos, MousePos, AllText, AllTextCat, SelectedWindow[0], GoldCoinImage, icons, DP) ;
+//
+//		attWindow.display(this, allText, equips, MousePos, DP) ;
+//	}
+	private void ApplyEquipsBonus(Equip equip, double ActionMult)
 	{
-		//int WindowLimit = 2 ;
-		//SelectedWindow[0] = UtilS.MenuSelection(Player.ActionKeys[0], Player.ActionKeys[2], action, SelectedWindow[0], WindowLimit) ;
-		for (int selectedItem = 0 ; selectedItem <= 7 - 1 ; selectedItem += 1)
-		{
-			//if (icons[i].ishovered(MousePos) & (currentAction.equals("Enter") | currentAction.equals("MouseLeftClick")) & 0 < attPoints)
-			//{
-				if (selectedItem == 0)
-				{
-					PA.getLife().incCurrentValue((int) PlayerAttributeIncrease[selectedItem]); ;
-					PA.getLife().incMaxValue((int) PlayerAttributeIncrease[selectedItem]); ;
-				}
-				else if (selectedItem == 1)
-				{
-					PA.getMp().incCurrentValue((int) PlayerAttributeIncrease[selectedItem]); ;
-					PA.getMp().incMaxValue((int) PlayerAttributeIncrease[selectedItem]); ;
-				}
-				else if (selectedItem == 2)
-				{
-					BA.getPhyAtk().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
-				}
-				else if (selectedItem == 3)
-				{
-					BA.getMagAtk().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
-				}
-				else if (selectedItem == 4)
-				{
-					BA.getPhyDef().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
-				}
-				else if (selectedItem == 5)
-				{
-					BA.getMagDef().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
-				}
-				else if (selectedItem == 6)
-				{
-					BA.getDex().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
-				}
-				else if (selectedItem == 7)
-				{
-					BA.getAgi().incBaseValue(PlayerAttributeIncrease[selectedItem]) ;
-				}
-				attPoints += -1 ;
-			//}
-		}
-		//Point WinPos = new Point((int) (0.3 * MainWinDim[0]), (int) (0.2 * MainWinDim[1])) ;
-		//DrawAttWindow(MainWinDim, WinPos, MousePos, AllText, AllTextCat, SelectedWindow[0], GoldCoinImage, icons, DP) ;
-
-		attWindow.display(this, allText, equips, equipsBonus, MousePos, DP) ;
-	}
-	private void ApplyEquipsBonus(int ID, double ActionMult)
-	{
-		double[] bonuses = equipsBonus[ID] ;
-		PA.getLife().incMaxValue((int) (bonuses[2]*ActionMult)); ;
-		PA.getMp().incMaxValue((int) (bonuses[3]*ActionMult)); ;
-		BA.getPhyAtk().incBonus(bonuses[4]*ActionMult) ;
-		BA.getMagAtk().incBonus(bonuses[5]*ActionMult) ;
-		BA.getPhyDef().incBonus(bonuses[6]*ActionMult) ;
-		BA.getMagDef().incBonus(bonuses[7]*ActionMult) ;
-		BA.getDex().incBonus(bonuses[8]*ActionMult) ;
-		BA.getAgi().incBonus(bonuses[9]*ActionMult) ;
-		BA.getCrit()[0] += bonuses[10]*ActionMult ;
-		BA.getCrit()[2] += bonuses[11]*ActionMult ;
-		BA.getStun().incAtkChanceBonus(bonuses[12]*ActionMult) ;
-		BA.getStun().incDefChanceBonus(bonuses[13]*ActionMult) ;
-		BA.getStun().incDuration(bonuses[14]*ActionMult) ;
-		BA.getBlock().incAtkChanceBonus(bonuses[15]*ActionMult) ;
-		BA.getBlock().incDefChanceBonus(bonuses[16]*ActionMult) ;
-		BA.getBlock().incDuration(bonuses[17]*ActionMult) ;
-		BA.getBlood().incAtkChanceBonus(bonuses[18]*ActionMult) ;
-		BA.getBlood().incDefChanceBonus(bonuses[19]*ActionMult) ;
-		BA.getBlood().incAtkBonus(bonuses[20]*ActionMult) ;
-		BA.getBlood().incDefBonus(bonuses[21]*ActionMult) ;
-		BA.getBlood().incDuration(bonuses[22]*ActionMult) ;
-		BA.getPoison().incAtkChanceBonus(bonuses[23]*ActionMult) ;
-		BA.getPoison().incDefChanceBonus(bonuses[24]*ActionMult) ;
-		BA.getPoison().incAtkBonus(bonuses[25]*ActionMult) ;
-		BA.getPoison().incDefBonus(bonuses[26]*ActionMult) ;
-		BA.getPoison().incDuration(bonuses[27]*ActionMult) ;
-		BA.getSilence().incAtkChanceBonus(bonuses[28]*ActionMult) ;
-		BA.getSilence().incDefChanceBonus(bonuses[29]*ActionMult) ;
-		BA.getSilence().incDuration(bonuses[30]*ActionMult) ;
+//		double[] bonuses = equipsBonus[ID] ;
+		AttributeBonus attBonus = equip.getAttributeBonus() ;
+		PA.getLife().incMaxValue((int) (attBonus.getLife() * ActionMult)) ;
+		PA.getMp().incMaxValue((int) (attBonus.getMP() * ActionMult)) ;
+		BA.getPhyAtk().incBonus(attBonus.getPhyAtk() * ActionMult) ;
+		BA.getMagAtk().incBonus(attBonus.getMagAtk() * ActionMult) ;
+		BA.getPhyDef().incBonus(attBonus.getPhyDef() * ActionMult) ;
+		BA.getMagDef().incBonus(attBonus.getMagDef() * ActionMult) ;
+		BA.getDex().incBonus(attBonus.getDex() * ActionMult) ;
+		BA.getAgi().incBonus(attBonus.getAgi() * ActionMult) ;
+		BA.getCrit()[0] += attBonus.getCritAtkChance() * ActionMult ;
+		BA.getCrit()[2] += attBonus.getCritDefChance() * ActionMult ;
+		BA.getStun().incAtkChanceBonus(attBonus.getStunAtkChance() * ActionMult) ;
+		BA.getStun().incDefChanceBonus(attBonus.getStunDefChance() * ActionMult) ;
+		BA.getStun().incDuration(attBonus.getStunDuration() * ActionMult) ;
+		BA.getBlock().incAtkChanceBonus(attBonus.getBlockAtkChance() * ActionMult) ;
+		BA.getBlock().incDefChanceBonus(attBonus.getBlockDefChance() * ActionMult) ;
+		BA.getBlock().incDuration(attBonus.getBlockDuration() * ActionMult) ;
+		BA.getBlood().incAtkChanceBonus(attBonus.getBloodAtkChance() * ActionMult) ;
+		BA.getBlood().incDefChanceBonus(attBonus.getBloodDefChance() * ActionMult) ;
+		BA.getBlood().incAtkBonus(attBonus.getBloodAtk() * ActionMult) ;
+		BA.getBlood().incDefBonus(attBonus.getBloodDef() * ActionMult) ;
+		BA.getBlood().incDuration(attBonus.getBloodDuration() * ActionMult) ;
+		BA.getPoison().incAtkChanceBonus(attBonus.getPoisonAtkChance() * ActionMult) ;
+		BA.getPoison().incDefChanceBonus(attBonus.getPoisonDefChance() * ActionMult) ;
+		BA.getPoison().incAtkBonus(attBonus.getPoisonAtk() * ActionMult) ;
+		BA.getPoison().incDefBonus(attBonus.getPoisonDef() * ActionMult) ;
+		BA.getPoison().incDuration(attBonus.getPoisonDuration() * ActionMult) ;
+		BA.getSilence().incAtkChanceBonus(attBonus.getSilenceAtkChance() * ActionMult) ;
+		BA.getSilence().incDefChanceBonus(attBonus.getSilenceDefChance() * ActionMult) ;
+		BA.getSilence().incDuration(attBonus.getSilenceDuration() * ActionMult) ;
 	}
 	
 	private static boolean SetIsFormed(Equip[] EquipID)
@@ -1472,13 +1518,13 @@ public class Player extends LiveBeing
 			{
 				if (SetIsFormed(equips))	// if the set was formed, remove the 20% bonus
 				{
-					ApplyEquipsBonus(equips[0].getId(), (double)-0.2) ;
-					ApplyEquipsBonus(equips[1].getId(), (double)-0.2) ;
-					ApplyEquipsBonus(equips[2].getId(), (double)-0.2) ;
+					ApplyEquipsBonus(equips[0], (double)-0.2) ;
+					ApplyEquipsBonus(equips[1], (double)-0.2) ;
+					ApplyEquipsBonus(equips[2], (double)-0.2) ;
 				}
 				equips[EquipType] = null ;
 				elem[EquipType + 1] = Elements.neutral ;
-				ApplyEquipsBonus(currentEquip.getId(), -1) ;
+				ApplyEquipsBonus(currentEquip, -1) ;
 			}
 			
 			if (currentEquip == null)
@@ -1488,13 +1534,13 @@ public class Player extends LiveBeing
 //					
 //				}
 				equips[EquipType] = Equip.getAll()[EquipID] ;
-				elem[EquipType + 1] = Items.EquipsElem[EquipID] ;
-				ApplyEquipsBonus(EquipID, 1) ;
+				elem[EquipType + 1] = equips[EquipType].getElem() ;
+				ApplyEquipsBonus(equips[EquipType], 1) ;
 				if (SetIsFormed(equips))	// if the set is formed, add the 20% bonus
 				{
-					ApplyEquipsBonus(equips[0].getId(), (double)0.2) ;
-					ApplyEquipsBonus(equips[1].getId(), (double)0.2) ;
-					ApplyEquipsBonus(equips[2].getId(), (double)0.2) ;
+					ApplyEquipsBonus(equips[0], (double)0.2) ;
+					ApplyEquipsBonus(equips[1], (double)0.2) ;
+					ApplyEquipsBonus(equips[2], (double)0.2) ;
 				}
 			}
 //			else
@@ -1524,56 +1570,56 @@ public class Player extends LiveBeing
 	
 	
 	// Drawing methods
-	private void DrawStats(String[][] AllText, int[] AllTextCat, Point Pos, int L, int H, double[] PlayerStats, DrawingOnPanel DP)
-	{
-		Font font = new Font("SansSerif", Font.BOLD, L / 28) ;
-		double OverallAngle = DrawingOnPanel.stdAngle ;
-		int TextCat = AllTextCat[7] ;
-		Point TextPos = new Point((int) (Pos.x + 5 + 0.05*L), (int) (Pos.y + 0.05*H)) ;
-		for (int i = 0 ; i <= PlayerStats.length - 1 ; i += 1)
-		{
-			DP.DrawText(TextPos, Align.bottomLeft, OverallAngle, AllText[TextCat][i + 1] + " " + String.valueOf(UtilG.Round(PlayerStats[i], 1)), font, Game.ColorPalette[5]) ;
-			TextPos.y += 0.95*H/PlayerStats.length ;
-		}
-	}
+//	private void DrawStats(String[][] AllText, int[] AllTextCat, Point Pos, int L, int H, double[] PlayerStats, DrawingOnPanel DP)
+//	{
+//		Font font = new Font("SansSerif", Font.BOLD, L / 28) ;
+//		double OverallAngle = DrawingOnPanel.stdAngle ;
+//		int TextCat = AllTextCat[7] ;
+//		Point TextPos = new Point((int) (Pos.x + 5 + 0.05*L), (int) (Pos.y + 0.05*H)) ;
+//		for (int i = 0 ; i <= PlayerStats.length - 1 ; i += 1)
+//		{
+//			DP.DrawText(TextPos, Align.bottomLeft, OverallAngle, AllText[TextCat][i + 1] + " " + String.valueOf(UtilG.Round(PlayerStats[i], 1)), font, Game.ColorPalette[5]) ;
+//			TextPos.y += 0.95*H/PlayerStats.length ;
+//		}
+//	}
 
 	private void DrawRange(DrawingOnPanel DP)
 	{
 		DP.DrawCircle(pos, (int)(2 * range), 2, null, Game.ColorPalette[job]) ;
 	}
-	private void DrawEquips(Point Pos, int Job, int equiptype, int EquipID, double[][] EquipsBonus, Scale scale, double angle, DrawingOnPanel DP)
+	private void DrawEquips(Point pos, int job, int type, Scale scale, double angle, DrawingOnPanel DP)
 	{
 		int bonus = 0 ;
-		if (EquipsBonus[EquipID][1] == 10)
+		if (bonus == 10)
 		{
 			bonus = 8 ;
 		}
-		if (equiptype == 0)
+		if (type == 0)
 		{
-			DP.DrawImage(Equip.SwordImage, Pos, angle, scale, Align.center) ;	// Items.EquipImage[job + bonus]
+			DP.DrawImage(Equip.SwordImage, pos, angle, scale, Align.center) ;	// Items.EquipImage[job + bonus]
 		}
-		if (equiptype == 1)
+		if (type == 1)
 		{
-			DP.DrawImage(Equip.ShieldImage, Pos, angle, scale, Align.center) ;	// Items.EquipImage[5 + bonus]
+			DP.DrawImage(Equip.ShieldImage, pos, angle, scale, Align.center) ;	// Items.EquipImage[5 + bonus]
 		}
-		if (equiptype == 2)
+		if (type == 2)
 		{
-			DP.DrawImage(Equip.ArmorImage, Pos, angle, scale, Align.center) ;	// Items.EquipImage[6 + bonus]
+			DP.DrawImage(Equip.ArmorImage, pos, angle, scale, Align.center) ;	// Items.EquipImage[6 + bonus]
 		}
-		if (equiptype == 3)
+		if (type == 3)
 		{
-			DP.DrawImage(Equip.ArrowImage, Pos, angle, scale, Align.center) ;	// Items.EquipImage[7]
+			DP.DrawImage(Equip.ArrowImage, pos, angle, scale, Align.center) ;	// Items.EquipImage[7]
 		}
 	}
 	private void DrawPlayerEquips(int[] Pos, double[] playerscale, DrawingOnPanel DP)
 	{
-		Scale scale = new Scale(0.6, 0.6) ;
-		double[] angle = new double[] {50, 30, 0, 0, 0} ;
-		Point EqPos = new Point((int)(Pos[0] + 0.16 * size.width * playerscale[0]), (int)(Pos[1] - 0.4 * size.height * playerscale[1])) ;
-		if (equips[0] != null)
-		{
-			DrawEquips(EqPos, job, 0, equips[0].getId() - Items.BagIDs[5], Items.EquipsBonus, scale, angle[job], DP) ;
-		}	
+//		Scale scale = new Scale(0.6, 0.6) ;
+//		double[] angle = new double[] {50, 30, 0, 0, 0} ;
+//		Point EqPos = new Point((int)(Pos[0] + 0.16 * size.width * playerscale[0]), (int)(Pos[1] - 0.4 * size.height * playerscale[1])) ;
+//		if (equips[0] != null)
+//		{
+//			DrawEquips(EqPos, job, 0, scale, angle[job], DP) ;
+//		}	
 		
 		/*
 		 * int bonus = 0 ;
@@ -1598,7 +1644,7 @@ public class Player extends LiveBeing
 		Point EqPos = new Point((int)(Pos.x + 0.16*size.width*playerscale[0]), (int)(Pos.y - 0.4*size.height*playerscale[1])) ;
 		if (getEquips()[0] != null)
 		{
-			DrawEquips(EqPos, job, 0, getEquips()[0].getId(), Items.EquipsBonus, scale, angle[job], DP) ;
+			DrawEquips(EqPos, job, 0, scale, angle[job], DP) ;
 		}	
 	}
 	public void DrawTimeBar(Creature creature, DrawingOnPanel DP)
@@ -1684,12 +1730,12 @@ public class Player extends LiveBeing
 			//bw.write("\nPlayer status counter: \n" + Arrays.toString(getStatusCounter())) ; 		
 //			bw.write("\nPlayer stats: \n" + Arrays.toString(getStats())) ;
 			bw.write("\nPlayer available attribute points: \n" + getAttPoints()) ;
-			bw.write("\nPlayer attribute increase: \n" + Arrays.deepToString(getAttIncrease())) ;
-			bw.write("\nPlayer chance increase: \n" + Arrays.deepToString(getChanceIncrease())) ;
+//			bw.write("\nPlayer attribute increase: \n" + Arrays.deepToString(getAttIncrease())) ;
+//			bw.write("\nPlayer chance increase: \n" + Arrays.deepToString(getChanceIncrease())) ;
 			//bw.write("\nPlayer creatures discovered: \n" + Arrays.toString(getCreaturesDiscovered())) ;
 			pet.Save(bw) ;	
 			
-			bw.write("\nEquips bonus: \n" + Arrays.deepToString(Items.EquipsBonus)) ;
+//			bw.write("\nEquips bonus: \n" + Arrays.deepToString(Items.EquipsBonus)) ;
 			//bufferedWriter.write("\nNPCs contact: \n" + Arrays.toString(FirstNPCContact)) ;
 			bw.write("\nDifficult level: \n" + Game.difficultLevel) ;
 			bw.close() ;

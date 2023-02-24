@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import attributes.PersonalAttributes;
+import liveBeings.LiveBeing;
 import main.Game;
 import maps.Collectible;
 import utilities.UtilG;
@@ -36,6 +38,13 @@ public class Alchemy extends Item
 		{
 			AllAlchemy[a] = new Alchemy(Integer.parseInt(input.get(a)[0]), input.get(a)[1], input.get(a)[3], Integer.parseInt(input.get(a)[5]), Float.parseFloat(input.get(a)[6]), Float.parseFloat(input.get(a)[7]), Float.parseFloat(input.get(a)[8]));
 		}
+	}
+	
+	public void use(LiveBeing target, double powerMult)
+	{		
+		PersonalAttributes PA = target.getPA() ;
+		PA.getLife().incCurrentValue((int) (lifeHeal * PA.getLife().getMaxValue() * powerMult)); ;
+		PA.getMp().incCurrentValue((int) (MPHeal * PA.getMp().getMaxValue() * powerMult)); ;
 	}
 	
 	public void printAtt()

@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 import attributes.AttributeBonus;
+import liveBeings.LiveBeing;
 import main.Game;
+import utilities.Elements;
 import utilities.UtilG;
 
 public class Equip extends Item
@@ -15,7 +17,7 @@ public class Equip extends Item
 	private int id ;
 	private int forgeLevel ;
 	private AttributeBonus attBonus ;
-	private String elem ;
+	private Elements elem ;
 	
 	private static Equip[] allEquips ;
 	
@@ -28,7 +30,7 @@ public class Equip extends Item
 	public static Image ArmorImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq6_Armor.png") ;
 	public static Image ArrowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq7_Arrow.png") ;
 
-	public Equip(int id, String name, String description, int price, float dropChance, int forgeLevel, AttributeBonus attBonus, String elem)
+	public Equip(int id, String name, String description, int price, float dropChance, int forgeLevel, AttributeBonus attBonus, Elements elem)
 	{
 		super(name, description, UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "items.png"), price, dropChance) ;
 		this.id = id ;
@@ -39,7 +41,7 @@ public class Equip extends Item
 
 	public int getId() {return id ;}
 	public int getForgeLevel() {return forgeLevel ;}
-	public String getElem() {return elem ;}
+	public Elements getElem() {return elem ;}
 	public AttributeBonus getAttributeBonus() {return attBonus ;}
 	public static Equip[] getAll() {return allEquips ;}
 	
@@ -61,10 +63,44 @@ public class Equip extends Item
 					Float.parseFloat(input.get(p)[24]), Float.parseFloat(input.get(p)[25]), Integer.parseInt(input.get(p)[26]), Integer.parseInt(input.get(p)[27]), Integer.parseInt(input.get(p)[28]),	// blood
 					Float.parseFloat(input.get(p)[29]), Float.parseFloat(input.get(p)[30]), Integer.parseInt(input.get(p)[31]), Integer.parseInt(input.get(p)[32]), Integer.parseInt(input.get(p)[33]),	// poison
 					Float.parseFloat(input.get(p)[34]), Float.parseFloat(input.get(p)[35]), Integer.parseInt(input.get(p)[36])),																// silence
-					input.get(p)[37]);																																					// elem
+					Elements.valueOf(input.get(p)[37]));																																					// elem
 		}		
 	}
 
+	public void use(LiveBeing user)
+	{
+//		int NumberOfEquipTypes = 3 ;	// Sword/Staff/Bow/Claws/Dagger, shield, armor/robe (Archers have bow, bandana, and armor)
+//		int EquipType = (EquipID + job) % NumberOfEquipTypes ;
+//		Equip currentEquip = equips[EquipType] ;
+//		if (currentEquip != null)	// Unnequip the current equip
+//		{
+//			if (user.SetIsFormed(equips))	// if the set was formed, remove the 20% bonus
+//			{
+//				ApplyEquipsBonus(equips[0], (double)-0.2) ;
+//				ApplyEquipsBonus(equips[1], (double)-0.2) ;
+//				ApplyEquipsBonus(equips[2], (double)-0.2) ;
+//			}
+//			equips[EquipType] = null ;
+//			user.getElem()[EquipType + 1] = Elements.neutral ;
+//			ApplyEquipsBonus(currentEquip, -1) ;
+//		}
+//		
+//		if (currentEquip == null)
+//		{
+//			equips[EquipType] = Equip.getAll()[EquipID] ;
+//			user.getElem()[EquipType + 1] = equips[EquipType].getElem() ;
+//			ApplyEquipsBonus(equips[EquipType], 1) ;
+//			if (user.SetIsFormed(equips))	// if the set is formed, add the 20% bonus
+//			{
+//				ApplyEquipsBonus(equips[0], (double)0.2) ;
+//				ApplyEquipsBonus(equips[1], (double)0.2) ;
+//				ApplyEquipsBonus(equips[2], (double)0.2) ;
+//			}
+//		}
+//			
+//		user.getElem()[4] = user.hasSuperElement() ? user.getElem()[1] : Elements.neutral ;
+	}
+	
 	public void printAtt()
 	{
 		System.out.print("Equip id: " + allEquips[id].getId() +

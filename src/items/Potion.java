@@ -3,19 +3,19 @@ package items;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-
+import attributes.PersonalAttributes;
+import liveBeings.LiveBeing;
 import main.Game;
 import utilities.UtilG;
 
 public class Potion extends Item
 {
 	private int id ;
-	private float lifeHeal ;
-	private float MPHeal ;
+	private double lifeHeal ;
+	private double MPHeal ;
 	
 	private static Potion[] AllPotions ;
-	public Potion(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal)
+	public Potion(int id, String Name, String Description, int price, double dropChance, double lifeHeal, double MPHeal)
 	{
 		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "items.png"), price, dropChance) ;
 		this.id = id ;
@@ -24,21 +24,35 @@ public class Potion extends Item
 	}
 
 	public int getId() {return id ;}
-	public float getLifeHeal() {return lifeHeal ;}
-	public float getMPHeal() {return MPHeal ;}	
+	public double getLifeHeal() {return lifeHeal ;}
+	public double getMPHeal() {return MPHeal ;}	
 	public static Potion[] getAll() {return AllPotions ;}
-	
-	
+		
 	public static void Initialize() throws IOException
 	{
 		ArrayList<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Potions.csv") ;
 		AllPotions = new Potion[input.size()] ;
 		for (int p = 0; p <= AllPotions.length - 1; p += 1)
 		{
-			AllPotions[p] = new Potion(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]), Float.parseFloat(input.get(p)[7]), Float.parseFloat(input.get(p)[8]));
+			int id = Integer.parseInt(input.get(p)[0]) ;
+			String description = input.get(p)[1] ;
+			String name = input.get(p)[3] ;
+			int price = Integer.parseInt(input.get(p)[5]) ;
+			double dropChance = Double.parseDouble(input.get(p)[6]) ;
+			double lifeHeal = Double.parseDouble(input.get(p)[7]) ;
+			double MPHeal = Double.parseDouble(input.get(p)[8]) ;
+			
+			AllPotions[p] = new Potion(id, description, name, price, dropChance, lifeHeal, MPHeal) ;
 		}		
 	}
 
+	public void use(LiveBeing target, double powerMult)
+	{
+		PersonalAttributes PA = target.getPA() ;
+		PA.getLife().incCurrentValue((int) (lifeHeal * PA.getLife().getMaxValue() * powerMult)) ;
+		PA.getMp().incCurrentValue((int) (MPHeal * PA.getMp().getMaxValue() * powerMult)) ;
+	}
+	
 	public void printAtt()
 	{
 		System.out.println("potion id: " + AllPotions[id].getId() +

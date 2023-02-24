@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import attributes.PersonalAttributes;
+import liveBeings.LiveBeing;
 import main.Game;
 import utilities.UtilG;
 
@@ -40,6 +42,14 @@ public class Food extends Item
 		{
 			AllFood[p] = new Food(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]), Float.parseFloat(input.get(p)[7]), Float.parseFloat(input.get(p)[8]), Integer.parseInt(input.get(p)[9]));
 		}		
+	}
+	
+	public void use(LiveBeing user)
+	{
+		PersonalAttributes PA = user.getPA() ;
+		PA.getLife().incCurrentValue((int) (lifeHeal * PA.getLife().getMaxValue())) ;
+		PA.getMp().incCurrentValue((int) (MPHeal * PA.getMp().getMaxValue())) ;
+		PA.getSatiation().incCurrentValue((int) (SatiationHeal * PA.getMp().getMaxValue())) ;
 	}
 
 	public void printAtt()
