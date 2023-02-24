@@ -897,7 +897,7 @@ public class Game extends JPanel
 				{				
 					creature.act(player.getPos(), player.getMap()) ;
 					creature.display(creature.getPos(), Scale.unit, DP) ;
-					creature.DrawAttributes(0, DP) ;
+//					creature.DrawAttributes(0, DP) ;
 				}
 				shouldRepaint = true ;
 			}

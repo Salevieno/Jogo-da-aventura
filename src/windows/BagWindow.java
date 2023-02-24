@@ -144,6 +144,7 @@ public class BagWindow extends GameWindow
 	}
 	public void Remove(Item item, int amount)
 	{
+		// TODO remove all item types
 		if (item instanceof Potion)	// potions
 		{
 			Potion potion = (Potion) item ;

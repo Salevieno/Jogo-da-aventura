@@ -159,9 +159,10 @@ public class Player extends LiveBeing
 		range = Integer.parseInt(Properties.get(job)[4]) ;
 		step = Integer.parseInt(Properties.get(job)[33]);
 	    elem = new Elements[] {Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral};
-		mpCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[37])) ;
+		actionCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[37])) ;
 		satiationCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[38])) ;
-		actionCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[39])) ;
+		thirstCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[39])) ;
+		mpCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[40])) ;
 		battleActionCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[41])) ;
 		stepCounter = new TimeCounter(0, 20) ;
 		combo = new ArrayList<>() ;
@@ -804,32 +805,32 @@ public class Player extends LiveBeing
 //			}
 			
 			// Meeting with creatures
-			if (isInBattle())
-			{
-				distx = Math.abs(pos.x - opponent.getPos().x) ;
-				disty = Math.abs(pos.y - size.height / 2 - opponent.getPos().y) ;
-				if (distx <= (size.width + opponent.getSize().width) / 2 & disty <= (size.height + opponent.getSize().height) / 2) //  & !ani.isActive(10) & !ani.isActive(19)
-				{
-					//return new int[] {0, opponent.getType().getID()} ;
-				}
-			}
-			else
+			if (!isInBattle())
 			{
 				ArrayList<Creature> creaturesInMap = fm.getCreatures() ;
-				for (int i = 0 ; i <= creaturesInMap.size() - 1 ; i += 1)
+				for (Creature creature : creaturesInMap)
 				{
-					Creature creature = creaturesInMap.get(i) ;
 					distx = UtilG.dist1D(pos.x, creature.getPos().x) ;
 					disty = UtilG.dist1D(pos.y - size.height / 2, creature.getPos().y) ;
 					if (distx <= (size.width + creature.getSize().width) / 2 & disty <= (size.height + creature.getSize().height) / 2) //  & !ani.isActive(10) & !ani.isActive(19)
 					{
-						opponent = creaturesInMap.get(i) ;
+						opponent = creature ;
 						opponent.setFollow(true) ;
 						setState(LiveBeingStates.fighting) ;
 						bestiary.addDiscoveredCreature(opponent.getType()) ;
 					}
 				}
 			}
+//			else
+//			{
+//
+//				distx = Math.abs(pos.x - opponent.getPos().x) ;
+//				disty = Math.abs(pos.y - size.height / 2 - opponent.getPos().y) ;
+//				if (distx <= (size.width + opponent.getSize().width) / 2 & disty <= (size.height + opponent.getSize().height) / 2) //  & !ani.isActive(10) & !ani.isActive(19)
+//				{
+//					//return new int[] {0, opponent.getType().getID()} ;
+//				}
+//			}
 		}	
 		
 		// Meeting with NPCs

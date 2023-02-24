@@ -42,6 +42,7 @@ public abstract class LiveBeing
 	protected Elements[] elem ;					// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
 	protected TimeCounter mpCounter ;
 	protected TimeCounter satiationCounter ;
+	protected TimeCounter thirstCounter ;
 	protected TimeCounter actionCounter ;
 	protected TimeCounter battleActionCounter ;
 	protected TimeCounter displayDamage ;
@@ -125,6 +126,7 @@ public abstract class LiveBeing
 	public String getCurrentAction() {return currentAction ;}
 	public TimeCounter getMpCounter() {return mpCounter ;}
 	public TimeCounter getSatiationCounter() {return satiationCounter ;}
+	public TimeCounter getThirstCounter() {return thirstCounter ;}
 	public TimeCounter getMoveCounter() {return actionCounter ;}
 	public TimeCounter getBattleActionCounter() {return battleActionCounter ;}
 	public TimeCounter getDisplayDamage() {return displayDamage ;}
@@ -178,23 +180,16 @@ public abstract class LiveBeing
 	
 	public void IncActionCounters()
 	{
-		/*for (int a = 0 ; a <= PA.Actions.length - 1 ; a += 1)
-		{
-			if (PA.Actions[a][0] < PA.Actions[a][1])
-			{
-				PA.Actions[a][0] += 1 ;
-			}	
-		}*/
 		mpCounter.inc() ;
 		satiationCounter.inc() ;
+		if (this instanceof Player) {thirstCounter.inc() ;}
 		actionCounter.inc() ;
 	}
 	public void activateCounters()
 	{
-		if (mpCounter.finished())
-		{
-			PA.getMp().incCurrentValue(1);
-		}
+		if (mpCounter.finished()) { PA.getMp().incCurrentValue(1) ; mpCounter.reset() ;}
+		if (satiationCounter.finished()) { PA.getSatiation().incCurrentValue(-1) ; satiationCounter.reset() ;}
+		if (this instanceof Player) { if (thirstCounter.finished()) { PA.getThirst().incCurrentValue(-1) ; thirstCounter.reset() ;}}
 	}
 	public void IncBattleActionCounters() {battleActionCounter.inc() ; displayDamage.inc() ;}
 	public void ResetBattleActions() {battleActionCounter.reset() ; }
@@ -379,12 +374,15 @@ public abstract class LiveBeing
 		attColor.add(colorPalette[6]) ;
 		attRate.add(PA.getMp().getRate()) ;
 		attColor.add(colorPalette[5]) ;
-		attRate.add(PA.getExp().getRate()) ;
-		attColor.add(colorPalette[1]) ;
-		attRate.add(PA.getSatiation().getRate()) ;
-		attColor.add(colorPalette[2]) ;
-		attRate.add(PA.getThirst().getRate()) ;
-		attColor.add(colorPalette[0]) ;
+		if (!(this instanceof Creature))
+		{
+			attRate.add(PA.getExp().getRate()) ;
+			attColor.add(colorPalette[1]) ;
+			attRate.add(PA.getSatiation().getRate()) ;
+			attColor.add(colorPalette[2]) ;
+			attRate.add(PA.getThirst().getRate()) ;
+			attColor.add(colorPalette[0]) ;
+		}
 		
 		if (style == 0)
 		{
