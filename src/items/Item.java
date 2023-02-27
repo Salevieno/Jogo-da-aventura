@@ -2,6 +2,9 @@ package items;
 
 import java.awt.Image;
 
+import main.Game;
+import utilities.UtilG;
+
 public abstract class Item
 {
 	protected String name ;
@@ -9,6 +12,9 @@ public abstract class Item
 	protected Image image ;
 	protected int price ;
 	protected double dropChance ;
+	
+
+    public static Image slot = UtilG.loadImage(Game.ImagesPath + "itemSlot.png") ;
 	
 	public Item(String Name, String Description, Image image, int price, double dropChance)
 	{

@@ -96,7 +96,7 @@ public class Player extends LiveBeing
 	private double[] collectLevel ;	// 0: herb, 1: wood, 2: metal
 	private TimeCounter collectCounter ;	// counts the progress of the player's collection
 	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor, 3: arrow
-	private int[] gold ;			// 0: current, 1: stored
+	private int storedGold ;
 	private double goldMultiplier ;	// multiplies the amount of gold the player wins
 	private Map<QuestSkills, Boolean> questSkills ;	// skills gained with quests
 	private boolean isRiding ;		// true if the player is riding
@@ -120,8 +120,8 @@ public class Player extends LiveBeing
 	public static final Image MagicBlissGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "MagicBliss.gif") ;
     public static final Image FishingGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Fishing.gif") ;
     
-	public final static ArrayList<String[]> Properties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
-	public final static ArrayList<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
+	public final static List<String[]> Properties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
+	public final static List<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public final static int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public final static Image[] AttWindowImages = new Image[] {UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")} ;
@@ -196,7 +196,7 @@ public class Player extends LiveBeing
 		//ElemMult = new double[10] ;
 		//Arrays.fill(ElemMult, 1) ;
 		collectLevel = new double[3] ;
-		gold = new int[2] ;
+		storedGold = 0 ;
 		goldMultiplier = Integer.parseInt(Properties.get(job)[32]) ; 
 		questSkills = new HashMap<QuestSkills, Boolean>() ;
 		questSkills.put(QuestSkills.forestMap, false) ;
@@ -409,7 +409,7 @@ public class Player extends LiveBeing
 	public BattleSpecialAttributeWithDamage getPoison() {return BA.getPoison() ;}
 	public BattleSpecialAttribute getSilence() {return BA.getSilence() ;}
 	public double[] getCollect() {return collectLevel ;}
-	public int[] getGold() {return gold ;}
+	public Integer getStoredGold() {return storedGold ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public BasicAttribute getSatiation() {return PA.getSatiation() ;}
 	public BasicAttribute getThirst() {return PA.getThirst() ;}
@@ -766,7 +766,7 @@ public class Player extends LiveBeing
 		updateCombo() ;
 		//ResetAction() ;
 	}
-	public void meet(Creature[] creatures, DrawingOnPanel DP)
+	public void meet(Creature[] creatures, Point mousePos, DrawingOnPanel DP)
 	{
 		double distx, disty ;
 		GameMap currentMap = map ;
@@ -841,7 +841,7 @@ public class Player extends LiveBeing
 				boolean meetingNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
 				if (meetingNPC)
 				{
-					npc.Contact(this, null, creatures, null, null, null, false, DP) ;
+					npc.Contact(this, null, creatures, null, null, mousePos, false, DP) ;
 				}
 			}	
 		}
@@ -1010,7 +1010,7 @@ public class Player extends LiveBeing
 		}
 		if (settings.isOpen())
 		{
-			settings.display(allText.get("* Menu de opções *"), DP) ;
+			settings.display(allText.get("* Menu de opï¿½ï¿½es *"), DP) ;
 		}
 		if (hintsWindow.isOpen())
 		{
@@ -1237,7 +1237,7 @@ public class Player extends LiveBeing
 			}
 		}		
 		
-		gold[0] += creature.getGold()*UtilG.RandomMult( (double) (0.1 * goldMultiplier)) ;
+		bag.addGold((int) (creature.getGold() * UtilG.RandomMult(0.1 * goldMultiplier))) ;
 //		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())) ;
 		
 		if (GetActiveQuests() != null)
@@ -1306,7 +1306,7 @@ public class Player extends LiveBeing
 	}
 	public void dies()
 	{
-		gold[0] = (int)(0.8*gold[0]) ;
+		bag.addGold((int) (-0.2 * bag.getGold())) ;
 		PA.getLife().setToMaximum(); ;
 		PA.getMp().setToMaximum(); ;
 		PA.getSatiation().setToMaximum() ;
@@ -1720,7 +1720,7 @@ public class Player extends LiveBeing
 			//bw.write("\nPlayer elem mult: \n" + Arrays.toString(getElemMult())) ;
 			bw.write("\nPlayer collect: \n" + Arrays.toString(getCollect())) ;
 			bw.write("\nPlayer level: \n" + getLevel()) ;
-			bw.write("\nPlayer gold: \n" + Arrays.toString(getGold())) ;
+//			bw.write("\nPlayer gold: \n" + Arrays.toString(getGold())) ;
 			bw.write("\nPlayer step: \n" + getStep()) ;
 			//bw.write("\nPlayer exp: \n" + Arrays.toString(getExp())) ;
 			//bw.write("\nPlayer satiation: \n" + Arrays.toString(getSatiation())) ;

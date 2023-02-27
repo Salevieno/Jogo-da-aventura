@@ -1,10 +1,9 @@
-/components/
+/windows/
 /graphics/
-/items/
 /liveBeings/
 /main/
-/screen/
-/testing/
-/windows/
-/maps/
+/items/
+/components/
 /utilities/
+/maps/
+/attributes/

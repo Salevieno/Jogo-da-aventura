@@ -125,6 +125,7 @@ public class BattleAttributes
 		return 0 < status.getStun() ;
 	}
 	
+	public BasicBattleAttribute[] basicAttributes() { return new BasicBattleAttribute[] {getPhyAtk(), getMagAtk(), getPhyDef(), getMagDef(), getDex(), getAgi()};}
 	public double[] getBaseValues()
 	{
 		return new double[] {
@@ -138,6 +139,7 @@ public class BattleAttributes
 				silence.getBasicAtkChance()
 				} ;
 	}
+	public double[] totalValues() { return new double[] {TotalPhyAtk(), TotalMagAtk(), TotalPhyDef(), TotalMagDef(), TotalDex(), TotalAgi()} ;}
 	public double[] baseAtkChances()
 	{
 		return new double[] {stun.TotalAtkChance(), block.TotalAtkChance(), blood.TotalAtkChance(), poison.TotalAtkChance(), silence.TotalAtkChance()} ;

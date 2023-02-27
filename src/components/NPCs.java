@@ -5,9 +5,14 @@ import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
+import items.Equip;
+import items.Forge;
+import items.Item;
 import liveBeings.Creature;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -16,6 +21,10 @@ import maps.GameMap;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
+import windows.BagWindow;
+import windows.CraftWindow;
+import windows.GameWindow;
+import windows.ShoppingWindow;
 
 public class NPCs
 {
@@ -25,6 +34,7 @@ public class NPCs
 	private int selOption ;
 	private int numberMenus ;
 	private int menu ;
+	private GameWindow window ;
 
 	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 	public static final Image SpeakingBubble = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeakingBubble.png") ;
@@ -44,6 +54,31 @@ public class NPCs
 		selOption = 0 ;
 		menu = 0 ;
 		numberMenus = type.getSpeech().length - 1 ;
+		switch (type.getJob())
+		{
+			case itemsSeller:
+			{
+		    	List<Item> itemsOnSale = new ArrayList<>() ;
+		    	itemsOnSale.add(Game.getAllItems()[0]) ;
+		    	itemsOnSale.add(Game.getAllItems()[2]) ;
+		    	itemsOnSale.add(Game.getAllItems()[10]) ;
+		    	itemsOnSale.add(Game.getAllItems()[30]) ;
+		    	itemsOnSale.add(Game.getAllItems()[500]) ;
+		    	
+		    	window = new ShoppingWindow(itemsOnSale) ;
+		    	
+		    	break ;
+			}
+			case crafter:
+			{
+		    	
+				
+				window = new CraftWindow(Game.allRecipes) ;
+				
+				break ;
+			}
+			default: window = null ; break ;
+		}
 		//Firstcontact = true ;
 		
 		/*
@@ -126,7 +161,7 @@ public class NPCs
 		return null ;
 	}
 
-	public void Contact(Player player, Pet pet, Creature[] creatures, GameMap[] maps, Quests[] quest, Point MousePos, boolean TutorialIsOn, DrawingOnPanel DP)
+	public void Contact(Player player, Pet pet, Creature[] creatures, GameMap[] maps, Quests[] quest, Point mousePos, boolean TutorialIsOn, DrawingOnPanel DP)
 	{
 		String action = player.getCurrentAction() ;		
 		if (action != null)
@@ -135,9 +170,29 @@ public class NPCs
 		}
 		speak(pos, DP) ;
 		
+		if (player.getCurrentAction() == null) { return ;}
+		
 		switch (type.getJob())
-		{
+		{		
 			case doctor: break ;
+			case itemsSeller:
+			{
+		    	sellerAction(player.getBag(), player.getCurrentAction(), mousePos, (ShoppingWindow) window, DP) ;
+		    	
+		    	break ;
+			}
+			case crafter:
+			{
+				crafterAction(player.getBag(), player.getCurrentAction(), mousePos, (CraftWindow) window, DP) ;
+				
+				break ;
+			}
+			case forger:
+			{
+				forgerAction(player.getBag(), player.getCurrentAction()) ;
+				
+				break ;
+			}
 			//case master: masterAction(player, pet, MousePos, DF) ; break ;
 			default: break;
 		}
@@ -355,6 +410,72 @@ public class NPCs
 		else if (menu == 3)
 		{
 			//DF.DrawSpeech(Pos, speech[5] + " " + speech[player.getProJob() + 2*player.getJob()] + "!", NPCTextFont, image, SpeakingBubbleImage, color) ;
+		}
+	}
+	
+	public void sellerAction(BagWindow bag, String action, Point mousePos, ShoppingWindow shopping, DrawingOnPanel DP)
+	{
+		shopping.display(mousePos, DP) ;
+		
+		if (action == null) { return ;}
+
+		shopping.navigate(action) ;
+		if (action.equals("Enter") | action.equals("MouseLeftClick"))
+		{
+			shopping.buyItem(bag) ;
+		}
+	}
+	
+	public void crafterAction(BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
+	{
+		craftWindow.display(mousePos, DP) ;
+		
+		if (action == null) { return ;}
+
+		craftWindow.navigate(action) ;
+		if (action.equals("Enter"))
+		{
+			craftWindow.craft(bag) ;
+		}
+	}
+	
+	public void forgerAction(BagWindow bag, String action)
+	{
+		if (action.equals("Enter"))
+		{
+			Item selectedItem = bag.getSelectedItem() ;
+			
+			if (!(selectedItem instanceof Equip)) { return ;}
+			
+			Equip selectedEquip = ((Equip) selectedItem) ;
+			
+			if (selectedEquip.getForgeLevel() == 10) { return ;}
+			
+			int runeId = selectedEquip.isSpecial() ? 20 : 0 ;
+			runeId += 2 * selectedEquip.getForgeLevel() ;
+			runeId += selectedEquip.isWeapon() ? 0 : 1 ;
+			Forge rune = Forge.getAll()[runeId] ;
+			
+			if (!bag.contains(rune)) { return ;}
+			
+			int forgePrice = 100 + 1000 * selectedEquip.getForgeLevel() ;
+			
+			if (!bag.hasEnoughGold(forgePrice)) { return ;}
+			
+			double chanceForge = 1 - 0.1 * selectedEquip.getForgeLevel() ;
+
+			bag.removeGold(forgePrice) ;
+			bag.Remove(rune, 1) ;
+			
+			if (Math.random() <= chanceForge)
+			{
+				selectedEquip.incForgeLevel() ;
+				
+				return ;
+			}
+			
+			selectedEquip.resetForgeLevel() ;
+			bag.Remove(selectedEquip, 1);
 		}
 	}
 	

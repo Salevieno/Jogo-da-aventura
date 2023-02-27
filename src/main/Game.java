@@ -114,7 +114,8 @@ public class Game extends JPanel
 	private Player player ;
 	private Pet pet ;
 	private Creature[] creature ;
-	//private ArrayList<Recipe> allRecipes ;
+	// TODO colocar para cada NPC carregar a sua lista
+	public static List<Recipe> allRecipes ;
 	private List<Projectiles> projs ;
 	public static int difficultLevel ;
 
@@ -139,6 +140,8 @@ public class Game extends JPanel
 	
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 	public static final Image slotImage = UtilG.loadImage(".\\images\\" + "slot.png") ;
+	
+	private static ShoppingWindow shopping ;
 	
 	public Game(Dimension windowDimension) 
 	{
@@ -198,7 +201,7 @@ public class Game extends JPanel
 	{
 		ArrayList<Recipe> recipes = new ArrayList<>() ;
 		
-		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "CraftRecipes.json") ;		
+		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "craftRecipes.json") ;
 		for (int i = 0 ; i <= input.size() - 1 ; i += 1)
 		{
 			JSONObject recipe = (JSONObject) input.get(i) ;
@@ -957,7 +960,7 @@ public class Game extends JPanel
 		// check if the player met something
 		if (!player.isInBattle())
 		{
-			player.meet(creature, DP) ;
+			player.meet(creature, mousePos, DP) ;
 		}
 		
 		
@@ -1006,6 +1009,8 @@ public class Game extends JPanel
 		
 		player.resetAction() ;
 
+//		shopping.display(mousePos, DP) ;
+		
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
 		
     	for (int i = 0 ; i <= ani.length - 1 ; i += 1) { ani[i].run(i, DP) ;}
@@ -1035,7 +1040,7 @@ public class Game extends JPanel
 		allItems = initializeAllItems() ;
 		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
 		initializeIcons(screen.getSize()) ;
-		//allRecipes = LoadCraftingRecipes() ;
+		allRecipes = LoadCraftingRecipes() ;
 		NPCTypes = initializeNPCTypes(GameLanguage) ;
 		buildingTypes = initializeBuildingTypes() ;		
 		cityMaps = initializeCityMaps() ;
@@ -1056,8 +1061,9 @@ public class Game extends JPanel
     	pet.setPos(player.getPos());
 
     	player.InitializeSpells() ;
+    	player.setName("Salevieno");
     	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
-    	player.setMap(fieldMaps[3]) ;
+    	player.setMap(cityMaps[1]) ;
     	player.setPos(new Point(60, screen.getSize().height / 2)) ;
 //    	player.getBag().Add(Potion.getAll()[0], 3) ;
 //    	player.getBag().Add(Potion.getAll()[0], 2) ;
@@ -1065,8 +1071,8 @@ public class Game extends JPanel
 //    	player.getBag().Add(Potion.getAll()[2], 2) ;
 //    	player.getBag().Add(Alchemy.getAll()[0], 2) ;
 //    	player.getBag().Add(Alchemy.getAll()[2], 2) ;
-//    	player.getBag().Add(Forge.getAll()[2], 3) ;
-    	player.getBag().Add(Equip.getAll()[2], 3) ;
+    	player.getBag().Add(Forge.getAll()[0], 3) ;
+    	player.getBag().Add(Equip.getAll()[0], 3) ;
 //    	System.out.println(player.getBag().numberItems);
 //    	for (int i = 0; i <= 20 - 1; i += 1)
 //    	{
@@ -1118,42 +1124,53 @@ public class Game extends JPanel
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
+    	player.getBag().addGold(300) ;
     	
     	
 
-    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
+    	player.getBag().Add(Potion.getAll()[0], 1) ;
+    	player.getBag().Add(Arrow.getAll()[0], 30) ;
+//    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	Battle.knockback(new Point(200, 200), new Point(210, 220), 10) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
-    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
-    	System.out.println(player.getQuest().get(0).isComplete());
-    	System.out.println(player.getQuest().get(1).isComplete());
+//    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	Battle.knockback(new Point(200, 200), new Point(210, 220), 10) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
+//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
+//    	System.out.println(player.getQuest().get(0).isComplete());
+//    	System.out.println(player.getQuest().get(1).isComplete());
     	
-    	allGifs = new Gif[2] ;
-    	allGifs[0] = Player.TentGif ;
+//    	List<Item> itemsOnSale = new ArrayList<>() ;
+//    	itemsOnSale.add(allItems[0]) ;
+//    	itemsOnSale.add(allItems[2]) ;
+//    	itemsOnSale.add(allItems[10]) ;
+//    	itemsOnSale.add(allItems[30]) ;
+//    	itemsOnSale.add(allItems[500]) ;
+//    	shopping = new ShoppingWindow(itemsOnSale) ;
     	
-    	Player.TentGif.play(mousePos, Align.center, DP) ;
+//    	allGifs = new Gif[2] ;
+//    	allGifs[0] = Player.TentGif ;
+//    	
+//    	Player.TentGif.play(mousePos, Align.center, DP) ;
 	}
 	
 	private void testing()

@@ -29,7 +29,7 @@ public class Building
 		
 	public void display(Point playerPos, double angle, Scale scale, DrawingOnPanel DP)
 	{
-		if (!isInside(playerPos))
+		if (!isInside(playerPos) | type.getInsideImage() == null)
 		{
 			Image image = type.getImage() ;
 			DP.DrawImage(image, pos, angle, scale, Align.bottomLeft) ;

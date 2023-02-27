@@ -3,7 +3,7 @@ package windows;
 import java.awt.Dimension;
 import java.awt.Image;
 
-public class GameWindow
+public abstract class GameWindow
 {
 	protected String name ;
 	protected Image image ;
@@ -13,7 +13,7 @@ public class GameWindow
 	protected int tab ;
 	protected int numberTabs ;
 	protected int item ;
-	public int numberItems ;
+	protected int numberItems ;
 	protected int window ;
 	protected int numberWindows ;
 	protected Dimension size ;
@@ -103,5 +103,5 @@ public class GameWindow
 			item -= 1 ;
 		}
 	}
-	
+
 }

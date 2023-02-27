@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 
 import attributes.AttributeBonus;
 import liveBeings.LiveBeing;
+import liveBeings.Player;
 import main.Game;
 import utilities.Elements;
 import utilities.UtilG;
@@ -67,11 +68,58 @@ public class Equip extends Item
 		}		
 	}
 
+	public boolean isSpecial()
+	{
+		if (0 <= id & id <= 99) { return false ;}
+		if (200 <= id & id <= 299) { return false ;}
+		if (400 <= id & id <= 499) { return false ;}
+		if (600 <= id & id <= 699) { return false ;}
+		if (800 <= id & id <= 899) { return false ;}
+		
+		return true ;
+	}
+
+	public boolean isWeapon()
+	{
+		if (0 <= id & id <= 99) { return id % 3 == 0 ;}
+		if (100 <= id & id <= 199) { return id % 3 == 1 ;}
+		if (200 <= id & id <= 299) { return id % 3 == 2 ;}
+		if (300 <= id & id <= 399) { return id % 3 == 0 ;}
+		if (400 <= id & id <= 499) { return id % 3 == 1 ;}
+		if (500 <= id & id <= 599) { return id % 3 == 2 ;}
+		if (600 <= id & id <= 699) { return id % 3 == 0 ;}
+		if (700 <= id & id <= 799) { return id % 3 == 1 ;}
+		if (800 <= id & id <= 899) { return id % 3 == 2 ;}
+		if (900 <= id & id <= 999) { return id % 3 == 0 ;}
+		
+		System.out.println("Verificação se o equipamento é uma arma com item que não é equipamento");
+		return false ;
+	}
+	
+	public void resetForgeLevel()
+	{
+		// TODO resetar bônus dos atributos
+		forgeLevel = 0 ;
+	}
+	
+	public void incForgeLevel()
+	{
+		// TODO aumentar bônus dos atributos
+		forgeLevel += 1 ;
+	}
+	
 	public void use(LiveBeing user)
 	{
-//		int NumberOfEquipTypes = 3 ;	// Sword/Staff/Bow/Claws/Dagger, shield, armor/robe (Archers have bow, bandana, and armor)
-//		int EquipType = (EquipID + job) % NumberOfEquipTypes ;
+		int EquipType = (id) % 3 ;
 //		Equip currentEquip = equips[EquipType] ;
+		
+		if (user instanceof Player)
+		{
+			Player player = (Player) user ;
+			player.getEquips()[EquipType] = null ;
+			player.getEquips()[EquipType] = Equip.getAll()[id] ;
+		}
+		
 //		if (currentEquip != null)	// Unnequip the current equip
 //		{
 //			if (user.SetIsFormed(equips))	// if the set was formed, remove the 20% bonus
@@ -85,20 +133,17 @@ public class Equip extends Item
 //			ApplyEquipsBonus(currentEquip, -1) ;
 //		}
 //		
-//		if (currentEquip == null)
+//		equips[EquipType] = Equip.getAll()[EquipID] ;
+//		user.getElem()[EquipType + 1] = equips[EquipType].getElem() ;
+//		ApplyEquipsBonus(equips[EquipType], 1) ;
+//		if (user.SetIsFormed(equips))	// if the set is formed, add the 20% bonus
 //		{
-//			equips[EquipType] = Equip.getAll()[EquipID] ;
-//			user.getElem()[EquipType + 1] = equips[EquipType].getElem() ;
-//			ApplyEquipsBonus(equips[EquipType], 1) ;
-//			if (user.SetIsFormed(equips))	// if the set is formed, add the 20% bonus
-//			{
-//				ApplyEquipsBonus(equips[0], (double)0.2) ;
-//				ApplyEquipsBonus(equips[1], (double)0.2) ;
-//				ApplyEquipsBonus(equips[2], (double)0.2) ;
-//			}
+//			ApplyEquipsBonus(equips[0], (double)0.2) ;
+//			ApplyEquipsBonus(equips[1], (double)0.2) ;
+//			ApplyEquipsBonus(equips[2], (double)0.2) ;
 //		}
-//			
-//		user.getElem()[4] = user.hasSuperElement() ? user.getElem()[1] : Elements.neutral ;
+			
+		user.getElem()[4] = user.hasSuperElement() ? user.getElem()[1] : Elements.neutral ;
 	}
 	
 	public void printAtt()

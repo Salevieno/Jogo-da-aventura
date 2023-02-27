@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -36,18 +37,19 @@ public class BagWindow extends GameWindow
 	//private ArrayList<Map<Item, Integer>> menus ;
 	private Map<Potion, Integer> pot ;
 	private Map<Alchemy, Integer> alch ;
-	private Map<Forge, Integer> forge ;
-	private Map<PetItem, Integer> petItem ;
-	private Map<Food, Integer> food ;
-	private Map<Arrow, Integer> arrow ;
-	private Map<Equip, Integer> equip ;
-	private Map<GeneralItem, Integer> genItem ;
-	private Map<Fab, Integer> fab ;
-	private Map<QuestItem, Integer> quest ;
+	private Map<Forge, Integer> forges ;
+	private Map<PetItem, Integer> petItems ;
+	private Map<Food, Integer> foods ;
+	private Map<Arrow, Integer> arrows ;
+	private Map<Equip, Integer> equips ;
+	private Map<GeneralItem, Integer> genItems ;
+	private Map<Fab, Integer> fabItems ;
+	private Map<QuestItem, Integer> questItems ;
 	private Item selectedItem ;
 	private int numberSlotMax ;
 	private int windowLimit ;
 	private Map<Item, Integer> activeItems ;
+	private int gold ;
 	
 	public static Image MenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagMenu.png") ;
     public static Image SlotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
@@ -59,18 +61,19 @@ public class BagWindow extends GameWindow
 		super("Mochila", null, 10, 2, 0, 0) ;
 		this.pot = pot ;
 		this.alch = alch ;
-		this.forge = forge ;
-		this.petItem = petItem ;
-		this.food = food ;
-		this.arrow = arrow ;
-		this.equip = equip ;
-		this.genItem = genItem ;
-		this.fab = fab ;
-		this.quest = quest ;
+		this.forges = forge ;
+		this.petItems = petItem ;
+		this.foods = food ;
+		this.arrows = arrow ;
+		this.equips = equip ;
+		this.genItems = genItem ;
+		this.fabItems = fab ;
+		this.questItems = quest ;
 		selectedItem = null ;
 		numberSlotMax = 20 ;
 		windowLimit = 20 ;
 		activeItems = new HashMap<>() ;
+		gold = 0 ;
 		
 		//menus.add(pot) ;
 	}
@@ -78,14 +81,15 @@ public class BagWindow extends GameWindow
 	public Map<Potion, Integer> getPotions() {return pot ;}
 	//public Map<Potion> getPotions() {return pot ;}
 	public Map<Alchemy, Integer> getAlchemy() {return alch ;}
-	public Map<Forge, Integer> getForge() {return forge ;}
-	public Map<PetItem, Integer> getPetItem() {return petItem ;}
-	public Map<Food, Integer> getFood() {return food ;}
-	public Map<Arrow, Integer> getArrow() {return arrow ;}
-	public Map<Equip, Integer> getEquip() {return equip ;}
-	public Map<GeneralItem, Integer> getGenItem() {return genItem ;}
-	public Map<Fab, Integer> getFab() {return fab ;}
-	public Map<QuestItem, Integer> getQuest() {return quest ;}
+	public Map<Forge, Integer> getForge() {return forges ;}
+	public Map<PetItem, Integer> getPetItem() {return petItems ;}
+	public Map<Food, Integer> getFood() {return foods ;}
+	public Map<Arrow, Integer> getArrow() {return arrows ;}
+	public Map<Equip, Integer> getEquip() {return equips ;}
+	public Map<GeneralItem, Integer> getGenItem() {return genItems ;}
+	public Map<Fab, Integer> getFab() {return fabItems ;}
+	public Map<QuestItem, Integer> getQuest() {return questItems ;}
+	public int getGold() {return gold ;}
 	
 
 	public void Add(Item item, int amount)
@@ -103,65 +107,146 @@ public class BagWindow extends GameWindow
 		}
 		if (item instanceof Forge)
 		{
-			if (forge.containsKey(item)) { forge.put((Forge) item, forge.get((Forge) item) + amount) ;}
-			else { forge.put((Forge) item, amount) ;}
+			if (forges.containsKey(item)) { forges.put((Forge) item, forges.get((Forge) item) + amount) ;}
+			else { forges.put((Forge) item, amount) ;}
 		}
 		if (item instanceof PetItem)
 		{
-			if (petItem.containsKey(item)) { petItem.put((PetItem) item, petItem.get((PetItem) item) + amount) ;}
-			else { petItem.put((PetItem) item, amount) ;}
+			if (petItems.containsKey(item)) { petItems.put((PetItem) item, petItems.get((PetItem) item) + amount) ;}
+			else { petItems.put((PetItem) item, amount) ;}
 		}
 		if (item instanceof Food)
 		{
-			if (food.containsKey(item)) { food.put((Food) item, food.get((Food) item) + amount) ;}
-			else { food.put((Food) item, amount) ;}
+			if (foods.containsKey(item)) { foods.put((Food) item, foods.get((Food) item) + amount) ;}
+			else { foods.put((Food) item, amount) ;}
 		}
 		if (item instanceof Arrow)
 		{
-			if (arrow.containsKey(item)) { arrow.put((Arrow) item, arrow.get((Arrow) item) + amount) ;}
-			else { arrow.put((Arrow) item, amount) ;}
+			if (arrows.containsKey(item)) { arrows.put((Arrow) item, arrows.get((Arrow) item) + amount) ;}
+			else { arrows.put((Arrow) item, amount) ;}
 		}
 		if (item instanceof GeneralItem)
 		{
-			if (genItem.containsKey(item)) { genItem.put((GeneralItem) item, genItem.get((GeneralItem) item) + amount) ;}
-			else { genItem.put((GeneralItem) item, amount) ;}
+			if (genItems.containsKey(item)) { genItems.put((GeneralItem) item, genItems.get((GeneralItem) item) + amount) ;}
+			else { genItems.put((GeneralItem) item, amount) ;}
 		}
 		if (item instanceof Equip)
 		{
-			if (equip.containsKey(item)) { equip.put((Equip) item, equip.get((Equip) item) + amount) ;}
-			else { equip.put((Equip) item, amount) ;}
+			if (equips.containsKey(item)) { equips.put((Equip) item, equips.get((Equip) item) + amount) ;}
+			else { equips.put((Equip) item, amount) ;}
 		}
 		if (item instanceof Fab)
 		{
-			if (fab.containsKey(item)) { fab.put((Fab) item, fab.get((Fab) item) + amount) ;}
-			else { fab.put((Fab) item, amount) ;}
+			if (fabItems.containsKey(item)) { fabItems.put((Fab) item, fabItems.get((Fab) item) + amount) ;}
+			else { fabItems.put((Fab) item, amount) ;}
 		}
 		if (item instanceof QuestItem)
 		{
-			if (quest.containsKey(item)) { quest.put((QuestItem) item, quest.get((QuestItem) item) + amount) ;}
-			else { quest.put((QuestItem) item, amount) ;}
+			if (questItems.containsKey(item)) { questItems.put((QuestItem) item, questItems.get((QuestItem) item) + amount) ;}
+			else { questItems.put((QuestItem) item, amount) ;}
 		}
 	}
+//	public void removeItem(Map<Item, Integer> items, Item item, int amount)
+//	{
+//		if (!items.containsKey(item)) { return ;}
+//		if (items.get(item) < amount) { return ;}
+//		
+//		items.put(item, items.get(item) - amount) ;
+//	}
 	public void Remove(Item item, int amount)
 	{
-		// TODO remove all item types
-		if (item instanceof Potion)	// potions
+		if (item instanceof Potion)
 		{
 			Potion potion = (Potion) item ;
-			if (pot.containsKey(potion))
-			{
-				if (amount <= pot.get(potion))
-				{
-					pot.put(potion, pot.get(potion) - amount) ;
-				}
-				else
-				{
-					pot.put(potion, 0) ;
-					System.out.println("Tentando remover mais itens do que tem na mochila");
-				}
-			}
-//			numberItems = pot.size() ;
+			if (!pot.containsKey(potion)) { return ;}
+			if (pot.get(potion) < amount) { return ;}
+			
+			pot.put(potion, pot.get(potion) - amount) ;
 		}
+		if (item instanceof Alchemy)
+		{
+			Alchemy alchemy = (Alchemy) item ;
+			if (!alch.containsKey(alchemy)) { return ;}
+			if (alch.get(alchemy) < amount) { return ;}
+			
+			alch.put(alchemy, alch.get(alchemy) - amount) ;
+		}
+		if (item instanceof Forge)
+		{
+			Forge forge = (Forge) item ;
+			if (!forges.containsKey(forge)) { return ;}
+			if (forges.get(forge) < amount) { return ;}
+			
+			forges.put(forge, forges.get(forge) - amount) ;
+		}
+		if (item instanceof PetItem)
+		{
+			PetItem petItem = (PetItem) item ;
+			if (!petItems.containsKey(petItem)) { return ;}
+			if (petItems.get(petItem) < amount) { return ;}
+			
+			petItems.put(petItem, petItems.get(petItem) - amount) ;
+		}
+		if (item instanceof Food)
+		{
+			Food food = (Food) item ;
+			if (!foods.containsKey(food)) { return ;}
+			if (foods.get(food) < amount) { return ;}
+			
+			foods.put(food, foods.get(food) - amount) ;
+		}
+		if (item instanceof Arrow)
+		{
+			Arrow arrow = (Arrow) item ;
+			if (!arrows.containsKey(arrow)) { return ;}
+			if (arrows.get(arrow) < amount) { return ;}
+			
+			arrows.put(arrow, arrows.get(arrow) - amount) ;
+		}
+		if (item instanceof Equip)
+		{
+			Equip equip = (Equip) item ;
+			if (!equips.containsKey(equip)) { return ;}
+			if (equips.get(equip) < amount) { return ;}
+			
+			equips.put(equip, equips.get(equip) - amount) ;
+		}
+		if (item instanceof GeneralItem)
+		{
+			GeneralItem genItem = (GeneralItem) item ;
+			if (!genItems.containsKey(genItem)) { return ;}
+			if (genItems.get(genItem) < amount) { return ;}
+			
+			genItems.put(genItem, genItems.get(genItem) - amount) ;
+		}
+		if (item instanceof Fab)
+		{
+			Fab fab = (Fab) item ;
+			if (!fabItems.containsKey(fab)) { return ;}
+			if (fabItems.get(fab) < amount) { return ;}
+			
+			fabItems.put(fab, fabItems.get(fab) - amount) ;
+		}
+		if (item instanceof QuestItem)
+		{
+			QuestItem questItem = (QuestItem) item ;
+			if (!questItems.containsKey(questItem)) { return ;}
+			if (questItems.get(questItem) < amount) { return ;}
+			
+			questItems.put(questItem, questItems.get(questItem) - amount) ;
+		}
+	}
+	
+	public void addGold (int amount) { gold += amount ;}
+	public void removeGold (int amount)
+	{
+		if (hasEnoughGold(amount))
+		{
+			gold += -amount ;
+			return ;
+		}
+		
+		System.out.println("Tentando remover mais dinheiro do que o existente na mochila") ;
 	}
 	
 	public Map<Item, Integer> getActiveItems()
@@ -170,14 +255,14 @@ public class BagWindow extends GameWindow
 		{
 			case 0: return pot.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
 			case 1: return alch.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 2: return forge.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 3: return petItem.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 4: return food.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 5: return arrow.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 6: return equip.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 7: return genItem.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 8: return fab.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 9: return quest.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			case 2: return forges.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			case 3: return petItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			case 4: return foods.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			case 5: return arrows.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			case 6: return equips.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			case 7: return genItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			case 8: return fabItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			case 9: return questItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
 			default: return null ;
 		}
 //		if (menu == 0)
@@ -235,18 +320,59 @@ public class BagWindow extends GameWindow
 	{
 		if (item instanceof Potion) { return pot.containsKey(item) ;}
 		if (item instanceof Alchemy) { return alch.containsKey((Alchemy) item) ;}
-		if (item instanceof Forge) { return forge.containsKey((Forge) item) ;}
-		if (item instanceof PetItem) { return petItem.containsKey((PetItem) item) ;}
-		if (item instanceof Food) { return food.containsKey((Food) item) ;}
-		if (item instanceof Arrow) { return arrow.containsKey(item) ;}
-		if (item instanceof Equip) { return equip.containsKey(item) ;}
-		if (item instanceof GeneralItem) { return genItem.containsKey(item) ;}
-		if (item instanceof Fab) { return fab.containsKey(item) ;}
-		if (item instanceof QuestItem) { return quest.containsKey(item) ;}
+		if (item instanceof Forge) { return forges.containsKey((Forge) item) ;}
+		if (item instanceof PetItem) { return petItems.containsKey((PetItem) item) ;}
+		if (item instanceof Food) { return foods.containsKey((Food) item) ;}
+		if (item instanceof Arrow) { return arrows.containsKey(item) ;}
+		if (item instanceof Equip) { return equips.containsKey(item) ;}
+		if (item instanceof GeneralItem) { return genItems.containsKey(item) ;}
+		if (item instanceof Fab) { return fabItems.containsKey(item) ;}
+		if (item instanceof QuestItem) { return questItems.containsKey(item) ;}
 		
-		System.out.println("Item procurado na mochila n�o pertence a uma categoria v�lida");
+		System.out.println("Item procurado na mochila não pertence a uma categoria válida");
 		return false ;
 	}
+	
+	public boolean contains (List<Item> items)
+	{
+		for (Item item : items)
+		{
+			if (!contains(item)) { return false ;}
+		}
+		
+		return true ;
+	}
+	
+	public boolean hasEnough(Item item, int qtd)
+	{
+		if (!contains(item)) { return false ;}
+
+		if (item instanceof Potion) { return qtd <= pot.get(item) ;}
+		if (item instanceof Alchemy) { return qtd <= alch.get(item) ;}
+		if (item instanceof Forge) { return qtd <= forges.get(item) ;}
+		if (item instanceof PetItem) { return qtd <= petItems.get(item) ;}
+		if (item instanceof Food) { return qtd <= foods.get(item) ;}
+		if (item instanceof Arrow) { return qtd <= arrows.get(item) ;}
+		if (item instanceof Equip) { return qtd <= equips.get(item) ;}
+		if (item instanceof GeneralItem) { return qtd <= genItems.get(item) ;}
+		if (item instanceof Fab) { return qtd <= fabItems.get(item) ;}
+		if (item instanceof QuestItem) { return qtd <= questItems.get(item) ;}
+
+		System.out.println("Item procurado na mochila não pertence a uma categoria válida");
+		return false ;
+	}
+	
+	public boolean hasEnough(Map<Item, Integer> items)
+	{
+		for (Item item : items.keySet())
+		{
+			if (!hasEnough(item, items.get(item))) {return false ;}
+		}
+		
+		return true ;
+	}
+	
+	public boolean hasEnoughGold (int amount) { return amount <= gold ;}
 	
 	public void navigate(String action)
 	{
@@ -291,6 +417,7 @@ public class BagWindow extends GameWindow
 			setItem(0) ;
 		}
 	}
+	
 	public void display(Point MousePos, String[] allText, DrawingOnPanel DP)
 	{
 		Dimension screenSize = Game.getScreen().getSize() ;
@@ -340,11 +467,11 @@ public class BagWindow extends GameWindow
 			int col = i / (numberSlotMax / 2) ;
 			Point slotCenter = new Point((int) (pos.x + 5 + slotW / 2 + col * sx), (int) (pos.y + 3 + slotH / 2 + row * sy)) ;
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
-			Color TextColor = i == item ? colorPalette[6] : colorPalette[3] ;
+			Color textColor = i == item ? colorPalette[9] : colorPalette[3] ;
 			
 			DP.DrawImage(SlotImage, slotCenter, Align.center) ;							// Draw slots
 			DP.DrawImage(activeItem.getKey().getImage(), slotCenter, Align.center) ;	// Draw items
-			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, activeItem.getKey().getName() + " (x " + activeItem.getValue() + ")", ItemFont, TextColor, 10, MousePos) ;
+			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, activeItem.getKey().getName() + " (x " + activeItem.getValue() + ")", ItemFont, textColor, 10, MousePos) ;
 			i += 1 ;
 		}
 		
@@ -384,12 +511,11 @@ public class BagWindow extends GameWindow
 			numberItems = 0 ;
 		}*/
 	}
-
 	
 	@Override
 	public String toString() {
-		return "Bag [pot=" + pot + ", alch=" + alch + ", forge=" + forge + ", petItem=" + petItem + ", food=" + food
-				+ ", arrow=" + arrow + ", equip=" + equip + ", genItem=" + genItem + ", fab=" + fab + ", quest=" + quest
+		return "Bag [pot=" + pot + ", alch=" + alch + ", forge=" + forges + ", petItem=" + petItems + ", food=" + foods
+				+ ", arrow=" + arrows + ", equip=" + equips + ", genItem=" + genItems + ", fab=" + fabItems + ", quest=" + questItems
 				+ "]";
 	}
 	

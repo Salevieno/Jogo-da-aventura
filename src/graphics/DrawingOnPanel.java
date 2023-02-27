@@ -85,11 +85,11 @@ public class DrawingOnPanel
 		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
 		Point offset = UtilG.OffsetFromPos(align, size) ;
 		AffineTransform backup = G.getTransform() ;
-		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;
+//		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;
 		
 		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 		
-		G.setTransform(backup) ;
+//		G.setTransform(backup) ;
 	}
 	public void DrawImage(Image image, Point pos, double angle, Scale scale, boolean flipH, boolean flipV, Align align, double alpha)
 	{       
@@ -99,13 +99,13 @@ public class DrawingOnPanel
 		size = new Dimension (!flipH ? 1 : -1 * size.width, !flipV ? 1 : -1 * size.height) ;
 		Point offset = UtilG.OffsetFromPos(align, size) ;
 		AffineTransform backup = G.getTransform() ;
-		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
+//		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
 		G.setComposite(AlphaComposite.SrcOver.derive((float) alpha)) ;
 		
 		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 		
 		G.setComposite(AlphaComposite.SrcOver.derive((float) 1.0)) ;
-        G.setTransform(backup) ;
+//        G.setTransform(backup) ;
 	}
 	public void DrawGif(Image gif, Point pos, Align align)
 	{
@@ -121,11 +121,11 @@ public class DrawingOnPanel
 		AffineTransform backup = G.getTransform() ;		
 		G.setColor(color) ;
 		G.setFont(font) ;
-		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
+//		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
 		
 		G.drawString(text, pos.x + offset.x, pos.y + offset.y + size.height) ;
         
-		G.setTransform(backup) ;
+//		G.setTransform(backup) ;
 	}
 	public void DrawFitText(Point pos, int sy, Align align, String text, Font font, int maxLength, Color color)
 	{

@@ -1,34 +1,35 @@
-ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,Mp bonus,PhyAtk bonus,MagAtk bonus,PhyDef bonus,MagDef bonus,Dex bonus,Agi bonus,Crit bonus atk chance,Crit bonus def chance,Stun atk chance,Stun def chance,Stun duration,Block atk chance,Block def chance,Block duration,Blood atk chance,Blood def chance,Blood atk,Blood def,Blood duration,Poison atk chance,Poison def chance,Poison atk,Poison def,Poison duration,Silence atk chance,Silence def chance,Silence duration,Elem
-0,escudo de madeira,wood shield,-,-,20,10,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-1,armadura de madeira,wood armor,-,-,20,10,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-2,espada de bronze,copper sword,-,-,290,10,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-3,escudo de bronze,copper shield,-,-,290,10,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-4,armadura de bronze,copper armor,-,-,290,10,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-5,espada pesada,heavy sword,-,-,681,10,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-6,escudo pesada,heavy shield,-,-,681,10,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-7,armadura pesada,heavy armor,-,-,681,10,0,0,0,0,0,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-8,espada da montanha,mountain sword,-,-,1164,10,0,0,0,0,0,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-9,escudo da montanha,mountain shield,-,-,1164,10,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-10,armadura da montanha,mountain armor,-,-,1164,10,0,0,0,0,0,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-11,espada do cavaleiro,knight's sword,-,-,1716,10,0,0,0,0,0,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-12,escudo do cavaleiro,knight's shield,-,-,1716,10,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-13,armadura do cavaleiro,knight's armor,-,-,1716,10,0,0,0,0,0,8,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-14,espada fenomenal,phenomenal sword,-,-,2326,10,0,0,0,0,0,8,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-15,escudo fenomenal,phenomenal shield,-,-,2326,10,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-16,armadura fenomenal,phenomenal armor,-,-,2326,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-17,espada do epicentro,epicenter sword,-,-,2988,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-18,escudo do epicentro,epicenter shield,-,-,2988,10,0,0,0,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-19,armadura do epicentro,epicenter armor,-,-,2988,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-20,espada dimensional,dimensional sword,-,-,3695,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-21,escudo dimensional,dimensional shield,-,-,3695,10,0,0,0,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-22,armadura dimensional,dimensional armor,-,-,3695,10,0,0,0,0,0,18,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-23,espada do pirata,pirate sword,-,-,4445,10,0,0,0,0,0,18,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-24,escudo do pirata,pirate shield,-,-,4445,10,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-25,armadura do pirata,pirate armor,-,-,4445,10,0,0,0,0,0,22,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-26,espada �pica,epic sword,-,-,5233,10,0,0,0,0,0,22,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-27,escudo �pico,epic shield,-,-,5233,10,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-28,armadura �pica,epic armor,-,-,5233,10,0,0,0,0,0,27,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-29,espada arcana,arcane sword,-,-,6056,10,0,0,0,0,0,27,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+ID,Nome,Name,Descri  o,Description,Price,Drop chance,Forge level,Life bonus,Mp bonus,PhyAtk bonus,MagAtk bonus,PhyDef bonus,MagDef bonus,Dex bonus,Agi bonus,Crit bonus atk chance,Crit bonus def chance,Stun atk chance,Stun def chance,Stun duration,Block atk chance,Block def chance,Block duration,Blood atk chance,Blood def chance,Blood atk,Blood def,Blood duration,Poison atk chance,Poison def chance,Poison atk,Poison def,Poison duration,Silence atk chance,Silence def chance,Silence duration,Elem
+0,espada de madeira,wood sword,-,-,20,10,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+1,escudo de madeira,wood shield,-,-,20,10,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+2,armadura de madeira,wood armor,-,-,20,10,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+3,espada de bronze,copper sword,-,-,290,10,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+4,escudo de bronze,copper shield,-,-,290,10,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+5,armadura de bronze,copper armor,-,-,290,10,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+6,espada pesada,heavy sword,-,-,681,10,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+7,escudo pesada,heavy shield,-,-,681,10,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+8,armadura pesada,heavy armor,-,-,681,10,0,0,0,0,0,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+9,espada da montanha,mountain sword,-,-,1164,10,0,0,0,0,0,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+10,escudo da montanha,mountain shield,-,-,1164,10,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+11,armadura da montanha,mountain armor,-,-,1164,10,0,0,0,0,0,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+12,espada do cavaleiro,knight's sword,-,-,1716,10,0,0,0,0,0,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+13,escudo do cavaleiro,knight's shield,-,-,1716,10,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+14,armadura do cavaleiro,knight's armor,-,-,1716,10,0,0,0,0,0,8,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+15,espada fenomenal,phenomenal sword,-,-,2326,10,0,0,0,0,0,8,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+16,escudo fenomenal,phenomenal shield,-,-,2326,10,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+17,armadura fenomenal,phenomenal armor,-,-,2326,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+18,espada do epicentro,epicenter sword,-,-,2988,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+19,escudo do epicentro,epicenter shield,-,-,2988,10,0,0,0,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+20,armadura do epicentro,epicenter armor,-,-,2988,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+21,espada dimensional,dimensional sword,-,-,3695,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+22,escudo dimensional,dimensional shield,-,-,3695,10,0,0,0,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+23,armadura dimensional,dimensional armor,-,-,3695,10,0,0,0,0,0,18,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+24,espada do pirata,pirate sword,-,-,4445,10,0,0,0,0,0,18,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+25,escudo do pirata,pirate shield,-,-,4445,10,0,0,0,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+26,armadura do pirata,pirate armor,-,-,4445,10,0,0,0,0,0,22,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+27,espada  pica,epic sword,-,-,5233,10,0,0,0,0,0,22,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+28,escudo  pico,epic shield,-,-,5233,10,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+29,armadura  pica,epic armor,-,-,5233,10,0,0,0,0,0,27,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+30,espada arcana,arcane sword,-,-,6056,10,0,0,0,0,0,27,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 30,escudo arcano,arcane shield,-,-,6056,10,0,0,0,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 31,armadura arcana,arcane armor,-,-,6056,10,0,0,0,0,0,32,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 32,espada lunar,lunar sword,-,-,6913,10,0,0,0,0,0,32,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -46,9 +47,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 44,espada da floresta,forest sword,-,-,10645,10,0,0,0,0,0,59,59,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 45,escudo da floresta,forest shield,-,-,10645,10,0,0,0,67,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 46,armadura da floresta,forest armor,-,-,10645,10,0,0,0,0,0,67,67,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-47,espada da escavação,excavation sword,-,-,11647,10,0,0,0,0,0,67,67,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-48,escudo da escavação,excavation shield,-,-,11647,10,0,0,0,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-49,armadura da escavação,excavation armor,-,-,11647,10,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+47,espada da escava  o,excavation sword,-,-,11647,10,0,0,0,0,0,67,67,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+48,escudo da escava  o,excavation shield,-,-,11647,10,0,0,0,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+49,armadura da escava  o,excavation armor,-,-,11647,10,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 50,espada secular,secular sword,-,-,12674,10,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 51,escudo secular,secular shield,-,-,12674,10,0,0,0,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 52,armadura secular,secular armor,-,-,12674,10,0,0,0,0,0,84,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -76,18 +77,18 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 74,espada de chocolate,chocolate sword,-,-,21711,10,0,0,0,0,0,163,163,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 75,escudo de chocolate,chocolate shield,-,-,21711,10,0,0,0,176,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 76,armadura de chocolate,chocolate armor,-,-,21711,10,0,0,0,0,0,176,176,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-77,espada da f�nix,fenix sword,-,-,22934,10,0,0,0,0,0,176,176,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-78,escudo da f�nix,fenix shield,-,-,22934,10,0,0,0,190,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-79,armadura da f�nix,fenix armor,-,-,22934,10,0,0,0,0,0,190,190,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+77,espada da f nix,fenix sword,-,-,22934,10,0,0,0,0,0,176,176,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+78,escudo da f nix,fenix shield,-,-,22934,10,0,0,0,190,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+79,armadura da f nix,fenix armor,-,-,22934,10,0,0,0,0,0,190,190,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 80,espada explosiva,explosive sword,-,-,24175,10,0,0,0,0,0,190,190,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 81,escudo explosivo,explosive shield,-,-,24175,10,0,0,0,204,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 82,armadura explosiva,explosive armor,-,-,24175,10,0,0,0,0,0,204,204,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 83,espada em derretimento,melting sword,-,-,25436,10,0,0,0,0,0,204,204,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 84,escudo em derretimento,melting shield,-,-,25436,10,0,0,0,219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 85,armadura em derretimento,melting armor,-,-,25436,10,0,0,0,0,0,219,219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-86,espada do vulcão,volcano sword,-,-,26714,10,0,0,0,0,0,219,219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-87,escudo do vulcão,volcano shield,-,-,26714,10,0,0,0,234,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-88,armadura do vulcão,volcano armor,-,-,26714,10,0,0,0,0,0,234,234,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+86,espada do vulc o,volcano sword,-,-,26714,10,0,0,0,0,0,219,219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+87,escudo do vulc o,volcano shield,-,-,26714,10,0,0,0,234,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+88,armadura do vulc o,volcano armor,-,-,26714,10,0,0,0,0,0,234,234,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 89,espada gelada,icy sword,-,-,28010,10,0,0,0,0,0,234,234,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 90,escudo gelado,icy shield,-,-,28010,10,0,0,0,250,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 91,armadura gelada,icy armor,-,-,28010,10,0,0,0,0,0,250,250,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -128,9 +129,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 126,espada do ninja,ninja sword,-,-,5624,0,0,50,0,0,0,21,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,fire
 127,escudo do ninja,ninja shield,-,-,5624,0,0,0,0,26,0,0,0,0,3,0,0,0.15,0,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 128,armadura do ninja,ninja armor,-,-,5624,0,0,0,0,0,0,26,26,0,1,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-129,espada da restauração,replenishing sword,-,-,6465,0,0,0,0,0,0,26,26,0,1,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-130,escudo da restauração,replenishing shield,-,-,6465,0,0,0,0,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-131,armadura da restauração,replenishing armor,-,-,6465,0,0,0,0,0,0,31,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+129,espada da restaura  o,replenishing sword,-,-,6465,0,0,0,0,0,0,26,26,0,1,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+130,escudo da restaura  o,replenishing shield,-,-,6465,0,0,0,0,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+131,armadura da restaura  o,replenishing armor,-,-,6465,0,0,0,0,0,0,31,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 132,espada da energia,energy sword,-,-,7338,0,0,0,0,0,0,31,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 133,escudo da energia,energy shield,-,-,7338,0,0,0,25,37,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,200,water
 134,armadura da energia,energy armor,-,-,7338,0,0,0,50,0,0,37,37,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,water
@@ -140,9 +141,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 138,espada pantanosa,swampy sword,-,-,9176,0,0,0,0,0,0,44,44,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,0,0,0,0,0,plant
 139,escudo pantanoso,swampy shield,-,-,9176,0,0,0,0,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,200,0,0,0,earth
 140,armadura pantanosa,swampy armor,-,-,9176,0,0,0,0,0,0,51,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,2,0,0,0,0,earth
-141,espada da névoa,misty sword,-,-,10138,0,0,0,0,0,0,51,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,2,0,0,0,0,earth
-142,escudo da névoa,misty shield,-,-,10138,0,0,0,0,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,8,0,230,0,0,0,plant
-143,armadura da névoa,misty armor,-,-,10138,0,0,0,0,0,0,58,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,plant
+141,espada da n voa,misty sword,-,-,10138,0,0,0,0,0,0,51,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,2,0,0,0,0,earth
+142,escudo da n voa,misty shield,-,-,10138,0,0,0,0,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,8,0,230,0,0,0,plant
+143,armadura da n voa,misty armor,-,-,10138,0,0,0,0,0,0,58,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,plant
 144,espada gloriosa,glorious sword,-,-,11127,0,0,0,0,0,0,58,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,plant
 145,escudo glorioso,glorious shield,-,-,11127,0,0,0,0,66,0,0,0,0,0,0,0,0.1,0,120,0.15,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,light
 146,armadura gloriosa,glorious armor,-,-,11127,0,0,0,0,0,0,66,66,0,0,0,0,0,0.02,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,light
@@ -164,33 +165,33 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 162,espada solar,sunny sword,-,-,17572,0,0,0,0,0,0,114,114,0,0,0,0,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 163,escudo solar,sunny shield,-,-,17572,0,0,0,0,125,0,0,0,0,0,0.2,0,0,0,0,0,0,0,0.05,0,20,0,200,0,0,0,0,0,0,0,0,light
 164,armadura solar,sunny armor,-,-,17572,0,0,0,0,0,0,125,125,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,5,0,0,0,0,0,0,0,0,0,light
-165,espada ind�gena,indigenous sword,-,-,18725,0,0,0,0,0,0,125,125,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,5,0,0,0,0,0,0,0,0,0,light
-166,escudo ind�gena,indigenous shield,-,-,18725,0,0,0,0,137,0,0,0,0,0,0.15,0,0,0,0,0,0,0,0.1,0,20,0,120,0,0,0,0,0,0,0,0,plant
-167,armadura ind�gena,indigenous armor,-,-,18725,0,0,0,0,0,0,137,137,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
-168,espada subaqu�tica,underwater sword,-,-,19898,0,0,0,0,0,0,137,137,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
-169,escudo subaqu�tico,underwater shield,-,-,19898,0,0,0,0,149,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,water
-170,armadura subaqu�tica,underwater armor,-,-,19898,0,0,0,0,0,0,149,149,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,0,0,0,0,0,0,0,0,water
+165,espada ind gena,indigenous sword,-,-,18725,0,0,0,0,0,0,125,125,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,5,0,0,0,0,0,0,0,0,0,light
+166,escudo ind gena,indigenous shield,-,-,18725,0,0,0,0,137,0,0,0,0,0,0.15,0,0,0,0,0,0,0,0.1,0,20,0,120,0,0,0,0,0,0,0,0,plant
+167,armadura ind gena,indigenous armor,-,-,18725,0,0,0,0,0,0,137,137,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
+168,espada subaqu tica,underwater sword,-,-,19898,0,0,0,0,0,0,137,137,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
+169,escudo subaqu tico,underwater shield,-,-,19898,0,0,0,0,149,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,water
+170,armadura subaqu tica,underwater armor,-,-,19898,0,0,0,0,0,0,149,149,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,0,0,0,0,0,0,0,0,water
 171,espada da rajada,blast sword,-,-,21091,0,0,0,0,0,0,149,149,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,0,0,0,0,0,0,0,0,water
 172,escudo da rajada,blast shield,-,-,21091,0,0,0,0,162,0,0,0,20,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 173,armadura da rajada,blast armor,-,-,21091,0,0,0,0,0,0,162,162,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-174,espada da determinação,sword of determination,-,-,22304,0,0,0,0,0,0,162,162,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-175,escudo da determinação,shield of determination,-,-,22304,0,0,0,0,175,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-176,armadura da determinação,armor of determination,-,-,22304,0,0,0,0,0,0,175,175,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+174,espada da determina  o,sword of determination,-,-,22304,0,0,0,0,0,0,162,162,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+175,escudo da determina  o,shield of determination,-,-,22304,0,0,0,0,175,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+176,armadura da determina  o,armor of determination,-,-,22304,0,0,0,0,0,0,175,175,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 177,espada do terremoto,earthquake sword,-,-,23536,0,0,0,0,0,0,175,175,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 178,escudo do terremoto,earthquake shield,-,-,23536,0,0,0,0,189,0,0,0,0,0,0,0,0.2,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 179,armadura do terremoto,earthquake armor,-,-,23536,0,0,0,0,0,0,189,189,0,0,0,0,0,0.15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
-180,espada da erupção,eruption sword,-,-,24787,0,0,0,0,0,0,189,189,0,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
-181,escudo da erupção,eruption shield,-,-,24787,0,0,0,0,203,0,0,0,0,0,0.2,0,0,0,0,0,0,0,0.3,0,15,0,250,0,0,0,0,0,0,0,0,fire
-182,armadura da erupção,eruption armor,-,-,24787,0,0,0,0,0,0,203,203,0,0,0,0.05,0,0,0,0,0,0,0,0.13,0,5,0,0,0,0,0,0,0,0,0,fire
+180,espada da erup  o,eruption sword,-,-,24787,0,0,0,0,0,0,189,189,0,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
+181,escudo da erup  o,eruption shield,-,-,24787,0,0,0,0,203,0,0,0,0,0,0.2,0,0,0,0,0,0,0,0.3,0,15,0,250,0,0,0,0,0,0,0,0,fire
+182,armadura da erup  o,eruption armor,-,-,24787,0,0,0,0,0,0,203,203,0,0,0,0.05,0,0,0,0,0,0,0,0.13,0,5,0,0,0,0,0,0,0,0,0,fire
 183,espada nuclear,nuclear sword,-,-,26057,0,0,0,0,0,0,203,203,0,0,0,0.1,0,0,0,0,0,0,0,0.13,0,5,0,0,0,0,0,0,0,0,0,fire
 184,escudo nuclear,nuclear shield,-,-,26057,0,0,0,0,218,0,0,0,20,0,0,0,0.15,0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,250,fire
 185,armadura nuclear,nuclear armor,-,-,26057,0,0,0,0,0,0,218,218,5,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,fire
-186,espada do drag�o,dragon sword,-,-,27344,0,0,0,0,0,0,218,218,5,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,fire
-187,escudo do drag�o,dragon shield,-,-,27344,0,0,150,0,233,0,0,0,0,0,0.15,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,fire
-188,armadura do drag�o,dragon armor,-,-,27344,0,0,50,0,0,0,233,233,0,0,0,0.05,0,0,0,0,0,0,0,0.1,0,15,0,0,0,0,0,0,0,0,0,fire
-189,espada de picol�,popsicle sword,-,-,28648,0,0,50,0,0,0,233,233,0,0,0,0.1,0,0,0,0,0,0,0,0.05,0,10,0,0,0,0,0,0,0,0,0,fire
-190,escudo de picol�,popsicle shield,-,-,28648,0,0,0,0,249,0,0,0,0,0,0,0,0.3,0,130,0.2,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
-191,armadura de picol�,popsicle armor,-,-,28648,0,0,0,0,0,0,249,249,0,0,0,0,0,0.1,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
+186,espada do drag o,dragon sword,-,-,27344,0,0,0,0,0,0,218,218,5,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,fire
+187,escudo do drag o,dragon shield,-,-,27344,0,0,150,0,233,0,0,0,0,0,0.15,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,fire
+188,armadura do drag o,dragon armor,-,-,27344,0,0,50,0,0,0,233,233,0,0,0,0.05,0,0,0,0,0,0,0,0.1,0,15,0,0,0,0,0,0,0,0,0,fire
+189,espada de picol ,popsicle sword,-,-,28648,0,0,50,0,0,0,233,233,0,0,0,0.1,0,0,0,0,0,0,0,0.05,0,10,0,0,0,0,0,0,0,0,0,fire
+190,escudo de picol ,popsicle shield,-,-,28648,0,0,0,0,249,0,0,0,0,0,0,0,0.3,0,130,0.2,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
+191,armadura de picol ,popsicle armor,-,-,28648,0,0,0,0,0,0,249,249,0,0,0,0,0,0.1,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 192,espada polar,polar sword,-,-,29970,0,0,0,0,0,0,249,249,0,0,0,0,0,0.1,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 193,escudo polar,polar shield,-,-,29970,0,0,0,0,265,0,0,0,0,0,0,0,0.23,0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 194,armadura polar,polar armor,-,-,29970,0,0,0,0,0,0,265,265,0,0,0,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
@@ -225,9 +226,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 223,cajado do pirata,pirate staff,-,-,4445,10,0,0,0,0,0,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 224,escudo do pirata,pirate shield,-,-,4445,10,0,0,0,9,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 225,armadura do pirata,pirate armor,-,-,4445,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-226,cajado �pico,epic staff,-,-,5233,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-227,escudo �pico,epic shield,-,-,5233,10,0,0,0,10,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-228,armadura �pica,epic armor,-,-,5233,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+226,cajado  pico,epic staff,-,-,5233,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+227,escudo  pico,epic shield,-,-,5233,10,0,0,0,10,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+228,armadura  pica,epic armor,-,-,5233,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 229,cajado arcano,arcane staff,-,-,6056,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 230,escudo arcano,arcane shield,-,-,6056,10,0,0,0,11,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 231,armadura arcana,arcane armor,-,-,6056,10,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -246,9 +247,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 244,cajado da floresta,forest staff,-,-,10645,10,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 245,escudo da floresta,forest shield,-,-,10645,10,0,0,0,16,67,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 246,armadura da floresta,forest armor,-,-,10645,10,0,0,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-247,cajado da escavação,excavation staff,-,-,11647,10,0,0,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-248,escudo da escavação,excavation shield,-,-,11647,10,0,0,0,17,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-249,armadura da escavação,excavation armor,-,-,11647,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+247,cajado da escava  o,excavation staff,-,-,11647,10,0,0,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+248,escudo da escava  o,excavation shield,-,-,11647,10,0,0,0,17,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+249,armadura da escava  o,excavation armor,-,-,11647,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 250,cajado secular,secular staff,-,-,12674,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 251,escudo secular,secular shield,-,-,12674,10,0,0,0,18,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 252,armadura secular,secular armor,-,-,12674,10,0,0,0,0,0,42,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -276,18 +277,18 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 274,cajado de chocolate,chocolate staff,-,-,21711,10,0,0,0,0,0,82,82,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 275,escudo de chocolate,chocolate shield,-,-,21711,10,0,0,0,26,176,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 276,armadura de chocolate,chocolate armor,-,-,21711,10,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-277,cajado da f�nix,fenix staff,-,-,22934,10,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-278,escudo da f�nix,fenix shield,-,-,22934,10,0,0,0,27,190,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-279,armadura da f�nix,fenix armor,-,-,22934,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+277,cajado da f nix,fenix staff,-,-,22934,10,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+278,escudo da f nix,fenix shield,-,-,22934,10,0,0,0,27,190,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+279,armadura da f nix,fenix armor,-,-,22934,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 280,cajado explosivo,explosive staff,-,-,24175,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 281,escudo explosivo,explosive shield,-,-,24175,10,0,0,0,28,204,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 282,armadura explosiva,explosive armor,-,-,24175,10,0,0,0,0,0,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 283,cajado em derretimento,melting staff,-,-,25436,10,0,0,0,0,0,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 284,escudo em derretimento,melting shield,-,-,25436,10,0,0,0,29,219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 285,armadura em derretimento,melting armor,-,-,25436,10,0,0,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-286,cajado do vulcão,volcano staff,-,-,26714,10,0,0,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-287,escudo do vulcão,volcano shield,-,-,26714,10,0,0,0,30,234,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-288,armadura do vulcão,volcano armor,-,-,26714,10,0,0,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+286,cajado do vulc o,volcano staff,-,-,26714,10,0,0,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+287,escudo do vulc o,volcano shield,-,-,26714,10,0,0,0,30,234,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+288,armadura do vulc o,volcano armor,-,-,26714,10,0,0,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 289,cajado gelado,icy staff,-,-,28010,10,0,0,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 290,escudo gelado,icy shield,-,-,28010,10,0,0,0,31,250,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 291,armadura gelada,icy armor,-,-,28010,10,0,0,0,0,0,125,125,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -328,9 +329,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 326,cajado do ninja,ninja staff,-,-,5624,0,0,50,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,fire
 327,escudo do ninja,ninja shield,-,-,5624,0,0,0,0,11,26,0,0,0,3,0,0,0.15,0,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 328,armadura do ninja,ninja armor,-,-,5624,0,0,0,0,0,0,14,14,0,1,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-329,cajado da restauração,replenishing staff,-,-,6465,0,0,0,0,0,0,14,14,0,1,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-330,escudo da restauração,replenishing shield,-,-,6465,0,0,0,0,12,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-331,armadura da restauração,replenishing armor,-,-,6465,0,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+329,cajado da restaura  o,replenishing staff,-,-,6465,0,0,0,0,0,0,14,14,0,1,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+330,escudo da restaura  o,replenishing shield,-,-,6465,0,0,0,0,12,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+331,armadura da restaura  o,replenishing armor,-,-,6465,0,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 332,cajado da energia,energy staff,-,-,7338,0,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 333,escudo da energia,energy shield,-,-,7338,0,0,0,25,13,37,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,200,water
 334,armadura da energia,energy armor,-,-,7338,0,0,0,50,0,0,19,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,water
@@ -340,9 +341,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 338,cajado pantanoso,swampy staff,-,-,9176,0,0,0,0,0,0,23,23,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,0,0,0,0,0,plant
 339,escudo pantanoso,swampy shield,-,-,9176,0,0,0,0,15,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,200,0,0,0,earth
 340,armadura pantanosa,swampy armor,-,-,9176,0,0,0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,2,0,0,0,0,earth
-341,cajado da névoa,misty staff,-,-,10138,0,0,0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,2,0,0,0,0,earth
-342,escudo da névoa,misty shield,-,-,10138,0,0,0,0,16,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,8,0,230,0,0,0,plant
-343,armadura da névoa,misty armor,-,-,10138,0,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,plant
+341,cajado da n voa,misty staff,-,-,10138,0,0,0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,2,0,0,0,0,earth
+342,escudo da n voa,misty shield,-,-,10138,0,0,0,0,16,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,8,0,230,0,0,0,plant
+343,armadura da n voa,misty armor,-,-,10138,0,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,plant
 344,cajado glorioso,glorious staff,-,-,11127,0,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,plant
 345,escudo glorioso,glorious shield,-,-,11127,0,0,0,0,17,66,0,0,0,0,0,0,0.1,0,120,0.15,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,light
 346,armadura gloriosa,glorious armor,-,-,11127,0,0,0,0,0,0,34,34,0,0,0,0,0,0.02,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,light
@@ -364,33 +365,33 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 362,cajado solar,sunny staff,-,-,17572,0,0,0,0,0,0,58,58,0,0,0,0,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 363,escudo solar,sunny shield,-,-,17572,0,0,0,0,23,125,0,0,0,0,0.2,0,0,0,0,0,0,0,0.05,0,20,0,200,0,0,0,0,0,0,0,0,light
 364,armadura solar,sunny armor,-,-,17572,0,0,0,0,0,0,63,63,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,5,0,0,0,0,0,0,0,0,0,light
-365,cajado ind�gena,indigenous staff,-,-,18725,0,0,0,0,0,0,63,63,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,5,0,0,0,0,0,0,0,0,0,light
-366,escudo ind�gena,indigenous shield,-,-,18725,0,0,0,0,24,137,0,0,0,0,0.15,0,0,0,0,0,0,0,0.1,0,20,0,120,0,0,0,0,0,0,0,0,plant
-367,armadura ind�gena,indigenous armor,-,-,18725,0,0,0,0,0,0,69,69,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
-368,cajado subaqu�tico,underwater staff,-,-,19898,0,0,0,0,0,0,69,69,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
-369,escudo subaqu�tico,underwater shield,-,-,19898,0,0,0,0,25,149,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,water
-370,armadura subaqu�tica,underwater armor,-,-,19898,0,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,0,0,0,0,0,0,0,0,water
+365,cajado ind gena,indigenous staff,-,-,18725,0,0,0,0,0,0,63,63,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,5,0,0,0,0,0,0,0,0,0,light
+366,escudo ind gena,indigenous shield,-,-,18725,0,0,0,0,24,137,0,0,0,0,0.15,0,0,0,0,0,0,0,0.1,0,20,0,120,0,0,0,0,0,0,0,0,plant
+367,armadura ind gena,indigenous armor,-,-,18725,0,0,0,0,0,0,69,69,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
+368,cajado subaqu tico,underwater staff,-,-,19898,0,0,0,0,0,0,69,69,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
+369,escudo subaqu tico,underwater shield,-,-,19898,0,0,0,0,25,149,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,water
+370,armadura subaqu tica,underwater armor,-,-,19898,0,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,0,0,0,0,0,0,0,0,water
 371,cajado da rajada,blast staff,-,-,21091,0,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,0,0,0,0,0,0,0,0,water
 372,escudo da rajada,blast shield,-,-,21091,0,0,0,0,26,162,0,0,20,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 373,armadura da rajada,blast armor,-,-,21091,0,0,0,0,0,0,82,82,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-374,cajado da determinação,staff of determination,-,-,22304,0,0,0,0,0,0,82,82,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-375,escudo da determinação,shield of determination,-,-,22304,0,0,0,0,27,175,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-376,armadura da determinação,armor of determination,-,-,22304,0,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+374,cajado da determina  o,staff of determination,-,-,22304,0,0,0,0,0,0,82,82,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+375,escudo da determina  o,shield of determination,-,-,22304,0,0,0,0,27,175,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+376,armadura da determina  o,armor of determination,-,-,22304,0,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 377,cajado do terremoto,earthquake staff,-,-,23536,0,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 378,escudo do terremoto,earthquake shield,-,-,23536,0,0,0,0,28,189,0,0,0,0,0,0,0.2,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 379,armadura do terremoto,earthquake armor,-,-,23536,0,0,0,0,0,0,95,95,0,0,0,0,0,0.15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
-380,cajado da erupção,eruption staff,-,-,24787,0,0,0,0,0,0,95,95,0,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
-381,escudo da erupção,eruption shield,-,-,24787,0,0,0,0,29,203,0,0,0,0,0.2,0,0,0,0,0,0,0,0.3,0,15,0,250,0,0,0,0,0,0,0,0,fire
-382,armadura da erupção,eruption armor,-,-,24787,0,0,0,0,0,0,102,102,0,0,0,0.05,0,0,0,0,0,0,0,0.13,0,5,0,0,0,0,0,0,0,0,0,fire
+380,cajado da erup  o,eruption staff,-,-,24787,0,0,0,0,0,0,95,95,0,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
+381,escudo da erup  o,eruption shield,-,-,24787,0,0,0,0,29,203,0,0,0,0,0.2,0,0,0,0,0,0,0,0.3,0,15,0,250,0,0,0,0,0,0,0,0,fire
+382,armadura da erup  o,eruption armor,-,-,24787,0,0,0,0,0,0,102,102,0,0,0,0.05,0,0,0,0,0,0,0,0.13,0,5,0,0,0,0,0,0,0,0,0,fire
 383,cajado nuclear,nuclear staff,-,-,26057,0,0,0,0,0,0,102,102,0,0,0,0.1,0,0,0,0,0,0,0,0.13,0,5,0,0,0,0,0,0,0,0,0,fire
 384,escudo nuclear,nuclear shield,-,-,26057,0,0,0,0,30,218,0,0,50,0,0,0,0.15,0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,250,fire
 385,armadura nuclear,nuclear armor,-,-,26057,0,0,0,0,0,0,110,110,15,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,fire
-386,cajado do drag�o,dragon staff,-,-,27344,0,0,0,0,0,0,110,110,15,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,fire
-387,escudo do drag�o,dragon shield,-,-,27344,0,0,150,0,31,233,0,0,0,0,0.15,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,fire
-388,armadura do drag�o,dragon armor,-,-,27344,0,0,50,0,0,0,117,117,0,0,0,0.05,0,0,0,0,0,0,0,0.1,0,15,0,0,0,0,0,0,0,0,0,fire
-389,cajado de picol�,popsicle staff,-,-,28648,0,0,50,0,0,0,117,117,0,0,0,0.1,0,0,0,0,0,0,0,0.05,0,10,0,0,0,0,0,0,0,0,0,fire
-390,escudo de picol�,popsicle shield,-,-,28648,0,0,0,0,32,249,0,0,0,0,0,0,0.3,0,130,0.2,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
-391,armadura de picol�,popsicle armor,-,-,28648,0,0,0,0,0,0,125,125,0,0,0,0,0,0.1,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
+386,cajado do drag o,dragon staff,-,-,27344,0,0,0,0,0,0,110,110,15,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,fire
+387,escudo do drag o,dragon shield,-,-,27344,0,0,150,0,31,233,0,0,0,0,0.15,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,fire
+388,armadura do drag o,dragon armor,-,-,27344,0,0,50,0,0,0,117,117,0,0,0,0.05,0,0,0,0,0,0,0,0.1,0,15,0,0,0,0,0,0,0,0,0,fire
+389,cajado de picol ,popsicle staff,-,-,28648,0,0,50,0,0,0,117,117,0,0,0,0.1,0,0,0,0,0,0,0,0.05,0,10,0,0,0,0,0,0,0,0,0,fire
+390,escudo de picol ,popsicle shield,-,-,28648,0,0,0,0,32,249,0,0,0,0,0,0,0.3,0,130,0.2,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
+391,armadura de picol ,popsicle armor,-,-,28648,0,0,0,0,0,0,125,125,0,0,0,0,0,0.1,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 392,cajado polar,polar staff,-,-,29970,0,0,0,0,0,0,125,125,0,0,0,0,0,0.1,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 393,escudo polar,polar shield,-,-,29970,0,0,0,0,33,265,0,0,0,0,0,0,0.23,0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 394,armadura polar,polar armor,-,-,29970,0,0,0,0,0,0,133,133,0,0,0,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
@@ -419,15 +420,15 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 417,arco do epicentro,epicenter bow,-,-,2988,10,0,0,0,0,0,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 418,bandana do epicentro,epicenter bandana,-,-,2988,10,0,0,0,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 419,armadura do epicentro,epicenter armor,-,-,2988,10,0,0,0,0,0,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-420,arco dimensional,dimensional bow,-,-,3695,10,0,0,0,0,0,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+420,airrco dimensional,dimensional bow,-,-,3695,10,0,0,0,0,0,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 421,bandana dimensional,dimensional bandana,-,-,3695,10,0,0,0,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 422,armadura dimensional,dimensional armor,-,-,3695,10,0,0,0,0,0,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 423,arco do pirata,pirate bow,-,-,4445,10,0,0,0,0,0,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 424,bandana do pirata,pirate bandana,-,-,4445,10,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 425,armadura do pirata,pirate armor,-,-,4445,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-426,arco �pico,epic bow,-,-,5233,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-427,bandana �pica,epic bandana,-,-,5233,10,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-428,armadura �pica,epic armor,-,-,5233,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+426,arco  pico,epic bow,-,-,5233,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+427,bandana  pica,epic bandana,-,-,5233,10,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+428,armadura  pica,epic armor,-,-,5233,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 429,arco arcano,arcane bow,-,-,6056,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 430,bandana arcana,arcane bandana,-,-,6056,10,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 431,armadura arcana,arcane armor,-,-,6056,10,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -446,10 +447,10 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 444,arco da floresta,forest bow,-,-,10645,10,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 445,bandana da floresta,forest bandana,-,-,10645,10,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 446,armadura da floresta,forest armor,-,-,10645,10,0,0,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-447,arco da escava��o,excavation bow,-,-,11647,10,0,0,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-448,bandana da escava��o,excavation bandana,-,-,11647,10,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-449,armadura da escava��o,excavation armor,-,-,11647,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-450,arco secular,secular bow,-,-,12674,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+447,arco da escava  o,excavation bow,-,-,11647,10,0,0,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+448,bandana da escava  o,excavation bandana,-,-,11647,10,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+449,armadura da escava  o,excavation armor,-,-,11647,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+450,airrco secular,secular bow,-,-,12674,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 451,bandana secular,secular bandana,-,-,12674,10,0,0,0,42,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 452,armadura secular,secular armor,-,-,12674,10,0,0,0,0,0,42,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 453,arco do cristal,crystal bow,-,-,13726,10,0,0,0,0,0,42,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -476,18 +477,18 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 474,arco de chocolate,chocolate bow,-,-,21711,10,0,0,0,0,0,82,82,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 475,bandana de chocolate,chocolate bandana,-,-,21711,10,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 476,armadura de chocolate,chocolate armor,-,-,21711,10,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-477,arco da f�nix,fenix bow,-,-,22934,10,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-478,bandana da f�nix,fenix bandana,-,-,22934,10,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-479,armadura da f�nix,fenix armor,-,-,22934,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-480,arco explosivo,explosive bow,-,-,24175,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+477,arco da f nix,fenix bow,-,-,22934,10,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+478,bandana da f nix,fenix bandana,-,-,22934,10,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+479,armadura da f nix,fenix armor,-,-,22934,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+480,airrco explosivo,explosive bow,-,-,24175,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 481,bandana explosiva,explosive bandana,-,-,24175,10,0,0,0,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 482,armadura explosiva,explosive armor,-,-,24175,10,0,0,0,0,0,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 483,arco em derretimento,melting bow,-,-,25436,10,0,0,0,0,0,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 484,bandana em derretimento,melting bandana,-,-,25436,10,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 485,armadura em derretimento,melting armor,-,-,25436,10,0,0,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-486,arco do vulc�o,volcano bow,-,-,26714,10,0,0,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-487,bandana do vulc�o,volcano bandana,-,-,26714,10,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-488,armadura do vulc�o,volcano armor,-,-,26714,10,0,0,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+486,arco do vulc o,volcano bow,-,-,26714,10,0,0,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+487,bandana do vulc o,volcano bandana,-,-,26714,10,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+488,armadura do vulc o,volcano armor,-,-,26714,10,0,0,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 489,arco gelado,icy bow,-,-,28010,10,0,0,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 490,bandana gelada,icy bandana,-,-,28010,10,0,0,0,125,125,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 491,armadura gelada,icy armor,-,-,28010,10,0,0,0,0,0,125,125,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -519,7 +520,7 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 517,arco do som,sound bow,-,-,3320,0,0,0,0,0,0,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,plant
 518,bandana no som,sound bandana,-,-,3320,0,0,0,0,7,7,0,0,0,0,0.1,0,0.1,0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-0.3,0,air
 519,armadura do som,sound armor,-,-,3320,0,0,0,0,0,0,7,7,0,0,0,0.1,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,air
-520,arco selvagem,wild bow,-,-,4049,0,0,0,0,0,0,7,7,0,0,0,0.1,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,air
+520,airrco selvagem,wild bow,-,-,4049,0,0,0,0,0,0,7,7,0,0,0,0.1,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,air
 521,bandana selvagem,wild bandana,-,-,4049,0,0,0,0,9,9,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 522,armadura selvagem,wild armor,-,-,4049,0,0,0,0,0,0,9,9,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 523,arco do amor,love bow,-,-,4818,0,0,0,0,0,0,9,9,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
@@ -528,9 +529,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 526,arco do ninja,ninja bow,-,-,5624,0,0,50,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,fire
 527,bandana no ninja,ninja bandana,-,-,5624,0,0,0,0,14,14,0,0,0,3,0,0,0.15,0,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 528,armadura do ninja,ninja armor,-,-,5624,0,0,0,0,0,0,14,14,0,1,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-529,arco da restaura��o,replenishing bow,-,-,6465,0,0,0,0,0,0,14,14,0,1,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-530,bandana da restaura��o,replenishing bandana,-,-,6465,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-531,armadura da restaura��o,replenishing armor,-,-,6465,0,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+529,arco da restaura  o,replenishing bow,-,-,6465,0,0,0,0,0,0,14,14,0,1,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+530,bandana da restaura  o,replenishing bandana,-,-,6465,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+531,armadura da restaura  o,replenishing armor,-,-,6465,0,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 532,arco da energia,energy bow,-,-,7338,0,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 533,bandana da energia,energy bandana,-,-,7338,0,0,0,25,19,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,200,water
 534,armadura da energia,energy armor,-,-,7338,0,0,0,50,0,0,19,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,water
@@ -540,16 +541,16 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 538,arco pantanoso,swampy bow,-,-,9176,0,0,0,0,0,0,23,23,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,0,0,0,0,0,plant
 539,bandana pantanosa,swampy bandana,-,-,9176,0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,200,0,0,0,earth
 540,armadura pantanosa,swampy armor,-,-,9176,0,0,0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,2,0,0,0,0,earth
-541,arco da n�voa,misty bow,-,-,10138,0,0,0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,2,0,0,0,0,earth
-542,bandana da n�voa,misty bandana,-,-,10138,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,8,0,230,0,0,0,plant
-543,armadura da n�voa,misty armor,-,-,10138,0,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,plant
+541,arco da n voa,misty bow,-,-,10138,0,0,0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,2,0,0,0,0,earth
+542,bandana da n voa,misty bandana,-,-,10138,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,8,0,230,0,0,0,plant
+543,armadura da n voa,misty armor,-,-,10138,0,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,plant
 544,arco glorioso,glorious bow,-,-,11127,0,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,plant
 545,bandana gloriosa,glorious bandana,-,-,11127,0,0,0,0,34,34,0,0,0,0,0,0,0.1,0,120,0.15,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,light
 546,armadura gloriosa,glorious armor,-,-,11127,0,0,0,0,0,0,34,34,0,0,0,0,0,0.02,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,light
 547,arco negro,dark bow,-,-,12141,0,0,0,0,0,0,34,34,0,0,0,0,0,0.02,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,light
 548,bandana negra,dark bandana,-,-,12141,0,0,0,0,38,38,0,0,0,0,0,0,0.15,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,dark
 549,armadura negra,dark armor,-,-,12141,0,0,0,0,0,0,38,38,0,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,dark
-550,arco punk,punk bow,-,-,13181,0,0,0,0,0,0,38,38,0,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,dark
+550,airrco punk,punk bow,-,-,13181,0,0,0,0,0,0,38,38,0,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,dark
 551,bandana punk,punk bandana,-,-,13181,0,0,0,0,42,42,0,0,0,0,0,0,0.1,0,170,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,300,thunder
 552,armadura punk,punk armor,-,-,13181,0,0,0,0,0,0,42,42,0,0,0,0,0,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.02,0,thunder
 553,arco rachado,cracked bow,-,-,14245,0,0,0,0,0,0,42,42,0,0,0,0,0,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.02,0,thunder
@@ -564,33 +565,33 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 562,arco solar,sunny bow,-,-,17572,0,0,0,0,0,0,58,58,0,0,0,0,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 563,bandana solar,sunny bandana,-,-,17572,0,0,0,0,63,63,0,0,0,0,0.2,0,0,0,0,0,0,0,0.05,0,20,0,200,0,0,0,0,0,0,0,0,light
 564,armadura solar,sunny armor,-,-,17572,0,0,0,0,0,0,63,63,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,5,0,0,0,0,0,0,0,0,0,light
-565,arco ind�gena,indigenous bow,-,-,18725,0,0,0,0,0,0,63,63,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,5,0,0,0,0,0,0,0,0,0,light
-566,bandana ind�gena,indigenous bandana,-,-,18725,0,0,0,0,69,69,0,0,0,0,0.15,0,0,0,0,0,0,0,0.1,0,20,0,120,0,0,0,0,0,0,0,0,plant
-567,armadura ind�gena,indigenous armor,-,-,18725,0,0,0,0,0,0,69,69,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
-568,arco subaqu�tico,underwater bow,-,-,19898,0,0,0,0,0,0,69,69,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
-569,bandana subaqu�tica,underwater bandana,-,-,19898,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,water
-570,armadura subaqu�tica,underwater armor,-,-,19898,0,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,0,0,0,0,0,0,0,0,water
+565,arco ind gena,indigenous bow,-,-,18725,0,0,0,0,0,0,63,63,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,5,0,0,0,0,0,0,0,0,0,light
+566,bandana ind gena,indigenous bandana,-,-,18725,0,0,0,0,69,69,0,0,0,0,0.15,0,0,0,0,0,0,0,0.1,0,20,0,120,0,0,0,0,0,0,0,0,plant
+567,armadura ind gena,indigenous armor,-,-,18725,0,0,0,0,0,0,69,69,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
+568,arco subaqu tico,underwater bow,-,-,19898,0,0,0,0,0,0,69,69,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
+569,bandana subaqu tica,underwater bandana,-,-,19898,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,water
+570,armadura subaqu tica,underwater armor,-,-,19898,0,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,0,0,0,0,0,0,0,0,water
 571,arco da rajada,blast bow,-,-,21091,0,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,0,0,0,0,0,0,0,0,water
 572,bandana da rajada,blast bandana,-,-,21091,0,0,0,0,82,82,0,0,20,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 573,armadura da rajada,blast armor,-,-,21091,0,0,0,0,0,0,82,82,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-574,arco da determina��o,bow of determination,-,-,22304,0,0,0,0,0,0,82,82,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-575,bandana da determina��o,bandana of determination,-,-,22304,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-576,armadura da determina��o,armor of determination,-,-,22304,0,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+574,arco da determina  o,bow of determination,-,-,22304,0,0,0,0,0,0,82,82,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+575,bandana da determina  o,bandana of determination,-,-,22304,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+576,armadura da determina  o,armor of determination,-,-,22304,0,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 577,arco do terremoto,earthquake bow,-,-,23536,0,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 578,bandana do terremoto,earthquake bandana,-,-,23536,0,0,0,0,95,95,0,0,0,0,0,0,0.2,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 579,armadura do terremoto,earthquake armor,-,-,23536,0,0,0,0,0,0,95,95,0,0,0,0,0,0.15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
-580,arco da erup��o,eruption bow,-,-,24787,0,0,0,0,0,0,95,95,0,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
-581,bandana da erup��o,eruption bandana,-,-,24787,0,0,0,0,102,102,0,0,0,0,0.2,0,0,0,0,0,0,0,0.3,0,15,0,250,0,0,0,0,0,0,0,0,fire
-582,armadura da erup��o,eruption armor,-,-,24787,0,0,0,0,0,0,102,102,0,0,0,0.05,0,0,0,0,0,0,0,0.13,0,5,0,0,0,0,0,0,0,0,0,fire
+580,airrco da erup  o,eruption bow,-,-,24787,0,0,0,0,0,0,95,95,0,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
+581,bandana da erup  o,eruption bandana,-,-,24787,0,0,0,0,102,102,0,0,0,0,0.2,0,0,0,0,0,0,0,0.3,0,15,0,250,0,0,0,0,0,0,0,0,fire
+582,armadura da erup  o,eruption armor,-,-,24787,0,0,0,0,0,0,102,102,0,0,0,0.05,0,0,0,0,0,0,0,0.13,0,5,0,0,0,0,0,0,0,0,0,fire
 583,arco nuclear,nuclear bow,-,-,26057,0,0,0,0,0,0,102,102,0,0,0,0.1,0,0,0,0,0,0,0,0.13,0,5,0,0,0,0,0,0,0,0,0,fire
 584,bandana nuclear,nuclear bandana,-,-,26057,0,0,0,0,110,110,0,0,50,0,0,0,0.15,0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,250,fire
 585,armadura nuclear,nuclear armor,-,-,26057,0,0,0,0,0,0,110,110,15,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,fire
-586,arco do drag�o,dragon bow,-,-,27344,0,0,0,0,0,0,110,110,15,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,fire
-587,bandana do drag�o,dragon bandana,-,-,27344,0,0,150,0,117,117,0,0,0,0,0.15,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,fire
-588,armadura do drag�o,dragon armor,-,-,27344,0,0,50,0,0,0,117,117,0,0,0,0.05,0,0,0,0,0,0,0,0.1,0,15,0,0,0,0,0,0,0,0,0,fire
-589,arco de picol�,popsicle bow,-,-,28648,0,0,50,0,0,0,117,117,0,0,0,0.1,0,0,0,0,0,0,0,0.05,0,10,0,0,0,0,0,0,0,0,0,fire
-590,bandana de picol�,popsicle bandana,-,-,28648,0,0,0,0,125,125,0,0,0,0,0,0,0.3,0,130,0.2,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
-591,armadura de picol�,popsicle armor,-,-,28648,0,0,0,0,0,0,125,125,0,0,0,0,0,0.1,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
+586,arco do drag o,dragon bow,-,-,27344,0,0,0,0,0,0,110,110,15,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,fire
+587,bandana do drag o,dragon bandana,-,-,27344,0,0,150,0,117,117,0,0,0,0,0.15,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,fire
+588,armadura do drag o,dragon armor,-,-,27344,0,0,50,0,0,0,117,117,0,0,0,0.05,0,0,0,0,0,0,0,0.1,0,15,0,0,0,0,0,0,0,0,0,fire
+589,arco de picol ,popsicle bow,-,-,28648,0,0,50,0,0,0,117,117,0,0,0,0.1,0,0,0,0,0,0,0,0.05,0,10,0,0,0,0,0,0,0,0,0,fire
+590,bandana de picol ,popsicle bandana,-,-,28648,0,0,0,0,125,125,0,0,0,0,0,0,0.3,0,130,0.2,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
+591,armadura de picol ,popsicle armor,-,-,28648,0,0,0,0,0,0,125,125,0,0,0,0,0,0.1,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 592,arco polar,polar bow,-,-,29970,0,0,0,0,0,0,125,125,0,0,0,0,0,0.1,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 593,bandana polar,polar bandana,-,-,29970,0,0,0,0,133,133,0,0,0,0,0,0,0.23,0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 594,armadura polar,polar armor,-,-,29970,0,0,0,0,0,0,133,133,0,0,0,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
@@ -625,9 +626,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 623,garras do piratas,pirate claws,-,-,4445,10,0,80,0,0,0,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 624,escudo do pirata,pirate shield,-,-,4445,10,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 625,armadura do pirata,pirate armor,-,-,4445,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-626,garras �picas,epic claws,-,-,5233,10,0,90,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-627,escudo �pico,epic shield,-,-,5233,10,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-628,armadura �pica,epic armor,-,-,5233,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+626,garras  picas,epic claws,-,-,5233,10,0,90,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+627,escudo  pico,epic shield,-,-,5233,10,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+628,armadura  pica,epic armor,-,-,5233,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 629,garras arcanas,arcane claws,-,-,6056,10,0,100,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 630,escudo arcano,arcane shield,-,-,6056,10,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 631,armadura arcana,arcane armor,-,-,6056,10,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -646,9 +647,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 644,garras da floresta,forest claws,-,-,10645,10,0,150,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 645,escudo da floresta,forest shield,-,-,10645,10,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 646,armadura da floresta,forest armor,-,-,10645,10,0,0,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-647,garras da escava��o,excavation claws,-,-,11647,10,0,160,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-648,escudo da escava��o,excavation shield,-,-,11647,10,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-649,armadura da escava��o,excavation armor,-,-,11647,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+647,garras da escava  o,excavation claws,-,-,11647,10,0,160,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+648,escudo da escava  o,excavation shield,-,-,11647,10,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+649,armadura da escava  o,excavation armor,-,-,11647,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 650,garras seculares,secular claws,-,-,12674,10,0,170,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 651,escudo secular,secular shield,-,-,12674,10,0,0,0,42,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 652,armadura secular,secular armor,-,-,12674,10,0,0,0,0,0,42,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -676,18 +677,18 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 674,garras de chocolate,chocolate claws,-,-,21711,10,0,250,0,0,0,82,82,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 675,escudo de chocolate,chocolate shield,-,-,21711,10,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 676,armadura de chocolate,chocolate armor,-,-,21711,10,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-677,garras da f�nix,fenix claws,-,-,22934,10,0,260,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-678,escudo da f�nix,fenix shield,-,-,22934,10,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-679,armadura da f�nix,fenix armor,-,-,22934,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+677,garras da f nix,fenix claws,-,-,22934,10,0,260,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+678,escudo da f nix,fenix shield,-,-,22934,10,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+679,armadura da f nix,fenix armor,-,-,22934,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 680,garras explosivas,explosive claws,-,-,24175,10,0,270,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 681,escudo explosivo,explosive shield,-,-,24175,10,0,0,0,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 682,armadura explosiva,explosive armor,-,-,24175,10,0,0,0,0,0,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 683,garras em derretimento,melting claws,-,-,25436,10,0,280,0,0,0,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 684,escudo em derretimento,melting shield,-,-,25436,10,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 685,armadura em derretimento,melting armor,-,-,25436,10,0,0,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-686,garras do vulc�o,volcano claws,-,-,26714,10,0,290,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-687,escudo do vulc�o,volcano shield,-,-,26714,10,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-688,armadura do vulc�o,volcano armor,-,-,26714,10,0,0,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+686,garras do vulc o,volcano claws,-,-,26714,10,0,290,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+687,escudo do vulc o,volcano shield,-,-,26714,10,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+688,armadura do vulc o,volcano armor,-,-,26714,10,0,0,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 689,garras geladas,icy claws,-,-,28010,10,0,300,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 690,escudo gelado,icy shield,-,-,28010,10,0,0,0,125,125,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 691,armadura gelada,icy armor,-,-,28010,10,0,0,0,0,0,125,125,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -728,9 +729,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 726,garras do ninja,ninja claws,-,-,5624,0,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,fire
 727,escudo do ninja,ninja shield,-,-,5624,0,0,0,0,0,14,0,0,0,6,0,0,0.3,0,240,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 728,armadura do ninja,ninja armor,-,-,5624,0,0,100,0,0,0,14,14,0,2,0,0,0,0.2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-729,garras da restaura��o,replenishing claws,-,-,6465,0,0,0,0,0,0,14,14,0,2,0,0,0,0.2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-730,escudo da restaura��o,replenishing shield,-,-,6465,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-731,armadura da restaura��o,replenishing armor,-,-,6465,0,0,110,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+729,garras da restaura  o,replenishing claws,-,-,6465,0,0,0,0,0,0,14,14,0,2,0,0,0,0.2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+730,escudo da restaura  o,replenishing shield,-,-,6465,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+731,armadura da restaura  o,replenishing armor,-,-,6465,0,0,110,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 732,garras da energia,energy claws,-,-,7338,0,0,0,25,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 733,escudo da energia,energy shield,-,-,7338,0,0,0,50,0,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.3,0,400,water
 734,armadura da energia,energy armor,-,-,7338,0,0,120,50,0,0,19,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,water
@@ -740,9 +741,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 738,garras pantanosas,swampy claws,-,-,9176,0,0,0,0,0,0,23,23,0,0,0,0.2,0,0,0,0,0,0,0,0.2,0,6,0,0,0,0,0,0,0,0,0,plant
 739,escudo pantanoso,swampy shield,-,-,9176,0,0,0,0,0,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.3,0,10,0,400,0,0,0,earth
 740,armadura pantanosa,swampy armor,-,-,9176,0,0,140,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,4,0,0,0,0,earth
-741,garras da n�voa,misty claws,-,-,10138,0,0,0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,4,0,0,0,0,earth
-742,escudo da n�voa,misty shield,-,-,10138,0,0,0,0,0,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.4,0,16,0,460,0,0,0,plant
-743,armadura da n�voa,misty armor,-,-,10138,0,0,150,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,6,0,0,0,0,plant
+741,garras da n voa,misty claws,-,-,10138,0,0,0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,4,0,0,0,0,earth
+742,escudo da n voa,misty shield,-,-,10138,0,0,0,0,0,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.4,0,16,0,460,0,0,0,plant
+743,armadura da n voa,misty armor,-,-,10138,0,0,150,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,6,0,0,0,0,plant
 744,garras gloriosas,glorious claws,-,-,11127,0,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,6,0,0,0,0,plant
 745,escudo glorioso,glorious shield,-,-,11127,0,0,0,0,0,34,0,0,0,0,0,0,0.2,0,240,0.3,0,400,0,0,0,0,0,0,0,0,0,0,0,0,0,light
 746,armadura gloriosa,glorious armor,-,-,11127,0,0,160,0,0,0,34,34,0,0,0,0,0,0.04,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,light
@@ -764,33 +765,33 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 762,garras solares,sunny claws,-,-,17572,0,0,0,0,0,0,58,58,0,0,0,0,0,0,0,0,0.2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 763,escudo solar,sunny shield,-,-,17572,0,0,0,0,0,63,0,0,0,0,0.4,0,0,0,0,0,0,0,0.1,0,40,0,400,0,0,0,0,0,0,0,0,light
 764,armadura solar,sunny armor,-,-,17572,0,0,220,0,0,0,63,63,0,0,0,0.2,0,0,0,0,0,0,0,0.2,0,10,0,0,0,0,0,0,0,0,0,light
-765,garras ind�genas,indigenous claws,-,-,18725,0,0,0,0,0,0,63,63,0,0,0,0.2,0,0,0,0,0,0,0,0.2,0,10,0,0,0,0,0,0,0,0,0,light
-766,escudo ind�gena,indigenous shield,-,-,18725,0,0,0,0,0,69,0,0,0,0,0.3,0,0,0,0,0,0,0,0.2,0,40,0,240,0,0,0,0,0,0,0,0,plant
-767,armadura ind�gena,indigenous armor,-,-,18725,0,0,230,0,0,0,69,69,0,0,0,0.2,0,0,0,0,0,0,0,0.4,0,4,0,0,0,0,0,0,0,0,0,plant
-768,garras subaqu�ticas,underwater claws,-,-,19898,0,0,0,0,0,0,69,69,0,0,0,0.2,0,0,0,0,0,0,0,0.4,0,4,0,0,0,0,0,0,0,0,0,plant
-769,escudo subaqu�tico,underwater shield,-,-,19898,0,0,0,0,0,75,0,0,0,0,0,0,0,0,0,0,0,0,0.3,0,50,0,500,0,0,0,0,0,0,0,0,water
-770,armadura subaqu�tica,underwater armor,-,-,19898,0,0,240,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0.3,0,10,0,0,0,0,0,0,0,0,0,water
+765,garras ind genas,indigenous claws,-,-,18725,0,0,0,0,0,0,63,63,0,0,0,0.2,0,0,0,0,0,0,0,0.2,0,10,0,0,0,0,0,0,0,0,0,light
+766,escudo ind gena,indigenous shield,-,-,18725,0,0,0,0,0,69,0,0,0,0,0.3,0,0,0,0,0,0,0,0.2,0,40,0,240,0,0,0,0,0,0,0,0,plant
+767,armadura ind gena,indigenous armor,-,-,18725,0,0,230,0,0,0,69,69,0,0,0,0.2,0,0,0,0,0,0,0,0.4,0,4,0,0,0,0,0,0,0,0,0,plant
+768,garras subaqu ticas,underwater claws,-,-,19898,0,0,0,0,0,0,69,69,0,0,0,0.2,0,0,0,0,0,0,0,0.4,0,4,0,0,0,0,0,0,0,0,0,plant
+769,escudo subaqu tico,underwater shield,-,-,19898,0,0,0,0,0,75,0,0,0,0,0,0,0,0,0,0,0,0,0.3,0,50,0,500,0,0,0,0,0,0,0,0,water
+770,armadura subaqu tica,underwater armor,-,-,19898,0,0,240,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0.3,0,10,0,0,0,0,0,0,0,0,0,water
 771,garras da rajada,blast claws,-,-,21091,0,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0.3,0,10,0,0,0,0,0,0,0,0,0,water
 772,escudo da rajada,blast shield,-,-,21091,0,0,0,0,0,82,0,0,40,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 773,armadura da rajada,blast armor,-,-,21091,0,0,250,0,0,0,82,82,20,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-774,garras da determina��o,claws of determination,-,-,22304,0,0,0,0,0,0,82,82,20,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-775,escudo da determina��o,shield of determination,-,-,22304,0,0,0,0,0,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-776,armadura da determina��o,armor of determination,-,-,22304,0,0,260,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+774,garras da determina  o,claws of determination,-,-,22304,0,0,0,0,0,0,82,82,20,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+775,escudo da determina  o,shield of determination,-,-,22304,0,0,0,0,0,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+776,armadura da determina  o,armor of determination,-,-,22304,0,0,260,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 777,garras do terremoto,earthquake claws,-,-,23536,0,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 778,escudo do terremoto,earthquake shield,-,-,23536,0,0,0,0,0,95,0,0,0,0,0,0,0.4,0,400,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 779,armadura do terremoto,earthquake armor,-,-,23536,0,0,270,0,0,0,95,95,0,0,0,0,0,0.3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
-780,garras da erup��o,eruption claws,-,-,24787,0,0,0,0,0,0,95,95,0,0,0,0,0,0.2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
-781,escudo da erup��o,eruption shield,-,-,24787,0,0,0,0,0,102,0,0,0,0,0.4,0,0,0,0,0,0,0,0.6,0,30,0,500,0,0,0,0,0,0,0,0,fire
-782,armadura da erup��o,eruption armor,-,-,24787,0,0,280,0,0,0,102,102,0,0,0,0.1,0,0,0,0,0,0,0,0.26,0,10,0,0,0,0,0,0,0,0,0,fire
+780,garras da erup  o,eruption claws,-,-,24787,0,0,0,0,0,0,95,95,0,0,0,0,0,0.2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
+781,escudo da erup  o,eruption shield,-,-,24787,0,0,0,0,0,102,0,0,0,0,0.4,0,0,0,0,0,0,0,0.6,0,30,0,500,0,0,0,0,0,0,0,0,fire
+782,armadura da erup  o,eruption armor,-,-,24787,0,0,280,0,0,0,102,102,0,0,0,0.1,0,0,0,0,0,0,0,0.26,0,10,0,0,0,0,0,0,0,0,0,fire
 783,garras nucleares,nuclear claws,-,-,26057,0,0,0,0,0,0,102,102,0,0,0,0.2,0,0,0,0,0,0,0,0.26,0,10,0,0,0,0,0,0,0,0,0,fire
 784,escudo nuclear,nuclear shield,-,-,26057,0,0,0,0,0,110,0,0,100,0,0,0,0.3,0,300,0,0,0,0,0,0,0,0,0,0,0,0,0,0.3,0,500,fire
 785,armadura nuclear,nuclear armor,-,-,26057,0,0,290,0,0,0,110,110,30,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,fire
-786,garras do drag�o,dragon claws,-,-,27344,0,0,150,0,0,0,110,110,30,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,fire
-787,escudo do drag�o,dragon shield,-,-,27344,0,0,50,0,0,117,0,0,0,0,0.3,0,0,0,0,0,0,0,0.3,0,50,0,500,0,0,0,0,0,0,0,0,fire
-788,armadura do drag�o,dragon armor,-,-,27344,0,0,350,0,0,0,117,117,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,30,0,0,0,0,0,0,0,0,0,fire
-789,garras de picol�,popsicle claws,-,-,28648,0,0,0,0,0,0,117,117,0,0,0,0.2,0,0,0,0,0,0,0,0.1,0,20,0,0,0,0,0,0,0,0,0,fire
-790,escudo de picol�,popsicle shield,-,-,28648,0,0,0,0,0,125,0,0,0,0,0,0,0.6,0,260,0.4,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
-791,armadura de picol�,popsicle armor,-,-,28648,0,0,310,0,0,0,125,125,0,0,0,0,0,0.2,0,0,0.26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
+786,garras do drag o,dragon claws,-,-,27344,0,0,150,0,0,0,110,110,30,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,fire
+787,escudo do drag o,dragon shield,-,-,27344,0,0,50,0,0,117,0,0,0,0,0.3,0,0,0,0,0,0,0,0.3,0,50,0,500,0,0,0,0,0,0,0,0,fire
+788,armadura do drag o,dragon armor,-,-,27344,0,0,350,0,0,0,117,117,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,30,0,0,0,0,0,0,0,0,0,fire
+789,garras de picol ,popsicle claws,-,-,28648,0,0,0,0,0,0,117,117,0,0,0,0.2,0,0,0,0,0,0,0,0.1,0,20,0,0,0,0,0,0,0,0,0,fire
+790,escudo de picol ,popsicle shield,-,-,28648,0,0,0,0,0,125,0,0,0,0,0,0,0.6,0,260,0.4,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
+791,armadura de picol ,popsicle armor,-,-,28648,0,0,310,0,0,0,125,125,0,0,0,0,0,0.2,0,0,0.26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 792,garras polares,polar claws,-,-,29970,0,0,0,0,0,0,125,125,0,0,0,0,0,0.2,0,0,0.26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 793,escudo polar,polar shield,-,-,29970,0,0,0,0,0,133,0,0,0,0,0,0,0.46,0,300,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 794,armadura polar,polar armor,-,-,29970,0,0,320,0,0,0,133,133,0,0,0,0,0,0.26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
@@ -819,15 +820,15 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 817,faca do epicentro,epicenter dagger,-,-,2988,10,0,0,0,0,0,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 818,escudo do epicentro,epicenter shield,-,-,2988,10,0,0,0,7,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 819,armadura do epicentro,epicenter armor,-,-,2988,10,0,0,0,0,0,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-820,faca dimensional,dimensional dagger,-,-,3695,10,0,0,0,0,0,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+820,fireaca dimensional,dimensional dagger,-,-,3695,10,0,0,0,0,0,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 821,escudo dimensional,dimensional shield,-,-,3695,10,0,0,0,9,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 822,armadura dimensional,dimensional armor,-,-,3695,10,0,0,0,0,0,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 823,faca do pirata,pirate dagger,-,-,4445,10,0,0,0,0,0,9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 824,escudo do pirata,pirate shield,-,-,4445,10,0,0,0,11,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 825,armadura do pirata,pirate armor,-,-,4445,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-826,faca �pica,epic dagger,-,-,5233,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-827,escudo �pico,epic shield,-,-,5233,10,0,0,0,14,0,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-828,armadura �pica,epic armor,-,-,5233,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+826,faca  pica,epic dagger,-,-,5233,10,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+827,escudo  pico,epic shield,-,-,5233,10,0,0,0,14,0,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+828,armadura  pica,epic armor,-,-,5233,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 829,faca arcana,arcane dagger,-,-,6056,10,0,0,0,0,0,14,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 830,escudo arcano,arcane shield,-,-,6056,10,0,0,0,16,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 831,armadura arcana,arcane armor,-,-,6056,10,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -846,10 +847,10 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 844,faca da floresta,forest dagger,-,-,10645,10,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 845,escudo da floresta,forest shield,-,-,10645,10,0,0,0,34,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 846,armadura da floresta,forest armor,-,-,10645,10,0,0,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-847,faca da escava��o,excavation dagger,-,-,11647,10,0,0,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-848,escudo da escava��o,excavation shield,-,-,11647,10,0,0,0,38,0,0,0,0,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-849,armadura da escava��o,excavation armor,-,-,11647,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-850,faca secular,secular dagger,-,-,12674,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+847,faca da escava  o,excavation dagger,-,-,11647,10,0,0,0,0,0,34,34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+848,escudo da escava  o,excavation shield,-,-,11647,10,0,0,0,38,0,0,0,0,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+849,armadura da escava  o,excavation armor,-,-,11647,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+850,fireaca secular,secular dagger,-,-,12674,10,0,0,0,0,0,38,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 851,escudo secular,secular shield,-,-,12674,10,0,0,0,42,0,0,0,0,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 852,armadura secular,secular armor,-,-,12674,10,0,0,0,0,0,42,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 853,faca do cristal,crystal dagger,-,-,13726,10,0,0,0,0,0,42,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -876,18 +877,18 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 874,faca de chocolate,chocolate dagger,-,-,21711,10,0,0,0,0,0,82,82,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 875,escudo de chocolate,chocolate shield,-,-,21711,10,0,0,0,88,0,0,0,0,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 876,armadura de chocolate,chocolate armor,-,-,21711,10,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-877,faca da f�nix,fenix dagger,-,-,22934,10,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-878,escudo da f�nix,fenix shield,-,-,22934,10,0,0,0,95,0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-879,armadura da f�nix,fenix armor,-,-,22934,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-880,faca explosiva,explosive dagger,-,-,24175,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+877,faca da f nix,fenix dagger,-,-,22934,10,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+878,escudo da f nix,fenix shield,-,-,22934,10,0,0,0,95,0,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+879,armadura da f nix,fenix armor,-,-,22934,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+880,fireaca explosiva,explosive dagger,-,-,24175,10,0,0,0,0,0,95,95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 881,escudo explosivo,explosive shield,-,-,24175,10,0,0,0,102,0,0,0,0,28,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 882,armadura explosiva,explosive armor,-,-,24175,10,0,0,0,0,0,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 883,faca em derretimento,melting dagger,-,-,25436,10,0,0,0,0,0,102,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 884,escudo  em derretimento,melting shield,-,-,25436,10,0,0,0,110,0,0,0,0,29,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 885,armadura em derretimento,melting armor,-,-,25436,10,0,0,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-886,faca do vulc�o,volcano dagger,-,-,26714,10,0,0,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-887,escudo do vulc�o,volcano shield,-,-,26714,10,0,0,0,117,0,0,0,0,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-888,armadura do vulc�o,volcano armor,-,-,26714,10,0,0,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+886,faca do vulc o,volcano dagger,-,-,26714,10,0,0,0,0,0,110,110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+887,escudo do vulc o,volcano shield,-,-,26714,10,0,0,0,117,0,0,0,0,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+888,armadura do vulc o,volcano armor,-,-,26714,10,0,0,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 889,faca gelada,icy dagger,-,-,28010,10,0,0,0,0,0,117,117,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 890,escudo gelado,icy shield,-,-,28010,10,0,0,0,125,0,0,0,0,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 891,armadura gelada,icy armor,-,-,28010,10,0,0,0,0,0,125,125,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
@@ -919,7 +920,7 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 917,faca do som,sound dagger,-,-,3320,0,0,0,0,0,0,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,plant
 918,escudo do som,sound shield,-,-,3320,0,0,0,0,7,0,0,0,0,7,0.1,0,0.1,0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-0.3,0,air
 919,armadura do som,sound armor,-,-,3320,0,0,0,0,0,0,7,7,0,0,0,0.1,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,air
-920,faca selvagem,wild dagger,-,-,4049,0,0,0,0,0,0,7,7,0,0,0,0.1,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,air
+920,fireaca selvagem,wild dagger,-,-,4049,0,0,0,0,0,0,7,7,0,0,0,0.1,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,air
 921,escudo selvagem,wild shield,-,-,4049,0,0,0,0,9,0,0,0,0,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 922,armadura selvagem,wild armor,-,-,4049,0,0,0,0,0,0,9,9,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 923,faca do amor,love dagger,-,-,4818,0,0,20,0,0,0,9,9,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
@@ -928,9 +929,9 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 926,faca do ninja,ninja dagger,-,-,5624,0,0,0,0,0,0,11,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,fire
 927,escudo do ninja,ninja shield,-,-,5624,0,0,0,0,14,0,0,0,0,13,0,0,0.15,0,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 928,armadura do ninja,ninja armor,-,-,5624,0,0,0,0,0,0,14,14,0,1,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-929,faca da restaura��o,replenishing dagger,-,-,6465,0,0,0,0,0,0,14,14,0,1,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-930,escudo da restaura��o,replenishing shield,-,-,6465,0,0,0,0,16,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-931,armadura da restaura��o,replenishing armor,-,-,6465,0,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+929,faca da restaura  o,replenishing dagger,-,-,6465,0,0,0,0,0,0,14,14,0,1,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+930,escudo da restaura  o,replenishing shield,-,-,6465,0,0,0,0,16,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+931,armadura da restaura  o,replenishing armor,-,-,6465,0,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 932,faca da energia,energy dagger,-,-,7338,0,0,0,25,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 933,escudo da energia,energy shield,-,-,7338,0,0,0,50,19,0,0,0,0,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,200,water
 934,armadura da energia,energy armor,-,-,7338,0,0,0,50,0,0,19,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,water
@@ -940,16 +941,16 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 938,faca pantanosa,swampy dagger,-,-,9176,0,0,0,0,0,0,23,23,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,0,0,0,0,0,plant
 939,escudo pantanoso,swampy shield,-,-,9176,0,0,0,0,26,0,0,0,0,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,200,0,0,0,earth
 940,armadura pantanosa,swampy armor,-,-,9176,0,0,0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,2,0,0,0,0,earth
-941,faca da n�voa,misty dagger,-,-,10138,0,0,0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,2,0,0,0,0,earth
-942,escudo da n�voa,misty shield,-,-,10138,0,0,0,0,30,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,8,0,230,0,0,0,plant
-943,armadura da n�voa,misty armor,-,-,10138,0,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,plant
+941,faca da n voa,misty dagger,-,-,10138,0,0,0,0,0,0,26,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,2,0,0,0,0,earth
+942,escudo da n voa,misty shield,-,-,10138,0,0,0,0,30,0,0,0,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0.2,0,8,0,230,0,0,0,plant
+943,armadura da n voa,misty armor,-,-,10138,0,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,plant
 944,faca gloriosa,glorious dagger,-,-,11127,0,0,0,0,0,0,30,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.1,0,3,0,0,0,0,plant
 945,escudo glorioso,glorious shield,-,-,11127,0,0,0,0,34,0,0,0,0,16,0,0,0.1,0,120,0.15,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,light
 946,armadura gloriosa,glorious armor,-,-,11127,0,0,0,0,0,0,34,34,0,0,0,0,0,0.02,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,light
 947,faca negra,dark dagger,-,-,12141,0,0,0,0,0,0,34,34,0,0,0,0,0,0.02,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,light
 948,escudo negro,dark shield,-,-,12141,0,0,0,0,38,0,0,0,0,17,0,0,0.15,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,dark
 949,armadura negra,dark armor,-,-,12141,0,0,0,0,0,0,38,38,0,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,dark
-950,faca punk,punk dagger,-,-,13181,0,0,0,0,0,0,38,38,0,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,dark
+950,fireaca punk,punk dagger,-,-,13181,0,0,0,0,0,0,38,38,0,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,dark
 951,escudo punk,punk shield,-,-,13181,0,0,0,0,42,0,0,0,0,18,0,0,0.1,0,170,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,300,thunder
 952,armadura punk,punk armor,-,-,13181,0,0,0,0,0,0,42,42,0,0,0,0,0,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.02,0,thunder
 953,faca rachada,cracked dagger,-,-,14245,0,0,0,0,0,0,42,42,0,0,0,0,0,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.02,0,thunder
@@ -964,33 +965,33 @@ ID,Nome,Name,Descri��o,Description,Price,Drop chance,Forge level,Life bonus,
 962,faca solar,sunny dagger,-,-,17572,0,0,0,0,0,0,58,58,0,0,0,0,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 963,escudo solar,sunny shield,-,-,17572,0,0,0,0,63,0,0,0,0,22,0.2,0,0,0,0,0,0,0,0.05,0,20,0,200,0,0,0,0,0,0,0,0,light
 964,armadura solar,sunny armor,-,-,17572,0,0,0,0,0,0,63,63,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,5,0,0,0,0,0,0,0,0,0,light
-965,faca ind�gena,indigenous dagger,-,-,18725,0,0,0,0,0,0,63,63,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,5,0,0,0,0,0,0,0,0,0,light
-966,escudo ind�gena,indigenous shield,-,-,18725,0,0,0,0,69,0,0,0,0,23,0.15,0,0,0,0,0,0,0,0.1,0,20,0,120,0,0,0,0,0,0,0,0,plant
-967,armadura ind�gena,indigenous armor,-,-,18725,0,0,0,0,0,0,69,69,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
-968,faca subaqu�tica,underwater dagger,-,-,19898,0,0,0,0,0,0,69,69,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
-969,escudo subaqu�tico,underwater shield,-,-,19898,0,0,0,0,75,0,0,0,0,24,0,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,water
-970,armadura subaqu�tica,underwater armor,-,-,19898,0,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,0,0,0,0,0,0,0,0,water
+965,faca ind gena,indigenous dagger,-,-,18725,0,0,0,0,0,0,63,63,0,0,0,0.1,0,0,0,0,0,0,0,0.1,0,5,0,0,0,0,0,0,0,0,0,light
+966,escudo ind gena,indigenous shield,-,-,18725,0,0,0,0,69,0,0,0,0,23,0.15,0,0,0,0,0,0,0,0.1,0,20,0,120,0,0,0,0,0,0,0,0,plant
+967,armadura ind gena,indigenous armor,-,-,18725,0,0,0,0,0,0,69,69,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
+968,faca subaqu tica,underwater dagger,-,-,19898,0,0,0,0,0,0,69,69,0,0,0,0.1,0,0,0,0,0,0,0,0.2,0,2,0,0,0,0,0,0,0,0,0,plant
+969,escudo subaqu tico,underwater shield,-,-,19898,0,0,0,0,75,0,0,0,0,24,0,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,water
+970,armadura subaqu tica,underwater armor,-,-,19898,0,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,0,0,0,0,0,0,0,0,water
 971,faca da rajada,blast dagger,-,-,21091,0,0,0,0,0,0,75,75,0,0,0,0,0,0,0,0,0,0,0,0.15,0,5,0,0,0,0,0,0,0,0,0,water
 972,escudo da rajada,blast shield,-,-,21091,0,0,0,0,82,0,0,0,20,45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 973,armadura da rajada,blast armor,-,-,21091,0,0,0,0,0,0,82,82,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-974,faca da determina��o,dagger of determination,-,-,22304,0,0,0,0,0,0,82,82,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-975,escudo da determina��o,shield of determination,-,-,22304,0,0,0,0,88,0,0,0,0,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
-976,armadura da determina��o,armor of determination,-,-,22304,0,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+974,faca da determina  o,dagger of determination,-,-,22304,0,0,0,0,0,0,82,82,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+975,escudo da determina  o,shield of determination,-,-,22304,0,0,0,0,88,0,0,0,0,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
+976,armadura da determina  o,armor of determination,-,-,22304,0,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 977,faca do terremoto,earthquake dagger,-,-,23536,0,0,0,0,0,0,88,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,air
 978,escudo do terremoto,earthquake shield,-,-,23536,0,0,0,0,95,0,0,0,0,27,0,0,0.2,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
 979,armadura do terremoto,earthquake armor,-,-,23536,0,0,0,0,0,0,95,95,0,0,0,0,0,0.15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
-980,faca da erup��o,eruption dagger,-,-,24787,0,0,0,0,0,0,95,95,0,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
-981,escudo da erup��o,eruption shield,-,-,24787,0,0,0,0,102,0,0,0,0,28,0.2,0,0,0,0,0,0,0,0.3,0,15,0,250,0,0,0,0,0,0,0,0,fire
-982,armadura da erup��o,eruption armor,-,-,24787,0,0,0,0,0,0,102,102,0,0,0,0.05,0,0,0,0,0,0,0,0.13,0,5,0,0,0,0,0,0,0,0,0,fire
+980,fireaca da erup  o,eruption dagger,-,-,24787,0,0,0,0,0,0,95,95,0,0,0,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,earth
+981,escudo da erup  o,eruption shield,-,-,24787,0,0,0,0,102,0,0,0,0,28,0.2,0,0,0,0,0,0,0,0.3,0,15,0,250,0,0,0,0,0,0,0,0,fire
+982,armadura da erup  o,eruption armor,-,-,24787,0,0,0,0,0,0,102,102,0,0,0,0.05,0,0,0,0,0,0,0,0.13,0,5,0,0,0,0,0,0,0,0,0,fire
 983,faca nuclear,nuclear dagger,-,-,26057,0,0,0,0,0,0,102,102,0,0,0,0.1,0,0,0,0,0,0,0,0.13,0,5,0,0,0,0,0,0,0,0,0,fire
 984,escudo nuclear,nuclear shield,-,-,26057,0,0,0,0,110,0,0,0,50,29,0,0,0.15,0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0.15,0,250,fire
 985,armadura nuclear,nuclear armor,-,-,26057,0,0,0,0,0,0,110,110,15,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,fire
-986,faca do drag�o,dragon dagger,-,-,27344,0,0,150,0,0,0,110,110,15,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,fire
-987,escudo do drag�o,dragon shield,-,-,27344,0,0,50,0,117,0,0,0,0,30,0.15,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,fire
-988,armadura do drag�o,dragon armor,-,-,27344,0,0,50,0,0,0,117,117,0,0,0,0.05,0,0,0,0,0,0,0,0.1,0,15,0,0,0,0,0,0,0,0,0,fire
-989,faca de picol�,popsicle dagger,-,-,28648,0,0,0,0,0,0,117,117,0,0,0,0.1,0,0,0,0,0,0,0,0.05,0,10,0,0,0,0,0,0,0,0,0,fire
-990,escudo de picol�,popsicle shield,-,-,28648,0,0,0,0,125,0,0,0,0,31,0,0,0.3,0,130,0.2,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
-991,armadura de picol�,popsicle armor,-,-,28648,0,0,0,0,0,0,125,125,0,0,0,0,0,0.1,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
+986,faca do drag o,dragon dagger,-,-,27344,0,0,150,0,0,0,110,110,15,0,0,0,0,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0,fire
+987,escudo do drag o,dragon shield,-,-,27344,0,0,50,0,117,0,0,0,0,30,0.15,0,0,0,0,0,0,0,0.15,0,25,0,250,0,0,0,0,0,0,0,0,fire
+988,armadura do drag o,dragon armor,-,-,27344,0,0,50,0,0,0,117,117,0,0,0,0.05,0,0,0,0,0,0,0,0.1,0,15,0,0,0,0,0,0,0,0,0,fire
+989,faca de picol ,popsicle dagger,-,-,28648,0,0,0,0,0,0,117,117,0,0,0,0.1,0,0,0,0,0,0,0,0.05,0,10,0,0,0,0,0,0,0,0,0,fire
+990,escudo de picol ,popsicle shield,-,-,28648,0,0,0,0,125,0,0,0,0,31,0,0,0.3,0,130,0.2,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
+991,armadura de picol ,popsicle armor,-,-,28648,0,0,0,0,0,0,125,125,0,0,0,0,0,0.1,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 992,faca polar,polar dagger,-,-,29970,0,0,0,0,0,0,125,125,0,0,0,0,0,0.1,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 993,escudo polar,polar shield,-,-,29970,0,0,0,0,133,0,0,0,0,32,0,0,0.23,0,150,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow
 994,armadura polar,polar armor,-,-,29970,0,0,0,0,0,0,133,133,0,0,0,0,0,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,snow

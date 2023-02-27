@@ -19,7 +19,6 @@ import utilities.UtilG;
 
 public class FabWindow extends GameWindow
 {
-    public static Image image ;
     //private static ArrayList<Recipe> recipes ;
     
 	public FabWindow()
