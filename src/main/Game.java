@@ -1074,10 +1074,16 @@ public class Game extends JPanel
     	player.getBag().Add(Forge.getAll()[0], 3) ;
     	player.getBag().Add(Equip.getAll()[0], 3) ;
 //    	System.out.println(player.getBag().numberItems);
-//    	for (int i = 0; i <= 20 - 1; i += 1)
-//    	{
-//    		player.getBag().Add(Potion.getAll()[i], 3) ;
-//    	}
+    	for (int i = 0; i <= Potion.getAll().length - 1; i += 1) { player.getBag().Add(Potion.getAll()[i], 3) ; }
+    	for (int i = 0; i <= Alchemy.getAll().length - 1; i += 1) { player.getBag().Add(Alchemy.getAll()[i], 3) ; }
+    	for (int i = 0; i <= Forge.getAll().length - 1; i += 1) { player.getBag().Add(Forge.getAll()[i], 3) ; }
+    	for (int i = 0; i <= Food.getAll().length - 1; i += 1) { player.getBag().Add(Food.getAll()[i], 3) ; }
+    	for (int i = 0; i <= PetItem.getAll().length - 1; i += 1) { player.getBag().Add(PetItem.getAll()[i], 3) ; }
+    	for (int i = 0; i <= Arrow.getAll().length - 1; i += 1) { player.getBag().Add(Arrow.getAll()[i], 3) ; }
+    	for (int i = 0; i <= Equip.getAll().length - 1; i += 1) { player.getBag().Add(Equip.getAll()[i], 3) ; }
+    	for (int i = 0; i <= GeneralItem.getAll().length - 1; i += 1) { player.getBag().Add(GeneralItem.getAll()[i], 3) ; }
+    	for (int i = 0; i <= Fab.getAll().length - 1; i += 1) { player.getBag().Add(Fab.getAll()[i], 3) ; }
+    	for (int i = 0; i <= QuestItem.getAll().length - 1; i += 1) { player.getBag().Add(QuestItem.getAll()[i], 3) ; }
     	//player.getPA().setExp(new BasicAttribute(50, 50, 1)) ;	// level up
     	//System.out.println("player life = " + player.getLife().getCurrentValue());
     	player.getLife().incCurrentValue(-10);

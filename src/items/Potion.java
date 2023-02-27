@@ -1,5 +1,6 @@
 package items;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -15,14 +16,34 @@ public class Potion extends Item
 	private double MPHeal ;
 	
 	private static Potion[] AllPotions ;
+	
+	private static Image lifePotionSmall = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconLifePotionSmall.png") ;
+	private static Image lifePotionMedium = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconLifePotionMedium.png") ;
+	private static Image lifePotionLarge = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconLifePotionLarge.png") ;
+	private static Image mpPotionSmall = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconMpPotionSmall.png") ;
+	private static Image mpPotionMedium = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconMpPotionMedium.png") ;
+	private static Image mpPotionLarge = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconMpPotionLarge.png") ;
+	
 	public Potion(int id, String Name, String Description, int price, double dropChance, double lifeHeal, double MPHeal)
 	{
-		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "items.png"), price, dropChance) ;
+		super(Name, Description, imageFromID(id), price, dropChance) ;
 		this.id = id ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
 	}
 
+	public static Image imageFromID(int id)
+	{
+		if (id % 6 == 0) { return lifePotionSmall ;}
+		if (id % 4 == 0) { return lifePotionMedium ;}
+		if (id % 2 == 0) { return lifePotionLarge ;}
+		if (id % 5 == 0) { return mpPotionSmall ;}
+		if (id % 3 == 0) { return mpPotionMedium ;}
+		if (id % 1 == 0) { return mpPotionLarge ;}
+		
+		return null ;
+	}
+	
 	public int getId() {return id ;}
 	public double getLifeHeal() {return lifeHeal ;}
 	public double getMPHeal() {return MPHeal ;}	

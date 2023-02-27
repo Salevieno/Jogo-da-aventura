@@ -1,9 +1,8 @@
 package items;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
 
 import main.Game;
 import utilities.UtilG;
@@ -15,9 +14,12 @@ public class Arrow extends Item
 	private String elem ;
 	
 	private static Arrow[] AllArrow ;
+
+	private static Image arrowIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconArrow.png") ;
+	
 	public Arrow(int id, String Name, String Description, int price, float dropChance, float atkPower, String elem)
 	{
-		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "items.png"), price, dropChance) ;
+		super(Name, Description, arrowIcon, price, dropChance) ;
 		this.id = id ;
 		this.atkPower = atkPower ;
 		this.elem = elem ;

@@ -22,6 +22,14 @@ public class Equip extends Item
 	
 	private static Equip[] allEquips ;
 	
+	private static Image swordIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconSword.png") ;
+	private static Image staffIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconStaff.png") ;
+	private static Image bowIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconBow.png") ;
+	private static Image clawsIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconClaws.png") ;
+	private static Image daggerIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconDagger.png") ;
+	private static Image shieldIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconShield.png") ;
+	private static Image armorIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconArmor.png") ;
+	
 	public static Image SwordImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq0_Sword.png") ;
 	public static Image StaffImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq1_Staff.png") ;
 	public static Image BowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq2_Bow.png") ;
@@ -33,13 +41,21 @@ public class Equip extends Item
 
 	public Equip(int id, String name, String description, int price, float dropChance, int forgeLevel, AttributeBonus attBonus, Elements elem)
 	{
-		super(name, description, UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "items.png"), price, dropChance) ;
+		super(name, description, imageFromID(id), price, dropChance) ;
 		this.id = id ;
 		this.forgeLevel = forgeLevel ;
 		this.attBonus = attBonus ;
 		this.elem = elem ;
 	}
 
+	
+	public static Image imageFromID(int id)
+	{
+		return id % 3 == 0 ? swordIcon :
+		id % 3 == 1 ? shieldIcon :
+			armorIcon ;
+	}
+	
 	public int getId() {return id ;}
 	public int getForgeLevel() {return forgeLevel ;}
 	public Elements getElem() {return elem ;}
