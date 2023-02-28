@@ -1,4 +1,4 @@
-ID,Nome,Name,Descricao,Description,Price,Drop chance,Life heal,Mp heal
+ÔªøID,Nome,Name,Descricao,Description,Price,Drop chance,Life heal,Mp heal
 0,hp da floresta 1,Forest hp pot 1,hp da floresta 1,Forest hp pot 1,15,25,0.1,0
 1,mp da floresta 1,Forest mp pot 1,mp da floresta 1,Forest mp pot 1,15,25,0,0.1
 2,hp da floresta 2,Forest hp pot 2,hp da floresta 2,Forest hp pot 2,61,25,0.2,0
@@ -29,33 +29,33 @@ ID,Nome,Name,Descricao,Description,Price,Drop chance,Life heal,Mp heal
 27,mp da ilha 1,Island mp pot 1,mp da ilha 1,Island mp pot 1,1059,20,0,0
 28,hp do oceano 1,Ocean hp pot 1,hp do oceano 1,Ocean hp pot 1,1162,20,0,0
 29,mp do oceano 1,Ocean mp pot 1,mp do oceano 1,Ocean mp pot 1,1162,20,0,0
-30,hp do vulc„o 1,Volcano hp pot 1,hp do vulc„o 1,Volcano hp pot 1,1267,20,0,0
-31,mp do vulc„o 1,Volcano mp pot 1,mp do vulc„o 1,Volcano mp pot 1,1267,20,0,0
-32,hp do vulc„o 2,Volcano hp pot 2,hp do vulc„o 2,Volcano hp pot 2,1375,20,0,0
-33,mp do vulc„o 2,Volcano mp pot 2,mp do vulc„o 2,Volcano mp pot 2,1375,20,0,0
-34,hp do vulc„o 3,Volcano hp pot 3,hp do vulc„o 3,Volcano hp pot 3,1484,15,0,0
-35,mp do vulc„o 3,Volcano mp pot 3,mp do vulc„o 3,Volcano mp pot 3,1484,15,0,0
+30,hp do vulc√£o 1,Volcano hp pot 1,hp do vulc√£o 1,Volcano hp pot 1,1267,20,0,0
+31,mp do vulc√£o 1,Volcano mp pot 1,mp do vulc√£o 1,Volcano mp pot 1,1267,20,0,0
+32,hp do vulc√£o 2,Volcano hp pot 2,hp do vulc√£o 2,Volcano hp pot 2,1375,20,0,0
+33,mp do vulc√£o 2,Volcano mp pot 2,mp do vulc√£o 2,Volcano mp pot 2,1375,20,0,0
+34,hp do vulc√£o 3,Volcano hp pot 3,hp do vulc√£o 3,Volcano hp pot 3,1484,15,0,0
+35,mp do vulc√£o 3,Volcano mp pot 3,mp do vulc√£o 3,Volcano mp pot 3,1484,15,0,0
 36,hp da terra das neves 1,Snowland hp pot 1,hp da terra das neves 1,Snowland hp pot 1,1595,15,0,0
 37,mp da terra das neves 1,Snowland mp pot 1,mp da terra das neves 1,Snowland mp pot 1,1595,15,0,0
 38,hp da terra das neves 2,Snowland hp pot 2,hp da terra das neves 2,Snowland hp pot 2,1708,15,0,0
 39,mp da terra das neves 2,Snowland mp pot 2,mp da terra das neves 2,Snowland mp pot 2,1708,15,0,0
-40,Bebida de ·gua,Water boost,Impulso de ·gua,Water boost,1500,5,0,0
+40,Bebida de √°gua,Water boost,Impulso de √°gua,Water boost,1500,5,0,0
 41,Bebida de fogo,Fire boost,Impulso de fogo,Fire boost,1500,5,0,0
 42,Bebida de planta,Plant boost,Impulso de planta,Plant boost,1500,5,0,0
 43,Bebida de terra,Earth boost,Impulso de terra,Earth boost,1500,5,0,0
 44,Bebida de ar,Air boost,Impulso de ar,Air boost,1500,5,0,0
-45,Bebida de trov„o,Thunder boost,Impulso de trov„o,Thunder boost,1500,5,0,0
+45,Bebida de trov√£o,Thunder boost,Impulso de trov√£o,Thunder boost,1500,5,0,0
 46,Bebida de luz,Light boost,Impulso de luz,Light boost,1500,5,0,0
-47,Bebida de escurid„o,Dark boost,Impulso de escurid„o,Dark boost,200,8,0,0
+47,Bebida de escurid√£o,Dark boost,Impulso de escurid√£o,Dark boost,200,8,0,0
 48,Bebida de neve,Snow boost,Impulso de neve,Snow boost,200,8,0,0
-49,Bebida de ataque fÌsico,Phy atk boost,Impulso de ataque fÌsico,Phy atk boost,200,8,0,0
-50,Bebida de ataque m·gico,Mag atk boost,Impulso de ataque m·gico,Mag atk boost,200,8,0,0
+49,Bebida de ataque f√≠sico,Phy atk boost,Impulso de ataque f√≠sico,Phy atk boost,200,8,0,0
+50,Bebida de ataque m√°gico,Mag atk boost,Impulso de ataque m√°gico,Mag atk boost,200,8,0,0
 51,Bebida de defesa,Def boost,Impulso de defesa,Def boost,200,8,0,0
 52,Bebida de dex e agi,Dex and agi boost,Impulso de destreza e agilidade,Dex and agi boost,200,8,0,0
 53,Bebida de atordoamento,Stun boost,Impulso de atordoamento,Stun boost,1500,6,0,0
 54,Bebida de bloqueio,Block boost,Impulso de bloqueio,Block boost,1500,6,0,0
 55,Bebida de sangue,Blood boost,Impulso de sangue,Blood boost,1500,6,0,0
 56,Bebida de veneno,Poison boost,Impulso de veneno,Poison boost,1500,6,0,0
-57,Bebida de silÍncio,Silence boost,Impulso de silÍncio,Silence boost,1500,6,0,0
+57,Bebida de sil√™ncio,Silence boost,Impulso de sil√™ncio,Silence boost,1500,6,0,0
 58,Bebida de velocidade,Speed boost,Impulso de velocidade,Speed boost,1500,6,0,0
-59,Bebida do drag„o,Dragon drink,Bebida do drag„o,Dragon drink,1500,4,0,0
+59,Bebida do drag√£o,Dragon drink,Bebida do drag√£o,Dragon drink,1500,4,0,0

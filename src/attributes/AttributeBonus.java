@@ -125,6 +125,83 @@ public class AttributeBonus
 		return new double[] {life, MP, phyAtk, magAtk, phyDef, magDef, dex, agi} ;
 	}
 	
+	public double[] all()
+	{
+		return new double[] {life, MP, phyAtk, magAtk, phyDef, magDef, dex, agi,
+		critAtkChance, critDefChance ,
+		stunAtkChance, stunDefChance, stunDuration, 
+		blockAtkChance, blockDefChance, blockDuration, 
+		bloodAtkChance, bloodDefChance, bloodAtk, bloodDef, bloodDuration, 
+		poisonAtkChance, poisonDefChance, poisonAtk, poisonDef, poisonDuration, 
+		silenceAtkChance, silenceDefChance, silenceDuration} ;
+	}
+	
+	public void resetAll()
+	{
+		 life = 0 ;
+		 MP = 0 ;
+		 phyAtk = 0 ;
+		 magAtk = 0 ;
+		 phyDef = 0 ;
+		 magDef = 0 ;
+		 dex = 0 ;
+		 agi = 0 ;
+		 critAtkChance = 0 ;
+		 critDefChance = 0 ;
+		 stunAtkChance = 0 ;
+		 stunDefChance = 0 ;
+		 stunDuration = 0 ;
+		 blockAtkChance = 0 ;
+		 blockDefChance = 0 ;
+		 blockDuration = 0 ;
+		 bloodAtkChance = 0 ;
+		 bloodDefChance = 0 ;
+		 bloodAtk = 0 ;
+		 bloodDef = 0 ;
+		 bloodDuration = 0 ;
+		 poisonAtkChance = 0 ;
+		 poisonDefChance = 0 ;
+		 poisonAtk = 0 ;
+		 poisonDef = 0 ;
+		 poisonDuration = 0 ;
+		 silenceAtkChance = 0 ;
+		 silenceDefChance = 0 ;
+		 silenceDuration = 0 ;
+	}
+	
+	public void inc(double[] amount)
+	{
+		  life += amount[0] ;
+		  MP += amount[1] ;
+		  phyAtk += amount[2] ;
+		  magAtk += amount[3] ;
+		  phyDef += amount[4] ;
+		  magDef += amount[5] ;
+		  dex += amount[6] ;
+		  agi += amount[7] ;
+		  critAtkChance += amount[8] ;
+		  critDefChance += amount[9] ;
+		  stunAtkChance += amount[10] ;
+		  stunDefChance += amount[11] ;
+		  stunDuration += amount[12] ;
+		  blockAtkChance += amount[13] ;
+		  blockDefChance += amount[14] ;
+		  blockDuration += amount[15] ;
+		  bloodAtkChance += amount[16] ;
+		  bloodDefChance += amount[17] ;
+		  bloodAtk += amount[18] ;
+		  bloodDef += amount[19] ;
+		  bloodDuration += amount[20] ;
+		  poisonAtkChance += amount[21] ;
+		  poisonDefChance += amount[22] ;
+		  poisonAtk += amount[23] ;
+		  poisonDef += amount[24] ;
+		  poisonDuration += amount[25] ;
+		  silenceAtkChance += amount[26] ;
+		  silenceDefChance += amount[27] ;
+		  silenceDuration += amount[28] ;
+	}
+	
 	public void printAtt()
 	{
 		System.out.println("   life bonus: " + life +
@@ -157,5 +234,6 @@ public class AttributeBonus
 				"   silence def chance bonus: " + silenceDefChance +
 				"   silence duration bonus: " + silenceDuration);
 	}
+	
 	
 }

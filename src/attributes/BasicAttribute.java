@@ -14,10 +14,11 @@ public class BasicAttribute extends LiveBeingAttribute
 		this.multiplier = multiplier;
 	}
 
-	public int getCurrentValue() {return currentValue ;}
-	public int getMaxValue() {return maxValue ;}
-	public double getMultiplier() {return multiplier ;}
-	public double getRate() {return currentValue / (double) maxValue ;}
+	public int getCurrentValue() { return currentValue ;}
+	public int getMaxValue() { return maxValue ;}
+	public double getMultiplier() { return multiplier ;}
+	public double getRate() { return currentValue / (double) maxValue ;}
+	public boolean isMaxed() { return currentValue == maxValue ;}
 
 	public void incCurrentValue(int amount) {currentValue = Math.max(0, Math.min(currentValue + amount, maxValue)) ;}
 	public void incMaxValue(int amount) {maxValue += amount ;}

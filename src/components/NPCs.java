@@ -6,23 +6,22 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import graphics.DrawFunctions;
+import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
 import items.Equip;
-import items.Forge;
 import items.Item;
-import liveBeings.Creature;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.Game;
-import maps.GameMap;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 import windows.BagWindow;
 import windows.CraftWindow;
+import windows.ForgeWindow;
 import windows.GameWindow;
 import windows.ShoppingWindow;
 
@@ -74,6 +73,14 @@ public class NPCs
 		    	
 				
 				window = new CraftWindow(Game.allRecipes) ;
+				
+				break ;
+			}
+			case forger:
+			{
+		    	
+				
+				window = new ForgeWindow() ;
 				
 				break ;
 			}
@@ -161,7 +168,7 @@ public class NPCs
 		return null ;
 	}
 
-	public void Contact(Player player, Pet pet, Creature[] creatures, GameMap[] maps, Quests[] quest, Point mousePos, boolean TutorialIsOn, DrawingOnPanel DP)
+	public void Contact(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
 	{
 		String action = player.getCurrentAction() ;		
 		if (action != null)
@@ -174,7 +181,13 @@ public class NPCs
 		
 		switch (type.getJob())
 		{		
-			case doctor: break ;
+			case doctor: 
+			{
+				if (pet == null) { doctorAction(player.getPA(), null) ;}
+				else { doctorAction(player.getPA(), pet.getPA()) ;}
+				
+				break ;
+			}
 			case itemsSeller:
 			{
 		    	sellerAction(player.getBag(), player.getCurrentAction(), mousePos, (ShoppingWindow) window, DP) ;
@@ -189,77 +202,19 @@ public class NPCs
 			}
 			case forger:
 			{
-				forgerAction(player.getBag(), player.getCurrentAction()) ;
+				List<Equip> equipsForForge = new ArrayList<>() ;
+				player.getBag().getEquip().keySet().forEach( equip -> {
+					equipsForForge.add(equip) ;
+				}) ;
+				((ForgeWindow) window).setItemsForForge(equipsForForge);
+				
+				forgerAction(player.getBag(), player.getCurrentAction(), (ForgeWindow) window, DP) ;
 				
 				break ;
 			}
 			//case master: masterAction(player, pet, MousePos, DF) ; break ;
 			default: break;
 		}
-		/*if (npc.getName().equals("Doctor") | npc.getName().equals("Doutor"))
-		{
-			Doctor(Choice, player, pet, npc, DF) ;
-		}*/
-		/*if (npc.getName().equals("Equips Seller") | npc.getName().equals("Vendedor de equipamentos"))
-		{
-			Sale(Choice, player, npc, items, MousePos, Player.CoinIcon, DF) ;
-		}
-		if (npc.getName().equals("Items Seller") | npc.getName().equals("Vendedor de itens"))
-		{
-			Sale(Choice, player, npc, items, MousePos, Player.CoinIcon, DF) ;
-		}
-		if (npc.getName().equals("Smuggle Seller") | npc.getName().equals("Contrabandista"))
-		{
-			Sale(Choice, player, npc, items, MousePos, Player.CoinIcon, DF) ;
-		}
-		if (npc.getName().equals("Banker") | npc.getName().equals("Banqueiro"))
-		{
-			Bank(Choice, player, npc, Player.CoinIcon, DF) ;
-		}
-		if (npc.getName().equals("Alchemist") | npc.getName().equals("Alquimista"))
-		{
-			Crafter(Choice, player, npc, items, MousePos, DF) ;
-		}
-		if (npc.getName().equals("Woodcrafter") | npc.getName().equals("Madeireiro"))
-		{			
-			Crafter(Choice, player, npc, items, MousePos, DF) ;
-		}		
-		if (npc.getName().equals("Forger") | npc.getName().equals("Forjador"))
-		{
-			Forger(Choice, player, pet, npc, items, maps, DF) ;
-		}
-		if (npc.getName().equals("Crafter") | npc.getName().equals("Fabricante"))
-		{
-			Crafter(Choice, player, npc, items, MousePos, DF) ;
-		}
-		if (npc.getName().equals("Elemental") | npc.getName().equals("Elemental"))
-		{
-			Elemental(Choice, player, npc, items, DF) ;
-		}
-		if (npc.getName().equals("Saver") | npc.getName().equals("Salvador"))
-		{
-			Saver(Choice, player, pet, npc, DF) ;
-		}*/
-		if (type.getName().equals("Master") | type.getName().equals("Mestre"))
-		{
-			//masterAction(player, pet, MousePos, DF) ;
-		}/*
-		if (npc.getName().contains("Quest") | npc.getName().contains("Quest"))
-		{
-			Quest(Choice, player, pet, creatureTypes, creatures, npc, quest, items, DF) ;
-		}
-		if (npc.getName().contains("Cave") | npc.getName().contains("caverna"))
-		{
-			CaveEntrance(player, maps) ;
-		}
-		if (npc.getName().contains("Sailor") | npc.getName().contains("Navegador"))
-		{
-			Sailor(Choice, player, npc, BoatImage, Ani, DF) ;
-		}
-		if (npc.getName().contains("Citizen") | npc.getName().contains("Cidad�o"))
-		{
-			Citizen(Choice, npc, DF) ;
-		}*/
 	}
 	
 	public void navigate(String action)
@@ -306,111 +261,30 @@ public class NPCs
 		}
 	}
 	
-	public void masterAction(Player player, Pet pet, Point MousePos, DrawFunctions DF)
+	public void doctorAction(PersonalAttributes playerPA, PersonalAttributes petPA)
 	{
-		//String[] speech = player.allText.get("* " + type.getName() + " *") ;
-		//Font NPCTextFont = new Font(Game.MainFontName, Font.BOLD, 20) ;
-		//System.out.println(selOption + " " + menu) ;
-		if (menu == 0)
+		if (selOption == 0)
 		{
-			if (player.getProJob() == 0 & 50 <= player.getLevel())
+			if (playerPA.getLife().isMaxed())
 			{
-				//DF.DrawSpeech(Pos, speech[3], NPCTextFont, image, SpeakingBubbleImage, color) ;
-			}
-			else
-			{
-				//DF.DrawSpeech(Pos, speech[1], NPCTextFont, image, SpeakingBubbleImage, color) ;
-			}
-			//DF.DrawOptionsWindow(Pos, NPCTextFont, selOption, options, image, color) ;
-			
-		}
-		/*else if (menu == 1)
-		{
-			if (player.getProJob() == 0 & 50 <= player.getLevel())
-			{
-				DF.DrawSpeech(Pos, AllText[TextCat][4], NPCTextFont, image, SpeakingBubbleImage, color) ;
-				//DF.DrawChoicesWindow(Pos, NPCTextFont, new String[] {"(1) " + AllText[AllTextCat[5]][2*player.getJob() + 1], "(2) " + AllText[AllTextCat[5]][2*player.getJob() + 2]}, image, color) ;
-				if (Choice.equals("1"))
-				{ 
-					player.setProJob(1) ;
-					menu = 3 ;
-				} else if (Choice.equals("2"))
-				{ 
-					player.setProJob(2) ;
-					for (int i = NumberOfSkillsAvailable[player.getJob()] ; i <= NumberOfSkillsAvailable[player.getJob()] + 10 - 1 ; i += 1)
-					{
-						skills[i] = skills[i + 10] ;
-					}
-					menu = 3 ;
-				}
-			}
-			else
-			{
-				int[] Pos = new int[] {(int)(0.1*ScreenL), (int)(0.9*ScreenH)} ;
-				int H = (int)(0.66*ScreenH) ;
-				Size size = new Size((int)(0.2*ScreenL), (int)(0.1*ScreenH)) ;
-				int Sx = size.x / 10, Sy = size.y / 10 ;
-				int[] Sequence = player.GetSpellSequence() ;
-				int[] x0 = new int[] {(int)(0.03*ScreenL + size.x + Sx), (int)(0.03*ScreenL + size.x / 2 + Sx / 2), (int)(0.03*ScreenL)} ;
-				int id = 0 ;
-				for (int row = 0 ; row <= Sequence.length - 1 ; row += 1)
-				{
-					for (int col = 0 ; col <= Sequence[row] - 1 ; col += 1)
-					{
-						int[] RectCenter = new int[] {(int) (Pos[0] + x0[Sequence[row] - 1] + (size.x + Sx)*col + size.x/2), (int) (Pos[1] - H + size.y/2 + Sy/2 + (size.y + Sy)*row)} ;
-						if (UtilG.isInside(MousePos, new Point(RectCenter[0] - size.x/2, RectCenter[1] - size.y/2), size))
-						{
-							SelectedSkill = id ;
-						}
-						id += 1 ;
-					}
-				}
+				if (petPA == null) {menu = 1 ; return ;}
+
+				petPA.getLife().setToMaximum() ;
+				petPA.getMp().setToMaximum() ;
 				
-				DF.DrawSpellsTree(player, skills, MousePos, SelectedSkill, icons[8]) ;
-				if (0 < player.getProJob())
-				{
-					NumberOfSkillsAvailable = new int[] {24, 25, 25, 24, 24} ;
-				}
-				if (Choice.equals(Player.ActionKeys[0]) & SelectedSkill < NumberOfSkillsAvailable[player.getJob()] - 1)
-				{
-					++SelectedSkill ;
-				}
-				if (Choice.equals(Player.ActionKeys[2]) & 0 < SelectedSkill)
-				{
-					--SelectedSkill ;
-				}
-				if(Choice.equals("Enter") | Choice.equals("MouseLeftClick"))
-				{
-					if (UtilS.SpellIsAvailable(player, skills, SelectedSkill) & 0 < player.getSkillPoints() & player.getSpell()[SelectedSkill] < skills[SelectedSkill].getMaxLevel())
-					{
-						++player.getSpell()[SelectedSkill] ;
-						skills[SelectedSkill].setMpCost((float)1.2*skills[SelectedSkill].getMpCost()) ;
-						player.addSkillPoint(-1) ;
-						ActivatePassiveSkill(player, pet, SelectedSkill) ;
-					}
-				}
-			}	
-		}*/
-		else if (menu == 2)
-		{
-			if (player.getProJob() == 0 & 50 <= player.getLevel())
-			{
-				//DF.DrawSpeech(Pos, speech[6], NPCTextFont, image, SpeakingBubbleImage, color) ;
-				//DF.DrawChoicesWindow(Pos, NPCTextFont, AcceptedChoices[0], image, color) ;
-				/*if (Choice.equals("1"))
-				{ 
-					menu = 1 ;
-				}*/
+				menu = 2 ;
+				return ;
 			}
-			else
-			{
-				//DF.DrawSpeech(Pos, speech[2], NPCTextFont, image, SpeakingBubbleImage, color) ;
-			}
+			
+			playerPA.getLife().setToMaximum() ;
+			playerPA.getMp().setToMaximum() ;
+			
+			menu = 3 ;
+			
+			return ;
 		}
-		else if (menu == 3)
-		{
-			//DF.DrawSpeech(Pos, speech[5] + " " + speech[player.getProJob() + 2*player.getJob()] + "!", NPCTextFont, image, SpeakingBubbleImage, color) ;
-		}
+		
+		menu = 4 ;
 	}
 	
 	public void sellerAction(BagWindow bag, String action, Point mousePos, ShoppingWindow shopping, DrawingOnPanel DP)
@@ -439,44 +313,17 @@ public class NPCs
 		}
 	}
 	
-	public void forgerAction(BagWindow bag, String action)
+	public void forgerAction(BagWindow bag, String action, ForgeWindow forgeWindow, DrawingOnPanel DP)
 	{
+		forgeWindow.display(DP) ;
+		
+		if (action == null) { return ;}
+
 		if (action.equals("Enter"))
 		{
-			Item selectedItem = bag.getSelectedItem() ;
-			
-			if (!(selectedItem instanceof Equip)) { return ;}
-			
-			Equip selectedEquip = ((Equip) selectedItem) ;
-			
-			if (selectedEquip.getForgeLevel() == 10) { return ;}
-			
-			int runeId = selectedEquip.isSpecial() ? 20 : 0 ;
-			runeId += 2 * selectedEquip.getForgeLevel() ;
-			runeId += selectedEquip.isWeapon() ? 0 : 1 ;
-			Forge rune = Forge.getAll()[runeId] ;
-			
-			if (!bag.contains(rune)) { return ;}
-			
-			int forgePrice = 100 + 1000 * selectedEquip.getForgeLevel() ;
-			
-			if (!bag.hasEnoughGold(forgePrice)) { return ;}
-			
-			double chanceForge = 1 - 0.1 * selectedEquip.getForgeLevel() ;
-
-			bag.removeGold(forgePrice) ;
-			bag.Remove(rune, 1) ;
-			
-			if (Math.random() <= chanceForge)
-			{
-				selectedEquip.incForgeLevel() ;
-				
-				return ;
-			}
-			
-			selectedEquip.resetForgeLevel() ;
-			bag.Remove(selectedEquip, 1);
+			forgeWindow.forge(bag) ;
 		}
+		
 	}
 	
 	public void display(DrawingOnPanel DP)

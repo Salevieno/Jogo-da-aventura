@@ -467,10 +467,9 @@ public class Player extends LiveBeing
     }
 	public void useItem(Item item)
 	{
-		// TODO use all items
 		if (item == null) { return ;}
 
-		System.out.println("player used " + item.getName());
+//		System.out.println("player used " + item.getName());
 		if (item instanceof Potion)
 		{
 			Potion pot = (Potion) item ;
@@ -841,7 +840,8 @@ public class Player extends LiveBeing
 				boolean meetingNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
 				if (meetingNPC)
 				{
-					npc.Contact(this, null, creatures, null, null, mousePos, false, DP) ;
+					// TODO passar pet
+					npc.Contact(this, null, mousePos, DP) ;
 				}
 			}	
 		}
@@ -1403,15 +1403,6 @@ public class Player extends LiveBeing
 		
 	}
 	
-	public boolean isEquippable(int ItemID)
-	{
-		// TODO is equippable
-//		if ((Items.BagIDs[6] + Items.NumberOfItems[6] / 5 * job) <= ItemID & ItemID <= Items.BagIDs[6] + Items.NumberOfItems[6] / 5 * (job + 1))
-//		{
-//			return true ;
-//		}
-		return false ;
-	}
 	public boolean isInBattle() {return state.equals(LiveBeingStates.fighting) ;}
 	
 	
@@ -1466,96 +1457,63 @@ public class Player extends LiveBeing
 //
 //		attWindow.display(this, allText, equips, MousePos, DP) ;
 //	}
-	private void ApplyEquipsBonus(Equip equip, double ActionMult)
-	{
-//		double[] bonuses = equipsBonus[ID] ;
-		AttributeBonus attBonus = equip.getAttributeBonus() ;
-		PA.getLife().incMaxValue((int) (attBonus.getLife() * ActionMult)) ;
-		PA.getMp().incMaxValue((int) (attBonus.getMP() * ActionMult)) ;
-		BA.getPhyAtk().incBonus(attBonus.getPhyAtk() * ActionMult) ;
-		BA.getMagAtk().incBonus(attBonus.getMagAtk() * ActionMult) ;
-		BA.getPhyDef().incBonus(attBonus.getPhyDef() * ActionMult) ;
-		BA.getMagDef().incBonus(attBonus.getMagDef() * ActionMult) ;
-		BA.getDex().incBonus(attBonus.getDex() * ActionMult) ;
-		BA.getAgi().incBonus(attBonus.getAgi() * ActionMult) ;
-		BA.getCrit()[0] += attBonus.getCritAtkChance() * ActionMult ;
-		BA.getCrit()[2] += attBonus.getCritDefChance() * ActionMult ;
-		BA.getStun().incAtkChanceBonus(attBonus.getStunAtkChance() * ActionMult) ;
-		BA.getStun().incDefChanceBonus(attBonus.getStunDefChance() * ActionMult) ;
-		BA.getStun().incDuration(attBonus.getStunDuration() * ActionMult) ;
-		BA.getBlock().incAtkChanceBonus(attBonus.getBlockAtkChance() * ActionMult) ;
-		BA.getBlock().incDefChanceBonus(attBonus.getBlockDefChance() * ActionMult) ;
-		BA.getBlock().incDuration(attBonus.getBlockDuration() * ActionMult) ;
-		BA.getBlood().incAtkChanceBonus(attBonus.getBloodAtkChance() * ActionMult) ;
-		BA.getBlood().incDefChanceBonus(attBonus.getBloodDefChance() * ActionMult) ;
-		BA.getBlood().incAtkBonus(attBonus.getBloodAtk() * ActionMult) ;
-		BA.getBlood().incDefBonus(attBonus.getBloodDef() * ActionMult) ;
-		BA.getBlood().incDuration(attBonus.getBloodDuration() * ActionMult) ;
-		BA.getPoison().incAtkChanceBonus(attBonus.getPoisonAtkChance() * ActionMult) ;
-		BA.getPoison().incDefChanceBonus(attBonus.getPoisonDefChance() * ActionMult) ;
-		BA.getPoison().incAtkBonus(attBonus.getPoisonAtk() * ActionMult) ;
-		BA.getPoison().incDefBonus(attBonus.getPoisonDef() * ActionMult) ;
-		BA.getPoison().incDuration(attBonus.getPoisonDuration() * ActionMult) ;
-		BA.getSilence().incAtkChanceBonus(attBonus.getSilenceAtkChance() * ActionMult) ;
-		BA.getSilence().incDefChanceBonus(attBonus.getSilenceDefChance() * ActionMult) ;
-		BA.getSilence().incDuration(attBonus.getSilenceDuration() * ActionMult) ;
-	}
 	
-	private static boolean SetIsFormed(Equip[] EquipID)
+	
+	public static boolean SetIsFormed(Equip[] EquipID)
 	{
 		if (EquipID[0] == null | EquipID[1] == null | EquipID[2] == null) { return false ;}
 		
 		return (EquipID[0].getId() + 1) == EquipID[1].getId() & (EquipID[1].getId() + 1) == EquipID[2].getId() ;
 	}
 	
-	private void Equip(int EquipID)
-	{
-		int NumberOfEquipTypes = 3 ;	// Sword/Staff/Bow/Claws/Dagger, shield, armor/robe (Archers have bow, bandana, and armor)
-		int EquipType = (EquipID + job) % NumberOfEquipTypes ;
-		Equip currentEquip = equips[EquipType] ;
-		//if (0 < Bag[EquipID])
-		//{
-			if (currentEquip != null)	// Unnequip the current equip
-			{
-				if (SetIsFormed(equips))	// if the set was formed, remove the 20% bonus
-				{
-					ApplyEquipsBonus(equips[0], (double)-0.2) ;
-					ApplyEquipsBonus(equips[1], (double)-0.2) ;
-					ApplyEquipsBonus(equips[2], (double)-0.2) ;
-				}
-				equips[EquipType] = null ;
-				elem[EquipType + 1] = Elements.neutral ;
-				ApplyEquipsBonus(currentEquip, -1) ;
-			}
-			
-			if (currentEquip == null)
-			{
-//				if (equips[(EquipID + job) % NumberOfEquipTypes].getId() == 0)	// Equip
-//				{
-//					
-//				}
-				equips[EquipType] = Equip.getAll()[EquipID] ;
-				elem[EquipType + 1] = equips[EquipType].getElem() ;
-				ApplyEquipsBonus(equips[EquipType], 1) ;
-				if (SetIsFormed(equips))	// if the set is formed, add the 20% bonus
-				{
-					ApplyEquipsBonus(equips[0], (double)0.2) ;
-					ApplyEquipsBonus(equips[1], (double)0.2) ;
-					ApplyEquipsBonus(equips[2], (double)0.2) ;
-				}
-			}
-//			else
+//	private void Equip(int EquipID)
+//	{
+//		int NumberOfEquipTypes = 3 ;	// Sword/Staff/Bow/Claws/Dagger, shield, armor/robe (Archers have bow, bandana, and armor)
+//		int EquipType = (EquipID + job) % NumberOfEquipTypes ;
+//		Equip currentEquip = equips[EquipType] ;
+//		//if (0 < Bag[EquipID])
+//		//{
+//			if (currentEquip != null)	// Unnequip the current equip
 //			{
-//				if (currentEquip.getId() != EquipID)
+//				if (SetIsFormed(equips))	// if the set was formed, remove the 20% bonus
 //				{
-//					
+//					ApplyEquipsBonus(equips[0], (double)-0.2) ;
+//					ApplyEquipsBonus(equips[1], (double)-0.2) ;
+//					ApplyEquipsBonus(equips[2], (double)-0.2) ;
+//				}
+//				equips[EquipType] = null ;
+//				elem[EquipType + 1] = Elements.neutral ;
+//				ApplyEquipsBonus(currentEquip, -1) ;
+//			}
+//			
+//			if (currentEquip == null)
+//			{
+////				if (equips[(EquipID + job) % NumberOfEquipTypes].getId() == 0)	// Equip
+////				{
+////					
+////				}
+//				equips[EquipType] = Equip.getAll()[EquipID] ;
+//				elem[EquipType + 1] = equips[EquipType].getElem() ;
+//				ApplyEquipsBonus(equips[EquipType], 1) ;
+//				if (SetIsFormed(equips))	// if the set is formed, add the 20% bonus
+//				{
+//					ApplyEquipsBonus(equips[0], (double)0.2) ;
+//					ApplyEquipsBonus(equips[1], (double)0.2) ;
+//					ApplyEquipsBonus(equips[2], (double)0.2) ;
 //				}
 //			}
-			
-		//}
-			
-		elem[4] = hasSuperElement() ? elem[1] : Elements.neutral ;
-	}
+////			else
+////			{
+////				if (currentEquip.getId() != EquipID)
+////				{
+////					
+////				}
+////			}
+//			
+//		//}
+//			
+//		elem[4] = hasSuperElement() ? elem[1] : Elements.neutral ;
+//	}
 	
 	private void ItemEffect(int ItemID)
 	{

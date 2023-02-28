@@ -171,7 +171,7 @@ public class PlayerAttributesWindow extends GameWindow
 					Point textPos = UtilG.Translate(eqSlotCenter[eq], -eqSlotW[eq] / 2 - 5, -eqSlotH[eq] / 2 - 2) ;
 
 					DP.DrawImage(eqImages[eq], eqSlotCenter[eq], Align.center) ;
-					DP.DrawTextUntil(textPos, Align.bottomLeft, angle, equip.getName(), font, textColor, 14, mousePos) ;
+//					DP.DrawTextUntil(textPos, Align.bottomLeft, angle, equip.getName(), font, textColor, 14, mousePos) ;
 					if (0 < equip.getForgeLevel())
 					{
 						DP.DrawText(textPos, Align.bottomCenter, angle, equipsText[eq + 1] + " + " + equip.getForgeLevel(), font, textColor) ;					

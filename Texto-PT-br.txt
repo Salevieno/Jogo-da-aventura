@@ -1,11 +1,11 @@
-* *
+﻿* *
 Tudo esta bem
 
 * Novo jogo *
 Qual o seu nome?
 Qual o seu sexo? (M/F)
 Nível de ousadia:
-(1) Baixo  (2) Médio  (3) Alto
+(1) Baixo  (2) Mdio  (3) Alto
 Escolha sua classe:
 Cavaleiro (0)
 Mago (1)
@@ -14,7 +14,7 @@ Animal (3)
 Ladrão (4)
 Cavaleiros são poderosos guerreiros corpo-a-corpo. Eles tem grande ataque, poder e vitalidade e são os guerreiros mais fortes do reino.
 Magos tem o maior poder mágico. Eles controlam os elementos e podem usar poderes sobrenaturais para manipular a magia e a vida.
-Arqueiros são guerreiros especializados em luta à distância. Eles usam poder físico combinado com o controle dos elementos.
+Arqueiros são guerreiros especializados em luta Ã  distÃ¢ncia. Eles usam poder físico combinado com o controle dos elementos.
 Animais vivem em harmonia com a natureza e podem usufruir dos seus poderes. Eles tem grande poder sobre a vida e incrível agilidade.
 Ladrões são os mais ágeis em todo o reino. Eles atacam cruelmente qualquer inimigo que cruze o seu caminho buscando poder e riqueza.
 Tutorial? (s/n)
@@ -26,19 +26,19 @@ Bem vindo ao tutorial! Sou eu, o criador do jogo! Vou te ensinar o mínimo neces
 Muito bem! Bom saber que vc me escuta. Ta vendo essas barrinhas em cima de você? Elas representam sua vida, energia mágica (mana), experiência e saciedade. (Enter para continuar).
 Se a saciedade chegar em 0 vc fica com fome e começa a perder vida. Para evitar isso, vc deve comer a comida que encontrar. (Enter para continuar).
 Agora vamos abrir sua mochila. Aperte 'b'.
-Parabéns! Na sua mochila vc tem diferentes tipos de itens. Eu te dei uma poção de vida como prêmio. Aperte enter duas vezes para selecionar e beber a poção.
+Parabns! Na sua mochila vc tem diferentes tipos de itens. Eu te dei uma poção de vida como prêmio. Aperte enter duas vezes para selecionar e beber a poção.
 Agora vamos aprender a usar equipamentos. Eu vou te dei uma arma ;p, aperte 'esc' para voltar para as abas da mochila e 's' para ir aos equipamentos. Então, aperte enter duas vezes para selecionar e equipar sua arma.
 Maravilha! Sempre que vc quiser usar um item selecione-o e aperte enter ou clique nele. Apenas alguns itens podem ser usados. Agora aperte 'b' novamente para fechar sua mochila e confira seus atributos e equipamentos apertando 'c'! o/
 Esses são seus atributos básicos de combate, coleta, ouro e equipamentos, assim como seus elementos. Nas outras abas tem seus atributos especiais e estatísticas. Vc pode usar 'w' e 's' para alternar entre as abas. Aperte 'c' novamente para fechar a sua janela e vamos em frente!
-Muito bem! O próximo passo importante é conhecer os NPCs. Vou apresentá-los rapidamente a vc. Eu recomendo falar com cada um deles para aprender o que eles fazem (Enter para continuar).
+Muito bem! O próximo passo importante  conhecer os NPCs. Vou apresentá-los rapidamente a vc. Eu recomendo falar com cada um deles para aprender o que eles fazem (Enter para continuar).
 Hora de aprender a lutar! Vamos para a floresta encarar umas criaturas.
-Ao tocar em uma criatura, vcs entram em combate. Vc pode atacar no 'a', se defender no 'd' e usar habilidades usando as teclas no menu da direita. Você também pode abrir sua mochila e usar itens, como poções, durante a batalha. Use quantos quiser! (Enter para continuar).
-Finalmente, vamos aprender a coletar. É mais fácil do que vc pensa. Simplesmente toque no item que vc quer coletar - frutinha, erva, madeira ou metal. Em mapas de alto nível, vc precisa de um bom nível de coleta para coletar os itens.
-Muito bem, saiba que para sobreviver é necessário não ficar com fome (barrinha amarela). Vc pode comer frutinhas e outras comidas que encontrar pelo caminho para se saciar. Vou te dar cinco frutinhas para ajudar neste começo (Enter para continuar).
-É isso, você é demais! Você pode jogar livremente agora. Eu recomendo falar com a garota rosa na cidade para pegar sua primeira quest. Você pode ver suas quests no 'q'. Vc tem muito a aprender ainda, mas vc pode se virar. Se precisar de ajuda, aperte 'H' pra ver dicas. Boa sorte, bravo aventureiro! (Enter para continuar).
-Este é o vendedor de itens! Vou te dar 100 de ouro para vc comprar algo. Selecione o item que deseja e aperte enter ou clique sobre ele. Use 'a' e 'd' para ver todos os itens a venda.
-Este é a forjadora! Ela forja seus equipamentos, tornando-os mais fortes. Para isso, é necessário usar runas de ataque (para armas) e defesa (para equipamentos), além de runas especiais para equipamentos especiais. Tome uma runa de ataque nível 1 e forje sua arma com ela!
-Este é seu mestru! Elu te ensina novas habilidades quando vc passa de nível e te ajuda a evoluir! Tome um ponto de habilidade e adquira a sua primeira habilidade!
+Ao tocar em uma criatura, vcs entram em combate. Vc pode atacar no 'a', se defender no 'd' e usar habilidades usando as teclas no menu da direita. Você tambm pode abrir sua mochila e usar itens, como poções, durante a batalha. Use quantos quiser! (Enter para continuar).
+Finalmente, vamos aprender a coletar. Ã‰ mais fácil do que vc pensa. Simplesmente toque no item que vc quer coletar - frutinha, erva, madeira ou metal. Em mapas de alto nível, vc precisa de um bom nível de coleta para coletar os itens.
+Muito bem, saiba que para sobreviver  necessário não ficar com fome (barrinha amarela). Vc pode comer frutinhas e outras comidas que encontrar pelo caminho para se saciar. Vou te dar cinco frutinhas para ajudar neste começo (Enter para continuar).
+Ã‰ isso, você  demais! Você pode jogar livremente agora. Eu recomendo falar com a garota rosa na cidade para pegar sua primeira quest. Você pode ver suas quests no 'q'. Vc tem muito a aprender ainda, mas vc pode se virar. Se precisar de ajuda, aperte 'H' pra ver dicas. Boa sorte, bravo aventureiro! (Enter para continuar).
+Este  o vendedor de itens! Vou te dar 100 de ouro para vc comprar algo. Selecione o item que deseja e aperte enter ou clique sobre ele. Use 'a' e 'd' para ver todos os itens a venda.
+Este  a forjadora! Ela forja seus equipamentos, tornando-os mais fortes. Para isso,  necessário usar runas de ataque (para armas) e defesa (para equipamentos), alm de runas especiais para equipamentos especiais. Tome uma runa de ataque nível 1 e forje sua arma com ela!
+Este  seu mestru! Elu te ensina novas habilidades quando vc passa de nível e te ajuda a evoluir! Tome um ponto de habilidade e adquira a sua primeira habilidade!
 
 * Classes *
 Cavaleiro
@@ -126,8 +126,8 @@ Tente novamente!
 Você precisa aumentar seu nível de coleta para coletar aqui!
 
 * Vitória *
-Parabéns, você passou de nível!
-Parabéns, você venceu!
+Parabns, você passou de nível!
+Parabns, você venceu!
 Você obteve:
 
 * Equipamentos *
@@ -138,8 +138,10 @@ Flecha
 
 * Doutor *
 Olá, gostaria de tratar esses ferimentos?
+Você não está ferido!
+Prontinho! Seu pet está melhor agora.
+Prontinho! Aproveite sua vida.
 Tenha um bom dia!
-Olá, bom ver que está bem!
 
 * Vendedor de equipamentos *
 Olá, o que deseja fazer?
@@ -149,12 +151,12 @@ Volte sempre!
 * Vendedor de itens *
 Olá, o que deseja fazer?
 O que deseja comprar?
-Até mais!
+At mais!
 
 * Contrabandista *
 Olá, o que deseja fazer?
 O que deseja comprar?
-Até mais!
+At mais!
 
 * Banqueiro *
 Olá, gostaria de usar o banco?
@@ -163,8 +165,8 @@ Quanto gostaria de sacar?
 Por favor, informe um número:
 Você não tem todo esse dinheiro!
 Você não tem dinheiro para pagar a taxa de 1%!
-Dinheiro guardado, até mais!
-Aqui está seu dinheiro, até mais!
+Dinheiro guardado, at mais!
+Aqui está seu dinheiro, at mais!
 Obrigado por vir!
 
 * Alquimista *
@@ -181,26 +183,27 @@ Te vejo por aí!
 
 * Mestre *
 Olá, deseja aumentar suas habilidades?
-Até a proxima!
+At a proxima!
 Uau, como vc cresceu! Está pronto para evoluir?
 Para qual classe quer evoluir?
-Parabéns! Agora vc é um:
+Parabns! Agora vc  um:
 Neste caso, quer aumentar suas habilidades?
 
 * Quest *
 Olá, quer fazer parte de uma missão?
 Parabéns, vc concluiu a missão! Aqui está seu prêmio!
 Você agora faz parte da missão:
-Até a próxima!
+At a próxima!
 
 * Forjador *
 Olá, vc deseja forjar seu equipamento?
 Qual equipamento vc quer forjar?
-Item forjado!
+O equipamento já está no nível máximo!
 Você precisa de uma runa apropriada para este equipamento!
-Você precisa equipar o equipamento primeiro!
+Você precisa de mais ouro para forjar este equipamento!
+Item forjado!
 Sinto muito, a forja não funcionou! Tente novamente!
-Até a próxima!
+At a próxima!
 
 * Fabricante *
 Olá, quer fabricar itens?
@@ -213,7 +216,7 @@ Quantos itens vc deseja fabricar?
 Olá, deseja salvar o jogo?
 Em que slot gostaria de salvar?
 Seu jogo está salvo!
-Até a próxima!
+At a próxima!
 
 * Elemental *
 Olá, quer mudar o elemento de seus equipamentos?
@@ -222,7 +225,7 @@ Qual esfera vc quer usar?
 Você precisa estar com o equipamento equipado!
 Elemento adicionado!
 Vc não tem os ingredientes necessários!
-Obrigado e até mais!
+Obrigado e at mais!
 
 * Cidadão 0 *
 Eu quero viajar para outras cidades e conhecer todo este mundo. Seria tão fácil se não fossem essas criaturas asquerosas!
@@ -230,29 +233,29 @@ Estes vermes vagam pela floresta agredindo aventureiros, saqueando cidadãos ino
 Malditas criaturas, podiam matar todas elas!
 
 * Cidadão 1 *
-Grandes são os mestres, que treinam os aventureiros desde as classes básicas até as superiores.
-Apenas os mais bravos chegam até essas classes, mas o duro treinamento para alcançá-las recompensa.
+Grandes são os mestres, que treinam os aventureiros desde as classes básicas at as superiores.
+Apenas os mais bravos chegam at essas classes, mas o duro treinamento para alcançá-las recompensa.
 Nada se compara ao poder daqueles que atingem as classes superiores.
 
 * Cidadão 2 *
 Um bom equipamento e um equipamento forjado. A forja intensifica todas as qualidades do equipamento.
-É necessário um forjador habilidoso para chegar a um alto nível de forja sem quebrar o equipamento.
+Ã‰ necessário um forjador habilidoso para chegar a um alto nível de forja sem quebrar o equipamento.
 No entanto, as propriedades refinadas compensam. Diz a lenda que equipamentos com alto nível de forja chegam a exibir um brilho peculiar.
 
 * Cidadão 3 *
-É muito desgastante ter que voltar para a cidade toda vez que me machuco. É por isso que sempre levo uma tenda para minhas aventuras.
-Acampar ao ar livre é a melhor coisa. Revigora as energias. Revitaliza o corpo e a alma.
+Ã‰ muito desgastante ter que voltar para a cidade toda vez que me machuco. Ã‰ por isso que sempre levo uma tenda para minhas aventuras.
+Acampar ao ar livre  a melhor coisa. Revigora as energias. Revitaliza o corpo e a alma.
 Eu aprendi a fazer minha tenda com um viajante que me ensinou a fazer a tenda em troca de alguns itens.
 
 * Cidadão 4 *
 Nós magos somos sortudos por saber manipular a energia arcana.
 Todo ser vivo nasce com ela, mas apenas com treinamento se aprende a usá-la.
-A energia arcana pode ser usada para curar ferimentos ou para ferir outros e não é afetada por defesas físicas.
+A energia arcana pode ser usada para curar ferimentos ou para ferir outros e não  afetada por defesas físicas.
 
 * Cidadão 5 *
 Pff, eu não sei o que seria de nós sem os elementos, as forças fundamentais do nosso universo.
 Quando eu me deparo com criaturas muito fortes, só consigo vencê-las usando o elemento certo.
-Usar as forças mágicas, elementais e naturais em sua vantagem é o verdadeiro poder de um mago.
+Usar as forças mágicas, elementais e naturais em sua vantagem  o verdadeiro poder de um mago.
 
 * Cidadão 6 *
 Já ouviu a lenda do super elemento?
@@ -260,9 +263,9 @@ Quando um ser vivo reune todos os equipamentos de um mesmo elemento, ele se torn
 Dizem que o super elemento da poderes especiais, fazendo o usuário receber as propriedades do elemento.
 
 * Cidadão 7 *
-Esta floresta é tão grande, é muito fácil se perder por aí.
+Esta floresta  tão grande,  muito fácil se perder por aí.
 Eu ouvi dizer que um aventureiro uma vez fez um mapa, ele deve estar em algum lugar da floresta.
-Contam que o mapa dele e tão avançado que mostra até a sua localização. Há! Como isso seria possível?
+Contam que o mapa dele e tão avançado que mostra at a sua localização. Há! Como isso seria possível?
 
 * Cidadão 8 *
 Nem todas as criaturas são terrestres. Uma vez eu pesquei uma do oceano.
@@ -270,49 +273,49 @@ Parece que elas vagam pelas águas, mas possuem uma cor azulada que torna difíc
 Muito cuidado se um dia resolver entrar na água sem um barco, alguma criatura pode esbarrar em você.
 
 * Cidadão 9 *
-A floresta é grande, mas não é todo o mundo. Para além das águas e das árvores existem outros continentes.
-Eu pessoalmente já fui até uma ilha, pegando o barco no cais, é claro.
+A floresta  grande, mas não  todo o mundo. Para alm das águas e das árvores existem outros continentes.
+Eu pessoalmente já fui at uma ilha, pegando o barco no cais,  claro.
 Mas há boatos de que há ainda outras terras por aí.
 
 * Cidadão 10 *
-Sabe, só porque seu equipamento é de fogo não quer dizer que ele sempre tem que ser de fogo.
+Sabe, só porque seu equipamento  de fogo não quer dizer que ele sempre tem que ser de fogo.
 Existem certas esferas poderosas, chamadas esferas elementais, capazes de mudar o elemento fundamental de um equipamento.
 Claro, para isso e necessário um ser igualmente poderoso que saiba usar as esferas. Ainda bem que temos um em nossa cidade.
 
 * Cidadão 11 *
-Fabricar itens e equipamentos é uma das melhores formas de obter coisas de qualidade, mas são tantos!
+Fabricar itens e equipamentos  uma das melhores formas de obter coisas de qualidade, mas são tantos!
 Como descobrir e memorizar todas as receitas? Ainda bem que fizeram um livro para isso.
 Quem fez provavelmente está por aí afora em aventuras agora, mas tenho certeza que não se importaria de compartilhar o conhecimento.
 
 * Cidadão 12 *
-Ah, como é maravilhosa a natureza. Fornece ervas, madeira e outros materiais de graça para a gente coletar.
-Claro que a coleta requer habilidade, para coletar materiais de alto nível é preciso ter um nível de coleta alto.
-Mas nós animais temos uma facilidade natural para essas coisas. Alguns de nós até coletam em dobro!
+Ah, como  maravilhosa a natureza. Fornece ervas, madeira e outros materiais de graça para a gente coletar.
+Claro que a coleta requer habilidade, para coletar materiais de alto nível  preciso ter um nível de coleta alto.
+Mas nós animais temos uma facilidade natural para essas coisas. Alguns de nós at coletam em dobro!
 
 * Cidadão 13 *
-O mundo é tão rico de diferentes criaturas. Eu quero saber tudo sobre elas!
-É difícil memorizar todas, mas é pra isso que existe o bestiário. Nele você grava informações das criaturas que ja encontrou, como uma agenda.
-Não é fácil montar um bestiário. Um aventureiro que passou por aqui uma vez tinha um. Ele deve estar pelo mundo afora agora.
+O mundo  tão rico de diferentes criaturas. Eu quero saber tudo sobre elas!
+Ã‰ difícil memorizar todas, mas  pra isso que existe o bestiário. Nele você grava informações das criaturas que ja encontrou, como uma agenda.
+Não  fácil montar um bestiário. Um aventureiro que passou por aqui uma vez tinha um. Ele deve estar pelo mundo afora agora.
 
 * Cidadão 14 *
 Por mais que algumas criaturas sejam agressivas, temos que aprender a amá-las. São bichos como nós.
-Quando o laço entre uma criatura e um aventureiro é forte o suficiente, ela pode se tornar um pet.
+Quando o laço entre uma criatura e um aventureiro  forte o suficiente, ela pode se tornar um pet.
 O pet e seu companheiro são inseparáveis e quando estão juntos a aventura se torna muito mais fácil. 
 
 * Cidadão 15 *
-A maioria das criaturas é bonitinha como nós, mas existem criaturas mais perigosas. Você já ouviu falar do dragão?
-Ele vive perto daqui, porém em terras tão quentes que apenas aventureiros de classe superior conseguem entrar.
+A maioria das criaturas  bonitinha como nós, mas existem criaturas mais perigosas. Você já ouviu falar do dragão?
+Ele vive perto daqui, porm em terras tão quentes que apenas aventureiros de classe superior conseguem entrar.
 O dragão vive pacificamente em sua morada, mas são muitos os aventureiros que querem desafiá-lo.
 
 * Cidadão 16 *
-Não quero saber o que eles dizem, dinheiro é o que importa nesse mundo! Muitos equipamentos poderosos só podem ser encontrados em lojas.
-Claro, você também pode fabricá-los com suas próprias mãos, mas como vai saber quais os itens necessários?
-Fabricar é uma forma prática de obter itens valiosos a baixo custo, mas eu prefiro comprá-los com o suado dinheiro que roubei!
+Não quero saber o que eles dizem, dinheiro  o que importa nesse mundo! Muitos equipamentos poderosos só podem ser encontrados em lojas.
+Claro, você tambm pode fabricá-los com suas próprias mãos, mas como vai saber quais os itens necessários?
+Fabricar  uma forma prática de obter itens valiosos a baixo custo, mas eu prefiro comprá-los com o suado dinheiro que roubei!
 
 * Cidadão 17 *
-Um aventureiro forte é um aventureiro bem equipado, é o que todos dizem. Mas, mesmo os mais poderosos equipamentos são melhores forjados.
-A forja é feita com pedras preciosas, chamadas runas de ataque e de defesa. Equipamentos especiais requerem runas especiais.
-Há! Mas é claro que você também pode ganhar uma grana preta vendendo elas no mercado negro. Especialmente as de nível alto.
+Um aventureiro forte  um aventureiro bem equipado,  o que todos dizem. Mas, mesmo os mais poderosos equipamentos são melhores forjados.
+A forja  feita com pedras preciosas, chamadas runas de ataque e de defesa. Equipamentos especiais requerem runas especiais.
+Há! Mas  claro que você tambm pode ganhar uma grana preta vendendo elas no mercado negro. Especialmente as de nível alto.
 
 * Cidadão 18 *
 Equipamentos normais podem ser poderosos, mas só possuem força bruta. Equipamentos especiais por outro lado dão todo tipo de poder.
@@ -322,43 +325,34 @@ No entanto, são ótimos para intensificar os efeitos especiais dos seus ataques
 * Cidadão 19 *
 Tanta terra, tanta terra...já pensou quantos tesouros devem estar enterrados nela?
 Para que se desgastar caçando criaturas quando você pode arrumar uma pá e procurar por tesouros debaixo da terra?
-Achado também é roubado, mesmo debaixo da terra! É o meu lema.
+Achado tambm  roubado, mesmo debaixo da terra! Ã‰ o meu lema.
 
 * Navegador 1 *
 Olá, quer viajar para a ilha?
-Obrigado, até a próxima!
+Obrigado, at a próxima!
 
 * Navegador 2 *
 Olá, quer voltar para o continente?
-Obrigado, até a próxima!
+Obrigado, at a próxima!
 
 * Quest exp *
 Olá, vc pode se livrar de umas criaturas pra mim?
-Ótimo! Eis-lhes aqui as criaturas que vc precisa caçar:
+Ã“timo! Eis-lhes aqui as criaturas que vc precisa caçar:
 Criaturas para matar
 Por favor, preciso que vc cace mais criaturas.
 Valeu! Aceite esta recompensa:
-Ok, até a próxima então.  
+Ok, at a próxima então.  
 
 * Quest items *
 Olá, vc pode pegar uns itens para que eu possa fabricar algo?
-Ótimo! Eis-te aqui os itens que vc precisa pegar:
+Ã“timo! Eis-te aqui os itens que vc precisa pegar:
 Itens para obter:
 Por favor, ainda preciso de mais itens.
 Valeu! Aqui, pode ficar com o que eu fabriquei:
-Ok, até a próxima então.
-
-* Partes do corpo *
-Cabelo
-Olhos
-Cabeça
-Braços
-Camisa
-Sapato
-Pernas
+Ok, at a próxima então.
 
 * Tesouros *
-Parabéns, você coletou um tesouro!
+Parabns, você coletou um tesouro!
 Você obteve:
 
 * Menus da mochila *
@@ -375,7 +369,7 @@ Quest
 
 * Pterodactile *
 Alto lá, viajante! Nessa terra há um dragão!
-Pq estou te dizendo isso? Pq sou um dinossauro, é claro, e dinossauros são legais!
+Pq estou te dizendo isso? Pq sou um dinossauro,  claro, e dinossauros são legais!
 
 * Nomes dos continentes *
 Floresta
@@ -386,11 +380,11 @@ Terra das neves
 Especial
 
 * Mensagem das placas *
-Bem vindo à cidade dos cavaleiros! Ao sul fica a cidade dos ladrões. Ao sudoeste fica a cidade dos magos. Ao leste fica a cidade dos arqueiros. Ao nordeste fica a cidade dos animais.
-Bem vindo à cidade dos magos! Ao oeste fica a cidade dos ladrões. Ao noroeste fica a cidade dos cavaleiros. Ao norte ficam as cidades dos arqueiros e dos animais.
-Bem vindo à cidade dos arqueiros! Ao sudoeste fica a cidade dos ladrões. Ao oeste fica a cidade dos cavaleiros. Ao sul fica a cidade dos magos. Ao norte fica a cidade dos animais.
-Bem vindo à cidade dos animais! Ao sudoeste ficam as cidades dos ladrões e dos cavaleiros. Ao sul ficam as cidades dos magos e dos arqueiros.
-Bem vindo à cidade dos ladrões! Ao norte fica a cidade dos cavaleiros. Ao leste fica a cidade dos magos. Ao nordeste ficam as cidades dos arqueiros e dos animais.
+Bem vindo Ã  cidade dos cavaleiros! Ao sul fica a cidade dos ladrões. Ao sudoeste fica a cidade dos magos. Ao leste fica a cidade dos arqueiros. Ao nordeste fica a cidade dos animais.
+Bem vindo Ã  cidade dos magos! Ao oeste fica a cidade dos ladrões. Ao noroeste fica a cidade dos cavaleiros. Ao norte ficam as cidades dos arqueiros e dos animais.
+Bem vindo Ã  cidade dos arqueiros! Ao sudoeste fica a cidade dos ladrões. Ao oeste fica a cidade dos cavaleiros. Ao sul fica a cidade dos magos. Ao norte fica a cidade dos animais.
+Bem vindo Ã  cidade dos animais! Ao sudoeste ficam as cidades dos ladrões e dos cavaleiros. Ao sul ficam as cidades dos magos e dos arqueiros.
+Bem vindo Ã  cidade dos ladrões! Ao norte fica a cidade dos cavaleiros. Ao leste fica a cidade dos magos. Ao nordeste ficam as cidades dos arqueiros e dos animais.
 
 * Menu de personalização *
 Personalize seu personagem!
@@ -436,13 +430,13 @@ Nas configurações padrão "W" e "S" movem os menus pra cima e para baixo e "A"
 Lembre-se de sempre ter comida reserva para não morrer de fome, principalmente em viagens longas!
 Fale com o seu mestre a cada passagem de nível para ganhar novas habilidades ou fortalecer as que vc já possui.
 Ao morrer vc perde 20% do seu dinheiro. Para evitar perdê-lo vc pode guardar seu dinheiro no banco pagando uma taxa de 1% do valor depositado e 1% novamente para retirar.
-Compre equipamentos tendo em vista que formar um set completo te dá 20% de bônus nas propriedades dos equipamentos. Vc também pode fabricar seu próprio set!
-Para aprender quais os ingredientes necessários para fabricar itens e equipamentos há um livro de fabricação que pode ser obtido através de quest.
+Compre equipamentos tendo em vista que formar um set completo te dá 20% de bônus nas propriedades dos equipamentos. Vc tambm pode fabricar seu próprio set!
+Para aprender quais os ingredientes necessários para fabricar itens e equipamentos há um livro de fabricação que pode ser obtido atravs de quest.
 Cansado de se perder andando por aí? Cada continente tem um mapa que está com um npc de quest ;).
-Quer um companheiro de jogo? Faça a quest do pet! Seu pet te ajudará nas batalhas e poderá usar poções e equipamentos, só não esqueça que ele também precisa comer!
+Quer um companheiro de jogo? Faça a quest do pet! Seu pet te ajudará nas batalhas e poderá usar poções e equipamentos, só não esqueça que ele tambm precisa comer!
 A forja pode não fazer muita diferença em níveis baixos, mas acredite, faz toda a diferença em altos níveis. Entretanto, tenha cuidado! Se o equipamento se quebrar durante a forja ele será perdido.
 Forjar armas para níveis mais altos requer runas de ataque de níveis mais altos. Forjar equipamentos requer runas de defesa. Forjar equipamentos e armas especiais requer runas especiais!
-Fabricar permite obter itens úteis e equipamentos que provem bônus especiais, como vida extra e maior ataque crítico. Muitos desses equipamentos só podem ser obtidos através de fabricação.
+Fabricar permite obter itens úteis e equipamentos que provem bônus especiais, como vida extra e maior ataque crítico. Muitos desses equipamentos só podem ser obtidos atravs de fabricação.
 Esferas elementais são raras, mas podem ser usadas para alterar o elemento da sua arma e equipamentos no npc Elemental. Armas e equipamentos elementais aumentam o seu dano causado e reduzem o seu dano recebido quando usados contra as criaturas certas.
 Se todos os seus equipamentos tiverem o mesmo elemento, ele se torna o seu superelemento. Cada superelemento te dá um poder especial!
 

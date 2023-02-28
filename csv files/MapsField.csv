@@ -1,4 +1,4 @@
-Name,Continent,Collectible level,Berry delay,Herb delay,Wood delay,Metal delay,Top left map ID,Left top map ID,Left bottom map ID,Bottom left map ID,Bottom right map ID,Right bottom map ID,Right top map ID,Top right map ID,Creature 1 ID,Creature 2 ID,Creature 3 ID,Creature 4 ID,Creature 5 ID,Creature 6 ID,Creature 7 ID,Creature 8 ID,Creature 9 ID,Creature 10 ID
+﻿Name,Continent,Collectible level,Berry delay,Herb delay,Wood delay,Metal delay,Top left map ID,Left top map ID,Left bottom map ID,Bottom left map ID,Bottom right map ID,Right bottom map ID,Right top map ID,Top right map ID,Creature 1 ID,Creature 2 ID,Creature 3 ID,Creature 4 ID,Creature 5 ID,Creature 6 ID,Creature 7 ID,Creature 8 ID,Creature 9 ID,Creature 10 ID
 Forest 1,0,5,4000,12800,15360,25600,7,4,4,-1,-1,1,1,7,120,120,121,121,121,122,122,123,123,124
 Forest 2,0,1,4000,12800,15360,25600,-1,-1,-1,4,4,7,7,-1,-1,-1,-1,20,20,21,22,22,23,24
 Forest 3,0,2,4000,12800,15360,25600,10,6,6,5,5,8,8,10,45,45,45,46,46,47,47,48,48,49

@@ -1,15 +1,15 @@
-ID,Nome,Name,DescriÁ„o,Description,Price,Drop chance,Life heal,Mp heal,Satiation heal
+ÔªøID,Nome,Name,Descri√ß√£o,Description,Price,Drop chance,Life heal,Mp heal,Satiation heal
 0,frutinha,berry,-,-,5,50,0,0,15
-1,maÁ„,apple,-,-,10,50,0,0,20
+1,ma√ß√£,apple,-,-,10,50,0,0,20
 2,banana,banana,-,-,15,50,0,0,25
 3,morango,strawberry,-,-,20,50,0,0,30
 4,pimenta,chilli peper,-,-,25,50,0,0,35
 5,amora,blackberry,-,-,30,50,0,0,40
 6,peixe pequeno,small fish,-,-,5,50,0,0,45
-7,peixe mÈdio,medium fish,-,-,10,50,0,0,50
+7,peixe m√©dio,medium fish,-,-,10,50,0,0,50
 8,peixe grande,big fish,-,-,15,50,0,0,55
 9,framboesa,raspberry,-,-,20,50,0,0,60
-10,lim„o,lemon,-,-,25,50,0,0,65
+10,lim√£o,lemon,-,-,25,50,0,0,65
 11,laranja,orange,-,-,30,50,0,0,70
 12,tomate,tomato,-,-,5,50,0,0,75
 13,cenoura,carrot,-,-,10,50,0,0,80
@@ -22,20 +22,20 @@ ID,Nome,Name,DescriÁ„o,Description,Price,Drop chance,Life heal,Mp heal,Satiation
 20,leite,milk,-,-,15,50,0,0,115
 21,inseto,insect,-,-,20,50,0,0,120
 22,sanguessuga,leech,-,-,25,50,0,0,125
-23,p„o,bread,-,-,30,50,0,0,130
+23,p√£o,bread,-,-,30,50,0,0,130
 24,milho,corn,-,-,5,50,0,0,135
-25,p„o de batata,potato bread,-,-,10,50,0,0,140
-26,h˙mus,humus,-,-,15,50,0,0,145
-27,guaran·,guarana,-,-,20,50,0,0,150
-28,aÁaÌ,acai,-,-,25,50,0,0,155
+25,p√£o de batata,potato bread,-,-,10,50,0,0,140
+26,h√∫mus,humus,-,-,15,50,0,0,145
+27,guaran√°,guarana,-,-,20,50,0,0,150
+28,a√ßa√≠,acai,-,-,25,50,0,0,155
 29,castanha,chestnut,-,-,30,50,0,0,160
 30,morcego,bat,-,-,155,50,0,0,165
 31,rato,cave rat,-,-,160,50,0,0,170
 32,aranha,spider,-,-,165,50,0,0,175
 33,cogumelo,mushroom,-,-,170,50,0,0,180
-34,fÛssil,fossil,-,-,175,50,0,0,185
+34,f√≥ssil,fossil,-,-,175,50,0,0,185
 35,limo,lime,-,-,180,50,0,0,190
-36,fÛssil torrado,toasted fossil,-,-,185,50,0,0,195
+36,f√≥ssil torrado,toasted fossil,-,-,185,50,0,0,195
 37,limo quente,heated lime,-,-,190,50,0,0,200
 38,coco,coconut,-,-,195,50,0,0,205
 39,palmito,heart of palm,-,-,200,50,0,0,210
@@ -44,16 +44,16 @@ ID,Nome,Name,DescriÁ„o,Description,Price,Drop chance,Life heal,Mp heal,Satiation
 42,coquetel,cocktail,-,-,215,50,0,0,225
 43,sopa,soup,-,-,220,30,0,0,230
 44,bebida quente,hot beverage,-,-,225,30,0,0,235
-45,cafÈ,coffee,-,-,230,30,0,0,240
-46,·gua fervente,boiling water,-,-,235,30,0,0,245
-47,macarr„o,noodles,-,-,240,30,0,0,250
+45,caf√©,coffee,-,-,230,30,0,0,240
+46,√°gua fervente,boiling water,-,-,235,30,0,0,245
+47,macarr√£o,noodles,-,-,240,30,0,0,250
 48,yakisoba,yakisoba,-,-,245,30,0,0,255
 49,queijo derretido,melted cheese,-,-,250,30,0,0,260
-50,comida de drag„o,dragon's food,-,-,255,30,0,0,265
+50,comida de drag√£o,dragon's food,-,-,255,30,0,0,265
 51,chocolate quente,hot chocolate,-,-,260,30,0,0,270
 52,pizza,pizza,-,-,265,30,0,0,275
 53,sorvete,ice cream,-,-,270,30,0,0,280
-54,ch· gelado,ice tea,-,-,275,30,0,0,285
+54,ch√° gelado,ice tea,-,-,275,30,0,0,285
 55,doces,sweeties,-,-,280,30,0,0,290
 56,leite achocolatado,chocolate milk,-,-,285,30,0,0,295
 57,enguia,eel,-,-,290,30,0,0,300

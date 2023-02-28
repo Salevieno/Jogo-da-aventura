@@ -1,6 +1,6 @@
-ID,Nome,Name,Descri  o,Description,Price,Drop chance,Forge level,Life bonus,Mp bonus,PhyAtk bonus,MagAtk bonus,PhyDef bonus,MagDef bonus,Dex bonus,Agi bonus,Crit bonus atk chance,Crit bonus def chance,Stun atk chance,Stun def chance,Stun duration,Block atk chance,Block def chance,Block duration,Blood atk chance,Blood def chance,Blood atk,Blood def,Blood duration,Poison atk chance,Poison def chance,Poison atk,Poison def,Poison duration,Silence atk chance,Silence def chance,Silence duration,Elem
+﻿ID,Nome,Name,Descri  o,Description,Price,Drop chance,Forge level,Life bonus,Mp bonus,PhyAtk bonus,MagAtk bonus,PhyDef bonus,MagDef bonus,Dex bonus,Agi bonus,Crit bonus atk chance,Crit bonus def chance,Stun atk chance,Stun def chance,Stun duration,Block atk chance,Block def chance,Block duration,Blood atk chance,Blood def chance,Blood atk,Blood def,Blood duration,Poison atk chance,Poison def chance,Poison atk,Poison def,Poison duration,Silence atk chance,Silence def chance,Silence duration,Elem
 0,espada de madeira,wood sword,-,-,20,10,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
-1,escudo de madeira,wood shield,-,-,20,10,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
+1,escudo de madeira,wood shield,-,-,20,10,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 2,armadura de madeira,wood armor,-,-,20,10,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 3,espada de bronze,copper sword,-,-,290,10,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral
 4,escudo de bronze,copper shield,-,-,290,10,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,neutral

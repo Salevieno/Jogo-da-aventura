@@ -1,4 +1,4 @@
-Job,HP increase,Mp increase,Phy atk increase,Mag atk increase,Phy def increase,Mag def increase,Dex increase,Agi increase,HP chance,Mp chance,Phy atk chance,Mag atk chance,Phy def chance,Mag def chance,Dex chance,Agi chance
+﻿Job,HP increase,Mp increase,Phy atk increase,Mag atk increase,Phy def increase,Mag def increase,Dex increase,Agi increase,HP chance,Mp chance,Phy atk chance,Mag atk chance,Phy def chance,Mag def chance,Dex chance,Agi chance
 0,20,10,4,2,4,2,2,2,1,1,0.4,0.4,0.4,0.4,0.2,0.2
 1,40,10,8,4,4,4,4,2,1,1,0.5,0.3,0.5,0.3,0.2,0.2
 2,34,16,4,4,8,6,2,2,1,1,0.5,0.4,0.5,0.4,0.2,0.2

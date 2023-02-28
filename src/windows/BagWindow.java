@@ -1,19 +1,15 @@
 package windows;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import items.Alchemy;
 import items.Arrow;
@@ -26,15 +22,13 @@ import items.Item;
 import items.PetItem;
 import items.Potion;
 import items.QuestItem;
-import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
 import utilities.Align;
 import utilities.UtilG;
 
 public class BagWindow extends GameWindow
-{	
-	//private ArrayList<Map<Item, Integer>> menus ;
+{
 	private Map<Potion, Integer> pot ;
 	private Map<Alchemy, Integer> alch ;
 	private Map<Forge, Integer> forges ;
@@ -270,13 +264,10 @@ public class BagWindow extends GameWindow
 	public Item getSelectedItem()
 	{
 		getActiveItems() ;
+		numberItems = 0 ;
 		if (!activeItems.isEmpty())
 		{
 			numberItems = Math.min(numberSlotMax, activeItems.size() - numberSlotMax * window) ;
-		}
-		else
-		{
-			numberItems = 0 ;
 		}
 		
 		int i = 0 ;
@@ -398,9 +389,7 @@ public class BagWindow extends GameWindow
 	
 	public void display(Point MousePos, String[] allText, DrawingOnPanel DP)
 	{
-		Dimension screenSize = Game.getScreen().getSize() ;
-		Point pos = new Point((int)(0.35 * screenSize.width), (int)(0.48 * screenSize.height)) ;
-		Dimension size = new Dimension((int)(0.52 * screenSize.width), (int)(0.4 * screenSize.height)) ;
+		Point windowPos = new Point((int)(0.35 * Game.getScreen().getSize().width), (int)(0.48 * Game.getScreen().getSize().height)) ;
 		Color[] colorPalette = Game.ColorPalette ;
 		
 		Font MenuFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -411,7 +400,7 @@ public class BagWindow extends GameWindow
 		int MenuH = MenuImage.getHeight(null) ;
 		for (int m = 0 ; m <= allText.length - 3 ; m += 1)
 		{
-			Point menuPos = m == menu ? UtilG.Translate(pos, 3, m * (MenuH - 1) + 3) : UtilG.Translate(pos, 0, m * (MenuH - 1) + 3) ;
+			Point menuPos = m == menu ? UtilG.Translate(windowPos, 3, m * (MenuH - 1) + 3) : UtilG.Translate(windowPos, 0, m * (MenuH - 1) + 3) ;
 			Point textPos = UtilG.Translate(menuPos, 3, MenuH / 2) ;
 			Color TextColor = m == menu ? colorPalette[3] : colorPalette[11] ;
 			
@@ -420,7 +409,7 @@ public class BagWindow extends GameWindow
 		}
 		
 		// Draw bag
-		DP.DrawImage(image, pos, Align.topLeft) ;
+		DP.DrawImage(image, windowPos, Align.topLeft) ;
 		
 		// draw items
 		int slotW = SlotImage.getWidth(null) ;
@@ -429,21 +418,22 @@ public class BagWindow extends GameWindow
 		activeItems = getActiveItems() ;
 		for (Map.Entry<Item, Integer> activeItem : activeItems.entrySet())
 		{
-			int sx = size.width / 2 ;
-			int sy = (size.height - 12 - slotH) / 9 ;
+			if (numberSlotMax <= i) { break ;}
+			
 			int row = i % (numberSlotMax / 2) ;
 			int col = i / (numberSlotMax / 2) ;
-			Point slotCenter = new Point((int) (pos.x + 70 + slotW / 2 + col * sx), (int) (pos.y + slotH / 2 + row * sy + 9)) ;
+			Point slotCenter = UtilG.Translate(windowPos, 78 + slotW / 2 + col * 121, 12 + slotH / 2 + row * 21) ;
+			String itemText = activeItem.getKey().getName() + " (x " + activeItem.getValue() + ")" ;
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
-			Color textColor = i == item ? colorPalette[9] : colorPalette[3] ;
+			Color textColor = i == item ? colorPalette[3] : colorPalette[9] ;
 			
 			DP.DrawImage(SlotImage, slotCenter, Align.center) ;
 			DP.DrawImage(activeItem.getKey().getImage(), slotCenter, Align.center) ;
-			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, activeItem.getKey().getName() + " (x " + activeItem.getValue() + ")", ItemFont, textColor, 10, MousePos) ;
+			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, itemText, ItemFont, textColor, 10, MousePos) ;
 			i += 1 ;
 		}
 		
-		DP.DrawWindowArrows(new Point(pos.x, pos.y + size.height), size.width, window, windowLimit) ;
+		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height), size.width, window, windowLimit) ;
 		
 	}
 	

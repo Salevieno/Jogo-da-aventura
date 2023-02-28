@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 import attributes.AttributeBonus;
+import attributes.BattleAttributes;
+import attributes.PersonalAttributes;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
@@ -114,50 +116,92 @@ public class Equip extends Item
 	
 	public void resetForgeLevel()
 	{
-		// TODO resetar bônus dos atributos
+		attBonus.resetAll() ;
 		forgeLevel = 0 ;
 	}
 	
 	public void incForgeLevel()
 	{
-		// TODO aumentar bônus dos atributos
+		double forgeBonus = 0.1 ;
+		double[] bonuses = attBonus.all() ;
+		double[] increment = new double[bonuses.length] ;
+		for (int i = 0 ; i <= bonuses.length - 1; i += 1)
+		{
+			increment[i] = forgeBonus * bonuses[i] ;
+		}
+		attBonus.inc(increment) ;
 		forgeLevel += 1 ;
 	}
 	
+	private void applyBonus(PersonalAttributes PA, BattleAttributes BA, Equip equip, double ActionMult)
+	{
+		AttributeBonus attBonus = equip.getAttributeBonus() ;
+		PA.getLife().incMaxValue((int) (attBonus.getLife() * ActionMult)) ;
+		PA.getMp().incMaxValue((int) (attBonus.getMP() * ActionMult)) ;
+		BA.getPhyAtk().incBonus(attBonus.getPhyAtk() * ActionMult) ;
+		BA.getMagAtk().incBonus(attBonus.getMagAtk() * ActionMult) ;
+		BA.getPhyDef().incBonus(attBonus.getPhyDef() * ActionMult) ;
+		BA.getMagDef().incBonus(attBonus.getMagDef() * ActionMult) ;
+		BA.getDex().incBonus(attBonus.getDex() * ActionMult) ;
+		BA.getAgi().incBonus(attBonus.getAgi() * ActionMult) ;
+		BA.getCrit()[0] += attBonus.getCritAtkChance() * ActionMult ;
+		BA.getCrit()[2] += attBonus.getCritDefChance() * ActionMult ;
+		BA.getStun().incAtkChanceBonus(attBonus.getStunAtkChance() * ActionMult) ;
+		BA.getStun().incDefChanceBonus(attBonus.getStunDefChance() * ActionMult) ;
+		BA.getStun().incDuration(attBonus.getStunDuration() * ActionMult) ;
+		BA.getBlock().incAtkChanceBonus(attBonus.getBlockAtkChance() * ActionMult) ;
+		BA.getBlock().incDefChanceBonus(attBonus.getBlockDefChance() * ActionMult) ;
+		BA.getBlock().incDuration(attBonus.getBlockDuration() * ActionMult) ;
+		BA.getBlood().incAtkChanceBonus(attBonus.getBloodAtkChance() * ActionMult) ;
+		BA.getBlood().incDefChanceBonus(attBonus.getBloodDefChance() * ActionMult) ;
+		BA.getBlood().incAtkBonus(attBonus.getBloodAtk() * ActionMult) ;
+		BA.getBlood().incDefBonus(attBonus.getBloodDef() * ActionMult) ;
+		BA.getBlood().incDuration(attBonus.getBloodDuration() * ActionMult) ;
+		BA.getPoison().incAtkChanceBonus(attBonus.getPoisonAtkChance() * ActionMult) ;
+		BA.getPoison().incDefChanceBonus(attBonus.getPoisonDefChance() * ActionMult) ;
+		BA.getPoison().incAtkBonus(attBonus.getPoisonAtk() * ActionMult) ;
+		BA.getPoison().incDefBonus(attBonus.getPoisonDef() * ActionMult) ;
+		BA.getPoison().incDuration(attBonus.getPoisonDuration() * ActionMult) ;
+		BA.getSilence().incAtkChanceBonus(attBonus.getSilenceAtkChance() * ActionMult) ;
+		BA.getSilence().incDefChanceBonus(attBonus.getSilenceDefChance() * ActionMult) ;
+		BA.getSilence().incDuration(attBonus.getSilenceDuration() * ActionMult) ;
+	}	
+	
 	public void use(LiveBeing user)
 	{
-		int EquipType = (id) % 3 ;
-//		Equip currentEquip = equips[EquipType] ;
+		int type = (id) % 3 ;
+		double setBonus = 0.2 ;
 		
-		if (user instanceof Player)
+		if (!(user instanceof Player)) { return ;}
+
+		Player player = (Player) user ;
+		
+		if (player.getEquips()[type] == Equip.getAll()[id])
 		{
-			Player player = (Player) user ;
-			player.getEquips()[EquipType] = null ;
-			player.getEquips()[EquipType] = Equip.getAll()[id] ;
+			// unequip
+			applyBonus(user.getPA(), user.getBA(), Equip.getAll()[id], -1) ;
+			user.getElem()[type + 1] = Elements.neutral ;
+			if (Player.SetIsFormed(player.getEquips()))
+			{
+				applyBonus(user.getPA(), user.getBA(), player.getEquips()[0], -setBonus) ;
+				applyBonus(user.getPA(), user.getBA(), player.getEquips()[1], -setBonus) ;
+				applyBonus(user.getPA(), user.getBA(), player.getEquips()[2], -setBonus) ;
+			}				
+			player.getEquips()[type] = null ;
+			
+			return ;
 		}
 		
-//		if (currentEquip != null)	// Unnequip the current equip
-//		{
-//			if (user.SetIsFormed(equips))	// if the set was formed, remove the 20% bonus
-//			{
-//				ApplyEquipsBonus(equips[0], (double)-0.2) ;
-//				ApplyEquipsBonus(equips[1], (double)-0.2) ;
-//				ApplyEquipsBonus(equips[2], (double)-0.2) ;
-//			}
-//			equips[EquipType] = null ;
-//			user.getElem()[EquipType + 1] = Elements.neutral ;
-//			ApplyEquipsBonus(currentEquip, -1) ;
-//		}
-//		
-//		equips[EquipType] = Equip.getAll()[EquipID] ;
-//		user.getElem()[EquipType + 1] = equips[EquipType].getElem() ;
-//		ApplyEquipsBonus(equips[EquipType], 1) ;
-//		if (user.SetIsFormed(equips))	// if the set is formed, add the 20% bonus
-//		{
-//			ApplyEquipsBonus(equips[0], (double)0.2) ;
-//			ApplyEquipsBonus(equips[1], (double)0.2) ;
-//			ApplyEquipsBonus(equips[2], (double)0.2) ;
-//		}
+		// equip
+		player.getEquips()[type] = Equip.getAll()[id] ;
+		user.getElem()[type + 1] = Equip.getAll()[id].elem ;				
+		if (Player.SetIsFormed(player.getEquips()))
+		{
+			applyBonus(user.getPA(), user.getBA(), player.getEquips()[0], setBonus) ;
+			applyBonus(user.getPA(), user.getBA(), player.getEquips()[1], setBonus) ;
+			applyBonus(user.getPA(), user.getBA(), player.getEquips()[2], setBonus) ;
+		}				
+		applyBonus(user.getPA(), user.getBA(), Equip.getAll()[id], 1) ;
 			
 		user.getElem()[4] = user.hasSuperElement() ? user.getElem()[1] : Elements.neutral ;
 	}
@@ -173,5 +217,14 @@ public class Equip extends Item
 		allEquips[id].getAttributeBonus().printAtt() ;
 		System.out.println("   elem: " + allEquips[id].getElem());
 	}
+	
+
+
+	@Override
+	public String toString()
+	{
+		return "Equip [id=" + id + ", forgeLevel=" + forgeLevel + ", attBonus=" + attBonus + ", elem=" + elem + "]";
+	}
+	
 	
 }

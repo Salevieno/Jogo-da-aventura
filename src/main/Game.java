@@ -237,26 +237,27 @@ public class Game extends JPanel
 		{
 			String  name = input.get(i)[language.ordinal()] ;
 			NPCJobs job = null ;
-			switch (input.get(i)[2])
-			{
-				case "doctor": job = NPCJobs.doctor ; break ;
-				case "equipsSeller": job = NPCJobs.equipsSeller ; break ;
-				case "itemsSeller": job = NPCJobs.itemsSeller ; break ;
-				case "smuggleSeller": job = NPCJobs.smuggleSeller ; break ;
-				case "banker": job = NPCJobs.banker ; break ;
-				case "alchemist": job = NPCJobs.alchemist ; break ;
-				case "woodcrafter": job = NPCJobs.woodcrafter ; break ;
-				case "crafter": job = NPCJobs.crafter ; break ;
-				case "forger": job = NPCJobs.forger ; break ;
-				case "elemental": job = NPCJobs.elemental ; break ;
-				case "saver": job = NPCJobs.saver ; break ;
-				case "master": job = NPCJobs.master ; break ;
-				case "quest": job = NPCJobs.quest ; break ;
-				case "citizen": job = NPCJobs.citizen ; break ;
-				case "caveEntry": job = NPCJobs.caveEntry ; break ;
-				case "caveExit": job = NPCJobs.caveExit ; break ;
-				case "sailor": job = NPCJobs.sailor ; break ;
-			}
+			job = NPCJobs.valueOf(input.get(i)[2]) ;
+//			switch (input.get(i)[2])
+//			{
+//				case "doctor": job = NPCJobs.doctor ; break ;
+//				case "equipsSeller": job = NPCJobs.equipsSeller ; break ;
+//				case "itemsSeller": job = NPCJobs.itemsSeller ; break ;
+//				case "smuggleSeller": job = NPCJobs.smuggleSeller ; break ;
+//				case "banker": job = NPCJobs.banker ; break ;
+//				case "alchemist": job = NPCJobs.alchemist ; break ;
+//				case "woodcrafter": job = NPCJobs.woodcrafter ; break ;
+//				case "crafter": job = NPCJobs.crafter ; break ;
+//				case "forger": job = NPCJobs.forger ; break ;
+//				case "elemental": job = NPCJobs.elemental ; break ;
+//				case "saver": job = NPCJobs.saver ; break ;
+//				case "master": job = NPCJobs.master ; break ;
+//				case "quest": job = NPCJobs.quest ; break ;
+//				case "citizen": job = NPCJobs.citizen ; break ;
+//				case "caveEntry": job = NPCJobs.caveEntry ; break ;
+//				case "caveExit": job = NPCJobs.caveExit ; break ;
+//				case "sailor": job = NPCJobs.sailor ; break ;
+//			}
 
 			String info = input.get(i)[3 + language.ordinal()] ;
 			Color color = ColorPalette[0] ;
@@ -264,7 +265,7 @@ public class Game extends JPanel
 			String[] speech = player.allText.get("* " + name + " *") ;
 
 			// TODO NPC options vai ser uma lista de listas, cada uma correspondendo a uma speech
-			String[] options = new String[] {"Sim", "NÃ£o"} ;
+			String[] options = new String[] {"Sim", "Não"} ;
 			
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}
@@ -1071,19 +1072,21 @@ public class Game extends JPanel
 //    	player.getBag().Add(Potion.getAll()[2], 2) ;
 //    	player.getBag().Add(Alchemy.getAll()[0], 2) ;
 //    	player.getBag().Add(Alchemy.getAll()[2], 2) ;
-    	player.getBag().Add(Forge.getAll()[0], 3) ;
+//    	player.getBag().Add(Forge.getAll()[0], 3) ;
     	player.getBag().Add(Equip.getAll()[0], 3) ;
+    	player.getBag().Add(Equip.getAll()[1], 3) ;
+    	player.getBag().Add(Equip.getAll()[2], 3) ;
 //    	System.out.println(player.getBag().numberItems);
-    	for (int i = 0; i <= Potion.getAll().length - 1; i += 1) { player.getBag().Add(Potion.getAll()[i], 3) ; }
-    	for (int i = 0; i <= Alchemy.getAll().length - 1; i += 1) { player.getBag().Add(Alchemy.getAll()[i], 3) ; }
+//    	for (int i = 0; i <= Potion.getAll().length - 1; i += 1) { player.getBag().Add(Potion.getAll()[i], 3) ; }
+//    	for (int i = 0; i <= Alchemy.getAll().length - 1; i += 1) { player.getBag().Add(Alchemy.getAll()[i], 3) ; }
     	for (int i = 0; i <= Forge.getAll().length - 1; i += 1) { player.getBag().Add(Forge.getAll()[i], 3) ; }
-    	for (int i = 0; i <= Food.getAll().length - 1; i += 1) { player.getBag().Add(Food.getAll()[i], 3) ; }
-    	for (int i = 0; i <= PetItem.getAll().length - 1; i += 1) { player.getBag().Add(PetItem.getAll()[i], 3) ; }
-    	for (int i = 0; i <= Arrow.getAll().length - 1; i += 1) { player.getBag().Add(Arrow.getAll()[i], 3) ; }
-    	for (int i = 0; i <= Equip.getAll().length - 1; i += 1) { player.getBag().Add(Equip.getAll()[i], 3) ; }
-    	for (int i = 0; i <= GeneralItem.getAll().length - 1; i += 1) { player.getBag().Add(GeneralItem.getAll()[i], 3) ; }
-    	for (int i = 0; i <= Fab.getAll().length - 1; i += 1) { player.getBag().Add(Fab.getAll()[i], 3) ; }
-    	for (int i = 0; i <= QuestItem.getAll().length - 1; i += 1) { player.getBag().Add(QuestItem.getAll()[i], 3) ; }
+//    	for (int i = 0; i <= Food.getAll().length - 1; i += 1) { player.getBag().Add(Food.getAll()[i], 3) ; }
+//    	for (int i = 0; i <= PetItem.getAll().length - 1; i += 1) { player.getBag().Add(PetItem.getAll()[i], 3) ; }
+//    	for (int i = 0; i <= Arrow.getAll().length - 1; i += 1) { player.getBag().Add(Arrow.getAll()[i], 3) ; }
+//    	for (int i = 0; i <= Equip.getAll().length - 1; i += 1) { player.getBag().Add(Equip.getAll()[i], 3) ; }
+//    	for (int i = 0; i <= GeneralItem.getAll().length - 1; i += 1) { player.getBag().Add(GeneralItem.getAll()[i], 3) ; }
+//    	for (int i = 0; i <= Fab.getAll().length - 1; i += 1) { player.getBag().Add(Fab.getAll()[i], 3) ; }
+//    	for (int i = 0; i <= QuestItem.getAll().length - 1; i += 1) { player.getBag().Add(QuestItem.getAll()[i], 3) ; }
     	//player.getPA().setExp(new BasicAttribute(50, 50, 1)) ;	// level up
     	//System.out.println("player life = " + player.getLife().getCurrentValue());
     	player.getLife().incCurrentValue(-10);
@@ -1130,7 +1133,7 @@ public class Game extends JPanel
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
-    	player.getBag().addGold(300) ;
+    	player.getBag().addGold(3000) ;
     	
     	
 
@@ -1177,6 +1180,8 @@ public class Game extends JPanel
 //    	allGifs[0] = Player.TentGif ;
 //    	
 //    	Player.TentGif.play(mousePos, Align.center, DP) ;
+    	
+    	
 	}
 	
 	private void testing()
