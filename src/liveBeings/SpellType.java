@@ -23,6 +23,7 @@ public class SpellType
 	//private int cooldownDuration ;
 	private int effectDuration ;
 	private List<Buff> buffs;
+	private List<Buff> nerfs;
 	private double[] AtkMod ;
 	private double[] DefMod ;
 	private double[] DexMod ;
@@ -40,7 +41,7 @@ public class SpellType
 	public static final Image cooldownImage = UtilG.loadImage(Game.ImagesPath + "Cooldown.png") ;	
 	//public static Image ElementalCicle = UtilG.loadImage(Game.ImagesPath + "ElementalCicle.png") ;
 	
-	public SpellType(String Name, int MaxLevel, int MpCost, SpellTypes type, Map<SpellType, Integer> preRequisites, int Cooldown, int Duration, List<Buff> buffs,
+	public SpellType(String Name, int MaxLevel, int MpCost, SpellTypes type, Map<SpellType, Integer> preRequisites, int Cooldown, int Duration, List<Buff> buffs, List<Buff> nerfs,
 			double[] AtkMod, double[] DefMod, double[] DexMod, double[] AgiMod, double[] AtkCritMod, double[] DefCritMod, double[] StunMod, double[] BlockMod, double[] BloodMod,
 			double[] PoisonMod, double[] SilenceMod, Elements Elem, String[] Info)
 	{
@@ -53,6 +54,7 @@ public class SpellType
 		//this.cooldownDuration = Duration ;
 		this.effectDuration = Duration ;
 		this.buffs = buffs ;
+		this.nerfs = nerfs ;
 		this.AtkMod = AtkMod ;
 		this.DefMod = DefMod ;
 		this.DexMod = DexMod ;
@@ -77,6 +79,7 @@ public class SpellType
 	//public int getCooldownDuration() {return cooldownDuration ;}
 	public int getEffectDuration() {return effectDuration ;}
 	public List<Buff> getBuffs() {return buffs ;}
+	public List<Buff> getNerfs() {return nerfs ;}
 	public double[] getAtkMod() {return AtkMod ;}
 	public double[] getDefMod() {return DefMod ;}
 	public double[] getDexMod() {return DexMod ;}
@@ -96,12 +99,13 @@ public class SpellType
 	{
 		return "SpellType [name=" + name + ", maxLevel=" + maxLevel + ", mpCost=" + mpCost + ", type=" + type
 				+ ", preRequisites=" + preRequisites + ", cooldown=" + cooldown + ", effectDuration=" + effectDuration
-				+ ", buffs=" + buffs + ", AtkMod=" + Arrays.toString(AtkMod) + ", DefMod=" + Arrays.toString(DefMod)
-				+ ", DexMod=" + Arrays.toString(DexMod) + ", AgiMod=" + Arrays.toString(AgiMod) + ", AtkCritMod="
-				+ Arrays.toString(AtkCritMod) + ", DefCritMod=" + Arrays.toString(DefCritMod) + ", StunMod="
-				+ Arrays.toString(StunMod) + ", BlockMod=" + Arrays.toString(BlockMod) + ", BloodMod="
-				+ Arrays.toString(BloodMod) + ", PoisonMod=" + Arrays.toString(PoisonMod) + ", SilenceMod="
-				+ Arrays.toString(SilenceMod) + ", elem=" + elem + ", info=" + Arrays.toString(info) + "]";
+				+ ", buffs=" + buffs + ", nerfs=" + nerfs + ", AtkMod=" + Arrays.toString(AtkMod) + ", DefMod="
+				+ Arrays.toString(DefMod) + ", DexMod=" + Arrays.toString(DexMod) + ", AgiMod="
+				+ Arrays.toString(AgiMod) + ", AtkCritMod=" + Arrays.toString(AtkCritMod) + ", DefCritMod="
+				+ Arrays.toString(DefCritMod) + ", StunMod=" + Arrays.toString(StunMod) + ", BlockMod="
+				+ Arrays.toString(BlockMod) + ", BloodMod=" + Arrays.toString(BloodMod) + ", PoisonMod="
+				+ Arrays.toString(PoisonMod) + ", SilenceMod=" + Arrays.toString(SilenceMod) + ", elem=" + elem
+				+ ", info=" + Arrays.toString(info) + "]";
 	}
 
 }

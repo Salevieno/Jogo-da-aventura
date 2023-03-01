@@ -3,6 +3,7 @@ package items;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 
@@ -130,41 +131,42 @@ public class Equip extends Item
 			increment[i] = forgeBonus * bonuses[i] ;
 		}
 		attBonus.inc(increment) ;
+		System.out.println(attBonus);
 		forgeLevel += 1 ;
 	}
 	
-	private void applyBonus(PersonalAttributes PA, BattleAttributes BA, Equip equip, double ActionMult)
+	private void applyBonus(PersonalAttributes PA, BattleAttributes BA, Equip equip, double mult)
 	{
 		AttributeBonus attBonus = equip.getAttributeBonus() ;
-		PA.getLife().incMaxValue((int) (attBonus.getLife() * ActionMult)) ;
-		PA.getMp().incMaxValue((int) (attBonus.getMP() * ActionMult)) ;
-		BA.getPhyAtk().incBonus(attBonus.getPhyAtk() * ActionMult) ;
-		BA.getMagAtk().incBonus(attBonus.getMagAtk() * ActionMult) ;
-		BA.getPhyDef().incBonus(attBonus.getPhyDef() * ActionMult) ;
-		BA.getMagDef().incBonus(attBonus.getMagDef() * ActionMult) ;
-		BA.getDex().incBonus(attBonus.getDex() * ActionMult) ;
-		BA.getAgi().incBonus(attBonus.getAgi() * ActionMult) ;
-		BA.getCrit()[0] += attBonus.getCritAtkChance() * ActionMult ;
-		BA.getCrit()[2] += attBonus.getCritDefChance() * ActionMult ;
-		BA.getStun().incAtkChanceBonus(attBonus.getStunAtkChance() * ActionMult) ;
-		BA.getStun().incDefChanceBonus(attBonus.getStunDefChance() * ActionMult) ;
-		BA.getStun().incDuration(attBonus.getStunDuration() * ActionMult) ;
-		BA.getBlock().incAtkChanceBonus(attBonus.getBlockAtkChance() * ActionMult) ;
-		BA.getBlock().incDefChanceBonus(attBonus.getBlockDefChance() * ActionMult) ;
-		BA.getBlock().incDuration(attBonus.getBlockDuration() * ActionMult) ;
-		BA.getBlood().incAtkChanceBonus(attBonus.getBloodAtkChance() * ActionMult) ;
-		BA.getBlood().incDefChanceBonus(attBonus.getBloodDefChance() * ActionMult) ;
-		BA.getBlood().incAtkBonus(attBonus.getBloodAtk() * ActionMult) ;
-		BA.getBlood().incDefBonus(attBonus.getBloodDef() * ActionMult) ;
-		BA.getBlood().incDuration(attBonus.getBloodDuration() * ActionMult) ;
-		BA.getPoison().incAtkChanceBonus(attBonus.getPoisonAtkChance() * ActionMult) ;
-		BA.getPoison().incDefChanceBonus(attBonus.getPoisonDefChance() * ActionMult) ;
-		BA.getPoison().incAtkBonus(attBonus.getPoisonAtk() * ActionMult) ;
-		BA.getPoison().incDefBonus(attBonus.getPoisonDef() * ActionMult) ;
-		BA.getPoison().incDuration(attBonus.getPoisonDuration() * ActionMult) ;
-		BA.getSilence().incAtkChanceBonus(attBonus.getSilenceAtkChance() * ActionMult) ;
-		BA.getSilence().incDefChanceBonus(attBonus.getSilenceDefChance() * ActionMult) ;
-		BA.getSilence().incDuration(attBonus.getSilenceDuration() * ActionMult) ;
+		PA.getLife().incMaxValue((int) (attBonus.getLife() * mult)) ;
+		PA.getMp().incMaxValue((int) (attBonus.getMP() * mult)) ;
+		BA.getPhyAtk().incBonus(attBonus.getPhyAtk() * mult) ;
+		BA.getMagAtk().incBonus(attBonus.getMagAtk() * mult) ;
+		BA.getPhyDef().incBonus(attBonus.getPhyDef() * mult) ;
+		BA.getMagDef().incBonus(attBonus.getMagDef() * mult) ;
+		BA.getDex().incBonus(attBonus.getDex() * mult) ;
+		BA.getAgi().incBonus(attBonus.getAgi() * mult) ;
+		BA.getCrit()[0] += attBonus.getCritAtkChance() * mult ;
+		BA.getCrit()[2] += attBonus.getCritDefChance() * mult ;
+		BA.getStun().incAtkChanceBonus(attBonus.getStunAtkChance() * mult) ;
+		BA.getStun().incDefChanceBonus(attBonus.getStunDefChance() * mult) ;
+		BA.getStun().incDuration(attBonus.getStunDuration() * mult) ;
+		BA.getBlock().incAtkChanceBonus(attBonus.getBlockAtkChance() * mult) ;
+		BA.getBlock().incDefChanceBonus(attBonus.getBlockDefChance() * mult) ;
+		BA.getBlock().incDuration(attBonus.getBlockDuration() * mult) ;
+		BA.getBlood().incAtkChanceBonus(attBonus.getBloodAtkChance() * mult) ;
+		BA.getBlood().incDefChanceBonus(attBonus.getBloodDefChance() * mult) ;
+		BA.getBlood().incAtkBonus(attBonus.getBloodAtk() * mult) ;
+		BA.getBlood().incDefBonus(attBonus.getBloodDef() * mult) ;
+		BA.getBlood().incDuration(attBonus.getBloodDuration() * mult) ;
+		BA.getPoison().incAtkChanceBonus(attBonus.getPoisonAtkChance() * mult) ;
+		BA.getPoison().incDefChanceBonus(attBonus.getPoisonDefChance() * mult) ;
+		BA.getPoison().incAtkBonus(attBonus.getPoisonAtk() * mult) ;
+		BA.getPoison().incDefBonus(attBonus.getPoisonDef() * mult) ;
+		BA.getPoison().incDuration(attBonus.getPoisonDuration() * mult) ;
+		BA.getSilence().incAtkChanceBonus(attBonus.getSilenceAtkChance() * mult) ;
+		BA.getSilence().incDefChanceBonus(attBonus.getSilenceDefChance() * mult) ;
+		BA.getSilence().incDuration(attBonus.getSilenceDuration() * mult) ;
 	}	
 	
 	public void use(LiveBeing user)
@@ -181,7 +183,7 @@ public class Equip extends Item
 			// unequip
 			applyBonus(user.getPA(), user.getBA(), Equip.getAll()[id], -1) ;
 			user.getElem()[type + 1] = Elements.neutral ;
-			if (Player.SetIsFormed(player.getEquips()))
+			if (Player.setIsFormed(player.getEquips()))
 			{
 				applyBonus(user.getPA(), user.getBA(), player.getEquips()[0], -setBonus) ;
 				applyBonus(user.getPA(), user.getBA(), player.getEquips()[1], -setBonus) ;
@@ -195,7 +197,7 @@ public class Equip extends Item
 		// equip
 		player.getEquips()[type] = Equip.getAll()[id] ;
 		user.getElem()[type + 1] = Equip.getAll()[id].elem ;				
-		if (Player.SetIsFormed(player.getEquips()))
+		if (Player.setIsFormed(player.getEquips()))
 		{
 			applyBonus(user.getPA(), user.getBA(), player.getEquips()[0], setBonus) ;
 			applyBonus(user.getPA(), user.getBA(), player.getEquips()[1], setBonus) ;
@@ -213,9 +215,8 @@ public class Equip extends Item
 				"   description: " + allEquips[id].getDescription() +
 				"   price: " + allEquips[id].getPrice() +
 				"   drop chance: " + allEquips[id].getDropChance() + "%" + 
-				"   forge level: " + allEquips[id].getForgeLevel() + " ") ;
-		allEquips[id].getAttributeBonus().printAtt() ;
-		System.out.println("   elem: " + allEquips[id].getElem());
+				"   forge level: " + allEquips[id].getForgeLevel() + " " +
+				"   elem: " + allEquips[id].getElem());
 	}
 	
 

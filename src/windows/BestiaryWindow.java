@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import graphics.DrawingOnPanel;
 import items.Item;
 import liveBeings.Creature;
-import liveBeings.CreatureTypes;
+import liveBeings.CreatureType;
 import liveBeings.Player;
 import main.Game;
 import utilities.Align;
@@ -19,7 +19,7 @@ import utilities.UtilS;
 
 public class BestiaryWindow extends GameWindow
 {
-	private ArrayList<CreatureTypes> discoveredCreatures ;
+	private ArrayList<CreatureType> discoveredCreatures ;
 	
 	public BestiaryWindow()
 	{
@@ -27,8 +27,8 @@ public class BestiaryWindow extends GameWindow
 		discoveredCreatures = new ArrayList<>() ;
 	}
 	
-	public ArrayList<CreatureTypes> getDiscoveredCreatures() { return discoveredCreatures ; }
-	public void addDiscoveredCreature(CreatureTypes newCreature) { discoveredCreatures.add(newCreature) ; }
+	public ArrayList<CreatureType> getDiscoveredCreatures() { return discoveredCreatures ; }
+	public void addDiscoveredCreature(CreatureType newCreature) { discoveredCreatures.add(newCreature) ; }
 	
 	public void navigate(String action)
 	{
@@ -40,7 +40,7 @@ public class BestiaryWindow extends GameWindow
 		window = UtilS.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, windowLimit) ;*/
 	}
 	
-	public void displayCreatureInfo(Point windowPos, Player player, CreatureTypes creatureType, DrawingOnPanel DP)
+	public void displayCreatureInfo(Point windowPos, Player player, CreatureType creatureType, DrawingOnPanel DP)
 	{
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -91,7 +91,7 @@ public class BestiaryWindow extends GameWindow
 		if (discoveredCreatures != null)
 		{
 			int numSlotsInWindow = Math.min(discoveredCreatures.size(), numRows * numCols) ;
-			CreatureTypes selectedCreature = null ;
+			CreatureType selectedCreature = null ;
 			for (int slot = 0 ; slot <= numSlotsInWindow - 1 ; slot += 1)
 			{
 				// draw slots
@@ -100,7 +100,7 @@ public class BestiaryWindow extends GameWindow
 				DP.DrawRoundRect(slotCenter, Align.center, slotSize, 2, Game.ColorPalette[20], Game.ColorPalette[7], true) ;
 
 				// draw creatures
-				CreatureTypes creatureType = discoveredCreatures.get(slot) ;
+				CreatureType creatureType = discoveredCreatures.get(slot) ;
 				double scaleFactor = Math.min((double) (slotSize.width - 10) / creatureType.getSize().width, (double) (slotSize.height - 10) / creatureType.getSize().height) ;
 				creatureType.display(slotCenter, new Scale(scaleFactor, scaleFactor), DP) ;
 				

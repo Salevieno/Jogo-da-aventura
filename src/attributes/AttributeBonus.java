@@ -4,12 +4,12 @@ public class AttributeBonus
 {
 	private int life ;
 	private int MP ;
-	private int phyAtk ;
-	private int magAtk ;
-	private int phyDef ;
-	private int magDef ;
-	private int dex ;
-	private int agi ;
+	private double phyAtk ;
+	private double magAtk ;
+	private double phyDef ;
+	private double magDef ;
+	private double dex ;
+	private double agi ;
 	private double critAtkChance ;
 	private double critDefChance ;
 	private double stunAtkChance ;
@@ -80,12 +80,12 @@ public class AttributeBonus
 
 	public int getLife() {return life ;}
 	public int getMP() {return MP ;}
-	public int getPhyAtk() {return phyAtk ;}
-	public int getMagAtk() {return magAtk ;}
-	public int getPhyDef() {return phyDef ;}
-	public int getMagDef() {return magDef ;}
-	public int getDex() {return dex ;}
-	public int getAgi() {return agi ;}
+	public double getPhyAtk() {return phyAtk ;}
+	public double getMagAtk() {return magAtk ;}
+	public double getPhyDef() {return phyDef ;}
+	public double getMagDef() {return magDef ;}
+	public double getDex() {return dex ;}
+	public double getAgi() {return agi ;}
 	public double getCritAtkChance() {return critAtkChance ;}
 	public double getCritDefChance() {return critDefChance ;}
 	public double getStunAtkChance() {return stunAtkChance ;}
@@ -201,39 +201,21 @@ public class AttributeBonus
 		  silenceDefChance += amount[27] ;
 		  silenceDuration += amount[28] ;
 	}
-	
-	public void printAtt()
+
+	@Override
+	public String toString()
 	{
-		System.out.println("   life bonus: " + life +
-				"   mp bonus: " + MP +
-				"   phy atk bonus: " + phyAtk +
-				"   mag atk bonus: " + magAtk +
-				"   phy def bonus: " + phyDef +
-				"   mag def bonus: " + magDef +
-				"   dex bonus: " + dex +
-				"   agi bonus: " + agi +
-				"   crit atk chance bonus: " + critAtkChance +
-				"   crit def chance bonus: " + critDefChance +
-				"   stun atk chance bonus: " + stunAtkChance +
-				"   stun def chance bonus: " + stunDefChance +
-				"   stun duration bonus: " + stunDuration +
-				"   block atk chance bonus: " + blockAtkChance +
-				"   block def chance bonus: " + blockDefChance +
-				"   block duration bonus: " + blockDuration +
-				"   blood atk chance bonus: " + bloodAtkChance +
-				"   blood def chance bonus: " + bloodDefChance +
-				"   blood atk bonus: " + bloodAtk +
-				"   blood def bonus: " + bloodDef +
-				"   blood duration bonus: " + bloodDuration +
-				"   poison atk chance bonus: " + poisonAtkChance +
-				"   poison def chance bonus: " + poisonDefChance +
-				"   poison atk bonus: " + poisonAtk +
-				"   poison def bonus: " + poisonDef +
-				"   poison duration bonus: " + poisonDuration +
-				"   silence atk chance bonus: " + silenceAtkChance +
-				"   silence def chance bonus: " + silenceDefChance +
-				"   silence duration bonus: " + silenceDuration);
+		return "AttributeBonus [life=" + life + ", MP=" + MP + ", phyAtk=" + phyAtk + ", magAtk=" + magAtk + ", phyDef="
+				+ phyDef + ", magDef=" + magDef + ", dex=" + dex + ", agi=" + agi + ", critAtkChance=" + critAtkChance
+				+ ", critDefChance=" + critDefChance + ", stunAtkChance=" + stunAtkChance + ", stunDefChance="
+				+ stunDefChance + ", stunDuration=" + stunDuration + ", blockAtkChance=" + blockAtkChance
+				+ ", blockDefChance=" + blockDefChance + ", blockDuration=" + blockDuration + ", bloodAtkChance="
+				+ bloodAtkChance + ", bloodDefChance=" + bloodDefChance + ", bloodAtk=" + bloodAtk + ", bloodDef="
+				+ bloodDef + ", bloodDuration=" + bloodDuration + ", poisonAtkChance=" + poisonAtkChance
+				+ ", poisonDefChance=" + poisonDefChance + ", poisonAtk=" + poisonAtk + ", poisonDef=" + poisonDef
+				+ ", poisonDuration=" + poisonDuration + ", silenceAtkChance=" + silenceAtkChance
+				+ ", silenceDefChance=" + silenceDefChance + ", silenceDuration=" + silenceDuration + "]";
 	}
-	
-	
+
+
 }

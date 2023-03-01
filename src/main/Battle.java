@@ -10,7 +10,7 @@ import javax.sound.sampled.Clip ;
 import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.PersonalAttributes;
-import components.Quests;
+import components.Quest;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
 import liveBeings.Buff;
@@ -354,7 +354,7 @@ public class Battle
 		{
 			if (player.isAlive())
 			{
-				player.Win(creature, winAni) ;
+				player.win(creature, winAni) ;
 			}
 			if (pet.isAlive())
 			{

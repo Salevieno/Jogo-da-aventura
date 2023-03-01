@@ -14,7 +14,7 @@ import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
 
-public class CreatureTypes 
+public class CreatureType 
 {
 	private int id ;
 	
@@ -40,7 +40,7 @@ public class CreatureTypes
 	
 	private static int NumberOfCreatureTypes ;
 	
-	public CreatureTypes(
+	public CreatureType(
 			int Type,
 			String name,
 			int level,

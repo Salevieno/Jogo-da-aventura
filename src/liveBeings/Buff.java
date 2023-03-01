@@ -1,5 +1,6 @@
 package liveBeings;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import attributes.Attributes;
@@ -41,10 +42,42 @@ public class Buff
 		this.chance = chance;
 	}
 	
+	public static Buff load(String[] spellsBuffsInp)
+	{
+		Map<Attributes, Double> percentIncrease = new HashMap<>() ;
+		Map<Attributes, Double> valueIncrease = new HashMap<>() ;
+		Map<Attributes, Double> chance = new HashMap<>() ;
+		int BuffCont = 0 ;
+
+		for (Attributes att : Attributes.values())
+		{
+			if (att.equals(Attributes.exp) | att.equals(Attributes.satiation) | att.equals(Attributes.thirst))
+			{
+				continue ;
+			}
+			if (att.equals(Attributes.blood) | att.equals(Attributes.poison))
+			{
+				percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
+				valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
+				chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
+				BuffCont += 12 ;
+			}
+			else
+			{
+				percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
+				valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
+				chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
+				BuffCont += 3 ;
+			}
+		}
+		
+		return new Buff(percentIncrease, valueIncrease, chance) ;
+	}
+	
 	@Override
 	public String toString()
 	{
-		return "Buff [percentIncrease=" + percentIncrease + ", valueIncrease=" + valueIncrease + ", chance=" + chance
+		return "Buff [percentIncrease=" + percentIncrease + "\n valueIncrease=" + valueIncrease + "\n chance=" + chance
 				+ "]";
 	}
 	

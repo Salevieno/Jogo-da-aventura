@@ -41,7 +41,7 @@ import components.NPCJobs;
 import components.NPCType;
 import components.NPCs;
 import components.Projectiles;
-import components.Quests;
+import components.Quest;
 import components.SpellTypes;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
@@ -60,7 +60,7 @@ import items.QuestItem;
 import items.Recipe;
 import liveBeings.Buff;
 import liveBeings.Creature;
-import liveBeings.CreatureTypes;
+import liveBeings.CreatureType;
 import liveBeings.LiveBeingStates;
 import liveBeings.LiveBeingStatus;
 import liveBeings.MovingAnimations;
@@ -112,7 +112,7 @@ public class Game extends JPanel
 	private GameIcon[] sideBarIcons;
 	//private Icon[] plusSignIcon ;
 	private Player player ;
-	private Pet pet ;
+	private static Pet pet ;
 	private Creature[] creature ;
 	// TODO colocar para cada NPC carregar a sua lista
 	public static List<Recipe> allRecipes ;
@@ -123,7 +123,7 @@ public class Game extends JPanel
 	private static Sky sky ;
 	private static SideBar sideBar ;
 	private static Opening opening ;
-	private static CreatureTypes[] creatureTypes ;
+	private static CreatureType[] creatureTypes ;
 	private static CityMap[] cityMaps;
 	private static FieldMap[] fieldMaps;
 	private static SpecialMap[] specialMaps;
@@ -133,15 +133,13 @@ public class Game extends JPanel
 	private static Item[] allItems ;
 	private static SpellType[] allSpellTypes ;
 	//private static NPCs[] allNPCs ;
-	private static Quests[] allQuests ;
+	private static Quest[] allQuests ;
 	private static Battle bat ;
 	private static Gif[] allGifs ;
 	private static Animations[] ani ;
 	
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 	public static final Image slotImage = UtilG.loadImage(".\\images\\" + "slot.png") ;
-	
-	private static ShoppingWindow shopping ;
 	
 	public Game(Dimension windowDimension) 
 	{
@@ -179,12 +177,12 @@ public class Game extends JPanel
 
 	public static Screen getScreen() {return screen ;}
 	public static Sky getSky() {return sky ;}
-	public static CreatureTypes[] getCreatureTypes() {return creatureTypes ;}
+	public static CreatureType[] getCreatureTypes() {return creatureTypes ;}
 	public static NPCType[] getNPCTypes() {return NPCTypes ;}
-
+	public static Pet getPet() { return pet ;}
 	public static BuildingType[] getBuildingTypes() {return buildingTypes ;}
 	public static GameMap[] getMaps() {return allMaps ;}
-	public static Quests[] getAllQuests() {return allQuests ;}
+	public static Quest[] getAllQuests() {return allQuests ;}
 	public static Item[] getAllItems() {return allItems ;}
 	public static SpellType[] getAllSpellTypes() {return allSpellTypes ;}
 	public static boolean getShouldRepaint() {return shouldRepaint ;}
@@ -194,7 +192,7 @@ public class Game extends JPanel
 	}
 	
 	public static void playStopTimeGif() {state = GameStates.playingStopTimeGif ;}
-	public boolean SomeAnimationIsActive() { return (ani[3].isActive() | ani[4].isActive() | ani[5].isActive()) ;}
+	public boolean someAnimationIsActive() { return (ani[3].isActive() | ani[4].isActive() | ani[5].isActive()) ;}
 	public static void shouldRepaint() {shouldRepaint = true ;}
 	
 	public ArrayList<Recipe> LoadCraftingRecipes()
@@ -231,37 +229,14 @@ public class Game extends JPanel
     private NPCType[] initializeNPCTypes(Languages language)
     {
     	ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "NPCTypes.csv") ;
-		String path = ImagesPath + "\\NPCs\\";
 		NPCType[] npcType = new NPCType[input.size()] ;
 		for (int i = 0 ; i <= npcType.length - 1 ; i += 1)
 		{
 			String  name = input.get(i)[language.ordinal()] ;
-			NPCJobs job = null ;
-			job = NPCJobs.valueOf(input.get(i)[2]) ;
-//			switch (input.get(i)[2])
-//			{
-//				case "doctor": job = NPCJobs.doctor ; break ;
-//				case "equipsSeller": job = NPCJobs.equipsSeller ; break ;
-//				case "itemsSeller": job = NPCJobs.itemsSeller ; break ;
-//				case "smuggleSeller": job = NPCJobs.smuggleSeller ; break ;
-//				case "banker": job = NPCJobs.banker ; break ;
-//				case "alchemist": job = NPCJobs.alchemist ; break ;
-//				case "woodcrafter": job = NPCJobs.woodcrafter ; break ;
-//				case "crafter": job = NPCJobs.crafter ; break ;
-//				case "forger": job = NPCJobs.forger ; break ;
-//				case "elemental": job = NPCJobs.elemental ; break ;
-//				case "saver": job = NPCJobs.saver ; break ;
-//				case "master": job = NPCJobs.master ; break ;
-//				case "quest": job = NPCJobs.quest ; break ;
-//				case "citizen": job = NPCJobs.citizen ; break ;
-//				case "caveEntry": job = NPCJobs.caveEntry ; break ;
-//				case "caveExit": job = NPCJobs.caveExit ; break ;
-//				case "sailor": job = NPCJobs.sailor ; break ;
-//			}
-
+			NPCJobs job = NPCJobs.valueOf(input.get(i)[2]) ;
 			String info = input.get(i)[3 + language.ordinal()] ;
 			Color color = ColorPalette[0] ;
-			Image image = UtilG.loadImage(path + "NPC_" + job.toString() + ".png") ;
+			Image image = UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + ".png") ;
 			String[] speech = player.allText.get("* " + name + " *") ;
 
 			// TODO NPC options vai ser uma lista de listas, cada uma correspondendo a uma speech
@@ -315,12 +290,12 @@ public class Game extends JPanel
 		return buildingTypes ;
     }
     
-    private CreatureTypes[] initializeCreatureTypes(Languages language, double diffMult)
+    private CreatureType[] initializeCreatureTypes(Languages language, double diffMult)
     {
 		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
 		String path = ImagesPath + "\\Creatures\\";
-    	CreatureTypes.setNumberOfCreatureTypes(input.size());
-		CreatureTypes[] creatureTypes = new CreatureTypes[CreatureTypes.getNumberOfCreatureTypes()] ;
+    	CreatureType.setNumberOfCreatureTypes(input.size());
+		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()] ;
 		Color[] color = new Color[creatureTypes.length] ;
 		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
 		{
@@ -389,7 +364,7 @@ public class Game extends JPanel
 			int battleActionDuration = Integer.parseInt(input.get(ct)[51]) ;
 			int stepCounter = 0 ;
 			
-			creatureTypes[ct] = new CreatureTypes(ct, name, level, size, range, step, elem,
+			creatureTypes[ct] = new CreatureType(ct, name, level, size, range, step, elem,
 					mpDuration, satiationDuration, moveDuration, battleActionDuration, stepCounter,
 					moveAni, PA, BA, spell, Bag, Gold, color[ct], StatusCounter) ;	
 		}
@@ -567,17 +542,17 @@ public class Game extends JPanel
 		return specialMaps ;
     }
     
-    private Quests[] initializeQuests(Languages language, int playerJob)
+    private Quest[] initializeQuests(Languages language, int playerJob)
     {
 		ArrayList<String[]> inputs = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
-		Quests[] quests = new Quests[inputs.size()] ;
+		Quest[] quests = new Quest[inputs.size()] ;
 		for (int i = 0 ; i <= quests.length - 1 ; i += 1)
 		{
 			String[] input = inputs.get(i) ;
 			int id = Integer.parseInt(input[0]) ;
 			String type = input[1] ;
-			Map<CreatureTypes, Integer> reqCreaturesCounter = new HashMap<>() ;
-			Map<CreatureTypes, Integer> reqCreatureTypes = new HashMap<>() ;
+			Map<CreatureType, Integer> reqCreaturesCounter = new HashMap<>() ;
+			Map<CreatureType, Integer> reqCreatureTypes = new HashMap<>() ;
 			Map<Item, Integer> reqItems = new HashMap<>() ;
 			Map<Item, Integer> rewardItems = new HashMap<>() ;
 			String description ;
@@ -606,7 +581,7 @@ public class Game extends JPanel
 			
 			description = input[30 + language.ordinal()] ;
 			
-			quests[i] = new Quests(id, type, reqCreaturesCounter, reqCreatureTypes, reqItems, goldReward, expReward, rewardItems, description) ;
+			quests[i] = new Quest(id, type, reqCreaturesCounter, reqCreatureTypes, reqItems, goldReward, expReward, rewardItems, description) ;
 		}
 		
 		return quests ;
@@ -637,41 +612,44 @@ public class Game extends JPanel
     	List<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;	
     	SpellType[] allSpellTypes = new SpellType[spellTypesInput.size()] ;
     	List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
-//    	List<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
+    	List<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
 
 		String[][] spellsInfo = new String[allSpellTypes.length][2] ;
 		for (int i = 0 ; i <= allSpellTypes.length - 1 ; i += 1)
 		{
 			int ID = i ;
 			
-			Map<Attributes, Double> percentIncrease = new HashMap<>() ;
-			Map<Attributes, Double> valueIncrease = new HashMap<>() ;
-			Map<Attributes, Double> chance = new HashMap<>() ;
-			int BuffCont = 0 ;
-			String[] spellsBuffsInp = spellsBuffsInput.get(ID) ;
-			for (Attributes att : Attributes.values())
-			{
-				if (att.equals(Attributes.exp) | att.equals(Attributes.satiation) | att.equals(Attributes.thirst))
-				{
-					continue ;
-				}
-				if (att.equals(Attributes.blood) | att.equals(Attributes.poison))
-				{
-					percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
-					valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
-					chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
-					BuffCont += 12 ;
-				}
-				else
-				{
-					percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
-					valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
-					chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
-					BuffCont += 3 ;
-				}
-			}
+//			Map<Attributes, Double> percentIncrease = new HashMap<>() ;
+//			Map<Attributes, Double> valueIncrease = new HashMap<>() ;
+//			Map<Attributes, Double> chance = new HashMap<>() ;
+//			int BuffCont = 0 ;
+//			for (Attributes att : Attributes.values())
+//			{
+//				if (att.equals(Attributes.exp) | att.equals(Attributes.satiation) | att.equals(Attributes.thirst))
+//				{
+//					continue ;
+//				}
+//				if (att.equals(Attributes.blood) | att.equals(Attributes.poison))
+//				{
+//					percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
+//					valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
+//					chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
+//					BuffCont += 12 ;
+//				}
+//				else
+//				{
+//					percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
+//					valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
+//					chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
+//					BuffCont += 3 ;
+//				}
+//			}
+//			
 			List<Buff> buffs = new ArrayList<>() ;
-			buffs.add(new Buff(percentIncrease, valueIncrease, chance)) ;
+			buffs.add(Buff.load(spellsBuffsInput.get(ID))) ;
+
+			List<Buff> nerfs = new ArrayList<>() ;
+			nerfs.add(Buff.load(spellsNerfsInput.get(ID))) ;
 
 			spellsInfo[i] = new String[] {spellTypesInput.get(ID)[42], spellTypesInput.get(ID)[43 + 2 * language.ordinal()]} ;
 			String Name = spellTypesInput.get(ID)[4] ;
@@ -701,7 +679,7 @@ public class Game extends JPanel
 			double[] Silence = new double[] {Double.parseDouble(spellTypesInput.get(ID)[38]), Double.parseDouble(spellTypesInput.get(ID)[39]), Double.parseDouble(spellTypesInput.get(ID)[40])} ;
 			Elements Elem = Elements.valueOf(spellTypesInput.get(ID)[41]) ;
 			
-			allSpellTypes[i] = new SpellType(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, buffs,
+			allSpellTypes[i] = new SpellType(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, buffs, nerfs,
 					Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i]) ;
 		}
 		return allSpellTypes ;
@@ -759,40 +737,30 @@ public class Game extends JPanel
 	private void incrementCounters()
 	{
 		sky.dayTime.inc() ;
-		player.IncActionCounters() ;
-		player.SupSpellCounters(creature, player.getOpponent()) ;
-		player.getBA().getStatus().decreaseStatus() ;
-		
-		if (pet != null)
-		{
-			pet.IncActionCounters() ;
-			pet.getBA().getStatus().decreaseStatus() ;
-		}
+		player.incrementCounters() ;		
+		if (pet != null) { pet.incrementCounters() ; }
 		
 		if (player.getMap() instanceof FieldMap)
 		{
 			FieldMap fm = (FieldMap) player.getMap() ;
-			fm.getCreatures().forEach(creature ->
-			{
-//				creature.IncActionCounters() ;
-				creature.getBA().getStatus().decreaseStatus() ;
-			});
+			fm.getCreatures().forEach(creature -> creature.incrementCounters()) ;
+//			creature.IncActionCounters() ;
+//			creature.getBA().getStatus().decreaseStatus() ;
 			
 			fm.IncCollectiblesCounter() ;
 		}
 		
 		if (player.isInBattle())
 		{
-			player.IncBattleActionCounters() ;
-			pet.IncBattleActionCounters() ;
-			player.getOpponent().IncBattleActionCounters() ;
+			player.incrementBattleActionCounters() ;
+			pet.incrementBattleActionCounters() ;
+			player.getOpponent().incrementBattleActionCounters() ;
 		}
 	}
 	
 	private void activateCounters()
 	{	
 		player.activateCounters();
-		//player.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
 		if (pet != null)
 		{
 			if (0 < pet.getLife().getCurrentValue())
@@ -803,11 +771,7 @@ public class Game extends JPanel
 		if (player.getMap() instanceof FieldMap)
 		{
 			FieldMap fm = (FieldMap) player.getMap() ;
-			for (Creature creature : fm.getCreatures())
-			{
-//				creature.ActivateActionCounters() ;
-			}
-			
+//			fm.getCreatures().forEach(creature -> creature.ActivateActionCounters()) ;			
 			fm.ActivateCollectiblesCounter() ;
 		}
 	}
@@ -1057,7 +1021,7 @@ public class Game extends JPanel
     	sideBar = new SideBar(player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
     	bat = new Battle() ;
 		
-		pet = new Pet((int) (4 * Math.random())) ;
+		pet = new Pet(0) ;
     	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
     	pet.setPos(player.getPos());
 
@@ -1065,21 +1029,24 @@ public class Game extends JPanel
     	player.setName("Salevieno");
     	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
     	player.setMap(cityMaps[1]) ;
-    	player.setPos(new Point(60, screen.getSize().height / 2)) ;
+    	player.setPos(new Point(155, 408)) ;
 //    	player.getBag().Add(Potion.getAll()[0], 3) ;
 //    	player.getBag().Add(Potion.getAll()[0], 2) ;
 //    	player.getBag().Add(Potion.getAll()[1], 2) ;
 //    	player.getBag().Add(Potion.getAll()[2], 2) ;
 //    	player.getBag().Add(Alchemy.getAll()[0], 2) ;
 //    	player.getBag().Add(Alchemy.getAll()[2], 2) ;
-//    	player.getBag().Add(Forge.getAll()[0], 3) ;
+    	player.getBag().Add(Forge.getAll()[0], 3) ;
+    	player.getBag().Add(Forge.getAll()[1], 3) ;
+    	player.getBag().Add(Forge.getAll()[2], 3) ;
+    	player.getBag().Add(Forge.getAll()[3], 3) ;
     	player.getBag().Add(Equip.getAll()[0], 3) ;
     	player.getBag().Add(Equip.getAll()[1], 3) ;
     	player.getBag().Add(Equip.getAll()[2], 3) ;
 //    	System.out.println(player.getBag().numberItems);
 //    	for (int i = 0; i <= Potion.getAll().length - 1; i += 1) { player.getBag().Add(Potion.getAll()[i], 3) ; }
 //    	for (int i = 0; i <= Alchemy.getAll().length - 1; i += 1) { player.getBag().Add(Alchemy.getAll()[i], 3) ; }
-    	for (int i = 0; i <= Forge.getAll().length - 1; i += 1) { player.getBag().Add(Forge.getAll()[i], 3) ; }
+//    	for (int i = 0; i <= Forge.getAll().length - 1; i += 1) { player.getBag().Add(Forge.getAll()[i], 3) ; }
 //    	for (int i = 0; i <= Food.getAll().length - 1; i += 1) { player.getBag().Add(Food.getAll()[i], 3) ; }
 //    	for (int i = 0; i <= PetItem.getAll().length - 1; i += 1) { player.getBag().Add(PetItem.getAll()[i], 3) ; }
 //    	for (int i = 0; i <= Arrow.getAll().length - 1; i += 1) { player.getBag().Add(Arrow.getAll()[i], 3) ; }
@@ -1151,30 +1118,8 @@ public class Game extends JPanel
 //    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
 //    	Battle.knockback(new Point(200, 200), new Point(210, 220), 10) ;
 //    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(2), null) ;
 //    	System.out.println(player.getQuest().get(0).isComplete());
 //    	System.out.println(player.getQuest().get(1).isComplete());
-    	
-//    	List<Item> itemsOnSale = new ArrayList<>() ;
-//    	itemsOnSale.add(allItems[0]) ;
-//    	itemsOnSale.add(allItems[2]) ;
-//    	itemsOnSale.add(allItems[10]) ;
-//    	itemsOnSale.add(allItems[30]) ;
-//    	itemsOnSale.add(allItems[500]) ;
-//    	shopping = new ShoppingWindow(itemsOnSale) ;
     	
 //    	allGifs = new Gif[2] ;
 //    	allGifs[0] = Player.TentGif ;
@@ -1182,6 +1127,33 @@ public class Game extends JPanel
 //    	Player.TentGif.play(mousePos, Align.center, DP) ;
     	
     	
+//    	for (Buff buff : spell.getBuffs())
+//    	{
+//        	System.out.println(buff);
+//    	}
+
+//    	player.setHotItem(Equip.getAll()[0], 0) ;
+    	
+//    	Spell spell = player.getSpells().get(11) ;
+//    	System.out.println(player.getMagAtk()) ;
+//    	
+//    	spell.applyBuffs(true, player) ;
+//    	
+//    	System.out.println(player.getMagAtk()) ;
+    	
+//    	Spell spell = pet.getSpells().get(4) ;
+//    	spell.incLevel(1) ;
+//    	
+//    	System.out.println(pet.getSpells().get(4).getBuffs());
+//    	System.out.println(pet.getLife()) ;
+//    	
+//    	spell.applyBuffs(true, pet) ;
+//    	
+//    	System.out.println(pet.getLife()) ;
+//    	
+//    	spell.applyBuffs(false, pet) ;
+//    	
+//    	System.out.println(pet.getLife()) ;
 	}
 	
 	private void testing()

@@ -178,6 +178,13 @@ public abstract class LiveBeing
 		return newPos ;
 	}
 	
+	public void incrementCounters()
+	{
+		IncActionCounters() ;
+		if (this instanceof Player) { ((Player) this).SupSpellCounters() ;}
+		BA.getStatus().decreaseStatus() ;
+	}
+	
 	public void IncActionCounters()
 	{
 		mpCounter.inc() ;
@@ -191,7 +198,7 @@ public abstract class LiveBeing
 		if (satiationCounter.finished()) { PA.getSatiation().incCurrentValue(-1) ; satiationCounter.reset() ;}
 		if (this instanceof Player) { if (thirstCounter.finished()) { PA.getThirst().incCurrentValue(-1) ; thirstCounter.reset() ;}}
 	}
-	public void IncBattleActionCounters() {battleActionCounter.inc() ; displayDamage.inc() ;}
+	public void incrementBattleActionCounters() {battleActionCounter.inc() ; displayDamage.inc() ;}
 	public void ResetBattleActions() {battleActionCounter.reset() ; }
 	
 	

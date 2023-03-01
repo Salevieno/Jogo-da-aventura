@@ -9,7 +9,7 @@ import javax.sound.sampled.Clip;
 
 import graphics.DrawingOnPanel;
 import liveBeings.Creature;
-import liveBeings.CreatureTypes;
+import liveBeings.CreatureType;
 import main.Game;
 import screen.Screen;
 import utilities.UtilG;
@@ -51,7 +51,7 @@ public class FieldMap extends GameMap
 		{
 			if (-1 < creatureTypeIDs[c])
 			{
-				CreatureTypes creatureType = Game.getCreatureTypes()[creatureTypeIDs[c]];
+				CreatureType creatureType = Game.getCreatureTypes()[creatureTypeIDs[c]];
 				Creature creature = new Creature(creatureType) ;
 				creatures.add(creature) ;
 			}

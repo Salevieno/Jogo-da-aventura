@@ -30,7 +30,7 @@ import windows.PlayerAttributesWindow;
 
 public class Creature extends LiveBeing
 {
-	private CreatureTypes type ;
+	private CreatureType type ;
 	private Set<Item> Bag ;
 	private int Gold ;
 	private Color color ;
@@ -43,7 +43,7 @@ public class Creature extends LiveBeing
 	
 	public static final String[] SpellKeys = new String[] {"0", "1", "2", "3"} ;
 	
- 	public Creature(CreatureTypes CT)
+ 	public Creature(CreatureType CT)
 	{
  		super(
 				CT.getPA(),
@@ -90,7 +90,7 @@ public class Creature extends LiveBeing
 		follow = false ;
 	}
 
-	public CreatureTypes getType() {return type ;}
+	public CreatureType getType() {return type ;}
 	public List<Spell> getSpell() {return spells ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
 	public BasicAttribute getMp() {return PA.getMp() ;}

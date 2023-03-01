@@ -3,26 +3,26 @@ package components ;
 import java.util.Map;
 
 import items.Item;
-import liveBeings.CreatureTypes;
+import liveBeings.CreatureType;
 import windows.BagWindow;
 
-public class Quests
+public class Quest
 {
 	private int id ;
 	private String name ;
 	private String type ;
 	private boolean isActive ;
 	private boolean isComplete ;
-	private Map<CreatureTypes, Integer> reqCreaturesCounter ;
-	private Map<CreatureTypes, Integer> reqCreatureTypes;
+	private Map<CreatureType, Integer> reqCreaturesCounter ;
+	private Map<CreatureType, Integer> reqCreatureTypes;
 	private Map<Item, Integer> reqItems;
 	private int goldReward ;
 	private int expReward ;
 	private Map<Item, Integer> rewardItems ;
 	private String description ;
 	
-	public Quests(int id, String type, Map<CreatureTypes, Integer> reqCreaturesCounter, 
-			Map<CreatureTypes, Integer> reqCreatureTypes, Map<Item, Integer> reqItems,
+	public Quest(int id, String type, Map<CreatureType, Integer> reqCreaturesCounter, 
+			Map<CreatureType, Integer> reqCreatureTypes, Map<Item, Integer> reqItems,
 			int goldReward, int expReward, Map<Item, Integer> rewardItems, String description)
 	{
 		this.id = id ;
@@ -43,8 +43,8 @@ public class Quests
 	public int getID() {return id ;}
 	public String getName() {return name ;}
 	public String getType() {return type ;}
-	public Map<CreatureTypes, Integer> getCounter() {return reqCreaturesCounter ;}
-	public Map<CreatureTypes, Integer> getReqCreatures() {return reqCreatureTypes ;}
+	public Map<CreatureType, Integer> getCounter() {return reqCreaturesCounter ;}
+	public Map<CreatureType, Integer> getReqCreatures() {return reqCreatureTypes ;}
 	public Map<Item, Integer> getReqItems() {return reqItems ;}
 	public int getGoldReward() {return goldReward ;}
 	public int getExpReward() {return expReward ;}
@@ -63,7 +63,7 @@ public class Quests
 	public void activate() { isActive = true ;}
 	public void deactivate() { isActive = false ;}
 	
-	public void IncReqCreaturesCounter(CreatureTypes creatureType)
+	public void IncReqCreaturesCounter(CreatureType creatureType)
 	{
 		reqCreatureTypes.keySet().forEach(type -> {
 			if (type.equals(creatureType)) {reqCreaturesCounter.put(type, reqCreaturesCounter.get(type) + 1) ;}
@@ -86,4 +86,15 @@ public class Quests
 			if (!bag.contains(item)) {isComplete = false ;}
 		});
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Quests [id=" + id + ", name=" + name + ", type=" + type + ", isActive=" + isActive + ", isComplete="
+				+ isComplete + ", reqCreaturesCounter=" + reqCreaturesCounter + ", reqCreatureTypes=" + reqCreatureTypes
+				+ ", reqItems=" + reqItems + ", goldReward=" + goldReward + ", expReward=" + expReward
+				+ ", rewardItems=" + rewardItems + ", description=" + description + "]";
+	}
+	
+	
 }

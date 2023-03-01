@@ -12,7 +12,7 @@ import java.util.Map;
 
 import components.Building;
 import components.NPCs;
-import components.Quests;
+import components.Quest;
 import graphics.Animations;
 import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;

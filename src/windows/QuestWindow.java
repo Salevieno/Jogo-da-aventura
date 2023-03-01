@@ -5,10 +5,10 @@ import java.awt.Point;
 import java.util.List;
 import java.util.Map;
 
-import components.Quests;
+import components.Quest;
 import graphics.DrawingOnPanel;
 import items.Item;
-import liveBeings.CreatureTypes;
+import liveBeings.CreatureType;
 import liveBeings.Player;
 import main.Game;
 import utilities.Align;
@@ -34,7 +34,7 @@ public class QuestWindow extends GameWindow
 		}
 	}
 	
-	public void display(List<Quests> quests, BagWindow bag, DrawingOnPanel DP)
+	public void display(List<Quest> quests, BagWindow bag, DrawingOnPanel DP)
 	{		
 		if (quests.size() <= 0) { return ;}
 
@@ -43,7 +43,7 @@ public class QuestWindow extends GameWindow
 		Point windowPos = new Point((int)(0.3 * Game.getScreen().getSize().width), (int)(0.15 * Game.getScreen().getSize().height)) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		double angle = DrawingOnPanel.stdAngle ;	
-		Quests quest = quests.get(window) ;
+		Quest quest = quests.get(window) ;
 		Point questPos = UtilG.Translate(windowPos, image.getWidth(null) / 2, 30) ;
 
 		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
@@ -51,16 +51,16 @@ public class QuestWindow extends GameWindow
 		DP.DrawText(questPos, Align.center, angle, quest.getName(), font, Game.ColorPalette[6]) ;
 
 		// draw required creatures
-		Map<CreatureTypes, Integer> reqCreatureTypes = quests.get(window).getReqCreatures() ;
+		Map<CreatureType, Integer> reqCreatureTypes = quests.get(window).getReqCreatures() ;
 		if (reqCreatureTypes != null)
 		{
-			CreatureTypes[] reqCreatureType = new CreatureTypes[0];
+			CreatureType[] reqCreatureType = new CreatureType[0];
 			reqCreatureType = reqCreatureTypes.keySet().toArray(reqCreatureType) ;
 			Point creaturesSectionPos = UtilG.Translate(windowPos, size.width / 2 , 60) ;
 			DP.DrawText(creaturesSectionPos, Align.center, angle, "Criaturas necessárias", font, Game.ColorPalette[9]) ;
 			DP.DrawLine(UtilG.Translate(creaturesSectionPos, -60, 20), UtilG.Translate(creaturesSectionPos, 60, 20), 1, Game.ColorPalette[9]) ;
 			Point creaturePos = UtilG.Translate(windowPos, 50, 80) ;
-			for (CreatureTypes creatureType : reqCreatureType)
+			for (CreatureType creatureType : reqCreatureType)
 			{
 				String creatureName = creatureType.getName() ;
 				creaturePos = UtilG.Translate(creaturePos, 0, creatureType.getSize().height + 4) ;

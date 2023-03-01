@@ -27,7 +27,7 @@ public class BasicAttribute extends LiveBeingAttribute
 	@Override
 	public String toString()
 	{
-		return "BasicAttribute [currentValue=" + currentValue + ", maxValue=" + maxValue + ", multiplier=" + multiplier+ "]" ;
+		return "BasicAttribute [currentValue=" + currentValue + ", bonus=" + bonus + ", maxValue=" + maxValue + ", multiplier=" + multiplier+ "]" ;
 	}
 	
 }

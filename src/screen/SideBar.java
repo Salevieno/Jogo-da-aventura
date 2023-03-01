@@ -5,24 +5,17 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import components.GameIcon;
-import components.QuestSkills;
 import graphics.DrawingOnPanel;
 import liveBeings.HotKeysBar;
 import liveBeings.Pet;
 import liveBeings.Player;
-import liveBeings.Spell;
-import liveBeings.SpellType;
 import liveBeings.SpellsBar;
 import main.Game;
 import utilities.Align;
-import utilities.Directions;
-import utilities.Scale;
 import utilities.UtilG;
 
 public class SideBar
@@ -33,26 +26,26 @@ public class SideBar
 	public SideBar(Image playerImage, Image petImage)
 	{
     	String path = Game.ImagesPath + "\\Icons\\";
-		Image Options = UtilG.loadImage(path + "Icon_settings.png") ;
-		Image Bag = UtilG.loadImage(path + "Icon1_Bag.png") ;
-		Image Quest = UtilG.loadImage(path + "Icon2_Quest.png") ;
-		Image Map = UtilG.loadImage(path + "Icon3_Map.png") ;
-		Image Book = UtilG.loadImage(path + "Icon4_Book.png") ;
-    	Image Tent = UtilG.loadImage(path + "Icon5_Tent.png") ;
+//		Image Options = UtilG.loadImage(path + "Icon_settings.png") ;
+//		Image Bag = UtilG.loadImage(path + "Icon1_Bag.png") ;
+//		Image Quest = UtilG.loadImage(path + "Icon2_Quest.png") ;
+//		Image Map = UtilG.loadImage(path + "Icon3_Map.png") ;
+//		Image Book = UtilG.loadImage(path + "Icon4_Book.png") ;
+//    	Image Tent = UtilG.loadImage(path + "Icon5_Tent.png") ;
     	//Image PlayerImage = Player ;
     	//Image PetImage = UtilG.loadImage(path + "PetType" + 0 + ".png") ;
-		Image SkillsTree = UtilG.loadImage(path + "Icon8_SkillsTree.png") ;
-		Image SelectedOptions = UtilG.loadImage(path + "Icon_settingsSelected.png") ;
-		Image SelectedBag = UtilG.loadImage(path + "Icon1_BagSelected.png") ;
-		Image SelectedQuest = UtilG.loadImage(path + "Icon2_QuestSelected.png") ;
-		Image SelectedMap = UtilG.loadImage(path + "Icon3_MapSelected.png") ;
-		Image SelectedBook = UtilG.loadImage(path + "Icon4_BookSelected.png") ;
-    	Image SelectedTent = UtilG.loadImage(path + "Icon5_TentSelected.png") ;
+//		Image SkillsTree = UtilG.loadImage(path + "Icon8_SkillsTree.png") ;
+//		Image SelectedOptions = UtilG.loadImage(path + "Icon_settingsSelected.png") ;
+//		Image SelectedBag = UtilG.loadImage(path + "Icon1_BagSelected.png") ;
+//		Image SelectedQuest = UtilG.loadImage(path + "Icon2_QuestSelected.png") ;
+//		Image SelectedMap = UtilG.loadImage(path + "Icon3_MapSelected.png") ;
+//		Image SelectedBook = UtilG.loadImage(path + "Icon4_BookSelected.png") ;
+//    	Image SelectedTent = UtilG.loadImage(path + "Icon5_TentSelected.png") ;
     	//Image PlayerSelectedImage = UtilG.loadImage(path + "Player.png") ;
     	//Image PetSelectedImage = Pet.g ;
-		Image SelectedSkillsTree = UtilG.loadImage(path + "Icon8_SelectedSkillsTree.png") ;
-		Image[] SideBarIconsImages = new Image[] {Options, Bag, Quest, Map, Book, Tent, playerImage, petImage, SkillsTree} ;
-		Image[] SideBarIconsSelectedImages = new Image[] {SelectedOptions, SelectedBag, SelectedQuest, SelectedMap, SelectedBook, SelectedTent, playerImage, petImage, SelectedSkillsTree} ;
+//		Image SelectedSkillsTree = UtilG.loadImage(path + "Icon8_SelectedSkillsTree.png") ;
+//		Image[] SideBarIconsImages = new Image[] {Options, Bag, Quest, Map, Book, Tent, playerImage, petImage, SkillsTree} ;
+//		Image[] SideBarIconsSelectedImages = new Image[] {SelectedOptions, SelectedBag, SelectedQuest, SelectedMap, SelectedBook, SelectedTent, playerImage, petImage, SelectedSkillsTree} ;
 
 		Point botLeftPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height - 250) ;
 		icons = new HashSet<>() ;
@@ -215,7 +208,7 @@ public class SideBar
 //		}
 //		
 //		// Hotkeys
-		HotKeysBar.display(mousePos, DP) ;
+		HotKeysBar.display(player.getHotItems(), mousePos, DP) ;
 //		DP.DrawRoundRect(new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70), Align.topLeft, new Dimension(36, 60), 1, colorPalette[7], colorPalette[19], true) ;
 //		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 //		{

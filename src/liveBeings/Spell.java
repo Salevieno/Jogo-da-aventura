@@ -1,17 +1,13 @@
 package liveBeings ;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
-import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
-import attributes.LiveBeingAttribute;
 import attributes.PersonalAttributes;
 import components.SpellTypes;
 import utilities.Elements;
@@ -28,6 +24,7 @@ public class Spell
 	//private int cooldown ;
 	//private int effectDuration ;
 	private List<Buff> buffs;
+	private List<Buff> nerfs;
 	private double[] AtkMod ;
 	private double[] DefMod ;
 	private double[] DexMod ;
@@ -59,6 +56,7 @@ public class Spell
 		//this.cooldown = spellType.getCooldown() ;
 		//this.effectDuration = spellType.getEffectDuration() ;
 		this.buffs = spellType.getBuffs() ;
+		this.nerfs = spellType.getNerfs() ;
 		this.AtkMod = spellType.getAtkMod() ;
 		this.DefMod = spellType.getDefMod() ;
 		this.DexMod = spellType.getDexMod() ;
@@ -85,6 +83,7 @@ public class Spell
 	public Map<SpellType, Integer> getPreRequisites() {return preRequisites ;}
 	public int getCooldown() {return cooldownCounter.getDuration() ;}
 	public List<Buff> getBuffs() {return buffs ;}
+//	public List<Buff> getNerfs() {return nerfs ;}
 	public double[] getAtkMod() {return AtkMod ;}
 	public double[] getDefMod() {return DefMod ;}
 	public double[] getDexMod() {return DexMod ;}
@@ -131,6 +130,44 @@ public class Spell
 		
 		return preRequisitesMet ;
 	}
+	
+	public void applyBuff(int mult, LiveBeing receiver, Buff buff)
+	{
+		Map<Attributes, Double> percIncrease = buff.getPercentIncrease() ;
+		Map<Attributes, Double> valueIncrease = buff.getValueIncrease() ;
+		for (Attributes att : Attributes.values())
+		{
+			if (att.equals(Attributes.exp) | att.equals(Attributes.satiation) | att.equals(Attributes.thirst))
+			{
+				continue ;
+			}
+			
+			BasicAttribute personalAttribute = receiver.getPA().mapAttributes(att) ;
+			if (personalAttribute != null)
+			{
+				double increment = personalAttribute.getMaxValue() * percIncrease.get(att) + valueIncrease.get(att) ;
+				personalAttribute.incBonus((int) Math.round(increment * level * mult));
+				
+				continue ;
+			}
+			
+			BasicBattleAttribute battleAttribute = receiver.getBA().mapAttributes(att) ;
+			if (battleAttribute != null)
+			{
+				double increment = battleAttribute.getBaseValue() * 10*percIncrease.get(att) + valueIncrease.get(att) ;
+				battleAttribute.incBonus(Math.round(increment * level * mult));
+				
+				continue ;
+			}
+			
+			BattleSpecialAttribute battleSpecialAttribute = receiver.getBA().mapSpecialAttributes(att) ;
+			if (battleSpecialAttribute != null)
+			{
+				battleSpecialAttribute.incAtkChanceBonus(Math.round(percIncrease.get(att) * level * mult));
+				battleSpecialAttribute.incAtkChanceBonus(Math.round(valueIncrease.get(att) * level * mult));
+			}
+		}
+	}
 
 	public void applyBuffs(boolean activate, LiveBeing receiver)
 	{
@@ -138,40 +175,17 @@ public class Spell
 
 		for (Buff buff : buffs)
 		{
-			Map<Attributes, Double> percIncrease = buff.getPercentIncrease() ;
-			Map<Attributes, Double> valueIncrease = buff.getValueIncrease() ;
-			for (Attributes att : Attributes.values())
-			{
-				if (att.equals(Attributes.exp) | att.equals(Attributes.satiation) | att.equals(Attributes.thirst))
-				{
-					continue ;
-				}
-				
-				BasicAttribute personalAttribute = receiver.getPA().mapAttributes(att) ;
-				if (personalAttribute != null)
-				{
-					double increment = personalAttribute.getMaxValue() * percIncrease.get(att) + valueIncrease.get(att) ;
-					personalAttribute.incCurrentValue((int) Math.round(increment * level * mult));
-					
-					continue ;
-				}
-				
-				BasicBattleAttribute battleAttribute = receiver.getBA().mapAttributes(att) ;
-				if (battleAttribute != null)
-				{
-					double increment = battleAttribute.getBaseValue() * 10*percIncrease.get(att) + valueIncrease.get(att) ;
-					battleAttribute.incBonus(Math.round(increment * level * mult));
-					
-					continue ;
-				}
-				
-				BattleSpecialAttribute battleSpecialAttribute = receiver.getBA().mapSpecialAttributes(att) ;
-				if (battleSpecialAttribute != null)
-				{
-					battleSpecialAttribute.incAtkChanceBonus(Math.round(percIncrease.get(att) * level * mult));
-					battleSpecialAttribute.incAtkChanceBonus(Math.round(valueIncrease.get(att) * level * mult));
-				}
-			}
+			applyBuff(mult, receiver, buff) ;
+		}
+	}
+
+	public void applyNerfs(boolean activate, LiveBeing receiver)
+	{
+		int mult = activate ? 1 : -1 ;
+
+		for (Buff nerf : nerfs)
+		{
+			applyBuff(mult, receiver, nerf) ;
 		}
 	}
 	

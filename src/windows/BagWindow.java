@@ -45,6 +45,7 @@ public class BagWindow extends GameWindow
 	private Map<Item, Integer> activeItems ;
 	private int gold ;
 
+	public static Image SelectedBag = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelected.png") ;
 	public static Image MenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagMenu.png") ;
 	public static Image SelectedMenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedMenu.png") ;
     public static Image SlotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
@@ -92,52 +93,61 @@ public class BagWindow extends GameWindow
 		{
 			if (pot.containsKey(item)) { pot.put((Potion) item, pot.get((Potion) item) + amount) ;}
 			else { pot.put((Potion) item, amount) ;}
-//			numberItems = pot.size() ;
+			numberItems = pot.size() ;
 		}
 		if (item instanceof Alchemy)
 		{
 			if (alch.containsKey(item)) { alch.put((Alchemy) item, alch.get((Alchemy) item) + amount) ;}
 			else { alch.put((Alchemy) item, amount) ;}
+			numberItems = alch.size() ;
 		}
 		if (item instanceof Forge)
 		{
 			if (forges.containsKey(item)) { forges.put((Forge) item, forges.get((Forge) item) + amount) ;}
 			else { forges.put((Forge) item, amount) ;}
+			numberItems = forges.size() ;
 		}
 		if (item instanceof PetItem)
 		{
 			if (petItems.containsKey(item)) { petItems.put((PetItem) item, petItems.get((PetItem) item) + amount) ;}
 			else { petItems.put((PetItem) item, amount) ;}
+			numberItems = petItems.size() ;
 		}
 		if (item instanceof Food)
 		{
 			if (foods.containsKey(item)) { foods.put((Food) item, foods.get((Food) item) + amount) ;}
 			else { foods.put((Food) item, amount) ;}
+			numberItems = foods.size() ;
 		}
 		if (item instanceof Arrow)
 		{
 			if (arrows.containsKey(item)) { arrows.put((Arrow) item, arrows.get((Arrow) item) + amount) ;}
 			else { arrows.put((Arrow) item, amount) ;}
+			numberItems = arrows.size() ;
 		}
 		if (item instanceof GeneralItem)
 		{
 			if (genItems.containsKey(item)) { genItems.put((GeneralItem) item, genItems.get((GeneralItem) item) + amount) ;}
 			else { genItems.put((GeneralItem) item, amount) ;}
+			numberItems = genItems.size() ;
 		}
 		if (item instanceof Equip)
 		{
 			if (equips.containsKey(item)) { equips.put((Equip) item, equips.get((Equip) item) + amount) ;}
 			else { equips.put((Equip) item, amount) ;}
+			numberItems = equips.size() ;
 		}
 		if (item instanceof Fab)
 		{
 			if (fabItems.containsKey(item)) { fabItems.put((Fab) item, fabItems.get((Fab) item) + amount) ;}
 			else { fabItems.put((Fab) item, amount) ;}
+			numberItems = fabItems.size() ;
 		}
 		if (item instanceof QuestItem)
 		{
 			if (questItems.containsKey(item)) { questItems.put((QuestItem) item, questItems.get((QuestItem) item) + amount) ;}
 			else { questItems.put((QuestItem) item, amount) ;}
+			numberItems = questItems.size() ;
 		}
 	}
 //	public void removeItem(Map<Item, Integer> items, Item item, int amount)
@@ -355,6 +365,11 @@ public class BagWindow extends GameWindow
 			{
 				menuDown() ;
 			}
+			
+			if (action.equals("Enter") | action.equals("MouseLeftClick"))
+			{
+				tabUp() ;
+			}
 		}
 		if (getTab() == 1)
 		{
@@ -374,18 +389,14 @@ public class BagWindow extends GameWindow
 			{
 				windowDown() ;
 			}
-		}
-		
-		if (action.equals("Enter") | action.equals("MouseLeftClick"))
-		{
-			tabUp() ;
-		}
-		if (action.equals("Escape") | action.equals("MouseRightClick"))
-		{
-			tabDown() ;
-			setItem(0) ;
+			if (action.equals("Escape") | action.equals("MouseRightClick"))
+			{
+				tabDown() ;
+				setItem(0) ;
+			}
 		}
 	}
+
 	
 	public void display(Point MousePos, String[] allText, DrawingOnPanel DP)
 	{
@@ -396,7 +407,7 @@ public class BagWindow extends GameWindow
 		Font ItemFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		
 		
-		// Draw menus
+		// draw menus
 		int MenuH = MenuImage.getHeight(null) ;
 		for (int m = 0 ; m <= allText.length - 3 ; m += 1)
 		{
@@ -408,8 +419,8 @@ public class BagWindow extends GameWindow
 			DP.DrawText(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, allText[m + 1], MenuFont, TextColor) ;
 		}
 		
-		// Draw bag
-		DP.DrawImage(image, windowPos, Align.topLeft) ;
+		// draw bag
+		DP.DrawImage(tab == 0 ? image : SelectedBag, windowPos, Align.topLeft) ;
 		
 		// draw items
 		int slotW = SlotImage.getWidth(null) ;

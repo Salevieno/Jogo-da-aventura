@@ -1,9 +1,7 @@
 package windows;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
@@ -33,7 +31,8 @@ public class ForgeWindow extends GameWindow
 
 	public void setItemsForForge(List<Equip> itemsForForge)
 	{
-		this.itemsForForge = itemsForForge;
+		this.itemsForForge = itemsForForge ;
+		numberItems = itemsForForge.size() ;
 	}
 
 
@@ -54,24 +53,24 @@ public class ForgeWindow extends GameWindow
 	
 	public Equip selectedEquip() { return itemsForForge.get(item) ;}
 	
-	public void forge(BagWindow bag)
+	public int forge(BagWindow bag)
 	{
 
 		Equip selectedEquip = selectedEquip() ;
 		
-		if (selectedEquip.getForgeLevel() == 10) { menu = 2 ; return ;}
-		
+		if (selectedEquip.getForgeLevel() == 10) { return 2 ;}
+
 		int runeId = selectedEquip.isSpecial() ? 20 : 0 ;
 		runeId += 2 * selectedEquip.getForgeLevel() ;
 		runeId += selectedEquip.isWeapon() ? 0 : 1 ;
 		Forge rune = Forge.getAll()[runeId] ;
 
-		if (!bag.contains(rune)) { menu = 3 ; return ;}
-		
+		if (!bag.contains(rune)) { return 3 ;}
+
 		int forgePrice = 100 + 1000 * selectedEquip.getForgeLevel() ;
 
 
-		if (!bag.hasEnoughGold(forgePrice)) { menu = 4 ; return ;}
+		if (!bag.hasEnoughGold(forgePrice)) { return 4 ;}
 
 
 		double chanceForge = 1 - 0.08 * selectedEquip.getForgeLevel() ;
@@ -84,13 +83,13 @@ public class ForgeWindow extends GameWindow
 		{
 			selectedEquip.incForgeLevel() ;
 			
-			menu = 5 ; 
-			return ;
+			return 5 ;
 		}
 		
-		menu = 6 ; 
 		selectedEquip.resetForgeLevel() ;
 		bag.Remove(selectedEquip, 1);
+		
+		return 6 ; 
 
 
 		// TODO overwrite save
@@ -98,6 +97,7 @@ public class ForgeWindow extends GameWindow
 	
 	public void display(DrawingOnPanel DP)
 	{
+		
 		Point windowPos = new Point((int)(0.4*Game.getScreen().getSize().width), (int)(0.2*Game.getScreen().getSize().height)) ;
 		Point itemPos = UtilG.Translate(windowPos, 30, 70) ;
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 28) ;

@@ -43,16 +43,13 @@ public class NPCs
 	{
 		this.id = id ;
 		this.type = type ;
-		//this.Name = Name ;
 		this.pos = Pos ;
-		//this.image = image ;
-		//this.Map = Map ;
-		//this.PosRelToBuilding = PosRelToBuilding ;
-		//this.Info = Info ;
-		//this.color = color ;
 		selOption = 0 ;
 		menu = 0 ;
-		numberMenus = type.getSpeech().length - 1 ;
+		numberMenus = 0 ;
+		
+		if (type.getSpeech() != null) { numberMenus = type.getSpeech().length - 1 ;}
+		
 		switch (type.getJob())
 		{
 			case itemsSeller:
@@ -86,67 +83,6 @@ public class NPCs
 			}
 			default: window = null ; break ;
 		}
-		//Firstcontact = true ;
-		
-		/*
-		 * private int ScreenL, ScreenH ;
-			private int TextCat ;
-			private String[][] AllText ;
-			private int[] AllTextCat ;  
-			private Icon[] icons ;
-			
-			public int[] Menu ;
-			private int[] SelectedItem, SelectedWindow ;
-			private String[][] AcceptedChoices ;
-			private int ElementalEquipID ;
-			private String TypedDeposit, TypedWithdraw ;
-			private int SelectedSkill ;
-			private int FabAmount ;
-			private int ForgeEquip ;
-			private int selChoice ;
-		
-			private static String NPCTextFontName = Game.MainFontName ;
-			private static Font NPCTextFont ;
-			private static Image SpeakingBubbleImage, BoatImage ;
-		 * 
-		 * ScreenL = Game.getScreen().getSize().x ;
-		ScreenH = Game.getScreen().getSize().y ;
-		this.AllText = AllText ;
-		this.AllTextCat = AllTextCat ;
-		this.icons = icons ;
-
-		Menu = new int[149] ;
-		SelectedItem = new int[3] ;		// [Elemental, Crafting, Shopping]
-		SelectedWindow = new int[2] ; 	// [Crafting, Shopping]
-		AcceptedChoices = new String[6][] ;
-		if (player.getLanguage().equals("P"))
-		{
-			AcceptedChoices[0] = new String[] {"Sim", "Nï¿½o"} ;
-			AcceptedChoices[1] = new String[] {"Vender", "Comprar", "Nada"} ;
-			AcceptedChoices[2] = new String[] {"Colocar dinheiro", "Sacar dinheiro", "Sï¿½ estou passando"} ;
-			AcceptedChoices[3] = new String[] {"Arma", "Escudo/Bandana", "Vestimenta"} ;
-			AcceptedChoices[4] = new String[] {"Slot 1", "Slot 2", "Slot 3"} ;
-			AcceptedChoices[5] = new String[] {"Enter"} ;
-		} else if (player.getLanguage().equals("E"))
-		{
-			AcceptedChoices[0] = new String[] {"(1) Yes", "(2) No"} ;
-			AcceptedChoices[1] = new String[] {"(1) Sell", "(2) Buy", "(3) Nothing"} ;
-			AcceptedChoices[2] = new String[] {"(1) Deposit", "(2) Withdraw", "(3) Nope"} ;
-			AcceptedChoices[3] = new String[] {"Weapon (1)", "Shield (2)", "Armor (3)"} ;
-			AcceptedChoices[4] = new String[] {"(1)", "(2)", "(3)"} ;
-			AcceptedChoices[5] = new String[] {"Enter"} ;
-		}		
-		ElementalEquipID = -1 ;
-		TypedDeposit = "" ;
-		TypedWithdraw = "" ;
-		SelectedSkill = 1 ;
-		FabAmount = 1 ;
-		ForgeEquip = -1;
-		
-		NPCTextFont = new Font(NPCTextFontName, Font.BOLD, 20) ;
-		SpeakingBubbleImage = UtilG.loadImage(ImagesPath + "SpeakingBubble.png") ;
-		BoatImage = UtilG.loadImage(ImagesPath + "Boat.png") ;
-		 * */
 	}
 
 	public int getID() {return id ;}
@@ -157,15 +93,7 @@ public class NPCs
 	
 	public static NPCType typeFromJob(NPCJobs job)
 	{
-		for (NPCType npcType : Game.getNPCTypes())
-		{
-			if (job.equals(npcType.getJob()))
-			{
-				return npcType ;
-			}
-		}
-		
-		return null ;
+		return Arrays.asList(Game.getNPCTypes()).stream().filter(npcType -> job.equals(npcType.getJob())).toList().get(0) ;
 	}
 
 	public void Contact(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
@@ -176,8 +104,6 @@ public class NPCs
 			navigate(action) ;
 		}
 		speak(pos, DP) ;
-		
-		if (player.getCurrentAction() == null) { return ;}
 		
 		switch (type.getJob())
 		{		
@@ -315,13 +241,18 @@ public class NPCs
 	
 	public void forgerAction(BagWindow bag, String action, ForgeWindow forgeWindow, DrawingOnPanel DP)
 	{
+	
+		if (menu == 0) { return ;}
+		
 		forgeWindow.display(DP) ;
 		
 		if (action == null) { return ;}
 
-		if (action.equals("Enter"))
+		forgeWindow.navigate(action) ;
+		// TODO a forja só deve acontecer no menu 1
+		if (action.equals("Enter") & 2 <= menu)
 		{
-			forgeWindow.forge(bag) ;
+			menu = forgeWindow.forge(bag) ;
 		}
 		
 	}
