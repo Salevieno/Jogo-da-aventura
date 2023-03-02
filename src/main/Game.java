@@ -794,7 +794,7 @@ public class Game extends JPanel
 		if (player.isInBattle())
 		{
 			player.incrementBattleActionCounters() ;
-			pet.incrementBattleActionCounters() ;
+			if (pet != null) {pet.incrementBattleActionCounters() ;}
 			player.getOpponent().incrementBattleActionCounters() ;
 		}
 	}
@@ -893,7 +893,7 @@ public class Game extends JPanel
 		
 		
 		// draw the map (cities, forest, etc.)
-//		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
+		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
 		sideBar.display(player, pet, mousePos, DP);
 		
 		// creatures act
@@ -903,7 +903,7 @@ public class Game extends JPanel
 			for (Creature creature : fm.getCreatures())
 			{				
 				creature.act(player.getPos(), player.getMap()) ;
-//				creature.display(creature.getPos(), Scale.unit, DP) ;
+				creature.display(creature.getPos(), Scale.unit, DP) ;
 //				creature.DrawAttributes(0, DP) ;
 			}
 			shouldRepaint = true ;
@@ -922,23 +922,23 @@ public class Game extends JPanel
 		        	player.getMoveCounter().reset() ;
 		        }
 			}
-		}		
+		}
 		if (player.isMoving())
 		{
 			player.move(pet) ;
 			if (player.isDoneMoving())
 			{
 				if (player.getOpponent() == null) { player.setState(LiveBeingStates.idle) ;}
-				else { player.setState(LiveBeingStates.fighting) ;};
+				else { player.setState(LiveBeingStates.fighting) ;}
 			}
 		}
-//		player.DrawAttributes(0, DP) ;
-//		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
-//		if (player.weaponIsEquipped())
-//		{
-//			player.DrawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
-//		}
-//		player.displayState(DP) ;
+		player.DrawAttributes(0, DP) ;
+		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
+		if (player.weaponIsEquipped())
+		{
+			player.DrawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
+		}
+		player.displayState(DP) ;
 		
 		
 		// pet acts
@@ -976,7 +976,7 @@ public class Game extends JPanel
 		
 		// level up the player and the pet if they should
 		player.checkLevelUp(ani[4]) ;
-		pet.checkLevelUp(ani[4]) ;
+		if (pet != null) { pet.checkLevelUp(ani[4]) ;}
 //		if (!ani.isActive(12))
 //		{
 //			player.checkLevelUp(ani) ;
@@ -1059,14 +1059,14 @@ public class Game extends JPanel
     	sideBar = new SideBar(player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
     	bat = new Battle() ;
 		
-		pet = new Pet(0) ;
-    	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
-    	pet.setPos(player.getPos());
+//		pet = new Pet(0) ;
+//    	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
+//    	pet.setPos(player.getPos());
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
     	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
-    	player.setMap(fieldMaps[12]) ;
+    	player.setMap(cityMaps[1]) ;
     	player.setPos(new Point(226, 473)) ;
 //    	player.getBag().Add(Potion.getAll()[0], 3) ;
 //    	player.getBag().Add(Potion.getAll()[0], 2) ;
@@ -1192,7 +1192,7 @@ public class Game extends JPanel
 //    	spell.applyBuffs(false, pet) ;
 //    	
 //    	System.out.println(pet.getLife()) ;
-    	System.out.println(fieldMaps[12].allColliders());
+//    	System.out.println(fieldMaps[12].allColliders());
 	}
 	
 	private void testing()

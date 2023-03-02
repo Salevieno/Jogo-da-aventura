@@ -56,6 +56,8 @@ public class BattleAttributes
 	public BattleSpecialAttributeWithDamage getPoison() {return poison ;}
 	public BattleSpecialAttribute getSilence() {return silence ;}
 	public LiveBeingStatus getStatus() {return status ;}
+	
+	public void resetStatus() { status = new LiveBeingStatus() ;}
 
 	public BasicBattleAttribute mapAttributes(Attributes att)
 	{

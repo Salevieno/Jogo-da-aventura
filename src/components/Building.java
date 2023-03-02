@@ -1,5 +1,6 @@
 package components ;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image ;
@@ -27,7 +28,20 @@ public class Building
 		
 		switch (type.getName())
 		{
-			case "Hospital": colliders.add(new Collider(new Point(pos.x + 20, pos.y + 20))) ; break ;
+			case "Hospital": 
+			{
+				for (int i = 0 ; i <= 86 ; i += 1)
+				{
+					colliders.add(new Collider(new Point(pos.x + i, pos.y))) ;
+				}
+				
+				for (int i = 118 ; i <= 177 ; i += 1)
+				{
+					colliders.add(new Collider(new Point(pos.x + i, pos.y))) ;
+				}
+				
+				 break ;
+			}
 			default: break ;
 		}
 	}
@@ -45,6 +59,11 @@ public class Building
 		{
 			Image image = type.getImage() ;
 			DP.DrawImage(image, pos, angle, scale, Align.bottomLeft) ;
+			
+//			for (Collider collider : colliders)
+//			{
+//				DP.DrawRect(collider.getPos(), Align.center, new Dimension(1, 1), 1, Color.red, null) ;
+//			}
 			
 			return ;
 		}

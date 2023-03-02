@@ -437,6 +437,7 @@ public class Player extends LiveBeing
 	public static SpellType[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 139, 152) ;}
 	
 	public void discoverCreature(CreatureType creatureType) { bestiary.addDiscoveredCreature(creatureType) ;}
+	public void resetClosestCreature() { closestCreature = null ;}
 	public void resetOpponent() { opponent = null ;}
 
 	public boolean isMoving() { return (state.equals(LiveBeingStates.moving)) ;}
@@ -500,7 +501,6 @@ public class Player extends LiveBeing
 //		}	
 		
 		Point newPos = CalcNewPos() ;
-		System.out.println(newPos) ;
 		if (Game.getScreen().posIsInMap(newPos))
 		{	
 			if (map.groundIsWalkable(newPos, elem[4]))
@@ -1180,6 +1180,7 @@ public class Player extends LiveBeing
 		PA.getLife().setToMaximum(); ;
 		PA.getMp().setToMaximum(); ;
 		PA.getSatiation().setToMaximum() ;
+		BA.resetStatus() ;
 		state = LiveBeingStates.idle ;
 		resetPosition() ;
 	}

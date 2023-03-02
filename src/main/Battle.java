@@ -171,7 +171,6 @@ public class Battle
 	}
 	
 	
-	// ação da batalha
 	private void ActivateCounters(Player player, Pet pet, Creature creature)
 	{
 		if (player.getBattleActionCounter().finished() & player.getCurrentBattleAction() != null)
@@ -182,10 +181,13 @@ public class Battle
 			}
 //			UtilS.PrintBattleActions(6, "Player", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
 		}
-		if (pet.getBattleActionCounter().finished() & pet.isDefending())
+		if (pet != null)
 		{
-//			UtilS.PrintBattleActions(6, "Pet", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
- 			pet.DeactivateDef() ;
+			if (pet.getBattleActionCounter().finished() & pet.isDefending())
+			{
+//				UtilS.PrintBattleActions(6, "Pet", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
+	 			pet.DeactivateDef() ;
+			}
 		}
 		if (creature.getBattleActionCounter().finished() & creature.isDefending())
 		{
@@ -314,13 +316,21 @@ public class Battle
 	{
 		ActivateCounters(player, pet, creature) ;
 		int damageStyle = player.getSettings().getDamageAnimation() ;
-		LiveBeing creatureTarget = creature.chooseTarget(player.isAlive(), pet.isAlive()).equals("player") ? player : pet ;
+		LiveBeing creatureTarget = player ;
+		if (pet != null) { creatureTarget = creature.chooseTarget(player.isAlive(), pet.isAlive()).equals("player") ? player : pet ;}
 		
 		runTurn(player, creature, damageStyle, ani[0], DP) ;
-		runTurn(pet, creature, damageStyle, ani[1], DP) ;
+		if (pet != null) {runTurn(pet, creature, damageStyle, ani[1], DP) ;}
 		runTurn(creature, creatureTarget, damageStyle, ani[2], DP) ;
 		
-		if (creature.isAlive() & (player.isAlive() | pet.isAlive())) { return ;}
+		if (pet != null)
+		{
+			if (creature.isAlive() & (player.isAlive() | pet.isAlive())) { return ;}
+		}
+		else
+		{
+			if (creature.isAlive() & player.isAlive()) { return ;}
+		}
 		
 		FinishBattle(player, pet, creature, ani[3]) ;
 	}
@@ -329,6 +339,7 @@ public class Battle
 	{
 		player.setState(LiveBeingStates.idle) ;
 		player.resetOpponent() ;
+		player.resetClosestCreature() ;
 		
 		for (Spell spell : player.getSpells())
 		{
@@ -356,19 +367,22 @@ public class Battle
 			{
 				player.win(creature, winAni) ;
 			}
-			if (pet.isAlive())
-			{
-				pet.Win(creature) ;
-			}
-			creature.Dies() ;
 			player.resetAction() ;
 			player.resetBattleAction() ;
-			pet.ResetBattleActions() ;
+			if (pet != null)
+			{
+				if (pet.isAlive())
+				{
+					pet.Win(creature) ;
+				}
+				pet.ResetBattleActions() ;
+			}
+			creature.Dies() ;
 		}
 		else
 		{
 			player.dies() ;
-			pet.Dies() ;
+			if (pet != null) {pet.Dies() ;}
 			creature.setFollow(false) ;
 		}
 	}

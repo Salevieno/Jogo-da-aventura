@@ -75,6 +75,7 @@ public class FieldMap extends GameMap
 	
 	public void ActivateCollectiblesCounter()
 	{
+		// TODO investigar concurrentmodificationexception
 		for (Collectible collectible : collectibles)
 		{
 			if (collectible.getCounter().finished()) { AddCollectibles() ;}
