@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 import graphics.DrawingOnPanel;
 import main.Game;
@@ -15,16 +17,26 @@ public class Building
 {
 	private BuildingType type ;
 	private Point pos ;
+	private List<Collider> colliders ;
 	
 	public Building(BuildingType type, Point pos)
 	{
 		this.type = type ;
 		this.pos = pos ;
+		colliders = new ArrayList<>() ;
+		
+		switch (type.getName())
+		{
+			case "Hospital": colliders.add(new Collider(new Point(pos.x + 20, pos.y + 20))) ; break ;
+			default: break ;
+		}
 	}
 
 	
-	public BuildingType getType() {return type ;}
-	public Point getPos() {return pos ;}
+	public BuildingType getType() { return type ;}
+	public Point getPos() { return pos ;}
+	public List<Collider> getColliders() { return colliders ;}
+	
 	public boolean isInside(Point pos) {return UtilG.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null)), UtilG.getImageSize(type.getImage())) ;}
 		
 	public void display(Point playerPos, double angle, Scale scale, DrawingOnPanel DP)

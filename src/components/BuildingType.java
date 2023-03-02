@@ -28,7 +28,8 @@ public class BuildingType
 	public void setInsideImage(Image insideImage) { this.insideImage = insideImage ;}
 	public Image[] getOrnamentImages() {return ornamentImages ;}
 	public void setOrnamentImages(Image[] ornamentImages) { this.ornamentImages = ornamentImages ;}
-	public List<NPCs> getNPCs() {return npc ;}	
+	public List<NPCs> getNPCs() {return npc ;}
+
 
 	public boolean hasNPCs() {return npc != null ;}
 

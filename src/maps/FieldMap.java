@@ -4,9 +4,11 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.sampled.Clip;
 
+import components.NPCs;
 import graphics.DrawingOnPanel;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
@@ -21,9 +23,9 @@ public class FieldMap extends GameMap
 	private int level ;
 	private int[] collectibleDelay ;
 	
-	public FieldMap(String name, int continent, int[] connections, Image image, Clip music, int collectibleLevel, int[] collectibleDelay, int[] creatureTypeIDs)
+	public FieldMap(String name, int continent, int[] connections, Image image, Clip music, int collectibleLevel, int[] collectibleDelay, int[] creatureTypeIDs, List<NPCs> npcs)
 	{
-		super(name, continent, connections, image, music, null, null) ;
+		super(name, continent, connections, image, music, null, npcs) ;
 		this.level = collectibleLevel ;
 		this.collectibleDelay = collectibleDelay ;
 		
@@ -36,7 +38,7 @@ public class FieldMap extends GameMap
 		for (int me = 0 ; me <= 4 ; ++me)
 		{
 			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
-			mapElem.add(new MapElements(me, "ForestTree", randomPos, UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem6_TreeForest.png"))) ;				
+			mapElems.add(new MapElements(me, "ForestTree", randomPos, UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem6_TreeForest.png"))) ;				
 		}
 		
 		

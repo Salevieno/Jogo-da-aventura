@@ -33,9 +33,9 @@ Esses são seus atributos básicos de combate, coleta, ouro e equipamentos, assi
 Muito bem! O próximo passo importante  conhecer os NPCs. Vou apresentá-los rapidamente a vc. Eu recomendo falar com cada um deles para aprender o que eles fazem (Enter para continuar).
 Hora de aprender a lutar! Vamos para a floresta encarar umas criaturas.
 Ao tocar em uma criatura, vcs entram em combate. Vc pode atacar no 'a', se defender no 'd' e usar habilidades usando as teclas no menu da direita. Você tambm pode abrir sua mochila e usar itens, como poções, durante a batalha. Use quantos quiser! (Enter para continuar).
-Finalmente, vamos aprender a coletar. Ã‰ mais fácil do que vc pensa. Simplesmente toque no item que vc quer coletar - frutinha, erva, madeira ou metal. Em mapas de alto nível, vc precisa de um bom nível de coleta para coletar os itens.
+Finalmente, vamos aprender a coletar. É mais fácil do que vc pensa. Simplesmente toque no item que vc quer coletar - frutinha, erva, madeira ou metal. Em mapas de alto nível, vc precisa de um bom nível de coleta para coletar os itens.
 Muito bem, saiba que para sobreviver  necessário não ficar com fome (barrinha amarela). Vc pode comer frutinhas e outras comidas que encontrar pelo caminho para se saciar. Vou te dar cinco frutinhas para ajudar neste começo (Enter para continuar).
-Ã‰ isso, você  demais! Você pode jogar livremente agora. Eu recomendo falar com a garota rosa na cidade para pegar sua primeira quest. Você pode ver suas quests no 'q'. Vc tem muito a aprender ainda, mas vc pode se virar. Se precisar de ajuda, aperte 'H' pra ver dicas. Boa sorte, bravo aventureiro! (Enter para continuar).
+É isso, você  demais! Você pode jogar livremente agora. Eu recomendo falar com a garota rosa na cidade para pegar sua primeira quest. Você pode ver suas quests no 'q'. Vc tem muito a aprender ainda, mas vc pode se virar. Se precisar de ajuda, aperte 'H' pra ver dicas. Boa sorte, bravo aventureiro! (Enter para continuar).
 Este  o vendedor de itens! Vou te dar 100 de ouro para vc comprar algo. Selecione o item que deseja e aperte enter ou clique sobre ele. Use 'a' e 'd' para ver todos os itens a venda.
 Este  a forjadora! Ela forja seus equipamentos, tornando-os mais fortes. Para isso,  necessário usar runas de ataque (para armas) e defesa (para equipamentos), alm de runas especiais para equipamentos especiais. Tome uma runa de ataque nível 1 e forje sua arma com ela!
 Este  seu mestru! Elu te ensina novas habilidades quando vc passa de nível e te ajuda a evoluir! Tome um ponto de habilidade e adquira a sua primeira habilidade!
@@ -239,11 +239,11 @@ Nada se compara ao poder daqueles que atingem as classes superiores.
 
 * Cidadão 2 *
 Um bom equipamento e um equipamento forjado. A forja intensifica todas as qualidades do equipamento.
-Ã‰ necessário um forjador habilidoso para chegar a um alto nível de forja sem quebrar o equipamento.
+É necessário um forjador habilidoso para chegar a um alto nível de forja sem quebrar o equipamento.
 No entanto, as propriedades refinadas compensam. Diz a lenda que equipamentos com alto nível de forja chegam a exibir um brilho peculiar.
 
 * Cidadão 3 *
-Ã‰ muito desgastante ter que voltar para a cidade toda vez que me machuco. Ã‰ por isso que sempre levo uma tenda para minhas aventuras.
+É muito desgastante ter que voltar para a cidade toda vez que me machuco. É por isso que sempre levo uma tenda para minhas aventuras.
 Acampar ao ar livre  a melhor coisa. Revigora as energias. Revitaliza o corpo e a alma.
 Eu aprendi a fazer minha tenda com um viajante que me ensinou a fazer a tenda em troca de alguns itens.
 
@@ -294,7 +294,7 @@ Mas nós animais temos uma facilidade natural para essas coisas. Alguns de nós 
 
 * Cidadão 13 *
 O mundo  tão rico de diferentes criaturas. Eu quero saber tudo sobre elas!
-Ã‰ difícil memorizar todas, mas  pra isso que existe o bestiário. Nele você grava informações das criaturas que ja encontrou, como uma agenda.
+É difícil memorizar todas, mas  pra isso que existe o bestiário. Nele você grava informações das criaturas que ja encontrou, como uma agenda.
 Não  fácil montar um bestiário. Um aventureiro que passou por aqui uma vez tinha um. Ele deve estar pelo mundo afora agora.
 
 * Cidadão 14 *
@@ -325,7 +325,7 @@ No entanto, são ótimos para intensificar os efeitos especiais dos seus ataques
 * Cidadão 19 *
 Tanta terra, tanta terra...já pensou quantos tesouros devem estar enterrados nela?
 Para que se desgastar caçando criaturas quando você pode arrumar uma pá e procurar por tesouros debaixo da terra?
-Achado tambm  roubado, mesmo debaixo da terra! Ã‰ o meu lema.
+Achado tambm  roubado, mesmo debaixo da terra! É o meu lema.
 
 * Navegador 1 *
 Olá, quer viajar para a ilha?

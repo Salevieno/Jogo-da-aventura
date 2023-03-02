@@ -13,7 +13,7 @@ public class SpecialMap extends GameMap
 		
 		for (TreasureChest chest : treasureChests)
 		{
-			this.mapElem.add(chest) ;
+			this.mapElems.add(chest) ;
 		}
 	}	
 }

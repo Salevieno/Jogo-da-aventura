@@ -13,6 +13,7 @@ import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
 import items.Equip;
 import items.Item;
+import items.Recipe;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.Game;
@@ -34,6 +35,7 @@ public class NPCs
 	private int numberMenus ;
 	private int menu ;
 	private GameWindow window ;
+	private List<Collider> colliders ;
 
 	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 	public static final Image SpeakingBubble = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeakingBubble.png") ;
@@ -52,14 +54,31 @@ public class NPCs
 		
 		switch (type.getJob())
 		{
+			case equipsSeller:
+			{
+				int[] itemIDs = new int[] {0, 2, 10, 30, 500} ;
+		    	List<Item> itemsOnSale = new ArrayList<>() ;
+		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
+		    	
+		    	window = new ShoppingWindow(itemsOnSale) ;
+		    	
+		    	break ;
+			}
 			case itemsSeller:
 			{
+				int[] itemIDs = new int[] {0, 2, 10, 30, 500} ;
 		    	List<Item> itemsOnSale = new ArrayList<>() ;
-		    	itemsOnSale.add(Game.getAllItems()[0]) ;
-		    	itemsOnSale.add(Game.getAllItems()[2]) ;
-		    	itemsOnSale.add(Game.getAllItems()[10]) ;
-		    	itemsOnSale.add(Game.getAllItems()[30]) ;
-		    	itemsOnSale.add(Game.getAllItems()[500]) ;
+		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
+		    	
+		    	window = new ShoppingWindow(itemsOnSale) ;
+		    	
+		    	break ;
+			}
+			case smuggleSeller:
+			{
+				int[] itemIDs = new int[] {0, 2, 10, 30, 500} ;
+		    	List<Item> itemsOnSale = new ArrayList<>() ;
+		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
 		    	
 		    	window = new ShoppingWindow(itemsOnSale) ;
 		    	
@@ -67,30 +86,48 @@ public class NPCs
 			}
 			case crafter:
 			{
-		    	
+		    	List<Recipe> recipes = Game.allRecipes.subList(20, 30) ;
 				
-				window = new CraftWindow(Game.allRecipes) ;
+				window = new CraftWindow(recipes) ;
 				
 				break ;
 			}
 			case forger:
 			{
-		    	
-				
 				window = new ForgeWindow() ;
+				
+				break ;
+			}
+			case alchemist:
+			{
+		    	List<Recipe> recipes = Game.allRecipes.subList(0, 10) ;
+				
+				window = new CraftWindow(recipes) ;
+				
+				break ;
+			}
+			case woodcrafter:
+			{
+		    	List<Recipe> recipes = Game.allRecipes.subList(10, 20) ;
+				
+				window = new CraftWindow(recipes) ;
 				
 				break ;
 			}
 			default: window = null ; break ;
 		}
+		
+		colliders = new ArrayList<>() ;
+		colliders.add(new Collider(pos)) ;
 	}
 
 	public int getID() {return id ;}
 	public void setID(int I) {id = I ;}
 	public NPCType getType() {return type ;}
 	public Point getPos() {return pos ;}
-	public void setPos(Point P) {pos = P ;}
-	
+	public void setPos(Point P) {pos = P ;}	
+	public List<Collider> getColliders() { return colliders ;}
+
 	public static NPCType typeFromJob(NPCJobs job)
 	{
 		return Arrays.asList(Game.getNPCTypes()).stream().filter(npcType -> job.equals(npcType.getJob())).toList().get(0) ;
@@ -114,7 +151,19 @@ public class NPCs
 				
 				break ;
 			}
+			case equipsSeller:
+			{
+		    	sellerAction(player.getBag(), player.getCurrentAction(), mousePos, (ShoppingWindow) window, DP) ;
+		    	
+		    	break ;
+			}
 			case itemsSeller:
+			{
+		    	sellerAction(player.getBag(), player.getCurrentAction(), mousePos, (ShoppingWindow) window, DP) ;
+		    	
+		    	break ;
+			}
+			case smuggleSeller:
 			{
 		    	sellerAction(player.getBag(), player.getCurrentAction(), mousePos, (ShoppingWindow) window, DP) ;
 		    	
@@ -129,13 +178,29 @@ public class NPCs
 			case forger:
 			{
 				List<Equip> equipsForForge = new ArrayList<>() ;
-				player.getBag().getEquip().keySet().forEach( equip -> {
-					equipsForForge.add(equip) ;
-				}) ;
+				player.getBag().getEquip().keySet().forEach(equipsForForge::add) ;
 				((ForgeWindow) window).setItemsForForge(equipsForForge);
 				
 				forgerAction(player.getBag(), player.getCurrentAction(), (ForgeWindow) window, DP) ;
 				
+				break ;
+			}
+			case alchemist:
+			{
+				crafterAction(player.getBag(), player.getCurrentAction(), mousePos, (CraftWindow) window, DP) ;
+				
+				break ;
+			}
+			case woodcrafter:
+			{
+				crafterAction(player.getBag(), player.getCurrentAction(), mousePos, (CraftWindow) window, DP) ;
+				
+				break ;
+			}
+			case sailor:
+			{
+				sailorAction(player, action) ;
+
 				break ;
 			}
 			//case master: masterAction(player, pet, MousePos, DF) ; break ;
@@ -257,6 +322,17 @@ public class NPCs
 		
 	}
 	
+	public void sailorAction(Player player, String action)
+	{
+		if (action == null) { return ;}		
+
+		if (action.equals("Enter") & selOption == 0)
+		{
+			if (player.getMap().getName().equals("Forest 13")) { player.setMap(Game.getMaps()[39]) ; return;}
+			if (player.getMap().getName().equals("Island 1")) { player.setMap(Game.getMaps()[12]) ; return;}
+		}
+	}
+	
 	public void display(DrawingOnPanel DP)
 	{
 		DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomCenter) ;
@@ -281,6 +357,15 @@ public class NPCs
 			}
 		}
 	}
+
+	
+	@Override
+	public String toString()
+	{
+		return "NPCs [id=" + id + ", type=" + type + ", pos=" + pos + ", selOption=" + selOption + ", numberMenus="
+				+ numberMenus + ", menu=" + menu + ", window=" + window + "]";
+	}
+	
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 

@@ -104,4 +104,5 @@ public abstract class GameWindow
 		}
 	}
 
+	public abstract void navigate(String action) ;
 }

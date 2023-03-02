@@ -176,7 +176,7 @@ public class Creature extends LiveBeing
 		//boolean NewPosIsInsideScreen = Utg.isInside(NewPos, screen.getBorders(), screen.getBorders()) ;
 		if (NewPosIsInsideScreen)
 		{
-			boolean NewPosIsWalkable = map.GroundIsWalkable(NewPos, null) ;
+			boolean NewPosIsWalkable = map.groundIsWalkable(NewPos, null) ;
 			if (NewPosIsWalkable)
 			{
 				setPos(NewPos) ;

@@ -189,8 +189,8 @@ public abstract class LiveBeing
 	{
 		mpCounter.inc() ;
 		satiationCounter.inc() ;
-		if (this instanceof Player) {thirstCounter.inc() ;}
-		actionCounter.inc() ;
+		if (this instanceof Player) { thirstCounter.inc() ;}
+		if (this instanceof Player) { actionCounter.inc() ;}
 	}
 	public void activateCounters()
 	{

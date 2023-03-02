@@ -8,6 +8,7 @@ import java.awt.Point;
 import items.Item;
 import main.AtkResults;
 import main.Game;
+import maps.GameMap;
 import utilities.TimeCounter;
 
 public class Animations 
@@ -48,7 +49,7 @@ public class Animations
 			{
 				if (aniID <= 2)
 				{
-					DamageAnimation(vars, DP) ;
+					damageAnimation(vars, DP) ;
 				}
 				else if (aniID == 3)
 				{
@@ -77,7 +78,7 @@ public class Animations
 		isActive = false ;
 	}
 		
-	private void DamageAnimation(Object[] vars, DrawingOnPanel DP)
+	private void damageAnimation(Object[] vars, DrawingOnPanel DP)
 	{
 		Point targetPos = (Point) vars[1] ;
 		Dimension targetSize = (Dimension) vars[2] ;
@@ -110,7 +111,27 @@ public class Animations
 		DP.PterodactileAnimation(counter, PterodactileImage, SpeakingBubbleImage, message) ;
 	}
 	
-	
+
+
+	private void SailingAnimation(Object[] vars, DrawingOnPanel DP)
+	{
+//		int continent = (int) vars[1] ;
+		Image boatImage = (Image) vars[1] ;
+		Image playerImage = (Image) vars[2] ;
+		Image sailorImage = (Image) vars[3] ;
+		DP.SailingAnimation(playerImage, sailorImage, boatImage, counter, "Island") ;
+		
+//		GameMap origin = continent == 0 ? Game.getMaps()[39] : Game.getMaps()[12] ;
+		
+//		if (counter.finished())
+//		{
+			/*if (MusicIsOn)
+			{
+				UtilGeral.SwitchMusic(Music[MusicInMap[player.getMap()]], Music[11]) ;
+			}*/
+//			player.setMap(maps[61]) ;
+//		}
+	}
 	
 	
 	
@@ -394,41 +415,6 @@ public class Animations
 //		Color TextColor = (Color) AniVars18[4] ;
 //		Image CoinIcon = (Image) AniVars18[5] ;
 //		DP.ChestRewardsAnimation(items, Anicounter[18], Aniduration[18], ItemRewards, GoldRewards, TextColor, CoinIcon) ;
-	}
-
-	private void SailingAnimation(Object[] AniVars19, DrawingOnPanel DP)
-	{
-//		Player player = (Player) AniVars19[1] ;
-//		NPCs[] npc = (NPCs[]) AniVars19[2] ;
-//		Image BoatImage = (Image) AniVars19[3] ;
-//		GameMap[] maps = (GameMap[]) AniVars19[4] ;
-//		/*if (0 < pet.getLife()[0])
-//		{
-//			pet.setPos(player.getPos()) ;
-//		}*/
-//		if (player.getContinent() == 2)
-//		{
-//			if (Anicounter[19] == 0)
-//			{
-//				/*if (MusicIsOn)
-//				{
-//					UtilGeral.SwitchMusic(Music[MusicInMap[player.getMap()]], Music[11]) ;
-//				}*/
-//				player.setMap(maps[64]) ;
-//			}
-//			DP.SailingAnimation(player, npc[86], maps, "Forest", Anicounter[19], Aniduration[19], BoatImage) ;
-//		} else if (player.getContinent() == 0)
-//		{
-//			if (Anicounter[19] == 0)
-//			{
-//				/*if (MusicIsOn)
-//				{
-//					UtilGeral.SwitchMusic(Music[MusicInMap[player.getMap()]], Music[11]) ;
-//				}*/
-//				player.setMap(maps[61]) ;
-//			}
-//			DP.SailingAnimation(player, npc[88], maps, "Island", Anicounter[19], Aniduration[19], BoatImage) ;
-//		}
 	}
 
 	private void OpeningAnimation(Object[] AniVars20, DrawingOnPanel DP)

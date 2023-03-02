@@ -64,6 +64,7 @@ import utilities.UtilS;
 import windows.BagWindow;
 import windows.BestiaryWindow;
 import windows.FabWindow;
+import windows.GameWindow;
 import windows.HintsWindow;
 import windows.MapWindow;
 import windows.PlayerAttributesWindow;
@@ -77,6 +78,7 @@ public class Player extends LiveBeing
 	private String sex ;
 	private Color color ;
 	
+	private GameWindow focusWindow ;
 	private BagWindow bag ;
 	private SettingsWindow settings ;
 	private SpellsTreeWindow spellsTree ;
@@ -169,13 +171,14 @@ public class Player extends LiveBeing
 		allText = UtilG.ReadTextFile(Language) ;
 
 		//Bag = new int[Items.NumberOfAllItems] ;
-		questWindow = new QuestWindow() ;
+		focusWindow = null ;
 		bag = new BagWindow(new HashMap<Potion, Integer>(), new HashMap<Alchemy, Integer>(), new HashMap<Forge, Integer>(), new HashMap<PetItem, Integer>(), new HashMap<Food, Integer>(),
 				new HashMap<Arrow, Integer>(), new HashMap<Equip, Integer>(), new HashMap<GeneralItem, Integer>(), new HashMap<Fab, Integer>(), new HashMap<QuestItem, Integer>()) ;
 		if (job == 2)
 		{
 			bag.Add(Arrow.getAll()[0], 100) ;
 		}
+		questWindow = new QuestWindow() ;
 		quests = new ArrayList<>() ;
 		knownRecipes = new ArrayList<>() ;
 		fabWindow = new FabWindow() ;
@@ -497,9 +500,10 @@ public class Player extends LiveBeing
 //		}	
 		
 		Point newPos = CalcNewPos() ;
+		System.out.println(newPos) ;
 		if (Game.getScreen().posIsInMap(newPos))
 		{	
-			if (map.GroundIsWalkable(newPos, elem[4]))
+			if (map.groundIsWalkable(newPos, elem[4]))
 			{
 				setPos(newPos) ;
 			}	
@@ -557,10 +561,12 @@ public class Player extends LiveBeing
 		}
 		if (currentAction.equals(ActionKeys[4]))
 		{
+			focusWindow = bag ;
 			bag.open() ;
 		}
 		if (currentAction.equals(ActionKeys[5]))
 		{
+			focusWindow = attWindow ;
 			attWindow.open() ;
 		}
 //		if (currentAction.equals(ActionKeys[6]))
@@ -574,18 +580,22 @@ public class Player extends LiveBeing
 		// TODO add dig
 		if (currentAction.equals(ActionKeys[7]))	// Map  & questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))
 		{
+			focusWindow = mapWindow ;
 			mapWindow.open() ;
 		}
 		if (currentAction.equals(ActionKeys[8]) & pet != null)
 		{
+			focusWindow = pet.getAttWindow() ;
 			pet.getAttWindow().open() ;
 		}
 		if (currentAction.equals(ActionKeys[9]))
 		{
+			focusWindow = questWindow ;
 			questWindow.open() ;
 		}
 		if (currentAction.equals(ActionKeys[10]))
 		{			
+			focusWindow = hintsWindow ;
 			hintsWindow.open() ;
 		}
 		if (currentAction.equals(ActionKeys[11]) & questSkills.get(QuestSkills.ride))
@@ -599,6 +609,7 @@ public class Player extends LiveBeing
 		}
 		if (currentAction.equals(ActionKeys[13]) & questSkills.get(QuestSkills.bestiary))
 		{
+			focusWindow = bestiary ;
 			bestiary.open() ;
 		}
 		
@@ -628,34 +639,39 @@ public class Player extends LiveBeing
 		}
 
 		// navigating through open windows
+		if (focusWindow != null)
+		{
+			if (focusWindow.isOpen()) { focusWindow.navigate(currentAction) ;}
+		}
+		
 		if (bag.isOpen())
 		{
 			if (bag.getTab() == 1 & (currentAction.equals("Enter") | currentAction.equals("MouseLeftClick")))
 			{
 				useItem(bag.getSelectedItem()) ;
 			}
-			bag.navigate(currentAction) ;
+//			bag.navigate(currentAction) ;
 		}
-		if (fabWindow.isOpen())
-		{
-			fabWindow.navigate(currentAction) ;
-		}
-		if (questWindow.isOpen())
-		{
-			questWindow.navigate(currentAction) ;
-		}
-		if (settings.isOpen())
-		{
-			settings.navigate(currentAction) ;
-		}
-		if (attWindow.isOpen())
-		{
-			attWindow.navigate(this, currentAction, MousePos) ;
-		}
-		if (hintsWindow.isOpen())
-		{
-			hintsWindow.navigate(currentAction) ;
-		}
+//		if (fabWindow.isOpen())
+//		{
+//			fabWindow.navigate(currentAction) ;
+//		}
+//		if (questWindow.isOpen())
+//		{
+//			questWindow.navigate(currentAction) ;
+//		}
+//		if (settings.isOpen())
+//		{
+//			settings.navigate(currentAction) ;
+//		}
+//		if (attWindow.isOpen())
+//		{
+//			attWindow.navigate(this, currentAction, MousePos) ;
+//		}
+//		if (hintsWindow.isOpen())
+//		{
+//			hintsWindow.navigate(currentAction) ;
+//		}
 		
 		for (int i = 0; i <= HotKeys.length - 1 ; i += 1)
 		{
@@ -884,7 +900,7 @@ public class Player extends LiveBeing
 		}
 		if (-1 < nextMapID)
 		{
-			if (Game.getMaps()[nextMapID].GroundIsWalkable(nextPos, elem[4]))
+			if (Game.getMaps()[nextMapID].groundIsWalkable(nextPos, elem[4]))
 			{
 				setMap(Game.getMaps()[nextMapID]) ;
 				setPos(nextPos) ;	
@@ -961,7 +977,7 @@ public class Player extends LiveBeing
 		}
 		if (settings.isOpen())
 		{
-			settings.display(allText.get("* Menu de opï¿½ï¿½es *"), DP) ;
+			settings.display(allText.get("* Menu de opções *"), DP) ;
 		}
 		if (hintsWindow.isOpen())
 		{

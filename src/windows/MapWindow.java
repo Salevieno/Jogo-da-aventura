@@ -1,11 +1,6 @@
 package windows;
 
-
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Point;
-
-import javax.swing.ImageIcon;
 
 import graphics.DrawingOnPanel;
 import main.Game;
@@ -81,5 +76,10 @@ public class MapWindow extends GameWindow
 				}
 			}
 		}
+	}
+
+	public void navigate(String action)
+	{
+		
 	}
 }

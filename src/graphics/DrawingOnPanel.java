@@ -611,61 +611,60 @@ public class DrawingOnPanel
 		
 	}
 	
-	public void SailingAnimation(Player player, NPCs npc, GameMap[] maps, String Destination, int counter, int Duration, Image BoatImage)
+	public void SailingAnimation(Image playerImage, Image sailorImage, Image boatImage, TimeCounter counter, String destination)
 	{
-		/*int Step = player.getStep()/2 ;
-		int NPCLength = npc.getWidth(null), NPCHeight = npc.getHeight(null) ;
-		if (Destination.equals("Island"))
+//		int Step = player.getStep()/2 ;
+//		Dimension sailorSize = new Dimension(sailorImage.getWidth(null), sailorImage.getHeight(null)) ;
+		if (destination.equals("Island"))
 		{
-			Point InitialPos = new Point(Step, (int)(0.5*screenSize.height)) ;	
-			Point Pos = new Point(Math.abs((InitialPos.x + Step*counter)) % screenSize.width, InitialPos.y) ;
-			if (Pos.x + Step < screenSize.width)
-			{
-				DrawImage(BoatImage, Pos, OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, alignPoints.bottomLeft, 1) ;
-				DrawImage(npc, new Point(Pos.x + NPCLength, (int) (Pos.y - 0.5*NPCHeight)), OverallAngle, new float[] {(float)0.5, (float)0.5}, new boolean[] {false, false}, alignPoints.center, 1) ;
-				player.setPos(new Point(Pos.x + Step, Pos.y)) ;
-			}
-			else
-			{
-				player.setPos(InitialPos) ;
-				player.setMap(maps[player.getMap().getid() + 1]) ;
-				if (player.getMap().getid() == 65)
-				{
-					player.setPos(new Point(20, 500)) ;
-					player.setMap(maps[40]) ;
-					/if (MusicIsOn)
-					///{
-					//	UtilGeral.SwitchMusic(Music[11], Music[MusicInMap[player.getMap()]]) ;
-					//}
-				}
-			}
+			
 		}
-		else if (Destination.equals("Forest"))
-		{
-			Point InitialPos = new Point(screenSize.width - Step, (int)(0.5*screenSize.height)) ;
-			Point Pos = new Point((InitialPos.x - Step*(counter % (screenSize.width/Step - 1))) % screenSize.width, InitialPos.y) ;
-			if (0 < Pos.x - Step)
-			{
-				DrawImage(BoatImage, Pos, OverallAngle, new float[] {(float)1, (float)1}, new boolean[] {false, false}, alignPoints.bottomLeft, 1) ;
-				DrawImage(npc, new Point(Pos.x + NPCLength, (int) (Pos.y - 0.5*NPCHeight)), OverallAngle, new float[] {(float)0.5, (float)0.5}, new boolean[] {false, false}, alignPoints.center, 1) ;
-				player.setPos(new Point(Pos.x - Step, Pos.y)) ;
-			}
-			else
-			{
-				player.setPos(InitialPos) ;
-				player.setMap(maps[player.getMap().getid() - 1]) ;
-				if (player.getMap().getid() == 60)
-				{
-					player.setPos(new Point(640, 500)) ;
-					player.setMap(maps[13]) ;
-					//if (MusicIsOn)
-					//{
-					//	UtilGeral.SwitchMusic(Music[11], Music[MusicInMap[player.getMap()]]) ;
-					//}
-				}
-			}
-		}
-		*/
+		int step = 1 ;
+		Point startPos = new Point(step, (int)(0.5*screenSize.height)) ;	
+		Point currentPos = UtilG.Translate(startPos, (int) (step * counter.rate()), 0) ;
+
+		DrawImage(boatImage, currentPos, Align.center) ;
+		DrawImage(sailorImage, currentPos, Align.center) ;
+		DrawImage(playerImage, currentPos, Align.center) ;
+		
+		if (Game.getScreen().posIsInMap(currentPos)) { return ;}
+		
+		
+//		else
+//		{
+//			player.setPos(startPos) ;
+//			player.setMap(maps[player.getMap().getid() + 1]) ;
+//			if (player.getMap().getid() == 65)
+//			{
+//				player.setPos(new Point(20, 500)) ;
+//				player.setMap(maps[40]) ;
+//			}
+//		}
+//		else if (Destination.equals("Forest"))
+//		{
+//			Point InitialPos = new Point(screenSize.width - Step, (int)(0.5*screenSize.height)) ;
+//			Point Pos = new Point((InitialPos.x - Step*(counter % (screenSize.width/Step - 1))) % screenSize.width, InitialPos.y) ;
+//			if (0 < Pos.x - Step)
+//			{
+//				DrawImage(BoatImage, Pos, OverallAngle, new float[] {(float)1, (float)1}, new boolean[] {false, false}, alignPoints.bottomLeft, 1) ;
+//				DrawImage(npc, new Point(Pos.x + NPCLength, (int) (Pos.y - 0.5*NPCHeight)), OverallAngle, new float[] {(float)0.5, (float)0.5}, new boolean[] {false, false}, alignPoints.center, 1) ;
+//				player.setPos(new Point(Pos.x - Step, Pos.y)) ;
+//			}
+//			else
+//			{
+//				player.setPos(InitialPos) ;
+//				player.setMap(maps[player.getMap().getid() - 1]) ;
+//				if (player.getMap().getid() == 60)
+//				{
+//					player.setPos(new Point(640, 500)) ;
+//					player.setMap(maps[13]) ;
+//					//if (MusicIsOn)
+//					//{
+//					//	UtilGeral.SwitchMusic(Music[11], Music[MusicInMap[player.getMap()]]) ;
+//					//}
+//				}
+//			}
+//		}
 	}
 	
 	public void FishingAnimation(Point playerPos, Image FishingGif, String WaterPos)

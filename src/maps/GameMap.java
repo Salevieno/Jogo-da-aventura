@@ -11,6 +11,7 @@ import java.util.Objects;
 import javax.sound.sampled.Clip;
 
 import components.Building;
+import components.Collider;
 import components.NPCs;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
@@ -33,7 +34,7 @@ public class GameMap
 	private int CollectibleLevel ;
 	private int[] CollectibleCounter ;	// [Berry, herb, wood, metal]
     private int[] CollectibleDelay ;	// [Berry, herb, wood, metal]
-	protected List<MapElements> mapElem ;
+	protected List<MapElements> mapElems ;
 	public List<Building> buildings ;
 	public List<NPCs> npcs ;
 	
@@ -89,7 +90,7 @@ public class GameMap
 		this.npcs = npc ;
 		this.Connections = Connections ;
 		
-		mapElem = new ArrayList<MapElements>() ;
+		mapElems = new ArrayList<MapElements>() ;
 	}
 
 	public String getName() {return Name ;}
@@ -103,7 +104,7 @@ public class GameMap
 	public int[] getConnections() {return Connections ;}	
 	public int[] getCollectibleCounter() {return CollectibleCounter ;}	
 	public int[] getCollectibleDelay() {return CollectibleDelay ;}
-	public List<MapElements> getMapElem() {return mapElem ;}
+	public List<MapElements> getMapElem() {return mapElems ;}
 	//public ArrayList<CreatureTypes> getCreatureTypes() {return creatureTypes ;}
 	public List<NPCs> getNPCs() {return npcs ;}
 	public List<Building> getBuildings() {return buildings ;}
@@ -261,6 +262,37 @@ public class GameMap
 		}*/
  	}
 
+ 	public List<Collider> allColliders()
+ 	{
+ 		List<Collider> allColliders = new ArrayList<>() ;
+ 		if (buildings != null)
+ 		{
+ 			for (Building building : buildings)
+ 	 		{
+ 	 			allColliders.addAll(building.getColliders()) ;
+ 	 		}
+ 		}
+ 		
+ 		if (npcs != null)
+ 		{
+ 			for (NPCs npc : npcs)
+ 	 		{
+ 	 			allColliders.addAll(npc.getColliders()) ;
+ 	 		}
+ 		}
+ 		
+ 		if (mapElems != null)
+ 		{
+ 			for (MapElements mapElem : mapElems)
+ 	 		{
+ 	 			allColliders.addAll(mapElem.getColliders()) ;
+ 	 		}
+ 			
+ 		}
+ 		
+ 		return allColliders ;
+ 	}
+ 	
  	public void display(Point pos, Scale scale, DrawingOnPanel DP)
  	{
  		DP.DrawImage(image, pos, scale, Align.bottomLeft) ;
@@ -277,9 +309,9 @@ public class GameMap
  	
  	public void displayElements(DrawingOnPanel DP)
  	{ 		
- 		for (int me = 0 ; me <= mapElem.size() - 1 ; me += 1)
+ 		for (int me = 0 ; me <= mapElems.size() - 1 ; me += 1)
 		{
-			mapElem.get(me).DrawImage(DrawingOnPanel.stdAngle, DP) ;
+			mapElems.get(me).DrawImage(DrawingOnPanel.stdAngle, DP) ;
 		}
  	}
  	
@@ -295,16 +327,9 @@ public class GameMap
 	
 	public void displayNPCs(DrawingOnPanel DP)
 	{
-		if (npcs != null)	// Map has NPCs
-		{
-			for (int i = 0 ; i <= npcs.size() - 1 ; i += 1)
-			{
-				//if (NPCsInMap.get(i).getPosRelToBuilding().equals("Outside"))
-				//{
-					npcs.get(i).display(DP) ;		
-				//}
-			}
-		}
+		if (npcs == null) { return ;}
+		
+		npcs.forEach(npc -> npc.display(DP));
 	}
 	 	
 	public boolean IsACity()
@@ -331,7 +356,7 @@ public class GameMap
 				&& Arrays.equals(Connections, other.Connections) && Continent == other.Continent
 				&& Objects.equals(Name, other.Name) && Arrays.deepEquals(Type, other.Type)
 				&& Objects.equals(buildings, other.buildings) && Arrays.deepEquals(groundType, other.groundType)
-				&& Objects.equals(image, other.image) && Objects.equals(mapElem, other.mapElem)
+				&& Objects.equals(image, other.image) && Objects.equals(mapElems, other.mapElems)
 				&& Objects.equals(music, other.music) && Objects.equals(npcs, other.npcs);
 	}
 	
@@ -345,7 +370,7 @@ public class GameMap
 		result = prime * result + Arrays.hashCode(Connections);
 		result = prime * result + Arrays.deepHashCode(Type);
 		result = prime * result + Arrays.deepHashCode(groundType);
-		result = prime * result + Objects.hash(CollectibleLevel, Continent, Name, buildings, image, mapElem, music, npcs);
+		result = prime * result + Objects.hash(CollectibleLevel, Continent, Name, buildings, image, mapElems, music, npcs);
 		return result;
 	}
 
@@ -369,27 +394,35 @@ public class GameMap
 		
 		return null ;
 	}
-	
-	public boolean GroundIsWalkable(Point Pos, Elements SuperElem)
-	{
-		// TODO ground is walkable organizar
-		if (groundType == null) { return true ; }
 
-		Point point = new Point(Pos) ;
-		for (int i = 0; i <= groundType.length - 1; i += 1)
-		{
-			Object[] o = (Object[]) groundType[i] ;
-			if (point.equals((Point) o[1]))
-			{
-				String gtype = (String) o[0] ;
-				if ((gtype.equals("water") & !SuperElem.equals(Elements.water)) |
-						((gtype.equals("tree") |
-						(gtype.equals("rock"))) & !SuperElem.equals(Elements.air)))
-				{
-					return false ;
-				}
-			}
-		}
+	public boolean groundIsWalkable(Point pos, Elements superElem)
+	{
+		// TODO ground is walkable
+//		if (groundType == null) { return true ; }
+//
+//		Point point = new Point(Pos) ;
+//		for (int i = 0; i <= groundType.length - 1; i += 1)
+//		{
+//			Object[] o = (Object[]) groundType[i] ;
+//			if (point.equals((Point) o[1]))
+//			{
+//				String gtype = (String) o[0] ;
+//				if ((gtype.equals("water") & !SuperElem.equals(Elements.water)) |
+//						((gtype.equals("tree") |
+//						(gtype.equals("rock"))) & !SuperElem.equals(Elements.air)))
+//				{
+//					return false ;
+//				}
+//			}
+//		}
+		
+		if (superElem != null) { if (superElem.equals(Elements.air)) { return true ;}}
+		
+ 		List<Collider> allColliders = allColliders() ;
+ 		for (Collider collider : allColliders)
+ 		{
+ 			if (pos.equals(collider.getPos())) { return false ;}
+ 		}
 		
 		return true ;
 	}
@@ -401,7 +434,7 @@ public class GameMap
 				+ ", image=" + image + ", music=" + music + ", Type=" + Arrays.toString(Type) + ", groundType="
 				+ Arrays.toString(groundType) + ", CollectibleLevel=" + CollectibleLevel + ", CollectibleCounter="
 				+ Arrays.toString(CollectibleCounter) + ", CollectibleDelay=" + Arrays.toString(CollectibleDelay)
-				+ ", mapElem=" + mapElem + ", buildings=" + buildings + ", npcs=" + npcs + "]";
+				+ ", mapElem=" + mapElems + ", buildings=" + buildings + ", npcs=" + npcs + "]";
 	}
 
 	/*public void CreateCollectible(int MapID, int CollectibleID)

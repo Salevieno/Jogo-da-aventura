@@ -7,8 +7,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-
 import components.GameIcon;
 import graphics.DrawingOnPanel;
 import liveBeings.Spell;
@@ -67,7 +65,9 @@ public class SpellsTreeWindow extends GameWindow
 			}
 		}
 	}
-		
+	
+	public void navigate(String action) { }
+	
 	public void display(Point MousePos, int SelectedSpell, DrawingOnPanel DP)
 	{
 		//System.out.println(Game.getAllSpellTypes().length);

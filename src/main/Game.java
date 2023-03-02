@@ -35,6 +35,7 @@ import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import components.BuildingType;
+import components.Collider;
 import components.Building;
 import components.GameIcon;
 import components.NPCJobs;
@@ -114,7 +115,6 @@ public class Game extends JPanel
 	private Player player ;
 	private static Pet pet ;
 	private Creature[] creature ;
-	// TODO colocar para cada NPC carregar a sua lista
 	public static List<Recipe> allRecipes ;
 	private List<Projectiles> projs ;
 	public static int difficultLevel ;
@@ -275,6 +275,8 @@ public class Game extends JPanel
 				}
 			}
 			
+			
+			
     		buildingTypes[i] = new BuildingType(name, outsideImage, npcs) ;
     		
     		boolean hasInterior = (boolean) type.get("hasInterior") ;
@@ -410,10 +412,11 @@ public class Game extends JPanel
 				}
 				
 				int buildingPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[11 + 3 * i])) ;
-				int buildingPosY = (int) (sky.height + screen.getSize().height * Double.parseDouble(input.get(id)[12 + 3 * i])) ;
+				int buildingPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[12 + 3 * i])) ;
 				Point buildingPos = new Point(buildingPosX, buildingPosY) ;
 				
 				buildings.add(new Building(buildingType, buildingPos)) ;
+				
 			}
 
 			
@@ -456,7 +459,7 @@ public class Game extends JPanel
 			
 			String name = input.get(id)[0] ;
 			
-			if (name.contains("Special")) { mod += 1 ;}
+			if (id == 34 | id == 54) { mod += 1 ;}
 			
 			int continent = Integer.parseInt(input.get(id)[1]) ;
 			int collectibleLevel = Integer.parseInt(input.get(id)[2]) ;
@@ -464,7 +467,8 @@ public class Game extends JPanel
 			int herbDelay = Integer.parseInt(input.get(id)[4]) ;
 			int woodDelay = Integer.parseInt(input.get(id)[5]) ;
 			int metalDelay = Integer.parseInt(input.get(id)[6]) ;
-			int[] Connections = new int[] {
+			int[] collectiblesDelay = new int[] {berryDelay, herbDelay, woodDelay, metalDelay} ;
+			int[] connections = new int[] {
 											Integer.parseInt(input.get(id)[7]),
 											Integer.parseInt(input.get(id)[8]),
 											Integer.parseInt(input.get(id)[9]),
@@ -485,11 +489,48 @@ public class Game extends JPanel
 											Integer.parseInt(input.get(id)[22]),
 											Integer.parseInt(input.get(id)[23]),
 											Integer.parseInt(input.get(id)[24])
-											} ;			
+											} ;
+			
+			List<NPCs> npcs = new ArrayList<>() ;
+			if (26 <= input.get(id).length)
+			{				
+				String npcJob = input.get(id)[25] ;
+				NPCType NPCType = null ;
+				for (int j = 0 ; j <= getNPCTypes().length - 1 ; j += 1)
+				{
+					if (npcJob.equals(getNPCTypes()[j].getJob().toString()))
+					{
+						NPCType = getNPCTypes()[j] ;
+					}
+				}
+				
+				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[26])) ;
+				int NPCPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[27])) ;
+				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
+				npcs.add(new NPCs(0, NPCType, NPCPos)) ;			
+			}
+			if (29 <= input.get(id).length)
+			{				
+				String npcJob = input.get(id)[25] ;
+				NPCType NPCType = null ;
+				for (int j = 0 ; j <= getNPCTypes().length - 1 ; j += 1)
+				{
+					if (npcJob.equals(getNPCTypes()[j].getJob().toString()))
+					{
+						NPCType = getNPCTypes()[j] ;
+					}
+				}
+				
+				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29])) ;
+				int NPCPosY = (int) (sky.height + screen.getSize().height * Double.parseDouble(input.get(id)[30])) ;
+				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
+				npcs.add(new NPCs(0, NPCType, NPCPos)) ;			
+			}
+			
 			Image image = UtilG.loadImage(path + "Map" + String.valueOf(mapID + mod) + ".png") ;
 			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
 			
-			fieldMap[id] = new FieldMap(name, continent, Connections, image, music, collectibleLevel, new int[] {berryDelay, herbDelay, woodDelay, metalDelay}, creatureIDs) ;
+			fieldMap[id] = new FieldMap(name, continent, connections, image, music, collectibleLevel, collectiblesDelay, creatureIDs, npcs) ;
 		}
 		
 		return fieldMap ;
@@ -743,7 +784,7 @@ public class Game extends JPanel
 		if (player.getMap() instanceof FieldMap)
 		{
 			FieldMap fm = (FieldMap) player.getMap() ;
-			fm.getCreatures().forEach(creature -> creature.incrementCounters()) ;
+			fm.getCreatures().forEach(Creature::incrementCounters) ;
 //			creature.IncActionCounters() ;
 //			creature.getBA().getStatus().decreaseStatus() ;
 			
@@ -852,23 +893,20 @@ public class Game extends JPanel
 		
 		
 		// draw the map (cities, forest, etc.)
-		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
+//		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
 		sideBar.display(player, pet, mousePos, DP);
 		
 		// creatures act
-		if (!player.getMap().IsACity())
+		if (player.getMap().isAField())
 		{
-			if (player.getMap() instanceof FieldMap)
-			{
-				FieldMap fm = (FieldMap) player.getMap() ;
-				for (Creature creature : fm.getCreatures())
-				{				
-					creature.act(player.getPos(), player.getMap()) ;
-					creature.display(creature.getPos(), Scale.unit, DP) ;
-//					creature.DrawAttributes(0, DP) ;
-				}
-				shouldRepaint = true ;
+			FieldMap fm = (FieldMap) player.getMap() ;
+			for (Creature creature : fm.getCreatures())
+			{				
+				creature.act(player.getPos(), player.getMap()) ;
+//				creature.display(creature.getPos(), Scale.unit, DP) ;
+//				creature.DrawAttributes(0, DP) ;
 			}
+			shouldRepaint = true ;
 		}
 		
 		
@@ -894,13 +932,13 @@ public class Game extends JPanel
 				else { player.setState(LiveBeingStates.fighting) ;};
 			}
 		}
-		player.DrawAttributes(0, DP) ;
-		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
-		if (player.weaponIsEquipped())	// if the player is equipped with a weapon
-		{
-			player.DrawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
-		}
-		player.displayState(DP) ;
+//		player.DrawAttributes(0, DP) ;
+//		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
+//		if (player.weaponIsEquipped())
+//		{
+//			player.DrawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
+//		}
+//		player.displayState(DP) ;
 		
 		
 		// pet acts
@@ -1028,8 +1066,8 @@ public class Game extends JPanel
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
     	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
-    	player.setMap(cityMaps[1]) ;
-    	player.setPos(new Point(155, 408)) ;
+    	player.setMap(fieldMaps[12]) ;
+    	player.setPos(new Point(226, 473)) ;
 //    	player.getBag().Add(Potion.getAll()[0], 3) ;
 //    	player.getBag().Add(Potion.getAll()[0], 2) ;
 //    	player.getBag().Add(Potion.getAll()[1], 2) ;
@@ -1154,6 +1192,7 @@ public class Game extends JPanel
 //    	spell.applyBuffs(false, pet) ;
 //    	
 //    	System.out.println(pet.getLife()) ;
+    	System.out.println(fieldMaps[12].allColliders());
 	}
 	
 	private void testing()

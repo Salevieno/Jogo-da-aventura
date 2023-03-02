@@ -2,6 +2,7 @@ package components;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.util.Arrays;
 
 public class NPCType
 {
@@ -32,4 +33,13 @@ public class NPCType
 	public Image getImage() {return image ;}
 	public String[] getSpeech() {return speech ;}
 	public String[] getOptions() {return options ;}
+
+
+	@Override
+	public String toString()
+	{
+		return "NPCType [name=" + name + ", job=" + job + ", info=" + info + ", color=" + color + ", image=" + image
+				+ ", speech=" + Arrays.toString(speech) + ", options=" + Arrays.toString(options) + "]";
+	}
+	
 }

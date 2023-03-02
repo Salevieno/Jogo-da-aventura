@@ -42,12 +42,12 @@ public class PlayerAttributesWindow extends GameWindow
 		addAttIcon[6] = new GameIcon(6, "Plus sign", new Point(100, 220), null, PlusSignImage, SelectedPlusSignImage) ;
 	}
 	
-	public void navigate(Player player, String action, Point MousePos)
+	public void navigate(String action)
 	{
-		if (getTab() == 0)
-		{
-			ApplyAttributesIncrease(player, MousePos) ;
-		}
+//		if (getTab() == 0)
+//		{
+//			ApplyAttributesIncrease(player, MousePos) ;
+//		}
 		if (action.equals(Player.ActionKeys[2]))
 		{
 			tabUp() ;

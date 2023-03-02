@@ -325,7 +325,7 @@ public class Pet extends LiveBeing
 		{
 			nextPos = Follow(pos, playerPos, step, step) ;
 		}
-		if (playerMap.GroundIsWalkable(nextPos, playerElem))
+		if (playerMap.groundIsWalkable(nextPos, playerElem))
 		{
 			setPos(nextPos) ;
 		}
