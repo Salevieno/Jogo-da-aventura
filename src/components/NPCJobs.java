@@ -3,8 +3,8 @@ package components;
 public enum NPCJobs
 {
 	doctor ("doctor"),
-	itemsSeller ("items seller"),
 	equipsSeller ("equips seller"),
+	itemsSeller ("items seller"),
 	smuggleSeller ("smuggle seller"),
 	master ("master"),
 	alchemist ("alchemist"),

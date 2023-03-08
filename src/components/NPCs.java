@@ -21,7 +21,9 @@ import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 import windows.BagWindow;
+import windows.BankWindow;
 import windows.CraftWindow;
+import windows.ElementalWindow;
 import windows.ForgeWindow;
 import windows.GameWindow;
 import windows.ShoppingWindow;
@@ -50,13 +52,15 @@ public class NPCs
 		menu = 0 ;
 		numberMenus = 0 ;
 		
-		if (type.getSpeech() != null) { numberMenus = type.getSpeech().length - 1 ;}
+		if (type.getSpeech() != null) { numberMenus = type.getSpeech().length - 2 ;}
 		
 		switch (type.getJob())
 		{
 			case equipsSeller:
 			{
-				int[] itemIDs = new int[] {0, 2, 10, 30, 500} ;
+				int[] itemIDs = new int[] {300, 305, 307, 309, 315, 322, 326, 328, 332, 336, 340, 344} ;
+				int cityID = id / 17 ;
+				for (int i = 0 ; i <= itemIDs.length - 1; i += 1) { itemIDs[i] += 200 * cityID ;}
 		    	List<Item> itemsOnSale = new ArrayList<>() ;
 		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
 		    	
@@ -66,7 +70,7 @@ public class NPCs
 			}
 			case itemsSeller:
 			{
-				int[] itemIDs = new int[] {0, 2, 10, 30, 500} ;
+				int[] itemIDs = new int[] {0, 1, 4, 5, 121, 122, 125, 130, 1301, 1305, 1702, 1708, 1710, 1713} ;
 		    	List<Item> itemsOnSale = new ArrayList<>() ;
 		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
 		    	
@@ -76,7 +80,9 @@ public class NPCs
 			}
 			case smuggleSeller:
 			{
-				int[] itemIDs = new int[] {0, 2, 10, 30, 500} ;
+				int[] itemIDs = new int[] {400, 405, 407, 409, 415, 422, 426, 428, 432, 436, 440, 444} ;
+				int cityID = id / 17 ;
+				for (int i = 0 ; i <= itemIDs.length - 1; i += 1) { itemIDs[i] += 200 * cityID ;}
 		    	List<Item> itemsOnSale = new ArrayList<>() ;
 		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
 		    	
@@ -84,9 +90,25 @@ public class NPCs
 		    	
 		    	break ;
 			}
+			case alchemist:
+			{
+		    	List<Recipe> recipes = Game.allRecipes.subList(0, 39) ;
+				
+				window = new CraftWindow(recipes) ;
+				
+				break ;
+			}
+			case woodcrafter:
+			{
+		    	List<Recipe> recipes = Game.allRecipes.subList(40, 59) ;
+				
+				window = new CraftWindow(recipes) ;
+				
+				break ;
+			}
 			case crafter:
 			{
-		    	List<Recipe> recipes = Game.allRecipes.subList(20, 30) ;
+		    	List<Recipe> recipes = Game.allRecipes.subList(60, Game.allRecipes.size()) ;
 				
 				window = new CraftWindow(recipes) ;
 				
@@ -98,20 +120,16 @@ public class NPCs
 				
 				break ;
 			}
-			case alchemist:
+			case elemental:
 			{
-		    	List<Recipe> recipes = Game.allRecipes.subList(0, 10) ;
-				
-				window = new CraftWindow(recipes) ;
-				
+				window = new ElementalWindow() ;
+
 				break ;
 			}
-			case woodcrafter:
+			case banker:
 			{
-		    	List<Recipe> recipes = Game.allRecipes.subList(10, 20) ;
-				
-				window = new CraftWindow(recipes) ;
-				
+				window = new BankWindow() ;
+
 				break ;
 			}
 			default: window = null ; break ;
@@ -126,12 +144,14 @@ public class NPCs
 	public NPCType getType() {return type ;}
 	public Point getPos() {return pos ;}
 	public void setPos(Point P) {pos = P ;}	
+	public GameWindow getWindow() { return window ;}
 	public List<Collider> getColliders() { return colliders ;}
+	
+	public void resetMenu() { menu = 0 ;}
+	public void incMenu() { if (menu <= numberMenus - 1) menu += 1 ;}
+	public void decMenu() { if (1 <= menu) menu += -1 ;}
 
-	public static NPCType typeFromJob(NPCJobs job)
-	{
-		return Arrays.asList(Game.getNPCTypes()).stream().filter(npcType -> job.equals(npcType.getJob())).toList().get(0) ;
-	}
+	public static NPCType typeFromJob(NPCJobs job) { return Arrays.asList(Game.getNPCTypes()).stream().filter(npcType -> job.equals(npcType.getJob())).toList().get(0) ;}
 
 	public void Contact(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
 	{
@@ -169,6 +189,24 @@ public class NPCs
 		    	
 		    	break ;
 			}
+			case master:
+			{
+				masterAction() ;
+
+				break ;
+			}
+			case alchemist:
+			{
+				crafterAction(player.getBag(), player.getCurrentAction(), mousePos, (CraftWindow) window, DP) ;
+				
+				break ;
+			}
+			case woodcrafter:
+			{
+				crafterAction(player.getBag(), player.getCurrentAction(), mousePos, (CraftWindow) window, DP) ;
+				
+				break ;
+			}
 			case crafter:
 			{
 				crafterAction(player.getBag(), player.getCurrentAction(), mousePos, (CraftWindow) window, DP) ;
@@ -185,16 +223,20 @@ public class NPCs
 				
 				break ;
 			}
-			case alchemist:
+			case elemental:
 			{
-				crafterAction(player.getBag(), player.getCurrentAction(), mousePos, (CraftWindow) window, DP) ;
-				
+				elementalAction((ElementalWindow) window, player.getCurrentAction(), DP) ;
+
 				break ;
 			}
-			case woodcrafter:
+			case saver:
 			{
-				crafterAction(player.getBag(), player.getCurrentAction(), mousePos, (CraftWindow) window, DP) ;
-				
+				saverAction() ;
+
+				break ;
+			}
+			case citizen:
+			{
 				break ;
 			}
 			case sailor:
@@ -203,7 +245,30 @@ public class NPCs
 
 				break ;
 			}
-			//case master: masterAction(player, pet, MousePos, DF) ; break ;
+			case caveEntry:
+			{
+				portalAction(player) ;
+
+				break ;
+			}
+			case caveExit:
+			{
+				portalAction(player) ;
+
+				break ;
+			}
+			case banker:
+			{
+				bankerAction(player.getBag(), (BankWindow) window, player.getCurrentAction(), DP) ;
+
+				break ;
+			}
+			case quest:
+			{
+				questAction() ;
+
+				break ;
+			}
 			default: break;
 		}
 	}
@@ -291,6 +356,11 @@ public class NPCs
 		}
 	}
 	
+	public void masterAction()
+	{
+		// TODO
+	}
+	
 	public void crafterAction(BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
 	{
 		craftWindow.display(mousePos, DP) ;
@@ -322,15 +392,86 @@ public class NPCs
 		
 	}
 	
+	public void elementalAction(ElementalWindow elementalWindow, String action, DrawingOnPanel DP)
+	{
+		elementalWindow.display(DP) ;
+		
+		if (action == null) { return ;}
+
+		elementalWindow.navigate(action) ;
+		if (action.equals("Enter") | action.equals("MouseLeftClick"))
+		{
+//			elementalWindow.buyItem(bag) ;
+		}
+	}
+	
+	public void saverAction()
+	{
+		// TODO
+	}
+	
 	public void sailorAction(Player player, String action)
 	{
 		if (action == null) { return ;}		
 
 		if (action.equals("Enter") & selOption == 0)
 		{
-			if (player.getMap().getName().equals("Forest 13")) { player.setMap(Game.getMaps()[39]) ; return;}
-			if (player.getMap().getName().equals("Island 1")) { player.setMap(Game.getMaps()[12]) ; return;}
+			if (player.getMap().getName().equals("Forest 13")) { player.setMap(Game.getMaps()[39]) ; player.setPos(pos) ; return;}
+			if (player.getMap().getName().equals("Island 1")) { player.setMap(Game.getMaps()[12]) ; player.setPos(pos) ; return;}
 		}
+	}
+	
+	public void portalAction(Player player)
+	{
+		if (player.getMap().getName().equals("Forest 3")) { player.setMap(Game.getMaps()[29]) ; player.setPos(pos) ; return;}
+		if (player.getMap().getName().equals("Cave 1")) { player.setMap(Game.getMaps()[7]) ; player.setPos(pos) ; return;}
+	}
+	
+	public void bankerAction(BagWindow bag, BankWindow bankWindow, String action, DrawingOnPanel DP)
+	{
+		bankWindow.display(DP) ;
+
+		if (menu == 1) { bankWindow.displayInput("Quanto gostaria de depositar?", action, DP) ;}
+		
+		if (action == null) { return ;}
+
+		bankWindow.navigate(action) ;
+		
+		if (bankWindow.isInvested() & bankWindow.investmentIsComplete())
+		{
+			bankWindow.updateValueInvested() ;
+			bankWindow.restartInvestment() ;
+		}
+		
+		if (menu == 1)
+		{
+			bankWindow.readValue(action, DP) ;
+		}
+		if (action.equals("Enter") | action.equals("MouseLeftClick"))
+		{
+			if (menu == 2)
+			{
+				if (selOption == 0)
+				{
+					int amount = bankWindow.getAmountTyped() ;
+					bankWindow.deposit(bag, amount) ;
+					System.out.println("amount deposited = " + amount);
+				}
+				if (selOption == 1)
+				{
+					int amount = bankWindow.getAmountTyped() ;
+					bankWindow.withdraw(bag, amount) ;
+					System.out.println("amount withdrew = " + amount);
+				}
+				
+				menu = numberMenus ;
+			}
+		}
+	}
+	
+	public void questAction()
+	{
+		// TODO
 	}
 	
 	public void display(DrawingOnPanel DP)

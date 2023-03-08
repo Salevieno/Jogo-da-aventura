@@ -437,7 +437,7 @@ public class Game extends JPanel
 				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29 + 3 * i])) ;
 				int NPCPosY = (int) (sky.height + screen.getSize().height * Double.parseDouble(input.get(id)[30 + 3 * i])) ;
 				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
-				npcs.add(new NPCs(i, NPCType, NPCPos)) ;
+				npcs.add(new NPCs(i + 17 * id, NPCType, NPCPos)) ;
 			}
 			
 			cityMap[id] = new CityMap(name, continent, connections, image, music, buildings, npcs);
@@ -797,6 +797,8 @@ public class Game extends JPanel
 			if (pet != null) {pet.incrementBattleActionCounters() ;}
 			player.getOpponent().incrementBattleActionCounters() ;
 		}
+		
+		
 	}
 	
 	private void activateCounters()
@@ -975,8 +977,8 @@ public class Game extends JPanel
 		
 		
 		// level up the player and the pet if they should
-		player.checkLevelUp(ani[4]) ;
-		if (pet != null) { pet.checkLevelUp(ani[4]) ;}
+		if (player.shouldLevelUP()) player.levelUp(ani[4]) ;
+		if (pet != null) { if (pet.shouldLevelUP()) pet.levelUp(ani[4]) ;}
 //		if (!ani.isActive(12))
 //		{
 //			player.checkLevelUp(ani) ;

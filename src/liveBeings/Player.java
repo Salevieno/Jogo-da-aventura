@@ -510,7 +510,7 @@ public class Player extends LiveBeing
 		}
 		else
 		{
-			MoveToNewMap(pet, currentAction, settings.getMusicIsOn()) ;
+			MoveToNewMap() ;
 		}
 		
 		stepCounter.inc() ;
@@ -742,9 +742,9 @@ public class Player extends LiveBeing
 		
 		for (NPCs npc : currentMap.getNPCs())
 		{
-			boolean meetingNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
+			boolean metNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
 			
-			if (!meetingNPC) { continue ;}
+			if (!metNPC) { continue ;}
 			
 			npc.Contact(this, Game.getPet(), mousePos, DP) ;
 			
@@ -835,7 +835,7 @@ public class Player extends LiveBeing
 			PA.getThirst().incCurrentValue(1) ;
 		}
 	}
-	private void MoveToNewMap(Pet pet, String action, boolean MusicIsOn)
+	private void MoveToNewMap()
 	{
 		Screen screen = Game.getScreen() ;
 		int nextMapID = -1 ;
@@ -1122,30 +1122,27 @@ public class Player extends LiveBeing
 		String[] ItemsObtained = GetItemsObtained.toArray(new String[] {}) ;
 		winAnimation.start(new Object[] {100, ItemsObtained, color}) ;
 	}
-	public void checkLevelUp(Animations ani)
+	public void levelUp(Animations ani)
 	{
-		if (shouldLevelUP())
-		{
-			double[] attributesIncrease = CalcAttIncrease() ;
-			setLevel(level + 1) ;
-			PA.getLife().incMaxValue((int) attributesIncrease[0]) ;
-			PA.getMp().incMaxValue((int) attributesIncrease[1]); ;	
-			BA.getPhyAtk().incBaseValue(attributesIncrease[2]) ;
-			BA.getMagAtk().incBaseValue(attributesIncrease[3]) ;
-			BA.getPhyDef().incBaseValue(attributesIncrease[4]) ;
-			BA.getMagDef().incBaseValue(attributesIncrease[5]) ;
-			BA.getAgi().incBaseValue(attributesIncrease[6]) ;
-			BA.getDex().incBaseValue(attributesIncrease[7]) ;
-			PA.getExp().incMaxValue((int) attributesIncrease[8]); ;
-			PA.getLife().setToMaximum() ;
-			PA.getMp().setToMaximum() ;
-			spellPoints += 1 ;
-			attPoints += 2 ;
-			
-			ani.start(new Object[] {150, Arrays.copyOf(attributesIncrease, attributesIncrease.length - 1), level, color}) ;
-		}
+		double[] attIncrease = calcAttributesIncrease() ;
+		setLevel(level + 1) ;
+		PA.getLife().incMaxValue((int) attIncrease[0]) ;
+		PA.getMp().incMaxValue((int) attIncrease[1]); ;	
+		BA.getPhyAtk().incBaseValue(attIncrease[2]) ;
+		BA.getMagAtk().incBaseValue(attIncrease[3]) ;
+		BA.getPhyDef().incBaseValue(attIncrease[4]) ;
+		BA.getMagDef().incBaseValue(attIncrease[5]) ;
+		BA.getAgi().incBaseValue(attIncrease[6]) ;
+		BA.getDex().incBaseValue(attIncrease[7]) ;
+		PA.getExp().incMaxValue((int) attIncrease[8]); ;
+		PA.getLife().setToMaximum() ;
+		PA.getMp().setToMaximum() ;
+		spellPoints += 1 ;
+		attPoints += 2 ;
+		
+		ani.start(new Object[] {150, Arrays.copyOf(attIncrease, attIncrease.length - 1), level, color}) ;
 	}
-	private double[] CalcAttIncrease()
+	private double[] calcAttributesIncrease()
 	{
 		double[] attributeIncrease = attIncrease.basic() ;
 		double[] chanceIncrease = attChanceIncrease.basic() ;
@@ -1157,7 +1154,7 @@ public class Player extends LiveBeing
 			increase[i] = attributeIncrease[i] ;
 		}
 		
-		increase[attributeIncrease.length] = (double) (10*(3*Math.pow(level - 1, 2) + 3*(level - 1) + 1) - 5) ;
+		increase[attributeIncrease.length] = (double) (10 * (3 * Math.pow(level - 1, 2) + 3 * (level - 1) + 1) - 5) ;
 		
 		return increase ;
 	}

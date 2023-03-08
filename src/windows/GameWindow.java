@@ -2,6 +2,9 @@ package windows;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
+
+import graphics.DrawingOnPanel;
 
 public abstract class GameWindow
 {
@@ -105,4 +108,5 @@ public abstract class GameWindow
 	}
 
 	public abstract void navigate(String action) ;
+//	public abstract void display(Point MousePos, DrawingOnPanel DP) ;
 }

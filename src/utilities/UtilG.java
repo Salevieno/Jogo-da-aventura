@@ -45,6 +45,10 @@ public abstract class UtilG
 	
 	// reading file methods
 	
+	public static boolean isNumeric(String str) {
+		  return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
+		}
+	
 	public static Map<String, String[]> ReadTextFile(String Language)
 	{
 		String fileName = "Texto-PT-br.txt" ;

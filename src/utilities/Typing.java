@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import graphics.DrawingOnPanel;
 
-public class Typing
+public abstract class Typing
 {
 	private static int TypingCounter = 0 ;
 	private static String[] TypingText = new String[1] ;
@@ -35,11 +35,12 @@ public class Typing
 	
 	public static String LiveTyping(Point Pos, double angle, String Input, Font font, Color color, DrawingOnPanel DP)
 	{
-		if (true)	//UtilG.IsAlphaNumeric(Input)
+		Character input = Input.toCharArray()[0] ;
+		if (Character.isLetterOrDigit(input))
 		{
 			TypingText = AddString(TypingText, Input) ;	
 			++TypingCounter ;
-			if(2 <= TypingCounter)
+			if (2 <= TypingCounter)
 			{
 				TypedText += TypingText[TypingCounter] ;	
 			}
@@ -54,10 +55,10 @@ public class Typing
 		{
 			TypedText = "" ;
 		}
-		if (TypedText != null)
-		{
-			DP.DrawText(Pos, Align.bottomLeft, angle, TypedText.toString(), font, color) ;									
-		}	
+//		if (TypedText != null)
+//		{
+//			DP.DrawText(Pos, Align.bottomLeft, angle, TypedText.toString(), font, color) ;									
+//		}	
 		return TypedText ;
 	}
 	

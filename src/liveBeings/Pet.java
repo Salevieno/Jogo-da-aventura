@@ -94,145 +94,50 @@ public class Pet extends LiveBeing
 	
 	private static PersonalAttributes InitializePersonalAttributes(int Job)
 	{
-		BasicAttribute Life = new BasicAttribute(Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2]), 1) ;
-		BasicAttribute Mp = new BasicAttribute(Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3]), 1) ;
-		BasicAttribute Exp = new BasicAttribute(0, 50, 1) ;
-		BasicAttribute Satiation = new BasicAttribute(100, 100, 1) ;
-		BasicAttribute Thirst = new BasicAttribute(100, 100, 1) ;
-		return new PersonalAttributes(Life, Mp, Exp, Satiation, Thirst) ;
+		BasicAttribute life = new BasicAttribute(Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2]), 1) ;
+		BasicAttribute mp = new BasicAttribute(Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3]), 1) ;
+		BasicAttribute exp = new BasicAttribute(0, 50, 1) ;
+		BasicAttribute satiation = new BasicAttribute(100, 100, 1) ;
+		BasicAttribute thirst = new BasicAttribute(100, 100, 1) ;
+		return new PersonalAttributes(life, mp, exp, satiation, thirst) ;
 	}
 	
 	private static BattleAttributes InitializeBattleAttributes(int Job)
 	{
-		BasicBattleAttribute PhyAtk = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[5]), 0, 0) ;
-		BasicBattleAttribute MagAtk = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[6]), 0, 0) ;
-		BasicBattleAttribute PhyDef = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[7]), 0, 0) ;
-		BasicBattleAttribute MagDef = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[8]), 0, 0) ;
-		BasicBattleAttribute Dex = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[9]), 0, 0) ;
-		BasicBattleAttribute Agi = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[10]), 0, 0) ;
-		double[] Crit = new double[] {Double.parseDouble(PetProperties.get(Job)[11]), 0, Double.parseDouble(PetProperties.get(Job)[12]), 0} ;
-		BattleSpecialAttribute Stun = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[13]), 0, Double.parseDouble(PetProperties.get(Job)[14]), 0, Integer.parseInt(PetProperties.get(Job)[15])) ;
-		BattleSpecialAttribute Block = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[16]), 0, Double.parseDouble(PetProperties.get(Job)[17]), 0, Integer.parseInt(PetProperties.get(Job)[18])) ;
-		BattleSpecialAttributeWithDamage Blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(PetProperties.get(Job)[19]), 0, Double.parseDouble(PetProperties.get(Job)[20]), 0, Integer.parseInt(PetProperties.get(Job)[21]), 0, Integer.parseInt(PetProperties.get(Job)[22]), 0, Integer.parseInt(PetProperties.get(Job)[23])) ;
-		BattleSpecialAttributeWithDamage Poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(PetProperties.get(Job)[24]), 0, Double.parseDouble(PetProperties.get(Job)[25]), 0, Integer.parseInt(PetProperties.get(Job)[26]), 0, Integer.parseInt(PetProperties.get(Job)[27]), 0, Integer.parseInt(PetProperties.get(Job)[28])) ;
-		BattleSpecialAttribute Silence = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[29]), 0, Double.parseDouble(PetProperties.get(Job)[30]), 0, Integer.parseInt(PetProperties.get(Job)[31])) ;
+		BasicBattleAttribute phyAtk = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[5]), 0, 0) ;
+		BasicBattleAttribute magAtk = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[6]), 0, 0) ;
+		BasicBattleAttribute phyDef = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[7]), 0, 0) ;
+		BasicBattleAttribute magDef = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[8]), 0, 0) ;
+		BasicBattleAttribute dex = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[9]), 0, 0) ;
+		BasicBattleAttribute agi = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[10]), 0, 0) ;
+		double[] crit = new double[] {Double.parseDouble(PetProperties.get(Job)[11]), 0, Double.parseDouble(PetProperties.get(Job)[12]), 0} ;
+		BattleSpecialAttribute stun = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[13]), 0, Double.parseDouble(PetProperties.get(Job)[14]), 0, Integer.parseInt(PetProperties.get(Job)[15])) ;
+		BattleSpecialAttribute block = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[16]), 0, Double.parseDouble(PetProperties.get(Job)[17]), 0, Integer.parseInt(PetProperties.get(Job)[18])) ;
+		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(PetProperties.get(Job)[19]), 0, Double.parseDouble(PetProperties.get(Job)[20]), 0, Integer.parseInt(PetProperties.get(Job)[21]), 0, Integer.parseInt(PetProperties.get(Job)[22]), 0, Integer.parseInt(PetProperties.get(Job)[23])) ;
+		BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(PetProperties.get(Job)[24]), 0, Double.parseDouble(PetProperties.get(Job)[25]), 0, Integer.parseInt(PetProperties.get(Job)[26]), 0, Integer.parseInt(PetProperties.get(Job)[27]), 0, Integer.parseInt(PetProperties.get(Job)[28])) ;
+		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[29]), 0, Double.parseDouble(PetProperties.get(Job)[30]), 0, Integer.parseInt(PetProperties.get(Job)[31])) ;
 		LiveBeingStatus status = new LiveBeingStatus() ;
-		return new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, status) ;
+		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, crit, stun, block, blood, poison, silence, status) ;
 	}
 	
 	public static MovingAnimations initializeMovingAnimations(int Job)
 	{
-		return new MovingAnimations(UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(Job) + ".png")) ;
+		String filePath = Game.ImagesPath + "\\Pet\\" + "PetType" ;
+		return new MovingAnimations(UtilG.loadImage(filePath + String.valueOf(Job) + ".png"),
+				UtilG.loadImage(filePath + String.valueOf(Job) + ".png"),
+				UtilG.loadImage(filePath + String.valueOf(Job) + ".png"),
+				UtilG.loadImage(filePath + String.valueOf(Job) + ".png"),
+				UtilG.loadImage(filePath + String.valueOf(Job) + ".png")) ;
 	}
 
 	public ArrayList<Spell> InitializePetSpells()
     {
-		SpellType[] allSpellTypes = Game.getAllSpellTypes() ;
-		
+		SpellType[] allSpellTypes = Game.getAllSpellTypes() ;		
 		ArrayList<Spell> petspells = new ArrayList<>() ;
-		//ArrayList<String[]> PetSpellsInput = UtilG.ReadcsvFile(Game.CSVPath + "PetSpells.csv") ;	
-//		ArrayList<String[]> PetSpellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "PetSpellsBuffs.csv") ;
-//		ArrayList<String[]> PetSpellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "PetSpellsNerfs.csv") ;
-//		double[][][] PetSpellBuffs = new double[Pet.NumberOfSpells][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]		
-//		double[][][] PetSpellNerfs = new double[Pet.NumberOfSpells][14][13] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance, duration]	
-//		String[][] spellsInfo = new String[NumberOfSpells][2] ;
+		
 		for (int i = 0 ; i <= Pet.NumberOfSpells - 1 ; i += 1)
 		{
-			int ID = i + job*Pet.NumberOfSpells ;
-//			int BuffCont = 0, NerfCont = 0 ;
-//			for (int j = 0 ; j <= 14 - 1 ; j += 1)
-//			{
-//				if (j == 11 | j == 12)
-//				{
-//					for (int k = 0 ; k <= 13 - 1 ; k += 1)
-//					{
-//						PetSpellBuffs[i][j][k] = Double.parseDouble(PetSpellsBuffsInput.get(ID)[BuffCont + 3]) ;
-//						BuffCont += 1 ;
-//					}
-//				}
-//				else
-//				{
-//					PetSpellBuffs[i][j][0] = Double.parseDouble(PetSpellsBuffsInput.get(ID)[BuffCont + 3]) ;
-//					PetSpellBuffs[i][j][1] = Double.parseDouble(PetSpellsBuffsInput.get(ID)[BuffCont + 4]) ;
-//					PetSpellBuffs[i][j][2] = Double.parseDouble(PetSpellsBuffsInput.get(ID)[BuffCont + 5]) ;
-//					PetSpellBuffs[i][j][12] = Double.parseDouble(PetSpellsBuffsInput.get(ID)[BuffCont + 6]) ;
-//					BuffCont += 4 ;
-//				}
-//			}
-//			for (int j = 0 ; j <= 14 - 1 ; j += 1)
-//			{
-//				if (j == 11 | j == 12)
-//				{
-//					for (int k = 0 ; k <= 13 - 1 ; k += 1)
-//					{
-//						PetSpellNerfs[i][j][k] = Double.parseDouble(PetSpellsNerfsInput.get(ID)[NerfCont + 3]) ;
-//						NerfCont += 1 ;
-//					}
-//				}
-//				else
-//				{
-//					PetSpellNerfs[i][j][0] = Double.parseDouble(PetSpellsNerfsInput.get(ID)[NerfCont + 3]) ;
-//					PetSpellNerfs[i][j][1] = Double.parseDouble(PetSpellsNerfsInput.get(ID)[NerfCont + 4]) ;
-//					PetSpellNerfs[i][j][2] = Double.parseDouble(PetSpellsNerfsInput.get(ID)[NerfCont + 5]) ;
-//					PetSpellNerfs[i][j][12] = Double.parseDouble(PetSpellsNerfsInput.get(ID)[NerfCont + 6]) ;
-//					NerfCont += 4 ;
-//				}
-//			}
-			//if (Language.equals("P"))
-			//{
-				//spellsInfo[i] = new String[] {PetSpellsInput.get(ID)[42], PetSpellsInput.get(ID)[43]} ;
-			//}
-			//else if (Language.equals("E"))
-			//{
-			//	spellsInfo[i] = new String[] {PetSpellsInput.get(ID)[44], PetSpellsInput.get(ID)[45]} ;
-			//}
-			//String Name, int MaxLevel, double MpCost, String Type, int[][] PreRequisites, int Cooldown, int Duration, double[][] Buffs, double[][] Nerfs, double[] AtkMod, double[] DefMod, double[] DexMod, double[] AgiMod, double[] AtkCritMod, double[] DefCritMod, double[] StunMod, double[] BlockMod, double[] BloodMod, double[] PoisonMod, double[] SilenceMod, String Elem, String[] Info
-			/*String Name = PetSpellsInput.get(ID)[4] ;
-			int MaxLevel = Integer.parseInt(PetSpellsInput.get(ID)[5]) ;
-			double MpCost = Double.parseDouble(PetSpellsInput.get(ID)[6]) ;
-			SpellTypes Type ;
-			if (PetSpellsInput.get(ID)[7].equals("Active"))
-			{
-				Type = SpellTypes.active ;
-			}
-			else if (PetSpellsInput.get(ID)[7].equals("Passive"))
-			{
-				Type = SpellTypes.passive ;
-			}
-			else if (PetSpellsInput.get(ID)[7].equals("Offensive"))
-			{
-				Type = SpellTypes.offensive ;
-			}
-			else
-			{
-				Type = SpellTypes.support ;
-			}
-			Map<Spell, Integer> preRequisites = new HashMap<>() ;
-			for (int p = 0 ; p <= 6 - 1 ; p += 2)
-			{
-				if (-1 < Integer.parseInt(PetSpellsInput.get(ID)[p + 8]))
-				{
-					preRequisites.put(spell.get(Integer.parseInt(PetSpellsInput.get(ID)[p + 8])), Integer.parseInt(PetSpellsInput.get(ID)[p + 9])) ;
-				}
-			}
-			int Cooldown = Integer.parseInt(PetSpellsInput.get(ID)[14]) ;
-			int Duration = Integer.parseInt(PetSpellsInput.get(ID)[15]) ;
-			double[] Atk = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[16]), Double.parseDouble(PetSpellsInput.get(ID)[17])} ;
-			double[] Def = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[18]), Double.parseDouble(PetSpellsInput.get(ID)[19])} ;
-			double[] Dex = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[20]), Double.parseDouble(PetSpellsInput.get(ID)[21])} ;
-			double[] Agi = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[22]), Double.parseDouble(PetSpellsInput.get(ID)[23])} ;
-			double[] AtkCrit = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[24])} ;
-			double[] DefCrit = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[25])} ;
-			double[] Stun = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[26]), Double.parseDouble(PetSpellsInput.get(ID)[27]), Double.parseDouble(PetSpellsInput.get(ID)[28])} ;
-			double[] Block = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[29]), Double.parseDouble(PetSpellsInput.get(ID)[30]), Double.parseDouble(PetSpellsInput.get(ID)[31])} ;
-			double[] Blood = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[32]), Double.parseDouble(PetSpellsInput.get(ID)[33]), Double.parseDouble(PetSpellsInput.get(ID)[34])} ;
-			double[] Poison = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[35]), Double.parseDouble(PetSpellsInput.get(ID)[36]), Double.parseDouble(PetSpellsInput.get(ID)[37])} ;
-			double[] Silence = new double[] {Double.parseDouble(PetSpellsInput.get(ID)[38]), Double.parseDouble(PetSpellsInput.get(ID)[39]), Double.parseDouble(PetSpellsInput.get(ID)[40])} ;
-			String Elem = PetSpellsInput.get(ID)[41] ;*/
+			int ID = i + job * Pet.NumberOfSpells ;
 			
 			petspells.add(new Spell(allSpellTypes[ID])) ;	
 		}
@@ -263,13 +168,10 @@ public class Pet extends LiveBeing
 	public double[] getElemMult() {return ElemMult ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public BasicAttribute getSatiation() {return PA.getSatiation() ;}
-	//public int[][] getActions() {return PA.Actions ;}
-//	public int[] getStatusCounter() {return StatusCounter ;}
 
-	public boolean isAlive()
-	{
-		return (0 < PA.getLife().getCurrentValue()) ;
-	}
+	public boolean isAlive() { return 0 < PA.getLife().getCurrentValue() ;}
+	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
+	public boolean closeToPlayer(Point playerPos) { return UtilG.dist(pos, playerPos) <= 40 ; }
 	
 	public Point CenterPos()
 	{
@@ -302,10 +204,6 @@ public class Pet extends LiveBeing
 		return "" ;
 	}
 	
-	public boolean closeToPlayer(Point playerPos)
-	{
-		return UtilG.dist(pos, playerPos) <= 40 ;
-	}
 	public void Move(Point playerPos, GameMap playerMap, Creature opponent, Elements playerElem)
 	{
 		Point nextPos ;
@@ -333,27 +231,6 @@ public class Pet extends LiveBeing
 	public void Dies()
 	{
 		PA.getLife().incCurrentValue(-PA.getLife().getCurrentValue()) ;
-	}
-	public void ActivateActionCounters(boolean SomeAnimationIsOn)
-	{
-		/*if (PA.Actions[1][0] % PA.Actions[1][1] == 0)
-		{
-			PA.getSatiation()[0] = Math.max(PA.getSatiation()[0] - 1, 0) ;
-			if (PA.getSatiation()[0] == 0)	// pet is hungry
-			{
-				PA.getLife()[0] = Math.max(PA.getLife()[0] - 1, 0) ;
-			}
-			PA.Actions[1][0] = 0 ;
-		}
-		if (PA.Actions[2][0] % PA.Actions[2][1] == 0)	// Pet heals mp
-		{
-			PA.getMp()[0] = (double)(Math.min(PA.getMp()[0] + 0.02*PA.getMp()[1], PA.getMp()[1])) ;	
-			PA.Actions[2][0] = 0 ;
-		}
-		if (PA.Actions[0][0] % PA.Actions[0][1] == 0 & !SomeAnimationIsOn)
-		{
-			PA.Actions[0][2] = 1 ;	// pet can move
-		}*/
 	}
 	
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
@@ -408,33 +285,28 @@ public class Pet extends LiveBeing
 	{
 		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())); ;
 	}
-	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
-	public void checkLevelUp(Animations ani)
+	
+	public void levelUp(Animations ani)
 	{
-		if (shouldLevelUP())
-		{
-			double[] attributesIncrease = CalcAttIncrease() ;
-			setLevel(level + 1) ;
-			spellPoints += 1 ;
-			PA.getLife().incMaxValue((int) attributesIncrease[0]) ;
-			PA.getLife().setToMaximum() ;
-			PA.getMp().incMaxValue((int) attributesIncrease[1]) ;	
-			PA.getMp().setToMaximum() ;
-			BA.getPhyAtk().incBaseValue(attributesIncrease[2]) ;
-			BA.getMagAtk().incBaseValue(attributesIncrease[3]) ;
-			BA.getPhyDef().incBaseValue(attributesIncrease[4]) ;
-			BA.getMagDef().incBaseValue(attributesIncrease[5]) ;
-			BA.getAgi().incBaseValue(attributesIncrease[6]) ;
-			BA.getDex().incBaseValue(attributesIncrease[7]) ;
-			PA.getExp().incMaxValue((int) attributesIncrease[8]) ;		
-
-//			ani.SetAniVars(13, new Object[] {150, attributesIncrease, level, Game.ColorPalette[5]}) ;
-//			ani.StartAni(13) ;
-		}
+		double[] attIncrease = calcAttributesIncrease() ;
+		setLevel(level + 1) ;
+		spellPoints += 1 ;
+		PA.getLife().incMaxValue((int) attIncrease[0]) ;
+		PA.getLife().setToMaximum() ;
+		PA.getMp().incMaxValue((int) attIncrease[1]) ;	
+		PA.getMp().setToMaximum() ;
+		BA.getPhyAtk().incBaseValue(attIncrease[2]) ;
+		BA.getMagAtk().incBaseValue(attIncrease[3]) ;
+		BA.getPhyDef().incBaseValue(attIncrease[4]) ;
+		BA.getMagDef().incBaseValue(attIncrease[5]) ;
+		BA.getAgi().incBaseValue(attIncrease[6]) ;
+		BA.getDex().incBaseValue(attIncrease[7]) ;
+		PA.getExp().incMaxValue((int) attIncrease[8]) ;
+		
+		ani.start(new Object[] {150, Arrays.copyOf(attIncrease, attIncrease.length - 1), level, color}) ;
 	}
-	public double[] CalcAttIncrease()
+	public double[] calcAttributesIncrease()
 	{
-		// Life, Mp, Phyatk, Magatk, Phydef, Magdef, Dex, Agi, Exp
 		double[] Increase = new double[AttributeIncrease.length + 1] ;
 		for (int i = 0 ; i <= AttributeIncrease.length - 1 ; ++i)
 		{
@@ -443,11 +315,10 @@ public class Pet extends LiveBeing
 				Increase[i] = AttributeIncrease[i] ;
 			}
 		}
-		Increase[AttributeIncrease.length] = (double) (10*(3*Math.pow(level - 1, 2) + 3*(level - 1) + 1) - 5) ;
+		Increase[AttributeIncrease.length] = (double) (10 * (3 * Math.pow(level - 1, 2) + 3 * (level - 1) + 1) - 5) ;
 		return Increase ;
 	}
 
-	/* Save and load methods */
 	public void Save(BufferedWriter bW)
 	{
 		try
@@ -528,7 +399,6 @@ public class Pet extends LiveBeing
 	}
 	
 	
-	/* Drawing methods */
 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
 	{
 		movingAni.display(dir, pos, DrawingOnPanel.stdAngle, scale, DP) ;
