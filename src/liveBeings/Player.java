@@ -487,33 +487,63 @@ public class Player extends LiveBeing
 	public void resetBattleAction() { currentBattleAction = null ;}
 	public void decAttPoints(int amount) {attPoints += -amount ;}
 
-	private void startMoving()
-	{
-		state = LiveBeingStates.moving ;
-		stepCounter.reset() ;
-	}
+	private void startMove() { state = LiveBeingStates.moving ; stepCounter.reset() ;}
 
 	public void move(Pet pet)
 	{
-//		if (Ani.isActive(10) | Ani.isActive(12) | Ani.isActive(13) | Ani.isActive(15) | Ani.isActive(18))
-//		{
-//			return ;
-//		}	
-		
-		Point newPos = CalcNewPos() ;
-		if (Game.getScreen().posIsInMap(newPos))
-		{	
-			if (map.groundIsWalkable(newPos, elem[4]))
-			{
-				setPos(newPos) ;
-			}	
-		}
-		else
-		{
-			MoveToNewMap() ;
-		}
 		
 		stepCounter.inc() ;
+		
+		Point newPos = CalcNewPos() ;
+		
+		if (!Game.getScreen().posIsInMap(newPos)) {	moveToNewMap() ; return ;}
+		
+		if (!map.groundIsWalkable(newPos, elem[4])) { return ;}
+		
+		setPos(newPos) ;
+		
+	}
+	
+	private void moveToNewMap()
+	{
+		
+		int[] screenBorder = Game.getScreen().getBorders() ;
+		Point currentPos = new Point(pos) ;
+		Point newPos = new Point() ;
+		int newMapID = -1 ;
+		int[] mapConnections = map.getConnections() ;
+		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
+		boolean bottomSide = currentPos.y <= Game.getScreen().getSize().height / 2 ;
+
+		switch (dir)
+		{
+			case up:
+				newPos = new Point(currentPos.x, screenBorder[3] - step) ;
+				newMapID = leftSide ? mapConnections[0] : mapConnections[7] ;
+				
+				break ;
+			
+			case left:
+				newPos = new Point(screenBorder[2] - step, currentPos.y) ;
+				newMapID = bottomSide ? mapConnections[1] : mapConnections[2] ;
+				
+				break ;
+			
+			case down:
+				newPos = new Point(currentPos.x, screenBorder[1] + step) ;
+				newMapID = leftSide ? mapConnections[3] : mapConnections[4] ;
+				
+				break ;
+			
+			case right:
+				newPos = new Point(screenBorder[0] + step, currentPos.y) ;
+				newMapID = bottomSide ? mapConnections[5] : mapConnections[6] ;
+				
+				break ;			
+		}
+		
+		if (-1 < newMapID) { setMap(Game.getMaps()[newMapID]) ; setPos(newPos) ;}
+		
 	}
 
 	private List<Quest> getActiveQuests() { return quests.stream().filter(quest -> quest.isActive()).toList() ;}	
@@ -538,7 +568,7 @@ public class Player extends LiveBeing
 				case "Esquerda": setDir(Directions.left) ; break ;
 				case "Direita": setDir(Directions.right) ; break ;
 			}
-			startMoving() ;
+			startMove() ;
 		}
 		if (currentAction.equals("MouseLeftClick"))
 		{
@@ -835,92 +865,7 @@ public class Player extends LiveBeing
 			PA.getThirst().incCurrentValue(1) ;
 		}
 	}
-	private void MoveToNewMap()
-	{
-		Screen screen = Game.getScreen() ;
-		int nextMapID = -1 ;
-		Point currentPos = new Point(pos.x, pos.y) ;
-		Point nextPos = new Point(0, 0) ;
-		int[] mapCon = map.getConnections() ;
-
-		switch (dir)
-		{
-			case up:
-			nextPos = new Point(currentPos.x, screen.getBorders()[3] - step) ;
-			if (-1 < mapCon[0] & currentPos.x <= screen.getSize().width / 2)
-			{
-				nextMapID = mapCon[0] ;
-			}
-			else if (-1 < mapCon[7] & screen.getSize().width / 2 < currentPos.x)
-			{
-				nextMapID = mapCon[7] ;
-			}
-			
-			break ;
-			
-			case left:
-			nextPos = new Point(screen.getBorders()[2] - step, currentPos.y) ;
-			if (-1 < mapCon[1] & currentPos.y <= screen.getSize().height / 2)
-			{
-				nextMapID = mapCon[1] ;
-			}
-			else if (-1 < mapCon[2] & screen.getSize().height / 2 < currentPos.y)
-			{
-				nextMapID = mapCon[2] ;
-			}
-			
-			break ;
-			
-			case down:
-			nextPos = new Point(currentPos.x, screen.getBorders()[1] + step) ;
-			if(-1 < mapCon[3] & currentPos.x <= screen.getSize().width / 2)
-			{
-				nextMapID = mapCon[3] ;
-			}
-			else if(-1 < mapCon[4] & screen.getSize().width / 2 < currentPos.x)
-			{
-				nextMapID = mapCon[4] ;	
-			}
-			
-			break ;
-			
-			case right:
-			nextPos = new Point(screen.getBorders()[0] + step, currentPos.y) ;
-			if(-1 < mapCon[5] & screen.getSize().height / 2 < currentPos.y)
-			{
-				nextMapID = mapCon[5] ;
-			}
-			else if(-1 < mapCon[6] & currentPos.y <= screen.getSize().height / 2)
-			{
-				nextMapID = mapCon[6] ;
-			}
-			
-			break ;
-			
-		}
-		if (-1 < nextMapID)
-		{
-			if (Game.getMaps()[nextMapID].groundIsWalkable(nextPos, elem[4]))
-			{
-				setMap(Game.getMaps()[nextMapID]) ;
-				setPos(nextPos) ;	
-//				if (pet.isAlive())
-//				{
-//					pet.setPos(nextPos) ;
-//				}
-//				if (map.IsACity())
-//				{
-//					ResetAction() ;
-//				}
-			}
-			
-
-			if (!isInBattle() & getContinent() == 3)
-			{
-//				Pterodactile.speak() ;
-			}
-		}
-	}
+	
 	public void SupSpellCounters()
 	{
 		for (Spell spell : spells)

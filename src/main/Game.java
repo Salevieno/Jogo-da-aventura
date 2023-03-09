@@ -135,7 +135,7 @@ public class Game extends JPanel
 	//private static NPCs[] allNPCs ;
 	private static Quest[] allQuests ;
 	private static Battle bat ;
-	private static Gif[] allGifs ;
+//	private static Gif[] allGifs ;
 	private static Animations[] ani ;
 	
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;

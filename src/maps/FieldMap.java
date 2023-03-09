@@ -35,6 +35,7 @@ public class FieldMap extends GameMap
 		Point minCoord = new Point((int) (0.1 * screen.getSize().width), Game.getSky().height + 10) ;
 		Dimension range = new Dimension((int) (0.8 * screen.getSize().width), (int) (0.8 * screen.getSize().height)) ;
 		Dimension step = new Dimension(1, 1) ;
+		// colocar offset de 20 das bordas (tamanho do passo do player)
 		for (int me = 0 ; me <= 4 ; ++me)
 		{
 			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
