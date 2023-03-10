@@ -182,7 +182,7 @@ public abstract class LiveBeing
 	public void incrementCounters()
 	{
 		incActionCounters() ;
-		if (this instanceof Player) { ((Player) this).SupSpellCounters() ;}
+		if (this instanceof Player) { ((Player) this).supSpellCounters() ;}
 		BA.getStatus().decreaseStatus() ;
 	}
 	

@@ -895,7 +895,7 @@ public class Game extends JPanel
 			konamiCode() ;
 		}
 		// draw the map (cities, forest, etc.)
-//		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
+		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
 		sideBar.display(player, pet, mousePos, DP);
 		
 		// creatures act
@@ -934,13 +934,14 @@ public class Game extends JPanel
 				else { player.setState(LiveBeingStates.fighting) ;}
 			}
 		}
-//		player.DrawAttributes(0, DP) ;
-//		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
-//		if (player.weaponIsEquipped())
-//		{
-//			player.DrawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
-//		}
-//		player.displayState(DP) ;
+		player.applyAdjacentGroundEffect() ;
+		player.DrawAttributes(0, DP) ;
+		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
+		if (player.weaponIsEquipped())
+		{
+			player.drawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
+		}
+		player.displayState(DP) ;
 		
 		
 		// pet acts
@@ -990,7 +991,7 @@ public class Game extends JPanel
 		
 		
 		// show the active player windows
-		player.ShowWindows(pet, creature, creatureTypes, allMaps, bat, mousePos, DP) ;
+		player.showWindows(pet, creature, creatureTypes, allMaps, bat, mousePos, DP) ;
 		
 		
 		// move the active projectiles and check if they collide with something

@@ -458,13 +458,13 @@ public class Player extends LiveBeing
 		return (EquipID[0].getId() + 1) == EquipID[1].getId() & (EquipID[1].getId() + 1) == EquipID[2].getId() ;
 	}
 	
-	private void ActivateRide()
+	private void activateRide()
 	{
 		step = isRiding ? step / 2 : 2 * step ;
 		isRiding = !isRiding ;
 	}
 	
-	private void Collect(Collectible collectible, DrawingOnPanel DP)
+	private void collect(Collectible collectible, DrawingOnPanel DP)
     {
 		collectCounter.inc() ;
         Image collectingGif = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "Collecting.gif") ;
@@ -489,6 +489,18 @@ public class Player extends LiveBeing
 	public void resetBattleAction() { currentBattleAction = null ;}
 	public void decAttPoints(int amount) {attPoints += -amount ;}
 
+	public void applyAdjacentGroundEffect()
+	{
+		if (isInside(GroundTypes.lava) & !elem[4].equals(Elements.fire))
+		{
+			PA.getLife().incCurrentValue(-5) ;
+		}
+		if (isTouching(GroundTypes.water))
+		{
+			PA.getThirst().incCurrentValue(1) ;
+		}
+	}
+	
 	private void startMove() { state = LiveBeingStates.moving ; stepCounter.reset() ;}
 
 	public void move(Pet pet)
@@ -570,8 +582,10 @@ public class Player extends LiveBeing
 				case "Esquerda": setDir(Directions.left) ; break ;
 				case "Direita": setDir(Directions.right) ; break ;
 			}
+			
 			startMove() ;
 		}
+		
 		if (currentAction.equals("MouseLeftClick"))
 		{
 			sideBar.getIcons().forEach(icon ->
@@ -591,6 +605,7 @@ public class Player extends LiveBeing
 				}
 			});
 		}
+		
 		if (currentAction.equals(ActionKeys[4]))
 		{
 			focusWindow = bag ;
@@ -601,14 +616,13 @@ public class Player extends LiveBeing
 			focusWindow = attWindow ;
 			attWindow.open() ;
 		}
-//		if (currentAction.equals(ActionKeys[6]))
-//		{
-//			String WaterPos = Uts.CheckAdjacentGround(getPos(), screen, maps[getMap()], "Water");
-//			if (0 < getBag()[1340] & (WaterPos.contains("Touching") | WaterPos.equals("Inside")))
-//			{
-//				// TODO fishing gif
-//			}
-//		}
+		if (currentAction.equals(ActionKeys[6]))
+		{
+			if (bag.contains(Game.getAllItems()[1340]) & isInside(GroundTypes.water))
+			{
+				// TODO fishing gif
+			}
+		}
 		// TODO add dig
 		if (currentAction.equals(ActionKeys[7]))	// Map  & questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))
 		{
@@ -632,7 +646,7 @@ public class Player extends LiveBeing
 		}
 		if (currentAction.equals(ActionKeys[11]) & questSkills.get(QuestSkills.ride))
 		{
-			ActivateRide() ;
+			activateRide() ;
 		}
 		if (currentAction.equals(ActionKeys[12]) & !isInBattle())
 		{
@@ -651,7 +665,7 @@ public class Player extends LiveBeing
 			
 			if (spell.getType().equals(SpellTypes.support))
 			{
-				if (spell.isReady() & spell.getMpCost() <= PA.getMp().getCurrentValue() & 0 < spell.getLevel())
+				if (spell.isReady() & hasEnoughMP(spell) & 0 < spell.getLevel())
 				{
 					useSupportSpell(pet, spell) ;
 					train(new AtkResults(AtkTypes.magical, null, 0)) ;
@@ -682,37 +696,13 @@ public class Player extends LiveBeing
 			{
 				useItem(bag.getSelectedItem()) ;
 			}
-//			bag.navigate(currentAction) ;
 		}
-//		if (fabWindow.isOpen())
-//		{
-//			fabWindow.navigate(currentAction) ;
-//		}
-//		if (questWindow.isOpen())
-//		{
-//			questWindow.navigate(currentAction) ;
-//		}
-//		if (settings.isOpen())
-//		{
-//			settings.navigate(currentAction) ;
-//		}
-//		if (attWindow.isOpen())
-//		{
-//			attWindow.navigate(this, currentAction, MousePos) ;
-//		}
-//		if (hintsWindow.isOpen())
-//		{
-//			hintsWindow.navigate(currentAction) ;
-//		}
 		
 		for (int i = 0; i <= HotKeys.length - 1 ; i += 1)
 		{
-			if (currentAction.equals(HotKeys[i]))
+			if (currentAction.equals(HotKeys[i]) & hotItems[i] != null)
 			{
-				if (hotItems[i] != null)
-				{
-					useItem(hotItems[i]) ;
-				}
+				useItem(hotItems[i]) ;
 			}
 		}
 		
@@ -736,7 +726,7 @@ public class Player extends LiveBeing
 				if (distx <= 0.5*size.width & disty <= 0.5*size.height)
 				{
 					setState(LiveBeingStates.collecting);
-					Collect(collectible, DP) ;
+					collect(collectible, DP) ;
 				}
 			});
 
@@ -856,19 +846,8 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	private void receiveAdjacentGroundEffect(GameMap map)
-	{
-		if (UtilS.checkAdjacentGround(pos, map, GroundTypes.lava).equals(RelativePos.inside) & !elem[4].equals(Elements.fire))
-		{
-			PA.getLife().incCurrentValue(-5) ;
-		}
-		if (UtilS.isTouching(pos, map, GroundTypes.water))
-		{
-			PA.getThirst().incCurrentValue(1) ;
-		}
-	}
 	
-	public void SupSpellCounters()
+	public void supSpellCounters()
 	{
 		for (Spell spell : spells)
 		{
@@ -888,7 +867,7 @@ public class Player extends LiveBeing
 			
 	
 	// called every time the window is repainted
-	public void ShowWindows(Pet pet, Creature[] creature, CreatureType[] creatureTypes, GameMap[] maps, Battle B, Point MousePos, DrawingOnPanel DP)
+	public void showWindows(Pet pet, Creature[] creature, CreatureType[] creatureTypes, GameMap[] maps, Battle B, Point MousePos, DrawingOnPanel DP)
 	{
 		if (bag.isOpen())
 		{
@@ -934,7 +913,7 @@ public class Player extends LiveBeing
 		
 	
 	// battle functions
-	public void SpendArrow()
+	public void spendArrow()
 	{
 		//if (0 < Equips[3] & 0 < Bag[Equips[3]])
 		//{
@@ -1232,45 +1211,32 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	private void DrawRange(DrawingOnPanel DP)
+	private void drawRange(DrawingOnPanel DP)
 	{
 		DP.DrawCircle(pos, (int)(2 * range), 2, null, Game.ColorPalette[job]) ;
 	}
-	private void DrawEquips(Point pos, int job, int type, Scale scale, double angle, DrawingOnPanel DP)
+	private void drawEquips(Point pos, int job, int type, Scale scale, double angle, DrawingOnPanel DP)
 	{
-		int bonus = 0 ;
-		if (bonus == 10)
+		// TODO add shining equips for bonus 10
+		switch (type)
 		{
-			bonus = 8 ;
-		}
-		if (type == 0)
-		{
-			DP.DrawImage(Equip.SwordImage, pos, angle, scale, Align.center) ;	// Items.EquipImage[job + bonus]
-		}
-		if (type == 1)
-		{
-			DP.DrawImage(Equip.ShieldImage, pos, angle, scale, Align.center) ;	// Items.EquipImage[5 + bonus]
-		}
-		if (type == 2)
-		{
-			DP.DrawImage(Equip.ArmorImage, pos, angle, scale, Align.center) ;	// Items.EquipImage[6 + bonus]
-		}
-		if (type == 3)
-		{
-			DP.DrawImage(Equip.ArrowImage, pos, angle, scale, Align.center) ;	// Items.EquipImage[7]
+			case 0: DP.DrawImage(Equip.SwordImage, pos, angle, scale, Align.center) ; return ;
+			case 1: DP.DrawImage(Equip.ShieldImage, pos, angle, scale, Align.center) ; return ;
+			case 2: DP.DrawImage(Equip.ArmorImage, pos, angle, scale, Align.center) ; return ;
+			case 3: DP.DrawImage(Equip.ArrowImage, pos, angle, scale, Align.center)  ; return ;
 		}
 	}
-	public void DrawWeapon(Point Pos, double[] playerscale, DrawingOnPanel DP)
+	public void drawWeapon(Point Pos, double[] playerscale, DrawingOnPanel DP)
 	{
 		Scale scale = new Scale(0.6, 0.6) ;
 		double[] angle = new double[] {50, 30, 0, 0, 0} ;
 		Point EqPos = new Point((int)(Pos.x + 0.16*size.width*playerscale[0]), (int)(Pos.y - 0.4*size.height*playerscale[1])) ;
 		if (getEquips()[0] != null)
 		{
-			DrawEquips(EqPos, job, 0, scale, angle[job], DP) ;
+			drawEquips(EqPos, job, 0, scale, angle[job], DP) ;
 		}	
 	}
-	public void DrawTimeBar(Creature creature, DrawingOnPanel DP)
+	public void drawTimeBar(Creature creature, DrawingOnPanel DP)
 	{
 		String relPos = UtilS.RelPos(pos, creature.getPos()) ;
 		DrawTimeBar(relPos, Game.ColorPalette[9], DP) ;
@@ -1292,7 +1258,7 @@ public class Player extends LiveBeing
 		}
 		if (showRange)
 		{
-			DrawRange(DP) ;
+			drawRange(DP) ;
 		}
 
 		BA.getStatus().display(UtilG.Translate(pos, 0, -size.height), dir, DP);
