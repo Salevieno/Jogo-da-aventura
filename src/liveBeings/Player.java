@@ -51,12 +51,14 @@ import main.Game;
 import maps.Collectible;
 import maps.FieldMap;
 import maps.GameMap;
+import maps.GroundTypes;
 import screen.Screen;
 import screen.SideBar;
 import utilities.Align;
 import utilities.AttackEffects;
 import utilities.Directions;
 import utilities.Elements;
+import utilities.RelativePos;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
@@ -856,11 +858,11 @@ public class Player extends LiveBeing
 	
 	private void receiveAdjacentGroundEffect(GameMap map)
 	{
-		if (UtilS.CheckAdjacentGround(pos, map, "Lava").equals("Inside") & !elem[4].equals("f"))
+		if (UtilS.checkAdjacentGround(pos, map, GroundTypes.lava).equals(RelativePos.inside) & !elem[4].equals(Elements.fire))
 		{
 			PA.getLife().incCurrentValue(-5) ;
 		}
-		if (UtilS.isAdjacentTo(pos,  map, "Water"))
+		if (UtilS.isTouching(pos, map, GroundTypes.water))
 		{
 			PA.getThirst().incCurrentValue(1) ;
 		}
@@ -969,7 +971,7 @@ public class Player extends LiveBeing
 		
 		spell.getCooldownCounter().reset();
 		spell.activate() ;		
-		ResetBattleActions() ;
+		resetBattleActions() ;
 		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
 
 		// TODO support spells 

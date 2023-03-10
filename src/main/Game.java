@@ -73,6 +73,8 @@ import liveBeings.SpellType;
 import maps.CityMap;
 import maps.FieldMap;
 import maps.GameMap;
+import maps.GroundType;
+import maps.GroundTypes;
 import maps.SpecialMap;
 import maps.TreasureChest;
 import screen.Screen;
@@ -892,10 +894,8 @@ public class Game extends JPanel
 		{
 			konamiCode() ;
 		}
-		
-		
 		// draw the map (cities, forest, etc.)
-		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
+//		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
 		sideBar.display(player, pet, mousePos, DP);
 		
 		// creatures act
@@ -934,13 +934,13 @@ public class Game extends JPanel
 				else { player.setState(LiveBeingStates.fighting) ;}
 			}
 		}
-		player.DrawAttributes(0, DP) ;
-		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
-		if (player.weaponIsEquipped())
-		{
-			player.DrawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
-		}
-		player.displayState(DP) ;
+//		player.DrawAttributes(0, DP) ;
+//		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
+//		if (player.weaponIsEquipped())
+//		{
+//			player.DrawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
+//		}
+//		player.displayState(DP) ;
 		
 		
 		// pet acts
@@ -1195,6 +1195,9 @@ public class Game extends JPanel
 //    	
 //    	System.out.println(pet.getLife()) ;
 //    	System.out.println(fieldMaps[12].allColliders());
+    	
+    	player.setPos(new Point(30, 250)) ;
+    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250))) ;
 	}
 	
 	private void testing()

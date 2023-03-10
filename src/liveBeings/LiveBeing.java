@@ -16,6 +16,7 @@ import main.AtkResults;
 import main.AtkTypes;
 import main.Game;
 import maps.GameMap;
+import maps.GroundTypes;
 import utilities.Align;
 import utilities.AttackEffects;
 import utilities.Directions;
@@ -180,12 +181,12 @@ public abstract class LiveBeing
 	
 	public void incrementCounters()
 	{
-		IncActionCounters() ;
+		incActionCounters() ;
 		if (this instanceof Player) { ((Player) this).SupSpellCounters() ;}
 		BA.getStatus().decreaseStatus() ;
 	}
 	
-	public void IncActionCounters()
+	public void incActionCounters()
 	{
 		mpCounter.inc() ;
 		satiationCounter.inc() ;
@@ -199,7 +200,7 @@ public abstract class LiveBeing
 		if (this instanceof Player) { if (thirstCounter.finished()) { PA.getThirst().incCurrentValue(-1) ; thirstCounter.reset() ;}}
 	}
 	public void incrementBattleActionCounters() {battleActionCounter.inc() ; displayDamage.inc() ;}
-	public void ResetBattleActions() {battleActionCounter.reset() ; }
+	public void resetBattleActions() {battleActionCounter.reset() ; }
 	
 	
 	public void resetCombo()
@@ -223,7 +224,7 @@ public abstract class LiveBeing
 		}
 	}
 	
-	public List<Spell> GetActiveSpells()
+	public List<Spell> getActiveSpells()
 	{
 		List<Spell> activeSpells = new ArrayList<Spell>() ;
 		for (Spell spell : spells)
@@ -238,7 +239,7 @@ public abstract class LiveBeing
 	}
 	
 	public boolean isAlive() {return 0 < PA.getLife().getCurrentValue() ;}
-	public boolean hasTheSpell(String action) {return Player.SpellKeys.indexOf(action) < GetActiveSpells().size() ;}
+	public boolean hasTheSpell(String action) {return Player.SpellKeys.indexOf(action) < getActiveSpells().size() ;}
 	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
 	public boolean hasSuperElement()
 	{
@@ -264,6 +265,8 @@ public abstract class LiveBeing
 		return actionIsDef() ;
 	}
 	public boolean isInRange(Point target) {return pos.distance(target) <= range ;}
+	public boolean isTouching(GroundTypes groundType) { return UtilS.isTouching(pos, map, groundType) ;}
+	public boolean isInside(GroundTypes groundType) { return UtilS.isInside(pos, map, groundType) ;}
 	
 	public Elements[] atkElems()
 	{

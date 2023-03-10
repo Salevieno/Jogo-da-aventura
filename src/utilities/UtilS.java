@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays ;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import components.Building;
@@ -25,6 +26,8 @@ import main.Battle;
 import main.Game;
 import maps.FieldMap;
 import maps.GameMap;
+import maps.GroundType;
+import maps.GroundTypes;
 import screen.Screen;
 
 public abstract class UtilS 
@@ -74,85 +77,69 @@ public abstract class UtilS
 		return SelectedMenu ;
 	}
 	
- 	public static String CheckAdjacentGround(Point playerPos, GameMap map, String GroundType)
+	public static RelativePos calcRelativePos(Point pos, Point targetPos)
 	{
- 		Point PlayerPos = new Point(playerPos.x, playerPos.y) ;
-		if (map.getgroundType() != null)
+		if (pos.equals(targetPos))
 		{
-			for (int i = 0; i <= map.getgroundType().length - 1; i += 1)
-			{
-				Object[] o = (Object[]) map.getgroundType()[i] ;
-				String type = (String) o[0] ;	// ground type at the point
-				Point p = (Point) o[1] ;		// point on the map
-				if (type.equals(GroundType))
-				{
-					if (p.x == PlayerPos.x & p.y == PlayerPos.y)
-					{
-						return "inside" ;	// The player is inside the ground
-					}
-					else if (p.x == (PlayerPos.x - 1) & p.y == PlayerPos.y)
-					{
-						return "touching left" ;	// The ground is touching the player from the left
-					}
-					else if (p.x == (PlayerPos.x + 1) & p.y == PlayerPos.y)
-					{
-						return "touching right" ;	// The player is touching the ground and the ground is on the left
-					}
-					else if (p.x == PlayerPos.x & p.y == (PlayerPos.y - 1))
-					{
-						return "touching up" ;	// The player is touching the ground and the ground is on the left
-					}
-					else if (p.x == (PlayerPos.x - 1) & p.y == (PlayerPos.y + 1))
-					{
-						return "touching down" ;	// The player is touching the ground and the ground is on the left
-					}
-				}			
-			}
+			return RelativePos.inside;
 		}
-		//if (map.getType()[PlayerPos[0]][PlayerPos[1]].equals(GroundType))
-		//{
-		//	return "Inside" ;	// The player is inside the ground
-		//}
-		//if (screen.getBorders()[0] <= PlayerPos[0] - step)
-		//{
-		//	if (map.getType()[PlayerPos[0] - step][PlayerPos[1]].equals(GroundType))
-		//	{
-		//		return "Touching Left" ;	// The player is touching the ground and the ground is on the left
-		//	}
-		//}
-		//if (PlayerPos[0] + step < screen.getBorders()[2] - 1)
-		//{
-		//	if (map.getType()[PlayerPos[0] + step][PlayerPos[1]].equals(GroundType))
-		//	{
-		//		return "Touching Right" ;	// The player is touching the ground and the ground is on the right
-		//	}
-		//}
-		//if (screen.getBorders()[1] <= PlayerPos[1] - step)
-		//{
-		//	if (map.getType()[PlayerPos[0]][PlayerPos[1] - step].equals(GroundType))
-		//	{
-		//		return "Touching Up" ;	// The player is touching the ground and the ground is above
-		//	}
-		//}
-		//if (PlayerPos[1] + step < screen.getBorders()[3] - 1)
-		//{
-		//	if (map.getType()[PlayerPos[0]][PlayerPos[1] + step].equals(GroundType))
-		//	{
-		//		return "Touching Down" ;	// The player is touching the ground and the ground is below
-		//	}
-		//}
+		if (pos.x == (targetPos.x - 1) & pos.y == targetPos.y)
+		{
+			return RelativePos.left ;
+		}
+		if (pos.x == (targetPos.x + 1) & pos.y == targetPos.y)
+		{
+			return RelativePos.right ;
+		}
+		if (pos.x == targetPos.x & pos.y == (targetPos.y - 1))
+		{
+			return RelativePos.below ;
+		}
+		if (pos.x == targetPos.x & pos.y == (targetPos.y + 1))
+		{
+			return RelativePos.above ;
+		}
 		
-		return "";
+		return null ;
+	}
+	
+ 	public static RelativePos checkAdjacentGround(Point pos, GameMap map, GroundTypes targetGroundType)
+	{
+ 		Point userPos = new Point(pos) ;
+
+		if (map == null) { return null ;}
+		
+		if (map.getgroundTypes() == null) { return null ;}
+
+		for (GroundType groundType : map.getgroundTypes())
+		{
+			if (!groundType.getType().equals(targetGroundType)) { continue ;}	
+			
+			return calcRelativePos(userPos, groundType.getPos()) ;
+		}
+		
+		return null ;
+		
 	}
  	
- 	public static boolean isAdjacentTo(Point pos, GameMap maps, String GroundType)
+ 	public static boolean isTouching(Point pos, GameMap map, GroundTypes GroundType)
  	{
- 		String adjGround = CheckAdjacentGround(pos, maps, GroundType) ;
- 		if (adjGround.equals("Inside") | adjGround.equals("Touching Left") | adjGround.equals("Touching Right") | adjGround.equals("Touching Up") | adjGround.equals("Touching Down"))
- 		{
- 			return true ;
- 		}
- 		return false ;
+ 		RelativePos adjGround = checkAdjacentGround(pos, map, GroundType) ;
+ 		
+ 		if (adjGround == null) { return false ;}
+ 		
+ 		List<RelativePos> adjPositions = Arrays.asList(RelativePos.values()) ;
+ 		
+ 		return adjPositions.contains(adjGround) ;
+ 	}
+ 	
+ 	public static boolean isInside(Point pos, GameMap map, GroundTypes GroundType)
+ 	{
+ 		RelativePos adjGround = checkAdjacentGround(pos, map, GroundType) ;
+ 		
+ 		if (adjGround == null) { return false ;}
+ 		
+ 		return adjGround.equals(RelativePos.inside) ;
  	}
 		
 	public static Creature ClosestCreatureInRange(Player player, Creature[] creatures, GameMap[] maps)

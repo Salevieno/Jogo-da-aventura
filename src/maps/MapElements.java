@@ -17,7 +17,7 @@ public class MapElements
 	private Point pos ;			// topLeft position of the element
 	private Image image ;		// image of the element
 	private List<Collider> colliders ;
-	
+	// wall, tree, grass, rock, crystal, stalactite, volcano, chest, invisible wall
 	public MapElements(int id, String Name, Point Pos, Image image)
 	{
 		this.id = id ;
@@ -46,8 +46,8 @@ public class MapElements
 	public void setPos(Point P) {pos = P ;}
 	public void setImage(Image I) {image = I ;}
 
-	public void DrawImage(double angle, DrawingOnPanel DP)
+	public void display(DrawingOnPanel DP)
 	{
-		DP.DrawImage(image, pos, angle, new Scale(1, 1), Align.topLeft) ;
+		DP.DrawImage(image, pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.topLeft) ;
 	}
 }

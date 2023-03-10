@@ -11,9 +11,6 @@ public class SpecialMap extends GameMap
 	{
 		super(Name, Continent, Connections, image, music, null, null) ;
 		
-		for (TreasureChest chest : treasureChests)
-		{
-			this.mapElems.add(chest) ;
-		}
+		treasureChests.forEach(chest -> mapElems.add(chest)) ;
 	}	
 }

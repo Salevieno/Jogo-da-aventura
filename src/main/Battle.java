@@ -254,7 +254,7 @@ public class Battle
 		if (attacker.actionIsAtk() | (attacker.actionIsSpell() & !attacker.isSilent()) | attacker.actionIsDef())
 		{
 			attacker.updateCombo() ;
-			attacker.ResetBattleActions() ;
+			attacker.resetBattleActions() ;
 		}
 		
 		if (attacker instanceof Player) { ((Player) attacker).setBattleAction(atkResult.getAtkType()) ;}
@@ -375,7 +375,7 @@ public class Battle
 				{
 					pet.Win(creature) ;
 				}
-				pet.ResetBattleActions() ;
+				pet.resetBattleActions() ;
 			}
 			creature.Dies() ;
 		}

@@ -53,12 +53,12 @@ public class Building
 	
 	public boolean isInside(Point pos) {return UtilG.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null)), UtilG.getImageSize(type.getImage())) ;}
 		
-	public void display(Point playerPos, double angle, Scale scale, DrawingOnPanel DP)
+	public void display(Point playerPos, DrawingOnPanel DP)
 	{
 		if (!isInside(playerPos) | type.getInsideImage() == null)
 		{
 			Image image = type.getImage() ;
-			DP.DrawImage(image, pos, angle, scale, Align.bottomLeft) ;
+			DP.DrawImage(image, pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
 			
 //			for (Collider collider : colliders)
 //			{
@@ -69,7 +69,7 @@ public class Building
 		}
 		
 		Image image = type.getInsideImage() ;
-		DP.DrawImage(image, pos, angle, scale, Align.bottomLeft) ;
+		DP.DrawImage(image, pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
 		
 		if (type.getNPCs() == null) { return ;}
 		
