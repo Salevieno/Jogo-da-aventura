@@ -1097,13 +1097,12 @@ public class Game extends JPanel
 //    	for (int i = 0; i <= QuestItem.getAll().length - 1; i += 1) { player.getBag().Add(QuestItem.getAll()[i], 3) ; }
     	//player.getPA().setExp(new BasicAttribute(50, 50, 1)) ;	// level up
     	//System.out.println("player life = " + player.getLife().getCurrentValue());
-    	player.getLife().incCurrentValue(-10);
     	//System.out.println("player life = " + player.getLife().getCurrentValue());
 		//System.out.println("player PA = " + player.getPA());
-    	for (int i = 0 ; i <= Player.NumberOfSpellsPerJob[player.getJob()] - 1 ; i += 1)
-    	{
-        	player.getSpells().get(i).incLevel(1) ;
-    	}
+//    	for (int i = 0 ; i <= Player.NumberOfSpellsPerJob[player.getJob()] - 1 ; i += 1)
+//    	{
+//        	player.getSpells().get(i).incLevel(1) ;
+//    	}
 
     	//System.out.println("player spells = " + player.getSpell());
     	//player.getSpell().add(new Spell(allSpellTypes[0])) ;

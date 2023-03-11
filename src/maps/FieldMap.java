@@ -76,10 +76,10 @@ public class FieldMap extends GameMap
 	
 	public void ActivateCollectiblesCounter()
 	{
-		// TODO investigar concurrentmodificationexception
-		for (Collectible collectible : collectibles)
+		int numberCollectibles = collectibles.size() ;
+		for (int i = 0 ; i <= numberCollectibles - 1 ; i += 1)
 		{
-			if (collectible.getCounter().finished()) { AddCollectibles() ;}
+			if (collectibles.get(i).getCounter().finished()) { AddCollectibles() ; collectibles.get(i).getCounter().reset() ;}
 		}
 	}
 	

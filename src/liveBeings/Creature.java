@@ -286,41 +286,11 @@ public class Creature extends LiveBeing
 		}
 	}
 	
-//	public void Follow(Point Pos, Point Target, int step, double mindist)
-//	{
-//		Point pos = new Point(Pos.x, Pos.y) ; // Prevent the method from modifying the original variable Pos
-//		double verdist = Math.abs(pos.y - Target.y), hordist = Math.abs(pos.x - Target.x) ;
-//		if (mindist < pos.distance(Target))
-//		{
-//			if (verdist < hordist)
-//			{
-//				if (pos.x < Target.x)
-//				{
-//					pos.x += step ;
-//				}
-//				else
-//				{
-//					pos.x += -step ;
-//				}
-//			}
-//			else
-//			{
-//				if (pos.y < Target.y)
-//				{
-//					pos.y += step ;
-//				}
-//				else
-//				{
-//					pos.y += -step ;
-//				}
-//			}
-//		}
-//		setPos(pos) ;
-//	}
 	public void Move(Point PlayerPos, GameMap map)
 	{
 		//if (PA.Actions[0][2] == 1 & !PA.getName().equals("Drag�o") & !PA.getName().equals("Dragon"))	// If the creature can move
 		//{
+		// TODO quando não está em batalha mas está seguindo, ela só se aproxima, mas não entra na batalha
 			if (follow)
 			{
 				setPos(Follow(pos, PlayerPos, step, range)) ;

@@ -269,9 +269,10 @@ public class Battle
 			attacker.DrawTimeBar(UtilS.RelPos(attacker.getPos(), receiver.getPos()), Game.ColorPalette[2], DP) ;
 			// criatura tem que tomar blood and poison dano do player e do pet
 			attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
+
 			if (attacker.canAtk() & attacker.isInRange(receiver.getPos()))
 			{
-				if (attacker instanceof Creature) {Creature creature = (Creature) attacker ; creature.fight() ;}
+				if (attacker instanceof Creature) { Creature creature = (Creature) attacker ; creature.fight() ;}
 //				attacker.hasActed()
 				AtkResults atkResults = Atk(attacker, receiver) ;
 				if (attacker.actionIsAtk() | attacker.actionIsSpell()) { receiver.getDisplayDamage().reset() ;}
@@ -320,7 +321,7 @@ public class Battle
 		if (pet != null) { creatureTarget = creature.chooseTarget(player.isAlive(), pet.isAlive()).equals("player") ? player : pet ;}
 		
 		runTurn(player, creature, damageStyle, ani[0], DP) ;
-		if (pet != null) {runTurn(pet, creature, damageStyle, ani[1], DP) ;}
+		if (pet != null) { runTurn(pet, creature, damageStyle, ani[1], DP) ;}
 		runTurn(creature, creatureTarget, damageStyle, ani[2], DP) ;
 		
 		if (pet != null)

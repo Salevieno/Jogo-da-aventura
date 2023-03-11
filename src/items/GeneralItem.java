@@ -5,7 +5,10 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
+import liveBeings.LiveBeing;
+import liveBeings.Player;
 import main.Game;
+import maps.GroundTypes;
 import utilities.UtilG;
 
 public class GeneralItem extends Item
@@ -33,6 +36,48 @@ public class GeneralItem extends Item
 		}		
 	}
 
+	public void use(LiveBeing user)
+	{
+		
+		switch (id)
+		{
+			case 27: 
+			{
+				if (!(user instanceof Player) | !user.isTouching(GroundTypes.water))
+				{
+					return ;
+				}
+				
+				((Player) user).getBag().Remove(this, 1) ;
+				((Player) user).getBag().Add(AllGeneralItems[30], 1) ;
+			}
+			case 28: 
+			{
+				if (!(user instanceof Player) | !user.isTouching(GroundTypes.water))
+				{
+					return ;
+				}
+				
+				((Player) user).getBag().Remove(this, 1) ;
+				((Player) user).getBag().Add(AllGeneralItems[31], 1) ;
+			}
+			case 29: 
+			{
+				if (!(user instanceof Player) | !user.isTouching(GroundTypes.water))
+				{
+					return ;
+				}
+				
+				((Player) user).getBag().Remove(this, 1) ;
+				((Player) user).getBag().Add(AllGeneralItems[32], 1) ;
+			}
+			case 30: user.getPA().getThirst().incCurrentValue(30) ; return ;
+			case 31: user.getPA().getThirst().incCurrentValue(60) ; return ;
+			case 32: user.getPA().getThirst().incCurrentValue(100) ; return ;
+		}
+				
+	}
+	
 	public void printAtt()
 	{
 		System.out.println("General item id: " + AllGeneralItems[id].getId() +

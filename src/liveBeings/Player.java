@@ -840,6 +840,10 @@ public class Player extends LiveBeing
 		}
 		if (item instanceof GeneralItem)
 		{
+			GeneralItem genItem = (GeneralItem) item ;
+			
+			genItem.use(this) ;
+			
 			return ;
 		}
 		if (item instanceof Fab)
