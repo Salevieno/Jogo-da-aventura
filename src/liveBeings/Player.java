@@ -48,6 +48,7 @@ import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
 import main.Game;
+import maps.CityMap;
 import maps.Collectible;
 import maps.FieldMap;
 import maps.GameMap;
@@ -556,7 +557,12 @@ public class Player extends LiveBeing
 				break ;			
 		}
 		
-		if (-1 < newMapID) { setMap(Game.getMaps()[newMapID]) ; setPos(newPos) ;}
+		if (newMapID == -1) { return ;}
+		
+		GameMap newMap = Game.getMaps()[newMapID] ;
+		setMap(newMap) ;
+		setPos(newPos) ;
+		if (newMap instanceof CityMap) { opponent = null ;}
 		
 	}
 
@@ -712,7 +718,6 @@ public class Player extends LiveBeing
 	
 	public void meet(Creature[] creatures, Point mousePos, DrawingOnPanel DP)
 	{
-//		double distx, disty ;
 		GameMap currentMap = map ;
 		if (currentMap.isAField())
 		{
@@ -731,6 +736,7 @@ public class Player extends LiveBeing
 			});
 
 			// meeting with chests
+			// TODO meet with chests
 //			String groundType = currentMap.groundTypeAtPoint(pos) ;
 //			if (groundType != null)
 //			{
@@ -903,7 +909,7 @@ public class Player extends LiveBeing
 		}
 		if (settings.isOpen())
 		{
-			settings.display(allText.get("* Menu de opções *"), DP) ;
+			settings.display(allText.get("* Menu de opï¿½ï¿½es *"), DP) ;
 		}
 		if (hintsWindow.isOpen())
 		{

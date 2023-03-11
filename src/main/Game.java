@@ -242,7 +242,7 @@ public class Game extends JPanel
 			String[] speech = player.allText.get("* " + name + " *") ;
 
 			// TODO NPC options vai ser uma lista de listas, cada uma correspondendo a uma speech
-			String[] options = new String[] {"Sim", "Não"} ;
+			String[] options = new String[] {"Sim", "Nï¿½o"} ;
 			
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}

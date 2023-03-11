@@ -205,15 +205,11 @@ public class Creature extends LiveBeing
 		Think() ;	
 		if (state.equals(LiveBeingStates.moving))
 		{
-			Move(playerPos, getFollow(), map) ;
+			Move(playerPos, map) ;
 			if (stepCounter.getCounter() % 5 == 0)
 			{
-				setDir(PA.randomDir()) ;	// set random direction
+				setDir(PA.randomDir()) ;
 			}
-			/*if (getActions()[0][2] == 1)	// If the creature can move
-			{
-				ResetActions() ;
-			}*/
 		}
 	}
 	public void fight()
@@ -321,11 +317,11 @@ public class Creature extends LiveBeing
 //		}
 //		setPos(pos) ;
 //	}
-	public void Move(Point PlayerPos, boolean FollowPlayer, GameMap map)
+	public void Move(Point PlayerPos, GameMap map)
 	{
 		//if (PA.Actions[0][2] == 1 & !PA.getName().equals("Drag�o") & !PA.getName().equals("Dragon"))	// If the creature can move
 		//{
-			if (FollowPlayer)
+			if (follow)
 			{
 				setPos(Follow(pos, PlayerPos, step, range)) ;
 			}

@@ -196,8 +196,22 @@ public abstract class LiveBeing
 	public void activateCounters()
 	{
 		if (mpCounter.finished()) { PA.getMp().incCurrentValue(1) ; mpCounter.reset() ;}
-		if (satiationCounter.finished()) { PA.getSatiation().incCurrentValue(-1) ; satiationCounter.reset() ;}
-		if (this instanceof Player) { if (thirstCounter.finished()) { PA.getThirst().incCurrentValue(-1) ; thirstCounter.reset() ;}}
+		if (satiationCounter.finished())
+		{
+			PA.getSatiation().incCurrentValue(-1) ;
+			satiationCounter.reset() ;
+			if (PA.getSatiation().getCurrentValue() == 0) { PA.getLife().incCurrentValue(-1) ;}
+		}
+		
+		if (this instanceof Player)
+		{
+			if (thirstCounter.finished())
+			{
+				PA.getThirst().incCurrentValue(-1) ;
+				thirstCounter.reset() ;
+				if (PA.getThirst().getCurrentValue() == 0) { PA.getLife().incCurrentValue(-1) ;}
+			}
+		}
 	}
 	public void incrementBattleActionCounters() {battleActionCounter.inc() ; displayDamage.inc() ;}
 	public void resetBattleActions() {battleActionCounter.reset() ; }
@@ -305,23 +319,24 @@ public abstract class LiveBeing
 //		}
 //	}
 		
-	public Point Follow(Point Pos, Point Target, int step, int minDist)
+	public Point Follow(Point userPos, Point target, int step, int minDist)
 	{
-		Point pos = new Point(Pos) ;
-		step = 1 ;
-		double distY = Math.abs(pos.y - Target.y) ;
-		double distX = Math.abs(pos.x - Target.x) ;
 		
-		if (minDist < pos.distance(Target)) { return pos ;}
+		Point pos = new Point(userPos) ;
+		step = 1 ;
+		double distY = Math.abs(pos.y - target.y) ;
+		double distX = Math.abs(pos.x - target.x) ;
+
+		if (pos.distance(target) <= minDist) { return pos ;}
 		
 		if (distY < distX)
 		{
-			if (pos.x < Target.x) { return new Point(pos.x + step, pos.y) ;}
+			if (pos.x < target.x) { return new Point(pos.x + step, pos.y) ;}
 			
 			return new Point(pos.x - step, pos.y) ;
 		}
 		
-		if (pos.y < Target.y) { return new Point(pos.x, pos.y + step) ;}
+		if (pos.y < target.y) { return new Point(pos.x, pos.y + step) ;}
 		
 		return new Point(pos.x, pos.y - step) ;
 
