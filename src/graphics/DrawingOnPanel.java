@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import components.GameIcon;
-import components.NPCs;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.AtkResults;
@@ -396,6 +395,7 @@ public class DrawingOnPanel
 		map.displayElements(this) ;
 		map.displayBuildings(playerPos, this) ;
 		map.displayNPCs(this) ;
+		map.displayGroundTypes(this) ;
 		if (map instanceof FieldMap)
 		{
 			FieldMap fm = (FieldMap) map ;

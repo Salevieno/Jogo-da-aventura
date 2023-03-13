@@ -238,7 +238,7 @@ public class Game extends JPanel
 			NPCJobs job = NPCJobs.valueOf(input.get(i)[2]) ;
 			String info = input.get(i)[3 + language.ordinal()] ;
 			Color color = ColorPalette[0] ;
-			Image image = UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + ".png") ;
+			Image image = !job.toString().equals("master") ?  UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + ".png") : UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + ".gif") ;
 			String[] speech = player.allText.get("* " + name + " *") ;
 
 			// TODO NPC options vai ser uma lista de listas, cada uma correspondendo a uma speech
@@ -1197,7 +1197,11 @@ public class Game extends JPanel
 //    	System.out.println(fieldMaps[12].allColliders());
     	
     	player.setPos(new Point(30, 250)) ;
-    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250))) ;
+    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(10, 10))) ;
+    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 200), new Dimension(50, 10))) ;
+    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 199), new Dimension(10, 10))) ;
+    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 203), new Dimension(10, 10))) ;
+    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(200, 200), new Dimension(10, 10))) ;
 	}
 	
 	private void testing()

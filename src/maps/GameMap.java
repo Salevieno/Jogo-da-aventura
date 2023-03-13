@@ -4,9 +4,7 @@ import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import javax.sound.sampled.Clip;
 
@@ -28,8 +26,6 @@ public class GameMap
 	private int[] connections ;
 	private Image image ;
 	private Clip music ;
-	
-//	private String[][] type ;			// 2 = water, 9 = lava, 10 = ice, 12 = berry, 13 = herb, 14 = wood, 15 = metal
 	
 	protected List<GroundType> groundTypes ;	
 	protected List<MapElements> mapElems ;
@@ -104,7 +100,7 @@ public class GameMap
 				{
 					for (int k = (screenDim.width * 4 / 5) ; k <= screenDim.width - 1 ; k += 1)
 					{
-						groundTypes.add(new GroundType(GroundTypes.water, new Point(j, k))) ;
+						groundTypes.add(new GroundType(GroundTypes.water, new Point(j, k), new Dimension(1, 1))) ;
 					}
 				}
 			}
@@ -112,21 +108,21 @@ public class GameMap
 			{
 				for (int j = 3 ; j <= 21 ; j += 1)
 				{
-					groundTypes.add(new GroundType(GroundTypes.water, new Point(j, 10))) ;	// outer wall (horizontal top)
+					groundTypes.add(new GroundType(GroundTypes.water, new Point(j, 10), new Dimension(1, 1))) ;	// outer wall (horizontal top)
 				}
 				for (int k = 10 ; k <= 20 ; k += 1)
 				{
-					groundTypes.add(new GroundType(GroundTypes.water, new Point(3, k))) ;	// outer wall (vertical left edge)
-					groundTypes.add(new GroundType(GroundTypes.water, new Point(21, k))) ;	// outer wall (vertical left edge)
+					groundTypes.add(new GroundType(GroundTypes.water, new Point(3, k), new Dimension(1, 1))) ;	// outer wall (vertical left edge)
+					groundTypes.add(new GroundType(GroundTypes.water, new Point(21, k), new Dimension(1, 1))) ;	// outer wall (vertical left edge)
 				}
 				for (int j = 8 ; j <= 26 ; j += 1)
 				{
-					groundTypes.add(new GroundType(GroundTypes.water, new Point(j, 23))) ;	// inner wall (horizontal bottom)
+					groundTypes.add(new GroundType(GroundTypes.water, new Point(j, 23), new Dimension(1, 1))) ;	// inner wall (horizontal bottom)
 				}
 				for (int k = 16 ; k <= 23 ; k += 1)
 				{
-					groundTypes.add(new GroundType(GroundTypes.water, new Point(8, k))) ;	// inner wall (vertical left edge)
-					groundTypes.add(new GroundType(GroundTypes.water, new Point(26, k))) ;	// inner wall (vertical right edge)
+					groundTypes.add(new GroundType(GroundTypes.water, new Point(8, k), new Dimension(1, 1))) ;	// inner wall (vertical left edge)
+					groundTypes.add(new GroundType(GroundTypes.water, new Point(26, k), new Dimension(1, 1))) ;	// inner wall (vertical right edge)
 				}
 			}
 			/*if (id == 13 | id == 17)	// shore
@@ -244,6 +240,7 @@ public class GameMap
 
 	public GroundTypes groundTypeAtPoint(Point pos)
 	{
+		// TODO atualizar com tamanho de ground type
 		if (groundTypes == null) { return null ;}
 		
 		for (GroundType groundType : groundTypes)
@@ -288,31 +285,25 @@ public class GameMap
 		
 		npcs.forEach(npc -> npc.display(DP));
 	}
-
-	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 	
-
+	public void displayGroundTypes(DrawingOnPanel DP)
+	{
+ 		if (groundTypes == null) { return ;}
+ 		
+		groundTypes.forEach(groundType -> {
+			switch (groundType.type)
+			{
+				case water: DP.DrawRect(groundType.pos, Align.center, groundType.size, 1, Game.ColorPalette[13], null) ; break ;
+				case lava: DP.DrawRect(groundType.pos, Align.center, groundType.size, 1, Game.ColorPalette[6], null) ; break ;
+				default: break ;
+			}
+		});
+	}
+	
 	public boolean groundIsWalkable(Point pos, Elements superElem)
 	{
-		// TODO ground is walkable
-//		if (groundType == null) { return true ; }
-//
-//		Point point = new Point(Pos) ;
-//		for (int i = 0; i <= groundType.length - 1; i += 1)
-//		{
-//			Object[] o = (Object[]) groundType[i] ;
-//			if (point.equals((Point) o[1]))
-//			{
-//				String gtype = (String) o[0] ;
-//				if ((gtype.equals("water") & !SuperElem.equals(Elements.water)) |
-//						((gtype.equals("tree") |
-//						(gtype.equals("rock"))) & !SuperElem.equals(Elements.air)))
-//				{
-//					return false ;
-//				}
-//			}
-//		}
-		
+
+		// TODO atualizar com tamanho de ground type
 		if (superElem != null) { if (superElem.equals(Elements.air)) { return true ;}}
 		
  		List<Collider> allColliders = allColliders() ;
@@ -322,6 +313,7 @@ public class GameMap
  		}
 		
 		return true ;
+		
 	}
 
 }

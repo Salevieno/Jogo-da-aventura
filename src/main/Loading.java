@@ -4,7 +4,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 
-import graphics.DrawFunctions;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
 import utilities.Align;
@@ -23,7 +22,7 @@ public class Loading
     	
 	}
 	
-	public void Run(DrawFunctions DF)
+	public void Run()
 	{
 		/*DrawPrimitives DP = DF.getDrawPrimitives() ;
 		Font font = new Font("BoldSansSerif", Font.BOLD, 20) ;
