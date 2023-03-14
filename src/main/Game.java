@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -106,9 +107,10 @@ public class Game extends JPanel
 	public static Color[] ColorPalette ;	
 	public static int DayDuration ;
 	
-	protected static GameStates state ;
+	private static GameStates state ;
 	private static boolean shouldRepaint ;	// tells if the panel should be repainted, created to handle multiple repaint requests at once
 	private Languages GameLanguage ;
+    public static Map<String, String[]> allText ;	// All the text in the game
 	private static boolean konamiCodeActive ;
 
 	private DrawingOnPanel DP ;
@@ -167,6 +169,7 @@ public class Game extends JPanel
 		state = GameStates.loading;
 		konamiCodeActive = false ;
 		shouldRepaint = false ;
+		allText = new HashMap<>() ;
     	//OpeningIsOn = true ; 
 
     	player = new Player("", "", "", 1) ;
@@ -176,6 +179,9 @@ public class Game extends JPanel
 		addKeyListener(new TAdapter()) ;
 		setFocusable(true) ;
 	}
+	
+	public static GameStates getState() { return state ;}
+	public static void setState(GameStates newState) { state = newState ;}
 
 	public static Screen getScreen() {return screen ;}
 	public static Sky getSky() {return sky ;}
@@ -196,6 +202,29 @@ public class Game extends JPanel
 	public static void playStopTimeGif() {state = GameStates.playingStopTimeGif ;}
 	public boolean someAnimationIsActive() { return (ani[3].isActive() | ani[4].isActive() | ani[5].isActive()) ;}
 	public static void shouldRepaint() {shouldRepaint = true ;}
+	
+	public void loadAllText()
+	{
+		
+		JSONObject textData = UtilG.readJsonObject("./Texto-PT-br.json") ;		
+		
+		Set<Object> keySet = textData.keySet() ;
+		Iterator<Object> iterator = keySet.iterator() ;
+		
+		while (iterator.hasNext())
+		{
+			Object key = iterator.next() ;
+			JSONArray listText = (JSONArray) textData.get(key) ;
+			
+			List<String> listValues = new ArrayList<>() ;
+			for (int j = 0 ; j <= listText.size() - 1 ; j += 1)
+			{
+				listValues.add((String) listText.get(j)) ;
+			}
+			allText.put((String) key, listValues.toArray(new String[] {})) ;
+		}
+		
+	}
 	
 	public ArrayList<Recipe> LoadCraftingRecipes()
 	{
@@ -239,10 +268,20 @@ public class Game extends JPanel
 			String info = input.get(i)[3 + language.ordinal()] ;
 			Color color = ColorPalette[0] ;
 			Image image = !job.toString().equals("master") ?  UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + ".png") : UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + ".gif") ;
-			String[] speech = player.allText.get("* " + name + " *") ;
-
-			// TODO NPC options vai ser uma lista de listas, cada uma correspondendo a uma speech
-			String[] options = new String[] {"Sim", "Nï¿½o"} ;
+			String[] speech = new String[] {""} ;
+			
+			// TODO "Falas" em speech -> padronizar para todas as línguas
+			
+			String[][] options = new String[][] {{""}} ;
+			if (Game.allText.get(name + "Falas") != null)
+			{
+				speech = Game.allText.get(name + "Falas") ;
+				options = new String[Game.allText.get(name + "Falas").length][] ;
+				for (int j = 0 ; j <= options.length - 1; j += 1)
+				{
+					options[j] = Game.allText.get(name + "Opcoes" + j) ;
+				}
+			}
 			
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}
@@ -1025,6 +1064,7 @@ public class Game extends JPanel
 	private void testingInitialization()
 	{
 		// Quick start
+		loadAllText() ;
 		
 		try {Potion.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the potions
 		try {Alchemy.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the alchemy items
@@ -1058,7 +1098,7 @@ public class Game extends JPanel
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
 		System.arraycopy(specialMaps, 0, allMaps, cityMaps.length + fieldMaps.length, specialMaps.length) ;
 		
-    	Pterodactile.setMessage(player.allText.get("* Pterodactile *")) ;
+    	Pterodactile.setMessage(Game.allText.get("Pterodactile")) ;
     	sideBar = new SideBar(player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
     	bat = new Battle() ;
 		
@@ -1195,7 +1235,7 @@ public class Game extends JPanel
 //    	
 //    	System.out.println(pet.getLife()) ;
 //    	System.out.println(fieldMaps[12].allColliders());
-    	
+    	player.getPA().getExp().incCurrentValue(500) ;
     	player.setPos(new Point(30, 250)) ;
     	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(10, 10))) ;
     	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 200), new Dimension(50, 10))) ;

@@ -21,7 +21,6 @@ import java.math.RoundingMode ;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets ;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -165,7 +164,7 @@ public abstract class UtilG
         JSONParser parser = new JSONParser();
         try
         {
-            Object object = parser.parse(new FileReader(filePath));
+            Object object = parser.parse(new FileReader(filePath, StandardCharsets.UTF_8));
             
             //convert Object to JSONObject
             JSONObject jsonObject = (JSONObject)object;
@@ -196,7 +195,7 @@ public abstract class UtilG
         JSONParser parser = new JSONParser();
         try
         {
-            Object object = parser.parse(new FileReader(filePath));
+            Object object = parser.parse(new FileReader(filePath, StandardCharsets.UTF_8));
             
             //convert Object to JSONObject
             JSONArray jsonObject = (JSONArray)object;

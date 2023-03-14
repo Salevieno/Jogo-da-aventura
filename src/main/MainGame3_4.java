@@ -47,14 +47,14 @@ public class MainGame3_4 extends JFrame implements ActionListener
 	public static void pauseGame()
 	{
         timer.stop() ;
-        previousState = Game.state ;
-        Game.state = GameStates.paused ;
+        previousState = Game.getState() ;
+        Game.setState(GameStates.paused) ;
 	}
 	
 	public static void resumeGame()
 	{
         timer.start() ;
-        Game.state = previousState ;
+        Game.setState(previousState) ;
 	}
 	
 	public static void main(String[] args) 

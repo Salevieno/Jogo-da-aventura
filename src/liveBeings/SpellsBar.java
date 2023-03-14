@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import utilities.UtilG;
 
 public class SpellsBar
 {	
-	public static void display(int currentMP, List<Spell> spells, List<Spell> ActiveSpells, String[] allText, Point mousePos, Color BGcolor, Color TextColor, DrawingOnPanel DP)
+	public static void display(int currentMP, List<Spell> spells, List<Spell> ActiveSpells, Point mousePos, Color BGcolor, Color TextColor, DrawingOnPanel DP)
 	{
 		Font Titlefont = new Font("SansSerif", Font.BOLD, 10) ;
 		Font font = new Font("SansSerif", Font.BOLD, 9) ;
@@ -36,7 +37,7 @@ public class SpellsBar
 		//Color TextColor = player.getColor() ;
 		
 		DP.DrawRoundRect(Pos, Align.bottomLeft, size, 1, colorPalette[7], BGcolor, true) ;
-		DP.DrawText(new Point(Pos.x + size.width / 2, Pos.y - size.height + 3), Align.topCenter, OverallAngle, allText[1], Titlefont, colorPalette[5]) ;
+		DP.DrawText(new Point(Pos.x + size.width / 2, Pos.y - size.height + 3), Align.topCenter, OverallAngle, Game.allText.get("Barra de habilidades")[0], Titlefont, colorPalette[5]) ;
 		for (int i = 0 ; i <= ActiveSpells.size() - 1 ; ++i)
 		{
 			Spell spell = spells.get(i) ;

@@ -109,7 +109,6 @@ public class Player extends LiveBeing
 	
 	private Creature closestCreature ;		// creature that is currently closest to the player
     private Creature opponent ;				// creature that is currently in battle with the player
-    public Map<String, String[]> allText ;	// All the text in the game in the player language
     private Item[] hotItems ;				// items on the hotkeys
 	private Statistics stats ;
     
@@ -128,6 +127,7 @@ public class Player extends LiveBeing
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public final static Image[] AttWindowImages = new Image[] {UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")} ;
     public final static Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
+    public final static Gif levelUpAnimation = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 300, false, false) ;
     
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Pet window, Map, Quest, Hint, Tent, Bestiary]
 	public static final String[] MoveKeys = new String[] {KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
@@ -171,7 +171,7 @@ public class Player extends LiveBeing
 		
 		
 		spells = new ArrayList<Spell>() ;
-		allText = UtilG.ReadTextFile(Language) ;
+//		allText = UtilG.ReadTextFile(Language) ;
 
 		//Bag = new int[Items.NumberOfAllItems] ;
 		focusWindow = null ;
@@ -881,11 +881,11 @@ public class Player extends LiveBeing
 	{
 		if (bag.isOpen())
 		{
-			bag.display(MousePos, allText.get("* Menus da mochila *"), DP) ;
+			bag.display(MousePos, Game.allText.get("Menus da mochila"), DP) ;
 		}
 		if (attWindow.isOpen())
 		{
-			attWindow.display(this, allText, equips, MousePos, DP);
+			attWindow.display(this, equips, MousePos, DP);
 		}
 		if (fabWindow.isOpen())
 		{		
@@ -896,7 +896,7 @@ public class Player extends LiveBeing
 		{
 			if (pet.getAttWindow().isOpen())
 			{
-				pet.getAttWindow().display(pet, allText, null, MousePos, DP);
+				pet.getAttWindow().display(pet, null, MousePos, DP);
 			}
 		}
 		if (mapWindow.isOpen())
@@ -913,7 +913,7 @@ public class Player extends LiveBeing
 		}
 		if (settings.isOpen())
 		{
-			settings.display(allText.get("* Menu de op��es *"), DP) ;
+			settings.display(DP) ;
 		}
 		if (hintsWindow.isOpen())
 		{
@@ -1076,7 +1076,7 @@ public class Player extends LiveBeing
 		spellPoints += 1 ;
 		attPoints += 2 ;
 		
-		ani.start(new Object[] {150, Arrays.copyOf(attIncrease, attIncrease.length - 1), level, color}) ;
+		ani.start(new Object[] {150, Arrays.copyOf(attIncrease, attIncrease.length - 1), level, pos}) ;
 	}
 	private double[] calcAttributesIncrease()
 	{

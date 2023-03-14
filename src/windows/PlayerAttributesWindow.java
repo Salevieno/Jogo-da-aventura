@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.Map;
 
 import attributes.AttributeBonus;
@@ -109,7 +110,7 @@ public class PlayerAttributesWindow extends GameWindow
 		}
 	}
 	
-	public void display(LiveBeing user, Map<String, String[]> allText, Equip[] equips, Point mousePos, DrawingOnPanel DP)
+	public void display(LiveBeing user, Equip[] equips, Point mousePos, DrawingOnPanel DP)
 	{
 		Dimension screenSize = Game.getScreen().getSize() ;
 		Point windowPos = new Point((int) (0.2 * screenSize.width), (int)(0.2 * screenSize.height)) ;
@@ -125,18 +126,21 @@ public class PlayerAttributesWindow extends GameWindow
 		tabColor[tab] = colorPalette[19] ;
 		tabTextColor[tab] = colorPalette[3] ;
 		
-		String[] classesText = allText.get("* Classes *") ;
-		String[] proClassesText = allText.get("* ProClasses *") ;
-		String[] attText = allText.get("* Atributos *") ;
-		String[] equipsText = allText.get("* Equipamentos *") ;
-		String[] tabsText = allText.get("* Janela do jogador *") ;
+		String[] classesText = Game.allText.get("Classes") ;
+		String[] proClassesText = Game.allText.get("ProClasses") ;
+		String[] attText = Game.allText.get("Atributos") ;
+		String[] equipsText = Game.allText.get("Equipamentos") ;
+		String[] tabsText = Game.allText.get("Janela do jogador") ;
 		
 		// Main window
 		DP.DrawImage(image, windowPos, Align.topLeft) ;
+
+		DP.DrawText(UtilG.Translate(windowPos, 5, 20), Align.center, 90, tabsText[0], namefont, tabTextColor[0]) ;
+		DP.DrawText(UtilG.Translate(windowPos, 5, 30), Align.center, 90, tabsText[1], namefont, tabTextColor[1]) ;
+		DP.DrawText(UtilG.Translate(windowPos, 5, 40), Align.center, 90, tabsText[2], namefont, tabTextColor[2]) ;
 		
-		DP.DrawText(UtilG.Translate(windowPos, 5, 20), Align.center, 90, tabsText[1], namefont, tabTextColor[0]) ;
-		DP.DrawText(UtilG.Translate(windowPos, 5, 30), Align.center, 90, tabsText[2], namefont, tabTextColor[1]) ;
-		DP.DrawText(UtilG.Translate(windowPos, 5, 40), Align.center, 90, tabsText[3], namefont, tabTextColor[2]) ;
+		
+		
 		if (tab == 0)
 		{
 			Image userImage = user.getMovingAni().idleGif ;
@@ -146,9 +150,9 @@ public class PlayerAttributesWindow extends GameWindow
 			Point namePos = UtilG.Translate(windowPos, size.width / 2, 11) ;
 			Point levelPos = UtilG.Translate(windowPos, size.width / 2, 38) ;
 			DP.DrawText(namePos, Align.center, angle, user.getName(), namefont, textColor) ;		
-			DP.DrawText(levelPos, Align.center, angle, attText[1] + ": " + user.getLevel(), font, colorPalette[6]) ;
+			DP.DrawText(levelPos, Align.center, angle, attText[0] + ": " + user.getLevel(), font, colorPalette[6]) ;
 			
-			String jobText = user.getProJob() == 0 ? classesText[user.getJob() + 1] : proClassesText[user.getProJob() + 2*user.getJob()];
+			String jobText = user.getProJob() == 0 ? classesText[user.getJob()] : proClassesText[user.getProJob() + 2*user.getJob()];
 			Point jobTextPos = UtilG.Translate(windowPos, size.width / 2, 56) ;
 			DP.DrawText(jobTextPos, Align.center, angle, jobText, font, colorPalette[5]) ;
 			
@@ -199,8 +203,8 @@ public class PlayerAttributesWindow extends GameWindow
 			// attributes
 			Point lifePos = UtilG.Translate(windowPos, 20, 38) ;
 			Point mpPos = UtilG.Translate(windowPos, 20, 56) ;
-			String lifeText = attText[2] + ": " + UtilG.Round(user.getPA().getLife().getCurrentValue(), 1) ;
-			String mpText = attText[3] + ": " + UtilG.Round(user.getPA().getMp().getCurrentValue(), 1) ;
+			String lifeText = attText[1] + ": " + UtilG.Round(user.getPA().getLife().getCurrentValue(), 1) ;
+			String mpText = attText[2] + ": " + UtilG.Round(user.getPA().getMp().getCurrentValue(), 1) ;
 			DP.DrawText(lifePos, Align.centerLeft, angle, lifeText, font, colorPalette[6]) ;
 			DP.DrawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[5]) ;
 			
@@ -221,7 +225,7 @@ public class PlayerAttributesWindow extends GameWindow
 				DP.DrawText(attPos, Align.centerLeft, angle, attValue, font, textColor) ;
 			}
 			Point critPos = UtilG.Translate(initialAttPos, 0, 9 + attributes.length * 22) ;
-			String critValue = attText[10] + ": " + UtilG.Round(100 * user.getBA().TotalCritAtkChance(), 1) + "%" ;
+			String critValue = attText[9] + ": " + UtilG.Round(100 * user.getBA().TotalCritAtkChance(), 1) + "%" ;
 			DP.DrawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
 			
 			//	Collecting
@@ -250,10 +254,14 @@ public class PlayerAttributesWindow extends GameWindow
 				DP.DrawImage(Player.CoinIcon, coinPos, angle, new Scale(1, 1), Align.center) ;
 				DP.DrawText(goldPos, Align.centerLeft, angle, goldValue, font, textColor) ;
 			}
+			
+			return ;
+			
 		}
-		else if (tab == 1)
+		
+		if (tab == 1)
 		{
-			String[] specialAttrPropText = allText.get("* Propriedades dos atributos especiais *") ;
+			String[] specialAttrPropText = Game.allText.get("Propriedades dos atributos especiais") ;
 			int L = size.width ;
 			double sx = 0.15 * L ;
 			double sy = 1.8 * font.getSize() ;
@@ -267,7 +275,7 @@ public class PlayerAttributesWindow extends GameWindow
 			DP.DrawText(new Point(windowPos.x + (int)(0.45*L + 3*sx), (int)(windowPos.y + 3*sy)), Align.center, angle, specialAttrPropText[5], font, textColor) ;	
 			for (int i = 0 ; i <= 4 ; ++i)
 			{
-				DP.DrawText(new Point(windowPos.x + (int)(0.2*L), (int)(windowPos.y + (i + 4)*sy)), Align.center, angle, attText[i + 11], font, AttributeColor[i]) ;	
+				DP.DrawText(new Point(windowPos.x + (int)(0.2*L), (int)(windowPos.y + (i + 4)*sy)), Align.center, angle, attText[i + 10], font, AttributeColor[i]) ;	
 			}
 			for (int i = 0 ; i <= 3 ; ++i)
 			{
@@ -298,8 +306,12 @@ public class PlayerAttributesWindow extends GameWindow
 //			DP.DrawText(new Point(windowPos.x + (int)(0.025*L), (int)(windowPos.y + 18*sy)), Align.bottomLeft, TextAngle, attText[13] + " " + specialAttrPropText[7] + " = " + UtilG.Round(user.getBA().getBlood()[8], 2), font, AttributeColor[2]) ;	
 //			DP.DrawText(new Point(windowPos.x + (int)(0.025*L), (int)(windowPos.y + 19*sy)), Align.bottomLeft, TextAngle, attText[14] + " " + specialAttrPropText[7] + " = " + UtilG.Round(user.getBA().getPoison()[8], 2), font, AttributeColor[3]) ;	
 //			DP.DrawText(new Point(windowPos.x + (int)(0.025*L), (int)(windowPos.y + 20*sy)), Align.bottomLeft, TextAngle, attText[15] + " " + specialAttrPropText[7] + " = " + UtilG.Round(user.getBA().getSilence()[4], 2), font, AttributeColor[4]) ;	
+			
+			return ;
+			
 		}
-		else if (tab == 2)
+		
+		if (tab == 2)
 		{
 			if (user instanceof Player)
 			{
@@ -315,6 +327,9 @@ public class PlayerAttributesWindow extends GameWindow
 					textPos = UtilG.Translate(textPos, 0, sy) ;
 				}
 			}
+			
+			return ;
+			
 		}
 	}
 }

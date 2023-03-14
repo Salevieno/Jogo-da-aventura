@@ -171,9 +171,7 @@ public class SideBar
 			}
 		}*/
 		
-		SpellsBar.display(player.getMp().getCurrentValue(), player.getSpells(),
-				player.getSpells(), player.allText.get("* Barra de habilidades *"),
-				mousePos, TextColor, TextColor, DP);
+		SpellsBar.display(player.getMp().getCurrentValue(), player.getSpells(), player.getSpells(), mousePos, TextColor, TextColor, DP);
 //		DrawSpellsBar(player, SpellType.cooldownImage, SpellType.slotImage, mousePos, DP) ;
 //		
 //		icons[1].display(stdAngle, Align.topLeft, mousePos, DP) ;		// bag

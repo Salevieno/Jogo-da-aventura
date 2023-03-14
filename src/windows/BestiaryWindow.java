@@ -44,7 +44,7 @@ public class BestiaryWindow extends GameWindow
 	{
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String[] text = player.allText.get("* Bestiário *") ;
+		String[] text = Game.allText.get("Bestiário") ;
 		Color textColor = Game.ColorPalette[9] ;
 		double angle = DrawingOnPanel.stdAngle ;
 		

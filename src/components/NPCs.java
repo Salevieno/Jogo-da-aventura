@@ -306,14 +306,14 @@ public class NPCs
 		
 	public void speak(Point pos, DrawingOnPanel DP)
 	{
-		String content = type.getSpeech()[menu + 1] ;
+		String content = type.getSpeech()[menu] ;
 		if (!content.equals(""))
 		{
 			DP.DrawSpeech(pos, content, NPCfont, type.getImage(), SpeakingBubble, type.getColor()) ;
 		}
 		if (type.getOptions() != null)
 		{
-			drawOptions(selOption, type.getOptions(), type.getColor(), DP);
+			drawOptions(selOption, type.getOptions()[menu], type.getColor(), DP);
 		}
 	}
 	

@@ -167,7 +167,7 @@ public class SettingsWindow extends GameWindow
 			DP.DrawText(TextPos, Align.bottomCenter, OverallAngle, "Off", font, ColorPalette[4]) ;							
 		}
 	}
-	public void display(String[] text, DrawingOnPanel DP)
+	public void display(DrawingOnPanel DP)
 	{
 		Dimension screenSize = Game.getScreen().getSize() ;
 		double stdAngle = DrawingOnPanel.stdAngle ;
@@ -176,6 +176,7 @@ public class SettingsWindow extends GameWindow
 		Point textPos = new Point(pos.x + 25, pos.y  + 42) ;
 		int sx = image.getWidth(null) - 45 ;
 		int sy = font.getSize() + 4 ;
+		String[] text = Game.allText.get("Menu de opções") ;
 		Color[] textColor = new Color[3 + Player.ActionKeys.length] ;
 		Arrays.fill(textColor, Game.ColorPalette[5]) ;
 		textColor[item] = Game.ColorPalette[3] ;

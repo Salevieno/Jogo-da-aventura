@@ -6,9 +6,11 @@ import java.awt.Image ;
 import java.awt.Point;
 
 import items.Item;
+import liveBeings.Player;
 import main.AtkResults;
 import main.Game;
 import maps.GameMap;
+import utilities.Align;
 import utilities.TimeCounter;
 
 public class Animations 
@@ -99,8 +101,10 @@ public class Animations
 	{
 		double[] AttributesIncrease = (double[]) vars[1] ;
 		int playerLevel = (int) vars[2] ;
+		Point playerPos = (Point) vars[3] ;
 		Color textColor = Game.ColorPalette[6] ;
 		DP.levelUpAnimation(counter, AttributesIncrease, playerLevel, textColor) ;
+		Player.levelUpAnimation.play(playerPos, Align.center, DP) ;
 	}
 
 	private void PterodactileAnimation(Object[] vars, DrawingOnPanel DP)

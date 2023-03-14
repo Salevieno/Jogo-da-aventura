@@ -317,7 +317,7 @@ public class DrawingOnPanel
 		DrawGif(LoadingGif, Pos, Align.center);
 	}
 	
-	public void DrawLoadingGameScreen(Player player, Pet pet, Map<String, String[]> allText, GameIcon[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
+	public void DrawLoadingGameScreen(Player player, Pet pet, GameIcon[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
 	{
 		Point[] WindowPos = new Point[] {new Point((int)(0.15*screenSize.width), (int)(0.2*screenSize.height)),
 				new Point((int)(0.65*screenSize.width), (int)(0.2*screenSize.height)),
@@ -326,7 +326,7 @@ public class DrawingOnPanel
 		
 		DrawText(new Point((int)(0.5*screenSize.width), (int)(0.05*screenSize.height)), Align.center, stdAngle, "Slot " + (SlotID + 1), font, colorPalette[5]) ;
 		//player.DrawAttWindow(MainWinDim, WindowPos[0], null, AllText, AllTextCat, 0, GoldCoinImage, icons, DP) ;
-		player.getAttWindow().display(player, allText, player.getEquips(), new Point(0, 0), this) ;
+		player.getAttWindow().display(player, player.getEquips(), new Point(0, 0), this) ;
 		if (0 < pet.getLife().getCurrentValue())
 		{
  			//pet.getAttWindow().display(pet, allText, null, null, NumberOfUsedSlots, null, null, null, null);

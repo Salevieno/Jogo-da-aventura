@@ -31,7 +31,7 @@ public class HintsWindow extends GameWindow
 	
 	public void display(Player player, DrawingOnPanel DP)
 	{
-		String[] text = player.allText.get("* Menu de dicas *") ;
+		String[] text = Game.allText.get("Menu de dicas") ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
 		Point windowPos = new Point((int) (0.1 * Game.getScreen().getSize().width),
 				(int) (0.4 * Game.getScreen().getSize().height)) ;
