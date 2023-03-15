@@ -74,6 +74,14 @@ public class Potion extends Item
 		PA.getMp().incCurrentValue((int) (MPHeal * PA.getMp().getMaxValue() * powerMult)) ;
 	}
 	
+		
+	@Override
+	public String toString()
+	{
+		return "Potion [id=" + id + ", lifeHeal=" + lifeHeal + ", MPHeal=" + MPHeal + "]";
+	}
+	
+
 	public void printAtt()
 	{
 		System.out.println("potion id: " + AllPotions[id].getId() +

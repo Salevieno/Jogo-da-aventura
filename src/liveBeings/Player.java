@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.json.simple.JSONObject;
@@ -175,8 +176,16 @@ public class Player extends LiveBeing
 
 		//Bag = new int[Items.NumberOfAllItems] ;
 		focusWindow = null ;
-		bag = new BagWindow(new HashMap<Potion, Integer>(), new HashMap<Alchemy, Integer>(), new HashMap<Forge, Integer>(), new HashMap<PetItem, Integer>(), new HashMap<Food, Integer>(),
-				new HashMap<Arrow, Integer>(), new HashMap<Equip, Integer>(), new HashMap<GeneralItem, Integer>(), new HashMap<Fab, Integer>(), new HashMap<QuestItem, Integer>()) ;
+		bag = new BagWindow(new LinkedHashMap<Potion, Integer>(),
+				new LinkedHashMap<Alchemy, Integer>(),
+				new LinkedHashMap<Forge, Integer>(),
+				new LinkedHashMap<PetItem, Integer>(),
+				new LinkedHashMap<Food, Integer>(),
+				new LinkedHashMap<Arrow, Integer>(),
+				new LinkedHashMap<Equip, Integer>(),
+				new LinkedHashMap<GeneralItem, Integer>(),
+				new LinkedHashMap<Fab, Integer>(),
+				new LinkedHashMap<QuestItem, Integer>()) ;
 		if (job == 2)
 		{
 			bag.Add(Arrow.getAll()[0], 100) ;
@@ -624,8 +633,12 @@ public class Player extends LiveBeing
 		}
 		if (currentAction.equals(ActionKeys[6]))
 		{
-			if (bag.contains(Game.getAllItems()[1340]) & isInside(GroundTypes.water))
+			if (bag.contains(Game.getAllItems()[1340]) & (isInside(GroundTypes.water) | isTouching(GroundTypes.water)))
 			{
+				Point offset = new Point() ;
+				offset.x =  dir.equals(Directions.left) ? -size.width : dir.equals(Directions.right) ? size.width : 0 ;
+				offset.y =  dir.equals(Directions.up) ? -size.height : dir.equals(Directions.down) ? size.height : 0 ;
+				Point gifPos = UtilG.Translate(pos, offset.x, offset.y) ;
 				// TODO fishing gif
 			}
 		}

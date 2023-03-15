@@ -253,7 +253,7 @@ public class NPCs
 			}
 			case caveExit:
 			{
-				portalAction(player) ;
+				if (player.getBag().contains(Game.getAllItems()[1338])) { portalAction(player) ;}
 
 				break ;
 			}
@@ -416,15 +416,15 @@ public class NPCs
 
 		if (action.equals("Enter") & selOption == 0)
 		{
-			if (player.getMap().getName().equals("Forest 13")) { player.setMap(Game.getMaps()[39]) ; player.setPos(pos) ; return;}
-			if (player.getMap().getName().equals("Island 1")) { player.setMap(Game.getMaps()[12]) ; player.setPos(pos) ; return;}
+			if (player.getMap().getName().equals("Forest 13")) { player.setMap(Game.getMaps()[39]) ; player.setPos(pos) ; return ;}
+			if (player.getMap().getName().equals("Island 1")) { player.setMap(Game.getMaps()[12]) ; player.setPos(pos) ; return ;}
 		}
 	}
 	
 	public void portalAction(Player player)
 	{
-		if (player.getMap().getName().equals("Forest 3")) { player.setMap(Game.getMaps()[29]) ; player.setPos(pos) ; return;}
-		if (player.getMap().getName().equals("Cave 1")) { player.setMap(Game.getMaps()[7]) ; player.setPos(pos) ; return;}
+		if (player.getMap().getName().equals("Forest 2")) { player.setMap(Game.getMaps()[30]) ; player.setPos(UtilG.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
+		if (player.getMap().getName().equals("Cave 1")) { player.setMap(Game.getMaps()[6]) ; player.setPos(UtilG.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
 	}
 	
 	public void bankerAction(BagWindow bag, BankWindow bankWindow, String action, DrawingOnPanel DP)

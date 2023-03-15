@@ -76,34 +76,62 @@ public abstract class UtilS
 		return SelectedMenu ;
 	}
 	
-	public static RelativePos calcRelativePos(Point pos, Point targetPos)
+//	public static RelativePos calcRelativePos(Point pos, Point targetPos)
+//	{
+//		if (pos.equals(targetPos))
+//		{
+//			return RelativePos.inside;
+//		}
+//		if (pos.x == (targetPos.x - 1) & pos.y == targetPos.y)
+//		{
+//			return RelativePos.left ;
+//		}
+//		if (pos.x == (targetPos.x + 1) & pos.y == targetPos.y)
+//		{
+//			return RelativePos.right ;
+//		}
+//		if (pos.x == targetPos.x & pos.y == (targetPos.y - 1))
+//		{
+//			return RelativePos.below ;
+//		}
+//		if (pos.x == targetPos.x & pos.y == (targetPos.y + 1))
+//		{
+//			return RelativePos.above ;
+//		}
+//		
+//		return null ;
+//	}
+	
+	public static RelativePos calcRelativePos(Point pos, Point targetPos, Dimension targetSize)
 	{
-		if (pos.equals(targetPos))
+		if (UtilG.isInside(pos, targetPos, targetSize))
 		{
 			return RelativePos.inside;
 		}
-		if (pos.x == (targetPos.x - 1) & pos.y == targetPos.y)
+		if (pos.x == (targetPos.x - 1) & (targetPos.y <= pos.y & pos.y <= targetPos.y + targetSize.height))
 		{
 			return RelativePos.left ;
 		}
-		if (pos.x == (targetPos.x + 1) & pos.y == targetPos.y)
+		if (pos.x == (targetPos.x + 1) & (targetPos.y <= pos.y & pos.y <= targetPos.y + targetSize.height))
 		{
 			return RelativePos.right ;
 		}
-		if (pos.x == targetPos.x & pos.y == (targetPos.y - 1))
-		{
-			return RelativePos.below ;
-		}
-		if (pos.x == targetPos.x & pos.y == (targetPos.y + 1))
+		if ((targetPos.x <= pos.x & pos.x <= targetPos.x + targetSize.width) & pos.y == (targetPos.y - 1))
 		{
 			return RelativePos.above ;
+		}
+		if ((targetPos.x <= pos.x & pos.x <= targetPos.x + targetSize.width) & pos.y == (targetPos.y + 1))
+		{
+			return RelativePos.below ;
 		}
 		
 		return null ;
 	}
 	
+	
  	public static RelativePos checkAdjacentGround(Point pos, GameMap map, GroundTypes targetGroundType)
 	{
+ 		
  		Point userPos = new Point(pos) ;
 
 		if (map == null) { return null ;}
@@ -114,7 +142,7 @@ public abstract class UtilS
 		{
 			if (!groundType.getType().equals(targetGroundType)) { continue ;}	
 			
-			return calcRelativePos(userPos, groundType.getPos()) ;
+			return calcRelativePos(userPos, groundType.getPos(), groundType.getSize()) ;
 		}
 		
 		return null ;

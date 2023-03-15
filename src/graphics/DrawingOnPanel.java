@@ -390,7 +390,7 @@ public class DrawingOnPanel
 	
 	public void DrawFullMap(Point playerPos, GameMap map, Sky sky)
 	{
-		sky.display(this) ;
+		if ( !map.getName().contains("Cave") ) { sky.display(this) ;}
 		map.display(this) ;
 		map.displayElements(this) ;
 		map.displayBuildings(playerPos, this) ;

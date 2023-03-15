@@ -59,6 +59,9 @@ public class FieldMap extends GameMap
 				creatures.add(creature) ;
 			}
 		}
+		
+		// add npcs
+		this.npcs = npcs ;
 	}
 
 	public ArrayList<Creature> getCreatures() {return creatures ;}

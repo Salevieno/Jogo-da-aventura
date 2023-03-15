@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -86,6 +87,7 @@ import utilities.Align;
 import utilities.AttackEffects;
 import utilities.Elements;
 import utilities.GameStates;
+import utilities.RelativePos;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -494,7 +496,7 @@ public class Game extends JPanel
     	FieldMap[] fieldMap = new FieldMap[input.size()] ;
 		
     	int mod = 0 ;
-		for (int id = 0 ; id <=  fieldMap.length - 1 ; id += 1)
+		for (int id = 0 ; id <= fieldMap.length - 1 ; id += 1)
 		{
 			int mapID = id + cityMaps.length ;
 			
@@ -570,7 +572,7 @@ public class Game extends JPanel
 			
 			Image image = UtilG.loadImage(path + "Map" + String.valueOf(mapID + mod) + ".png") ;
 			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
-			
+
 			fieldMap[id] = new FieldMap(name, continent, connections, image, music, collectibleLevel, collectiblesDelay, creatureIDs, npcs) ;
 		}
 		
@@ -1059,6 +1061,7 @@ public class Game extends JPanel
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
 		
     	for (int i = 0 ; i <= ani.length - 1 ; i += 1) { ani[i].run(i, DP) ;}
+    	
 	}
 			
 	private void testingInitialization()
@@ -1109,7 +1112,7 @@ public class Game extends JPanel
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
     	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
-    	player.setMap(cityMaps[1]) ;
+    	player.setMap(fieldMaps[1]) ;
     	player.setPos(new Point(226, 473)) ;
 //    	player.getBag().Add(Potion.getAll()[0], 3) ;
 //    	player.getBag().Add(Potion.getAll()[0], 2) ;
@@ -1126,38 +1129,6 @@ public class Game extends JPanel
     	player.getBag().Add(Equip.getAll()[2], 3) ;
 //    	System.out.println(player.getBag().numberItems);
 //    	for (int i = 0; i <= Potion.getAll().length - 1; i += 1) { player.getBag().Add(Potion.getAll()[i], 3) ; }
-//    	for (int i = 0; i <= Alchemy.getAll().length - 1; i += 1) { player.getBag().Add(Alchemy.getAll()[i], 3) ; }
-//    	for (int i = 0; i <= Forge.getAll().length - 1; i += 1) { player.getBag().Add(Forge.getAll()[i], 3) ; }
-//    	for (int i = 0; i <= Food.getAll().length - 1; i += 1) { player.getBag().Add(Food.getAll()[i], 3) ; }
-//    	for (int i = 0; i <= PetItem.getAll().length - 1; i += 1) { player.getBag().Add(PetItem.getAll()[i], 3) ; }
-//    	for (int i = 0; i <= Arrow.getAll().length - 1; i += 1) { player.getBag().Add(Arrow.getAll()[i], 3) ; }
-//    	for (int i = 0; i <= Equip.getAll().length - 1; i += 1) { player.getBag().Add(Equip.getAll()[i], 3) ; }
-//    	for (int i = 0; i <= GeneralItem.getAll().length - 1; i += 1) { player.getBag().Add(GeneralItem.getAll()[i], 3) ; }
-//    	for (int i = 0; i <= Fab.getAll().length - 1; i += 1) { player.getBag().Add(Fab.getAll()[i], 3) ; }
-//    	for (int i = 0; i <= QuestItem.getAll().length - 1; i += 1) { player.getBag().Add(QuestItem.getAll()[i], 3) ; }
-    	//player.getPA().setExp(new BasicAttribute(50, 50, 1)) ;	// level up
-    	//System.out.println("player life = " + player.getLife().getCurrentValue());
-    	//System.out.println("player life = " + player.getLife().getCurrentValue());
-		//System.out.println("player PA = " + player.getPA());
-//    	for (int i = 0 ; i <= Player.NumberOfSpellsPerJob[player.getJob()] - 1 ; i += 1)
-//    	{
-//        	player.getSpells().get(i).incLevel(1) ;
-//    	}
-
-    	//System.out.println("player spells = " + player.getSpell());
-    	//player.getSpell().add(new Spell(allSpellTypes[0])) ;
-    	//player.getLife().incCurrentValue(-20);
-    	
-    	/*System.out.println("\nplayer life");
-    	System.out.println(player.getLife());
-    	player.applyBuff(true, player.getSpell().get(0).getBuffs().get(0));
-    	//player.ApplyBuffsAndNerfs("activate", "", 0, player.getSpell().get(0).getBuffs().get(0), 0, false);
-    	System.out.println("\nbuff activated");
-    	System.out.println(player.getLife());
-    	player.applyBuff(false, player.getSpell().get(0).getBuffs().get(0));
-    	//player.ApplyBuffsAndNerfs("deactivate", "", 0, player.getSpell().get(0).getBuffs().get(0), 0, false);
-    	System.out.println("\nbuff deactivated");
-    	System.out.println(player.getLife());*/
     	player.addQuest(allQuests[1]) ;
     	player.addQuest(allQuests[5]) ;
     	player.addQuest(allQuests[6]) ;
@@ -1168,14 +1139,6 @@ public class Game extends JPanel
     	{
         	player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
     	}
-    	/*System.out.println(player.getBag().getPotions()) ;
-    	player.getBag().Add(Potion.getAll()[0], 4) ;
-    	player.getBag().Add(Alchemy.getAll()[0], 1) ;
-    	System.out.println(player.getBag().getPotions()) ;
-    	player.getBag().Remove(Potion.getAll()[0], 3) ;
-    	System.out.println(player.getBag().getPotions()) ;
-    	player.getBag().useItem(player, Potion.getAll()[0]) ;
-    	System.out.println(player.getBag().getPotions()) ;*/
     	if (player.getSettings().getMusicIsOn())
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
@@ -1237,11 +1200,11 @@ public class Game extends JPanel
 //    	System.out.println(fieldMaps[12].allColliders());
     	player.getPA().getExp().incCurrentValue(500) ;
     	player.setPos(new Point(30, 250)) ;
-    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(10, 10))) ;
-    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 200), new Dimension(50, 10))) ;
-    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 199), new Dimension(10, 10))) ;
-    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 203), new Dimension(10, 10))) ;
-    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(200, 200), new Dimension(10, 10))) ;
+    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(20, 20))) ;
+//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 200), new Dimension(50, 10))) ;
+//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 199), new Dimension(10, 10))) ;
+//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 203), new Dimension(10, 10))) ;
+//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(200, 200), new Dimension(10, 10))) ;
 	}
 	
 	private void testing()

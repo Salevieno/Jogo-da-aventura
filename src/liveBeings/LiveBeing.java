@@ -16,11 +16,13 @@ import main.AtkResults;
 import main.AtkTypes;
 import main.Game;
 import maps.GameMap;
+import maps.GroundType;
 import maps.GroundTypes;
 import utilities.Align;
 import utilities.AttackEffects;
 import utilities.Directions;
 import utilities.Elements;
+import utilities.RelativePos;
 import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -281,6 +283,20 @@ public abstract class LiveBeing
 	public boolean isInRange(Point target) {return pos.distance(target) <= range ;}
 	public boolean isTouching(GroundTypes groundType) { return UtilS.isTouching(pos, map, groundType) ;}
 	public boolean isInside(GroundTypes groundType) { return UtilS.isInside(pos, map, groundType) ;}
+	
+	public RelativePos relPosToGroundType(GroundTypes groundType)
+	{
+		// TODO busca por todos os groundTypes do mapa. E se o jogador estiver tocando em vários ao mesmo tempo?
+		if (isTouching(groundType)) { return null ;}
+		
+		RelativePos relPos = null ;
+		for (GroundType gt : map.getgroundTypes())
+		{
+			relPos = UtilS.calcRelativePos(pos, gt.getPos(), gt.getSize()) ;
+		}
+		
+    	return relPos ;
+	}
 	
 	public Elements[] atkElems()
 	{

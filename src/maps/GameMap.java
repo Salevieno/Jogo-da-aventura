@@ -240,12 +240,15 @@ public class GameMap
 
 	public GroundTypes groundTypeAtPoint(Point pos)
 	{
-		// TODO atualizar com tamanho de ground type
-		if (groundTypes == null) { return null ;}
+		if (groundTypes == null) { return null ;}		
 		
+//		for (GroundType groundType : groundTypes)
+//		{
+//			if (groundType.getPos().equals(pos)) { return groundType.getType() ;}			
+//		}
 		for (GroundType groundType : groundTypes)
 		{
-			if (groundType.getPos().equals(pos)) { return groundType.getType() ;}			
+			if (UtilG.isInside(pos, groundType.getPos(), groundType.getSize())) { return groundType.getType() ;}			
 		}
 		
 		return null ;
@@ -258,7 +261,9 @@ public class GameMap
  	
  	public void display(DrawingOnPanel DP)
  	{
- 		DP.DrawImage(image, Game.getScreen().getMapCenter(), Align.center) ;
+ 		if (name.contains("Cave")) { DP.DrawImage(image, Game.getScreen().getCenter(), Align.center) ;}
+ 		else { DP.DrawImage(image, Game.getScreen().getMapCenter(), Align.center) ;}
+ 		
  		if (name.equals("City of the archers"))
  		{
  	 		DP.DrawImage(beachGif, new Point(Game.getScreen().getSize().width, 96), Align.topRight) ;
@@ -282,7 +287,7 @@ public class GameMap
 	public void displayNPCs(DrawingOnPanel DP)
 	{
 		if (npcs == null) { return ;}
-		
+
 		npcs.forEach(npc -> npc.display(DP));
 	}
 	
@@ -293,8 +298,8 @@ public class GameMap
 		groundTypes.forEach(groundType -> {
 			switch (groundType.type)
 			{
-				case water: DP.DrawRect(groundType.pos, Align.center, groundType.size, 1, Game.ColorPalette[13], null) ; break ;
-				case lava: DP.DrawRect(groundType.pos, Align.center, groundType.size, 1, Game.ColorPalette[6], null) ; break ;
+				case water: DP.DrawRect(groundType.pos, Align.topLeft, groundType.size, 1, Game.ColorPalette[13], null) ; break ;
+				case lava: DP.DrawRect(groundType.pos, Align.topLeft, groundType.size, 1, Game.ColorPalette[6], null) ; break ;
 				default: break ;
 			}
 		});
@@ -303,7 +308,6 @@ public class GameMap
 	public boolean groundIsWalkable(Point pos, Elements superElem)
 	{
 
-		// TODO atualizar com tamanho de ground type
 		if (superElem != null) { if (superElem.equals(Elements.air)) { return true ;}}
 		
  		List<Collider> allColliders = allColliders() ;

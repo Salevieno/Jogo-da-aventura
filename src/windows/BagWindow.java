@@ -409,14 +409,14 @@ public class BagWindow extends GameWindow
 		
 		// draw menus
 		int MenuH = MenuImage.getHeight(null) ;
-		for (int m = 0 ; m <= allText.length - 3 ; m += 1)
+		for (int m = 0 ; m <= allText.length - 1 ; m += 1)
 		{
 			Point menuPos = m == menu ? UtilG.Translate(windowPos, 3, m * (MenuH - 1) + 3) : UtilG.Translate(windowPos, 0, m * (MenuH - 1) + 3) ;
 			Point textPos = UtilG.Translate(menuPos, 3, MenuH / 2) ;
 			Color TextColor = m == menu ? colorPalette[3] : colorPalette[11] ;
 			
 			DP.DrawImage(m == menu ? SelectedMenuImage : MenuImage, menuPos, Align.topLeft) ;
-			DP.DrawText(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, allText[m + 1], MenuFont, TextColor) ;
+			DP.DrawText(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, allText[m], MenuFont, TextColor) ;
 		}
 		
 		// draw bag
