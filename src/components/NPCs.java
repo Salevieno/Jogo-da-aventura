@@ -481,22 +481,21 @@ public class NPCs
 
 	public void drawOptions(int selOption, String[] options, Color color, DrawingOnPanel DP)
 	{
-		Point windowPos = new Point((int) (pos.x - type.getImage().getWidth(null) - 10), pos.y) ;		
+		
+		if (options == null) { return ;}
+		
+		Point windowPos = UtilG.Translate(pos, - type.getImage().getWidth(null) - 10, 0) ;
+		
 		DP.DrawImage(ChoicesWindow, windowPos, Align.topLeft) ;
 		
-		int sy = 2 * UtilG.TextH(NPCfont.getSize()) ;
+		int sy = 2 * NPCfont.getSize() ;
 		for (int i = 0 ; i <= options.length - 1 ; i += 1)
 		{
-			Point textPos = new Point(windowPos.x + 5, windowPos.y + 5 + i * sy) ;
-			if (i == selOption)
-			{
-				DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, String.valueOf(i) + " - " + options[i], NPCfont, Game.ColorPalette[5]) ;
-			}
-			else
-			{
-				DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, String.valueOf(i) + " - " + options[i], NPCfont, color) ;	
-			}
+			Point textPos = UtilG.Translate(windowPos, 5, 5 + i * sy) ;
+			Color textColor = i == selOption ? Game.ColorPalette[5] : color ;
+			DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, String.valueOf(i) + " - " + options[i], NPCfont, textColor) ;
 		}
+		
 	}
 
 	

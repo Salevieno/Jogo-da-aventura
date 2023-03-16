@@ -54,13 +54,11 @@ import maps.Collectible;
 import maps.FieldMap;
 import maps.GameMap;
 import maps.GroundTypes;
-import screen.Screen;
 import screen.SideBar;
 import utilities.Align;
 import utilities.AttackEffects;
 import utilities.Directions;
 import utilities.Elements;
-import utilities.RelativePos;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
@@ -128,7 +126,7 @@ public class Player extends LiveBeing
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public final static Image[] AttWindowImages = new Image[] {UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")} ;
     public final static Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
-    public final static Gif levelUpAnimation = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 300, false, false) ;
+    public final static Gif levelUpAnimation = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 170, false, false) ;
     
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Pet window, Map, Quest, Hint, Tent, Bestiary]
 	public static final String[] MoveKeys = new String[] {KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
@@ -588,6 +586,8 @@ public class Player extends LiveBeing
 		
 	public void acts(Pet pet, Point MousePos, SideBar sideBar)
 	{
+		
+		// I like to move it, move it!
 		if (actionIsAMove())
 		{
 			switch (currentAction)
@@ -601,6 +601,8 @@ public class Player extends LiveBeing
 			startMove() ;
 		}
 		
+		
+		// clicking icons
 		if (currentAction.equals("MouseLeftClick"))
 		{
 			sideBar.getIcons().forEach(icon ->
@@ -621,6 +623,8 @@ public class Player extends LiveBeing
 			});
 		}
 		
+		
+		// doing keyboard actions
 		if (currentAction.equals(ActionKeys[4]))
 		{
 			focusWindow = bag ;
@@ -678,6 +682,8 @@ public class Player extends LiveBeing
 			bestiary.open() ;
 		}
 		
+		
+		// using spells
 		if (actionIsSpell())
 		{
 			Spell spell = spells.get(SpellKeys.indexOf(currentAction));
@@ -697,16 +703,18 @@ public class Player extends LiveBeing
 			}
 		}
 		
+		
 		// if hits creature, enters battle
 		if (actionIsAtk() & closestCreature != null & !isInBattle())
 		{
 			engageInFight(closestCreature) ;
 		}
 
+		
 		// navigating through open windows
 		if (focusWindow != null)
 		{
-			if (focusWindow.isOpen()) { focusWindow.navigate(currentAction) ;}
+			if (focusWindow.isOpen()) { focusWindow.navigate(currentAction) ; }
 		}
 		
 		if (bag.isOpen())
@@ -717,6 +725,8 @@ public class Player extends LiveBeing
 			}
 		}
 		
+		
+		// using hotItems
 		for (int i = 0; i <= HotKeys.length - 1 ; i += 1)
 		{
 			if (currentAction.equals(HotKeys[i]) & hotItems[i] != null)
@@ -724,6 +734,7 @@ public class Player extends LiveBeing
 				useItem(hotItems[i]) ;
 			}
 		}
+		
 		
 		updateCombo() ;
 		
@@ -1089,13 +1100,14 @@ public class Player extends LiveBeing
 		spellPoints += 1 ;
 		attPoints += 2 ;
 		
-		ani.start(new Object[] {150, Arrays.copyOf(attIncrease, attIncrease.length - 1), level, pos}) ;
+		ani.start(new Object[] {600, Arrays.copyOf(attIncrease, attIncrease.length - 1), level, pos}) ;
 	}
 	private double[] calcAttributesIncrease()
 	{
 		double[] attributeIncrease = attIncrease.basic() ;
 		double[] chanceIncrease = attChanceIncrease.basic() ;
 		double[] increase = new double[attributeIncrease.length + 1] ;
+
 		for (int i = 0 ; i <= attributeIncrease.length - 1 ; i += 1)
 		{
 			if (chanceIncrease[i] <= Math.random()) { continue ;}

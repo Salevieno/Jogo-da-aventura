@@ -1,9 +1,7 @@
 package components ;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image ;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +16,14 @@ public class Building
 {
 	private BuildingType type ;
 	private Point pos ;
+	private List<NPCs> npcs ;	// NPCs in the building
 	private List<Collider> colliders ;
 	
-	public Building(BuildingType type, Point pos)
+	public Building(BuildingType type, Point pos, List<NPCs> npcs)
 	{
 		this.type = type ;
 		this.pos = pos ;
+		this.npcs = npcs ;
 		colliders = new ArrayList<>() ;
 		
 		switch (type.getName())
@@ -43,22 +43,44 @@ public class Building
 				 break ;
 			}
 			default: break ;
-		}
+		}		
+
+		npcs.forEach(npc -> npc.setPos(new Point(pos.x, pos.y))) ;
 	}
 
 	
 	public BuildingType getType() { return type ;}
 	public Point getPos() { return pos ;}
+	public List<NPCs> getNPCs() {return npcs ;}
 	public List<Collider> getColliders() { return colliders ;}
 	
 	public boolean isInside(Point pos) {return UtilG.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null)), UtilG.getImageSize(type.getImage())) ;}
+	public boolean hasNPCs() {return npcs != null ;}
 		
+	public void displayNPCs(DrawingOnPanel DP)
+	{
+		if (npcs == null) { return ;}
+		
+		for (NPCs npc : npcs)
+		{
+			System.out.println(npc);
+			npc.display(DP) ;
+		}
+	}
+	
 	public void display(Point playerPos, DrawingOnPanel DP)
 	{
-		if (!isInside(playerPos) | type.getInsideImage() == null)
+		if (type.getInsideImage() == null)
 		{
-			Image image = type.getImage() ;
-			DP.DrawImage(image, pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
+			DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
+			displayNPCs(DP) ;
+			
+			return ;
+		}
+		
+		if (!isInside(playerPos))
+		{
+			DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
 			
 //			for (Collider collider : colliders)
 //			{
@@ -68,15 +90,8 @@ public class Building
 			return ;
 		}
 		
-		Image image = type.getInsideImage() ;
-		DP.DrawImage(image, pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
-		
-		if (type.getNPCs() == null) { return ;}
-		
-		for (NPCs npc : type.getNPCs())
-		{
-			npc.display(DP) ;
-		}
+		DP.DrawImage(type.getInsideImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
+		displayNPCs(DP) ;
 		
 		if (type.getName().equals("Sign"))
 		{

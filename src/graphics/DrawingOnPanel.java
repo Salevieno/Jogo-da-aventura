@@ -11,6 +11,7 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.awt.geom.AffineTransform ;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import components.GameIcon;
@@ -394,7 +395,7 @@ public class DrawingOnPanel
 		map.display(this) ;
 		map.displayElements(this) ;
 		map.displayBuildings(playerPos, this) ;
-		map.displayNPCs(this) ;
+//		map.displayNPCs(this) ;
 		map.displayGroundTypes(this) ;
 		if (map instanceof FieldMap)
 		{
@@ -592,14 +593,16 @@ public class DrawingOnPanel
 		Point pos = new Point((int)(0.45 * screenSize.width), (int)(0.2 * screenSize.height)) ;
 		Scale scale = new Scale(1, 1) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		String[] attText = Game.allText.get("Atributos") ;
 		
 		DrawImage(menuWindow, pos, scale, Align.topLeft) ;
 		Point textPos = UtilG.Translate(pos, 5, font.getSize() + 5) ;
-		DrawText(textPos, Align.bottomLeft, stdAngle, "Nível " + playerLevel + "!", font, textColor) ;
+		DrawText(textPos, Align.bottomLeft, stdAngle, attText[0] + " " + playerLevel + "!", font, textColor) ;
 		
 		if ( counter.rate() <= 0.3 ) { return ;}
 		
-		String[] attNames = new String[] {"Vida", "MP", "Ataque físico", "Ataque mágico", "Defesa física", "Defesa mágica", "Destreza", "Agilidade"} ;
+//		String[] attNames = new String[] {"Vida", "MP", "Ataque f�sico", "Ataque mágico", "Defesa física", "Defesa mágica", "Destreza", "Agilidade"} ;
+		String[] attNames = Arrays.copyOfRange(attText, 1, 9) ;
 		for (int i = 0 ; i <= AttributeIncrease.length - 1 ; i += 1)
 		{
 			if ( 0.3 + 0.5 * i / (AttributeIncrease.length - 1) <= counter.rate() )

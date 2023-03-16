@@ -99,12 +99,20 @@ public class Animations
 	
 	private void levelUpAnimation(Object[] vars, DrawingOnPanel DP)
 	{
-		double[] AttributesIncrease = (double[]) vars[1] ;
-		int playerLevel = (int) vars[2] ;
 		Point playerPos = (Point) vars[3] ;
+		
+		if (!Player.levelUpAnimation.isDonePlaying())
+		{
+			Player.levelUpAnimation.play(playerPos, Align.bottomCenter, DP) ;
+			counter.reset() ;
+			return ;
+		}
+
+		double[] attributesIncrease = (double[]) vars[1] ;
+		int playerLevel = (int) vars[2] ;
 		Color textColor = Game.ColorPalette[6] ;
-		DP.levelUpAnimation(counter, AttributesIncrease, playerLevel, textColor) ;
-		Player.levelUpAnimation.play(playerPos, Align.center, DP) ;
+		
+		DP.levelUpAnimation(counter, attributesIncrease, playerLevel, textColor) ;
 	}
 
 	private void PterodactileAnimation(Object[] vars, DrawingOnPanel DP)

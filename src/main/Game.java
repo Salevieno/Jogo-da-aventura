@@ -300,27 +300,9 @@ public class Game extends JPanel
     	{
     		JSONObject type = (JSONObject) input.get(i) ;
     		String name = (String) type.get("name") ;
-			Image outsideImage = UtilG.loadImage(path + "Building" + name + ".png") ;
+			Image outsideImage = UtilG.loadImage(path + "Building" + name + ".png") ;			
 			
-			// adding npcs to the building
-			List<NPCs> npcs = new ArrayList<>() ;
-			JSONArray arrayNPCs = (JSONArray) type.get("npcs") ;
-			for (int j = 0; j <= arrayNPCs.size() - 1; j += 1)
-			{
-				JSONObject newNPC = (JSONObject) arrayNPCs.get(j) ;
-				NPCJobs npcJob = NPCJobs.valueOf((String) newNPC.get("job")) ;
-				NPCType npcType = NPCs.typeFromJob(npcJob) ;
-				JSONArray arrayPos = (JSONArray) newNPC.get("pos") ;
-				Point npcPos = new Point((int) (long) arrayPos.get(0), (int) (long) arrayPos.get(1)) ;
-				if (npcType != null)
-				{
-					npcs.add(new NPCs(0, npcType, npcPos)) ;
-				}
-			}
-			
-			
-			
-    		buildingTypes[i] = new BuildingType(name, outsideImage, npcs) ;
+    		buildingTypes[i] = new BuildingType(name, outsideImage) ;
     		
     		boolean hasInterior = (boolean) type.get("hasInterior") ;
 			if (hasInterior)
@@ -457,8 +439,27 @@ public class Game extends JPanel
 				int buildingPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[11 + 3 * i])) ;
 				int buildingPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[12 + 3 * i])) ;
 				Point buildingPos = new Point(buildingPosX, buildingPosY) ;
+
 				
-				buildings.add(new Building(buildingType, buildingPos)) ;
+				// TODO passar os npcs do json de building types para buildings
+				// adding npcs to the building
+				List<NPCs> npcs = new ArrayList<>() ;
+				JSONArray arrayNPCs = (JSONArray) buildingType.get("npcs") ;
+				for (int j = 0; j <= arrayNPCs.size() - 1; j += 1)
+				{
+					JSONObject newNPC = (JSONObject) arrayNPCs.get(j) ;
+					NPCJobs npcJob = NPCJobs.valueOf((String) newNPC.get("job")) ;
+					NPCType npcType = NPCs.typeFromJob(npcJob) ;
+					JSONArray arrayPos = (JSONArray) newNPC.get("pos") ;
+					Point npcPos = new Point((int) (long) arrayPos.get(0), (int) (long) arrayPos.get(1)) ;
+					
+					if (npcType != null)
+					{
+						npcs.add(new NPCs(0, npcType, npcPos)) ;
+					}
+				}
+				
+				buildings.add(new Building(buildingType, buildingPos, npcs)) ;
 				
 			}
 
@@ -1112,7 +1113,7 @@ public class Game extends JPanel
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
     	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
-    	player.setMap(fieldMaps[1]) ;
+    	player.setMap(cityMaps[1]) ;
     	player.setPos(new Point(226, 473)) ;
 //    	player.getBag().Add(Potion.getAll()[0], 3) ;
 //    	player.getBag().Add(Potion.getAll()[0], 2) ;
@@ -1403,6 +1404,7 @@ public class Game extends JPanel
         		//testGif2.start();
 			}
             //shouldRepaint = true ;
+			System.out.println(mousePos) ;
 		}
 
 		@Override

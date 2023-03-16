@@ -112,12 +112,12 @@ public class AttributeBonus
 	{
 		life = (int) basicAttInc[0] ;
 		MP = (int) basicAttInc[1] ;
-		phyAtk = (int) basicAttInc[2] ;
-		magAtk = (int) basicAttInc[3] ;
-		phyDef = (int) basicAttInc[4] ;
-		magDef = (int) basicAttInc[5] ;
-		dex = (int) basicAttInc[6] ;
-		agi = (int) basicAttInc[7] ;
+		phyAtk = (double) basicAttInc[2] ;
+		magAtk = (double) basicAttInc[3] ;
+		phyDef = (double) basicAttInc[4] ;
+		magDef = (double) basicAttInc[5] ;
+		dex = (double) basicAttInc[6] ;
+		agi = (double) basicAttInc[7] ;
 	}
 	
 	public double[] basic()
