@@ -33,7 +33,7 @@ public class SpellsTreeWindow extends GameWindow
 	
 	public SpellsTreeWindow()
 	{
-		super("√Årvore de magias", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTree.png"), 0, 0, 0, 1);
+		super("¡rvore de magias", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTree.png"), 0, 0, 0, 1);
 //		this.spells = spells ;
 //		this.spellPoints = spellPoints ;
 		windowTopLeft = new Point((int)(0.1 * Game.getScreen().getSize().width), (int)(0.2 * Game.getScreen().getSize().height)) ;
@@ -137,10 +137,18 @@ public class SpellsTreeWindow extends GameWindow
 			DP.DrawText(spellLevelPos, Align.center, angle, String.valueOf(spells.get(i).getLevel()), regularFont, textColor) ;
 		}
 
-		Point spellPointsPos = UtilG.Translate(windowTopLeft, 0, -20) ;
+		Point spellPointsPos = UtilG.Translate(windowTopLeft, 0, -40) ;
 		DP.DrawText(spellPointsPos, Align.centerLeft, angle, "Pontos de magia = " + spellPoints, largeFont, Game.ColorPalette[9]) ;
 		
-		
+		// draw info
+		Point infoPos = UtilG.Translate(windowTopLeft, 0, -30) ;
+		DP.DrawRoundRect(infoPos, Align.topLeft, new Dimension(size.width, 30), 1, Game.ColorPalette[0], Game.ColorPalette[0], true) ;
+		for (String info : spells.get(item).getInfo())
+		{
+			infoPos.y += 5 ;
+			DP.DrawText(infoPos, Align.centerLeft, angle, info, largeFont, Game.ColorPalette[9]) ;
+			infoPos.y += 5 ;
+		}		
 	}
 	
 }

@@ -636,7 +636,6 @@ public class Game extends JPanel
 			String[] input = inputs.get(i) ;
 			int id = Integer.parseInt(input[0]) ;
 			String type = input[1] ;
-			Map<CreatureType, Integer> reqCreaturesCounter = new HashMap<>() ;
 			Map<CreatureType, Integer> reqCreatureTypes = new HashMap<>() ;
 			Map<Item, Integer> reqItems = new HashMap<>() ;
 			Map<Item, Integer> rewardItems = new HashMap<>() ;
@@ -645,7 +644,6 @@ public class Game extends JPanel
 			for (int j = 2 ; j <= 8 - 1 ; j += 2)
 			{
 				if (Integer.parseInt(input[j]) <= -1) { continue ;}
-				reqCreaturesCounter.put(Game.getCreatureTypes()[Integer.parseInt(input[j])], 0) ;
 				reqCreatureTypes.put(Game.getCreatureTypes()[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
 			}
 			
@@ -666,7 +664,7 @@ public class Game extends JPanel
 			
 			description = input[30 + language.ordinal()] ;
 			
-			quests[i] = new Quest(id, type, reqCreaturesCounter, reqCreatureTypes, reqItems, goldReward, expReward, rewardItems, description) ;
+			quests[i] = new Quest(id, type, reqCreatureTypes, reqItems, goldReward, expReward, rewardItems, description) ;
 		}
 		
 		return quests ;
@@ -694,42 +692,17 @@ public class Game extends JPanel
  	
     private Spell[] initializeAllSpells(Languages language)
     {
-    	List<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;	
-    	Spell[] allSpells = new Spell[spellTypesInput.size()] ;
+    	List<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;
     	List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
     	List<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
-
+    	
+    	Spell[] allSpells = new Spell[spellTypesInput.size()] ;
 		String[][] info = new String[allSpells.length][2] ;
+		
 		for (int i = 0 ; i <= allSpells.length - 1 ; i += 1)
 		{
 			int ID = i ;
 			
-//			Map<Attributes, Double> percentIncrease = new HashMap<>() ;
-//			Map<Attributes, Double> valueIncrease = new HashMap<>() ;
-//			Map<Attributes, Double> chance = new HashMap<>() ;
-//			int BuffCont = 0 ;
-//			for (Attributes att : Attributes.values())
-//			{
-//				if (att.equals(Attributes.exp) | att.equals(Attributes.satiation) | att.equals(Attributes.thirst))
-//				{
-//					continue ;
-//				}
-//				if (att.equals(Attributes.blood) | att.equals(Attributes.poison))
-//				{
-//					percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
-//					valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
-//					chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
-//					BuffCont += 12 ;
-//				}
-//				else
-//				{
-//					percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
-//					valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
-//					chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
-//					BuffCont += 3 ;
-//				}
-//			}
-//			
 			List<Buff> buffs = new ArrayList<>() ;
 			buffs.add(Buff.load(spellsBuffsInput.get(ID))) ;
 
@@ -1130,12 +1103,12 @@ public class Game extends JPanel
     	player.getBag().Add(Equip.getAll()[2], 3) ;
 //    	System.out.println(player.getBag().numberItems);
 //    	for (int i = 0; i <= Potion.getAll().length - 1; i += 1) { player.getBag().Add(Potion.getAll()[i], 3) ; }
-    	player.addQuest(allQuests[1]) ;
-    	player.addQuest(allQuests[5]) ;
-    	player.addQuest(allQuests[6]) ;
-    	player.addQuest(allQuests[7]) ;
-    	player.getQuest().get(0).activate() ;
-    	player.getQuest().get(1).activate() ;
+//    	player.addQuest(allQuests[1]) ;
+//    	player.addQuest(allQuests[5]) ;
+//    	player.addQuest(allQuests[6]) ;
+//    	player.addQuest(allQuests[7]) ;
+//    	player.getQuests().get(0).activate() ;
+//    	player.getQuest().get(1).activate() ;
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
         	player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;

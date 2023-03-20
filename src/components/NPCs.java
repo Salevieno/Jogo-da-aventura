@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
@@ -16,7 +17,6 @@ import items.Item;
 import items.Recipe;
 import liveBeings.Pet;
 import liveBeings.Player;
-import liveBeings.Spell;
 import main.Game;
 import utilities.Align;
 import utilities.Scale;
@@ -45,11 +45,11 @@ public class NPCs
 	public static final Image SpeakingBubble = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeakingBubble.png") ;
 	public static final Image ChoicesWindow = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "ChoicesWindow.png") ;
 	
-	public NPCs (int id, NPCType type, Point Pos)
+	public NPCs (int id, NPCType type, Point pos)
 	{
 		this.id = id ;
 		this.type = type ;
-		this.pos = Pos ;
+		this.pos = pos ;
 		selOption = 0 ;
 		menu = 0 ;
 		numberMenus = 0 ;
@@ -275,7 +275,7 @@ public class NPCs
 			}
 			case quest:
 			{
-				questAction() ;
+				questAction(player.getQuests(), player.getBag(), player.getPA(), player.getQuestSkills(), player.getCurrentAction()) ;
 
 				break ;
 			}
@@ -494,9 +494,29 @@ public class NPCs
 		}
 	}
 	
-	public void questAction()
+	public void questAction(List<Quest> quests, BagWindow bag, PersonalAttributes PA, Map<QuestSkills, Boolean> skills, String action)
 	{
-		// TODO
+		
+		if (action == null) { return ;}
+
+		Quest quest = Game.getAllQuests()[id - 28] ;
+		
+		quest.checkCompletion(bag) ;
+		
+		if (quest.isComplete())
+		{
+			quest.complete(bag, PA, skills) ;
+			incMenu() ;
+		}
+		
+		if (action.equals("Enter") & selOption == 0)
+		{
+			if (quests.contains(quest)) { return ;}
+			
+			quests.add(quest) ;
+			quests.get(quests.size() - 1).activate() ;
+		}
+		
 	}
 	
 	public void display(DrawingOnPanel DP)

@@ -145,10 +145,8 @@ public class Player extends LiveBeing
 		this.job = job ;
 		proJob = 0 ;
 		level = 1 ;
-		if (Game.getMaps() != null)
-		{
-			map = Game.getMaps()[job];
-		}
+		if (Game.getMaps() != null) { map = Game.getMaps()[job] ;}
+		
 		pos = new Point();
 		dir = Directions.up;
 		state = LiveBeingStates.idle;
@@ -170,9 +168,7 @@ public class Player extends LiveBeing
 		
 		
 		spells = new ArrayList<Spell>() ;
-//		allText = UtilG.ReadTextFile(Language) ;
 
-		//Bag = new int[Items.NumberOfAllItems] ;
 		focusWindow = null ;
 		bag = new BagWindow(new LinkedHashMap<Potion, Integer>(),
 				new LinkedHashMap<Alchemy, Integer>(),
@@ -198,10 +194,7 @@ public class Player extends LiveBeing
 		equips = new Equip[4] ;	// 0: weapon, 1: shield, 2: armor, 3: arrow
 		spellPoints = 0 ;
 		color = Game.ColorPalette[12] ;
-
     	
-		//ElemMult = new double[10] ;
-		//Arrays.fill(ElemMult, 1) ;
 		collectLevel = new double[3] ;
 		storedGold = 0 ;
 		goldMultiplier = Integer.parseInt(Properties.get(job)[32]) ; 
@@ -237,9 +230,7 @@ public class Player extends LiveBeing
 
 		closestCreature = null ;
 	    opponent = null ;
-//		equipsBonus = Items.EquipsBonus ;
 		settings = new SettingsWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "windowSettings.png"), false, true, false, 1, 1) ;
-//		spellsTree = new SpellsTreeWindow(spells.toArray(new Spell[0]), spellPoints, color) ;
 		hotItems = new Item[3] ;
 		
 	}
@@ -289,115 +280,26 @@ public class Player extends LiveBeing
 	
 	public void InitializeSpells()
     {
-		spells = new ArrayList<>() ;
-		Spell[] allSpellTypes = Game.getAllSpellTypes() ;
 		
-    	//int NumberOfAllSkills = 178 ;
-    	int NumberOfSpells = Player.NumberOfSpellsPerJob[job] ;
-    	//int NumberOfAtt = 14 ;
-    	//int NumberOfBuffs = 12 ;
-    	//ArrayList<String[]> spellsInput = UtilG.ReadcsvFile(Game.CSVPath + "Spells.csv") ;	
-    	/*ArrayList<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
-    	ArrayList<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
-		double[][][] spellBuffs = new double[NumberOfSpells][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
-		double[][][] spellNerfs = new double[NumberOfSpells][NumberOfAtt][NumberOfBuffs] ;	// [Life, MP, PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence][atk chance %, atk chance, chance, def chance %, def chance, chance, atk %, atk, chance, def %, def, chance]		
-		String[][] spellsInfo = new String[NumberOfSpells][2] ;
-		*/
+		spells = new ArrayList<>() ;	
+    	int numberSpells = NumberOfSpellsPerJob[job] ;
 
-
-    	for (int i = 0 ; i <= NumberOfSpells - 1 ; i += 1)
+    	for (int i = 0 ; i <= numberSpells - 1 ; i += 1)
 		{
-			/*int ID = i + Player.CumNumberOfSpellsPerJob[job] ;
-			int BuffCont = 0, NerfCont = 0 ;
-			for (int j = 0 ; j <= NumberOfAtt - 1 ; j += 1)
-			{
-				if (j == 11 | j == 12)
-				{
-					for (int k = 0 ; k <= NumberOfBuffs - 1 ; k += 1)
-					{
-						spellBuffs[i][j][k] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
-						spellNerfs[i][j][k] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
-						NerfCont += 1 ;
-						BuffCont += 1 ;
-					}
-				}
-				else
-				{
-					spellBuffs[i][j][0] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 3]) ;
-					spellBuffs[i][j][1] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 4]) ;
-					spellBuffs[i][j][2] = Double.parseDouble(spellsBuffsInput.get(ID)[BuffCont + 5]) ;
-					spellNerfs[i][j][0] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 3]) ;
-					spellNerfs[i][j][1] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 4]) ;
-					spellNerfs[i][j][2] = Double.parseDouble(spellsNerfsInput.get(ID)[NerfCont + 5]) ;
-					NerfCont += 3 ;
-					BuffCont += 3 ;
-				}
-			}*/
-			/*if (Language.equals("P"))
-			{
-				spellsInfo[i] = new String[] {spellsInput.get(ID)[42], spellsInput.get(ID)[43]} ;
-			}
-			else if (Language.equals("E"))
-			{
-				spellsInfo[i] = new String[] {spellsInput.get(ID)[44], spellsInput.get(ID)[45]} ;
-			}
-			String Name = spellsInput.get(ID)[4] ;
-			int MaxLevel = Integer.parseInt(spellsInput.get(ID)[5]) ;
-			double MpCost = Double.parseDouble(spellsInput.get(ID)[6]) ;
-			SpellTypes Type ;
-			if (spellsInput.get(ID)[7].equals("Active"))
-			{
-				Type = SpellTypes.active ;
-			}
-			else if (spellsInput.get(ID)[7].equals("Passive"))
-			{
-				Type = SpellTypes.passive ;
-			}
-			else if (spellsInput.get(ID)[7].equals("Offensive"))
-			{
-				Type = SpellTypes.offensive ;
-			}
-			else
-			{
-				Type = SpellTypes.support ;
-			}
-			Map<Spell, Integer> preRequisites = new HashMap<>() ;
-			for (int p = 0 ; p <= 6 - 1 ; p += 2)
-			{
-				if (-1 < Integer.parseInt(spellsInput.get(ID)[p + 8]))
-				{
-					preRequisites.put(spell.get(Integer.parseInt(spellsInput.get(ID)[p + 8])), Integer.parseInt(spellsInput.get(ID)[p + 9])) ;
-				}
-			}
-			int Cooldown = Integer.parseInt(spellsInput.get(ID)[14]) ;
-			int Duration = Integer.parseInt(spellsInput.get(ID)[15]) ;
-			double[] Atk = new double[] {Double.parseDouble(spellsInput.get(ID)[16]), Double.parseDouble(spellsInput.get(ID)[17])} ;
-			double[] Def = new double[] {Double.parseDouble(spellsInput.get(ID)[18]), Double.parseDouble(spellsInput.get(ID)[19])} ;
-			double[] Dex = new double[] {Double.parseDouble(spellsInput.get(ID)[20]), Double.parseDouble(spellsInput.get(ID)[21])} ;
-			double[] Agi = new double[] {Double.parseDouble(spellsInput.get(ID)[22]), Double.parseDouble(spellsInput.get(ID)[23])} ;
-			double[] AtkCrit = new double[] {Double.parseDouble(spellsInput.get(ID)[24])} ;
-			double[] DefCrit = new double[] {Double.parseDouble(spellsInput.get(ID)[25])} ;
-			double[] Stun = new double[] {Double.parseDouble(spellsInput.get(ID)[26]), Double.parseDouble(spellsInput.get(ID)[27]), Double.parseDouble(spellsInput.get(ID)[28])} ;
-			double[] Block = new double[] {Double.parseDouble(spellsInput.get(ID)[29]), Double.parseDouble(spellsInput.get(ID)[30]), Double.parseDouble(spellsInput.get(ID)[31])} ;
-			double[] Blood = new double[] {Double.parseDouble(spellsInput.get(ID)[32]), Double.parseDouble(spellsInput.get(ID)[33]), Double.parseDouble(spellsInput.get(ID)[34])} ;
-			double[] Poison = new double[] {Double.parseDouble(spellsInput.get(ID)[35]), Double.parseDouble(spellsInput.get(ID)[36]), Double.parseDouble(spellsInput.get(ID)[37])} ;
-			double[] Silence = new double[] {Double.parseDouble(spellsInput.get(ID)[38]), Double.parseDouble(spellsInput.get(ID)[39]), Double.parseDouble(spellsInput.get(ID)[40])} ;
-			String Elem = spellsInput.get(ID)[41] ;*/
-
     		int spellID = CumNumberOfSpellsPerJob[job] + i ;
-			spells.add(allSpellTypes[spellID]) ;	
-			
-			// new Spell(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, spellBuffs[i], spellNerfs[i],
-			//Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i])
+    		
+			spells.add(Game.getAllSpellTypes()[spellID]) ;
 		}
+    	
 		spells.get(0).incLevel(1) ;
+		
     }
 	
 	public String getLanguage() {return language ;}
 	public String getSex() {return sex ;}
 	public Directions getDir() {return dir ;}
 	public Color getColor() {return color ;}
-	public List<Quest> getQuest() {return quests ;}
+	public List<Quest> getQuests() {return quests ;}
 	public BagWindow getBag() {return bag ;}
 	public Equip[] getEquips() {return equips ;}
 	public int getSpellPoints() {return spellPoints ;}

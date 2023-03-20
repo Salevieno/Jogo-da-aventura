@@ -1,7 +1,9 @@
 package components ;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import attributes.PersonalAttributes;
 import items.Item;
 import liveBeings.CreatureType;
 import windows.BagWindow;
@@ -21,8 +23,7 @@ public class Quest
 	private Map<Item, Integer> rewardItems ;
 	private String description ;
 	
-	public Quest(int id, String type, Map<CreatureType, Integer> reqCreaturesCounter, 
-			Map<CreatureType, Integer> reqCreatureTypes, Map<Item, Integer> reqItems,
+	public Quest(int id, String type, Map<CreatureType, Integer> reqCreatureTypes, Map<Item, Integer> reqItems,
 			int goldReward, int expReward, Map<Item, Integer> rewardItems, String description)
 	{
 		this.id = id ;
@@ -30,7 +31,9 @@ public class Quest
 		this.type = type ;
 		isActive = false ;
 		isComplete = false ;
-		this.reqCreaturesCounter = reqCreaturesCounter ;
+		reqCreaturesCounter = new HashMap<>() ;
+		if (reqCreatureTypes != null) { reqCreatureTypes.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 10)) ;}
+		
 		this.reqCreatureTypes = reqCreatureTypes ;
 		this.reqItems = reqItems ;
 		this.goldReward = goldReward ;
@@ -62,6 +65,7 @@ public class Quest
 	
 	public void activate() { isActive = true ;}
 	public void deactivate() { isActive = false ;}
+	private void resetCreaturesCounter() { reqCreatureTypes.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 0)) ;}
 	
 	public void IncReqCreaturesCounter(CreatureType creatureType)
 	{
@@ -76,7 +80,7 @@ public class Quest
 		if (reqCreatureTypes != null)
 		{
 			reqCreatureTypes.keySet().forEach(type -> {
-				if (!reqCreatureTypes.get(type).equals(reqCreaturesCounter.get(type))) {isComplete = false ;}
+				if (reqCreaturesCounter.get(type) < reqCreatureTypes.get(type)) {isComplete = false ;}
 			});
 		}
 		
@@ -87,6 +91,27 @@ public class Quest
 		});
 	}
 
+	public void complete(BagWindow bag, PersonalAttributes PA, Map<QuestSkills, Boolean> skills)
+	{
+		
+		resetCreaturesCounter() ;
+		deactivate() ;
+		isComplete = false ;
+		
+		PA.getExp().incCurrentValue(expReward) ;
+		bag.addGold(goldReward) ;
+
+		for (Item item : rewardItems.keySet()) { bag.Add(item, 1) ;}
+		
+		// special rewards
+		switch (id)
+		{
+			case 1: skills.replace(QuestSkills.bestiary, true) ; break ;
+			default: break ;
+		}
+		
+	}
+	
 	@Override
 	public String toString()
 	{

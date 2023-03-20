@@ -94,6 +94,6 @@ public class QuestWindow extends GameWindow
 			DP.DrawText(textPos, Align.centerLeft, angle, item.getName(), font, Game.ColorPalette[9]) ;
 		}
 		
-		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height), size.width, window, numberWindows) ;
+		DP.DrawWindowArrows(UtilG.Translate(windowPos, size.width / 2, size.height + 5), size.width, window, numberWindows) ;
 	}
 }

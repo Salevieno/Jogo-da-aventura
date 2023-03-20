@@ -262,61 +262,24 @@ public class DrawingOnPanel
 		DrawFitText(pos, sy, Align.topLeft, text, font, maxTextL, color) ;		
 	}
 	
-	public void DrawWindowArrows(Point Pos, int L, int SelectedWindow, int MaxWindow)
+	public void DrawWindowArrows(Point pos, int width, int selectedWindow, int numberWindows)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
-		if (0 < SelectedWindow)
+		if (0 < selectedWindow)
 		{
-			Point LeftArrowPos = new Point(Pos.x - (int)(0.5 * L), Pos.y) ;
+			Point LeftArrowPos = new Point(pos.x - (int)(0.5 * width), pos.y) ;
 			DrawImage(ArrowIconImage, LeftArrowPos, stdAngle, new Scale(-1, -1), Align.center) ;
 			DrawText(LeftArrowPos, Align.topRight, stdAngle, Player.ActionKeys[1], font, colorPalette[5]) ;			
 		}
-		if (SelectedWindow < MaxWindow)
+		if (selectedWindow < numberWindows - 1)
 		{
-			Point RightArrowPos = new Point(Pos.x + (int)(0.5 * L), Pos.y) ;
+			Point RightArrowPos = new Point(pos.x + (int)(0.5 * width), pos.y) ;
 			DrawImage(ArrowIconImage, RightArrowPos, stdAngle, new Scale(1, -1), Align.center) ;
 			DrawText(RightArrowPos, Align.topRight, stdAngle, Player.ActionKeys[3], font, colorPalette[5]) ;		
 		}
 	}
 	
-	public void DrawOrganogram(int[] Sequence, Point Pos, int sx, int sy, Dimension size, String[][] Text1, String[] Text2, GameIcon SlotIcon, Font font, Color[] TextColor, Point MousePos)
-	{
-		int[] x0 = new int[] {screenSize.width / 30 + size.width + sx, screenSize.width / 30 + size.width / 2 + sx / 2, screenSize.width / 30} ;
-		int IconH = SlotIcon.getImage().getHeight(null) ;
-		int RectH = (int) (0.67 * IconH) ;
-		int id = 0 ;
-		for (int row = 0 ; row <= Sequence.length - 1 ; row += 1)
-		{
-			for (int col = 0 ; col <= Sequence[row] - 1 ; col += 1)
-			{
-				Point slotCenter = new Point(Pos.x + x0[Sequence[row] - 1] + (size.width + sx) * col + size.width / 2, Pos.y + size.height / 2 + sy / 2 + (size.height + sy) * row) ;
-				SlotIcon.setPos(slotCenter) ;
-				DrawImage(SlotIcon.getImage(), slotCenter, Align.center) ;
-				if (UtilG.isInside(MousePos, new Point(slotCenter.x - size.width / 2, slotCenter.y + RectH), size))
-				{
-					DrawImage(SlotIcon.getSelectedImage(), slotCenter, Align.center) ;
-				}
-				
-				int TextH = UtilG.TextH(font.getSize()) ;
-				int textsy = RectH - 10 - TextH * (Text1.length - 1) ;
-				if (1 < Text1.length)
-				{
-					textsy = (int) UtilG.spacing(RectH, Sequence[row], TextH, 2) ;
-				}
-				for (int textrow = 0 ; textrow <= Text1.length - 1 ; textrow += 1)
-				{
-					DrawTextUntil(new Point(slotCenter.x, slotCenter.y - IconH / 2 + 5 + textrow * textsy), Align.topCenter, stdAngle, Text1[textrow][id], font, TextColor[id], 20, MousePos) ;
-				}
-				DrawText(new Point(slotCenter.x, slotCenter.y + size.height / 3), Align.center, stdAngle, Text2[id], font, TextColor[id]) ;							
-				id += 1 ;
-			}
-		}
-	}
-	
-	public void DrawLoadingText(Image LoadingGif, Point Pos)
-	{
-		DrawGif(LoadingGif, Pos, Align.center);
-	}
+	public void DrawLoadingText(Image LoadingGif, Point Pos) { DrawGif(LoadingGif, Pos, Align.center) ;}
 	
 	public void DrawLoadingGameScreen(Player player, Pet pet, GameIcon[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
 	{
@@ -405,51 +368,6 @@ public class DrawingOnPanel
 		DrawTime(sky) ;
 	}
 
-//	public void DrawFabBook(Image BookImage, Item[] items, int SelectedPage, int[][] Ingredients, int[][] Products, Point MousePos)
-//	{
-//		Point Pos = new Point((int)(0.5*screenSize.width), (int)(0.5*screenSize.height)) ;
-//		Font Titlefont = new Font("SansSerif", Font.BOLD, 16) ;
-//		Font font = new Font("SansSerif", Font.BOLD, 14) ;
-//		int L = BookImage.getWidth(null), H = BookImage.getHeight(null) ;
-//		int sy = H/15 ;
-//		int IngredientsCont = 0, ProductsCont = 0 ;
-//		int MaxTextL = 10 ;
-//		DrawImage(BookImage, Pos, stdAngle, new Scale(1, 1), Align.center) ;
-//		DrawText(new Point(Pos.x - 3*L/8, Pos.y - H/5 - sy/4), Align.bottomLeft, stdAngle, "Ingredients:", Titlefont, colorPalette[5]) ;
-//		DrawText(new Point(Pos.x + 3*L/8, Pos.y - H/5 - sy/4), Align.topRight, stdAngle, "Products:", Titlefont, colorPalette[5]) ;		
-//		for (int j = 0 ; j <= Ingredients[SelectedPage].length - 1 ; ++j)
-//		{
-//			if (-1 < Ingredients[SelectedPage][j])
-//			{
-//				/*if (Utg.MouseIsInside(MousePos, new int[] {Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2}, MaxTextL*font.getSize()/2, Utg.TextH(font.getSize())))
-//				{
-//					DrawText(new Point(Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2}, alignPoints.bottomLeft, OverallAngle, items[Ingredients[SelectedPage][j]].getName(), font, ColorPalette[5]) ;
-//				}
-//				else
-//				{*/
-////					DrawTextUntil(new Point(Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2), Align.bottomLeft, stdAngle, items[Ingredients[SelectedPage][j]].getName(), font, colorPalette[5], MaxTextL, MousePos) ;
-//				//}
-//				IngredientsCont += 1 ;
-//			}
-//		}
-//		for (int j = 0 ; j <= Products[SelectedPage].length - 1 ; ++j)
-//		{
-//			if (-1 < Products[SelectedPage][j])
-//			{
-//				/*if (Utg.MouseIsInside(MousePos, new int[] {Pos.x + 3*L/8 - MaxTextL*font.getSize()/2, Pos.y - H/5 + ProductsCont*sy + sy/2}, MaxTextL*font.getSize()/2, Utg.TextH(font.getSize())))
-//				{
-//					DrawText(new Point(Pos.x + 3*L/8, Pos.y - H/5 + ProductsCont*sy + sy/2}, alignPoints.topRight, OverallAngle, items[Products[SelectedPage][j]].getName(), font, ColorPalette[5]) ;
-//				}
-//				else
-//				{*/
-////					DrawTextUntil(new Point(Pos.x + 3*L/8, Pos.y - H/5 + ProductsCont*sy + sy/2), Align.topRight, stdAngle, items[Products[SelectedPage][j]].getName(), font, colorPalette[5], MaxTextL, MousePos) ;
-//				//}
-//				ProductsCont += 1 ;
-//			}
-//		}
-//		DrawWindowArrows(new Point(Pos.x, Pos.y + 15*H/32), L, SelectedPage, Ingredients.length - 1) ;
-//	}
-	
 	public void DrawDamageAnimation(Point initialPos, AtkResults atkResults, TimeCounter counter, int style, Color color)
 	{
 		AttackEffects effect = atkResults.getEffect() ;
@@ -495,41 +413,6 @@ public class DrawingOnPanel
 		Font font = new Font("SansSerif", Font.BOLD, 18) ;
 		DrawText(Pos, Align.center, stdAngle, SkillName, font, color) ;
 	}
-	
-//	public void ChestRewardsAnimation(Items[] items, int counter, int duration, int[] ItemRewards, int[] GoldRewards, Color TextColor, Image CoinIcon)
-//	{
-		/*Font font = new Font("SansSerif", Font.BOLD, 20) ;
-		int TextCat = AllTextCat[29] ;
-		Point Pos = new Point((int)(0.3*screenSize.width), (int)(0.8*screenSize.height)) ;
-		Size size = new Size((int)(0.5*screenSize.width), (int)(0.6*screenSize.height)) ;
-		int Sy = size.y / 12 ;
-		Point TextPos = new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y)) ;
-		DrawMenuWindow(Pos, size, null, 0, ColorPalette[18], ColorPalette[7]) ;
-		DrawText(TextPos, alignPoints.bottomLeft, OverallAngle, AllText[TextCat][1], font, TextColor) ;
-		if (counter < duration/3)
-		{
-			DrawText(new Point(TextPos.x, TextPos.y + Sy), alignPoints.bottomLeft, OverallAngle, AllText[TextCat][2], font, TextColor) ;			
-		} else if (counter < duration)
-		{
-			DrawText(new Point(TextPos.x, TextPos.y + Sy), alignPoints.bottomLeft, OverallAngle, AllText[TextCat][2], font, TextColor) ;			
-			for (int i = 0 ; i <= ItemRewards.length - 1 ; i += 1)
-			{
-				if (duration/3 + 2*duration/30*i < counter % duration)
-				{
-					DrawText(new Point(TextPos.x, TextPos.y + (i + 2)*Sy), alignPoints.bottomLeft, OverallAngle, items[ItemRewards[i]].getName(), font, TextColor) ;															
-				}
-			}
-			for (int i = 0 ; i <= GoldRewards.length - 1 ; i += 1)
-			{
-				if (duration/3 + 2*duration/30*i < counter % duration)
-				{
-					DrawText(new Point(TextPos.x, TextPos.y + (i + 2 + ItemRewards.length)*Sy), alignPoints.bottomLeft, OverallAngle, String.valueOf(GoldRewards[i]), font, ColorPalette[18]) ;															
-					DrawImage(CoinIcon, new Point((int) (TextPos.x + 1.05*UtilG.TextL(String.valueOf(GoldRewards[i]), font, G)), TextPos.y + (i + 2 + ItemRewards.length)*Sy + UtilG.TextH(font.getSize())/2), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, alignPoints.bottomLeft, 1) ;
-				}
-			}
-		}
-		*/
-//	}
 	
 	public void CollectingAnimation(Point Pos, int counter, int delay, int MessageTime, int CollectibleType, String Message)
 	{
@@ -729,8 +612,88 @@ public class DrawingOnPanel
 	}
 	
 	
+
+//	public void DrawFabBook(Image BookImage, Item[] items, int SelectedPage, int[][] Ingredients, int[][] Products, Point MousePos)
+//	{
+//		Point Pos = new Point((int)(0.5*screenSize.width), (int)(0.5*screenSize.height)) ;
+//		Font Titlefont = new Font("SansSerif", Font.BOLD, 16) ;
+//		Font font = new Font("SansSerif", Font.BOLD, 14) ;
+//		int L = BookImage.getWidth(null), H = BookImage.getHeight(null) ;
+//		int sy = H/15 ;
+//		int IngredientsCont = 0, ProductsCont = 0 ;
+//		int MaxTextL = 10 ;
+//		DrawImage(BookImage, Pos, stdAngle, new Scale(1, 1), Align.center) ;
+//		DrawText(new Point(Pos.x - 3*L/8, Pos.y - H/5 - sy/4), Align.bottomLeft, stdAngle, "Ingredients:", Titlefont, colorPalette[5]) ;
+//		DrawText(new Point(Pos.x + 3*L/8, Pos.y - H/5 - sy/4), Align.topRight, stdAngle, "Products:", Titlefont, colorPalette[5]) ;		
+//		for (int j = 0 ; j <= Ingredients[SelectedPage].length - 1 ; ++j)
+//		{
+//			if (-1 < Ingredients[SelectedPage][j])
+//			{
+//				/*if (Utg.MouseIsInside(MousePos, new int[] {Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2}, MaxTextL*font.getSize()/2, Utg.TextH(font.getSize())))
+//				{
+//					DrawText(new Point(Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2}, alignPoints.bottomLeft, OverallAngle, items[Ingredients[SelectedPage][j]].getName(), font, ColorPalette[5]) ;
+//				}
+//				else
+//				{*/
+////					DrawTextUntil(new Point(Pos.x - 3*L/8, Pos.y - H/5 + IngredientsCont*sy + sy/2), Align.bottomLeft, stdAngle, items[Ingredients[SelectedPage][j]].getName(), font, colorPalette[5], MaxTextL, MousePos) ;
+//				//}
+//				IngredientsCont += 1 ;
+//			}
+//		}
+//		for (int j = 0 ; j <= Products[SelectedPage].length - 1 ; ++j)
+//		{
+//			if (-1 < Products[SelectedPage][j])
+//			{
+//				/*if (Utg.MouseIsInside(MousePos, new int[] {Pos.x + 3*L/8 - MaxTextL*font.getSize()/2, Pos.y - H/5 + ProductsCont*sy + sy/2}, MaxTextL*font.getSize()/2, Utg.TextH(font.getSize())))
+//				{
+//					DrawText(new Point(Pos.x + 3*L/8, Pos.y - H/5 + ProductsCont*sy + sy/2}, alignPoints.topRight, OverallAngle, items[Products[SelectedPage][j]].getName(), font, ColorPalette[5]) ;
+//				}
+//				else
+//				{*/
+////					DrawTextUntil(new Point(Pos.x + 3*L/8, Pos.y - H/5 + ProductsCont*sy + sy/2), Align.topRight, stdAngle, items[Products[SelectedPage][j]].getName(), font, colorPalette[5], MaxTextL, MousePos) ;
+//				//}
+//				ProductsCont += 1 ;
+//			}
+//		}
+//		DrawWindowArrows(new Point(Pos.x, Pos.y + 15*H/32), L, SelectedPage, Ingredients.length - 1) ;
+//	}
 	
 	
+
+//	public void ChestRewardsAnimation(Items[] items, int counter, int duration, int[] ItemRewards, int[] GoldRewards, Color TextColor, Image CoinIcon)
+//	{
+		/*Font font = new Font("SansSerif", Font.BOLD, 20) ;
+		int TextCat = AllTextCat[29] ;
+		Point Pos = new Point((int)(0.3*screenSize.width), (int)(0.8*screenSize.height)) ;
+		Size size = new Size((int)(0.5*screenSize.width), (int)(0.6*screenSize.height)) ;
+		int Sy = size.y / 12 ;
+		Point TextPos = new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y)) ;
+		DrawMenuWindow(Pos, size, null, 0, ColorPalette[18], ColorPalette[7]) ;
+		DrawText(TextPos, alignPoints.bottomLeft, OverallAngle, AllText[TextCat][1], font, TextColor) ;
+		if (counter < duration/3)
+		{
+			DrawText(new Point(TextPos.x, TextPos.y + Sy), alignPoints.bottomLeft, OverallAngle, AllText[TextCat][2], font, TextColor) ;			
+		} else if (counter < duration)
+		{
+			DrawText(new Point(TextPos.x, TextPos.y + Sy), alignPoints.bottomLeft, OverallAngle, AllText[TextCat][2], font, TextColor) ;			
+			for (int i = 0 ; i <= ItemRewards.length - 1 ; i += 1)
+			{
+				if (duration/3 + 2*duration/30*i < counter % duration)
+				{
+					DrawText(new Point(TextPos.x, TextPos.y + (i + 2)*Sy), alignPoints.bottomLeft, OverallAngle, items[ItemRewards[i]].getName(), font, TextColor) ;															
+				}
+			}
+			for (int i = 0 ; i <= GoldRewards.length - 1 ; i += 1)
+			{
+				if (duration/3 + 2*duration/30*i < counter % duration)
+				{
+					DrawText(new Point(TextPos.x, TextPos.y + (i + 2 + ItemRewards.length)*Sy), alignPoints.bottomLeft, OverallAngle, String.valueOf(GoldRewards[i]), font, ColorPalette[18]) ;															
+					DrawImage(CoinIcon, new Point((int) (TextPos.x + 1.05*UtilG.TextL(String.valueOf(GoldRewards[i]), font, G)), TextPos.y + (i + 2 + ItemRewards.length)*Sy + UtilG.TextH(font.getSize())/2), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, alignPoints.bottomLeft, 1) ;
+				}
+			}
+		}
+		*/
+//	}
 	
 	
 	
