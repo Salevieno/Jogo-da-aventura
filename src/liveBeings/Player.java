@@ -290,7 +290,7 @@ public class Player extends LiveBeing
 	public void InitializeSpells()
     {
 		spells = new ArrayList<>() ;
-		SpellType[] allSpellTypes = Game.getAllSpellTypes() ;
+		Spell[] allSpellTypes = Game.getAllSpellTypes() ;
 		
     	//int NumberOfAllSkills = 178 ;
     	int NumberOfSpells = Player.NumberOfSpellsPerJob[job] ;
@@ -385,7 +385,7 @@ public class Player extends LiveBeing
 			String Elem = spellsInput.get(ID)[41] ;*/
 
     		int spellID = CumNumberOfSpellsPerJob[job] + i ;
-			spells.add(new Spell(allSpellTypes[spellID])) ;	
+			spells.add(allSpellTypes[spellID]) ;	
 			
 			// new Spell(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, spellBuffs[i], spellNerfs[i],
 			//Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i])
@@ -440,11 +440,11 @@ public class Player extends LiveBeing
 	
 	private Point feetPos() {return new Point(pos.x, (int) (pos.y - size.height)) ;}
 	
-	public static SpellType[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpellTypes(), 14) ;}
-	public static SpellType[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 34, 49) ;}
-	public static SpellType[] getArcherSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 70, 84) ;}
-	public static SpellType[] getAnimalSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 105, 118) ;}
-	public static SpellType[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 139, 152) ;}
+	public static Spell[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpellTypes(), 14) ;}
+	public static Spell[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 34, 49) ;}
+	public static Spell[] getArcherSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 70, 84) ;}
+	public static Spell[] getAnimalSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 105, 118) ;}
+	public static Spell[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 139, 152) ;}
 	
 	public void discoverCreature(CreatureType creatureType) { bestiary.addDiscoveredCreature(creatureType) ;}
 	public void resetClosestCreature() { closestCreature = null ;}

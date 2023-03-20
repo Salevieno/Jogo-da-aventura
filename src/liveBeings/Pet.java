@@ -130,16 +130,16 @@ public class Pet extends LiveBeing
 				UtilG.loadImage(filePath + String.valueOf(Job) + ".png")) ;
 	}
 
-	public ArrayList<Spell> InitializePetSpells()
+	public List<Spell> InitializePetSpells()
     {
-		SpellType[] allSpellTypes = Game.getAllSpellTypes() ;		
+		Spell[] allSpellTypes = Game.getAllSpellTypes() ;		
 		ArrayList<Spell> petspells = new ArrayList<>() ;
 		
 		for (int i = 0 ; i <= Pet.NumberOfSpells - 1 ; i += 1)
 		{
 			int ID = i + job * Pet.NumberOfSpells ;
 			
-			petspells.add(new Spell(allSpellTypes[ID])) ;	
+			petspells.add(allSpellTypes[ID]) ;	
 		}
 		
 		petspells.get(0).incLevel(1) ;

@@ -71,7 +71,6 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Pterodactile;
 import liveBeings.Spell;
-import liveBeings.SpellType;
 import maps.CityMap;
 import maps.FieldMap;
 import maps.GameMap;
@@ -137,7 +136,7 @@ public class Game extends JPanel
 	private static BuildingType[] buildingTypes ;
 	private static NPCType[] NPCTypes ;
 	private static Item[] allItems ;
-	private static SpellType[] allSpellTypes ;
+	private static Spell[] allSpells ;
 	//private static NPCs[] allNPCs ;
 	private static Quest[] allQuests ;
 	private static Battle bat ;
@@ -194,7 +193,7 @@ public class Game extends JPanel
 	public static GameMap[] getMaps() {return allMaps ;}
 	public static Quest[] getAllQuests() {return allQuests ;}
 	public static Item[] getAllItems() {return allItems ;}
-	public static SpellType[] getAllSpellTypes() {return allSpellTypes ;}
+	public static Spell[] getAllSpellTypes() {return allSpells ;}
 	public static boolean getShouldRepaint() {return shouldRepaint ;}
 	public static Point getMousePos()
 	{
@@ -364,11 +363,11 @@ public class Game extends JPanel
 						
 			// TODO spells para as criaturas
 			List<Spell> spell = new ArrayList<>() ;
-			spell.add(new Spell(allSpellTypes[0])) ;
-			spell.add(new Spell(allSpellTypes[1])) ;
-			spell.add(new Spell(allSpellTypes[2])) ;
-			spell.add(new Spell(allSpellTypes[3])) ;
-			spell.add(new Spell(allSpellTypes[4])) ;
+			spell.add(allSpells[0]) ;
+			spell.add(allSpells[1]) ;
+			spell.add(allSpells[2]) ;
+			spell.add(allSpells[3]) ;
+			spell.add(allSpells[4]) ;
 			
 			Set<Item> Bag = new HashSet<>() ;
 			for (int i = 0 ; i <= 10 - 1; i += 1)
@@ -693,15 +692,15 @@ public class Game extends JPanel
     	return sideBarIcons ;
     }
  	
-    private SpellType[] initializeSpellTypes(Languages language)
+    private Spell[] initializeAllSpells(Languages language)
     {
     	List<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;	
-    	SpellType[] allSpellTypes = new SpellType[spellTypesInput.size()] ;
+    	Spell[] allSpells = new Spell[spellTypesInput.size()] ;
     	List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
     	List<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
 
-		String[][] spellsInfo = new String[allSpellTypes.length][2] ;
-		for (int i = 0 ; i <= allSpellTypes.length - 1 ; i += 1)
+		String[][] info = new String[allSpells.length][2] ;
+		for (int i = 0 ; i <= allSpells.length - 1 ; i += 1)
 		{
 			int ID = i ;
 			
@@ -737,38 +736,38 @@ public class Game extends JPanel
 			List<Buff> nerfs = new ArrayList<>() ;
 			nerfs.add(Buff.load(spellsNerfsInput.get(ID))) ;
 
-			spellsInfo[i] = new String[] {spellTypesInput.get(ID)[42], spellTypesInput.get(ID)[43 + 2 * language.ordinal()]} ;
-			String Name = spellTypesInput.get(ID)[4] ;
-			int MaxLevel = Integer.parseInt(spellTypesInput.get(ID)[5]) ;
-			int MpCost = Integer.parseInt(spellTypesInput.get(ID)[6]) ;
-			SpellTypes Type = SpellTypes.valueOf(spellTypesInput.get(ID)[7]) ;
-			Map<SpellType, Integer> preRequisites = new HashMap<>() ;
+			info[i] = new String[] {spellTypesInput.get(ID)[42], spellTypesInput.get(ID)[43 + 2 * language.ordinal()]} ;
+			String name = spellTypesInput.get(ID)[4] ;
+			int maxLevel = Integer.parseInt(spellTypesInput.get(ID)[5]) ;
+			int mpCost = Integer.parseInt(spellTypesInput.get(ID)[6]) ;
+			SpellTypes type = SpellTypes.valueOf(spellTypesInput.get(ID)[7]) ;
+			Map<Spell, Integer> preRequisites = new HashMap<>() ;
 			for (int p = 0 ; p <= 6 - 1 ; p += 2)
 			{
 				if (-1 < Integer.parseInt(spellTypesInput.get(ID)[p + 8]))
 				{
-					preRequisites.put(allSpellTypes[Integer.parseInt(spellTypesInput.get(ID)[p + 8])], Integer.parseInt(spellTypesInput.get(ID)[p + 9])) ;
+					preRequisites.put(allSpells[Integer.parseInt(spellTypesInput.get(ID)[p + 8])], Integer.parseInt(spellTypesInput.get(ID)[p + 9])) ;
 				}
 			}
-			int Cooldown = Integer.parseInt(spellTypesInput.get(ID)[14]) ;
-			int Duration = Integer.parseInt(spellTypesInput.get(ID)[15]) ;
-			double[] Atk = new double[] {Double.parseDouble(spellTypesInput.get(ID)[16]), Double.parseDouble(spellTypesInput.get(ID)[17])} ;
-			double[] Def = new double[] {Double.parseDouble(spellTypesInput.get(ID)[18]), Double.parseDouble(spellTypesInput.get(ID)[19])} ;
-			double[] Dex = new double[] {Double.parseDouble(spellTypesInput.get(ID)[20]), Double.parseDouble(spellTypesInput.get(ID)[21])} ;
-			double[] Agi = new double[] {Double.parseDouble(spellTypesInput.get(ID)[22]), Double.parseDouble(spellTypesInput.get(ID)[23])} ;
-			double[] AtkCrit = new double[] {Double.parseDouble(spellTypesInput.get(ID)[24])} ;
-			double[] DefCrit = new double[] {Double.parseDouble(spellTypesInput.get(ID)[25])} ;
-			double[] Stun = new double[] {Double.parseDouble(spellTypesInput.get(ID)[26]), Double.parseDouble(spellTypesInput.get(ID)[27]), Double.parseDouble(spellTypesInput.get(ID)[28])} ;
-			double[] Block = new double[] {Double.parseDouble(spellTypesInput.get(ID)[29]), Double.parseDouble(spellTypesInput.get(ID)[30]), Double.parseDouble(spellTypesInput.get(ID)[31])} ;
-			double[] Blood = new double[] {Double.parseDouble(spellTypesInput.get(ID)[32]), Double.parseDouble(spellTypesInput.get(ID)[33]), Double.parseDouble(spellTypesInput.get(ID)[34])} ;
-			double[] Poison = new double[] {Double.parseDouble(spellTypesInput.get(ID)[35]), Double.parseDouble(spellTypesInput.get(ID)[36]), Double.parseDouble(spellTypesInput.get(ID)[37])} ;
-			double[] Silence = new double[] {Double.parseDouble(spellTypesInput.get(ID)[38]), Double.parseDouble(spellTypesInput.get(ID)[39]), Double.parseDouble(spellTypesInput.get(ID)[40])} ;
-			Elements Elem = Elements.valueOf(spellTypesInput.get(ID)[41]) ;
+			int cooldown = Integer.parseInt(spellTypesInput.get(ID)[14]) ;
+			int duration = Integer.parseInt(spellTypesInput.get(ID)[15]) ;
+			double[] atkMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[16]), Double.parseDouble(spellTypesInput.get(ID)[17])} ;
+			double[] defMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[18]), Double.parseDouble(spellTypesInput.get(ID)[19])} ;
+			double[] dexMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[20]), Double.parseDouble(spellTypesInput.get(ID)[21])} ;
+			double[] agiMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[22]), Double.parseDouble(spellTypesInput.get(ID)[23])} ;
+			double[] atkCritMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[24])} ;
+			double[] defCritMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[25])} ;
+			double[] stunMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[26]), Double.parseDouble(spellTypesInput.get(ID)[27]), Double.parseDouble(spellTypesInput.get(ID)[28])} ;
+			double[] blockMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[29]), Double.parseDouble(spellTypesInput.get(ID)[30]), Double.parseDouble(spellTypesInput.get(ID)[31])} ;
+			double[] bloodMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[32]), Double.parseDouble(spellTypesInput.get(ID)[33]), Double.parseDouble(spellTypesInput.get(ID)[34])} ;
+			double[] poisonMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[35]), Double.parseDouble(spellTypesInput.get(ID)[36]), Double.parseDouble(spellTypesInput.get(ID)[37])} ;
+			double[] silenceMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[38]), Double.parseDouble(spellTypesInput.get(ID)[39]), Double.parseDouble(spellTypesInput.get(ID)[40])} ;
+			Elements elem = Elements.valueOf(spellTypesInput.get(ID)[41]) ;
 			
-			allSpellTypes[i] = new SpellType(Name, MaxLevel, MpCost, Type, preRequisites, Cooldown, Duration, buffs, nerfs,
-					Atk, Def, Dex, Agi, AtkCrit, DefCrit, Stun, Block, Blood, Poison, Silence, Elem, spellsInfo[i]) ;
+			allSpells[i] = new Spell(name, maxLevel, mpCost, type, preRequisites, buffs, nerfs,
+					atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod, cooldown, duration, elem, info[i]) ;
 		}
-		return allSpellTypes ;
+		return allSpells ;
     }
 
 	private Item[] initializeAllItems()
@@ -1087,7 +1086,7 @@ public class Game extends JPanel
     	sky = new Sky() ;
     	screen.setBorders(new int[] {0, sky.height, screen.getSize().width, screen.getSize().height});
     	screen.setMapCenter() ;
-    	allSpellTypes = initializeSpellTypes(GameLanguage) ;
+    	allSpells = initializeAllSpells(GameLanguage) ;
 		allItems = initializeAllItems() ;
 		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
 		initializeIcons(screen.getSize()) ;

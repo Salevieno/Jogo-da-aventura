@@ -1,5 +1,6 @@
 package liveBeings ;
 
+import java.awt.Image;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +11,10 @@ import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
 import attributes.PersonalAttributes;
 import components.SpellTypes;
+import main.Game;
 import utilities.Elements;
 import utilities.TimeCounter;
+import utilities.UtilG;
 
 public class Spell 
 {	
@@ -20,81 +23,85 @@ public class Spell
 	private int maxLevel ;
 	private int mpCost ;
 	private SpellTypes type ;
-	private Map<SpellType, Integer> preRequisites ;
+	private Map<Spell, Integer> preRequisites ;
 	//private int cooldown ;
 	//private int effectDuration ;
 	private List<Buff> buffs;
 	private List<Buff> nerfs;
-	private double[] AtkMod ;
-	private double[] DefMod ;
-	private double[] DexMod ;
-	private double[] AgiMod ;
-	private double[] AtkCritMod ;
-	private double[] DefCritMod ;
-	private double[] StunMod ;
-	private double[] BlockMod ;
-	private double[] BloodMod ;
-	private double[] PoisonMod ;
-	private double[] SilenceMod ;
+	private double[] atkMod ;
+	private double[] defMod ;
+	private double[] dexMod ;
+	private double[] agiMod ;
+	private double[] atkCritMod ;
+	private double[] defCritMod ;
+	private double[] stunMod ;
+	private double[] blockMod ;
+	private double[] bloodMod ;
+	private double[] poisonMod ;
+	private double[] silenceMod ;
 	private boolean isActive ;
 	//private int cooldownCounter ;
 	//private int effectCounter ;
 	private TimeCounter cooldownCounter ;
 	private TimeCounter effectCounter ;
 	private Elements elem ;
-
 	private String[] info ;	// Effect and description
+
+	public static final Image cooldownImage = UtilG.loadImage(Game.ImagesPath + "Cooldown.png") ;	
 	
-	public Spell(SpellType spellType)
+	
+	public Spell(String name, int maxLevel, int mpCost, SpellTypes type, Map<Spell, Integer> preRequisites,
+			List<Buff> buffs, List<Buff> nerfs, double[] atkMod, double[] defMod, double[] dexMod, double[] agiMod,
+			double[] atkCritMod, double[] defCritMod, double[] stunMod, double[] blockMod, double[] bloodMod,
+			double[] poisonMod, double[] silenceMod, int cooldown, int duration, Elements elem, String[] info)
 	{
-		this.name = spellType.getName() ;
-		level = 0 ;
-		this.maxLevel = spellType.getMaxLevel() ;
-		this.mpCost = spellType.getMpCost() ;
-		this.type = spellType.getType() ;
-		this.preRequisites = spellType.getPreRequisites() ;
-		//this.cooldown = spellType.getCooldown() ;
-		//this.effectDuration = spellType.getEffectDuration() ;
-		this.buffs = spellType.getBuffs() ;
-		this.nerfs = spellType.getNerfs() ;
-		this.AtkMod = spellType.getAtkMod() ;
-		this.DefMod = spellType.getDefMod() ;
-		this.DexMod = spellType.getDexMod() ;
-		this.AgiMod = spellType.getAgiMod() ;
-		this.AtkCritMod = spellType.getAtkCritMod() ;
-		this.DefCritMod = spellType.getDefCritMod() ;
-		this.StunMod = spellType.getStunMod() ;
-		this.BlockMod = spellType.getBlockMod() ;
-		this.BloodMod = spellType.getBloodMod() ;
-		this.PoisonMod = spellType.getPoisonMod() ;
-		this.SilenceMod = spellType.getSilenceMod() ;
-		isActive = false ;
-		cooldownCounter = new TimeCounter(0, spellType.getCooldown()) ;
-		effectCounter = new TimeCounter(0, spellType.getEffectDuration()) ;
-		this.elem = spellType.getElem() ;
-		this.info = spellType.getInfo() ;
+		this.name = name;
+		level = 0;
+		this.maxLevel = maxLevel;
+		this.mpCost = mpCost;
+		this.type = type;
+		this.preRequisites = preRequisites;
+		this.buffs = buffs;
+		this.nerfs = nerfs;
+		this.atkMod = atkMod;
+		this.defMod = defMod;
+		this.dexMod = dexMod;
+		this.agiMod = agiMod;
+		this.atkCritMod = atkCritMod;
+		this.defCritMod = defCritMod;
+		this.stunMod = stunMod;
+		this.blockMod = blockMod;
+		this.bloodMod = bloodMod;
+		this.poisonMod = poisonMod;
+		this.silenceMod = silenceMod;
+		isActive = false;
+		cooldownCounter = new TimeCounter(0, cooldown) ;
+		effectCounter = new TimeCounter(0, duration) ;
+		this.elem = elem;
+		this.info = info;
 	}
+
 	
 	public String getName() {return name ;}
 	public int getLevel() {return level ;}
 	public int getMaxLevel() {return maxLevel ;}
 	public int getMpCost() {return mpCost ;}
 	public SpellTypes getType() {return type ;}
-	public Map<SpellType, Integer> getPreRequisites() {return preRequisites ;}
+	public Map<Spell, Integer> getPreRequisites() {return preRequisites ;}
 	public int getCooldown() {return cooldownCounter.getDuration() ;}
 	public List<Buff> getBuffs() {return buffs ;}
 //	public List<Buff> getNerfs() {return nerfs ;}
-	public double[] getAtkMod() {return AtkMod ;}
-	public double[] getDefMod() {return DefMod ;}
-	public double[] getDexMod() {return DexMod ;}
-	public double[] getAgiMod() {return AgiMod ;}
-	public double[] getAtkCritMod() {return AtkCritMod ;}
-	public double[] getDefCritMod() {return DefCritMod ;}
-	public double[] getStunMod() {return StunMod ;}
-	public double[] getBlockMod() {return BlockMod ;}
-	public double[] getBloodMod() {return BloodMod ;}
-	public double[] getPoisonMod() {return PoisonMod ;}
-	public double[] getSilenceMod() {return SilenceMod ;}
+	public double[] getAtkMod() {return atkMod ;}
+	public double[] getDefMod() {return defMod ;}
+	public double[] getDexMod() {return dexMod ;}
+	public double[] getAgiMod() {return agiMod ;}
+	public double[] getAtkCritMod() {return atkCritMod ;}
+	public double[] getDefCritMod() {return defCritMod ;}
+	public double[] getStunMod() {return stunMod ;}
+	public double[] getBlockMod() {return blockMod ;}
+	public double[] getBloodMod() {return bloodMod ;}
+	public double[] getPoisonMod() {return poisonMod ;}
+	public double[] getSilenceMod() {return silenceMod ;}
 	public Elements getElem() {return elem ;}
 	public TimeCounter getCooldownCounter() {return cooldownCounter ;}
 	public TimeCounter getDurationCounter() {return effectCounter ;}
@@ -230,12 +237,12 @@ public class Spell
 	public String toString()
 	{
 		return "Spell [name=" + name + ", level=" + level + ", maxLevel=" + maxLevel + ", mpCost=" + mpCost + ", type="
-				+ type + ", preRequisites=" + preRequisites + ", buffs=" + buffs + ", AtkMod=" + Arrays.toString(AtkMod) + ", DefMod="
-				+ Arrays.toString(DefMod) + ", DexMod=" + Arrays.toString(DexMod) + ", AgiMod="
-				+ Arrays.toString(AgiMod) + ", AtkCritMod=" + Arrays.toString(AtkCritMod) + ", DefCritMod="
-				+ Arrays.toString(DefCritMod) + ", StunMod=" + Arrays.toString(StunMod) + ", BlockMod="
-				+ Arrays.toString(BlockMod) + ", BloodMod=" + Arrays.toString(BloodMod) + ", PoisonMod="
-				+ Arrays.toString(PoisonMod) + ", SilenceMod=" + Arrays.toString(SilenceMod) + ", isActive=" + isActive
+				+ type + ", preRequisites=" + preRequisites + ", buffs=" + buffs + ", AtkMod=" + Arrays.toString(atkMod) + ", DefMod="
+				+ Arrays.toString(defMod) + ", DexMod=" + Arrays.toString(dexMod) + ", AgiMod="
+				+ Arrays.toString(agiMod) + ", AtkCritMod=" + Arrays.toString(atkCritMod) + ", DefCritMod="
+				+ Arrays.toString(defCritMod) + ", StunMod=" + Arrays.toString(stunMod) + ", BlockMod="
+				+ Arrays.toString(blockMod) + ", BloodMod=" + Arrays.toString(bloodMod) + ", PoisonMod="
+				+ Arrays.toString(poisonMod) + ", SilenceMod=" + Arrays.toString(silenceMod) + ", isActive=" + isActive
 				+ ", cooldownCounter=" + cooldownCounter + ", effectCounter=" + effectCounter + ", elem=" + elem
 				+ ", info=" + Arrays.toString(info) + "]";
 	}
