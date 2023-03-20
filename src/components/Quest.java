@@ -15,6 +15,7 @@ public class Quest
 	private String type ;
 	private boolean isActive ;
 	private boolean isComplete ;
+	private boolean isRepeatable ;
 	private Map<CreatureType, Integer> reqCreaturesCounter ;
 	private Map<CreatureType, Integer> reqCreatureTypes;
 	private Map<Item, Integer> reqItems;
@@ -23,14 +24,16 @@ public class Quest
 	private Map<Item, Integer> rewardItems ;
 	private String description ;
 	
-	public Quest(int id, String type, Map<CreatureType, Integer> reqCreatureTypes, Map<Item, Integer> reqItems,
+	public Quest(int id, String type, boolean isRepeatable, Map<CreatureType, Integer> reqCreatureTypes, Map<Item, Integer> reqItems,
 			int goldReward, int expReward, Map<Item, Integer> rewardItems, String description)
 	{
+		
 		this.id = id ;
 		name = String.valueOf("Quest " + id) ;
 		this.type = type ;
 		isActive = false ;
 		isComplete = false ;
+		this.isRepeatable = isRepeatable ;
 		reqCreaturesCounter = new HashMap<>() ;
 		if (reqCreatureTypes != null) { reqCreatureTypes.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 10)) ;}
 		
@@ -62,6 +65,7 @@ public class Quest
 	
 	public boolean isActive() { return isActive ;}
 	public boolean isComplete() { return isComplete ;}
+	public boolean isRepeatable() { return isRepeatable ;}
 	
 	public void activate() { isActive = true ;}
 	public void deactivate() { isActive = false ;}
@@ -76,6 +80,7 @@ public class Quest
 	
 	public void checkCompletion(BagWindow bag)
 	{
+		
 		isComplete = true ;
 		if (reqCreatureTypes != null)
 		{
@@ -89,6 +94,7 @@ public class Quest
 		reqItems.keySet().forEach(item -> {
 			if (!bag.contains(item)) {isComplete = false ;}
 		});
+		
 	}
 
 	public void complete(BagWindow bag, PersonalAttributes PA, Map<QuestSkills, Boolean> skills)
@@ -96,11 +102,13 @@ public class Quest
 		
 		resetCreaturesCounter() ;
 		deactivate() ;
-		isComplete = false ;
+		
+		if (isRepeatable) { isComplete = false ;}
 		
 		PA.getExp().incCurrentValue(expReward) ;
 		bag.addGold(goldReward) ;
 
+		for (Item item : reqItems.keySet()) { bag.Remove(item, 1) ;}
 		for (Item item : rewardItems.keySet()) { bag.Add(item, 1) ;}
 		
 		// special rewards
@@ -111,15 +119,16 @@ public class Quest
 		}
 		
 	}
-	
+
 	@Override
 	public String toString()
 	{
-		return "Quests [id=" + id + ", name=" + name + ", type=" + type + ", isActive=" + isActive + ", isComplete="
-				+ isComplete + ", reqCreaturesCounter=" + reqCreaturesCounter + ", reqCreatureTypes=" + reqCreatureTypes
-				+ ", reqItems=" + reqItems + ", goldReward=" + goldReward + ", expReward=" + expReward
-				+ ", rewardItems=" + rewardItems + ", description=" + description + "]";
+		return "Quest [id=" + id + ", name=" + name + ", type=" + type + ", isActive=" + isActive + ", isComplete="
+				+ isComplete + ", isRepeatable=" + isRepeatable + ", reqCreaturesCounter=" + reqCreaturesCounter
+				+ ", reqCreatureTypes=" + reqCreatureTypes + ", reqItems=" + reqItems + ", goldReward=" + goldReward
+				+ ", expReward=" + expReward + ", rewardItems=" + rewardItems + ", description=" + description + "]";
 	}
+	
 	
 	
 }

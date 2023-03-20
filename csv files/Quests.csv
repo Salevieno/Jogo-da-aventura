@@ -1,4 +1,4 @@
-﻿QuestID,Type,Creature to kill 1,Amount,Creature to kill 1,Amount,Creature to kill 1,Amount,Item req. 1,Amount,Item req. 2,Amount,Item req. 3,Amount,Item req. 4,Amount,Item req. 5,Amount,Gold reward,Exp reward,Item reward 1,Amount,Item reward 2,Amount,Item reward 3,Amount,Item reward 4,Amount,Item reward 5,Amount,Descrição,Description
+﻿QuestID,Type,Creature to kill 1,Amount,Creature to kill 2,Amount,Creature to kill 3,Amount,Item req. 1,Amount,Item req. 2,Amount,Item req. 3,Amount,Item req. 4,Amount,Item req. 5,Amount,Gold reward,Exp reward,Item reward 1,Amount,Item reward 2,Amount,Item reward 3,Amount,Item reward 4,Amount,Item reward 5,Amount,Descrição,Description
 0,Exp,0,10,1,5,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,20,150,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-,-
 1,Exp,5,10,6,5,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,20,150,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-,-
 2,Exp,10,10,11,5,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,20,150,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-,-

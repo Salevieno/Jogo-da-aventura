@@ -502,6 +502,7 @@ public class NPCs
 		Quest quest = Game.getAllQuests()[id - 28] ;
 		
 		quest.checkCompletion(bag) ;
+		System.out.println(quest);
 		
 		if (quest.isComplete())
 		{

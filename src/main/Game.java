@@ -655,6 +655,7 @@ public class Game extends JPanel
 			
 			int goldReward = Integer.parseInt(input[18]) ;
 			int expReward = Integer.parseInt(input[19]) ;
+			boolean isRepeatable = 0 <= expReward ;
 			
 			for (int j = 20 ; j <= 28 - 1 ; j += 2)
 			{
@@ -664,7 +665,7 @@ public class Game extends JPanel
 			
 			description = input[30 + language.ordinal()] ;
 			
-			quests[i] = new Quest(id, type, reqCreatureTypes, reqItems, goldReward, expReward, rewardItems, description) ;
+			quests[i] = new Quest(id, type, isRepeatable, reqCreatureTypes, reqItems, goldReward, expReward, rewardItems, description) ;
 		}
 		
 		return quests ;
@@ -1121,18 +1122,18 @@ public class Game extends JPanel
     	
     	
 
-    	player.getBag().Add(Potion.getAll()[0], 1) ;
-    	player.getBag().Add(Arrow.getAll()[0], 30) ;
-//    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
+//    	player.getBag().Add(Potion.getAll()[0], 1) ;
+//    	player.getBag().Add(Arrow.getAll()[0], 30) ;
+    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
 //    	Battle.knockback(new Point(200, 200), new Point(210, 220), 10) ;
 //    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
 //    	System.out.println(player.getQuest().get(0).isComplete());
