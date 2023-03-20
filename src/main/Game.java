@@ -272,7 +272,7 @@ public class Game extends JPanel
 			Image image = !job.toString().equals("master") ?  UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + ".png") : UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + ".gif") ;
 			String[] speech = new String[] {""} ;
 			
-			// TODO "Falas" em speech -> padronizar para todas as línguas
+			// TODO "Falas" em speech -> padronizar para todas as lï¿½nguas
 			
 			String[][] options = new String[][] {{""}} ;
 			if (Game.allText.get(name + "Falas") != null)
@@ -324,6 +324,7 @@ public class Game extends JPanel
     	CreatureType.setNumberOfCreatureTypes(input.size());
 		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()] ;
 		Color[] color = new Color[creatureTypes.length] ;
+		int numberCreatureTypes = 7 ;
 		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
 		{
 			int colorid = (int)((Creature.getskinColor().length - 1)*Math.random()) ;
@@ -333,11 +334,11 @@ public class Game extends JPanel
 				color[ct] = ColorPalette[5] ;
 			}
 			
-			MovingAnimations moveAni = new MovingAnimations(UtilG.loadImage(path + "creature" + (ct % 5) + "_idle.gif"),
-					UtilG.loadImage(path + "creature" + (ct % 5) + "_movingup.gif"),
-					UtilG.loadImage(path + "creature" + (ct % 5) + "_movingdown.gif"),
-					UtilG.loadImage(path + "creature" + (ct % 5) + "_movingleft.gif"),
-					UtilG.loadImage(path + "creature" + (ct % 5) + "_movingright.gif")) ;
+			MovingAnimations moveAni = new MovingAnimations(UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_idle.gif"),
+					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_movingup.gif"),
+					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_movingdown.gif"),
+					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_movingleft.gif"),
+					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_movingright.gif")) ;
 			
 			BasicAttribute Life = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[5]) * diffMult), (int) (Integer.parseInt(input.get(ct)[5]) * diffMult), 1) ;
 			BasicAttribute Mp = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[6]) * diffMult), (int) (Integer.parseInt(input.get(ct)[6]) * diffMult), 1) ;
@@ -444,20 +445,20 @@ public class Game extends JPanel
 				// TODO passar os npcs do json de building types para buildings
 				// adding npcs to the building
 				List<NPCs> npcs = new ArrayList<>() ;
-				JSONArray arrayNPCs = (JSONArray) buildingType.get("npcs") ;
-				for (int j = 0; j <= arrayNPCs.size() - 1; j += 1)
-				{
-					JSONObject newNPC = (JSONObject) arrayNPCs.get(j) ;
-					NPCJobs npcJob = NPCJobs.valueOf((String) newNPC.get("job")) ;
-					NPCType npcType = NPCs.typeFromJob(npcJob) ;
-					JSONArray arrayPos = (JSONArray) newNPC.get("pos") ;
-					Point npcPos = new Point((int) (long) arrayPos.get(0), (int) (long) arrayPos.get(1)) ;
-					
-					if (npcType != null)
-					{
-						npcs.add(new NPCs(0, npcType, npcPos)) ;
-					}
-				}
+//				JSONArray arrayNPCs = (JSONArray) buildingType.get("npcs") ;
+//				for (int j = 0; j <= arrayNPCs.size() - 1; j += 1)
+//				{
+//					JSONObject newNPC = (JSONObject) arrayNPCs.get(j) ;
+//					NPCJobs npcJob = NPCJobs.valueOf((String) newNPC.get("job")) ;
+//					NPCType npcType = NPCs.typeFromJob(npcJob) ;
+//					JSONArray arrayPos = (JSONArray) newNPC.get("pos") ;
+//					Point npcPos = new Point((int) (long) arrayPos.get(0), (int) (long) arrayPos.get(1)) ;
+//					
+//					if (npcType != null)
+//					{
+//						npcs.add(new NPCs(0, npcType, npcPos)) ;
+//					}
+//				}
 				
 				buildings.add(new Building(buildingType, buildingPos, npcs)) ;
 				
@@ -1112,7 +1113,7 @@ public class Game extends JPanel
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
-    	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
+//    	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
     	player.setMap(cityMaps[1]) ;
     	player.setPos(new Point(226, 473)) ;
 //    	player.getBag().Add(Potion.getAll()[0], 3) ;
@@ -1199,8 +1200,9 @@ public class Game extends JPanel
 //    	
 //    	System.out.println(pet.getLife()) ;
 //    	System.out.println(fieldMaps[12].allColliders());
-    	player.getPA().getExp().incCurrentValue(500) ;
-    	player.setPos(new Point(30, 250)) ;
+    	player.decSpellPoints(-10) ;
+//    	player.getPA().getExp().incCurrentValue(500) ;
+    	player.setPos(new Point(330, 250)) ;
     	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(20, 20))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 200), new Dimension(50, 10))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 199), new Dimension(10, 10))) ;

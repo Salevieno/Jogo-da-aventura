@@ -239,7 +239,7 @@ public class Player extends LiveBeing
 	    opponent = null ;
 //		equipsBonus = Items.EquipsBonus ;
 		settings = new SettingsWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "windowSettings.png"), false, true, false, 1, 1) ;
-		spellsTree = new SpellsTreeWindow(spells.toArray(new Spell[0]), spellPoints, color) ;
+//		spellsTree = new SpellsTreeWindow(spells.toArray(new Spell[0]), spellPoints, color) ;
 		hotItems = new Item[3] ;
 		
 	}
@@ -449,7 +449,8 @@ public class Player extends LiveBeing
 	public void discoverCreature(CreatureType creatureType) { bestiary.addDiscoveredCreature(creatureType) ;}
 	public void resetClosestCreature() { closestCreature = null ;}
 	public void resetOpponent() { opponent = null ;}
-
+	public void decSpellPoints(int amount) { spellPoints += -1 ;}
+	
 	public boolean isMoving() { return (state.equals(LiveBeingStates.moving)) ;}
 	public boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
@@ -749,7 +750,8 @@ public class Player extends LiveBeing
 			
 			// meeting with collectibles
 			List<Collectible> collectibles = fm.getCollectibles() ;
-			collectibles.forEach(collectible -> {
+			for (Collectible collectible : collectibles)
+			{
 				double distx = Math.abs(pos.x - collectible.getPos().x) ;
 				double disty = Math.abs(pos.y - collectible.getPos().y) ;
 				if (distx <= 0.5*size.width & disty <= 0.5*size.height)
@@ -757,7 +759,17 @@ public class Player extends LiveBeing
 					setState(LiveBeingStates.collecting);
 					collect(collectible, DP) ;
 				}
-			});
+			}
+			
+//			collectibles.forEach(collectible -> {
+//				double distx = Math.abs(pos.x - collectible.getPos().x) ;
+//				double disty = Math.abs(pos.y - collectible.getPos().y) ;
+//				if (distx <= 0.5*size.width & disty <= 0.5*size.height)
+//				{
+//					setState(LiveBeingStates.collecting);
+//					collect(collectible, DP) ;
+//				}
+//			});
 
 			// meeting with chests
 			// TODO meet with chests

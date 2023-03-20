@@ -395,7 +395,7 @@ public class DrawingOnPanel
 		map.display(this) ;
 		map.displayElements(this) ;
 		map.displayBuildings(playerPos, this) ;
-//		map.displayNPCs(this) ;
+		map.displayNPCs(this) ;
 		map.displayGroundTypes(this) ;
 		if (map instanceof FieldMap)
 		{
@@ -601,7 +601,7 @@ public class DrawingOnPanel
 		
 		if ( counter.rate() <= 0.3 ) { return ;}
 		
-//		String[] attNames = new String[] {"Vida", "MP", "Ataque f�sico", "Ataque mágico", "Defesa física", "Defesa mágica", "Destreza", "Agilidade"} ;
+//		String[] attNames = new String[] {"Vida", "MP", "Ataque f�sico", "Ataque mágico", "Defesa física", "Defesa mágica", "Destreza", "Agilidade"} ;
 		String[] attNames = Arrays.copyOfRange(attText, 1, 9) ;
 		for (int i = 0 ; i <= AttributeIncrease.length - 1 ; i += 1)
 		{

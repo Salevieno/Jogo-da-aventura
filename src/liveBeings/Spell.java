@@ -118,17 +118,18 @@ public class Spell
 
 	public boolean hasPreRequisitesMet()
 	{
-		boolean preRequisitesMet = true ;
+		return true ;
 		
-		/*for (Map.Entry<Spell, Integer> entry : preRequisites.entrySet())
-		{
-			if (entry.getKey().getLevel() < entry.getValue())
-			{
-				preRequisitesMet = false ;
-			}
-		}*/
+//		for (Spell spell : spells)
+//		{
+//			if (preRequisites.keySet().contains(spell.getType()) & spell.getLevel() < preRequisites.get(spell))
+//			{
+//				return false ;
+//			}
+//		}
+//		
+//		return true ;
 		
-		return preRequisitesMet ;
 	}
 	
 	public void applyBuff(int mult, LiveBeing receiver, Buff buff)

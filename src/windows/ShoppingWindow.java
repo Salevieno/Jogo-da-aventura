@@ -16,13 +16,13 @@ import utilities.UtilG;
 
 public class ShoppingWindow extends GameWindow
 {
-	private static int NumberItemsPerWindow = 10 ;
-	private List<Item> ItemsForSale ;
+	private static int numberItemsPerWindow = 10 ;
+	private List<Item> itemsForSale ;
 	
 	public ShoppingWindow(List<Item> ItemsForSale)
 	{
-		super("Shopping", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Shopping.png"), 1, 1, Math.min(ItemsForSale.size(), NumberItemsPerWindow), ItemsForSale.size() / NumberItemsPerWindow + 1) ;
-		this.ItemsForSale = ItemsForSale ;
+		super("Shopping", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Shopping.png"), 1, 1, Math.min(ItemsForSale.size(), numberItemsPerWindow), ItemsForSale.size() / numberItemsPerWindow + 1) ;
+		this.itemsForSale = ItemsForSale ;
 	}
 
 	public void navigate(String action)
@@ -49,8 +49,8 @@ public class ShoppingWindow extends GameWindow
 	
 	private void removeItem()
 	{
-		ItemsForSale.remove(item) ;
-		if (item == ItemsForSale.size())
+		itemsForSale.remove(item) ;
+		if (item == itemsForSale.size())
 		{
 			item += -1 ;
 		}
@@ -59,11 +59,11 @@ public class ShoppingWindow extends GameWindow
 	
 	public void buyItem(BagWindow bag)
 	{
-		if (ItemsForSale.get(item).getPrice() <= bag.getGold())
+		if (itemsForSale.get(item).getPrice() <= bag.getGold())
 		{
 //			removeItem() ;
-			bag.Add(ItemsForSale.get(item), 1) ;
-			bag.addGold(-ItemsForSale.get(item).getPrice()) ;
+			bag.Add(itemsForSale.get(item), 1) ;
+			bag.addGold(-itemsForSale.get(item).getPrice()) ;
 		}
 	}
 	
@@ -75,7 +75,7 @@ public class ShoppingWindow extends GameWindow
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Font titleFont = new Font(Game.MainFontName, Font.BOLD, 16) ;
 		double angle = DrawingOnPanel.stdAngle ;
-		List<Item> itemsOnWindow = NumberItemsPerWindow <= ItemsForSale.size() ? ItemsForSale.subList(0, NumberItemsPerWindow) : ItemsForSale ;
+		List<Item> itemsOnWindow = numberItemsPerWindow <= itemsForSale.size() ? itemsForSale.subList(0, numberItemsPerWindow) : itemsForSale ;
 		
 		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
 		

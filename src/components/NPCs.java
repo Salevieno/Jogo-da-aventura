@@ -16,6 +16,7 @@ import items.Item;
 import items.Recipe;
 import liveBeings.Pet;
 import liveBeings.Player;
+import liveBeings.Spell;
 import main.Game;
 import utilities.Align;
 import utilities.Scale;
@@ -27,6 +28,7 @@ import windows.ElementalWindow;
 import windows.ForgeWindow;
 import windows.GameWindow;
 import windows.ShoppingWindow;
+import windows.SpellsTreeWindow;
 
 public class NPCs
 {
@@ -89,6 +91,12 @@ public class NPCs
 		    	window = new ShoppingWindow(itemsOnSale) ;
 		    	
 		    	break ;
+			}
+			case master:
+			{				
+		    	window = new SpellsTreeWindow() ;
+
+				break ;
 			}
 			case alchemist:
 			{
@@ -191,7 +199,9 @@ public class NPCs
 			}
 			case master:
 			{
-				masterAction() ;
+				((SpellsTreeWindow) window).setSpells(player.getSpells()) ;
+				
+				masterAction(player, player.getCurrentAction(), mousePos, (SpellsTreeWindow) window, DP) ;
 
 				break ;
 			}
@@ -356,9 +366,24 @@ public class NPCs
 		}
 	}
 	
-	public void masterAction()
+	public void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawingOnPanel DP)
 	{
-		// TODO
+
+		spellsTree.display(mousePos, player.getSpellPoints(), DP);
+		
+		if (action == null) { return ;}
+
+		spellsTree.navigate(action) ;
+
+		if (action.equals("Enter") | action.equals("MouseLeftClick"))
+		{
+			if (spellsTree.canAcquireSpell(player.getSpellPoints()))
+			{
+				spellsTree.acquireSpell(player.getSpells()) ;
+				player.decSpellPoints(1) ;
+			}
+		}
+		
 	}
 	
 	public void crafterAction(BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
@@ -384,7 +409,7 @@ public class NPCs
 		if (action == null) { return ;}
 
 		forgeWindow.navigate(action) ;
-		// TODO a forja só deve acontecer no menu 1
+		// TODO a forja sï¿½ deve acontecer no menu 1
 		if (action.equals("Enter") & 2 <= menu)
 		{
 			menu = forgeWindow.forge(bag) ;
