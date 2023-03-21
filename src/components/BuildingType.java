@@ -2,16 +2,15 @@ package components;
 
 import java.awt.Image;
 import java.util.Arrays;
-import java.util.List;
 
 public class BuildingType
 {
-	private String name ;
+	private BuildingNames name ;
 	private Image image ;
 	private Image insideImage ;
 	private Image[] ornamentImages ;
 	
-	public BuildingType(String name, Image image)
+	public BuildingType(BuildingNames name, Image image)
 	{
 		this.name = name ;
 		this.image = image ;
@@ -20,7 +19,7 @@ public class BuildingType
 	}
 	
 
-	public String getName() {return name ;}
+	public BuildingNames getName() {return name ;}
 	public Image getImage() {return image ;}
 	public Image getInsideImage() {return insideImage ;}
 	public void setInsideImage(Image insideImage) { this.insideImage = insideImage ;}

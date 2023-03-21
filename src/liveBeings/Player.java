@@ -25,7 +25,9 @@ import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 
 import java.util.Map;
+import java.util.Set;
 
+import components.Building;
 import components.NPCs;
 import components.QuestSkills;
 import components.Quest;
@@ -476,7 +478,7 @@ public class Player extends LiveBeing
 		
 	}
 
-	private List<Quest> getActiveQuests() { return quests.stream().filter(quest -> quest.isActive()).toList() ;}	
+//	private List<Quest> getActiveQuests() { return quests.stream().filter(quest -> quest.isActive()).toList() ;}	
 
 	public void engageInFight(Creature Opponent)
 	{
@@ -711,10 +713,24 @@ public class Player extends LiveBeing
 			boolean metNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
 			
 			if (!metNPC) { continue ;}
-			
+			System.out.println(npc.getType().getName());
 			npc.Contact(this, Game.getPet(), mousePos, DP) ;
 			
 			break ;
+		}
+		
+		for (Building building : currentMap.getBuildings())
+		{
+			for (NPCs npc : building.getNPCs())
+			{
+				boolean metNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
+				
+				if (!metNPC) { continue ;}
+				
+				npc.Contact(this, Game.getPet(), mousePos, DP) ;
+				
+				break ;
+			}
 		}
 	}
 		
@@ -984,13 +1000,10 @@ public class Player extends LiveBeing
 		bag.addGold((int) (creature.getGold() * UtilG.RandomMult(0.1 * goldMultiplier))) ;
 		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())) ;
 		
-		if (getActiveQuests() != null)
+		for (Quest quest : quests)
 		{
-			for (Quest quest : getActiveQuests())
-			{
-				quest.IncReqCreaturesCounter(creature.getType()) ;
-				quest.checkCompletion(bag) ;
-			}
+			quest.IncReqCreaturesCounter(creature.getType()) ;
+			quest.checkCompletion(bag) ;
 		}
 		
 		String[] ItemsObtained = GetItemsObtained.toArray(new String[] {}) ;
@@ -1215,82 +1228,98 @@ public class Player extends LiveBeing
 
 	
 	// Save and load methods
-	private void Save(String filePath, Pet pet)
+	public void save(int slot)
 	{
-		// TODO save method
-		try
-		{	
-			FileWriter fileWriter = new FileWriter(filePath) ;
-			BufferedWriter bw = new BufferedWriter(fileWriter) ; 
-			bw.write("Save version: 3.41 \n" + getName()) ;
-			bw.write("\nPlayer name: \n" + getName()) ;
-			bw.write("\nPlayer language: \n" + getLanguage()) ;
-			bw.write("\nPlayer sex: \n" + getSex()) ;
-			bw.write("\nPlayer size: \n" + getSize()) ;
-			bw.write("\nPlayer colors: \n" + getColor()) ;
-			bw.write("\nPlayer job: \n" + getJob()) ;
-			//bw.write("\nPlayer PA.ProJob: \n" + PA.ProJob) ;
-			bw.write("\nPlayer continent: \n" + getContinent()) ;
-			bw.write("\nPlayer map: \n" + getMap()) ;
-			bw.write("\nPlayer pos: \n" + getPos()) ;
-			//bw.write("\nPlayer skill: \n" + Arrays.toString(getSpell())) ;
-			//bw.write("\nPlayer quest: \n" + Arrays.toString(getQuest())) ;
-			//bw.write("\nPlayer bag: \n" + Arrays.toString(getBag())) ;
-			bw.write("\nPlayer equips: \n" + Arrays.toString(getEquips())) ;
-			bw.write("\nPlayer skillPoints: \n" + getSpellPoints()) ;
-			//bw.write("\nPlayer life: \n" + Arrays.toString(getLife())) ;
-			//bw.write("\nPlayer mp: \n" + Arrays.toString(getMp())) ;
-			bw.write("\nPlayer range: \n" + getRange()) ;
-			//bw.write("\nPlayer phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
-			//bw.write("\nPlayer magAtk: \n" + Arrays.toString(getMagAtk())) ;
-			//bw.write("\nPlayer phyDef: \n" + Arrays.toString(getPhyDef())) ;
-			//bw.write("\nPlayer magDef: \n" + Arrays.toString(getMagDef())) ;
-			//bw.write("\nPlayer dex: \n" + Arrays.toString(getDex())) ;
-			//bw.write("\nPlayer agi: \n" + Arrays.toString(getAgi())) ;
-			bw.write("\nPlayer crit: \n" + Arrays.toString(getCrit())) ;
-//			bw.write("\nPlayer stun: \n" + Arrays.toString(getStun())) ;
-//			bw.write("\nPlayer block: \n" + Arrays.toString(getBlock())) ;
-//			bw.write("\nPlayer blood: \n" + Arrays.toString(getBlood())) ;
-//			bw.write("\nPlayer poison: \n" + Arrays.toString(getPoison())) ;
-//			bw.write("\nPlayer silence: \n" + Arrays.toString(getSilence())) ;
-			bw.write("\nPlayer elem: \n" + Arrays.toString(getElem())) ;
-			//bw.write("\nPlayer elem mult: \n" + Arrays.toString(getElemMult())) ;
-			bw.write("\nPlayer collect: \n" + Arrays.toString(getCollect())) ;
-			bw.write("\nPlayer level: \n" + getLevel()) ;
-//			bw.write("\nPlayer gold: \n" + Arrays.toString(getGold())) ;
-			bw.write("\nPlayer step: \n" + getStep()) ;
-			//bw.write("\nPlayer exp: \n" + Arrays.toString(getExp())) ;
-			//bw.write("\nPlayer satiation: \n" + Arrays.toString(getSatiation())) ;
-			//bw.write("\nPlayer quest skills: \n" + Arrays.toString(questSkills)) ;
-//			bw.write("\nPlayer status: \n" + Arrays.toString(BA.getSpecialStatus())) ; 
-			//bw.write("\nPlayer actions: \n" + Arrays.deepToString(getActions())) ; 
-			//bw.write("\nPlayer battle actions: \n" + Arrays.deepToString(BA.getBattleActions())) ; 
-			//bw.write("\nPlayer status counter: \n" + Arrays.toString(getStatusCounter())) ; 		
-//			bw.write("\nPlayer stats: \n" + Arrays.toString(getStats())) ;
-			bw.write("\nPlayer available attribute points: \n" + getAttPoints()) ;
-//			bw.write("\nPlayer attribute increase: \n" + Arrays.deepToString(getAttIncrease())) ;
-//			bw.write("\nPlayer chance increase: \n" + Arrays.deepToString(getChanceIncrease())) ;
-			//bw.write("\nPlayer creatures discovered: \n" + Arrays.toString(getCreaturesDiscovered())) ;
-			pet.Save(bw) ;	
-			
-//			bw.write("\nEquips bonus: \n" + Arrays.deepToString(Items.EquipsBonus)) ;
-			//bufferedWriter.write("\nNPCs contact: \n" + Arrays.toString(FirstNPCContact)) ;
-			bw.write("\nDifficult level: \n" + Game.difficultLevel) ;
-			bw.close() ;
-		}		
-		catch(IOException ex) 
-		{
-            System.out.println("Error writing to file '" + filePath + "'") ;
+		
+		try (FileWriter file = new FileWriter("save " + slot + ".json"))
+        {
+            file.write("name: " + name + "\n"); 
+            file.write("level: " + level); 
+            file.flush();
+    		// TODO
+ 
         }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+		
+//		try
+//		{	
+//			FileWriter fileWriter = new FileWriter(filePath) ;
+//			BufferedWriter bw = new BufferedWriter(fileWriter) ; 
+//			bw.write("Save version: 3.41 \n" + getName()) ;
+//			bw.write("\nPlayer name: \n" + getName()) ;
+//			bw.write("\nPlayer language: \n" + getLanguage()) ;
+//			bw.write("\nPlayer sex: \n" + getSex()) ;
+//			bw.write("\nPlayer size: \n" + getSize()) ;
+//			bw.write("\nPlayer colors: \n" + getColor()) ;
+//			bw.write("\nPlayer job: \n" + getJob()) ;
+//			//bw.write("\nPlayer PA.ProJob: \n" + PA.ProJob) ;
+//			bw.write("\nPlayer continent: \n" + getContinent()) ;
+//			bw.write("\nPlayer map: \n" + getMap()) ;
+//			bw.write("\nPlayer pos: \n" + getPos()) ;
+//			//bw.write("\nPlayer skill: \n" + Arrays.toString(getSpell())) ;
+//			//bw.write("\nPlayer quest: \n" + Arrays.toString(getQuest())) ;
+//			//bw.write("\nPlayer bag: \n" + Arrays.toString(getBag())) ;
+//			bw.write("\nPlayer equips: \n" + Arrays.toString(getEquips())) ;
+//			bw.write("\nPlayer skillPoints: \n" + getSpellPoints()) ;
+//			//bw.write("\nPlayer life: \n" + Arrays.toString(getLife())) ;
+//			//bw.write("\nPlayer mp: \n" + Arrays.toString(getMp())) ;
+//			bw.write("\nPlayer range: \n" + getRange()) ;
+//			//bw.write("\nPlayer phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
+//			//bw.write("\nPlayer magAtk: \n" + Arrays.toString(getMagAtk())) ;
+//			//bw.write("\nPlayer phyDef: \n" + Arrays.toString(getPhyDef())) ;
+//			//bw.write("\nPlayer magDef: \n" + Arrays.toString(getMagDef())) ;
+//			//bw.write("\nPlayer dex: \n" + Arrays.toString(getDex())) ;
+//			//bw.write("\nPlayer agi: \n" + Arrays.toString(getAgi())) ;
+//			bw.write("\nPlayer crit: \n" + Arrays.toString(getCrit())) ;
+////			bw.write("\nPlayer stun: \n" + Arrays.toString(getStun())) ;
+////			bw.write("\nPlayer block: \n" + Arrays.toString(getBlock())) ;
+////			bw.write("\nPlayer blood: \n" + Arrays.toString(getBlood())) ;
+////			bw.write("\nPlayer poison: \n" + Arrays.toString(getPoison())) ;
+////			bw.write("\nPlayer silence: \n" + Arrays.toString(getSilence())) ;
+//			bw.write("\nPlayer elem: \n" + Arrays.toString(getElem())) ;
+//			//bw.write("\nPlayer elem mult: \n" + Arrays.toString(getElemMult())) ;
+//			bw.write("\nPlayer collect: \n" + Arrays.toString(getCollect())) ;
+//			bw.write("\nPlayer level: \n" + getLevel()) ;
+////			bw.write("\nPlayer gold: \n" + Arrays.toString(getGold())) ;
+//			bw.write("\nPlayer step: \n" + getStep()) ;
+//			//bw.write("\nPlayer exp: \n" + Arrays.toString(getExp())) ;
+//			//bw.write("\nPlayer satiation: \n" + Arrays.toString(getSatiation())) ;
+//			//bw.write("\nPlayer quest skills: \n" + Arrays.toString(questSkills)) ;
+////			bw.write("\nPlayer status: \n" + Arrays.toString(BA.getSpecialStatus())) ; 
+//			//bw.write("\nPlayer actions: \n" + Arrays.deepToString(getActions())) ; 
+//			//bw.write("\nPlayer battle actions: \n" + Arrays.deepToString(BA.getBattleActions())) ; 
+//			//bw.write("\nPlayer status counter: \n" + Arrays.toString(getStatusCounter())) ; 		
+////			bw.write("\nPlayer stats: \n" + Arrays.toString(getStats())) ;
+//			bw.write("\nPlayer available attribute points: \n" + getAttPoints()) ;
+////			bw.write("\nPlayer attribute increase: \n" + Arrays.deepToString(getAttIncrease())) ;
+////			bw.write("\nPlayer chance increase: \n" + Arrays.deepToString(getChanceIncrease())) ;
+//			//bw.write("\nPlayer creatures discovered: \n" + Arrays.toString(getCreaturesDiscovered())) ;
+//			pet.Save(bw) ;	
+//			
+////			bw.write("\nEquips bonus: \n" + Arrays.deepToString(Items.EquipsBonus)) ;
+//			//bufferedWriter.write("\nNPCs contact: \n" + Arrays.toString(FirstNPCContact)) ;
+//			bw.write("\nDifficult level: \n" + Game.difficultLevel) ;
+//			bw.close() ;
+//		}		
+//		catch(IOException ex) 
+//		{
+//            System.out.println("Error writing to file '" + filePath + "'") ;
+//        }
 	}
-	private void Load(String filePath, Pet pet, GameMap[] maps)
+	private static Player load(String filePath)
 	{
-		JSONObject JsonData = UtilG.readJsonObject(filePath) ;
-		setName((String) JsonData.get("Name")) ;
-		setLevel(Math.toIntExact((Long) JsonData.get("Level"))) ;
+		
+		// TODO
+		JSONObject jsonData = UtilG.readJsonObject(filePath) ;
+		Player newPlayer = new Player((String) jsonData.get("name"), filePath, filePath, 0) ;
+		newPlayer.setLevel((int) jsonData.get("level"));
+		
+		return newPlayer ;
+		
 	}
-	
-	
 	
 	
 	

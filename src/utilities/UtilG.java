@@ -513,7 +513,8 @@ public abstract class UtilG
 
 	public static Point Translate(Point originalPoint, int dx, int dy)
 	{
-		return new Point(originalPoint.x + dx, originalPoint.y + dy) ;
+		Point newPoint = new Point(originalPoint);
+		return new Point(newPoint.x + dx, newPoint.y + dy) ;
 	}
 	
 	public static int TextL(String Text, Font font, Graphics G)

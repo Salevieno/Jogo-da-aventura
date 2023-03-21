@@ -28,7 +28,7 @@ public class Building
 		
 		switch (type.getName())
 		{
-			case "Hospital": 
+			case hospital: 
 			{
 				for (int i = 0 ; i <= 86 ; i += 1)
 				{
@@ -43,9 +43,7 @@ public class Building
 				 break ;
 			}
 			default: break ;
-		}		
-
-		npcs.forEach(npc -> npc.setPos(new Point(pos.x, pos.y))) ;
+		}
 	}
 
 	
@@ -63,7 +61,6 @@ public class Building
 		
 		for (NPCs npc : npcs)
 		{
-			System.out.println(npc);
 			npc.display(DP) ;
 		}
 	}
@@ -93,7 +90,7 @@ public class Building
 		DP.DrawImage(type.getInsideImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
 		displayNPCs(DP) ;
 		
-		if (type.getName().equals("Sign"))
+		if (type.getName().equals(BuildingNames.sign))
 		{
 			Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 			Point messagePos = UtilG.Translate(pos, 10, 20) ;
@@ -103,4 +100,13 @@ public class Building
 			DP.DrawFitText(messagePos, font.getSize() + 2, Align.bottomLeft, message, font, 35, Game.ColorPalette[5]) ;			
 		}
 	}
+
+
+	@Override
+	public String toString()
+	{
+		return "Building [type=" + type + ", pos=" + pos + ", npcs=" + npcs + ", colliders=" + colliders + "]";
+	}
+	
+	
 }

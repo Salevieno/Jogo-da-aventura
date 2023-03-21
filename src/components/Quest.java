@@ -13,7 +13,7 @@ public class Quest
 	private int id ;
 	private String name ;
 	private String type ;
-	private boolean isActive ;
+//	private boolean isActive ;
 	private boolean isComplete ;
 	private boolean isRepeatable ;
 	private Map<CreatureType, Integer> reqCreaturesCounter ;
@@ -31,7 +31,7 @@ public class Quest
 		this.id = id ;
 		name = String.valueOf("Quest " + id) ;
 		this.type = type ;
-		isActive = false ;
+//		isActive = false ;
 		isComplete = false ;
 		this.isRepeatable = isRepeatable ;
 		reqCreaturesCounter = new HashMap<>() ;
@@ -63,12 +63,12 @@ public class Quest
 	public Map<Item, Integer> getRewardItems() {return rewardItems ;}
 	public void setDescription(String D) {description = D ;}
 	
-	public boolean isActive() { return isActive ;}
+//	public boolean isActive() { return isActive ;}
 	public boolean isComplete() { return isComplete ;}
 	public boolean isRepeatable() { return isRepeatable ;}
 	
-	public void activate() { isActive = true ;}
-	public void deactivate() { isActive = false ;}
+//	public void activate() { isActive = true ;}
+//	public void deactivate() { isActive = false ;}
 	private void resetCreaturesCounter() { reqCreatureTypes.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 0)) ;}
 	
 	public void IncReqCreaturesCounter(CreatureType creatureType)
@@ -101,7 +101,7 @@ public class Quest
 	{
 		
 		resetCreaturesCounter() ;
-		deactivate() ;
+//		deactivate() ;
 		
 		if (isRepeatable) { isComplete = false ;}
 		
@@ -123,12 +123,11 @@ public class Quest
 	@Override
 	public String toString()
 	{
-		return "Quest [id=" + id + ", name=" + name + ", type=" + type + ", isActive=" + isActive + ", isComplete="
+		return "Quest [id=" + id + ", name=" + name + ", type=" + type + ", isComplete="
 				+ isComplete + ", isRepeatable=" + isRepeatable + ", reqCreaturesCounter=" + reqCreaturesCounter
 				+ ", reqCreatureTypes=" + reqCreatureTypes + ", reqItems=" + reqItems + ", goldReward=" + goldReward
 				+ ", expReward=" + expReward + ", rewardItems=" + rewardItems + ", description=" + description + "]";
 	}
-	
-	
+		
 	
 }

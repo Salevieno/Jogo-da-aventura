@@ -39,6 +39,7 @@ import attributes.PersonalAttributes;
 import components.BuildingType;
 import components.Collider;
 import components.Building;
+import components.BuildingNames;
 import components.GameIcon;
 import components.NPCJobs;
 import components.NPCType;
@@ -271,7 +272,7 @@ public class Game extends JPanel
 			Image image = !job.toString().equals("master") ?  UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + ".png") : UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + ".gif") ;
 			String[] speech = new String[] {""} ;
 			
-			// TODO "Falas" em speech -> padronizar para todas as l�nguas
+			// TODO "Falas" em speech -> padronizar para todas as línguas
 			
 			String[][] options = new String[][] {{""}} ;
 			if (Game.allText.get(name + "Falas") != null)
@@ -298,7 +299,7 @@ public class Game extends JPanel
     	for (int i = 0 ; i <= input.size() - 1; i += 1)
     	{
     		JSONObject type = (JSONObject) input.get(i) ;
-    		String name = (String) type.get("name") ;
+    		BuildingNames name = BuildingNames.valueOf((String) type.get("name")) ;
 			Image outsideImage = UtilG.loadImage(path + "Building" + name + ".png") ;			
 			
     		buildingTypes[i] = new BuildingType(name, outsideImage) ;
@@ -400,7 +401,7 @@ public class Game extends JPanel
     
     private CityMap[] initializeCityMaps()
     {
-		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsCity.csv") ;
+		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsCity.csv") ;
 		String path = ImagesPath + "\\Maps\\";
 		CityMap[] cityMap = new CityMap[input.size()] ;
 		
@@ -426,47 +427,39 @@ public class Game extends JPanel
 			List<Building> buildings = new ArrayList<>() ;
 			for (int i = 0; i <= 6 - 1; i += 1)
 			{
-				String buildingName = input.get(id)[10 + 3 * i] ;
+				BuildingNames buildingName = BuildingNames.valueOf(input.get(id)[10 + 3 * i]) ;
 				BuildingType buildingType = null ;
-				for (int j = 0 ; j <= buildingTypes.length - 1 ; j += 1)
+				for (BuildingType type : buildingTypes)
 				{
-					if (buildingName.equals(buildingTypes[j].getName()))
-					{
-						buildingType = buildingTypes[j] ;
-					}
+					if (type.getName().equals(buildingName)) { buildingType = type ; break ;}
 				}
-				
 				int buildingPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[11 + 3 * i])) ;
 				int buildingPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[12 + 3 * i])) ;
 				Point buildingPos = new Point(buildingPosX, buildingPosY) ;
-
 				
-				// TODO passar os npcs do json de building types para buildings
 				// adding npcs to the building
 				List<NPCs> npcs = new ArrayList<>() ;
-//				JSONArray arrayNPCs = (JSONArray) buildingType.get("npcs") ;
-//				for (int j = 0; j <= arrayNPCs.size() - 1; j += 1)
-//				{
-//					JSONObject newNPC = (JSONObject) arrayNPCs.get(j) ;
-//					NPCJobs npcJob = NPCJobs.valueOf((String) newNPC.get("job")) ;
-//					NPCType npcType = NPCs.typeFromJob(npcJob) ;
-//					JSONArray arrayPos = (JSONArray) newNPC.get("pos") ;
-//					Point npcPos = new Point((int) (long) arrayPos.get(0), (int) (long) arrayPos.get(1)) ;
-//					
-//					if (npcType != null)
-//					{
-//						npcs.add(new NPCs(0, npcType, npcPos)) ;
-//					}
-//				}
-				
+				switch (buildingName)
+				{
+					case hospital: npcs.add(new NPCs(0, NPCTypes[0], UtilG.Translate(buildingPos, 120, -60))) ; break ;
+					case store: 
+					{
+						npcs.add(new NPCs(0, NPCTypes[1], UtilG.Translate(buildingPos, 120, -60))) ;
+						npcs.add(new NPCs(0, NPCTypes[2], UtilG.Translate(buildingPos, 80, -60))) ;
+						
+						break ;
+					}
+					case bank: npcs.add(new NPCs(0, NPCTypes[4], UtilG.Translate(buildingPos, 40, -30))) ; break ;
+					case craft: npcs.add(new NPCs(0, NPCTypes[8], UtilG.Translate(buildingPos, 40, -30))) ; break ;
+					default: break;
+				}
 				buildings.add(new Building(buildingType, buildingPos, npcs)) ;
-				
 			}
 
 			
 			// adding npcs to map
 			List<NPCs> npcs = new ArrayList<NPCs>() ;
-			for (int i = 0; i <= 17 - 1; i += 1)
+			for (int i = 0; i <= 13 - 1; i += 1)
 			{
 				String npcJob = input.get(id)[28 + 3 * i] ;
 				NPCType NPCType = null ;

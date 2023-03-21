@@ -5,10 +5,15 @@ import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
@@ -241,7 +246,7 @@ public class NPCs
 			}
 			case saver:
 			{
-				saverAction() ;
+				saverAction(player, pet, player.getCurrentAction()) ;
 
 				break ;
 			}
@@ -409,7 +414,7 @@ public class NPCs
 		if (action == null) { return ;}
 
 		forgeWindow.navigate(action) ;
-		// TODO a forja s� deve acontecer no menu 1
+		// TODO a forja só deve acontecer no menu 1
 		if (action.equals("Enter") & 2 <= menu)
 		{
 			menu = forgeWindow.forge(bag) ;
@@ -430,9 +435,21 @@ public class NPCs
 		}
 	}
 	
-	public void saverAction()
+	public void saverAction(Player player, Pet pet, String action)
 	{
-		// TODO
+		
+		if (action == null) { return ;}
+		
+		if (action.equals("Enter") & menu == 0 & selOption == 0)
+		{
+			incMenu() ;
+		}
+		if (action.equals("Enter") & menu == 0)
+		{
+			int slot = selOption + 1 ;
+	        player.save(slot) ;
+		}
+		
 	}
 	
 	public void sailorAction(Player player, String action)
@@ -501,21 +518,29 @@ public class NPCs
 
 		Quest quest = Game.getAllQuests()[id - 28] ;
 		
-		quest.checkCompletion(bag) ;
-		System.out.println(quest);
-		
-		if (quest.isComplete())
-		{
-			quest.complete(bag, PA, skills) ;
-			incMenu() ;
-		}
-		
 		if (action.equals("Enter") & selOption == 0)
 		{
-			if (quests.contains(quest)) { return ;}
+
+			if (!quests.contains(quest))
+			{
+				if (!quest.isRepeatable() & quest.isComplete())
+				{
+					return ;
+				}
+				
+				quests.add(quest) ;
+			}
 			
-			quests.add(quest) ;
-			quests.get(quests.size() - 1).activate() ;
+			quest.checkCompletion(bag) ;
+			
+			if (quest.isComplete())
+			{
+				quest.complete(bag, PA, skills) ;
+				incMenu() ;
+				quests.remove(quest) ;
+			}
+			
+			return ;
 		}
 		
 	}
