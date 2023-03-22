@@ -1,10 +1,12 @@
 package windows;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 
 import graphics.DrawingOnPanel;
+import main.Game;
 
 public abstract class GameWindow
 {
@@ -20,6 +22,11 @@ public abstract class GameWindow
 	protected int window ;
 	protected int numberWindows ;
 	protected Dimension size ;
+	protected final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
+	protected final Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 11) ;
+	protected final Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	protected final int border = 6 ;
+	protected final int padding = 4 ;
 	
 	public GameWindow(String name, Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
 	{

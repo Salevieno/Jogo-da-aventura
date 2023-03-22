@@ -24,7 +24,7 @@ public class CraftWindow extends GameWindow
 
 	public CraftWindow(List<Recipe> recipes)
 	{
-		super("Criação", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Craft.gif"), 1, 1, NumberRecipesPerWindow, recipes.size() / NumberRecipesPerWindow + 1) ;
+		super("Criação", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Craft.png"), 1, 1, NumberRecipesPerWindow, recipes.size() / NumberRecipesPerWindow + 1) ;
 		this.recipesForCrafting = recipes ;
 		recipesInWindow = NumberRecipesPerWindow <= recipesForCrafting.size() ? recipesForCrafting.subList(window, NumberRecipesPerWindow + window) : recipesForCrafting ;
 	}
@@ -66,9 +66,6 @@ public class CraftWindow extends GameWindow
 		Point ingredientsPos = UtilG.Translate(windowPos, 20, 110) ;
 		Point productsPos = UtilG.Translate(windowPos, 180, 110) ;
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 18) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Font titleFont = new Font(Game.MainFontName, Font.BOLD, 16) ;
-		Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 14) ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
 		
@@ -90,7 +87,7 @@ public class CraftWindow extends GameWindow
 				Color itemNameColor = Game.ColorPalette[9] ;
 				DP.DrawImage(Item.slot, ingredientsPos, angle, new Scale(1, 1), Align.center) ;
 				DP.DrawImage(item.getImage(), ingredientsPos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.center) ;
-				DP.DrawText(UtilG.Translate(ingredientsPos, 20, 0), Align.centerLeft, DrawingOnPanel.stdAngle, qtd + " " + item.getName(), font, itemNameColor) ;
+				DP.DrawText(UtilG.Translate(ingredientsPos, 14, 0), Align.centerLeft, DrawingOnPanel.stdAngle, qtd + " " + item.getName(), stdFont, itemNameColor) ;
 				ingredientsPos.y += 30 ;
 			}) ;
 			
@@ -98,7 +95,7 @@ public class CraftWindow extends GameWindow
 				Color itemNameColor = Game.ColorPalette[9] ;
 				DP.DrawImage(Item.slot, productsPos, angle, new Scale(1, 1), Align.center) ;
 				DP.DrawImage(item.getImage(), productsPos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.center) ;
-				DP.DrawText(UtilG.Translate(productsPos, 20, 0), Align.centerLeft, DrawingOnPanel.stdAngle, qtd + " " + item.getName(), font, itemNameColor) ;
+				DP.DrawText(UtilG.Translate(productsPos, 14, 0), Align.centerLeft, DrawingOnPanel.stdAngle, qtd + " " + item.getName(), stdFont, itemNameColor) ;
 				productsPos.y += 30 ;
 			}) ;		
 		}

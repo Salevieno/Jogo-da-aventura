@@ -1,7 +1,6 @@
 package windows;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Point;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import utilities.UtilG;
 
 public class ForgeWindow extends GameWindow
 {
+	
 	private List<Equip> itemsForForge ;
 	private static final int NumberItemsPerWindow = 10 ;
 	
@@ -25,17 +25,13 @@ public class ForgeWindow extends GameWindow
 		super("Forge", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Forge.png"), 1, 1, 1, 1) ;
 		itemsForForge = null ;
 		item = 0 ;
-	}
-	
-	
+	}	
 
 	public void setItemsForForge(List<Equip> itemsForForge)
 	{
 		this.itemsForForge = itemsForForge ;
 		numberItems = itemsForForge.size() ;
 	}
-
-
 
 	public void navigate(String action)
 	{
@@ -58,7 +54,7 @@ public class ForgeWindow extends GameWindow
 
 		Equip selectedEquip = selectedEquip() ;
 		
-		if (selectedEquip.getForgeLevel() == 10) { return 2 ;}
+		if (selectedEquip.getForgeLevel() == Equip.maxForgeLevel) { return 2 ;}
 
 		int runeId = selectedEquip.isSpecial() ? 20 : 0 ;
 		runeId += 2 * selectedEquip.getForgeLevel() ;
@@ -99,10 +95,7 @@ public class ForgeWindow extends GameWindow
 	{
 		
 		Point windowPos = new Point((int)(0.4*Game.getScreen().getSize().width), (int)(0.2*Game.getScreen().getSize().height)) ;
-		Point itemPos = UtilG.Translate(windowPos, 30, 70) ;
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 28) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Font titleFont = new Font(Game.MainFontName, Font.BOLD, 16) ;
 		double angle = DrawingOnPanel.stdAngle ;
 		List<Equip> itemsOnWindow = NumberItemsPerWindow <= itemsForForge.size() ? itemsForForge.subList(0, NumberItemsPerWindow) : itemsForForge ;
 		
@@ -111,6 +104,8 @@ public class ForgeWindow extends GameWindow
 		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
 		
 		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.ColorPalette[2]) ;
+		
+		Point itemPos = UtilG.Translate(windowPos, 30, 70) ;
 		for (Equip item : itemsOnWindow)
 		{
 			if (item == null) { continue ;}
@@ -120,7 +115,7 @@ public class ForgeWindow extends GameWindow
 			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? Game.ColorPalette[6] : Game.ColorPalette[9] ;
 			DP.DrawImage(Item.slot, itemPos, angle, new Scale(1, 1), Align.center) ;
 			DP.DrawImage(item.getImage(), itemPos, angle, new Scale(1, 1), Align.center) ;
-			DP.DrawText(namePos, Align.topLeft, angle, item.getName() + " + " + item.getForgeLevel(), font, itemColor) ;
+			DP.DrawText(namePos, Align.topLeft, angle, item.getName() + " + " + item.getForgeLevel(), stdFont, itemColor) ;
 			itemPos.y += 30 ;
 		}
 		

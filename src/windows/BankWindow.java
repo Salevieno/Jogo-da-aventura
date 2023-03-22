@@ -16,7 +16,6 @@ import utilities.UtilG;
 public class BankWindow extends GameWindow
 {
 	private Point windowPos ;
-	private Font contentFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 	private int amountTyped ;
 	private int balance ;
 	private boolean isInvested ;
@@ -74,16 +73,16 @@ public class BankWindow extends GameWindow
 	public void displayInput(String message, String action, DrawingOnPanel DP)
 	{
 		Point pos = UtilG.Translate(windowPos, 50, size.height / 3) ;
-		DP.DrawText(UtilG.Translate(pos, 0, -30), Align.centerLeft, DrawingOnPanel.stdAngle, message, contentFont, Game.ColorPalette[9]) ;
+		DP.DrawText(UtilG.Translate(pos, 0, -30), Align.centerLeft, DrawingOnPanel.stdAngle, message, stdFont, Game.ColorPalette[9]) ;
 		DP.DrawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.ColorPalette[7], Game.ColorPalette[7], true) ;
 		DP.DrawImage(Player.CoinIcon, UtilG.Translate(pos, 5, 0), Align.centerLeft) ;
-		DP.DrawText(UtilG.Translate(pos, 20, 0), Align.centerLeft, DrawingOnPanel.stdAngle, String.valueOf(amountTyped), contentFont, Game.ColorPalette[9]) ;
+		DP.DrawText(UtilG.Translate(pos, 20, 0), Align.centerLeft, DrawingOnPanel.stdAngle, String.valueOf(amountTyped), stdFont, Game.ColorPalette[9]) ;
 	}
 
 	public int readValue(String action, DrawingOnPanel DP)
 	{
 		Point pos = UtilG.Translate(windowPos, 50 + 20, size.height / 3) ;
-		String text = Typing.LiveTyping(pos, DrawingOnPanel.stdAngle, action, contentFont, Game.ColorPalette[5], DP) ;
+		String text = Typing.LiveTyping(pos, DrawingOnPanel.stdAngle, action, stdFont, Game.ColorPalette[5], DP) ;
 		
 		if (!UtilG.isNumeric(text)) { return 0 ;}
 		
@@ -99,7 +98,7 @@ public class BankWindow extends GameWindow
 		
 		Point balancePos = UtilG.Translate(windowPos, 50, (int) (0.8 * size.height)) ;
 		DP.DrawImage(Player.CoinIcon, balancePos, Align.center) ;
-		DP.DrawText(balancePos, Align.centerLeft, DrawingOnPanel.stdAngle, String.valueOf(balance), contentFont, Game.ColorPalette[9]) ;
+		DP.DrawText(balancePos, Align.centerLeft, DrawingOnPanel.stdAngle, String.valueOf(balance), stdFont, Game.ColorPalette[9]) ;
 	}
 
 }

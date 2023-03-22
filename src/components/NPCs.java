@@ -422,8 +422,9 @@ public class NPCs
 		
 	}
 	
-	public void elementalAction(ElementalWindow elementalWindow, String action, DrawingOnPanel DP)
+	public void elementalAction(BagWindow bag, ElementalWindow elementalWindow, String action, DrawingOnPanel DP)
 	{
+		
 		elementalWindow.display(DP) ;
 		
 		if (action == null) { return ;}
@@ -431,8 +432,9 @@ public class NPCs
 		elementalWindow.navigate(action) ;
 		if (action.equals("Enter") | action.equals("MouseLeftClick"))
 		{
-//			elementalWindow.buyItem(bag) ;
+			changeEquipElement(bag, equip) ;
 		}
+		
 	}
 	
 	public void saverAction(Player player, Pet pet, String action)

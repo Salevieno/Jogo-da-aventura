@@ -1048,6 +1048,7 @@ public class Game extends JPanel
 		try {Fab.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the fabrication items
 		try {QuestItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the quest items	
     	
+		
     	// Minimum initialization
     	DayDuration = 120000 ;
     	sky = new Sky() ;
@@ -1174,6 +1175,15 @@ public class Game extends JPanel
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 199), new Dimension(10, 10))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 203), new Dimension(10, 10))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(200, 200), new Dimension(10, 10))) ;
+    	
+    	System.out.println(Equip.getAll()[0]);
+    	for (int i = 0; i <= 9; i += 1)
+    	{ 
+        	Equip.getAll()[0].incForgeLevel();
+        	System.out.println(Equip.getAll()[0]);
+    	}
+    	Equip.getAll()[0].setElem(Elements.fire);
+    	System.out.println(Equip.getAll()[0]);
 	}
 	
 	private void testing()

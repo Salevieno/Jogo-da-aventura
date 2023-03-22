@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.ImageIcon;
-
 import attributes.AttributeBonus;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
@@ -22,8 +20,10 @@ public class Equip extends Item
 	private int forgeLevel ;
 	private AttributeBonus attBonus ;
 	private Elements elem ;
+	private Elements originalElem ;
 	
 	private static Equip[] allEquips ;
+	public static final int maxForgeLevel = 10 ;
 	
 	private static Image swordIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconSword.png") ;
 	private static Image staffIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconStaff.png") ;
@@ -32,6 +32,7 @@ public class Equip extends Item
 	private static Image daggerIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconDagger.png") ;
 	private static Image shieldIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconShield.png") ;
 	private static Image armorIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconArmor.png") ;
+	private static Image emblemIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconArmor.png") ;
 	
 	public static Image SwordImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq0_Sword.png") ;
 	public static Image StaffImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq1_Staff.png") ;
@@ -40,6 +41,7 @@ public class Equip extends Item
 	public static Image DaggerImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq4_Dagger.png") ;
 	public static Image ShieldImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq5_Shield.png") ;
 	public static Image ArmorImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq6_Armor.png") ;
+	public static Image emblemImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq8_emblem.png") ;
 	public static Image ArrowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq7_Arrow.png") ;
 
 	public Equip(int id, String name, String description, int price, float dropChance, int forgeLevel, AttributeBonus attBonus, Elements elem)
@@ -49,19 +51,39 @@ public class Equip extends Item
 		this.forgeLevel = forgeLevel ;
 		this.attBonus = attBonus ;
 		this.elem = elem ;
+		originalElem = elem ;
 	}
 
 	
+	public static EquipTypes typeFromID(int id)
+	{
+		
+		if ((id + 1) % 100 == 0) { return EquipTypes.emblem ;}
+
+		int job = id / 200 ;
+		int idRel = id - 200 * job;
+		
+		if (idRel <= 98)
+		{
+			return idRel % 3 == 0 ? EquipTypes.weapons()[job] : idRel % 3 == 1 ? EquipTypes.shield : EquipTypes.armor ;
+		}
+		
+		return idRel % 3 == 1 ? EquipTypes.weapons()[job] : idRel % 3 == 2 ? EquipTypes.shield : EquipTypes.armor ;
+		
+	}
+	
 	public static Image imageFromID(int id)
 	{
-		return id % 3 == 0 ? swordIcon :
-		id % 3 == 1 ? shieldIcon :
-			armorIcon ;
+		
+		Image[] equipImages = new Image[] {swordIcon, staffIcon, bowIcon, clawsIcon, daggerIcon, shieldIcon, armorIcon, emblemImage} ;
+		return equipImages[Arrays.asList(EquipTypes.values()).indexOf(typeFromID(id))] ;
+		
 	}
 	
 	public int getId() {return id ;}
 	public int getForgeLevel() {return forgeLevel ;}
 	public Elements getElem() {return elem ;}
+	public void setElem(Elements newElem) { elem = newElem ;}
 	public AttributeBonus getAttributeBonus() {return attBonus ;}
 	public static Equip[] getAll() {return allEquips ;}
 	
@@ -72,18 +94,55 @@ public class Equip extends Item
 		allEquips = new Equip[input.size()] ;
 		for (int p = 0; p <= allEquips.length - 1; p += 1)
 		{
-			allEquips[p] = new Equip(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]),
-					Integer.parseInt(input.get(p)[7]),																																	// forge level
-					new AttributeBonus(Integer.parseInt(input.get(p)[8]), Integer.parseInt(input.get(p)[9]),																				// life and mp
-					Integer.parseInt(input.get(p)[10]),	Integer.parseInt(input.get(p)[11]), Integer.parseInt(input.get(p)[12]), Integer.parseInt(input.get(p)[13]),									// phyatk magatk phydef magdef
-					Integer.parseInt(input.get(p)[14]), Integer.parseInt(input.get(p)[15]),																									// dex and agi
-					Float.parseFloat(input.get(p)[16]), Float.parseFloat(input.get(p)[17]),																									// crit atk and def chance
-					Float.parseFloat(input.get(p)[18]), Float.parseFloat(input.get(p)[19]), Integer.parseInt(input.get(p)[20]),																	// stun
-					Float.parseFloat(input.get(p)[21]), Float.parseFloat(input.get(p)[22]), Integer.parseInt(input.get(p)[23]),																	// block
-					Float.parseFloat(input.get(p)[24]), Float.parseFloat(input.get(p)[25]), Integer.parseInt(input.get(p)[26]), Integer.parseInt(input.get(p)[27]), Integer.parseInt(input.get(p)[28]),	// blood
-					Float.parseFloat(input.get(p)[29]), Float.parseFloat(input.get(p)[30]), Integer.parseInt(input.get(p)[31]), Integer.parseInt(input.get(p)[32]), Integer.parseInt(input.get(p)[33]),	// poison
-					Float.parseFloat(input.get(p)[34]), Float.parseFloat(input.get(p)[35]), Integer.parseInt(input.get(p)[36])),																// silence
-					Elements.valueOf(input.get(p)[37]));																																					// elem
+			int id = Integer.parseInt(input.get(p)[0]) ;
+			String name = input.get(p)[1] ;
+			String description = input.get(p)[3] ;
+			int price = Integer.parseInt(input.get(p)[5]) ;
+			float dropChance = Float.parseFloat(input.get(p)[6]) ;
+			int forgeLevel = 0;
+			
+			int life = Integer.parseInt(input.get(p)[7]) ;
+			int MP = Integer.parseInt(input.get(p)[8]) ;
+			int phyAtk = Integer.parseInt(input.get(p)[9]) ;
+			int magAtk = Integer.parseInt(input.get(p)[10]) ;
+			int phyDef = Integer.parseInt(input.get(p)[11]) ;
+			int magDef = Integer.parseInt(input.get(p)[12]) ;
+			int dex = Integer.parseInt(input.get(p)[13]) ;
+			int agi = Integer.parseInt(input.get(p)[14]) ;
+			double critAtkChance = Double.parseDouble(input.get(p)[15]) ;
+			double critDefChance = Double.parseDouble(input.get(p)[16]) ;
+			double stunAtkChance = Double.parseDouble(input.get(p)[17]) ;
+			double stunDefChance = Double.parseDouble(input.get(p)[18]) ;
+			int stunDuration = Integer.parseInt(input.get(p)[19]) ;
+			double blockAtkChance = Double.parseDouble(input.get(p)[20]) ;
+			double blockDefChance = Double.parseDouble(input.get(p)[21]) ;
+			int blockDuration = Integer.parseInt(input.get(p)[22]) ;
+			double bloodAtkChance = Double.parseDouble(input.get(p)[23]) ;
+			double bloodDefChance = Double.parseDouble(input.get(p)[24]) ;
+			int bloodAtk = Integer.parseInt(input.get(p)[25]) ;
+			int bloodDef = Integer.parseInt(input.get(p)[26]) ;
+			int bloodDuration = Integer.parseInt(input.get(p)[27]) ;
+			double poisonAtkChance = Double.parseDouble(input.get(p)[28]) ;
+			double poisonDefChance = Double.parseDouble(input.get(p)[29]) ;
+			int poisonAtk = Integer.parseInt(input.get(p)[30]) ;
+			int poisonDef = Integer.parseInt(input.get(p)[31]) ;
+			int poisonDuration = Integer.parseInt(input.get(p)[32]) ;
+			double silenceAtkChance = Double.parseDouble(input.get(p)[33]) ;
+			double silenceDefChance = Double.parseDouble(input.get(p)[34]) ;
+			int silenceDuration = Integer.parseInt(input.get(p)[35]) ;
+	
+			AttributeBonus attBonus = new AttributeBonus(life, MP,
+					phyAtk,	magAtk, phyDef, magDef,	dex, agi,
+					critAtkChance, critDefChance,
+					stunAtkChance, stunDefChance, stunDuration,
+					blockAtkChance, blockDefChance, blockDuration,
+					bloodAtkChance, bloodDefChance, bloodAtk, bloodDef, bloodDuration,
+					poisonAtkChance, poisonDefChance, poisonAtk, poisonDef, poisonDuration,
+					silenceAtkChance, silenceDefChance, silenceDuration);
+			
+			Elements elem = Elements.valueOf(input.get(p)[36]) ;
+			
+			allEquips[p] = new Equip(id, name, description, price, dropChance, forgeLevel, attBonus, elem);																																					// elem
 		}		
 	}
 
@@ -115,6 +174,8 @@ public class Equip extends Item
 		return false ;
 	}
 	
+	public void resetElem() { elem = originalElem ;}
+	
 	public void resetForgeLevel()
 	{
 		attBonus.resetAll() ;
@@ -131,9 +192,9 @@ public class Equip extends Item
 			increment[i] = forgeBonus * bonuses[i] ;
 		}
 		attBonus.inc(increment) ;
-		System.out.println(attBonus);
 		forgeLevel += 1 ;
 	}
+	
 	
 	private void applyBonus(PersonalAttributes PA, BattleAttributes BA, Equip equip, double mult)
 	{
