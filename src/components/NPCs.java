@@ -515,8 +515,8 @@ public class NPCs
 	{
 		
 		if (action == null) { return ;}
-
-		Quest quest = Game.getAllQuests()[id - 28] ;
+System.out.println(id);
+		Quest quest = Game.getAllQuests()[id - 25] ;
 		
 		if (action.equals("Enter") & selOption == 0)
 		{
