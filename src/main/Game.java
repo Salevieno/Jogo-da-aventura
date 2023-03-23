@@ -91,6 +91,7 @@ import utilities.RelativePos;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
+import windows.BankWindow;
 import windows.CraftWindow;
 import windows.ShoppingWindow;
 
@@ -284,7 +285,8 @@ public class Game extends JPanel
 					options[j] = Game.allText.get(name + "Opcoes" + j) ;
 				}
 			}
-			
+			if (job.equals(NPCJobs.banker)) { options = new String[][] {{"Sim", "Não"}, {}, {"Depositar", "Sacar", "Investir com baixo risco", "Investir com alto risco"}, {}, {}, {}, {}, {}, {}} ;}
+
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}
     	
@@ -474,6 +476,7 @@ public class Game extends JPanel
 				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29 + 3 * i])) ;
 				int NPCPosY = (int) (sky.height + screen.getSize().height * Double.parseDouble(input.get(id)[30 + 3 * i])) ;
 				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
+
 				npcs.add(new NPCs(i + 17 * id, NPCType, NPCPos)) ;
 			}
 			
@@ -809,6 +812,21 @@ public class Game extends JPanel
 			player.getOpponent().incrementBattleActionCounters() ;
 		}
 		
+		for (CityMap city : cityMaps)
+		{
+			BankWindow bank = (BankWindow) city.getBuildings().get(3).getNPCs().get(0).getWindow() ;
+			if (bank.isInvested())
+			{
+//				System.out.println(bank.isInvested() + " " + bank.getInvestmentCounter()) ;
+				bank.incInvestmentCounter() ;
+				if (bank.investmentIsComplete())
+				{
+					bank.completeInvestment() ;
+//					System.out.println("balance = " + bank.getBalance()) ;
+				}
+			}
+		}
+		
 		
 	}
 	
@@ -904,8 +922,8 @@ public class Game extends JPanel
 			konamiCode() ;
 		}
 		// draw the map (cities, forest, etc.)
-		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
-		sideBar.display(player, pet, mousePos, DP);
+//		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
+//		sideBar.display(player, pet, mousePos, DP);
 		
 		// creatures act
 		if (player.getMap().isAField())
@@ -944,13 +962,13 @@ public class Game extends JPanel
 			}
 		}
 		player.applyAdjacentGroundEffect() ;
-		player.DrawAttributes(0, DP) ;
-		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
-		if (player.weaponIsEquipped())
-		{
-			player.drawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
-		}
-		player.displayState(DP) ;
+//		player.DrawAttributes(0, DP) ;
+//		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
+//		if (player.weaponIsEquipped())
+//		{
+//			player.drawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
+//		}
+//		player.displayState(DP) ;
 		
 		
 		// pet acts
@@ -1046,8 +1064,8 @@ public class Game extends JPanel
 		try {Equip.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the equip items
 		try {GeneralItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the general items
 		try {Fab.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the fabrication items
-		try {QuestItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the quest items	
-    	
+		try {QuestItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the quest items
+		
 		
     	// Minimum initialization
     	DayDuration = 120000 ;
@@ -1094,8 +1112,8 @@ public class Game extends JPanel
     	player.getBag().Add(Forge.getAll()[2], 3) ;
     	player.getBag().Add(Forge.getAll()[3], 3) ;
     	player.getBag().Add(Equip.getAll()[0], 3) ;
-    	player.getBag().Add(Equip.getAll()[1], 3) ;
-    	player.getBag().Add(Equip.getAll()[2], 3) ;
+//    	player.getBag().Add(Equip.getAll()[1], 3) ;
+//    	player.getBag().Add(Equip.getAll()[2], 3) ;
 //    	System.out.println(player.getBag().numberItems);
 //    	for (int i = 0; i <= Potion.getAll().length - 1; i += 1) { player.getBag().Add(Potion.getAll()[i], 3) ; }
 //    	player.addQuest(allQuests[1]) ;
@@ -1124,7 +1142,7 @@ public class Game extends JPanel
     	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
@@ -1169,21 +1187,13 @@ public class Game extends JPanel
 //    	System.out.println(fieldMaps[12].allColliders());
     	player.decSpellPoints(-10) ;
 //    	player.getPA().getExp().incCurrentValue(500) ;
-    	player.setPos(new Point(330, 250)) ;
+    	player.setPos(new Point(130, 181)) ;
     	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(20, 20))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 200), new Dimension(50, 10))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 199), new Dimension(10, 10))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 203), new Dimension(10, 10))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(200, 200), new Dimension(10, 10))) ;
     	
-    	System.out.println(Equip.getAll()[0]);
-    	for (int i = 0; i <= 9; i += 1)
-    	{ 
-        	Equip.getAll()[0].incForgeLevel();
-        	System.out.println(Equip.getAll()[0]);
-    	}
-    	Equip.getAll()[0].setElem(Elements.fire);
-    	System.out.println(Equip.getAll()[0]);
 	}
 	
 	private void testing()

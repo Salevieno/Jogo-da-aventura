@@ -5,15 +5,10 @@ import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
@@ -59,7 +54,7 @@ public class NPCs
 		menu = 0 ;
 		numberMenus = 0 ;
 		
-		if (type.getSpeech() != null) { numberMenus = type.getSpeech().length - 2 ;}
+		if (type.getSpeech() != null) { numberMenus = type.getSpeech().length - 1 ;}
 		
 		switch (type.getJob())
 		{
@@ -168,13 +163,9 @@ public class NPCs
 
 	public void Contact(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
 	{
-		String action = player.getCurrentAction() ;		
-		if (action != null)
-		{
-			navigate(action) ;
-		}
+//		System.out.println(action);
 		speak(pos, DP) ;
-		
+
 		switch (type.getJob())
 		{		
 			case doctor: 
@@ -240,7 +231,11 @@ public class NPCs
 			}
 			case elemental:
 			{
-				elementalAction((ElementalWindow) window, player.getCurrentAction(), DP) ;
+				List<Equip> listEquips = new ArrayList<Equip> (player.getBag().getEquip().keySet()) ;
+				((ElementalWindow) window).setEquipsForElemChange(listEquips) ;
+				((ElementalWindow) window).setSpheres(ElementalWindow.spheresInBag(player.getBag())) ;
+				
+				elementalAction(player.getBag(), (ElementalWindow) window, player.getCurrentAction(), DP) ;
 
 				break ;
 			}
@@ -256,7 +251,7 @@ public class NPCs
 			}
 			case sailor:
 			{
-				sailorAction(player, action) ;
+				sailorAction(player, player.getCurrentAction()) ;
 
 				break ;
 			}
@@ -284,19 +279,32 @@ public class NPCs
 
 				break ;
 			}
-			default: break;
+			
+			default: break;			
 		}
+		
+
+		if (player.getCurrentAction() != null) { navigate(player.getCurrentAction()) ;}
+		
 	}
 	
 	public void navigate(String action)
 	{
 		switchOption(action) ;
-		navigateMenu(action) ;
+		
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) & menu <= numberMenus - 1)
+		{
+//			incMenu() ;
+		}
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) & 0 < menu)
+		{
+//			decMenu() ;
+		}
 	}
 	
 	public void switchOption(String action)
 	{
-		if (action.equals(Player.ActionKeys[2]) & selOption <= type.getOptions().length - 2)
+		if (action.equals(Player.ActionKeys[2]) & selOption <= type.getOptions().length - 1)
 		{
 			selOption += 1 ;
 		}
@@ -306,19 +314,6 @@ public class NPCs
 		}
 	}
 	
-	public void navigateMenu(String action)
-	{
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) & menu <= numberMenus - 2)
-		{
-			menu += 1;
-			//menu = selOption ;
-		}
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) & 0 < menu)
-		{
-			menu += -1 ;
-		}
-	}
-		
 	public void speak(Point pos, DrawingOnPanel DP)
 	{
 		String content = type.getSpeech()[menu] ;
@@ -425,15 +420,30 @@ public class NPCs
 	public void elementalAction(BagWindow bag, ElementalWindow elementalWindow, String action, DrawingOnPanel DP)
 	{
 		
-		elementalWindow.display(DP) ;
-		
+//		elementalWindow.display(DP) ;
+
 		if (action == null) { return ;}
 
 		elementalWindow.navigate(action) ;
 		if (action.equals("Enter") | action.equals("MouseLeftClick"))
 		{
-			changeEquipElement(bag, equip) ;
-		}
+			switch (menu)
+			{
+				case 0: menu = selOption == 0 ? 1 : type.getSpeech().length - 1 ; break ;
+				case 1:
+				{
+					if (elementalWindow.getSpheres() == null | elementalWindow.getSpheres().size() <= 0) { menu = 4 ;}
+					else { elementalWindow.selectSphere() ; menu = 2 ;}
+					break ;
+				}
+				case 2:
+				{
+					if (elementalWindow.getSelectedEquip() == null | elementalWindow.getSelectedSphere() == null) { menu = 3 ;}
+					else { elementalWindow.changeEquipElement(bag) ; menu = 5 ;}
+					break ;
+				}
+			}
+		}		
 		
 	}
 	
@@ -444,7 +454,7 @@ public class NPCs
 		
 		if (action.equals("Enter") & menu == 0 & selOption == 0)
 		{
-			incMenu() ;
+//			incMenu() ;
 		}
 		if (action.equals("Enter") & menu == 0)
 		{
@@ -473,6 +483,7 @@ public class NPCs
 	
 	public void bankerAction(BagWindow bag, BankWindow bankWindow, String action, DrawingOnPanel DP)
 	{
+		
 		bankWindow.display(DP) ;
 
 		if (menu == 1) { bankWindow.displayInput("Quanto gostaria de depositar?", action, DP) ;}
@@ -481,36 +492,30 @@ public class NPCs
 
 		bankWindow.navigate(action) ;
 		
-		if (bankWindow.isInvested() & bankWindow.investmentIsComplete())
-		{
-			bankWindow.updateValueInvested() ;
-			bankWindow.restartInvestment() ;
-		}
+		if (menu == 1) { bankWindow.readValue(action, DP) ;}
 		
-		if (menu == 1)
+		if (!action.equals("Enter") & !action.equals("MouseLeftClick")) { return ;}
+		
+		switch (menu)
 		{
-			bankWindow.readValue(action, DP) ;
-		}
-		if (action.equals("Enter") | action.equals("MouseLeftClick"))
-		{
-			if (menu == 2)
+			case 0: menu = selOption == 0 ? 1 : type.getSpeech().length - 1 ; break ;
+			case 1: incMenu() ; break ;
+			case 2:
 			{
-				if (selOption == 0)
+				int amount = bankWindow.getAmountTyped() ;
+				switch (selOption)
 				{
-					int amount = bankWindow.getAmountTyped() ;
-					bankWindow.deposit(bag, amount) ;
-					System.out.println("amount deposited = " + amount);
+					case 0: bankWindow.deposit(bag, amount) ; break ;
+					case 1: bankWindow.withdraw(bag, amount) ; break ;
+					case 2: bankWindow.invest(bag, amount, false) ; break ;
+					case 3: bankWindow.invest(bag, amount, true) ; break ;
 				}
-				if (selOption == 1)
-				{
-					int amount = bankWindow.getAmountTyped() ;
-					bankWindow.withdraw(bag, amount) ;
-					System.out.println("amount withdrew = " + amount);
-				}
-				
+
 				menu = numberMenus ;
+				break ;
 			}
 		}
+		
 	}
 	
 	public void questAction(List<Quest> quests, BagWindow bag, PersonalAttributes PA, Map<QuestSkills, Boolean> skills, String action)
@@ -538,7 +543,7 @@ System.out.println(id);
 			if (quest.isComplete())
 			{
 				quest.complete(bag, PA, skills) ;
-				incMenu() ;
+//				incMenu() ;
 				quests.remove(quest) ;
 			}
 			

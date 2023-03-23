@@ -713,7 +713,7 @@ public class Player extends LiveBeing
 			boolean metNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
 			
 			if (!metNPC) { continue ;}
-			System.out.println(npc.getType().getName());
+//			System.out.println(npc.getType().getName());
 			npc.Contact(this, Game.getPet(), mousePos, DP) ;
 			
 			break ;

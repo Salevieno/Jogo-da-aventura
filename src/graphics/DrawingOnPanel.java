@@ -211,6 +211,21 @@ public class DrawingOnPanel
 		}
 		G.setStroke(new BasicStroke(stdStroke)) ;
 	}
+	public void DrawArc(Point center, int diameter, int stroke, int startAngle, int endAngle, Color color, Color contourColor)
+	{
+		G.setColor(color) ;
+		G.setStroke(new BasicStroke(stroke)) ;
+		if (color != null)
+		{
+			G.fillArc(center.x - diameter/2, center.y - diameter/2, diameter, diameter, startAngle, endAngle) ;
+		}
+		if (contourColor != null)
+		{
+			G.setColor(contourColor) ;
+			G.drawArc(center.x - diameter/2, center.y - diameter/2, diameter, diameter, startAngle, endAngle) ;
+		}
+		G.setStroke(new BasicStroke(stdStroke)) ;
+	}
 	public void DrawCircle(Point center, int diameter, int stroke, Color color, Color contourColor)
 	{
 		G.setColor(color) ;

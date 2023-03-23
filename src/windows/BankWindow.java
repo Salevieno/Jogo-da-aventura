@@ -1,7 +1,7 @@
 package windows;
 
 import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 
 import graphics.DrawingOnPanel;
@@ -18,38 +18,49 @@ public class BankWindow extends GameWindow
 	private Point windowPos ;
 	private int amountTyped ;
 	private int balance ;
+	private int investedAmount ;
 	private boolean isInvested ;
+	private String investmentRisk ;
 	private TimeCounter investmentCounter ;
+	
+	private static final String[] investmentRiskLevels = new String[] {"low", "high"} ;
+	public static final Image clock = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "clock.png") ;
 	
 	public BankWindow()
 	{
-		super("Bank", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Bank.png"), 1, 1, 1, 1) ;
-		windowPos = new Point((int)(0.4*Game.getScreen().getSize().width), (int)(0.2*Game.getScreen().getSize().height)) ;
+		super("Bank", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Banco.png"), 1, 1, 1, 1) ;
+		windowPos = new Point((int)(0.6*Game.getScreen().getSize().width), (int)(0.2*Game.getScreen().getSize().height)) ;
 		amountTyped = 0 ;
 		balance = 0 ;
+		investedAmount = 0 ;
 		isInvested = false ;
-		investmentCounter = new TimeCounter(0, 1000) ;	// TODO where to inc this counter?
+		investmentCounter = new TimeCounter(0, 10000) ;
 	}
 
 	
 	
 	public int getAmountTyped() { return amountTyped ;}
 	public int getBalance() { return balance;}
+	public TimeCounter getInvestmentCounter() { return investmentCounter ;}
+
 	public boolean isInvested() { return isInvested;}
 	public boolean investmentIsComplete() { return investmentCounter.finished() ;}
 	
-	public void restartInvestment() { investmentCounter.reset() ;}
-
-
+	public void incInvestmentCounter() { investmentCounter.inc() ;}
+	public void completeInvestment()
+	{
+		double rate = investmentRisk.equals(investmentRiskLevels[0]) ? Math.random() <= 0.95 ? 1.05 : 0.95 : Math.random() <= 0.6 ? 1.2 : 0.9 ;
+		
+		investedAmount = (int) (investedAmount * rate) ;
+		balance += investedAmount ;
+		investedAmount = 0 ;
+		investmentCounter.reset() ;
+		isInvested = false ;
+	}
+	
 	public void navigate(String action)
 	{
 
-	}
-	
-	public void updateValueInvested()
-	{
-		double rate = Math.random() <= 0.8 ? 1.05 : 0.95 ;
-		balance = (int) (balance * rate) ;
 	}
 
 	public void deposit(BagWindow bag, int amount)
@@ -67,7 +78,18 @@ public class BankWindow extends GameWindow
 		if (balance < amountWithFee) { return ;}
 		
 		balance += -amountWithFee ;
-		bag.addGold(amount) ;
+		bag
+		.addGold(amount) ;
+	}
+	
+	public void invest(BagWindow bag, int amount, boolean highRisk)
+	{
+		if (!bag.hasEnoughGold(amount)) { return ;}
+		
+		investmentRisk = highRisk ? investmentRiskLevels[1] : investmentRiskLevels[0] ;
+		isInvested = true ;
+		investedAmount += amount ;
+		bag.removeGold(amount) ;
 	}
 	
 	public void displayInput(String message, String action, DrawingOnPanel DP)
@@ -91,14 +113,34 @@ public class BankWindow extends GameWindow
 		return 0 ;
 	}
 	
+	private void drawInvestmentTimer(Point pos, double timeRate, DrawingOnPanel DP)
+	{
+		DP.DrawImage(clock, pos, Align.center) ;
+		DP.DrawArc(pos, 16, 1, 90, (int) (-360 * timeRate), Game.ColorPalette[2], null) ;
+	}
+	
 	public void display(DrawingOnPanel DP)
 	{
+		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 16) ;
 		double angle = DrawingOnPanel.stdAngle ;
-		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
 		
-		Point balancePos = UtilG.Translate(windowPos, 50, (int) (0.8 * size.height)) ;
-		DP.DrawImage(Player.CoinIcon, balancePos, Align.center) ;
-		DP.DrawText(balancePos, Align.centerLeft, DrawingOnPanel.stdAngle, String.valueOf(balance), stdFont, Game.ColorPalette[9]) ;
+		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
+
+		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.ColorPalette[2]) ;
+		
+		Point balancePos = UtilG.Translate(windowPos, border + 20, (int) border + 35) ;
+		Point investmentPos = UtilG.Translate(windowPos, border + 110, border + 35) ;
+		
+		DP.DrawText(balancePos, Align.centerLeft, DrawingOnPanel.stdAngle, "Saldo", stdFont, Game.ColorPalette[9]) ;
+		DP.DrawText(investmentPos, Align.centerLeft, DrawingOnPanel.stdAngle, "Investimento", stdFont, Game.ColorPalette[9]) ;
+		
+		drawInvestmentTimer(UtilG.Translate(investmentPos, 80, 0), investmentCounter.rate(), DP) ;
+
+		DP.DrawImage(Player.CoinIcon, UtilG.Translate(balancePos, 0, 20), Align.centerLeft) ;
+		DP.DrawText(UtilG.Translate(balancePos, 15, 20), Align.centerLeft, DrawingOnPanel.stdAngle, String.valueOf(balance), stdFont, Game.ColorPalette[9]) ;
+		DP.DrawImage(Player.CoinIcon, UtilG.Translate(investmentPos, 0, 20), Align.centerLeft) ;
+		DP.DrawText(UtilG.Translate(investmentPos, 15, 20), Align.centerLeft, DrawingOnPanel.stdAngle, String.valueOf(investedAmount), stdFont, Game.ColorPalette[9]) ;
+		
 	}
 
 }

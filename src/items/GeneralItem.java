@@ -85,7 +85,7 @@ public class GeneralItem extends Item
 	@Override
 	public String toString()
 	{
-		return "GeneralItem [id=" + id + "   name= " + name + "]" ;
+		return "GeneralItem [id=" + id + ", name= " + name + "]" ;
 	}
 	
 

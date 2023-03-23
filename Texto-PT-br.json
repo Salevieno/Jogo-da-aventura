@@ -263,11 +263,11 @@
 
   "ElementalFalas": [
     "Olá, quer mudar o elemento de seus equipamentos?",
-    "Qual equipamento vc quer alterar?",
     "Qual esfera vc quer usar?",
-    "Você precisa estar com o equipamento equipado!",
+    "Qual equipamento vc quer alterar?",
+    "Vc não possui equipamentos!",
+    "Vc não possui esferas elementais!",
     "Elemento adicionado!",
-    "Vc não tem os ingredientes necessários!",
     "Obrigado e até mais!"
   ],
 
