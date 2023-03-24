@@ -258,23 +258,23 @@ public class DrawingOnPanel
 	
 	
 	// composed methods
-	public void DrawSpeech(Point Pos, String text, Font font, Image NPCimage, Image SpeakingBubble, Color color)
+	public void DrawSpeech(Point pos, String text, Font font, Image NPCimage, Image speechBubble, Color color)
 	{
 		// obs: text must end with . , ? or ! for this function to work
-		int ImageL = SpeakingBubble.getWidth(null), ImageH = SpeakingBubble.getHeight(null) ;
-		Pos = new Point (Pos.x, Pos.y - NPCimage.getHeight(null)) ;
-		int maxTextL = 20 ;
-		if (0.7 * screenSize.width < Pos.x)
+		int bubbleL = speechBubble.getWidth(null), bubbleH = speechBubble.getHeight(null) ;
+		if (0.7 * screenSize.width < pos.x)
 		{
-			DrawImage(SpeakingBubble, new Point(Pos.x + ImageL, Pos.y), stdAngle, new Scale(1, 1), true, false, Align.bottomCenter, 1) ;
+			DrawImage(speechBubble, UtilG.Translate(pos, bubbleL, 0), stdAngle, new Scale(1, 1), true, false, Align.bottomCenter, 1) ;
 		}
 		else
 		{
-			DrawImage(SpeakingBubble, Pos, stdAngle, new Scale(1, 1), Align.bottomCenter) ;
+			DrawImage(speechBubble, pos, stdAngle, new Scale(1, 1), Align.bottomCenter) ;
 		}
-		Point pos = new Point((int) (Pos.x - ImageL / 2 + 14), (int) (Pos.y - ImageH + 5)) ;
-		int sy = UtilG.TextH(font.getSize() + 1) ;
-		DrawFitText(pos, sy, Align.topLeft, text, font, maxTextL, color) ;		
+		
+		Point textPos = UtilG.Translate(pos, 14 - bubbleL / 2, 5 - bubbleH) ;
+		int maxTextL = 20 ;
+		int sy = font.getSize() + 1 ;
+		DrawFitText(textPos, sy, Align.topLeft, text, font, maxTextL, color) ;		
 	}
 	
 	public void DrawWindowArrows(Point pos, int width, int selectedWindow, int numberWindows)

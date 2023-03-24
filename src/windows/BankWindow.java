@@ -28,8 +28,8 @@ public class BankWindow extends GameWindow
 	
 	public BankWindow()
 	{
-		super("Bank", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Banco.png"), 1, 1, 1, 1) ;
-		windowPos = new Point((int)(0.6*Game.getScreen().getSize().width), (int)(0.2*Game.getScreen().getSize().height)) ;
+		super("Banco", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Banco.png"), 1, 1, 1, 1) ;
+		windowPos = new Point((int)(0.4*Game.getScreen().getSize().width), (int)(0.2*Game.getScreen().getSize().height)) ;
 		amountTyped = 0 ;
 		balance = 0 ;
 		investedAmount = 0 ;
@@ -121,20 +121,20 @@ public class BankWindow extends GameWindow
 	
 	public void display(DrawingOnPanel DP)
 	{
-		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 16) ;
+		Point titlePos = UtilG.Translate(windowPos, size.width / 2, border + 10) ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
 		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
 
 		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.ColorPalette[2]) ;
 		
-		Point balancePos = UtilG.Translate(windowPos, border + 20, (int) border + 35) ;
-		Point investmentPos = UtilG.Translate(windowPos, border + 110, border + 35) ;
+		Point balancePos = UtilG.Translate(windowPos, border + padding + 4, (int) border + 30) ;
+		Point investmentPos = UtilG.Translate(windowPos, border + padding + 4, border + 90) ;
 		
 		DP.DrawText(balancePos, Align.centerLeft, DrawingOnPanel.stdAngle, "Saldo", stdFont, Game.ColorPalette[9]) ;
 		DP.DrawText(investmentPos, Align.centerLeft, DrawingOnPanel.stdAngle, "Investimento", stdFont, Game.ColorPalette[9]) ;
 		
-		drawInvestmentTimer(UtilG.Translate(investmentPos, 80, 0), investmentCounter.rate(), DP) ;
+		drawInvestmentTimer(UtilG.Translate(investmentPos, 110, 2), investmentCounter.rate(), DP) ;
 
 		DP.DrawImage(Player.CoinIcon, UtilG.Translate(balancePos, 0, 20), Align.centerLeft) ;
 		DP.DrawText(UtilG.Translate(balancePos, 15, 20), Align.centerLeft, DrawingOnPanel.stdAngle, String.valueOf(balance), stdFont, Game.ColorPalette[9]) ;

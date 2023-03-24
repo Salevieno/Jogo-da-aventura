@@ -285,7 +285,7 @@ public class Game extends JPanel
 					options[j] = Game.allText.get(name + "Opcoes" + j) ;
 				}
 			}
-			if (job.equals(NPCJobs.banker)) { options = new String[][] {{"Sim", "Não"}, {}, {"Depositar", "Sacar", "Investir com baixo risco", "Investir com alto risco"}, {}, {}, {}, {}, {}, {}} ;}
+			if (job.equals(NPCJobs.banker)) { options = new String[][] {{"Sim", "Não"}, {"Depositar", "Sacar", "Investir com baixo risco", "Investir com alto risco"}, {}, {}, {}, {}, {}, {}, {}} ;}
 
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}
@@ -922,8 +922,8 @@ public class Game extends JPanel
 			konamiCode() ;
 		}
 		// draw the map (cities, forest, etc.)
-//		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
-//		sideBar.display(player, pet, mousePos, DP);
+		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
+		sideBar.display(player, pet, mousePos, DP);
 		
 		// creatures act
 		if (player.getMap().isAField())
@@ -962,13 +962,13 @@ public class Game extends JPanel
 			}
 		}
 		player.applyAdjacentGroundEffect() ;
-//		player.DrawAttributes(0, DP) ;
-//		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
-//		if (player.weaponIsEquipped())
-//		{
-//			player.drawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
-//		}
-//		player.displayState(DP) ;
+		player.DrawAttributes(0, DP) ;
+		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
+		if (player.weaponIsEquipped())
+		{
+			player.drawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
+		}
+		player.displayState(DP) ;
 		
 		
 		// pet acts

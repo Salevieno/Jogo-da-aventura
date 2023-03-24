@@ -41,8 +41,8 @@ public class NPCs
 	private GameWindow window ;
 	private List<Collider> colliders ;
 
-	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-	public static final Image SpeakingBubble = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeakingBubble.png") ;
+	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 11) ;
+	public static final Image SpeakingBubble = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeechBubble.png") ;
 	public static final Image ChoicesWindow = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "ChoicesWindow.png") ;
 	
 	public NPCs (int id, NPCType type, Point pos)
@@ -165,6 +165,8 @@ public class NPCs
 	{
 //		System.out.println(action);
 		speak(pos, DP) ;
+		if (type.getOptions() != null) { drawOptions(UtilG.Translate(pos, 20, -10), DP) ;}
+				
 
 		switch (type.getJob())
 		{		
@@ -316,15 +318,12 @@ public class NPCs
 	
 	public void speak(Point pos, DrawingOnPanel DP)
 	{
+		
 		String content = type.getSpeech()[menu] ;
-		if (!content.equals(""))
-		{
-			DP.DrawSpeech(pos, content, NPCfont, type.getImage(), SpeakingBubble, type.getColor()) ;
-		}
-		if (type.getOptions() != null)
-		{
-			drawOptions(selOption, type.getOptions()[menu], type.getColor(), DP);
-		}
+		Point speechPos = UtilG.Translate(pos, -22, -2 - type.getImage().getHeight(null)) ;
+		
+		if (!content.equals("")) { DP.DrawSpeech(speechPos, content, NPCfont, type.getImage(), SpeakingBubble, type.getColor()) ;}		
+		
 	}
 	
 	public void doctorAction(PersonalAttributes playerPA, PersonalAttributes petPA)
@@ -486,13 +485,13 @@ public class NPCs
 		
 		bankWindow.display(DP) ;
 
-		if (menu == 1) { bankWindow.displayInput("Quanto gostaria de depositar?", action, DP) ;}
+		if (menu == 2) { bankWindow.displayInput("Quanto gostaria de depositar?", action, DP) ;}
 		
 		if (action == null) { return ;}
 
 		bankWindow.navigate(action) ;
 		
-		if (menu == 1) { bankWindow.readValue(action, DP) ;}
+		if (menu == 2) { bankWindow.readValue(action, DP) ;}
 		
 		if (!action.equals("Enter") & !action.equals("MouseLeftClick")) { return ;}
 		
@@ -557,16 +556,18 @@ System.out.println(id);
 		DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomCenter) ;
 	}
 
-	public void drawOptions(int selOption, String[] options, Color color, DrawingOnPanel DP)
+	public void drawOptions(Point windowPos, DrawingOnPanel DP)
 	{
+
+		String[] options = type.getOptions()[menu] ;
+		Color color = type.getColor() ;
 		
-		if (options == null) { return ;}
+		if (options == null | options.length <= 0) { return ;}
 		
-		Point windowPos = UtilG.Translate(pos, - type.getImage().getWidth(null) - 10, 0) ;
 		
 		DP.DrawImage(ChoicesWindow, windowPos, Align.topLeft) ;
 		
-		int sy = 2 * NPCfont.getSize() ;
+		int sy = NPCfont.getSize() + 5 ;
 		for (int i = 0 ; i <= options.length - 1 ; i += 1)
 		{
 			Point textPos = UtilG.Translate(windowPos, 5, 5 + i * sy) ;
