@@ -1,18 +1,18 @@
-﻿ID,Nome,Name,DescriÃ§Ã£o,Description,Price,Drop chance,Atk power,Elem
+﻿ID,Nome,Name,Descrição,Description,Price,Drop chance,Atk power,Elem
 0,flecha de madeira,wood arrow,-,-,5,30,3,neutral
-1,flecha de aÃ§o,steel arrow,-,-,15,30,8,neutral
+1,flecha de aço,steel arrow,-,-,15,30,8,neutral
 2,flecha da montanha,mountain arrow,-,-,30,30,15,neutral
-3,flecha lunar,lunar arrow,-,-,50,30,25,neutral
+3,flecha lunar,lunar arrow,-,-,50,30,25,neutrals
 4,flecha do oceano,ocean arrow,-,-,60,30,50,neutral
 5,flecha de magma,magma arrow,-,-,80,30,80,neutral
-6,flecha de Ã¡gua,water arrow,-,-,50,30,50,water
+6,flecha de água,water arrow,-,-,50,30,50,water
 7,flecha de fogo,fire arrow,-,-,50,30,50,fire
 8,flecha de planta,plant arrow,-,-,50,30,50,plant
 9,flecha de terra,earth arrow,-,-,50,30,50,earth
 10,flecha de ar,air arrow,-,-,50,30,50,air
-11,flecha de trovÃ£o,thunder arrow,-,-,50,30,50,thunder
+11,flecha de trovão,thunder arrow,-,-,50,30,50,thunder
 12,flecha de luz,light arrow,-,-,50,30,50,light
-13,flecha de escuridÃ£o,dark arrow,-,-,50,30,50,dark
+13,flecha de escuridão,dark arrow,-,-,50,30,50,dark
 14,flecha de neve,snow arrow,-,-,50,30,50,snow
 15,flecha retardadora,slowing arrow,-,-,50,30,50,neutral
 16,flecha atordoante,stunning arrow,-,-,50,30,50,neutral

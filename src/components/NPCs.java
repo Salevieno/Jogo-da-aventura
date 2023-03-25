@@ -251,7 +251,13 @@ public class NPCs
 			{
 				break ;
 			}
-			case sailor:
+			case sailorToIsland:
+			{
+				sailorAction(player, player.getCurrentAction()) ;
+
+				break ;
+			}
+			case sailorToForest:
 			{
 				sailorAction(player, player.getCurrentAction()) ;
 
@@ -318,11 +324,12 @@ public class NPCs
 	
 	public void speak(Point pos, DrawingOnPanel DP)
 	{
+		if (type.getSpeech()[menu].equals("")) { return ;}
 		
 		String content = type.getSpeech()[menu] ;
 		Point speechPos = UtilG.Translate(pos, -22, -2 - type.getImage().getHeight(null)) ;
 		
-		if (!content.equals("")) { DP.DrawSpeech(speechPos, content, NPCfont, type.getImage(), SpeakingBubble, type.getColor()) ;}		
+		DP.DrawSpeech(speechPos, content, NPCfont, SpeakingBubble, type.getColor()) ;
 		
 	}
 	
@@ -379,7 +386,7 @@ public class NPCs
 			if (spellsTree.canAcquireSpell(player.getSpellPoints()))
 			{
 				spellsTree.acquireSpell(player.getSpells()) ;
-				player.decSpellPoints(1) ;
+				player.decSpellPoints() ;
 			}
 		}
 		
@@ -470,7 +477,7 @@ public class NPCs
 		if (action.equals("Enter") & selOption == 0)
 		{
 			if (player.getMap().getName().equals("Forest 13")) { player.setMap(Game.getMaps()[39]) ; player.setPos(pos) ; return ;}
-			if (player.getMap().getName().equals("Island 1")) { player.setMap(Game.getMaps()[12]) ; player.setPos(pos) ; return ;}
+			if (player.getMap().getName().equals("Island 1")) { player.setMap(Game.getMaps()[17]) ; player.setPos(pos) ; return ;}
 		}
 	}
 	
@@ -558,12 +565,12 @@ System.out.println(id);
 
 	public void drawOptions(Point windowPos, DrawingOnPanel DP)
 	{
-
+		// TODO transformar choices numa GameWindow
 		String[] options = type.getOptions()[menu] ;
-		Color color = type.getColor() ;
+		Color selColor = Game.ColorPalette[3] ;
 		
-		if (options == null | options.length <= 0) { return ;}
-		
+		if (options == null) { return ;}		
+		if (options.length <= 0) { return ;}
 		
 		DP.DrawImage(ChoicesWindow, windowPos, Align.topLeft) ;
 		
@@ -571,7 +578,7 @@ System.out.println(id);
 		for (int i = 0 ; i <= options.length - 1 ; i += 1)
 		{
 			Point textPos = UtilG.Translate(windowPos, 5, 5 + i * sy) ;
-			Color textColor = i == selOption ? Game.ColorPalette[5] : color ;
+			Color textColor = i == selOption ? selColor : Game.ColorPalette[9] ;
 			DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, String.valueOf(i) + " - " + options[i], NPCfont, textColor) ;
 		}
 		

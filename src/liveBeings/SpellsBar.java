@@ -3,6 +3,7 @@ package liveBeings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +18,9 @@ import utilities.UtilG;
 
 public class SpellsBar
 {	
+	
+	private static final Image image = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "SpellsBar.png") ;
+	
 	public static void display(int currentMP, List<Spell> spells, List<Spell> ActiveSpells, Point mousePos, Color BGcolor, Color TextColor, DrawingOnPanel DP)
 	{
 		Font Titlefont = new Font("SansSerif", Font.BOLD, 10) ;
@@ -36,7 +40,8 @@ public class SpellsBar
 		//Color BGcolor = Player.ClassColors[player.getJob()] ;
 		//Color TextColor = player.getColor() ;
 		
-		DP.DrawRoundRect(Pos, Align.bottomLeft, size, 1, colorPalette[7], BGcolor, true) ;
+//		DP.DrawRoundRect(Pos, Align.bottomLeft, size, 1, colorPalette[7], BGcolor, true) ;
+		DP.DrawImage(image, Pos, Align.bottomLeft) ;
 		DP.DrawText(new Point(Pos.x + size.width / 2, Pos.y - size.height + 3), Align.topCenter, OverallAngle, Game.allText.get("Barra de habilidades")[0], Titlefont, colorPalette[5]) ;
 		for (int i = 0 ; i <= ActiveSpells.size() - 1 ; ++i)
 		{

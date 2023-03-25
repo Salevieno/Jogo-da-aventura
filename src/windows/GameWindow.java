@@ -1,5 +1,6 @@
 package windows;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
@@ -22,9 +23,12 @@ public abstract class GameWindow
 	protected int window ;
 	protected int numberWindows ;
 	protected Dimension size ;
+	
 	protected final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	protected final Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 11) ;
 	protected final Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	protected final Color stdColor = Game.ColorPalette[9] ;
+	protected final Color selColor = Game.ColorPalette[3] ;
 	protected final int border = 6 ;
 	protected final int padding = 4 ;
 	

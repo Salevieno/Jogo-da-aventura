@@ -262,15 +262,16 @@ public class Game extends JPanel
 	
     private NPCType[] initializeNPCTypes(Languages language)
     {
-    	ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "NPCTypes.csv") ;
+    	List<String[]> input = UtilG.ReadcsvFile(CSVPath + "NPCTypes.csv") ;
 		NPCType[] npcType = new NPCType[input.size()] ;
 		for (int i = 0 ; i <= npcType.length - 1 ; i += 1)
 		{
 			String  name = input.get(i)[language.ordinal()] ;
 			NPCJobs job = NPCJobs.valueOf(input.get(i)[2]) ;
 			String info = input.get(i)[3 + language.ordinal()] ;
-			Color color = ColorPalette[0] ;
-			Image image = !job.toString().equals("master") ?  UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + ".png") : UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + ".gif") ;
+			Color color = job.getColor() ;
+			String imageExtension = !job.equals(NPCJobs.master) ?  ".png" : ".gif" ;
+			Image image = UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + imageExtension) ;
 			String[] speech = new String[] {""} ;
 			
 			// TODO "Falas" em speech -> padronizar para todas as línguas
@@ -285,7 +286,9 @@ public class Game extends JPanel
 					options[j] = Game.allText.get(name + "Opcoes" + j) ;
 				}
 			}
-			if (job.equals(NPCJobs.banker)) { options = new String[][] {{"Sim", "Não"}, {"Depositar", "Sacar", "Investir com baixo risco", "Investir com alto risco"}, {}, {}, {}, {}, {}, {}, {}} ;}
+
+			if (job.equals(NPCJobs.banker)) { options = new String[][] {{"Sim", "Não"}, 
+				{"Depositar", "Sacar", "Investir com baixo risco", "Investir com alto risco"}, {}, {}, {}, {}, {}, {}, {}} ;}
 
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}
@@ -321,7 +324,7 @@ public class Game extends JPanel
     
     private CreatureType[] initializeCreatureTypes(Languages language, double diffMult)
     {
-		ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
+		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
 		String path = ImagesPath + "\\Creatures\\";
     	CreatureType.setNumberOfCreatureTypes(input.size());
 		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()] ;
@@ -474,7 +477,7 @@ public class Game extends JPanel
 				}
 				
 				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29 + 3 * i])) ;
-				int NPCPosY = (int) (sky.height + screen.getSize().height * Double.parseDouble(input.get(id)[30 + 3 * i])) ;
+				int NPCPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[30 + 3 * i])) ;
 				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
 
 				npcs.add(new NPCs(i + 17 * id, NPCType, NPCPos)) ;
@@ -488,7 +491,7 @@ public class Game extends JPanel
     
     private FieldMap[] initializeFieldMaps()
     {
-    	ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsField.csv") ;
+    	List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsField.csv") ;
     	String path = ImagesPath + "\\Maps\\";
     	FieldMap[] fieldMap = new FieldMap[input.size()] ;
 		
@@ -534,14 +537,13 @@ public class Game extends JPanel
 			List<NPCs> npcs = new ArrayList<>() ;
 			if (26 <= input.get(id).length)
 			{				
-				String npcJob = input.get(id)[25] ;
+				NPCJobs npcJob = NPCJobs.valueOf(input.get(id)[25]) ;
 				NPCType NPCType = null ;
-				for (int j = 0 ; j <= getNPCTypes().length - 1 ; j += 1)
+				for (NPCType type : NPCTypes)
 				{
-					if (npcJob.equals(getNPCTypes()[j].getJob().toString()))
-					{
-						NPCType = getNPCTypes()[j] ;
-					}
+					if (!npcJob.equals(type.getJob())) { continue ;}
+					
+					NPCType = type ;
 				}
 				
 				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[26])) ;
@@ -578,7 +580,7 @@ public class Game extends JPanel
     
     private SpecialMap[] initializeSpecialMaps()
     {
-    	ArrayList<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;
+    	List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;
 		String path = ImagesPath + "\\Maps\\";
 		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
 		
@@ -625,7 +627,7 @@ public class Game extends JPanel
     
     private Quest[] initializeQuests(Languages language, int playerJob)
     {
-		ArrayList<String[]> inputs = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
+		List<String[]> inputs = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
 		Quest[] quests = new Quest[inputs.size()] ;
 		for (int i = 0 ; i <= quests.length - 1 ; i += 1)
 		{
@@ -1099,8 +1101,7 @@ public class Game extends JPanel
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
 //    	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
-    	player.setMap(cityMaps[1]) ;
-    	player.setPos(new Point(226, 473)) ;
+    	player.setMap(allMaps[1]) ;
 //    	player.getBag().Add(Potion.getAll()[0], 3) ;
 //    	player.getBag().Add(Potion.getAll()[0], 2) ;
 //    	player.getBag().Add(Potion.getAll()[1], 2) ;
@@ -1185,9 +1186,8 @@ public class Game extends JPanel
 //    	
 //    	System.out.println(pet.getLife()) ;
 //    	System.out.println(fieldMaps[12].allColliders());
-    	player.decSpellPoints(-10) ;
 //    	player.getPA().getExp().incCurrentValue(500) ;
-    	player.setPos(new Point(130, 181)) ;
+    	player.setPos(new Point(300, 321)) ;
     	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(20, 20))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 200), new Dimension(50, 10))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 199), new Dimension(10, 10))) ;
@@ -1392,7 +1392,8 @@ public class Game extends JPanel
         		//testGif2.start();
 			}
             //shouldRepaint = true ;
-			System.out.println(mousePos) ;
+//			System.out.println(mousePos) ;
+			System.out.println(mousePos.x / 600.0 + "," + (mousePos.y - 96) / 384.0) ;
 		}
 
 		@Override

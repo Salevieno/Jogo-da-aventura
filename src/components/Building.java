@@ -65,8 +65,22 @@ public class Building
 		}
 	}
 	
-	public void display(Point playerPos, DrawingOnPanel DP)
+	public void displaySignMessage(int cityID, DrawingOnPanel DP)
 	{
+		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
+		Point messagePos = UtilG.Translate(pos, 10, 10) ;
+		String message = Game.allText.get("Mensagem das placas")[cityID] ;
+		DP.DrawRoundRect(pos, Align.topLeft, new Dimension(220, 80), 2, Game.ColorPalette[4], Game.ColorPalette[4], true) ;			
+		DP.DrawFitText(messagePos, font.getSize() + 2, Align.centerLeft, message, font, 40, Game.ColorPalette[7]) ;	
+	}
+	
+	public void display(Point playerPos, int cityID, DrawingOnPanel DP)
+	{
+		if (type.getName().equals(BuildingNames.sign) & isInside(playerPos))
+		{
+			displaySignMessage(cityID, DP) ;
+		}
+		
 		if (type.getInsideImage() == null)
 		{
 			DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
@@ -86,19 +100,10 @@ public class Building
 			
 			return ;
 		}
-		
+
 		DP.DrawImage(type.getInsideImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
 		displayNPCs(DP) ;
 		
-		if (type.getName().equals(BuildingNames.sign))
-		{
-			Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-			Point messagePos = UtilG.Translate(pos, 10, 20) ;
-//			String message = player.allText.get("* Mensagem das placas *") signMessage[id + 1] ;
-			String message = "Oi!" ;
-			DP.DrawRoundRect(pos, Align.topLeft, new Dimension(300, 200), 3, Game.ColorPalette[4], Game.ColorPalette[4], true) ;			
-			DP.DrawFitText(messagePos, font.getSize() + 2, Align.bottomLeft, message, font, 35, Game.ColorPalette[5]) ;			
-		}
 	}
 
 

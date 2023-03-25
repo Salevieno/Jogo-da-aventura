@@ -44,10 +44,13 @@ public class BagWindow extends GameWindow
 	private int windowLimit ;
 	private Map<Item, Integer> activeItems ;
 	private int gold ;
+	
+	private Point windowPos = new Point((int)(0.3 * Game.getScreen().getSize().width), (int)(0.48 * Game.getScreen().getSize().height)) ;
 
 	public static Image SelectedBag = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelected.png") ;
 	public static Image MenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagMenu.png") ;
-	public static Image SelectedMenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedMenu.png") ;
+	public static Image SelectedMenuTab0 = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedMenuTab0.png") ;
+	public static Image SelectedMenuTab1 = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedMenuTab1.png") ;
     public static Image SlotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
 	
 	public BagWindow(Map<Potion, Integer> pot, Map<Alchemy, Integer> alch, Map<Forge, Integer> forge, Map<PetItem, Integer> petItem,
@@ -400,23 +403,18 @@ public class BagWindow extends GameWindow
 	
 	public void display(Point MousePos, String[] allText, DrawingOnPanel DP)
 	{
-		Point windowPos = new Point((int)(0.35 * Game.getScreen().getSize().width), (int)(0.48 * Game.getScreen().getSize().height)) ;
-		Color[] colorPalette = Game.ColorPalette ;
-		
-		Font MenuFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Font ItemFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
-		
 		
 		// draw menus
-		int MenuH = MenuImage.getHeight(null) ;
 		for (int m = 0 ; m <= allText.length - 1 ; m += 1)
 		{
-			Point menuPos = m == menu ? UtilG.Translate(windowPos, 3, m * (MenuH - 1) + 3) : UtilG.Translate(windowPos, 0, m * (MenuH - 1) + 3) ;
-			Point textPos = UtilG.Translate(menuPos, 3, MenuH / 2) ;
-			Color TextColor = m == menu ? colorPalette[3] : colorPalette[11] ;
+			Point menuPos = UtilG.Translate(windowPos, 0, border + m * MenuImage.getHeight(null)) ;
+			menuPos.x += m == menu ? 3 : 0 ; 
+			Point textPos = UtilG.Translate(menuPos, 3, MenuImage.getHeight(null) / 2) ;
+			Color textColor = m == menu ? selColor : stdColor ;
+			Image menuImage = m == menu ? (tab == 0 ? SelectedMenuTab0 : SelectedMenuTab1) : MenuImage ;
 			
-			DP.DrawImage(m == menu ? SelectedMenuImage : MenuImage, menuPos, Align.topLeft) ;
-			DP.DrawText(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, allText[m], MenuFont, TextColor) ;
+			DP.DrawImage(menuImage, menuPos, Align.topLeft) ;
+			DP.DrawText(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, allText[m], titleFont, textColor) ;
 		}
 		
 		// draw bag
@@ -433,14 +431,14 @@ public class BagWindow extends GameWindow
 			
 			int row = i % (numberSlotMax / 2) ;
 			int col = i / (numberSlotMax / 2) ;
-			Point slotCenter = UtilG.Translate(windowPos, 78 + slotW / 2 + col * 121, 12 + slotH / 2 + row * 21) ;
+			Point slotCenter = UtilG.Translate(windowPos, 70 + 6 + slotW / 2 + col * (140 + slotW), border + padding + 2 + slotH / 2 + row * 21) ;
 			String itemText = activeItem.getKey().getName() + " (x " + activeItem.getValue() + ")" ;
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
-			Color textColor = i == item ? colorPalette[3] : colorPalette[9] ;
+			Color textColor = i == item ? selColor : stdColor ;
 			
 			DP.DrawImage(SlotImage, slotCenter, Align.center) ;
 			DP.DrawImage(activeItem.getKey().getImage(), slotCenter, Align.center) ;
-			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, itemText, ItemFont, textColor, 10, MousePos) ;
+			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, itemText, stdFont, textColor, 10, MousePos) ;
 			i += 1 ;
 		}
 		

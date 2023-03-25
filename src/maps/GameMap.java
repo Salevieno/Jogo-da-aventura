@@ -277,11 +277,11 @@ public class GameMap
  		mapElems.forEach(mapElem -> mapElem.display(DP)) ;
  	}
  	
- 	public void displayBuildings(Point playerPos, DrawingOnPanel DP)
+ 	public void displayBuildings(Point playerPos, int cityID, DrawingOnPanel DP)
  	{
 		if (buildings == null) { return ;}
 		
-		buildings.forEach(building -> building.display(playerPos, DP)) ;
+		buildings.forEach(building -> building.display(playerPos, cityID, DP)) ;
  	}
 	
 	public void displayNPCs(DrawingOnPanel DP)

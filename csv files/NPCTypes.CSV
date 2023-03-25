@@ -35,5 +35,5 @@ Cidadão 18,Citizen 18,citizen,Outside,Morador da cidade,A citizen
 Cidadão 19,Citizen 19,citizen,Outside,Morador da cidade,A citizen
 Entrada da caverna,Cave entrance,caveEntry,Outside,Entrada da caverna.,Cave entrance.
 Saída da caverna,Cave exit,caveExit,Outside,Saída da caverna.,Cave exit.
-Navegador 1,Sailor 1,sailor,Outside,Te leva para a ilha.,Takes you to the island.
-Navegador 2,Sailor 2,sailor,Outside,Te traz para a floresta.,Brings you to the forest.
+Navegador 1,Sailor 1,sailorToIsland,Outside,Te leva para a ilha.,Takes you to the island.
+Navegador 2,Sailor 2,sailorToForest,Outside,Te traz para a floresta.,Brings you to the forest.

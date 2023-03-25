@@ -65,29 +65,32 @@ public class DrawingOnPanel
 	public void DrawImage(Image image, Point pos, Align align)
 	{       
 		if (image == null) { System.out.println("Tentando desenhar imagem nula") ; return ; }
-
-		Dimension size = new Dimension(image.getWidth(null), image.getHeight(null)) ;
-		Point offset = UtilG.OffsetFromPos(align, size) ;
-		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
+		
+		DrawImage(image, pos, 0, new Scale(1, 1), false, false, align, 1) ;
+//		Dimension size = new Dimension(image.getWidth(null), image.getHeight(null)) ;
+//		Point offset = UtilG.OffsetFromPos(align, size) ;
+//		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 	}
 	public void DrawImage(Image image, Point pos, Scale scale, Align align)
 	{       
 		if (image == null) { System.out.println("Tentando desenhar imagem nula") ; return ; }
-		
-		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
-		Point offset = UtilG.OffsetFromPos(align, size) ;
-		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
+
+		DrawImage(image, pos, 0, scale, false, false, align, 1) ;
+//		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
+//		Point offset = UtilG.OffsetFromPos(align, size) ;
+//		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 	}
 	public void DrawImage(Image image, Point pos, double angle, Scale scale, Align align)
 	{       
 		if (image == null) { System.out.println("Tentando desenhar imagem nula") ; return ; }
-		
-		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
-		Point offset = UtilG.OffsetFromPos(align, size) ;
-		AffineTransform backup = G.getTransform() ;
+
+		DrawImage(image, pos, angle, scale, false, false, align, 1) ;
+//		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
+//		Point offset = UtilG.OffsetFromPos(align, size) ;
+//		AffineTransform backup = G.getTransform() ;
 //		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;
 		
-		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
+//		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 		
 //		G.setTransform(backup) ;
 	}
@@ -96,7 +99,7 @@ public class DrawingOnPanel
 		if (image == null) { System.out.println("Tentando desenhar imagem nula") ; return ; }
 		
 		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
-		size = new Dimension (!flipH ? 1 : -1 * size.width, !flipV ? 1 : -1 * size.height) ;
+		size = new Dimension ((!flipH ? 1 : -1) * size.width, (!flipV ? 1 : -1) * size.height) ;
 		Point offset = UtilG.OffsetFromPos(align, size) ;
 		AffineTransform backup = G.getTransform() ;
 //		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
@@ -258,18 +261,18 @@ public class DrawingOnPanel
 	
 	
 	// composed methods
-	public void DrawSpeech(Point pos, String text, Font font, Image NPCimage, Image speechBubble, Color color)
+	public void DrawSpeech(Point pos, String text, Font font, Image speechBubble, Color color)
 	{
 		// obs: text must end with . , ? or ! for this function to work
 		int bubbleL = speechBubble.getWidth(null), bubbleH = speechBubble.getHeight(null) ;
+		boolean flipH = 0.7 * screenSize.width < pos.x ? true : false ;
+		
 		if (0.7 * screenSize.width < pos.x)
 		{
-			DrawImage(speechBubble, UtilG.Translate(pos, bubbleL, 0), stdAngle, new Scale(1, 1), true, false, Align.bottomCenter, 1) ;
+			pos = UtilG.Translate(pos, 50, 0) ;
 		}
-		else
-		{
-			DrawImage(speechBubble, pos, stdAngle, new Scale(1, 1), Align.bottomCenter) ;
-		}
+
+		DrawImage(speechBubble, pos, stdAngle, new Scale(1, 1), flipH, false, Align.bottomCenter, 1) ;
 		
 		Point textPos = UtilG.Translate(pos, 14 - bubbleL / 2, 5 - bubbleH) ;
 		int maxTextL = 20 ;
@@ -372,7 +375,7 @@ public class DrawingOnPanel
 		if ( !map.getName().contains("Cave") ) { sky.display(this) ;}
 		map.display(this) ;
 		map.displayElements(this) ;
-		map.displayBuildings(playerPos, this) ;
+		map.displayBuildings(playerPos, Arrays.asList(Game.getMaps()).indexOf(map), this) ;
 		map.displayNPCs(this) ;
 		map.displayGroundTypes(this) ;
 		if (map instanceof FieldMap)
@@ -609,13 +612,13 @@ public class DrawingOnPanel
 		{
 			currentPos.x += -0.5*(screenWidth + imageWidth) ;
 			currentPos.y += 0.25*screenHeight ;
-			DrawSpeech(messagePos, message[1], font, pterodactile, speakingBubble, Game.ColorPalette[19]) ;
+			DrawSpeech(messagePos, message[1], font, speakingBubble, Game.ColorPalette[19]) ;
 		}
 		else if (counter.rate() < 0.75)
 		{
 			currentPos.x += -0.5*(screenWidth + imageWidth) ;
 			currentPos.y += -screenHeight * (counter.rate() - 0.5) ;
-			DrawSpeech(messagePos, message[2], font, pterodactile, speakingBubble, Game.ColorPalette[19]) ;
+			DrawSpeech(messagePos, message[2], font, speakingBubble, Game.ColorPalette[19]) ;
 		}
 		else
 		{

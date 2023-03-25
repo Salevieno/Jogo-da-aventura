@@ -1,8 +1,6 @@
 package windows;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 import java.util.Map;
@@ -18,15 +16,15 @@ import utilities.UtilG;
 
 public class CraftWindow extends GameWindow
 {
-	private static int NumberRecipesPerWindow = 1 ;
-	private List<Recipe> recipesForCrafting ;
+	private static final int RecipesPerWindow = 1 ;
+	private List<Recipe> recipes ;
 	private List<Recipe> recipesInWindow ;
 
 	public CraftWindow(List<Recipe> recipes)
 	{
-		super("Criação", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Craft.png"), 1, 1, NumberRecipesPerWindow, recipes.size() / NumberRecipesPerWindow + 1) ;
-		this.recipesForCrafting = recipes ;
-		recipesInWindow = NumberRecipesPerWindow <= recipesForCrafting.size() ? recipesForCrafting.subList(window, NumberRecipesPerWindow + window) : recipesForCrafting ;
+		super("Criação", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Craft.png"), 1, 1, RecipesPerWindow, recipes.size() / RecipesPerWindow) ;
+		this.recipes = recipes ;
+		recipesInWindow = RecipesPerWindow <= recipes.size() ? recipes.subList(window, RecipesPerWindow + window) : recipes ;
 	}
 	
 	public void navigate(String action)
@@ -42,7 +40,7 @@ public class CraftWindow extends GameWindow
 			itemDown() ;
 		}
 		
-		recipesInWindow = NumberRecipesPerWindow <= recipesForCrafting.size() ? recipesForCrafting.subList(window, NumberRecipesPerWindow + window) : recipesForCrafting ;
+		recipesInWindow = RecipesPerWindow <= recipes.size() ? recipes.subList(window, RecipesPerWindow + window) : recipes ;
 	}
 	
 	public void craft(BagWindow bag)
@@ -63,21 +61,20 @@ public class CraftWindow extends GameWindow
 	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 		Point windowPos = new Point((int)(0.34*Game.getScreen().getSize().width), (int)(0.22*Game.getScreen().getSize().height)) ;
-		Point ingredientsPos = UtilG.Translate(windowPos, 20, 110) ;
-		Point productsPos = UtilG.Translate(windowPos, 180, 110) ;
-		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 18) ;
-		double angle = DrawingOnPanel.stdAngle ;
-		
+		Point titlePos = UtilG.Translate(windowPos, size.width / 2, border + 9) ;
+		double angle = DrawingOnPanel.stdAngle ;		
 		
 		DP.DrawImage(image, windowPos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.topLeft) ;
 		
 		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.ColorPalette[18]) ;
 		
-		DP.DrawText(UtilG.Translate(windowPos, 80, 70), Align.center, angle, "Ingredientes", subTitleFont, Game.ColorPalette[9]) ;
-		DP.DrawLine(UtilG.Translate(windowPos, 20, 90), UtilG.Translate(windowPos, 140, 90), 1, Game.ColorPalette[9]) ;
-		DP.DrawText(UtilG.Translate(windowPos, 220, 70), Align.center, angle, "Produtos", subTitleFont, Game.ColorPalette[9]) ;
-		DP.DrawLine(UtilG.Translate(windowPos, 180, 90), UtilG.Translate(windowPos, 260, 90), 1, Game.ColorPalette[9]) ;
-		
+		Point ingredientsTextPos = UtilG.Translate(windowPos, border + padding + 84, border + 32) ;
+		Point ProductsTextPos = UtilG.Translate(windowPos, border + padding + 170 + 84, border + 32) ;
+		DP.DrawText(ingredientsTextPos, Align.center, angle, "Ingredientes", subTitleFont, Game.ColorPalette[9]) ;
+		DP.DrawText(ProductsTextPos, Align.center, angle, "Produtos", subTitleFont, Game.ColorPalette[9]) ;
+
+		Point ingredientsPos = UtilG.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + padding + Item.slot.getHeight(null) / 2 + 44) ;
+		Point productsPos = UtilG.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2 + 169, border + padding + Item.slot.getHeight(null) / 2 + 44) ;
 		for (Recipe recipe : recipesInWindow)
 		{
 			Map<Item, Integer> ingredients = recipe.getIngredients() ;
@@ -88,7 +85,7 @@ public class CraftWindow extends GameWindow
 				DP.DrawImage(Item.slot, ingredientsPos, angle, new Scale(1, 1), Align.center) ;
 				DP.DrawImage(item.getImage(), ingredientsPos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.center) ;
 				DP.DrawText(UtilG.Translate(ingredientsPos, 14, 0), Align.centerLeft, DrawingOnPanel.stdAngle, qtd + " " + item.getName(), stdFont, itemNameColor) ;
-				ingredientsPos.y += 30 ;
+				ingredientsPos.y += 23 ;
 			}) ;
 			
 			products.forEach( (item, qtd) -> {
@@ -96,7 +93,7 @@ public class CraftWindow extends GameWindow
 				DP.DrawImage(Item.slot, productsPos, angle, new Scale(1, 1), Align.center) ;
 				DP.DrawImage(item.getImage(), productsPos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.center) ;
 				DP.DrawText(UtilG.Translate(productsPos, 14, 0), Align.centerLeft, DrawingOnPanel.stdAngle, qtd + " " + item.getName(), stdFont, itemNameColor) ;
-				productsPos.y += 30 ;
+				productsPos.y += 23 ;
 			}) ;		
 		}
 		

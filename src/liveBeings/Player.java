@@ -353,7 +353,7 @@ public class Player extends LiveBeing
 	public void discoverCreature(CreatureType creatureType) { bestiary.addDiscoveredCreature(creatureType) ;}
 	public void resetClosestCreature() { closestCreature = null ;}
 	public void resetOpponent() { opponent = null ;}
-	public void decSpellPoints(int amount) { spellPoints += -1 ;}
+	public void decSpellPoints() { spellPoints += -1 ;}
 	
 	public boolean isMoving() { return (state.equals(LiveBeingStates.moving)) ;}
 	public boolean isDoneMoving() { return stepCounter.finished() ;}
@@ -614,19 +614,22 @@ public class Player extends LiveBeing
 		{
 			engageInFight(closestCreature) ;
 		}
-
-		
-		// navigating through open windows
-		if (focusWindow != null)
-		{
-			if (focusWindow.isOpen()) { focusWindow.navigate(currentAction) ; }
-		}
 		
 		if (bag.isOpen())
 		{
 			if (bag.getTab() == 1 & (currentAction.equals("Enter") | currentAction.equals("MouseLeftClick")))
 			{
 				useItem(bag.getSelectedItem()) ;
+			}
+		}
+
+		
+		// navigating through open windows
+		if (focusWindow != null)
+		{
+			if (focusWindow.isOpen())
+			{
+				focusWindow.navigate(currentAction) ;
 			}
 		}
 		
@@ -654,8 +657,10 @@ public class Player extends LiveBeing
 			
 			// meeting with collectibles
 			List<Collectible> collectibles = fm.getCollectibles() ;
-			for (Collectible collectible : collectibles)
+			int numberCollectibles = collectibles.size() ;
+			for (int i = 0 ; i <= numberCollectibles - 1 ; i += 1)
 			{
+				Collectible collectible = collectibles.get(i) ;
 				double distx = Math.abs(pos.x - collectible.getPos().x) ;
 				double disty = Math.abs(pos.y - collectible.getPos().y) ;
 				if (distx <= 0.5*size.width & disty <= 0.5*size.height)
@@ -696,28 +701,31 @@ public class Player extends LiveBeing
 					double disty = UtilG.dist1D(pos.y - size.height / 2, creature.getPos().y) ;
 					if (distx <= (size.width + creature.getSize().width) / 2 & disty <= (size.height + creature.getSize().height) / 2) //  & !ani.isActive(10) & !ani.isActive(19)
 					{
-						opponent = creature ;
-						opponent.setFollow(true) ;
-						setState(LiveBeingStates.fighting) ;
-						bestiary.addDiscoveredCreature(opponent.getType()) ;
+//						opponent = creature ;
+//						opponent.setFollow(true) ;
+//						setState(LiveBeingStates.fighting) ;
+//						bestiary.addDiscoveredCreature(opponent.getType()) ;
 					}
 				}
 			}
 		}	
 		
 		// meeting with NPCs
-		if (currentMap.getNPCs() == null) { return ;}
-		
-		for (NPCs npc : currentMap.getNPCs())
+		if (currentMap.getNPCs() != null)
 		{
-			boolean metNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
-			
-			if (!metNPC) { continue ;}
-//			System.out.println(npc.getType().getName());
-			npc.Contact(this, Game.getPet(), mousePos, DP) ;
-			
-			break ;
+			for (NPCs npc : currentMap.getNPCs())
+			{
+				boolean metNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
+				
+				if (!metNPC) { continue ;}
+//				System.out.println(npc.getType().getName());
+				npc.Contact(this, Game.getPet(), mousePos, DP) ;
+				
+				break ;
+			}
 		}
+		
+		if (currentMap.getBuildings() == null) { return ;}
 		
 		for (Building building : currentMap.getBuildings())
 		{
