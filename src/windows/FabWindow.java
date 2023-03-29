@@ -3,9 +3,7 @@ package windows;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 
 import graphics.DrawingOnPanel;

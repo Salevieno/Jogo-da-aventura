@@ -7,15 +7,12 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import graphics.DrawingOnPanel;
-import items.Item;
-import liveBeings.Creature;
 import liveBeings.CreatureType;
 import liveBeings.Player;
 import main.Game;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
-import utilities.UtilS;
 
 public class BestiaryWindow extends GameWindow
 {
@@ -23,7 +20,7 @@ public class BestiaryWindow extends GameWindow
 	
 	public BestiaryWindow()
 	{
-		super("Bestiário", null, 0, 0, 0, 0) ;
+		super("Bestiï¿½rio", null, 0, 0, 0, 0) ;
 		discoveredCreatures = new ArrayList<>() ;
 	}
 	
@@ -44,7 +41,7 @@ public class BestiaryWindow extends GameWindow
 	{
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String[] text = Game.allText.get("Bestiário") ;
+		String[] text = Game.allText.get("Bestiï¿½rio") ;
 		Color textColor = Game.ColorPalette[9] ;
 		double angle = DrawingOnPanel.stdAngle ;
 		

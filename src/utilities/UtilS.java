@@ -2,32 +2,18 @@ package utilities ;
 
 import java.awt.Color ;
 import java.awt.Dimension;
-import java.awt.Font ;
 import java.awt.Image ;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Arrays ;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import components.Building;
-import components.NPCs;
-import components.Quest;
-import graphics.Animations;
-import graphics.DrawingOnPanel;
-import items.Equip;
 import liveBeings.Creature;
-import liveBeings.Pet;
 import liveBeings.Player;
-import liveBeings.Spell;
-import main.Battle;
 import main.Game;
 import maps.FieldMap;
 import maps.GameMap;
 import maps.GroundType;
 import maps.GroundTypes;
-import screen.Screen;
 
 public abstract class UtilS 
 {	

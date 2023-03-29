@@ -4,12 +4,9 @@ import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-
 import attributes.PersonalAttributes;
 import liveBeings.LiveBeing;
 import main.Game;
-import maps.Collectible;
 import utilities.UtilG;
 
 public class Alchemy extends Item

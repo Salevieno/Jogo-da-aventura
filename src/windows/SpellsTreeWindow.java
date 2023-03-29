@@ -5,10 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 
-import components.GameIcon;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
 import liveBeings.Spell;

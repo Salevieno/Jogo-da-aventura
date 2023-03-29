@@ -1,19 +1,13 @@
 package main ;
 
 import java.awt.Point;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sound.sampled.Clip ;
-
 import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
-import attributes.PersonalAttributes;
-import components.Quest;
 import graphics.Animations;
 import graphics.DrawingOnPanel;
-import liveBeings.Buff;
 import liveBeings.Creature;
 import liveBeings.LiveBeing;
 import liveBeings.LiveBeingStates;

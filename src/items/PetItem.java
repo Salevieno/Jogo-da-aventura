@@ -3,8 +3,6 @@ package items;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-
 import liveBeings.Pet;
 import main.Game;
 import utilities.UtilG;

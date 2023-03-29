@@ -2,7 +2,6 @@ package windows;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Point;
 import java.util.List;
 

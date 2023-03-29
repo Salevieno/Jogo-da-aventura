@@ -3,10 +3,6 @@ package components;
 import java.awt.Color;
 import java.awt.Image;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import main.Game;
 
 public class NPCType
 {

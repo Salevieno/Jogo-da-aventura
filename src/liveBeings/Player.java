@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 import java.awt.event.KeyEvent ;
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList ;
@@ -13,6 +12,7 @@ import java.util.Arrays ;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 
@@ -23,14 +23,10 @@ import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
-
-import java.util.Map;
-import java.util.Set;
-
 import components.Building;
 import components.NPCs;
-import components.QuestSkills;
 import components.Quest;
+import components.QuestSkills;
 import components.SpellTypes;
 import graphics.Animations;
 import graphics.DrawingOnPanel;

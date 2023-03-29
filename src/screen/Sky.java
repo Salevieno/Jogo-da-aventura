@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 
-import javax.swing.ImageIcon;
-
 import graphics.DrawingOnPanel;
 import main.Game;
 import utilities.Align;

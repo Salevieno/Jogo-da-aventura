@@ -1,11 +1,8 @@
 package main;
 
-import java.awt.Font;
 import java.awt.Image;
-import java.awt.Point;
 
 import graphics.DrawingOnPanel;
-import liveBeings.Player;
 import utilities.Align;
 import utilities.UtilG;
 

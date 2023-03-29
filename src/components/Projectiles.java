@@ -11,7 +11,6 @@ import liveBeings.Player;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
-import utilities.UtilS;
 
 public class Projectiles
 {

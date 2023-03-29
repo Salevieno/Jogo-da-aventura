@@ -8,7 +8,6 @@ import java.awt.Point;
 import java.util.Map;
 
 import components.GameIcon;
-import graphics.Animations;
 import graphics.DrawingOnPanel;
 import graphics.Gif;
 import liveBeings.Player;
