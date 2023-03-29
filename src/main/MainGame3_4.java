@@ -21,21 +21,19 @@ public class MainGame3_4 extends JFrame implements ActionListener
 	private static final long serialVersionUID = 1L ;
 	
 	private static Timer timer ;		// Main timer of the game
+	private static final Dimension windowSize = new Dimension(640, 480) ;
 	private static GameStates previousState ;
 
 	public MainGame3_4() 
     {
-		// initialize the UI
-		Dimension windowSize = new Dimension(640, 480) ;	// frame dimensions (0, 39) and give an extra space on the right (40, 0)
+		// initialize the UI		
         setTitle("Jogo da aventura") ;
         setPreferredSize(windowSize) ;
         pack() ;
         Dimension actualWindowSize = getContentPane().getSize() ;
         Dimension extraSize = new Dimension(windowSize.width - actualWindowSize.width, windowSize.height - actualWindowSize.height) ;
-        setSize(new Dimension(windowSize.width + extraSize.width, windowSize.height + extraSize.height)) ;
-        
-        
-        setLocation(500, 200) ;					// window location
+        setSize(new Dimension(windowSize.width + extraSize.width, windowSize.height + extraSize.height)) ;      
+        setLocation(500, 200) ;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         setVisible(true) ;
         timer = new Timer(10, this) ;			// timer of the game, first number = frame duration

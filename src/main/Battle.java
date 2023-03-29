@@ -25,11 +25,8 @@ public class Battle
 	protected static List<Elements> ElemID ;
 	protected static double[][] ElemMult ;
 	
-	public Battle()
-	{	
-		//this.SoundEffects = SoundEffects ;
-//		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
-
+	static
+	{
 		int NumElem = 10 ;
     	ElemID = new ArrayList<>() ;
 		ElemMult = new double[NumElem][NumElem] ;
@@ -44,10 +41,18 @@ public class Battle
 		}
 		randomAmp = (double)0.1 ;
 	}
+	
+	public Battle()
+	{	
+		//this.SoundEffects = SoundEffects ;
+//		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
+
+	}
 
 	// métodos de cálculo de batalha válidos para todos os participantes
 	private static double basicElemMult(Elements Atk, Elements Def)
 	{
+		System.out.println(Battle.ElemID);
 		return Battle.ElemMult[Battle.ElemID.indexOf(Atk)][Battle.ElemID.indexOf(Def)] ;
 	}
 	
@@ -120,7 +125,7 @@ public class Battle
 		return effect;
 	}
 	
-	public static int calcDamage(AttackEffects effect, double Atk, double Def, Elements[] AtkElem, Elements[] DefElem, double ElemModifier)
+	public static int calcDamage(AttackEffects effect, double Atk, double Def, Elements[] atkElems, Elements[] defElem, double ElemModifier)
 	{
 		int damage = -1 ;
 		if (effect.equals(AttackEffects.miss) | effect.equals(AttackEffects.block))
@@ -133,10 +138,11 @@ public class Battle
 		}
 		else if (effect.equals(AttackEffects.crit))
 		{
-			double randomMult = UtilG.RandomMult(randomAmp) ;
-			double elemMult = calcElemMult(AtkElem[0], AtkElem[1], DefElem[0], DefElem[0], AtkElem[2]) ;
-			damage = (int)(randomMult*elemMult*ElemModifier*Atk) ;
+			damage = (int) Atk ;
 		}
+		double randomMult = UtilG.RandomMult(randomAmp) ;
+		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElem[0], defElem[0], atkElems[2]) ;
+		damage = (int)(randomMult*elemMult*ElemModifier*Atk) ;
 		return damage ;
 	}
 		

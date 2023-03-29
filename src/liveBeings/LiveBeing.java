@@ -286,7 +286,7 @@ public abstract class LiveBeing
 	
 	public RelativePos relPosToGroundType(GroundTypes groundType)
 	{
-		// TODO busca por todos os groundTypes do mapa. E se o jogador estiver tocando em vários ao mesmo tempo?
+		// TODO busca por todos os groundTypes do mapa. E se o jogador estiver tocando em vï¿½rios ao mesmo tempo?
 		if (isTouching(groundType)) { return null ;}
 		
 		RelativePos relPos = null ;

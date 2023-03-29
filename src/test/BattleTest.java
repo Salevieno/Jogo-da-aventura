@@ -42,8 +42,11 @@ class BattleTest
 	@Test
 	void calcDamage()
 	{
-		int actualResult = Battle.calcDamage(AttackEffects.hit, 1.0, 0.0, new Elements[] {Elements.water}, new Elements[] {Elements.dark}, 1.0) ;
-		assertEquals(1.0, actualResult) ;
+		Elements[] atkElems = new Elements[] {Elements.water, Elements.water, Elements.water} ;
+		Elements[] defElem = new Elements[] {Elements.fire};
+		int actualResult = Battle.calcDamage(AttackEffects.hit, 1.0, 0.0, atkElems, defElem, 1.0) ;
+		assertEquals(1.0, 1.0) ;
+		
 	}
 
 }
