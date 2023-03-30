@@ -139,35 +139,31 @@ public class Game extends JPanel
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 	public static final Image slotImage = UtilG.loadImage(".\\images\\" + "slot.png") ;
 	
-	public Game(Dimension windowDimension) 
+	static
 	{
-    	screen = new Screen(new Dimension(windowDimension.width - 40, windowDimension.height), null) ;
-    	screen.calcCenter() ;
     	JSONPath = ".\\json\\" ;
-		CSVPath = ".\\csv files\\" ;
+		CSVPath = ".\\csv\\" ;
 		ImagesPath = ".\\images\\" ;
 		MusicPath = ".\\music\\" ;
 		MainFontName = "Comics" ;
-		ColorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette.png"), "Normal") ;    	
-    	ani = new Animations[] {
-    			new Animations(),
-    			new Animations(),
-    			new Animations(),
-    			new Animations(),
-    			new Animations(),
-    			new Animations()
-    	};
+		Dimension windowSize = MainGame3_4.getWindowsize() ;
+		screen = new Screen(new Dimension(windowSize.width - 40, windowSize.height), null) ;
+    	screen.calcCenter() ;
 		opening = new Opening() ;
+		state = GameStates.loading;
+		ColorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette.png"), "Normal") ;
+		konamiCodeActive = false ;
+		ani = new Animations[6] ;
+		Arrays.fill(ani, new Animations());
+		allText = new HashMap<>() ;
+		shouldRepaint = false ;
+    }
+	
+	public Game() 
+	{
 		DP = new DrawingOnPanel() ;
 		GameLanguage = Languages.portugues ;
-		state = GameStates.loading;
-		konamiCodeActive = false ;
-		shouldRepaint = false ;
-		allText = new HashMap<>() ;
-    	//OpeningIsOn = true ; 
-
     	player = new Player("", "", "", 1) ;
-    	//music = new Music() ;
     	
 		addMouseListener(new MouseEventDemo()) ;
 		addKeyListener(new TAdapter()) ;

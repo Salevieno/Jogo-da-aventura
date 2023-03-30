@@ -52,8 +52,7 @@ public class Battle
 	// métodos de cálculo de batalha válidos para todos os participantes
 	private static double basicElemMult(Elements Atk, Elements Def)
 	{
-		System.out.println(Battle.ElemID);
-		return Battle.ElemMult[Battle.ElemID.indexOf(Atk)][Battle.ElemID.indexOf(Def)] ;
+		return ElemMult[ElemID.indexOf(Atk)][ElemID.indexOf(Def)] ;
 	}
 	
 	private static boolean hit(double Dex, double Agi)

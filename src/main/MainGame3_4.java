@@ -24,7 +24,7 @@ public class MainGame3_4 extends JFrame implements ActionListener
 	private static final Dimension windowSize = new Dimension(640, 480) ;
 	private static GameStates previousState ;
 
-	public MainGame3_4() 
+	private MainGame3_4() 
     {
 		// initialize the UI		
         setTitle("Jogo da aventura") ;
@@ -39,7 +39,7 @@ public class MainGame3_4 extends JFrame implements ActionListener
         timer = new Timer(10, this) ;			// timer of the game, first number = frame duration
 		timer.start() ;							// Game will start checking for keyboard events every "timer" miliseconds
 		previousState = GameStates.opening ;
-        add(new Game(windowSize)) ;				// adding game panel on the JFrame
+        add(new Game()) ;				// adding game panel on the JFrame
     }
     
 	public static void pauseGame()
@@ -60,6 +60,8 @@ public class MainGame3_4 extends JFrame implements ActionListener
 		EventQueue.invokeLater(() -> {new MainGame3_4() ;}) ;
 	}
 	
+	public static Dimension getWindowsize() { return windowSize ;}
+
 	@Override
     public void actionPerformed(ActionEvent e) 
 	{        
