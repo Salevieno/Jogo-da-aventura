@@ -336,11 +336,26 @@ public abstract class UtilG
 	
 	public static Color GetPixelColor(BufferedImage Bufferedimage, Point Pos)
 	{
-		int clr = Bufferedimage.getRGB(Pos.x, Pos.y) ; 
-		int red = (clr & 0x00ff0000) >> 16 ;
-		int green = (clr & 0x0000ff00) >> 8 ;
-		int blue = clr & 0x000000ff ;
+		int pixel = Bufferedimage.getRGB(Pos.x, Pos.y) ; 
+		int red = (pixel & 0x00ff0000) >> 16 ;
+		int green = (pixel & 0x0000ff00) >> 8 ;
+		int blue = pixel & 0x000000ff ;
 		return new Color(red, green, blue) ;
+	}
+	
+	public static Color GetPixelColor(Image image, Point point)
+	{
+		int pixel = toBufferedImage(image).getRGB(point.x, point.y) ; 
+		int red = (pixel & 0x00ff0000) >> 16 ;
+		int green = (pixel & 0x0000ff00) >> 8 ;
+		int blue = pixel & 0x000000ff ;
+		return new Color(red, green, blue) ;
+	}
+	
+	public static boolean isTransparent(Image image, Point point)
+	{
+		int pixel = toBufferedImage(image).getRGB(point.x, point.y);
+		return pixel >> 24 == 0x00 ;
 	}
 	
 	/*

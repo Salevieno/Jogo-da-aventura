@@ -4,6 +4,7 @@ import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.Arrays;
 
 import items.Item;
 import liveBeings.Player;
@@ -91,7 +92,7 @@ public class Animations
 
 	private void winAnimation(Object[] vars, DrawingOnPanel DP)
 	{
-		String[] ItemsObtained = (String[]) vars[1] ;
+		String[] ItemsObtained = (String[]) vars[0] ;
 		Color textColor = Game.ColorPalette[8] ;
 		DP.winAnimation(counter, ItemsObtained, textColor) ;
 	}
@@ -122,7 +123,15 @@ public class Animations
 		DP.PterodactileAnimation(counter, PterodactileImage, SpeakingBubbleImage, message) ;
 	}
 	
+	
+	
 
+
+	@Override
+	public String toString()
+	{
+		return "Animations [counter=" + counter + ", isActive=" + isActive + ", vars=" + Arrays.toString(vars) + "]";
+	}
 
 	private void SailingAnimation(Object[] vars, DrawingOnPanel DP)
 	{

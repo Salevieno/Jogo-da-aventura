@@ -100,7 +100,7 @@ public class NPCs
 			}
 			case alchemist:
 			{
-		    	List<Recipe> recipes = Game.allRecipes.subList(0, 39) ;
+		    	List<Recipe> recipes = Game.getAllRecipes().subList(0, 39) ;
 				
 				window = new CraftWindow(recipes) ;
 				
@@ -108,7 +108,7 @@ public class NPCs
 			}
 			case woodcrafter:
 			{
-		    	List<Recipe> recipes = Game.allRecipes.subList(40, 59) ;
+		    	List<Recipe> recipes = Game.getAllRecipes().subList(40, 59) ;
 				
 				window = new CraftWindow(recipes) ;
 				
@@ -116,7 +116,7 @@ public class NPCs
 			}
 			case crafter:
 			{
-		    	List<Recipe> recipes = Game.allRecipes.subList(60, Game.allRecipes.size()) ;
+		    	List<Recipe> recipes = Game.getAllRecipes().subList(60, Game.getAllRecipes().size()) ;
 				
 				window = new CraftWindow(recipes) ;
 				

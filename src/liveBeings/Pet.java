@@ -132,14 +132,14 @@ public class Pet extends LiveBeing
 
 	public List<Spell> InitializePetSpells()
     {
-		Spell[] allSpellTypes = Game.getAllSpellTypes() ;		
+		Spell[] allSpells = Game.getAllSpells() ;		
 		ArrayList<Spell> petspells = new ArrayList<>() ;
 		
 		for (int i = 0 ; i <= Pet.NumberOfSpells - 1 ; i += 1)
 		{
 			int ID = i + job * Pet.NumberOfSpells ;
 			
-			petspells.add(allSpellTypes[ID]) ;	
+			petspells.add(allSpells[ID]) ;	
 		}
 		
 		petspells.get(0).incLevel(1) ;

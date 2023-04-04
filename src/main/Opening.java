@@ -84,6 +84,21 @@ public class Opening
 		return openingGif.isDonePlaying();
 	}*/
 	
+
+	public static int SelectMenu(String upKey, String downKey, String action, int selectedMenu, int numberMenus)
+	{
+		if (action.equals(downKey) & selectedMenu < numberMenus)
+		{
+			selectedMenu += 1 ;
+		}
+		if (action.equals(upKey) & 0 < selectedMenu)
+		{
+			selectedMenu += -1 ;
+		}
+		return selectedMenu ;
+	}
+	
+	
 	public void Run(String action, Point MousePos, DrawingOnPanel DP)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
@@ -119,7 +134,7 @@ public class Opening
 			}
 		}
 		
-		GameIcon.selectedIconID = UtilS.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, GameIcon.selectedIconID, buttons.length) ;
+		GameIcon.selectedIconID = SelectMenu(Player.ActionKeys[1], Player.ActionKeys[3], action, GameIcon.selectedIconID, buttons.length) ;
 		if (step == 0)
 		{
 			Music.PlayMusic(Music.intro) ;

@@ -2,6 +2,7 @@ package components ;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,24 +27,20 @@ public class Building
 		this.npcs = npcs ;
 		colliders = new ArrayList<>() ;
 		
-		switch (type.getName())
-		{
-			case hospital: 
-			{
-				for (int i = 0 ; i <= 86 ; i += 1)
-				{
-					colliders.add(new Collider(new Point(pos.x + i, pos.y))) ;
-				}
-				
-				for (int i = 118 ; i <= 177 ; i += 1)
-				{
-					colliders.add(new Collider(new Point(pos.x + i, pos.y))) ;
-				}
-				
-				 break ;
-			}
-			default: break ;
-		}
+//		Image collidersImage = UtilG.loadImage(Game.ImagesPath + "\\Buildings\\" + "Building" + type.getName() + "Colliders.png") ;
+//		
+//		if (collidersImage == null) { return ;}
+//		
+//		for (int i = 0 ; i <= collidersImage.getWidth(null) - 1 ; i += 1)
+//		{
+//			for (int j = 0 ; j <= collidersImage.getHeight(null) - 1 ; j += 1)
+//			{
+//				if (!UtilG.isTransparent(collidersImage, new Point(i, j)))
+//				{
+//					colliders.add(new Collider(new Point(pos.x + i, pos.y - type.getImage().getHeight(null) + j))) ;
+//				}
+//			}
+//		}
 	}
 
 	
@@ -81,6 +78,11 @@ public class Building
 			displaySignMessage(cityID, DP) ;
 		}
 		
+//		for (Collider collider : colliders)
+//		{
+//			DP.DrawRect(collider.getPos(), Align.center, new Dimension(1, 1), 1, Color.black, null) ;
+//		}
+		
 		if (type.getInsideImage() == null)
 		{
 			DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
@@ -93,10 +95,6 @@ public class Building
 		{
 			DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
 			
-//			for (Collider collider : colliders)
-//			{
-//				DP.DrawRect(collider.getPos(), Align.center, new Dimension(1, 1), 1, Color.red, null) ;
-//			}
 			
 			return ;
 		}

@@ -138,11 +138,13 @@ public class SpellsTreeWindow extends GameWindow
 			Dimension slotSize = new Dimension(spellSlot.getWidth(null), spellSlot.getHeight(null)) ;
 			Color textColor = this.item == i ? selectedColor : spells.get(i).hasPreRequisitesMet() ? hasPreReqColor : hasNotPreReqColor ;
 			Point slotPos = calcSlotPos(row, col, slotSize) ;
-			Point spellNamePos = UtilG.Translate(slotPos, slotSize.width / 2, 10) ;
+//			Point spellNamePos = UtilG.Translate(slotPos, slotSize.width / 2, 10) ;
+			Point spellImagePos = UtilG.Translate(slotPos, slotSize.width / 2, 4 + 14) ;
 			Point spellLevelPos = UtilG.Translate(slotPos, slotSize.width / 2, slotSize.height / 2 + 18) ;
 					
 			DP.DrawImage(spellSlot, slotPos, Align.topLeft) ;
-			DP.DrawTextUntil(spellNamePos, Align.center, angle, spells.get(i).getName(), regularFont, textColor, 8, mousePos) ;
+			DP.DrawImage(spells.get(i).getImage(), spellImagePos, Align.center) ;
+//			DP.DrawTextUntil(spellNamePos, Align.center, angle, spells.get(i).getName(), regularFont, textColor, 8, mousePos) ;
 			DP.DrawText(spellLevelPos, Align.center, angle, String.valueOf(spells.get(i).getLevel()), regularFont, textColor) ;
 		}
 

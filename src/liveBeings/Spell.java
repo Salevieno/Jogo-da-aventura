@@ -19,6 +19,7 @@ import utilities.UtilG;
 public class Spell 
 {	
 	private String name ;
+	private Image image ;
 	private int level ;
 	private int maxLevel ;
 	private int mpCost ;
@@ -50,12 +51,13 @@ public class Spell
 	public static final Image cooldownImage = UtilG.loadImage(Game.ImagesPath + "Cooldown.png") ;	
 	
 	
-	public Spell(String name, int maxLevel, int mpCost, SpellTypes type, Map<Spell, Integer> preRequisites,
+	public Spell(String name, Image image, int maxLevel, int mpCost, SpellTypes type, Map<Spell, Integer> preRequisites,
 			List<Buff> buffs, List<Buff> nerfs, double[] atkMod, double[] defMod, double[] dexMod, double[] agiMod,
 			double[] atkCritMod, double[] defCritMod, double[] stunMod, double[] blockMod, double[] bloodMod,
 			double[] poisonMod, double[] silenceMod, int cooldown, int duration, Elements elem, String[] info)
 	{
 		this.name = name;
+		this.image = image;
 		level = 0;
 		this.maxLevel = maxLevel;
 		this.mpCost = mpCost;
@@ -83,6 +85,7 @@ public class Spell
 
 	
 	public String getName() {return name ;}
+	public Image getImage() {return image ;}
 	public int getLevel() {return level ;}
 	public int getMaxLevel() {return maxLevel ;}
 	public int getMpCost() {return mpCost ;}
@@ -236,7 +239,7 @@ public class Spell
 	@Override
 	public String toString()
 	{
-		return "Spell [name=" + name + ", level=" + level + ", maxLevel=" + maxLevel + ", mpCost=" + mpCost + ", type="
+		return "Spell [name=" + name + ", image=" + image + ", level=" + level + ", maxLevel=" + maxLevel + ", mpCost=" + mpCost + ", type="
 				+ type + ", preRequisites=" + preRequisites + ", buffs=" + buffs + ", AtkMod=" + Arrays.toString(atkMod) + ", DefMod="
 				+ Arrays.toString(defMod) + ", DexMod=" + Arrays.toString(dexMod) + ", AgiMod="
 				+ Arrays.toString(agiMod) + ", AtkCritMod=" + Arrays.toString(atkCritMod) + ", DefCritMod="

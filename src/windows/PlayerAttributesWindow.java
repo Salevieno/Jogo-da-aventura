@@ -21,7 +21,6 @@ import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
 import utilities.UtilG;
-import utilities.UtilS;
 
 public class PlayerAttributesWindow extends GameWindow
 {
@@ -183,7 +182,8 @@ public class PlayerAttributesWindow extends GameWindow
 					Elements eqElem = user.getElem()[eq + 1] ;
 					if (eqElem != null) { continue ;}
 					
-					Image elemImage = DrawingOnPanel.ElementImages[UtilS.ElementID(eqElem)] ;
+					int elemID = Elements.getID(eqElem) ;
+					Image elemImage = DrawingOnPanel.ElementImages[elemID] ;
 					Point elemPos = UtilG.Translate(eqSlotCenter[eq], eqSlotW[eq] - 12, eqSlotH[eq] / 2) ;
 					DP.DrawImage(elemImage, elemPos, angle, new Scale(0.12, 0.12), Align.center) ;
 				}
@@ -193,8 +193,9 @@ public class PlayerAttributesWindow extends GameWindow
 			// super element
 			if (user.hasSuperElement())
 			{
+				int elemID = Elements.getID(user.getElem()[4]) ;
 				Point superElemPos = UtilG.Translate(userPos, 0, 35) ;
-				Image superElemImage = DrawingOnPanel.ElementImages[UtilS.ElementID(user.getElem()[4])] ;
+				Image superElemImage = DrawingOnPanel.ElementImages[elemID] ;
 				DP.DrawImage(superElemImage, superElemPos, angle, new Scale(0.3, 0.3), Align.center) ;
 			}
 			

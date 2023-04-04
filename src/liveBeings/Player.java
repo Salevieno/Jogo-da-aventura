@@ -286,7 +286,7 @@ public class Player extends LiveBeing
 		{
     		int spellID = CumNumberOfSpellsPerJob[job] + i ;
     		
-			spells.add(Game.getAllSpellTypes()[spellID]) ;
+			spells.add(Game.getAllSpells()[spellID]) ;
 		}
     	
 		spells.get(0).incLevel(1) ;
@@ -340,11 +340,11 @@ public class Player extends LiveBeing
 	
 	private Point feetPos() {return new Point(pos.x, (int) (pos.y - size.height)) ;}
 	
-	public static Spell[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpellTypes(), 14) ;}
-	public static Spell[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 34, 49) ;}
-	public static Spell[] getArcherSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 70, 84) ;}
-	public static Spell[] getAnimalSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 105, 118) ;}
-	public static Spell[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpellTypes(), 139, 152) ;}
+	public static Spell[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpells(), 14) ;}
+	public static Spell[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 34, 49) ;}
+	public static Spell[] getArcherSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 70, 84) ;}
+	public static Spell[] getAnimalSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 105, 118) ;}
+	public static Spell[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 139, 152) ;}
 	
 	public void discoverCreature(CreatureType creatureType) { bestiary.addDiscoveredCreature(creatureType) ;}
 	public void resetClosestCreature() { closestCreature = null ;}
@@ -476,6 +476,40 @@ public class Player extends LiveBeing
 
 //	private List<Quest> getActiveQuests() { return quests.stream().filter(quest -> quest.isActive()).toList() ;}	
 
+
+	public Creature ClosestCreatureInRange()
+	{			
+		
+		if (!map.isAField()) { return null ;}
+		
+		FieldMap fieldMap = (FieldMap) map ;
+		if (!fieldMap.hasCreatures()) { return null ;}
+		
+		int NumberOfCreaturesInMap = fieldMap.getCreatures().size() ;
+		double[] dist = new double[NumberOfCreaturesInMap] ;
+		double MinDist = Game.getScreen().getSize().width + Game.getScreen().getSize().height ;
+		for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
+		{
+			Creature creature = fieldMap.getCreatures().get(i) ;
+			if (fieldMap.getCreatures().get(i) != null)
+			{
+				dist[i] = (double) new Point(pos.x, pos.y).distance(new Point(creature.getPos().x, creature.getPos().y)) ;				
+				MinDist = Math.min(MinDist, dist[i]) ;
+			}	
+		}
+		for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
+		{
+			Creature creature = fieldMap.getCreatures().get(i) ;
+			if (dist[i] == MinDist & fieldMap.getCreatures() != null & dist[i] <= range)
+			{
+				return creature ;	// Closest creature ID
+			}
+		}
+		
+		return null ;
+		
+	}
+	
 	public void engageInFight(Creature Opponent)
 	{
 		opponent = Opponent ;
@@ -644,7 +678,7 @@ public class Player extends LiveBeing
 		
 	}
 	
-	public void meet(Creature[] creatures, Point mousePos, DrawingOnPanel DP)
+	public void meet(Point mousePos, DrawingOnPanel DP)
 	{
 		GameMap currentMap = map ;
 		if (currentMap.isAField())
@@ -835,7 +869,7 @@ public class Player extends LiveBeing
 			
 	
 	// called every time the window is repainted
-	public void showWindows(Pet pet, Creature[] creature, CreatureType[] creatureTypes, GameMap[] maps, Battle B, Point MousePos, DrawingOnPanel DP)
+	public void showWindows(Pet pet, CreatureType[] creatureTypes, GameMap[] maps, Battle B, Point MousePos, DrawingOnPanel DP)
 	{
 		if (bag.isOpen())
 		{
@@ -1011,7 +1045,7 @@ public class Player extends LiveBeing
 		}
 		
 		String[] ItemsObtained = GetItemsObtained.toArray(new String[] {}) ;
-		winAnimation.start(new Object[] {100, ItemsObtained, color}) ;
+		winAnimation.start(new Object[] {ItemsObtained}) ;
 	}
 	public void levelUp(Animations ani)
 	{

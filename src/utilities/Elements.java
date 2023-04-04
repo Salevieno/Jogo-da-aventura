@@ -1,5 +1,7 @@
 package utilities;
 
+import java.util.Arrays;
+
 public enum Elements
 {
 	neutral,
@@ -11,5 +13,10 @@ public enum Elements
 	thunder,
 	light,
 	dark,
-	snow
+	snow;
+	
+	public static int getID(Elements elem)
+	{
+		return Arrays.asList(Elements.values()).indexOf(elem) ;
+	}
 }

@@ -7,10 +7,6 @@ import java.awt.Point;
 import java.util.Arrays ;
 import java.util.List;
 
-import liveBeings.Creature;
-import liveBeings.Player;
-import main.Game;
-import maps.FieldMap;
 import maps.GameMap;
 import maps.GroundType;
 import maps.GroundTypes;
@@ -18,75 +14,43 @@ import maps.GroundTypes;
 public abstract class UtilS 
 {	
 	
-	public static Color[] ReadColorPalette(Image ColorPaletteImage, String mode)
+	public static Color[] ReadColorPalette(Image paletteImage, String mode)
 	{
-		Color[] Palette = new Color[28] ;	// 28 color palette
+		Color[] palette = new Color[28] ;
 
-		if (mode.equals("Normal"))
+		switch (mode)
 		{
-			for (int y = 0 ; y <= 7 - 1 ; y += 1)
-			{
-				for (int x = 0 ; x <= 4 - 1 ; x += 1)
-				{
-					Palette[x + 4 * y] = UtilG.GetPixelColor(UtilG.toBufferedImage(ColorPaletteImage), new Point(x, y)) ;
-				}
-			}
-		}
-		else if (mode.equals("Konami"))
-		{
-			for (int x = 0 ; x <= 4 - 1 ; x += 1)
+			case "Normal":
 			{
 				for (int y = 0 ; y <= 7 - 1 ; y += 1)
 				{
-					Palette[7 * x + y] = UtilG.GetPixelColor(UtilG.toBufferedImage(ColorPaletteImage), new Point(x, y)) ;
+					for (int x = 0 ; x <= 4 - 1 ; x += 1)
+					{
+						palette[x + 4 * y] = UtilG.GetPixelColor(UtilG.toBufferedImage(paletteImage), new Point(x, y)) ;
+					}
 				}
+				
+				break ;
+			}
+			case "Konami":
+			{
+				for (int x = 0 ; x <= 4 - 1 ; x += 1)
+				{
+					for (int y = 0 ; y <= 7 - 1 ; y += 1)
+					{
+						palette[7 * x + y] = UtilG.GetPixelColor(UtilG.toBufferedImage(paletteImage), new Point(x, y)) ;
+					}
+				}
+				
+				break ;
 			}
 		}
-		return Palette ;
+		return palette ;
 	}
 
-	public static String RelPos(Point RefPos, Point Pos2) { return Pos2.x < RefPos.x ? "Right" : "Left" ;}
+	public static String RelPos(Point point, Point refPos) { return refPos.x < point.x ? "Right" : "Left" ;}
 	
 	public static int MirrorFromRelPos(String relPos) { return relPos.equals("Left") ? -1 : 1 ;}
-	
-	public static int MenuSelection(String UpKey, String DownKey, String Choice, int SelectedMenu, int MenuLength)
-	{
-		if (Choice.equals(DownKey) & SelectedMenu < MenuLength)
-		{
-			SelectedMenu += 1 ;
-		}
-		if (Choice.equals(UpKey) & 0 < SelectedMenu)
-		{
-			SelectedMenu += -1 ;
-		}
-		return SelectedMenu ;
-	}
-	
-//	public static RelativePos calcRelativePos(Point pos, Point targetPos)
-//	{
-//		if (pos.equals(targetPos))
-//		{
-//			return RelativePos.inside;
-//		}
-//		if (pos.x == (targetPos.x - 1) & pos.y == targetPos.y)
-//		{
-//			return RelativePos.left ;
-//		}
-//		if (pos.x == (targetPos.x + 1) & pos.y == targetPos.y)
-//		{
-//			return RelativePos.right ;
-//		}
-//		if (pos.x == targetPos.x & pos.y == (targetPos.y - 1))
-//		{
-//			return RelativePos.below ;
-//		}
-//		if (pos.x == targetPos.x & pos.y == (targetPos.y + 1))
-//		{
-//			return RelativePos.above ;
-//		}
-//		
-//		return null ;
-//	}
 	
 	public static RelativePos calcRelativePos(Point pos, Point targetPos, Dimension targetSize)
 	{
@@ -113,8 +77,7 @@ public abstract class UtilS
 		
 		return null ;
 	}
-	
-	
+		
  	public static RelativePos checkAdjacentGround(Point pos, GameMap map, GroundTypes targetGroundType)
 	{
  		
@@ -135,9 +98,9 @@ public abstract class UtilS
 		
 	}
  	
- 	public static boolean isTouching(Point pos, GameMap map, GroundTypes GroundType)
+ 	public static boolean isTouching(Point pos, GameMap map, GroundTypes groundType)
  	{
- 		RelativePos adjGround = checkAdjacentGround(pos, map, GroundType) ;
+ 		RelativePos adjGround = checkAdjacentGround(pos, map, groundType) ;
  		
  		if (adjGround == null) { return false ;}
  		
@@ -146,51 +109,106 @@ public abstract class UtilS
  		return adjPositions.contains(adjGround) ;
  	}
  	
- 	public static boolean isInside(Point pos, GameMap map, GroundTypes GroundType)
+ 	public static boolean isInside(Point pos, GameMap map, GroundTypes groundType)
  	{
- 		RelativePos adjGround = checkAdjacentGround(pos, map, GroundType) ;
+ 		RelativePos adjGround = checkAdjacentGround(pos, map, groundType) ;
  		
  		if (adjGround == null) { return false ;}
  		
  		return adjGround.equals(RelativePos.inside) ;
  	}
 		
-	public static Creature ClosestCreatureInRange(Player player, Creature[] creatures, GameMap[] maps)
-	{	
-		Dimension screenSize = Game.getScreen().getSize() ;
-		if (player.getMap().isAField())	// map is a field, so it has creatures
-		{
-			FieldMap fm = (FieldMap) player.getMap() ;
-			int NumberOfCreaturesInMap = fm.getCreatures().size() ;
-			//for (int i = 0 ; i <= player.getMap().getCreatureTypes().size() - 1 ; ++i)
-			//{
-			//	if (-1 < player.getMap().getCreatureTypes().get(i).getID())
-			//	{
-			//		NumberOfCreaturesInMap += 1 ;
-			//	}
-			//}
-			double[] dist = new double[NumberOfCreaturesInMap] ;
-			double MinDist = screenSize.width + screenSize.height ;
-			for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
-			{
-				Creature creature = fm.getCreatures().get(i) ;
-				if (fm.getCreatures().get(i) != null)
-				{
-					dist[i] = (double) new Point(player.getPos().x, player.getPos().y).distance(new Point(creature.getPos().x, creature.getPos().y)) ;				
-					MinDist = Math.min(MinDist, dist[i]) ;
-				}	
-			}
-			for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
-			{
-				Creature creature = fm.getCreatures().get(i) ;
-				if (dist[i] == MinDist & fm.getCreatures() != null & dist[i] <= player.getRange())
-				{
-					return creature ;	// Closest creature ID
-				}
-			}
-		}
-		return null ;
-	}
+//	public static int UpAndDownCounter(int counter, int duration)
+//	{
+//		if ((counter/duration & 1) == 0)	// counter % looptime is even
+//		{
+//			return counter % duration ;
+//		}
+//		else
+//		{
+//			return duration - (counter % duration) ;
+//		}
+//	}
+
+// 	public static void PrintBattleActions(int message, String user, String receiver, int damage, int effect, int[] status, String[] elem)
+//	{
+//		System.out.println() ;
+//		if (message == 0)
+//		{
+//			System.out.println(user + " inflicts status on " + receiver + " " + Arrays.toString(status)) ;
+//			if (effect == 0)
+//			{
+//				System.out.println(user + " deals damage on " + receiver + " ! Damage = " + damage) ;
+//			} else if (effect == 1)
+//			{
+//				System.out.println(user + " deals critical damage on " + receiver + " ! Damage = " + damage) ;
+//			}
+//			else if (effect == 2)
+//			{
+//				System.out.println(user + " misses " + receiver + "!") ;
+//			} 
+//			else if (effect == 3)
+//			{
+//				System.out.println(receiver + " blocks " + user + "!") ;
+//			}
+//		}
+//		if (message == 1)
+//		{
+//			System.out.println(user + " is stun!") ;
+//		}
+//		if (message == 2)
+//		{
+//			System.out.println(user + " uses spell on " + receiver + " ! Damage = " + damage) ;
+//		}
+//		if (message == 3)
+//		{
+//			System.out.println(user + " defends!") ;
+//		}
+//		if (message == 4)
+//		{
+//			System.out.println("Arrow power added!") ;
+//		}
+//		if (message == 5)
+//		{
+//			System.out.println(user + " elem: " + Arrays.toString(elem)) ;
+//		}
+//		if (message == 6)
+//		{
+//			System.out.println(user + " def down!") ;
+//		}
+//		if (message == 7)
+//		{
+//			System.out.println("Skill buff") ;
+//		}
+//		System.out.println() ;
+//		System.out.println() ;
+//	}
+	
+//	public static RelativePos calcRelativePos(Point pos, Point targetPos)
+//	{
+//		if (pos.equals(targetPos))
+//		{
+//			return RelativePos.inside;
+//		}
+//		if (pos.x == (targetPos.x - 1) & pos.y == targetPos.y)
+//		{
+//			return RelativePos.left ;
+//		}
+//		if (pos.x == (targetPos.x + 1) & pos.y == targetPos.y)
+//		{
+//			return RelativePos.right ;
+//		}
+//		if (pos.x == targetPos.x & pos.y == (targetPos.y - 1))
+//		{
+//			return RelativePos.below ;
+//		}
+//		if (pos.x == targetPos.x & pos.y == (targetPos.y + 1))
+//		{
+//			return RelativePos.above ;
+//		}
+//		
+//		return null ;
+//	}
 	
 	/*public static void PrintBattleActions2(String useraction, String receiveraction, String user, String receiver, Object[] AtkResult, String[] elem)
 	{
@@ -232,61 +250,7 @@ public abstract class UtilS
 		}
 	}
 	*/
-	public static void PrintBattleActions(int message, String user, String receiver, int damage, int effect, int[] status, String[] elem)
-	{
-		System.out.println() ;
-		if (message == 0)
-		{
-			System.out.println(user + " inflicts status on " + receiver + " " + Arrays.toString(status)) ;
-			if (effect == 0)
-			{
-				System.out.println(user + " deals damage on " + receiver + " ! Damage = " + damage) ;
-			} else if (effect == 1)
-			{
-				System.out.println(user + " deals critical damage on " + receiver + " ! Damage = " + damage) ;
-			}
-			else if (effect == 2)
-			{
-				System.out.println(user + " misses " + receiver + "!") ;
-			} 
-			else if (effect == 3)
-			{
-				System.out.println(receiver + " blocks " + user + "!") ;
-			}
-		}
-		if (message == 1)
-		{
-			System.out.println(user + " is stun!") ;
-		}
-		if (message == 2)
-		{
-			System.out.println(user + " uses spell on " + receiver + " ! Damage = " + damage) ;
-		}
-		if (message == 3)
-		{
-			System.out.println(user + " defends!") ;
-		}
-		if (message == 4)
-		{
-			System.out.println("Arrow power added!") ;
-		}
-		if (message == 5)
-		{
-			System.out.println(user + " elem: " + Arrays.toString(elem)) ;
-		}
-		if (message == 6)
-		{
-			System.out.println(user + " def down!") ;
-		}
-		if (message == 7)
-		{
-			System.out.println("Skill buff") ;
-		}
-		System.out.println() ;
-		System.out.println() ;
-	}
 	
-	public static int ElementID(Elements Elem) { return Arrays.asList(Elements.values()).indexOf(Elem) ;}
 	/*
 	public static String ElementName(int ElemID)
 	{
@@ -337,17 +301,7 @@ public abstract class UtilS
 		return Bag ;
 	}
 */
-	public static int UpAndDownCounter(int counter, int duration)
-	{
-		if ((counter/duration & 1) == 0)	// counter % looptime is even
-		{
-			return counter % duration ;
-		}
-		else
-		{
-			return duration - (counter % duration) ;
-		}
-	}
+	
 	
 	/*
 	

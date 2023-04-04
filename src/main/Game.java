@@ -37,7 +37,6 @@ import attributes.PersonalAttributes;
 import components.Building;
 import components.BuildingNames;
 import components.BuildingType;
-import components.GameIcon;
 import components.NPCJobs;
 import components.NPCType;
 import components.NPCs;
@@ -89,33 +88,32 @@ import windows.BankWindow;
 public class Game extends JPanel
 {
 	private static final long serialVersionUID = 1L ;
+	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 
+	public static final String JSONPath = ".\\json\\" ;
+	public static final String CSVPath = ".\\csv\\";
+	public static final String ImagesPath = ".\\images\\";
+	public static final String MusicPath = ".\\music\\" ;
+	public static final String MainFontName = "Comics" ;	
+	public static final Image slotImage = UtilG.loadImage(".\\images\\" + "slot.png") ;
+	
 	private JPanel mainPanel = this ;
     private static Point mousePos ;
-
-	public static String JSONPath ;
-	public static String CSVPath ;
-	public static String ImagesPath ;
-	public static String MusicPath ;
-	public static String MainFontName ;
-	public static Color[] ColorPalette ;	
-	public static int DayDuration ;
-	
 	private static GameStates state ;
 	private static boolean shouldRepaint ;	// tells if the panel should be repainted, created to handle multiple repaint requests at once
-	private Languages GameLanguage ;
-    public static Map<String, String[]> allText ;	// All the text in the game
+	private static Languages GameLanguage ;
 	private static boolean konamiCodeActive ;
+    
+	public static Color[] ColorPalette ;	
+	public static int DayDuration ;
+    public static Map<String, String[]> allText ;	// All the text in the game
+	
 
 	private DrawingOnPanel DP ;
-	private GameIcon[] sideBarIcons;
-	//private Icon[] plusSignIcon ;
 	private Player player ;
 	private static Pet pet ;
-	private Creature[] creature ;
-	public static List<Recipe> allRecipes ;
 	private List<Projectiles> projs ;
-	public static int difficultLevel ;
+	public int difficultLevel ;
 
 	private static Screen screen ;
 	private static Sky sky ;
@@ -128,6 +126,7 @@ public class Game extends JPanel
 	private static GameMap[] allMaps ;
 	private static BuildingType[] buildingTypes ;
 	private static NPCType[] NPCTypes ;
+	private static List<Recipe> allRecipes ;
 	private static Item[] allItems ;
 	private static Spell[] allSpells ;
 	//private static NPCs[] allNPCs ;
@@ -136,16 +135,8 @@ public class Game extends JPanel
 //	private static Gif[] allGifs ;
 	private static Animations[] ani ;
 	
-	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
-	public static final Image slotImage = UtilG.loadImage(".\\images\\" + "slot.png") ;
-	
 	static
 	{
-    	JSONPath = ".\\json\\" ;
-		CSVPath = ".\\csv\\" ;
-		ImagesPath = ".\\images\\" ;
-		MusicPath = ".\\music\\" ;
-		MainFontName = "Comics" ;
 		Dimension windowSize = MainGame3_4.getWindowsize() ;
 		screen = new Screen(new Dimension(windowSize.width - 40, windowSize.height), null) ;
     	screen.calcCenter() ;
@@ -171,8 +162,6 @@ public class Game extends JPanel
 	}
 	
 	public static GameStates getState() { return state ;}
-	public static void setState(GameStates newState) { state = newState ;}
-
 	public static Screen getScreen() {return screen ;}
 	public static Sky getSky() {return sky ;}
 	public static CreatureType[] getCreatureTypes() {return creatureTypes ;}
@@ -181,19 +170,18 @@ public class Game extends JPanel
 	public static BuildingType[] getBuildingTypes() {return buildingTypes ;}
 	public static GameMap[] getMaps() {return allMaps ;}
 	public static Quest[] getAllQuests() {return allQuests ;}
+	public static List<Recipe> getAllRecipes() {return allRecipes ;}
 	public static Item[] getAllItems() {return allItems ;}
-	public static Spell[] getAllSpellTypes() {return allSpells ;}
+	public static Spell[] getAllSpells() {return allSpells ;}
 	public static boolean getShouldRepaint() {return shouldRepaint ;}
-	public static Point getMousePos()
-	{
-		return mousePos ;
-	}
+	public static Point getMousePos() { return mousePos ;}
+	public static void setState(GameStates newState) { state = newState ;}
 	
 	public static void playStopTimeGif() {state = GameStates.playingStopTimeGif ;}
-	public boolean someAnimationIsActive() { return (ani[3].isActive() | ani[4].isActive() | ani[5].isActive()) ;}
 	public static void shouldRepaint() {shouldRepaint = true ;}
+	public static boolean someAnimationIsActive() { return (ani[3].isActive() | ani[4].isActive() | ani[5].isActive()) ;}
 	
-	public void loadAllText()
+	private void loadAllText()
 	{
 		
 		JSONObject textData = UtilG.readJsonObject("./Texto-PT-br.json") ;		
@@ -216,9 +204,9 @@ public class Game extends JPanel
 		
 	}
 	
-	public ArrayList<Recipe> LoadCraftingRecipes()
+	private List<Recipe> LoadCraftingRecipes()
 	{
-		ArrayList<Recipe> recipes = new ArrayList<>() ;
+		List<Recipe> recipes = new ArrayList<>() ;
 		
 		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "craftRecipes.json") ;
 		for (int i = 0 ; i <= input.size() - 1 ; i += 1)
@@ -655,26 +643,7 @@ public class Game extends JPanel
 		
 		return quests ;
     }
-   
-    private GameIcon[] initializeIcons(Dimension screenSize)
-    {
-    	String path = Game.ImagesPath + "\\Icons\\";
-    	
-		// Plus sign icons
-     	//plusSignIcon = new Icon[8] ;
-     	Point[] PlusSignPos = new Point[] {new Point(175, 206), new Point(175, 225), new Point(175, 450),
-     			new Point(175, 475), new Point(175, 500), new Point(175, 525), new Point(175, 550), new Point(175, 575)} ;
-		Image PlusSignImage = UtilG.loadImage(path + "PlusSign.png") ;
-		Image SelectedPlusSignImage = UtilG.loadImage(path + "ShiningPlusSign.png") ;
-		for (int i = 0 ; i <= PlusSignPos.length - 1 ; i += 1)
-    	{
-     		GameIcon newIcon = new GameIcon(i + 8, "Plus sign", PlusSignPos[i], null, PlusSignImage, SelectedPlusSignImage) ;
-    		//plusSignIcon[i] = newIcon;
-     		GameIcon.addToAllIconsList(newIcon) ;
-    	}
-		
-    	return sideBarIcons ;
-    }
+     
  	
     private Spell[] initializeAllSpells(Languages language)
     {
@@ -697,6 +666,8 @@ public class Game extends JPanel
 
 			info[i] = new String[] {spellTypesInput.get(ID)[42], spellTypesInput.get(ID)[43 + 2 * language.ordinal()]} ;
 			String name = spellTypesInput.get(ID)[4] ;
+			String job = "Mage" ; // TODO
+			Image image = 34 <= i ? UtilG.loadImage(ImagesPath + "\\Spells\\" + "spell" + job + (i - 34) + ".png") : null ;
 			int maxLevel = Integer.parseInt(spellTypesInput.get(ID)[5]) ;
 			int mpCost = Integer.parseInt(spellTypesInput.get(ID)[6]) ;
 			SpellTypes type = SpellTypes.valueOf(spellTypesInput.get(ID)[7]) ;
@@ -723,13 +694,14 @@ public class Game extends JPanel
 			double[] silenceMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[38]), Double.parseDouble(spellTypesInput.get(ID)[39]), Double.parseDouble(spellTypesInput.get(ID)[40])} ;
 			Elements elem = Elements.valueOf(spellTypesInput.get(ID)[41]) ;
 			
-			allSpells[i] = new Spell(name, maxLevel, mpCost, type, preRequisites, buffs, nerfs,
+			allSpells[i] = new Spell(name, image, maxLevel, mpCost, type, preRequisites, buffs, nerfs,
 					atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod, cooldown, duration, elem, info[i]) ;
 		}
 		return allSpells ;
     }
 
-	private Item[] initializeAllItems()
+	
+    private Item[] initializeAllItems()
 	{
 		ArrayList<Item> allItems = new ArrayList<>() ;
 		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
@@ -781,10 +753,11 @@ public class Game extends JPanel
 	private void incrementCounters()
 	{
 		sky.dayTime.inc() ;
-		player.incrementCounters() ;		
+		player.incrementCounters() ;
+		
 		if (pet != null) { pet.incrementCounters() ; }
 		
-		if (player.getMap() instanceof FieldMap)
+		if (player.getMap().isAField())
 		{
 			FieldMap fm = (FieldMap) player.getMap() ;
 			fm.getCreatures().forEach(Creature::incrementCounters) ;
@@ -815,12 +788,12 @@ public class Game extends JPanel
 				}
 			}
 		}
-		
-		
+				
 	}
 	
 	private void activateCounters()
 	{	
+		
 		player.activateCounters();
 		if (pet != null)
 		{
@@ -829,13 +802,15 @@ public class Game extends JPanel
 				//pet.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
 			}
 		}
-		if (player.getMap() instanceof FieldMap)
-		{
-			FieldMap fm = (FieldMap) player.getMap() ;
-//			fm.getCreatures().forEach(creature -> creature.ActivateActionCounters()) ;			
-			fm.ActivateCollectiblesCounter() ;
-		}
+		
+		if (!player.getMap().isAField()) { return ;}
+		
+		FieldMap fm = (FieldMap) player.getMap() ;
+//		fm.getCreatures().forEach(creature -> creature.ActivateActionCounters()) ;			
+		fm.ActivateCollectiblesCounter() ;
+		
 	}
+	
 	
 	
 	
@@ -857,6 +832,7 @@ public class Game extends JPanel
 		}
 	}
 	
+	
 	private void checkKonamiCode(List<String> Combo)
 	{
 		String[] combo = Combo.toArray(new String[Combo.size()]) ;
@@ -867,6 +843,7 @@ public class Game extends JPanel
 		}
 	}
 	
+	
 	private void playStopTimeGifs()
 	{
 		if (opening.getOpeningGif().isTimeStopper())
@@ -876,6 +853,7 @@ public class Game extends JPanel
 			repaint();
 		}
 	}
+	
 	
 	private void playGifs(DrawingOnPanel DP)
 	{
@@ -900,19 +878,21 @@ public class Game extends JPanel
 		
 	private void runGame(DrawingOnPanel DP)
 	{
+		
 		// increment and activate counters
 		incrementCounters() ;
 		activateCounters() ;
 		
+		
 		// check for the Konami code
 		checkKonamiCode(player.getCombo()) ;
-		if (konamiCodeActive)
-		{
-			konamiCode() ;
-		}
+		if (konamiCodeActive) { konamiCode() ;}
+		
+		
 		// draw the map (cities, forest, etc.)
 		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
 		sideBar.display(player, pet, mousePos, DP);
+		
 		
 		// creatures act
 		if (player.getMap().isAField())
@@ -974,40 +954,25 @@ public class Game extends JPanel
 		
 		
 		// find the closest creature to the player
-		if (!player.getMap().IsACity())
-		{
-			player.setClosestCreature(UtilS.ClosestCreatureInRange(player, creature, allMaps)) ;
-		}
+		if (!player.getMap().IsACity()) { player.setClosestCreature(player.ClosestCreatureInRange()) ;}
 		
 		// check if the player met something
-		if (!player.isInBattle())
-		{
-			player.meet(creature, mousePos, DP) ;
-		}
+		if (!player.isInBattle()) { player.meet(mousePos, DP) ;}
 		
 		
 		// if the player is in battle, run battle
-		if (player.isInBattle())	// & !ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(16) only enter battle if the animations for win (12), level up (13), pet level up (14), and pterodactile (16) are off
-		{
-			bat.RunBattle(player, pet, player.getOpponent(), ani, DP) ;
-		}
+		// & !ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(16)
+		// only enter battle if the animations for win (12), level up (13), pet level up (14), and pterodactile (16) are off
+		if (player.isInBattle()) { bat.RunBattle(player, pet, player.getOpponent(), ani, DP) ;}
 		
 		
 		// level up the player and the pet if they should
 		if (player.shouldLevelUP()) player.levelUp(ani[4]) ;
 		if (pet != null) { if (pet.shouldLevelUP()) pet.levelUp(ani[4]) ;}
-//		if (!ani.isActive(12))
-//		{
-//			player.checkLevelUp(ani) ;
-//		}
-//		if (pet != null & !ani.isActive(13))
-//		{
-//			pet.checkLevelUp(ani) ;
-//		}
 		
 		
 		// show the active player windows
-		player.showWindows(pet, creature, creatureTypes, allMaps, bat, mousePos, DP) ;
+		player.showWindows(pet, creatureTypes, allMaps, bat, mousePos, DP) ;
 		
 		
 		// move the active projectiles and check if they collide with something
@@ -1035,10 +1000,11 @@ public class Game extends JPanel
 		
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
 		
-    	for (int i = 0 ; i <= ani.length - 1 ; i += 1) { ani[i].run(i, DP) ;}
+//    	for (int i = 0 ; i <= ani.length - 1 ; i += 1) { ani[i].run(i, DP) ;}
     	
 	}
 			
+	
 	private void testingInitialization()
 	{
 		// Quick start
@@ -1064,7 +1030,7 @@ public class Game extends JPanel
     	allSpells = initializeAllSpells(GameLanguage) ;
 		allItems = initializeAllItems() ;
 		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
-		initializeIcons(screen.getSize()) ;
+//		initializeIcons(screen.getSize()) ;
 		allRecipes = LoadCraftingRecipes() ;
 		NPCTypes = initializeNPCTypes(GameLanguage) ;
 		buildingTypes = initializeBuildingTypes() ;		
@@ -1179,9 +1145,9 @@ public class Game extends JPanel
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 200), new Dimension(50, 10))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 199), new Dimension(10, 10))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 203), new Dimension(10, 10))) ;
-//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(200, 200), new Dimension(10, 10))) ;
-    	
+//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(200, 200), new Dimension(10, 10))) ;    	
 	}
+	
 	
 	private void testing()
 	{
@@ -1219,28 +1185,7 @@ public class Game extends JPanel
 	
 
 	
-	/*private void battleSimulation()
-	{
-    	GameLanguage = "P" ;
-		AllText = Utg.ReadTextFile(GameLanguage) ;
-		AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
-    	PlayerName = "" ;
-    	PlayerJob = 1 ;
-    	PlayerSex = "N" ;
-    	MainInitialization() ;
-    	OpeningIsOn = false ;
-    	RunGame = true ;
-		//player.PrintAllAttributes();
-		player.CreatureInBattle = 85;
-		//creatureTypes[creature[player.CreatureInBattle].getType()].printAtt() ;
-		player.setPos(creature[player.CreatureInBattle].getPos()) ;
-		player.setPos(new int[] {player.getPos()[0] + 20, player.getPos()[1] + 15});
-		//player.getBA().setStun(new double[] {1, 0, 0, 0, 500});
-		player.getEquips()[0] = 301 ;
-		player.getEquips()[1] = 302 ;
-		player.getEquips()[2] = 303 ;
-		player.setCurrentAction("Fighting");
-	}*/
+	
 	
 	@Override
 	protected void paintComponent(Graphics g)
@@ -1307,6 +1252,7 @@ public class Game extends JPanel
         g.dispose() ;  
     }
 		
+	
 	class TAdapter extends KeyAdapter 
 	{	
 	    @Override
@@ -1343,6 +1289,7 @@ public class Game extends JPanel
 
 	    }
 	}
+	
 	
 	class MouseEventDemo implements MouseListener 
 	{
@@ -1390,6 +1337,30 @@ public class Game extends JPanel
 		}		
 	}
 
+	
+//	private void battleSimulation()
+//	{
+//    	GameLanguage = "P" ;
+//		AllText = Utg.ReadTextFile(GameLanguage) ;
+//		AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
+//    	PlayerName = "" ;
+//    	PlayerJob = 1 ;
+//    	PlayerSex = "N" ;
+//    	MainInitialization() ;
+//    	OpeningIsOn = false ;
+//    	RunGame = true ;
+//		//player.PrintAllAttributes();
+//		player.CreatureInBattle = 85;
+//		//creatureTypes[creature[player.CreatureInBattle].getType()].printAtt() ;
+//		player.setPos(creature[player.CreatureInBattle].getPos()) ;
+//		player.setPos(new int[] {player.getPos()[0] + 20, player.getPos()[1] + 15});
+//		//player.getBA().setStun(new double[] {1, 0, 0, 0, 500});
+//		player.getEquips()[0] = 301 ;
+//		player.getEquips()[1] = 302 ;
+//		player.getEquips()[2] = 303 ;
+//		player.setCurrentAction("Fighting");
+//	}
+	
 //  private void mainInitialization()
 //	{
 //		DayDuration = 120000 ;

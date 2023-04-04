@@ -68,6 +68,8 @@ public class FieldMap extends GameMap
 	public ArrayList<Collectible> getCollectibles() {return collectibles ;}
 	public void setCreatures(ArrayList<Creature> newValue) {creatures = newValue ;}
 	
+	public boolean hasCreatures() { return creatures != null ;}
+	
 	public void IncCollectiblesCounter()
 	{
 		for (Collectible collectible : collectibles)
