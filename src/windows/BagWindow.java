@@ -314,7 +314,7 @@ public class BagWindow extends GameWindow
 		return false ;
 	}
 	
-	public boolean contains (List<Item> items)
+	public boolean contains(List<Item> items)
 	{
 		for (Item item : items)
 		{
@@ -386,6 +386,7 @@ public class BagWindow extends GameWindow
 			if (action.equals(Player.ActionKeys[3]))
 			{
 				windowUp() ;
+				updateWindow() ;
 			}
 			if (action.equals(Player.ActionKeys[1]))
 			{
@@ -399,6 +400,10 @@ public class BagWindow extends GameWindow
 		}
 	}
 
+	public void updateWindow()
+	{
+		
+	}
 	
 	public void display(Point MousePos, String[] allText, DrawingOnPanel DP)
 	{
@@ -422,11 +427,11 @@ public class BagWindow extends GameWindow
 		// draw items
 		int slotW = SlotImage.getWidth(null) ;
 		int slotH = SlotImage.getHeight(null) ;
-		int i = 0 ;
+		int i = window * numberSlotMax ;
 		activeItems = getActiveItems() ;
 		for (Map.Entry<Item, Integer> activeItem : activeItems.entrySet())
 		{
-			if (numberSlotMax <= i) { break ;}
+			if ((window + 1) * numberSlotMax <= i) { break ;}
 			
 			int row = i % (numberSlotMax / 2) ;
 			int col = i / (numberSlotMax / 2) ;

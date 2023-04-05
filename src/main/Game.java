@@ -84,6 +84,7 @@ import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.BankWindow;
+import windows.ShoppingWindow;
 
 public class Game extends JPanel
 {
@@ -995,8 +996,6 @@ public class Game extends JPanel
 		}
 		
 		player.resetAction() ;
-
-//		shopping.display(mousePos, DP) ;
 		
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
 		
@@ -1140,7 +1139,7 @@ public class Game extends JPanel
 //    	System.out.println(pet.getLife()) ;
 //    	System.out.println(fieldMaps[12].allColliders());
 //    	player.getPA().getExp().incCurrentValue(500) ;
-    	player.setPos(new Point(300, 321)) ;
+    	player.setPos(new Point(400, 221)) ;
     	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(20, 20))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 200), new Dimension(50, 10))) ;
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 199), new Dimension(10, 10))) ;

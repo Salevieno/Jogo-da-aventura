@@ -137,25 +137,8 @@ public class GameIcon
 			selectedIconID = id ;
 		}
 	}
-	public boolean ishovered(Point mousePos)
-	{
-		if (UtilG.isInside(mousePos, topLeftCorner, size))
-		{
-			return true ;
-		}
-		else
-		{
-			return false ;
-		}
-	}
-	public boolean isselected()
-	{
-		if (selectedIconID == id)
-		{
-			return true ;
-		}
-		return false ;
-	}
+	public boolean ishovered(Point mousePos) { return UtilG.isInside(mousePos, topLeftCorner, size) ;}
+	public boolean isselected() { return selectedIconID == id ;}
 	
 	public void activate()
 	{

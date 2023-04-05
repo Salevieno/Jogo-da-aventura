@@ -161,7 +161,7 @@ public class NPCs
 
 	public static NPCType typeFromJob(NPCJobs job) { return Arrays.asList(Game.getNPCTypes()).stream().filter(npcType -> job.equals(npcType.getJob())).toList().get(0) ;}
 
-	public void Contact(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
+	public void action(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
 	{
 //		System.out.println(action);
 		speak(pos, DP) ;
@@ -302,11 +302,11 @@ public class NPCs
 		
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) & menu <= numberMenus - 1)
 		{
-//			incMenu() ;
+			incMenu() ;
 		}
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) & 0 < menu)
 		{
-//			decMenu() ;
+			decMenu() ;
 		}
 	}
 	
@@ -361,19 +361,22 @@ public class NPCs
 	
 	public void sellerAction(BagWindow bag, String action, Point mousePos, ShoppingWindow shopping, DrawingOnPanel DP)
 	{
+	
+		if (menu == 0) { return ;}
+		
 		shopping.display(mousePos, DP) ;
 		
 		if (action == null) { return ;}
 
 		shopping.navigate(action) ;
-		if (action.equals("Enter") | action.equals("MouseLeftClick"))
-		{
-			shopping.buyItem(bag) ;
-		}
+		shopping.action(action, bag) ;
+		
 	}
 	
 	public void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawingOnPanel DP)
 	{
+	
+		if (menu == 0) { return ;}
 
 		spellsTree.display(mousePos, player.getSpellPoints(), DP);
 		
@@ -394,6 +397,9 @@ public class NPCs
 	
 	public void crafterAction(BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
 	{
+	
+		if (menu == 0) { return ;}
+		
 		craftWindow.display(mousePos, DP) ;
 		
 		if (action == null) { return ;}
@@ -425,6 +431,9 @@ public class NPCs
 	
 	public void elementalAction(BagWindow bag, ElementalWindow elementalWindow, String action, DrawingOnPanel DP)
 	{
+	
+		if (menu == 0) { return ;}
+		
 		
 //		elementalWindow.display(DP) ;
 
@@ -489,6 +498,9 @@ public class NPCs
 	
 	public void bankerAction(BagWindow bag, BankWindow bankWindow, String action, DrawingOnPanel DP)
 	{
+	
+		if (menu == 0) { return ;}
+		
 		
 		bankWindow.display(DP) ;
 

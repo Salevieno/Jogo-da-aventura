@@ -749,7 +749,7 @@ public class Player extends LiveBeing
 				
 				if (!metNPC) { continue ;}
 //				System.out.println(npc.getType().getName());
-				npc.Contact(this, Game.getPet(), mousePos, DP) ;
+				npc.action(this, Game.getPet(), mousePos, DP) ;
 				
 				break ;
 			}
@@ -765,7 +765,7 @@ public class Player extends LiveBeing
 				
 				if (!metNPC) { continue ;}
 				
-				npc.Contact(this, Game.getPet(), mousePos, DP) ;
+				npc.action(this, Game.getPet(), mousePos, DP) ;
 				
 				break ;
 			}

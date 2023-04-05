@@ -17,11 +17,13 @@ public class ShoppingWindow extends GameWindow
 {
 	private static int numberItemsPerWindow = 10 ;
 	private List<Item> itemsForSale ;
+	private List<Item> itemsOnWindow ;
 	
 	public ShoppingWindow(List<Item> ItemsForSale)
 	{
 		super("Shopping", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Shopping.png"), 1, 1, Math.min(ItemsForSale.size(), numberItemsPerWindow), ItemsForSale.size() / numberItemsPerWindow + 1) ;
 		this.itemsForSale = ItemsForSale ;
+		itemsOnWindow = itemsOnWindow() ;
 	}
 
 	public void navigate(String action)
@@ -39,31 +41,50 @@ public class ShoppingWindow extends GameWindow
 		if (action.equals(Player.ActionKeys[3]))
 		{
 			windowUp() ;
+			updateWindow() ;
 		}
 		if (action.equals(Player.ActionKeys[1]))
 		{
 			windowDown() ;
+			updateWindow() ;
 		}
 	}
 	
-	private void removeItem()
+	public void action(String action, BagWindow bag)
 	{
-		itemsForSale.remove(item) ;
-		if (item == itemsForSale.size())
+		if (action.equals("Enter") | action.equals("MouseLeftClick"))
 		{
-			item += -1 ;
+			buyItem(bag) ;
 		}
-		numberItems += -1 ;
+	}
+	
+	private void updateWindow()
+	{
+		item = 0 ;
+		itemsOnWindow = itemsOnWindow() ;
+		numberItems = itemsOnWindow.size() ;
 	}
 	
 	public void buyItem(BagWindow bag)
 	{
 		if (itemsForSale.get(item).getPrice() <= bag.getGold())
 		{
-//			removeItem() ;
 			bag.Add(itemsForSale.get(item), 1) ;
 			bag.addGold(-itemsForSale.get(item).getPrice()) ;
 		}
+	}
+	
+	private List<Item> itemsOnWindow()
+	{
+		if (itemsForSale.size() <= numberItemsPerWindow)
+		{
+			return itemsForSale ;
+		}
+		
+		int firstItemID = window * numberItemsPerWindow ;
+		int lastItemID = Math.min(firstItemID + numberItemsPerWindow, itemsForSale.size()) ;
+		
+		return itemsForSale.subList(firstItemID, lastItemID) ;		
 	}
 	
 	public void display(Point mousePos, DrawingOnPanel DP)
@@ -72,7 +93,6 @@ public class ShoppingWindow extends GameWindow
 		Point itemPos = UtilG.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + 20 + padding + Item.slot.getHeight(null) / 2) ;
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 16) ;
 		double angle = DrawingOnPanel.stdAngle ;
-		List<Item> itemsOnWindow = numberItemsPerWindow <= itemsForSale.size() ? itemsForSale.subList(0, numberItemsPerWindow) : itemsForSale ;
 		
 		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
 		
