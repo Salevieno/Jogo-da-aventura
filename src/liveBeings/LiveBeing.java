@@ -150,6 +150,9 @@ public abstract class LiveBeing
 	public void setRange(int newValue) {range = newValue ;}
 	public void setStep(int newValue) {step = newValue ;}
 	public void setCombo(ArrayList<String> newValue) {combo = newValue ;}
+
+	public boolean isMoving() { return (state.equals(LiveBeingStates.moving)) ;}
+	public boolean canAct() { return actionCounter.finished() ;}
 	
 	public PersonalAttributes getPA() {return PA ;}
 	public BattleAttributes getBA() {return BA ;}
@@ -193,7 +196,7 @@ public abstract class LiveBeing
 		mpCounter.inc() ;
 		satiationCounter.inc() ;
 		if (this instanceof Player) { thirstCounter.inc() ;}
-		if (this instanceof Player) { actionCounter.inc() ;}
+		actionCounter.inc() ;
 	}
 	public void activateCounters()
 	{

@@ -62,7 +62,7 @@ public class Creature extends LiveBeing
 		this.elem = CT.elem;
 		mpCounter = new TimeCounter(0, CT.mpDuration);
 		satiationCounter = new TimeCounter(0, CT.satiationDuration);
-//		actionCounter = new TimeCounter(0, CT.moveDuration) ;
+		actionCounter = new TimeCounter(0, 30) ;	// TODO 2 counters using moveDuration
 		battleActionCounter = new TimeCounter(0, CT.battleActionDuration) ;
 		this.stepCounter = new TimeCounter(0, CT.moveDuration) ;
 		combo = new ArrayList<>() ;
@@ -200,17 +200,58 @@ public class Creature extends LiveBeing
 		if (0.5 <= Math.random()) { return "player" ;}
 		else { return "pet" ;}
 	}
+	
+
+	public void Think()
+	{
+
+		if (!state.equals(LiveBeingStates.idle)) { return ;}
+		
+		boolean startMoving = 0.7 < Math.random() ;
+		
+		if (!startMoving) { return ;}
+
+		boolean switchDirection = 0.50 < Math.random() ;
+		if (switchDirection)
+		{
+			setDir(PA.randomDir()) ;
+		}
+		setState(LiveBeingStates.moving) ;
+		return ;
+		
+	}
+	
+	public void Move(Point PlayerPos, GameMap map)
+	{
+
+		// TODO quando não está em batalha mas está seguindo, ela só se aproxima, mas não entra na batalha
+		if (follow)
+		{
+			setPos(Follow(pos, PlayerPos, step, range)) ;
+			return ;
+		}
+
+		int numberSwitchDirection = (int) (1 + 4 * Math.random()) ;
+		boolean switchDirection = stepCounter.getCounter() % (stepCounter.getDuration() / numberSwitchDirection) == 0 ;
+		if (switchDirection)
+		{
+			setDir(PA.randomDir()) ;
+		}
+	
+		updatePos(dir, pos, step, map) ;
+		stepCounter.inc() ;
+		if (stepCounter.finished())
+		{
+			setState(LiveBeingStates.idle) ;
+			stepCounter.reset() ;
+		}
+		
+	}
+	
 	public void act(Point playerPos, GameMap map)
 	{
-		Think() ;	
-		if (state.equals(LiveBeingStates.moving))
-		{
-			Move(playerPos, map) ;
-			if (stepCounter.getCounter() % 5 == 0)
-			{
-				setDir(PA.randomDir()) ;
-			}
-		}
+		Think() ;
+		actionCounter.reset() ;
 	}
 	public void fight()
 	{
@@ -271,37 +312,6 @@ public class Creature extends LiveBeing
 	}
 	
 
-	public void Think()
-	{
-		if (0.3 < Math.random())
-		{
-			if (state.equals(LiveBeingStates.idle))
-			{
-				setState(LiveBeingStates.moving) ;
-			}
-			else if (state.equals(LiveBeingStates.moving))
-			{
-				setState(LiveBeingStates.idle) ;
-			}
-		}
-	}
-	
-	public void Move(Point PlayerPos, GameMap map)
-	{
-		//if (PA.Actions[0][2] == 1 & !PA.getName().equals("Drag�o") & !PA.getName().equals("Dragon"))	// If the creature can move
-		//{
-		// TODO quando não está em batalha mas está seguindo, ela só se aproxima, mas não entra na batalha
-			if (follow)
-			{
-				setPos(Follow(pos, PlayerPos, step, range)) ;
-			}
-			else
-			{
-				updatePos(dir, pos, step, map) ;
-			}
-			stepCounter.inc() ;		
-		//}
-	}
 
 	public void Dies()
 	{

@@ -371,7 +371,7 @@ public class Game extends JPanel
 			Elements[] elem = new Elements[] {Elements.valueOf(input.get(ct)[35])} ;
 			int mpDuration = Integer.parseInt(input.get(ct)[49]) ;
 			int satiationDuration = 100 ;
-			int moveDuration = Integer.parseInt(input.get(ct)[50]) ;
+			int moveDuration = Integer.parseInt(input.get(ct)[50]) ;	// TODO this is the number of steps
 			int battleActionDuration = Integer.parseInt(input.get(ct)[51]) ;
 			int stepCounter = 0 ;
 			
@@ -900,11 +900,22 @@ public class Game extends JPanel
 		// creatures act
 		if (player.getMap().isAField())
 		{
-			FieldMap fm = (FieldMap) player.getMap() ;
-			for (Creature creature : fm.getCreatures())
-			{				
-				creature.act(player.getPos(), player.getMap()) ;
+			List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
+			for (Creature creature : creaturesInMap)
+			{
+//				creature.incActionCounters() ;
+				if (creature.isMoving())
+				{
+					creature.Move(player.getPos(), player.getMap()) ;
+					creature.display(creature.getPos(), Scale.unit, DP) ;
+					continue ;
+				}
+				if (creature.canAct())
+				{
+					creature.act(player.getPos(), player.getMap()) ;
+				}
 				creature.display(creature.getPos(), Scale.unit, DP) ;
+				
 //				creature.DrawAttributes(0, DP) ;
 			}
 			shouldRepaint = true ;

@@ -354,11 +354,9 @@ public class Player extends LiveBeing
 	public void resetOpponent() { opponent = null ;}
 	public void decSpellPoints() { spellPoints += -1 ;}
 	
-	public boolean isMoving() { return (state.equals(LiveBeingStates.moving)) ;}
 	public boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
-	public boolean arrowIsEquipped() { return (equips[3] != null) ;}	
-	public boolean canAct() { return actionCounter.finished() ;}
+	public boolean arrowIsEquipped() { return (equips[3] != null) ;}
 	private boolean actionIsAMove() { return Arrays.asList(MoveKeys).contains(currentAction) ;}
 	public boolean isInBattle() { return state.equals(LiveBeingStates.fighting) ;}
 	public boolean isCollecting() { return state.equals(LiveBeingStates.collecting) ;}
