@@ -264,7 +264,7 @@ public abstract class LiveBeing
 	}
 	public boolean hasActed() {return currentAction != null ;}
 	public boolean actionIsSpell()	{return hasActed() ? Player.SpellKeys.contains(currentAction) : false ;}
-	public boolean actionIsAtk() {return hasActed() ? currentAction.equals(Player.BattleKeys[0]) : false ;}
+	public boolean actionIsAtk() {return false ;}
 	public boolean actionIsDef() {return hasActed() ? currentAction.equals(Player.BattleKeys[1]) : false ;}
 	
 	public boolean canAtk() {return battleActionCounter.finished() & !BA.isStun() ;}
@@ -280,6 +280,7 @@ public abstract class LiveBeing
 		}
 		return actionIsDef() ;
 	}
+	public boolean isInCloseRange(Point target) {return pos.distance(target) <= size.getWidth() ;}
 	public boolean isInRange(Point target) {return pos.distance(target) <= range ;}
 	public boolean isTouching(GroundTypes groundType) { return UtilS.isTouching(pos, map, groundType) ;}
 	public boolean isInside(GroundTypes groundType) { return UtilS.isInside(pos, map, groundType) ;}

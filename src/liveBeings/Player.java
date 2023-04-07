@@ -106,10 +106,12 @@ public class Player extends LiveBeing
 	
 	private Creature closestCreature ;		// creature that is currently closest to the player
     private Creature opponent ;				// creature that is currently in battle with the player
+    private Collectible currentCollectible ;
     private Item[] hotItems ;				// items on the hotkeys
 	private Statistics stats ;
     
     public static final Image CollectingMessage = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "CollectingMessage.gif") ;   
+    public static final Image collectingGif = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "Collecting.gif") ;
     public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "Icon5_Tent.png") ;
     public static final Gif TentGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Icon5_Tent.gif"), 1000, false, false) ;
     public static final Image DragonAuraImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "DragonAura.png") ;
@@ -127,7 +129,7 @@ public class Player extends LiveBeing
     public final static Gif levelUpAnimation = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 170, false, false) ;
     
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Pet window, Map, Quest, Hint, Tent, Bestiary]
-	public static final String[] MoveKeys = new String[] {KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
+	public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
 	public static final String[] HotKeys = new String[] {"E", "X", "V"} ;
 	public static final List<String> SpellKeys = new ArrayList<>(Arrays.asList(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"})) ;
 	
@@ -210,7 +212,7 @@ public class Player extends LiveBeing
 		isRiding = false ;
 		currentBattleAction = null ;
 		stats = new Statistics() ;
-		collectCounter = new TimeCounter(0, 300) ;
+		collectCounter = new TimeCounter(0, 240) ;
 		attPoints = 0 ;
 		
 		
@@ -228,6 +230,7 @@ public class Player extends LiveBeing
 
 		closestCreature = null ;
 	    opponent = null ;
+	    currentCollectible = null ;
 		settings = new SettingsWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "windowSettings.png"), false, true, false, 1, 1) ;
 		hotItems = new Item[3] ;
 		
@@ -358,7 +361,8 @@ public class Player extends LiveBeing
 	public boolean canAct() { return actionCounter.finished() ;}
 	private boolean actionIsAMove() { return Arrays.asList(MoveKeys).contains(currentAction) ;}
 	public boolean isInBattle() { return state.equals(LiveBeingStates.fighting) ;}
-	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}	
+	public boolean isCollecting() { return state.equals(LiveBeingStates.collecting) ;}
+	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 
 	public static boolean setIsFormed(Equip[] EquipID)
 	{
@@ -373,24 +377,31 @@ public class Player extends LiveBeing
 		isRiding = !isRiding ;
 	}
 	
-	private void collect(Collectible collectible, DrawingOnPanel DP)
+	private void finishCollecting()
+	{
+		collectCounter.reset() ;
+        collectingGif.flush() ;
+        state = LiveBeingStates.idle ;
+        
+        // remove the collectible from the list
+		if (map.isAField())
+		{
+			FieldMap fm = (FieldMap) map ;
+			List<Collectible> collectibles = fm.getCollectibles() ;
+			collectibles.remove(currentCollectible) ;
+		}
+		
+        currentCollectible = null ;
+	}
+	
+	public void collect(DrawingOnPanel DP)
     {
 		collectCounter.inc() ;
-        Image collectingGif = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "Collecting.gif") ;
         DP.DrawGif(collectingGif, getPos(), Align.center);
+        
         if (collectCounter.finished())
         {
-        	collectCounter.reset() ;
-            collectingGif.flush() ;
-            
-            // remove the collectible from the list
-            GameMap currentMap = map ;
-			if (currentMap.isAField())
-			{
-				FieldMap fm = (FieldMap) getMap() ;
-				ArrayList<Collectible> collectibles = fm.getCollectibles() ;
-				collectibles.remove(collectible) ;
-			}
+        	finishCollecting() ;
         }
     }
 	
@@ -527,10 +538,10 @@ public class Player extends LiveBeing
 		{
 			switch (currentAction)
 			{
-				case "Acima": setDir(Directions.up) ; break ;
-				case "Abaixo": setDir(Directions.down) ; break ;
-				case "Esquerda": setDir(Directions.left) ; break ;
-				case "Direita": setDir(Directions.right) ; break ;
+				case "Acima": case "W": setDir(Directions.up) ; break ;
+				case "Abaixo": case "S": setDir(Directions.down) ; break ;
+				case "Esquerda": case "A": setDir(Directions.left) ; break ;
+				case "Direita": case "D": setDir(Directions.right) ; break ;
 			}
 			
 			startMove() ;
@@ -680,24 +691,27 @@ public class Player extends LiveBeing
 	
 	public void meet(Point mousePos, DrawingOnPanel DP)
 	{
-		GameMap currentMap = map ;
-		if (currentMap.isAField())
+		if (state == LiveBeingStates.collecting) { return ;}
+		
+		if (map.isAField())
 		{
-			FieldMap fm = (FieldMap) getMap() ;
+			FieldMap fm = (FieldMap) map ;
 			
 			// meeting with collectibles
 			List<Collectible> collectibles = fm.getCollectibles() ;
 			int numberCollectibles = collectibles.size() ;
 			for (int i = 0 ; i <= numberCollectibles - 1 ; i += 1)
 			{
+				
+				if (collectibles.size() - 1 < i) { break ;}
+				
 				Collectible collectible = collectibles.get(i) ;
-				double distx = Math.abs(pos.x - collectible.getPos().x) ;
-				double disty = Math.abs(pos.y - collectible.getPos().y) ;
-				if (distx <= 0.5*size.width & disty <= 0.5*size.height)
-				{
-					setState(LiveBeingStates.collecting);
-					collect(collectible, DP) ;
-				}
+				if (!isInCloseRange(collectible.getPos())) { continue ;}
+				
+				setState(LiveBeingStates.collecting);
+				currentCollectible = collectible ;
+				break ;		
+				
 			}
 			
 //			collectibles.forEach(collectible -> {
@@ -741,9 +755,9 @@ public class Player extends LiveBeing
 		}	
 		
 		// meeting with NPCs
-		if (currentMap.getNPCs() != null)
+		if (map.getNPCs() != null)
 		{
-			for (NPCs npc : currentMap.getNPCs())
+			for (NPCs npc : map.getNPCs())
 			{
 				boolean metNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
 				
@@ -755,9 +769,9 @@ public class Player extends LiveBeing
 			}
 		}
 		
-		if (currentMap.getBuildings() == null) { return ;}
+		if (map.getBuildings() == null) { return ;}
 		
-		for (Building building : currentMap.getBuildings())
+		for (Building building : map.getBuildings())
 		{
 			for (NPCs npc : building.getNPCs())
 			{

@@ -931,6 +931,10 @@ public class Game extends JPanel
 				else { player.setState(LiveBeingStates.fighting) ;}
 			}
 		}
+		if (player.isCollecting())
+		{
+			player.collect(DP) ;
+		}
 		player.applyAdjacentGroundEffect() ;
 		player.DrawAttributes(0, DP) ;
 		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
@@ -1004,7 +1008,7 @@ public class Game extends JPanel
 	}
 			
 	
-	private void testingInitialization()
+	private void initialize()
 	{
 		// Quick start
 		loadAllText() ;
@@ -1053,28 +1057,18 @@ public class Game extends JPanel
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
 //    	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
-    	player.setMap(allMaps[1]) ;
-//    	player.getBag().Add(Potion.getAll()[0], 3) ;
-//    	player.getBag().Add(Potion.getAll()[0], 2) ;
-//    	player.getBag().Add(Potion.getAll()[1], 2) ;
-//    	player.getBag().Add(Potion.getAll()[2], 2) ;
-//    	player.getBag().Add(Alchemy.getAll()[0], 2) ;
-//    	player.getBag().Add(Alchemy.getAll()[2], 2) ;
-    	player.getBag().Add(Forge.getAll()[0], 3) ;
-    	player.getBag().Add(Forge.getAll()[1], 3) ;
-    	player.getBag().Add(Forge.getAll()[2], 3) ;
-    	player.getBag().Add(Forge.getAll()[3], 3) ;
-    	player.getBag().Add(Equip.getAll()[0], 3) ;
+    	player.setMap(allMaps[5]) ;
+//    	player.getBag().Add(Forge.getAll()[0], 3) ;
+//    	player.getBag().Add(Forge.getAll()[1], 3) ;
+//    	player.getBag().Add(Forge.getAll()[2], 3) ;
+//    	player.getBag().Add(Forge.getAll()[3], 3) ;
+//    	player.getBag().Add(Equip.getAll()[0], 3) ;
 //    	player.getBag().Add(Equip.getAll()[1], 3) ;
 //    	player.getBag().Add(Equip.getAll()[2], 3) ;
 //    	System.out.println(player.getBag().numberItems);
 //    	for (int i = 0; i <= Potion.getAll().length - 1; i += 1) { player.getBag().Add(Potion.getAll()[i], 3) ; }
 //    	player.addQuest(allQuests[1]) ;
-//    	player.addQuest(allQuests[5]) ;
-//    	player.addQuest(allQuests[6]) ;
-//    	player.addQuest(allQuests[7]) ;
 //    	player.getQuests().get(0).activate() ;
-//    	player.getQuest().get(1).activate() ;
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
         	player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
@@ -1103,19 +1097,6 @@ public class Game extends JPanel
 //    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
 //    	System.out.println(player.getQuest().get(0).isComplete());
 //    	System.out.println(player.getQuest().get(1).isComplete());
-    	
-//    	allGifs = new Gif[2] ;
-//    	allGifs[0] = Player.TentGif ;
-//    	
-//    	Player.TentGif.play(mousePos, Align.center, DP) ;
-    	
-    	
-//    	for (Buff buff : spell.getBuffs())
-//    	{
-//        	System.out.println(buff);
-//    	}
-
-//    	player.setHotItem(Equip.getAll()[0], 0) ;
     	
 //    	Spell spell = player.getSpells().get(11) ;
 //    	System.out.println(player.getMagAtk()) ;
@@ -1218,8 +1199,7 @@ public class Game extends JPanel
 	        case loading:
 	        {
 	        	//loading.displayText(DP) ;
-				//MainInitialization() ;
-	    		testingInitialization() ;
+	        	initialize() ;
 				state = GameStates.running;
 				
 				shouldRepaint = true ;
