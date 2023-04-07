@@ -11,6 +11,7 @@ import java.awt.MouseInfo ;
 import java.awt.Point;
 import java.awt.image.BufferedImage ;
 import java.io.BufferedReader ;
+import java.io.File ;
 import java.io.FileInputStream ;
 import java.io.FileNotFoundException ;
 import java.io.FileReader ;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel ;
 
@@ -220,6 +222,12 @@ public abstract class UtilG
         
         return null ;
     }
+
+	public static void saveImage(BufferedImage img, String path) throws FileNotFoundException, IOException
+    {
+		File outputfile = new File(path + ".png") ;
+		ImageIO.write(img, "png", outputfile) ;
+    }
 	
 	public static Image loadImage(String filePath)
 	{
@@ -309,6 +317,7 @@ public abstract class UtilG
 		}
 	}	
 */
+
 	
 	public static BufferedImage toBufferedImage(Image img)
 	{

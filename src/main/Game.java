@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent ;
 import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,6 +66,7 @@ import liveBeings.LiveBeingStatus;
 import liveBeings.MovingAnimations;
 import liveBeings.Pet;
 import liveBeings.Player;
+import liveBeings.PlayerJobs;
 import liveBeings.Pterodactile;
 import liveBeings.Spell;
 import maps.CityMap;
@@ -667,8 +669,8 @@ public class Game extends JPanel
 
 			info[i] = new String[] {spellTypesInput.get(ID)[42], spellTypesInput.get(ID)[43 + 2 * language.ordinal()]} ;
 			String name = spellTypesInput.get(ID)[4] ;
-			String job = "Mage" ; // TODO
-			Image image = 34 <= i ? UtilG.loadImage(ImagesPath + "\\Spells\\" + "spell" + job + (i - 34) + ".png") : null ;
+			String job = PlayerJobs.jobFromSpellID(i).toString() ;
+			Image image = UtilG.loadImage(ImagesPath + "\\Spells\\" + "spell" + job + i + ".png") ;
 			int maxLevel = Integer.parseInt(spellTypesInput.get(ID)[5]) ;
 			int mpCost = Integer.parseInt(spellTypesInput.get(ID)[6]) ;
 			SpellTypes type = SpellTypes.valueOf(spellTypesInput.get(ID)[7]) ;
@@ -1023,7 +1025,6 @@ public class Game extends JPanel
 		try {GeneralItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the general items
 		try {Fab.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the fabrication items
 		try {QuestItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the quest items
-		
 		
     	// Minimum initialization
     	DayDuration = 120000 ;
