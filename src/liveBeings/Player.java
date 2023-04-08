@@ -67,7 +67,7 @@ import windows.FabWindow;
 import windows.GameWindow;
 import windows.HintsWindow;
 import windows.MapWindow;
-import windows.PlayerAttributesWindow;
+import windows.AttributesWindow;
 import windows.QuestWindow;
 import windows.SettingsWindow;
 import windows.SpellsTreeWindow;
@@ -112,7 +112,7 @@ public class Player extends LiveBeing
     
     public static final Image CollectingMessage = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "CollectingMessage.gif") ;   
     public static final Image collectingGif = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "Collecting.gif") ;
-    public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\Icons\\" + "Icon5_Tent.png") ;
+//    public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "Icon5_tent.png") ;
     public static final Gif TentGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Icon5_Tent.gif"), 1000, false, false) ;
     public static final Image DragonAuraImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "DragonAura.png") ;
     public static final Image RidingImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Tiger.png") ;
@@ -139,7 +139,7 @@ public class Player extends LiveBeing
 				InitializePersonalAttributes(name, job),
 				InitializeBattleAttributes(job),
 				InitializeMovingAnimations(),
-				new PlayerAttributesWindow(AttWindowImages[0])
+				new AttributesWindow(AttWindowImages[0])
 			) ;
 		this.name = name ;
 		this.job = job ;

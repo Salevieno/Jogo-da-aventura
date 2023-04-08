@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent ;
 import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +37,8 @@ import attributes.PersonalAttributes;
 import components.Building;
 import components.BuildingNames;
 import components.BuildingType;
+import components.GameIcon;
+import components.IconFunction;
 import components.NPCJobs;
 import components.NPCType;
 import components.NPCs;
@@ -86,7 +87,6 @@ import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.BankWindow;
-import windows.ShoppingWindow;
 
 public class Game extends JPanel
 {
@@ -97,8 +97,7 @@ public class Game extends JPanel
 	public static final String CSVPath = ".\\csv\\";
 	public static final String ImagesPath = ".\\images\\";
 	public static final String MusicPath = ".\\music\\" ;
-	public static final String MainFontName = "Comics" ;	
-	public static final Image slotImage = UtilG.loadImage(".\\images\\" + "slot.png") ;
+	public static final String MainFontName = "Comics" ;
 	
 	private JPanel mainPanel = this ;
     private static Point mousePos ;
@@ -137,7 +136,7 @@ public class Game extends JPanel
 	private static Battle bat ;
 //	private static Gif[] allGifs ;
 	private static Animations[] ani ;
-	
+	GameIcon display ;
 	static
 	{
 		Dimension windowSize = MainGame3_4.getWindowsize() ;
@@ -1012,6 +1011,19 @@ public class Game extends JPanel
 			}
 		}
 		
+    	display.display(0, Align.topLeft, mousePos, DP) ;
+
+    	IconFunction myClick = () ->
+    	{
+    		DP.DrawImage(Potion.imageFromID(0), new Point(200, 200), Align.center);
+    	} ;
+    	
+    	if (display.isClicked(mousePos, player.getCurrentAction()))
+    	{
+    		System.out.println("clicked");
+    		display.act(myClick) ;
+    	}
+		
 		player.resetAction() ;
 		
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
@@ -1019,8 +1031,9 @@ public class Game extends JPanel
 //    	for (int i = 0 ; i <= ani.length - 1 ; i += 1) { ani[i].run(i, DP) ;}
     	
 	}
-			
 	
+			
+
 	private void initialize()
 	{
 		// Quick start
@@ -1068,19 +1081,7 @@ public class Game extends JPanel
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
-//    	player.getSpellsTreeWindow().setSpells(player.getSpells().toArray(new Spell[0])) ;
     	player.setMap(allMaps[5]) ;
-//    	player.getBag().Add(Forge.getAll()[0], 3) ;
-//    	player.getBag().Add(Forge.getAll()[1], 3) ;
-//    	player.getBag().Add(Forge.getAll()[2], 3) ;
-//    	player.getBag().Add(Forge.getAll()[3], 3) ;
-//    	player.getBag().Add(Equip.getAll()[0], 3) ;
-//    	player.getBag().Add(Equip.getAll()[1], 3) ;
-//    	player.getBag().Add(Equip.getAll()[2], 3) ;
-//    	System.out.println(player.getBag().numberItems);
-//    	for (int i = 0; i <= Potion.getAll().length - 1; i += 1) { player.getBag().Add(Potion.getAll()[i], 3) ; }
-//    	player.addQuest(allQuests[1]) ;
-//    	player.getQuests().get(0).activate() ;
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
         	player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
@@ -1105,80 +1106,15 @@ public class Game extends JPanel
     	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
-//    	Battle.knockback(new Point(200, 200), new Point(210, 220), 10) ;
-//    	player.Win(((FieldMap) player.getMap()).getCreatures().get(0), null) ;
-//    	System.out.println(player.getQuest().get(0).isComplete());
-//    	System.out.println(player.getQuest().get(1).isComplete());
     	
-//    	Spell spell = player.getSpells().get(11) ;
-//    	System.out.println(player.getMagAtk()) ;
-//    	
-//    	spell.applyBuffs(true, player) ;
-//    	
-//    	System.out.println(player.getMagAtk()) ;
-    	
-//    	Spell spell = pet.getSpells().get(4) ;
-//    	spell.incLevel(1) ;
-//    	
-//    	System.out.println(pet.getSpells().get(4).getBuffs());
-//    	System.out.println(pet.getLife()) ;
-//    	
-//    	spell.applyBuffs(true, pet) ;
-//    	
-//    	System.out.println(pet.getLife()) ;
-//    	
-//    	spell.applyBuffs(false, pet) ;
-//    	
-//    	System.out.println(pet.getLife()) ;
-//    	System.out.println(fieldMaps[12].allColliders());
-//    	player.getPA().getExp().incCurrentValue(500) ;
     	player.setPos(new Point(400, 221)) ;
     	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(20, 20))) ;
-//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 200), new Dimension(50, 10))) ;
-//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 199), new Dimension(10, 10))) ;
-//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(150, 203), new Dimension(10, 10))) ;
-//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(200, 200), new Dimension(10, 10))) ;    	
-	}
-	
-	
-	private void testing()
-	{
-//		List<Item> ItemsOnSale = new ArrayList<>() ;
-//		ItemsOnSale.add(allItems[0]) ;
-//		ItemsOnSale.add(allItems[1]) ;
-//		ItemsOnSale.add(allItems[2]) ;
-//		ItemsOnSale.add(allItems[10]) ;
-//		ItemsOnSale.add(allItems[3]) ;
-//		ItemsOnSale.add(allItems[50]) ;
-//		ItemsOnSale.add(allItems[60]) ;
-//		ItemsOnSale.add(allItems[73]) ;
-//		ItemsOnSale.add(allItems[24]) ;
-//		ItemsOnSale.add(allItems[35]) ;
-//		ItemsOnSale.add(allItems[14]) ;
-//		ShoppingWindow SW = new ShoppingWindow(ItemsOnSale) ;
-//		SW.display(mousePos, DP) ;
-//		
-//
-//		List<Item> ItemsForCrafting = new ArrayList<>() ;
-//		ItemsForCrafting.add(allItems[0]) ;
-//		ItemsForCrafting.add(allItems[1]) ;
-//		ItemsForCrafting.add(allItems[2]) ;
-//		ItemsForCrafting.add(allItems[10]) ;
-//		ItemsForCrafting.add(allItems[3]) ;
-//		ItemsForCrafting.add(allItems[50]) ;
-//		ItemsForCrafting.add(allItems[60]) ;
-//		ItemsForCrafting.add(allItems[73]) ;
-//		ItemsForCrafting.add(allItems[24]) ;
-//		ItemsForCrafting.add(allItems[35]) ;
-//		ItemsForCrafting.add(allItems[14]) ;
-//		CraftWindow CW = new CraftWindow(ItemsForCrafting) ;
-//		CW.display(mousePos, DP) ;
+
+    	display = new GameIcon(0, "display", new Point(300, 300), "description", null, null) ;
+    	
 	}
 	
 
-	
-	
-	
 	@Override
 	protected void paintComponent(Graphics g)
 	{
@@ -1221,7 +1157,6 @@ public class Game extends JPanel
 	        case running:
 	        {
 	        	runGame(DP) ;
-				testing() ;
 				playGifs(DP) ;
 
 	    		break ;
@@ -1318,7 +1253,7 @@ public class Game extends JPanel
 			}
             //shouldRepaint = true ;
 //			System.out.println(mousePos) ;
-			System.out.println(mousePos.x / 600.0 + "," + (mousePos.y - 96) / 384.0) ;
+//			System.out.println(mousePos.x / 600.0 + "," + (mousePos.y - 96) / 384.0) ;
 		}
 
 		@Override

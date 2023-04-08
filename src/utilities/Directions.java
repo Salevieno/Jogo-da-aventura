@@ -30,4 +30,21 @@ public enum Directions
 			default: return null;
 		}
 	}
+	
+	private static Directions getOpposite(Directions dir)
+	{
+		switch (dir)
+		{
+			case up: return down ;
+			case down: return up ;
+			case left: return right ;
+			case right: return left ;
+			default: return null ;
+		}
+	}
+	
+	public static boolean areOpposite(Directions originalDir, Directions dir2)
+	{
+		return (originalDir.equals(Directions.getOpposite(dir2))) ;
+	}
 }

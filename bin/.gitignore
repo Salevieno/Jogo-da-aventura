@@ -1,8 +1,6 @@
-/main/
-/maps/
 /screen/
-/test/
-/testing/
-/utilities/
-/windows/
 /liveBeings/
+/windows/
+/graphics/
+/components/
+/main/

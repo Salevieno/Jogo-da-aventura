@@ -28,7 +28,7 @@ import utilities.Elements;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
-import windows.PlayerAttributesWindow;
+import windows.AttributesWindow;
 
 public class Pet extends LiveBeing
 {
@@ -46,7 +46,7 @@ public class Pet extends LiveBeing
 	
 	private static ArrayList<String[]> PetProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
 	private static ArrayList<String[]> PetEvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
-	private static PlayerAttributesWindow attWindow = new PlayerAttributesWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PetAttWindow1.png")) ;
+	private static AttributesWindow attWindow = new AttributesWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PetAttWindow1.png")) ;
 	
 	
 	public Pet(int Job)
@@ -183,11 +183,11 @@ public class Pet extends LiveBeing
 		int move = -1 ;
 		if (10 <= PA.getMp().getCurrentValue())	// if there is enough mp
 		{
-			move = (int)(3*Math.random() - 0.01) ;	// consider using spell
+			move = UtilG.randomIntFromTo(0, 3) ;	// consider using spell
 		}
 		else
 		{
-			move = (int)(2*Math.random() - 0.01) ;	// only physical atk of def
+			move = UtilG.randomIntFromTo(0, 2) ;	// only physical atk of def
 		}
 		if (move == 0)
 		{
@@ -199,7 +199,7 @@ public class Pet extends LiveBeing
 		}
 		if (move == 2)
 		{
-			return String.valueOf((int)(5*Math.random() - 0.01)) ;
+			return String.valueOf(UtilG.randomIntFromTo(0, 5)) ;
 		}
 		return "" ;
 	}
@@ -215,7 +215,7 @@ public class Pet extends LiveBeing
 		{
 			if (Math.random() <= 0.2)
 			{
-				dir = PA.randomDir() ;
+				dir = PersonalAttributes.randomDir() ;
 			}
 			nextPos = PA.CalcNewPos(dir, pos, step) ;
 		}

@@ -26,7 +26,7 @@ import utilities.RelativePos;
 import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;
-import windows.PlayerAttributesWindow;
+import windows.AttributesWindow;
 
 public abstract class LiveBeing
 {
@@ -57,7 +57,7 @@ public abstract class LiveBeing
 	protected PersonalAttributes PA ;				// Personal attributes
 	protected BattleAttributes BA ;					// Battle attributes
 	protected MovingAnimations movingAni ;			// Moving animations
-	protected PlayerAttributesWindow attWindow ;	// Attributes window
+	protected AttributesWindow attWindow ;	// Attributes window
 	
 	public static final Image[] StatusImages = new Image[] {
 			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Stun.png"),
@@ -104,7 +104,7 @@ public abstract class LiveBeing
 	}*/
 	
 	public LiveBeing(PersonalAttributes PA, BattleAttributes BA,
-			MovingAnimations movingAni, PlayerAttributesWindow attWindow)
+			MovingAnimations movingAni, AttributesWindow attWindow)
 	{
 		this.PA = PA;
 		this.BA = BA;
@@ -156,7 +156,7 @@ public abstract class LiveBeing
 	
 	public PersonalAttributes getPA() {return PA ;}
 	public BattleAttributes getBA() {return BA ;}
-	public PlayerAttributesWindow getAttWindow() {return attWindow ;}
+	public AttributesWindow getAttWindow() {return attWindow ;}
 	public MovingAnimations getMovingAni() {return movingAni ;}
 
 	public void displayState(DrawingOnPanel DP)

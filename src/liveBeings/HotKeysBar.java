@@ -3,6 +3,7 @@ package liveBeings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 
 import graphics.DrawingOnPanel;
@@ -13,7 +14,10 @@ import utilities.UtilG;
 import windows.BagWindow;
 
 public class HotKeysBar
-{	
+{
+	
+	public static final Image slotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
+
 	public static void display(Item[] hotItems, Point mousePos, DrawingOnPanel DP)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -25,7 +29,7 @@ public class HotKeysBar
 		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 		{
 			Point slotCenter = new Point(Game.getScreen().getSize().width + 10, Game.getScreen().getSize().height - 60 + 20 * i) ;
-			Dimension slotSize = new Dimension(Game.slotImage.getWidth(null), Game.slotImage.getHeight(null)) ;
+			Dimension slotSize = new Dimension(slotImage.getWidth(null), slotImage.getHeight(null)) ;
 			Point keyTextPos = new Point(slotCenter.x + slotSize.width / 2 + 5, slotCenter.y + slotSize.height / 2) ;
 			
 			DP.DrawImage(BagWindow.SlotImage, slotCenter, Align.center) ;

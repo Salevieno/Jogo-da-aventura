@@ -3,6 +3,7 @@ package attributes ;
 import java.awt.Point;
 
 import utilities.Directions;
+import utilities.UtilG;
 
 public class PersonalAttributes
 {
@@ -46,9 +47,9 @@ public class PersonalAttributes
 		}
 	}
 	
-	public Directions randomDir()
+	public static Directions randomDir()
 	{
-		int dir = (int)(4*Math.random() - 0.01) ;
+		int dir = UtilG.randomIntFromTo(0, 3) ;
 
 		return Directions.getDir(dir) ;
 	}

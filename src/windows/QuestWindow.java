@@ -36,20 +36,21 @@ public class QuestWindow extends GameWindow
 	
 	public void display(List<Quest> quests, BagWindow bag, DrawingOnPanel DP)
 	{		
-		if (quests.size() <= 0) { return ;}
 
 		numberWindows = quests.size() ;
 		
 		Point windowPos = new Point((int)(0.3 * Game.getScreen().getSize().width), (int)(0.15 * Game.getScreen().getSize().height)) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		double angle = DrawingOnPanel.stdAngle ;	
-		Quest quest = quests.get(window) ;
-		Point questPos = UtilG.Translate(windowPos, image.getWidth(null) / 2, 30) ;
+		double angle = DrawingOnPanel.stdAngle ;
 
 		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
-		
-		DP.DrawText(questPos, Align.center, angle, quest.getName(), font, Game.ColorPalette[6]) ;
 
+		if (quests.size() <= 0) { return ;}
+		
+		Quest quest = quests.get(window) ;
+		Point questPos = UtilG.Translate(windowPos, image.getWidth(null) / 2, 30) ;
+		DP.DrawText(questPos, Align.center, angle, quest.getName(), font, Game.ColorPalette[6]) ;
+		
 		// draw required creatures
 		Map<CreatureType, Integer> reqCreatureTypes = quests.get(window).getReqCreatures() ;
 		if (reqCreatureTypes != null)
@@ -57,7 +58,7 @@ public class QuestWindow extends GameWindow
 			CreatureType[] reqCreatureType = new CreatureType[0];
 			reqCreatureType = reqCreatureTypes.keySet().toArray(reqCreatureType) ;
 			Point creaturesSectionPos = UtilG.Translate(windowPos, size.width / 2 , 60) ;
-			DP.DrawText(creaturesSectionPos, Align.center, angle, "Criaturas necessárias", font, Game.ColorPalette[9]) ;
+			DP.DrawText(creaturesSectionPos, Align.center, angle, "Criaturas necessï¿½rias", font, Game.ColorPalette[9]) ;
 			DP.DrawLine(UtilG.Translate(creaturesSectionPos, -60, 20), UtilG.Translate(creaturesSectionPos, 60, 20), 1, Game.ColorPalette[9]) ;
 			Point creaturePos = UtilG.Translate(windowPos, 50, 80) ;
 			for (CreatureType creatureType : reqCreatureType)
@@ -80,7 +81,7 @@ public class QuestWindow extends GameWindow
 		Item[] reqItem = new Item[0] ;
 		reqItem = reqItems.keySet().toArray(reqItem) ;
 		Point itemsSectionPos = UtilG.Translate(windowPos, size.width / 2, 180) ;
-		DP.DrawText(itemsSectionPos, Align.center, angle, "Itens necessários", font, Game.ColorPalette[9]) ;
+		DP.DrawText(itemsSectionPos, Align.center, angle, "Itens necessï¿½rios", font, Game.ColorPalette[9]) ;
 		DP.DrawLine(UtilG.Translate(itemsSectionPos, -60, 20), UtilG.Translate(itemsSectionPos, 60, 20), 1, Game.ColorPalette[9]) ;
 		Point circlePos = UtilG.Translate(windowPos, 50, 200) ;
 		Point itemPos = UtilG.Translate(circlePos, 10, 0) ;

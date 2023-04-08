@@ -18,6 +18,7 @@ public class SpellsBar
 {	
 	
 	private static final Image image = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "SpellsBar.png") ;
+	public static final Image slotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
 	
 	public static void display(int currentMP, List<Spell> spells, List<Spell> ActiveSpells, Point mousePos, Color BGcolor, Color TextColor, DrawingOnPanel DP)
 	{
@@ -29,7 +30,7 @@ public class SpellsBar
 		Point Pos = new Point(screen.getSize().width + 1, (int) (0.99 * screen.getSize().height) - 70) ;
 		//List<Spell> ActiveSpells = player.GetActiveSpells() ;
 		Dimension size = new Dimension(36, 130) ;
-		int slotW = Game.slotImage.getWidth(null), slotH = Game.slotImage.getHeight(null) ;	// Bar size
+		int slotW = slotImage.getWidth(null), slotH = slotImage.getHeight(null) ;	// Bar size
 		int Ncols = Math.max(ActiveSpells.size() / 11 + 1, 1) ;
 		int Nrows = ActiveSpells.size() / Ncols + 1 ;
 		int Sx = (int) UtilG.spacing(size.width, Ncols, slotW, 3), Sy = (int) UtilG.spacing(size.height, Nrows, slotH, 5) ;		
@@ -49,11 +50,11 @@ public class SpellsBar
 				Point slotCenter = new Point(Pos.x + slotW / 2 + (i / Nrows) * Sx + 3, Pos.y - size.height + slotH / 2 + (i % Nrows) * Sy + Titlefont.getSize() + 5) ;
 				if (currentMP < spell.getMpCost())
 				{
-					DP.DrawImage(Game.slotImage, slotCenter, Align.center) ;
+					DP.DrawImage(slotImage, slotCenter, Align.center) ;
 				}
 				else
 				{
-					DP.DrawImage(Game.slotImage, slotCenter, Align.center) ;
+					DP.DrawImage(slotImage, slotCenter, Align.center) ;
 				}
 				DP.DrawText(slotCenter, Align.center, OverallAngle, Keys.get(i), font, TextColor) ;
 				Dimension imgSize = new Dimension(Spell.cooldownImage.getWidth(null), Spell.cooldownImage.getHeight(null)) ;

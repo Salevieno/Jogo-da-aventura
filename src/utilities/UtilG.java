@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -45,6 +46,11 @@ public abstract class UtilG
  	} 	
 	
 	// reading file methods
+	
+	public static int randomIntFromTo(int min, int max)
+	{
+		return ThreadLocalRandom.current().nextInt(min, max + 1);
+	}
 	
 	public static boolean isNumeric(String str) {
 		  return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.

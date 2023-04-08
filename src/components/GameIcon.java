@@ -29,7 +29,8 @@ public class GameIcon
 	public static int selectedIconID ;
 	public static List<GameIcon> allIcons = new ArrayList<>() ;	// isn't it insane to create a list of all items of a class inside the class itself?
 	
-	public GameIcon(int id, String Name, Point Pos, String description, Image image, Image SelectedImage)
+	public GameIcon(int id, String Name, Point Pos,
+			String description, Image image, Image SelectedImage)
 	{
 		this.id = id ;
 		this.name = Name ;
@@ -127,6 +128,8 @@ public class GameIcon
 			}
 		}
 	}
+
+	public void act(IconFunction action) { action.act() ;}
 	
 	public Point getCenter() {return new Point(topLeftCorner.x + size.width / 2, topLeftCorner.y + size.height / 2) ;}
 	
@@ -138,6 +141,12 @@ public class GameIcon
 		}
 	}
 	public boolean ishovered(Point mousePos) { return UtilG.isInside(mousePos, topLeftCorner, size) ;}
+	public boolean isClicked(Point mousePos, String action)
+	{
+		if (action == null) { return false ;}
+		
+		return ishovered(mousePos) & action.equals("MouseLeftClick") ;
+	}
 	public boolean isselected() { return selectedIconID == id ;}
 	
 	public void activate()

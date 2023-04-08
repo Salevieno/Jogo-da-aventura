@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import attributes.PersonalAttributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
@@ -26,7 +27,7 @@ import utilities.Elements;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
-import windows.PlayerAttributesWindow;
+import windows.AttributesWindow;
 
 public class Creature extends LiveBeing
 {
@@ -49,7 +50,7 @@ public class Creature extends LiveBeing
 				CT.getPA(),
 				CT.getBA(),
 				CT.getMovingAnimations(),
-				new PlayerAttributesWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PetAttWindow1.png"))
+				new AttributesWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PetAttWindow1.png"))
 			) ;
 		
 		this.type = CT ;
@@ -62,7 +63,7 @@ public class Creature extends LiveBeing
 		this.elem = CT.elem;
 		mpCounter = new TimeCounter(0, CT.mpDuration);
 		satiationCounter = new TimeCounter(0, CT.satiationDuration);
-		actionCounter = new TimeCounter(0, 30) ;	// TODO 2 counters using moveDuration
+		actionCounter = new TimeCounter(0, CT.moveDuration) ;
 		battleActionCounter = new TimeCounter(0, CT.battleActionDuration) ;
 		this.stepCounter = new TimeCounter(0, CT.moveDuration) ;
 		combo = new ArrayList<>() ;
@@ -166,6 +167,17 @@ public class Creature extends LiveBeing
 	{
 		return new Point((int) (pos.x + 0.5 * size.width), (int) (pos.y - 0.5 * size.height)) ;
 	}
+	
+	public Directions newMoveDirection(Directions originalDir)
+	{
+		Directions newDir = PersonalAttributes.randomDir() ;
+		while (Directions.areOpposite(originalDir, newDir))
+		{
+			newDir = PersonalAttributes.randomDir() ;
+		}
+		return newDir ;
+	}
+	
 	public void updatePos(Directions dir, Point CurrentPos, int step, GameMap map)
 	{
 		Screen screen = Game.getScreen() ;
@@ -214,7 +226,7 @@ public class Creature extends LiveBeing
 		boolean switchDirection = 0.50 < Math.random() ;
 		if (switchDirection)
 		{
-			setDir(PA.randomDir()) ;
+			setDir(newMoveDirection(dir)) ;
 		}
 		setState(LiveBeingStates.moving) ;
 		return ;
@@ -231,11 +243,11 @@ public class Creature extends LiveBeing
 			return ;
 		}
 
-		int numberSwitchDirection = (int) (1 + 4 * Math.random()) ;
+		int numberSwitchDirection = UtilG.randomIntFromTo(1, 5) ;
 		boolean switchDirection = stepCounter.getCounter() % (stepCounter.getDuration() / numberSwitchDirection) == 0 ;
 		if (switchDirection)
 		{
-			setDir(PA.randomDir()) ;
+			setDir(newMoveDirection(dir)) ;
 		}
 	
 		updatePos(dir, pos, step, map) ;
