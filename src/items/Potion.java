@@ -2,7 +2,7 @@ package items;
 
 import java.awt.Image;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import attributes.PersonalAttributes;
 import liveBeings.LiveBeing;
@@ -51,7 +51,7 @@ public class Potion extends Item
 		
 	public static void Initialize() throws IOException
 	{
-		ArrayList<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Potions.csv") ;
+		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Potions.csv") ;
 		AllPotions = new Potion[input.size()] ;
 		for (int p = 0; p <= AllPotions.length - 1; p += 1)
 		{

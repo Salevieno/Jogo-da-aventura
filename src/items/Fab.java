@@ -1,9 +1,7 @@
 package items;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
+import java.util.List;
 
 import main.Game;
 import utilities.UtilG;
@@ -25,7 +23,7 @@ public class Fab extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		ArrayList<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Fab.csv") ;
+		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Fab.csv") ;
 		AllFabs = new Fab[input.size()] ;
 		for (int p = 0; p <= AllFabs.length - 1; p += 1)
 		{

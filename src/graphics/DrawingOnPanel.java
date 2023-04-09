@@ -10,8 +10,8 @@ import java.awt.Graphics2D ;
 import java.awt.Image ;
 import java.awt.Point;
 import java.awt.geom.AffineTransform ;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import components.GameIcon;
 import liveBeings.Pet;
@@ -26,6 +26,8 @@ import utilities.AttackEffects;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
+
+import windows.PlayerAttributesWindow;
 
 public class DrawingOnPanel 
 {
@@ -131,7 +133,7 @@ public class DrawingOnPanel
 	}
 	public void DrawFitText(Point pos, int sy, Align align, String text, Font font, int maxLength, Color color)
 	{
-		ArrayList<String> FitText = UtilG.FitText(text, maxLength) ;
+		List<String> FitText = UtilG.FitText(text, maxLength) ;
 		for (int i = 0 ; i <= FitText.size() - 1 ; i += 1)
 		{
 			DrawText(new Point(pos.x, pos.y + i*sy), align, stdAngle, FitText.get(i), font, color) ;						
@@ -307,7 +309,7 @@ public class DrawingOnPanel
 		
 		DrawText(new Point((int)(0.5*screenSize.width), (int)(0.05*screenSize.height)), Align.center, stdAngle, "Slot " + (SlotID + 1), font, colorPalette[5]) ;
 		//player.DrawAttWindow(MainWinDim, WindowPos[0], null, AllText, AllTextCat, 0, GoldCoinImage, icons, DP) ;
-		player.getAttWindow().display(player, player.getEquips(), new Point(0, 0), this) ;
+		((PlayerAttributesWindow) player.getAttWindow()).display(player, player.getEquips(), new Point(0, 0), this) ;
 		if (0 < pet.getLife().getCurrentValue())
 		{
  			//pet.getAttWindow().display(pet, allText, null, null, NumberOfUsedSlots, null, null, null, null);

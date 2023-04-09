@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 
 import graphics.DrawingOnPanel;
 import liveBeings.CreatureType;
@@ -51,7 +52,7 @@ public class BestiaryWindow extends GameWindow
 		windowPos.y += - (int) (0.5 * Game.getScreen().getSize().height) ;
 		creatureType.display(UtilG.Translate(windowPos, 40, offset), new Scale(1, 1), DP) ;
 		
-		ArrayList<String> textInfo = new ArrayList<>() ;
+		List<String> textInfo = new ArrayList<>() ;
 		textInfo.add(text[2] + ": " + creatureType.getLevel()) ;
 		textInfo.add(text[3] + ": " + (int)creatureType.getPA().getLife().getCurrentValue()) ;
 		textInfo.add(text[4] + ": " + creatureType.getPA().getExp().getCurrentValue()) ;

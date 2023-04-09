@@ -1,7 +1,7 @@
 package items;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import liveBeings.Pet;
 import main.Game;
@@ -33,7 +33,7 @@ public class PetItem extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		ArrayList<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_PetItem.csv") ;
+		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_PetItem.csv") ;
 		AllPetItems = new PetItem[input.size()] ;
 		for (int p = 0; p <= AllPetItems.length - 1; p += 1)
 		{

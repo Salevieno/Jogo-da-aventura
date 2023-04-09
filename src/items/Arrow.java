@@ -2,7 +2,7 @@ package items;
 
 import java.awt.Image;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import main.Game;
 import utilities.UtilG;
@@ -33,7 +33,7 @@ public class Arrow extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		ArrayList<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Arrow.csv") ;
+		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Arrow.csv") ;
 		AllArrow = new Arrow[input.size()] ;
 		for (int p = 0; p <= AllArrow.length - 1; p += 1)
 		{

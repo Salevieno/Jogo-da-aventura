@@ -2,8 +2,8 @@ package items;
 
 import java.awt.Image;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import attributes.AttributeBonus;
 import attributes.BattleAttributes;
@@ -90,7 +90,7 @@ public class Equip extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		ArrayList<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Equip.csv") ;
+		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Equip.csv") ;
 		allEquips = new Equip[input.size()] ;
 		for (int p = 0; p <= allEquips.length - 1; p += 1)
 		{

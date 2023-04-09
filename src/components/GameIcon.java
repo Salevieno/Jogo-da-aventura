@@ -25,9 +25,20 @@ public class GameIcon
 	private Image image ;
 	private Image selectedImage ;	// Image when selected
 	private String value ;			// return value for when the icon is clicked
+	private IconFunction action ;
 	
 	public static int selectedIconID ;
 	public static List<GameIcon> allIcons = new ArrayList<>() ;	// isn't it insane to create a list of all items of a class inside the class itself?
+	
+	public GameIcon(Point pos, Image image, Image selectedImage, IconFunction action)
+	{
+		this.image = image ;
+		this.selectedImage = selectedImage ;
+		this.topLeftCorner = pos ;
+		isActive = true ;
+		size = new Dimension(image.getWidth(null), image.getHeight(null)) ;
+		this.action = action ;
+	}
 	
 	public GameIcon(int id, String Name, Point Pos,
 			String description, Image image, Image SelectedImage)
@@ -129,15 +140,22 @@ public class GameIcon
 		}
 	}
 
-	public void act(IconFunction action) { action.act() ;}
+	public void act() { action.act() ;}
 	
 	public Point getCenter() {return new Point(topLeftCorner.x + size.width / 2, topLeftCorner.y + size.height / 2) ;}
 	
 	public void select(Point mousePos)
 	{
-		if (isActive & ishovered(mousePos))
+		if (isActive)
 		{
-			selectedIconID = id ;
+			if (ishovered(mousePos))
+			{
+				selectedIconID = id ;
+			}
+			else
+			{
+				selectedIconID = -1 ;
+			}
 		}
 	}
 	public boolean ishovered(Point mousePos) { return UtilG.isInside(mousePos, topLeftCorner, size) ;}
@@ -161,9 +179,12 @@ public class GameIcon
 	
 	public void display(double angle, Align alignment, Point mousePos, DrawingOnPanel DP)
 	{
+		
+		if (!isActive) { return ;}
+		
 		Font font = new Font(Game.MainFontName, Font.BOLD, 16) ;
 		Color textColor = Game.ColorPalette[0] ;
-		Color selectedTextColor = Game.ColorPalette[1] ;
+		Color selectedTextColor = Game.ColorPalette[1] ;		
 		
 		select(mousePos) ;
 		if (isselected())	// ishovered(MousePos)
@@ -193,6 +214,7 @@ public class GameIcon
 			}
 		}
 	}
+	
 	public void displayHoverMessage(Align alignment, DrawingOnPanel DP)
 	{
 		if (description != null)

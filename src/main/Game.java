@@ -136,7 +136,7 @@ public class Game extends JPanel
 	private static Battle bat ;
 //	private static Gif[] allGifs ;
 	private static Animations[] ani ;
-	GameIcon display ;
+	
 	static
 	{
 		Dimension windowSize = MainGame3_4.getWindowsize() ;
@@ -1011,19 +1011,6 @@ public class Game extends JPanel
 			}
 		}
 		
-    	display.display(0, Align.topLeft, mousePos, DP) ;
-
-    	IconFunction myClick = () ->
-    	{
-    		DP.DrawImage(Potion.imageFromID(0), new Point(200, 200), Align.center);
-    	} ;
-    	
-    	if (display.isClicked(mousePos, player.getCurrentAction()))
-    	{
-    		System.out.println("clicked");
-    		display.act(myClick) ;
-    	}
-		
 		player.resetAction() ;
 		
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
@@ -1075,9 +1062,9 @@ public class Game extends JPanel
     	sideBar = new SideBar(player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
     	bat = new Battle() ;
 		
-//		pet = new Pet(0) ;
-//    	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
-//    	pet.setPos(player.getPos());
+		pet = new Pet(0) ;
+    	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
+    	pet.setPos(player.getPos());
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
@@ -1107,10 +1094,10 @@ public class Game extends JPanel
     	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
     	
+    	player.getExp().incCurrentValue(5000);
+    	
     	player.setPos(new Point(400, 221)) ;
     	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(20, 20))) ;
-
-    	display = new GameIcon(0, "display", new Point(300, 300), "description", null, null) ;
     	
 	}
 	

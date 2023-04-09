@@ -1,7 +1,7 @@
 package items;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import main.Game;
 import utilities.UtilG;
@@ -23,7 +23,7 @@ public class Forge extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		ArrayList<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Forge.csv") ;
+		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Forge.csv") ;
 		AllForge = new Forge[input.size()] ;
 		for (int p = 0; p <= AllForge.length - 1; p += 1)
 		{

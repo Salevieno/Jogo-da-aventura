@@ -2,7 +2,7 @@ package items;
 
 import java.awt.Image;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import attributes.PersonalAttributes;
 import liveBeings.LiveBeing;
@@ -43,7 +43,7 @@ public class Alchemy extends Item
 	
 	public static void Initialize() throws IOException
 	{
-		ArrayList<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Alchemy.csv") ;
+		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Alchemy.csv") ;
 		AllAlchemy = new Alchemy[input.size()] ;
 		for (int a = 0; a <= AllAlchemy.length - 1; a += 1)
 		{

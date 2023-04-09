@@ -67,7 +67,8 @@ import windows.FabWindow;
 import windows.GameWindow;
 import windows.HintsWindow;
 import windows.MapWindow;
-import windows.AttributesWindow;
+import windows.PlayerAttributesWindow;
+import windows.PetAttributesWindow;
 import windows.QuestWindow;
 import windows.SettingsWindow;
 import windows.SpellsTreeWindow;
@@ -124,7 +125,6 @@ public class Player extends LiveBeing
 	public final static List<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public final static int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
-    public final static Image[] AttWindowImages = new Image[] {UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")} ;
     public final static Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
     public final static Gif levelUpAnimation = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 170, false, false) ;
     
@@ -132,15 +132,17 @@ public class Player extends LiveBeing
 	public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
 	public static final String[] HotKeys = new String[] {"E", "X", "V"} ;
 	public static final List<String> SpellKeys = new ArrayList<>(Arrays.asList(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"})) ;
-	
+
+	public final static Image[] AttWindowImages = new Image[] {UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")} ;
+    
 	public Player(String name, String Language, String Sex, int job)
 	{
 		super(
 				InitializePersonalAttributes(name, job),
 				InitializeBattleAttributes(job),
 				InitializeMovingAnimations(),
-				new AttributesWindow(AttWindowImages[0])
-			) ;
+				new PlayerAttributesWindow(AttWindowImages[0])
+				) ;
 		this.name = name ;
 		this.job = job ;
 		proJob = 0 ;
@@ -528,7 +530,7 @@ public class Player extends LiveBeing
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 		
-	public void acts(Pet pet, Point MousePos, SideBar sideBar)
+	public void acts(Pet pet, Point mousePos, SideBar sideBar)
 	{
 		
 		// I like to move it, move it!
@@ -551,7 +553,7 @@ public class Player extends LiveBeing
 		{
 			sideBar.getIcons().forEach(icon ->
 			{
-				if (icon.ishovered(MousePos))
+				if (icon.ishovered(mousePos))
 				{
 					switch (icon.getName())
 					{
@@ -577,6 +579,7 @@ public class Player extends LiveBeing
 		if (currentAction.equals(ActionKeys[5]))
 		{
 			focusWindow = attWindow ;
+			((PlayerAttributesWindow) attWindow).updateAttIncButtons(this) ;
 			attWindow.open() ;
 		}
 		if (currentAction.equals(ActionKeys[6]))
@@ -660,6 +663,11 @@ public class Player extends LiveBeing
 			{
 				useItem(bag.getSelectedItem()) ;
 			}
+		}
+		
+		if (attWindow.isOpen())
+		{
+			((PlayerAttributesWindow) attWindow).act(this, mousePos, currentAction) ;
 		}
 
 		
@@ -889,7 +897,7 @@ public class Player extends LiveBeing
 		}
 		if (attWindow.isOpen())
 		{
-			attWindow.display(this, equips, MousePos, DP);
+			((PlayerAttributesWindow) attWindow).display(this, equips, MousePos, DP);
 		}
 		if (fabWindow.isOpen())
 		{		
@@ -900,7 +908,7 @@ public class Player extends LiveBeing
 		{
 			if (pet.getAttWindow().isOpen())
 			{
-				pet.getAttWindow().display(pet, null, MousePos, DP);
+				((PetAttributesWindow) pet.getAttWindow()).display(pet, DP);
 			}
 		}
 		if (mapWindow.isOpen())
@@ -1077,6 +1085,7 @@ public class Player extends LiveBeing
 		spellPoints += 1 ;
 		attPoints += 2 ;
 		
+		((PlayerAttributesWindow) attWindow).activateIncAttButtons(attPoints) ;
 		ani.start(new Object[] {600, Arrays.copyOf(attIncrease, attIncrease.length - 1), level, pos}) ;
 	}
 	private double[] calcAttributesIncrease()

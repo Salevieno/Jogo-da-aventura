@@ -27,6 +27,7 @@ import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.AttributesWindow;
+import windows.PlayerAttributesWindow;
 
 public abstract class LiveBeing
 {
@@ -54,10 +55,10 @@ public abstract class LiveBeing
 	protected List<String> combo ;				// record of the last 10 movements
 	protected List<Spell> spells ;
 	
-	protected PersonalAttributes PA ;				// Personal attributes
-	protected BattleAttributes BA ;					// Battle attributes
-	protected MovingAnimations movingAni ;			// Moving animations
-	protected AttributesWindow attWindow ;	// Attributes window
+	protected PersonalAttributes PA ;			// Personal attributes
+	protected BattleAttributes BA ;				// Battle attributes
+	protected MovingAnimations movingAni ;		// Moving animations
+	protected AttributesWindow attWindow ;		// Attributes window
 	
 	public static final Image[] StatusImages = new Image[] {
 			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Stun.png"),
@@ -74,7 +75,7 @@ public abstract class LiveBeing
 	/*public LiveBeing(String name, int job, int proJob, int level, GameMap map, Point pos, Directions dir,
 			LiveBeingStates state, Dimension size, double range, int step, String[] elem, TimeCounter mpCounter,
 			TimeCounter satiationCounter, TimeCounter moveCounter, TimeCounter battleActionCounter, 
-			ArrayList<String> combo, ArrayList<Spell> spells, PersonalAttributes PA, BattleAttributes BA,
+			List<String> combo, ArrayList<Spell> spells, PersonalAttributes PA, BattleAttributes BA,
 			MovingAnimations movingAni, PlayerAttributesWindow attWindow)
 	{
 		this.name = name;
@@ -109,7 +110,7 @@ public abstract class LiveBeing
 		this.PA = PA;
 		this.BA = BA;
 		this.movingAni = movingAni;
-		this.attWindow = attWindow;
+		this.attWindow = attWindow ;
 		displayDamage = new TimeCounter(0, 100) ;
 		currentAction = null ;
 	}
@@ -149,8 +150,8 @@ public abstract class LiveBeing
 	public void setSize(Dimension newValue) {size = newValue ;}
 	public void setRange(int newValue) {range = newValue ;}
 	public void setStep(int newValue) {step = newValue ;}
-	public void setCombo(ArrayList<String> newValue) {combo = newValue ;}
-
+	public void setCombo(List<String> newValue) {combo = newValue ;}
+	
 	public boolean isMoving() { return (state.equals(LiveBeingStates.moving)) ;}
 	public boolean canAct() { return actionCounter.finished() ;}
 	

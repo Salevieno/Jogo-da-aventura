@@ -97,12 +97,12 @@ public abstract class UtilG
 		return Text ;
 	}
 	
-	public static ArrayList<String[]> ReadcsvFile(String FileName)
+	public static List<String[]> ReadcsvFile(String FileName)
 	{
 		BufferedReader br = null ;
         String line = "" ;
         String separator = "," ;
-        ArrayList<String[]> Input = new ArrayList<String[]>() ;
+        List<String[]> Input = new ArrayList<String[]>() ;
         try 
         {
             br = new BufferedReader(new FileReader(FileName, Charset.forName("UTF-8"))) ;
@@ -558,9 +558,9 @@ public abstract class UtilG
 		return (int)(0.8*TextSize) ;
 	}
 		
-	public static ArrayList<String> FitText(String inputstring, int NumberOfChars)
+	public static List<String> FitText(String inputstring, int NumberOfChars)
 	{
-		ArrayList<String> newstring = new ArrayList<String>() ;
+		List<String> newstring = new ArrayList<String>() ;
 		int CharsExeeding = 0 ;		
 		int i = 0 ;
 		int FirstChar = 0 ;
@@ -597,7 +597,7 @@ public abstract class UtilG
 			}
 			i += 1 ;
 		} while(LastChar != inputstring.length() & i != inputstring.length()) ;
-		ArrayList<String> newstring2 = new ArrayList<>() ;
+		List<String> newstring2 = new ArrayList<>() ;
 		for (int j = 0 ; j <= i - 1 ; j += 1)
 		{
 			newstring2.add(newstring.get(j)) ;

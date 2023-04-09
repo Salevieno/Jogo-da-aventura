@@ -28,7 +28,8 @@ import utilities.Elements;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
-import windows.AttributesWindow;
+import windows.PetAttributesWindow;
+import windows.PlayerAttributesWindow;
 
 public class Pet extends LiveBeing
 {
@@ -44,14 +45,14 @@ public class Pet extends LiveBeing
 	
 	public static String[] SpellKeys = new String[] {"0", "1", "2", "3"} ;
 	
-	private static ArrayList<String[]> PetProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
-	private static ArrayList<String[]> PetEvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
-	private static AttributesWindow attWindow = new AttributesWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PetAttWindow1.png")) ;
+	private static List<String[]> PetProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
+	private static List<String[]> PetEvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
 	
 	
 	public Pet(int Job)
 	{
-		super(InitializePersonalAttributes(Job), InitializeBattleAttributes(Job), initializeMovingAnimations(Job), attWindow) ;
+		super(InitializePersonalAttributes(Job), InitializeBattleAttributes(Job),
+				initializeMovingAnimations(Job), new PetAttributesWindow()) ;
 		
 		name = PetProperties.get(Job)[0] ;
 		level = 1 ;

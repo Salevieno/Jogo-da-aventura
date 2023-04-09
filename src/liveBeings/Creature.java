@@ -27,7 +27,8 @@ import utilities.Elements;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
-import windows.AttributesWindow;
+import windows.CreatureAttributesWindow;
+import windows.PlayerAttributesWindow;
 
 public class Creature extends LiveBeing
 {
@@ -50,7 +51,7 @@ public class Creature extends LiveBeing
 				CT.getPA(),
 				CT.getBA(),
 				CT.getMovingAnimations(),
-				new AttributesWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PetAttWindow1.png"))
+				new CreatureAttributesWindow()
 			) ;
 		
 		this.type = CT ;
