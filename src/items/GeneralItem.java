@@ -1,6 +1,6 @@
 package items;
 
-import java.io.IOException;
+import java.awt.Image;
 import java.util.List;
 
 import liveBeings.LiveBeing;
@@ -14,17 +14,10 @@ public class GeneralItem extends Item
 	private int id ;
 	
 	private static GeneralItem[] AllGeneralItems ;
-	public GeneralItem(int id, String Name, String Description, int price, double dropChance)
-	{
-		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "items.png"), price, dropChance) ;
-		this.id = id ;
-	}
-
-	public int getId() {return id ;}
-	public static GeneralItem[] getAll() {return AllGeneralItems ;}
 	
+	private static final Image generalItemIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconGenItem.png") ;
 	
-	public static void Initialize() throws IOException
+	static
 	{
 		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_GeneralItem.csv") ;
 		AllGeneralItems = new GeneralItem[input.size()] ;
@@ -36,9 +29,23 @@ public class GeneralItem extends Item
 			int price = Integer.parseInt(input.get(p)[5]) ;
 			double dropChance = Double.parseDouble(input.get(p)[6]) ;
 			AllGeneralItems[p] = new GeneralItem(id, name, description, price, dropChance);
-		}		
+		}
+	}
+	
+	public GeneralItem(int id, String Name, String Description, int price, double dropChance)
+	{
+		super(Name, Description, imageFromID(id), price, dropChance) ;
+		this.id = id ;
 	}
 
+	public int getId() {return id ;}
+	public static GeneralItem[] getAll() {return AllGeneralItems ;}
+	
+	public static Image imageFromID(int id)
+	{		
+		return generalItemIcon ;		
+	}
+	
 	public void use(LiveBeing user)
 	{
 		

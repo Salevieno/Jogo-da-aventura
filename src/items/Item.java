@@ -30,4 +30,5 @@ public abstract class Item
 	public Image getImage() {return image ;}
 	public int getPrice() {return price ;}
 	public double getDropChance() {return dropChance ;}
+	
 }

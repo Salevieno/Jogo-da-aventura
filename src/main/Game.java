@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent ;
 import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,8 +36,6 @@ import attributes.PersonalAttributes;
 import components.Building;
 import components.BuildingNames;
 import components.BuildingType;
-import components.GameIcon;
-import components.IconFunction;
 import components.NPCJobs;
 import components.NPCType;
 import components.NPCs;
@@ -1023,21 +1020,8 @@ public class Game extends JPanel
 
 	private void initialize()
 	{
-		// Quick start
 		loadAllText() ;
 		
-		try {Potion.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the potions
-		try {Alchemy.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the alchemy items
-		try {Forge.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the forge items
-		try {PetItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the pet items
-		try {Food.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the food items
-		try {Arrow.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the arrow items
-		try {Equip.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the equip items
-		try {GeneralItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the general items
-		try {Fab.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the fabrication items
-		try {QuestItem.Initialize() ;} catch (IOException e) {e.printStackTrace() ;} // Initialize the list with all the quest items
-		
-    	// Minimum initialization
     	DayDuration = 120000 ;
     	sky = new Sky() ;
     	screen.setBorders(new int[] {0, sky.height, screen.getSize().width, screen.getSize().height});
@@ -1045,7 +1029,6 @@ public class Game extends JPanel
     	allSpells = initializeAllSpells(GameLanguage) ;
 		allItems = initializeAllItems() ;
 		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
-//		initializeIcons(screen.getSize()) ;
 		allRecipes = LoadCraftingRecipes() ;
 		NPCTypes = initializeNPCTypes(GameLanguage) ;
 		buildingTypes = initializeBuildingTypes() ;		
@@ -1069,6 +1052,7 @@ public class Game extends JPanel
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
     	player.setMap(allMaps[5]) ;
+    	
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
         	player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
@@ -1080,9 +1064,6 @@ public class Game extends JPanel
     	player.getBag().addGold(3000) ;
     	
     	
-
-//    	player.getBag().Add(Potion.getAll()[0], 1) ;
-//    	player.getBag().Add(Arrow.getAll()[0], 30) ;
     	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}

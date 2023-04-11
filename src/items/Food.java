@@ -1,6 +1,6 @@
 package items;
 
-import java.io.IOException;
+import java.awt.Image;
 import java.util.List;
 
 import attributes.PersonalAttributes;
@@ -16,9 +16,22 @@ public class Food extends Item
 	private int SatiationHeal ;
 	
 	private static Food[] AllFood ;
+	
+	private static final Image iconFoodBerry = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconFoodBerry.png") ;
+	
+	static
+	{
+		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Food.csv") ;
+		AllFood = new Food[input.size()] ;
+		for (int p = 0; p <= AllFood.length - 1; p += 1)
+		{
+			AllFood[p] = new Food(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]), Float.parseFloat(input.get(p)[7]), Float.parseFloat(input.get(p)[8]), Integer.parseInt(input.get(p)[9]));
+		}	
+	}
+	
 	public Food(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal, int SatiationHeal)
 	{
-		super(Name, Description, UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "items.png"), price, dropChance) ;
+		super(Name, Description, imageFromID(id), price, dropChance) ;
 		this.id = id ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
@@ -30,16 +43,10 @@ public class Food extends Item
 	public float getMPHeal() {return MPHeal ;}	
 	public int getSatiationHeal() {return SatiationHeal ;}	
 	public static Food[] getAll() {return AllFood ;}
-	
-	
-	public static void Initialize() throws IOException
+
+	public static Image imageFromID(int id)
 	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Food.csv") ;
-		AllFood = new Food[input.size()] ;
-		for (int p = 0; p <= AllFood.length - 1; p += 1)
-		{
-			AllFood[p] = new Food(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]), Float.parseFloat(input.get(p)[7]), Float.parseFloat(input.get(p)[8]), Integer.parseInt(input.get(p)[9]));
-		}		
+		return iconFoodBerry ;
 	}
 	
 	public void use(LiveBeing user)

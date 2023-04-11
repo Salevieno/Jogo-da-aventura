@@ -1,7 +1,6 @@
 package items;
 
 import java.awt.Image;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,70 +24,26 @@ public class Equip extends Item
 	private static Equip[] allEquips ;
 	public static final int maxForgeLevel = 10 ;
 	
-	private static Image swordIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconSword.png") ;
-	private static Image staffIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconStaff.png") ;
-	private static Image bowIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconBow.png") ;
-	private static Image clawsIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconClaws.png") ;
-	private static Image daggerIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconDagger.png") ;
-	private static Image shieldIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconShield.png") ;
-	private static Image armorIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconArmor.png") ;
-	private static Image emblemIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconArmor.png") ;
+	private static final Image swordIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconSword.png") ;
+	private static final Image staffIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconStaff.png") ;
+	private static final Image bowIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconBow.png") ;
+	private static final Image clawsIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconClaws.png") ;
+	private static final Image daggerIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconDagger.png") ;
+	private static final Image shieldIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconShield.png") ;
+	private static final Image armorIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconArmor.png") ;
+	private static final Image emblemIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconArmor.png") ;
 	
-	public static Image SwordImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq0_Sword.png") ;
-	public static Image StaffImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq1_Staff.png") ;
-	public static Image BowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq2_Bow.png") ;
-	public static Image ClawsImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq3_Claws.png") ;
-	public static Image DaggerImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq4_Dagger.png") ;
-	public static Image ShieldImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq5_Shield.png") ;
-	public static Image ArmorImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq6_Armor.png") ;
-	public static Image emblemImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq8_emblem.png") ;
-	public static Image ArrowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq7_Arrow.png") ;
+	public static final Image SwordImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq0_Sword.png") ;
+	public static final Image StaffImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq1_Staff.png") ;
+	public static final Image BowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq2_Bow.png") ;
+	public static final Image ClawsImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq3_Claws.png") ;
+	public static final Image DaggerImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq4_Dagger.png") ;
+	public static final Image ShieldImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq5_Shield.png") ;
+	public static final Image ArmorImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq6_Armor.png") ;
+	public static final Image emblemImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq8_emblem.png") ;
+	public static final Image ArrowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq7_Arrow.png") ;
 
-	public Equip(int id, String name, String description, int price, float dropChance, int forgeLevel, AttributeBonus attBonus, Elements elem)
-	{
-		super(name, description, imageFromID(id), price, dropChance) ;
-		this.id = id ;
-		this.forgeLevel = forgeLevel ;
-		this.attBonus = attBonus ;
-		this.elem = elem ;
-		originalElem = elem ;
-	}
-
-	
-	public static EquipTypes typeFromID(int id)
-	{
-		
-		if ((id + 1) % 100 == 0) { return EquipTypes.emblem ;}
-
-		int job = id / 200 ;
-		int idRel = id - 200 * job;
-		
-		if (idRel <= 98)
-		{
-			return idRel % 3 == 0 ? EquipTypes.weapons()[job] : idRel % 3 == 1 ? EquipTypes.shield : EquipTypes.armor ;
-		}
-		
-		return idRel % 3 == 1 ? EquipTypes.weapons()[job] : idRel % 3 == 2 ? EquipTypes.shield : EquipTypes.armor ;
-		
-	}
-	
-	public static Image imageFromID(int id)
-	{
-		
-		Image[] equipImages = new Image[] {swordIcon, staffIcon, bowIcon, clawsIcon, daggerIcon, shieldIcon, armorIcon, emblemImage} ;
-		return equipImages[Arrays.asList(EquipTypes.values()).indexOf(typeFromID(id))] ;
-		
-	}
-	
-	public int getId() {return id ;}
-	public int getForgeLevel() {return forgeLevel ;}
-	public Elements getElem() {return elem ;}
-	public void setElem(Elements newElem) { elem = newElem ;}
-	public AttributeBonus getAttributeBonus() {return attBonus ;}
-	public static Equip[] getAll() {return allEquips ;}
-	
-	
-	public static void Initialize() throws IOException
+	static
 	{
 		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Equip.csv") ;
 		allEquips = new Equip[input.size()] ;
@@ -143,8 +98,51 @@ public class Equip extends Item
 			Elements elem = Elements.valueOf(input.get(p)[36]) ;
 			
 			allEquips[p] = new Equip(id, name, description, price, dropChance, forgeLevel, attBonus, elem);																																					// elem
-		}		
+		}
 	}
+	
+	public Equip(int id, String name, String description, int price, float dropChance, int forgeLevel, AttributeBonus attBonus, Elements elem)
+	{
+		super(name, description, imageFromID(id), price, dropChance) ;
+		this.id = id ;
+		this.forgeLevel = forgeLevel ;
+		this.attBonus = attBonus ;
+		this.elem = elem ;
+		originalElem = elem ;
+	}
+
+	
+	public static EquipTypes typeFromID(int id)
+	{
+		
+		if ((id + 1) % 100 == 0) { return EquipTypes.emblem ;}
+
+		int job = id / 200 ;
+		int idRel = id - 200 * job;
+		
+		if (idRel <= 98)
+		{
+			return idRel % 3 == 0 ? EquipTypes.weapons()[job] : idRel % 3 == 1 ? EquipTypes.shield : EquipTypes.armor ;
+		}
+		
+		return idRel % 3 == 1 ? EquipTypes.weapons()[job] : idRel % 3 == 2 ? EquipTypes.shield : EquipTypes.armor ;
+		
+	}
+	
+	public static Image imageFromID(int id)
+	{
+		
+		Image[] equipImages = new Image[] {swordIcon, staffIcon, bowIcon, clawsIcon, daggerIcon, shieldIcon, armorIcon, emblemIcon} ;
+		return equipImages[Arrays.asList(EquipTypes.values()).indexOf(typeFromID(id))] ;
+		
+	}
+	
+	public int getId() {return id ;}
+	public int getForgeLevel() {return forgeLevel ;}
+	public Elements getElem() {return elem ;}
+	public void setElem(Elements newElem) { elem = newElem ;}
+	public AttributeBonus getAttributeBonus() {return attBonus ;}
+	public static Equip[] getAll() {return allEquips ;}
 
 	public boolean isSpecial()
 	{

@@ -1,7 +1,6 @@
 package items;
 
 import java.awt.Image;
-import java.io.IOException;
 import java.util.List;
 
 import attributes.PersonalAttributes;
@@ -17,12 +16,30 @@ public class Potion extends Item
 	
 	private static Potion[] AllPotions ;
 	
-	private static Image lifePotionSmall = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconLifePotionSmall.png") ;
-	private static Image lifePotionMedium = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconLifePotionMedium.png") ;
-	private static Image lifePotionLarge = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconLifePotionLarge.png") ;
-	private static Image mpPotionSmall = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconMpPotionSmall.png") ;
-	private static Image mpPotionMedium = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconMpPotionMedium.png") ;
-	private static Image mpPotionLarge = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconMpPotionLarge.png") ;
+	private static Image lifePotionSmall = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconLifePotionSmall.png") ;
+	private static Image lifePotionMedium = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconLifePotionMedium.png") ;
+	private static Image lifePotionLarge = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconLifePotionLarge.png") ;
+	private static Image mpPotionSmall = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconMpPotionSmall.png") ;
+	private static Image mpPotionMedium = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconMpPotionMedium.png") ;
+	private static Image mpPotionLarge = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconMpPotionLarge.png") ;
+	
+	static
+	{
+		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Potions.csv") ;
+		AllPotions = new Potion[input.size()] ;
+		for (int p = 0; p <= AllPotions.length - 1; p += 1)
+		{
+			int id = Integer.parseInt(input.get(p)[0]) ;
+			String description = input.get(p)[1] ;
+			String name = input.get(p)[3] ;
+			int price = Integer.parseInt(input.get(p)[5]) ;
+			double dropChance = Double.parseDouble(input.get(p)[6]) ;
+			double lifeHeal = Double.parseDouble(input.get(p)[7]) ;
+			double MPHeal = Double.parseDouble(input.get(p)[8]) ;
+			
+			AllPotions[p] = new Potion(id, description, name, price, dropChance, lifeHeal, MPHeal) ;
+		}	
+	}
 	
 	public Potion(int id, String Name, String Description, int price, double dropChance, double lifeHeal, double MPHeal)
 	{
@@ -49,24 +66,6 @@ public class Potion extends Item
 	public double getMPHeal() {return MPHeal ;}	
 	public static Potion[] getAll() {return AllPotions ;}
 		
-	public static void Initialize() throws IOException
-	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Potions.csv") ;
-		AllPotions = new Potion[input.size()] ;
-		for (int p = 0; p <= AllPotions.length - 1; p += 1)
-		{
-			int id = Integer.parseInt(input.get(p)[0]) ;
-			String description = input.get(p)[1] ;
-			String name = input.get(p)[3] ;
-			int price = Integer.parseInt(input.get(p)[5]) ;
-			double dropChance = Double.parseDouble(input.get(p)[6]) ;
-			double lifeHeal = Double.parseDouble(input.get(p)[7]) ;
-			double MPHeal = Double.parseDouble(input.get(p)[8]) ;
-			
-			AllPotions[p] = new Potion(id, description, name, price, dropChance, lifeHeal, MPHeal) ;
-		}		
-	}
-
 	public void use(LiveBeing target, double powerMult)
 	{
 		PersonalAttributes PA = target.getPA() ;

@@ -1,7 +1,6 @@
 package items;
 
 import java.awt.Image;
-import java.io.IOException;
 import java.util.List;
 
 import attributes.PersonalAttributes;
@@ -17,9 +16,19 @@ public class Alchemy extends Item
 	
 	private static Alchemy[] AllAlchemy ;
 	
-	private static Image HerbIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconHerb.png") ;
-	private static Image WoodIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconWood.png") ;
-	private static Image MetalIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "IconMetal.png") ;
+	private static Image HerbIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconHerb.png") ;
+	private static Image WoodIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconWood.png") ;
+	private static Image MetalIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconMetal.png") ;
+	
+	static
+	{
+		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Alchemy.csv") ;
+		AllAlchemy = new Alchemy[input.size()] ;
+		for (int a = 0; a <= AllAlchemy.length - 1; a += 1)
+		{
+			AllAlchemy[a] = new Alchemy(Integer.parseInt(input.get(a)[0]), input.get(a)[1], input.get(a)[3], Integer.parseInt(input.get(a)[5]), Float.parseFloat(input.get(a)[6]), Float.parseFloat(input.get(a)[7]), Float.parseFloat(input.get(a)[8]));
+		}
+	}
 	
 	public Alchemy(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal)
 	{
@@ -40,16 +49,6 @@ public class Alchemy extends Item
 	public float getLifeHeal() {return lifeHeal ;}
 	public float getMPHeal() {return MPHeal ;}
 	public static Alchemy[] getAll() {return AllAlchemy ;}
-	
-	public static void Initialize() throws IOException
-	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Alchemy.csv") ;
-		AllAlchemy = new Alchemy[input.size()] ;
-		for (int a = 0; a <= AllAlchemy.length - 1; a += 1)
-		{
-			AllAlchemy[a] = new Alchemy(Integer.parseInt(input.get(a)[0]), input.get(a)[1], input.get(a)[3], Integer.parseInt(input.get(a)[5]), Float.parseFloat(input.get(a)[6]), Float.parseFloat(input.get(a)[7]), Float.parseFloat(input.get(a)[8]));
-		}
-	}
 	
 	public void use(LiveBeing target, double powerMult)
 	{		
