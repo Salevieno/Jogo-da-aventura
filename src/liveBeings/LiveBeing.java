@@ -218,6 +218,8 @@ public abstract class LiveBeing
 				if (PA.getThirst().getCurrentValue() == 0) { PA.getLife().incCurrentValue(-1) ;}
 			}
 		}
+		
+		if (PA.getLife().getCurrentValue() <= 0) { dies() ;}
 	}
 	public void incrementBattleActionCounters() {battleActionCounter.inc() ; displayDamage.inc() ;}
 	public void resetBattleActions() {battleActionCounter.reset() ; }
@@ -364,6 +366,7 @@ public abstract class LiveBeing
 	}
 	
 	public abstract AtkResults useSpell(Spell spell, LiveBeing receiver) ;
+	public abstract void dies() ;
 	
 	public void ActivateDef()
 	{

@@ -205,7 +205,7 @@ public class Pet extends LiveBeing
 		return "" ;
 	}
 	
-	public void Move(Point playerPos, GameMap playerMap, Creature opponent, Elements playerElem)
+	public void move(Point playerPos, GameMap playerMap, Creature opponent, Elements playerElem)
 	{
 		Point nextPos ;
 		if (opponent != null)
@@ -229,9 +229,10 @@ public class Pet extends LiveBeing
 			setPos(nextPos) ;
 		}
 	}
-	public void Dies()
+	public void dies()
 	{
-		PA.getLife().incCurrentValue(-PA.getLife().getCurrentValue()) ;
+		// TODO
+//		PA.getLife().incCurrentValue(-PA.getLife().getCurrentValue()) ;
 	}
 	
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)

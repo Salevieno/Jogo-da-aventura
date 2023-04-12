@@ -326,7 +326,7 @@ public class Creature extends LiveBeing
 	
 
 
-	public void Dies()
+	public void dies()
 	{
 		PA.getLife().setToMaximum() ;
 		PA.getMp().setToMaximum() ;

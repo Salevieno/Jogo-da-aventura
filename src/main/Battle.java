@@ -377,12 +377,12 @@ public class Battle
 				}
 				pet.resetBattleActions() ;
 			}
-			creature.Dies() ;
+			creature.dies() ;
 		}
 		else
 		{
 			player.dies() ;
-			if (pet != null) {pet.Dies() ;}
+			if (pet != null) {pet.dies() ;}
 			creature.setFollow(false) ;
 		}
 	}

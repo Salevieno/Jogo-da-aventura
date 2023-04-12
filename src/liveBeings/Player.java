@@ -481,7 +481,7 @@ public class Player extends LiveBeing
 		GameMap newMap = Game.getMaps()[newMapID] ;
 		setMap(newMap) ;
 		setPos(newPos) ;
-		if (newMap instanceof CityMap) { opponent = null ;}
+		if (newMap instanceof CityMap) { closestCreature = null ; opponent = null ;}
 		
 	}
 
@@ -544,7 +544,18 @@ public class Player extends LiveBeing
 				case "Direita": case "D": setDir(Directions.right) ; break ;
 			}
 			
-			startMove() ;
+			if (focusWindow != null)
+			{
+				if (!focusWindow.isOpen())
+				{
+					startMove() ;
+				}
+			}
+			else
+			{
+				startMove() ;
+			}
+			
 		}
 		
 		
@@ -1124,6 +1135,7 @@ public class Player extends LiveBeing
 		PA.getLife().setToMaximum(); ;
 		PA.getMp().setToMaximum(); ;
 		PA.getSatiation().setToMaximum() ;
+		PA.getThirst().setToMaximum() ;
 		BA.resetStatus() ;
 		state = LiveBeingStates.idle ;
 		resetPosition() ;

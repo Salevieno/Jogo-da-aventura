@@ -960,7 +960,7 @@ public class Game extends JPanel
 			if (pet.isAlive())
 			{
 				pet.updateCombo() ;
-				pet.Move(player.getPos(), player.getMap(), player.getOpponent(), player.getElem()[4]) ;
+				pet.move(player.getPos(), player.getMap(), player.getOpponent(), player.getElem()[4]) ;
 				pet.display(pet.getPos(), new Scale(1, 1), DP) ;
 				pet.DrawAttributes(0, DP) ;
 			}

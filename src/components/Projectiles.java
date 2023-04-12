@@ -93,7 +93,7 @@ public class Projectiles
 			pet.getLife().incCurrentValue(-damage); ;
 			if (pet.getLife().getCurrentValue() < 0)
 			{
-				pet.Dies() ;
+				pet.dies() ;
 			}
 		}
 		else if (-1 < hit & type == 0)
@@ -102,7 +102,7 @@ public class Projectiles
 			creatureHit.getLife().incCurrentValue(-damage); ;
 			if (creatureHit.getLife().getCurrentValue() < 0)
 			{
-				creatureHit.Dies() ;
+				creatureHit.dies() ;
 			}
 		}
 	}
