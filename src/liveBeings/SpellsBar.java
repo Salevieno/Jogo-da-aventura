@@ -20,7 +20,7 @@ public class SpellsBar
 	private static final String title = Game.allText.get("Barra de habilidades")[0] ;
 	
 	private static final Image image = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "SpellsBar.png") ;
-	private static final Image slotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SideBarSlot.png") ;
+	private static final Image slotImage = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "Slot.png") ;
 	
 	public static void display(int currentMP, List<Spell> activeSpells, Point mousePos, DrawingOnPanel DP)
 	{

@@ -11,7 +11,7 @@ import java.util.Map;
 
 import attributes.Attributes;
 import attributes.BasicBattleAttribute;
-import components.GameIcon;
+import components.GameButton;
 import components.IconFunction;
 import graphics.DrawingOnPanel;
 import items.Equip;
@@ -25,7 +25,7 @@ import utilities.UtilG;
 
 public class PlayerAttributesWindow extends AttributesWindow
 {
-	private Map<Attributes, GameIcon> incAttButtons ;
+	private Map<Attributes, GameButton> incAttButtons ;
 	
 	Image plusSign = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "PlusSign.png") ;
 	Image selectedPlusSign = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "ShiningPlusSign.png") ;
@@ -45,7 +45,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		for (Attributes att : Arrays.asList(Attributes.getBattle()))
 		{
 			IconFunction method = () -> {player.getBA().mapAttributes(att).incBaseValue(1) ;} ;
-			GameIcon newAttButton = new GameIcon(pos, plusSign, selectedPlusSign, method) ;
+			GameButton newAttButton = new GameButton(pos, plusSign, selectedPlusSign, method) ;
 			incAttButtons.put(att, newAttButton) ;
 			pos = UtilG.Translate(pos, 0, 22) ;			
 

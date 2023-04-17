@@ -77,7 +77,9 @@ import maps.TreasureChest;
 import screen.Screen;
 import screen.SideBar;
 import screen.Sky;
+import simulations.PlayerEvolutionSimulation;
 import utilities.Align;
+import utilities.AttackEffects;
 import utilities.Elements;
 import utilities.GameStates;
 import utilities.Scale;
@@ -599,6 +601,18 @@ public class Game extends JPanel
 		return specialMaps ;
     }
     
+    private GameMap[] initializeAllMaps()
+    {
+    	
+    	GameMap[] allMaps = new GameMap[cityMaps.length + fieldMaps.length + specialMaps.length] ;
+		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
+		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
+		System.arraycopy(specialMaps, 0, allMaps, cityMaps.length + fieldMaps.length, specialMaps.length) ;
+		
+		return allMaps ;
+		
+    }
+    
     private Quest[] initializeQuests(Languages language, int playerJob)
     {
 		List<String[]> inputs = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
@@ -1010,6 +1024,7 @@ public class Game extends JPanel
 		
 		player.resetAction() ;
 		
+		
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
 		
 //    	for (int i = 0 ; i <= ani.length - 1 ; i += 1) { ani[i].run(i, DP) ;}
@@ -1020,6 +1035,7 @@ public class Game extends JPanel
 
 	private void initialize()
 	{
+		
 		loadAllText() ;
 		
     	DayDuration = 120000 ;
@@ -1036,14 +1052,11 @@ public class Game extends JPanel
 		fieldMaps = initializeFieldMaps() ;
 		specialMaps = initializeSpecialMaps() ;
 		allQuests = initializeQuests(GameLanguage, player.getJob()) ;
-		allMaps = new GameMap[cityMaps.length + fieldMaps.length + specialMaps.length] ;
-		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
-		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
-		System.arraycopy(specialMaps, 0, allMaps, cityMaps.length + fieldMaps.length, specialMaps.length) ;
-		
-    	Pterodactile.setMessage(Game.allText.get("Pterodactile")) ;
+		allMaps = initializeAllMaps() ;
     	sideBar = new SideBar(player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
     	bat = new Battle() ;
+    	
+    	Pterodactile.setMessage(Game.allText.get("Pterodactile")) ;
 		
 		pet = new Pet(0) ;
     	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
@@ -1052,6 +1065,7 @@ public class Game extends JPanel
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
     	player.setMap(allMaps[5]) ;
+    	player.setPos(new Point(400, 221)) ;
     	
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
@@ -1064,20 +1078,22 @@ public class Game extends JPanel
     	player.getBag().addGold(3000) ;
     	
     	
-    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
     	
-    	player.getExp().incCurrentValue(5000);
+//    	player.getExp().incCurrentValue(5000);
     	
-    	player.setPos(new Point(400, 221)) ;
+    	PlayerEvolutionSimulation.startAtLevel(50, player) ;
+    	PlayerEvolutionSimulation.train(10000, new AtkResults(AtkTypes.physical, AttackEffects.hit, 0), player) ;
+    	
     	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(20, 20))) ;
     	
 	}
@@ -1121,6 +1137,12 @@ public class Game extends JPanel
 				shouldRepaint = true ;
 				
 	    		break ;
+	        }
+	        case simulation:
+	        {
+	        	PlayerEvolutionSimulation.displayInterface(mousePos, DP) ;
+	        	
+	        	break ;
 	        }
 	        case running:
 	        {

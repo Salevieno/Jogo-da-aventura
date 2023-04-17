@@ -1097,6 +1097,9 @@ public class Player extends LiveBeing
 		attPoints += 2 ;
 		
 		((PlayerAttributesWindow) attWindow).activateIncAttButtons(attPoints) ;
+		
+		if (ani == null) { return ;}
+		
 		ani.start(new Object[] {600, Arrays.copyOf(attIncrease, attIncrease.length - 1), level, pos}) ;
 	}
 	private double[] calcAttributesIncrease()

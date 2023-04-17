@@ -8,7 +8,7 @@ import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
 
-import components.GameIcon;
+import components.GameButton;
 import graphics.DrawingOnPanel;
 import liveBeings.HotKeysBar;
 import liveBeings.Pet;
@@ -20,7 +20,7 @@ import utilities.UtilG;
 
 public class SideBar
 {
-	private Set<GameIcon> icons ;
+	private Set<GameButton> icons ;
 		
 	public SideBar(Image playerImage, Image petImage)
 	{
@@ -33,13 +33,13 @@ public class SideBar
 			Point pos = UtilG.Translate(botCenterPos, 0, -10 - 50 * i) ;
 			Image image = UtilG.loadImage(path + "Icon" + i + "_" + names[i] + ".png") ;
 			Image selImage = UtilG.loadImage(path + "Icon" + i + "_" + names[i] + "Selected.png") ;
-			icons.add(new GameIcon(i, names[i], pos, "description", image, selImage)) ;
+			icons.add(new GameButton(i, names[i], pos, "description", image, selImage)) ;
 		}
-		icons.forEach(GameIcon::activate);
+		icons.forEach(GameButton::activate);
 	}
 	
-	public Set<GameIcon> getIcons() { return icons ;}
-	public void setIcons(Set<GameIcon> icons) { this.icons = icons ;}
+	public Set<GameButton> getIcons() { return icons ;}
+	public void setIcons(Set<GameButton> icons) { this.icons = icons ;}
 		
 	public void display(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
 	{

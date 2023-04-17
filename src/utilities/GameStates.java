@@ -6,5 +6,6 @@ public enum GameStates
 	loading,
 	running,
 	paused,
+	simulation,
 	playingStopTimeGif
 }

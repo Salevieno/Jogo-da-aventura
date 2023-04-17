@@ -13,7 +13,7 @@ import java.awt.geom.AffineTransform ;
 import java.util.Arrays;
 import java.util.List;
 
-import components.GameIcon;
+import components.GameButton;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.AtkResults;
@@ -300,7 +300,7 @@ public class DrawingOnPanel
 	
 	public void DrawLoadingText(Image LoadingGif, Point Pos) { DrawGif(LoadingGif, Pos, Align.center) ;}
 	
-	public void DrawLoadingGameScreen(Player player, Pet pet, GameIcon[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
+	public void DrawLoadingGameScreen(Player player, Pet pet, GameButton[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
 	{
 		Point[] WindowPos = new Point[] {new Point((int)(0.15*screenSize.width), (int)(0.2*screenSize.height)),
 				new Point((int)(0.65*screenSize.width), (int)(0.2*screenSize.height)),

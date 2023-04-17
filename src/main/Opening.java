@@ -7,7 +7,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Map;
 
-import components.GameIcon;
+import components.GameButton;
 import graphics.DrawingOnPanel;
 import graphics.Gif;
 import liveBeings.Player;
@@ -21,7 +21,7 @@ public class Opening
 {
 	private static Image backgroundImage;
 	private static Gif openingGif ;
-    private static GameIcon[] buttons ;
+    private static GameButton[] buttons ;
     private static String[] text ;
     private int step ;
     private String[] playerInfo ;	// Chosen name, difficult level, sex and class
@@ -31,11 +31,11 @@ public class Opening
 		String path = Game.ImagesPath  + "\\Opening\\";
 		backgroundImage = UtilG.loadImage(path + "Opening.png") ;
 		openingGif = new Gif(UtilG.loadImage(path + "Opening.gif"), 1375, false, true) ;
-		GameIcon.selectedIconID = 2 ;
+		GameButton.selectedIconID = 2 ;
     	step = 0 ;
     	playerInfo = new String[4] ;
 
-    	buttons = new GameIcon[14] ;
+    	buttons = new GameButton[14] ;
 		Image btPort = UtilG.loadImage(path + "ButtonPort.png") ;
 		Image btEn = UtilG.loadImage(path + "ButtonEn.png") ;
 		Image btPortSelected = UtilG.loadImage(path + "ButtonPortSelected.png") ;
@@ -46,24 +46,24 @@ public class Opening
 		Image btLoadGameSelected = UtilG.loadImage(path + "Button_loadGameSelected.gif") ;
 		
 		Dimension screenSize = Game.getScreen().getSize() ;
-		buttons[0] = new GameIcon(0, "Port", new Point(screenSize.width - 50, 30), null, btPort, btPortSelected) ;
-		buttons[1] = new GameIcon(1, "En", new Point(screenSize.width - 0, 30), null, btEn, btEnSelected) ;
-		buttons[2] = new GameIcon(2, "New game", new Point(screenSize.width / 2 - 80, screenSize.height / 4), null, btNewGame, btNewGameSelected) ;
-		buttons[3] = new GameIcon(3, "Load game", new Point(screenSize.width / 2 + 80, screenSize.height / 4), null, btLoadGame, btLoadGameSelected) ;
-		buttons[4] = new GameIcon(4, "Male", new Point(screenSize.width / 2 - 50, screenSize.height / 4), null, null, null) ;
-		buttons[5] = new GameIcon(5, "Female", new Point(screenSize.width / 2 + 50, screenSize.height / 4), null, null, null) ;
-    	buttons[6] = new GameIcon(6, "Baixo", new Point(screenSize.width / 2 - 100, screenSize.height / 4), null, null, null) ;
-    	buttons[7] = new GameIcon(7, "M�dio", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
-    	buttons[8] = new GameIcon(8, "Alto", new Point(screenSize.width / 2 + 100, screenSize.height / 4), null, null, null) ;
-    	buttons[9] = new GameIcon(9, "Cavaleiro", new Point(screenSize.width / 2 - 200, screenSize.height / 4), null, null, null) ;
-    	buttons[10] = new GameIcon(10, "Mago", new Point(screenSize.width / 2 - 100, screenSize.height / 4), null, null, null) ;
-    	buttons[11] = new GameIcon(11, "Arqueiro", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
-    	buttons[12] = new GameIcon(12, "Animal", new Point(screenSize.width / 2 + 100, screenSize.height / 4), null, null, null) ;
-    	buttons[13] = new GameIcon(13, "Ladr�o", new Point(screenSize.width / 2 + 200, screenSize.height / 4), null, null, null) ;
+		buttons[0] = new GameButton(0, "Port", new Point(screenSize.width - 50, 30), null, btPort, btPortSelected) ;
+		buttons[1] = new GameButton(1, "En", new Point(screenSize.width - 0, 30), null, btEn, btEnSelected) ;
+		buttons[2] = new GameButton(2, "New game", new Point(screenSize.width / 2 - 80, screenSize.height / 4), null, btNewGame, btNewGameSelected) ;
+		buttons[3] = new GameButton(3, "Load game", new Point(screenSize.width / 2 + 80, screenSize.height / 4), null, btLoadGame, btLoadGameSelected) ;
+		buttons[4] = new GameButton(4, "Male", new Point(screenSize.width / 2 - 50, screenSize.height / 4), null, null, null) ;
+		buttons[5] = new GameButton(5, "Female", new Point(screenSize.width / 2 + 50, screenSize.height / 4), null, null, null) ;
+    	buttons[6] = new GameButton(6, "Baixo", new Point(screenSize.width / 2 - 100, screenSize.height / 4), null, null, null) ;
+    	buttons[7] = new GameButton(7, "M�dio", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
+    	buttons[8] = new GameButton(8, "Alto", new Point(screenSize.width / 2 + 100, screenSize.height / 4), null, null, null) ;
+    	buttons[9] = new GameButton(9, "Cavaleiro", new Point(screenSize.width / 2 - 200, screenSize.height / 4), null, null, null) ;
+    	buttons[10] = new GameButton(10, "Mago", new Point(screenSize.width / 2 - 100, screenSize.height / 4), null, null, null) ;
+    	buttons[11] = new GameButton(11, "Arqueiro", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
+    	buttons[12] = new GameButton(12, "Animal", new Point(screenSize.width / 2 + 100, screenSize.height / 4), null, null, null) ;
+    	buttons[13] = new GameButton(13, "Ladr�o", new Point(screenSize.width / 2 + 200, screenSize.height / 4), null, null, null) ;
     	
-    	for (GameIcon button : buttons)
+    	for (GameButton button : buttons)
     	{
-     		GameIcon.addToAllIconsList(button) ;
+     		GameButton.addToAllIconsList(button) ;
     	}
 
     	Map<String, String[]> allText = UtilG.ReadTextFile("P") ;
@@ -130,11 +130,11 @@ public class Opening
 		{
 			if (buttons[i].getIsActive() & buttons[i].ishovered(MousePos))
 			{
-				GameIcon.selectedIconID = i ;
+				GameButton.selectedIconID = i ;
 			}
 		}
 		
-		GameIcon.selectedIconID = SelectMenu(Player.ActionKeys[1], Player.ActionKeys[3], action, GameIcon.selectedIconID, buttons.length) ;
+		GameButton.selectedIconID = SelectMenu(Player.ActionKeys[1], Player.ActionKeys[3], action, GameButton.selectedIconID, buttons.length) ;
 		if (step == 0)
 		{
 			Music.PlayMusic(Music.intro) ;
