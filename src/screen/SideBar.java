@@ -61,7 +61,8 @@ public class SideBar
 			}
 		});
 		
-		SpellsBar.display(player.getMp().getCurrentValue(), player.getSpells(), player.getSpells(), mousePos, textColor, textColor, DP);
+		// TODO which spells to pass to spellsBar
+		SpellsBar.display(player.getMp().getCurrentValue(), player.getSpells(), mousePos, DP);
 		HotKeysBar.display(player.getHotItems(), mousePos, DP) ;
 
 	}
