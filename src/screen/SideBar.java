@@ -54,7 +54,7 @@ public class SideBar
 		DP.DrawRect(barPos, Align.bottomLeft, size, 1, Game.ColorPalette[9], null) ;		
 		
 		icons.forEach(icon -> {
-			icon.display(stdAngle, Align.bottomCenter, mousePos, DP) ;
+			icon.display(stdAngle, Align.bottomCenter, false, mousePos, DP) ;
 			if (IconKey[icon.getid()] != null)
 			{
 				DP.DrawText(icon.getPos(), Align.bottomLeft, stdAngle, IconKey[icon.getid()], font, textColor) ;

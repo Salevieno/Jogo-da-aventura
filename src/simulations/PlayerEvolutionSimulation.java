@@ -3,8 +3,8 @@ package simulations;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import components.GameButton;
 import components.IconFunction;
@@ -19,15 +19,16 @@ import utilities.UtilG;
 
 public abstract class PlayerEvolutionSimulation
 {
-	private static Map<String, GameButton> buttons ;
+	private static List<GameButton> buttons ;
+	
 	private static final Image buttonImage = UtilG.loadImage(Game.ImagesPath + "ButtonGeneral.png") ;
 	private static final Image buttonSelectedImage = UtilG.loadImage(Game.ImagesPath + "ButtonGeneralSelected.png") ;
 	
 	static
 	{
 		IconFunction startLevelAction = () -> {System.out.println("player start at level ");}  ;
-		buttons = new HashMap<>() ;
-		buttons.put("start at level", new GameButton(new Point(200, 200), buttonImage, buttonSelectedImage, startLevelAction)) ;
+		buttons = new ArrayList<>() ;
+		buttons.add(new GameButton(new Point(60, 80), "+ level", buttonImage, buttonSelectedImage, startLevelAction)) ;
 	}
 	
 	public static void startAtLevel(int level, Player player)
@@ -61,8 +62,8 @@ public abstract class PlayerEvolutionSimulation
 	public static void displayInterface(Point mousePos, DrawingOnPanel DP)
 	{
 		DP.DrawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), 1, Color.black, null) ;
-		buttons.values().forEach(button -> {
-			button.display(0, Align.center, mousePos, DP) ;
+		buttons.forEach(button -> {
+			button.display(0, Align.center, true, mousePos, DP) ;
 		});
 		
 	}

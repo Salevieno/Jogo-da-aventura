@@ -244,7 +244,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 				DP.DrawText(goldPos, Align.centerLeft, angle, goldValue, font, textColor) ;
 			}
 			
-			incAttButtons.values().forEach(button -> button.display(angle, Align.topLeft, mousePos, DP)) ;
+			incAttButtons.values().forEach(button -> button.display(angle, Align.topLeft, false, mousePos, DP)) ;
 			
 			return ;
 			

@@ -32,9 +32,20 @@ public class GameButton
 	
 	public GameButton(Point pos, Image image, Image selectedImage, IconFunction action)
 	{
+		this.topLeftCorner = pos ;
 		this.image = image ;
 		this.selectedImage = selectedImage ;
+		isActive = true ;
+		size = new Dimension(image.getWidth(null), image.getHeight(null)) ;
+		this.action = action ;
+	}
+	
+	public GameButton(Point pos, String name, Image image, Image selectedImage, IconFunction action)
+	{
 		this.topLeftCorner = pos ;
+		this.name = name ;
+		this.image = image ;
+		this.selectedImage = selectedImage ;
 		isActive = true ;
 		size = new Dimension(image.getWidth(null), image.getHeight(null)) ;
 		this.action = action ;
@@ -177,26 +188,31 @@ public class GameButton
 	}
 	public String getValue() { return value ;}
 	
-	public void display(double angle, Align alignment, Point mousePos, DrawingOnPanel DP)
+	public void display(double angle, Align alignment, boolean displayText, Point mousePos, DrawingOnPanel DP)
 	{
 		
 		if (!isActive) { return ;}
 		
-		Font font = new Font(Game.MainFontName, Font.BOLD, 16) ;
-		Color textColor = Game.ColorPalette[0] ;
-		Color selectedTextColor = Game.ColorPalette[1] ;		
+		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		Color textColor = Game.ColorPalette[9] ;
+		Color selectedTextColor = Game.ColorPalette[10] ;
+
+		Point displayPos = UtilG.getPosAt(topLeftCorner, alignment, size) ;
 		
 		select(mousePos) ;
 		if (isselected())	// ishovered(MousePos)
 		{
 			if (selectedImage != null)
 			{
-				DP.DrawImage(selectedImage, topLeftCorner, angle, new Scale(1, 1), alignment) ;
-				//DP.DrawText(getCenter(), AlignmentPoints.center, 0, Name, font, selectedTextColor) ;
+				DP.DrawImage(selectedImage, displayPos, angle, new Scale(1, 1), alignment) ;
+				if (displayText)
+				{
+					DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
+				}
 			}
 			else
 			{
-				DP.DrawRoundRect(topLeftCorner, alignment, size, 5, Game.ColorPalette[5], Game.ColorPalette[6], true) ;
+				DP.DrawRoundRect(displayPos, alignment, size, 5, Game.ColorPalette[5], Game.ColorPalette[6], true) ;
 				DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 			}
 		}
@@ -204,12 +220,15 @@ public class GameButton
 		{
 			if (image != null)
 			{
-				DP.DrawImage(image, topLeftCorner, angle, new Scale(1, 1), alignment) ;
-				//DP.DrawText(getCenter(), AlignmentPoints.center, 0, Name, font, textColor) ;
+				DP.DrawImage(image, displayPos, angle, new Scale(1, 1), alignment) ;
+				if (displayText)
+				{
+					DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
+				}
 			}
 			else
 			{
-				DP.DrawRoundRect(topLeftCorner, alignment, size, 2, Game.ColorPalette[5], Game.ColorPalette[6], true) ;
+				DP.DrawRoundRect(displayPos, alignment, size, 2, Game.ColorPalette[5], Game.ColorPalette[6], true) ;
 				DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
 			}
 		}

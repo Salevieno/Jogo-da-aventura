@@ -121,7 +121,7 @@ public class Opening
 		{
 			if (buttons[i].getIsActive())
 			{
-				buttons[i].display(0, Align.center, MousePos, DP) ;
+				buttons[i].display(0, Align.center, false, MousePos, DP) ;
 			}
 		}
 		

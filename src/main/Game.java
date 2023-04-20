@@ -1132,7 +1132,7 @@ public class Game extends JPanel
 	        {
 	        	//loading.displayText(DP) ;
 	        	initialize() ;
-				state = GameStates.running;
+				state = GameStates.simulation;
 				
 				shouldRepaint = true ;
 				
