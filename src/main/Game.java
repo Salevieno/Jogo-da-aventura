@@ -80,6 +80,7 @@ import screen.Screen;
 import screen.SideBar;
 import screen.Sky;
 import simulations.PlayerEvolutionSimulation;
+import testing.TestingAnimations;
 import utilities.Align;
 import utilities.Elements;
 import utilities.GameStates;
@@ -132,10 +133,8 @@ public class Game extends JPanel
 	private static List<Recipe> allRecipes ;
 	private static Item[] allItems ;
 	private static Spell[] allSpells ;
-	//private static NPCs[] allNPCs ;
 	private static Quest[] allQuests ;
 	private static Battle bat ;
-//	private static Gif[] allGifs ;
 	private static Animations[] ani ;
 	
 	static
@@ -178,6 +177,7 @@ public class Game extends JPanel
 	public static List<Recipe> getAllRecipes() {return allRecipes ;}
 	public static Item[] getAllItems() {return allItems ;}
 	public static Spell[] getAllSpells() {return allSpells ;}
+	public static Animations[] getAnimations() { return ani ;}
 	public static boolean getShouldRepaint() {return shouldRepaint ;}
 	public static Point getMousePos() { return mousePos ;}
 	public static void setState(GameStates newState) { state = newState ;}
@@ -1033,7 +1033,7 @@ public class Game extends JPanel
 		
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
 		
-//    	for (int i = 0 ; i <= ani.length - 1 ; i += 1) { ani[i].run(i, DP) ;}
+    	for (int i = 0 ; i <= ani.length - 1 ; i += 1) { ani[i].run(i, DP) ;}
     	
 	}
 	

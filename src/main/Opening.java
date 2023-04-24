@@ -15,7 +15,6 @@ import utilities.Align;
 import utilities.Scale;
 import utilities.Typing;
 import utilities.UtilG;
-import utilities.UtilS;
 
 public class Opening
 {

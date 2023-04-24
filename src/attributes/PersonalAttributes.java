@@ -7,6 +7,7 @@ import utilities.UtilG;
 
 public class PersonalAttributes
 {
+	
 	private BasicAttribute Life ;
 	private BasicAttribute Mp ;
 	private BasicAttribute Exp ;
@@ -46,6 +47,10 @@ public class PersonalAttributes
 			default: return null ;
 		}
 	}
+	public static int numberFightsToLevelUp(int currentExp, int totalExp, int opponentExp, double expMult)
+	{
+		return 1 + (int) ((totalExp - currentExp) / (opponentExp * expMult)) ;
+	}
 	
 	public static Directions randomDir()
 	{
@@ -73,4 +78,5 @@ public class PersonalAttributes
 		return "PersonalAttributes [Life=" + Life + ", Mp=" + Mp + ", Exp=" + Exp + ", Satiation=" + Satiation
 				+ ", Thirst=" + Thirst + "]";
 	}
+
 }

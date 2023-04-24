@@ -17,6 +17,7 @@ public class Pterodactile
 
 		Object[] object = new Object[] { 1500, image, SpeakingBubbleImage, message } ;
 		ani.start(object) ;
+		
     }
     
     public static void setMessage(String[] newMessage) { message = newMessage ;} 

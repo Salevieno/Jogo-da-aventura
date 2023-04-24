@@ -27,13 +27,14 @@ import liveBeings.LiveBeingStatus;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.AtkResults;
+import main.AtkTypes;
 import main.Game;
 import utilities.Align;
+import utilities.AttackEffects;
 import utilities.Directions;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
-import windows.CreatureAttributesWindow;
 import windows.GameWindow;
 import windows.PlayerAttributesWindow;
 
@@ -54,7 +55,8 @@ public abstract class PlayerEvolutionSimulation
 	private static int numberFightsRepetition = 0 ;
 	
 	private static List<GameButton> buttons ;
-	
+
+	private static final Image screenImage = UtilG.loadImage(Game.ImagesPath + "SimulationScreen.png") ;
 	private static final Image buttonImage = UtilG.loadImage(Game.ImagesPath + "ButtonGeneral.png") ;
 	private static final Image buttonSelectedImage = UtilG.loadImage(Game.ImagesPath + "ButtonGeneralSelected.png") ;
 	private static final Image fightingImage = UtilG.loadImage(Game.ImagesPath + "fightingIcon.png") ;
@@ -63,49 +65,13 @@ public abstract class PlayerEvolutionSimulation
 	{		
 		buttons = new ArrayList<>() ;
 
-		Point jobSectionPos = new Point(20, 60) ;
+		addJobSection() ;	
 		
-		Map<String, IconFunction> jobSectionNamesActions = new LinkedHashMap<>() ;
-		jobSectionNamesActions.put("cavaleiro", () -> { playerResetJob(0) ;}) ;
-		jobSectionNamesActions.put("mago", () -> { playerResetJob(1) ;}) ;
-		jobSectionNamesActions.put("arqueiro", () -> { playerResetJob(2) ;}) ;
-		jobSectionNamesActions.put("animal", () -> { playerResetJob(3) ;}) ;
-		jobSectionNamesActions.put("ladrão", () -> { playerResetJob(4) ;}) ;
+		addPlayerSection() ;
 		
-		addSection(jobSectionPos, new Point(90, 0), jobSectionNamesActions) ;
+		addPetSection() ;
 		
-		IconFunction fullLifePlayerAction = () -> { playerFullLife() ;} ;
-		IconFunction fullLifePetAction = () -> { petFullLife() ;} ;
-		
-		buttons.add(newButton(new Point(100, 160), "encher vida", fullLifePlayerAction)) ;
-		buttons.add(newButton(new Point(100, 200), "pet encher vida", fullLifePetAction)) ;
-		
-		IconFunction petAction = () -> { petReset() ;} ;
-		IconFunction plusPetLevelAction = () -> { petLevelUp(1) ;} ;
-		IconFunction plus5PetLevelAction = () -> { petLevelUp(5) ;} ;
-		IconFunction plus10PetLevelAction = () -> { petLevelUp(10) ;} ;
-		
-		IconFunction plusLevelAction = () -> { playerLevelUp(1) ;} ;
-		IconFunction plus5LevelAction = () -> { playerLevelUp(5) ;} ;
-		IconFunction plus10LevelAction = () -> { playerLevelUp(10) ;} ;
-		
-		IconFunction battleAction = () -> { simulateBattle() ;} ;
-		IconFunction battlex10Action = () -> { simulateBattle10x() ;} ;
-		IconFunction battlex100Action = () -> { simulateBattle100x() ;} ;
-		
-		
-		buttons.add(newButton(new Point(500, 60), "pet", petAction)) ;
-		buttons.add(newButton(new Point(500, 100), "pet+ level", plusPetLevelAction)) ;
-		buttons.add(newButton(new Point(500, 140), "pet+ 5 level", plus5PetLevelAction)) ;
-		buttons.add(newButton(new Point(500, 180), "pet+ 10 level", plus10PetLevelAction)) ;
-		
-		buttons.add(newButton(new Point(60, 100), "+ level", plusLevelAction)) ;
-		buttons.add(newButton(new Point(160, 100), "+ 5 level", plus5LevelAction)) ;
-		buttons.add(newButton(new Point(260, 100), "+ 10 level", plus10LevelAction)) ;
-		
-		buttons.add(newButton(new Point(460, 220), "Battle", battleAction)) ;
-		buttons.add(newButton(new Point(460, 260), "Battle x 10", battlex10Action)) ;
-		buttons.add(newButton(new Point(460, 300), "Battle x 100", battlex100Action)) ;
+		addBattleSection() ;
 		
 	}
 	
@@ -114,14 +80,115 @@ public abstract class PlayerEvolutionSimulation
 		return new GameButton(pos, text, buttonImage, buttonSelectedImage, action) ;
 	}
 	
-	private static void addSection(Point pos, Point s, Map<String, IconFunction> sectionNamesActions)
+	private static void addJobSection()
+	{
+		Point sectionPos = new Point(80, 32) ;
+		
+		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		namesActions.put("cavaleiro", () -> { playerResetJob(0) ;}) ;
+		namesActions.put("mago", () -> { playerResetJob(1) ;}) ;
+		namesActions.put("arqueiro", () -> { playerResetJob(2) ;}) ;
+		namesActions.put("animal", () -> { playerResetJob(3) ;}) ;
+		namesActions.put("ladrão", () -> { playerResetJob(4) ;}) ;
+		
+		addSection(sectionPos, new Point(90, 0), namesActions) ;
+	}
+
+	private static void addPlayerSection()
+	{
+		addPlayerTrainSection() ;
+		addPlayerLevelUpSection() ;
+	}
+	
+	private static void addPlayerTrainSection()
+	{
+		Point sectionPos = new Point(10, 60 + 10) ;
+
+		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		namesActions.put("encher vida", () -> { playerFullLife() ;}) ;
+		namesActions.put("train", () -> { playerTrain() ;}) ;
+		
+		addSection(sectionPos, new Point(0, 30), namesActions) ;
+	}
+	
+	private static void addPlayerLevelUpSection()
+	{
+		Point sectionPos = new Point(100, 60 + 10) ;
+		
+		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		namesActions.put("+ level", () -> { playerLevelUp(1) ;}) ;
+		namesActions.put("+ 5 level", () -> { playerLevelUp(5) ;}) ;
+		namesActions.put("+ 10 level", () -> { playerLevelUp(10) ;}) ;
+		
+		addSection(sectionPos, new Point(0, 30), namesActions) ;
+	}
+	
+	private static void addPetSection()
+	{
+		addPetLevelUpSection() ;
+		addPetTrainSection() ;
+	}
+	
+	private static void addPetLevelUpSection()
+	{
+		Point sectionPos = new Point(311, 60 + 10) ;
+
+		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		namesActions.put("pet", () -> { petReset() ;}) ;
+		namesActions.put("encher vida", () -> { petFullLife() ;}) ;
+		namesActions.put("train", () -> { petTrain() ;}) ;
+		
+		addSection(sectionPos, new Point(0, 30), namesActions) ;
+	}
+	
+	private static void addPetTrainSection()
+	{
+		Point sectionPos = new Point(401, 60 + 10) ;
+
+		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		namesActions.put("+ level", () -> { petLevelUp(1) ;}) ;
+		namesActions.put("+ 5 level", () -> { petLevelUp(5) ;}) ;
+		namesActions.put("+ 10 level", () -> { petLevelUp(10) ;}) ;
+		
+		addSection(sectionPos, new Point(0, 30), namesActions) ;
+	}
+
+	private static void addBattleSection()
+	{
+		addBattleResetSection() ;
+		addBattleFightsSection() ;
+	}
+
+	private static void addBattleResetSection()
+	{
+		Point sectionPos = new Point(10, 266 + 10) ;
+
+		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		namesActions.put("Reset fights", () -> { resetFights() ;}) ;
+		
+		addSection(sectionPos, new Point(0, 30), namesActions) ;
+	}
+
+	private static void addBattleFightsSection()
+	{
+		Point sectionPos = new Point(100, 266 + 10) ;
+
+		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		namesActions.put("Battle", () -> { simulateBattle() ;}) ;
+		namesActions.put("Battle x 10", () -> { simulateBattle10x() ;}) ;
+		namesActions.put("Battle x 100", () -> { simulateBattle100x() ;}) ;
+		
+		addSection(sectionPos, new Point(0, 30), namesActions) ;
+	}
+	
+	private static void addSection(Point pos, Point spacing, Map<String, IconFunction> sectionNamesActions)
 	{
 		int i = 0 ;
 		Iterator it = sectionNamesActions.entrySet().iterator();
 	    while (it.hasNext())
 	    {
 	        Map.Entry<String, IconFunction> pair = (Map.Entry) it.next();
-			Point buttonPos = UtilG.Translate(pos, i * s.x, i * s.y) ;
+			Point buttonPos = UtilG.Translate(pos, i * spacing.x, i * spacing.y) ;
 			buttons.add(newButton(buttonPos, pair.getKey(), pair.getValue())) ;
 			i++ ;
 	    }
@@ -216,8 +283,18 @@ public abstract class PlayerEvolutionSimulation
 			if (99 <= player.getLevel()) { break ;}
 			
 			player.getExp().incCurrentValue(player.getExp().getMaxValue());
-			player.levelUp(null) ;			
+			player.levelUp(null) ; // Game.getAnimations()[4]			
 		}
+	}
+	
+	private static void playerTrain()
+	{
+		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0)) ;
+	}
+	
+	private static void petTrain()
+	{
+		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0)) ;
 	}
 	
 	private static void petLevelUp(int times)
@@ -229,7 +306,7 @@ public abstract class PlayerEvolutionSimulation
 			if (99 <= pet.getLevel()) { break ;}
 
 			pet.getExp().incCurrentValue(pet.getExp().getMaxValue());
-			pet.levelUp(null) ;			
+			pet.levelUp(null) ; // Game.getAnimations()[4]
 		}
 	}
 	
@@ -251,8 +328,7 @@ public abstract class PlayerEvolutionSimulation
 		}
 	}
 	
-	private static void resetNumberPlayerWins() { numberPlayerWins = 0 ;}
-	private static void resetNumberCreatureWins() { numberCreatureWins = 0 ;}
+	private static void resetFights() { numberFights = 0 ; numberPlayerWins = 0 ; numberCreatureWins = 0 ;}
 	private static void incNumberPlayerWins() { numberPlayerWins += 1 ;}
 	private static void incNumberCreatureWins() { numberCreatureWins += 1 ;}
 	
@@ -303,18 +379,6 @@ public abstract class PlayerEvolutionSimulation
 		else
 		{
 			numberFightsRepetition = 0 ;
-		}
-		
-	}
-	
-	private static void train(int amountAtks, AtkResults atkResults, LiveBeing user)
-	{
-		
-		if (user instanceof Creature) { return ;}
-			
-		for (int i = 0 ; i <= amountAtks - 1 ; i += 1)
-		{
-			user.train(atkResults) ;
 		}
 		
 	}
@@ -401,60 +465,73 @@ public abstract class PlayerEvolutionSimulation
 		return player.getAttWindow() ;
 	}
 	
+	public static void drawBar(Point pos, int currentHeight, int maxHeight, Color color, DrawingOnPanel DP)
+	{
+		int width = 10 ;
+		DP.DrawRect(pos, Align.bottomLeft, new Dimension(width, currentHeight), 1, color, null) ;
+		DP.DrawRect(pos, Align.bottomLeft, new Dimension(width, maxHeight), 1, null, color) ;
+	}
+	
 	public static void displayBattleStats(DrawingOnPanel DP)
 	{
-		int numberOpponentsToPlayerLevelUp = 1 + (int) ((player.getExp().getMaxValue() - player.getExp().getCurrentValue()) / (playerOpponent.getExp().getCurrentValue() * player.getExp().getMultiplier())) ;
-		DP.DrawText(new Point(400, 400), Align.centerLeft, DrawingOnPanel.stdAngle, numberOpponentsToPlayerLevelUp + " to level up", font, Game.ColorPalette[1]);
+		Point pos = new Point(10, 400) ;
+		int barsHeight = 50 ;
+		
+		int numberOpponentsToPlayerLevelUp = PersonalAttributes.numberFightsToLevelUp(player.getExp().getCurrentValue(), player.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), player.getExp().getMultiplier()) ;
+		DP.DrawText(UtilG.Translate(pos, 170, 10), Align.bottomCenter, DrawingOnPanel.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.ColorPalette[1]);
 
-		int barHeight = 50 ;
-		Dimension playerExpBarSize = new Dimension(10, (int) (player.getExp().getRate() * barHeight)) ;
-		DP.DrawRect(new Point(400, 460), Align.bottomLeft, playerExpBarSize, 1, Game.ColorPalette[1], null) ;
-		DP.DrawRect(new Point(400, 460), Align.bottomLeft, new Dimension(10, barHeight), 1, null, Game.ColorPalette[1]) ;
+		int playerExpBarSize = (int) (player.getExp().getRate() * barsHeight) ;
+		drawBar(UtilG.Translate(pos, 170, 70), playerExpBarSize, barsHeight, Game.ColorPalette[1], DP) ;
 		
 		if (pet != null)
 		{
-			int numberOpponentsToPetLevelUp = 1 + (int) ((pet.getExp().getMaxValue() - pet.getExp().getCurrentValue()) / (playerOpponent.getExp().getCurrentValue() * pet.getExp().getMultiplier())) ;
-			DP.DrawText(new Point(450, 420), Align.centerLeft, DrawingOnPanel.stdAngle, numberOpponentsToPetLevelUp + " to pet level up", font, Game.ColorPalette[2]);
+			int numberOpponentsToPetLevelUp = PersonalAttributes.numberFightsToLevelUp(pet.getExp().getCurrentValue(), pet.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), pet.getExp().getMultiplier()) ;
+			DP.DrawText(UtilG.Translate(pos, 200, 10), Align.bottomCenter, DrawingOnPanel.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Game.ColorPalette[2]);
 			
-			Dimension petExpBarSize = new Dimension(10, (int) (pet.getExp().getRate() * barHeight)) ;
-			DP.DrawRect(new Point(420, 460), Align.bottomLeft, petExpBarSize, 1, Game.ColorPalette[2], null) ;
-			DP.DrawRect(new Point(420, 460), Align.bottomLeft, new Dimension(10, barHeight), 1, null, Game.ColorPalette[2]) ;
+			int petExpBarSize = (int) (pet.getExp().getRate() * barsHeight) ;
+			drawBar(UtilG.Translate(pos, 200, 70), petExpBarSize, barsHeight, Game.ColorPalette[2], DP) ;
 		}
 		
-		DP.DrawText(new Point(100, 400), Align.centerLeft, DrawingOnPanel.stdAngle, "total fights = " + numberFights, font, Game.ColorPalette[1]);
-		DP.DrawText(new Point(100, 420), Align.centerLeft, DrawingOnPanel.stdAngle, "player wins = " + numberPlayerWins, font, Game.ColorPalette[1]);
-		DP.DrawText(new Point(100, 440), Align.centerLeft, DrawingOnPanel.stdAngle, "creature wins = " + numberCreatureWins, font, Game.ColorPalette[1]);
+		String percPlayerWins = 1 <= numberFights ? " (" + UtilG.Round((100 * numberPlayerWins) / (double)numberFights, 2) + "%)" : "" ;
+		String percCreatureWins = 1 <= numberFights ? " (" + UtilG.Round((100 * numberCreatureWins) / (double)numberFights, 2) + "%)" : "" ;
+		DP.DrawText(UtilG.Translate(pos, 0, 30), Align.bottomLeft, DrawingOnPanel.stdAngle, "total fights = " + numberFights, font, Game.ColorPalette[1]);
+		DP.DrawText(UtilG.Translate(pos, 0, 50), Align.bottomLeft, DrawingOnPanel.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.ColorPalette[1]);
+		DP.DrawText(UtilG.Translate(pos, 0, 70), Align.bottomLeft, DrawingOnPanel.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.ColorPalette[1]);
 
 	}
 	
 	public static void displayInterface(Point mousePos, DrawingOnPanel DP)
 	{
 		
-		DP.DrawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), 1, Color.black, null) ;
+//		DP.DrawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), 1, Color.black, null) ;
+		DP.DrawImage(screenImage, new Point(0, 0), Align.topLeft) ;
+		DP.DrawText(new Point(300, 13), Align.center, DrawingOnPanel.stdAngle, "Simulador do jogo", font, Game.ColorPalette[9]) ;
+		
 		buttons.forEach(button -> {
 			button.display(0, Align.center, true, mousePos, DP) ;
 		});
 
-		playerOpponent.displayName(new Point(460, 340), Align.centerLeft, Color.yellow, DP);
-		playerOpponent.display(new Point(460, 360), new Scale(1, 1), DP);
+		playerOpponent.displayName(new Point(460, 300), Align.center, Color.yellow, DP);
+		playerOpponent.display(new Point(460, 340), new Scale(1, 1), DP);
 		if (player.isAlive())
 		{
-			player.display(new Point(380, 360), new Scale(1.8, 1.8), Directions.right, false, DP) ;
+			player.display(new Point(45, 230), new Scale(1.8, 1.8), Directions.right, false, DP) ;
 		}
 		if (pet != null)
 		{
 			if (pet.isAlive())
 			{
-				pet.display(new Point(400, 360), new Scale(1, 1), DP) ;
+				pet.display(new Point(450, 230), new Scale(1, 1), DP) ;
 			}
 		}
 		
 		if (player.isInBattle())
 		{
-			DP.DrawImage(fightingImage, new Point(480, 400), Align.center) ;
+			DP.DrawImage(fightingImage, new Point(300, 240), Align.center) ;
 		}
 		
 		displayBattleStats(DP) ;
 		
 	}
+	
 }

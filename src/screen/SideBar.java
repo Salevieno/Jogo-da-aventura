@@ -21,13 +21,18 @@ import utilities.UtilG;
 public class SideBar
 {
 	private Set<GameButton> icons ;
+	
+	private Point barPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height);	
+	private Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
 		
 	public SideBar(Image playerImage, Image petImage)
 	{
+		
     	String path = Game.ImagesPath + "\\SideBar\\";
 		Point botCenterPos = new Point(Game.getScreen().getSize().width + 20, Game.getScreen().getSize().height - 220) ;
 		icons = new HashSet<>() ;
 		String[] names = new String[] {"settings", "bag", "quest", "map", "book", "tent"} ; // "player", "pet"
+		
 		for (int i = 0; i <= names.length - 1 ; i += 1)
 		{
 			Point pos = UtilG.Translate(botCenterPos, 0, -10 - 50 * i) ;
@@ -35,7 +40,9 @@ public class SideBar
 			Image selImage = UtilG.loadImage(path + "Icon" + i + "_" + names[i] + "Selected.png") ;
 			icons.add(new GameButton(i, names[i], pos, "description", image, selImage)) ;
 		}
+		
 		icons.forEach(GameButton::activate);
+		
 	}
 	
 	public Set<GameButton> getIcons() { return icons ;}
@@ -44,8 +51,6 @@ public class SideBar
 	public void display(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
 	{
 		
-		Point barPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height);
-		Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
 		double stdAngle = DrawingOnPanel.stdAngle ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String[] IconKey = new String[] {null, Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7], null, null, null, null} ;

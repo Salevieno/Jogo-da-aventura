@@ -26,10 +26,10 @@ public class Animations
 		vars = null ;
 	}
 	
-	public void start(Object[] Vars)
+	public void start(Object[] vars)
 	{
 		isActive = true ;
-		vars = Vars ;
+		this.vars = vars ;
 		counter = new TimeCounter(0, (int) vars[0]) ;
 	}
 	
@@ -101,9 +101,9 @@ public class Animations
 	{
 		Point playerPos = (Point) vars[3] ;
 		
-		if (!Player.levelUpAnimation.isDonePlaying())
+		if (!Player.levelUpGif.isDonePlaying())
 		{
-			Player.levelUpAnimation.play(playerPos, Align.bottomCenter, DP) ;
+			Player.levelUpGif.play(playerPos, Align.bottomCenter, DP) ;
 			counter.reset() ;
 			return ;
 		}
