@@ -72,6 +72,17 @@ public class SpellsTreeWindow extends GameWindow
 		}
 	}
 	
+	public void act(Player player)
+	{
+		
+		if (canAcquireSpell(player.getSpellPoints()))
+		{
+			acquireSpell(player.getSpells()) ;
+			player.decSpellPoints() ;
+		}
+		
+	}
+	
 	private Point calcSlotPos(int row, int col, Dimension slotSize)
 	{
 		Point offset = new Point(windowTopLeft.x + border + padding, windowTopLeft.y + border + padding + 20) ;

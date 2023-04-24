@@ -11,6 +11,8 @@ import java.awt.event.KeyAdapter ;
 import java.awt.event.KeyEvent ;
 import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,13 +81,13 @@ import screen.SideBar;
 import screen.Sky;
 import simulations.PlayerEvolutionSimulation;
 import utilities.Align;
-import utilities.AttackEffects;
 import utilities.Elements;
 import utilities.GameStates;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.BankWindow;
+import windows.CreatureAttributesWindow;
 
 public class Game extends JPanel
 {
@@ -111,7 +113,7 @@ public class Game extends JPanel
 	
 
 	private DrawingOnPanel DP ;
-	private Player player ;
+	private static Player player ;
 	private static Pet pet ;
 	private List<Projectiles> projs ;
 	public int difficultLevel ;
@@ -155,9 +157,10 @@ public class Game extends JPanel
 	{
 		DP = new DrawingOnPanel() ;
 		GameLanguage = Languages.portugues ;
-    	player = new Player("", "", "", 1) ;
+    	player = new Player("", "", 1) ;
     	
 		addMouseListener(new MouseEventDemo()) ;
+		addMouseWheelListener(new MouseWheelEventDemo()) ;
 		addKeyListener(new TAdapter()) ;
 		setFocusable(true) ;
 	}
@@ -167,6 +170,7 @@ public class Game extends JPanel
 	public static Sky getSky() {return sky ;}
 	public static CreatureType[] getCreatureTypes() {return creatureTypes ;}
 	public static NPCType[] getNPCTypes() {return NPCTypes ;}
+	public static Player getPlayer() { return player ;}
 	public static Pet getPet() { return pet ;}
 	public static BuildingType[] getBuildingTypes() {return buildingTypes ;}
 	public static GameMap[] getMaps() {return allMaps ;}
@@ -780,13 +784,6 @@ public class Game extends JPanel
 			fm.IncCollectiblesCounter() ;
 		}
 		
-		if (player.isInBattle())
-		{
-			player.incrementBattleActionCounters() ;
-			if (pet != null) {pet.incrementBattleActionCounters() ;}
-			player.getOpponent().incrementBattleActionCounters() ;
-		}
-		
 		for (CityMap city : cityMaps)
 		{
 			BankWindow bank = (BankWindow) city.getBuildings().get(3).getNPCs().get(0).getWindow() ;
@@ -824,8 +821,17 @@ public class Game extends JPanel
 		
 	}
 	
+	public static void removePet()
+	{
+		pet = null ;
+	}
 	
-	
+	public static void letThereBePet()
+	{
+		int job = UtilG.randomIntFromTo(0, 3) ;
+		pet = new Pet(job) ;
+    	pet.setPos(player.getPos());
+	}
 	
 	private void konamiCode()
 	{
@@ -922,7 +928,7 @@ public class Game extends JPanel
 				}
 				if (creature.canAct())
 				{
-					creature.act(player.getPos(), player.getMap()) ;
+					creature.act() ;
 				}
 				creature.display(creature.getPos(), Scale.unit, DP) ;
 				
@@ -1000,7 +1006,7 @@ public class Game extends JPanel
 		
 		
 		// show the active player windows
-		player.showWindows(pet, creatureTypes, allMaps, bat, mousePos, DP) ;
+		player.showWindows(pet, mousePos, DP) ;
 		
 		
 		// move the active projectiles and check if they collide with something
@@ -1057,15 +1063,13 @@ public class Game extends JPanel
     	bat = new Battle() ;
     	
     	Pterodactile.setMessage(Game.allText.get("Pterodactile")) ;
-		
-		pet = new Pet(0) ;
-    	pet.getPA().setLife(new BasicAttribute(100, 100, 1));
-    	pet.setPos(player.getPos());
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
     	player.setMap(allMaps[5]) ;
     	player.setPos(new Point(400, 221)) ;
+		
+    	letThereBePet() ;
     	
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
@@ -1090,9 +1094,6 @@ public class Game extends JPanel
 //    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
     	
 //    	player.getExp().incCurrentValue(5000);
-    	
-    	PlayerEvolutionSimulation.startAtLevel(50, player) ;
-    	PlayerEvolutionSimulation.train(10000, new AtkResults(AtkTypes.physical, AttackEffects.hit, 0), player) ;
     	
     	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(20, 20))) ;
     	
@@ -1140,7 +1141,48 @@ public class Game extends JPanel
 	        }
 	        case simulation:
 	        {
+	    		player.incrementCounters() ;
+	    		player.activateCounters();
+	    		player.getSatiation().setToMaximum() ;
+	    		player.getThirst().setToMaximum() ;
+	    		if (pet != null) { pet.incrementCounters() ; }
+	    		if (pet != null) { pet.activateCounters() ; }
+	    		if (pet != null) { pet.getSatiation().setToMaximum() ; }
+	        	
+	    		if (player.getCurrentAction() != null)
+	        	{
+	        		PlayerEvolutionSimulation.act(player.getCurrentAction(), mousePos) ;
+	        	}
+	        	if (player.isInBattle())
+	        	{
+//	        		Creature creature = player.getOpponent() ;
+//	        		creature.fight() ;
+	        		PlayerEvolutionSimulation.playerFight() ;
+//	        		if (pet != null) { pet.fight() ;}
+	        		bat.RunBattle(player, pet, player.getOpponent(), ani, DP) ;
+	        		if (!player.isInBattle())
+	        		{
+		        		PlayerEvolutionSimulation.checkPlayerWin() ;
+	        		}
+	        	}
+	        	else
+	        	{
+	        		PlayerEvolutionSimulation.checkBattleRepeat() ;
+	        	}
+	        	if (player.shouldLevelUP()) { player.levelUp(null) ;}
+	        	if (pet != null) { if (pet.shouldLevelUP()) { pet.levelUp(null) ;}} ;
 	        	PlayerEvolutionSimulation.displayInterface(mousePos, DP) ;
+	        	player.showWindows(pet, mousePos, DP) ;
+	    		
+	    		if (player.getOpponent() != null)
+	    		{
+	    			if (player.getOpponent().getAttWindow().isOpen())
+	    			{
+	    				((CreatureAttributesWindow) player.getOpponent().getAttWindow()).display(DP) ;
+	    			}
+	    		}
+	        	
+	        	player.resetAction() ;
 	        	
 	        	break ;
 	        }
@@ -1250,61 +1292,24 @@ public class Game extends JPanel
 		public void mouseReleased(MouseEvent e) 
 		{
 
+		}
+		
+	}
+	
+	class MouseWheelEventDemo implements MouseWheelListener 
+	{
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent evt)
+		{
+			if (evt.getWheelRotation() < 0)	// wheel up
+			{
+        		player.setCurrentAction("MouseWheelUp") ;
+			}
+			else
+			{
+        		player.setCurrentAction("MouseWheelDown") ;
+			}
 		}		
 	}
 
-	
-//	private void battleSimulation()
-//	{
-//    	GameLanguage = "P" ;
-//		AllText = Utg.ReadTextFile(GameLanguage) ;
-//		AllTextCat = Uts.FindAllTextCat(AllText, GameLanguage) ;
-//    	PlayerName = "" ;
-//    	PlayerJob = 1 ;
-//    	PlayerSex = "N" ;
-//    	MainInitialization() ;
-//    	OpeningIsOn = false ;
-//    	RunGame = true ;
-//		//player.PrintAllAttributes();
-//		player.CreatureInBattle = 85;
-//		//creatureTypes[creature[player.CreatureInBattle].getType()].printAtt() ;
-//		player.setPos(creature[player.CreatureInBattle].getPos()) ;
-//		player.setPos(new int[] {player.getPos()[0] + 20, player.getPos()[1] + 15});
-//		//player.getBA().setStun(new double[] {1, 0, 0, 0, 500});
-//		player.getEquips()[0] = 301 ;
-//		player.getEquips()[1] = 302 ;
-//		player.getEquips()[2] = 303 ;
-//		player.setCurrentAction("Fighting");
-//	}
-	
-//  private void mainInitialization()
-//	{
-//		DayDuration = 120000 ;
-//  	sky = new Sky() ;
-//  	screen.setBorders(new int[] {0, sky.height, screen.getSize().width, screen.getSize().height});
-//  	screen.setMapCenter() ;    			
-//  	GameMap.InitializeStaticVars(ImagesPath) ;
-//		//allNPCs = InitializeNPCTypes(GameLanguage, screen.getSize()) ;
-//		buildingTypes = initializeBuildingTypes() ;
-//		creatureTypes = initializeCreatureTypes(GameLanguage, 1) ;
-//		cityMaps = initializeCityMaps() ;
-//		fieldMaps = initializeFieldMaps() ;
-//		allMaps = new GameMap[cityMaps.length + fieldMaps.length] ;
-//		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
-//		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
-//		//DifficultMult = new double[] {(double) 0.5, (double) 0.7, (double) 1.0} ;
-//		//player = InitializePlayer(PlayerInitialName, PlayerInitialJob, GameLanguage, PlayerInitialSex) ;
-//		//pet = InitializePet() ;
-//		//creature = InitializeCreatures(creatureTypes, screen.getSize(), fieldMaps) ;
-//		for (int map = 0 ; map <= allMaps.length - 1 ; map += 1)
-//		{
-//			//allMaps[map].InitializeNPCsInMap(allNPCs) ;
-//		}
-//		allQuests = initializeQuests(GameLanguage, player.getJob()) ;
-//		initializeIcons(screen.getSize()) ;
-//
-//		// Initialize classes
-//  	bat = new Battle(new int[] {player.getBA().getBattleActions()[0][1]/2, pet.getBA().getBattleActions()[0][1]/2}, ani) ;
-//	}
-	
 }

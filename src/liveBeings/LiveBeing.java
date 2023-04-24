@@ -27,7 +27,6 @@ import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.AttributesWindow;
-import windows.PlayerAttributesWindow;
 
 public abstract class LiveBeing
 {
@@ -68,7 +67,7 @@ public abstract class LiveBeing
 			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Silence.png")
 			};
 	public static final Image defendingImage = UtilG.loadImage(Game.ImagesPath + "\\Battle\\" + "ShieldIcon.png") ;
-	public static final String[] BattleKeys = new String[] {"A", "D"} ;	
+	public static final String[] BattleKeys = new String[] {"Y", "U"} ;	
 	
 
 	public String getName() {return name ;}
@@ -138,6 +137,12 @@ public abstract class LiveBeing
 	public List<String> getCombo() {return combo ;}
 	public List<Spell> getSpells() {return spells ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
+	public void setMpCounter(TimeCounter mpCounter) { this.mpCounter = mpCounter ;}
+	public void setActionCounter(TimeCounter actionCounter) { this.actionCounter = actionCounter ;}	
+	public void setBattleActionCounter(TimeCounter battleActionCounter) { this.battleActionCounter = battleActionCounter ;}
+	public void setSatiationCounter(TimeCounter satiationCounter) { this.satiationCounter = satiationCounter ;}
+	public void setThirstCounter(TimeCounter thirstCounter) { this.thirstCounter = thirstCounter ;}
+	public void setStepCounter(TimeCounter stepCounter) { this.stepCounter = stepCounter ;}
 
 	public void setName(String newValue) {name = newValue ;}
 	public void setLevel(int newValue) {level = newValue ;}
@@ -156,7 +161,10 @@ public abstract class LiveBeing
 	public boolean canAct() { return actionCounter.finished() ;}
 	
 	public PersonalAttributes getPA() {return PA ;}
+	public void setPA(PersonalAttributes pA) { PA = pA ;}
 	public BattleAttributes getBA() {return BA ;}
+	public void setBA(BattleAttributes bA) { BA = bA ;}
+
 	public AttributesWindow getAttWindow() {return attWindow ;}
 	public MovingAnimations getMovingAni() {return movingAni ;}
 
@@ -188,7 +196,7 @@ public abstract class LiveBeing
 	public void incrementCounters()
 	{
 		incActionCounters() ;
-		if (this instanceof Player) { ((Player) this).supSpellCounters() ;}
+		if (this instanceof Player) { ((Player) this).spellCounters() ;}
 		BA.getStatus().decreaseStatus() ;
 	}
 	
@@ -270,8 +278,8 @@ public abstract class LiveBeing
 	}
 	public boolean hasActed() {return currentAction != null ;}
 	public boolean actionIsSpell()	{return hasActed() ? Player.SpellKeys.contains(currentAction) : false ;}
-	public boolean actionIsAtk() {return false ;}
-	public boolean actionIsDef() {return hasActed() ? currentAction.equals(Player.BattleKeys[1]) : false ;}
+	public boolean actionIsAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
+	public boolean actionIsDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}
 	
 	public boolean canAtk() {return battleActionCounter.finished() & !BA.isStun() ;}
 	public boolean isSilent() {return 0 < BA.getStatus().getSilence() ;}
@@ -367,6 +375,14 @@ public abstract class LiveBeing
 	
 	public abstract AtkResults useSpell(Spell spell, LiveBeing receiver) ;
 	public abstract void dies() ;
+	
+	public void checkDeactivateDef()
+	{
+		if (battleActionCounter.finished() & isDefending())
+		{
+			DeactivateDef() ;
+		}
+	}
 	
 	public void ActivateDef()
 	{

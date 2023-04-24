@@ -27,7 +27,7 @@ public class PetAttributesWindow extends AttributesWindow
 	{
 
 		Dimension screenSize = Game.getScreen().getSize() ;
-		Point windowPos = new Point((int) (0.2 * screenSize.width), (int)(0.2 * screenSize.height)) ;
+		Point windowPos = new Point((int) (0.5 * screenSize.width), (int)(0.2 * screenSize.height)) ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
 		DP.DrawImage(image, windowPos, Align.topLeft) ;
@@ -39,7 +39,7 @@ public class PetAttributesWindow extends AttributesWindow
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;		
 		Color[] colorPalette = Game.ColorPalette ;
-		Color textColor = colorPalette[2] ;
+		Color textColor = colorPalette[9] ;
 		
 		String[] attText = Game.allText.get("Atributos") ;		
 		Point namePos = UtilG.Translate(windowPos, size.width / 2, 14) ;

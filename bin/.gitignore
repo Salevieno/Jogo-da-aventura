@@ -1,8 +1,12 @@
-/liveBeings/
-/screen/
-/main/
-/simulations/
-/utilities/
+/attributes/
+/items/
+/maps/
+/test/
+/testing/
 /components/
 /graphics/
+/liveBeings/
+/main/
+/screen/
+/simulations/
 /windows/

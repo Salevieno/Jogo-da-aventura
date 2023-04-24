@@ -75,7 +75,7 @@ import windows.SpellsTreeWindow;
 
 public class Player extends LiveBeing
 {
-	private String language ;
+//	private String language ;
 	private String sex ;
 	private Color color ;
 	
@@ -135,14 +135,16 @@ public class Player extends LiveBeing
 
 	public final static Image[] AttWindowImages = new Image[] {UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")} ;
     
-	public Player(String name, String Language, String Sex, int job)
+	public Player(String name, String Sex, int job)
 	{
 		super(
-				InitializePersonalAttributes(name, job),
+				InitializePersonalAttributes(job),
 				InitializeBattleAttributes(job),
 				InitializeMovingAnimations(),
 				new PlayerAttributesWindow(AttWindowImages[0])
 				) ;
+		((PlayerAttributesWindow) attWindow).initializeAttIncButtons(this) ;
+		
 		this.name = name ;
 		this.job = job ;
 		proJob = 0 ;
@@ -165,7 +167,7 @@ public class Player extends LiveBeing
 		stepCounter = new TimeCounter(0, 20) ;
 		combo = new ArrayList<>() ;
 	    
-		this.language = Language ;
+//		this.language = Language ;
 		this.sex = Sex ;
 		
 		
@@ -192,6 +194,7 @@ public class Player extends LiveBeing
 		fabWindow = new FabWindow() ;
 		mapWindow = new MapWindow() ;
 		hintsWindow = new HintsWindow() ;
+		spellsTree = new SpellsTreeWindow() ;
 		bestiary = new BestiaryWindow() ;
 		equips = new Equip[4] ;	// 0: weapon, 1: shield, 2: armor, 3: arrow
 		spellPoints = 0 ;
@@ -199,7 +202,7 @@ public class Player extends LiveBeing
     	
 		collectLevel = new double[3] ;
 		storedGold = 0 ;
-		goldMultiplier = Integer.parseInt(Properties.get(job)[32]) ; 
+		goldMultiplier = Double.parseDouble(Properties.get(job)[32]) ; 
 		questSkills = new HashMap<QuestSkills, Boolean>() ;
 		questSkills.put(QuestSkills.forestMap, false) ;
 		questSkills.put(QuestSkills.caveMap, false) ;
@@ -239,31 +242,31 @@ public class Player extends LiveBeing
 	}
 	
 
-	private static PersonalAttributes InitializePersonalAttributes(String Name, int Job)
+	private static PersonalAttributes InitializePersonalAttributes(int job)
 	{
-	    BasicAttribute life = new BasicAttribute(Integer.parseInt(Properties.get(Job)[2]), Integer.parseInt(Properties.get(Job)[2]), 1) ;
-	    BasicAttribute mp = new BasicAttribute(Integer.parseInt(Properties.get(Job)[3]), Integer.parseInt(Properties.get(Job)[3]), 1) ;
-		BasicAttribute exp = new BasicAttribute(0, 5, Integer.parseInt(Properties.get(Job)[34])) ;
-		BasicAttribute satiation = new BasicAttribute(100, 100, Integer.parseInt(Properties.get(Job)[35])) ;
-		BasicAttribute thirst = new BasicAttribute(100, 100, Integer.parseInt(Properties.get(Job)[36])) ;
+	    BasicAttribute life = new BasicAttribute(Integer.parseInt(Properties.get(job)[2]), Integer.parseInt(Properties.get(job)[2]), 1) ;
+	    BasicAttribute mp = new BasicAttribute(Integer.parseInt(Properties.get(job)[3]), Integer.parseInt(Properties.get(job)[3]), 1) ;
+		BasicAttribute exp = new BasicAttribute(0, 5, Double.parseDouble(Properties.get(job)[34])) ;
+		BasicAttribute satiation = new BasicAttribute(100, 100, Integer.parseInt(Properties.get(job)[35])) ;
+		BasicAttribute thirst = new BasicAttribute(100, 100, Integer.parseInt(Properties.get(job)[36])) ;
 		return new PersonalAttributes(life, mp, exp, satiation,	thirst) ;
 	}
 	
-	private static BattleAttributes InitializeBattleAttributes(int Job)
+	private static BattleAttributes InitializeBattleAttributes(int job)
 	{
 
-		BasicBattleAttribute phyAtk = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[5]), 0, 0) ;
-		BasicBattleAttribute magAtk = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[6]), 0, 0) ;
-		BasicBattleAttribute phyDef = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[7]), 0, 0) ;
-		BasicBattleAttribute magDef = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[8]), 0, 0) ;
-		BasicBattleAttribute dex = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[9]), 0, 0) ;	
-		BasicBattleAttribute agi = new BasicBattleAttribute (Double.parseDouble(Properties.get(Job)[10]), 0, 0) ;
-		double[] crit = new double[] {Double.parseDouble(Properties.get(Job)[11]), 0, Double.parseDouble(Properties.get(Job)[12]), 0} ;
-		BattleSpecialAttribute stun = new BattleSpecialAttribute(Double.parseDouble(Properties.get(Job)[13]), 0, Double.parseDouble(Properties.get(Job)[14]), 0, Integer.parseInt(Properties.get(Job)[15])) ;
-		BattleSpecialAttribute block = new BattleSpecialAttribute(Double.parseDouble(Properties.get(Job)[16]), 0, Double.parseDouble(Properties.get(Job)[17]), 0, Integer.parseInt(Properties.get(Job)[18])) ;
-		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(Properties.get(Job)[19]), 0, Double.parseDouble(Properties.get(Job)[20]), 0, Integer.parseInt(Properties.get(Job)[21]), 0, Integer.parseInt(Properties.get(Job)[22]), 0, Integer.parseInt(Properties.get(Job)[23])) ;
-		BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(Properties.get(Job)[24]), 0, Double.parseDouble(Properties.get(Job)[25]), 0, Integer.parseInt(Properties.get(Job)[26]), 0, Integer.parseInt(Properties.get(Job)[27]), 0, Integer.parseInt(Properties.get(Job)[28])) ;
-		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(Properties.get(Job)[29]), 0, Double.parseDouble(Properties.get(Job)[30]), 0, Integer.parseInt(Properties.get(Job)[31])) ;
+		BasicBattleAttribute phyAtk = new BasicBattleAttribute (Double.parseDouble(Properties.get(job)[5]), 0, 0) ;
+		BasicBattleAttribute magAtk = new BasicBattleAttribute (Double.parseDouble(Properties.get(job)[6]), 0, 0) ;
+		BasicBattleAttribute phyDef = new BasicBattleAttribute (Double.parseDouble(Properties.get(job)[7]), 0, 0) ;
+		BasicBattleAttribute magDef = new BasicBattleAttribute (Double.parseDouble(Properties.get(job)[8]), 0, 0) ;
+		BasicBattleAttribute dex = new BasicBattleAttribute (Double.parseDouble(Properties.get(job)[9]), 0, 0) ;	
+		BasicBattleAttribute agi = new BasicBattleAttribute (Double.parseDouble(Properties.get(job)[10]), 0, 0) ;
+		double[] crit = new double[] {Double.parseDouble(Properties.get(job)[11]), 0, Double.parseDouble(Properties.get(job)[12]), 0} ;
+		BattleSpecialAttribute stun = new BattleSpecialAttribute(Double.parseDouble(Properties.get(job)[13]), 0, Double.parseDouble(Properties.get(job)[14]), 0, Integer.parseInt(Properties.get(job)[15])) ;
+		BattleSpecialAttribute block = new BattleSpecialAttribute(Double.parseDouble(Properties.get(job)[16]), 0, Double.parseDouble(Properties.get(job)[17]), 0, Integer.parseInt(Properties.get(job)[18])) ;
+		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(Properties.get(job)[19]), 0, Double.parseDouble(Properties.get(job)[20]), 0, Integer.parseInt(Properties.get(job)[21]), 0, Integer.parseInt(Properties.get(job)[22]), 0, Integer.parseInt(Properties.get(job)[23])) ;
+		BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(Properties.get(job)[24]), 0, Double.parseDouble(Properties.get(job)[25]), 0, Integer.parseInt(Properties.get(job)[26]), 0, Integer.parseInt(Properties.get(job)[27]), 0, Integer.parseInt(Properties.get(job)[28])) ;
+		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(Properties.get(job)[29]), 0, Double.parseDouble(Properties.get(job)[30]), 0, Integer.parseInt(Properties.get(job)[31])) ;
 		LiveBeingStatus status = new LiveBeingStatus() ;
 
 		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, crit, stun, block, blood, poison, silence, status) ;
@@ -298,7 +301,7 @@ public class Player extends LiveBeing
 		
     }
 	
-	public String getLanguage() {return language ;}
+//	public String getLanguage() {return language ;}
 	public String getSex() {return sex ;}
 	public Directions getDir() {return dir ;}
 	public Color getColor() {return color ;}
@@ -329,7 +332,12 @@ public class Player extends LiveBeing
 	public AtkTypes getCurrentBattleAction() { return currentBattleAction ;}
 	public Statistics getStats() {return stats ;}
 	public int getAttPoints() {return attPoints ;}
-	public AttributeBonus getAttIncrease() {return attIncrease ;}
+	public AttributeBonus getAttIncrease() {return attIncrease ;}	
+	public void setAttIncrease(AttributeBonus attIncrease) { this.attIncrease = attIncrease ;}	
+	public AttributeBonus getAttChanceIncrease() { return attChanceIncrease ;}
+	public void setAttChanceIncrease(AttributeBonus attChanceIncrease) { this.attChanceIncrease = attChanceIncrease ;}
+
+
 	public AttributeBonus getChanceIncrease() {return attChanceIncrease ;}
 	public SettingsWindow getSettings() {return settings ;}
 	public SpellsTreeWindow getSpellsTreeWindow() {return spellsTree ;}
@@ -338,8 +346,10 @@ public class Player extends LiveBeing
 	public Statistics getStatistics() { return stats ;}
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
 	public void setBattleAction(AtkTypes ba) { currentBattleAction = ba ;}
-	public void setHotItem(Item item, int slot) { hotItems[slot] = item ;}
+	public void setHotItem(Item item, int slot) { hotItems[slot] = item ;}	
+	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
 	
+
 	public void addQuest(Quest newQuest) { quests.add(newQuest) ;}
 	
 	
@@ -762,10 +772,10 @@ public class Player extends LiveBeing
 					double disty = UtilG.dist1D(pos.y - size.height / 2, creature.getPos().y) ;
 					if (distx <= (size.width + creature.getSize().width) / 2 & disty <= (size.height + creature.getSize().height) / 2) //  & !ani.isActive(10) & !ani.isActive(19)
 					{
-//						opponent = creature ;
-//						opponent.setFollow(true) ;
-//						setState(LiveBeingStates.fighting) ;
-//						bestiary.addDiscoveredCreature(opponent.getType()) ;
+						opponent = creature ;
+						opponent.setFollow(true) ;
+						setState(LiveBeingStates.fighting) ;
+						bestiary.addDiscoveredCreature(opponent.getType()) ;
 					}
 				}
 			}
@@ -880,7 +890,7 @@ public class Player extends LiveBeing
 	}
 	
 	
-	public void supSpellCounters()
+	public void spellCounters()
 	{
 		for (Spell spell : spells)
 		{
@@ -900,19 +910,19 @@ public class Player extends LiveBeing
 			
 	
 	// called every time the window is repainted
-	public void showWindows(Pet pet, CreatureType[] creatureTypes, GameMap[] maps, Battle B, Point MousePos, DrawingOnPanel DP)
+	public void showWindows(Pet pet, Point mousePos, DrawingOnPanel DP)
 	{
 		if (bag.isOpen())
 		{
-			bag.display(MousePos, Game.allText.get("Menus da mochila"), DP) ;
+			bag.display(mousePos, Game.allText.get("Menus da mochila"), DP) ;
 		}
 		if (attWindow.isOpen())
 		{
-			((PlayerAttributesWindow) attWindow).display(this, equips, MousePos, DP);
+			((PlayerAttributesWindow) attWindow).display(this, equips, mousePos, DP);
 		}
 		if (fabWindow.isOpen())
 		{		
-			fabWindow.display(knownRecipes, MousePos, DP) ;
+			fabWindow.display(knownRecipes, mousePos, DP) ;
 		}
 		//Tent() ;	// TODO create tent
 		if (pet != null)
@@ -932,7 +942,7 @@ public class Player extends LiveBeing
 		}
 		if (bestiary.isOpen())
 		{
-			bestiary.display(this, MousePos, DP) ;
+			bestiary.display(this, mousePos, DP) ;
 		}
 		if (settings.isOpen())
 		{
@@ -941,6 +951,10 @@ public class Player extends LiveBeing
 		if (hintsWindow.isOpen())
 		{
 			hintsWindow.display(this, DP) ;
+		}
+		if (spellsTree.isOpen())
+		{
+			spellsTree.display(mousePos, spellPoints, DP) ;
 		}
 	}
 		
@@ -1388,7 +1402,7 @@ public class Player extends LiveBeing
 		
 		// TODO
 		JSONObject jsonData = UtilG.readJsonObject(filePath) ;
-		Player newPlayer = new Player((String) jsonData.get("name"), filePath, filePath, 0) ;
+		Player newPlayer = new Player((String) jsonData.get("name"), "", 0) ;
 		newPlayer.setLevel((int) jsonData.get("level"));
 		
 		return newPlayer ;

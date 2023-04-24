@@ -182,17 +182,24 @@ public class Battle
 		}
 		if (pet != null)
 		{
-			if (pet.getBattleActionCounter().finished() & pet.isDefending())
+			if (pet.isAlive() & pet.getBattleActionCounter().finished() & pet.getCurrentAction() != null)
 			{
-//				UtilS.PrintBattleActions(6, "Pet", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
-	 			pet.DeactivateDef() ;
+				if (pet.getCurrentAction().equals(Player.BattleKeys[1]))
+				{
+//					UtilS.PrintBattleActions(6, "Pet", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
+		 			pet.DeactivateDef() ;
+				}
 			}
 		}
-		if (creature.getBattleActionCounter().finished() & creature.isDefending())
+		if (creature.getBattleActionCounter().finished() & creature.getCurrentAction() != null)
 		{
-//			UtilS.PrintBattleActions(6, "Creature", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
- 			creature.DeactivateDef() ;
+			if (creature.getCurrentAction().equals(Player.BattleKeys[1]))
+			{
+//				UtilS.PrintBattleActions(6, "Creature", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
+	 			creature.DeactivateDef() ;
+			}
 		}
+		
 //		player.ActivateBattleActionCounters() ;
 //		pet.ActivateBattleActionCounters() ;
 //		creature.ActivateBattleActionCounters() ;
@@ -219,7 +226,6 @@ public class Battle
 	private AtkResults Atk(LiveBeing attacker, LiveBeing receiver)
 	{
 		AtkResults atkResult = new AtkResults() ;
-
 		if (attacker.actionIsAtk())
 		{
 			atkResult = calcPhysicalAtk(attacker, receiver) ;
@@ -263,16 +269,17 @@ public class Battle
 	
 	private void runTurn(LiveBeing attacker, LiveBeing receiver, int damageAnimation, Animations damageAni, DrawingOnPanel DP)
 	{
+		
 		if (attacker.isAlive())
 		{
 			attacker.DrawTimeBar(UtilS.RelPos(attacker.getPos(), receiver.getPos()), Game.ColorPalette[2], DP) ;
 			// criatura tem que tomar blood and poison dano do player e do pet
 			attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
-
 			if (attacker.canAtk() & attacker.isInRange(receiver.getPos()))
 			{
-				if (attacker instanceof Creature) { Creature creature = (Creature) attacker ; creature.fight() ;}
-//				attacker.hasActed()
+				if (attacker instanceof Creature) { ((Creature) attacker).fight() ;}
+				if (attacker instanceof Pet) { ((Pet) attacker).fight() ;}
+
 				AtkResults atkResults = Atk(attacker, receiver) ;
 				if (attacker.actionIsAtk() | attacker.actionIsSpell()) { receiver.getDisplayDamage().reset() ;}
 //				if (attacker.getSettings().getSoundEffectsAreOn()) { Music.PlayMusic(hitSound) ;}
@@ -310,29 +317,43 @@ public class Battle
 			attacker.getBA().getStatus().display(attacker.getPos(), attacker.getDir(), DP);
 			if (attacker.isDefending()) { attacker.displayDefending(DP) ;}			
 		}
+		
 	}
 	
 	public void RunBattle(Player player, Pet pet, Creature creature, Animations[] ani, DrawingOnPanel DP)
 	{
+		player.incrementBattleActionCounters() ;
+		if (pet != null) {pet.incrementBattleActionCounters() ;}
+		creature.incrementBattleActionCounters() ;
+		
 		ActivateCounters(player, pet, creature) ;
 		int damageStyle = player.getSettings().getDamageAnimation() ;
 		LiveBeing creatureTarget = player ;
 		if (pet != null) { creatureTarget = creature.chooseTarget(player.isAlive(), pet.isAlive()).equals("player") ? player : pet ;}
-		
+
 		runTurn(player, creature, damageStyle, ani[0], DP) ;
 		if (pet != null) { runTurn(pet, creature, damageStyle, ani[1], DP) ;}
 		runTurn(creature, creatureTarget, damageStyle, ani[2], DP) ;
 		
-		if (pet != null)
-		{
-			if (creature.isAlive() & (player.isAlive() | pet.isAlive())) { return ;}
-		}
-		else
-		{
-			if (creature.isAlive() & player.isAlive()) { return ;}
-		}
+		if (!battleIsOver(player, pet, creature)) { return ;}
 		
 		FinishBattle(player, pet, creature, ani[3]) ;
+	}
+	
+	public static boolean battleIsOver(Player player, Pet pet, Creature creature)
+	{
+//		if (pet != null)
+//		{
+//			if (creature.isAlive() & (player.isAlive() | pet.isAlive())) { return false ;}
+//		}
+//		else
+//		{
+//			if (creature.isAlive() & player.isAlive()) { return false ;}
+//		}
+		
+		if (creature.isAlive() & player.isAlive()) { return false ;}
+		
+		return true ;
 	}
 	
 	private void FinishBattle(Player player, Pet pet, Creature creature, Animations winAni)
@@ -382,7 +403,7 @@ public class Battle
 		else
 		{
 			player.dies() ;
-			if (pet != null) {pet.dies() ;}
+			if (pet != null) {pet.dies() ; pet.setPos(player.getPos());}
 			creature.setFollow(false) ;
 		}
 	}

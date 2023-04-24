@@ -25,7 +25,8 @@ import utilities.UtilG;
 
 public class PlayerAttributesWindow extends AttributesWindow
 {
-	private Map<Attributes, GameButton> incAttButtons ;
+	Point windowPos = new Point((int) (0.1 * Game.getScreen().getSize().width), (int)(0.2 * Game.getScreen().getSize().height)) ;
+	public Map<Attributes, GameButton> incAttButtons ;
 	
 	Image plusSign = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "PlusSign.png") ;
 	Image selectedPlusSign = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "ShiningPlusSign.png") ;
@@ -36,23 +37,30 @@ public class PlayerAttributesWindow extends AttributesWindow
 		
 		incAttButtons = new HashMap<>() ;
 		
+		
 	}
 	
-	public void updateAttIncButtons(Player player)
+	public void initializeAttIncButtons(Player player)
 	{
-		
-		Point pos = new Point(120, 280) ;
+
+		Point pos = UtilG.Translate(windowPos, 0, 180) ;
 		for (Attributes att : Arrays.asList(Attributes.getBattle()))
 		{
 			IconFunction method = () -> {player.getBA().mapAttributes(att).incBaseValue(1) ;} ;
 			GameButton newAttButton = new GameButton(pos, plusSign, selectedPlusSign, method) ;
+			newAttButton.deactivate() ;
 			incAttButtons.put(att, newAttButton) ;
-			pos = UtilG.Translate(pos, 0, 22) ;			
-
-			if (((Player) player).getAttPoints() <= 0) { continue ;}
-			
-			newAttButton.activate() ;
+			pos = UtilG.Translate(pos, 0, 22) ;
 		}
+		
+	}
+	
+	public void updateAttIncButtons(Player player)
+	{
+
+		if (((Player) player).getAttPoints() <= 0) { return ;}
+		
+		incAttButtons.values().forEach(button -> button.activate());
 		
 	}
 	
@@ -100,7 +108,6 @@ public class PlayerAttributesWindow extends AttributesWindow
 	public void display(LiveBeing user, Equip[] equips, Point mousePos, DrawingOnPanel DP)
 	{
 		Dimension screenSize = Game.getScreen().getSize() ;
-		Point windowPos = new Point((int) (0.2 * screenSize.width), (int)(0.2 * screenSize.height)) ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -109,7 +116,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Color[] colorPalette = Game.ColorPalette ;
 		Color[] tabColor = new Color[] {colorPalette[7], colorPalette[7], colorPalette[7]} ;
 		Color[] tabTextColor = new Color[] {colorPalette[5], colorPalette[5], colorPalette[5]} ;
-		Color textColor = colorPalette[2] ;
+		Color textColor = colorPalette[9] ;
 		tabColor[tab] = colorPalette[19] ;
 		tabTextColor[tab] = colorPalette[3] ;
 		
@@ -125,8 +132,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		DP.DrawText(UtilG.Translate(windowPos, 5, 20), Align.center, 90, tabsText[0], namefont, tabTextColor[0]) ;
 		DP.DrawText(UtilG.Translate(windowPos, 5, 30), Align.center, 90, tabsText[1], namefont, tabTextColor[1]) ;
 		DP.DrawText(UtilG.Translate(windowPos, 5, 40), Align.center, 90, tabsText[2], namefont, tabTextColor[2]) ;
-		
-		
+			
 		
 		if (tab == 0)
 		{

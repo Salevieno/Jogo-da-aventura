@@ -70,7 +70,6 @@ public class Pet extends LiveBeing
 		mpCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[35])) ;
 		battleActionCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[36])) ;
 		stepCounter = new TimeCounter(0, 20) ;
-		currentAction = null ;
 		combo = new ArrayList<>();
 		
 		this.job = Job ;
@@ -179,7 +178,7 @@ public class Pet extends LiveBeing
 		return new Point((int) (pos.x + 0.5 * size.width), (int) (pos.y - 0.5 * size.height)) ;
 	}
 
-	public String fight(String[] ActionKeys)
+	public void fight()
 	{
 		int move = -1 ;
 		if (10 <= PA.getMp().getCurrentValue())	// if there is enough mp
@@ -192,17 +191,16 @@ public class Pet extends LiveBeing
 		}
 		if (move == 0)
 		{
-			return ActionKeys[1] ;
+			currentAction = BattleKeys[0] ;
 		}
 		if (move == 1)
 		{
-			return ActionKeys[3] ;
+			currentAction = BattleKeys[1] ;
 		}
 		if (move == 2)
 		{
-			return String.valueOf(UtilG.randomIntFromTo(0, 5)) ;
+			currentAction = String.valueOf(UtilG.randomIntFromTo(0, 4)) ;
 		}
-		return "" ;
 	}
 	
 	public void move(Point playerPos, GameMap playerMap, Creature opponent, Elements playerElem)
@@ -304,6 +302,8 @@ public class Pet extends LiveBeing
 		BA.getAgi().incBaseValue(attIncrease[6]) ;
 		BA.getDex().incBaseValue(attIncrease[7]) ;
 		PA.getExp().incMaxValue((int) attIncrease[8]) ;
+		
+		if (ani == null) { return ;}
 		
 		ani.start(new Object[] {150, Arrays.copyOf(attIncrease, attIncrease.length - 1), level, color}) ;
 	}

@@ -2,8 +2,10 @@ package liveBeings ;
 
 import java.awt.Color ;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -126,6 +128,11 @@ public class Creature extends LiveBeing
 		return (MPcost <= PA.getMp().getCurrentValue()) ;
 	}
 	
+	public void displayName(Point pos, Align alignment, Color color, DrawingOnPanel DP)
+	{
+		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		DP.DrawText(pos, alignment, DrawingOnPanel.stdAngle, name, font, color) ;
+	}
 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
 	{
 		DP.DrawImage(type.movingAni.idleGif, pos, scale, Align.center) ;
@@ -261,7 +268,7 @@ public class Creature extends LiveBeing
 		
 	}
 	
-	public void act(Point playerPos, GameMap map)
+	public void act()
 	{
 		Think() ;
 		actionCounter.reset() ;
@@ -332,6 +339,14 @@ public class Creature extends LiveBeing
 		PA.getMp().setToMaximum() ;
 		setRandomPos() ;
 		follow = false ;
+	}
+
+	
+	@Override
+	public String toString()
+	{
+		return "Creature [type=" + type + ", Bag=" + Bag + ", Gold=" + Gold + ", color=" + color + ", StatusCounter="
+				+ Arrays.toString(StatusCounter) + ", follow=" + follow + "]";
 	}
 
 	
