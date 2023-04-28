@@ -12,7 +12,9 @@ public class TimeCounter
 	}
 	
 	public int getCounter() {return counter ;}
-	public int getDuration() {return duration ;}
+	public int getDuration() {return duration ;}	
+	public void setDuration(int duration) { this.duration = duration ;}
+
 	public double rate() { return (double) counter / duration ;}
 	public boolean finished() {return counter == duration ;}
 	

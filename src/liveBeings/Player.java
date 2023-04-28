@@ -28,7 +28,7 @@ import components.NPCs;
 import components.Quest;
 import components.QuestSkills;
 import components.SpellTypes;
-import graphics.Animations;
+import graphics.Animation;
 import graphics.DrawingOnPanel;
 import graphics.Gif;
 import items.Alchemy;
@@ -1068,7 +1068,7 @@ public class Player extends LiveBeing
 			SkillBuffIsActive[12][0] = false ;
 		}*/
 	}
-	public void win(Creature creature, Animations winAnimation)
+	public void win(Creature creature, Animation winAnimation)
 	{		
 		List<String> GetItemsObtained = new ArrayList<>() ;
 		for (Item item : creature.getBag())
@@ -1090,9 +1090,11 @@ public class Player extends LiveBeing
 		}
 		
 		String[] ItemsObtained = GetItemsObtained.toArray(new String[] {}) ;
-		winAnimation.start(new Object[] {300, ItemsObtained}) ;
+		
+		// TODO
+		winAnimation.start(300, new Object[] {ItemsObtained}) ;
 	}
-	public void levelUp(Animations ani)
+	public void levelUp(Animation ani)
 	{
 		double[] attIncrease = calcAttributesIncrease() ;
 		setLevel(level + 1) ;
@@ -1114,7 +1116,8 @@ public class Player extends LiveBeing
 		
 		if (ani == null) { return ;}
 		
-		ani.start(new Object[] {600, Arrays.copyOf(attIncrease, attIncrease.length - 1), level, pos}) ;
+		// TODO
+		ani.start(600, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level, pos}) ;
 	}
 	private double[] calcAttributesIncrease()
 	{

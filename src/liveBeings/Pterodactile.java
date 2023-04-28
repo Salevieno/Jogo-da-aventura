@@ -2,7 +2,7 @@ package liveBeings;
 
 import java.awt.Image;
 
-import graphics.Animations;
+import graphics.Animation;
 import main.Game;
 import utilities.UtilG;
 
@@ -12,11 +12,11 @@ public class Pterodactile
     public static final Image SpeakingBubbleImage = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeechBubble.png") ;
     public static String[] message = null  ;
     
-    public static void speak(Animations ani)
+    public static void speak(Animation ani)
     {
-
-		Object[] object = new Object[] { 1500, image, SpeakingBubbleImage, message } ;
-		ani.start(object) ;
+    	// TODO
+		Object[] object = new Object[] { image, SpeakingBubbleImage, message } ;
+		ani.start(1500, object) ;
 		
     }
     

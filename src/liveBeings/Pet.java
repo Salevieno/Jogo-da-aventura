@@ -15,7 +15,7 @@ import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
-import graphics.Animations;
+import graphics.Animation;
 import graphics.DrawingOnPanel;
 import main.AtkResults;
 import main.AtkTypes;
@@ -286,7 +286,7 @@ public class Pet extends LiveBeing
 		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())); ;
 	}
 	
-	public void levelUp(Animations ani)
+	public void levelUp(Animation ani)
 	{
 		double[] attIncrease = calcAttributesIncrease() ;
 		setLevel(level + 1) ;
@@ -305,7 +305,8 @@ public class Pet extends LiveBeing
 		
 		if (ani == null) { return ;}
 		
-		ani.start(new Object[] {150, Arrays.copyOf(attIncrease, attIncrease.length - 1), level, color}) ;
+		// TODO
+		ani.start(150, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level, color}) ;
 	}
 	public double[] calcAttributesIncrease()
 	{

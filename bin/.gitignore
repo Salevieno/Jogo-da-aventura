@@ -1,8 +1,7 @@
-/simulations/
 /main/
-/screen/
-/attributes/
 /graphics/
 /testing/
 /liveBeings/
-/windows/
+/components/
+/utilities/
+/simulations/

@@ -35,6 +35,7 @@ import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
+import components.AnimationDisplayFunction;
 import components.Building;
 import components.BuildingNames;
 import components.BuildingType;
@@ -44,7 +45,7 @@ import components.NPCs;
 import components.Projectiles;
 import components.Quest;
 import components.SpellTypes;
-import graphics.Animations;
+import graphics.Animation;
 import graphics.DrawingOnPanel;
 import items.Alchemy;
 import items.Arrow;
@@ -135,7 +136,7 @@ public class Game extends JPanel
 	private static Spell[] allSpells ;
 	private static Quest[] allQuests ;
 	private static Battle bat ;
-	private static Animations[] ani ;
+	private static Animation[] animations ;
 	
 	static
 	{
@@ -146,8 +147,8 @@ public class Game extends JPanel
 		state = GameStates.loading;
 		ColorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette.png"), "Normal") ;
 		konamiCodeActive = false ;
-		ani = new Animations[6] ;
-		Arrays.fill(ani, new Animations());
+		initializeAnimations() ;
+		
 		allText = new HashMap<>() ;
 		shouldRepaint = false ;
     }
@@ -177,14 +178,14 @@ public class Game extends JPanel
 	public static List<Recipe> getAllRecipes() {return allRecipes ;}
 	public static Item[] getAllItems() {return allItems ;}
 	public static Spell[] getAllSpells() {return allSpells ;}
-	public static Animations[] getAnimations() { return ani ;}
+	public static Animation[] getAnimations() { return animations ;}
 	public static boolean getShouldRepaint() {return shouldRepaint ;}
 	public static Point getMousePos() { return mousePos ;}
 	public static void setState(GameStates newState) { state = newState ;}
 	
 	public static void playStopTimeGif() {state = GameStates.playingStopTimeGif ;}
 	public static void shouldRepaint() {shouldRepaint = true ;}
-	public static boolean someAnimationIsActive() { return (ani[3].isActive() | ani[4].isActive() | ani[5].isActive()) ;}
+	public static boolean someAnimationIsActive() { return (animations[3].isActive() | animations[4].isActive() | animations[5].isActive()) ;}
 	
 	private void loadAllText()
 	{
@@ -238,6 +239,62 @@ public class Game extends JPanel
 		}
 
 		return recipes ;
+	}
+	
+	private static void initializeAnimations()
+	{
+		animations = new Animation[6] ;
+		animations[0] = new Animation() ;
+		animations[1] = new Animation() ;
+		animations[2] = new Animation() ;
+		animations[3] = new Animation() ;
+		animations[4] = new Animation() ;
+		animations[5] = new Animation() ;
+		
+		animations[0].setDisplayFunction((vars, DP) -> {
+		
+			Point targetPos = (Point) vars[0] ;
+			Dimension targetSize = (Dimension) vars[1] ;
+			AtkResults atkResults = (AtkResults) vars[2] ;
+			int style = (int) vars[3] ;
+			Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
+			DP.DrawDamageAnimation(pos, atkResults, animations[0].getCounter(), style, Game.ColorPalette[6]) ;
+		}) ;
+		animations[1].setDisplayFunction((vars, DP) -> {
+		
+			Point targetPos = (Point) vars[0] ;
+			Dimension targetSize = (Dimension) vars[1] ;
+			AtkResults atkResults = (AtkResults) vars[2] ;
+			int style = (int) vars[3] ;
+			Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
+			DP.DrawDamageAnimation(pos, atkResults, animations[1].getCounter(), style, Game.ColorPalette[6]) ;
+		}) ;
+		animations[2].setDisplayFunction((vars, DP) -> {		
+			Point targetPos = (Point) vars[0] ;
+			Dimension targetSize = (Dimension) vars[1] ;
+			AtkResults atkResults = (AtkResults) vars[2] ;
+			int style = (int) vars[3] ;
+			Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
+			DP.DrawDamageAnimation(pos, atkResults, animations[2].getCounter(), style, Game.ColorPalette[6]) ;
+		}) ;
+		animations[3].setDisplayFunction((vars, DP) -> {		
+			String[] ItemsObtained = (String[]) vars[0] ;
+			Color textColor = Game.ColorPalette[8] ;
+			DP.winAnimation(animations[3].getCounter(), ItemsObtained, textColor) ;
+		}) ;
+		animations[4].setDisplayFunction((vars, DP) -> {
+			double[] attributesIncrease = (double[]) vars[0] ;
+			int playerLevel = (int) vars[1] ;
+			Color textColor = Game.ColorPalette[6] ;
+			
+			DP.levelUpAnimation(animations[4].getCounter(), attributesIncrease, playerLevel, textColor) ;
+		}) ;
+		animations[5].setDisplayFunction((vars, DP) -> {
+			Image PterodactileImage = (Image) vars[0] ;
+			Image SpeakingBubbleImage = (Image) vars[1] ;
+			String[] message = (String[]) vars[2] ;
+			DP.PterodactileAnimation(animations[5].getCounter(), PterodactileImage, SpeakingBubbleImage, message) ;
+		}) ;
 	}
 	
     private NPCType[] initializeNPCTypes(Languages language)
@@ -997,12 +1054,12 @@ public class Game extends JPanel
 		// if the player is in battle, run battle
 		// & !ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(16)
 		// only enter battle if the animations for win (12), level up (13), pet level up (14), and pterodactile (16) are off
-		if (player.isInBattle()) { bat.RunBattle(player, pet, player.getOpponent(), ani, DP) ;}
+		if (player.isInBattle()) { bat.RunBattle(player, pet, player.getOpponent(), animations, DP) ;}
 		
 		
 		// level up the player and the pet if they should
-		if (player.shouldLevelUP()) player.levelUp(ani[4]) ;
-		if (pet != null) { if (pet.shouldLevelUP()) pet.levelUp(ani[4]) ;}
+		if (player.shouldLevelUP()) player.levelUp(animations[4]) ;
+		if (pet != null) { if (pet.shouldLevelUP()) pet.levelUp(animations[4]) ;}
 		
 		
 		// show the active player windows
@@ -1033,7 +1090,7 @@ public class Game extends JPanel
 		
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
 		
-    	for (int i = 0 ; i <= ani.length - 1 ; i += 1) { ani[i].run(i, DP) ;}
+    	for (Animation ani : animations) { ani.run(DP) ;}
     	
 	}
 	
@@ -1093,7 +1150,7 @@ public class Game extends JPanel
 //    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
     	
-//    	player.getExp().incCurrentValue(5000);
+    	player.getExp().incCurrentValue(5000);
     	
     	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(20, 20))) ;
     	
@@ -1159,7 +1216,7 @@ public class Game extends JPanel
 //	        		creature.fight() ;
 	        		PlayerEvolutionSimulation.playerFight() ;
 //	        		if (pet != null) { pet.fight() ;}
-	        		bat.RunBattle(player, pet, player.getOpponent(), ani, DP) ;
+	        		bat.RunBattle(player, pet, player.getOpponent(), animations, DP) ;
 	        		if (!player.isInBattle())
 	        		{
 		        		PlayerEvolutionSimulation.checkPlayerWin() ;

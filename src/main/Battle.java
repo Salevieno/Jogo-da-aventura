@@ -6,7 +6,7 @@ import java.util.List;
 
 import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
-import graphics.Animations;
+import graphics.Animation;
 import graphics.DrawingOnPanel;
 import liveBeings.Creature;
 import liveBeings.LiveBeing;
@@ -267,7 +267,7 @@ public class Battle
 		return atkResult ;
 	}	
 	
-	private void runTurn(LiveBeing attacker, LiveBeing receiver, int damageAnimation, Animations damageAni, DrawingOnPanel DP)
+	private void runTurn(LiveBeing attacker, LiveBeing receiver, int damageAnimation, Animation damageAni, DrawingOnPanel DP)
 	{
 		
 		if (attacker.isAlive())
@@ -312,7 +312,8 @@ public class Battle
 					if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
 					if (attacker instanceof Player) { ((Player) attacker).getStatistics().update(atkResults) ;}
 				}
-				damageAni.start(new Object[] {100, receiver.getPos(), receiver.getSize(), atkResults, damageAnimation}) ;
+				// TODO
+				damageAni.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageAnimation}) ;
 			}
 			attacker.getBA().getStatus().display(attacker.getPos(), attacker.getDir(), DP);
 			if (attacker.isDefending()) { attacker.displayDefending(DP) ;}			
@@ -320,7 +321,7 @@ public class Battle
 		
 	}
 	
-	public void RunBattle(Player player, Pet pet, Creature creature, Animations[] ani, DrawingOnPanel DP)
+	public void RunBattle(Player player, Pet pet, Creature creature, Animation[] ani, DrawingOnPanel DP)
 	{
 		player.incrementBattleActionCounters() ;
 		if (pet != null) {pet.incrementBattleActionCounters() ;}
@@ -356,7 +357,7 @@ public class Battle
 		return true ;
 	}
 	
-	private void FinishBattle(Player player, Pet pet, Creature creature, Animations winAni)
+	private void FinishBattle(Player player, Pet pet, Creature creature, Animation winAni)
 	{
 		player.setState(LiveBeingStates.idle) ;
 		player.resetOpponent() ;

@@ -6,6 +6,7 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.util.Arrays;
 
+import components.AnimationDisplayFunction;
 import items.Item;
 import liveBeings.Player;
 import main.AtkResults;
@@ -13,59 +14,44 @@ import main.Game;
 import utilities.Align;
 import utilities.TimeCounter;
 
-public class Animations 
+public class Animation 
 {
 	private TimeCounter counter ;
 	private boolean isActive ;
 	private Object[] vars ;
+	private AnimationDisplayFunction displayFunction ;
 	
-	public Animations()
+	public Animation()
 	{
 		counter = new TimeCounter(0, 0) ;
 		isActive = false ;
 		vars = null ;
 	}
 	
-	public void start(Object[] vars)
+	public TimeCounter getCounter() { return counter ;}
+	
+	public void start(int duration, Object[] vars)
 	{
 		isActive = true ;
 		this.vars = vars ;
-		counter = new TimeCounter(0, (int) vars[0]) ;
+		counter.setDuration(duration) ;
 	}
 	
-	private void IncAnimationCounter()
-	{
-		counter.inc() ;
-	}
-	
+	public void setDisplayFunction(AnimationDisplayFunction displayFunction) { this.displayFunction = displayFunction ;}
+
 	public boolean isActive()
 	{
 		return isActive ;
 	}
 	 	
-	public void run(int aniID, DrawingOnPanel DP)
+	public void run(DrawingOnPanel DP)
 	{	
 		if (isActive)
 		{
 			if (!counter.finished())
 			{
-				if (aniID <= 2)
-				{
-					damageAnimation(vars, DP) ;
-				}
-				else if (aniID == 3)
-				{
-					winAnimation(vars, DP) ;
-				}
-				else if (aniID == 4)
-				{
-					levelUpAnimation(vars, DP) ;
-				}
-				else if (aniID == 5)
-				{
-					PterodactileAnimation(vars, DP) ;
-				}
-				IncAnimationCounter() ;
+				displayFunction.act(vars, DP) ;
+				counter.inc() ;
 			}
 			else
 			{
