@@ -178,6 +178,73 @@ public class Pet extends LiveBeing
 		return new Point((int) (pos.x + 0.5 * size.width), (int) (pos.y - 0.5 * size.height)) ;
 	}
 
+	public Directions newMoveDirection(Directions originalDir)
+	{
+		Directions newDir = PersonalAttributes.randomDir() ;
+		while (Directions.areOpposite(originalDir, newDir))
+		{
+			newDir = PersonalAttributes.randomDir() ;
+		}
+		return newDir ;
+	}
+	
+	private Point findNextPos(Point playerPos, Creature opponent)
+	{
+		if (opponent != null)
+		{
+			return Follow(pos, opponent.getPos(), step, step) ;
+		}
+		else if (closeToPlayer(playerPos))
+		{
+			if (UtilG.chance(0.8)) { return pos ;}
+			
+			if (UtilG.chance(0.2))
+			{
+				dir = PersonalAttributes.randomDir() ;
+			}
+			return PA.CalcNewPos(dir, pos, step) ;
+		}
+		else
+		{
+			return Follow(pos, playerPos, step, step) ;
+		}
+	}
+	
+	public void think(boolean isInBattle, Point playerPos)
+	{
+		if (!isInBattle)
+		{
+			if (!closeToPlayer(playerPos)) { setState(LiveBeingStates.moving) ; return ;}
+			
+			if (UtilG.chance(0.8)) { setState(LiveBeingStates.idle) ; return ;}
+			else { setState(LiveBeingStates.moving) ; return ;}
+		}
+		
+		setState(LiveBeingStates.fighting) ;
+	}
+	
+	public void act(Player player)
+	{
+		if (state.equals(LiveBeingStates.moving))
+		{
+			move(player.getPos(), player.getMap(), player.getOpponent(), player.getElem()[4]) ;
+		}
+		else if (state.equals(LiveBeingStates.fighting))
+		{
+			fight() ;
+		}
+		
+	}
+	
+	public void move(Point playerPos, GameMap playerMap, Creature opponent, Elements playerElem)
+	{
+		Point nextPos = findNextPos(playerPos, opponent) ;
+		if (playerMap.groundIsWalkable(nextPos, playerElem))
+		{
+			setPos(nextPos) ;
+		}
+	}
+	
 	public void fight()
 	{
 		int move = -1 ;
@@ -203,30 +270,6 @@ public class Pet extends LiveBeing
 		}
 	}
 	
-	public void move(Point playerPos, GameMap playerMap, Creature opponent, Elements playerElem)
-	{
-		Point nextPos ;
-		if (opponent != null)
-		{
-			nextPos = Follow(pos, opponent.getPos(), step, step) ;
-		}
-		else if (closeToPlayer(playerPos))
-		{
-			if (Math.random() <= 0.2)
-			{
-				dir = PersonalAttributes.randomDir() ;
-			}
-			nextPos = PA.CalcNewPos(dir, pos, step) ;
-		}
-		else
-		{
-			nextPos = Follow(pos, playerPos, step, step) ;
-		}
-		if (playerMap.groundIsWalkable(nextPos, playerElem))
-		{
-			setPos(nextPos) ;
-		}
-	}
 	public void dies()
 	{
 		// TODO

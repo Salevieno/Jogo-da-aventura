@@ -278,7 +278,7 @@ public class Battle
 			if (attacker.canAtk() & attacker.isInRange(receiver.getPos()))
 			{
 				if (attacker instanceof Creature) { ((Creature) attacker).fight() ;}
-				if (attacker instanceof Pet) { ((Pet) attacker).fight() ;}
+//				if (attacker instanceof Pet) { ((Pet) attacker).fight() ;}
 
 				AtkResults atkResults = Atk(attacker, receiver) ;
 				if (attacker.actionIsAtk() | attacker.actionIsSpell()) { receiver.getDisplayDamage().reset() ;}

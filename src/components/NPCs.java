@@ -163,7 +163,7 @@ public class NPCs
 
 	public void action(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
 	{
-//		System.out.println(action);
+		
 		speak(pos, DP) ;
 		if (type.getOptions() != null) { drawOptions(UtilG.Translate(pos, 20, -10), DP) ;}
 				
@@ -540,7 +540,7 @@ public class NPCs
 	{
 		
 		if (action == null) { return ;}
-System.out.println(id);
+
 		Quest quest = Game.getAllQuests()[id - 25] ;
 		
 		if (action.equals("Enter") & selOption == 0)

@@ -50,6 +50,8 @@ public abstract class UtilG
 	
 	public static int randomIntFromTo(int min, int max) { return ThreadLocalRandom.current().nextInt(min, max + 1) ;}
 	
+	public static boolean chance(double chance) { return Math.random() <= chance ;}
+	
 	public static boolean isNumeric(String str) { return str.matches("-?\\d+(\\.\\d+)?") ;}  // match a number with optional '-' and decimal.
 	
 	public static Map<String, String[]> ReadTextFile(Languages language)

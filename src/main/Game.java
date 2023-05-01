@@ -91,6 +91,12 @@ import windows.CreatureAttributesWindow;
 
 public class Game extends JPanel
 {
+	// TODO soundtrack
+	// TODO design das construções
+	// TODO spells
+	// TODO nomes das criaturas
+	// TODO descrição dos itens
+	// TODO colocar categorias de texto num enum
 	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 
@@ -334,7 +340,14 @@ public class Game extends JPanel
 			
 			// TODO "Falas" em speech -> padronizar para todas as línguas
 			
-			String[][] options = new String[][] {{""}} ;
+			String[][] options = new String[][] {{"Sim", "Não"}, {}, {}} ;
+
+			if (job.equals(NPCJobs.banker))
+			{
+				options = new String[][] {{"Sim", "Não"}, 
+				{"Depositar", "Sacar", "Investir com baixo risco", "Investir com alto risco"}, {}, {}, {}, {}, {}, {}, {}} ;
+			}
+			
 			if (Game.allText.get(name + "Falas") != null)
 			{
 				speech = Game.allText.get(name + "Falas") ;
@@ -344,9 +357,6 @@ public class Game extends JPanel
 					options[j] = Game.allText.get(name + "Opcoes" + j) ;
 				}
 			}
-
-			if (job.equals(NPCJobs.banker)) { options = new String[][] {{"Sim", "Não"}, 
-				{"Depositar", "Sacar", "Investir com baixo risco", "Investir com alto risco"}, {}, {}, {}, {}, {}, {}, {}} ;}
 
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}
@@ -1017,6 +1027,20 @@ public class Game extends JPanel
 		}
 		
 		
+		// pet acts
+		if (pet != null)
+		{
+			if (pet.isAlive())
+			{
+				pet.updateCombo() ;
+				pet.think(player.isInBattle(), player.getPos()) ;
+				pet.act(player);
+				pet.display(pet.getPos(), new Scale(1, 1), DP) ;
+				pet.DrawAttributes(0, DP) ;
+			}
+		}
+		
+		
 		// player acts
 		if (player.canAct())
 		{
@@ -1051,19 +1075,6 @@ public class Game extends JPanel
 			player.drawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
 		}
 		player.displayState(DP) ;
-		
-		
-		// pet acts
-		if (pet != null)
-		{
-			if (pet.isAlive())
-			{
-				pet.updateCombo() ;
-				pet.move(player.getPos(), player.getMap(), player.getOpponent(), player.getElem()[4]) ;
-				pet.display(pet.getPos(), new Scale(1, 1), DP) ;
-				pet.DrawAttributes(0, DP) ;
-			}
-		}
 		
 		
 		// find the closest creature to the player
@@ -1145,7 +1156,7 @@ public class Game extends JPanel
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
-    	player.setMap(allMaps[5]) ;
+    	player.setMap(cityMaps[2]) ;
     	player.setPos(new Point(400, 221)) ;
 		
     	letThereBePet() ;

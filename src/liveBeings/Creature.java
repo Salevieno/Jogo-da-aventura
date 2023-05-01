@@ -224,14 +224,14 @@ public class Creature extends LiveBeing
 
 	public void Think()
 	{
-
+			// TODO thinking is acting
 		if (!state.equals(LiveBeingStates.idle)) { return ;}
 		
-		boolean startMoving = 0.7 < Math.random() ;
+		boolean startMoving = UtilG.chance(0.3) ;
 		
 		if (!startMoving) { return ;}
 
-		boolean switchDirection = 0.50 < Math.random() ;
+		boolean switchDirection = UtilG.chance(0.5) ;
 		if (switchDirection)
 		{
 			setDir(newMoveDirection(dir)) ;
