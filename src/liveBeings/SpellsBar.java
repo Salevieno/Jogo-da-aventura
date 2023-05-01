@@ -33,11 +33,11 @@ public class SpellsBar
 		int sx = (int) UtilG.spacing(barSize.width, Ncols, slotSize.width, 2) ;
 		int sy = (int) UtilG.spacing(barSize.height - titlefont.getSize(), Nrows, slotSize.height, 1) ;
 		double angle = DrawingOnPanel.stdAngle ;	
-		Color textColor = Game.ColorPalette[7] ;
+		Color textColor = Game.colorPalette[7] ;
 		DP.DrawImage(image, barPos, Align.bottomLeft) ;
 		
 		Point titlePos = new Point(barPos.x + barSize.width / 2, barPos.y - barSize.height + 2) ;
-		DP.DrawText(titlePos, Align.topCenter, angle, title, titlefont, Game.ColorPalette[5]) ;
+		DP.DrawText(titlePos, Align.topCenter, angle, title, titlefont, Game.colorPalette[5]) ;
 		
 		List<String> Keys = Player.SpellKeys ;
 		Dimension imgSize = new Dimension(Spell.cooldownImage.getWidth(null), Spell.cooldownImage.getHeight(null)) ;

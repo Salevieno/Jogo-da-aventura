@@ -96,7 +96,7 @@ public class ShoppingWindow extends GameWindow
 		
 		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
 		
-		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.ColorPalette[2]) ;
+		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[2]) ;
 				
 		
 		for (Item item : itemsOnWindow)
@@ -110,11 +110,11 @@ public class ShoppingWindow extends GameWindow
 				this.item = itemsOnWindow.indexOf(item) ;
 			}
 			
-			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? Game.ColorPalette[6] : Game.ColorPalette[9] ;
+			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? Game.colorPalette[6] : Game.colorPalette[9] ;
 			DP.DrawImage(Item.slot, itemPos, angle, new Scale(1, 1), Align.center) ;
 			DP.DrawImage(item.getImage(), itemPos, angle, new Scale(1, 1), Align.center) ;
 			DP.DrawText(namePos, Align.centerLeft, angle, item.getName(), stdFont, itemColor) ;
-			DP.DrawText(pricePos, Align.centerRight, angle, String.valueOf(item.getPrice()), stdFont, Game.ColorPalette[2]) ;
+			DP.DrawText(pricePos, Align.centerRight, angle, String.valueOf(item.getPrice()), stdFont, Game.colorPalette[2]) ;
 			DP.DrawImage(Player.CoinIcon, coinPos, Align.center) ;
 			itemPos.y += 23 ;
 		}

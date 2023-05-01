@@ -24,8 +24,9 @@ public class Gif
 		this.timeStopper = timeStopper;
 	}
 	
-	public Image getImage() { return image ;}
-	
+	public Image getImage() { return image ;}	
+	public int getDuration() { return duration ;}
+
 	public void start() { timeCounter = 1 ;}
 	public void resetTimeCounter() { timeCounter = 0 ;}
 	public void incTimeCounter() { timeCounter += 1 ;}

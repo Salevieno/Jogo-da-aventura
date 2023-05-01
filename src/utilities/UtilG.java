@@ -36,6 +36,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import graphics.DrawingOnPanel;
+import main.Languages;
 
 public abstract class UtilG 
 {	
@@ -47,43 +48,35 @@ public abstract class UtilG
 	
 	// reading file methods
 	
-	public static int randomIntFromTo(int min, int max)
-	{
-		return ThreadLocalRandom.current().nextInt(min, max + 1);
-	}
+	public static int randomIntFromTo(int min, int max) { return ThreadLocalRandom.current().nextInt(min, max + 1) ;}
 	
-	public static boolean isNumeric(String str) {
-		  return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
-		}
+	public static boolean isNumeric(String str) { return str.matches("-?\\d+(\\.\\d+)?") ;}  // match a number with optional '-' and decimal.
 	
-	public static Map<String, String[]> ReadTextFile(String Language)
+	public static Map<String, String[]> ReadTextFile(Languages language)
 	{
-		String fileName = "Texto-PT-br.txt" ;
-		Map<String, String[]> Text = new HashMap<String, String[]>() ;
-		if (Language.equals("E"))
-		{
-			fileName = "Text-EN.txt" ;
-		}
+		String fileName = language == Languages.portugues ? "Texto-PT-br.txt" : "Text-EN.txt" ;
+		Map<String, String[]> fileContent = new HashMap<String, String[]>() ;
+		
 		try
 		{	
 			FileInputStream fileReader = new FileInputStream (fileName) ;
 			InputStreamReader streamReader = new InputStreamReader(fileReader, StandardCharsets.UTF_8) ;
 			BufferedReader bufferedReader = new BufferedReader(streamReader) ; 					
-			String Line = bufferedReader.readLine() ;
+			String line = bufferedReader.readLine() ;
 			String key = "" ;
-			List<String> content = new ArrayList<>() ;
-			while (Line != null)
+			List<String> lineContent = new ArrayList<>() ;
+			while (line != null)
 			{
-				if (Line.contains("*"))
+				if (line.contains("*"))
 				{
-					Text.put(key, content.toArray(new String[content.size()])) ;
-					key = Line ;
-					content = new ArrayList<>() ;
+					fileContent.put(key, lineContent.toArray(new String[lineContent.size()])) ;
+					key = line ;
+					lineContent = new ArrayList<>() ;
 	            }
-				content.add(Line) ;
-				Line = bufferedReader.readLine() ;
+				lineContent.add(line) ;
+				line = bufferedReader.readLine() ;
 			}
-			Text.put(key, content.toArray(new String[content.size()])) ;
+			fileContent.put(key, lineContent.toArray(new String[lineContent.size()])) ;
 			bufferedReader.close() ;
 		}
 		catch(FileNotFoundException ex) 
@@ -94,7 +87,8 @@ public abstract class UtilG
 		{
             System.out.println("Error reading file '" + fileName + "' (text file)") ;                  
         }
-		return Text ;
+		
+		return fileContent ;
 	}
 	
 	public static List<String[]> ReadcsvFile(String FileName)
@@ -102,14 +96,14 @@ public abstract class UtilG
 		BufferedReader br = null ;
         String line = "" ;
         String separator = "," ;
-        List<String[]> Input = new ArrayList<String[]>() ;
+        List<String[]> fileContent = new ArrayList<String[]>() ;
         try 
         {
             br = new BufferedReader(new FileReader(FileName, Charset.forName("UTF-8"))) ;
             line = br.readLine() ;
             while ((line = br.readLine()) != null) 
             {
-                Input.add(line.split(separator)) ;
+                fileContent.add(line.split(separator)) ;
             }
         } 
         catch (FileNotFoundException e) 
@@ -122,19 +116,18 @@ public abstract class UtilG
         }
         finally
         {
-            if (br != null)
+            if (br == null) { return fileContent ;}
+            
+            try
             {
-                try
-                {
-                    br.close() ;
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace() ;
-                }
+                br.close() ;
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace() ;
             }
         }
-        return Input ;
+        return fileContent ;
 	}
 	
 	/*	
@@ -203,17 +196,8 @@ public abstract class UtilG
         JSONParser parser = new JSONParser();
         try
         {
-            Object object = parser.parse(new FileReader(filePath, StandardCharsets.UTF_8));
-            
-            //convert Object to JSONObject
+            Object object = parser.parse(new FileReader(filePath, StandardCharsets.UTF_8)) ;            
             JSONArray jsonObject = (JSONArray)object;
-            
-            //Reading the String
-            //String name = (String) jsonObject.get("Name");
-            //Long level = (Long) jsonObject.get("Level");
-            
-            //Reading the array
-           // JSONArray countries = (JSONArray)jsonObject.get("Countries");
             
             return jsonObject ;
         }
@@ -229,11 +213,11 @@ public abstract class UtilG
         return null ;
     }
 
-	public static void saveImage(BufferedImage img, String path) throws FileNotFoundException, IOException
-    {
-		File outputfile = new File(path + ".png") ;
-		ImageIO.write(img, "png", outputfile) ;
-    }
+//	public static void saveImage(BufferedImage img, String path) throws FileNotFoundException, IOException
+//    {
+//		File outputfile = new File(path + ".png") ;
+//		ImageIO.write(img, "png", outputfile) ;
+//    }
 	
 	public static Image loadImage(String filePath)
 	{
@@ -344,7 +328,7 @@ public abstract class UtilG
 	    return bimage ;
 	}
 
-	public static Dimension getImageSize(Image image)
+	public static Dimension getSize(Image image)
 	{
 		return new Dimension(image.getWidth(null), image.getHeight(null));
 	}

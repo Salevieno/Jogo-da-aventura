@@ -272,7 +272,7 @@ public class Battle
 		
 		if (attacker.isAlive())
 		{
-			attacker.DrawTimeBar(UtilS.RelPos(attacker.getPos(), receiver.getPos()), Game.ColorPalette[2], DP) ;
+			attacker.DrawTimeBar(UtilS.RelPos(attacker.getPos(), receiver.getPos()), Game.colorPalette[2], DP) ;
 			// criatura tem que tomar blood and poison dano do player e do pet
 			attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
 			if (attacker.canAtk() & attacker.isInRange(receiver.getPos()))

@@ -16,7 +16,7 @@ import windows.BagWindow;
 public class HotKeysBar
 {
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-	private static final Color textColor = Game.ColorPalette[19] ;
+	private static final Color textColor = Game.colorPalette[19] ;
 	
 	public static final Image slotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
 
@@ -25,7 +25,7 @@ public class HotKeysBar
 		Point barTopLeft = new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70) ;
 		Dimension slotSize = new Dimension(slotImage.getWidth(null), slotImage.getHeight(null)) ;
 		
-		DP.DrawRoundRect(barTopLeft, Align.topLeft, new Dimension(36, 60), 1, Game.ColorPalette[7], Game.ColorPalette[19], true) ;
+		DP.DrawRoundRect(barTopLeft, Align.topLeft, new Dimension(36, 60), 1, Game.colorPalette[7], Game.colorPalette[19], true) ;
 		
 		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 		{

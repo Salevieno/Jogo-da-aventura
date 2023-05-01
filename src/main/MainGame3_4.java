@@ -18,6 +18,11 @@ import utilities.GameStates;
  */
 public class MainGame3_4 extends JFrame implements ActionListener
 {
+	// TODO soundtrack
+	// TODO design das construções
+	// TODO spells
+	// TODO nomes das criaturas
+	// TODO descrição dos itens
 	private static final long serialVersionUID = 1L ;
 	
 	private static Timer timer ;		// Main timer of the game
@@ -64,11 +69,10 @@ public class MainGame3_4 extends JFrame implements ActionListener
 
 	@Override
     public void actionPerformed(ActionEvent e) 
-	{        
+	{
         if (Game.getShouldRepaint())
         {
         	repaint() ;
-        	Game.shouldRepaint() ;
         }
 		if (e.getSource() != timer)
 		{

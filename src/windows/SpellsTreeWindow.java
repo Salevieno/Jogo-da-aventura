@@ -103,7 +103,7 @@ public class SpellsTreeWindow extends GameWindow
 		for (String info : spells.get(item).getInfo())
 		{
 			pos.y += 8 ;
-			DP.DrawText(pos, Align.centerLeft, angle, info, regularFont, Game.ColorPalette[9]) ;
+			DP.DrawText(pos, Align.centerLeft, angle, info, regularFont, Game.colorPalette[9]) ;
 			pos.y += 8 ;
 		}
 	}
@@ -112,7 +112,7 @@ public class SpellsTreeWindow extends GameWindow
 	{
 		double angle = DrawingOnPanel.stdAngle ;
 		Point pointsPos = UtilG.Translate(windowTopLeft, size.width + 10 + 28, size.height - 6 - 40) ;
-		Color color = Game.ColorPalette[0] ;
+		Color color = Game.colorPalette[0] ;
 		
 		DP.DrawImage(spellPoints, pointsPos, Align.topCenter) ;
 		DP.DrawText(UtilG.Translate(pointsPos, 0, 6), Align.topCenter, angle, "Pontos", regularFont, color) ;
@@ -127,18 +127,18 @@ public class SpellsTreeWindow extends GameWindow
 		int TabL = size.width / 20 ;
 		int TabH = size.height / 3 ;
 		double angle = DrawingOnPanel.stdAngle ;
-		Color[] TabColor = new Color[] {Game.ColorPalette[7], Game.ColorPalette[7]} ;
-		Color[] TabTextColor = new Color[] {Game.ColorPalette[5], Game.ColorPalette[5]} ;
-		Color selectedColor = Game.ColorPalette[3] ;
-		Color hasPreReqColor = Game.ColorPalette[0] ;
-		Color hasNotPreReqColor = Game.ColorPalette[9] ;
+		Color[] TabColor = new Color[] {Game.colorPalette[7], Game.colorPalette[7]} ;
+		Color[] TabTextColor = new Color[] {Game.colorPalette[5], Game.colorPalette[5]} ;
+		Color selectedColor = Game.colorPalette[3] ;
+		Color hasPreReqColor = Game.colorPalette[0] ;
+		Color hasNotPreReqColor = Game.colorPalette[9] ;
 		
 		displaySpellsInfo(DP) ;
 
 		DP.DrawImage(image, windowTopLeft, angle, new Scale(1, 1), Align.topLeft) ;
 		
 		Point titlePos = UtilG.Translate(windowTopLeft, size.width / 2, 6 + 9) ;
-		DP.DrawText(titlePos, Align.center, angle, name, largeFont, Game.ColorPalette[9]);
+		DP.DrawText(titlePos, Align.center, angle, name, largeFont, Game.colorPalette[9]);
 		
 		
 		// display spells

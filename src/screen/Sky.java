@@ -31,7 +31,7 @@ public class Sky
 			Image CloudImage = UtilG.loadImage(path + "Cloud" + String.valueOf(1 + (int) (3 * Math.random())) + ".png") ;
 			Point InitialCloudPos = new Point((int)(Math.random() * Game.getScreen().getSize().width), 2 + (int) ((height - CloudImage.getHeight(null)) * Math.random())) ;
 			Point CloudSpeed = new Point((int) (1 + 2 * Math.random()), 0) ;
-	    	Cloud[c] = new SkyComponent(CloudImage, InitialCloudPos, CloudSpeed, new Color[] {Game.ColorPalette[4]}) ;
+	    	Cloud[c] = new SkyComponent(CloudImage, InitialCloudPos, CloudSpeed, new Color[] {Game.colorPalette[4]}) ;
 		}
 		
 		// initialize stars
@@ -40,7 +40,7 @@ public class Sky
 		for (int s = 0 ; s <= Star.length - 1 ; s += 1)
 		{
 			Point StarPos = new Point((int)(Math.random() * Game.getScreen().getSize().width), (int)(Math.random() * height)) ;
-			Color[] StarColor = new Color[] {Game.ColorPalette[(int)((Game.ColorPalette.length - 1)*Math.random())]} ;
+			Color[] StarColor = new Color[] {Game.colorPalette[(int)((Game.colorPalette.length - 1)*Math.random())]} ;
 	    	Star[s] = new SkyComponent(StarImage, StarPos, new Point(0, 0), StarColor) ;
 		}	
 	}
@@ -63,9 +63,9 @@ public class Sky
 	public void display(DrawingOnPanel DP)
 	{
 		double ColorMult = (1 - 1.8 * Math.abs(dayTime.getCounter() - Game.DayDuration / 2) / Game.DayDuration) ;
-		int red = Math.max(0, Math.min(Game.ColorPalette[0].getRed(), 255)) ;
-		int green = Math.max(0, Math.min((int)(Game.ColorPalette[0].getGreen() * ColorMult), 255)) ;
-		int blue = Math.max(0, Math.min((int)(Game.ColorPalette[0].getBlue() * ColorMult), 255)) ;
+		int red = Math.max(0, Math.min(Game.colorPalette[0].getRed(), 255)) ;
+		int green = Math.max(0, Math.min((int)(Game.colorPalette[0].getGreen() * ColorMult), 255)) ;
+		int blue = Math.max(0, Math.min((int)(Game.colorPalette[0].getBlue() * ColorMult), 255)) ;
 		Color skyColor = new Color(red, green, blue) ;
 		
 		DP.DrawRect(new Point(0, height), Align.bottomLeft, new Dimension(Game.getScreen().getSize().width, height), 1, skyColor, null) ;

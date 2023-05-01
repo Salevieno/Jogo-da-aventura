@@ -16,7 +16,7 @@ public class Building
 {
 	private BuildingType type ;
 	private Point pos ;
-	private List<NPCs> npcs ;	// NPCs in the building
+	private List<NPCs> npcs ;
 	private List<Collider> colliders ;
 	
 	public Building(BuildingType type, Point pos, List<NPCs> npcs)
@@ -48,7 +48,7 @@ public class Building
 	public List<NPCs> getNPCs() {return npcs ;}
 	public List<Collider> getColliders() { return colliders ;}
 	
-	public boolean isInside(Point pos) {return UtilG.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null)), UtilG.getImageSize(type.getImage())) ;}
+	public boolean isInside(Point pos) {return UtilG.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null)), UtilG.getSize(type.getImage())) ;}
 	public boolean hasNPCs() {return npcs != null ;}
 		
 	public void displayNPCs(DrawingOnPanel DP)
@@ -66,8 +66,8 @@ public class Building
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		Point messagePos = UtilG.Translate(pos, 10, 10) ;
 		String message = Game.allText.get("Mensagem das placas")[cityID] ;
-		DP.DrawRoundRect(pos, Align.topLeft, new Dimension(220, 80), 2, Game.ColorPalette[4], Game.ColorPalette[4], true) ;			
-		DP.DrawFitText(messagePos, font.getSize() + 2, Align.centerLeft, message, font, 40, Game.ColorPalette[7]) ;	
+		DP.DrawRoundRect(pos, Align.topLeft, new Dimension(220, 80), 2, Game.colorPalette[4], Game.colorPalette[4], true) ;			
+		DP.DrawFitText(messagePos, font.getSize() + 2, Align.centerLeft, message, font, 40, Game.colorPalette[7]) ;	
 	}
 	
 	public void display(Point playerPos, int cityID, DrawingOnPanel DP)

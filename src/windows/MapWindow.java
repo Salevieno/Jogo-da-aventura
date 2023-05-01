@@ -71,7 +71,7 @@ public class MapWindow extends GameWindow
 					
 					if (map.equals(playerMap))
 					{
-						DP.DrawCircle(UtilG.Translate(pos, (int) (scale.x * size.width / 2), (int) (- scale.y * size.height / 2)), 5, 0, Game.ColorPalette[6], null) ;
+						DP.DrawCircle(UtilG.Translate(pos, (int) (scale.x * size.width / 2), (int) (- scale.y * size.height / 2)), 5, 0, Game.colorPalette[6], null) ;
 					}
 				}
 			}

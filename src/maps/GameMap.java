@@ -298,8 +298,8 @@ public class GameMap
 		groundTypes.forEach(groundType -> {
 			switch (groundType.type)
 			{
-				case water: DP.DrawRect(groundType.pos, Align.topLeft, groundType.size, 1, Game.ColorPalette[13], null) ; break ;
-				case lava: DP.DrawRect(groundType.pos, Align.topLeft, groundType.size, 1, Game.ColorPalette[6], null) ; break ;
+				case water: DP.DrawRect(groundType.pos, Align.topLeft, groundType.size, 1, Game.colorPalette[13], null) ; break ;
+				case lava: DP.DrawRect(groundType.pos, Align.topLeft, groundType.size, 1, Game.colorPalette[6], null) ; break ;
 				default: break ;
 			}
 		});

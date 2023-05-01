@@ -26,7 +26,7 @@ public class SettingsWindow extends GameWindow
 	
 	public SettingsWindow(Image image, boolean musicIsOn, boolean soundEffectsAreOn, boolean showPlayerRange, int attDisplay, int damageAnimation)
 	{
-		super("Opções", image, 3, 0, 6, 0) ;
+		super("Opï¿½ï¿½es", image, 3, 0, 6, 0) ;
 		deeperMenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "settingsDeeperWindow.png") ;
 		this.musicIsOn = musicIsOn ;
 		this.soundEffectsAreOn = soundEffectsAreOn ;
@@ -157,7 +157,7 @@ public class SettingsWindow extends GameWindow
 	
 	public void displayValue(boolean value, Point TextPos, double OverallAngle, Font font, DrawingOnPanel DP)
 	{
-		Color[] ColorPalette = Game.ColorPalette ;
+		Color[] ColorPalette = Game.colorPalette ;
 		if (value)
 		{
 			DP.DrawText(TextPos, Align.bottomCenter, OverallAngle, "On", font, ColorPalette[5]) ;							
@@ -176,10 +176,10 @@ public class SettingsWindow extends GameWindow
 		Point textPos = new Point(pos.x + 25, pos.y  + 42) ;
 		int sx = image.getWidth(null) - 45 ;
 		int sy = font.getSize() + 4 ;
-		String[] text = Game.allText.get("Menu de opções") ;
+		String[] text = Game.allText.get("Menu de opÃ§Ãµes") ;
 		Color[] textColor = new Color[3 + Player.ActionKeys.length] ;
-		Arrays.fill(textColor, Game.ColorPalette[5]) ;
-		textColor[item] = Game.ColorPalette[3] ;
+		Arrays.fill(textColor, Game.colorPalette[5]) ;
+		textColor[item] = Game.colorPalette[3] ;
 		
 		if (menu == 0)
 		{
@@ -189,7 +189,7 @@ public class SettingsWindow extends GameWindow
 		{
 			DP.DrawImage(deeperMenuImage, pos, Align.topLeft) ;			
 		}
-		DP.DrawText(UtilG.Translate(textPos, image.getWidth(null) / 2 - 15, -6), Align.bottomCenter, stdAngle, "OpÃ§Ãµes", font, Game.ColorPalette[5]) ;
+		DP.DrawText(UtilG.Translate(textPos, image.getWidth(null) / 2 - 15, -6), Align.bottomCenter, stdAngle, "OpÃ§Ãµes", font, Game.colorPalette[5]) ;
 		if (menu == 0)
 		{
 			for (int i = 0 ; i <= numberItems - 1 ; i += 1)
@@ -207,11 +207,11 @@ public class SettingsWindow extends GameWindow
 			for (int i = 0 ; i <= Player.ActionKeys.length - 1 ; i += 1)
 			{
 				DP.DrawText(new Point(textPos.x, textPos.y + (i + 1)*sy), Align.bottomLeft, stdAngle, text[i + 7], font, textColor[i]) ;
-				DP.DrawText(new Point(textPos.x + sx, textPos.y + (i + 1)*sy), Align.bottomCenter, stdAngle, Player.ActionKeys[i], font, Game.ColorPalette[5]) ;			
+				DP.DrawText(new Point(textPos.x + sx, textPos.y + (i + 1)*sy), Align.bottomCenter, stdAngle, Player.ActionKeys[i], font, Game.colorPalette[5]) ;			
 			}
 			if (-1 < selectedActionKeyID)
 			{
-				DP.DrawText(new Point(textPos.x + sx, textPos.y + (selectedActionKeyID + 1)*sy), Align.bottomCenter, stdAngle, Player.ActionKeys[selectedActionKeyID], font, Game.ColorPalette[3]) ;
+				DP.DrawText(new Point(textPos.x + sx, textPos.y + (selectedActionKeyID + 1)*sy), Align.bottomCenter, stdAngle, Player.ActionKeys[selectedActionKeyID], font, Game.colorPalette[3]) ;
 			}
 		}
 	}

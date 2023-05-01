@@ -103,7 +103,7 @@ public class ForgeWindow extends GameWindow
 		
 		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
 		
-		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.ColorPalette[2]) ;
+		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[2]) ;
 		
 		Point itemPos = UtilG.Translate(windowPos, 30, 70) ;
 		for (Equip item : itemsOnWindow)
@@ -112,7 +112,7 @@ public class ForgeWindow extends GameWindow
 			
 			Point namePos = UtilG.Translate(itemPos, 20, -6) ;
 			
-			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? Game.ColorPalette[6] : Game.ColorPalette[9] ;
+			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? Game.colorPalette[6] : Game.colorPalette[9] ;
 			DP.DrawImage(Item.slot, itemPos, angle, new Scale(1, 1), Align.center) ;
 			DP.DrawImage(item.getImage(), itemPos, angle, new Scale(1, 1), Align.center) ;
 			DP.DrawText(namePos, Align.topLeft, angle, item.getName() + " + " + item.getForgeLevel(), stdFont, itemColor) ;

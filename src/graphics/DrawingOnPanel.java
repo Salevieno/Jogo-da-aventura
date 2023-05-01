@@ -35,10 +35,9 @@ public class DrawingOnPanel
 	public static int stdStroke = 1;
 	private Graphics2D G ;
 	
-	private static Color[] colorPalette = Game.ColorPalette;
+	private static Color[] colorPalette = Game.colorPalette;
 	private Dimension screenSize = Game.getScreen().getSize() ;
 	private static Image menuWindow = UtilG.loadImage(Game.ImagesPath + "MenuWindow.png") ;
-//	private static Image buttonGeneral = UtilG.loadImage(Game.ImagesPath + "ButtonGeneral.png") ;
 	private static Image ArrowIconImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "ArrowIcon.png") ;
 	public static Image[] ElementImages = new Image[] {
 			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementNeutral.png"),
@@ -53,9 +52,6 @@ public class DrawingOnPanel
 			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementSnow.png")
 			} ;
 	
-	public DrawingOnPanel()
-	{
-	}
 	
 	public void setGraphics(Graphics2D G)
 	{
@@ -64,36 +60,16 @@ public class DrawingOnPanel
 
 	// primitive methods
 	public void DrawImage(Image image, Point pos, Align align)
-	{       
-		if (image == null) { System.out.println("Tentando desenhar imagem nula") ; return ; }
-		
+	{
 		DrawImage(image, pos, 0, new Scale(1, 1), false, false, align, 1) ;
-//		Dimension size = new Dimension(image.getWidth(null), image.getHeight(null)) ;
-//		Point offset = UtilG.OffsetFromPos(align, size) ;
-//		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 	}
 	public void DrawImage(Image image, Point pos, Scale scale, Align align)
-	{       
-		if (image == null) { System.out.println("Tentando desenhar imagem nula") ; return ; }
-
+	{
 		DrawImage(image, pos, 0, scale, false, false, align, 1) ;
-//		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
-//		Point offset = UtilG.OffsetFromPos(align, size) ;
-//		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 	}
 	public void DrawImage(Image image, Point pos, double angle, Scale scale, Align align)
-	{       
-		if (image == null) { System.out.println("Tentando desenhar imagem nula") ; return ; }
-
+	{
 		DrawImage(image, pos, angle, scale, false, false, align, 1) ;
-//		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
-//		Point offset = UtilG.OffsetFromPos(align, size) ;
-//		AffineTransform backup = G.getTransform() ;
-//		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x + offset.x, pos.y + offset.y)) ;
-		
-//		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
-		
-//		G.setTransform(backup) ;
 	}
 	public void DrawImage(Image image, Point pos, double angle, Scale scale, boolean flipH, boolean flipV, Align align, double alpha)
 	{       
@@ -103,13 +79,13 @@ public class DrawingOnPanel
 		size = new Dimension ((!flipH ? 1 : -1) * size.width, (!flipV ? 1 : -1) * size.height) ;
 		Point offset = UtilG.OffsetFromPos(align, size) ;
 		AffineTransform backup = G.getTransform() ;
-//		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
+		G.transform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
 		G.setComposite(AlphaComposite.SrcOver.derive((float) alpha)) ;
 		
 		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 		
 		G.setComposite(AlphaComposite.SrcOver.derive((float) 1.0)) ;
-//        G.setTransform(backup) ;
+        G.setTransform(backup) ;
 	}
 	public void DrawGif(Image gif, Point pos, Align align)
 	{
@@ -123,13 +99,14 @@ public class DrawingOnPanel
 		Dimension size = new Dimension(UtilG.TextL(text, font, G), UtilG.TextH(font.getSize())) ;
 		Point offset = UtilG.OffsetFromPos(align, size) ;
 		AffineTransform backup = G.getTransform() ;		
+		
+		G.transform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
+
 		G.setColor(color) ;
 		G.setFont(font) ;
-//		G.setTransform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
-		
 		G.drawString(text, pos.x + offset.x, pos.y + offset.y + size.height) ;
         
-//		G.setTransform(backup) ;
+		G.setTransform(backup) ;
 	}
 	public void DrawFitText(Point pos, int sy, Align align, String text, Font font, int maxLength, Color color)
 	{
@@ -613,13 +590,13 @@ public class DrawingOnPanel
 		{
 			currentPos.x += -0.5*(screenWidth + imageWidth) ;
 			currentPos.y += 0.25*screenHeight ;
-			DrawSpeech(messagePos, message[1], font, speakingBubble, Game.ColorPalette[19]) ;
+			DrawSpeech(messagePos, message[1], font, speakingBubble, Game.colorPalette[19]) ;
 		}
 		else if (counter.rate() < 0.75)
 		{
 			currentPos.x += -0.5*(screenWidth + imageWidth) ;
 			currentPos.y += -screenHeight * (counter.rate() - 0.5) ;
-			DrawSpeech(messagePos, message[2], font, speakingBubble, Game.ColorPalette[19]) ;
+			DrawSpeech(messagePos, message[2], font, speakingBubble, Game.colorPalette[19]) ;
 		}
 		else
 		{

@@ -36,7 +36,7 @@ public class HintsWindow extends GameWindow
 		Point windowPos = new Point((int) (0.1 * Game.getScreen().getSize().width),
 				(int) (0.4 * Game.getScreen().getSize().height)) ;
 		Point textPos = new Point(windowPos.x + 15, windowPos.y + 10) ;
-		Color textColor = Game.ColorPalette[5] ;
+		Color textColor = Game.colorPalette[5] ;
 		double angle = DrawingOnPanel.stdAngle ;
 		int sy = font.getSize() + 2 ;
 		numberWindows = text.length - 6 ;

@@ -173,9 +173,9 @@ public abstract class LiveBeing
 		Point pos = new Point(540, 100) ;
 		Dimension size = new Dimension(60, 20) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		DP.DrawRoundRect(pos, Align.center, size, 1, Game.ColorPalette[8], Game.ColorPalette[8], true);
-		if (combo == null) {DP.DrawText(pos, Align.center, 0, "null", font, Game.ColorPalette[9]) ;}
-		else if (0 < combo.size()) { DP.DrawText(pos, Align.center, 0, state.toString(), font, Game.ColorPalette[9]) ;}		
+		DP.DrawRoundRect(pos, Align.center, size, 1, Game.colorPalette[8], Game.colorPalette[8], true);
+		if (combo == null) {DP.DrawText(pos, Align.center, 0, "null", font, Game.colorPalette[9]) ;}
+		else if (0 < combo.size()) { DP.DrawText(pos, Align.center, 0, state.toString(), font, Game.colorPalette[9]) ;}		
 	}
 	
 	public Point CalcNewPos()
@@ -429,7 +429,7 @@ public abstract class LiveBeing
 	
 	public void DrawAttributes(int style, DrawingOnPanel DP)
 	{
-		Color[] colorPalette = Game.ColorPalette ;
+		Color[] colorPalette = Game.colorPalette ;
 		Dimension screenSize = Game.getScreen().getSize() ;
 		
 		ArrayList<Double> attRate = new ArrayList<>() ;
@@ -484,7 +484,7 @@ public abstract class LiveBeing
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
 		Point rectPos = new Point(pos.x + mirror * offset.width, pos.y + offset.height) ;
 		
-		DP.DrawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.ColorPalette[9]) ;
+		DP.DrawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.colorPalette[9]) ;
 		DP.DrawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null) ;
 	}
 

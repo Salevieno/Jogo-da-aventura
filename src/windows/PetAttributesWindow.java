@@ -38,7 +38,7 @@ public class PetAttributesWindow extends AttributesWindow
 
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;		
-		Color[] colorPalette = Game.ColorPalette ;
+		Color[] colorPalette = Game.colorPalette ;
 		Color textColor = colorPalette[9] ;
 		
 		String[] attText = Game.allText.get("Atributos") ;		

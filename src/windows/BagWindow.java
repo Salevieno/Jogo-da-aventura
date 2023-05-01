@@ -3,10 +3,14 @@ package windows;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import graphics.DrawingOnPanel;
@@ -91,6 +95,7 @@ public class BagWindow extends GameWindow
 
 	public void Add(Item item, int amount)
 	{
+		// TODO if bag is open bag.orderItems() ;
 		if (item instanceof Potion)
 		{
 			if (pot.containsKey(item)) { pot.put((Potion) item, pot.get((Potion) item) + amount) ;}
@@ -166,6 +171,7 @@ public class BagWindow extends GameWindow
 			Potion potion = (Potion) item ;
 			if (!pot.containsKey(potion)) { return ;}
 			if (pot.get(potion) < amount) { return ;}
+			if (pot.get(potion) == amount) { pot.remove(potion) ; return ;}	// TODO apply to other menus
 			
 			pot.put(potion, pot.get(potion) - amount) ;
 		}
@@ -254,18 +260,63 @@ public class BagWindow extends GameWindow
 		
 		System.out.println("Tentando remover mais dinheiro do que o existente na mochila") ;
 	}
+	private Map<Potion, Integer> orderItems(Map<Potion, Integer> pot)
+	{
+		Map<Potion, Integer> orderedItems = new LinkedHashMap<>() ;
+		Set<Potion> pots = pot.keySet() ;
+		List<Integer> potIds = new ArrayList<>() ;
+		pots.forEach(p -> potIds.add(p.getId())) ;
+		potIds.sort(Comparator.naturalOrder()) ;
+		
+		for (int i = 0; i <= pot.entrySet().size() - 1 ; i += 1)
+		{
+			orderedItems.put(Potion.getAll()[potIds.get(i)], pot.get(Potion.getAll()[potIds.get(i)])) ;
+		}
+		
+		return orderedItems ;
+	}
+	private Map<Equip, Integer> orderEquips(Map<Equip, Integer> pot)
+	{
+		Map<Equip, Integer> orderedItems = new LinkedHashMap<>() ;
+		Set<Equip> pots = pot.keySet() ;
+		List<Integer> potIds = new ArrayList<>() ;
+		pots.forEach(p -> potIds.add(p.getId())) ;
+		potIds.sort(Comparator.naturalOrder());
+		
+		for (int i = 0; i <= pot.entrySet().size() - 1 ; i += 1)
+		{
+			orderedItems.put(Equip.getAll()[potIds.get(i)], pot.get(Equip.getAll()[potIds.get(i)])) ;
+		}
+		
+		return orderedItems ;
+	}
 	
 	public Map<Item, Integer> getActiveItems()
 	{
+		// pega os itens em ordem maior que 0 e mapeia em ordem aleatória e mostra
+		// 
+		
+		// [0, 21, 45, 32, 44, 10]
+		// [0, 10, 21, 32, 44]
+		// [45]
+		
 		switch (menu)
 		{
-			case 0: return pot.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			case 0: 
+			{
+				pot = orderItems(pot) ;
+				return pot.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			}
 			case 1: return alch.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
 			case 2: return forges.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
 			case 3: return petItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
 			case 4: return foods.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
 			case 5: return arrows.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 6: return equips.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			case 6: 
+			{
+				equips = orderEquips(equips) ;
+				return equips.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			}
 			case 7: return genItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
 			case 8: return fabItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
 			case 9: return questItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;

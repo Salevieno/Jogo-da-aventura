@@ -579,7 +579,7 @@ System.out.println(id);
 	{
 		// TODO transformar choices numa GameWindow
 		String[] options = type.getOptions()[menu] ;
-		Color selColor = Game.ColorPalette[3] ;
+		Color selColor = Game.colorPalette[3] ;
 		
 		if (options == null) { return ;}		
 		if (options.length <= 0) { return ;}
@@ -590,7 +590,7 @@ System.out.println(id);
 		for (int i = 0 ; i <= options.length - 1 ; i += 1)
 		{
 			Point textPos = UtilG.Translate(windowPos, 5, 5 + i * sy) ;
-			Color textColor = i == selOption ? selColor : Game.ColorPalette[9] ;
+			Color textColor = i == selOption ? selColor : Game.colorPalette[9] ;
 			DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, String.valueOf(i) + " - " + options[i], NPCfont, textColor) ;
 		}
 		

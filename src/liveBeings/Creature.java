@@ -42,8 +42,8 @@ public class Creature extends LiveBeing
 	private boolean follow ;	
 //	public int countmove ;
 	
-	private static Color[] skinColor = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1]} ;
-	private static Color[] shadeColor = new Color[] {Game.ColorPalette[2], Game.ColorPalette[3]} ;
+	private static Color[] skinColor = new Color[] {Game.colorPalette[0], Game.colorPalette[1]} ;
+	private static Color[] shadeColor = new Color[] {Game.colorPalette[2], Game.colorPalette[3]} ;
 	
 	public static final String[] SpellKeys = new String[] {"0", "1", "2", "3"} ;
 	

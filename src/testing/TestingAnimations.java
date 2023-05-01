@@ -30,7 +30,7 @@ public class TestingAnimations
 		Object[] object4 = new Object[] {new double[] {2, 5, 2, 1, 3, 1}, 1} ;
 		ani[4].start(200, object4) ;
 
-		Pterodactile.speak(ani[5]) ;
+		Pterodactile.speak() ;
 		
 	}
 }

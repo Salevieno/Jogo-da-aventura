@@ -3,8 +3,6 @@ package liveBeings ;
 import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +15,7 @@ import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import graphics.Animation;
 import graphics.DrawingOnPanel;
+import graphics.Gif;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
@@ -29,7 +28,6 @@ import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
 import windows.PetAttributesWindow;
-import windows.PlayerAttributesWindow;
 
 public class Pet extends LiveBeing
 {
@@ -48,6 +46,8 @@ public class Pet extends LiveBeing
 	private static List<String[]> PetProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
 	private static List<String[]> PetEvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
 	
+	public final static Gif levelUpGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 170, false, false) ;
+    
 	
 	public Pet(int Job)
 	{
@@ -73,7 +73,7 @@ public class Pet extends LiveBeing
 		combo = new ArrayList<>();
 		
 		this.job = Job ;
-		Color[] ColorPalette = Game.ColorPalette ;
+		Color[] ColorPalette = Game.colorPalette ;
 		Color[] PetColor = new Color[] {ColorPalette[3], ColorPalette[1], ColorPalette[18], ColorPalette[18]} ;
 		color = PetColor[Job] ;
 		spells = InitializePetSpells();
@@ -286,7 +286,7 @@ public class Pet extends LiveBeing
 		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())); ;
 	}
 	
-	public void levelUp(Animation ani)
+	public void levelUp(Animation attIncAnimation)
 	{
 		double[] attIncrease = calcAttributesIncrease() ;
 		setLevel(level + 1) ;
@@ -302,11 +302,13 @@ public class Pet extends LiveBeing
 		BA.getAgi().incBaseValue(attIncrease[6]) ;
 		BA.getDex().incBaseValue(attIncrease[7]) ;
 		PA.getExp().incMaxValue((int) attIncrease[8]) ;
+
+		Game.getAnimations()[5].start(levelUpGif.getDuration(), new Object[] {pos}) ;
 		
-		if (ani == null) { return ;}
+		if (attIncAnimation == null) { return ;}
 		
 		// TODO
-		ani.start(150, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level, color}) ;
+		attIncAnimation.start(150, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level}) ;
 	}
 	public double[] calcAttributesIncrease()
 	{
@@ -322,48 +324,48 @@ public class Pet extends LiveBeing
 		return Increase ;
 	}
 
-	public void Save(BufferedWriter bW)
-	{
-		try
-		{
-			bW.write("\nPet name: \n" + getName()) ;
-			bW.write("\nPet size: \n" + getSize()) ;
-			bW.write("\nPet color: \n" + getColor()) ;
-			bW.write("\nPet job: \n" + getJob()) ;
-			bW.write("\nPet coords: \n" + getPos()) ;
-			//bW.write("\nPet skill: \n" + Arrays.toString(getSpells())) ;
-			bW.write("\nPet skillPoints: \n" + getSpellPoints()) ;
-			//bW.write("\nPet life: \n" + Arrays.toString(getLife())) ;
-			//bW.write("\nPet mp: \n" + Arrays.toString(getMp())) ;
-			bW.write("\nPet range: \n" + getRange()) ;
-			//bW.write("\nPet phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
-			//bW.write("\nPet magAtk: \n" + Arrays.toString(getMagAtk())) ;
-			//bW.write("\nPet phyDef: \n" + Arrays.toString(getPhyDef())) ;
-			//bW.write("\nPet magDef: \n" + Arrays.toString(getMagDef())) ;
-			//bW.write("\nPet dex: \n" + Arrays.toString(getDex())) ;
-			//bW.write("\nPet agi: \n" + Arrays.toString(getAgi())) ;
-			bW.write("\nPet crit: \n" + Arrays.toString(getCrit())) ;
-//			bW.write("\nPet stun: \n" + Arrays.toString(getStun())) ;
-//			bW.write("\nPet block: \n" + Arrays.toString(getBlock())) ;
-//			bW.write("\nPet blood: \n" + Arrays.toString(getBlood())) ;
-//			bW.write("\nPet poison: \n" + Arrays.toString(getPoison())) ;
-//			bW.write("\nPet silence: \n" + Arrays.toString(getSilence())) ;
-			bW.write("\nPet elem: \n" + Arrays.toString(getElem())) ;
-			bW.write("\nPet elem mult: \n" + Arrays.toString(getElemMult())) ;
-			bW.write("\nPet level: \n" + getLevel()) ;
-			bW.write("\nPet step: \n" + getStep()) ;
-			//bW.write("\nPet satiation: \n" + Arrays.toString(getSatiation())) ;
-			//bW.write("\nPet exp: \n" + Arrays.toString(getExp())) ;
-//			bW.write("\nPet status: \n" + Arrays.toString(getBA().getSpecialStatus())) ; 
-			//bW.write("\nPet actions: \n" + Arrays.deepToString(getActions())) ; 
-			//bW.write("\nPet battle actions: \n" + Arrays.deepToString(getBA().getBattleActions())) ; 
-//			bW.write("\nPet status counter: \n" + Arrays.toString(getStatusCounter())) ;
-		}
-		catch (IOException e)
-		{
-			System.out.println("Error writing the pet attributes to file") ;
-		}
-	}
+//	public void Save(BufferedWriter bW)
+//	{
+//		try
+//		{
+//			bW.write("\nPet name: \n" + getName()) ;
+//			bW.write("\nPet size: \n" + getSize()) ;
+//			bW.write("\nPet color: \n" + getColor()) ;
+//			bW.write("\nPet job: \n" + getJob()) ;
+//			bW.write("\nPet coords: \n" + getPos()) ;
+//			//bW.write("\nPet skill: \n" + Arrays.toString(getSpells())) ;
+//			bW.write("\nPet skillPoints: \n" + getSpellPoints()) ;
+//			//bW.write("\nPet life: \n" + Arrays.toString(getLife())) ;
+//			//bW.write("\nPet mp: \n" + Arrays.toString(getMp())) ;
+//			bW.write("\nPet range: \n" + getRange()) ;
+//			//bW.write("\nPet phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
+//			//bW.write("\nPet magAtk: \n" + Arrays.toString(getMagAtk())) ;
+//			//bW.write("\nPet phyDef: \n" + Arrays.toString(getPhyDef())) ;
+//			//bW.write("\nPet magDef: \n" + Arrays.toString(getMagDef())) ;
+//			//bW.write("\nPet dex: \n" + Arrays.toString(getDex())) ;
+//			//bW.write("\nPet agi: \n" + Arrays.toString(getAgi())) ;
+//			bW.write("\nPet crit: \n" + Arrays.toString(getCrit())) ;
+////			bW.write("\nPet stun: \n" + Arrays.toString(getStun())) ;
+////			bW.write("\nPet block: \n" + Arrays.toString(getBlock())) ;
+////			bW.write("\nPet blood: \n" + Arrays.toString(getBlood())) ;
+////			bW.write("\nPet poison: \n" + Arrays.toString(getPoison())) ;
+////			bW.write("\nPet silence: \n" + Arrays.toString(getSilence())) ;
+//			bW.write("\nPet elem: \n" + Arrays.toString(getElem())) ;
+//			bW.write("\nPet elem mult: \n" + Arrays.toString(getElemMult())) ;
+//			bW.write("\nPet level: \n" + getLevel()) ;
+//			bW.write("\nPet step: \n" + getStep()) ;
+//			//bW.write("\nPet satiation: \n" + Arrays.toString(getSatiation())) ;
+//			//bW.write("\nPet exp: \n" + Arrays.toString(getExp())) ;
+////			bW.write("\nPet status: \n" + Arrays.toString(getBA().getSpecialStatus())) ; 
+//			//bW.write("\nPet actions: \n" + Arrays.deepToString(getActions())) ; 
+//			//bW.write("\nPet battle actions: \n" + Arrays.deepToString(getBA().getBattleActions())) ; 
+////			bW.write("\nPet status counter: \n" + Arrays.toString(getStatusCounter())) ;
+//		}
+//		catch (IOException e)
+//		{
+//			System.out.println("Error writing the pet attributes to file") ;
+//		}
+//	}
 	public void Load(String[][] ReadFile)
 	{
 		/*int NumberOfPlayerAttributes = 49 ;

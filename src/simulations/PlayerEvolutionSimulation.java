@@ -64,7 +64,9 @@ public abstract class PlayerEvolutionSimulation
 	static
 	{		
 		buttons = new ArrayList<>() ;
-
+		player.setPos(new Point(45, 230)) ;
+		pet.setPos(new Point(450, 230)) ;
+		
 		addJobSection() ;	
 		
 		addPlayerSection() ;
@@ -478,25 +480,25 @@ public abstract class PlayerEvolutionSimulation
 		int barsHeight = 50 ;
 		
 		int numberOpponentsToPlayerLevelUp = PersonalAttributes.numberFightsToLevelUp(player.getExp().getCurrentValue(), player.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), player.getExp().getMultiplier()) ;
-		DP.DrawText(UtilG.Translate(pos, 170, 10), Align.bottomCenter, DrawingOnPanel.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.ColorPalette[1]);
+		DP.DrawText(UtilG.Translate(pos, 170, 10), Align.bottomCenter, DrawingOnPanel.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.colorPalette[1]);
 
 		int playerExpBarSize = (int) (player.getExp().getRate() * barsHeight) ;
-		drawBar(UtilG.Translate(pos, 170, 70), playerExpBarSize, barsHeight, Game.ColorPalette[1], DP) ;
+		drawBar(UtilG.Translate(pos, 170, 70), playerExpBarSize, barsHeight, Game.colorPalette[1], DP) ;
 		
 		if (pet != null)
 		{
 			int numberOpponentsToPetLevelUp = PersonalAttributes.numberFightsToLevelUp(pet.getExp().getCurrentValue(), pet.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), pet.getExp().getMultiplier()) ;
-			DP.DrawText(UtilG.Translate(pos, 200, 10), Align.bottomCenter, DrawingOnPanel.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Game.ColorPalette[2]);
+			DP.DrawText(UtilG.Translate(pos, 200, 10), Align.bottomCenter, DrawingOnPanel.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Game.colorPalette[2]);
 			
 			int petExpBarSize = (int) (pet.getExp().getRate() * barsHeight) ;
-			drawBar(UtilG.Translate(pos, 200, 70), petExpBarSize, barsHeight, Game.ColorPalette[2], DP) ;
+			drawBar(UtilG.Translate(pos, 200, 70), petExpBarSize, barsHeight, Game.colorPalette[2], DP) ;
 		}
 		
 		String percPlayerWins = 1 <= numberFights ? " (" + UtilG.Round((100 * numberPlayerWins) / (double)numberFights, 2) + "%)" : "" ;
 		String percCreatureWins = 1 <= numberFights ? " (" + UtilG.Round((100 * numberCreatureWins) / (double)numberFights, 2) + "%)" : "" ;
-		DP.DrawText(UtilG.Translate(pos, 0, 30), Align.bottomLeft, DrawingOnPanel.stdAngle, "total fights = " + numberFights, font, Game.ColorPalette[1]);
-		DP.DrawText(UtilG.Translate(pos, 0, 50), Align.bottomLeft, DrawingOnPanel.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.ColorPalette[1]);
-		DP.DrawText(UtilG.Translate(pos, 0, 70), Align.bottomLeft, DrawingOnPanel.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.ColorPalette[1]);
+		DP.DrawText(UtilG.Translate(pos, 0, 30), Align.bottomLeft, DrawingOnPanel.stdAngle, "total fights = " + numberFights, font, Game.colorPalette[1]);
+		DP.DrawText(UtilG.Translate(pos, 0, 50), Align.bottomLeft, DrawingOnPanel.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.colorPalette[1]);
+		DP.DrawText(UtilG.Translate(pos, 0, 70), Align.bottomLeft, DrawingOnPanel.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.colorPalette[1]);
 
 	}
 	
@@ -505,7 +507,7 @@ public abstract class PlayerEvolutionSimulation
 		
 //		DP.DrawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), 1, Color.black, null) ;
 		DP.DrawImage(screenImage, new Point(0, 0), Align.topLeft) ;
-		DP.DrawText(new Point(300, 13), Align.center, DrawingOnPanel.stdAngle, "Simulador do jogo", font, Game.ColorPalette[9]) ;
+		DP.DrawText(new Point(300, 13), Align.center, DrawingOnPanel.stdAngle, "Simulador do jogo", font, Game.colorPalette[9]) ;
 		
 		buttons.forEach(button -> {
 			button.display(0, Align.center, true, mousePos, DP) ;
@@ -515,13 +517,13 @@ public abstract class PlayerEvolutionSimulation
 		playerOpponent.display(new Point(460, 340), new Scale(1, 1), DP);
 		if (player.isAlive())
 		{
-			player.display(new Point(45, 230), new Scale(1.8, 1.8), Directions.right, false, DP) ;
+			player.display(player.getPos(), new Scale(1.8, 1.8), Directions.right, false, DP) ;
 		}
 		if (pet != null)
 		{
 			if (pet.isAlive())
 			{
-				pet.display(new Point(450, 230), new Scale(1, 1), DP) ;
+				pet.display(pet.getPos(), new Scale(1, 1), DP) ;
 			}
 		}
 		

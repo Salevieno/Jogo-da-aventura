@@ -107,7 +107,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 	public void displayTab0(Player player, Equip[] equips, Point mousePos, DrawingOnPanel DP)
 	{
 		
-		Color[] colorPalette = Game.ColorPalette ;		
+		Color[] colorPalette = Game.colorPalette ;		
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		double angle = DrawingOnPanel.stdAngle ;
 
@@ -217,7 +217,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Point goldPos = UtilG.Translate(windowPos, 210, 332) ;
 		String goldValue = String.valueOf(UtilG.Round(player.getBag().getGold(), 1)) ;
 		DP.DrawImage(Player.CoinIcon, coinPos, angle, new Scale(1, 1), Align.center) ;
-		DP.DrawText(goldPos, Align.centerLeft, angle, goldValue, font, Game.ColorPalette[2]) ;
+		DP.DrawText(goldPos, Align.centerLeft, angle, goldValue, font, Game.colorPalette[2]) ;
 		
 		incAttButtons.values().forEach(button -> button.display(angle, Align.topLeft, false, mousePos, DP)) ;
 	}
@@ -225,7 +225,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 	public void displayTab1(DrawingOnPanel DP)
 	{
 		
-		Color[] colorPalette = Game.ColorPalette ;
+		Color[] colorPalette = Game.colorPalette ;
 		
 		double angle = DrawingOnPanel.stdAngle ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
@@ -293,7 +293,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		for (String key : allStats.keySet())
 		{
 			String text = key + ": " + String.valueOf(UtilG.Round((double) allStats.get(key), 1)) ;
-			DP.DrawText(textPos, Align.bottomLeft, DrawingOnPanel.stdAngle, text, font, Game.ColorPalette[9]) ;
+			DP.DrawText(textPos, Align.bottomLeft, DrawingOnPanel.stdAngle, text, font, Game.colorPalette[9]) ;
 			textPos = UtilG.Translate(textPos, 0, sy) ;
 		}
 		
@@ -305,7 +305,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 
 		String[] tabsText = Game.allText.get("Janela do jogador") ;
-		Color[] colorPalette = Game.ColorPalette ;
+		Color[] colorPalette = Game.colorPalette ;
 		Color[] tabColor = new Color[] {colorPalette[7], colorPalette[7], colorPalette[7]} ;
 		Color[] tabTextColor = new Color[] {colorPalette[5], colorPalette[5], colorPalette[5]} ;
 		tabColor[tab] = colorPalette[19] ;
@@ -321,8 +321,8 @@ public class PlayerAttributesWindow extends AttributesWindow
 		}
 
 		DP.DrawText(UtilG.Translate(windowPos, 5, 20), Align.center, 90, tabsText[0], namefont, tabTextColor[0]) ;
-		DP.DrawText(UtilG.Translate(windowPos, 5, 30), Align.center, 90, tabsText[1], namefont, tabTextColor[1]) ;
-		DP.DrawText(UtilG.Translate(windowPos, 5, 40), Align.center, 90, tabsText[2], namefont, tabTextColor[2]) ;
+		DP.DrawText(UtilG.Translate(windowPos, 5, 55), Align.center, 90, tabsText[1], namefont, tabTextColor[1]) ;
+		DP.DrawText(UtilG.Translate(windowPos, 5, 90), Align.center, 90, tabsText[2], namefont, tabTextColor[2]) ;
 			
 		switch (tab)
 		{

@@ -52,20 +52,20 @@ public class Opening
 		buttons[4] = new GameButton(4, "Male", new Point(screenSize.width / 2 - 50, screenSize.height / 4), null, null, null) ;
 		buttons[5] = new GameButton(5, "Female", new Point(screenSize.width / 2 + 50, screenSize.height / 4), null, null, null) ;
     	buttons[6] = new GameButton(6, "Baixo", new Point(screenSize.width / 2 - 100, screenSize.height / 4), null, null, null) ;
-    	buttons[7] = new GameButton(7, "M�dio", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
+    	buttons[7] = new GameButton(7, "Médio", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
     	buttons[8] = new GameButton(8, "Alto", new Point(screenSize.width / 2 + 100, screenSize.height / 4), null, null, null) ;
     	buttons[9] = new GameButton(9, "Cavaleiro", new Point(screenSize.width / 2 - 200, screenSize.height / 4), null, null, null) ;
     	buttons[10] = new GameButton(10, "Mago", new Point(screenSize.width / 2 - 100, screenSize.height / 4), null, null, null) ;
     	buttons[11] = new GameButton(11, "Arqueiro", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
     	buttons[12] = new GameButton(12, "Animal", new Point(screenSize.width / 2 + 100, screenSize.height / 4), null, null, null) ;
-    	buttons[13] = new GameButton(13, "Ladr�o", new Point(screenSize.width / 2 + 200, screenSize.height / 4), null, null, null) ;
+    	buttons[13] = new GameButton(13, "Ladrão", new Point(screenSize.width / 2 + 200, screenSize.height / 4), null, null, null) ;
     	
     	for (GameButton button : buttons)
     	{
      		GameButton.addToAllIconsList(button) ;
     	}
 
-    	Map<String, String[]> allText = UtilG.ReadTextFile("P") ;
+    	Map<String, String[]> allText = UtilG.ReadTextFile(Game.getLanguage()) ;
     	text = allText.get("* Novo jogo *") ;
 		//Ani.SetAniVars(20, new Object[] {147, OpeningGif}) ;
 		//Ani.StartAni(20) ;
@@ -103,7 +103,7 @@ public class Opening
 		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 		Dimension screenSize = Game.getScreen().getSize() ;
 		double textAngle = DrawingOnPanel.stdAngle ;
-		Color textColor = Game.ColorPalette[5] ;
+		Color textColor = Game.colorPalette[5] ;
 		
 
 //		if (!Ani.isActive(20))

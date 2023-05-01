@@ -36,7 +36,7 @@ public class GameButton
 		this.image = image ;
 		this.selectedImage = selectedImage ;
 		isActive = true ;
-		size = new Dimension(image.getWidth(null), image.getHeight(null)) ;
+		size = UtilG.getSize(image) ;
 		this.action = action ;
 	}
 	
@@ -47,85 +47,78 @@ public class GameButton
 		this.image = image ;
 		this.selectedImage = selectedImage ;
 		isActive = true ;
-		size = new Dimension(image.getWidth(null), image.getHeight(null)) ;
+		size = UtilG.getSize(image) ;
 		this.action = action ;
 	}
 	
-	public GameButton(int id, String Name, Point Pos,
-			String description, Image image, Image SelectedImage)
+	public GameButton(int id, String name, Point pos,
+			String description, Image image, Image selectedImage)
 	{
 		this.id = id ;
-		this.name = Name ;
-		this.topLeftCorner = Pos ;
-		size = new Dimension(10 * Name.length(), 30) ;
+		this.name = name ;
+		this.topLeftCorner = pos ;
+		size = image != null ? UtilG.getSize(image) : new Dimension(10 * name.length(), 30) ;
 		isActive = false ;
 		this.description = description ;
 		this.image = image ;
-		this.selectedImage = SelectedImage ;
+		this.selectedImage = selectedImage ;
 
-		if (image != null)
-		{
-			size.width = image.getWidth(null) ;
-			size.height = image.getHeight(null) ;
-		}
-
-		if (id == 0)
-		{
-			value = "P" ;	// Language = Portuguese
-		}
-		if (id == 1)
-		{
-			value = "E" ;	// Language = English
-		}
-		if (id == 2)
-		{
-			value = "N" ;	// Game = new game
-		}
-		if (id == 3)
-		{
-			value = "L" ;	// Game = load game
-		}
-		if (id == 4)
-		{
-			value = "M" ;	// Sex = male
-		}
-		if (id == 5)
-		{
-			value = "F" ;	// Sex = female
-		}
-		if (id == 6)
-		{
-			value = "0" ;	// Ousadia = baixo
-		}
-		if (id == 7)
-		{
-			value = "1" ;	// Ousadia = m�dio
-		}
-		if (id == 8)
-		{
-			value = "2" ;	// Ousadia = alto
-		}
-		if (id == 9)
-		{
-			value = "0" ;	// Classe = cavaleiro
-		}
-		if (id == 10)
-		{
-			value = "1" ;	// Classe = mago
-		}
-		if (id == 11)
-		{
-			value = "2" ;	// Classe = arqueiro
-		}
-		if (id == 12)
-		{
-			value = "3" ;	// Classe = animal
-		}
-		if (id == 13)
-		{
-			value = "4" ;	// Classe = ladr�o
-		}
-		description = Name ;
+//		if (id == 0)
+//		{
+//			value = "P" ;	// Language = Portuguese
+//		}
+//		if (id == 1)
+//		{
+//			value = "E" ;	// Language = English
+//		}
+//		if (id == 2)
+//		{
+//			value = "N" ;	// Game = new game
+//		}
+//		if (id == 3)
+//		{
+//			value = "L" ;	// Game = load game
+//		}
+//		if (id == 4)
+//		{
+//			value = "M" ;	// Sex = male
+//		}
+//		if (id == 5)
+//		{
+//			value = "F" ;	// Sex = female
+//		}
+//		if (id == 6)
+//		{
+//			value = "0" ;	// Ousadia = baixo
+//		}
+//		if (id == 7)
+//		{
+//			value = "1" ;	// Ousadia = m�dio
+//		}
+//		if (id == 8)
+//		{
+//			value = "2" ;	// Ousadia = alto
+//		}
+//		if (id == 9)
+//		{
+//			value = "0" ;	// Classe = cavaleiro
+//		}
+//		if (id == 10)
+//		{
+//			value = "1" ;	// Classe = mago
+//		}
+//		if (id == 11)
+//		{
+//			value = "2" ;	// Classe = arqueiro
+//		}
+//		if (id == 12)
+//		{
+//			value = "3" ;	// Classe = animal
+//		}
+//		if (id == 13)
+//		{
+//			value = "4" ;	// Classe = ladr�o
+//		}
 	}
 
 	public int getid() {return id ;}
@@ -194,8 +187,8 @@ public class GameButton
 		if (!isActive) { return ;}
 		
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Color textColor = Game.ColorPalette[9] ;
-		Color selectedTextColor = Game.ColorPalette[10] ;
+		Color textColor = Game.colorPalette[9] ;
+		Color selectedTextColor = Game.colorPalette[10] ;
 
 		Point displayPos = UtilG.getPosAt(topLeftCorner, alignment, size) ;
 		
@@ -212,7 +205,7 @@ public class GameButton
 			}
 			else
 			{
-				DP.DrawRoundRect(displayPos, alignment, size, 5, Game.ColorPalette[5], Game.ColorPalette[6], true) ;
+				DP.DrawRoundRect(displayPos, alignment, size, 5, Game.colorPalette[5], Game.colorPalette[6], true) ;
 				DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 			}
 		}
@@ -228,7 +221,7 @@ public class GameButton
 			}
 			else
 			{
-				DP.DrawRoundRect(displayPos, alignment, size, 2, Game.ColorPalette[5], Game.ColorPalette[6], true) ;
+				DP.DrawRoundRect(displayPos, alignment, size, 2, Game.colorPalette[5], Game.colorPalette[6], true) ;
 				DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
 			}
 		}

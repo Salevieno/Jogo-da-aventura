@@ -42,7 +42,7 @@ public class FabWindow extends GameWindow
 	public void display(List<Recipe> recipes, Point MousePos, DrawingOnPanel DP)
 	{
 		Dimension screenSize = Game.getScreen().getSize() ;
-		Color[] ColorPalette = Game.ColorPalette ;
+		Color[] ColorPalette = Game.colorPalette ;
 		double OverallAngle = DrawingOnPanel.stdAngle ;
 		
 		Point windowPos = new Point((int)(0.5*screenSize.width), (int)(0.5*screenSize.height)) ;

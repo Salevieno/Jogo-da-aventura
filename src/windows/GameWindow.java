@@ -25,8 +25,8 @@ public abstract class GameWindow
 	protected final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	protected final Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 11) ;
 	protected final Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-	protected final Color stdColor = Game.ColorPalette[9] ;
-	protected final Color selColor = Game.ColorPalette[3] ;
+	protected final Color stdColor = Game.colorPalette[9] ;
+	protected final Color selColor = Game.colorPalette[3] ;
 	protected final int border = 6 ;
 	protected final int padding = 4 ;
 	

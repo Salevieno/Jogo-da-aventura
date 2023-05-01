@@ -125,7 +125,7 @@ public class Player extends LiveBeing
 	public final static List<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public final static int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
-    public final static Color[] ClassColors = new Color[] {Game.ColorPalette[0], Game.ColorPalette[1], Game.ColorPalette[2], Game.ColorPalette[3], Game.ColorPalette[4]} ;
+    public final static Color[] ClassColors = new Color[] {Game.colorPalette[0], Game.colorPalette[1], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
     public final static Gif levelUpGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 170, false, false) ;
     
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Bestiary]
@@ -198,7 +198,7 @@ public class Player extends LiveBeing
 		bestiary = new BestiaryWindow() ;
 		equips = new Equip[4] ;	// 0: weapon, 1: shield, 2: armor, 3: arrow
 		spellPoints = 0 ;
-		color = Game.ColorPalette[12] ;
+		color = Game.colorPalette[12] ;
     	
 		collectLevel = new double[3] ;
 		storedGold = 0 ;
@@ -540,61 +540,13 @@ public class Player extends LiveBeing
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 		
-	public void acts(Pet pet, Point mousePos, SideBar sideBar)
+	private void keyboardActions(Pet pet)
 	{
-		
-		// I like to move it, move it!
-		if (actionIsAMove())
-		{
-			switch (currentAction)
-			{
-				case "Acima": case "W": setDir(Directions.up) ; break ;
-				case "Abaixo": case "S": setDir(Directions.down) ; break ;
-				case "Esquerda": case "A": setDir(Directions.left) ; break ;
-				case "Direita": case "D": setDir(Directions.right) ; break ;
-			}
-			
-			if (focusWindow != null)
-			{
-				if (!focusWindow.isOpen())
-				{
-					startMove() ;
-				}
-			}
-			else
-			{
-				startMove() ;
-			}
-			
-		}
-		
-		
-		// clicking icons
-		if (currentAction.equals("MouseLeftClick"))
-		{
-			sideBar.getIcons().forEach(icon ->
-			{
-				if (icon.ishovered(mousePos))
-				{
-					switch (icon.getName())
-					{
-						case "Settings":  settings.open() ; break ;
-						case "Bag": bag.open() ; break ;
-						case "QuestWindow": questWindow.open() ; break ;
-						case "QuestSkills": if (questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) mapWindow.open() ; break ;
-						case "FabWindow": fabWindow.open() ; break ;
-						case "AttWindow": attWindow.open() ; break ;
-						case "Pet": if (pet.isAlive()) pet.getAttWindow().open() ; break ;
-					}
-				}
-			});
-		}
-		
-		
-		// doing keyboard actions
+
 		if (currentAction.equals(ActionKeys[4]))
 		{
 			focusWindow = bag ;
+			// TODO bag.orderItems() ;
 			bag.open() ;
 		}
 		if (currentAction.equals(ActionKeys[5]))
@@ -649,6 +601,60 @@ public class Player extends LiveBeing
 			focusWindow = bestiary ;
 			bestiary.open() ;
 		}
+	}
+	
+	public void acts(Pet pet, Point mousePos, SideBar sideBar)
+	{
+		
+		// I like to move it, move it!
+		if (actionIsAMove())
+		{
+			switch (currentAction)
+			{
+				case "Acima": case "W": setDir(Directions.up) ; break ;
+				case "Abaixo": case "S": setDir(Directions.down) ; break ;
+				case "Esquerda": case "A": setDir(Directions.left) ; break ;
+				case "Direita": case "D": setDir(Directions.right) ; break ;
+			}
+			
+			if (focusWindow != null)
+			{
+				if (!focusWindow.isOpen())
+				{
+					startMove() ;
+				}
+			}
+			else
+			{
+				startMove() ;
+			}
+			
+		}
+		
+		
+		// clicking icons
+		if (currentAction.equals("MouseLeftClick"))
+		{
+			sideBar.getButtons().forEach(button ->
+			{
+				if (button.ishovered(mousePos))
+				{
+					switch (button.getName())
+					{
+						case "settings":  settings.open() ; break ;
+						case "bag": bag.open() ; break ;
+						case "quest": questWindow.open() ; break ;
+						case "map": if (questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) mapWindow.open() ; break ;
+						case "fab": fabWindow.open() ; break ;
+						case "player": attWindow.open() ; break ;
+						case "pet": if (pet.isAlive()) pet.getAttWindow().open() ; break ;
+					}
+				}
+			});
+		}
+		
+		
+		keyboardActions(pet) ;
 		
 		
 		// using spells
@@ -1094,7 +1100,7 @@ public class Player extends LiveBeing
 		// TODO
 		winAnimation.start(300, new Object[] {ItemsObtained}) ;
 	}
-	public void levelUp(Animation ani)
+	public void levelUp(Animation attIncAnimation)
 	{
 		double[] attIncrease = calcAttributesIncrease() ;
 		setLevel(level + 1) ;
@@ -1114,10 +1120,12 @@ public class Player extends LiveBeing
 		
 		((PlayerAttributesWindow) attWindow).activateIncAttButtons(attPoints) ;
 		
-		if (ani == null) { return ;}
+		Game.getAnimations()[4].start(levelUpGif.getDuration(), new Object[] {pos}) ;
+		
+		if (attIncAnimation == null) { return ;}
 		
 		// TODO
-		ani.start(600, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level, pos}) ;
+		attIncAnimation.start(600, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level}) ;
 	}
 	private double[] calcAttributesIncrease()
 	{
@@ -1266,7 +1274,7 @@ public class Player extends LiveBeing
 	
 	private void drawRange(DrawingOnPanel DP)
 	{
-		DP.DrawCircle(pos, (int)(2 * range), 2, null, Game.ColorPalette[job]) ;
+		DP.DrawCircle(pos, (int)(2 * range), 2, null, Game.colorPalette[job]) ;
 	}
 	private void drawEquips(Point pos, int job, int type, Scale scale, double angle, DrawingOnPanel DP)
 	{
@@ -1292,7 +1300,7 @@ public class Player extends LiveBeing
 	public void drawTimeBar(Creature creature, DrawingOnPanel DP)
 	{
 		String relPos = UtilS.RelPos(pos, creature.getPos()) ;
-		DrawTimeBar(relPos, Game.ColorPalette[9], DP) ;
+		DrawTimeBar(relPos, Game.colorPalette[9], DP) ;
 	}
 	public void display(Point pos, Scale scale, Directions direction, boolean showRange, DrawingOnPanel DP)
 	{
@@ -1303,7 +1311,7 @@ public class Player extends LiveBeing
 			DP.DrawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
 		}
 		
-		movingAni.display(direction, pos, angle, scale, DP) ;
+		movingAni.display(direction, pos, angle, new Scale(1,1), DP) ;
 		
 		if (questSkills.get(QuestSkills.dragonAura))
 		{

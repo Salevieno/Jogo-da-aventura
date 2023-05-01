@@ -29,7 +29,7 @@ public class Animation
 	}
 	
 	public TimeCounter getCounter() { return counter ;}
-	
+	public void activate() {isActive = true ;}
 	public void start(int duration, Object[] vars)
 	{
 		isActive = true ;
@@ -73,13 +73,13 @@ public class Animation
 		AtkResults atkResults = (AtkResults) vars[3] ;
 		int style = (int) vars[4] ;
 		Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
-		DP.DrawDamageAnimation(pos, atkResults, counter, style, Game.ColorPalette[6]) ;
+		DP.DrawDamageAnimation(pos, atkResults, counter, style, Game.colorPalette[6]) ;
 	}
 
 	private void winAnimation(Object[] vars, DrawingOnPanel DP)
 	{
 		String[] ItemsObtained = (String[]) vars[0] ;
-		Color textColor = Game.ColorPalette[8] ;
+		Color textColor = Game.colorPalette[8] ;
 		DP.winAnimation(counter, ItemsObtained, textColor) ;
 	}
 	
@@ -96,7 +96,7 @@ public class Animation
 
 		double[] attributesIncrease = (double[]) vars[1] ;
 		int playerLevel = (int) vars[2] ;
-		Color textColor = Game.ColorPalette[6] ;
+		Color textColor = Game.colorPalette[6] ;
 		
 		DP.levelUpAnimation(counter, attributesIncrease, playerLevel, textColor) ;
 	}
