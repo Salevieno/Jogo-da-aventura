@@ -23,7 +23,10 @@ public class SpellsTreeWindow extends GameWindow
 //	private Color textColor ;
 //	public List<GameIcon> spellBoxes ;
 //	private Dimension windowSize ;
-	
+
+	private static final Image noTabsImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTree.png") ;
+	private static final Image tab0Image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTreeTab0.png") ;
+	private static final Image tab1Image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTreeTab1.png") ;
 	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	private static final int[][] numberSpellsPerRow = new int[][] {{2, 3, 3, 3, 3}} ;
@@ -33,7 +36,7 @@ public class SpellsTreeWindow extends GameWindow
 	
 	public SpellsTreeWindow()
 	{
-		super("Árvore de magias", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTree.png"), 0, 0, 0, 1);
+		super("Árvore de magias", noTabsImage, 0, 1, 0, 1);
 //		this.spells = spells ;
 //		this.spellPoints = spellPoints ;
 		windowTopLeft = new Point((int)(0.1 * Game.getScreen().getSize().width), (int)(0.2 * Game.getScreen().getSize().height)) ;
@@ -41,6 +44,7 @@ public class SpellsTreeWindow extends GameWindow
 //		spellBoxes = new ArrayList<>() ;
 	}
 		
+	public void switchTo2Tabs() { numberTabs = 2 ;}
 	public void setSpells(List<Spell> spells) { this.spells = spells ; numberItems = spells.size() ;}	
 //	public void setSpellPoints(int spellPoints) { this.spellPoints = spellPoints;}
 	public boolean canAcquireSpell(int spellPoints) { return 0 < spellPoints & spells.get(item).getLevel() < spells.get(item).getMaxLevel() & spells.get(item).hasPreRequisitesMet() ;}
@@ -62,13 +66,24 @@ public class SpellsTreeWindow extends GameWindow
 	{
 		if (action == null) { return ;}
 		
-		if (action.equals(Player.ActionKeys[0]))
+		if (action.equals(Player.ActionKeys[1]))
 		{
 			itemUp() ;
 		}
-		if (action.equals(Player.ActionKeys[2]))
+		if (action.equals(Player.ActionKeys[3]))
 		{
 			itemDown() ;
+		}
+		if (1 <= numberTabs)
+		{
+			if (action.equals(Player.ActionKeys[0]))
+			{
+				tabDown() ;
+			}
+			if (action.equals(Player.ActionKeys[2]))
+			{
+				tabUp() ;
+			}
 		}
 	}
 	
@@ -96,6 +111,9 @@ public class SpellsTreeWindow extends GameWindow
 	
 	public void displaySpellsInfo(DrawingOnPanel DP)
 	{
+		if (spells == null) { return ;}
+		if (spells.get(item) == null) { return ;}
+		
 		double angle = DrawingOnPanel.stdAngle ;
 		Point pos = UtilG.Translate(windowTopLeft, 0, -40) ;
 		DP.DrawImage(spellInfo, pos, Align.topLeft) ;
@@ -135,11 +153,20 @@ public class SpellsTreeWindow extends GameWindow
 		
 		displaySpellsInfo(DP) ;
 
-		DP.DrawImage(image, windowTopLeft, angle, new Scale(1, 1), Align.topLeft) ;
+		if (numberTabs <= 1)
+		{
+			DP.DrawImage(image, windowTopLeft, angle, new Scale(1, 1), Align.topLeft) ;
+		}
+		else
+		{
+			Image displayImage = tab == 0 ? tab0Image : tab1Image ;
+			DP.DrawImage(displayImage, windowTopLeft, angle, new Scale(1, 1), Align.topLeft) ;
+		}
 		
 		Point titlePos = UtilG.Translate(windowTopLeft, size.width / 2, 6 + 9) ;
 		DP.DrawText(titlePos, Align.center, angle, name, largeFont, Game.colorPalette[9]);
 		
+		if (spells == null) { return ;}
 		
 		// display spells
 		for (int i = 0 ; i <= spells.size() - 1 ; i += 1)

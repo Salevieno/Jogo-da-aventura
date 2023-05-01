@@ -92,12 +92,6 @@ public class NPCs
 		    	
 		    	break ;
 			}
-			case master:
-			{				
-		    	window = new SpellsTreeWindow() ;
-
-				break ;
-			}
 			case alchemist:
 			{
 		    	List<Recipe> recipes = Game.getAllRecipes().subList(0, 39) ;
@@ -197,9 +191,8 @@ public class NPCs
 			}
 			case master:
 			{
-				((SpellsTreeWindow) window).setSpells(player.getSpells()) ;
-				
-				masterAction(player, player.getCurrentAction(), mousePos, (SpellsTreeWindow) window, DP) ;
+				player.getSpellsTreeWindow().setSpells(player.getSpells()) ;
+				masterAction(player, player.getCurrentAction(), mousePos, player.getSpellsTreeWindow(), DP) ;
 
 				break ;
 			}
@@ -375,6 +368,18 @@ public class NPCs
 	
 	public void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawingOnPanel DP)
 	{
+		
+		if (player.getLevel() == 50 & player.getProJob() == 0)
+		{
+			if (action == null) { return ;}
+
+			if (action.equals("Enter") | action.equals("MouseLeftClick"))
+			{
+				// TODO get pro job
+				player.setProJob(1) ;
+				player.getSpellsTreeWindow().switchTo2Tabs() ;
+			}			
+		}
 	
 		if (menu == 0) { return ;}
 
