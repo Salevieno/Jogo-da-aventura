@@ -232,6 +232,19 @@ public abstract class LiveBeing
 	public void incrementBattleActionCounters() {battleActionCounter.inc() ; displayDamage.inc() ;}
 	public void resetBattleActions() {battleActionCounter.reset() ; }
 	
+	public int totalPower()
+	{
+		// TODO consider life, dex and agi, special ba, element mult, mp with spells and items
+		double FPS = 200 / 3.0 ;
+		double maxPhyAtkPossible = BA.getPhyAtk().getTotal() ;
+		double maxMagAtkPossible = BA.getMagAtk().getTotal() ;
+		double maxDamagePossible = Math.max(maxPhyAtkPossible, maxMagAtkPossible) ;
+		double maxDPS = FPS * maxDamagePossible / battleActionCounter.getDuration() ;
+		int totalPower = (int) maxDPS ;
+		
+		return totalPower ;
+		
+	}
 	
 	public void resetCombo()
 	{

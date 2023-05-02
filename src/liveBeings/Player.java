@@ -47,6 +47,7 @@ import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
 import main.Game;
+import main.TextCategories;
 import maps.CityMap;
 import maps.Collectible;
 import maps.FieldMap;
@@ -920,7 +921,7 @@ public class Player extends LiveBeing
 	{
 		if (bag.isOpen())
 		{
-			bag.display(mousePos, Game.allText.get("Menus da mochila"), DP) ;
+			bag.display(mousePos, Game.allText.get(TextCategories.bagMenus), DP) ;
 		}
 		if (attWindow.isOpen())
 		{

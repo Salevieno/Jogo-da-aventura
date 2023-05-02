@@ -9,6 +9,7 @@ import java.util.List;
 
 import graphics.DrawingOnPanel;
 import main.Game;
+import main.TextCategories;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
@@ -17,7 +18,7 @@ public class SpellsBar
 {	
 	private static final Font titlefont = new Font("SansSerif", Font.BOLD, 10) ;
 	private static final Font font = new Font("SansSerif", Font.BOLD, 9) ;
-	private static final String title = Game.allText.get("Barra de habilidades")[0] ;
+	private static final String title = Game.allText.get(TextCategories.spellsBar)[0] ;
 	
 	private static final Image image = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "SpellsBar.png") ;
 	private static final Image slotImage = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "Slot.png") ;

@@ -65,8 +65,9 @@ public class Opening
      		GameButton.addToAllIconsList(button) ;
     	}
 
-    	Map<String, String[]> allText = UtilG.ReadTextFile(Game.getLanguage()) ;
-    	text = allText.get("* Novo jogo *") ;
+    	// TODO text
+//    	Map<TextCategories, String[]> allText = UtilG.ReadTextFile(Game.getLanguage()) ;
+//    	text = allText.get(TextCategories.newGame) ;
 		//Ani.SetAniVars(20, new Object[] {147, OpeningGif}) ;
 		//Ani.StartAni(20) ;
 	}

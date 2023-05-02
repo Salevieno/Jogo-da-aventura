@@ -10,6 +10,7 @@ import java.util.Arrays;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
 import main.Game;
+import main.TextCategories;
 import utilities.Align;
 import utilities.UtilG;
 
@@ -176,7 +177,7 @@ public class SettingsWindow extends GameWindow
 		Point textPos = new Point(pos.x + 25, pos.y  + 42) ;
 		int sx = image.getWidth(null) - 45 ;
 		int sy = font.getSize() + 4 ;
-		String[] text = Game.allText.get("Menu de opções") ;
+		String[] text = Game.allText.get(TextCategories.settings) ;
 		Color[] textColor = new Color[3 + Player.ActionKeys.length] ;
 		Arrays.fill(textColor, Game.colorPalette[5]) ;
 		textColor[item] = Game.colorPalette[3] ;

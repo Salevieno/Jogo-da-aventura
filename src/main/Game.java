@@ -96,7 +96,6 @@ public class Game extends JPanel
 	// TODO spells
 	// TODO nomes das criaturas
 	// TODO descrição dos itens
-	// TODO colocar categorias de texto num enum
 	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 
@@ -104,6 +103,7 @@ public class Game extends JPanel
 	public static final String CSVPath = ".\\csv\\";
 	public static final String ImagesPath = ".\\images\\";
 	public static final String MusicPath = ".\\music\\" ;
+	public static final String TextPathBR = "./Texto-PT-br.json" ;
 	public static final String MainFontName = "Comics" ;
 	
 	private JPanel mainPanel = this ;
@@ -115,7 +115,7 @@ public class Game extends JPanel
     
 	public static Color[] colorPalette ;	
 	public static int DayDuration ;
-    public static Map<String, String[]> allText ;	// All the text in the game
+    public static Map<TextCategories, String[]> allText ;
 	
 
 	private DrawingOnPanel DP ;
@@ -195,7 +195,7 @@ public class Game extends JPanel
 	private void loadAllText()
 	{
 		
-		JSONObject textData = UtilG.readJsonObject("./Texto-PT-br.json") ;		
+		JSONObject textData = UtilG.readJsonObject(TextPathBR) ;		
 		
 		Set<Object> keySet = textData.keySet() ;
 		Iterator<Object> iterator = keySet.iterator() ;
@@ -210,7 +210,7 @@ public class Game extends JPanel
 			{
 				listValues.add((String) listText.get(j)) ;
 			}
-			allText.put((String) key, listValues.toArray(new String[] {})) ;
+			allText.put(TextCategories.catFromBRName((String) key), listValues.toArray(new String[] {})) ;
 		}
 		
 	}
@@ -1152,7 +1152,7 @@ public class Game extends JPanel
     	sideBar = new SideBar(player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
     	bat = new Battle() ;
     	
-    	Pterodactile.setMessage(Game.allText.get("Pterodactile")) ;
+    	Pterodactile.setMessage(Game.allText.get(TextCategories.pterodactile)) ;
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno");

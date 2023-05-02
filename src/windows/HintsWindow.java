@@ -7,6 +7,7 @@ import java.awt.Point;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
 import main.Game;
+import main.TextCategories;
 import utilities.Align;
 import utilities.UtilG;
 
@@ -31,7 +32,7 @@ public class HintsWindow extends GameWindow
 	
 	public void display(Player player, DrawingOnPanel DP)
 	{
-		String[] text = Game.allText.get("Menu de dicas") ;
+		String[] text = Game.allText.get(TextCategories.hints) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
 		Point windowPos = new Point((int) (0.1 * Game.getScreen().getSize().width),
 				(int) (0.4 * Game.getScreen().getSize().height)) ;

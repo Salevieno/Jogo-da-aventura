@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sound.sampled.Clip;
@@ -215,6 +216,99 @@ public class GameMap
 
 	public boolean IsACity() { return (this instanceof CityMap) ;}
 	public boolean isAField() { return (this instanceof FieldMap) ;}
+	public boolean groundIsWalkable(Point pos, Elements superElem)
+	{
+
+		if (superElem != null) { if (superElem.equals(Elements.air)) { return true ;}}
+		
+ 		List<Collider> allColliders = allColliders() ;
+ 		for (Collider collider : allColliders)
+ 		{
+ 			if (pos.equals(collider.getPos())) { return false ;}
+ 		}
+		
+		return true ;
+		
+	}
+
+	public static GameMap[] inForest()
+	{
+		GameMap[] forestMaps = new GameMap[30] ;
+		GameMap[] allMaps = Game.getMaps() ;
+
+		for (int i = 0 ; i <= 30 - 1 ; i += 1)
+		{
+			forestMaps[i] = allMaps[i] ;
+		}
+		
+		return forestMaps ;
+	}
+	
+	public static GameMap[] inCave()
+	{
+		GameMap[] caveMaps = new GameMap[10] ;
+		GameMap[] allMaps = Game.getMaps() ;
+
+		for (int i = 0 ; i <= 10 - 1 ; i += 1)
+		{
+			caveMaps[i] = allMaps[i + 30] ;
+		}
+		
+		return caveMaps ;
+	}
+	
+	public static GameMap[] inIsland()
+	{
+		GameMap[] islandMaps = new GameMap[5] ;
+		GameMap[] allMaps = Game.getMaps() ;
+
+		for (int i = 0 ; i <= 5 - 1 ; i += 1)
+		{
+			islandMaps[i] = allMaps[i + 40] ;
+		}
+		
+		return islandMaps ;
+	}
+	
+	public static GameMap[] inVolcano()
+	{
+		GameMap[] volcanoMaps = new GameMap[10] ;
+		GameMap[] allMaps = Game.getMaps() ;
+
+		for (int i = 0 ; i <= 10 - 1 ; i += 1)
+		{
+			volcanoMaps[i] = allMaps[i + 45] ;
+		}
+		
+		return volcanoMaps ;
+	}
+	
+	public static GameMap[] inSnowland()
+	{
+		GameMap[] snowlandMaps = new GameMap[5] ;
+		GameMap[] allMaps = Game.getMaps() ;
+
+		for (int i = 0 ; i <= 5 - 1 ; i += 1)
+		{
+			snowlandMaps[i] = allMaps[i + 55] ;
+		}
+		
+		return snowlandMaps ;
+	}
+	
+	public static GameMap[] inSecretIsland()
+	{
+		GameMap[] secretIslandMaps = new GameMap[7] ;
+		GameMap[] allMaps = Game.getMaps() ;
+		
+		for (int i = 0 ; i <= 7 - 1 ; i += 1)
+		{
+			secretIslandMaps[i] = allMaps[i + 60] ;
+		}
+		
+		return secretIslandMaps ;
+	}
+	
 	
  	public List<Collider> allColliders()
  	{
@@ -304,20 +398,13 @@ public class GameMap
 			}
 		});
 	}
-	
-	public boolean groundIsWalkable(Point pos, Elements superElem)
-	{
 
-		if (superElem != null) { if (superElem.equals(Elements.air)) { return true ;}}
-		
- 		List<Collider> allColliders = allColliders() ;
- 		for (Collider collider : allColliders)
- 		{
- 			if (pos.equals(collider.getPos())) { return false ;}
- 		}
-		
-		return true ;
-		
-	}
+	
+	@Override
+	public String toString()
+	{
+		return "GameMap [name=" + name + ", continent=" + continent + ", connections=" + Arrays.toString(connections)
+				+ "]";
+	}	
 
 }

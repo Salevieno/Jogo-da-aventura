@@ -29,7 +29,7 @@ public class MapWindow extends GameWindow
 	{
 		int row = 0 ;
 		int col = 0 ;
-		switch(mapName)
+		switch (mapName)
 		{
 			case "City of the knights": row = 3 ; col = 0 ; break ;
 			case "City of the mages": row = 0 ; col = 2 ; break ;
@@ -72,27 +72,36 @@ public class MapWindow extends GameWindow
 		Scale scale = new Scale(0.1, 0.1) ;
 		Point offset = new Point(18 + border, 8 + border) ;
 		Point spacing = new Point ((int) (640 * scale.x), (int) (480 * scale.y)) ;
+		GameMap[] maps = null ;
 		
 		DP.DrawImage(image, windowPos, Align.topLeft) ;
-		for (GameMap map : Game.getMaps())
+		
+		switch (playerMap.getContinent())
 		{
-			Point cell = null ;
-			switch (map.getContinent())
-			{
-				case 0:
-				{
-					cell = getMapRowCol(map.getName()) ;
-				}
-			}
+			case 0: maps = GameMap.inForest() ; break ;
+			case 1: maps = GameMap.inCave() ; break ;
+			case 2: maps = GameMap.inIsland() ; break ;
+			case 3: maps = GameMap.inVolcano() ; break ;
+			case 4: maps = GameMap.inSnowland() ; break ;
+			case 5: maps = GameMap.inSecretIsland() ; break ;
+			default: break ;
+		}
+		
+		if (maps == null) { return ;}
+
+		for (GameMap map : maps)
+		{
+			Point cell = getMapRowCol(map.getName()) ;
 			
-			if (cell == null) { return ;}
+			if (cell == null) { continue ;}
 			
-			Point pos = UtilG.Translate(windowPos, offset.x + spacing.x * cell.x, size.height - offset.y - spacing.y * cell.y) ;
-			map.display(pos, scale, DP) ;
+			Point mapPos = UtilG.Translate(windowPos, offset.x + spacing.x * cell.x, size.height - offset.y - spacing.y * cell.y) ;
+			map.display(mapPos, scale, DP) ;
 			
 			if (map.equals(playerMap))
 			{
-				DP.DrawCircle(UtilG.Translate(pos, (int) (scale.x * size.width / 2), (int) (- scale.y * size.height / 2)), 5, 0, Game.colorPalette[6], null) ;
+				Point circlePos = UtilG.Translate(mapPos, (int) (scale.x * size.width / 2), (int) (- scale.y * size.height / 2)) ;
+				DP.DrawCircle(circlePos, 5, 0, Game.colorPalette[6], null) ;
 			}
 		}
 	}

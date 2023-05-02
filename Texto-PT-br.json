@@ -1,48 +1,9 @@
 {
-  "Novo jogo": [
-    "Qual o seu nome?",
-    "Qual o seu sexo?",
-    "Nível de ousadia:",
-    "(1) Baixo (2) Médio (3) Alto",
-    "Escolha sua classe:",
-    "Cavaleiro (0)",
-    "Mago (1)",
-    "Arqueiro (2)",
-    "Animal (3)",
-    "Ladrão (4)",
-    "Cavaleiros são poderosos guerreiros corpo-a-corpo. Eles tem grande ataque, poder e vitalidade e são os guerreiros mais fortes do reino.",
-    "Magos tem o maior poder mágico. Eles controlam os elementos e podem usar poderes sobrenaturais para manipular a magia e a vida.",
-    "Arqueiros são guerreiros especializados em luta à distÃ¢ncia. Eles usam poder físico combinado com o controle dos elementos.",
-    "Animais vivem em harmonia com a natureza e podem usufruir dos seus poderes. Eles tem grande poder sobre a vida e incrível agilidade.",
-    "Ladrões são os mais ágeis em todo o reino. Eles atacam cruelmente qualquer inimigo que cruze o seu caminho buscando poder e riqueza.",
-    "Loading..."
+  "tudo está bem": [
+    "tudo está bem"
   ],
 
-
-  "Classes": [
-    "Cavaleiro",
-    "Mago",
-    "Arqueiro",
-    "Animal",
-    "Ladrão"
-  ],
-
-
-  "ProClasses": [
-    "Lorde",
-    "Escudeiro",
-    "Arquimago",
-    "Curandeiro",
-    "Ranger",
-    "Elementalista",
-    "Rei da Floresta",
-    "Selvagem",
-    "Assassino",
-    "Mercenário"
-  ],
-
-
-  "Atributos": [
+  "atributos": [
     "Nível",
     "Vida",
     "Mana",
@@ -66,35 +27,116 @@
     "Água"
   ],
 
-
-  "Estatísticas do jogador": [
-    "Número de ataques físicos:",
-    "Número de habilidades usadas:",
-    "Número de defesas:",
-    "Dano físico causado:",
-    "Dano físico recebido:",
-    "Dano mágico causado:",
-    "Dano mágico recebido:",
-    "Dano físico defendido:",
-    "Dano mágico defendido:",
-    "Número de golpes acertados:",
-    "Número de golpes recebidos:",
-    "Número de esquivas:",
-    "Número de críticos:",
-    "Dano crítico causado:",
-    "Número de atordoamentos:",
-    "Número de bloqueios:",
-    "Número de sangramentos causados:",
-    "Dano de sangramento causado:",
-    "Dano de sangramento defendido:",
-    "Número de envenenamentos causados:",
-    "Dano de envenenamento total:",
-    "Dano de envenenamento defendido:",
-    "Número de silêncios causados:"
+  "menus da mochila": [
+    "Poções",
+    "Alquimia",
+    "Runas",
+    "Pet",
+    "Comida",
+    "Flechas",
+    "Equips",
+    "Itens",
+    "Fábrica",
+    "Quest"
   ],
 
+  "bestiário": [
+    "Bestiário",
+    "Nível",
+    "Vida",
+    "Exp",
+    "Ouro Itens"
+  ],
 
-  "Propriedades dos atributos especiais": [
+  "classes": [
+    "Cavaleiro",
+    "Mago",
+    "Arqueiro",
+    "Animal",
+    "Ladrão"
+  ],
+
+  "equipamentos": [
+    "Arma",
+    "Escudo",
+    "Armadura",
+    "Flecha"
+  ],
+
+  "menu de dicas": [
+    "Dica",
+    "Anterior",
+    "Próxima",
+    "(Enter para fechar)",
+    "Você pode abrir a janela de dicas a qualquer momento apertando 'H'.",
+    "Teste passar o mouse sobre as coisas.",
+    "Nas configurações padrão 'W' e 'S' movem os menus pra cima e para baixo e 'A' e 'D' para esquerda e direita. 'Esc' volta para o menu anterior.",
+    "Lembre-se de sempre ter comida reserva para não morrer de fome, principalmente em viagens longas!",
+    "Fale com o seu mestre a cada passagem de nível para ganhar novas habilidades ou fortalecer as que vc já possui.",
+    "Ao morrer vc perde 20% do seu dinheiro. Para evitar perdê-lo vc pode guardar seu dinheiro no banco pagando uma taxa de 1% do valor depositado e 1% novamente para retirar.",
+    "Compre equipamentos tendo em vista que formar um set completo te dá 20% de bônus nas propriedades dos equipamentos. Vc tambm pode fabricar seu próprio set!",
+    "Para aprender quais os ingredientes necessários para fabricar itens e equipamentos há um livro de fabricação que pode ser obtido atravs de quest.",
+    "Cansado de se perder andando por aí? Cada continente tem um mapa que está com um npc de quest ;).",
+    "Quer um companheiro de jogo? Faça a quest do pet! Seu pet te ajudará nas batalhas e poderá usar poções e equipamentos, só não esqueça que ele tambm precisa comer!",
+    "A forja pode não fazer muita diferença em níveis baixos, mas acredite, faz toda a diferença em altos níveis. Entretanto, tenha cuidado! Se o equipamento se quebrar durante a forja ele será perdido.",
+    "Forjar armas para níveis mais altos requer runas de ataque de níveis mais altos. Forjar equipamentos requer runas de defesa. Forjar equipamentos e armas especiais requer runas especiais!",
+    "Fabricar permite obter itens úteis e equipamentos que provem bônus especiais, como vida extra e maior ataque crítico. Muitos desses equipamentos só podem ser obtidos atravs de fabricação.",
+    "Esferas elementais são raras, mas podem ser usadas para alterar o elemento da sua arma e equipamentos no npc Elemental. Armas e equipamentos elementais aumentam o seu dano causado e reduzem o seu dano recebido quando usados contra as criaturas certas.",
+    "Se todos os seus equipamentos tiverem o mesmo elemento, ele se torna o seu superelemento. Cada superelemento te dá um poder especial!"
+  ],
+
+  "novo jogo": [
+    "Qual o seu nome?",
+    "Qual o seu sexo?",
+    "Nível de ousadia:",
+    "(1) Baixo (2) Médio (3) Alto",
+    "Escolha sua classe:",
+    "Cavaleiro (0)",
+    "Mago (1)",
+    "Arqueiro (2)",
+    "Animal (3)",
+    "Ladrão (4)",
+    "Cavaleiros são poderosos guerreiros corpo-a-corpo. Eles tem grande ataque, poder e vitalidade e são os guerreiros mais fortes do reino.",
+    "Magos tem o maior poder mágico. Eles controlam os elementos e podem usar poderes sobrenaturais para manipular a magia e a vida.",
+    "Arqueiros são guerreiros especializados em luta à distÃ¢ncia. Eles usam poder físico combinado com o controle dos elementos.",
+    "Animais vivem em harmonia com a natureza e podem usufruir dos seus poderes. Eles tem grande poder sobre a vida e incrível agilidade.",
+    "Ladrões são os mais ágeis em todo o reino. Eles atacam cruelmente qualquer inimigo que cruze o seu caminho buscando poder e riqueza.",
+    "Loading..."
+  ],
+
+  "menu de opções": [
+    "Música:",
+    "Efeitos sonoros:",
+    "Mostrar alcance:",
+    "Tela de atributos:",
+    "Animação do dano:",
+    "Controles:",
+    "Seleção para cima:",
+    "Seleção para a esquerda:",
+    "Seleção para baixo:",
+    "Seleção para a direita:",
+    "Mochila:",
+    "Tela do personagem:",
+    "Livro de fabricação:",
+    "Mapa:",
+    "Tela do pet:",
+    "Menu de opções:",
+    "Menu de quests:",
+    "Menu de dicas:",
+    "Montar:",
+    "Tenda:",
+    "Bestiário:"
+  ],
+
+  "mensagem das placas": [
+    "Bem vindo à cidade dos cavaleiros! Ao sul fica a cidade dos ladrões. Ao sudoeste fica a cidade dos magos. Ao leste fica a cidade dos arqueiros. Ao nordeste fica a cidade dos animais.",
+    "Bem vindo à cidade dos magos! Ao oeste fica a cidade dos ladrões. Ao noroeste fica a cidade dos cavaleiros. Ao norte ficam as cidades dos arqueiros e dos animais.",
+    "Bem vindo à cidade dos arqueiros! Ao sudoeste fica a cidade dos ladrões. Ao oeste fica a cidade dos cavaleiros. Ao sul fica a cidade dos magos. Ao norte fica a cidade dos animais.",
+    "Bem vindo à cidade dos animais! Ao sudoeste ficam as cidades dos ladrões e dos cavaleiros. Ao sul ficam as cidades dos magos e dos arqueiros.",
+    "Bem vindo à cidade dos ladrões! Ao norte fica a cidade dos cavaleiros. Ao leste fica a cidade dos magos. Ao nordeste ficam as cidades dos arqueiros e dos animais."
+  ],
+
+  "propriedades dos atributos especiais": [
     "Chance do efeito",
     "Ataque",
     "Resistência",
@@ -104,32 +146,35 @@
     "Duração"
   ],
 
+  "barra de magias": [
+    "Magias"
+  ],
 
-  "Coleta": [
-    "Coletando",
-    "frutinha",
-    "erva",
-    "madeira",
-    "metal",
-    "Você coletou",
-    "Tente novamente!",
-    "Você precisa aumentar seu nível de coleta para coletar aqui!"
+  "janela do jogador": [
+    "Bas.",
+    "Esp.",
+    "Est."
+  ],
+
+  "proClasses": [
+    "Lorde",
+    "Escudeiro",
+    "Arquimago",
+    "Curandeiro",
+    "Ranger",
+    "Elementalista",
+    "Rei da Floresta",
+    "Selvagem",
+    "Assassino",
+    "Mercenário"
+  ],
+
+  "pterodactile": [
+    "Alto lá, viajante! Nessa terra há um dragão!",
+    "Pq estou te dizendo isso? Pq sou um dinossauro, é claro, e dinossauros são legais!"
   ],
 
 
-  "Vitória": [
-    "Parabéns, você passou de nível!",
-    "Parabéns, você venceu!",
-    "Você obteve:"
-  ],
-
-
-  "Equipamentos": [
-    "Arma",
-    "Escudo",
-    "Armadura",
-    "Flecha"
-  ],
 
 
   "DoutorFalas": [
@@ -444,29 +489,45 @@
   ],
 
 
-  "Tesouros": [
-    "Parabéns, você coletou um tesouro!",
-    "Você obteve:"
+
+
+
+
+
+
+
+
+  "Estatísticas do jogador": [
+    "Número de ataques físicos:",
+    "Número de habilidades usadas:",
+    "Número de defesas:",
+    "Dano físico causado:",
+    "Dano físico recebido:",
+    "Dano mágico causado:",
+    "Dano mágico recebido:",
+    "Dano físico defendido:",
+    "Dano mágico defendido:",
+    "Número de golpes acertados:",
+    "Número de golpes recebidos:",
+    "Número de esquivas:",
+    "Número de críticos:",
+    "Dano crítico causado:",
+    "Número de atordoamentos:",
+    "Número de bloqueios:",
+    "Número de sangramentos causados:",
+    "Dano de sangramento causado:",
+    "Dano de sangramento defendido:",
+    "Número de envenenamentos causados:",
+    "Dano de envenenamento total:",
+    "Dano de envenenamento defendido:",
+    "Número de silêncios causados:"
   ],
 
 
-  "Menus da mochila": [
-    "Poções",
-    "Alquimia",
-    "Runas",
-    "Pet",
-    "Comida",
-    "Flechas",
-    "Equips",
-    "Itens",
-    "Fábrica",
-    "Quest"
-  ],
-
-
-  "Pterodactile": [
-    "Alto lá, viajante! Nessa terra há um dragão!",
-    "Pq estou te dizendo isso? Pq sou um dinossauro, é claro, e dinossauros são legais!"
+  "Menu de quest": [
+    "Quests",
+    "Criaturas",
+    "Itens"
   ],
 
 
@@ -480,87 +541,36 @@
   ],
 
 
-  "Mensagem das placas": [
-    "Bem vindo à cidade dos cavaleiros! Ao sul fica a cidade dos ladrões. Ao sudoeste fica a cidade dos magos. Ao leste fica a cidade dos arqueiros. Ao nordeste fica a cidade dos animais.",
-    "Bem vindo à cidade dos magos! Ao oeste fica a cidade dos ladrões. Ao noroeste fica a cidade dos cavaleiros. Ao norte ficam as cidades dos arqueiros e dos animais.",
-    "Bem vindo à cidade dos arqueiros! Ao sudoeste fica a cidade dos ladrões. Ao oeste fica a cidade dos cavaleiros. Ao sul fica a cidade dos magos. Ao norte fica a cidade dos animais.",
-    "Bem vindo à cidade dos animais! Ao sudoeste ficam as cidades dos ladrões e dos cavaleiros. Ao sul ficam as cidades dos magos e dos arqueiros.",
-    "Bem vindo à cidade dos ladrões! Ao norte fica a cidade dos cavaleiros. Ao leste fica a cidade dos magos. Ao nordeste ficam as cidades dos arqueiros e dos animais."
+  "Tesouros": [
+    "Parabéns, você coletou um tesouro!",
+    "Você obteve:"
   ],
 
 
-  "Menu de quest": [
-    "Quests",
-    "Criaturas",
-    "Itens"
+  "Coleta": [
+    "Coletando",
+    "frutinha",
+    "erva",
+    "madeira",
+    "metal",
+    "Você coletou",
+    "Tente novamente!",
+    "Você precisa aumentar seu nível de coleta para coletar aqui!"
   ],
 
 
-  "Menu de opções": [
-    "Música:",
-    "Efeitos sonoros:",
-    "Mostrar alcance:",
-    "Tela de atributos:",
-    "Animação do dano:",
-    "Controles:",
-    "Seleção para cima:",
-    "Seleção para a esquerda:",
-    "Seleção para baixo:",
-    "Seleção para a direita:",
-    "Mochila:",
-    "Tela do personagem:",
-    "Livro de fabricação:",
-    "Mapa:",
-    "Tela do pet:",
-    "Menu de opções:",
-    "Menu de quests:",
-    "Menu de dicas:",
-    "Montar:",
-    "Tenda:",
-    "Bestiário:"
-  ],
-
-
-  "Menu de dicas": [
-    "Dica",
-    "Anterior",
-    "Próxima",
-    "(Enter para fechar)",
-    "Você pode abrir a janela de dicas a qualquer momento apertando 'H'.",
-    "Teste passar o mouse sobre as coisas.",
-    "Nas configurações padrão 'W' e 'S' movem os menus pra cima e para baixo e 'A' e 'D' para esquerda e direita. 'Esc' volta para o menu anterior.",
-    "Lembre-se de sempre ter comida reserva para não morrer de fome, principalmente em viagens longas!",
-    "Fale com o seu mestre a cada passagem de nível para ganhar novas habilidades ou fortalecer as que vc já possui.",
-    "Ao morrer vc perde 20% do seu dinheiro. Para evitar perdê-lo vc pode guardar seu dinheiro no banco pagando uma taxa de 1% do valor depositado e 1% novamente para retirar.",
-    "Compre equipamentos tendo em vista que formar um set completo te dá 20% de bônus nas propriedades dos equipamentos. Vc tambm pode fabricar seu próprio set!",
-    "Para aprender quais os ingredientes necessários para fabricar itens e equipamentos há um livro de fabricação que pode ser obtido atravs de quest.",
-    "Cansado de se perder andando por aí? Cada continente tem um mapa que está com um npc de quest ;).",
-    "Quer um companheiro de jogo? Faça a quest do pet! Seu pet te ajudará nas batalhas e poderá usar poções e equipamentos, só não esqueça que ele tambm precisa comer!",
-    "A forja pode não fazer muita diferença em níveis baixos, mas acredite, faz toda a diferença em altos níveis. Entretanto, tenha cuidado! Se o equipamento se quebrar durante a forja ele será perdido.",
-    "Forjar armas para níveis mais altos requer runas de ataque de níveis mais altos. Forjar equipamentos requer runas de defesa. Forjar equipamentos e armas especiais requer runas especiais!",
-    "Fabricar permite obter itens úteis e equipamentos que provem bônus especiais, como vida extra e maior ataque crítico. Muitos desses equipamentos só podem ser obtidos atravs de fabricação.",
-    "Esferas elementais são raras, mas podem ser usadas para alterar o elemento da sua arma e equipamentos no npc Elemental. Armas e equipamentos elementais aumentam o seu dano causado e reduzem o seu dano recebido quando usados contra as criaturas certas.",
-    "Se todos os seus equipamentos tiverem o mesmo elemento, ele se torna o seu superelemento. Cada superelemento te dá um poder especial!"
-  ],
-
-
-  "Barra de habilidades": [
-    "Habil."
-  ],
-
-
-  "Janela do jogador": [
-    "Bas.",
-    "Esp.",
-    "Est."
-  ],
-
-
-  "Bestiário": [
-    "Bestiário",
-    "Nível",
-    "Vida",
-    "Exp",
-    "Ouro Itens"
+  "Vitória": [
+    "Parabéns, você passou de nível!",
+    "Parabéns, você venceu!",
+    "Você obteve:"
   ]
+
+
+
+
+
+
+
+
+
 }

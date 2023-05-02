@@ -18,6 +18,7 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import main.AtkResults;
 import main.Game;
+import main.TextCategories;
 import maps.FieldMap;
 import maps.GameMap;
 import screen.Sky;
@@ -472,7 +473,7 @@ public class DrawingOnPanel
 		Point pos = new Point((int)(0.45 * screenSize.width), (int)(0.2 * screenSize.height)) ;
 		Scale scale = new Scale(1, 1) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String[] attText = Game.allText.get("Atributos") ;
+		String[] attText = Game.allText.get(TextCategories.attributes) ;
 		
 		DrawImage(menuWindow, pos, scale, Align.topLeft) ;
 		Point textPos = UtilG.Translate(pos, 5, font.getSize() + 5) ;

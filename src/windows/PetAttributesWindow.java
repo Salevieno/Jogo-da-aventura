@@ -11,6 +11,7 @@ import graphics.DrawingOnPanel;
 import items.Equip;
 import liveBeings.Pet;
 import main.Game;
+import main.TextCategories;
 import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
@@ -41,7 +42,7 @@ public class PetAttributesWindow extends AttributesWindow
 		Color[] colorPalette = Game.colorPalette ;
 		Color textColor = colorPalette[9] ;
 		
-		String[] attText = Game.allText.get("Atributos") ;		
+		String[] attText = Game.allText.get(TextCategories.attributes) ;		
 		Point namePos = UtilG.Translate(windowPos, size.width / 2, 14) ;
 		Point levelPos = UtilG.Translate(windowPos, size.width / 2, 30) ;
 		DP.DrawText(namePos, Align.center, angle, pet.getName(), namefont, textColor) ;		

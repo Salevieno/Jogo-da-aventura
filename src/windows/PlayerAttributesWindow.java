@@ -17,6 +17,7 @@ import graphics.DrawingOnPanel;
 import items.Equip;
 import liveBeings.Player;
 import main.Game;
+import main.TextCategories;
 import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
@@ -111,10 +112,10 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		double angle = DrawingOnPanel.stdAngle ;
 
-		String[] classesText = Game.allText.get("Classes") ;
-		String[] proClassesText = Game.allText.get("ProClasses") ;
-		String[] attText = Game.allText.get("Atributos") ;
-		String[] equipsText = Game.allText.get("Equipamentos") ;
+		String[] classesText = Game.allText.get(TextCategories.classes) ;
+		String[] proClassesText = Game.allText.get(TextCategories.proclasses) ;
+		String[] attText = Game.allText.get(TextCategories.attributes) ;
+		String[] equipsText = Game.allText.get(TextCategories.equipments) ;
 		Color textColor = colorPalette[9] ;
 		
 		Image userImage = player.getMovingAni().idleGif ;
@@ -195,6 +196,9 @@ public class PlayerAttributesWindow extends AttributesWindow
 		String critValue = attText[9] + ": " + UtilG.Round(100 * player.getBA().TotalCritAtkChance(), 1) + "%" ;
 		DP.DrawImage(critIcon, UtilG.Translate(windowPos, 31, 333), new Scale(1, 1), Align.center) ;
 		DP.DrawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
+
+		Point powerPos = UtilG.Translate(windowPos, 230, 200) ;
+		DP.DrawText(powerPos, Align.centerLeft, angle, String.valueOf(player.totalPower()), font, colorPalette[6]) ;	
 		
 		//	Collecting
 		DP.DrawImage(collectIcons[0], UtilG.Translate(windowPos, 195, 257), new Scale(1, 1), Align.center) ;
@@ -231,9 +235,9 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		Color textColor = colorPalette[9] ;
 		
-		String[] attText = Game.allText.get("Atributos") ;
+		String[] attText = Game.allText.get(TextCategories.attributes) ;
 		
-		String[] specialAttrPropText = Game.allText.get("Propriedades dos atributos especiais") ;
+		String[] specialAttrPropText = Game.allText.get(TextCategories.specialAttributesProperties) ;
 		int L = size.width ;
 		double sx = 0.15 * L ;
 		double sy = 1.8 * font.getSize() ;
@@ -304,7 +308,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 
-		String[] tabsText = Game.allText.get("Janela do jogador") ;
+		String[] tabsText = Game.allText.get(TextCategories.playerWindow) ;
 		Color[] colorPalette = Game.colorPalette ;
 		Color[] tabColor = new Color[] {colorPalette[7], colorPalette[7], colorPalette[7]} ;
 		Color[] tabTextColor = new Color[] {colorPalette[5], colorPalette[5], colorPalette[5]} ;

@@ -11,6 +11,7 @@ import graphics.DrawingOnPanel;
 import liveBeings.CreatureType;
 import liveBeings.Player;
 import main.Game;
+import main.TextCategories;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
@@ -42,7 +43,7 @@ public class BestiaryWindow extends GameWindow
 	{
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String[] text = Game.allText.get("Besti�rio") ;
+		String[] text = Game.allText.get(TextCategories.bestiary) ;
 		Color textColor = Game.colorPalette[9] ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
