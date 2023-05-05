@@ -499,28 +499,30 @@
 
   "Estatísticas do jogador": [
     "Número de ataques físicos:",
-    "Número de habilidades usadas:",
+    "Número de magias usadas:",
     "Número de defesas:",
-    "Dano físico causado:",
-    "Dano físico recebido:",
-    "Dano mágico causado:",
-    "Dano mágico recebido:",
-    "Dano físico defendido:",
-    "Dano mágico defendido:",
     "Número de golpes acertados:",
     "Número de golpes recebidos:",
     "Número de esquivas:",
     "Número de críticos:",
-    "Dano crítico causado:",
     "Número de atordoamentos:",
     "Número de bloqueios:",
     "Número de sangramentos causados:",
+    "Número de envenenamentos causados:",
+    "Número de silêncios causados:",
+    "Dano físico causado:",
+    "Dano físico recebido:",
+    "Dano físico defendido:",
+    "Dano mágico causado:",
+    "Dano mágico recebido:",
+    "Dano mágico defendido:",
+    "Dano crítico causado:",
     "Dano de sangramento causado:",
     "Dano de sangramento defendido:",
-    "Número de envenenamentos causados:",
     "Dano de envenenamento total:",
     "Dano de envenenamento defendido:",
-    "Número de silêncios causados:"
+    "Dano físico máximo causado:",
+    "Dano mágico máximo causado:"
   ],
 
 
@@ -564,13 +566,4 @@
     "Parabéns, você venceu!",
     "Você obteve:"
   ]
-
-
-
-
-
-
-
-
-
 }
