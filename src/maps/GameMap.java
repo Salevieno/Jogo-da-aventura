@@ -23,7 +23,7 @@ import utilities.UtilG;
 public class GameMap 
 {
 	private String name ;
-	private int continent ;
+	private Continents continent ;
 	private int[] connections ;
 	private Image image ;
 	private Clip music ;
@@ -38,10 +38,10 @@ public class GameMap
 	
 	private static final Image beachGif = UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map2_beach.gif") ;
 	
-	public GameMap(String Name, int Continent, int[] Connections, Image image, Clip music, List<Building> building, List<NPCs> npc)
+	public GameMap(String Name, Continents continent, int[] Connections, Image image, Clip music, List<Building> building, List<NPCs> npc)
 	{
 		this.name = Name ;
-		this.continent = Continent ;
+		this.continent = continent ;
 		this.image = image ;
 		this.music = music ;
 		this.buildings = building ;
@@ -53,7 +53,7 @@ public class GameMap
 	}
 
 	public String getName() {return name ;}
-	public int getContinent() {return continent ;}
+	public Continents getContinent() {return continent ;}
 	public Image getimage() {return image ;}
 	public Clip getMusic() { return music ;}
 //	public String[][] getType() {return type ;}
@@ -64,7 +64,7 @@ public class GameMap
 	public List<Building> getBuildings() {return buildings ;}
 	public Continents getContinentName(Player player)
 	{ 
-		return Continents.getAll()[continent + 1] ;
+		return Continents.getAll()[continent.ordinal() + 1] ;
 	}
 	
 	public void addGroundType (GroundType newGroundType) { groundTypes.add(newGroundType) ;}
@@ -93,7 +93,7 @@ public class GameMap
  	public void initializeGroundTypes(int SkyHeight, Dimension screenDim)
  	{
  		groundTypes = new ArrayList<>() ;
-		if (continent == 0)
+		if (continent.equals(Continents.forest))
 		{
 			if (name.equals("City of archers"))
 			{

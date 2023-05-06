@@ -76,7 +76,7 @@ public class MapWindow extends GameWindow
 		
 		DP.DrawImage(image, windowPos, Align.topLeft) ;
 		
-		switch (playerMap.getContinent())
+		switch (playerMap.getContinent().ordinal())
 		{
 			case 0: maps = GameMap.inForest() ; break ;
 			case 1: maps = GameMap.inCave() ; break ;

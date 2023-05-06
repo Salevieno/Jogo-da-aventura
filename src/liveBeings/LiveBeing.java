@@ -15,6 +15,7 @@ import graphics.DrawingOnPanel;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Game;
+import maps.Continents;
 import maps.GameMap;
 import maps.GroundType;
 import maps.GroundTypes;
@@ -34,7 +35,6 @@ public abstract class LiveBeing
 	protected int job ;
 	protected int proJob ;
 	protected int level;
-	//private int continent ;
 	protected GameMap map ;
 	protected Point pos ;						// bottomCenter of the liveBeing
 	protected Directions dir ;					// direction of the movement
@@ -117,7 +117,7 @@ public abstract class LiveBeing
 	public int getLevel() {return level ;}
 	public int getJob() {return job ;}
 	public int getProJob() {return proJob ;}
-	public int getContinent() {return map.getContinent() ;}
+	public Continents getContinent() {return map.getContinent() ;}
 	public GameMap getMap() {return map ;}
 	public Directions getDir() {return dir ;}
 	public LiveBeingStates getState() {return state ;}

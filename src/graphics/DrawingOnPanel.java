@@ -19,6 +19,7 @@ import liveBeings.Player;
 import main.AtkResults;
 import main.Game;
 import main.TextCategories;
+import maps.Continents;
 import maps.FieldMap;
 import maps.GameMap;
 import screen.Sky;
@@ -351,17 +352,20 @@ public class DrawingOnPanel
 	
 	public void DrawFullMap(Point playerPos, GameMap map, Sky sky)
 	{
-		if ( !map.getName().contains("Cave") ) { sky.display(this) ;}
+		if ( !map.getContinent().equals(Continents.cave) ) { sky.display(this) ;}
+		
 		map.display(this) ;
 		map.displayElements(playerPos, this) ;
 		map.displayBuildings(playerPos, Arrays.asList(Game.getMaps()).indexOf(map), this) ;
 		map.displayNPCs(this) ;
 		map.displayGroundTypes(this) ;
+		
 		if (map instanceof FieldMap)
 		{
 			FieldMap fm = (FieldMap) map ;
 			fm.displayCollectibles(this) ;
 		}
+		// TODO tudo está bem
 		DrawTime(sky) ;
 	}
 

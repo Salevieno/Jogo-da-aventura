@@ -70,6 +70,7 @@ import liveBeings.PlayerJobs;
 import liveBeings.Pterodactile;
 import liveBeings.Spell;
 import maps.CityMap;
+import maps.Continents;
 import maps.FieldMap;
 import maps.GameMap;
 import maps.GroundType;
@@ -481,7 +482,7 @@ public class Game extends JPanel
 		for (int id = 0 ; id <= cityMap.length - 1 ; id += 1)
 		{
 			String name = input.get(id)[0] ;
-			int continent = Integer.parseInt(input.get(id)[1]) ;
+			Continents continent = Continents.getAll()[Integer.parseInt(input.get(id)[1])] ;
 			int[] connections = new int[] {
 											Integer.parseInt(input.get(id)[2]),
 											Integer.parseInt(input.get(id)[3]),
@@ -572,7 +573,7 @@ public class Game extends JPanel
 			
 			if (id == 34 | id == 54) { mod += 1 ;}
 			
-			int continent = Integer.parseInt(input.get(id)[1]) ;
+			Continents continent = Continents.getAll()[Integer.parseInt(input.get(id)[1])] ;
 			int collectibleLevel = Integer.parseInt(input.get(id)[2]) ;
 			int berryDelay = Integer.parseInt(input.get(id)[3]) ;
 			int herbDelay = Integer.parseInt(input.get(id)[4]) ;
@@ -655,7 +656,7 @@ public class Game extends JPanel
 		for (int id = 0 ; id <= specialMaps.length - 1 ; id += 1)
 		{
 			String name = input.get(id)[0] ;
-			int continent = Integer.parseInt(input.get(id)[1]) ;
+			Continents continent = Continents.getAll()[Integer.parseInt(input.get(id)[1])] ;
 			int[] connections = new int[] {
 											Integer.parseInt(input.get(id)[2]),
 											Integer.parseInt(input.get(id)[3]),

@@ -23,7 +23,7 @@ public class FieldMap extends GameMap
 	private int level ;
 	private int[] collectibleDelay ;
 	
-	public FieldMap(String name, int continent, int[] connections, Image image, Clip music, int collectibleLevel, int[] collectibleDelay, int[] creatureTypeIDs, List<NPCs> npcs)
+	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, int[] collectibleDelay, int[] creatureTypeIDs, List<NPCs> npcs)
 	{
 		super(name, continent, connections, image, music, null, npcs) ;
 		this.level = collectibleLevel ;
