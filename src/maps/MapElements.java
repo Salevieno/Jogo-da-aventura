@@ -9,6 +9,7 @@ import components.Collider;
 import graphics.DrawingOnPanel;
 import utilities.Align;
 import utilities.Scale;
+import utilities.UtilG;
 
 public class MapElements
 {
@@ -45,9 +46,18 @@ public class MapElements
 	public void setName(String N) {name = N ;}
 	public void setPos(Point P) {pos = P ;}
 	public void setImage(Image I) {image = I ;}
+	
+	private boolean playerIsBehind(Point playerPos) { return UtilG.isInside(playerPos, pos, UtilG.getSize(image)) ;}
 
-	public void display(DrawingOnPanel DP)
+	public void display(Point playerPos, DrawingOnPanel DP)
 	{
+		if (playerIsBehind(playerPos))
+		{
+			DP.DrawImage(image, pos, DrawingOnPanel.stdAngle, new Scale(1, 1), false, false, Align.topLeft, 0.5) ;
+			
+			return ;
+		}
+		
 		DP.DrawImage(image, pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.topLeft) ;
 	}
 }

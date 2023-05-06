@@ -353,7 +353,7 @@ public class DrawingOnPanel
 	{
 		if ( !map.getName().contains("Cave") ) { sky.display(this) ;}
 		map.display(this) ;
-		map.displayElements(this) ;
+		map.displayElements(playerPos, this) ;
 		map.displayBuildings(playerPos, Arrays.asList(Game.getMaps()).indexOf(map), this) ;
 		map.displayNPCs(this) ;
 		map.displayGroundTypes(this) ;

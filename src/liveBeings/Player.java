@@ -441,7 +441,7 @@ public class Player extends LiveBeing
 		
 		Point newPos = CalcNewPos() ;
 		
-		if (!Game.getScreen().posIsInMap(newPos)) {	moveToNewMap() ; return ;}
+		if (!Game.getScreen().posIsInMap(newPos)) {	moveToNewMap(pet) ; return ;}
 		
 		if (!map.groundIsWalkable(newPos, elem[4])) { return ;}
 		
@@ -449,7 +449,7 @@ public class Player extends LiveBeing
 		
 	}
 	
-	private void moveToNewMap()
+	private void moveToNewMap(Pet pet)
 	{
 		
 		int[] screenBorder = Game.getScreen().getBorders() ;
@@ -492,6 +492,9 @@ public class Player extends LiveBeing
 		GameMap newMap = Game.getMaps()[newMapID] ;
 		setMap(newMap) ;
 		setPos(newPos) ;
+		
+		if (pet != null) { pet.setPos(newPos) ;}
+		
 		if (newMap instanceof CityMap) { closestCreature = null ; opponent = null ;}
 		
 	}

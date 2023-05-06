@@ -364,11 +364,11 @@ public class GameMap
  		}
  	}
  	
- 	public void displayElements(DrawingOnPanel DP)
+ 	public void displayElements(Point playerPos, DrawingOnPanel DP)
  	{ 		
  		if (mapElems == null) { return ;}
  		
- 		mapElems.forEach(mapElem -> mapElem.display(DP)) ;
+ 		mapElems.forEach(mapElem -> mapElem.display(playerPos, DP)) ;
  	}
  	
  	public void displayBuildings(Point playerPos, int cityID, DrawingOnPanel DP)

@@ -1,7 +1,11 @@
-/testing/
-/windows/
-/maps/
+/liveBeings/
 /main/
+/maps/
+/screen/
+/simulations/
+/test/
+/testing/
+/utilities/
+/windows/
 /components/
 /graphics/
-/liveBeings/
