@@ -76,14 +76,14 @@ public class MapWindow extends GameWindow
 		
 		DP.DrawImage(image, windowPos, Align.topLeft) ;
 		
-		switch (playerMap.getContinent().ordinal())
+		switch (playerMap.getContinent())
 		{
-			case 0: maps = GameMap.inForest() ; break ;
-			case 1: maps = GameMap.inCave() ; break ;
-			case 2: maps = GameMap.inIsland() ; break ;
-			case 3: maps = GameMap.inVolcano() ; break ;
-			case 4: maps = GameMap.inSnowland() ; break ;
-			case 5: maps = GameMap.inSecretIsland() ; break ;
+			case forest: maps = GameMap.inForest() ; break ;
+			case cave: maps = GameMap.inCave() ; break ;
+			case island: maps = GameMap.inIsland() ; break ;
+			case volcano: maps = GameMap.inVolcano() ; break ;
+			case snowland: maps = GameMap.inSnowland() ; break ;
+			case special: maps = GameMap.inSpecial() ; break ;
 			default: break ;
 		}
 		

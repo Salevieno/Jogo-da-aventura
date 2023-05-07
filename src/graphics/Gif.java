@@ -1,11 +1,13 @@
 package graphics;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 
 import main.Game;
 import main.MainGame3_4;
 import utilities.Align;
+import utilities.UtilG;
 
 public class Gif
 {
@@ -36,6 +38,7 @@ public class Gif
 	public boolean isStarting() { return (timeCounter == 0) ;}
 	public boolean isDonePlaying() { return (timeCounter == duration) ;}	
 	public boolean isPlaying() { return (0 < timeCounter & !isDonePlaying()) ;}
+	public Dimension size() { return UtilG.getSize(image) ;}
 	
 	public void play(Point pos, Align alignment, DrawingOnPanel DP)
 	{

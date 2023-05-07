@@ -82,6 +82,7 @@ import screen.SideBar;
 import screen.Sky;
 import simulations.PlayerEvolutionSimulation;
 import utilities.Align;
+import utilities.Directions;
 import utilities.Elements;
 import utilities.GameStates;
 import utilities.Scale;
@@ -249,7 +250,7 @@ public class Game extends JPanel
 	
 	private static void initializeAnimations()
 	{
-		animations = new Animation[9] ;
+		animations = new Animation[10] ;
 		for (int i = 0; i <= animations.length - 1; i += 1)
 		{
 			animations[i] = new Animation() ;
@@ -322,6 +323,26 @@ public class Game extends JPanel
 			Image SpeakingBubbleImage = (Image) vars[1] ;
 			String[] message = (String[]) vars[2] ;
 			DP.PterodactileAnimation(animations[8].getCounter(), PterodactileImage, SpeakingBubbleImage, message) ;
+		}) ;
+		animations[9].setDisplayFunction((vars, DP) -> {
+			Point playerPos = (Point) vars[0] ;
+			Directions playerDir = (Directions) vars[1] ;
+			Point fishingPos = UtilG.Translate(playerPos, 0, 0) ;
+
+			switch (playerDir)
+			{
+				case left: fishingPos = UtilG.Translate(playerPos, -Player.FishingGif.size().width, 0) ; break ;
+				case right: fishingPos = UtilG.Translate(playerPos, Player.FishingGif.size().width, 0) ; break ;
+				case up: fishingPos = UtilG.Translate(playerPos, 0, -Player.FishingGif.size().height) ; break ;
+				case down: fishingPos = UtilG.Translate(playerPos, 0, Player.FishingGif.size().height) ; break ;
+			}
+			
+			Player.FishingGif.play(fishingPos, Align.bottomCenter, DP) ;
+			if (Player.FishingGif.isDonePlaying())
+			{
+				Player.FishingGif.resetTimeCounter() ;
+			}
+			
 		}) ;
 	}
 	
@@ -1157,7 +1178,7 @@ public class Game extends JPanel
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
-    	player.setMap(cityMaps[2]) ;
+    	player.setMap(cityMaps[4]) ;
     	player.setPos(new Point(400, 221)) ;
     	player.setLevel(50) ;
 		
@@ -1186,7 +1207,7 @@ public class Game extends JPanel
     	
 //    	player.getExp().incCurrentValue(5000);
     	
-    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(20, 20))) ;
+//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
     	
     	
 	}
@@ -1347,6 +1368,7 @@ public class Game extends JPanel
 		@Override
 		public void mouseClicked(MouseEvent evt)
 		{
+			
 		}
 
 		@Override
@@ -1358,7 +1380,7 @@ public class Game extends JPanel
 		@Override
 		public void mouseExited(MouseEvent arg0)
 		{
-			
+
 		}
 
 		@Override
@@ -1377,8 +1399,8 @@ public class Game extends JPanel
         		//testGif2.start();
 			}
             //shouldRepaint = true ;
-//			System.out.println(mousePos) ;
-//			System.out.println(mousePos.x / 600.0 + "," + (mousePos.y - 96) / 384.0) ;
+			System.out.print(mousePos + " ") ;
+			System.out.println(mousePos.x / 600.0 + "," + (mousePos.y - 96) / 384.0) ;
 		}
 
 		@Override

@@ -62,7 +62,7 @@ public abstract class UtilS
 		{
 			return RelativePos.left ;
 		}
-		if (pos.x == (targetPos.x + 1) & (targetPos.y <= pos.y & pos.y <= targetPos.y + targetSize.height))
+		if (pos.x == (targetPos.x + targetSize.width + 1) & (targetPos.y <= pos.y & pos.y <= targetPos.y + targetSize.height))
 		{
 			return RelativePos.right ;
 		}
@@ -70,7 +70,7 @@ public abstract class UtilS
 		{
 			return RelativePos.above ;
 		}
-		if ((targetPos.x <= pos.x & pos.x <= targetPos.x + targetSize.width) & pos.y == (targetPos.y + 1))
+		if ((targetPos.x <= pos.x & pos.x <= targetPos.x + targetSize.width) & pos.y == (targetPos.y + targetSize.height + 1))
 		{
 			return RelativePos.below ;
 		}

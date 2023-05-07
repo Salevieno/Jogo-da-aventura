@@ -120,7 +120,7 @@ public class Player extends LiveBeing
     public static final Image RidingImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Tiger.png") ;
 	public static final Image CoinIcon = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "CoinIcon.png") ;    
 	public static final Image MagicBlissGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "MagicBliss.gif") ;
-    public static final Image FishingGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Fishing.gif") ;
+    public static final Gif FishingGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Fishing.gif"), 220, false, false) ;
     
 	public final static List<String[]> Properties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
 	public final static List<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
@@ -542,6 +542,20 @@ public class Player extends LiveBeing
 		state = LiveBeingStates.fighting ;
 	}
 	
+	public void fish()
+	{
+		
+		Point offset = new Point() ;
+		offset.x =  dir.equals(Directions.left) ? -size.width : dir.equals(Directions.right) ? size.width : 0 ;
+		offset.y =  dir.equals(Directions.up) ? -size.height : dir.equals(Directions.down) ? size.height : 0 ;
+
+		setState(LiveBeingStates.fishing) ;
+		
+		Animation fishingAnimation = Game.getAnimations()[9] ;
+		fishingAnimation.start(FishingGif.getDuration(), new Object[] {pos, dir}) ;
+		
+	}
+	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 		
 	private void keyboardActions(Pet pet)
@@ -561,13 +575,9 @@ public class Player extends LiveBeing
 		}
 		if (currentAction.equals(ActionKeys[6]))
 		{
-			if (bag.contains(Game.getAllItems()[1340]) & (isInside(GroundTypes.water) | isTouching(GroundTypes.water)))
+			if (bag.contains(Game.getAllItems()[1340]) & isTouching(GroundTypes.water))
 			{
-				Point offset = new Point() ;
-				offset.x =  dir.equals(Directions.left) ? -size.width : dir.equals(Directions.right) ? size.width : 0 ;
-				offset.y =  dir.equals(Directions.up) ? -size.height : dir.equals(Directions.down) ? size.height : 0 ;
-				Point gifPos = UtilG.Translate(pos, offset.x, offset.y) ;
-				// TODO fishing gif
+				fish() ;
 			}
 		}
 		// TODO add dig

@@ -226,6 +226,8 @@ public class GameMap
  		{
  			if (pos.equals(collider.getPos())) { return false ;}
  		}
+
+ 		if (superElem != null) { if (!superElem.equals(Elements.water) & groundTypeAtPoint(pos) == GroundTypes.water) { return false ;}}
 		
 		return true ;
 		
@@ -296,17 +298,17 @@ public class GameMap
 		return snowlandMaps ;
 	}
 	
-	public static GameMap[] inSecretIsland()
+	public static GameMap[] inSpecial()
 	{
-		GameMap[] secretIslandMaps = new GameMap[7] ;
+		GameMap[] specialMaps = new GameMap[7] ;
 		GameMap[] allMaps = Game.getMaps() ;
 		
 		for (int i = 0 ; i <= 7 - 1 ; i += 1)
 		{
-			secretIslandMaps[i] = allMaps[i + 60] ;
+			specialMaps[i] = allMaps[i + 60] ;
 		}
 		
-		return secretIslandMaps ;
+		return specialMaps ;
 	}
 	
 	
