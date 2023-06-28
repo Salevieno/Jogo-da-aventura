@@ -309,7 +309,7 @@ public class Battle
 				
 				if ( atkResults.getEffect() != null | atkResults.getAtkType() == AtkTypes.defense )
 				{
-					if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
+					//if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
 					if (attacker instanceof Player) { ((Player) attacker).getStatistics().update(atkResults) ;}
 				}
 				// TODO
@@ -387,7 +387,7 @@ public class Battle
 		{
 			if (player.isAlive())
 			{
-				player.win(creature, winAni) ;
+				//player.win(creature, winAni) ;
 			}
 			player.resetAction() ;
 			player.resetBattleAction() ;
@@ -395,7 +395,7 @@ public class Battle
 			{
 				if (pet.isAlive())
 				{
-					pet.Win(creature) ;
+					//pet.Win(creature) ;
 				}
 				pet.resetBattleActions() ;
 			}

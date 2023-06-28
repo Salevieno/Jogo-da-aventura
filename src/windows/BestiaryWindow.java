@@ -39,7 +39,7 @@ public class BestiaryWindow extends GameWindow
 		window = UtilS.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, windowLimit) ;*/
 	}
 	
-	public void displayCreatureInfo(Point windowPos, Player player, CreatureType creatureType, DrawingOnPanel DP)
+	public void displayCreatureInfo(Point mainWindowPos, Player player, CreatureType creatureType, DrawingOnPanel DP)
 	{
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -50,19 +50,25 @@ public class BestiaryWindow extends GameWindow
 		int offset = 5 ;
 		int sy = infoFont.getSize() ;
 		
-		windowPos.y += - (int) (0.5 * Game.getScreen().getSize().height) ;
-		creatureType.display(UtilG.Translate(windowPos, 40, offset), new Scale(1, 1), DP) ;
+		mainWindowPos.y += - (int) (0.5 * Game.getScreen().getSize().height) ;
+
+		Dimension windowSize = new Dimension((int)(0.2 * Game.getScreen().getSize().width), (int)(0.5 * Game.getScreen().getSize().height)) ;
+		Point windowPos = UtilG.Translate(mainWindowPos, 0, -30) ;
+		DP.DrawRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
+		
+		Point creaturePos = UtilG.Translate(mainWindowPos, 40, offset) ;
+		creatureType.display(creaturePos, new Scale(1, 1), DP) ;
 		
 		List<String> textInfo = new ArrayList<>() ;
-		textInfo.add(text[2] + ": " + creatureType.getLevel()) ;
-		textInfo.add(text[3] + ": " + (int)creatureType.getPA().getLife().getCurrentValue()) ;
-		textInfo.add(text[4] + ": " + creatureType.getPA().getExp().getCurrentValue()) ;
-		textInfo.add(text[5] + ": " + creatureType.getGold()) ;
-		textInfo.add(text[6] + ": ") ;
+		textInfo.add(text[1] + ": " + creatureType.getLevel()) ;
+		textInfo.add(text[2] + ": " + (int)creatureType.getPA().getLife().getCurrentValue()) ;
+		textInfo.add(text[3] + ": " + creatureType.getPA().getExp().getCurrentValue()) ;
+		textInfo.add(text[4] + ": " + creatureType.getGold()) ;
+		textInfo.add(text[5] + ": ") ;
 		creatureType.getBag().forEach(item -> textInfo.add(item.getName())) ;
 
 		// draw text
-		Point textPos = new Point(windowPos.x + offset, (int) (windowPos.y + creatureType.getSize().height + offset)) ;
+		Point textPos = new Point(mainWindowPos.x + offset, (int) (mainWindowPos.y + creatureType.getSize().height + offset)) ;
 		DP.DrawText(textPos, Align.topLeft, angle, creatureType.getName(), namefont, textColor) ;
 		textPos = UtilG.Translate(textPos, 0, sy) ;
 		for (int i = 0 ; i <= text.length - 1 ; i += 1)

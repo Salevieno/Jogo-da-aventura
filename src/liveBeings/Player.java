@@ -610,7 +610,7 @@ public class Player extends LiveBeing
 			PA.getLife().setToMaximum() ;
 			TentGif.start() ;
 		}
-		if (currentAction.equals(ActionKeys[13]) & questSkills.get(QuestSkills.bestiary))
+		if (currentAction.equals(ActionKeys[13]))// & questSkills.get(QuestSkills.bestiary)
 		{
 			focusWindow = bestiary ;
 			bestiary.open() ;

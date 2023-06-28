@@ -38,8 +38,9 @@ public class Creature extends LiveBeing
 	private Set<Item> Bag ;
 	private int Gold ;
 	private Color color ;
+	private double[] genes ;	// TODO considerar mover pra CreatureType
 	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
-	private boolean follow ;	
+	private boolean follow ;
 //	public int countmove ;
 	
 	private static Color[] skinColor = new Color[] {Game.colorPalette[0], Game.colorPalette[1]} ;
@@ -56,8 +57,7 @@ public class Creature extends LiveBeing
 				new CreatureAttributesWindow()
 			) ;
 		
-		this.type = CT ;
-		
+		this.type = CT ;		
 		this.name = CT.name;
 		this.level = CT.level;
 		this.size = CT.size;
@@ -90,6 +90,7 @@ public class Creature extends LiveBeing
 		{
 			setPos(Game.getScreen().getCenter()) ;
 		}
+		genes = new double[] {0.18732520398672736, 0.005913873377452361} ;
 		
 		follow = false ;
 	}
@@ -114,10 +115,12 @@ public class Creature extends LiveBeing
 	public Set<Item> getBag() {return Bag ;}
 	public int getGold() {return Gold ;}
 	public Color getColor() {return color ;}
+	public double[] getGenes() {return genes ;}
 	//public int[][] getActions() {return PA.Actions ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public boolean getFollow() {return follow ;}
 	public void setPos(Point newValue) {pos = newValue ;}
+	public void setGenes(double[] newGenes) {genes = newGenes ;}
 	public void setFollow(boolean F) {follow = F ;}
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
@@ -268,6 +271,25 @@ public class Creature extends LiveBeing
 		
 	}
 	
+	public int chooseFightMove()
+	{
+//		if (10 <= PA.getMp().getCurrentValue())
+//		{
+//			return (int)(3*Math.random() - 0.01) ;
+//		}
+//		else
+//		{
+//			return (int)(2*Math.random() - 0.01) ;
+//		}
+		
+//		for (int i = 0 ; i <= genes.length - 1; i += 1)
+//		{
+//			chances[i] = genes[i] * geneMult[i] ;
+//		}
+		
+		return UtilG.randomFromChanceList(genes) ;
+	}
+	
 	public void act()
 	{
 		Think() ;
@@ -275,26 +297,12 @@ public class Creature extends LiveBeing
 	}
 	public void fight()
 	{
-		int move = -1 ;
-		if (10 <= PA.getMp().getCurrentValue())
+		int move = chooseFightMove() ;
+		switch (move)
 		{
-			move = (int)(3*Math.random() - 0.01) ;
-		}
-		else
-		{
-			move = (int)(2*Math.random() - 0.01) ;
-		}
-		if (move == 0)
-		{
-			setCurrentAction(BattleKeys[0]) ;	// Physical attack
-		}
-		if (move == 1)
-		{
-			setCurrentAction(BattleKeys[1]) ;	// Defense
-		}
-		if (move == 2)
-		{
-			setCurrentAction(String.valueOf((int)((spells.size()) * Math.random() - 0.01))) ;
+			case 0:	setCurrentAction(BattleKeys[0]) ; break ;	// Physical attack
+			case 1:	setCurrentAction(BattleKeys[1]) ; break ;	// Defense
+			case 2:	setCurrentAction(String.valueOf(UtilG.randomIntFromTo(0, spells.size() - 1))) ; break ;	// spell
 		}
 	}
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)

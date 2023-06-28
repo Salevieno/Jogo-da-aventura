@@ -73,8 +73,6 @@ import maps.CityMap;
 import maps.Continents;
 import maps.FieldMap;
 import maps.GameMap;
-import maps.GroundType;
-import maps.GroundTypes;
 import maps.SpecialMap;
 import maps.TreasureChest;
 import screen.Screen;
@@ -1212,6 +1210,26 @@ public class Game extends JPanel
     	
 	}
 	
+	private void chooseFightMoveTest()
+	{
+		int numberTests = 10000 ;
+		int numberAtks = 0 ;
+		int numberDefs = 0 ;
+		int numberSpells = 0 ;
+		Creature creature = new Creature(creatureTypes[0]) ;
+		
+		for (int i = 0 ; i <= numberTests - 1; i += 1)
+		{
+			int fightMove = creature.chooseFightMove() ;
+			numberAtks += fightMove == 0 ? 1 : 0 ;
+			numberDefs += fightMove == 1 ? 1 : 0 ;
+			numberSpells += fightMove == 2 ? 1 : 0 ;
+		}
+		System.out.println("Atks: " + 100.0 * numberAtks / numberTests + "%") ;
+		System.out.println("Defs: " + 100.0 * numberDefs / numberTests + "%") ;
+		System.out.println("Spells: " + 100.0 * numberSpells / numberTests + "%") ;
+	}
+	
 
 	@Override
 	protected void paintComponent(Graphics g)
@@ -1246,7 +1264,7 @@ public class Game extends JPanel
 	        {
 	        	//loading.displayText(DP) ;
 	        	initialize() ;
-				state = GameStates.running;
+				state = GameStates.simulation;
 				
 				shouldRepaint = true ;
 				
@@ -1275,6 +1293,7 @@ public class Game extends JPanel
 	        		bat.RunBattle(player, pet, player.getOpponent(), animations, DP) ;
 	        		if (!player.isInBattle())
 	        		{
+	        			PlayerEvolutionSimulation.updateCreatureGenes() ;
 		        		PlayerEvolutionSimulation.checkPlayerWin() ;
 	        		}
 	        	}
@@ -1304,6 +1323,7 @@ public class Game extends JPanel
 	        {
 	        	runGame(DP) ;
 				playGifs(DP) ;
+				//DP.DrawImage(UtilG.loadImage("./images/test.png"), mousePos, Align.center) ;
 
 	    		break ;
 	        }

@@ -52,6 +52,20 @@ public abstract class UtilG
 	
 	public static boolean chance(double chance) { return Math.random() <= chance ;}
 	
+	public static int randomFromChanceList(double[] chances)
+	{		
+		int number = UtilG.randomIntFromTo(0,  100) ;
+		
+		int cum = 0 ;
+		for (int i = 0 ; i <= chances.length - 1; i += 1)
+		{
+			if (cum <= number & number <= cum + 100 * chances[i]) { return i ;}
+			cum += 100 * chances[i] ;
+		}
+		
+		return chances.length ;
+	}
+	
 	public static boolean isNumeric(String str) { return str.matches("-?\\d+(\\.\\d+)?") ;}  // match a number with optional '-' and decimal.
 	
 	public static Map<String, String[]> ReadTextFile(Languages language)

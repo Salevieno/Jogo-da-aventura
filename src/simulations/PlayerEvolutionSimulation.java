@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -60,6 +61,10 @@ public abstract class PlayerEvolutionSimulation
 	private static final Image buttonImage = UtilG.loadImage(Game.ImagesPath + "ButtonGeneral.png") ;
 	private static final Image buttonSelectedImage = UtilG.loadImage(Game.ImagesPath + "ButtonGeneralSelected.png") ;
 	private static final Image fightingImage = UtilG.loadImage(Game.ImagesPath + "fightingIcon.png") ;
+	
+	
+	private static int highestFitness = 0 ;
+	private static double[] bestGenes = {0.18732520398672736, 0.005913873377452361} ;
 	
 	static
 	{		
@@ -383,6 +388,22 @@ public abstract class PlayerEvolutionSimulation
 			numberFightsRepetition = 0 ;
 		}
 		
+	}
+	
+	public static void updateCreatureGenes()
+	{
+		playerOpponent.setGenes(new double[] {0.5 * Math.random(), 0.5 * Math.random()});
+		
+		int fitness = 1000 - player.getLife().getCurrentValue() + playerOpponent.getLife().getCurrentValue() ;
+		if (highestFitness <= fitness)
+		{
+			System.out.println("Fitness = " + fitness + " best genes: " + Arrays.toString(bestGenes)) ;
+			
+			highestFitness = fitness ;
+			bestGenes = playerOpponent.getGenes() ;			
+		}
+		
+//		System.out.println(Arrays.toString(playerOpponent.getGenes())) ;
 	}
 	
 	public static void playerFight()
