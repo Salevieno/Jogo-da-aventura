@@ -1419,8 +1419,8 @@ public class Game extends JPanel
         		//testGif2.start();
 			}
             //shouldRepaint = true ;
-			System.out.print(mousePos + " ") ;
-			System.out.println(mousePos.x / 600.0 + "," + (mousePos.y - 96) / 384.0) ;
+//			System.out.print(mousePos + " ") ;
+//			System.out.println(mousePos.x / 600.0 + "," + (mousePos.y - 96) / 384.0) ;
 		}
 
 		@Override

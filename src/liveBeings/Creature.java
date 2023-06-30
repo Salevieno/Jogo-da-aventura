@@ -50,12 +50,7 @@ public class Creature extends LiveBeing
 	
  	public Creature(CreatureType CT)
 	{
- 		super(
-				CT.getPA(),
-				CT.getBA(),
-				CT.getMovingAnimations(),
-				new CreatureAttributesWindow()
-			) ;
+ 		super(CT.getPA(), CT.getBA(), CT.getMovingAnimations(), new CreatureAttributesWindow()) ;
 		
 		this.type = CT ;		
 		this.name = CT.name;
@@ -311,11 +306,11 @@ public class Creature extends LiveBeing
 		int damage = -1 ;
 		AttackEffects effect = null ;
 
-		double MagAtk = BA.TotalMagAtk() ;
+		double MagAtk = 100*BA.TotalMagAtk() ;
 		double MagDef = receiver.getBA().TotalMagDef() ;
-		double AtkDex = BA.TotalDex() ;
+		double AtkDex = 100*BA.TotalDex() ;
 		double DefAgi = receiver.getBA().TotalAgi() ;
-		double AtkCrit = BA.TotalCritAtkChance() ;
+		double AtkCrit = 100*BA.TotalCritAtkChance() ;
 		double DefCrit = receiver.getBA().TotalCritDefChance() ;
 		double receiverElemMod = 1 ;
 		double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;

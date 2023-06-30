@@ -343,6 +343,7 @@ public abstract class PlayerEvolutionSimulation
 	{
 		playerOpponent = new Creature(Game.getCreatureTypes()[playerOpponentID]) ;
 		playerOpponent.setPos(player.getPos());
+		playerOpponent.setGenes(new double[] {0.5 * Math.random(), 0.5 * Math.random()});
 		player.engageInFight(playerOpponent) ;
 		incNumberFights() ;
 	}
@@ -392,17 +393,17 @@ public abstract class PlayerEvolutionSimulation
 	
 	public static void updateCreatureGenes()
 	{
-		playerOpponent.setGenes(new double[] {0.5 * Math.random(), 0.5 * Math.random()});
 		
-		int fitness = 1000 - player.getLife().getCurrentValue() + playerOpponent.getLife().getCurrentValue() ;
+		int fitness = calcFitness() ;
+		System.out.println("\n Fight n° " + numberFights) ;
+		
 		if (highestFitness <= fitness)
 		{
-			System.out.println("Fitness = " + fitness + " best genes: " + Arrays.toString(bestGenes)) ;
-			
+			System.out.println(" ------ new best fitness ------ ") ;
 			highestFitness = fitness ;
 			bestGenes = playerOpponent.getGenes() ;			
+			System.out.println("Fitness = " + fitness + " best genes: " + Arrays.toString(bestGenes)) ;
 		}
-		
 //		System.out.println(Arrays.toString(playerOpponent.getGenes())) ;
 	}
 	
@@ -557,4 +558,8 @@ public abstract class PlayerEvolutionSimulation
 		
 	}
 	
+	private static int calcFitness()
+	{
+		return 1000 - 100 * player.getLife().getCurrentValue() / player.getLife().getMaxValue() + 100 * playerOpponent.getLife().getCurrentValue() / playerOpponent.getLife().getMaxValue() ;
+	}
 }
