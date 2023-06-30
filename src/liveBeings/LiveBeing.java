@@ -291,7 +291,8 @@ public abstract class LiveBeing
 	}
 	public boolean hasActed() {return currentAction != null ;}
 	public boolean actionIsSpell()	{return hasActed() ? Player.SpellKeys.contains(currentAction) : false ;}
-	public boolean actionIsAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
+	public boolean actionIsPhysicalAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
+	public boolean actionIsMagicalAtk() { return false ;} // TODO
 	public boolean actionIsDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}
 	
 	public boolean canAtk() {return battleActionCounter.finished() & !BA.isStun() ;}

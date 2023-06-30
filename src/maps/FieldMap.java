@@ -36,10 +36,15 @@ public class FieldMap extends GameMap
 		Dimension range = new Dimension((int) (0.8 * screen.getSize().width), (int) (0.8 * screen.getSize().height)) ;
 		Dimension step = new Dimension(1, 1) ;
 		// TODO colocar offset de 20 das bordas (tamanho do passo do player)
-		for (int me = 0 ; me <= 4 ; ++me)
+		for (int me = 0 ; me <= 5 - 1 ; ++me)
 		{
 			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
 			mapElems.add(new MapElements(me, "ForestTree", randomPos, UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem6_TreeForest.png"))) ;				
+		}
+		for (int me = 0 ; me <= 20 - 1 ; ++me)
+		{
+			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
+			mapElems.add(new MapElements(me, "grass", randomPos, UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem8_Grass.png"))) ;				
 		}
 		
 		

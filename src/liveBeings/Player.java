@@ -675,25 +675,17 @@ public class Player extends LiveBeing
 		if (actionIsSpell())
 		{
 			Spell spell = spells.get(SpellKeys.indexOf(currentAction));
+			useSpell(spell, this) ;
 			
-			if (spell.getType().equals(SpellTypes.support))
-			{
-				if (spell.isReady() & hasEnoughMP(spell) & 0 < spell.getLevel())
-				{
-					useSupportSpell(pet, spell) ;
-					train(new AtkResults(AtkTypes.magical, null, 0)) ;
-					stats.incNumberMagAtk() ;
-				}
-			}
-			else if (closestCreature != null & !isInBattle())
-			{
-				engageInFight(closestCreature) ;
-			}
+//			if (spell.getType().equals(SpellTypes.offensive) & closestCreature != null & !isInBattle())
+//			{
+//				engageInFight(closestCreature) ;
+//			}
 		}
 		
 		
 		// if hits creature, enters battle
-		if (actionIsAtk() & closestCreature != null & !isInBattle())
+		if ((actionIsPhysicalAtk() | actionIsMagicalAtk()) & closestCreature != null & !isInBattle())
 		{
 			engageInFight(closestCreature) ;
 		}
@@ -909,6 +901,24 @@ public class Player extends LiveBeing
 		}
 	}
 	
+	public AtkResults useSpell(Spell spell, LiveBeing receiver)
+	{
+		if (spell.getType().equals(SpellTypes.support))
+		{
+			if (spell.isReady() & hasEnoughMP(spell) & 0 < spell.getLevel())
+			{
+				useSupportSpell(spell) ;
+				train(new AtkResults(AtkTypes.magical, null, 0)) ;
+				stats.incNumberMagAtk() ;
+			}
+			
+			return null ;
+		}
+		else
+		{
+			return useOffensiveSpell(spell, receiver) ;
+		}
+	}
 	
 	public void spellCounters()
 	{
@@ -1012,7 +1022,7 @@ public class Player extends LiveBeing
 		
 		return 0 ;
 	}
-	private void useSupportSpell(Pet pet, Spell spell)
+	private void useSupportSpell(Spell spell)
 	{	
 		
 		spell.getCooldownCounter().reset();
@@ -1182,7 +1192,7 @@ public class Player extends LiveBeing
 		state = LiveBeingStates.idle ;
 		resetPosition() ;
 	}
-	public AtkResults useSpell(Spell spell, LiveBeing receiver)
+	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
 	{
 		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
 		spell.activate() ;
@@ -1204,8 +1214,8 @@ public class Player extends LiveBeing
 		double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
 		double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
 		double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
-		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;	// Critical atk modifier
-		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;	// Critical def modifier
+		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;
+		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;
 		double BlockDef = receiver.getBA().getStatus().getBlock() ;
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;

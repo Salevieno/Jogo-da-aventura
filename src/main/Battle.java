@@ -226,7 +226,7 @@ public class Battle
 	private AtkResults Atk(LiveBeing attacker, LiveBeing receiver)
 	{
 		AtkResults atkResult = new AtkResults() ;
-		if (attacker.actionIsAtk())
+		if (attacker.actionIsPhysicalAtk())
 		{
 			atkResult = calcPhysicalAtk(attacker, receiver) ;
 			if (atkResult.getEffect().equals(AttackEffects.hit))
@@ -256,7 +256,7 @@ public class Battle
  			attacker.ActivateDef() ;
 		}
 		
-		if (attacker.actionIsAtk() | (attacker.actionIsSpell() & !attacker.isSilent()) | attacker.actionIsDef())
+		if (attacker.actionIsPhysicalAtk() | (attacker.actionIsSpell() & !attacker.isSilent()) | attacker.actionIsDef())
 		{
 			attacker.updateCombo() ;
 			attacker.resetBattleActions() ;
@@ -281,7 +281,7 @@ public class Battle
 //				if (attacker instanceof Pet) { ((Pet) attacker).fight() ;}
 
 				AtkResults atkResults = Atk(attacker, receiver) ;
-				if (attacker.actionIsAtk() | attacker.actionIsSpell()) { receiver.getDisplayDamage().reset() ;}
+				if (attacker.actionIsPhysicalAtk() | attacker.actionIsSpell()) { receiver.getDisplayDamage().reset() ;}
 //				if (attacker.getSettings().getSoundEffectsAreOn()) { Music.PlayMusic(hitSound) ;}
 
 				// add player surprise atk
