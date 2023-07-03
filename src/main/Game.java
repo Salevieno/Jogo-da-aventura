@@ -456,12 +456,12 @@ public class Game extends JPanel
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, status) ;
 						
 			// TODO spells para as criaturas
-			List<Spell> spell = new ArrayList<>() ;
-			spell.add(allSpells[0]) ;
-			spell.add(allSpells[1]) ;
-			spell.add(allSpells[2]) ;
-			spell.add(allSpells[3]) ;
-			spell.add(allSpells[4]) ;
+			List<Spell> spells = new ArrayList<>() ;
+			spells.add(allSpells[0]) ;
+//			spells.add(allSpells[1]) ;
+//			spells.add(allSpells[2]) ;
+//			spells.add(allSpells[3]) ;
+//			spells.add(allSpells[4]) ;
 			
 			Set<Item> Bag = new HashSet<>() ;
 			for (int i = 0 ; i <= 10 - 1; i += 1)
@@ -487,7 +487,7 @@ public class Game extends JPanel
 			
 			creatureTypes[ct] = new CreatureType(ct, name, level, size, range, step, elem,
 					mpDuration, satiationDuration, moveDuration, battleActionDuration, stepCounter,
-					moveAni, PA, BA, spell, Bag, Gold, color[ct], StatusCounter) ;	
+					moveAni, PA, BA, spells, Bag, Gold, color[ct], StatusCounter) ;	
 		}
 		return creatureTypes ;
     }
@@ -818,9 +818,10 @@ public class Game extends JPanel
 			double[] poisonMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[35]), Double.parseDouble(spellTypesInput.get(ID)[36]), Double.parseDouble(spellTypesInput.get(ID)[37])} ;
 			double[] silenceMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[38]), Double.parseDouble(spellTypesInput.get(ID)[39]), Double.parseDouble(spellTypesInput.get(ID)[40])} ;
 			Elements elem = Elements.valueOf(spellTypesInput.get(ID)[41]) ;
-			
+
 			allSpells[i] = new Spell(name, image, maxLevel, mpCost, type, preRequisites, buffs, nerfs,
-					atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod, cooldown, duration, elem, info[i]) ;
+					atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod,
+					cooldown, duration, elem, info[i]) ;
 		}
 		return allSpells ;
     }
@@ -1288,6 +1289,7 @@ public class Game extends JPanel
 	        	{
 //	        		Creature creature = player.getOpponent() ;
 //	        		creature.fight() ;
+	        		player.getOpponent().incrementCounters() ;
 	        		PlayerEvolutionSimulation.playerFight() ;
 //	        		if (pet != null) { pet.fight() ;}
 	        		bat.RunBattle(player, pet, player.getOpponent(), animations, DP) ;
@@ -1310,7 +1312,7 @@ public class Game extends JPanel
 	    		{
 	    			if (player.getOpponent().getAttWindow().isOpen())
 	    			{
-	    				((CreatureAttributesWindow) player.getOpponent().getAttWindow()).display(DP) ;
+	    				((CreatureAttributesWindow) player.getOpponent().getAttWindow()).display(player.getOpponent(), DP) ;
 	    			}
 	    		}
 	    		

@@ -63,6 +63,9 @@ public abstract class PlayerEvolutionSimulation
 	private static final Image fightingImage = UtilG.loadImage(Game.ImagesPath + "fightingIcon.png") ;
 	
 	
+	private static int BattleResultsPlayerLife = 0 ;
+	private static int BattleResultsCreatureLife = 0 ;
+	
 	private static int highestFitness = 0 ;
 	private static double[] bestGenes = {0.18732520398672736, 0.005913873377452361} ;
 	
@@ -211,9 +214,12 @@ public abstract class PlayerEvolutionSimulation
 	
 	private static void petFullLife()
 	{
-		pet.getLife().setToMaximum() ;
-		pet.getMp().setToMaximum() ;
-		pet.getSatiation().setToMaximum() ;
+		if (pet != null)
+		{
+			pet.getLife().setToMaximum() ;
+			pet.getMp().setToMaximum() ;
+			pet.getSatiation().setToMaximum() ;
+		}
 	}
 	
 	private static void playerResetJob(int newJob)
@@ -341,9 +347,11 @@ public abstract class PlayerEvolutionSimulation
 	
 	private static void simulateBattle()
 	{
+		BattleResultsPlayerLife = 0 ;
+		BattleResultsCreatureLife = 0 ;
 		playerOpponent = new Creature(Game.getCreatureTypes()[playerOpponentID]) ;
 		playerOpponent.setPos(player.getPos());
-		playerOpponent.setGenes(new double[] {0.5 * Math.random(), 0.5 * Math.random()});
+//		playerOpponent.setGenes(new double[] {0.5 * Math.random(), 0.5 * Math.random()});
 		player.engageInFight(playerOpponent) ;
 		incNumberFights() ;
 	}
@@ -356,6 +364,12 @@ public abstract class PlayerEvolutionSimulation
 	private static void simulateBattle100x()
 	{
 		numberFightsRepetition = 100 ;
+	}
+	
+	public static void setBattleResults(int playerLife, int creatureLife)
+	{
+		BattleResultsPlayerLife = playerLife ;
+		BattleResultsCreatureLife = creatureLife ;
 	}
 	
 	public static void incNumberFights() { numberFights += 1 ;}
@@ -560,6 +574,6 @@ public abstract class PlayerEvolutionSimulation
 	
 	private static int calcFitness()
 	{
-		return 1000 - 100 * player.getLife().getCurrentValue() / player.getLife().getMaxValue() + 100 * playerOpponent.getLife().getCurrentValue() / playerOpponent.getLife().getMaxValue() ;
+		return 1000 - (int)(100 * BattleResultsPlayerLife / (double) player.getLife().getMaxValue()) + (int)(100 * BattleResultsCreatureLife / (double)playerOpponent.getLife().getMaxValue()) ;
 	}
 }

@@ -85,7 +85,7 @@ public class Creature extends LiveBeing
 		{
 			setPos(Game.getScreen().getCenter()) ;
 		}
-		genes = new double[] {0.18732520398672736, 0.005913873377452361} ;
+		genes = new double[] {0.14606542271035106, 0.11939312567256516} ;
 		
 		follow = false ;
 	}
@@ -293,6 +293,7 @@ public class Creature extends LiveBeing
 	public void fight()
 	{
 		int move = chooseFightMove() ;
+
 		switch (move)
 		{
 			case 0:	setCurrentAction(BattleKeys[0]) ; break ;	// Physical attack
@@ -306,11 +307,11 @@ public class Creature extends LiveBeing
 		int damage = -1 ;
 		AttackEffects effect = null ;
 
-		double MagAtk = 100*BA.TotalMagAtk() ;
+		double MagAtk = 3*BA.TotalMagAtk() ;
 		double MagDef = receiver.getBA().TotalMagDef() ;
-		double AtkDex = 100*BA.TotalDex() ;
+		double AtkDex = 3*BA.TotalDex() ;
 		double DefAgi = receiver.getBA().TotalAgi() ;
-		double AtkCrit = 100*BA.TotalCritAtkChance() ;
+		double AtkCrit = 3*BA.TotalCritAtkChance() ;
 		double DefCrit = receiver.getBA().TotalCritDefChance() ;
 		double receiverElemMod = 1 ;
 		double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
@@ -322,7 +323,7 @@ public class Creature extends LiveBeing
 		double BlockDef = receiver.getBA().getStatus().getBlock() ;
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
-		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[1], elem[4]} ;
+		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[0], Elements.neutral} ;
 		Elements[] DefElem = receiver.defElems() ;
 		
 		BasicAtk = MagAtk ;
@@ -340,6 +341,13 @@ public class Creature extends LiveBeing
 	{
 		PA.getLife().setToMaximum() ;
 		PA.getMp().setToMaximum() ;
+		if (currentAtkType != null)
+		{
+			if (currentAtkType.equals(AtkTypes.defense))
+			{
+				DeactivateDef() ;
+			}
+		}
 		setRandomPos() ;
 		follow = false ;
 	}

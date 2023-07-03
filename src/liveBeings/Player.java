@@ -101,7 +101,6 @@ public class Player extends LiveBeing
 	private double goldMultiplier ;	// multiplies the amount of gold the player wins
 	private Map<QuestSkills, Boolean> questSkills ;	// skills gained with quests
 	private boolean isRiding ;		// true if the player is riding
-	private AtkTypes currentBattleAction ;
 
 	private AttributeBonus attIncrease ;	// Amount of increase in each attribute when the player levels up
 	private AttributeBonus attChanceIncrease ;	// Chance of increase of these attributes
@@ -216,7 +215,6 @@ public class Player extends LiveBeing
 		questSkills.put(QuestSkills.dragonAura, false) ;
 		questSkills.put(QuestSkills.bestiary, false) ;
 		isRiding = false ;
-		currentBattleAction = null ;
 		stats = new Statistics() ;
 		collectCounter = new TimeCounter(0, 240) ;
 		attPoints = 0 ;
@@ -330,7 +328,6 @@ public class Player extends LiveBeing
 	public BasicAttribute getSatiation() {return PA.getSatiation() ;}
 	public BasicAttribute getThirst() {return PA.getThirst() ;}
 	public Map<QuestSkills, Boolean> getQuestSkills() {return questSkills ;}
-	public AtkTypes getCurrentBattleAction() { return currentBattleAction ;}
 	public Statistics getStats() {return stats ;}
 	public int getAttPoints() {return attPoints ;}
 	public AttributeBonus getAttIncrease() {return attIncrease ;}	
@@ -346,7 +343,6 @@ public class Player extends LiveBeing
 	public Item[] getHotItems() { return hotItems ;}
 	public Statistics getStatistics() { return stats ;}
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
-	public void setBattleAction(AtkTypes ba) { currentBattleAction = ba ;}
 	public void setHotItem(Item item, int slot) { hotItems[slot] = item ;}	
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
 	
@@ -416,8 +412,6 @@ public class Player extends LiveBeing
         }
     }
 	
-	public void resetAction() { currentAction = null ;}
-	public void resetBattleAction() { currentBattleAction = null ;}
 	public void decAttPoints(int amount) {attPoints += -amount ;}
 
 	public void applyAdjacentGroundEffect()
@@ -920,23 +914,6 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	public void spellCounters()
-	{
-		for (Spell spell : spells)
-		{
-			if (spell.isActive())
-			{
-				spell.getDurationCounter().inc() ;
-			}
-			if (spell.getDurationCounter().finished())
-			{
-				spell.getDurationCounter().reset() ;
-				spell.applyBuffs(false, this) ;
-				spell.deactivate() ;
-			}
-			spell.getCooldownCounter().inc() ;
-		}
-	}
 			
 	
 	// called every time the window is repainted
@@ -1122,23 +1099,23 @@ public class Player extends LiveBeing
 		String[] ItemsObtained = GetItemsObtained.toArray(new String[] {}) ;
 		
 		// TODO
-		winAnimation.start(300, new Object[] {ItemsObtained}) ;
+		//winAnimation.start(300, new Object[] {ItemsObtained}) ;
 	}
 	public void levelUp(Animation attIncAnimation)
 	{
 		double[] attIncrease = calcAttributesIncrease() ;
 		setLevel(level + 1) ;
-		PA.getLife().incMaxValue((int) attIncrease[0]) ;
-		PA.getMp().incMaxValue((int) attIncrease[1]); ;	
-		BA.getPhyAtk().incBaseValue(attIncrease[2]) ;
-		BA.getMagAtk().incBaseValue(attIncrease[3]) ;
-		BA.getPhyDef().incBaseValue(attIncrease[4]) ;
-		BA.getMagDef().incBaseValue(attIncrease[5]) ;
-		BA.getAgi().incBaseValue(attIncrease[6]) ;
-		BA.getDex().incBaseValue(attIncrease[7]) ;
+//		PA.getLife().incMaxValue((int) attIncrease[0]) ;
+//		PA.getMp().incMaxValue((int) attIncrease[1]); ;	
+//		BA.getPhyAtk().incBaseValue(attIncrease[2]) ;
+//		BA.getMagAtk().incBaseValue(attIncrease[3]) ;
+//		BA.getPhyDef().incBaseValue(attIncrease[4]) ;
+//		BA.getMagDef().incBaseValue(attIncrease[5]) ;
+//		BA.getAgi().incBaseValue(attIncrease[6]) ;
+//		BA.getDex().incBaseValue(attIncrease[7]) ;
 		PA.getExp().incMaxValue((int) attIncrease[8]); ;
-		PA.getLife().setToMaximum() ;
-		PA.getMp().setToMaximum() ;
+//		PA.getLife().setToMaximum() ;
+//		PA.getMp().setToMaximum() ;
 		spellPoints += 1 ;
 		attPoints += 2 ;
 		

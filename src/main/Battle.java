@@ -14,6 +14,7 @@ import liveBeings.LiveBeingStates;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Spell;
+import simulations.PlayerEvolutionSimulation;
 import utilities.AttackEffects;
 import utilities.Elements;
 import utilities.UtilG;
@@ -182,18 +183,18 @@ public class Battle
 		}
 		if (pet != null)
 		{
-			if (pet.isAlive() & pet.getBattleActionCounter().finished() & pet.getCurrentAction() != null)
+			if (pet.isAlive() & pet.getBattleActionCounter().finished() & pet.getCurrentBattleAction() != null)
 			{
-				if (pet.getCurrentAction().equals(Player.BattleKeys[1]))
+				if (pet.getCurrentBattleAction().equals(AtkTypes.defense))
 				{
 //					UtilS.PrintBattleActions(6, "Pet", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
 		 			pet.DeactivateDef() ;
 				}
 			}
 		}
-		if (creature.getBattleActionCounter().finished() & creature.getCurrentAction() != null)
+		if (creature.getBattleActionCounter().finished() & creature.getCurrentBattleAction() != null)
 		{
-			if (creature.getCurrentAction().equals(Player.BattleKeys[1]))
+			if (creature.getCurrentBattleAction().equals(AtkTypes.defense))
 			{
 //				UtilS.PrintBattleActions(6, "Creature", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
 	 			creature.DeactivateDef() ;
@@ -207,6 +208,17 @@ public class Battle
 		if (player.getBattleActionCounter().finished())
 		{
 			player.resetBattleAction() ;
+		}
+		if (pet != null)
+		{
+			if (pet.getBattleActionCounter().finished())
+			{
+				pet.resetBattleAction() ;
+			}
+		}
+		if (creature.getBattleActionCounter().finished())
+		{
+			creature.resetBattleAction() ;
 		}
 		/*for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
 		{
@@ -242,7 +254,7 @@ public class Battle
 			if (spell.isReady() & attacker.hasEnoughMP(spell))
 			{
 				atkResult = attacker.useSpell(spell, receiver) ;
-				if (atkResult.getEffect().equals(AttackEffects.hit))
+				if (atkResult.getEffect().equals(AttackEffects.hit) | atkResult.getEffect().equals(AttackEffects.crit))
 				{
 					receiver.getPA().getLife().incCurrentValue(-atkResult.getDamage()) ;
 					int[] inflictedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
@@ -262,7 +274,7 @@ public class Battle
 			attacker.resetBattleActions() ;
 		}
 		
-		if (attacker instanceof Player) { ((Player) attacker).setBattleAction(atkResult.getAtkType()) ;}
+		attacker.setBattleAction(atkResult.getAtkType()) ;
 		
 		return atkResult ;
 	}	
@@ -273,7 +285,7 @@ public class Battle
 		if (attacker.isAlive())
 		{
 			attacker.DrawTimeBar(UtilS.RelPos(attacker.getPos(), receiver.getPos()), Game.colorPalette[2], DP) ;
-			// criatura tem que tomar blood and poison dano do player e do pet
+			// TODO criatura tem que tomar blood and poison dano do player e do pet
 			attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
 			if (attacker.canAtk() & attacker.isInRange(receiver.getPos()))
 			{
@@ -359,6 +371,8 @@ public class Battle
 	
 	private void FinishBattle(Player player, Pet pet, Creature creature, Animation winAni)
 	{
+		PlayerEvolutionSimulation.setBattleResults(player.getLife().getCurrentValue(), creature.getLife().getCurrentValue()) ;
+		
 		player.setState(LiveBeingStates.idle) ;
 		player.resetOpponent() ;
 		player.resetClosestCreature() ;
@@ -387,7 +401,7 @@ public class Battle
 		{
 			if (player.isAlive())
 			{
-				//player.win(creature, winAni) ;
+				player.win(creature, winAni) ;
 			}
 			player.resetAction() ;
 			player.resetBattleAction() ;
@@ -400,13 +414,15 @@ public class Battle
 				pet.resetBattleActions() ;
 			}
 			creature.dies() ;
+			
+			return ;
 		}
-		else
-		{
-			player.dies() ;
-			if (pet != null) {pet.dies() ; pet.setPos(player.getPos());}
-			creature.setFollow(false) ;
-		}
+		
+		creature.getPA().getLife().setToMaximum() ;
+		creature.getPA().getMp().setToMaximum() ;
+		player.dies() ;
+		if (pet != null) {pet.dies() ; pet.setPos(player.getPos());}
+		creature.setFollow(false) ;
 	}
 
 

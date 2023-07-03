@@ -1,6 +1,17 @@
 /main/
+<<<<<<< Updated upstream
 /liveBeings/
 /windows/
 /test/
 /utilities/
 /simulations/
+=======
+/maps/
+/screen/
+/simulations/
+/test/
+/testing/
+/utilities/
+/windows/
+/liveBeings/
+>>>>>>> Stashed changes

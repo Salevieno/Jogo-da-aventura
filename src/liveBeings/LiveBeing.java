@@ -51,6 +51,7 @@ public abstract class LiveBeing
 	protected TimeCounter displayDamage ;
 	protected TimeCounter stepCounter ;			// counts the steps in the movement
 	protected String currentAction ;
+	protected AtkTypes currentAtkType ;
 	protected List<String> combo ;				// record of the last 10 movements
 	protected List<Spell> spells ;
 	
@@ -112,6 +113,7 @@ public abstract class LiveBeing
 		this.attWindow = attWindow ;
 		displayDamage = new TimeCounter(0, 100) ;
 		currentAction = null ;
+		currentAtkType = null ;
 	}
 	
 	public int getLevel() {return level ;}
@@ -127,6 +129,7 @@ public abstract class LiveBeing
 	public double getRange() {return range ;}
 	public int getStep() {return step ;}
 	public String getCurrentAction() {return currentAction ;}
+	public AtkTypes getCurrentBattleAction() { return currentAtkType ;}
 	public TimeCounter getMpCounter() {return mpCounter ;}
 	public TimeCounter getSatiationCounter() {return satiationCounter ;}
 	public TimeCounter getThirstCounter() {return thirstCounter ;}
@@ -156,9 +159,13 @@ public abstract class LiveBeing
 	public void setRange(int newValue) {range = newValue ;}
 	public void setStep(int newValue) {step = newValue ;}
 	public void setCombo(List<String> newValue) {combo = newValue ;}
+	public void setBattleAction(AtkTypes ba) { currentAtkType = ba ;}
 	
 	public boolean isMoving() { return (state.equals(LiveBeingStates.moving)) ;}
 	public boolean canAct() { return actionCounter.finished() ;}
+	
+	public void resetAction() { currentAction = null ;}
+	public void resetBattleAction() { currentAtkType = null ;}
 	
 	public PersonalAttributes getPA() {return PA ;}
 	public void setPA(PersonalAttributes pA) { PA = pA ;}
@@ -196,8 +203,27 @@ public abstract class LiveBeing
 	public void incrementCounters()
 	{
 		incActionCounters() ;
-		if (this instanceof Player) { ((Player) this).spellCounters() ;}
+//		if (this instanceof Player) { ((Player) this).spellCounters() ;}
+		spellCounters() ;
 		BA.getStatus().decreaseStatus() ;
+	}
+
+	public void spellCounters()
+	{
+		for (Spell spell : spells)
+		{
+			if (spell.isActive())
+			{
+				spell.getDurationCounter().inc() ;
+			}
+			if (spell.getDurationCounter().finished())
+			{
+				spell.getDurationCounter().reset() ;
+				spell.applyBuffs(false, this) ;
+				spell.deactivate() ;
+			}
+			spell.getCooldownCounter().inc() ;
+		}
 	}
 	
 	public void incActionCounters()
@@ -290,7 +316,23 @@ public abstract class LiveBeing
 		return elem[1].equals(elem[2]) & elem[2].equals(elem[3]) ;
 	}
 	public boolean hasActed() {return currentAction != null ;}
-	public boolean actionIsSpell()	{return hasActed() ? Player.SpellKeys.contains(currentAction) : false ;}
+	public boolean actionIsSpell()
+	{
+		if (!hasActed()) { return false ;}
+		
+		if (this instanceof Player)
+		{
+			return Player.SpellKeys.contains(currentAction) ;
+		}
+		List<String> listSpells = new ArrayList<>() ;
+		listSpells.add("0") ;
+		listSpells.add("1") ;
+		listSpells.add("2") ;
+		listSpells.add("3") ;
+		listSpells.add("4") ;
+
+		return listSpells.contains(currentAction) ;	// TODO
+	}
 	public boolean actionIsPhysicalAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
 	public boolean actionIsMagicalAtk() { return false ;} // TODO
 	public boolean actionIsDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}
