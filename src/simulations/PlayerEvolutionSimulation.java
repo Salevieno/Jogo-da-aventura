@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,7 +24,6 @@ import components.GameButton;
 import components.IconFunction;
 import graphics.DrawingOnPanel;
 import liveBeings.Creature;
-import liveBeings.LiveBeing;
 import liveBeings.LiveBeingStatus;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -67,6 +67,8 @@ public abstract class PlayerEvolutionSimulation
 	private static int BattleResultsCreatureLife = 0 ;
 	
 	private static int highestFitness = 0 ;
+	private static List<Integer> listFitness = new ArrayList<>() ;
+	private static List<List<Double>> listBestGenes = new ArrayList<>() ;
 	private static double[] bestGenes = {0.18732520398672736, 0.005913873377452361} ;
 	
 	static
@@ -342,7 +344,9 @@ public abstract class PlayerEvolutionSimulation
 	}
 	
 	private static void resetFights() { numberFights = 0 ; numberPlayerWins = 0 ; numberCreatureWins = 0 ;}
+	
 	private static void incNumberPlayerWins() { numberPlayerWins += 1 ;}
+	
 	private static void incNumberCreatureWins() { numberCreatureWins += 1 ;}
 	
 	private static void simulateBattle()
@@ -405,19 +409,42 @@ public abstract class PlayerEvolutionSimulation
 		
 	}
 	
+	private static boolean genesAreSelected(int fitness)
+	{
+		return Collections.min(listFitness) <= fitness ;
+	}
+	
 	public static void updateCreatureGenes()
 	{
 		
 		int fitness = calcFitness() ;
-		System.out.println("\n Fight n° " + numberFights) ;
+//		System.out.println("\n Fight n° " + numberFights) ;
 		
 		if (highestFitness <= fitness)
 		{
-			System.out.println(" ------ new best fitness ------ ") ;
+//			System.out.println(" ------ new best fitness ------ ") ;
 			highestFitness = fitness ;
 			bestGenes = playerOpponent.getGenes() ;			
-			System.out.println("Fitness = " + fitness + " best genes: " + Arrays.toString(bestGenes)) ;
+//			System.out.println("Fitness = " + fitness + " best genes: " + Arrays.toString(bestGenes)) ;
+
 		}
+		
+		if (listFitness.size() <= 10)
+		{
+			listFitness.add(fitness) ;
+		}
+		else if (genesAreSelected(fitness))
+		{
+			int indexMinFitness = listFitness.indexOf(Collections.min(listFitness)) ;
+			listFitness.remove(indexMinFitness) ;
+			listFitness.add(fitness) ;
+			listFitness.sort(null) ;
+//			System.out.println(Arrays.asList(playerOpponent.getGenes()));
+		}
+		
+		
+		System.out.println("listFitness = " + listFitness) ;
+//		System.out.println("listBestGenes = " + listBestGenes) ;
 //		System.out.println(Arrays.toString(playerOpponent.getGenes())) ;
 	}
 	
