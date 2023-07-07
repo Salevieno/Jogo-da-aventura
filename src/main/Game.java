@@ -1221,7 +1221,7 @@ public class Game extends JPanel
 		
 		for (int i = 0 ; i <= numberTests - 1; i += 1)
 		{
-			int fightMove = creature.chooseFightMove() ;
+			int fightMove = creature.chooseFightMove("Y") ;
 			numberAtks += fightMove == 0 ? 1 : 0 ;
 			numberDefs += fightMove == 1 ? 1 : 0 ;
 			numberSpells += fightMove == 2 ? 1 : 0 ;

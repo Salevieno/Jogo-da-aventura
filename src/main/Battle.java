@@ -289,7 +289,7 @@ public class Battle
 			attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
 			if (attacker.canAtk() & attacker.isInRange(receiver.getPos()))
 			{
-				if (attacker instanceof Creature) { ((Creature) attacker).fight() ;}
+				if (attacker instanceof Creature) { ((Creature) attacker).fight(receiver.getCurrentAction()) ;}
 //				if (attacker instanceof Pet) { ((Pet) attacker).fight() ;}
 
 				AtkResults atkResults = Atk(attacker, receiver) ;

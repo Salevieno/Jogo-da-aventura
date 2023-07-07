@@ -52,18 +52,18 @@ public abstract class UtilG
 	
 	public static boolean chance(double chance) { return Math.random() <= chance ;}
 	
-	public static int randomFromChanceList(double[] chances)
+	public static int randomFromChanceList(List<Double> chances)
 	{		
 		int number = UtilG.randomIntFromTo(0,  100) ;
 		
 		int cum = 0 ;
-		for (int i = 0 ; i <= chances.length - 1; i += 1)
+		for (int i = 0 ; i <= chances.size() - 1; i += 1)
 		{
-			if (cum <= number & number <= cum + 100 * chances[i]) { return i ;}
-			cum += 100 * chances[i] ;
+			if (cum <= number & number <= cum + 100 * chances.get(i)) { return i ;}
+			cum += 100 * chances.get(i) ;
 		}
 		
-		return chances.length ;
+		return chances.size() ;
 	}
 	
 	public static boolean isNumeric(String str) { return str.matches("-?\\d+(\\.\\d+)?") ;}  // match a number with optional '-' and decimal.

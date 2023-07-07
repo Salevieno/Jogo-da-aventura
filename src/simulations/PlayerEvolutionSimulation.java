@@ -24,6 +24,7 @@ import components.GameButton;
 import components.IconFunction;
 import graphics.DrawingOnPanel;
 import liveBeings.Creature;
+import liveBeings.Genes;
 import liveBeings.LiveBeingStatus;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -69,7 +70,8 @@ public abstract class PlayerEvolutionSimulation
 	private static int highestFitness = 0 ;
 	private static List<Integer> listFitness = new ArrayList<>() ;
 	private static List<List<Double>> listBestGenes = new ArrayList<>() ;
-	private static double[] bestGenes = {0.18732520398672736, 0.005913873377452361} ;
+	private static List<Double> bestGenes = new ArrayList<>() ;
+	private static List<Double> newGenes = new ArrayList<>(Arrays.asList(0.14606542271035106, 0.11939312567256516)) ;
 	
 	static
 	{		
@@ -355,7 +357,9 @@ public abstract class PlayerEvolutionSimulation
 		BattleResultsCreatureLife = 0 ;
 		playerOpponent = new Creature(Game.getCreatureTypes()[playerOpponentID]) ;
 		playerOpponent.setPos(player.getPos());
-//		playerOpponent.setGenes(new double[] {0.5 * Math.random(), 0.5 * Math.random()});
+//		playerOpponent.setGenes(new double[] {0.5 * Math.random(), 0.5 * Math.random()});		
+		System.out.println("newGenes = " + newGenes);
+		playerOpponent.setGenes(new Genes(newGenes));
 		player.engageInFight(playerOpponent) ;
 		incNumberFights() ;
 	}
@@ -409,43 +413,43 @@ public abstract class PlayerEvolutionSimulation
 		
 	}
 	
-	private static boolean genesAreSelected(int fitness)
-	{
-		return Collections.min(listFitness) <= fitness ;
-	}
-	
 	public static void updateCreatureGenes()
 	{
-		
-		int fitness = calcFitness() ;
-//		System.out.println("\n Fight n° " + numberFights) ;
+		Genes opponentGenes = playerOpponent.getGenes() ;
+		int fitness = Genes.calcFitness(BattleResultsPlayerLife, player.getLife().getMaxValue(), BattleResultsCreatureLife, playerOpponent.getLife().getMaxValue()) ;
+		System.out.println("\n Fight n° " + numberFights) ;
 		
 		if (highestFitness <= fitness)
 		{
-//			System.out.println(" ------ new best fitness ------ ") ;
+			System.out.println(" ------ new best fitness ------ ") ;
 			highestFitness = fitness ;
-			bestGenes = playerOpponent.getGenes() ;			
-//			System.out.println("Fitness = " + fitness + " best genes: " + Arrays.toString(bestGenes)) ;
+			bestGenes = opponentGenes.getGenes() ;			
+			System.out.println("Fitness = " + fitness + " best genes: " + bestGenes) ;
 
 		}
 		
 		if (listFitness.size() <= 10)
 		{
 			listFitness.add(fitness) ;
+			listBestGenes.add(bestGenes) ;
+			opponentGenes.randomize() ;
+			newGenes = opponentGenes.getGenes() ;
+			opponentGenes.setGenes(newGenes) ;
+			System.out.println("opponentGenes = " + opponentGenes) ;
 		}
-		else if (genesAreSelected(fitness))
+		else if (opponentGenes.areSelected(listFitness))
 		{
+			newGenes = opponentGenes.breed(listBestGenes) ;
 			int indexMinFitness = listFitness.indexOf(Collections.min(listFitness)) ;
 			listFitness.remove(indexMinFitness) ;
 			listFitness.add(fitness) ;
 			listFitness.sort(null) ;
-//			System.out.println(Arrays.asList(playerOpponent.getGenes()));
 		}
 		
 		
+		
 		System.out.println("listFitness = " + listFitness) ;
-//		System.out.println("listBestGenes = " + listBestGenes) ;
-//		System.out.println(Arrays.toString(playerOpponent.getGenes())) ;
+		System.out.println("listBestGenes = " + listBestGenes) ;
 	}
 	
 	public static void playerFight()
@@ -598,9 +602,5 @@ public abstract class PlayerEvolutionSimulation
 		displayBattleStats(DP) ;
 		
 	}
-	
-	private static int calcFitness()
-	{
-		return 1000 - (int)(100 * BattleResultsPlayerLife / (double) player.getLife().getMaxValue()) + (int)(100 * BattleResultsCreatureLife / (double)playerOpponent.getLife().getMaxValue()) ;
-	}
+
 }

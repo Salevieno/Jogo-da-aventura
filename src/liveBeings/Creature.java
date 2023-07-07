@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import attributes.PersonalAttributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
+import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
 import items.Item;
 import main.AtkResults;
@@ -30,7 +30,6 @@ import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
 import windows.CreatureAttributesWindow;
-import windows.PlayerAttributesWindow;
 
 public class Creature extends LiveBeing
 {
@@ -38,7 +37,7 @@ public class Creature extends LiveBeing
 	private Set<Item> Bag ;
 	private int Gold ;
 	private Color color ;
-	private double[] genes ;	// TODO considerar mover pra CreatureType
+	private Genes genes ;	// TODO considerar mover pra CreatureType
 	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 	private boolean follow ;
 //	public int countmove ;
@@ -85,7 +84,7 @@ public class Creature extends LiveBeing
 		{
 			setPos(Game.getScreen().getCenter()) ;
 		}
-		genes = new double[] {0.14606542271035106, 0.11939312567256516} ;
+		genes = new Genes() ;
 		
 		follow = false ;
 	}
@@ -110,12 +109,11 @@ public class Creature extends LiveBeing
 	public Set<Item> getBag() {return Bag ;}
 	public int getGold() {return Gold ;}
 	public Color getColor() {return color ;}
-	public double[] getGenes() {return genes ;}
-	//public int[][] getActions() {return PA.Actions ;}
+	public Genes getGenes() {return genes ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public boolean getFollow() {return follow ;}
 	public void setPos(Point newValue) {pos = newValue ;}
-	public void setGenes(double[] newGenes) {genes = newGenes ;}
+	public void setGenes(Genes newGenes) {genes = newGenes ;}
 	public void setFollow(boolean F) {follow = F ;}
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
@@ -266,23 +264,11 @@ public class Creature extends LiveBeing
 		
 	}
 	
-	public int chooseFightMove()
+	public int chooseFightMove(String playerMove)
 	{
-//		if (10 <= PA.getMp().getCurrentValue())
-//		{
-//			return (int)(3*Math.random() - 0.01) ;
-//		}
-//		else
-//		{
-//			return (int)(2*Math.random() - 0.01) ;
-//		}
+		List<Double> modifiedGenes = genes.getModifiedGenes(playerMove) ;
 		
-//		for (int i = 0 ; i <= genes.length - 1; i += 1)
-//		{
-//			chances[i] = genes[i] * geneMult[i] ;
-//		}
-		
-		return UtilG.randomFromChanceList(genes) ;
+		return UtilG.randomFromChanceList(modifiedGenes) ;
 	}
 	
 	public void act()
@@ -290,9 +276,9 @@ public class Creature extends LiveBeing
 		Think() ;
 		actionCounter.reset() ;
 	}
-	public void fight()
+	public void fight(String playerMove)
 	{
-		int move = chooseFightMove() ;
+		int move = chooseFightMove(playerMove) ;
 
 		switch (move)
 		{
