@@ -1295,7 +1295,10 @@ public class Game extends JPanel
 	        		bat.RunBattle(player, pet, player.getOpponent(), animations, DP) ;
 	        		if (!player.isInBattle())
 	        		{
-	        			PlayerEvolutionSimulation.updateCreatureGenes() ;
+	        			if (PlayerEvolutionSimulation.shouldUpdateGenes())
+	        			{
+		        			PlayerEvolutionSimulation.updateCreatureGenes() ;	
+	        			}
 		        		PlayerEvolutionSimulation.checkPlayerWin() ;
 	        		}
 	        	}

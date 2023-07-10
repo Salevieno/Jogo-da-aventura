@@ -71,7 +71,8 @@ public abstract class PlayerEvolutionSimulation
 	private static List<Integer> listFitness = new ArrayList<>() ;
 	private static List<List<Double>> listBestGenes = new ArrayList<>() ;
 	private static List<Double> bestGenes = new ArrayList<>() ;
-	private static List<Double> newGenes = new ArrayList<>(Arrays.asList(0.14606542271035106, 0.11939312567256516)) ;
+	private static Genes newGenes = new Genes(Arrays.asList(0.14, 0.12, 0.74)) ;
+	private static boolean evolutionIsOn = false ;
 	
 	static
 	{		
@@ -191,6 +192,7 @@ public abstract class PlayerEvolutionSimulation
 		namesActions.put("Battle", () -> { simulateBattle() ;}) ;
 		namesActions.put("Battle x 10", () -> { simulateBattle10x() ;}) ;
 		namesActions.put("Battle x 100", () -> { simulateBattle100x() ;}) ;
+		namesActions.put("Evolve", () -> { evolve() ;}) ;
 		
 		addSection(sectionPos, new Point(0, 30), namesActions) ;
 	}
@@ -351,15 +353,23 @@ public abstract class PlayerEvolutionSimulation
 	
 	private static void incNumberCreatureWins() { numberCreatureWins += 1 ;}
 	
-	private static void simulateBattle()
+	private static void ResetBattleResults()
 	{
 		BattleResultsPlayerLife = 0 ;
 		BattleResultsCreatureLife = 0 ;
+	}
+	
+	private static void CreateNewCreature()
+	{
 		playerOpponent = new Creature(Game.getCreatureTypes()[playerOpponentID]) ;
 		playerOpponent.setPos(player.getPos());
-//		playerOpponent.setGenes(new double[] {0.5 * Math.random(), 0.5 * Math.random()});		
-		System.out.println("newGenes = " + newGenes);
-		playerOpponent.setGenes(new Genes(newGenes));
+		playerOpponent.setGenes(new Genes(newGenes.getGenes()));
+	}
+	
+	private static void simulateBattle()
+	{
+		ResetBattleResults() ;
+		CreateNewCreature() ;
 		player.engageInFight(playerOpponent) ;
 		incNumberFights() ;
 	}
@@ -373,6 +383,14 @@ public abstract class PlayerEvolutionSimulation
 	{
 		numberFightsRepetition = 100 ;
 	}
+	
+	private static void evolve()
+	{
+		numberFightsRepetition = 1000 ;
+		evolutionIsOn = true ;
+	}
+	
+	public static boolean shouldUpdateGenes() { return evolutionIsOn & numberFights % 4 == 0 ; }
 	
 	public static void setBattleResults(int playerLife, int creatureLife)
 	{
@@ -417,39 +435,43 @@ public abstract class PlayerEvolutionSimulation
 	{
 		Genes opponentGenes = playerOpponent.getGenes() ;
 		int fitness = Genes.calcFitness(BattleResultsPlayerLife, player.getLife().getMaxValue(), BattleResultsCreatureLife, playerOpponent.getLife().getMaxValue()) ;
-		System.out.println("\n Fight n° " + numberFights) ;
-		
+		opponentGenes.setFitness(fitness) ;
+//		System.out.println("\n Fight n° " + numberFights) ;
+
+		System.out.println(numberFights + ";" + fitness + ";" + opponentGenes.getGenes() + ";" + opponentGenes.getGeneMods()) ;
 		if (highestFitness <= fitness)
 		{
-			System.out.println(" ------ new best fitness ------ ") ;
+//			System.out.println(" ------ new best fitness ------ ") ;
 			highestFitness = fitness ;
-			bestGenes = opponentGenes.getGenes() ;			
-			System.out.println("Fitness = " + fitness + " best genes: " + bestGenes) ;
+			bestGenes = opponentGenes.getGenes() ;
+		}
 
-		}
-		
-		if (listFitness.size() <= 10)
+		if (listFitness.size() <= 10 - 1)
 		{
 			listFitness.add(fitness) ;
-			listBestGenes.add(bestGenes) ;
-			opponentGenes.randomize() ;
-			newGenes = opponentGenes.getGenes() ;
-			opponentGenes.setGenes(newGenes) ;
-			System.out.println("opponentGenes = " + opponentGenes) ;
+			listBestGenes.add(new ArrayList<>(opponentGenes.getGenes())) ;
+			newGenes.randomize() ;	
+			newGenes.setGenes(Genes.normalize(newGenes.getGenes())) ;		
 		}
-		else if (opponentGenes.areSelected(listFitness))
+		else
 		{
-			newGenes = opponentGenes.breed(listBestGenes) ;
-			int indexMinFitness = listFitness.indexOf(Collections.min(listFitness)) ;
-			listFitness.remove(indexMinFitness) ;
-			listFitness.add(fitness) ;
-			listFitness.sort(null) ;
+			if (opponentGenes.areSelected(listFitness))
+			{
+				int indexMinFitness = listFitness.indexOf(Collections.min(listFitness)) ;
+				listFitness.remove(indexMinFitness) ;
+				listFitness.add(fitness) ;
+				listBestGenes.remove(indexMinFitness) ;
+				listBestGenes.add(new ArrayList<>(opponentGenes.getGenes())) ;	
+				
+//				System.out.println("listFitness = " + listFitness) ;
+//				System.out.println("listBestGenes = " + listBestGenes) ;
+			}
+			
+			listFitness.sort(null) ;			
+			newGenes.breed(listBestGenes) ;
 		}
+	
 		
-		
-		
-		System.out.println("listFitness = " + listFitness) ;
-		System.out.println("listBestGenes = " + listBestGenes) ;
 	}
 	
 	public static void playerFight()
