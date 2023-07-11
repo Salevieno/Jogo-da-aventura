@@ -61,6 +61,7 @@ import items.Recipe;
 import liveBeings.Buff;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
+import liveBeings.Genetics;
 import liveBeings.LiveBeingStates;
 import liveBeings.LiveBeingStatus;
 import liveBeings.MovingAnimations;
@@ -1295,8 +1296,10 @@ public class Game extends JPanel
 	        		bat.RunBattle(player, pet, player.getOpponent(), animations, DP) ;
 	        		if (!player.isInBattle())
 	        		{
+	        			PlayerEvolutionSimulation.updateFitness() ;
 	        			if (PlayerEvolutionSimulation.shouldUpdateGenes())
 	        			{
+	        				PlayerEvolutionSimulation.updateRecords() ;
 		        			PlayerEvolutionSimulation.updateCreatureGenes() ;	
 	        			}
 		        		PlayerEvolutionSimulation.checkPlayerWin() ;

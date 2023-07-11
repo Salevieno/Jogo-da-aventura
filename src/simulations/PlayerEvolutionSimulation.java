@@ -24,7 +24,7 @@ import components.GameButton;
 import components.IconFunction;
 import graphics.DrawingOnPanel;
 import liveBeings.Creature;
-import liveBeings.Genes;
+import liveBeings.Genetics;
 import liveBeings.LiveBeingStatus;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -67,11 +67,16 @@ public abstract class PlayerEvolutionSimulation
 	private static int BattleResultsPlayerLife = 0 ;
 	private static int BattleResultsCreatureLife = 0 ;
 	
+	private static int numberRandomGeneRounds = 6 ;
+	private static int numberRoundsToEvolve = 4 ;
+	private static int currentFitness = 0 ;
+	private static int lowestFitness = 2000 ;
+	private static int avrFitness = 0 ;
 	private static int highestFitness = 0 ;
-	private static List<Integer> listFitness = new ArrayList<>() ;
+	private static List<Integer> listBestFitness = new ArrayList<>() ;
 	private static List<List<Double>> listBestGenes = new ArrayList<>() ;
 	private static List<Double> bestGenes = new ArrayList<>() ;
-	private static Genes newGenes = new Genes(Arrays.asList(0.14, 0.12, 0.74)) ;
+	private static Genetics newGenes = new Genetics(Arrays.asList(0.14, 0.12, 0.74)) ;
 	private static boolean evolutionIsOn = false ;
 	
 	static
@@ -363,7 +368,7 @@ public abstract class PlayerEvolutionSimulation
 	{
 		playerOpponent = new Creature(Game.getCreatureTypes()[playerOpponentID]) ;
 		playerOpponent.setPos(player.getPos());
-		playerOpponent.setGenes(new Genes(newGenes.getGenes()));
+		playerOpponent.setGenes(new Genetics(newGenes.getGenes()));
 	}
 	
 	private static void simulateBattle()
@@ -386,11 +391,12 @@ public abstract class PlayerEvolutionSimulation
 	
 	private static void evolve()
 	{
+		System.out.println("numberFights lowestFitness currentFitness highestFitness genes geneMods") ;
 		numberFightsRepetition = 1000 ;
 		evolutionIsOn = true ;
 	}
 	
-	public static boolean shouldUpdateGenes() { return evolutionIsOn & numberFights % 4 == 0 ; }
+	public static boolean shouldUpdateGenes() { return evolutionIsOn & numberFights % numberRoundsToEvolve == 0 ; }
 	
 	public static void setBattleResults(int playerLife, int creatureLife)
 	{
@@ -431,46 +437,72 @@ public abstract class PlayerEvolutionSimulation
 		
 	}
 	
-	public static void updateCreatureGenes()
-	{
-		Genes opponentGenes = playerOpponent.getGenes() ;
-		int fitness = Genes.calcFitness(BattleResultsPlayerLife, player.getLife().getMaxValue(), BattleResultsCreatureLife, playerOpponent.getLife().getMaxValue()) ;
-		opponentGenes.setFitness(fitness) ;
-//		System.out.println("\n Fight n° " + numberFights) ;
-
-		System.out.println(numberFights + ";" + fitness + ";" + opponentGenes.getGenes() + ";" + opponentGenes.getGeneMods()) ;
-		if (highestFitness <= fitness)
+	public static void updateRecords()
+	{		
+		Genetics genes = playerOpponent.getGenes() ;
+		genes.setFitness(avrFitness) ;
+		if (genes.getFitness() <= lowestFitness)
+		{
+			lowestFitness = genes.getFitness() ;
+		}
+		
+		if (highestFitness <= genes.getFitness())
 		{
 //			System.out.println(" ------ new best fitness ------ ") ;
-			highestFitness = fitness ;
-			bestGenes = opponentGenes.getGenes() ;
+			highestFitness = genes.getFitness() ;
+			bestGenes = new ArrayList<>(genes.getGenes());
 		}
-
-		if (listFitness.size() <= 10 - 1)
+		
+		if (listBestFitness.size() <= numberRandomGeneRounds - 1)
 		{
-			listFitness.add(fitness) ;
-			listBestGenes.add(new ArrayList<>(opponentGenes.getGenes())) ;
-			newGenes.randomize() ;	
-			newGenes.setGenes(Genes.normalize(newGenes.getGenes())) ;		
+			listBestGenes.add(new ArrayList<>(genes.getGenes())) ;
+			listBestFitness.add(genes.getFitness()) ;
+//			listBestFitness.sort(null) ;	
 		}
-		else
+		else if (genes.areSelected(listBestFitness))
 		{
-			if (opponentGenes.areSelected(listFitness))
-			{
-				int indexMinFitness = listFitness.indexOf(Collections.min(listFitness)) ;
-				listFitness.remove(indexMinFitness) ;
-				listFitness.add(fitness) ;
-				listBestGenes.remove(indexMinFitness) ;
-				listBestGenes.add(new ArrayList<>(opponentGenes.getGenes())) ;	
-				
-//				System.out.println("listFitness = " + listFitness) ;
-//				System.out.println("listBestGenes = " + listBestGenes) ;
-			}
+			int indexMinFitness = listBestFitness.indexOf(Collections.min(listBestFitness)) ;
+			listBestGenes.remove(indexMinFitness) ;
+			listBestGenes.add(new ArrayList<>(genes.getGenes())) ;
+			listBestFitness.remove(indexMinFitness) ;
+			listBestFitness.add(genes.getFitness()) ;
+//			listBestFitness.sort(null) ;	
 			
-			listFitness.sort(null) ;			
-			newGenes.breed(listBestGenes) ;
+//			System.out.println("listFitness = " + listFitness) ;
+//			System.out.println("listBestGenes = " + listBestGenes) ;
 		}
+	}
 	
+	public static void updateFitness()
+	{
+		playerOpponent.getGenes().updateFitness(BattleResultsPlayerLife, player.getLife().getMaxValue(), BattleResultsCreatureLife, playerOpponent.getLife().getMaxValue()) ;
+		currentFitness = playerOpponent.getGenes().getFitness() ;		
+		avrFitness += currentFitness / (double) numberRoundsToEvolve ;
+	}
+	
+	public static void updateCreatureGenes()
+	{		
+//		System.out.println("\n Fight n° " + numberFights) ;
+		System.out.print(numberFights + ";") ;
+		System.out.print(lowestFitness + ";") ;
+		System.out.print(avrFitness + ";") ;
+		System.out.print(highestFitness + ";") ;
+		System.out.print(playerOpponent.getGenes().getGenes().get(0) + ";") ;
+		System.out.print(playerOpponent.getGenes().getGenes().get(1) + ";") ;
+		System.out.print(playerOpponent.getGenes().getGenes().get(2) + ";") ;
+		System.out.print(listBestFitness + ";") ;
+		System.out.println(listBestGenes) ;
+		
+		avrFitness = 0 ;
+		if (listBestFitness.size() <= numberRandomGeneRounds - 1)
+		{
+			newGenes.randomizeGenes() ;
+			newGenes.setGenes(Genetics.normalize(newGenes.getGenes())) ;
+			
+			return ;
+		}
+		
+		newGenes.breed(listBestGenes) ;
 		
 	}
 	

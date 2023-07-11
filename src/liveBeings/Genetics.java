@@ -7,24 +7,26 @@ import java.util.List;
 
 import utilities.UtilG;
 
-public class Genes
+public class Genetics
 {
 	private List<Double> genes ;
 	private List<List<Double>> geneMods ;
 	private int fitness ;
 	
-	public Genes()
+	public Genetics()
 	{
-		genes = new ArrayList<>(Arrays.asList(0.14, 0.12, 0.74))  ;
+		genes = new ArrayList<>(Arrays.asList(0.0, 0.0, 0.0))  ;
 		geneMods = new ArrayList<>() ;
 		geneMods.add(Arrays.asList(0.0, 0.0, 0.0)) ;
 		geneMods.add(Arrays.asList(0.0, 0.0, 0.0)) ;
 		geneMods.add(Arrays.asList(0.0, 0.0, 0.0)) ;
 
-		geneMods.forEach(geneMod -> geneMod.replaceAll(mod -> Math.random() - Math.random()));
+		randomizeGenes() ;
+		genes = normalize(genes) ;
+//		randomizeGeneMods() ;
 	}
 	
-	public Genes(List<Double> genes)
+	public Genetics(List<Double> genes)
 	{
 		this.genes = new ArrayList<>(genes)  ;
 		geneMods = new ArrayList<>() ;
@@ -35,9 +37,14 @@ public class Genes
 //		geneMods.forEach(geneMod -> geneMod.replaceAll(mod -> UtilG.Round(Math.random() - Math.random(), 3)));
 	}
 	
-	public void randomize()
+	public void randomizeGenes()
 	{
 		genes.replaceAll(gene -> UtilG.Round(Math.random(), 3));
+	}
+	
+	public void randomizeGeneMods()
+	{
+		geneMods.forEach(geneMod -> geneMod.replaceAll(mod -> Math.random() - Math.random()));
 	}
 	
 	public static List<Double> makePositive(List<Double> list)
@@ -97,12 +104,34 @@ public class Genes
 		return Collections.min(listFitness) <= fitness ;
 	}	
 	
+	public void mutate()
+	{
+		randomizeGenes() ;
+		genes = normalize(genes) ;
+	}
+	
 	public void breed(List<List<Double>> bestGenes)
 	{
 		int i1 = UtilG.randomIntFromTo(0, bestGenes.size() - 1 ) ;
 		int i2 = UtilG.randomIntFromTo(0, bestGenes.size() - 1 ) ;
+		
+		if (UtilG.chance(0.1))
+		{
+			mutate() ;
+			return ;
+		}
+		System.out.println(i1 + " " + i2);
+		System.out.println(bestGenes.get(i1) + " " + bestGenes.get(i2));
+		System.out.println(avr(bestGenes.get(i1), bestGenes.get(i2)));
+		System.out.println();
 
 		genes = new ArrayList<>(avr(bestGenes.get(i1), bestGenes.get(i2))) ;
+	}
+	
+	public void updateFitness(int opponentEndLife, int opponentMaxLife, int endLife, int maxLife)
+	{
+		int fitness = Genetics.calcFitness(opponentEndLife, opponentMaxLife, endLife, maxLife) ;
+		setFitness(fitness) ;
 	}
 	
 	public static int calcFitness(int opponentEndLife, int opponentMaxLife, int endLife, int maxLife)
@@ -147,6 +176,5 @@ public class Genes
 	{
 		return "Genes [genes=" + genes + ", fitness=" + fitness + "]";
 	}
-	
 	
 }

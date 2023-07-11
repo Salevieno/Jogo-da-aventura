@@ -37,7 +37,7 @@ public class Creature extends LiveBeing
 	private Set<Item> Bag ;
 	private int Gold ;
 	private Color color ;
-	private Genes genes ;	// TODO considerar mover pra CreatureType
+	private Genetics genes ;	// TODO considerar mover pra CreatureType
 	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 	private boolean follow ;
 //	public int countmove ;
@@ -84,7 +84,7 @@ public class Creature extends LiveBeing
 		{
 			setPos(Game.getScreen().getCenter()) ;
 		}
-		genes = new Genes() ;
+		genes = new Genetics() ;
 		
 		follow = false ;
 	}
@@ -109,11 +109,11 @@ public class Creature extends LiveBeing
 	public Set<Item> getBag() {return Bag ;}
 	public int getGold() {return Gold ;}
 	public Color getColor() {return color ;}
-	public Genes getGenes() {return genes ;}
+	public Genetics getGenes() {return genes ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public boolean getFollow() {return follow ;}
 	public void setPos(Point newValue) {pos = newValue ;}
-	public void setGenes(Genes newGenes) {genes = newGenes ;}
+	public void setGenes(Genetics newGenes) {genes = newGenes ;}
 	public void setFollow(boolean F) {follow = F ;}
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
