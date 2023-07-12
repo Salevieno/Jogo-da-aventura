@@ -502,7 +502,9 @@ public abstract class PlayerEvolutionSimulation
 			return ;
 		}
 		
-		newGenes.breed(listBestGenes) ;
+		int totalParentFitness = (int) listBestFitness.stream().mapToDouble(a -> a).sum() ;
+		newGenes.breed2(listBestGenes, totalParentFitness) ;
+		newGenes.setGenes(Genetics.normalize(newGenes.getGenes())) ;
 		
 	}
 	

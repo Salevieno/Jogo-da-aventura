@@ -58,7 +58,7 @@ public class Genetics
 		List<Double> avr = new ArrayList<>() ;
 		for (int i = 0 ; i <= genes1.size() - 1; i += 1)
 		{
-			avr.add((genes1.get(i) + genes2.get(i)) / 2.0 ) ;
+			avr.add(UtilG.Round((genes1.get(i) + genes2.get(i)) / 2.0, 3) ) ;
 		}
 		
 		return avr ;
@@ -110,24 +110,41 @@ public class Genetics
 		genes = normalize(genes) ;
 	}
 	
-	public void breed(List<List<Double>> bestGenes)
+	public void breed(List<List<Double>> bestGenes, int totalParentFitness)
 	{
 		int i1 = UtilG.randomIntFromTo(0, bestGenes.size() - 1 ) ;
 		int i2 = UtilG.randomIntFromTo(0, bestGenes.size() - 1 ) ;
+
+		double mutationChance = 0.2 * (1 - totalParentFitness / (6 * 2000)) ;
 		
-		if (UtilG.chance(0.1))
+		if (UtilG.chance(mutationChance))
 		{
 			mutate() ;
 			return ;
 		}
-		System.out.println(i1 + " " + i2);
-		System.out.println(bestGenes.get(i1) + " " + bestGenes.get(i2));
-		System.out.println(avr(bestGenes.get(i1), bestGenes.get(i2)));
-		System.out.println();
 
 		genes = new ArrayList<>(avr(bestGenes.get(i1), bestGenes.get(i2))) ;
 	}
 	
+	public void breed2(List<List<Double>> bestGenes, int totalParentFitness)
+	{
+		int i1 = UtilG.randomIntFromTo(0, bestGenes.size() - 1 ) ;
+		int i2 = UtilG.randomIntFromTo(0, bestGenes.size() - 1 ) ;
+		
+		double mutationChance = 0.2 * (1 - totalParentFitness / (6 * 2000)) ;
+		
+		if (UtilG.chance(mutationChance))
+		{
+			mutate() ;
+			return ;
+		}
+		
+		for (int i = 0 ; i <= genes.size() - 1 ; i += 1)
+		{
+			genes.set(i, UtilG.chance(0.5) ? bestGenes.get(i1).get(i) : bestGenes.get(i2).get(i)) ;
+		}
+	}
+		
 	public void updateFitness(int opponentEndLife, int opponentMaxLife, int endLife, int maxLife)
 	{
 		int fitness = Genetics.calcFitness(opponentEndLife, opponentMaxLife, endLife, maxLife) ;
