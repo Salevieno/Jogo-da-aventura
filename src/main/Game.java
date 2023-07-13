@@ -1268,13 +1268,13 @@ public class Game extends JPanel
 	        	initialize() ;
 				state = GameStates.simulation;
 				
-				for (int i = 0 ; i <= 10000 - 1 ; i += 1)
-				{
-					Genetics genes = new Genetics() ;
-//					genes.randomizeGenes() ;
-//					genes.setGenes(Genetics.normalize(genes.getGenes())) ;
-					System.out.println(genes.getGenes());
-				}
+//				for (int i = 0 ; i <= 10000 - 1 ; i += 1)
+//				{
+//					Genetics genes = new Genetics() ;
+////					genes.randomizeGenes() ;
+////					genes.setGenes(Genetics.normalize(genes.getGenes())) ;
+//					System.out.println(genes.getGenes());
+//				}
 				
 				shouldRepaint = true ;
 				

@@ -22,8 +22,7 @@ public class Genetics
 		geneMods.add(Arrays.asList(0.0, 0.0, 0.0)) ;
 
 		randomizeGenes() ;
-		genes = normalize(genes) ;
-//		randomizeGeneMods() ;
+		randomizeGeneMods() ;
 	}
 	
 	public Genetics(List<Double> genes)
@@ -34,21 +33,58 @@ public class Genetics
 		geneMods.add(Arrays.asList(0.0, 0.0, 0.0)) ;
 		geneMods.add(Arrays.asList(0.0, 0.0, 0.0)) ;
 
-//		geneMods.forEach(geneMod -> geneMod.replaceAll(mod -> UtilG.Round(Math.random() - Math.random(), 3)));
+		randomizeGeneMods() ;
+	}
+	
+	public Genetics(List<Double> genes, List<List<Double>> geneMods)
+	{
+		this.genes = new ArrayList<>(genes)  ;
+		this.geneMods = new ArrayList<>(geneMods)  ;
 	}
 	
 	public void randomizeGenes()
 	{
 		genes.replaceAll(gene -> UtilG.Round(Math.random(), 3));
+		genes = normalize(genes) ;
 	}
 	
 	public void randomizeGeneMods()
 	{
-		geneMods.forEach(geneMod -> geneMod.replaceAll(mod -> Math.random() - Math.random()));
+		do
+		{
+			geneMods.forEach(geneMod -> geneMod.replaceAll(mod -> Math.random() - Math.random()));
+			geneMods.replaceAll(geneMod -> normalize(geneMod)) ;
+		} while (!geneModsOk()) ;
+		
+		geneMods.forEach(geneMod -> geneMod.replaceAll(mod -> UtilG.Round(mod, 3))) ;
+		
+	}
+	
+	private boolean geneModsOk()
+	{
+		
+		for (int i = 0 ; i <= genes.size() - 1 ; i += 1)
+		{
+			for (List<Double> geneMod : geneMods)
+			{
+				if (genes.get(i) + geneMod.get(i) < 0)
+				{
+					return false ;
+				}
+				if ( 1 < genes.get(i) + geneMod.get(i))
+				{
+					return false ;
+				}				
+			}
+		}
+		
+		return true ;
+		
 	}
 	
 	public static List<Double> makePositive(List<Double> list)
 	{
+		list = new ArrayList<>(list) ;
 		list.replaceAll(value -> Math.max(value, 0)) ;
 		return list ;
 	}
@@ -90,8 +126,9 @@ public class Genetics
 		modifiedGenes.set(1, genes.get(1) + incDefGene) ;
 		modifiedGenes.set(2, genes.get(2) + incSpellGene) ;
 
-		modifiedGenes = makePositive(modifiedGenes) ;
+//		modifiedGenes = makePositive(modifiedGenes) ;
 		modifiedGenes = normalize(modifiedGenes) ;
+//		System.out.println("modified genes = " + modifiedGenes) ;
 		
 //		System.out.println("player move = " + playerMove);
 //		System.out.println("modifiedGenes = " + modifiedGenes + " = " + modifiedGenes.stream().mapToDouble(d -> d).sum()) ;
@@ -107,7 +144,7 @@ public class Genetics
 	public void mutate()
 	{
 		randomizeGenes() ;
-		genes = normalize(genes) ;
+		randomizeGeneMods() ;
 	}
 	
 	public void breed(List<List<Double>> bestGenes, int totalParentFitness)
@@ -126,7 +163,7 @@ public class Genetics
 		genes = new ArrayList<>(avr(bestGenes.get(i1), bestGenes.get(i2))) ;
 	}
 	
-	public void breed2(List<List<Double>> bestGenes, int totalParentFitness)
+	public void breed2(List<Genetics> bestGenes, int totalParentFitness)
 	{
 		int i1 = UtilG.randomIntFromTo(0, bestGenes.size() - 1 ) ;
 		int i2 = UtilG.randomIntFromTo(0, bestGenes.size() - 1 ) ;
@@ -141,7 +178,9 @@ public class Genetics
 		
 		for (int i = 0 ; i <= genes.size() - 1 ; i += 1)
 		{
-			genes.set(i, UtilG.chance(0.5) ? bestGenes.get(i1).get(i) : bestGenes.get(i2).get(i)) ;
+			boolean getFromParent1 = UtilG.chance(0.5) ;
+			genes.set(i, getFromParent1 ? bestGenes.get(i1).getGenes().get(i) : bestGenes.get(i2).getGenes().get(i)) ;
+			geneMods.set(i, getFromParent1 ? bestGenes.get(i1).getGeneMods().get(i) : bestGenes.get(i2).getGeneMods().get(i)) ;
 		}
 	}
 		

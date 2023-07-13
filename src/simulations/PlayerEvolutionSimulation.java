@@ -74,9 +74,10 @@ public abstract class PlayerEvolutionSimulation
 	private static int avrFitness = 0 ;
 	private static int highestFitness = 0 ;
 	private static List<Integer> listBestFitness = new ArrayList<>() ;
-	private static List<List<Double>> listBestGenes = new ArrayList<>() ;
+//	private static List<List<Double>> listBestGenes = new ArrayList<>() ;
+	private static List<Genetics> listBestGenes = new ArrayList<>() ;
 	private static List<Double> bestGenes = new ArrayList<>() ;
-	private static Genetics newGenes = new Genetics(Arrays.asList(0.14, 0.12, 0.74)) ;
+	private static Genetics newGenes = new Genetics() ;
 	private static boolean evolutionIsOn = false ;
 	
 	static
@@ -368,7 +369,7 @@ public abstract class PlayerEvolutionSimulation
 	{
 		playerOpponent = new Creature(Game.getCreatureTypes()[playerOpponentID]) ;
 		playerOpponent.setPos(player.getPos());
-		playerOpponent.setGenes(new Genetics(newGenes.getGenes()));
+		playerOpponent.setGenes(new Genetics(newGenes.getGenes(), newGenes.getGeneMods()));
 	}
 	
 	private static void simulateBattle()
@@ -455,7 +456,7 @@ public abstract class PlayerEvolutionSimulation
 		
 		if (listBestFitness.size() <= numberRandomGeneRounds - 1)
 		{
-			listBestGenes.add(new ArrayList<>(genes.getGenes())) ;
+			listBestGenes.add(genes) ;
 			listBestFitness.add(genes.getFitness()) ;
 //			listBestFitness.sort(null) ;	
 		}
@@ -463,7 +464,7 @@ public abstract class PlayerEvolutionSimulation
 		{
 			int indexMinFitness = listBestFitness.indexOf(Collections.min(listBestFitness)) ;
 			listBestGenes.remove(indexMinFitness) ;
-			listBestGenes.add(new ArrayList<>(genes.getGenes())) ;
+			listBestGenes.add(genes) ;
 			listBestFitness.remove(indexMinFitness) ;
 			listBestFitness.add(genes.getFitness()) ;
 //			listBestFitness.sort(null) ;	
@@ -487,17 +488,26 @@ public abstract class PlayerEvolutionSimulation
 		System.out.print(lowestFitness + ";") ;
 		System.out.print(avrFitness + ";") ;
 		System.out.print(highestFitness + ";") ;
-		System.out.print(playerOpponent.getGenes().getGenes().get(0) + ";") ;
-		System.out.print(playerOpponent.getGenes().getGenes().get(1) + ";") ;
-		System.out.print(playerOpponent.getGenes().getGenes().get(2) + ";") ;
-		System.out.print(listBestFitness + ";") ;
-		System.out.println(listBestGenes) ;
+		for (double gene : playerOpponent.getGenes().getGenes())
+		{
+			System.out.print(gene + ";") ;
+		}
+		for (List<Double> geneMods : playerOpponent.getGenes().getGeneMods())
+		{
+			for (double geneMod : geneMods)
+			{
+				System.out.print(geneMod + ";") ;
+			}
+		}
+		System.out.println();
+//		System.out.print(listBestFitness + ";") ;
+//		System.out.println(listBestGenes) ;
 		
 		avrFitness = 0 ;
 		if (listBestFitness.size() <= numberRandomGeneRounds - 1)
 		{
 			newGenes.randomizeGenes() ;
-			newGenes.setGenes(Genetics.normalize(newGenes.getGenes())) ;
+			newGenes.randomizeGeneMods() ;
 			
 			return ;
 		}
