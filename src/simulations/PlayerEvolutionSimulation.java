@@ -520,6 +520,7 @@ public abstract class PlayerEvolutionSimulation
 	
 	public static void playerFight()
 	{
+		if (!player.isAlive()) { return ;}
 		
 		int move = UtilG.randomIntFromTo(0, 2) ;
 		switch (move)

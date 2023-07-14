@@ -1,34 +1,34 @@
 package maps;
 
-import java.awt.Image;
 import java.awt.Point;
 
 import graphics.DrawingOnPanel;
+import items.Item;
 import main.Game;
 import utilities.Align;
 import utilities.TimeCounter;
-import utilities.UtilG;
 
-public class Collectible
+public class Collectible extends Item
 {
-	private int type ;
-	private String name ;
+//	private String name ;
+	private int itemID ;
 	private int level ;
 	private Point pos ;
 	private TimeCounter counter ;
-	private Image image ;
+//	private Image image ;
 
-	public static final String[] CollectibleNames = new String[] {"Berry", "Herb", "Wood", "Metal"} ;
-	public static Image BerryImage = UtilG.loadImage(Game.ImagesPath  + "\\Collect\\" + "Col0_Berry" + ".png") ;
-	public static Image HerbImage = UtilG.loadImage(Game.ImagesPath  + "\\Collect\\" + "Col1_Herb" + ".png") ;
-	public static Image WoodImage = UtilG.loadImage(Game.ImagesPath  + "\\Collect\\" + "Col2_Wood" + ".png") ;
-	public static Image MetalImage = UtilG.loadImage(Game.ImagesPath  + "\\Collect\\" + "Col3_Metal" + ".png") ;
-	public static Image[] collectibleImages ;
+//	public static final String[] CollectibleNames = new String[] {"Berry", "Herb", "Wood", "Metal"} ;
+//	public static Image BerryImage = UtilG.loadImage(Game.ImagesPath  + "\\Collect\\" + "Col0_Berry" + ".png") ;
+//	public static Image HerbImage = UtilG.loadImage(Game.ImagesPath  + "\\Collect\\" + "Col1_Herb" + ".png") ;
+//	public static Image WoodImage = UtilG.loadImage(Game.ImagesPath  + "\\Collect\\" + "Col2_Wood" + ".png") ;
+//	public static Image MetalImage = UtilG.loadImage(Game.ImagesPath  + "\\Collect\\" + "Col3_Metal" + ".png") ;
+//	public static Image[] collectibleImages ;
 	
-	public Collectible(int type, int level, Point pos, int delay)
+	public Collectible(int itemID, int level, Point pos, int delay)
 	{
-		this.type = type ;
-		name = CollectibleNames[type] ;
+		super(Game.getAllItems()[itemID].getName(), Game.getAllItems()[itemID].getDescription(), Game.getAllItems()[itemID].getImage(), Game.getAllItems()[itemID].getPrice(), Game.getAllItems()[itemID].getDropChance()) ;
+//		name = CollectibleNames[type] ;
+		this.itemID = itemID ;
 		this.level = level ;
 		this.pos = pos ;
 		
@@ -39,16 +39,31 @@ public class Collectible
 //	    Image HerbImage = UtilG.loadImage(path + "Col1_" + name + ".png") ;
 //	    Image WoodImage = UtilG.loadImage(path + "Col2_" + name + ".png") ;
 //	    Image MetalImage = UtilG.loadImage(path + "Col3_" + name + ".png") ;
-		collectibleImages = new Image[] {BerryImage, HerbImage, WoodImage, MetalImage};
+//		collectibleImages = new Image[] {BerryImage, HerbImage, WoodImage, MetalImage};
 		
-		image = collectibleImages[type] ;
+//		image = collectibleImages[type] ;
 	}
 
-	public int getType() { return type ; }
 	public int getLevel() { return level ; }
 	public Point getPos() { return pos ; }
-	public TimeCounter getCounter() { return counter ; }	
+	public TimeCounter getCounter() { return counter ; }
+	public Item getItem() {return Game.getAllItems()[itemID] ;}
+	
+	public int type()
+	{
+		if (itemID == 220) { return 0 ;}
+		
+		return itemID % 3 + 1 ;
+	}
 	
 	public void display(DrawingOnPanel DP) {DP.DrawImage(image, pos, Align.center) ;}
+
+	@Override
+	public String toString()
+	{
+		return "Collectible [level=" + level + ", pos=" + pos + ", counter=" + counter + ", name=" + name
+				+ ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance="
+				+ dropChance + "]";
+	}
 	
 }

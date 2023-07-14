@@ -384,7 +384,21 @@ public class Player extends LiveBeing
 		isRiding = !isRiding ;
 	}
 	
-	private void finishCollecting()
+	private void trainCollecting(Collectible collectible)
+	{
+		
+		if (collectible.type() <= 0) { return ;}
+		
+		collectLevel[collectible.type() - 1] += 0.25 / (collectLevel[collectible.type() - 1] + 1) ;
+		
+	}
+	
+	private void addCollectibleToBag(Collectible collectible, BagWindow bag)
+	{
+		bag.Add(collectible.getItem(), 1) ;
+	}
+	
+	private void removeCollectibleFromMap()
 	{
 		collectCounter.reset() ;
         collectingGif.flush() ;
@@ -397,8 +411,6 @@ public class Player extends LiveBeing
 			List<Collectible> collectibles = fm.getCollectibles() ;
 			collectibles.remove(currentCollectible) ;
 		}
-		
-        currentCollectible = null ;
 	}
 	
 	public void collect(DrawingOnPanel DP)
@@ -408,7 +420,11 @@ public class Player extends LiveBeing
         
         if (collectCounter.finished())
         {
-        	finishCollecting() ;
+        	removeCollectibleFromMap() ;
+        	addCollectibleToBag(currentCollectible, bag) ;
+        	trainCollecting(currentCollectible) ;
+        	
+            currentCollectible = null ;
         }
     }
 	
@@ -771,7 +787,7 @@ public class Player extends LiveBeing
 			// meeting with creatures
 			if (!isInBattle())
 			{
-				ArrayList<Creature> creaturesInMap = fm.getCreatures() ;
+				List<Creature> creaturesInMap = fm.getCreatures() ;
 				for (Creature creature : creaturesInMap)
 				{
 					double distx = UtilG.dist1D(pos.x, creature.getPos().x) ;

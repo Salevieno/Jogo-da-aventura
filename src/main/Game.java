@@ -61,7 +61,6 @@ import items.Recipe;
 import liveBeings.Buff;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
-import liveBeings.Genetics;
 import liveBeings.LiveBeingStates;
 import liveBeings.LiveBeingStatus;
 import liveBeings.MovingAnimations;
@@ -1194,16 +1193,16 @@ public class Game extends JPanel
 		}
     	player.getBag().addGold(3000) ;
     	
-    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
     	
 //    	player.getExp().incCurrentValue(5000);
     	
@@ -1266,7 +1265,7 @@ public class Game extends JPanel
 	        {
 	        	//loading.displayText(DP) ;
 	        	initialize() ;
-				state = GameStates.simulation;
+				state = GameStates.running;
 				
 //				for (int i = 0 ; i <= 10000 - 1 ; i += 1)
 //				{

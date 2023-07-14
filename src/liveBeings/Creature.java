@@ -293,11 +293,11 @@ public class Creature extends LiveBeing
 		int damage = -1 ;
 		AttackEffects effect = null ;
 
-		double MagAtk = 3*BA.TotalMagAtk() ;
+		double MagAtk = BA.TotalMagAtk() ;
 		double MagDef = receiver.getBA().TotalMagDef() ;
-		double AtkDex = 3*BA.TotalDex() ;
+		double AtkDex = BA.TotalDex() ;
 		double DefAgi = receiver.getBA().TotalAgi() ;
-		double AtkCrit = 3*BA.TotalCritAtkChance() ;
+		double AtkCrit = BA.TotalCritAtkChance() ;
 		double DefCrit = receiver.getBA().TotalCritDefChance() ;
 		double receiverElemMod = 1 ;
 		double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
