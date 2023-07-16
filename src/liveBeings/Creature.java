@@ -129,36 +129,14 @@ public class Creature extends LiveBeing
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		DP.DrawText(pos, alignment, DrawingOnPanel.stdAngle, name, font, color) ;
 	}
+	
 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
 	{
 		DP.DrawImage(type.movingAni.idleGif, pos, scale, Align.center) ;
-		/*if (PA.getThought().equals("Exist"))
-		{
-			DP.DrawImage(type.movingAni.idleGif, pos, scale, "Center") ;
-		}
-		else if (PA.getThought().equals("Move"))
-		{
-			if (dir.equals("Acima"))
-			{
-				DP.DrawImage(type.movingAni.movingUpGif, pos, scale, "Center") ;
-			}
-			if (dir.equals("Abaixo"))
-			{
-				DP.DrawImage(type.movingAni.movingDownGif, pos, scale, "Center") ;
-			}
-			if (dir.equals("Esquerda"))
-			{
-				DP.DrawImage(type.movingAni.movingLeftGif, pos, scale, "Center") ;
-			}
-			if (dir.equals("Direita"))
-			{
-				DP.DrawImage(type.movingAni.movingRightGif, pos, scale, "Center") ;
-			}
-		}*/
+		DP.DrawText(new Point(pos.x, pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
 //		DP.DrawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
 	}
 	
-
 	public void setRandomPos()
 	{
 		Screen screen = Game.getScreen() ;
@@ -167,6 +145,7 @@ public class Creature extends LiveBeing
 		Dimension step = new Dimension(1, 1) ;
 		setPos(UtilG.RandomPos(MinCoord, Range, step)) ;
 	}
+	
 	public Point CenterPos()
 	{
 		return new Point((int) (pos.x + 0.5 * size.width), (int) (pos.y - 0.5 * size.height)) ;
@@ -207,6 +186,7 @@ public class Creature extends LiveBeing
 			//setPos(CurrentPos) ;
 		}
 	}
+	
 	public String chooseTarget(boolean playerIsAlive, boolean petIsAlive)
 	{
 		if (!playerIsAlive & !petIsAlive) { return null ;}		
@@ -217,7 +197,6 @@ public class Creature extends LiveBeing
 		else { return "pet" ;}
 	}
 	
-
 	public void Think()
 	{
 			// TODO thinking is acting
@@ -276,6 +255,7 @@ public class Creature extends LiveBeing
 		Think() ;
 		actionCounter.reset() ;
 	}
+	
 	public void fight(String playerMove)
 	{
 		int move = chooseFightMove(playerMove) ;
@@ -287,6 +267,7 @@ public class Creature extends LiveBeing
 			case 2:	setCurrentAction(String.valueOf(UtilG.randomIntFromTo(0, spells.size() - 1))) ; break ;	// spell
 		}
 	}
+	
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
 		int spellLevel = spell.getLevel() ;
@@ -321,8 +302,6 @@ public class Creature extends LiveBeing
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 	}
 	
-
-
 	public void dies()
 	{
 		PA.getLife().setToMaximum() ;
@@ -337,7 +316,6 @@ public class Creature extends LiveBeing
 		setRandomPos() ;
 		follow = false ;
 	}
-
 	
 	@Override
 	public String toString()

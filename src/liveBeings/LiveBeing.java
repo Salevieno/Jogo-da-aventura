@@ -538,7 +538,7 @@ public abstract class LiveBeing
 		Dimension barSize = new Dimension(2 + size.height / 20, size.height) ;
 		Dimension offset = new Dimension (barSize.width / 2 + (StatusImages[0].getWidth(null) + 5), -barSize.height / 2) ;
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
-		Point rectPos = new Point(pos.x + mirror * offset.width, pos.y + offset.height) ;
+		Point rectPos = new Point(pos.x + mirror * offset.width, pos.y) ;
 		
 		DP.DrawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.colorPalette[9]) ;
 		DP.DrawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null) ;
@@ -546,10 +546,9 @@ public abstract class LiveBeing
 
 	public void TakeBloodAndPoisonDamage(double totalBloodAtk, double totalPoisonAtk)
 	{
-		int BloodDamage = 0 ;
-		int PoisonDamage = 0 ;
+		int BloodDamage = 0, PoisonDamage = 0 ;
 		double BloodMult = 1, PoisonMult = 1 ;
-		if (job == 4)
+		if (job == 4) // TODO isso vale tbm para criaturas e pet
 		{
 			PoisonMult += -0.1*spells.get(13).getLevel() ;
 		}

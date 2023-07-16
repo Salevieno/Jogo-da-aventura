@@ -118,6 +118,9 @@ public class Genetics
  	public List<Double> getModifiedGenes(String playerMove)
 	{
 		List<Double> modifiedGenes = new ArrayList<>(genes) ;
+		
+		if (playerMove == null) { return modifiedGenes ;}
+		
 		double incAtkGene = playerMove.equals("Y") ? geneMods.get(0).get(0) : 0 ;
 		double incDefGene = playerMove.equals("U") ? geneMods.get(1).get(1) : 0 ;
 		double incSpellGene = playerMove.equals("0") ? geneMods.get(2).get(2) : 0 ;

@@ -254,8 +254,7 @@ public class Game extends JPanel
 			animations[i] = new Animation() ;
 		}
 		
-		animations[0].setDisplayFunction((vars, DP) -> {
-		
+		animations[0].setDisplayFunction((vars, DP) -> {		
 			Point targetPos = (Point) vars[0] ;
 			Dimension targetSize = (Dimension) vars[1] ;
 			AtkResults atkResults = (AtkResults) vars[2] ;
@@ -263,8 +262,7 @@ public class Game extends JPanel
 			Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
 			DP.DrawDamageAnimation(pos, atkResults, animations[0].getCounter(), style, Game.colorPalette[6]) ;
 		}) ;
-		animations[1].setDisplayFunction((vars, DP) -> {
-		
+		animations[1].setDisplayFunction((vars, DP) -> {		
 			Point targetPos = (Point) vars[0] ;
 			Dimension targetSize = (Dimension) vars[1] ;
 			AtkResults atkResults = (AtkResults) vars[2] ;
@@ -1179,9 +1177,9 @@ public class Game extends JPanel
     	player.setName("Salevieno");
     	player.setMap(cityMaps[1]) ;
     	player.setPos(new Point(400, 221)) ;
-    	player.setLevel(50) ;
+//    	player.setLevel(50) ;
 		
-    	letThereBePet() ;
+//    	letThereBePet() ;
     	
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
@@ -1191,7 +1189,7 @@ public class Game extends JPanel
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
-    	player.getBag().addGold(3000) ;
+//    	player.getBag().addGold(3000) ;
     	
 //    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}

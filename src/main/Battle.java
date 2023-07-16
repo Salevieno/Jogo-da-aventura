@@ -17,6 +17,7 @@ import liveBeings.Spell;
 import simulations.PlayerEvolutionSimulation;
 import utilities.AttackEffects;
 import utilities.Elements;
+import utilities.GameStates;
 import utilities.UtilG;
 import utilities.UtilS;
 
@@ -169,8 +170,7 @@ public class Battle
 		Point destiny = new Point(targetPos.x + travelX, targetPos.y + travelY) ;
 		return destiny ;
 	}
-	
-	
+		
 	private void ActivateCounters(Player player, Pet pet, Creature creature)
 	{
 		if (player.getBattleActionCounter().finished() & player.getCurrentBattleAction() != null)
@@ -270,6 +270,10 @@ public class Battle
 		
 		if (attacker.actionIsPhysicalAtk() | (attacker.actionIsSpell() & !attacker.isSilent()) | attacker.actionIsDef())
 		{
+			if (attacker instanceof Player & attacker.getJob() == 2 & ((Player) attacker).arrowIsEquipped())
+			{
+				((Player) attacker).spendArrow() ;
+			}
 			attacker.updateCombo() ;
 			attacker.resetBattleActions() ;
 		}
@@ -284,7 +288,8 @@ public class Battle
 		
 		if (attacker.isAlive())
 		{
-			attacker.DrawTimeBar(UtilS.RelPos(attacker.getPos(), receiver.getPos()), Game.colorPalette[2], DP) ;
+			// UtilS.RelPos(attacker.getPos(), receiver.getPos())
+			attacker.DrawTimeBar("Left", Game.colorPalette[2], DP) ;
 			// TODO criatura tem que tomar blood and poison dano do player e do pet
 			attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
 			if (attacker.canAtk() & attacker.isInRange(receiver.getPos()))
@@ -321,7 +326,7 @@ public class Battle
 				
 				if ( atkResults.getEffect() != null | atkResults.getAtkType() == AtkTypes.defense )
 				{
-					//if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
+					if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
 					if (attacker instanceof Player) { ((Player) attacker).getStatistics().update(atkResults) ;}
 				}
 				// TODO
@@ -371,7 +376,10 @@ public class Battle
 	
 	private void FinishBattle(Player player, Pet pet, Creature creature, Animation winAni)
 	{
-		PlayerEvolutionSimulation.setBattleResults(player.getLife().getCurrentValue(), creature.getLife().getCurrentValue()) ;
+		if (Game.getState().equals(GameStates.simulation))
+		{
+			PlayerEvolutionSimulation.setBattleResults(player.getLife().getCurrentValue(), creature.getLife().getCurrentValue()) ;
+		}
 		
 		player.setState(LiveBeingStates.idle) ;
 		player.resetOpponent() ;

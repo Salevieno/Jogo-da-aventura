@@ -37,10 +37,10 @@ public class PlayerAttributesWindow extends AttributesWindow
 	
 	public PlayerAttributesWindow(Image image)
 	{
+		
 		super(image, 3) ;
 		
-		incAttButtons = new HashMap<>() ;
-		
+		incAttButtons = new HashMap<>() ;	
 		
 	}
 	
