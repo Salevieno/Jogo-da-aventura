@@ -288,7 +288,7 @@ public class DrawingOnPanel
 		
 		DrawText(new Point((int)(0.5*screenSize.width), (int)(0.05*screenSize.height)), Align.center, stdAngle, "Slot " + (SlotID + 1), font, colorPalette[5]) ;
 		//player.DrawAttWindow(MainWinDim, WindowPos[0], null, AllText, AllTextCat, 0, GoldCoinImage, icons, DP) ;
-		((PlayerAttributesWindow) player.getAttWindow()).display(player, player.getEquips(), new Point(0, 0), this) ;
+		((PlayerAttributesWindow) player.getAttWindow()).display(player, player.getEquips(), player.getEquippedArrow(), new Point(0, 0), this) ;
 		if (0 < pet.getLife().getCurrentValue())
 		{
  			//pet.getAttWindow().display(pet, allText, null, null, NumberOfUsedSlots, null, null, null, null);

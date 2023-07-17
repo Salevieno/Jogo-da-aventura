@@ -96,7 +96,8 @@ public class Player extends LiveBeing
 	private int spellPoints ;		// spell points available (to upgrade the spells)
 	private double[] collectLevel ;	// 0: herb, 1: wood, 2: metal
 	private TimeCounter collectCounter ;	// counts the progress of the player's collection
-	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor, 3: arrow
+	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor
+	private Arrow equippedArrow ;
 	private int storedGold ;
 	private double goldMultiplier ;	// multiplies the amount of gold the player wins
 	private Map<QuestSkills, Boolean> questSkills ;	// skills gained with quests
@@ -186,7 +187,7 @@ public class Player extends LiveBeing
 				new LinkedHashMap<QuestItem, Integer>()) ;
 		if (job == 2)
 		{
-			bag.Add(Arrow.getAll()[0], 100) ;
+			bag.Add(Arrow.getAll()[0], 2) ;
 		}
 		questWindow = new QuestWindow() ;
 		quests = new ArrayList<>() ;
@@ -196,7 +197,8 @@ public class Player extends LiveBeing
 		hintsWindow = new HintsWindow() ;
 		spellsTree = new SpellsTreeWindow() ;
 		bestiary = new BestiaryWindow() ;
-		equips = new Equip[4] ;	// 0: weapon, 1: shield, 2: armor, 3: arrow
+		equips = new Equip[3] ;	// 0: weapon, 1: shield, 2: armor
+		equippedArrow = null ;
 		spellPoints = 0 ;
 		color = Game.colorPalette[12] ;
     	
@@ -307,6 +309,7 @@ public class Player extends LiveBeing
 	public List<Quest> getQuests() {return quests ;}
 	public BagWindow getBag() {return bag ;}
 	public Equip[] getEquips() {return equips ;}
+	public Arrow getEquippedArrow() {return equippedArrow ;}
 	public int getSpellPoints() {return spellPoints ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
 	public BasicAttribute getMp() {return PA.getMp() ;}
@@ -334,8 +337,8 @@ public class Player extends LiveBeing
 	public void setAttIncrease(AttributeBonus attIncrease) { this.attIncrease = attIncrease ;}	
 	public AttributeBonus getAttChanceIncrease() { return attChanceIncrease ;}
 	public void setAttChanceIncrease(AttributeBonus attChanceIncrease) { this.attChanceIncrease = attChanceIncrease ;}
-
-
+	public void setEquippedArrow(Arrow equippedArrow) {this.equippedArrow = equippedArrow ;}
+	
 	public AttributeBonus getChanceIncrease() {return attChanceIncrease ;}
 	public SettingsWindow getSettings() {return settings ;}
 	public SpellsTreeWindow getSpellsTreeWindow() {return spellsTree ;}
@@ -365,7 +368,7 @@ public class Player extends LiveBeing
 	
 	public boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
-	public boolean arrowIsEquipped() { return (equips[3] != null) ;}
+	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
 	private boolean actionIsAMove() { return Arrays.asList(MoveKeys).contains(currentAction) ;}
 	public boolean isInBattle() { return state.equals(LiveBeingStates.fighting) ;}
 	public boolean isCollecting() { return state.equals(LiveBeingStates.collecting) ;}
@@ -945,7 +948,7 @@ public class Player extends LiveBeing
 		}
 		if (attWindow.isOpen())
 		{
-			((PlayerAttributesWindow) attWindow).display(this, equips, mousePos, DP);
+			((PlayerAttributesWindow) attWindow).display(this, equips, equippedArrow, mousePos, DP);
 		}
 		if (fabWindow.isOpen())
 		{		
@@ -989,18 +992,18 @@ public class Player extends LiveBeing
 	// battle functions
 	public void spendArrow()
 	{
-		//if (0 < Equips[3] & 0 < Bag[Equips[3]])
-		//{
-			//Bag[Equips[3]] += -1 ;
-			if (job == 2 & Math.random() <= 0.1*spells.get(13).getLevel())
-			{
-				//Bag[Equips[3]] += 1 ;
-			}
-		//}
-		//if (Bag[Equips[3]] == 0)
-		//{
-			equips[3] = null ;
-		//}
+		if (equippedArrow == null) { return ;}		
+		
+		if (!UtilG.chance(0.1 * spells.get(13).getLevel()))
+		{
+			bag.Remove(equippedArrow, 1) ;
+		}
+
+		if (!bag.contains(equippedArrow))
+		{
+			equippedArrow.use(this) ;
+			setEquippedArrow(null) ;
+		}
 	}
 	private int StealItem(Creature creature, Item[] items, int spellLevel)
 	{	

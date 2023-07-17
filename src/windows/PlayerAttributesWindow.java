@@ -14,6 +14,7 @@ import attributes.BasicBattleAttribute;
 import components.GameButton;
 import components.IconFunction;
 import graphics.DrawingOnPanel;
+import items.Arrow;
 import items.Equip;
 import liveBeings.Player;
 import main.Game;
@@ -105,7 +106,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		}
 	}
 	
-	public void displayTab0(Player player, Equip[] equips, Point mousePos, DrawingOnPanel DP)
+	public void displayTab0(Player player, Equip[] equips, Arrow equippedArrow, Point mousePos, DrawingOnPanel DP)
 	{
 		
 		Color[] colorPalette = Game.colorPalette ;		
@@ -133,18 +134,17 @@ public class PlayerAttributesWindow extends AttributesWindow
 		//	Equips
 		if (equips != null)
 		{
-			int[] eqSlotW = new int[] {51, 51, 51, 8} ;
-			int[] eqSlotH = new int[] {51, 51, 51, 24} ;
+			int[] eqSlotW = new int[] {51, 51, 51} ;
+			int[] eqSlotH = new int[] {51, 51, 51} ;
 			Point[] eqSlotCenter = new Point[] {UtilG.Translate(windowPos, 66, 110),
 					UtilG.Translate(windowPos, 244, 62),
-					UtilG.Translate(windowPos, 244, 134), 
-					UtilG.Translate(windowPos, 95, 117)} ;
+					UtilG.Translate(windowPos, 244, 134)} ;
 			for (int eq = 0 ; eq <= equips.length - 1 ; eq += 1)
 			{
 				if (equips[eq] == null) { continue ;}
 				
 				Equip equip = equips[eq] ;
-				Image[] eqImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Equip.ArmorImage, Equip.ArrowImage} ;
+				Image[] eqImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Equip.ArmorImage} ;
 				Point textPos = UtilG.Translate(eqSlotCenter[eq], -eqSlotW[eq] / 2 - 5, -eqSlotH[eq] / 2 - 2) ;
 
 				DP.DrawImage(eqImages[eq], eqSlotCenter[eq], Align.center) ;
@@ -162,6 +162,12 @@ public class PlayerAttributesWindow extends AttributesWindow
 				Point elemPos = UtilG.Translate(eqSlotCenter[eq], eqSlotW[eq] - 12, eqSlotH[eq] / 2) ;
 				DP.DrawImage(elemImage, elemPos, angle, new Scale(0.12, 0.12), Align.center) ;
 			}
+		}
+		
+		// Arrow
+		if (equippedArrow != null)
+		{
+			DP.DrawImage(Equip.ArrowImage, UtilG.Translate(windowPos, 95, 117), Align.center) ;
 		}
 		
 		
@@ -303,7 +309,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		
 	}
 		
-	public void display(Player player, Equip[] equips, Point mousePos, DrawingOnPanel DP)
+	public void display(Player player, Equip[] equips, Arrow equippedArrow, Point mousePos, DrawingOnPanel DP)
 	{
 		
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -330,7 +336,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 			
 		switch (tab)
 		{
-			case 0: displayTab0(player, equips, mousePos, DP) ; break ;
+			case 0: displayTab0(player, equips, equippedArrow, mousePos, DP) ; break ;
 			case 1: displayTab1(DP) ; break ;
 			case 2: displayTab2(player, DP) ; break ;
 		}		

@@ -55,63 +55,30 @@ public class Arrow extends Item
 		
 		return null ;
 	}
-	// TODO equip arrow
+
 	public void use(LiveBeing user)
 	{
 		if (!(user instanceof Player)) { return ;}
 
 		Player player = (Player) user ;
 		
-		if (player.getEquips()[3] == Arrow.getAll()[id])
+		if (player.getEquippedArrow() == Arrow.getAll()[id])
 		{
 			// unequip
-			applyBonus(user.getPA(), user.getBA(), Arrow.getAll()[id], -1) ;
-			user.getElem()[3 + 1] = Elements.neutral ;
-			player.getEquips()[3] = null ;
+			applyBonus(user.getBA(), Arrow.getAll()[id], -1) ;
+			player.setEquippedArrow(null) ;
 			
 			return ;
 		}
 		
 		// equip
-		player.getEquips()[3] = Arrow.getAll()[id] ;
-		user.getElem()[3 + 1] = Arrow.getAll()[id].elem ;
-		applyBonus(user.getPA(), user.getBA(), Arrow.getAll()[id], 1) ;
-			
-		user.getElem()[4] = user.hasSuperElement() ? user.getElem()[1] : Elements.neutral ;
+		player.setEquippedArrow(Arrow.getAll()[id]) ;
+		applyBonus(user.getBA(), Arrow.getAll()[id], 1) ;
 	}
 	
-	private void applyBonus(PersonalAttributes PA, BattleAttributes BA, Arrow arrow, double mult)
+	private void applyBonus(BattleAttributes BA, Arrow arrow, double mult)
 	{
-		AttributeBonus attBonus = arrow.getAttributeBonus() ;
-		PA.getLife().incMaxValue((int) (attBonus.getLife() * mult)) ;
-		PA.getMp().incMaxValue((int) (attBonus.getMP() * mult)) ;
-		BA.getPhyAtk().incBonus(attBonus.getPhyAtk() * mult) ;
-		BA.getMagAtk().incBonus(attBonus.getMagAtk() * mult) ;
-		BA.getPhyDef().incBonus(attBonus.getPhyDef() * mult) ;
-		BA.getMagDef().incBonus(attBonus.getMagDef() * mult) ;
-		BA.getDex().incBonus(attBonus.getDex() * mult) ;
-		BA.getAgi().incBonus(attBonus.getAgi() * mult) ;
-		BA.getCrit()[0] += attBonus.getCritAtkChance() * mult ;
-		BA.getCrit()[2] += attBonus.getCritDefChance() * mult ;
-		BA.getStun().incAtkChanceBonus(attBonus.getStunAtkChance() * mult) ;
-		BA.getStun().incDefChanceBonus(attBonus.getStunDefChance() * mult) ;
-		BA.getStun().incDuration(attBonus.getStunDuration() * mult) ;
-		BA.getBlock().incAtkChanceBonus(attBonus.getBlockAtkChance() * mult) ;
-		BA.getBlock().incDefChanceBonus(attBonus.getBlockDefChance() * mult) ;
-		BA.getBlock().incDuration(attBonus.getBlockDuration() * mult) ;
-		BA.getBlood().incAtkChanceBonus(attBonus.getBloodAtkChance() * mult) ;
-		BA.getBlood().incDefChanceBonus(attBonus.getBloodDefChance() * mult) ;
-		BA.getBlood().incAtkBonus(attBonus.getBloodAtk() * mult) ;
-		BA.getBlood().incDefBonus(attBonus.getBloodDef() * mult) ;
-		BA.getBlood().incDuration(attBonus.getBloodDuration() * mult) ;
-		BA.getPoison().incAtkChanceBonus(attBonus.getPoisonAtkChance() * mult) ;
-		BA.getPoison().incDefChanceBonus(attBonus.getPoisonDefChance() * mult) ;
-		BA.getPoison().incAtkBonus(attBonus.getPoisonAtk() * mult) ;
-		BA.getPoison().incDefBonus(attBonus.getPoisonDef() * mult) ;
-		BA.getPoison().incDuration(attBonus.getPoisonDuration() * mult) ;
-		BA.getSilence().incAtkChanceBonus(attBonus.getSilenceAtkChance() * mult) ;
-		BA.getSilence().incDefChanceBonus(attBonus.getSilenceDefChance() * mult) ;
-		BA.getSilence().incDuration(attBonus.getSilenceDuration() * mult) ;
+		BA.getPhyAtk().incBonus(atkPower * mult) ;
 	}
 
 	public void printAtt()

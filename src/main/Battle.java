@@ -270,9 +270,9 @@ public class Battle
 		
 		if (attacker.actionIsPhysicalAtk() | (attacker.actionIsSpell() & !attacker.isSilent()) | attacker.actionIsDef())
 		{
-			if (attacker instanceof Player & attacker.getJob() == 2 & ((Player) attacker).arrowIsEquipped())
+			if (attacker instanceof Player & attacker.getJob() == 2)
 			{
-				((Player) attacker).spendArrow() ;
+				if (((Player) attacker).arrowIsEquipped()) { ((Player) attacker).spendArrow() ;}
 			}
 			attacker.updateCombo() ;
 			attacker.resetBattleActions() ;

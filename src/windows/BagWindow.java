@@ -350,16 +350,66 @@ public class BagWindow extends GameWindow
 	
 	public boolean contains(Item item)
 	{
-		if (item instanceof Potion) { return pot.containsKey(item) ;}
-		if (item instanceof Alchemy) { return alch.containsKey((Alchemy) item) ;}
-		if (item instanceof Forge) { return forges.containsKey((Forge) item) ;}
-		if (item instanceof PetItem) { return petItems.containsKey((PetItem) item) ;}
-		if (item instanceof Food) { return foods.containsKey((Food) item) ;}
-		if (item instanceof Arrow) { return arrows.containsKey(item) ;}
-		if (item instanceof Equip) { return equips.containsKey(item) ;}
-		if (item instanceof GeneralItem) { return genItems.containsKey(item) ;}
-		if (item instanceof Fab) { return fabItems.containsKey(item) ;}
-		if (item instanceof QuestItem) { return questItems.containsKey(item) ;}
+		if (item instanceof Potion)
+		{
+			if (!pot.containsKey(item)) { return false ;}
+			
+			return  1 <= pot.get(item) ;
+		}
+		if (item instanceof Alchemy)
+		{
+			if (!alch.containsKey(item)) { return false ;}
+			
+			return  1 <= alch.get(item) ;
+		}
+		if (item instanceof Forge)
+		{
+			if (!forges.containsKey(item)) { return false ;}
+			
+			return  1 <= forges.get(item) ;
+		}
+		if (item instanceof PetItem)
+		{
+			if (!petItems.containsKey(item)) { return false ;}
+			
+			return  1 <= petItems.get(item) ;
+		}
+		if (item instanceof Food)
+		{
+			if (!foods.containsKey(item)) { return false ;}
+			
+			return  1 <= foods.get(item) ;
+		}
+		if (item instanceof Arrow)
+		{
+			if (!arrows.containsKey(item)) { return false ;}
+			
+			return  1 <= arrows.get(item) ;
+		}
+		if (item instanceof Equip)
+		{
+			if (!equips.containsKey(item)) { return false ;}
+			
+			return  1 <= equips.get(item) ;
+		}
+		if (item instanceof GeneralItem)
+		{
+			if (!genItems.containsKey(item)) { return false ;}
+			
+			return  1 <= genItems.get(item) ;
+		}
+		if (item instanceof Fab)
+		{
+			if (!fabItems.containsKey(item)) { return false ;}
+			
+			return  1 <= fabItems.get(item) ;
+		}
+		if (item instanceof QuestItem)
+		{
+			if (!questItems.containsKey(item)) { return false ;}
+			
+			return  1 <= questItems.get(item) ;
+		}
 		
 		System.out.println("Item procurado na mochila não pertence a uma categoria válida");
 		return false ;
