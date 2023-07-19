@@ -171,7 +171,7 @@ public class BagWindow extends GameWindow
 			Potion potion = (Potion) item ;
 			if (!pot.containsKey(potion)) { return ;}
 			if (pot.get(potion) < amount) { return ;}
-			if (pot.get(potion) == amount) { pot.remove(potion) ; return ;}	// TODO apply to other menus
+			if (pot.get(potion) == amount) { pot.remove(potion) ; item = null ; tab = 0 ; return ;}
 			
 			pot.put(potion, pot.get(potion) - amount) ;
 		}
@@ -180,6 +180,7 @@ public class BagWindow extends GameWindow
 			Alchemy alchemy = (Alchemy) item ;
 			if (!alch.containsKey(alchemy)) { return ;}
 			if (alch.get(alchemy) < amount) { return ;}
+			if (alch.get(alchemy) == amount) { alch.remove(alchemy) ; item = null ; tab = 0 ; return ;}
 			
 			alch.put(alchemy, alch.get(alchemy) - amount) ;
 		}
@@ -188,6 +189,7 @@ public class BagWindow extends GameWindow
 			Forge forge = (Forge) item ;
 			if (!forges.containsKey(forge)) { return ;}
 			if (forges.get(forge) < amount) { return ;}
+			if (forges.get(forge) == amount) { forges.remove(forge) ; item = null ; tab = 0 ; return ;}
 			
 			forges.put(forge, forges.get(forge) - amount) ;
 		}
@@ -196,6 +198,7 @@ public class BagWindow extends GameWindow
 			PetItem petItem = (PetItem) item ;
 			if (!petItems.containsKey(petItem)) { return ;}
 			if (petItems.get(petItem) < amount) { return ;}
+			if (petItems.get(petItem) == amount) { petItems.remove(petItem) ; item = null ; tab = 0 ; return ;}
 			
 			petItems.put(petItem, petItems.get(petItem) - amount) ;
 		}
@@ -204,6 +207,7 @@ public class BagWindow extends GameWindow
 			Food food = (Food) item ;
 			if (!foods.containsKey(food)) { return ;}
 			if (foods.get(food) < amount) { return ;}
+			if (foods.get(food) == amount) { foods.remove(food) ; item = null ; tab = 0 ; return ;}
 			
 			foods.put(food, foods.get(food) - amount) ;
 		}
@@ -212,6 +216,7 @@ public class BagWindow extends GameWindow
 			Arrow arrow = (Arrow) item ;
 			if (!arrows.containsKey(arrow)) { return ;}
 			if (arrows.get(arrow) < amount) { return ;}
+			if (arrows.get(arrow) == amount) { arrows.remove(arrow) ; item = null ; tab = 0 ; return ;}
 			
 			arrows.put(arrow, arrows.get(arrow) - amount) ;
 		}
@@ -220,6 +225,7 @@ public class BagWindow extends GameWindow
 			Equip equip = (Equip) item ;
 			if (!equips.containsKey(equip)) { return ;}
 			if (equips.get(equip) < amount) { return ;}
+			if (equips.get(equip) == amount) { equips.remove(equip) ; item = null ; tab = 0 ; return ;}
 			
 			equips.put(equip, equips.get(equip) - amount) ;
 		}
@@ -228,6 +234,7 @@ public class BagWindow extends GameWindow
 			GeneralItem genItem = (GeneralItem) item ;
 			if (!genItems.containsKey(genItem)) { return ;}
 			if (genItems.get(genItem) < amount) { return ;}
+			if (genItems.get(genItem) == amount) { genItems.remove(genItem) ; item = null ; tab = 0 ; return ;}
 			
 			genItems.put(genItem, genItems.get(genItem) - amount) ;
 		}
@@ -236,6 +243,7 @@ public class BagWindow extends GameWindow
 			Fab fab = (Fab) item ;
 			if (!fabItems.containsKey(fab)) { return ;}
 			if (fabItems.get(fab) < amount) { return ;}
+			if (fabItems.get(fab) == amount) { fabItems.remove(fab) ; item = null ; tab = 0 ; return ;}
 			
 			fabItems.put(fab, fabItems.get(fab) - amount) ;
 		}
@@ -244,6 +252,7 @@ public class BagWindow extends GameWindow
 			QuestItem questItem = (QuestItem) item ;
 			if (!questItems.containsKey(questItem)) { return ;}
 			if (questItems.get(questItem) < amount) { return ;}
+			if (questItems.get(questItem) == amount) { questItems.remove(questItem) ; item = null ; tab = 0 ; return ;}
 			
 			questItems.put(questItem, questItems.get(questItem) - amount) ;
 		}
@@ -326,6 +335,7 @@ public class BagWindow extends GameWindow
 	
 	public Item getSelectedItem()
 	{
+		selectedItem = null ;
 		getActiveItems() ;
 		numberItems = 0 ;
 		if (!activeItems.isEmpty())
@@ -458,7 +468,7 @@ public class BagWindow extends GameWindow
 	
 	public void navigate(String action)
 	{
-		if (getTab() == 0)
+		if (tab == 0)
 		{
 			if (action.equals(Player.ActionKeys[2]))
 			{
@@ -473,8 +483,12 @@ public class BagWindow extends GameWindow
 			{
 				tabUp() ;
 			}
+			if (action.equals("Escape"))
+			{
+				close() ;
+			}
 		}
-		if (getTab() == 1)
+		if (tab == 1)
 		{
 			if (action.equals(Player.ActionKeys[2]))
 			{

@@ -8,6 +8,8 @@ public enum TextCategories
 	bestiary("bestiário"),
 	classes("classes"),
 	equipments("equipamentos"),
+	forgerSpeech("ForjadorFalas"),
+	forgerOptions0("ForjadorOpcoes0"),
 	hints("menu de dicas"),
 	newGame("novo jogo"),
 	settings("menu de opções"),

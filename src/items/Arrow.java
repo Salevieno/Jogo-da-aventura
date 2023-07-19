@@ -61,19 +61,21 @@ public class Arrow extends Item
 		if (!(user instanceof Player)) { return ;}
 
 		Player player = (Player) user ;
+		Arrow arrow = Arrow.getAll()[id] ;
 		
-		if (player.getEquippedArrow() == Arrow.getAll()[id])
+		if (player.getEquippedArrow() == arrow)
 		{
 			// unequip
-			applyBonus(user.getBA(), Arrow.getAll()[id], -1) ;
+			applyBonus(user.getBA(), arrow, -1) ;
 			player.setEquippedArrow(null) ;
 			
 			return ;
 		}
 		
-		// equip
-		player.setEquippedArrow(Arrow.getAll()[id]) ;
-		applyBonus(user.getBA(), Arrow.getAll()[id], 1) ;
+		// equip		
+		if (!player.getBag().contains(arrow)) { return ;}
+		applyBonus(user.getBA(), arrow, 1) ;
+		player.setEquippedArrow(arrow) ;
 	}
 	
 	private void applyBonus(BattleAttributes BA, Arrow arrow, double mult)

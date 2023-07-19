@@ -568,9 +568,7 @@ public class Player extends LiveBeing
 		fishingAnimation.start(FishingGif.getDuration(), new Object[] {pos, dir}) ;
 		
 	}
-	
-	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
-		
+
 	private void keyboardActions(Pet pet)
 	{
 
@@ -629,6 +627,8 @@ public class Player extends LiveBeing
 			bestiary.open() ;
 		}
 	}
+
+	private boolean actionIsArrowKeys() { return currentAction.equals("Acima") | currentAction.equals("Abaixo") | currentAction.equals("Esquerda") | currentAction.equals("Direita") ;}
 	
 	public void acts(Pet pet, Point mousePos, SideBar sideBar)
 	{
@@ -644,16 +644,23 @@ public class Player extends LiveBeing
 				case "Direita": case "D": setDir(Directions.right) ; break ;
 			}
 			
-			if (focusWindow != null)
+			if (actionIsArrowKeys())
 			{
-				if (!focusWindow.isOpen())
+				startMove() ;
+			}
+			else
+			{				
+				if (focusWindow != null)
+				{
+					if (!focusWindow.isOpen())
+					{
+						startMove() ;
+					}
+				}
+				else if (!metAnyNPC())
 				{
 					startMove() ;
 				}
-			}
-			else
-			{
-				startMove() ;
 			}
 			
 		}
@@ -741,6 +748,20 @@ public class Player extends LiveBeing
 		
 	}
 	
+	private boolean metNPC(NPCs npc) { return UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;}
+	
+	private boolean metAnyNPC()
+	{
+		if (map.getNPCs() == null) { return false ;}
+		
+		for (NPCs npc : map.getNPCs())
+		{
+			if (metNPC(npc)) { return true ;}
+		}
+		
+		return false ;
+	}
+	
 	public void meet(Point mousePos, DrawingOnPanel DP)
 	{
 		if (state == LiveBeingStates.collecting) { return ;}
@@ -810,11 +831,9 @@ public class Player extends LiveBeing
 		if (map.getNPCs() != null)
 		{
 			for (NPCs npc : map.getNPCs())
-			{
-				boolean metNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
+			{				
+				if (!metNPC(npc)) { continue ;}
 				
-				if (!metNPC) { continue ;}
-//				System.out.println(npc.getType().getName());
 				npc.action(this, Game.getPet(), mousePos, DP) ;
 				
 				break ;
@@ -826,10 +845,8 @@ public class Player extends LiveBeing
 		for (Building building : map.getBuildings())
 		{
 			for (NPCs npc : building.getNPCs())
-			{
-				boolean metNPC = UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;
-				
-				if (!metNPC) { continue ;}
+			{				
+				if (!metNPC(npc)) { continue ;}
 				
 				npc.action(this, Game.getPet(), mousePos, DP) ;
 				
@@ -837,7 +854,9 @@ public class Player extends LiveBeing
 			}
 		}
 	}
-		
+	
+	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
+			
 	
 	public void useItem(Item item)
 	{

@@ -20,6 +20,9 @@ public class ForgeWindow extends GameWindow
 	private List<Equip> itemsForForge ;
 	private static final int NumberItemsPerWindow = 10 ;
 	
+	private Point windowPos = new Point((int)(0.2*Game.getScreen().getSize().width), (int)(0.2*Game.getScreen().getSize().height)) ;
+	private Point titlePos = UtilG.Translate(windowPos, size.width / 2, 16) ;
+	
 	public ForgeWindow()
 	{
 		super("Forge", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Forge.png"), 1, 1, 1, 1) ;
@@ -47,26 +50,28 @@ public class ForgeWindow extends GameWindow
 		}
 	}
 	
-	public Equip selectedEquip() { return itemsForForge.get(item) ;}
+	public Equip selectedEquip() { if (item == -1) { return null ;} return itemsForForge.get(item) ;}
 	
 	public int forge(BagWindow bag)
 	{
 
 		Equip selectedEquip = selectedEquip() ;
 		
-		if (selectedEquip.getForgeLevel() == Equip.maxForgeLevel) { return 2 ;}
+		if (selectedEquip == null) { return 2 ;}
+		
+		if (selectedEquip.getForgeLevel() == Equip.maxForgeLevel) { return 3 ;}
 
 		int runeId = selectedEquip.isSpecial() ? 20 : 0 ;
 		runeId += 2 * selectedEquip.getForgeLevel() ;
 		runeId += selectedEquip.isWeapon() ? 0 : 1 ;
 		Forge rune = Forge.getAll()[runeId] ;
 
-		if (!bag.contains(rune)) { return 3 ;}
+		if (!bag.contains(rune)) { return 4 ;}
 
 		int forgePrice = 100 + 1000 * selectedEquip.getForgeLevel() ;
 
 
-		if (!bag.hasEnoughGold(forgePrice)) { return 4 ;}
+		if (!bag.hasEnoughGold(forgePrice)) { return 5 ;}
 
 
 		double chanceForge = 1 - 0.08 * selectedEquip.getForgeLevel() ;
@@ -79,13 +84,13 @@ public class ForgeWindow extends GameWindow
 		{
 			selectedEquip.incForgeLevel() ;
 			
-			return 5 ;
+			return 6 ;
 		}
 		
 		selectedEquip.resetForgeLevel() ;
 		bag.Remove(selectedEquip, 1);
 		
-		return 6 ; 
+		return 7 ; 
 
 
 		// TODO overwrite save
@@ -94,8 +99,6 @@ public class ForgeWindow extends GameWindow
 	public void display(DrawingOnPanel DP)
 	{
 		
-		Point windowPos = new Point((int)(0.4*Game.getScreen().getSize().width), (int)(0.2*Game.getScreen().getSize().height)) ;
-		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 28) ;
 		double angle = DrawingOnPanel.stdAngle ;
 		List<Equip> itemsOnWindow = NumberItemsPerWindow <= itemsForForge.size() ? itemsForForge.subList(0, NumberItemsPerWindow) : itemsForForge ;
 		
@@ -105,18 +108,18 @@ public class ForgeWindow extends GameWindow
 		
 		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[2]) ;
 		
-		Point itemPos = UtilG.Translate(windowPos, 30, 70) ;
+		Point itemPos = UtilG.Translate(windowPos, 24, 70) ;
 		for (Equip item : itemsOnWindow)
 		{
 			if (item == null) { continue ;}
 			
-			Point namePos = UtilG.Translate(itemPos, 20, -6) ;
+			Point namePos = UtilG.Translate(itemPos, 14, -6) ;
 			
-			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? Game.colorPalette[6] : Game.colorPalette[9] ;
+			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? selColor : stdColor ;
 			DP.DrawImage(Item.slot, itemPos, angle, new Scale(1, 1), Align.center) ;
 			DP.DrawImage(item.getImage(), itemPos, angle, new Scale(1, 1), Align.center) ;
 			DP.DrawText(namePos, Align.topLeft, angle, item.getName() + " + " + item.getForgeLevel(), stdFont, itemColor) ;
-			itemPos.y += 30 ;
+			itemPos.y += 28 ;
 		}
 		
 	}

@@ -210,7 +210,12 @@ public class Game extends JPanel
 			{
 				listValues.add((String) listText.get(j)) ;
 			}
-			allText.put(TextCategories.catFromBRName((String) key), listValues.toArray(new String[] {})) ;
+
+			TextCategories catName = TextCategories.catFromBRName((String) key) ;
+			if (catName != null)
+			{
+				allText.put(catName, listValues.toArray(new String[] {})) ;
+			}
 		}
 		
 	}
@@ -366,13 +371,13 @@ public class Game extends JPanel
 				{"Depositar", "Sacar", "Investir com baixo risco", "Investir com alto risco"}, {}, {}, {}, {}, {}, {}, {}} ;
 			}
 			
-			if (Game.allText.get(name + "Falas") != null)
+			if (Game.allText.get(TextCategories.catFromBRName(name + "Falas")) != null)
 			{
-				speech = Game.allText.get(name + "Falas") ;
-				options = new String[Game.allText.get(name + "Falas").length][] ;
+				speech = Game.allText.get(TextCategories.catFromBRName(name + "Falas")) ;
+				options = new String[Game.allText.get(TextCategories.catFromBRName(name + "Falas")).length][] ;
 				for (int j = 0 ; j <= options.length - 1; j += 1)
 				{
-					options[j] = Game.allText.get(name + "Opcoes" + j) ;
+					options[j] = Game.allText.get(TextCategories.catFromBRName(name + "Opcoes" + j)) ;
 				}
 			}
 
@@ -766,8 +771,7 @@ public class Game extends JPanel
 		
 		return quests ;
     }
-     
- 	
+      	
     private Spell[] initializeAllSpells(Languages language)
     {
     	List<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;
@@ -823,7 +827,6 @@ public class Game extends JPanel
 		}
 		return allSpells ;
     }
-
 	
     private Item[] initializeAllItems()
 	{
@@ -1194,11 +1197,11 @@ public class Game extends JPanel
     	
 //    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
@@ -1361,6 +1364,7 @@ public class Game extends JPanel
 	
 	class TAdapter extends KeyAdapter 
 	{	
+		// TODO transformar actions em keyEvents
 	    @Override
 	    public void keyPressed(KeyEvent e) 
 	    {

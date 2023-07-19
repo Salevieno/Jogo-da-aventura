@@ -44,7 +44,7 @@ public class NPCs
 	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 11) ;
 	public static final Image SpeakingBubble = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeechBubble.png") ;
 	public static final Image ChoicesWindow = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "ChoicesWindow.png") ;
-	
+	// TODO criar mapa para direcionar para o menu apropriado a depender da opção escolhida
 	public NPCs (int id, NPCType type, Point pos)
 	{
 		this.id = id ;
@@ -291,8 +291,9 @@ public class NPCs
 	
 	public void navigate(String action)
 	{
-		switchOption(action) ;
 		
+		switchOption(action) ;
+
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) & menu <= numberMenus - 1)
 		{
 			incMenu() ;
@@ -301,6 +302,7 @@ public class NPCs
 		{
 			decMenu() ;
 		}
+		
 	}
 	
 	public void switchOption(String action)
@@ -325,8 +327,34 @@ public class NPCs
 		DP.DrawSpeech(speechPos, content, NPCfont, SpeakingBubble, type.getColor()) ;
 		
 	}
+
+	public void display(DrawingOnPanel DP)
+	{
+		DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomCenter) ;
+	}
+
+	public void drawOptions(Point windowPos, DrawingOnPanel DP)
+	{
+		// TODO transformar choices numa GameWindow
+		String[] options = type.getOptions()[menu] ;
+		Color selColor = Game.colorPalette[3] ;
+		
+		if (options == null) { return ;}		
+		if (options.length <= 0) { return ;}
+		
+		DP.DrawImage(ChoicesWindow, windowPos, Align.topLeft) ;
+		
+		int sy = NPCfont.getSize() + 5 ;
+		for (int i = 0 ; i <= options.length - 1 ; i += 1)
+		{
+			Point textPos = UtilG.Translate(windowPos, 5, 5 + i * sy) ;
+			Color textColor = i == selOption ? selColor : Game.colorPalette[9] ;
+			DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, String.valueOf(i) + " - " + options[i], NPCfont, textColor) ;
+		}
+		
+	}
 	
-	public void doctorAction(PersonalAttributes playerPA, PersonalAttributes petPA)
+	private void doctorAction(PersonalAttributes playerPA, PersonalAttributes petPA)
 	{
 		if (selOption == 0)
 		{
@@ -352,7 +380,7 @@ public class NPCs
 		menu = 4 ;
 	}
 	
-	public void sellerAction(BagWindow bag, String action, Point mousePos, ShoppingWindow shopping, DrawingOnPanel DP)
+	private void sellerAction(BagWindow bag, String action, Point mousePos, ShoppingWindow shopping, DrawingOnPanel DP)
 	{
 	
 		if (menu == 0) { return ;}
@@ -366,7 +394,7 @@ public class NPCs
 		
 	}
 	
-	public void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawingOnPanel DP)
+	private void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawingOnPanel DP)
 	{
 		
 		if (player.getLevel() == 50 & player.getProJob() == 0)
@@ -400,7 +428,7 @@ public class NPCs
 		
 	}
 	
-	public void crafterAction(BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
+	private void crafterAction(BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
 	{
 	
 		if (menu == 0) { return ;}
@@ -416,9 +444,9 @@ public class NPCs
 		}
 	}
 	
-	public void forgerAction(BagWindow bag, String action, ForgeWindow forgeWindow, DrawingOnPanel DP)
+	private void forgerAction(BagWindow bag, String action, ForgeWindow forgeWindow, DrawingOnPanel DP)
 	{
-	
+		
 		if (menu == 0) { return ;}
 		
 		forgeWindow.display(DP) ;
@@ -434,7 +462,7 @@ public class NPCs
 		
 	}
 	
-	public void elementalAction(BagWindow bag, ElementalWindow elementalWindow, String action, DrawingOnPanel DP)
+	private void elementalAction(BagWindow bag, ElementalWindow elementalWindow, String action, DrawingOnPanel DP)
 	{
 	
 		if (menu == 0) { return ;}
@@ -467,7 +495,7 @@ public class NPCs
 		
 	}
 	
-	public void saverAction(Player player, Pet pet, String action)
+	private void saverAction(Player player, Pet pet, String action)
 	{
 		
 		if (action == null) { return ;}
@@ -484,7 +512,7 @@ public class NPCs
 		
 	}
 	
-	public void sailorAction(Player player, String action)
+	private void sailorAction(Player player, String action)
 	{
 		if (action == null) { return ;}		
 
@@ -495,13 +523,13 @@ public class NPCs
 		}
 	}
 	
-	public void portalAction(Player player)
+	private void portalAction(Player player)
 	{
 		if (player.getMap().getName().equals("Forest 2")) { player.setMap(Game.getMaps()[30]) ; player.setPos(UtilG.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
 		if (player.getMap().getName().equals("Cave 1")) { player.setMap(Game.getMaps()[6]) ; player.setPos(UtilG.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
 	}
 	
-	public void bankerAction(BagWindow bag, BankWindow bankWindow, String action, DrawingOnPanel DP)
+	private void bankerAction(BagWindow bag, BankWindow bankWindow, String action, DrawingOnPanel DP)
 	{
 	
 		if (menu == 0) { return ;}
@@ -541,7 +569,7 @@ public class NPCs
 		
 	}
 	
-	public void questAction(List<Quest> quests, BagWindow bag, PersonalAttributes PA, Map<QuestSkills, Boolean> skills, String action)
+	private void questAction(List<Quest> quests, BagWindow bag, PersonalAttributes PA, Map<QuestSkills, Boolean> skills, String action)
 	{
 		
 		if (action == null) { return ;}
@@ -574,33 +602,6 @@ public class NPCs
 		}
 		
 	}
-	
-	public void display(DrawingOnPanel DP)
-	{
-		DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomCenter) ;
-	}
-
-	public void drawOptions(Point windowPos, DrawingOnPanel DP)
-	{
-		// TODO transformar choices numa GameWindow
-		String[] options = type.getOptions()[menu] ;
-		Color selColor = Game.colorPalette[3] ;
-		
-		if (options == null) { return ;}		
-		if (options.length <= 0) { return ;}
-		
-		DP.DrawImage(ChoicesWindow, windowPos, Align.topLeft) ;
-		
-		int sy = NPCfont.getSize() + 5 ;
-		for (int i = 0 ; i <= options.length - 1 ; i += 1)
-		{
-			Point textPos = UtilG.Translate(windowPos, 5, 5 + i * sy) ;
-			Color textColor = i == selOption ? selColor : Game.colorPalette[9] ;
-			DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, String.valueOf(i) + " - " + options[i], NPCfont, textColor) ;
-		}
-		
-	}
-
 	
 	@Override
 	public String toString()
