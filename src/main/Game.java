@@ -1193,7 +1193,7 @@ public class Game extends JPanel
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
-//    	player.getBag().addGold(3000) ;
+    	player.getBag().addGold(3000) ;
     	
 //    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}

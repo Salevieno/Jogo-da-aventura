@@ -758,6 +758,14 @@ public class Player extends LiveBeing
 		{
 			if (metNPC(npc)) { return true ;}
 		}
+
+		for (Building building : map.getBuildings())
+		{
+			for (NPCs npc : building.getNPCs())
+			{
+				if (metNPC(npc)) { return true ;}
+			}
+		}
 		
 		return false ;
 	}
