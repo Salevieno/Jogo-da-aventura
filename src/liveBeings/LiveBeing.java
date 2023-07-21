@@ -180,9 +180,10 @@ public abstract class LiveBeing
 		Point pos = new Point(540, 100) ;
 		Dimension size = new Dimension(60, 20) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		String stateText = 0 < combo.size() ? state.toString() : "" ;
+		
 		DP.DrawRoundRect(pos, Align.center, size, 1, Game.colorPalette[8], Game.colorPalette[8], true);
-		if (combo == null) {DP.DrawText(pos, Align.center, 0, "null", font, Game.colorPalette[9]) ;}
-		else if (0 < combo.size()) { DP.DrawText(pos, Align.center, 0, state.toString(), font, Game.colorPalette[9]) ;}		
+		DP.DrawText(pos, Align.center, 0, stateText, font, Game.colorPalette[9]) ;
 	}
 	
 	public Point CalcNewPos()
@@ -333,6 +334,12 @@ public abstract class LiveBeing
 		
 		// TODO determinar se a ação é spell
 		return listSpells.contains(currentAction) ;
+	}
+	public boolean actionIsArrowAtk()
+	{
+		if (!( this instanceof Player)) { return false ;}
+		
+		return hasActed() ? currentAction.equals(BattleKeys[0]) & ((Player) this).arrowIsEquipped() : false ;
 	}
 	public boolean actionIsPhysicalAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
 	public boolean actionIsDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}

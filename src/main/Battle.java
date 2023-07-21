@@ -94,7 +94,6 @@ public class Battle
 
 	private static AtkResults calcPhysicalAtk(LiveBeing attacker, LiveBeing receiver)
 	{
-		// TODO add arrow atk, arrows can be physical and magical at the same time
 		AttackEffects effect = calcEffect(attacker.getBA().TotalDex(), receiver.getBA().TotalAgi(), attacker.getBA().TotalCritAtkChance(), receiver.getBA().TotalCritDefChance(), receiver.getBA().getStatus().getBlock()) ;
 		int damage = calcDamage(effect, attacker.getBA().TotalPhyAtk(), receiver.getBA().TotalPhyDef(), attacker.atkElems(), receiver.defElems(), 1) ;
 
@@ -235,6 +234,10 @@ public class Battle
 	private AtkResults Atk(LiveBeing attacker, LiveBeing receiver)
 	{
 		AtkResults atkResult = new AtkResults() ;
+		if (attacker.actionIsArrowAtk())
+		{
+			// TODO add arrow atk, arrows can be physical and magical at the same time
+		}
 		if (attacker.actionIsPhysicalAtk())
 		{
 			atkResult = calcPhysicalAtk(attacker, receiver) ;
