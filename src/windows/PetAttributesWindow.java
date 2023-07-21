@@ -8,7 +8,6 @@ import java.awt.Point;
 
 import attributes.BasicBattleAttribute;
 import graphics.DrawingOnPanel;
-import items.Equip;
 import liveBeings.Pet;
 import main.Game;
 import main.TextCategories;

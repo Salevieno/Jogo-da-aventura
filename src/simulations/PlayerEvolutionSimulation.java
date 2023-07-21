@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -76,7 +75,7 @@ public abstract class PlayerEvolutionSimulation
 	private static List<Integer> listBestFitness = new ArrayList<>() ;
 //	private static List<List<Double>> listBestGenes = new ArrayList<>() ;
 	private static List<Genetics> listBestGenes = new ArrayList<>() ;
-	private static List<Double> bestGenes = new ArrayList<>() ;
+//	private static List<Double> bestGenes = new ArrayList<>() ;
 	private static Genetics newGenes = new Genetics() ;
 	private static boolean evolutionIsOn = false ;
 	
@@ -84,7 +83,10 @@ public abstract class PlayerEvolutionSimulation
 	{		
 		buttons = new ArrayList<>() ;
 		player.setPos(new Point(45, 230)) ;
-		pet.setPos(new Point(450, 230)) ;
+		if (pet != null)
+		{
+			pet.setPos(new Point(450, 230)) ;
+		}
 		
 		addJobSection() ;	
 		
@@ -205,13 +207,15 @@ public abstract class PlayerEvolutionSimulation
 	
 	private static void addSection(Point pos, Point spacing, Map<String, IconFunction> sectionNamesActions)
 	{
+		Iterator<?> it = sectionNamesActions.keySet().iterator();
+
 		int i = 0 ;
-		Iterator it = sectionNamesActions.entrySet().iterator();
 	    while (it.hasNext())
 	    {
-	        Map.Entry<String, IconFunction> pair = (Map.Entry) it.next();
+	    	String key = (String) it.next() ;
+	    	IconFunction action = sectionNamesActions.get(key) ;
 			Point buttonPos = UtilG.Translate(pos, i * spacing.x, i * spacing.y) ;
-			buttons.add(newButton(buttonPos, pair.getKey(), pair.getValue())) ;
+			buttons.add(newButton(buttonPos, key, action)) ;
 			i++ ;
 	    }
 	}
@@ -369,7 +373,7 @@ public abstract class PlayerEvolutionSimulation
 	{
 		playerOpponent = new Creature(Game.getCreatureTypes()[playerOpponentID]) ;
 		playerOpponent.setPos(player.getPos());
-		playerOpponent.setGenes(new Genetics(newGenes.getGenes(), newGenes.getGeneMods()));
+		playerOpponent.getType().setGenes(new Genetics(newGenes.getGenes(), newGenes.getGeneMods()));
 	}
 	
 	private static void simulateBattle()
@@ -422,6 +426,7 @@ public abstract class PlayerEvolutionSimulation
 		
 	}
 	
+	
 	public static void checkBattleRepeat()
 	{
 		
@@ -440,7 +445,7 @@ public abstract class PlayerEvolutionSimulation
 	
 	public static void updateRecords()
 	{		
-		Genetics genes = playerOpponent.getGenes() ;
+		Genetics genes = playerOpponent.getType().getGenes() ;
 		genes.setFitness(avrFitness) ;
 		if (genes.getFitness() <= lowestFitness)
 		{
@@ -451,7 +456,7 @@ public abstract class PlayerEvolutionSimulation
 		{
 //			System.out.println(" ------ new best fitness ------ ") ;
 			highestFitness = genes.getFitness() ;
-			bestGenes = new ArrayList<>(genes.getGenes());
+//			bestGenes = new ArrayList<>(genes.getGenes());
 		}
 		
 		if (listBestFitness.size() <= numberRandomGeneRounds - 1)
@@ -476,8 +481,8 @@ public abstract class PlayerEvolutionSimulation
 	
 	public static void updateFitness()
 	{
-		playerOpponent.getGenes().updateFitness(BattleResultsPlayerLife, player.getLife().getMaxValue(), BattleResultsCreatureLife, playerOpponent.getLife().getMaxValue()) ;
-		currentFitness = playerOpponent.getGenes().getFitness() ;		
+		playerOpponent.getType().getGenes().updateFitness(BattleResultsPlayerLife, player.getLife().getMaxValue(), BattleResultsCreatureLife, playerOpponent.getLife().getMaxValue()) ;
+		currentFitness = playerOpponent.getType().getGenes().getFitness() ;		
 		avrFitness += currentFitness / (double) numberRoundsToEvolve ;
 	}
 	
@@ -488,11 +493,11 @@ public abstract class PlayerEvolutionSimulation
 		System.out.print(lowestFitness + ";") ;
 		System.out.print(avrFitness + ";") ;
 		System.out.print(highestFitness + ";") ;
-		for (double gene : playerOpponent.getGenes().getGenes())
+		for (double gene : playerOpponent.getType().getGenes().getGenes())
 		{
 			System.out.print(gene + ";") ;
 		}
-		for (List<Double> geneMods : playerOpponent.getGenes().getGeneMods())
+		for (List<Double> geneMods : playerOpponent.getType().getGenes().getGeneMods())
 		{
 			for (double geneMod : geneMods)
 			{
@@ -635,6 +640,7 @@ public abstract class PlayerEvolutionSimulation
 		DP.DrawText(UtilG.Translate(pos, 0, 70), Align.bottomLeft, DrawingOnPanel.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.colorPalette[1]);
 
 	}
+	
 	
 	public static void displayInterface(Point mousePos, DrawingOnPanel DP)
 	{

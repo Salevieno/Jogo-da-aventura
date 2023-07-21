@@ -162,7 +162,7 @@ public abstract class LiveBeing
 	public void setBattleAction(AtkTypes ba) { currentAtkType = ba ;}
 	
 	public boolean isMoving() { return (state.equals(LiveBeingStates.moving)) ;}
-	public boolean canAct() { return actionCounter.finished() ;}
+	public boolean canAct() { return actionCounter.finished() ;}	// TODO add states
 	
 	public void resetAction() { currentAction = null ;}
 	public void resetBattleAction() { currentAtkType = null ;}
@@ -330,11 +330,11 @@ public abstract class LiveBeing
 		listSpells.add("2") ;
 		listSpells.add("3") ;
 		listSpells.add("4") ;
-
-		return listSpells.contains(currentAction) ;	// TODO
+		
+		// TODO determinar se a ação é spell
+		return listSpells.contains(currentAction) ;
 	}
 	public boolean actionIsPhysicalAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
-	public boolean actionIsMagicalAtk() { return false ;} // TODO
 	public boolean actionIsDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}
 	
 	public boolean canAtk() {return battleActionCounter.finished() & !BA.isStun() ;}
@@ -357,7 +357,7 @@ public abstract class LiveBeing
 	
 	public RelativePos relPosToGroundType(GroundTypes groundType)
 	{
-		// TODO busca por todos os groundTypes do mapa. E se o jogador estiver tocando em v�rios ao mesmo tempo?
+
 		if (isTouching(groundType)) { return null ;}
 		
 		RelativePos relPos = null ;
@@ -367,6 +367,7 @@ public abstract class LiveBeing
 		}
 		
     	return relPos ;
+    	
 	}
 	
 	public Elements[] atkElems()

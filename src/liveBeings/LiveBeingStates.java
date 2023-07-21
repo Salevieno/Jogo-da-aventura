@@ -10,4 +10,5 @@ public enum LiveBeingStates
 	idle,
 	moving,
 	sleeping
+	
 }

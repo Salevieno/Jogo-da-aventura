@@ -14,8 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
-
 import attributes.AttributeBonus;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
@@ -68,8 +66,8 @@ import windows.FabWindow;
 import windows.GameWindow;
 import windows.HintsWindow;
 import windows.MapWindow;
-import windows.PlayerAttributesWindow;
 import windows.PetAttributesWindow;
+import windows.PlayerAttributesWindow;
 import windows.QuestWindow;
 import windows.SettingsWindow;
 import windows.SpellsTreeWindow;
@@ -96,6 +94,8 @@ public class Player extends LiveBeing
 	private int spellPoints ;		// spell points available (to upgrade the spells)
 	private double[] collectLevel ;	// 0: herb, 1: wood, 2: metal
 	private TimeCounter collectCounter ;	// counts the progress of the player's collection
+	private TimeCounter digCounter ;		// counts the progress of digging
+	private TimeCounter tentCounter ;		// counts the progress of sleeping at the tent
 	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor
 	private Arrow equippedArrow ;
 	private int storedGold ;
@@ -129,7 +129,7 @@ public class Player extends LiveBeing
     public final static Color[] ClassColors = new Color[] {Game.colorPalette[0], Game.colorPalette[1], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
     public final static Gif levelUpGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 170, false, false) ;
     
-    public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Bestiary]
+    public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
 	public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
 	public static final String[] HotKeys = new String[] {"T", "Y", "U"} ;
 	public static final List<String> SpellKeys = new ArrayList<>(Arrays.asList(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"})) ;
@@ -219,6 +219,8 @@ public class Player extends LiveBeing
 		isRiding = false ;
 		stats = new Statistics() ;
 		collectCounter = new TimeCounter(0, 240) ;
+		digCounter = new TimeCounter(0, 200) ;
+		tentCounter = new TimeCounter(0, 200) ;
 		attPoints = 0 ;
 		
 		
@@ -514,6 +516,10 @@ public class Player extends LiveBeing
 
 //	private List<Quest> getActiveQuests() { return quests.stream().filter(quest -> quest.isActive()).toList() ;}	
 
+	private void obtainItems(List<Item> itemsObtained)
+	{		
+		Game.getAnimations()[3].start(300, new Object[] {itemsObtained.toArray(new Item[0])}) ;
+	}
 
 	public Creature ClosestCreatureInRange()
 	{			
@@ -569,66 +575,141 @@ public class Player extends LiveBeing
 		
 	}
 
+	private void dig()
+	{
+		digCounter.inc() ;
+		if (digCounter.finished())
+		{
+			digCounter.reset() ;
+			List<Item> rewards = new ArrayList<>() ;
+			rewards.add(Game.getAllItems()[0]) ;
+			// TODO determine digging items
+			if (UtilG.chance(1))
+			{
+				bag.Add(rewards.get(0), 1) ;
+				obtainItems(rewards) ;
+			}
+			setState(LiveBeingStates.idle) ;
+		}
+	}
+	
+	private void tent(DrawingOnPanel DP)
+	{
+		TentGif.play(pos, Align.center, DP) ;
+		tentCounter.inc() ;
+		if (tentCounter.finished())
+		{
+			tentCounter.reset() ;
+			PA.getLife().setToMaximum() ;
+			PA.getMp().setToMaximum() ;
+			setState(LiveBeingStates.idle) ;
+		}
+	}
+	
 	private void keyboardActions(Pet pet)
 	{
-
-		if (currentAction.equals(ActionKeys[4]))
+		int actionId = Arrays.asList(ActionKeys).indexOf(currentAction) ;
+		switch (actionId)
 		{
-			focusWindow = bag ;
-			// TODO bag.orderItems() ;
-			bag.open() ;
-		}
-		if (currentAction.equals(ActionKeys[5]))
-		{
-			focusWindow = attWindow ;
-			((PlayerAttributesWindow) attWindow).updateAttIncButtons(this) ;
-			attWindow.open() ;
-		}
-		if (currentAction.equals(ActionKeys[6]))
-		{
-			if (bag.contains(Game.getAllItems()[1340]) & isTouching(GroundTypes.water))
+			case 4:
 			{
-				fish() ;
+				focusWindow = bag ;
+				// TODO bag.orderItems() ;
+				bag.open() ;
+				
+				return ;
 			}
+			case 5:
+			{
+				focusWindow = attWindow ;
+				((PlayerAttributesWindow) attWindow).updateAttIncButtons(this) ;
+				attWindow.open() ;
+				
+				return ;
+			}
+			case 6:
+			{
+				if (!bag.contains(Game.getAllItems()[1340]) | !isTouching(GroundTypes.water)) { return ;}
+				
+				fish() ;
+				
+				return ;
+			}
+			case 7:
+			{
+				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
+			  
+				focusWindow = mapWindow ;
+				mapWindow.open() ;
+				
+				return ;
+			}
+			case 8:
+			{
+				if (pet == null) { return ;}
+				
+				focusWindow = pet.getAttWindow() ;
+				pet.getAttWindow().open() ;
+				
+				return ;
+			}
+			case 9:
+			{
+				focusWindow = questWindow ;
+				questWindow.open() ;
+				
+				return ;
+			}
+			case 10:
+			{
+				focusWindow = hintsWindow ;
+				hintsWindow.open() ;
+				
+				return ;
+			}
+			case 11:
+			{
+				if (!questSkills.get(QuestSkills.ride)) { return ;}
+				
+				activateRide() ;
+				
+				return ;
+			}
+			case 12:
+			{
+				if (isInBattle()) { return ;}
+				
+				TentGif.start() ;
+				setState(LiveBeingStates.sleeping) ;
+				
+				return ;
+			}
+			case 13: setState(LiveBeingStates.digging) ; return ;
+			case 14:
+			{
+				if (!questSkills.get(QuestSkills.bestiary)) { return ;}
+				
+				focusWindow = bestiary ;
+				bestiary.open() ;
+				
+				return ;
+			}
+			default: return ;
 		}
-		// TODO add dig
-		if (currentAction.equals(ActionKeys[7]))	// Map  & questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))
-		{
-			focusWindow = mapWindow ;
-			mapWindow.open() ;
-		}
-		if (currentAction.equals(ActionKeys[8]) & pet != null)
-		{
-			focusWindow = pet.getAttWindow() ;
-			pet.getAttWindow().open() ;
-		}
-		if (currentAction.equals(ActionKeys[9]))
-		{
-			focusWindow = questWindow ;
-			questWindow.open() ;
-		}
-		if (currentAction.equals(ActionKeys[10]))
-		{			
-			focusWindow = hintsWindow ;
-			hintsWindow.open() ;
-		}
-		if (currentAction.equals(ActionKeys[11]) & questSkills.get(QuestSkills.ride))
-		{
-			activateRide() ;
-		}
-		if (currentAction.equals(ActionKeys[12]) & !isInBattle())
-		{
-			PA.getLife().setToMaximum() ;
-			TentGif.start() ;
-		}
-		if (currentAction.equals(ActionKeys[13]))// & questSkills.get(QuestSkills.bestiary)
-		{
-			focusWindow = bestiary ;
-			bestiary.open() ;
-		}
+		
 	}
 
 	private boolean actionIsArrowKeys() { return currentAction.equals("Acima") | currentAction.equals("Abaixo") | currentAction.equals("Esquerda") | currentAction.equals("Direita") ;}
+	
+	public void doCurrentAction(DrawingOnPanel DP)
+	{
+		switch (state)
+		{
+			case digging: dig() ; return ;
+			case sleeping: tent(DP) ; return ;
+			default: return ;
+		}
+	}
 	
 	public void acts(Pet pet, Point mousePos, SideBar sideBar)
 	{
@@ -701,11 +782,10 @@ public class Player extends LiveBeing
 //			{
 //				engageInFight(closestCreature) ;
 //			}
-		}
-		
+		}		
 		
 		// if hits creature, enters battle
-		if ((actionIsPhysicalAtk() | actionIsMagicalAtk()) & closestCreature != null & !isInBattle())
+		if ((actionIsPhysicalAtk() | actionIsSpell()) & closestCreature != null & !isInBattle())
 		{
 			engageInFight(closestCreature) ;
 		}
@@ -1032,9 +1112,9 @@ public class Player extends LiveBeing
 			setEquippedArrow(null) ;
 		}
 	}
-	private int StealItem(Creature creature, Item[] items, int spellLevel)
-	{	
-		// TODO steal item
+	// TODO steal item
+//	private int StealItem(Creature creature, Item[] items, int spellLevel)
+//	{	
 //		int ID = (int)(UtilG.ArrayWithValuesGreaterThan(creature.getBag(), -1).length*Math.random() - 0.01) ;
 //		int StolenItemID = -1 ;
 //		if(-1 < creature.getBag()[ID])
@@ -1047,8 +1127,8 @@ public class Player extends LiveBeing
 //		}
 //		return StolenItemID ;
 		
-		return 0 ;
-	}
+//		return 0 ;
+//	}
 	private void useSupportSpell(Spell spell)
 	{	
 		
@@ -1106,7 +1186,7 @@ public class Player extends LiveBeing
 		spell.applyNerfs(true, opponent) ;
 		
 	}
-	public void autoSpells(Creature creature, ArrayList<Spell> spell)
+	public void autoSpells(Creature creature, List<Spell> spell)
 	{		
 		/*if (job == 3 & PA.getLife()[0] < 0.2 * PA.getLife()[1] & 0 < Skill[12] & !SkillBuffIsActive[12][0])	// Survivor's instinct
 		{
@@ -1127,14 +1207,14 @@ public class Player extends LiveBeing
 	}
 	public void win(Creature creature, Animation winAnimation)
 	{		
-		List<String> GetItemsObtained = new ArrayList<>() ;
+		
+		List<Item> itemsObtained = new ArrayList<>() ;
 		for (Item item : creature.getBag())
 		{
-			if (Math.random() <= 0.01 * item.getDropChance())
-			{
-				GetItemsObtained.add(item.getName()) ;
-				bag.Add(item, 1) ;				
-			}
+			if (!UtilG.chance(0.01 * item.getDropChance())) { continue ;}
+			
+			itemsObtained.add(item) ;
+			bag.Add(item, 1) ;	
 		}		
 		
 		bag.addGold((int) (creature.getGold() * UtilG.RandomMult(0.1 * goldMultiplier))) ;
@@ -1146,11 +1226,10 @@ public class Player extends LiveBeing
 			quest.checkCompletion(bag) ;
 		}
 		
-		String[] ItemsObtained = GetItemsObtained.toArray(new String[] {}) ;
+		obtainItems(itemsObtained) ;
 		
-		// TODO
-		//winAnimation.start(300, new Object[] {ItemsObtained}) ;
 	}
+	
 	public void levelUp(Animation attIncAnimation)
 	{
 		double[] attIncrease = calcAttributesIncrease() ;
@@ -1175,9 +1254,9 @@ public class Player extends LiveBeing
 		
 		if (attIncAnimation == null) { return ;}
 		
-		// TODO
 		attIncAnimation.start(600, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level}) ;
 	}
+	
 	private double[] calcAttributesIncrease()
 	{
 		double[] attributeIncrease = attIncrease.basic() ;
@@ -1311,17 +1390,18 @@ public class Player extends LiveBeing
 		
 	}
 	
-	private void ItemEffect(int ItemID)
-	{
-		if (ItemID == 1381 | ItemID == 1382 | ItemID == 1384)
-		{
-			BA.getStatus().setBlood(0) ;
-		}
-		if (ItemID == 1411)
-		{
-			BA.getStatus().setSilence(0) ;
-		}
-	}
+	// TODO itemEffect
+//	private void ItemEffect(int ItemID)
+//	{
+//		if (ItemID == 1381 | ItemID == 1382 | ItemID == 1384)
+//		{
+//			BA.getStatus().setBlood(0) ;
+//		}
+//		if (ItemID == 1411)
+//		{
+//			BA.getStatus().setSilence(0) ;
+//		}
+//	}
 	
 	private void drawRange(DrawingOnPanel DP)
 	{
@@ -1378,6 +1458,7 @@ public class Player extends LiveBeing
 
 	
 	// Save and load methods
+	// TODO save player
 	public void save(int slot)
 	{
 		
@@ -1386,7 +1467,6 @@ public class Player extends LiveBeing
             file.write("name: " + name + "\n"); 
             file.write("level: " + level); 
             file.flush();
-    		// TODO
  
         }
         catch (IOException e)
@@ -1395,18 +1475,18 @@ public class Player extends LiveBeing
         }
 		
 	}
-	
-	private static Player load(String filePath)
-	{
-		
-		// TODO
-		JSONObject jsonData = UtilG.readJsonObject(filePath) ;
-		Player newPlayer = new Player((String) jsonData.get("name"), "", 0) ;
-		newPlayer.setLevel((int) jsonData.get("level"));
-		
-		return newPlayer ;
-		
-	}
+
+	// TODO load player
+//	private static Player load(String filePath)
+//	{
+//		
+//		JSONObject jsonData = UtilG.readJsonObject(filePath) ;
+//		Player newPlayer = new Player((String) jsonData.get("name"), "", 0) ;
+//		newPlayer.setLevel((int) jsonData.get("level"));
+//		
+//		return newPlayer ;
+//		
+//	}
 	
 	
 }

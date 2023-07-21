@@ -32,19 +32,24 @@ public class FieldMap extends GameMap
 		
 		// add map elements
 		Screen screen = Game.getScreen() ;
-		Point minCoord = new Point((int) (0.1 * screen.getSize().width), Game.getSky().height + 10) ;
-		Dimension range = new Dimension((int) (0.8 * screen.getSize().width), (int) (0.8 * screen.getSize().height)) ;
+		Point minCoord = new Point(20, Game.getSky().height + 20) ;
+		Dimension range = new Dimension(screen.getSize().width - 40, screen.getSize().height - Game.getSky().height - 40) ;
 		Dimension step = new Dimension(1, 1) ;
-		// TODO colocar offset de 20 das bordas (tamanho do passo do player)
-		for (int me = 0 ; me <= 5 - 1 ; me += 1)
+		
+		int numberTrees = 5 ;
+		int numberGrass = 20 ;
+		Image treeImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem6_TreeForest.png") ;
+		Image grassImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem8_Grass.png") ;
+
+		for (int me = 0 ; me <= numberTrees - 1 ; me += 1)
 		{
 			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
-			mapElems.add(new MapElements(me, "ForestTree", randomPos, UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem6_TreeForest.png"))) ;				
+			mapElems.add(new MapElements(me, "ForestTree", randomPos, treeImage)) ;				
 		}
-		for (int me = 0 ; me <= 20 - 1 ; ++me)
+		for (int me = 0 ; me <= numberGrass - 1 ; me += 1)
 		{
 			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
-			mapElems.add(new MapElements(me, "grass", randomPos, UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem8_Grass.png"))) ;				
+			mapElems.add(new MapElements(me, "grass", randomPos, grassImage)) ;				
 		}
 		
 		
@@ -54,12 +59,12 @@ public class FieldMap extends GameMap
 		
 		
 		// add creatures
-		creatures = new ArrayList<Creature>() ;
-		for (int c = 0 ; c <= creatureTypeIDs.length - 1 ; c += 1)
+		creatures = new ArrayList<Creature>() ;			
+		for (int creatureTypeID : creatureTypeIDs)
 		{
-			if (-1 < creatureTypeIDs[c])
+			if (-1 < creatureTypeID)
 			{
-				CreatureType creatureType = Game.getCreatureTypes()[creatureTypeIDs[c]];
+				CreatureType creatureType = Game.getCreatureTypes()[creatureTypeID];
 				Creature creature = new Creature(creatureType) ;
 				creatures.add(creature) ;
 			}

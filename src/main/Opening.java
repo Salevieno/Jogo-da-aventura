@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
-import java.util.Map;
 
 import components.GameButton;
 import graphics.DrawingOnPanel;

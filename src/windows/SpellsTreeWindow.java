@@ -29,7 +29,7 @@ public class SpellsTreeWindow extends GameWindow
 	private static final Image tab1Image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTreeTab1.png") ;
 	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
-	private static final int[][] numberSpellsPerRow = new int[][] {{2, 3, 3, 3, 3}} ;
+//	private static final int[][] numberSpellsPerRow = new int[][] {{2, 3, 3, 3, 3}} ;
 	private static final Image spellSlot = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellSlot.png") ;
 	private static final Image spellInfo = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellInfo.png") ;
 	private static final Image spellPoints = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellPoints.png") ;
@@ -142,11 +142,11 @@ public class SpellsTreeWindow extends GameWindow
 	public void display(Point mousePos, int points, DrawingOnPanel DP)
 	{
 
-		int TabL = size.width / 20 ;
-		int TabH = size.height / 3 ;
+//		int TabL = size.width / 20 ;
+//		int TabH = size.height / 3 ;
 		double angle = DrawingOnPanel.stdAngle ;
-		Color[] TabColor = new Color[] {Game.colorPalette[7], Game.colorPalette[7]} ;
-		Color[] TabTextColor = new Color[] {Game.colorPalette[5], Game.colorPalette[5]} ;
+//		Color[] TabColor = new Color[] {Game.colorPalette[7], Game.colorPalette[7]} ;
+//		Color[] TabTextColor = new Color[] {Game.colorPalette[5], Game.colorPalette[5]} ;
 		Color selectedColor = Game.colorPalette[3] ;
 		Color hasPreReqColor = Game.colorPalette[0] ;
 		Color hasNotPreReqColor = Game.colorPalette[9] ;

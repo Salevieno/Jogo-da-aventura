@@ -272,7 +272,7 @@ public class Pet extends LiveBeing
 	
 	public void dies()
 	{
-		// TODO
+		// TODO pet dies
 //		PA.getLife().incCurrentValue(-PA.getLife().getCurrentValue()) ;
 	}
 	
@@ -350,7 +350,6 @@ public class Pet extends LiveBeing
 		
 		if (attIncAnimation == null) { return ;}
 		
-		// TODO
 		attIncAnimation.start(150, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level}) ;
 	}
 	public double[] calcAttributesIncrease()

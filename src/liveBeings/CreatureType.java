@@ -29,6 +29,8 @@ public class CreatureType
 	protected int moveDuration ;		// counts the move
 	protected int battleActionDuration ;// counts the battle actions
 	
+	private Genetics genes ;
+	
 	protected MovingAnimations movingAni ;
 	protected PersonalAttributes PA ;
 	protected BattleAttributes BA ;
@@ -84,6 +86,8 @@ public class CreatureType
 		this.Gold = Gold ;
 		this.color = color ;
 		this.StatusCounter = StatusCounter ;
+		
+		genes = new Genetics() ;
 	}
 
 	public int getID() {return id ;}
@@ -98,12 +102,14 @@ public class CreatureType
 	public int getGold() {return Gold ;}
 	public Color getColor() {return color ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
+	public Genetics getGenes() {return genes ;}
 	public void setID(int I) {id = I ;}
 	public void setSpell(List<Spell> S) {spell = S ;}
 	public void setBag(Set<Item> B) {Bag = B ;}
 	public void setGold(int G) {Gold = G ;}
 	public void setColor(Color C) {color = C ;}
 	public void setStatusCounter(int[] S) {StatusCounter = S ;}
+	public void setGenes(Genetics newGenes) {genes = newGenes ;}
 	
 	public static int getNumberOfCreatureTypes()
 	{

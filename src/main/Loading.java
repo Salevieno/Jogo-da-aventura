@@ -8,13 +8,13 @@ import utilities.UtilG;
 
 public class Loading
 {
-	private int selectedSlot, tab ;
+//	private int selectedSlot, tab ;
 	private Image LoadingGif ;
 	
 	public Loading()
 	{
-		selectedSlot = 0 ;
-		tab = 0 ;
+//		selectedSlot = 0 ;
+//		tab = 0 ;
 		LoadingGif = UtilG.loadImage(Game.ImagesPath + "Loading.gif") ;
     	
 	}

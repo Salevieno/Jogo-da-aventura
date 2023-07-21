@@ -22,7 +22,7 @@ public class SettingsWindow extends GameWindow
 	private boolean showPlayerRange ;
 	private int attDisplay ;
 	private int damageAnimation ;
-	private String[] actionKeys ;
+//	private String[] actionKeys ;
 	private int selectedActionKeyID ;
 	
 	public SettingsWindow(Image image, boolean musicIsOn, boolean soundEffectsAreOn, boolean showPlayerRange, int attDisplay, int damageAnimation)

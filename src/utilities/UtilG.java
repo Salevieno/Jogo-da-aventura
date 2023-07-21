@@ -11,7 +11,6 @@ import java.awt.MouseInfo ;
 import java.awt.Point;
 import java.awt.image.BufferedImage ;
 import java.io.BufferedReader ;
-import java.io.File ;
 import java.io.FileInputStream ;
 import java.io.FileNotFoundException ;
 import java.io.FileReader ;
@@ -27,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel ;
 

@@ -192,13 +192,12 @@ public class Game extends JPanel
 	public static void shouldNotRepaint() {shouldRepaint = false ;}
 	public static boolean someAnimationIsActive() { return (animations[3].isActive() | animations[4].isActive() | animations[5].isActive()) ;}
 	
-	private void loadAllText()
+	private static void loadAllText()
 	{
 		
-		JSONObject textData = UtilG.readJsonObject(TextPathBR) ;		
-		
-		Set<Object> keySet = textData.keySet() ;
-		Iterator<Object> iterator = keySet.iterator() ;
+		JSONObject textData = UtilG.readJsonObject(TextPathBR) ;
+
+		Iterator<?> iterator = textData.keySet().iterator() ;
 		
 		while (iterator.hasNext())
 		{
@@ -216,39 +215,11 @@ public class Game extends JPanel
 			{
 				allText.put(catName, listValues.toArray(new String[] {})) ;
 			}
-		}
+		}		
 		
-	}
-	
-	private List<Recipe> LoadCraftingRecipes()
-	{
-		List<Recipe> recipes = new ArrayList<>() ;
+//		allText.entrySet().forEach(text->System.out.println(Arrays.toString(text.getValue())));
 		
-		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "craftRecipes.json") ;
-		for (int i = 0 ; i <= input.size() - 1 ; i += 1)
-		{
-			JSONObject recipe = (JSONObject) input.get(i) ;
-			
-			JSONArray listIngredients = (JSONArray) recipe.get("IngredientIDs") ;
-			JSONArray listIngredientAmounts = (JSONArray) recipe.get("IngredientAmounts") ;
-			Map<Item, Integer> ingredients = new HashMap<>() ;
-			for (int ing = 0 ; ing <= listIngredients.size() - 1 ; ing += 1)
-			{
-				ingredients.put(allItems[(int) (long) listIngredients.get(ing)], (int) (long) listIngredientAmounts.get(ing)) ;
-			}
-
-			JSONArray listProducts = (JSONArray) recipe.get("ProductIDs") ;
-			JSONArray listProductAmounts = (JSONArray) recipe.get("ProductAmounts") ;
-			Map<Item, Integer> products = new HashMap<>() ;
-			for (int prod = 0 ; prod <= listProducts.size() - 1 ; prod += 1)
-			{
-				products.put(allItems[(int) (long) listProducts.get(prod)], (int) (long) listProductAmounts.get(prod)) ;
-			}
-			
-			recipes.add(new Recipe(ingredients, products)) ;
-		}
-
-		return recipes ;
+		
 	}
 	
 	private static void initializeAnimations()
@@ -284,9 +255,8 @@ public class Game extends JPanel
 			DP.DrawDamageAnimation(pos, atkResults, animations[2].getCounter(), style, Game.colorPalette[6]) ;
 		}) ;
 		animations[3].setDisplayFunction((vars, DP) -> {		
-			String[] ItemsObtained = (String[]) vars[0] ;
-			Color textColor = Game.colorPalette[8] ;
-			DP.winAnimation(animations[3].getCounter(), ItemsObtained, textColor) ;
+			Item[] itemsObtained = (Item[]) vars[0] ;
+			DP.winAnimation(animations[3].getCounter(), itemsObtained) ;
 		}) ;
 		animations[4].setDisplayFunction((vars, DP) -> {
 			Point playerPos = (Point) vars[0] ;
@@ -345,6 +315,77 @@ public class Game extends JPanel
 			}
 			
 		}) ;
+	}
+	
+	private static void checkKonamiCode(List<String> Combo)
+	{
+		String[] combo = Combo.toArray(new String[Combo.size()]) ;
+		if (Arrays.equals(combo, konamiCode))
+		{
+			konamiCodeActive = !konamiCodeActive ;
+			player.resetCombo() ;
+		}
+	}
+	
+	private static void konamiCode()
+	{
+		DayDuration = 12 ;
+		colorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette.png"), "Konami") ;
+		if (sky.dayTime.getCounter() % 1200 <= 300)
+		{
+			DrawingOnPanel.stdAngle += 0.04 ;
+		}
+		else if (sky.dayTime.getCounter() % 1200 <= 900)
+		{
+			DrawingOnPanel.stdAngle -= 0.04 ;
+		}
+		else
+		{
+			DrawingOnPanel.stdAngle += 0.04 ;
+		}
+	}
+
+	public static void removePet()
+	{
+		pet = null ;
+	}
+	
+	public static void letThereBePet()
+	{
+		int job = UtilG.randomIntFromTo(0, 3) ;
+		pet = new Pet(job) ;
+    	pet.setPos(player.getPos());
+	}
+		
+	private List<Recipe> LoadCraftingRecipes()
+	{
+		List<Recipe> recipes = new ArrayList<>() ;
+		
+		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "craftRecipes.json") ;
+		for (int i = 0 ; i <= input.size() - 1 ; i += 1)
+		{
+			JSONObject recipe = (JSONObject) input.get(i) ;
+			
+			JSONArray listIngredients = (JSONArray) recipe.get("IngredientIDs") ;
+			JSONArray listIngredientAmounts = (JSONArray) recipe.get("IngredientAmounts") ;
+			Map<Item, Integer> ingredients = new HashMap<>() ;
+			for (int ing = 0 ; ing <= listIngredients.size() - 1 ; ing += 1)
+			{
+				ingredients.put(allItems[(int) (long) listIngredients.get(ing)], (int) (long) listIngredientAmounts.get(ing)) ;
+			}
+
+			JSONArray listProducts = (JSONArray) recipe.get("ProductIDs") ;
+			JSONArray listProductAmounts = (JSONArray) recipe.get("ProductAmounts") ;
+			Map<Item, Integer> products = new HashMap<>() ;
+			for (int prod = 0 ; prod <= listProducts.size() - 1 ; prod += 1)
+			{
+				products.put(allItems[(int) (long) listProducts.get(prod)], (int) (long) listProductAmounts.get(prod)) ;
+			}
+			
+			recipes.add(new Recipe(ingredients, products)) ;
+		}
+
+		return recipes ;
 	}
 	
     private NPCType[] initializeNPCTypes(Languages language)
@@ -875,7 +916,6 @@ public class Game extends JPanel
 		return (Item[]) allItems.toArray(new Item[allItems.size()]) ;
 	}
 	
-
     
 	private void incrementCounters()
 	{
@@ -930,49 +970,7 @@ public class Game extends JPanel
 		fm.ActivateCollectiblesCounter() ;
 		
 	}
-	
-	public static void removePet()
-	{
-		pet = null ;
-	}
-	
-	public static void letThereBePet()
-	{
-		int job = UtilG.randomIntFromTo(0, 3) ;
-		pet = new Pet(job) ;
-    	pet.setPos(player.getPos());
-	}
-	
-	private void konamiCode()
-	{
-		DayDuration = 12 ;
-		colorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette.png"), "Konami") ;
-		if (sky.dayTime.getCounter() % 1200 <= 300)
-		{
-			DrawingOnPanel.stdAngle += 0.04 ;
-		}
-		else if (sky.dayTime.getCounter() % 1200 <= 900)
-		{
-			DrawingOnPanel.stdAngle -= 0.04 ;
-		}
-		else
-		{
-			DrawingOnPanel.stdAngle += 0.04 ;
-		}
-	}
-	
-	
-	private void checkKonamiCode(List<String> Combo)
-	{
-		String[] combo = Combo.toArray(new String[Combo.size()]) ;
-		if (Arrays.equals(combo, konamiCode))
-		{
-			konamiCodeActive = !konamiCodeActive ;
-			player.resetCombo() ;
-		}
-	}
-	
-	
+		
 	private void playStopTimeGifs()
 	{
 		if (opening.getOpeningGif().isTimeStopper())
@@ -982,8 +980,7 @@ public class Game extends JPanel
 			repaint();
 		}
 	}
-	
-	
+		
 	private void playGifs(DrawingOnPanel DP)
 	{
 		/*if (!testGif.isTimeStopper())
@@ -1003,8 +1000,7 @@ public class Game extends JPanel
 			shouldRepaint = true ;
 		}*/
 	}
-	
-		
+			
 	private void runGame(DrawingOnPanel DP)
 	{
 		
@@ -1089,6 +1085,8 @@ public class Game extends JPanel
 		{
 			player.collect(DP) ;
 		}
+		player.doCurrentAction(DP) ;
+		
 		player.applyAdjacentGroundEffect() ;
 		player.DrawAttributes(0, DP) ;
 		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
@@ -1149,8 +1147,6 @@ public class Game extends JPanel
     	
 	}
 	
-			
-
 	private void initialize()
 	{
 		
@@ -1213,25 +1209,25 @@ public class Game extends JPanel
     	
 	}
 	
-	private void chooseFightMoveTest()
-	{
-		int numberTests = 10000 ;
-		int numberAtks = 0 ;
-		int numberDefs = 0 ;
-		int numberSpells = 0 ;
-		Creature creature = new Creature(creatureTypes[0]) ;
-		
-		for (int i = 0 ; i <= numberTests - 1; i += 1)
-		{
-			int fightMove = creature.chooseFightMove("Y") ;
-			numberAtks += fightMove == 0 ? 1 : 0 ;
-			numberDefs += fightMove == 1 ? 1 : 0 ;
-			numberSpells += fightMove == 2 ? 1 : 0 ;
-		}
-		System.out.println("Atks: " + 100.0 * numberAtks / numberTests + "%") ;
-		System.out.println("Defs: " + 100.0 * numberDefs / numberTests + "%") ;
-		System.out.println("Spells: " + 100.0 * numberSpells / numberTests + "%") ;
-	}
+//	private void chooseFightMoveTest()
+//	{
+//		int numberTests = 10000 ;
+//		int numberAtks = 0 ;
+//		int numberDefs = 0 ;
+//		int numberSpells = 0 ;
+//		Creature creature = new Creature(creatureTypes[0]) ;
+//		
+//		for (int i = 0 ; i <= numberTests - 1; i += 1)
+//		{
+//			int fightMove = creature.chooseFightMove("Y") ;
+//			numberAtks += fightMove == 0 ? 1 : 0 ;
+//			numberDefs += fightMove == 1 ? 1 : 0 ;
+//			numberSpells += fightMove == 2 ? 1 : 0 ;
+//		}
+//		System.out.println("Atks: " + 100.0 * numberAtks / numberTests + "%") ;
+//		System.out.println("Defs: " + 100.0 * numberDefs / numberTests + "%") ;
+//		System.out.println("Spells: " + 100.0 * numberSpells / numberTests + "%") ;
+//	}
 	
 
 	@Override
@@ -1284,7 +1280,7 @@ public class Game extends JPanel
 	        case simulation:
 	        {
 	    		player.incrementCounters() ;
-	    		player.activateCounters();
+	    		player.activateCounters() ;
 	    		player.getSatiation().setToMaximum() ;
 	    		player.getThirst().setToMaximum() ;
 	    		if (pet != null) { pet.incrementCounters() ; }

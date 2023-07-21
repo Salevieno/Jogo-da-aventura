@@ -3,13 +3,10 @@ package items;
 import java.awt.Image;
 import java.util.List;
 
-import attributes.AttributeBonus;
 import attributes.BattleAttributes;
-import attributes.PersonalAttributes;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
-import utilities.Elements;
 import utilities.UtilG;
 
 public class Arrow extends Item

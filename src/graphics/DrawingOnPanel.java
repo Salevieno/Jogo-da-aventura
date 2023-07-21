@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import components.GameButton;
+import items.Item;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.AtkResults;
@@ -449,24 +450,26 @@ public class DrawingOnPanel
 		DrawImage(TentImage, Pos, Align.center) ;
 	}
 
-	public void winAnimation(TimeCounter counter, String[] itemNames, Color textColor)
+	public void winAnimation(TimeCounter counter, Item[] items)
 	{
 		Point pos = new Point((int)(0.45 * screenSize.width), (int)(0.2 * screenSize.height)) ;
 		Scale scale = new Scale(1, 1) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		Color titleColor = Game.colorPalette[5] ;
+		Color itemNamesColor = Game.colorPalette[6] ;
 
 		DrawImage(menuWindow, pos, scale, Align.topLeft) ;
 		Point textPos = UtilG.Translate(pos, 5, font.getSize() + 5) ;
-		DrawText(textPos, Align.bottomLeft, stdAngle, "Você venceu!", font, textColor) ;
+		DrawText(textPos, Align.bottomLeft, stdAngle, "Você obteve!", font, titleColor) ;
 		
 		if ( counter.rate() <= 0.3 ) { return ;}
 		
-		for (int i = 0 ; i <= itemNames.length - 1 ; i += 1)
+		for (int i = 0 ; i <= items.length - 1 ; i += 1)
 		{
-			if ( 0.3 + 0.5 * i / (itemNames.length - 1) <= counter.rate() )
+			if ( 0.3 + 0.5 * i / items.length <= counter.rate() )
 			{
 				Point newTextPos = UtilG.Translate(textPos, 0, (i + 1) * (font.getSize() + 2)) ;
-				DrawText(newTextPos, Align.bottomLeft, stdAngle, "Você obteve: " + itemNames[i], font, textColor) ;
+				DrawText(newTextPos, Align.bottomLeft, stdAngle, items[i].getName(), font, itemNamesColor) ;
 			}
 		}
 	}
