@@ -247,6 +247,7 @@ public class DrawingOnPanel
 		// obs: text must end with . , ? or ! for this function to work
 		int bubbleL = speechBubble.getWidth(null), bubbleH = speechBubble.getHeight(null) ;
 		boolean flipH = 0.7 * screenSize.width < pos.x ? true : false ;
+		Color textColor = color != null ? color : colorPalette[0] ;
 		
 		if (0.7 * screenSize.width < pos.x)
 		{
@@ -258,7 +259,7 @@ public class DrawingOnPanel
 		Point textPos = UtilG.Translate(pos, 14 - bubbleL / 2, 5 - bubbleH) ;
 		int maxTextL = 20 ;
 		int sy = font.getSize() + 1 ;
-		DrawFitText(textPos, sy, Align.topLeft, text, font, maxTextL, color) ;		
+		DrawFitText(textPos, sy, Align.topLeft, text, font, maxTextL, textColor) ;		
 	}
 	
 	public void DrawWindowArrows(Point pos, int width, int selectedWindow, int numberWindows)

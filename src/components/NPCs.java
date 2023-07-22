@@ -307,11 +307,16 @@ public class NPCs
 	
 	public void switchOption(String action)
 	{
-		if (action.equals(Player.ActionKeys[2]) & selOption <= type.getOptions().length - 1)
+		if (type == null) { return ;}
+		if (type.getOptions() == null) { return ;}
+		if (type.getOptions().length <= 0) { return ;}
+		if (type.getOptions()[0] == null) { return ;}
+		
+		if (action.equals(Player.ActionKeys[2]) & selOption <= type.getOptions()[0].length - 2)
 		{
 			selOption += 1 ;
 		}
-		if (action.equals(Player.ActionKeys[0]) & 0 < selOption)
+		if (action.equals(Player.ActionKeys[0]) & 1 <= selOption)
 		{
 			selOption += -1 ;
 		}
@@ -320,6 +325,7 @@ public class NPCs
 	public void speak(Point pos, DrawingOnPanel DP)
 	{
 		if (type.getSpeech()[menu].equals("")) { return ;}
+		if (type.getImage() == null) { return ;}
 		
 		String content = type.getSpeech()[menu] ;
 		Point speechPos = UtilG.Translate(pos, -22, -2 - type.getImage().getHeight(null)) ;
