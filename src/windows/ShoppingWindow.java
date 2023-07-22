@@ -110,7 +110,7 @@ public class ShoppingWindow extends GameWindow
 				this.item = itemsOnWindow.indexOf(item) ;
 			}
 			
-			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? Game.colorPalette[6] : Game.colorPalette[9] ;
+			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? selColor : stdColor ;
 			DP.DrawImage(Item.slot, itemPos, angle, new Scale(1, 1), Align.center) ;
 			DP.DrawImage(item.getImage(), itemPos, angle, new Scale(1, 1), Align.center) ;
 			DP.DrawText(namePos, Align.centerLeft, angle, item.getName(), stdFont, itemColor) ;

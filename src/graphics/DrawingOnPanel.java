@@ -267,13 +267,13 @@ public class DrawingOnPanel
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		if (0 < selectedWindow)
 		{
-			Point LeftArrowPos = new Point(pos.x - (int)(0.5 * width), pos.y) ;
+			Point LeftArrowPos = new Point(pos.x + (int)(0.25 * width), pos.y) ;
 			DrawImage(ArrowIconImage, LeftArrowPos, stdAngle, new Scale(-1, -1), Align.center) ;
 			DrawText(LeftArrowPos, Align.topRight, stdAngle, Player.ActionKeys[1], font, colorPalette[5]) ;			
 		}
 		if (selectedWindow < numberWindows - 1)
 		{
-			Point RightArrowPos = new Point(pos.x + (int)(0.5 * width), pos.y) ;
+			Point RightArrowPos = new Point(pos.x + (int)(0.75 * width), pos.y) ;
 			DrawImage(ArrowIconImage, RightArrowPos, stdAngle, new Scale(1, -1), Align.center) ;
 			DrawText(RightArrowPos, Align.topRight, stdAngle, Player.ActionKeys[3], font, colorPalette[5]) ;		
 		}

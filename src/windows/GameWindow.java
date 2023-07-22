@@ -116,6 +116,8 @@ public abstract class GameWindow
 		}
 	}
 
+	public Color getTextColor(boolean condition) { return condition ? selColor : stdColor ;}
+	
 	public abstract void navigate(String action) ;
 //	public abstract void display(Point MousePos, DrawingOnPanel DP) ;
 }
