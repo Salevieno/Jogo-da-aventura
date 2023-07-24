@@ -39,14 +39,12 @@ public class BagWindow extends GameWindow
 	private Map<GeneralItem, Integer> genItems ;
 	private Map<Fab, Integer> fabItems ;
 	private Map<QuestItem, Integer> questItems ;
-	private Item selectedItem ;
-	private int numberSlotMax ;
-	private boolean itemsAreOrdered ;
 	private Map<Item, Integer> itemsOnWindow ;
 	private int gold ;
 	
-	private Point windowPos = new Point((int)(0.3 * Game.getScreen().getSize().width), (int)(0.48 * Game.getScreen().getSize().height)) ;
-
+	private final Point windowPos = new Point((int)(0.3 * Game.getScreen().getSize().width), (int)(0.48 * Game.getScreen().getSize().height)) ;
+	private final int numberSlotMax = 20 ;
+	
 	public static final Image BagImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Bag.png") ;
 	public static final Image SelectedBag = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelected.png") ;
 	public static final Image MenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagMenu.png") ;
@@ -70,9 +68,6 @@ public class BagWindow extends GameWindow
 		this.genItems = genItem ;
 		this.fabItems = fab ;
 		this.questItems = quest ;
-		selectedItem = null ;
-		numberSlotMax = 20 ;
-		itemsAreOrdered = false ;
 		itemsOnWindow = new LinkedHashMap<>() ;
 		gold = 0 ;
 		
@@ -90,6 +85,62 @@ public class BagWindow extends GameWindow
 	public Map<QuestItem, Integer> getQuest() {return questItems ;}
 	public int getGold() {return gold ;}
 	
+	public void navigate(String action)
+	{
+		if (tab == 0)
+		{
+			if (action.equals(Player.ActionKeys[2]))
+			{
+				menuUp() ;
+				window = 0 ;
+				updateWindow() ;
+			}
+			if (action.equals(Player.ActionKeys[0]))
+			{
+				menuDown() ;
+				window = 0 ;
+				updateWindow() ;
+			}			
+			if (action.equals("Enter") | action.equals("MouseLeftClick"))
+			{
+				tabUp() ;
+			}
+			if (action.equals("Escape"))
+			{
+				close() ;
+			}
+		}
+		if (tab == 1)
+		{
+			if (action.equals(Player.ActionKeys[2]))
+			{
+				itemUp() ;
+			}
+			if (action.equals(Player.ActionKeys[0]))
+			{
+				if (numberSlotMax * window + 1 <= item)
+				{
+					itemDown() ;
+				}
+			}
+			if (action.equals(Player.ActionKeys[3]))
+			{
+				windowUp() ;
+				updateWindow() ;
+			}
+			if (action.equals(Player.ActionKeys[1]))
+			{
+				windowDown() ;
+				updateWindow() ;
+			}
+			if (action.equals("Escape") | action.equals("MouseRightClick"))
+			{
+				tabDown() ;
+				setItem(0) ;
+			}
+		}
+	}
+	
 	public void Add(Item item, int amount)
 	{
 		if (item instanceof Potion)
@@ -97,6 +148,7 @@ public class BagWindow extends GameWindow
 			if (pot.containsKey(item)) { pot.put((Potion) item, pot.get((Potion) item) + amount) ;}
 			else { pot.put((Potion) item, amount) ;}
 			numberItems = pot.size() ;
+			numberWindows = pot.size() / numberSlotMax ;
 		}
 		if (item instanceof Alchemy)
 		{
@@ -366,27 +418,26 @@ public class BagWindow extends GameWindow
 	
 	public Item getSelectedItem()
 	{
-		selectedItem = null ;
-		getItemsOnWindow() ;
+		itemsOnWindow = getItemsOnWindow() ;
 		numberItems = 0 ;
-		if (!itemsOnWindow.isEmpty())
-		{
-			numberItems = Math.min(numberSlotMax, itemsOnWindow.size() - numberSlotMax * window) ;
-		}
 		
-		int i = 0 ;
+		if (itemsOnWindow.isEmpty()) { return null ;}
+		
+		numberItems = numberSlotMax * window + Math.min(numberSlotMax, itemsOnWindow.size()) ;
+		
+		int i = numberSlotMax * window ;
 		for (Map.Entry<Item, Integer> activeItem : itemsOnWindow.entrySet())
 		{
-			if (i == item)
+			if (i != item)
 			{
-				selectedItem = activeItem.getKey() ;
-				
-				break ;
-			}			
-			i += 1 ;
+				i += 1 ;
+				continue ;
+			}	
+			
+			return activeItem.getKey() ;	
 		}
 		
-		return selectedItem ;
+		return null ;
 	}
 	
 	public boolean contains(Item item)
@@ -506,83 +557,12 @@ public class BagWindow extends GameWindow
 	
 	public boolean hasEnoughGold (int amount) { return amount <= gold ;}
 	
-	public void navigate(String action)
-	{
-		if (tab == 0)
-		{
-			if (action.equals(Player.ActionKeys[2]))
-			{
-				menuUp() ;
-				window = 0 ;
-				itemsAreOrdered = false ;
-			}
-			if (action.equals(Player.ActionKeys[0]))
-			{
-				menuDown() ;
-				window = 0 ;
-				itemsAreOrdered = false ;
-			}
-			
-			if (action.equals("Enter") | action.equals("MouseLeftClick"))
-			{
-				tabUp() ;
-			}
-			if (action.equals("Escape"))
-			{
-				close() ;
-			}
-		}
-		if (tab == 1)
-		{
-			if (action.equals(Player.ActionKeys[2]))
-			{
-				itemUp() ;
-			}
-			if (action.equals(Player.ActionKeys[0]))
-			{
-				itemDown() ;
-			}
-			if (action.equals(Player.ActionKeys[3]))
-			{
-				windowUp() ;
-				updateWindow() ;
-			}
-			if (action.equals(Player.ActionKeys[1]))
-			{
-				windowDown() ;
-				updateWindow() ;
-			}
-			if (action.equals("Escape") | action.equals("MouseRightClick"))
-			{
-				tabDown() ;
-				setItem(0) ;
-			}
-		}
-	}
-
 	public void updateWindow()
 	{
 		item = window * numberSlotMax ;
 		itemsOnWindow = getItemsOnWindow() ;
 		numberItems = (window + 1) * numberSlotMax ;
-
-		Map<Item, Integer> menuItems = getMenuItems() ;
-		numberWindows = menuItems.size() / numberSlotMax ;
-//		switch (menu)
-//		{
-//			case 0: numberWindows = pot.size() / numberSlotMax ; break ;
-//			case 1: numberWindows = alch.size() / numberSlotMax ; break ;
-//			case 2: numberWindows = forges.size() / numberSlotMax ; break ;
-//			case 3: numberWindows = petItems.size() / numberSlotMax ; break ;
-//			case 4: numberWindows = foods.size() / numberSlotMax ; break ;
-//			case 5: numberWindows = arrows.size() / numberSlotMax ; break ;
-//			case 6: numberWindows = equips.size() / numberSlotMax ; break ;
-//			case 7: numberWindows = genItems.size() / numberSlotMax ; break ;
-//			case 8: numberWindows = fabItems.size() / numberSlotMax ; break ;
-//			case 9: numberWindows = questItems.size() / numberSlotMax ; break ;
-//			default: return ;
-//		}
-		
+		numberWindows = getMenuItems().size() / numberSlotMax ;
 	}
 	
 	public void display(Point MousePos, String[] allText, DrawingOnPanel DP)

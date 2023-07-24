@@ -507,11 +507,11 @@ public class Game extends JPanel
 //			spells.add(allSpells[3]) ;
 //			spells.add(allSpells[4]) ;
 			
-			Set<Item> Bag = new HashSet<>() ;
+			Set<Item> items = new HashSet<>() ;
 			for (int i = 0 ; i <= 10 - 1; i += 1)
 			{
 				int itemID = Integer.parseInt(input.get(ct)[37 + i]) ;
-				if (-1 < itemID) { Bag.add(allItems[itemID]) ;}
+				if (-1 < itemID) { items.add(allItems[itemID]) ;}
 			}
 
 			int Gold = Integer.parseInt(input.get(ct)[47]) ;
@@ -531,7 +531,7 @@ public class Game extends JPanel
 			
 			creatureTypes[ct] = new CreatureType(ct, name, level, size, range, step, elem,
 					mpDuration, satiationDuration, moveDuration, battleActionDuration, stepCounter,
-					moveAni, PA, BA, spells, Bag, Gold, color[ct], StatusCounter) ;	
+					moveAni, PA, BA, spells, items, Gold, color[ct], StatusCounter) ;	
 		}
 		return creatureTypes ;
     }
