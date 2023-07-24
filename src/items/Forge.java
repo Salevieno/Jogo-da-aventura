@@ -8,7 +8,6 @@ import utilities.UtilG;
 
 public class Forge extends Item
 {
-	private int id ;
 	
 	private static Forge[] AllForge ;
 	
@@ -29,11 +28,9 @@ public class Forge extends Item
 	
 	public Forge(int id, String Name, String Description, int price, float dropChance)
 	{
-		super(Name, Description, imageFromID(id), price, dropChance) ;
-		this.id = id ;
+		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 	}
 
-	public int getId() {return id ;}
 	public static Forge[] getAll() {return AllForge ;}
 	
 	public static Image imageFromID(int id)

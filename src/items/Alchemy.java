@@ -10,7 +10,6 @@ import utilities.UtilG;
 
 public class Alchemy extends Item
 {
-	private int id ;
 	private float lifeHeal ;
 	private float MPHeal ;
 	
@@ -32,7 +31,7 @@ public class Alchemy extends Item
 	
 	public Alchemy(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal)
 	{
-		super(Name, Description, imageFromID(id), price, dropChance) ;
+		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
 		
@@ -45,7 +44,6 @@ public class Alchemy extends Item
 		MetalIcon ;
 	}
 	
-	public int getId() {return id ;}
 	public float getLifeHeal() {return lifeHeal ;}
 	public float getMPHeal() {return MPHeal ;}
 	public static Alchemy[] getAll() {return AllAlchemy ;}

@@ -10,7 +10,6 @@ import utilities.UtilG;
 
 public class Food extends Item
 {
-	private int id ;
 	private float lifeHeal ;
 	private float MPHeal ;
 	private int SatiationHeal ;
@@ -31,14 +30,12 @@ public class Food extends Item
 	
 	public Food(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal, int SatiationHeal)
 	{
-		super(Name, Description, imageFromID(id), price, dropChance) ;
-		this.id = id ;
+		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
 		this.SatiationHeal = SatiationHeal ;
 	}
 
-	public int getId() {return id ;}
 	public float getLifeHeal() {return lifeHeal ;}
 	public float getMPHeal() {return MPHeal ;}	
 	public int getSatiationHeal() {return SatiationHeal ;}	

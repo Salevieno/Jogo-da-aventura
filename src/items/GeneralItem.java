@@ -11,8 +11,6 @@ import utilities.UtilG;
 
 public class GeneralItem extends Item
 {
-	private int id ;
-	
 	private static GeneralItem[] AllGeneralItems ;
 	
 	private static final Image generalItemIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconGenItem.png") ;
@@ -34,11 +32,9 @@ public class GeneralItem extends Item
 	
 	public GeneralItem(int id, String Name, String Description, int price, double dropChance)
 	{
-		super(Name, Description, imageFromID(id), price, dropChance) ;
-		this.id = id ;
+		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 	}
 
-	public int getId() {return id ;}
 	public static GeneralItem[] getAll() {return AllGeneralItems ;}
 	
 	public static Image imageFromID(int id)

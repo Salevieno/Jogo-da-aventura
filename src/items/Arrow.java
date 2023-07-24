@@ -11,7 +11,6 @@ import utilities.UtilG;
 
 public class Arrow extends Item
 {
-	private int id ;
 	private float atkPower ;
 	private String elem ;
 	
@@ -33,13 +32,11 @@ public class Arrow extends Item
 	
 	public Arrow(int id, String Name, String Description, int price, float dropChance, float atkPower, String elem)
 	{
-		super(Name, Description, imageFromID(id), price, dropChance) ;
-		this.id = id ;
+		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 		this.atkPower = atkPower ;
 		this.elem = elem ;
 	}
 
-	public int getId() {return id ;}
 	public float getAtkPower() {return atkPower ;}
 	public String getElem() {return elem ;}
 	public static Arrow[] getAll() {return AllArrow ;}

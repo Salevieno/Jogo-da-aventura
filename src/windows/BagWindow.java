@@ -4,14 +4,10 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import graphics.DrawingOnPanel;
@@ -46,23 +42,24 @@ public class BagWindow extends GameWindow
 	private Item selectedItem ;
 	private int numberSlotMax ;
 	private boolean itemsAreOrdered ;
-//	private int windowLimit ;
 	private Map<Item, Integer> itemsOnWindow ;
 	private int gold ;
 	
 	private Point windowPos = new Point((int)(0.3 * Game.getScreen().getSize().width), (int)(0.48 * Game.getScreen().getSize().height)) ;
 
-	public static Image SelectedBag = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelected.png") ;
-	public static Image MenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagMenu.png") ;
-	public static Image SelectedMenuTab0 = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedMenuTab0.png") ;
-	public static Image SelectedMenuTab1 = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedMenuTab1.png") ;
-    public static Image SlotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
+	public static final Image BagImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Bag.png") ;
+	public static final Image SelectedBag = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelected.png") ;
+	public static final Image MenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagMenu.png") ;
+	public static final Image SelectedMenuTab0 = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedMenuTab0.png") ;
+	public static final Image SelectedMenuTab1 = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedMenuTab1.png") ;
+    public static final Image SlotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
 	
 	public BagWindow(Map<Potion, Integer> pot, Map<Alchemy, Integer> alch, Map<Forge, Integer> forge, Map<PetItem, Integer> petItem,
 			Map<Food, Integer> food, Map<Arrow, Integer> arrow, Map<Equip, Integer> equip, Map<GeneralItem, Integer> genItem,
 			Map<Fab, Integer> fab, Map<QuestItem, Integer> quest)
 	{
-		super("Mochila", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Bag.png"), 10, 2, 0, 0) ;
+		
+		super("Mochila", BagImage, 10, 2, 0, 0) ;
 		this.pot = pot ;
 		this.alch = alch ;
 		this.forges = forge ;
@@ -76,11 +73,9 @@ public class BagWindow extends GameWindow
 		selectedItem = null ;
 		numberSlotMax = 20 ;
 		itemsAreOrdered = false ;
-//		windowLimit = 20 ;
 		itemsOnWindow = new LinkedHashMap<>() ;
 		gold = 0 ;
 		
-		//menus.add(pot) ;
 	}
 
 	public Map<Potion, Integer> getPotions() {return pot ;}
@@ -95,10 +90,8 @@ public class BagWindow extends GameWindow
 	public Map<QuestItem, Integer> getQuest() {return questItems ;}
 	public int getGold() {return gold ;}
 	
-
 	public void Add(Item item, int amount)
 	{
-		// TODO if bag is open bag.orderItems() ;
 		if (item instanceof Potion)
 		{
 			if (pot.containsKey(item)) { pot.put((Potion) item, pot.get((Potion) item) + amount) ;}
@@ -169,20 +162,18 @@ public class BagWindow extends GameWindow
 			numberWindows = questItems.size() / numberSlotMax ;
 		}
 	}
-//	public void removeItem(Map<Item, Integer> items, Item item, int amount)
-//	{
-//		if (!items.containsKey(item)) { return ;}
-//		if (items.get(item) < amount) { return ;}
-//		
-//		items.put(item, items.get(item) - amount) ;
-//	}
+
 	public void Remove(Item item, int amount)
 	{
+
+		Map<Item, Integer> menuItems = getMenuItems() ;
+
+		if (!menuItems.containsKey(item)) { System.out.println("Tentando remover um item que não existe na mochila") ; return ;}
+		if (menuItems.get(item) < amount) { System.out.println("Tentando remover mais itens do que a quantidade existente na mochila") ; return ;}
+		
 		if (item instanceof Potion)
 		{
 			Potion potion = (Potion) item ;
-			if (!pot.containsKey(potion)) { return ;}
-			if (pot.get(potion) < amount) { return ;}
 			if (pot.get(potion) == amount) { pot.remove(potion) ; item = null ; tab = 0 ; return ;}
 			
 			pot.put(potion, pot.get(potion) - amount) ;
@@ -190,8 +181,6 @@ public class BagWindow extends GameWindow
 		if (item instanceof Alchemy)
 		{
 			Alchemy alchemy = (Alchemy) item ;
-			if (!alch.containsKey(alchemy)) { return ;}
-			if (alch.get(alchemy) < amount) { return ;}
 			if (alch.get(alchemy) == amount) { alch.remove(alchemy) ; item = null ; tab = 0 ; return ;}
 			
 			alch.put(alchemy, alch.get(alchemy) - amount) ;
@@ -199,8 +188,6 @@ public class BagWindow extends GameWindow
 		if (item instanceof Forge)
 		{
 			Forge forge = (Forge) item ;
-			if (!forges.containsKey(forge)) { return ;}
-			if (forges.get(forge) < amount) { return ;}
 			if (forges.get(forge) == amount) { forges.remove(forge) ; item = null ; tab = 0 ; return ;}
 			
 			forges.put(forge, forges.get(forge) - amount) ;
@@ -208,8 +195,6 @@ public class BagWindow extends GameWindow
 		if (item instanceof PetItem)
 		{
 			PetItem petItem = (PetItem) item ;
-			if (!petItems.containsKey(petItem)) { return ;}
-			if (petItems.get(petItem) < amount) { return ;}
 			if (petItems.get(petItem) == amount) { petItems.remove(petItem) ; item = null ; tab = 0 ; return ;}
 			
 			petItems.put(petItem, petItems.get(petItem) - amount) ;
@@ -217,8 +202,6 @@ public class BagWindow extends GameWindow
 		if (item instanceof Food)
 		{
 			Food food = (Food) item ;
-			if (!foods.containsKey(food)) { return ;}
-			if (foods.get(food) < amount) { return ;}
 			if (foods.get(food) == amount) { foods.remove(food) ; item = null ; tab = 0 ; return ;}
 			
 			foods.put(food, foods.get(food) - amount) ;
@@ -226,8 +209,6 @@ public class BagWindow extends GameWindow
 		if (item instanceof Arrow)
 		{
 			Arrow arrow = (Arrow) item ;
-			if (!arrows.containsKey(arrow)) { return ;}
-			if (arrows.get(arrow) < amount) { return ;}
 			if (arrows.get(arrow) == amount) { arrows.remove(arrow) ; item = null ; tab = 0 ; return ;}
 			
 			arrows.put(arrow, arrows.get(arrow) - amount) ;
@@ -235,8 +216,6 @@ public class BagWindow extends GameWindow
 		if (item instanceof Equip)
 		{
 			Equip equip = (Equip) item ;
-			if (!equips.containsKey(equip)) { return ;}
-			if (equips.get(equip) < amount) { return ;}
 			if (equips.get(equip) == amount) { equips.remove(equip) ; item = null ; tab = 0 ; return ;}
 			
 			equips.put(equip, equips.get(equip) - amount) ;
@@ -244,8 +223,6 @@ public class BagWindow extends GameWindow
 		if (item instanceof GeneralItem)
 		{
 			GeneralItem genItem = (GeneralItem) item ;
-			if (!genItems.containsKey(genItem)) { return ;}
-			if (genItems.get(genItem) < amount) { return ;}
 			if (genItems.get(genItem) == amount) { genItems.remove(genItem) ; item = null ; tab = 0 ; return ;}
 			
 			genItems.put(genItem, genItems.get(genItem) - amount) ;
@@ -253,8 +230,6 @@ public class BagWindow extends GameWindow
 		if (item instanceof Fab)
 		{
 			Fab fab = (Fab) item ;
-			if (!fabItems.containsKey(fab)) { return ;}
-			if (fabItems.get(fab) < amount) { return ;}
 			if (fabItems.get(fab) == amount) { fabItems.remove(fab) ; item = null ; tab = 0 ; return ;}
 			
 			fabItems.put(fab, fabItems.get(fab) - amount) ;
@@ -262,15 +237,15 @@ public class BagWindow extends GameWindow
 		if (item instanceof QuestItem)
 		{
 			QuestItem questItem = (QuestItem) item ;
-			if (!questItems.containsKey(questItem)) { return ;}
-			if (questItems.get(questItem) < amount) { return ;}
 			if (questItems.get(questItem) == amount) { questItems.remove(questItem) ; item = null ; tab = 0 ; return ;}
 			
 			questItems.put(questItem, questItems.get(questItem) - amount) ;
 		}
+		
 	}
 	
 	public void addGold (int amount) { gold += amount ;}
+	
 	public void removeGold (int amount)
 	{
 		if (hasEnoughGold(amount))
@@ -281,131 +256,112 @@ public class BagWindow extends GameWindow
 		
 		System.out.println("Tentando remover mais dinheiro do que o existente na mochila") ;
 	}
-	private Map<Potion, Integer> orderItems(Map<Potion, Integer> pot)
+
+	private Map<Item, Integer> getMenuItems()
 	{
-		Map<Potion, Integer> orderedItems = new LinkedHashMap<>() ;
-		Set<Potion> pots = pot.keySet() ;
-		List<Integer> potIds = new ArrayList<>() ;
-		pots.forEach(p -> potIds.add(p.getId())) ;
-		potIds.sort(Comparator.naturalOrder()) ;
+		Map<Item, Integer> items = new LinkedHashMap<>() ;
 		
-		for (int i = 0; i <= pot.entrySet().size() - 1 ; i += 1)
+		switch (menu)
 		{
-			orderedItems.put(Potion.getAll()[potIds.get(i)], pot.get(Potion.getAll()[potIds.get(i)])) ;
+			case 0: pot.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ; break ;
+			case 1: alch.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ; break ;
+			case 2: forges.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ; break ;
+			case 3: petItems.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ; break ;
+			case 4: foods.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ; break ;
+			case 5: arrows.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ; break ;
+			case 6: equips.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ; break ;
+			case 7: genItems.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ; break ;
+			case 8: fabItems.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ; break ;
+			case 9: questItems.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ; break ;
+			default: return null ;
 		}
 		
-		return orderedItems ;
+		return items ;
 	}
-	private Map<Forge, Integer> orderForges(Map<Forge, Integer> forge)
+	
+	private Item[] getMenuArrayItems()
 	{
-		Map<Forge, Integer> orderedItems = new LinkedHashMap<>() ;
-		Set<Forge> items = forge.keySet() ;
-		List<Integer> ids = new ArrayList<>() ;
-		items.forEach(item -> ids.add(item.getId())) ;
-		ids.sort(Comparator.naturalOrder());
-
-		for (int i = 0; i <= forge.entrySet().size() - 1 ; i += 1)
+		switch (menu)
 		{
-			System.out.println(Forge.getAll()[ids.get(i)]);
-			System.out.println();
-			orderedItems.put(Forge.getAll()[ids.get(i)], forge.get(Forge.getAll()[ids.get(i)])) ;
+			case 0: return Potion.getAll() ;
+			case 1: return Alchemy.getAll() ;
+			case 2: return Forge.getAll() ;
+			case 3: return PetItem.getAll() ;
+			case 4: return Food.getAll() ;
+			case 5: return Arrow.getAll() ;
+			case 6: return Equip.getAll() ;
+			case 7: return GeneralItem.getAll() ;
+			case 8: return Fab.getAll() ;
+			case 9: return QuestItem.getAll() ;
+			default: return null ;
 		}
-
-		itemsAreOrdered = true ;
-		return orderedItems ;
 	}
-	private Map<Equip, Integer> orderEquips(Map<Equip, Integer> pot)
+	
+	private List<Item> getMenuListItems()
 	{
-		Map<Equip, Integer> orderedItems = new LinkedHashMap<>() ;
-		Set<Equip> pots = pot.keySet() ;
-		List<Integer> potIds = new ArrayList<>() ;
-		pots.forEach(p -> potIds.add(p.getId())) ;
-		potIds.sort(Comparator.naturalOrder());
-		
-		for (int i = 0; i <= pot.entrySet().size() - 1 ; i += 1)
+		Map<Item, Integer> menuItems = getMenuItems() ;
+		return new ArrayList<>(menuItems.keySet()) ;
+		 
+//		switch (menu)
+//		{
+//			case 0: return new ArrayList<>(pot.keySet()) ;
+//			case 1: return new ArrayList<>(alch.keySet()) ;
+//			case 2: return new ArrayList<>(forges.keySet()) ;
+//			case 3: return new ArrayList<>(petItems.keySet()) ;
+//			case 4: return new ArrayList<>(foods.keySet()) ;
+//			case 5: return new ArrayList<>(arrows.keySet()) ;
+//			case 6: return new ArrayList<>(equips.keySet()) ;
+//			case 7: return new ArrayList<>(genItems.keySet()) ;
+//			case 8: return new ArrayList<>(fabItems.keySet()) ;
+//			case 9: return new ArrayList<>(questItems.keySet()) ;
+//			default: return null ;
+//		}
+	}
+	
+	private Map<Item, Integer> removeItemsOutsideWindow(Map<Item, Integer> orderedItems)
+	{
+		List<Item> keySet = getMenuListItems() ;
+		for (Item key : keySet)
 		{
-			orderedItems.put(Equip.getAll()[potIds.get(i)], pot.get(Equip.getAll()[potIds.get(i)])) ;
+			if ((window + 1) * numberSlotMax <= key.getId() | key.getId() <= window * numberSlotMax - 1)
+			{
+				orderedItems.remove(key) ;
+			}
 		}
 		
 		return orderedItems ;
 	}
 	
+	private Map<Item, Integer> orderItems(Map<Item, Integer> originalItems)
+	{
+		
+		Map<Item, Integer> orderedItems = new LinkedHashMap<>() ;
+		
+		for (Item item : getMenuArrayItems())
+		{
+			if (originalItems.get(item) == null) { continue ;}
+			
+			orderedItems.put(item, originalItems.get(item)) ;
+		}
+		
+		return orderedItems ;
+		
+	}
+	
+	private Map<Item, Integer> getItemsWithAmount()
+	{
+		return getMenuItems().entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+	}
+	
 	public Map<Item, Integer> getItemsOnWindow()
 	{
-		// pega os itens em ordem maior que 0 e mapeia em ordem aleatória e mostra
-		// 
-		
-		// [0, 21, 45, 32, 44, 10]
-		// [0, 10, 21, 32, 44]
-		// [45]
 		Map<Item, Integer> items = new LinkedHashMap<>() ;
+		Map<Item, Integer> orderedItems = new LinkedHashMap<>() ;
+		items = getItemsWithAmount() ;
+		orderedItems = orderItems(items)  ;
+		orderedItems = removeItemsOutsideWindow(orderedItems) ;
 		
-		switch (menu)
-		{
-			case 0: 
-			{
-				pot = orderItems(pot) ;
-				return pot.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			}
-			case 1: return alch.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 2:
-			{
-				items = forges.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-				if (true)
-				{
-					Map<Item, Integer> orderedItems = new LinkedHashMap<>() ;
-					List<Forge> keySet = new ArrayList<>(forges.keySet()) ;
-					List<Integer> ids = new ArrayList<>() ;
-					
-					keySet.forEach(item -> ids.add(item.getId())) ;
-					ids.sort(Comparator.naturalOrder());
-
-					for (int i = 0; i <= keySet.size() - 1 ; i += 1)
-					{
-						orderedItems.put(Forge.getAll()[ids.get(i)], forges.get(Forge.getAll()[ids.get(i)])) ;
-					}
-					
-					for (Forge key : keySet)
-					{
-						if ((window + 1) * numberSlotMax <= key.getId() | key.getId() <= window * numberSlotMax - 1)
-						{
-							orderedItems.remove(key) ;
-						}
-					}
-
-					itemsAreOrdered = true ;
-					items = orderedItems ;
-				}
-				
-				
-				break ;
-			}
-			case 3: return petItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 4: return foods.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 5: return arrows.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 6: 
-			{
-				equips = orderEquips(equips) ;
-				items = equips.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-				
-				break ;
-			}
-			case 7: return genItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 8: return fabItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 9: return questItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			default: return null ;
-		}
-
-//		List<Item> listItems = new ArrayList<>(items.keySet()) ;		
-//		for (int i = 0 ; i <= items.size() - 1 ; i += 1)
-//		{
-//			if (i < window * numberSlotMax)
-//			{
-//				items.remove(listItems.get(i)) ;
-//			}
-//		}
-		
-		return items ;
+		return orderedItems ;
 	}
 	
 	public Item getSelectedItem()
@@ -435,69 +391,75 @@ public class BagWindow extends GameWindow
 	
 	public boolean contains(Item item)
 	{
-		if (item instanceof Potion)
-		{
-			if (!pot.containsKey(item)) { return false ;}
-			
-			return  1 <= pot.get(item) ;
-		}
-		if (item instanceof Alchemy)
-		{
-			if (!alch.containsKey(item)) { return false ;}
-			
-			return  1 <= alch.get(item) ;
-		}
-		if (item instanceof Forge)
-		{
-			if (!forges.containsKey(item)) { return false ;}
-			
-			return  1 <= forges.get(item) ;
-		}
-		if (item instanceof PetItem)
-		{
-			if (!petItems.containsKey(item)) { return false ;}
-			
-			return  1 <= petItems.get(item) ;
-		}
-		if (item instanceof Food)
-		{
-			if (!foods.containsKey(item)) { return false ;}
-			
-			return  1 <= foods.get(item) ;
-		}
-		if (item instanceof Arrow)
-		{
-			if (!arrows.containsKey(item)) { return false ;}
-			
-			return  1 <= arrows.get(item) ;
-		}
-		if (item instanceof Equip)
-		{
-			if (!equips.containsKey(item)) { return false ;}
-			
-			return  1 <= equips.get(item) ;
-		}
-		if (item instanceof GeneralItem)
-		{
-			if (!genItems.containsKey(item)) { return false ;}
-			
-			return  1 <= genItems.get(item) ;
-		}
-		if (item instanceof Fab)
-		{
-			if (!fabItems.containsKey(item)) { return false ;}
-			
-			return  1 <= fabItems.get(item) ;
-		}
-		if (item instanceof QuestItem)
-		{
-			if (!questItems.containsKey(item)) { return false ;}
-			
-			return  1 <= questItems.get(item) ;
-		}
+		Map<Item, Integer> menuItems = getMenuItems() ;
 		
-		System.out.println("Item procurado na mochila não pertence a uma categoria válida");
-		return false ;
+		if (!menuItems.containsKey(item)) { return false ;}
+		
+		return 1 <= menuItems.get(item) ;
+		
+//		if (item instanceof Potion)
+//		{
+//			if (!pot.containsKey(item)) { return false ;}
+//			
+//			return  1 <= pot.get(item) ;
+//		}
+//		if (item instanceof Alchemy)
+//		{
+//			if (!alch.containsKey(item)) { return false ;}
+//			
+//			return  1 <= alch.get(item) ;
+//		}
+//		if (item instanceof Forge)
+//		{
+//			if (!forges.containsKey(item)) { return false ;}
+//			
+//			return  1 <= forges.get(item) ;
+//		}
+//		if (item instanceof PetItem)
+//		{
+//			if (!petItems.containsKey(item)) { return false ;}
+//			
+//			return  1 <= petItems.get(item) ;
+//		}
+//		if (item instanceof Food)
+//		{
+//			if (!foods.containsKey(item)) { return false ;}
+//			
+//			return  1 <= foods.get(item) ;
+//		}
+//		if (item instanceof Arrow)
+//		{
+//			if (!arrows.containsKey(item)) { return false ;}
+//			
+//			return  1 <= arrows.get(item) ;
+//		}
+//		if (item instanceof Equip)
+//		{
+//			if (!equips.containsKey(item)) { return false ;}
+//			
+//			return  1 <= equips.get(item) ;
+//		}
+//		if (item instanceof GeneralItem)
+//		{
+//			if (!genItems.containsKey(item)) { return false ;}
+//			
+//			return  1 <= genItems.get(item) ;
+//		}
+//		if (item instanceof Fab)
+//		{
+//			if (!fabItems.containsKey(item)) { return false ;}
+//			
+//			return  1 <= fabItems.get(item) ;
+//		}
+//		if (item instanceof QuestItem)
+//		{
+//			if (!questItems.containsKey(item)) { return false ;}
+//			
+//			return  1 <= questItems.get(item) ;
+//		}
+//		
+//		System.out.println("Item procurado na mochila não pertence a uma categoria válida");
+//		return false ;
 	}
 	
 	public boolean contains(List<Item> items)
@@ -514,19 +476,22 @@ public class BagWindow extends GameWindow
 	{
 		if (!contains(item)) { return false ;}
 
-		if (item instanceof Potion) { return qtd <= pot.get(item) ;}
-		if (item instanceof Alchemy) { return qtd <= alch.get(item) ;}
-		if (item instanceof Forge) { return qtd <= forges.get(item) ;}
-		if (item instanceof PetItem) { return qtd <= petItems.get(item) ;}
-		if (item instanceof Food) { return qtd <= foods.get(item) ;}
-		if (item instanceof Arrow) { return qtd <= arrows.get(item) ;}
-		if (item instanceof Equip) { return qtd <= equips.get(item) ;}
-		if (item instanceof GeneralItem) { return qtd <= genItems.get(item) ;}
-		if (item instanceof Fab) { return qtd <= fabItems.get(item) ;}
-		if (item instanceof QuestItem) { return qtd <= questItems.get(item) ;}
-
-		System.out.println("Item procurado na mochila não pertence a uma categoria válida");
-		return false ;
+		Map<Item, Integer> menuItems = getMenuItems() ;
+		return qtd <= menuItems.get(item) ;
+		
+//		if (item instanceof Potion) { return qtd <= pot.get(item) ;}
+//		if (item instanceof Alchemy) { return qtd <= alch.get(item) ;}
+//		if (item instanceof Forge) { return qtd <= forges.get(item) ;}
+//		if (item instanceof PetItem) { return qtd <= petItems.get(item) ;}
+//		if (item instanceof Food) { return qtd <= foods.get(item) ;}
+//		if (item instanceof Arrow) { return qtd <= arrows.get(item) ;}
+//		if (item instanceof Equip) { return qtd <= equips.get(item) ;}
+//		if (item instanceof GeneralItem) { return qtd <= genItems.get(item) ;}
+//		if (item instanceof Fab) { return qtd <= fabItems.get(item) ;}
+//		if (item instanceof QuestItem) { return qtd <= questItems.get(item) ;}
+//
+//		System.out.println("Item procurado na mochila não pertence a uma categoria válida");
+//		return false ;
 	}
 	
 	public boolean hasEnough(Map<Item, Integer> items)
@@ -548,10 +513,14 @@ public class BagWindow extends GameWindow
 			if (action.equals(Player.ActionKeys[2]))
 			{
 				menuUp() ;
+				window = 0 ;
+				itemsAreOrdered = false ;
 			}
 			if (action.equals(Player.ActionKeys[0]))
 			{
 				menuDown() ;
+				window = 0 ;
+				itemsAreOrdered = false ;
 			}
 			
 			if (action.equals("Enter") | action.equals("MouseLeftClick"))
@@ -596,20 +565,23 @@ public class BagWindow extends GameWindow
 		item = window * numberSlotMax ;
 		itemsOnWindow = getItemsOnWindow() ;
 		numberItems = (window + 1) * numberSlotMax ;
-		switch (menu)
-		{
-			case 0: numberWindows = pot.size() / numberSlotMax ; break ;
-			case 1: numberWindows = alch.size() / numberSlotMax ; break ;
-			case 2: numberWindows = forges.size() / numberSlotMax ; break ;
-			case 3: numberWindows = petItems.size() / numberSlotMax ; break ;
-			case 4: numberWindows = foods.size() / numberSlotMax ; break ;
-			case 5: numberWindows = arrows.size() / numberSlotMax ; break ;
-			case 6: numberWindows = equips.size() / numberSlotMax ; break ;
-			case 7: numberWindows = genItems.size() / numberSlotMax ; break ;
-			case 8: numberWindows = fabItems.size() / numberSlotMax ; break ;
-			case 9: numberWindows = questItems.size() / numberSlotMax ; break ;
-			default: return ;
-		}
+
+		Map<Item, Integer> menuItems = getMenuItems() ;
+		numberWindows = menuItems.size() / numberSlotMax ;
+//		switch (menu)
+//		{
+//			case 0: numberWindows = pot.size() / numberSlotMax ; break ;
+//			case 1: numberWindows = alch.size() / numberSlotMax ; break ;
+//			case 2: numberWindows = forges.size() / numberSlotMax ; break ;
+//			case 3: numberWindows = petItems.size() / numberSlotMax ; break ;
+//			case 4: numberWindows = foods.size() / numberSlotMax ; break ;
+//			case 5: numberWindows = arrows.size() / numberSlotMax ; break ;
+//			case 6: numberWindows = equips.size() / numberSlotMax ; break ;
+//			case 7: numberWindows = genItems.size() / numberSlotMax ; break ;
+//			case 8: numberWindows = fabItems.size() / numberSlotMax ; break ;
+//			case 9: numberWindows = questItems.size() / numberSlotMax ; break ;
+//			default: return ;
+//		}
 		
 	}
 	
@@ -636,7 +608,15 @@ public class BagWindow extends GameWindow
 		int slotW = SlotImage.getWidth(null) ;
 		int slotH = SlotImage.getHeight(null) ;
 		int itemID = window * numberSlotMax ;
+		
+//		if (!itemsAreOrdered)
+//		{
+//			itemsOnWindow = getItemsOnWindow() ;
+//			itemsAreOrdered = true ;
+//		}
 		itemsOnWindow = getItemsOnWindow() ;
+			
+		
 		List<Item> itemsDisplayed = new ArrayList<>(itemsOnWindow.keySet()) ;
 		List<Integer> amountsDisplayed = new ArrayList<>(itemsOnWindow.values()) ;
 		
@@ -656,23 +636,6 @@ public class BagWindow extends GameWindow
 			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, itemText, stdFont, textColor, 10, MousePos) ;
 			itemID += 1 ;
 		}
-		
-//		for (Map.Entry<Item, Integer> activeItem : itemsOnWindow.entrySet())
-//		{
-//			if ((window + 1) * numberSlotMax <= itemID) { break ;}
-//			
-//			int row = (itemID - window * numberSlotMax) % ( numberSlotMax / 2) ;
-//			int col = (itemID - window * numberSlotMax) / ( numberSlotMax / 2) ;
-//			Point slotCenter = UtilG.Translate(windowPos, 70 + 6 + slotW / 2 + col * (140 + slotW), border + padding + 2 + slotH / 2 + row * 21) ;
-//			String itemText = activeItem.getKey().getName() + " (x " + activeItem.getValue() + ")" ;
-//			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
-//			Color textColor = getTextColor(itemID == item) ;
-//			
-//			DP.DrawImage(SlotImage, slotCenter, Align.center) ;
-//			DP.DrawImage(activeItem.getKey().getImage(), slotCenter, Align.center) ;
-//			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, itemText, stdFont, textColor, 10, MousePos) ;
-//			itemID += 1 ;
-//		}
 		
 		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height + 5), size.width, window, numberWindows) ;
 		

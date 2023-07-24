@@ -8,8 +8,6 @@ import utilities.UtilG;
 
 public class QuestItem extends Item
 {
-	private int id ;
-	
 	private static QuestItem[] AllQuests ;
 	
 	private static final Image questItemIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconQuestItem.png") ;
@@ -25,11 +23,9 @@ public class QuestItem extends Item
 	}
 	public QuestItem(int id, String Name, String Description, int price, float dropChance)
 	{
-		super(Name, Description, imageFromID(id), price, dropChance) ;
-		this.id = id ;
+		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 	}
 
-	public int getId() {return id ;}
 	public static QuestItem[] getAll() {return AllQuests ;}
 
 	public static Image imageFromID(int id)

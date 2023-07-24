@@ -10,7 +10,6 @@ import utilities.UtilG;
 
 public class Potion extends Item
 {
-	private int id ;
 	private double lifeHeal ;
 	private double MPHeal ;
 	
@@ -43,8 +42,7 @@ public class Potion extends Item
 	
 	public Potion(int id, String Name, String Description, int price, double dropChance, double lifeHeal, double MPHeal)
 	{
-		super(Name, Description, imageFromID(id), price, dropChance) ;
-		this.id = id ;
+		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
 	}
@@ -61,7 +59,6 @@ public class Potion extends Item
 		return null ;
 	}
 	
-	public int getId() {return id ;}
 	public double getLifeHeal() {return lifeHeal ;}
 	public double getMPHeal() {return MPHeal ;}	
 	public static Potion[] getAll() {return AllPotions ;}

@@ -8,8 +8,6 @@ import utilities.UtilG;
 
 public class Fab extends Item
 {
-	private int id ;
-	
 	private static Fab[] AllFabs ;
 	
 	private static final Image ferkIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconFerk.png") ;
@@ -26,11 +24,9 @@ public class Fab extends Item
 	
 	public Fab(int id, String Name, String Description, int price, float dropChance)
 	{
-		super(Name, Description, imageFromID(id), price, dropChance) ;
-		this.id = id ;
+		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 	}
 
-	public int getId() {return id ;}
 	public static Fab[] getAll() {return AllFabs ;}
 
 	public static Image imageFromID(int id)

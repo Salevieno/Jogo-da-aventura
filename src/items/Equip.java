@@ -15,7 +15,6 @@ import utilities.UtilG;
 
 public class Equip extends Item
 {
-	private int id ;
 	private int forgeLevel ;
 	private AttributeBonus attBonus ;
 	private Elements elem ;
@@ -103,8 +102,7 @@ public class Equip extends Item
 	
 	public Equip(int id, String name, String description, int price, float dropChance, int forgeLevel, AttributeBonus attBonus, Elements elem)
 	{
-		super(name, description, imageFromID(id), price, dropChance) ;
-		this.id = id ;
+		super(id, name, description, imageFromID(id), price, dropChance) ;
 		this.forgeLevel = forgeLevel ;
 		this.attBonus = attBonus ;
 		this.elem = elem ;
@@ -137,7 +135,6 @@ public class Equip extends Item
 		
 	}
 	
-	public int getId() {return id ;}
 	public int getForgeLevel() {return forgeLevel ;}
 	public Elements getElem() {return elem ;}
 	public void setElem(Elements newElem) { elem = newElem ;}

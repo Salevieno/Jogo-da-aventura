@@ -786,13 +786,13 @@ public class Game extends JPanel
 			for (int j = 2 ; j <= 8 - 1 ; j += 2)
 			{
 				if (Integer.parseInt(input[j]) <= -1) { continue ;}
-				reqCreatureTypes.put(Game.getCreatureTypes()[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
+				reqCreatureTypes.put(creatureTypes[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
 			}
 			
 			for (int j = 8 ; j <= 18 - 1 ; j += 2)
 			{
 				if (Integer.parseInt(input[j]) <= -1) { continue ;}
-				reqItems.put(Game.getAllItems()[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
+				reqItems.put(allItems[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
 			}
 			
 			int goldReward = Integer.parseInt(input[18]) ;
@@ -802,7 +802,7 @@ public class Game extends JPanel
 			for (int j = 20 ; j <= 28 - 1 ; j += 2)
 			{
 				if (Integer.parseInt(input[j + 1]) <= -1) { continue ;}
-				rewardItems.put(Game.getAllItems()[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
+				rewardItems.put(allItems[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
 			}
 			
 			description = input[30 + language.ordinal()] ;
@@ -871,7 +871,7 @@ public class Game extends JPanel
 	
     private Item[] initializeAllItems()
 	{
-		ArrayList<Item> allItems = new ArrayList<>() ;
+		List<Item> allItems = new ArrayList<>() ;
 		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
 		{
 			allItems.add(Potion.getAll()[i]) ;
@@ -1189,18 +1189,18 @@ public class Game extends JPanel
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
-    	player.getBag().addGold(3000) ;
+    	player.getBag().addGold(50000) ;
     	
-//    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
     	
 //    	player.getExp().incCurrentValue(5000);
     	

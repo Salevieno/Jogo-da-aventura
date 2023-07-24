@@ -26,9 +26,8 @@ public class Collectible extends Item
 	
 	public Collectible(int itemID, int level, Point pos, int delay)
 	{
-		super(Game.getAllItems()[itemID].getName(), Game.getAllItems()[itemID].getDescription(), Game.getAllItems()[itemID].getImage(), Game.getAllItems()[itemID].getPrice(), Game.getAllItems()[itemID].getDropChance()) ;
+		super(itemID, Game.getAllItems()[itemID].getName(), Game.getAllItems()[itemID].getDescription(), Game.getAllItems()[itemID].getImage(), Game.getAllItems()[itemID].getPrice(), Game.getAllItems()[itemID].getDropChance()) ;
 //		name = CollectibleNames[type] ;
-		this.itemID = itemID ;
 		this.level = level ;
 		this.pos = pos ;
 		
