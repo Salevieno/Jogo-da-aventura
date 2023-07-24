@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -44,7 +45,8 @@ public class BagWindow extends GameWindow
 	private Map<QuestItem, Integer> questItems ;
 	private Item selectedItem ;
 	private int numberSlotMax ;
-	private int windowLimit ;
+	private boolean itemsAreOrdered ;
+//	private int windowLimit ;
 	private Map<Item, Integer> itemsOnWindow ;
 	private int gold ;
 	
@@ -73,8 +75,9 @@ public class BagWindow extends GameWindow
 		this.questItems = quest ;
 		selectedItem = null ;
 		numberSlotMax = 20 ;
-		windowLimit = 20 ;
-		itemsOnWindow = new HashMap<>() ;
+		itemsAreOrdered = false ;
+//		windowLimit = 20 ;
+		itemsOnWindow = new LinkedHashMap<>() ;
 		gold = 0 ;
 		
 		//menus.add(pot) ;
@@ -293,6 +296,24 @@ public class BagWindow extends GameWindow
 		
 		return orderedItems ;
 	}
+	private Map<Forge, Integer> orderForges(Map<Forge, Integer> forge)
+	{
+		Map<Forge, Integer> orderedItems = new LinkedHashMap<>() ;
+		Set<Forge> items = forge.keySet() ;
+		List<Integer> ids = new ArrayList<>() ;
+		items.forEach(item -> ids.add(item.getId())) ;
+		ids.sort(Comparator.naturalOrder());
+
+		for (int i = 0; i <= forge.entrySet().size() - 1 ; i += 1)
+		{
+			System.out.println(Forge.getAll()[ids.get(i)]);
+			System.out.println();
+			orderedItems.put(Forge.getAll()[ids.get(i)], forge.get(Forge.getAll()[ids.get(i)])) ;
+		}
+
+		itemsAreOrdered = true ;
+		return orderedItems ;
+	}
 	private Map<Equip, Integer> orderEquips(Map<Equip, Integer> pot)
 	{
 		Map<Equip, Integer> orderedItems = new LinkedHashMap<>() ;
@@ -327,7 +348,38 @@ public class BagWindow extends GameWindow
 				return pot.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
 			}
 			case 1: return alch.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
-			case 2: return forges.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+			case 2:
+			{
+				items = forges.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
+				if (true)
+				{
+					Map<Item, Integer> orderedItems = new LinkedHashMap<>() ;
+					List<Forge> keySet = new ArrayList<>(forges.keySet()) ;
+					List<Integer> ids = new ArrayList<>() ;
+					
+					keySet.forEach(item -> ids.add(item.getId())) ;
+					ids.sort(Comparator.naturalOrder());
+
+					for (int i = 0; i <= keySet.size() - 1 ; i += 1)
+					{
+						orderedItems.put(Forge.getAll()[ids.get(i)], forges.get(Forge.getAll()[ids.get(i)])) ;
+					}
+					
+					for (Forge key : keySet)
+					{
+						if ((window + 1) * numberSlotMax <= key.getId() | key.getId() <= window * numberSlotMax - 1)
+						{
+							orderedItems.remove(key) ;
+						}
+					}
+
+					itemsAreOrdered = true ;
+					items = orderedItems ;
+				}
+				
+				
+				break ;
+			}
 			case 3: return petItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
 			case 4: return foods.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
 			case 5: return arrows.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
@@ -343,15 +395,15 @@ public class BagWindow extends GameWindow
 			case 9: return questItems.entrySet().stream().filter(entry -> 0 < entry.getValue()).collect(Collectors.toMap(Entry::getKey, Entry::getValue)) ;
 			default: return null ;
 		}
-		
-		List<Item> listItems = new ArrayList<>(items.keySet()) ;		
-		for (int i = 0 ; i <= items.size() - 1 ; i += 1)
-		{
-			if (i < window * numberSlotMax)
-			{
-				items.remove(listItems.get(i)) ;
-			}
-		}
+
+//		List<Item> listItems = new ArrayList<>(items.keySet()) ;		
+//		for (int i = 0 ; i <= items.size() - 1 ; i += 1)
+//		{
+//			if (i < window * numberSlotMax)
+//			{
+//				items.remove(listItems.get(i)) ;
+//			}
+//		}
 		
 		return items ;
 	}
@@ -585,22 +637,42 @@ public class BagWindow extends GameWindow
 		int slotH = SlotImage.getHeight(null) ;
 		int itemID = window * numberSlotMax ;
 		itemsOnWindow = getItemsOnWindow() ;
-		for (Map.Entry<Item, Integer> activeItem : itemsOnWindow.entrySet())
+		List<Item> itemsDisplayed = new ArrayList<>(itemsOnWindow.keySet()) ;
+		List<Integer> amountsDisplayed = new ArrayList<>(itemsOnWindow.values()) ;
+		
+		for (int i = 0 ; i <= itemsDisplayed.size() - 1; i += 1)
 		{
 			if ((window + 1) * numberSlotMax <= itemID) { break ;}
 			
 			int row = (itemID - window * numberSlotMax) % ( numberSlotMax / 2) ;
 			int col = (itemID - window * numberSlotMax) / ( numberSlotMax / 2) ;
 			Point slotCenter = UtilG.Translate(windowPos, 70 + 6 + slotW / 2 + col * (140 + slotW), border + padding + 2 + slotH / 2 + row * 21) ;
-			String itemText = activeItem.getKey().getName() + " (x " + activeItem.getValue() + ")" ;
+			String itemText = itemsDisplayed.get(i).getName() + " (x " + amountsDisplayed.get(i) + ")" ;
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
 			Color textColor = getTextColor(itemID == item) ;
 			
 			DP.DrawImage(SlotImage, slotCenter, Align.center) ;
-			DP.DrawImage(activeItem.getKey().getImage(), slotCenter, Align.center) ;
+			DP.DrawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
 			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, itemText, stdFont, textColor, 10, MousePos) ;
 			itemID += 1 ;
 		}
+		
+//		for (Map.Entry<Item, Integer> activeItem : itemsOnWindow.entrySet())
+//		{
+//			if ((window + 1) * numberSlotMax <= itemID) { break ;}
+//			
+//			int row = (itemID - window * numberSlotMax) % ( numberSlotMax / 2) ;
+//			int col = (itemID - window * numberSlotMax) / ( numberSlotMax / 2) ;
+//			Point slotCenter = UtilG.Translate(windowPos, 70 + 6 + slotW / 2 + col * (140 + slotW), border + padding + 2 + slotH / 2 + row * 21) ;
+//			String itemText = activeItem.getKey().getName() + " (x " + activeItem.getValue() + ")" ;
+//			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
+//			Color textColor = getTextColor(itemID == item) ;
+//			
+//			DP.DrawImage(SlotImage, slotCenter, Align.center) ;
+//			DP.DrawImage(activeItem.getKey().getImage(), slotCenter, Align.center) ;
+//			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, itemText, stdFont, textColor, 10, MousePos) ;
+//			itemID += 1 ;
+//		}
 		
 		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height + 5), size.width, window, numberWindows) ;
 		

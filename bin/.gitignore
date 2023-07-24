@@ -1,4 +1,9 @@
-/windows/
+/liveBeings/
 /main/
-/components/
-/graphics/
+/maps/
+/screen/
+/simulations/
+/test/
+/testing/
+/utilities/
+/windows/

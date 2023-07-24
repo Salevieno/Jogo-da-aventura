@@ -46,13 +46,13 @@ public class Forge extends Item
 		return null ;
 	}
 	
-	public void printAtt()
+	public String toString()
 	{
-		System.out.println("forge id: " + AllForge[id].getId() +
+		return "forge id: " + AllForge[id].getId() +
 				"   name: " + AllForge[id].getName() +
 				"   description: " + AllForge[id].getDescription() +
 				"   price: " + AllForge[id].getPrice() +
-				"   drop chance: " + AllForge[id].getDropChance() + "%");
+				"   drop chance: " + AllForge[id].getDropChance() + "%" ;
 	}
 	
 }
