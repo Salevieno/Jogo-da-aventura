@@ -201,8 +201,8 @@ public class PlayerAttributesWindow extends AttributesWindow
 		DP.DrawImage(critIcon, UtilG.Translate(windowPos, 31, 333), new Scale(1, 1), Align.center) ;
 		DP.DrawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
 
-		Point powerPos = UtilG.Translate(windowPos, 230, 200) ;
-		DP.DrawText(powerPos, Align.centerLeft, angle, String.valueOf(player.totalPower()), font, colorPalette[6]) ;	
+		Point powerPos = UtilG.Translate(windowPos, 260, 300) ;
+		player.displayPowerBar(powerPos, DP) ;
 		
 		//	Collecting
 		DP.DrawImage(collectIcons[0], UtilG.Translate(windowPos, 195, 257), new Scale(1, 1), Align.center) ;

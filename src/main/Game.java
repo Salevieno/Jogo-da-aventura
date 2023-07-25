@@ -161,7 +161,7 @@ public class Game extends JPanel
 	public Game() 
 	{
 		DP = new DrawingOnPanel() ;
-    	player = new Player("", "", 4) ;
+    	player = new Player("", "", 2) ;
     	
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -1202,28 +1202,27 @@ public class Game extends JPanel
     	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
     	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
     	
-    	player.getBag().menuUp() ;
-    	player.getBag().menuUp() ;
-    	player.getBag().menuUp() ;
-    	player.getBag().menuUp() ;
-    	player.getBag().menuUp() ;
-    	player.getBag().menuUp() ;
-    	
-    	System.out.println(((Equip) player.getBag().getMenuListItems().get(0 + 200 * player.getJob())));
-    	for (int i = 0 ; i <= 3 - 1; i += 1)
-    	{
-        	((Equip) player.getBag().getMenuListItems().get(i + 200 * player.getJob())).use(player) ;
-        	player.getEquips()[i].incForgeLevel() ;
-        	player.getEquips()[i].incForgeLevel() ;
-        	player.getEquips()[i].incForgeLevel() ;
-        	player.getEquips()[i].incForgeLevel() ;
-        	player.getEquips()[i].incForgeLevel() ;
-        	player.getEquips()[i].incForgeLevel() ;
-        	player.getEquips()[i].incForgeLevel() ;
-        	player.getEquips()[i].incForgeLevel() ;
-        	player.getEquips()[i].incForgeLevel() ;
-        	player.getEquips()[i].incForgeLevel() ;
-    	}
+//    	player.getBag().menuUp() ;
+//    	player.getBag().menuUp() ;
+//    	player.getBag().menuUp() ;
+//    	player.getBag().menuUp() ;
+//    	player.getBag().menuUp() ;
+//    	player.getBag().menuUp() ;
+//    	
+//    	for (int i = 0 ; i <= 3 - 1; i += 1)
+//    	{
+//        	((Equip) player.getBag().getMenuListItems().get(i + 200 * player.getJob())).use(player) ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//    	}
     	
 //    	player.getExp().incCurrentValue(5000);
     	

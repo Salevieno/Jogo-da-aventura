@@ -68,6 +68,7 @@ public abstract class LiveBeing
 			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Silence.png")
 			};
 	public static final Image defendingImage = UtilG.loadImage(Game.ImagesPath + "\\Battle\\" + "ShieldIcon.png") ;
+	public static final Image powerBarImage = UtilG.loadImage(Game.ImagesPath + "PowerBar.png") ;
 	public static final String[] BattleKeys = new String[] {"Y", "U"} ;	
 	
 
@@ -184,6 +185,18 @@ public abstract class LiveBeing
 		
 		DP.DrawRoundRect(pos, Align.center, size, 1, Game.colorPalette[8], Game.colorPalette[8], true);
 		DP.DrawText(pos, Align.center, 0, stateText, font, Game.colorPalette[9]) ;
+	}
+
+	public void displayPowerBar(Point pos, DrawingOnPanel DP)
+	{
+		int maxPower = 1000 ;
+		Color color = Game.colorPalette[6] ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
+		Dimension barSize = new Dimension(21, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
+		
+		DP.DrawRect(pos, Align.bottomCenter, barSize, 0, color, null) ;
+		DP.DrawImage(powerBarImage, pos, Align.bottomCenter) ;
+		DP.DrawText(UtilG.Translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
 	}
 	
 	public Point CalcNewPos()
