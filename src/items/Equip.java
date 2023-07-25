@@ -40,7 +40,14 @@ public class Equip extends Item
 	public static final Image ShieldImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq5_Shield.png") ;
 	public static final Image ArmorImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq6_Armor.png") ;
 	public static final Image emblemImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq8_emblem.png") ;
-	public static final Image ArrowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq7_Arrow.png") ;
+	
+	public static final Image ShiningSwordImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq0_ShiningSword.png") ;
+	public static final Image ShiningStaffImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq1_ShiningStaff.png") ;
+	public static final Image ShiningBowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq2_ShiningBow.png") ;
+	public static final Image ShiningClawsImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq3_ShiningClaws.png") ;
+	public static final Image ShiningDaggerImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq4_ShiningDagger.png") ;
+	public static final Image ShiningShieldImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq5_ShiningShield.png") ;
+	public static final Image ShiningArmorImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq6_ShiningArmor.png") ;
 
 	static
 	{
@@ -127,12 +134,41 @@ public class Equip extends Item
 		
 	}
 	
+	private static int numTypeFromID(int id)
+	{
+		EquipTypes type = typeFromID(id) ;
+		
+		switch(type)
+		{
+			case emblem: return 3 ;
+			case shield: return 1 ;
+			case armor: return 2 ;
+			default: return 0 ;
+		}
+	}
+	
 	public static Image imageFromID(int id)
 	{
 		
 		Image[] equipImages = new Image[] {swordIcon, staffIcon, bowIcon, clawsIcon, daggerIcon, shieldIcon, armorIcon, emblemIcon} ;
 		return equipImages[Arrays.asList(EquipTypes.values()).indexOf(typeFromID(id))] ;
 		
+	}
+
+	public Image fullSizeImage()
+	{
+		switch(typeFromID(id))
+		{
+			case sword: return forgeLevel == 10 ? ShiningSwordImage : SwordImage ;
+			case staff: return forgeLevel == 10 ? ShiningStaffImage : StaffImage ;
+			case bow: return forgeLevel == 10 ? ShiningBowImage : BowImage ;
+			case claws: return forgeLevel == 10 ? ShiningClawsImage : ClawsImage ;
+			case dagger: return forgeLevel == 10 ? ShiningDaggerImage : DaggerImage ;
+			case shield: return forgeLevel == 10 ? ShiningShieldImage : ShieldImage ;
+			case armor: return forgeLevel == 10 ? ShiningArmorImage : ArmorImage ;
+			case emblem: return emblemImage ;
+			default: return null ;
+		}
 	}
 	
 	public int getForgeLevel() {return forgeLevel ;}
@@ -190,7 +226,6 @@ public class Equip extends Item
 		forgeLevel += 1 ;
 	}
 	
-	
 	private void applyBonus(PersonalAttributes PA, BattleAttributes BA, Equip equip, double mult)
 	{
 		AttributeBonus attBonus = equip.getAttributeBonus() ;
@@ -227,11 +262,11 @@ public class Equip extends Item
 	
 	public void use(LiveBeing user)
 	{
-		int type = (id) % 3 ;
-		double setBonus = 0.2 ;
 		
 		if (!(user instanceof Player)) { return ;}
-
+		
+		int type = numTypeFromID(id) ;
+		double setBonus = 0.2 ;
 		Player player = (Player) user ;
 		
 		if (player.getEquips()[type] == Equip.getAll()[id])
@@ -264,23 +299,10 @@ public class Equip extends Item
 		user.getElem()[4] = user.hasSuperElement() ? user.getElem()[1] : Elements.neutral ;
 	}
 	
-	public void printAtt()
-	{
-		System.out.print("Equip id: " + allEquips[id].getId() +
-				"   name: " + allEquips[id].getName() +
-				"   description: " + allEquips[id].getDescription() +
-				"   price: " + allEquips[id].getPrice() +
-				"   drop chance: " + allEquips[id].getDropChance() + "%" + 
-				"   forge level: " + allEquips[id].getForgeLevel() + " " +
-				"   elem: " + allEquips[id].getElem());
-	}
-	
-
-
 	@Override
 	public String toString()
 	{
-		return "Equip [id=" + id + ", forgeLevel=" + forgeLevel + ", attBonus=" + attBonus + ", elem=" + elem + "]";
+		return "Equip [id=" + id + ", name = " + name + ", forgeLevel=" + forgeLevel + ", attBonus=" + attBonus + ", elem=" + elem + "]";
 	}
 	
 	

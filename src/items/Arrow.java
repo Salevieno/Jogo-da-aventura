@@ -20,6 +20,8 @@ public class Arrow extends Item
 	private static final Image strongArrowIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconStrongArrow.png") ;
 	private static final Image boltArrowIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconBoltArrow.png") ;
 	
+	private static final Image ArrowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq7_Arrow.png") ;
+	
 	static
 	{
 		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Arrow.csv") ;
@@ -50,6 +52,11 @@ public class Arrow extends Item
 		return null ;
 	}
 
+	public Image fullSizeImage()
+	{
+		return ArrowImage ;
+	}
+	
 	public void use(LiveBeing user)
 	{
 		if (!(user instanceof Player)) { return ;}

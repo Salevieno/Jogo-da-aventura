@@ -136,22 +136,20 @@ public class PlayerAttributesWindow extends AttributesWindow
 		{
 			int[] eqSlotW = new int[] {51, 51, 51} ;
 			int[] eqSlotH = new int[] {51, 51, 51} ;
-			Point[] eqSlotCenter = new Point[] {UtilG.Translate(windowPos, 66, 110),
-					UtilG.Translate(windowPos, 244, 62),
-					UtilG.Translate(windowPos, 244, 134)} ;
+			Point[] eqSlotCenter = new Point[] {UtilG.Translate(windowPos, 66, 110), UtilG.Translate(windowPos, 244, 62), UtilG.Translate(windowPos, 244, 134)} ;
 			for (int eq = 0 ; eq <= equips.length - 1 ; eq += 1)
 			{
 				if (equips[eq] == null) { continue ;}
 				
-				Equip equip = equips[eq] ;
-				Image[] eqImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Equip.ArmorImage} ;
-				Point textPos = UtilG.Translate(eqSlotCenter[eq], -eqSlotW[eq] / 2 - 5, -eqSlotH[eq] / 2 - 2) ;
+				Equip equip = equips[eq] ;		
 
-				DP.DrawImage(eqImages[eq], eqSlotCenter[eq], Align.center) ;
+				DP.DrawImage(equip.fullSizeImage(), eqSlotCenter[eq], Align.center) ;
 //				DP.DrawTextUntil(textPos, Align.bottomLeft, angle, equip.getName(), font, textColor, 14, mousePos) ;
+				
+				Point textPos = UtilG.Translate(eqSlotCenter[eq], 0, -eqSlotH[eq] / 2 - 3) ;
 				if (0 < equip.getForgeLevel())
 				{
-					DP.DrawText(textPos, Align.bottomCenter, angle, equipsText[eq + 1] + " + " + equip.getForgeLevel(), font, textColor) ;					
+					DP.DrawText(textPos, Align.bottomCenter, angle, equipsText[eq] + " + " + equip.getForgeLevel(), font, textColor) ;					
 				}
 				
 				Elements eqElem = player.getElem()[eq + 1] ;
@@ -167,7 +165,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		// Arrow
 		if (equippedArrow != null)
 		{
-			DP.DrawImage(Equip.ArrowImage, UtilG.Translate(windowPos, 95, 117), Align.center) ;
+			DP.DrawImage(equippedArrow.fullSizeImage(), UtilG.Translate(windowPos, 95, 117), Align.center) ;
 		}
 		
 		

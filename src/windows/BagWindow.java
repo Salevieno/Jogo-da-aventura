@@ -349,7 +349,7 @@ public class BagWindow extends GameWindow
 		}
 	}
 	
-	private List<Item> getMenuListItems()
+	public List<Item> getMenuListItems()
 	{
 		Map<Item, Integer> menuItems = getMenuItems() ;
 		return new ArrayList<>(menuItems.keySet()) ;

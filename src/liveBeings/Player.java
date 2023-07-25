@@ -304,7 +304,6 @@ public class Player extends LiveBeing
 		
     }
 	
-//	public String getLanguage() {return language ;}
 	public String getSex() {return sex ;}
 	public Directions getDir() {return dir ;}
 	public Color getColor() {return color ;}
@@ -339,8 +338,7 @@ public class Player extends LiveBeing
 	public void setAttIncrease(AttributeBonus attIncrease) { this.attIncrease = attIncrease ;}	
 	public AttributeBonus getAttChanceIncrease() { return attChanceIncrease ;}
 	public void setAttChanceIncrease(AttributeBonus attChanceIncrease) { this.attChanceIncrease = attChanceIncrease ;}
-	public void setEquippedArrow(Arrow equippedArrow) {this.equippedArrow = equippedArrow ;}
-	
+	public void setEquippedArrow(Arrow equippedArrow) {this.equippedArrow = equippedArrow ;}	
 	public AttributeBonus getChanceIncrease() {return attChanceIncrease ;}
 	public SettingsWindow getSettings() {return settings ;}
 	public SpellsTreeWindow getSpellsTreeWindow() {return spellsTree ;}
@@ -351,22 +349,12 @@ public class Player extends LiveBeing
 	public void setHotItem(Item item, int slot) { hotItems[slot] = item ;}	
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
 	
-
-	public void addQuest(Quest newQuest) { quests.add(newQuest) ;}
-	
-	
-	private Point feetPos() {return new Point(pos.x, (int) (pos.y - size.height)) ;}
 	
 	public static Spell[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpells(), 14) ;}
 	public static Spell[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 34, 49) ;}
 	public static Spell[] getArcherSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 70, 84) ;}
 	public static Spell[] getAnimalSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 105, 118) ;}
 	public static Spell[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 139, 152) ;}
-	
-	public void discoverCreature(CreatureType creatureType) { bestiary.addDiscoveredCreature(creatureType) ;}
-	public void resetClosestCreature() { closestCreature = null ;}
-	public void resetOpponent() { opponent = null ;}
-	public void decSpellPoints() { spellPoints += -1 ;}
 	
 	public boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
@@ -375,14 +363,58 @@ public class Player extends LiveBeing
 	public boolean isInBattle() { return state.equals(LiveBeingStates.fighting) ;}
 	public boolean isCollecting() { return state.equals(LiveBeingStates.collecting) ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
-
 	public static boolean setIsFormed(Equip[] EquipID)
 	{
 		if (EquipID[0] == null | EquipID[1] == null | EquipID[2] == null) { return false ;}
 		
 		return (EquipID[0].getId() + 1) == EquipID[1].getId() & (EquipID[1].getId() + 1) == EquipID[2].getId() ;
 	}
+
+	private Point feetPos() {return new Point(pos.x, (int) (pos.y - size.height)) ;}	
+
+	public Creature ClosestCreatureInRange()
+	{			
+		
+		if (!map.isAField()) { return null ;}
+		
+		FieldMap fieldMap = (FieldMap) map ;
+		if (!fieldMap.hasCreatures()) { return null ;}
+		
+		int NumberOfCreaturesInMap = fieldMap.getCreatures().size() ;
+		double[] dist = new double[NumberOfCreaturesInMap] ;
+		double MinDist = Game.getScreen().getSize().width + Game.getScreen().getSize().height ;
+		for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
+		{
+			Creature creature = fieldMap.getCreatures().get(i) ;
+			if (fieldMap.getCreatures().get(i) != null)
+			{
+				dist[i] = (double) new Point(pos.x, pos.y).distance(new Point(creature.getPos().x, creature.getPos().y)) ;				
+				MinDist = Math.min(MinDist, dist[i]) ;
+			}	
+		}
+		for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
+		{
+			Creature creature = fieldMap.getCreatures().get(i) ;
+			if (dist[i] == MinDist & fieldMap.getCreatures() != null & dist[i] <= range)
+			{
+				return creature ;	// Closest creature ID
+			}
+		}
+		
+		return null ;
+		
+	}
 	
+	public void discoverCreature(CreatureType creatureType) { bestiary.addDiscoveredCreature(creatureType) ;}
+	
+	public void addQuest(Quest newQuest) { quests.add(newQuest) ;}
+	
+	public void decSpellPoints() { spellPoints += -1 ;}
+	
+	public void resetClosestCreature() { closestCreature = null ;}
+	
+	public void resetOpponent() { opponent = null ;}
+		
 	private void activateRide()
 	{
 		step = isRiding ? step / 2 : 2 * step ;
@@ -514,46 +546,11 @@ public class Player extends LiveBeing
 		
 	}
 
-//	private List<Quest> getActiveQuests() { return quests.stream().filter(quest -> quest.isActive()).toList() ;}	
-
 	private void obtainItems(List<Item> itemsObtained)
 	{		
 		Game.getAnimations()[3].start(300, new Object[] {itemsObtained.toArray(new Item[0])}) ;
 	}
 
-	public Creature ClosestCreatureInRange()
-	{			
-		
-		if (!map.isAField()) { return null ;}
-		
-		FieldMap fieldMap = (FieldMap) map ;
-		if (!fieldMap.hasCreatures()) { return null ;}
-		
-		int NumberOfCreaturesInMap = fieldMap.getCreatures().size() ;
-		double[] dist = new double[NumberOfCreaturesInMap] ;
-		double MinDist = Game.getScreen().getSize().width + Game.getScreen().getSize().height ;
-		for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
-		{
-			Creature creature = fieldMap.getCreatures().get(i) ;
-			if (fieldMap.getCreatures().get(i) != null)
-			{
-				dist[i] = (double) new Point(pos.x, pos.y).distance(new Point(creature.getPos().x, creature.getPos().y)) ;				
-				MinDist = Math.min(MinDist, dist[i]) ;
-			}	
-		}
-		for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
-		{
-			Creature creature = fieldMap.getCreatures().get(i) ;
-			if (dist[i] == MinDist & fieldMap.getCreatures() != null & dist[i] <= range)
-			{
-				return creature ;	// Closest creature ID
-			}
-		}
-		
-		return null ;
-		
-	}
-	
 	public void engageInFight(Creature Opponent)
 	{
 		opponent = Opponent ;
@@ -561,7 +558,7 @@ public class Player extends LiveBeing
 		state = LiveBeingStates.fighting ;
 	}
 	
-	public void fish()
+	private void fish()
 	{
 		
 		Point offset = new Point() ;
@@ -1407,25 +1404,31 @@ public class Player extends LiveBeing
 	{
 		DP.DrawCircle(pos, (int)(2 * range), 2, null, Game.colorPalette[job]) ;
 	}
-	private void drawEquips(Point pos, int job, int type, Scale scale, double angle, DrawingOnPanel DP)
-	{
-		// TODO add shining equips for bonus 10
-		switch (type)
-		{
-			case 0: DP.DrawImage(Equip.SwordImage, pos, angle, scale, Align.center) ; return ;
-			case 1: DP.DrawImage(Equip.ShieldImage, pos, angle, scale, Align.center) ; return ;
-			case 2: DP.DrawImage(Equip.ArmorImage, pos, angle, scale, Align.center) ; return ;
-			case 3: DP.DrawImage(Equip.ArrowImage, pos, angle, scale, Align.center)  ; return ;
-		}
+//	private void drawEquips(Point pos, int job, int type, Scale scale, double angle, int forgeLevel, DrawingOnPanel DP)
+//	{
+//		Image image = null ;
+//		switch (type)
+//		{
+//			case 0: image = forgeLevel == 10 ? Equip.ShiningSwordImage : Equip.SwordImage ; break ;
+//			case 1: image = forgeLevel == 10 ? Equip.ShiningShieldImage : Equip.ShieldImage ; break ;
+//			case 2: image = forgeLevel == 10 ? Equip.ShiningArmorImage : Equip.ArmorImage ; break ;
+//			case 3: image = Equip.ArrowImage ; break ;
+//		}
+//		
+//		DP.DrawImage(image, pos, angle, scale, Align.center)  ;
+//	}
+	private void drawEquips(Point pos, Equip equip, double angle, Scale scale, DrawingOnPanel DP)
+	{		
+		DP.DrawImage(equip.fullSizeImage(), pos, angle, scale, Align.center) ;
 	}
 	public void drawWeapon(Point Pos, double[] playerscale, DrawingOnPanel DP)
 	{
 		Scale scale = new Scale(0.6, 0.6) ;
 		double[] angle = new double[] {50, 30, 0, 0, 0} ;
 		Point EqPos = new Point((int)(Pos.x + 0.16*size.width*playerscale[0]), (int)(Pos.y - 0.4*size.height*playerscale[1])) ;
-		if (getEquips()[0] != null)
+		if (equips[0] != null)
 		{
-			drawEquips(EqPos, job, 0, scale, angle[job], DP) ;
+			drawEquips(EqPos, equips[0], angle[job], scale, DP) ;
 		}	
 	}
 	public void drawTimeBar(Creature creature, DrawingOnPanel DP)
