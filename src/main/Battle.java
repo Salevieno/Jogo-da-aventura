@@ -329,7 +329,6 @@ public class Battle
 					if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
 					if (attacker instanceof Player) { ((Player) attacker).getStatistics().update(atkResults) ;}
 				}
-				// TODO damage animation
 				damageAni.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageAnimation}) ;
 			}
 			attacker.getBA().getStatus().display(attacker.getPos(), attacker.getDir(), DP);

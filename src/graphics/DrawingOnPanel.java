@@ -378,35 +378,39 @@ public class DrawingOnPanel
 		if (effect == null) { return ;}
 
 		String message = null ;
-		int damage = atkResults.getDamage() ;
+		String damage = String.valueOf(UtilG.Round(atkResults.getDamage(), 1)) ;
 		switch (effect)
 		{
-			case miss:
-			{
-				message = "Miss" ; break;
-			}
-			case hit:
-			{
-				message = String.valueOf(UtilG.Round(damage, 1)) ; break;
-			}
-			case crit:
-			{
-				message = String.valueOf(UtilG.Round(damage, 1)) + "!" ; break;
-			}
-			case block:
-			{
-				message = "Block" ;	break;
-			}
-		}		
+			case miss: message = "Miss" ; break ;
+			case hit: message = damage ; break ;
+			case crit: message = damage + "!" ; break ;
+			case block: message = "Block" ;	break ;
+		}
+
+		double rate = Math.pow(counter.rate(), 0.6) ;
+//		Point[] movement = new Point[] {
+//				new Point(0, (int) (-20 * rate)),
+//				new Point((int) (Math.pow(8 * rate, 2)), (int) (-20 * rate)),
+//				new Point((int) (Math.pow(rate, 2)), (int) (-20 * rate))
+//		};
+		
+		Point move = new Point() ;
+		switch (style)
+		{
+			case 1: move = new Point((int) (Math.pow(8 * rate, 2)), (int) (-20 * rate)) ; break ;
+			case 2: move = new Point((int) (Math.pow(rate, 2)), (int) (-20 * rate)) ; break ;
+			default: move = new Point(0, (int) (-20 * rate)) ; break ;
+		}
+				
+//		Point move = switch(effect)
+//				{
+//		case 1 -> new Point((int) (Math.pow(8 * rate, 2)), (int) (-20 * rate)) ;
+//		case 2 -> new Point((int) (Math.pow(rate, 2)), (int) (-20 * rate)) ;
+//		default -> new Point(0, (int) (-20 * rate)) ;
+//				}
 
 		Font font = new Font(Game.MainFontName, Font.BOLD, 16) ;
-		double rate = Math.pow(counter.rate(), 0.6) ;
-		Point[] movement = new Point[] {
-				new Point(0, (int) (-20 * rate)),
-				new Point((int) (Math.pow(8 * rate, 2)), (int) (-20 * rate)),
-				new Point((int) (Math.pow(rate, 2)), (int) (-20 * rate))
-		};
-		Point currentPos = UtilG.Translate(initialPos, movement[style].x, movement[style].y) ;
+		Point currentPos = UtilG.Translate(initialPos, move.x, move.y) ;
 		DrawText(currentPos, Align.center, stdAngle, message, font, color) ;
 		
 	}

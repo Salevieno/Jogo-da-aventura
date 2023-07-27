@@ -201,17 +201,15 @@ public abstract class LiveBeing
 	
 	public Point CalcNewPos()
 	{
-		Point newPos = new Point(0, 0) ;
-		step = 1 ;
+//		step = 1 ;
 		switch (dir)
 		{
-			case up: newPos = new Point(pos.x, pos.y - step) ; break ;
-			case down: newPos = new Point(pos.x, pos.y + step) ; break ;
-			case left: newPos = new Point(pos.x - step, pos.y) ; break ;
-			case right: newPos = new Point(pos.x + step, pos.y) ; break ;		
+			case up: return new Point(pos.x, pos.y - step) ;
+			case down: return new Point(pos.x, pos.y + step) ;
+			case left: return new Point(pos.x - step, pos.y) ;
+			case right: return new Point(pos.x + step, pos.y) ;	
+			default: return new Point(pos) ;
 		}
-		
-		return newPos ;
 	}
 	
 	public void incrementCounters()
@@ -327,6 +325,7 @@ public abstract class LiveBeing
 	public boolean hasSuperElement()
 	{
 		if (elem[1] == null | elem[2] == null | elem[3] == null) { return false ;}
+		
 		return elem[1].equals(elem[2]) & elem[2].equals(elem[3]) ;
 	}
 	public boolean hasActed() {return currentAction != null ;}

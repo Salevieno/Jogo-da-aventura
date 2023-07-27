@@ -1085,16 +1085,17 @@ public class Game extends JPanel
 		{
 			player.collect(DP) ;
 		}
-		player.doCurrentAction(DP) ;
 		
 		player.applyAdjacentGroundEffect() ;
 		player.DrawAttributes(0, DP) ;
 		player.display(player.getPos(), new Scale(1, 1), player.getDir(), player.getSettings().getShowPlayerRange(), DP) ;
 		if (player.weaponIsEquipped())
 		{
-			player.drawWeapon(player.getPos(), new double[] {1, 1}, DP) ;
+			player.drawWeapon(player.getPos(), new Scale(1, 1), DP) ;
 		}
 		player.displayState(DP) ;
+		
+		player.doCurrentAction(DP) ;
 		
 		
 		// find the closest creature to the player
@@ -1174,7 +1175,7 @@ public class Game extends JPanel
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno");
-    	player.setMap(cityMaps[1]) ;
+    	player.setMap(cityMaps[2]) ;
     	player.setPos(new Point(400, 221)) ;
 
 //    	player.setLevel(50) ;

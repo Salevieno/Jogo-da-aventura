@@ -29,7 +29,7 @@ public class SideBar
 	{
 		
     	String path = Game.ImagesPath + "\\SideBar\\";
-		Point botCenterPos = new Point(Game.getScreen().getSize().width + 20, Game.getScreen().getSize().height - 220) ;
+		Point botCenterPos = new Point(Game.getScreen().getSize().width + 20, Game.getScreen().getSize().height - 230) ;
 		buttons = new HashSet<>() ;
 		String[] names = new String[] {"settings", "bag", "quest", "map", "book", "tent"} ; // "player", "pet"
 		
@@ -37,7 +37,7 @@ public class SideBar
 		{
 			Image image = UtilG.loadImage(path + "Icon" + i + "_" + names[i] + ".png") ;
 			Image selImage = UtilG.loadImage(path + "Icon" + i + "_" + names[i] + "Selected.png") ;
-			Point pos = UtilG.Translate(botCenterPos, -image.getWidth(null) / 2, -10 - 50 * i) ;
+			Point pos = UtilG.Translate(botCenterPos, -image.getWidth(null) / 2, -10 - 45 * i) ;
 			buttons.add(new GameButton(i, names[i], pos, "description", image, selImage)) ;
 		}
 		

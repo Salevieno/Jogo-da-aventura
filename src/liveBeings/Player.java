@@ -115,7 +115,7 @@ public class Player extends LiveBeing
     public static final Image CollectingMessage = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "CollectingMessage.gif") ;   
     public static final Image collectingGif = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "Collecting.gif") ;
 //    public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "Icon5_tent.png") ;
-    public static final Gif TentGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Icon5_Tent.gif"), 1000, false, false) ;
+    public static final Gif TentGif = new Gif(UtilG.loadImage(Game.ImagesPath + "Tent.png"), 1000, false, false) ;
     public static final Image DragonAuraImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "DragonAura.png") ;
     public static final Image RidingImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Tiger.png") ;
 	public static final Image CoinIcon = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "CoinIcon.png") ;    
@@ -592,7 +592,7 @@ public class Player extends LiveBeing
 	
 	private void tent(DrawingOnPanel DP)
 	{
-		TentGif.play(pos, Align.center, DP) ;
+		TentGif.play(pos, Align.bottomCenter, DP) ;
 		tentCounter.inc() ;
 		if (tentCounter.finished())
 		{
@@ -836,6 +836,8 @@ public class Player extends LiveBeing
 			if (metNPC(npc)) { return true ;}
 		}
 
+		if (map.getBuildings() == null) { return false ;}
+		
 		for (Building building : map.getBuildings())
 		{
 			for (NPCs npc : building.getNPCs())
@@ -1058,7 +1060,6 @@ public class Player extends LiveBeing
 		{		
 			fabWindow.display(knownRecipes, mousePos, DP) ;
 		}
-		//Tent() ;	// TODO create tent
 		if (pet != null)
 		{
 			if (pet.getAttWindow().isOpen())
@@ -1421,15 +1422,17 @@ public class Player extends LiveBeing
 	{		
 		DP.DrawImage(equip.fullSizeImage(), pos, angle, scale, Align.center) ;
 	}
-	public void drawWeapon(Point Pos, double[] playerscale, DrawingOnPanel DP)
+	public void drawWeapon(Point pos, Scale playerscale, DrawingOnPanel DP)
 	{
+		
+		if (equips[0] != null) { return ;}
+		
 		Scale scale = new Scale(0.6, 0.6) ;
 		double[] angle = new double[] {50, 30, 0, 0, 0} ;
-		Point EqPos = new Point((int)(Pos.x + 0.16*size.width*playerscale[0]), (int)(Pos.y - 0.4*size.height*playerscale[1])) ;
-		if (equips[0] != null)
-		{
-			drawEquips(EqPos, equips[0], angle[job], scale, DP) ;
-		}	
+		Point eqPos = new Point((int)(pos.x + 0.16 * size.width * playerscale.x), (int)(pos.y - 0.4 * size.height * playerscale.y)) ;
+		
+		drawEquips(eqPos, equips[0], angle[job], scale, DP) ;	
+		
 	}
 	public void drawTimeBar(Creature creature, DrawingOnPanel DP)
 	{
