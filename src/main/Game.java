@@ -202,23 +202,44 @@ public class Game extends JPanel
 		while (iterator.hasNext())
 		{
 			Object key = iterator.next() ;
-			JSONArray listText = (JSONArray) textData.get(key) ;
-			
-			List<String> listValues = new ArrayList<>() ;
-			for (int j = 0 ; j <= listText.size() - 1 ; j += 1)
-			{
-				listValues.add((String) listText.get(j)) ;
-			}
-
 			TextCategories catName = TextCategories.catFromBRName((String) key) ;
+
 			if (catName != null)
-			{
+			{				
+				if (catName.equals(TextCategories.npcs))
+				{
+					String npcName = "Doutor" ;
+					
+					JSONObject npcData = (JSONObject) textData.get(key) ;
+					JSONObject npc = (JSONObject) npcData.get(npcName) ;
+					List<String> falas = (List<String>) npc.get("Falas") ;
+					List<JSONArray> opcoes = (List<JSONArray>) npc.get("Opcoes") ;
+
+					allText.put(TextCategories.catFromBRName(catName + npcName + "Falas"), falas.toArray(new String[0])) ;
+					
+					for (int i = 0 ; i <= opcoes.size() - 1; i += 1)
+					{
+						allText.put(TextCategories.catFromBRName(catName + npcName + "Opcoes" + i), ((List<String>) opcoes.get(i)).toArray(new String[0])) ;
+					}
+					
+					allText.entrySet().forEach(text -> System.out.println(text.getKey() + " " + Arrays.toString(text.getValue())));
+							
+					
+					
+					continue ;
+				}
+				
+				JSONArray listText = (JSONArray) textData.get(key) ;
+				
+				List<String> listValues = new ArrayList<>() ;
+				for (int j = 0 ; j <= listText.size() - 1 ; j += 1)
+				{
+					listValues.add((String) listText.get(j)) ;
+				}
+				
 				allText.put(catName, listValues.toArray(new String[] {})) ;
 			}
-		}		
-		
-//		allText.entrySet().forEach(text->System.out.println(Arrays.toString(text.getValue())));
-		
+		}
 		
 	}
 	
@@ -400,26 +421,20 @@ public class Game extends JPanel
 			Color color = job.getColor() ;
 			String imageExtension = !job.equals(NPCJobs.master) ?  ".png" : ".gif" ;
 			Image image = UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + imageExtension) ;
-			String[] speech = new String[] {""} ;
+			String[] speech = null ;
+			List<List<String>> options = new ArrayList<>() ;
 			
-			// TODO "Falas" em speech -> padronizar para todas as línguas
-			
-			String[][] options = new String[][] {{"Sim", "Não"}, {}, {}} ;
-
-			if (job.equals(NPCJobs.banker))
+			TextCategories speechName = TextCategories.catFromBRName("npcs" + "Doutor" + "Falas") ;
+			if (Game.allText.get(speechName) != null)
 			{
-				options = new String[][] {{"Sim", "Não"}, 
-				{"Depositar", "Sacar", "Investir com baixo risco", "Investir com alto risco"}, {}, {}, {}, {}, {}, {}, {}} ;
+				speech = Game.allText.get(speechName) ;
 			}
 			
-			if (Game.allText.get(TextCategories.catFromBRName(name + "Falas")) != null)
+			for (int o = 0 ; o <= 2 - 1 ; o += 1)
 			{
-				speech = Game.allText.get(TextCategories.catFromBRName(name + "Falas")) ;
-				options = new String[Game.allText.get(TextCategories.catFromBRName(name + "Falas")).length][] ;
-				for (int j = 0 ; j <= options.length - 1; j += 1)
-				{
-					options[j] = Game.allText.get(TextCategories.catFromBRName(name + "Opcoes" + j)) ;
-				}
+				TextCategories optionName = TextCategories.catFromBRName("npcs" + "Doutor" + "Opcoes" + o) ;
+				List<String> option = Arrays.asList(Game.allText.get(optionName)) ;
+				options.add(option) ;
 			}
 
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
@@ -1174,7 +1189,7 @@ public class Game extends JPanel
     	Pterodactile.setMessage(Game.allText.get(TextCategories.pterodactile)) ;
 
     	player.InitializeSpells() ;
-    	player.setName("Salevieno");
+    	player.setName("Salevieno") ;
     	player.setMap(cityMaps[2]) ;
     	player.setPos(new Point(400, 221)) ;
 

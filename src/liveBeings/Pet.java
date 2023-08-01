@@ -41,18 +41,14 @@ public class Pet extends LiveBeing
 	public static double[] AttributeIncrease ;
 	public static double[] ChanceIncrease ;
 	
-	public static String[] SpellKeys = new String[] {"0", "1", "2", "3"} ;
-	
 	private static List<String[]> PetProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
 	private static List<String[]> PetEvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
 	
 	public final static Gif levelUpGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 170, false, false) ;
-    
-	
+    	
 	public Pet(int Job)
 	{
-		super(InitializePersonalAttributes(Job), InitializeBattleAttributes(Job),
-				initializeMovingAnimations(Job), new PetAttributesWindow()) ;
+		super(InitializePersonalAttributes(Job), InitializeBattleAttributes(Job), initializeMovingAnimations(Job), new PetAttributesWindow()) ;
 		
 		name = PetProperties.get(Job)[0] ;
 		level = 1 ;

@@ -39,12 +39,9 @@ public class Creature extends LiveBeing
 	private Color color ;
 	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 	private boolean follow ;
-//	public int countmove ;
 	
 	private static Color[] skinColor = new Color[] {Game.colorPalette[0], Game.colorPalette[1]} ;
 	private static Color[] shadeColor = new Color[] {Game.colorPalette[2], Game.colorPalette[3]} ;
-	
-	public static final String[] SpellKeys = new String[] {"0", "1", "2", "3"} ;
 	
  	public Creature(CreatureType CT)
 	{

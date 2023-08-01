@@ -296,11 +296,12 @@ public class NPCs
 
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) & menu <= numberMenus - 1)
 		{
-			incMenu() ;
+			menu = type.getDestination().get(menu).get(selOption) ;
+//			incMenu() ;
 		}
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) & 0 < menu)
 		{
-			decMenu() ;
+			menu = 0 ;
 		}
 		
 	}
@@ -309,10 +310,10 @@ public class NPCs
 	{
 		if (type == null) { return ;}
 		if (type.getOptions() == null) { return ;}
-		if (type.getOptions().length <= 0) { return ;}
-		if (type.getOptions()[0] == null) { return ;}
+		if (type.getOptions().size() <= 0) { return ;}
+		if (type.getOptions().get(0) == null) { return ;}
 		
-		if (action.equals(Player.ActionKeys[2]) & selOption <= type.getOptions()[0].length - 2)
+		if (action.equals(Player.ActionKeys[2]) & selOption <= type.getOptions().get(0).size() - 2)
 		{
 			selOption += 1 ;
 		}
@@ -342,20 +343,24 @@ public class NPCs
 	public void drawOptions(Point windowPos, DrawingOnPanel DP)
 	{
 		// TODO transformar choices numa GameWindow
-		String[] options = type.getOptions()[menu] ;
+		if (type.getOptions() == null) { return ;}
+		if (type.getOptions().size() <= menu) { return ;}
+		if (type.getOptions().get(menu) == null) { return ;}
+		
+		List<String> options = type.getOptions().get(menu) ;
 		Color selColor = Game.colorPalette[3] ;
 		
 		if (options == null) { return ;}		
-		if (options.length <= 0) { return ;}
+		if (options.size() <= 0) { return ;}
 		
 		DP.DrawImage(ChoicesWindow, windowPos, Align.topLeft) ;
 		
 		int sy = NPCfont.getSize() + 5 ;
-		for (int i = 0 ; i <= options.length - 1 ; i += 1)
+		for (int i = 0 ; i <= options.size() - 1 ; i += 1)
 		{
 			Point textPos = UtilG.Translate(windowPos, 5, 5 + i * sy) ;
 			Color textColor = i == selOption ? selColor : Game.colorPalette[9] ;
-			DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, String.valueOf(i) + " - " + options[i], NPCfont, textColor) ;
+			DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, String.valueOf(i) + " - " + options.get(i), NPCfont, textColor) ;
 		}
 		
 	}

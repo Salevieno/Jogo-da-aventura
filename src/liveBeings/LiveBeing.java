@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import attributes.BattleAttributes;
@@ -70,7 +71,7 @@ public abstract class LiveBeing
 	public static final Image defendingImage = UtilG.loadImage(Game.ImagesPath + "\\Battle\\" + "ShieldIcon.png") ;
 	public static final Image powerBarImage = UtilG.loadImage(Game.ImagesPath + "PowerBar.png") ;
 	public static final String[] BattleKeys = new String[] {"Y", "U"} ;	
-	
+	public static final List<String> SpellKeys = new ArrayList<>(Arrays.asList(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"})) ;
 
 	public String getName() {return name ;}
 	/*public LiveBeing(String name, int job, int proJob, int level, GameMap map, Point pos, Directions dir,
@@ -105,8 +106,7 @@ public abstract class LiveBeing
 		this.attWindow = attWindow;
 	}*/
 	
-	public LiveBeing(PersonalAttributes PA, BattleAttributes BA,
-			MovingAnimations movingAni, AttributesWindow attWindow)
+	public LiveBeing(PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, AttributesWindow attWindow)
 	{
 		this.PA = PA;
 		this.BA = BA;
@@ -329,32 +329,15 @@ public abstract class LiveBeing
 		return elem[1].equals(elem[2]) & elem[2].equals(elem[3]) ;
 	}
 	public boolean hasActed() {return currentAction != null ;}
-	public boolean actionIsSpell()
-	{
-		if (!hasActed()) { return false ;}
-		
-		if (this instanceof Player)
-		{
-			return Player.SpellKeys.contains(currentAction) ;
-		}
-		List<String> listSpells = new ArrayList<>() ;
-		listSpells.add("0") ;
-		listSpells.add("1") ;
-		listSpells.add("2") ;
-		listSpells.add("3") ;
-		listSpells.add("4") ;
-		
-		// TODO determinar se a ação é spell
-		return listSpells.contains(currentAction) ;
-	}
+	public boolean actionIsSpell()  {return hasActed() ? Player.SpellKeys.contains(currentAction) : false ;}
+	public boolean actionIsPhysicalAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
+	public boolean actionIsDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}
 	public boolean actionIsArrowAtk()
 	{
 		if (!( this instanceof Player)) { return false ;}
 		
 		return hasActed() ? currentAction.equals(BattleKeys[0]) & ((Player) this).arrowIsEquipped() : false ;
 	}
-	public boolean actionIsPhysicalAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
-	public boolean actionIsDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}
 	
 	public boolean canAtk() {return battleActionCounter.finished() & !BA.isStun() ;}
 	public boolean isSilent() {return 0 < BA.getStatus().getSilence() ;}
