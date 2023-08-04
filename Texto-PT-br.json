@@ -176,9 +176,9 @@
   ],
 
   "NPCs":
-  {
-    "Doutor":
+  [
     {
+      "Nome": "Doutor",
       "Falas":
       [
         "Olá, gostaria de tratar esses ferimentos?",
@@ -187,9 +187,33 @@
         "Prontinho! Aproveite sua vida.",
         "Tenha um bom dia!"
       ],
-      "Opcoes": [["Sim", "Não"], ["Até mais"]]
+      "Opcoes": [["Sim", "Não"], [], [], [], ["Até mais."]]
+    },    
+    {
+      "Nome": "Mestre",
+      "Falas":
+      [
+        "Olá, deseja aumentar suas habilidades?",
+        "Escolha uma habilidade.",
+        "Uau, como vc cresceu! Está pronto para evoluir?",
+        "Para qual classe quer evoluir?",
+        "Parabéns! Agora vc é um:",
+        "Neste caso, quer aumentar suas habilidades?",
+        "Até a proxima!"
+      ],
+      "Opcoes": [["Sim", "Não"], [], ["Sim", "Não"], [], [], ["Sim", "Não"], ["Até mais."]]
+    },
+    {
+      "Nome": "Vendedor de equipamentos",
+      "Falas":
+      [
+        "Olá, o que deseja fazer?",
+        "Escolha seu equipamento!",
+        "Volte sempre!"
+      ],
+      "Opcoes": [["Comprar", "Vender"], [], ["Até mais."]]
     }
-  },
+  ],
 
 
 

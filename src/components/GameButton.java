@@ -189,15 +189,13 @@ public class GameButton
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Color textColor = Game.colorPalette[9] ;
 		Color selectedTextColor = Game.colorPalette[10] ;
-
-		Point displayPos = UtilG.getPosAt(topLeftCorner, alignment, size) ;
 		
 		select(mousePos) ;
 		if (isselected())	// ishovered(MousePos)
 		{
 			if (selectedImage != null)
 			{
-				DP.DrawImage(selectedImage, displayPos, angle, new Scale(1, 1), alignment) ;
+				DP.DrawImage(selectedImage, topLeftCorner, angle, new Scale(1, 1), alignment) ;
 				if (displayText)
 				{
 					DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
@@ -205,7 +203,7 @@ public class GameButton
 			}
 			else
 			{
-				DP.DrawRoundRect(displayPos, alignment, size, 5, Game.colorPalette[5], Game.colorPalette[6], true) ;
+				DP.DrawRoundRect(topLeftCorner, alignment, size, 5, Game.colorPalette[5], Game.colorPalette[6], true) ;
 				DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 			}
 		}
@@ -213,7 +211,7 @@ public class GameButton
 		{
 			if (image != null)
 			{
-				DP.DrawImage(image, displayPos, angle, new Scale(1, 1), alignment) ;
+				DP.DrawImage(image, topLeftCorner, angle, new Scale(1, 1), alignment) ;
 				if (displayText)
 				{
 					DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
@@ -221,7 +219,7 @@ public class GameButton
 			}
 			else
 			{
-				DP.DrawRoundRect(displayPos, alignment, size, 2, Game.colorPalette[5], Game.colorPalette[6], true) ;
+				DP.DrawRoundRect(topLeftCorner, alignment, size, 2, Game.colorPalette[5], Game.colorPalette[6], true) ;
 				DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
 			}
 		}

@@ -28,17 +28,20 @@ public class SideBar
 	public SideBar(Image playerImage, Image petImage)
 	{
 		
-    	String path = Game.ImagesPath + "\\SideBar\\";
-		Point botCenterPos = new Point(Game.getScreen().getSize().width + 20, Game.getScreen().getSize().height - 230) ;
+		Point topLeftPos = new Point(Game.getScreen().getSize().width + 20, Game.getScreen().getSize().height - 220) ;
 		buttons = new HashSet<>() ;
 		String[] names = new String[] {"settings", "bag", "quest", "map", "book", "tent"} ; // "player", "pet"
-		
+
+    	String path = Game.ImagesPath + "\\SideBar\\";
+    	int offsetY = 0 ;
 		for (int i = 0; i <= names.length - 1 ; i += 1)
-		{
+		{			
 			Image image = UtilG.loadImage(path + "Icon" + i + "_" + names[i] + ".png") ;
 			Image selImage = UtilG.loadImage(path + "Icon" + i + "_" + names[i] + "Selected.png") ;
-			Point pos = UtilG.Translate(botCenterPos, -image.getWidth(null) / 2, -10 - 45 * i) ;
-			buttons.add(new GameButton(i, names[i], pos, "description", image, selImage)) ;
+			Point botCenterPos = UtilG.Translate(topLeftPos, 0, - offsetY) ;
+			buttons.add(new GameButton(i, names[i], botCenterPos, "", image, selImage)) ;
+
+			offsetY += image.getHeight(null) + 10 ;
 		}
 		
 		buttons.forEach(GameButton::activate);
@@ -56,15 +59,10 @@ public class SideBar
 		String[] IconKey = new String[] {null, Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7], null, null, null, null} ;
 		Color textColor = Game.colorPalette[7] ;
 		
-		DP.DrawRect(barPos, Align.bottomLeft, size, 1, Game.colorPalette[9], null) ;		
+		DP.DrawRect(barPos, Align.bottomLeft, size, 1, Game.colorPalette[9], null) ;
 		
-		buttons.forEach(icon -> {
-			icon.display(stdAngle, Align.bottomCenter, false, mousePos, DP) ;
-			if (IconKey[icon.getid()] != null)
-			{
-				DP.DrawText(icon.getPos(), Align.bottomLeft, stdAngle, IconKey[icon.getid()], font, textColor) ;
-			}
-		});
+		buttons.forEach(button -> button.display(stdAngle, Align.bottomCenter, false, mousePos, DP)) ;
+		buttons.forEach(button -> DP.DrawText(button.getPos(), Align.topLeft, stdAngle, IconKey[button.getid()] != null ? IconKey[button.getid()] : "", font, textColor)) ;
 		
 		// TODO which spells to pass to spellsBar
 		SpellsBar.display(player.getMp().getCurrentValue(), player.getSpells(), mousePos, DP);

@@ -327,8 +327,12 @@ public class NPCs
 	{
 		if (type.getSpeech()[menu].equals("")) { return ;}
 		if (type.getImage() == null) { return ;}
+		if (type.getSpeech().length <= menu) { return ;}
 		
 		String content = type.getSpeech()[menu] ;
+		
+		if (content == null) { return ;}
+		
 		Point speechPos = UtilG.Translate(pos, -22, -2 - type.getImage().getHeight(null)) ;
 		
 		DP.DrawSpeech(speechPos, content, NPCfont, SpeakingBubble, type.getColor()) ;

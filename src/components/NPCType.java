@@ -2,6 +2,7 @@ package components;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class NPCType
 		this.image = image ;
 		this.speech = speech ;
 		this.options = options ;
+		destination = new ArrayList<>() ;
 		MapOptionsToDestinyMenu(job) ;
 	}
 	
@@ -44,6 +46,8 @@ public class NPCType
 		switch (job)
 		{
 			case doctor: break ;
+			case master: destination.add(Arrays.asList(1, 6)) ; break ;
+			case equipsSeller: destination.add(Arrays.asList(1, 2)) ; break ;
 			default: return ;
 		}
 	}

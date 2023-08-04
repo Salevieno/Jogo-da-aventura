@@ -205,25 +205,28 @@ public class Game extends JPanel
 			TextCategories catName = TextCategories.catFromBRName((String) key) ;
 
 			if (catName != null)
-			{				
+			{			
 				if (catName.equals(TextCategories.npcs))
 				{
-					String npcName = "Doutor" ;
 					
-					JSONObject npcData = (JSONObject) textData.get(key) ;
-					JSONObject npc = (JSONObject) npcData.get(npcName) ;
-					List<String> falas = (List<String>) npc.get("Falas") ;
-					List<JSONArray> opcoes = (List<JSONArray>) npc.get("Opcoes") ;
-
-					allText.put(TextCategories.catFromBRName(catName + npcName + "Falas"), falas.toArray(new String[0])) ;
+					JSONArray npcData = (JSONArray) textData.get(key) ;
 					
-					for (int i = 0 ; i <= opcoes.size() - 1; i += 1)
+					for (int i = 0 ; i <= npcData.size() - 1; i += 1)
 					{
-						allText.put(TextCategories.catFromBRName(catName + npcName + "Opcoes" + i), ((List<String>) opcoes.get(i)).toArray(new String[0])) ;
-					}
-					
-					allText.entrySet().forEach(text -> System.out.println(text.getKey() + " " + Arrays.toString(text.getValue())));
-							
+						JSONObject npc = (JSONObject) npcData.get(i) ;
+						String npcName = (String) npc.get("Nome") ;
+						List<String> falas = (List<String>) npc.get("Falas") ;
+						List<JSONArray> opcoes = (List<JSONArray>) npc.get("Opcoes") ;
+
+						allText.put(TextCategories.catFromBRName(catName + "Nome"), falas.toArray(new String[0])) ;
+						allText.put(TextCategories.catFromBRName(catName + npcName + "Falas"), falas.toArray(new String[0])) ;
+						
+						for (int j = 0 ; j <= opcoes.size() - 1; j += 1)
+						{
+							List<String> opcoesMenu = (List<String>) opcoes.get(j) ;
+							allText.put(TextCategories.catFromBRName(catName + npcName + "Opcoes" + j), opcoesMenu.toArray(new String[0])) ;
+						}
+					}					
 					
 					
 					continue ;
@@ -236,11 +239,10 @@ public class Game extends JPanel
 				{
 					listValues.add((String) listText.get(j)) ;
 				}
-				
+
 				allText.put(catName, listValues.toArray(new String[] {})) ;
 			}
 		}
-		
 	}
 	
 	private static void initializeAnimations()
@@ -423,18 +425,22 @@ public class Game extends JPanel
 			Image image = UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + imageExtension) ;
 			String[] speech = null ;
 			List<List<String>> options = new ArrayList<>() ;
-			
-			TextCategories speechName = TextCategories.catFromBRName("npcs" + "Doutor" + "Falas") ;
+
+			TextCategories speechName = TextCategories.catFromBRName("npcs" + name + "Falas") ;
+
 			if (Game.allText.get(speechName) != null)
 			{
 				speech = Game.allText.get(speechName) ;
 			}
 			
-			for (int o = 0 ; o <= 2 - 1 ; o += 1)
+			for (int o = 0 ; o <= speech.length - 1 ; o += 1)
 			{
-				TextCategories optionName = TextCategories.catFromBRName("npcs" + "Doutor" + "Opcoes" + o) ;
-				List<String> option = Arrays.asList(Game.allText.get(optionName)) ;
-				options.add(option) ;
+				TextCategories optionName = TextCategories.catFromBRName("npcs" + name + "Opcoes" + o) ;
+				if (Game.allText.get(optionName) != null)
+				{
+					List<String> option = Arrays.asList(Game.allText.get(optionName)) ;
+					options.add(option) ;
+				}
 			}
 
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;

@@ -259,7 +259,7 @@ public class DrawingOnPanel
 		Point textPos = UtilG.Translate(pos, 14 - bubbleL / 2, 5 - bubbleH) ;
 		int maxTextL = 20 ;
 		int sy = font.getSize() + 1 ;
-		DrawFitText(textPos, sy, Align.topLeft, text, font, maxTextL, textColor) ;		
+		DrawFitText(textPos, sy, Align.topLeft, text, font, maxTextL, textColor) ;
 	}
 	
 	public void DrawWindowArrows(Point pos, int width, int selectedWindow, int numberWindows)
