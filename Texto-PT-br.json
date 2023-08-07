@@ -178,6 +178,16 @@
   "NPCs":
   [
     {
+      "Nome": "Cidadão 19",
+      "Falas":
+      [
+        "Tanta terra, tanta terra...já pensou quantos tesouros devem estar enterrados nela?",
+        "Para que se desgastar caçando criaturas quando você pode arrumar uma pá e procurar por tesouros debaixo da terra?",
+        "Achado também é roubado, mesmo debaixo da terra! É o meu lema."
+      ],
+      "Opcoes": [["Sim", "Não"], ["Sim", "123", "Não"], []]
+    },   
+    {
       "Nome": "Doutor",
       "Falas":
       [
@@ -214,13 +224,6 @@
       "Opcoes": [["Comprar", "Vender"], [], ["Até mais."]]
     }
   ],
-
-
-
-
-
-
-
 
   "Estatísticas do jogador": [
     "Número de ataques físicos:",

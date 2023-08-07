@@ -48,6 +48,7 @@ public class NPCType
 			case doctor: break ;
 			case master: destination.add(Arrays.asList(1, 6)) ; break ;
 			case equipsSeller: destination.add(Arrays.asList(1, 2)) ; break ;
+			case citizen: destination.add(Arrays.asList(1, 0)) ; destination.add(Arrays.asList(0, 1, 2)) ; break ;
 			default: return ;
 		}
 	}

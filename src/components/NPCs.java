@@ -303,7 +303,6 @@ public class NPCs
 		{
 			menu = 0 ;
 		}
-		
 	}
 	
 	public void switchOption(String action)
@@ -313,7 +312,7 @@ public class NPCs
 		if (type.getOptions().size() <= 0) { return ;}
 		if (type.getOptions().get(0) == null) { return ;}
 		
-		if (action.equals(Player.ActionKeys[2]) & selOption <= type.getOptions().get(0).size() - 2)
+		if (action.equals(Player.ActionKeys[2]) & selOption <= type.getOptions().get(0).size() - 1)
 		{
 			selOption += 1 ;
 		}

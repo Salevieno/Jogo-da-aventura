@@ -918,7 +918,7 @@ public class Player extends LiveBeing
 			for (NPCs npc : map.getNPCs())
 			{				
 				if (!metNPC(npc)) { continue ;}
-				
+
 				npc.action(this, Game.getPet(), mousePos, DP) ;
 				
 				break ;

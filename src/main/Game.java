@@ -425,7 +425,7 @@ public class Game extends JPanel
 			Image image = UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + imageExtension) ;
 			String[] speech = null ;
 			List<List<String>> options = new ArrayList<>() ;
-
+			
 			TextCategories speechName = TextCategories.catFromBRName("npcs" + name + "Falas") ;
 
 			if (Game.allText.get(speechName) != null)
@@ -436,6 +436,7 @@ public class Game extends JPanel
 			for (int o = 0 ; o <= speech.length - 1 ; o += 1)
 			{
 				TextCategories optionName = TextCategories.catFromBRName("npcs" + name + "Opcoes" + o) ;
+				
 				if (Game.allText.get(optionName) != null)
 				{
 					List<String> option = Arrays.asList(Game.allText.get(optionName)) ;
