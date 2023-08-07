@@ -217,14 +217,27 @@ public class Game extends JPanel
 						String npcName = (String) npc.get("Nome") ;
 						List<String> falas = (List<String>) npc.get("Falas") ;
 						List<JSONArray> opcoes = (List<JSONArray>) npc.get("Opcoes") ;
-
-						allText.put(TextCategories.catFromBRName(catName + "Nome"), falas.toArray(new String[0])) ;
-						allText.put(TextCategories.catFromBRName(catName + npcName + "Falas"), falas.toArray(new String[0])) ;
+						TextCategories textCatName = TextCategories.catFromBRName(catName + "Nome") ;
+						TextCategories textCatFala = TextCategories.catFromBRName(catName + npcName + "Falas") ;
+						
+						if (textCatName != null)
+						{
+							allText.put(textCatName, falas.toArray(new String[0])) ;
+						}
+						
+						if (textCatFala != null)
+						{
+							allText.put(textCatFala, falas.toArray(new String[0])) ;
+						}						
 						
 						for (int j = 0 ; j <= opcoes.size() - 1; j += 1)
 						{
 							List<String> opcoesMenu = (List<String>) opcoes.get(j) ;
-							allText.put(TextCategories.catFromBRName(catName + npcName + "Opcoes" + j), opcoesMenu.toArray(new String[0])) ;
+							TextCategories textCatOption = TextCategories.catFromBRName(catName + npcName + "Opcoes" + j) ;
+							
+							if (textCatOption == null) { continue ;}
+							
+							allText.put(textCatOption, opcoesMenu.toArray(new String[0])) ;
 						}
 					}					
 					
@@ -239,10 +252,13 @@ public class Game extends JPanel
 				{
 					listValues.add((String) listText.get(j)) ;
 				}
-
+				
 				allText.put(catName, listValues.toArray(new String[] {})) ;
 			}
 		}
+		
+//		allText.entrySet().forEach(text -> System.out.println(text.getKey() + " " + Arrays.toString(text.getValue())));
+		
 	}
 	
 	private static void initializeAnimations()
@@ -431,16 +447,16 @@ public class Game extends JPanel
 			if (Game.allText.get(speechName) != null)
 			{
 				speech = Game.allText.get(speechName) ;
-			}
-			
-			for (int o = 0 ; o <= speech.length - 1 ; o += 1)
-			{
-				TextCategories optionName = TextCategories.catFromBRName("npcs" + name + "Opcoes" + o) ;
 				
-				if (Game.allText.get(optionName) != null)
+				for (int o = 0 ; o <= speech.length - 1 ; o += 1)
 				{
-					List<String> option = Arrays.asList(Game.allText.get(optionName)) ;
-					options.add(option) ;
+					TextCategories optionName = TextCategories.catFromBRName("npcs" + name + "Opcoes" + o) ;
+					
+					if (Game.allText.get(optionName) != null)
+					{
+						List<String> option = Arrays.asList(Game.allText.get(optionName)) ;
+						options.add(option) ;
+					}
 				}
 			}
 
