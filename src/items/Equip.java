@@ -302,7 +302,8 @@ public class Equip extends Item
 	@Override
 	public String toString()
 	{
-		return "Equip [id=" + id + ", name = " + name + ", forgeLevel=" + forgeLevel + ", attBonus=" + attBonus + ", elem=" + elem + "]";
+//		return "Equip [id=" + id + ", name = " + name + ", forgeLevel=" + forgeLevel + ", attBonus=" + attBonus + ", elem=" + elem + "]";
+		return "Equip," + id + "," + name;
 	}
 	
 	

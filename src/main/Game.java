@@ -96,6 +96,8 @@ public class Game extends JPanel
 	// TODO spells
 	// TODO nomes das criaturas
 	// TODO descrição dos itens
+	// TODO no superelemento de fogo, todos os panos na mochila viram panos em chamas
+	// TODO items repetidos: esfera de neve
 	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 
@@ -141,6 +143,7 @@ public class Game extends JPanel
 	private static Battle bat ;
 	private static List<Projectiles> projs ;
 	private static Animation[] animations ;
+	
 	
 	static
 	{
@@ -743,6 +746,7 @@ public class Game extends JPanel
 			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
 
 			fieldMap[id] = new FieldMap(name, continent, connections, image, music, collectibleLevel, collectiblesDelay, creatureIDs, npcs) ;
+			fieldMap[id].printItems() ;
 		}
 		
 		return fieldMap ;

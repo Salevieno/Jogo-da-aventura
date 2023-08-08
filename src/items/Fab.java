@@ -33,14 +33,12 @@ public class Fab extends Item
 	{		
 		return ferkIcon ;		
 	}
-	
-	public void printAtt()
+
+	@Override
+	public String toString()
 	{
-		System.out.println("Fab id: " + AllFabs[id].getId() +
-				"   name: " + AllFabs[id].getName() +
-				"   description: " + AllFabs[id].getDescription() +
-				"   price: " + AllFabs[id].getPrice() +
-				"   drop chance: " + AllFabs[id].getDropChance() + "%");
+		return "Fab [id=" + id + ", name=" + name ;
 	}
+	
 	
 }

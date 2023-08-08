@@ -135,6 +135,8 @@ public class Player extends LiveBeing
 
 	public final static Image[] AttWindowImages = new Image[] {UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")} ;
     	
+	
+	
 	public Player(String name, String Sex, int job)
 	{
 		super(
@@ -577,14 +579,18 @@ public class Player extends LiveBeing
 		if (digCounter.finished())
 		{
 			digCounter.reset() ;
-			List<Item> rewards = new ArrayList<>() ;
-			rewards.add(Game.getAllItems()[0]) ;
-			// TODO determine digging items
-			if (UtilG.chance(1))
-			{
-				bag.Add(rewards.get(0), 1) ;
-				obtainItems(rewards) ;
-			}
+			
+			List<Item> listItems = new ArrayList<Item>(diggingItems.keySet()) ;
+			List<Double> listChances = new ArrayList<Double>(diggingItems.values()) ;
+			
+//			System.out.println(rewards);
+//			System.out.println(listItems);
+//			System.out.println(listChances);
+
+			int itemID = UtilG.randomFromChanceList(listChances) ;
+			bag.Add(listItems.get(itemID), 1) ;
+			obtainItems(Arrays.asList(listItems.get(itemID))) ;
+			
 			setState(LiveBeingStates.idle) ;
 		}
 	}

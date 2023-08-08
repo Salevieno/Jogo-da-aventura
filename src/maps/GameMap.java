@@ -22,11 +22,11 @@ import utilities.UtilG;
 
 public class GameMap 
 {
-	private String name ;
-	private Continents continent ;
-	private int[] connections ;
-	private Image image ;
-	private Clip music ;
+	protected String name ;
+	protected Continents continent ;
+	protected int[] connections ;
+	protected Image image ;
+	protected Clip music ;
 	
 	protected List<GroundType> groundTypes ;	
 	protected List<MapElements> mapElems ;

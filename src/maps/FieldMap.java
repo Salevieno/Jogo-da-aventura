@@ -76,7 +76,7 @@ public class FieldMap extends GameMap
 
 	public List<Creature> getCreatures() {return creatures ;}
 	public List<Collectible> getCollectibles() {return collectibles ;}
-	public void setCreatures(ArrayList<Creature> newValue) {creatures = newValue ;}
+	public void setCreatures(List<Creature> newValue) {creatures = newValue ;}
 	
 	public boolean hasCreatures() { return creatures != null ;}
 	
@@ -122,6 +122,13 @@ public class FieldMap extends GameMap
 		}
  	}
 
+ 	public void printItems()
+ 	{
+ 		System.out.println("** " + name + " items **");
+ 		creatures.forEach(creature -> creature.getBag().forEach(System.out::println));
+ 		System.out.println();
+ 	}
+ 	
 //	public void displayGroundType()
 //	{
 //		if (groundType != null)

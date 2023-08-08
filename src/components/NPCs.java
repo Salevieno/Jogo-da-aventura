@@ -324,9 +324,11 @@ public class NPCs
 	
 	public void speak(Point pos, DrawingOnPanel DP)
 	{
+		
+		if (type.getSpeech() == null) { return ;}
+		if (type.getSpeech().length <= menu) { return ;}
 		if (type.getSpeech()[menu].equals("")) { return ;}
 		if (type.getImage() == null) { return ;}
-		if (type.getSpeech().length <= menu) { return ;}
 		
 		String content = type.getSpeech()[menu] ;
 		
