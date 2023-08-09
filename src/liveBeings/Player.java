@@ -580,8 +580,8 @@ public class Player extends LiveBeing
 		{
 			digCounter.reset() ;
 			
-			List<Item> listItems = new ArrayList<Item>(diggingItems.keySet()) ;
-			List<Double> listChances = new ArrayList<Double>(diggingItems.values()) ;
+			List<Item> listItems = new ArrayList<Item>(GameMap.allDiggingItems.keySet()) ;
+			List<Double> listChances = new ArrayList<Double>(GameMap.allDiggingItems.values()) ;
 			
 //			System.out.println(rewards);
 //			System.out.println(listItems);

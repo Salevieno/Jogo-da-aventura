@@ -54,16 +54,25 @@ public class Alchemy extends Item
 		PA.getLife().incCurrentValue((int) (lifeHeal * PA.getLife().getMaxValue() * powerMult)); ;
 		PA.getMp().incCurrentValue((int) (MPHeal * PA.getMp().getMaxValue() * powerMult)); ;
 	}
-	
-	public void printAtt()
+
+	@Override
+	public String toString()
 	{
-		System.out.println("alchemy id: " + AllAlchemy[id].getId() +
-				"   name: " + AllAlchemy[id].getName() +
-				"   description: " + AllAlchemy[id].getDescription() +
-				"   price: " + AllAlchemy[id].getPrice() +
-				"   drop chance: " + AllAlchemy[id].getDropChance() + "%" + 
-				"   life heal: " + 100 * AllAlchemy[id].getLifeHeal() + "%" + 
-				"   mp heal: " + 100 * AllAlchemy[id].getMPHeal() + "%");
+//		return "Alchemy [lifeHeal=" + lifeHeal + ", MPHeal=" + MPHeal + ", id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance=" + dropChance + "]";
+		return "Alchemy," + id + "," + name;
 	}
+	
+	
+	
+//	public void printAtt()
+//	{
+//		System.out.println("alchemy id: " + AllAlchemy[id].getId() +
+//				"   name: " + AllAlchemy[id].getName() +
+//				"   description: " + AllAlchemy[id].getDescription() +
+//				"   price: " + AllAlchemy[id].getPrice() +
+//				"   drop chance: " + AllAlchemy[id].getDropChance() + "%" + 
+//				"   life heal: " + 100 * AllAlchemy[id].getLifeHeal() + "%" + 
+//				"   mp heal: " + 100 * AllAlchemy[id].getMPHeal() + "%");
+//	}
 	
 }

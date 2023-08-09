@@ -746,7 +746,8 @@ public class Game extends JPanel
 			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
 
 			fieldMap[id] = new FieldMap(name, continent, connections, image, music, collectibleLevel, collectiblesDelay, creatureIDs, npcs) ;
-			fieldMap[id].printItems() ;
+//			if (continent.equals(Continents.forest))
+//				fieldMap[id].printItems() ;
 		}
 		
 		return fieldMap ;

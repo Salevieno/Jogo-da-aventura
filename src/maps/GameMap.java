@@ -5,7 +5,9 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sound.sampled.Clip;
 
@@ -13,6 +15,9 @@ import components.Building;
 import components.Collider;
 import components.NPCs;
 import graphics.DrawingOnPanel;
+import items.Fab;
+import items.GeneralItem;
+import items.Item;
 import liveBeings.Player;
 import main.Game;
 import utilities.Align;
@@ -31,13 +36,185 @@ public class GameMap
 	protected List<GroundType> groundTypes ;	
 	protected List<MapElements> mapElems ;
 	protected List<Building> buildings ;
-	protected List<NPCs> npcs ;	
+	protected List<NPCs> npcs ;
+	protected Map<Item, Double> diggingItems = new HashMap<>() ;
 	
 	public static Image[] CollectibleImage ;
 	public static Image[] GroundImage ;	
 	
 	private static final Image beachGif = UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map2_beach.gif") ;
+	public static final Map<Item, Double> allDiggingItems = new HashMap<>() ;
 
+	static
+	{
+		int[] fabItemIDs = new int[] {0,3,4,6,7,11,13,16,17,25,30,48,51,59,60,61,62,63,64,65,75,76,77,78,79,80,86,87,88} ;
+		double[] fabItemPotentials = new double[] {5,4,3,3,3,1,4,5,1,5,3,4,4,4,3,5,5,5,4,4,2,2,3,2,1,1,5,3,2} ;
+
+		int[] genItemIDs = new int[] {2,4,8,9,25,33,35,41,45,46,48,50,52,59,60,61,67,68,75,77,80,90,91,109,110,113,116,117,120,122,125,126,131,136,141,142,143,144,147,150,154,155,156,157,161,162,166,167,168,169,170,171,172,173,175,178,179,183,191,193,202,203,205,215,221,223,224,228,230,231,232,233,242,248,249,250,259,267,268,276,277,278,283,286,292,293,294,295,296,299,301,310,311,315,316,317,323,325,327,335,337,338,339,341,343,345,346,350,353,355,358,363,367,368,370,371,375,378,381} ;
+		double[] genItemPotentials = new double[] {5,5,5,5,4,4,3,4,4,5,3,2,4,2,1,2,3,4,4,2,3,1,1,3,1,3,2,4,3,1,3,3,1,2,2,1,3,2,3,2,4,4,4,5,2,3,3,5,5,4,4,1,2,3,2,2,3,4,5,2,2,3,4,2,1,5,4,5,5,4,5,5,5,3,2,4,3,4,4,1,4,1,2,5,3,4,5,4,2,1,2,3,4,3,2,3,3,1,1,2,2,3,2,4,3,2,4,5,3,4,4,3,2,2,5,4,3,2,1} ;
+		
+		for (int i = 0 ; i <= fabItemIDs.length - 1; i += 1)
+		{
+			allDiggingItems.put(Fab.getAll()[fabItemIDs[i]], fabItemPotentials[i]) ;
+		}
+		
+		for (int i = 0 ; i <= genItemIDs.length - 1; i += 1)
+		{
+			allDiggingItems.put(GeneralItem.getAll()[genItemIDs[i]], genItemPotentials[i]) ;
+		}
+		
+//		allDiggingItems.put(Fab.getAll()[0], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[3], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[4], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[6], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[7], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[11], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[13], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[16], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[17], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[25], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[30], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[48], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[51], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[59], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[60], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[61], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[62], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[63], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[64], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[65], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[75], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[76], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[77], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[78], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[79], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[80], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[86], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[87], 0.2) ;
+//		allDiggingItems.put(Fab.getAll()[88], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[2], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[4], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[8], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[9], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[25], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[33], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[35], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[41], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[45], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[46], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[48], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[50], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[52], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[59], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[60], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[61], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[67], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[68], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[75], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[77], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[80], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[90], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[91], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[109], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[110], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[113], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[116], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[117], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[120], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[122], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[125], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[126], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[131], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[136], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[141], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[142], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[143], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[144], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[147], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[150], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[154], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[155], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[156], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[157], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[161], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[162], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[166], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[167], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[168], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[169], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[170], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[171], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[172], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[173], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[175], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[178], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[179], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[183], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[191], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[193], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[202], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[203], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[205], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[215], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[221], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[223], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[224], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[228], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[230], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[231], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[232], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[233], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[242], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[248], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[249], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[250], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[259], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[267], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[268], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[276], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[277], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[278], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[283], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[286], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[292], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[293], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[294], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[295], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[296], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[299], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[301], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[310], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[311], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[315], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[316], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[317], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[323], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[325], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[327], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[335], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[337], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[338], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[339], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[341], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[343], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[345], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[346], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[350], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[353], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[355], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[358], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[363], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[367], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[368], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[370], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[371], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[375], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[378], 0.2) ;
+//		allDiggingItems.put(GeneralItem.getAll()[381], 0.2) ;
+//		diggingItems.entrySet().forEach(System.out::println);
+	}
+	
+	
 	static
 	{
 //		Image Water = UtilG.loadImage(Game.ImagesPath + "MapElem0_Water.png") ;
@@ -75,18 +252,15 @@ public class GameMap
 
 	public String getName() {return name ;}
 	public Continents getContinent() {return continent ;}
+	public Continents getContinentName(Player player) {  return Continents.getAll()[continent.ordinal() + 1] ;}
 	public Image getimage() {return image ;}
 	public Clip getMusic() { return music ;}
-//	public String[][] getType() {return type ;}
 	public List<GroundType> getgroundTypes() {return groundTypes ;}
 	public int[] getConnections() {return connections ;}	
 	public List<MapElements> getMapElem() {return mapElems ;}
 	public List<NPCs> getNPCs() {return npcs ;}
 	public List<Building> getBuildings() {return buildings ;}
-	public Continents getContinentName(Player player)
-	{ 
-		return Continents.getAll()[continent.ordinal() + 1] ;
-	}
+	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
 	
 	public void addGroundType (GroundType newGroundType) { groundTypes.add(newGroundType) ;}
 		
@@ -311,6 +485,19 @@ public class GameMap
 		return specialMaps ;
 	}
 	
+	public void calcDigItemChances()
+	{
+		double totalPotencial = 0 ;
+		for (Item item : diggingItems.keySet())
+		{
+			totalPotencial += diggingItems.get(item) ;
+		}
+		
+		for (Item item : diggingItems.keySet())
+		{
+			diggingItems.put(item, diggingItems.get(item) / totalPotencial) ;
+		}
+	}
 	
  	public List<Collider> allColliders()
  	{

@@ -45,11 +45,8 @@ public class Forge extends Item
 	
 	public String toString()
 	{
-		return "forge id: " + AllForge[id].getId() +
-				"   name: " + AllForge[id].getName() +
-				"   description: " + AllForge[id].getDescription() +
-				"   price: " + AllForge[id].getPrice() +
-				"   drop chance: " + AllForge[id].getDropChance() + "%" ;
+//		return "forge id: " + AllForge[id].getId() + "   name: " + AllForge[id].getName() + "   description: " + AllForge[id].getDescription() + "   price: " + AllForge[id].getPrice() + "   drop chance: " + AllForge[id].getDropChance() + "%" ;
+		return "Forge," + id + "," + name;
 	}
 	
 }

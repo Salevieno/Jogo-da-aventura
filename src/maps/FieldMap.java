@@ -4,12 +4,15 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sound.sampled.Clip;
 
 import components.NPCs;
 import graphics.DrawingOnPanel;
+import items.Item;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
 import main.Game;
@@ -70,6 +73,17 @@ public class FieldMap extends GameMap
 			}
 		}
 		
+		// TODO incluir os digging items para as cidades e mapas especiais
+		for (Item item : allDiggingItems.keySet())
+		{
+			if (!containsItem(item)) { continue ;}
+			
+			diggingItems.put(item, allDiggingItems.get(item)) ;
+		}
+		calcDigItemChances() ;
+//		System.out.println(name);
+//		System.out.println(diggingItems);
+		
 		// add npcs
 		this.npcs = npcs ;
 	}
@@ -122,9 +136,22 @@ public class FieldMap extends GameMap
 		}
  	}
 
+ 	public boolean containsItem(Item item)
+ 	{
+ 		for (Creature creature : creatures)
+ 		{
+ 			if (creature.getBag().contains(item))
+ 			{
+ 				return true ;
+ 			}
+ 		}
+ 		
+ 		return false ;
+ 	}
+ 	
  	public void printItems()
  	{
- 		System.out.println("** " + name + " items **");
+ 		System.out.println(name);
  		creatures.forEach(creature -> creature.getBag().forEach(System.out::println));
  		System.out.println();
  	}

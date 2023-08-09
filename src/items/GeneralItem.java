@@ -88,17 +88,17 @@ public class GeneralItem extends Item
 	@Override
 	public String toString()
 	{
-		return "GeneralItem [id=" + id + ", name= " + name + "]" ;
+		return "GeneralItem," + id + "," + name ;
 	}
 	
 
-	public void printAtt()
-	{
-		System.out.println("General item id: " + AllGeneralItems[id].getId() +
-				"   name: " + AllGeneralItems[id].getName() +
-				"   description: " + AllGeneralItems[id].getDescription() +
-				"   price: " + AllGeneralItems[id].getPrice() +
-				"   drop chance: " + AllGeneralItems[id].getDropChance() + "%");
-	}
+//	public void printAtt()
+//	{
+//		System.out.println("General item id: " + AllGeneralItems[id].getId() +
+//				"   name: " + AllGeneralItems[id].getName() +
+//				"   description: " + AllGeneralItems[id].getDescription() +
+//				"   price: " + AllGeneralItems[id].getPrice() +
+//				"   drop chance: " + AllGeneralItems[id].getDropChance() + "%");
+//	}
 	
 }

@@ -74,19 +74,20 @@ public class Potion extends Item
 	@Override
 	public String toString()
 	{
-		return "Potion [id=" + id + ", lifeHeal=" + lifeHeal + ", MPHeal=" + MPHeal + "]";
+//		return "Potion [id=" + id + ", lifeHeal=" + lifeHeal + ", MPHeal=" + MPHeal + "]";
+		return "Potion," + id + "," + name;
 	}
 	
 
-	public void printAtt()
-	{
-		System.out.println("potion id: " + AllPotions[id].getId() +
-				"   name: " + AllPotions[id].getName() +
-				"   description: " + AllPotions[id].getDescription() +
-				"   price: " + AllPotions[id].getPrice() +
-				"   drop chance: " + AllPotions[id].getDropChance() + "%" + 
-				"   life heal: " + 100 * AllPotions[id].getLifeHeal() + "%" + 
-				"   mp heal: " + 100 * AllPotions[id].getMPHeal() + "%");
-	}
+//	public void printAtt()
+//	{
+//		System.out.println("potion id: " + AllPotions[id].getId() +
+//				"   name: " + AllPotions[id].getName() +
+//				"   description: " + AllPotions[id].getDescription() +
+//				"   price: " + AllPotions[id].getPrice() +
+//				"   drop chance: " + AllPotions[id].getDropChance() + "%" + 
+//				"   life heal: " + 100 * AllPotions[id].getLifeHeal() + "%" + 
+//				"   mp heal: " + 100 * AllPotions[id].getMPHeal() + "%");
+//	}
 	
 }

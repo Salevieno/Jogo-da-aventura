@@ -57,16 +57,25 @@ public class PetItem extends Item
 		
 	}
 
-	public void printAtt()
+	@Override
+	public String toString()
 	{
-		System.out.println("pet item id: " + AllPetItems[id].getId() +
-				"   name: " + AllPetItems[id].getName() +
-				"   description: " + AllPetItems[id].getDescription() +
-				"   price: " + AllPetItems[id].getPrice() +
-				"   drop chance: " + AllPetItems[id].getDropChance() + "%" + 
-				"   life heal: " + 100 * AllPetItems[id].getLifeHeal() + "%" + 
-				"   mp heal: " + 100 * AllPetItems[id].getMPHeal() + "%" + 
-				"   satiation heal: " + AllPetItems[id].getSatiationHeal());
+//		return "PetItem [lifeHeal=" + lifeHeal + ", MPHeal=" + MPHeal + ", SatiationHeal=" + SatiationHeal + ", id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance=" + dropChance + "]";
+		return "PetItem," + id + "," + name;
 	}
+
+	
+	
+//	public void printAtt()
+//	{
+//		System.out.println("pet item id: " + AllPetItems[id].getId() +
+//				"   name: " + AllPetItems[id].getName() +
+//				"   description: " + AllPetItems[id].getDescription() +
+//				"   price: " + AllPetItems[id].getPrice() +
+//				"   drop chance: " + AllPetItems[id].getDropChance() + "%" + 
+//				"   life heal: " + 100 * AllPetItems[id].getLifeHeal() + "%" + 
+//				"   mp heal: " + 100 * AllPetItems[id].getMPHeal() + "%" + 
+//				"   satiation heal: " + AllPetItems[id].getSatiationHeal());
+//	}
 	
 }

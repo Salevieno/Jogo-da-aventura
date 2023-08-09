@@ -17,11 +17,11 @@ public abstract class Item
 
     public static Image slot = UtilG.loadImage(Game.ImagesPath + "itemSlot.png") ;
 	
-	public Item(int id, String Name, String Description, Image image, int price, double dropChance)
+	public Item(int id, String name, String description, Image image, int price, double dropChance)
 	{
 		this.id = id ;
-		this.name = Name ;
-		this.description = Description ;
+		this.name = name ;
+		this.description = description ;
 		this.image = image ;
 		this.price = price ;
 		this.dropChance = dropChance ;
@@ -34,4 +34,9 @@ public abstract class Item
 	public int getPrice() {return price ;}
 	public double getDropChance() {return dropChance ;}
 	
+	@Override
+	public String toString()
+	{
+		return "Item," + id + "," + name;
+	}
 }

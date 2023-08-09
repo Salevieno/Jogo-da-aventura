@@ -37,7 +37,7 @@ public class Fab extends Item
 	@Override
 	public String toString()
 	{
-		return "Fab [id=" + id + ", name=" + name ;
+		return "Fab," + id + "," + name ;
 	}
 	
 	

@@ -84,15 +84,24 @@ public class Arrow extends Item
 		BA.getPhyAtk().incBonus(atkPower * mult) ;
 	}
 
-	public void printAtt()
+	@Override
+	public String toString()
 	{
-		System.out.println("Arrow id: " + AllArrow[id].getId() +
-				"   name: " + AllArrow[id].getName() +
-				"   description: " + AllArrow[id].getDescription() +
-				"   price: " + AllArrow[id].getPrice() +
-				"   drop chance: " + AllArrow[id].getDropChance() + "%" + 
-				"   atk power: " + AllArrow[id].getAtkPower() + 
-				"   elem: " + AllArrow[id].getElem());
+//		return "Arrow [atkPower=" + atkPower + ", elem=" + elem + ", id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance=" + dropChance + "]";
+		return "Arrow," + id + "," + name;
 	}
+	
+	
+
+//	public void printAtt()
+//	{
+//		System.out.println("Arrow id: " + AllArrow[id].getId() +
+//				"   name: " + AllArrow[id].getName() +
+//				"   description: " + AllArrow[id].getDescription() +
+//				"   price: " + AllArrow[id].getPrice() +
+//				"   drop chance: " + AllArrow[id].getDropChance() + "%" + 
+//				"   atk power: " + AllArrow[id].getAtkPower() + 
+//				"   elem: " + AllArrow[id].getElem());
+//	}
 	
 }
