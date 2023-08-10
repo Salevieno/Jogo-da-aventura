@@ -1,12 +1,13 @@
 package maps;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import javax.sound.sampled.Clip;
 
@@ -17,6 +18,7 @@ import liveBeings.Creature;
 import liveBeings.CreatureType;
 import main.Game;
 import screen.Screen;
+import utilities.Align;
 import utilities.UtilG;
 
 public class FieldMap extends GameMap
@@ -147,7 +149,32 @@ public class FieldMap extends GameMap
  		}
  		
  		return false ;
- 	}
+ 	} 	
+
+ 	@Override
+	public void displayItems(DrawingOnPanel DP)
+	{
+
+		Point pos = new Point(500, 190) ;
+		Dimension size = new Dimension(140, 200) ;
+		Point textPos = UtilG.Translate(pos, -size.width / 2 + 5, -size.height / 2) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		Set<Item> itemsAlreadyDisplayed = new HashSet<>() ;
+		
+		DP.DrawRoundRect(pos, Align.center, size, 1, Game.colorPalette[8], Game.colorPalette[8], true);
+		
+		creatures.forEach(creature -> {
+			for (Item item : creature.getBag())
+			{
+				if (itemsAlreadyDisplayed.contains(item)) { continue ;}
+				
+				itemsAlreadyDisplayed.add(item) ;
+				DP.DrawText(textPos, Align.centerLeft, 0, item.getName(), font, Game.colorPalette[9]) ;
+				textPos.y += 10 ;
+			}
+		}) ;
+
+	}
  	
  	public void printItems()
  	{

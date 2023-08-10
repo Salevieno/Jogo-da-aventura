@@ -1136,7 +1136,8 @@ public class Game extends JPanel
 		{
 			player.drawWeapon(player.getPos(), new Scale(1, 1), DP) ;
 		}
-		player.displayState(DP) ;
+//		player.displayState(DP) ;
+		player.getMap().displayItems(DP) ;
 		
 		player.doCurrentAction(DP) ;
 		
@@ -1218,7 +1219,7 @@ public class Game extends JPanel
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno") ;
-    	player.setMap(cityMaps[2]) ;
+    	player.setMap(fieldMaps[2]) ;
     	player.setPos(new Point(400, 221)) ;
 
 //    	player.setLevel(50) ;

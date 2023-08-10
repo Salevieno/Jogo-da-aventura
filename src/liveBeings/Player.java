@@ -574,14 +574,19 @@ public class Player extends LiveBeing
 	}
 
 	private void dig()
-	{
+	{		
 		digCounter.inc() ;
+		
 		if (digCounter.finished())
 		{
 			digCounter.reset() ;
 			
-			List<Item> listItems = new ArrayList<Item>(GameMap.allDiggingItems.keySet()) ;
-			List<Double> listChances = new ArrayList<Double>(GameMap.allDiggingItems.values()) ;
+			setState(LiveBeingStates.idle) ;
+			
+			if (map.getDiggingItems().isEmpty()) { return ;}
+			
+			List<Item> listItems = new ArrayList<Item>(map.getDiggingItems().keySet()) ;
+			List<Double> listChances = new ArrayList<Double>(map.getDiggingItems().values()) ;
 			
 //			System.out.println(rewards);
 //			System.out.println(listItems);
@@ -590,9 +595,8 @@ public class Player extends LiveBeing
 			int itemID = UtilG.randomFromChanceList(listChances) ;
 			bag.Add(listItems.get(itemID), 1) ;
 			obtainItems(Arrays.asList(listItems.get(itemID))) ;
-			
-			setState(LiveBeingStates.idle) ;
 		}
+		
 	}
 	
 	private void tent(DrawingOnPanel DP)
