@@ -43,7 +43,8 @@ public class GameMap
 	public static Image[] CollectibleImage ;
 	public static Image[] GroundImage ;	
 	
-	private static final Image beachGif = UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map2_beach.gif") ;
+	protected static final Image beachGif = UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map2_beach.gif") ;
+	protected static final Image infoWindow = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "MapInfo.png") ;
 	public static final Map<Item, Double> allDiggingItems = new HashMap<>() ;
 
 	static
@@ -441,21 +442,50 @@ public class GameMap
 		});
 	}
 
-	public void displayItems(DrawingOnPanel DP)
+	public void displayInfoWindow(DrawingOnPanel DP)
 	{
 
-		Point pos = new Point(500, 190) ;
-		Dimension size = new Dimension(140, 200) ;
-		Point textPos = UtilG.Translate(pos, -size.width / 2 + 5, -size.height / 2) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-
+		Point pos = new Point(200, 30) ;
+		Dimension size = new Dimension(340, 420) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
+		Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
+		Font titleFont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		
-		DP.DrawRoundRect(pos, Align.center, size, 1, Game.colorPalette[8], Game.colorPalette[8], true);
+		DP.DrawImage(infoWindow, pos, Align.topLeft) ;
+		
+		Point titlePos = UtilG.Translate(pos, size.width / 2 + 5, 13) ;
+		DP.DrawText(titlePos, Align.center, 0, name, titleFont, Game.colorPalette[9]) ;
+		
+		Point diggingItemsPos = UtilG.Translate(pos, 10, 43) ;
+		DP.DrawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Game.colorPalette[9]) ;
+		diggingItemsPos.y += 14 ;
 		for (Item item : diggingItems.keySet())
 		{
-			DP.DrawText(textPos, Align.centerLeft, 0, item.getName(), font, Game.colorPalette[9]) ;
-			textPos.y += 10 ;
+			DP.DrawText(diggingItemsPos, Align.centerLeft, 0, item.getName(), font, Game.colorPalette[9]) ;
+			diggingItemsPos.y += 10 ;
 		}
+		
+		if (this instanceof FieldMap)
+		{
+			FieldMap fm = (FieldMap) this ;
+			
+			Point levelPos = UtilG.Translate(titlePos, 0, 14) ;
+			DP.DrawText(levelPos, Align.center, 0, "Nível " + String.valueOf(fm.getLevel()), largeFont, Game.colorPalette[6]) ;
+			
+			Point allItemsPos = UtilG.Translate(pos, 160, 43) ;
+			DP.DrawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Game.colorPalette[9]) ;
+			allItemsPos.y += 14 ;
+			for (Item item : fm.getItems())
+			{
+				DP.DrawText(allItemsPos, Align.centerLeft, 0, item.getName(), font, Game.colorPalette[9]) ;
+				allItemsPos.y += 10 ;
+			}
+			
+			return ;
+		}
+		
+		Point levelPos = UtilG.Translate(titlePos, 0, 14) ;
+		DP.DrawText(levelPos, Align.center, 0, "Nível 0", largeFont, Game.colorPalette[6]) ;
 
 	}
 	

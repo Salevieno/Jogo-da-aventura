@@ -1137,7 +1137,7 @@ public class Game extends JPanel
 			player.drawWeapon(player.getPos(), new Scale(1, 1), DP) ;
 		}
 //		player.displayState(DP) ;
-		player.getMap().displayItems(DP) ;
+		player.getMap().displayInfoWindow(DP) ;
 		
 		player.doCurrentAction(DP) ;
 		
