@@ -22,6 +22,8 @@ import attributes.PersonalAttributes;
 import components.GameButton;
 import components.IconFunction;
 import graphics.DrawingOnPanel;
+import items.GeneralItem;
+import items.Item;
 import liveBeings.Creature;
 import liveBeings.Genetics;
 import liveBeings.LiveBeingStatus;
@@ -95,7 +97,7 @@ public abstract class PlayerEvolutionSimulation
 		addPetSection() ;
 		
 		addBattleSection() ;
-		
+		simulateWinsUntilLevel99() ;
 	}
 	
 	private static GameButton newButton(Point pos, String text, IconFunction action)
@@ -121,6 +123,7 @@ public abstract class PlayerEvolutionSimulation
 	{
 		addPlayerTrainSection() ;
 		addPlayerLevelUpSection() ;
+		addPlayerWinSection() ;
 	}
 	
 	private static void addPlayerTrainSection()
@@ -142,6 +145,16 @@ public abstract class PlayerEvolutionSimulation
 		namesActions.put("+ level", () -> { playerLevelUp(1) ;}) ;
 		namesActions.put("+ 5 level", () -> { playerLevelUp(5) ;}) ;
 		namesActions.put("+ 10 level", () -> { playerLevelUp(10) ;}) ;
+		
+		addSection(sectionPos, new Point(0, 30), namesActions) ;
+	}
+	
+	private static void addPlayerWinSection()
+	{
+		Point sectionPos = new Point(190, 60 + 10) ;
+		
+		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		namesActions.put("win until 99", () -> { simulateWinsUntilLevel99() ;}) ;
 		
 		addSection(sectionPos, new Point(0, 30), namesActions) ;
 	}
@@ -218,6 +231,14 @@ public abstract class PlayerEvolutionSimulation
 			buttons.add(newButton(buttonPos, key, action)) ;
 			i++ ;
 	    }
+	}
+
+	private static void resetPlayer()
+	{
+		player.getBag().removeGold(player.getBag().getGold()) ;
+		player.setAttPoints(0) ;
+		player.getBag().empty() ;
+		playerResetJob(player.getJob()) ;
 	}
 	
 	private static void playerFullLife()
@@ -393,6 +414,52 @@ public abstract class PlayerEvolutionSimulation
 	{
 		numberFightsRepetition = 100 ;
 	}
+		
+	private static void simulateWinsUntilLevel99()
+	{
+		int totalExpUntilMaxLevel = 0 ;
+		for (int level = 1 ; level <= 100 - 1 ; level += 1)
+		{
+			totalExpUntilMaxLevel += (int) Player.calcExpToLevelUp(level) ;
+		}
+
+		int numberCreatures = Game.getCreatureTypes().length ;
+//		for (int creatureID = 0 ; creatureID <= numberCreatures - 1; creatureID += 1)
+//		{
+//			Creature creature = new Creature(Game.getCreatureTypes()[creatureID]) ;
+//			int itemsValue = 0 ;
+//			for (Item item : creature.getBag())
+//			{
+//				if (item instanceof GeneralItem)
+//				{
+//					itemsValue += item.getPrice() ;
+//				}
+//			}
+//			System.out.println(itemsValue);
+//		}
+		
+		double avrGoldUntilMaxLevel = 0 ;
+		for (int creatureID = 53 ; creatureID <= 54 - 1; creatureID += 1)
+		{
+			Creature creature = new Creature(Game.getCreatureTypes()[creatureID]) ;
+			int numberWinsToMaxLevel = totalExpUntilMaxLevel / creature.getExp().getCurrentValue() + 1 ;
+			int cumGoldUntilMaxLevel = creature.getGold() * numberWinsToMaxLevel ;
+			avrGoldUntilMaxLevel += cumGoldUntilMaxLevel / (double) numberCreatures ;
+			
+			for (int i = 0 ; i <= numberWinsToMaxLevel - 1; i += 1)
+			{
+				player.win(playerOpponent, false) ;
+				checkPlayerWin() ;
+				if (player.shouldLevelUP()) { player.levelUp(null) ;}
+			}
+			
+			System.out.println(creatureID + " " + (player.getBag().calcGenItemsValue()));
+			System.out.println(player.getBag()) ;
+			 
+			resetPlayer() ;
+		}
+		
+	}
 	
 	private static void evolve()
 	{
@@ -425,8 +492,7 @@ public abstract class PlayerEvolutionSimulation
 		incNumberCreatureWins() ;
 		
 	}
-	
-	
+		
 	public static void checkBattleRepeat()
 	{
 		

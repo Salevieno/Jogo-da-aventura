@@ -354,7 +354,7 @@ public class Battle
 		
 		if (!battleIsOver(player, pet, creature)) { return ;}
 		
-		FinishBattle(player, pet, creature, ani[3]) ;
+		FinishBattle(player, pet, creature) ;
 	}
 	
 	public static boolean battleIsOver(Player player, Pet pet, Creature creature)
@@ -373,7 +373,7 @@ public class Battle
 		return true ;
 	}
 	
-	private void FinishBattle(Player player, Pet pet, Creature creature, Animation winAni)
+	private void FinishBattle(Player player, Pet pet, Creature creature)
 	{
 		if (Game.getState().equals(GameStates.simulation))
 		{
@@ -408,7 +408,7 @@ public class Battle
 		{
 			if (player.isAlive())
 			{
-				player.win(creature, winAni) ;
+				player.win(creature, true) ;
 			}
 			player.resetAction() ;
 			player.resetBattleAction() ;

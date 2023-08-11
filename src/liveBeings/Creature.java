@@ -56,9 +56,9 @@ public class Creature extends LiveBeing
 		this.elem = CT.elem;
 		mpCounter = new TimeCounter(0, CT.mpDuration);
 		satiationCounter = new TimeCounter(0, CT.satiationDuration);
-		actionCounter = new TimeCounter(0, CT.moveDuration) ;
+		actionCounter = new TimeCounter(0, CT.numberSteps) ;
 		battleActionCounter = new TimeCounter(0, CT.battleActionDuration) ;
-		this.stepCounter = new TimeCounter(0, CT.moveDuration) ;
+		this.stepCounter = new TimeCounter(0, CT.numberSteps) ;
 		combo = new ArrayList<>() ;
 		
 		dir = Directions.up ;
@@ -189,26 +189,7 @@ public class Creature extends LiveBeing
 		if (0.5 <= Math.random()) { return "player" ;}
 		else { return "pet" ;}
 	}
-	
-	public void Think()
-	{
-			// TODO thinking is acting
-		if (!state.equals(LiveBeingStates.idle)) { return ;}
 		
-		boolean startMoving = UtilG.chance(0.3) ;
-		
-		if (!startMoving) { return ;}
-
-		boolean switchDirection = UtilG.chance(0.5) ;
-		if (switchDirection)
-		{
-			setDir(newMoveDirection(dir)) ;
-		}
-		setState(LiveBeingStates.moving) ;
-		return ;
-		
-	}
-	
 	public void Move(Point PlayerPos, GameMap map)
 	{
 
@@ -245,8 +226,21 @@ public class Creature extends LiveBeing
 	
 	public void act()
 	{
-		Think() ;
+		if (!state.equals(LiveBeingStates.idle)) { return ;}
+		
+		boolean startMoving = UtilG.chance(0.3) ;
+		
+		if (!startMoving) { return ;}
+
+		boolean switchDirection = UtilG.chance(0.5) ;
+		if (switchDirection)
+		{
+			setDir(newMoveDirection(dir)) ;
+		}
+		setState(LiveBeingStates.moving) ;
+		
 		actionCounter.reset() ;
+		return ;
 	}
 	
 	public void fight(String playerMove)

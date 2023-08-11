@@ -296,6 +296,20 @@ public class BagWindow extends GameWindow
 		
 	}
 	
+	public void empty()
+	{
+		pot.clear() ;
+		alch.clear() ;
+		forges.clear() ;
+		petItems.clear() ;
+		foods.clear() ;
+		arrows.clear() ;
+		equips.clear() ;
+		genItems.clear() ;
+		fabItems.clear() ;
+		questItems.clear() ;
+	}
+	
 	public void addGold (int amount) { gold += amount ;}
 	
 	public void removeGold (int amount)
@@ -563,6 +577,66 @@ public class BagWindow extends GameWindow
 		itemsOnWindow = getItemsOnWindow() ;
 		numberItems = (window + 1) * numberSlotMax ;
 		numberWindows = getMenuItems().size() / numberSlotMax ;
+	}
+	
+	public int calcGenItemsValue()
+	{
+		int value = 0 ;
+
+		for (Item item : genItems.keySet())
+		{
+			value += item.getPrice() * genItems.get(item) ;
+		}
+		
+		return value ;
+	}
+	
+	public int calcValue()
+	{
+		int value = 0 ;
+		
+		for (Item item : pot.keySet())
+		{
+			value += item.getPrice() * pot.get(item) ;
+		}
+		for (Item item : alch.keySet())
+		{
+			value += item.getPrice() * alch.get(item) ;
+		}
+		for (Item item : forges.keySet())
+		{
+			value += item.getPrice() * forges.get(item) ;
+		}
+		for (Item item : petItems.keySet())
+		{
+			value += item.getPrice() * petItems.get(item) ;
+		}
+		for (Item item : foods.keySet())
+		{
+			value += item.getPrice() * foods.get(item) ;
+		}
+		for (Item item : arrows.keySet())
+		{
+			value += item.getPrice() * arrows.get(item) ;
+		}
+		for (Item item : equips.keySet())
+		{
+			value += item.getPrice() * equips.get(item) ;
+		}
+		for (Item item : genItems.keySet())
+		{
+			value += item.getPrice() * genItems.get(item) ;
+		}
+		for (Item item : fabItems.keySet())
+		{
+			value += item.getPrice() * fabItems.get(item) ;
+		}
+		for (Item item : questItems.keySet())
+		{
+			value += item.getPrice() * questItems.get(item) ;
+		}
+		
+		return value ;
 	}
 	
 	public void display(Point MousePos, String[] allText, DrawingOnPanel DP)

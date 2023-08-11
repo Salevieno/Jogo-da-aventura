@@ -367,7 +367,7 @@ public class DrawingOnPanel
 			FieldMap fm = (FieldMap) map ;
 			fm.displayCollectibles(this) ;
 		}
-		// TODO tudo está bem
+		map.displayTudoEstaBem(this);
 		DrawTime(sky) ;
 	}
 

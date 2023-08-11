@@ -26,7 +26,7 @@ public class CreatureType
 	protected Elements[] elem ;			// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
 	protected int mpDuration ;			// counts the mp reduction
 	protected int satiationDuration ;	// counts the satiation reduction
-	protected int moveDuration ;		// counts the move
+	protected int numberSteps ;			// counts the steps
 	protected int battleActionDuration ;// counts the battle actions
 	
 	private Genetics genes ;
@@ -52,7 +52,7 @@ public class CreatureType
 			Elements[] elem,
 			int mpDuration,
 			int satiationDuration,
-			int moveDuration,
+			int numberSteps,
 			int battleActionDuration,
 			int stepCounter,
 			MovingAnimations movingAni,
@@ -74,7 +74,7 @@ public class CreatureType
 		this.elem = elem;
 		this.mpDuration = mpDuration;
 		this.satiationDuration = satiationDuration;
-		this.moveDuration = moveDuration;
+		this.numberSteps = numberSteps;
 		this.battleActionDuration = battleActionDuration ;
 //		this.stepCounter = stepCounter;
 		

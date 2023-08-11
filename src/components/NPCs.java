@@ -347,7 +347,6 @@ public class NPCs
 
 	public void drawOptions(Point windowPos, DrawingOnPanel DP)
 	{
-		// TODO transformar choices numa GameWindow
 		if (type.getOptions() == null) { return ;}
 		if (type.getOptions().size() <= menu) { return ;}
 		if (type.getOptions().get(menu) == null) { return ;}

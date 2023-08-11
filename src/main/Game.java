@@ -97,7 +97,6 @@ public class Game extends JPanel
 	// TODO nomes das criaturas
 	// TODO descrição dos itens
 	// TODO no superelemento de fogo, todos os panos na mochila viram panos em chamas
-	// TODO items repetidos: esfera de neve
 	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 
@@ -164,7 +163,7 @@ public class Game extends JPanel
 	public Game() 
 	{
 		DP = new DrawingOnPanel() ;
-    	player = new Player("", "", 2) ;
+    	player = new Player("", "", 1) ;
     	
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -566,13 +565,12 @@ public class Game extends JPanel
 			Elements[] elem = new Elements[] {Elements.valueOf(input.get(ct)[35])} ;
 			int mpDuration = Integer.parseInt(input.get(ct)[49]) ;
 			int satiationDuration = 100 ;
-			int moveDuration = Integer.parseInt(input.get(ct)[50]) ;	// TODO this is the number of steps
+			int numberSteps = Integer.parseInt(input.get(ct)[50]) ;
 			int battleActionDuration = Integer.parseInt(input.get(ct)[51]) ;
 			int stepCounter = 0 ;
 			
-			creatureTypes[ct] = new CreatureType(ct, name, level, size, range, step, elem,
-					mpDuration, satiationDuration, moveDuration, battleActionDuration, stepCounter,
-					moveAni, PA, BA, spells, items, Gold, color[ct], StatusCounter) ;	
+			creatureTypes[ct] = new CreatureType(ct, name, level, size, range, step, elem, mpDuration, satiationDuration,
+					numberSteps, battleActionDuration, stepCounter, moveAni, PA, BA, spells, items, Gold, color[ct], StatusCounter) ;	
 		}
 		return creatureTypes ;
     }
@@ -1234,18 +1232,18 @@ public class Game extends JPanel
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
-    	player.getBag().addGold(50000) ;
+    	//player.getBag().addGold(50000) ;
     	
-    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
     	
 //    	player.getBag().menuUp() ;
 //    	player.getBag().menuUp() ;
@@ -1330,7 +1328,7 @@ public class Game extends JPanel
 	        {
 	        	//loading.displayText(DP) ;
 	        	initialize() ;
-				state = GameStates.running;
+				state = GameStates.simulation;
 				
 //				for (int i = 0 ; i <= 10000 - 1 ; i += 1)
 //				{

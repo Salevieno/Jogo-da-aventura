@@ -112,6 +112,7 @@ public class Player extends LiveBeing
     private Item[] hotItems ;				// items on the hotkeys
 	private Statistics stats ;
     
+	public static final int maxLevel = 99 ;
     public static final Image CollectingMessage = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "CollectingMessage.gif") ;   
     public static final Image collectingGif = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "Collecting.gif") ;
 //    public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "Icon5_tent.png") ;
@@ -351,6 +352,13 @@ public class Player extends LiveBeing
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
 	
 	
+	
+	public void setAttPoints(int attPoints)
+	{
+		this.attPoints = attPoints;
+	}
+
+
 	public static Spell[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpells(), 14) ;}
 	public static Spell[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 34, 49) ;}
 	public static Spell[] getArcherSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 70, 84) ;}
@@ -547,7 +555,7 @@ public class Player extends LiveBeing
 		
 	}
 
-	private void obtainItems(List<Item> itemsObtained)
+	private void obtainItemsAnimation(List<Item> itemsObtained)
 	{		
 		Game.getAnimations()[3].start(300, new Object[] {itemsObtained.toArray(new Item[0])}) ;
 	}
@@ -594,7 +602,7 @@ public class Player extends LiveBeing
 
 			int itemID = UtilG.randomFromChanceList(listChances) ;
 			bag.Add(listItems.get(itemID), 1) ;
-			obtainItems(Arrays.asList(listItems.get(itemID))) ;
+			obtainItemsAnimation(Arrays.asList(listItems.get(itemID))) ;
 		}
 		
 	}
@@ -1211,7 +1219,7 @@ public class Player extends LiveBeing
 			SkillBuffIsActive[12][0] = false ;
 		}*/
 	}
-	public void win(Creature creature, Animation winAnimation)
+	public void win(Creature creature, boolean showAnimation)
 	{		
 		
 		List<Item> itemsObtained = new ArrayList<>() ;
@@ -1220,7 +1228,7 @@ public class Player extends LiveBeing
 			if (!UtilG.chance(0.01 * item.getDropChance())) { continue ;}
 			
 			itemsObtained.add(item) ;
-			bag.Add(item, 1) ;	
+			bag.Add(item, 1) ;
 		}		
 		
 		bag.addGold((int) (creature.getGold() * UtilG.RandomMult(0.1 * goldMultiplier))) ;
@@ -1232,12 +1240,17 @@ public class Player extends LiveBeing
 			quest.checkCompletion(bag) ;
 		}
 		
-		obtainItems(itemsObtained) ;
+		if (showAnimation)
+		{
+			obtainItemsAnimation(itemsObtained) ;
+		}
 		
 	}
 	
 	public void levelUp(Animation attIncAnimation)
 	{
+		if (level == maxLevel) { return ;}
+		
 		double[] attIncrease = calcAttributesIncrease() ;
 		setLevel(level + 1) ;
 		PA.getLife().incMaxValue((int) attIncrease[0]) ;
@@ -1276,10 +1289,15 @@ public class Player extends LiveBeing
 			increase[i] = attributeIncrease[i] ;
 		}
 		
-		increase[attributeIncrease.length] = (double) (10 * (3 * Math.pow(level - 1, 2) + 3 * (level - 1) + 1) - 5) ;
+		increase[attributeIncrease.length] = calcExpToLevelUp(level) ;
 		
 		return increase ;
 	}
+	public static double calcExpToLevelUp(int level)
+	{
+		return 10 * (3 * Math.pow(level - 1, 2) + 3 * (level - 1) + 1) - 5 ;
+	}
+	
 	private void resetPosition()
 	{
 		setMap(Game.getMaps()[job]) ;

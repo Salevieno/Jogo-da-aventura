@@ -63,9 +63,9 @@ public class PlayerAttributesWindow extends AttributesWindow
 	public void updateAttIncButtons(Player player)
 	{
 
-		if (((Player) player).getAttPoints() <= 0) { return ;}
+		if (player.getAttPoints() <= 0) { incAttButtons.values().forEach(button -> button.deactivate()) ; return ;}
 		
-		incAttButtons.values().forEach(button -> button.activate());
+		incAttButtons.values().forEach(button -> button.activate()) ;
 		
 	}
 	

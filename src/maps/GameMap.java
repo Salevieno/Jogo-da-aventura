@@ -21,6 +21,7 @@ import items.GeneralItem;
 import items.Item;
 import liveBeings.Player;
 import main.Game;
+import main.TextCategories;
 import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
@@ -488,6 +489,11 @@ public class GameMap
 		DP.DrawText(levelPos, Align.center, 0, "Nível 0", largeFont, Game.colorPalette[6]) ;
 
 	}
+ 	
+ 	public void displayTudoEstaBem(DrawingOnPanel DP)
+ 	{
+ 		DP.DrawText(new Point(20, 20), Align.topLeft, 0, Game.allText.get(TextCategories.allIsGood)[0], new Font(Game.MainFontName, Font.BOLD, 13), Game.colorPalette[8]) ;
+ 	}
 	
 	@Override
 	public String toString()
