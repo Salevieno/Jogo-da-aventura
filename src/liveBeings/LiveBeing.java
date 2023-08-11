@@ -170,7 +170,7 @@ public abstract class LiveBeing
 	public void setBattleAction(AtkTypes ba) { currentAtkType = ba ;}
 	
 	public boolean isMoving() { return (state.equals(LiveBeingStates.moving)) ;}
-	public boolean canAct() { return actionCounter.finished() ;}	// TODO add states
+	public boolean canAct() { return actionCounter.finished() & (state.equals(LiveBeingStates.idle) | state.equals(LiveBeingStates.fighting)) ;}
 	
 	public void resetAction() { currentAction = null ;}
 	public void resetBattleAction() { currentAtkType = null ;}

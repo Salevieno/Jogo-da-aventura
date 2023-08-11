@@ -44,7 +44,7 @@ public class NPCs
 	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 11) ;
 	public static final Image SpeakingBubble = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeechBubble.png") ;
 	public static final Image ChoicesWindow = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "ChoicesWindow.png") ;
-	// TODO criar mapa para direcionar para o menu apropriado a depender da opção escolhida
+
 	public NPCs (int id, NPCType type, Point pos)
 	{
 		this.id = id ;

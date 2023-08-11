@@ -8,13 +8,14 @@ import javax.sound.sampled.Clip;
 
 import components.Building;
 import components.NPCs;
+import items.Fab;
+import items.GeneralItem;
 import main.Game;
 import utilities.UtilG;
 
 public class CityMap extends GameMap
 {
-	public CityMap(String Name, Continents Continent, int[] Connections, Image image, Clip music,
-			List<Building> buildings, List<NPCs> npcs)
+	public CityMap(String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPCs> npcs)
 	{
 		super(Name, Continent, Connections, image, music, buildings, npcs) ;
 		
@@ -24,6 +25,14 @@ public class CityMap extends GameMap
 			mapElems.add(new MapElements(0, "Knight'sCityWall", new Point(0, 96 - knightsCityWallImage.getHeight(null)), knightsCityWallImage)) ;
 			mapElems.add(new MapElements(0, "Knight'sCityWall", new Point(0, 480 - knightsCityWallImage.getHeight(null)), knightsCityWallImage)) ;
 		}
+		
+		diggingItems.put(Fab.getAll()[0], allDiggingItems.get(Fab.getAll()[0])) ;
+		diggingItems.put(Fab.getAll()[25], allDiggingItems.get(Fab.getAll()[25])) ;
+		diggingItems.put(GeneralItem.getAll()[4], allDiggingItems.get(GeneralItem.getAll()[4])) ;
+		diggingItems.put(GeneralItem.getAll()[25], allDiggingItems.get(GeneralItem.getAll()[25])) ;
+		diggingItems.put(GeneralItem.getAll()[35], allDiggingItems.get(GeneralItem.getAll()[35])) ;
+		diggingItems.put(GeneralItem.getAll()[155], allDiggingItems.get(GeneralItem.getAll()[155])) ;
+		calcDigItemChances() ;
 	}
 
 }

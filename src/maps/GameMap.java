@@ -65,7 +65,7 @@ public class GameMap
 			allDiggingItems.put(GeneralItem.getAll()[genItemIDs[i]], genItemPotentials[i]) ;
 		}
 		
-//		diggingItems.entrySet().forEach(System.out::println);
+//		allDiggingItems.entrySet().forEach(System.out::println);
 	}
 	
 	

@@ -75,7 +75,6 @@ public class FieldMap extends GameMap
 			}
 		}
 		
-		// TODO incluir os digging items para as cidades e mapas especiais
 		for (Item item : allDiggingItems.keySet())
 		{
 			if (!containsItem(item)) { continue ;}
