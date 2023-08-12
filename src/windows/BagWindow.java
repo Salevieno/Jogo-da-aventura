@@ -341,7 +341,7 @@ public class BagWindow extends GameWindow
 			case 9: questItems.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ; break ;
 			default: return null ;
 		}
-		
+
 		return items ;
 	}
 	
@@ -385,7 +385,7 @@ public class BagWindow extends GameWindow
 	}
 	
 	private Map<Item, Integer> removeItemsOutsideWindow(Map<Item, Integer> orderedItems)
-	{
+	{// TODO só funciona se o jogador tiver os itens iniciais
 		List<Item> keySet = getMenuListItems() ;
 		for (Item key : keySet)
 		{

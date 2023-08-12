@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import attributes.AttributeBonus;
 import attributes.BasicAttribute;
@@ -46,11 +47,12 @@ import main.AtkTypes;
 import main.Battle;
 import main.Game;
 import main.TextCategories;
-import maps.CityMap;
 import maps.Collectible;
 import maps.FieldMap;
 import maps.GameMap;
 import maps.GroundTypes;
+import maps.MapElements;
+import maps.TreasureChest;
 import screen.SideBar;
 import utilities.Align;
 import utilities.AttackEffects;
@@ -109,6 +111,7 @@ public class Player extends LiveBeing
 	private Creature closestCreature ;		// creature that is currently closest to the player
     private Creature opponent ;				// creature that is currently in battle with the player
     private Collectible currentCollectible ;
+    private TreasureChest currentChest ;
     private Item[] hotItems ;				// items on the hotkeys
 	private Statistics stats ;
     
@@ -241,6 +244,7 @@ public class Player extends LiveBeing
 		closestCreature = null ;
 	    opponent = null ;
 	    currentCollectible = null ;
+	    currentChest = null ;
 		settings = new SettingsWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "windowSettings.png"), false, true, false, 1, 1) ;
 		hotItems = new Item[3] ;
 		
@@ -371,6 +375,7 @@ public class Player extends LiveBeing
 	private boolean actionIsAMove() { return Arrays.asList(MoveKeys).contains(currentAction) ;}
 	public boolean isInBattle() { return state.equals(LiveBeingStates.fighting) ;}
 	public boolean isCollecting() { return state.equals(LiveBeingStates.collecting) ;}
+	public boolean isOpeningChest() { return state.equals(LiveBeingStates.openingChest) ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	public static boolean setIsFormed(Equip[] EquipID)
 	{
@@ -448,7 +453,6 @@ public class Player extends LiveBeing
 	{
 		collectCounter.reset() ;
         collectingGif.flush() ;
-        state = LiveBeingStates.idle ;
         
         // remove the collectible from the list
 		if (map.isAField())
@@ -469,9 +473,25 @@ public class Player extends LiveBeing
         	removeCollectibleFromMap() ;
         	addCollectibleToBag(currentCollectible, bag) ;
         	trainCollecting(currentCollectible) ;
-        	
+
+            state = LiveBeingStates.idle ;
             currentCollectible = null ;
         }
+    }
+	
+	private void addChestContentToBag(TreasureChest chest, BagWindow bag)
+	{
+		chest.getItemRewards().forEach(item -> bag.Add(item, 1)) ;
+		bag.addGold(chest.getGoldReward()) ;
+	}
+	
+	public void openChest()
+    {
+    	addChestContentToBag(currentChest, bag) ;
+		map.removeMapElem(currentChest) ;
+    	
+        state = LiveBeingStates.idle ;
+        currentChest = null ;
     }
 	
 	public void decAttPoints(int amount) {attPoints += -amount ;}
@@ -551,7 +571,8 @@ public class Player extends LiveBeing
 		
 		if (pet != null) { pet.setPos(newPos) ;}
 		
-		if (newMap instanceof CityMap) { closestCreature = null ; opponent = null ;}
+		closestCreature = null ;
+		opponent = null ;
 		
 	}
 
@@ -867,11 +888,25 @@ public class Player extends LiveBeing
 	
 	public void meet(Point mousePos, DrawingOnPanel DP)
 	{
-		if (state == LiveBeingStates.collecting) { return ;}
+		if (state == LiveBeingStates.collecting | isInBattle()) { return ;}
+
+		// meeting with treasure chests
+		List<MapElements> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).collect(Collectors.toList()) ;
+		for (MapElements chest : chests)
+		{
+
+			if (!isInCloseRange(chest.getPos())) { continue ;}
+
+			setState(LiveBeingStates.openingChest);
+			currentChest = (TreasureChest) chest ;
+			break ;
+			
+		}
 		
 		if (map.isAField())
 		{
 			FieldMap fm = (FieldMap) map ;
+			
 			
 			// meeting with collectibles
 			List<Collectible> collectibles = fm.getCollectibles() ;
@@ -890,42 +925,18 @@ public class Player extends LiveBeing
 				
 			}
 			
-//			collectibles.forEach(collectible -> {
-//				double distx = Math.abs(pos.x - collectible.getPos().x) ;
-//				double disty = Math.abs(pos.y - collectible.getPos().y) ;
-//				if (distx <= 0.5*size.width & disty <= 0.5*size.height)
-//				{
-//					setState(LiveBeingStates.collecting);
-//					collect(collectible, DP) ;
-//				}
-//			});
-
-			// meeting with chests
-			// TODO meet with chests
-//			String groundType = currentMap.groundTypeAtPoint(pos) ;
-//			if (groundType != null)
-//			{
-//				if (groundType.contains("Chest"))
-//				{
-//					//return new int[] {3, Integer.parseInt(groundType.substring(groundType.length() - 1))} ;
-//				}
-//			}
-			
 			// meeting with creatures
-			if (!isInBattle())
+			List<Creature> creaturesInMap = fm.getCreatures() ;
+			for (Creature creature : creaturesInMap)
 			{
-				List<Creature> creaturesInMap = fm.getCreatures() ;
-				for (Creature creature : creaturesInMap)
+				double distx = UtilG.dist1D(pos.x, creature.getPos().x) ;
+				double disty = UtilG.dist1D(pos.y - size.height / 2, creature.getPos().y) ;
+				if (distx <= (size.width + creature.getSize().width) / 2 & disty <= (size.height + creature.getSize().height) / 2) //  & !ani.isActive(10) & !ani.isActive(19)
 				{
-					double distx = UtilG.dist1D(pos.x, creature.getPos().x) ;
-					double disty = UtilG.dist1D(pos.y - size.height / 2, creature.getPos().y) ;
-					if (distx <= (size.width + creature.getSize().width) / 2 & disty <= (size.height + creature.getSize().height) / 2) //  & !ani.isActive(10) & !ani.isActive(19)
-					{
-						opponent = creature ;
-						opponent.setFollow(true) ;
-						setState(LiveBeingStates.fighting) ;
-						bestiary.addDiscoveredCreature(opponent.getType()) ;
-					}
+					opponent = creature ;
+					opponent.setFollow(true) ;
+					setState(LiveBeingStates.fighting) ;
+					bestiary.addDiscoveredCreature(opponent.getType()) ;
 				}
 			}
 		}	

@@ -118,7 +118,8 @@ public class GameMap
 	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
 	
 	public void addGroundType (GroundType newGroundType) { groundTypes.add(newGroundType) ;}
-		
+	public void removeMapElem (MapElements mapElem) { mapElems.remove(mapElem) ;}
+	
  	public void initializeGroundTypes(int SkyHeight, Dimension screenDim)
  	{
  		groundTypes = new ArrayList<>() ;

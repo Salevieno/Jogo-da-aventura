@@ -28,6 +28,7 @@ public class Collectible extends Item
 	{
 		super(itemID, Game.getAllItems()[itemID].getName(), Game.getAllItems()[itemID].getDescription(), Game.getAllItems()[itemID].getImage(), Game.getAllItems()[itemID].getPrice(), Game.getAllItems()[itemID].getDropChance()) ;
 //		name = CollectibleNames[type] ;
+		this.itemID = itemID ;
 		this.level = level ;
 		this.pos = pos ;
 		
@@ -60,9 +61,8 @@ public class Collectible extends Item
 	@Override
 	public String toString()
 	{
-		return "Collectible [level=" + level + ", pos=" + pos + ", counter=" + counter + ", name=" + name
-				+ ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance="
-				+ dropChance + "]";
+//		return "Collectible [level=" + level + ", pos=" + pos + ", counter=" + counter + ", name=" + name + ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance=" + dropChance + "]";
+		return "Collectible," + getItem().getName() ;
 	}
 	
 }

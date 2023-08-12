@@ -9,6 +9,7 @@ public enum LiveBeingStates
 	fishing,
 	idle,
 	moving,
+	openingChest,
 	sleeping
 	
 }
