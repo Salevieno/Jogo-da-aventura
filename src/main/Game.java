@@ -163,7 +163,7 @@ public class Game extends JPanel
 	public Game() 
 	{
 		DP = new DrawingOnPanel() ;
-    	player = new Player("", "", 1) ;
+    	player = new Player("", "", 2) ;
     	
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -754,8 +754,10 @@ public class Game extends JPanel
     private SpecialMap[] initializeSpecialMaps()
     {
     	List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;
-		String path = ImagesPath + "\\Maps\\";
 		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
+		Image treasureChestsImage = UtilG.loadImage(ImagesPath + "\\MapElements\\" + "MapElem15_Chest.png") ;
+		Clip music = Music.musicFileToClip(new File(MusicPath + "12-Special.wav").getAbsoluteFile()) ;
+		String path = ImagesPath + "\\Maps\\";
 		
 		for (int id = 0 ; id <= specialMaps.length - 1 ; id += 1)
 		{
@@ -772,11 +774,9 @@ public class Game extends JPanel
 											Integer.parseInt(input.get(id)[9])
 											} ;
 			Image image = UtilG.loadImage(path + "MapSpecial" + String.valueOf(id) + ".png") ;
-			Clip music = Music.musicFileToClip(new File(MusicPath + "12-Special.wav").getAbsoluteFile()) ;
 			
 			// adding treasure chests
 			List<TreasureChest> treasureChests = new ArrayList<>() ;
-			Image treasureChestsImage = UtilG.loadImage(ImagesPath + "\\MapElements\\" + "MapElem15_Chest.png") ;
 			for (int chest = 0 ; chest <= 5 - 1; chest += 1)
 			{
 				Point pos = new Point((int) (Double.parseDouble(input.get(id)[10 + 13 * chest]) * screen.getSize().width), (int) (Double.parseDouble(input.get(id)[11 + 13 * chest]) * screen.getSize().height)) ;
@@ -792,6 +792,7 @@ public class Game extends JPanel
 				int goldReward = Integer.parseInt(input.get(id)[22 + 13 * chest]) ;
 				treasureChests.add(new TreasureChest(chest, pos, treasureChestsImage, itemRewards, goldReward)) ;
 			}
+			
 			specialMaps[id] = new SpecialMap(name, continent, connections, image, music, treasureChests) ;
 		}
 		
@@ -805,7 +806,11 @@ public class Game extends JPanel
 		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
 		System.arraycopy(specialMaps, 0, allMaps, cityMaps.length + fieldMaps.length, specialMaps.length) ;
-		
+
+		for (int i = 0 ; i <= allMaps.length - 1; i += 1)
+		{
+			System.out.println(i + " " + allMaps[i]);
+		}
 		return allMaps ;
 		
     }
@@ -1044,7 +1049,6 @@ public class Game extends JPanel
 			
 	private void runGame(DrawingOnPanel DP)
 	{
-		
 		// increment and activate counters
 		incrementCounters() ;
 		activateCounters() ;

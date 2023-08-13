@@ -647,87 +647,64 @@ public class Player extends LiveBeing
 		switch (actionId)
 		{
 			case 4:
-			{
 				focusWindow = bag ;
 				bag.open() ;
 				
 				return ;
-			}
 			case 5:
-			{
 				focusWindow = attWindow ;
 				((PlayerAttributesWindow) attWindow).updateAttIncButtons(this) ;
 				attWindow.open() ;
 				
 				return ;
-			}
 			case 6:
-			{
 				if (!bag.contains(Game.getAllItems()[1340]) | !isTouching(GroundTypes.water)) { return ;}
-				
 				fish() ;
 				
 				return ;
-			}
 			case 7:
-			{
-				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
-			  
+//				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
 				focusWindow = mapWindow ;
 				mapWindow.open() ;
 				
 				return ;
-			}
 			case 8:
-			{
 				if (pet == null) { return ;}
-				
 				focusWindow = pet.getAttWindow() ;
 				pet.getAttWindow().open() ;
 				
 				return ;
-			}
 			case 9:
-			{
 				focusWindow = questWindow ;
 				questWindow.open() ;
 				
 				return ;
-			}
 			case 10:
-			{
 				focusWindow = hintsWindow ;
 				hintsWindow.open() ;
 				
 				return ;
-			}
 			case 11:
-			{
 				if (!questSkills.get(QuestSkills.ride)) { return ;}
 				
 				activateRide() ;
 				
 				return ;
-			}
 			case 12:
-			{
 				if (isInBattle()) { return ;}
 				
 				TentGif.start() ;
 				setState(LiveBeingStates.sleeping) ;
 				
 				return ;
-			}
 			case 13: setState(LiveBeingStates.digging) ; return ;
 			case 14:
-			{
 				if (!questSkills.get(QuestSkills.bestiary)) { return ;}
 				
 				focusWindow = bestiary ;
 				bestiary.open() ;
 				
 				return ;
-			}
 			default: return ;
 		}
 		

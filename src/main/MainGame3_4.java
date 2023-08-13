@@ -36,7 +36,7 @@ public class MainGame3_4 extends JFrame implements ActionListener
         setLocation(500, 200) ;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         setVisible(true) ;
-        timer = new Timer(1, this) ;			// timer of the game, first number = frame duration
+        timer = new Timer(10, this) ;			// timer of the game, first number = frame duration
 		timer.start() ;							// Game will start checking for keyboard events every "timer" miliseconds
 		previousState = GameStates.opening ;
         add(new Game()) ;				// adding game panel on the JFrame
