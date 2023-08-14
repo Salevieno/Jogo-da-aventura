@@ -489,7 +489,12 @@ public class Player extends LiveBeing
     {
     	addChestContentToBag(currentChest, bag) ;
 		map.removeMapElem(currentChest) ;
-		// TODO include gold animation
+		
+		if (0 < currentChest.getGoldReward())
+		{
+			obtainGoldAnimation(currentChest.getGoldReward()) ;
+		}
+		
 		if (!currentChest.getItemRewards().isEmpty())
 		{
 			obtainItemsAnimation(currentChest.getItemRewards()) ;
@@ -586,6 +591,11 @@ public class Player extends LiveBeing
 		Game.getAnimations()[3].start(300, new Object[] {itemsObtained.toArray(new Item[0])}) ;
 	}
 
+	private void obtainGoldAnimation(int amount)
+	{
+		Game.getAnimations()[10].start(200, new Object[] {amount}) ;
+	}
+	
 	public void engageInFight(Creature Opponent)
 	{
 		opponent = Opponent ;

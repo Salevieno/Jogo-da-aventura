@@ -265,7 +265,7 @@ public class Game extends JPanel
 	
 	private static void initializeAnimations()
 	{
-		animations = new Animation[10] ;
+		animations = new Animation[11] ;
 		for (int i = 0; i <= animations.length - 1; i += 1)
 		{
 			animations[i] = new Animation() ;
@@ -355,6 +355,10 @@ public class Game extends JPanel
 				Player.FishingGif.resetTimeCounter() ;
 			}
 			
+		}) ;
+		animations[10].setDisplayFunction((vars, DP) -> {		
+			int goldObtained = (int) vars[0] ;
+			DP.gainGoldAnimation(animations[10].getCounter(), goldObtained) ;
 		}) ;
 	}
 	

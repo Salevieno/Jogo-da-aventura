@@ -478,6 +478,23 @@ public class DrawingOnPanel
 			}
 		}
 	}
+
+	public void gainGoldAnimation(TimeCounter counter, int goldObtained)
+	{
+		Point pos = new Point((int)(0.45 * screenSize.width), (int)(0.6 * screenSize.height)) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		Color titleColor = Game.colorPalette[3] ;
+
+		Point textPos = UtilG.Translate(pos, 5, font.getSize() + 5) ;
+		DrawText(textPos, Align.centerLeft, stdAngle, "+", font, titleColor) ;
+		
+		Point coinPos = UtilG.Translate(pos, 15, font.getSize() + 5) ;
+		DrawImage(Player.CoinIcon, coinPos, new Scale(1, 1), Align.centerLeft) ;
+		
+		Point amountPos = UtilG.Translate(pos, 35, font.getSize() + 5) ;
+		DrawText(amountPos, Align.centerLeft, stdAngle, String.valueOf(goldObtained), font, titleColor) ;
+		
+	}
 	
 	public void levelUpAnimation(TimeCounter counter, double[] AttributeIncrease, int playerLevel, Color textColor)
 	{
