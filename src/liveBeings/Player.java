@@ -489,6 +489,11 @@ public class Player extends LiveBeing
     {
     	addChestContentToBag(currentChest, bag) ;
 		map.removeMapElem(currentChest) ;
+		// TODO include gold animation
+		if (!currentChest.getItemRewards().isEmpty())
+		{
+			obtainItemsAnimation(currentChest.getItemRewards()) ;
+		}
     	
         state = LiveBeingStates.idle ;
         currentChest = null ;

@@ -792,7 +792,6 @@ public class Game extends JPanel
 				int goldReward = Integer.parseInt(input.get(id)[22 + 13 * chest]) ;
 				treasureChests.add(new TreasureChest(chest, pos, treasureChestsImage, itemRewards, goldReward)) ;
 			}
-			
 			specialMaps[id] = new SpecialMap(name, continent, connections, image, music, treasureChests) ;
 		}
 		
@@ -807,10 +806,6 @@ public class Game extends JPanel
 		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
 		System.arraycopy(specialMaps, 0, allMaps, cityMaps.length + fieldMaps.length, specialMaps.length) ;
 
-		for (int i = 0 ; i <= allMaps.length - 1; i += 1)
-		{
-			System.out.println(i + " " + allMaps[i]);
-		}
 		return allMaps ;
 		
     }

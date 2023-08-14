@@ -385,13 +385,13 @@ public class BagWindow extends GameWindow
 	}
 	
 	private Map<Item, Integer> removeItemsOutsideWindow(Map<Item, Integer> orderedItems)
-	{// TODO só funciona se o jogador tiver os itens iniciais
+	{
 		List<Item> keySet = getMenuListItems() ;
-		for (Item key : keySet)
+		for (int i = 0 ; i <= keySet.size() - 1; i += 1)
 		{
-			if ((window + 1) * numberSlotMax <= key.getId() | key.getId() <= window * numberSlotMax - 1)
+			if ((window + 1) * numberSlotMax <= i | i <= window * numberSlotMax - 1)
 			{
-				orderedItems.remove(key) ;
+				orderedItems.remove(keySet.get(i)) ;
 			}
 		}
 		
