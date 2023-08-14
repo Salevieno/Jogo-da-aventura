@@ -666,95 +666,186 @@ public class Game extends JPanel
     
     private FieldMap[] initializeFieldMaps()
     {
-    	List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsField.csv") ;
+		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "craftRecipes.json") ;
+    	FieldMap[] fieldMaps = new FieldMap[input.size()] ;
     	String path = ImagesPath + "\\Maps\\";
-    	FieldMap[] fieldMap = new FieldMap[input.size()] ;
-		
+
     	int mod = 0 ;
-		for (int id = 0 ; id <= fieldMap.length - 1 ; id += 1)
+		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
 		{
 			int mapID = id + cityMaps.length ;
 			
-			String name = input.get(id)[0] ;
-			
 			if (id == 34 | id == 54) { mod += 1 ;}
 			
-			Continents continent = Continents.getAll()[Integer.parseInt(input.get(id)[1])] ;
-			int collectibleLevel = Integer.parseInt(input.get(id)[2]) ;
-			int berryDelay = Integer.parseInt(input.get(id)[3]) ;
-			int herbDelay = Integer.parseInt(input.get(id)[4]) ;
-			int woodDelay = Integer.parseInt(input.get(id)[5]) ;
-			int metalDelay = Integer.parseInt(input.get(id)[6]) ;
-			int[] collectiblesDelay = new int[] {berryDelay, herbDelay, woodDelay, metalDelay} ;
-			int[] connections = new int[] {
-											Integer.parseInt(input.get(id)[7]),
-											Integer.parseInt(input.get(id)[8]),
-											Integer.parseInt(input.get(id)[9]),
-											Integer.parseInt(input.get(id)[10]),
-											Integer.parseInt(input.get(id)[11]),
-											Integer.parseInt(input.get(id)[12]),
-											Integer.parseInt(input.get(id)[13]),
-											Integer.parseInt(input.get(id)[14])
-											} ;
-			int[] creatureIDs = new int[] {
-											Integer.parseInt(input.get(id)[15]),
-											Integer.parseInt(input.get(id)[16]),
-											Integer.parseInt(input.get(id)[17]),
-											Integer.parseInt(input.get(id)[18]),
-											Integer.parseInt(input.get(id)[19]),
-											Integer.parseInt(input.get(id)[20]),
-											Integer.parseInt(input.get(id)[21]),
-											Integer.parseInt(input.get(id)[22]),
-											Integer.parseInt(input.get(id)[23]),
-											Integer.parseInt(input.get(id)[24])
-											} ;
 			
-			List<NPCs> npcs = new ArrayList<>() ;
-			if (26 <= input.get(id).length)
-			{				
-				NPCJobs npcJob = NPCJobs.valueOf(input.get(id)[25]) ;
-				NPCType NPCType = null ;
-				for (NPCType type : NPCTypes)
-				{
-					if (!npcJob.equals(type.getJob())) { continue ;}
-					
-					NPCType = type ;
-				}
-				
-				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[26])) ;
-				int NPCPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[27])) ;
-				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
-				npcs.add(new NPCs(0, NPCType, NPCPos)) ;			
-			}
-			if (29 <= input.get(id).length)
-			{				
-				String npcJob = input.get(id)[25] ;
-				NPCType NPCType = null ;
-				for (int j = 0 ; j <= getNPCTypes().length - 1 ; j += 1)
-				{
-					if (npcJob.equals(getNPCTypes()[j].getJob().toString()))
-					{
-						NPCType = getNPCTypes()[j] ;
-					}
-				}
-				
-				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29])) ;
-				int NPCPosY = (int) (sky.height + screen.getSize().height * Double.parseDouble(input.get(id)[30])) ;
-				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
-				npcs.add(new NPCs(0, NPCType, NPCPos)) ;			
-			}
+			JSONObject map = (JSONObject) input.get(id) ;
+			
+			String name = (String) map.get("Name") ;
+			Continents continent = Continents.getAll()[(int) map.get("Continent")] ;
+			JSONObject connectionIDs = (JSONObject) map.get("Connections") ;
+			int[] connections = new int[8] ;
+			connections[0] = (int) connectionIDs.get("topLeft") ;
+			connections[1] = (int) connectionIDs.get("leftTop") ;
+			connections[2] = (int) connectionIDs.get("leftBottom") ;
+			connections[3] = (int) connectionIDs.get("bottomLeft") ;
+			connections[4] = (int) connectionIDs.get("bottomRight") ;
+			connections[5] = (int) connectionIDs.get("rightBottom") ;
+			connections[6] = (int) connectionIDs.get("rightTop") ;
+			connections[7] = (int) connectionIDs.get("topRight") ;
 			
 			Image image = UtilG.loadImage(path + "Map" + String.valueOf(mapID + mod) + ".png") ;
 			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
 
-			fieldMap[id] = new FieldMap(name, continent, connections, image, music, collectibleLevel, collectiblesDelay, creatureIDs, npcs) ;
-//			if (continent.equals(Continents.forest))
-//				fieldMap[id].printItems() ;
+			JSONObject collectibles = (JSONObject) map.get("Collectibles") ;
+			int collectibleLevel = (int) collectibles.get("level") ;
+			int[] collectiblesDelay = new int[4] ;
+			collectiblesDelay[0] = (int) collectibles.get("berryDelay") ;
+			collectiblesDelay[1] = (int) collectibles.get("herbDelay") ;
+			collectiblesDelay[2] = (int) collectibles.get("woodDelay") ;
+			collectiblesDelay[3] = (int) collectibles.get("metalDelay") ;
+			
+			int[] creatureIDs = (int[]) map.get("Collectibles") ;
+			JSONArray listNPCs = (JSONArray) map.get("Collectibles") ;
+			List<NPCs> npcs = new ArrayList<>() ;
+			
+//			if (26 <= input.get(id).length)
+//				{				
+//					NPCJobs npcJob = NPCJobs.valueOf(input.get(id)[25]) ;
+//					NPCType NPCType = null ;
+//					for (NPCType type : NPCTypes)
+//					{
+//						if (!npcJob.equals(type.getJob())) { continue ;}
+//						
+//						NPCType = type ;
+//					}
+//					
+//					int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[26])) ;
+//					int NPCPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[27])) ;
+//					Point NPCPos = new Point(NPCPosX, NPCPosY) ;
+//					npcs.add(new NPCs(0, NPCType, NPCPos)) ;			
+//				}
+//				if (29 <= input.get(id).length)
+//				{				
+//					String npcJob = input.get(id)[25] ;
+//					NPCType NPCType = null ;
+//					for (int j = 0 ; j <= getNPCTypes().length - 1 ; j += 1)
+//					{
+//						if (npcJob.equals(getNPCTypes()[j].getJob().toString()))
+//						{
+//							NPCType = getNPCTypes()[j] ;
+//						}
+//					}
+//					
+//					int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29])) ;
+//					int NPCPosY = (int) (sky.height + screen.getSize().height * Double.parseDouble(input.get(id)[30])) ;
+//					Point NPCPos = new Point(NPCPosX, NPCPosY) ;
+//					npcs.add(new NPCs(0, NPCType, NPCPos)) ;			
+//				}
+			
+			for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
+			{
+				JSONObject npc = (JSONObject) listNPCs.get(i) ;
+				Point npcPos = new Point((int) ((JSONObject) npc.get("pos")).get("x"), (int) ((JSONObject) npc.get("pos")).get("y")) ;
+				npcs.add(new NPCs(i, null, npcPos)) ;
+			}
+			
+			fieldMaps[id] = new FieldMap(name, continent, connections, image, music, collectibleLevel, collectiblesDelay, creatureIDs, npcs) ;
 		}
-		
-		return fieldMap ;
+
+		return fieldMaps ;    	
     }
     
+//    private FieldMap[] initializeFieldMaps()
+//    {
+//    	List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsField.csv") ;
+//    	String path = ImagesPath + "\\Maps\\";
+//    	FieldMap[] fieldMap = new FieldMap[input.size()] ;
+//		
+//    	int mod = 0 ;
+//		for (int id = 0 ; id <= fieldMap.length - 1 ; id += 1)
+//		{
+//			int mapID = id + cityMaps.length ;
+//			
+//			String name = input.get(id)[0] ;
+//			
+//			if (id == 34 | id == 54) { mod += 1 ;}
+//			
+//			Continents continent = Continents.getAll()[Integer.parseInt(input.get(id)[1])] ;
+//			int collectibleLevel = Integer.parseInt(input.get(id)[2]) ;
+//			int berryDelay = Integer.parseInt(input.get(id)[3]) ;
+//			int herbDelay = Integer.parseInt(input.get(id)[4]) ;
+//			int woodDelay = Integer.parseInt(input.get(id)[5]) ;
+//			int metalDelay = Integer.parseInt(input.get(id)[6]) ;
+//			int[] collectiblesDelay = new int[] {berryDelay, herbDelay, woodDelay, metalDelay} ;
+//			int[] connections = new int[] {
+//											Integer.parseInt(input.get(id)[7]),
+//											Integer.parseInt(input.get(id)[8]),
+//											Integer.parseInt(input.get(id)[9]),
+//											Integer.parseInt(input.get(id)[10]),
+//											Integer.parseInt(input.get(id)[11]),
+//											Integer.parseInt(input.get(id)[12]),
+//											Integer.parseInt(input.get(id)[13]),
+//											Integer.parseInt(input.get(id)[14])
+//											} ;
+//			int[] creatureIDs = new int[] {
+//											Integer.parseInt(input.get(id)[15]),
+//											Integer.parseInt(input.get(id)[16]),
+//											Integer.parseInt(input.get(id)[17]),
+//											Integer.parseInt(input.get(id)[18]),
+//											Integer.parseInt(input.get(id)[19]),
+//											Integer.parseInt(input.get(id)[20]),
+//											Integer.parseInt(input.get(id)[21]),
+//											Integer.parseInt(input.get(id)[22]),
+//											Integer.parseInt(input.get(id)[23]),
+//											Integer.parseInt(input.get(id)[24])
+//											} ;
+//			
+//			List<NPCs> npcs = new ArrayList<>() ;
+//			if (26 <= input.get(id).length)
+//			{				
+//				NPCJobs npcJob = NPCJobs.valueOf(input.get(id)[25]) ;
+//				NPCType NPCType = null ;
+//				for (NPCType type : NPCTypes)
+//				{
+//					if (!npcJob.equals(type.getJob())) { continue ;}
+//					
+//					NPCType = type ;
+//				}
+//				
+//				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[26])) ;
+//				int NPCPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[27])) ;
+//				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
+//				npcs.add(new NPCs(0, NPCType, NPCPos)) ;			
+//			}
+//			if (29 <= input.get(id).length)
+//			{				
+//				String npcJob = input.get(id)[25] ;
+//				NPCType NPCType = null ;
+//				for (int j = 0 ; j <= getNPCTypes().length - 1 ; j += 1)
+//				{
+//					if (npcJob.equals(getNPCTypes()[j].getJob().toString()))
+//					{
+//						NPCType = getNPCTypes()[j] ;
+//					}
+//				}
+//				
+//				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29])) ;
+//				int NPCPosY = (int) (sky.height + screen.getSize().height * Double.parseDouble(input.get(id)[30])) ;
+//				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
+//				npcs.add(new NPCs(0, NPCType, NPCPos)) ;			
+//			}
+//			
+//			Image image = UtilG.loadImage(path + "Map" + String.valueOf(mapID + mod) + ".png") ;
+//			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
+//
+//			fieldMap[id] = new FieldMap(name, continent, connections, image, music, collectibleLevel, collectiblesDelay, creatureIDs, npcs) ;
+////			if (continent.equals(Continents.forest))
+////				fieldMap[id].printItems() ;
+//		}
+//		
+//		return fieldMap ;
+//    }
+//    
     private SpecialMap[] initializeSpecialMaps()
     {
     	List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;

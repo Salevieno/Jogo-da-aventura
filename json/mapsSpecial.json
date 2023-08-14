@@ -1,0 +1,28 @@
+[
+  {
+    "Name": "Cave 10",
+    "Continent": 1,
+    "Connections": {"topLeft": -1, "leftTop": 37, "leftBottom": 38, "bottomLeft": -1, "bottomRight": -1, "rightBottom": -1, "rightTop": -1, "topRight": -1},
+    "Treasure chests":
+    [
+      {"pos": {"x": 0.56, "y": 0.78}, "rewards": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1], "gold": 2000},
+      {"pos": {"x": 0.65, "y": 0.19}, "rewards": [455, -1, -1, -1, -1, -1, -1, -1, -1, -1], "gold": 0},
+      {"pos": {"x": 0.32, "y": 0.32}, "rewards": [456, -1, -1, -1, -1, -1, -1, -1, -1, -1], "gold": 0},
+      {"pos": {"x": 0.64, "y": 0.48}, "rewards": [457, -1, -1, -1, -1, -1, -1, -1, -1, -1], "gold": 0},
+      {"pos": {"x": 0.74, "y": 0.15}, "rewards": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1], "gold": 4000}
+    ]
+  },
+  {
+    "Name": "Secret island 1",
+    "Continent": 5,
+    "Connections": {"topLeft": 66, "leftTop": -1, "leftBottom": -1, "bottomLeft": -1, "bottomRight": -1, "rightBottom": -1, "rightTop": -1, "topRight": 66},
+    "Treasure chests":
+    [
+      {"pos": {"x": 0.40, "y": 0.50}, "rewards": [134, 134, 134, 134, 134, 135, 135, 135, 135, 135], "gold": 0},
+      {"pos": {"x": 0.60, "y": 0.50}, "rewards": [1346, 1348, 1349, 1350, 1351, -1, -1, -1, -1, -1], "gold": 0},
+      {"pos": {"x": 0.30, "y": 0.60}, "rewards": [456, -1, -1, -1, -1, -1, -1, -1, -1, -1], "gold": 0},
+      {"pos": {"x": 0.80, "y": 0.20}, "rewards": [457, -1, -1, -1, -1, -1, -1, -1, -1, -1], "gold": 0},
+      {"pos": {"x": 0.43, "y": 0.80}, "rewards": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1], "gold": 4000}
+    ]
+  }
+]

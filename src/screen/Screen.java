@@ -29,4 +29,9 @@ public class Screen
 	{
 		return (borders[0] < pos.x & borders[1] < pos.y & pos.x < borders[2] & pos.y < borders[3]) ;
 	}
+	
+	public Point getPoint(double x, double y)
+	{
+		return new Point((int)(x * size.width), (int)(y * size.height)) ;
+	}
 }

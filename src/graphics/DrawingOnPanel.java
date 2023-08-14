@@ -457,7 +457,7 @@ public class DrawingOnPanel
 
 	public void winAnimation(TimeCounter counter, Item[] items)
 	{
-		Point pos = new Point((int)(0.45 * screenSize.width), (int)(0.2 * screenSize.height)) ;
+		Point pos = Game.getScreen().getPoint(0.45, 0.2) ;
 		Scale scale = new Scale(1, 1) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Color titleColor = Game.colorPalette[5] ;
@@ -481,17 +481,17 @@ public class DrawingOnPanel
 
 	public void gainGoldAnimation(TimeCounter counter, int goldObtained)
 	{
-		Point pos = new Point((int)(0.45 * screenSize.width), (int)(0.6 * screenSize.height)) ;
+		Point pos = Game.getScreen().getPoint(0.45, 0.6) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Color titleColor = Game.colorPalette[3] ;
 
-		Point textPos = UtilG.Translate(pos, 5, font.getSize() + 5) ;
+		Point textPos = UtilG.Translate(pos, 5, 0) ;
 		DrawText(textPos, Align.centerLeft, stdAngle, "+", font, titleColor) ;
 		
-		Point coinPos = UtilG.Translate(pos, 15, font.getSize() + 5) ;
+		Point coinPos = UtilG.Translate(pos, 15, 0) ;
 		DrawImage(Player.CoinIcon, coinPos, new Scale(1, 1), Align.centerLeft) ;
 		
-		Point amountPos = UtilG.Translate(pos, 35, font.getSize() + 5) ;
+		Point amountPos = UtilG.Translate(pos, 35, 0) ;
 		DrawText(amountPos, Align.centerLeft, stdAngle, String.valueOf(goldObtained), font, titleColor) ;
 		
 	}
@@ -499,7 +499,7 @@ public class DrawingOnPanel
 	public void levelUpAnimation(TimeCounter counter, double[] AttributeIncrease, int playerLevel, Color textColor)
 	{
 
-		Point pos = new Point((int)(0.45 * screenSize.width), (int)(0.2 * screenSize.height)) ;
+		Point pos = Game.getScreen().getPoint(0.45, 0.2) ;
 		Scale scale = new Scale(1, 1) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String[] attText = Game.allText.get(TextCategories.attributes) ;
