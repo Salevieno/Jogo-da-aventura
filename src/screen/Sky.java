@@ -14,14 +14,16 @@ import utilities.UtilG;
 public class Sky 
 {
 	public TimeCounter dayTime ;
-	public int height ;
+//	public int height ;
 	private SkyComponent[] Cloud;
 	private SkyComponent[] Star ;
+	
+	public static final int height = (int)(0.2 * Game.getScreen().getSize().height) ;
 	
 	public Sky ()
 	{
 		dayTime = new TimeCounter(Game.DayDuration / 2, Game.DayDuration) ;
-		height = (int)(0.2 * Game.getScreen().getSize().height) ;
+		
 		String path = Game.ImagesPath  + "\\Sky\\";
     	
     	// initialize clouds

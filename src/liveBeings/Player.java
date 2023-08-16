@@ -1088,7 +1088,7 @@ public class Player extends LiveBeing
 		}
 		if (mapWindow.isOpen())
 		{
-			mapWindow.display(map, DP) ;
+			mapWindow.display(pos, map, DP) ;
 		}		
 		if (questWindow.isOpen())
 		{

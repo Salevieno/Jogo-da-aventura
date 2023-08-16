@@ -309,7 +309,7 @@ public class GameMap
 
 		for (int i = 0 ; i <= 10 - 1 ; i += 1)
 		{
-			volcanoMaps[i] = allMaps[i + 45] ;
+			volcanoMaps[i] = allMaps[i + 44] ;
 		}
 		
 		return volcanoMaps ;

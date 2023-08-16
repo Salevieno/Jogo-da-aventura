@@ -23,7 +23,7 @@ public class SideBar
 	private Set<GameButton> buttons ;
 	
 	private Point barPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height);	
-	private Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
+	public static final Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
 		
 	public SideBar(Image playerImage, Image petImage)
 	{

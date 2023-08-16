@@ -1133,7 +1133,7 @@ public class Game extends JPanel
 		if (!player.getMap().IsACity()) { player.setClosestCreature(player.ClosestCreatureInRange()) ;}
 		
 		// check if the player met something
-		if (!player.isInBattle()) { player.meet(mousePos, DP) ;}
+		//if (!player.isInBattle()) { player.meet(mousePos, DP) ;}
 		
 		
 		// if the player is in battle, run battle

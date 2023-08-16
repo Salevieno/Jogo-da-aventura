@@ -192,7 +192,7 @@
     "NPCs": []
   },
   {
-    "Name": "Forest 26",
+    "Name": "Forest 25",
     "Continent": 0,
     "Collectibles": {"level": 2, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": -1, "leftTop": 28, "leftBottom": 28, "bottomLeft": 27, "bottomRight": 27, "rightBottom": 3, "rightTop": 3, "topRight": -1},
