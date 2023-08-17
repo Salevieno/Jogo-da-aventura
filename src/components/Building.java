@@ -19,6 +19,14 @@ public class Building
 	private Point pos ;
 	private List<NPCs> npcs ;
 	private List<Collider> colliders ;
+
+	public Building(BuildingType type, Point pos)
+	{
+		this.type = type ;
+		this.pos = pos ;
+		addStandardNPCs() ;
+		colliders = new ArrayList<>() ;
+	}
 	
 	public Building(BuildingType type, Point pos, List<NPCs> npcs)
 	{
@@ -52,6 +60,23 @@ public class Building
 	public boolean isInside(Point pos) {return UtilG.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null)), UtilG.getSize(type.getImage())) ;}
 	public boolean hasNPCs() {return npcs != null ;}
 		
+	public void addStandardNPCs()
+	{
+		npcs = new ArrayList<>() ;
+		switch (type.getName())
+		{
+			case hospital: npcs.add(new NPCs(0, Game.getNPCTypes()[0], UtilG.Translate(pos, 120, -60))) ; break ;
+			case store: 
+				npcs.add(new NPCs(0, Game.getNPCTypes()[1], UtilG.Translate(pos, 120, -60))) ;
+				npcs.add(new NPCs(0, Game.getNPCTypes()[2], UtilG.Translate(pos, 80, -60))) ;
+				
+				break ;
+			case bank: npcs.add(new NPCs(0, Game.getNPCTypes()[4], UtilG.Translate(pos, 40, -30))) ; break ;
+			case craft: npcs.add(new NPCs(0, Game.getNPCTypes()[8], UtilG.Translate(pos, 40, -30))) ; break ;
+			default: break;
+		}
+	}
+	
 	public void displayNPCs(DrawingOnPanel DP)
 	{
 		if (npcs == null) { return ;}

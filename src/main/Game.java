@@ -402,6 +402,26 @@ public class Game extends JPanel
     	pet.setPos(player.getPos());
 	}
 		
+	private NPCs readNPCfromJson(JSONObject npcJSONObject)
+	{
+		
+		JSONObject npc = npcJSONObject ;
+		String npcName = (String) npc.get("name") ;
+		double posX = (Double) ((JSONObject) npc.get("pos")).get("x") ;
+		double posY = (Double) ((JSONObject) npc.get("pos")).get("y") ;
+		Point npcPos = screen.getPoint(posX, posY) ;
+		NPCJobs npcJob = NPCJobs.valueOf(npcName) ;
+		NPCType npcType = null ;
+		for (NPCType type : NPCTypes)
+		{
+			if (!npcJob.equals(type.getJob())) { continue ;}
+
+			npcType = type ;
+		}
+		return new NPCs(0, npcType, npcPos) ;
+		
+	}
+	
 	private List<Recipe> LoadCraftingRecipes()
 	{
 		List<Recipe> recipes = new ArrayList<>() ;
@@ -579,89 +599,152 @@ public class Game extends JPanel
 		return creatureTypes ;
     }
     
+//    private CityMap[] initializeCityMaps()
+//    {
+//		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsCity.csv") ;
+//		String path = ImagesPath + "\\Maps\\";
+//		CityMap[] cityMap = new CityMap[input.size()] ;
+//		
+//		for (int id = 0 ; id <= cityMap.length - 1 ; id += 1)
+//		{
+//			String name = input.get(id)[0] ;
+//			Continents continent = Continents.getAll()[Integer.parseInt(input.get(id)[1])] ;
+//			int[] connections = new int[] {
+//											Integer.parseInt(input.get(id)[2]),
+//											Integer.parseInt(input.get(id)[3]),
+//											Integer.parseInt(input.get(id)[4]),
+//											Integer.parseInt(input.get(id)[5]),
+//											Integer.parseInt(input.get(id)[6]),
+//											Integer.parseInt(input.get(id)[7]),
+//											Integer.parseInt(input.get(id)[8]),
+//											Integer.parseInt(input.get(id)[9])
+//											} ;
+//			Image image = UtilG.loadImage(path + "Map" + String.valueOf(id) + ".png") ;
+//			Clip music = Music.musicFileToClip(new File(MusicPath + (id + 2) + "-" + name + ".wav").getAbsoluteFile()) ;
+//			
+//			
+//			// adding buildings top map
+//			List<Building> buildings = new ArrayList<>() ;
+//			for (int i = 0; i <= 6 - 1; i += 1)
+//			{
+//				BuildingNames buildingName = BuildingNames.valueOf(input.get(id)[10 + 3 * i]) ;
+//				BuildingType buildingType = null ;
+//				for (BuildingType type : buildingTypes)
+//				{
+//					if (type.getName().equals(buildingName)) { buildingType = type ; break ;}
+//				}
+//				int buildingPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[11 + 3 * i])) ;
+//				int buildingPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[12 + 3 * i])) ;
+//				Point buildingPos = new Point(buildingPosX, buildingPosY) ;
+//				
+//				// adding npcs to the building
+//				List<NPCs> npcs = new ArrayList<>() ;
+//				switch (buildingName)
+//				{
+//					case hospital: npcs.add(new NPCs(0, NPCTypes[0], UtilG.Translate(buildingPos, 120, -60))) ; break ;
+//					case store: 
+//					{
+//						npcs.add(new NPCs(0, NPCTypes[1], UtilG.Translate(buildingPos, 120, -60))) ;
+//						npcs.add(new NPCs(0, NPCTypes[2], UtilG.Translate(buildingPos, 80, -60))) ;
+//						
+//						break ;
+//					}
+//					case bank: npcs.add(new NPCs(0, NPCTypes[4], UtilG.Translate(buildingPos, 40, -30))) ; break ;
+//					case craft: npcs.add(new NPCs(0, NPCTypes[8], UtilG.Translate(buildingPos, 40, -30))) ; break ;
+//					default: break;
+//				}
+//				buildings.add(new Building(buildingType, buildingPos, npcs)) ;
+//			}
+//
+//			
+//			// adding npcs to map
+//			List<NPCs> npcs = new ArrayList<NPCs>() ;
+//			for (int i = 0; i <= 13 - 1; i += 1)
+//			{
+//				String npcJob = input.get(id)[28 + 3 * i] ;
+//				NPCType NPCType = null ;
+//				for (int j = 0 ; j <= getNPCTypes().length - 1 ; j += 1)
+//				{
+//					if (npcJob.equals(getNPCTypes()[j].getJob().toString()))
+//					{
+//						NPCType = getNPCTypes()[j] ;
+//					}
+//				}
+//				
+//				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29 + 3 * i])) ;
+//				int NPCPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[30 + 3 * i])) ;
+//				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
+//
+//				npcs.add(new NPCs(i + 17 * id, NPCType, NPCPos)) ;
+//			}
+//			
+//			cityMap[id] = new CityMap(name, continent, connections, image, music, buildings, npcs);
+//		}
+//		
+//		return cityMap ;
+//    }
+    
+
     private CityMap[] initializeCityMaps()
     {
-		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsCity.csv") ;
-		String path = ImagesPath + "\\Maps\\";
-		CityMap[] cityMap = new CityMap[input.size()] ;
-		
-		for (int id = 0 ; id <= cityMap.length - 1 ; id += 1)
+		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "mapsCity.json") ;
+		CityMap[] cityMaps = new CityMap[input.size()] ;
+    	String path = ImagesPath + "\\Maps\\";
+
+		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
 		{
-			String name = input.get(id)[0] ;
-			Continents continent = Continents.getAll()[Integer.parseInt(input.get(id)[1])] ;
-			int[] connections = new int[] {
-											Integer.parseInt(input.get(id)[2]),
-											Integer.parseInt(input.get(id)[3]),
-											Integer.parseInt(input.get(id)[4]),
-											Integer.parseInt(input.get(id)[5]),
-											Integer.parseInt(input.get(id)[6]),
-											Integer.parseInt(input.get(id)[7]),
-											Integer.parseInt(input.get(id)[8]),
-											Integer.parseInt(input.get(id)[9])
-											} ;
+			JSONObject map = (JSONObject) input.get(id) ;
+			
+			String name = (String) map.get("Name") ;
+			int continentID = (int) (long) map.get("Continent") ;
+			Continents continent = Continents.getAll()[continentID] ;
+			JSONObject connectionIDs = (JSONObject) map.get("Connections") ;
+			int[] connections = new int[8] ;
+			connections[0] = (int) (long) connectionIDs.get("topLeft") ;
+			connections[1] = (int) (long) connectionIDs.get("leftTop") ;
+			connections[2] = (int) (long) connectionIDs.get("leftBottom") ;
+			connections[3] = (int) (long) connectionIDs.get("bottomLeft") ;
+			connections[4] = (int) (long) connectionIDs.get("bottomRight") ;
+			connections[5] = (int) (long) connectionIDs.get("rightBottom") ;
+			connections[6] = (int) (long) connectionIDs.get("rightTop") ;
+			connections[7] = (int) (long) connectionIDs.get("topRight") ;
+			
 			Image image = UtilG.loadImage(path + "Map" + String.valueOf(id) + ".png") ;
-			Clip music = Music.musicFileToClip(new File(MusicPath + (id + 2) + "-" + name + ".wav").getAbsoluteFile()) ;
-			
-			
-			// adding buildings top map
+			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
+
+			JSONArray listBuildings = (JSONArray) map.get("Buildings") ;
 			List<Building> buildings = new ArrayList<>() ;
-			for (int i = 0; i <= 6 - 1; i += 1)
+			for (int i = 0 ; i <= listBuildings.size() - 1 ; i += 1)
 			{
-				BuildingNames buildingName = BuildingNames.valueOf(input.get(id)[10 + 3 * i]) ;
+				JSONObject building = (JSONObject) listBuildings.get(i) ;
+				BuildingNames buildingName = BuildingNames.valueOf((String) building.get("name")) ;
+				double posX = (Double) ((JSONObject) building.get("pos")).get("x") ;
+				double posY = (Double) ((JSONObject) building.get("pos")).get("y") ;
+				Point buildingPos = screen.getPoint(posX, posY) ;
+				
 				BuildingType buildingType = null ;
 				for (BuildingType type : buildingTypes)
 				{
-					if (type.getName().equals(buildingName)) { buildingType = type ; break ;}
-				}
-				int buildingPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[11 + 3 * i])) ;
-				int buildingPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[12 + 3 * i])) ;
-				Point buildingPos = new Point(buildingPosX, buildingPosY) ;
-				
-				// adding npcs to the building
-				List<NPCs> npcs = new ArrayList<>() ;
-				switch (buildingName)
-				{
-					case hospital: npcs.add(new NPCs(0, NPCTypes[0], UtilG.Translate(buildingPos, 120, -60))) ; break ;
-					case store: 
-					{
-						npcs.add(new NPCs(0, NPCTypes[1], UtilG.Translate(buildingPos, 120, -60))) ;
-						npcs.add(new NPCs(0, NPCTypes[2], UtilG.Translate(buildingPos, 80, -60))) ;
-						
-						break ;
-					}
-					case bank: npcs.add(new NPCs(0, NPCTypes[4], UtilG.Translate(buildingPos, 40, -30))) ; break ;
-					case craft: npcs.add(new NPCs(0, NPCTypes[8], UtilG.Translate(buildingPos, 40, -30))) ; break ;
-					default: break;
-				}
-				buildings.add(new Building(buildingType, buildingPos, npcs)) ;
-			}
+					if (!buildingName.equals(type.getName())) { continue ;}
 
+					buildingType = type ;
+				}
+				
+				buildings.add(new Building(buildingType, buildingPos)) ;
+				
+			}
 			
-			// adding npcs to map
-			List<NPCs> npcs = new ArrayList<NPCs>() ;
-			for (int i = 0; i <= 13 - 1; i += 1)
+			JSONArray listNPCs = (JSONArray) map.get("NPCs") ;
+			List<NPCs> npcs = new ArrayList<>() ;			
+			for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
 			{
-				String npcJob = input.get(id)[28 + 3 * i] ;
-				NPCType NPCType = null ;
-				for (int j = 0 ; j <= getNPCTypes().length - 1 ; j += 1)
-				{
-					if (npcJob.equals(getNPCTypes()[j].getJob().toString()))
-					{
-						NPCType = getNPCTypes()[j] ;
-					}
-				}
-				
-				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29 + 3 * i])) ;
-				int NPCPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[30 + 3 * i])) ;
-				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
-
-				npcs.add(new NPCs(i + 17 * id, NPCType, NPCPos)) ;
+				npcs.add(readNPCfromJson((JSONObject) listNPCs.get(i))) ;
 			}
 			
-			cityMap[id] = new CityMap(name, continent, connections, image, music, buildings, npcs);
+			cityMaps[id] = new CityMap(name, continent, connections, image, music, buildings, npcs) ;
 		}
-		
-		return cityMap ;
+
+		return cityMaps ;    	
     }
     
     private FieldMap[] initializeFieldMaps()
@@ -712,23 +795,10 @@ public class Game extends JPanel
 			}
 			
 			JSONArray listNPCs = (JSONArray) map.get("NPCs") ;
-			List<NPCs> npcs = new ArrayList<>() ;			
+			List<NPCs> npcs = new ArrayList<>() ;
 			for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
 			{
-				JSONObject npc = (JSONObject) listNPCs.get(i) ;
-				String npcName = (String) npc.get("name") ;
-				double posX = (Double) ((JSONObject) npc.get("pos")).get("x") ;
-				double posY = (Double) ((JSONObject) npc.get("pos")).get("y") ;
-				Point npcPos = screen.getPoint(posX, posY) ;
-				NPCJobs npcJob = NPCJobs.valueOf(npcName) ;
-				NPCType npcType = null ;
-				for (NPCType type : NPCTypes)
-				{
-					if (!npcJob.equals(type.getJob())) { continue ;}
-
-					npcType = type ;
-				}
-				npcs.add(new NPCs(0, npcType, npcPos)) ;
+				npcs.add(readNPCfromJson((JSONObject) listNPCs.get(i))) ;
 			}
 			
 			fieldMaps[id] = new FieldMap(name, continent, connections, image, music, collectibleLevel, collectiblesDelay, creatureIDs, npcs) ;
