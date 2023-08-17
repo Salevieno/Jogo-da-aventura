@@ -540,6 +540,7 @@ public class NPCs
 	
 	private void portalAction(Player player)
 	{
+		// TODO usar o move to map
 		if (player.getMap().getName().equals("Forest 2")) { player.setMap(Game.getMaps()[30]) ; player.setPos(UtilG.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
 		if (player.getMap().getName().equals("Cave 1")) { player.setMap(Game.getMaps()[6]) ; player.setPos(UtilG.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
 	}

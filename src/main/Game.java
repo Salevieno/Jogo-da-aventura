@@ -402,7 +402,7 @@ public class Game extends JPanel
     	pet.setPos(player.getPos());
 	}
 		
-	private NPCs readNPCfromJson(JSONObject npcJSONObject)
+	private static NPCs readNPCfromJson(JSONObject npcJSONObject)
 	{
 		
 		JSONObject npc = npcJSONObject ;
@@ -422,7 +422,7 @@ public class Game extends JPanel
 		
 	}
 	
-	private List<Recipe> LoadCraftingRecipes()
+	private static List<Recipe> LoadCraftingRecipes()
 	{
 		List<Recipe> recipes = new ArrayList<>() ;
 		
@@ -453,7 +453,7 @@ public class Game extends JPanel
 		return recipes ;
 	}
 	
-    private NPCType[] initializeNPCTypes(Languages language)
+    private static NPCType[] initializeNPCTypes(Languages language)
     {
     	List<String[]> input = UtilG.ReadcsvFile(CSVPath + "NPCTypes.csv") ;
 		NPCType[] npcType = new NPCType[input.size()] ;
@@ -492,7 +492,7 @@ public class Game extends JPanel
 		return npcType ;
     }
     
-    private BuildingType[] initializeBuildingTypes()
+    private static BuildingType[] initializeBuildingTypes()
     {
     	JSONArray input = UtilG.readJsonArray("./json/buildingTypes.json") ;
     	BuildingType[] buildingTypes = new BuildingType[input.size()] ;
@@ -518,7 +518,7 @@ public class Game extends JPanel
 		return buildingTypes ;
     }
     
-    private CreatureType[] initializeCreatureTypes(Languages language, double diffMult)
+    private static CreatureType[] initializeCreatureTypes(Languages language, double diffMult)
     {
 		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
 		String path = ImagesPath + "\\Creatures\\";
@@ -598,94 +598,8 @@ public class Game extends JPanel
 		}
 		return creatureTypes ;
     }
-    
-//    private CityMap[] initializeCityMaps()
-//    {
-//		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsCity.csv") ;
-//		String path = ImagesPath + "\\Maps\\";
-//		CityMap[] cityMap = new CityMap[input.size()] ;
-//		
-//		for (int id = 0 ; id <= cityMap.length - 1 ; id += 1)
-//		{
-//			String name = input.get(id)[0] ;
-//			Continents continent = Continents.getAll()[Integer.parseInt(input.get(id)[1])] ;
-//			int[] connections = new int[] {
-//											Integer.parseInt(input.get(id)[2]),
-//											Integer.parseInt(input.get(id)[3]),
-//											Integer.parseInt(input.get(id)[4]),
-//											Integer.parseInt(input.get(id)[5]),
-//											Integer.parseInt(input.get(id)[6]),
-//											Integer.parseInt(input.get(id)[7]),
-//											Integer.parseInt(input.get(id)[8]),
-//											Integer.parseInt(input.get(id)[9])
-//											} ;
-//			Image image = UtilG.loadImage(path + "Map" + String.valueOf(id) + ".png") ;
-//			Clip music = Music.musicFileToClip(new File(MusicPath + (id + 2) + "-" + name + ".wav").getAbsoluteFile()) ;
-//			
-//			
-//			// adding buildings top map
-//			List<Building> buildings = new ArrayList<>() ;
-//			for (int i = 0; i <= 6 - 1; i += 1)
-//			{
-//				BuildingNames buildingName = BuildingNames.valueOf(input.get(id)[10 + 3 * i]) ;
-//				BuildingType buildingType = null ;
-//				for (BuildingType type : buildingTypes)
-//				{
-//					if (type.getName().equals(buildingName)) { buildingType = type ; break ;}
-//				}
-//				int buildingPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[11 + 3 * i])) ;
-//				int buildingPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[12 + 3 * i])) ;
-//				Point buildingPos = new Point(buildingPosX, buildingPosY) ;
-//				
-//				// adding npcs to the building
-//				List<NPCs> npcs = new ArrayList<>() ;
-//				switch (buildingName)
-//				{
-//					case hospital: npcs.add(new NPCs(0, NPCTypes[0], UtilG.Translate(buildingPos, 120, -60))) ; break ;
-//					case store: 
-//					{
-//						npcs.add(new NPCs(0, NPCTypes[1], UtilG.Translate(buildingPos, 120, -60))) ;
-//						npcs.add(new NPCs(0, NPCTypes[2], UtilG.Translate(buildingPos, 80, -60))) ;
-//						
-//						break ;
-//					}
-//					case bank: npcs.add(new NPCs(0, NPCTypes[4], UtilG.Translate(buildingPos, 40, -30))) ; break ;
-//					case craft: npcs.add(new NPCs(0, NPCTypes[8], UtilG.Translate(buildingPos, 40, -30))) ; break ;
-//					default: break;
-//				}
-//				buildings.add(new Building(buildingType, buildingPos, npcs)) ;
-//			}
-//
-//			
-//			// adding npcs to map
-//			List<NPCs> npcs = new ArrayList<NPCs>() ;
-//			for (int i = 0; i <= 13 - 1; i += 1)
-//			{
-//				String npcJob = input.get(id)[28 + 3 * i] ;
-//				NPCType NPCType = null ;
-//				for (int j = 0 ; j <= getNPCTypes().length - 1 ; j += 1)
-//				{
-//					if (npcJob.equals(getNPCTypes()[j].getJob().toString()))
-//					{
-//						NPCType = getNPCTypes()[j] ;
-//					}
-//				}
-//				
-//				int NPCPosX = (int) (screen.getSize().width * Double.parseDouble(input.get(id)[29 + 3 * i])) ;
-//				int NPCPosY = (int) (sky.height + (screen.getSize().height - sky.height) * Double.parseDouble(input.get(id)[30 + 3 * i])) ;
-//				Point NPCPos = new Point(NPCPosX, NPCPosY) ;
-//
-//				npcs.add(new NPCs(i + 17 * id, NPCType, NPCPos)) ;
-//			}
-//			
-//			cityMap[id] = new CityMap(name, continent, connections, image, music, buildings, npcs);
-//		}
-//		
-//		return cityMap ;
-//    }
-    
 
-    private CityMap[] initializeCityMaps()
+    private static CityMap[] initializeCityMaps()
     {
 		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "mapsCity.json") ;
 		CityMap[] cityMaps = new CityMap[input.size()] ;
@@ -697,17 +611,17 @@ public class Game extends JPanel
 			
 			String name = (String) map.get("Name") ;
 			int continentID = (int) (long) map.get("Continent") ;
-			Continents continent = Continents.getAll()[continentID] ;
+			Continents continent = Continents.values()[continentID] ;
 			JSONObject connectionIDs = (JSONObject) map.get("Connections") ;
 			int[] connections = new int[8] ;
-			connections[0] = (int) (long) connectionIDs.get("topLeft") ;
-			connections[1] = (int) (long) connectionIDs.get("leftTop") ;
-			connections[2] = (int) (long) connectionIDs.get("leftBottom") ;
-			connections[3] = (int) (long) connectionIDs.get("bottomLeft") ;
-			connections[4] = (int) (long) connectionIDs.get("bottomRight") ;
-			connections[5] = (int) (long) connectionIDs.get("rightBottom") ;
-			connections[6] = (int) (long) connectionIDs.get("rightTop") ;
-			connections[7] = (int) (long) connectionIDs.get("topRight") ;
+			connections[0] = (int) (long) connectionIDs.get("topRight") ;
+			connections[1] = (int) (long) connectionIDs.get("topLeft") ;
+			connections[2] = (int) (long) connectionIDs.get("leftTop") ;
+			connections[3] = (int) (long) connectionIDs.get("leftBottom") ;
+			connections[4] = (int) (long) connectionIDs.get("bottomLeft") ;
+			connections[5] = (int) (long) connectionIDs.get("bottomRight") ;
+			connections[6] = (int) (long) connectionIDs.get("rightBottom") ;
+			connections[7] = (int) (long) connectionIDs.get("rightTop") ;
 			
 			Image image = UtilG.loadImage(path + "Map" + String.valueOf(id) + ".png") ;
 			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
@@ -747,7 +661,7 @@ public class Game extends JPanel
 		return cityMaps ;    	
     }
     
-    private FieldMap[] initializeFieldMaps()
+    private static FieldMap[] initializeFieldMaps()
     {
 		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "mapsField.json") ;
     	FieldMap[] fieldMaps = new FieldMap[input.size()] ;
@@ -764,17 +678,17 @@ public class Game extends JPanel
 			
 			String name = (String) map.get("Name") ;
 			int continentID = (int) (long) map.get("Continent") ;
-			Continents continent = Continents.getAll()[continentID] ;
+			Continents continent = Continents.values()[continentID] ;
 			JSONObject connectionIDs = (JSONObject) map.get("Connections") ;
 			int[] connections = new int[8] ;
-			connections[0] = (int) (long) connectionIDs.get("topLeft") ;
-			connections[1] = (int) (long) connectionIDs.get("leftTop") ;
-			connections[2] = (int) (long) connectionIDs.get("leftBottom") ;
-			connections[3] = (int) (long) connectionIDs.get("bottomLeft") ;
-			connections[4] = (int) (long) connectionIDs.get("bottomRight") ;
-			connections[5] = (int) (long) connectionIDs.get("rightBottom") ;
-			connections[6] = (int) (long) connectionIDs.get("rightTop") ;
-			connections[7] = (int) (long) connectionIDs.get("topRight") ;
+			connections[0] = (int) (long) connectionIDs.get("topRight") ;
+			connections[1] = (int) (long) connectionIDs.get("topLeft") ;
+			connections[2] = (int) (long) connectionIDs.get("leftTop") ;
+			connections[3] = (int) (long) connectionIDs.get("leftBottom") ;
+			connections[4] = (int) (long) connectionIDs.get("bottomLeft") ;
+			connections[5] = (int) (long) connectionIDs.get("bottomRight") ;
+			connections[6] = (int) (long) connectionIDs.get("rightBottom") ;
+			connections[7] = (int) (long) connectionIDs.get("rightTop") ;
 			
 			Image image = UtilG.loadImage(path + "Map" + String.valueOf(mapID + mod) + ".png") ;
 			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
@@ -807,7 +721,7 @@ public class Game extends JPanel
 		return fieldMaps ;    	
     }
 
-    private SpecialMap[] initializeSpecialMaps()
+    private static SpecialMap[] initializeSpecialMaps()
     {
     	List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;
 		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
@@ -818,16 +732,16 @@ public class Game extends JPanel
 		for (int id = 0 ; id <= specialMaps.length - 1 ; id += 1)
 		{
 			String name = input.get(id)[0] ;
-			Continents continent = Continents.getAll()[Integer.parseInt(input.get(id)[1])] ;
+			Continents continent = Continents.values()[Integer.parseInt(input.get(id)[1])] ;
 			int[] connections = new int[] {
+											Integer.parseInt(input.get(id)[9]),
 											Integer.parseInt(input.get(id)[2]),
 											Integer.parseInt(input.get(id)[3]),
 											Integer.parseInt(input.get(id)[4]),
 											Integer.parseInt(input.get(id)[5]),
 											Integer.parseInt(input.get(id)[6]),
 											Integer.parseInt(input.get(id)[7]),
-											Integer.parseInt(input.get(id)[8]),
-											Integer.parseInt(input.get(id)[9])
+											Integer.parseInt(input.get(id)[8])
 											} ;
 			Image image = UtilG.loadImage(path + "MapSpecial" + String.valueOf(id) + ".png") ;
 			
@@ -848,44 +762,56 @@ public class Game extends JPanel
 				int goldReward = Integer.parseInt(input.get(id)[22 + 13 * chest]) ;
 				treasureChests.add(new TreasureChest(chest, pos, treasureChestsImage, itemRewards, goldReward)) ;
 			}
-			System.out.println(id) ;
 			specialMaps[id] = new SpecialMap(name, continent, connections, image, music, treasureChests) ;
 		}
 		
 		return specialMaps ;
     }
     
-    private GameMap[] initializeAllMaps()
+    private static GameMap[] initializeAllMaps()
     {
 
+		cityMaps = initializeCityMaps() ;
+		fieldMaps = initializeFieldMaps() ;
+		specialMaps = initializeSpecialMaps() ;
     	GameMap[] allMaps = new GameMap[cityMaps.length + fieldMaps.length + specialMaps.length] ;
     	for (int i = 0 ; i <= cityMaps.length - 1; i += 1)
     	{
     		allMaps[i] = cityMaps[i] ;
     	}
-    	for (int i = cityMaps.length ; i <= cityMaps.length + 33 - 1; i += 1)
+    	for (int i = cityMaps.length ; i <= cityMaps.length + 34 - 1; i += 1)
     	{
     		allMaps[i] = fieldMaps[i - cityMaps.length] ;
     	}
 		allMaps[39] = specialMaps[0] ;
     	for (int i = 40 ; i <= 60 - 1; i += 1)
     	{
-    		allMaps[i] = fieldMaps[i - 40] ;
+    		allMaps[i] = fieldMaps[i - cityMaps.length - 1] ;
     	}
 		allMaps[60] = specialMaps[1] ;
     	for (int i = 61 ; i <= cityMaps.length + fieldMaps.length + specialMaps.length - 1; i += 1)
     	{
-    		allMaps[i] = fieldMaps[i - 61] ;
+    		allMaps[i] = fieldMaps[i - cityMaps.length - 2] ;
     	}
 //		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
 //		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
 //		System.arraycopy(specialMaps, 0, allMaps, cityMaps.length + fieldMaps.length, specialMaps.length) ;
-
 		return allMaps ;
 		
     }
     
-    private Quest[] initializeQuests(Languages language, int playerJob)
+    public static void initalizeMapsTest()
+    {
+    	allSpells = initializeAllSpells(gameLanguage) ;
+		allItems = initializeAllItems() ;
+		creatureTypes = initializeCreatureTypes(gameLanguage, 1) ;
+		allRecipes = LoadCraftingRecipes() ;
+		NPCTypes = initializeNPCTypes(gameLanguage) ;
+		buildingTypes = initializeBuildingTypes() ;
+		allMaps = initializeAllMaps() ;
+    }
+    
+    private static Quest[] initializeQuests(Languages language, int playerJob)
     {
 		List<String[]> inputs = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
 		Quest[] quests = new Quest[inputs.size()] ;
@@ -929,7 +855,7 @@ public class Game extends JPanel
 		return quests ;
     }
       	
-    private Spell[] initializeAllSpells(Languages language)
+    private static Spell[] initializeAllSpells(Languages language)
     {
     	List<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;
     	List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
@@ -985,7 +911,7 @@ public class Game extends JPanel
 		return allSpells ;
     }
 	
-    private Item[] initializeAllItems()
+    private static Item[] initializeAllItems()
 	{
 		List<Item> allItems = new ArrayList<>() ;
 		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
@@ -1268,7 +1194,7 @@ public class Game extends JPanel
     	
 	}
 	
-	private void initialize()
+	private static void initialize()
 	{
 		
 		loadAllText() ;
@@ -1282,10 +1208,7 @@ public class Game extends JPanel
 		creatureTypes = initializeCreatureTypes(gameLanguage, 1) ;
 		allRecipes = LoadCraftingRecipes() ;
 		NPCTypes = initializeNPCTypes(gameLanguage) ;
-		buildingTypes = initializeBuildingTypes() ;		
-		cityMaps = initializeCityMaps() ;
-		fieldMaps = initializeFieldMaps() ;
-		specialMaps = initializeSpecialMaps() ;
+		buildingTypes = initializeBuildingTypes() ;
 		allQuests = initializeQuests(gameLanguage, player.getJob()) ;
 		allMaps = initializeAllMaps() ;
     	sideBar = new SideBar(player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
@@ -1295,7 +1218,7 @@ public class Game extends JPanel
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno") ;
-    	player.setMap(cityMaps[2]) ;
+    	player.setMap(fieldMaps[31]) ;
     	player.setPos(new Point(400, 221)) ;
 
 //    	player.setLevel(50) ;

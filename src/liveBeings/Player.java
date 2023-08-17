@@ -527,62 +527,20 @@ public class Player extends LiveBeing
 		
 		Point newPos = CalcNewPos() ;
 		
-		if (!Game.getScreen().posIsInMap(newPos)) {	moveToNewMap(pet) ; return ;}
+		if (!Game.getScreen().posIsInMap(newPos))
+		{
+			moveToNewMap(pos, dir, map, step) ;
+			
+			if (pet != null) { pet.setPos(pos) ;}
+			
+			closestCreature = null ;
+			opponent = null ;
+			return ;
+		}
 		
 		if (!map.groundIsWalkable(newPos, elem[4])) { return ;}
 		
 		setPos(newPos) ;
-		
-	}
-	
-	private void moveToNewMap(Pet pet)
-	{
-		
-		int[] screenBorder = Game.getScreen().getBorders() ;
-		Point currentPos = new Point(pos) ;
-		Point newPos = new Point() ;
-		int newMapID = -1 ;
-		int[] mapConnections = map.getConnections() ;
-		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
-		boolean bottomSide = currentPos.y <= Game.getScreen().getSize().height / 2 ;
-
-		switch (dir)
-		{
-			case up:
-				newPos = new Point(currentPos.x, screenBorder[3] - step) ;
-				newMapID = leftSide ? mapConnections[0] : mapConnections[7] ;
-				
-				break ;
-			
-			case left:
-				newPos = new Point(screenBorder[2] - step, currentPos.y) ;
-				newMapID = bottomSide ? mapConnections[1] : mapConnections[2] ;
-				
-				break ;
-			
-			case down:
-				newPos = new Point(currentPos.x, screenBorder[1] + step) ;
-				newMapID = leftSide ? mapConnections[3] : mapConnections[4] ;
-				
-				break ;
-			
-			case right:
-				newPos = new Point(screenBorder[0] + step, currentPos.y) ;
-				newMapID = bottomSide ? mapConnections[5] : mapConnections[6] ;
-				
-				break ;			
-		}
-		
-		if (newMapID == -1) { return ;}
-		
-		GameMap newMap = Game.getMaps()[newMapID] ;
-		setMap(newMap) ;
-		setPos(newPos) ;
-		
-		if (pet != null) { pet.setPos(newPos) ;}
-		
-		closestCreature = null ;
-		opponent = null ;
 		
 	}
 

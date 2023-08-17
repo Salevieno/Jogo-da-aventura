@@ -63,20 +63,21 @@ public class MapWindow extends GameWindow
 			case "Forest 23": row = 6 ; col = 3 ; break ;
 			case "Forest 24": row = 7 ; col = 2 ; break ;
 			case "Forest 25": row = 7 ; col = 3 ; break ;
-			case "Cave 1": row = 7 ; col = 3 ; break ;
-			case "Cave 2": row = 7 ; col = 3 ; break ;
-			case "Cave 3": row = 7 ; col = 3 ; break ;
-			case "Cave 4": row = 7 ; col = 3 ; break ;
-			case "Cave 5": row = 7 ; col = 3 ; break ;
-			case "Cave 6": row = 7 ; col = 3 ; break ;
-			case "Cave 7": row = 7 ; col = 3 ; break ;
-			case "Cave 8": row = 7 ; col = 3 ; break ;
-			case "Cave 9": row = 7 ; col = 3 ; break ;
-			case "Island 1": row = 7 ; col = 3 ; break ;
-			case "Island 2": row = 7 ; col = 3 ; break ;
-			case "Island 3": row = 7 ; col = 3 ; break ;
-			case "Island 4": row = 7 ; col = 3 ; break ;
-			case "Island 5": row = 7 ; col = 3 ; break ;
+			case "Cave 1": row = 1 ; col = 0 ; break ;
+			case "Cave 2": row = 1 ; col = 1 ; break ;
+			case "Cave 3": row = 1 ; col = 2 ; break ;
+			case "Cave 4": row = 0 ; col = 0 ; break ;
+			case "Cave 5": row = 0 ; col = 1 ; break ;
+			case "Cave 6": row = 0 ; col = 2 ; break ;
+			case "Cave 7": row = 1 ; col = 3 ; break ;
+			case "Cave 8": row = 1 ; col = 4 ; break ;
+			case "Cave 9": row = 0 ; col = 4 ; break ;
+			case "Cave 10": row = 1 ; col = 5 ; break ;
+			case "Island 1": row = 0 ; col = 0 ; break ;
+			case "Island 2": row = 2 ; col = 1 ; break ;
+			case "Island 3": row = 1 ; col = 1 ; break ;
+			case "Island 4": row = 2 ; col = 2 ; break ;
+			case "Island 5": row = 1 ; col = 2 ; break ;
 			case "Volcano 1": row = 0 ; col = 2 ; break ;
 			case "Volcano 2": row = 1 ; col = 0 ; break ;
 			case "Volcano 3": row = 1 ; col = 1 ; break ;
@@ -87,17 +88,17 @@ public class MapWindow extends GameWindow
 			case "Volcano 8": row = 3 ; col = 0 ; break ;
 			case "Volcano 9": row = 3 ; col = 1 ; break ;
 			case "Volcano 10": row = 3 ; col = 2 ; break ;
-			case "Snowland 1": row = 7 ; col = 3 ; break ;
-			case "Snowland 2": row = 7 ; col = 3 ; break ;
-			case "Snowland 3": row = 7 ; col = 3 ; break ;
-			case "Snowland 4": row = 7 ; col = 3 ; break ;
-			case "Snowland 5": row = 7 ; col = 3 ; break ;
-			case "Secret island 2": row = 7 ; col = 3 ; break ;
-			case "Secret island 3": row = 7 ; col = 3 ; break ;
-			case "Secret island 4": row = 7 ; col = 3 ; break ;
-			case "Secret island 5": row = 7 ; col = 3 ; break ;
-			case "Secret island 6": row = 7 ; col = 3 ; break ;
-			case "Secret island 7": row = 7 ; col = 3 ; break ;
+			case "Snowland 1": row = 1 ; col = 2 ; break ;
+			case "Snowland 2": row = 0 ; col = 2 ; break ;
+			case "Snowland 3": row = 1 ; col = 1 ; break ;
+			case "Snowland 4": row = 0 ; col = 1 ; break ;
+			case "Snowland 5": row = 0 ; col = 0 ; break ;
+			case "Ocean 1": row = 2 ; col = 0 ; break ;
+			case "Ocean 2": row = 2 ; col = 1 ; break ;
+			case "Ocean 3": row = 2 ; col = 2 ; break ;
+			case "Ocean 4": row = 2 ; col = 3 ; break ;
+			case "Ocean 5": row = 1 ; col = 1 ; break ;
+			case "Ocean 6": row = 0 ; col = 1 ; break ;
 			default: return null ;
 		}
 		
@@ -113,12 +114,13 @@ public class MapWindow extends GameWindow
 		GameMap[] maps = null ;
 		
 		DP.DrawImage(image, windowPos, Align.topLeft) ;
-		
+
 		switch (playerMap.getContinent())
 		{
 			case forest: maps = GameMap.inForest() ; break ;
 			case cave: maps = GameMap.inCave() ; break ;
 			case island: maps = GameMap.inIsland() ; break ;
+			case ocean: maps = GameMap.inOcean() ; break ;
 			case volcano: maps = GameMap.inVolcano() ; break ;
 			case snowland: maps = GameMap.inSnowland() ; break ;
 			case special: maps = GameMap.inSpecial() ; break ;
@@ -129,7 +131,6 @@ public class MapWindow extends GameWindow
 		
 		for (GameMap map : maps)
 		{
-			System.out.println(map);
 			Point cell = getMapRowCol(map.getName()) ;
 			
 			if (cell == null) { continue ;}

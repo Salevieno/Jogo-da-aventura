@@ -107,7 +107,7 @@ public class GameMap
 
 	public String getName() {return name ;}
 	public Continents getContinent() {return continent ;}
-	public Continents getContinentName(Player player) {  return Continents.getAll()[continent.ordinal() + 1] ;}
+	public Continents getContinentName(Player player) {  return Continents.values()[continent.ordinal() + 1] ;}
 	public Image getimage() {return image ;}
 	public Clip getMusic() { return music ;}
 	public List<GroundType> getgroundTypes() {return groundTypes ;}
@@ -309,10 +309,23 @@ public class GameMap
 
 		for (int i = 0 ; i <= 10 - 1 ; i += 1)
 		{
-			volcanoMaps[i] = allMaps[i + 44] ;
+			volcanoMaps[i] = allMaps[i + 45] ;
 		}
 		
 		return volcanoMaps ;
+	}
+	
+	public static GameMap[] inOcean()
+	{
+		GameMap[] oceanMaps = new GameMap[6] ;
+		GameMap[] allMaps = Game.getMaps() ;
+
+		for (int i = 0 ; i <= 6 - 1 ; i += 1)
+		{
+			oceanMaps[i] = allMaps[i + 61] ;
+		}
+		
+		return oceanMaps ;
 	}
 	
 	public static GameMap[] inSnowland()

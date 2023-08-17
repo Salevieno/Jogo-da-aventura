@@ -219,6 +219,86 @@ public abstract class LiveBeing
 		}
 	}
 	
+	public static GameMap calcNewMap(Point pos, Directions dir, GameMap currentMap)
+	{
+		Point currentPos = new Point(pos) ;
+		int newMapID = -1 ;
+		int[] mapConnections = currentMap.getConnections() ;
+		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
+		boolean bottomSide = currentPos.y <= Game.getScreen().getSize().height / 2 ;
+		switch (dir)
+		{
+			case up:
+				
+				newMapID = leftSide ? mapConnections[1] : mapConnections[0] ;				
+				break ;
+			
+			case left:
+				
+				newMapID = bottomSide ? mapConnections[3] : mapConnections[2] ;				
+				break ;
+			
+			case down:
+				
+				newMapID = leftSide ? mapConnections[4] : mapConnections[5] ;				
+				break ;
+			
+			case right:
+				
+				newMapID = bottomSide ? mapConnections[6] : mapConnections[7] ;				
+				break ;			
+		}
+		
+		if (newMapID == -1) { return null ;}
+		
+		return Game.getMaps()[newMapID] ;
+		
+	}
+	
+	public static Point calcNewMapPos(Point pos, Directions dir, int step)
+	{
+		int[] screenBorder = Game.getScreen().getBorders() ;
+		Point currentPos = new Point(pos) ;
+		Point newPos = new Point() ;
+
+		switch (dir)
+		{
+			case up:
+				
+				newPos = new Point(currentPos.x, screenBorder[3] - step) ;				
+				break ;
+			
+			case left:
+				
+				newPos = new Point(screenBorder[2] - step, currentPos.y) ;				
+				break ;
+			
+			case down:
+				
+				newPos = new Point(currentPos.x, screenBorder[1] + step) ;				
+				break ;
+			
+			case right:
+				
+				newPos = new Point(screenBorder[0] + step, currentPos.y) ;				
+				break ;			
+		}
+		
+		return newPos ;
+	}
+	
+	protected void moveToNewMap(Point pos, Directions dir, GameMap currentMap, int step)
+	{
+		GameMap newMap = calcNewMap(pos, dir, currentMap) ;
+		
+		if (newMap == null) { return ;}
+		
+		Point newPos = calcNewMapPos(pos, dir, step) ;
+		
+		setMap(newMap) ;
+		setPos(newPos) ;
+	}
+	
 	public void incrementCounters()
 	{
 		incActionCounters() ;

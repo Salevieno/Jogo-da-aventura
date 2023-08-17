@@ -14,9 +14,4 @@ public enum Continents
 	{
 		
 	}
-	
-	public static Continents[] getAll()
-	{
-		return new Continents[] {forest, cave, island, volcano, snowland, special} ;
-	}
 }

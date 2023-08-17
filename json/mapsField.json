@@ -35,7 +35,7 @@
     "Name": "Forest 5",
     "Continent": 0,
     "Collectibles": {"level": 2, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
-    "Connections": {"topLeft": 12, "leftTop": 8, "leftBottom": 8, "bottomLeft": -1, "bottomRight": -1, "rightBottom": -9, "rightTop": -1, "topRight": 12},
+    "Connections": {"topLeft": 12, "leftTop": 8, "leftBottom": 8, "bottomLeft": -1, "bottomRight": -1, "rightBottom": -1, "rightTop": -1, "topRight": 12},
     "Creatures": [30, 30, 30, 31, 31, 32, 32, 33, 33, 34],
     "NPCs": []
   },
