@@ -313,7 +313,7 @@
   },
   {
     "Name": "Volcano 1",
-    "Continent": 3,
+    "Continent": 4,
     "Collectibles": {"level": 8, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": 48, "leftTop": 3, "leftBottom": 3, "bottomLeft": -1, "bottomRight": -1, "rightBottom": -1, "rightTop": -1, "topRight": 48},
     "Creatures": [195, 195, 195, 196, 196, 197, 197, 198, 198, 199],
@@ -321,7 +321,7 @@
   },
   {
     "Name": "Volcano 2",
-    "Continent": 3,
+    "Continent": 4,
     "Collectibles": {"level": 8, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": 49, "leftTop": -1, "leftBottom": -1, "bottomLeft": 3, "bottomRight": 3, "rightBottom": 47, "rightTop": 47, "topRight": 49},
     "Creatures": [200, 200, 200, 201, 201, 202, 202, 203, 203, 204],
@@ -329,7 +329,7 @@
   },
   {
     "Name": "Volcano 3",
-    "Continent": 3,
+    "Continent": 4,
     "Collectibles": {"level": 8, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": 50, "leftTop": 46, "leftBottom": 46, "bottomLeft": 3, "bottomRight": 3, "rightBottom": 48, "rightTop": 48, "topRight": 50},
     "Creatures": [205, 205, 205, 206, 206, 207, 207, 208, 208, 209],
@@ -337,7 +337,7 @@
   },
   {
     "Name": "Volcano 4",
-    "Continent": 3,
+    "Continent": 4,
     "Collectibles": {"level": 8, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": 51, "leftTop": 47, "leftBottom": 47, "bottomLeft": 45, "bottomRight": 45, "rightBottom": -1, "rightTop": -1, "topRight": 51},
     "Creatures": [210, 210, 210, 211, 211, 212, 212, 213, 213, 214],
@@ -345,7 +345,7 @@
   },
   {
     "Name": "Volcano 5",
-    "Continent": 3,
+    "Continent": 4,
     "Collectibles": {"level": 9, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": 52, "leftTop": -1, "leftBottom": -1, "bottomLeft": 46, "bottomRight": 46, "rightBottom": 50, "rightTop": 50, "topRight": 52},
     "Creatures": [215, 215, 215, 216, 216, 217, 217, 218, 218, 219],
@@ -353,7 +353,7 @@
   },
   {
     "Name": "Volcano 6",
-    "Continent": 3,
+    "Continent": 4,
     "Collectibles": {"level": 10, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": 53, "leftTop": 49, "leftBottom": 49, "bottomLeft": 47, "bottomRight": 47, "rightBottom": 51, "rightTop": 51, "topRight": 53},
     "Creatures": [240, 240, 240, 241, 241, 242, 242, 243, 243, 244],
@@ -361,7 +361,7 @@
   },
   {
     "Name": "Volcano 7",
-    "Continent": 3,
+    "Continent": 4,
     "Collectibles": {"level": 9, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": 54, "leftTop": 50, "leftBottom": 50, "bottomLeft": 48, "bottomRight": 48, "rightBottom": -1, "rightTop": -1, "topRight": 54},
     "Creatures": [220, 220, 220, 221, 221, 222, 222, 223, 223, 224],
@@ -369,7 +369,7 @@
   },
   {
     "Name": "Volcano 8",
-    "Continent": 3,
+    "Continent": 4,
     "Collectibles": {"level": 9, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": -1, "leftTop": -1, "leftBottom": -1, "bottomLeft": 49, "bottomRight": 49, "rightBottom": 53, "rightTop": 53, "topRight": -1},
     "Creatures": [225, 225, 225, 226, 226, 227, 227, 228, 228, 229],
@@ -377,7 +377,7 @@
   },
   {
     "Name": "Volcano 9",
-    "Continent": 3,
+    "Continent": 4,
     "Collectibles": {"level": 9, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": -1, "leftTop": 52, "leftBottom": 52, "bottomLeft": 50, "bottomRight": 50, "rightBottom": 54, "rightTop": 54, "topRight": -1},
     "Creatures": [195, 195, 195, 196, 196, 197, 197, 198, 198, 199],
@@ -385,7 +385,7 @@
   },
   {
     "Name": "Volcano 10",
-    "Continent": 3,
+    "Continent": 4,
     "Collectibles": {"level": 9, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": -1, "leftTop": 53, "leftBottom": 53, "bottomLeft": 51, "bottomRight": 51, "rightBottom": -1, "rightTop": -1, "topRight": -1},
     "Creatures": [235, 235, 235, 236, 236, 237, 237, 238, 238, 239],
@@ -393,7 +393,7 @@
   },
   {
     "Name": "Snowland 1",
-    "Continent": 4,
+    "Continent": 5,
     "Collectibles": {"level": 10, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": -1, "leftTop": 57, "leftBottom": 57, "bottomLeft": 56, "bottomRight": 56, "rightBottom": 25, "rightTop": 25, "topRight": -1},
     "Creatures": [245, 245, 245, 246, 246, 247, 247, 248, 248, 249],
@@ -401,7 +401,7 @@
   },
   {
     "Name": "Snowland 2",
-    "Continent": 4,
+    "Continent": 5,
     "Collectibles": {"level": 10, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": 55, "leftTop": 58, "leftBottom": 58, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 25, "rightTop": 25, "topRight": 55},
     "Creatures": [250, 250, 250, 251, 251, 252, 252, 253, 253, 254],
@@ -409,7 +409,7 @@
   },
   {
     "Name": "Snowland 3",
-    "Continent": 4,
+    "Continent": 5,
     "Collectibles": {"level": 11, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": -1, "leftTop": 59, "leftBottom": 59, "bottomLeft": 58, "bottomRight": 58, "rightBottom": 55, "rightTop": 55, "topRight": -1},
     "Creatures": [255, 255, 255, 256, 256, 257, 257, 258, 258, 259],
@@ -417,7 +417,7 @@
   },
   {
     "Name": "Snowland 4",
-    "Continent": 4,
+    "Continent": 5,
     "Collectibles": {"level": 11, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": 57, "leftTop": 59, "leftBottom": 59, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 56, "rightTop": 56, "topRight": 57},
     "Creatures": [260, 260, 260, 261, 261, 262, 262, 263, 263, 264],
@@ -425,55 +425,55 @@
   },
   {
     "Name": "Snowland 5",
-    "Continent": 4,
+    "Continent": 5,
     "Collectibles": {"level": 11, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": -1, "leftTop": -1, "leftBottom": -1, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 58, "rightTop": 57, "topRight": -1},
     "Creatures": [265, 265, 265, 266, 266, 267, 267, 268, 268, 269],
     "NPCs": []
   },
   {
-    "Name": "Secret island 2",
-    "Continent": 5,
+    "Name": "Ocean 1",
+    "Continent": 3,
     "Collectibles": {"level": -1, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": -1, "leftTop": 13, "leftBottom": -1, "bottomLeft": -1, "bottomRight": 62, "rightBottom": 62, "rightTop": 62, "topRight": -1},
     "Creatures": [270, 270, 270, 271, 271, 272, 272, 273, 273, 274],
     "NPCs": []
   },
   {
-    "Name": "Secret island 3",
-    "Continent": 5,
+    "Name": "Ocean 2",
+    "Continent": 3,
     "Collectibles": {"level": -1, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": -1, "leftTop": 61, "leftBottom": 61, "bottomLeft": 65, "bottomRight": 65, "rightBottom": 63, "rightTop": 63, "topRight": -1},
     "Creatures": [275, 275, 275, 276, 276, 277, 277, 278, 278, 279],
     "NPCs": []
   },
   {
-    "Name": "Secret island 4",
-    "Continent": 5,
+    "Name": "Ocean 3",
+    "Continent": 3,
     "Collectibles": {"level": -1, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": -1, "leftTop": 62, "leftBottom": 62, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 64, "rightTop": 64, "topRight": -1},
     "Creatures": [280, 280, 280, 281, 281, 282, 282, 283, 283, 284],
     "NPCs": []
   },
   {
-    "Name": "Secret island 5",
-    "Continent": 5,
+    "Name": "Ocean 4",
+    "Continent": 3,
     "Collectibles": {"level": -1, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": -1, "leftTop": 63, "leftBottom": 63, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 40, "rightTop": 40, "topRight": -1},
     "Creatures": [285, 285, 285, 286, 286, 287, 287, 288, 288, 289],
     "NPCs": []
   },
   {
-    "Name": "Secret island 6",
-    "Continent": 5,
+    "Name": "Ocean 5",
+    "Continent": 3,
     "Collectibles": {"level": -1, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": 62, "leftTop": -1, "leftBottom": -1, "bottomLeft": 66, "bottomRight": 66, "rightBottom": -1, "rightTop": -1, "topRight": 62},
     "Creatures": [290, 290, 290, 291, 291, 292, 292, 293, 293, 294],
     "NPCs": []
   },
   {
-    "Name": "Secret island 7",
-    "Continent": 5,
+    "Name": "Ocean 6",
+    "Continent": 3,
     "Collectibles": {"level": -1, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": 65, "leftTop": -1, "leftBottom": -1, "bottomLeft": 60, "bottomRight": 60, "rightBottom": -1, "rightTop": -1, "topRight": 65},
     "Creatures": [295, 295, 295, 296, 296, 297, 297, 298, 298, 299],

@@ -848,6 +848,7 @@ public class Game extends JPanel
 				int goldReward = Integer.parseInt(input.get(id)[22 + 13 * chest]) ;
 				treasureChests.add(new TreasureChest(chest, pos, treasureChestsImage, itemRewards, goldReward)) ;
 			}
+			System.out.println(id) ;
 			specialMaps[id] = new SpecialMap(name, continent, connections, image, music, treasureChests) ;
 		}
 		
@@ -856,11 +857,29 @@ public class Game extends JPanel
     
     private GameMap[] initializeAllMaps()
     {
-    	
+
     	GameMap[] allMaps = new GameMap[cityMaps.length + fieldMaps.length + specialMaps.length] ;
-		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
-		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
-		System.arraycopy(specialMaps, 0, allMaps, cityMaps.length + fieldMaps.length, specialMaps.length) ;
+    	for (int i = 0 ; i <= cityMaps.length - 1; i += 1)
+    	{
+    		allMaps[i] = cityMaps[i] ;
+    	}
+    	for (int i = cityMaps.length ; i <= cityMaps.length + 33 - 1; i += 1)
+    	{
+    		allMaps[i] = fieldMaps[i - cityMaps.length] ;
+    	}
+		allMaps[39] = specialMaps[0] ;
+    	for (int i = 40 ; i <= 60 - 1; i += 1)
+    	{
+    		allMaps[i] = fieldMaps[i - 40] ;
+    	}
+		allMaps[60] = specialMaps[1] ;
+    	for (int i = 61 ; i <= cityMaps.length + fieldMaps.length + specialMaps.length - 1; i += 1)
+    	{
+    		allMaps[i] = fieldMaps[i - 61] ;
+    	}
+//		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
+//		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
+//		System.arraycopy(specialMaps, 0, allMaps, cityMaps.length + fieldMaps.length, specialMaps.length) ;
 
 		return allMaps ;
 		
