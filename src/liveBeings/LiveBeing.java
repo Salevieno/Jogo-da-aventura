@@ -208,7 +208,7 @@ public abstract class LiveBeing
 	
 	public Point CalcNewPos()
 	{
-		step = 10 ;
+		step = 5 ;
 		switch (dir)
 		{
 			case up: return new Point(pos.x, pos.y - step) ;
@@ -255,36 +255,39 @@ public abstract class LiveBeing
 		
 	}
 	
-	public static Point calcNewMapPos(Point pos, Directions dir, int step)
+	public static Point calcNewMapPos(Point pos, Directions dir, GameMap currentMap, int step)
 	{
 		int[] screenBorder = Game.getScreen().getBorders() ;
+		Dimension screenSize = Game.getScreen().getSize() ;
 		Point currentPos = new Point(pos) ;
-		Point newPos = new Point() ;
+		int[] mapConnections = currentMap.getConnections() ;
+		boolean meetsTwoMapsUp = mapConnections[1] != mapConnections[0] ;
+		boolean meetsTwoMapsLeft = mapConnections[3] != mapConnections[2] ;
+		boolean meetsTwoMapsDown = mapConnections[4] != mapConnections[5] ;
+		boolean meetsTwoMapsRight = mapConnections[6] != mapConnections[7] ;
+		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
+		boolean bottomSide = currentPos.y <= Game.getScreen().getSize().height / 2 ;
 
 		switch (dir)
 		{
 			case up:
-				
-				newPos = new Point(currentPos.x, screenBorder[3] - step) ;				
-				break ;
+				if (!meetsTwoMapsUp) { return new Point(currentPos.x, screenBorder[3] - step) ;}
+				return leftSide ? new Point(currentPos.x + screenSize.width / 2, screenBorder[3] - step) : new Point(currentPos.x - screenSize.width / 2, screenBorder[3] - step) ;				
 			
 			case left:
-				
-				newPos = new Point(screenBorder[2] - step, currentPos.y) ;				
-				break ;
+				if (!meetsTwoMapsLeft) { return new Point(screenBorder[2] - step, currentPos.y) ;}
+				return bottomSide ? new Point(screenBorder[2] - step, currentPos.y + screenSize.height / 2) : new Point(screenBorder[2] - step, currentPos.y - screenSize.height / 2) ;
 			
 			case down:
-				
-				newPos = new Point(currentPos.x, screenBorder[1] + step) ;				
-				break ;
+				if (!meetsTwoMapsDown) { return new Point(currentPos.x, screenBorder[1] + step) ;}
+				return leftSide ? new Point(currentPos.x + screenSize.width / 2, screenBorder[1] + step) : new Point(currentPos.x - screenSize.width / 2, screenBorder[1] + step) ;			
 			
 			case right:
-				
-				newPos = new Point(screenBorder[0] + step, currentPos.y) ;				
-				break ;			
+				if (!meetsTwoMapsRight) { return new Point(screenBorder[0] + step, currentPos.y) ;}
+				return bottomSide ? new Point(screenBorder[0] + step, currentPos.y + screenSize.height / 2) : new Point(screenBorder[0] + step, currentPos.y - screenSize.height / 2) ;
+			
+			default: return null ;
 		}
-		
-		return newPos ;
 	}
 	
 	protected void moveToNewMap(Point pos, Directions dir, GameMap currentMap, int step)
@@ -293,7 +296,7 @@ public abstract class LiveBeing
 		
 		if (newMap == null) { return ;}
 		
-		Point newPos = calcNewMapPos(pos, dir, step) ;
+		Point newPos = calcNewMapPos(pos, dir, currentMap, step) ;
 		
 		setMap(newMap) ;
 		setPos(newPos) ;

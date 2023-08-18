@@ -219,7 +219,7 @@
     "Name": "Cave 3",
     "Continent": 1,
     "Collectibles": {"level": 6, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
-    "Connections": {"topLeft": -1, "leftTop": 31, "leftBottom": 31, "bottomLeft": 35, "bottomRight": 35, "rightBottom": 36, "rightTop": -1, "topRight": -1},
+    "Connections": {"topLeft": -1, "leftTop": 31, "leftBottom": 31, "bottomLeft": 35, "bottomRight": 35, "rightBottom": -1, "rightTop": 36, "topRight": -1},
     "Creatures": [135, 135, 135, 136, 136, 137, 137, 138, 138, 139],
     "NPCs": []
   },
@@ -243,7 +243,7 @@
     "Name": "Cave 6",
     "Continent": 1,
     "Collectibles": {"level": 7, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
-    "Connections": {"topLeft": 32, "leftTop": 34, "leftBottom": 34, "bottomLeft": -1, "bottomRight": -1, "rightBottom": -1, "rightTop": 36, "topRight": 32},
+    "Connections": {"topLeft": 32, "leftTop": 34, "leftBottom": 34, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 36, "rightTop": -1, "topRight": 32},
     "Creatures": [150, 150, 150, 151, 151, 152, 152, 153, 153, 154],
     "NPCs": []
   },
@@ -259,7 +259,7 @@
     "Name": "Cave 8",
     "Continent": 1,
     "Collectibles": {"level": 7, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
-    "Connections": {"topLeft": -1, "leftTop": -1, "leftBottom": 36, "bottomLeft": 38, "bottomRight": 38, "rightBottom": 39, "rightTop": -1, "topRight": -1},
+    "Connections": {"topLeft": -1, "leftTop": 36, "leftBottom": -1, "bottomLeft": 38, "bottomRight": 38, "rightBottom": 39, "rightTop": -1, "topRight": -1},
     "Creatures": [160, 160, 160, 161, 161, 162, 162, 163, 163, 164],
     "NPCs": []
   },
@@ -267,7 +267,7 @@
     "Name": "Cave 9",
     "Continent": 1,
     "Collectibles": {"level": 7, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
-    "Connections": {"topLeft": 37, "leftTop": 36, "leftBottom": -1, "bottomLeft": -1, "bottomRight": -1, "rightBottom": -1, "rightTop": 39, "topRight": 37},
+    "Connections": {"topLeft": 37, "leftTop": -1, "leftBottom": 36, "bottomLeft": -1, "bottomRight": -1, "rightBottom": -1, "rightTop": 39, "topRight": 37},
     "Creatures": [165, 165, 165, 166, 166, 167, 167, 168, 168, 169],
     "NPCs": []
   },

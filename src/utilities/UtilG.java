@@ -722,6 +722,11 @@ public abstract class UtilG
 			}
 		}
 	}
+		
+	public static double calcOffset(int n, double L, double size, double spacing)
+	{
+		return (L - n * size - (n - 1) * spacing) / 2 ;
+	}
 	
 	public static double spacing(double L, int n, double size, double offset)
 	{
