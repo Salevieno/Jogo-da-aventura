@@ -251,7 +251,7 @@
     "Name": "Cave 7",
     "Continent": 1,
     "Collectibles": {"level": -1, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
-    "Connections": {"topLeft": -1, "leftTop": 32, "leftBottom": 35, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 38, "rightTop": 37, "topRight": -1},
+    "Connections": {"topLeft": -1, "leftTop": 35, "leftBottom": 32, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 37, "rightTop": 38, "topRight": -1},
     "Creatures": [155, 155, 155, 156, 156, 157, 157, 158, 158, 159],
     "NPCs": []
   },
