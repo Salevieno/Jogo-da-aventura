@@ -551,7 +551,7 @@ public abstract class LiveBeing
 		{
 			BA.getPhyAtk().incTrain(0.025 / (BA.getPhyAtk().getTrain() + 1)) ;					
 		}
-		if (effect != null)
+		if (effect != AttackEffects.none)
 		{
 			if (effect.equals(AttackEffects.crit))
 			{

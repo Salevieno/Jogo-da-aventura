@@ -55,8 +55,9 @@ public class MainGame3_4 extends JFrame implements ActionListener
         Game.setState(previousState) ;
 	}
 	
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{
+//		MainGame3_4() ;
 		EventQueue.invokeLater(() -> {new MainGame3_4() ;}) ;
 	}
 	

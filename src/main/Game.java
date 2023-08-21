@@ -1148,12 +1148,10 @@ public class Game extends JPanel
 		if (!player.getMap().IsACity()) { player.setClosestCreature(player.ClosestCreatureInRange()) ;}
 		
 		// check if the player met something
-		//if (!player.isInBattle()) { player.meet(mousePos, DP) ;}
+		if (!player.isInBattle()) { player.meet(mousePos, DP) ;}
 		
 		
 		// if the player is in battle, run battle
-		// & !ani.isActive(12) & !ani.isActive(13) & !ani.isActive(14) & !ani.isActive(16)
-		// only enter battle if the animations for win (12), level up (13), pet level up (14), and pterodactile (16) are off
 		if (player.isInBattle()) { bat.RunBattle(player, pet, player.getOpponent(), animations, DP) ;}
 		
 		
@@ -1218,7 +1216,7 @@ public class Game extends JPanel
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno") ;
-    	player.setMap(fieldMaps[52]) ;
+    	player.setMap(fieldMaps[1]) ;
     	player.setPos(new Point(400, 221)) ;
 
 //    	player.setLevel(50) ;

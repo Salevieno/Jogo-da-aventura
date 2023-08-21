@@ -375,7 +375,7 @@ public class DrawingOnPanel
 	{
 		AttackEffects effect = atkResults.getEffect() ;
 		
-		if (effect == null) { return ;}
+		if (effect == AttackEffects.none) { return ;}
 
 		String message = null ;
 		String damage = String.valueOf(UtilG.Round(atkResults.getDamage(), 1)) ;
@@ -385,6 +385,7 @@ public class DrawingOnPanel
 			case hit: message = damage ; break ;
 			case crit: message = damage + "!" ; break ;
 			case block: message = "Block" ;	break ;
+			default: break ;
 		}
 
 		double rate = Math.pow(counter.rate(), 0.6) ;

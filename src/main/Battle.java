@@ -48,6 +48,22 @@ public class Battle
 
 	}
 
+	private static void PrintTurn(LiveBeing attacker, LiveBeing receiver)
+	{
+		System.out.println();
+		System.out.println(attacker.getName() + " acts!");
+	}
+	
+	private static void PrintAtkResults(AtkResults atkResults)
+	{
+		System.out.println(atkResults);
+	}
+	
+	private static void PrintReceiverCondition(LiveBeing receiver)
+	{
+		System.out.println(receiver.getName() + ": life = " + receiver.getPA().getLife().getCurrentValue()) ;
+	}
+	
 	// métodos de cálculo de batalha válidos para todos os participantes
 	private static double basicElemMult(Elements Atk, Elements Def)
 	{
@@ -231,7 +247,7 @@ public class Battle
 		}*/
 	}
 	
-	private AtkResults Atk(LiveBeing attacker, LiveBeing receiver)
+	private AtkResults runTurn(LiveBeing attacker, LiveBeing receiver)
 	{
 		AtkResults atkResult = new AtkResults() ;
 		if (attacker.actionIsArrowAtk())
@@ -264,7 +280,7 @@ public class Battle
 		}
 		else if (attacker.actionIsDef())
 		{
-			atkResult = new AtkResults(AtkTypes.defense , null, 0) ;
+			atkResult = new AtkResults(AtkTypes.defense , AttackEffects.none, 0) ;
  			attacker.ActivateDef() ;
 		}
 		
@@ -279,35 +295,39 @@ public class Battle
 		}
 		
 		attacker.setBattleAction(atkResult.getAtkType()) ;
-		
+		PrintAtkResults(atkResult) ;
+		PrintReceiverCondition(receiver) ;
 		return atkResult ;
 	}	
 	
-	private void runTurn(LiveBeing attacker, LiveBeing receiver, int damageAnimation, Animation damageAni, DrawingOnPanel DP)
+	private void checkTurn(LiveBeing attacker, LiveBeing receiver, int damageAnimation, Animation damageAni, DrawingOnPanel DP)
 	{
 		
-		if (attacker.isAlive())
+		if (!attacker.isAlive()) { return ;}
+		
+		// TODO criatura tem que tomar blood and poison dano do player e do pet
+		attacker.DrawTimeBar("Left", Game.colorPalette[2], DP) ;
+		attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
+		if (attacker.canAtk() & attacker.isInRange(receiver.getPos()))
 		{
-			// UtilS.RelPos(attacker.getPos(), receiver.getPos())
-			attacker.DrawTimeBar("Left", Game.colorPalette[2], DP) ;
-			// TODO criatura tem que tomar blood and poison dano do player e do pet
-			attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
-			if (attacker.canAtk() & attacker.isInRange(receiver.getPos()))
-			{
-				if (attacker instanceof Creature) { ((Creature) attacker).fight(receiver.getCurrentAction()) ;}
+			if (attacker instanceof Creature) { ((Creature) attacker).fight(receiver.getCurrentAction()) ;}
 //				if (attacker instanceof Pet) { ((Pet) attacker).fight() ;}
-
-				AtkResults atkResults = Atk(attacker, receiver) ;
-				if (attacker.actionIsPhysicalAtk() | attacker.actionIsSpell()) { receiver.getDisplayDamage().reset() ;}
+			AtkResults atkResults = new AtkResults() ;
+			if (attacker.hasActed())
+			{
+				PrintTurn(attacker, receiver) ;
+				atkResults = runTurn(attacker, receiver) ;
+			}
+			if (attacker.actionIsPhysicalAtk() | attacker.actionIsSpell()) { receiver.getDisplayDamage().reset() ;}
 //				if (attacker.getSettings().getSoundEffectsAreOn()) { Music.PlayMusic(hitSound) ;}
 
-				// add player surprise atk
+			// add player surprise atk
 //				attacker.autoSpells(receiver, attacker.getSpells());
 
-				// TODO automatically activated spells
+			// TODO automatically activated spells
 //				player.autoSpells(creature, player.getSpells());	
 
-				
+			
 //				if (player.getJob() == 4)
 //				{
 //					//SkillBuffIsActive[11][0] = false ;	// surprise attack
@@ -322,18 +342,18 @@ public class Battle
 //					}
 //					player.updatedefensiveStats(damage, effect, creature.actionIsSpell(), creature) ;
 //				}
-				
-				
-				if ( atkResults.getEffect() != null | atkResults.getAtkType() == AtkTypes.defense )
-				{
-					if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
-					if (attacker instanceof Player) { ((Player) attacker).getStatistics().update(atkResults) ;}
-				}
-				damageAni.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageAnimation}) ;
+			
+			
+			if ( atkResults.getEffect() != AttackEffects.none | atkResults.getAtkType() == AtkTypes.defense )
+			{
+				if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
+				if (attacker instanceof Player) { ((Player) attacker).getStatistics().update(atkResults) ;}
 			}
-			attacker.getBA().getStatus().display(attacker.getPos(), attacker.getDir(), DP);
-			if (attacker.isDefending()) { attacker.displayDefending(DP) ;}			
+			damageAni.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageAnimation}) ;
 		}
+		
+		attacker.getBA().getStatus().display(attacker.getPos(), attacker.getDir(), DP);
+		if (attacker.isDefending()) { attacker.displayDefending(DP) ;}		
 		
 	}
 	
@@ -348,9 +368,9 @@ public class Battle
 		LiveBeing creatureTarget = player ;
 		if (pet != null) { creatureTarget = creature.chooseTarget(player.isAlive(), pet.isAlive()).equals("player") ? player : pet ;}
 
-		runTurn(player, creature, damageStyle, ani[0], DP) ;
-		if (pet != null) { runTurn(pet, creature, damageStyle, ani[1], DP) ;}
-		runTurn(creature, creatureTarget, damageStyle, ani[2], DP) ;
+		checkTurn(player, creature, damageStyle, ani[0], DP) ;
+		if (pet != null) { checkTurn(pet, creature, damageStyle, ani[1], DP) ;}
+		checkTurn(creature, creatureTarget, damageStyle, ani[2], DP) ;
 		
 		if (!battleIsOver(player, pet, creature)) { return ;}
 		

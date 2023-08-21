@@ -11,7 +11,7 @@ public class AtkResults
 	public AtkResults()
 	{
 		this.atkType = null;
-		this.effect = null;
+		this.effect = AttackEffects.none;
 		this.damage = 0;
 	}
 	
