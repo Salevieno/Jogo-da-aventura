@@ -1306,7 +1306,7 @@ public class Game extends JPanel
 	        {
 	        	//loading.displayText(DP) ;
 	        	initialize() ;
-				state = GameStates.running;
+				state = GameStates.simulation;
 				
 //				for (int i = 0 ; i <= 10000 - 1 ; i += 1)
 //				{

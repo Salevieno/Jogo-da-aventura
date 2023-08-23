@@ -9,7 +9,6 @@ import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
-import attributes.PersonalAttributes;
 import components.SpellTypes;
 import main.Game;
 import utilities.Elements;
@@ -25,8 +24,6 @@ public class Spell
 	private int mpCost ;
 	private SpellTypes type ;
 	private Map<Spell, Integer> preRequisites ;
-	//private int cooldown ;
-	//private int effectDuration ;
 	private List<Buff> buffs;
 	private List<Buff> nerfs;
 	private double[] atkMod ;
@@ -41,8 +38,6 @@ public class Spell
 	private double[] poisonMod ;
 	private double[] silenceMod ;
 	private boolean isActive ;
-	//private int cooldownCounter ;
-	//private int effectCounter ;
 	private TimeCounter cooldownCounter ;
 	private TimeCounter effectCounter ;
 	private Elements elem ;
@@ -113,8 +108,8 @@ public class Spell
 
 	public boolean isReady() {return cooldownCounter.finished() ;}
 	public boolean isActive() {return isActive ;}
-	public void activate() {isActive = true ;}
-	public void deactivate() {isActive = false ;}
+	public void activate() {isActive = true ; System.out.println("activate spell " + name);}
+	public void deactivate() {isActive = false ; System.out.println("deactivate spell " + name);}
 	//public void incCooldownCounter() {cooldownCounter = (cooldownCounter + 1) % cooldownDuration ;}
 	//public void incDurationCounter() {effectCounter = (effectCounter + 1) % effectDuration ;}
 
@@ -165,7 +160,7 @@ public class Spell
 			BasicBattleAttribute battleAttribute = receiver.getBA().mapAttributes(att) ;
 			if (battleAttribute != null)
 			{
-				double increment = battleAttribute.getBaseValue() * 10*percIncrease.get(att) + valueIncrease.get(att) ;
+				double increment = battleAttribute.getBaseValue() * 10 * percIncrease.get(att) + valueIncrease.get(att) ;
 				battleAttribute.incBonus(Math.round(increment * level * mult));
 				
 				continue ;
@@ -200,41 +195,41 @@ public class Spell
 		}
 	}
 	
-	public void applyBuffsAndNerfs(String action, LiveBeing receiver)
-	{
-		int ActionMult = 1 ;
-//		double[][] Buff = new double[14][5] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
-//		double[] OriginalValue = new double[14] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
-		
-		PersonalAttributes PA = receiver.getPA() ;
-//		BattleAttributes BA = receiver.getBA() ;
-		
-//		OriginalValue = new double[] {PA.getLife().getMaxValue(), PA.getMp().getMaxValue(), BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(),
-//				BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(),
-//				BA.getCrit()[0],
-//				BA.getStun().getBasicAtkChance(),
-//				BA.getBlock().getBasicAtkChance(),
-//				BA.getBlood().getBasicAtkChance(), BA.getBlood().getBasicDefChance(), BA.getBlood().getBasicAtk(), BA.getBlood().getBasicDef(),
-//				BA.getPoison().getBasicAtkChance(), BA.getPoison().getBasicDefChance(),
-//				BA.getPoison().getBasicAtk(), BA.getPoison().getBasicDef(),
-//				BA.getSilence().getBasicAtkChance()} ;
-		if (action.equals("deactivate"))
-		{
-			ActionMult = -1 ;
-		}
-		
-		for (Buff buff : buffs)
-		{
-			int level = 1 ;
-			double increment = PA.getLife().getMaxValue() * buff.getPercentIncrease().get(Attributes.life)
-					+ buff.getValueIncrease().get(Attributes.life) ;
-			PA.getLife().incCurrentValue((int) increment * level * ActionMult);
-		}
+//	public void applyBuffsAndNerfs(String action, LiveBeing receiver)
+//	{
+//		int ActionMult = 1 ;
+////		double[][] Buff = new double[14][5] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
+////		double[] OriginalValue = new double[14] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 //		
-//		if (!spellIsActive)
+//		PersonalAttributes PA = receiver.getPA() ;
+////		BattleAttributes BA = receiver.getBA() ;
+//		
+////		OriginalValue = new double[] {PA.getLife().getMaxValue(), PA.getMp().getMaxValue(), BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(),
+////				BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(),
+////				BA.getCrit()[0],
+////				BA.getStun().getBasicAtkChance(),
+////				BA.getBlock().getBasicAtkChance(),
+////				BA.getBlood().getBasicAtkChance(), BA.getBlood().getBasicDefChance(), BA.getBlood().getBasicAtk(), BA.getBlood().getBasicDef(),
+////				BA.getPoison().getBasicAtkChance(), BA.getPoison().getBasicDefChance(),
+////				BA.getPoison().getBasicAtk(), BA.getPoison().getBasicDef(),
+////				BA.getSilence().getBasicAtkChance()} ;
+//		if (action.equals("deactivate"))
 //		{
+//			ActionMult = -1 ;
 //		}
-	}
+//		
+//		for (Buff buff : buffs)
+//		{
+//			int level = 1 ;
+//			double increment = PA.getLife().getMaxValue() * buff.getPercentIncrease().get(Attributes.life)
+//					+ buff.getValueIncrease().get(Attributes.life) ;
+//			PA.getLife().incCurrentValue((int) increment * level * ActionMult);
+//		}
+////		
+////		if (!spellIsActive)
+////		{
+////		}
+//	}
 	
 	@Override
 	public String toString()

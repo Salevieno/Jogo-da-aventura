@@ -7,18 +7,12 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import components.SpellTypes;
 import graphics.DrawingOnPanel;
-import items.Fab;
-import items.GeneralItem;
-import items.Item;
-import items.Potion;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Game;
@@ -43,9 +37,9 @@ public abstract class LiveBeing
 	protected int proJob ;
 	protected int level;
 	protected GameMap map ;
-	protected Point pos ;						// bottomCenter of the liveBeing
-	protected Directions dir ;					// direction of the movement
-	protected LiveBeingStates state ;			// current state
+	protected Point pos ;						// bottomCenter
+	protected Directions dir ;
+	protected LiveBeingStates state ;
 	protected Dimension size ;
 	protected int range ;
 	protected int step ;
@@ -62,10 +56,10 @@ public abstract class LiveBeing
 	protected List<String> combo ;				// record of the last 10 movements
 	protected List<Spell> spells ;
 	
-	protected PersonalAttributes PA ;			// Personal attributes
-	protected BattleAttributes BA ;				// Battle attributes
-	protected MovingAnimations movingAni ;		// Moving animations
-	protected AttributesWindow attWindow ;		// Attributes window
+	protected PersonalAttributes PA ;
+	protected BattleAttributes BA ;
+	protected MovingAnimations movingAni ;
+	protected AttributesWindow attWindow ;
 	
 	public static final Image[] StatusImages = new Image[] {
 			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Stun.png"),
@@ -167,7 +161,7 @@ public abstract class LiveBeing
 	public void setRange(int newValue) {range = newValue ;}
 	public void setStep(int newValue) {step = newValue ;}
 	public void setCombo(List<String> newValue) {combo = newValue ;}
-	public void setBattleAction(AtkTypes ba) { currentAtkType = ba ;}
+	public void setCurrentAtkType(AtkTypes ba) { currentAtkType = ba ;}
 	
 	public boolean isMoving() { return (state.equals(LiveBeingStates.moving)) ;}
 	public boolean canAct() { return actionCounter.finished() & (state.equals(LiveBeingStates.idle) | state.equals(LiveBeingStates.fighting)) ;}

@@ -1003,21 +1003,17 @@ public class Player extends LiveBeing
 	
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
-		if (spell.getType().equals(SpellTypes.support))
-		{
-			if (spell.isReady() & hasEnoughMP(spell) & 0 < spell.getLevel())
-			{
-				useSupportSpell(spell) ;
-				train(new AtkResults(AtkTypes.magical, null, 0)) ;
-				stats.incNumberMagAtk() ;
-			}
-			
-			return null ;
-		}
-		else
-		{
-			return useOffensiveSpell(spell, receiver) ;
-		}
+		if (spell.getLevel() <= 0) { return null ;}
+		if (!spell.isReady()) { return null ;}
+		if (!hasEnoughMP(spell)) { return null ;}
+		
+		if (!spell.getType().equals(SpellTypes.support)) { return useOffensiveSpell(spell, receiver) ;}
+
+		useSupportSpell(spell) ;
+		train(new AtkResults(AtkTypes.magical, AttackEffects.none, 0)) ;
+		stats.incNumberMagAtk() ;
+		
+		return null ;
 	}
 	
 			
@@ -1285,13 +1281,12 @@ public class Player extends LiveBeing
 	}
 	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
 	{
-		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
-		spell.activate() ;
 		
 		int spellLevel = spell.getLevel() ;
 		int spellID = spells.indexOf(spell) ;
 		int damage = -1 ;
-		AttackEffects effect = null ;
+		AttackEffects effect = AttackEffects.none ;
+		
 		double PhyAtk = BA.TotalPhyAtk() ;
 		double MagAtk = BA.TotalMagAtk() ;
 		double PhyDef = receiver.getBA().TotalPhyDef() ;
@@ -1299,8 +1294,8 @@ public class Player extends LiveBeing
 		double AtkDex = BA.TotalDex() ;
 		double DefAgi = receiver.getBA().TotalAgi() ;
 		double AtkCrit = BA.TotalCritAtkChance() ;
-		double DefCrit = receiver.getBA().TotalCritDefChance() ;
-		double receiverElemMod = 1 ;
+		double DefCrit = receiver.getBA().TotalCritDefChance() ;		
+		
 		double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
 		double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
 		double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
@@ -1308,29 +1303,35 @@ public class Player extends LiveBeing
 		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;
 		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;
 		double BlockDef = receiver.getBA().getStatus().getBlock() ;
+		
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
+		
 		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[1], elem[4]} ;
 		Elements[] DefElem = receiver.defElems() ;
+		double receiverElemMod = 1 ;
+
+		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
+		spell.activate() ;
 		
 		switch (job)
 		{
 			case 0:
-			{
+			
 				BasicAtk = PhyAtk ;
 				BasicDef = PhyDef ;
 				
 				break ;
-			}
+			
 			case 1:
-			{
+			
 				BasicAtk = MagAtk ;
 				BasicDef = MagDef ;
 				
 				break ;
-			}
+			
 			case 2:
-			{
+			
 				double arrowAtk = arrowIsEquipped() ? Arrow.getAll()[equips[3].getId()].getAtkPower() : 0 ;
 				if (spellID == 0 | spellID == 3 | spellID == 6 | spellID == 9 | spellID == 12)
 				{
@@ -1349,27 +1350,28 @@ public class Player extends LiveBeing
 				}
 				
 				break ;
-			}
+			
 			case 3:
-			{
+			
 				BasicAtk = PhyAtk ;
 				BasicDef = PhyDef ;
 				
 				break ;
-			}
+			
 			case 4:
-			{
+			
 				BasicAtk = PhyAtk ;
 				BasicDef = PhyDef ;
 				
 				break ;
-			}
+			
 		}
 		
-		effect = Battle.calcEffect(DexMod[0] + AtkDex*DexMod[1], AgiMod[0] + DefAgi*AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
-		damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
-		
-		spell.applyBuffsAndNerfs("activate", receiver) ;
+		effect = Battle.calcEffect(DexMod[0] + AtkDex * DexMod[1], AgiMod[0] + DefAgi * AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
+		damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk * AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
+
+		spell.applyBuffs(true, this) ;
+		spell.applyNerfs(true, opponent) ;
 		
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 		

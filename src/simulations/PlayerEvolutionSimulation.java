@@ -29,6 +29,7 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import main.AtkResults;
 import main.AtkTypes;
+import main.Battle;
 import main.Game;
 import utilities.Align;
 import utilities.AttackEffects;
@@ -224,7 +225,7 @@ public abstract class PlayerEvolutionSimulation
 	    {
 	    	String key = (String) it.next() ;
 	    	IconFunction action = sectionNamesActions.get(key) ;
-			Point buttonPos = UtilG.Translate(pos, i * spacing.x, i * spacing.y) ;
+			Point buttonPos = UtilG.Translate(pos, i * spacing.x + buttonImage.getWidth(null) / 2, i * spacing.y + buttonImage.getHeight(null) / 2) ;
 			buttons.add(newButton(buttonPos, key, action)) ;
 			i++ ;
 	    }
@@ -396,6 +397,7 @@ public abstract class PlayerEvolutionSimulation
 	
 	private static void simulateBattle()
 	{
+		Battle.PrintStart() ;
 		ResetBattleResults() ;
 		CreateNewCreature() ;
 		player.engageInFight(playerOpponent) ;
@@ -711,16 +713,16 @@ public abstract class PlayerEvolutionSimulation
 		DP.DrawImage(screenImage, new Point(0, 0), Align.topLeft) ;
 		DP.DrawText(new Point(300, 13), Align.center, DrawingOnPanel.stdAngle, "Simulador do jogo", font, Game.colorPalette[9]) ;
 		
-		buttons.forEach(button -> {
-			button.display(0, Align.center, true, mousePos, DP) ;
-		});
+		buttons.forEach(button -> button.display(0, Align.center, true, mousePos, DP)) ;
 
 		playerOpponent.displayName(new Point(460, 300), Align.center, Color.yellow, DP);
 		playerOpponent.display(new Point(460, 340), new Scale(1, 1), DP);
+		
 		if (player.isAlive())
 		{
 			player.display(player.getPos(), new Scale(1.8, 1.8), Directions.right, false, DP) ;
 		}
+		
 		if (pet != null)
 		{
 			if (pet.isAlive())

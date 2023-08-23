@@ -17,6 +17,7 @@ public class BasicAttribute extends LiveBeingAttribute
 	public int getCurrentValue() { return currentValue ;}
 	public int getMaxValue() { return maxValue ;}
 	public double getMultiplier() { return multiplier ;}
+	public int getTotalValue() { return (int) (currentValue + bonus) ;}
 	public double getRate() { return currentValue / (double) maxValue ;}
 	public boolean isMaxed() { return currentValue == maxValue ;}
 
@@ -27,7 +28,8 @@ public class BasicAttribute extends LiveBeingAttribute
 	@Override
 	public String toString()
 	{
-		return "BasicAttribute [currentValue=" + currentValue + ", bonus=" + bonus + ", maxValue=" + maxValue + ", multiplier=" + multiplier+ "]" ;
+//		return "BasicAttribute [currentValue=" + currentValue + ", bonus=" + bonus + ", maxValue=" + maxValue + ", multiplier=" + multiplier+ "]" ;
+		return " bonus=" + bonus ;
 	}
 	
 }

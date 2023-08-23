@@ -72,6 +72,7 @@ public class PersonalAttributes
 		
 		return newPos ;
 	}
+	
 	@Override
 	public String toString()
 	{

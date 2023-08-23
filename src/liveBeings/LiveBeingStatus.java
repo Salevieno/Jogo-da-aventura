@@ -20,6 +20,7 @@ public class LiveBeingStatus
 	private int magDef ;
 	private int dex ;
 	private int agi ;
+	
 	private int stun ;
 	private int block ;
 	private int blood ;
@@ -45,9 +46,9 @@ public class LiveBeingStatus
 	{
 		return MP;
 	}
-	public void setMP(int mP)
+	public void setMP(int MP)
 	{
-		MP = mP;
+		this.MP = MP;
 	}
 	public int getPhyAtk()
 	{
@@ -141,7 +142,7 @@ public class LiveBeingStatus
 
 	
 	public void receiveStatus(int[] AppliedStatus)
-	{
+	{// TODO include all status
 		stun = Math.max(stun, AppliedStatus[0]) ;
 		block = Math.max(block, AppliedStatus[1]) ;
 		blood = Math.max(blood, AppliedStatus[2]) ;
@@ -167,7 +168,6 @@ public class LiveBeingStatus
 	
 	public void display(Point liveBeingPos, Directions dir, DrawingOnPanel DP)
 	{
-		// effect 0: Stun, 1: Block, 2: Blood, 3: Poison, 4: Silence
 
 //		int mirror = UtilS.MirrorFromRelPos(UtilS.RelPos(getPos(), creature.getPos())) ;
 		int mirror = 1 ;
@@ -177,10 +177,11 @@ public class LiveBeingStatus
 			Point ImagePos = new Point(liveBeingPos.x, liveBeingPos.y - offset.height) ;
 			DP.DrawImage(stunImage, ImagePos, Align.center) ;
 		}
+		
 		int[] statusList = new int[] {block, blood, poison, silence} ;
 		Image[] statusImageList = new Image[] {blockImage, bloodImage, poisonImage, silenceImage} ;
 		Point ImagePos = new Point(liveBeingPos.x + mirror * (statusImageList[0].getWidth(null) + offset.width), liveBeingPos.y) ;
-		for (int statusID = 0 ; statusID <= statusList.length - 1 ; statusID += 1)	// Block, blood, poison and silence
+		for (int statusID = 0 ; statusID <= statusList.length - 1 ; statusID += 1)
 		{
 			if (0 < statusList[statusID])
 			{
@@ -189,4 +190,14 @@ public class LiveBeingStatus
 			}
 		}
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "LiveBeingStatus [life=" + life + ", MP=" + MP + ", phyAtk=" + phyAtk + ", magAtk=" + magAtk
+				+ ", phyDef=" + phyDef + ", magDef=" + magDef + ", dex=" + dex + ", agi=" + agi + ", stun=" + stun
+				+ ", block=" + block + ", blood=" + blood + ", poison=" + poison + ", silence=" + silence + "]";
+	}
+	
+	
 }

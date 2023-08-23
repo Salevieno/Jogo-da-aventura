@@ -1,5 +1,5 @@
 ﻿Job,ProJob,Skill,Life %,Life,Chance,MP %,MP,Chance,Phy Atk %,Phy Atk,Chance,Mag Atk %,Mag Atk,Chance,Phy Def %,Phy Def,Chance,Mag Def %,Mag Def,Chance,Dex %,Dex,Chance,Agi %,Agi,Chance,Crit %,Crit,Chance,Stun chance %,Stun chance,Chance,Block chance %,Block chance,Chance,Blood atk chance %,Blood atk chance,Chance,Blood def chance %,Blood def chance,Chance,Blood atk %,Blood atk,Chance,Blood def %,Blood def,Chance,Poison atk chance %,Poison atk chance,Chance,Poison def chance %,Poison def chance,Chance,Poison atk %,Poison atk,Chance,Poison def %,Poison def,Chance,Silence chance %,Silence chance,Chance
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
