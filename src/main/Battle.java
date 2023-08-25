@@ -279,30 +279,62 @@ public class Battle
 		return true ;
 	}
 	
+	private AtkResults atk(AtkTypes atkType, LiveBeing attacker, LiveBeing receiver)
+	{
+		switch (atkType)
+		{
+			case physical: return calcPhysicalAtk(attacker, receiver) ;
+			case magical:
+			{
+				Spell spell = attacker.getSpells().get(Player.SpellKeys.indexOf(attacker.getCurrentAction())) ;
+				if (spell.isReady() & attacker.hasEnoughMP(spell))
+				{
+					return attacker.useSpell(spell, receiver) ;
+				}
+				
+				return new AtkResults() ;
+			}
+			case physicalMagical: 
+			{
+				// TODO arrow atk
+				return new AtkResults() ;
+			}
+			case defense:
+			{
+	 			attacker.ActivateDef() ;
+				return new AtkResults(AtkTypes.defense , AttackEffects.none, 0) ;
+			}
+			default: return new AtkResults() ;
+		}
+	}
 	
 	private AtkResults runTurn(LiveBeing attacker, LiveBeing receiver)
 	{
 		AtkResults atkResult = new AtkResults() ;
 		if (attacker.actionIsArrowAtk())
 		{
+			atkResult = atk(AtkTypes.physicalMagical, attacker, receiver) ;
 			// TODO add arrow atk, arrows can be physical and magical at the same time
 		}
 		if (attacker.actionIsPhysicalAtk())
 		{
-			atkResult = calcPhysicalAtk(attacker, receiver) ;
+			atkResult = atk(AtkTypes.physical, attacker, receiver) ;
+//			atkResult = calcPhysicalAtk(attacker, receiver) ;
 		}
 		else if (attacker.actionIsSpell() & !attacker.isSilent())
 		{
-			Spell spell = attacker.getSpells().get(Player.SpellKeys.indexOf(attacker.getCurrentAction())) ;
-			if (spell.isReady() & attacker.hasEnoughMP(spell))
-			{
-				atkResult = attacker.useSpell(spell, receiver) ;
-			}
+			atkResult = atk(AtkTypes.magical, attacker, receiver) ;
+//			Spell spell = attacker.getSpells().get(Player.SpellKeys.indexOf(attacker.getCurrentAction())) ;
+//			if (spell.isReady() & attacker.hasEnoughMP(spell))
+//			{
+//				atkResult = attacker.useSpell(spell, receiver) ;
+//			}
 		}
 		else if (attacker.actionIsDef())
 		{
-			atkResult = new AtkResults(AtkTypes.defense , AttackEffects.none, 0) ;
- 			attacker.ActivateDef() ;
+			atkResult = atk(AtkTypes.defense, attacker, receiver) ;
+//			atkResult = new AtkResults(AtkTypes.defense , AttackEffects.none, 0) ;
+// 			attacker.ActivateDef() ;
 		}
 		
 		if (atkResult.getEffect().equals(AttackEffects.hit) | atkResult.getEffect().equals(AttackEffects.crit))
