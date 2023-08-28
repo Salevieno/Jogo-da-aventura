@@ -202,7 +202,6 @@ public abstract class LiveBeing
 	
 	public Point CalcNewPos()
 	{
-		step = 5 ;
 		switch (dir)
 		{
 			case up: return new Point(pos.x, pos.y - step) ;

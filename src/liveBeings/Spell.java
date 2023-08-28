@@ -1,6 +1,8 @@
 package liveBeings ;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -110,9 +112,25 @@ public class Spell
 	public boolean isActive() {return isActive ;}
 	public void activate() {isActive = true ; System.out.println("activate spell " + name);}
 	public void deactivate() {isActive = false ; System.out.println("deactivate spell " + name);}
-	//public void incCooldownCounter() {cooldownCounter = (cooldownCounter + 1) % cooldownDuration ;}
-	//public void incDurationCounter() {effectCounter = (effectCounter + 1) % effectDuration ;}
 
+	public static void saveImages()
+	{
+		BufferedImage img = UtilG.toBufferedImage(UtilG.loadImage(Game.ImagesPath + "genericSpell.png")) ;
+		for (int i = 0 ; i <= 172 - 1; i += 1)
+		{
+			PlayerJobs job = PlayerJobs.jobFromSpellID(i) ;
+//			System.out.println("spell" + job + i + ".png");
+			try
+			{
+				UtilG.saveImage(img, Game.ImagesPath + "\\Spells\\" + "spell" + job + i) ;
+			} catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void incLevel(int increment)
 	{
 		if (level + increment <= maxLevel)
@@ -194,42 +212,6 @@ public class Spell
 			applyBuff(mult, receiver, nerf) ;
 		}
 	}
-	
-//	public void applyBuffsAndNerfs(String action, LiveBeing receiver)
-//	{
-//		int ActionMult = 1 ;
-////		double[][] Buff = new double[14][5] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence][effect]
-////		double[] OriginalValue = new double[14] ;	// [PA.getLife(), PA.getMp(), PhyAtk, MagAtk, Phy def, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
-//		
-//		PersonalAttributes PA = receiver.getPA() ;
-////		BattleAttributes BA = receiver.getBA() ;
-//		
-////		OriginalValue = new double[] {PA.getLife().getMaxValue(), PA.getMp().getMaxValue(), BA.getPhyAtk().getBaseValue(), BA.getMagAtk().getBaseValue(),
-////				BA.getPhyDef().getBaseValue(), BA.getMagDef().getBaseValue(), BA.getDex().getBaseValue(), BA.getAgi().getBaseValue(),
-////				BA.getCrit()[0],
-////				BA.getStun().getBasicAtkChance(),
-////				BA.getBlock().getBasicAtkChance(),
-////				BA.getBlood().getBasicAtkChance(), BA.getBlood().getBasicDefChance(), BA.getBlood().getBasicAtk(), BA.getBlood().getBasicDef(),
-////				BA.getPoison().getBasicAtkChance(), BA.getPoison().getBasicDefChance(),
-////				BA.getPoison().getBasicAtk(), BA.getPoison().getBasicDef(),
-////				BA.getSilence().getBasicAtkChance()} ;
-//		if (action.equals("deactivate"))
-//		{
-//			ActionMult = -1 ;
-//		}
-//		
-//		for (Buff buff : buffs)
-//		{
-//			int level = 1 ;
-//			double increment = PA.getLife().getMaxValue() * buff.getPercentIncrease().get(Attributes.life)
-//					+ buff.getValueIncrease().get(Attributes.life) ;
-//			PA.getLife().incCurrentValue((int) increment * level * ActionMult);
-//		}
-////		
-////		if (!spellIsActive)
-////		{
-////		}
-//	}
 	
 	@Override
 	public String toString()

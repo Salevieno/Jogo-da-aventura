@@ -76,57 +76,53 @@ public class Battle
 	
 	private static void PrintElement(Elements atkElem, Elements weaponElem, Elements armorElem, Elements shieldElem, Elements superElem, double elemMult)
 	{
-		System.out.println("Elements: atk = " + atkElem + " weapon = " + weaponElem + " armor = " + armorElem + " def = " + shieldElem + " super = " + superElem + " mult = " + elemMult) ;
+		System.out.println("Elements: atk = " + atkElem + " | weapon = " + weaponElem + " | armor = " + armorElem + " | def = " + shieldElem + " | super = " + superElem + " | mult = " + elemMult) ;
 	}
 	
 	// métodos de cálculo de batalha válidos para todos os participantes
-	private static double basicElemMult(Elements Atk, Elements Def)
+	private static double basicElemMult(Elements atk, Elements def)
 	{
-		return ElemMult[ElemID.indexOf(Atk)][ElemID.indexOf(Def)] ;
+		return ElemMult[ElemID.indexOf(atk)][ElemID.indexOf(def)] ;
 	}
 	
-	private static boolean hit(double Dex, double Agi)
+	private static boolean hit(double dex, double agi)
 	{
-		boolean hit = false ;
-		
-		if (Math.random() <= 1 - 1/(1 + Math.pow(1.1, Dex - Agi)))
-		{
-			hit = true ;
-		}
-		
-		return hit ;
+		double hitChance = 1 - 1 / (1 + Math.pow(1.1, dex - agi)) ;
+		return UtilG.chance(hitChance) ;
 	}
 	
-	private static boolean block(double BlockDef)
+	private static boolean block(double blockDef)
 	{
-		if (Math.random() < BlockDef)
-		{
-			return true ;
-		}
-		return false ;
+		return UtilG.chance(blockDef) ;
 	}
 
-	private static boolean criticalAtk(double CritAtk, double CritDef)
+	private static boolean criticalAtk(double critAtk, double critDef)
 	{
-		return (Math.random() + CritDef <= CritAtk) ;
+		return UtilG.chance(critAtk - critDef) ;
 	}
 		
-	private static double calcElemMult(Elements Atk, Elements Weapon, Elements Armor, Elements Shield, Elements SuperElem)
+	private static double calcElemMult(Elements atk, Elements weapon, Elements armor, Elements shield, Elements superElem)
 	{
 		double mult = 1 ;
-		mult = basicElemMult(Atk, Armor) * mult ;
-		mult = basicElemMult(Atk, Shield) * mult ;
-		mult = basicElemMult(Weapon, Armor) * mult ;
-		mult = basicElemMult(Weapon, Shield) * mult ;
-		mult = basicElemMult(SuperElem, Armor) * mult ;
-		mult = basicElemMult(SuperElem, Shield) * mult ;
+		mult = basicElemMult(atk, armor) * mult ;
+		mult = basicElemMult(atk, shield) * mult ;
+		mult = basicElemMult(weapon, armor) * mult ;
+		mult = basicElemMult(weapon, shield) * mult ;
+		mult = basicElemMult(superElem, armor) * mult ;
+		mult = basicElemMult(superElem, shield) * mult ;
 		return mult ;
 	}
 
 	private static AtkResults calcPhysicalAtk(LiveBeing attacker, LiveBeing receiver)
 	{
+		double arrowPower = 0 ;
+		if (attacker.actionIsArrowAtk())
+		{
+			arrowPower += ((Player) attacker).getEquippedArrow().getAtkPower() ;
+		}
+		
 		AttackEffects effect = calcEffect(attacker.getBA().TotalDex(), receiver.getBA().TotalAgi(), attacker.getBA().TotalCritAtkChance(), receiver.getBA().TotalCritDefChance(), receiver.getBA().getStatus().getBlock()) ;
-		int damage = calcDamage(effect, attacker.getBA().TotalPhyAtk(), receiver.getBA().TotalPhyDef(), attacker.atkElems(), receiver.defElems(), 1) ;
+		int damage = calcDamage(effect, attacker.getBA().TotalPhyAtk() + arrowPower, receiver.getBA().TotalPhyDef(), attacker.atkElems(), receiver.defElems(), 1) ;
 
 		return new AtkResults(AtkTypes.physical, effect, damage) ;
 	}
@@ -153,7 +149,7 @@ public class Battle
 		return effect;
 	}
 	
-	public static int calcDamage(AttackEffects effect, double Atk, double Def, Elements[] atkElems, Elements[] defElem, double ElemModifier)
+	public static int calcDamage(AttackEffects effect, double atk, double def, Elements[] atkElems, Elements[] defElem, double elemModifier)
 	{
 		int damage = -1 ;
 		if (effect.equals(AttackEffects.miss) | effect.equals(AttackEffects.block))
@@ -162,16 +158,16 @@ public class Battle
 		} 
 		else if (effect.equals(AttackEffects.hit))
 		{
-			damage = Math.max(0, (int)(Atk - Def)) ;
+			damage = Math.max(0, (int)(atk - def)) ;
 		}
 		else if (effect.equals(AttackEffects.crit))
 		{
-			damage = (int) Atk ;
+			damage = (int) atk ;
 		}
 		double randomMult = UtilG.RandomMult(randomAmp) ;
 		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElem[0], defElem[0], atkElems[2]) ;
 		PrintElement(atkElems[0], atkElems[1], defElem[0], defElem[0], atkElems[2], elemMult) ;
-		damage = (int) (randomMult * elemMult * ElemModifier * Atk) ;
+		damage = (int) (randomMult * elemMult * elemModifier * atk) ;
 		return damage ;
 	}
 		
@@ -181,7 +177,7 @@ public class Battle
 		
 		for (int i = 0; i <= atkChances.length - 1; i += 1)
 		{
-			if (Math.random() <= atkChances[i] - defChances[i])
+			if (UtilG.chance(atkChances[i] - defChances[i]))
 			{
 				status[i] = durations[i] ;
 			}
@@ -279,6 +275,7 @@ public class Battle
 		return true ;
 	}
 	
+	
 	private AtkResults atk(AtkTypes atkType, LiveBeing attacker, LiveBeing receiver)
 	{
 		switch (atkType)
@@ -296,7 +293,7 @@ public class Battle
 			}
 			case physicalMagical: 
 			{
-				// TODO arrow atk
+				// TODO physicalMagical atks
 				return new AtkResults() ;
 			}
 			case defense:
@@ -311,12 +308,11 @@ public class Battle
 	private AtkResults runTurn(LiveBeing attacker, LiveBeing receiver)
 	{
 		AtkResults atkResult = new AtkResults() ;
-		if (attacker.actionIsArrowAtk())
-		{
-			atkResult = atk(AtkTypes.physicalMagical, attacker, receiver) ;
-			// TODO add arrow atk, arrows can be physical and magical at the same time
-		}
-		if (attacker.actionIsPhysicalAtk())
+//		if (attacker.actionIsArrowAtk())
+//		{
+//			atkResult = atk(AtkTypes.physical, attacker, receiver) ;
+//		}
+		if (attacker.actionIsPhysicalAtk() | attacker.actionIsArrowAtk())
 		{
 			atkResult = atk(AtkTypes.physical, attacker, receiver) ;
 //			atkResult = calcPhysicalAtk(attacker, receiver) ;

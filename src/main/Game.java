@@ -1216,7 +1216,7 @@ public class Game extends JPanel
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno") ;
-    	player.setMap(fieldMaps[1]) ;
+    	player.setMap(cityMaps[1]) ;
     	player.setPos(new Point(400, 221)) ;
 
 //    	player.setLevel(50) ;
@@ -1306,7 +1306,7 @@ public class Game extends JPanel
 	        {
 	        	//loading.displayText(DP) ;
 	        	initialize() ;
-				state = GameStates.simulation;
+				state = GameStates.running;
 				
 //				for (int i = 0 ; i <= 10000 - 1 ; i += 1)
 //				{

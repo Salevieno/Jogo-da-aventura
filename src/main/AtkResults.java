@@ -40,7 +40,7 @@ public class AtkResults
 	@Override
 	public String toString()
 	{
-		return "AtkResults [atkType=" + atkType + ", effect=" + effect + ", damage=" + damage + "]";
+		return "AtkResults: type = " + atkType + ", effect = " + effect + ", damage = " + damage ;
 	}
 	
 	

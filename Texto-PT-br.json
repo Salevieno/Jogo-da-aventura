@@ -176,17 +176,7 @@
   ],
 
   "NPCs":
-  [
-    {
-      "Nome": "Cidadão 19",
-      "Falas":
-      [
-        "Tanta terra, tanta terra...já pensou quantos tesouros devem estar enterrados nela?",
-        "Para que se desgastar caçando criaturas quando você pode arrumar uma pá e procurar por tesouros debaixo da terra?",
-        "Achado também é roubado, mesmo debaixo da terra! É o meu lema."
-      ],
-      "Opcoes": [["Sim", "Não"], ["Sim", "123", "Não"], []]
-    },   
+  [ 
     {
       "Nome": "Doutor",
       "Falas":
@@ -222,28 +212,6 @@
         "Volte sempre!"
       ],
       "Opcoes": [["Comprar", "Vender"], [], ["Até mais."]]
-    },
-    {
-      "Nome": "Doutor",
-      "Falas":
-      [
-        "Olá, gostaria de tratar esses ferimentos?",
-        "Você não está ferido!",
-        "Prontinho! Seu pet está melhor agora.",
-        "Prontinho! Aproveite sua vida.",
-        "Tenha um bom dia!"
-      ],
-      "Opcoes": [[], [], [], [], []]
-    },
-    {
-      "Nome": "Vendedor de equipamentos",
-      "Falas":
-      [
-        "Olá, o que deseja fazer?",
-        "Escolha seu equipamento!",
-        "Volte sempre!"
-      ],
-      "Opcoes": [[], [], []]
     },
     {
       "Nome": "Vendedor de itens",
@@ -302,19 +270,6 @@
         "Te vejo por aí!"
       ],
       "Opcoes": [[], [], [], []]
-    },
-    {
-      "Nome": "Mestre",
-      "Falas":
-      [
-        "Olá, deseja aumentar suas habilidades?",
-        "Até a proxima!",
-        "Uau, como vc cresceu! Está pronto para evoluir?",
-        "Para qual classe quer evoluir?",
-        "Parabéns! Agora vc é um:",
-        "Neste caso, quer aumentar suas habilidades?"
-      ],
-      "Opcoes": [[], [], [], [], [], []]
     },
     {
       "Nome": "Quest",

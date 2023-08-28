@@ -138,7 +138,7 @@ public class Player extends LiveBeing
 	public static final String[] HotKeys = new String[] {"T", "Y", "U"} ;
 
 	public final static Image[] AttWindowImages = new Image[] {UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")} ;
-    	
+    public final static Image settingsWindowImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "windowSettings.png") ;
 	
 	
 	public Player(String name, String Sex, int job)
@@ -192,7 +192,7 @@ public class Player extends LiveBeing
 				new LinkedHashMap<QuestItem, Integer>()) ;
 		if (job == 2)
 		{
-			bag.Add(Arrow.getAll()[0], 2) ;
+			bag.Add(Arrow.getAll()[0], 100) ;
 		}
 		questWindow = new QuestWindow() ;
 		quests = new ArrayList<>() ;
@@ -211,16 +211,10 @@ public class Player extends LiveBeing
 		storedGold = 0 ;
 		goldMultiplier = Double.parseDouble(Properties.get(job)[32]) ; 
 		questSkills = new HashMap<QuestSkills, Boolean>() ;
-		questSkills.put(QuestSkills.forestMap, false) ;
-		questSkills.put(QuestSkills.caveMap, false) ;
-		questSkills.put(QuestSkills.islandMap, false) ;
-		questSkills.put(QuestSkills.volcanoMap, false) ;
-		questSkills.put(QuestSkills.snowlandMap, false) ;
-		questSkills.put(QuestSkills.shovel, false) ;
-		questSkills.put(QuestSkills.craftWindow, false) ;
-		questSkills.put(QuestSkills.ride, false) ;
-		questSkills.put(QuestSkills.dragonAura, false) ;
-		questSkills.put(QuestSkills.bestiary, false) ;
+		for (QuestSkills questSkill : QuestSkills.values())
+		{
+			questSkills.put(questSkill, false) ;
+		}
 		isRiding = false ;
 		stats = new Statistics() ;
 		collectCounter = new TimeCounter(0, 240) ;
@@ -245,7 +239,7 @@ public class Player extends LiveBeing
 	    opponent = null ;
 	    currentCollectible = null ;
 	    currentChest = null ;
-		settings = new SettingsWindow(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "windowSettings.png"), false, true, false, 1, 1) ;
+		settings = new SettingsWindow(settingsWindowImage, false, true, false, 1, 1) ;
 		hotItems = new Item[3] ;
 		
 	}
@@ -1332,20 +1326,20 @@ public class Player extends LiveBeing
 			
 			case 2:
 			
-				double arrowAtk = arrowIsEquipped() ? Arrow.getAll()[equips[3].getId()].getAtkPower() : 0 ;
+				double arrowAtkPower = arrowIsEquipped() ? equippedArrow.getAtkPower() : 0 ;
 				if (spellID == 0 | spellID == 3 | spellID == 6 | spellID == 9 | spellID == 12)
 				{
-					BasicAtk = PhyAtk + arrowAtk ;
+					BasicAtk = PhyAtk + arrowAtkPower ;
 					BasicDef = PhyDef ;
 				}
 				if (spellID == 2 | spellID == 5 | spellID == 11)
 				{
-					BasicAtk = (double) ((PhyAtk + MagAtk) / 2.0 + arrowAtk) ;
-					BasicDef = (double) ((PhyDef + MagDef) / 2.0) ;
+					BasicAtk = (PhyAtk + MagAtk) / 2.0 + arrowAtkPower ;
+					BasicDef = (PhyDef + MagDef) / 2.0 ;
 				}
 				if (spellID == 14)
 				{
-					BasicAtk = MagAtk + arrowAtk ;
+					BasicAtk = MagAtk + arrowAtkPower ;
 					BasicDef = MagDef ;
 				}
 				
