@@ -34,4 +34,9 @@ public class Screen
 	{
 		return new Point((int)(x * size.width), (int)(y * size.height)) ;
 	}
+	
+	public Point getPointWithinBorders(double x, double y)
+	{
+		return new Point((int)(x * size.width), (int)(borders[1] + y * (size.height - borders[1]))) ;
+	}
 }

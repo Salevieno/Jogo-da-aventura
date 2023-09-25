@@ -349,19 +349,25 @@ public class Player extends LiveBeing
 	public void setHotItem(Item item, int slot) { hotItems[slot] = item ;}	
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
 	
-	
-	
-	public void setAttPoints(int attPoints)
-	{
-		this.attPoints = attPoints;
-	}
-
 
 	public static Spell[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpells(), 14) ;}
 	public static Spell[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 34, 49) ;}
 	public static Spell[] getArcherSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 70, 84) ;}
 	public static Spell[] getAnimalSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 105, 118) ;}
 	public static Spell[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 139, 152) ;}
+	
+	
+	public void setAttPoints(int attPoints)
+	{
+		this.attPoints = attPoints;
+	}
+	public void addProSpells()
+	{
+		int firstSpellID = spells.size() + CumNumberOfSpellsPerJob[job] ;
+		firstSpellID += proJob == 1 ? 0 : 10 ;
+		spells.addAll(Arrays.asList(Arrays.copyOfRange(Game.getAllSpells(), firstSpellID - 1, firstSpellID + 10))) ;
+	}
+
 	
 	public boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
@@ -1056,7 +1062,7 @@ public class Player extends LiveBeing
 		}
 		if (spellsTree.isOpen())
 		{
-			spellsTree.display(mousePos, spellPoints, DP) ;
+			spellsTree.display(mousePos, job, spellPoints, DP) ;
 		}
 	}
 		

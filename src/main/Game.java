@@ -163,7 +163,7 @@ public class Game extends JPanel
 	public Game() 
 	{
 		DP = new DrawingOnPanel() ;
-    	player = new Player("", "", 2) ;
+    	player = new Player("", "", 3) ;
     	
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -409,7 +409,7 @@ public class Game extends JPanel
 		String npcName = (String) npc.get("name") ;
 		double posX = (Double) ((JSONObject) npc.get("pos")).get("x") ;
 		double posY = (Double) ((JSONObject) npc.get("pos")).get("y") ;
-		Point npcPos = screen.getPoint(posX, posY) ;
+		Point npcPos = screen.getPointWithinBorders(posX, posY) ;
 		NPCJobs npcJob = NPCJobs.valueOf(npcName) ;
 		NPCType npcType = null ;
 		for (NPCType type : NPCTypes)
@@ -634,7 +634,7 @@ public class Game extends JPanel
 				BuildingNames buildingName = BuildingNames.valueOf((String) building.get("name")) ;
 				double posX = (Double) ((JSONObject) building.get("pos")).get("x") ;
 				double posY = (Double) ((JSONObject) building.get("pos")).get("y") ;
-				Point buildingPos = screen.getPoint(posX, posY) ;
+				Point buildingPos = screen.getPointWithinBorders(posX, posY) ;
 				
 				BuildingType buildingType = null ;
 				for (BuildingType type : buildingTypes)
@@ -1216,8 +1216,9 @@ public class Game extends JPanel
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno") ;
-    	player.setMap(cityMaps[1]) ;
-    	player.setPos(new Point(400, 221)) ;
+    	player.setLevel(50) ;
+    	player.setMap(cityMaps[3]) ;
+    	player.setPos(new Point(200, 221)) ;
 
 //    	player.setLevel(50) ;
 		

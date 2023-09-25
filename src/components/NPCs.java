@@ -412,7 +412,7 @@ public class NPCs
 	private void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawingOnPanel DP)
 	{
 		
-		if (player.getLevel() == 50 & player.getProJob() == 0)
+		if (50 <= player.getLevel() & player.getProJob() == 0)
 		{
 			if (action == null) { return ;}
 
@@ -420,13 +420,14 @@ public class NPCs
 			{
 				// TODO get pro job
 				player.setProJob(1) ;
+				player.addProSpells() ;
 				player.getSpellsTreeWindow().switchTo2Tabs() ;
 			}			
 		}
 	
 		if (menu == 0) { return ;}
 
-		spellsTree.display(mousePos, player.getSpellPoints(), DP);
+		spellsTree.display(mousePos, player.getJob(), player.getSpellPoints(), DP);
 		
 		if (action == null) { return ;}
 

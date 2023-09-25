@@ -18,36 +18,30 @@ import utilities.UtilG;
 public class SpellsTreeWindow extends GameWindow
 {
 	private List<Spell> spells ;
-//	private int spellPoints ;
 	private Point windowTopLeft ;
-//	private Color textColor ;
-//	public List<GameIcon> spellBoxes ;
-//	private Dimension windowSize ;
 
+	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
+	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	private static final Image noTabsImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTree.png") ;
 	private static final Image tab0Image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTreeTab0.png") ;
 	private static final Image tab1Image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTreeTab1.png") ;
-	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
-	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
-//	private static final int[][] numberSpellsPerRow = new int[][] {{2, 3, 3, 3, 3}} ;
 	private static final Image spellSlot = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellSlot.png") ;
+	private static final Image spellSlotSelected = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellSlotSelected.png") ;
 	private static final Image spellInfo = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellInfo.png") ;
 	private static final Image spellPoints = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellPoints.png") ;
 	
 	public SpellsTreeWindow()
 	{
-		super("Árvore de magias", noTabsImage, 0, 1, 0, 1);
-//		this.spells = spells ;
-//		this.spellPoints = spellPoints ;
-		windowTopLeft = new Point((int)(0.1 * Game.getScreen().getSize().width), (int)(0.2 * Game.getScreen().getSize().height)) ;
-//		windowSize = new Dimension((int)(0.7 * Game.getScreen().getSize().width), (int)(0.66 * Game.getScreen().getSize().height)) ;
-//		spellBoxes = new ArrayList<>() ;
+		super("Árvore de magias", noTabsImage, 0, 1, 0, 1) ;
+		
+		windowTopLeft = Game.getScreen().getPoint(0.1, 0.2) ;
 	}
 		
 	public void switchTo2Tabs() { numberTabs = 2 ;}
-	public void setSpells(List<Spell> spells) { this.spells = spells ; numberItems = spells.size() ;}	
-//	public void setSpellPoints(int spellPoints) { this.spellPoints = spellPoints;}
+	public void setSpells(List<Spell> spells) { this.spells = spells ; numberItems = spells.size() ;}
+	
 	public boolean canAcquireSpell(int spellPoints) { return 0 < spellPoints & spells.get(item).getLevel() < spells.get(item).getMaxLevel() & spells.get(item).hasPreRequisitesMet() ;}
+	
 	public void acquireSpell(List<Spell> spells)
 	{
 
@@ -62,26 +56,44 @@ public class SpellsTreeWindow extends GameWindow
 		
 	}
 	
+	public int[] spellsDistribution(int playerJob)
+	{
+		if (0 < tab) { return new int[] {1, 2, 2, 2, 2, 1} ;
+		
+		}
+		switch (playerJob)
+		{
+			case 0: return new int[] {1, 3, 3, 3, 3, 1} ;
+			case 1: return new int[] {3, 3, 3, 3, 3} ;
+			case 2: return new int[] {3, 3, 3, 3, 3} ;
+			case 3: return new int[] {2, 3, 3, 3, 3} ;
+			case 4: return new int[] {2, 3, 3, 3, 3} ;
+			default: return null ;
+		}
+	}
+	
 	public void navigate(String action)
 	{
 		if (action == null) { return ;}
-		
+
 		if (action.equals(Player.ActionKeys[1]))
 		{
-			itemUp() ;
+			itemDown() ;
 		}
 		if (action.equals(Player.ActionKeys[3]))
 		{
-			itemDown() ;
+			itemUp() ;
 		}
 		if (1 <= numberTabs)
 		{
 			if (action.equals(Player.ActionKeys[0]))
 			{
+				item = 0 ;
 				tabDown() ;
 			}
 			if (action.equals(Player.ActionKeys[2]))
 			{
+				item = spells.size() - 10 ;
 				tabUp() ;
 			}
 		}
@@ -98,13 +110,24 @@ public class SpellsTreeWindow extends GameWindow
 		
 	}
 	
-	private Point calcSlotPos(int row, int col, Dimension slotSize)
+	private List<Spell> basicSpells(int playerJob)
+	{
+		return spells.subList(0, Player.NumberOfSpellsPerJob[playerJob]) ;
+	}
+	
+	private List<Spell> proSpells()
+	{
+		return spells.subList(spells.size() - 11, spells.size() - 1) ;
+	}
+	
+	private Point calcSlotPos(int row, int col, int numberRows, int numberCols, Dimension slotSize)
 	{
 		Point offset = new Point(windowTopLeft.x + border + padding, windowTopLeft.y + border + padding + 20) ;
 		
-		Point spacing = new Point((int)UtilG.spacing(288, 3, slotSize.width, padding), (int)UtilG.spacing(320, 5, slotSize.height, padding)) ;
+		double spacingX = UtilG.spacing(288, numberCols, slotSize.width, padding) ;
+		double spacingY = UtilG.spacing(320, numberRows, slotSize.height, padding) ;
 
-		Point slotPos = new Point(offset.x + col * spacing.x, offset.y + row * spacing.y) ;
+		Point slotPos = new Point((int) (offset.x + col * spacingX), (int) (offset.y + row * spacingY)) ;
 		
 		return slotPos ;
 	}
@@ -116,13 +139,15 @@ public class SpellsTreeWindow extends GameWindow
 		
 		double angle = DrawingOnPanel.stdAngle ;
 		Point pos = UtilG.Translate(windowTopLeft, 0, -40) ;
+		Point spellNamePos = UtilG.Translate(windowTopLeft, spellInfo.getWidth(null) / 2, - 40 - 10) ;
 		DP.DrawImage(spellInfo, pos, Align.topLeft) ;
+		DP.DrawText(spellNamePos, Align.center, angle, spells.get(item).getName(), regularFont, Game.colorPalette[9]) ;
 		pos.x += 5 ;
+		pos.y += 8 ;
 		for (String info : spells.get(item).getInfo())
 		{
-			pos.y += 8 ;
 			DP.DrawText(pos, Align.centerLeft, angle, info, regularFont, Game.colorPalette[9]) ;
-			pos.y += 8 ;
+			pos.y += 16 ;
 		}
 	}
 	
@@ -139,51 +164,71 @@ public class SpellsTreeWindow extends GameWindow
 		
 	}
 	
-	public void display(Point mousePos, int points, DrawingOnPanel DP)
+	public void displayWindow(DrawingOnPanel DP)
+	{
+		double angle = DrawingOnPanel.stdAngle ;
+		if (numberTabs <= 1)
+		{
+			DP.DrawImage(image, windowTopLeft, angle, new Scale(1, 1), Align.topLeft) ;
+			return ;
+		}
+		
+		Point displayPos = UtilG.Translate(windowTopLeft, -23, 0) ;
+		Image displayImage = tab == 0 ? tab0Image : tab1Image ;
+		Color tabTextColor = Game.colorPalette[9] ;
+		DP.DrawImage(displayImage, displayPos, angle, new Scale(1, 1), Align.topLeft) ;
+		DP.DrawText(UtilG.Translate(windowTopLeft, -10, 6 + 75/2), Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
+		DP.DrawText(UtilG.Translate(windowTopLeft, -10, 6 + 75 + 75/2), Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
+	}
+	
+	public void display(Point mousePos, int playerJob, int points, DrawingOnPanel DP)
 	{
 
-//		int TabL = size.width / 20 ;
-//		int TabH = size.height / 3 ;
 		double angle = DrawingOnPanel.stdAngle ;
-//		Color[] TabColor = new Color[] {Game.colorPalette[7], Game.colorPalette[7]} ;
-//		Color[] TabTextColor = new Color[] {Game.colorPalette[5], Game.colorPalette[5]} ;
 		Color selectedColor = Game.colorPalette[3] ;
 		Color hasPreReqColor = Game.colorPalette[0] ;
 		Color hasNotPreReqColor = Game.colorPalette[9] ;
 		
 		displaySpellsInfo(DP) ;
-
-		if (numberTabs <= 1)
-		{
-			DP.DrawImage(image, windowTopLeft, angle, new Scale(1, 1), Align.topLeft) ;
-		}
-		else
-		{
-			Image displayImage = tab == 0 ? tab0Image : tab1Image ;
-			DP.DrawImage(displayImage, windowTopLeft, angle, new Scale(1, 1), Align.topLeft) ;
-		}
+		displayWindow(DP) ;
 		
 		Point titlePos = UtilG.Translate(windowTopLeft, size.width / 2, 6 + 9) ;
 		DP.DrawText(titlePos, Align.center, angle, name, largeFont, Game.colorPalette[9]);
 		
 		if (spells == null) { return ;}
+
+		List<Spell> spellsOnWindow = tab == 0 ? basicSpells(playerJob) : proSpells() ;
+
+		int[] spellsDistribution = spellsDistribution(playerJob) ;
 		
 		// display spells
-		for (int i = 0 ; i <= spells.size() - 1 ; i += 1)
+		int initialSpell = tab == 0 ? 0 : basicSpells(playerJob).size() + 1 ;
+		int row = 0 ;
+		int col = 0 ;
+		for (int i = 0 ; i <= spellsOnWindow.size() - 1 ; i += 1)
 		{
-			int row = i / 3 ;
-			int col = i % 3 ;
+			if (spellsDistribution.length <= row) { System.out.println("Tentando desenhar magias demais!") ; break ;}
+			
 			Dimension slotSize = new Dimension(spellSlot.getWidth(null), spellSlot.getHeight(null)) ;
-			Color textColor = this.item == i ? selectedColor : spells.get(i).hasPreRequisitesMet() ? hasPreReqColor : hasNotPreReqColor ;
-			Point slotPos = calcSlotPos(row, col, slotSize) ;
+			Color textColor = this.item == initialSpell + i ? selectedColor : spellsOnWindow.get(i).hasPreRequisitesMet() ? hasPreReqColor : hasNotPreReqColor ;
+			Image slotImage = this.item == initialSpell + i ? spellSlotSelected : spellSlot ;
+			Point slotPos = calcSlotPos(row, col, spellsDistribution.length, spellsDistribution[row], slotSize) ;
 //			Point spellNamePos = UtilG.Translate(slotPos, slotSize.width / 2, 10) ;
 			Point spellImagePos = UtilG.Translate(slotPos, slotSize.width / 2, 4 + 14) ;
 			Point spellLevelPos = UtilG.Translate(slotPos, slotSize.width / 2, slotSize.height / 2 + 18) ;
 					
-			DP.DrawImage(spellSlot, slotPos, Align.topLeft) ;
-			DP.DrawImage(spells.get(i).getImage(), spellImagePos, Align.center) ;
+			DP.DrawImage(slotImage, slotPos, Align.topLeft) ;
+			DP.DrawImage(spellsOnWindow.get(i).getImage(), spellImagePos, Align.center) ;
 //			DP.DrawTextUntil(spellNamePos, Align.center, angle, spells.get(i).getName(), regularFont, textColor, 8, mousePos) ;
-			DP.DrawText(spellLevelPos, Align.center, angle, String.valueOf(spells.get(i).getLevel()), regularFont, textColor) ;
+			DP.DrawText(spellLevelPos, Align.center, angle, String.valueOf(spellsOnWindow.get(i).getLevel()), regularFont, textColor) ;
+			col += 1 ;			
+			
+			if (spellsDistribution[row] <= col)
+			{
+				col = 0 ;
+				row += 1 ;
+			}
+			
 		}
 
 		displaySpellPoints(points, DP) ;

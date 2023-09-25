@@ -605,35 +605,35 @@ public abstract class UtilG
 		return newstring2 ;
 	}
 	
-	public static int IndexOf(int[] Array, int Value)
-	{
-		if (Array != null)
-		{
-			for (int i = 0 ; i <= Array.length - 1 ; i += 1)
-			{
-				if (Value == Array[i])
-				{
-					return i ;
-				}
-			}
-		}
-		return -1 ;
-	}
-
-	public static int IndexOf(String[] Vector, String Value)
-	{
-		if (Vector != null)
-		{
-			for (int i = 0 ; i <= Vector.length - 1 ; ++i)
-			{
-				if (Vector[i].equals(Value))
-				{
-					return i ;
-				}
-			}
-		}
-		return -1 ;
-	}
+//	public static int IndexOf(int[] Array, int Value)
+//	{
+//		if (Array != null)
+//		{
+//			for (int i = 0 ; i <= Array.length - 1 ; i += 1)
+//			{
+//				if (Value == Array[i])
+//				{
+//					return i ;
+//				}
+//			}
+//		}
+//		return -1 ;
+//	}
+//
+//	public static int IndexOf(String[] Vector, String Value)
+//	{
+//		if (Vector != null)
+//		{
+//			for (int i = 0 ; i <= Vector.length - 1 ; ++i)
+//			{
+//				if (Vector[i].equals(Value))
+//				{
+//					return i ;
+//				}
+//			}
+//		}
+//		return -1 ;
+//	}
 	
 	public static double Round(double num, int decimals)
 	{
