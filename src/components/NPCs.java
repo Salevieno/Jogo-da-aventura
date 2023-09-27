@@ -18,6 +18,7 @@ import items.Recipe;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.Game;
+import main.TextCategories;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
@@ -161,7 +162,8 @@ public class NPCs
 		speak(pos, DP) ;
 		if (type.getOptions() != null) { drawOptions(UtilG.Translate(pos, 20, -10), DP) ;}
 				
-
+		String playerAction = player.getCurrentAction() ;
+		BagWindow playerBag = player.getBag() ;
 		switch (type.getJob())
 		{		
 			case doctor: 
@@ -173,70 +175,80 @@ public class NPCs
 			}
 			case equipsSeller:
 			{
-		    	sellerAction(player.getBag(), player.getCurrentAction(), mousePos, (ShoppingWindow) window, DP) ;
+		    	sellerAction(playerBag, playerAction, mousePos, (ShoppingWindow) window, DP) ;
 		    	
 		    	break ;
 			}
 			case itemsSeller:
 			{
-		    	sellerAction(player.getBag(), player.getCurrentAction(), mousePos, (ShoppingWindow) window, DP) ;
+		    	sellerAction(playerBag, playerAction, mousePos, (ShoppingWindow) window, DP) ;
 		    	
 		    	break ;
 			}
 			case smuggleSeller:
 			{
-		    	sellerAction(player.getBag(), player.getCurrentAction(), mousePos, (ShoppingWindow) window, DP) ;
+		    	sellerAction(playerBag, playerAction, mousePos, (ShoppingWindow) window, DP) ;
 		    	
 		    	break ;
 			}
 			case master:
 			{
 				player.getSpellsTreeWindow().setSpells(player.getSpells()) ;
+				
+				if (50 <= player.getLevel() & player.getProJob() == 0 & menu == 0)
+				{
+					menu = 2 ;
+					String[] proClassesText = Game.allText.get(TextCategories.proclasses) ;
+					String proJob1 = proClassesText[2 * player.getJob() + 0] ;
+					String proJob2 = proClassesText[2 * player.getJob() + 1] ;
+					type.getOptions().set(3, new ArrayList<String>(Arrays.asList(proJob1, proJob2))) ;
+				}
+				
 				masterAction(player, player.getCurrentAction(), mousePos, player.getSpellsTreeWindow(), DP) ;
 
 				break ;
 			}
 			case alchemist:
 			{
-				crafterAction(player.getBag(), player.getCurrentAction(), mousePos, (CraftWindow) window, DP) ;
+				crafterAction(playerBag, playerAction, mousePos, (CraftWindow) window, DP) ;
 				
 				break ;
 			}
 			case woodcrafter:
 			{
-				crafterAction(player.getBag(), player.getCurrentAction(), mousePos, (CraftWindow) window, DP) ;
+				crafterAction(playerBag, playerAction, mousePos, (CraftWindow) window, DP) ;
 				
 				break ;
 			}
 			case crafter:
 			{
-				crafterAction(player.getBag(), player.getCurrentAction(), mousePos, (CraftWindow) window, DP) ;
+				crafterAction(playerBag, playerAction, mousePos, (CraftWindow) window, DP) ;
 				
 				break ;
 			}
 			case forger:
 			{
 				List<Equip> equipsForForge = new ArrayList<>() ;
-				player.getBag().getEquip().keySet().forEach(equipsForForge::add) ;
+				playerBag.getEquip().keySet().forEach(equipsForForge::add) ;
 				((ForgeWindow) window).setItemsForForge(equipsForForge);
 				
-				forgerAction(player.getBag(), player.getCurrentAction(), (ForgeWindow) window, DP) ;
+				forgerAction(playerBag, playerAction, (ForgeWindow) window, DP) ;
 				
 				break ;
 			}
 			case elemental:
 			{
-				List<Equip> listEquips = new ArrayList<Equip> (player.getBag().getEquip().keySet()) ;
+				List<Equip> listEquips = new ArrayList<Equip> (playerBag.getEquip().keySet()) ;
 				((ElementalWindow) window).setEquipsForElemChange(listEquips) ;
-				((ElementalWindow) window).setSpheres(ElementalWindow.spheresInBag(player.getBag())) ;
+				((ElementalWindow) window).setSpheres(ElementalWindow.spheresInBag(playerBag)) ;
 				
-				elementalAction(player.getBag(), (ElementalWindow) window, player.getCurrentAction(), DP) ;
+				elementalAction(playerBag, (ElementalWindow) window, player.getCurrentAction(), DP) ;
 
 				break ;
 			}
 			case saver:
 			{
-				saverAction(player, pet, player.getCurrentAction()) ;
+				saverAction(player, pet, playerAction) ;
 
 				break ;
 			}
@@ -246,13 +258,13 @@ public class NPCs
 			}
 			case sailorToIsland:
 			{
-				sailorAction(player, player.getCurrentAction()) ;
+				sailorAction(player, playerAction) ;
 
 				break ;
 			}
 			case sailorToForest:
 			{
-				sailorAction(player, player.getCurrentAction()) ;
+				sailorAction(player, playerAction) ;
 
 				break ;
 			}
@@ -264,19 +276,19 @@ public class NPCs
 			}
 			case caveExit:
 			{
-				if (player.getBag().contains(Game.getAllItems()[1338])) { portalAction(player) ;}
+				if (playerBag.contains(Game.getAllItems()[1338])) { portalAction(player) ;}
 
 				break ;
 			}
 			case banker:
 			{
-				bankerAction(player.getBag(), (BankWindow) window, player.getCurrentAction(), DP) ;
+				bankerAction(playerBag, (BankWindow) window, playerAction, DP) ;
 
 				break ;
 			}
 			case quest:
 			{
-				questAction(player.getQuests(), player.getBag(), player.getPA(), player.getQuestSkills(), player.getCurrentAction()) ;
+				questAction(player.getQuests(), playerBag, player.getPA(), player.getQuestSkills(), playerAction) ;
 
 				break ;
 			}
@@ -297,7 +309,6 @@ public class NPCs
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) & menu <= numberMenus - 1)
 		{
 			menu = type.getDestination().get(menu).get(selOption) ;
-//			incMenu() ;
 		}
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) & 0 < menu)
 		{
@@ -412,20 +423,19 @@ public class NPCs
 	private void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawingOnPanel DP)
 	{
 		
-		if (50 <= player.getLevel() & player.getProJob() == 0)
+		if (50 <= player.getLevel() & player.getProJob() == 0 & menu == 3)
 		{
 			if (action == null) { return ;}
 
 			if (action.equals("Enter") | action.equals("MouseLeftClick"))
 			{
-				// TODO get pro job
-				player.setProJob(1) ;
+				player.setProJob(1 + selOption) ;
 				player.addProSpells() ;
 				player.getSpellsTreeWindow().switchTo2Tabs() ;
 			}			
 		}
 	
-		if (menu == 0) { return ;}
+		if (menu == 0 | 2 <= menu & menu <= 5 ) { return ;}
 
 		spellsTree.display(mousePos, player.getJob(), player.getSpellPoints(), DP);
 		

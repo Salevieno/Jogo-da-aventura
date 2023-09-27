@@ -45,11 +45,21 @@ public class NPCType
 	{
 		switch (job)
 		{
-			case doctor: break ;
-			case master: destination.add(Arrays.asList(1, 6)) ; break ;
-			case equipsSeller: destination.add(Arrays.asList(1, 2)) ; break ;
-			case citizen: destination.add(Arrays.asList(1, 0)) ; destination.add(Arrays.asList(0, 1, 2)) ; break ;
-			case smuggleSeller: destination.add(Arrays.asList(1, 2)) ; break ;
+			case doctor: return ;
+			case master: 
+			{
+				destination.add(Arrays.asList(1, 6)) ;
+				destination.add(Arrays.asList()) ;
+				destination.add(Arrays.asList(3, 5)) ;
+				destination.add(Arrays.asList(4, 4)) ;
+				destination.add(Arrays.asList(6)) ;
+				destination.add(Arrays.asList(1, 6)) ;
+				destination.add(Arrays.asList(6)) ;
+				return ;
+			}
+			case equipsSeller: destination.add(Arrays.asList(1, 2)) ; return ;
+			case citizen: destination.add(Arrays.asList(1, 0)) ; destination.add(Arrays.asList(0, 1, 2)) ; return ;
+			case smuggleSeller: destination.add(Arrays.asList(1, 2)) ; return ;
 			default: return ;
 		}
 	}

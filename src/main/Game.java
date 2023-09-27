@@ -1218,7 +1218,7 @@ public class Game extends JPanel
     	player.setName("Salevieno") ;
     	player.setLevel(50) ;
     	player.setMap(cityMaps[3]) ;
-    	player.setPos(new Point(200, 221)) ;
+    	player.setPos(new Point(200, 241)) ;
 
 //    	player.setLevel(50) ;
 		

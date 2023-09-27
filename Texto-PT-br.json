@@ -201,7 +201,7 @@
         "Neste caso, quer aumentar suas habilidades?",
         "Até a proxima!"
       ],
-      "Opcoes": [["Sim", "Não"], [], ["Sim", "Não"], [], [], ["Sim", "Não"], ["Até mais."]]
+      "Opcoes": [["Sim", "Não"], [], ["Sim", "Não"], [], ["Até mais."], ["Sim", "Não"], ["Até mais."]]
     },
     {
       "Nome": "Vendedor de equipamentos",

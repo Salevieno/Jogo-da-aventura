@@ -126,7 +126,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Point levelPos = UtilG.Translate(windowPos, size.width / 2, 38) ;	
 		DP.DrawText(levelPos, Align.center, angle, attText[0] + ": " + player.getLevel(), font, colorPalette[6]) ;
 		
-		String jobText = player.getProJob() == 0 ? classesText[player.getJob()] : proClassesText[player.getProJob() + 2*player.getJob()];
+		String jobText = player.getProJob() == 0 ? classesText[player.getJob()] : proClassesText[2 * player.getJob() + player.getProJob() - 1];
 		Point jobTextPos = UtilG.Translate(windowPos, size.width / 2, 56) ;
 		DP.DrawText(jobTextPos, Align.center, angle, jobText, font, colorPalette[5]) ;
 		
