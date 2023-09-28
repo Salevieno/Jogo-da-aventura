@@ -154,6 +154,7 @@ public class NPCs
 	public void incMenu() { if (menu <= numberMenus - 1) menu += 1 ;}
 	public void decMenu() { if (1 <= menu) menu += -1 ;}
 
+	public boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("MouseLeftClick") ;}
 	public static NPCType typeFromJob(NPCJobs job) { return Arrays.asList(Game.getNPCTypes()).stream().filter(npcType -> job.equals(npcType.getJob())).toList().get(0) ;}
 
 	public void action(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
@@ -203,8 +204,9 @@ public class NPCs
 					String proJob2 = proClassesText[2 * player.getJob() + 1] ;
 					type.getOptions().set(3, new ArrayList<String>(Arrays.asList(proJob1, proJob2))) ;
 				}
+				window = player.getSpellsTreeWindow() ;
 				
-				masterAction(player, player.getCurrentAction(), mousePos, player.getSpellsTreeWindow(), DP) ;
+				masterAction(player, player.getCurrentAction(), mousePos, (SpellsTreeWindow) window, DP) ;
 
 				break ;
 			}
@@ -297,7 +299,11 @@ public class NPCs
 		}
 		
 
-		if (player.getCurrentAction() != null) { navigate(player.getCurrentAction()) ;}
+		if (player.getCurrentAction() == null) { return ;}
+				
+		if (window != null) { if (window.isOpen()) { return ;} ;}
+		
+		navigate(player.getCurrentAction()) ;
 		
 	}
 	
@@ -308,11 +314,14 @@ public class NPCs
 
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) & menu <= numberMenus - 1)
 		{
+			if (type.getOptions().get(menu).isEmpty()) { return ;}
 			menu = type.getDestination().get(menu).get(selOption) ;
+			selOption = 0 ;
 		}
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) & 0 < menu)
 		{
 			menu = 0 ;
+			selOption = 0 ;
 		}
 	}
 	
@@ -427,29 +436,33 @@ public class NPCs
 		{
 			if (action == null) { return ;}
 
-			if (action.equals("Enter") | action.equals("MouseLeftClick"))
+			if (actionIsForward(action))
 			{
 				player.setProJob(1 + selOption) ;
 				player.addProSpells() ;
 				player.getSpellsTreeWindow().switchTo2Tabs() ;
 			}			
 		}
+		
+		if (action == null) { return ;}
+		
+		if (menu == 0 & actionIsForward(action))
+		{
+			player.setFocusWindow(spellsTree) ;
+			spellsTree.open() ;
+		}
 	
-		if (menu == 0 | 2 <= menu & menu <= 5 ) { return ;}
+		//if (menu == 0 | 2 <= menu & menu <= 6 ) { return ;}
 
-		spellsTree.display(mousePos, player.getJob(), player.getSpellPoints(), DP);
+		//spellsTree.display(mousePos, player.getJob(), player.getSpellPoints(), DP);
 		
 		if (action == null) { return ;}
 
-		spellsTree.navigate(action) ;
+		//spellsTree.navigate(action) ;
 
-		if (action.equals("Enter") | action.equals("MouseLeftClick"))
+		if (actionIsForward(action))
 		{
-			if (spellsTree.canAcquireSpell(player.getSpellPoints()))
-			{
-				spellsTree.acquireSpell(player.getSpells()) ;
-				player.decSpellPoints() ;
-			}
+			spellsTree.act(player) ;
 		}
 		
 	}

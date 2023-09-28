@@ -348,6 +348,7 @@ public class Player extends LiveBeing
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
 	public void setHotItem(Item item, int slot) { hotItems[slot] = item ;}	
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
+	public void setFocusWindow(GameWindow W) { focusWindow = W ;}
 	
 
 	public static Spell[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpells(), 14) ;}
@@ -368,7 +369,7 @@ public class Player extends LiveBeing
 		spells.addAll(Arrays.asList(Arrays.copyOfRange(Game.getAllSpells(), firstSpellID - 1, firstSpellID + 10))) ;
 	}
 
-	
+	public boolean isFocusedOnWindow() { if (focusWindow == null) { return false ;} return focusWindow.isOpen() ;}
 	public boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
@@ -715,12 +716,9 @@ public class Player extends LiveBeing
 			}
 			else
 			{				
-				if (focusWindow != null)
+				if (!isFocusedOnWindow())
 				{
-					if (!focusWindow.isOpen())
-					{
-						startMove() ;
-					}
+					startMove() ;
 				}
 				else if (!metAnyNPC())
 				{

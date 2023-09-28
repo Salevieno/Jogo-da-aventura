@@ -34,7 +34,7 @@ public class SpellsTreeWindow extends GameWindow
 	{
 		super("Árvore de magias", noTabsImage, 0, 1, 0, 1) ;
 		
-		windowTopLeft = Game.getScreen().getPoint(0.1, 0.2) ;
+		windowTopLeft = Game.getScreen().getPoint(0.4, 0.2) ;
 	}
 		
 	public void switchTo2Tabs() { numberTabs = 2 ;}
