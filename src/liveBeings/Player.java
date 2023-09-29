@@ -709,21 +709,10 @@ public class Player extends LiveBeing
 				case "Esquerda": case "A": setDir(Directions.left) ; break ;
 				case "Direita": case "D": setDir(Directions.right) ; break ;
 			}
-			
-			if (actionIsArrowKeys())
+
+			if (actionIsArrowKeys() | (!isFocusedOnWindow() & !metAnyNPC()))
 			{
 				startMove() ;
-			}
-			else
-			{				
-				if (!isFocusedOnWindow())
-				{
-					startMove() ;
-				}
-				else if (!metAnyNPC())
-				{
-					startMove() ;
-				}
 			}
 			
 		}
