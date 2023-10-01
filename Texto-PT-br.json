@@ -152,9 +152,9 @@
   ],
 
   "janela do jogador": [
-    "Bas.",
-    "Esp.",
-    "Est."
+    "Basic.",
+    "Espec.",
+    "Estat."
   ],
 
   "proClasses": [
@@ -581,32 +581,35 @@
     }
   ],
 
-  "Estatísticas do jogador": [
-    "Número de ataques físicos:",
-    "Número de magias usadas:",
-    "Número de defesas:",
-    "Número de golpes acertados:",
-    "Número de golpes recebidos:",
-    "Número de esquivas:",
-    "Número de críticos:",
-    "Número de atordoamentos:",
-    "Número de bloqueios:",
-    "Número de sangramentos causados:",
-    "Número de envenenamentos causados:",
-    "Número de silêncios causados:",
-    "Dano físico causado:",
-    "Dano físico recebido:",
-    "Dano físico defendido:",
-    "Dano mágico causado:",
-    "Dano mágico recebido:",
-    "Dano mágico defendido:",
-    "Dano crítico causado:",
-    "Dano de sangramento causado:",
-    "Dano de sangramento defendido:",
-    "Dano de envenenamento total:",
-    "Dano de envenenamento defendido:",
-    "Dano físico máximo causado:",
-    "Dano mágico máximo causado:"
+  "estatísticas do jogador": [
+    "ataques físicos",
+    "magias usadas",
+    "defesas",
+    "golpes acertados",
+    "esquivas",
+    "críticos",
+    "atordoamentos",
+    "bloqueios",
+    "sangramentos",
+    "envenenamentos",
+    "silêncios",
+    "fís. c",
+    "fís. r",
+    "fís. d",
+    "mág. c",
+    "mág. r",
+    "mág. d",
+    "crít. c",
+    "crít. r",
+    "crít. d",
+    "sangramento c",
+    "sangramento r",
+    "sangramento d",
+    "envenenamento c",
+    "envenenamento r",
+    "envenenamento d",
+    "físico",
+    "mágico"
   ],
 
 

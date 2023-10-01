@@ -63,6 +63,7 @@ public enum TextCategories
 	signMessages("mensagem das placas"),
 	specialAttributesProperties("propriedades dos atributos especiais"),
 	spellsBar("barra de magias"),
+	statistics("estatísticas do jogador"),
 	playerWindow("janela do jogador"),
 	proclasses("proClasses"),
 	pterodactile("pterodactile");

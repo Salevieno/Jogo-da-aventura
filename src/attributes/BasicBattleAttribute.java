@@ -1,5 +1,7 @@
 package attributes;
 
+import utilities.UtilG;
+
 public class BasicBattleAttribute extends LiveBeingAttribute
 {
 	private double baseValue ;	// base value of the attribute
@@ -27,6 +29,7 @@ public class BasicBattleAttribute extends LiveBeingAttribute
 
 	public void incBaseValue(double inc) {baseValue += inc ;}
 	public void incTrain(double inc) {train += inc ;}
+	public String text() {return UtilG.Round(baseValue, 1) + " + " + UtilG.Round(bonus, 1) + " + " + UtilG.Round(train, 1) ;}
 	
 	public double getTotal() {return baseValue + bonus + train ;}
 

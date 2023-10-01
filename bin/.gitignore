@@ -1,12 +1,12 @@
-/components/
-/graphics/
-/items/
-/main/
-/windows/
 /liveBeings/
+/main/
 /maps/
 /screen/
 /simulations/
 /test/
+/testing/
 /utilities/
+/windows/
+/.gitignore
+/components/
 /attributes/

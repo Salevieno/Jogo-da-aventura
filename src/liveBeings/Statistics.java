@@ -1,11 +1,13 @@
 package liveBeings;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import main.AtkResults;
 import main.AtkTypes;
+import main.Game;
+import main.TextCategories;
 import utilities.AttackEffects;
 
 public class Statistics
@@ -14,7 +16,6 @@ public class Statistics
 	private int numberMagAtk ;
 	private int numberDef ;
 	private int numberHitsInflicted ;
-	private int numberHitsReceived ;
 	private int numberDodges ;
 	private int numberCritInflicted ;
 	private int numberStunInflicted ;
@@ -29,12 +30,17 @@ public class Statistics
 	private int magDamageReceived ;
 	private int magDamageDefended ;
 	private int critDamageInflicted ;
+	private int critDamageReceived ;
+	private int critDamageDefended ;
 	private int bloodDamageInflicted ;
+	private int bloodDamageReceived ;
 	private int bloodDamageDefended ;
 	private int poisonDamageInflicted ;
+	private int poisonDamageReceived ;
 	private int poisonDamageDefended ;
 	private int highestPhyDamageInflicted ;
 	private int highestMagDamageInflicted ;
+		
 	
 	public int getNumberPhyAtk()
 	{
@@ -52,17 +58,13 @@ public class Statistics
 	{
 		return numberHitsInflicted;
 	}
-	public int getNumberHitsReceived()
-	{
-		return numberHitsReceived;
-	}
 	public int getNumberDodges()
 	{
 		return numberDodges;
 	}
 	public int getNumberCritInflicted()
 	{
-		return critDamageInflicted;
+		return numberCritInflicted;
 	}
 	public int getNumberStunInflicted()
 	{
@@ -74,15 +76,15 @@ public class Statistics
 	}
 	public int getNumberBloodInflicted()
 	{
-		return numberCritInflicted;
+		return numberBloodInflicted;
 	}
 	public int getNumberPoisonInflicted()
 	{
-		return bloodDamageDefended;
+		return numberPoisonInflicted;
 	}
 	public int getNumberSilenceInflicted()
 	{
-		return poisonDamageDefended;
+		return numberSilenceInflicted;
 	}
 	public int getPhyDamageInflicted()
 	{
@@ -110,23 +112,39 @@ public class Statistics
 	}
 	public int getCritDamageInflicted()
 	{
-		return numberBloodInflicted;
+		return critDamageInflicted;
+	}
+	public int getCritDamageReceived()
+	{
+		return critDamageReceived;
+	}
+	public int getCritDamageDefended()
+	{
+		return critDamageDefended;
 	}
 	public int getBloodDamageInflicted()
 	{
 		return bloodDamageInflicted;
 	}
+	public int getBloodDamageReceived()
+	{
+		return bloodDamageReceived;
+	}
 	public int getBloodDamageDefended()
 	{
-		return numberPoisonInflicted;
+		return bloodDamageDefended;
 	}
 	public int getPoisonDamageInflicted()
 	{
 		return poisonDamageInflicted;
 	}
+	public int getPoisonDamageReceived()
+	{
+		return poisonDamageReceived;
+	}
 	public int getPoisonDamageDefended()
 	{
-		return numberSilenceInflicted;
+		return poisonDamageDefended;
 	}
 	public int getHighestPhyDamageInflicted()
 	{
@@ -137,11 +155,11 @@ public class Statistics
 		return highestMagDamageInflicted;
 	}
 	
+	
 	public void incNumberPhyAtk() { numberPhyAtk += 1 ;}
 	public void incNumberMagAtk() { numberMagAtk += 1 ;}
 	public void incNumberDef() { numberDef += 1 ;}
 	public void incNumberHitsInflicted() { numberHitsInflicted += 1 ;}
-	public void incNumberHitsReceived() { numberHitsReceived += 1 ;}
 	public void incNumberDodges() { numberDodges += 1 ;}
 	public void incNumberCritInflicted() { numberCritInflicted += 1 ;}
 	public void incPhyDamageInflicted(int amount) { phyDamageInflicted += amount ;}
@@ -244,8 +262,7 @@ public class Statistics
 	public void updatedefensiveStats(int damage, AttackEffects effect, boolean creaturePhyAtk, Creature creature)
 	{
 		if (effect.equals(AttackEffects.hit))
-		{			
-			incNumberHitsReceived() ;
+		{
 			if (creaturePhyAtk)
 			{				
 				incPhyDamageReceived(damage) ;
@@ -271,26 +288,82 @@ public class Statistics
 		incNumberDodges() ;
 	}
 
+	public Map<String, Integer> numberStats()
+	{
+		String[] statsText = Game.allText.get(TextCategories.statistics) ;
+		Map<String, Integer> numberStats = new LinkedHashMap<>() ;
+		Map<String, Double> allStats = allStatistics() ;
+		for (int i = 0 ; i <= 11 - 1; i += 1)
+		{
+			numberStats.put(statsText[i], (Integer) (int) (double) allStats.get(statsText[i])) ;
+		}
+		
+		return numberStats ;
+	}
+	
+	public Map<String, Double> damageStats()
+	{
+		String[] statsText = Game.allText.get(TextCategories.statistics) ;
+		Map<String, Double> damageStats = new LinkedHashMap<>() ;
+		Map<String, Double> allStats = allStatistics() ;
+		for (int i = 11 ; i <= statsText.length - 2 - 1; i += 1)
+		{
+			damageStats.put(statsText[i], allStats.get(statsText[i])) ;
+		}
+		
+		return damageStats ;
+	}
+	
+	public Map<String, Double> maxStats()
+	{
+		String[] statsText = Game.allText.get(TextCategories.statistics) ;
+		Map<String, Double> maxStats = new LinkedHashMap<>() ;
+		Map<String, Double> allStats = allStatistics() ;
+		for (int i = statsText.length - 2 ; i <= statsText.length - 1; i += 1)
+		{
+			maxStats.put(statsText[i], allStats.get(statsText[i])) ;
+		}
+		
+		return maxStats ;
+	}
+	
 	public Map<String, Double> allStatistics()
 	{
-		Map<String, Double> allStats = new HashMap<>() ;
+		Map<String, Double> allStats = new LinkedHashMap<>() ;
+		String[] statsText = Game.allText.get(TextCategories.statistics) ;
 		Field[] fields = Statistics.class.getDeclaredFields() ;
-		for (Field field : fields)
+		for (int i = 0 ; i <= fields.length - 1 ; i += 1)
 		{
 			try
 			{
-				if (field.getType().equals(int.class))
+				if (fields[i].getType().equals(int.class))
 				{
-					allStats.put(field.getName(), (Double) (double) (int) (Integer) field.get(this)) ;
+					allStats.put(statsText[i], (Double) (double) (int) (Integer) fields[i].get(this)) ;
 				}
 				else
 				{
-					allStats.put(field.getName(), (Double) field.get(this)) ;
+					allStats.put(statsText[i], (Double) fields[i].get(this)) ;
 				}
 			}
 			catch (IllegalArgumentException e) { e.printStackTrace() ;}
 			catch (IllegalAccessException e) { e.printStackTrace() ;}
 		}
+//		for (Field field : fields)
+//		{
+//			try
+//			{
+//				if (field.getType().equals(int.class))
+//				{
+//					allStats.put(field.getName(), (Double) (double) (int) (Integer) field.get(this)) ;
+//				}
+//				else
+//				{
+//					allStats.put(field.getName(), (Double) field.get(this)) ;
+//				}
+//			}
+//			catch (IllegalArgumentException e) { e.printStackTrace() ;}
+//			catch (IllegalAccessException e) { e.printStackTrace() ;}
+//		}
 		
 		return allStats ;
 	}

@@ -1,5 +1,7 @@
 package attributes;
 
+import utilities.UtilG;
+
 public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
 {
 	private int basicAtk ;
@@ -45,6 +47,14 @@ public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
 		return basicDefBonus;
 	}
 
+	public double[] attributes() { return new double[] {basicAtkChance, basicDefChance, basicAtk, basicDef, duration} ;}
+	public double[] bonuses() { return new double[] {basicAtkChanceBonus, basicDefChanceBonus, basicAtkBonus, basicDefBonus} ;}
+	public String textAtkChance() { return UtilG.Round(basicAtkChance, 2) + " + " + UtilG.Round(basicAtkChanceBonus, 2) ;}
+	public String textDefChance() { return UtilG.Round(basicDefChance, 2) + " + " + UtilG.Round(basicDefChanceBonus, 2) ;}
+	public String textAtk() { return UtilG.Round(basicAtk, 2) + " + " + UtilG.Round(basicAtkBonus, 2) ;}
+	public String textDef() { return UtilG.Round(basicDef, 2) + " + " + UtilG.Round(basicDefBonus, 2) ;}
+	public String textDuration() { return String.valueOf(duration) ;}
+	public String[] texts() { return new String[] {textAtkChance(), textDefChance(), textAtk(), textDef(), textDuration()} ;}
 
 
 	public double TotalAtk()
