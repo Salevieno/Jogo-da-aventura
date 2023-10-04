@@ -194,13 +194,19 @@ public class Statistics
 			if (atkType.equals(AtkTypes.magical))
 			{
 				incNumberMagAtk() ;
-				incMagDamageInflicted(damage) ;
+				if (effect.equals(AttackEffects.hit))
+				{
+					incMagDamageInflicted(damage) ;
+				}
 				highestMagDamageInflicted = Math.max(highestMagDamageInflicted, damage) ;
 			}
 			else
 			{
 				incNumberPhyAtk() ;
-				incPhyDamageInflicted(damage) ;
+				if (effect.equals(AttackEffects.hit))
+				{
+					incPhyDamageInflicted(damage) ;
+				}
 				highestPhyDamageInflicted = Math.max(highestPhyDamageInflicted, damage) ;
 			}			
 		}
@@ -215,46 +221,10 @@ public class Statistics
 		if (effect.equals(AttackEffects.hit))							// player performed a successful hit
 		{
 			incNumberHitsInflicted() ;
-			// for the status, dividing the duration of the status by the duration applied to get the number of times the status was applied
-//			if (0 < BA.getStun().getDuration())
-//			{
-//				statistics[14] += creature.getBA().getSpecialStatus()[0] / BA.getStun().getDuration() ;	// total number of stun inflicted by the player
-//			}
-//			if (0 < BA.getBlock().getDuration())
-//			{
-//				statistics[15] += creature.getBA().getSpecialStatus()[1] / BA.getBlock().getDuration() ;	// total number of block performed by the player
-//			}
-//			if (0 < BA.getBlood().getDuration())
-//			{
-//				statistics[16] += creature.getBA().getSpecialStatus()[2] / BA.getBlood().getDuration() ;	// total number of blood inflicted by the player
-//				if (0 < creature.getBA().getSpecialStatus()[2])
-//				{
-//					statistics[17] += 1 ;	// total number of blood inflicted by the player
-//				}
-//			}
-//			if (0 < BA.getPoison().getDuration())
-//			{
-//				statistics[19] += creature.getBA().getSpecialStatus()[3] / BA.getPoison().getDuration() ;	// total number of poison inflicted by the player
-//				if (0 < creature.getBA().getSpecialStatus()[3])
-//				{
-//					statistics[20] += 1 ;	// total number of blood inflicted by the player
-//				}
-//			}
-//			if (0 < BA.getSilence().getDuration())
-//			{
-//				statistics[22] += creature.getBA().getSpecialStatus()[4] / BA.getSilence().getDuration() ;	// total number of silence inflicted by the player
-//			}
 		}
-//		if (0 < BloodDamage)
-//		{
-//			statistics[18] += BA.getBlood().TotalDef() ;
-//		}
-//		if (0 < PoisonDamage)
-//		{
-//			statistics[21] += BA.getPoison().TotalDef() ;
-//		}
 		if (effect.equals(AttackEffects.crit))
 		{
+			incNumberHitsInflicted() ;
 			incNumberCritInflicted() ;
 			incCritDamageInflicted(damage) ;
 		}

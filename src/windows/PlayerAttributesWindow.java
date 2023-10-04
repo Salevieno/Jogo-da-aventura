@@ -1,7 +1,6 @@
 package windows;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
@@ -184,7 +183,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		String lifeText = attText[1] + ": " + UtilG.Round(player.getPA().getLife().getCurrentValue(), 1) ;
 		String mpText = attText[2] + ": " + UtilG.Round(player.getPA().getMp().getCurrentValue(), 1) ;
 		DP.DrawText(lifePos, Align.centerLeft, angle, lifeText, font, colorPalette[6]) ;
-		DP.DrawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[5]) ;
+		DP.DrawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[8]) ;
 		
 		BasicBattleAttribute[] attributes = player.getBA().basicAttributes() ;
 		int attOffset = 4 ;

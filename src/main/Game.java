@@ -80,7 +80,6 @@ import screen.SideBar;
 import screen.Sky;
 import simulations.PlayerEvolutionSimulation;
 import utilities.Align;
-import utilities.AttackEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.GameStates;
@@ -98,6 +97,7 @@ public class Game extends JPanel
 	// TODO nomes das criaturas
 	// TODO descrição dos itens
 	// TODO no superelemento de fogo, todos os panos na mochila viram panos em chamas
+	// TODO conferir a contagem das estatísticas do player
 	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] {"Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A"} ;
 
@@ -1235,28 +1235,28 @@ public class Game extends JPanel
 		}
     	//player.getBag().addGold(50000) ;
     	
-    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	
-    	for (int i = 0 ; i <= 60 - 1 ; i += 1)
-    	{
-    		player.getExp().incCurrentValue(player.getExp().getMaxValue());
-			player.levelUp(null) ; // Game.getAnimations()[4]	
-    	}
-    	for (int i = 0 ; i <= 30000 - 1 ; i += 1)
-    	{
-    		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0));
-    		player.train(new AtkResults(AtkTypes.magical, AttackEffects.hit, 0));
-    		player.train(new AtkResults(AtkTypes.defense, AttackEffects.hit, 0));
-    	}
+//    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	
+//    	for (int i = 0 ; i <= 60 - 1 ; i += 1)
+//    	{
+//    		player.getExp().incCurrentValue(player.getExp().getMaxValue());
+//			player.levelUp(null) ; // Game.getAnimations()[4]	
+//    	}
+//    	for (int i = 0 ; i <= 30000 - 1 ; i += 1)
+//    	{
+//    		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0));
+//    		player.train(new AtkResults(AtkTypes.magical, AttackEffects.hit, 0));
+//    		player.train(new AtkResults(AtkTypes.defense, AttackEffects.hit, 0));
+//    	}
 //    	player.getBag().menuUp() ;
 //    	player.getBag().menuUp() ;
 //    	player.getBag().menuUp() ;

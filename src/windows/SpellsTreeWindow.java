@@ -97,6 +97,10 @@ public class SpellsTreeWindow extends GameWindow
 				tabUp() ;
 			}
 		}
+		if (action.equals("Escape"))
+		{
+			close() ;
+		}
 	}
 	
 	public void act(Player player)
@@ -107,6 +111,8 @@ public class SpellsTreeWindow extends GameWindow
 			acquireSpell(player.getSpells()) ;
 			player.decSpellPoints() ;
 		}
+		
+		
 		
 	}
 	

@@ -86,7 +86,7 @@ public class BagWindow extends GameWindow
 	public int getGold() {return gold ;}
 	
 	public void navigate(String action)
-	{
+	{System.out.println("tab " + tab + " window " + window + " menu " + menu);
 		if (tab == 0)
 		{
 			if (action.equals(Player.ActionKeys[2]))
