@@ -83,6 +83,7 @@ public class NPCs
 			}
 			case smuggleSeller:
 			{
+				// TODO smuggle seller renew stock
 				int[] itemIDs = new int[] {400, 405, 407, 409, 415, 422, 426, 428, 432, 436, 440, 444} ;
 				int cityID = id / 17 ;
 				for (int i = 0 ; i <= itemIDs.length - 1; i += 1) { itemIDs[i] += 200 * cityID ;}

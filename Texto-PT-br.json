@@ -187,7 +187,7 @@
         "Prontinho! Aproveite sua vida.",
         "Tenha um bom dia!"
       ],
-      "Opcoes": [["Sim", "Não"], [], [], [], ["Até mais."]]
+      "Opcoes": [["Sim", "Não"], [], [], [], ["Até mais"]]
     },    
     {
       "Nome": "Mestre",
@@ -201,7 +201,7 @@
         "Neste caso, quer aumentar suas habilidades?",
         "Até a proxima!"
       ],
-      "Opcoes": [["Sim", "Não"], [], ["Sim", "Não"], [], ["Até mais."], ["Sim", "Não"], ["Até mais."]]
+      "Opcoes": [["Sim", "Não"], [], ["Sim", "Não"], [], ["Até mais."], ["Sim", "Não"], ["Até mais"]]
     },
     {
       "Nome": "Vendedor de equipamentos",
@@ -211,7 +211,7 @@
         "Escolha seu equipamento!",
         "Volte sempre!"
       ],
-      "Opcoes": [["Comprar", "Vender"], [], ["Até mais."]]
+      "Opcoes": [["Comprar", "Vender"], [], ["Até mais"]]
     },
     {
       "Nome": "Vendedor de itens",
@@ -221,7 +221,7 @@
         "O que deseja comprar?",
         "Até mais!"
       ],
-      "Opcoes": [[], [], []]
+      "Opcoes": [["Comprar", "Vender"], [], ["Até mais"]]
     },
     {
       "Nome": "Contrabandista",
@@ -231,7 +231,7 @@
         "O que deseja comprar?",
         "Até mais!"
       ],
-      "Opcoes": [[], [], []]
+      "Opcoes": [["Comprar", "Vender"], [], ["Até mais"]]
     },
     {
       "Nome": "Banqueiro",

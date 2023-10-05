@@ -52,6 +52,7 @@ public class ShoppingWindow extends GameWindow
 	
 	public void action(String action, BagWindow bag)
 	{
+		// TODO reaction with "bought" or "not enough gold"
 		if (action.equals("Enter") | action.equals("MouseLeftClick"))
 		{
 			buyItem(bag) ;
@@ -67,11 +68,15 @@ public class ShoppingWindow extends GameWindow
 	
 	public void buyItem(BagWindow bag)
 	{
-		if (itemsForSale.get(item).getPrice() <= bag.getGold())
+		if (bag.getGold() < itemsForSale.get(item).getPrice())
 		{
-			bag.Add(itemsForSale.get(item), 1) ;
-			bag.addGold(-itemsForSale.get(item).getPrice()) ;
+			Game.getAnimations()[11].start(200, new Object[] {});
+			return ;
 		}
+		
+		bag.Add(itemsForSale.get(item), 1) ;
+		bag.addGold(-itemsForSale.get(item).getPrice()) ;
+		Game.getAnimations()[3].start(300, new Object[] {new Item[] {itemsForSale.get(item)}});
 	}
 	
 	private List<Item> itemsOnWindow()

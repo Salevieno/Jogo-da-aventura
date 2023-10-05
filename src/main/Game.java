@@ -266,7 +266,7 @@ public class Game extends JPanel
 	
 	private static void initializeAnimations()
 	{
-		animations = new Animation[11] ;
+		animations = new Animation[12] ;
 		for (int i = 0; i <= animations.length - 1; i += 1)
 		{
 			animations[i] = new Animation() ;
@@ -360,6 +360,9 @@ public class Game extends JPanel
 		animations[10].setDisplayFunction((vars, DP) -> {		
 			int goldObtained = (int) vars[0] ;
 			DP.gainGoldAnimation(animations[10].getCounter(), goldObtained) ;
+		}) ;
+		animations[11].setDisplayFunction((vars, DP) -> {
+			DP.notEnoughGold(animations[11].getCounter()) ;
 		}) ;
 	}
 	
@@ -1234,24 +1237,24 @@ public class Game extends JPanel
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
-    	//player.getBag().addGold(50000) ;
+    	player.getBag().addGold(300) ;
     	
-    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
 //    	
-//    	for (int i = 0 ; i <= 60 - 1 ; i += 1)
-//    	{
-//    		player.getExp().incCurrentValue(player.getExp().getMaxValue());
-//			player.levelUp(null) ; // Game.getAnimations()[4]	
-//    	}
+    	for (int i = 0 ; i <= 60 - 1 ; i += 1)
+    	{
+    		player.getExp().incCurrentValue(player.getExp().getMaxValue());
+			player.levelUp(null) ; // Game.getAnimations()[4]	
+    	}
 //    	for (int i = 0 ; i <= 30000 - 1 ; i += 1)
 //    	{
 //    		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0));
