@@ -58,8 +58,22 @@ public class NPCType
 				return ;
 			}
 			case equipsSeller: destination.add(Arrays.asList(1, 2)) ; return ;
-			case citizen: destination.add(Arrays.asList(1, 0)) ; destination.add(Arrays.asList(0, 1, 2)) ; return ;
+			case citizen0: case citizen1: case citizen2: case citizen3: case citizen4:
+			case citizen5: case citizen6: case citizen7: case citizen8: case citizen9:
+			case citizen10: case citizen11: case citizen12: case citizen13: case citizen14:
+			case citizen15: case citizen16: case citizen17: case citizen18: case citizen19:
+			{
+				destination.add(Arrays.asList(1)) ; destination.add(Arrays.asList(2)) ; return ;
+			}
 			case smuggleSeller: destination.add(Arrays.asList(1, 2)) ; return ;
+			case saver: 
+			{
+				destination.add(Arrays.asList(1, 3)) ;
+				destination.add(Arrays.asList(2, 2, 2)) ;
+				destination.add(Arrays.asList(3)) ;
+				destination.add(Arrays.asList(3)) ;
+				return ;
+			}
 			default: return ;
 		}
 	}

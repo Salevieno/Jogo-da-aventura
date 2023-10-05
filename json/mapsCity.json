@@ -22,10 +22,10 @@
       {"name": "saver", "pos": {"x": 0.25, "y": 0.38}},
       {"name": "master", "pos": {"x": 0.24, "y": 0.92}},
       {"name": "quest", "pos": {"x": 0.87, "y": 0.63}},
-      {"name": "citizen", "pos": {"x": 0.13, "y": 0.33}},
-      {"name": "citizen", "pos": {"x": 0.36, "y": 0.33}},
-      {"name": "citizen", "pos": {"x": 0.60, "y": 0.64}},
-      {"name": "citizen", "pos": {"x": 0.86, "y": 0.28}}
+      {"name": "citizen0", "pos": {"x": 0.13, "y": 0.33}},
+      {"name": "citizen1", "pos": {"x": 0.36, "y": 0.33}},
+      {"name": "citizen2", "pos": {"x": 0.60, "y": 0.64}},
+      {"name": "citizen3", "pos": {"x": 0.86, "y": 0.28}}
     ]
   },
   {
@@ -51,10 +51,10 @@
       {"name": "saver", "pos": {"x": 0.87, "y": 0.91}},
       {"name": "master", "pos": {"x": 0.64, "y": 0.47}},
       {"name": "quest", "pos": {"x": 0.07, "y": 0.35}},
-      {"name": "citizen", "pos": {"x": 0.42, "y": 0.88}},
-      {"name": "citizen", "pos": {"x": 0.38, "y": 0.38}},
-      {"name": "citizen", "pos": {"x": 0.6, "y": 0.9}},
-      {"name": "citizen", "pos": {"x": 0.58, "y": 0.65}}
+      {"name": "citizen4", "pos": {"x": 0.42, "y": 0.88}},
+      {"name": "citizen5", "pos": {"x": 0.38, "y": 0.38}},
+      {"name": "citizen6", "pos": {"x": 0.6, "y": 0.9}},
+      {"name": "citizen7", "pos": {"x": 0.58, "y": 0.65}}
     ]
   },
   {
@@ -80,10 +80,10 @@
       {"name": "saver", "pos": {"x": 0.06, "y": 0.65}},
       {"name": "master", "pos": {"x": 0.37, "y": 0.47}},
       {"name": "quest", "pos": {"x": 0.66, "y": 0.1}},
-      {"name": "citizen", "pos": {"x": 0.05, "y": 0.16}},
-      {"name": "citizen", "pos": {"x": 0.43, "y": 0.94}},
-      {"name": "citizen", "pos": {"x": 0.71, "y": 0.46}},
-      {"name": "citizen", "pos": {"x": 0.39, "y": 0.32}}
+      {"name": "citizen8", "pos": {"x": 0.05, "y": 0.16}},
+      {"name": "citizen9", "pos": {"x": 0.43, "y": 0.94}},
+      {"name": "citizen10", "pos": {"x": 0.71, "y": 0.46}},
+      {"name": "citizen11", "pos": {"x": 0.39, "y": 0.32}}
     ]
   },
   {
@@ -109,10 +109,10 @@
       {"name": "saver", "pos": {"x": 0.84, "y": 0.57}},
       {"name": "master", "pos": {"x": 0.33, "y": 0.33}},
       {"name": "quest", "pos": {"x": 0.08, "y": 0.26}},
-      {"name": "citizen", "pos": {"x": 0.18, "y": 0.27}},
-      {"name": "citizen", "pos": {"x": 0.12, "y": 0.6}},
-      {"name": "citizen", "pos": {"x": 0.60, "y": 0.64}},
-      {"name": "citizen", "pos": {"x": 0.51, "y": 0.27}}
+      {"name": "citizen12", "pos": {"x": 0.18, "y": 0.27}},
+      {"name": "citizen13", "pos": {"x": 0.12, "y": 0.6}},
+      {"name": "citizen14", "pos": {"x": 0.60, "y": 0.64}},
+      {"name": "citizen15", "pos": {"x": 0.51, "y": 0.27}}
     ]
   },
   {
@@ -138,10 +138,10 @@
       {"name": "saver", "pos": {"x": 0.5, "y": 0.05}},
       {"name": "master", "pos": {"x": 0.24, "y": 0.92}},
       {"name": "quest", "pos": {"x": 0.05, "y": 0.91}},
-      {"name": "citizen", "pos": {"x": 0.18, "y": 0.27}},
-      {"name": "citizen", "pos": {"x": 0.45, "y": 0.43}},
-      {"name": "citizen", "pos": {"x": 0.60, "y": 0.64}},
-      {"name": "citizen", "pos": {"x": 0.51, "y": 0.27}}
+      {"name": "citizen16", "pos": {"x": 0.18, "y": 0.27}},
+      {"name": "citizen17", "pos": {"x": 0.45, "y": 0.43}},
+      {"name": "citizen18", "pos": {"x": 0.60, "y": 0.64}},
+      {"name": "citizen19", "pos": {"x": 0.51, "y": 0.27}}
     ]
   }
 ]

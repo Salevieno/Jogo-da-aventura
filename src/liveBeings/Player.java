@@ -763,6 +763,7 @@ public class Player extends LiveBeing
 		
 		if (bag.isOpen())
 		{
+			bag.navigate(currentAction) ;
 			if (bag.getTab() == 1 & (currentAction.equals("Enter") | currentAction.equals("MouseLeftClick")))
 			{
 				useItem(bag.getSelectedItem()) ;
@@ -884,7 +885,7 @@ public class Player extends LiveBeing
 			for (NPCs npc : map.getNPCs())
 			{				
 				if (!metNPC(npc)) { continue ;}
-
+				
 				npc.action(this, Game.getPet(), mousePos, DP) ;
 				
 				break ;
@@ -1440,16 +1441,15 @@ public class Player extends LiveBeing
 
 	
 	// Save and load methods
-	// TODO save player
 	public void save(int slot)
 	{
 		
 		try (FileWriter file = new FileWriter("save " + slot + ".json"))
         {
+			// TODO save player
             file.write("name: " + name + "\n"); 
             file.write("level: " + level); 
-            file.flush();
- 
+            file.flush(); 
         }
         catch (IOException e)
         {

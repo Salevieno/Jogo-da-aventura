@@ -256,8 +256,8 @@ public class DrawingOnPanel
 
 		DrawImage(speechBubble, pos, stdAngle, new Scale(1, 1), flipH, false, Align.bottomCenter, 1) ;
 		
-		Point textPos = UtilG.Translate(pos, 14 - bubbleL / 2, 5 - bubbleH) ;
-		int maxTextL = 20 ;
+		Point textPos = UtilG.Translate(pos, 12 - bubbleL / 2, 5 - bubbleH) ;
+		int maxTextL = 35 ;
 		int sy = font.getSize() + 1 ;
 		DrawFitText(textPos, sy, Align.topLeft, text, font, maxTextL, textColor) ;
 	}

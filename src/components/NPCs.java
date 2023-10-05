@@ -42,7 +42,7 @@ public class NPCs
 	private GameWindow window ;
 	private List<Collider> colliders ;
 
-	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 11) ;
+	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	public static final Image SpeakingBubble = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeechBubble.png") ;
 	public static final Image ChoicesWindow = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "ChoicesWindow.png") ;
 
@@ -254,10 +254,6 @@ public class NPCs
 
 				break ;
 			}
-			case citizen:
-			{
-				break ;
-			}
 			case sailorToIsland:
 			{
 				sailorAction(player, playerAction) ;
@@ -314,6 +310,7 @@ public class NPCs
 
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) & menu <= numberMenus - 1)
 		{
+			if (type.getOptions().size() == 0) { return ;}
 			if (type.getOptions().get(menu).isEmpty()) { return ;}
 			menu = type.getDestination().get(menu).get(selOption) ;
 			selOption = 0 ;
@@ -355,7 +352,7 @@ public class NPCs
 		if (content == null) { return ;}
 		
 		Point speechPos = UtilG.Translate(pos, -22, -2 - type.getImage().getHeight(null)) ;
-		
+
 		DP.DrawSpeech(speechPos, content, NPCfont, SpeakingBubble, type.getColor()) ;
 		
 	}
@@ -539,11 +536,7 @@ public class NPCs
 		
 		if (action == null) { return ;}
 		
-		if (action.equals("Enter") & menu == 0 & selOption == 0)
-		{
-//			incMenu() ;
-		}
-		if (action.equals("Enter") & menu == 0)
+		if (actionIsForward(action) & menu == 1)
 		{
 			int slot = selOption + 1 ;
 	        player.save(slot) ;

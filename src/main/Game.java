@@ -467,10 +467,9 @@ public class Game extends JPanel
 			String imageExtension = !job.equals(NPCJobs.master) ?  ".png" : ".gif" ;
 			Image image = UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + imageExtension) ;
 			String[] speech = null ;
-			List<List<String>> options = new ArrayList<>() ;
-			
+			List<List<String>> options = new ArrayList<>() ;			
 			TextCategories speechName = TextCategories.catFromBRName("npcs" + name + "Falas") ;
-
+			
 			if (Game.allText.get(speechName) != null)
 			{
 				speech = Game.allText.get(speechName) ;
@@ -486,6 +485,7 @@ public class Game extends JPanel
 					}
 				}
 			}
+			System.out.println(job + " " + options);
 
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}
@@ -653,7 +653,8 @@ public class Game extends JPanel
 			List<NPCs> npcs = new ArrayList<>() ;			
 			for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
 			{
-				npcs.add(readNPCfromJson((JSONObject) listNPCs.get(i))) ;
+				NPCs npc = readNPCfromJson((JSONObject) listNPCs.get(i)) ;
+				npcs.add(npc) ;
 			}
 			
 			cityMaps[id] = new CityMap(name, continent, connections, image, music, buildings, npcs) ;
@@ -1235,16 +1236,16 @@ public class Game extends JPanel
 		}
     	//player.getBag().addGold(50000) ;
     	
-//    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
 //    	
 //    	for (int i = 0 ; i <= 60 - 1 ; i += 1)
 //    	{

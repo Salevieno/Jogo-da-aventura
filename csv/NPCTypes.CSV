@@ -13,26 +13,26 @@ Salvador,Saver,saver,Outside,Salva seu jogo.,Saves your game.
 Mestre,Master,master,Outside,Te ensina novas habilidades e te faz evoluir.,Teaches you new skills and makes you evolve.
 Quest exp,Quest items,quest,Outside,Te dá uma quest.,Gives you a quest.
 Quest,Quest,quest,Outside,Te dá uma quest.,Gives you a quest.
-Cidadão 0,Citizen 0,citizen,Outside,Morador da cidade,A citizen
-Cidadão 1,Citizen 1,citizen,Outside,Morador da cidade,A citizen
-Cidadão 2,Citizen 2,citizen,Outside,Morador da cidade,A citizen
-Cidadão 3,Citizen 3,citizen,Outside,Morador da cidade,A citizen
-Cidadão 4,Citizen 4,citizen,Outside,Morador da cidade,A citizen
-Cidadão 5,Citizen 5,citizen,Outside,Morador da cidade,A citizen
-Cidadão 6,Citizen 6,citizen,Outside,Morador da cidade,A citizen
-Cidadão 7,Citizen 7,citizen,Outside,Morador da cidade,A citizen
-Cidadão 8,Citizen 8,citizen,Outside,Morador da cidade,A citizen
-Cidadão 9,Citizen 9,citizen,Outside,Morador da cidade,A citizen
-Cidadão 10,Citizen 10,citizen,Outside,Morador da cidade,A citizen
-Cidadão 11,Citizen 11,citizen,Outside,Morador da cidade,A citizen
-Cidadão 12,Citizen 12,citizen,Outside,Morador da cidade,A citizen
-Cidadão 13,Citizen 13,citizen,Outside,Morador da cidade,A citizen
-Cidadão 14,Citizen 14,citizen,Outside,Morador da cidade,A citizen
-Cidadão 15,Citizen 15,citizen,Outside,Morador da cidade,A citizen
-Cidadão 16,Citizen 16,citizen,Outside,Morador da cidade,A citizen
-Cidadão 17,Citizen 17,citizen,Outside,Morador da cidade,A citizen
-Cidadão 18,Citizen 18,citizen,Outside,Morador da cidade,A citizen
-Cidadão 19,Citizen 19,citizen,Outside,Morador da cidade,A citizen
+Cidadão 0,Citizen 0,citizen0,Outside,Morador da cidade,A citizen
+Cidadão 1,Citizen 1,citizen1,Outside,Morador da cidade,A citizen
+Cidadão 2,Citizen 2,citizen2,Outside,Morador da cidade,A citizen
+Cidadão 3,Citizen 3,citizen3,Outside,Morador da cidade,A citizen
+Cidadão 4,Citizen 4,citizen4,Outside,Morador da cidade,A citizen
+Cidadão 5,Citizen 5,citizen5,Outside,Morador da cidade,A citizen
+Cidadão 6,Citizen 6,citizen6,Outside,Morador da cidade,A citizen
+Cidadão 7,Citizen 7,citizen7,Outside,Morador da cidade,A citizen
+Cidadão 8,Citizen 8,citizen8,Outside,Morador da cidade,A citizen
+Cidadão 9,Citizen 9,citizen9,Outside,Morador da cidade,A citizen
+Cidadão 10,Citizen 10,citizen10,Outside,Morador da cidade,A citizen
+Cidadão 11,Citizen 11,citizen11,Outside,Morador da cidade,A citizen
+Cidadão 12,Citizen 12,citizen12,Outside,Morador da cidade,A citizen
+Cidadão 13,Citizen 13,citizen13,Outside,Morador da cidade,A citizen
+Cidadão 14,Citizen 14,citizen14,Outside,Morador da cidade,A citizen
+Cidadão 15,Citizen 15,citizen15,Outside,Morador da cidade,A citizen
+Cidadão 16,Citizen 16,citizen16,Outside,Morador da cidade,A citizen
+Cidadão 17,Citizen 17,citizen17,Outside,Morador da cidade,A citizen
+Cidadão 18,Citizen 18,citizen18,Outside,Morador da cidade,A citizen
+Cidadão 19,Citizen 19,citizen19,Outside,Morador da cidade,A citizen
 Entrada da caverna,Cave entrance,caveEntry,Outside,Entrada da caverna.,Cave entrance.
 Saída da caverna,Cave exit,caveExit,Outside,Saída da caverna.,Cave exit.
 Navegador 1,Sailor 1,sailorToIsland,Outside,Te leva para a ilha.,Takes you to the island.
