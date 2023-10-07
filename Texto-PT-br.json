@@ -247,7 +247,7 @@
         "Aqui está seu dinheiro, até mais!",
         "Obrigado por vir!"
       ],
-      "Opcoes": [[], [], [], [], [], [], [], [], []]
+      "Opcoes": [["Quero guardar ouro", "Quero sacar ouro", "Só estou passando"], [], [], [], [], [], ["Até mais"], ["Até mais"], ["Até mais"]]
     },
     {
       "Nome": "Alquimista",
@@ -255,10 +255,11 @@
       [
         "Olá, quer fabricar poções com suas ervas?",
         "Escolha a poção que quer fabricar:",
+        "Aqui está sua poção!",
         "Você não tem os ingredientes necessários!",
         "Obrigado por vir!"
       ],
-      "Opcoes": [[], [], [], []]
+      "Opcoes": [["Sim", "Não"], [], [], [], ["Tchau"]]
     },
     {
       "Nome": "Madeireiro",
@@ -266,10 +267,11 @@
       [
         "Olá, quer trocar sua madeira em comida para pet?",
         "Obrigado pela madeira!",
+        "Aqui está sua comida de pet!",
         "Você nao tem madeira!",
         "Te vejo por aí!"
       ],
-      "Opcoes": [[], [], [], []]
+      "Opcoes": [["Sim", "Não"], [], [], [], ["Tchau"]]
     },
     {
       "Nome": "Quest",
@@ -304,11 +306,12 @@
       [
         "Olá, quer fabricar itens?",
         "Escolha o item que quer fabricar:",
+        "Aqui está seu item!",
         "Você não tem os materiais necessários!",
         "Obrigado por vir!",
         "Quantos itens vc deseja fabricar?"
       ],
-      "Opcoes": [[], [], [], [], []]
+      "Opcoes": [["Sim", "Não"], [], [], [], ["Tchau"], []]
     },
     {
       "Nome": "Salvador",

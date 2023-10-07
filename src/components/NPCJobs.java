@@ -42,7 +42,8 @@ public enum NPCJobs
 	sailorToForest ("sailorToForest", Game.colorPalette[15]),
 	caveEntry ("caveEntry", Game.colorPalette[1]),
 	caveExit ("caveExit", Game.colorPalette[1]),
-	quest ("quest", Game.colorPalette[5]);
+	questExp ("quest exp", Game.colorPalette[5]),
+	questItem ("quest item", Game.colorPalette[5]);
 	
 	private Color color ;
 	

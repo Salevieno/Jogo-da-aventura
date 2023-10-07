@@ -11,8 +11,8 @@ Fabricante,Crafter,crafter,Craft,Fabrica itens.,Crafts items.
 Elemental,Elemental,elemental,Outside,Muda o elemento dos equips.,Changes the element of equips.
 Salvador,Saver,saver,Outside,Salva seu jogo.,Saves your game.
 Mestre,Master,master,Outside,Te ensina novas habilidades e te faz evoluir.,Teaches you new skills and makes you evolve.
-Quest exp,Quest items,quest,Outside,Te dá uma quest.,Gives you a quest.
-Quest,Quest,quest,Outside,Te dá uma quest.,Gives you a quest.
+Quest exp,Quest exp,questExp,Outside,Te dá uma quest.,Gives you a quest.
+Quest item,Quest item,questItem,Outside,Te dá uma quest.,Gives you a quest.
 Cidadão 0,Citizen 0,citizen0,Outside,Morador da cidade,A citizen
 Cidadão 1,Citizen 1,citizen1,Outside,Morador da cidade,A citizen
 Cidadão 2,Citizen 2,citizen2,Outside,Morador da cidade,A citizen

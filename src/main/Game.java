@@ -1190,7 +1190,6 @@ public class Game extends JPanel
 		
 		player.resetAction() ;
 		
-		
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
 		
     	for (Animation ani : animations) { ani.run(DP) ;}
@@ -1223,8 +1222,7 @@ public class Game extends JPanel
     	player.setName("Salevieno") ;
     	player.setLevel(50) ;
     	player.setMap(cityMaps[3]) ;
-    	player.setPos(new Point(200, 241)) ;
-
+    	player.setPos(new Point(400, 341)) ;
 //    	player.setLevel(50) ;
 		
 //    	letThereBePet() ;
@@ -1255,6 +1253,7 @@ public class Game extends JPanel
     		player.getExp().incCurrentValue(player.getExp().getMaxValue());
 			player.levelUp(null) ; // Game.getAnimations()[4]	
     	}
+    	player.getLife().incCurrentValue( - 200) ;
 //    	for (int i = 0 ; i <= 30000 - 1 ; i += 1)
 //    	{
 //    		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0));
@@ -1489,6 +1488,7 @@ public class Game extends JPanel
 			if (evt.getButton() == 3)	// Right click
 			{
         		player.setCurrentAction("MouseRightClick") ;
+        		player.setPos(mousePos) ;
         		//testGif2.start();
 			}
             //shouldRepaint = true ;

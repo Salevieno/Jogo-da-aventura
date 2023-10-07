@@ -97,7 +97,7 @@ public class CraftWindow extends GameWindow
 			}) ;		
 		}
 		
-		DP.DrawWindowArrows(UtilG.Translate(windowPos, size.width / 2, size.height + 10), size.width, window, numberWindows) ;
+		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows) ;
 		
 	}
 }

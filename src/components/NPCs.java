@@ -170,8 +170,8 @@ public class NPCs
 		{		
 			case doctor: 
 			{
-				if (pet == null) { doctorAction(player.getPA(), null) ;}
-				else { doctorAction(player.getPA(), pet.getPA()) ;}
+				if (pet == null) { doctorAction(playerAction, player.getPA(), null) ;}
+				else { doctorAction(playerAction, player.getPA(), pet.getPA()) ;}
 				
 				break ;
 			}
@@ -285,7 +285,7 @@ public class NPCs
 
 				break ;
 			}
-			case quest:
+			case questExp:
 			{
 				questAction(player.getQuests(), playerBag, player.getPA(), player.getQuestSkills(), playerAction) ;
 
@@ -312,9 +312,11 @@ public class NPCs
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) & menu <= numberMenus - 1)
 		{
 			if (type.getOptions().size() == 0) { return ;}
+			if (type.getOptions().size() <= menu) { return ;}
 			if (type.getOptions().get(menu).isEmpty()) { return ;}
 			menu = type.getDestination().get(menu).get(selOption) ;
 			selOption = 0 ;
+			return ;
 		}
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) & 0 < menu)
 		{
@@ -387,30 +389,25 @@ public class NPCs
 		
 	}
 	
-	private void doctorAction(PersonalAttributes playerPA, PersonalAttributes petPA)
+	private void doctorAction(String action, PersonalAttributes playerPA, PersonalAttributes petPA)
 	{
-		if (selOption == 0)
+		if (menu != 1) { return ;}
+		
+		if (playerPA.getLife().isMaxed())
 		{
-			if (playerPA.getLife().isMaxed())
-			{
-				if (petPA == null) {menu = 1 ; return ;}
+			if (petPA == null) {menu = 1 ; return ;}
 
-				petPA.getLife().setToMaximum() ;
-				petPA.getMp().setToMaximum() ;
-				
-				menu = 2 ;
-				return ;
-			}
+			petPA.getLife().setToMaximum() ;
+			petPA.getMp().setToMaximum() ;
 			
-			playerPA.getLife().setToMaximum() ;
-			playerPA.getMp().setToMaximum() ;
-			
-			menu = 3 ;
-			
+			menu = 2 ;
 			return ;
 		}
 		
-		menu = 4 ;
+		playerPA.getLife().setToMaximum() ;
+		playerPA.getMp().setToMaximum() ;
+		
+		menu = 3 ;
 	}
 	
 	private void sellerAction(BagWindow bag, String action, Point mousePos, ShoppingWindow shopping, DrawingOnPanel DP)
@@ -467,8 +464,8 @@ public class NPCs
 	
 	private void crafterAction(BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
 	{
-	
-		if (menu == 0) { return ;}
+		// TODO craft
+		if (menu == 0 | menu == 4) { return ;}
 		
 		craftWindow.display(mousePos, DP) ;
 		
@@ -565,27 +562,27 @@ public class NPCs
 	
 	private void bankerAction(BagWindow bag, BankWindow bankWindow, String action, DrawingOnPanel DP)
 	{
-	
+		// TODO bank action
 		if (menu == 0) { return ;}
 		
 		
 		bankWindow.display(DP) ;
 
-		if (menu == 2) { bankWindow.displayInput("Quanto gostaria de depositar?", action, DP) ;}
+		if (menu == 1) { bankWindow.displayInput("Quanto gostaria de depositar?", action, DP) ;}
+		if (menu == 2) { bankWindow.displayInput("Quanto gostaria de sacar?", action, DP) ;}
 		
 		if (action == null) { return ;}
 
 		bankWindow.navigate(action) ;
 		
-		if (menu == 2) { bankWindow.readValue(action, DP) ;}
+		if (menu == 1 | menu == 2) { bankWindow.readValue(action, DP) ;}
 		
-		if (!action.equals("Enter") & !action.equals("MouseLeftClick")) { return ;}
+		if (!actionIsForward(action)) { return ;}
 		
 		switch (menu)
 		{
 			case 0: menu = selOption == 0 ? 1 : type.getSpeech().length - 1 ; break ;
-			case 1: incMenu() ; break ;
-			case 2:
+			case 1: case 2:
 			{
 				int amount = bankWindow.getAmountTyped() ;
 				switch (selOption)

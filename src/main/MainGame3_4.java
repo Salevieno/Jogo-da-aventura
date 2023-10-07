@@ -24,7 +24,7 @@ public class MainGame3_4 extends JFrame implements ActionListener
 	private static final Dimension windowSize = new Dimension(640, 480) ;
 	private static GameStates previousState ;
 
-	private MainGame3_4() 
+	private MainGame3_4()
     {
 		// initialize the UI		
         setTitle("Jogo da aventura") ;

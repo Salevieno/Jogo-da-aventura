@@ -45,7 +45,36 @@ public class NPCType
 	{
 		switch (job)
 		{
-			case doctor: return ;
+			case alchemist: case woodcrafter: case crafter:
+			{
+				 destination.add(Arrays.asList(1, 4)) ;
+				 destination.add(Arrays.asList()) ;
+				 destination.add(Arrays.asList()) ;
+				 destination.add(Arrays.asList()) ;
+				 destination.add(Arrays.asList(4)) ;
+				 return ;
+			}
+			case banker:
+			{
+				destination.add(Arrays.asList(1, 2, 8)) ;
+				destination.add(Arrays.asList()) ;
+				destination.add(Arrays.asList()) ;
+				destination.add(Arrays.asList()) ;
+				destination.add(Arrays.asList()) ;
+				destination.add(Arrays.asList()) ;
+				destination.add(Arrays.asList(8)) ;
+				destination.add(Arrays.asList(8)) ;
+				destination.add(Arrays.asList(8)) ;
+				return ;
+			}
+			case doctor:
+				destination.add(Arrays.asList(1, 4)) ;
+				destination.add(Arrays.asList()) ;
+				destination.add(Arrays.asList()) ;
+				destination.add(Arrays.asList()) ;
+				destination.add(Arrays.asList(4)) ;
+				return ;
+				
 			case master: 
 			{
 				destination.add(Arrays.asList(1, 6)) ;

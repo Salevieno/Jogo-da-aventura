@@ -1,13 +1,2 @@
-/liveBeings/
 /main/
-/maps/
-/screen/
-/simulations/
-/test/
-/testing/
-/utilities/
-/windows/
-/.gitignore
 /components/
-/attributes/
-/graphics/
