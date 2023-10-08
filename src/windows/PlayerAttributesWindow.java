@@ -13,7 +13,6 @@ import attributes.BasicBattleAttribute;
 import components.GameButton;
 import components.IconFunction;
 import graphics.DrawingOnPanel;
-import items.Arrow;
 import items.Equip;
 import liveBeings.Player;
 import main.Game;
@@ -26,14 +25,17 @@ import utilities.UtilG;
 public class PlayerAttributesWindow extends AttributesWindow
 {
 	
-	Point windowPos = new Point((int) (0.1 * Game.getScreen().getSize().width), (int)(0.2 * Game.getScreen().getSize().height)) ;
+	private Point windowPos = new Point((int) (0.1 * Game.getScreen().getSize().width), (int)(0.2 * Game.getScreen().getSize().height)) ;
+	private Player player ;
+//	private Equip[] equips ;
+//	private Arrow equippedArrow ;
 	public Map<Attributes, GameButton> incAttButtons ;
 
-	Image tab1Image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png") ;
-	Image tab2Image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png") ;
+	private Image tab1Image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png") ;
+	private Image tab2Image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png") ;
 	
-	Image plusSign = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "PlusSign.png") ;
-	Image selectedPlusSign = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "ShiningPlusSign.png") ;
+	private Image plusSign = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "PlusSign.png") ;
+	private Image selectedPlusSign = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "ShiningPlusSign.png") ;
 	
 	public PlayerAttributesWindow(Image image)
 	{
@@ -44,6 +46,10 @@ public class PlayerAttributesWindow extends AttributesWindow
 		
 	}
 	
+	public void setPlayer(Player player) { this.player = player ;}
+//	public void setEquips(Equip[] equips) { this.equips = equips ;}
+//	public void setEquippedArrow(Arrow equippedArrow) { this.equippedArrow = equippedArrow ;}
+
 	public void initializeAttIncButtons(Player player)
 	{
 
@@ -105,7 +111,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		}
 	}
 	
-	public void displayTab0(Player player, Equip[] equips, Arrow equippedArrow, Point mousePos, DrawingOnPanel DP)
+	public void displayTab0(Point mousePos, DrawingOnPanel DP)
 	{
 		
 		Color[] colorPalette = Game.colorPalette ;		
@@ -131,6 +137,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		
 		
 		//	Equips
+		Equip[] equips = player.getEquips() ;
 		if (equips != null)
 		{
 			int eqSlotSize = 51 ;
@@ -161,9 +168,9 @@ public class PlayerAttributesWindow extends AttributesWindow
 		}
 		
 		// Arrow
-		if (equippedArrow != null)
+		if (player.getEquippedArrow() != null)
 		{
-			DP.DrawImage(equippedArrow.fullSizeImage(), UtilG.Translate(windowPos, 100, 133), Align.bottomCenter) ;
+			DP.DrawImage(player.getEquippedArrow().fullSizeImage(), UtilG.Translate(windowPos, 100, 133), Align.bottomCenter) ;
 		}
 		
 		
@@ -331,7 +338,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		
 	}
 		
-	public void display(Player player, Equip[] equips, Arrow equippedArrow, Point mousePos, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 		
 		String[] tabsText = Game.allText.get(TextCategories.playerWindow) ;
@@ -350,7 +357,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 			
 		switch (tab)
 		{
-			case 0: displayTab0(player, equips, equippedArrow, mousePos, DP) ; break ;
+			case 0: displayTab0(mousePos, DP) ; break ;
 			case 1: displayTab1(player, DP) ; break ;
 			case 2: displayTab2(player, DP) ; break ;
 		}		

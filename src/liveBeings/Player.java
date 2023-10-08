@@ -46,10 +46,8 @@ import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
 import main.Game;
-import main.TextCategories;
 import maps.Collectible;
 import maps.FieldMap;
-import maps.GameMap;
 import maps.GroundTypes;
 import maps.MapElements;
 import maps.TreasureChest;
@@ -81,6 +79,7 @@ public class Player extends LiveBeing
 	private Color color ;
 	
 	private GameWindow focusWindow ;
+	private List<GameWindow> openWindows ;
 	private BagWindow bag ;
 	private SettingsWindow settings ;
 	private SpellsTreeWindow spellsTree ;
@@ -180,6 +179,7 @@ public class Player extends LiveBeing
 		spells = new ArrayList<Spell>() ;
 
 		focusWindow = null ;
+		openWindows = new ArrayList<>() ;
 		bag = new BagWindow(new LinkedHashMap<Potion, Integer>(),
 				new LinkedHashMap<Alchemy, Integer>(),
 				new LinkedHashMap<Forge, Integer>(),
@@ -348,14 +348,31 @@ public class Player extends LiveBeing
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
 	public void setHotItem(Item item, int slot) { hotItems[slot] = item ;}	
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
-	public void setFocusWindow(GameWindow W) { focusWindow = W ;}
-	
+	public void setFocusWindow(GameWindow W) { focusWindow = W ; System.out.println(focusWindow);}
+
+	public void switchOpenClose(GameWindow win)
+	{
+		if (win.isOpen())
+		{
+			win.close() ;
+			openWindows.remove(win) ;
+			if (openWindows.isEmpty()) { setFocusWindow(null) ; return ;}
+			setFocusWindow(openWindows.get(openWindows.size() - 1)) ;
+			return ;
+		}
+
+		win.open() ;
+		openWindows.add(win) ;
+		setFocusWindow(win) ;
+	}	
 
 	public static Spell[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpells(), 14) ;}
 	public static Spell[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 34, 49) ;}
 	public static Spell[] getArcherSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 70, 84) ;}
 	public static Spell[] getAnimalSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 105, 118) ;}
 	public static Spell[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 139, 152) ;}
+	
+	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("MouseLeftClick") ;}
 	
 	
 	public void setAttPoints(int attPoints)
@@ -620,70 +637,95 @@ public class Player extends LiveBeing
 		int actionId = Arrays.asList(ActionKeys).indexOf(currentAction) ;
 		switch (actionId)
 		{
-			case 4:
-				focusWindow = bag ;
-				bag.open() ;
-				
-				return ;
+			case 4: switchOpenClose(bag) ; return ;
+			
 			case 5:
-				focusWindow = attWindow ;
+				((PlayerAttributesWindow) attWindow).setPlayer(this) ;
 				((PlayerAttributesWindow) attWindow).updateAttIncButtons(this) ;
-				attWindow.open() ;
-				
+				switchOpenClose(attWindow) ;
 				return ;
+				
 			case 6:
 				if (!bag.contains(Game.getAllItems()[1340]) | !isTouching(GroundTypes.water)) { return ;}
-				fish() ;
+				fish() ; return ;
 				
-				return ;
 			case 7:
 //				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
-				focusWindow = mapWindow ;
-				mapWindow.open() ;
+				mapWindow.setPlayerPos(pos) ;
+				mapWindow.setCurrentMap(map) ;
+				switchOpenClose(mapWindow) ; return ;
 				
-				return ;
 			case 8:
 				if (pet == null) { return ;}
-				focusWindow = pet.getAttWindow() ;
-				pet.getAttWindow().open() ;
+				((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
+				switchOpenClose(pet.getAttWindow()) ; return ;
 				
-				return ;
-			case 9:
-				focusWindow = questWindow ;
-				questWindow.open() ;
+			case 9: 
+				questWindow.setQuests(quests) ;
+				questWindow.setBag(bag) ;
+				switchOpenClose(questWindow) ; return ;
 				
-				return ;
-			case 10:
-				focusWindow = hintsWindow ;
-				hintsWindow.open() ;
-				
-				return ;
+			case 10: switchOpenClose(hintsWindow) ; return ;
+			
 			case 11:
-				if (!questSkills.get(QuestSkills.ride)) { return ;}
-				
-				activateRide() ;
-				
+				if (!questSkills.get(QuestSkills.ride)) { return ;}				
+				activateRide() ;				
 				return ;
+				
 			case 12:
-				if (isInBattle()) { return ;}
-				
+				if (isInBattle()) { return ;}				
 				TentGif.start() ;
-				setState(LiveBeingStates.sleeping) ;
-				
+				setState(LiveBeingStates.sleeping) ;				
 				return ;
+				
 			case 13: setState(LiveBeingStates.digging) ; return ;
-			case 14:
+			
+			case 14: 
 				if (!questSkills.get(QuestSkills.bestiary)) { return ;}
+				switchOpenClose(bestiary) ; return ;
 				
-				focusWindow = bestiary ;
-				bestiary.open() ;
-				
-				return ;
 			default: return ;
 		}
 		
 	}
 
+	public void mouseActions(Pet pet, Point mousePos, SideBar sideBar)
+	{
+		sideBar.getButtons().forEach(button ->
+		{
+			if (button.ishovered(mousePos))
+			{
+				switch (button.getName())
+				{
+					case "settings": switchOpenClose(settings) ; return ;
+					case "bag": switchOpenClose(bag) ; return ;
+					case "quest": 
+						questWindow.setQuests(quests) ;
+						questWindow.setBag(bag) ;
+						switchOpenClose(questWindow) ; return ;
+						
+					case "map":
+						if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
+						mapWindow.setPlayerPos(pos) ;
+						mapWindow.setCurrentMap(map) ;
+						switchOpenClose(mapWindow) ; return ;
+						
+					case "fab": fabWindow.setRecipes(knownRecipes) ; switchOpenClose(fabWindow) ; return ;
+					case "player":
+						((PlayerAttributesWindow) attWindow).setPlayer(this) ;
+						((PlayerAttributesWindow) attWindow).updateAttIncButtons(this) ;
+						switchOpenClose(attWindow) ;
+						return ;
+						
+					case "pet":
+						if (pet == null) { return ;}
+						((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
+						switchOpenClose(pet.getAttWindow()) ; return ;
+				}
+			}
+		});
+	}
+	
 	private boolean actionIsArrowKeys() { return currentAction.equals("Acima") | currentAction.equals("Abaixo") | currentAction.equals("Esquerda") | currentAction.equals("Direita") ;}
 	
 	public void doCurrentAction(DrawingOnPanel DP)
@@ -718,28 +760,11 @@ public class Player extends LiveBeing
 		}
 		
 		
-		// clicking icons
 		if (currentAction.equals("MouseLeftClick"))
 		{
-			sideBar.getButtons().forEach(button ->
-			{
-				if (button.ishovered(mousePos))
-				{
-					switch (button.getName())
-					{
-						case "settings":  settings.open() ; break ;
-						case "bag": bag.open() ; break ;
-						case "quest": questWindow.open() ; break ;
-						case "map": if (questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) mapWindow.open() ; break ;
-						case "fab": fabWindow.open() ; break ;
-						case "player": attWindow.open() ; break ;
-						case "pet": if (pet.isAlive()) pet.getAttWindow().open() ; break ;
-					}
-				}
-			});
+			mouseActions(pet, mousePos, sideBar) ;
 		}
-		
-		
+
 		keyboardActions(pet) ;
 		
 		
@@ -761,20 +786,16 @@ public class Player extends LiveBeing
 			engageInFight(closestCreature) ;
 		}
 		
-		if (bag.isOpen())
+		if (bag.isOpen() & actionIsForward(currentAction))
 		{
-			bag.navigate(currentAction) ;
-			if (bag.getTab() == 1 & (currentAction.equals("Enter") | currentAction.equals("MouseLeftClick")))
-			{
-				useItem(bag.getSelectedItem()) ;
-			}
+			bag.act(currentAction, this) ;
 		}
 		
-		if (attWindow.isOpen())
+		if (attWindow.isOpen() & actionIsForward(currentAction))
 		{
 			((PlayerAttributesWindow) attWindow).act(this, mousePos, currentAction) ;
 		}
-
+		System.out.println("focus = " + focusWindow);
 		
 		// navigating through open windows
 		if (focusWindow != null)
@@ -789,10 +810,9 @@ public class Player extends LiveBeing
 		// using hotItems
 		for (int i = 0; i <= HotKeys.length - 1 ; i += 1)
 		{
-			if (currentAction.equals(HotKeys[i]) & hotItems[i] != null)
-			{
-				useItem(hotItems[i]) ;
-			}
+			if (!currentAction.equals(HotKeys[i]) | hotItems[i] == null) { continue ;}
+			
+			useItem(hotItems[i]) ;
 		}
 		
 		
@@ -906,6 +926,7 @@ public class Player extends LiveBeing
 			}
 		}
 	}
+
 	
 	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
 			
@@ -948,6 +969,7 @@ public class Player extends LiveBeing
 		}
 		if (item instanceof PetItem)
 		{
+			// TODO use pet item
 //			PetItem petItem = (PetItem) item ;
 			
 //			petItem.use(pet) ;
@@ -964,7 +986,6 @@ public class Player extends LiveBeing
 		}
 		if (item instanceof Equip)
 		{
-//			Equip(((Equip) item).getId()) ;
 			Equip equip = (Equip) item ;
 			
 			equip.use(this) ;
@@ -1009,49 +1030,7 @@ public class Player extends LiveBeing
 	// called every time the window is repainted
 	public void showWindows(Pet pet, Point mousePos, DrawingOnPanel DP)
 	{
-		if (bag.isOpen())
-		{
-			bag.display(mousePos, Game.allText.get(TextCategories.bagMenus), DP) ;
-		}
-		if (attWindow.isOpen())
-		{
-			((PlayerAttributesWindow) attWindow).display(this, equips, equippedArrow, mousePos, DP);
-		}
-		if (fabWindow.isOpen())
-		{		
-			fabWindow.display(knownRecipes, mousePos, DP) ;
-		}
-		if (pet != null)
-		{
-			if (pet.getAttWindow().isOpen())
-			{
-				((PetAttributesWindow) pet.getAttWindow()).display(pet, DP);
-			}
-		}
-		if (mapWindow.isOpen())
-		{
-			mapWindow.display(pos, map, DP) ;
-		}		
-		if (questWindow.isOpen())
-		{
-			questWindow.display(quests, bag, DP) ;
-		}
-		if (bestiary.isOpen())
-		{
-			bestiary.display(this, mousePos, DP) ;
-		}
-		if (settings.isOpen())
-		{
-			settings.display(DP) ;
-		}
-		if (hintsWindow.isOpen())
-		{
-			hintsWindow.display(this, DP) ;
-		}
-		if (spellsTree.isOpen())
-		{
-			spellsTree.display(mousePos, job, spellPoints, DP) ;
-		}
+		openWindows.forEach(win -> win.display(mousePos, DP)) ;
 	}
 		
 	

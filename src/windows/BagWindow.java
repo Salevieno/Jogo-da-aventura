@@ -24,6 +24,7 @@ import items.Potion;
 import items.QuestItem;
 import liveBeings.Player;
 import main.Game;
+import main.TextCategories;
 import utilities.Align;
 import utilities.UtilG;
 
@@ -42,7 +43,7 @@ public class BagWindow extends GameWindow
 	private Map<Item, Integer> itemsOnWindow ;
 	private int gold ;
 	
-	private final Point windowPos = new Point((int)(0.3 * Game.getScreen().getSize().width), (int)(0.48 * Game.getScreen().getSize().height)) ;
+	private final Point windowPos = Game.getScreen().getPoint(0.3, 0.48) ;
 	private final int numberSlotMax = 20 ;
 	
 	public static final Image BagImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Bag.png") ;
@@ -139,6 +140,13 @@ public class BagWindow extends GameWindow
 				setItem(0) ;
 			}
 		}
+	}
+	
+	public void act(String action, Player player)
+	{
+		if (tab == 0) { return ;}
+		
+		player.useItem(getSelectedItem()) ;
 	}
 	
 	public void Add(Item item, int amount)
@@ -639,11 +647,12 @@ public class BagWindow extends GameWindow
 		return value ;
 	}
 	
-	public void display(Point MousePos, String[] allText, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{
+		String[] menuNames = Game.allText.get(TextCategories.bagMenus) ;
 		
 		// draw menus
-		for (int m = 0 ; m <= allText.length - 1 ; m += 1)
+		for (int m = 0 ; m <= menuNames.length - 1 ; m += 1)
 		{
 			Point menuPos = UtilG.Translate(windowPos, 0, border + m * MenuImage.getHeight(null)) ;
 			menuPos.x += m == menu ? 3 : 0 ; 
@@ -652,7 +661,7 @@ public class BagWindow extends GameWindow
 			Image menuImage = m == menu ? (tab == 0 ? SelectedMenuTab0 : SelectedMenuTab1) : MenuImage ;
 			
 			DP.DrawImage(menuImage, menuPos, Align.topLeft) ;
-			DP.DrawText(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, allText[m], titleFont, textColor) ;
+			DP.DrawText(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, menuNames[m], titleFont, textColor) ;
 		}
 		
 		// draw bag
@@ -687,7 +696,7 @@ public class BagWindow extends GameWindow
 			
 			DP.DrawImage(SlotImage, slotCenter, Align.center) ;
 			DP.DrawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
-			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, itemText, stdFont, textColor, 10, MousePos) ;
+			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, itemText, stdFont, textColor, 10, mousePos) ;
 			itemID += 1 ;
 		}
 		
@@ -695,11 +704,11 @@ public class BagWindow extends GameWindow
 		
 	}
 	
-	@Override
-	public String toString() {
-		return "Bag [pot=" + pot + ", alch=" + alch + ", forge=" + forges + ", petItem=" + petItems + ", food=" + foods
-				+ ", arrow=" + arrows + ", equip=" + equips + ", genItem=" + genItems + ", fab=" + fabItems + ", quest=" + questItems
-				+ "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Bag [pot=" + pot + ", alch=" + alch + ", forge=" + forges + ", petItem=" + petItems + ", food=" + foods
+//				+ ", arrow=" + arrows + ", equip=" + equips + ", genItem=" + genItems + ", fab=" + fabItems + ", quest=" + questItems
+//				+ "]";
+//	}
 	
 }

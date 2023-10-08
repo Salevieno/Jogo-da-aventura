@@ -17,11 +17,19 @@ import utilities.UtilG;
 
 public class QuestWindow extends GameWindow
 {
+	private List<Quest> quests ;
+	private BagWindow bag ;
+	
 	public QuestWindow()
 	{
 		super("Quest", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Quest.png"), 0, 0, 0, 0) ;
 	}
 	
+	
+	public void setQuests(List<Quest> quests) { this.quests = quests ;}
+	public void setBag(BagWindow bag) { this.bag = bag ;}
+
+
 	public void navigate(String action)
 	{
 		if (action.equals(Player.ActionKeys[3]))
@@ -34,7 +42,7 @@ public class QuestWindow extends GameWindow
 		}
 	}
 	
-	public void display(List<Quest> quests, BagWindow bag, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{		
 
 		numberWindows = quests.size() ;
@@ -58,7 +66,7 @@ public class QuestWindow extends GameWindow
 			CreatureType[] reqCreatureType = new CreatureType[0];
 			reqCreatureType = reqCreatureTypes.keySet().toArray(reqCreatureType) ;
 			Point creaturesSectionPos = UtilG.Translate(windowPos, size.width / 2 , 60) ;
-			DP.DrawText(creaturesSectionPos, Align.center, angle, "Criaturas necess�rias", font, Game.colorPalette[9]) ;
+			DP.DrawText(creaturesSectionPos, Align.center, angle, "Criaturas necessárias", font, Game.colorPalette[9]) ;
 			DP.DrawLine(UtilG.Translate(creaturesSectionPos, -60, 20), UtilG.Translate(creaturesSectionPos, 60, 20), 1, Game.colorPalette[9]) ;
 			Point creaturePos = UtilG.Translate(windowPos, 50, 80) ;
 			for (CreatureType creatureType : reqCreatureType)
@@ -81,7 +89,7 @@ public class QuestWindow extends GameWindow
 		Item[] reqItem = new Item[0] ;
 		reqItem = reqItems.keySet().toArray(reqItem) ;
 		Point itemsSectionPos = UtilG.Translate(windowPos, size.width / 2, 180) ;
-		DP.DrawText(itemsSectionPos, Align.center, angle, "Itens necess�rios", font, Game.colorPalette[9]) ;
+		DP.DrawText(itemsSectionPos, Align.center, angle, "Itens necessários", font, Game.colorPalette[9]) ;
 		DP.DrawLine(UtilG.Translate(itemsSectionPos, -60, 20), UtilG.Translate(itemsSectionPos, 60, 20), 1, Game.colorPalette[9]) ;
 		Point circlePos = UtilG.Translate(windowPos, 50, 200) ;
 		Point itemPos = UtilG.Translate(circlePos, 10, 0) ;

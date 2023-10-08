@@ -74,38 +74,6 @@ public abstract class LiveBeing
 	public static final List<String> SpellKeys = new ArrayList<>(Arrays.asList(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"})) ;
 	
 	
-	public String getName() {return name ;}
-	/*public LiveBeing(String name, int job, int proJob, int level, GameMap map, Point pos, Directions dir,
-			LiveBeingStates state, Dimension size, double range, int step, String[] elem, TimeCounter mpCounter,
-			TimeCounter satiationCounter, TimeCounter moveCounter, TimeCounter battleActionCounter, 
-			List<String> combo, ArrayList<Spell> spells, PersonalAttributes PA, BattleAttributes BA,
-			MovingAnimations movingAni, PlayerAttributesWindow attWindow)
-	{
-		this.name = name;
-		this.job = job;
-		this.proJob = proJob;
-		this.level = level;
-		this.map = map;
-		this.pos = pos;
-		this.dir = dir;
-		this.state = state;
-		this.size = size;
-		this.range = range;
-		this.step = step;
-		this.elem = elem;
-		this.mpCounter = mpCounter;
-		this.satiationCounter = satiationCounter;
-		this.moveCounter = moveCounter;
-		this.battleActionCounter = battleActionCounter ;
-		this.stepCounter = 0;
-		this.currentAction = "";
-		this.combo = combo;
-		this.spells = spells;
-		this.PA = PA;
-		this.BA = BA;
-		this.movingAni = movingAni;
-		this.attWindow = attWindow;
-	}*/
 	
 	public LiveBeing(PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, AttributesWindow attWindow)
 	{
@@ -117,7 +85,8 @@ public abstract class LiveBeing
 		currentAction = null ;
 		currentAtkType = null ;
 	}
-	
+
+	public String getName() {return name ;}
 	public int getLevel() {return level ;}
 	public int getJob() {return job ;}
 	public int getProJob() {return proJob ;}

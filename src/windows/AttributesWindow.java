@@ -1,7 +1,9 @@
 package windows;
 
 import java.awt.Image;
+import java.awt.Point;
 
+import graphics.DrawingOnPanel;
 import main.Game;
 import utilities.UtilG;
 
@@ -31,4 +33,6 @@ public class AttributesWindow extends GameWindow
 	public void navigate(String action)
 	{
 	}
+
+	public void display(Point mousePos, DrawingOnPanel DP) { }
 }

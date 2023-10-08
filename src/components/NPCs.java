@@ -155,7 +155,6 @@ public class NPCs
 	public void incMenu() { if (menu <= numberMenus - 1) menu += 1 ;}
 	public void decMenu() { if (1 <= menu) menu += -1 ;}
 
-	public boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("MouseLeftClick") ;}
 	public static NPCType typeFromJob(NPCJobs job) { return Arrays.asList(Game.getNPCTypes()).stream().filter(npcType -> job.equals(npcType.getJob())).toList().get(0) ;}
 
 	public void action(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
@@ -395,7 +394,7 @@ public class NPCs
 		
 		if (playerPA.getLife().isMaxed())
 		{
-			if (petPA == null) {menu = 1 ; return ;}
+			if (petPA == null) { return ;}
 
 			petPA.getLife().setToMaximum() ;
 			petPA.getMp().setToMaximum() ;
@@ -431,7 +430,7 @@ public class NPCs
 		{
 			if (action == null) { return ;}
 
-			if (actionIsForward(action))
+			if (Player.actionIsForward(action))
 			{
 				player.setProJob(1 + selOption) ;
 				player.addProSpells() ;
@@ -441,21 +440,16 @@ public class NPCs
 		
 		if (action == null) { return ;}
 		
-		if (menu == 0 & actionIsForward(action))
+		if (menu == 0 & Player.actionIsForward(action))
 		{
 			player.setFocusWindow(spellsTree) ;
-			spellsTree.open() ;
+
+			spellsTree.setSpellsOnWindow(player.getJob()) ;
+			spellsTree.setSpellsDistribution(player.getJob()) ;
+			player.switchOpenClose(spellsTree) ;
 		}
-	
-		//if (menu == 0 | 2 <= menu & menu <= 6 ) { return ;}
 
-		//spellsTree.display(mousePos, player.getJob(), player.getSpellPoints(), DP);
-		
-		if (action == null) { return ;}
-
-		//spellsTree.navigate(action) ;
-
-		if (actionIsForward(action))
+		if (Player.actionIsForward(action))
 		{
 			spellsTree.act(player) ;
 		}
@@ -483,7 +477,7 @@ public class NPCs
 		
 		if (menu == 0) { return ;}
 		
-		forgeWindow.display(DP) ;
+		forgeWindow.display(null, DP) ;
 		
 		if (action == null) { return ;}
 
@@ -534,7 +528,7 @@ public class NPCs
 		
 		if (action == null) { return ;}
 		
-		if (actionIsForward(action) & menu == 1)
+		if (Player.actionIsForward(action) & menu == 1)
 		{
 			int slot = selOption + 1 ;
 	        player.save(slot) ;
@@ -566,7 +560,7 @@ public class NPCs
 		if (menu == 0) { return ;}
 		
 		
-		bankWindow.display(DP) ;
+		bankWindow.display(null, DP) ;
 
 		if (menu == 1) { bankWindow.displayInput("Quanto gostaria de depositar?", action, DP) ;}
 		if (menu == 2) { bankWindow.displayInput("Quanto gostaria de sacar?", action, DP) ;}
@@ -577,7 +571,7 @@ public class NPCs
 		
 		if (menu == 1 | menu == 2) { bankWindow.readValue(action, DP) ;}
 		
-		if (!actionIsForward(action)) { return ;}
+		if (!Player.actionIsForward(action)) { return ;}
 		
 		switch (menu)
 		{

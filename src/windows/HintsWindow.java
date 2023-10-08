@@ -30,7 +30,7 @@ public class HintsWindow extends GameWindow
 		}
 	}
 	
-	public void display(Player player, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 		String[] text = Game.allText.get(TextCategories.hints) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;

@@ -17,7 +17,7 @@ import utilities.UtilG;
 
 public class FabWindow extends GameWindow
 {
-    //private static ArrayList<Recipe> recipes ;
+    private List<Recipe> recipes ;
     
 	public FabWindow()
 	{
@@ -26,6 +26,12 @@ public class FabWindow extends GameWindow
 		//LoadCraftingRecipes() ;
 		//numberWindows = recipes.size() ;
 	}
+	
+	
+
+	public void setRecipes(List<Recipe> recipes) { this.recipes = recipes ;}
+
+
 
 	public void navigate(String action)
 	{
@@ -39,7 +45,7 @@ public class FabWindow extends GameWindow
 		}
 	}
 
-	public void display(List<Recipe> recipes, Point MousePos, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 		Dimension screenSize = Game.getScreen().getSize() ;
 		Color[] ColorPalette = Game.colorPalette ;
@@ -75,7 +81,7 @@ public class FabWindow extends GameWindow
 				String ingredientName = ingredients[i].getName() ;
 				int ingredientAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
 				String text = ingredientAmount + " " + ingredientName ;
-				DP.DrawTextUntil(textPos, Align.topLeft, OverallAngle, text, font, textColor, 10, MousePos) ;
+				DP.DrawTextUntil(textPos, Align.topLeft, OverallAngle, text, font, textColor, 10, mousePos) ;
 			}
 			
 			// draw products
@@ -87,7 +93,7 @@ public class FabWindow extends GameWindow
 				String productsName = products[i].getName() ;
 				int productsAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
 				String text = productsAmount + " " + productsName ;
-				DP.DrawTextUntil(textPos, Align.topRight, OverallAngle, text, font, textColor, 10, MousePos) ;
+				DP.DrawTextUntil(textPos, Align.topRight, OverallAngle, text, font, textColor, 10, mousePos) ;
 			}
 		}
 		Point arrowsPos = UtilG.Translate(windowPos, 0, image.getHeight(null) / 2) ;

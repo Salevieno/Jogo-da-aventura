@@ -39,7 +39,7 @@ public class BestiaryWindow extends GameWindow
 		window = UtilS.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, windowLimit) ;*/
 	}
 	
-	public void displayCreatureInfo(Point mainWindowPos, Player player, CreatureType creatureType, DrawingOnPanel DP)
+	public void displayCreatureInfo(Point mainWindowPos, CreatureType creatureType, DrawingOnPanel DP)
 	{
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -78,7 +78,7 @@ public class BestiaryWindow extends GameWindow
 		}
 	}
 	
-	public void display(Player player, Point MousePos, DrawingOnPanel DP)
+	public void display(Point MousePos, DrawingOnPanel DP)
 	{
 		Point windowPos = new Point((int)(0.1 * Game.getScreen().getSize().width), (int)(0.3 * Game.getScreen().getSize().height)) ;
 		Dimension windowSize = new Dimension((int)(0.6 * Game.getScreen().getSize().width), (int)(0.6 * Game.getScreen().getSize().height)) ;
@@ -117,7 +117,7 @@ public class BestiaryWindow extends GameWindow
 			}
 			if (selectedCreature != null)
 			{
-				displayCreatureInfo(new Point(windowPos.x + windowSize.width, windowPos.y + windowSize.height), player, selectedCreature, DP) ;
+				displayCreatureInfo(new Point(windowPos.x + windowSize.width, windowPos.y + windowSize.height), selectedCreature, DP) ;
 			}
 		}
 	}

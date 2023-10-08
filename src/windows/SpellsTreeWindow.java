@@ -19,6 +19,9 @@ public class SpellsTreeWindow extends GameWindow
 {
 	private List<Spell> spells ;
 	private Point windowTopLeft ;
+	private List<Spell> spellsOnWindow ;
+	private int[] spellsDistribution ;
+	private int points ;
 
 	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
@@ -56,19 +59,18 @@ public class SpellsTreeWindow extends GameWindow
 		
 	}
 	
-	public int[] spellsDistribution(int playerJob)
+	public void setSpellsDistribution(int playerJob)
 	{
-		if (0 < tab) { return new int[] {1, 2, 2, 2, 2, 1} ;
+		if (0 < tab) { spellsDistribution = new int[] {1, 2, 2, 2, 2, 1} ; return ;}
 		
-		}
 		switch (playerJob)
 		{
-			case 0: return new int[] {1, 3, 3, 3, 3, 1} ;
-			case 1: return new int[] {3, 3, 3, 3, 3} ;
-			case 2: return new int[] {3, 3, 3, 3, 3} ;
-			case 3: return new int[] {2, 3, 3, 3, 3} ;
-			case 4: return new int[] {2, 3, 3, 3, 3} ;
-			default: return null ;
+			case 0: spellsDistribution = new int[] {1, 3, 3, 3, 3, 1} ; return ;
+			case 1: spellsDistribution = new int[] {3, 3, 3, 3, 3} ; return ;
+			case 2: spellsDistribution = new int[] {3, 3, 3, 3, 3} ; return ;
+			case 3: spellsDistribution = new int[] {2, 3, 3, 3, 3} ; return ;
+			case 4: spellsDistribution = new int[] {2, 3, 3, 3, 3} ; return ;
+			default: spellsDistribution = null ;
 		}
 	}
 	
@@ -114,16 +116,6 @@ public class SpellsTreeWindow extends GameWindow
 		
 		
 		
-	}
-	
-	private List<Spell> basicSpells(int playerJob)
-	{
-		return spells.subList(0, Player.NumberOfSpellsPerJob[playerJob]) ;
-	}
-	
-	private List<Spell> proSpells()
-	{
-		return spells.subList(spells.size() - 11, spells.size() - 1) ;
 	}
 	
 	private Point calcSlotPos(int row, int col, int numberRows, int numberCols, Dimension slotSize)
@@ -187,7 +179,22 @@ public class SpellsTreeWindow extends GameWindow
 		DP.DrawText(UtilG.Translate(windowTopLeft, -10, 6 + 75 + 75/2), Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
 	}
 	
-	public void display(Point mousePos, int playerJob, int points, DrawingOnPanel DP)
+	public List<Spell> basicSpells(int playerJob)
+	{
+		return spells.subList(0, Player.NumberOfSpellsPerJob[playerJob]) ;
+	}
+	
+	public List<Spell> proSpells()
+	{
+		return spells.subList(spells.size() - 11, spells.size() - 1) ;
+	}
+
+	public void setSpellsOnWindow(int playerJob)
+	{
+		spellsOnWindow = tab == 0 ? basicSpells(playerJob) : proSpells() ;
+	}
+	
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 
 		double angle = DrawingOnPanel.stdAngle ;
@@ -202,13 +209,9 @@ public class SpellsTreeWindow extends GameWindow
 		DP.DrawText(titlePos, Align.center, angle, name, largeFont, Game.colorPalette[9]);
 		
 		if (spells == null) { return ;}
-
-		List<Spell> spellsOnWindow = tab == 0 ? basicSpells(playerJob) : proSpells() ;
-
-		int[] spellsDistribution = spellsDistribution(playerJob) ;
 		
 		// display spells
-		int initialSpell = tab == 0 ? 0 : basicSpells(playerJob).size() + 1 ;
+		int initialSpell = tab == 0 ? 0 : spellsOnWindow.size() + 1 ;
 		int row = 0 ;
 		int col = 0 ;
 		for (int i = 0 ; i <= spellsOnWindow.size() - 1 ; i += 1)

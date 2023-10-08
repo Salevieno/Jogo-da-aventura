@@ -18,12 +18,16 @@ import utilities.UtilG;
 
 public class PetAttributesWindow extends AttributesWindow
 {
+	private Pet pet ;
+	
 	public PetAttributesWindow()
 	{
 		super(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PetAttWindow.png"), 1);
 	}
 
-	public void display(Pet pet, DrawingOnPanel DP)
+	public void setPet(Pet pet) { this.pet = pet ;}
+	
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 
 		Dimension screenSize = Game.getScreen().getSize() ;

@@ -168,7 +168,7 @@ public class SettingsWindow extends GameWindow
 			DP.DrawText(TextPos, Align.bottomCenter, OverallAngle, "Off", font, ColorPalette[4]) ;							
 		}
 	}
-	public void display(DrawingOnPanel DP)
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 		Dimension screenSize = Game.getScreen().getSize() ;
 		double stdAngle = DrawingOnPanel.stdAngle ;

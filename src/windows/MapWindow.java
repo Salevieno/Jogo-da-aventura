@@ -7,7 +7,6 @@ import java.awt.Point;
 import graphics.DrawingOnPanel;
 import main.Game;
 import maps.GameMap;
-import screen.Sky;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
@@ -15,12 +14,17 @@ import utilities.UtilG;
 public class MapWindow extends GameWindow
 {
 	private Point windowPos = new Point(30, 30) ;
+	private Point playerPos ;
+	private GameMap currentMap ;
 	private static final Image image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "MapWindow.png") ;
 	
 	public MapWindow()
 	{
 		super("Mapa", image, 0, 0, 0, 0) ;
 	}
+	
+	public void setPlayerPos(Point playerPos) { this.playerPos = playerPos ;}
+	public void setCurrentMap(GameMap currentMap) { this.currentMap = currentMap ;}
 
 	public void navigate(String action)
 	{
@@ -190,8 +194,10 @@ public class MapWindow extends GameWindow
 		return new Point(offsetX, offsetY) ;
 	}
 	
-	public void display(Point playerPos, GameMap playerMap, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{
+		if (currentMap == null) { return ;}
+		
 		// full map = 14 x 15 mapas
 		// continent maps = max 6 x 8 maps
 		Dimension screenSize = Game.getScreen().getSize() ;
@@ -203,7 +209,7 @@ public class MapWindow extends GameWindow
 
 		DP.DrawImage(image, windowPos, Align.topLeft) ;
 
-		switch (playerMap.getContinent())
+		switch (currentMap.getContinent())
 		{
 			case forest: maps = GameMap.inForest() ; offset = calcMapOffset(8, 6, scale, spacing) ; break ;
 			case cave: maps = GameMap.inCave() ; offset = calcMapOffset(2, 6, scale, spacing) ; break ;
@@ -234,7 +240,8 @@ public class MapWindow extends GameWindow
 			Point textPos = UtilG.Translate(mapPos, (int) (scale.x * screenSize.width / 2), (int) (-scale.y * screenSize.height / 2)) ;
 			DP.DrawText(textPos, Align.center, 0, map.getName(), stdFont, Game.colorPalette[9]) ;
 			
-			if (!map.equals(playerMap)) { continue ;}
+			if (!map.equals(currentMap)) { continue ;}
+			if (playerPos == null) { continue ;}
 			
 			double playerRelXPos = playerPos.x / (double) Game.getScreen().getSize().width ;
 			double playerRelYPos = playerPos.y / (double) (Game.getScreen().getSize().height) ;

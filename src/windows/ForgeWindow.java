@@ -96,7 +96,7 @@ public class ForgeWindow extends GameWindow
 		// TODO overwrite save
 	}
 	
-	public void display(DrawingOnPanel DP)
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 		
 		double angle = DrawingOnPanel.stdAngle ;

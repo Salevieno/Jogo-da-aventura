@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Point;
 
+import graphics.DrawingOnPanel;
 import main.Game;
 
 public abstract class GameWindow
@@ -52,8 +54,7 @@ public abstract class GameWindow
 	public int getItem() {return item ;}
 	public void setItem(int newValue) {item = newValue ;}
 	
-	public void open() { isOpen = !isOpen ;}
-	
+	public void open() { isOpen = true ;}
 	public void close() { isOpen = false ;}
 	
 	public void menuUp()
@@ -119,5 +120,5 @@ public abstract class GameWindow
 	public Color getTextColor(boolean condition) { return condition ? selColor : stdColor ;}
 	
 	public abstract void navigate(String action) ;
-//	public abstract void display(Point MousePos, DrawingOnPanel DP) ;
+	public abstract void display(Point MousePos, DrawingOnPanel DP) ;
 }

@@ -97,7 +97,7 @@ public class ElementalWindow extends GameWindow
 		
 	}
 
-	public void display(DrawingOnPanel DP)
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 		
 		Point windowPos = new Point((int)(0.4*Game.getScreen().getSize().width), (int)(0.2*Game.getScreen().getSize().height)) ;

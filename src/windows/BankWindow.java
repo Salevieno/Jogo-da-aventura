@@ -119,7 +119,7 @@ public class BankWindow extends GameWindow
 		DP.DrawArc(pos, 16, 1, 90, (int) (-360 * timeRate), Game.colorPalette[2], null) ;
 	}
 	
-	public void display(DrawingOnPanel DP)
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, border + 10) ;
 		double angle = DrawingOnPanel.stdAngle ;
