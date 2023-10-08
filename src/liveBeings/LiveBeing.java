@@ -325,6 +325,7 @@ public abstract class LiveBeing
 	public int totalPower()
 	{
 		// TODO consider life, dex and agi, special ba, element mult, mp with spells and items
+		// Dano = nHits . hitRate . (PhyAtkRate . PhyDam + MagAtkRate . MagDam + BloodRate . BloodDam + PoisonRate . PoisonDam)
 		double FPS = 200 / 3.0 ;
 		double maxPhyAtkPossible = BA.getPhyAtk().getTotal() ;
 		double maxMagAtkPossible = BA.getMagAtk().getTotal() ;

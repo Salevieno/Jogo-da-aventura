@@ -884,45 +884,45 @@ public class Game extends JPanel
 		
 		for (int i = 0 ; i <= allSpells.length - 1 ; i += 1)
 		{
-			int ID = i ;
+			int id = i ;
 			
 			List<Buff> buffs = new ArrayList<>() ;
-			buffs.add(Buff.load(spellsBuffsInput.get(ID))) ;
+			buffs.add(Buff.load(spellsBuffsInput.get(id))) ;
 
 			List<Buff> nerfs = new ArrayList<>() ;
-			nerfs.add(Buff.load(spellsNerfsInput.get(ID))) ;
+			nerfs.add(Buff.load(spellsNerfsInput.get(id))) ;
 
-			info[i] = new String[] {spellTypesInput.get(ID)[42], spellTypesInput.get(ID)[43 + 2 * language.ordinal()]} ;
-			String name = spellTypesInput.get(ID)[4] ;
+			info[i] = new String[] {spellTypesInput.get(id)[42], spellTypesInput.get(id)[43 + 2 * language.ordinal()]} ;
+			String name = spellTypesInput.get(id)[4] ;
 			String job = PlayerJobs.jobFromSpellID(i).toString() ;
 			Image image = UtilG.loadImage(ImagesPath + "\\Spells\\" + "spell" + job + i + ".png") ;
-			int maxLevel = Integer.parseInt(spellTypesInput.get(ID)[5]) ;
-			int mpCost = Integer.parseInt(spellTypesInput.get(ID)[6]) ;
-			SpellTypes type = SpellTypes.valueOf(spellTypesInput.get(ID)[7]) ;
+			int maxLevel = Integer.parseInt(spellTypesInput.get(id)[5]) ;
+			int mpCost = Integer.parseInt(spellTypesInput.get(id)[6]) ;
+			SpellTypes type = SpellTypes.valueOf(spellTypesInput.get(id)[7]) ;
 			Map<Spell, Integer> preRequisites = new HashMap<>() ;
 			for (int p = 0 ; p <= 6 - 1 ; p += 2)
 			{
-				if (-1 < Integer.parseInt(spellTypesInput.get(ID)[p + 8]))
+				if (-1 < Integer.parseInt(spellTypesInput.get(id)[p + 8]))
 				{
-					preRequisites.put(allSpells[Integer.parseInt(spellTypesInput.get(ID)[p + 8])], Integer.parseInt(spellTypesInput.get(ID)[p + 9])) ;
+					preRequisites.put(allSpells[Integer.parseInt(spellTypesInput.get(id)[p + 8])], Integer.parseInt(spellTypesInput.get(id)[p + 9])) ;
 				}
 			}
-			int cooldown = Integer.parseInt(spellTypesInput.get(ID)[14]) ;
-			int duration = Integer.parseInt(spellTypesInput.get(ID)[15]) ;
-			double[] atkMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[16]), Double.parseDouble(spellTypesInput.get(ID)[17])} ;
-			double[] defMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[18]), Double.parseDouble(spellTypesInput.get(ID)[19])} ;
-			double[] dexMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[20]), Double.parseDouble(spellTypesInput.get(ID)[21])} ;
-			double[] agiMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[22]), Double.parseDouble(spellTypesInput.get(ID)[23])} ;
-			double[] atkCritMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[24])} ;
-			double[] defCritMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[25])} ;
-			double[] stunMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[26]), Double.parseDouble(spellTypesInput.get(ID)[27]), Double.parseDouble(spellTypesInput.get(ID)[28])} ;
-			double[] blockMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[29]), Double.parseDouble(spellTypesInput.get(ID)[30]), Double.parseDouble(spellTypesInput.get(ID)[31])} ;
-			double[] bloodMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[32]), Double.parseDouble(spellTypesInput.get(ID)[33]), Double.parseDouble(spellTypesInput.get(ID)[34])} ;
-			double[] poisonMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[35]), Double.parseDouble(spellTypesInput.get(ID)[36]), Double.parseDouble(spellTypesInput.get(ID)[37])} ;
-			double[] silenceMod = new double[] {Double.parseDouble(spellTypesInput.get(ID)[38]), Double.parseDouble(spellTypesInput.get(ID)[39]), Double.parseDouble(spellTypesInput.get(ID)[40])} ;
-			Elements elem = Elements.valueOf(spellTypesInput.get(ID)[41]) ;
+			int cooldown = Integer.parseInt(spellTypesInput.get(id)[14]) ;
+			int duration = Integer.parseInt(spellTypesInput.get(id)[15]) ;
+			double[] atkMod = new double[] {Double.parseDouble(spellTypesInput.get(id)[16]), Double.parseDouble(spellTypesInput.get(id)[17])} ;
+			double[] defMod = new double[] {Double.parseDouble(spellTypesInput.get(id)[18]), Double.parseDouble(spellTypesInput.get(id)[19])} ;
+			double[] dexMod = new double[] {Double.parseDouble(spellTypesInput.get(id)[20]), Double.parseDouble(spellTypesInput.get(id)[21])} ;
+			double[] agiMod = new double[] {Double.parseDouble(spellTypesInput.get(id)[22]), Double.parseDouble(spellTypesInput.get(id)[23])} ;
+			double[] atkCritMod = new double[] {Double.parseDouble(spellTypesInput.get(id)[24])} ;
+			double[] defCritMod = new double[] {Double.parseDouble(spellTypesInput.get(id)[25])} ;
+			double[] stunMod = new double[] {Double.parseDouble(spellTypesInput.get(id)[26]), Double.parseDouble(spellTypesInput.get(id)[27]), Double.parseDouble(spellTypesInput.get(id)[28])} ;
+			double[] blockMod = new double[] {Double.parseDouble(spellTypesInput.get(id)[29]), Double.parseDouble(spellTypesInput.get(id)[30]), Double.parseDouble(spellTypesInput.get(id)[31])} ;
+			double[] bloodMod = new double[] {Double.parseDouble(spellTypesInput.get(id)[32]), Double.parseDouble(spellTypesInput.get(id)[33]), Double.parseDouble(spellTypesInput.get(id)[34])} ;
+			double[] poisonMod = new double[] {Double.parseDouble(spellTypesInput.get(id)[35]), Double.parseDouble(spellTypesInput.get(id)[36]), Double.parseDouble(spellTypesInput.get(id)[37])} ;
+			double[] silenceMod = new double[] {Double.parseDouble(spellTypesInput.get(id)[38]), Double.parseDouble(spellTypesInput.get(id)[39]), Double.parseDouble(spellTypesInput.get(id)[40])} ;
+			Elements elem = Elements.valueOf(spellTypesInput.get(id)[41]) ;
 
-			allSpells[i] = new Spell(name, image, maxLevel, mpCost, type, preRequisites, buffs, nerfs,
+			allSpells[i] = new Spell(id, name, image, maxLevel, mpCost, type, preRequisites, buffs, nerfs,
 					atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod,
 					cooldown, duration, elem, info[i]) ;
 		}
@@ -1066,7 +1066,6 @@ public class Game extends JPanel
 		// increment and activate counters
 		incrementCounters() ;
 		activateCounters() ;
-		
 		
 		// check for the Konami code
 		checkKonamiCode(player.getCombo()) ;

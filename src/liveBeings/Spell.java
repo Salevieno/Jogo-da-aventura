@@ -19,6 +19,7 @@ import utilities.UtilG;
 
 public class Spell 
 {	
+	private int id ;
 	private String name ;
 	private Image image ;
 	private int level ;
@@ -48,11 +49,12 @@ public class Spell
 	public static final Image cooldownImage = UtilG.loadImage(Game.ImagesPath + "Cooldown.png") ;	
 	
 	
-	public Spell(String name, Image image, int maxLevel, int mpCost, SpellTypes type, Map<Spell, Integer> preRequisites,
+	public Spell(int id, String name, Image image, int maxLevel, int mpCost, SpellTypes type, Map<Spell, Integer> preRequisites,
 			List<Buff> buffs, List<Buff> nerfs, double[] atkMod, double[] defMod, double[] dexMod, double[] agiMod,
 			double[] atkCritMod, double[] defCritMod, double[] stunMod, double[] blockMod, double[] bloodMod,
 			double[] poisonMod, double[] silenceMod, int cooldown, int duration, Elements elem, String[] info)
 	{
+		this.id = id ;
 		this.name = name;
 		this.image = image;
 		level = 0;
@@ -80,7 +82,8 @@ public class Spell
 		this.info = info;
 	}
 
-	
+
+	public int getId() {return id ;}
 	public String getName() {return name ;}
 	public Image getImage() {return image ;}
 	public int getLevel() {return level ;}

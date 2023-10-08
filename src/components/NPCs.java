@@ -167,11 +167,10 @@ public class NPCs
 		BagWindow playerBag = player.getBag() ;
 		
 
-		if (player.getCurrentAction() == null) { return ;}
+		if (playerAction == null) { return ;}
 				
 		if (window != null) { if (window.isOpen()) { return ;} ;}
 		
-		navigate(player.getCurrentAction()) ;
 		switch (type.getJob())
 		{		
 			case doctor: 
@@ -300,6 +299,7 @@ public class NPCs
 			
 			default: break;			
 		}
+		navigate(playerAction) ;
 		
 	}
 	
@@ -424,7 +424,6 @@ public class NPCs
 	
 	private void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawingOnPanel DP)
 	{
-		
 		if (50 <= player.getLevel() & player.getProJob() == 0 & menu == 3)
 		{
 			if (action == null) { return ;}
@@ -439,7 +438,7 @@ public class NPCs
 		
 		if (action == null) { return ;}
 	
-		if (menu == 1 & Player.actionIsForward(action))
+		if (menu == 0 | menu == 5 & Player.actionIsForward(action))
 		{
 //			player.setFocusWindow(spellsTree) ;
 

@@ -1028,93 +1028,93 @@ public class Player extends LiveBeing
 	}
 	public void applyPassiveSpell(Spell spell)
 	{
-		int spellID = spells.indexOf(spell) ;
-		switch (job)
+		System.out.println("spell id = " + spell.getId());
+		switch (spell.getId())
 		{
-			case 0:
-				switch (spellID)
-				{
-					case 1:
-						PA.getLife().incMaxValue(10 + (int) (0.05 * PA.getLife().getMaxValue())) ;
-						PA.getLife().setToMaximum() ;
-						return ;
-					case 2: BA.getPhyAtk().incBaseValue(2 + (int) (0.04 * BA.getPhyAtk().getBaseValue())) ; return ;
-					case 3: BA.getPhyDef().incBaseValue(2 + (int) (0.04 * BA.getPhyDef().getBaseValue())) ; return ;
-					case 7: BA.getBlood().incBasicDef(0.4 + 0.05 * BA.getBlood().getBasicDef()) ; return ;
-					case 10:  return ; // TODO resistência a neutros + 15%
-					case 11: BA.getPhyAtk().incBaseValue(2) ; BA.getDex().incBaseValue(1) ; BA.getAgi().incBaseValue(1) ; return ;
-					
-					default: return ;
-				}
-				
-			case 1:
-				switch (spellID)
-				{
-					case 2: BA.getMagAtk().incBaseValue(2 + (int) (0.04 * BA.getMagAtk().getBaseValue())) ; BA.getMagDef().incBaseValue(2 + (int) (0.04 * BA.getMagDef().getBaseValue())) ; return ;
-					case 8:  return ; // TODO lança uma magia a depender do resultado das cartas, sem uso de mana, a cada 100 frames
-					default: return ;
-				}
-				
-			case 2:
-				switch (spellID)
-				{
-					case 1: BA.getDex().incBaseValue(1) ; BA.getAgi().incBaseValue(0.4) ; return ;
-					case 4:  return ; // TODO permite o uso de flechas mais poderosas
-					case 7: BA.getMagAtk().incBaseValue(1 + (int) (0.02 * BA.getMagAtk().getBaseValue())) ; BA.getPhyAtk().incBaseValue(1 + (int) (0.02 * BA.getPhyAtk().getBaseValue())) ; return ;
-					case 8:  return ; // TODO permite a fabricação de flechas elementais
-					case 10: BA.getBlood().incDefChance(0.05) ; BA.getPoison().incDefChance(0.05) ; return ;
-					default: return ;
-				}
-				
-			case 3:
-				switch (spellID)
-				{
-					case 1: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
-					
-					case 3: BA.getCritAtk().incBaseValue(0.03) ; return ;
-					
-					case 4:  return ; // TODO chance de coleta em dobro em até 70%
-					
-					case 7:  return ; // TODO efeito das poções até + 30%
-					
-					case 9:
-						PA.getLife().incMaxValue((int) (0.03 * PA.getLife().getMaxValue())) ;
-						PA.getLife().setToMaximum() ;
-						BA.getPhyAtk().incBaseValue(2) ; BA.getPhyDef().incBaseValue(2) ;
-						return ;
-						
-					case 12:  return ; // TODO survivor instinct
-					
-					case 13: 
-						Pet pet = Game.getPet() ;
-						if (pet == null) { return ;}
-						pet.getPA().getLife().incMaxValue(10) ;
-						pet.getPA().getLife().setToMaximum() ;
-						pet.getPA().getMp().incMaxValue(10) ;
-						pet.getPA().getMp().setToMaximum() ;
-						pet.getBA().getPhyAtk().incBaseValue(2) ;
-						pet.getBA().getMagAtk().incBaseValue(2) ;
-						pet.getBA().getDex().incBaseValue(1) ;
-						pet.getBA().getAgi().incBaseValue(1) ;
-						return ;
-						
-					default: return ;
-				}
-				
-			case 4:
-				switch (spellID)
-				{
-					case 1: BA.getAgi().incBaseValue(1) ; return ;
-					case 4: BA.getPhyAtk().incBaseValue(3) ; BA.getDex().incBaseValue(1) ; return ;
-					case 6:  return ; // TODO aumenta em 20% a chance de obter itens raros na escavação
-					case 8:  return ; // TODO permite o uso de itens na batalha
-					case 9:  return ; // TODO permite a fabricação de poções venenosas
-					case 11:  return ; // TODO chance de até 100% de contra-atacar
-					case 13: BA.getPoison().incDefBonus(1) ; return ;
-					default: return ;
-				}
-				
+			case 1: PA.getLife().incMaxValue(10 + (int) (0.05 * PA.getLife().getMaxValue())) ; PA.getLife().setToMaximum() ; return ;
+			case 2: BA.getPhyAtk().incBaseValue(2 + (int) (0.04 * BA.getPhyAtk().getBaseValue())) ; return ;
+			case 3: BA.getPhyDef().incBaseValue(2 + (int) (0.04 * BA.getPhyDef().getBaseValue())) ; return ;
+			case 7: BA.getBlood().incBasicDef(0.4 + 0.05 * BA.getBlood().getBasicDef()) ; return ;
+			case 10:  return ; // TODO resistência a neutros + 15%
+			case 11: BA.getPhyAtk().incBaseValue(2) ; BA.getDex().incBaseValue(1) ; BA.getAgi().incBaseValue(1) ; return ;
+			case 14: PA.getLife().incMaxValue(202) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(9) ; BA.getPhyDef().incBaseValue(5) ; return ;
+			case 18: BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(3) ; BA.getStun().incAtkChance(0.04) ; return ;
+			case 19: return ; // TODO aumenta bônus do atk físico da arma em até 50%
+			case 23: return ; // TODO aumenta o efeito do treinamento em 20%
+			case 24: PA.getLife().incMaxValue(202) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(5) ; BA.getPhyDef().incBaseValue(9) ; return ;
+			case 26: BA.getBlock().incAtkChance(0.06) ; return ; // TODO teste
+			case 27: BA.getMagDef().incBaseValue(0.1 * BA.getMagDef().getBaseValue()) ; return ;
+			case 28: BA.getCritDef().incBaseValue(0.15) ; return ;
+			case 29: BA.getPoison().incDefChance(0.1) ; return ;
+			
+			case 36: BA.getMagAtk().incBaseValue(2 + (int) (0.04 * BA.getMagAtk().getBaseValue())) ; BA.getMagDef().incBaseValue(2 + (int) (0.04 * BA.getMagDef().getBaseValue())) ; return ;
+			case 42:  return ; // TODO lança uma magia a depender do resultado das cartas, sem uso de mana, a cada 100 frames
+			case 49: PA.getMp().incMaxValue(202) ; PA.getMp().setToMaximum() ; BA.getMagAtk().incBaseValue(9) ; BA.getMagDef().incBaseValue(5) ; return ;
+			case 54: return ; // TODO reduz o cooldown das magias em 50%
+			case 57: return ; // TODO descobre o próximo movimento da criatura com chance de 70%
+			case 59: PA.getMp().incMaxValue(202) ; PA.getMp().setToMaximum() ; BA.getMagAtk().incBaseValue(5) ; BA.getMagDef().incBaseValue(9) ; return ;
+			case 62: return ; // TODO regen de até 5% da vida, consome mp
+			case 65: return ; // TODO chance de converter até 100% do dano mágico recebido em vida
+			
+			case 70: BA.getDex().incBaseValue(1) ; BA.getAgi().incBaseValue(0.4) ; return ;
+			case 73:  return ; // TODO permite o uso de flechas mais poderosas
+			case 76: BA.getMagAtk().incBaseValue(1 + (int) (0.02 * BA.getMagAtk().getBaseValue())) ; BA.getPhyAtk().incBaseValue(1 + (int) (0.02 * BA.getPhyAtk().getBaseValue())) ; return ;
+			case 77:  return ; // TODO permite a fabricação de flechas elementais
+			case 79: BA.getBlood().incDefChance(0.05) ; BA.getPoison().incDefChance(0.05) ; return ;
+			case 82:  return ; // TODO chance permanente de recuperar a flecha de até 50%
+			case 84: BA.getPhyAtk().incBaseValue(7) ; BA.getDex().incBaseValue(10) ; BA.getAgi().incBaseValue(3) ; return ;
+			case 86: range *= 1.148698 ; return ;
+			case 88: return ; // TODO permite fabricar flechas especiais
+			case 89: return ; // TODO permite se mover durante a batalha com redução de destreza
+			case 92: return ; // TODO aumenta a saciedade, comidas recuperam vida
+			case 94: PA.getMp().incMaxValue(68) ; PA.getMp().setToMaximum() ; BA.getMagAtk().incBaseValue(7) ; BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(2) ; return ;
+			case 96: return ; // TODO aumenta a resistência aos elementos em 30%
+			case 99: return ; // TODO vê o elemento das criaturas
+			
+			case 105: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
+			case 107: BA.getCritAtk().incBaseValue(0.03) ; return ;
+			case 108:  return ; // TODO chance de coleta em dobro em até 70%
+			case 111:  return ; // TODO efeito das poções até + 30%
+			case 113:
+				PA.getLife().incMaxValue((int) (0.03 * PA.getLife().getMaxValue())) ;
+				PA.getLife().setToMaximum() ;
+				BA.getPhyAtk().incBaseValue(2) ; BA.getPhyDef().incBaseValue(2) ;
+				return ;
+			case 116:  return ; // TODO survivor instinct
+			case 117: 
+				Pet pet = Game.getPet() ;
+				if (pet == null) { return ;}
+				pet.getPA().getLife().incMaxValue(10) ;
+				pet.getPA().getLife().setToMaximum() ;
+				pet.getPA().getMp().incMaxValue(10) ;
+				pet.getPA().getMp().setToMaximum() ;
+				pet.getBA().getPhyAtk().incBaseValue(2) ;
+				pet.getBA().getMagAtk().incBaseValue(2) ;
+				pet.getBA().getDex().incBaseValue(1) ;
+				pet.getBA().getAgi().incBaseValue(1) ;
+				return ;
+			case 118: PA.getMp().incMaxValue(48) ; PA.getMp().setToMaximum() ; BA.getPhyAtk().incBaseValue(7) ; BA.getMagAtk().incBaseValue(4) ; BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(3) ; return ;
+			case 128: PA.getLife().incMaxValue(28) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(11) ; BA.getPhyDef().incBaseValue(4) ; BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(5) ; return ;	
+			case 129: return ; // TODO aumenta a velocidade de ataque
+			case 133: return ; // TODO Se a criatura estiver com a vida abaixo de 30%, os ataques físicos e mágicos do Selvagem aumentam em 30%
+			
+			case 139: BA.getAgi().incBaseValue(1) ; return ;
+			case 142: BA.getPhyAtk().incBaseValue(3) ; BA.getDex().incBaseValue(1) ; return ;
+			case 144:  return ; // TODO aumenta em 20% a chance de obter itens raros na escavação
+			case 146:  return ; // TODO permite o uso de itens na batalha
+			case 147:  return ; // TODO permite a fabricação de poções venenosas
+			case 149:  return ; // TODO chance de até 100% de contra-atacar
+			case 151: BA.getPoison().incBasicDef(1); return ;
+			case 152: PA.getLife().incMaxValue(10) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(6) ; BA.getPhyDef().incBaseValue(6) ; BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(10) ; return ;
+			case 155: return ; // TODO chance de 30% de atacar sem gastar o turno
+			case 156: BA.getStun().incDefChance(0.1) ; return ;
+			case 162: PA.getLife().incMaxValue(16) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(3) ; BA.getPhyDef().incBaseValue(3) ; BA.getDex().incBaseValue(5) ; BA.getAgi().incBaseValue(6) ; return ;
+			case 163: return ; // TODO aumenta o ganho de ouro em 20%
+			case 165: return ; // TODO 50% do dano recebido de envenenamento é convertido em vida
+			case 168: return ; // TODO aumenta o multiplicador de ataque em 5%
+			
 			default: return ;
+			
 		}
 	}
 	private void useSupportSpell(Spell spell)
@@ -1123,7 +1123,7 @@ public class Player extends LiveBeing
 		spell.getCooldownCounter().reset();
 		spell.activate() ;		
 		resetBattleActions() ;
-		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
+		PA.getMp().incMaxValue(-spell.getMpCost()) ;
 
 		// TODO support spells 
 		int spellIndex = spells.indexOf(spell) ;

@@ -8,41 +8,41 @@ import utilities.UtilG;
 public class PersonalAttributes
 {
 	
-	private BasicAttribute Life ;
-	private BasicAttribute Mp ;
-	private BasicAttribute Exp ;
-	private BasicAttribute Satiation ;
-	private BasicAttribute Thirst ;
+	private BasicAttribute life ;
+	private BasicAttribute mp ;
+	private BasicAttribute exp ;
+	private BasicAttribute satiation ;
+	private BasicAttribute thirst ;
 	
 	public PersonalAttributes(BasicAttribute Life, BasicAttribute Mp, BasicAttribute Exp, BasicAttribute Satiation, BasicAttribute Thirst)
 	{
-		this.Life = Life ;
-		this.Mp = Mp ;
-		this.Exp = Exp ;
-		this.Satiation = Satiation ;
-		this.Thirst = Thirst ;
+		this.life = Life ;
+		this.mp = Mp ;
+		this.exp = Exp ;
+		this.satiation = Satiation ;
+		this.thirst = Thirst ;
 	}
-	public BasicAttribute getLife() {return Life ;}
-	public BasicAttribute getMp() {return Mp ;}
-	public BasicAttribute getExp() {return Exp ;}
-	public BasicAttribute getSatiation() {return Satiation ;}
-	public BasicAttribute getThirst() {return Thirst ;}
+	public BasicAttribute getLife() {return life ;}
+	public BasicAttribute getMp() {return mp ;}
+	public BasicAttribute getExp() {return exp ;}
+	public BasicAttribute getSatiation() {return satiation ;}
+	public BasicAttribute getThirst() {return thirst ;}
 	
-	public void setLife(BasicAttribute newValue) {Life = newValue ;}
-	public void setMp(BasicAttribute newValue) {Mp = newValue ;}
-	public void setExp(BasicAttribute newValue) {Exp = newValue ;}
-	public void setSatiation(BasicAttribute newValue) {Satiation = newValue ;}
-	public void setThirst(BasicAttribute newValue) {Thirst = newValue ;}
+	public void setLife(BasicAttribute newValue) {life = newValue ;}
+	public void setMp(BasicAttribute newValue) {mp = newValue ;}
+	public void setExp(BasicAttribute newValue) {exp = newValue ;}
+	public void setSatiation(BasicAttribute newValue) {satiation = newValue ;}
+	public void setThirst(BasicAttribute newValue) {thirst = newValue ;}
 
 	public BasicAttribute mapAttributes(Attributes att)
 	{
 		switch (att)
 		{
-			case life: return Life ;
-			case mp: return Mp ;
-			case exp: return Exp ;
-			case satiation: return Satiation ;
-			case thirst: return Thirst ;
+			case life: return life ;
+			case mp: return mp ;
+			case exp: return exp ;
+			case satiation: return satiation ;
+			case thirst: return thirst ;
 			
 			default: return null ;
 		}
@@ -54,6 +54,7 @@ public class PersonalAttributes
 	
 	public static Directions randomDir()
 	{
+		// TODO what is directions doing here?
 		int dir = UtilG.randomIntFromTo(0, 3) ;
 
 		return Directions.getDir(dir) ;
@@ -76,8 +77,8 @@ public class PersonalAttributes
 	@Override
 	public String toString()
 	{
-		return "PersonalAttributes [Life=" + Life + ", Mp=" + Mp + ", Exp=" + Exp + ", Satiation=" + Satiation
-				+ ", Thirst=" + Thirst + "]";
+		return "PersonalAttributes [Life=" + life + ", Mp=" + mp + ", Exp=" + exp + ", Satiation=" + satiation
+				+ ", Thirst=" + thirst + "]";
 	}
 
 }

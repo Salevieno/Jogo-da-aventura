@@ -11,10 +11,7 @@ public class BattleAttributes
 	private BasicBattleAttribute dex ;
 	private BasicBattleAttribute agi ;
 	private BasicBattleAttribute critAtk ;
-	private BasicBattleAttribute critDef ;
-	
-//	private double[] crit ;		// 0: Base crit atk chance, 1: bonus, 2: basic crit def chance, 3: bonus
-	
+	private BasicBattleAttribute critDef ;	
 	private BattleSpecialAttribute stun ;
 	private BattleSpecialAttribute block ;
 	private BattleSpecialAttributeWithDamage blood ;
@@ -34,7 +31,6 @@ public class BattleAttributes
 		this.magDef = MagDef ;
 		this.dex = Dex ;
 		this.agi = Agi ;
-//		this.crit = Crit ;
 		this.critAtk = CritAtk ;
 		this.critDef = CritDef ;
 		this.stun = Stun ;
