@@ -37,7 +37,7 @@ public class SpellsTreeWindow extends GameWindow
 	private static final Image spellPoints = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellPoints.png") ;
 	
 	public SpellsTreeWindow(int playerJob)
-	{
+	{// TODO arrumar a árvore de magias. Spells tá se confundindo com spellsOnWindow
 		super("Árvore de magias", noTabsImage, 0, 1, 0, 1) ;
 		
 		windowTopLeft = Game.getScreen().getPoint(0.4, 0.2) ;
@@ -206,8 +206,6 @@ public class SpellsTreeWindow extends GameWindow
 	public void updateSpellsOnWindow()
 	{
 		spellsOnWindow = tab == 0 ? basicSpells() : proSpells() ;
-		System.out.println(basicSpells());
-		System.out.println(proSpells());
 	}
 	
 	public void display(Point mousePos, DrawingOnPanel DP)

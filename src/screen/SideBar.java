@@ -64,8 +64,7 @@ public class SideBar
 		buttons.forEach(button -> button.display(stdAngle, Align.bottomCenter, false, mousePos, DP)) ;
 		buttons.forEach(button -> DP.DrawText(button.getPos(), Align.topLeft, stdAngle, IconKey[button.getid()] != null ? IconKey[button.getid()] : "", font, textColor)) ;
 		
-		// TODO which spells to pass to spellsBar
-		SpellsBar.display(player.getMp().getCurrentValue(), player.getSpells(), mousePos, DP);
+		SpellsBar.display(player.getMp().getCurrentValue(), player.getActiveSpells(), mousePos, DP);
 		HotKeysBar.display(player.getHotItems(), mousePos, DP) ;
 
 	}
