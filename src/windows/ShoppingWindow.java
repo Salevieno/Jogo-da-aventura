@@ -15,17 +15,22 @@ import utilities.UtilG;
 
 public class ShoppingWindow extends GameWindow
 {
-	private static int numberItemsPerWindow = 10 ;
 	private List<Item> itemsForSale ;
 	private List<Item> itemsOnWindow ;
+	private boolean buyMode ;
+	
+	private static final int numberItemsPerWindow = 10 ;
 	
 	public ShoppingWindow(List<Item> ItemsForSale)
 	{
 		super("Shopping", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Shopping.png"), 1, 1, Math.min(ItemsForSale.size(), numberItemsPerWindow), ItemsForSale.size() / numberItemsPerWindow + 1) ;
 		this.itemsForSale = ItemsForSale ;
 		itemsOnWindow = itemsOnWindow() ;
+		buyMode = true ;
 	}
 
+	public void setBuyMode(boolean buyMode) { this.buyMode = buyMode ;}
+	
 	public void navigate(String action)
 	{
 		if (action == null) { return ;}
@@ -50,12 +55,18 @@ public class ShoppingWindow extends GameWindow
 		}
 	}
 	
-	public void action(String action, BagWindow bag)
+	public void act(String action, BagWindow bag)
 	{
 		// TODO reaction with "bought" or "not enough gold"
-		if (action.equals("Enter") | action.equals("MouseLeftClick"))
+		if (Player.actionIsForward(action))
 		{
-			buyItem(bag) ;
+			if (buyMode)
+			{
+				buyItem(bag) ;
+				return ;
+			}
+			
+			sellItem(bag) ;
 		}
 	}
 	
@@ -77,6 +88,14 @@ public class ShoppingWindow extends GameWindow
 		bag.Add(itemsForSale.get(item), 1) ;
 		bag.addGold(-itemsForSale.get(item).getPrice()) ;
 		Game.getAnimations()[3].start(300, new Object[] {new Item[] {itemsForSale.get(item)}});
+	}
+	
+	public void sellItem(BagWindow bag)
+	{
+		Item bagSelectedItem = bag.getSelectedItem() ;
+		bag.Remove(bagSelectedItem, 1) ;
+		bag.addGold(bagSelectedItem.getPrice()) ;
+		// TODO animation get gold
 	}
 	
 	private List<Item> itemsOnWindow()

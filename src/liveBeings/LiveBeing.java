@@ -484,6 +484,8 @@ public abstract class LiveBeing
 
 	}
 	
+
+	public abstract void applyPassiveSpell(Spell spell) ;	
 	public abstract AtkResults useSpell(Spell spell, LiveBeing receiver) ;
 	public abstract void dies() ;
 	

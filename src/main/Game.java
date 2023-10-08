@@ -1220,7 +1220,7 @@ public class Game extends JPanel
 
     	player.InitializeSpells() ;
     	player.setName("Salevieno") ;
-    	player.setLevel(50) ;
+//    	player.setLevel(50) ;
     	player.setMap(cityMaps[3]) ;
     	player.setPos(new Point(200, 201)) ;
 		
@@ -1236,23 +1236,22 @@ public class Game extends JPanel
 		}
     	player.getBag().addGold(300) ;
     	
-    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
+//    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
 //    	
-    	for (int i = 0 ; i <= 60 - 1 ; i += 1)
+    	for (int i = 0 ; i <= 1 - 1 ; i += 1)
     	{
     		player.getExp().incCurrentValue(player.getExp().getMaxValue());
-			player.levelUp(null) ; // Game.getAnimations()[4]	
+			player.levelUp(null) ; // Game.getAnimations()[4]
     	}
-    	player.getLife().incCurrentValue( - 200) ;
 //    	for (int i = 0 ; i <= 30000 - 1 ; i += 1)
 //    	{
 //    		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0));

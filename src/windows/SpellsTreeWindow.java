@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
+import components.SpellTypes;
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
 import liveBeings.Spell;
@@ -42,20 +43,25 @@ public class SpellsTreeWindow extends GameWindow
 		
 	public void switchTo2Tabs() { numberTabs = 2 ;}
 	public void setSpells(List<Spell> spells) { this.spells = spells ; numberItems = spells.size() ;}
+	public void setPoints (int points) { this.points = points ;}
 	
 	public boolean canAcquireSpell(int spellPoints) { return 0 < spellPoints & spells.get(item).getLevel() < spells.get(item).getMaxLevel() & spells.get(item).hasPreRequisitesMet() ;}
 	
-	public void acquireSpell(List<Spell> spells)
+	public void acquireSpell(Player player)
 	{
-
-		if (!spells.contains(spells.get(item)))
+		Spell spell = player.getSpells().get(item) ;
+		if (!spells.contains(spell))
 		{
-			spells.add(spells.get(item)) ;
+			spells.add(spell) ;
 			
 			return ;
 		}
 		
-		spells.get(item).incLevel(1) ;
+		spell.incLevel(1) ;
+		if (spell.getType().equals(SpellTypes.passive))
+		{
+			player.applyPassiveSpell(spell) ;
+		}
 		
 	}
 	
@@ -107,14 +113,13 @@ public class SpellsTreeWindow extends GameWindow
 	
 	public void act(Player player)
 	{
-		
-		if (canAcquireSpell(player.getSpellPoints()))
+
+		if (canAcquireSpell(points) & Player.actionIsForward(player.getCurrentAction()))
 		{
-			acquireSpell(player.getSpells()) ;
+			acquireSpell(player) ;
+			points += -1 ;
 			player.decSpellPoints() ;
-		}
-		
-		
+		}		
 		
 	}
 	

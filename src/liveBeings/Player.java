@@ -70,6 +70,7 @@ import windows.PetAttributesWindow;
 import windows.PlayerAttributesWindow;
 import windows.QuestWindow;
 import windows.SettingsWindow;
+import windows.ShoppingWindow;
 import windows.SpellsTreeWindow;
 
 public class Player extends LiveBeing
@@ -348,23 +349,7 @@ public class Player extends LiveBeing
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
 	public void setHotItem(Item item, int slot) { hotItems[slot] = item ;}	
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
-	public void setFocusWindow(GameWindow W) { focusWindow = W ; System.out.println(focusWindow);}
-
-	public void switchOpenClose(GameWindow win)
-	{
-		if (win.isOpen())
-		{
-			win.close() ;
-			openWindows.remove(win) ;
-			if (openWindows.isEmpty()) { setFocusWindow(null) ; return ;}
-			setFocusWindow(openWindows.get(openWindows.size() - 1)) ;
-			return ;
-		}
-
-		win.open() ;
-		openWindows.add(win) ;
-		setFocusWindow(win) ;
-	}	
+	public void setFocusWindow(GameWindow W) { focusWindow = W ;}
 
 	public static Spell[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpells(), 14) ;}
 	public static Spell[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 34, 49) ;}
@@ -786,7 +771,7 @@ public class Player extends LiveBeing
 			engageInFight(closestCreature) ;
 		}
 		
-		if (bag.isOpen() & actionIsForward(currentAction))
+		if (bag.isOpen())
 		{
 			bag.act(currentAction, this) ;
 		}
@@ -795,14 +780,29 @@ public class Player extends LiveBeing
 		{
 			((PlayerAttributesWindow) attWindow).act(this, mousePos, currentAction) ;
 		}
-		System.out.println("focus = " + focusWindow);
+//		System.out.println("focus = " + focusWindow);
 		
 		// navigating through open windows
 		if (focusWindow != null)
 		{
 			if (focusWindow.isOpen())
 			{
-				focusWindow.navigate(currentAction) ;
+				if (currentAction.equals("Escape"))
+				{
+					switchOpenClose(focusWindow) ;
+				}
+				else
+				{
+					focusWindow.navigate(currentAction) ;
+				}
+			}
+			if (focusWindow instanceof ShoppingWindow)
+			{
+				((ShoppingWindow) focusWindow).act(currentAction, bag) ;
+			}
+			if (focusWindow instanceof SpellsTreeWindow)
+			{
+				((SpellsTreeWindow) focusWindow).act(this) ;
 			}
 		}
 		
@@ -1025,7 +1025,21 @@ public class Player extends LiveBeing
 		return null ;
 	}
 	
-			
+	public void switchOpenClose(GameWindow win)
+	{
+		if (win.isOpen())
+		{
+			win.close() ;
+			openWindows.remove(win) ;
+			if (openWindows.isEmpty()) { setFocusWindow(null) ; return ;}
+			setFocusWindow(openWindows.get(openWindows.size() - 1)) ;
+			return ;
+		}
+
+		win.open() ;
+		openWindows.add(win) ;
+		setFocusWindow(win) ;
+	}	
 	
 	// called every time the window is repainted
 	public void showWindows(Pet pet, Point mousePos, DrawingOnPanel DP)
@@ -1067,6 +1081,31 @@ public class Player extends LiveBeing
 		
 //		return 0 ;
 //	}
+	public void applyPassiveSpell(Spell spell)
+	{
+		int spellID = spells.indexOf(spell) ;
+		switch (job)
+		{
+			case 0:
+				
+			case 1:
+			case 2:
+			case 3:
+				switch (spellID)
+				{
+					case 1: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
+					case 3: BA.getCrit() ; return ;
+					case 4: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
+					case 7: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
+					case 9: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
+					case 12: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
+					case 13: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
+					default: return ;
+				}
+			case 4:
+			default: return ;
+		}
+	}
 	private void useSupportSpell(Spell spell)
 	{	
 		
@@ -1124,6 +1163,103 @@ public class Player extends LiveBeing
 		spell.applyNerfs(true, opponent) ;
 		
 	}
+	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
+	{
+		
+		int spellLevel = spell.getLevel() ;
+		int spellID = spells.indexOf(spell) ;
+		int damage = -1 ;
+		AttackEffects effect = AttackEffects.none ;
+		
+		double PhyAtk = BA.TotalPhyAtk() ;
+		double MagAtk = BA.TotalMagAtk() ;
+		double PhyDef = receiver.getBA().TotalPhyDef() ;
+		double MagDef = receiver.getBA().TotalMagDef() ;
+		double AtkDex = BA.TotalDex() ;
+		double DefAgi = receiver.getBA().TotalAgi() ;
+		double AtkCrit = BA.TotalCritAtkChance() ;
+		double DefCrit = receiver.getBA().TotalCritDefChance() ;		
+		
+		double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
+		double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
+		double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
+		double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
+		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;
+		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;
+		double BlockDef = receiver.getBA().getStatus().getBlock() ;
+		
+		double BasicAtk = 0 ;
+		double BasicDef = 0 ;
+		
+		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[1], elem[4]} ;
+		Elements[] DefElem = receiver.defElems() ;
+		double receiverElemMod = 1 ;
+
+		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
+		spell.activate() ;
+		
+		switch (job)
+		{
+			case 0:
+			
+				BasicAtk = PhyAtk ;
+				BasicDef = PhyDef ;
+				
+				break ;
+			
+			case 1:
+			
+				BasicAtk = MagAtk ;
+				BasicDef = MagDef ;
+				
+				break ;
+			
+			case 2:
+			
+				double arrowAtkPower = arrowIsEquipped() ? equippedArrow.getAtkPower() : 0 ;
+				if (spellID == 0 | spellID == 3 | spellID == 6 | spellID == 9 | spellID == 12)
+				{
+					BasicAtk = PhyAtk + arrowAtkPower ;
+					BasicDef = PhyDef ;
+				}
+				if (spellID == 2 | spellID == 5 | spellID == 11)
+				{
+					BasicAtk = (PhyAtk + MagAtk) / 2.0 + arrowAtkPower ;
+					BasicDef = (PhyDef + MagDef) / 2.0 ;
+				}
+				if (spellID == 14)
+				{
+					BasicAtk = MagAtk + arrowAtkPower ;
+					BasicDef = MagDef ;
+				}
+				
+				break ;
+			
+			case 3:
+			
+				BasicAtk = PhyAtk ;
+				BasicDef = PhyDef ;
+				
+				break ;
+			
+			case 4:
+			
+				BasicAtk = PhyAtk ;
+				BasicDef = PhyDef ;
+				
+				break ;
+			
+		}
+		
+		effect = Battle.calcEffect(DexMod[0] + AtkDex * DexMod[1], AgiMod[0] + DefAgi * AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
+		damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk * AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
+
+		spell.applyBuffs(true, this) ;
+		spell.applyNerfs(true, opponent) ;
+		
+		return new AtkResults(AtkTypes.magical, effect, damage) ;
+		
+	}
 	public void autoSpells(Creature creature, List<Spell> spell)
 	{		
 		/*if (job == 3 & PA.getLife()[0] < 0.2 * PA.getLife()[1] & 0 < Skill[12] & !SkillBuffIsActive[12][0])	// Survivor's instinct
@@ -1143,6 +1279,7 @@ public class Player extends LiveBeing
 			SkillBuffIsActive[12][0] = false ;
 		}*/
 	}
+	
 	public void win(Creature creature, boolean showAnimation)
 	{		
 		
@@ -1245,103 +1382,6 @@ public class Player extends LiveBeing
 		BA.resetStatus() ;
 		state = LiveBeingStates.idle ;
 		resetPosition() ;
-	}
-	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
-	{
-		
-		int spellLevel = spell.getLevel() ;
-		int spellID = spells.indexOf(spell) ;
-		int damage = -1 ;
-		AttackEffects effect = AttackEffects.none ;
-		
-		double PhyAtk = BA.TotalPhyAtk() ;
-		double MagAtk = BA.TotalMagAtk() ;
-		double PhyDef = receiver.getBA().TotalPhyDef() ;
-		double MagDef = receiver.getBA().TotalMagDef() ;
-		double AtkDex = BA.TotalDex() ;
-		double DefAgi = receiver.getBA().TotalAgi() ;
-		double AtkCrit = BA.TotalCritAtkChance() ;
-		double DefCrit = receiver.getBA().TotalCritDefChance() ;		
-		
-		double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
-		double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
-		double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
-		double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
-		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;
-		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;
-		double BlockDef = receiver.getBA().getStatus().getBlock() ;
-		
-		double BasicAtk = 0 ;
-		double BasicDef = 0 ;
-		
-		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[1], elem[4]} ;
-		Elements[] DefElem = receiver.defElems() ;
-		double receiverElemMod = 1 ;
-
-		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
-		spell.activate() ;
-		
-		switch (job)
-		{
-			case 0:
-			
-				BasicAtk = PhyAtk ;
-				BasicDef = PhyDef ;
-				
-				break ;
-			
-			case 1:
-			
-				BasicAtk = MagAtk ;
-				BasicDef = MagDef ;
-				
-				break ;
-			
-			case 2:
-			
-				double arrowAtkPower = arrowIsEquipped() ? equippedArrow.getAtkPower() : 0 ;
-				if (spellID == 0 | spellID == 3 | spellID == 6 | spellID == 9 | spellID == 12)
-				{
-					BasicAtk = PhyAtk + arrowAtkPower ;
-					BasicDef = PhyDef ;
-				}
-				if (spellID == 2 | spellID == 5 | spellID == 11)
-				{
-					BasicAtk = (PhyAtk + MagAtk) / 2.0 + arrowAtkPower ;
-					BasicDef = (PhyDef + MagDef) / 2.0 ;
-				}
-				if (spellID == 14)
-				{
-					BasicAtk = MagAtk + arrowAtkPower ;
-					BasicDef = MagDef ;
-				}
-				
-				break ;
-			
-			case 3:
-			
-				BasicAtk = PhyAtk ;
-				BasicDef = PhyDef ;
-				
-				break ;
-			
-			case 4:
-			
-				BasicAtk = PhyAtk ;
-				BasicDef = PhyDef ;
-				
-				break ;
-			
-		}
-		
-		effect = Battle.calcEffect(DexMod[0] + AtkDex * DexMod[1], AgiMod[0] + DefAgi * AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
-		damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk * AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
-
-		spell.applyBuffs(true, this) ;
-		spell.applyNerfs(true, opponent) ;
-		
-		return new AtkResults(AtkTypes.magical, effect, damage) ;
-		
 	}
 	
 	// TODO itemEffect

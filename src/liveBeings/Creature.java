@@ -255,6 +255,11 @@ public class Creature extends LiveBeing
 		}
 	}
 	
+	public void applyPassiveSpell(Spell spell)
+	{
+		
+	}
+	
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
 		int spellLevel = spell.getLevel() ;

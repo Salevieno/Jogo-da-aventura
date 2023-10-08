@@ -1,5 +1,10 @@
 /liveBeings/
-/windows/
-/graphics/
-/components/
 /main/
+/maps/
+/screen/
+/simulations/
+/test/
+/testing/
+/utilities/
+/windows/
+/components/

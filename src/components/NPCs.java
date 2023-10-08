@@ -165,6 +165,13 @@ public class NPCs
 				
 		String playerAction = player.getCurrentAction() ;
 		BagWindow playerBag = player.getBag() ;
+		
+
+		if (player.getCurrentAction() == null) { return ;}
+				
+		if (window != null) { if (window.isOpen()) { return ;} ;}
+		
+		navigate(player.getCurrentAction()) ;
 		switch (type.getJob())
 		{		
 			case doctor: 
@@ -176,19 +183,19 @@ public class NPCs
 			}
 			case equipsSeller:
 			{
-		    	sellerAction(playerBag, playerAction, mousePos, (ShoppingWindow) window, DP) ;
+		    	sellerAction(player, playerAction, (ShoppingWindow) window, DP) ;
 		    	
 		    	break ;
 			}
 			case itemsSeller:
 			{
-		    	sellerAction(playerBag, playerAction, mousePos, (ShoppingWindow) window, DP) ;
+		    	sellerAction(player, playerAction, (ShoppingWindow) window, DP) ;
 		    	
 		    	break ;
 			}
 			case smuggleSeller:
 			{
-		    	sellerAction(playerBag, playerAction, mousePos, (ShoppingWindow) window, DP) ;
+		    	sellerAction(player, playerAction, (ShoppingWindow) window, DP) ;
 		    	
 		    	break ;
 			}
@@ -294,13 +301,6 @@ public class NPCs
 			default: break;			
 		}
 		
-
-		if (player.getCurrentAction() == null) { return ;}
-				
-		if (window != null) { if (window.isOpen()) { return ;} ;}
-		
-		navigate(player.getCurrentAction()) ;
-		
 	}
 	
 	public void navigate(String action)
@@ -329,9 +329,9 @@ public class NPCs
 		if (type == null) { return ;}
 		if (type.getOptions() == null) { return ;}
 		if (type.getOptions().size() <= 0) { return ;}
-		if (type.getOptions().get(0) == null) { return ;}
+		if (type.getOptions().get(menu) == null) { return ;}
 		
-		if (action.equals(Player.ActionKeys[2]) & selOption <= type.getOptions().get(0).size() - 1)
+		if (action.equals(Player.ActionKeys[2]) & selOption <= type.getOptions().get(menu).size() - 2)
 		{
 			selOption += 1 ;
 		}
@@ -409,17 +409,16 @@ public class NPCs
 		menu = 3 ;
 	}
 	
-	private void sellerAction(BagWindow bag, String action, Point mousePos, ShoppingWindow shopping, DrawingOnPanel DP)
+	private void sellerAction(Player player, String action, ShoppingWindow shopping, DrawingOnPanel DP)
 	{
-	
-		if (menu == 0) { return ;}
-		
-		shopping.display(mousePos, DP) ;
-		
+		System.out.println(menu);
 		if (action == null) { return ;}
-
-		shopping.navigate(action) ;
-		shopping.action(action, bag) ;
+		
+		if (menu == 0 & Player.actionIsForward(action))
+		{
+			shopping.setBuyMode(selOption == 0) ;
+			player.switchOpenClose(shopping) ;
+		}
 		
 	}
 	
@@ -439,19 +438,15 @@ public class NPCs
 		}
 		
 		if (action == null) { return ;}
-		
-		if (menu == 0 & Player.actionIsForward(action))
+	
+		if (menu == 1 & Player.actionIsForward(action))
 		{
-			player.setFocusWindow(spellsTree) ;
+//			player.setFocusWindow(spellsTree) ;
 
+			spellsTree.setPoints(player.getSpellPoints()) ;
 			spellsTree.setSpellsOnWindow(player.getJob()) ;
 			spellsTree.setSpellsDistribution(player.getJob()) ;
 			player.switchOpenClose(spellsTree) ;
-		}
-
-		if (Player.actionIsForward(action))
-		{
-			spellsTree.act(player) ;
 		}
 		
 	}

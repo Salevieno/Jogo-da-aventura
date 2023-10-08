@@ -272,6 +272,11 @@ public class Pet extends LiveBeing
 //		PA.getLife().incCurrentValue(-PA.getLife().getCurrentValue()) ;
 	}
 	
+	public void applyPassiveSpell(Spell spell)
+	{
+		
+	}
+	
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
 		int spellLevel = spell.getLevel() ;

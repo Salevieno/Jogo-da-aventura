@@ -146,6 +146,8 @@ public class BagWindow extends GameWindow
 	{
 		if (tab == 0) { return ;}
 		
+		if (tab == 1 & Player.actionIsForward(action))
+		
 		player.useItem(getSelectedItem()) ;
 	}
 	
