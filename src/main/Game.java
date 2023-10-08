@@ -164,7 +164,7 @@ public class Game extends JPanel
 	public Game() 
 	{
 		DP = new DrawingOnPanel() ;
-    	player = new Player("", "", 3) ;
+    	player = new Player("", "", 4) ;
     	
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -404,6 +404,18 @@ public class Game extends JPanel
 		int job = UtilG.randomIntFromTo(0, 3) ;
 		pet = new Pet(job) ;
     	pet.setPos(player.getPos());
+    	if (player.getJob() == 3 & 0 < player.getSpells().get(13).getLevel())	// Best friend
+    	{
+    		int spellLevel = player.getSpells().get(13).getLevel() ;
+    		pet.getPA().getLife().incMaxValue(10 * spellLevel) ;
+    		pet.getPA().getLife().setToMaximum() ;
+			pet.getPA().getMp().incMaxValue(10 * spellLevel) ;
+			pet.getPA().getMp().setToMaximum() ;
+			pet.getBA().getPhyAtk().incBaseValue(2 * spellLevel) ;
+			pet.getBA().getMagAtk().incBaseValue(2 * spellLevel) ;
+			pet.getBA().getDex().incBaseValue(1 * spellLevel) ;
+			pet.getBA().getAgi().incBaseValue(1 * spellLevel) ;
+    	}
 	}
 		
 	private static NPCs readNPCfromJson(JSONObject npcJSONObject)
@@ -558,14 +570,15 @@ public class Game extends JPanel
 			BasicBattleAttribute MagDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[11]) * diffMult, 0, 0) ;
 			BasicBattleAttribute Dex = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[12]) * diffMult, 0, 0) ;
 			BasicBattleAttribute Agi = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[13]) * diffMult, 0, 0) ;
-			double[] Crit = new double[] {Double.parseDouble(input.get(ct)[14]) * diffMult, 0, Double.parseDouble(input.get(ct)[15]) * diffMult, 0} ;
+			BasicBattleAttribute CritAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[14]) * diffMult, 0, 0) ;
+			BasicBattleAttribute CritDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[15]) * diffMult, 0, 0) ;
 			BattleSpecialAttribute Stun = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[16]) * diffMult, 0, Double.parseDouble(input.get(ct)[17]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[18]) * diffMult)) ;
 			BattleSpecialAttribute Block = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[19]) * diffMult, 0, Double.parseDouble(input.get(ct)[20]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[21]) * diffMult)) ;
 			BattleSpecialAttributeWithDamage Blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(input.get(ct)[22]) * diffMult, 0, Double.parseDouble(input.get(ct)[23]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[24]) * diffMult), 0, (int) (Double.parseDouble(input.get(ct)[25]) * diffMult), 0, (int) (Integer.parseInt(input.get(ct)[26]) * diffMult)) ;
 			BattleSpecialAttributeWithDamage Poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(input.get(ct)[27]) * diffMult, 0, Double.parseDouble(input.get(ct)[28]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[29]) * diffMult), 0, (int) (Double.parseDouble(input.get(ct)[30]) * diffMult), 0, (int) (Integer.parseInt(input.get(ct)[31]) * diffMult)) ;
 			BattleSpecialAttribute Silence = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[32]) * diffMult, 0, Double.parseDouble(input.get(ct)[33]) * diffMult, 0, (int) (Double.parseDouble(input.get(ct)[34]) * diffMult)) ;
 			LiveBeingStatus status = new LiveBeingStatus() ;
-			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, Crit, Stun, Block, Blood, Poison, Silence, status) ;
+			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, CritAtk, CritDef, Stun, Block, Blood, Poison, Silence, status) ;
 						
 			// TODO spells para as criaturas
 			List<Spell> spells = new ArrayList<>() ;
@@ -1247,7 +1260,7 @@ public class Game extends JPanel
 //    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
 //    	
-    	for (int i = 0 ; i <= 1 - 1 ; i += 1)
+    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
     	{
     		player.getExp().incCurrentValue(player.getExp().getMaxValue());
 			player.levelUp(null) ; // Game.getAnimations()[4]

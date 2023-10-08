@@ -106,14 +106,15 @@ public class Pet extends LiveBeing
 		BasicBattleAttribute magDef = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[8]), 0, 0) ;
 		BasicBattleAttribute dex = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[9]), 0, 0) ;
 		BasicBattleAttribute agi = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[10]), 0, 0) ;
-		double[] crit = new double[] {Double.parseDouble(PetProperties.get(Job)[11]), 0, Double.parseDouble(PetProperties.get(Job)[12]), 0} ;
+		BasicBattleAttribute critAtk = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[11]), 0, 0) ;
+		BasicBattleAttribute critDef = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[12]), 0, 0) ;
 		BattleSpecialAttribute stun = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[13]), 0, Double.parseDouble(PetProperties.get(Job)[14]), 0, Integer.parseInt(PetProperties.get(Job)[15])) ;
 		BattleSpecialAttribute block = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[16]), 0, Double.parseDouble(PetProperties.get(Job)[17]), 0, Integer.parseInt(PetProperties.get(Job)[18])) ;
 		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(PetProperties.get(Job)[19]), 0, Double.parseDouble(PetProperties.get(Job)[20]), 0, Integer.parseInt(PetProperties.get(Job)[21]), 0, Integer.parseInt(PetProperties.get(Job)[22]), 0, Integer.parseInt(PetProperties.get(Job)[23])) ;
 		BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(PetProperties.get(Job)[24]), 0, Double.parseDouble(PetProperties.get(Job)[25]), 0, Integer.parseInt(PetProperties.get(Job)[26]), 0, Integer.parseInt(PetProperties.get(Job)[27]), 0, Integer.parseInt(PetProperties.get(Job)[28])) ;
 		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[29]), 0, Double.parseDouble(PetProperties.get(Job)[30]), 0, Integer.parseInt(PetProperties.get(Job)[31])) ;
 		LiveBeingStatus status = new LiveBeingStatus() ;
-		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, crit, stun, block, blood, poison, silence, status) ;
+		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef, stun, block, blood, poison, silence, status) ;
 	}
 	
 	public static MovingAnimations initializeMovingAnimations(int Job)
@@ -155,7 +156,8 @@ public class Pet extends LiveBeing
 	public BasicBattleAttribute getMagDef() {return BA.getMagDef() ;}
 	public BasicBattleAttribute getDex() {return BA.getDex() ;}
 	public BasicBattleAttribute getAgi() {return BA.getAgi() ;}
-	public double[] getCrit() {return BA.getCrit() ;}
+	public BasicBattleAttribute getCritAtk() {return BA.getCritAtk() ;}
+	public BasicBattleAttribute getCritDef() {return BA.getCritDef() ;}
 	public BattleSpecialAttribute getStun() {return BA.getStun() ;}
 	public BattleSpecialAttribute getBlock() {return BA.getBlock() ;}
 	public BattleSpecialAttributeWithDamage getBlood() {return BA.getBlood() ;}

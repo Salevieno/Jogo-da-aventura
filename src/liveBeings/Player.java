@@ -265,7 +265,8 @@ public class Player extends LiveBeing
 		BasicBattleAttribute magDef = new BasicBattleAttribute (Double.parseDouble(Properties.get(job)[8]), 0, 0) ;
 		BasicBattleAttribute dex = new BasicBattleAttribute (Double.parseDouble(Properties.get(job)[9]), 0, 0) ;	
 		BasicBattleAttribute agi = new BasicBattleAttribute (Double.parseDouble(Properties.get(job)[10]), 0, 0) ;
-		double[] crit = new double[] {Double.parseDouble(Properties.get(job)[11]), 0, Double.parseDouble(Properties.get(job)[12]), 0} ;
+		BasicBattleAttribute critAtk = new BasicBattleAttribute (Double.parseDouble(Properties.get(job)[11]), 0, 0) ;
+		BasicBattleAttribute critDef = new BasicBattleAttribute (Double.parseDouble(Properties.get(job)[12]), 0, 0) ;
 		BattleSpecialAttribute stun = new BattleSpecialAttribute(Double.parseDouble(Properties.get(job)[13]), 0, Double.parseDouble(Properties.get(job)[14]), 0, Integer.parseInt(Properties.get(job)[15])) ;
 		BattleSpecialAttribute block = new BattleSpecialAttribute(Double.parseDouble(Properties.get(job)[16]), 0, Double.parseDouble(Properties.get(job)[17]), 0, Integer.parseInt(Properties.get(job)[18])) ;
 		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(Properties.get(job)[19]), 0, Double.parseDouble(Properties.get(job)[20]), 0, Integer.parseInt(Properties.get(job)[21]), 0, Integer.parseInt(Properties.get(job)[22]), 0, Integer.parseInt(Properties.get(job)[23])) ;
@@ -273,7 +274,7 @@ public class Player extends LiveBeing
 		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(Properties.get(job)[29]), 0, Double.parseDouble(Properties.get(job)[30]), 0, Integer.parseInt(Properties.get(job)[31])) ;
 		LiveBeingStatus status = new LiveBeingStatus() ;
 
-		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, crit, stun, block, blood, poison, silence, status) ;
+		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef, stun, block, blood, poison, silence, status) ;
 	
 	}
 	
@@ -321,7 +322,8 @@ public class Player extends LiveBeing
 	public BasicBattleAttribute getMagDef() {return BA.getMagDef() ;}
 	public BasicBattleAttribute getDex() {return BA.getDex() ;}
 	public BasicBattleAttribute getAgi() {return BA.getAgi() ;}
-	public double[] getCrit() {return BA.getCrit() ;}
+	public BasicBattleAttribute getCritAtk() {return BA.getCritAtk() ;}
+	public BasicBattleAttribute getCritDef() {return BA.getCritDef() ;}
 	public BattleSpecialAttribute getStun() {return BA.getStun() ;}
 	public BattleSpecialAttribute getBlock() {return BA.getBlock() ;}
 	public BattleSpecialAttributeWithDamage getBlood() {return BA.getBlood() ;}
@@ -1024,85 +1026,94 @@ public class Player extends LiveBeing
 		
 		return null ;
 	}
-	
-	public void switchOpenClose(GameWindow win)
-	{
-		if (win.isOpen())
-		{
-			win.close() ;
-			openWindows.remove(win) ;
-			if (openWindows.isEmpty()) { setFocusWindow(null) ; return ;}
-			setFocusWindow(openWindows.get(openWindows.size() - 1)) ;
-			return ;
-		}
-
-		win.open() ;
-		openWindows.add(win) ;
-		setFocusWindow(win) ;
-	}	
-	
-	// called every time the window is repainted
-	public void showWindows(Pet pet, Point mousePos, DrawingOnPanel DP)
-	{
-		openWindows.forEach(win -> win.display(mousePos, DP)) ;
-	}
-		
-	
-	// battle functions
-	public void spendArrow()
-	{
-		if (equippedArrow == null) { return ;}		
-		
-		if (!UtilG.chance(0.1 * spells.get(13).getLevel()))
-		{
-			bag.Remove(equippedArrow, 1) ;
-		}
-
-		if (!bag.contains(equippedArrow))
-		{
-			equippedArrow.use(this) ;
-			setEquippedArrow(null) ;
-		}
-	}
-	// TODO steal item
-//	private int StealItem(Creature creature, Item[] items, int spellLevel)
-//	{	
-//		int ID = (int)(UtilG.ArrayWithValuesGreaterThan(creature.getBag(), -1).length*Math.random() - 0.01) ;
-//		int StolenItemID = -1 ;
-//		if(-1 < creature.getBag()[ID])
-//		{
-//			if(Math.random() <= 0.01*items[creature.getBag()[ID]].getDropChance() + 0.01*spellLevel)
-//			{
-//				//Bag[creature.getBag()[ID]] += 1 ;
-//				StolenItemID = items[creature.getBag()[ID]].getID() ;
-//			}
-//		}
-//		return StolenItemID ;
-		
-//		return 0 ;
-//	}
 	public void applyPassiveSpell(Spell spell)
 	{
 		int spellID = spells.indexOf(spell) ;
 		switch (job)
 		{
 			case 0:
+				switch (spellID)
+				{
+					case 1:
+						PA.getLife().incMaxValue(10 + (int) (0.05 * PA.getLife().getMaxValue())) ;
+						PA.getLife().setToMaximum() ;
+						return ;
+					case 2: BA.getPhyAtk().incBaseValue(2 + (int) (0.04 * BA.getPhyAtk().getBaseValue())) ; return ;
+					case 3: BA.getPhyDef().incBaseValue(2 + (int) (0.04 * BA.getPhyDef().getBaseValue())) ; return ;
+					case 7: BA.getBlood().incBasicDef(0.4 + 0.05 * BA.getBlood().getBasicDef()) ; return ;
+					case 10:  return ; // TODO resistência a neutros + 15%
+					case 11: BA.getPhyAtk().incBaseValue(2) ; BA.getDex().incBaseValue(1) ; BA.getAgi().incBaseValue(1) ; return ;
+					
+					default: return ;
+				}
 				
 			case 1:
+				switch (spellID)
+				{
+					case 2: BA.getMagAtk().incBaseValue(2 + (int) (0.04 * BA.getMagAtk().getBaseValue())) ; BA.getMagDef().incBaseValue(2 + (int) (0.04 * BA.getMagDef().getBaseValue())) ; return ;
+					case 8:  return ; // TODO lança uma magia a depender do resultado das cartas, sem uso de mana, a cada 100 frames
+					default: return ;
+				}
+				
 			case 2:
+				switch (spellID)
+				{
+					case 1: BA.getDex().incBaseValue(1) ; BA.getAgi().incBaseValue(0.4) ; return ;
+					case 4:  return ; // TODO permite o uso de flechas mais poderosas
+					case 7: BA.getMagAtk().incBaseValue(1 + (int) (0.02 * BA.getMagAtk().getBaseValue())) ; BA.getPhyAtk().incBaseValue(1 + (int) (0.02 * BA.getPhyAtk().getBaseValue())) ; return ;
+					case 8:  return ; // TODO permite a fabricação de flechas elementais
+					case 10: BA.getBlood().incDefChance(0.05) ; BA.getPoison().incDefChance(0.05) ; return ;
+					default: return ;
+				}
+				
 			case 3:
 				switch (spellID)
 				{
 					case 1: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
-					case 3: BA.getCrit() ; return ;
-					case 4: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
-					case 7: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
-					case 9: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
-					case 12: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
-					case 13: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
+					
+					case 3: BA.getCritAtk().incBaseValue(0.03) ; return ;
+					
+					case 4:  return ; // TODO chance de coleta em dobro em até 70%
+					
+					case 7:  return ; // TODO efeito das poções até + 30%
+					
+					case 9:
+						PA.getLife().incMaxValue((int) (0.03 * PA.getLife().getMaxValue())) ;
+						PA.getLife().setToMaximum() ;
+						BA.getPhyAtk().incBaseValue(2) ; BA.getPhyDef().incBaseValue(2) ;
+						return ;
+						
+					case 12:  return ; // TODO survivor instinct
+					
+					case 13: 
+						Pet pet = Game.getPet() ;
+						if (pet == null) { return ;}
+						pet.getPA().getLife().incMaxValue(10) ;
+						pet.getPA().getLife().setToMaximum() ;
+						pet.getPA().getMp().incMaxValue(10) ;
+						pet.getPA().getMp().setToMaximum() ;
+						pet.getBA().getPhyAtk().incBaseValue(2) ;
+						pet.getBA().getMagAtk().incBaseValue(2) ;
+						pet.getBA().getDex().incBaseValue(1) ;
+						pet.getBA().getAgi().incBaseValue(1) ;
+						return ;
+						
 					default: return ;
 				}
+				
 			case 4:
+				switch (spellID)
+				{
+					case 1: BA.getAgi().incBaseValue(1) ; return ;
+					case 4: BA.getPhyAtk().incBaseValue(3) ; BA.getDex().incBaseValue(1) ; return ;
+					case 6:  return ; // TODO aumenta em 20% a chance de obter itens raros na escavação
+					case 8:  return ; // TODO permite o uso de itens na batalha
+					case 9:  return ; // TODO permite a fabricação de poções venenosas
+					case 11:  return ; // TODO chance de até 100% de contra-atacar
+					case 13: BA.getPoison().incDefBonus(1) ; return ;
+					default: return ;
+				}
+				
 			default: return ;
 		}
 	}
@@ -1279,6 +1290,63 @@ public class Player extends LiveBeing
 			SkillBuffIsActive[12][0] = false ;
 		}*/
 	}
+	
+	public void switchOpenClose(GameWindow win)
+	{
+		if (win.isOpen())
+		{
+			win.close() ;
+			openWindows.remove(win) ;
+			if (openWindows.isEmpty()) { setFocusWindow(null) ; return ;}
+			setFocusWindow(openWindows.get(openWindows.size() - 1)) ;
+			return ;
+		}
+
+		win.open() ;
+		openWindows.add(win) ;
+		setFocusWindow(win) ;
+	}	
+	
+	// called every time the window is repainted
+	public void showWindows(Pet pet, Point mousePos, DrawingOnPanel DP)
+	{
+		openWindows.forEach(win -> win.display(mousePos, DP)) ;
+	}
+		
+	
+	// battle functions
+	public void spendArrow()
+	{
+		if (equippedArrow == null) { return ;}		
+		
+		if (!UtilG.chance(0.1 * spells.get(13).getLevel()))
+		{
+			bag.Remove(equippedArrow, 1) ;
+		}
+
+		if (!bag.contains(equippedArrow))
+		{
+			equippedArrow.use(this) ;
+			setEquippedArrow(null) ;
+		}
+	}
+	// TODO steal item
+//	private int StealItem(Creature creature, Item[] items, int spellLevel)
+//	{	
+//		int ID = (int)(UtilG.ArrayWithValuesGreaterThan(creature.getBag(), -1).length*Math.random() - 0.01) ;
+//		int StolenItemID = -1 ;
+//		if(-1 < creature.getBag()[ID])
+//		{
+//			if(Math.random() <= 0.01*items[creature.getBag()[ID]].getDropChance() + 0.01*spellLevel)
+//			{
+//				//Bag[creature.getBag()[ID]] += 1 ;
+//				StolenItemID = items[creature.getBag()[ID]].getID() ;
+//			}
+//		}
+//		return StolenItemID ;
+		
+//		return 0 ;
+//	}
 	
 	public void win(Creature creature, boolean showAnimation)
 	{		

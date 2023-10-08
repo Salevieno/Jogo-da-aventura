@@ -94,7 +94,8 @@ public class Creature extends LiveBeing
 	public BasicBattleAttribute getMagDef() {return BA.getMagDef() ;}
 	public BasicBattleAttribute getDex() {return BA.getDex() ;}
 	public BasicBattleAttribute getAgi() {return BA.getAgi() ;}
-	public double[] getCrit() {return BA.getCrit() ;}
+	public BasicBattleAttribute getCritAtk() {return BA.getCritAtk() ;}
+	public BasicBattleAttribute getCritDef() {return BA.getCritDef() ;}
 	public BattleSpecialAttribute getStun() {return BA.getStun() ;}
 	public BattleSpecialAttribute getBlock() {return BA.getBlock() ;}
 	public BattleSpecialAttributeWithDamage getBlood() {return BA.getBlood() ;}

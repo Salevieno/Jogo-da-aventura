@@ -43,8 +43,8 @@ public class BattleSpecialAttribute
 	}
 	public double[] attributes() { return new double[] {basicAtkChance, basicDefChance, duration} ;}
 	public double[] bonuses() { return new double[] {basicAtkChanceBonus, basicDefChanceBonus} ;}
-	public String textAtk() { return UtilG.Round(basicAtkChance, 2) + " + " + UtilG.Round(basicAtkChanceBonus, 2) ;}
-	public String textDef() { return UtilG.Round(basicDefChance, 2) + " + " + UtilG.Round(basicDefChanceBonus, 2) ;}
+	public String textAtk() { return (int) (100 * basicAtkChance) + "% + " + (int) (100 * basicAtkChanceBonus) + "%" ;}
+	public String textDef() { return (int) (100 * basicDefChance) + "% + " + (int) (100 * basicDefChanceBonus) + "%" ;}
 	public String textDuration() { return String.valueOf(duration) ;}
 	public String[] texts() { return new String[] {textAtk(), textDef(), textDuration()} ;}
 	
@@ -56,7 +56,9 @@ public class BattleSpecialAttribute
 	{
 		return basicDefChance + basicDefChanceBonus ;
 	}
-	
+
+	public void incAtkChance(double inc) {basicAtkChance += inc ;}
+	public void incDefChance(double inc) {basicDefChance += inc ;}
 	public void incAtkChanceBonus(double inc) {basicAtkChanceBonus += inc ;}
 	public void incDefChanceBonus(double inc) {basicDefChanceBonus += inc ;}
 	public void incDuration(double inc) {duration += inc ;}

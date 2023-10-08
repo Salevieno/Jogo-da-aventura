@@ -277,7 +277,8 @@ public abstract class PlayerEvolutionSimulation
 		BasicBattleAttribute magDef = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[8]), 0, 0) ;
 		BasicBattleAttribute dex = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[9]), 0, 0) ;	
 		BasicBattleAttribute agi = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[10]), 0, 0) ;
-		double[] crit = new double[] {Double.parseDouble(prop.get(newJob)[11]), 0, Double.parseDouble(prop.get(newJob)[12]), 0} ;
+		BasicBattleAttribute critAtk = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[11]), 0, 0) ;
+		BasicBattleAttribute critDef = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[12]), 0, 0) ;
 		BattleSpecialAttribute stun = new BattleSpecialAttribute(Double.parseDouble(prop.get(newJob)[13]), 0, Double.parseDouble(prop.get(newJob)[14]), 0, Integer.parseInt(prop.get(newJob)[15])) ;
 		BattleSpecialAttribute block = new BattleSpecialAttribute(Double.parseDouble(prop.get(newJob)[16]), 0, Double.parseDouble(prop.get(newJob)[17]), 0, Integer.parseInt(prop.get(newJob)[18])) ;
 		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(prop.get(newJob)[19]), 0, Double.parseDouble(prop.get(newJob)[20]), 0, Integer.parseInt(prop.get(newJob)[21]), 0, Integer.parseInt(prop.get(newJob)[22]), 0, Integer.parseInt(prop.get(newJob)[23])) ;
@@ -285,7 +286,7 @@ public abstract class PlayerEvolutionSimulation
 		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(prop.get(newJob)[29]), 0, Double.parseDouble(prop.get(newJob)[30]), 0, Integer.parseInt(prop.get(newJob)[31])) ;
 		LiveBeingStatus status = new LiveBeingStatus() ;
 		
-		player.setBA(new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, crit, stun, block, blood, poison, silence, status)) ;
+		player.setBA(new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef, stun, block, blood, poison, silence, status)) ;
 		
 		player.setRange(Integer.parseInt(prop.get(newJob)[4])) ;
 		player.setStep(Integer.parseInt(prop.get(newJob)[33])) ;

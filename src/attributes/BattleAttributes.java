@@ -1,7 +1,5 @@
 package attributes ;
 
-import java.util.Arrays;
-
 import liveBeings.LiveBeingStatus;
 
 public class BattleAttributes
@@ -12,8 +10,10 @@ public class BattleAttributes
 	private BasicBattleAttribute magDef ;
 	private BasicBattleAttribute dex ;
 	private BasicBattleAttribute agi ;
+	private BasicBattleAttribute critAtk ;
+	private BasicBattleAttribute critDef ;
 	
-	private double[] crit ;		// 0: Base crit atk chance, 1: bonus, 2: basic crit def chance, 3: bonus
+//	private double[] crit ;		// 0: Base crit atk chance, 1: bonus, 2: basic crit def chance, 3: bonus
 	
 	private BattleSpecialAttribute stun ;
 	private BattleSpecialAttribute block ;
@@ -24,7 +24,7 @@ public class BattleAttributes
 	private LiveBeingStatus status ;
 	
 	public BattleAttributes(BasicBattleAttribute PhyAtk, BasicBattleAttribute MagAtk, BasicBattleAttribute PhyDef, BasicBattleAttribute MagDef, BasicBattleAttribute Dex, BasicBattleAttribute Agi,
-			double[] Crit,
+			BasicBattleAttribute CritAtk, BasicBattleAttribute CritDef,
 			BattleSpecialAttribute Stun, BattleSpecialAttribute Block, BattleSpecialAttributeWithDamage Blood, BattleSpecialAttributeWithDamage Poison, BattleSpecialAttribute Silence,
 			LiveBeingStatus status)
 	{
@@ -34,7 +34,9 @@ public class BattleAttributes
 		this.magDef = MagDef ;
 		this.dex = Dex ;
 		this.agi = Agi ;
-		this.crit = Crit ;
+//		this.crit = Crit ;
+		this.critAtk = CritAtk ;
+		this.critDef = CritDef ;
 		this.stun = Stun ;
 		this.block = Block ;
 		this.blood = Blood ;
@@ -49,7 +51,8 @@ public class BattleAttributes
 	public BasicBattleAttribute getMagDef() {return magDef ;}
 	public BasicBattleAttribute getDex() {return dex ;}
 	public BasicBattleAttribute getAgi() {return agi ;}
-	public double[] getCrit() {return crit ;}
+	public BasicBattleAttribute getCritAtk() {return critAtk ;}
+	public BasicBattleAttribute getCritDef() {return critDef ;}
 	public BattleSpecialAttribute getStun() {return stun ;}
 	public BattleSpecialAttribute getBlock() {return block ;}
 	public BattleSpecialAttributeWithDamage getBlood() {return blood ;}
@@ -114,11 +117,11 @@ public class BattleAttributes
 	}
 	public double TotalCritAtkChance()
 	{
-		return getCrit()[0] + getCrit()[1] ;
+		return critAtk.getTotal() ;
 	}
 	public double TotalCritDefChance()
 	{
-		return getCrit()[2] + getCrit()[3] ;
+		return critDef.getTotal() ;
 	}
 
 	
@@ -132,8 +135,7 @@ public class BattleAttributes
 	{
 		return new double[] {
 				phyAtk.getBaseValue(), magAtk.getBaseValue(), phyDef.getBaseValue(), magDef.getBaseValue(),
-				dex.getBaseValue(), agi.getBaseValue(),
-				crit[0],
+				dex.getBaseValue(), agi.getBaseValue(), critAtk.getBaseValue(),
 				stun.getBasicAtkChance(),
 				block.getBasicAtkChance(),
 				blood.getBasicAtkChance(), blood.getBasicDefChance(), blood.getBasicAtk(), blood.getBasicDef(),
@@ -159,7 +161,7 @@ public class BattleAttributes
 	public String toString()
 	{
 		return "BattleAttributes [phyAtk=" + phyAtk + ", magAtk=" + magAtk + ", phyDef=" + phyDef + ", magDef=" + magDef
-				+ ", dex=" + dex + ", agi=" + agi + ", crit=" + Arrays.toString(crit) + ", stun=" + stun + ", block="
+				+ ", dex=" + dex + ", agi=" + agi + ", critAtk=" + critAtk + ", critDef=" + critDef + ", stun=" + stun + ", block="
 				+ block + ", blood=" + blood + ", poison=" + poison + ", silence=" + silence + ", status=" + status
 				+ "]";
 	}

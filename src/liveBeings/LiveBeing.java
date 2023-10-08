@@ -521,7 +521,7 @@ public abstract class LiveBeing
 			{
 				if (job == 2)
 				{
-					BA.getCrit()[1] += 0.025 * 0.000212 / (BA.getCrit()[1] + 1) ;	// 100% after 10,000 hits starting from 0.12
+					BA.getCritAtk().incBonus(0.025 * 0.000212 / (BA.getCritAtk().getBonus() + 1)) ;	// 100% after 10,000 hits starting from 0.12
 				}
 			}
 			if (effect.equals(AttackEffects.hit))

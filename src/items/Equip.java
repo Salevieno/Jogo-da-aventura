@@ -237,8 +237,8 @@ public class Equip extends Item
 		BA.getMagDef().incBonus(attBonus.getMagDef() * mult) ;
 		BA.getDex().incBonus(attBonus.getDex() * mult) ;
 		BA.getAgi().incBonus(attBonus.getAgi() * mult) ;
-		BA.getCrit()[0] += attBonus.getCritAtkChance() * mult ;
-		BA.getCrit()[2] += attBonus.getCritDefChance() * mult ;
+		BA.getCritAtk().incBonus(attBonus.getCritAtkChance() * mult) ;
+		BA.getCritDef().incBonus(attBonus.getCritDefChance() * mult) ;
 		BA.getStun().incAtkChanceBonus(attBonus.getStunAtkChance() * mult) ;
 		BA.getStun().incDefChanceBonus(attBonus.getStunDefChance() * mult) ;
 		BA.getStun().incDuration(attBonus.getStunDuration() * mult) ;
