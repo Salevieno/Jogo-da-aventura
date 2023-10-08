@@ -438,13 +438,13 @@ public class NPCs
 		
 		if (action == null) { return ;}
 	
-		if (menu == 0 | menu == 5 & Player.actionIsForward(action))
+		if ((menu == 0 | menu == 5) & Player.actionIsForward(action))
 		{
 //			player.setFocusWindow(spellsTree) ;
 
 			spellsTree.setPoints(player.getSpellPoints()) ;
-			spellsTree.setSpellsOnWindow(player.getJob()) ;
-			spellsTree.setSpellsDistribution(player.getJob()) ;
+			spellsTree.updateSpellsOnWindow() ;
+			spellsTree.updateSpellsDistribution() ;
 			player.switchOpenClose(spellsTree) ;
 		}
 		

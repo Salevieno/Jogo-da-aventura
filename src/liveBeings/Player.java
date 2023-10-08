@@ -201,7 +201,7 @@ public class Player extends LiveBeing
 		fabWindow = new FabWindow() ;
 		mapWindow = new MapWindow() ;
 		hintsWindow = new HintsWindow() ;
-		spellsTree = new SpellsTreeWindow() ;
+		spellsTree = new SpellsTreeWindow(job) ;
 		bestiary = new BestiaryWindow() ;
 		equips = new Equip[3] ;	// 0: weapon, 1: shield, 2: armor
 		equippedArrow = null ;
@@ -1028,7 +1028,7 @@ public class Player extends LiveBeing
 	}
 	public void applyPassiveSpell(Spell spell)
 	{
-		System.out.println("spell id = " + spell.getId());
+//		System.out.println("spell id = " + spell.getId());
 		switch (spell.getId())
 		{
 			case 1: PA.getLife().incMaxValue(10 + (int) (0.05 * PA.getLife().getMaxValue())) ; PA.getLife().setToMaximum() ; return ;

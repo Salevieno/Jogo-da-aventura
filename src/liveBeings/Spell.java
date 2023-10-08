@@ -219,15 +219,16 @@ public class Spell
 	@Override
 	public String toString()
 	{
-		return "Spell [name=" + name + ", image=" + image + ", level=" + level + ", maxLevel=" + maxLevel + ", mpCost=" + mpCost + ", type="
-				+ type + ", preRequisites=" + preRequisites + ", buffs=" + buffs + ", AtkMod=" + Arrays.toString(atkMod) + ", DefMod="
-				+ Arrays.toString(defMod) + ", DexMod=" + Arrays.toString(dexMod) + ", AgiMod="
-				+ Arrays.toString(agiMod) + ", AtkCritMod=" + Arrays.toString(atkCritMod) + ", DefCritMod="
-				+ Arrays.toString(defCritMod) + ", StunMod=" + Arrays.toString(stunMod) + ", BlockMod="
-				+ Arrays.toString(blockMod) + ", BloodMod=" + Arrays.toString(bloodMod) + ", PoisonMod="
-				+ Arrays.toString(poisonMod) + ", SilenceMod=" + Arrays.toString(silenceMod) + ", isActive=" + isActive
-				+ ", cooldownCounter=" + cooldownCounter + ", effectCounter=" + effectCounter + ", elem=" + elem
-				+ ", info=" + Arrays.toString(info) + "]";
+		return "id = " + id + " name = " + name ;
+//		return "Spell [name=" + name + ", image=" + image + ", level=" + level + ", maxLevel=" + maxLevel + ", mpCost=" + mpCost + ", type="
+//				+ type + ", preRequisites=" + preRequisites + ", buffs=" + buffs + ", AtkMod=" + Arrays.toString(atkMod) + ", DefMod="
+//				+ Arrays.toString(defMod) + ", DexMod=" + Arrays.toString(dexMod) + ", AgiMod="
+//				+ Arrays.toString(agiMod) + ", AtkCritMod=" + Arrays.toString(atkCritMod) + ", DefCritMod="
+//				+ Arrays.toString(defCritMod) + ", StunMod=" + Arrays.toString(stunMod) + ", BlockMod="
+//				+ Arrays.toString(blockMod) + ", BloodMod=" + Arrays.toString(bloodMod) + ", PoisonMod="
+//				+ Arrays.toString(poisonMod) + ", SilenceMod=" + Arrays.toString(silenceMod) + ", isActive=" + isActive
+//				+ ", cooldownCounter=" + cooldownCounter + ", effectCounter=" + effectCounter + ", elem=" + elem
+//				+ ", info=" + Arrays.toString(info) + "]";
 	}
 
 }
