@@ -160,6 +160,8 @@ public class Spell
 	
 	public void applyBuff(int mult, LiveBeing receiver, Buff buff)
 	{
+		if (receiver == null) { System.out.println("Tentando usar magia em ninguém!") ; return ;}
+		
 		Map<Attributes, Double> percIncrease = buff.getPercentIncrease() ;
 		Map<Attributes, Double> valueIncrease = buff.getValueIncrease() ;
 		for (Attributes att : Attributes.values())

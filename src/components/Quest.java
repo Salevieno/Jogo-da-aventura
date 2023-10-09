@@ -31,11 +31,10 @@ public class Quest
 		this.id = id ;
 		name = String.valueOf("Quest " + id) ;
 		this.type = type ;
-//		isActive = false ;
 		isComplete = false ;
 		this.isRepeatable = isRepeatable ;
 		reqCreaturesCounter = new HashMap<>() ;
-		if (reqCreatureTypes != null) { reqCreatureTypes.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 10)) ;}
+		if (reqCreatureTypes != null) { reqCreatureTypes.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 0)) ;}
 		
 		this.reqCreatureTypes = reqCreatureTypes ;
 		this.reqItems = reqItems ;

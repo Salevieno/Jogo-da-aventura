@@ -65,14 +65,14 @@ public class Building
 		npcs = new ArrayList<>() ;
 		switch (type.getName())
 		{
-			case hospital: npcs.add(new NPCs(0, Game.getNPCTypes()[0], UtilG.Translate(pos, 120, -60))) ; break ;
+			case hospital: npcs.add(new NPCs(Game.getNPCTypes()[0], UtilG.Translate(pos, 120, -60))) ; break ;
 			case store: 
-				npcs.add(new NPCs(0, Game.getNPCTypes()[1], UtilG.Translate(pos, 120, -60))) ;
-				npcs.add(new NPCs(0, Game.getNPCTypes()[2], UtilG.Translate(pos, 80, -60))) ;
+				npcs.add(new NPCs(Game.getNPCTypes()[1], UtilG.Translate(pos, 120, -60))) ;
+				npcs.add(new NPCs(Game.getNPCTypes()[2], UtilG.Translate(pos, 80, -60))) ;
 				
 				break ;
-			case bank: npcs.add(new NPCs(0, Game.getNPCTypes()[4], UtilG.Translate(pos, 40, -30))) ; break ;
-			case craft: npcs.add(new NPCs(0, Game.getNPCTypes()[8], UtilG.Translate(pos, 40, -30))) ; break ;
+			case bank: npcs.add(new NPCs(Game.getNPCTypes()[4], UtilG.Translate(pos, 40, -30))) ; break ;
+			case craft: npcs.add(new NPCs(Game.getNPCTypes()[8], UtilG.Translate(pos, 40, -30))) ; break ;
 			default: break;
 		}
 	}

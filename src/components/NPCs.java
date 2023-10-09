@@ -19,6 +19,7 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import main.Game;
 import main.TextCategories;
+import maps.GameMap;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
@@ -46,15 +47,15 @@ public class NPCs
 	public static final Image SpeakingBubble = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeechBubble.png") ;
 	public static final Image ChoicesWindow = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "ChoicesWindow.png") ;
 
-	public NPCs (int id, NPCType type, Point pos)
+	public NPCs(NPCType type, Point pos)
 	{
-		this.id = id ;
+		this.id = 0 ;
 		this.type = type ;
 		this.pos = pos ;
 		selOption = 0 ;
 		menu = 0 ;
 		numberMenus = 0 ;
-		
+
 		if (type.getSpeech() != null) { numberMenus = type.getSpeech().length - 1 ;}
 		
 		switch (type.getJob())
@@ -156,7 +157,69 @@ public class NPCs
 	public void decMenu() { if (1 <= menu) menu += -1 ;}
 
 	public static NPCType typeFromJob(NPCJobs job) { return Arrays.asList(Game.getNPCTypes()).stream().filter(npcType -> job.equals(npcType.getJob())).toList().get(0) ;}
-
+	public static void setIDs()
+	{
+		GameMap[] allMaps = Game.getMaps() ;
+		int i = 0 ;
+		for (GameMap map : allMaps)
+		{
+			List<NPCs> npcsInMap = map.getNPCs() ;
+			if (npcsInMap == null) { return ;}
+			if (npcsInMap.isEmpty()) { return ;}
+			
+			for (NPCs npc : npcsInMap)
+			{
+				npc.setID(i) ;
+				i += 1 ;
+			}
+		}
+	}
+	public static int getQuestNPCid(NPCs questNPC)
+	{
+		GameMap[] allMaps = Game.getMaps() ;
+		int questNPCid = 0 ;
+		for (GameMap map : allMaps)
+		{
+			List<NPCs> npcsInMap = map.getNPCs() ;
+			if (npcsInMap == null) { return -1 ;}
+			if (npcsInMap.isEmpty()) { return -1 ;}
+			
+			for (int i = 0 ; i <= npcsInMap.size() - 1 ; i += 1)
+			{
+				NPCJobs npcJob = npcsInMap.get(i).getType().getJob() ;
+				if (!npcJob.equals(NPCJobs.questExp) & !npcJob.equals(NPCJobs.questItem)) { continue ;}
+				if (!npcsInMap.get(i).equals(questNPC)) { questNPCid += 1; continue ;}
+				
+				return questNPCid ;
+			}
+		}
+		
+		return -1 ;
+	}
+	public static Quest getQuest(int id)
+	{
+		GameMap[] allMaps = Game.getMaps() ;
+		Quest[] allQuests = Game.getAllQuests() ;
+		int questNPCid = 0 ;
+		for (GameMap map : allMaps)
+		{
+			List<NPCs> npcsInMap = map.getNPCs() ;
+			if (npcsInMap == null) { return null ;}
+			if (npcsInMap.isEmpty()) { return null ;}
+			
+			for (int i = 0 ; i <= npcsInMap.size() - 1 ; i += 1)
+			{
+				NPCJobs npcJob = npcsInMap.get(i).getType().getJob() ;
+				if (!npcJob.equals(NPCJobs.questExp) & !npcJob.equals(NPCJobs.questItem)) { continue ;}
+				if (questNPCid != id) { questNPCid += 1; continue ;}
+				
+				return allQuests[questNPCid] ;
+			}
+		}
+		
+		return null ;
+	}
+	
 	public void action(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
 	{
 		
@@ -590,11 +653,13 @@ public class NPCs
 	
 	private void questAction(List<Quest> quests, BagWindow bag, PersonalAttributes PA, Map<QuestSkills, Boolean> skills, String action)
 	{
-		
+		// TODO resolver bug quando sai da cidade dos animais pela esquerda e quando o ladrão morre
+
 		if (action == null) { return ;}
 
-		Quest quest = Game.getAllQuests()[id - 25] ;
-		
+		int questID = getQuestNPCid(this) ;
+		Quest quest = Game.getAllQuests()[questID] ;
+
 		if (action.equals("Enter") & selOption == 0)
 		{
 
@@ -610,14 +675,11 @@ public class NPCs
 			
 			quest.checkCompletion(bag) ;
 			
-			if (quest.isComplete())
-			{
-				quest.complete(bag, PA, skills) ;
-//				incMenu() ;
-				quests.remove(quest) ;
-			}
+			if (!quest.isComplete()) { return ; }
 			
-			return ;
+			quest.complete(bag, PA, skills) ;
+			quests.remove(quest) ;
+			
 		}
 		
 	}

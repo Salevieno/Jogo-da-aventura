@@ -434,7 +434,7 @@ public class Game extends JPanel
 
 			npcType = type ;
 		}
-		return new NPCs(0, npcType, npcPos) ;
+		return new NPCs(npcType, npcPos) ;
 		
 	}
 	
@@ -500,7 +500,7 @@ public class Game extends JPanel
 					}
 				}
 			}
-			System.out.println(job + " " + options);
+//			System.out.println(job + " " + options);
 
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}
@@ -676,7 +676,7 @@ public class Game extends JPanel
 			cityMaps[id] = new CityMap(name, continent, connections, image, music, buildings, npcs) ;
 		}
 
-		return cityMaps ;    	
+		return cityMaps ;
     }
     
     private static FieldMap[] initializeFieldMaps()
@@ -1225,6 +1225,7 @@ public class Game extends JPanel
 		buildingTypes = initializeBuildingTypes() ;
 		allQuests = initializeQuests(gameLanguage, player.getJob()) ;
 		allMaps = initializeAllMaps() ;
+		NPCs.setIDs() ;
     	sideBar = new SideBar(player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
     	bat = new Battle() ;
     	
@@ -1233,10 +1234,10 @@ public class Game extends JPanel
     	player.InitializeSpells() ;
     	player.setName("Salevieno") ;
 //    	player.setLevel(50) ;
-    	player.setMap(cityMaps[3]) ;
+    	player.setMap(cityMaps[1]) ;
     	player.setPos(new Point(200, 201)) ;
 		
-    	letThereBePet() ;
+//    	letThereBePet() ;
     	
     	for (int i = 0; i <= fieldMaps.length - 1 ; i += 1)
     	{
@@ -1247,6 +1248,7 @@ public class Game extends JPanel
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
     	player.getBag().addGold(300) ;
+
     	
 //    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
@@ -1259,11 +1261,11 @@ public class Game extends JPanel
 //    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
 //    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
 //    	
-    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
-    	{
-    		player.getExp().incCurrentValue(player.getExp().getMaxValue());
-			player.levelUp(null) ; // Game.getAnimations()[4]
-    	}
+//    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
+//    	{
+//    		player.getExp().incCurrentValue(player.getExp().getMaxValue());
+//			player.levelUp(null) ; // Game.getAnimations()[4]
+//    	}
 //    	for (int i = 0 ; i <= 30000 - 1 ; i += 1)
 //    	{
 //    		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0));

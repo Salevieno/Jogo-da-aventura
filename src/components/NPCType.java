@@ -86,6 +86,15 @@ public class NPCType
 				destination.add(Arrays.asList(6)) ;
 				return ;
 			}
+			
+			case questExp:
+				destination.add(Arrays.asList(1, 4)) ;
+				destination.add(Arrays.asList(2)) ;
+				destination.add(Arrays.asList(2)) ;
+				destination.add(Arrays.asList(4)) ;
+				destination.add(Arrays.asList(4)) ;
+				return ;
+				
 			case equipsSeller: case itemsSeller: case smuggleSeller:
 			{
 				 destination.add(Arrays.asList(1, 2)) ;
@@ -98,7 +107,7 @@ public class NPCType
 			case citizen10: case citizen11: case citizen12: case citizen13: case citizen14:
 			case citizen15: case citizen16: case citizen17: case citizen18: case citizen19:
 			{
-				destination.add(Arrays.asList(1)) ; destination.add(Arrays.asList(2)) ; return ;
+				destination.add(Arrays.asList(1)) ; destination.add(Arrays.asList(2)) ; destination.add(Arrays.asList(2)) ; return ;
 			}
 			case saver: 
 			{
