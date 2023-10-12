@@ -819,7 +819,7 @@ public class Player extends LiveBeing
 			}
 			if (focusWindow instanceof ElementalWindow)
 			{
-				((ElementalWindow) focusWindow).act(this, bag, currentAction) ;
+				((ElementalWindow) focusWindow).act(bag, currentAction) ;
 			}
 		}
 		

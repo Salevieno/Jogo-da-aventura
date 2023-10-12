@@ -39,7 +39,7 @@ public class ElementalWindow extends GameWindow
 		selectedSphere = null ; // ArrayList<Item>) ((ArrayList<?>) equipsForElemChange))
 		equipsForElemChange = null ;
 	}
-
+	// TODO fazer a janela fechar após a seleção da esfera
 	public static List<GeneralItem> spheresInBag(BagWindow bag)
 	{
 		
@@ -88,7 +88,7 @@ public class ElementalWindow extends GameWindow
 
 	}
 	
-	public void act(Player player, BagWindow bag, String action)
+	public void act(BagWindow bag, String action)
 	{
 		if (action == null) { return ;}
 		
@@ -105,6 +105,7 @@ public class ElementalWindow extends GameWindow
 				
 			case 1:
 				selectSphere() ;
+				changeEquipElement(bag) ;
 				menu = 0 ;
 				return ;
 			
@@ -128,18 +129,19 @@ public class ElementalWindow extends GameWindow
 	
 	public void changeEquipElement(BagWindow bag)
 	{
+		if (selectedEquip == null) { return ;}
 		if (selectedSphere == null) { return ;}
 		
 		Elements sphereElem = Elements.values()[selectedSphere.getId() - firstSphereID] ;
 		
-		if (!bag.contains(spheres.get(item))) { return ;}
+		if (!bag.contains(selectedSphere)) { return ;}
 		
-		System.out.println(equipsForElemChange.get(item).getName() + ": " + equipsForElemChange.get(item).getElem() + " -> " + sphereElem);
+		System.out.println(selectedEquip.getName() + ": " + selectedEquip.getElem() + " -> " + sphereElem);
 		
-		equipsForElemChange.get(item).setElem(sphereElem) ;
-		bag.remove(spheres.get(item), 1) ;
+		selectedEquip.setElem(sphereElem) ;
+		bag.remove(selectedSphere, 1) ;
 		
-//		System.out.println("Equip new elem: " + equipsForElemChange.get(item).getElem());
+		System.out.println("Equip new elem: " + selectedEquip.getElem());
 		
 	}
 

@@ -158,12 +158,14 @@ public class PlayerAttributesWindow extends AttributesWindow
 				}
 				
 				Elements eqElem = player.getElem()[eq + 1] ;
-				if (eqElem != null) { continue ;}
+
+				if (eqElem == null) { continue ;}
 				
 				int elemID = Elements.getID(eqElem) ;
 				Image elemImage = DrawingOnPanel.ElementImages[elemID] ;
-				Point elemPos = UtilG.Translate(eqSlotCenter[eq], eqSlotSize - 12, eqSlotSize / 2) ;
-				DP.DrawImage(elemImage, elemPos, angle, new Scale(0.12, 0.12), Align.center) ;
+				Point elemPos = UtilG.Translate(eqSlotCenter[eq], eqSlotSize / 2 - 12, eqSlotSize / 2 - 12) ;
+
+				DP.DrawImage(elemImage, elemPos, angle, new Scale(0.25, 0.25), Align.center) ;
 			}
 		}
 		
