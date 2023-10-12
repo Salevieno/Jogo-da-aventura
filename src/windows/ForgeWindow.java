@@ -77,7 +77,7 @@ public class ForgeWindow extends GameWindow
 		double chanceForge = 1 - 0.08 * selectedEquip.getForgeLevel() ;
 
 		bag.removeGold(forgePrice) ;
-		bag.Remove(rune, 1) ;
+		bag.remove(rune, 1) ;
 
 
 		if (Math.random() <= chanceForge)
@@ -88,7 +88,7 @@ public class ForgeWindow extends GameWindow
 		}
 		
 		selectedEquip.resetForgeLevel() ;
-		bag.Remove(selectedEquip, 1);
+		bag.remove(selectedEquip, 1);
 		
 		return 7 ; 
 

@@ -85,7 +85,7 @@ public class ShoppingWindow extends GameWindow
 			return ;
 		}
 		
-		bag.Add(itemsForSale.get(item), 1) ;
+		bag.add(itemsForSale.get(item), 1) ;
 		bag.addGold(-itemsForSale.get(item).getPrice()) ;
 		Game.getAnimations()[3].start(300, new Object[] {new Item[] {itemsForSale.get(item)}});
 	}
@@ -93,7 +93,7 @@ public class ShoppingWindow extends GameWindow
 	public void sellItem(BagWindow bag)
 	{
 		Item bagSelectedItem = bag.getSelectedItem() ;
-		bag.Remove(bagSelectedItem, 1) ;
+		bag.remove(bagSelectedItem, 1) ;
 		bag.addGold(bagSelectedItem.getPrice()) ;
 		// TODO animation get gold
 	}

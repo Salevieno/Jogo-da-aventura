@@ -106,8 +106,8 @@ public class Quest
 		PA.getExp().incCurrentValue(expReward) ;
 		bag.addGold(goldReward) ;
 
-		for (Item item : reqItems.keySet()) { bag.Remove(item, 1) ;}
-		for (Item item : rewardItems.keySet()) { bag.Add(item, 1) ; System.out.println("added " + item);}
+		for (Item item : reqItems.keySet()) { bag.remove(item, 1) ;}
+		for (Item item : rewardItems.keySet()) { bag.add(item, 1) ; System.out.println("added " + item);}
 		
 		// TODO special rewards
 		switch (id)

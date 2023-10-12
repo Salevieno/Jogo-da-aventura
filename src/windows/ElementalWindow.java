@@ -91,7 +91,7 @@ public class ElementalWindow extends GameWindow
 		System.out.println(equipsForElemChange.get(item).getName() + ": " + equipsForElemChange.get(item).getElem() + " -> " + sphereElem);
 		
 		equipsForElemChange.get(item).setElem(sphereElem) ;
-		bag.Remove(spheres.get(item), 1) ;
+		bag.remove(spheres.get(item), 1) ;
 		
 //		System.out.println("Equip new elem: " + equipsForElemChange.get(item).getElem());
 		

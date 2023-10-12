@@ -151,7 +151,7 @@ public class BagWindow extends GameWindow
 		player.useItem(getSelectedItem()) ;
 	}
 	
-	public void Add(Item item, int amount)
+	public void add(Item item, int amount)
 	{
 		if (item instanceof Potion)
 		{
@@ -225,13 +225,13 @@ public class BagWindow extends GameWindow
 		}
 	}
 
-	public void Remove(Item item, int amount)
+	public void remove(Item item, int amount)
 	{
 
-		Map<Item, Integer> menuItems = getMenuItems() ;
+//		Map<Item, Integer> menuItems = getMenuItems() ;
 
-		if (!menuItems.containsKey(item)) { System.out.println("Tentando remover um item que não existe na mochila") ; return ;}
-		if (menuItems.get(item) < amount) { System.out.println("Tentando remover mais itens do que a quantidade existente na mochila") ; return ;}
+		if (!contains(item)) { System.out.println("Tentando remover um item que não existe na mochila") ; return ;}
+		if (!hasEnough(item, amount)) { System.out.println("Tentando remover mais itens do que a quantidade existente na mochila") ; return ;}
 		
 		if (item instanceof Potion)
 		{
@@ -506,8 +506,9 @@ public class BagWindow extends GameWindow
 	{
 		if (!contains(item)) { return false ;}
 
-		Map<Item, Integer> menuItems = getMenuItems() ;
-		return qtd <= menuItems.get(item) ;
+		Map<Item, Integer> allItems = getAllItems() ;
+
+		return qtd <= allItems.get(item) ;
 		
 //		if (item instanceof Potion) { return qtd <= pot.get(item) ;}
 //		if (item instanceof Alchemy) { return qtd <= alch.get(item) ;}

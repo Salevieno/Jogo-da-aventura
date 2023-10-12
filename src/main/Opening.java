@@ -12,7 +12,6 @@ import graphics.Gif;
 import liveBeings.Player;
 import utilities.Align;
 import utilities.Scale;
-import utilities.Typing;
 import utilities.UtilG;
 
 public class Opening
@@ -163,15 +162,15 @@ public class Opening
 		{
 			DP.DrawText(new Point((int)(0.5*screenSize.width) + 20, (int)(0.25*screenSize.height)), Align.center, textAngle, text[1], font, textColor) ;
 			if (action.equals("Enter"))
-			{
-				Typing.LiveTyping(Game.getScreen().getPoint(0.4, 0.3), textAngle, action) ;
+			{// TODO opening input
+//				Typing.LiveTyping(Game.getScreen().getPoint(0.4, 0.3), textAngle, action) ;
 		    	buttons[4].activate() ;
 		    	buttons[5].activate() ;
 				step += 1 ;
 			}
 			else
 			{
-				playerInfo[0] = Typing.LiveTyping(Game.getScreen().getPoint(0.4, 0.3), textAngle, action) ;
+//				playerInfo[0] = Typing.LiveTyping(Game.getScreen().getPoint(0.4, 0.3), textAngle, action) ;
 			}
 		}
 		else if (step == 3)

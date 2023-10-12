@@ -1235,7 +1235,7 @@ public class Game extends JPanel
     	player.setName("Salevieno") ;
 //    	player.setLevel(50) ;
     	player.setMap(cityMaps[1]) ;
-    	player.setPos(new Point(112, 183)) ;
+    	player.setPos(new Point(64, 398)) ;
 		
 //    	letThereBePet() ;
     	
@@ -1250,16 +1250,16 @@ public class Game extends JPanel
     	player.getBag().addGold(300) ;
 
     	
-    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
-    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
+    	for (Item item : Forge.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : PetItem.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
+    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
 
 //    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
 //    	{
@@ -1436,28 +1436,33 @@ public class Game extends JPanel
 	    public void keyPressed(KeyEvent e) 
 	    {
 	        int key = e.getKeyCode() ;
-	        
-            if (key == KeyEvent.VK_LEFT | key == KeyEvent.VK_UP | key == KeyEvent.VK_DOWN | key == KeyEvent.VK_RIGHT) 
-            {
-            	player.setCurrentAction(KeyEvent.getKeyText(key)) ;
-            }
-            else if (key == KeyEvent.VK_ENTER | key == KeyEvent.VK_ESCAPE | key == KeyEvent.VK_BACK_SPACE | key == KeyEvent.VK_F1 | key == KeyEvent.VK_F2 | key == KeyEvent.VK_F3 | key == KeyEvent.VK_F4 | key == KeyEvent.VK_F5 | key == KeyEvent.VK_F6 | key == KeyEvent.VK_F7 | key == KeyEvent.VK_F8 | key == KeyEvent.VK_F9 | key == KeyEvent.VK_F10 | key == KeyEvent.VK_F11 | key == KeyEvent.VK_F12 | key == KeyEvent.VK_A | key == KeyEvent.VK_B | key == KeyEvent.VK_C | key == KeyEvent.VK_D | key == KeyEvent.VK_E | key == KeyEvent.VK_F | key == KeyEvent.VK_G | key == KeyEvent.VK_H | key == KeyEvent.VK_I | key == KeyEvent.VK_J | key == KeyEvent.VK_K | key == KeyEvent.VK_L | key == KeyEvent.VK_M | key == KeyEvent.VK_N | key == KeyEvent.VK_O | key == KeyEvent.VK_P | key == KeyEvent.VK_Q | key == KeyEvent.VK_R | key == KeyEvent.VK_S | key == KeyEvent.VK_T | key == KeyEvent.VK_U | key == KeyEvent.VK_V | key == KeyEvent.VK_W | key == KeyEvent.VK_X | key == KeyEvent.VK_Y | key == KeyEvent.VK_Z | key == KeyEvent.VK_0 | key == KeyEvent.VK_1 | key == KeyEvent.VK_2 | key == KeyEvent.VK_3 | key == KeyEvent.VK_4 | key == KeyEvent.VK_5 | key == KeyEvent.VK_6 | key == KeyEvent.VK_7 | key == KeyEvent.VK_8 | key == KeyEvent.VK_9) 
-            {
-        		player.setCurrentAction(KeyEvent.getKeyText(key)) ;
-            }
-            else if (key == KeyEvent.VK_SPACE)
-            {
-        		player.setCurrentAction(KeyEvent.getKeyText(key)) ;
-            }
-            else if (key == KeyEvent.VK_NUMPAD0 | key == KeyEvent.VK_NUMPAD1 | key == KeyEvent.VK_NUMPAD2 | key == KeyEvent.VK_NUMPAD3 | key == KeyEvent.VK_NUMPAD4 | key == KeyEvent.VK_NUMPAD5 | key == KeyEvent.VK_NUMPAD6 | key == KeyEvent.VK_NUMPAD7 | key == KeyEvent.VK_NUMPAD8 | key == KeyEvent.VK_NUMPAD9)
-            {
-        		player.setCurrentAction(String.valueOf(key - 96)) ;
-            }
-            else if (key == KeyEvent.VK_PAUSE) 
-            {
-            	
-            }
+
             shouldRepaint = true ;
+	        switch (key)
+	        {
+		        case KeyEvent.VK_LEFT: case KeyEvent.VK_UP: case KeyEvent.VK_DOWN: case KeyEvent.VK_RIGHT:
+		        	player.setCurrentAction(KeyEvent.getKeyText(key)) ; return ;
+		        	
+		        case KeyEvent.VK_ENTER: case KeyEvent.VK_ESCAPE: case KeyEvent.VK_BACK_SPACE: case KeyEvent.VK_SPACE:
+		        case KeyEvent.VK_F1: case KeyEvent.VK_F2: case KeyEvent.VK_F3: case KeyEvent.VK_F4: case KeyEvent.VK_F5: case KeyEvent.VK_F6:
+		        case KeyEvent.VK_F7: case KeyEvent.VK_F8: case KeyEvent.VK_F9: case KeyEvent.VK_F10: case KeyEvent.VK_F11: case KeyEvent.VK_F12:
+		        case KeyEvent.VK_A: case KeyEvent.VK_B: case KeyEvent.VK_C: case KeyEvent.VK_D: case KeyEvent.VK_E: case KeyEvent.VK_F: case KeyEvent.VK_G:
+		        case KeyEvent.VK_H: case KeyEvent.VK_I: case KeyEvent.VK_J: case KeyEvent.VK_K: case KeyEvent.VK_L: case KeyEvent.VK_M: case KeyEvent.VK_N:
+		        case KeyEvent.VK_O: case KeyEvent.VK_P: case KeyEvent.VK_Q: case KeyEvent.VK_R: case KeyEvent.VK_S: case KeyEvent.VK_T: case KeyEvent.VK_U:
+		        case KeyEvent.VK_V: case KeyEvent.VK_W: case KeyEvent.VK_X: case KeyEvent.VK_Y: case KeyEvent.VK_Z:
+		        case KeyEvent.VK_0: case KeyEvent.VK_1: case KeyEvent.VK_2: case KeyEvent.VK_3: case KeyEvent.VK_4:
+		        case KeyEvent.VK_5: case KeyEvent.VK_6: case KeyEvent.VK_7: case KeyEvent.VK_8: case KeyEvent.VK_9:
+		        	player.setCurrentAction(KeyEvent.getKeyText(key)) ; return ;
+		        	
+		        case KeyEvent.VK_NUMPAD0: case KeyEvent.VK_NUMPAD1: case KeyEvent.VK_NUMPAD2: case KeyEvent.VK_NUMPAD3: case KeyEvent.VK_NUMPAD4:
+		        case KeyEvent.VK_NUMPAD5: case KeyEvent.VK_NUMPAD6: case KeyEvent.VK_NUMPAD7: case KeyEvent.VK_NUMPAD8: case KeyEvent.VK_NUMPAD9:
+		        	player.setCurrentAction(String.valueOf(key - 96)) ; return ;
+		        	
+		        case KeyEvent.VK_PAUSE:
+		        	 return ;
+		        	 
+		        default: return ;
+	        }
 	    }
 	
 	    @Override

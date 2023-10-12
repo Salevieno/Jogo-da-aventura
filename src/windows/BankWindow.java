@@ -179,7 +179,10 @@ public class BankWindow extends GameWindow
 		
 		if (!isReadingInput()) { return ;}
 
-		Point inputPos = UtilG.Translate(windowPos, border + padding + 4, border - 30) ;
+		Point inputMessagePos = UtilG.Translate(windowPos, 0, border + size.height + 15) ;
+		DP.DrawText(inputMessagePos, Align.centerLeft, angle, "Amount for " + mode, stdFont, Game.colorPalette[9]) ;
+		
+		Point inputPos = UtilG.Translate(windowPos, 0, border + size.height + 35) ;
 		liveInput.displayTypingField(inputPos, DP) ;
 	}
 

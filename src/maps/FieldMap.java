@@ -1,7 +1,6 @@
 package maps;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import liveBeings.Creature;
 import liveBeings.CreatureType;
 import main.Game;
 import screen.Screen;
-import utilities.Align;
 import utilities.UtilG;
 
 public class FieldMap extends GameMap

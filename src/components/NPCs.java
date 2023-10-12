@@ -238,7 +238,7 @@ public class NPCs
 		{
 			case alchemist: case woodcrafter: case crafter:
 			{
-				crafterAction(playerBag, playerAction, mousePos, (CraftWindow) window, DP) ;
+				crafterAction(player, playerBag, playerAction, mousePos, (CraftWindow) window, DP) ;
 				
 				break ;
 			}
@@ -423,7 +423,6 @@ public class NPCs
 
 	private void bankerAction(Player player, BankWindow bankWindow, String action, DrawingOnPanel DP)
 	{
-		// TODO bank action
 
 		if (action == null) { return ;}
 		
@@ -495,20 +494,25 @@ public class NPCs
 		
 	}
 
-	private void crafterAction(BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
+	private void crafterAction(Player player, BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
 	{
 		// TODO craft
-		if (menu == 0 | menu == 4) { return ;}
+		System.out.println("crafting menu = " + menu);
+//		if (menu == 0 | menu == 4) { return ;}
 		
-		craftWindow.display(mousePos, DP) ;
+//		craftWindow.display(mousePos, DP) ;
 		
 		if (action == null) { return ;}
 
-		craftWindow.navigate(action) ;
-		if (action.equals("Enter"))
+		if (menu == 0 & selOption == 0 & Player.actionIsForward(action))
 		{
-			craftWindow.craft(bag) ;
+			player.switchOpenClose(craftWindow) ;
 		}
+//		craftWindow.navigate(action) ;
+//		if (action.equals("Enter"))
+//		{
+//			craftWindow.craft(bag) ;
+//		}
 	}
 	
 	private void doctorAction(String action, PersonalAttributes playerPA, PersonalAttributes petPA)

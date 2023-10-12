@@ -63,6 +63,7 @@ import utilities.UtilS;
 import windows.BagWindow;
 import windows.BankWindow;
 import windows.BestiaryWindow;
+import windows.CraftWindow;
 import windows.FabWindow;
 import windows.GameWindow;
 import windows.HintsWindow;
@@ -194,7 +195,7 @@ public class Player extends LiveBeing
 				new LinkedHashMap<QuestItem, Integer>()) ;
 		if (job == 2)
 		{
-			bag.Add(Arrow.getAll()[0], 100) ;
+			bag.add(Arrow.getAll()[0], 100) ;
 		}
 		questWindow = new QuestWindow() ;
 		quests = new ArrayList<>() ;
@@ -452,7 +453,7 @@ public class Player extends LiveBeing
 	
 	private void addCollectibleToBag(Collectible collectible, BagWindow bag)
 	{
-		bag.Add(collectible.getItem(), 1) ;
+		bag.add(collectible.getItem(), 1) ;
 	}
 	
 	private void removeCollectibleFromMap()
@@ -487,7 +488,7 @@ public class Player extends LiveBeing
 	
 	private void addChestContentToBag(TreasureChest chest, BagWindow bag)
 	{
-		chest.getItemRewards().forEach(item -> bag.Add(item, 1)) ;
+		chest.getItemRewards().forEach(item -> bag.add(item, 1)) ;
 		bag.addGold(chest.getGoldReward()) ;
 	}
 	
@@ -601,7 +602,7 @@ public class Player extends LiveBeing
 //			System.out.println(listChances);
 
 			int itemID = UtilG.randomFromChanceList(listChances) ;
-			bag.Add(listItems.get(itemID), 1) ;
+			bag.add(listItems.get(itemID), 1) ;
 			obtainItemsAnimation(Arrays.asList(listItems.get(itemID))) ;
 		}
 		
@@ -811,6 +812,10 @@ public class Player extends LiveBeing
 			{
 				((BankWindow) focusWindow).act(bag, currentAction) ;
 			}
+			if (focusWindow instanceof CraftWindow)
+			{
+				((CraftWindow) focusWindow).act(bag, currentAction) ;
+			}
 		}
 		
 		
@@ -949,7 +954,7 @@ public class Player extends LiveBeing
 			double powerMult = job == 3 ? 1.06 * spells.get(7).getLevel() : 1 ;
 			
 			pot.use(this, powerMult) ;
-			bag.Remove(pot, 1) ;
+			bag.remove(pot, 1) ;
 			
 			return ;			
 		}
@@ -959,7 +964,7 @@ public class Player extends LiveBeing
 			double powerMult = job == 3 ? 1.06 * spells.get(7).getLevel() : 1 ;
 			
 			alch.use(this, powerMult) ;
-			bag.Remove(alch, 1) ;
+			bag.remove(alch, 1) ;
 			
 			return ;			
 		}
@@ -972,7 +977,7 @@ public class Player extends LiveBeing
 			Food food = (Food) item ;
 			
 			food.use(this) ;
-			bag.Remove(food, 1);
+			bag.remove(food, 1);
 		}
 		if (item instanceof PetItem)
 		{
@@ -1326,7 +1331,7 @@ public class Player extends LiveBeing
 		
 		if (!UtilG.chance(0.1 * spells.get(13).getLevel()))
 		{
-			bag.Remove(equippedArrow, 1) ;
+			bag.remove(equippedArrow, 1) ;
 		}
 
 		if (!bag.contains(equippedArrow))
@@ -1362,7 +1367,7 @@ public class Player extends LiveBeing
 			if (!UtilG.chance(0.01 * item.getDropChance())) { continue ;}
 			
 			itemsObtained.add(item) ;
-			bag.Add(item, 1) ;
+			bag.add(item, 1) ;
 		}		
 		
 		bag.addGold((int) (creature.getGold() * UtilG.RandomMult(0.1 * goldMultiplier))) ;

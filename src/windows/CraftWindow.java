@@ -19,7 +19,7 @@ public class CraftWindow extends GameWindow
 	private static final int RecipesPerWindow = 1 ;
 	private List<Recipe> recipes ;
 	private List<Recipe> recipesInWindow ;
-
+// TODO permitir a criação de múltiplos itens
 	public CraftWindow(List<Recipe> recipes)
 	{
 		super("Criação", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Craft.png"), 1, 1, RecipesPerWindow, recipes.size() / RecipesPerWindow) ;
@@ -46,16 +46,29 @@ public class CraftWindow extends GameWindow
 	public void craft(BagWindow bag)
 	{
 		Recipe recipe = recipesInWindow.get(item) ;
-		
+		System.out.println("Crafing");
 		if (!bag.hasEnough(recipe.getIngredients())) {return ;}
-		
+		System.out.println("bag hs enough items");
+		System.out.println("ingredients = " + recipe.getIngredients());
+		System.out.println("products = " + recipe.getProducts());
 		recipe.getIngredients().forEach( (ingredient, qtd) -> {
-			bag.Remove(ingredient, qtd) ;
+			bag.remove(ingredient, qtd) ;
 		});
-		
+		System.out.println("removed items from the bag");
 		recipe.getProducts().forEach( (product, qtd) -> {
-			bag.Add(product, qtd) ;
+			bag.add(product, qtd) ;
 		});
+		System.out.println("added new items to the bag");
+	}
+	
+	public void act(BagWindow bag, String action)
+	{
+		if (action == null) { return ;}
+		
+		if (action.equals("Enter"))
+		{
+			craft(bag) ;
+		}
 	}
 	
 	public void display(Point mousePos, DrawingOnPanel DP)

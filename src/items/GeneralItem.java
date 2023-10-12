@@ -54,8 +54,8 @@ public class GeneralItem extends Item
 					return ;
 				}
 				
-				((Player) user).getBag().Remove(this, 1) ;
-				((Player) user).getBag().Add(AllGeneralItems[30], 1) ;
+				((Player) user).getBag().remove(this, 1) ;
+				((Player) user).getBag().add(AllGeneralItems[30], 1) ;
 			}
 			case 28: 
 			{
@@ -64,8 +64,8 @@ public class GeneralItem extends Item
 					return ;
 				}
 				
-				((Player) user).getBag().Remove(this, 1) ;
-				((Player) user).getBag().Add(AllGeneralItems[31], 1) ;
+				((Player) user).getBag().remove(this, 1) ;
+				((Player) user).getBag().add(AllGeneralItems[31], 1) ;
 			}
 			case 29: 
 			{
@@ -74,8 +74,8 @@ public class GeneralItem extends Item
 					return ;
 				}
 				
-				((Player) user).getBag().Remove(this, 1) ;
-				((Player) user).getBag().Add(AllGeneralItems[32], 1) ;
+				((Player) user).getBag().remove(this, 1) ;
+				((Player) user).getBag().add(AllGeneralItems[32], 1) ;
 			}
 			case 30: user.getPA().getThirst().incCurrentValue(30) ; return ;
 			case 31: user.getPA().getThirst().incCurrentValue(60) ; return ;

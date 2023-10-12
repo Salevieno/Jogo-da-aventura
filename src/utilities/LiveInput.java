@@ -46,6 +46,7 @@ public class LiveInput
 //		Point pos = UtilG.Translate(windowPos, 50, size.height / 3) ;
 //		DP.DrawText(UtilG.Translate(pos, 0, -30), Align.centerLeft, DrawingOnPanel.stdAngle, text, stdFont, Game.colorPalette[9]) ;
 		DP.DrawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.colorPalette[7], Game.colorPalette[7], true) ;
+		DP.DrawLine(UtilG.Translate(pos, 20, 5), UtilG.Translate(pos, 20, -5), 2, Game.colorPalette[9]) ;
 		DP.DrawImage(Player.CoinIcon, UtilG.Translate(pos, 5, 0), Align.centerLeft) ;
 		DP.DrawText(UtilG.Translate(pos, 20, 0), Align.centerLeft, DrawingOnPanel.stdAngle, text, font, Game.colorPalette[9]) ;
 	

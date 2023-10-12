@@ -549,6 +549,8 @@ public abstract class UtilG
 	
 	public static int TextL(String Text, Font font, Graphics G)
 	{
+		if (G == null) { return 0 ;}
+		
 		FontMetrics metrics = G.getFontMetrics(font) ;
 		return (int) (metrics.stringWidth(Text)) ;
 	}
