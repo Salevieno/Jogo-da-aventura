@@ -355,7 +355,25 @@ public class BagWindow extends GameWindow
 		return items ;
 	}
 	
-	private Item[] getMenuArrayItems()
+	private Map<Item, Integer> getAllItems()
+	{
+		Map<Item, Integer> items = new LinkedHashMap<>() ;
+		
+		pot.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ;
+		alch.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ;
+		forges.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ;
+		petItems.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ;
+		foods.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ;
+		arrows.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ;
+		equips.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ;
+		genItems.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ;
+		fabItems.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ;
+		questItems.entrySet().forEach(item -> items.put(item.getKey(), item.getValue())) ;
+
+		return items ;
+	}
+	
+ 	private Item[] getMenuArrayItems()
 	{
 		switch (menu)
 		{
@@ -466,75 +484,12 @@ public class BagWindow extends GameWindow
 	
 	public boolean contains(Item item)
 	{
-		Map<Item, Integer> menuItems = getMenuItems() ;
-		
+		Map<Item, Integer> menuItems = getAllItems() ;
+
 		if (!menuItems.containsKey(item)) { return false ;}
 		
 		return 1 <= menuItems.get(item) ;
-		
-//		if (item instanceof Potion)
-//		{
-//			if (!pot.containsKey(item)) { return false ;}
-//			
-//			return  1 <= pot.get(item) ;
-//		}
-//		if (item instanceof Alchemy)
-//		{
-//			if (!alch.containsKey(item)) { return false ;}
-//			
-//			return  1 <= alch.get(item) ;
-//		}
-//		if (item instanceof Forge)
-//		{
-//			if (!forges.containsKey(item)) { return false ;}
-//			
-//			return  1 <= forges.get(item) ;
-//		}
-//		if (item instanceof PetItem)
-//		{
-//			if (!petItems.containsKey(item)) { return false ;}
-//			
-//			return  1 <= petItems.get(item) ;
-//		}
-//		if (item instanceof Food)
-//		{
-//			if (!foods.containsKey(item)) { return false ;}
-//			
-//			return  1 <= foods.get(item) ;
-//		}
-//		if (item instanceof Arrow)
-//		{
-//			if (!arrows.containsKey(item)) { return false ;}
-//			
-//			return  1 <= arrows.get(item) ;
-//		}
-//		if (item instanceof Equip)
-//		{
-//			if (!equips.containsKey(item)) { return false ;}
-//			
-//			return  1 <= equips.get(item) ;
-//		}
-//		if (item instanceof GeneralItem)
-//		{
-//			if (!genItems.containsKey(item)) { return false ;}
-//			
-//			return  1 <= genItems.get(item) ;
-//		}
-//		if (item instanceof Fab)
-//		{
-//			if (!fabItems.containsKey(item)) { return false ;}
-//			
-//			return  1 <= fabItems.get(item) ;
-//		}
-//		if (item instanceof QuestItem)
-//		{
-//			if (!questItems.containsKey(item)) { return false ;}
-//			
-//			return  1 <= questItems.get(item) ;
-//		}
-//		
-//		System.out.println("Item procurado na mochila não pertence a uma categoria válida");
-//		return false ;
+
 	}
 	
 	public boolean contains(List<Item> items)

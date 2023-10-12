@@ -5,7 +5,7 @@
     "Collectibles": {"level": 5, "berryDelay": 4000, "herbDelay": 12800, "woodDelay": 15360, "metalDelay": 25600},
     "Connections": {"topLeft": 7, "leftTop": 4, "leftBottom": 4, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 1, "rightTop": 1, "topRight": 7},
     "Creatures": [120, 120, 121, 121, 121, 122, 122, 123, 123, 124],
-    "NPCs": []
+    "NPCs": [{"name": "questItem", "pos": {"x": 0.87, "y": 0.63}}, {"name": "questExp", "pos": {"x": 0.27, "y": 0.73}}]
   },
   {
     "Name": "Forest 2",

@@ -235,7 +235,31 @@ public class NPCs
 		if (window != null) { if (window.isOpen()) { return ;} ;}
 		
 		switch (type.getJob())
-		{		
+		{
+			case alchemist: case woodcrafter: case crafter:
+			{
+				crafterAction(playerBag, playerAction, mousePos, (CraftWindow) window, DP) ;
+				
+				break ;
+			}
+			case banker:
+			{
+				bankerAction(player, (BankWindow) window, playerAction, DP) ;
+
+				break ;
+			}
+			case caveEntry:
+			{
+				portalAction(player) ;
+
+				break ;
+			}
+			case caveExit:
+			{
+				if (playerBag.contains(Game.getAllItems()[1338])) { portalAction(player) ;}
+
+				break ;
+			}
 			case doctor: 
 			{
 				if (pet == null) { doctorAction(playerAction, player.getPA(), null) ;}
@@ -243,23 +267,31 @@ public class NPCs
 				
 				break ;
 			}
-			case equipsSeller:
+			case elemental:
+			{
+				List<Equip> listEquips = new ArrayList<Equip> (playerBag.getEquip().keySet()) ;
+				((ElementalWindow) window).setEquipsForElemChange(listEquips) ;
+				((ElementalWindow) window).setSpheres(ElementalWindow.spheresInBag(playerBag)) ;
+				
+				elementalAction(playerBag, (ElementalWindow) window, player.getCurrentAction(), DP) ;
+
+				break ;
+			}
+			case equipsSeller: case itemsSeller: case smuggleSeller:
 			{
 		    	sellerAction(player, playerAction, (ShoppingWindow) window, DP) ;
 		    	
 		    	break ;
 			}
-			case itemsSeller:
+			case forger:
 			{
-		    	sellerAction(player, playerAction, (ShoppingWindow) window, DP) ;
-		    	
-		    	break ;
-			}
-			case smuggleSeller:
-			{
-		    	sellerAction(player, playerAction, (ShoppingWindow) window, DP) ;
-		    	
-		    	break ;
+				List<Equip> equipsForForge = new ArrayList<>() ;
+				playerBag.getEquip().keySet().forEach(equipsForForge::add) ;
+				((ForgeWindow) window).setItemsForForge(equipsForForge);
+				
+				forgerAction(playerBag, playerAction, (ForgeWindow) window, DP) ;
+				
+				break ;
 			}
 			case master:
 			{
@@ -279,81 +311,19 @@ public class NPCs
 
 				break ;
 			}
-			case alchemist:
-			{
-				crafterAction(playerBag, playerAction, mousePos, (CraftWindow) window, DP) ;
-				
-				break ;
-			}
-			case woodcrafter:
-			{
-				crafterAction(playerBag, playerAction, mousePos, (CraftWindow) window, DP) ;
-				
-				break ;
-			}
-			case crafter:
-			{
-				crafterAction(playerBag, playerAction, mousePos, (CraftWindow) window, DP) ;
-				
-				break ;
-			}
-			case forger:
-			{
-				List<Equip> equipsForForge = new ArrayList<>() ;
-				playerBag.getEquip().keySet().forEach(equipsForForge::add) ;
-				((ForgeWindow) window).setItemsForForge(equipsForForge);
-				
-				forgerAction(playerBag, playerAction, (ForgeWindow) window, DP) ;
-				
-				break ;
-			}
-			case elemental:
-			{
-				List<Equip> listEquips = new ArrayList<Equip> (playerBag.getEquip().keySet()) ;
-				((ElementalWindow) window).setEquipsForElemChange(listEquips) ;
-				((ElementalWindow) window).setSpheres(ElementalWindow.spheresInBag(playerBag)) ;
-				
-				elementalAction(playerBag, (ElementalWindow) window, player.getCurrentAction(), DP) ;
-
-				break ;
-			}
 			case saver:
 			{
 				saverAction(player, pet, playerAction) ;
 
 				break ;
 			}
-			case sailorToIsland:
+			case sailorToIsland: case sailorToForest:
 			{
 				sailorAction(player, playerAction) ;
 
 				break ;
 			}
-			case sailorToForest:
-			{
-				sailorAction(player, playerAction) ;
-
-				break ;
-			}
-			case caveEntry:
-			{
-				portalAction(player) ;
-
-				break ;
-			}
-			case caveExit:
-			{
-				if (playerBag.contains(Game.getAllItems()[1338])) { portalAction(player) ;}
-
-				break ;
-			}
-			case banker:
-			{
-				bankerAction(playerBag, (BankWindow) window, playerAction, DP) ;
-
-				break ;
-			}
-			case questExp:
+			case questExp: case questItem:
 			{
 				questAction(player.getQuests(), playerBag, player.getPA(), player.getQuestSkills(), playerAction) ;
 
@@ -450,6 +420,96 @@ public class NPCs
 		}
 		
 	}
+
+	private void bankerAction(Player player, BankWindow bankWindow, String action, DrawingOnPanel DP)
+	{
+		// TODO bank action
+
+		if (action == null) { return ;}
+		
+		if (Player.actionIsForward(action))
+		{
+			if (menu == 0 & (selOption == 0 | selOption == 1 | selOption == 2 | selOption == 3))
+			{
+				if (selOption == 0)
+				{
+					bankWindow.setMode("deposit");
+				}
+				if (selOption == 1)
+				{
+					bankWindow.setMode("withdraw");
+				}
+				if (selOption == 2)
+				{
+					bankWindow.setMode("investment low risk");
+				}
+				if (selOption == 3)
+				{
+					bankWindow.setMode("investment hight risk");
+				}
+				player.switchOpenClose(bankWindow) ;
+				return ;
+			}
+		}
+
+//		if (menu == 1)
+//		{
+//			bankWindow.readValue(action, DP) ;
+//		}
+		
+		
+//		if (menu == 0) { return ;}
+//		
+//		
+//		bankWindow.display(null, DP) ;
+//
+//		if (menu == 1) { bankWindow.displayInput("Quanto gostaria de depositar?", action, DP) ;}
+//		if (menu == 2) { bankWindow.displayInput("Quanto gostaria de sacar?", action, DP) ;}
+//		
+//		if (action == null) { return ;}
+//
+//		bankWindow.navigate(action) ;
+//		
+//		if (menu == 1 | menu == 2) { bankWindow.readValue(action, DP) ;}
+//		
+//		if (!Player.actionIsForward(action)) { return ;}
+//		
+//		switch (menu)
+//		{
+//			case 0: menu = selOption == 0 ? 1 : type.getSpeech().length - 1 ; break ;
+//			case 1: case 2:
+//			{
+//				int amount = bankWindow.getAmountTyped() ;
+//				switch (selOption)
+//				{
+//					case 0: bankWindow.deposit(bag, amount) ; break ;
+//					case 1: bankWindow.withdraw(bag, amount) ; break ;
+//					case 2: bankWindow.invest(bag, amount, false) ; break ;
+//					case 3: bankWindow.invest(bag, amount, true) ; break ;
+//				}
+//
+//				menu = numberMenus ;
+//				break ;
+//			}
+//		}
+		
+	}
+
+	private void crafterAction(BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
+	{
+		// TODO craft
+		if (menu == 0 | menu == 4) { return ;}
+		
+		craftWindow.display(mousePos, DP) ;
+		
+		if (action == null) { return ;}
+
+		craftWindow.navigate(action) ;
+		if (action.equals("Enter"))
+		{
+			craftWindow.craft(bag) ;
+		}
+	}
 	
 	private void doctorAction(String action, PersonalAttributes playerPA, PersonalAttributes petPA)
 	{
@@ -471,82 +531,7 @@ public class NPCs
 		
 		menu = 3 ;
 	}
-	
-	private void sellerAction(Player player, String action, ShoppingWindow shopping, DrawingOnPanel DP)
-	{
-		System.out.println(menu);
-		if (action == null) { return ;}
-		
-		if (menu == 0 & Player.actionIsForward(action))
-		{
-			shopping.setBuyMode(selOption == 0) ;
-			player.switchOpenClose(shopping) ;
-		}
-		
-	}
-	
-	private void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawingOnPanel DP)
-	{
-		if (50 <= player.getLevel() & player.getProJob() == 0 & menu == 3)
-		{
-			if (action == null) { return ;}
 
-			if (Player.actionIsForward(action))
-			{
-				player.setProJob(1 + selOption) ;
-				player.addProSpells() ;
-				player.getSpellsTreeWindow().switchTo2Tabs() ;
-			}			
-		}
-		
-		if (action == null) { return ;}
-	
-		if ((menu == 0 | menu == 5) & Player.actionIsForward(action))
-		{
-//			player.setFocusWindow(spellsTree) ;
-
-			spellsTree.setPoints(player.getSpellPoints()) ;
-			spellsTree.updateSpellsOnWindow() ;
-			spellsTree.updateSpellsDistribution() ;
-			player.switchOpenClose(spellsTree) ;
-		}
-		
-	}
-	
-	private void crafterAction(BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
-	{
-		// TODO craft
-		if (menu == 0 | menu == 4) { return ;}
-		
-		craftWindow.display(mousePos, DP) ;
-		
-		if (action == null) { return ;}
-
-		craftWindow.navigate(action) ;
-		if (action.equals("Enter"))
-		{
-			craftWindow.craft(bag) ;
-		}
-	}
-	
-	private void forgerAction(BagWindow bag, String action, ForgeWindow forgeWindow, DrawingOnPanel DP)
-	{
-		
-		if (menu == 0) { return ;}
-		
-		forgeWindow.display(null, DP) ;
-		
-		if (action == null) { return ;}
-
-		forgeWindow.navigate(action) ;
-		// TODO a forja só deve acontecer no menu 1
-		if (action.equals("Enter") & 2 <= menu)
-		{
-			menu = forgeWindow.forge(bag) ;
-		}
-		
-	}
-	
 	private void elementalAction(BagWindow bag, ElementalWindow elementalWindow, String action, DrawingOnPanel DP)
 	{
 	
@@ -580,75 +565,57 @@ public class NPCs
 		
 	}
 	
-	private void saverAction(Player player, Pet pet, String action)
+	private void forgerAction(BagWindow bag, String action, ForgeWindow forgeWindow, DrawingOnPanel DP)
 	{
+		
+		if (menu == 0) { return ;}
+		
+		forgeWindow.display(null, DP) ;
 		
 		if (action == null) { return ;}
-		
-		if (Player.actionIsForward(action) & menu == 1)
-		{
-			int slot = selOption + 1 ;
-	        player.save(slot) ;
-		}
-		
-	}
-	
-	private void sailorAction(Player player, String action)
-	{
-		if (action == null) { return ;}		
 
-		if (action.equals("Enter") & selOption == 0)
+		forgeWindow.navigate(action) ;
+		// TODO a forja só deve acontecer no menu 1
+		if (action.equals("Enter") & 2 <= menu)
 		{
-			if (player.getMap().getName().equals("Forest 13")) { player.setMap(Game.getMaps()[39]) ; player.setPos(pos) ; return ;}
-			if (player.getMap().getName().equals("Island 1")) { player.setMap(Game.getMaps()[17]) ; player.setPos(pos) ; return ;}
+			menu = forgeWindow.forge(bag) ;
 		}
+		
 	}
+
+	private void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawingOnPanel DP)
+	{
+		if (50 <= player.getLevel() & player.getProJob() == 0 & menu == 3)
+		{
+			if (action == null) { return ;}
+
+			if (Player.actionIsForward(action))
+			{
+				player.setProJob(1 + selOption) ;
+				player.addProSpells() ;
+				player.getSpellsTreeWindow().switchTo2Tabs() ;
+			}			
+		}
+		
+		if (action == null) { return ;}
 	
+		if ((menu == 0 | menu == 5) & Player.actionIsForward(action))
+		{
+//			player.setFocusWindow(spellsTree) ;
+
+			spellsTree.setPoints(player.getSpellPoints()) ;
+			spellsTree.updateSpellsOnWindow() ;
+			spellsTree.updateSpellsDistribution() ;
+			player.switchOpenClose(spellsTree) ;
+		}
+		
+	}
+
 	private void portalAction(Player player)
 	{
 		// TODO usar o move to map
 		if (player.getMap().getName().equals("Forest 2")) { player.setMap(Game.getMaps()[30]) ; player.setPos(UtilG.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
 		if (player.getMap().getName().equals("Cave 1")) { player.setMap(Game.getMaps()[6]) ; player.setPos(UtilG.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
-	}
-	
-	private void bankerAction(BagWindow bag, BankWindow bankWindow, String action, DrawingOnPanel DP)
-	{
-		// TODO bank action
-		if (menu == 0) { return ;}
-		
-		
-		bankWindow.display(null, DP) ;
-
-		if (menu == 1) { bankWindow.displayInput("Quanto gostaria de depositar?", action, DP) ;}
-		if (menu == 2) { bankWindow.displayInput("Quanto gostaria de sacar?", action, DP) ;}
-		
-		if (action == null) { return ;}
-
-		bankWindow.navigate(action) ;
-		
-		if (menu == 1 | menu == 2) { bankWindow.readValue(action, DP) ;}
-		
-		if (!Player.actionIsForward(action)) { return ;}
-		
-		switch (menu)
-		{
-			case 0: menu = selOption == 0 ? 1 : type.getSpeech().length - 1 ; break ;
-			case 1: case 2:
-			{
-				int amount = bankWindow.getAmountTyped() ;
-				switch (selOption)
-				{
-					case 0: bankWindow.deposit(bag, amount) ; break ;
-					case 1: bankWindow.withdraw(bag, amount) ; break ;
-					case 2: bankWindow.invest(bag, amount, false) ; break ;
-					case 3: bankWindow.invest(bag, amount, true) ; break ;
-				}
-
-				menu = numberMenus ;
-				break ;
-			}
-		}
-		
 	}
 	
 	private void questAction(List<Quest> quests, BagWindow bag, PersonalAttributes PA, Map<QuestSkills, Boolean> skills, String action)
@@ -665,8 +632,10 @@ public class NPCs
 
 			if (!quests.contains(quest))
 			{
+				quest.checkCompletion(bag) ;
 				if (!quest.isRepeatable() & quest.isComplete())
 				{
+					quest.complete(bag, PA, skills) ;
 					return ;
 				}
 				
@@ -680,6 +649,43 @@ public class NPCs
 			quest.complete(bag, PA, skills) ;
 			quests.remove(quest) ;
 			
+		}
+		
+	}
+	
+	private void sailorAction(Player player, String action)
+	{
+		if (action == null) { return ;}		
+
+		if (action.equals("Enter") & selOption == 0)
+		{
+			if (player.getMap().getName().equals("Forest 13")) { player.setMap(Game.getMaps()[39]) ; player.setPos(pos) ; return ;}
+			if (player.getMap().getName().equals("Island 1")) { player.setMap(Game.getMaps()[17]) ; player.setPos(pos) ; return ;}
+		}
+	}
+
+	private void saverAction(Player player, Pet pet, String action)
+	{
+		
+		if (action == null) { return ;}
+		
+		if (Player.actionIsForward(action) & menu == 1)
+		{
+			int slot = selOption + 1 ;
+	        player.save(slot) ;
+		}
+		
+	}
+	
+	private void sellerAction(Player player, String action, ShoppingWindow shopping, DrawingOnPanel DP)
+	{
+		System.out.println(menu);
+		if (action == null) { return ;}
+		
+		if (menu == 0 & Player.actionIsForward(action))
+		{
+			shopping.setBuyMode(selOption == 0) ;
+			player.switchOpenClose(shopping) ;
 		}
 		
 	}

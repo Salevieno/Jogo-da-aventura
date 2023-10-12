@@ -240,6 +240,7 @@
         "Olá, gostaria de usar o banco?",
         "Quanto gostaria de guardar?",
         "Quanto gostaria de sacar?",
+        "Quanto gostaria de investir?",
         "Por favor, informe um número:",
         "Você não tem todo esse dinheiro!",
         "Você não tem dinheiro para pagar a taxa de 1%!",
@@ -247,7 +248,7 @@
         "Aqui está seu dinheiro, até mais!",
         "Obrigado por vir!"
       ],
-      "Opcoes": [["Quero guardar ouro", "Quero sacar ouro", "Só estou passando"], [], [], [], [], [], ["Até mais"], ["Até mais"], ["Até mais"]]
+      "Opcoes": [["Quero guardar ouro", "Quero sacar ouro", "Quero investir com baixo risco", "Quero investir com alto risco", "Só estou passando"], [], [], [], [], [], [], ["Até mais"], ["Até mais"], ["Até mais"]]
     },
     {
       "Nome": "Alquimista",
@@ -569,17 +570,16 @@
       "Opcoes": [["Claro", "Agora não"], ["Ok"], ["Ok"], ["Eba!"], ["Até mais!"]]
     },
     {
-      "Nome": "Quest items",
+      "Nome": "Quest item",
       "Falas":
       [
         "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
         "Ótimo! Eis-te aqui os itens que vc precisa pegar:",
-        "Itens para obter:",
         "Por favor, ainda preciso de mais itens.",
         "Valeu! Aqui, pode ficar com o que eu fabriquei:",
         "Ok, até a próxima então."
       ],
-      "Opcoes": [[], [], [], [], [], []]
+      "Opcoes": [["Claro", "Agora não"], ["Ok"], ["Ok"], ["Eba!"], ["Até mais!"]]
     }
   ],
 

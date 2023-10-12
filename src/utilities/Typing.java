@@ -1,10 +1,10 @@
 package utilities;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Point;
 
 import graphics.DrawingOnPanel;
+import liveBeings.Player;
+import main.Game;
 
 public abstract class Typing
 {
@@ -33,8 +33,8 @@ public abstract class Typing
 		return result ;
 	}
 	
-	public static String LiveTyping(Point Pos, double angle, String Input, Font font, Color color, DrawingOnPanel DP)
-	{
+	public static String LiveTyping(Point Pos, double angle, String Input)
+	{		
 		Character input = Input.toCharArray()[0] ;
 		if (Character.isLetterOrDigit(input))
 		{
@@ -55,11 +55,13 @@ public abstract class Typing
 		{
 			TypedText = "" ;
 		}
-//		if (TypedText != null)
-//		{
-//			DP.DrawText(Pos, Align.bottomLeft, angle, TypedText.toString(), font, color) ;									
-//		}	
 		return TypedText ;
 	}
 	
+	public static void displayTypingField(Point pos, DrawingOnPanel DP)
+	{
+		DP.DrawImage(Player.CoinIcon, UtilG.Translate(pos, 10, 10), Align.centerLeft) ;
+		DP.DrawText(UtilG.Translate(pos, 15, 10), Align.centerLeft, DrawingOnPanel.stdAngle, TypedText, DrawingOnPanel.stdFont, Game.colorPalette[9]) ;
+		
+	}
 }

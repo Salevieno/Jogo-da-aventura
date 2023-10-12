@@ -161,18 +161,17 @@ public class Opening
 		}
 		else if (step == 2)
 		{
-			Font Largefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 			DP.DrawText(new Point((int)(0.5*screenSize.width) + 20, (int)(0.25*screenSize.height)), Align.center, textAngle, text[1], font, textColor) ;
 			if (action.equals("Enter"))
 			{
-				Typing.LiveTyping(new Point((int)(0.4*screenSize.width), (int)(0.3*screenSize.height)), textAngle, action, Largefont, textColor, DP) ;
+				Typing.LiveTyping(Game.getScreen().getPoint(0.4, 0.3), textAngle, action) ;
 		    	buttons[4].activate() ;
 		    	buttons[5].activate() ;
 				step += 1 ;
 			}
 			else
 			{
-				playerInfo[0] = Typing.LiveTyping(new Point((int)(0.4*screenSize.width), (int)(0.3*screenSize.height)), textAngle, action, Largefont, textColor, DP) ;
+				playerInfo[0] = Typing.LiveTyping(Game.getScreen().getPoint(0.4, 0.3), textAngle, action) ;
 			}
 		}
 		else if (step == 3)

@@ -100,7 +100,6 @@ public class Quest
 	{
 		
 		resetCreaturesCounter() ;
-//		deactivate() ;
 		
 		if (isRepeatable) { isComplete = false ;}
 		
@@ -108,14 +107,16 @@ public class Quest
 		bag.addGold(goldReward) ;
 
 		for (Item item : reqItems.keySet()) { bag.Remove(item, 1) ;}
-		for (Item item : rewardItems.keySet()) { bag.Add(item, 1) ;}
+		for (Item item : rewardItems.keySet()) { bag.Add(item, 1) ; System.out.println("added " + item);}
 		
-		// special rewards
+		// TODO special rewards
 		switch (id)
 		{
 			case 1: skills.replace(QuestSkills.bestiary, true) ; break ;
 			default: break ;
 		}
+		
+		isComplete = true ;
 		
 	}
 

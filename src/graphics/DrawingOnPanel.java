@@ -29,13 +29,13 @@ import utilities.AttackEffects;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
-
 import windows.PlayerAttributesWindow;
 
 public class DrawingOnPanel 
 {
 	public static double stdAngle = 0 ;
 	public static int stdStroke = 1;
+	public static Font stdFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 	private Graphics2D G ;
 	
 	private static Color[] colorPalette = Game.colorPalette;

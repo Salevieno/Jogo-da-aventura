@@ -500,7 +500,7 @@ public class Game extends JPanel
 					}
 				}
 			}
-//			System.out.println(job + " " + options);
+//			System.out.println(job + " " + speech + " " + options);
 
 			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
 		}
@@ -1235,7 +1235,7 @@ public class Game extends JPanel
     	player.setName("Salevieno") ;
 //    	player.setLevel(50) ;
     	player.setMap(cityMaps[1]) ;
-    	player.setPos(new Point(200, 201)) ;
+    	player.setPos(new Point(112, 183)) ;
 		
 //    	letThereBePet() ;
     	
@@ -1250,17 +1250,17 @@ public class Game extends JPanel
     	player.getBag().addGold(300) ;
 
     	
-//    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
-//    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
-//    	
+    	for (Item item : Potion.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Alchemy.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Forge.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : PetItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Food.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Arrow.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Equip.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : GeneralItem.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : Fab.getAll()) { player.getBag().Add(item, 10) ;}
+    	for (Item item : QuestItem.getAll()) { player.getBag().Add(item, 10) ;}
+
 //    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
 //    	{
 //    		player.getExp().incCurrentValue(player.getExp().getMaxValue());
@@ -1470,22 +1470,13 @@ public class Game extends JPanel
 	class MouseEventDemo implements MouseListener 
 	{
 		@Override
-		public void mouseClicked(MouseEvent evt)
-		{
-			
-		}
+		public void mouseClicked(MouseEvent evt) { }
 
 		@Override
-		public void mouseEntered(MouseEvent arg0)
-		{
-			
-		}
+		public void mouseEntered(MouseEvent arg0) { }
 
 		@Override
-		public void mouseExited(MouseEvent arg0)
-		{
-
-		}
+		public void mouseExited(MouseEvent arg0) { }
 
 		@Override
 		public void mousePressed(MouseEvent evt)
@@ -1505,14 +1496,11 @@ public class Game extends JPanel
 			}
             //shouldRepaint = true ;
 //			System.out.print(mousePos + " ") ;
-			System.out.println(UtilG.Round(mousePos.x / 600.0, 2) + "," + UtilG.Round((mousePos.y - 96) / 384.0, 2)) ;
+			System.out.println(UtilG.Round(mousePos.x / 600.0, 2) + "," + UtilG.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent e) 
-		{
-
-		}	
+		public void mouseReleased(MouseEvent e) { }	
 	}
 	
 	class MouseWheelEventDemo implements MouseWheelListener 

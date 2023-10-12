@@ -56,7 +56,8 @@ public class NPCType
 			}
 			case banker:
 			{
-				destination.add(Arrays.asList(1, 2, 8)) ;
+				destination.add(Arrays.asList(1, 2, 3, 3, 8)) ;
+				destination.add(Arrays.asList()) ;
 				destination.add(Arrays.asList()) ;
 				destination.add(Arrays.asList()) ;
 				destination.add(Arrays.asList()) ;
@@ -87,7 +88,7 @@ public class NPCType
 				return ;
 			}
 			
-			case questExp:
+			case questExp: case questItem:
 				destination.add(Arrays.asList(1, 4)) ;
 				destination.add(Arrays.asList(2)) ;
 				destination.add(Arrays.asList(2)) ;

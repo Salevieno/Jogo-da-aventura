@@ -97,7 +97,7 @@ public class QuestWindow extends GameWindow
 		{
 			itemPos = UtilG.Translate(itemPos, 0, font.getSize() + 4) ;
 			circlePos = UtilG.Translate(circlePos, 0, font.getSize() + 4) ;
-			Point textPos = UtilG.Translate(itemPos, 15, 0) ;
+			Point textPos = UtilG.Translate(itemPos, 15, 0) ; System.out.println(item + " " + bag.contains(item));
 			DP.DrawCircle(circlePos, 10, 0, bag.contains(item) ? Game.colorPalette[3] : Game.colorPalette[6], null) ;
 			DP.DrawImage(item.getImage(), itemPos, Align.center) ;
 			DP.DrawText(textPos, Align.centerLeft, angle, item.getName(), font, Game.colorPalette[9]) ;

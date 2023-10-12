@@ -61,6 +61,7 @@ import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.BagWindow;
+import windows.BankWindow;
 import windows.BestiaryWindow;
 import windows.FabWindow;
 import windows.GameWindow;
@@ -805,6 +806,10 @@ public class Player extends LiveBeing
 			if (focusWindow instanceof SpellsTreeWindow)
 			{
 				((SpellsTreeWindow) focusWindow).act(this) ;
+			}
+			if (focusWindow instanceof BankWindow)
+			{
+				((BankWindow) focusWindow).act(bag, currentAction) ;
 			}
 		}
 		
