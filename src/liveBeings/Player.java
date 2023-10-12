@@ -64,6 +64,7 @@ import windows.BagWindow;
 import windows.BankWindow;
 import windows.BestiaryWindow;
 import windows.CraftWindow;
+import windows.ElementalWindow;
 import windows.FabWindow;
 import windows.GameWindow;
 import windows.HintsWindow;
@@ -815,6 +816,10 @@ public class Player extends LiveBeing
 			if (focusWindow instanceof CraftWindow)
 			{
 				((CraftWindow) focusWindow).act(bag, currentAction) ;
+			}
+			if (focusWindow instanceof ElementalWindow)
+			{
+				((ElementalWindow) focusWindow).act(this, bag, currentAction) ;
 			}
 		}
 		

@@ -52,6 +52,7 @@ public class BagWindow extends GameWindow
 	public static final Image SelectedMenuTab0 = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedMenuTab0.png") ;
 	public static final Image SelectedMenuTab1 = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedMenuTab1.png") ;
     public static final Image SlotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
+    public static final Image SelectedSlotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedSlot.png") ;
 	
 	public BagWindow(Map<Potion, Integer> pot, Map<Alchemy, Integer> alch, Map<Forge, Integer> forge, Map<PetItem, Integer> petItem,
 			Map<Food, Integer> food, Map<Arrow, Integer> arrow, Map<Equip, Integer> equip, Map<GeneralItem, Integer> genItem,
@@ -87,7 +88,7 @@ public class BagWindow extends GameWindow
 	public int getGold() {return gold ;}
 	
 	public void navigate(String action)
-	{System.out.println("tab " + tab + " window " + window + " menu " + menu);
+	{//System.out.println("tab " + tab + " window " + window + " menu " + menu);
 		if (tab == 0)
 		{
 			if (action.equals(Player.ActionKeys[2]))
@@ -102,7 +103,7 @@ public class BagWindow extends GameWindow
 				window = 0 ;
 				updateWindow() ;
 			}			
-			if (action.equals("Enter") | action.equals("MouseLeftClick"))
+			if (Player.actionIsForward(action))
 			{
 				tabUp() ;
 			}

@@ -273,7 +273,7 @@ public class NPCs
 				((ElementalWindow) window).setEquipsForElemChange(listEquips) ;
 				((ElementalWindow) window).setSpheres(ElementalWindow.spheresInBag(playerBag)) ;
 				
-				elementalAction(playerBag, (ElementalWindow) window, player.getCurrentAction(), DP) ;
+				elementalAction(player, playerBag, (ElementalWindow) window, player.getCurrentAction(), DP) ;
 
 				break ;
 			}
@@ -496,23 +496,13 @@ public class NPCs
 
 	private void crafterAction(Player player, BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
 	{
-		// TODO craft
-		System.out.println("crafting menu = " + menu);
-//		if (menu == 0 | menu == 4) { return ;}
-		
-//		craftWindow.display(mousePos, DP) ;
-		
+//		System.out.println("crafting menu = " + menu);
 		if (action == null) { return ;}
 
 		if (menu == 0 & selOption == 0 & Player.actionIsForward(action))
 		{
 			player.switchOpenClose(craftWindow) ;
 		}
-//		craftWindow.navigate(action) ;
-//		if (action.equals("Enter"))
-//		{
-//			craftWindow.craft(bag) ;
-//		}
 	}
 	
 	private void doctorAction(String action, PersonalAttributes playerPA, PersonalAttributes petPA)
@@ -536,36 +526,43 @@ public class NPCs
 		menu = 3 ;
 	}
 
-	private void elementalAction(BagWindow bag, ElementalWindow elementalWindow, String action, DrawingOnPanel DP)
+	private void elementalAction(Player player, BagWindow bag, ElementalWindow elementalWindow, String action, DrawingOnPanel DP)
 	{
 	
-		if (menu == 0) { return ;}
+//		if (menu == 0) { return ;}
 		
 		
 //		elementalWindow.display(DP) ;
 
 		if (action == null) { return ;}
 
-		elementalWindow.navigate(action) ;
-		if (action.equals("Enter") | action.equals("MouseLeftClick"))
+		if (Player.actionIsForward(action))
 		{
-			switch (menu)
+			if (menu == 0 & selOption == 0)
 			{
-				case 0: menu = selOption == 0 ? 1 : type.getSpeech().length - 1 ; break ;
-				case 1:
-				{
-					if (elementalWindow.getSpheres() == null | elementalWindow.getSpheres().size() <= 0) { menu = 4 ;}
-					else { elementalWindow.selectSphere() ; menu = 2 ;}
-					break ;
-				}
-				case 2:
-				{
-					if (elementalWindow.getSelectedEquip() == null | elementalWindow.getSelectedSphere() == null) { menu = 3 ;}
-					else { elementalWindow.changeEquipElement(bag) ; menu = 5 ;}
-					break ;
-				}
+				player.switchOpenClose(elementalWindow) ;
 			}
-		}		
+		}
+//		elementalWindow.navigate(action) ;
+//		if (action.equals("Enter") | action.equals("MouseLeftClick"))
+//		{
+//			switch (menu)
+//			{
+//				case 0: menu = selOption == 0 ? 1 : type.getSpeech().length - 1 ; break ;
+//				case 1:
+//				{
+//					if (elementalWindow.getSpheres() == null | elementalWindow.getSpheres().size() <= 0) { menu = 4 ;}
+//					else { elementalWindow.selectSphere() ; menu = 2 ;}
+//					break ;
+//				}
+//				case 2:
+//				{
+//					if (elementalWindow.getSelectedEquip() == null | elementalWindow.getSelectedSphere() == null) { menu = 3 ;}
+//					else { elementalWindow.changeEquipElement(bag) ; menu = 5 ;}
+//					break ;
+//				}
+//			}
+//		}		
 		
 	}
 	

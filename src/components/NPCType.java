@@ -76,6 +76,11 @@ public class NPCType
 				destination.add(Arrays.asList(4)) ;
 				return ;
 				
+			case elemental:
+				destination.add(Arrays.asList(0, 1)) ;
+				destination.add(Arrays.asList(1)) ;
+				return ;
+				
 			case master: 
 			{
 				destination.add(Arrays.asList(1, 6)) ;

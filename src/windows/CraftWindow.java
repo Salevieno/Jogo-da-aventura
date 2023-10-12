@@ -1,6 +1,7 @@
 package windows;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +20,13 @@ public class CraftWindow extends GameWindow
 	private static final int RecipesPerWindow = 1 ;
 	private List<Recipe> recipes ;
 	private List<Recipe> recipesInWindow ;
+	
+	public static final Image craftImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Craft.png") ;
 // TODO permitir a criação de múltiplos itens
+	// TODO corrigir as receitas
 	public CraftWindow(List<Recipe> recipes)
 	{
-		super("Criação", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Craft.png"), 1, 1, RecipesPerWindow, recipes.size() / RecipesPerWindow) ;
+		super("Criação", craftImage, 1, 1, RecipesPerWindow, recipes.size() / RecipesPerWindow) ;
 		this.recipes = recipes ;
 		recipesInWindow = RecipesPerWindow <= recipes.size() ? recipes.subList(window, RecipesPerWindow + window) : recipes ;
 	}
@@ -46,19 +50,19 @@ public class CraftWindow extends GameWindow
 	public void craft(BagWindow bag)
 	{
 		Recipe recipe = recipesInWindow.get(item) ;
-		System.out.println("Crafing");
+//		System.out.println("Crafing");
 		if (!bag.hasEnough(recipe.getIngredients())) {return ;}
-		System.out.println("bag hs enough items");
-		System.out.println("ingredients = " + recipe.getIngredients());
-		System.out.println("products = " + recipe.getProducts());
+//		System.out.println("bag hs enough items");
+//		System.out.println("ingredients = " + recipe.getIngredients());
+//		System.out.println("products = " + recipe.getProducts());
 		recipe.getIngredients().forEach( (ingredient, qtd) -> {
 			bag.remove(ingredient, qtd) ;
 		});
-		System.out.println("removed items from the bag");
+//		System.out.println("removed items from the bag");
 		recipe.getProducts().forEach( (product, qtd) -> {
 			bag.add(product, qtd) ;
 		});
-		System.out.println("added new items to the bag");
+//		System.out.println("added new items to the bag");
 	}
 	
 	public void act(BagWindow bag, String action)

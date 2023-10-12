@@ -330,14 +330,9 @@
       "Falas":
       [
         "Olá, quer mudar o elemento de seus equipamentos?",
-        "Qual esfera vc quer usar?",
-        "Qual equipamento vc quer alterar?",
-        "Vc não possui equipamentos!",
-        "Vc não possui esferas elementais!",
-        "Elemento adicionado!",
         "Obrigado e até mais!"
       ],
-      "Opcoes": [[], [], [], [], [], [], []]
+      "Opcoes": [["Sim", "Não"], ["Tchau"]]
     },
     {
       "Nome": "Cidadão 0",
