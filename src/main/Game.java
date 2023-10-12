@@ -164,7 +164,7 @@ public class Game extends JPanel
 	public Game() 
 	{
 		DP = new DrawingOnPanel() ;
-    	player = new Player("", "", 4) ;
+    	player = new Player("", "", 1) ;
     	
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -979,7 +979,14 @@ public class Game extends JPanel
     
 	private void incrementCounters()
 	{
-		sky.dayTime.inc() ;
+		for (int i = 0 ; i <= 200 ; i += 1)
+		{
+			sky.dayTime.inc() ;
+			if (sky.dayTime.finished())
+			{
+				sky.dayTime.reset() ;
+			}
+		}
 		player.incrementCounters() ;
 		
 		if (pet != null) { pet.incrementCounters() ; }
@@ -1232,7 +1239,7 @@ public class Game extends JPanel
     	Pterodactile.setMessage(Game.allText.get(TextCategories.pterodactile)) ;
 
     	player.InitializeSpells() ;
-    	player.setName("Salevieno") ;
+    	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
 //    	player.setLevel(50) ;
     	player.setMap(cityMaps[1]) ;
     	player.setPos(new Point(393, 140)) ;
@@ -1247,19 +1254,19 @@ public class Game extends JPanel
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
-    	player.getBag().addGold(300) ;
+//    	player.getBag().addGold(300) ;
 
     	
-    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
-    	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
-    	for (Item item : Forge.getAll()) { player.getBag().add(item, 10) ;}
-    	for (Item item : PetItem.getAll()) { player.getBag().add(item, 10) ;}
-    	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
-    	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
-    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
-    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
-    	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
-    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
+//    	for (Item item : Forge.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : PetItem.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
+//    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
 
 //    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
 //    	{
@@ -1496,7 +1503,7 @@ public class Game extends JPanel
 			if (evt.getButton() == 3)	// Right click
 			{
         		player.setCurrentAction("MouseRightClick") ;
-        		player.setPos(mousePos) ;
+//        		player.setPos(mousePos) ;
         		//testGif2.start();
 			}
             //shouldRepaint = true ;

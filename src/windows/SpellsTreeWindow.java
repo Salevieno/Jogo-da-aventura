@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
-import java.util.Arrays;
 import java.util.List;
 
 import components.SpellTypes;
@@ -38,6 +37,7 @@ public class SpellsTreeWindow extends GameWindow
 	
 	public SpellsTreeWindow(int playerJob)
 	{// TODO arrumar a árvore de magias. Spells tá se confundindo com spellsOnWindow
+		// TODO incluir pre-reqs nos spells
 		super("Árvore de magias", noTabsImage, 0, 1, 0, 1) ;
 		
 		windowTopLeft = Game.getScreen().getPoint(0.4, 0.2) ;

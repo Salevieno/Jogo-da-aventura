@@ -21,6 +21,7 @@ public class ForgeWindow extends GameWindow
 	
 	private List<Equip> itemsForForge ;
 	private String message ;
+	// TODO colocar esse texto no json
 	private static final List<String> messages = Arrays.asList(
 			"Selecione o equipamento",
 			"O equipamento já está no nível máximo!",
