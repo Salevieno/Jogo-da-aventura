@@ -19,15 +19,15 @@ import utilities.UtilG;
 
 public class ElementalWindow extends GameWindow
 {
-
+	
+	private Point windowPos = Game.getScreen().getPoint(0.4, 0.2) ;
 	private List<GeneralItem> spheres ;
 	private GeneralItem selectedSphere ;
 	private List<Equip> equipsForElemChange ;
 	private Equip selectedEquip ;
 	
 	private static final List<String> menuTitles = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
-	private static final Point windowPos = Game.getScreen().getPoint(0.4, 0.2) ;
-	public static final Image windowImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Elemental.png") ;
+	private static final Image windowImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Elemental.png") ;
 	private static final int firstSphereID = 390 ;
 	private static final int numberItemsOnWindow = 10 ;
 

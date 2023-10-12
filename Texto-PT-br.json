@@ -290,16 +290,9 @@
       "Falas":
       [
         "Olá, vc deseja forjar seu equipamento?",
-        "Qual equipamento vc quer forjar?",
-        "Seu equipamento precisa estar equipado.",
-        "O equipamento já está no nível máximo!",
-        "Você precisa de uma runa apropriada para este equipamento!",
-        "Você precisa de mais ouro para forjar este equipamento!",
-        "Item forjado!",
-        "Sinto muito, a forja não funcionou! Tente novamente!",
         "Até a próxima!"
       ],
-      "Opcoes": [[], [], [], [], [], [], [], []]
+      "Opcoes": [["Sim", "Não"], ["Até"]]
     },
     {
       "Nome": "Fabricante",

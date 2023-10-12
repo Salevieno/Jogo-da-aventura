@@ -66,6 +66,7 @@ import windows.BestiaryWindow;
 import windows.CraftWindow;
 import windows.ElementalWindow;
 import windows.FabWindow;
+import windows.ForgeWindow;
 import windows.GameWindow;
 import windows.HintsWindow;
 import windows.MapWindow;
@@ -820,6 +821,10 @@ public class Player extends LiveBeing
 			if (focusWindow instanceof ElementalWindow)
 			{
 				((ElementalWindow) focusWindow).act(bag, currentAction) ;
+			}
+			if (focusWindow instanceof ForgeWindow)
+			{
+				((ForgeWindow) focusWindow).act(bag, currentAction) ;
 			}
 		}
 		

@@ -1,7 +1,9 @@
 package windows;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.List;
 
 import graphics.DrawingOnPanel;
@@ -18,15 +20,24 @@ public class ForgeWindow extends GameWindow
 {
 	
 	private List<Equip> itemsForForge ;
+	private String message ;
+	private static final List<String> messages = Arrays.asList(
+			"Selecione o equipamento",
+			"O equipamento já está no nível máximo!",
+			"Você precisa de uma runa apropriada!",
+			"Você precisa de mais ouro!",
+			"Item forjado!",
+			"Essa não! A forja não funcionou!") ;
 	private static final int NumberItemsPerWindow = 10 ;
+	private static final Image windowImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Forge.png") ;
 	
-	private Point windowPos = new Point((int)(0.2*Game.getScreen().getSize().width), (int)(0.2*Game.getScreen().getSize().height)) ;
-	private Point titlePos = UtilG.Translate(windowPos, size.width / 2, 16) ;
-	
+	private Point windowPos = Game.getScreen().getPointWithinBorders(0.2, 0.1) ;
+
 	public ForgeWindow()
 	{
-		super("Forge", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Forge.png"), 1, 1, 1, 1) ;
+		super("Forge", windowImage, 1, 1, 1, 1) ;
 		itemsForForge = null ;
+		message = messages.get(0) ;
 		item = 0 ;
 	}	
 
@@ -36,6 +47,11 @@ public class ForgeWindow extends GameWindow
 		numberItems = itemsForForge.size() ;
 	}
 
+	public void updateMessage(int i)
+	{
+		message = messages.get(i) ;
+	}
+	
 	public void navigate(String action)
 	{
 		if (action == null) { return ;}
@@ -50,28 +66,36 @@ public class ForgeWindow extends GameWindow
 		}
 	}
 	
+	public void act(BagWindow bag, String action)
+	{
+		if (menu == 0 & Player.actionIsForward(action))
+		{
+			forge(bag) ;
+		}
+	}
+	
 	public Equip selectedEquip() { if (item == -1) { return null ;} return itemsForForge.get(item) ;}
 	
-	public int forge(BagWindow bag)
+	public void forge(BagWindow bag)
 	{
 
 		Equip selectedEquip = selectedEquip() ;
 		
-		if (selectedEquip == null) { return 2 ;}
+//		if (selectedEquip == null) { updateMessage() ; return 2 ;}
 		
-		if (selectedEquip.getForgeLevel() == Equip.maxForgeLevel) { return 3 ;}
+		if (selectedEquip.getForgeLevel() == Equip.maxForgeLevel) { updateMessage(1) ; return ;}
 
 		int runeId = selectedEquip.isSpecial() ? 20 : 0 ;
 		runeId += 2 * selectedEquip.getForgeLevel() ;
 		runeId += selectedEquip.isWeapon() ? 0 : 1 ;
 		Forge rune = Forge.getAll()[runeId] ;
 
-		if (!bag.contains(rune)) { return 4 ;}
+		if (!bag.contains(rune)) { updateMessage(2) ; return ;}
 
 		int forgePrice = 100 + 1000 * selectedEquip.getForgeLevel() ;
 
 
-		if (!bag.hasEnoughGold(forgePrice)) { return 5 ;}
+		if (!bag.hasEnoughGold(forgePrice)) { updateMessage(3) ; return ;}
 
 
 		double chanceForge = 1 - 0.08 * selectedEquip.getForgeLevel() ;
@@ -84,13 +108,13 @@ public class ForgeWindow extends GameWindow
 		{
 			selectedEquip.incForgeLevel() ;
 			
-			return 6 ;
+			updateMessage(4) ; return ;
 		}
 		
 		selectedEquip.resetForgeLevel() ;
 		bag.remove(selectedEquip, 1);
 		
-		return 7 ; 
+		updateMessage(5) ; return ; 
 
 
 		// TODO overwrite save
@@ -98,7 +122,9 @@ public class ForgeWindow extends GameWindow
 	
 	public void display(Point mousePos, DrawingOnPanel DP)
 	{
-		
+
+		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 16) ;
+		Point messagePos = UtilG.Translate(windowPos, size.width / 2, 36) ;
 		double angle = DrawingOnPanel.stdAngle ;
 		List<Equip> itemsOnWindow = NumberItemsPerWindow <= itemsForForge.size() ? itemsForForge.subList(0, NumberItemsPerWindow) : itemsForForge ;
 		
@@ -107,6 +133,7 @@ public class ForgeWindow extends GameWindow
 		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
 		
 		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[2]) ;
+		DP.DrawText(messagePos, Align.center, angle, message, stdFont, stdColor) ;
 		
 		Point itemPos = UtilG.Translate(windowPos, 24, 70) ;
 		for (Equip item : itemsOnWindow)

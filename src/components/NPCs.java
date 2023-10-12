@@ -289,7 +289,7 @@ public class NPCs
 				playerBag.getEquip().keySet().forEach(equipsForForge::add) ;
 				((ForgeWindow) window).setItemsForForge(equipsForForge);
 				
-				forgerAction(playerBag, playerAction, (ForgeWindow) window, DP) ;
+				forgerAction(player, playerBag, playerAction, (ForgeWindow) window, DP) ;
 				
 				break ;
 			}
@@ -528,59 +528,38 @@ public class NPCs
 
 	private void elementalAction(Player player, BagWindow bag, ElementalWindow elementalWindow, String action, DrawingOnPanel DP)
 	{
-	
-//		if (menu == 0) { return ;}
 		
-		
-//		elementalWindow.display(DP) ;
-
 		if (action == null) { return ;}
 
-		if (Player.actionIsForward(action))
+		if (menu == 0 & selOption == 0 & Player.actionIsForward(action))
 		{
-			if (menu == 0 & selOption == 0)
-			{
-				player.switchOpenClose(elementalWindow) ;
-			}
-		}
-//		elementalWindow.navigate(action) ;
-//		if (action.equals("Enter") | action.equals("MouseLeftClick"))
-//		{
-//			switch (menu)
-//			{
-//				case 0: menu = selOption == 0 ? 1 : type.getSpeech().length - 1 ; break ;
-//				case 1:
-//				{
-//					if (elementalWindow.getSpheres() == null | elementalWindow.getSpheres().size() <= 0) { menu = 4 ;}
-//					else { elementalWindow.selectSphere() ; menu = 2 ;}
-//					break ;
-//				}
-//				case 2:
-//				{
-//					if (elementalWindow.getSelectedEquip() == null | elementalWindow.getSelectedSphere() == null) { menu = 3 ;}
-//					else { elementalWindow.changeEquipElement(bag) ; menu = 5 ;}
-//					break ;
-//				}
-//			}
-//		}		
+			player.switchOpenClose(elementalWindow) ;
+		}	
 		
 	}
 	
-	private void forgerAction(BagWindow bag, String action, ForgeWindow forgeWindow, DrawingOnPanel DP)
+	private void forgerAction(Player player, BagWindow bag, String action, ForgeWindow forgeWindow, DrawingOnPanel DP)
 	{
-		
-		if (menu == 0) { return ;}
-		
-		forgeWindow.display(null, DP) ;
-		
+
 		if (action == null) { return ;}
 
-		forgeWindow.navigate(action) ;
-		// TODO a forja só deve acontecer no menu 1
-		if (action.equals("Enter") & 2 <= menu)
+		if (menu == 0 & selOption == 0 & Player.actionIsForward(action))
 		{
-			menu = forgeWindow.forge(bag) ;
+			player.switchOpenClose(forgeWindow) ;
 		}
+		
+//		if (menu == 0) { return ;}
+//		
+//		forgeWindow.display(null, DP) ;
+//		
+//		if (action == null) { return ;}
+//
+//		forgeWindow.navigate(action) ;
+
+//		if (action.equals("Enter") & 2 <= menu)
+//		{
+//			menu = forgeWindow.forge(bag) ;
+//		}
 		
 	}
 
