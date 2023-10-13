@@ -641,7 +641,7 @@ public class Player extends LiveBeing
 				fish() ; return ;
 				
 			case 7:
-//				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
+				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
 				mapWindow.setPlayerPos(pos) ;
 				mapWindow.setCurrentMap(map) ;
 				switchOpenClose(mapWindow) ; return ;
@@ -949,89 +949,6 @@ public class Player extends LiveBeing
 		}
 	}
 
-	
-	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
-			
-	
-	public void useItem(Item item)
-	{
-		if (item == null) { return ;}
-
-		System.out.println("player used " + item.getName());
-		if (item instanceof Potion)
-		{
-			Potion pot = (Potion) item ;
-			double powerMult = job == 3 ? 1.06 * spells.get(7).getLevel() : 1 ;
-			
-			pot.use(this, powerMult) ;
-			bag.remove(pot, 1) ;
-			
-			return ;			
-		}
-		if (item instanceof Alchemy)
-		{
-			Alchemy alch = (Alchemy) item ;
-			double powerMult = job == 3 ? 1.06 * spells.get(7).getLevel() : 1 ;
-			
-			alch.use(this, powerMult) ;
-			bag.remove(alch, 1) ;
-			
-			return ;			
-		}
-		if (item instanceof Forge)
-		{
-			return ;
-		}
-		if (item instanceof Food)
-		{
-			Food food = (Food) item ;
-			
-			food.use(this) ;
-			bag.remove(food, 1);
-		}
-		if (item instanceof PetItem)
-		{
-			// TODO use pet item
-//			PetItem petItem = (PetItem) item ;
-			
-//			petItem.use(pet) ;
-			
-			return ;			
-		}
-		if (item instanceof Arrow)
-		{
-			Arrow arrow = (Arrow) item ;
-			
-			arrow.use(this) ;
-			
-			return ;
-		}
-		if (item instanceof Equip)
-		{
-			Equip equip = (Equip) item ;
-			
-			equip.use(this) ;
-			
-			return ;			
-		}
-		if (item instanceof GeneralItem)
-		{
-			GeneralItem genItem = (GeneralItem) item ;
-			
-			genItem.use(this) ;
-			
-			return ;
-		}
-		if (item instanceof Fab)
-		{
-			return ;
-		}
-		if (item instanceof QuestItem)
-		{
-			return ;
-		}
-	}
-	
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
 		if (spell.getLevel() <= 0) { return null ;}
@@ -1046,6 +963,7 @@ public class Player extends LiveBeing
 		
 		return null ;
 	}
+	
 	public void applyPassiveSpell(Spell spell)
 	{
 //		System.out.println("spell id = " + spell.getId());
@@ -1137,6 +1055,7 @@ public class Player extends LiveBeing
 			
 		}
 	}
+
 	private void useSupportSpell(Spell spell)
 	{	
 		
@@ -1194,6 +1113,7 @@ public class Player extends LiveBeing
 		spell.applyNerfs(true, opponent) ;
 		
 	}
+
 	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
 	{
 		
@@ -1291,6 +1211,89 @@ public class Player extends LiveBeing
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 		
 	}
+	
+	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
+			
+	
+	public void useItem(Item item)
+	{
+		if (item == null) { return ;}
+
+		System.out.println("player used " + item.getName());
+		if (item instanceof Potion)
+		{
+			Potion pot = (Potion) item ;
+			double powerMult = job == 3 ? 1.06 * spells.get(7).getLevel() : 1 ;
+			
+			pot.use(this, powerMult) ;
+			bag.remove(pot, 1) ;
+			
+			return ;			
+		}
+		if (item instanceof Alchemy)
+		{
+			Alchemy alch = (Alchemy) item ;
+			double powerMult = job == 3 ? 1.06 * spells.get(7).getLevel() : 1 ;
+			
+			alch.use(this, powerMult) ;
+			bag.remove(alch, 1) ;
+			
+			return ;			
+		}
+		if (item instanceof Forge)
+		{
+			return ;
+		}
+		if (item instanceof Food)
+		{
+			Food food = (Food) item ;
+			
+			food.use(this) ;
+			bag.remove(food, 1);
+		}
+		if (item instanceof PetItem)
+		{
+			// TODO use pet item
+//			PetItem petItem = (PetItem) item ;
+			
+//			petItem.use(pet) ;
+			
+			return ;			
+		}
+		if (item instanceof Arrow)
+		{
+			Arrow arrow = (Arrow) item ;
+			
+			arrow.use(this) ;
+			
+			return ;
+		}
+		if (item instanceof Equip)
+		{
+			Equip equip = (Equip) item ;
+			
+			equip.use(this) ;
+			
+			return ;			
+		}
+		if (item instanceof GeneralItem)
+		{
+			GeneralItem genItem = (GeneralItem) item ;
+			
+			genItem.use(this) ;
+			
+			return ;
+		}
+		if (item instanceof Fab)
+		{
+			return ;
+		}
+		if (item instanceof QuestItem)
+		{
+			return ;
+		}
+	}
+	
 	public void autoSpells(Creature creature, List<Spell> spell)
 	{		
 		/*if (job == 3 & PA.getLife()[0] < 0.2 * PA.getLife()[1] & 0 < Skill[12] & !SkillBuffIsActive[12][0])	// Survivor's instinct
@@ -1469,6 +1472,7 @@ public class Player extends LiveBeing
 		PA.getThirst().setToMaximum() ;
 		BA.resetStatus() ;
 		state = LiveBeingStates.idle ;
+		resetOpponent() ;
 		resetPosition() ;
 	}
 	
