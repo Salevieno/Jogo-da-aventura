@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import components.SpellTypes;
@@ -19,12 +20,13 @@ import utilities.UtilG;
 public class SpellsTreeWindow extends GameWindow
 {
 	private List<Spell> spells ;
-	private Point windowTopLeft ;
+	private List<Spell> playerCurrentSpells ;
 	private List<Spell> spellsOnWindow ;
 	private int[] spellsDistribution ;
 	private int playerJob ;
 	private int points ;
 
+	private static final Point windowTopLeft = Game.getScreen().getPoint(0.4, 0.2) ;
 	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	private static final Image noTabsImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTree.png") ;
@@ -32,23 +34,25 @@ public class SpellsTreeWindow extends GameWindow
 	private static final Image tab1Image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTreeTab1.png") ;
 	private static final Image spellSlot = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellSlot.png") ;
 	private static final Image spellSlotSelected = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellSlotSelected.png") ;
+	private static final Image spellInactiveSlot = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellInactiveSlot.png") ;
 	private static final Image spellInfo = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellInfo.png") ;
 	private static final Image spellPoints = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellPoints.png") ;
 	
 	public SpellsTreeWindow(int playerJob)
 	{// TODO arrumar a árvore de magias. Spells tá se confundindo com spellsOnWindow
-		// TODO incluir pre-reqs nos spells
+
 		super("Árvore de magias", noTabsImage, 0, 1, 0, 1) ;
 		
-		windowTopLeft = Game.getScreen().getPoint(0.4, 0.2) ;
 		this.playerJob = playerJob ;
+		playerCurrentSpells = new ArrayList<>() ;
 	}
 		
 	public void switchTo2Tabs() { numberTabs = 2 ;}
 	public void setSpells(List<Spell> spells) { this.spells = spells ; updateSpellsOnWindow() ; numberItems = spellsOnWindow.size() ;}
 	public void setPoints (int points) { this.points = points ;}
+	public void setplayerCurrentSpells (List<Spell> playerCurrentSpells) { this.playerCurrentSpells = playerCurrentSpells ;}
 	
-	public boolean canAcquireSpell(int spellPoints) { return 0 < spellPoints & spells.get(item).getLevel() < spells.get(item).getMaxLevel() & spells.get(item).hasPreRequisitesMet() ;}
+	public boolean canAcquireSpell(int spellPoints) { return 0 < spellPoints & spells.get(item).getLevel() < spells.get(item).getMaxLevel() & spells.get(item).hasPreRequisitesMet(playerCurrentSpells) ;}
 	
 	public void acquireSpell(Player player)
 	{
@@ -122,8 +126,10 @@ public class SpellsTreeWindow extends GameWindow
 	
 	public void act(Player player)
 	{
-
-		if (canAcquireSpell(points) & Player.actionIsForward(player.getCurrentAction()))
+		String action = player.getCurrentAction() ;
+		Spell spell = spellsOnWindow.get(item) ;
+		
+		if (canAcquireSpell(points) & Player.actionIsForward(action) & spell.hasPreRequisitesMet(playerCurrentSpells))
 		{
 			acquireSpell(player) ;
 			points += -1 ;
@@ -234,8 +240,8 @@ public class SpellsTreeWindow extends GameWindow
 			
 			Spell spell = spellsOnWindow.get(i) ;
 			Dimension slotSize = new Dimension(spellSlot.getWidth(null), spellSlot.getHeight(null)) ;
-			Color textColor = this.item == initialSpell + i ? selectedColor : spell.hasPreRequisitesMet() ? hasPreReqColor : hasNotPreReqColor ;
-			Image slotImage = this.item == initialSpell + i ? spellSlotSelected : spellSlot ;
+			Color textColor = this.item == initialSpell + i ? selectedColor : spell.hasPreRequisitesMet(playerCurrentSpells) ? hasPreReqColor : hasNotPreReqColor ;
+			Image slotImage = spell.hasPreRequisitesMet(playerCurrentSpells) ? (this.item == initialSpell + i ? spellSlotSelected : spellSlot) : spellInactiveSlot ;
 			Point slotPos = calcSlotPos(row, col, spellsDistribution.length, spellsDistribution[row], slotSize) ;
 			Point spellImagePos = UtilG.Translate(slotPos, slotSize.width / 2, 4 + 14) ;
 			Point spellLevelPos = UtilG.Translate(slotPos, slotSize.width / 2, slotSize.height / 2 + 18) ;

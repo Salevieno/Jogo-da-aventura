@@ -32,7 +32,7 @@ public class ForgeWindow extends GameWindow
 	private static final int NumberItemsPerWindow = 10 ;
 	private static final Image windowImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Forge.png") ;
 	
-	private Point windowPos = Game.getScreen().getPointWithinBorders(0.2, 0.1) ;
+	private static final Point windowPos = Game.getScreen().getPointWithinBorders(0.2, 0.1) ;
 
 	public ForgeWindow()
 	{
@@ -48,9 +48,11 @@ public class ForgeWindow extends GameWindow
 		numberItems = itemsForForge.size() ;
 	}
 
-	public void updateMessage(int i)
+	public void displayMessage(int i)
 	{
 		message = messages.get(i) ;
+		Point pos = UtilG.Translate(windowPos, 0, - 30) ;
+		Game.getAnimations()[12].start(200, new Object[] {pos, message, Game.colorPalette[9]}) ;
 	}
 	
 	public void navigate(String action)
@@ -82,21 +84,21 @@ public class ForgeWindow extends GameWindow
 
 		Equip selectedEquip = selectedEquip() ;
 		
-//		if (selectedEquip == null) { updateMessage() ; return 2 ;}
+		if (selectedEquip == null) { return ;}
 		
-		if (selectedEquip.getForgeLevel() == Equip.maxForgeLevel) { updateMessage(1) ; return ;}
+		if (selectedEquip.getForgeLevel() == Equip.maxForgeLevel) { displayMessage(1) ; return ;}
 
 		int runeId = selectedEquip.isSpecial() ? 20 : 0 ;
 		runeId += 2 * selectedEquip.getForgeLevel() ;
 		runeId += selectedEquip.isWeapon() ? 0 : 1 ;
 		Forge rune = Forge.getAll()[runeId] ;
 
-		if (!bag.contains(rune)) { updateMessage(2) ; return ;}
+		if (!bag.contains(rune)) { displayMessage(2) ; return ;}
 
 		int forgePrice = 100 + 1000 * selectedEquip.getForgeLevel() ;
 
 
-		if (!bag.hasEnoughGold(forgePrice)) { updateMessage(3) ; return ;}
+		if (!bag.hasEnoughGold(forgePrice)) { displayMessage(3) ; return ;}
 
 
 		double chanceForge = 1 - 0.08 * selectedEquip.getForgeLevel() ;
@@ -109,13 +111,13 @@ public class ForgeWindow extends GameWindow
 		{
 			selectedEquip.incForgeLevel() ;
 			
-			updateMessage(4) ; return ;
+			displayMessage(4) ; return ;
 		}
 		
 		selectedEquip.resetForgeLevel() ;
 		bag.remove(selectedEquip, 1);
 		
-		updateMessage(5) ; return ; 
+		displayMessage(5) ; return ; 
 
 
 		// TODO overwrite save
@@ -134,7 +136,7 @@ public class ForgeWindow extends GameWindow
 		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
 		
 		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[2]) ;
-		DP.DrawText(messagePos, Align.center, angle, message, stdFont, stdColor) ;
+		DP.DrawText(messagePos, Align.center, angle, "Selecione o equipamento", stdFont, stdColor) ;
 		
 		Point itemPos = UtilG.Translate(windowPos, 24, 70) ;
 		for (Equip item : itemsOnWindow)

@@ -23,7 +23,7 @@ public class Battle
 	private static double randomAmp ;
 	protected static List<Elements> ElemID ;
 	protected static double[][] ElemMult ;
-	
+	// TODO animação do hit e das magias
 	static
 	{
 		int NumElem = 10 ;

@@ -142,19 +142,17 @@ public class Spell
 		}
 	}
 
-	public boolean hasPreRequisitesMet()
+	public boolean hasPreRequisitesMet(List<Spell> playerSpells)
 	{
-		return true ;
+		if (preRequisites.isEmpty()) { return true ;}
 		
-//		for (Spell spell : spells)
-//		{
-//			if (preRequisites.keySet().contains(spell.getType()) & spell.getLevel() < preRequisites.get(spell))
-//			{
-//				return false ;
-//			}
-//		}
-//		
-//		return true ;
+		for (Spell spell : playerSpells)
+		{
+			if (!preRequisites.keySet().contains(spell)) { continue ;}
+			if (spell.getLevel() < preRequisites.get(spell)) { return false ;}
+		}
+		
+		return true ;
 		
 	}
 	

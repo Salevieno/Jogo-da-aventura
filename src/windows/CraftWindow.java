@@ -3,6 +3,7 @@ package windows;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -17,16 +18,22 @@ import utilities.UtilG;
 
 public class CraftWindow extends GameWindow
 {
-	private static final int RecipesPerWindow = 1 ;
+	private int amountOfCrafts ;
 	private List<Recipe> recipes ;
 	private List<Recipe> recipesInWindow ;
 	
+	private static final Point windowPos = Game.getScreen().getPoint(0.34, 0.22) ;	
+	private static final int RecipesPerWindow = 1 ;
+	private static final List<String> messages = Arrays.asList(
+			"Items criados!",
+			"Vc não possui todos os ingredientes") ;
 	public static final Image craftImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Craft.png") ;
 // TODO permitir a criação de múltiplos itens
 	// TODO corrigir as receitas
 	public CraftWindow(List<Recipe> recipes)
 	{
 		super("Criação", craftImage, 1, 1, RecipesPerWindow, recipes.size() / RecipesPerWindow) ;
+		amountOfCrafts = 1 ;
 		this.recipes = recipes ;
 		recipesInWindow = RecipesPerWindow <= recipes.size() ? recipes.subList(window, RecipesPerWindow + window) : recipes ;
 	}
@@ -51,7 +58,7 @@ public class CraftWindow extends GameWindow
 	{
 		Recipe recipe = recipesInWindow.get(item) ;
 //		System.out.println("Crafing");
-		if (!bag.hasEnough(recipe.getIngredients())) {return ;}
+		if (!bag.hasEnough(recipe.getIngredients())) { displayMessage(1) ; return ;}
 //		System.out.println("bag hs enough items");
 //		System.out.println("ingredients = " + recipe.getIngredients());
 //		System.out.println("products = " + recipe.getProducts());
@@ -62,6 +69,8 @@ public class CraftWindow extends GameWindow
 		recipe.getProducts().forEach( (product, qtd) -> {
 			bag.add(product, qtd) ;
 		});
+		
+		displayMessage(0) ;
 //		System.out.println("added new items to the bag");
 	}
 	
@@ -71,13 +80,23 @@ public class CraftWindow extends GameWindow
 		
 		if (action.equals("Enter"))
 		{
-			craft(bag) ;
+			for (int i = 0 ; i <= amountOfCrafts - 1; i += 1)
+			{
+				craft(bag) ;
+			}
 		}
+	}
+
+	public void displayMessage(int i)
+	{
+		String message = messages.get(i) ;
+		Point pos = UtilG.Translate(windowPos, 0, - 30) ;
+		Game.getAnimations()[12].start(200, new Object[] {pos, message, Game.colorPalette[9]}) ;
 	}
 	
 	public void display(Point mousePos, DrawingOnPanel DP)
 	{
-		Point windowPos = new Point((int)(0.34*Game.getScreen().getSize().width), (int)(0.22*Game.getScreen().getSize().height)) ;
+		
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, border + 9) ;
 		double angle = DrawingOnPanel.stdAngle ;		
 		

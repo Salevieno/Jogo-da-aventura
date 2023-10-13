@@ -73,6 +73,8 @@ import maps.CityMap;
 import maps.Continents;
 import maps.FieldMap;
 import maps.GameMap;
+import maps.GroundType;
+import maps.GroundTypes;
 import maps.SpecialMap;
 import maps.TreasureChest;
 import screen.Screen;
@@ -164,7 +166,7 @@ public class Game extends JPanel
 	public Game() 
 	{
 		DP = new DrawingOnPanel() ;
-    	player = new Player("", "", 1) ;
+    	player = new Player("", "", 0) ;
     	
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -266,7 +268,7 @@ public class Game extends JPanel
 	
 	private static void initializeAnimations()
 	{
-		animations = new Animation[12] ;
+		animations = new Animation[13] ;
 		for (int i = 0; i <= animations.length - 1; i += 1)
 		{
 			animations[i] = new Animation() ;
@@ -363,6 +365,12 @@ public class Game extends JPanel
 		}) ;
 		animations[11].setDisplayFunction((vars, DP) -> {
 			DP.notEnoughGold(animations[11].getCounter()) ;
+		}) ;
+		animations[12].setDisplayFunction((vars, DP) -> {
+			Point pos = (Point) vars[0] ;
+			String message = (String) vars[1] ;
+			Color color = (Color) vars[2] ;
+			DP.quickTextAnimation(pos, animations[12].getCounter(), message, color) ;
 		}) ;
 	}
 	
@@ -734,6 +742,19 @@ public class Game extends JPanel
 			}
 			
 			fieldMaps[id] = new FieldMap(name, continent, connections, image, music, collectibleLevel, collectiblesDelay, creatureIDs, npcs) ;
+		
+			switch(id)
+			{
+				case 1: fieldMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(120, 200), new Dimension(50, 20))) ; break ;
+				case 3: fieldMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(120, 200), new Dimension(50, 20))) ; break ;
+				case 9: fieldMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ; break ;
+				case 12: fieldMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ; break ;
+				case 13: fieldMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ; break ;
+				case 14: fieldMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ; break ;
+				case 15: fieldMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ; break ;
+				case 22: fieldMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ; break ;
+				default: break ;
+			}
 		}
 
 		return fieldMaps ;    	
@@ -979,13 +1000,10 @@ public class Game extends JPanel
     
 	private void incrementCounters()
 	{
-		for (int i = 0 ; i <= 200 ; i += 1)
+		sky.dayTime.inc() ;
+		if (sky.dayTime.finished())
 		{
-			sky.dayTime.inc() ;
-			if (sky.dayTime.finished())
-			{
-				sky.dayTime.reset() ;
-			}
+			sky.dayTime.reset() ;
 		}
 		player.incrementCounters() ;
 		
@@ -1254,25 +1272,25 @@ public class Game extends JPanel
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
-//    	player.getBag().addGold(300) ;
+    	player.getBag().addGold(30000) ;
 
     	
-//    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
-//    	for (Item item : Forge.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : PetItem.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
-//    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
+    	for (Item item : Forge.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : PetItem.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
+    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
 
-//    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
-//    	{
-//    		player.getExp().incCurrentValue(player.getExp().getMaxValue());
-//			player.levelUp(null) ; // Game.getAnimations()[4]
-//    	}
+    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
+    	{
+    		player.getExp().incCurrentValue(player.getExp().getMaxValue());
+			player.levelUp(null) ; // Game.getAnimations()[4]
+    	}
 //    	for (int i = 0 ; i <= 30000 - 1 ; i += 1)
 //    	{
 //    		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0));
@@ -1305,7 +1323,7 @@ public class Game extends JPanel
     	
 //    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
     	
-    	
+
 	}
 	
 	@Override
@@ -1503,7 +1521,7 @@ public class Game extends JPanel
 			if (evt.getButton() == 3)	// Right click
 			{
         		player.setCurrentAction("MouseRightClick") ;
-//        		player.setPos(mousePos) ;
+        		player.setPos(mousePos) ;
         		//testGif2.start();
 			}
             //shouldRepaint = true ;

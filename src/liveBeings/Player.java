@@ -842,7 +842,7 @@ public class Player extends LiveBeing
 		
 	}
 	
-	private boolean metNPC(NPCs npc) { return UtilG.isInside(this.getPos(), UtilG.getPosAt(npc.getPos(), Align.topLeft, this.getSize()), this.getSize()) ;}
+	private boolean metNPC(NPCs npc) { return UtilG.isInside(this.getPos(), npc.getPos(), this.getSize()) ;}
 	
 	private boolean metAnyNPC()
 	{

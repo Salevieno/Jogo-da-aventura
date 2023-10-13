@@ -510,6 +510,18 @@ public class DrawingOnPanel
 		DrawText(textPos, Align.centerLeft, stdAngle, "Você não tem ouro suficiente!", font, titleColor) ;
 		
 	}
+
+	public void quickTextAnimation(Point pos, TimeCounter counter, String text, Color color)
+	{
+
+		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		Dimension size = new Dimension(UtilG.TextL(text, font, G) + 10, 20) ;
+		Color bgColor = Game.colorPalette[7] ;
+		
+		DrawRoundRect(pos, Align.topLeft, size, 2, bgColor, bgColor, true) ;
+		DrawText(UtilG.Translate(pos, 5, 5), Align.topLeft, stdAngle, text, font, color) ;
+		
+	}
 	
 	public void levelUpAnimation(TimeCounter counter, double[] AttributeIncrease, int playerLevel, Color textColor)
 	{

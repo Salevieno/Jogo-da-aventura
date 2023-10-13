@@ -548,19 +548,6 @@ public class NPCs
 			player.switchOpenClose(forgeWindow) ;
 		}
 		
-//		if (menu == 0) { return ;}
-//		
-//		forgeWindow.display(null, DP) ;
-//		
-//		if (action == null) { return ;}
-//
-//		forgeWindow.navigate(action) ;
-
-//		if (action.equals("Enter") & 2 <= menu)
-//		{
-//			menu = forgeWindow.forge(bag) ;
-//		}
-		
 	}
 
 	private void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawingOnPanel DP)
@@ -583,6 +570,7 @@ public class NPCs
 		{
 //			player.setFocusWindow(spellsTree) ;
 
+			spellsTree.setplayerCurrentSpells(player.getSpells()) ;
 			spellsTree.setPoints(player.getSpellPoints()) ;
 			spellsTree.updateSpellsOnWindow() ;
 			spellsTree.updateSpellsDistribution() ;

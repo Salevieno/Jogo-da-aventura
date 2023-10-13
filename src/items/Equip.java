@@ -208,7 +208,7 @@ public class Equip extends Item
 	public void resetElem() { elem = originalElem ;}
 	
 	public void resetForgeLevel()
-	{
+	{// TODO corrigir bug bonus att pós forja quebrada
 		attBonus.resetAll() ;
 		forgeLevel = 0 ;
 	}
