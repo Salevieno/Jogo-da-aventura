@@ -26,6 +26,9 @@ public class FieldMap extends GameMap
 	private int level ;
 	private int[] collectibleDelay ;
 	
+	private static final Image treeImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem6_TreeForest.png") ;
+	private static final Image grassImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem8_Grass.png") ;
+	// TODO Fix collectibles spawn rate (spawning multiples at a time)
 	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, int[] collectibleDelay, int[] creatureTypeIDs, List<NPCs> npcs)
 	{
 		super(name, continent, connections, image, music, null, npcs) ;
@@ -40,19 +43,17 @@ public class FieldMap extends GameMap
 		Dimension step = new Dimension(1, 1) ;
 		
 		int numberTrees = 5 ;
-		int numberGrass = 20 ;
-		Image treeImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem6_TreeForest.png") ;
-		Image grassImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem8_Grass.png") ;
+		int numberGrass = 20 ;	
 
-		for (int me = 0 ; me <= numberTrees - 1 ; me += 1)
+		for (int i = 0 ; i <= numberTrees - 1 ; i += 1)
 		{
 			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
-			mapElems.add(new MapElements(me, "ForestTree", randomPos, treeImage)) ;				
+			mapElems.add(new MapElements(i, "ForestTree", randomPos, treeImage)) ;				
 		}
-		for (int me = 0 ; me <= numberGrass - 1 ; me += 1)
+		for (int i = 0 ; i <= numberGrass - 1 ; i += 1)
 		{
 			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
-			mapElems.add(new MapElements(me, "grass", randomPos, grassImage)) ;				
+			mapElems.add(new MapElements(i, "grass", randomPos, grassImage)) ;				
 		}
 		
 		

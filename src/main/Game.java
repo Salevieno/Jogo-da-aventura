@@ -166,7 +166,7 @@ public class Game extends JPanel
 	public Game() 
 	{
 		DP = new DrawingOnPanel() ;
-    	player = new Player("", "", 0) ;
+    	player = new Player("", "", 3) ;
     	
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -692,6 +692,7 @@ public class Game extends JPanel
 		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "mapsField.json") ;
     	FieldMap[] fieldMaps = new FieldMap[input.size()] ;
     	String path = ImagesPath + "\\Maps\\";
+    	File forestMusic = new File(MusicPath + "7-Forest.wav").getAbsoluteFile() ;
 
     	int mod = 0 ;
 		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
@@ -717,7 +718,7 @@ public class Game extends JPanel
 			connections[7] = (int) (long) connectionIDs.get("rightTop") ;
 			
 			Image image = UtilG.loadImage(path + "Map" + String.valueOf(mapID + mod) + ".png") ;
-			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
+			Clip music = Music.musicFileToClip(forestMusic) ;
 
 			JSONObject collectibles = (JSONObject) map.get("Collectibles") ;
 			int collectibleLevel = (int) (long) collectibles.get("level") ;
@@ -1259,7 +1260,7 @@ public class Game extends JPanel
     	player.InitializeSpells() ;
     	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
 //    	player.setLevel(50) ;
-    	player.setMap(cityMaps[1]) ;
+    	player.setMap(cityMaps[3]) ;
     	player.setPos(new Point(393, 140)) ;
 		
 //    	letThereBePet() ;
@@ -1272,6 +1273,8 @@ public class Game extends JPanel
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
+    	
+    	for (GameMap map : allMaps) { System.out.println(map.getNPCs()) ;}
 //    	player.getBag().addGold(30000) ;
 //
 //    	

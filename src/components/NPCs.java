@@ -169,7 +169,7 @@ public class NPCs
 			
 			for (NPCs npc : npcsInMap)
 			{
-				npc.setID(i) ;
+				npc.setID(i) ;System.out.println(map.getName() + " " + npc.getID() + " " + npc.getType().getName());
 				i += 1 ;
 			}
 		}
@@ -177,7 +177,7 @@ public class NPCs
 	public static int getQuestNPCid(NPCs questNPC)
 	{
 		GameMap[] allMaps = Game.getMaps() ;
-		int questNPCid = 0 ;
+		int questId = 0 ;
 		for (GameMap map : allMaps)
 		{
 			List<NPCs> npcsInMap = map.getNPCs() ;
@@ -188,9 +188,9 @@ public class NPCs
 			{
 				NPCJobs npcJob = npcsInMap.get(i).getType().getJob() ;
 				if (!npcJob.equals(NPCJobs.questExp) & !npcJob.equals(NPCJobs.questItem)) { continue ;}
-				if (!npcsInMap.get(i).equals(questNPC)) { questNPCid += 1; continue ;}
+				if (!npcsInMap.get(i).equals(questNPC)) { questId += 1; continue ;}
 				
-				return questNPCid ;
+				return questId ;
 			}
 		}
 		
@@ -593,6 +593,8 @@ public class NPCs
 		if (action == null) { return ;}
 
 		int questID = getQuestNPCid(this) ;
+		System.out.println("quest ID = " + questID + " npc id = " + id);
+		System.out.println("Game quests size = " + Game.getAllQuests().length);
 		Quest quest = Game.getAllQuests()[questID] ;
 
 		if (action.equals("Enter") & selOption == 0)

@@ -6,6 +6,7 @@ import java.util.Map;
 import attributes.PersonalAttributes;
 import items.Item;
 import liveBeings.CreatureType;
+import main.Game;
 import windows.BagWindow;
 
 public class Quest
@@ -113,6 +114,16 @@ public class Quest
 		switch (id)
 		{
 			case 1: skills.replace(QuestSkills.bestiary, true) ; break ;
+			case 27: skills.replace(QuestSkills.craftWindow, true) ; break ;
+			case 39: Game.letThereBePet() ; break ;
+			case 42: skills.replace(QuestSkills.forestMap, true) ; break ;
+			case 46: skills.replace(QuestSkills.caveMap, true) ; break ;
+			case 50: skills.replace(QuestSkills.islandMap, true) ; break ;
+			case 56: skills.replace(QuestSkills.volcanoMap, true) ; break ;
+			case 62: skills.replace(QuestSkills.snowlandMap, true) ; break ;
+			case 48: skills.replace(QuestSkills.shovel, true) ; break ;
+			case 57: skills.replace(QuestSkills.ride, true) ; break ;
+			case 60: skills.replace(QuestSkills.dragonAura, true) ; break ;
 			default: break ;
 		}
 		

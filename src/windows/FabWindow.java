@@ -1,8 +1,8 @@
 package windows;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
@@ -19,10 +19,13 @@ public class FabWindow extends GameWindow
 {
     private List<Recipe> recipes ;
     
+	private static final Image windowImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Book.png") ;
+	private static final Point windowPos = Game.getScreen().getPoint(0.5, 0.5) ;
+	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
+	
 	public FabWindow()
 	{
-		super("Livro", null, 0, 0, 0, 3) ;
-		image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Book.png") ;
+		super("Livro", windowImage, 0, 0, 0, 3) ;
 		//LoadCraftingRecipes() ;
 		//numberWindows = recipes.size() ;
 	}
@@ -47,15 +50,12 @@ public class FabWindow extends GameWindow
 
 	public void display(Point mousePos, DrawingOnPanel DP)
 	{
-		Dimension screenSize = Game.getScreen().getSize() ;
-		Color[] ColorPalette = Game.colorPalette ;
-		double OverallAngle = DrawingOnPanel.stdAngle ;
-		
-		Point windowPos = new Point((int)(0.5*screenSize.width), (int)(0.5*screenSize.height)) ;
+		System.out.println("displaying fab window");
 		Point ingredientsCol = UtilG.Translate(windowPos, -image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
 		Point productsCol = UtilG.Translate(windowPos, image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
-		Color textColor = ColorPalette[1] ;
+		
+		double stdAngle = DrawingOnPanel.stdAngle ;
+		Color textColor = Game.colorPalette[1] ;
 		/*if (Ingredients != null)
 		{
 			NumberOfPages = Ingredients.length - 1 ;
@@ -64,7 +64,7 @@ public class FabWindow extends GameWindow
 		//window = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, NumberOfPages) ;
 		//Font titleFont = new Font(Game.MainFontName, Font.BOLD, 16) ;
 		
-		DP.DrawImage(image, windowPos, OverallAngle, new Scale(1, 1), Align.center) ;
+		DP.DrawImage(image, windowPos, stdAngle, new Scale(1, 1), Align.center) ;
 		//DP.DrawText(new Point(windowPos.x - 3 * imageL / 8, windowPos.y - imageH / 5 - sy/4), "BotLeft", OverallAngle, "Ingredientes:", titleFont, ColorPalette[5]) ;
 		//DP.DrawText(new Point(windowPos.x + 3 * imageL / 8, windowPos.y - imageH / 5 - sy/4), "TopRight", OverallAngle, "Produtos", titleFont, ColorPalette[5]) ;		
 		if (recipes != null)
@@ -81,7 +81,7 @@ public class FabWindow extends GameWindow
 				String ingredientName = ingredients[i].getName() ;
 				int ingredientAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
 				String text = ingredientAmount + " " + ingredientName ;
-				DP.DrawTextUntil(textPos, Align.topLeft, OverallAngle, text, font, textColor, 10, mousePos) ;
+				DP.DrawTextUntil(textPos, Align.topLeft, stdAngle, text, font, textColor, 10, mousePos) ;
 			}
 			
 			// draw products
@@ -93,9 +93,10 @@ public class FabWindow extends GameWindow
 				String productsName = products[i].getName() ;
 				int productsAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
 				String text = productsAmount + " " + productsName ;
-				DP.DrawTextUntil(textPos, Align.topRight, OverallAngle, text, font, textColor, 10, mousePos) ;
+				DP.DrawTextUntil(textPos, Align.topRight, stdAngle, text, font, textColor, 10, mousePos) ;
 			}
 		}
+		
 		Point arrowsPos = UtilG.Translate(windowPos, 0, image.getHeight(null) / 2) ;
 		DP.DrawWindowArrows(arrowsPos, image.getWidth(null), window, numberWindows - 1) ;
 	}

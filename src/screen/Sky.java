@@ -18,7 +18,7 @@ public class Sky
 	private SkyComponent[] Cloud;
 	private SkyComponent[] Star ;
 	
-	public static final int height = (int)(0.2 * Game.getScreen().getSize().height) ;
+	public final int height = (int)(0.2 * Game.getScreen().getSize().height) ;
 	
 	public Sky ()
 	{

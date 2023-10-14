@@ -685,7 +685,7 @@ public class Player extends LiveBeing
 		sideBar.getButtons().forEach(button ->
 		{
 			if (button.ishovered(mousePos))
-			{
+			{System.out.println(button.getName()); 
 				switch (button.getName())
 				{
 					case "settings": switchOpenClose(settings) ; return ;
