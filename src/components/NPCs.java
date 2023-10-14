@@ -161,15 +161,17 @@ public class NPCs
 	{
 		GameMap[] allMaps = Game.getMaps() ;
 		int i = 0 ;
+
 		for (GameMap map : allMaps)
 		{
 			List<NPCs> npcsInMap = map.getNPCs() ;
-			if (npcsInMap == null) { return ;}
-			if (npcsInMap.isEmpty()) { return ;}
+
+			if (npcsInMap == null) { continue ;}
+			if (npcsInMap.isEmpty()) { continue ;}
 			
 			for (NPCs npc : npcsInMap)
 			{
-				npc.setID(i) ;System.out.println(map.getName() + " " + npc.getID() + " " + npc.getType().getName());
+				npc.setID(i) ;
 				i += 1 ;
 			}
 		}
@@ -178,11 +180,12 @@ public class NPCs
 	{
 		GameMap[] allMaps = Game.getMaps() ;
 		int questId = 0 ;
+
 		for (GameMap map : allMaps)
 		{
 			List<NPCs> npcsInMap = map.getNPCs() ;
-			if (npcsInMap == null) { return -1 ;}
-			if (npcsInMap.isEmpty()) { return -1 ;}
+			if (npcsInMap == null) { continue ;}
+			if (npcsInMap.isEmpty()) { continue ;}
 			
 			for (int i = 0 ; i <= npcsInMap.size() - 1 ; i += 1)
 			{
@@ -595,6 +598,7 @@ public class NPCs
 		int questID = getQuestNPCid(this) ;
 		System.out.println("quest ID = " + questID + " npc id = " + id);
 		System.out.println("Game quests size = " + Game.getAllQuests().length);
+		if (questID == -1) { System.out.println("Quest id não encontrado para npc " + type.getName() + " " + id) ; return ;}
 		Quest quest = Game.getAllQuests()[questID] ;
 
 		if (action.equals("Enter") & selOption == 0)
@@ -663,8 +667,9 @@ public class NPCs
 	@Override
 	public String toString()
 	{
-		return "NPCs [id=" + id + ", type=" + type + ", pos=" + pos + ", selOption=" + selOption + ", numberMenus="
-				+ numberMenus + ", menu=" + menu + ", window=" + window + "]";
+//		return "NPCs [id=" + id + ", type=" + type + ", pos=" + pos + ", selOption=" + selOption + ", numberMenus="
+//				+ numberMenus + ", menu=" + menu + ", window=" + window + "]";
+		return type.getName() ;
 	}
 	
 	

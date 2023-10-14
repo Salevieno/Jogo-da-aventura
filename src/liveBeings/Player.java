@@ -685,7 +685,7 @@ public class Player extends LiveBeing
 		sideBar.getButtons().forEach(button ->
 		{
 			if (button.ishovered(mousePos))
-			{System.out.println(button.getName()); 
+			{System.out.println("pressed button = " + button.getName()); 
 				switch (button.getName())
 				{
 					case "settings": switchOpenClose(settings) ; return ;
@@ -701,7 +701,7 @@ public class Player extends LiveBeing
 						mapWindow.setCurrentMap(map) ;
 						switchOpenClose(mapWindow) ; return ;
 						
-					case "fab": fabWindow.setRecipes(knownRecipes) ; switchOpenClose(fabWindow) ; return ;
+					case "book": fabWindow.setRecipes(knownRecipes) ; switchOpenClose(fabWindow) ; return ;
 					case "player":
 						((PlayerAttributesWindow) attWindow).setPlayer(this) ;
 						((PlayerAttributesWindow) attWindow).updateAttIncButtons(this) ;

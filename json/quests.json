@@ -919,7 +919,7 @@
   },
   {
     "QuestID": 27,
-    "Type": "Exp",
+    "Type": "Item",
     "Creature to kill 1": -1,
     "Amount": -1,
     "Creature to kill 1__1": -1,
@@ -1327,7 +1327,7 @@
   },
   {
     "QuestID": 39,
-    "Type": "Exp",
+    "Type": "Item",
     "Creature to kill 1": -1,
     "Amount": -1,
     "Creature to kill 1__1": -1,
@@ -1429,7 +1429,7 @@
   },
   {
     "QuestID": 42,
-    "Type": "Exp",
+    "Type": "Item",
     "Creature to kill 1": -1,
     "Amount": -1,
     "Creature to kill 1__1": -1,
@@ -1565,7 +1565,7 @@
   },
   {
     "QuestID": 46,
-    "Type": "Exp",
+    "Type": "Item",
     "Creature to kill 1": 132,
     "Amount": 3,
     "Creature to kill 1__1": 133,
@@ -1701,7 +1701,7 @@
   },
   {
     "QuestID": 50,
-    "Type": "Exp",
+    "Type": "Item",
     "Creature to kill 1": -1,
     "Amount": -1,
     "Creature to kill 1__1": -1,
@@ -1905,7 +1905,7 @@
   },
   {
     "QuestID": 56,
-    "Type": "Exp",
+    "Type": "Item",
     "Creature to kill 1": -1,
     "Amount": -1,
     "Creature to kill 1__1": -1,
@@ -1939,7 +1939,7 @@
   },
   {
     "QuestID": 57,
-    "Type": "Exp",
+    "Type": "Item",
     "Creature to kill 1": -1,
     "Amount": -1,
     "Creature to kill 1__1": -1,
@@ -2041,7 +2041,7 @@
   },
   {
     "QuestID": 60,
-    "Type": "Exp",
+    "Type": "Item",
     "Creature to kill 1": -1,
     "Amount": -1,
     "Creature to kill 1__1": -1,
@@ -2109,7 +2109,7 @@
   },
   {
     "QuestID": 62,
-    "Type": "Exp",
+    "Type": "Item",
     "Creature to kill 1": -1,
     "Amount": -1,
     "Creature to kill 1__1": -1,

@@ -741,7 +741,7 @@ public class Game extends JPanel
 			{
 				npcs.add(readNPCfromJson((JSONObject) listNPCs.get(i))) ;
 			}
-			
+
 			fieldMaps[id] = new FieldMap(name, continent, connections, image, music, collectibleLevel, collectiblesDelay, creatureIDs, npcs) ;
 		
 			switch(id)
@@ -998,6 +998,19 @@ public class Game extends JPanel
 		return (Item[]) allItems.toArray(new Item[allItems.size()]) ;
 	}
 	
+    public static List<NPCs> getAllNPCs()
+    {
+    	// TODO function for dev only
+    	List<NPCs> allNPCs = new ArrayList<>() ;
+    	for (GameMap map : allMaps)
+    	{
+    		if (map.getNPCs() == null) { continue ;}
+    		if (map.getNPCs().isEmpty()) { continue ;}
+    		allNPCs.addAll(map.getNPCs()) ;
+    	}
+    	
+    	return allNPCs ;
+    }
     
 	private void incrementCounters()
 	{
@@ -1274,7 +1287,19 @@ public class Game extends JPanel
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
     	
-    	for (GameMap map : allMaps) { System.out.println(map.getNPCs()) ;}
+    	
+//    	System.out.println("Game npcs: " + Game.getAllNPCs().size());
+//    	int i = 0 ;
+//    	for (NPCs npc : Game.getAllNPCs())
+//    	{
+//    		if (npc.getType().getJob().equals(NPCJobs.questExp) | npc.getType().getJob().equals(NPCJobs.questItem))
+//    		{
+//    			i++ ;
+//    			System.out.println(npc + " " + npc.getID());
+//    		}
+//    	}
+//    	System.out.println(i + " npc quests");
+//    	Game.getAllNPCs().forEach(System.out::println);
 //    	player.getBag().addGold(30000) ;
 //
 //    	
