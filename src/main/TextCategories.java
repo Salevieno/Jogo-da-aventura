@@ -11,6 +11,15 @@ public enum TextCategories
 	hints("menu de dicas"),
 	newGame("novo jogo"),
 	
+	settings("menu de opções"),
+	signMessages("mensagem das placas"),
+	specialAttributesProperties("propriedades dos atributos especiais"),
+	spellsBar("barra de magias"),
+	statistics("estatísticas do jogador"),
+	playerWindow("janela do jogador"),
+	proclasses("proClasses"),
+	pterodactile("pterodactile"),
+	
 
 	npcs("NPCs"),
 	alchemistSpeech("npcsAlquimistaFalas"),
@@ -178,17 +187,8 @@ public enum TextCategories
 	woodcrafterOptions1("npcsMadeireiroOpcoes1"),
 	woodcrafterOptions2("npcsMadeireiroOpcoes2"),
 	woodcrafterOptions3("npcsMadeireiroOpcoes3"),
-	woodcrafterOptions4("npcsMadeireiroOpcoes4"),
+	woodcrafterOptions4("npcsMadeireiroOpcoes4");
 	
-	
-	settings("menu de opções"),
-	signMessages("mensagem das placas"),
-	specialAttributesProperties("propriedades dos atributos especiais"),
-	spellsBar("barra de magias"),
-	statistics("estatísticas do jogador"),
-	playerWindow("janela do jogador"),
-	proclasses("proClasses"),
-	pterodactile("pterodactile");
 	
 	public static TextCategories catFromBRName(String brName)
 	{

@@ -5,236 +5,250 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 import components.GameButton;
+import components.IconFunction;
 import graphics.DrawingOnPanel;
 import graphics.Gif;
 import liveBeings.Player;
+import screen.Screen;
 import utilities.Align;
+import utilities.GameStates;
+import utilities.LiveInput;
 import utilities.Scale;
 import utilities.UtilG;
 
-public class Opening
+public abstract class Opening
 {
 	private static Image backgroundImage;
 	private static Gif openingGif ;
-    private static GameButton[] buttons ;
-    private static String[] text ;
-    private int step ;
-    private String[] playerInfo ;	// Chosen name, difficult level, sex and class
+    private static List<GameButton> buttons ;
+    private static String[] stepMessage ;
+    private static String[] jobInfo ;
+    private static int step ;
+    private static String[] playerInfo ;	// Chosen name, difficult level, sex and class
+	private static LiveInput liveInput ;
+
+    private static final Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
+    private static final Font smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	
-	public Opening()
+	static
 	{
 		String path = Game.ImagesPath  + "\\Opening\\";
 		backgroundImage = UtilG.loadImage(path + "Opening.png") ;
-		openingGif = new Gif(UtilG.loadImage(path + "Opening.gif"), 1375, false, true) ;
+		openingGif = new Gif(UtilG.loadImage(path + "Opening.gif"), 200, false, true) ;
 		GameButton.selectedIconID = 2 ;
     	step = 0 ;
+		liveInput = new LiveInput() ;
     	playerInfo = new String[4] ;
 
-    	buttons = new GameButton[14] ;
-		Image btPort = UtilG.loadImage(path + "ButtonPort.png") ;
-		Image btEn = UtilG.loadImage(path + "ButtonEn.png") ;
-		Image btPortSelected = UtilG.loadImage(path + "ButtonPortSelected.png") ;
-		Image btEnSelected = UtilG.loadImage(path + "ButtonEnSelected.png") ;
-		Image btNewGame = UtilG.loadImage(path + "Button_newGame.png") ;
-		Image btNewGameSelected = UtilG.loadImage(path + "Button_newGameSelected.gif") ;
-		Image btLoadGame = UtilG.loadImage(path + "Button_loadGame.png") ;
-		Image btLoadGameSelected = UtilG.loadImage(path + "Button_loadGameSelected.gif") ;
-		
-		Dimension screenSize = Game.getScreen().getSize() ;
-		buttons[0] = new GameButton(0, "Port", new Point(screenSize.width - 50, 30), null, btPort, btPortSelected) ;
-		buttons[1] = new GameButton(1, "En", new Point(screenSize.width - 0, 30), null, btEn, btEnSelected) ;
-		buttons[2] = new GameButton(2, "New game", new Point(screenSize.width / 2 - 80, screenSize.height / 4), null, btNewGame, btNewGameSelected) ;
-		buttons[3] = new GameButton(3, "Load game", new Point(screenSize.width / 2 + 80, screenSize.height / 4), null, btLoadGame, btLoadGameSelected) ;
-		buttons[4] = new GameButton(4, "Male", new Point(screenSize.width / 2 - 50, screenSize.height / 4), null, null, null) ;
-		buttons[5] = new GameButton(5, "Female", new Point(screenSize.width / 2 + 50, screenSize.height / 4), null, null, null) ;
-    	buttons[6] = new GameButton(6, "Baixo", new Point(screenSize.width / 2 - 100, screenSize.height / 4), null, null, null) ;
-    	buttons[7] = new GameButton(7, "Médio", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
-    	buttons[8] = new GameButton(8, "Alto", new Point(screenSize.width / 2 + 100, screenSize.height / 4), null, null, null) ;
-    	buttons[9] = new GameButton(9, "Cavaleiro", new Point(screenSize.width / 2 - 200, screenSize.height / 4), null, null, null) ;
-    	buttons[10] = new GameButton(10, "Mago", new Point(screenSize.width / 2 - 100, screenSize.height / 4), null, null, null) ;
-    	buttons[11] = new GameButton(11, "Arqueiro", new Point(screenSize.width / 2 + 0, screenSize.height / 4), null, null, null) ;
-    	buttons[12] = new GameButton(12, "Animal", new Point(screenSize.width / 2 + 100, screenSize.height / 4), null, null, null) ;
-    	buttons[13] = new GameButton(13, "Ladrão", new Point(screenSize.width / 2 + 200, screenSize.height / 4), null, null, null) ;
     	
+    	buttons = new ArrayList<>() ;
+
+		IconFunction portAction = () -> { } ;
+		IconFunction enAction = () -> { } ;
+		IconFunction newGameAction = () -> {} ;
+		IconFunction loadGameAction = () -> {} ;
+		IconFunction confirmNameAction = () -> {playerInfo[0] = liveInput.getText() ; System.out.println(playerInfo[0]);} ;
+		IconFunction maleAction = () -> { playerInfo[1] = "M" ;} ;
+		IconFunction femaleAction = () -> { playerInfo[1] = "F" ;} ;
+		IconFunction easyAction = () -> { playerInfo[2] = "0" ;} ;
+		IconFunction mediumAction = () -> { playerInfo[2] = "1" ;} ;
+		IconFunction hardAction = () -> { playerInfo[2] = "2" ;} ;
+		IconFunction knightAction = () -> { playerInfo[3] = "0" ;} ;
+		IconFunction mageAction = () -> { playerInfo[3] = "1" ;} ;
+		IconFunction archerAction = () -> { playerInfo[3] = "2" ;} ;
+		IconFunction animalAction = () -> { playerInfo[3] = "3" ;} ;
+		IconFunction thiefAction = () -> { playerInfo[3] = "4" ;} ;
+		
+		Screen screen = Game.getScreen() ;
+		String[] btNames = new String[] {
+				"Port", "En",
+				"New Game", "Load Game",
+				"Confirm name",
+				"Male", "Female",
+				"Easy", "Medium", "Hard",
+				"Knight", "Mage", "Archer", "Animal", "Thief"} ;
+		Point[] btPos = new Point[] {
+				screen.pos(0.75, 0.05), screen.pos(0.85, 0.05),
+				screen.pos(0.2, 0.3), screen.pos(0.5, 0.3),
+				screen.pos(0.38, 0.45), 
+				screen.pos(0.3, 0.3), screen.pos(0.5, 0.3),
+				screen.pos(0.2, 0.3), screen.pos(0.4, 0.3), screen.pos(0.6, 0.3),
+				screen.pos(0.02, 0.3), screen.pos(0.22, 0.3), screen.pos(0.42, 0.3), screen.pos(0.62, 0.3), screen.pos(0.82, 0.3)} ;
+		IconFunction[] btAction = new IconFunction[] {
+				portAction, enAction,
+				newGameAction, loadGameAction,
+				confirmNameAction,
+				maleAction, femaleAction,
+				easyAction, mediumAction, hardAction,
+				knightAction, mageAction, archerAction, animalAction, thiefAction} ;
+		for (int i = 0 ; i <= btNames.length - 1; i += 1)
+		{
+			Image btImage = UtilG.loadImage(path + btNames[i] + ".png") ;
+			Image btImageSelected = UtilG.loadImage(path + btNames[i] + " Selected.gif") ;
+			if (btImage == null) { btImage = UtilG.loadImage(Game.ImagesPath + "ButtonGeneral.png") ;}
+			if (btImageSelected == null) { btImageSelected = UtilG.loadImage(path + btNames[i] + " Selected.png") ;}
+			if (btImageSelected == null) { btImageSelected = UtilG.loadImage(Game.ImagesPath + "ButtonGeneralSelected.png") ;}
+			buttons.add(new GameButton(btPos[i], Align.center, btNames[i], btImage, btImageSelected, btAction[i])) ;
+			buttons.get(buttons.size() - 1).deactivate() ;
+		
+		}
+		
     	for (GameButton button : buttons)
     	{
      		GameButton.addToAllIconsList(button) ;
     	}
+    	buttons.get(0).activate() ;
+    	buttons.get(1).activate() ;
+    	buttons.get(2).activate() ;
+    	buttons.get(3).activate() ;
 
-    	// TODO text
-//    	Map<TextCategories, String[]> allText = UtilG.ReadTextFile(Game.getLanguage()) ;
-//    	text = allText.get(TextCategories.newGame) ;
-		//Ani.SetAniVars(20, new Object[] {147, OpeningGif}) ;
-		//Ani.StartAni(20) ;
+    	// TODO get text from json. AllText is not loaded here yet Game.allText.get(TextCategories.newGame)
+    	stepMessage = new String[] {"", "Qual o seu nome?", "", "", "", ""} ;
+    	jobInfo = new String[]
+		{
+			"Cavaleiros são poderosos guerreiros corpo-a-corpo. Eles tem grande ataque, poder e vitalidade e são os guerreiros mais fortes do reino.",
+		    "Magos tem o maior poder mágico. Eles controlam os elementos e podem usar poderes sobrenaturais para manipular a magia e a vida.",
+		    "Arqueiros são guerreiros especializados em luta à distância. Eles usam poder físico combinado com o controle dos elementos.",
+		    "Animais vivem em harmonia com a natureza e podem usufruir dos seus poderes. Eles tem grande poder sobre a vida e incrível agilidade.",
+		    "Ladrões são os mais ágeis em todo o reino. Eles atacam cruelmente qualquer inimigo que cruze o seu caminho buscando poder e riqueza."	
+		};
+
 	}
 
-	public Gif getOpeningGif() { return openingGif ;}
-	
-	/*public void Animation(DrawingOnPanel DP)
-	{
-		DP.DrawGif(openingGif, new Point(0, 0), AlignmentPoints.topLeft) ;
-	}*/
-	
-	/*public boolean animationIsDonePlaying()
-	{
-		return openingGif.isDonePlaying();
-	}*/
-	
+	public static Gif getOpeningGif() { return openingGif ;}
 
-	public static int SelectMenu(String upKey, String downKey, String action, int selectedMenu, int numberMenus)
+	public static void act(String action, Point mousePos)
 	{
-		if (action.equals(downKey) & selectedMenu < numberMenus)
+		
+		if (action == null) { return ;}
+
+		boolean advanceStep = false ;
+		for (GameButton button : buttons)
 		{
-			selectedMenu += 1 ;
+			if (!button.isActive()) { continue ;}
+			if (!button.isClicked(mousePos, action)) { continue ;}
+			
+			button.act() ;
+			if (!button.getName().equals("Port") & !button.getName().equals("En"))
+			{
+				advanceStep = true ;
+			}
+			break ;
 		}
-		if (action.equals(upKey) & 0 < selectedMenu)
+		
+		if (step == 1)
 		{
-			selectedMenu += -1 ;
+			liveInput.receiveInput(action) ;
 		}
-		return selectedMenu ;
+		
+		if (!advanceStep) { return ;}
+		
+		step += 1 ;
+		switch(step)
+		{
+			case 1:
+				buttons.get(2).deactivate() ;
+		    	buttons.get(3).deactivate() ;
+		    	buttons.get(4).activate() ;
+				return ;
+				
+			case 2:
+		    	buttons.get(4).deactivate() ;
+		    	buttons.get(5).activate() ;
+		    	buttons.get(6).activate() ;
+				return ;
+				
+			case 3:
+				buttons.get(5).deactivate() ;
+		    	buttons.get(6).deactivate() ;
+		    	buttons.get(7).activate() ;
+		    	buttons.get(8).activate() ;
+		    	buttons.get(9).activate() ;
+				return ;
+				
+			case 4:
+		    	buttons.get(7).deactivate() ;
+		    	buttons.get(8).deactivate() ;
+		    	buttons.get(9).deactivate() ;
+		    	buttons.get(10).activate() ;
+		    	buttons.get(11).activate() ;
+		    	buttons.get(12).activate() ;
+		    	buttons.get(13).activate() ;
+		    	buttons.get(14).activate() ;
+				return ;
+				
+			case 5:
+				buttons.get(10).deactivate() ;
+		    	buttons.get(11).deactivate() ;
+		    	buttons.get(12).deactivate() ;
+		    	buttons.get(13).deactivate() ;
+		    	buttons.get(14).deactivate() ;
+				return ;				
+				
+			default: return ;
+		}
+		
+	}
+
+	public static void displayJobInfo(DrawingOnPanel DP)
+	{
+		Color textColor = Game.colorPalette[9] ;
+		Color bgColor = Game.colorPalette[7] ;
+		for (int i = 0 ; i <= 5 - 1 ; i += 1)
+		{
+			Point rectPos = Game.getScreen().pos(0.06 + i * 0.2, 0.4) ;
+			Point textPos = UtilG.Translate(rectPos, 5, 5) ;
+			DP.DrawRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, bgColor, true) ;
+			DP.DrawFitText(textPos, 10, Align.topLeft, jobInfo[i], smallFont, 18, textColor) ;
+		}
 	}
 	
-	
-	public void Run(String action, Point MousePos, DrawingOnPanel DP)
+	public static void display(String action, Point mousePos, DrawingOnPanel DP)
 	{
-		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
-		Dimension screenSize = Game.getScreen().getSize() ;
-		double textAngle = DrawingOnPanel.stdAngle ;
+		Point textPos = Game.getScreen().pos(0.5, 0.3) ;
 		Color textColor = Game.colorPalette[5] ;
 		
-
-//		if (!Ani.isActive(20))
-//		{
-//	    	buttons[0].activate() ;
-//	    	buttons[1].activate() ;
-//	    	buttons[2].activate() ;
-//	    	buttons[3].activate() ;
-//		}
-		
-		// draw background
 		DP.DrawImage(backgroundImage, new Point(0, 0), 0, new Scale(1, 1), Align.topLeft) ;		
-		for (int i = 0 ; i <= buttons.length - 1 ; i += 1)
+		for (GameButton button : buttons)
 		{
-			if (buttons[i].getIsActive())
-			{
-				buttons[i].display(0, Align.center, false, MousePos, DP) ;
-			}
+			if (!button.isActive()) { continue ;}
+			
+			button.display(0, true, mousePos, DP) ;
 		}
 		
-		// defining button behavior
-		for (int i = 0 ; i <= buttons.length - 1 ; i += 1)
-		{
-			if (buttons[i].getIsActive() & buttons[i].ishovered(MousePos))
-			{
-				GameButton.selectedIconID = i ;
-			}
-		}
-		
-		GameButton.selectedIconID = SelectMenu(Player.ActionKeys[1], Player.ActionKeys[3], action, GameButton.selectedIconID, buttons.length) ;
-		if (step == 0)
-		{
-			Music.PlayMusic(Music.intro) ;
-			step += 1 ;
-		}
 		if (step == 1)
-		{		
-			if (action.equals("Enter") | action.equals("MouseLeftClick"))
-			{
-				//action = buttons[Icon.selectedIconID].getValue() ;
-			}
-			if (action.equals("N"))
-			{
-				//AllText = UtilG.ReadTextFile(InitialLanguage) ;
-				//AllTextCat = UtilS.FindAllTextCat(AllText, InitialLanguage) ;
-		    	buttons[2].deactivate() ;
-		    	buttons[3].deactivate() ;
-				step += 1 ;
-			}	
-			else if (action.equals("L"))
-			{
-		    	buttons[2].deactivate() ;
-		    	buttons[3].deactivate() ;
-			}
-		}
-		else if (step == 2)
 		{
-			DP.DrawText(new Point((int)(0.5*screenSize.width) + 20, (int)(0.25*screenSize.height)), Align.center, textAngle, text[1], font, textColor) ;
-			if (action.equals("Enter"))
-			{// TODO opening input
-//				Typing.LiveTyping(Game.getScreen().getPoint(0.4, 0.3), textAngle, action) ;
-		    	buttons[4].activate() ;
-		    	buttons[5].activate() ;
-				step += 1 ;
-			}
-			else
-			{
-//				playerInfo[0] = Typing.LiveTyping(Game.getScreen().getPoint(0.4, 0.3), textAngle, action) ;
-			}
+			DP.DrawText(Game.getScreen().pos(0.3, 0.4), Align.topLeft, DrawingOnPanel.stdAngle, liveInput.getText(), font, textColor) ;
 		}
-		else if (step == 3)
+		if (step == 4)
 		{
-			if (action.equals("M") | action.equals("F"))
-			{
-		    	buttons[4].deactivate() ;
-		    	buttons[5].deactivate() ;
-		    	buttons[6].activate() ;
-		    	buttons[7].activate() ;
-		    	buttons[8].activate() ;
-				step += 1 ;	
-				playerInfo[3] = action ;
-			}
+			displayJobInfo(DP) ;
 		}
-		else if (step == 4)
-		{
-			if (action.equals("0") | action.equals("1") | action.equals("2"))
-			{
-		    	buttons[6].deactivate() ;
-		    	buttons[7].deactivate() ;
-		    	buttons[8].deactivate() ;
-		    	buttons[9].activate() ;
-		    	buttons[10].activate() ;
-		    	buttons[11].activate() ;
-		    	buttons[12].activate() ;
-		    	buttons[13].activate() ;
-		    	playerInfo[1] = action ;
-				step += 1 ;
-			}
-		}
-		else if (step == 5)
-		{
-			int TextL = 15 ;
-			int sx = (int)(0.21*screenSize.width), sy = 20 ;
-			Font smallfont = new Font("BoldSansSerif", Font.BOLD, 12) ;
-			DP.DrawText(new Point((int)(0.35*screenSize.width), (int)(0.1*screenSize.height)), Align.bottomLeft, textAngle, text[5], font, textColor) ;		
-			for (int i = 0 ; i <= 5 - 1 ; i += 1)
-			{
-				Point Pos = new Point((int) (0.01 * screenSize.width + i * sx), (int) (0.28 * screenSize.height)) ;
-				DP.DrawFitText(new Point(Pos.x + 5, Pos.y + 5), sy, Align.topLeft, text[11 + i], smallfont, TextL, textColor) ;	
-			}
-			if (action.equals("0") | action.equals("1") | action.equals("2") | action.equals("3") | action.equals("4"))
-			{
-		    	buttons[9].deactivate() ;
-		    	buttons[10].deactivate() ;
-		    	buttons[11].deactivate() ;
-		    	buttons[12].deactivate() ;
-		    	buttons[13].deactivate() ;
-				step += 1 ;	
-				playerInfo[2] = action ;
-				buttons[0].deactivate() ;
-				buttons[1].deactivate() ;
-			}			
-		}
+		
+		if (stepMessage.length - 1 <= step) { return ;}
+		DP.DrawText(textPos, Align.center, DrawingOnPanel.stdAngle, stepMessage[step], font, textColor) ;
+	}
+
+	public static void run(Player player, Point mousePos, DrawingOnPanel DP)
+	{
+		if (!Opening.getOpeningGif().isDonePlaying())
+    	{
+    		Opening.getOpeningGif().play(new Point(0, 0), Align.topLeft, DP);
+    		return ;
+    	}
+
+		Music.PlayMusic(Music.intro) ;
+		display(player.getCurrentAction(), mousePos, DP) ;
+		act(player.getCurrentAction(), mousePos) ;
+		player.resetAction() ;
 	}
 	
-	public String[] getSelectedPlayerAttributes()
-	{
-		return playerInfo ;
-	}
+	public static String[] getPlayerInfo() { return playerInfo ;}
 
-	public boolean isOver()
-	{
-		return (step == 6) ;
-	}
+	public static boolean isOver() { return (step == 5) ;}
+	
 }

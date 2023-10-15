@@ -57,7 +57,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		for (Attributes att : Arrays.asList(Attributes.getBattle()))
 		{
 			IconFunction method = () -> {player.getBA().mapAttributes(att).incBaseValue(1) ;} ;
-			GameButton newAttButton = new GameButton(pos, plusSign, selectedPlusSign, method) ;
+			GameButton newAttButton = new GameButton(pos, Align.topLeft, plusSign, selectedPlusSign, method) ;
 			newAttButton.deactivate() ;
 			incAttButtons.put(att, newAttButton) ;
 			pos = UtilG.Translate(pos, 0, 22) ;
@@ -235,7 +235,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		DP.DrawImage(Player.CoinIcon, coinPos, angle, new Scale(1, 1), Align.center) ;
 		DP.DrawText(goldPos, Align.centerLeft, angle, goldValue, font, Game.colorPalette[2]) ;
 		
-		incAttButtons.values().forEach(button -> button.display(angle, Align.topLeft, false, mousePos, DP)) ;
+		incAttButtons.values().forEach(button -> button.display(angle, false, mousePos, DP)) ;
 	}
 	
 	public void displayTab1(Player player, DrawingOnPanel DP)

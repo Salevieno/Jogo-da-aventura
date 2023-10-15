@@ -130,7 +130,6 @@ public class Game extends JPanel
 	private static Screen screen ;
 	private static Sky sky ;
 	private static SideBar sideBar ;
-	private static Opening opening ;
 	private static CreatureType[] creatureTypes ;
 	private static CityMap[] cityMaps;
 	private static FieldMap[] fieldMaps;
@@ -153,8 +152,7 @@ public class Game extends JPanel
 		screen = new Screen(new Dimension(windowSize.width - 40, windowSize.height), null) ;
     	screen.calcCenter() ;
 		gameLanguage = Languages.portugues ;
-		state = GameStates.loading;
-		opening = new Opening() ;
+		state = GameStates.opening;
 		colorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette.png"), "Normal") ;
 		konamiCodeActive = false ;
 		initializeAnimations() ;
@@ -1072,9 +1070,9 @@ public class Game extends JPanel
 		
 	private void playStopTimeGifs()
 	{
-		if (opening.getOpeningGif().isTimeStopper())
+		if (Opening.getOpeningGif().isTimeStopper())
 		{
-			opening.getOpeningGif().play(new Point(0, 0), Align.topLeft, DP);
+			Opening.getOpeningGif().play(new Point(0, 0), Align.topLeft, DP);
 			
 			repaint();
 		}
@@ -1271,10 +1269,10 @@ public class Game extends JPanel
     	Pterodactile.setMessage(Game.allText.get(TextCategories.pterodactile)) ;
 
     	player.InitializeSpells() ;
-    	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
+//    	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
 //    	player.setLevel(50) ;
-    	player.setMap(cityMaps[3]) ;
-    	player.setPos(new Point(393, 140)) ;
+//    	player.setMap(cityMaps[3]) ;
+//    	player.setPos(new Point(393, 140)) ;
 		
 //    	letThereBePet() ;
     	
@@ -1366,19 +1364,11 @@ public class Game extends JPanel
         {
 	        case opening:
 	        {
-	        	if (!opening.getOpeningGif().isDonePlaying())
-	        	{
-		    		opening.getOpeningGif().play(new Point(0, 0), Align.topLeft, DP);
-	        	}
-	        	else
-	        	{
-		    		opening.Run(player.getCurrentAction(), mousePos, DP) ;
-		    		if (opening.isOver())
-		    		{
-		    			state = GameStates.loading ;
-		    		}
-					player.resetAction(); ;
-	        	}
+	        	Opening.run(player, mousePos, DP) ;
+	    		if (Opening.isOver())
+	    		{
+	    			Game.setState(GameStates.loading) ;
+	    		}
 				shouldRepaint = true ;
 	    		
 	    		break ;
@@ -1386,7 +1376,14 @@ public class Game extends JPanel
 	        case loading:
 	        {
 	        	//loading.displayText(DP) ;
+    			String name = Opening.getPlayerInfo()[0] ;
+    			String sex = Opening.getPlayerInfo()[1] ;
+        		difficultLevel = Integer.parseInt(Opening.getPlayerInfo()[2]) ;
+    			int job = Integer.parseInt(Opening.getPlayerInfo()[3]) ;
+	    		player = new Player(name, sex, job) ;
 	        	initialize() ;
+	        	player.setMap(Game.getMaps()[job]) ;
+	        	player.setPos(Game.getScreen().getCenter());
 				state = GameStates.running;
 				
 //				for (int i = 0 ; i <= 10000 - 1 ; i += 1)
@@ -1541,7 +1538,7 @@ public class Game extends JPanel
 		{
 			if (evt.getButton() == 1)	// Left click
 			{
-        		player.setCurrentAction("MouseLeftClick") ;
+        		player.setCurrentAction("LeftClick") ;
 
 //        		TestingAnimations.runTests(ani) ;
         		//testGif.start();
@@ -1549,12 +1546,11 @@ public class Game extends JPanel
 			if (evt.getButton() == 3)	// Right click
 			{
         		player.setCurrentAction("MouseRightClick") ;
-        		player.setPos(mousePos) ;
+//        		player.setPos(mousePos) ;
         		//testGif2.start();
 			}
             //shouldRepaint = true ;
-//			System.out.print(mousePos + " ") ;
-			System.out.println(UtilG.Round(mousePos.x / 600.0, 2) + "," + UtilG.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;
+//			System.out.println(UtilG.Round(mousePos.x / 600.0, 2) + "," + UtilG.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;
 		}
 
 		@Override

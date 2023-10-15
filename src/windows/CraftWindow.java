@@ -22,7 +22,7 @@ public class CraftWindow extends GameWindow
 	private List<Recipe> recipes ;
 	private List<Recipe> recipesInWindow ;
 	
-	private static final Point windowPos = Game.getScreen().getPoint(0.34, 0.22) ;	
+	private static final Point windowPos = Game.getScreen().pos(0.34, 0.22) ;	
 	private static final int RecipesPerWindow = 1 ;
 	private static final List<String> messages = Arrays.asList(
 			"Items criados!",

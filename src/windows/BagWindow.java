@@ -43,7 +43,7 @@ public class BagWindow extends GameWindow
 	private Map<Item, Integer> itemsOnWindow ;
 	private int gold ;
 	
-	private final Point windowPos = Game.getScreen().getPoint(0.3, 0.48) ;
+	private final Point windowPos = Game.getScreen().pos(0.3, 0.48) ;
 	private final int numberSlotMax = 20 ;
 	
 	public static final Image BagImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Bag.png") ;

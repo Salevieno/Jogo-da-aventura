@@ -20,7 +20,7 @@ import utilities.UtilG;
 public class ElementalWindow extends GameWindow
 {
 	
-	private Point windowPos = Game.getScreen().getPoint(0.4, 0.2) ;
+	private Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
 	private List<GeneralItem> spheres ;
 	private GeneralItem selectedSphere ;
 	private List<Equip> equipsForElemChange ;

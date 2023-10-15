@@ -346,6 +346,8 @@ public abstract class UtilG
 
 	public static Dimension getSize(Image image)
 	{
+		if (image == null) { return new Dimension() ;}
+		
 		return new Dimension(image.getWidth(null), image.getHeight(null));
 	}
 	
@@ -447,8 +449,10 @@ public abstract class UtilG
 		return (double)(Math.max(0, 1 - amplitude + 2 * amplitude * Math.random())) ;
 	}
 
-	public static Point OffsetFromPos(Align alignment, Dimension size)
+	public static Point offsetForAlignment(Align alignment, Dimension size)
 	{
+		if (size == null) { System.out.println("Offset from pos with null size!") ; return new Point() ;}
+		
 		Point offset = new Point(0, 0) ;
 		switch (alignment)
 		{
@@ -512,10 +516,13 @@ public abstract class UtilG
 		return offset ;
 	}
 
-	public static Point getPosAt(Point topLeftPos, Align alignment, Dimension size)
+	public static Point getTopLeft(Point pos, Align alignment, Dimension size)
 	{
-		Point offset = UtilG.OffsetFromPos(alignment, size) ;
-		return UtilG.Translate(topLeftPos, -offset.x, -offset.y) ;
+		if (size == null) { System.out.println("getPosAt with null size!") ; return new Point() ;}
+		
+		Point offset = UtilG.offsetForAlignment(alignment, size) ;
+
+		return UtilG.Translate(pos, -offset.x, -offset.y) ;
 	}
 	
 	public static int[] ArrayWithValuesGreaterThan(int[] OriginalArray, int MinValue)
@@ -748,9 +755,9 @@ public abstract class UtilG
 		return s ;
 	}
 	
-	public static boolean isInside(Point objPos, Point topLeftPos, Dimension size)
+	public static boolean isInside(Point objPos, Point topLeft, Dimension size)
 	{
-		return (topLeftPos.x <= objPos.x & objPos.x <= topLeftPos.x + size.width &
-				objPos.y <= topLeftPos.y + size.height & topLeftPos.y <= objPos.y);
+		return (topLeft.x <= objPos.x & objPos.x <= topLeft.x + size.width &
+				objPos.y <= topLeft.y + size.height & topLeft.y <= objPos.y);
 	}
 }

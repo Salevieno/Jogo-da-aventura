@@ -1002,7 +1002,7 @@ public class NPCs
 		{
 			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()] + 1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 			PlayerHasTheIngredients = Crafting(Choice, player, npc, items, NPCCraftingIngredients, NPCCraftingIngredientAmounts, NPCCraftingProducts, NPCCraftingProductAmounts, MousePos, DF) ;			
-			if (Choice.equals("Enter") | Choice.equals("MouseLeftClick"))
+			if (Choice.equals("Enter") | Choice.equals("LeftClick"))
 			{
 				Menu[npc.getID()] = 2 ;
 			}
@@ -1562,7 +1562,7 @@ public class NPCs
 			{
 				SelectedItem[1] = SelectedWindow[0]*ItemsPerWindow ;
 			}
-			if (Choice.equals("Enter") | Choice.equals("MouseLeftClick"))
+			if (Choice.equals("Enter") | Choice.equals("LeftClick"))
 			{
 				Choice = "" ;
 				Menu[npc.getID()] = 1 ;

@@ -160,12 +160,12 @@ public class Player extends LiveBeing
 		proJob = 0 ;
 		level = 1 ;
 		if (Game.getMaps() != null) { map = Game.getMaps()[job] ;}
-		
+
 		pos = new Point();
 		dir = Directions.up;
 		state = LiveBeingStates.idle;
 		Image PlayerBack = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerBack.gif") ;
-	    size = new Dimension (PlayerBack.getWidth(null), PlayerBack.getHeight(null));
+	    size = new Dimension(PlayerBack.getWidth(null), PlayerBack.getHeight(null));
 		range = Integer.parseInt(Properties.get(job)[4]) ;
 		step = Integer.parseInt(Properties.get(job)[33]);
 	    elem = new Elements[] {Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral};
@@ -352,6 +352,7 @@ public class Player extends LiveBeing
 	public Creature getOpponent() { return opponent ;}
 	public Item[] getHotItems() { return hotItems ;}
 	public Statistics getStatistics() { return stats ;}
+	public void setSex(String sex) { this.sex = sex ;}
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
 	public void setHotItem(Item item, int slot) { hotItems[slot] = item ;}	
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
@@ -363,7 +364,7 @@ public class Player extends LiveBeing
 	public static Spell[] getAnimalSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 105, 118) ;}
 	public static Spell[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 139, 152) ;}
 	
-	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("MouseLeftClick") ;}
+	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
 	
 	
 	public void setAttPoints(int attPoints)
@@ -685,7 +686,7 @@ public class Player extends LiveBeing
 		sideBar.getButtons().forEach(button ->
 		{
 			if (button.ishovered(mousePos))
-			{System.out.println("pressed button = " + button.getName()); 
+			{//System.out.println("pressed button = " + button.getName()); 
 				switch (button.getName())
 				{
 					case "settings": switchOpenClose(settings) ; return ;
@@ -751,7 +752,7 @@ public class Player extends LiveBeing
 		}
 		
 		
-		if (currentAction.equals("MouseLeftClick"))
+		if (currentAction.equals("LeftClick"))
 		{
 			mouseActions(pet, mousePos, sideBar) ;
 		}
@@ -842,7 +843,7 @@ public class Player extends LiveBeing
 		
 	}
 	
-	private boolean metNPC(NPCs npc) { return UtilG.isInside(this.getPos(), npc.getPos(), this.getSize()) ;}
+	private boolean metNPC(NPCs npc) { return UtilG.isInside(this.getPos(), npc.getPos(), new Dimension(2*size.width, 2*size.height)) ;} // this.getSize()
 	
 	private boolean metAnyNPC()
 	{

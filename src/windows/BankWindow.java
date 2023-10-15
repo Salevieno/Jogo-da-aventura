@@ -30,7 +30,7 @@ public class BankWindow extends GameWindow
 	public BankWindow()
 	{
 		super("Banco", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Banco.png"), 1, 1, 1, 1) ;
-		windowPos = Game.getScreen().getPoint(0.4, 0.2) ;
+		windowPos = Game.getScreen().pos(0.4, 0.2) ;
 		mode = "" ;
 		amountTyped = 0 ;
 		balance = 0 ;

@@ -50,33 +50,33 @@ public class Battle
 
 	public static void PrintStart()
 	{
-		System.out.println();
-		System.out.println();
-		System.out.println("  Battle started!  ");
+//		System.out.println();
+//		System.out.println();
+//		System.out.println("  Battle started!  ");
 	}
 	
 	private static void PrintTurn(LiveBeing attacker, LiveBeing receiver)
 	{
-		System.out.println();
-		System.out.println(attacker.getName() + " acts!");
+//		System.out.println();
+//		System.out.println(attacker.getName() + " acts!");
 	}
 	
 	private static void PrintAtkResults(AtkResults atkResults)
 	{
-		System.out.println(atkResults);
+//		System.out.println(atkResults);
 	}
 	
 	private static void PrintReceiverCondition(LiveBeing receiver)
 	{
-		System.out.println(receiver.getName() + " action = " + receiver.getCurrentAction()) ;
-		System.out.println(receiver.getName() + " life = " + receiver.getPA().getLife().getTotalValue()) ;
-		System.out.println(receiver.getName() + " " + receiver.getPA()) ;
-		System.out.println(receiver.getName() + " " + receiver.getBA().getStatus()) ;
+//		System.out.println(receiver.getName() + " action = " + receiver.getCurrentAction()) ;
+//		System.out.println(receiver.getName() + " life = " + receiver.getPA().getLife().getTotalValue()) ;
+//		System.out.println(receiver.getName() + " " + receiver.getPA()) ;
+//		System.out.println(receiver.getName() + " " + receiver.getBA().getStatus()) ;
 	}
 	
 	private static void PrintElement(Elements atkElem, Elements weaponElem, Elements armorElem, Elements shieldElem, Elements superElem, double elemMult)
 	{
-		System.out.println("Elements: atk = " + atkElem + " | weapon = " + weaponElem + " | armor = " + armorElem + " | def = " + shieldElem + " | super = " + superElem + " | mult = " + elemMult) ;
+//		System.out.println("Elements: atk = " + atkElem + " | weapon = " + weaponElem + " | armor = " + armorElem + " | def = " + shieldElem + " | super = " + superElem + " | mult = " + elemMult) ;
 	}
 	
 	// métodos de cálculo de batalha válidos para todos os participantes

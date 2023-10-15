@@ -50,6 +50,6 @@ public class HintsWindow extends GameWindow
 		DP.DrawText(UtilG.Translate(textPos, size.width / 2, size.height - 40), Align.center, angle, text[4], font, textColor) ;
 		DP.DrawFitText(UtilG.Translate(textPos, 0, 30), sy, Align.topLeft, text[window + 5], font, 70, textColor) ;
 		
-		DP.DrawWindowArrows(UtilG.Translate(windowPos, size.width / 2, size.height - 23), (int) (0.92 * size.width), window, numberWindows - 1) ;
+		DP.DrawWindowArrows(UtilG.Translate(windowPos, size.width / 2, size.height - 23), (int) (1.02 * size.width), window, numberWindows - 1) ;
 	}
 }

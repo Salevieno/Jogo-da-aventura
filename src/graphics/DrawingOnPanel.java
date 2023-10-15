@@ -80,7 +80,7 @@ public class DrawingOnPanel
 		
 		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
 		size = new Dimension ((!flipH ? 1 : -1) * size.width, (!flipV ? 1 : -1) * size.height) ;
-		Point offset = UtilG.OffsetFromPos(align, size) ;
+		Point offset = UtilG.offsetForAlignment(align, size) ;
 		AffineTransform backup = G.getTransform() ;
 		G.transform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
 		G.setComposite(AlphaComposite.SrcOver.derive((float) alpha)) ;
@@ -93,14 +93,14 @@ public class DrawingOnPanel
 	public void DrawGif(Image gif, Point pos, Align align)
 	{
 		Dimension size = new Dimension(gif.getWidth(null), gif.getHeight(null)) ;
-		Point offset = UtilG.OffsetFromPos(align, size) ;
+		Point offset = UtilG.offsetForAlignment(align, size) ;
 		G.drawImage(gif, pos.x + offset.x, pos.y + offset.y, null) ;
 	}
 	public void DrawText(Point pos, Align align, double angle, String text, Font font, Color color)
 	{
 		// by default starts at the left bottom
 		Dimension size = new Dimension(UtilG.TextL(text, font, G), UtilG.TextH(font.getSize())) ;
-		Point offset = UtilG.OffsetFromPos(align, size) ;
+		Point offset = UtilG.offsetForAlignment(align, size) ;
 		AffineTransform backup = G.getTransform() ;		
 		
 		G.transform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
@@ -121,7 +121,7 @@ public class DrawingOnPanel
 	}
 	public void DrawTextUntil(Point pos, Align align, double angle, String text, Font font, Color color, int maxLength, Point mousePos)
 	{
-		Point offset = UtilG.OffsetFromPos(align, new Dimension(maxLength, UtilG.TextH(font.getSize()))) ;
+		Point offset = UtilG.offsetForAlignment(align, new Dimension(maxLength, UtilG.TextH(font.getSize()))) ;
 		int minlength = 3 ;	// 3 is the length of "..."
 		String shortText = text ;
 		maxLength = Math.max(maxLength, minlength) ;
@@ -157,7 +157,7 @@ public class DrawingOnPanel
 	public void DrawRect(Point pos, Align align, Dimension size, int stroke, Color color, Color contourColor)
 	{
 		// Rectangle by default starts at the left top
-		Point offset = UtilG.OffsetFromPos(align, size) ;
+		Point offset = UtilG.offsetForAlignment(align, size) ;
 		int[] Corner = new int[] {pos.x + offset.x, pos.y + offset.y} ;
 		G.setStroke(new BasicStroke(stroke)) ;
 		if (color != null)
@@ -179,7 +179,7 @@ public class DrawingOnPanel
 	{
 		// Round rectangle by default starts at the left top
 		int ArcWidth = 10, ArcHeight = 10 ;
-		Point offset = UtilG.OffsetFromPos(align, size) ;
+		Point offset = UtilG.offsetForAlignment(align, size) ;
 		int[] Corner = new int[] {pos.x + offset.x, pos.y + offset.y} ;
 		G.setStroke(new BasicStroke(stroke)) ;
 		if (topColor != null & botColor != null)
@@ -458,7 +458,7 @@ public class DrawingOnPanel
 
 	public void winAnimation(TimeCounter counter, Item[] items)
 	{
-		Point pos = Game.getScreen().getPoint(0.45, 0.2) ;
+		Point pos = Game.getScreen().pos(0.45, 0.2) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Color titleColor = Game.colorPalette[5] ;
 		Color itemNamesColor = Game.colorPalette[6] ;
@@ -482,7 +482,7 @@ public class DrawingOnPanel
 	public void gainGoldAnimation(TimeCounter counter, int goldObtained)
 	{
 		
-		Point pos = Game.getScreen().getPoint(0.45, 0.6) ;
+		Point pos = Game.getScreen().pos(0.45, 0.6) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Color titleColor = Game.colorPalette[3] ;
 
@@ -500,7 +500,7 @@ public class DrawingOnPanel
 	public void notEnoughGold(TimeCounter counter)
 	{
 		// TODO animation not enough gold
-		Point pos = Game.getScreen().getPoint(0.45, 0.2) ;
+		Point pos = Game.getScreen().pos(0.45, 0.2) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Color titleColor = Game.colorPalette[3] ;
 
@@ -526,7 +526,7 @@ public class DrawingOnPanel
 	public void levelUpAnimation(TimeCounter counter, double[] AttributeIncrease, int playerLevel, Color textColor)
 	{
 
-		Point pos = Game.getScreen().getPoint(0.45, 0.2) ;
+		Point pos = Game.getScreen().pos(0.45, 0.2) ;
 		Scale scale = new Scale(1, 1) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String[] attText = Game.allText.get(TextCategories.attributes) ;

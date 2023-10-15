@@ -100,7 +100,7 @@ public abstract class PlayerEvolutionSimulation
 	
 	private static GameButton newButton(Point pos, String text, IconFunction action)
 	{
-		return new GameButton(pos, text, buttonImage, buttonSelectedImage, action) ;
+		return new GameButton(pos, Align.topLeft, text, buttonImage, buttonSelectedImage, action) ;
 	}
 	
 	private static void addJobSection()
@@ -634,7 +634,7 @@ public abstract class PlayerEvolutionSimulation
 		{
 			player.getSpellsTreeWindow().navigate(player.getCurrentAction()) ;
 
-			if (action.equals("Enter") | action.equals("MouseLeftClick"))
+			if (action.equals("Enter") | action.equals("LeftClick"))
 			{
 				player.getSpellsTreeWindow().act(player) ;
 			}
@@ -649,7 +649,7 @@ public abstract class PlayerEvolutionSimulation
 
 		if (player.getBag().isOpen())
 		{
-			if (player.getBag().getTab() == 1 & (player.getCurrentAction().equals("Enter") | player.getCurrentAction().equals("MouseLeftClick")))
+			if (player.getBag().getTab() == 1 & (player.getCurrentAction().equals("Enter") | player.getCurrentAction().equals("LeftClick")))
 			{
 				player.useItem(player.getBag().getSelectedItem()) ;
 			}
@@ -714,7 +714,7 @@ public abstract class PlayerEvolutionSimulation
 		DP.DrawImage(screenImage, new Point(0, 0), Align.topLeft) ;
 		DP.DrawText(new Point(300, 13), Align.center, DrawingOnPanel.stdAngle, "Simulador do jogo", font, Game.colorPalette[9]) ;
 		
-		buttons.forEach(button -> button.display(0, Align.center, true, mousePos, DP)) ;
+		buttons.forEach(button -> button.display(0, true, mousePos, DP)) ;
 
 		playerOpponent.displayName(new Point(460, 300), Align.center, Color.yellow, DP);
 		playerOpponent.display(new Point(460, 340), new Scale(1, 1), DP);

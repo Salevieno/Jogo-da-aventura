@@ -19,10 +19,10 @@ public class MapMoveTest
 	void mapMoveTest()
 	{
 		
-		Point topLeft = Game.getScreen().getPoint(0.01, 0.99) ;
-		Point bottomLeft = Game.getScreen().getPoint(0.01, 0.01) ;
-		Point bottomRight = Game.getScreen().getPoint(0.99, 0.01) ;
-		Point topRight = Game.getScreen().getPoint(0.99, 0.99) ;
+		Point topLeft = Game.getScreen().pos(0.01, 0.99) ;
+		Point bottomLeft = Game.getScreen().pos(0.01, 0.01) ;
+		Point bottomRight = Game.getScreen().pos(0.99, 0.01) ;
+		Point topRight = Game.getScreen().pos(0.99, 0.99) ;
 		Map<Integer, Point> possiblePositions = new LinkedHashMap<>() ;
 		Map<Integer, Directions> possibleDirections = new LinkedHashMap<>() ;
 		Map<Integer, String> moveNames = new LinkedHashMap<>() ;
