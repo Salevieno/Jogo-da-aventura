@@ -540,9 +540,10 @@ public class Player extends LiveBeing
 		if (!Game.getScreen().posIsInMap(newPos))
 		{
 			moveToNewMap(pos, dir, map, step) ;
-			
+
 			if (pet != null) { pet.setPos(pos) ;}
 			
+			if (opponent != null) { opponent.setFollow(false) ;}
 			closestCreature = null ;
 			opponent = null ;
 			return ;
@@ -642,7 +643,7 @@ public class Player extends LiveBeing
 				fish() ; return ;
 				
 			case 7:
-				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
+//				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
 				mapWindow.setPlayerPos(pos) ;
 				mapWindow.setCurrentMap(map) ;
 				switchOpenClose(mapWindow) ; return ;
@@ -1473,6 +1474,7 @@ public class Player extends LiveBeing
 		PA.getThirst().setToMaximum() ;
 		BA.resetStatus() ;
 		state = LiveBeingStates.idle ;
+		if (opponent != null) { opponent.setFollow(false) ;}
 		resetOpponent() ;
 		resetPosition() ;
 	}

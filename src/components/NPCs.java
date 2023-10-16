@@ -591,13 +591,11 @@ public class NPCs
 	
 	private void questAction(List<Quest> quests, BagWindow bag, PersonalAttributes PA, Map<QuestSkills, Boolean> skills, String action)
 	{
-		// TODO resolver bug quando sai da cidade dos animais pela esquerda e quando o ladrão morre
 
 		if (action == null) { return ;}
 
 		int questID = getQuestNPCid(this) ;
-		System.out.println("quest ID = " + questID + " npc id = " + id);
-		System.out.println("Game quests size = " + Game.getAllQuests().length);
+
 		if (questID == -1) { System.out.println("Quest id não encontrado para npc " + type.getName() + " " + id) ; return ;}
 		Quest quest = Game.getAllQuests()[questID] ;
 

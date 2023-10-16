@@ -23,15 +23,12 @@ public class SideBar
 {
 	private Set<GameButton> buttons ;
 	
-	private Point barPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height);	
+	private static final Point barPos = Game.getScreen().pos(1, 1) ;	
 	public static final Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
 		
 	public SideBar(Image playerImage, Image petImage)
 	{
 		
-		Dimension screenSize = Game.getScreen().getSize() ;
-		Point topLeftPos = new Point(screenSize.width + 20, screenSize.height - 220) ;
-		buttons = new HashSet<>() ;
 		String[] names = new String[] {"settings", "bag", "quest", "map", "book", "tent"} ; // "player", "pet"
 		IconFunction[] actions = new IconFunction[names.length] ;
 		actions[0] = () -> { } ; 
@@ -39,17 +36,18 @@ public class SideBar
 		actions[2] = () -> { } ; 
 		actions[3] = () -> { } ; 
 		actions[4] = () -> { } ; 
-		actions[5] = () -> { } ; 
-		
-    	String path = Game.ImagesPath + "\\SideBar\\";
+		actions[5] = () -> { } ;		
+
     	int offsetY = 0 ;
+		buttons = new HashSet<>() ;
+    	String path = Game.ImagesPath + "\\SideBar\\";
 		for (int i = 0; i <= names.length - 1 ; i += 1)
 		{			
 			Image image = UtilG.loadImage(path + "Icon" + i + "_" + names[i] + ".png") ;
 			Image selImage = UtilG.loadImage(path + "Icon" + i + "_" + names[i] + "Selected.png") ;
-			Point botCenterPos = UtilG.Translate(topLeftPos, -20, - offsetY) ;
+			Point botCenterPos = UtilG.Translate(barPos, 20, -220 - offsetY) ;
 			buttons.add(new GameButton(i, names[i], botCenterPos, "", image, selImage)) ;
-//			buttons.add(new GameButton(botCenterPos, Align.center, image, selImage, actions[i])) ;
+//			buttons.add(new GameButton(botCenterPos, Align.bottomCenter, image, selImage, actions[i])) ;
 
 			offsetY += image.getHeight(null) + 10 ;
 		}
@@ -94,7 +92,8 @@ public class SideBar
 		
 		double stdAngle = DrawingOnPanel.stdAngle ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String[] IconKey = new String[] {null, Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7], null, null, null, null} ;
+		String[] IconKey = new String[] {null, Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7],
+				null, null, null, null} ;
 		Color textColor = Game.colorPalette[7] ;
 		
 		DP.DrawRect(barPos, Align.bottomLeft, size, 1, Game.colorPalette[9], null) ;

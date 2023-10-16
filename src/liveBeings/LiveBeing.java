@@ -187,7 +187,7 @@ public abstract class LiveBeing
 		int newMapID = -1 ;
 		int[] mapConnections = currentMap.getConnections() ;
 		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
-		boolean bottomSide = currentPos.y <= Game.getScreen().getSize().height / 2 ;
+		boolean topSide = currentPos.y <= Game.getScreen().getSize().height / 2 ;
 		switch (dir)
 		{
 			case up:
@@ -197,7 +197,7 @@ public abstract class LiveBeing
 			
 			case left:
 				
-				newMapID = bottomSide ? mapConnections[3] : mapConnections[2] ;				
+				newMapID = topSide ? mapConnections[2] : mapConnections[3] ;				
 				break ;
 			
 			case down:
@@ -207,7 +207,7 @@ public abstract class LiveBeing
 			
 			case right:
 				
-				newMapID = bottomSide ? mapConnections[6] : mapConnections[7] ;				
+				newMapID = topSide ? mapConnections[7] : mapConnections[6] ;				
 				break ;			
 		}
 		
@@ -228,25 +228,25 @@ public abstract class LiveBeing
 		boolean meetsTwoMapsDown = mapConnections[4] != mapConnections[5] ;
 		boolean meetsTwoMapsRight = mapConnections[6] != mapConnections[7] ;
 		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
-		boolean bottomSide = currentPos.y <= Game.getScreen().getSize().height / 2 ;
+		boolean topSide = currentPos.y <= Game.getScreen().getSize().height / 2 ;
 
 		switch (dir)
 		{
 			case up:
 				if (!meetsTwoMapsUp) { return new Point(currentPos.x, screenBorder[3] - step) ;}
-				return leftSide ? new Point(currentPos.x + screenSize.width / 2, screenBorder[3] - step) : new Point(currentPos.x - screenSize.width / 2, screenBorder[3] - step) ;				
+				return leftSide ? new Point(currentPos.x + screenSize.width / 2 - 1, screenBorder[3] - step) : new Point(currentPos.x - screenSize.width / 2, screenBorder[3] - step) ;				
 			
 			case left:
 				if (!meetsTwoMapsLeft) { return new Point(screenBorder[2] - step, currentPos.y) ;}
-				return bottomSide ? new Point(screenBorder[2] - step, currentPos.y + screenSize.height / 2) : new Point(screenBorder[2] - step, currentPos.y - screenSize.height / 2) ;
+				return topSide ? new Point(screenBorder[2] - step, currentPos.y + screenSize.height / 2 - 1) : new Point(screenBorder[2] - step, currentPos.y - screenSize.height / 2) ;
 			
 			case down:
 				if (!meetsTwoMapsDown) { return new Point(currentPos.x, screenBorder[1] + step) ;}
-				return leftSide ? new Point(currentPos.x + screenSize.width / 2, screenBorder[1] + step) : new Point(currentPos.x - screenSize.width / 2, screenBorder[1] + step) ;			
+				return leftSide ? new Point(currentPos.x + screenSize.width / 2 - 1, screenBorder[1] + step) : new Point(currentPos.x - screenSize.width / 2, screenBorder[1] + step) ;			
 			
 			case right:
 				if (!meetsTwoMapsRight) { return new Point(screenBorder[0] + step, currentPos.y) ;}
-				return bottomSide ? new Point(screenBorder[0] + step, currentPos.y + screenSize.height / 2) : new Point(screenBorder[0] + step, currentPos.y - screenSize.height / 2) ;
+				return topSide ? new Point(screenBorder[0] + step, currentPos.y + screenSize.height / 2 - 1) : new Point(screenBorder[0] + step, currentPos.y - screenSize.height / 2) ;
 			
 			default: return null ;
 		}

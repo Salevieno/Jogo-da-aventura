@@ -125,7 +125,7 @@ public class Game extends JPanel
 	private DrawingOnPanel DP ;
 	private static Player player ;
 	private static Pet pet ;
-	public int difficultLevel ;
+	public static int difficultLevel ;
 
 	private static Screen screen ;
 	private static Sky sky ;
@@ -540,7 +540,7 @@ public class Game extends JPanel
 		return buildingTypes ;
     }
     
-    private static CreatureType[] initializeCreatureTypes(Languages language, double diffMult)
+    private static CreatureType[] initializeCreatureTypes(Languages language, int difficultLevel)
     {
 		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
 		String path = ImagesPath + "\\Creatures\\";
@@ -548,6 +548,7 @@ public class Game extends JPanel
 		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()] ;
 		Color[] color = new Color[creatureTypes.length] ;
 		int numberCreatureTypes = 7 ;
+		double diffMult = difficultLevel == 0 ? 0.3 : (difficultLevel == 1 ? 0.7 : 1.0) ;
 		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
 		{
 			int colorid = (int)((Creature.getskinColor().length - 1)*Math.random()) ;
@@ -1256,7 +1257,7 @@ public class Game extends JPanel
     	screen.setMapCenter() ;
     	allSpells = initializeAllSpells(gameLanguage) ;
 		allItems = initializeAllItems() ;
-		creatureTypes = initializeCreatureTypes(gameLanguage, 1) ;
+		creatureTypes = initializeCreatureTypes(gameLanguage, difficultLevel) ;
 		allRecipes = LoadCraftingRecipes() ;
 		NPCTypes = initializeNPCTypes(gameLanguage) ;
 		buildingTypes = initializeBuildingTypes() ;

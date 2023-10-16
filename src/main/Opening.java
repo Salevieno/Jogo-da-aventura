@@ -72,12 +72,12 @@ public abstract class Opening
 				"Easy", "Medium", "Hard",
 				"Knight", "Mage", "Archer", "Animal", "Thief"} ;
 		Point[] btPos = new Point[] {
-				screen.pos(0.75, 0.05), screen.pos(0.85, 0.05),
-				screen.pos(0.2, 0.3), screen.pos(0.5, 0.3),
-				screen.pos(0.38, 0.45), 
-				screen.pos(0.3, 0.3), screen.pos(0.5, 0.3),
-				screen.pos(0.2, 0.3), screen.pos(0.4, 0.3), screen.pos(0.6, 0.3),
-				screen.pos(0.02, 0.3), screen.pos(0.22, 0.3), screen.pos(0.42, 0.3), screen.pos(0.62, 0.3), screen.pos(0.82, 0.3)} ;
+				screen.pos(0.85, 0.05), screen.pos(0.95, 0.05),
+				screen.pos(0.45, 0.3), screen.pos(0.65, 0.3),
+				screen.pos(0.48, 0.45), 
+				screen.pos(0.4, 0.3), screen.pos(0.6, 0.3),
+				screen.pos(0.3, 0.3), screen.pos(0.5, 0.3), screen.pos(0.7, 0.3),
+				screen.pos(0.12, 0.3), screen.pos(0.32, 0.3), screen.pos(0.52, 0.3), screen.pos(0.72, 0.3), screen.pos(0.92, 0.3)} ;
 		IconFunction[] btAction = new IconFunction[] {
 				portAction, enAction,
 				newGameAction, loadGameAction,
@@ -237,7 +237,7 @@ public abstract class Opening
 	{
 		if (!Opening.getOpeningGif().isDonePlaying())
     	{
-    		Opening.getOpeningGif().play(new Point(0, 0), Align.topLeft, DP);
+			openingGif.play(new Point(0, 0), Align.topLeft, DP);
     		return ;
     	}
 

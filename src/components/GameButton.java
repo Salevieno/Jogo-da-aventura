@@ -81,7 +81,7 @@ public class GameButton
 
 	public void act() { action.act() ;}
 	
-	public Point getCenter() {return new Point(topLeft.x + size.width / 2, topLeft.y + size.height / 2) ;}
+	public Point getCenter() {return UtilG.Translate(topLeft, size.width / 2, size.height / 2) ;}
 	
 	public void select(Point mousePos)
 	{

@@ -522,7 +522,7 @@ public abstract class UtilG
 		
 		Point offset = UtilG.offsetForAlignment(alignment, size) ;
 
-		return UtilG.Translate(pos, -offset.x, -offset.y) ;
+		return UtilG.Translate(pos, offset.x, offset.y) ;
 	}
 	
 	public static int[] ArrayWithValuesGreaterThan(int[] OriginalArray, int MinValue)

@@ -405,22 +405,6 @@ public class GameMap
 		
 		return null ;
 	}
-	
- 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
- 	{
- 		DP.DrawImage(image, pos, scale, Align.bottomLeft) ;
- 	}
- 	
- 	public void display(DrawingOnPanel DP)
- 	{
- 		if (name.contains("Cave")) { DP.DrawImage(image, Game.getScreen().getCenter(), Align.center) ;}
- 		else { DP.DrawImage(image, Game.getScreen().getMapCenter(), Align.center) ;}
- 		
- 		if (name.equals("City of the archers"))
- 		{
- 	 		DP.DrawImage(beachGif, new Point(Game.getScreen().getSize().width, 96), Align.topRight) ;
- 		}
- 	}
  	
  	public void displayElements(Point playerPos, DrawingOnPanel DP)
  	{ 		
@@ -507,6 +491,24 @@ public class GameMap
  	public void displayTudoEstaBem(DrawingOnPanel DP)
  	{
  		DP.DrawText(new Point(20, 20), Align.topLeft, 0, Game.allText.get(TextCategories.allIsGood)[0], new Font(Game.MainFontName, Font.BOLD, 13), Game.colorPalette[8]) ;
+ 	}
+	
+ 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
+ 	{
+ 		DP.DrawImage(image, pos, scale, Align.bottomLeft) ;
+ 	}
+ 	
+ 	public void display(DrawingOnPanel DP)
+ 	{
+ 		// TODO choose scale by map size
+ 		if (name.contains("Cave")) { DP.DrawImage(image, Game.getScreen().getCenter(), Align.center) ;}
+ 		else if (name.equals("City of the animals")) {DP.DrawImage(image, Game.getScreen().getMapCenter(), new Scale(0.5, 0.5), Align.center) ;}
+ 		else { DP.DrawImage(image, Game.getScreen().getMapCenter(), Align.center) ;}
+ 		
+ 		if (name.equals("City of the archers"))
+ 		{
+ 	 		DP.DrawImage(beachGif, new Point(Game.getScreen().getSize().width, 96), Align.topRight) ;
+ 		}
  	}
 	
 	@Override
