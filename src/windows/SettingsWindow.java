@@ -207,7 +207,7 @@ public class SettingsWindow extends GameWindow
 		{
 			for (int i = 0 ; i <= Player.ActionKeys.length - 1 ; i += 1)
 			{
-				DP.DrawText(new Point(textPos.x, textPos.y + (i + 1)*sy), Align.bottomLeft, stdAngle, text[i + 7], font, textColor[i]) ;
+				DP.DrawText(new Point(textPos.x, textPos.y + (i + 1)*sy), Align.bottomLeft, stdAngle, text[i + 6], font, textColor[i]) ;
 				DP.DrawText(new Point(textPos.x + sx, textPos.y + (i + 1)*sy), Align.bottomCenter, stdAngle, Player.ActionKeys[i], font, Game.colorPalette[5]) ;			
 			}
 			if (-1 < selectedActionKeyID)

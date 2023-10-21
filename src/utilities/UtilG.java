@@ -684,15 +684,9 @@ public abstract class UtilG
 		return new Point((int)((range.width*Math.random() + minCoord.x)/step.width)*step.width, (int)((range.height*Math.random() + minCoord.y)/step.height)*step.height) ;
 	}
 	
-	public static double dist1D(int PosA, int PosB)
-	{
-		return Math.abs(PosA - PosB) ;
-	}
+	public static double dist1D(int PosA, int PosB) { return Math.abs(PosA - PosB) ;}
 	
-	public static double dist(Point pos1, Point pos2)
-	{
-		return Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2)) ;
-	}
+	public static double dist(Point pos1, Point pos2) { return Math.hypot(pos2.x - pos1.x, pos2.y - pos1.y) ;}
 	
 	public static double getAngle(double[] speed)
 	{
@@ -759,5 +753,10 @@ public abstract class UtilG
 	{
 		return (topLeft.x <= objPos.x & objPos.x <= topLeft.x + size.width &
 				objPos.y <= topLeft.y + size.height & topLeft.y <= objPos.y);
+	}
+	
+	public static boolean isWithinRadius(Point objPos, Point targetPos, double radius)
+	{
+		return dist(objPos, targetPos) <= radius ;
 	}
 }

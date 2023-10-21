@@ -548,7 +548,7 @@ public class Game extends JPanel
 		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()] ;
 		Color[] color = new Color[creatureTypes.length] ;
 		int numberCreatureTypes = 7 ;
-		double diffMult = difficultLevel == 0 ? 0.3 : (difficultLevel == 1 ? 0.7 : 1.0) ;
+		double diffMult = difficultLevel == 0 ? 0.6 : (difficultLevel == 1 ? 0.8 : 1.0) ;
 		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
 		{
 			int colorid = (int)((Creature.getskinColor().length - 1)*Math.random()) ;
@@ -558,7 +558,8 @@ public class Game extends JPanel
 				color[ct] = colorPalette[5] ;
 			}
 			
-			MovingAnimations moveAni = new MovingAnimations(UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_idle.gif"),
+			MovingAnimations moveAni = new MovingAnimations(
+					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_idle.gif"),
 					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_movingup.gif"),
 					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_movingdown.gif"),
 					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_movingleft.gif"),
@@ -1113,6 +1114,7 @@ public class Game extends JPanel
 		// draw the map (cities, forest, etc.)
 		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
 		sideBar.display(player, pet, mousePos, DP);
+		sideBar.act(player.getCurrentAction(), mousePos) ;
 		
 		
 		// creatures act
@@ -1177,14 +1179,10 @@ public class Game extends JPanel
 				else { player.setState(LiveBeingStates.fighting) ;}
 			}
 		}
-		if (player.isCollecting())
-		{
-			player.collect(DP) ;
-		}
-		if (player.isOpeningChest())
-		{
-			player.openChest() ;
-		}
+		
+		if (player.isCollecting()) { player.collect(DP) ;}
+		
+		if (player.isOpeningChest()) { player.openChest() ;}
 		
 		player.applyAdjacentGroundEffect() ;
 		player.DrawAttributes(0, DP) ;
@@ -1203,7 +1201,7 @@ public class Game extends JPanel
 		if (!player.getMap().IsACity()) { player.setClosestCreature(player.ClosestCreatureInRange()) ;}
 		
 		// check if the player met something
-		if (!player.isInBattle()) { player.meet(mousePos, DP) ;}
+		player.meet(mousePos, DP) ;
 		
 		
 		// if the player is in battle, run battle
@@ -1264,7 +1262,7 @@ public class Game extends JPanel
 		allQuests = initializeQuests(gameLanguage, player.getJob()) ;
 		allMaps = initializeAllMaps() ;
 		NPCs.setIDs() ;
-    	sideBar = new SideBar(player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
+    	sideBar = new SideBar(player, player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
     	bat = new Battle() ;
     	
     	Pterodactile.setMessage(Game.allText.get(TextCategories.pterodactile)) ;

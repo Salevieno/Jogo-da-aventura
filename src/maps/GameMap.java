@@ -246,6 +246,7 @@ public class GameMap
 
 	public boolean IsACity() { return (this instanceof CityMap) ;}
 	public boolean isAField() { return (this instanceof FieldMap) ;}
+	public boolean isSpecial() { return (this instanceof SpecialMap) ;}
 	public boolean groundIsWalkable(Point pos, Elements superElem)
 	{
 

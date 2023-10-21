@@ -16,20 +16,22 @@ import utilities.UtilG;
 
 public class GameButton
 {
-	private int id ;
 	private String name ;
 	private Point topLeft ;
 	private Align alignment ;
 	private Dimension size ;
 	private boolean isActive ;
 	private String description ;
-	private String value ;			// return value for when the icon is clicked
 	private Image image ;
 	private Image selectedImage ;
 	private IconFunction action ;
 	
+	private static Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	private static Color textColor = Game.colorPalette[9] ;
+	private static Color selectedTextColor = Game.colorPalette[10] ;
+	
 	public static int selectedIconID ;
-	public static List<GameButton> allIcons = new ArrayList<>() ;	// isn't it insane to create a list of all items of a class inside the class itself?
+	public static List<GameButton> allButtons = new ArrayList<>() ;	// isn't it insane to create a list of all items of a class inside the class itself?
 	
 	public GameButton(Point pos, Align alignment, Image image, Image selectedImage, IconFunction action)
 	{
@@ -53,23 +55,7 @@ public class GameButton
 		this.topLeft = UtilG.getTopLeft(pos, alignment, size) ;
 		this.action = action ;
 	}
-	
-	public GameButton(int id, String name, Point pos, String description, Image image, Image selectedImage)
-	{
-		
-		this.id = id ;
-		this.name = name ;
-		this.topLeft = pos ;
-		size = image != null ? UtilG.getSize(image) : new Dimension(10 * name.length(), 30) ;
-		isActive = false ;
-		this.description = description ;
-		this.image = image ;
-		this.selectedImage = selectedImage ;
-		this.alignment = Align.topLeft ;
-		
-	}
 
-	public int getid() {return id ;}
 	public String getName() {return name ;}
 	public Point getTopLeftPos() {return topLeft ;}
 	public boolean isActive() { return isActive ;}
@@ -77,24 +63,10 @@ public class GameButton
 	public Image getSelectedImage() {return selectedImage ;}
 	public void setTopLeftPos(Point P) {topLeft = P ;}
 	
-	public static void addToAllIconsList(GameButton icon) { allIcons.add(icon) ;}
-
-	public void act() { action.act() ;}
-	
 	public Point getCenter() {return UtilG.Translate(topLeft, size.width / 2, size.height / 2) ;}
 	
-	public void select(Point mousePos)
-	{
-		if (!isActive) { return ;}
+	public static void addToAllIconsList(GameButton icon) { allButtons.add(icon) ;}
 
-		if (ishovered(mousePos))
-		{
-			selectedIconID = id ;
-			return ;
-		}
-		
-		selectedIconID = -1 ;
-	}
 	public boolean ishovered(Point mousePos) { return UtilG.isInside(mousePos, topLeft, size) ;}
 	public boolean isClicked(Point mousePos, String action)
 	{
@@ -102,55 +74,92 @@ public class GameButton
 		
 		return ishovered(mousePos) & action.equals("LeftClick") ;
 	}
-	public boolean isselected() { return selectedIconID == id ;}
 	
 	public void activate() { isActive = true ;}
 	public void deactivate() { isActive = false ;}
-	public String getValue() { return value ;}
+	public void act() { action.act() ;}
+	
+	
+	public void displayGeneralButton(DrawingOnPanel DP)
+	{
+		DP.DrawRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[5], Game.colorPalette[6], true) ;
+		DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
+	}
+	
+	public void displayHovered(double angle, boolean displayText, DrawingOnPanel DP)
+	{
+		if (selectedImage != null)
+		{ Double  itens = null ;
+			DP.DrawImage(selectedImage, topLeft, angle, new Scale(1, 1), Align.topLeft) ;
+			if (displayText)
+			{
+				DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
+			}
+		}
+		else
+		{
+			DP.DrawRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[5], Game.colorPalette[6], true) ;
+			DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
+		}
+	}
+	
+	public void displayNotHovered(double angle, boolean displayText, DrawingOnPanel DP)
+	{
+		if (image != null)
+		{
+			DP.DrawImage(image, topLeft, angle, new Scale(1, 1), Align.topLeft) ;
+			
+			if (!displayText) { return ;}
+			
+			DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
+			return ;
+		}
+		
+		DP.DrawRoundRect(topLeft, Align.topLeft, size, 2, Game.colorPalette[5], Game.colorPalette[6], true) ;
+		DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
+	}
 	
 	public void display(double angle, boolean displayText, Point mousePos, DrawingOnPanel DP)
 	{
 		
 		if (!isActive) { return ;}
 		
-		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Color textColor = Game.colorPalette[9] ;
-		Color selectedTextColor = Game.colorPalette[10] ;
+		Image imageDisplayed = ishovered(mousePos) ? selectedImage : image ;
 		
-		select(mousePos) ;
-		if (isselected())	// ishovered(MousePos)
+		if (imageDisplayed == null)
 		{
-			if (selectedImage != null)
-			{
-				DP.DrawImage(selectedImage, topLeft, angle, new Scale(1, 1), Align.topLeft) ;
-				if (displayText)
-				{
-					DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
-				}
-			}
-			else
-			{
-				DP.DrawRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[5], Game.colorPalette[6], true) ;
-				DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
-			}
+			displayGeneralButton(DP) ;
+			return ;
 		}
-		else
-		{
-			if (image != null)
-			{
-				DP.DrawImage(image, topLeft, angle, new Scale(1, 1), Align.topLeft) ;
-				if (displayText)
-				{
-					DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
-				}
-			}
-			else
-			{
-				DP.DrawRoundRect(topLeft, Align.topLeft, size, 2, Game.colorPalette[5], Game.colorPalette[6], true) ;
-				DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
-			}
-		}
+		
+		DP.DrawImage(imageDisplayed, topLeft, angle, new Scale(1, 1), Align.topLeft) ;
+		if (name == null)
+		{ return ;}
+		DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
+		
+//		if (ishovered(mousePos))
+//		{
+//			displayHovered(angle, displayText, DP) ;
+//			return ;
+//		}
+//		
+//		displayNotHovered(angle, displayText, DP) ;
 	}
+	
+//	public void display(double angle, boolean displayText, Point mousePos, DrawingOnPanel DP)
+//	{
+//		
+//		if (!isActive) { return ;}
+//		
+//		
+//		if (ishovered(mousePos))
+//		{
+//			displayHovered(angle, displayText, DP) ;
+//			return ;
+//		}
+//		
+//		displayNotHovered(angle, displayText, DP) ;
+//	}
 	
 	public void displayHoverMessage(DrawingOnPanel DP)
 	{

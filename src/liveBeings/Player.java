@@ -348,6 +348,10 @@ public class Player extends LiveBeing
 	public void setEquippedArrow(Arrow equippedArrow) {this.equippedArrow = equippedArrow ;}	
 	public AttributeBonus getChanceIncrease() {return attChanceIncrease ;}
 	public SettingsWindow getSettings() {return settings ;}
+	public QuestWindow getQuestWindow() {return questWindow ;}
+	public MapWindow getMapWindow() {return mapWindow ;}
+	public FabWindow getFabWindow() {return fabWindow ;}
+	public List<Recipe> getKnownRecipes() { return knownRecipes ;}
 	public SpellsTreeWindow getSpellsTreeWindow() {return spellsTree ;}
 	public Creature getOpponent() { return opponent ;}
 	public Item[] getHotItems() { return hotItems ;}
@@ -612,8 +616,9 @@ public class Player extends LiveBeing
 		
 	}
 	
-	private void tent(DrawingOnPanel DP)
+	public void tent(DrawingOnPanel DP)
 	{
+		// TODO how does the tent work? should it be on the sidebar?
 		TentGif.play(pos, Align.bottomCenter, DP) ;
 		tentCounter.inc() ;
 		if (tentCounter.finished())
@@ -667,8 +672,8 @@ public class Player extends LiveBeing
 				
 			case 12:
 				if (isInBattle()) { return ;}				
-				TentGif.start() ;
-				setState(LiveBeingStates.sleeping) ;				
+//				TentGif.start() ;
+//				setState(LiveBeingStates.sleeping) ;				
 				return ;
 				
 			case 13: setState(LiveBeingStates.digging) ; return ;
@@ -680,43 +685,6 @@ public class Player extends LiveBeing
 			default: return ;
 		}
 		
-	}
-
-	public void mouseActions(Pet pet, Point mousePos, SideBar sideBar)
-	{
-		sideBar.getButtons().forEach(button ->
-		{
-			if (button.ishovered(mousePos))
-			{//System.out.println("pressed button = " + button.getName()); 
-				switch (button.getName())
-				{
-					case "settings": switchOpenClose(settings) ; return ;
-					case "bag": switchOpenClose(bag) ; return ;
-					case "quest": 
-						questWindow.setQuests(quests) ;
-						questWindow.setBag(bag) ;
-						switchOpenClose(questWindow) ; return ;
-						
-					case "map":
-						if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
-						mapWindow.setPlayerPos(pos) ;
-						mapWindow.setCurrentMap(map) ;
-						switchOpenClose(mapWindow) ; return ;
-						
-					case "book": fabWindow.setRecipes(knownRecipes) ; switchOpenClose(fabWindow) ; return ;
-					case "player":
-						((PlayerAttributesWindow) attWindow).setPlayer(this) ;
-						((PlayerAttributesWindow) attWindow).updateAttIncButtons(this) ;
-						switchOpenClose(attWindow) ;
-						return ;
-						
-					case "pet":
-						if (pet == null) { return ;}
-						((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
-						switchOpenClose(pet.getAttWindow()) ; return ;
-				}
-			}
-		});
 	}
 	
 	private boolean actionIsArrowKeys() { return currentAction.equals("Acima") | currentAction.equals("Abaixo") | currentAction.equals("Esquerda") | currentAction.equals("Direita") ;}
@@ -753,10 +721,10 @@ public class Player extends LiveBeing
 		}
 		
 		
-		if (currentAction.equals("LeftClick"))
-		{
-			mouseActions(pet, mousePos, sideBar) ;
-		}
+//		if (currentAction.equals("LeftClick"))
+//		{
+//			mouseActions(pet, mousePos, sideBar) ;
+//		}
 
 		keyboardActions(pet) ;
 		
@@ -844,7 +812,7 @@ public class Player extends LiveBeing
 		
 	}
 	
-	private boolean metNPC(NPCs npc) { return UtilG.isInside(this.getPos(), npc.getPos(), new Dimension(2*size.width, 2*size.height)) ;} // this.getSize()
+	private boolean metNPC(NPCs npc) { return UtilG.isWithinRadius(this.getPos(), npc.getPos(), size.height / 2) ;}
 	
 	private boolean metAnyNPC()
 	{
@@ -870,19 +838,22 @@ public class Player extends LiveBeing
 	
 	public void meet(Point mousePos, DrawingOnPanel DP)
 	{
-		if (state == LiveBeingStates.collecting | isInBattle()) { return ;}
+		if (state == LiveBeingStates.collecting | isInBattle() | Game.someAnimationIsActive()) { return ;}
 
 		// meeting with treasure chests
-		List<MapElements> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).collect(Collectors.toList()) ;
-		for (MapElements chest : chests)
+		if (map.isSpecial())
 		{
+			List<MapElements> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).collect(Collectors.toList()) ;
+			for (MapElements chest : chests)
+			{
 
-			if (!isInCloseRange(chest.getPos())) { continue ;}
+				if (!isInCloseRange(chest.getPos())) { continue ;}
 
-			setState(LiveBeingStates.openingChest);
-			currentChest = (TreasureChest) chest ;
-			break ;
-			
+				setState(LiveBeingStates.openingChest);
+				currentChest = (TreasureChest) chest ;
+				break ;
+				
+			}
 		}
 		
 		if (map.isAField())
@@ -927,8 +898,8 @@ public class Player extends LiveBeing
 		if (map.getNPCs() != null)
 		{
 			for (NPCs npc : map.getNPCs())
-			{				
-				if (!metNPC(npc)) { continue ;}
+			{
+				if (!metNPC(npc)) { npc.resetMenu() ; continue ;}
 				
 				npc.action(this, Game.getPet(), mousePos, DP) ;
 				
@@ -942,7 +913,7 @@ public class Player extends LiveBeing
 		{
 			for (NPCs npc : building.getNPCs())
 			{				
-				if (!metNPC(npc)) { continue ;}
+				if (!metNPC(npc)) { npc.resetMenu() ; continue ;}
 				
 				npc.action(this, Game.getPet(), mousePos, DP) ;
 				

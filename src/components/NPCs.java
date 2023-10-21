@@ -210,11 +210,11 @@ public class NPCs
 			if (npcsInMap == null) { return null ;}
 			if (npcsInMap.isEmpty()) { return null ;}
 			
-			for (int i = 0 ; i <= npcsInMap.size() - 1 ; i += 1)
+			for (NPCs npc : npcsInMap)
 			{
-				NPCJobs npcJob = npcsInMap.get(i).getType().getJob() ;
+				NPCJobs npcJob = npc.getType().getJob() ;
 				if (!npcJob.equals(NPCJobs.questExp) & !npcJob.equals(NPCJobs.questItem)) { continue ;}
-				if (questNPCid != id) { questNPCid += 1; continue ;}
+				if (questNPCid != id) { questNPCid += 1 ; continue ;}
 				
 				return allQuests[questNPCid] ;
 			}
@@ -227,16 +227,16 @@ public class NPCs
 	{
 		
 		speak(pos, DP) ;
-		if (type.getOptions() != null) { drawOptions(UtilG.Translate(pos, 20, -10), DP) ;}
+		drawOptions(UtilG.Translate(pos, 20, -10), DP) ;
 				
 		String playerAction = player.getCurrentAction() ;
-		BagWindow playerBag = player.getBag() ;
 		
 
 		if (playerAction == null) { return ;}
 				
 		if (window != null) { if (window.isOpen()) { return ;} ;}
-		
+
+		BagWindow playerBag = player.getBag() ;
 		switch (type.getJob())
 		{
 			case alchemist: case woodcrafter: case crafter:
@@ -391,13 +391,8 @@ public class NPCs
 		
 		Point speechPos = UtilG.Translate(pos, -22, -2 - type.getImage().getHeight(null)) ;
 
-		DP.DrawSpeech(speechPos, content, NPCfont, SpeakingBubble, type.getColor()) ;
+		DP.DrawSpeech(speechPos, content, NPCfont, SpeakingBubble, Game.colorPalette[9]) ;
 		
-	}
-
-	public void display(DrawingOnPanel DP)
-	{
-		DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomCenter) ;
 	}
 
 	public void drawOptions(Point windowPos, DrawingOnPanel DP)
@@ -419,7 +414,7 @@ public class NPCs
 		{
 			Point textPos = UtilG.Translate(windowPos, 5, 5 + i * sy) ;
 			Color textColor = i == selOption ? selColor : Game.colorPalette[9] ;
-			DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, String.valueOf(i) + " - " + options.get(i), NPCfont, textColor) ;
+			DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, options.get(i), NPCfont, textColor) ;
 		}
 		
 	}
@@ -661,7 +656,12 @@ public class NPCs
 		}
 		
 	}
-	
+
+	public void display(DrawingOnPanel DP)
+	{
+		DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomCenter) ;
+	}
+
 	@Override
 	public String toString()
 	{
