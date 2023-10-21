@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -34,10 +33,9 @@ import windows.CreatureAttributesWindow;
 public class Creature extends LiveBeing
 {
 	private CreatureType type ;
-	private Set<Item> Bag ;
-	private int Gold ;
+	private Set<Item> items ;
+	private int gold ;
 	private Color color ;
-	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 	private boolean follow ;
 	
 	private static Color[] skinColor = new Color[] {Game.colorPalette[0], Game.colorPalette[1]} ;
@@ -65,10 +63,9 @@ public class Creature extends LiveBeing
 		state = LiveBeingStates.idle ;
 		currentAction = "" ;
 		spells = CT.getSpell() ;
-		this.Bag = CT.getBag() ;
-		this.Gold = CT.getGold() ;
+		this.items = CT.getItems() ;
+		this.gold = CT.getGold() ;
 		this.color = CT.getColor() ;
-		this.StatusCounter = CT.getStatusCounter() ;
 		
 		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
 		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Game.getSky().height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
@@ -102,10 +99,9 @@ public class Creature extends LiveBeing
 	public BattleSpecialAttributeWithDamage getPoison() {return BA.getPoison() ;}
 	public BattleSpecialAttribute getSilence() {return BA.getSilence() ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
-	public Set<Item> getBag() {return Bag ;}
-	public int getGold() {return Gold ;}
+	public Set<Item> getBag() {return items ;}
+	public int getGold() {return gold ;}
 	public Color getColor() {return color ;}
-	public int[] getStatusCounter() {return StatusCounter ;}
 	public boolean getFollow() {return follow ;}
 	public void setPos(Point newValue) {pos = newValue ;}
 	public void setFollow(boolean F) {follow = F ;}
@@ -134,25 +130,23 @@ public class Creature extends LiveBeing
 	public void setRandomPos()
 	{
 		Screen screen = Game.getScreen() ;
-		Point MinCoord = new Point(0, (int) (0.2*screen.getSize().height)) ;
-		Dimension Range = new Dimension(screen.getSize().width, (int) (screen.getBorders()[3] - screen.getBorders()[1])) ;
+		Point minCoord = new Point(0, (int) (0.2*screen.getSize().height)) ;
+		Dimension range = new Dimension(screen.getSize().width, (int) (screen.getBorders()[3] - screen.getBorders()[1])) ;
 		Dimension step = new Dimension(1, 1) ;
-		setPos(UtilG.RandomPos(MinCoord, Range, step)) ;
-	}
-	
-	public Point CenterPos()
-	{
-		return new Point((int) (pos.x + 0.5 * size.width), (int) (pos.y - 0.5 * size.height)) ;
+		setPos(UtilG.RandomPos(minCoord, range, step)) ;
 	}
 	
 	public Directions newMoveDirection(Directions originalDir)
 	{
+		
 		Directions newDir = PersonalAttributes.randomDir() ;
 		while (Directions.areOpposite(originalDir, newDir))
 		{
 			newDir = PersonalAttributes.randomDir() ;
 		}
+		
 		return newDir ;
+		
 	}
 	
 	public void updatePos(Directions dir, Point CurrentPos, int step, GameMap map)
@@ -187,7 +181,7 @@ public class Creature extends LiveBeing
 		// TODO quando não está em batalha mas está seguindo, ela só se aproxima, mas não entra na batalha
 		if (follow)
 		{
-			setPos(Follow(pos, PlayerPos, step, range)) ;
+			setPos(follow(pos, PlayerPos, step, range)) ;
 			return ;
 		}
 
@@ -299,7 +293,7 @@ public class Creature extends LiveBeing
 		{
 			if (currentAtkType.equals(AtkTypes.defense))
 			{
-				DeactivateDef() ;
+				deactivateDef() ;
 			}
 		}
 		setRandomPos() ;
@@ -309,8 +303,7 @@ public class Creature extends LiveBeing
 	@Override
 	public String toString()
 	{
-		return "Creature [type=" + type + ", Bag=" + Bag + ", Gold=" + Gold + ", color=" + color + ", StatusCounter="
-				+ Arrays.toString(StatusCounter) + ", follow=" + follow + "]";
+		return "Creature [type=" + type + ", Bag=" + items + ", Gold=" + gold + ", color=" + color + ", follow=" + follow + "]";
 	}
 
 	

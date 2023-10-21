@@ -169,7 +169,7 @@ public abstract class LiveBeing
 		DP.DrawText(UtilG.Translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
 	}
 	
-	public Point CalcNewPos()
+	public Point calcNewPos()
 	{
 		switch (dir)
 		{
@@ -279,6 +279,7 @@ public abstract class LiveBeing
 			if (spell.isActive())
 			{
 				spell.getDurationCounter().inc() ;
+				System.out.println(spell.getName() + " " + spell.getCooldownCounter());
 			}
 			if (spell.getDurationCounter().finished())
 			{
@@ -462,7 +463,7 @@ public abstract class LiveBeing
 //		}
 //	}
 		
-	public Point Follow(Point userPos, Point target, int step, int minDist)
+	public Point follow(Point userPos, Point target, int step, int minDist)
 	{
 		
 		Point pos = new Point(userPos) ;
@@ -494,16 +495,16 @@ public abstract class LiveBeing
 	{
 		if (battleActionCounter.finished() & isDefending())
 		{
-			DeactivateDef() ;
+			deactivateDef() ;
 		}
 	}
 	
-	public void ActivateDef()
+	public void activateDef()
 	{
 		BA.getPhyDef().incBonus(BA.getPhyDef().getBaseValue()) ;
 		BA.getMagDef().incBonus(BA.getMagDef().getBaseValue()) ;
 	}
-	public void DeactivateDef()
+	public void deactivateDef()
 	{
 		BA.getPhyDef().incBonus(-BA.getPhyDef().getBaseValue()) ;
 		BA.getMagDef().incBonus(-BA.getMagDef().getBaseValue()) ;

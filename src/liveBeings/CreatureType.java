@@ -35,15 +35,15 @@ public class CreatureType
 	protected PersonalAttributes PA ;
 	protected BattleAttributes BA ;
 	private List<Spell> spell ;
-	private Set<Item> Bag ;
-	private int Gold ;
+	private Set<Item> items ;
+	private int gold ;
 	private Color color ;
 	private int[] StatusCounter ;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]	
 	
 	private static int NumberOfCreatureTypes ;
 	
 	public CreatureType(
-			int Type,
+			int id,
 			String name,
 			int level,
 			Dimension size,
@@ -59,12 +59,12 @@ public class CreatureType
 			PersonalAttributes PA,
 			BattleAttributes BA,
 			List<Spell> spell,
-			Set<Item> Bag,
-			int Gold,
+			Set<Item> items,
+			int gold,
 			Color color,
 			int[] StatusCounter)
 	{
-		this.id = Type ;
+		this.id = id ;
 		
 		this.name = name;
 		this.level = level;
@@ -76,14 +76,13 @@ public class CreatureType
 		this.satiationDuration = satiationDuration;
 		this.numberSteps = numberSteps;
 		this.battleActionDuration = battleActionDuration ;
-//		this.stepCounter = stepCounter;
 		
 		this.movingAni = movingAni ;
 		this.PA = PA ;
 		this.BA = BA ;
 		this.spell = spell ;
-		this.Bag = Bag ;
-		this.Gold = Gold ;
+		this.items = items ;
+		this.gold = gold ;
 		this.color = color ;
 		this.StatusCounter = StatusCounter ;
 		
@@ -98,35 +97,29 @@ public class CreatureType
 	public PersonalAttributes getPA() {return PA ;}
 	public BattleAttributes getBA() {return BA ;}
 	public List<Spell> getSpell() {return spell ;}
-	public Set<Item> getBag() {return Bag ;}
-	public int getGold() {return Gold ;}
+	public Set<Item> getItems() {return items ;}
+	public int getGold() {return gold ;}
 	public Color getColor() {return color ;}
 	public int[] getStatusCounter() {return StatusCounter ;}
 	public Genetics getGenes() {return genes ;}
 	public void setID(int I) {id = I ;}
 	public void setSpell(List<Spell> S) {spell = S ;}
-	public void setBag(Set<Item> B) {Bag = B ;}
-	public void setGold(int G) {Gold = G ;}
+	public void setItems(Set<Item> B) {items = B ;}
+	public void setGold(int G) {gold = G ;}
 	public void setColor(Color C) {color = C ;}
 	public void setStatusCounter(int[] S) {StatusCounter = S ;}
 	public void setGenes(Genetics newGenes) {genes = newGenes ;}
 	
-	public static int getNumberOfCreatureTypes()
-	{
-		return NumberOfCreatureTypes ;
-	}
-	public static void setNumberOfCreatureTypes(int num)
-	{
-		NumberOfCreatureTypes = num ;
-	}
+	public static int getNumberOfCreatureTypes() { return NumberOfCreatureTypes ;}
+	public static void setNumberOfCreatureTypes(int num) { NumberOfCreatureTypes = num ;}
 	
 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
 	{
 		DP.DrawImage(movingAni.idleGif, pos, scale, Align.center) ;
 	}
 
-	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "CreatureTypes [Type=" + id + "]";
 	}
 }

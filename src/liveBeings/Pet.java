@@ -190,7 +190,7 @@ public class Pet extends LiveBeing
 	{
 		if (opponent != null)
 		{
-			return Follow(pos, opponent.getPos(), step, step) ;
+			return follow(pos, opponent.getPos(), step, step) ;
 		}
 		else if (closeToPlayer(playerPos))
 		{
@@ -204,7 +204,7 @@ public class Pet extends LiveBeing
 		}
 		else
 		{
-			return Follow(pos, playerPos, step, step) ;
+			return follow(pos, playerPos, step, step) ;
 		}
 	}
 	

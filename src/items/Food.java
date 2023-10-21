@@ -16,7 +16,7 @@ public class Food extends Item
 	
 	private static Food[] AllFood ;
 	
-	private static final Image iconFoodBerry = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconFoodBerry.png") ;
+	private static final Image iconFoodBerry ;
 	
 	static
 	{
@@ -25,7 +25,8 @@ public class Food extends Item
 		for (int p = 0; p <= AllFood.length - 1; p += 1)
 		{
 			AllFood[p] = new Food(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]), Float.parseFloat(input.get(p)[7]), Float.parseFloat(input.get(p)[8]), Integer.parseInt(input.get(p)[9]));
-		}	
+		}
+		iconFoodBerry = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconFoodBerry.png") ;
 	}
 	
 	public Food(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal, int SatiationHeal)
@@ -41,17 +42,14 @@ public class Food extends Item
 	public int getSatiationHeal() {return SatiationHeal ;}	
 	public static Food[] getAll() {return AllFood ;}
 
-	public static Image imageFromID(int id)
-	{
-		return iconFoodBerry ;
-	}
+	public static Image imageFromID(int id) { return iconFoodBerry ;}
 	
 	public void use(LiveBeing user)
 	{
 		PersonalAttributes PA = user.getPA() ;
 		PA.getLife().incCurrentValue((int) (lifeHeal * PA.getLife().getMaxValue())) ;
 		PA.getMp().incCurrentValue((int) (MPHeal * PA.getMp().getMaxValue())) ;
-		PA.getSatiation().incCurrentValue((int) (SatiationHeal * PA.getMp().getMaxValue())) ;
+		PA.getSatiation().incCurrentValue((int) (SatiationHeal / 310.0 * PA.getSatiation().getMaxValue())) ;
 	}
 
 	@Override

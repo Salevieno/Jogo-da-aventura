@@ -540,7 +540,7 @@ public class Player extends LiveBeing
 		
 		stepCounter.inc() ;
 		
-		Point newPos = CalcNewPos() ;
+		Point newPos = calcNewPos() ;
 		
 		if (!Game.getScreen().posIsInMap(newPos))
 		{
@@ -925,6 +925,7 @@ public class Player extends LiveBeing
 		if (!spell.getType().equals(SpellTypes.support)) { return useOffensiveSpell(spell, receiver) ;}
 
 		useSupportSpell(spell) ;
+		spell.getCooldownCounter().reset() ;
 		train(new AtkResults(AtkTypes.magical, AttackEffects.none, 0)) ;
 		stats.incNumberMagAtk() ;
 		
@@ -1174,6 +1175,7 @@ public class Player extends LiveBeing
 
 		spell.applyBuffs(true, this) ;
 		spell.applyNerfs(true, opponent) ;
+		spell.getCooldownCounter().reset() ;
 		
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 		

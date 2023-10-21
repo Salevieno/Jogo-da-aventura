@@ -65,7 +65,7 @@ public class BestiaryWindow extends GameWindow
 		textInfo.add(text[3] + ": " + creatureType.getPA().getExp().getCurrentValue()) ;
 		textInfo.add(text[4] + ": " + creatureType.getGold()) ;
 		textInfo.add(text[5] + ": ") ;
-		creatureType.getBag().forEach(item -> textInfo.add(item.getName())) ;
+		creatureType.getItems().forEach(item -> textInfo.add(item.getName())) ;
 
 		// draw text
 		Point textPos = new Point(mainWindowPos.x + offset, (int) (mainWindowPos.y + creatureType.getSize().height + offset)) ;

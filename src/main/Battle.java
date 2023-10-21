@@ -201,7 +201,7 @@ public class Battle
 		{
 			if (player.getCurrentBattleAction().equals(AtkTypes.defense))
 			{
-				player.DeactivateDef() ;
+				player.deactivateDef() ;
 			}
 //			UtilS.PrintBattleActions(6, "Player", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
 		}
@@ -212,7 +212,7 @@ public class Battle
 				if (pet.getCurrentBattleAction().equals(AtkTypes.defense))
 				{
 //					UtilS.PrintBattleActions(6, "Pet", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
-		 			pet.DeactivateDef() ;
+		 			pet.deactivateDef() ;
 				}
 			}
 		}
@@ -221,7 +221,7 @@ public class Battle
 			if (creature.getCurrentBattleAction().equals(AtkTypes.defense))
 			{
 //				UtilS.PrintBattleActions(6, "Creature", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
-	 			creature.DeactivateDef() ;
+	 			creature.deactivateDef() ;
 			}
 		}
 		
@@ -298,7 +298,7 @@ public class Battle
 			}
 			case defense:
 			{
-	 			attacker.ActivateDef() ;
+	 			attacker.activateDef() ;
 				return new AtkResults(AtkTypes.defense , AttackEffects.none, 0) ;
 			}
 			default: return new AtkResults() ;
