@@ -1126,12 +1126,13 @@ public class Game extends JPanel
 //				creature.incActionCounters() ;
 				if (creature.isMoving())
 				{
-					creature.Move(player.getPos(), player.getMap()) ;
+					creature.move(player.getPos(), player.getMap()) ;
 					creature.display(creature.getPos(), Scale.unit, DP) ;
 					continue ;
 				}
 				if (creature.canAct())
 				{
+					creature.think() ;
 					creature.act() ;
 				}
 				creature.display(creature.getPos(), Scale.unit, DP) ;
