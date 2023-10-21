@@ -77,7 +77,7 @@ public abstract class Opening
 				screen.pos(0.48, 0.45), 
 				screen.pos(0.4, 0.3), screen.pos(0.6, 0.3),
 				screen.pos(0.3, 0.3), screen.pos(0.5, 0.3), screen.pos(0.7, 0.3),
-				screen.pos(0.12, 0.3), screen.pos(0.32, 0.3), screen.pos(0.52, 0.3), screen.pos(0.72, 0.3), screen.pos(0.92, 0.3)} ;
+				screen.pos(0.13, 0.3), screen.pos(0.33, 0.3), screen.pos(0.53, 0.3), screen.pos(0.73, 0.3), screen.pos(0.93, 0.3)} ;
 		IconFunction[] btAction = new IconFunction[] {
 				portAction, enAction,
 				newGameAction, loadGameAction,
@@ -196,11 +196,11 @@ public abstract class Opening
 
 	public static void displayJobInfo(DrawingOnPanel DP)
 	{
-		Color textColor = Game.colorPalette[9] ;
-		Color bgColor = Game.colorPalette[7] ;
+		Color textColor = Game.colorPalette[0] ;
+		Color bgColor = Game.colorPalette[3] ;
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
-			Point rectPos = Game.getScreen().pos(0.06 + i * 0.2, 0.4) ;
+			Point rectPos = Game.getScreen().pos(0.04 + i * 0.2, 0.4) ;
 			Point textPos = UtilG.Translate(rectPos, 5, 5) ;
 			DP.DrawRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, bgColor, true) ;
 			DP.DrawFitText(textPos, 10, Align.topLeft, jobInfo[i], smallFont, 18, textColor) ;

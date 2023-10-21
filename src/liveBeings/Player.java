@@ -135,7 +135,7 @@ public class Player extends LiveBeing
 	public final static int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public final static Color[] ClassColors = new Color[] {Game.colorPalette[0], Game.colorPalette[1], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
-    public final static Gif levelUpGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 170, false, false) ;
+    public final static Gif levelUpGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 160, false, false) ;
     
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
 	public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
@@ -387,6 +387,7 @@ public class Player extends LiveBeing
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
 	private boolean actionIsAMove() { return Arrays.asList(MoveKeys).contains(currentAction) ;}
+	private boolean hitsCreature() { return (actionIsPhysicalAtk() | actionIsSpell()) & closestCreature != null ;}
 	public boolean isInBattle() { return state.equals(LiveBeingStates.fighting) ;}
 	public boolean isCollecting() { return state.equals(LiveBeingStates.collecting) ;}
 	public boolean isOpeningChest() { return state.equals(LiveBeingStates.openingChest) ;}
@@ -594,25 +595,23 @@ public class Player extends LiveBeing
 	{		
 		digCounter.inc() ;
 		
-		if (digCounter.finished())
-		{
-			digCounter.reset() ;
-			
-			setState(LiveBeingStates.idle) ;
-			
-			if (map.getDiggingItems().isEmpty()) { return ;}
-			
-			List<Item> listItems = new ArrayList<Item>(map.getDiggingItems().keySet()) ;
-			List<Double> listChances = new ArrayList<Double>(map.getDiggingItems().values()) ;
-			
-//			System.out.println(rewards);
-//			System.out.println(listItems);
-//			System.out.println(listChances);
+		if (!digCounter.finished()) { return ;}
+		
+		digCounter.reset() ;		
+		setState(LiveBeingStates.idle) ;
+		
+		if (map.getDiggingItems().isEmpty()) { return ;}
+		
+		List<Item> listItems = new ArrayList<Item>(map.getDiggingItems().keySet()) ;
+		List<Double> listChances = new ArrayList<Double>(map.getDiggingItems().values()) ;
+		
+//		System.out.println(rewards);
+//		System.out.println(listItems);
+//		System.out.println(listChances);
 
-			int itemID = UtilG.randomFromChanceList(listChances) ;
-			bag.add(listItems.get(itemID), 1) ;
-			obtainItemsAnimation(Arrays.asList(listItems.get(itemID))) ;
-		}
+		int itemID = UtilG.randomFromChanceList(listChances) ;
+		bag.add(listItems.get(itemID), 1) ;
+		obtainItemsAnimation(Arrays.asList(listItems.get(itemID))) ;
 		
 	}
 	
@@ -734,19 +733,14 @@ public class Player extends LiveBeing
 		{
 			Spell spell = spells.get(SpellKeys.indexOf(currentAction));
 			useSpell(spell, this) ;
-			
-//			if (spell.getType().equals(SpellTypes.offensive) & closestCreature != null & !isInBattle())
-//			{
-//				engageInFight(closestCreature) ;
-//			}
 		}		
 		
 		// if hits creature, enters battle
-		if ((actionIsPhysicalAtk() | actionIsSpell()) & closestCreature != null & !isInBattle())
+		if (hitsCreature() & !isInBattle())
 		{
 			engageInFight(closestCreature) ;
 		}
-		
+
 		if (bag.isOpen())
 		{
 			bag.act(currentAction, this) ;
@@ -763,7 +757,7 @@ public class Player extends LiveBeing
 		{
 			if (focusWindow.isOpen())
 			{
-				if (currentAction.equals("Escape"))
+				if (currentAction.equals("Escape"))	// TODO bag: tab = 0, other windows: menu = 0
 				{
 					switchOpenClose(focusWindow) ;
 				}
@@ -1291,6 +1285,7 @@ public class Player extends LiveBeing
 	{
 		if (win.isOpen())
 		{
+			win.reset() ;
 			win.close() ;
 			openWindows.remove(win) ;
 			if (openWindows.isEmpty()) { setFocusWindow(null) ; return ;}

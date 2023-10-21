@@ -153,7 +153,7 @@ public class Game extends JPanel
     	screen.calcCenter() ;
 		gameLanguage = Languages.portugues ;
 		state = GameStates.opening;
-		colorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette.png"), "Normal") ;
+		colorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette4.png"), "Normal") ;
 		konamiCodeActive = false ;
 		initializeAnimations() ;
 		

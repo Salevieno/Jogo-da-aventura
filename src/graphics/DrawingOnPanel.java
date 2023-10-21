@@ -249,7 +249,7 @@ public class DrawingOnPanel
 		boolean flipH = 0.7 * screenSize.width < pos.x ? true : false ;
 		Color textColor = color != null ? color : colorPalette[0] ;
 		
-		if (0.7 * screenSize.width < pos.x)
+		if (pos.x <= 0.3 * screenSize.width)
 		{
 			pos = UtilG.Translate(pos, 50, 0) ;
 		}

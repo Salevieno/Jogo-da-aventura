@@ -646,7 +646,7 @@ public class NPCs
 	
 	private void sellerAction(Player player, String action, ShoppingWindow shopping, DrawingOnPanel DP)
 	{
-		System.out.println(menu);
+
 		if (action == null) { return ;}
 		
 		if (menu == 0 & Player.actionIsForward(action))

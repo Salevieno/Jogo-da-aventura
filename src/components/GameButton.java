@@ -27,8 +27,8 @@ public class GameButton
 	private IconFunction action ;
 	
 	private static Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-	private static Color textColor = Game.colorPalette[9] ;
-	private static Color selectedTextColor = Game.colorPalette[10] ;
+	private static Color textColor = Game.colorPalette[0] ;
+	private static Color selectedTextColor = Game.colorPalette[18] ;
 	
 	public static int selectedIconID ;
 	public static List<GameButton> allButtons = new ArrayList<>() ;	// isn't it insane to create a list of all items of a class inside the class itself?
@@ -82,7 +82,7 @@ public class GameButton
 	
 	public void displayGeneralButton(DrawingOnPanel DP)
 	{
-		DP.DrawRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[5], Game.colorPalette[6], true) ;
+		DP.DrawRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[3], Game.colorPalette[3], true) ;
 		DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 	}
 	

@@ -24,13 +24,13 @@ public abstract class GameWindow
 	protected int numberWindows ;
 	protected Dimension size ;
 	
-	protected final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
-	protected final Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 11) ;
-	protected final Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-	protected final Color stdColor = Game.colorPalette[9] ;
-	protected final Color selColor = Game.colorPalette[3] ;
-	protected final int border = 6 ;
-	protected final int padding = 4 ;
+	protected static final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
+	protected static final Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 11) ;
+	protected static final Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	protected static final Color stdColor = Game.colorPalette[9] ;
+	protected static final Color selColor = Game.colorPalette[3] ;
+	protected static final int border = 6 ;
+	protected static final int padding = 4 ;
 	
 	public GameWindow(String name, Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
 	{
@@ -117,6 +117,14 @@ public abstract class GameWindow
 		}
 	}
 
+	public void reset()
+	{
+		menu = 0 ;
+		tab = 0 ;
+		window = 0 ;
+		item = 0 ;
+	}
+	
 	public Color getTextColor(boolean condition) { return condition ? selColor : stdColor ;}
 	
 	public abstract void navigate(String action) ;

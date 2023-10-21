@@ -88,7 +88,7 @@ public class BagWindow extends GameWindow
 	public int getGold() {return gold ;}
 	
 	public void navigate(String action)
-	{//System.out.println("tab " + tab + " window " + window + " menu " + menu);
+	{
 		if (tab == 0)
 		{
 			if (action.equals(Player.ActionKeys[2]))
@@ -106,10 +106,6 @@ public class BagWindow extends GameWindow
 			if (Player.actionIsForward(action))
 			{
 				tabUp() ;
-			}
-			if (action.equals("Escape"))
-			{
-				close() ;
 			}
 		}
 		if (tab == 1)
@@ -148,8 +144,10 @@ public class BagWindow extends GameWindow
 		if (tab == 0) { return ;}
 		
 		if (tab == 1 & Player.actionIsForward(action))
+		{
+			player.useItem(getSelectedItem()) ;
+		}
 		
-		player.useItem(getSelectedItem()) ;
 	}
 	
 	public void add(Item item, int amount)
