@@ -39,14 +39,14 @@ public class GameMap
 	protected List<MapElements> mapElems ;
 	protected List<Building> buildings ;
 	protected List<NPCs> npcs ;
-	protected Map<Item, Double> diggingItems = new HashMap<>() ;
+	protected Map<Item, Double> diggingItems ;
 	
 	public static Image[] CollectibleImage ;
 	public static Image[] GroundImage ;	
 	
-	protected static final Image beachGif = UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map2_beach.gif") ;
-	protected static final Image infoWindow = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "MapInfo.png") ;
-	public static final Map<Item, Double> allDiggingItems = new HashMap<>() ;
+	protected static final Image beachGif ;
+	protected static final Image infoWindow ;
+	public static final Map<Item, Double> allDiggingItems ;
 
 	static
 	{
@@ -56,6 +56,7 @@ public class GameMap
 		int[] genItemIDs = new int[] {2,4,8,9,25,33,35,41,45,46,48,50,52,59,60,61,67,68,75,77,80,90,91,109,110,113,116,117,120,122,125,126,131,136,141,142,143,144,147,150,154,155,156,157,161,162,166,167,168,169,170,171,172,173,175,178,179,183,191,193,202,203,205,215,221,223,224,228,230,231,232,233,242,248,249,250,259,267,268,276,277,278,283,286,292,293,294,295,296,299,301,310,311,315,316,317,323,325,327,335,337,338,339,341,343,345,346,350,353,355,358,363,367,368,370,371,375,378,381} ;
 		double[] genItemPotentials = new double[] {5,5,5,5,4,4,3,4,4,5,3,2,4,2,1,2,3,4,4,2,3,1,1,3,1,3,2,4,3,1,3,3,1,2,2,1,3,2,3,2,4,4,4,5,2,3,3,5,5,4,4,1,2,3,2,2,3,4,5,2,2,3,4,2,1,5,4,5,5,4,5,5,5,3,2,4,3,4,4,1,4,1,2,5,3,4,5,4,2,1,2,3,4,3,2,3,3,1,1,2,2,3,2,4,3,2,4,5,3,4,4,3,2,2,5,4,3,2,1} ;
 		
+		allDiggingItems = new HashMap<>() ;
 		for (int i = 0 ; i <= fabItemIDs.length - 1; i += 1)
 		{
 			allDiggingItems.put(Fab.getAll()[fabItemIDs[i]], fabItemPotentials[i]) ;
@@ -65,6 +66,8 @@ public class GameMap
 		{
 			allDiggingItems.put(GeneralItem.getAll()[genItemIDs[i]], genItemPotentials[i]) ;
 		}
+		beachGif = UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map2_beach.gif") ;
+		infoWindow = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "MapInfo.png") ;
 		
 //		allDiggingItems.entrySet().forEach(System.out::println);
 	}
@@ -95,11 +98,12 @@ public class GameMap
 	{
 		this.name = Name ;
 		this.continent = continent ;
+		this.connections = Connections ;
 		this.image = image ;
 		this.music = music ;
 		this.buildings = building ;
 		this.npcs = npc ;
-		this.connections = Connections ;
+		diggingItems = new HashMap<>() ;
 		
 		mapElems = new ArrayList<>() ;
 		groundTypes = new ArrayList<>() ;
@@ -461,14 +465,14 @@ public class GameMap
 		DP.DrawImage(infoWindow, pos, Align.topLeft) ;
 		
 		Point titlePos = UtilG.Translate(pos, size.width / 2 + 5, 13) ;
-		DP.DrawText(titlePos, Align.center, 0, name, titleFont, Game.colorPalette[9]) ;
+		DP.DrawText(titlePos, Align.center, 0, name, titleFont, Game.colorPalette[0]) ;
 		
 		Point diggingItemsPos = UtilG.Translate(pos, 10, 43) ;
-		DP.DrawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Game.colorPalette[9]) ;
+		DP.DrawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Game.colorPalette[0]) ;
 		diggingItemsPos.y += 14 ;
 		for (Item item : diggingItems.keySet())
 		{
-			DP.DrawText(diggingItemsPos, Align.centerLeft, 0, item.getName(), font, Game.colorPalette[9]) ;
+			DP.DrawText(diggingItemsPos, Align.centerLeft, 0, item.getName(), font, Game.colorPalette[0]) ;
 			diggingItemsPos.y += 10 ;
 		}
 		
@@ -480,11 +484,11 @@ public class GameMap
 			DP.DrawText(levelPos, Align.center, 0, "Nível " + String.valueOf(fm.getLevel()), largeFont, Game.colorPalette[6]) ;
 			
 			Point allItemsPos = UtilG.Translate(pos, 160, 43) ;
-			DP.DrawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Game.colorPalette[9]) ;
+			DP.DrawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Game.colorPalette[0]) ;
 			allItemsPos.y += 14 ;
 			for (Item item : fm.getItems())
 			{
-				DP.DrawText(allItemsPos, Align.centerLeft, 0, item.getName(), font, Game.colorPalette[9]) ;
+				DP.DrawText(allItemsPos, Align.centerLeft, 0, item.getName(), font, Game.colorPalette[0]) ;
 				allItemsPos.y += 10 ;
 			}
 			
@@ -498,7 +502,10 @@ public class GameMap
  	
  	public void displayTudoEstaBem(DrawingOnPanel DP)
  	{
- 		DP.DrawText(new Point(20, 20), Align.topLeft, 0, Game.allText.get(TextCategories.allIsGood)[0], new Font(Game.MainFontName, Font.BOLD, 13), Game.colorPalette[8]) ;
+ 		Point pos = new Point(20, 20) ;
+ 		String text = Game.allText.get(TextCategories.allIsGood)[0] ;
+ 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+ 		DP.DrawText(pos, Align.topLeft, 0, text, font, Game.colorPalette[20]) ;
  	}
 	
  	public void display(Point pos, Scale scale, DrawingOnPanel DP)

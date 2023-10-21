@@ -159,12 +159,12 @@ public class SpellsTreeWindow extends GameWindow
 		Point pos = UtilG.Translate(windowTopLeft, 0, -40) ;
 		Point spellNamePos = UtilG.Translate(windowTopLeft, spellInfo.getWidth(null) / 2, - 40 - 10) ;
 		DP.DrawImage(spellInfo, pos, Align.topLeft) ;
-		DP.DrawText(spellNamePos, Align.center, angle, spellsOnWindow.get(item).getName(), regularFont, Game.colorPalette[9]) ;
+		DP.DrawText(spellNamePos, Align.center, angle, spellsOnWindow.get(item).getName(), regularFont, Game.colorPalette[21]) ;
 		pos.x += 5 ;
 		pos.y += 8 ;
 		for (String info : spellsOnWindow.get(item).getInfo())
 		{
-			DP.DrawText(pos, Align.centerLeft, angle, info, regularFont, Game.colorPalette[9]) ;
+			DP.DrawText(pos, Align.centerLeft, angle, info, regularFont, Game.colorPalette[21]) ;
 			pos.y += 16 ;
 		}
 	}
@@ -173,7 +173,7 @@ public class SpellsTreeWindow extends GameWindow
 	{
 		double angle = DrawingOnPanel.stdAngle ;
 		Point pointsPos = UtilG.Translate(windowTopLeft, size.width + 10 + 28, size.height - 6 - 40) ;
-		Color color = Game.colorPalette[0] ;
+		Color color = Game.colorPalette[21] ;
 		
 		DP.DrawImage(spellPoints, pointsPos, Align.topCenter) ;
 		DP.DrawText(UtilG.Translate(pointsPos, 0, 6), Align.topCenter, angle, "Pontos", regularFont, color) ;
@@ -193,7 +193,7 @@ public class SpellsTreeWindow extends GameWindow
 		
 		Point displayPos = UtilG.Translate(windowTopLeft, -23, 0) ;
 		Image displayImage = tab == 0 ? tab0Image : tab1Image ;
-		Color tabTextColor = Game.colorPalette[9] ;
+		Color tabTextColor = Game.colorPalette[21] ;
 		DP.DrawImage(displayImage, displayPos, angle, new Scale(1, 1), Align.topLeft) ;
 		DP.DrawText(UtilG.Translate(windowTopLeft, -10, 6 + 75/2), Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
 		DP.DrawText(UtilG.Translate(windowTopLeft, -10, 6 + 75 + 75/2), Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
@@ -219,14 +219,14 @@ public class SpellsTreeWindow extends GameWindow
 
 		double angle = DrawingOnPanel.stdAngle ;
 		Color selectedColor = Game.colorPalette[3] ;
-		Color hasPreReqColor = Game.colorPalette[0] ;
-		Color hasNotPreReqColor = Game.colorPalette[9] ;
+		Color hasPreReqColor = Game.colorPalette[21] ;
+		Color hasNotPreReqColor = Game.colorPalette[21] ;
 		
 		displaySpellsInfo(DP) ;
 		displayWindow(DP) ;
 		
 		Point titlePos = UtilG.Translate(windowTopLeft, size.width / 2, 6 + 9) ;
-		DP.DrawText(titlePos, Align.center, angle, name, largeFont, Game.colorPalette[9]);
+		DP.DrawText(titlePos, Align.center, angle, name, largeFont, Game.colorPalette[21]);
 		
 		if (spells == null) { return ;}
 		

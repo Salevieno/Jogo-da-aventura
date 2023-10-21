@@ -101,9 +101,9 @@ public class SideBar
 		double stdAngle = DrawingOnPanel.stdAngle ;
 		String[] IconKey = new String[] {null, Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7],
 				null, null, null, null} ;
-		Color textColor = Game.colorPalette[7] ;
+		Color textColor = Game.colorPalette[3] ;
 		
-		DP.DrawRect(barPos, Align.bottomLeft, size, 1, Game.colorPalette[9], null) ;
+		DP.DrawRect(barPos, Align.bottomLeft, size, 1, Game.colorPalette[0], null) ;
 		
 		buttons.forEach(button -> button.display(stdAngle, false, mousePos, DP)) ;
 		buttons.forEach(button -> DP.DrawText(button.getTopLeftPos(), Align.topLeft, stdAngle, IconKey[0] != null ? IconKey[0] : "", font, textColor)) ;

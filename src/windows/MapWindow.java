@@ -238,7 +238,7 @@ public class MapWindow extends GameWindow
 			Point mapPos = UtilG.Translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2, size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
 			map.display(mapPos, scale, DP) ;
 			Point textPos = UtilG.Translate(mapPos, (int) (scale.x * screenSize.width / 2), (int) (-scale.y * screenSize.height / 2)) ;
-			DP.DrawText(textPos, Align.center, 0, map.getName(), stdFont, Game.colorPalette[9]) ;
+			DP.DrawText(textPos, Align.center, 0, map.getName(), stdFont, Game.colorPalette[0]) ;
 			
 			if (!map.equals(currentMap)) { continue ;}
 			if (playerPos == null) { continue ;}

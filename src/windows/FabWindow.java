@@ -58,7 +58,7 @@ public class FabWindow extends GameWindow
 		
 		int sy = font.getSize() + 1 ;
 		int id = window ;
-		Color textColor = Game.colorPalette[1] ;
+		Color textColor = Game.colorPalette[5] ;
 		double stdAngle = DrawingOnPanel.stdAngle ;
 		
 		// draw ingredients

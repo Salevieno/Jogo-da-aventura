@@ -4,10 +4,10 @@ import items.Item;
 
 public enum CollectibleTypes
 {
-	berry (400),
-	herb (156),
-	wood (250),
-	metal (400);
+	berry (4000),
+	herb (128000),
+	wood (153600),
+	metal (256000);
 	
 	int spawnTime ;
 	

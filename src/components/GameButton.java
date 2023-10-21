@@ -133,33 +133,12 @@ public class GameButton
 		}
 		
 		DP.DrawImage(imageDisplayed, topLeft, angle, new Scale(1, 1), Align.topLeft) ;
-		if (name == null)
-		{ return ;}
+		
+		if (name == null) { return ;}
+		
 		DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
 		
-//		if (ishovered(mousePos))
-//		{
-//			displayHovered(angle, displayText, DP) ;
-//			return ;
-//		}
-//		
-//		displayNotHovered(angle, displayText, DP) ;
 	}
-	
-//	public void display(double angle, boolean displayText, Point mousePos, DrawingOnPanel DP)
-//	{
-//		
-//		if (!isActive) { return ;}
-//		
-//		
-//		if (ishovered(mousePos))
-//		{
-//			displayHovered(angle, displayText, DP) ;
-//			return ;
-//		}
-//		
-//		displayNotHovered(angle, displayText, DP) ;
-//	}
 	
 	public void displayHoverMessage(DrawingOnPanel DP)
 	{

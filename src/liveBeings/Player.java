@@ -134,7 +134,7 @@ public class Player extends LiveBeing
 	public final static List<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public final static int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
-    public final static Color[] ClassColors = new Color[] {Game.colorPalette[0], Game.colorPalette[1], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
+    public final static Color[] ClassColors = new Color[] {Game.colorPalette[21], Game.colorPalette[5], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
     public final static Gif levelUpGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 160, false, false) ;
     
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
@@ -1504,7 +1504,7 @@ public class Player extends LiveBeing
 	public void drawTimeBar(Creature creature, DrawingOnPanel DP)
 	{
 		String relPos = UtilS.RelPos(pos, creature.getPos()) ;
-		DrawTimeBar(relPos, Game.colorPalette[9], DP) ;
+		DrawTimeBar(relPos, Game.colorPalette[0], DP) ;
 	}
 	public void display(Point pos, Scale scale, Directions direction, boolean showRange, DrawingOnPanel DP)
 	{

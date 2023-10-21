@@ -38,7 +38,7 @@ public class CreatureAttributesWindow extends AttributesWindow
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;		
 		Color[] colorPalette = Game.colorPalette ;
-		Color textColor = colorPalette[9] ;
+		Color textColor = colorPalette[21] ;
 		
 		String[] attText = Game.allText.get(TextCategories.attributes) ;		
 		Point namePos = UtilG.Translate(windowPos, size.width / 2, 14) ;

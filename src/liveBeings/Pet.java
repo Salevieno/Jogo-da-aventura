@@ -69,9 +69,9 @@ public class Pet extends LiveBeing
 		combo = new ArrayList<>();
 		
 		this.job = Job ;
-		Color[] ColorPalette = Game.colorPalette ;
-		Color[] PetColor = new Color[] {ColorPalette[3], ColorPalette[1], ColorPalette[18], ColorPalette[18]} ;
-		color = PetColor[Job] ;
+		Color[] colorPalette = Game.colorPalette ;
+		Color[] petColors = new Color[] {colorPalette[3], colorPalette[5], colorPalette[21], colorPalette[21]} ;
+		color = petColors[Job] ;
 		spells = InitializePetSpells();
 		spellPoints = 0 ;
 

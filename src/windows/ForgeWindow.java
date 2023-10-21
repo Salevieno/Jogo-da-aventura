@@ -52,7 +52,7 @@ public class ForgeWindow extends GameWindow
 	{
 		message = messages.get(i) ;
 		Point pos = UtilG.Translate(windowPos, 0, - 30) ;
-		Game.getAnimations()[12].start(200, new Object[] {pos, message, Game.colorPalette[9]}) ;
+		Game.getAnimations()[12].start(200, new Object[] {pos, message, Game.colorPalette[0]}) ;
 	}
 	
 	public void navigate(String action)

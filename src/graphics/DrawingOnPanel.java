@@ -33,32 +33,42 @@ import windows.PlayerAttributesWindow;
 
 public class DrawingOnPanel 
 {
-	public static double stdAngle = 0 ;
-	public static int stdStroke = 1;
-	public static Font stdFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-	private Graphics2D G ;
+	private Graphics2D graph2D ;
 	
 	private static Color[] colorPalette = Game.colorPalette;
 	private Dimension screenSize = Game.getScreen().getSize() ;
-	private static Image menuWindow = UtilG.loadImage(Game.ImagesPath + "MenuWindow.png") ;
-	private static Image ArrowIconImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "ArrowIcon.png") ;
-	public static Image[] ElementImages = new Image[] {
-			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementNeutral.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementWater.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementFire.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementPlant.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementEarth.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementAir.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementThunder.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementLight.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementDark.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementSnow.png")
-			} ;
+	private static Image menuWindow ;
+	private static Image ArrowIconImage ;
 	
+	public static double stdAngle ;
+	public static final int stdStroke ;
+	public static final Font stdFont ;
+	public static final Image[] ElementImages ;
 	
-	public void setGraphics(Graphics2D G)
+	static
 	{
-		this.G = G ;
+		stdAngle = 0 ;
+		stdStroke = 1;
+		stdFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		menuWindow = UtilG.loadImage(Game.ImagesPath + "MenuWindow.png") ;
+		ArrowIconImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "ArrowIcon.png") ;
+		ElementImages = new Image[] {
+				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementNeutral.png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementWater.png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementFire.png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementPlant.png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementEarth.png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementAir.png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementThunder.png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementLight.png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementDark.png"),
+				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementSnow.png")
+				} ;
+	}
+	
+	public void setGraphics(Graphics2D graph2D)
+	{
+		this.graph2D = graph2D ;
 	}
 
 	// primitive methods
@@ -81,35 +91,35 @@ public class DrawingOnPanel
 		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
 		size = new Dimension ((!flipH ? 1 : -1) * size.width, (!flipV ? 1 : -1) * size.height) ;
 		Point offset = UtilG.offsetForAlignment(align, size) ;
-		AffineTransform backup = G.getTransform() ;
-		G.transform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
-		G.setComposite(AlphaComposite.SrcOver.derive((float) alpha)) ;
+		AffineTransform backup = graph2D.getTransform() ;
+		graph2D.transform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
+		graph2D.setComposite(AlphaComposite.SrcOver.derive((float) alpha)) ;
 		
-		G.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
+		graph2D.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 		
-		G.setComposite(AlphaComposite.SrcOver.derive((float) 1.0)) ;
-        G.setTransform(backup) ;
+		graph2D.setComposite(AlphaComposite.SrcOver.derive((float) 1.0)) ;
+        graph2D.setTransform(backup) ;
 	}
 	public void DrawGif(Image gif, Point pos, Align align)
 	{
 		Dimension size = new Dimension(gif.getWidth(null), gif.getHeight(null)) ;
 		Point offset = UtilG.offsetForAlignment(align, size) ;
-		G.drawImage(gif, pos.x + offset.x, pos.y + offset.y, null) ;
+		graph2D.drawImage(gif, pos.x + offset.x, pos.y + offset.y, null) ;
 	}
 	public void DrawText(Point pos, Align align, double angle, String text, Font font, Color color)
 	{
 		// by default starts at the left bottom
-		Dimension size = new Dimension(UtilG.TextL(text, font, G), UtilG.TextH(font.getSize())) ;
+		Dimension size = new Dimension(UtilG.TextL(text, font, graph2D), UtilG.TextH(font.getSize())) ;
 		Point offset = UtilG.offsetForAlignment(align, size) ;
-		AffineTransform backup = G.getTransform() ;		
+		AffineTransform backup = graph2D.getTransform() ;		
 		
-		G.transform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
+		graph2D.transform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
 
-		G.setColor(color) ;
-		G.setFont(font) ;
-		G.drawString(text, pos.x + offset.x, pos.y + offset.y + size.height) ;
+		graph2D.setColor(color) ;
+		graph2D.setFont(font) ;
+		graph2D.drawString(text, pos.x + offset.x, pos.y + offset.y + size.height) ;
         
-		G.setTransform(backup) ;
+		graph2D.setTransform(backup) ;
 	}
 	public void DrawFitText(Point pos, int sy, Align align, String text, Font font, int maxLength, Color color)
 	{
@@ -133,7 +143,7 @@ public class DrawingOnPanel
 		}
 		
 		Point topLeftPos = UtilG.Translate(pos, offset.x, offset.y) ;
-		Dimension textSize = new Dimension(UtilG.TextL(shortText, font, G), UtilG.TextH(font.getSize())) ;
+		Dimension textSize = new Dimension(UtilG.TextL(shortText, font, graph2D), UtilG.TextH(font.getSize())) ;
 		if (text.length() <= maxLength | UtilG.isInside(mousePos, topLeftPos, textSize))
 		{
 			DrawText(pos, align, stdAngle, text, font, color) ;
@@ -145,12 +155,12 @@ public class DrawingOnPanel
 	}
 	public void DrawLine(Point p1, Point p2, int stroke, Color color)
 	{
-		G.setColor(color) ;
-		G.setStroke(new BasicStroke(stroke)) ;
+		graph2D.setColor(color) ;
+		graph2D.setStroke(new BasicStroke(stroke)) ;
 		
-		G.drawLine(p1.x, p1.y, p2.x, p2.y) ;
+		graph2D.drawLine(p1.x, p1.y, p2.x, p2.y) ;
 		
-		G.setStroke(new BasicStroke(stdStroke)) ;
+		graph2D.setStroke(new BasicStroke(stdStroke)) ;
         //Ut.CheckIfPosIsOutsideScreen(new int[] {x[0], y[0]}, new int[] {ScreenL + 55, ScreenH + 19}, "A line is being drawn outside window") ;
 		//Ut.CheckIfPosIsOutsideScreen(new int[] {x[1], y[1]}, new int[] {ScreenL + 55, ScreenH + 19}, "A line is being drawn outside window") ;
 	}
@@ -159,21 +169,21 @@ public class DrawingOnPanel
 		// Rectangle by default starts at the left top
 		Point offset = UtilG.offsetForAlignment(align, size) ;
 		int[] Corner = new int[] {pos.x + offset.x, pos.y + offset.y} ;
-		G.setStroke(new BasicStroke(stroke)) ;
+		graph2D.setStroke(new BasicStroke(stroke)) ;
 		if (color != null)
 		{
-			G.setColor(color) ;
-			G.fillRect(Corner[0], Corner[1], size.width, size.height) ;
+			graph2D.setColor(color) ;
+			graph2D.fillRect(Corner[0], Corner[1], size.width, size.height) ;
 		}
 		if (contourColor != null)
 		{
 			//int[] xPoints = new int[] {Corner[0], Corner[0] + size.width, Corner[0] + size.width, Corner[0], Corner[0]} ;
 			//int[] yPoints = new int[] {Corner[1], Corner[1], Corner[1] + size.height, Corner[1] + size.height, Corner[1]} ;
-			G.setColor(contourColor) ;
-			G.drawRect(Corner[0], Corner[1], size.width, size.height) ;
+			graph2D.setColor(contourColor) ;
+			graph2D.drawRect(Corner[0], Corner[1], size.width, size.height) ;
 			//G.drawPolyline(xPoints, yPoints, xPoints.length) ;
 		}
-		G.setStroke(new BasicStroke(stdStroke)) ;
+		graph2D.setStroke(new BasicStroke(stdStroke)) ;
 	}
 	public void DrawRoundRect(Point pos, Align align, Dimension size, int stroke, Color topColor, Color botColor, boolean contour)
 	{
@@ -181,63 +191,63 @@ public class DrawingOnPanel
 		int ArcWidth = 10, ArcHeight = 10 ;
 		Point offset = UtilG.offsetForAlignment(align, size) ;
 		int[] Corner = new int[] {pos.x + offset.x, pos.y + offset.y} ;
-		G.setStroke(new BasicStroke(stroke)) ;
+		graph2D.setStroke(new BasicStroke(stroke)) ;
 		if (topColor != null & botColor != null)
 		{
 		    GradientPaint gradient = new GradientPaint(Corner[0], Corner[1], topColor, Corner[0], Corner[1] + size.height, botColor) ;
-		    G.setPaint(gradient) ;
-			G.fillRoundRect(Corner[0], Corner[1], size.width, size.height, ArcWidth, ArcHeight) ;
+		    graph2D.setPaint(gradient) ;
+			graph2D.fillRoundRect(Corner[0], Corner[1], size.width, size.height, ArcWidth, ArcHeight) ;
 		}
 		if (contour)
 		{
-			G.setColor(Color.black) ;
-			G.drawRoundRect(Corner[0], Corner[1], size.width, size.height, ArcWidth, ArcHeight) ;
+			graph2D.setColor(Color.black) ;
+			graph2D.drawRoundRect(Corner[0], Corner[1], size.width, size.height, ArcWidth, ArcHeight) ;
 		}
-		G.setStroke(new BasicStroke(stdStroke)) ;
+		graph2D.setStroke(new BasicStroke(stdStroke)) ;
 	}
 	public void DrawArc(Point center, int diameter, int stroke, int startAngle, int endAngle, Color color, Color contourColor)
 	{
-		G.setColor(color) ;
-		G.setStroke(new BasicStroke(stroke)) ;
+		graph2D.setColor(color) ;
+		graph2D.setStroke(new BasicStroke(stroke)) ;
 		if (color != null)
 		{
-			G.fillArc(center.x - diameter/2, center.y - diameter/2, diameter, diameter, startAngle, endAngle) ;
+			graph2D.fillArc(center.x - diameter/2, center.y - diameter/2, diameter, diameter, startAngle, endAngle) ;
 		}
 		if (contourColor != null)
 		{
-			G.setColor(contourColor) ;
-			G.drawArc(center.x - diameter/2, center.y - diameter/2, diameter, diameter, startAngle, endAngle) ;
+			graph2D.setColor(contourColor) ;
+			graph2D.drawArc(center.x - diameter/2, center.y - diameter/2, diameter, diameter, startAngle, endAngle) ;
 		}
-		G.setStroke(new BasicStroke(stdStroke)) ;
+		graph2D.setStroke(new BasicStroke(stdStroke)) ;
 	}
 	public void DrawCircle(Point center, int diameter, int stroke, Color color, Color contourColor)
 	{
-		G.setColor(color) ;
-		G.setStroke(new BasicStroke(stroke)) ;
+		graph2D.setColor(color) ;
+		graph2D.setStroke(new BasicStroke(stroke)) ;
 		if (color != null)
 		{
-			G.fillOval(center.x - diameter/2, center.y - diameter/2, diameter, diameter) ;
+			graph2D.fillOval(center.x - diameter/2, center.y - diameter/2, diameter, diameter) ;
 		}
 		if (contourColor != null)
 		{
-			G.setColor(contourColor) ;
-			G.drawOval(center.x - diameter/2, center.y - diameter/2, diameter, diameter) ;
+			graph2D.setColor(contourColor) ;
+			graph2D.drawOval(center.x - diameter/2, center.y - diameter/2, diameter, diameter) ;
 		}
-		G.setStroke(new BasicStroke(stdStroke)) ;
+		graph2D.setStroke(new BasicStroke(stdStroke)) ;
 	}
 	public void DrawPolygon(int[] x, int[] y, int stroke, Color color)
 	{
-		G.setColor(color) ;
-		G.setStroke(new BasicStroke(stroke)) ;
-		G.fillPolygon(x, y, x.length) ;
-		G.setStroke(new BasicStroke(stdStroke)) ;
+		graph2D.setColor(color) ;
+		graph2D.setStroke(new BasicStroke(stroke)) ;
+		graph2D.fillPolygon(x, y, x.length) ;
+		graph2D.setStroke(new BasicStroke(stdStroke)) ;
 	}
 	public void DrawPolyLine(int[] x, int[] y, int stroke, Color color)
 	{
-		G.setColor(color) ;
-		G.setStroke(new BasicStroke(stroke)) ;
-		G.drawPolyline(x, y, x.length) ;
-		G.setStroke(new BasicStroke(stdStroke)) ;
+		graph2D.setColor(color) ;
+		graph2D.setStroke(new BasicStroke(stroke)) ;
+		graph2D.drawPolyline(x, y, x.length) ;
+		graph2D.setStroke(new BasicStroke(stdStroke)) ;
 	}
 	
 	
@@ -247,7 +257,7 @@ public class DrawingOnPanel
 		// obs: text must end with . , ? or ! for this function to work
 		int bubbleL = speechBubble.getWidth(null), bubbleH = speechBubble.getHeight(null) ;
 		boolean flipH = 0.7 * screenSize.width < pos.x ? true : false ;
-		Color textColor = color != null ? color : colorPalette[0] ;
+		Color textColor = color != null ? color : colorPalette[21] ;
 		
 		if (pos.x <= 0.3 * screenSize.width)
 		{
@@ -316,7 +326,7 @@ public class DrawingOnPanel
 		for (int i = 0 ; i <= screenSize.width/spacing[0] - 1 ; ++i)
 		{
 			int LineThickness = 1 ;
-			Color color = colorPalette[9] ;
+			Color color = colorPalette[21] ;
 			if (i % 10 == 0)
 			{
 				LineThickness = 2 ;
@@ -330,7 +340,7 @@ public class DrawingOnPanel
 			for (int j = 0 ; j <= screenSize.height/spacing[1] - 1 ; ++j)
 			{
 				LineThickness = 1 ;
-				color = colorPalette[9] ;
+				color = colorPalette[21] ;
 				if (j % 10 == 0)
 				{
 					LineThickness = 2 ;
@@ -349,7 +359,8 @@ public class DrawingOnPanel
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 		float time = (float)(sky.dayTime.getCounter()) / Game.DayDuration ;
-		DrawText(new Point(0, (int) (0.99*screenSize.height)), Align.bottomLeft, stdAngle, (int)(24*time) + ":" + (int)(24*60*time % 60), font, colorPalette[5]) ;
+		String message = (int)(24*time) + ":" + (int)(24*60*time % 60) ;
+		DrawText(Game.getScreen().pos(0, 0.99), Align.bottomLeft, stdAngle, message, font, colorPalette[20]) ;
 	}
 	
 	public void DrawFullMap(Point playerPos, GameMap map, Sky sky)
@@ -515,8 +526,8 @@ public class DrawingOnPanel
 	{
 
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Dimension size = new Dimension(UtilG.TextL(text, font, G) + 10, 20) ;
-		Color bgColor = Game.colorPalette[7] ;
+		Dimension size = new Dimension(UtilG.TextL(text, font, graph2D) + 10, 20) ;
+		Color bgColor = Game.colorPalette[3] ;
 		
 		DrawRoundRect(pos, Align.topLeft, size, 2, bgColor, bgColor, true) ;
 		DrawText(UtilG.Translate(pos, 5, 5), Align.topLeft, stdAngle, text, font, color) ;
@@ -721,7 +732,7 @@ public class DrawingOnPanel
 		Size size = new Size((int)(0.5*screenSize.width), (int)(0.6*screenSize.height)) ;
 		int Sy = size.y / 12 ;
 		Point TextPos = new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y)) ;
-		DrawMenuWindow(Pos, size, null, 0, ColorPalette[18], ColorPalette[7]) ;
+		DrawMenuWindow(Pos, size, null, 0, colorPalette[21], colorPalette[3]) ;
 		DrawText(TextPos, alignPoints.bottomLeft, OverallAngle, AllText[TextCat][1], font, TextColor) ;
 		if (counter < duration/3)
 		{
@@ -740,7 +751,7 @@ public class DrawingOnPanel
 			{
 				if (duration/3 + 2*duration/30*i < counter % duration)
 				{
-					DrawText(new Point(TextPos.x, TextPos.y + (i + 2 + ItemRewards.length)*Sy), alignPoints.bottomLeft, OverallAngle, String.valueOf(GoldRewards[i]), font, ColorPalette[18]) ;															
+					DrawText(new Point(TextPos.x, TextPos.y + (i + 2 + ItemRewards.length)*Sy), alignPoints.bottomLeft, OverallAngle, String.valueOf(GoldRewards[i]), font, colorPalette[21]) ;															
 					DrawImage(CoinIcon, new Point((int) (TextPos.x + 1.05*UtilG.TextL(String.valueOf(GoldRewards[i]), font, G)), TextPos.y + (i + 2 + ItemRewards.length)*Sy + UtilG.TextH(font.getSize())/2), OverallAngle, new float[] {1, 1}, new boolean[] {false, false}, alignPoints.bottomLeft, 1) ;
 				}
 			}
@@ -761,7 +772,7 @@ public class DrawingOnPanel
 //		Point Pos = new Point((int)(0.25*screenSize.width), (int)(0.8*screenSize.height)) ;
 //		Size size = new Size((int)(0.5*screenSize.width), (int)(0.6*screenSize.height)) ;
 //		int Sy = size.y / 10 ;
-//		DrawMenuWindow(Pos, size, null, 0, ColorPalette[pet.getJob()], ColorPalette[7]) ;
+//		DrawMenuWindow(Pos, size, null, 0, ColorPalette[pet.getJob()], colorPalette[3]) ;
 //		DrawText(new Point(Pos.x + (int)(0.05 * size.x), Pos.y - (int)(0.95 * size.y)), alignPoints.bottomLeft, OverallAngle, AllText[WinCat][1], font, pet.getColor()) ;
 //		if (counter % duration < duration/3)
 //		{
@@ -789,7 +800,7 @@ public class DrawingOnPanel
 			{
 				Font font = new Font("SansSerif", Font.BOLD, size.x * size.y / 3500) ;
 				Point WindowPos = new Point((int) (Pos.x + 0.5 * size.x), (int) (Pos.y - size.y - 0.5*3*UtilG.TextH(font.getSize()))) ;
-				Color TextColor = ColorPalette[9] ;
+				Color TextColor = colorPalette[21] ;
 				DrawRoundRect(WindowPos, alignPoints.center, new Size((int)(0.6 * size.x), (int)(3*UtilG.TextH(font.getSize()))), 3, color1, color2, true) ;
 				DrawText(WindowPos, alignPoints.center, OverallAngle, Title, font, TextColor) ;
 			}
@@ -803,17 +814,17 @@ public class DrawingOnPanel
 //		Dimension size = new Dimension((int)(2 + size2/20), (int)(size2)) ;
 //		int mirror = UtilS.MirrorFromRelPos(relPos) ;
 //		int RectT = 1 ;
-//		Color BackgroundColor = colorPalette[7] ;
+//		Color BackgroundColor = colorPalette[3] ;
 //		if (dir.equals("Vertical"))
 //		{
 //			pos = new Point(pos.x + mirror*offset.x, pos.y + offset.y) ;
-//			DrawRect(pos, Align.bottomLeft, size, RectT, BackgroundColor, colorPalette[9]) ;
+//			DrawRect(pos, Align.bottomLeft, size, RectT, BackgroundColor, colorPalette[21]) ;
 //			DrawRect(pos, Align.bottomLeft, new Dimension(size.width, size.height * counter / delay), RectT, color, null) ;	
 //		}
 //		if (dir.equals("Horizontal"))
 //		{
 //			pos = new Point(pos.x + offset.x, pos.y + mirror*offset.y) ;
-//			DrawRect(pos, Align.bottomLeft, new Dimension(size.height, size.width), RectT, BackgroundColor, colorPalette[9]) ;
+//			DrawRect(pos, Align.bottomLeft, new Dimension(size.height, size.width), RectT, BackgroundColor, colorPalette[21]) ;
 //			DrawRect(new Point(pos.x - size.height / 2, pos.y + size.width / 2), Align.bottomLeft, new Dimension(size.height * counter / delay, size.width), RectT, color, null) ;	
 //		}			
 //	}
@@ -823,7 +834,7 @@ public class DrawingOnPanel
 //		if (effect == 0)
 //		{
 //			targetPos = new Point(targetPos.x - targetSize.width / 2, targetPos.y + targetSize.height / 2) ;
-//			Color lineColor = colorPalette[9] ;
+//			Color lineColor = colorPalette[21] ;
 //			DrawLine(new Point(targetPos.x, targetPos.y - 15), new Point(targetPos.x + 50 * rate, targetPos.y - 15 - 50 * rate), 1, lineColor) ;
 //			DrawLine(new Point(targetPos.x, targetPos.y), new Point(targetPos.x + 50 * rate, targetPos.y - 50 * rate), 1, lineColor) ;
 //			DrawLine(new Point(targetPos.x, targetPos.y + 15), new Point(targetPos.x + 50 * rate, targetPos.y + 15 - 50 * rate), 1, lineColor) ;
@@ -907,7 +918,7 @@ public class DrawingOnPanel
 				dx = dx*Ut.UpAndDownCounter(counter, duration/10) ;
 				DrawText(new Point((int) (Pos.x + player.getSize()[0]/2 + dx), Pos.y - player.getSize()[1]/2 - (int)(0.78*H)}, "Left", OverallAngle, AllText[TextCat][2], font, ColorPalette[6]) ;
 				DrawText(new Point((int) (Pos.x + player.getSize()[0]/2 + dx), Pos.y - player.getSize()[1]/2 - (int)(0.78*H) + Sy}, "Left", OverallAngle, AllText[TextCat][3], font, ColorPalette[5]) ;
-				DrawText(new Point((int) (Pos.x - 1.2*player.getSize()[0] + dx), Pos.y - player.getSize()[1]/2 - (int)(0.78*H) + 2*Sy}, "Right", OverallAngle, AllText[TextCat][18], font, ColorPalette[1]) ;
+				DrawText(new Point((int) (Pos.x - 1.2*player.getSize()[0] + dx), Pos.y - player.getSize()[1]/2 - (int)(0.78*H) + 2*Sy}, "Right", OverallAngle, AllText[TextCat][18], font, colorPalette[5]) ;
 				DrawText(new Point((int) (Pos.x - 1.2*player.getSize()[0] + dx), Pos.y - player.getSize()[1]/2 - (int)(0.78*H) + 3*Sy}, "Right", OverallAngle, AllText[TextCat][20], font, ColorPalette[2]) ;
 			}
 		}*/

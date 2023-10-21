@@ -217,7 +217,7 @@ public abstract class Opening
 	public static void display(String action, Point mousePos, DrawingOnPanel DP)
 	{
 		Point textPos = Game.getScreen().pos(0.5, 0.3) ;
-		Color textColor = Game.colorPalette[5] ;
+		Color textColor = Game.colorPalette[0] ;
 		
 		DP.DrawImage(backgroundImage, new Point(0, 0), 0, new Scale(1, 1), Align.topLeft) ;		
 		for (GameButton button : buttons)

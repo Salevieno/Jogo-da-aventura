@@ -391,7 +391,7 @@ public class NPCs
 		
 		Point speechPos = UtilG.Translate(pos, -22, -2 - type.getImage().getHeight(null)) ;
 
-		DP.DrawSpeech(speechPos, content, NPCfont, SpeakingBubble, Game.colorPalette[9]) ;
+		DP.DrawSpeech(speechPos, content, NPCfont, SpeakingBubble, Game.colorPalette[0]) ;
 		
 	}
 
@@ -402,7 +402,7 @@ public class NPCs
 		if (type.getOptions().get(menu) == null) { return ;}
 		
 		List<String> options = type.getOptions().get(menu) ;
-		Color selColor = Game.colorPalette[3] ;
+		Color selColor = Game.colorPalette[18] ;
 		
 		if (options == null) { return ;}		
 		if (options.size() <= 0) { return ;}
@@ -413,7 +413,7 @@ public class NPCs
 		for (int i = 0 ; i <= options.size() - 1 ; i += 1)
 		{
 			Point textPos = UtilG.Translate(windowPos, 5, 5 + i * sy) ;
-			Color textColor = i == selOption ? selColor : Game.colorPalette[9] ;
+			Color textColor = i == selOption ? selColor : Game.colorPalette[0] ;
 			DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, options.get(i), NPCfont, textColor) ;
 		}
 		

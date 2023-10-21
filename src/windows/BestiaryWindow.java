@@ -44,7 +44,7 @@ public class BestiaryWindow extends GameWindow
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String[] text = Game.allText.get(TextCategories.bestiary) ;
-		Color textColor = Game.colorPalette[9] ;
+		Color textColor = Game.colorPalette[0] ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
 		int offset = 5 ;
@@ -102,7 +102,7 @@ public class BestiaryWindow extends GameWindow
 				// draw slots
 				Point slotTopLeft = new Point((int) (windowPos.x + (slot / numCols) * sx + offset), (int) (windowPos.y + (slot % numRows) * sy + offset)) ;
 				Point slotCenter = UtilG.Translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
-				DP.DrawRoundRect(slotCenter, Align.center, slotSize, 2, Game.colorPalette[20], Game.colorPalette[7], true) ;
+				DP.DrawRoundRect(slotCenter, Align.center, slotSize, 2, Game.colorPalette[20], Game.colorPalette[3], true) ;
 
 				// draw creatures
 				CreatureType creatureType = discoveredCreatures.get(slot) ;

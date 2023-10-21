@@ -1,5 +1,6 @@
 package windows;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 
@@ -128,23 +129,12 @@ public class BankWindow extends GameWindow
 		bag.removeGold(amount) ;
 	}
 	
-
-	//	public void displayInput(String message, String action, DrawingOnPanel DP)
-//	{
-//		Point pos = UtilG.Translate(windowPos, 50, size.height / 3) ;
-//		DP.DrawText(UtilG.Translate(pos, 0, -30), Align.centerLeft, DrawingOnPanel.stdAngle, message, stdFont, Game.colorPalette[9]) ;
-//		DP.DrawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.colorPalette[7], Game.colorPalette[7], true) ;
-//		DP.DrawImage(Player.CoinIcon, UtilG.Translate(pos, 5, 0), Align.centerLeft) ;
-//		DP.DrawText(UtilG.Translate(pos, 20, 0), Align.centerLeft, DrawingOnPanel.stdAngle, String.valueOf(amountTyped), stdFont, Game.colorPalette[9]) ;
-//	}
-
 	public void readValue(String action)
 	{
 		
 		if (!UtilG.isNumeric(action) & !action.equals("Backspace")) { return ;}
 
 		liveInput.receiveInput(action) ;
-//		System.out.println("reading = " + liveInput.getText()) ;
 		
 	}
 	
@@ -158,6 +148,7 @@ public class BankWindow extends GameWindow
 	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, border + 10) ;
+		Color textColor = Game.colorPalette[0] ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
 		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
@@ -167,20 +158,20 @@ public class BankWindow extends GameWindow
 		Point balancePos = UtilG.Translate(windowPos, border + padding + 4, (int) border + 30) ;
 		Point investmentPos = UtilG.Translate(windowPos, border + padding + 4, border + 90) ;
 		
-		DP.DrawText(balancePos, Align.centerLeft, angle, "Saldo", stdFont, Game.colorPalette[9]) ;
-		DP.DrawText(investmentPos, Align.centerLeft, angle, "Investimento", stdFont, Game.colorPalette[9]) ;
+		DP.DrawText(balancePos, Align.centerLeft, angle, "Saldo", stdFont, textColor) ;
+		DP.DrawText(investmentPos, Align.centerLeft, angle, "Investimento", stdFont, textColor) ;
 		
 		drawInvestmentTimer(UtilG.Translate(investmentPos, 110, 2), investmentCounter.rate(), DP) ;
 
 		DP.DrawImage(Player.CoinIcon, UtilG.Translate(balancePos, 0, 20), Align.centerLeft) ;
-		DP.DrawText(UtilG.Translate(balancePos, 15, 20), Align.centerLeft, angle, String.valueOf(balance), stdFont, Game.colorPalette[9]) ;
+		DP.DrawText(UtilG.Translate(balancePos, 15, 20), Align.centerLeft, angle, String.valueOf(balance), stdFont, textColor) ;
 		DP.DrawImage(Player.CoinIcon, UtilG.Translate(investmentPos, 0, 20), Align.centerLeft) ;
-		DP.DrawText(UtilG.Translate(investmentPos, 15, 20), Align.centerLeft, angle, String.valueOf(investedAmount), stdFont, Game.colorPalette[9]) ;
+		DP.DrawText(UtilG.Translate(investmentPos, 15, 20), Align.centerLeft, angle, String.valueOf(investedAmount), stdFont, textColor) ;
 		
 		if (!isReadingInput()) { return ;}
 
 		Point inputMessagePos = UtilG.Translate(windowPos, 0, border + size.height + 15) ;
-		DP.DrawText(inputMessagePos, Align.centerLeft, angle, "Amount for " + mode, stdFont, Game.colorPalette[9]) ;
+		DP.DrawText(inputMessagePos, Align.centerLeft, angle, "Amount for " + mode, stdFont, textColor) ;
 		
 		Point inputPos = UtilG.Translate(windowPos, 0, border + size.height + 35) ;
 		liveInput.displayTypingField(inputPos, DP) ;

@@ -684,10 +684,10 @@ public abstract class PlayerEvolutionSimulation
 		int barsHeight = 50 ;
 		
 		int numberOpponentsToPlayerLevelUp = PersonalAttributes.numberFightsToLevelUp(player.getExp().getCurrentValue(), player.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), player.getExp().getMultiplier()) ;
-		DP.DrawText(UtilG.Translate(pos, 170, 10), Align.bottomCenter, DrawingOnPanel.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.colorPalette[1]);
+		DP.DrawText(UtilG.Translate(pos, 170, 10), Align.bottomCenter, DrawingOnPanel.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.colorPalette[5]);
 
 		int playerExpBarSize = (int) (player.getExp().getRate() * barsHeight) ;
-		drawBar(UtilG.Translate(pos, 170, 70), playerExpBarSize, barsHeight, Game.colorPalette[1], DP) ;
+		drawBar(UtilG.Translate(pos, 170, 70), playerExpBarSize, barsHeight, Game.colorPalette[5], DP) ;
 		
 		if (pet != null)
 		{
@@ -700,9 +700,9 @@ public abstract class PlayerEvolutionSimulation
 		
 		String percPlayerWins = 1 <= numberFights ? " (" + UtilG.Round((100 * numberPlayerWins) / (double)numberFights, 2) + "%)" : "" ;
 		String percCreatureWins = 1 <= numberFights ? " (" + UtilG.Round((100 * numberCreatureWins) / (double)numberFights, 2) + "%)" : "" ;
-		DP.DrawText(UtilG.Translate(pos, 0, 30), Align.bottomLeft, DrawingOnPanel.stdAngle, "total fights = " + numberFights, font, Game.colorPalette[1]);
-		DP.DrawText(UtilG.Translate(pos, 0, 50), Align.bottomLeft, DrawingOnPanel.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.colorPalette[1]);
-		DP.DrawText(UtilG.Translate(pos, 0, 70), Align.bottomLeft, DrawingOnPanel.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.colorPalette[1]);
+		DP.DrawText(UtilG.Translate(pos, 0, 30), Align.bottomLeft, DrawingOnPanel.stdAngle, "total fights = " + numberFights, font, Game.colorPalette[5]);
+		DP.DrawText(UtilG.Translate(pos, 0, 50), Align.bottomLeft, DrawingOnPanel.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.colorPalette[5]);
+		DP.DrawText(UtilG.Translate(pos, 0, 70), Align.bottomLeft, DrawingOnPanel.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.colorPalette[5]);
 
 	}
 	
@@ -712,7 +712,7 @@ public abstract class PlayerEvolutionSimulation
 		
 //		DP.DrawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), 1, Color.black, null) ;
 		DP.DrawImage(screenImage, new Point(0, 0), Align.topLeft) ;
-		DP.DrawText(new Point(300, 13), Align.center, DrawingOnPanel.stdAngle, "Simulador do jogo", font, Game.colorPalette[9]) ;
+		DP.DrawText(new Point(300, 13), Align.center, DrawingOnPanel.stdAngle, "Simulador do jogo", font, Game.colorPalette[0]) ;
 		
 		buttons.forEach(button -> button.display(0, true, mousePos, DP)) ;
 

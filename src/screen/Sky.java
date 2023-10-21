@@ -65,9 +65,9 @@ public class Sky
 	public void display(DrawingOnPanel DP)
 	{
 		double ColorMult = (1 - 1.8 * Math.abs(dayTime.getCounter() - Game.DayDuration / 2) / Game.DayDuration) ;
-		int red = Math.max(0, Math.min(Game.colorPalette[0].getRed(), 255)) ;
-		int green = Math.max(0, Math.min((int)(Game.colorPalette[0].getGreen() * ColorMult), 255)) ;
-		int blue = Math.max(0, Math.min((int)(Game.colorPalette[0].getBlue() * ColorMult), 255)) ;
+		int red = Math.max(0, Math.min(Game.colorPalette[21].getRed(), 255)) ;
+		int green = Math.max(0, Math.min((int)(Game.colorPalette[21].getGreen() * ColorMult), 255)) ;
+		int blue = Math.max(0, Math.min((int)(Game.colorPalette[21].getBlue() * ColorMult), 255)) ;
 		Color skyColor = new Color(red, green, blue) ;
 		
 		DP.DrawRect(new Point(0, height), Align.bottomLeft, new Dimension(Game.getScreen().getSize().width, height), 1, skyColor, null) ;

@@ -93,7 +93,7 @@ public class Building
 		Point messagePos = UtilG.Translate(pos, 10, 10) ;
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
 		DP.DrawRoundRect(pos, Align.topLeft, new Dimension(220, 80), 2, Game.colorPalette[4], Game.colorPalette[4], true) ;			
-		DP.DrawFitText(messagePos, font.getSize() + 2, Align.centerLeft, message, font, 40, Game.colorPalette[7]) ;	
+		DP.DrawFitText(messagePos, font.getSize() + 2, Align.centerLeft, message, font, 40, Game.colorPalette[3]) ;	
 	}
 	
 	public void display(Point playerPos, int cityID, DrawingOnPanel DP)

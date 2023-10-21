@@ -38,7 +38,7 @@ public class Creature extends LiveBeing
 	private Color color ;
 	private boolean follow ;
 	
-	private static Color[] skinColor = new Color[] {Game.colorPalette[0], Game.colorPalette[1]} ;
+	private static Color[] skinColor = new Color[] {Game.colorPalette[0], Game.colorPalette[5]} ;
 	private static Color[] shadeColor = new Color[] {Game.colorPalette[2], Game.colorPalette[3]} ;
 	
  	public Creature(CreatureType CT)

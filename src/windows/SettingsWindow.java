@@ -161,11 +161,11 @@ public class SettingsWindow extends GameWindow
 		Color[] ColorPalette = Game.colorPalette ;
 		if (value)
 		{
-			DP.DrawText(TextPos, Align.bottomCenter, OverallAngle, "On", font, ColorPalette[5]) ;							
+			DP.DrawText(TextPos, Align.bottomCenter, OverallAngle, "On", font, ColorPalette[20]) ;							
 		}
 		else
 		{
-			DP.DrawText(TextPos, Align.bottomCenter, OverallAngle, "Off", font, ColorPalette[4]) ;							
+			DP.DrawText(TextPos, Align.bottomCenter, OverallAngle, "Off", font, ColorPalette[2]) ;							
 		}
 	}
 	public void display(Point mousePos, DrawingOnPanel DP)
@@ -179,8 +179,8 @@ public class SettingsWindow extends GameWindow
 		int sy = font.getSize() + 4 ;
 		String[] text = Game.allText.get(TextCategories.settings) ;
 		Color[] textColor = new Color[3 + Player.ActionKeys.length] ;
-		Arrays.fill(textColor, Game.colorPalette[5]) ;
-		textColor[item] = Game.colorPalette[3] ;
+		Arrays.fill(textColor, Game.colorPalette[1]) ;
+		textColor[item] = Game.colorPalette[18] ;
 		
 		if (menu == 0)
 		{
@@ -190,7 +190,7 @@ public class SettingsWindow extends GameWindow
 		{
 			DP.DrawImage(deeperMenuImage, pos, Align.topLeft) ;			
 		}
-		DP.DrawText(UtilG.Translate(textPos, image.getWidth(null) / 2 - 15, -6), Align.bottomCenter, stdAngle, "Opções", font, Game.colorPalette[5]) ;
+		DP.DrawText(UtilG.Translate(textPos, image.getWidth(null) / 2 - 15, -6), Align.bottomCenter, stdAngle, "Opções", font, Game.colorPalette[0]) ;
 		if (menu == 0)
 		{
 			for (int i = 0 ; i <= numberItems - 1 ; i += 1)

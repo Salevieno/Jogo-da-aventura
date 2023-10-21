@@ -153,8 +153,8 @@ public abstract class LiveBeing
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String stateText = 0 < combo.size() ? state.toString() : "" ;
 		
-		DP.DrawRoundRect(pos, Align.center, size, 1, Game.colorPalette[8], Game.colorPalette[8], true);
-		DP.DrawText(pos, Align.center, 0, stateText, font, Game.colorPalette[9]) ;
+		DP.DrawRoundRect(pos, Align.center, size, 1, Game.colorPalette[21], Game.colorPalette[21], true);
+		DP.DrawText(pos, Align.center, 0, stateText, font, Game.colorPalette[0]) ;
 	}
 
 	public void displayPowerBar(Point pos, DrawingOnPanel DP)
@@ -551,17 +551,17 @@ public abstract class LiveBeing
 		ArrayList<Color> attColor = new ArrayList<>() ;
 		
 		attRate.add(PA.getLife().getRate()) ;
-		attColor.add(colorPalette[6]) ;
+		attColor.add(colorPalette[7]) ;
 		attRate.add(PA.getMp().getRate()) ;
-		attColor.add(colorPalette[5]) ;
+		attColor.add(colorPalette[20]) ;
 		if (!(this instanceof Creature))
 		{
 			attRate.add(PA.getExp().getRate()) ;
-			attColor.add(colorPalette[1]) ;
+			attColor.add(colorPalette[5]) ;
 			attRate.add(PA.getSatiation().getRate()) ;
-			attColor.add(colorPalette[2]) ;
+			attColor.add(colorPalette[15]) ;
 			attRate.add(PA.getThirst().getRate()) ;
-			attColor.add(colorPalette[0]) ;
+			attColor.add(colorPalette[21]) ;
 		}
 		
 		if (style == 0)
@@ -572,7 +572,9 @@ public abstract class LiveBeing
 			int barthick = 1 ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
-				DP.DrawRect(new Point(Pos.x, Pos.y + (att + 1) * Sy), Align.topLeft, new Dimension((int)(attRate.get(att) * size.width), size.height), barthick, attColor.get(att), colorPalette[9]) ;
+				Point pos =new Point(Pos.x, Pos.y + (att + 1) * Sy) ;
+				Dimension size2 = new Dimension((int)(attRate.get(att) * size.width), size.height) ;
+				DP.DrawRect(pos, Align.topLeft, size2, barthick, attColor.get(att), colorPalette[0]) ;
 			}
 		}
 		if (style == 1)
@@ -581,11 +583,14 @@ public abstract class LiveBeing
 			Dimension size = new Dimension((int)(0.13*screenSize.width), (int)(0.013*screenSize.height)) ;
 			int Sy = size.height ;
 			int barthick = 1 ;
-			DP.DrawRoundRect(Pos, Align.topLeft, new Dimension((int)(1.4 * size.width), (attRate.size() + 1) * Sy), barthick, colorPalette[8], colorPalette[4], true) ;
+			Dimension rectSize = new Dimension((int)(1.4 * size.width), (attRate.size() + 1) * Sy) ;
+			DP.DrawRoundRect(Pos, Align.topLeft, rectSize, barthick, colorPalette[8], colorPalette[4], true) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
-				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.width), Pos.y + (att + 1) * Sy), Align.centerLeft, size, barthick, null, colorPalette[9]) ;
-				DP.DrawRect(new Point((int) (Pos.x + 0.3 * size.width), Pos.y + (att + 1) * Sy), Align.centerLeft, new Dimension((int)(attRate.get(att) * size.width), size.height), barthick, attColor.get(att), colorPalette[9]) ;
+				Point pos = new Point((int) (Pos.x + 0.3 * size.width), Pos.y + (att + 1) * Sy) ;
+				Dimension size2 = new Dimension((int)(attRate.get(att) * size.width), size.height) ;
+				DP.DrawRect(pos, Align.centerLeft, size, barthick, null, colorPalette[21]) ;
+				DP.DrawRect(pos, Align.centerLeft, size2, barthick, attColor.get(att), colorPalette[0]) ;
 			}
 		}
 	}	
@@ -599,7 +604,7 @@ public abstract class LiveBeing
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
 		Point rectPos = new Point(pos.x + mirror * offset.width, pos.y) ;
 		
-		DP.DrawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.colorPalette[9]) ;
+		DP.DrawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.colorPalette[0]) ;
 		DP.DrawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null) ;
 	}
 
