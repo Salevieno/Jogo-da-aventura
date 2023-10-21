@@ -918,18 +918,27 @@ public class Player extends LiveBeing
 
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
+		
 		if (spell.getLevel() <= 0) { return null ;}
 		if (!spell.isReady()) { return null ;}
 		if (!hasEnoughMP(spell)) { return null ;}
 		
-		if (!spell.getType().equals(SpellTypes.support)) { return useOffensiveSpell(spell, receiver) ;}
-
-		useSupportSpell(spell) ;
 		spell.getCooldownCounter().reset() ;
 		train(new AtkResults(AtkTypes.magical, AttackEffects.none, 0)) ;
 		stats.incNumberMagAtk() ;
 		
-		return null ;
+		switch (spell.getType())
+		{
+			case support :
+				useSupportSpell(spell) ;
+				return null ;
+				
+			case offensive :
+				return useOffensiveSpell(spell, receiver) ;
+				
+			default : return null ;
+		}
+		
 	}
 	
 	public void applyPassiveSpell(Spell spell)
@@ -1175,7 +1184,6 @@ public class Player extends LiveBeing
 
 		spell.applyBuffs(true, this) ;
 		spell.applyNerfs(true, opponent) ;
-		spell.getCooldownCounter().reset() ;
 		
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 		

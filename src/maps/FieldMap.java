@@ -4,8 +4,10 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.sound.sampled.Clip;
@@ -17,6 +19,7 @@ import liveBeings.Creature;
 import liveBeings.CreatureType;
 import main.Game;
 import screen.Screen;
+import utilities.TimeCounter;
 import utilities.UtilG;
 
 public class FieldMap extends GameMap
@@ -25,10 +28,11 @@ public class FieldMap extends GameMap
 	private List<Creature> creatures ;
 	private int level ;
 	private int[] collectibleDelay ;
+	private Map<CollectibleTypes, TimeCounter> collectibleCounter ;
 	
 	private static final Image treeImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem6_TreeForest.png") ;
 	private static final Image grassImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem8_Grass.png") ;
-	// TODO Fix collectibles spawn rate (spawning multiples at a time)
+
 	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, int[] collectibleDelay, int[] creatureTypeIDs, List<NPCs> npcs)
 	{
 		super(name, continent, connections, image, music, null, npcs) ;
@@ -59,19 +63,23 @@ public class FieldMap extends GameMap
 		
 		// add collectbiles
 		collectibles = new ArrayList<Collectible>() ;
-		AddCollectibles() ;
+		collectibleCounter = new HashMap<>() ;
+		for (CollectibleTypes type : CollectibleTypes.values())
+		{
+			addCollectible(type) ;
+			collectibleCounter.put(type, new TimeCounter(0, type.getSpawnTime())) ;
+		}
 		
 		
 		// add creatures
 		creatures = new ArrayList<Creature>() ;			
 		for (int creatureTypeID : creatureTypeIDs)
 		{
-			if (-1 < creatureTypeID)
-			{
-				CreatureType creatureType = Game.getCreatureTypes()[creatureTypeID];
-				Creature creature = new Creature(creatureType) ;
-				creatures.add(creature) ;
-			}
+			if (creatureTypeID <= -1) { continue ;}
+			
+			CreatureType creatureType = Game.getCreatureTypes()[creatureTypeID];
+			Creature creature = new Creature(creatureType) ;
+			creatures.add(creature) ;
 		}
 		
 		for (Item item : allDiggingItems.keySet())
@@ -105,20 +113,26 @@ public class FieldMap extends GameMap
 	
 	public void IncCollectiblesCounter()
 	{
-		for (Collectible collectible : collectibles)
-		{
-			collectible.getCounter().inc() ;
-//			if (collectible.getCounter() <= collectible.getDelay()) { }
-		}
+		collectibleCounter.values().forEach(TimeCounter::inc);
+//		for (Collectible collectible : collectibles)
+//		{
+//			collectible.getCounter().inc() ;
+////			if (collectible.getCounter() <= collectible.getDelay()) { }
+//		}
 	}
 	
 	public void ActivateCollectiblesCounter()
 	{
-		int numberCollectibles = collectibles.size() ;
-		for (int i = 0 ; i <= numberCollectibles - 1 ; i += 1)
+		
+		collectibleCounter.entrySet().forEach(entry -> 
 		{
-			if (collectibles.get(i).getCounter().finished()) { AddCollectibles() ; collectibles.get(i).getCounter().reset() ;}
-		}
+			if (entry.getValue().finished())
+			{
+				addCollectible(entry.getKey()) ;
+				entry.getValue().reset() ;
+			}
+		}) ;
+
 	}
 	
 	public void CreateGroundElement()
@@ -126,15 +140,18 @@ public class FieldMap extends GameMap
 		
 	}
 	
-	public void AddCollectibles()
+	public void addCollectible(CollectibleTypes type)
 	{
-		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
-		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (float)(Game.getSky().height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
 		
-		collectibles.add(new Collectible(220, level, UtilG.RandomPos(minCoord, range, new Dimension(1, 1)), collectibleDelay[0])) ;
-		collectibles.add(new Collectible(60 + 3 * level, level, UtilG.RandomPos(minCoord, range, new Dimension(1, 1)), collectibleDelay[1])) ;
-		collectibles.add(new Collectible(61 + 3 * level, level, UtilG.RandomPos(minCoord, range, new Dimension(1, 1)), collectibleDelay[2])) ;
-		collectibles.add(new Collectible(62 + 3 * level, level, UtilG.RandomPos(minCoord, range, new Dimension(1, 1)), collectibleDelay[3])) ;
+		switch (type)
+		{
+			case berry: collectibles.add(new Collectible(220, level, randomPosInMap(), collectibleDelay[0])) ; return ;
+			case herb: collectibles.add(new Collectible(60 + 3 * level, level, randomPosInMap(), collectibleDelay[1])) ; return ;
+			case wood: collectibles.add(new Collectible(61 + 3 * level, level, randomPosInMap(), collectibleDelay[2])) ; return ;
+			case metal: collectibles.add(new Collectible(62 + 3 * level, level, randomPosInMap(), collectibleDelay[3])) ; return ;
+			default: return ;
+		}
+		
 	} 	
 	
  	public void displayCollectibles(DrawingOnPanel DP)

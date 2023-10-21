@@ -263,7 +263,14 @@ public class GameMap
 		return true ;
 		
 	}
-
+	public Point randomPosInMap()
+	{
+		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
+		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (float)(Game.getSky().height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
+		
+		return UtilG.RandomPos(minCoord, range, new Dimension(1, 1)) ;
+	}
+	
 	public static GameMap[] inForest()
 	{
 		GameMap[] forestMaps = new GameMap[30] ;

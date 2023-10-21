@@ -28,7 +28,9 @@ public class Arrow extends Item
 		AllArrow = new Arrow[input.size()] ;
 		for (int p = 0; p <= AllArrow.length - 1; p += 1)
 		{
-			AllArrow[p] = new Arrow(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]), Float.parseFloat(input.get(p)[7]), input.get(p)[8]);
+			AllArrow[p] = new Arrow(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3],
+					Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]),
+					Float.parseFloat(input.get(p)[7]), input.get(p)[8]);
 		}
 	}
 	

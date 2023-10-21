@@ -5,8 +5,8 @@ import java.awt.Point;
 
 public class Screen
 {
-	private Dimension size ;	// Length, height
-	private int[] borders ;	// Min x, Min y, Max x, Max y
+	private Dimension size ;
+	private int[] borders ;	// min x, min y, max x, max y
 	private Point center ;	// center of the entire screen, including the sky
 	private Point mapCenter ;	// center of the walkable map, excluding the sky
 

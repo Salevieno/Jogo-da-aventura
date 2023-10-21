@@ -19,7 +19,7 @@ public class BankWindow extends GameWindow
 	private int amountTyped ;
 	private int balance ;
 	private int investedAmount ;
-	private boolean isInvested ;
+	private boolean hasInvestement ;
 	private String investmentRisk ;
 	private TimeCounter investmentCounter ;
 	private LiveInput liveInput ;
@@ -35,7 +35,7 @@ public class BankWindow extends GameWindow
 		amountTyped = 0 ;
 		balance = 0 ;
 		investedAmount = 0 ;
-		isInvested = false ;
+		hasInvestement = false ;
 		investmentCounter = new TimeCounter(0, 10000) ;
 		liveInput = new LiveInput() ;
 	}
@@ -47,7 +47,7 @@ public class BankWindow extends GameWindow
 	public void setMode(String mode) { this.mode = mode ;}
 	
 	private boolean isReadingInput() { return mode.equals("deposit") | mode.equals("withdraw") | mode.equals("investment low risk") | mode.equals("investment hight risk") ;}
-	public boolean isInvested() { return isInvested;}
+	public boolean hasInvestment() { return hasInvestement;}
 	public boolean investmentIsComplete() { return investmentCounter.finished() ;}
 	
 	public void incInvestmentCounter() { investmentCounter.inc() ;}
@@ -59,7 +59,7 @@ public class BankWindow extends GameWindow
 		balance += investedAmount ;
 		investedAmount = 0 ;
 		investmentCounter.reset() ;
-		isInvested = false ;
+		hasInvestement = false ;
 	}
 	
 	public void navigate(String action)
@@ -123,7 +123,7 @@ public class BankWindow extends GameWindow
 		if (!bag.hasEnoughGold(amount)) { return ;}
 		
 		investmentRisk = highRisk ? investmentRiskLevels[1] : investmentRiskLevels[0] ;
-		isInvested = true ;
+		hasInvestement = true ;
 		investedAmount += amount ;
 		bag.removeGold(amount) ;
 	}

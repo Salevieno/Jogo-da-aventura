@@ -1027,16 +1027,13 @@ public class Game extends JPanel
 		{
 			FieldMap fm = (FieldMap) player.getMap() ;
 			fm.getCreatures().forEach(Creature::incrementCounters) ;
-//			creature.IncActionCounters() ;
-//			creature.getBA().getStatus().decreaseStatus() ;
-			
 			fm.IncCollectiblesCounter() ;
 		}
 		
 		for (CityMap city : cityMaps)
 		{
 			BankWindow bank = (BankWindow) city.getBuildings().get(3).getNPCs().get(0).getWindow() ;
-			if (bank.isInvested())
+			if (bank.hasInvestment())
 			{
 //				System.out.println(bank.isInvested() + " " + bank.getInvestmentCounter()) ;
 				bank.incInvestmentCounter() ;
@@ -1247,20 +1244,30 @@ public class Game extends JPanel
 	
 	private static void initialize()
 	{
-		
+
+    	System.out.println("Initializing");
+    	System.out.println("Loading text");
 		loadAllText() ;
 		
     	DayDuration = 120000 ;
     	sky = new Sky() ;
     	screen.setBorders(new int[] {0, sky.height, screen.getSize().width, screen.getSize().height});
     	screen.setMapCenter() ;
+    	System.out.println("Loading spells");
     	allSpells = initializeAllSpells(gameLanguage) ;
+    	System.out.println("Loading items");
 		allItems = initializeAllItems() ;
+    	System.out.println("Loading creature types");
 		creatureTypes = initializeCreatureTypes(gameLanguage, difficultLevel) ;
+    	System.out.println("Loading recipes");
 		allRecipes = LoadCraftingRecipes() ;
+    	System.out.println("Loading NPC types");
 		NPCTypes = initializeNPCTypes(gameLanguage) ;
+    	System.out.println("Loading building types");
 		buildingTypes = initializeBuildingTypes() ;
+    	System.out.println("Loading quests");
 		allQuests = initializeQuests(gameLanguage, player.getJob()) ;
+    	System.out.println("Loading maps");
 		allMaps = initializeAllMaps() ;
 		NPCs.setIDs() ;
     	sideBar = new SideBar(player, player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
@@ -1375,7 +1382,8 @@ public class Game extends JPanel
 	        }
 	        case loading:
 	        {
-	        	//loading.displayText(DP) ;
+//    			System.out.println("Game loading");
+    			Opening.displayLoadingScreen(DP) ;
     			String name = Opening.getPlayerInfo()[0] ;
     			String sex = Opening.getPlayerInfo()[1] ;
         		difficultLevel = Integer.parseInt(Opening.getPlayerInfo()[2]) ;

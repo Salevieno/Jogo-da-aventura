@@ -6,18 +6,17 @@ import graphics.DrawingOnPanel;
 import utilities.Align;
 import utilities.UtilG;
 
-public class Loading
+public abstract class Loading
 {
 //	private int selectedSlot, tab ;
-	private Image LoadingGif ;
 	
-	public Loading()
-	{
-//		selectedSlot = 0 ;
-//		tab = 0 ;
-		LoadingGif = UtilG.loadImage(Game.ImagesPath + "Loading.gif") ;
-    	
-	}
+//	public Loading()
+//	{
+////		selectedSlot = 0 ;
+////		tab = 0 ;
+//		LoadingGif = UtilG.loadImage(Game.ImagesPath + "\\Opening\\" + "Loading.gif") ;
+//    	
+//	}
 	
 	public void Run()
 	{
@@ -98,8 +97,4 @@ public class Loading
 		}*/
 	}
 	
-	public void displayText(DrawingOnPanel DP)
-	{
-		DP.DrawGif(LoadingGif, Game.getScreen().getCenter(), Align.center) ;
-	}
 }

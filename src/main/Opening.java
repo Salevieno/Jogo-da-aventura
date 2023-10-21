@@ -33,12 +33,14 @@ public abstract class Opening
 
     private static final Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
     private static final Font smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
+	private static final Image LoadingGif ;
 	
 	static
 	{
 		String path = Game.ImagesPath  + "\\Opening\\";
 		backgroundImage = UtilG.loadImage(path + "Opening.png") ;
 		openingGif = new Gif(UtilG.loadImage(path + "Opening.gif"), 200, false, true) ;
+		LoadingGif = UtilG.loadImage(path + "Loading.gif") ;
 		GameButton.selectedIconID = 2 ;
     	step = 0 ;
 		liveInput = new LiveInput() ;
@@ -193,7 +195,12 @@ public abstract class Opening
 		}
 		
 	}
-
+	
+	public static void displayLoadingScreen(DrawingOnPanel DP)
+	{
+		DP.DrawGif(LoadingGif, Game.getScreen().getCenter(), Align.center) ;
+	}
+	
 	public static void displayJobInfo(DrawingOnPanel DP)
 	{
 		Color textColor = Game.colorPalette[0] ;

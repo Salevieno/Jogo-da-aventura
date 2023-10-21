@@ -76,7 +76,7 @@ public class DrawingOnPanel
 	}
 	public void DrawImage(Image image, Point pos, double angle, Scale scale, boolean flipH, boolean flipV, Align align, double alpha)
 	{       
-		if (image == null) { System.out.println("Tentando desenhar imagem nula") ; return ; }
+		if (image == null) { System.out.println("Tentando desenhar imagem nula na pos " + pos) ; return ; }
 		
 		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
 		size = new Dimension ((!flipH ? 1 : -1) * size.width, (!flipV ? 1 : -1) * size.height) ;

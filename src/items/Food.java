@@ -22,14 +22,18 @@ public class Food extends Item
 	{
 		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Food.csv") ;
 		AllFood = new Food[input.size()] ;
+		iconFoodBerry = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconFoodBerry.png") ;
 		for (int p = 0; p <= AllFood.length - 1; p += 1)
 		{
-			AllFood[p] = new Food(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]), Float.parseFloat(input.get(p)[7]), Float.parseFloat(input.get(p)[8]), Integer.parseInt(input.get(p)[9]));
+			AllFood[p] = new Food(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3],
+					Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]),
+					Float.parseFloat(input.get(p)[7]), Float.parseFloat(input.get(p)[8]),
+					Integer.parseInt(input.get(p)[9]));
 		}
-		iconFoodBerry = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconFoodBerry.png") ;
 	}
 	
-	public Food(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal, int SatiationHeal)
+	public Food(int id, String Name, String Description, int price,
+			float dropChance, float lifeHeal, float MPHeal, int SatiationHeal)
 	{
 		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
