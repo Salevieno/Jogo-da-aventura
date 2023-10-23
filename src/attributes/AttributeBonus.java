@@ -136,39 +136,6 @@ public class AttributeBonus
 		silenceAtkChance, silenceDefChance, silenceDuration} ;
 	}
 	
-	public void resetAll()
-	{
-		 life = 0 ;
-		 MP = 0 ;
-		 phyAtk = 0 ;
-		 magAtk = 0 ;
-		 phyDef = 0 ;
-		 magDef = 0 ;
-		 dex = 0 ;
-		 agi = 0 ;
-		 critAtkChance = 0 ;
-		 critDefChance = 0 ;
-		 stunAtkChance = 0 ;
-		 stunDefChance = 0 ;
-		 stunDuration = 0 ;
-		 blockAtkChance = 0 ;
-		 blockDefChance = 0 ;
-		 blockDuration = 0 ;
-		 bloodAtkChance = 0 ;
-		 bloodDefChance = 0 ;
-		 bloodAtk = 0 ;
-		 bloodDef = 0 ;
-		 bloodDuration = 0 ;
-		 poisonAtkChance = 0 ;
-		 poisonDefChance = 0 ;
-		 poisonAtk = 0 ;
-		 poisonDef = 0 ;
-		 poisonDuration = 0 ;
-		 silenceAtkChance = 0 ;
-		 silenceDefChance = 0 ;
-		 silenceDuration = 0 ;
-	}
-	
 	public void inc(double[] amount)
 	{
 		  life += amount[0] ;

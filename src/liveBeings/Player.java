@@ -729,7 +729,7 @@ public class Player extends LiveBeing
 		
 		
 		// using spells
-		if (actionIsSpell())
+		if (actionIsSpell() & !isInBattle())
 		{
 			Spell spell = spells.get(SpellKeys.indexOf(currentAction));
 			useSpell(spell, this) ;
@@ -928,11 +928,10 @@ public class Player extends LiveBeing
 		
 		switch (spell.getType())
 		{
-			case support :
-				useSupportSpell(spell) ;
+			case support : useSupportSpell(spell) ;
 				return null ;
 				
-			case offensive :
+			case offensive : if (!isInBattle()) { return null ;}
 				return useOffensiveSpell(spell, receiver) ;
 				
 			default : return null ;
@@ -1035,7 +1034,6 @@ public class Player extends LiveBeing
 	private void useSupportSpell(Spell spell)
 	{	
 		
-		spell.getCooldownCounter().reset();
 		spell.activate() ;		
 		resetBattleActions() ;
 		PA.getMp().incMaxValue(-spell.getMpCost()) ;
@@ -1183,8 +1181,8 @@ public class Player extends LiveBeing
 
 		spell.applyBuffs(true, this) ;
 		spell.applyNerfs(true, opponent) ;
-		System.out.println("using offensive spell");
-		System.out.println(effect + " " + damage);
+//		System.out.println("player used offensive spell");
+//		System.out.println("result = " + effect + " " + damage);
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 		
 	}

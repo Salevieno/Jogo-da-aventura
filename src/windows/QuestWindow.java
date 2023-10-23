@@ -21,8 +21,8 @@ public class QuestWindow extends GameWindow
 	private List<Quest> quests ;
 	private BagWindow bag ;
 	
-	Point windowPos = new Point((int)(0.3 * Game.getScreen().getSize().width), (int)(0.15 * Game.getScreen().getSize().height)) ;
-	Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	private static final Point windowPos = Game.getScreen().pos(0.3, 0.15) ;
+	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 	
 	public QuestWindow()
 	{
@@ -119,7 +119,7 @@ public class QuestWindow extends GameWindow
 		
 		Quest quest = quests.get(window) ;
 		Point questPos = UtilG.Translate(windowPos, image.getWidth(null) / 2, 30) ;
-		DP.DrawText(questPos, Align.center, angle, quest.getName(), font, Game.colorPalette[8]) ;
+		DP.DrawText(questPos, Align.center, angle, quest.getName() + " " + quest.getID(), font, Game.colorPalette[8]) ;
 		
 		displayReqCreatures(UtilG.Translate(windowPos, 0 , 60), quest, DP) ;
 		displayReqItems(UtilG.Translate(windowPos, 0, 230), DP) ;

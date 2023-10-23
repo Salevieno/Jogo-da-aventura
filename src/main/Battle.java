@@ -284,6 +284,13 @@ public class Battle
 			case magical:
 			{
 				Spell spell = attacker.getSpells().get(Player.SpellKeys.indexOf(attacker.getCurrentAction())) ;
+//				if (attacker instanceof Player)
+//				{
+//					System.out.println("\nplayer using " + spell);
+//					System.out.println("spell cooldown counter " + spell.getCooldownCounter());
+//					System.out.println("spell.isReady() " + spell.isReady());
+//					System.out.println("attacker.hasEnoughMP(spell) " + attacker.hasEnoughMP(spell));
+//				}
 				if (spell.isReady() & attacker.hasEnoughMP(spell))
 				{
 					return attacker.useSpell(spell, receiver) ;
@@ -335,7 +342,6 @@ public class Battle
 		
 		if (atkResult.getEffect().equals(AttackEffects.hit) | atkResult.getEffect().equals(AttackEffects.crit))
 		{
-			System.out.println("receiver is hit " + atkResult.getDamage());
 			receiver.getPA().getLife().incCurrentValue(-atkResult.getDamage()) ;
 			int[] inflictedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
 			receiver.getBA().getStatus().receiveStatus(inflictedStatus) ;
@@ -372,7 +378,11 @@ public class Battle
 		attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
 		if (attacker.canAtk() & attacker.isInRange(receiver.getPos()))
 		{
-			if (attacker instanceof Creature) { ((Creature) attacker).fight(receiver.getCurrentAction()) ;}
+			if (attacker instanceof Creature)
+			{
+				((Creature) attacker).fight(receiver.getCurrentAction()) ;
+			
+			}
 //				if (attacker instanceof Pet) { ((Pet) attacker).fight() ;}
 			AtkResults atkResults = new AtkResults() ;
 			if (attacker.hasActed())
@@ -380,7 +390,11 @@ public class Battle
 				PrintTurn(attacker, receiver) ;
 				atkResults = runTurn(attacker, receiver) ;
 			}
-			if (attacker.actionIsPhysicalAtk() | attacker.actionIsSpell()) { receiver.getDisplayDamage().reset() ;}
+			if (attacker.actionIsPhysicalAtk() | attacker.actionIsSpell())
+			{
+				receiver.getDisplayDamage().reset() ;
+			}
+			
 //				if (attacker.getSettings().getSoundEffectsAreOn()) { Music.PlayMusic(hitSound) ;}
 
 			// add player surprise atk
@@ -414,11 +428,14 @@ public class Battle
 			}			
 
 //			if (attacker instanceof Player) { System.out.println("display damage = " + atkResults.getDamage()); ;}
-//			damageAni.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageAnimation}) ;
+			damageAni.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageAnimation}) ;
 		}
 		
 		attacker.getBA().getStatus().display(attacker.getPos(), attacker.getDir(), DP);
-		if (attacker.isDefending()) { attacker.displayDefending(DP) ;}		
+		if (attacker.isDefending())
+		{
+			attacker.displayDefending(DP) ;
+		}		
 		
 	}
 	
