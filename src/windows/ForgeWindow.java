@@ -115,7 +115,7 @@ public class ForgeWindow extends GameWindow
 		bag.remove(rune, 1) ;
 
 
-		if (Math.random() <= chanceForge)
+		if (UtilG.chance(chanceForge))
 		{
 			selectedEquip.incForgeLevel() ;
 			

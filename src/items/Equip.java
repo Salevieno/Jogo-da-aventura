@@ -208,11 +208,12 @@ public class Equip extends Item
 	
 	public void resetElem() { elem = originalElem ;}
 	
-	public void resetForgeLevel()
-	{// TODO corrigir bug bonus att pós forja quebrada
-		attBonus.resetAll() ;
-		forgeLevel = 0 ;
-	}
+//	public void resetForgeLevel()
+//	{// TODO corrigir bug bonus att pós forja quebrada
+//		
+//		attBonus.resetAll() ;
+//		forgeLevel = 0 ;
+//	}
 	
 	public void incForgeLevel()
 	{
@@ -225,6 +226,19 @@ public class Equip extends Item
 		}
 		attBonus.inc(increment) ;
 		forgeLevel += 1 ;
+	}
+	
+	public void resetForgeLevel()
+	{
+		double forgeBonus = 0.1 ;
+		double[] bonuses = attBonus.all() ;
+		double[] initialBonus = Arrays.copyOf(bonuses, bonuses.length) ;
+		for (int i = 0 ; i <= bonuses.length - 1; i += 1)
+		{
+			initialBonus[i] = initialBonus[i] / Math.pow((1 + forgeBonus), forgeLevel) ;
+		}
+		attBonus.setBasic(initialBonus) ;
+		forgeLevel = 0 ;
 	}
 	
 	private void applyBonus(PersonalAttributes PA, BattleAttributes BA, Equip equip, double mult)

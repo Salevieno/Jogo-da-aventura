@@ -42,10 +42,10 @@ public class AttributeBonus
 			int dex, int agi,
 			double critAtkChance, double critDefChance,
 			double stunAtkChance, double stunDefChance, int stunDuration,
-			double blockAtkChance, double blockDefChance,	int blockDuration,
+			double blockAtkChance, double blockDefChance, int blockDuration,
 			double bloodAtkChance, double bloodDefChance, int bloodAtk, int bloodDef, int bloodDuration,
-			double poisonAtkChance, double poisonDefChance, int poisonAtk, int poisonDef,	int poisonDuration,
-			double silenceAtkChance,	double silenceDefChance,	int silenceDuration)
+			double poisonAtkChance, double poisonDefChance, int poisonAtk, int poisonDef, int poisonDuration,
+			double silenceAtkChance, double silenceDefChance, int silenceDuration)
 	{
 		this.life = life ;
 		this.MP = MP ;

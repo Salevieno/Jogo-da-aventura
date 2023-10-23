@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
@@ -290,6 +291,7 @@ public class NPCs
 			{
 				List<Equip> equipsForForge = new ArrayList<>() ;
 				playerBag.getEquip().keySet().forEach(equipsForForge::add) ;
+				equipsForForge = equipsForForge.stream().filter(eq -> !Arrays.asList(player.getEquips()).contains(eq)).collect(Collectors.toList());
 				((ForgeWindow) window).setItemsForForge(equipsForForge);
 				
 				forgerAction(player, playerBag, playerAction, (ForgeWindow) window, DP) ;

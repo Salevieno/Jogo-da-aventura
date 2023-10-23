@@ -1458,7 +1458,7 @@ public class Game extends JPanel
 //    	
 //    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
-//    	for (Item item : Forge.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Forge.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : PetItem.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
