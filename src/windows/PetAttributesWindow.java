@@ -112,12 +112,12 @@ public class PetAttributesWindow extends AttributesWindow
 			Point attPos = UtilG.Translate(initialAttPos, 117 * (i / 3), (i % 3) * 22) ;
 			String attValue = UtilG.Round(attributes[i].getBaseValue(), 1) + " + " + UtilG.Round(attributes[i].getBonus(), 1) + " + " + UtilG.Round(attributes[i].getTrain(), 1) ;
 			
-			DP.DrawImage(attIcons[i], UtilG.Translate(attPos, -15, 0), new Scale(1, 1), Align.center) ;
+			DP.DrawImage(attIcons[i], UtilG.Translate(attPos, -15, 0), Scale.unit, Align.center) ;
 			DP.DrawText(attPos, Align.centerLeft, angle, attValue, font, textColor) ;
 		}
 		Point critPos = UtilG.Translate(initialAttPos, 0, 71) ;
 		String critValue = attText[9] + ": " + UtilG.Round(100 * pet.getBA().TotalCritAtkChance(), 1) + "%" ;
-		DP.DrawImage(critIcon, UtilG.Translate(initialAttPos, -15, 72), new Scale(1, 1), Align.center) ;
+		DP.DrawImage(critIcon, UtilG.Translate(initialAttPos, -15, 72), Scale.unit, Align.center) ;
 		DP.DrawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
 		
 	}

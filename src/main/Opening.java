@@ -31,12 +31,14 @@ public abstract class Opening
     private static String[] playerInfo ;	// Chosen name, difficult level, sex and class
 	private static LiveInput liveInput ;
 
-    private static final Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
-    private static final Font smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
+    private static final Font font ;
+    private static final Font smallFont ;
 	private static final Image LoadingGif ;
 	
 	static
 	{
+		font = new Font(Game.MainFontName, Font.BOLD, 14) ;
+	    smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		String path = Game.ImagesPath  + "\\Opening\\";
 		backgroundImage = UtilG.loadImage(path + "Opening.png") ;
 		openingGif = new Gif(UtilG.loadImage(path + "Opening.gif"), 200, false, true) ;
@@ -76,7 +78,7 @@ public abstract class Opening
 		Point[] btPos = new Point[] {
 				screen.pos(0.85, 0.05), screen.pos(0.95, 0.05),
 				screen.pos(0.45, 0.3), screen.pos(0.65, 0.3),
-				screen.pos(0.48, 0.45), 
+				screen.pos(0.51, 0.45), 
 				screen.pos(0.4, 0.3), screen.pos(0.6, 0.3),
 				screen.pos(0.3, 0.3), screen.pos(0.5, 0.3), screen.pos(0.7, 0.3),
 				screen.pos(0.13, 0.3), screen.pos(0.33, 0.3), screen.pos(0.53, 0.3), screen.pos(0.73, 0.3), screen.pos(0.93, 0.3)} ;
@@ -219,7 +221,7 @@ public abstract class Opening
 		Point textPos = Game.getScreen().pos(0.5, 0.3) ;
 		Color textColor = Game.colorPalette[0] ;
 		
-		DP.DrawImage(backgroundImage, new Point(0, 0), 0, new Scale(1, 1), Align.topLeft) ;		
+		DP.DrawImage(backgroundImage, new Point(0, 0), 0, Scale.unit, Align.topLeft) ;		
 		for (GameButton button : buttons)
 		{
 			if (!button.isActive()) { continue ;}
@@ -229,7 +231,8 @@ public abstract class Opening
 		
 		if (step == 1)
 		{
-			DP.DrawText(Game.getScreen().pos(0.3, 0.4), Align.topLeft, DrawingOnPanel.stdAngle, liveInput.getText(), font, textColor) ;
+//			DP.DrawText(Game.getScreen().pos(0.34, 0.36), Align.topLeft, DrawingOnPanel.stdAngle, liveInput.getText(), font, textColor) ;
+			liveInput.displayTypingField(Game.getScreen().pos(0.34, 0.36), false, DP) ;
 		}
 		if (step == 4)
 		{

@@ -256,15 +256,21 @@ public class GameMap
 
 		if (superElem != null) { if (superElem.equals(Elements.air)) { return true ;}}
 		
+		// checking colliders
  		List<Collider> allColliders = allColliders() ;
  		for (Collider collider : allColliders)
  		{
  			if (pos.equals(collider.getPos())) { return false ;}
  		}
 
- 		if (superElem != null) { if (!superElem.equals(Elements.water) & groundTypeAtPoint(pos) == GroundTypes.water) { return false ;}}
-		
-		return true ;
+ 		// checking ground types
+ 		if (groundTypeAtPoint(pos) == null) { return true ;}
+ 		
+ 		switch (groundTypeAtPoint(pos))
+ 		{
+ 			case water: return superElem == Elements.water ;
+ 			default: return true ;
+ 		}
 		
 	}
 	public Point randomPosInMap()
@@ -406,10 +412,6 @@ public class GameMap
 	{
 		if (groundTypes == null) { return null ;}		
 		
-//		for (GroundType groundType : groundTypes)
-//		{
-//			if (groundType.getPos().equals(pos)) { return groundType.getType() ;}			
-//		}
 		for (GroundType groundType : groundTypes)
 		{
 			if (UtilG.isInside(pos, groundType.getPos(), groundType.getSize())) { return groundType.getType() ;}			
@@ -446,8 +448,8 @@ public class GameMap
 		groundTypes.forEach(groundType -> {
 			switch (groundType.type)
 			{
-				case water: DP.DrawRect(groundType.pos, Align.topLeft, groundType.size, 1, Game.colorPalette[13], null) ; break ;
-				case lava: DP.DrawRect(groundType.pos, Align.topLeft, groundType.size, 1, Game.colorPalette[6], null) ; break ;
+				case water: DP.DrawRect(groundType.pos, Align.topLeft, groundType.size, 1, Game.colorPalette[20], null) ; break ;
+				case lava: DP.DrawRect(groundType.pos, Align.topLeft, groundType.size, 1, Game.colorPalette[7], null) ; break ;
 				default: break ;
 			}
 		});

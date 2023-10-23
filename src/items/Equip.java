@@ -1,6 +1,7 @@
 package items;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
 
@@ -258,7 +259,7 @@ public class Equip extends Item
 		BA.getSilence().incAtkChanceBonus(attBonus.getSilenceAtkChance() * mult) ;
 		BA.getSilence().incDefChanceBonus(attBonus.getSilenceDefChance() * mult) ;
 		BA.getSilence().incDuration(attBonus.getSilenceDuration() * mult) ;
-	}	
+	}
 	
 	public void use(LiveBeing user)
 	{
@@ -268,10 +269,11 @@ public class Equip extends Item
 		int type = numTypeFromID(id) ;
 		double setBonus = 0.2 ;
 		Player player = (Player) user ;
-		
+		// TODO corrigir bug de equipar armas diferentes uma seguida da outra
 		if (player.getEquips()[type] == Equip.getAll()[id])
 		{
 			// unequip
+			Game.getAnimations()[12].start(160, new Object[] {Game.getScreen().pos(0.4, 0.3), "Desequipado!", Game.colorPalette[0]}) ;
 			applyBonus(user.getPA(), user.getBA(), Equip.getAll()[id], -1) ;
 			user.getElem()[type + 1] = Elements.neutral ;
 			if (Player.setIsFormed(player.getEquips()))
@@ -286,6 +288,7 @@ public class Equip extends Item
 		}
 		
 		// equip
+		Game.getAnimations()[12].start(160, new Object[] {Game.getScreen().pos(0.4, 0.3), "Equipado!", Game.colorPalette[0]}) ;
 		player.getEquips()[type] = Equip.getAll()[id] ;
 		user.getElem()[type + 1] = Equip.getAll()[id].elem ;				
 		if (Player.setIsFormed(player.getEquips()))

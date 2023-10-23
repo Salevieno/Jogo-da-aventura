@@ -279,7 +279,6 @@ public abstract class LiveBeing
 			if (spell.isActive())
 			{
 				spell.getDurationCounter().inc() ;
-				System.out.println(spell.getName() + " " + spell.getCooldownCounter());
 			}
 			if (spell.getDurationCounter().finished())
 			{

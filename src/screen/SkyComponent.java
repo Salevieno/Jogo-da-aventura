@@ -52,6 +52,6 @@ public class SkyComponent
 	}
 	public void display(double angle, DrawingOnPanel DP)
 	{
-		DP.DrawImage(image, pos, angle, new Scale(1, 1), Align.topLeft) ;
+		DP.DrawImage(image, pos, angle, Scale.unit, Align.topLeft) ;
 	}
 }

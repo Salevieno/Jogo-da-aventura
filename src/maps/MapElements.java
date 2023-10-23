@@ -53,11 +53,11 @@ public class MapElements
 	{
 		if (playerIsBehind(playerPos))
 		{
-			DP.DrawImage(image, pos, DrawingOnPanel.stdAngle, new Scale(1, 1), false, false, Align.topLeft, 0.5) ;
+			DP.DrawImage(image, pos, DrawingOnPanel.stdAngle, Scale.unit, false, false, Align.topLeft, 0.5) ;
 			
 			return ;
 		}
 		
-		DP.DrawImage(image, pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.topLeft) ;
+		DP.DrawImage(image, pos, DrawingOnPanel.stdAngle, Scale.unit, Align.topLeft) ;
 	}
 }

@@ -388,7 +388,7 @@ public class Player extends LiveBeing
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
 	private boolean actionIsAMove() { return Arrays.asList(MoveKeys).contains(currentAction) ;}
 	private boolean hitsCreature() { return (actionIsPhysicalAtk() | actionIsSpell()) & closestCreature != null ;}
-	public boolean isInBattle() { return state.equals(LiveBeingStates.fighting) ;}
+	public boolean isInBattle() { return opponent != null & state.equals(LiveBeingStates.fighting) ;}
 	public boolean isCollecting() { return state.equals(LiveBeingStates.collecting) ;}
 	public boolean isOpeningChest() { return state.equals(LiveBeingStates.openingChest) ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
@@ -806,7 +806,7 @@ public class Player extends LiveBeing
 		
 	}
 	
-	private boolean metNPC(NPCs npc) { return UtilG.isWithinRadius(this.getPos(), npc.getPos(), size.height / 2) ;}
+	private boolean metNPC(NPCs npc) { return isInCloseRange(npc.getPos()) ;} // UtilG.isWithinRadius(this.getPos(), npc.getPos(), size.height / 2) ;
 	
 	private boolean metAnyNPC()
 	{
@@ -871,18 +871,17 @@ public class Player extends LiveBeing
 				break ;		
 				
 			}
-			
+			System.out.println("checking meet with creatures") ;
 			// meeting with creatures
 			List<Creature> creaturesInMap = fm.getCreatures() ;
 			for (Creature creature : creaturesInMap)
 			{
-				double distx = UtilG.dist1D(pos.x, creature.getPos().x) ;
-				double disty = UtilG.dist1D(pos.y - size.height / 2, creature.getPos().y) ;
-				if (distx <= (size.width + creature.getSize().width) / 2 & disty <= (size.height + creature.getSize().height) / 2) //  & !ani.isActive(10) & !ani.isActive(19)
+//				double distx = UtilG.dist1D(pos.x, creature.getPos().x) ;
+//				double disty = UtilG.dist1D(pos.y, creature.getPos().y) ; //  - size.height / 2
+				// distx <= (size.width + creature.getSize().width) / 2 & disty <= (size.height + creature.getSize().height) / 2
+				if (isInCloseRange(creature.getPos()))
 				{
-					opponent = creature ;
-					opponent.setFollow(true) ;
-					setState(LiveBeingStates.fighting) ;
+					engageInFight(creature) ;
 					bestiary.addDiscoveredCreature(opponent.getType()) ;
 				}
 			}
@@ -1184,7 +1183,8 @@ public class Player extends LiveBeing
 
 		spell.applyBuffs(true, this) ;
 		spell.applyNerfs(true, opponent) ;
-		
+		System.out.println("using offensive spell");
+		System.out.println(effect + " " + damage);
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 		
 	}

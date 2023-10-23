@@ -74,7 +74,7 @@ public class DrawingOnPanel
 	// primitive methods
 	public void DrawImage(Image image, Point pos, Align align)
 	{
-		DrawImage(image, pos, 0, new Scale(1, 1), false, false, align, 1) ;
+		DrawImage(image, pos, 0, Scale.unit, false, false, align, 1) ;
 	}
 	public void DrawImage(Image image, Point pos, Scale scale, Align align)
 	{
@@ -264,7 +264,7 @@ public class DrawingOnPanel
 			pos = UtilG.Translate(pos, 50, 0) ;
 		}
 
-		DrawImage(speechBubble, pos, stdAngle, new Scale(1, 1), flipH, false, Align.bottomCenter, 1) ;
+		DrawImage(speechBubble, pos, stdAngle, Scale.unit, flipH, false, Align.bottomCenter, 1) ;
 		
 		Point textPos = UtilG.Translate(pos, 12 - bubbleL / 2, 5 - bubbleH) ;
 		int maxTextL = 35 ;
@@ -474,7 +474,7 @@ public class DrawingOnPanel
 		Color titleColor = Game.colorPalette[5] ;
 		Color itemNamesColor = Game.colorPalette[6] ;
 
-		DrawImage(menuWindow, pos, new Scale(1, 1), Align.topLeft) ;
+		DrawImage(menuWindow, pos, Scale.unit, Align.topLeft) ;
 		Point textPos = UtilG.Translate(pos, 5, font.getSize() + 5) ;
 		DrawText(textPos, Align.bottomLeft, stdAngle, "Você obteve!", font, titleColor) ;
 		
@@ -501,7 +501,7 @@ public class DrawingOnPanel
 		DrawText(textPos, Align.centerLeft, stdAngle, "+", font, titleColor) ;
 		
 		Point coinPos = UtilG.Translate(pos, 15, 0) ;
-		DrawImage(Player.CoinIcon, coinPos, new Scale(1, 1), Align.centerLeft) ;
+		DrawImage(Player.CoinIcon, coinPos, Scale.unit, Align.centerLeft) ;
 		
 		Point amountPos = UtilG.Translate(pos, 35, 0) ;
 		DrawText(amountPos, Align.centerLeft, stdAngle, String.valueOf(goldObtained), font, titleColor) ;
@@ -515,7 +515,7 @@ public class DrawingOnPanel
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Color titleColor = Game.colorPalette[3] ;
 
-		DrawImage(menuWindow, pos, new Scale(1, 1), Align.topLeft) ;
+		DrawImage(menuWindow, pos, Scale.unit, Align.topLeft) ;
 		
 		Point textPos = UtilG.Translate(pos, 5, 0) ;
 		DrawText(textPos, Align.centerLeft, stdAngle, "Você não tem ouro suficiente!", font, titleColor) ;
@@ -538,7 +538,7 @@ public class DrawingOnPanel
 	{
 
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
-		Scale scale = new Scale(1, 1) ;
+		Scale scale = Scale.unit ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String[] attText = Game.allText.get(TextCategories.attributes) ;
 		
@@ -686,7 +686,7 @@ public class DrawingOnPanel
 //		int sy = H/15 ;
 //		int IngredientsCont = 0, ProductsCont = 0 ;
 //		int MaxTextL = 10 ;
-//		DrawImage(BookImage, Pos, stdAngle, new Scale(1, 1), Align.center) ;
+//		DrawImage(BookImage, Pos, stdAngle, Scale.unit, Align.center) ;
 //		DrawText(new Point(Pos.x - 3*L/8, Pos.y - H/5 - sy/4), Align.bottomLeft, stdAngle, "Ingredients:", Titlefont, colorPalette[5]) ;
 //		DrawText(new Point(Pos.x + 3*L/8, Pos.y - H/5 - sy/4), Align.topRight, stdAngle, "Products:", Titlefont, colorPalette[5]) ;		
 //		for (int j = 0 ; j <= Ingredients[SelectedPage].length - 1 ; ++j)
@@ -856,7 +856,7 @@ public class DrawingOnPanel
 //				angle = (float) (angle*180/Math.PI - 90) ;
 //			}
 //			DrawImage(Equip.ArrowImage, new Point(attackerPos.x + (targetPos.x - attackerPos.x) * rate, attackerPos.y + (targetPos.y - attackerPos.y) * rate),
-//					angle, new Scale(1, 1), Align.center) ;
+//					angle, Scale.unit, Align.center) ;
 //		}
 //	}
 	/*public void CrazyArrowAnimation(int map, int counter, int looptime, Image CrazyArrowImage)
@@ -896,7 +896,7 @@ public class DrawingOnPanel
 		}
 		dx = dx*UtilS.UpAndDownCounter(counter, looptime) ;
 		dh = dh*UtilS.UpAndDownCounter(counter, looptime) ;
-		DrawImage(CrazyArrowImage, new Point((int) (InitialPos.x + dx), (int) (InitialPos.y + dh)), angle, new Scale(1, 1), alignPoints.center) ;
+		DrawImage(CrazyArrowImage, new Point((int) (InitialPos.x + dx), (int) (InitialPos.y + dh)), angle, Scale.unit, alignPoints.center) ;
 	}*/
 	/*public void TutorialAnimations()
 	{

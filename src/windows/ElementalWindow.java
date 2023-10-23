@@ -202,7 +202,7 @@ public class ElementalWindow extends GameWindow
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 18) ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
-		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
+		DP.DrawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
 		DP.DrawText(titlePos, Align.center, angle, menuTitles.get(menu), titleFont, stdColor) ;
 		switch (menu)
 		{

@@ -26,7 +26,7 @@ public class BankWindow extends GameWindow
 	private LiveInput liveInput ;
 	
 	private static final String[] investmentRiskLevels = new String[] {"low", "high"} ;
-	public static final Image clock = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "clock.png") ;
+	public static final Image clock = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "clock.png") ;
 	// TODO add avisos max deposit, withdraw and investment
 	public BankWindow()
 	{
@@ -141,7 +141,7 @@ public class BankWindow extends GameWindow
 	private void drawInvestmentTimer(Point pos, double timeRate, DrawingOnPanel DP)
 	{
 		DP.DrawImage(clock, pos, Align.center) ;
-		DP.DrawArc(pos, 16, 1, 90, (int) (-360 * timeRate), Game.colorPalette[2], null) ; // TODO investment timer animation
+		DP.DrawArc(UtilG.Translate(pos, 0, 2), 21, 1, 90, (int) (-360 * timeRate), Game.colorPalette[20], null) ;
 	}
 	
 	
@@ -151,9 +151,9 @@ public class BankWindow extends GameWindow
 		Color textColor = Game.colorPalette[0] ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
-		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
+		DP.DrawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
 
-		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[2]) ;
+		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[0]) ;
 		
 		Point balancePos = UtilG.Translate(windowPos, border + padding + 4, (int) border + 30) ;
 		Point investmentPos = UtilG.Translate(windowPos, border + padding + 4, border + 90) ;
@@ -161,7 +161,7 @@ public class BankWindow extends GameWindow
 		DP.DrawText(balancePos, Align.centerLeft, angle, "Saldo", stdFont, textColor) ;
 		DP.DrawText(investmentPos, Align.centerLeft, angle, "Investimento", stdFont, textColor) ;
 		
-		drawInvestmentTimer(UtilG.Translate(investmentPos, 110, 2), investmentCounter.rate(), DP) ;
+		drawInvestmentTimer(UtilG.Translate(investmentPos, 110, 10), investmentCounter.rate(), DP) ;
 
 		DP.DrawImage(Player.CoinIcon, UtilG.Translate(balancePos, 0, 20), Align.centerLeft) ;
 		DP.DrawText(UtilG.Translate(balancePos, 15, 20), Align.centerLeft, angle, String.valueOf(balance), stdFont, textColor) ;
@@ -174,7 +174,8 @@ public class BankWindow extends GameWindow
 		DP.DrawText(inputMessagePos, Align.centerLeft, angle, "Amount for " + mode, stdFont, textColor) ;
 		
 		Point inputPos = UtilG.Translate(windowPos, 0, border + size.height + 35) ;
-		liveInput.displayTypingField(inputPos, DP) ;
+		liveInput.displayTypingField(inputPos, true, DP) ;
+		DP.DrawImage(Player.CoinIcon, UtilG.Translate(inputPos, 5, 0), Align.centerLeft) ;
 	}
 
 }

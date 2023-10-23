@@ -717,7 +717,7 @@ public abstract class PlayerEvolutionSimulation
 		buttons.forEach(button -> button.display(0, true, mousePos, DP)) ;
 
 		playerOpponent.displayName(new Point(460, 300), Align.center, Color.yellow, DP);
-		playerOpponent.display(new Point(460, 340), new Scale(1, 1), DP);
+		playerOpponent.display(new Point(460, 340), Scale.unit, DP);
 		
 		if (player.isAlive())
 		{
@@ -728,7 +728,7 @@ public abstract class PlayerEvolutionSimulation
 		{
 			if (pet.isAlive())
 			{
-				pet.display(pet.getPos(), new Scale(1, 1), DP) ;
+				pet.display(pet.getPos(), Scale.unit, DP) ;
 			}
 		}
 		

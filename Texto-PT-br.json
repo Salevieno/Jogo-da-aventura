@@ -249,7 +249,7 @@
         "Aqui está seu dinheiro, até mais!",
         "Obrigado por vir!"
       ],
-      "Opcoes": [["Quero guardar ouro", "Quero sacar ouro", "Quero investir com baixo risco", "Quero investir com alto risco", "Só estou passando"], [], [], [], [], [], [], ["Até mais"], ["Até mais"], ["Até mais"]]
+      "Opcoes": [["Guardar ouro", "Sacar ouro", "Investimento seguro", "Investimento arriscado", "Só estou passando"], [], [], [], [], [], [], ["Até mais"], ["Até mais"], ["Até mais"]]
     },
     {
       "Nome": "Alquimista",

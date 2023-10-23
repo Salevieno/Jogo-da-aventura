@@ -1,7 +1,6 @@
 package windows;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
@@ -19,19 +18,19 @@ public class SettingsWindow extends GameWindow
 	private Image deeperMenuImage ;
 	private boolean musicIsOn ;
 	private boolean soundEffectsAreOn ;
-	private boolean showPlayerRange ;
+	private boolean showAtkRange ;
 	private int attDisplay ;
 	private int damageAnimation ;
 //	private String[] actionKeys ;
 	private int selectedActionKeyID ;
 	
-	public SettingsWindow(Image image, boolean musicIsOn, boolean soundEffectsAreOn, boolean showPlayerRange, int attDisplay, int damageAnimation)
+	public SettingsWindow(Image image, boolean musicIsOn, boolean soundEffectsAreOn, boolean showAtkRange, int attDisplay, int damageAnimation)
 	{
-		super("Op��es", image, 3, 0, 6, 0) ;
+		super("Opções", image, 3, 0, 6, 0) ;
 		deeperMenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "settingsDeeperWindow.png") ;
 		this.musicIsOn = musicIsOn ;
 		this.soundEffectsAreOn = soundEffectsAreOn ;
-		this.showPlayerRange = showPlayerRange ;
+		this.showAtkRange = showAtkRange ;
 		this.attDisplay = attDisplay ;
 		this.damageAnimation = damageAnimation ;
 		selectedActionKeyID = - 1;
@@ -40,12 +39,12 @@ public class SettingsWindow extends GameWindow
 
 	public boolean getMusicIsOn() {return musicIsOn ;}
 	public boolean getSoundEffectsAreOn() {return soundEffectsAreOn ;}
-	public boolean getShowPlayerRange() {return showPlayerRange ;}
+	public boolean getShowAtkRange() {return showAtkRange ;}
 	public int getAttDisplay() {return attDisplay ;}
 	public int getDamageAnimation() {return damageAnimation ;}
 	public void setMusicIsOn(boolean newValue) {musicIsOn = newValue ;}
 	public void setSoundEffectsAreOn(boolean newValue) {soundEffectsAreOn = newValue ;}
-	public void setShowPlayerRange(boolean newValue) {showPlayerRange = newValue ;}
+	public void setShowPlayerRange(boolean newValue) {showAtkRange = newValue ;}
 	public void setAttDisplay(int newValue) {attDisplay = newValue ;}
 	public void setDamageAnimation(int newValue) {damageAnimation = newValue ;}
 	
@@ -127,7 +126,7 @@ public class SettingsWindow extends GameWindow
 		}
 		if (item == 2)
 		{
-			showPlayerRange = !showPlayerRange ;
+			showAtkRange = !showAtkRange ;
 		}
 		if (item == 3)
 		{
@@ -170,11 +169,10 @@ public class SettingsWindow extends GameWindow
 	}
 	public void display(Point mousePos, DrawingOnPanel DP)
 	{
-		Dimension screenSize = Game.getScreen().getSize() ;
-		double stdAngle = DrawingOnPanel.stdAngle ;
+		Point pos = Game.getScreen().pos(0.4, 0.35) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Point pos = new Point((int)(0.4*screenSize.width), (int)(0.35*screenSize.height)) ;
-		Point textPos = new Point(pos.x + 25, pos.y  + 42) ;
+		double stdAngle = DrawingOnPanel.stdAngle ;
+		Point textPos = UtilG.Translate(pos, 25, 42) ;
 		int sx = image.getWidth(null) - 45 ;
 		int sy = font.getSize() + 4 ;
 		String[] text = Game.allText.get(TextCategories.settings) ;
@@ -199,7 +197,7 @@ public class SettingsWindow extends GameWindow
 			}
 			displayValue(musicIsOn, new Point(textPos.x + sx, textPos.y + sy), stdAngle, font, DP) ;
 			displayValue(soundEffectsAreOn, new Point(textPos.x + sx, textPos.y + 2 * sy), stdAngle, font, DP) ;
-			displayValue(showPlayerRange, new Point(textPos.x + sx, textPos.y + 3 * sy), stdAngle, font, DP) ;
+			displayValue(showAtkRange, new Point(textPos.x + sx, textPos.y + 3 * sy), stdAngle, font, DP) ;
 			DP.DrawText(new Point(textPos.x + sx, textPos.y + (3 + 1)*sy), Align.bottomCenter, stdAngle, String.valueOf(getAttDisplay()), font, textColor[3]) ;
 			DP.DrawText(new Point(textPos.x + sx, textPos.y + (4 + 1)*sy), Align.bottomCenter, stdAngle, String.valueOf(getDamageAnimation()), font, textColor[4]) ;				
 		}

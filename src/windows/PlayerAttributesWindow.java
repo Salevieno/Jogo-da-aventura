@@ -201,21 +201,21 @@ public class PlayerAttributesWindow extends AttributesWindow
 		{
 			Point attValuePos = UtilG.Translate(initialAttPos, 0, i * 22) ;
 			Point attImagePos = UtilG.Translate(windowPos, 35, 191 + i * 22) ;
-			DP.DrawImage(attIcons[i], attImagePos, new Scale(1, 1), Align.center) ;
+			DP.DrawImage(attIcons[i], attImagePos, Scale.unit, Align.center) ;
 			DP.DrawText(attValuePos, Align.centerLeft, angle, attributes[i].text(), font, textColor) ;
 		}
 		Point critPos = UtilG.Translate(initialAttPos, 0, 9 + attributes.length * 22) ;
 		String critValue = UtilG.Round(100 * player.getBA().TotalCritAtkChance(), 1) + "%" ;
-		DP.DrawImage(critIcon, UtilG.Translate(windowPos, 35, 333), new Scale(1, 1), Align.center) ;
+		DP.DrawImage(critIcon, UtilG.Translate(windowPos, 35, 333), Scale.unit, Align.center) ;
 		DP.DrawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
 
 		Point powerPos = UtilG.Translate(windowPos, 260, 300) ;
 		player.displayPowerBar(powerPos, DP) ;
 		
 		//	Collecting
-		DP.DrawImage(collectIcons[0], UtilG.Translate(windowPos, 188, 257), new Scale(1, 1), Align.center) ;
-		DP.DrawImage(collectIcons[1], UtilG.Translate(windowPos, 188, 279), new Scale(1, 1), Align.center) ;
-		DP.DrawImage(collectIcons[2], UtilG.Translate(windowPos, 188, 301), new Scale(1, 1), Align.center) ;
+		DP.DrawImage(collectIcons[0], UtilG.Translate(windowPos, 188, 257), Scale.unit, Align.center) ;
+		DP.DrawImage(collectIcons[1], UtilG.Translate(windowPos, 188, 279), Scale.unit, Align.center) ;
+		DP.DrawImage(collectIcons[2], UtilG.Translate(windowPos, 188, 301), Scale.unit, Align.center) ;
 		
 		Point herbPos = UtilG.Translate(windowPos, 197 + attOffset, 257) ;
 		Point woodPos = UtilG.Translate(windowPos, 197 + attOffset, 279) ;
@@ -232,7 +232,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Point coinPos = UtilG.Translate(windowPos, 185, 332) ;
 		Point goldPos = UtilG.Translate(windowPos, 197 + attOffset, 332) ;
 		String goldValue = String.valueOf(UtilG.Round(player.getBag().getGold(), 1)) ;
-		DP.DrawImage(Player.CoinIcon, coinPos, angle, new Scale(1, 1), Align.center) ;
+		DP.DrawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
 		DP.DrawText(goldPos, Align.centerLeft, angle, goldValue, font, Game.colorPalette[15]) ;
 		
 		incAttButtons.values().forEach(button -> button.display(angle, false, mousePos, DP)) ;

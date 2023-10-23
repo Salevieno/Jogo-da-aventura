@@ -57,7 +57,7 @@ public class BestiaryWindow extends GameWindow
 		DP.DrawRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
 		
 		Point creaturePos = UtilG.Translate(mainWindowPos, 40, offset) ;
-		creatureType.display(creaturePos, new Scale(1, 1), DP) ;
+		creatureType.display(creaturePos, Scale.unit, DP) ;
 		
 		List<String> textInfo = new ArrayList<>() ;
 		textInfo.add(text[1] + ": " + creatureType.getLevel()) ;

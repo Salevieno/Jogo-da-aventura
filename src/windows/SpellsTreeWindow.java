@@ -187,14 +187,14 @@ public class SpellsTreeWindow extends GameWindow
 		double angle = DrawingOnPanel.stdAngle ;
 		if (numberTabs <= 1)
 		{
-			DP.DrawImage(image, windowTopLeft, angle, new Scale(1, 1), Align.topLeft) ;
+			DP.DrawImage(image, windowTopLeft, angle, Scale.unit, Align.topLeft) ;
 			return ;
 		}
 		
 		Point displayPos = UtilG.Translate(windowTopLeft, -23, 0) ;
 		Image displayImage = tab == 0 ? tab0Image : tab1Image ;
 		Color tabTextColor = Game.colorPalette[21] ;
-		DP.DrawImage(displayImage, displayPos, angle, new Scale(1, 1), Align.topLeft) ;
+		DP.DrawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
 		DP.DrawText(UtilG.Translate(windowTopLeft, -10, 6 + 75/2), Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
 		DP.DrawText(UtilG.Translate(windowTopLeft, -10, 6 + 75 + 75/2), Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
 	}

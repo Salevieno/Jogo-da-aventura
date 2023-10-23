@@ -79,6 +79,16 @@ public class ForgeWindow extends GameWindow
 	
 	public Equip selectedEquip() { if (item == -1) { return null ;} return itemsForForge.get(item) ;}
 	
+	public int forgePrice(int forgeLevel) { return 30 + 100 * forgeLevel + 30 * forgeLevel * forgeLevel ;}
+	
+	public Forge reqRune(Equip selectedEquip)
+	{
+		int runeId = selectedEquip.isSpecial() ? 20 : 0 ;
+		runeId += 2 * selectedEquip.getForgeLevel() ;
+		runeId += selectedEquip.isWeapon() ? 0 : 1 ;
+		return Forge.getAll()[runeId] ;
+	}
+	
 	public void forge(BagWindow bag)
 	{
 
@@ -88,20 +98,18 @@ public class ForgeWindow extends GameWindow
 		
 		if (selectedEquip.getForgeLevel() == Equip.maxForgeLevel) { displayMessage(1) ; return ;}
 
-		int runeId = selectedEquip.isSpecial() ? 20 : 0 ;
-		runeId += 2 * selectedEquip.getForgeLevel() ;
-		runeId += selectedEquip.isWeapon() ? 0 : 1 ;
-		Forge rune = Forge.getAll()[runeId] ;
+		Forge rune = reqRune(selectedEquip) ;
 
 		if (!bag.contains(rune)) { displayMessage(2) ; return ;}
 
-		int forgePrice = 100 + 1000 * selectedEquip.getForgeLevel() ;
+		int forgeLevel = selectedEquip.getForgeLevel() ; ;
+		int forgePrice = forgePrice(forgeLevel) ;
 
 
 		if (!bag.hasEnoughGold(forgePrice)) { displayMessage(3) ; return ;}
 
 
-		double chanceForge = 1 - 0.08 * selectedEquip.getForgeLevel() ;
+		double chanceForge = 1 - 0.08 * forgeLevel ;
 
 		bag.removeGold(forgePrice) ;
 		bag.remove(rune, 1) ;
@@ -133,7 +141,7 @@ public class ForgeWindow extends GameWindow
 		
 		if (itemsOnWindow.size() == 0) { item = -1 ;}
 		
-		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
+		DP.DrawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
 		
 		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[2]) ;
 		DP.DrawText(messagePos, Align.center, angle, "Selecione o equipamento", stdFont, stdColor) ;
@@ -144,11 +152,18 @@ public class ForgeWindow extends GameWindow
 			if (item == null) { continue ;}
 			
 			Point namePos = UtilG.Translate(itemPos, 14, -6) ;
+			Point runePos = UtilG.Translate(itemPos, 64, -6) ;
+			Point coinPos = UtilG.Translate(itemPos, 104, -6) ;
+			Point pricePos = UtilG.Translate(itemPos, 114, -6) ;
 			
 			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? selColor : stdColor ;
-			DP.DrawImage(Item.slot, itemPos, angle, new Scale(1, 1), Align.center) ;
-			DP.DrawImage(item.getImage(), itemPos, angle, new Scale(1, 1), Align.center) ;
+			DP.DrawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
+			DP.DrawImage(item.getImage(), itemPos, angle, Scale.unit, Align.center) ;
 			DP.DrawText(namePos, Align.topLeft, angle, item.getName() + " + " + item.getForgeLevel(), stdFont, itemColor) ;
+			// TODO draw required rune
+			DP.DrawText(runePos, Align.topLeft, angle, reqRune(item).getName(), stdFont, itemColor) ;
+			DP.DrawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
+			DP.DrawText(pricePos, Align.centerLeft, angle, String.valueOf(forgePrice(item.getForgeLevel())), stdFont, itemColor) ;
 			itemPos.y += 28 ;
 		}
 		

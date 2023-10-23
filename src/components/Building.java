@@ -89,11 +89,11 @@ public class Building
 	
 	public void displaySignMessage(int cityID, DrawingOnPanel DP)
 	{
-		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		Point messagePos = UtilG.Translate(pos, 10, 10) ;
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
-		DP.DrawRoundRect(pos, Align.topLeft, new Dimension(220, 80), 2, Game.colorPalette[4], Game.colorPalette[4], true) ;			
-		DP.DrawFitText(messagePos, font.getSize() + 2, Align.centerLeft, message, font, 40, Game.colorPalette[3]) ;	
+		DP.DrawRoundRect(pos, Align.topLeft, new Dimension(230, 80), 2, Game.colorPalette[3], Game.colorPalette[3], true) ;			
+		DP.DrawFitText(messagePos, font.getSize() + 2, Align.centerLeft, message, font, 40, Game.colorPalette[0]) ;	
 	}
 	
 	public void display(Point playerPos, int cityID, DrawingOnPanel DP)
@@ -110,7 +110,7 @@ public class Building
 		
 		if (type.getInsideImage() == null)
 		{
-			DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
+			DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, Scale.unit, Align.bottomLeft) ;
 			displayNPCs(DP) ;
 			
 			return ;
@@ -118,13 +118,13 @@ public class Building
 		
 		if (!isInside(playerPos))
 		{
-			DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
+			DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, Scale.unit, Align.bottomLeft) ;
 			
 			
 			return ;
 		}
 
-		DP.DrawImage(type.getInsideImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomLeft) ;
+		DP.DrawImage(type.getInsideImage(), pos, DrawingOnPanel.stdAngle, Scale.unit, Align.bottomLeft) ;
 		displayNPCs(DP) ;
 		
 	}

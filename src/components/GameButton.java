@@ -90,7 +90,7 @@ public class GameButton
 	{
 		if (selectedImage != null)
 		{ Double  itens = null ;
-			DP.DrawImage(selectedImage, topLeft, angle, new Scale(1, 1), Align.topLeft) ;
+			DP.DrawImage(selectedImage, topLeft, angle, Scale.unit, Align.topLeft) ;
 			if (displayText)
 			{
 				DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
@@ -107,7 +107,7 @@ public class GameButton
 	{
 		if (image != null)
 		{
-			DP.DrawImage(image, topLeft, angle, new Scale(1, 1), Align.topLeft) ;
+			DP.DrawImage(image, topLeft, angle, Scale.unit, Align.topLeft) ;
 			
 			if (!displayText) { return ;}
 			
@@ -132,7 +132,7 @@ public class GameButton
 			return ;
 		}
 		
-		DP.DrawImage(imageDisplayed, topLeft, angle, new Scale(1, 1), Align.topLeft) ;
+		DP.DrawImage(imageDisplayed, topLeft, angle, Scale.unit, Align.topLeft) ;
 		
 		if (name == null) { return ;}
 		

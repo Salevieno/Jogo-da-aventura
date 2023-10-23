@@ -101,7 +101,7 @@ public class CraftWindow extends GameWindow
 		Color textColor = Game.colorPalette[0] ;
 		double angle = DrawingOnPanel.stdAngle ;		
 		
-		DP.DrawImage(image, windowPos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.topLeft) ;
+		DP.DrawImage(image, windowPos, DrawingOnPanel.stdAngle, Scale.unit, Align.topLeft) ;
 		
 		DP.DrawText(titlePos, Align.center, angle, name, titleFont, textColor) ;
 		
@@ -119,16 +119,16 @@ public class CraftWindow extends GameWindow
 			
 			ingredients.forEach( (item, qtd) -> {
 				Color itemNameColor = textColor ;
-				DP.DrawImage(Item.slot, ingredientsPos, angle, new Scale(1, 1), Align.center) ;
-				DP.DrawImage(item.getImage(), ingredientsPos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.center) ;
+				DP.DrawImage(Item.slot, ingredientsPos, angle, Scale.unit, Align.center) ;
+				DP.DrawImage(item.getImage(), ingredientsPos, DrawingOnPanel.stdAngle, Scale.unit, Align.center) ;
 				DP.DrawText(UtilG.Translate(ingredientsPos, 14, 0), Align.centerLeft, DrawingOnPanel.stdAngle, qtd + " " + item.getName(), stdFont, itemNameColor) ;
 				ingredientsPos.y += 23 ;
 			}) ;
 			
 			products.forEach( (item, qtd) -> {
 				Color itemNameColor = textColor ;
-				DP.DrawImage(Item.slot, productsPos, angle, new Scale(1, 1), Align.center) ;
-				DP.DrawImage(item.getImage(), productsPos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.center) ;
+				DP.DrawImage(Item.slot, productsPos, angle, Scale.unit, Align.center) ;
+				DP.DrawImage(item.getImage(), productsPos, DrawingOnPanel.stdAngle, Scale.unit, Align.center) ;
 				DP.DrawText(UtilG.Translate(productsPos, 14, 0), Align.centerLeft, DrawingOnPanel.stdAngle, qtd + " " + item.getName(), stdFont, itemNameColor) ;
 				productsPos.y += 23 ;
 			}) ;		

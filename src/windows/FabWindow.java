@@ -98,7 +98,7 @@ public class FabWindow extends GameWindow
 		//window = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, NumberOfPages) ;
 		//Font titleFont = new Font(Game.MainFontName, Font.BOLD, 16) ;
 		
-		DP.DrawImage(image, windowPos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.center) ;
+		DP.DrawImage(image, windowPos, DrawingOnPanel.stdAngle, Scale.unit, Align.center) ;
 		//DP.DrawText(new Point(windowPos.x - 3 * imageL / 8, windowPos.y - imageH / 5 - sy/4), "BotLeft", OverallAngle, "Ingredientes:", titleFont, ColorPalette[5]) ;
 		//DP.DrawText(new Point(windowPos.x + 3 * imageL / 8, windowPos.y - imageH / 5 - sy/4), "TopRight", OverallAngle, "Produtos", titleFont, ColorPalette[5]) ;		
 		displayRecipes(mousePos, DP) ;

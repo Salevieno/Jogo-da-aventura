@@ -111,19 +111,11 @@ public class FieldMap extends GameMap
 	
 	public boolean hasCreatures() { return creatures != null ;}
 	
-	public void IncCollectiblesCounter()
-	{
-		collectibleCounter.values().forEach(TimeCounter::inc);
-//		for (Collectible collectible : collectibles)
-//		{
-//			collectible.getCounter().inc() ;
-////			if (collectible.getCounter() <= collectible.getDelay()) { }
-//		}
-	}
+	public void IncCollectiblesCounter() { collectibleCounter.values().forEach(TimeCounter::inc) ;}
 	
 	public void ActivateCollectiblesCounter()
 	{
-		
+		// TODO use filter ;)
 		collectibleCounter.entrySet().forEach(entry -> 
 		{
 			if (entry.getValue().finished())
@@ -135,20 +127,21 @@ public class FieldMap extends GameMap
 
 	}
 	
-	public void CreateGroundElement()
-	{
-		
-	}
-	
 	public void addCollectible(CollectibleTypes type)
 	{
 		
+		Point pos = randomPosInMap() ;
+		while (groundTypeAtPoint(pos) != null)
+		{
+			pos = randomPosInMap() ;
+		}
+		
 		switch (type)
 		{
-			case berry: collectibles.add(new Collectible(220, level, randomPosInMap(), collectibleDelay[0])) ; return ;
-			case herb: collectibles.add(new Collectible(60 + 3 * level, level, randomPosInMap(), collectibleDelay[1])) ; return ;
-			case wood: collectibles.add(new Collectible(61 + 3 * level, level, randomPosInMap(), collectibleDelay[2])) ; return ;
-			case metal: collectibles.add(new Collectible(62 + 3 * level, level, randomPosInMap(), collectibleDelay[3])) ; return ;
+			case berry: collectibles.add(new Collectible(220, level, pos, collectibleDelay[0])) ; return ;
+			case herb: collectibles.add(new Collectible(60 + 3 * level, level, pos, collectibleDelay[1])) ; return ;
+			case wood: collectibles.add(new Collectible(61 + 3 * level, level, pos, collectibleDelay[2])) ; return ;
+			case metal: collectibles.add(new Collectible(62 + 3 * level, level, pos, collectibleDelay[3])) ; return ;
 			default: return ;
 		}
 		
@@ -181,22 +174,5 @@ public class FieldMap extends GameMap
  		creatures.forEach(creature -> creature.getBag().forEach(System.out::println));
  		System.out.println();
  	}
- 	
-//	public void displayGroundType()
-//	{
-//		if (groundType != null)
-//		{
-//			for (int gt = 0 ; gt <= groundType.length - 1 ; gt += 1)
-//			{
-//				Object[] o = (Object[]) groundType[gt] ;
-//				String type = (String) o[0] ;
-//				Point p = (Point) o[1] ;
-//				if (type.equals("water"))
-//				{
-//					DP.DrawRect(new Point(p.x, p.y), "center", new Size(10, 10), 0, Color.blue, null, false);
-//				}
-//			}
-//		}
-//	}
 	 	
 }

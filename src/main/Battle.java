@@ -335,6 +335,7 @@ public class Battle
 		
 		if (atkResult.getEffect().equals(AttackEffects.hit) | atkResult.getEffect().equals(AttackEffects.crit))
 		{
+			System.out.println("receiver is hit " + atkResult.getDamage());
 			receiver.getPA().getLife().incCurrentValue(-atkResult.getDamage()) ;
 			int[] inflictedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
 			receiver.getBA().getStatus().receiveStatus(inflictedStatus) ;
@@ -403,14 +404,17 @@ public class Battle
 //					}
 //					player.updatedefensiveStats(damage, effect, creature.actionIsSpell(), creature) ;
 //				}
-			
-			
-			if ( atkResults.getEffect() != AttackEffects.none | atkResults.getAtkType() == AtkTypes.defense )
+			if (atkResults.getAtkType() != null)
 			{
-				if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
-				if (attacker instanceof Player) { ((Player) attacker).getStatistics().update(atkResults) ;}
-			}
-			damageAni.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageAnimation}) ;
+				if ( !atkResults.getEffect().equals(AttackEffects.none) | atkResults.getAtkType().equals(AtkTypes.defense) )
+				{
+					if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
+					if (attacker instanceof Player) { ((Player) attacker).getStatistics().update(atkResults) ;}
+				}
+			}			
+
+//			if (attacker instanceof Player) { System.out.println("display damage = " + atkResults.getDamage()); ;}
+//			damageAni.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageAnimation}) ;
 		}
 		
 		attacker.getBA().getStatus().display(attacker.getPos(), attacker.getDir(), DP);

@@ -46,7 +46,7 @@ public class Projectiles
 	
 	public void DrawImage(DrawingOnPanel DP)
 	{
-		DP.DrawImage(image, pos, UtilG.getAngle(speed), new Scale(1, 1), Align.center) ;
+		DP.DrawImage(image, pos, UtilG.getAngle(speed), Scale.unit, Align.center) ;
 	}
 	public void move()
 	{

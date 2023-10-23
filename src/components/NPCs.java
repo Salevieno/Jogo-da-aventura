@@ -659,7 +659,7 @@ public class NPCs
 
 	public void display(DrawingOnPanel DP)
 	{
-		DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, new Scale(1, 1), Align.bottomCenter) ;
+		DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, Scale.unit, Align.bottomCenter) ;
 	}
 
 	@Override

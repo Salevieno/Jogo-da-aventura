@@ -155,10 +155,8 @@ public class Creature extends LiveBeing
 		Point newPos = PA.CalcNewPos(dir, CurrentPos, step) ;
 
 		if (!Game.getScreen().posIsInMap(newPos)) { return ;}
+		if (!map.groundIsWalkable(newPos, null)) { return ;}
 
-		boolean NewPosIsWalkable = map.groundIsWalkable(newPos, null) ;
-		if (!NewPosIsWalkable) { return ;}
-		
 		setPos(newPos) ;
 	
 	}

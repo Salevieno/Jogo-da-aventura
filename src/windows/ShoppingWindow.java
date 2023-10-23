@@ -118,7 +118,7 @@ public class ShoppingWindow extends GameWindow
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 16) ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
-		DP.DrawImage(image, windowPos, angle, new Scale(1, 1), Align.topLeft) ;
+		DP.DrawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
 		
 		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[2]) ;
 				
@@ -135,8 +135,8 @@ public class ShoppingWindow extends GameWindow
 			}
 			
 			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? selColor : stdColor ;
-			DP.DrawImage(Item.slot, itemPos, angle, new Scale(1, 1), Align.center) ;
-			DP.DrawImage(item.getImage(), itemPos, angle, new Scale(1, 1), Align.center) ;
+			DP.DrawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
+			DP.DrawImage(item.getImage(), itemPos, angle, Scale.unit, Align.center) ;
 			DP.DrawText(namePos, Align.centerLeft, angle, item.getName(), stdFont, itemColor) ;
 			DP.DrawText(pricePos, Align.centerRight, angle, String.valueOf(item.getPrice()), stdFont, Game.colorPalette[2]) ;
 			DP.DrawImage(Player.CoinIcon, coinPos, Align.center) ;

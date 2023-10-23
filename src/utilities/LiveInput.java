@@ -38,16 +38,15 @@ public class LiveInput
 		addChar(newChar) ;
 	}
 	
-	public void displayTypingField(Point pos, DrawingOnPanel DP)
+	public void displayTypingField(Point pos, boolean showBackground, DrawingOnPanel DP)
 	{
-//		DP.DrawImage(Player.CoinIcon, UtilG.Translate(pos, 10, 10), Align.centerLeft) ;
-//		DP.DrawText(UtilG.Translate(pos, 15, 10), Align.centerLeft, DrawingOnPanel.stdAngle, text, DrawingOnPanel.stdFont, Game.colorPalette[21]) ;		
-	
-//		Point pos = UtilG.Translate(windowPos, 50, size.height / 3) ;
-//		DP.DrawText(UtilG.Translate(pos, 0, -30), Align.centerLeft, DrawingOnPanel.stdAngle, text, stdFont, Game.colorPalette[21]) ;
-		DP.DrawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.colorPalette[3], Game.colorPalette[3], true) ;
-		DP.DrawLine(UtilG.Translate(pos, 20, 5), UtilG.Translate(pos, 20, -5), 2, Game.colorPalette[0]) ;
-		DP.DrawImage(Player.CoinIcon, UtilG.Translate(pos, 5, 0), Align.centerLeft) ;
+
+		if (showBackground)
+		{
+			DP.DrawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.colorPalette[3], Game.colorPalette[3], true) ;
+		}
+		int offsetX = (int) (7.3 * text.length()) ;
+		DP.DrawLine(UtilG.Translate(pos, 20 + offsetX, 5), UtilG.Translate(pos, 20 + offsetX, -5), 2, Game.colorPalette[0]) ;
 		DP.DrawText(UtilG.Translate(pos, 20, 0), Align.centerLeft, DrawingOnPanel.stdAngle, text, font, Game.colorPalette[0]) ;
 	
 	}
