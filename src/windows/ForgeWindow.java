@@ -52,7 +52,7 @@ public class ForgeWindow extends GameWindow
 	{
 		message = messages.get(i) ;
 		Point pos = UtilG.Translate(windowPos, 0, - 30) ;
-		Game.getAnimations()[12].start(200, new Object[] {pos, message, Game.colorPalette[0]}) ;
+		Game.getAnimations().get(12).start(200, new Object[] {pos, message, Game.colorPalette[0]}) ;
 	}
 	
 	public void navigate(String action)
@@ -153,8 +153,8 @@ public class ForgeWindow extends GameWindow
 			
 			Point namePos = UtilG.Translate(itemPos, 14, -6) ;
 			Point runePos = UtilG.Translate(itemPos, 64, -6) ;
-			Point coinPos = UtilG.Translate(itemPos, 104, -6) ;
-			Point pricePos = UtilG.Translate(itemPos, 114, -6) ;
+			Point coinPos = UtilG.Translate(itemPos, 164, -6) ;
+			Point pricePos = UtilG.Translate(itemPos, 204, -6) ;
 			
 			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? selColor : stdColor ;
 			DP.DrawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;

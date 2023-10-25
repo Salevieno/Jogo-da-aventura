@@ -13,6 +13,7 @@ import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import components.SpellTypes;
 import graphics.DrawingOnPanel;
+import graphics.Gif;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Game;
@@ -72,7 +73,8 @@ public abstract class LiveBeing
 	public static final Image powerBarImage = UtilG.loadImage(Game.ImagesPath + "PowerBar.png") ;
 	public static final String[] BattleKeys = new String[] {"Y", "U"} ;	
 	public static final List<String> SpellKeys = new ArrayList<>(Arrays.asList(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"})) ;
-	
+	public final Gif phyHitGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Battle\\" + "PhysicalHit.gif"), (int) (75 / 1.5), false, false) ;
+	public final Gif magHitGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Battle\\" + "SpellHit.gif"), (int) (90 / 1.5), false, false) ;
 	
 	
 	public LiveBeing(PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, AttributesWindow attWindow)
@@ -627,8 +629,9 @@ public abstract class LiveBeing
 	}
 	public void displayDefending(DrawingOnPanel DP)
 	{
-		int ImageW = defendingImage.getWidth(null) ;
-		Point ImagePos = UtilG.Translate(pos, ImageW, 0) ;
-		DP.DrawImage(defendingImage, ImagePos, Align.center) ;
+		Point imagePos = UtilG.Translate(pos, defendingImage.getWidth(null), 0) ;
+		DP.DrawImage(defendingImage, imagePos, Align.center) ;
 	}
+
+	public abstract void useAutoSpells();
 }

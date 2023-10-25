@@ -227,8 +227,7 @@ public class BagWindow extends GameWindow
 	public void remove(Item item, int amount)
 	{
 
-//		Map<Item, Integer> menuItems = getMenuItems() ;
-
+		if (item == null) { System.out.println("Tentando remover item nulo") ; return ;}
 		if (!contains(item)) { System.out.println("Tentando remover um item que não existe na mochila") ; return ;}
 		if (!hasEnough(item, amount)) { System.out.println("Tentando remover mais itens do que a quantidade existente na mochila") ; return ;}
 		
@@ -354,7 +353,7 @@ public class BagWindow extends GameWindow
 		return items ;
 	}
 	
-	private Map<Item, Integer> getAllItems()
+	public Map<Item, Integer> getAllItems()
 	{
 		Map<Item, Integer> items = new LinkedHashMap<>() ;
 		

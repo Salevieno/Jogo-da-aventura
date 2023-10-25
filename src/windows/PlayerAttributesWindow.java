@@ -192,7 +192,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		String lifeText = attText[1] + ": " + UtilG.Round(player.getPA().getLife().getCurrentValue(), 1) ;
 		String mpText = attText[2] + ": " + UtilG.Round(player.getPA().getMp().getCurrentValue(), 1) ;
 		DP.DrawText(lifePos, Align.centerLeft, angle, lifeText, font, colorPalette[7]) ;
-		DP.DrawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[20]) ;
+		DP.DrawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[21]) ;
 		
 		BasicBattleAttribute[] attributes = player.getBA().basicAttributes() ;
 		int attOffset = 4 ;

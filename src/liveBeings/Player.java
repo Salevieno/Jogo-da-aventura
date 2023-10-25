@@ -26,7 +26,6 @@ import components.Building;
 import components.NPCs;
 import components.Quest;
 import components.QuestSkills;
-import components.SpellTypes;
 import graphics.Animation;
 import graphics.DrawingOnPanel;
 import graphics.Gif;
@@ -91,7 +90,7 @@ public class Player extends LiveBeing
 	private MapWindow mapWindow ;
 	private List<Recipe> knownRecipes ;
 	private FabWindow fabWindow ;
-	private List<Quest> quests ;	
+	private List<Quest> quests ;
 	private QuestWindow questWindow ;
 	private HintsWindow hintsWindow ;
 	private BestiaryWindow bestiary ;
@@ -141,7 +140,12 @@ public class Player extends LiveBeing
 	public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
 	public static final String[] HotKeys = new String[] {"T", "Y", "U"} ;
 
-	public final static Image[] AttWindowImages = new Image[] {UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"), UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")} ;
+	public final static Image[] AttWindowImages = new Image[]
+								{
+									UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"),
+									UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"),
+									UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")
+								} ;
     public final static Image settingsWindowImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "windowSettings.png") ;
 	
 	
@@ -388,7 +392,7 @@ public class Player extends LiveBeing
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
 	private boolean actionIsAMove() { return Arrays.asList(MoveKeys).contains(currentAction) ;}
 	private boolean hitsCreature() { return (actionIsPhysicalAtk() | actionIsSpell()) & closestCreature != null ;}
-	public boolean isInBattle() { return opponent != null & state.equals(LiveBeingStates.fighting) ;}
+	public boolean isInBattle() { return opponent != null | state.equals(LiveBeingStates.fighting) ;}
 	public boolean isCollecting() { return state.equals(LiveBeingStates.collecting) ;}
 	public boolean isOpeningChest() { return state.equals(LiveBeingStates.openingChest) ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
@@ -562,12 +566,12 @@ public class Player extends LiveBeing
 
 	private void obtainItemsAnimation(List<Item> itemsObtained)
 	{		
-		Game.getAnimations()[3].start(300, new Object[] {itemsObtained.toArray(new Item[0])}) ;
+		Game.getAnimations().get(3).start(300, new Object[] {itemsObtained.toArray(new Item[0])}) ;
 	}
 
 	private void obtainGoldAnimation(int amount)
 	{
-		Game.getAnimations()[10].start(200, new Object[] {amount}) ;
+		Game.getAnimations().get(10).start(200, new Object[] {amount}) ;
 	}
 	
 	public void engageInFight(Creature Opponent)
@@ -586,7 +590,7 @@ public class Player extends LiveBeing
 
 		setState(LiveBeingStates.fishing) ;
 		
-		Animation fishingAnimation = Game.getAnimations()[9] ;
+		Animation fishingAnimation = Game.getAnimations().get(9) ;
 		fishingAnimation.start(FishingGif.getDuration(), new Object[] {pos, dir}) ;
 		
 	}
@@ -806,7 +810,7 @@ public class Player extends LiveBeing
 		
 	}
 	
-	private boolean metNPC(NPCs npc) { return isInCloseRange(npc.getPos()) ;} // UtilG.isWithinRadius(this.getPos(), npc.getPos(), size.height / 2) ;
+	private boolean metNPC(NPCs npc) { return isInCloseRange(npc.getPos()) ;}
 	
 	private boolean metAnyNPC()
 	{
@@ -830,64 +834,61 @@ public class Player extends LiveBeing
 		return false ;
 	}
 	
-	public void meet(Point mousePos, DrawingOnPanel DP)
+	public void meetWithTreasureChests()
 	{
-		if (state == LiveBeingStates.collecting | isInBattle() | Game.someAnimationIsActive()) { return ;}
+		if (!map.isSpecial()) { return ;}
 
-		// meeting with treasure chests
-		if (map.isSpecial())
+		List<MapElements> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).collect(Collectors.toList()) ;
+		for (MapElements chest : chests)
 		{
-			List<MapElements> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).collect(Collectors.toList()) ;
-			for (MapElements chest : chests)
+
+			if (!isInCloseRange(chest.getPos())) { continue ;}
+
+			setState(LiveBeingStates.openingChest);
+			currentChest = (TreasureChest) chest ;
+			break ;
+			
+		}
+	}
+
+	public void meetWithCollectibles(FieldMap map)
+	{
+		List<Collectible> collectibles = map.getCollectibles() ;
+		
+		if (collectibles == null) { return ;}
+		if (collectibles.isEmpty()) { return ;}
+		
+		for (int i = 0 ; i <= collectibles.size() - 1 ; i += 1)
+		{
+			
+			if (collectibles.size() - 1 < i) { break ;}
+			
+			Collectible collectible = collectibles.get(i) ;
+			if (!isInCloseRange(collectible.getPos())) { continue ;}
+			
+			setState(LiveBeingStates.collecting);
+			currentCollectible = collectible ;
+			break ;		
+			
+		}
+	}
+
+	public void meetWithCreatures(FieldMap map)
+	{
+//		System.out.println("checking meet with creatures") ;
+		List<Creature> creaturesInMap = map.getCreatures() ;
+		for (Creature creature : creaturesInMap)
+		{
+			if (isInCloseRange(creature.getPos()))
 			{
-
-				if (!isInCloseRange(chest.getPos())) { continue ;}
-
-				setState(LiveBeingStates.openingChest);
-				currentChest = (TreasureChest) chest ;
-				break ;
-				
+				engageInFight(creature) ;
+				bestiary.addDiscoveredCreature(opponent.getType()) ;
 			}
 		}
-		
-		if (map.isAField())
-		{
-			FieldMap fm = (FieldMap) map ;
-			
-			
-			// meeting with collectibles
-			List<Collectible> collectibles = fm.getCollectibles() ;
-			int numberCollectibles = collectibles.size() ;
-			for (int i = 0 ; i <= numberCollectibles - 1 ; i += 1)
-			{
-				
-				if (collectibles.size() - 1 < i) { break ;}
-				
-				Collectible collectible = collectibles.get(i) ;
-				if (!isInCloseRange(collectible.getPos())) { continue ;}
-				
-				setState(LiveBeingStates.collecting);
-				currentCollectible = collectible ;
-				break ;		
-				
-			}
-			System.out.println("checking meet with creatures") ;
-			// meeting with creatures
-			List<Creature> creaturesInMap = fm.getCreatures() ;
-			for (Creature creature : creaturesInMap)
-			{
-//				double distx = UtilG.dist1D(pos.x, creature.getPos().x) ;
-//				double disty = UtilG.dist1D(pos.y, creature.getPos().y) ; //  - size.height / 2
-				// distx <= (size.width + creature.getSize().width) / 2 & disty <= (size.height + creature.getSize().height) / 2
-				if (isInCloseRange(creature.getPos()))
-				{
-					engageInFight(creature) ;
-					bestiary.addDiscoveredCreature(opponent.getType()) ;
-				}
-			}
-		}	
-		
-		// meeting with NPCs
+	}
+
+	public void meetWithNPCs(Point mousePos, DrawingOnPanel DP)
+	{
 		if (map.getNPCs() != null)
 		{
 			for (NPCs npc : map.getNPCs())
@@ -913,6 +914,21 @@ public class Player extends LiveBeing
 				break ;
 			}
 		}
+	}
+	
+	public void meet(Point mousePos, DrawingOnPanel DP)
+	{
+		if (state == LiveBeingStates.collecting | isInBattle() | Game.someAnimationIsActive()) { return ;}
+
+		meetWithTreasureChests() ;
+		
+		if (map.isAField())
+		{
+			meetWithCollectibles((FieldMap) map) ;
+			meetWithCreatures((FieldMap) map) ;			
+		}	
+		
+		meetWithNPCs(mousePos, DP) ;
 	}
 
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
@@ -1088,6 +1104,21 @@ public class Player extends LiveBeing
 		
 	}
 
+	public void useAutoSpells()
+	{
+
+//		if (effect != null)
+//		{
+//			if (player.getJob() == 4 & Math.random() < 0.2*player.getSpells().get(11).getLevel() & effect.equals(AttackEffects.crit))	// Surprise attack
+//			{
+//				creature.getLife().incCurrentValue((int) -Math.min(0.5 * damage, 2*player.getPhyAtk().getBaseValue())); ;
+//				// needs to show the atk animation
+//				//SkillBuffIsActive[11][0] = true ;
+//			}
+//			player.updatedefensiveStats(damage, effect, creature.actionIsSpell(), creature) ;
+//		}
+	}
+	
 	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
 	{
 		
@@ -1397,7 +1428,7 @@ public class Player extends LiveBeing
 		
 		((PlayerAttributesWindow) attWindow).activateIncAttButtons(attPoints) ;
 		
-		Game.getAnimations()[4].start(levelUpGif.getDuration(), new Object[] {pos}) ;
+		Game.getAnimations().get(4).start(levelUpGif.getDuration(), new Object[] {pos}) ;
 		
 		if (attIncAnimation == null) { return ;}
 		

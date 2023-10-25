@@ -31,7 +31,7 @@ public class Gif
 
 	public void start() { timeCounter = 1 ;}
 	public void resetTimeCounter() { timeCounter = 0 ;}
-	public void incTimeCounter() { timeCounter += 1 ;}
+	private void incTimeCounter() { timeCounter += 1 ;}
 	
 	public boolean isLoop() { return loop ;}
 	public boolean isTimeStopper() { return timeStopper ;}	

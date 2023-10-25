@@ -15,7 +15,7 @@ public class Pterodactile
     {
     	// TODO pterodactile speak
 		Object[] object = new Object[] { image, SpeakingBubbleImage, message } ;
-		Game.getAnimations()[8].start(1500, object) ;
+		Game.getAnimations().get(8).start(1500, object) ;
 		
     }
     

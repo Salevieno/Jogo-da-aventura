@@ -277,15 +277,15 @@ public class DrawingOnPanel
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		if (0 < selectedWindow)
 		{
-			Point LeftArrowPos = new Point(pos.x + (int)(0.25 * width), pos.y) ;
+			Point LeftArrowPos = UtilG.Translate(pos, (int)(0.25 * width), 0) ;
 			DrawImage(ArrowIconImage, LeftArrowPos, stdAngle, new Scale(-1, -1), Align.center) ;
-			DrawText(LeftArrowPos, Align.topRight, stdAngle, Player.ActionKeys[1], font, colorPalette[5]) ;			
+			DrawText(LeftArrowPos, Align.topRight, stdAngle, Player.ActionKeys[1], font, colorPalette[0]) ;			
 		}
 		if (selectedWindow < numberWindows - 1)
 		{
-			Point RightArrowPos = new Point(pos.x + (int)(0.75 * width), pos.y) ;
+			Point RightArrowPos = UtilG.Translate(pos, (int)(0.75 * width), 0) ;
 			DrawImage(ArrowIconImage, RightArrowPos, stdAngle, new Scale(1, -1), Align.center) ;
-			DrawText(RightArrowPos, Align.topRight, stdAngle, Player.ActionKeys[3], font, colorPalette[5]) ;		
+			DrawText(RightArrowPos, Align.topRight, stdAngle, Player.ActionKeys[3], font, colorPalette[0]) ;		
 		}
 	}
 	
@@ -293,22 +293,19 @@ public class DrawingOnPanel
 	
 	public void DrawLoadingGameScreen(Player player, Pet pet, GameButton[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
 	{
-		Point[] WindowPos = new Point[] {new Point((int)(0.15*screenSize.width), (int)(0.2*screenSize.height)),
-				new Point((int)(0.65*screenSize.width), (int)(0.2*screenSize.height)),
-				new Point((int)(0.5*screenSize.width), (int)(0.2*screenSize.height))} ;
+		Point[] WindowPos = new Point[] {Game.getScreen().pos(0.15, 0.2), Game.getScreen().pos(0.65, 0.2), Game.getScreen().pos(0.5, 0.2)} ;
 		Font font = new Font("SansSerif", Font.BOLD, 28) ;
 		
-		DrawText(new Point((int)(0.5*screenSize.width), (int)(0.05*screenSize.height)), Align.center, stdAngle, "Slot " + (SlotID + 1), font, colorPalette[5]) ;
+		DrawText(Game.getScreen().pos(0.5, 0.05), Align.center, stdAngle, "Slot " + (SlotID + 1), font, colorPalette[5]) ;
 		//player.DrawAttWindow(MainWinDim, WindowPos[0], null, AllText, AllTextCat, 0, GoldCoinImage, icons, DP) ;
 		((PlayerAttributesWindow) player.getAttWindow()).display(new Point(0, 0), this) ;
 		if (0 < pet.getLife().getCurrentValue())
 		{
  			//pet.getAttWindow().display(pet, allText, null, null, NumberOfUsedSlots, null, null, null, null);
 		}
- 		if (ArrowIconImage != null)
- 		{
- 			DrawWindowArrows(WindowPos[2], (int)(0.5*screenSize.width), SlotID, NumberOfUsedSlots - 1) ;
- 		}
+ 		if (ArrowIconImage == null) { return ;}
+		
+ 		DrawWindowArrows(WindowPos[2], (int)(0.5*screenSize.width), SlotID, NumberOfUsedSlots - 1) ;
 	}
 	
 	public void DrawEmptyLoadingSlot(int SlotID, int NumSlots)
@@ -493,9 +490,9 @@ public class DrawingOnPanel
 	public void gainGoldAnimation(TimeCounter counter, int goldObtained)
 	{
 		
-		Point pos = Game.getScreen().pos(0.45, 0.6) ;
+		Point pos = Game.getScreen().pos(0.45, 0.1) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Color titleColor = Game.colorPalette[3] ;
+		Color titleColor = Game.colorPalette[15] ;
 
 		Point textPos = UtilG.Translate(pos, 5, 0) ;
 		DrawText(textPos, Align.centerLeft, stdAngle, "+", font, titleColor) ;

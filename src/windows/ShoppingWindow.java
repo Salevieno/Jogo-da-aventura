@@ -3,7 +3,9 @@ package windows;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import graphics.DrawingOnPanel;
 import items.Item;
@@ -18,18 +20,33 @@ public class ShoppingWindow extends GameWindow
 	private List<Item> itemsForSale ;
 	private List<Item> itemsOnWindow ;
 	private boolean buyMode ;
-	
+
+	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
 	private static final int numberItemsPerWindow = 10 ;
 	
-	public ShoppingWindow(List<Item> ItemsForSale)
+	public ShoppingWindow(List<Item> itemsForSale)
 	{
-		super("Shopping", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Shopping.png"), 1, 1, Math.min(ItemsForSale.size(), numberItemsPerWindow), ItemsForSale.size() / numberItemsPerWindow + 1) ;
-		this.itemsForSale = ItemsForSale ;
-		itemsOnWindow = itemsOnWindow() ;
+		super("Shopping", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Shopping.png"), 1, 1, Math.min(itemsForSale.size(), numberItemsPerWindow), calcNumberWindows(itemsForSale.size())) ;
+		this.itemsForSale = itemsForSale ;
+		itemsOnWindow = calcItemsOnWindow() ;
 		buyMode = true ;
 	}
 
 	public void setBuyMode(boolean buyMode) { this.buyMode = buyMode ;}
+	
+	private Item selectedItem() { return itemsForSale.get(item + window * numberItemsPerWindow) ;}
+	
+	public void setIemsForSellingMode(BagWindow bag)
+	{
+		Set<Item> newItems = bag.getAllItems().keySet();
+		itemsForSale = new ArrayList<>(newItems) ;
+		updateNumberWindows() ;
+		updateWindow() ;
+	}
+	
+	private static int calcNumberWindows(int numberItems) { return (int) Math.ceil(numberItems / (double)numberItemsPerWindow) ;}
+	
+	public void updateNumberWindows() { numberWindows = calcNumberWindows(itemsForSale.size()) ;}
 	
 	public void navigate(String action)
 	{
@@ -73,32 +90,39 @@ public class ShoppingWindow extends GameWindow
 	private void updateWindow()
 	{
 		item = 0 ;
-		itemsOnWindow = itemsOnWindow() ;
+		itemsOnWindow = calcItemsOnWindow() ;
 		numberItems = itemsOnWindow.size() ;
 	}
 	
 	public void buyItem(BagWindow bag)
 	{
-		if (bag.getGold() < itemsForSale.get(item).getPrice())
+		Item selectedItem = selectedItem() ;
+		if (bag.getGold() < selectedItem.getPrice())
 		{
-			Game.getAnimations()[11].start(200, new Object[] {});
+			Game.getAnimations().get(11).start(200, new Object[] {});
 			return ;
 		}
 		
-		bag.add(itemsForSale.get(item), 1) ;
-		bag.addGold(-itemsForSale.get(item).getPrice()) ;
-		Game.getAnimations()[3].start(300, new Object[] {new Item[] {itemsForSale.get(item)}});
+		bag.add(selectedItem, 1) ;
+		bag.addGold(-selectedItem.getPrice()) ;
+		Game.getAnimations().get(3).start(300, new Object[] {new Item[] {selectedItem}});
 	}
 	
 	public void sellItem(BagWindow bag)
 	{
-		Item bagSelectedItem = bag.getSelectedItem() ;
-		bag.remove(bagSelectedItem, 1) ;
-		bag.addGold(bagSelectedItem.getPrice()) ;
-		// TODO animation get gold
+		
+		Item selectedItem = selectedItem() ;
+		if (!bag.contains(selectedItem)) { System.out.println("Tentando vender item que não possui") ; return ;}
+		
+		System.out.println("Vendendo " + selectedItem.getName());
+		bag.remove(selectedItem, 1) ;
+		bag.addGold(selectedItem.getPrice()) ;
+		setIemsForSellingMode(bag) ;
+		Game.getAnimations().get(10).start(200, new Object[] {selectedItem.getPrice()}) ;
+
 	}
 	
-	private List<Item> itemsOnWindow()
+	private List<Item> calcItemsOnWindow()
 	{
 		if (itemsForSale.size() <= numberItemsPerWindow)
 		{
@@ -113,14 +137,13 @@ public class ShoppingWindow extends GameWindow
 	
 	public void display(Point mousePos, DrawingOnPanel DP)
 	{
-		Point windowPos = new Point((int)(0.4*Game.getScreen().getSize().width), (int)(0.2*Game.getScreen().getSize().height)) ;
 		Point itemPos = UtilG.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + 20 + padding + Item.slot.getHeight(null) / 2) ;
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 16) ;
 		double angle = DrawingOnPanel.stdAngle ;
 		
 		DP.DrawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
 		
-		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[2]) ;
+		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[1]) ;
 				
 		
 		for (Item item : itemsOnWindow)
@@ -138,12 +161,12 @@ public class ShoppingWindow extends GameWindow
 			DP.DrawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
 			DP.DrawImage(item.getImage(), itemPos, angle, Scale.unit, Align.center) ;
 			DP.DrawText(namePos, Align.centerLeft, angle, item.getName(), stdFont, itemColor) ;
-			DP.DrawText(pricePos, Align.centerRight, angle, String.valueOf(item.getPrice()), stdFont, Game.colorPalette[2]) ;
+			DP.DrawText(pricePos, Align.centerRight, angle, String.valueOf(item.getPrice()), stdFont, Game.colorPalette[13]) ;
 			DP.DrawImage(Player.CoinIcon, coinPos, Align.center) ;
 			itemPos.y += 23 ;
 		}
 		
-		DP.DrawWindowArrows(UtilG.Translate(windowPos, size.width / 2, size.height), size.width, window, numberWindows) ;
+		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows) ;
 		
 	}
 }

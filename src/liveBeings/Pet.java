@@ -279,6 +279,11 @@ public class Pet extends LiveBeing
 		
 	}
 	
+	public void useAutoSpells()
+	{
+		
+	}
+	
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
 		int spellLevel = spell.getLevel() ;
@@ -327,6 +332,7 @@ public class Pet extends LiveBeing
 		}
 		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage) ;
 	}
+	
 	public void Win(Creature creature)
 	{
 		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())); ;
@@ -349,12 +355,13 @@ public class Pet extends LiveBeing
 		BA.getDex().incBaseValue(attIncrease[7]) ;
 		PA.getExp().incMaxValue((int) attIncrease[8]) ;
 
-		Game.getAnimations()[5].start(levelUpGif.getDuration(), new Object[] {pos}) ;
+		Game.getAnimations().get(5).start(levelUpGif.getDuration(), new Object[] {pos}) ;
 		
 		if (attIncAnimation == null) { return ;}
 		
 		attIncAnimation.start(150, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level}) ;
 	}
+	
 	public double[] calcAttributesIncrease()
 	{
 		double[] Increase = new double[AttributeIncrease.length + 1] ;

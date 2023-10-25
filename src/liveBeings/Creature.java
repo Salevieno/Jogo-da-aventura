@@ -249,6 +249,11 @@ public class Creature extends LiveBeing
 		
 	}
 	
+	public void useAutoSpells()
+	{
+		
+	}
+	
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
 		int spellLevel = spell.getLevel() ;

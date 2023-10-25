@@ -61,41 +61,9 @@ public class NPCs
 		
 		switch (type.getJob())
 		{
-			case equipsSeller:
-			{
-				int[] itemIDs = new int[] {300, 305, 307, 309, 315, 322, 326, 328, 332, 336, 340, 344} ;
-				int cityID = id / 17 ;
-				for (int i = 0 ; i <= itemIDs.length - 1; i += 1) { itemIDs[i] += 200 * cityID ;}
-		    	List<Item> itemsOnSale = new ArrayList<>() ;
-		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
-		    	
-		    	window = new ShoppingWindow(itemsOnSale) ;
-		    	
-		    	break ;
-			}
-			case itemsSeller:
-			{
-				int[] itemIDs = new int[] {0, 1, 4, 5, 121, 122, 125, 130, 1301, 1305, 1702, 1708, 1710, 1713} ;
-		    	List<Item> itemsOnSale = new ArrayList<>() ;
-		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
-		    	
-		    	window = new ShoppingWindow(itemsOnSale) ;
-		    	
-		    	break ;
-			}
-			case smuggleSeller:
-			{
-				// TODO smuggle seller renew stock
-				int[] itemIDs = new int[] {400, 405, 407, 409, 415, 422, 426, 428, 432, 436, 440, 444} ;
-				int cityID = id / 17 ;
-				for (int i = 0 ; i <= itemIDs.length - 1; i += 1) { itemIDs[i] += 200 * cityID ;}
-		    	List<Item> itemsOnSale = new ArrayList<>() ;
-		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
-		    	
-		    	window = new ShoppingWindow(itemsOnSale) ;
-		    	
-		    	break ;
-			}
+			case equipsSeller: case itemsSeller: case smuggleSeller:
+				break ;
+				
 			case alchemist:
 			{
 		    	List<Recipe> recipes = Game.getAllRecipes().subList(0, 39) ;
@@ -281,12 +249,46 @@ public class NPCs
 
 				break ;
 			}
-			case equipsSeller: case itemsSeller: case smuggleSeller:
+			case equipsSeller:
 			{
+				int[] itemIDs = new int[] {300, 305, 307, 309, 315, 322, 326, 328, 332, 336, 340, 344} ;
+				int cityID = id / 17 ;
+				for (int i = 0 ; i <= itemIDs.length - 1; i += 1) { itemIDs[i] += 200 * cityID ;}
+//		    	List<Item> itemsOnSale = new ArrayList<>() ;
+//		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
+		    	
+		    	window = new ShoppingWindow(Game.getItems(itemIDs)) ;
+		    	
 		    	sellerAction(player, playerAction, (ShoppingWindow) window, DP) ;
 		    	
 		    	break ;
 			}
+			case itemsSeller:
+				int[] itemIDs = new int[] {0, 1, 4, 5, 121, 122, 125, 130, 1301, 1305, 1702, 1708, 1710, 1713} ;
+//		    	List<Item> itemsOnSale = new ArrayList<>() ;
+//		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
+		    	
+		    	window = new ShoppingWindow(Game.getItems(itemIDs)) ;
+		    	
+		    	sellerAction(player, playerAction, (ShoppingWindow) window, DP) ;
+		    	
+		    	break ;
+				
+			case smuggleSeller:
+				int[] itemids = new int[] {400, 405, 407, 409, 415, 422, 426, 428, 432, 436, 440, 444} ;
+				int cityID = id / 17 ;
+				for (int i = 0 ; i <= itemids.length - 1; i += 1) { itemids[i] += 200 * cityID ;}
+//		    	List<Item> itemsOnSale = new ArrayList<>() ;
+//		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
+				// TODO smuggle seller renew stock
+		    	
+		    	window = new ShoppingWindow(Game.getItems(itemids)) ;
+		    	
+		    	sellerAction(player, playerAction, (ShoppingWindow) window, DP) ;
+				
+		    	break ;
+				
+				 
 			case forger:
 			{
 				List<Equip> equipsForForge = new ArrayList<>() ;
@@ -654,6 +656,10 @@ public class NPCs
 		if (menu == 0 & Player.actionIsForward(action))
 		{
 			shopping.setBuyMode(selOption == 0) ;
+			if (selOption == 1)
+			{
+				shopping.setIemsForSellingMode(player.getBag()) ;
+			}
 			player.switchOpenClose(shopping) ;
 		}
 		

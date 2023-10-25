@@ -13,6 +13,7 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Spell;
 import simulations.PlayerEvolutionSimulation;
+import utilities.Align;
 import utilities.AttackEffects;
 import utilities.Elements;
 import utilities.GameStates;
@@ -23,7 +24,8 @@ public class Battle
 	private static double randomAmp ;
 	protected static List<Elements> ElemID ;
 	protected static double[][] ElemMult ;
-	// TODO animação do hit e das magias
+	
+
 	static
 	{
 		int NumElem = 10 ;
@@ -276,6 +278,38 @@ public class Battle
 	}
 	
 	
+	private static void startAtkAnimations(LiveBeing user, AtkTypes atkType)
+	{
+		if (atkType == null) { return ;}
+
+		switch (atkType)
+		{
+			case physical: user.phyHitGif.start() ; return ;
+			case magical: user.magHitGif.start() ; return ;
+			default: return ;
+		}
+	}
+	
+	private static void playAtkAnimation(LiveBeing user, Point pos, DrawingOnPanel DP)
+	{
+		if (user.phyHitGif.isPlaying())
+		{
+			user.phyHitGif.play(pos, Align.center, DP) ;
+		}
+		else
+		{
+			user.phyHitGif.resetTimeCounter() ;
+		}
+		if (user.magHitGif.isPlaying())
+		{
+			user.magHitGif.play(pos, Align.center, DP) ;
+		}
+		else
+		{
+			user.magHitGif.resetTimeCounter() ;
+		}
+	}
+	
 	private AtkResults atk(AtkTypes atkType, LiveBeing attacker, LiveBeing receiver)
 	{
 		switch (atkType)
@@ -383,7 +417,6 @@ public class Battle
 				((Creature) attacker).fight(receiver.getCurrentAction()) ;
 			
 			}
-//				if (attacker instanceof Pet) { ((Pet) attacker).fight() ;}
 			AtkResults atkResults = new AtkResults() ;
 			if (attacker.hasActed())
 			{
@@ -394,30 +427,15 @@ public class Battle
 			{
 				receiver.getDisplayDamage().reset() ;
 			}
-			
-//				if (attacker.getSettings().getSoundEffectsAreOn()) { Music.PlayMusic(hitSound) ;}
 
-			// add player surprise atk
-//				attacker.autoSpells(receiver, attacker.getSpells());
+			// TODO sound effects
+//			if (attacker.getSettings().getSoundEffectsAreOn()) { Music.PlayMusic(hitSound) ;}
+
 
 			// TODO automatically activated spells
-//				player.autoSpells(creature, player.getSpells());	
+			attacker.useAutoSpells();
 
 			
-//				if (player.getJob() == 4)
-//				{
-//					//SkillBuffIsActive[11][0] = false ;	// surprise attack
-//				}
-//				if (effect != null)
-//				{
-//					if (player.getJob() == 4 & Math.random() < 0.2*player.getSpells().get(11).getLevel() & effect.equals(AttackEffects.crit))	// Surprise attack
-//					{
-//						creature.getLife().incCurrentValue((int) -Math.min(0.5 * damage, 2*player.getPhyAtk().getBaseValue())); ;
-//						// needs to show the atk animation
-//						//SkillBuffIsActive[11][0] = true ;
-//					}
-//					player.updatedefensiveStats(damage, effect, creature.actionIsSpell(), creature) ;
-//				}
 			if (atkResults.getAtkType() != null)
 			{
 				if ( !atkResults.getEffect().equals(AttackEffects.none) | atkResults.getAtkType().equals(AtkTypes.defense) )
@@ -427,19 +445,20 @@ public class Battle
 				}
 			}			
 
-//			if (attacker instanceof Player) { System.out.println("display damage = " + atkResults.getDamage()); ;}
 			damageAni.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageAnimation}) ;
+			if (attacker instanceof Player) { startAtkAnimations(attacker, atkResults.getAtkType()) ;}
 		}
 		
 		attacker.getBA().getStatus().display(attacker.getPos(), attacker.getDir(), DP);
 		if (attacker.isDefending())
 		{
 			attacker.displayDefending(DP) ;
-		}		
+		}
+		playAtkAnimation(attacker, receiver.getPos(), DP) ;
 		
 	}
 	
-	public void RunBattle(Player player, Pet pet, Creature creature, Animation[] ani, DrawingOnPanel DP)
+	public void RunBattle(Player player, Pet pet, Creature creature, List<Animation> ani, DrawingOnPanel DP)
 	{
 		player.incrementBattleActionCounters() ;
 		if (pet != null) {pet.incrementBattleActionCounters() ;}
@@ -450,9 +469,9 @@ public class Battle
 		LiveBeing creatureTarget = player ;
 		if (pet != null) { creatureTarget = creature.chooseTarget(player.isAlive(), pet.isAlive()).equals("player") ? player : pet ;}
 
-		checkTurn(player, creature, damageStyle, ani[0], DP) ;
-		if (pet != null) { checkTurn(pet, creature, damageStyle, ani[1], DP) ;}
-		checkTurn(creature, creatureTarget, damageStyle, ani[2], DP) ;
+		checkTurn(player, creature, damageStyle, ani.get(0), DP) ;
+		if (pet != null) { checkTurn(pet, creature, damageStyle, ani.get(1), DP) ;}
+		checkTurn(creature, creatureTarget, damageStyle, ani.get(2), DP) ;
 		
 		if (!battleIsOver(player, pet, creature)) { return ;}
 		
