@@ -875,13 +875,17 @@ public class Game extends JPanel
 			case 3:
 				fieldMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(120, 100), new Dimension(45, 30))) ;
 				break ;
+			case 8:
+				fieldMaps[id]
+						.addGroundType(new GroundType(GroundTypes.water, new Point(500, sky.height), new Dimension(140, 480 - sky.height))) ;
+				break ;
 			case 9:
 				fieldMaps[id]
 						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
 				break ;
 			case 12:
 				fieldMaps[id]
-						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
+						.addGroundType(new GroundType(GroundTypes.water, new Point(500, sky.height), new Dimension(140, 480 - sky.height))) ;
 				break ;
 			case 13:
 				fieldMaps[id]
@@ -1534,6 +1538,7 @@ public class Game extends JPanel
 //    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
+    	player.getElem()[4] = Elements.water ;
 //
 //    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
 //    	{
@@ -1610,7 +1615,7 @@ public class Game extends JPanel
 				int job = 1 ;
 				player = new Player(name, sex, job) ;
 				initialize() ;
-				player.setMap(Game.getMaps()[job + 0]) ;
+				player.setMap(Game.getMaps()[17]) ;
 				player.setPos(Game.getScreen().getCenter()) ;
 				state = GameStates.running ;
 	

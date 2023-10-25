@@ -492,16 +492,16 @@ public class DrawingOnPanel
 		
 		Point pos = Game.getScreen().pos(0.45, 0.1) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Color titleColor = Game.colorPalette[15] ;
+		Color textColor = Game.colorPalette[14] ;
 
 		Point textPos = UtilG.Translate(pos, 5, 0) ;
-		DrawText(textPos, Align.centerLeft, stdAngle, "+", font, titleColor) ;
+		DrawText(textPos, Align.centerLeft, stdAngle, "+", font, textColor) ;
 		
 		Point coinPos = UtilG.Translate(pos, 15, 0) ;
 		DrawImage(Player.CoinIcon, coinPos, Scale.unit, Align.centerLeft) ;
 		
 		Point amountPos = UtilG.Translate(pos, 35, 0) ;
-		DrawText(amountPos, Align.centerLeft, stdAngle, String.valueOf(goldObtained), font, titleColor) ;
+		DrawText(amountPos, Align.centerLeft, stdAngle, String.valueOf(goldObtained), font, textColor) ;
 		
 	}
 

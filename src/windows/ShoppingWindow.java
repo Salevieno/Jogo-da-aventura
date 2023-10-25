@@ -161,7 +161,7 @@ public class ShoppingWindow extends GameWindow
 			DP.DrawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
 			DP.DrawImage(item.getImage(), itemPos, angle, Scale.unit, Align.center) ;
 			DP.DrawText(namePos, Align.centerLeft, angle, item.getName(), stdFont, itemColor) ;
-			DP.DrawText(pricePos, Align.centerRight, angle, String.valueOf(item.getPrice()), stdFont, Game.colorPalette[13]) ;
+			DP.DrawText(pricePos, Align.centerRight, angle, String.valueOf(item.getPrice()), stdFont, Game.colorPalette[14]) ;
 			DP.DrawImage(Player.CoinIcon, coinPos, Align.center) ;
 			itemPos.y += 23 ;
 		}

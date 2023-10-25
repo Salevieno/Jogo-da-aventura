@@ -630,8 +630,18 @@ public class NPCs
 
 		if (action.equals("Enter") & selOption == 0)
 		{
-			if (player.getMap().getName().equals("Forest 13")) { player.setMap(Game.getMaps()[39]) ; player.setPos(pos) ; return ;}
-			if (player.getMap().getName().equals("Island 1")) { player.setMap(Game.getMaps()[17]) ; player.setPos(pos) ; return ;}
+			if (player.getMap().getName().equals("Forest 13"))
+			{
+				player.setMap(Game.getMaps()[40]) ;
+				player.setPos(Game.getScreen().pos(0.2, 0.8)) ;
+				return ;
+			}
+			if (player.getMap().getName().equals("Island 1"))
+			{
+				player.setMap(Game.getMaps()[17]) ;
+				player.setPos(Game.getScreen().pos(0.8, 0.8)) ;
+				return ;
+			}
 		}
 	}
 

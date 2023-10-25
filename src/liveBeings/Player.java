@@ -924,8 +924,8 @@ public class Player extends LiveBeing
 		
 		if (map.isAField())
 		{
-			meetWithCollectibles((FieldMap) map) ;
-			meetWithCreatures((FieldMap) map) ;			
+			//meetWithCollectibles((FieldMap) map) ;
+			//meetWithCreatures((FieldMap) map) ;			
 		}	
 		
 		meetWithNPCs(mousePos, DP) ;

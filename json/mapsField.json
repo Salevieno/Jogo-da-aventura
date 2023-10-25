@@ -67,7 +67,7 @@
     "Name": "Forest 9",
     "Continent": 0,
     "Collectibles": {"level": 5, "berryDelay": 40, "herbDelay": 1280, "woodDelay": 1536, "metalDelay": 2560},
-    "Connections": {"topLeft": 17, "leftTop": 12, "leftBottom": 12, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 61, "rightTop": 61, "topRight": 17},
+    "Connections": {"topLeft": 17, "leftTop": 12, "leftBottom": 12, "bottomLeft": -1, "bottomRight": -1, "rightBottom": -1, "rightTop": -1, "topRight": 17},
     "Creatures": [105, 105, 106, 106, 106, 107, 107, 108, 108, 109],
     "NPCs": [{"name": "questExp", "pos": {"x": 0.45, "y": 0.8}}, {"name": "questItem", "pos": {"x": 0.17, "y": 0.86}}]
   },
@@ -99,7 +99,7 @@
     "Name": "Forest 13",
     "Continent": 0,
     "Collectibles": {"level": 4, "berryDelay": 40, "herbDelay": 1280, "woodDelay": 1536, "metalDelay": 2560},
-    "Connections": {"topLeft": 2, "leftTop": 16, "leftBottom": 16, "bottomLeft": 13, "bottomRight": 13, "rightBottom": -1, "rightTop": -1, "topRight": 2},
+    "Connections": {"topLeft": 2, "leftTop": 16, "leftBottom": 16, "bottomLeft": 13, "bottomRight": 13, "rightBottom": 61, "rightTop": 61, "topRight": 2},
     "Creatures": [95, 95, 96, 96, 97, 97, 97, 98, 98, 99],
     "NPCs": [{"name": "sailorToIsland", "pos": {"x": 0.82, "y": 0.91}}, {"name": "questExp", "pos": {"x": 0.76, "y": 0.25}}, {"name": "questItem", "pos": {"x": 0.66, "y": 0.25}}]
   },
@@ -435,7 +435,7 @@
     "Name": "Ocean 1",
     "Continent": 3,
     "Collectibles": {"level": -1, "berryDelay": 40, "herbDelay": 1280, "woodDelay": 1536, "metalDelay": 2560},
-    "Connections": {"topLeft": -1, "leftTop": 13, "leftBottom": -1, "bottomLeft": -1, "bottomRight": 62, "rightBottom": 62, "rightTop": 62, "topRight": -1},
+    "Connections": {"topLeft": -1, "leftTop": 17, "leftBottom": 17, "bottomLeft": -1, "bottomRight": 62, "rightBottom": 62, "rightTop": 62, "topRight": -1},
     "Creatures": [270, 270, 270, 271, 271, 272, 272, 273, 273, 274],
     "NPCs": []
   },
