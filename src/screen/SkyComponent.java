@@ -1,6 +1,5 @@
 package screen;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
@@ -15,15 +14,13 @@ public class SkyComponent
 	private Point pos ;
 	private Point speed ;
 	private Dimension size ;
-	private Color[] color ;
 	private int counter ;
 	
-	public SkyComponent(Image image, Point pos, Point speed, Color[] color)
+	public SkyComponent(Image image, Point pos, Point speed)
 	{
 		this.image = image ;
 		this.pos = pos ;
 		this.speed = speed ;
-		this.color = color ;
 		size = new Dimension(0, 0) ;
 		if (image != null)
 		{
@@ -37,21 +34,25 @@ public class SkyComponent
 	public Point getPos() {return pos ;}
 	public Point getSpeed() {return speed ;}
 	public Dimension getSize() {return size ;}
-	public Color[] getColor() {return color ;}
 	public int getCounter() {return counter ;}
 	public void setImage(Image I) {image = I ;}
 	public void setPos(Point P) {pos = P ;}
 	public void setSpeed(Point S) {speed = S ;}
-	public void setColor(Color[] C) {color = C ;}
 	public void setCounter(int C) {counter = C ;}
 	
 
-	public void IncCounter(int MaxCounter)
+	public void incCounter(int MaxCounter)
 	{
 		counter = (counter + 1) % MaxCounter ;
 	}
-	public void display(double angle, DrawingOnPanel DP)
+	
+	public void move()
 	{
-		DP.DrawImage(image, pos, angle, Scale.unit, Align.topLeft) ;
+		setPos(new Point(pos.x + speed.x, pos.y + speed.y)) ;
+	}
+	
+	public void display(double angle, double alpha, DrawingOnPanel DP)
+	{
+		DP.DrawImage(image, pos, angle, Scale.unit, false, false, Align.topLeft, alpha) ;
 	}
 }

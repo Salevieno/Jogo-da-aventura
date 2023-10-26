@@ -152,7 +152,7 @@ public class Game extends JPanel
 		screen = new Screen(new Dimension(windowSize.width - 40, windowSize.height), null) ;
 		screen.calcCenter() ;
 		gameLanguage = Languages.portugues ;
-		state = GameStates.loading ;
+		state = GameStates.opening ;
 		colorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette4.png"), "Normal") ;
 		konamiCodeActive = false ;
 		initializeAnimations() ;
@@ -164,7 +164,7 @@ public class Game extends JPanel
 	public Game()
 	{
 		DP = new DrawingOnPanel() ;
-		player = new Player("", "", 3) ;
+		player = new Player("", "", 0) ;
 
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -1011,19 +1011,15 @@ public class Game extends JPanel
 
 			for (int j = 2 ; j <= 8 - 1 ; j += 2)
 			{
-				if (Integer.parseInt(input[j]) <= -1)
-				{
-					continue ;
-				}
+				if (Integer.parseInt(input[j]) <= -1) { continue ;}
+				
 				reqCreatureTypes.put(creatureTypes[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
 			}
 
 			for (int j = 8 ; j <= 18 - 1 ; j += 2)
 			{
-				if (Integer.parseInt(input[j]) <= -1)
-				{
-					continue ;
-				}
+				if (Integer.parseInt(input[j]) <= -1) { continue ;}
+				
 				reqItems.put(allItems[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
 			}
 
@@ -1034,10 +1030,8 @@ public class Game extends JPanel
 
 			for (int j = 20 ; j <= 28 - 1 ; j += 2)
 			{
-				if (Integer.parseInt(input[j + 1]) <= -1)
-				{
-					continue ;
-				}
+				if (Integer.parseInt(input[j + 1]) <= -1) { continue ;}
+				
 				rewardItems.put(allItems[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
 			}
 
@@ -1442,6 +1436,94 @@ public class Game extends JPanel
 
 	}
 
+	private static void initializeCheatMode()
+	{
+
+//    	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
+//    	player.setLevel(50) ;
+//    	player.setMap(cityMaps[3]) ;
+//    	player.setPos(new Point(393, 140)) ;
+
+//    	letThereBePet() ;
+
+//		for (int i = 0 ; i <= fieldMaps.length - 1 ; i += 1)
+//		{
+//			player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
+//		}
+
+//    	System.out.println("Game npcs: " + Game.getAllNPCs().size()) ;
+//    	int i = 0 ;
+//    	for (NPCs npc : Game.getAllNPCs())
+//    	{
+//    		if (npc.getType().getJob().equals(NPCJobs.questExp) | npc.getType().getJob().equals(NPCJobs.questItem))
+//    		{
+//    			i++ ;
+//    			System.out.println(npc + " " + npc.getID()) ;
+//    		}
+//    	}
+//    	System.out.println(i + " npc quests") ;
+//    	Game.getAllNPCs().forEach(System.out::println) ;
+    	player.getBag().addGold(30000) ;
+//
+//    	
+//    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
+    	for (Item item : Forge.getAll()) { player.getBag().add(item, 1) ;}
+    	for (Item item : PetItem.getAll()) { player.getBag().add(item, 2) ;}
+//    	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
+    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
+    	player.getElem()[4] = Elements.water ;
+//
+//    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
+//    	{
+//    		player.getExp().incCurrentValue(player.getExp().getMaxValue()) ;
+//			player.levelUp(null) ; // Game.getAnimations()[4]
+//    	}
+//    	for (int i = 0 ; i <= 30000 - 1 ; i += 1)
+//    	{
+//    		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0)) ;
+//    		player.train(new AtkResults(AtkTypes.magical, AttackEffects.hit, 0)) ;
+//    		player.train(new AtkResults(AtkTypes.defense, AttackEffects.hit, 0)) ;
+//    	}
+//    	player.getBag().menuUp() ;
+//    	player.getBag().menuUp() ;
+//    	player.getBag().menuUp() ;
+//    	player.getBag().menuUp() ;
+//    	player.getBag().menuUp() ;
+//    	player.getBag().menuUp() ;
+//    	
+//    	for (int i = 0 ; i <= 3 - 1 ; i += 1)
+//    	{
+//        	((Equip) player.getBag().getMenuListItems().get(i + 200 * player.getJob())).use(player) ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//        	player.getEquips()[i].incForgeLevel() ;
+//    	}
+
+//    	player.getExp().incCurrentValue(5000) ;
+
+//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
+
+    	//				for (int i = 0 ; i <= 10000 - 1 ; i += 1)
+    	//				{
+    	//					Genetics genes = new Genetics() ;
+    	////					genes.randomizeGenes() ;
+    	////					genes.setGenes(Genetics.normalize(genes.getGenes())) ;
+    	//					System.out.println(genes.getGenes()) ;
+    	//				}
+    	
+	}
 	
 	private static void initialize()
 	{
@@ -1496,86 +1578,12 @@ public class Game extends JPanel
 		Pterodactile.setMessage(Game.allText.get(TextCategories.pterodactile)) ;
 
 		player.InitializeSpells() ;
-//    	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
-//    	player.setLevel(50) ;
-//    	player.setMap(cityMaps[3]) ;
-//    	player.setPos(new Point(393, 140)) ;
-
-//    	letThereBePet() ;
-
-//		for (int i = 0 ; i <= fieldMaps.length - 1 ; i += 1)
-//		{
-//			player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
-//		}
+		player.setMap(Game.getMaps()[player.getJob()]) ;
+		player.setPos(Game.getScreen().getCenter()) ;
 		if (player.getSettings().getMusicIsOn())
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
-
-//    	System.out.println("Game npcs: " + Game.getAllNPCs().size()) ;
-//    	int i = 0 ;
-//    	for (NPCs npc : Game.getAllNPCs())
-//    	{
-//    		if (npc.getType().getJob().equals(NPCJobs.questExp) | npc.getType().getJob().equals(NPCJobs.questItem))
-//    		{
-//    			i++ ;
-//    			System.out.println(npc + " " + npc.getID()) ;
-//    		}
-//    	}
-//    	System.out.println(i + " npc quests") ;
-//    	Game.getAllNPCs().forEach(System.out::println) ;
-//    	player.getBag().addGold(30000) ;
-//
-//    	
-//    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
-    	for (Item item : Forge.getAll()) { player.getBag().add(item, 1) ;}
-    	for (Item item : PetItem.getAll()) { player.getBag().add(item, 2) ;}
-//    	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
-//    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
-    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
-    	player.getElem()[4] = Elements.water ;
-//
-//    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
-//    	{
-//    		player.getExp().incCurrentValue(player.getExp().getMaxValue()) ;
-//			player.levelUp(null) ; // Game.getAnimations()[4]
-//    	}
-//    	for (int i = 0 ; i <= 30000 - 1 ; i += 1)
-//    	{
-//    		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0)) ;
-//    		player.train(new AtkResults(AtkTypes.magical, AttackEffects.hit, 0)) ;
-//    		player.train(new AtkResults(AtkTypes.defense, AttackEffects.hit, 0)) ;
-//    	}
-//    	player.getBag().menuUp() ;
-//    	player.getBag().menuUp() ;
-//    	player.getBag().menuUp() ;
-//    	player.getBag().menuUp() ;
-//    	player.getBag().menuUp() ;
-//    	player.getBag().menuUp() ;
-//    	
-//    	for (int i = 0 ; i <= 3 - 1 ; i += 1)
-//    	{
-//        	((Equip) player.getBag().getMenuListItems().get(i + 200 * player.getJob())).use(player) ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//    	}
-
-//    	player.getExp().incCurrentValue(5000) ;
-
-//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
-
 		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeInit) / 1000000) ;
 		
 	}
@@ -1602,33 +1610,19 @@ public class Game extends JPanel
 				break ;
 
 			case loading:
-	//    			System.out.println("Game loading") ;
 				Opening.displayLoadingScreen(DP) ;
-//				String name = Opening.getPlayerInfo()[0] ;
-//				String sex = Opening.getPlayerInfo()[1] ;
-//				difficultLevel = Integer.parseInt(Opening.getPlayerInfo()[2]) ;
-//				int job = Integer.parseInt(Opening.getPlayerInfo()[3]) ;
-				String name = "Salezin" ;
-				String sex = "M" ;
-				difficultLevel = 1 ;
-				int job = 1 ;
+				String name = Opening.getPlayerInfo()[0] ;
+				String sex = Opening.getPlayerInfo()[1] ;
+				difficultLevel = Integer.parseInt(Opening.getPlayerInfo()[2]) ;
+				int job = Integer.parseInt(Opening.getPlayerInfo()[3]) ;
+//				String name = "Salezin" ;
+//				String sex = "M" ;
+//				difficultLevel = 1 ;
+//				int job = 1 ;
 				player = new Player(name, sex, job) ;
 				initialize() ;
-				player.setMap(Game.getMaps()[8]) ;
-				player.setPos(Game.getScreen().getCenter()) ;
+//				initializeCheatMode() ;
 				state = GameStates.running ;
-				for (Quest quest : allQuests)
-				{
-					System.out.println(quest);
-				}
-	
-	//				for (int i = 0 ; i <= 10000 - 1 ; i += 1)
-	//				{
-	//					Genetics genes = new Genetics() ;
-	////					genes.randomizeGenes() ;
-	////					genes.setGenes(Genetics.normalize(genes.getGenes())) ;
-	//					System.out.println(genes.getGenes()) ;
-	//				}
 	
 				shouldRepaint = true ;	
 				break ;

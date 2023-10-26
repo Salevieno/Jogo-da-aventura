@@ -143,7 +143,7 @@ public class ForgeWindow extends GameWindow
 		
 		DP.DrawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
 		
-		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[2]) ;
+		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[1]) ;
 		DP.DrawText(messagePos, Align.center, angle, "Selecione o equipamento", stdFont, stdColor) ;
 		
 		Point itemPos = UtilG.Translate(windowPos, 24, 70) ;
@@ -152,16 +152,16 @@ public class ForgeWindow extends GameWindow
 			if (item == null) { continue ;}
 			
 			Point namePos = UtilG.Translate(itemPos, 14, -6) ;
-			Point runePos = UtilG.Translate(itemPos, 64, -6) ;
-			Point coinPos = UtilG.Translate(itemPos, 164, -6) ;
-			Point pricePos = UtilG.Translate(itemPos, 204, -6) ;
+			Point runePos = UtilG.Translate(itemPos, 154, -6) ;
+			Point coinPos = UtilG.Translate(itemPos, 264, -6) ;
+			Point pricePos = UtilG.Translate(itemPos, 274, -6) ;
 			
 			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? selColor : stdColor ;
 			DP.DrawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
 			DP.DrawImage(item.getImage(), itemPos, angle, Scale.unit, Align.center) ;
-			DP.DrawText(namePos, Align.topLeft, angle, item.getName() + " + " + item.getForgeLevel(), stdFont, itemColor) ;
+			DP.DrawText(namePos, Align.centerLeft, angle, item.getName() + " + " + item.getForgeLevel(), stdFont, itemColor) ;
 			// TODO draw required rune
-			DP.DrawText(runePos, Align.topLeft, angle, reqRune(item).getName(), stdFont, itemColor) ;
+			DP.DrawText(runePos, Align.centerLeft, angle, reqRune(item).getName(), stdFont, itemColor) ;
 			DP.DrawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
 			DP.DrawText(pricePos, Align.centerLeft, angle, String.valueOf(forgePrice(item.getForgeLevel())), stdFont, itemColor) ;
 			itemPos.y += 28 ;

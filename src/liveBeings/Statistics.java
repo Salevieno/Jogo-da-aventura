@@ -318,6 +318,7 @@ public class Statistics
 			catch (IllegalArgumentException e) { e.printStackTrace() ;}
 			catch (IllegalAccessException e) { e.printStackTrace() ;}
 		}
+		
 //		for (Field field : fields)
 //		{
 //			try

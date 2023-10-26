@@ -362,7 +362,7 @@ public class DrawingOnPanel
 	
 	public void DrawFullMap(Point playerPos, GameMap map, Sky sky)
 	{
-		if ( !map.getContinent().equals(Continents.cave) ) { sky.display(this) ;}
+		if ( !map.getContinent().equals(Continents.cave) ) { sky.display(this) ; sky.updateIsDay() ;}
 		
 		map.display(this) ;
 		map.displayElements(playerPos, this) ;
@@ -507,15 +507,16 @@ public class DrawingOnPanel
 
 	public void notEnoughGold(TimeCounter counter)
 	{
-		// TODO animation not enough gold
-		Point pos = Game.getScreen().pos(0.45, 0.2) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Color titleColor = Game.colorPalette[3] ;
 
-		DrawImage(menuWindow, pos, Scale.unit, Align.topLeft) ;
+		Point pos = Game.getScreen().pos(0.45, 0.2) ;
+//		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+//		Color titleColor = Game.colorPalette[3] ;
+
+//		DrawImage(menuWindow, pos, Scale.unit, Align.topLeft) ;
 		
-		Point textPos = UtilG.Translate(pos, 5, 0) ;
-		DrawText(textPos, Align.centerLeft, stdAngle, "Você não tem ouro suficiente!", font, titleColor) ;
+//		Point textPos = UtilG.Translate(pos, 5, 0) ;
+//		DrawText(textPos, Align.centerLeft, stdAngle, "Você não tem ouro suficiente!", font, titleColor) ;
+		Game.getAnimations().get(12).start(200, new Object[] {pos, "Você não tem ouro suficiente!", Game.colorPalette[0]}) ;
 		
 	}
 

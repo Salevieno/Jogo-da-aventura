@@ -88,7 +88,7 @@ public class FabWindow extends GameWindow
 
 	public void display(Point mousePos, DrawingOnPanel DP)
 	{
-		System.out.println("displaying fab window");
+//		System.out.println("displaying fab window");
 		
 		/*if (Ingredients != null)
 		{
