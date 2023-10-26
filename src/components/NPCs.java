@@ -625,7 +625,7 @@ public class NPCs
 	}
 	
 	private void sailorAction(Player player, String action)
-	{
+	{// TODO sailor animation
 		if (action == null) { return ;}		
 
 		if (action.equals("Enter") & selOption == 0)

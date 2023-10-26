@@ -1384,7 +1384,7 @@ public class Game extends JPanel
 		// find the closest creature to the player
 		if (!player.getMap().IsACity())
 		{
-			player.setClosestCreature(player.ClosestCreatureInRange()) ;
+			player.setClosestCreature(player.closestCreatureInRange()) ;
 		}
 
 		// check if the player met something
@@ -1504,10 +1504,10 @@ public class Game extends JPanel
 
 //    	letThereBePet() ;
 
-		for (int i = 0 ; i <= fieldMaps.length - 1 ; i += 1)
-		{
-			player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
-		}
+//		for (int i = 0 ; i <= fieldMaps.length - 1 ; i += 1)
+//		{
+//			player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
+//		}
 		if (player.getSettings().getMusicIsOn())
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
@@ -1535,7 +1535,7 @@ public class Game extends JPanel
 //    	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
 //    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
     	player.getElem()[4] = Elements.water ;
@@ -1615,7 +1615,7 @@ public class Game extends JPanel
 				int job = 1 ;
 				player = new Player(name, sex, job) ;
 				initialize() ;
-				player.setMap(Game.getMaps()[17]) ;
+				player.setMap(Game.getMaps()[8]) ;
 				player.setPos(Game.getScreen().getCenter()) ;
 				state = GameStates.running ;
 	

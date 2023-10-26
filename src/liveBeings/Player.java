@@ -211,7 +211,7 @@ public class Player extends LiveBeing
 		hintsWindow = new HintsWindow() ;
 		spellsTree = new SpellsTreeWindow(job) ;
 		bestiary = new BestiaryWindow() ;
-		equips = new Equip[3] ;	// 0: weapon, 1: shield, 2: armor
+		equips = new Equip[3] ;
 		equippedArrow = null ;
 		spellPoints = 0 ;
 		color = Game.colorPalette[12] ;
@@ -405,7 +405,7 @@ public class Player extends LiveBeing
 
 	private Point feetPos() {return new Point(pos.x, (int) (pos.y - size.height)) ;}	
 
-	public Creature ClosestCreatureInRange()
+	public Creature closestCreatureInRange()
 	{			
 		
 		if (!map.isAField()) { return null ;}
@@ -468,35 +468,48 @@ public class Player extends LiveBeing
 		bag.add(collectible.getItem(), 1) ;
 	}
 	
-	private void removeCollectibleFromMap()
+	private void removeCollectibleFromMap(Collectible collectible)
+	{        
+		if (!map.isAField()) { return ;}
+		// TODO essa função devia estar em fieldMap
+		List<Collectible> collectibles = ((FieldMap) map).getCollectibles() ;
+		collectibles.remove(collectible) ;
+	}
+	
+	public void finishCollecting()
 	{
 		collectCounter.reset() ;
         collectingGif.flush() ;
-        
-        // remove the collectible from the list
-		if (map.isAField())
-		{
-			FieldMap fm = (FieldMap) map ;
-			List<Collectible> collectibles = fm.getCollectibles() ;
-			collectibles.remove(currentCollectible) ;
-		}
+    	state = LiveBeingStates.idle ;
+        currentCollectible = null ;
 	}
 	
 	public void collect(DrawingOnPanel DP)
     {
+		
 		collectCounter.inc() ;
         DP.DrawGif(collectingGif, getPos(), Align.center);
         
-        if (collectCounter.finished())
+        if (!collectCounter.finished()) { return ;}
+        
+        boolean isBerry = currentCollectible.type() == 0 ;
+        int mapLevel = ((FieldMap) map).getLevel() ;
+        double collectChance = isBerry ? 1 : 1 - 1 / (1 + Math.pow(1.1, collectLevel[currentCollectible.type() - 1] - mapLevel)) ;
+        String msg = "Falha na coleta!" ;        
+    	
+        if (UtilG.chance(collectChance))
         {
-        	removeCollectibleFromMap() ;
+        	msg = "Coleta com sucesso!" ;
         	addCollectibleToBag(currentCollectible, bag) ;
         	trainCollecting(currentCollectible) ;
-
-            state = LiveBeingStates.idle ;
-            currentCollectible = null ;
         }
+
+    	removeCollectibleFromMap(currentCollectible) ;
+        finishCollecting() ;
+    	Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), msg, Game.colorPalette[4]}) ;      
+
     }
+	
 	
 	private void addChestContentToBag(TreasureChest chest, BagWindow bag)
 	{
@@ -854,7 +867,7 @@ public class Player extends LiveBeing
 	public void meetWithCollectibles(FieldMap map)
 	{
 		List<Collectible> collectibles = map.getCollectibles() ;
-		
+
 		if (collectibles == null) { return ;}
 		if (collectibles.isEmpty()) { return ;}
 		
@@ -865,6 +878,15 @@ public class Player extends LiveBeing
 			
 			Collectible collectible = collectibles.get(i) ;
 			if (!isInCloseRange(collectible.getPos())) { continue ;}
+			
+			if (0 < collectible.type())
+			{
+				if (collectLevel[collectible.type() - 1] + 1 < ((FieldMap) map).getLevel())
+				{
+					Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), "Nível de coleta insuficiente", Game.colorPalette[4]}) ;
+					break ;
+				}
+			}
 			
 			setState(LiveBeingStates.collecting);
 			currentCollectible = collectible ;
@@ -924,8 +946,8 @@ public class Player extends LiveBeing
 		
 		if (map.isAField())
 		{
-			//meetWithCollectibles((FieldMap) map) ;
-			//meetWithCreatures((FieldMap) map) ;			
+			meetWithCollectibles((FieldMap) map) ;
+			meetWithCreatures((FieldMap) map) ;			
 		}	
 		
 		meetWithNPCs(mousePos, DP) ;
@@ -1318,6 +1340,24 @@ public class Player extends LiveBeing
 			}
 			SkillBuffIsActive[12][0] = false ;
 		}*/
+
+		// TODO steal item
+//		private int StealItem(Creature creature, Item[] items, int spellLevel)
+//		{	
+//			int ID = (int)(UtilG.ArrayWithValuesGreaterThan(creature.getBag(), -1).length*Math.random() - 0.01) ;
+//			int StolenItemID = -1 ;
+//			if(-1 < creature.getBag()[ID])
+//			{
+//				if(Math.random() <= 0.01*items[creature.getBag()[ID]].getDropChance() + 0.01*spellLevel)
+//				{
+//					//Bag[creature.getBag()[ID]] += 1 ;
+//					StolenItemID = items[creature.getBag()[ID]].getID() ;
+//				}
+//			}
+//			return StolenItemID ;
+			
+//			return 0 ;
+//		}
 	}
 	
 	public void switchOpenClose(GameWindow win)
@@ -1360,23 +1400,6 @@ public class Player extends LiveBeing
 			setEquippedArrow(null) ;
 		}
 	}
-	// TODO steal item
-//	private int StealItem(Creature creature, Item[] items, int spellLevel)
-//	{	
-//		int ID = (int)(UtilG.ArrayWithValuesGreaterThan(creature.getBag(), -1).length*Math.random() - 0.01) ;
-//		int StolenItemID = -1 ;
-//		if(-1 < creature.getBag()[ID])
-//		{
-//			if(Math.random() <= 0.01*items[creature.getBag()[ID]].getDropChance() + 0.01*spellLevel)
-//			{
-//				//Bag[creature.getBag()[ID]] += 1 ;
-//				StolenItemID = items[creature.getBag()[ID]].getID() ;
-//			}
-//		}
-//		return StolenItemID ;
-		
-//		return 0 ;
-//	}
 	
 	public void win(Creature creature, boolean showAnimation)
 	{		
@@ -1485,8 +1508,8 @@ public class Player extends LiveBeing
 	}
 	
 	// TODO itemEffect
-//	private void ItemEffect(int ItemID)
-//	{
+	private void ItemEffect(int ItemID)
+	{
 //		if (ItemID == 1381 | ItemID == 1382 | ItemID == 1384)
 //		{
 //			BA.getStatus().setBlood(0) ;
@@ -1495,7 +1518,7 @@ public class Player extends LiveBeing
 //		{
 //			BA.getStatus().setSilence(0) ;
 //		}
-//	}
+	}
 	
 	private void drawRange(DrawingOnPanel DP)
 	{
@@ -1559,13 +1582,12 @@ public class Player extends LiveBeing
 	}
 
 	
-	// Save and load methods
+	// TODO save player
 	public void save(int slot)
 	{
 		
 		try (FileWriter file = new FileWriter("save " + slot + ".json"))
         {
-			// TODO save player
             file.write("name: " + name + "\n"); 
             file.write("level: " + level); 
             file.flush(); 
@@ -1578,16 +1600,17 @@ public class Player extends LiveBeing
 	}
 
 	// TODO load player
-//	private static Player load(String filePath)
-//	{
-//		
+	private static Player load(String filePath)
+	{
+		
 //		JSONObject jsonData = UtilG.readJsonObject(filePath) ;
+		Player newPlayer = new Player("", "", 0) ;
 //		Player newPlayer = new Player((String) jsonData.get("name"), "", 0) ;
 //		newPlayer.setLevel((int) jsonData.get("level"));
 //		
-//		return newPlayer ;
-//		
-//	}
+		return newPlayer ;
+		
+	}
 	
 	
 }

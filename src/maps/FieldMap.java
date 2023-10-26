@@ -139,9 +139,9 @@ public class FieldMap extends GameMap
 		switch (type)
 		{
 			case berry: collectibles.add(new Collectible(220, level, pos, collectibleDelay[0])) ; return ;
-			case herb: collectibles.add(new Collectible(60 + 3 * level, level, pos, collectibleDelay[1])) ; return ;
-			case wood: collectibles.add(new Collectible(61 + 3 * level, level, pos, collectibleDelay[2])) ; return ;
-			case metal: collectibles.add(new Collectible(62 + 3 * level, level, pos, collectibleDelay[3])) ; return ;
+			case herb: collectibles.add(new Collectible(60 + 3 * (level - 1), level, pos, collectibleDelay[1])) ; return ;
+			case wood: collectibles.add(new Collectible(61 + 3 * (level - 1), level, pos, collectibleDelay[2])) ; return ;
+			case metal: collectibles.add(new Collectible(62 + 3 * (level - 1), level, pos, collectibleDelay[3])) ; return ;
 			default: return ;
 		}
 		

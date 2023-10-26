@@ -45,7 +45,7 @@ public class Collectible extends Item
 
 	public String toString()
 	{
-		return "Collectible," + getItem().getName() ;
+		return "Collectible " + getItem().getName() ;
 	}
 	
 }
