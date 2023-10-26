@@ -35,7 +35,10 @@ public class Quest
 		isComplete = false ;
 		this.isRepeatable = isRepeatable ;
 		reqCreaturesCounter = new HashMap<>() ;
-		if (reqCreatureTypes != null) { reqCreatureTypes.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 0)) ;}
+		if (reqCreatureTypes != null)
+		{
+			reqCreatureTypes.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 0)) ;
+		}
 		
 		this.reqCreatureTypes = reqCreatureTypes ;
 		this.reqItems = reqItems ;
@@ -63,12 +66,9 @@ public class Quest
 	public Map<Item, Integer> getRewardItems() {return rewardItems ;}
 	public void setDescription(String D) {description = D ;}
 	
-//	public boolean isActive() { return isActive ;}
 	public boolean isComplete() { return isComplete ;}
 	public boolean isRepeatable() { return isRepeatable ;}
 	
-//	public void activate() { isActive = true ;}
-//	public void deactivate() { isActive = false ;}
 	private void resetCreaturesCounter() { reqCreatureTypes.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 0)) ;}
 	
 	public void IncReqCreaturesCounter(CreatureType creatureType)
@@ -97,6 +97,26 @@ public class Quest
 		
 	}
 
+	public void giveSkillRewards(Map<QuestSkills, Boolean> skills)
+	{
+		switch (id)
+		{
+			case 19: skills.replace(QuestSkills.shovel, true) ; return ;
+			case 27: skills.replace(QuestSkills.craftWindow, true) ; return ;
+			case 39: Game.letThereBePet() ; return ;
+			case 44: skills.replace(QuestSkills.bestiary, true) ; return ;
+			case 42: skills.replace(QuestSkills.forestMap, true) ; return ;
+			case 46: skills.replace(QuestSkills.caveMap, true) ; return ;
+			case 50: skills.replace(QuestSkills.islandMap, true) ; return ;
+			case 51: skills.replace(QuestSkills.ride, true) ; return ;
+			case 56: skills.replace(QuestSkills.volcanoMap, true) ; return ;
+			case 57: return ; // TODO advanced crafting (add recipes)
+			case 60: skills.replace(QuestSkills.dragonAura, true) ; return ;
+			case 62: skills.replace(QuestSkills.snowlandMap, true) ; return ;
+			default: return ;
+		}
+	}
+	
 	public void complete(BagWindow bag, PersonalAttributes PA, Map<QuestSkills, Boolean> skills)
 	{
 		
@@ -109,24 +129,9 @@ public class Quest
 
 		for (Item item : reqItems.keySet()) { bag.remove(item, 1) ;}
 		for (Item item : rewardItems.keySet()) { bag.add(item, 1) ; System.out.println("added " + item);}
+		giveSkillRewards(skills) ;
 		Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), "Quest completa!", Game.colorPalette[4]}) ;
 		
-		// TODO special rewards
-		switch (id)
-		{
-			case 1: skills.replace(QuestSkills.bestiary, true) ; break ;
-			case 27: skills.replace(QuestSkills.craftWindow, true) ; break ;
-			case 39: Game.letThereBePet() ; break ;
-			case 42: skills.replace(QuestSkills.forestMap, true) ; break ;
-			case 46: skills.replace(QuestSkills.caveMap, true) ; break ;
-			case 50: skills.replace(QuestSkills.islandMap, true) ; break ;
-			case 56: skills.replace(QuestSkills.volcanoMap, true) ; break ;
-			case 62: skills.replace(QuestSkills.snowlandMap, true) ; break ;
-			case 48: skills.replace(QuestSkills.shovel, true) ; break ;
-			case 57: skills.replace(QuestSkills.ride, true) ; break ;
-			case 60: skills.replace(QuestSkills.dragonAura, true) ; break ;
-			default: break ;
-		}
 		
 		isComplete = true ;
 		
@@ -135,10 +140,11 @@ public class Quest
 	@Override
 	public String toString()
 	{
-		return "Quest [id=" + id + ", name=" + name + ", type=" + type + ", isComplete="
-				+ isComplete + ", isRepeatable=" + isRepeatable + ", reqCreaturesCounter=" + reqCreaturesCounter
-				+ ", reqCreatureTypes=" + reqCreatureTypes + ", reqItems=" + reqItems + ", goldReward=" + goldReward
-				+ ", expReward=" + expReward + ", rewardItems=" + rewardItems + ", description=" + description + "]";
+		return id + ";" + type + ";" + isRepeatable + ";" + reqCreatureTypes + ";" + reqItems + ";" + goldReward + ";" + expReward + ";" + rewardItems ;
+//		return "Quest [id=" + id + ", name=" + name + ", type=" + type + ", isComplete="
+//				+ isComplete + ", isRepeatable=" + isRepeatable + ", reqCreaturesCounter=" + reqCreaturesCounter
+//				+ ", reqCreatureTypes=" + reqCreatureTypes + ", reqItems=" + reqItems + ", goldReward=" + goldReward
+//				+ ", expReward=" + expReward + ", rewardItems=" + rewardItems + ", description=" + description + "]";
 	}
 		
 	

@@ -1008,8 +1008,6 @@ public class Game extends JPanel
 			String type = input[1] ;
 			Map<CreatureType, Integer> reqCreatureTypes = new HashMap<>() ;
 			Map<Item, Integer> reqItems = new HashMap<>() ;
-			Map<Item, Integer> rewardItems = new HashMap<>() ;
-			String description ;
 
 			for (int j = 2 ; j <= 8 - 1 ; j += 2)
 			{
@@ -1032,6 +1030,7 @@ public class Game extends JPanel
 			int goldReward = Integer.parseInt(input[18]) ;
 			int expReward = Integer.parseInt(input[19]) ;
 			boolean isRepeatable = 0 <= expReward ;
+			Map<Item, Integer> rewardItems = new HashMap<>() ;
 
 			for (int j = 20 ; j <= 28 - 1 ; j += 2)
 			{
@@ -1042,7 +1041,7 @@ public class Game extends JPanel
 				rewardItems.put(allItems[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
 			}
 
-			description = input[30 + language.ordinal()] ;
+			String description = input[30 + language.ordinal()] ;
 
 			quests[i] = new Quest(id, type, isRepeatable, reqCreatureTypes, reqItems, goldReward, expReward,
 					rewardItems, description) ;
@@ -1618,6 +1617,10 @@ public class Game extends JPanel
 				player.setMap(Game.getMaps()[8]) ;
 				player.setPos(Game.getScreen().getCenter()) ;
 				state = GameStates.running ;
+				for (Quest quest : allQuests)
+				{
+					System.out.println(quest);
+				}
 	
 	//				for (int i = 0 ; i <= 10000 - 1 ; i += 1)
 	//				{
