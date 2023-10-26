@@ -1535,7 +1535,7 @@ public class Game extends JPanel
 		loadAllText() ;
 		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeText) / 1000000) ;
 
-		DayDuration = 120000 ;
+		DayDuration = 1200 ;
 		sky = new Sky() ;
 		screen.setBorders(new int[] { 0, sky.height, screen.getSize().width, screen.getSize().height }) ;
 		screen.setMapCenter() ;
