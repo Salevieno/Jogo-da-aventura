@@ -152,7 +152,7 @@ public class Game extends JPanel
 		screen = new Screen(new Dimension(windowSize.width - 40, windowSize.height), null) ;
 		screen.calcCenter() ;
 		gameLanguage = Languages.portugues ;
-		state = GameStates.opening ;
+		state = GameStates.loading ;
 		colorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette4.png"), "Normal") ;
 		konamiCodeActive = false ;
 		initializeAnimations() ;
@@ -1535,7 +1535,7 @@ public class Game extends JPanel
 		loadAllText() ;
 		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeText) / 1000000) ;
 
-		DayDuration = 1200 ;
+		DayDuration = 120000 ;
 		sky = new Sky() ;
 		screen.setBorders(new int[] { 0, sky.height, screen.getSize().width, screen.getSize().height }) ;
 		screen.setMapCenter() ;
@@ -1611,14 +1611,14 @@ public class Game extends JPanel
 
 			case loading:
 				Opening.displayLoadingScreen(DP) ;
-				String name = Opening.getPlayerInfo()[0] ;
-				String sex = Opening.getPlayerInfo()[1] ;
-				difficultLevel = Integer.parseInt(Opening.getPlayerInfo()[2]) ;
-				int job = Integer.parseInt(Opening.getPlayerInfo()[3]) ;
-//				String name = "Salezin" ;
-//				String sex = "M" ;
-//				difficultLevel = 1 ;
-//				int job = 1 ;
+//				String name = Opening.getPlayerInfo()[0] ;
+//				String sex = Opening.getPlayerInfo()[1] ;
+//				difficultLevel = Integer.parseInt(Opening.getPlayerInfo()[2]) ;
+//				int job = Integer.parseInt(Opening.getPlayerInfo()[3]) ;
+				String name = "Salezin" ;
+				String sex = "M" ;
+				difficultLevel = 1 ;
+				int job = 1 ;
 				player = new Player(name, sex, job) ;
 				initialize() ;
 //				initializeCheatMode() ;

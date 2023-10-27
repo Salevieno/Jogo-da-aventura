@@ -124,7 +124,7 @@ public class Sky
 	
 	public void display(DrawingOnPanel DP)
 	{
-		System.out.println(dayTime.rate());
+
 		updateIsDay() ;
 		updateSkyColor() ;
 		DP.DrawRect(new Point(0, height), Align.bottomLeft, size, 1, color, null) ;

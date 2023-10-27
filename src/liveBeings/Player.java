@@ -664,7 +664,7 @@ public class Player extends LiveBeing
 				fish() ; return ;
 				
 			case 7:
-//				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
+				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
 				mapWindow.setPlayerPos(pos) ;
 				mapWindow.setCurrentMap(map) ;
 				switchOpenClose(mapWindow) ; return ;

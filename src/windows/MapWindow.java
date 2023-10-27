@@ -16,6 +16,8 @@ public class MapWindow extends GameWindow
 	private Point windowPos = new Point(30, 30) ;
 	private Point playerPos ;
 	private GameMap currentMap ;
+	
+	private static final boolean displayFull = false ;
 	private static final Image image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "MapWindow.png") ;
 	
 	public MapWindow()
@@ -194,6 +196,16 @@ public class MapWindow extends GameWindow
 		return new Point(offsetX, offsetY) ;
 	}
 	
+	public void displayPlayer(Point mapPos, Dimension screenSize, Scale scale, DrawingOnPanel DP)
+	{
+
+		double playerRelXPos = playerPos.x / (double) Game.getScreen().getSize().width ;
+		double playerRelYPos = playerPos.y / (double) (Game.getScreen().getSize().height) ;
+		Point circlePos = UtilG.Translate(mapPos, (int) (scale.x * screenSize.width * playerRelXPos),
+				(int) (-scale.y * screenSize.height * (1 - playerRelYPos))) ;
+		DP.DrawCircle(circlePos, 5, 0, Game.colorPalette[6], null) ;
+	}
+	
 	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 		if (currentMap == null) { return ;}
@@ -223,30 +235,32 @@ public class MapWindow extends GameWindow
 		
 		if (maps == null) { return ;}
 		
-		maps = Game.getMaps() ;
-		scale = new Scale(0.05, 0.05) ;
-		mapSize = new Dimension((int) (600 * scale.x), (int) (384 * scale.y)) ;
-		spacing = new Point((int) ((640 * scale.x - mapSize.width)), (int) ((480 * scale.y - mapSize.height))) ;
-		offset = calcMapOffset(15, 14, scale, spacing) ;
+		if (displayFull)
+		{
+			maps = Game.getMaps() ;
+			scale = new Scale(0.05, 0.05) ;
+			mapSize = new Dimension((int) (600 * scale.x), (int) (384 * scale.y)) ;
+			spacing = new Point((int) ((640 * scale.x - mapSize.width)), (int) ((480 * scale.y - mapSize.height))) ;
+			offset = calcMapOffset(15, 14, scale, spacing) ;
+		}
 		
 		for (GameMap map : maps)
 		{
-			Point cell = getMapRowColFullMap(map.getName()) ;
+			Point cell = displayFull ? getMapRowColFullMap(map.getName()): getMapRowCol(map.getName()) ;
 			
 			if (cell == null) { continue ;}
 			
-			Point mapPos = UtilG.Translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2, size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
+			Point mapPos = UtilG.Translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
+					size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
 			map.display(mapPos, scale, DP) ;
-			Point textPos = UtilG.Translate(mapPos, (int) (scale.x * screenSize.width / 2), (int) (-scale.y * screenSize.height / 2)) ;
+			Point textPos = UtilG.Translate(mapPos, (int) (scale.x * screenSize.width / 2),
+					(int) (-scale.y * screenSize.height / 2)) ;
 			DP.DrawText(textPos, Align.center, 0, map.getName(), stdFont, Game.colorPalette[0]) ;
 			
 			if (!map.equals(currentMap)) { continue ;}
 			if (playerPos == null) { continue ;}
 			
-			double playerRelXPos = playerPos.x / (double) Game.getScreen().getSize().width ;
-			double playerRelYPos = playerPos.y / (double) (Game.getScreen().getSize().height) ;
-			Point circlePos = UtilG.Translate(mapPos, (int) (scale.x * screenSize.width * playerRelXPos), (int) (-scale.y * screenSize.height * (1 - playerRelYPos))) ;
-			DP.DrawCircle(circlePos, 5, 0, Game.colorPalette[6], null) ;
+			displayPlayer(mapPos, screenSize, scale, DP) ;
 		}
 	}
 }

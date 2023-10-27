@@ -3,7 +3,6 @@ package liveBeings ;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -111,8 +110,9 @@ public class Spell
 	public String[] getInfo() {return info ;}
 	public TimeCounter getEffectCounter() { return effectCounter ;}
 
-	public boolean isReady() {return cooldownCounter.finished() ;}
-	public boolean isActive() {return isActive ;}
+	public boolean isReady() { return cooldownCounter.finished() ;}
+	public boolean isActive() { return isActive ;}
+	public boolean isMaxed() { return level == maxLevel ;}
 	public void activate() {isActive = true ; System.out.println("activate spell " + name);}
 	public void deactivate() {isActive = false ; System.out.println("deactivate spell " + name);}
 
