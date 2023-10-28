@@ -2,6 +2,7 @@ package maps;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sound.sampled.Clip;
@@ -15,6 +16,18 @@ import utilities.UtilG;
 
 public class CityMap extends GameMap
 {
+
+	public static final List<Image> images ;
+	
+	static
+	{
+		images = new ArrayList<>() ;
+		for (int i = 0 ; i <= 5 - 1 ; i += 1)
+		{
+			images.add(UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map" + String.valueOf(i) + ".png")) ;
+		}
+	}
+	
 	public CityMap(String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPCs> npcs)
 	{
 		super(Name, Continent, Connections, image, music, buildings, npcs) ;

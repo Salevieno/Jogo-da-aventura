@@ -3,6 +3,7 @@ package liveBeings ;
 import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -10,9 +11,11 @@ import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
 import items.Item;
+import main.Game;
 import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
+import utilities.UtilG;
 
 public class CreatureType 
 {
@@ -41,6 +44,21 @@ public class CreatureType
 	private int[] StatusCounter ;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]	
 	
 	private static int NumberOfCreatureTypes ;
+	public static final List<MovingAnimations> moveAni ;
+	
+	static
+	{
+		moveAni = new ArrayList<>() ;
+		for (int i = 0 ; i <= 7 - 1 ; i += 1)
+		{
+			moveAni.add(new MovingAnimations(
+			UtilG.loadImage(Game.ImagesPath + "\\Creatures\\" + "creature" + i + "_idle.gif"),
+			UtilG.loadImage(Game.ImagesPath + "\\Creatures\\" + "creature" + i + "_movingup.gif"),
+			UtilG.loadImage(Game.ImagesPath + "\\Creatures\\" + "creature" + i + "_movingdown.gif"),
+			UtilG.loadImage(Game.ImagesPath + "\\Creatures\\" + "creature" + i + "_movingleft.gif"),
+			UtilG.loadImage(Game.ImagesPath + "\\Creatures\\" + "creature" + i + "_movingright.gif"))) ;
+		}
+	}
 	
 	public CreatureType(
 			int id,

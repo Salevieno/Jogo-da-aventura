@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import items.GeneralItem;
 import items.Item;
 import liveBeings.Player;
 import main.Game;
+import main.Music;
 import main.TextCategories;
 import utilities.Align;
 import utilities.Elements;
@@ -47,6 +49,8 @@ public class GameMap
 	protected static final Image beachGif ;
 	protected static final Image infoWindow ;
 	public static final Map<Item, Double> allDiggingItems ;
+	public static final Clip musicForest ;
+	public static final Clip musicSpecial ;
 
 	static
 	{
@@ -68,6 +72,9 @@ public class GameMap
 		}
 		beachGif = UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map2_beach.gif") ;
 		infoWindow = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "MapInfo.png") ;
+		
+		musicForest = Music.musicFileToClip(new File(Game.MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
+		musicSpecial = Music.musicFileToClip(new File(Game.MusicPath + "12-Special.wav").getAbsoluteFile()) ;
 		
 //		allDiggingItems.entrySet().forEach(System.out::println);
 	}

@@ -517,11 +517,8 @@ public class Game extends JPanel
 	private static List<Recipe> LoadCraftingRecipes()
 	{
 		List<Recipe> recipes = new ArrayList<>() ;
-
-		long elapsedTimeReadingFile = System.nanoTime();
 		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "craftRecipes.json") ;
 
-		System.out.println("Time reading recipes file = " + (System.nanoTime() - elapsedTimeReadingFile) / 1000000) ;
 		for (int i = 0 ; i <= input.size() - 1 ; i += 1)
 		{
 			JSONObject recipe = (JSONObject) input.get(i) ;
@@ -616,16 +613,16 @@ public class Game extends JPanel
 
 	private static CreatureType[] initializeCreatureTypes(Languages language, int difficultLevel)
 	{
-
+		System.out.println();
 		long elapsedTimeReadingFile = System.nanoTime();
 		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
 		System.out.println("Time reading creature types file = " + (System.nanoTime() - elapsedTimeReadingFile) / 1000000) ;
-		String path = ImagesPath + "\\Creatures\\" ;
 		CreatureType.setNumberOfCreatureTypes(input.size()) ;
 		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()] ;
 		Color[] color = new Color[creatureTypes.length] ;
 		int numberCreatureTypes = 7 ;
 		double diffMult = difficultLevel == 0 ? 0.6 : (difficultLevel == 1 ? 0.8 : 1.0) ;
+		
 		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
 		{
 			int colorid = (int) ((Creature.getskinColor().length - 1) * Math.random()) ;
@@ -635,12 +632,7 @@ public class Game extends JPanel
 				color[ct] = colorPalette[5] ;
 			}
 
-			MovingAnimations moveAni = new MovingAnimations(
-					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_idle.gif"),
-					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_movingup.gif"),
-					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_movingdown.gif"),
-					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_movingleft.gif"),
-					UtilG.loadImage(path + "creature" + (ct % numberCreatureTypes) + "_movingright.gif")) ;
+			MovingAnimations moveAni = CreatureType.moveAni.get(ct % numberCreatureTypes) ;
 
 			BasicAttribute Life = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[5]) * diffMult),
 					(int) (Integer.parseInt(input.get(ct)[5]) * diffMult), 1) ;
@@ -735,7 +727,6 @@ public class Game extends JPanel
 	{
 		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "mapsCity.json") ;
 		CityMap[] cityMaps = new CityMap[input.size()] ;
-		String path = ImagesPath + "\\Maps\\" ;
 
 		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
 		{
@@ -755,8 +746,8 @@ public class Game extends JPanel
 			connections[6] = (int) (long) connectionIDs.get("rightBottom") ;
 			connections[7] = (int) (long) connectionIDs.get("rightTop") ;
 
-			Image image = UtilG.loadImage(path + "Map" + String.valueOf(id) + ".png") ;
-			Clip music = Music.musicFileToClip(new File(MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
+			Image image = CityMap.images.get(id) ;
+			Clip music = GameMap.musicForest ;
 
 			JSONArray listBuildings = (JSONArray) map.get("Buildings") ;
 			List<Building> buildings = new ArrayList<>() ;
@@ -810,18 +801,9 @@ public class Game extends JPanel
 	{
 		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "mapsField.json") ;
 		FieldMap[] fieldMaps = new FieldMap[input.size()] ;
-		String path = ImagesPath + "\\Maps\\" ;
-		File forestMusic = new File(MusicPath + "7-Forest.wav").getAbsoluteFile() ;
 
-		int mod = 0 ;
 		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
 		{
-			int mapID = id + cityMaps.length ;
-
-			if (id == 34 | id == 54)
-			{
-				mod += 1 ;
-			}
 
 			JSONObject map = (JSONObject) input.get(id) ;
 
@@ -839,8 +821,8 @@ public class Game extends JPanel
 			connections[6] = (int) (long) connectionIDs.get("rightBottom") ;
 			connections[7] = (int) (long) connectionIDs.get("rightTop") ;
 
-			Image image = UtilG.loadImage(path + "Map" + String.valueOf(mapID + mod) + ".png") ;
-			Clip music = Music.musicFileToClip(forestMusic) ;
+			Image image = FieldMap.images.get(id) ;
+			Clip music = GameMap.musicForest ;
 
 			JSONObject collectibles = (JSONObject) map.get("Collectibles") ;
 			int collectibleLevel = (int) (long) collectibles.get("level") ;
@@ -917,8 +899,7 @@ public class Game extends JPanel
 		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;
 		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
 		Image treasureChestsImage = UtilG.loadImage(ImagesPath + "\\MapElements\\" + "MapElem15_Chest.png") ;
-		Clip music = Music.musicFileToClip(new File(MusicPath + "12-Special.wav").getAbsoluteFile()) ;
-		String path = ImagesPath + "\\Maps\\" ;
+
 
 		for (int id = 0 ; id <= specialMaps.length - 1 ; id += 1)
 		{
@@ -928,8 +909,10 @@ public class Game extends JPanel
 					Integer.parseInt(input.get(id)[3]), Integer.parseInt(input.get(id)[4]),
 					Integer.parseInt(input.get(id)[5]), Integer.parseInt(input.get(id)[6]),
 					Integer.parseInt(input.get(id)[7]), Integer.parseInt(input.get(id)[8]) } ;
-			Image image = UtilG.loadImage(path + "MapSpecial" + String.valueOf(id) + ".png") ;
 
+			Image image = SpecialMap.images.get(id) ;
+			Clip music = GameMap.musicForest ;
+			
 			// adding treasure chests
 			List<TreasureChest> treasureChests = new ArrayList<>() ;
 			for (int chest = 0 ; chest <= 5 - 1 ; chest += 1)
@@ -1533,46 +1516,37 @@ public class Game extends JPanel
 		long elapsedTimeInit = System.nanoTime();
 		long elapsedTimeText = System.nanoTime();
 		System.out.println("Initializing") ;
-		System.out.println("Loading text") ;
 		loadAllText() ;
-		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeText) / 1000000) ;
+		System.out.println("Loaded text in " + (System.nanoTime() - elapsedTimeText) / 1000000) ;
 
 		DayDuration = 120000 ;
 		sky = new Sky() ;
 		screen.setBorders(new int[] { 0, sky.height, screen.getSize().width, screen.getSize().height }) ;
 		screen.setMapCenter() ;
 		long elapsedTimeSpells = System.nanoTime();
-		System.out.println("Loading spells") ;
 		allSpells = initializeAllSpells(gameLanguage) ;
-		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeSpells) / 1000000) ;
+		System.out.println("Loaded spells in " + (System.nanoTime() - elapsedTimeSpells) / 1000000) ;
 		long elapsedTimeItems = System.nanoTime();
-		System.out.println("Loading items") ;
 		allItems = initializeAllItems() ;
-		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeItems) / 1000000) ;
+		System.out.println("Loaded items in " + (System.nanoTime() - elapsedTimeItems) / 1000000) ;
 		long elapsedTimeCreatures = System.nanoTime();
-		System.out.println("Loading creature types") ;
 		creatureTypes = initializeCreatureTypes(gameLanguage, difficultLevel) ;
-		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeCreatures) / 1000000) ;
+		System.out.println("Loaded creature types in " + (System.nanoTime() - elapsedTimeCreatures) / 1000000) ;
 		long elapsedTimeRecipes = System.nanoTime();
-		System.out.println("Loading recipes") ;
 		allRecipes = LoadCraftingRecipes() ;
-		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeRecipes) / 1000000) ;
+		System.out.println("Loaded recipes in " + (System.nanoTime() - elapsedTimeRecipes) / 1000000) ;
 		long elapsedTimeNPCs = System.nanoTime();
-		System.out.println("Loading NPC types") ;
 		NPCTypes = initializeNPCTypes(gameLanguage) ;
-		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeNPCs) / 1000000) ;
+		System.out.println("Loaded npc types in " + (System.nanoTime() - elapsedTimeNPCs) / 1000000) ;
 		long elapsedTimeBuildings = System.nanoTime();
-		System.out.println("Loading building types") ;
 		buildingTypes = initializeBuildingTypes() ;
-		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeBuildings) / 1000000) ;
+		System.out.println("Loaded building types in " + (System.nanoTime() - elapsedTimeBuildings) / 1000000) ;
 		long elapsedTimeQuests = System.nanoTime();
-		System.out.println("Loading quests") ;
 		allQuests = initializeQuests(gameLanguage, player.getJob()) ;
-		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeQuests) / 1000000) ;
+		System.out.println("Loaded quests in " + (System.nanoTime() - elapsedTimeQuests) / 1000000) ;
 		long elapsedTimeMaps = System.nanoTime();
-		System.out.println("Loading maps") ;
 		allMaps = initializeAllMaps() ;
-		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeMaps) / 1000000) ;
+		System.out.println("Loaded maps in " + (System.nanoTime() - elapsedTimeMaps) / 1000000) ;
 		NPCs.setIDs() ;
 		sideBar = new SideBar(player, player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
 		bat = new Battle() ;

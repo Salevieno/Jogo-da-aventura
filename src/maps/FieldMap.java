@@ -30,9 +30,25 @@ public class FieldMap extends GameMap
 	private int[] collectibleDelay ;
 	private Map<CollectibleTypes, TimeCounter> collectibleCounter ;
 	
-	private static final Image treeImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem6_TreeForest.png") ;
-	private static final Image grassImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem8_Grass.png") ;
+	private static final Image treeImage ;
+	private static final Image grassImage ;
 
+	public static final List<Image> images ;
+	
+	static
+	{
+		treeImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem6_TreeForest.png") ;
+		grassImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem8_Grass.png") ;
+		
+		images = new ArrayList<>() ;
+		for (int i = 5 ; i <= 67 - 1 ; i += 1)
+		{
+			if (i == 39 | i == 60) { continue ;}
+			
+			images.add(UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map" + String.valueOf(i) + ".png")) ;
+		}
+	}
+	
 	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, int[] collectibleDelay, int[] creatureTypeIDs, List<NPCs> npcs)
 	{
 		super(name, continent, connections, image, music, null, npcs) ;

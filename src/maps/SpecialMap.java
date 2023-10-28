@@ -1,15 +1,29 @@
 package maps;
 
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sound.sampled.Clip;
 
 import items.Fab;
 import items.GeneralItem;
+import main.Game;
+import utilities.UtilG;
 
 public class SpecialMap extends GameMap
-{	
+{
+	
+	public static final List<Image> images ;
+	
+	static
+	{
+		images = new ArrayList<>() ;
+		for (int i = 0 ; i <= 2 - 1 ; i += 1)
+		{
+			images.add(UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "MapSpecial" + String.valueOf(i) + ".png")) ;
+		}
+	}
 	public SpecialMap(String Name, Continents Continent, int[] Connections, Image image, Clip music, List<TreasureChest> treasureChests)
 	{
 		super(Name, Continent, Connections, image, music, null, null) ;
