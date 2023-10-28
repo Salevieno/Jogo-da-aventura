@@ -179,6 +179,7 @@ public abstract class UtilG
 	public static JSONObject readJsonObject(String filePath)
     {
         JSONParser parser = new JSONParser();
+
         try
         {
             Object object = parser.parse(new FileReader(filePath, StandardCharsets.UTF_8));
@@ -195,13 +196,13 @@ public abstract class UtilG
             
             return jsonObject ;
         }
-        catch(FileNotFoundException fe)
+        catch (FileNotFoundException fe)
         {
-            fe.printStackTrace();
+            System.out.println("arquivo do save não encontrado") ;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            e.printStackTrace();
+            System.out.println("erro ao tentar carregar o save: " + e.getMessage()) ;
         }
         
         return null ;

@@ -384,7 +384,7 @@ public abstract class LiveBeing
 		return elem[1].equals(elem[2]) & elem[2].equals(elem[3]) ;
 	}
 	public boolean hasActed() {return currentAction != null ;}
-	public boolean actionIsSpell()  {return hasActed() ? Player.SpellKeys.contains(currentAction) : false ;}
+	public boolean actionIsSpell() {return hasActed() ? Player.SpellKeys.contains(currentAction) : false ;}	// TODO add condição se possui spell
 	public boolean actionIsPhysicalAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
 	public boolean actionIsDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}
 	public boolean actionIsArrowAtk()

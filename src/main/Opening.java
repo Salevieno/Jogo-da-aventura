@@ -15,7 +15,6 @@ import graphics.Gif;
 import liveBeings.Player;
 import screen.Screen;
 import utilities.Align;
-import utilities.GameStates;
 import utilities.LiveInput;
 import utilities.Scale;
 import utilities.UtilG;
@@ -25,15 +24,26 @@ public abstract class Opening
 	private static Image backgroundImage;
 	private static Gif openingGif ;
     private static List<GameButton> buttons ;
+    private static List<GameButton> loadSlotButtons ;
     private static String[] stepMessage ;
     private static String[] jobInfo ;
     private static int step ;
-    private static String[] playerInfo ;	// Chosen name, difficult level, sex and class
+    private static boolean newGame ;
+    private static boolean isOver ;
+    
+    private static String chosenName ;
+    private static int difficultLevel ;
+    private static String chosenSex ;
+    private static int chosenJob ;
 	private static LiveInput liveInput ;
+	
+	private static Player[] players ;
 
     private static final Font font ;
     private static final Font smallFont ;
 	private static final Image LoadingGif ;
+	private static final Image LoadingSlot ;
+	private static final Image LoadingSlotSelected ;
 	
 	static
 	{
@@ -43,29 +53,49 @@ public abstract class Opening
 		backgroundImage = UtilG.loadImage(path + "Opening.png") ;
 		openingGif = new Gif(UtilG.loadImage(path + "Opening.gif"), 200, false, true) ;
 		LoadingGif = UtilG.loadImage(path + "Loading.gif") ;
+		LoadingSlot = UtilG.loadImage(path + "LoadingSlot.png") ;
+		LoadingSlotSelected = UtilG.loadImage(path + "LoadingSlotSelected.png") ;
 		GameButton.selectedIconID = 2 ;
     	step = 0 ;
+    	newGame = true ;
+    	isOver = false ;
 		liveInput = new LiveInput() ;
-    	playerInfo = new String[4] ;
-
-    	
     	buttons = new ArrayList<>() ;
+    	loadSlotButtons = new ArrayList<>() ;
+    	
+    	players = new Player[3] ;
 
 		IconFunction portAction = () -> { } ;
 		IconFunction enAction = () -> { } ;
 		IconFunction newGameAction = () -> {} ;
-		IconFunction loadGameAction = () -> {} ;
-		IconFunction confirmNameAction = () -> {playerInfo[0] = liveInput.getText() ; System.out.println(playerInfo[0]);} ;
-		IconFunction maleAction = () -> { playerInfo[1] = "M" ;} ;
-		IconFunction femaleAction = () -> { playerInfo[1] = "F" ;} ;
-		IconFunction easyAction = () -> { playerInfo[2] = "0" ;} ;
-		IconFunction mediumAction = () -> { playerInfo[2] = "1" ;} ;
-		IconFunction hardAction = () -> { playerInfo[2] = "2" ;} ;
-		IconFunction knightAction = () -> { playerInfo[3] = "0" ;} ;
-		IconFunction mageAction = () -> { playerInfo[3] = "1" ;} ;
-		IconFunction archerAction = () -> { playerInfo[3] = "2" ;} ;
-		IconFunction animalAction = () -> { playerInfo[3] = "3" ;} ;
-		IconFunction thiefAction = () -> { playerInfo[3] = "4" ;} ;
+		IconFunction loadSlot1 = () -> { Game.setPlayer(players[0]) ; isOver = true ;} ;
+		IconFunction loadSlot2 = () -> { Game.setPlayer(players[1]) ; isOver = true ;} ;
+		IconFunction loadSlot3 = () -> { Game.setPlayer(players[2]) ; isOver = true ;} ;
+		IconFunction loadGameAction = () -> {
+			newGame = false ;
+			players[0] = Player.load(1) ;
+			players[1] = Player.load(2) ;
+			players[2] = Player.load(3) ;
+	
+	    	loadSlotButtons.add(new GameButton(new Point(60, 100), Align.topLeft, "Load slot 1", LoadingSlot, LoadingSlotSelected, loadSlot1)) ;
+	    	loadSlotButtons.add(new GameButton(new Point(260, 100), Align.topLeft, "Load slot 2", LoadingSlot, LoadingSlotSelected, loadSlot2)) ;
+	    	loadSlotButtons.add(new GameButton(new Point(460, 100), Align.topLeft, "Load slot 3", LoadingSlot, LoadingSlotSelected, loadSlot3)) ;
+	
+			if (players[0] == null) { loadSlotButtons.get(0).deactivate() ;}
+			if (players[1] == null) { loadSlotButtons.get(1).deactivate() ;}
+			if (players[2] == null) { loadSlotButtons.get(2).deactivate() ;}
+		} ;
+		IconFunction confirmNameAction = () -> {chosenName = liveInput.getText() ;} ;
+		IconFunction maleAction = () -> { chosenSex = "M" ;} ;
+		IconFunction femaleAction = () -> { chosenSex = "F" ;} ;
+		IconFunction easyAction = () -> { difficultLevel = 0 ;} ;
+		IconFunction mediumAction = () -> { difficultLevel = 1 ;} ;
+		IconFunction hardAction = () -> { difficultLevel = 2 ;} ;
+		IconFunction knightAction = () -> { chosenJob = 0 ;} ;
+		IconFunction mageAction = () -> { chosenJob = 1 ;} ;
+		IconFunction archerAction = () -> { chosenJob = 2 ;} ;
+		IconFunction animalAction = () -> { chosenJob = 3 ;} ;
+		IconFunction thiefAction = () -> { chosenJob = 4 ;} ;
 		
 		Screen screen = Game.getScreen() ;
 		String[] btNames = new String[] {
@@ -109,7 +139,7 @@ public abstract class Opening
     	buttons.get(1).activate() ;
     	buttons.get(2).activate() ;
     	buttons.get(3).activate() ;
-
+    	
     	// TODO get text from json. AllText is not loaded here yet Game.allText.get(TextCategories.newGame)
     	stepMessage = new String[] {"", "Qual o seu nome?", "", "", "", ""} ;
     	jobInfo = new String[]
@@ -123,9 +153,16 @@ public abstract class Opening
 
 	}
 
+	public static Player getChosenPlayer() { return new Player(chosenName, chosenSex, chosenJob) ;}
+	public static String getChosenName() { return chosenName ;}
+	public static int getChosenDifficultLevel() { return difficultLevel ;}
+	public static String getChosenSex() { return chosenSex ;}
+	public static int getChosenJob() { return chosenJob ;}
+	
+	
 	public static Gif getOpeningGif() { return openingGif ;}
 
-	public static void act(String action, Point mousePos)
+	private static void act(String action, Point mousePos)
 	{
 		
 		if (action == null) { return ;}
@@ -141,6 +178,15 @@ public abstract class Opening
 			{
 				advanceStep = true ;
 			}
+			break ;
+		}
+		
+		for (GameButton button : loadSlotButtons)
+		{
+			if (!button.isActive()) { continue ;}
+			if (!button.isClicked(mousePos, action)) { continue ;}
+			
+			button.act() ;
 			break ;
 		}
 		
@@ -191,11 +237,42 @@ public abstract class Opening
 		    	buttons.get(12).deactivate() ;
 		    	buttons.get(13).deactivate() ;
 		    	buttons.get(14).deactivate() ;
-				return ;				
+		    	isOver = true ;
+				return ;
 				
 			default: return ;
 		}
 		
+	}
+	
+	private static void displaySlot(Point pos, int slotNumber, DrawingOnPanel DP)
+	{
+//		DP.DrawImage(LoadingSlot, pos, Align.topLeft) ;
+		
+		Player player = players[slotNumber] ;
+		double angle = DrawingOnPanel.stdAngle ;
+		Color textColor = Game.colorPalette[0] ;
+		
+		Point textPos = UtilG.Translate(pos, 75, 10) ;
+		DP.DrawText(textPos, Align.center, angle, "Slot " + (slotNumber + 1), font, textColor) ;
+
+		Point namePos = UtilG.Translate(pos, 75, 30) ;
+		DP.DrawText(namePos, Align.center, angle, player.getName(), smallFont, textColor) ;
+		
+		Point levelPos = UtilG.Translate(pos, 10, 45) ;
+		DP.DrawText(levelPos, Align.centerLeft, angle, "Nível: " + player.getLevel(), smallFont, textColor) ;
+		
+	}
+	
+	private static void displayLoadingSlot(Player player, Point mousePos, DrawingOnPanel DP)
+	{
+		for (int i = 0 ; i <= loadSlotButtons.size() - 1 ; i += 1)
+		{
+			if (!loadSlotButtons.get(i).isActive()) { continue ;}
+			
+			loadSlotButtons.get(i).display(0, true, mousePos, DP) ;
+			displaySlot(new Point(60 + 200 * i, 100), i, DP) ;
+		}
 	}
 	
 	public static void displayLoadingScreen(DrawingOnPanel DP)
@@ -203,7 +280,7 @@ public abstract class Opening
 		DP.DrawGif(LoadingGif, Game.getScreen().getCenter(), Align.center) ;
 	}
 	
-	public static void displayJobInfo(DrawingOnPanel DP)
+	private static void displayJobInfo(DrawingOnPanel DP)
 	{
 		Color textColor = Game.colorPalette[0] ;
 		Color bgColor = Game.colorPalette[3] ;
@@ -231,12 +308,15 @@ public abstract class Opening
 		
 		if (step == 1)
 		{
-//			DP.DrawText(Game.getScreen().pos(0.34, 0.36), Align.topLeft, DrawingOnPanel.stdAngle, liveInput.getText(), font, textColor) ;
 			liveInput.displayTypingField(Game.getScreen().pos(0.34, 0.36), false, DP) ;
 		}
 		if (step == 4)
 		{
 			displayJobInfo(DP) ;
+		}
+		if (step == 5)
+		{
+			displayLoadingScreen(DP) ;
 		}
 		
 		if (stepMessage.length - 1 <= step) { return ;}
@@ -252,13 +332,19 @@ public abstract class Opening
     	}
 
 		Music.PlayMusic(Music.intro) ;
-		display(player.getCurrentAction(), mousePos, DP) ;
 		act(player.getCurrentAction(), mousePos) ;
+		if (newGame)
+		{
+			display(player.getCurrentAction(), mousePos, DP) ;
+		}
+		else
+		{
+			displayLoadingSlot(player, mousePos, DP) ;
+		}
 		player.resetAction() ;
 	}
 	
-	public static String[] getPlayerInfo() { return playerInfo ;}
-
-	public static boolean isOver() { return (step == 5) ;}
+	public static boolean newGame() { return newGame ;}
+	public static boolean isOver() { return isOver ;}
 	
 }

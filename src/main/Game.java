@@ -152,7 +152,7 @@ public class Game extends JPanel
 		screen = new Screen(new Dimension(windowSize.width - 40, windowSize.height), null) ;
 		screen.calcCenter() ;
 		gameLanguage = Languages.portugues ;
-		state = GameStates.loading ;
+		state = GameStates.opening ;
 		colorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette4.png"), "Normal") ;
 		konamiCodeActive = false ;
 		initializeAnimations() ;
@@ -201,6 +201,7 @@ public class Game extends JPanel
     	return items ;
 	}
 	
+	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
 	public static void setState(GameStates newState) { state = newState ;}
 	public static void playStopTimeGif() { state = GameStates.playingStopTimeGif ;}
 	public static void shouldNotRepaint() { shouldRepaint = false ;}
@@ -1439,6 +1440,7 @@ public class Game extends JPanel
 	private static void initializeCheatMode()
 	{
 
+		
 //    	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
 //    	player.setLevel(50) ;
 //    	player.setMap(cityMaps[3]) ;
@@ -1597,13 +1599,17 @@ public class Game extends JPanel
 		mousePos = UtilG.GetMousePos(mainPanel) ;
 		DP.setGraphics((Graphics2D) g) ;
 
-		// System.out.println("game is " + gameState) ;
 		switch (state)
 		{
 			case opening:
 				Opening.run(player, mousePos, DP) ;
 				if (Opening.isOver())
 				{
+					if (Opening.newGame())
+					{
+						difficultLevel = Opening.getChosenDifficultLevel() ;
+						player = Opening.getChosenPlayer() ;
+					}
 					Game.setState(GameStates.loading) ;
 				}
 				shouldRepaint = true ;	
@@ -1611,15 +1617,6 @@ public class Game extends JPanel
 
 			case loading:
 				Opening.displayLoadingScreen(DP) ;
-//				String name = Opening.getPlayerInfo()[0] ;
-//				String sex = Opening.getPlayerInfo()[1] ;
-//				difficultLevel = Integer.parseInt(Opening.getPlayerInfo()[2]) ;
-//				int job = Integer.parseInt(Opening.getPlayerInfo()[3]) ;
-				String name = "Salezin" ;
-				String sex = "M" ;
-				difficultLevel = 1 ;
-				int job = 1 ;
-				player = new Player(name, sex, job) ;
 				initialize() ;
 //				initializeCheatMode() ;
 				state = GameStates.running ;
@@ -1635,13 +1632,7 @@ public class Game extends JPanel
 				if (pet != null)
 				{
 					pet.incrementCounters() ;
-				}
-				if (pet != null)
-				{
 					pet.activateCounters() ;
-				}
-				if (pet != null)
-				{
 					pet.getSatiation().setToMaximum() ;
 				}
 	
@@ -1667,7 +1658,8 @@ public class Game extends JPanel
 						}
 						PlayerEvolutionSimulation.checkPlayerWin() ;
 					}
-				} else
+				}
+				else
 				{
 					PlayerEvolutionSimulation.checkBattleRepeat() ;
 				}

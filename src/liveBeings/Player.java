@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.json.simple.JSONObject;
+
 import attributes.AttributeBonus;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
@@ -1600,11 +1602,17 @@ public class Player extends LiveBeing
 	}
 
 	// TODO load player
-	private static Player load(String filePath)
+	public static Player load(int slot)
 	{
 		
-//		JSONObject jsonData = UtilG.readJsonObject(filePath) ;
-		Player newPlayer = new Player("", "", 0) ;
+		JSONObject jsonData = UtilG.readJsonObject("save " + slot + ".json") ;
+		if (jsonData == null) { return null ;}
+		System.out.println("jsonData " + jsonData);
+		String name = (String) jsonData.get("name") ;
+		String sex = (String) jsonData.get("sex") ;
+		int level = (int) (long) jsonData.get("level") ;
+		Player newPlayer = new Player(name, sex, 0) ;
+		newPlayer.setLevel(level);
 //		Player newPlayer = new Player((String) jsonData.get("name"), "", 0) ;
 //		newPlayer.setLevel((int) jsonData.get("level"));
 //		
