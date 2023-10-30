@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import java.awt.event.MouseWheelEvent ;
 import java.awt.event.MouseWheelListener ;
-import java.io.File ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.HashMap ;
@@ -1255,7 +1254,6 @@ public class Game extends JPanel
 		List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
 		for (Creature creature : creaturesInMap)
 		{
-//			creature.incActionCounters() ;
 			if (creature.isMoving())
 			{
 				creature.move(player.getPos(), player.getMap()) ;
@@ -1268,10 +1266,8 @@ public class Game extends JPanel
 				creature.act() ;
 			}
 			creature.display(creature.getPos(), Scale.unit, DP) ;
-
-//			creature.DrawAttributes(0, DP) ;
+			creature.displayAdditionalInfo(DP) ;
 		}
-		// TODO eliminar shouldRepaint
 		shouldRepaint = true ;
 	}
 	

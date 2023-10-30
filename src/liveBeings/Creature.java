@@ -123,8 +123,12 @@ public class Creature extends LiveBeing
 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
 	{
 		DP.DrawImage(type.movingAni.idleGif, pos, scale, Align.center) ;
+	}
+	
+	public void displayAdditionalInfo(DrawingOnPanel DP)
+	{
 		DP.DrawText(new Point(pos.x, pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
-//		DP.DrawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
+		DP.DrawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
 	}
 	
 	public void setRandomPos()

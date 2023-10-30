@@ -27,7 +27,7 @@ public class BankWindow extends GameWindow
 	
 	private static final String[] investmentRiskLevels = new String[] {"low", "high"} ;
 	public static final Image clock = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "clock.png") ;
-	// TODO add avisos max deposit, withdraw and investment
+
 	public BankWindow()
 	{
 		super("Banco", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Banco.png"), 1, 1, 1, 1) ;
@@ -103,7 +103,7 @@ public class BankWindow extends GameWindow
 
 	public void deposit(BagWindow bag, int amount)
 	{
-		if (!bag.hasEnoughGold(amount)) { return ;}
+		if (!bag.hasEnoughGold(amount)) { displayNotEnoughGold() ; return ;}
 		
 		balance += amount ;
 		bag.removeGold(amount) ;
@@ -113,7 +113,7 @@ public class BankWindow extends GameWindow
 	{
 		int amountWithFee = (int) (1.01 * amount) ;
 		
-		if (balance < amountWithFee) { return ;}
+		if (balance < amountWithFee) { displayNotEnoughGold() ; return ;}
 		
 		balance += -amountWithFee ;
 		bag.addGold(amount) ;
@@ -121,7 +121,7 @@ public class BankWindow extends GameWindow
 	
 	public void invest(BagWindow bag, int amount, boolean highRisk)
 	{
-		if (!bag.hasEnoughGold(amount)) { return ;}
+		if (!bag.hasEnoughGold(amount)) { displayNotEnoughGold() ; return ;}
 		
 		investmentRisk = highRisk ? investmentRiskLevels[1] : investmentRiskLevels[0] ;
 		hasInvestement = true ;
@@ -144,6 +144,13 @@ public class BankWindow extends GameWindow
 		DP.DrawArc(UtilG.Translate(pos, 0, 2), 21, 1, 90, (int) (-360 * timeRate), Game.colorPalette[20], null) ;
 	}
 	
+	private void displayNotEnoughGold()
+	{
+		Point msgPos = Game.getScreen().pos(0.4, 0.3) ;
+		String msg = "Você não tem ouro suficiente!" ;
+		Color msgColor = Game.colorPalette[0] ;
+		Game.getAnimations().get(12).start(160, new Object[] {msgPos, msg, msgColor}) ; 
+	}
 	
 	public void display(Point mousePos, DrawingOnPanel DP)
 	{
