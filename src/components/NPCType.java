@@ -69,7 +69,7 @@ public class NPCType
 				return ;
 			}
 			case doctor:
-				destination.add(Arrays.asList(1, 4)) ;
+				destination.add(Arrays.asList(3, 4)) ;
 				destination.add(Arrays.asList()) ;
 				destination.add(Arrays.asList()) ;
 				destination.add(Arrays.asList()) ;

@@ -54,7 +54,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 	{
 
 		Point pos = UtilG.Translate(windowPos, 0, 180) ;
-		for (Attributes att : Arrays.asList(Attributes.getBattle()))
+		for (Attributes att : Arrays.asList(Attributes.getIncrementable()))
 		{
 			IconFunction method = () -> {player.getBA().mapAttributes(att).incBaseValue(1) ;} ;
 			GameButton newAttButton = new GameButton(pos, Align.topLeft, plusSign, selectedPlusSign, method) ;
@@ -197,14 +197,14 @@ public class PlayerAttributesWindow extends AttributesWindow
 		BasicBattleAttribute[] attributes = player.getBA().basicAttributes() ;
 		int attOffset = 4 ;
 		Point initialAttPos = UtilG.Translate(windowPos, 44 + attOffset, 191) ;
-		for (int i = 0; i <= attributes.length - 1; i += 1)
+		for (int i = 0; i <= attributes.length - 3; i += 1)
 		{
 			Point attValuePos = UtilG.Translate(initialAttPos, 0, i * 22) ;
 			Point attImagePos = UtilG.Translate(windowPos, 35, 191 + i * 22) ;
 			DP.DrawImage(attIcons[i], attImagePos, Scale.unit, Align.center) ;
 			DP.DrawText(attValuePos, Align.centerLeft, angle, attributes[i].text(), font, textColor) ;
 		}
-		Point critPos = UtilG.Translate(initialAttPos, 0, 9 + attributes.length * 22) ;
+		Point critPos = UtilG.Translate(initialAttPos, 0, 9 + (attributes.length - 2) * 22) ;
 		String critValue = UtilG.Round(100 * player.getBA().TotalCritAtkChance(), 1) + "%" ;
 		DP.DrawImage(critIcon, UtilG.Translate(windowPos, 35, 333), Scale.unit, Align.center) ;
 		DP.DrawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		

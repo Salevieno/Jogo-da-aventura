@@ -512,15 +512,16 @@ public class NPCs
 		if (menu != 1) { return ;}
 		
 		if (playerPA.getLife().isMaxed())
-		{
-			if (petPA == null) { return ;}
-
-			petPA.getLife().setToMaximum() ;
-			petPA.getMp().setToMaximum() ;
-			
-			menu = 2 ;
+		{			
+			menu = 1 ;
 			return ;
 		}
+
+		if (petPA != null)
+		{
+			petPA.getLife().setToMaximum() ;
+			petPA.getMp().setToMaximum() ;
+		}		
 		
 		playerPA.getLife().setToMaximum() ;
 		playerPA.getMp().setToMaximum() ;

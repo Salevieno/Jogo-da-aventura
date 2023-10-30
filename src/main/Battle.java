@@ -154,22 +154,28 @@ public class Battle
 	public static int calcDamage(AttackEffects effect, double atk, double def, Elements[] atkElems, Elements[] defElem, double elemModifier)
 	{
 		int damage = -1 ;
-		if (effect.equals(AttackEffects.miss) | effect.equals(AttackEffects.block))
+		
+		switch(effect)
 		{
-			damage = 0 ;
-		} 
-		else if (effect.equals(AttackEffects.hit))
-		{
-			damage = Math.max(0, (int)(atk - def)) ;
+			case miss: case block:
+				damage = 0 ;
+				break ;
+				
+			case hit:
+				damage = Math.max(0, (int)(atk - def)) ;
+				break ;
+			
+			case crit:
+				damage = (int) atk ;
+				break ;
+			
+			default: return 0 ;
 		}
-		else if (effect.equals(AttackEffects.crit))
-		{
-			damage = (int) atk ;
-		}
+		
 		double randomMult = UtilG.RandomMult(randomAmp) ;
 		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElem[0], defElem[0], atkElems[2]) ;
 		PrintElement(atkElems[0], atkElems[1], defElem[0], defElem[0], atkElems[2], elemMult) ;
-		damage = (int) (randomMult * elemMult * elemModifier * atk) ;
+		damage = (int) (randomMult * elemMult * elemModifier * damage) ;
 		return damage ;
 	}
 		

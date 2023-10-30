@@ -1,5 +1,7 @@
 package attributes ;
 
+import org.json.simple.JSONObject;
+
 import liveBeings.LiveBeingStatus;
 
 public class BattleAttributes
@@ -20,24 +22,24 @@ public class BattleAttributes
 	
 	private LiveBeingStatus status ;
 	
-	public BattleAttributes(BasicBattleAttribute PhyAtk, BasicBattleAttribute MagAtk, BasicBattleAttribute PhyDef, BasicBattleAttribute MagDef, BasicBattleAttribute Dex, BasicBattleAttribute Agi,
-			BasicBattleAttribute CritAtk, BasicBattleAttribute CritDef,
-			BattleSpecialAttribute Stun, BattleSpecialAttribute Block, BattleSpecialAttributeWithDamage Blood, BattleSpecialAttributeWithDamage Poison, BattleSpecialAttribute Silence,
+	public BattleAttributes(BasicBattleAttribute phyAtk, BasicBattleAttribute magAtk, BasicBattleAttribute phyDef, BasicBattleAttribute magDef, BasicBattleAttribute dex, BasicBattleAttribute agi,
+			BasicBattleAttribute critAtk, BasicBattleAttribute critDef,
+			BattleSpecialAttribute stun, BattleSpecialAttribute block, BattleSpecialAttributeWithDamage blood, BattleSpecialAttributeWithDamage poison, BattleSpecialAttribute silence,
 			LiveBeingStatus status)
 	{
-		this.phyAtk = PhyAtk ;
-		this.magAtk = MagAtk ;
-		this.phyDef = PhyDef ;
-		this.magDef = MagDef ;
-		this.dex = Dex ;
-		this.agi = Agi ;
-		this.critAtk = CritAtk ;
-		this.critDef = CritDef ;
-		this.stun = Stun ;
-		this.block = Block ;
-		this.blood = Blood ;
-		this.poison = Poison ;
-		this.silence = Silence ;
+		this.phyAtk = phyAtk ;
+		this.magAtk = magAtk ;
+		this.phyDef = phyDef ;
+		this.magDef = magDef ;
+		this.dex = dex ;
+		this.agi = agi ;
+		this.critAtk = critAtk ;
+		this.critDef = critDef ;
+		this.stun = stun ;
+		this.block = block ;
+		this.blood = blood ;
+		this.poison = poison ;
+		this.silence = silence ;
 		this.status = status ;
 	}
 
@@ -68,6 +70,8 @@ public class BattleAttributes
 			case magDef: return magDef ;
 			case dex: return dex ;
 			case agi: return agi ;
+			case critAtk: return critAtk ;
+			case critDef: return critDef ;
 			
 			default: return null ;
 		}
@@ -126,7 +130,8 @@ public class BattleAttributes
 		return 0 < status.getStun() ;
 	}
 	
-	public BasicBattleAttribute[] basicAttributes() { return new BasicBattleAttribute[] {getPhyAtk(), getMagAtk(), getPhyDef(), getMagDef(), getDex(), getAgi()};}
+	public BasicBattleAttribute[] basicAttributes() { return new BasicBattleAttribute[] {getPhyAtk(), getMagAtk(), getPhyDef(), getMagDef(), getDex(), getAgi(), critAtk, critDef};}
+	public BattleSpecialAttribute[] specialAttributes() { return new BattleSpecialAttribute[] {stun, block, blood, poison, silence} ;}
 	public double[] getBaseValues()
 	{
 		return new double[] {
@@ -152,7 +157,53 @@ public class BattleAttributes
 	{
 		return new int[] {stun.getDuration(), block.getDuration(), blood.getDuration(), poison.getDuration(), silence.getDuration()} ;
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject toJsonObject()
+	{
 
+        JSONObject content = new JSONObject();
+        for (Attributes att : Attributes.getBattle())
+        {
+            content.put(att.toString(), mapAttributes(att).toJsonObject());
+        }
+        for (Attributes att : Attributes.getSpecial())
+        {
+            content.put(att.toString(), mapSpecialAttributes(att).toJsonObject());
+        }
+        content.put("status", status.toJsonObject());
+        
+        return content ;
+        
+	}
+
+	
+	public static BattleAttributes fromJson(JSONObject jsonData)
+	{
+
+		BasicBattleAttribute phyAtk = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("phyAtk")) ;
+		BasicBattleAttribute magAtk = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("magAtk")) ;
+		BasicBattleAttribute phyDef = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("phyDef")) ;
+		BasicBattleAttribute magDef = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("magDef")) ;
+		BasicBattleAttribute dex = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("dex")) ;
+		BasicBattleAttribute agi = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("agi")) ;
+		BasicBattleAttribute critAtk = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("critAtk")) ;
+		BasicBattleAttribute critDef = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("critDef")) ;
+		
+		BattleSpecialAttribute stun = BattleSpecialAttribute.fromJson((JSONObject) jsonData.get("stun")) ;
+		BattleSpecialAttribute block = BattleSpecialAttribute.fromJson((JSONObject) jsonData.get("block")) ;
+		BattleSpecialAttributeWithDamage blood = BattleSpecialAttributeWithDamage.fromJson((JSONObject) jsonData.get("blood")) ;
+		BattleSpecialAttributeWithDamage poison = BattleSpecialAttributeWithDamage.fromJson((JSONObject) jsonData.get("poison")) ;
+		BattleSpecialAttribute silence = BattleSpecialAttribute.fromJson((JSONObject) jsonData.get("silence")) ;
+		
+		LiveBeingStatus status = LiveBeingStatus.fromJson((JSONObject) jsonData.get("status")) ;
+		
+		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef,
+				stun, block, blood, poison, silence,
+				status) ;
+	}
+	
 	@Override
 	public String toString()
 	{

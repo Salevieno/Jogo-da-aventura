@@ -5,8 +5,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sound.sampled.Clip;
 
 import components.GameButton;
 import components.IconFunction;
@@ -44,6 +47,8 @@ public abstract class Opening
 	private static final Image LoadingGif ;
 	private static final Image LoadingSlot ;
 	private static final Image LoadingSlotSelected ;
+	public static final Clip thunderSound ;
+	public static final Clip introMusic ;
 	
 	static
 	{
@@ -55,6 +60,10 @@ public abstract class Opening
 		LoadingGif = UtilG.loadImage(path + "Loading.gif") ;
 		LoadingSlot = UtilG.loadImage(path + "LoadingSlot.png") ;
 		LoadingSlotSelected = UtilG.loadImage(path + "LoadingSlotSelected.png") ;
+
+		thunderSound = Music.musicFileToClip(new File(Game.MusicPath + "0-Thunder.wav").getAbsoluteFile()) ;
+		introMusic = Music.musicFileToClip(new File(Game.MusicPath + "1-Intro.wav").getAbsoluteFile()) ;
+		
 		GameButton.selectedIconID = 2 ;
     	step = 0 ;
     	newGame = true ;
@@ -84,6 +93,7 @@ public abstract class Opening
 			if (players[0] == null) { loadSlotButtons.get(0).deactivate() ;}
 			if (players[1] == null) { loadSlotButtons.get(1).deactivate() ;}
 			if (players[2] == null) { loadSlotButtons.get(2).deactivate() ;}
+			
 		} ;
 		IconFunction confirmNameAction = () -> {chosenName = liveInput.getText() ;} ;
 		IconFunction maleAction = () -> { chosenSex = "M" ;} ;
@@ -174,6 +184,10 @@ public abstract class Opening
 			if (!button.isClicked(mousePos, action)) { continue ;}
 			
 			button.act() ;
+			if (button.getName().equals("Load Game"))
+			{
+				return ;
+			}
 			if (!button.getName().equals("Port") & !button.getName().equals("En"))
 			{
 				advanceStep = true ;
@@ -325,13 +339,17 @@ public abstract class Opening
 
 	public static void run(Player player, Point mousePos, DrawingOnPanel DP)
 	{
-		if (!Opening.getOpeningGif().isDonePlaying())
+		if (openingGif.isStarting())
+		{
+			Music.PlayMusic(thunderSound) ;
+			Music.PlayMusic(introMusic) ;
+		}
+		if (!openingGif.isDonePlaying())
     	{
 			openingGif.play(new Point(0, 0), Align.topLeft, DP);
     		return ;
     	}
 
-		Music.PlayMusic(Music.intro) ;
 		act(player.getCurrentAction(), mousePos) ;
 		if (newGame)
 		{

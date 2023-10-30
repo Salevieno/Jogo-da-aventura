@@ -1815,7 +1815,7 @@ public class Game extends JPanel
 			if (evt.getButton() == 3) // Right click
 			{
 				player.setCurrentAction("MouseRightClick") ;
-//        		player.setPos(mousePos) ;
+        		player.setPos(mousePos) ;
 				// testGif2.start() ;
 			}
 			// shouldRepaint = true ;

@@ -13,7 +13,8 @@ public enum Attributes
 	magDef,
 	dex,
 	agi,
-	crit,
+	critAtk,
+	critDef,
 	stun,
 	block,
 	blood,
@@ -30,9 +31,14 @@ public enum Attributes
 		return new Attributes[] {life, mp, exp, satiation, thirst} ;
 	}
 	
-	public static Attributes[] getBattle()
+	public static Attributes[] getIncrementable()
 	{
 		return new Attributes[] {phyAtk, magAtk, phyDef, magDef, dex, agi} ;
+	}
+	
+	public static Attributes[] getBattle()
+	{
+		return new Attributes[] {phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef} ;
 	}
 	
 	public static Attributes[] getSpecial()

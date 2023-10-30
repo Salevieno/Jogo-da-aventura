@@ -1,5 +1,7 @@
 package attributes;
 
+import org.json.simple.JSONObject;
+
 import utilities.UtilG;
 
 public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
@@ -18,29 +20,21 @@ public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
 		this.basicDef = basicDef ;
 		this.basicDefBonus = basicDefBonus ;
 	}
-	
-	
-	
+		
 	public double getBasicAtk()
 	{
 		return basicAtk;
 	}
-
-
 
 	public double getBasicAtkBonus()
 	{
 		return basicAtkBonus;
 	}
 
-
-
 	public double getBasicDef()
 	{
 		return basicDef;
 	}
-
-
 
 	public double getBasicDefBonus()
 	{
@@ -71,6 +65,44 @@ public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
 	public void incDefBonus(double inc) {basicDefBonus += inc ;}
 
 
+	@SuppressWarnings("unchecked")
+	public JSONObject toJsonObject()
+	{
+
+        JSONObject content = new JSONObject();
+        content.put("basicAtkChance", basicAtkChance);
+        content.put("basicAtk", basicAtk);
+        content.put("basicDefChance", basicDefChance);
+        content.put("basicDef", basicDef);
+        content.put("basicAtkChanceBonus", basicAtkChanceBonus);
+        content.put("basicAtkBonus", basicAtkBonus);
+        content.put("basicDefChanceBonus", basicDefChanceBonus);
+        content.put("basicDefBonus", basicDefBonus);
+        content.put("duration", duration);
+        
+        return content ;
+        
+	}
+
+	public static BattleSpecialAttributeWithDamage fromJson(JSONObject jsonData)
+	{
+
+		double basicAtkChance = (double) (Double) jsonData.get("basicAtkChance") ;
+		double basicAtk = (double) (Double) jsonData.get("basicAtk") ;
+		double basicDefChance = (double) (Double) jsonData.get("basicDefChance") ;
+		double basicDef = (double) (Double) jsonData.get("basicDef") ;
+		double basicAtkChanceBonus = (double) (Double) jsonData.get("basicAtkChanceBonus") ;
+		double basicAtkBonus = (double) (Double) jsonData.get("basicAtkBonus") ;
+		double basicDefChanceBonus = (double) (Double) jsonData.get("basicDefChanceBonus") ;
+		double basicDefBonus = (double) (Double) jsonData.get("basicDefBonus") ;
+		int duration = (int) (long) jsonData.get("duration") ;
+		return new BattleSpecialAttributeWithDamage(basicAtkChance, basicAtk,
+				basicDefChance, basicDef,
+				basicAtkChanceBonus, basicAtkBonus,
+				basicDefChanceBonus, basicDefBonus,
+				duration) ;
+		
+	}
 
 	@Override
 	public String toString() {

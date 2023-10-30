@@ -1,5 +1,7 @@
 package attributes;
 
+import org.json.simple.JSONObject;
+
 public class BasicAttribute extends LiveBeingAttribute
 {
 	private int currentValue ;
@@ -25,6 +27,27 @@ public class BasicAttribute extends LiveBeingAttribute
 	public void incMaxValue(int amount) {maxValue += amount ;}
 	public void setToMaximum() {currentValue = maxValue ;}
 
+	public static BasicAttribute fromJson(JSONObject jsonData)
+	{
+
+		int currentValue = (int) (long) jsonData.get("currentValue") ;
+		int maxValue = (int) (long) jsonData.get("maxValue") ;
+		double multiplier = (double) (Double) jsonData.get("multiplier") ;
+		return new BasicAttribute(currentValue, maxValue, multiplier) ;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject toJson()
+	{
+
+        JSONObject content = new JSONObject();
+        content.put("currentValue", currentValue);
+        content.put("maxValue", maxValue);
+        content.put("multiplier", multiplier);
+        
+        return content ;
+	}
+	
 	@Override
 	public String toString()
 	{

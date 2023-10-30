@@ -1,6 +1,6 @@
 package attributes;
 
-import utilities.UtilG;
+import org.json.simple.JSONObject;
 
 public class BattleSpecialAttribute
 {
@@ -62,4 +62,33 @@ public class BattleSpecialAttribute
 	public void incAtkChanceBonus(double inc) {basicAtkChanceBonus += inc ;}
 	public void incDefChanceBonus(double inc) {basicDefChanceBonus += inc ;}
 	public void incDuration(double inc) {duration += inc ;}
+	
+
+	@SuppressWarnings("unchecked")
+	public JSONObject toJsonObject()
+	{
+
+        JSONObject content = new JSONObject();
+        content.put("basicAtkChance", basicAtkChance);
+        content.put("basicDefChance", basicDefChance);
+        content.put("basicAtkChanceBonus", basicAtkChanceBonus);
+        content.put("basicDefChanceBonus", basicDefChanceBonus);
+        content.put("duration", duration);
+        
+        return content ;
+        
+	}
+
+	public static BattleSpecialAttribute fromJson(JSONObject jsonData)
+	{
+
+		double basicAtkChance = (double) (Double) jsonData.get("basicAtkChance") ;
+		double basicDefChance = (double) (Double) jsonData.get("basicDefChance") ;
+		double basicAtkChanceBonus = (double) (Double) jsonData.get("basicAtkChanceBonus") ;
+		double basicDefChanceBonus = (double) (Double) jsonData.get("basicDefChanceBonus") ;
+		int duration = (int) (long) jsonData.get("duration") ;
+		return new BattleSpecialAttribute(basicAtkChance, basicDefChance, basicAtkChanceBonus, basicDefChanceBonus, duration) ;
+		
+	}
+	
 }

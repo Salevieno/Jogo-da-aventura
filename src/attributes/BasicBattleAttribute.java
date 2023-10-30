@@ -1,5 +1,7 @@
 package attributes;
 
+import org.json.simple.JSONObject;
+
 import utilities.UtilG;
 
 public class BasicBattleAttribute extends LiveBeingAttribute
@@ -33,6 +35,29 @@ public class BasicBattleAttribute extends LiveBeingAttribute
 	
 	public double getTotal() {return baseValue + bonus + train ;}
 
+	@SuppressWarnings("unchecked")
+	public JSONObject toJsonObject()
+	{
+
+        JSONObject content = new JSONObject();
+        content.put("baseValue", baseValue);
+        content.put("bonus", bonus);
+        content.put("train", train);
+        
+        return content ;
+        
+	}
+
+	public static BasicBattleAttribute fromJson(JSONObject jsonData)
+	{
+
+		double baseValue = (double) (Double) jsonData.get("baseValue") ;
+		double bonus = (double) (Double) jsonData.get("bonus") ;
+		double train = (double) (Double) jsonData.get("train") ;
+		return new BasicBattleAttribute(baseValue, bonus, train) ;
+		
+	}
+	
 	@Override
 	public String toString()
 	{

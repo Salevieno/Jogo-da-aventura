@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 
+import org.json.simple.JSONObject;
+
+import attributes.BasicAttribute;
 import graphics.DrawingOnPanel;
 import main.Game;
 import utilities.Align;
@@ -13,7 +16,7 @@ import utilities.UtilG;
 public class LiveBeingStatus
 {
 	private int life ;
-	private int MP ;
+	private int mp ;
 	private int phyAtk ;
 	private int magAtk ;
 	private int phyDef ;
@@ -44,11 +47,11 @@ public class LiveBeingStatus
 	}
 	public int getMP()
 	{
-		return MP;
+		return mp;
 	}
-	public void setMP(int MP)
+	public void setMP(int mp)
 	{
-		this.MP = MP;
+		this.mp = mp;
 	}
 	public int getPhyAtk()
 	{
@@ -139,7 +142,6 @@ public class LiveBeingStatus
 		this.silence = silence;
 	}
 	
-
 	
 	public void receiveStatus(int[] AppliedStatus)
 	{// TODO include all status
@@ -152,7 +154,7 @@ public class LiveBeingStatus
 	public void decreaseStatus()
 	{
 		if (0 < life) {life += -1 ; }
-		if (0 < MP) {MP += -1 ; }
+		if (0 < mp) {mp += -1 ; }
 		if (0 < phyAtk) {phyAtk += -1 ; }
 		if (0 < magAtk) {magAtk += -1 ; }
 		if (0 < phyDef) {phyDef += -1 ; }
@@ -191,10 +193,67 @@ public class LiveBeingStatus
 		}
 	}
 	
+
+	public static LiveBeingStatus fromJson(JSONObject jsonData)
+	{
+
+		int life = (int) (long) jsonData.get("life") ;
+		int mp = (int) (long) jsonData.get("mp") ;
+		int phyAtk = (int) (long) jsonData.get("phyAtk") ;
+		int magAtk = (int) (long) jsonData.get("magAtk") ;
+		int phyDef = (int) (long) jsonData.get("phyDef") ;
+		int magDef = (int) (long) jsonData.get("magDef") ;
+		int dex = (int) (long) jsonData.get("dex") ;
+		int agi = (int) (long) jsonData.get("agi") ;
+		int stun = (int) (long) jsonData.get("stun") ;
+		int block = (int) (long) jsonData.get("block") ;
+		int blood = (int) (long) jsonData.get("blood") ;
+		int poison = (int) (long) jsonData.get("poison") ;
+		int silence = (int) (long) jsonData.get("silence") ;
+		LiveBeingStatus newLiveBeingStatus = new LiveBeingStatus() ;
+		newLiveBeingStatus.setLife(life) ;
+		newLiveBeingStatus.setMP(mp) ;
+		newLiveBeingStatus.setPhyAtk(phyAtk);
+		newLiveBeingStatus.setMagAtk(magAtk);
+		newLiveBeingStatus.setPhyDef(phyDef);
+		newLiveBeingStatus.setMagDef(magDef);
+		newLiveBeingStatus.setDex(dex);
+		newLiveBeingStatus.setAgi(agi);
+		newLiveBeingStatus.setStun(stun);
+		newLiveBeingStatus.setBlock(block);
+		newLiveBeingStatus.setBlood(blood);
+		newLiveBeingStatus.setPoison(poison);
+		newLiveBeingStatus.setSilence(silence);
+		
+		return newLiveBeingStatus ;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject toJsonObject()
+	{
+
+        JSONObject content = new JSONObject();
+        content.put("life", life);
+        content.put("mp", mp);
+        content.put("phyAtk", phyAtk);
+        content.put("magAtk", magAtk);
+        content.put("phyDef", phyDef);
+        content.put("magDef", magDef);
+        content.put("dex", dex);
+        content.put("agi", agi);
+        content.put("stun", stun);
+        content.put("block", block);
+        content.put("blood", blood);
+        content.put("poison", poison);
+        content.put("silence", silence);
+        
+        return content ;
+	}
+	
 	@Override
 	public String toString()
 	{
-		return "LiveBeingStatus [life=" + life + ", MP=" + MP + ", phyAtk=" + phyAtk + ", magAtk=" + magAtk
+		return "LiveBeingStatus [life=" + life + ", MP=" + mp + ", phyAtk=" + phyAtk + ", magAtk=" + magAtk
 				+ ", phyDef=" + phyDef + ", magDef=" + magDef + ", dex=" + dex + ", agi=" + agi + ", stun=" + stun
 				+ ", block=" + block + ", blood=" + blood + ", poison=" + poison + ", silence=" + silence + "]";
 	}

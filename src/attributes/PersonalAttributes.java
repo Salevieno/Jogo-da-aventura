@@ -2,6 +2,8 @@ package attributes ;
 
 import java.awt.Point;
 
+import org.json.simple.JSONObject;
+
 import utilities.Directions;
 import utilities.UtilG;
 
@@ -72,6 +74,33 @@ public class PersonalAttributes
 		}
 		
 		return newPos ;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject toJsonObject()
+	{
+
+        JSONObject content = new JSONObject();
+        content.put("life", life.toJson());
+        content.put("mp", mp.toJson());
+        content.put("exp", exp.toJson());
+        content.put("satiation", satiation.toJson());
+        content.put("thirst", thirst.toJson());
+        
+        return content ;
+        
+	}
+	
+	public static PersonalAttributes fromJson(JSONObject jsonData)
+	{
+
+		BasicAttribute life = BasicAttribute.fromJson((JSONObject) jsonData.get("life")) ;
+		BasicAttribute mp = BasicAttribute.fromJson((JSONObject) jsonData.get("mp")) ;
+		BasicAttribute exp = BasicAttribute.fromJson((JSONObject) jsonData.get("exp")) ;
+		BasicAttribute satiation = BasicAttribute.fromJson((JSONObject) jsonData.get("satiation")) ;
+		BasicAttribute thirst = BasicAttribute.fromJson((JSONObject) jsonData.get("thirst")) ;
+		
+		return new PersonalAttributes(life, mp, exp, satiation, thirst) ;
 	}
 	
 	@Override

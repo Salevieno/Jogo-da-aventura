@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 import java.awt.event.KeyEvent ;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.HashMap;
@@ -848,12 +846,13 @@ public class Player extends LiveBeing
 		
 		return false ;
 	}
-	
+
 	public void meetWithTreasureChests()
 	{
 		if (!map.isSpecial()) { return ;}
 
-		List<MapElements> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).collect(Collectors.toList()) ;
+		List<MapElements> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).
+				collect(Collectors.toList()) ;
 		for (MapElements chest : chests)
 		{
 
@@ -1236,8 +1235,6 @@ public class Player extends LiveBeing
 
 		spell.applyBuffs(true, this) ;
 		spell.applyNerfs(true, opponent) ;
-//		System.out.println("player used offensive spell");
-//		System.out.println("result = " + effect + " " + damage);
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 		
 	}
@@ -1584,24 +1581,23 @@ public class Player extends LiveBeing
 	}
 
 	
-	// TODO save player
+	@SuppressWarnings("unchecked")
 	public void save(int slot)
 	{
-		
-		try (FileWriter file = new FileWriter("save " + slot + ".json"))
-        {
-            file.write("name: " + name + "\n"); 
-            file.write("level: " + level); 
-            file.flush(); 
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+
+        JSONObject content = new JSONObject();
+        content.put("name", name);
+        content.put("sex", sex);
+        content.put("level", level);
+        content.put("job", job);
+        content.put("PA", PA.toJsonObject()) ;
+        content.put("BA", BA.toJsonObject()) ;
+        
+        UtilG.writeJson(content, "save " + slot) ;
+        
 		
 	}
 
-	// TODO load player
 	public static Player load(int slot)
 	{
 		
@@ -1611,11 +1607,15 @@ public class Player extends LiveBeing
 		String name = (String) jsonData.get("name") ;
 		String sex = (String) jsonData.get("sex") ;
 		int level = (int) (long) jsonData.get("level") ;
-		Player newPlayer = new Player(name, sex, 0) ;
+		int job = (int) (long) jsonData.get("job") ;
+		JSONObject PAData = (JSONObject) jsonData.get("PA") ;
+		JSONObject BAData = (JSONObject) jsonData.get("BA") ;
+		
+		Player newPlayer = new Player(name, sex, job) ;
 		newPlayer.setLevel(level);
-//		Player newPlayer = new Player((String) jsonData.get("name"), "", 0) ;
-//		newPlayer.setLevel((int) jsonData.get("level"));
-//		
+		newPlayer.setPA(PersonalAttributes.fromJson(PAData));
+		newPlayer.setBA(BattleAttributes.fromJson(BAData));
+		
 		return newPlayer ;
 		
 	}

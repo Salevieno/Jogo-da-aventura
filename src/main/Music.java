@@ -8,20 +8,19 @@ import javax.sound.sampled.Clip;
 
 public class Music
 {
-	private boolean isOn ;
+//	private boolean isOn ;
 	private Clip clip ;
 	
 	private static Clip currentlyPlayingClip = null ;
 	
-	public static final Clip intro = musicFileToClip(new File(Game.MusicPath + "1-Intro.wav").getAbsoluteFile()) ; ;
 	
 	public Music(Clip clip)
 	{
 		this.clip = clip ;
-		isOn = false ;
+//		isOn = false ;
 	}
 	
-	public boolean isOn() {return isOn ;}
+//	public boolean isOn() {return isOn ;}
 	
 	public Clip getClip() {return clip ;}
 	
@@ -45,6 +44,8 @@ public class Music
 	
 	public static void PlayMusic(Clip MusicFile)
  	{
+		if (MusicFile.isRunning() | MusicFile.isActive()) { return ;}
+		
  		try 
  		{
  			currentlyPlayingClip = MusicFile ;
