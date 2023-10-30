@@ -943,7 +943,7 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	public void meet(Point mousePos, DrawingOnPanel DP)
+	public void checkMeet(Point mousePos, DrawingOnPanel DP)
 	{
 		if (state == LiveBeingStates.collecting | isInBattle() | Game.someAnimationIsActive()) { return ;}
 

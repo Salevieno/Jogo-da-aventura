@@ -1250,64 +1250,44 @@ public class Game extends JPanel
 	}
 
 	
-	private void runGame(DrawingOnPanel DP)
+	private void creaturesAct()
 	{
-		// increment and activate counters
-		incrementCounters() ;
-		activateCounters() ;
-
-		// check for the Konami code
-		checkKonamiCode(player.getCombo()) ;
-		if (konamiCodeActive)
+		List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
+		for (Creature creature : creaturesInMap)
 		{
-			konamiCode() ;
-		}
-
-		// draw the map (cities, forest, etc.)
-		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
-		sideBar.display(player, pet, mousePos, DP) ;
-		sideBar.act(player.getCurrentAction(), mousePos) ;
-
-		// creatures act
-		if (player.getMap().isAField())
-		{
-			List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
-			for (Creature creature : creaturesInMap)
+//			creature.incActionCounters() ;
+			if (creature.isMoving())
 			{
-//				creature.incActionCounters() ;
-				if (creature.isMoving())
-				{
-					creature.move(player.getPos(), player.getMap()) ;
-					creature.display(creature.getPos(), Scale.unit, DP) ;
-					continue ;
-				}
-				if (creature.canAct())
-				{
-					creature.think() ;
-					creature.act() ;
-				}
+				creature.move(player.getPos(), player.getMap()) ;
 				creature.display(creature.getPos(), Scale.unit, DP) ;
-
-//				creature.DrawAttributes(0, DP) ;
+				continue ;
 			}
-			// TODO eliminar shouldRepaint
-			shouldRepaint = true ;
-		}
-
-		// pet acts
-		if (pet != null)
-		{
-			if (pet.isAlive())
+			if (creature.canAct())
 			{
-				pet.updateCombo() ;
-				pet.think(player.isInBattle(), player.getPos()) ;
-				pet.act(player) ;
-				pet.display(pet.getPos(), Scale.unit, DP) ;
-				pet.drawAttributes(0, DP) ;
+				creature.think() ;
+				creature.act() ;
 			}
-		}
+			creature.display(creature.getPos(), Scale.unit, DP) ;
 
-		// player acts
+//			creature.DrawAttributes(0, DP) ;
+		}
+		// TODO eliminar shouldRepaint
+		shouldRepaint = true ;
+	}
+	
+	private void petActs()
+	{
+		if (!pet.isAlive()) { return ;}
+		
+		pet.updateCombo() ;
+		pet.think(player.isInBattle(), player.getPos()) ;
+		pet.act(player) ;
+		pet.display(pet.getPos(), Scale.unit, DP) ;
+		pet.drawAttributes(0, DP) ;
+	}
+	
+	private void playerActs()
+	{
 		if (player.canAct())
 		{
 			if (player.hasActed())
@@ -1357,23 +1337,65 @@ public class Game extends JPanel
 //		player.getMap().displayInfoWindow(DP) ;
 
 		player.doCurrentAction(DP) ;
+	}
+	
+	private void updateProjectiles()
+	{
+		List<Creature> creaturesInMap = new ArrayList<>() ;
+		if (!player.getMap().IsACity())
+		{
+			FieldMap fm = (FieldMap) player.getMap() ;
+			creaturesInMap = fm.getCreatures() ;
+		}
+		for (Projectiles proj : projs)
+		{
+			proj.go(player, creaturesInMap, pet, DP) ;
+			if (proj.collidedwith(player, creaturesInMap, pet) != -3) // if the projectile has hit some live being
+			{
+				projs.remove(proj) ;
+			}
+		}
+	}
+	
+	private void runGame(DrawingOnPanel DP)
+	{
+		incrementCounters() ;
+		activateCounters() ;
 
-		// find the closest creature to the player
+		checkKonamiCode(player.getCombo()) ;
+		if (konamiCodeActive)
+		{
+			konamiCode() ;
+		}
+
+		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
+		sideBar.display(player, pet, mousePos, DP) ;
+		sideBar.act(player.getCurrentAction(), mousePos) ;
+
+		if (player.getMap().isAField())
+		{
+			creaturesAct() ;
+		}
+
+		if (pet != null)
+		{
+			petActs() ;
+		}
+
+		playerActs() ;
+
 		if (!player.getMap().IsACity())
 		{
 			player.setClosestCreature(player.closestCreatureInRange()) ;
 		}
 
-		// check if the player met something
-		player.meet(mousePos, DP) ;
+		player.checkMeet(mousePos, DP) ;
 
-		// if the player is in battle, run battle
 		if (player.isInBattle())
 		{
 			bat.RunBattle(player, pet, player.getOpponent(), animations, DP) ;
 		}
 
-		// level up the player and the pet if they should
 		if (player.shouldLevelUP())
 		{
 			player.levelUp(animations.get(6)) ;
@@ -1387,26 +1409,11 @@ public class Game extends JPanel
 			}	
 		}
 
-		// show the active player windows
 		player.showWindows(pet, mousePos, DP) ;
 
-		// move the active projectiles and check if they collide with something
 		if (projs != null)
 		{
-			List<Creature> creaturesInMap = new ArrayList<>() ;
-			if (!player.getMap().IsACity())
-			{
-				FieldMap fm = (FieldMap) player.getMap() ;
-				creaturesInMap = fm.getCreatures() ;
-			}
-			for (Projectiles proj : projs)
-			{
-				proj.go(player, creaturesInMap, pet, DP) ;
-				if (proj.collidedwith(player, creaturesInMap, pet) != -3) // if the projectile has hit some live being
-				{
-					projs.remove(proj) ;
-				}
-			}
+			updateProjectiles() ;
 		}
 
 		player.resetAction() ;
