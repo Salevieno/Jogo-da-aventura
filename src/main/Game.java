@@ -1303,7 +1303,7 @@ public class Game extends JPanel
 				pet.think(player.isInBattle(), player.getPos()) ;
 				pet.act(player) ;
 				pet.display(pet.getPos(), Scale.unit, DP) ;
-				pet.DrawAttributes(0, DP) ;
+				pet.drawAttributes(0, DP) ;
 			}
 		}
 
@@ -1347,7 +1347,7 @@ public class Game extends JPanel
 		}
 
 		player.applyAdjacentGroundEffect() ;
-		player.DrawAttributes(0, DP) ;
+		player.drawAttributes(0, DP) ;
 		player.display(player.getPos(), Scale.unit, player.getDir(), player.getSettings().getShowAtkRange(), DP) ;
 		if (player.weaponIsEquipped())
 		{

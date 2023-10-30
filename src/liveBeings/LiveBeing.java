@@ -543,7 +543,7 @@ public abstract class LiveBeing
 		}
 	}
 	
-	public void DrawAttributes(int style, DrawingOnPanel DP)
+	public void drawAttributes(int style, DrawingOnPanel DP)
 	{
 		Color[] colorPalette = Game.colorPalette ;
 		Dimension screenSize = Game.getScreen().getSize() ;

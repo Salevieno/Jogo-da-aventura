@@ -8,10 +8,13 @@ import java.util.List;
 import attributes.AttributeBonus;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
+import graphics.DrawingOnPanel;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
+import utilities.Align;
 import utilities.Elements;
+import utilities.Scale;
 import utilities.UtilG;
 
 public class Equip extends Item
@@ -208,13 +211,6 @@ public class Equip extends Item
 	
 	public void resetElem() { elem = originalElem ;}
 	
-//	public void resetForgeLevel()
-//	{// TODO corrigir bug bonus att pós forja quebrada
-//		
-//		attBonus.resetAll() ;
-//		forgeLevel = 0 ;
-//	}
-	
 	public void incForgeLevel()
 	{
 		double forgeBonus = 0.1 ;
@@ -314,6 +310,11 @@ public class Equip extends Item
 		applyBonus(user.getPA(), user.getBA(), Equip.getAll()[id], 1) ;
 			
 		user.getElem()[4] = user.hasSuperElement() ? user.getElem()[1] : Elements.neutral ;
+	}
+	
+	public void display(Point pos, double angle, Scale scale, Align align, DrawingOnPanel DP)
+	{
+		DP.DrawImage(this.fullSizeImage(), pos, angle, scale, align) ;
 	}
 	
 	@Override

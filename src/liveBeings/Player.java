@@ -373,7 +373,11 @@ public class Player extends LiveBeing
 	public static Spell[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 139, 152) ;}
 	
 	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
-	
+
+	public static double calcExpToLevelUp(int level)
+	{
+		return 10 * (3 * Math.pow(level - 1, 2) + 3 * (level - 1) + 1) - 5 ;
+	}
 	
 	public void setAttPoints(int attPoints)
 	{
@@ -403,6 +407,7 @@ public class Player extends LiveBeing
 		return (EquipID[0].getId() + 1) == EquipID[1].getId() & (EquipID[1].getId() + 1) == EquipID[2].getId() ;
 	}
 
+	
 	private Point feetPos() {return new Point(pos.x, (int) (pos.y - size.height)) ;}	
 
 	public Creature closestCreatureInRange()
@@ -509,7 +514,6 @@ public class Player extends LiveBeing
     	Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), msg, Game.colorPalette[4]}) ;      
 
     }
-	
 	
 	private void addChestContentToBag(TreasureChest chest, BagWindow bag)
 	{
@@ -1238,10 +1242,7 @@ public class Player extends LiveBeing
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 		
 	}
-	
-	// \*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/\*/
-			
-	
+		
 	public void useItem(Item item)
 	{
 		if (item == null) { return ;}
@@ -1474,11 +1475,7 @@ public class Player extends LiveBeing
 		
 		return increase ;
 	}
-	public static double calcExpToLevelUp(int level)
-	{
-		return 10 * (3 * Math.pow(level - 1, 2) + 3 * (level - 1) + 1) - 5 ;
-	}
-	
+
 	private void resetPosition()
 	{
 		setMap(Game.getMaps()[job]) ;
@@ -1492,6 +1489,7 @@ public class Player extends LiveBeing
 			case 4: setPos(new Point(340, 640)) ; break ;
 		}
 	}
+	
 	public void dies()
 	{
 		bag.addGold((int) (-0.2 * bag.getGold())) ;
@@ -1517,70 +1515,30 @@ public class Player extends LiveBeing
 //		{
 //			BA.getStatus().setSilence(0) ;
 //		}
+//		if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & job == 4 & 0 < Spell[8])
+//			{		
+//				int ItemsWithEffectsID = -1 ;
+//				for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
+//				{
+//					if (itemID == Items.ItemsWithEffects[i])
+//					{
+//						ItemsWithEffectsID = i ;
+//					}
+//				}
+//				if (-1 < ItemsWithEffectsID)
+//				{
+//					B.ItemEffectInBattle(getBattleAtt(), pet.getBA(), creature[creatureID].getBA(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
+//				}
+//				//Bag[itemID] += -1 ;
+//				BA.getBattleActions()[0][0] = 0 ;
+//				BA.getBattleActions()[0][2] = 0 ;
+//			}
+//			else
+//			{
+//				ItemEffect(itemID) ;
+//				//Bag[itemID] += -1 ;
+//			}
 	}
-	
-	private void drawRange(DrawingOnPanel DP)
-	{
-		DP.DrawCircle(pos, (int)(2 * range), 2, null, Game.colorPalette[job]) ;
-	}
-//	private void drawEquips(Point pos, int job, int type, Scale scale, double angle, int forgeLevel, DrawingOnPanel DP)
-//	{
-//		Image image = null ;
-//		switch (type)
-//		{
-//			case 0: image = forgeLevel == 10 ? Equip.ShiningSwordImage : Equip.SwordImage ; break ;
-//			case 1: image = forgeLevel == 10 ? Equip.ShiningShieldImage : Equip.ShieldImage ; break ;
-//			case 2: image = forgeLevel == 10 ? Equip.ShiningArmorImage : Equip.ArmorImage ; break ;
-//			case 3: image = Equip.ArrowImage ; break ;
-//		}
-//		
-//		DP.DrawImage(image, pos, angle, scale, Align.center)  ;
-//	}
-	private void drawEquips(Point pos, Equip equip, double angle, Scale scale, DrawingOnPanel DP)
-	{		
-		DP.DrawImage(equip.fullSizeImage(), pos, angle, scale, Align.center) ;
-	}
-	
-	public void drawWeapon(Point pos, Scale scale, DrawingOnPanel DP)
-	{
-		if (equips[0] == null) { return ;}
-		
-		double[] angle = new double[] {-50, 30, 0, 0, 0} ;
-		Point offset = new Point((int) (0.16 * size.width * scale.x), (int) (0.4 * size.height * scale.y)) ;
-		Point eqPos = UtilG.Translate(pos, offset.x, -offset.y) ;
-		
-		drawEquips(eqPos, equips[0], angle[job], new Scale(0.6, 0.6), DP) ;	
-		
-	}
-	public void drawTimeBar(Creature creature, DrawingOnPanel DP)
-	{
-		String relPos = UtilS.RelPos(pos, creature.getPos()) ;
-		DrawTimeBar(relPos, Game.colorPalette[0], DP) ;
-	}
-	
-	public void display(Point pos, Scale scale, Directions direction, boolean showRange, DrawingOnPanel DP)
-	{
-		double angle = DrawingOnPanel.stdAngle ;
-		if (isRiding)
-		{
-			Point ridePos = UtilG.Translate(pos, -RidingImage.getWidth(null) / 2, RidingImage.getHeight(null) / 2) ;
-			DP.DrawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
-		}
-		
-		movingAni.display(direction, pos, angle, new Scale(1,1), DP) ;
-		
-		if (questSkills.get(QuestSkills.dragonAura))
-		{
-			DP.DrawImage(DragonAuraImage, feetPos(), angle, scale, Align.center) ;					
-		}
-		if (showRange)
-		{
-			drawRange(DP) ;
-		}
-
-		BA.getStatus().display(UtilG.Translate(pos, 0, -size.height), dir, DP);
-	}
-
 	
 	@SuppressWarnings("unchecked")
 	public void save(int slot)
@@ -1621,121 +1579,50 @@ public class Player extends LiveBeing
 		
 	}
 	
+	private void drawRange(DrawingOnPanel DP)
+	{
+		DP.DrawCircle(pos, (int)(2 * range), 2, null, Game.colorPalette[job]) ;
+	}
+
+	public void drawWeapon(Point pos, Scale scale, DrawingOnPanel DP)
+	{
+		if (equips[0] == null) { return ;}
+		
+		double[] angle = new double[] {-50, 30, 0, 0, 0} ;
+		Point offset = new Point((int) (0.16 * size.width * scale.x), (int) (0.4 * size.height * scale.y)) ;
+		Point eqPos = UtilG.Translate(pos, offset.x, -offset.y) ;
+		
+		equips[0].display(eqPos, angle[job], new Scale(0.6, 0.6), Align.center, DP) ;
+		
+	}
+	public void drawTimeBar(Creature creature, DrawingOnPanel DP)
+	{
+		String relPos = UtilS.RelPos(pos, creature.getPos()) ;
+		DrawTimeBar(relPos, Game.colorPalette[0], DP) ;
+	}
+	
+	public void display(Point pos, Scale scale, Directions direction, boolean showRange, DrawingOnPanel DP)
+	{
+		double angle = DrawingOnPanel.stdAngle ;
+		if (isRiding)
+		{
+			Point ridePos = UtilG.Translate(pos, -RidingImage.getWidth(null) / 2, RidingImage.getHeight(null) / 2) ;
+			DP.DrawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
+		}
+		
+		movingAni.display(direction, pos, angle, new Scale(1,1), DP) ;
+		
+		if (questSkills.get(QuestSkills.dragonAura))
+		{
+			DP.DrawImage(DragonAuraImage, feetPos(), angle, scale, Align.center) ;					
+		}
+		if (showRange)
+		{
+			drawRange(DP) ;
+		}
+
+		BA.getStatus().display(UtilG.Translate(pos, 0, -size.height), dir, DP);
+	}
+
 	
 }
-
-//public void UseItem(Pet pet, Creatures[] creature, int creatureID, int itemID, Items[] items, Battle B)
-//{
-//	double PotMult = 1 ;
-//	if (job == 3)
-//	{
-//		PotMult += 0.06 * Spell[7] ;
-//	}
-//	if (-1 < itemID)	// if the item is valid
-//	{
-//		//if (0 < Bag[itemID])	// if the player has the item in the bag
-//		//{
-//			if (items[itemID].getType().equals("Potion"))	// potions
-//			{
-//				double HealPower = Items.PotionsHealing[itemID][1] * PotMult ;
-//				
-//				PA.incLife(HealPower * PA.getLife()[1]) ;
-//				PA.incMP(HealPower * PA.getMp()[1]) ;
-//				//Bag[itemID] += -1 ;			
-//			}
-//			else if (items[itemID].getType().equals("Alchemy"))	// alchemy (using herbs heal half of their equivalent pot)
-//			{
-//				double HealPower = Items.PotionsHealing[itemID / 3 - Items.BagIDs[0] / 3 + 1][1] / 2 * PotMult ;
-//				
-//				PA.incLife(HealPower * PA.getLife()[1]) ;
-//				if (0 < pet.getLife()[0])
-//				{
-//					pet.incLife(HealPower * pet.getLife()[1]) ;
-//					pet.incMP(HealPower * pet.getMp()[1]) ;
-//					
-//					// Animal's skill "natural help": gives 20% bonus on the pet attributes. The enhanced attributes depend on the collectible used
-//					if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & job == 3 & (itemID - Items.BagIDs[1] + 1) % 3 < Spell[10])
-//					{
-//						int ItemsWithEffectsID = -1 ;
-//						for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
-//						{
-//							if (itemID == Items.ItemsWithEffects[i])
-//							{
-//								ItemsWithEffectsID = i ;
-//							}
-//						}
-//						if (-1 < ItemsWithEffectsID)
-//						{
-//							B.ItemEffectInBattle(getBattleAtt(), pet.getBA(), creature[creatureID].getBA(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
-//						}
-//					}
-//				}
-//				//Bag[itemID] += -1 ;
-//			}
-//			else if (items[itemID].getType().equals("Pet"))		// pet items
-//			{
-//				pet.incLife(Items.PetItems[itemID - Items.BagIDs[3] + 1][1] * pet.getLife()[1]) ;
-//				pet.incMP(Items.PetItems[itemID - Items.BagIDs[3] + 1][2] * pet.getMp()[1]) ;
-//				pet.incSatiation(Items.PetItems[itemID - Items.BagIDs[3] + 1][3]) ;
-//				//Bag[itemID] += -1 ;
-//			}
-//			else if (items[itemID].getType().equals("Food"))	// food
-//			{
-//				PA.incSatiation(Items.FoodSatiation[itemID - Items.BagIDs[4] + 1][3] * PA.getSatiation()[2]) ;
-//				//Bag[itemID] += -1 ;
-//			}
-//			else if (items[itemID].getType().equals("Arrow"))	// arrows
-//			{
-//				//if (0 < Bag[itemID] & job == 2)
-//				//{
-//					if (itemID == Items.BagIDs[5] | itemID <= Items.BagIDs[5] + 3 & 1 <= Spell[4] | itemID == Items.BagIDs[5] + 4 & 2 <= Spell[4]  | itemID == Items.BagIDs[5] + 5 & 3 <= Spell[4]  | Items.BagIDs[5] + 6 <= itemID & itemID <= Items.BagIDs[5] + 14 & 4 <= Spell[4]  | Items.BagIDs[5] + 14 <= itemID & 5 <= Spell[4])
-//					{
-//						if (0 == Equips[3])
-//						{
-//							Equips[3] = itemID ;	// Equipped arrow
-//							elem[0] = bag.getArrow()[itemID - Items.BagIDs[5]].getElem() ;
-//						}
-//						else
-//						{
-//							Equips[3] = 0 ;	// Unequipped arrow
-//							elem[0] = "n" ;
-//						}
-//					}
-//				//}
-//			}
-//			else if (items[itemID].getType().equals("Equip"))	// equipment
-//			{
-//				if (isEquippable(itemID))
-//				{
-//					Equip(items, itemID) ;
-//				}
-//			}
-//			else if (items[itemID].getType().equals("Item"))	// items
-//			{
-//				if (-1 < creatureID & BA.getBattleActions()[0][2] == 1 & isInBattle() & job == 4 & 0 < Spell[8])
-//				{		
-//					int ItemsWithEffectsID = -1 ;
-//					for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
-//					{
-//						if (itemID == Items.ItemsWithEffects[i])
-//						{
-//							ItemsWithEffectsID = i ;
-//						}
-//					}
-//					if (-1 < ItemsWithEffectsID)
-//					{
-//						B.ItemEffectInBattle(getBattleAtt(), pet.getBA(), creature[creatureID].getBA(), creature[creatureID].getElem(), creature[creatureID].getLife(), items, ItemsWithEffectsID, Items.ItemsTargets[ItemsWithEffectsID], Items.ItemsElement[ItemsWithEffectsID], Items.ItemsEffects[ItemsWithEffectsID], Items.ItemsBuffs[ItemsWithEffectsID], "activate") ;
-//					}
-//					//Bag[itemID] += -1 ;
-//					BA.getBattleActions()[0][0] = 0 ;
-//					BA.getBattleActions()[0][2] = 0 ;
-//				}
-//				else
-//				{
-//					ItemEffect(itemID) ;
-//					//Bag[itemID] += -1 ;
-//				}
-//			}
-//		//}			
-//	}
-//}
