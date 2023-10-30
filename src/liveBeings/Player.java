@@ -1540,16 +1540,16 @@ public class Player extends LiveBeing
 	{		
 		DP.DrawImage(equip.fullSizeImage(), pos, angle, scale, Align.center) ;
 	}
-	public void drawWeapon(Point pos, Scale playerscale, DrawingOnPanel DP)
+	
+	public void drawWeapon(Point pos, Scale scale, DrawingOnPanel DP)
 	{
+		if (equips[0] == null) { return ;}
 		
-		if (equips[0] != null) { return ;}
+		double[] angle = new double[] {-50, 30, 0, 0, 0} ;
+		Point offset = new Point((int) (0.16 * size.width * scale.x), (int) (0.4 * size.height * scale.y)) ;
+		Point eqPos = UtilG.Translate(pos, offset.x, -offset.y) ;
 		
-		Scale scale = new Scale(0.6, 0.6) ;
-		double[] angle = new double[] {50, 30, 0, 0, 0} ;
-		Point eqPos = new Point((int)(pos.x + 0.16 * size.width * playerscale.x), (int)(pos.y - 0.4 * size.height * playerscale.y)) ;
-		
-		drawEquips(eqPos, equips[0], angle[job], scale, DP) ;	
+		drawEquips(eqPos, equips[0], angle[job], new Scale(0.6, 0.6), DP) ;	
 		
 	}
 	public void drawTimeBar(Creature creature, DrawingOnPanel DP)
@@ -1557,6 +1557,7 @@ public class Player extends LiveBeing
 		String relPos = UtilS.RelPos(pos, creature.getPos()) ;
 		DrawTimeBar(relPos, Game.colorPalette[0], DP) ;
 	}
+	
 	public void display(Point pos, Scale scale, Directions direction, boolean showRange, DrawingOnPanel DP)
 	{
 		double angle = DrawingOnPanel.stdAngle ;

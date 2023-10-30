@@ -152,7 +152,7 @@ public class Game extends JPanel
 		screen = new Screen(new Dimension(windowSize.width - 40, windowSize.height), null) ;
 		screen.calcCenter() ;
 		gameLanguage = Languages.portugues ;
-		state = GameStates.opening ;
+		state = GameStates.loading ;
 		colorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette4.png"), "Normal") ;
 		konamiCodeActive = false ;
 		initializeAnimations() ;
@@ -1592,6 +1592,7 @@ public class Game extends JPanel
 			case loading:
 				Opening.displayLoadingScreen(DP) ;
 				initialize() ;
+		    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
 //				initializeCheatMode() ;
 				state = GameStates.running ;
 	
