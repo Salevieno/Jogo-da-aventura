@@ -143,10 +143,10 @@ public class Creature extends LiveBeing
 	public Directions newMoveDirection(Directions originalDir)
 	{
 		
-		Directions newDir = PersonalAttributes.randomDir() ;
+		Directions newDir = randomDir() ;
 		while (Directions.areOpposite(originalDir, newDir))
 		{
-			newDir = PersonalAttributes.randomDir() ;
+			newDir = randomDir() ;
 		}
 		
 		return newDir ;
@@ -156,7 +156,7 @@ public class Creature extends LiveBeing
 	public void updatePos(Directions dir, Point CurrentPos, int step, GameMap map)
 	{
 
-		Point newPos = PA.CalcNewPos(dir, CurrentPos, step) ;
+		Point newPos = calcNewPos(dir, CurrentPos, step) ;
 
 		if (!Game.getScreen().posIsInMap(newPos)) { return ;}
 		if (!map.groundIsWalkable(newPos, null)) { return ;}

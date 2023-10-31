@@ -58,13 +58,13 @@ public abstract class UtilG
 		int number = UtilG.randomIntFromTo(0,  100) ;
 		
 		int cum = 0 ;
-		for (int i = 0 ; i <= chances.size() - 1; i += 1)
+		for (int i = 0 ; i <= chances.size() - 1 ; i += 1)
 		{
 			if (cum <= number & number <= cum + 100 * chances.get(i)) { return i ;}
 			cum += 100 * chances.get(i) ;
 		}
 		
-		return chances.size() ;
+		return chances.size() - 1 ;
 	}
 	
 	public static boolean isNumeric(String str) { return str.matches("-?\\d+(\\.\\d+)?") ;}  // match a number with optional '-' and decimal.

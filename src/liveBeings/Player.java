@@ -126,6 +126,7 @@ public class Player extends LiveBeing
     public static final Image DragonAuraImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "DragonAura.png") ;
     public static final Image RidingImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Tiger.png") ;
 	public static final Image CoinIcon = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "CoinIcon.png") ;    
+	public static final Image DiggingGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Digging.gif") ;   
 	public static final Image MagicBlissGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "MagicBliss.gif") ;
     public static final Gif FishingGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Fishing.gif"), 220, false, false) ;
     
@@ -612,9 +613,10 @@ public class Player extends LiveBeing
 		
 	}
 
-	private void dig()
+	private void dig(DrawingOnPanel DP)
 	{		
 		digCounter.inc() ;
+		DP.DrawImage(DiggingGif, pos, Align.center) ;
 		
 		if (!digCounter.finished()) { return ;}
 		
@@ -625,10 +627,6 @@ public class Player extends LiveBeing
 		
 		List<Item> listItems = new ArrayList<Item>(map.getDiggingItems().keySet()) ;
 		List<Double> listChances = new ArrayList<Double>(map.getDiggingItems().values()) ;
-		
-//		System.out.println(rewards);
-//		System.out.println(listItems);
-//		System.out.println(listChances);
 
 		int itemID = UtilG.randomFromChanceList(listChances) ;
 		bag.add(listItems.get(itemID), 1) ;
@@ -638,7 +636,6 @@ public class Player extends LiveBeing
 	
 	public void tent(DrawingOnPanel DP)
 	{
-		// TODO how does the tent work? should it be on the sidebar?
 		TentGif.play(pos, Align.bottomCenter, DP) ;
 		tentCounter.inc() ;
 		if (tentCounter.finished())
@@ -713,7 +710,7 @@ public class Player extends LiveBeing
 	{
 		switch (state)
 		{
-			case digging: dig() ; return ;
+			case digging: dig(DP) ; return ;
 			case sleeping: tent(DP) ; return ;
 			default: return ;
 		}
@@ -1595,6 +1592,7 @@ public class Player extends LiveBeing
 		equips[0].display(eqPos, angle[job], new Scale(0.6, 0.6), Align.center, DP) ;
 		
 	}
+	
 	public void drawTimeBar(Creature creature, DrawingOnPanel DP)
 	{
 		String relPos = UtilS.RelPos(pos, creature.getPos()) ;

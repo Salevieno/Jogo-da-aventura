@@ -147,41 +147,8 @@ public abstract class LiveBeing
 
 	public AttributesWindow getAttWindow() {return attWindow ;}
 	public MovingAnimations getMovingAni() {return movingAni ;}
-
-	public void displayState(DrawingOnPanel DP)
-	{
-		Point pos = new Point(540, 100) ;
-		Dimension size = new Dimension(60, 20) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String stateText = 0 < combo.size() ? state.toString() : "" ;
-		
-		DP.DrawRoundRect(pos, Align.center, size, 1, Game.colorPalette[21], Game.colorPalette[21], true);
-		DP.DrawText(pos, Align.center, 0, stateText, font, Game.colorPalette[0]) ;
-	}
-
-	public void displayPowerBar(Point pos, DrawingOnPanel DP)
-	{
-		int maxPower = 1000 ;
-		Color color = Game.colorPalette[6] ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
-		Dimension barSize = new Dimension(21, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
-		
-		DP.DrawRect(pos, Align.bottomCenter, barSize, 0, color, null) ;
-		DP.DrawImage(powerBarImage, pos, Align.bottomCenter) ;
-		DP.DrawText(UtilG.Translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
-	}
 	
-	public Point calcNewPos()
-	{
-		switch (dir)
-		{
-			case up: return new Point(pos.x, pos.y - step) ;
-			case down: return new Point(pos.x, pos.y + step) ;
-			case left: return new Point(pos.x - step, pos.y) ;
-			case right: return new Point(pos.x + step, pos.y) ;	
-			default: return new Point(pos) ;
-		}
-	}
+	public static Directions randomDir() { return Directions.getDir(UtilG.randomIntFromTo(0, 3)) ;}
 	
 	public static GameMap calcNewMap(Point pos, Directions dir, GameMap currentMap)
 	{
@@ -252,6 +219,56 @@ public abstract class LiveBeing
 			
 			default: return null ;
 		}
+	}
+
+	public void displayState(DrawingOnPanel DP)
+	{
+		Point pos = new Point(540, 100) ;
+		Dimension size = new Dimension(60, 20) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		String stateText = 0 < combo.size() ? state.toString() : "" ;
+		
+		DP.DrawRoundRect(pos, Align.center, size, 1, Game.colorPalette[21], Game.colorPalette[21], true);
+		DP.DrawText(pos, Align.center, 0, stateText, font, Game.colorPalette[0]) ;
+	}
+
+	public void displayPowerBar(Point pos, DrawingOnPanel DP)
+	{
+		int maxPower = 1000 ;
+		Color color = Game.colorPalette[6] ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
+		Dimension barSize = new Dimension(21, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
+		
+		DP.DrawRect(pos, Align.bottomCenter, barSize, 0, color, null) ;
+		DP.DrawImage(powerBarImage, pos, Align.bottomCenter) ;
+		DP.DrawText(UtilG.Translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
+	}
+	
+	public Point calcNewPos()
+	{
+		switch (dir)
+		{
+			case up: return new Point(pos.x, pos.y - step) ;
+			case down: return new Point(pos.x, pos.y + step) ;
+			case left: return new Point(pos.x - step, pos.y) ;
+			case right: return new Point(pos.x + step, pos.y) ;	
+			default: return new Point(pos) ;
+		}
+	}
+
+	public Point calcNewPos(Directions dir, Point currentPos, int step)
+	{
+		Point newPos = new Point(0, 0) ;
+		step = 1 ;	// TODO step = 1
+		switch (dir)
+		{
+			case up: newPos = new Point(currentPos.x, currentPos.y - step) ; break ;
+			case down: newPos = new Point(currentPos.x, currentPos.y + step) ; break ;
+			case left: newPos = new Point(currentPos.x - step, currentPos.y) ; break ;
+			case right: newPos = new Point(currentPos.x + step, currentPos.y) ; break ;
+		}
+		
+		return newPos ;
 	}
 	
 	protected void moveToNewMap(Point pos, Directions dir, GameMap currentMap, int step)
@@ -384,7 +401,15 @@ public abstract class LiveBeing
 		return elem[1].equals(elem[2]) & elem[2].equals(elem[3]) ;
 	}
 	public boolean hasActed() {return currentAction != null ;}
-	public boolean actionIsSpell() {return hasActed() ? Player.SpellKeys.contains(currentAction) : false ;}	// TODO add condição se possui spell
+	public boolean actionIsSpell()
+	{
+		if (!hasActed()) { return false ;}
+		
+		if (!Player.SpellKeys.contains(currentAction)) { return false ;}
+		
+		Spell spell = spells.get(SpellKeys.indexOf(currentAction)) ;
+		return 1 <= spell.getLevel() ;
+	}
 	public boolean actionIsPhysicalAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
 	public boolean actionIsDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}
 	public boolean actionIsArrowAtk()
@@ -426,6 +451,10 @@ public abstract class LiveBeing
     	return relPos ;
     	
 	}
+	
+
+	
+	
 	
 	public Elements[] atkElems()
 	{
@@ -612,14 +641,14 @@ public abstract class LiveBeing
 	public void TakeBloodAndPoisonDamage(double totalBloodAtk, double totalPoisonAtk)
 	{
 		int BloodDamage = 0, PoisonDamage = 0 ;
-		double BloodMult = 1, PoisonMult = 1 ;
-		if (job == 4) // TODO isso vale tbm para criaturas e pet
+		double bloodMult = 1, PoisonMult = 1 ;
+		if (this instanceof Player & job == 4)
 		{
 			PoisonMult += -0.1*spells.get(13).getLevel() ;
 		}
 		if (0 < BA.getStatus().getBlood())
 		{
-			BloodDamage = (int) Math.max(totalBloodAtk * BloodMult - BA.getBlood().TotalDef(), 0) ;
+			BloodDamage = (int) Math.max(totalBloodAtk * bloodMult - BA.getBlood().TotalDef(), 0) ;
 		}
 		if (0 < BA.getStatus().getPoison())
 		{

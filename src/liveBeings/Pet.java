@@ -178,10 +178,10 @@ public class Pet extends LiveBeing
 
 	public Directions newMoveDirection(Directions originalDir)
 	{
-		Directions newDir = PersonalAttributes.randomDir() ;
+		Directions newDir = randomDir() ;
 		while (Directions.areOpposite(originalDir, newDir))
 		{
-			newDir = PersonalAttributes.randomDir() ;
+			newDir = randomDir() ;
 		}
 		return newDir ;
 	}
@@ -198,9 +198,9 @@ public class Pet extends LiveBeing
 			
 			if (UtilG.chance(0.2))
 			{
-				dir = PersonalAttributes.randomDir() ;
+				dir = randomDir() ;
 			}
-			return PA.CalcNewPos(dir, pos, step) ;
+			return calcNewPos(dir, pos, step) ;
 		}
 		else
 		{

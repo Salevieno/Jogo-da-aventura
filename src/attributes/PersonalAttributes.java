@@ -54,28 +54,6 @@ public class PersonalAttributes
 		return 1 + (int) ((totalExp - currentExp) / (opponentExp * expMult)) ;
 	}
 	
-	public static Directions randomDir()
-	{
-		// TODO what is directions doing here?
-		int dir = UtilG.randomIntFromTo(0, 3) ;
-
-		return Directions.getDir(dir) ;
-	}
-	public Point CalcNewPos(Directions dir, Point currentPos, int step)
-	{
-		Point newPos = new Point(0, 0) ;
-		step = 1 ;
-		switch (dir)
-		{
-			case up: newPos = new Point(currentPos.x, currentPos.y - step) ; break ;
-			case down: newPos = new Point(currentPos.x, currentPos.y + step) ; break ;
-			case left: newPos = new Point(currentPos.x - step, currentPos.y) ; break ;
-			case right: newPos = new Point(currentPos.x + step, currentPos.y) ; break ;
-		}
-		
-		return newPos ;
-	}
-	
 	@SuppressWarnings("unchecked")
 	public JSONObject toJsonObject()
 	{
