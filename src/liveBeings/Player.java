@@ -26,6 +26,7 @@ import components.Building;
 import components.NPCs;
 import components.Quest;
 import components.QuestSkills;
+import components.SpellTypes;
 import graphics.Animation;
 import graphics.DrawingOnPanel;
 import graphics.Gif;
@@ -547,7 +548,7 @@ public class Player extends LiveBeing
 	{
 		if (isInside(GroundTypes.lava) & !elem[4].equals(Elements.fire))
 		{
-			PA.getLife().incCurrentValue(-5) ;
+			PA.getLife().decTotalValue(5) ;
 		}
 		if (isTouching(GroundTypes.water))
 		{
@@ -957,7 +958,7 @@ public class Player extends LiveBeing
 
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
-		
+		// TODO move useSpell para Spell
 		if (spell.getLevel() <= 0) { return null ;}
 		if (!spell.isReady()) { return null ;}
 		if (!hasEnoughMP(spell)) { return null ;}
@@ -1056,7 +1057,6 @@ public class Player extends LiveBeing
 			case 144:  return ; // TODO aumenta em 20% a chance de obter itens raros na escavação
 			case 146:  return ; // TODO permite o uso de itens na batalha
 			case 147:  return ; // TODO permite a fabricação de poções venenosas
-			case 149:  return ; // TODO chance de até 100% de contra-atacar
 			case 151: BA.getPoison().incBasicDef(1); return ;
 			case 152: PA.getLife().incMaxValue(10) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(6) ; BA.getPhyDef().incBaseValue(6) ; BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(10) ; return ;
 			case 155: return ; // TODO chance de 30% de atacar sem gastar o turno
@@ -1128,19 +1128,34 @@ public class Player extends LiveBeing
 		
 	}
 
-	public void useAutoSpells()
+	public void useAutoSpells(boolean activate)
 	{
+		for (Spell spell : spells)
+		{
+			if (!spell.getType().equals(SpellTypes.auto)) { continue ;}
+			if (spell.getLevel() <= 0) { continue ;}
+			if (spell.isActive() & activate) { continue ;}
+			if (!spell.isActive() & !activate) { continue ;}
+			
+			switch (spell.getId())
+			{
+				case 116:
+					if (!(PA.getLife().getRate() <= 0.2)) { return ;}
+					spell.activate();
+					spell.applyBuffs(activate, this) ;
+					spell.applyNerfs(activate, this) ;
 
-//		if (effect != null)
-//		{
-//			if (player.getJob() == 4 & Math.random() < 0.2*player.getSpells().get(11).getLevel() & effect.equals(AttackEffects.crit))	// Surprise attack
-//			{
-//				creature.getLife().incCurrentValue((int) -Math.min(0.5 * damage, 2*player.getPhyAtk().getBaseValue())); ;
-//				// needs to show the atk animation
-//				//SkillBuffIsActive[11][0] = true ;
-//			}
-//			player.updatedefensiveStats(damage, effect, creature.actionIsSpell(), creature) ;
-//		}
+					return ;
+				
+				case 149:
+					if (!UtilG.chance(0.2 * spell.getLevel())) { return ;}
+					// TODO surprise atk
+					return ;
+					
+				default: return ;
+			}
+		}
+
 	}
 	
 	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
@@ -1175,7 +1190,7 @@ public class Player extends LiveBeing
 		Elements[] DefElem = receiver.defElems() ;
 		double receiverElemMod = 1 ;
 
-		PA.getMp().incCurrentValue(-spell.getMpCost()) ;
+		PA.getMp().decTotalValue(spell.getMpCost()) ;
 		spell.activate() ;
 		
 		switch (job)
@@ -1489,6 +1504,7 @@ public class Player extends LiveBeing
 	
 	public void dies()
 	{
+		useAutoSpells(false) ;
 		bag.addGold((int) (-0.2 * bag.getGold())) ;
 		PA.getLife().setToMaximum(); ;
 		PA.getMp().setToMaximum(); ;

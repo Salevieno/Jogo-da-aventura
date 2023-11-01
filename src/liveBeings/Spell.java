@@ -113,8 +113,8 @@ public class Spell
 	public boolean isReady() { return cooldownCounter.finished() ;}
 	public boolean isActive() { return isActive ;}
 	public boolean isMaxed() { return level == maxLevel ;}
-	public void activate() {isActive = true ; System.out.println("activate spell " + name);}
-	public void deactivate() {isActive = false ; System.out.println("deactivate spell " + name);}
+	public void activate() {isActive = true ;}
+	public void deactivate() {isActive = false ;}
 
 	public static void saveImages()
 	{
@@ -158,7 +158,7 @@ public class Spell
 	
 	public void applyBuff(int mult, LiveBeing receiver, Buff buff)
 	{
-		if (receiver == null) { System.out.println("Tentando usar magia em ninguém!") ; return ;}
+		if (receiver == null) { System.out.println("Tentando usar buffs de magia em ninguém!") ; return ;}
 		
 		Map<Attributes, Double> percIncrease = buff.getPercentIncrease() ;
 		Map<Attributes, Double> valueIncrease = buff.getValueIncrease() ;
@@ -181,9 +181,9 @@ public class Spell
 			BasicBattleAttribute battleAttribute = receiver.getBA().mapAttributes(att) ;
 			if (battleAttribute != null)
 			{
-				double increment = battleAttribute.getBaseValue() * 10 * percIncrease.get(att) + valueIncrease.get(att) ;
+				double increment = battleAttribute.getBaseValue() * percIncrease.get(att) + valueIncrease.get(att) ;
 				battleAttribute.incBonus(Math.round(increment * level * mult));
-				
+				System.out.println(increment);
 				continue ;
 			}
 			
@@ -199,11 +199,13 @@ public class Spell
 	public void applyBuffs(boolean activate, LiveBeing receiver)
 	{
 		int mult = activate ? 1 : -1 ;
-
+		System.out.println("buff mult " + mult);
+		System.out.println("BA = " + receiver.getBA());
 		for (Buff buff : buffs)
 		{
 			applyBuff(mult, receiver, buff) ;
 		}
+		System.out.println("new BA = " + receiver.getBA());
 	}
 
 	public void applyNerfs(boolean activate, LiveBeing receiver)

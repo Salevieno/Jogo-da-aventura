@@ -1,8 +1,11 @@
 package main ;
 
 import java.awt.Point;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sound.sampled.Clip;
 
 import graphics.Animation;
 import graphics.DrawingOnPanel;
@@ -25,6 +28,8 @@ public class Battle
 	protected static List<Elements> ElemID ;
 	protected static double[][] ElemMult ;
 	
+	public static final Clip hitSound ;
+	
 
 	static
 	{
@@ -41,6 +46,7 @@ public class Battle
 			}				
 		}
 		randomAmp = (double)0.1 ;
+		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
 	}
 	
 	public Battle()
@@ -266,8 +272,9 @@ public class Battle
 		}*/
 	}
 	
-	public static boolean battleIsOver(Player player, Pet pet, Creature creature)
+	public static boolean isOver(Player player, Pet pet, Creature creature)
 	{
+		// TODO add pet life condition to finish battle
 //		if (pet != null)
 //		{
 //			if (creature.isAlive() & (player.isAlive() | pet.isAlive())) { return false ;}
@@ -276,7 +283,6 @@ public class Battle
 //		{
 //			if (creature.isAlive() & player.isAlive()) { return false ;}
 //		}
-		
 		if (creature.isAlive() & player.isAlive()) { return false ;}
 		
 		return true ;
@@ -362,7 +368,7 @@ public class Battle
 		
 		if (atkResult.getEffect().equals(AttackEffects.hit) | atkResult.getEffect().equals(AttackEffects.crit))
 		{
-			receiver.getPA().getLife().incCurrentValue(-atkResult.getDamage()) ;
+			receiver.getPA().getLife().decTotalValue(atkResult.getDamage()) ;
 			int[] inflictedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
 			receiver.getBA().getStatus().receiveStatus(inflictedStatus) ;
 		}
@@ -394,7 +400,7 @@ public class Battle
 		
 		// TODO criatura tem que tomar blood and poison dano do player e do pet
 		attacker.DrawTimeBar("Left", Game.colorPalette[2], DP) ;
-		attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
+//		attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
 		if (attacker.canAtk() & attacker.isInRange(receiver.getPos()))
 		{
 			if (attacker instanceof Creature)
@@ -413,12 +419,13 @@ public class Battle
 				receiver.getDisplayDamage().reset() ;
 			}
 
-			// TODO sound effects
-//			if (attacker.getSettings().getSoundEffectsAreOn()) { Music.PlayMusic(hitSound) ;}
+			if (Game.getPlayer().getSettings().getSoundEffectsAreOn())
+			{
+				Music.PlayMusic(hitSound) ;
+			}
 
 
-			// TODO automatically activated spells
-			attacker.useAutoSpells();
+			attacker.useAutoSpells(true) ;
 
 			
 			if (atkResults.getAtkType() != null)
@@ -458,7 +465,7 @@ public class Battle
 		if (pet != null) { checkTurn(pet, creature, damageStyle, ani.get(1), DP) ;}
 		checkTurn(creature, creatureTarget, damageStyle, ani.get(2), DP) ;
 		
-		if (!battleIsOver(player, pet, creature)) { return ;}
+		if (!isOver(player, pet, creature)) { return ;}
 		
 		FinishBattle(player, pet, creature) ;
 	}
@@ -478,21 +485,7 @@ public class Battle
 		{
 			spell.getEffectCounter().reset() ;
 		}
-		
-		// deactivate survivor's instinct (animal's spell)
-		if (player.getJob() == 3)	// Survivor's instinct
-		{
-			Spell survivorInstinct = player.getSpells().get(12) ;
-			if (0 < survivorInstinct.getLevel())
-			{
-				for (int i = 0 ; i <= survivorInstinct.getBuffs().size() - 1 ; ++i)
-				{
-					// TODO survivor instinct
-					//BuffsAndNerfs(player, pet, creature, survivorInstinct.getBuffs(), survivorInstinct.getLevel(), i, false, "Player", "deactivate") ;
-				}
-				//SkillBuffIsActive[12][0] = false ;
-			}
-		}
+	
 		
 		if (!creature.isAlive())
 		{
@@ -506,19 +499,18 @@ public class Battle
 			{
 				if (pet.isAlive())
 				{
-					//pet.Win(creature) ;
+					pet.win(creature) ;
 				}
-				pet.resetBattleActions() ;
 			}
-			creature.dies() ;
+//			creature.dies() ;
 			
 			return ;
 		}
 		
 		creature.getPA().getLife().setToMaximum() ;
 		creature.getPA().getMp().setToMaximum() ;
-		player.dies() ;
-		if (pet != null) {pet.dies() ; pet.setPos(player.getPos());}
+//		player.dies() ;
+//		if (pet != null) {pet.dies() ; pet.setPos(player.getPos());}
 		creature.setFollow(false) ;
 	}
 

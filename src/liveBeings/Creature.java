@@ -253,7 +253,7 @@ public class Creature extends LiveBeing
 		
 	}
 	
-	public void useAutoSpells()
+	public void useAutoSpells(boolean activate)
 	{
 		
 	}

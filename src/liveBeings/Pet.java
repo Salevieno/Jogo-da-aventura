@@ -271,7 +271,9 @@ public class Pet extends LiveBeing
 	public void dies()
 	{
 		// TODO pet dies
-//		PA.getLife().incCurrentValue(-PA.getLife().getCurrentValue()) ;
+
+		resetBattleActions() ;
+		setPos(Game.getPlayer().getPos()) ;
 	}
 	
 	public void applyPassiveSpell(Spell spell)
@@ -279,7 +281,7 @@ public class Pet extends LiveBeing
 		
 	}
 	
-	public void useAutoSpells()
+	public void useAutoSpells(boolean activate)
 	{
 		
 	}
@@ -318,22 +320,7 @@ public class Pet extends LiveBeing
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 	}
 	
-	public void TakeBloodAndPoisonDamage(Creature creature)
-	{
-		int BloodDamage = 0 ;
-		int PoisonDamage = 0 ;
-		if (0 < BA.getStatus().getBlood())
-		{
-			BloodDamage = (int) Math.max(creature.getBA().getBlood().TotalAtk() - BA.getBlood().TotalDef(), 0) ;
-		}
-		if (0 < BA.getStatus().getPoison())
-		{
-			PoisonDamage = (int) Math.max(creature.getBA().getPoison().TotalAtk() - BA.getPoison().TotalDef(), 0) ;
-		}
-		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage) ;
-	}
-	
-	public void Win(Creature creature)
+	public void win(Creature creature)
 	{
 		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())); ;
 	}
@@ -376,83 +363,8 @@ public class Pet extends LiveBeing
 		return Increase ;
 	}
 
-//	public void Save(BufferedWriter bW)
-//	{
-//		try
-//		{
-//			bW.write("\nPet name: \n" + getName()) ;
-//			bW.write("\nPet size: \n" + getSize()) ;
-//			bW.write("\nPet color: \n" + getColor()) ;
-//			bW.write("\nPet job: \n" + getJob()) ;
-//			bW.write("\nPet coords: \n" + getPos()) ;
-//			//bW.write("\nPet skill: \n" + Arrays.toString(getSpells())) ;
-//			bW.write("\nPet skillPoints: \n" + getSpellPoints()) ;
-//			//bW.write("\nPet life: \n" + Arrays.toString(getLife())) ;
-//			//bW.write("\nPet mp: \n" + Arrays.toString(getMp())) ;
-//			bW.write("\nPet range: \n" + getRange()) ;
-//			//bW.write("\nPet phyAtk: \n" + Arrays.toString(getPhyAtk())) ;
-//			//bW.write("\nPet magAtk: \n" + Arrays.toString(getMagAtk())) ;
-//			//bW.write("\nPet phyDef: \n" + Arrays.toString(getPhyDef())) ;
-//			//bW.write("\nPet magDef: \n" + Arrays.toString(getMagDef())) ;
-//			//bW.write("\nPet dex: \n" + Arrays.toString(getDex())) ;
-//			//bW.write("\nPet agi: \n" + Arrays.toString(getAgi())) ;
-//			bW.write("\nPet crit: \n" + Arrays.toString(getCrit())) ;
-////			bW.write("\nPet stun: \n" + Arrays.toString(getStun())) ;
-////			bW.write("\nPet block: \n" + Arrays.toString(getBlock())) ;
-////			bW.write("\nPet blood: \n" + Arrays.toString(getBlood())) ;
-////			bW.write("\nPet poison: \n" + Arrays.toString(getPoison())) ;
-////			bW.write("\nPet silence: \n" + Arrays.toString(getSilence())) ;
-//			bW.write("\nPet elem: \n" + Arrays.toString(getElem())) ;
-//			bW.write("\nPet elem mult: \n" + Arrays.toString(getElemMult())) ;
-//			bW.write("\nPet level: \n" + getLevel()) ;
-//			bW.write("\nPet step: \n" + getStep()) ;
-//			//bW.write("\nPet satiation: \n" + Arrays.toString(getSatiation())) ;
-//			//bW.write("\nPet exp: \n" + Arrays.toString(getExp())) ;
-////			bW.write("\nPet status: \n" + Arrays.toString(getBA().getSpecialStatus())) ; 
-//			//bW.write("\nPet actions: \n" + Arrays.deepToString(getActions())) ; 
-//			//bW.write("\nPet battle actions: \n" + Arrays.deepToString(getBA().getBattleActions())) ; 
-////			bW.write("\nPet status counter: \n" + Arrays.toString(getStatusCounter())) ;
-//		}
-//		catch (IOException e)
-//		{
-//			System.out.println("Error writing the pet attributes to file") ;
-//		}
-//	}
 	public void Load(String[][] ReadFile)
 	{
-		/*int NumberOfPlayerAttributes = 49 ;
-		PA.setName(ReadFile[2*(NumberOfPlayerAttributes + 1)][0]) ;
-		PA.setSize((Size) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 2)]), "String", "int")) ;
-		color = UtilG.toColor(ReadFile[2*(NumberOfPlayerAttributes + 3)])[0] ;
-		Job = Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 4)][0]) ;
-		setPos((Point) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 5)]), "String", "int")) ;
-		spell = (Spells[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 6)]), "String", "int") ;
-		spellPoints = Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 7)][0]) ;
-		PA.setLife((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 8)]), "String", "double")) ;
-		PA.setMp((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 9)]), "String", "double")) ;
-		PA.setRange(Double.parseDouble(ReadFile[2*(NumberOfPlayerAttributes + 10)][0])) ;
-		BA.setPhyAtk((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 11)]), "String", "double")) ;
-		BA.setMagAtk((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 12)]), "String", "double")) ;
-		BA.setPhyDef((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 13)]), "String", "double")) ;
-		BA.setMagDef((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 14)]), "String", "double")) ;
-		BA.setDex((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 15)]), "String", "double")) ;
-		BA.setAgi((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 16)]), "String", "double")) ;
-		BA.setCrit((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 17)]), "String", "double")) ;
-		BA.setStun((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 18)]), "String", "double")) ;
-		BA.setBlock((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 19)]), "String", "double")) ;
-		BA.setBlood((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 20)]), "String", "double")) ;
-		BA.setPoison((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 21)]), "String", "double")) ;
-		BA.setSilence((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 22)]), "String", "double")) ;
-		PA.Elem = (String[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 23)]), "String", "String") ;
-		ElemMult = (double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 24)]), "String", "double") ;
-		PA.setLevel(Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 25)][0])) ;
-		PA.setStep(Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 26)][0])) ;
-		PA.setSatiation((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 27)]), "String", "double")) ;
-		PA.setExp((double[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 28)]), "String", "double")) ;
-		BA.setSpecialStatus((int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 29)]), "String", "int")) ;
-		PA.Actions = (int[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 30)], 3), "String", "int") ;
-		BA.setBattleActions((int[][]) UtilG.ConvertDoubleArray(UtilG.deepToString(ReadFile[2*(NumberOfPlayerAttributes + 31)], 3), "String", "int")) ;
-		StatusCounter = (int[]) UtilG.ConvertArray(UtilG.toString(ReadFile[2*(NumberOfPlayerAttributes + 32)]), "String", "int") ;*/
 	}
 	
 	

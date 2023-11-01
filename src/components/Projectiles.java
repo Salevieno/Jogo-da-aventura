@@ -82,7 +82,7 @@ public class Projectiles
 		int hit = collidedwith(player, creature, pet) ;
 		if (hit == -1 & type == 1)
 		{
-			player.getLife().incCurrentValue(-damage); ;
+			player.getLife().decTotalValue(damage); ;
 			if (!player.isAlive())
 			{
 				player.dies() ;
@@ -90,7 +90,7 @@ public class Projectiles
 		}
 		else if (hit == -2 & type == 1)
 		{
-			pet.getLife().incCurrentValue(-damage); ;
+			pet.getLife().decTotalValue(damage); ;
 			if (pet.getLife().getCurrentValue() < 0)
 			{
 				pet.dies() ;
@@ -99,7 +99,7 @@ public class Projectiles
 		else if (-1 < hit & type == 0)
 		{
 			Creature creatureHit = creature.get(hit) ;
-			creatureHit.getLife().incCurrentValue(-damage); ;
+			creatureHit.getLife().decTotalValue(damage); ;
 			if (creatureHit.getLife().getCurrentValue() < 0)
 			{
 				creatureHit.dies() ;

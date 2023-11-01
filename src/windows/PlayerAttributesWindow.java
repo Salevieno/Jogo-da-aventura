@@ -189,8 +189,8 @@ public class PlayerAttributesWindow extends AttributesWindow
 		// attributes
 		Point lifePos = UtilG.Translate(windowPos, 22, 39) ;
 		Point mpPos = UtilG.Translate(windowPos, 22, 58) ;
-		String lifeText = attText[1] + ": " + UtilG.Round(player.getPA().getLife().getCurrentValue(), 1) ;
-		String mpText = attText[2] + ": " + UtilG.Round(player.getPA().getMp().getCurrentValue(), 1) ;
+		String lifeText = attText[1] + ": " + UtilG.Round(player.getPA().getLife().getTotalValue(), 1) ;
+		String mpText = attText[2] + ": " + UtilG.Round(player.getPA().getMp().getTotalValue(), 1) ;
 		DP.DrawText(lifePos, Align.centerLeft, angle, lifeText, font, colorPalette[7]) ;
 		DP.DrawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[21]) ;
 		

@@ -163,7 +163,7 @@ public class Game extends JPanel
 	public Game()
 	{
 		DP = new DrawingOnPanel() ;
-		player = new Player("", "", 0) ;
+		player = new Player("", "", 3) ;
 
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -1439,19 +1439,11 @@ public class Game extends JPanel
 //			player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
 //		}
 
-//    	System.out.println("Game npcs: " + Game.getAllNPCs().size()) ;
-//    	int i = 0 ;
-//    	for (NPCs npc : Game.getAllNPCs())
-//    	{
-//    		if (npc.getType().getJob().equals(NPCJobs.questExp) | npc.getType().getJob().equals(NPCJobs.questItem))
-//    		{
-//    			i++ ;
-//    			System.out.println(npc + " " + npc.getID()) ;
-//    		}
-//    	}
-//    	System.out.println(i + " npc quests") ;
-//    	Game.getAllNPCs().forEach(System.out::println) ;
     	player.getBag().addGold(30000) ;
+    	for (Spell spell : player.getSpells())
+    	{
+    		spell.incLevel(1) ;
+    	}
 //
 //    	
 //    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
@@ -1466,50 +1458,28 @@ public class Game extends JPanel
 //    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
     	player.getElem()[4] = Elements.water ;
 //
-//    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
-//    	{
-//    		player.getExp().incCurrentValue(player.getExp().getMaxValue()) ;
-//			player.levelUp(null) ; // Game.getAnimations()[4]
-//    	}
+    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
+    	{
+    		player.getExp().incCurrentValue(player.getExp().getMaxValue()) ;
+			player.levelUp(null) ; // Game.getAnimations()[4]
+    	}
 //    	for (int i = 0 ; i <= 30000 - 1 ; i += 1)
 //    	{
 //    		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0)) ;
 //    		player.train(new AtkResults(AtkTypes.magical, AttackEffects.hit, 0)) ;
 //    		player.train(new AtkResults(AtkTypes.defense, AttackEffects.hit, 0)) ;
 //    	}
-//    	player.getBag().menuUp() ;
-//    	player.getBag().menuUp() ;
-//    	player.getBag().menuUp() ;
-//    	player.getBag().menuUp() ;
-//    	player.getBag().menuUp() ;
-//    	player.getBag().menuUp() ;
-//    	
+////    	
 //    	for (int i = 0 ; i <= 3 - 1 ; i += 1)
 //    	{
 //        	((Equip) player.getBag().getMenuListItems().get(i + 200 * player.getJob())).use(player) ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
-//        	player.getEquips()[i].incForgeLevel() ;
+//        	for (int j = 0 ; j <= 10 - 1 ; j += 1)
+//        	{
+//            	player.getEquips()[i].incForgeLevel() ;
+//        	}
 //    	}
 
 //    	player.getExp().incCurrentValue(5000) ;
-
-//    	player.getMap().addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
-
-    	//				for (int i = 0 ; i <= 10000 - 1 ; i += 1)
-    	//				{
-    	//					Genetics genes = new Genetics() ;
-    	////					genes.randomizeGenes() ;
-    	////					genes.setGenes(Genetics.normalize(genes.getGenes())) ;
-    	//					System.out.println(genes.getGenes()) ;
-    	//				}
     	
 	}
 	
@@ -1596,7 +1566,7 @@ public class Game extends JPanel
 				Opening.displayLoadingScreen(DP) ;
 				initialize() ;
 		    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
-//				initializeCheatMode() ;
+				initializeCheatMode() ;
 				state = GameStates.running ;
 	
 				shouldRepaint = true ;	

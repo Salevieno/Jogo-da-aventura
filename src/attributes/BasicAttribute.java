@@ -20,10 +20,24 @@ public class BasicAttribute extends LiveBeingAttribute
 	public int getMaxValue() { return maxValue ;}
 	public double getMultiplier() { return multiplier ;}
 	public int getTotalValue() { return (int) (currentValue + bonus) ;}
-	public double getRate() { return currentValue / (double) maxValue ;}
-	public boolean isMaxed() { return currentValue == maxValue ;}
+	public double getRate() { return getTotalValue() / (double) maxValue ;}
+	public boolean isMaxed() { return getTotalValue() == maxValue ;}
 
-	public void incCurrentValue(int amount) {currentValue = Math.max(0, Math.min(currentValue + amount, maxValue)) ;}
+	public void incCurrentValue(int amount)
+	{
+		currentValue = Math.max(0, Math.min(currentValue + amount, maxValue)) ;
+	}
+	public void decTotalValue(int amount)
+	{
+		if (amount <= 0) { System.out.println("tentando usar decTotalValue com valor negativo") ; return ;}
+		
+		if (Math.abs(amount) <= bonus) { bonus += -amount ; return ;}
+		
+		currentValue = (int) Math.max(currentValue - Math.abs(amount - bonus), 0) ;
+		bonus = 0 ;
+		
+		return ;
+	}
 	public void incMaxValue(int amount) {maxValue += amount ;}
 	public void setToMaximum() {currentValue = maxValue ;}
 
@@ -51,8 +65,8 @@ public class BasicAttribute extends LiveBeingAttribute
 	@Override
 	public String toString()
 	{
-//		return "BasicAttribute [currentValue=" + currentValue + ", bonus=" + bonus + ", maxValue=" + maxValue + ", multiplier=" + multiplier+ "]" ;
-		return " bonus=" + bonus ;
+		return "BasicAttribute [currentValue=" + currentValue + ", bonus=" + bonus + ", maxValue=" + maxValue + " totalValue=" + getTotalValue() + ", multiplier=" + multiplier+ "]" ;
+//		return " bonus=" + bonus ;
 	}
 	
 }

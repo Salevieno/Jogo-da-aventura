@@ -1,11 +1,6 @@
 package attributes ;
 
-import java.awt.Point;
-
 import org.json.simple.JSONObject;
-
-import utilities.Directions;
-import utilities.UtilG;
 
 public class PersonalAttributes
 {

@@ -336,7 +336,7 @@ public abstract class LiveBeing
 			}
 		}
 		
-		if (PA.getLife().getCurrentValue() <= 0) { dies() ;}
+		if (!isAlive()) { dies() ;}
 	}
 	public void incrementBattleActionCounters() {battleActionCounter.inc() ; displayDamage.inc() ;}
 	public void resetBattleActions() {battleActionCounter.reset() ; }
@@ -391,7 +391,7 @@ public abstract class LiveBeing
 		return activeSpells ;
 	}
 	
-	public boolean isAlive() {return 0 < PA.getLife().getCurrentValue() ;}
+	public boolean isAlive() {return 0 < PA.getLife().getTotalValue() ;}
 	public boolean hasTheSpell(String action) {return Player.SpellKeys.indexOf(action) < getActiveSpells().size() ;}
 	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
 	public boolean hasSuperElement()
@@ -452,10 +452,6 @@ public abstract class LiveBeing
     	
 	}
 	
-
-	
-	
-	
 	public Elements[] atkElems()
 	{
 		if (this instanceof Player) { return new Elements[] {elem[0], elem[1], elem[4]} ;}
@@ -473,10 +469,6 @@ public abstract class LiveBeing
 		return null ;
 	}
 	
-//	public void ActivateBattleActionCounters()
-//	{
-//		
-//	}
 //	public void displayDamageTaken(AtkResults atkResults, int animationStyle, DrawingOnPanel DP)
 //	{
 //		System.out.println(displayDamage);
@@ -516,9 +508,9 @@ public abstract class LiveBeing
 
 	}
 	
-
-	public abstract void applyPassiveSpell(Spell spell) ;	
 	public abstract AtkResults useSpell(Spell spell, LiveBeing receiver) ;
+	public abstract void applyPassiveSpell(Spell spell) ;	
+	public abstract void useAutoSpells(boolean activate);
 	public abstract void dies() ;
 	
 	public void checkDeactivateDef()
@@ -654,7 +646,8 @@ public abstract class LiveBeing
 		{
 			PoisonDamage = (int) Math.max(totalPoisonAtk * PoisonMult - BA.getPoison().TotalDef(), 0) ;
 		}
-		PA.getLife().incCurrentValue(-BloodDamage - PoisonDamage) ;
+		PA.getLife().decTotalValue(BloodDamage + PoisonDamage) ;
+		// TODO transferir para blood and poison
 	}
 	public void displayDefending(DrawingOnPanel DP)
 	{
@@ -662,5 +655,4 @@ public abstract class LiveBeing
 		DP.DrawImage(defendingImage, imagePos, Align.center) ;
 	}
 
-	public abstract void useAutoSpells();
 }
