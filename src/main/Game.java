@@ -1429,7 +1429,7 @@ public class Game extends JPanel
 		
 //    	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
 //    	player.setLevel(50) ;
-//    	player.setMap(cityMaps[3]) ;
+    	player.setMap(cityMaps[1]) ;
 //    	player.setPos(new Point(393, 140)) ;
 
 //    	letThereBePet() ;
@@ -1492,9 +1492,9 @@ public class Game extends JPanel
 		loadAllText() ;
 		System.out.println("Loaded text in " + (System.nanoTime() - elapsedTimeText) / 1000000) ;
 
-		DayDuration = 120000 ;
+		DayDuration = 1200 ;
 		sky = new Sky() ;
-		screen.setBorders(new int[] { 0, sky.height, screen.getSize().width, screen.getSize().height }) ;
+		screen.setBorders(new int[] { 0, Sky.height, screen.getSize().width, screen.getSize().height }) ;
 		screen.setMapCenter() ;
 		long elapsedTimeSpells = System.nanoTime();
 		allSpells = initializeAllSpells(gameLanguage) ;

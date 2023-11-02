@@ -382,7 +382,7 @@ public abstract class LiveBeing
 		List<Spell> activeSpells = new ArrayList<Spell>() ;
 		for (Spell spell : spells)
 		{
-			if (!spell.getType().equals(SpellTypes.passive) & 0 < spell.getLevel())
+			if (!spell.getType().equals(SpellTypes.passive) & !spell.getType().equals(SpellTypes.auto) & 0 < spell.getLevel())
 			{
 				activeSpells.add(spell) ;
 			}

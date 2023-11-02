@@ -107,9 +107,10 @@ public class Sky
 	
 	private void displayNightSky(DrawingOnPanel DP)
 	{
+		double alpha = -16 * Math.pow(dayTime.rate() - 0.5, 2) + 16 * Math.abs(dayTime.rate() - 0.5) - 3 ;
 		for (SkyComponent star : stars)
 		{
-			star.display(DrawingOnPanel.stdAngle, 1, DP) ;
+			star.display(DrawingOnPanel.stdAngle, alpha, DP) ;
 		}
 	}
 	

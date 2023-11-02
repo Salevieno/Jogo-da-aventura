@@ -183,7 +183,7 @@ public class Spell
 			{
 				double increment = battleAttribute.getBaseValue() * percIncrease.get(att) + valueIncrease.get(att) ;
 				battleAttribute.incBonus(Math.round(increment * level * mult));
-				System.out.println(increment);
+
 				continue ;
 			}
 			

@@ -29,10 +29,10 @@ public class SpellsBar
 		Dimension barSize = new Dimension(image.getWidth(null), image.getHeight(null)) ;
 		Dimension slotSize = new Dimension(slotImage.getWidth(null), slotImage.getHeight(null)) ;
 		
-		int Ncols = Math.max(activeSpells.size() / 11 + 1, 1) ;
-		int Nrows = activeSpells.size() / Ncols + 1 ;
-		int sx = (int) UtilG.spacing(barSize.width, Ncols, slotSize.width, 2) ;
-		int sy = (int) UtilG.spacing(barSize.height - titlefont.getSize(), Nrows, slotSize.height, 1) ;
+		int nCols = Math.max(activeSpells.size() / 11 + 1, 1) ;
+		int nRows = activeSpells.size() / nCols + 1 ;
+		int sx = (int) UtilG.spacing(barSize.width, nCols, slotSize.width, 2) ;
+		int sy = (int) UtilG.spacing(barSize.height - titlefont.getSize(), nRows, slotSize.height, 1) ;
 		double angle = DrawingOnPanel.stdAngle ;	
 		Color textColor = Game.colorPalette[3] ;
 		DP.DrawImage(image, barPos, Align.bottomLeft) ;
@@ -47,8 +47,8 @@ public class SpellsBar
 			Spell spell = activeSpells.get(i) ;
 			if (0 < spell.getLevel())
 			{
-				int row = i % Nrows ;
-				int col = i / Nrows ;
+				int row = i % nRows ;
+				int col = i / nRows ;
 				Point slotCenter = UtilG.Translate(barPos, slotSize.width / 2 + col * sx + 2, - barSize.height + slotSize.height / 2 + row * sy + titlefont.getSize() + 1) ;
 				Image image = currentMP < spell.getMpCost() ? slotImage : slotImage ;
 				DP.DrawImage(image, slotCenter, Align.center) ;
