@@ -2,8 +2,7 @@ package items;
 
 import java.awt.Image;
 
-import main.Game;
-import utilities.UtilG;
+import utilities.UtilS;
 
 public abstract class Item
 {
@@ -15,7 +14,7 @@ public abstract class Item
 	protected double dropChance ;
 	
 
-    public static Image slot = UtilG.loadImage(Game.ImagesPath + "itemSlot.png") ;
+    public static Image slot = UtilS.loadImage("itemSlot.png") ;
 	
 	public Item(int id, String name, String description, Image image, int price, double dropChance)
 	{

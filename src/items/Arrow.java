@@ -8,6 +8,7 @@ import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class Arrow extends Item
 {
@@ -16,11 +17,11 @@ public class Arrow extends Item
 	
 	private static Arrow[] AllArrow ;
 
-	private static final Image woodArrowIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconWoodArrow.png") ;
-	private static final Image strongArrowIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconStrongArrow.png") ;
-	private static final Image boltArrowIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconBoltArrow.png") ;
+	private static final Image woodArrowIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconWoodArrow.png") ;
+	private static final Image strongArrowIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconStrongArrow.png") ;
+	private static final Image boltArrowIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconBoltArrow.png") ;
 	
-	private static final Image ArrowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq7_Arrow.png") ;
+	private static final Image ArrowImage = UtilS.loadImage("\\Equips\\" + "Eq7_Arrow.png") ;
 	
 	static
 	{

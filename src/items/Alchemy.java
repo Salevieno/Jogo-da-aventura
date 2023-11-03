@@ -7,6 +7,7 @@ import attributes.PersonalAttributes;
 import liveBeings.LiveBeing;
 import main.Game;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class Alchemy extends Item
 {
@@ -15,9 +16,9 @@ public class Alchemy extends Item
 	
 	private static Alchemy[] AllAlchemy ;
 	
-	private static Image HerbIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconHerb.png") ;
-	private static Image WoodIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconWood.png") ;
-	private static Image MetalIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconMetal.png") ;
+	private static Image HerbIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconHerb.png") ;
+	private static Image WoodIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconWood.png") ;
+	private static Image MetalIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMetal.png") ;
 	
 	static
 	{

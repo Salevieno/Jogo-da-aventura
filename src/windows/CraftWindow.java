@@ -15,6 +15,7 @@ import main.Game;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class CraftWindow extends GameWindow
 {
@@ -27,7 +28,7 @@ public class CraftWindow extends GameWindow
 	private static final List<String> messages = Arrays.asList(
 			"Items criados!",
 			"Vc não possui todos os ingredientes") ;
-	public static final Image craftImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Craft.png") ;
+	public static final Image craftImage = UtilS.loadImage("\\Windows\\" + "Craft.png") ;
 // TODO permitir a criação de múltiplos itens
 	// TODO corrigir as receitas
 	public CraftWindow(List<Recipe> recipes)

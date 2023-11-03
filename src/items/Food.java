@@ -7,6 +7,7 @@ import attributes.PersonalAttributes;
 import liveBeings.LiveBeing;
 import main.Game;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class Food extends Item
 {
@@ -22,7 +23,7 @@ public class Food extends Item
 	{
 		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Food.csv") ;
 		AllFood = new Food[input.size()] ;
-		iconFoodBerry = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconFoodBerry.png") ;
+		iconFoodBerry = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconFoodBerry.png") ;
 		for (int p = 0; p <= AllFood.length - 1; p += 1)
 		{
 			AllFood[p] = new Food(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3],

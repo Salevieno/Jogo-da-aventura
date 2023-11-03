@@ -16,6 +16,7 @@ import main.Game;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class SpellsTreeWindow extends GameWindow
 {
@@ -29,14 +30,14 @@ public class SpellsTreeWindow extends GameWindow
 	private static final Point windowTopLeft = Game.getScreen().pos(0.4, 0.2) ;
 	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
-	private static final Image noTabsImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTree.png") ;
-	private static final Image tab0Image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTreeTab0.png") ;
-	private static final Image tab1Image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellsTreeTab1.png") ;
-	private static final Image spellSlot = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellSlot.png") ;
-	private static final Image spellSlotSelected = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellSlotSelected.png") ;
-	private static final Image spellInactiveSlot = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellInactiveSlot.png") ;
-	private static final Image spellInfo = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellInfo.png") ;
-	private static final Image spellPoints = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "SpellPoints.png") ;
+	private static final Image noTabsImage = UtilS.loadImage("\\Windows\\" + "SpellsTree.png") ;
+	private static final Image tab0Image = UtilS.loadImage("\\Windows\\" + "SpellsTreeTab0.png") ;
+	private static final Image tab1Image = UtilS.loadImage("\\Windows\\" + "SpellsTreeTab1.png") ;
+	private static final Image spellSlot = UtilS.loadImage("\\Windows\\" + "SpellSlot.png") ;
+	private static final Image spellSlotSelected = UtilS.loadImage("\\Windows\\" + "SpellSlotSelected.png") ;
+	private static final Image spellInactiveSlot = UtilS.loadImage("\\Windows\\" + "SpellInactiveSlot.png") ;
+	private static final Image spellInfo = UtilS.loadImage("\\Windows\\" + "SpellInfo.png") ;
+	private static final Image spellPoints = UtilS.loadImage("\\Windows\\" + "SpellPoints.png") ;
 	
 	public SpellsTreeWindow(int playerJob)
 	{// TODO arrumar a árvore de magias. Spells tá se confundindo com spellsOnWindow

@@ -14,12 +14,13 @@ import main.Game;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class FabWindow extends GameWindow
 {
     private List<Recipe> recipes ;
     
-	private static final Image windowImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Book.png") ;
+	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Book.png") ;
 	private static final Point windowPos = Game.getScreen().pos(0.5, 0.5) ;
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 	

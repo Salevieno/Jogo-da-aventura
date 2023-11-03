@@ -15,6 +15,7 @@ import main.Game;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class ForgeWindow extends GameWindow
 {
@@ -30,7 +31,7 @@ public class ForgeWindow extends GameWindow
 			"Item forjado!",
 			"Essa não! A forja não funcionou!") ;
 	private static final int NumberItemsPerWindow = 10 ;
-	private static final Image windowImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Forge.png") ;
+	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Forge.png") ;
 	
 	private static final Point windowPos = Game.getScreen().getPointWithinBorders(0.2, 0.1) ;
 

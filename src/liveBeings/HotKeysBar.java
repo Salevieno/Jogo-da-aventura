@@ -11,6 +11,7 @@ import items.Item;
 import main.Game;
 import utilities.Align;
 import utilities.UtilG;
+import utilities.UtilS;
 import windows.BagWindow;
 
 public class HotKeysBar
@@ -18,7 +19,7 @@ public class HotKeysBar
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 	private static final Color textColor = Game.colorPalette[19] ;
 	
-	public static final Image slotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
+	public static final Image slotImage = UtilS.loadImage("\\Windows\\" + "BagSlot.png") ;
 
 	public static void display(Item[] hotItems, Point mousePos, DrawingOnPanel DP)
 	{

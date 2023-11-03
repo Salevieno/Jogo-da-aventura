@@ -5,12 +5,13 @@ import java.util.List;
 
 import main.Game;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class QuestItem extends Item
 {
 	private static QuestItem[] AllQuests ;
 	
-	private static final Image questItemIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconQuestItem.png") ;
+	private static final Image questItemIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconQuestItem.png") ;
 	
 	static
 	{

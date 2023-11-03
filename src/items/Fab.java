@@ -5,12 +5,13 @@ import java.util.List;
 
 import main.Game;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class Fab extends Item
 {
 	private static Fab[] AllFabs ;
 	
-	private static final Image ferkIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconFerk.png") ;
+	private static final Image ferkIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconFerk.png") ;
 	
 	static
 	{

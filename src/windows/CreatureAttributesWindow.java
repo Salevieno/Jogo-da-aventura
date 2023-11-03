@@ -14,12 +14,13 @@ import main.TextCategories;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class CreatureAttributesWindow extends AttributesWindow
 {
 	public CreatureAttributesWindow()
 	{
-		super(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "CreatureAttWindow.png"), 1);
+		super(UtilS.loadImage("\\Windows\\" + "CreatureAttWindow.png"), 1);
 	}
 
 	public void display(Creature creature, DrawingOnPanel DP)

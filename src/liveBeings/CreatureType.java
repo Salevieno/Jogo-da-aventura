@@ -11,11 +11,10 @@ import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
 import items.Item;
-import main.Game;
 import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
-import utilities.UtilG;
+import utilities.UtilS;
 
 public class CreatureType 
 {
@@ -52,11 +51,11 @@ public class CreatureType
 		for (int i = 0 ; i <= 7 - 1 ; i += 1)
 		{
 			moveAni.add(new MovingAnimations(
-			UtilG.loadImage(Game.ImagesPath + "\\Creatures\\" + "creature" + i + "_idle.gif"),
-			UtilG.loadImage(Game.ImagesPath + "\\Creatures\\" + "creature" + i + "_movingup.gif"),
-			UtilG.loadImage(Game.ImagesPath + "\\Creatures\\" + "creature" + i + "_movingdown.gif"),
-			UtilG.loadImage(Game.ImagesPath + "\\Creatures\\" + "creature" + i + "_movingleft.gif"),
-			UtilG.loadImage(Game.ImagesPath + "\\Creatures\\" + "creature" + i + "_movingright.gif"))) ;
+			UtilS.loadImage("\\Creatures\\" + "creature" + i + "_idle.gif"),
+			UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingup.gif"),
+			UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingdown.gif"),
+			UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingleft.gif"),
+			UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingright.gif"))) ;
 		}
 	}
 	

@@ -1,11 +1,5 @@
 package main;
 
-import java.awt.Image;
-
-import graphics.DrawingOnPanel;
-import utilities.Align;
-import utilities.UtilG;
-
 public abstract class Loading
 {
 //	private int selectedSlot, tab ;
@@ -14,7 +8,7 @@ public abstract class Loading
 //	{
 ////		selectedSlot = 0 ;
 ////		tab = 0 ;
-//		LoadingGif = UtilG.loadImage(Game.ImagesPath + "\\Opening\\" + "Loading.gif") ;
+//		LoadingGif = UtilS.loadImage("\\Opening\\" + "Loading.gif") ;
 //    	
 //	}
 	

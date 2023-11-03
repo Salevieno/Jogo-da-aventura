@@ -12,7 +12,6 @@ import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
-import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
 import items.Item;
 import main.AtkResults;

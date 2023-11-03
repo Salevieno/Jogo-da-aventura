@@ -466,6 +466,15 @@ public abstract class UtilG
 		return (double)(Math.max(0, 1 - amplitude + 2 * amplitude * Math.random())) ;
 	}
 
+	public static Point calcGrid(int numberItems, int maxNumberRows)
+	{
+
+		int nCols = Math.max((int) (Math.ceil(numberItems / (double)maxNumberRows)), 1) ;
+		int nRows = numberItems / nCols + 1 ;
+		
+		return new Point(nRows, nCols) ;
+	}
+	
 	public static Point offsetForAlignment(Align alignment, Dimension size)
 	{
 		if (size == null) { System.out.println("Offset from pos with null size!") ; return new Point() ;}
@@ -745,25 +754,37 @@ public abstract class UtilG
 		}
 	}
 		
-	public static double calcOffset(int n, double L, double size, double spacing)
+	public static double calcOffset(int n, double width, double size, double spacing)
 	{
-		return (L - n * size - (n - 1) * spacing) / 2 ;
+		return (width - n * size - (n - 1) * spacing) / 2 ;
 	}
 	
-	public static double spacing(double L, int n, double size, double offset)
+	/** @return center to center spacing */
+	public static double spacing(double width, int n, double size, double offset)
 	{
-		double s = -1 ;
 		
-		if (1 < n)
+		if (n <= 0) { return -1 ;}
+		if (n == 1)
 		{
-			s = (L - 2 * offset - size) / (n - 1) ;
+			return width - 2 * offset ;
 		}
-		else if (n == 1)
-		{
-			s = L - 2 * offset ;
-		}
+
+		return clearSpacing(width, n, size, offset) + size ;
 		
-		return s ;
+	}
+	
+	/** @return clear spacing */
+	public static double clearSpacing(double width, int n, double size, double offset)
+	{
+		
+		if (n <= 0) { return -1 ;}
+		if (n == 1)
+		{
+			return width - 2 * offset ;
+		}
+
+		return (width - 2 * offset - n * size) / (n - 1) ;
+		
 	}
 	
 	public static boolean isInside(Point objPos, Point topLeft, Dimension size)

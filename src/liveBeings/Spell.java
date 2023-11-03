@@ -15,6 +15,7 @@ import main.Game;
 import utilities.Elements;
 import utilities.TimeCounter;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class Spell 
 {	
@@ -45,7 +46,7 @@ public class Spell
 	private Elements elem ;
 	private String[] info ;	// Effect and description
 
-	public static final Image cooldownImage = UtilG.loadImage(Game.ImagesPath + "Cooldown.png") ;	
+	public static final Image cooldownImage = UtilS.loadImage("Cooldown.png") ;	
 	
 	
 	public Spell(int id, String name, Image image, int maxLevel, int mpCost, SpellTypes type, Map<Spell, Integer> preRequisites,
@@ -118,7 +119,7 @@ public class Spell
 
 	public static void saveImages()
 	{
-		BufferedImage img = UtilG.toBufferedImage(UtilG.loadImage(Game.ImagesPath + "genericSpell.png")) ;
+		BufferedImage img = UtilG.toBufferedImage(UtilS.loadImage("genericSpell.png")) ;
 		for (int i = 0 ; i <= 172 - 1; i += 1)
 		{
 			PlayerJobs job = PlayerJobs.jobFromSpellID(i) ;

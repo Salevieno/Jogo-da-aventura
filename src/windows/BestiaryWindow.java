@@ -9,7 +9,6 @@ import java.util.List;
 
 import graphics.DrawingOnPanel;
 import liveBeings.CreatureType;
-import liveBeings.Player;
 import main.Game;
 import main.TextCategories;
 import utilities.Align;

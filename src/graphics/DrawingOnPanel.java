@@ -29,6 +29,7 @@ import utilities.AttackEffects;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
+import utilities.UtilS;
 import windows.PlayerAttributesWindow;
 
 public class DrawingOnPanel 
@@ -50,19 +51,19 @@ public class DrawingOnPanel
 		stdAngle = 0 ;
 		stdStroke = 1;
 		stdFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		menuWindow = UtilG.loadImage(Game.ImagesPath + "MenuWindow.png") ;
-		ArrowIconImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "ArrowIcon.png") ;
+		menuWindow = UtilS.loadImage("MenuWindow.png") ;
+		ArrowIconImage = UtilS.loadImage("\\Windows\\" + "ArrowIcon.png") ;
 		ElementImages = new Image[] {
-				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementNeutral.png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementWater.png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementFire.png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementPlant.png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementEarth.png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementAir.png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementThunder.png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementLight.png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementDark.png"),
-				UtilG.loadImage(Game.ImagesPath + "\\Elements\\" + "ElementSnow.png")
+				UtilS.loadImage("\\Elements\\" + "ElementNeutral.png"),
+				UtilS.loadImage("\\Elements\\" + "ElementWater.png"),
+				UtilS.loadImage("\\Elements\\" + "ElementFire.png"),
+				UtilS.loadImage("\\Elements\\" + "ElementPlant.png"),
+				UtilS.loadImage("\\Elements\\" + "ElementEarth.png"),
+				UtilS.loadImage("\\Elements\\" + "ElementAir.png"),
+				UtilS.loadImage("\\Elements\\" + "ElementThunder.png"),
+				UtilS.loadImage("\\Elements\\" + "ElementLight.png"),
+				UtilS.loadImage("\\Elements\\" + "ElementDark.png"),
+				UtilS.loadImage("\\Elements\\" + "ElementSnow.png")
 				} ;
 	}
 	

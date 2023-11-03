@@ -120,23 +120,23 @@ public class Player extends LiveBeing
 	private Statistics stats ;
     
 	public static final int maxLevel = 99 ;
-    public static final Image CollectingMessage = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "CollectingMessage.gif") ;   
-    public static final Image collectingGif = UtilG.loadImage(Game.ImagesPath + "\\Collect\\" + "Collecting.gif") ;
-//    public static final Image TentImage = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "Icon5_tent.png") ;
-    public static final Gif TentGif = new Gif(UtilG.loadImage(Game.ImagesPath + "Tent.png"), 1000, false, false) ;
-    public static final Image DragonAuraImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "DragonAura.png") ;
-    public static final Image RidingImage = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Tiger.png") ;
-	public static final Image CoinIcon = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "CoinIcon.png") ;    
-	public static final Image DiggingGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Digging.gif") ;   
-	public static final Image MagicBlissGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "MagicBliss.gif") ;
-    public static final Gif FishingGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "Fishing.gif"), 220, false, false) ;
+    public static final Image CollectingMessage = UtilS.loadImage("\\Collect\\" + "CollectingMessage.gif") ;   
+    public static final Image collectingGif = UtilS.loadImage("\\Collect\\" + "Collecting.gif") ;
+//    public static final Image TentImage = UtilS.loadImage("\\SideBar\\" + "Icon5_tent.png") ;
+    public static final Gif TentGif = new Gif(UtilS.loadImage("Tent.png"), 1000, false, false) ;
+    public static final Image DragonAuraImage = UtilS.loadImage("\\Player\\" + "DragonAura.png") ;
+    public static final Image RidingImage = UtilS.loadImage("\\Player\\" + "Tiger.png") ;
+	public static final Image CoinIcon = UtilS.loadImage("\\Player\\" + "CoinIcon.png") ;    
+	public static final Image DiggingGif = UtilS.loadImage("\\Player\\" + "Digging.gif") ;   
+	public static final Image MagicBlissGif = UtilS.loadImage("\\Player\\" + "MagicBliss.gif") ;
+    public static final Gif FishingGif = new Gif(UtilS.loadImage("\\Player\\" + "Fishing.gif"), 220, false, false) ;
     
 	public final static List<String[]> Properties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
 	public final static List<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public final static int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public final static Color[] ClassColors = new Color[] {Game.colorPalette[21], Game.colorPalette[5], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
-    public final static Gif levelUpGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 160, false, false) ;
+    public final static Gif levelUpGif = new Gif(UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 160, false, false) ;
     
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
 	public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
@@ -144,11 +144,11 @@ public class Player extends LiveBeing
 
 	public final static Image[] AttWindowImages = new Image[]
 								{
-									UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow1.png"),
-									UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow2.png"),
-									UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PlayerAttWindow3.png")
+									UtilS.loadImage("\\Windows\\" + "PlayerAttWindow1.png"),
+									UtilS.loadImage("\\Windows\\" + "PlayerAttWindow2.png"),
+									UtilS.loadImage("\\Windows\\" + "PlayerAttWindow3.png")
 								} ;
-    public final static Image settingsWindowImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "windowSettings.png") ;
+    public final static Image settingsWindowImage = UtilS.loadImage("\\Windows\\" + "windowSettings.png") ;
 	
 	
 	public Player(String name, String Sex, int job)
@@ -170,7 +170,7 @@ public class Player extends LiveBeing
 		pos = new Point();
 		dir = Directions.up;
 		state = LiveBeingStates.idle;
-		Image PlayerBack = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerBack.gif") ;
+		Image PlayerBack = UtilS.loadImage("\\Player\\" + "PlayerBack.gif") ;
 	    size = new Dimension(PlayerBack.getWidth(null), PlayerBack.getHeight(null));
 		range = Integer.parseInt(Properties.get(job)[4]) ;
 		step = Integer.parseInt(Properties.get(job)[33]);
@@ -290,11 +290,11 @@ public class Player extends LiveBeing
 	
 	private static MovingAnimations InitializeMovingAnimations()
 	{
-	    Image idleGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerIdle.gif") ;
-	    Image movingUpGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerBack.gif") ;
-		Image movingDownGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerFront.gif") ;
-		Image movingLeftGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerMovingLeft.gif") ;
-		Image movingRightGif = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "PlayerRight.gif") ;
+	    Image idleGif = UtilS.loadImage("\\Player\\" + "PlayerIdle.gif") ;
+	    Image movingUpGif = UtilS.loadImage("\\Player\\" + "PlayerBack.gif") ;
+		Image movingDownGif = UtilS.loadImage("\\Player\\" + "PlayerFront.gif") ;
+		Image movingLeftGif = UtilS.loadImage("\\Player\\" + "PlayerMovingLeft.gif") ;
+		Image movingRightGif = UtilS.loadImage("\\Player\\" + "PlayerRight.gif") ;
 		
 		return new MovingAnimations(idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif) ;
 	}
@@ -966,7 +966,7 @@ public class Player extends LiveBeing
 		spell.getCooldownCounter().reset() ;
 		train(new AtkResults(AtkTypes.magical, AttackEffects.none, 0)) ;
 		stats.incNumberMagAtk() ;
-		
+		System.out.println("used spell " + spell.getName());
 		switch (spell.getType())
 		{
 			case support : useSupportSpell(spell) ;
@@ -1034,7 +1034,6 @@ public class Player extends LiveBeing
 				PA.getLife().setToMaximum() ;
 				BA.getPhyAtk().incBaseValue(2) ; BA.getPhyDef().incBaseValue(2) ;
 				return ;
-			case 116:  return ; // TODO survivor instinct
 			case 117: 
 				Pet pet = Game.getPet() ;
 				if (pet == null) { return ;}
@@ -1076,55 +1075,62 @@ public class Player extends LiveBeing
 		
 		spell.activate() ;		
 		resetBattleActions() ;
-		PA.getMp().incMaxValue(-spell.getMpCost()) ;
+		PA.getMp().decTotalValue(spell.getMpCost()) ;
+		switch (spell.getId())
+		{
+			case 4: 
+				break ;
+			
+			default: break ;
+		}
 
-		// TODO support spells 
-		int spellIndex = spells.indexOf(spell) ;
-		if (job == 0)
-		{
-			if (spellIndex == 4)
-			{
-				// eternal life
-			}
-			if (proJob == 1 & spellIndex == 20)
-			{
-				// nobility
-			}
-			if (proJob == 2 & spellIndex == 20)
-			{
-				// spiky
-			}
-			if (proJob == 2 & spellIndex == 22)
-			{
-				// human shield
-			}
-			if (proJob == 2 & spellIndex == 23)
-			{
-				// salvation
-			}
-		}
-		if (job == 1)
-		{
-			if (spellIndex == 9)
-			{
-				// swamp
-			}
-			if (spellIndex == 10)
-			{
-				// cure
-				getLife().incCurrentValue(5 * spell.getLevel()) ;
-			}
-			if (spellIndex == 11)
-			{
-				// mystical inspiration
-			}
-		}
 		
 		spell.applyBuffs(true, this) ;
 		
 		if (opponent == null) { return ;}
 		
 		spell.applyNerfs(true, opponent) ;
+		// TODO support spells 
+//		int spellIndex = spells.indexOf(spell) ;
+//		if (job == 0)
+//		{
+//			if (spellIndex == 4)
+//			{
+//				// eternal life
+//			}
+//			if (proJob == 1 & spellIndex == 20)
+//			{
+//				// nobility
+//			}
+//			if (proJob == 2 & spellIndex == 20)
+//			{
+//				// spiky
+//			}
+//			if (proJob == 2 & spellIndex == 22)
+//			{
+//				// human shield
+//			}
+//			if (proJob == 2 & spellIndex == 23)
+//			{
+//				// salvation
+//			}
+//		}
+//		if (job == 1)
+//		{
+//			if (spellIndex == 9)
+//			{
+//				// swamp
+//			}
+//			if (spellIndex == 10)
+//			{
+//				// cure
+//				getLife().incCurrentValue(5 * spell.getLevel()) ;
+//			}
+//			if (spellIndex == 11)
+//			{
+//				// mystical inspiration
+//			}
+//		}
 		
 	}
 
@@ -1156,6 +1162,23 @@ public class Player extends LiveBeing
 			}
 		}
 
+		// TODO steal item
+//		private int StealItem(Creature creature, Item[] items, int spellLevel)
+//		{	
+//			int ID = (int)(UtilG.ArrayWithValuesGreaterThan(creature.getBag(), -1).length*Math.random() - 0.01) ;
+//			int StolenItemID = -1 ;
+//			if(-1 < creature.getBag()[ID])
+//			{
+//				if(Math.random() <= 0.01*items[creature.getBag()[ID]].getDropChance() + 0.01*spellLevel)
+//				{
+//					//Bag[creature.getBag()[ID]] += 1 ;
+//					StolenItemID = items[creature.getBag()[ID]].getID() ;
+//				}
+//			}
+//			return StolenItemID ;
+			
+//			return 0 ;
+//		}
 	}
 	
 	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
@@ -1332,44 +1355,6 @@ public class Player extends LiveBeing
 		{
 			return ;
 		}
-	}
-	
-	public void autoSpells(Creature creature, List<Spell> spell)
-	{		
-		/*if (job == 3 & PA.getLife()[0] < 0.2 * PA.getLife()[1] & 0 < Skill[12] & !SkillBuffIsActive[12][0])	// Survivor's instinct
-		{
-			for (int i = 0 ; i <= skill[12].getBuffs().length - 1 ; ++i)
-			{
-				BuffsAndNerfs(player, pet, creature, skill[12].getBuffs(), Skill[12], i, false, "Player", "activate") ;
-			}
-			SkillBuffIsActive[12][0] = true ;
-		}
-		if (job == 3 & 0.2*Life[1] <= Life[0] & 0 < Skill[12] & SkillBuffIsActive[12][0])	// Survivor's instinct
-		{
-			for (int i = 0 ; i <= skill[12].getBuffs().length - 1 ; ++i)
-			{
-				BuffsAndNerfs(player, pet, creature, skill[12].getBuffs(), Skill[12], i, false, "Player", "deactivate") ;
-			}
-			SkillBuffIsActive[12][0] = false ;
-		}*/
-
-		// TODO steal item
-//		private int StealItem(Creature creature, Item[] items, int spellLevel)
-//		{	
-//			int ID = (int)(UtilG.ArrayWithValuesGreaterThan(creature.getBag(), -1).length*Math.random() - 0.01) ;
-//			int StolenItemID = -1 ;
-//			if(-1 < creature.getBag()[ID])
-//			{
-//				if(Math.random() <= 0.01*items[creature.getBag()[ID]].getDropChance() + 0.01*spellLevel)
-//				{
-//					//Bag[creature.getBag()[ID]] += 1 ;
-//					StolenItemID = items[creature.getBag()[ID]].getID() ;
-//				}
-//			}
-//			return StolenItemID ;
-			
-//			return 0 ;
-//		}
 	}
 	
 	public void switchOpenClose(GameWindow win)

@@ -21,6 +21,7 @@ import utilities.Align;
 import utilities.LiveInput;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public abstract class Opening
 {
@@ -133,9 +134,9 @@ public abstract class Opening
 		{
 			Image btImage = UtilG.loadImage(path + btNames[i] + ".png") ;
 			Image btImageSelected = UtilG.loadImage(path + btNames[i] + " Selected.gif") ;
-			if (btImage == null) { btImage = UtilG.loadImage(Game.ImagesPath + "ButtonGeneral.png") ;}
+			if (btImage == null) { btImage = UtilS.loadImage("ButtonGeneral.png") ;}
 			if (btImageSelected == null) { btImageSelected = UtilG.loadImage(path + btNames[i] + " Selected.png") ;}
-			if (btImageSelected == null) { btImageSelected = UtilG.loadImage(Game.ImagesPath + "ButtonGeneralSelected.png") ;}
+			if (btImageSelected == null) { btImageSelected = UtilS.loadImage("ButtonGeneralSelected.png") ;}
 			buttons.add(new GameButton(btPos[i], Align.center, btNames[i], btImage, btImageSelected, btAction[i])) ;
 			buttons.get(buttons.size() - 1).deactivate() ;
 		

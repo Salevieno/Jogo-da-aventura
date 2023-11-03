@@ -6,6 +6,7 @@ import java.util.List;
 import liveBeings.Pet;
 import main.Game;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class PetItem extends Item
 {
@@ -15,10 +16,10 @@ public class PetItem extends Item
 	
 	private static PetItem[] AllPetItems ;
 
-	private static final Image petLifePotion = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconPetLifePotion.png") ;
-	private static final Image petMPPotion = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconPetMPPotion.png") ;
-	private static final Image petFood = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconPetFood.png") ;
-	private static final Image petSet = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconPetSet.png") ;
+	private static final Image petLifePotion = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconPetLifePotion.png") ;
+	private static final Image petMPPotion = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconPetMPPotion.png") ;
+	private static final Image petFood = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconPetFood.png") ;
+	private static final Image petSet = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconPetSet.png") ;
 	
 	static
 	{

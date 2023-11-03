@@ -88,7 +88,6 @@ import utilities.Scale ;
 import utilities.UtilG ;
 import utilities.UtilS ;
 import windows.BankWindow ;
-import windows.CreatureAttributesWindow ;
 
 public class Game extends JPanel
 {
@@ -152,7 +151,7 @@ public class Game extends JPanel
 		screen.calcCenter() ;
 		gameLanguage = Languages.portugues ;
 		state = GameStates.loading ;
-		colorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette4.png"), "Normal") ;
+		colorPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette4.png"), "Normal") ;
 		konamiCodeActive = false ;
 		initializeAnimations() ;
 
@@ -163,7 +162,7 @@ public class Game extends JPanel
 	public Game()
 	{
 		DP = new DrawingOnPanel() ;
-		player = new Player("", "", 3) ;
+		player = new Player("", "", 0) ;
 
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -443,24 +442,22 @@ public class Game extends JPanel
 		
 	}
 
-	private static void checkKonamiCode(List<String> Combo)
+	private static void checkKonamiCode(List<String> combo)
 	{
-		String[] combo = Combo.toArray(new String[Combo.size()]) ;
-		if (Arrays.equals(combo, konamiCode))
-		{
-			konamiCodeActive = !konamiCodeActive ;
-			player.resetCombo() ;
-		}
+		if (!Arrays.equals(combo.toArray(new String[combo.size()]), konamiCode)) { return ;}
+		
+		konamiCodeActive = !konamiCodeActive ;
+		player.resetCombo() ;
 	}
 
 	private static void konamiCode()
 	{
 		DayDuration = 12 ;
-		colorPalette = UtilS.ReadColorPalette(UtilG.loadImage(ImagesPath + "ColorPalette.png"), "Konami") ;
-		if (sky.dayTime.getCounter() % 1200 <= 300)
+		colorPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Konami") ;
+		if (Sky.dayTime.getCounter() % 1200 <= 300)
 		{
 			DrawingOnPanel.stdAngle += 0.04 ;
-		} else if (sky.dayTime.getCounter() % 1200 <= 900)
+		} else if (Sky.dayTime.getCounter() % 1200 <= 900)
 		{
 			DrawingOnPanel.stdAngle -= 0.04 ;
 		} else
@@ -556,7 +553,7 @@ public class Game extends JPanel
 			String info = input.get(i)[3 + language.ordinal()] ;
 			Color color = job.getColor() ;
 			String imageExtension = !job.equals(NPCJobs.master) ? ".png" : ".gif" ;
-			Image image = UtilG.loadImage(ImagesPath + "\\NPCs\\" + "NPC_" + job.toString() + imageExtension) ;
+			Image image = UtilS.loadImage("\\NPCs\\" + "NPC_" + job.toString() + imageExtension) ;
 			String[] speech = null ;
 			List<List<String>> options = new ArrayList<>() ;
 			TextCategories speechName = TextCategories.catFromBRName("npcs" + name + "Falas") ;
@@ -787,7 +784,7 @@ public class Game extends JPanel
 			{
 				case 2:
 					cityMaps[id]
-							.addGroundType(new GroundType(GroundTypes.water, new Point(500, sky.height), new Dimension(140, 480 - sky.height))) ;
+							.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
 					break ;
 				default: break ;
 			}
@@ -859,7 +856,7 @@ public class Game extends JPanel
 				break ;
 			case 8:
 				fieldMaps[id]
-						.addGroundType(new GroundType(GroundTypes.water, new Point(500, sky.height), new Dimension(140, 480 - sky.height))) ;
+						.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
 				break ;
 			case 9:
 				fieldMaps[id]
@@ -867,7 +864,7 @@ public class Game extends JPanel
 				break ;
 			case 12:
 				fieldMaps[id]
-						.addGroundType(new GroundType(GroundTypes.water, new Point(500, sky.height), new Dimension(140, 480 - sky.height))) ;
+						.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
 				break ;
 			case 13:
 				fieldMaps[id]
@@ -897,7 +894,7 @@ public class Game extends JPanel
 	{
 		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;
 		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
-		Image treasureChestsImage = UtilG.loadImage(ImagesPath + "\\MapElements\\" + "MapElem15_Chest.png") ;
+		Image treasureChestsImage = UtilS.loadImage("\\MapElements\\" + "MapElem15_Chest.png") ;
 
 
 		for (int id = 0 ; id <= specialMaps.length - 1 ; id += 1)
@@ -1046,11 +1043,10 @@ public class Game extends JPanel
 			List<Buff> nerfs = new ArrayList<>() ;
 			nerfs.add(Buff.load(spellsNerfsInput.get(id))) ;
 
-			info[i] = new String[] { spellTypesInput.get(id)[42],
-					spellTypesInput.get(id)[43 + 2 * language.ordinal()] } ;
+			info[i] = new String[] { spellTypesInput.get(id)[42], spellTypesInput.get(id)[43 + 2 * language.ordinal()] } ;
 			String name = spellTypesInput.get(id)[4] ;
 			String job = PlayerJobs.jobFromSpellID(i).toString() ;
-			Image image = UtilG.loadImage(ImagesPath + "\\Spells\\" + "spell" + job + i + ".png") ;
+			Image image = UtilS.loadImage("\\Spells\\" + "spell" + job + i + ".png") ;
 			int maxLevel = Integer.parseInt(spellTypesInput.get(id)[5]) ;
 			int mpCost = Integer.parseInt(spellTypesInput.get(id)[6]) ;
 			SpellTypes type = SpellTypes.valueOf(spellTypesInput.get(id)[7]) ;
@@ -1164,10 +1160,10 @@ public class Game extends JPanel
 	
 	private void incrementCounters()
 	{
-		sky.dayTime.inc() ;
-		if (sky.dayTime.finished())
+		Sky.dayTime.inc() ;
+		if (Sky.dayTime.finished())
 		{
-			sky.dayTime.reset() ;
+			Sky.dayTime.reset() ;
 		}
 		player.incrementCounters() ;
 
@@ -1442,7 +1438,7 @@ public class Game extends JPanel
     	player.getBag().addGold(30000) ;
     	for (Spell spell : player.getSpells())
     	{
-    		spell.incLevel(1) ;
+    		spell.incLevel(5) ;
     	}
 //
 //    	
@@ -1492,7 +1488,7 @@ public class Game extends JPanel
 		loadAllText() ;
 		System.out.println("Loaded text in " + (System.nanoTime() - elapsedTimeText) / 1000000) ;
 
-		DayDuration = 1200 ;
+		DayDuration = 120000 ;
 		sky = new Sky() ;
 		screen.setBorders(new int[] { 0, Sky.height, screen.getSize().width, screen.getSize().height }) ;
 		screen.setMapCenter() ;
@@ -1565,7 +1561,6 @@ public class Game extends JPanel
 			case loading:
 				Opening.displayLoadingScreen(DP) ;
 				initialize() ;
-		    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
 				initializeCheatMode() ;
 				state = GameStates.running ;
 	
@@ -1573,71 +1568,7 @@ public class Game extends JPanel
 				break ;
 
 			case simulation:
-				player.incrementCounters() ;
-				player.activateCounters() ;
-				player.getSatiation().setToMaximum() ;
-				player.getThirst().setToMaximum() ;
-				if (pet != null)
-				{
-					pet.incrementCounters() ;
-					pet.activateCounters() ;
-					pet.getSatiation().setToMaximum() ;
-				}
-	
-				if (player.getCurrentAction() != null)
-				{
-					PlayerEvolutionSimulation.act(player.getCurrentAction(), mousePos) ;
-				}
-				if (player.isInBattle())
-				{
-	//	        		Creature creature = player.getOpponent() ;
-	//	        		creature.fight() ;
-					player.getOpponent().incrementCounters() ;
-					PlayerEvolutionSimulation.playerFight() ;
-	//	        		if (pet != null) { pet.fight() ;}
-					bat.RunBattle(player, pet, player.getOpponent(), animations, DP) ;
-					if (!player.isInBattle())
-					{
-						PlayerEvolutionSimulation.updateFitness() ;
-						if (PlayerEvolutionSimulation.shouldUpdateGenes())
-						{
-							PlayerEvolutionSimulation.updateRecords() ;
-							PlayerEvolutionSimulation.updateCreatureGenes() ;
-						}
-						PlayerEvolutionSimulation.checkPlayerWin() ;
-					}
-				}
-				else
-				{
-					PlayerEvolutionSimulation.checkBattleRepeat() ;
-				}
-				PlayerEvolutionSimulation.displayInterface(mousePos, DP) ;
-				if (player.shouldLevelUP())
-				{
-					player.levelUp(null) ;
-				}
-				if (pet != null)
-				{
-					if (pet.shouldLevelUP())
-					{
-						pet.levelUp(null) ;
-					}
-				}
-				player.showWindows(pet, mousePos, DP) ;
-	
-				if (player.getOpponent() != null)
-				{
-					if (player.getOpponent().getAttWindow().isOpen())
-					{
-						((CreatureAttributesWindow) player.getOpponent().getAttWindow()).display(player.getOpponent(), DP) ;
-					}
-				}
-	
-				for (Animation ani : animations)
-				{
-					ani.run(DP) ;
-				}
-				player.resetAction() ;	
+				PlayerEvolutionSimulation.run(mousePos, bat, animations, DP) ;	
 				break ;
 
 			case running:

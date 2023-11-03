@@ -1,5 +1,4 @@
-/items/
-/liveBeings/
+/attributes/
 /main/
 /maps/
 /screen/
@@ -8,6 +7,4 @@
 /testing/
 /utilities/
 /windows/
-/attributes/
-/components/
-/graphics/
+/liveBeings/

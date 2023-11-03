@@ -8,8 +8,7 @@ import javax.sound.sampled.Clip;
 
 import items.Fab;
 import items.GeneralItem;
-import main.Game;
-import utilities.UtilG;
+import utilities.UtilS;
 
 public class SpecialMap extends GameMap
 {
@@ -21,7 +20,7 @@ public class SpecialMap extends GameMap
 		images = new ArrayList<>() ;
 		for (int i = 0 ; i <= 2 - 1 ; i += 1)
 		{
-			images.add(UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "MapSpecial" + String.valueOf(i) + ".png")) ;
+			images.add(UtilS.loadImage("\\Maps\\" + "MapSpecial" + String.valueOf(i) + ".png")) ;
 		}
 	}
 	public SpecialMap(String Name, Continents Continent, int[] Connections, Image image, Clip music, List<TreasureChest> treasureChests)

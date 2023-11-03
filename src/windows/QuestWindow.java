@@ -15,6 +15,7 @@ import main.Game;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class QuestWindow extends GameWindow
 {
@@ -26,7 +27,7 @@ public class QuestWindow extends GameWindow
 	
 	public QuestWindow()
 	{
-		super("Quest", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Quest.png"), 0, 0, 0, 0) ;
+		super("Quest", UtilS.loadImage("\\Windows\\" + "Quest.png"), 0, 0, 0, 0) ;
 	}
 	
 	

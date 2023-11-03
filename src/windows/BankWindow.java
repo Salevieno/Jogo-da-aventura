@@ -12,6 +12,7 @@ import utilities.LiveInput;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class BankWindow extends GameWindow
 {
@@ -26,11 +27,11 @@ public class BankWindow extends GameWindow
 	private LiveInput liveInput ;
 	
 	private static final String[] investmentRiskLevels = new String[] {"low", "high"} ;
-	public static final Image clock = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "clock.png") ;
+	public static final Image clock = UtilS.loadImage("\\Windows\\" + "clock.png") ;
 
 	public BankWindow()
 	{
-		super("Banco", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Banco.png"), 1, 1, 1, 1) ;
+		super("Banco", UtilS.loadImage("\\Windows\\" + "Banco.png"), 1, 1, 1, 1) ;
 		windowPos = Game.getScreen().pos(0.4, 0.2) ;
 		mode = "" ;
 		amountTyped = 0 ;

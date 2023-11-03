@@ -27,6 +27,7 @@ import main.Game;
 import main.TextCategories;
 import utilities.Align;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class BagWindow extends GameWindow
 {
@@ -46,13 +47,13 @@ public class BagWindow extends GameWindow
 	private final Point windowPos = Game.getScreen().pos(0.3, 0.48) ;
 	private final int numberSlotMax = 20 ;
 	
-	public static final Image BagImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Bag.png") ;
-	public static final Image SelectedBag = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelected.png") ;
-	public static final Image MenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagMenu.png") ;
-	public static final Image SelectedMenuTab0 = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedMenuTab0.png") ;
-	public static final Image SelectedMenuTab1 = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedMenuTab1.png") ;
-    public static final Image SlotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSlot.png") ;
-    public static final Image SelectedSlotImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "BagSelectedSlot.png") ;
+	public static final Image BagImage = UtilS.loadImage("\\Windows\\" + "Bag.png") ;
+	public static final Image SelectedBag = UtilS.loadImage("\\Windows\\" + "BagSelected.png") ;
+	public static final Image MenuImage = UtilS.loadImage("\\Windows\\" + "BagMenu.png") ;
+	public static final Image SelectedMenuTab0 = UtilS.loadImage("\\Windows\\" + "BagSelectedMenuTab0.png") ;
+	public static final Image SelectedMenuTab1 = UtilS.loadImage("\\Windows\\" + "BagSelectedMenuTab1.png") ;
+    public static final Image SlotImage = UtilS.loadImage("\\Windows\\" + "BagSlot.png") ;
+    public static final Image SelectedSlotImage = UtilS.loadImage("\\Windows\\" + "BagSelectedSlot.png") ;
 	
 	public BagWindow(Map<Potion, Integer> pot, Map<Alchemy, Integer> alch, Map<Forge, Integer> forge, Map<PetItem, Integer> petItem,
 			Map<Food, Integer> food, Map<Arrow, Integer> arrow, Map<Equip, Integer> equip, Map<GeneralItem, Integer> genItem,

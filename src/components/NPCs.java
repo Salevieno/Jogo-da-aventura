@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import attributes.PersonalAttributes;
 import graphics.DrawingOnPanel;
 import items.Equip;
-import items.Item;
 import items.Recipe;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -24,6 +23,7 @@ import maps.GameMap;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 import windows.BagWindow;
 import windows.BankWindow;
 import windows.CraftWindow;
@@ -45,8 +45,10 @@ public class NPCs
 	private List<Collider> colliders ;
 
 	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 10) ;
-	public static final Image SpeakingBubble = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeechBubble.png") ;
-	public static final Image ChoicesWindow = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "ChoicesWindow.png") ;
+	public static final Image speakingBubble = UtilS.loadImage("\\NPCs\\" + "SpeechBubble.png") ;
+	public static final Image choicesWindow = UtilS.loadImage("\\NPCs\\" + "ChoicesWindow.png") ;
+	private static final Color stdColor = Game.colorPalette[0] ;
+	private static final Color selColor = Game.colorPalette[18] ;
 
 	public NPCs(NPCType type, Point pos)
 	{
@@ -386,16 +388,16 @@ public class NPCs
 		
 		if (type.getSpeech() == null) { return ;}
 		if (type.getSpeech().length <= menu) { return ;}
-		if (type.getSpeech()[menu].equals("")) { return ;}
+		if (type.getSpeech()[menu].isEmpty()) { return ;}
 		if (type.getImage() == null) { return ;}
 		
 		String content = type.getSpeech()[menu] ;
 		
 		if (content == null) { return ;}
 		
-		Point speechPos = UtilG.Translate(pos, -22, -2 - type.getImage().getHeight(null)) ;
+		Point speechPos = UtilG.Translate(pos, -22, -2 - type.height()) ;
 
-		DP.DrawSpeech(speechPos, content, NPCfont, SpeakingBubble, Game.colorPalette[0]) ;
+		DP.DrawSpeech(speechPos, content, NPCfont, speakingBubble, stdColor) ;
 		
 	}
 
@@ -406,18 +408,17 @@ public class NPCs
 		if (type.getOptions().get(menu) == null) { return ;}
 		
 		List<String> options = type.getOptions().get(menu) ;
-		Color selColor = Game.colorPalette[18] ;
 		
 		if (options == null) { return ;}		
 		if (options.size() <= 0) { return ;}
 		
-		DP.DrawImage(ChoicesWindow, windowPos, Align.topLeft) ;
+		DP.DrawImage(choicesWindow, windowPos, Align.topLeft) ;
 		
 		int sy = NPCfont.getSize() + 5 ;
 		for (int i = 0 ; i <= options.size() - 1 ; i += 1)
 		{
 			Point textPos = UtilG.Translate(windowPos, 5, 5 + i * sy) ;
-			Color textColor = i == selOption ? selColor : Game.colorPalette[0] ;
+			Color textColor = i == selOption ? selColor : stdColor ;
 			DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, options.get(i), NPCfont, textColor) ;
 		}
 		

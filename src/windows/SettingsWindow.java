@@ -12,6 +12,7 @@ import main.Game;
 import main.TextCategories;
 import utilities.Align;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class SettingsWindow extends GameWindow
 {
@@ -31,7 +32,7 @@ public class SettingsWindow extends GameWindow
 	public SettingsWindow(Image image, boolean musicIsOn, boolean soundEffectsAreOn, boolean showAtkRange, int attDisplay, int damageAnimation)
 	{
 		super("Opções", image, 3, 0, 6, 0) ;
-		deeperMenuImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "settingsDeeperWindow.png") ;
+		deeperMenuImage = UtilS.loadImage("\\Windows\\" + "settingsDeeperWindow.png") ;
 		this.musicIsOn = musicIsOn ;
 		this.soundEffectsAreOn = soundEffectsAreOn ;
 		this.showAtkRange = showAtkRange ;

@@ -16,6 +16,7 @@ import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class ElementalWindow extends GameWindow
 {
@@ -27,7 +28,7 @@ public class ElementalWindow extends GameWindow
 	private Equip selectedEquip ;
 	
 	private static final List<String> menuTitles = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
-	private static final Image windowImage = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Elemental.png") ;
+	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Elemental.png") ;
 	private static final int firstSphereID = 390 ;
 	private static final int numberItemsOnWindow = 10 ;
 

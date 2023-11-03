@@ -16,6 +16,7 @@ import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class Equip extends Item
 {
@@ -27,31 +28,31 @@ public class Equip extends Item
 	private static Equip[] allEquips ;
 	public static final int maxForgeLevel = 10 ;
 	
-	private static final Image swordIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconSword.png") ;
-	private static final Image staffIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconStaff.png") ;
-	private static final Image bowIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconBow.png") ;
-	private static final Image clawsIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconClaws.png") ;
-	private static final Image daggerIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconDagger.png") ;
-	private static final Image shieldIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconShield.png") ;
-	private static final Image armorIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconArmor.png") ;
-	private static final Image emblemIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconArmor.png") ;
+	private static final Image swordIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconSword.png") ;
+	private static final Image staffIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconStaff.png") ;
+	private static final Image bowIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconBow.png") ;
+	private static final Image clawsIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconClaws.png") ;
+	private static final Image daggerIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconDagger.png") ;
+	private static final Image shieldIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconShield.png") ;
+	private static final Image armorIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconArmor.png") ;
+	private static final Image emblemIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconArmor.png") ;
 	
-	public static final Image SwordImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq0_Sword.png") ;
-	public static final Image StaffImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq1_Staff.png") ;
-	public static final Image BowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq2_Bow.png") ;
-	public static final Image ClawsImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq3_Claws.png") ;
-	public static final Image DaggerImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq4_Dagger.png") ;
-	public static final Image ShieldImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq5_Shield.png") ;
-	public static final Image ArmorImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq6_Armor.png") ;
-	public static final Image emblemImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq8_emblem.png") ;
+	public static final Image SwordImage = UtilS.loadImage("\\Equips\\" + "Eq0_Sword.png") ;
+	public static final Image StaffImage = UtilS.loadImage("\\Equips\\" + "Eq1_Staff.png") ;
+	public static final Image BowImage = UtilS.loadImage("\\Equips\\" + "Eq2_Bow.png") ;
+	public static final Image ClawsImage = UtilS.loadImage("\\Equips\\" + "Eq3_Claws.png") ;
+	public static final Image DaggerImage = UtilS.loadImage("\\Equips\\" + "Eq4_Dagger.png") ;
+	public static final Image ShieldImage = UtilS.loadImage("\\Equips\\" + "Eq5_Shield.png") ;
+	public static final Image ArmorImage = UtilS.loadImage("\\Equips\\" + "Eq6_Armor.png") ;
+	public static final Image emblemImage = UtilS.loadImage("\\Equips\\" + "Eq8_emblem.png") ;
 	
-	public static final Image ShiningSwordImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq0_ShiningSword.png") ;
-	public static final Image ShiningStaffImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq1_ShiningStaff.png") ;
-	public static final Image ShiningBowImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq2_ShiningBow.png") ;
-	public static final Image ShiningClawsImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq3_ShiningClaws.png") ;
-	public static final Image ShiningDaggerImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq4_ShiningDagger.png") ;
-	public static final Image ShiningShieldImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq5_ShiningShield.png") ;
-	public static final Image ShiningArmorImage = UtilG.loadImage(Game.ImagesPath + "\\Equips\\" + "Eq6_ShiningArmor.png") ;
+	public static final Image ShiningSwordImage = UtilS.loadImage("\\Equips\\" + "Eq0_ShiningSword.png") ;
+	public static final Image ShiningStaffImage = UtilS.loadImage("\\Equips\\" + "Eq1_ShiningStaff.png") ;
+	public static final Image ShiningBowImage = UtilS.loadImage("\\Equips\\" + "Eq2_ShiningBow.png") ;
+	public static final Image ShiningClawsImage = UtilS.loadImage("\\Equips\\" + "Eq3_ShiningClaws.png") ;
+	public static final Image ShiningDaggerImage = UtilS.loadImage("\\Equips\\" + "Eq4_ShiningDagger.png") ;
+	public static final Image ShiningShieldImage = UtilS.loadImage("\\Equips\\" + "Eq5_ShiningShield.png") ;
+	public static final Image ShiningArmorImage = UtilS.loadImage("\\Equips\\" + "Eq6_ShiningArmor.png") ;
 
 	static
 	{

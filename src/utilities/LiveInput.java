@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Point;
 
 import graphics.DrawingOnPanel;
-import liveBeings.Player;
 import main.Game;
 
 public class LiveInput

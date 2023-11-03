@@ -8,12 +8,13 @@ import liveBeings.Player;
 import main.Game;
 import maps.GroundTypes;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class GeneralItem extends Item
 {
 	private static GeneralItem[] AllGeneralItems ;
 	
-	private static final Image generalItemIcon = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconGenItem.png") ;
+	private static final Image generalItemIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconGenItem.png") ;
 	
 	static
 	{

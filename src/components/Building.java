@@ -35,7 +35,7 @@ public class Building
 		this.npcs = npcs ;
 		colliders = new ArrayList<>() ;
 		
-//		Image collidersImage = UtilG.loadImage(Game.ImagesPath + "\\Buildings\\" + "Building" + type.getName() + "Colliders.png") ;
+//		Image collidersImage = UtilS.loadImage("\\Buildings\\" + "Building" + type.getName() + "Colliders.png") ;
 //		
 //		if (collidersImage == null) { return ;}
 //		

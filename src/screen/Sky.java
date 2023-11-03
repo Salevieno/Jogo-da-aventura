@@ -10,6 +10,7 @@ import main.Game;
 import utilities.Align;
 import utilities.TimeCounter;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class Sky 
 {
@@ -21,17 +22,17 @@ public class Sky
 
 	public static final int height = (int)(0.2 * Game.getScreen().getSize().height) ;
 	public static final Dimension size = new Dimension(Game.getScreen().getSize().width, height) ;
-	public static final Image cloudImage1 = UtilG.loadImage(Game.ImagesPath  + "\\Sky\\" + "Cloud1.png") ;
-	public static final Image cloudImage2 = UtilG.loadImage(Game.ImagesPath  + "\\Sky\\" + "Cloud2.png") ;
-	public static final Image cloudImage3 = UtilG.loadImage(Game.ImagesPath  + "\\Sky\\" + "Cloud3.png") ;
+	public static final Image cloudImage1 = UtilS.loadImage("\\Sky\\" + "Cloud1.png") ;
+	public static final Image cloudImage2 = UtilS.loadImage("\\Sky\\" + "Cloud2.png") ;
+	public static final Image cloudImage3 = UtilS.loadImage("\\Sky\\" + "Cloud3.png") ;
 	private static final Image[] starImages = new Image[] {
-			UtilG.loadImage(Game.ImagesPath  + "\\Sky\\" + "Star1.png") ,
-			UtilG.loadImage(Game.ImagesPath  + "\\Sky\\" + "Star2.png") ,
-			UtilG.loadImage(Game.ImagesPath  + "\\Sky\\" + "Star3.png") ,
-			UtilG.loadImage(Game.ImagesPath  + "\\Sky\\" + "Star4.png") ,
-			UtilG.loadImage(Game.ImagesPath  + "\\Sky\\" + "Star5.png") ,
-			UtilG.loadImage(Game.ImagesPath  + "\\Sky\\" + "Star6.png") ,
-			UtilG.loadImage(Game.ImagesPath  + "\\Sky\\" + "Star7.png")
+			UtilS.loadImage("\\Sky\\" + "Star1.png") ,
+			UtilS.loadImage("\\Sky\\" + "Star2.png") ,
+			UtilS.loadImage("\\Sky\\" + "Star3.png") ,
+			UtilS.loadImage("\\Sky\\" + "Star4.png") ,
+			UtilS.loadImage("\\Sky\\" + "Star5.png") ,
+			UtilS.loadImage("\\Sky\\" + "Star6.png") ,
+			UtilS.loadImage("\\Sky\\" + "Star7.png")
 	} ;
 	
 	public Sky ()

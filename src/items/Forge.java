@@ -5,16 +5,17 @@ import java.util.List;
 
 import main.Game;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class Forge extends Item
 {
 	
 	private static Forge[] AllForge ;
 	
-	private static final Image runeAtk = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconRuneAtk.png") ;
-	private static final Image runeDef = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconRuneDef.png") ;
-	private static final Image specialRuneAtk = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconSpecialRuneAtk.png") ;
-	private static final Image specialRuneDef = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconSpecialRuneDef.png") ;
+	private static final Image runeAtk = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconRuneAtk.png") ;
+	private static final Image runeDef = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconRuneDef.png") ;
+	private static final Image specialRuneAtk = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconSpecialRuneAtk.png") ;
+	private static final Image specialRuneDef = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconSpecialRuneDef.png") ;
 	
 	static
 	{

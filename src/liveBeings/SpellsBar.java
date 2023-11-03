@@ -13,59 +13,88 @@ import main.TextCategories;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class SpellsBar
 {	
-	private static final Font titlefont = new Font("SansSerif", Font.BOLD, 10) ;
-	private static final Font font = new Font("SansSerif", Font.BOLD, 9) ;
-	private static final String title = Game.allText.get(TextCategories.spellsBar)[0] ;
+	private static final int maxNumberRows ;
+	private static final Font titlefont ;
+	private static final Font font ;
+	private static final String title ;
+	private static final Color textColor ;
+
+	private static final Point barPos ;
+	private static final Image image ;
+	private static final Image slotImage ;
+	private static final Image slotImageNoMP ;
+	private static final Dimension size ;
+	private static final Dimension slotSize ;
 	
-	private static final Image image = UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "SpellsBar.png") ;
-	private static final Image slotImage = UtilG.loadImage(Game.ImagesPath + "\\SideBar\\" + "Slot.png") ;
-	
-	public static void display(int currentMP, List<Spell> activeSpells, Point mousePos, DrawingOnPanel DP)
+	static
 	{
-		Point barPos = new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70) ;
-		Dimension barSize = new Dimension(image.getWidth(null), image.getHeight(null)) ;
-		Dimension slotSize = new Dimension(slotImage.getWidth(null), slotImage.getHeight(null)) ;
+		maxNumberRows = 8 ;
+		titlefont = new Font("SansSerif", Font.BOLD, 10) ;
+		font = new Font("SansSerif", Font.BOLD, 9) ;
+		title = Game.allText.get(TextCategories.spellsBar)[0] ;
+		textColor = Game.colorPalette[3] ;
 		
-		int nCols = Math.max(activeSpells.size() / 11 + 1, 1) ;
-		int nRows = activeSpells.size() / nCols + 1 ;
-		int sx = (int) UtilG.spacing(barSize.width, nCols, slotSize.width, 2) ;
-		int sy = (int) UtilG.spacing(barSize.height - titlefont.getSize(), nRows, slotSize.height, 1) ;
+		barPos = new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70) ;
+		image = UtilS.loadImage("\\Player\\" + "SpellsBar.png") ;
+		slotImage = UtilS.loadImage("\\SideBar\\" + "Slot.png") ;
+		slotImageNoMP = UtilS.loadImage("\\SideBar\\" + "SlotNoMP.png") ;
+		size = UtilG.getSize(image) ;
+		slotSize = UtilG.getSize(slotImage) ;
+	}
+	
+	public static void displayCooldown(Point slotCenter, Spell spell, DrawingOnPanel DP)
+	{
+
+		if (spell.getCooldownCounter().finished()) { return ;}
+		
+		Dimension imgSize = UtilG.getSize(Spell.cooldownImage) ;
+		Scale scale = new Scale(1, 1 - spell.getCooldownCounter().rate()) ;
+		Point imgPos = new Point(slotCenter.x - imgSize.width / 2, slotCenter.y + imgSize.height / 2);
+		DP.DrawImage(Spell.cooldownImage, imgPos, DrawingOnPanel.stdAngle, scale, Align.bottomLeft) ;
+	
+	}
+	
+	public static void display(int userMP, List<Spell> spells, Point mousePos, DrawingOnPanel DP)
+	{
+		// TODO calcs podem ir pra outra função
+		Point grid = UtilG.calcGrid(spells.size(), maxNumberRows) ;
+		int nRows = grid.x ;
+		int nCols = grid.y ;
+
+		Point offset = new Point(slotSize.width / 2, slotSize.height / 2 + 15) ;
+		int sx = (int) UtilG.spacing(size.width, nCols, slotSize.width, 0) ;
+		int sy = (int) UtilG.spacing(size.height, nRows, slotSize.height, 15) ;
 		double angle = DrawingOnPanel.stdAngle ;	
-		Color textColor = Game.colorPalette[3] ;
+		
 		DP.DrawImage(image, barPos, Align.bottomLeft) ;
 		
-		Point titlePos = new Point(barPos.x + barSize.width / 2, barPos.y - barSize.height + 2) ;
+		Point titlePos = new Point(barPos.x + size.width / 2, barPos.y - size.height + 2) ;
 		DP.DrawText(titlePos, Align.topCenter, angle, title, titlefont, Game.colorPalette[5]) ;
 		
-		List<String> Keys = Player.SpellKeys ;
-		Dimension imgSize = new Dimension(Spell.cooldownImage.getWidth(null), Spell.cooldownImage.getHeight(null)) ;
-		for (int i = 0 ; i <= activeSpells.size() - 1 ; ++i)
+		for (int i = 0 ; i <= spells.size() - 1 ; i += 1)
 		{
-			Spell spell = activeSpells.get(i) ;
-			if (0 < spell.getLevel())
-			{
-				int row = i % nRows ;
-				int col = i / nRows ;
-				Point slotCenter = UtilG.Translate(barPos, slotSize.width / 2 + col * sx + 2, - barSize.height + slotSize.height / 2 + row * sy + titlefont.getSize() + 1) ;
-				Image image = currentMP < spell.getMpCost() ? slotImage : slotImage ;
-				DP.DrawImage(image, slotCenter, Align.center) ;
-				DP.DrawText(slotCenter, Align.center, angle, Keys.get(i), font, textColor) ;
-				
-				// display cooldown
-				if (!spell.getCooldownCounter().finished())
-				{
-					Scale Imscale = new Scale(1, 1 - spell.getCooldownCounter().rate()) ;
-					Point cooldownImagePos = new Point(slotCenter.x - imgSize.width / 2, slotCenter.y + imgSize.height / 2);
-					DP.DrawImage(Spell.cooldownImage, cooldownImagePos, angle, Imscale, Align.bottomLeft) ;
-				}
-				
-				if (!UtilG.isInside(mousePos, new Point(slotCenter.x - imgSize.width / 2, slotCenter.y - imgSize.height / 2), imgSize)) { continue ;}
-				
-				DP.DrawText(new Point(slotCenter.x - slotSize.width - 10, slotCenter.y), Align.centerRight, angle, spell.getName(), titlefont, textColor) ;
-			}
+			Spell spell = spells.get(i) ;
+			if (spell.getLevel() <= 0) { continue ;}
+			
+			int row = i % nRows ;
+			int col = i / nRows ;
+			Point slotCenter = UtilG.Translate(barPos, offset.x + col * sx, - size.height + offset.y + row * sy) ;
+			Image image = spell.getMpCost() < userMP ? slotImage : slotImageNoMP ;
+			DP.DrawImage(image, slotCenter, Align.center) ;
+			DP.DrawText(slotCenter, Align.center, angle, Player.SpellKeys.get(i), font, textColor) ;
+			
+			displayCooldown(slotCenter, spell, DP) ;
+
+			Point slotTopLeft = UtilG.getTopLeft(slotCenter, Align.center, slotSize) ;
+			if (!UtilG.isInside(mousePos, slotTopLeft, slotSize)) { continue ;}
+			
+			Point textPos = new Point(slotCenter.x - slotSize.width - 10, slotCenter.y) ;
+			DP.DrawText(textPos, Align.centerRight, angle, spell.getName(), titlefont, textColor) ;
+		
 		}
 	}
 }

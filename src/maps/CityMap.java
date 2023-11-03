@@ -11,8 +11,7 @@ import components.Building;
 import components.NPCs;
 import items.Fab;
 import items.GeneralItem;
-import main.Game;
-import utilities.UtilG;
+import utilities.UtilS;
 
 public class CityMap extends GameMap
 {
@@ -24,7 +23,7 @@ public class CityMap extends GameMap
 		images = new ArrayList<>() ;
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
-			images.add(UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map" + String.valueOf(i) + ".png")) ;
+			images.add(UtilS.loadImage("\\Maps\\" + "Map" + String.valueOf(i) + ".png")) ;
 		}
 	}
 	
@@ -34,7 +33,7 @@ public class CityMap extends GameMap
 		
 		if (Name.equals("City of the knights"))
 		{
-			Image knightsCityWallImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "Knight'sCityWall.png") ;
+			Image knightsCityWallImage = UtilS.loadImage("\\MapElements\\" + "Knight'sCityWall.png") ;
 			mapElems.add(new MapElements(0, "Knight'sCityWall", new Point(0, 96 - knightsCityWallImage.getHeight(null)), knightsCityWallImage)) ;
 			mapElems.add(new MapElements(0, "Knight'sCityWall", new Point(0, 480 - knightsCityWallImage.getHeight(null)), knightsCityWallImage)) ;
 		}

@@ -39,6 +39,8 @@ public class NPCType
 	public String[] getSpeech() {return speech ;}
 	public List<List<String>> getOptions() {return options ;}
 	public List<List<Integer>> getDestination() { return destination ;}
+	
+	public int height() { return image.getHeight(null) ;}
 
 
 	private void MapOptionsToDestinyMenu(NPCJobs job)

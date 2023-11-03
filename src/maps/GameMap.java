@@ -28,6 +28,7 @@ import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class GameMap 
 {
@@ -70,8 +71,8 @@ public class GameMap
 		{
 			allDiggingItems.put(GeneralItem.getAll()[genItemIDs[i]], genItemPotentials[i]) ;
 		}
-		beachGif = UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map2_beach.gif") ;
-		infoWindow = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "MapInfo.png") ;
+		beachGif = UtilS.loadImage("\\Maps\\" + "Map2_beach.gif") ;
+		infoWindow = UtilS.loadImage("\\Windows\\" + "MapInfo.png") ;
 		
 		musicForest = Music.musicFileToClip(new File(Game.MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
 		musicSpecial = Music.musicFileToClip(new File(Game.MusicPath + "12-Special.wav").getAbsoluteFile()) ;
@@ -82,22 +83,22 @@ public class GameMap
 	
 	static
 	{
-//		Image Water = UtilG.loadImage(Game.ImagesPath + "MapElem0_Water.png") ;
-		/*Image Wall = UtilG.loadImage(ImagesPath + "MapElem1_Wall.png") ;
-		Image Berry = UtilG.loadImage(ImagesPath + "MapElem2_Berry.png") ;
-		Image Herb = UtilG.loadImage(ImagesPath + "MapElem3_Herb.png") ;
-		Image Wood = UtilG.loadImage(ImagesPath + "MapElem4_Wood.png") ;
-		Image Metal = UtilG.loadImage(ImagesPath + "MapElem5_Metal.png") ;
-		Image TreeForest = UtilG.loadImage(ImagesPath + "MapElem6_TreeForest.png") ;
-		Image PalmTree = UtilG.loadImage(ImagesPath + "MapElem7_PalmTree.png") ;
-		Image Grass = UtilG.loadImage(ImagesPath + "MapElem8_Grass.png") ;
-		Image Rock = UtilG.loadImage(ImagesPath + "MapElem9_Rock.png") ;
-		Image Crystal = UtilG.loadImage(ImagesPath + "MapElem10_Crystal.png") ;
-		Image Stalactite = UtilG.loadImage(ImagesPath + "MapElem11_Stalactite.png") ;
-		Image Volcano = UtilG.loadImage(ImagesPath + "MapElem12_Volcano.png") ;*/
-//		Image Lava = UtilG.loadImage(Game.ImagesPath + "MapElem13_Lava.png") ;
-//		Image Ice = UtilG.loadImage(Game.ImagesPath + "MapElem14_Ice.png") ;
-		//Image Chest = UtilG.loadImage(ImagesPath + "MapElem15_Chest.png") ;	
+//		Image Water = UtilS.loadImage("MapElem0_Water.png") ;
+		/*Image Wall = UtilS.loadImage("MapElem1_Wall.png") ;
+		Image Berry = UtilS.loadImage("MapElem2_Berry.png") ;
+		Image Herb = UtilS.loadImage("MapElem3_Herb.png") ;
+		Image Wood = UtilS.loadImage("MapElem4_Wood.png") ;
+		Image Metal = UtilS.loadImage("MapElem5_Metal.png") ;
+		Image TreeForest = UtilS.loadImage("MapElem6_TreeForest.png") ;
+		Image PalmTree = UtilS.loadImage("MapElem7_PalmTree.png") ;
+		Image Grass = UtilS.loadImage("MapElem8_Grass.png") ;
+		Image Rock = UtilS.loadImage("MapElem9_Rock.png") ;
+		Image Crystal = UtilS.loadImage("MapElem10_Crystal.png") ;
+		Image Stalactite = UtilS.loadImage("MapElem11_Stalactite.png") ;
+		Image Volcano = UtilS.loadImage("MapElem12_Volcano.png") ;*/
+//		Image Lava = UtilS.loadImage("MapElem13_Lava.png") ;
+//		Image Ice = UtilS.loadImage("MapElem14_Ice.png") ;
+		//Image Chest = UtilS.loadImage("MapElem15_Chest.png") ;	
 //		GroundImage = new Image[] {Water, Lava, Ice} ;
 	}
 	

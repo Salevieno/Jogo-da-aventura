@@ -6,12 +6,10 @@ import java.awt.Point;
 
 import org.json.simple.JSONObject;
 
-import attributes.BasicAttribute;
 import graphics.DrawingOnPanel;
-import main.Game;
 import utilities.Align;
 import utilities.Directions;
-import utilities.UtilG;
+import utilities.UtilS;
 
 public class LiveBeingStatus
 {
@@ -30,11 +28,11 @@ public class LiveBeingStatus
 	private int poison ;
 	private int silence ;
 	
-	private static Image stunImage = UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Stun.png") ;
-	private static Image blockImage = UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Block.png") ;
-	private static Image bloodImage = UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Blood.png") ;
-	private static Image poisonImage = UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Poison.png") ;
-	private static Image silenceImage = UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Silence.png") ;
+	private static Image stunImage = UtilS.loadImage("\\Status\\" + "Stun.png") ;
+	private static Image blockImage = UtilS.loadImage("\\Status\\" + "Block.png") ;
+	private static Image bloodImage = UtilS.loadImage("\\Status\\" + "Blood.png") ;
+	private static Image poisonImage = UtilS.loadImage("\\Status\\" + "Poison.png") ;
+	private static Image silenceImage = UtilS.loadImage("\\Status\\" + "Silence.png") ;
 	
 	
 	public int getLife()

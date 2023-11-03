@@ -3,12 +3,12 @@ package liveBeings;
 import java.awt.Image;
 
 import main.Game;
-import utilities.UtilG;
+import utilities.UtilS;
 
 public class Pterodactile
 {
-    public static final Image image = UtilG.loadImage(Game.ImagesPath + "\\Pterodactile\\" + "Pterodactile.png") ;
-    public static final Image SpeakingBubbleImage = UtilG.loadImage(Game.ImagesPath + "\\NPCs\\" + "SpeechBubble.png") ;
+    public static final Image image = UtilS.loadImage("\\Pterodactile\\" + "Pterodactile.png") ;
+    public static final Image SpeakingBubbleImage = UtilS.loadImage("\\NPCs\\" + "SpeechBubble.png") ;
     public static String[] message = null  ;
     
     public static void speak()

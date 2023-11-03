@@ -10,12 +10,13 @@ import main.Game;
 import main.TextCategories;
 import utilities.Align;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class HintsWindow extends GameWindow
 {
 	public HintsWindow()
 	{
-		super("Dicas", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Hints.png"), 0, 0, 0, 0) ;
+		super("Dicas", UtilS.loadImage("\\Windows\\" + "Hints.png"), 0, 0, 0, 0) ;
 	}
 	
 	public void navigate(String action)

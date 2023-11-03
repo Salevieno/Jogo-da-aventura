@@ -21,6 +21,7 @@ import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import components.GameButton;
 import components.IconFunction;
+import graphics.Animation;
 import graphics.DrawingOnPanel;
 import liveBeings.Creature;
 import liveBeings.Genetics;
@@ -37,6 +38,8 @@ import utilities.Directions;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
+import utilities.UtilS;
+import windows.CreatureAttributesWindow;
 import windows.GameWindow;
 import windows.PlayerAttributesWindow;
 
@@ -58,10 +61,10 @@ public abstract class PlayerEvolutionSimulation
 	
 	private static List<GameButton> buttons ;
 
-	private static final Image screenImage = UtilG.loadImage(Game.ImagesPath + "SimulationScreen.png") ;
-	private static final Image buttonImage = UtilG.loadImage(Game.ImagesPath + "ButtonGeneral.png") ;
-	private static final Image buttonSelectedImage = UtilG.loadImage(Game.ImagesPath + "ButtonGeneralSelected.png") ;
-	private static final Image fightingImage = UtilG.loadImage(Game.ImagesPath + "fightingIcon.png") ;
+	private static final Image screenImage = UtilS.loadImage("SimulationScreen.png") ;
+	private static final Image buttonImage = UtilS.loadImage("ButtonGeneral.png") ;
+	private static final Image buttonSelectedImage = UtilS.loadImage("ButtonGeneralSelected.png") ;
+	private static final Image fightingImage = UtilS.loadImage("fightingIcon.png") ;
 	
 	
 	private static int BattleResultsPlayerLife = 0 ;
@@ -669,6 +672,75 @@ public abstract class PlayerEvolutionSimulation
 	public static GameWindow getPlayerAttWindow()
 	{
 		return player.getAttWindow() ;
+	}
+	
+	public static void run(Point mousePos, Battle bat, List<Animation> animations, DrawingOnPanel DP)
+	{
+		player.incrementCounters() ;
+		player.activateCounters() ;
+		player.getSatiation().setToMaximum() ;
+		player.getThirst().setToMaximum() ;
+		if (pet != null)
+		{
+			pet.incrementCounters() ;
+			pet.activateCounters() ;
+			pet.getSatiation().setToMaximum() ;
+		}
+
+		if (player.getCurrentAction() != null)
+		{
+			PlayerEvolutionSimulation.act(player.getCurrentAction(), mousePos) ;
+		}
+		if (player.isInBattle())
+		{
+//	        		Creature creature = player.getOpponent() ;
+//	        		creature.fight() ;
+			player.getOpponent().incrementCounters() ;
+			PlayerEvolutionSimulation.playerFight() ;
+//	        		if (pet != null) { pet.fight() ;}
+			bat.RunBattle(player, pet, player.getOpponent(), animations, DP) ;
+			if (!player.isInBattle())
+			{
+				PlayerEvolutionSimulation.updateFitness() ;
+				if (PlayerEvolutionSimulation.shouldUpdateGenes())
+				{
+					PlayerEvolutionSimulation.updateRecords() ;
+					PlayerEvolutionSimulation.updateCreatureGenes() ;
+				}
+				PlayerEvolutionSimulation.checkPlayerWin() ;
+			}
+		}
+		else
+		{
+			PlayerEvolutionSimulation.checkBattleRepeat() ;
+		}
+		PlayerEvolutionSimulation.displayInterface(mousePos, DP) ;
+		if (player.shouldLevelUP())
+		{
+			player.levelUp(null) ;
+		}
+		if (pet != null)
+		{
+			if (pet.shouldLevelUP())
+			{
+				pet.levelUp(null) ;
+			}
+		}
+		player.showWindows(pet, mousePos, DP) ;
+
+		if (player.getOpponent() != null)
+		{
+			if (player.getOpponent().getAttWindow().isOpen())
+			{
+				((CreatureAttributesWindow) player.getOpponent().getAttWindow()).display(player.getOpponent(), DP) ;
+			}
+		}
+
+		for (Animation ani : animations)
+		{
+			ani.run(DP) ;
+		}
+		player.resetAction() ;
 	}
 	
 	public static void drawBar(Point pos, int currentHeight, int maxHeight, Color color, DrawingOnPanel DP)

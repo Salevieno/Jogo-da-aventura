@@ -15,6 +15,7 @@ import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class PetAttributesWindow extends AttributesWindow
 {
@@ -22,7 +23,7 @@ public class PetAttributesWindow extends AttributesWindow
 	
 	public PetAttributesWindow()
 	{
-		super(UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "PetAttWindow.png"), 1);
+		super(UtilS.loadImage("\\Windows\\" + "PetAttWindow.png"), 1);
 	}
 
 	public void setPet(Pet pet) { this.pet = pet ;}

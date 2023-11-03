@@ -14,6 +14,7 @@ import main.Game;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class ShoppingWindow extends GameWindow
 {
@@ -26,7 +27,7 @@ public class ShoppingWindow extends GameWindow
 	
 	public ShoppingWindow(List<Item> itemsForSale)
 	{
-		super("Shopping", UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "Shopping.png"), 1, 1, Math.min(itemsForSale.size(), numberItemsPerWindow), calcNumberWindows(itemsForSale.size())) ;
+		super("Shopping", UtilS.loadImage("\\Windows\\" + "Shopping.png"), 1, 1, Math.min(itemsForSale.size(), numberItemsPerWindow), calcNumberWindows(itemsForSale.size())) ;
 		this.itemsForSale = itemsForSale ;
 		itemsOnWindow = calcItemsOnWindow() ;
 		buyMode = true ;

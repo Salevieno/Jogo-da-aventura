@@ -7,6 +7,7 @@ import attributes.PersonalAttributes;
 import liveBeings.LiveBeing;
 import main.Game;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class Potion extends Item
 {
@@ -15,12 +16,12 @@ public class Potion extends Item
 	
 	private static Potion[] AllPotions ;
 	
-	private static Image lifePotionSmall = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconLifePotionSmall.png") ;
-	private static Image lifePotionMedium = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconLifePotionMedium.png") ;
-	private static Image lifePotionLarge = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconLifePotionLarge.png") ;
-	private static Image mpPotionSmall = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconMpPotionSmall.png") ;
-	private static Image mpPotionMedium = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconMpPotionMedium.png") ;
-	private static Image mpPotionLarge = UtilG.loadImage(Game.ImagesPath + "\\Windows\\bagIcons\\" + "IconMpPotionLarge.png") ;
+	private static Image lifePotionSmall = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconLifePotionSmall.png") ;
+	private static Image lifePotionMedium = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconLifePotionMedium.png") ;
+	private static Image lifePotionLarge = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconLifePotionLarge.png") ;
+	private static Image mpPotionSmall = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMpPotionSmall.png") ;
+	private static Image mpPotionMedium = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMpPotionMedium.png") ;
+	private static Image mpPotionLarge = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMpPotionLarge.png") ;
 	
 	static
 	{

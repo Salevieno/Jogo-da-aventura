@@ -21,6 +21,7 @@ import main.Game;
 import screen.Screen;
 import utilities.TimeCounter;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class FieldMap extends GameMap
 {
@@ -37,15 +38,15 @@ public class FieldMap extends GameMap
 	
 	static
 	{
-		treeImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem6_TreeForest.png") ;
-		grassImage = UtilG.loadImage(Game.ImagesPath + "\\MapElements\\" + "MapElem8_Grass.png") ;
+		treeImage = UtilS.loadImage("\\MapElements\\" + "MapElem6_TreeForest.png") ;
+		grassImage = UtilS.loadImage("\\MapElements\\" + "MapElem8_Grass.png") ;
 		
 		images = new ArrayList<>() ;
 		for (int i = 5 ; i <= 67 - 1 ; i += 1)
 		{
 			if (i == 39 | i == 60) { continue ;}
 			
-			images.add(UtilG.loadImage(Game.ImagesPath + "\\Maps\\" + "Map" + String.valueOf(i) + ".png")) ;
+			images.add(UtilS.loadImage("\\Maps\\" + "Map" + String.valueOf(i) + ".png")) ;
 		}
 	}
 	

@@ -27,6 +27,7 @@ import utilities.Elements;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
+import utilities.UtilS;
 import windows.PetAttributesWindow;
 
 public class Pet extends LiveBeing
@@ -44,7 +45,7 @@ public class Pet extends LiveBeing
 	private static List<String[]> PetProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
 	private static List<String[]> PetEvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
 	
-	public final static Gif levelUpGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Player\\" + "LevelUp.gif"), 170, false, false) ;
+	public final static Gif levelUpGif = new Gif(UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 170, false, false) ;
     	
 	public Pet(int Job)
 	{

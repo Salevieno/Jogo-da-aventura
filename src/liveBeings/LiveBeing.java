@@ -63,18 +63,18 @@ public abstract class LiveBeing
 	protected AttributesWindow attWindow ;
 	
 	public static final Image[] StatusImages = new Image[] {
-			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Stun.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Block.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Blood.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Poison.png"),
-			UtilG.loadImage(Game.ImagesPath + "\\Status\\" + "Silence.png")
+			UtilS.loadImage("\\Status\\" + "Stun.png"),
+			UtilS.loadImage("\\Status\\" + "Block.png"),
+			UtilS.loadImage("\\Status\\" + "Blood.png"),
+			UtilS.loadImage("\\Status\\" + "Poison.png"),
+			UtilS.loadImage("\\Status\\" + "Silence.png")
 			};
-	public static final Image defendingImage = UtilG.loadImage(Game.ImagesPath + "\\Battle\\" + "ShieldIcon.png") ;
-	public static final Image powerBarImage = UtilG.loadImage(Game.ImagesPath + "PowerBar.png") ;
+	public static final Image defendingImage = UtilS.loadImage("\\Battle\\" + "ShieldIcon.png") ;
+	public static final Image powerBarImage = UtilS.loadImage("PowerBar.png") ;
 	public static final String[] BattleKeys = new String[] {"Y", "U"} ;	
 	public static final List<String> SpellKeys = new ArrayList<>(Arrays.asList(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"})) ;
-	public final Gif phyHitGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Battle\\" + "PhysicalHit.gif"), (int) (75 / 1.5), false, false) ;
-	public final Gif magHitGif = new Gif(UtilG.loadImage(Game.ImagesPath + "\\Battle\\" + "SpellHit.gif"), (int) (90 / 1.5), false, false) ;
+	public final Gif phyHitGif = new Gif(UtilS.loadImage("\\Battle\\" + "PhysicalHit.gif"), (int) (75 / 1.5), false, false) ;
+	public final Gif magHitGif = new Gif(UtilS.loadImage("\\Battle\\" + "SpellHit.gif"), (int) (90 / 1.5), false, false) ;
 	
 	
 	public LiveBeing(PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, AttributesWindow attWindow)

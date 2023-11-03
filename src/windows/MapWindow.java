@@ -10,6 +10,7 @@ import maps.GameMap;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class MapWindow extends GameWindow
 {
@@ -18,7 +19,7 @@ public class MapWindow extends GameWindow
 	private GameMap currentMap ;
 	
 	private static final boolean displayFull = false ;
-	private static final Image image = UtilG.loadImage(Game.ImagesPath + "\\Windows\\" + "MapWindow.png") ;
+	private static final Image image = UtilS.loadImage("\\Windows\\" + "MapWindow.png") ;
 	
 	public MapWindow()
 	{
