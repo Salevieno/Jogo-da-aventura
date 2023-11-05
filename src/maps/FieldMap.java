@@ -19,6 +19,7 @@ import liveBeings.Creature;
 import liveBeings.CreatureType;
 import main.Game;
 import screen.Screen;
+import screen.Sky;
 import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -59,8 +60,8 @@ public class FieldMap extends GameMap
 		
 		// add map elements
 		Screen screen = Game.getScreen() ;
-		Point minCoord = new Point(20, Game.getSky().height + 20) ;
-		Dimension range = new Dimension(screen.getSize().width - 40, screen.getSize().height - Game.getSky().height - 40) ;
+		Point minCoord = new Point(20, Sky.height + 20) ;
+		Dimension range = new Dimension(screen.getSize().width - 100, screen.getSize().height - Sky.height - 100) ;
 		Dimension step = new Dimension(1, 1) ;
 		
 		int numberTrees = 5 ;
