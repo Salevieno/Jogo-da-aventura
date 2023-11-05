@@ -1116,7 +1116,7 @@ public class Game extends JPanel
 		pet.think(player.isInBattle(), player.getPos()) ;
 		pet.act(player) ;
 		pet.display(pet.getPos(), Scale.unit, DP) ;
-		pet.displayAttributes(0, DP) ;
+//		pet.displayAttributes(0, DP) ;
 	}
 	
 	private void playerActs()
@@ -1407,7 +1407,7 @@ public class Game extends JPanel
 			case loading:
 				Opening.displayLoadingScreen(DP) ;
 				initialize() ;
-//				initializeCheatMode() ;
+				initializeCheatMode() ;
 				state = GameStates.running ;
 	
 				shouldRepaint = true ;	

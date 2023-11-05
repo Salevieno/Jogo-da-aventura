@@ -136,7 +136,7 @@ public class Player extends LiveBeing
 	public final static int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public final static Color[] ClassColors = new Color[] {Game.colorPalette[21], Game.colorPalette[5], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
-    public final static Gif levelUpGif = new Gif(UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 160, false, false) ;
+    public final static Gif levelUpGif = new Gif(UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 500, false, false) ;
     
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
 	public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
@@ -1454,7 +1454,7 @@ public class Player extends LiveBeing
 		
 		((PlayerAttributesWindow) attWindow).activateIncAttButtons(attPoints) ;
 		
-		Game.getAnimations().get(4).start(levelUpGif.getDuration(), new Object[] {pos}) ;
+		Game.getAnimations().get(4).start(levelUpGif.getDuration(), new Object[] {UtilG.Translate(pos, 8, 0)}) ;
 		
 		if (attIncAnimation == null) { return ;}
 		
