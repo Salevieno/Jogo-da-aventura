@@ -7,20 +7,20 @@ import graphics.Animation;
 import liveBeings.Pterodactile;
 import main.AtkResults;
 import main.AtkTypes;
-import utilities.AttackEffects;
+import utilities.AtkEffects;
 
 public class TestingAnimations
 {
 	public static void runTests(Animation[] ani)
 	{    	
 
-		Object[] object0 = new Object[] {new Point(200, 200), new Dimension(100, 100), new AtkResults(AtkTypes.magical, AttackEffects.crit, 200), 1} ;
+		Object[] object0 = new Object[] {new Point(200, 200), new Dimension(100, 100), new AtkResults(AtkTypes.magical, AtkEffects.crit, 200), 1} ;
     	ani[0].start(100, object0) ;
     	
-		Object[] object1 = new Object[] {new Point(200, 300), new Dimension(100, 100), new AtkResults(AtkTypes.magical, AttackEffects.crit, 200), 1} ;
+		Object[] object1 = new Object[] {new Point(200, 300), new Dimension(100, 100), new AtkResults(AtkTypes.magical, AtkEffects.crit, 200), 1} ;
     	ani[1].start(100, object1) ;
     	
-    	Object[] object2 = new Object[] {new Point(300, 200), new Dimension(100, 100), new AtkResults(AtkTypes.magical, AttackEffects.crit, 300), 1} ;
+    	Object[] object2 = new Object[] {new Point(300, 200), new Dimension(100, 100), new AtkResults(AtkTypes.magical, AtkEffects.crit, 300), 1} ;
     	ani[2].start(100, object2) ;
     	   	
 

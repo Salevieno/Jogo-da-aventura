@@ -33,7 +33,7 @@ import main.AtkTypes;
 import main.Battle;
 import main.Game;
 import utilities.Align;
-import utilities.AttackEffects;
+import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Scale;
 import utilities.TimeCounter;
@@ -341,12 +341,12 @@ public abstract class PlayerEvolutionSimulation
 	
 	private static void playerTrain()
 	{
-		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0)) ;
+		player.train(new AtkResults(AtkTypes.physical, AtkEffects.hit, 0)) ;
 	}
 	
 	private static void petTrain()
 	{
-		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0)) ;
+		player.train(new AtkResults(AtkTypes.physical, AtkEffects.hit, 0)) ;
 	}
 	
 	private static void petLevelUp(int times)
@@ -674,7 +674,7 @@ public abstract class PlayerEvolutionSimulation
 		return player.getAttWindow() ;
 	}
 	
-	public static void run(Point mousePos, Battle bat, List<Animation> animations, DrawingOnPanel DP)
+	public static void run(Point mousePos, List<Animation> animations, DrawingOnPanel DP)
 	{
 		player.incrementCounters() ;
 		player.activateCounters() ;
@@ -698,7 +698,7 @@ public abstract class PlayerEvolutionSimulation
 			player.getOpponent().incrementCounters() ;
 			PlayerEvolutionSimulation.playerFight() ;
 //	        		if (pet != null) { pet.fight() ;}
-			bat.RunBattle(player, pet, player.getOpponent(), animations, DP) ;
+			Battle.runBattle(player, pet, player.getOpponent(), DP) ;
 			if (!player.isInBattle())
 			{
 				PlayerEvolutionSimulation.updateFitness() ;

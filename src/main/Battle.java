@@ -1,5 +1,6 @@
 package main ;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
@@ -17,18 +18,23 @@ import liveBeings.Player;
 import liveBeings.Spell;
 import simulations.PlayerEvolutionSimulation;
 import utilities.Align;
-import utilities.AttackEffects;
+import utilities.AtkEffects;
 import utilities.Elements;
 import utilities.GameStates;
 import utilities.UtilG;
 
-public class Battle 
+public abstract class Battle 
 {
 	private static double randomAmp ;
-	protected static List<Elements> ElemID ;
-	protected static double[][] ElemMult ;
+	private static List<Elements> ElemID ;
+	private static double[][] ElemMult ;
 	
 	public static final Clip hitSound ;
+	
+	private static int damageStyle ;
+	private static final Color phyAtkColor = Game.colorPalette[6] ;
+	private static final Color magAtkColor = Game.colorPalette[5] ;
+//	private static List<Animation> damageAni ;
 	
 
 	static
@@ -45,15 +51,10 @@ public class Battle
 				ElemMult[i][j] = Double.parseDouble(ElemInput.get(i)[j + 1]) ;
 			}				
 		}
+		damageStyle = 0 ;
+//		damageAni = new ArrayList<>() ;
 		randomAmp = (double)0.1 ;
 		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
-	}
-	
-	public Battle()
-	{	
-		//this.SoundEffects = SoundEffects ;
-//		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
-
 	}
 
 	public static void PrintStart()
@@ -85,6 +86,17 @@ public class Battle
 	private static void PrintElement(Elements atkElem, Elements weaponElem, Elements armorElem, Elements shieldElem, Elements superElem, double elemMult)
 	{
 //		System.out.println("Elements: atk = " + atkElem + " | weapon = " + weaponElem + " | armor = " + armorElem + " | def = " + shieldElem + " | super = " + superElem + " | mult = " + elemMult) ;
+	}
+	
+	private static void playDamageAnimation(LiveBeing receiver, AtkResults atkResults)
+	{
+		Animation damageAni = new Animation(0) ;
+		Game.getAnimations().add(damageAni) ;
+		// TODO atkResults foi null here
+		System.out.println(atkResults) ;
+		Color textColor = atkResults.getAtkType().equals(AtkTypes.magical) ? magAtkColor : phyAtkColor ;
+		damageAni.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageStyle, textColor}) ;
+//		damageAni.forEach(ani -> ani.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageStyle})) ;
 	}
 	
 	private static double basicElemMult(Elements atk, Elements def)
@@ -128,35 +140,50 @@ public class Battle
 			arrowPower += ((Player) attacker).getEquippedArrow().getAtkPower() ;
 		}
 		
-		AttackEffects effect = calcEffect(attacker.getBA().TotalDex(), receiver.getBA().TotalAgi(), attacker.getBA().TotalCritAtkChance(), receiver.getBA().TotalCritDefChance(), receiver.getBA().getStatus().getBlock()) ;
-		int damage = calcDamage(effect, attacker.getBA().TotalPhyAtk() + arrowPower, receiver.getBA().TotalPhyDef(), attacker.atkElems(), receiver.defElems(), 1) ;
+		double atkDex = attacker.getBA().TotalDex() ;
+		double defAgi = receiver.getBA().TotalAgi() ;
+		double atkCrit = attacker.getBA().TotalCritAtkChance() ;
+		double defCrit = receiver.getBA().TotalCritDefChance() ;
+		double defBlock = receiver.getBA().getStatus().getBlock() ;
+		double atkPhyAtk = attacker.getBA().TotalPhyAtk() ;
+		double defPhyDef = receiver.getBA().TotalPhyDef() ;
+		Elements[] atkElems = attacker.atkElems() ;
+		Elements[] defElems = receiver.defElems() ;
+		
+		AtkEffects effect = calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
+		int damage = calcDamage(effect, atkPhyAtk + arrowPower, defPhyDef, atkElems, defElems, 1) ;
 
 		return new AtkResults(AtkTypes.physical, effect, damage) ;
 	}
 	
-	public static AttackEffects calcEffect(double Dex, double Agi, double CritAtk, double CritDef, double BlockDef)
+	public static void updateDamageAnimation(int newDamageStyle)
 	{
-		AttackEffects effect ;
-		if (block(BlockDef))
+		damageStyle = newDamageStyle ;
+	}
+	
+	public static AtkEffects calcEffect(double dex, double agi, double critAtk, double critDef, double blockDef)
+	{
+		AtkEffects effect ;
+		if (block(blockDef))
 		{
-			effect = AttackEffects.block ;
+			effect = AtkEffects.block ;
 		} 
-		else if (hit(Dex, Agi))
+		else if (hit(dex, agi))
 		{
-			effect = AttackEffects.hit ;
-			if (criticalAtk(CritAtk, CritDef))
+			effect = AtkEffects.hit ;
+			if (criticalAtk(critAtk, critDef))
 			{
-				effect = AttackEffects.crit ;
+				effect = AtkEffects.crit ;
 			}
 		}
 		else
 		{
-			effect = AttackEffects.miss ;
+			effect = AtkEffects.miss ;
 		}
 		return effect;
 	}
 	
-	public static int calcDamage(AttackEffects effect, double atk, double def, Elements[] atkElems, Elements[] defElem, double elemModifier)
+	public static int calcDamage(AtkEffects effect, double atk, double def, Elements[] atkElems, Elements[] defElems, double elemMod)
 	{
 		int damage = -1 ;
 		
@@ -178,9 +205,9 @@ public class Battle
 		}
 		
 		double randomMult = UtilG.RandomMult(randomAmp) ;
-		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElem[0], defElem[0], atkElems[2]) ;
-		PrintElement(atkElems[0], atkElems[1], defElem[0], defElem[0], atkElems[2], elemMult) ;
-		damage = (int) (randomMult * elemMult * elemModifier * damage) ;
+		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElems[0], defElems[0], atkElems[2]) ;
+		PrintElement(atkElems[0], atkElems[1], defElems[0], defElems[0], atkElems[2], elemMult) ;
+		damage = (int) (randomMult * elemMult * elemMod * damage) ;
 		return damage ;
 	}
 		
@@ -198,6 +225,30 @@ public class Battle
 		return status ;
 	}
 	
+	private static AtkTypes atkTypeFromAction(LiveBeing attacker)
+	{
+		System.out.println("attacker action: " + attacker.getCurrentAction());
+		System.out.println("attacker.usedPhysicalAtk(): " + attacker.usedPhysicalAtk());
+		System.out.println("attacker.actionIsArrowAtk(): " + attacker.actionIsArrowAtk());
+		System.out.println("attacker.actionIsSpell(): " + attacker.actionIsSpell());
+		System.out.println("attacker.isSilent(): " + attacker.isSilent());
+		System.out.println("attacker.usedDef(): " + attacker.usedDef() + "\n");
+		if (attacker.usedPhysicalAtk() | attacker.actionIsArrowAtk())
+		{
+			return AtkTypes.physical ;
+		}
+		if (attacker.actionIsSpell() & !attacker.isSilent())
+		{
+			return AtkTypes.magical ;
+		}
+		if (attacker.usedDef())
+		{
+			return AtkTypes.defense ;
+		}
+		
+		return null ;
+	}
+	
 	public static Point knockback(Point originPos, Point targetPos, int dist)
 	{
 		double angle = targetPos.x != originPos.x ? Math.atan((targetPos.y - originPos.y) / (double)(targetPos.x - originPos.x)) : Math.PI / 2.0 ;
@@ -207,12 +258,19 @@ public class Battle
 		Point destiny = new Point(targetPos.x + travelX, targetPos.y + travelY) ;
 		return destiny ;
 	}
-
+		
+	private static void incrementCounters(Player player, Pet pet, Creature creature)
+	{
+		player.incrementBattleActionCounters() ;
+		if (pet != null) {pet.incrementBattleActionCounters() ;}
+		creature.incrementBattleActionCounters() ;
+	}
+ 	
 	private static void activateCounters(Player player, Pet pet, Creature creature)
 	{
-		if (player.getBattleActionCounter().finished() & player.getCurrentBattleAction() != null)
+		if (player.getBattleActionCounter().finished() & player.getCurrentAtkType() != null)
 		{
-			if (player.getCurrentBattleAction().equals(AtkTypes.defense))
+			if (player.getCurrentAtkType().equals(AtkTypes.defense))
 			{
 				player.deactivateDef() ;
 			}
@@ -220,18 +278,18 @@ public class Battle
 		}
 		if (pet != null)
 		{
-			if (pet.isAlive() & pet.getBattleActionCounter().finished() & pet.getCurrentBattleAction() != null)
+			if (pet.isAlive() & pet.getBattleActionCounter().finished() & pet.getCurrentAtkType() != null)
 			{
-				if (pet.getCurrentBattleAction().equals(AtkTypes.defense))
+				if (pet.getCurrentAtkType().equals(AtkTypes.defense))
 				{
 //					UtilS.PrintBattleActions(6, "Pet", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
 		 			pet.deactivateDef() ;
 				}
 			}
 		}
-		if (creature.getBattleActionCounter().finished() & creature.getCurrentBattleAction() != null)
+		if (creature.getBattleActionCounter().finished() & creature.getCurrentAtkType() != null)
 		{
-			if (creature.getCurrentBattleAction().equals(AtkTypes.defense))
+			if (creature.getCurrentAtkType().equals(AtkTypes.defense))
 			{
 //				UtilS.PrintBattleActions(6, "Creature", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
 	 			creature.deactivateDef() ;
@@ -271,7 +329,7 @@ public class Battle
 			}
 		}*/
 	}
-	
+		
 	public static boolean isOver(Player player, Pet pet, Creature creature)
 	{
 		// TODO add pet life condition to finish battle
@@ -287,7 +345,7 @@ public class Battle
 		
 		return true ;
 	}
-		
+			
 	private static void startAtkAnimations(LiveBeing user, AtkTypes atkType)
 	{
 		if (atkType == null) { return ;}
@@ -299,8 +357,8 @@ public class Battle
 			default: return ;
 		}
 	}
-	
-	private static void playAtkAnimation(LiveBeing user, Point pos, DrawingOnPanel DP)
+		
+	private static void playAtkAnimations(LiveBeing user, Point pos, DrawingOnPanel DP)
 	{
 		if (user.phyHitGif.isPlaying())
 		{
@@ -319,16 +377,29 @@ public class Battle
 			user.magHitGif.resetTimeCounter() ;
 		}
 	}
-	
-	
-	private AtkResults atk(AtkTypes atkType, LiveBeing attacker, LiveBeing receiver)
+			
+	private static void checkSpendArrow(LiveBeing attacker)
+	{
+		if (!(attacker instanceof Player)) { return ;}
+		
+		Player player = (Player) attacker ;
+		
+//		if (player.getJob() != 2) { return ;}
+		if (!player.arrowIsEquipped()) { return ;}
+		if (!player.usedPhysicalAtk() & !player.usedSpell()) { return ;}
+		
+		player.spendArrow() ;
+	}
+		
+	private static AtkResults atk(AtkTypes atkType, LiveBeing attacker, LiveBeing receiver)
 	{
 		switch (atkType)
 		{
 			case physical: return calcPhysicalAtk(attacker, receiver) ;
 			case magical:
 			{
-				Spell spell = attacker.getSpells().get(Player.SpellKeys.indexOf(attacker.getCurrentAction())) ;
+				int spellID = Player.SpellKeys.indexOf(attacker.getCurrentAction()) ;
+				Spell spell = attacker.getSpells().get(spellID) ;
 				if (spell.isReady() & attacker.hasEnoughMP(spell))
 				{
 					return attacker.useSpell(spell, receiver) ;
@@ -344,133 +415,121 @@ public class Battle
 			case defense:
 			{
 	 			attacker.activateDef() ;
-				return new AtkResults(AtkTypes.defense , AttackEffects.none, 0) ;
+				return new AtkResults(AtkTypes.defense , AtkEffects.none, 0) ;
 			}
 			default: return new AtkResults() ;
 		}
 	}
 	
-	private AtkResults runTurn(LiveBeing attacker, LiveBeing receiver)
+	private static AtkResults performAtk(LiveBeing attacker, LiveBeing receiver)
 	{
 		AtkResults atkResult = new AtkResults() ;
-		if (attacker.actionIsPhysicalAtk() | attacker.actionIsArrowAtk())
-		{
-			atkResult = atk(AtkTypes.physical, attacker, receiver) ;
-		}
-		else if (attacker.actionIsSpell() & !attacker.isSilent())
-		{
-			atkResult = atk(AtkTypes.magical, attacker, receiver) ;
-		}
-		else if (attacker.actionIsDef())
-		{
-			atkResult = atk(AtkTypes.defense, attacker, receiver) ;
-		}
+		AtkTypes atkType = atkTypeFromAction(attacker) ;
 		
-		if (atkResult.getEffect().equals(AttackEffects.hit) | atkResult.getEffect().equals(AttackEffects.crit))
-		{
-			receiver.getPA().getLife().decTotalValue(atkResult.getDamage()) ;
-			int[] inflictedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
-			receiver.getBA().getStatus().receiveStatus(inflictedStatus) ;
-		}
+		if (atkType == null) { return atkResult ;}
 		
-		if (attacker.actionIsPhysicalAtk() | (attacker.actionIsSpell() & !attacker.isSilent()))
-		{
-			if (attacker instanceof Player & attacker.getJob() == 2)
-			{
-				if (((Player) attacker).arrowIsEquipped()) { ((Player) attacker).spendArrow() ;}
-			}
-		}
+		atkResult = atk(atkType, attacker, receiver) ;
+		checkSpendArrow(attacker) ;
 		
-		if (attacker.actionIsPhysicalAtk() | (attacker.actionIsSpell() & !attacker.isSilent()) | attacker.actionIsDef())
-		{
-			attacker.updateCombo() ;
-			attacker.resetBattleActions() ;
-		}
+		AtkEffects effect = atkResult.getEffect() ;
 		
-		attacker.setCurrentAtkType(atkResult.getAtkType()) ;
-		PrintAtkResults(atkResult) ;
-		PrintReceiverCondition(receiver) ;
+		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResult ;}
+		
+//		if (attacker instanceof Creature) { System.out.println(atkResult) ;}
+		receiver.getPA().getLife().decTotalValue(atkResult.getDamage()) ;
+		int[] appliedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(),
+				attacker.getBA().baseDurations()) ;				
+		receiver.getBA().getStatus().receiveStatus(appliedStatus) ;
+
 		return atkResult ;
 	}	
-	
-	private void checkTurn(LiveBeing attacker, LiveBeing receiver, int damageAnimation, Animation damageAni, DrawingOnPanel DP)
+		
+	private static void runTurn(LiveBeing attacker, LiveBeing receiver, DrawingOnPanel DP)
 	{
 		
 		if (!attacker.isAlive()) { return ;}
 		
 		// TODO criatura tem que tomar blood and poison dano do player e do pet
-		attacker.DrawTimeBar("Left", Game.colorPalette[2], DP) ;
+		attacker.drawTimeBar("Left", Game.colorPalette[13], DP) ;
 //		attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
-		if (attacker.canAtk() & attacker.isInRange(receiver.getPos()))
-		{
-			if (attacker instanceof Creature)
-			{
-				((Creature) attacker).fight(receiver.getCurrentAction()) ;
-			
-			}
-			AtkResults atkResults = new AtkResults() ;
-			if (attacker.hasActed())
-			{
-				PrintTurn(attacker, receiver) ;
-				atkResults = runTurn(attacker, receiver) ;
-			}
-			if (attacker.actionIsPhysicalAtk() | attacker.actionIsSpell())
-			{
-				receiver.getDisplayDamage().reset() ;
-			}
 
-			if (Game.getPlayer().getSettings().getSoundEffectsAreOn())
-			{
-				Music.PlayMusic(hitSound) ;
-			}
-
-
-			attacker.useAutoSpells(true) ;
-
-			
-			if (atkResults.getAtkType() != null)
-			{
-				if ( !atkResults.getEffect().equals(AttackEffects.none) | atkResults.getAtkType().equals(AtkTypes.defense) )
-				{
-					if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
-					if (attacker instanceof Player) { ((Player) attacker).getStatistics().update(atkResults) ;}
-				}
-			}			
-
-			damageAni.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageAnimation}) ;
-			if (attacker instanceof Player) { startAtkAnimations(attacker, atkResults.getAtkType()) ;}
-		}
-		
-		attacker.getBA().getStatus().display(attacker.getPos(), attacker.getDir(), DP);
+		playAtkAnimations(attacker, receiver.getPos(), DP) ;
+//		attacker.getBA().getStatus().display(attacker.getPos(), attacker.getDir(), DP);
 		if (attacker.isDefending())
 		{
 			attacker.displayDefending(DP) ;
 		}
-		playAtkAnimation(attacker, receiver.getPos(), DP) ;
+		
+		if (!attacker.canAtk() | !attacker.isInRange(receiver.getPos())) { return ;}
+		
+		if (attacker instanceof Creature)
+		{
+			((Creature) attacker).useFightMove(receiver.getCurrentAction()) ;
+		}
+		
+		AtkResults atkResults = new AtkResults() ;
+		if (attacker.usedPhysicalAtk() | attacker.usedSpell())
+		{
+			atkResults = performAtk(attacker, receiver) ;
+
+			attacker.setCurrentAtkType(atkResults.getAtkType()) ;
+
+			playDamageAnimation(receiver, atkResults) ;
+			startAtkAnimations(attacker, atkResults.getAtkType()) ;
+			
+			PrintTurn(attacker, receiver) ;
+			PrintAtkResults(atkResults) ;
+			PrintReceiverCondition(receiver) ;
+		}
+		if (attacker.usedPhysicalAtk() | attacker.usedSpell() | attacker.usedDef())
+		{
+			attacker.updateCombo() ;
+			attacker.resetBattleActions() ;
+		}
+//		if (attacker.usedPhysicalAtk() | attacker.actionIsSpell())
+//		{
+//			receiver.getDisplayDamage().reset() ;
+//		}
+
+		if (Game.getPlayer().getSettings().getSoundEffectsAreOn())
+		{
+			Music.PlayMusic(hitSound) ;
+		}
+
+
+		attacker.useAutoSpells(true) ;
+		
+		
+		
+		if (atkResults.getAtkType() == null) { return ;}
+		
+		if (atkResults.getEffect().equals(AtkEffects.none)) { return ;}
+		
+		if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
+		if (attacker instanceof Player) { ((Player) attacker).getStatistics().update(atkResults) ;}
 		
 	}
-	
-	public void RunBattle(Player player, Pet pet, Creature creature, List<Animation> ani, DrawingOnPanel DP)
-	{
-		player.incrementBattleActionCounters() ;
-		if (pet != null) {pet.incrementBattleActionCounters() ;}
-		creature.incrementBattleActionCounters() ;
 		
+	
+	public static void runBattle(Player player, Pet pet, Creature creature, DrawingOnPanel DP)
+	{
+		incrementCounters(player, pet, creature) ;
 		activateCounters(player, pet, creature) ;
-		int damageStyle = player.getSettings().getDamageAnimation() ;
+		
 		LiveBeing creatureTarget = player ;
 		if (pet != null) { creatureTarget = creature.chooseTarget(player.isAlive(), pet.isAlive()).equals("player") ? player : pet ;}
 
-		checkTurn(player, creature, damageStyle, ani.get(0), DP) ;
-		if (pet != null) { checkTurn(pet, creature, damageStyle, ani.get(1), DP) ;}
-		checkTurn(creature, creatureTarget, damageStyle, ani.get(2), DP) ;
+		runTurn(player, creature, DP) ;
+		if (pet != null) { runTurn(pet, creature, DP) ;}
+		runTurn(creature, creatureTarget, DP) ;
 		
 		if (!isOver(player, pet, creature)) { return ;}
 		
-		FinishBattle(player, pet, creature) ;
+		finishBattle(player, pet, creature) ;
 	}
+		
 	
-	private void FinishBattle(Player player, Pet pet, Creature creature)
+	private static void finishBattle(Player player, Pet pet, Creature creature)
 	{
 		if (Game.getState().equals(GameStates.simulation))
 		{

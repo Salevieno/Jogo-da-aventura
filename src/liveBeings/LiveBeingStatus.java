@@ -1,6 +1,5 @@
 package liveBeings;
 
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 
@@ -9,6 +8,7 @@ import org.json.simple.JSONObject;
 import graphics.DrawingOnPanel;
 import utilities.Align;
 import utilities.Directions;
+import utilities.UtilG;
 import utilities.UtilS;
 
 public class LiveBeingStatus
@@ -171,23 +171,22 @@ public class LiveBeingStatus
 
 //		int mirror = UtilS.MirrorFromRelPos(UtilS.RelPos(getPos(), creature.getPos())) ;
 		int mirror = 1 ;
-		Dimension offset = new Dimension(8, 4) ;
-		if (0 < stun)	// Stun
+		Point offset = new Point(8, 4) ;
+		if (0 < stun)
 		{
-			Point ImagePos = new Point(liveBeingPos.x, liveBeingPos.y - offset.height) ;
-			DP.DrawImage(stunImage, ImagePos, Align.center) ;
+			Point imgPos = UtilG.Translate(liveBeingPos, 0, -offset.y) ;
+			DP.DrawImage(stunImage, imgPos, Align.center) ;
 		}
 		
 		int[] statusList = new int[] {block, blood, poison, silence} ;
-		Image[] statusImageList = new Image[] {blockImage, bloodImage, poisonImage, silenceImage} ;
-		Point ImagePos = new Point(liveBeingPos.x + mirror * (statusImageList[0].getWidth(null) + offset.width), liveBeingPos.y) ;
-		for (int statusID = 0 ; statusID <= statusList.length - 1 ; statusID += 1)
+		Image[] imgList = new Image[] {blockImage, bloodImage, poisonImage, silenceImage} ;
+		Point imgPos = UtilG.Translate(liveBeingPos, mirror * imgList[0].getWidth(null) + offset.x, 0) ;
+		for (int i = 0 ; i <= statusList.length - 1 ; i += 1)
 		{
-			if (0 < statusList[statusID])
-			{
-				DP.DrawImage(statusImageList[statusID], ImagePos, Align.center) ;
-				ImagePos.y += statusImageList[statusID].getHeight(null) + 2 ;
-			}
+			if (statusList[i] <= 0) { continue ;}
+			
+			DP.DrawImage(imgList[i], imgPos, Align.center) ;
+			imgPos.y += imgList[i].getHeight(null) + 2 ;
 		}
 	}
 	

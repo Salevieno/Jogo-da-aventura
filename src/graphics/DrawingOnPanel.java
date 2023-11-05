@@ -25,7 +25,7 @@ import maps.FieldMap;
 import maps.GameMap;
 import screen.Sky;
 import utilities.Align;
-import utilities.AttackEffects;
+import utilities.AtkEffects;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilG;
@@ -384,9 +384,9 @@ public class DrawingOnPanel
 
 	public void DrawDamageAnimation(Point initialPos, AtkResults atkResults, TimeCounter counter, int style, Color color)
 	{
-		AttackEffects effect = atkResults.getEffect() ;
+		AtkEffects effect = atkResults.getEffect() ;
 		
-		if (effect == AttackEffects.none) { return ;}
+		if (effect == AtkEffects.none) { return ;}
 
 		String message = null ;
 		String damage = String.valueOf(UtilG.Round(atkResults.getDamage(), 1)) ;
@@ -421,7 +421,7 @@ public class DrawingOnPanel
 //		default -> new Point(0, (int) (-20 * rate)) ;
 //				}
 
-		Font font = new Font(Game.MainFontName, Font.BOLD, 16) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 		Point currentPos = UtilG.Translate(initialPos, move.x, move.y) ;
 		DrawText(currentPos, Align.center, stdAngle, message, font, color) ;
 		

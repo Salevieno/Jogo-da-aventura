@@ -21,7 +21,7 @@ import main.AtkTypes;
 import main.Battle;
 import main.Game;
 import maps.GameMap;
-import utilities.AttackEffects;
+import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.Scale;
@@ -172,9 +172,9 @@ public class Pet extends LiveBeing
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	public boolean closeToPlayer(Point playerPos) { return UtilG.dist(pos, playerPos) <= 40 ; }
 	
-	public Point CenterPos()
+	public Point center()
 	{
-		return new Point((int) (pos.x + 0.5 * size.width), (int) (pos.y - 0.5 * size.height)) ;
+		return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;
 	}
 
 	public Directions newMoveDirection(Directions originalDir)
@@ -291,7 +291,7 @@ public class Pet extends LiveBeing
 	{
 		int spellLevel = spell.getLevel() ;
 		int damage = -1 ;
-		AttackEffects effect = null ;
+		AtkEffects effect = null ;
 
 		double MagAtk = BA.TotalMagAtk() ;
 		double MagDef = receiver.getBA().TotalMagDef() ;
@@ -372,6 +372,8 @@ public class Pet extends LiveBeing
 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
 	{
 		movingAni.display(dir, pos, DrawingOnPanel.stdAngle, scale, DP) ;
+		
+		displayStatus(DP) ;
 	}
 	
 }

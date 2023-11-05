@@ -1,6 +1,6 @@
 package utilities;
 
-public enum AttackEffects
+public enum AtkEffects
 {
 	none,
 	miss,

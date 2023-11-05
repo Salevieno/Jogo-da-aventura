@@ -22,7 +22,7 @@ import maps.GameMap;
 import maps.GroundType;
 import maps.GroundTypes;
 import utilities.Align;
-import utilities.AttackEffects;
+import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.RelativePos;
@@ -50,7 +50,7 @@ public abstract class LiveBeing
 	protected TimeCounter thirstCounter ;
 	protected TimeCounter actionCounter ;
 	protected TimeCounter battleActionCounter ;
-	protected TimeCounter displayDamage ;
+//	protected TimeCounter displayDamage ;
 	protected TimeCounter stepCounter ;			// counts the steps in the movement
 	protected String currentAction ;
 	protected AtkTypes currentAtkType ;
@@ -83,11 +83,17 @@ public abstract class LiveBeing
 		this.BA = BA;
 		this.movingAni = movingAni;
 		this.attWindow = attWindow ;
-		displayDamage = new TimeCounter(0, 100) ;
+//		displayDamage = new TimeCounter(0, 100) ;
 		currentAction = null ;
 		currentAtkType = null ;
 	}
 
+	public abstract Point center() ;
+	public abstract AtkResults useSpell(Spell spell, LiveBeing receiver) ;
+	public abstract void applyPassiveSpell(Spell spell) ;	
+	public abstract void useAutoSpells(boolean activate);
+	public abstract void dies() ;
+	
 	public String getName() {return name ;}
 	public int getLevel() {return level ;}
 	public int getJob() {return job ;}
@@ -102,13 +108,13 @@ public abstract class LiveBeing
 	public double getRange() {return range ;}
 	public int getStep() {return step ;}
 	public String getCurrentAction() {return currentAction ;}
-	public AtkTypes getCurrentBattleAction() { return currentAtkType ;}
+	public AtkTypes getCurrentAtkType() { return currentAtkType ;}
 	public TimeCounter getMpCounter() {return mpCounter ;}
 	public TimeCounter getSatiationCounter() {return satiationCounter ;}
 	public TimeCounter getThirstCounter() {return thirstCounter ;}
 	public TimeCounter getMoveCounter() {return actionCounter ;}
 	public TimeCounter getBattleActionCounter() {return battleActionCounter ;}
-	public TimeCounter getDisplayDamage() {return displayDamage ;}
+//	public TimeCounter getDisplayDamage() {return displayDamage ;}
 	public TimeCounter getStepCounter() {return stepCounter ;}
 	public List<String> getCombo() {return combo ;}
 	public List<Spell> getSpells() {return spells ;}
@@ -338,7 +344,7 @@ public abstract class LiveBeing
 		
 		if (!isAlive()) { dies() ;}
 	}
-	public void incrementBattleActionCounters() {battleActionCounter.inc() ; displayDamage.inc() ;}
+	public void incrementBattleActionCounters() {battleActionCounter.inc() ; } // displayDamage.inc() ;
 	public void resetBattleActions() {battleActionCounter.reset() ; }
 	
 	public int totalPower()
@@ -403,19 +409,29 @@ public abstract class LiveBeing
 	public boolean hasActed() {return currentAction != null ;}
 	public boolean actionIsSpell()
 	{
-		if (!hasActed()) { return false ;}
+		// TODO 1 this can replace usedSpell
+		if (!hasActed()) { return false ;}		
 		
 		if (!Player.SpellKeys.contains(currentAction)) { return false ;}
 		
-		Spell spell = spells.get(SpellKeys.indexOf(currentAction)) ;
+		int spellID = SpellKeys.indexOf(currentAction) ;
+		
+		if (spells.size() <= spellID) { return false ;}
+		
+		Spell spell = spells.get(spellID) ;
+
+		if (!spell.isReady()) { return false ;}
+		if (!hasEnoughMP(spell)) { return false ;}
+		
 		return 1 <= spell.getLevel() ;
 	}
-	public boolean actionIsPhysicalAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
-	public boolean actionIsDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}
+	public boolean usedPhysicalAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
+	public boolean usedSpell() { return (actionIsSpell() & !isSilent()) ;}
+	public boolean usedDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}
 	public boolean actionIsArrowAtk()
 	{
 		if (!( this instanceof Player)) { return false ;}
-		
+		// TODO consider spells
 		return hasActed() ? currentAction.equals(BattleKeys[0]) & ((Player) this).arrowIsEquipped() : false ;
 	}
 	
@@ -430,7 +446,7 @@ public abstract class LiveBeing
 		{
 			return (!battleActionCounter.finished() & combo.get(0).equals(BattleKeys[1])) ;
 		}
-		return actionIsDef() ;
+		return usedDef() ;
 	}
 	public boolean isInCloseRange(Point target) {return pos.distance(target) <= size.getWidth() ;}
 	public boolean isInRange(Point target) {return pos.distance(target) <= range ;}
@@ -508,11 +524,6 @@ public abstract class LiveBeing
 
 	}
 	
-	public abstract AtkResults useSpell(Spell spell, LiveBeing receiver) ;
-	public abstract void applyPassiveSpell(Spell spell) ;	
-	public abstract void useAutoSpells(boolean activate);
-	public abstract void dies() ;
-	
 	public void checkDeactivateDef()
 	{
 		if (battleActionCounter.finished() & isDefending())
@@ -533,22 +544,22 @@ public abstract class LiveBeing
 	}
 	public void train(AtkResults atkResult)
 	{
-		AttackEffects effect = (AttackEffects) atkResult.getEffect() ;
+		AtkEffects effect = (AtkEffects) atkResult.getEffect() ;
 		AtkTypes atkType = atkResult.getAtkType() ;
 		if (atkType.equals(AtkTypes.physical))
 		{
 			BA.getPhyAtk().incTrain(0.025 / (BA.getPhyAtk().getTrain() + 1)) ;					
 		}
-		if (effect != AttackEffects.none)
+		if (effect != AtkEffects.none)
 		{
-			if (effect.equals(AttackEffects.crit))
+			if (effect.equals(AtkEffects.crit))
 			{
 				if (job == 2)
 				{
 					BA.getCritAtk().incBonus(0.025 * 0.000212 / (BA.getCritAtk().getBonus() + 1)) ;	// 100% after 10,000 hits starting from 0.12
 				}
 			}
-			if (effect.equals(AttackEffects.hit))
+			if (effect.equals(AtkEffects.hit))
 			{
 				BA.getDex().incTrain(0.025 / (BA.getDex().getTrain() + 1)) ;
 			}
@@ -616,39 +627,48 @@ public abstract class LiveBeing
 			}
 		}
 	}	
-	public void DrawTimeBar(String relPos, Color color, DrawingOnPanel DP)
+	
+	public void drawTimeBar(String relPos, Color color, DrawingOnPanel DP)
 	{
 		int stroke = DrawingOnPanel.stdStroke ;
 		double rate = battleActionCounter.rate() ;
 		int mirror = UtilS.MirrorFromRelPos(relPos) ;
 		Dimension barSize = new Dimension(2 + size.height / 20, size.height) ;
-		Dimension offset = new Dimension (barSize.width / 2 + (StatusImages[0].getWidth(null) + 5), -barSize.height / 2) ;
+		Dimension offset = new Dimension (barSize.width / 2 + (StatusImages[0].getWidth(null) + 5), barSize.height / 2) ;
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
-		Point rectPos = new Point(pos.x + mirror * offset.width, pos.y) ;
+		Point rectPos = UtilG.Translate(center(), mirror * offset.width, offset.height) ;
 		
 		DP.DrawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.colorPalette[0]) ;
 		DP.DrawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null) ;
 	}
 
 	public void TakeBloodAndPoisonDamage(double totalBloodAtk, double totalPoisonAtk)
-	{
-		int BloodDamage = 0, PoisonDamage = 0 ;
-		double bloodMult = 1, PoisonMult = 1 ;
+	{// TODO transferir para blood and poison
+		int bloodDamage = 0, poisonDamage = 0 ;
+		double bloodMult = 1, poisonMult = 1 ;
 		if (this instanceof Player & job == 4)
 		{
-			PoisonMult += -0.1*spells.get(13).getLevel() ;
+			poisonMult += -0.1*spells.get(13).getLevel() ;
 		}
 		if (0 < BA.getStatus().getBlood())
 		{
-			BloodDamage = (int) Math.max(totalBloodAtk * bloodMult - BA.getBlood().TotalDef(), 0) ;
+			bloodDamage = (int) Math.max(totalBloodAtk * bloodMult - BA.getBlood().TotalDef(), 0) ;
 		}
 		if (0 < BA.getStatus().getPoison())
 		{
-			PoisonDamage = (int) Math.max(totalPoisonAtk * PoisonMult - BA.getPoison().TotalDef(), 0) ;
+			poisonDamage = (int) Math.max(totalPoisonAtk * poisonMult - BA.getPoison().TotalDef(), 0) ;
 		}
-		PA.getLife().decTotalValue(BloodDamage + PoisonDamage) ;
-		// TODO transferir para blood and poison
+		
+		if (bloodDamage + poisonDamage <= 0) { return ;}
+		
+		PA.getLife().decTotalValue(bloodDamage + poisonDamage) ;	
 	}
+	
+	public void displayStatus(DrawingOnPanel DP)
+	{
+		BA.getStatus().display(UtilG.Translate(pos, 0, -size.height), dir, DP) ;
+	}
+	
 	public void displayDefending(DrawingOnPanel DP)
 	{
 		Point imagePos = UtilG.Translate(pos, defendingImage.getWidth(null), 0) ;

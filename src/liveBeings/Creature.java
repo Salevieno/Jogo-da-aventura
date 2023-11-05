@@ -20,8 +20,9 @@ import main.Battle;
 import main.Game;
 import maps.GameMap;
 import screen.Screen;
+import screen.Sky;
 import utilities.Align;
-import utilities.AttackEffects;
+import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.Scale;
@@ -67,7 +68,7 @@ public class Creature extends LiveBeing
 		this.color = CT.getColor() ;
 		
 		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
-		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Game.getSky().height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
+		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
 		Point initialPos = UtilG.RandomPos(minCoord, range, new Dimension(1, 1)) ;
 		setPos(initialPos) ;
 		
@@ -107,6 +108,8 @@ public class Creature extends LiveBeing
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
 
+	public Point center() { return new Point(pos) ;}
+	
 	public boolean hasEnoughMP(int spellID)
 	{
 		int MPcost = 10 * spellID ;
@@ -122,6 +125,8 @@ public class Creature extends LiveBeing
 	public void display(Point pos, Scale scale, DrawingOnPanel DP)
 	{
 		DP.DrawImage(type.movingAni.idleGif, pos, scale, Align.center) ;
+		
+		displayStatus(DP) ;
 	}
 	
 	public void displayAdditionalInfo(DrawingOnPanel DP)
@@ -165,7 +170,7 @@ public class Creature extends LiveBeing
 	}
 	
 	public String chooseTarget(boolean playerIsAlive, boolean petIsAlive)
-	{
+	{// TODO refatorar creature choose target
 		if (!playerIsAlive & !petIsAlive) { return null ;}		
 		if (!playerIsAlive) { return "pet"  ;}
 		if (!petIsAlive) { return "player" ;}
@@ -235,15 +240,15 @@ public class Creature extends LiveBeing
 		return ;
 	}
 	
-	public void fight(String playerMove)
+	public void useFightMove(String playerMove)
 	{
 		int move = chooseFightMove(playerMove) ;
 
 		switch (move)
 		{
-			case 0:	setCurrentAction(BattleKeys[0]) ; break ;	// Physical attack
-			case 1:	setCurrentAction(BattleKeys[1]) ; break ;	// Defense
-			case 2:	setCurrentAction(String.valueOf(UtilG.randomIntFromTo(0, spells.size() - 1))) ; break ;	// spell
+			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
+			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
+			case 2:	setCurrentAction(String.valueOf(UtilG.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
 		}
 	}
 	
@@ -261,7 +266,7 @@ public class Creature extends LiveBeing
 	{
 		int spellLevel = spell.getLevel() ;
 		int damage = -1 ;
-		AttackEffects effect = null ;
+		AtkEffects effect = null ;
 
 		double MagAtk = BA.TotalMagAtk() ;
 		double MagDef = receiver.getBA().TotalMagDef() ;

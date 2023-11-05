@@ -46,7 +46,6 @@ public class Spell
 	private Elements elem ;
 	private String[] info ;	// Effect and description
 
-	public static final Image cooldownImage = UtilS.loadImage("Cooldown.png") ;	
 	
 	
 	public Spell(int id, String name, Image image, int maxLevel, int mpCost, SpellTypes type, Map<Spell, Integer> preRequisites,

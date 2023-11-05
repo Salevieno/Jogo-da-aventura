@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import graphics.DrawingOnPanel;
 import liveBeings.Player;
+import main.Battle;
 import main.Game;
 import main.TextCategories;
 import utilities.Align;
@@ -140,6 +141,7 @@ public class SettingsWindow extends GameWindow
 		if (item == 4)
 		{
 			damageAnimation = (damageAnimation + 1) % 4 ;
+			Battle.updateDamageAnimation(damageAnimation) ;
 		}
 		if (item == 5)
 		{

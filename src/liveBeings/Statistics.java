@@ -8,7 +8,7 @@ import main.AtkResults;
 import main.AtkTypes;
 import main.Game;
 import main.TextCategories;
-import utilities.AttackEffects;
+import utilities.AtkEffects;
 
 public class Statistics
 {
@@ -185,7 +185,7 @@ public class Statistics
 		if (atkResult == null) { return ;}
 		
 		AtkTypes atkType = atkResult.getAtkType() ;
-		AttackEffects effect = (AttackEffects) atkResult.getEffect() ;
+		AtkEffects effect = (AtkEffects) atkResult.getEffect() ;
 		int damage = (int) atkResult.getDamage() ;
 		
 		
@@ -194,7 +194,7 @@ public class Statistics
 			if (atkType.equals(AtkTypes.magical))
 			{
 				incNumberMagAtk() ;
-				if (effect.equals(AttackEffects.hit))
+				if (effect.equals(AtkEffects.hit))
 				{
 					incMagDamageInflicted(damage) ;
 				}
@@ -203,7 +203,7 @@ public class Statistics
 			else
 			{
 				incNumberPhyAtk() ;
-				if (effect.equals(AttackEffects.hit))
+				if (effect.equals(AtkEffects.hit))
 				{
 					incPhyDamageInflicted(damage) ;
 				}
@@ -218,20 +218,20 @@ public class Statistics
 		
 		if (effect == null) { return ;}
 		
-		if (effect.equals(AttackEffects.hit))							// player performed a successful hit
+		if (effect.equals(AtkEffects.hit))							// player performed a successful hit
 		{
 			incNumberHitsInflicted() ;
 		}
-		if (effect.equals(AttackEffects.crit))
+		if (effect.equals(AtkEffects.crit))
 		{
 			incNumberHitsInflicted() ;
 			incNumberCritInflicted() ;
 			incCritDamageInflicted(damage) ;
 		}
 	}
-	public void updatedefensiveStats(int damage, AttackEffects effect, boolean creaturePhyAtk, Creature creature)
+	public void updatedefensiveStats(int damage, AtkEffects effect, boolean creaturePhyAtk, Creature creature)
 	{
-		if (effect.equals(AttackEffects.hit))
+		if (effect.equals(AtkEffects.hit))
 		{
 			if (creaturePhyAtk)
 			{				

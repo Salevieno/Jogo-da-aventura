@@ -1,21 +1,21 @@
 package main;
 
-import utilities.AttackEffects;
+import utilities.AtkEffects;
 
 public class AtkResults
 {
 	private AtkTypes atkType ;
-	private AttackEffects effect ;
+	private AtkEffects effect ;
 	private int damage ;
 
 	public AtkResults()
 	{
 		this.atkType = null;
-		this.effect = AttackEffects.none;
+		this.effect = AtkEffects.none;
 		this.damage = 0;
 	}
 	
-	public AtkResults(AtkTypes atkType, AttackEffects effect, int damage)
+	public AtkResults(AtkTypes atkType, AtkEffects effect, int damage)
 	{
 		this.atkType = atkType;
 		this.effect = effect;
@@ -27,7 +27,7 @@ public class AtkResults
 		return atkType;
 	}
 
-	public AttackEffects getEffect()
+	public AtkEffects getEffect()
 	{
 		return effect;
 	}

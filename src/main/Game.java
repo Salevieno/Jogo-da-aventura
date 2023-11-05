@@ -100,8 +100,7 @@ public class Game extends JPanel
 	// TODO conferir a contagem das estatísticas do player
 	// TODO figure out how to get gif duration
 	private static final long serialVersionUID = 1L ;
-	private static final String[] konamiCode = new String[] { "Acima", "Acima", "Abaixo", "Abaixo", "Esquerda",
-			"Direita", "Esquerda", "Direita", "B", "A" } ;
+	private static final String[] konamiCode = new String[] { "Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A" } ;
 	public static final String JSONPath = ".\\json\\" ;
 	public static final String CSVPath = ".\\csv\\" ;
 	public static final String ImagesPath = ".\\images\\" ;
@@ -140,7 +139,6 @@ public class Game extends JPanel
 	private static Item[] allItems ;
 	private static Spell[] allSpells ;
 	private static Quest[] allQuests ;
-	private static Battle bat ;
 	private static List<Projectiles> projs ;
 	private static List<Animation> animations ;
 
@@ -283,160 +281,7 @@ public class Game extends JPanel
 		animations = new ArrayList<>() ;
 		for (int i = 0 ; i <= 13 - 1 ; i += 1)
 		{
-			Animation ani = new Animation() ;
-			switch(i)
-			{
-				case 0 :
-					ani.setDisplayFunction((vars, DP) -> {
-						Point targetPos = (Point) vars[0] ;
-						Dimension targetSize = (Dimension) vars[1] ;
-						AtkResults atkResults = (AtkResults) vars[2] ;
-						int style = (int) vars[3] ;
-						Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
-						DP.DrawDamageAnimation(pos, atkResults, ani.getCounter(), style, Game.colorPalette[6]) ;
-					}) ;
-					break ;
-					
-				case 1 :
-					ani.setDisplayFunction((vars, DP) -> {
-						Point targetPos = (Point) vars[0] ;
-						Dimension targetSize = (Dimension) vars[1] ;
-						AtkResults atkResults = (AtkResults) vars[2] ;
-						int style = (int) vars[3] ;
-						Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
-						DP.DrawDamageAnimation(pos, atkResults, ani.getCounter(), style, Game.colorPalette[6]) ;
-					}) ;
-					break ;
-					
-				case 2 :
-					ani.setDisplayFunction((vars, DP) -> {
-						Point targetPos = (Point) vars[0] ;
-						Dimension targetSize = (Dimension) vars[1] ;
-						AtkResults atkResults = (AtkResults) vars[2] ;
-						int style = (int) vars[3] ;
-						Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
-						DP.DrawDamageAnimation(pos, atkResults, ani.getCounter(), style, Game.colorPalette[6]) ;
-					}) ;
-					break ;
-					
-				case 3 :
-					ani.setDisplayFunction((vars, DP) -> {
-						Item[] itemsObtained = (Item[]) vars[0] ;
-						DP.winAnimation(ani.getCounter(), itemsObtained) ;
-					}) ;
-					break ;
-					
-				case 4 :
-					ani.setDisplayFunction((vars, DP) -> {
-						Point playerPos = (Point) vars[0] ;
-						Player.levelUpGif.play(playerPos, Align.bottomCenter, DP) ;
-						if (Player.levelUpGif.isDonePlaying())
-						{
-							Player.levelUpGif.resetTimeCounter() ;
-							// TODO reset gif
-						}
-					}) ;
-					break ;
-					
-				case 5 :
-					ani.setDisplayFunction((vars, DP) -> {
-						Point petPos = (Point) vars[0] ;
-						Pet.levelUpGif.play(petPos, Align.bottomCenter, DP) ;
-						if (Pet.levelUpGif.isDonePlaying())
-						{
-							Pet.levelUpGif.resetTimeCounter() ;
-						}
-					}) ;
-					break ;
-					
-				case 6 :
-					ani.setDisplayFunction((vars, DP) -> {
-						double[] attributesInc = (double[]) vars[0] ;
-						int playerLevel = (int) vars[1] ;
-						Color textColor = Game.colorPalette[6] ;
-
-						DP.levelUpAnimation(ani.getCounter(), attributesInc, playerLevel, textColor) ;
-					}) ;
-					break ;
-					
-				case 7 :
-					ani.setDisplayFunction((vars, DP) -> {
-						double[] attributesInc = (double[]) vars[0] ;
-						int playerLevel = (int) vars[1] ;
-						Color textColor = Game.colorPalette[6] ;
-
-						DP.levelUpAnimation(ani.getCounter(), attributesInc, playerLevel, textColor) ;
-					}) ;
-					break ;
-					
-				case 8 :
-					ani.setDisplayFunction((vars, DP) -> {
-						Image PterodactileImage = (Image) vars[0] ;
-						Image SpeakingBubbleImage = (Image) vars[1] ;
-						String[] message = (String[]) vars[2] ;
-						DP.PterodactileAnimation(ani.getCounter(), PterodactileImage, SpeakingBubbleImage, message) ;
-					}) ;
-					break ;
-					
-				case 9 :
-					ani.setDisplayFunction((vars, DP) -> {
-						Point playerPos = (Point) vars[0] ;
-						Directions playerDir = (Directions) vars[1] ;
-						Point fishingPos = UtilG.Translate(playerPos, 0, 0) ;
-
-						switch (playerDir)
-						{
-							case left:
-								fishingPos = UtilG.Translate(playerPos, -Player.FishingGif.size().width, 0) ;
-								break ;
-								
-							case right:
-								fishingPos = UtilG.Translate(playerPos, Player.FishingGif.size().width, 0) ;
-								break ;
-								
-							case up:
-								fishingPos = UtilG.Translate(playerPos, 0, -Player.FishingGif.size().height) ;
-								break ;
-								
-							case down:
-								fishingPos = UtilG.Translate(playerPos, 0, Player.FishingGif.size().height) ;
-								break ;
-						}
-
-						Player.FishingGif.play(fishingPos, Align.bottomCenter, DP) ;
-						if (Player.FishingGif.isDonePlaying())
-						{
-							Player.FishingGif.resetTimeCounter() ;
-						}
-
-					}) ;
-					break ;
-					
-				case 10 :
-					ani.setDisplayFunction((vars, DP) -> {
-						int goldObtained = (int) vars[0] ;
-						DP.gainGoldAnimation(ani.getCounter(), goldObtained) ;
-					}) ;
-					break ;
-					
-				case 11 :
-					ani.setDisplayFunction((vars, DP) -> {
-						DP.notEnoughGold(ani.getCounter()) ;
-					}) ;
-					break ;
-					
-				case 12 :
-					ani.setDisplayFunction((vars, DP) -> {
-						Point pos = (Point) vars[0] ;
-						String message = (String) vars[1] ;
-						Color color = (Color) vars[2] ;
-						DP.quickTextAnimation(pos, ani.getCounter(), message, color) ;
-					}) ;
-					break ;
-					
-				default: break ;
-			}
-			
+			Animation ani = new Animation(i) ;
 			animations.add(ani) ;
 		}
 		
@@ -609,10 +454,7 @@ public class Game extends JPanel
 
 	private static CreatureType[] initializeCreatureTypes(Languages language, int difficultLevel)
 	{
-		System.out.println();
-		long elapsedTimeReadingFile = System.nanoTime();
 		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
-		System.out.println("Time reading creature types file = " + (System.nanoTime() - elapsedTimeReadingFile) / 1000000) ;
 		CreatureType.setNumberOfCreatureTypes(input.size()) ;
 		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()] ;
 		Color[] color = new Color[creatureTypes.length] ;
@@ -1385,7 +1227,7 @@ public class Game extends JPanel
 
 		if (player.isInBattle())
 		{
-			bat.RunBattle(player, pet, player.getOpponent(), animations, DP) ;
+			Battle.runBattle(player, pet, player.getOpponent(), DP) ;
 		}
 
 		if (player.shouldLevelUP())
@@ -1412,10 +1254,15 @@ public class Game extends JPanel
 
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
 
-		for (Animation ani : animations)
+		for (int i = 0 ; i <= animations.size() - 1 ; i += 1)
 		{
-			ani.run(DP) ;
+			animations.get(i).run(DP) ;
+//			if (!ani.isActive())
+//			{
+//				animations.remove(ani) ;
+//			}
 		}
+//		System.out.println(animations.size());
 
 	}
 
@@ -1425,10 +1272,10 @@ public class Game extends JPanel
 		
 //    	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
 //    	player.setLevel(50) ;
-    	player.setMap(cityMaps[1]) ;
+    	player.setMap(fieldMaps[1]) ;
 //    	player.setPos(new Point(393, 140)) ;
 
-//    	letThereBePet() ;
+    	letThereBePet() ;
 
 //		for (int i = 0 ; i <= fieldMaps.length - 1 ; i += 1)
 //		{
@@ -1517,19 +1364,19 @@ public class Game extends JPanel
 		allMaps = initializeAllMaps() ;
 		System.out.println("Loaded maps in " + (System.nanoTime() - elapsedTimeMaps) / 1000000) ;
 		NPCs.setIDs() ;
-		sideBar = new SideBar(player, player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
-		bat = new Battle() ;
 
 		Pterodactile.setMessage(Game.allText.get(TextCategories.pterodactile)) ;
 
 		player.InitializeSpells() ;
 		player.setMap(Game.getMaps()[player.getJob()]) ;
 		player.setPos(Game.getScreen().getCenter()) ;
+		Battle.updateDamageAnimation(player.getSettings().getDamageAnimation()) ;
+		sideBar = new SideBar(player, player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
 		if (player.getSettings().getMusicIsOn())
 		{
 			Music.SwitchMusic(player.getMap().getMusic()) ;
 		}
-		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeInit) / 1000000) ;
+		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeInit) / 1000000 + "\n") ;
 		
 	}
 
@@ -1561,14 +1408,14 @@ public class Game extends JPanel
 			case loading:
 				Opening.displayLoadingScreen(DP) ;
 				initialize() ;
-				initializeCheatMode() ;
+//				initializeCheatMode() ;
 				state = GameStates.running ;
 	
 				shouldRepaint = true ;	
 				break ;
 
 			case simulation:
-				PlayerEvolutionSimulation.run(mousePos, bat, animations, DP) ;	
+				PlayerEvolutionSimulation.run(mousePos, animations, DP) ;	
 				break ;
 
 			case running:

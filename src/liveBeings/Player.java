@@ -53,7 +53,7 @@ import maps.MapElements;
 import maps.TreasureChest;
 import screen.SideBar;
 import utilities.Align;
-import utilities.AttackEffects;
+import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.Scale;
@@ -170,8 +170,7 @@ public class Player extends LiveBeing
 		pos = new Point();
 		dir = Directions.up;
 		state = LiveBeingStates.idle;
-		Image PlayerBack = UtilS.loadImage("\\Player\\" + "PlayerBack.gif") ;
-	    size = new Dimension(PlayerBack.getWidth(null), PlayerBack.getHeight(null));
+	    size = UtilG.getSize(UtilS.loadImage("\\Player\\" + "PlayerBack.gif")) ;
 		range = Integer.parseInt(Properties.get(job)[4]) ;
 		step = Integer.parseInt(Properties.get(job)[33]);
 	    elem = new Elements[] {Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral};
@@ -368,6 +367,11 @@ public class Player extends LiveBeing
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
 	public void setFocusWindow(GameWindow W) { focusWindow = W ;}
 
+	public Point center()
+	{
+		return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;
+	}
+	
 	public static Spell[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpells(), 14) ;}
 	public static Spell[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 34, 49) ;}
 	public static Spell[] getArcherSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 70, 84) ;}
@@ -397,7 +401,7 @@ public class Player extends LiveBeing
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
 	private boolean actionIsAMove() { return Arrays.asList(MoveKeys).contains(currentAction) ;}
-	private boolean hitsCreature() { return (actionIsPhysicalAtk() | actionIsSpell()) & closestCreature != null ;}
+	private boolean hitsCreature() { return (usedPhysicalAtk() | actionIsSpell()) & closestCreature != null ;}
 	public boolean isInBattle() { return opponent != null | state.equals(LiveBeingStates.fighting) ;}
 	public boolean isCollecting() { return state.equals(LiveBeingStates.collecting) ;}
 	public boolean isOpeningChest() { return state.equals(LiveBeingStates.openingChest) ;}
@@ -964,7 +968,7 @@ public class Player extends LiveBeing
 		if (!hasEnoughMP(spell)) { return null ;}
 		
 		spell.getCooldownCounter().reset() ;
-		train(new AtkResults(AtkTypes.magical, AttackEffects.none, 0)) ;
+		train(new AtkResults(AtkTypes.magical, AtkEffects.none, 0)) ;
 		stats.incNumberMagAtk() ;
 		System.out.println("used spell " + spell.getName());
 		switch (spell.getType())
@@ -1075,6 +1079,7 @@ public class Player extends LiveBeing
 		
 		spell.activate() ;		
 		resetBattleActions() ;
+		System.out.println("Player used support spell");
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
 		switch (spell.getId())
 		{
@@ -1187,7 +1192,7 @@ public class Player extends LiveBeing
 		int spellLevel = spell.getLevel() ;
 		int spellID = spells.indexOf(spell) ;
 		int damage = -1 ;
-		AttackEffects effect = AttackEffects.none ;
+		AtkEffects effect = AtkEffects.none ;
 		
 		double PhyAtk = BA.TotalPhyAtk() ;
 		double MagAtk = BA.TotalMagAtk() ;
@@ -1212,7 +1217,7 @@ public class Player extends LiveBeing
 		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[1], elem[4]} ;
 		Elements[] DefElem = receiver.defElems() ;
 		double receiverElemMod = 1 ;
-
+		System.out.println("Player used offensive spell");
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
 		spell.activate() ;
 		
@@ -1594,11 +1599,11 @@ public class Player extends LiveBeing
 		
 	}
 	
-	public void drawTimeBar(Creature creature, DrawingOnPanel DP)
-	{
-		String relPos = UtilS.RelPos(pos, creature.getPos()) ;
-		DrawTimeBar(relPos, Game.colorPalette[0], DP) ;
-	}
+//	public void drawTimeBar(Creature creature, DrawingOnPanel DP)
+//	{
+//		String relPos = UtilS.RelPos(pos, creature.getPos()) ;
+//		drawTimeBar(relPos, Game.colorPalette[0], DP) ;
+//	}
 	
 	public void display(Point pos, Scale scale, Directions direction, boolean showRange, DrawingOnPanel DP)
 	{
@@ -1609,7 +1614,7 @@ public class Player extends LiveBeing
 			DP.DrawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
 		}
 		
-		movingAni.display(direction, pos, angle, new Scale(1,1), DP) ;
+		movingAni.display(direction, pos, angle, Scale.unit, DP) ;
 		
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
@@ -1619,8 +1624,8 @@ public class Player extends LiveBeing
 		{
 			drawRange(DP) ;
 		}
-
-		BA.getStatus().display(UtilG.Translate(pos, 0, -size.height), dir, DP);
+		
+		displayStatus(DP) ;
 	}
 
 	
