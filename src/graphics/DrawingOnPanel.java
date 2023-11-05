@@ -421,7 +421,7 @@ public class DrawingOnPanel
 //		default -> new Point(0, (int) (-20 * rate)) ;
 //				}
 
-		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
 		Point currentPos = UtilG.Translate(initialPos, move.x, move.y) ;
 		DrawText(currentPos, Align.center, stdAngle, message, font, color) ;
 		

@@ -34,7 +34,6 @@ public abstract class Battle
 	private static int damageStyle ;
 	private static final Color phyAtkColor = Game.colorPalette[6] ;
 	private static final Color magAtkColor = Game.colorPalette[5] ;
-//	private static List<Animation> damageAni ;
 	
 
 	static
@@ -95,7 +94,7 @@ public abstract class Battle
 		// TODO atkResults foi null here
 		System.out.println(atkResults) ;
 		Color textColor = atkResults.getAtkType().equals(AtkTypes.magical) ? magAtkColor : phyAtkColor ;
-		damageAni.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageStyle, textColor}) ;
+		damageAni.start(100, new Object[] {receiver.center(), receiver.getSize(), atkResults, damageStyle, textColor}) ;
 //		damageAni.forEach(ani -> ani.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageStyle})) ;
 	}
 	
@@ -453,7 +452,7 @@ public abstract class Battle
 		attacker.drawTimeBar("Left", Game.colorPalette[13], DP) ;
 //		attacker.TakeBloodAndPoisonDamage(receiver.getBA().getBlood().TotalAtk(), receiver.getBA().getPoison().TotalAtk()) ;
 
-		playAtkAnimations(attacker, receiver.getPos(), DP) ;
+		playAtkAnimations(attacker, receiver.center(), DP) ;
 //		attacker.getBA().getStatus().display(attacker.getPos(), attacker.getDir(), DP);
 		if (attacker.isDefending())
 		{

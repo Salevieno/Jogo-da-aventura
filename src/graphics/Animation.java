@@ -52,29 +52,29 @@ public class Animation
 					AtkResults atkResults = (AtkResults) vars[2] ;
 					int style = (int) vars[3] ;
 					Color textColor = (Color) vars[4] ;
-					Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
+					Point pos = new Point(targetPos.x, targetPos.y - targetSize.height / 2 - 5) ;
 					DP.DrawDamageAnimation(pos, atkResults, counter, style, textColor) ;
 				} ;
 				
-			case 1 :
-				return (vars, DP) -> {
-					Point targetPos = (Point) vars[0] ;
-					Dimension targetSize = (Dimension) vars[1] ;
-					AtkResults atkResults = (AtkResults) vars[2] ;
-					int style = (int) vars[3] ;
-					Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
-					DP.DrawDamageAnimation(pos, atkResults, counter, style, Game.colorPalette[6]) ;
-				} ;
-				
-			case 2 :
-				return (vars, DP) -> {
-					Point targetPos = (Point) vars[0] ;
-					Dimension targetSize = (Dimension) vars[1] ;
-					AtkResults atkResults = (AtkResults) vars[2] ;
-					int style = (int) vars[3] ;
-					Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
-					DP.DrawDamageAnimation(pos, atkResults, counter, style, Game.colorPalette[6]) ;
-				} ;				
+//			case 1 :
+//				return (vars, DP) -> {
+//					Point targetPos = (Point) vars[0] ;
+//					Dimension targetSize = (Dimension) vars[1] ;
+//					AtkResults atkResults = (AtkResults) vars[2] ;
+//					int style = (int) vars[3] ;
+//					Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
+//					DP.DrawDamageAnimation(pos, atkResults, counter, style, Game.colorPalette[6]) ;
+//				} ;
+//				
+//			case 2 :
+//				return (vars, DP) -> {
+//					Point targetPos = (Point) vars[0] ;
+//					Dimension targetSize = (Dimension) vars[1] ;
+//					AtkResults atkResults = (AtkResults) vars[2] ;
+//					int style = (int) vars[3] ;
+//					Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
+//					DP.DrawDamageAnimation(pos, atkResults, counter, style, Game.colorPalette[6]) ;
+//				} ;				
 				
 			case 3 :
 				return (vars, DP) -> {

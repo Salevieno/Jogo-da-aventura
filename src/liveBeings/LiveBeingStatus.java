@@ -1,5 +1,6 @@
 package liveBeings;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 
@@ -166,21 +167,22 @@ public class LiveBeingStatus
 		if (0 < silence) {silence += -1 ; }
 	}
 	
-	public void display(Point liveBeingPos, Directions dir, DrawingOnPanel DP)
+	public void display(Point bodyCenter, Dimension size, Directions dir, DrawingOnPanel DP)
 	{
 
 //		int mirror = UtilS.MirrorFromRelPos(UtilS.RelPos(getPos(), creature.getPos())) ;
-		int mirror = 1 ;
-		Point offset = new Point(8, 4) ;
+		int mirror = -1 ;
+		Point offset = new Point(size.width / 2 + bloodImage.getWidth(null) / 2 + 2, size.height / 2 + 4) ;
+
 		if (0 < stun)
 		{
-			Point imgPos = UtilG.Translate(liveBeingPos, 0, -offset.y) ;
+			Point imgPos = UtilG.Translate(bodyCenter, 0, -offset.y) ;
 			DP.DrawImage(stunImage, imgPos, Align.center) ;
 		}
 		
 		int[] statusList = new int[] {block, blood, poison, silence} ;
 		Image[] imgList = new Image[] {blockImage, bloodImage, poisonImage, silenceImage} ;
-		Point imgPos = UtilG.Translate(liveBeingPos, mirror * imgList[0].getWidth(null) + offset.x, 0) ;
+		Point imgPos = UtilG.Translate(bodyCenter, mirror * offset.x, -offset.y) ;
 		for (int i = 0 ; i <= statusList.length - 1 ; i += 1)
 		{
 			if (statusList[i] <= 0) { continue ;}

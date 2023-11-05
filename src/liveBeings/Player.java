@@ -1364,6 +1364,7 @@ public class Player extends LiveBeing
 	
 	public void switchOpenClose(GameWindow win)
 	{
+		// Janelas deviam ficar com o Game, não com o player
 		if (win.isOpen())
 		{
 			win.reset() ;
@@ -1598,12 +1599,6 @@ public class Player extends LiveBeing
 		equips[0].display(eqPos, angle[job], new Scale(0.6, 0.6), Align.center, DP) ;
 		
 	}
-	
-//	public void drawTimeBar(Creature creature, DrawingOnPanel DP)
-//	{
-//		String relPos = UtilS.RelPos(pos, creature.getPos()) ;
-//		drawTimeBar(relPos, Game.colorPalette[0], DP) ;
-//	}
 	
 	public void display(Point pos, Scale scale, Directions direction, boolean showRange, DrawingOnPanel DP)
 	{

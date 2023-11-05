@@ -512,7 +512,7 @@ public class GameMap
  	
  	public void displayTudoEstaBem(DrawingOnPanel DP)
  	{
- 		Point pos = new Point(20, 20) ;
+ 		Point pos = new Point(500, 10) ;
  		String text = Game.allText.get(TextCategories.allIsGood)[0] ;
  		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
  		DP.DrawText(pos, Align.topLeft, 0, text, font, Game.colorPalette[20]) ;

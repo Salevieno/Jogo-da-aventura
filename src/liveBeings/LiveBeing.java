@@ -62,6 +62,7 @@ public abstract class LiveBeing
 	protected MovingAnimations movingAni ;
 	protected AttributesWindow attWindow ;
 	
+	public static final Image AttImage = UtilS.loadImage("\\Player\\" + "Attributes.png") ;
 	public static final Image[] StatusImages = new Image[] {
 			UtilS.loadImage("\\Status\\" + "Stun.png"),
 			UtilS.loadImage("\\Status\\" + "Block.png"),
@@ -485,22 +486,6 @@ public abstract class LiveBeing
 		return null ;
 	}
 	
-//	public void displayDamageTaken(AtkResults atkResults, int animationStyle, DrawingOnPanel DP)
-//	{
-//		System.out.println(displayDamage);
-//		if (!displayDamage.finished())
-//		{
-////			Point TargetPos = (Point) AniVars1[1] ;
-////			Dimension TargetSize = (Dimension) AniVars1[2] ;
-////			int damage = (int)((Object[]) AniVars1[3])[0] ;
-////			AttackEffects effect = (AttackEffects)((Object[]) AniVars1[3])[1] ;
-////			int AnimationStyle = (int) AniVars1[4] ;
-////			Point Pos = new Point(TargetPos.x, TargetPos.y - TargetSize.height - 25) ;
-//			Point pos = new Point(this.pos.x, this.pos.y - size.height - 20) ;
-//			DP.DrawDamageAnimation(pos, atkResults, displayDamage, animationStyle, Game.ColorPalette[6]) ;
-//		}
-//	}
-		
 	public Point follow(Point userPos, Point target, int step, int minDist)
 	{
 		
@@ -575,31 +560,30 @@ public abstract class LiveBeing
 		}
 	}
 	
-	public void drawAttributes(int style, DrawingOnPanel DP)
+	public void displayAttributes(int style, DrawingOnPanel DP)
 	{
-		Color[] colorPalette = Game.colorPalette ;
-		Dimension screenSize = Game.getScreen().getSize() ;
 		
-		ArrayList<Double> attRate = new ArrayList<>() ;
-		ArrayList<Color> attColor = new ArrayList<>() ;
+		List<Double> attRate = new ArrayList<>() ;
+		List<Color> attColor = new ArrayList<>() ;
 		
 		attRate.add(PA.getLife().getRate()) ;
-		attColor.add(colorPalette[7]) ;
+		attColor.add(Game.colorPalette[7]) ;
 		attRate.add(PA.getMp().getRate()) ;
-		attColor.add(colorPalette[20]) ;
+		attColor.add(Game.colorPalette[20]) ;
 		if (!(this instanceof Creature))
 		{
 			attRate.add(PA.getExp().getRate()) ;
-			attColor.add(colorPalette[5]) ;
+			attColor.add(Game.colorPalette[5]) ;
 			attRate.add(PA.getSatiation().getRate()) ;
-			attColor.add(colorPalette[15]) ;
+			attColor.add(Game.colorPalette[15]) ;
 			attRate.add(PA.getThirst().getRate()) ;
-			attColor.add(colorPalette[21]) ;
+			attColor.add(Game.colorPalette[21]) ;
 		}
 		
 		if (style == 0)
 		{
 			Point Pos = new Point((int)(pos.x - size.width / 2), (int)(pos.y - size.height - 5 * (1 + attRate.size()))) ;
+			Dimension screenSize = Game.getScreen().getSize() ;
 			Dimension size = new Dimension((int)(0.05*screenSize.width), (int)(0.01*screenSize.height)) ;
 			int Sy = (int)(0.01*screenSize.height) ;
 			int barthick = 1 ;
@@ -607,25 +591,26 @@ public abstract class LiveBeing
 			{
 				Point pos =new Point(Pos.x, Pos.y + (att + 1) * Sy) ;
 				Dimension size2 = new Dimension((int)(attRate.get(att) * size.width), size.height) ;
-				DP.DrawRect(pos, Align.topLeft, size2, barthick, attColor.get(att), colorPalette[0]) ;
+				DP.DrawRect(pos, Align.topLeft, size2, barthick, attColor.get(att), Game.colorPalette[0]) ;
 			}
 		}
 		if (style == 1)
 		{
-			Point Pos = new Point((int)(0.01*screenSize.width), (int)(0.03*screenSize.height)) ;
-			Dimension size = new Dimension((int)(0.13*screenSize.width), (int)(0.013*screenSize.height)) ;
-			int Sy = size.height ;
-			int barthick = 1 ;
-			Dimension rectSize = new Dimension((int)(1.4 * size.width), (attRate.size() + 1) * Sy) ;
-			DP.DrawRoundRect(Pos, Align.topLeft, rectSize, barthick, colorPalette[8], colorPalette[4], true) ;
+			Point topLeft = Game.getScreen().pos(0.01, 0.02) ;
+			Dimension barSize = new Dimension(100, 5) ;
+			int stroke = 1 ;
+			DP.DrawImage(AttImage, topLeft, Align.topLeft) ;
+			Point offset = new Point(10, 15) ;
+			Point barPos = UtilG.Translate(topLeft, offset.x, offset.y) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
-				Point pos = new Point((int) (Pos.x + 0.3 * size.width), Pos.y + (att + 1) * Sy) ;
-				Dimension size2 = new Dimension((int)(attRate.get(att) * size.width), size.height) ;
-				DP.DrawRect(pos, Align.centerLeft, size, barthick, null, colorPalette[21]) ;
-				DP.DrawRect(pos, Align.centerLeft, size2, barthick, attColor.get(att), colorPalette[0]) ;
+				Dimension rateSize = new Dimension((int)(attRate.get(att) * barSize.width), barSize.height) ;
+				DP.DrawRect(barPos, Align.centerLeft, barSize, stroke, null, Game.colorPalette[0]) ;
+				DP.DrawRect(barPos, Align.centerLeft, rateSize, stroke, attColor.get(att), null) ;
+				barPos.y += barSize.height ;
 			}
 		}
+		
 	}	
 	
 	public void drawTimeBar(String relPos, Color color, DrawingOnPanel DP)
@@ -666,12 +651,13 @@ public abstract class LiveBeing
 	
 	public void displayStatus(DrawingOnPanel DP)
 	{
-		BA.getStatus().display(UtilG.Translate(pos, 0, -size.height), dir, DP) ;
+		BA.getStatus().display(center(), size, dir, DP) ;
 	}
 	
 	public void displayDefending(DrawingOnPanel DP)
 	{
-		Point imagePos = UtilG.Translate(pos, defendingImage.getWidth(null), 0) ;
+		Point offset = new Point(size.width / 2 + defendingImage.getWidth(null) / 2 + 2, 0) ;
+		Point imagePos = UtilG.Translate(center(), offset.x, 0) ;
 		DP.DrawImage(defendingImage, imagePos, Align.center) ;
 	}
 

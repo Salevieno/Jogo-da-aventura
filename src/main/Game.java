@@ -81,7 +81,6 @@ import screen.SideBar ;
 import screen.Sky ;
 import simulations.PlayerEvolutionSimulation ;
 import utilities.Align ;
-import utilities.Directions ;
 import utilities.Elements ;
 import utilities.GameStates ;
 import utilities.Scale ;
@@ -1117,7 +1116,7 @@ public class Game extends JPanel
 		pet.think(player.isInBattle(), player.getPos()) ;
 		pet.act(player) ;
 		pet.display(pet.getPos(), Scale.unit, DP) ;
-		pet.drawAttributes(0, DP) ;
+		pet.displayAttributes(0, DP) ;
 	}
 	
 	private void playerActs()
@@ -1161,7 +1160,7 @@ public class Game extends JPanel
 		}
 
 		player.applyAdjacentGroundEffect() ;
-		player.drawAttributes(0, DP) ;
+		player.displayAttributes(player.getSettings().getAttDisplay(), DP) ;
 		player.display(player.getPos(), Scale.unit, player.getDir(), player.getSettings().getShowAtkRange(), DP) ;
 		if (player.weaponIsEquipped())
 		{
