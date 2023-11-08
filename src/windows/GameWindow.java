@@ -8,6 +8,8 @@ import java.awt.Point;
 
 import graphics.DrawingOnPanel;
 import main.Game;
+import utilities.Align;
+import utilities.UtilG;
 
 public abstract class GameWindow
 {
@@ -52,19 +54,19 @@ public abstract class GameWindow
 	public int getTab() {return tab ;}
 	public int getWindow() {return window ;}
 	public int getItem() {return item ;}
-	public void setItem(int newValue) {item = newValue ;}
+	protected void setItem(int newValue) {item = newValue ;}
 	
 	public void open() { isOpen = true ;}
 	public void close() { isOpen = false ;}
 	
-	public void menuUp()
+	protected void menuUp()
 	{
 		if (menu < numberMenus - 1)
 		{
 			menu += 1 ;
 		}
 	}	
-	public void menuDown()
+	protected void menuDown()
 	{
 		if (0 < menu)
 		{
@@ -72,14 +74,14 @@ public abstract class GameWindow
 		}
 	}
 	
-	public void tabUp()
+	protected void tabUp()
 	{
 		if (tab < numberTabs - 1)
 		{
 			tab += 1 ;
 		}
 	}	
-	public void tabDown()
+	protected void tabDown()
 	{
 		if (0 < tab)
 		{
@@ -87,14 +89,14 @@ public abstract class GameWindow
 		}
 	}
 	
-	public void windowUp()
+	protected void windowUp()
 	{
 		if (window < numberWindows - 1)
 		{
 			window += 1 ;
 		}
 	}	
-	public void windowDown()
+	protected void windowDown()
 	{
 		if (0 < window)
 		{
@@ -102,14 +104,14 @@ public abstract class GameWindow
 		}
 	}
 	
-	public void itemUp()
+	protected void itemUp()
 	{
 		if (item < numberItems - 1)
 		{
 			item += 1 ;
 		}
 	}	
-	public void itemDown()
+	protected void itemDown()
 	{
 		if (0 < item)
 		{
@@ -125,7 +127,15 @@ public abstract class GameWindow
 		item = 0 ;
 	}
 	
-	public Color getTextColor(boolean condition) { return condition ? selColor : stdColor ;}
+	public Color getTextColor(boolean isSelected) { return isSelected ? selColor : stdColor ;}
+	
+	protected void checkMouseSelection(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
+	{
+		Point textTopLeft = UtilG.getTopLeft(itemPos, align, itemSize) ;
+		if (!UtilG.isInside(mousePos, textTopLeft, itemSize)) { return ;}
+		
+		item = itemID ;
+	}
 	
 	public abstract void navigate(String action) ;
 	public abstract void display(Point MousePos, DrawingOnPanel DP) ;

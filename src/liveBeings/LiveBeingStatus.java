@@ -172,7 +172,7 @@ public class LiveBeingStatus
 
 //		int mirror = UtilS.MirrorFromRelPos(UtilS.RelPos(getPos(), creature.getPos())) ;
 		int mirror = -1 ;
-		Point offset = new Point(size.width / 2 + bloodImage.getWidth(null) / 2 + 2, size.height / 2 + 4) ;
+		Point offset = new Point(size.width / 2 - 4, size.height / 2 + 4) ;
 
 		if (0 < stun)
 		{

@@ -249,14 +249,15 @@ public class SpellsTreeWindow extends GameWindow
 			Dimension slotSize = new Dimension(spellSlot.getWidth(null), spellSlot.getHeight(null)) ;
 			Color textColor = hasPreReq ? hasPreReqColor : hasNotPreReqColor ;
 			Image slotImage = hasPreReq ? spellSlot : spellInactiveSlot ;
+			Point slotPos = calcSlotPos(row, col, spellsDistribution.length, spellsDistribution[row], slotSize) ;
 			
+			checkMouseSelection(mousePos, slotPos, Align.topLeft, slotSize, initialSpell + i) ;
 			if (this.item == initialSpell + i)
 			{
 				textColor = selectedColor ;
 				slotImage = hasPreReq ? spellSlotSelected : spellInactiveSlot;
 			}
 			
-			Point slotPos = calcSlotPos(row, col, spellsDistribution.length, spellsDistribution[row], slotSize) ;
 			Point spellImagePos = UtilG.Translate(slotPos, slotSize.width / 2, 4 + 14) ;
 			Point spellLevelPos = UtilG.Translate(slotPos, slotSize.width / 2, slotSize.height / 2 + 18) ;
 					

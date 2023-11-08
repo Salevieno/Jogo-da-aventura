@@ -35,10 +35,11 @@ public class GameButton
 	
 	public GameButton(Point pos, Align alignment, Image image, Image selectedImage, IconFunction action)
 	{
+		name = "" ;
 		this.image = image ;
 		this.selectedImage = selectedImage ;
 		isActive = true ;
-		size = UtilG.getSize(image) ;
+		size = image != null ? UtilG.getSize(image) : new Dimension(100, 50) ;
 		this.alignment = alignment ;
 		this.topLeft = UtilG.getTopLeft(pos, alignment, size) ;
 		this.action = action ;
@@ -50,7 +51,7 @@ public class GameButton
 		this.image = image ;
 		this.selectedImage = selectedImage ;
 		isActive = true ;
-		size = UtilG.getSize(image) ;
+		size = image != null ? UtilG.getSize(image) : new Dimension(100, 50) ;
 		this.alignment = alignment ;
 		this.topLeft = UtilG.getTopLeft(pos, alignment, size) ;
 		this.action = action ;
@@ -89,7 +90,7 @@ public class GameButton
 	public void displayHovered(double angle, boolean displayText, DrawingOnPanel DP)
 	{
 		if (selectedImage != null)
-		{ Double  itens = null ;
+		{
 			DP.DrawImage(selectedImage, topLeft, angle, Scale.unit, Align.topLeft) ;
 			if (displayText)
 			{

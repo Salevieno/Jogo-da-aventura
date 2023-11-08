@@ -1,6 +1,7 @@
 package windows;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class ElementalWindow extends GameWindow
 		if (action == null) { return ;}
 		
 		
-		if (!action.equals("Enter")) { return ;}
+		if (!action.equals("Enter") & !action.equals("LeftClick")) { return ;}
 		
 		System.out.println("menu = " + menu);
 		switch (menu)
@@ -151,7 +152,7 @@ public class ElementalWindow extends GameWindow
 		return equipsForElemChange.subList(numberItemsOnWindow * window, numberItemsOnWindow * (window + 1)) ;
 	}
 	
-	private void displayEquipSelectionMenu(DrawingOnPanel DP)
+	private void displayEquipSelectionMenu(Point mousePos, DrawingOnPanel DP)
 	{
 		int slotW = BagWindow.SlotImage.getWidth(null) ;
 		int slotH = BagWindow.SlotImage.getHeight(null) ;
@@ -166,6 +167,7 @@ public class ElementalWindow extends GameWindow
 					border + padding + 22 + slotH / 2 + row * 21) ;
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
 			Image slotImage = i == item ? BagWindow.SelectedSlotImage : BagWindow.SlotImage ;
+			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
 			Color textColor = getTextColor(i == item) ;
 			
 			DP.DrawImage(slotImage, slotCenter, Align.center) ;
@@ -174,7 +176,7 @@ public class ElementalWindow extends GameWindow
 		}
 	}
 	
-	private void displaySphereSelectionMenu(DrawingOnPanel DP)
+	private void displaySphereSelectionMenu(Point mousePos, DrawingOnPanel DP)
 	{
 		int slotW = BagWindow.SlotImage.getWidth(null) ;
 		int slotH = BagWindow.SlotImage.getHeight(null) ;
@@ -192,6 +194,7 @@ public class ElementalWindow extends GameWindow
 			Image slotImage = item == i ? BagWindow.SelectedSlotImage : BagWindow.SlotImage ;
 			DP.DrawImage(slotImage, slotCenter, Align.center) ;
 			DP.DrawImage(sphere.getImage(), slotCenter, Align.center) ;
+			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
 			Color textColor = getTextColor(i == item) ;
 			DP.DrawText(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, sphere.getName(), stdFont, textColor) ;
 		}
@@ -207,8 +210,8 @@ public class ElementalWindow extends GameWindow
 		DP.DrawText(titlePos, Align.center, angle, menuTitles.get(menu), titleFont, stdColor) ;
 		switch (menu)
 		{
-			case 0: displayEquipSelectionMenu(DP) ; break ;
-			case 1: displaySphereSelectionMenu(DP) ; break ;
+			case 0: displayEquipSelectionMenu(mousePos, DP) ; break ;
+			case 1: displaySphereSelectionMenu(mousePos, DP) ; break ;
 			default: break ;
 		}
 		

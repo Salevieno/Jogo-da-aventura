@@ -1,6 +1,7 @@
 package windows;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -649,6 +650,7 @@ public class BagWindow extends GameWindow
 			Point slotCenter = UtilG.Translate(windowPos, 70 + 6 + slotW / 2 + col * (140 + slotW), border + padding + 2 + slotH / 2 + row * 21) ;
 			String itemText = itemsDisplayed.get(i).getName() + " (x " + amountsDisplayed.get(i) + ")" ;
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
+			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), itemID) ;
 			Color textColor = getTextColor(itemID == item) ;
 			
 			DP.DrawImage(SlotImage, slotCenter, Align.center) ;

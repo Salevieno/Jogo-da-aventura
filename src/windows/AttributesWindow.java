@@ -6,7 +6,7 @@ import java.awt.Point;
 import graphics.DrawingOnPanel;
 import utilities.UtilS;
 
-public class AttributesWindow extends GameWindow
+public abstract class AttributesWindow extends GameWindow
 {
 	
 	Image phyAtkIcon = UtilS.loadImage("\\Windows\\attIcons\\" + "PhyAtkIcon.png") ;

@@ -30,12 +30,8 @@ public class FabWindow extends GameWindow
 		//LoadCraftingRecipes() ;
 		//numberWindows = recipes.size() ;
 	}
-	
-	
 
 	public void setRecipes(List<Recipe> recipes) { this.recipes = recipes ;}
-
-
 
 	public void navigate(String action)
 	{

@@ -297,6 +297,7 @@ public class NPCs
 				playerBag.getEquip().keySet().forEach(equipsForForge::add) ;
 				equipsForForge = equipsForForge.stream().filter(eq -> !Arrays.asList(player.getEquips()).contains(eq)).collect(Collectors.toList());
 				((ForgeWindow) window).setItemsForForge(equipsForForge);
+				((ForgeWindow) window).setBag(playerBag);
 				
 				forgerAction(player, playerBag, playerAction, (ForgeWindow) window, DP) ;
 				

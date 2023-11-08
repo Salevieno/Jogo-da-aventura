@@ -109,7 +109,8 @@ public class Game extends JPanel
 
 	private JPanel mainPanel = this ;
 	private static Point mousePos ;
-	private static GameStates state ;
+	private static GameStates state = GameStates.loading ;
+	private static boolean cheatMode = true ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to handle multiple repaint
 											// requests at once
@@ -147,7 +148,7 @@ public class Game extends JPanel
 		screen = new Screen(new Dimension(windowSize.width - 40, windowSize.height), null) ;
 		screen.calcCenter() ;
 		gameLanguage = Languages.portugues ;
-		state = GameStates.loading ;
+//		state = GameStates.loading ;
 		colorPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette4.png"), "Normal") ;
 		konamiCodeActive = false ;
 		initializeAnimations() ;
@@ -1271,7 +1272,7 @@ public class Game extends JPanel
 		
 //    	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
 //    	player.setLevel(50) ;
-    	player.setMap(fieldMaps[1]) ;
+    	player.setMap(cityMaps[1]) ;
 //    	player.setPos(new Point(393, 140)) ;
 
     	letThereBePet() ;
@@ -1407,7 +1408,7 @@ public class Game extends JPanel
 			case loading:
 				Opening.displayLoadingScreen(DP) ;
 				initialize() ;
-				initializeCheatMode() ;
+				if (cheatMode) { initializeCheatMode() ;}
 				state = GameStates.running ;
 	
 				shouldRepaint = true ;	

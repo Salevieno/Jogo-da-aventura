@@ -1,6 +1,7 @@
 package windows;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
@@ -66,7 +67,7 @@ public class SettingsWindow extends GameWindow
 			{
 				itemDown() ;
 			}
-			if (action.equals("Enter") | action.equals(Player.ActionKeys[3]))
+			if (action.equals("Enter") | action.equals("LeftClick") | action.equals(Player.ActionKeys[3]))
 			{
 				updateSetting() ;
 			}
@@ -93,7 +94,7 @@ public class SettingsWindow extends GameWindow
 			{
 				windowDown() ;
 			}
-			if (action.equals("Enter"))
+			if (action.equals("Enter") | action.equals("LeftClick"))
 			{
 				selectActionKey() ;
 			}
@@ -175,15 +176,22 @@ public class SettingsWindow extends GameWindow
 	}
 	
 	
-	private void displayMenu0(Point textPos, int sx, int sy, double angle, String[] text, Color[] textColor, DrawingOnPanel DP)
+	private void displayMenu0(Point mousePos, String[] text, DrawingOnPanel DP)
 	{
 		
 		boolean[] keyIsOn = new boolean[] {musicIsOn, soundEffectsAreOn, showAtkRange, false, false} ;
+		Point optionPos = UtilG.Translate(windowPos, 25, 42) ;
+		double angle = DrawingOnPanel.stdAngle ;
+		int sx = image.getWidth(null) - 45 ;
+		int sy = font.getSize() + 4 ;
+		
 		for (int i = 0 ; i <= numberItems - 1 ; i += 1)
 		{
-			Point optionPos = new Point(textPos.x, textPos.y + (i + 1)*sy) ;
+			optionPos.y += sy ;
 			Point actionKeyPos = UtilG.Translate(optionPos, sx, 0) ;
-			DP.DrawText(optionPos, Align.bottomLeft, angle, text[i], font, textColor[i]) ;
+			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
+			Color textColor = getTextColor(item == i) ;
+			DP.DrawText(optionPos, Align.bottomLeft, angle, text[i], font, textColor) ;
 			
 			if (i == 3)
 			{
@@ -206,18 +214,25 @@ public class SettingsWindow extends GameWindow
 		
 	}
 	
-	private void displayMenu1(Point textPos, int sx, int sy, double angle, String[] text, Color[] textColor, DrawingOnPanel DP)
+	private void displayMenu1(Point mousePos, String[] text, DrawingOnPanel DP)
 	{
+		Point optionPos = UtilG.Translate(windowPos, 25, 42) ;
+		double angle = DrawingOnPanel.stdAngle ;
+		int sx = image.getWidth(null) - 45 ;
+		int sy = font.getSize() + 4 ;
+		
 		for (int i = 0 ; i <= Player.ActionKeys.length - 1 ; i += 1)
 		{
-			Point optionPos = new Point(textPos.x, textPos.y + (i + 1)*sy) ;
-			Point actionKeyPos = new Point(textPos.x + sx, textPos.y + (i + 1)*sy) ;
-			DP.DrawText(optionPos, Align.bottomLeft, angle, text[i + 6], font, textColor[i]) ;
+			optionPos.y += sy ;
+			Point actionKeyPos = UtilG.Translate(optionPos, sx, 0) ;
+			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
+			Color textColor = getTextColor(item == i) ;
+			DP.DrawText(optionPos, Align.bottomLeft, angle, text[i + 6], font, textColor) ;
 			DP.DrawText(actionKeyPos, Align.bottomCenter, angle, Player.ActionKeys[i], font, Game.colorPalette[5]) ;			
 		}
 		if (selectedActionKeyID <= -1) { return ;}
 
-		Point actionKeyPos = new Point(textPos.x + sx, textPos.y + (selectedActionKeyID + 1)*sy) ;
+		Point actionKeyPos = new Point(optionPos.x + sx, optionPos.y + (selectedActionKeyID + 1)*sy) ;
 		DP.DrawText(actionKeyPos, Align.bottomCenter, angle, Player.ActionKeys[selectedActionKeyID], font, Game.colorPalette[3]) ;
 	}
 	
@@ -238,14 +253,14 @@ public class SettingsWindow extends GameWindow
 		DP.DrawText(titlePos, Align.bottomCenter, angle, "Opções", font, Game.colorPalette[0]) ;
 		if (menu == 0)
 		{
-			displayMenu0(textPos, sx, sy, angle, text, textColor, DP) ;
+			displayMenu0(mousePos, text, DP) ;
 			
 			return ;
 		}
 		
 		if (menu == 1 | menu == 2)
 		{
-			displayMenu1(textPos, sx, sy, angle, text, textColor, DP) ;
+			displayMenu1(mousePos, text, DP) ;
 		}
 	}
 }

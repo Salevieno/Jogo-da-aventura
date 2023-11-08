@@ -147,22 +147,19 @@ public class ShoppingWindow extends GameWindow
 		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[1]) ;
 				
 		
-		for (Item item : itemsOnWindow)
+		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
 		{
+			Item bagItem = itemsOnWindow.get(i) ;
 			Point namePos = UtilG.Translate(itemPos, border + 10, 0) ;
 			Point pricePos = UtilG.Translate(namePos, size.width - border - padding - 50, 0) ;
 			Point coinPos = UtilG.Translate(pricePos, 10, 0) ;
 			
-			if (UtilG.isInside(mousePos, namePos, new Dimension(100, 20)))
-			{
-				this.item = itemsOnWindow.indexOf(item) ;
-			}
-			
-			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? selColor : stdColor ;
+			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(100, 10), i) ;
+			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? selColor : stdColor ;
 			DP.DrawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
-			DP.DrawImage(item.getImage(), itemPos, angle, Scale.unit, Align.center) ;
-			DP.DrawText(namePos, Align.centerLeft, angle, item.getName(), stdFont, itemColor) ;
-			DP.DrawText(pricePos, Align.centerRight, angle, String.valueOf(item.getPrice()), stdFont, Game.colorPalette[14]) ;
+			DP.DrawImage(bagItem.getImage(), itemPos, angle, Scale.unit, Align.center) ;
+			DP.DrawText(namePos, Align.centerLeft, angle, bagItem.getName(), stdFont, itemColor) ;
+			DP.DrawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), stdFont, Game.colorPalette[14]) ;
 			DP.DrawImage(Player.CoinIcon, coinPos, Align.center) ;
 			itemPos.y += 23 ;
 		}
