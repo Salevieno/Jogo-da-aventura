@@ -42,6 +42,7 @@ import components.NPCType ;
 import components.NPCs ;
 import components.Projectiles ;
 import components.Quest ;
+import components.QuestSkills;
 import components.SpellTypes ;
 import graphics.Animation ;
 import graphics.DrawingOnPanel ;
@@ -1301,11 +1302,17 @@ public class Game extends JPanel
 //    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
     	player.getElem()[4] = Elements.water ;
 //
-    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
+    	for (QuestSkills skill : QuestSkills.values())
     	{
-    		player.getExp().incCurrentValue(player.getExp().getMaxValue()) ;
-			player.levelUp(null) ; // Game.getAnimations()[4]
+    		player.getQuestSkills().replace(skill, true) ;
     	}
+    	
+//    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
+//    	{
+//    		player.getExp().incCurrentValue(player.getExp().getMaxValue()) ;
+//			player.levelUp(null) ; // Game.getAnimations()[4]
+//    	}
+    	
 //    	for (int i = 0 ; i <= 30000 - 1 ; i += 1)
 //    	{
 //    		player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0)) ;

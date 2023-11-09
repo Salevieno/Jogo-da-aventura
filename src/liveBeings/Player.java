@@ -189,16 +189,7 @@ public class Player extends LiveBeing
 
 		focusWindow = null ;
 		openWindows = new ArrayList<>() ;
-		bag = new BagWindow(new LinkedHashMap<Potion, Integer>(),
-				new LinkedHashMap<Alchemy, Integer>(),
-				new LinkedHashMap<Forge, Integer>(),
-				new LinkedHashMap<PetItem, Integer>(),
-				new LinkedHashMap<Food, Integer>(),
-				new LinkedHashMap<Arrow, Integer>(),
-				new LinkedHashMap<Equip, Integer>(),
-				new LinkedHashMap<GeneralItem, Integer>(),
-				new LinkedHashMap<Fab, Integer>(),
-				new LinkedHashMap<QuestItem, Integer>()) ;
+		bag = new BagWindow() ;
 		if (job == 2)
 		{
 			bag.add(Arrow.getAll()[0], 100) ;
@@ -248,7 +239,7 @@ public class Player extends LiveBeing
 	    opponent = null ;
 	    currentCollectible = null ;
 	    currentChest = null ;
-		settings = new SettingsWindow(settingsWindowImage, false, true, false, 1, 1) ;
+		settings = new SettingsWindow(settingsWindowImage, false, true, false, 0, 1) ;
 		hotItems = new Item[3] ;
 		
 	}

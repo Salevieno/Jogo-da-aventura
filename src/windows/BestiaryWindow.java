@@ -17,25 +17,22 @@ import utilities.UtilG;
 
 public class BestiaryWindow extends GameWindow
 {
-	private ArrayList<CreatureType> discoveredCreatures ;
+	private List<CreatureType> discoveredCreatures ;
+
+	private Point windowPos = Game.getScreen().pos(0.1, 0.3) ;
+	private Dimension windowSize = new Dimension(384, 288) ;
 	
 	public BestiaryWindow()
 	{
-		super("Besti�rio", null, 0, 0, 0, 0) ;
+		super("Bestiário", null, 0, 0, 0, 0) ;
 		discoveredCreatures = new ArrayList<>() ;
 	}
 	
-	public ArrayList<CreatureType> getDiscoveredCreatures() { return discoveredCreatures ; }
+	public List<CreatureType> getDiscoveredCreatures() { return discoveredCreatures ; }
 	public void addDiscoveredCreature(CreatureType newCreature) { discoveredCreatures.add(newCreature) ; }
 	
 	public void navigate(String action)
 	{
-		/*int windowLimit = 0 ;
-		if (discoveredCreatures != null)
-		{
-			windowLimit = Math.max(discoveredCreatures.size() - 1, 0) / 5 ;
-		}
-		window = UtilS.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, windowLimit) ;*/
 	}
 	
 	public void displayCreatureInfo(Point mainWindowPos, CreatureType creatureType, DrawingOnPanel DP)
@@ -51,7 +48,7 @@ public class BestiaryWindow extends GameWindow
 		
 		mainWindowPos.y += - (int) (0.5 * Game.getScreen().getSize().height) ;
 
-		Dimension windowSize = new Dimension((int)(0.2 * Game.getScreen().getSize().width), (int)(0.5 * Game.getScreen().getSize().height)) ;
+		Dimension windowSize = new Dimension(128, 240) ;
 		Point windowPos = UtilG.Translate(mainWindowPos, 0, -30) ;
 		DP.DrawRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
 		
@@ -67,7 +64,7 @@ public class BestiaryWindow extends GameWindow
 		creatureType.getItems().forEach(item -> textInfo.add(item.getName())) ;
 
 		// draw text
-		Point textPos = new Point(mainWindowPos.x + offset, (int) (mainWindowPos.y + creatureType.getSize().height + offset)) ;
+		Point textPos = UtilG.Translate(mainWindowPos, offset, creatureType.getSize().height + offset) ;
 		DP.DrawText(textPos, Align.topLeft, angle, creatureType.getName(), namefont, textColor) ;
 		textPos = UtilG.Translate(textPos, 0, sy) ;
 		for (int i = 0 ; i <= text.length - 1 ; i += 1)
@@ -77,11 +74,10 @@ public class BestiaryWindow extends GameWindow
 		}
 	}
 	
-	public void display(Point MousePos, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawingOnPanel DP)
 	{
-		Point windowPos = new Point((int)(0.1 * Game.getScreen().getSize().width), (int)(0.3 * Game.getScreen().getSize().height)) ;
-		Dimension windowSize = new Dimension((int)(0.6 * Game.getScreen().getSize().width), (int)(0.6 * Game.getScreen().getSize().height)) ;
-		int numRows = 6, numCols = 6 ;	
+		int numRows = 6 ;
+		int numCols = 6 ;
 		
 		int offset = 12 ;
 		Dimension slotSize = new Dimension(windowSize.width / (numCols + 1) - 2 * offset / numCols, windowSize.height / (numRows + 1) - 2 * offset / numRows) ;
@@ -92,32 +88,30 @@ public class BestiaryWindow extends GameWindow
 		// draw window
 		DP.DrawRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
 		
-		if (discoveredCreatures != null)
+		if (discoveredCreatures == null) { return ;}
+		
+		int numSlotsInWindow = Math.min(discoveredCreatures.size(), numRows * numCols) ;
+		item = -1 ;
+		for (int slot = 0 ; slot <= numSlotsInWindow - 1 ; slot += 1)
 		{
-			int numSlotsInWindow = Math.min(discoveredCreatures.size(), numRows * numCols) ;
-			CreatureType selectedCreature = null ;
-			for (int slot = 0 ; slot <= numSlotsInWindow - 1 ; slot += 1)
-			{
-				// draw slots
-				Point slotTopLeft = new Point((int) (windowPos.x + (slot / numCols) * sx + offset), (int) (windowPos.y + (slot % numRows) * sy + offset)) ;
-				Point slotCenter = UtilG.Translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
-				DP.DrawRoundRect(slotCenter, Align.center, slotSize, 2, Game.colorPalette[20], Game.colorPalette[3], true) ;
+			// draw slots
+			Point slotTopLeft = UtilG.Translate(windowPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
+			Point slotCenter = UtilG.Translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
+			DP.DrawRoundRect(slotCenter, Align.center, slotSize, 2, Game.colorPalette[20], Game.colorPalette[3], true) ;
 
-				// draw creatures
-				CreatureType creatureType = discoveredCreatures.get(slot) ;
-				double scaleFactor = Math.min((double) (slotSize.width - 10) / creatureType.getSize().width, (double) (slotSize.height - 10) / creatureType.getSize().height) ;
-				creatureType.display(slotCenter, new Scale(scaleFactor, scaleFactor), DP) ;
-				
-				// determine if a creature is selected
-				if (UtilG.isInside(MousePos, slotTopLeft, slotSize))
-				{
-					selectedCreature = creatureType ;
-				}
-			}
-			if (selectedCreature != null)
-			{
-				displayCreatureInfo(new Point(windowPos.x + windowSize.width, windowPos.y + windowSize.height), selectedCreature, DP) ;
-			}
+			// draw creatures
+			CreatureType creatureType = discoveredCreatures.get(slot) ;
+			double scaleFactor = Math.min((double) (slotSize.width - 10) / creatureType.getSize().width,
+					(double) (slotSize.height - 10) / creatureType.getSize().height) ;
+			checkMouseSelection(mousePos, slotTopLeft, Align.topLeft, slotSize, slot) ;
+			creatureType.display(slotCenter, new Scale(scaleFactor, scaleFactor), DP) ;
 		}
+
+		if (discoveredCreatures.isEmpty()) { return ;}
+		if (item < 0) { return ;}
+		
+		CreatureType selectedCreature = discoveredCreatures.get(item) ;
+		Point creatureInfoPos = UtilG.Translate(windowPos, windowSize.width, windowSize.height) ;
+		displayCreatureInfo(creatureInfoPos, selectedCreature, DP) ;
 	}
 }

@@ -56,6 +56,25 @@ public class BagWindow extends GameWindow
     public static final Image SlotImage = UtilS.loadImage("\\Windows\\" + "BagSlot.png") ;
     public static final Image SelectedSlotImage = UtilS.loadImage("\\Windows\\" + "BagSelectedSlot.png") ;
 	
+    public BagWindow()
+	{
+		
+		super("Mochila", BagImage, 10, 2, 0, 0) ;
+		this.pot = new LinkedHashMap<Potion, Integer>() ;
+		this.alch = new LinkedHashMap<Alchemy, Integer>() ;
+		this.forges = new LinkedHashMap<Forge, Integer>() ;
+		this.petItems = new LinkedHashMap<PetItem, Integer>() ;
+		this.foods = new LinkedHashMap<Food, Integer>() ;
+		this.arrows = new LinkedHashMap<Arrow, Integer>() ;
+		this.equips = new LinkedHashMap<Equip, Integer>() ;
+		this.genItems = new LinkedHashMap<GeneralItem, Integer>() ;
+		this.fabItems = new LinkedHashMap<Fab, Integer>() ;
+		this.questItems = new LinkedHashMap<QuestItem, Integer>() ;
+		itemsOnWindow = new LinkedHashMap<>() ;
+		gold = 0 ;
+		
+	}
+    
 	public BagWindow(Map<Potion, Integer> pot, Map<Alchemy, Integer> alch, Map<Forge, Integer> forge, Map<PetItem, Integer> petItem,
 			Map<Food, Integer> food, Map<Arrow, Integer> arrow, Map<Equip, Integer> equip, Map<GeneralItem, Integer> genItem,
 			Map<Fab, Integer> fab, Map<QuestItem, Integer> quest)

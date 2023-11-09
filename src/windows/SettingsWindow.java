@@ -240,8 +240,6 @@ public class SettingsWindow extends GameWindow
 	{
 		double angle = DrawingOnPanel.stdAngle ;
 		Point textPos = UtilG.Translate(windowPos, 25, 42) ;
-		int sx = image.getWidth(null) - 45 ;
-		int sy = font.getSize() + 4 ;
 		Image menuImage = menu == 0 ? image : deeperMenuImage ;
 		String[] text = Game.allText.get(TextCategories.settings) ;
 		Color[] textColor = new Color[3 + Player.ActionKeys.length] ;
@@ -253,6 +251,7 @@ public class SettingsWindow extends GameWindow
 		DP.DrawText(titlePos, Align.bottomCenter, angle, "Opções", font, Game.colorPalette[0]) ;
 		if (menu == 0)
 		{
+			numberItems = 6 ;
 			displayMenu0(mousePos, text, DP) ;
 			
 			return ;
@@ -260,6 +259,7 @@ public class SettingsWindow extends GameWindow
 		
 		if (menu == 1 | menu == 2)
 		{
+			numberItems = Player.ActionKeys.length ;
 			displayMenu1(mousePos, text, DP) ;
 		}
 	}
