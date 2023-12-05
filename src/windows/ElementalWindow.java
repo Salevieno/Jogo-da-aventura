@@ -22,12 +22,12 @@ import utilities.UtilS;
 public class ElementalWindow extends GameWindow
 {
 	
-	private Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
 	private List<GeneralItem> spheres ;
 	private GeneralItem selectedSphere ;
 	private List<Equip> equipsForElemChange ;
 	private Equip selectedEquip ;
-	
+
+	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
 	private static final List<String> menuTitles = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
 	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Elemental.png") ;
 	private static final int firstSphereID = 390 ;
@@ -35,7 +35,7 @@ public class ElementalWindow extends GameWindow
 
 	public ElementalWindow()
 	{
-		super("Elemental", windowImage, 2, 1, 1, 2) ;
+		super("Elemental", windowPos, windowImage, 2, 1, 1, 2) ;
 		spheres = null ;
 		selectedEquip = null ;
 		selectedSphere = null ; // ArrayList<Item>) ((ArrayList<?>) equipsForElemChange))

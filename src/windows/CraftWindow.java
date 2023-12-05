@@ -33,7 +33,7 @@ public class CraftWindow extends GameWindow
 	// TODO corrigir as receitas
 	public CraftWindow(List<Recipe> recipes)
 	{
-		super("Criação", craftImage, 1, 1, RecipesPerWindow, recipes.size() / RecipesPerWindow) ;
+		super("Criação", windowPos, craftImage, 1, 1, RecipesPerWindow, recipes.size() / RecipesPerWindow) ;
 		amountOfCrafts = 1 ;
 		this.recipes = recipes ;
 		recipesInWindow = RecipesPerWindow <= recipes.size() ? recipes.subList(window, RecipesPerWindow + window) : recipes ;

@@ -7,7 +7,6 @@ import java.awt.event.KeyEvent ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -123,7 +122,7 @@ public class Player extends LiveBeing
     public static final Image collectingGif = UtilS.loadImage("\\Collect\\" + "Collecting.gif") ;
 //    public static final Image TentImage = UtilS.loadImage("\\SideBar\\" + "Icon5_tent.png") ;
     public static final Gif TentGif = new Gif(UtilS.loadImage("Tent.png"), 1000, false, false) ;
-    public static final Image DragonAuraImage = UtilS.loadImage("\\Player\\" + "DragonAura.png") ;
+    public static final Image DragonAuraImage = UtilS.loadImage("\\Player\\" + "dragonAura.gif") ;
     public static final Image RidingImage = UtilS.loadImage("\\Player\\" + "Tiger.png") ;
 	public static final Image CoinIcon = UtilS.loadImage("\\Player\\" + "CoinIcon.png") ;    
 	public static final Image DiggingGif = UtilS.loadImage("\\Player\\" + "Digging.gif") ;   
@@ -239,7 +238,7 @@ public class Player extends LiveBeing
 	    opponent = null ;
 	    currentCollectible = null ;
 	    currentChest = null ;
-		settings = new SettingsWindow(settingsWindowImage, false, true, false, 0, 1) ;
+		settings = new SettingsWindow(settingsWindowImage, false, true, false, 1, 1) ;
 		hotItems = new Item[3] ;
 		
 	}
@@ -348,6 +347,7 @@ public class Player extends LiveBeing
 	public FabWindow getFabWindow() {return fabWindow ;}
 	public List<Recipe> getKnownRecipes() { return knownRecipes ;}
 	public SpellsTreeWindow getSpellsTreeWindow() {return spellsTree ;}
+	public HintsWindow getHintsindow() {return hintsWindow ;}
 	public Creature getOpponent() { return opponent ;}
 	public Item[] getHotItems() { return hotItems ;}
 	public Statistics getStatistics() { return stats ;}
@@ -368,7 +368,7 @@ public class Player extends LiveBeing
 	public static Spell[] getAnimalSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 105, 118) ;}
 	public static Spell[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 139, 152) ;}
 	
-	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
+	
 
 	public static double calcExpToLevelUp(int level)
 	{
@@ -404,7 +404,7 @@ public class Player extends LiveBeing
 	}
 
 	
-	private Point feetPos() {return new Point(pos.x, (int) (pos.y - size.height)) ;}	
+	private Point feetPos() {return new Point(pos.x, pos.y) ;}	
 
 	public Creature closestCreatureInRange()
 	{			
@@ -458,9 +458,9 @@ public class Player extends LiveBeing
 	private void trainCollecting(Collectible collectible)
 	{
 		
-		if (collectible.type() <= 0) { return ;}
+		if (collectible.typeNumber() <= 0) { return ;}
 		
-		collectLevel[collectible.type() - 1] += 0.25 / (collectLevel[collectible.type() - 1] + 1) ;
+		collectLevel[collectible.typeNumber() - 1] += 0.25 / (collectLevel[collectible.typeNumber() - 1] + 1) ;
 		
 	}
 	
@@ -493,9 +493,9 @@ public class Player extends LiveBeing
         
         if (!collectCounter.finished()) { return ;}
         
-        boolean isBerry = currentCollectible.type() == 0 ;
+        boolean isBerry = currentCollectible.typeNumber() == 0 ;
         int mapLevel = ((FieldMap) map).getLevel() ;
-        double collectChance = isBerry ? 1 : 1 - 1 / (1 + Math.pow(1.1, collectLevel[currentCollectible.type() - 1] - mapLevel)) ;
+        double collectChance = isBerry ? 1 : 1 - 1 / (1 + Math.pow(1.1, collectLevel[currentCollectible.typeNumber() - 1] - mapLevel)) ;
         String msg = "Falha na coleta!" ;        
     	
         if (UtilG.chance(collectChance))
@@ -683,9 +683,7 @@ public class Player extends LiveBeing
 				return ;
 				
 			case 12:
-				if (isInBattle()) { return ;}				
-//				TentGif.start() ;
-//				setState(LiveBeingStates.sleeping) ;				
+				if (isInBattle()) { return ;}		
 				return ;
 				
 			case 13: setState(LiveBeingStates.digging) ; return ;
@@ -731,12 +729,6 @@ public class Player extends LiveBeing
 			}
 			
 		}
-		
-		
-//		if (currentAction.equals("LeftClick"))
-//		{
-//			mouseActions(pet, mousePos, sideBar) ;
-//		}
 
 		keyboardActions(pet) ;
 		
@@ -756,10 +748,10 @@ public class Player extends LiveBeing
 
 		if (bag.isOpen())
 		{
-			bag.act(currentAction, this) ;
+			bag.act(currentAction, mousePos, this) ;
 		}
 		
-		if (attWindow.isOpen() & actionIsForward(currentAction))
+		if (attWindow.isOpen() & GameWindow.actionIsForward(currentAction))
 		{
 			((PlayerAttributesWindow) attWindow).act(this, mousePos, currentAction) ;
 		}
@@ -876,9 +868,9 @@ public class Player extends LiveBeing
 			Collectible collectible = collectibles.get(i) ;
 			if (!isInCloseRange(collectible.getPos())) { continue ;}
 			
-			if (0 < collectible.type())
+			if (0 < collectible.typeNumber())
 			{
-				if (collectLevel[collectible.type() - 1] + 1 < ((FieldMap) map).getLevel())
+				if (collectLevel[collectible.typeNumber() - 1] + 1 < ((FieldMap) map).getLevel())
 				{
 					Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), "Nível de coleta insuficiente", Game.colorPalette[4]}) ;
 					break ;
@@ -1600,10 +1592,10 @@ public class Player extends LiveBeing
 		}
 		
 		movingAni.display(direction, pos, angle, Scale.unit, DP) ;
-		
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
-			DP.DrawImage(DragonAuraImage, feetPos(), angle, scale, Align.center) ;					
+			Point auraPos = UtilG.Translate(pos, -size.width / 2, 0) ;
+			DP.DrawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
 		}
 		if (showRange)
 		{

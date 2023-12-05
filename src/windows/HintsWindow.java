@@ -14,9 +14,12 @@ import utilities.UtilS;
 
 public class HintsWindow extends GameWindow
 {
+	private static final Point windowPos = Game.getScreen().pos(0.1, 0.4) ;
+	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
+	
 	public HintsWindow()
 	{
-		super("Dicas", UtilS.loadImage("\\Windows\\" + "Hints.png"), 0, 0, 0, 0) ;
+		super("Dicas", windowPos, UtilS.loadImage("\\Windows\\" + "Hints.png"), 0, 0, 0, 0) ;
 	}
 	
 	public void navigate(String action)
@@ -34,8 +37,6 @@ public class HintsWindow extends GameWindow
 	public void display(Point mousePos, DrawingOnPanel DP)
 	{
 		String[] text = Game.allText.get(TextCategories.hints) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
-		Point windowPos = Game.getScreen().pos(0.1, 0.4) ;
 		Point textPos = new Point(windowPos.x + 15, windowPos.y + 10) ;
 		Color textColor = Game.colorPalette[5] ;
 		double angle = DrawingOnPanel.stdAngle ;

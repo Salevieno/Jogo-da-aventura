@@ -19,14 +19,14 @@ import utilities.UtilS;
 public class FabWindow extends GameWindow
 {
     private List<Recipe> recipes ;
-    
-	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Book.png") ;
+
 	private static final Point windowPos = Game.getScreen().pos(0.5, 0.5) ;
+	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Book.png") ;
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 	
 	public FabWindow()
 	{
-		super("Livro", windowImage, 0, 0, 0, 3) ;
+		super("Livro", windowPos, windowImage, 0, 0, 0, 3) ;
 		//LoadCraftingRecipes() ;
 		//numberWindows = recipes.size() ;
 	}

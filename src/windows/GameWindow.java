@@ -6,14 +6,19 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 
+import components.GameButton;
+import components.IconFunction;
 import graphics.DrawingOnPanel;
+import liveBeings.Player;
 import main.Game;
 import utilities.Align;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public abstract class GameWindow
 {
 	protected String name ;
+	protected Point topLeftPos ;
 	protected Image image ;
 	protected boolean isOpen ;
 	protected int menu ;
@@ -26,6 +31,13 @@ public abstract class GameWindow
 	protected int numberWindows ;
 	protected Dimension size ;
 	
+	protected String stdMenuUp = Player.ActionKeys[2] ;
+	protected String stdMenuDown = Player.ActionKeys[0] ;
+	protected String stdWindowUp = Player.ActionKeys[3] ;
+	protected String stdWindowDown = Player.ActionKeys[1] ;
+	protected String stdReturn = "MouseRightClick" ;
+	protected String stdExit = "Escape" ;
+	
 	protected static final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	protected static final Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 11) ;
 	protected static final Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -34,9 +46,10 @@ public abstract class GameWindow
 	protected static final int border = 6 ;
 	protected static final int padding = 4 ;
 	
-	public GameWindow(String name, Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
+	public GameWindow(String name, Point topLeftPos, Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
 	{
 		this.name = name ;
+		this.topLeftPos = topLeftPos ;
 		this.image = image ;
 		this.numberMenus = numberMenus ;
 		this.numberTabs = numberTabs ;
@@ -55,6 +68,24 @@ public abstract class GameWindow
 	public int getWindow() {return window ;}
 	public int getItem() {return item ;}
 	protected void setItem(int newValue) {item = newValue ;}
+	
+	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
+	protected GameButton windowUpButton(Point pos, Align align)
+	{
+		Image buttonImage = UtilS.loadImage("\\Windows\\" + "moveUp.png") ;
+		Image selectedButtonImage = UtilS.loadImage("\\Windows\\" + "SelectedMoveUp.gif") ;
+		IconFunction action = () -> { windowUp() ;} ;
+		return new GameButton(pos, align, buttonImage, selectedButtonImage, action) ;
+	}
+	protected GameButton windowDownButton(Point pos, Align align)
+	{
+		Image buttonImage = UtilS.loadImage("\\Windows\\" + "moveDown.png") ;
+		Image selectedButtonImage = UtilS.loadImage("\\Windows\\" + "selectedMoveDown.gif") ;
+		IconFunction action = () -> { windowDown() ;} ;
+		return new GameButton(pos, align, buttonImage, selectedButtonImage, action) ;
+	}
+	
+	public boolean mouseIsOver(Point mousePos) { return UtilG.isInside(mousePos, topLeftPos, size) ;}
 	
 	public void open() { isOpen = true ;}
 	public void close() { isOpen = false ;}

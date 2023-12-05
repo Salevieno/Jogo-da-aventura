@@ -526,9 +526,19 @@ public class GameMap
  	public void display(DrawingOnPanel DP)
  	{
  		// TODO choose scale by map size
- 		if (name.contains("Cave")) { DP.DrawImage(image, Game.getScreen().getCenter(), Align.center) ;}
- 		else if (name.equals("City of the animals")) {DP.DrawImage(image, Game.getScreen().getMapCenter(), new Scale(0.5, 0.5), Align.center) ;}
- 		else { DP.DrawImage(image, Game.getScreen().getMapCenter(), Align.center) ;}
+ 		if (name.contains("Cave"))
+ 		{
+ 			DP.DrawImage(image, Game.getScreen().getCenter(), Align.center) ;
+ 			return ;
+ 		}
+ 		
+ 		if (name.equals("City of the animals"))
+ 		{
+ 			DP.DrawImage(image, Game.getScreen().getMapCenter(), new Scale(0.5, 0.5), Align.center) ;
+ 			return ;
+ 		}
+ 		
+ 		DP.DrawImage(image, Game.getScreen().getMapCenter(), Align.center) ;
  		
  		if (name.equals("City of the archers"))
  		{

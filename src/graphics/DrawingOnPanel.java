@@ -186,7 +186,29 @@ public class DrawingOnPanel
 		}
 		graph2D.setStroke(new BasicStroke(stdStroke)) ;
 	}
-	public void DrawRoundRect(Point pos, Align align, Dimension size, int stroke, Color topColor, Color botColor, boolean contour)
+	public void drawRoundRect(Point pos, Align align, Dimension size, int stroke, Color fillColor, boolean contour)
+	{
+		drawRoundRect(pos, align, size, stroke, fillColor, contour, 10, 10) ;
+	}
+	public void drawRoundRect(Point pos, Align align, Dimension size, int stroke, Color fillColor, boolean contour, int arcWidth, int arcHeight)
+	{
+		// Round rectangle by default starts at the left top
+		Point offset = UtilG.offsetForAlignment(align, size) ;
+		int[] Corner = new int[] {pos.x + offset.x, pos.y + offset.y} ;
+		graph2D.setStroke(new BasicStroke(stroke)) ;
+		if (fillColor != null)
+		{
+		    graph2D.setColor(fillColor) ;
+			graph2D.fillRoundRect(Corner[0], Corner[1], size.width, size.height, arcWidth, arcHeight) ;
+		}
+		if (contour)
+		{
+			graph2D.setColor(Game.colorPalette[0]) ;
+			graph2D.drawRoundRect(Corner[0], Corner[1], size.width, size.height, arcWidth, arcHeight) ;
+		}
+		graph2D.setStroke(new BasicStroke(stdStroke)) ;
+	}
+	public void drawGradRoundRect(Point pos, Align align, Dimension size, int stroke, Color topColor, Color botColor, boolean contour)
 	{
 		// Round rectangle by default starts at the left top
 		int ArcWidth = 10, ArcHeight = 10 ;
@@ -201,7 +223,7 @@ public class DrawingOnPanel
 		}
 		if (contour)
 		{
-			graph2D.setColor(Color.black) ;
+			graph2D.setColor(Game.colorPalette[0]) ;
 			graph2D.drawRoundRect(Corner[0], Corner[1], size.width, size.height, ArcWidth, ArcHeight) ;
 		}
 		graph2D.setStroke(new BasicStroke(stdStroke)) ;
@@ -316,7 +338,7 @@ public class DrawingOnPanel
 		Point[] WindowPos = new Point[] {new Point((int)(0.35*screenSize.width), (int)(0.2*screenSize.height)),
 				new Point((int)(0.65*screenSize.width), (int)(0.2*screenSize.height)),
 				new Point((int)(0.5*screenSize.width), (int)(0.2*screenSize.height))} ;
-		DrawRoundRect(WindowPos[0], Align.topLeft, new Dimension(screenSize.width / 3, screenSize.height / 2), 2, Color.white, Color.lightGray, true) ;
+		drawGradRoundRect(WindowPos[0], Align.topLeft, new Dimension(screenSize.width / 3, screenSize.height / 2), 2, Color.white, Color.lightGray, true) ;
 		DrawText(new Point(WindowPos[0].x + screenSize.width / 6, WindowPos[0].y + screenSize.height / 4), Align.center, stdAngle, "Slot " + String.valueOf(SlotID + 1) + " is empty", new Font("SansSerif", Font.BOLD, 20), colorPalette[5]) ;
 		DrawWindowArrows(new Point(WindowPos[0].x, WindowPos[0].y + screenSize.height / 2), screenSize.width / 3, SlotID, NumSlots) ;
 	}
@@ -530,7 +552,7 @@ public class DrawingOnPanel
 		Dimension size = new Dimension(UtilG.TextL(text, font, graph2D) + 10, 20) ;
 		Color bgColor = Game.colorPalette[3] ;
 		
-		DrawRoundRect(pos, Align.topLeft, size, 2, bgColor, bgColor, true) ;
+		drawGradRoundRect(pos, Align.topLeft, size, 2, bgColor, bgColor, true) ;
 		DrawText(UtilG.Translate(pos, 5, 5), Align.topLeft, stdAngle, text, font, color) ;
 		
 	}

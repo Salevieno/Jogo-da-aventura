@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import components.GameButton;
 import graphics.DrawingOnPanel;
 import items.Alchemy;
 import items.Arrow;
@@ -45,21 +46,22 @@ public class BagWindow extends GameWindow
 	private Map<Item, Integer> itemsOnWindow ;
 	private int gold ;
 	
-	private final Point windowPos = Game.getScreen().pos(0.3, 0.48) ;
 	private final int numberSlotMax = 20 ;
-	
-	public static final Image BagImage = UtilS.loadImage("\\Windows\\" + "Bag.png") ;
-	public static final Image SelectedBag = UtilS.loadImage("\\Windows\\" + "BagSelected.png") ;
-	public static final Image MenuImage = UtilS.loadImage("\\Windows\\" + "BagMenu.png") ;
-	public static final Image SelectedMenuTab0 = UtilS.loadImage("\\Windows\\" + "BagSelectedMenuTab0.png") ;
-	public static final Image SelectedMenuTab1 = UtilS.loadImage("\\Windows\\" + "BagSelectedMenuTab1.png") ;
-    public static final Image SlotImage = UtilS.loadImage("\\Windows\\" + "BagSlot.png") ;
-    public static final Image SelectedSlotImage = UtilS.loadImage("\\Windows\\" + "BagSelectedSlot.png") ;
+	private final List<GameButton> buttons ;
+
+	private static final Point windowPos = Game.getScreen().pos(0.28, 0.4) ;
+	private static final Image BagImage = UtilS.loadImage("\\Windows\\" + "Bag.png") ;
+	private static final Image SelectedBag = UtilS.loadImage("\\Windows\\" + "BagSelected.png") ;
+	private static final Image MenuImage = UtilS.loadImage("\\Windows\\" + "BagMenu.png") ;
+	private static final Image SelectedMenuTab0 = UtilS.loadImage("\\Windows\\" + "BagSelectedMenuTab0.png") ;
+	private static final Image SelectedMenuTab1 = UtilS.loadImage("\\Windows\\" + "BagSelectedMenuTab1.png") ;
+	public static final Image SlotImage = UtilS.loadImage("\\Windows\\" + "BagSlot.png") ;
+	public static final Image SelectedSlotImage = UtilS.loadImage("\\Windows\\" + "BagSelectedSlot.png") ;
 	
     public BagWindow()
 	{
 		
-		super("Mochila", BagImage, 10, 2, 0, 0) ;
+		super("Mochila", windowPos, BagImage, 10, 2, 0, 0) ;
 		this.pot = new LinkedHashMap<Potion, Integer>() ;
 		this.alch = new LinkedHashMap<Alchemy, Integer>() ;
 		this.forges = new LinkedHashMap<Forge, Integer>() ;
@@ -73,6 +75,9 @@ public class BagWindow extends GameWindow
 		itemsOnWindow = new LinkedHashMap<>() ;
 		gold = 0 ;
 		
+		buttons = List.of(windowUpButton(new Point(windowPos.x + BagImage.getWidth(null) - 10, windowPos.y + BagImage.getHeight(null) + 10), Align.topLeft),
+						windowDownButton(new Point(windowPos.x + 10, windowPos.y + BagImage.getHeight(null) + 10), Align.topLeft)) ;
+		
 	}
     
 	public BagWindow(Map<Potion, Integer> pot, Map<Alchemy, Integer> alch, Map<Forge, Integer> forge, Map<PetItem, Integer> petItem,
@@ -80,7 +85,7 @@ public class BagWindow extends GameWindow
 			Map<Fab, Integer> fab, Map<QuestItem, Integer> quest)
 	{
 		
-		super("Mochila", BagImage, 10, 2, 0, 0) ;
+		super("Mochila", windowPos, BagImage, 10, 2, 0, 0) ;
 		this.pot = pot ;
 		this.alch = alch ;
 		this.forges = forge ;
@@ -93,6 +98,9 @@ public class BagWindow extends GameWindow
 		this.questItems = quest ;
 		itemsOnWindow = new LinkedHashMap<>() ;
 		gold = 0 ;
+		
+		buttons = List.of(windowUpButton(new Point(windowPos.x + BagImage.getWidth(null) - 10, windowPos.y + BagImage.getHeight(null) + 10), Align.topLeft),
+						windowDownButton(new Point(windowPos.x + 10, windowPos.y + BagImage.getHeight(null) + 10), Align.topLeft)) ;
 		
 	}
 
@@ -112,47 +120,47 @@ public class BagWindow extends GameWindow
 	{
 		if (tab == 0)
 		{
-			if (action.equals(Player.ActionKeys[2]))
+			if (action.equals(stdMenuUp))
 			{
 				menuUp() ;
 				window = 0 ;
 				updateWindow() ;
 			}
-			if (action.equals(Player.ActionKeys[0]))
+			if (action.equals(stdMenuDown))
 			{
 				menuDown() ;
 				window = 0 ;
 				updateWindow() ;
 			}			
-			if (Player.actionIsForward(action))
+			if (actionIsForward(action))
 			{
 				tabUp() ;
 			}
 		}
 		if (tab == 1)
 		{
-			if (action.equals(Player.ActionKeys[2]))
+			if (action.equals(stdMenuUp))
 			{
 				itemUp() ;
 			}
-			if (action.equals(Player.ActionKeys[0]))
+			if (action.equals(stdMenuDown))
 			{
 				if (numberSlotMax * window + 1 <= item)
 				{
 					itemDown() ;
 				}
 			}
-			if (action.equals(Player.ActionKeys[3]))
+			if (action.equals(stdWindowUp))
 			{
 				windowUp() ;
 				updateWindow() ;
 			}
-			if (action.equals(Player.ActionKeys[1]))
+			if (action.equals(stdWindowDown))
 			{
 				windowDown() ;
 				updateWindow() ;
 			}
-			if (action.equals("Escape") | action.equals("MouseRightClick"))
+			if (action.equals(stdExit) | action.equals(stdReturn))
 			{
 				tabDown() ;
 				setItem(0) ;
@@ -160,11 +168,13 @@ public class BagWindow extends GameWindow
 		}
 	}
 	
-	public void act(String action, Player player)
+	public void act(String action, Point mousePos, Player player)
 	{
+		buttons.forEach(button -> { if (button.isClicked(mousePos, action)) {button.act() ;}}) ;
+		
 		if (tab == 0) { return ;}
 		
-		if (tab == 1 & Player.actionIsForward(action))
+		if (tab == 1 & actionIsForward(action))
 		{
 			player.useItem(getSelectedItem()) ;
 		}
@@ -649,14 +659,7 @@ public class BagWindow extends GameWindow
 		int slotH = SlotImage.getHeight(null) ;
 		int itemID = window * numberSlotMax ;
 		
-//		if (!itemsAreOrdered)
-//		{
-//			itemsOnWindow = getItemsOnWindow() ;
-//			itemsAreOrdered = true ;
-//		}
-		itemsOnWindow = getItemsOnWindow() ;
-			
-		
+		itemsOnWindow = getItemsOnWindow() ;		
 		List<Item> itemsDisplayed = new ArrayList<>(itemsOnWindow.keySet()) ;
 		List<Integer> amountsDisplayed = new ArrayList<>(itemsOnWindow.values()) ;
 		
@@ -678,7 +681,8 @@ public class BagWindow extends GameWindow
 			itemID += 1 ;
 		}
 		
-		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height + 5), size.width, window, numberWindows) ;
+		buttons.forEach(button -> button.display(DrawingOnPanel.stdAngle, false, mousePos, DP)) ;
+//		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height + 5), size.width, window, numberWindows) ;
 		
 	}
 	

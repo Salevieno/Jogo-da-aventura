@@ -14,16 +14,16 @@ import utilities.UtilS;
 
 public class MapWindow extends GameWindow
 {
-	private Point windowPos = new Point(30, 30) ;
 	private Point playerPos ;
 	private GameMap currentMap ;
 	
 	private static final boolean displayFull = false ;
+	private static final Point windowPos = new Point(30, 30) ;
 	private static final Image image = UtilS.loadImage("\\Windows\\" + "MapWindow.png") ;
 	
 	public MapWindow()
 	{
-		super("Mapa", image, 0, 0, 0, 0) ;
+		super("Mapa", windowPos, image, 0, 0, 0, 0) ;
 	}
 	
 	public void setPlayerPos(Point playerPos) { this.playerPos = playerPos ;}

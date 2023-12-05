@@ -25,7 +25,7 @@ public abstract class AttributesWindow extends GameWindow
 	
 	public AttributesWindow(Image image, int numberTabs)
 	{
-		super("Atributos", image, 0, numberTabs, 0, 0) ;
+		super("Atributos", new Point(0, 0), image, 0, numberTabs, 0, 0) ;
 	}
 
 	@Override

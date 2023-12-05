@@ -32,8 +32,13 @@ public class FieldMap extends GameMap
 	private int[] collectibleDelay ;
 	private Map<CollectibleTypes, TimeCounter> collectibleCounter ;
 	
+	private static final int numberTrees = 5 ;
+	private static final int numberGrass = 20 ;
+	private static final int numberRocks = 10 ;
+	
 	private static final Image treeImage ;
 	private static final Image grassImage ;
+	private static final Image rockImage ;
 
 	public static final List<Image> images ;
 	
@@ -41,6 +46,7 @@ public class FieldMap extends GameMap
 	{
 		treeImage = UtilS.loadImage("\\MapElements\\" + "MapElem6_TreeForest.png") ;
 		grassImage = UtilS.loadImage("\\MapElements\\" + "MapElem8_Grass.png") ;
+		rockImage = UtilS.loadImage("\\MapElements\\" + "MapElem9_Rock.png") ;
 		
 		images = new ArrayList<>() ;
 		for (int i = 5 ; i <= 67 - 1 ; i += 1)
@@ -63,10 +69,12 @@ public class FieldMap extends GameMap
 		Point minCoord = new Point(20, Sky.height + 20) ;
 		Dimension range = new Dimension(screen.getSize().width - 100, screen.getSize().height - Sky.height - 100) ;
 		Dimension step = new Dimension(1, 1) ;
-		
-		int numberTrees = 5 ;
-		int numberGrass = 20 ;	
 
+		for (int i = 0 ; i <= numberRocks - 1 ; i += 1)
+		{
+			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
+			mapElems.add(new MapElements(i, "rock", randomPos, rockImage)) ;				
+		}
 		for (int i = 0 ; i <= numberTrees - 1 ; i += 1)
 		{
 			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
@@ -91,14 +99,14 @@ public class FieldMap extends GameMap
 		
 		// add creatures
 		creatures = new ArrayList<Creature>() ;			
-		for (int creatureTypeID : creatureTypeIDs)
-		{
-			if (creatureTypeID <= -1) { continue ;}
-			
-			CreatureType creatureType = Game.getCreatureTypes()[creatureTypeID];
-			Creature creature = new Creature(creatureType) ;
-			creatures.add(creature) ;
-		}
+//		for (int creatureTypeID : creatureTypeIDs)
+//		{
+//			if (creatureTypeID <= -1) { continue ;}
+//			
+//			CreatureType creatureType = Game.getCreatureTypes()[creatureTypeID];
+//			Creature creature = new Creature(creatureType) ;
+//			creatures.add(creature) ;
+//		}
 		
 		for (Item item : allDiggingItems.keySet())
 		{
@@ -107,6 +115,8 @@ public class FieldMap extends GameMap
 			diggingItems.put(item, allDiggingItems.get(item)) ;
 		}
 		calcDigItemChances() ;
+		
+		
 //		System.out.println(name);
 //		System.out.println(diggingItems);
 		

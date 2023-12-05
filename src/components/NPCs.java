@@ -123,6 +123,43 @@ public class NPCs
 	public GameWindow getWindow() { return window ;}
 	public List<Collider> getColliders() { return colliders ;}
 	
+	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
+	
+	public static NPCType typeFromName(String name)
+	{
+		NPCJobs npcJob = NPCJobs.valueOf(name) ;
+		for (NPCType type : Game.getNPCTypes())
+		{
+			if (!npcJob.equals(type.getJob()))
+			{
+				continue ;
+			}
+
+			return type ;
+		}
+		
+		return null ;
+	}
+	
+	public static List<NPCs> getNPC(int mapID)
+	{
+		List<NPCs> npcsInMap = new ArrayList<>() ;
+		switch (mapID)
+		{
+			case 0: 
+				
+				npcsInMap.add(new NPCs(Game.getNPCTypes()[12], Game.getScreen().pos(0.27, 0.73))) ;
+				npcsInMap.add(new NPCs(Game.getNPCTypes()[13], Game.getScreen().pos(0.87, 0.63))) ;
+				return npcsInMap ;
+			
+			default: 
+
+				npcsInMap.add(new NPCs(Game.getNPCTypes()[12], Game.getScreen().pos(0.27, 0.73))) ;
+				npcsInMap.add(new NPCs(Game.getNPCTypes()[13], Game.getScreen().pos(0.87, 0.63))) ;
+				return npcsInMap ;
+		}
+	}
+	
 	public void resetMenu() { menu = 0 ;}
 	public void incMenu() { if (menu <= numberMenus - 1) menu += 1 ;}
 	public void decMenu() { if (1 <= menu) menu += -1 ;}
@@ -430,7 +467,7 @@ public class NPCs
 
 		if (action == null) { return ;}
 		
-		if (Player.actionIsForward(action))
+		if (actionIsForward(action))
 		{
 			if (menu == 0 & (selOption == 0 | selOption == 1 | selOption == 2 | selOption == 3))
 			{
@@ -503,7 +540,7 @@ public class NPCs
 //		System.out.println("crafting menu = " + menu);
 		if (action == null) { return ;}
 
-		if (menu == 0 & selOption == 0 & Player.actionIsForward(action))
+		if (menu == 0 & selOption == 0 & actionIsForward(action))
 		{
 			player.switchOpenClose(craftWindow) ;
 		}
@@ -536,7 +573,7 @@ public class NPCs
 		
 		if (action == null) { return ;}
 
-		if (menu == 0 & selOption == 0 & Player.actionIsForward(action))
+		if (menu == 0 & selOption == 0 & actionIsForward(action))
 		{
 			player.switchOpenClose(elementalWindow) ;
 		}	
@@ -548,7 +585,7 @@ public class NPCs
 
 		if (action == null) { return ;}
 
-		if (menu == 0 & selOption == 0 & Player.actionIsForward(action))
+		if (menu == 0 & selOption == 0 & actionIsForward(action))
 		{
 			player.switchOpenClose(forgeWindow) ;
 		}
@@ -561,7 +598,7 @@ public class NPCs
 		{
 			if (action == null) { return ;}
 
-			if (Player.actionIsForward(action))
+			if (actionIsForward(action))
 			{
 				player.setProJob(1 + selOption) ;
 				player.addProSpells() ;
@@ -571,7 +608,7 @@ public class NPCs
 		
 		if (action == null) { return ;}
 	
-		if ((menu == 0 | menu == 5) & Player.actionIsForward(action))
+		if ((menu == 0 | menu == 5) & actionIsForward(action))
 		{
 //			player.setFocusWindow(spellsTree) ;
 
@@ -653,7 +690,7 @@ public class NPCs
 		
 		if (action == null) { return ;}
 		
-		if (Player.actionIsForward(action) & menu == 1)
+		if (actionIsForward(action) & menu == 1)
 		{
 			int slot = selOption + 1 ;
 	        player.save(slot) ;
@@ -666,7 +703,7 @@ public class NPCs
 
 		if (action == null) { return ;}
 		
-		if (menu == 0 & Player.actionIsForward(action))
+		if (menu == 0 & actionIsForward(action))
 		{
 			shopping.setBuyMode(selOption == 0) ;
 			if (selOption == 1)

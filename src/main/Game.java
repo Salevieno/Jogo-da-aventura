@@ -70,6 +70,7 @@ import liveBeings.PlayerJobs ;
 import liveBeings.Pterodactile ;
 import liveBeings.Spell ;
 import maps.CityMap ;
+import maps.CollectibleTypes;
 import maps.Continents ;
 import maps.FieldMap ;
 import maps.GameMap ;
@@ -110,7 +111,7 @@ public class Game extends JPanel
 
 	private JPanel mainPanel = this ;
 	private static Point mousePos ;
-	private static GameStates state = GameStates.loading ;
+	private static GameStates state = GameStates.opening ;
 	private static boolean cheatMode = true ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to handle multiple repaint
@@ -341,17 +342,7 @@ public class Game extends JPanel
 		double posX = (Double) ((JSONObject) npc.get("pos")).get("x") ;
 		double posY = (Double) ((JSONObject) npc.get("pos")).get("y") ;
 		Point npcPos = screen.getPointWithinBorders(posX, posY) ;
-		NPCJobs npcJob = NPCJobs.valueOf(npcName) ;
-		NPCType npcType = null ;
-		for (NPCType type : NPCTypes)
-		{
-			if (!npcJob.equals(type.getJob()))
-			{
-				continue ;
-			}
-
-			npcType = type ;
-		}
+		NPCType npcType = NPCs.typeFromName(npcName) ;
 		return new NPCs(npcType, npcPos) ;
 
 	}
@@ -644,12 +635,12 @@ public class Game extends JPanel
 		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
 		{
 
-			JSONObject map = (JSONObject) input.get(id) ;
+			JSONObject mapData = (JSONObject) input.get(id) ;
 
-			String name = (String) map.get("Name") ;
-			int continentID = (int) (long) map.get("Continent") ;
+			String name = (String) mapData.get("Name") ;
+			int continentID = (int) (long) mapData.get("Continent") ;
 			Continents continent = Continents.values()[continentID] ;
-			JSONObject connectionIDs = (JSONObject) map.get("Connections") ;
+			JSONObject connectionIDs = (JSONObject) mapData.get("Connections") ;
 			int[] connections = new int[8] ;
 			connections[0] = (int) (long) connectionIDs.get("topRight") ;
 			connections[1] = (int) (long) connectionIDs.get("topLeft") ;
@@ -663,71 +654,71 @@ public class Game extends JPanel
 			Image image = FieldMap.images.get(id) ;
 			Clip music = GameMap.musicForest ;
 
-			JSONObject collectibles = (JSONObject) map.get("Collectibles") ;
+			JSONObject collectibles = (JSONObject) mapData.get("Collectibles") ;
 			int collectibleLevel = (int) (long) collectibles.get("level") ;
-			int[] collectiblesDelay = new int[4] ;
-			collectiblesDelay[0] = (int) (long) collectibles.get("berryDelay") ;
-			collectiblesDelay[1] = (int) (long) collectibles.get("herbDelay") ;
-			collectiblesDelay[2] = (int) (long) collectibles.get("woodDelay") ;
-			collectiblesDelay[3] = (int) (long) collectibles.get("metalDelay") ;
+			int[] collectiblesDelay = new int[] {
+					CollectibleTypes.berry.getSpawnTime(),
+					CollectibleTypes.herb.getSpawnTime(),
+					CollectibleTypes.wood.getSpawnTime(),
+					CollectibleTypes.metal.getSpawnTime()} ;
 
-			List<Long> creatures = (List<Long>) map.get("Creatures") ;
+			List<Long> creatures = (List<Long>) mapData.get("Creatures") ;
 			int[] creatureIDs = new int[creatures.size()] ;
 			for (int i = 0 ; i <= creatures.size() - 1 ; i += 1)
 			{
 				creatureIDs[i] = (int) (long) creatures.get(i) ;
 			}
 
-			JSONArray listNPCs = (JSONArray) map.get("NPCs") ;
-			List<NPCs> npcs = new ArrayList<>() ;
-			for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
-			{
-				npcs.add(readNPCfromJson((JSONObject) listNPCs.get(i))) ;
-			}
+			JSONArray listNPCs = (JSONArray) mapData.get("NPCs") ;
+			List<NPCs> npcs = NPCs.getNPC(id) ;
+//			List<NPCs> npcs = new ArrayList<>() ;
+//			for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
+//			{
+//				npcs.add(readNPCfromJson((JSONObject) listNPCs.get(i))) ;
+//			}
 
-			fieldMaps[id] = new FieldMap(name, continent, connections, image, music, collectibleLevel,
+			FieldMap map = new FieldMap(name, continent, connections, image, music, collectibleLevel,
 					collectiblesDelay, creatureIDs, npcs) ;
 
 			switch (id)
 			{
-			case 1:
-				fieldMaps[id]
-						.addGroundType(new GroundType(GroundTypes.water, new Point(120, 200), new Dimension(50, 20))) ;
-				break ;
-			case 3:
-				fieldMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(120, 100), new Dimension(45, 30))) ;
-				break ;
-			case 8:
-				fieldMaps[id]
-						.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
-				break ;
-			case 9:
-				fieldMaps[id]
-						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
-				break ;
-			case 12:
-				fieldMaps[id]
-						.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
-				break ;
+//			case 1:
+//				map.addGroundType(new GroundType(GroundTypes.water, new Point(120, 200), new Dimension(50, 20))) ;
+//				break ;
+//			case 3:
+//				map.addGroundType(new GroundType(GroundTypes.water, new Point(120, 100), new Dimension(45, 30))) ;
+//				break ;
+//			case 8:
+//				map
+//						.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
+//				break ;
+//			case 9:
+//				map
+//						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
+//				break ;
+//			case 12:
+//				map
+//						.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
+//				break ;
 			case 13:
-				fieldMaps[id]
-						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
+				map.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
 				break ;
-			case 14:
-				fieldMaps[id]
-						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
-				break ;
-			case 15:
-				fieldMaps[id]
-						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
-				break ;
+//			case 14:
+//				map
+//						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
+//				break ;
+//			case 15:
+//				map
+//						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
+//				break ;
 			case 22:
-				fieldMaps[id]
-						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
+				map.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
 				break ;
 			default:
 				break ;
 			}
+
+			fieldMaps[id] = map ;
 		}
 
 		return fieldMaps ;
@@ -1273,7 +1264,7 @@ public class Game extends JPanel
 		
 //    	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
 //    	player.setLevel(50) ;
-    	player.setMap(cityMaps[1]) ;
+    	player.setMap(fieldMaps[1]) ;
 //    	player.setPos(new Point(393, 140)) ;
 
     	letThereBePet() ;
@@ -1284,10 +1275,10 @@ public class Game extends JPanel
 //		}
 
     	player.getBag().addGold(30000) ;
-    	for (Spell spell : player.getSpells())
-    	{
-    		spell.incLevel(5) ;
-    	}
+//    	for (Spell spell : player.getSpells())
+//    	{
+//    		spell.incLevel(5) ;
+//    	}
 //
 //    	
 //    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
@@ -1304,7 +1295,7 @@ public class Game extends JPanel
 //
     	for (QuestSkills skill : QuestSkills.values())
     	{
-    		player.getQuestSkills().replace(skill, true) ;
+//    		player.getQuestSkills().replace(skill, true) ;
     	}
     	
 //    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
@@ -1417,6 +1408,7 @@ public class Game extends JPanel
 				initialize() ;
 				if (cheatMode) { initializeCheatMode() ;}
 				state = GameStates.running ;
+//		    	player.switchOpenClose(player.getHintsindow()) ;
 	
 				shouldRepaint = true ;	
 				break ;

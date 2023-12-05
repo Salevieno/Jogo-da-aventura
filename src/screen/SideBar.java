@@ -29,7 +29,7 @@ public class SideBar
 	private List<Spell> spells ;
 	
 	private static final Point barPos = Game.getScreen().pos(1, 1) ;
-	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	public static final Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
 		
 	public SideBar(Player player, Image playerImage, Image petImage)
@@ -104,13 +104,24 @@ public class SideBar
 	{
 		
 		double stdAngle = DrawingOnPanel.stdAngle ;
-		String[] IconKey = new String[] {null, Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7], null, null, null, null} ;
-		Color textColor = Game.colorPalette[3] ;
+		String[] keys = new String[] {null, Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7], null, null, null, null} ;
+		Color textColor = Game.colorPalette[0] ;
 		
 		DP.DrawRect(barPos, Align.bottomLeft, size, 1, Game.colorPalette[0], null) ;
 		
 		buttons.forEach(button -> button.display(stdAngle, false, mousePos, DP)) ;
-		buttons.forEach(button -> DP.DrawText(button.getTopLeftPos(), Align.topLeft, stdAngle, IconKey[0] != null ? IconKey[0] : "", font, textColor)) ;
+		
+		Dimension textSize = new Dimension(12, 12) ;
+		int i = 0 ;
+		for (GameButton button : buttons)
+		{
+
+			if (keys[i] == null) { i += 1 ; continue ;}
+			Point rectCenter = UtilG.Translate(button.getTopLeftPos(), 5, 0) ;
+			DP.drawRoundRect(rectCenter, Align.center, textSize, 1, Game.colorPalette[3], true, 2, 2) ;
+			DP.DrawText(rectCenter, Align.center, stdAngle, keys[i], font, textColor) ;
+			i += 1 ;
+		}
 		
 		SpellsBar.display(player.getMp().getCurrentValue(), spells, mousePos, DP);
 		HotKeysBar.display(player.getHotItems(), mousePos, DP) ;

@@ -235,7 +235,7 @@ public abstract class LiveBeing
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String stateText = 0 < combo.size() ? state.toString() : "" ;
 		
-		DP.DrawRoundRect(pos, Align.center, size, 1, Game.colorPalette[21], Game.colorPalette[21], true);
+		DP.drawGradRoundRect(pos, Align.center, size, 1, Game.colorPalette[21], Game.colorPalette[21], true);
 		DP.DrawText(pos, Align.center, 0, stateText, font, Game.colorPalette[0]) ;
 	}
 
@@ -597,17 +597,17 @@ public abstract class LiveBeing
 		if (style == 1)
 		{
 			Point topLeft = Game.getScreen().pos(0.01, 0.02) ;
-			Dimension barSize = new Dimension(100, 5) ;
+			Dimension barSize = new Dimension(120, 5) ;
 			int stroke = 1 ;
 			DP.DrawImage(AttImage, topLeft, Align.topLeft) ;
-			Point offset = new Point(10, 15) ;
+			Point offset = new Point(70, 7) ;
 			Point barPos = UtilG.Translate(topLeft, offset.x, offset.y) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
 				Dimension rateSize = new Dimension((int)(attRate.get(att) * barSize.width), barSize.height) ;
 				DP.DrawRect(barPos, Align.centerLeft, barSize, stroke, null, Game.colorPalette[0]) ;
 				DP.DrawRect(barPos, Align.centerLeft, rateSize, stroke, attColor.get(att), null) ;
-				barPos.y += barSize.height ;
+				barPos.y += barSize.height + 6 ;
 			}
 		}
 		

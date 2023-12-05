@@ -19,12 +19,12 @@ public class BestiaryWindow extends GameWindow
 {
 	private List<CreatureType> discoveredCreatures ;
 
-	private Point windowPos = Game.getScreen().pos(0.1, 0.3) ;
+	private static final Point windowPos = Game.getScreen().pos(0.1, 0.3) ;
 	private Dimension windowSize = new Dimension(384, 288) ;
 	
 	public BestiaryWindow()
 	{
-		super("Bestiário", null, 0, 0, 0, 0) ;
+		super("Bestiário", windowPos, null, 0, 0, 0, 0) ;
 		discoveredCreatures = new ArrayList<>() ;
 	}
 	
@@ -50,7 +50,7 @@ public class BestiaryWindow extends GameWindow
 
 		Dimension windowSize = new Dimension(128, 240) ;
 		Point windowPos = UtilG.Translate(mainWindowPos, 0, -30) ;
-		DP.DrawRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
+		DP.drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
 		
 		Point creaturePos = UtilG.Translate(mainWindowPos, 40, offset) ;
 		creatureType.display(creaturePos, Scale.unit, DP) ;
@@ -86,7 +86,7 @@ public class BestiaryWindow extends GameWindow
 
 		
 		// draw window
-		DP.DrawRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
+		DP.drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
 		
 		if (discoveredCreatures == null) { return ;}
 		
@@ -97,7 +97,7 @@ public class BestiaryWindow extends GameWindow
 			// draw slots
 			Point slotTopLeft = UtilG.Translate(windowPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
 			Point slotCenter = UtilG.Translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
-			DP.DrawRoundRect(slotCenter, Align.center, slotSize, 2, Game.colorPalette[20], Game.colorPalette[3], true) ;
+			DP.drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Game.colorPalette[20], Game.colorPalette[3], true) ;
 
 			// draw creatures
 			CreatureType creatureType = discoveredCreatures.get(slot) ;

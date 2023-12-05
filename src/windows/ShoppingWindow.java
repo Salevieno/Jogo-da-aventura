@@ -27,7 +27,7 @@ public class ShoppingWindow extends GameWindow
 	
 	public ShoppingWindow(List<Item> itemsForSale)
 	{
-		super("Shopping", UtilS.loadImage("\\Windows\\" + "Shopping.png"), 1, 1, Math.min(itemsForSale.size(), numberItemsPerWindow), calcNumberWindows(itemsForSale.size())) ;
+		super("Shopping", windowPos, UtilS.loadImage("\\Windows\\" + "Shopping.png"), 1, 1, Math.min(itemsForSale.size(), numberItemsPerWindow), calcNumberWindows(itemsForSale.size())) ;
 		this.itemsForSale = itemsForSale ;
 		itemsOnWindow = calcItemsOnWindow() ;
 		buyMode = true ;
@@ -76,7 +76,7 @@ public class ShoppingWindow extends GameWindow
 	public void act(String action, BagWindow bag)
 	{
 		// TODO reaction with "bought" or "not enough gold"
-		if (Player.actionIsForward(action))
+		if (actionIsForward(action))
 		{
 			if (buyMode)
 			{

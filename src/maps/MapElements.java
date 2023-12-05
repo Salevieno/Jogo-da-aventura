@@ -1,5 +1,7 @@
 package maps ;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -44,28 +46,43 @@ public class MapElements
 	{
 
 		colliders = new ArrayList<>() ;
-		colliders.add(new Collider(topLeft)) ;
 		switch(name)
 		{
-			case "":
+			case "ForestTree":
+				
+				return ;
+				
+			case "grass": 
+
+				return ;
+				
+			case "rock":
+				for (int i = 5 ; i <= 11 ; i += 1)
+				{
+					colliders.add(new Collider(UtilG.Translate(topLeft, i, image.getHeight(null) - 2))) ;
+				}
+				
+				return ;
+				
 			default: return ;
 		}
-
-//		if (name.equals("ForestTree"))
-//		{
-//			collider = new Point[75 - 18] ;
-//			for (int i = 18 ; i <= 75 - 1 ; i += 1)
-//			{
-//				collider[i - 18] = new Point(i, 15) ;
-//			}
-//		}
+	}
+	
+	public void displayColliders(DrawingOnPanel DP)
+	{
+		for (Collider collider : colliders)
+		{
+			DP.DrawRect(collider.getPos(), Align.center, new Dimension(1, 1), 1, Color.red, null) ;
+		}
 	}
 	
 	public void display(Point playerPos, DrawingOnPanel DP)
 	{
+		
 		if (!playerIsBehind(playerPos))
 		{
 			DP.DrawImage(image, topLeft, DrawingOnPanel.stdAngle, Scale.unit, Align.topLeft) ;
+
 			
 			return ;
 		}

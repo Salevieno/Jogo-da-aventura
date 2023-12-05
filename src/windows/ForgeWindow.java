@@ -35,14 +35,15 @@ public class ForgeWindow extends GameWindow
 			"Você precisa de mais ouro!",
 			"Item forjado!",
 			"Essa não! A forja não funcionou!") ;
+	
 	private static final int NumberItemsPerWindow = 10 ;
+	private static final Point windowPos = Game.getScreen().getPointWithinBorders(0.2, 0.1) ;
 	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Forge.png") ;
 	
-	private static final Point windowPos = Game.getScreen().getPointWithinBorders(0.2, 0.1) ;
 
 	public ForgeWindow()
 	{
-		super("Forge", windowImage, 1, 1, 1, 1) ;
+		super("Forge", windowPos, windowImage, 1, 1, 1, 1) ;
 		bag = null ;
 		forgeButton = new GameButton(new Point(200, 300), Align.topLeft, null, null, () -> {forge() ;}) ;
 		itemsForForge = null ;
@@ -83,7 +84,7 @@ public class ForgeWindow extends GameWindow
 	
 	public void act(String action)
 	{
-		if (menu == 0 & Player.actionIsForward(action))
+		if (menu == 0 & actionIsForward(action))
 		{
 			forge() ;
 		}

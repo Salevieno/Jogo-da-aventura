@@ -27,7 +27,7 @@ public class QuestWindow extends GameWindow
 	
 	public QuestWindow()
 	{
-		super("Quest", UtilS.loadImage("\\Windows\\" + "Quest.png"), 0, 0, 0, 0) ;
+		super("Quest", windowPos, UtilS.loadImage("\\Windows\\" + "Quest.png"), 0, 0, 0, 0) ;
 	}
 	
 	

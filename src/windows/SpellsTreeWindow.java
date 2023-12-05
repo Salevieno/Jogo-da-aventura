@@ -42,7 +42,7 @@ public class SpellsTreeWindow extends GameWindow
 	public SpellsTreeWindow(int playerJob)
 	{// TODO arrumar a árvore de magias. Spells tá se confundindo com spellsOnWindow
 
-		super("Árvore de magias", noTabsImage, 0, 1, 0, 1) ;
+		super("Árvore de magias", windowTopLeft, noTabsImage, 0, 1, 0, 1) ;
 		
 		this.playerJob = playerJob ;
 		playerCurrentSpells = new ArrayList<>() ;
@@ -133,7 +133,7 @@ public class SpellsTreeWindow extends GameWindow
 		String action = player.getCurrentAction() ;
 		Spell spell = spellsOnWindow.get(item) ;
 		
-		if (canAcquireSpell(points) & Player.actionIsForward(action) & spell.hasPreRequisitesMet(playerCurrentSpells))
+		if (canAcquireSpell(points) & actionIsForward(action) & spell.hasPreRequisitesMet(playerCurrentSpells))
 		{
 			acquireSpell(player) ;
 			points += -1 ;

@@ -19,7 +19,7 @@ public class Collectible extends Item
 	public Collectible(int itemID, int level, Point pos, int delay)
 	{
 		super(itemID, Game.getAllItems()[itemID].getName(), Game.getAllItems()[itemID].getDescription(),
-					Game.getAllItems()[itemID].getImage(), Game.getAllItems()[itemID].getPrice(),
+				type(itemID).getImage(), Game.getAllItems()[itemID].getPrice(),
 					Game.getAllItems()[itemID].getDropChance()) ;
 		this.itemID = itemID ;
 		this.level = level ;
@@ -33,12 +33,22 @@ public class Collectible extends Item
 	public Point getPos() { return pos ; }
 	public TimeCounter getCounter() { return counter ; }
 	public Item getItem() {return Game.getAllItems()[itemID] ;}
+
+	public int typeNumber()
+	{
+		return typeID(itemID) ;
+	}
 	
-	public int type()
+	public static int typeID(int itemID)
 	{
 		if (itemID == 220) { return 0 ;}
 		
 		return itemID % 3 + 1 ;
+	}
+	
+	private static CollectibleTypes type(int itemID)
+	{
+		return CollectibleTypes.values()[typeID(itemID)] ;
 	}
 	
 	public void display(DrawingOnPanel DP) {DP.DrawImage(image, pos, Align.center) ;}

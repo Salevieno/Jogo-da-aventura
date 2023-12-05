@@ -33,7 +33,7 @@ public class SettingsWindow extends GameWindow
 	
 	public SettingsWindow(Image image, boolean musicIsOn, boolean soundEffectsAreOn, boolean showAtkRange, int attDisplay, int damageAnimation)
 	{
-		super("Opções", image, 3, 0, 6, 0) ;
+		super("Opções", windowPos, image, 3, 0, 6, 0) ;
 		deeperMenuImage = UtilS.loadImage("\\Windows\\" + "settingsDeeperWindow.png") ;
 		this.musicIsOn = musicIsOn ;
 		this.soundEffectsAreOn = soundEffectsAreOn ;

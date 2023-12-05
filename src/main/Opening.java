@@ -57,13 +57,13 @@ public abstract class Opening
 	    smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		String path = Game.ImagesPath  + "\\Opening\\";
 		backgroundImage = UtilG.loadImage(path + "Opening.png") ;
-		openingGif = new Gif(UtilG.loadImage(path + "Opening2.gif"), 630, false, true) ;
+		openingGif = new Gif(UtilG.loadImage(path + "Opening.gif"), 230, false, true) ;
 		LoadingGif = UtilG.loadImage(path + "Loading.gif") ;
 		LoadingSlot = UtilG.loadImage(path + "LoadingSlot.png") ;
 		LoadingSlotSelected = UtilG.loadImage(path + "LoadingSlotSelected.png") ;
 
-		thunderSound = Music.musicFileToClip(new File(Game.MusicPath + "0-Thunder.wav").getAbsoluteFile()) ;
-		introMusic = Music.musicFileToClip(new File(Game.MusicPath + "1-Intro.wav").getAbsoluteFile()) ;
+		thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
+		introMusic = Music.loadMusicFile("1-Intro.wav") ;
 		
 		GameButton.selectedIconID = 2 ;
     	step = 0 ;
@@ -303,7 +303,7 @@ public abstract class Opening
 		{
 			Point rectPos = Game.getScreen().pos(0.04 + i * 0.2, 0.4) ;
 			Point textPos = UtilG.Translate(rectPos, 5, 5) ;
-			DP.DrawRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, bgColor, true) ;
+			DP.drawGradRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, bgColor, true) ;
 			DP.DrawFitText(textPos, 10, Align.topLeft, jobInfo[i], smallFont, 18, textColor) ;
 		}
 	}
