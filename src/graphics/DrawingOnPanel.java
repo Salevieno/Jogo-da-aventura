@@ -44,7 +44,7 @@ public class DrawingOnPanel
 	public static double stdAngle ;
 	public static final int stdStroke ;
 	public static final Font stdFont ;
-	public static final Image[] ElementImages ;
+	public static final Image[] ElementImages ;	// TODO move to enum elements
 	
 	static
 	{

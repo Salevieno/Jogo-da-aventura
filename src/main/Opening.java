@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +14,7 @@ import components.GameButton;
 import components.IconFunction;
 import graphics.DrawingOnPanel;
 import graphics.Gif;
+import items.Equip;
 import liveBeings.Player;
 import screen.Screen;
 import utilities.Align;
@@ -22,6 +22,7 @@ import utilities.LiveInput;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
+import windows.AttributesWindow;
 
 public abstract class Opening
 {
@@ -32,6 +33,7 @@ public abstract class Opening
     private static String[] stepMessage ;
     private static String[] jobInfo ;
     private static int step ;
+    private static int loadingStep ;
     private static boolean newGame ;
     private static boolean isOver ;
     
@@ -48,8 +50,8 @@ public abstract class Opening
 	private static final Image LoadingGif ;
 	private static final Image LoadingSlot ;
 	private static final Image LoadingSlotSelected ;
-	public static final Clip thunderSound ;
-	public static final Clip introMusic ;
+	private static final Clip thunderSound ;
+	private static final Clip introMusic ;
 	
 	static
 	{
@@ -67,6 +69,7 @@ public abstract class Opening
 		
 		GameButton.selectedIconID = 2 ;
     	step = 0 ;
+    	loadingStep = 0 ;
     	newGame = true ;
     	isOver = false ;
 		liveInput = new LiveInput() ;
@@ -292,7 +295,40 @@ public abstract class Opening
 	
 	public static void displayLoadingScreen(DrawingOnPanel DP)
 	{
-		DP.DrawGif(LoadingGif, Game.getScreen().getCenter(), Align.center) ;
+		Color textColor = Game.colorPalette[0] ;
+		Point moveInfoTopLeft = new Point(60, 60) ;		
+		DP.DrawText(UtilG.Translate(moveInfoTopLeft, 150, 0), Align.center, 0, "Como se mover", smallFont, textColor) ;
+		
+		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().idleGif, null, DrawingOnPanel.ElementImages[1]} ;
+		String[] moveInfoText = new String[] {"W A S D ou setas", "", ""} ;
+		for (int i = 0 ; i <= moveInfoImages.length - 1; i += 1)
+		{
+			Point imageCenterLeft = UtilG.Translate(moveInfoTopLeft, 0, 40 + 25 * i) ;
+			DP.DrawImage(moveInfoImages[i], imageCenterLeft, Align.centerLeft);
+			DP.DrawText(UtilG.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, moveInfoText[i], smallFont, textColor) ;
+		}
+		
+		
+		Point atkInfoTopLeft = new Point(360, 60) ;
+		DP.DrawText(UtilG.Translate(atkInfoTopLeft, 150, 0), Align.center, 0, "Como lutar", smallFont, textColor) ;
+		
+		Image[] atkInfoImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Equip.StaffImage} ;
+		String[] atkInfoText = new String[] {"Y", "U", "0, 1...F11, F12"} ;
+		for (int i = 0 ; i <= atkInfoImages.length - 1; i += 1)
+		{
+			Point imageCenterLeft = UtilG.Translate(atkInfoTopLeft, 0, 40 + 25 * i) ;
+			DP.DrawImage(atkInfoImages[i], imageCenterLeft, Align.center);
+			DP.DrawText(UtilG.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, atkInfoText[i], smallFont, textColor) ;
+		}
+		
+		
+		Point loadingTextCenter = new Point(320, 360) ;
+		Point loadingBarCenterLeft = new Point(120, 400) ;
+		Dimension loadingBarSize = new Dimension(400, 30) ;
+		Dimension loadedBarSize = new Dimension(loadingStep * loadingBarSize.width / 11, loadingBarSize.height) ;
+		DP.DrawImage(LoadingGif, loadingTextCenter, Align.center) ;
+		DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 1, null, true);
+		DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Game.colorPalette[18], false);
 	}
 	
 	private static void displayJobInfo(DrawingOnPanel DP)
@@ -329,10 +365,6 @@ public abstract class Opening
 		{
 			displayJobInfo(DP) ;
 		}
-		if (step == 5)
-		{
-			displayLoadingScreen(DP) ;
-		}
 		
 		if (stepMessage.length - 1 <= step) { return ;}
 		DP.DrawText(textPos, Align.center, DrawingOnPanel.stdAngle, stepMessage[step], font, textColor) ;
@@ -362,6 +394,9 @@ public abstract class Opening
 		}
 		player.resetAction() ;
 	}
+	
+	public static int getLoadingStep() { return loadingStep ;}
+	public static void incLoadingStep() { loadingStep += 1 ;}
 	
 	public static boolean newGame() { return newGame ;}
 	public static boolean isOver() { return isOver ;}

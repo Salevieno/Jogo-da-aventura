@@ -1185,6 +1185,7 @@ public class Game extends JPanel
 	
 	private void runGame(DrawingOnPanel DP)
 	{
+
 		incrementCounters() ;
 		activateCounters() ;
 
@@ -1258,7 +1259,7 @@ public class Game extends JPanel
 
 	}
 
-	private static void initializeCheatMode()
+	private static void setCheatMode()
 	{
 
 		
@@ -1324,57 +1325,85 @@ public class Game extends JPanel
     	
 	}
 	
-	private static void initialize()
+	private static void initialize(int step)
 	{
 		
-		long elapsedTimeInit = System.nanoTime();
-		long elapsedTimeText = System.nanoTime();
-		System.out.println("Initializing") ;
-		loadAllText() ;
-		System.out.println("Loaded text in " + (System.nanoTime() - elapsedTimeText) / 1000000) ;
+		long elapsedTime = System.nanoTime();
 
-		DayDuration = 120000 ;
-		sky = new Sky() ;
-		screen.setBorders(new int[] { 0, Sky.height, screen.getSize().width, screen.getSize().height }) ;
-		screen.setMapCenter() ;
-		long elapsedTimeSpells = System.nanoTime();
-		allSpells = initializeAllSpells(gameLanguage) ;
-		System.out.println("Loaded spells in " + (System.nanoTime() - elapsedTimeSpells) / 1000000) ;
-		long elapsedTimeItems = System.nanoTime();
-		allItems = initializeAllItems() ;
-		System.out.println("Loaded items in " + (System.nanoTime() - elapsedTimeItems) / 1000000) ;
-		long elapsedTimeCreatures = System.nanoTime();
-		creatureTypes = initializeCreatureTypes(gameLanguage, difficultLevel) ;
-		System.out.println("Loaded creature types in " + (System.nanoTime() - elapsedTimeCreatures) / 1000000) ;
-		long elapsedTimeRecipes = System.nanoTime();
-		allRecipes = LoadCraftingRecipes() ;
-		System.out.println("Loaded recipes in " + (System.nanoTime() - elapsedTimeRecipes) / 1000000) ;
-		long elapsedTimeNPCs = System.nanoTime();
-		NPCTypes = initializeNPCTypes(gameLanguage) ;
-		System.out.println("Loaded npc types in " + (System.nanoTime() - elapsedTimeNPCs) / 1000000) ;
-		long elapsedTimeBuildings = System.nanoTime();
-		buildingTypes = initializeBuildingTypes() ;
-		System.out.println("Loaded building types in " + (System.nanoTime() - elapsedTimeBuildings) / 1000000) ;
-		long elapsedTimeQuests = System.nanoTime();
-		allQuests = initializeQuests(gameLanguage, player.getJob()) ;
-		System.out.println("Loaded quests in " + (System.nanoTime() - elapsedTimeQuests) / 1000000) ;
-		long elapsedTimeMaps = System.nanoTime();
-		allMaps = initializeAllMaps() ;
-		System.out.println("Loaded maps in " + (System.nanoTime() - elapsedTimeMaps) / 1000000) ;
-		NPCs.setIDs() ;
-
-		Pterodactile.setMessage(Game.allText.get(TextCategories.pterodactile)) ;
-
-		player.InitializeSpells() ;
-		player.setMap(Game.getMaps()[player.getJob()]) ;
-		player.setPos(Game.getScreen().getCenter()) ;
-		Battle.updateDamageAnimation(player.getSettings().getDamageAnimation()) ;
-		sideBar = new SideBar(player, player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
-		if (player.getSettings().getMusicIsOn())
+		switch (step)
 		{
-			Music.SwitchMusic(player.getMap().getMusic()) ;
+			case 0:
+				DayDuration = 120000 ;
+				sky = new Sky() ;
+				screen.setBorders(new int[] { 0, Sky.height, screen.getSize().width, screen.getSize().height }) ;
+				screen.setMapCenter() ;
+				System.out.println("Loaded initial stuff in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				return ;
+				
+			case 1:
+				loadAllText() ;
+				System.out.println("Loaded text in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				return ;
+				
+			case 2:
+				allSpells = initializeAllSpells(gameLanguage) ;
+				System.out.println("Loaded spells in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				return ;
+				
+			case 3:
+				allItems = initializeAllItems() ;
+				System.out.println("Loaded items in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				return ;
+				
+			case 4:
+				creatureTypes = initializeCreatureTypes(gameLanguage, difficultLevel) ;
+				System.out.println("Loaded creature types in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				return ;
+				
+			case 5:
+				allRecipes = LoadCraftingRecipes() ;
+				System.out.println("Loaded recipes in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				return ;
+				
+			case 6:
+				NPCTypes = initializeNPCTypes(gameLanguage) ;
+				System.out.println("Loaded npc types in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				return ;
+				
+			case 7:
+				buildingTypes = initializeBuildingTypes() ;
+				System.out.println("Loaded building types in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				return ;
+				
+			case 8:
+				allQuests = initializeQuests(gameLanguage, player.getJob()) ;
+				System.out.println("Loaded quests in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				return ;
+				
+			case 9:
+				allMaps = initializeAllMaps() ;
+				System.out.println("Loaded maps in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				return ;
+				
+			case 10:
+				NPCs.setIDs() ;
+
+				Pterodactile.setMessage(Game.allText.get(TextCategories.pterodactile)) ;
+
+				player.InitializeSpells() ;
+				player.setMap(Game.getMaps()[player.getJob()]) ;
+				player.setPos(Game.getScreen().getCenter()) ;
+				Battle.updateDamageAnimation(player.getSettings().getDamageAnimation()) ;
+				sideBar = new SideBar(player, player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
+				if (player.getSettings().getMusicIsOn())
+				{
+					Music.SwitchMusic(player.getMap().getMusic()) ;
+				}
+				System.out.println("Loaded last stuff in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				return ;
+			
+			default: return ;
 		}
-		System.out.println("Finished loading in " + (System.nanoTime() - elapsedTimeInit) / 1000000 + "\n") ;
 		
 	}
 
@@ -1400,17 +1429,21 @@ public class Game extends JPanel
 					}
 					Game.setState(GameStates.loading) ;
 				}
-				shouldRepaint = true ;	
+				shouldRepaint = true ;
 				break ;
 
 			case loading:
 				Opening.displayLoadingScreen(DP) ;
-				initialize() ;
-				if (cheatMode) { initializeCheatMode() ;}
-				state = GameStates.running ;
+				initialize(Opening.getLoadingStep()) ;
+				Opening.incLoadingStep() ;
+//				if (cheatMode) { setCheatMode() ;}
 //		    	player.switchOpenClose(player.getHintsindow()) ;
 	
-				shouldRepaint = true ;	
+				if (Opening.getLoadingStep() == 11)
+				{
+//					Game.setState(GameStates.running) ;
+				}
+				shouldRepaint = true ;
 				break ;
 
 			case simulation:

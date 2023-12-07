@@ -50,7 +50,6 @@ public abstract class LiveBeing
 	protected TimeCounter thirstCounter ;
 	protected TimeCounter actionCounter ;
 	protected TimeCounter battleActionCounter ;
-//	protected TimeCounter displayDamage ;
 	protected TimeCounter stepCounter ;			// counts the steps in the movement
 	protected String currentAction ;
 	protected AtkTypes currentAtkType ;
