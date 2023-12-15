@@ -91,14 +91,14 @@ public class FieldMap extends GameMap
 		
 		// add creatures
 		creatures = new ArrayList<Creature>() ;			
-//		for (int creatureTypeID : creatureTypeIDs)
-//		{
-//			if (creatureTypeID <= -1) { continue ;}
-//			
-//			CreatureType creatureType = Game.getCreatureTypes()[creatureTypeID];
-//			Creature creature = new Creature(creatureType) ;
-//			creatures.add(creature) ;
-//		}
+		for (int creatureTypeID : creatureTypeIDs)
+		{
+			if (creatureTypeID <= -1) { continue ;}
+			
+			CreatureType creatureType = Game.getCreatureTypes()[creatureTypeID];
+			Creature creature = new Creature(creatureType) ;
+			creatures.add(creature) ;
+		}
 		
 		for (Item item : allDiggingItems.keySet())
 		{

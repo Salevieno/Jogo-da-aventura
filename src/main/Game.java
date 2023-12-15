@@ -112,7 +112,7 @@ public class Game extends JPanel
 	private JPanel mainPanel = this ;
 	private static Point mousePos ;
 	private static GameStates state = GameStates.opening ;
-	private static boolean cheatMode = true ;
+	private static boolean cheatMode = false ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to handle multiple repaint
 											// requests at once
@@ -1096,7 +1096,7 @@ public class Game extends JPanel
 				creature.act() ;
 			}
 			creature.display(creature.getPos(), Scale.unit, DP) ;
-			creature.displayAdditionalInfo(DP) ;
+//			creature.displayAdditionalInfo(DP) ;
 		}
 		shouldRepaint = true ;
 	}
