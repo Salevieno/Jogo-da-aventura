@@ -1,8 +1,6 @@
 package liveBeings ;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -11,11 +9,8 @@ import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
 import components.SpellTypes;
-import main.Game;
 import utilities.Elements;
 import utilities.TimeCounter;
-import utilities.UtilG;
-import utilities.UtilS;
 
 public class Spell 
 {	
@@ -116,23 +111,23 @@ public class Spell
 	public void activate() {isActive = true ;}
 	public void deactivate() {isActive = false ;}
 
-	public static void saveImages()
-	{
-		BufferedImage img = UtilG.toBufferedImage(UtilS.loadImage("genericSpell.png")) ;
-		for (int i = 0 ; i <= 172 - 1; i += 1)
-		{
-			PlayerJobs job = PlayerJobs.jobFromSpellID(i) ;
-//			System.out.println("spell" + job + i + ".png");
-			try
-			{
-				UtilG.saveImage(img, Game.ImagesPath + "\\Spells\\" + "spell" + job + i) ;
-			} catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+//	private static void saveImages()
+//	{
+//		BufferedImage img = UtilG.toBufferedImage(UtilS.loadImage("genericSpell.png")) ;
+//		for (int i = 0 ; i <= 172 - 1; i += 1)
+//		{
+//			PlayerJobs job = PlayerJobs.jobFromSpellID(i) ;
+////			System.out.println("spell" + job + i + ".png");
+//			try
+//			{
+//				UtilG.saveImage(img, Game.ImagesPath + "\\Spells\\" + "spell" + job + i) ;
+//			}
+//			catch (IOException e)
+//			{
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 	
 	public void incLevel(int increment)
 	{

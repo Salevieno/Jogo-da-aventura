@@ -1,19 +1,18 @@
 package maps;
 
-import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
 import items.Item;
 
-public class TreasureChest extends MapElements
+public class TreasureChest extends MapElement
 {
 	private List<Item> itemRewards ;
 	private int goldReward ;
 
-	public TreasureChest(int id, Point pos, Image image, List<Item> itemRewards, int goldReward)
+	public TreasureChest(int id, Point pos, List<Item> itemRewards, int goldReward)
 	{
-		super(id, "treasure chest" + id, pos, image) ;
+		super(id, "treasureChest" + id, pos) ;
 		this.itemRewards = itemRewards ;
 		this.goldReward = goldReward ;
 	}

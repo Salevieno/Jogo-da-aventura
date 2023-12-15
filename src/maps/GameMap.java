@@ -39,7 +39,7 @@ public class GameMap
 	protected Clip music ;
 	
 	protected List<GroundType> groundTypes ;	
-	protected List<MapElements> mapElems ;
+	protected List<MapElement> mapElems ;
 	protected List<Building> buildings ;
 	protected List<NPCs> npcs ;
 	protected Map<Item, Double> diggingItems ;
@@ -124,13 +124,13 @@ public class GameMap
 	public Clip getMusic() { return music ;}
 	public List<GroundType> getgroundTypes() {return groundTypes ;}
 	public int[] getConnections() {return connections ;}	
-	public List<MapElements> getMapElem() {return mapElems ;}
+	public List<MapElement> getMapElem() {return mapElems ;}
 	public List<NPCs> getNPCs() {return npcs ;}
 	public List<Building> getBuildings() {return buildings ;}
 	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
 	
 	public void addGroundType (GroundType newGroundType) { groundTypes.add(newGroundType) ;}
-	public void removeMapElem (MapElements mapElem) { mapElems.remove(mapElem) ;}
+	public void removeMapElem (MapElement mapElem) { mapElems.remove(mapElem) ;}
 	
  	public void initializeGroundTypes(int SkyHeight, Dimension screenDim)
  	{

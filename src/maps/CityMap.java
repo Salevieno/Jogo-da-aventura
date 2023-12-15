@@ -31,12 +31,12 @@ public class CityMap extends GameMap
 	{
 		super(Name, Continent, Connections, image, music, buildings, npcs) ;
 		
-		if (Name.equals("City of the knights"))
-		{
-			Image knightsCityWallImage = UtilS.loadImage("\\MapElements\\" + "Knight'sCityWall.png") ;
-			mapElems.add(new MapElements(0, "Knight'sCityWall", new Point(0, 96 - knightsCityWallImage.getHeight(null)), knightsCityWallImage)) ;
-			mapElems.add(new MapElements(0, "Knight'sCityWall", new Point(0, 480 - knightsCityWallImage.getHeight(null)), knightsCityWallImage)) ;
-		}
+//		if (Name.equals("City of the knights"))
+//		{
+//			
+//			mapElems.add(new MapElement(0, "Knight'sCityWall", new Point(0, 96 - knightsCityWallImage.getHeight(null)))) ;
+//			mapElems.add(new MapElement(0, "Knight'sCityWall", new Point(0, 480 - knightsCityWallImage.getHeight(null)))) ;
+//		}
 		
 		diggingItems.put(Fab.getAll()[0], allDiggingItems.get(Fab.getAll()[0])) ;
 		diggingItems.put(Fab.getAll()[25], allDiggingItems.get(Fab.getAll()[25])) ;

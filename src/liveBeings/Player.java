@@ -47,7 +47,7 @@ import main.Game;
 import maps.Collectible;
 import maps.FieldMap;
 import maps.GroundTypes;
-import maps.MapElements;
+import maps.MapElement;
 import maps.TreasureChest;
 import screen.SideBar;
 import utilities.Align;
@@ -404,7 +404,7 @@ public class Player extends LiveBeing
 	}
 
 	
-	private Point feetPos() {return new Point(pos.x, pos.y) ;}	
+//	private Point feetPos() {return new Point(pos.x, pos.y) ;}	
 
 	public Creature closestCreatureInRange()
 	{			
@@ -839,9 +839,9 @@ public class Player extends LiveBeing
 	{
 		if (!map.isSpecial()) { return ;}
 
-		List<MapElements> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).
+		List<MapElement> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).
 				collect(Collectors.toList()) ;
-		for (MapElements chest : chests)
+		for (MapElement chest : chests)
 		{
 
 			if (!isInCloseRange(chest.getPos())) { continue ;}
@@ -1491,8 +1491,8 @@ public class Player extends LiveBeing
 	}
 	
 	// TODO itemEffect
-	private void ItemEffect(int ItemID)
-	{
+//	private void ItemEffect(int ItemID)
+//	{
 //		if (ItemID == 1381 | ItemID == 1382 | ItemID == 1384)
 //		{
 //			BA.getStatus().setBlood(0) ;
@@ -1524,7 +1524,7 @@ public class Player extends LiveBeing
 //				ItemEffect(itemID) ;
 //				//Bag[itemID] += -1 ;
 //			}
-	}
+//	}
 	
 	@SuppressWarnings("unchecked")
 	public void save(int slot)

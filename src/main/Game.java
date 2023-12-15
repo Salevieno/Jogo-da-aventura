@@ -728,7 +728,7 @@ public class Game extends JPanel
 	{
 		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;
 		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
-		Image treasureChestsImage = UtilS.loadImage("\\MapElements\\" + "MapElem15_Chest.png") ;
+		
 
 
 		for (int id = 0 ; id <= specialMaps.length - 1 ; id += 1)
@@ -760,7 +760,7 @@ public class Game extends JPanel
 					}
 				}
 				int goldReward = Integer.parseInt(input.get(id)[22 + 13 * chest]) ;
-				treasureChests.add(new TreasureChest(chest, pos, treasureChestsImage, itemRewards, goldReward)) ;
+				treasureChests.add(new TreasureChest(chest, pos, itemRewards, goldReward)) ;
 			}
 			specialMaps[id] = new SpecialMap(name, continent, connections, image, music, treasureChests) ;
 		}
@@ -1183,7 +1183,7 @@ public class Game extends JPanel
 		}
 	}
 	
-	private void runGame(DrawingOnPanel DP)
+	private void run(DrawingOnPanel DP)
 	{
 
 		incrementCounters() ;
@@ -1433,15 +1433,22 @@ public class Game extends JPanel
 				break ;
 
 			case loading:
-				Opening.displayLoadingScreen(DP) ;
-				initialize(Opening.getLoadingStep()) ;
-				Opening.incLoadingStep() ;
-//				if (cheatMode) { setCheatMode() ;}
-//		    	player.switchOpenClose(player.getHintsindow()) ;
-	
-				if (Opening.getLoadingStep() == 11)
+				Opening.displayLoadingScreen(player.getCurrentAction(), mousePos, DP) ;
+				if (!Opening.loadingIsOver())
 				{
-//					Game.setState(GameStates.running) ;
+					initialize(Opening.getLoadingStep()) ;
+					Opening.incLoadingStep() ;
+					if (Opening.loadingIsOver())
+					{
+						Opening.activateStartButton() ;
+					}
+				}
+	
+				if (Opening.gameStarted())
+				{
+			    	player.switchOpenClose(player.getHintsindow()) ;
+					if (cheatMode) { setCheatMode() ;}
+					Game.setState(GameStates.running) ;
 				}
 				shouldRepaint = true ;
 				break ;
@@ -1451,7 +1458,7 @@ public class Game extends JPanel
 				break ;
 
 			case running:
-				runGame(DP) ;
+				run(DP) ;
 				playGifs(DP) ;
 				// DP.DrawImage(UtilG.loadImage("./images/test.png"), mousePos, Align.center) ;	
 				break ;

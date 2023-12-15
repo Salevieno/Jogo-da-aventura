@@ -22,7 +22,6 @@ import utilities.LiveInput;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
-import windows.AttributesWindow;
 
 public abstract class Opening
 {
@@ -30,6 +29,7 @@ public abstract class Opening
 	private static Gif openingGif ;
     private static List<GameButton> buttons ;
     private static List<GameButton> loadSlotButtons ;
+    private static GameButton startButton ;
     private static String[] stepMessage ;
     private static String[] jobInfo ;
     private static int step ;
@@ -153,6 +153,12 @@ public abstract class Opening
     	buttons.get(1).activate() ;
     	buttons.get(2).activate() ;
     	buttons.get(3).activate() ;
+
+    	Image startImage = UtilG.loadImage(path + "Start.png") ;
+    	Image startImageSelected = UtilG.loadImage(path + "Start Selected.gif") ;
+		IconFunction startAction = () -> { loadingStep = 12 ;} ;
+    	startButton = new GameButton(Game.getScreen().getCenter(), Align.center, "start", startImage, startImageSelected, startAction) ;
+    	startButton.deactivate() ;
     	
     	// TODO get text from json. AllText is not loaded here yet Game.allText.get(TextCategories.newGame)
     	stepMessage = new String[] {"", "Qual o seu nome?", "", "", "", ""} ;
@@ -293,13 +299,13 @@ public abstract class Opening
 		}
 	}
 	
-	public static void displayLoadingScreen(DrawingOnPanel DP)
+	public static void displayLoadingScreen(String action, Point mousePos, DrawingOnPanel DP)
 	{
 		Color textColor = Game.colorPalette[0] ;
 		Point moveInfoTopLeft = new Point(60, 60) ;		
 		DP.DrawText(UtilG.Translate(moveInfoTopLeft, 150, 0), Align.center, 0, "Como se mover", smallFont, textColor) ;
 		
-		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().idleGif, null, DrawingOnPanel.ElementImages[1]} ;
+		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().idleGif, Equip.StaffImage, DrawingOnPanel.ElementImages[1]} ;
 		String[] moveInfoText = new String[] {"W A S D ou setas", "", ""} ;
 		for (int i = 0 ; i <= moveInfoImages.length - 1; i += 1)
 		{
@@ -322,13 +328,25 @@ public abstract class Opening
 		}
 		
 		
-		Point loadingTextCenter = new Point(320, 360) ;
-		Point loadingBarCenterLeft = new Point(120, 400) ;
-		Dimension loadingBarSize = new Dimension(400, 30) ;
-		Dimension loadedBarSize = new Dimension(loadingStep * loadingBarSize.width / 11, loadingBarSize.height) ;
-		DP.DrawImage(LoadingGif, loadingTextCenter, Align.center) ;
-		DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 1, null, true);
-		DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Game.colorPalette[18], false);
+		if (!loadingIsOver())
+		{
+			Point loadingTextCenter = new Point(320, 360) ;
+			Point loadingBarCenterLeft = new Point(120, 400) ;
+			Dimension loadingBarSize = new Dimension(400, 30) ;
+			Dimension loadedBarSize = new Dimension(loadingStep * loadingBarSize.width / 11, loadingBarSize.height) ;
+			DP.DrawImage(LoadingGif, loadingTextCenter, Align.center) ;
+			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 1, null, true);
+			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Game.colorPalette[18], false);
+		}
+		
+		if (startButton.isActive())
+		{
+			startButton.display(0, true, mousePos, DP) ;
+		}
+		if (startButton.isClicked(mousePos, action))
+		{
+			startButton.act() ;
+		}
 	}
 	
 	private static void displayJobInfo(DrawingOnPanel DP)
@@ -397,6 +415,9 @@ public abstract class Opening
 	
 	public static int getLoadingStep() { return loadingStep ;}
 	public static void incLoadingStep() { loadingStep += 1 ;}
+	public static boolean loadingIsOver() { return 11 <= loadingStep ;}
+	public static boolean gameStarted() { return loadingStep == 12 ;}
+	public static void activateStartButton() { startButton.activate() ;}
 	
 	public static boolean newGame() { return newGame ;}
 	public static boolean isOver() { return isOver ;}

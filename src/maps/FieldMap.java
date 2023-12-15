@@ -33,21 +33,13 @@ public class FieldMap extends GameMap
 	private Map<CollectibleTypes, TimeCounter> collectibleCounter ;
 	
 	private static final int numberTrees = 5 ;
-	private static final int numberGrass = 20 ;
+	private static final int numberGrass = 30 ;
 	private static final int numberRocks = 10 ;
-	
-	private static final Image treeImage ;
-	private static final Image grassImage ;
-	private static final Image rockImage ;
 
 	public static final List<Image> images ;
 	
 	static
 	{
-		treeImage = UtilS.loadImage("\\MapElements\\" + "MapElem6_TreeForest.png") ;
-		grassImage = UtilS.loadImage("\\MapElements\\" + "MapElem8_Grass.png") ;
-		rockImage = UtilS.loadImage("\\MapElements\\" + "MapElem9_Rock.png") ;
-		
 		images = new ArrayList<>() ;
 		for (int i = 5 ; i <= 67 - 1 ; i += 1)
 		{
@@ -73,17 +65,17 @@ public class FieldMap extends GameMap
 		for (int i = 0 ; i <= numberRocks - 1 ; i += 1)
 		{
 			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
-			mapElems.add(new MapElements(i, "rock", randomPos, rockImage)) ;				
+			mapElems.add(new MapElement(i, "rock", randomPos)) ;				
 		}
 		for (int i = 0 ; i <= numberTrees - 1 ; i += 1)
 		{
 			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
-			mapElems.add(new MapElements(i, "ForestTree", randomPos, treeImage)) ;				
+			mapElems.add(new MapElement(i, "ForestTree", randomPos)) ;				
 		}
 		for (int i = 0 ; i <= numberGrass - 1 ; i += 1)
 		{
 			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
-			mapElems.add(new MapElements(i, "grass", randomPos, grassImage)) ;				
+			mapElems.add(new MapElement(i, "grass", randomPos)) ;				
 		}
 		
 		
