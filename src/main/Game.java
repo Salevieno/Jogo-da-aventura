@@ -206,6 +206,45 @@ public class Game extends JPanel
 
 	public static boolean someAnimationIsActive() { return (animations.get(3).isActive() | animations.get(4).isActive() | animations.get(5).isActive()) ;}
 
+	private static void loadNPCText(JSONObject textData, Object key, TextCategories catName)
+	{
+		JSONArray npcData = (JSONArray) textData.get(key) ;
+
+		for (int i = 0 ; i <= npcData.size() - 1 ; i += 1)
+		{
+			JSONObject npc = (JSONObject) npcData.get(i) ;
+			String npcName = (String) npc.get("Nome") ;
+			List<String> falas = (List<String>) npc.get("Falas") ;
+			List<JSONArray> opcoes = (List<JSONArray>) npc.get("Opcoes") ;
+			TextCategories textCatName = TextCategories.catFromBRName(catName + "Nome") ;
+			TextCategories textCatFala = TextCategories.catFromBRName(catName + npcName + "Falas") ;
+
+			if (textCatName != null)
+			{
+				allText.put(textCatName, falas.toArray(new String[0])) ;
+			}
+
+			if (textCatFala != null)
+			{
+				allText.put(textCatFala, falas.toArray(new String[0])) ;
+			}
+
+			for (int j = 0 ; j <= opcoes.size() - 1 ; j += 1)
+			{
+				List<String> opcoesMenu = (List<String>) opcoes.get(j) ;
+				TextCategories textCatOption = TextCategories
+						.catFromBRName(catName + npcName + "Opcoes" + j) ;
+
+				if (textCatOption == null)
+				{
+					continue ;
+				}
+
+				allText.put(textCatOption, opcoesMenu.toArray(new String[0])) ;
+			}
+		}
+	}
+	
 	private static void loadAllText()
 	{
 
@@ -218,60 +257,23 @@ public class Game extends JPanel
 			Object key = iterator.next() ;
 			TextCategories catName = TextCategories.catFromBRName((String) key) ;
 
-			if (catName != null)
+			if (catName == null) { continue ;}
+			
+			if (catName.equals(TextCategories.npcs))
 			{
-				if (catName.equals(TextCategories.npcs))
-				{
-
-					JSONArray npcData = (JSONArray) textData.get(key) ;
-
-					for (int i = 0 ; i <= npcData.size() - 1 ; i += 1)
-					{
-						JSONObject npc = (JSONObject) npcData.get(i) ;
-						String npcName = (String) npc.get("Nome") ;
-						List<String> falas = (List<String>) npc.get("Falas") ;
-						List<JSONArray> opcoes = (List<JSONArray>) npc.get("Opcoes") ;
-						TextCategories textCatName = TextCategories.catFromBRName(catName + "Nome") ;
-						TextCategories textCatFala = TextCategories.catFromBRName(catName + npcName + "Falas") ;
-
-						if (textCatName != null)
-						{
-							allText.put(textCatName, falas.toArray(new String[0])) ;
-						}
-
-						if (textCatFala != null)
-						{
-							allText.put(textCatFala, falas.toArray(new String[0])) ;
-						}
-
-						for (int j = 0 ; j <= opcoes.size() - 1 ; j += 1)
-						{
-							List<String> opcoesMenu = (List<String>) opcoes.get(j) ;
-							TextCategories textCatOption = TextCategories
-									.catFromBRName(catName + npcName + "Opcoes" + j) ;
-
-							if (textCatOption == null)
-							{
-								continue ;
-							}
-
-							allText.put(textCatOption, opcoesMenu.toArray(new String[0])) ;
-						}
-					}
-
-					continue ;
-				}
-
-				JSONArray listText = (JSONArray) textData.get(key) ;
-
-				List<String> listValues = new ArrayList<>() ;
-				for (int j = 0 ; j <= listText.size() - 1 ; j += 1)
-				{
-					listValues.add((String) listText.get(j)) ;
-				}
-
-				allText.put(catName, listValues.toArray(new String[] {})) ;
+				loadNPCText(textData, key, catName) ;
+				continue ;
 			}
+
+			JSONArray listText = (JSONArray) textData.get(key) ;
+
+			List<String> listValues = new ArrayList<>() ;
+			for (int j = 0 ; j <= listText.size() - 1 ; j += 1)
+			{
+				listValues.add((String) listText.get(j)) ;
+			}
+
+			allText.put(catName, listValues.toArray(new String[] {})) ;
 		}
 
 //		allText.entrySet().forEach(text -> System.out.println(text.getKey() + " " + Arrays.toString(text.getValue()))) ;
@@ -1114,22 +1116,19 @@ public class Game extends JPanel
 	
 	private void playerActs()
 	{
-		if (player.canAct())
+		if (player.canAct() & player.hasActed())
 		{
-			if (player.hasActed())
-			{
-				player.acts(pet, mousePos, sideBar) ;
+			player.acts(pet, mousePos, sideBar) ;
 
-				if (player.getMoveCounter().finished())
-				{
-					player.getMoveCounter().reset() ;
-				}
+			if (player.getMoveCounter().finished())
+			{
+				player.getMoveCounter().reset() ;
 			}
 		}
 		if (player.isMoving())
 		{
 			player.move(pet) ;
-			if (player.isDoneMoving())
+			if (player.isDoneMoving())	// TODO whaaaaaaat?
 			{
 				if (player.getOpponent() == null)
 				{

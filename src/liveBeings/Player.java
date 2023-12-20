@@ -217,7 +217,7 @@ public class Player extends LiveBeing
 		isRiding = false ;
 		stats = new Statistics() ;
 		collectCounter = new TimeCounter(0, 240) ;
-		digCounter = new TimeCounter(0, 200) ;
+		digCounter = new TimeCounter(0, 500) ;
 		tentCounter = new TimeCounter(0, 200) ;
 		attPoints = 0 ;
 		
@@ -686,7 +686,9 @@ public class Player extends LiveBeing
 				if (isInBattle()) { return ;}		
 				return ;
 				
-			case 13: setState(LiveBeingStates.digging) ; return ;
+			case 13: 
+				if (!questSkills.get(QuestSkills.dig)) { return ;}
+				setState(LiveBeingStates.digging) ; return ;
 			
 			case 14: 
 				if (!questSkills.get(QuestSkills.bestiary)) { return ;}

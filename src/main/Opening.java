@@ -372,7 +372,7 @@ public abstract class Opening
 		{
 			if (!button.isActive()) { continue ;}
 			
-			button.display(0, true, mousePos, DP) ;
+			button.display(0, false, mousePos, DP) ;
 		}
 		
 		if (step == 1)

@@ -134,7 +134,8 @@ public class GameButton
 		}
 		
 		DP.DrawImage(imageDisplayed, topLeft, angle, Scale.unit, Align.topLeft) ;
-		
+
+		if (!displayText) { return ;}
 		if (name == null) { return ;}
 		
 		DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;

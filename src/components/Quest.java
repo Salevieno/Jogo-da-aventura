@@ -101,7 +101,7 @@ public class Quest
 	{
 		switch (id)
 		{
-			case 19: skills.replace(QuestSkills.shovel, true) ; return ;
+			case 19: skills.replace(QuestSkills.dig, true) ; return ;
 			case 27: skills.replace(QuestSkills.craftWindow, true) ; return ;
 			case 39: Game.letThereBePet() ; return ;
 			case 44: skills.replace(QuestSkills.bestiary, true) ; return ;

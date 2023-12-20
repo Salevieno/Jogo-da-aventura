@@ -7,7 +7,7 @@ public enum QuestSkills
 	islandMap,
 	volcanoMap,
 	snowlandMap,
-	shovel,
+	dig,
 	craftWindow,
 	ride,
 	dragonAura,
