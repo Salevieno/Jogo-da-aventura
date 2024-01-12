@@ -17,7 +17,6 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Spell;
 import simulations.PlayerEvolutionSimulation;
-import utilities.Align;
 import utilities.AtkEffects;
 import utilities.Elements;
 import utilities.GameStates;
@@ -86,6 +85,11 @@ public abstract class Battle
 	{
 //		System.out.println("Elements: atk = " + atkElem + " | weapon = " + weaponElem + " | armor = " + armorElem + " | def = " + shieldElem + " | super = " + superElem + " | mult = " + elemMult) ;
 	}
+
+	public static void updateDamageAnimation(int newDamageStyle)
+	{
+		damageStyle = newDamageStyle ;
+	}
 	
 	private static void playDamageAnimation(LiveBeing receiver, AtkResults atkResults)
 	{
@@ -98,28 +102,28 @@ public abstract class Battle
 //		damageAni.forEach(ani -> ani.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageStyle})) ;
 	}
 	
-	private static double basicElemMult(Elements atk, Elements def)
+	public static double basicElemMult(Elements atk, Elements def)
 	{
 		return ElemMult[ElemID.indexOf(atk)][ElemID.indexOf(def)] ;
 	}
 	
-	private static boolean hit(double dex, double agi)
+	public static boolean hit(double dex, double agi)
 	{
 		double hitChance = 1 - 1 / (1 + Math.pow(1.1, dex - agi)) ;
 		return UtilG.chance(hitChance) ;
 	}
 	
-	private static boolean block(double blockDef)
+	public static boolean block(double blockDef)
 	{
 		return UtilG.chance(blockDef) ;
 	}
 
-	private static boolean criticalAtk(double critAtk, double critDef)
+	public static boolean criticalAtk(double critAtk, double critDef)
 	{
 		return UtilG.chance(critAtk - critDef) ;
 	}
 		
-	private static double calcElemMult(Elements atk, Elements weapon, Elements armor, Elements shield, Elements superElem)
+	public static double calcElemMult(Elements atk, Elements weapon, Elements armor, Elements shield, Elements superElem)
 	{
 		double mult = 1 ;
 		mult = basicElemMult(atk, armor) * mult ;
@@ -131,7 +135,7 @@ public abstract class Battle
 		return mult ;
 	}
 
-	private static AtkResults calcPhysicalAtk(LiveBeing attacker, LiveBeing receiver)
+	public static AtkResults calcPhysicalAtk(LiveBeing attacker, LiveBeing receiver)
 	{
 		double arrowPower = 0 ;
 		if (attacker.actionIsArrowAtk())
@@ -153,11 +157,6 @@ public abstract class Battle
 		int damage = calcDamage(effect, atkPhyAtk + arrowPower, defPhyDef, atkElems, defElems, 1) ;
 
 		return new AtkResults(AtkTypes.physical, effect, damage) ;
-	}
-	
-	public static void updateDamageAnimation(int newDamageStyle)
-	{
-		damageStyle = newDamageStyle ;
 	}
 	
 	public static AtkEffects calcEffect(double dex, double agi, double critAtk, double critDef, double blockDef)
@@ -206,7 +205,8 @@ public abstract class Battle
 		double randomMult = UtilG.RandomMult(randomAmp) ;
 		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElems[0], defElems[0], atkElems[2]) ;
 		PrintElement(atkElems[0], atkElems[1], defElems[0], defElems[0], atkElems[2], elemMult) ;
-		damage = (int) (randomMult * elemMult * elemMod * damage) ;
+		System.out.println(randomMult + " " + elemMult + " " + elemMod + " " + damage);
+		damage = (int) UtilG.Round(randomMult * elemMult * elemMod * damage, 0) ;
 		return damage ;
 	}
 		
@@ -351,30 +351,30 @@ public abstract class Battle
 
 		switch (atkType)
 		{
-			case physical: user.phyHitGif.start() ; return ;
-			case magical: user.magHitGif.start() ; return ;
+//			case physical: user.phyHitGif.start() ; return ;
+//			case magical: user.magHitGif.start() ; return ;
 			default: return ;
 		}
 	}
 		
 	private static void playAtkAnimations(LiveBeing user, Point pos, DrawingOnPanel DP)
 	{
-		if (user.phyHitGif.isPlaying())
-		{
-			user.phyHitGif.play(pos, Align.center, DP) ;
-		}
-		else
-		{
-			user.phyHitGif.resetTimeCounter() ;
-		}
-		if (user.magHitGif.isPlaying())
-		{
-			user.magHitGif.play(pos, Align.center, DP) ;
-		}
-		else
-		{
-			user.magHitGif.resetTimeCounter() ;
-		}
+//		if (user.phyHitGif.isPlaying())
+//		{
+//			user.phyHitGif.play(pos, Align.center, DP) ;
+//		}
+//		else
+//		{
+//			user.phyHitGif.resetTimeCounter() ;
+//		}
+//		if (user.magHitGif.isPlaying())
+//		{
+//			user.magHitGif.play(pos, Align.center, DP) ;
+//		}
+//		else
+//		{
+//			user.magHitGif.resetTimeCounter() ;
+//		}
 	}
 			
 	private static void checkSpendArrow(LiveBeing attacker)
@@ -573,4 +573,5 @@ public abstract class Battle
 	}
 
 
+	public static double getRandomAmp() { return randomAmp ;}
 }

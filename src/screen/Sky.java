@@ -8,13 +8,13 @@ import java.awt.Point;
 import graphics.DrawingOnPanel;
 import main.Game;
 import utilities.Align;
-import utilities.TimeCounter;
+import utilities.FrameCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 
 public class Sky 
 {
-	public static TimeCounter dayTime ;
+	public static FrameCounter dayTime ;
 	private static SkyComponent[] clouds;
 	private static SkyComponent[] stars ;
 	private static boolean isDay ;
@@ -37,7 +37,7 @@ public class Sky
 	
 	public Sky ()
 	{
-		dayTime = new TimeCounter(Game.DayDuration / 2, Game.DayDuration) ;
+		dayTime = new FrameCounter(Game.DayDuration / 2, Game.DayDuration) ;
 		isDay = true ;
 		updateSkyColor() ;
     	

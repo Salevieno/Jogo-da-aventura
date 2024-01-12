@@ -1,29 +1,71 @@
 package utilities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class TimeCounter
 {
-	private int counter ;
-	private int duration ;
+	private boolean active ;
+	private double initialTime ;
+	private double counter ;
+	private double duration ;
 	
-	public TimeCounter(int initialValue, int duration)
+	private static Set<TimeCounter> allCounters ;
+	
+	static 
 	{
-		this.counter = initialValue ;
-		this.duration = duration ;
+		allCounters = new HashSet<>() ;
 	}
 	
-	public int getCounter() {return counter ;}
-	public int getDuration() {return duration ;}	
+	public TimeCounter(double duration)
+	{
+		this.active = false ;
+		this.counter = 0 ;
+		this.duration = duration ;
+		
+		allCounters.add(this) ;
+	}
+	
+	public double getCounter() { return counter ;}
+	public double getDuration() {return duration ;}	
 	public void setDuration(int duration) { this.duration = duration ;}
 
-	public double rate() { return (double) counter / duration ;}
-	public boolean finished() {return counter == duration ;}
+	public void start() { initialTime = System.nanoTime() * Math.pow(10, -9) ; active = true ;}
+	public void stop() { active = false ;}
+	public void reset() { initialTime = System.nanoTime() * Math.pow(10, -9) ;}
+//	public double current()
+//	{
+//		if (!active) { return counter ;}
+//		
+//		return Math.min((System.nanoTime() - counter) * Math.pow(10, -9), duration)  ;
+//	}
+	public double rate() { return getCounter() / duration ;}
+	public boolean isActive() { return active ;}
+	public boolean finished() { return duration <= getCounter() ;}
 	
-	public void inc() { if (counter <= duration - 1) {counter += 1 ;} }
-	public void reset() {counter = 0 ;}
+	public void update()
+	{
+		if (!active) { return ;}
+		
+		counter = (System.nanoTime() * Math.pow(10, -9) - initialTime) ;
+		if (duration <= counter)
+		{
+			counter = duration ;
+			active = false ;
+		}
+	}
+	
+	public static void updateAll()
+	{
+		allCounters.forEach(TimeCounter::update);
+	}
+
+//	public void inc() { if (counter <= duration) {counter = System.nanoTime() - counter ;}}
 	
 
 	@Override
-	public String toString() {
-		return "TimeCounter [counter=" + counter + ", duration=" + duration + "]";
+	public String toString()
+	{
+		return "TimeCounter [active = " + active + "time = " + getCounter() + ", duration = " + duration + "]";
 	}
 }

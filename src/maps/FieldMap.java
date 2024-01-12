@@ -20,7 +20,7 @@ import liveBeings.CreatureType;
 import main.Game;
 import screen.Screen;
 import screen.Sky;
-import utilities.TimeCounter;
+import utilities.FrameCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 
@@ -30,7 +30,7 @@ public class FieldMap extends GameMap
 	private List<Creature> creatures ;
 	private int level ;
 	private int[] collectibleDelay ;
-	private Map<CollectibleTypes, TimeCounter> collectibleCounter ;
+	private Map<CollectibleTypes, FrameCounter> collectibleCounter ;
 	
 	private static final int numberTrees = 5 ;
 	private static final int numberGrass = 30 ;
@@ -85,7 +85,7 @@ public class FieldMap extends GameMap
 		for (CollectibleTypes type : CollectibleTypes.values())
 		{
 			addCollectible(type) ;
-			collectibleCounter.put(type, new TimeCounter(0, type.getSpawnTime())) ;
+			collectibleCounter.put(type, new FrameCounter(0, type.getSpawnTime())) ;
 		}
 		
 		
@@ -131,7 +131,7 @@ public class FieldMap extends GameMap
 	
 	public boolean hasCreatures() { return creatures != null ;}
 	
-	public void IncCollectiblesCounter() { collectibleCounter.values().forEach(TimeCounter::inc) ;}
+	public void IncCollectiblesCounter() { collectibleCounter.values().forEach(FrameCounter::inc) ;}
 	
 	public void ActivateCollectiblesCounter()
 	{

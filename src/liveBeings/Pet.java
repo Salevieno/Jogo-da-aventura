@@ -25,7 +25,7 @@ import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.Scale;
-import utilities.TimeCounter;
+import utilities.FrameCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.PetAttributesWindow;
@@ -62,11 +62,11 @@ public class Pet extends LiveBeing
 		range = Integer.parseInt(PetProperties.get(Job)[4]) ;
 		step = Integer.parseInt(PetProperties.get(Job)[32]) ;
 		elem = new Elements[] {Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral} ;
-		actionCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[33])) ;
-		satiationCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[34])) ;
-		mpCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[35])) ;
-		battleActionCounter = new TimeCounter(0, Integer.parseInt(PetProperties.get(Job)[36])) ;
-		stepCounter = new TimeCounter(0, 20) ;
+		actionCounter = new FrameCounter(0, Integer.parseInt(PetProperties.get(Job)[33])) ;
+		satiationCounter = new FrameCounter(0, Integer.parseInt(PetProperties.get(Job)[34])) ;
+		mpCounter = new FrameCounter(0, Integer.parseInt(PetProperties.get(Job)[35])) ;
+		battleActionCounter = new FrameCounter(0, Integer.parseInt(PetProperties.get(Job)[36])) ;
+		stepCounter = new FrameCounter(0, 20) ;
 		combo = new ArrayList<>();
 		
 		this.job = Job ;
@@ -343,7 +343,7 @@ public class Pet extends LiveBeing
 		BA.getDex().incBaseValue(attIncrease[7]) ;
 		PA.getExp().incMaxValue((int) attIncrease[8]) ;
 
-		Game.getAnimations().get(5).start(levelUpGif.getDuration(), new Object[] {pos}) ;
+//		Game.getAnimations().get(5).start(levelUpGif.getDuration(), new Object[] {pos}) ;
 		
 		if (attIncAnimation == null) { return ;}
 		

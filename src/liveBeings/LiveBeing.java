@@ -26,7 +26,7 @@ import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.RelativePos;
-import utilities.TimeCounter;
+import utilities.FrameCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.AttributesWindow;
@@ -45,12 +45,12 @@ public abstract class LiveBeing
 	protected int range ;
 	protected int step ;
 	protected Elements[] elem ;					// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
-	protected TimeCounter mpCounter ;
-	protected TimeCounter satiationCounter ;
-	protected TimeCounter thirstCounter ;
-	protected TimeCounter actionCounter ;
-	protected TimeCounter battleActionCounter ;
-	protected TimeCounter stepCounter ;			// counts the steps in the movement
+	protected FrameCounter mpCounter ;
+	protected FrameCounter satiationCounter ;
+	protected FrameCounter thirstCounter ;
+	protected FrameCounter actionCounter ;
+	protected FrameCounter battleActionCounter ;
+	protected FrameCounter stepCounter ;			// counts the steps in the movement
 	protected String currentAction ;
 	protected AtkTypes currentAtkType ;
 	protected List<String> combo ;				// record of the last 10 movements
@@ -109,22 +109,22 @@ public abstract class LiveBeing
 	public int getStep() {return step ;}
 	public String getCurrentAction() {return currentAction ;}
 	public AtkTypes getCurrentAtkType() { return currentAtkType ;}
-	public TimeCounter getMpCounter() {return mpCounter ;}
-	public TimeCounter getSatiationCounter() {return satiationCounter ;}
-	public TimeCounter getThirstCounter() {return thirstCounter ;}
-	public TimeCounter getMoveCounter() {return actionCounter ;}
-	public TimeCounter getBattleActionCounter() {return battleActionCounter ;}
+	public FrameCounter getMpCounter() {return mpCounter ;}
+	public FrameCounter getSatiationCounter() {return satiationCounter ;}
+	public FrameCounter getThirstCounter() {return thirstCounter ;}
+	public FrameCounter getMoveCounter() {return actionCounter ;}
+	public FrameCounter getBattleActionCounter() {return battleActionCounter ;}
 //	public TimeCounter getDisplayDamage() {return displayDamage ;}
-	public TimeCounter getStepCounter() {return stepCounter ;}
+	public FrameCounter getStepCounter() {return stepCounter ;}
 	public List<String> getCombo() {return combo ;}
 	public List<Spell> getSpells() {return spells ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
-	public void setMpCounter(TimeCounter mpCounter) { this.mpCounter = mpCounter ;}
-	public void setActionCounter(TimeCounter actionCounter) { this.actionCounter = actionCounter ;}	
-	public void setBattleActionCounter(TimeCounter battleActionCounter) { this.battleActionCounter = battleActionCounter ;}
-	public void setSatiationCounter(TimeCounter satiationCounter) { this.satiationCounter = satiationCounter ;}
-	public void setThirstCounter(TimeCounter thirstCounter) { this.thirstCounter = thirstCounter ;}
-	public void setStepCounter(TimeCounter stepCounter) { this.stepCounter = stepCounter ;}
+	public void setMpCounter(FrameCounter mpCounter) { this.mpCounter = mpCounter ;}
+	public void setActionCounter(FrameCounter actionCounter) { this.actionCounter = actionCounter ;}	
+	public void setBattleActionCounter(FrameCounter battleActionCounter) { this.battleActionCounter = battleActionCounter ;}
+	public void setSatiationCounter(FrameCounter satiationCounter) { this.satiationCounter = satiationCounter ;}
+	public void setThirstCounter(FrameCounter thirstCounter) { this.thirstCounter = thirstCounter ;}
+	public void setStepCounter(FrameCounter stepCounter) { this.stepCounter = stepCounter ;}
 
 	public void setName(String newValue) {name = newValue ;}
 	public void setLevel(int newValue) {level = newValue ;}

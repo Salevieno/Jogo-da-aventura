@@ -14,25 +14,25 @@ import main.AtkResults;
 import main.Game;
 import utilities.Align;
 import utilities.Directions;
-import utilities.TimeCounter;
+import utilities.FrameCounter;
 import utilities.UtilG;
 
 public class Animation 
 {
-	private TimeCounter counter ;
+	private FrameCounter counter ;
 	private boolean isActive ;
 	private Object[] vars ;
 	private AnimationDisplayFunction displayFunction ;
 	
 	public Animation(int type)
 	{
-		counter = new TimeCounter(0, 0) ;
+		counter = new FrameCounter(0, 0) ;
 		isActive = false ;
 		vars = null ;
 		displayFunction = displayFunctionFromType(type) ;
 	}
 	
-	public TimeCounter getCounter() { return counter ;}
+	public FrameCounter getCounter() { return counter ;}
 	public void activate() {isActive = true ;}
 	public void start(int duration, Object[] vars)
 	{
@@ -86,20 +86,20 @@ public class Animation
 				return (vars, DP) -> {
 					Point playerPos = (Point) vars[0] ;
 					Player.levelUpGif.play(playerPos, Align.bottomCenter, DP) ;
-					if (Player.levelUpGif.isDonePlaying())
-					{
-						Player.levelUpGif.resetTimeCounter() ;
-					}
+//					if (Player.levelUpGif.isDonePlaying())
+//					{
+//						Player.levelUpGif.resetTimeCounter() ;
+//					}
 				} ;				
 				
 			case 5 :
 				return (vars, DP) -> {
 					Point petPos = (Point) vars[0] ;
 					Pet.levelUpGif.play(petPos, Align.bottomCenter, DP) ;
-					if (Pet.levelUpGif.isDonePlaying())
-					{
-						Pet.levelUpGif.resetTimeCounter() ;
-					}
+//					if (Pet.levelUpGif.isDonePlaying())
+//					{
+//						Pet.levelUpGif.resetTimeCounter() ;
+//					}
 				} ;				
 				
 			case 6 :
@@ -154,10 +154,10 @@ public class Animation
 					}
 
 					Player.FishingGif.play(fishingPos, Align.bottomCenter, DP) ;
-					if (Player.FishingGif.isDonePlaying())
-					{
-						Player.FishingGif.resetTimeCounter() ;
-					}
+//					if (Player.FishingGif.isDonePlaying())
+//					{
+//						Player.FishingGif.resetTimeCounter() ;
+//					}
 
 				} ;				
 				

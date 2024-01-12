@@ -86,6 +86,7 @@ import utilities.Align ;
 import utilities.Elements ;
 import utilities.GameStates ;
 import utilities.Scale ;
+import utilities.TimeCounter;
 import utilities.UtilG ;
 import utilities.UtilS ;
 import windows.BankWindow ;
@@ -99,7 +100,6 @@ public class Game extends JPanel
 	// TODO descrição dos itens
 	// TODO no superelemento de fogo, todos os panos na mochila viram panos em chamas
 	// TODO conferir a contagem das estatísticas do player
-	// TODO figure out how to get gif duration
 	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] { "Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A" } ;
 	public static final String JSONPath = ".\\json\\" ;
@@ -111,7 +111,7 @@ public class Game extends JPanel
 
 	private JPanel mainPanel = this ;
 	private static Point mousePos ;
-	private static GameStates state = GameStates.opening ;
+	private static GameStates state = GameStates.loading ;
 	private static boolean cheatMode = false ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to handle multiple repaint
@@ -162,7 +162,7 @@ public class Game extends JPanel
 	public Game()
 	{
 		DP = new DrawingOnPanel() ;
-		player = new Player("", "", 0) ;
+		player = new Player("", "", 1) ;
 
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -1415,6 +1415,7 @@ public class Game extends JPanel
 		mousePos = UtilG.GetMousePos(mainPanel) ;
 		DP.setGraphics((Graphics2D) g) ;
 
+		TimeCounter.updateAll() ;
 		switch (state)
 		{
 			case opening:
@@ -1595,6 +1596,10 @@ public class Game extends JPanel
 		@Override
 		public void mousePressed(MouseEvent evt)
 		{
+//		state = GameStates.opening ;
+//		shouldRepaint = true ;
+//		Player.levelUpGif.play(mousePos, Align.center, DP);
+//		Opening.openingGif.getTimeCounter().reset(); ;
 			if (evt.getButton() == 1) // Left click
 			{
 				player.setCurrentAction("LeftClick") ;

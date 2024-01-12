@@ -26,7 +26,7 @@ import utilities.UtilS;
 public abstract class Opening
 {
 	private static Image backgroundImage;
-	private static Gif openingGif ;
+	public static Gif openingGif ;
     private static List<GameButton> buttons ;
     private static List<GameButton> loadSlotButtons ;
     private static GameButton startButton ;
@@ -59,7 +59,7 @@ public abstract class Opening
 	    smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		String path = Game.ImagesPath  + "\\Opening\\";
 		backgroundImage = UtilG.loadImage(path + "Opening.png") ;
-		openingGif = new Gif(UtilG.loadImage(path + "Opening.gif"), 230, false, true) ;
+		openingGif = new Gif(UtilG.loadImage(path + "Opening.gif"), 0.7, false, true) ;
 		LoadingGif = UtilG.loadImage(path + "Loading.gif") ;
 		LoadingSlot = UtilG.loadImage(path + "LoadingSlot.png") ;
 		LoadingSlotSelected = UtilG.loadImage(path + "LoadingSlotSelected.png") ;
@@ -390,16 +390,16 @@ public abstract class Opening
 
 	public static void run(Player player, Point mousePos, DrawingOnPanel DP)
 	{
-		if (openingGif.isStarting())
-		{
-			Music.PlayMusic(thunderSound) ;
-			Music.PlayMusic(introMusic) ;
-		}
-		if (!openingGif.isDonePlaying())
-    	{
-			openingGif.play(new Point(0, 0), Align.topLeft, DP);
-    		return ;
-    	}
+//		if (openingGif.isStarting())
+//		{
+//			Music.PlayMusic(thunderSound) ;
+//			Music.PlayMusic(introMusic) ;
+//		}
+//		openingGif.play(new Point(0, 0), Align.topLeft, DP);
+//		if (!openingGif.isDonePlaying())
+//    	{
+//    		return ;
+//    	}
 
 		act(player.getCurrentAction(), mousePos) ;
 		if (newGame)

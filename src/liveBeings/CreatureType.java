@@ -46,7 +46,7 @@ public class CreatureType
 	public static final List<MovingAnimations> moveAni ;
 	
 	static
-	{System.out.println(1);
+	{
 		moveAni = new ArrayList<>() ;
 		for (int i = 0 ; i <= 7 - 1 ; i += 1)
 		{

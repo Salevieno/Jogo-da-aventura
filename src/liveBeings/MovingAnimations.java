@@ -25,7 +25,7 @@ public class MovingAnimations
 	{
 		switch (direction)
 		{
-			case up: DP.DrawImage(idleGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
+			case up: DP.DrawImage(movingUpGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
 			case down: DP.DrawImage(movingDownGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
 			case left: DP.DrawImage(movingLeftGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
 			case right: DP.DrawImage(movingRightGif, feetPos, angle, scale, Align.bottomCenter) ; break ;

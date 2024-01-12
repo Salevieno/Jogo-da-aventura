@@ -6,7 +6,7 @@ import graphics.DrawingOnPanel;
 import items.Item;
 import main.Game;
 import utilities.Align;
-import utilities.TimeCounter;
+import utilities.FrameCounter;
 
 public class Collectible extends Item
 {
@@ -14,7 +14,7 @@ public class Collectible extends Item
 	private int itemID ;
 	private int level ;
 	private Point pos ;
-	private TimeCounter counter ;
+	private FrameCounter counter ;
 	
 	public Collectible(int itemID, int level, Point pos, int delay)
 	{
@@ -25,13 +25,13 @@ public class Collectible extends Item
 		this.level = level ;
 		this.pos = pos ;
 		
-		counter = new TimeCounter(0, delay) ;
+		counter = new FrameCounter(0, delay) ;
 		
 	}
 
 	public int getLevel() { return level ; }
 	public Point getPos() { return pos ; }
-	public TimeCounter getCounter() { return counter ; }
+	public FrameCounter getCounter() { return counter ; }
 	public Item getItem() {return Game.getAllItems()[itemID] ;}
 
 	public int typeNumber()

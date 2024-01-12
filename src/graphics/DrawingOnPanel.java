@@ -27,7 +27,7 @@ import screen.Sky;
 import utilities.Align;
 import utilities.AtkEffects;
 import utilities.Scale;
-import utilities.TimeCounter;
+import utilities.FrameCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.PlayerAttributesWindow;
@@ -404,7 +404,7 @@ public class DrawingOnPanel
 		DrawTime(sky) ;
 	}
 
-	public void DrawDamageAnimation(Point initialPos, AtkResults atkResults, TimeCounter counter, int style, Color color)
+	public void DrawDamageAnimation(Point initialPos, AtkResults atkResults, FrameCounter counter, int style, Color color)
 	{
 		AtkEffects effect = atkResults.getEffect() ;
 		
@@ -489,7 +489,7 @@ public class DrawingOnPanel
 		DrawImage(TentImage, Pos, Align.center) ;
 	}
 
-	public void winAnimation(TimeCounter counter, Item[] items)
+	public void winAnimation(FrameCounter counter, Item[] items)
 	{
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -512,7 +512,7 @@ public class DrawingOnPanel
 		}
 	}
 
-	public void gainGoldAnimation(TimeCounter counter, int goldObtained)
+	public void gainGoldAnimation(FrameCounter counter, int goldObtained)
 	{
 		
 		Point pos = Game.getScreen().pos(0.45, 0.1) ;
@@ -530,7 +530,7 @@ public class DrawingOnPanel
 		
 	}
 
-	public void notEnoughGold(TimeCounter counter)
+	public void notEnoughGold(FrameCounter counter)
 	{
 
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
@@ -545,7 +545,7 @@ public class DrawingOnPanel
 		
 	}
 
-	public void quickTextAnimation(Point pos, TimeCounter counter, String text, Color color)
+	public void quickTextAnimation(Point pos, FrameCounter counter, String text, Color color)
 	{
 
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -557,7 +557,7 @@ public class DrawingOnPanel
 		
 	}
 	
-	public void levelUpAnimation(TimeCounter counter, double[] AttributeIncrease, int playerLevel, Color textColor)
+	public void levelUpAnimation(FrameCounter counter, double[] AttributeIncrease, int playerLevel, Color textColor)
 	{
 
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
@@ -584,7 +584,7 @@ public class DrawingOnPanel
 		
 	}
 	
-	public void SailingAnimation(Image playerImage, Image sailorImage, Image boatImage, TimeCounter counter, String destination)
+	public void SailingAnimation(Image playerImage, Image sailorImage, Image boatImage, FrameCounter counter, String destination)
 	{
 //		int Step = player.getStep()/2 ;
 //		Dimension sailorSize = new Dimension(sailorImage.getWidth(null), sailorImage.getHeight(null)) ;
@@ -663,7 +663,7 @@ public class DrawingOnPanel
 		UtilG.PlayGif(Pos, FishingGif, this) ;
 	}
 	
-	public void PterodactileAnimation(TimeCounter counter, Image pterodactile, Image speakingBubble, String[] message)
+	public void PterodactileAnimation(FrameCounter counter, Image pterodactile, Image speakingBubble, String[] message)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		int screenWidth = screenSize.width ;

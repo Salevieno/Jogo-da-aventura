@@ -55,7 +55,7 @@ import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.Scale;
-import utilities.TimeCounter;
+import utilities.FrameCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.BagWindow;
@@ -97,9 +97,9 @@ public class Player extends LiveBeing
 	private int attPoints ;			// attribute points available (to upgrade the attributes)
 	private int spellPoints ;		// spell points available (to upgrade the spells)
 	private double[] collectLevel ;	// 0: herb, 1: wood, 2: metal
-	private TimeCounter collectCounter ;	// counts the progress of the player's collection
-	private TimeCounter digCounter ;		// counts the progress of digging
-	private TimeCounter tentCounter ;		// counts the progress of sleeping at the tent
+	private FrameCounter collectCounter ;	// counts the progress of the player's collection
+	private FrameCounter digCounter ;		// counts the progress of digging
+	private FrameCounter tentCounter ;		// counts the progress of sleeping at the tent
 	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor
 	private Arrow equippedArrow ;
 	private int storedGold ;
@@ -134,7 +134,7 @@ public class Player extends LiveBeing
 	public final static int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public final static Color[] ClassColors = new Color[] {Game.colorPalette[21], Game.colorPalette[5], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
-    public final static Gif levelUpGif = new Gif(UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 320, false, false) ;
+    public final static Gif levelUpGif = new Gif(UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 4.5, false, false) ;
     
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
 	public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
@@ -172,12 +172,12 @@ public class Player extends LiveBeing
 		range = Integer.parseInt(Properties.get(job)[4]) ;
 		step = Integer.parseInt(Properties.get(job)[33]);
 	    elem = new Elements[] {Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral};
-		actionCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[37])) ;
-		satiationCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[38])) ;
-		thirstCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[39])) ;
-		mpCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[40])) ;
-		battleActionCounter = new TimeCounter(0, Integer.parseInt(Properties.get(job)[41])) ;
-		stepCounter = new TimeCounter(0, 20) ;
+		actionCounter = new FrameCounter(0, Integer.parseInt(Properties.get(job)[37])) ;
+		satiationCounter = new FrameCounter(0, Integer.parseInt(Properties.get(job)[38])) ;
+		thirstCounter = new FrameCounter(0, Integer.parseInt(Properties.get(job)[39])) ;
+		mpCounter = new FrameCounter(0, Integer.parseInt(Properties.get(job)[40])) ;
+		battleActionCounter = new FrameCounter(0, Integer.parseInt(Properties.get(job)[41])) ;
+		stepCounter = new FrameCounter(0, 20) ;
 		combo = new ArrayList<>() ;
 	    
 //		this.language = Language ;
@@ -216,9 +216,9 @@ public class Player extends LiveBeing
 		}
 		isRiding = false ;
 		stats = new Statistics() ;
-		collectCounter = new TimeCounter(0, 240) ;
-		digCounter = new TimeCounter(0, 500) ;
-		tentCounter = new TimeCounter(0, 200) ;
+		collectCounter = new FrameCounter(0, 240) ;
+		digCounter = new FrameCounter(0, 500) ;
+		tentCounter = new FrameCounter(0, 200) ;
 		attPoints = 0 ;
 		
 		
@@ -604,7 +604,7 @@ public class Player extends LiveBeing
 		setState(LiveBeingStates.fishing) ;
 		
 		Animation fishingAnimation = Game.getAnimations().get(9) ;
-		fishingAnimation.start(FishingGif.getDuration(), new Object[] {pos, dir}) ;
+//		fishingAnimation.start(FishingGif.getDuration(), new Object[] {pos, dir}) ;
 		
 	}
 
@@ -1438,7 +1438,7 @@ public class Player extends LiveBeing
 		
 		((PlayerAttributesWindow) attWindow).activateIncAttButtons(attPoints) ;
 		
-		Game.getAnimations().get(4).start(levelUpGif.getDuration(), new Object[] {UtilG.Translate(pos, 8, 0)}) ;
+//		Game.getAnimations().get(4).start(levelUpGif.getDuration(), new Object[] {UtilG.Translate(pos, 8, 0)}) ;
 		
 		if (attIncAnimation == null) { return ;}
 		

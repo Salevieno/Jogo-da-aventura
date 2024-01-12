@@ -10,7 +10,7 @@ import main.Game;
 import utilities.Align;
 import utilities.LiveInput;
 import utilities.Scale;
-import utilities.TimeCounter;
+import utilities.FrameCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 
@@ -22,7 +22,7 @@ public class BankWindow extends GameWindow
 	private int investedAmount ;
 	private boolean hasInvestement ;
 	private String investmentRisk ;
-	private TimeCounter investmentCounter ;
+	private FrameCounter investmentCounter ;
 	private LiveInput liveInput ;
 
 	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
@@ -37,14 +37,14 @@ public class BankWindow extends GameWindow
 		balance = 0 ;
 		investedAmount = 0 ;
 		hasInvestement = false ;
-		investmentCounter = new TimeCounter(0, 10000) ;
+		investmentCounter = new FrameCounter(0, 10000) ;
 		liveInput = new LiveInput() ;
 	}
 
 	
 	public int getAmountTyped() { return amountTyped ;}
 	public int getBalance() { return balance;}
-	public TimeCounter getInvestmentCounter() { return investmentCounter ;}
+	public FrameCounter getInvestmentCounter() { return investmentCounter ;}
 	public void setMode(String mode) { this.mode = mode ;}
 	
 	private boolean isReadingInput() { return mode.equals("deposit") | mode.equals("withdraw") | mode.equals("investment low risk") | mode.equals("investment hight risk") ;}

@@ -10,7 +10,7 @@ import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
 import components.SpellTypes;
 import utilities.Elements;
-import utilities.TimeCounter;
+import utilities.FrameCounter;
 
 public class Spell 
 {	
@@ -36,8 +36,8 @@ public class Spell
 	private double[] poisonMod ;
 	private double[] silenceMod ;
 	private boolean isActive ;
-	private TimeCounter cooldownCounter ;
-	private TimeCounter effectCounter ;
+	private FrameCounter cooldownCounter ;
+	private FrameCounter effectCounter ;
 	private Elements elem ;
 	private String[] info ;	// Effect and description
 
@@ -70,8 +70,8 @@ public class Spell
 		this.poisonMod = poisonMod;
 		this.silenceMod = silenceMod;
 		isActive = false;
-		cooldownCounter = new TimeCounter(0, cooldown) ;
-		effectCounter = new TimeCounter(0, duration) ;
+		cooldownCounter = new FrameCounter(0, cooldown) ;
+		effectCounter = new FrameCounter(0, duration) ;
 		this.elem = elem;
 		this.info = info;
 	}
@@ -100,10 +100,10 @@ public class Spell
 	public double[] getPoisonMod() {return poisonMod ;}
 	public double[] getSilenceMod() {return silenceMod ;}
 	public Elements getElem() {return elem ;}
-	public TimeCounter getCooldownCounter() {return cooldownCounter ;}
-	public TimeCounter getDurationCounter() {return effectCounter ;}
+	public FrameCounter getCooldownCounter() {return cooldownCounter ;}
+	public FrameCounter getDurationCounter() {return effectCounter ;}
 	public String[] getInfo() {return info ;}
-	public TimeCounter getEffectCounter() { return effectCounter ;}
+	public FrameCounter getEffectCounter() { return effectCounter ;}
 
 	public boolean isReady() { return cooldownCounter.finished() ;}
 	public boolean isActive() { return isActive ;}

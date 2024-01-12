@@ -26,7 +26,7 @@ import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.Scale;
-import utilities.TimeCounter;
+import utilities.FrameCounter;
 import utilities.UtilG;
 import windows.CreatureAttributesWindow;
 
@@ -52,11 +52,11 @@ public class Creature extends LiveBeing
 		this.range = CT.range;
 		this.step = CT.step;
 		this.elem = CT.elem;
-		mpCounter = new TimeCounter(0, CT.mpDuration);
-		satiationCounter = new TimeCounter(0, CT.satiationDuration);
-		actionCounter = new TimeCounter(0, CT.numberSteps) ;
-		battleActionCounter = new TimeCounter(0, CT.battleActionDuration) ;
-		this.stepCounter = new TimeCounter(0, CT.numberSteps) ;
+		mpCounter = new FrameCounter(0, CT.mpDuration);
+		satiationCounter = new FrameCounter(0, CT.satiationDuration);
+		actionCounter = new FrameCounter(0, CT.numberSteps) ;
+		battleActionCounter = new FrameCounter(0, CT.battleActionDuration) ;
+		this.stepCounter = new FrameCounter(0, CT.numberSteps) ;
 		combo = new ArrayList<>() ;
 		
 		dir = Directions.up ;
