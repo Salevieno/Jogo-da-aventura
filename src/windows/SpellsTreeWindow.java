@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import components.SpellTypes;
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import liveBeings.Player;
 import liveBeings.Spell;
 import main.Game;
@@ -154,44 +155,44 @@ public class SpellsTreeWindow extends GameWindow
 		return slotPos ;
 	}
 	
-	public void displaySpellsInfo(DrawingOnPanel DP)
+	public void displaySpellsInfo(DrawPrimitives DP)
 	{
 		if (spellsOnWindow == null) { return ;}
 		if (spellsOnWindow.get(item) == null) { return ;}
 		
-		double angle = DrawingOnPanel.stdAngle ;
+		double angle = Draw.stdAngle ;
 		Point pos = UtilG.Translate(windowTopLeft, 0, -66) ;
 		Color textColor = Game.colorPalette[0] ;
 		Point spellNamePos = UtilG.Translate(windowTopLeft, spellInfo.getWidth(null) / 2, - 66 - 10) ;
-		DP.DrawImage(spellInfo, pos, Align.topLeft) ;
-		DP.DrawText(spellNamePos, Align.center, angle, spellsOnWindow.get(item).getName(), regularFont, textColor) ;
+		DP.drawImage(spellInfo, pos, Align.topLeft) ;
+		DP.drawText(spellNamePos, Align.center, angle, spellsOnWindow.get(item).getName(), regularFont, textColor) ;
 		pos.x += 5 ;
 		pos.y += 8 ;
 		for (String info : spellsOnWindow.get(item).getInfo())
 		{
-			DP.DrawFitText(pos, 16, Align.centerLeft, info, regularFont, 50, textColor) ;
+			Draw.fitText(pos, 16, Align.centerLeft, info, regularFont, 50, textColor) ;
 			pos.y += 34 ;
 		}
 	}
 	
-	public void displaySpellPoints(int points, DrawingOnPanel DP)
+	public void displaySpellPoints(int points, DrawPrimitives DP)
 	{
-		double angle = DrawingOnPanel.stdAngle ;
+		double angle = Draw.stdAngle ;
 		Point pointsPos = UtilG.Translate(windowTopLeft, size.width + 10 + 28, size.height - 6 - 40) ;
 		Color color = Game.colorPalette[21] ;
 		
-		DP.DrawImage(spellPoints, pointsPos, Align.topCenter) ;
-		DP.DrawText(UtilG.Translate(pointsPos, 0, 6), Align.topCenter, angle, "Pontos", regularFont, color) ;
-		DP.DrawText(UtilG.Translate(pointsPos, 0, 24), Align.topCenter, angle, String.valueOf(points), regularFont, color) ;
+		DP.drawImage(spellPoints, pointsPos, Align.topCenter) ;
+		DP.drawText(UtilG.Translate(pointsPos, 0, 6), Align.topCenter, angle, "Pontos", regularFont, color) ;
+		DP.drawText(UtilG.Translate(pointsPos, 0, 24), Align.topCenter, angle, String.valueOf(points), regularFont, color) ;
 		
 	}
 	
-	public void displayWindow(DrawingOnPanel DP)
+	public void displayWindow(DrawPrimitives DP)
 	{
-		double angle = DrawingOnPanel.stdAngle ;
+		double angle = Draw.stdAngle ;
 		if (numberTabs <= 1)
 		{
-			DP.DrawImage(image, windowTopLeft, angle, Scale.unit, Align.topLeft) ;
+			DP.drawImage(image, windowTopLeft, angle, Scale.unit, Align.topLeft) ;
 			return ;
 		}
 		
@@ -200,9 +201,9 @@ public class SpellsTreeWindow extends GameWindow
 		Point tab2Pos = UtilG.Translate(windowTopLeft, -10, 6 + 75 + 75/2) ;
 		Image displayImage = tab == 0 ? tab0Image : tab1Image ;
 		Color tabTextColor = Game.colorPalette[21] ;
-		DP.DrawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
-		DP.DrawText(tab1Pos, Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
-		DP.DrawText(tab2Pos, Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
+		DP.drawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
+		DP.drawText(tab1Pos, Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
+		DP.drawText(tab2Pos, Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
 	}
 	
 	public List<Spell> basicSpells()
@@ -220,10 +221,10 @@ public class SpellsTreeWindow extends GameWindow
 		spellsOnWindow = tab == 0 ? basicSpells() : proSpells() ;
 	}
 	
-	public void display(Point mousePos, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawPrimitives DP)
 	{
 
-		double angle = DrawingOnPanel.stdAngle ;
+		double angle = Draw.stdAngle ;
 		Color selectedColor = Game.colorPalette[3] ;
 		Color hasPreReqColor = Game.colorPalette[21] ;
 		Color hasNotPreReqColor = Game.colorPalette[21] ;
@@ -232,7 +233,7 @@ public class SpellsTreeWindow extends GameWindow
 		displayWindow(DP) ;
 		
 		Point titlePos = UtilG.Translate(windowTopLeft, size.width / 2, 6 + 9) ;
-		DP.DrawText(titlePos, Align.center, angle, name, largeFont, Game.colorPalette[21]);
+		DP.drawText(titlePos, Align.center, angle, name, largeFont, Game.colorPalette[21]);
 		
 		if (spells == null) { return ;}
 		
@@ -261,9 +262,9 @@ public class SpellsTreeWindow extends GameWindow
 			Point spellImagePos = UtilG.Translate(slotPos, slotSize.width / 2, 4 + 14) ;
 			Point spellLevelPos = UtilG.Translate(slotPos, slotSize.width / 2, slotSize.height / 2 + 18) ;
 					
-			DP.DrawImage(slotImage, slotPos, Align.topLeft) ;
-			DP.DrawImage(spell.getImage(), spellImagePos, Align.center) ;
-			DP.DrawText(spellLevelPos, Align.center, angle, String.valueOf(spell.getLevel()), regularFont, textColor) ;
+			DP.drawImage(slotImage, slotPos, Align.topLeft) ;
+			DP.drawImage(spell.getImage(), spellImagePos, Align.center) ;
+			DP.drawText(spellLevelPos, Align.center, angle, String.valueOf(spell.getLevel()), regularFont, textColor) ;
 			col += 1 ;			
 			
 			if (spellsDistribution[row] <= col)

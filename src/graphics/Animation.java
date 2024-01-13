@@ -53,7 +53,7 @@ public class Animation
 					int style = (int) vars[3] ;
 					Color textColor = (Color) vars[4] ;
 					Point pos = new Point(targetPos.x, targetPos.y - targetSize.height / 2 - 5) ;
-					DP.DrawDamageAnimation(pos, atkResults, counter, style, textColor) ;
+					Draw.damageAnimation(pos, atkResults, counter, style, textColor) ;
 				} ;
 				
 //			case 1 :
@@ -79,7 +79,7 @@ public class Animation
 			case 3 :
 				return (vars, DP) -> {
 					Item[] itemsObtained = (Item[]) vars[0] ;
-					DP.winAnimation(counter, itemsObtained) ;
+					Draw.winAnimation(counter, itemsObtained) ;
 				} ;				
 				
 			case 4 :
@@ -108,7 +108,7 @@ public class Animation
 					int playerLevel = (int) vars[1] ;
 					Color textColor = Game.colorPalette[6] ;
 
-					DP.levelUpAnimation(counter, attributesInc, playerLevel, textColor) ;
+					Draw.levelUpAnimation(counter, attributesInc, playerLevel, textColor) ;
 				} ;				
 				
 			case 7 :
@@ -117,7 +117,7 @@ public class Animation
 					int playerLevel = (int) vars[1] ;
 					Color textColor = Game.colorPalette[6] ;
 
-					DP.levelUpAnimation(counter, attributesInc, playerLevel, textColor) ;
+					Draw.levelUpAnimation(counter, attributesInc, playerLevel, textColor) ;
 				} ;				
 				
 			case 8 :
@@ -125,7 +125,7 @@ public class Animation
 					Image PterodactileImage = (Image) vars[0] ;
 					Image SpeakingBubbleImage = (Image) vars[1] ;
 					String[] message = (String[]) vars[2] ;
-					DP.PterodactileAnimation(counter, PterodactileImage, SpeakingBubbleImage, message) ;
+					Draw.pterodactileAnimation(counter, PterodactileImage, SpeakingBubbleImage, message) ;
 				} ;				
 				
 			case 9 :
@@ -164,12 +164,12 @@ public class Animation
 			case 10 :
 				return (vars, DP) -> {
 					int goldObtained = (int) vars[0] ;
-					DP.gainGoldAnimation(counter, goldObtained) ;
+					Draw.gainGoldAnimation(counter, goldObtained) ;
 				} ;				
 				
 			case 11 :
 				return (vars, DP) -> {
-					DP.notEnoughGold(counter) ;
+					Draw.notEnoughGold(counter) ;
 				} ;				
 				
 			case 12 :
@@ -177,7 +177,7 @@ public class Animation
 					Point pos = (Point) vars[0] ;
 					String message = (String) vars[1] ;
 					Color color = (Color) vars[2] ;
-					DP.quickTextAnimation(pos, counter, message, color) ;
+					Draw.quickTextAnimation(pos, counter, message, color) ;
 				} ;				
 				
 			default: return null ;
@@ -188,7 +188,7 @@ public class Animation
 
 	public boolean isActive() { return isActive ;}
 	 	
-	public void run(DrawingOnPanel DP)
+	public void run(DrawPrimitives DP)
 	{	
 		
 		if (!isActive) { return ;}

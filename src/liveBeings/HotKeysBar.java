@@ -6,7 +6,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import items.Item;
 import main.Game;
 import utilities.Align;
@@ -21,7 +22,7 @@ public class HotKeysBar
 	
 	public static final Image slotImage = UtilS.loadImage("\\Windows\\" + "BagSlot.png") ;
 
-	public static void display(Item[] hotItems, Point mousePos, DrawingOnPanel DP)
+	public static void display(Item[] hotItems, Point mousePos, DrawPrimitives DP)
 	{
 		Point barTopLeft = new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70) ;
 		Dimension slotSize = new Dimension(slotImage.getWidth(null), slotImage.getHeight(null)) ;
@@ -33,17 +34,17 @@ public class HotKeysBar
 			Point slotCenter = UtilG.Translate(barTopLeft, 10, 10 + 20 * i) ;
 			Point keyTextPos = UtilG.Translate(slotCenter, slotSize.width / 2 + 5, slotSize.height / 2) ;
 			
-			DP.DrawImage(BagWindow.SlotImage, slotCenter, Align.center) ;
-			DP.DrawText(keyTextPos, Align.bottomLeft, DrawingOnPanel.stdAngle, Player.HotKeys[i], font, textColor) ;
+			DP.drawImage(BagWindow.SlotImage, slotCenter, Align.center) ;
+			DP.drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.HotKeys[i], font, textColor) ;
 			
 			if (hotItems[i] == null) { continue ;}
 
-			DP.DrawImage(hotItems[i].getImage(), slotCenter, Align.center) ;
+			DP.drawImage(hotItems[i].getImage(), slotCenter, Align.center) ;
 			
 			if (!UtilG.isInside(mousePos, UtilG.Translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize)) { continue ;}
 			
 			Point textPos = UtilG.Translate(slotCenter, - slotSize.width / 2 - 10, 0);
-			DP.DrawText(textPos, Align.centerRight, DrawingOnPanel.stdAngle, hotItems[i].getName(), font, textColor) ;
+			DP.drawText(textPos, Align.centerRight, Draw.stdAngle, hotItems[i].getName(), font, textColor) ;
 		}
 	}
 }

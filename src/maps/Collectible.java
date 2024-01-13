@@ -2,7 +2,7 @@ package maps;
 
 import java.awt.Point;
 
-import graphics.DrawingOnPanel;
+import graphics.DrawPrimitives;
 import items.Item;
 import main.Game;
 import utilities.Align;
@@ -51,7 +51,7 @@ public class Collectible extends Item
 		return CollectibleTypes.values()[typeID(itemID)] ;
 	}
 	
-	public void display(DrawingOnPanel DP) {DP.DrawImage(image, pos, Align.center) ;}
+	public void display(DrawPrimitives DP) {DP.drawImage(image, pos, Align.center) ;}
 
 	public String toString()
 	{

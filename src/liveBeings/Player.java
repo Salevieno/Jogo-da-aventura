@@ -26,7 +26,8 @@ import components.Quest;
 import components.QuestSkills;
 import components.SpellTypes;
 import graphics.Animation;
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import graphics.Gif;
 import items.Alchemy;
 import items.Arrow;
@@ -49,13 +50,12 @@ import maps.FieldMap;
 import maps.GroundTypes;
 import maps.MapElement;
 import maps.TreasureChest;
-import screen.SideBar;
 import utilities.Align;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
-import utilities.Scale;
 import utilities.FrameCounter;
+import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.BagWindow;
@@ -137,7 +137,8 @@ public class Player extends LiveBeing
     public final static Gif levelUpGif = new Gif(UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 4.5, false, false) ;
     
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
-	public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
+	public static List<String> ArrowKeys = List.of("Acima", "Abaixo", "Esquerda", "Direita") ;
+    public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
 	public static final String[] HotKeys = new String[] {"T", "Y", "U"} ;
 
 	public final static Image[] AttWindowImages = new Image[]
@@ -485,11 +486,11 @@ public class Player extends LiveBeing
         currentCollectible = null ;
 	}
 	
-	public void collect(DrawingOnPanel DP)
+	public void collect(DrawPrimitives DP)
     {
 		
 		collectCounter.inc() ;
-        DP.DrawGif(collectingGif, getPos(), Align.center);
+		Draw.gif(collectingGif, getPos(), Align.center);
         
         if (!collectCounter.finished()) { return ;}
         
@@ -603,15 +604,15 @@ public class Player extends LiveBeing
 
 		setState(LiveBeingStates.fishing) ;
 		
-		Animation fishingAnimation = Game.getAnimations().get(9) ;
+//		Animation fishingAnimation = Game.getAnimations().get(9) ;
 //		fishingAnimation.start(FishingGif.getDuration(), new Object[] {pos, dir}) ;
 		
 	}
 
-	private void dig(DrawingOnPanel DP)
+	private void dig(DrawPrimitives DP)
 	{		
 		digCounter.inc() ;
-		DP.DrawImage(DiggingGif, pos, Align.center) ;
+		DP.drawImage(DiggingGif, pos, Align.center) ;
 		
 		if (!digCounter.finished()) { return ;}
 		
@@ -629,7 +630,7 @@ public class Player extends LiveBeing
 		
 	}
 	
-	public void tent(DrawingOnPanel DP)
+	public void tent(DrawPrimitives DP)
 	{
 		TentGif.play(pos, Align.bottomCenter, DP) ;
 		tentCounter.inc() ;
@@ -699,9 +700,9 @@ public class Player extends LiveBeing
 		
 	}
 	
-	private boolean actionIsArrowKeys() { return currentAction.equals("Acima") | currentAction.equals("Abaixo") | currentAction.equals("Esquerda") | currentAction.equals("Direita") ;}
+	private static boolean actionIsArrowKeys(String action) { return ArrowKeys.contains(action);}
 	
-	public void doCurrentAction(DrawingOnPanel DP)
+	public void doCurrentAction(DrawPrimitives DP)
 	{
 		switch (state)
 		{
@@ -711,7 +712,7 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	public void acts(Pet pet, Point mousePos, SideBar sideBar)
+	public void acts(Pet pet, Point mousePos)
 	{
 		
 		// I like to move it, move it!
@@ -725,7 +726,7 @@ public class Player extends LiveBeing
 				case "Direita": case "D": setDir(Directions.right) ; break ;
 			}
 
-			if (actionIsArrowKeys() | (!isFocusedOnWindow() & !metAnyNPC()))
+			if (actionIsArrowKeys(currentAction) | (!isFocusedOnWindow() & !metAnyNPC()))
 			{
 				startMove() ;
 			}
@@ -900,7 +901,7 @@ public class Player extends LiveBeing
 		}
 	}
 
-	public void meetWithNPCs(Point mousePos, DrawingOnPanel DP)
+	public void meetWithNPCs(Point mousePos, DrawPrimitives DP)
 	{
 		if (map.getNPCs() != null)
 		{
@@ -929,7 +930,7 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	public void checkMeet(Point mousePos, DrawingOnPanel DP)
+	public void checkMeet(Point mousePos, DrawPrimitives DP)
 	{
 		if (state == LiveBeingStates.collecting | isInBattle() | Game.someAnimationIsActive()) { return ;}
 
@@ -1365,7 +1366,7 @@ public class Player extends LiveBeing
 	}	
 	
 	// called every time the window is repainted
-	public void showWindows(Pet pet, Point mousePos, DrawingOnPanel DP)
+	public void showWindows(Pet pet, Point mousePos, DrawPrimitives DP)
 	{
 		openWindows.forEach(win -> win.display(mousePos, DP)) ;
 	}
@@ -1567,12 +1568,12 @@ public class Player extends LiveBeing
 		
 	}
 	
-	private void drawRange(DrawingOnPanel DP)
+	private void drawRange(DrawPrimitives DP)
 	{
-		DP.DrawCircle(pos, (int)(2 * range), 2, null, Game.colorPalette[job]) ;
+		DP.drawCircle(pos, (int)(2 * range), 2, null, Game.colorPalette[job]) ;
 	}
 
-	public void drawWeapon(Point pos, Scale scale, DrawingOnPanel DP)
+	public void drawWeapon(Point pos, Scale scale, DrawPrimitives DP)
 	{
 		if (equips[0] == null) { return ;}
 		
@@ -1584,20 +1585,20 @@ public class Player extends LiveBeing
 		
 	}
 	
-	public void display(Point pos, Scale scale, Directions direction, boolean showRange, DrawingOnPanel DP)
+	public void display(Point pos, Scale scale, Directions direction, boolean showRange, DrawPrimitives DP)
 	{
-		double angle = DrawingOnPanel.stdAngle ;
+		double angle = Draw.stdAngle ;
 		if (isRiding)
 		{
 			Point ridePos = UtilG.Translate(pos, -RidingImage.getWidth(null) / 2, RidingImage.getHeight(null) / 2) ;
-			DP.DrawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
+			DP.drawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
 		}
 		
 		movingAni.display(direction, pos, angle, Scale.unit, DP) ;
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
 			Point auraPos = UtilG.Translate(pos, -size.width / 2, 0) ;
-			DP.DrawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
+			DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
 		}
 		if (showRange)
 		{

@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 
-import graphics.DrawingOnPanel;
+import graphics.DrawPrimitives;
 import utilities.Align;
 import utilities.Scale;
 
@@ -51,8 +51,8 @@ public class SkyComponent
 		setPos(new Point(pos.x + speed.x, pos.y + speed.y)) ;
 	}
 	
-	public void display(double angle, double alpha, DrawingOnPanel DP)
+	public void display(double angle, double alpha, DrawPrimitives DP)
 	{
-		DP.DrawImage(image, pos, angle, Scale.unit, false, false, Align.topLeft, alpha) ;
+		DP.drawImage(image, pos, angle, Scale.unit, false, false, Align.topLeft, alpha) ;
 	}
 }

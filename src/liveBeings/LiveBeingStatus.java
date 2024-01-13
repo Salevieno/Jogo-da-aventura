@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import org.json.simple.JSONObject;
 
-import graphics.DrawingOnPanel;
+import graphics.DrawPrimitives;
 import utilities.Align;
 import utilities.Directions;
 import utilities.UtilG;
@@ -167,7 +167,7 @@ public class LiveBeingStatus
 		if (0 < silence) {silence += -1 ; }
 	}
 	
-	public void display(Point bodyCenter, Dimension size, Directions dir, DrawingOnPanel DP)
+	public void display(Point bodyCenter, Dimension size, Directions dir, DrawPrimitives DP)
 	{
 
 //		int mirror = UtilS.MirrorFromRelPos(UtilS.RelPos(getPos(), creature.getPos())) ;
@@ -177,7 +177,7 @@ public class LiveBeingStatus
 		if (0 < stun)
 		{
 			Point imgPos = UtilG.Translate(bodyCenter, 0, -offset.y) ;
-			DP.DrawImage(stunImage, imgPos, Align.center) ;
+			DP.drawImage(stunImage, imgPos, Align.center) ;
 		}
 		
 		int[] statusList = new int[] {block, blood, poison, silence} ;
@@ -187,7 +187,7 @@ public class LiveBeingStatus
 		{
 			if (statusList[i] <= 0) { continue ;}
 			
-			DP.DrawImage(imgList[i], imgPos, Align.center) ;
+			DP.drawImage(imgList[i], imgPos, Align.center) ;
 			imgPos.y += imgList[i].getHeight(null) + 2 ;
 		}
 	}

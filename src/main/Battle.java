@@ -9,7 +9,7 @@ import java.util.List;
 import javax.sound.sampled.Clip;
 
 import graphics.Animation;
-import graphics.DrawingOnPanel;
+import graphics.DrawPrimitives;
 import liveBeings.Creature;
 import liveBeings.LiveBeing;
 import liveBeings.LiveBeingStates;
@@ -357,7 +357,7 @@ public abstract class Battle
 		}
 	}
 		
-	private static void playAtkAnimations(LiveBeing user, Point pos, DrawingOnPanel DP)
+	private static void playAtkAnimations(LiveBeing user, Point pos, DrawPrimitives DP)
 	{
 //		if (user.phyHitGif.isPlaying())
 //		{
@@ -443,7 +443,7 @@ public abstract class Battle
 		return atkResult ;
 	}	
 		
-	private static void runTurn(LiveBeing attacker, LiveBeing receiver, DrawingOnPanel DP)
+	private static void runTurn(LiveBeing attacker, LiveBeing receiver, DrawPrimitives DP)
 	{
 		
 		if (!attacker.isAlive()) { return ;}
@@ -510,7 +510,7 @@ public abstract class Battle
 	}
 		
 	
-	public static void runBattle(Player player, Pet pet, Creature creature, DrawingOnPanel DP)
+	public static void runBattle(Player player, Pet pet, Creature creature, DrawPrimitives DP)
 	{
 		incrementCounters(player, pet, creature) ;
 		activateCounters(player, pet, creature) ;

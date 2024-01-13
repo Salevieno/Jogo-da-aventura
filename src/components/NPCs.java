@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import attributes.PersonalAttributes;
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import items.Equip;
 import items.Recipe;
 import liveBeings.Pet;
@@ -231,7 +232,7 @@ public class NPCs
 		return null ;
 	}
 	
-	public void action(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
+	public void action(Player player, Pet pet, Point mousePos, DrawPrimitives DP)
 	{
 		
 		speak(pos, DP) ;
@@ -421,7 +422,7 @@ public class NPCs
 		}
 	}
 	
-	public void speak(Point pos, DrawingOnPanel DP)
+	public void speak(Point pos, DrawPrimitives DP)
 	{
 		
 		if (type.getSpeech() == null) { return ;}
@@ -435,11 +436,11 @@ public class NPCs
 		
 		Point speechPos = UtilG.Translate(pos, -22, -2 - type.height()) ;
 
-		DP.DrawSpeech(speechPos, content, NPCfont, speakingBubble, stdColor) ;
+		Draw.speech(speechPos, content, NPCfont, speakingBubble, stdColor) ;
 		
 	}
 
-	public void drawOptions(Point windowPos, DrawingOnPanel DP)
+	public void drawOptions(Point windowPos, DrawPrimitives DP)
 	{
 		if (type.getOptions() == null) { return ;}
 		if (type.getOptions().size() <= menu) { return ;}
@@ -450,19 +451,19 @@ public class NPCs
 		if (options == null) { return ;}		
 		if (options.size() <= 0) { return ;}
 		
-		DP.DrawImage(choicesWindow, windowPos, Align.topLeft) ;
+		DP.drawImage(choicesWindow, windowPos, Align.topLeft) ;
 		
 		int sy = NPCfont.getSize() + 5 ;
 		for (int i = 0 ; i <= options.size() - 1 ; i += 1)
 		{
 			Point textPos = UtilG.Translate(windowPos, 5, 5 + i * sy) ;
 			Color textColor = i == selOption ? selColor : stdColor ;
-			DP.DrawText(textPos, Align.topLeft, DrawingOnPanel.stdAngle, options.get(i), NPCfont, textColor) ;
+			DP.drawText(textPos, Align.topLeft, Draw.stdAngle, options.get(i), NPCfont, textColor) ;
 		}
 		
 	}
 
-	private void bankerAction(Player player, BankWindow bankWindow, String action, DrawingOnPanel DP)
+	private void bankerAction(Player player, BankWindow bankWindow, String action, DrawPrimitives DP)
 	{
 
 		if (action == null) { return ;}
@@ -535,7 +536,7 @@ public class NPCs
 		
 	}
 
-	private void crafterAction(Player player, BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawingOnPanel DP)
+	private void crafterAction(Player player, BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawPrimitives DP)
 	{
 //		System.out.println("crafting menu = " + menu);
 		if (action == null) { return ;}
@@ -568,7 +569,7 @@ public class NPCs
 		menu = 3 ;
 	}
 
-	private void elementalAction(Player player, BagWindow bag, ElementalWindow elementalWindow, String action, DrawingOnPanel DP)
+	private void elementalAction(Player player, BagWindow bag, ElementalWindow elementalWindow, String action, DrawPrimitives DP)
 	{
 		
 		if (action == null) { return ;}
@@ -580,7 +581,7 @@ public class NPCs
 		
 	}
 	
-	private void forgerAction(Player player, BagWindow bag, String action, ForgeWindow forgeWindow, DrawingOnPanel DP)
+	private void forgerAction(Player player, BagWindow bag, String action, ForgeWindow forgeWindow, DrawPrimitives DP)
 	{
 
 		if (action == null) { return ;}
@@ -592,7 +593,7 @@ public class NPCs
 		
 	}
 
-	private void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawingOnPanel DP)
+	private void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawPrimitives DP)
 	{
 		if (50 <= player.getLevel() & player.getProJob() == 0 & menu == 3)
 		{
@@ -698,7 +699,7 @@ public class NPCs
 		
 	}
 	
-	private void sellerAction(Player player, String action, ShoppingWindow shopping, DrawingOnPanel DP)
+	private void sellerAction(Player player, String action, ShoppingWindow shopping, DrawPrimitives DP)
 	{
 
 		if (action == null) { return ;}
@@ -715,9 +716,9 @@ public class NPCs
 		
 	}
 
-	public void display(DrawingOnPanel DP)
+	public void display(DrawPrimitives DP)
 	{
-		DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, Scale.unit, Align.bottomCenter) ;
+		DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
 	}
 
 	@Override
@@ -784,7 +785,7 @@ public class NPCs
 		}
 		return Menu[npc.getID()] ;
 	}	*/
-	/*public int Sale(String Choice, Player player, NPCs npc, Items[] items, int[] MousePos, Image Player.CoinIcon, DrawFunctions DF)
+	/*public int Sale(String Choice, Player player, NPCs npc, Items[] items, int[] mousePos, Image Player.CoinIcon, DrawFunctions DF)
 	{
 		int[] ItemsOnSale = new int[player.getBag().length] ;
 		if (npc.getName().equals("Equips Seller") | npc.getName().equals("Vendedor de equipamentos"))
@@ -828,13 +829,13 @@ public class NPCs
 			ItemsOnSale = Utg.ArrayWithIndexesGreaterThan(player.getBag(), 0) ;
 			if (0 < ItemsOnSale.length)
 			{
-				Menu[npc.getID()] = Shopping(Choice, player, npc, items, "Selling", ItemsOnSale, MousePos, Player.CoinIcon, DF) ;
+				Menu[npc.getID()] = Shopping(Choice, player, npc, items, "Selling", ItemsOnSale, mousePos, Player.CoinIcon, DF) ;
 			}
 		} else if (Menu[npc.getID()] == 2)
 		{
 			DF.DrawSpeech(npc.getPos(), AllText[TextCat][2], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
 			ItemsOnSale = Utg.ArrayWithValuesGreaterThan(ItemsOnSale, 0) ;
-			Menu[npc.getID()] = Shopping(Choice, player, npc, items, "Buying", ItemsOnSale, MousePos, Player.CoinIcon, DF) ;
+			Menu[npc.getID()] = Shopping(Choice, player, npc, items, "Buying", ItemsOnSale, mousePos, Player.CoinIcon, DF) ;
 		} else if (Menu[npc.getID()] == 3)
 		{
 			DF.DrawSpeech(npc.getPos(), AllText[TextCat][3], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
@@ -1020,7 +1021,7 @@ public class NPCs
 		}
 		return Menu[npc.getID()] ;
 	}*/
-	/*public void Crafter(String Choice, Player player, NPCs npc, Items[] items, int[] MousePos, DrawFunctions DF)
+	/*public void Crafter(String Choice, Player player, NPCs npc, Items[] items, int[] mousePos, DrawFunctions DF)
 	{
 		int[][] NPCCraftingIngredients = Utg.ArrayWithFirstTermEqualTo(npc.getID() - 17 * player.getJob(), Items.CraftingNPCIDs, Items.CraftingIngredients) ;
 		int[][] NPCCraftingIngredientAmounts = Utg.ArrayWithFirstTermEqualTo(npc.getID() - 17 * player.getJob(), Items.CraftingNPCIDs, Items.CraftingIngredientAmounts) ; 
@@ -1057,7 +1058,7 @@ public class NPCs
 		} if (Menu[npc.getID()] == 1)
 		{
 			DF.DrawSpeech(npc.getPos(), AllText[TextCat][Menu[npc.getID()] + 1], NPCTextFont, npc, SpeakingBubbleImage, npc.getColor()) ;
-			PlayerHasTheIngredients = Crafting(Choice, player, npc, items, NPCCraftingIngredients, NPCCraftingIngredientAmounts, NPCCraftingProducts, NPCCraftingProductAmounts, MousePos, DF) ;			
+			PlayerHasTheIngredients = Crafting(Choice, player, npc, items, NPCCraftingIngredients, NPCCraftingIngredientAmounts, NPCCraftingProducts, NPCCraftingProductAmounts, mousePos, DF) ;			
 			if (Choice.equals("Enter") | Choice.equals("LeftClick"))
 			{
 				Menu[npc.getID()] = 2 ;
@@ -1594,7 +1595,7 @@ public class NPCs
 		//}
 		return ForgeResult ;
 	}*/
-	/*public boolean Crafting(String Choice, Player player, NPCs npc, Items[] items, int[][] Ingredients, int[][] IngredientAmounts, int[][] Products, int[][] ProductAmounts, int[] MousePos, DrawFunctions DF)
+	/*public boolean Crafting(String Choice, Player player, NPCs npc, Items[] items, int[][] Ingredients, int[][] IngredientAmounts, int[][] Products, int[][] ProductAmounts, int[] mousePos, DrawFunctions DF)
 	{
 		int ItemsPerWindow = 10 ;
 		int MaxWindow = Math.max(0, (Products.length - 1)/ItemsPerWindow) ;
@@ -1661,7 +1662,7 @@ public class NPCs
 		int sy = (int) (0.1 * H) ;
 		int NmaxItemsPerWindow = 10 ;
 		int NitensOnWindow = Math.min(Products.length - SelectedWindow[0] * NmaxItemsPerWindow, NmaxItemsPerWindow) ;
-		DF.DrawCrafting(Menu[npc.getID()], SelectedItem[1], SelectedWindow[0], items, Ingredients, IngredientAmounts, Products, ProductAmounts, AvailableProducts, MousePos) ;
+		DF.DrawCrafting(Menu[npc.getID()], SelectedItem[1], SelectedWindow[0], items, Ingredients, IngredientAmounts, Products, ProductAmounts, AvailableProducts, mousePos) ;
 		for (int i = 0 ; i <= NitensOnWindow - 1 ; i += 1)
 		{
 			int ItemID = i + SelectedWindow[0] * NmaxItemsPerWindow ;
@@ -1670,7 +1671,7 @@ public class NPCs
 				int[] TextPos = new int[] {(int) (Pos[0] + 0.03 * L), (int) (Pos[1] - 0.97 * H + Utg.TextH(font.getSize())) + i * sy} ;
 				if (Utg.ArrayContains(AvailableProducts, Products[ItemID][0]))
 				{
-					if (Menu[npc.getID()] == 0 & Utg.isInside(MousePos, TextPos, L, Utg.TextH(font.getSize())))
+					if (Menu[npc.getID()] == 0 & Utg.isInside(mousePos, TextPos, L, Utg.TextH(font.getSize())))
 					{
 						SelectedItem[1] = ItemID ;
 					}
@@ -1679,7 +1680,7 @@ public class NPCs
 		}
 		return PlayerHasTheIngredients ;
 	}*/
-	/*public int Shopping(String Choice, Player player, NPCs npc, Items[] items, String mode, int[] ItemsOnSale, int[] MousePos, Image Player.CoinIcon, DrawFunctions DF)
+	/*public int Shopping(String Choice, Player player, NPCs npc, Items[] items, String mode, int[] ItemsOnSale, int[] mousePos, Image Player.CoinIcon, DrawFunctions DF)
 	{
 		int ItemsPerWindow = 10 ;
 		int MaxWindow = Math.max(0, (ItemsOnSale.length - 1)/ItemsPerWindow) ;
@@ -1721,12 +1722,12 @@ public class NPCs
 		{
 			int ItemID = i + ItemsPerWindow * SelectedWindow[1] ;
 			TextPos[i] = new int[] {(int) (WindowPos[0] + 10), (int) (WindowPos[1] + 16 + i * Sy)} ;
-			if (Utg.isInside(MousePos, TextPos[i], Sx, (int) (0.99 * Sy)))
+			if (Utg.isInside(mousePos, TextPos[i], Sx, (int) (0.99 * Sy)))
 			{
 				SelectedItem[2] = ItemID ;
 			}
 		}
-		DF.DrawShopping(WindowPos, WindowL, WindowH, SelectedItem[2], SelectedWindow[1], TextPos, mode, items, ItemsOnSale, MousePos, Player.CoinIcon) ;
+		DF.DrawShopping(WindowPos, WindowL, WindowH, SelectedItem[2], SelectedWindow[1], TextPos, mode, items, ItemsOnSale, mousePos, Player.CoinIcon) ;
 		return Menu[npc.getID()] ;
 	}*/
 	/*public void Save(Player player, Pet pet, String fileName)

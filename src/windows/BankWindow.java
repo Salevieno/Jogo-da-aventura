@@ -4,13 +4,14 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import liveBeings.Player;
 import main.Game;
 import utilities.Align;
+import utilities.FrameCounter;
 import utilities.LiveInput;
 import utilities.Scale;
-import utilities.FrameCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 
@@ -138,10 +139,10 @@ public class BankWindow extends GameWindow
 		
 	}
 	
-	private void drawInvestmentTimer(Point pos, double timeRate, DrawingOnPanel DP)
+	private void drawInvestmentTimer(Point pos, double timeRate, DrawPrimitives DP)
 	{
-		DP.DrawImage(clock, pos, Align.center) ;
-		DP.DrawArc(UtilG.Translate(pos, 0, 2), 21, 1, 90, (int) (-360 * timeRate), Game.colorPalette[20], null) ;
+		DP.drawImage(clock, pos, Align.center) ;
+		DP.drawArc(UtilG.Translate(pos, 0, 2), 21, 1, 90, (int) (-360 * timeRate), Game.colorPalette[20], null) ;
 	}
 	
 	private void displayNotEnoughGold()
@@ -152,37 +153,37 @@ public class BankWindow extends GameWindow
 		Game.getAnimations().get(12).start(160, new Object[] {msgPos, msg, msgColor}) ; 
 	}
 	
-	public void display(Point mousePos, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawPrimitives DP)
 	{
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, border + 10) ;
 		Color textColor = Game.colorPalette[0] ;
-		double angle = DrawingOnPanel.stdAngle ;
+		double angle = Draw.stdAngle ;
 		
-		DP.DrawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
+		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
 
-		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[0]) ;
+		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[0]) ;
 		
 		Point balancePos = UtilG.Translate(windowPos, border + padding + 4, (int) border + 30) ;
 		Point investmentPos = UtilG.Translate(windowPos, border + padding + 4, border + 90) ;
 		
-		DP.DrawText(balancePos, Align.centerLeft, angle, "Saldo", stdFont, textColor) ;
-		DP.DrawText(investmentPos, Align.centerLeft, angle, "Investimento", stdFont, textColor) ;
+		DP.drawText(balancePos, Align.centerLeft, angle, "Saldo", stdFont, textColor) ;
+		DP.drawText(investmentPos, Align.centerLeft, angle, "Investimento", stdFont, textColor) ;
 		
 		drawInvestmentTimer(UtilG.Translate(investmentPos, 110, 10), investmentCounter.rate(), DP) ;
 
-		DP.DrawImage(Player.CoinIcon, UtilG.Translate(balancePos, 0, 20), Align.centerLeft) ;
-		DP.DrawText(UtilG.Translate(balancePos, 15, 20), Align.centerLeft, angle, String.valueOf(balance), stdFont, textColor) ;
-		DP.DrawImage(Player.CoinIcon, UtilG.Translate(investmentPos, 0, 20), Align.centerLeft) ;
-		DP.DrawText(UtilG.Translate(investmentPos, 15, 20), Align.centerLeft, angle, String.valueOf(investedAmount), stdFont, textColor) ;
+		DP.drawImage(Player.CoinIcon, UtilG.Translate(balancePos, 0, 20), Align.centerLeft) ;
+		DP.drawText(UtilG.Translate(balancePos, 15, 20), Align.centerLeft, angle, String.valueOf(balance), stdFont, textColor) ;
+		DP.drawImage(Player.CoinIcon, UtilG.Translate(investmentPos, 0, 20), Align.centerLeft) ;
+		DP.drawText(UtilG.Translate(investmentPos, 15, 20), Align.centerLeft, angle, String.valueOf(investedAmount), stdFont, textColor) ;
 		
 		if (!isReadingInput()) { return ;}
 
 		Point inputMessagePos = UtilG.Translate(windowPos, 0, border + size.height + 15) ;
-		DP.DrawText(inputMessagePos, Align.centerLeft, angle, "Amount for " + mode, stdFont, textColor) ;
+		DP.drawText(inputMessagePos, Align.centerLeft, angle, "Amount for " + mode, stdFont, textColor) ;
 		
 		Point inputPos = UtilG.Translate(windowPos, 0, border + size.height + 35) ;
 		liveInput.displayTypingField(inputPos, true, DP) ;
-		DP.DrawImage(Player.CoinIcon, UtilG.Translate(inputPos, 5, 0), Align.centerLeft) ;
+		DP.drawImage(Player.CoinIcon, UtilG.Translate(inputPos, 5, 0), Align.centerLeft) ;
 	}
 
 }

@@ -12,7 +12,8 @@ import java.util.Set;
 import components.GameButton;
 import components.IconFunction;
 import components.QuestSkills;
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import liveBeings.HotKeysBar;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -100,14 +101,14 @@ public class SideBar
 		}
 	}
 	
-	public void display(Player player, Pet pet, Point mousePos, DrawingOnPanel DP)
+	public void display(Player player, Pet pet, Point mousePos, DrawPrimitives DP)
 	{
 		
-		double stdAngle = DrawingOnPanel.stdAngle ;
+		double stdAngle = Draw.stdAngle ;
 		String[] keys = new String[] {null, Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7], null, null, null, null} ;
 		Color textColor = Game.colorPalette[0] ;
 		
-		DP.DrawRect(barPos, Align.bottomLeft, size, 1, Game.colorPalette[0], null) ;
+		DP.drawRect(barPos, Align.bottomLeft, size, 1, Game.colorPalette[0], null) ;
 		
 		buttons.forEach(button -> button.display(stdAngle, false, mousePos, DP)) ;
 		
@@ -119,7 +120,7 @@ public class SideBar
 			if (keys[i] == null) { i += 1 ; continue ;}
 			Point rectCenter = UtilG.Translate(button.getTopLeftPos(), 5, 0) ;
 			DP.drawRoundRect(rectCenter, Align.center, textSize, 1, Game.colorPalette[3], true, 2, 2) ;
-			DP.DrawText(rectCenter, Align.center, stdAngle, keys[i], font, textColor) ;
+			DP.drawText(rectCenter, Align.center, stdAngle, keys[i], font, textColor) ;
 			i += 1 ;
 		}
 		

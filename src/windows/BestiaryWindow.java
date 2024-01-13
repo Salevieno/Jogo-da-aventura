@@ -7,7 +7,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import liveBeings.CreatureType;
 import main.Game;
 import main.TextCategories;
@@ -35,13 +36,13 @@ public class BestiaryWindow extends GameWindow
 	{
 	}
 	
-	public void displayCreatureInfo(Point mainWindowPos, CreatureType creatureType, DrawingOnPanel DP)
+	public void displayCreatureInfo(Point mainWindowPos, CreatureType creatureType, DrawPrimitives DP)
 	{
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String[] text = Game.allText.get(TextCategories.bestiary) ;
 		Color textColor = Game.colorPalette[0] ;
-		double angle = DrawingOnPanel.stdAngle ;
+		double angle = Draw.stdAngle ;
 		
 		int offset = 5 ;
 		int sy = infoFont.getSize() ;
@@ -65,16 +66,16 @@ public class BestiaryWindow extends GameWindow
 
 		// draw text
 		Point textPos = UtilG.Translate(mainWindowPos, offset, creatureType.getSize().height + offset) ;
-		DP.DrawText(textPos, Align.topLeft, angle, creatureType.getName(), namefont, textColor) ;
+		DP.drawText(textPos, Align.topLeft, angle, creatureType.getName(), namefont, textColor) ;
 		textPos = UtilG.Translate(textPos, 0, sy) ;
 		for (int i = 0 ; i <= text.length - 1 ; i += 1)
 		{
 			textPos = UtilG.Translate(textPos, 0, sy) ;
-			DP.DrawText(textPos, Align.topLeft, angle, textInfo.get(i), infoFont, textColor) ;
+			DP.drawText(textPos, Align.topLeft, angle, textInfo.get(i), infoFont, textColor) ;
 		}
 	}
 	
-	public void display(Point mousePos, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawPrimitives DP)
 	{
 		int numRows = 6 ;
 		int numCols = 6 ;

@@ -7,7 +7,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import main.Game;
 import main.TextCategories;
 import utilities.Align;
@@ -62,7 +63,7 @@ public abstract class SpellsBar
 		nCols = grid.y ;
 	}
 	
-	public static void displayCooldown(Point slotCenter, Spell spell, DrawingOnPanel DP)
+	public static void displayCooldown(Point slotCenter, Spell spell, DrawPrimitives DP)
 	{
 
 		if (spell.getCooldownCounter().finished()) { return ;}
@@ -70,21 +71,21 @@ public abstract class SpellsBar
 		Dimension imgSize = UtilG.getSize(cooldownImage) ;
 		Scale scale = new Scale(1, 1 - spell.getCooldownCounter().rate()) ;
 		Point imgPos = new Point(slotCenter.x - imgSize.width / 2, slotCenter.y + imgSize.height / 2);
-		DP.DrawImage(cooldownImage, imgPos, DrawingOnPanel.stdAngle, scale, Align.bottomLeft) ;
+		DP.drawImage(cooldownImage, imgPos, Draw.stdAngle, scale, Align.bottomLeft) ;
 	
 	}
 	
-	public static void display(int userMP, List<Spell> spells, Point mousePos, DrawingOnPanel DP)
+	public static void display(int userMP, List<Spell> spells, Point mousePos, DrawPrimitives DP)
 	{
 
 		Point offset = new Point(slotSize.width / 2, slotSize.height / 2 + 15) ;
 		int sx = (int) UtilG.spacing(size.width, nCols, slotSize.width, 0) ;
 		int sy = (int) UtilG.spacing(size.height, nRows, slotSize.height, 15) ;
-		double angle = DrawingOnPanel.stdAngle ;	
+		double angle = Draw.stdAngle ;	
 		
-		DP.DrawImage(image, barPos, Align.bottomLeft) ;
+		DP.drawImage(image, barPos, Align.bottomLeft) ;
 		
-		DP.DrawText(titlePos, Align.topCenter, angle, title, titlefont, Game.colorPalette[5]) ;
+		DP.drawText(titlePos, Align.topCenter, angle, title, titlefont, Game.colorPalette[5]) ;
 		
 		for (int i = 0 ; i <= spells.size() - 1 ; i += 1)
 		{
@@ -95,8 +96,8 @@ public abstract class SpellsBar
 			int col = i / nRows ;
 			Point slotCenter = UtilG.Translate(barPos, offset.x + col * sx, - size.height + offset.y + row * sy) ;
 			Image image = spell.getMpCost() < userMP ? slotImage : slotImageNoMP ;
-			DP.DrawImage(image, slotCenter, Align.center) ;
-			DP.DrawText(slotCenter, Align.center, angle, Player.SpellKeys.get(i), font, textColor) ;
+			DP.drawImage(image, slotCenter, Align.center) ;
+			DP.drawText(slotCenter, Align.center, angle, Player.SpellKeys.get(i), font, textColor) ;
 			
 			displayCooldown(slotCenter, spell, DP) ;
 
@@ -104,7 +105,7 @@ public abstract class SpellsBar
 			if (!UtilG.isInside(mousePos, slotTopLeft, slotSize)) { continue ;}
 			
 			Point textPos = new Point(slotCenter.x - slotSize.width - 10, slotCenter.y) ;
-			DP.DrawText(textPos, Align.centerRight, angle, spell.getName(), titlefont, textColor) ;
+			DP.drawText(textPos, Align.centerRight, angle, spell.getName(), titlefont, textColor) ;
 		
 		}
 	}

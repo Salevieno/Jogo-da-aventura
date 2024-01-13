@@ -9,7 +9,7 @@ import java.util.Set;
 
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
-import graphics.DrawingOnPanel;
+import graphics.DrawPrimitives;
 import items.Item;
 import utilities.Align;
 import utilities.Elements;
@@ -130,9 +130,9 @@ public class CreatureType
 	public static int getNumberOfCreatureTypes() { return NumberOfCreatureTypes ;}
 	public static void setNumberOfCreatureTypes(int num) { NumberOfCreatureTypes = num ;}
 	
-	public void display(Point pos, Scale scale, DrawingOnPanel DP)
+	public void display(Point pos, Scale scale, DrawPrimitives DP)
 	{
-		DP.DrawImage(movingAni.idleGif, pos, scale, Align.center) ;
+		DP.drawImage(movingAni.idleGif, pos, scale, Align.center) ;
 	}
 
 	public String toString()

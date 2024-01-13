@@ -1,8 +1,8 @@
 package components;
 
-import graphics.DrawingOnPanel;
+import graphics.DrawPrimitives;
 
 public interface AnimationDisplayFunction
 {
-	void act(Object[] vars, DrawingOnPanel DP) ;
+	void act(Object[] vars, DrawPrimitives DP) ;
 }

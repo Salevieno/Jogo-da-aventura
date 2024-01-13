@@ -4,7 +4,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import main.Game;
 
 public class LiveInput
@@ -37,7 +38,7 @@ public class LiveInput
 		addChar(newChar) ;
 	}
 	
-	public void displayTypingField(Point pos, boolean showBackground, DrawingOnPanel DP)
+	public void displayTypingField(Point pos, boolean showBackground, DrawPrimitives DP)
 	{
 
 		if (showBackground)
@@ -45,8 +46,8 @@ public class LiveInput
 			DP.drawGradRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.colorPalette[3], Game.colorPalette[3], true) ;
 		}
 		int offsetX = (int) (7.3 * text.length()) ;
-		DP.DrawLine(UtilG.Translate(pos, 20 + offsetX, 5), UtilG.Translate(pos, 20 + offsetX, -5), 2, Game.colorPalette[0]) ;
-		DP.DrawText(UtilG.Translate(pos, 20, 0), Align.centerLeft, DrawingOnPanel.stdAngle, text, font, Game.colorPalette[0]) ;
+		DP.drawLine(UtilG.Translate(pos, 20 + offsetX, 5), UtilG.Translate(pos, 20 + offsetX, -5), 2, Game.colorPalette[0]) ;
+		DP.drawText(UtilG.Translate(pos, 20, 0), Align.centerLeft, Draw.stdAngle, text, font, Game.colorPalette[0]) ;
 	
 	}
 }

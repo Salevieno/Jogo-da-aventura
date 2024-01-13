@@ -43,7 +43,7 @@ public class Gif
 //	public boolean isPlaying() { return (0 < timeCounter & !isDonePlaying()) ;}
 	public Dimension size() { return UtilG.getSize(image) ;}
 	
-	public void play(Point pos, Align alignment, DrawingOnPanel DP)
+	public void play(Point pos, Align alignment, DrawPrimitives DP)
 	{
 		if (timeCounter.finished())
 		{
@@ -57,7 +57,7 @@ public class Gif
 //		{
 //			Game.playStopTimeGif() ;
 //		}
-		DP.DrawGif(image, pos, alignment) ;
+		Draw.gif(image, pos, alignment) ;
 //		incTimeCounter() ;
 	}
 }

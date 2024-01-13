@@ -12,7 +12,8 @@ import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import items.Item;
 import main.AtkResults;
 import main.AtkTypes;
@@ -25,8 +26,8 @@ import utilities.Align;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
-import utilities.Scale;
 import utilities.FrameCounter;
+import utilities.Scale;
 import utilities.UtilG;
 import windows.CreatureAttributesWindow;
 
@@ -116,23 +117,23 @@ public class Creature extends LiveBeing
 		return (MPcost <= PA.getMp().getCurrentValue()) ;
 	}
 	
-	public void displayName(Point pos, Align alignment, Color color, DrawingOnPanel DP)
+	public void displayName(Point pos, Align alignment, Color color, DrawPrimitives DP)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		DP.DrawText(pos, alignment, DrawingOnPanel.stdAngle, name, font, color) ;
+		DP.drawText(pos, alignment, Draw.stdAngle, name, font, color) ;
 	}
 	
-	public void display(Point pos, Scale scale, DrawingOnPanel DP)
+	public void display(Point pos, Scale scale, DrawPrimitives DP)
 	{
-		DP.DrawImage(type.movingAni.idleGif, pos, scale, Align.center) ;
+		DP.drawImage(type.movingAni.idleGif, pos, scale, Align.center) ;
 		
 		displayStatus(DP) ;
 	}
 	
-	public void displayAdditionalInfo(DrawingOnPanel DP)
+	public void displayAdditionalInfo(DrawPrimitives DP)
 	{
-		DP.DrawText(new Point(pos.x, pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
-		DP.DrawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
+		DP.drawText(new Point(pos.x, pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
+		DP.drawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
 	}
 	
 	public void setRandomPos()

@@ -5,7 +5,8 @@ import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import main.Game;
 import utilities.Align;
 import utilities.FrameCounter;
@@ -92,7 +93,7 @@ public class Sky
 	
 	private boolean passedScreen(int x) { return Game.getScreen().getSize().width <= x ;}
 	
-	private void displayDaySky(DrawingOnPanel DP)
+	private void displayDaySky(DrawPrimitives DP)
 	{
 		for (SkyComponent cloud : clouds)
 		{
@@ -102,16 +103,16 @@ public class Sky
 				resetCloudMovement(cloud) ;
 			}
 			double alpha = -16 * Math.pow(dayTime.rate(), 2) + 16 * dayTime.rate() - 3 ;
-			cloud.display(DrawingOnPanel.stdAngle, alpha, DP) ;
+			cloud.display(Draw.stdAngle, alpha, DP) ;
 		}
 	}
 	
-	private void displayNightSky(DrawingOnPanel DP)
+	private void displayNightSky(DrawPrimitives DP)
 	{
 		double alpha = -16 * Math.pow(dayTime.rate() - 0.5, 2) + 16 * Math.abs(dayTime.rate() - 0.5) - 3 ;
 		for (SkyComponent star : stars)
 		{
-			star.display(DrawingOnPanel.stdAngle, alpha, DP) ;
+			star.display(Draw.stdAngle, alpha, DP) ;
 		}
 	}
 	
@@ -124,12 +125,12 @@ public class Sky
 		color = new Color(red, green, blue) ;
 	}
 	
-	public void display(DrawingOnPanel DP)
+	public void display(DrawPrimitives DP)
 	{
 
 		updateIsDay() ;
 		updateSkyColor() ;
-		DP.DrawRect(new Point(0, height), Align.bottomLeft, size, 1, color, null) ;
+		DP.drawRect(new Point(0, height), Align.bottomLeft, size, 1, color, null) ;
 		
 		if (isDay)
 		{

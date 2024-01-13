@@ -13,7 +13,7 @@ import java.util.Set;
 import javax.sound.sampled.Clip;
 
 import components.NPCs;
-import graphics.DrawingOnPanel;
+import graphics.DrawPrimitives;
 import items.Item;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
@@ -167,7 +167,7 @@ public class FieldMap extends GameMap
 		
 	} 	
 	
- 	public void displayCollectibles(DrawingOnPanel DP)
+ 	public void displayCollectibles(DrawPrimitives DP)
  	{
  		for (Collectible collectible : collectibles)
 		{

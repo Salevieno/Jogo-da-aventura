@@ -7,12 +7,12 @@ import java.awt.Image;
 import java.awt.Point;
 
 import attributes.BasicBattleAttribute;
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import liveBeings.Pet;
 import main.Game;
 import main.TextCategories;
 import utilities.Align;
-import utilities.Elements;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -28,18 +28,18 @@ public class PetAttributesWindow extends AttributesWindow
 
 	public void setPet(Pet pet) { this.pet = pet ;}
 	
-	public void display(Point mousePos, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawPrimitives DP)
 	{
 
 		Dimension screenSize = Game.getScreen().getSize() ;
 		Point windowPos = new Point((int) (0.5 * screenSize.width), (int)(0.2 * screenSize.height)) ;
-		double angle = DrawingOnPanel.stdAngle ;
+		double angle = Draw.stdAngle ;
 		
-		DP.DrawImage(image, windowPos, Align.topLeft) ;
+		DP.drawImage(image, windowPos, Align.topLeft) ;
 
 		Image userImage = pet.getMovingAni().idleGif ;
 		Point userPos = UtilG.Translate(windowPos, size.width / 2, 60) ;
-		DP.DrawImage(userImage, userPos, Align.center) ;
+		DP.drawImage(userImage, userPos, Align.center) ;
 
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;		
@@ -49,8 +49,8 @@ public class PetAttributesWindow extends AttributesWindow
 		String[] attText = Game.allText.get(TextCategories.attributes) ;		
 		Point namePos = UtilG.Translate(windowPos, size.width / 2, 14) ;
 		Point levelPos = UtilG.Translate(windowPos, size.width / 2, 30) ;
-		DP.DrawText(namePos, Align.center, angle, pet.getName(), namefont, textColor) ;		
-		DP.DrawText(levelPos, Align.center, angle, attText[0] + ": " + pet.getLevel(), font, colorPalette[6]) ;
+		DP.drawText(namePos, Align.center, angle, pet.getName(), namefont, textColor) ;		
+		DP.drawText(levelPos, Align.center, angle, attText[0] + ": " + pet.getLevel(), font, colorPalette[6]) ;
 		
 		
 		// TODO pet equips
@@ -91,10 +91,9 @@ public class PetAttributesWindow extends AttributesWindow
 		// super element
 		if (pet.hasSuperElement())
 		{
-			int elemID = Elements.getID(pet.getElem()[4]) ;
 			Point superElemPos = UtilG.Translate(userPos, 0, 35) ;
-			Image superElemImage = DrawingOnPanel.ElementImages[elemID] ;
-			DP.DrawImage(superElemImage, superElemPos, angle, new Scale(0.3, 0.3), Align.center) ;
+			Image superElemImage = pet.getElem()[4].image ;
+			DP.drawImage(superElemImage, superElemPos, angle, new Scale(0.3, 0.3), Align.center) ;
 		}
 		
 		
@@ -103,8 +102,8 @@ public class PetAttributesWindow extends AttributesWindow
 		Point mpPos = UtilG.Translate(windowPos, 20, border + padding + 37 + 26) ;
 		String lifeText = attText[1] + ": " + UtilG.Round(pet.getPA().getLife().getCurrentValue(), 1) ;
 		String mpText = attText[2] + ": " + UtilG.Round(pet.getPA().getMp().getCurrentValue(), 1) ;
-		DP.DrawText(lifePos, Align.centerLeft, angle, lifeText, font, colorPalette[6]) ;
-		DP.DrawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[5]) ;
+		DP.drawText(lifePos, Align.centerLeft, angle, lifeText, font, colorPalette[6]) ;
+		DP.drawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[5]) ;
 				
 		BasicBattleAttribute[] attributes = pet.getBA().basicAttributes() ;
 		Point initialAttPos = UtilG.Translate(windowPos, border + padding + 34, 124) ;
@@ -113,13 +112,13 @@ public class PetAttributesWindow extends AttributesWindow
 			Point attPos = UtilG.Translate(initialAttPos, 117 * (i / 3), (i % 3) * 22) ;
 			String attValue = UtilG.Round(attributes[i].getBaseValue(), 1) + " + " + UtilG.Round(attributes[i].getBonus(), 1) + " + " + UtilG.Round(attributes[i].getTrain(), 1) ;
 			
-			DP.DrawImage(attIcons[i], UtilG.Translate(attPos, -15, 0), Scale.unit, Align.center) ;
-			DP.DrawText(attPos, Align.centerLeft, angle, attValue, font, textColor) ;
+			DP.drawImage(attIcons[i], UtilG.Translate(attPos, -15, 0), Scale.unit, Align.center) ;
+			DP.drawText(attPos, Align.centerLeft, angle, attValue, font, textColor) ;
 		}
 		Point critPos = UtilG.Translate(initialAttPos, 0, 71) ;
 		String critValue = attText[9] + ": " + UtilG.Round(100 * pet.getBA().TotalCritAtkChance(), 1) + "%" ;
-		DP.DrawImage(critIcon, UtilG.Translate(initialAttPos, -15, 72), Scale.unit, Align.center) ;
-		DP.DrawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
+		DP.drawImage(critIcon, UtilG.Translate(initialAttPos, -15, 72), Scale.unit, Align.center) ;
+		DP.drawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
 		
 	}
 }

@@ -3,7 +3,7 @@ package liveBeings;
 import java.awt.Image;
 import java.awt.Point;
 
-import graphics.DrawingOnPanel;
+import graphics.DrawPrimitives;
 import utilities.Align;
 import utilities.Directions;
 import utilities.Scale;
@@ -21,14 +21,14 @@ public class MovingAnimations
 		this.movingRightGif = movingRightGif ;
 	}
 	
-	public void display(Directions direction, Point feetPos, double angle, Scale scale, DrawingOnPanel DP)
+	public void display(Directions direction, Point feetPos, double angle, Scale scale, DrawPrimitives DP)
 	{
 		switch (direction)
 		{
-			case up: DP.DrawImage(movingUpGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
-			case down: DP.DrawImage(movingDownGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
-			case left: DP.DrawImage(movingLeftGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
-			case right: DP.DrawImage(movingRightGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
+			case up: DP.drawImage(movingUpGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
+			case down: DP.drawImage(movingDownGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
+			case left: DP.drawImage(movingLeftGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
+			case right: DP.drawImage(movingRightGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
 		}
 	}
 }

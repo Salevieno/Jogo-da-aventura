@@ -6,7 +6,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import main.Game;
 import main.TextCategories;
 import utilities.Align;
@@ -77,7 +78,7 @@ public class Building
 		}
 	}
 	
-	public void displayNPCs(DrawingOnPanel DP)
+	public void displayNPCs(DrawPrimitives DP)
 	{
 		if (npcs == null) { return ;}
 		
@@ -87,16 +88,16 @@ public class Building
 		}
 	}
 	
-	public void displaySignMessage(int cityID, DrawingOnPanel DP)
+	public void displaySignMessage(int cityID, DrawPrimitives DP)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		Point messagePos = UtilG.Translate(pos, 10, 10) ;
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
 		DP.drawGradRoundRect(pos, Align.topLeft, new Dimension(230, 80), 2, Game.colorPalette[3], Game.colorPalette[3], true) ;			
-		DP.DrawFitText(messagePos, font.getSize() + 2, Align.centerLeft, message, font, 40, Game.colorPalette[0]) ;	
+		Draw.fitText(messagePos, font.getSize() + 2, Align.centerLeft, message, font, 40, Game.colorPalette[0]) ;	
 	}
 	
-	public void display(Point playerPos, int cityID, DrawingOnPanel DP)
+	public void display(Point playerPos, int cityID, DrawPrimitives DP)
 	{
 		if (type.getName().equals(BuildingNames.sign) & isInside(playerPos))
 		{
@@ -110,7 +111,7 @@ public class Building
 		
 		if (type.getInsideImage() == null)
 		{
-			DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, Scale.unit, Align.bottomLeft) ;
+			DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomLeft) ;
 			displayNPCs(DP) ;
 			
 			return ;
@@ -118,13 +119,13 @@ public class Building
 		
 		if (!isInside(playerPos))
 		{
-			DP.DrawImage(type.getImage(), pos, DrawingOnPanel.stdAngle, Scale.unit, Align.bottomLeft) ;
+			DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomLeft) ;
 			
 			
 			return ;
 		}
 
-		DP.DrawImage(type.getInsideImage(), pos, DrawingOnPanel.stdAngle, Scale.unit, Align.bottomLeft) ;
+		DP.drawImage(type.getInsideImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomLeft) ;
 		displayNPCs(DP) ;
 		
 	}

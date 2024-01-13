@@ -14,7 +14,8 @@ import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import graphics.Animation;
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import graphics.Gif;
 import main.AtkResults;
 import main.AtkTypes;
@@ -24,8 +25,8 @@ import maps.GameMap;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
-import utilities.Scale;
 import utilities.FrameCounter;
+import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.PetAttributesWindow;
@@ -369,9 +370,9 @@ public class Pet extends LiveBeing
 	}
 	
 	
-	public void display(Point pos, Scale scale, DrawingOnPanel DP)
+	public void display(Point pos, Scale scale, DrawPrimitives DP)
 	{
-		movingAni.display(dir, pos, DrawingOnPanel.stdAngle, scale, DP) ;
+		movingAni.display(dir, pos, Draw.stdAngle, scale, DP) ;
 		
 		displayStatus(DP) ;
 	}

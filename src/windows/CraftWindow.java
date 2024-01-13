@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import items.Item;
 import items.Recipe;
 import liveBeings.Player;
@@ -95,21 +96,21 @@ public class CraftWindow extends GameWindow
 		Game.getAnimations().get(12).start(200, new Object[] {pos, message, Game.colorPalette[0]}) ;
 	}
 	
-	public void display(Point mousePos, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawPrimitives DP)
 	{
 		
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, border + 9) ;
 		Color textColor = Game.colorPalette[0] ;
-		double angle = DrawingOnPanel.stdAngle ;		
+		double angle = Draw.stdAngle ;		
 		
-		DP.DrawImage(image, windowPos, DrawingOnPanel.stdAngle, Scale.unit, Align.topLeft) ;
+		DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.topLeft) ;
 		
-		DP.DrawText(titlePos, Align.center, angle, name, titleFont, textColor) ;
+		DP.drawText(titlePos, Align.center, angle, name, titleFont, textColor) ;
 		
 		Point ingredientsTextPos = UtilG.Translate(windowPos, border + padding + 84, border + 32) ;
 		Point ProductsTextPos = UtilG.Translate(windowPos, border + padding + 170 + 84, border + 32) ;
-		DP.DrawText(ingredientsTextPos, Align.center, angle, "Ingredientes", subTitleFont, textColor) ;
-		DP.DrawText(ProductsTextPos, Align.center, angle, "Produtos", subTitleFont, textColor) ;
+		DP.drawText(ingredientsTextPos, Align.center, angle, "Ingredientes", subTitleFont, textColor) ;
+		DP.drawText(ProductsTextPos, Align.center, angle, "Produtos", subTitleFont, textColor) ;
 
 		Point ingredientsPos = UtilG.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + padding + Item.slot.getHeight(null) / 2 + 44) ;
 		Point productsPos = UtilG.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2 + 169, border + padding + Item.slot.getHeight(null) / 2 + 44) ;
@@ -120,22 +121,22 @@ public class CraftWindow extends GameWindow
 			
 			ingredients.forEach( (item, qtd) -> {
 				Color itemNameColor = textColor ;
-				DP.DrawImage(Item.slot, ingredientsPos, angle, Scale.unit, Align.center) ;
-				DP.DrawImage(item.getImage(), ingredientsPos, DrawingOnPanel.stdAngle, Scale.unit, Align.center) ;
-				DP.DrawText(UtilG.Translate(ingredientsPos, 14, 0), Align.centerLeft, DrawingOnPanel.stdAngle, qtd + " " + item.getName(), stdFont, itemNameColor) ;
+				DP.drawImage(Item.slot, ingredientsPos, angle, Scale.unit, Align.center) ;
+				DP.drawImage(item.getImage(), ingredientsPos, Draw.stdAngle, Scale.unit, Align.center) ;
+				DP.drawText(UtilG.Translate(ingredientsPos, 14, 0), Align.centerLeft, Draw.stdAngle, qtd + " " + item.getName(), stdFont, itemNameColor) ;
 				ingredientsPos.y += 23 ;
 			}) ;
 			
 			products.forEach( (item, qtd) -> {
 				Color itemNameColor = textColor ;
-				DP.DrawImage(Item.slot, productsPos, angle, Scale.unit, Align.center) ;
-				DP.DrawImage(item.getImage(), productsPos, DrawingOnPanel.stdAngle, Scale.unit, Align.center) ;
-				DP.DrawText(UtilG.Translate(productsPos, 14, 0), Align.centerLeft, DrawingOnPanel.stdAngle, qtd + " " + item.getName(), stdFont, itemNameColor) ;
+				DP.drawImage(Item.slot, productsPos, angle, Scale.unit, Align.center) ;
+				DP.drawImage(item.getImage(), productsPos, Draw.stdAngle, Scale.unit, Align.center) ;
+				DP.drawText(UtilG.Translate(productsPos, 14, 0), Align.centerLeft, Draw.stdAngle, qtd + " " + item.getName(), stdFont, itemNameColor) ;
 				productsPos.y += 23 ;
 			}) ;		
 		}
 		
-		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows) ;
+		Draw.windowArrows(UtilG.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows) ;
 		
 	}
 }

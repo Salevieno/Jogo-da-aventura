@@ -2,9 +2,6 @@ package utilities ;
 
 import java.awt.Color ;
 import java.awt.Dimension;
-import java.awt.Font ;
-import java.awt.FontMetrics ;
-import java.awt.Graphics ;
 import java.awt.Graphics2D ;
 import java.awt.Image ;
 import java.awt.MouseInfo ;
@@ -36,12 +33,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import graphics.DrawingOnPanel;
 import main.Languages;
 
 public abstract class UtilG 
 {	
-	public static Point GetMousePos(JPanel panel)
+	public static Point GetmousePos(JPanel panel)
  	{
  		Point panelLocation = new Point(panel.getLocationOnScreen().x, panel.getLocationOnScreen().y) ;
 		return new Point(MouseInfo.getPointerInfo().getLocation().x - panelLocation.x, MouseInfo.getPointerInfo().getLocation().y - panelLocation.y) ;
@@ -456,10 +452,10 @@ public abstract class UtilG
 
 	*/
 	
-	public static void PlayGif(Point pos, Image gif, DrawingOnPanel DP)
-	{
-		DP.DrawGif(gif, pos, Align.center) ;
-	}
+//	public static void PlayGif(Point pos, Image gif, DrawPrimitives DP)
+//	{
+//		DP.DrawGif(gif, pos, Align.center) ;
+//	}
 
 	public static double RandomMult(double amplitude)
 	{
@@ -574,19 +570,22 @@ public abstract class UtilG
 		return NewArray ;
 	}
 
-	public static Point Translate(Point originalPoint, int dx, int dy)
+	public static Point Translate(Point point, int dx, int dy)
 	{
-		Point newPoint = new Point(originalPoint);
+		Point newPoint = new Point(point);
 		return new Point(newPoint.x + dx, newPoint.y + dy) ;
 	}
+
+	public static Point Translate(Point pos, Point delta){ return Translate(new Point(pos), delta.x, delta.y) ;}
+	public static Point Translate(Point pos, Dimension delta){ return Translate(new Point(pos), delta.width, delta.height) ;}
 	
-	public static int TextL(String Text, Font font, Graphics G)
-	{
-		if (G == null) { return 0 ;}
-		
-		FontMetrics metrics = G.getFontMetrics(font) ;
-		return (int) (metrics.stringWidth(Text)) ;
-	}
+//	public static int TextL(String text, Font font, Graphics graphs)
+//	{
+//		if (graphs == null) { return 0 ;}
+//		
+//		FontMetrics metrics = graphs.getFontMetrics(font) ;
+//		return metrics.stringWidth(text) ;
+//	}
 	
 	public static int TextH(int TextSize)
 	{

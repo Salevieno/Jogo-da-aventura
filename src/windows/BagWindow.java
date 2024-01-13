@@ -12,7 +12,8 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import components.GameButton;
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import items.Alchemy;
 import items.Arrow;
 import items.Equip;
@@ -634,7 +635,7 @@ public class BagWindow extends GameWindow
 		return value ;
 	}
 	
-	public void display(Point mousePos, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawPrimitives DP)
 	{
 		String[] menuNames = Game.allText.get(TextCategories.bagMenus) ;
 		
@@ -647,12 +648,12 @@ public class BagWindow extends GameWindow
 			Color textColor = getTextColor(m == menu) ;
 			Image menuImage = m == menu ? (tab == 0 ? SelectedMenuTab0 : SelectedMenuTab1) : MenuImage ;
 			
-			DP.DrawImage(menuImage, menuPos, Align.topLeft) ;
-			DP.DrawText(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, menuNames[m], titleFont, textColor) ;
+			DP.drawImage(menuImage, menuPos, Align.topLeft) ;
+			DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, menuNames[m], titleFont, textColor) ;
 		}
 		
 		// draw bag
-		DP.DrawImage(tab == 0 ? image : SelectedBag, windowPos, Align.topLeft) ;
+		DP.drawImage(tab == 0 ? image : SelectedBag, windowPos, Align.topLeft) ;
 		
 		// draw items
 		int slotW = SlotImage.getWidth(null) ;
@@ -675,13 +676,13 @@ public class BagWindow extends GameWindow
 			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), itemID) ;
 			Color textColor = getTextColor(itemID == item) ;
 			
-			DP.DrawImage(SlotImage, slotCenter, Align.center) ;
-			DP.DrawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
-			DP.DrawTextUntil(textPos, Align.centerLeft, DrawingOnPanel.stdAngle, itemText, stdFont, textColor, 10, mousePos) ;
+			DP.drawImage(SlotImage, slotCenter, Align.center) ;
+			DP.drawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
+			Draw.textUntil(textPos, Align.centerLeft, Draw.stdAngle, itemText, stdFont, textColor, 10, mousePos) ;
 			itemID += 1 ;
 		}
 		
-		buttons.forEach(button -> button.display(DrawingOnPanel.stdAngle, false, mousePos, DP)) ;
+		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos, DP)) ;
 //		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height + 5), size.width, window, numberWindows) ;
 		
 	}

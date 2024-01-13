@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
 
-import graphics.DrawingOnPanel;
-import liveBeings.Player;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import main.Game;
 import main.TextCategories;
 import utilities.Align;
@@ -14,7 +14,7 @@ import utilities.UtilS;
 
 public class HintsWindow extends GameWindow
 {
-	private static final Point windowPos = Game.getScreen().pos(0.1, 0.4) ;
+	private static final Point windowPos = Game.getScreen().pos(0.15, 0.4) ;
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	
 	public HintsWindow()
@@ -24,33 +24,26 @@ public class HintsWindow extends GameWindow
 	
 	public void navigate(String action)
 	{
-		if (action.equals(Player.ActionKeys[3]))
-		{
-			windowUp() ;
-		}
-		if (action.equals(Player.ActionKeys[1]))
-		{
-			windowDown() ;
-		}
+		stdNavigation(action);
 	}
 	
-	public void display(Point mousePos, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawPrimitives DP)
 	{
 		String[] text = Game.allText.get(TextCategories.hints) ;
 		Point textPos = new Point(windowPos.x + 15, windowPos.y + 10) ;
-		Color textColor = Game.colorPalette[5] ;
-		double angle = DrawingOnPanel.stdAngle ;
+		Color textColor = Game.colorPalette[0] ;
+		double angle = Draw.stdAngle ;
 		int sy = font.getSize() + 2 ;
 		numberWindows = text.length - 6 ;
 		
-		DP.DrawImage(image, windowPos, Align.topLeft) ;
+		DP.drawImage(image, windowPos, Align.topLeft) ;
 		
-		DP.DrawText(UtilG.Translate(windowPos, size.width / 2, 20), Align.center, angle, text[0], font, textColor) ;
-		DP.DrawText(UtilG.Translate(textPos, 10, size.height - 35), Align.topLeft, angle, text[1], font, textColor) ;
-		DP.DrawText(UtilG.Translate(textPos, (int)(0.9 * size.width), size.height - 35), Align.topRight, angle, text[2], font, textColor) ;
-		DP.DrawText(UtilG.Translate(textPos, size.width / 2, size.height - 40), Align.center, angle, text[3], font, textColor) ;
-		DP.DrawFitText(UtilG.Translate(textPos, 0, 30), sy, Align.topLeft, text[window + 4], font, 70, textColor) ;
+		DP.drawText(UtilG.Translate(windowPos, size.width / 2, 20), Align.center, angle, text[0], font, textColor) ;
+		DP.drawText(UtilG.Translate(textPos, 10, size.height - 35), Align.topLeft, angle, text[1], font, textColor) ;
+		DP.drawText(UtilG.Translate(textPos, (int)(0.9 * size.width), size.height - 35), Align.topRight, angle, text[2], font, textColor) ;
+		DP.drawText(UtilG.Translate(textPos, size.width / 2, size.height - 40), Align.center, angle, text[3], font, textColor) ;
+		Draw.fitText(UtilG.Translate(textPos, 0, 30), sy, Align.topLeft, text[window + 4], font, 70, textColor) ;
 		
-		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows - 1) ;
+		Draw.windowArrows(UtilG.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows - 1) ;
 	}
 }

@@ -6,7 +6,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import items.Item;
 import items.Recipe;
 import liveBeings.Player;
@@ -45,7 +46,7 @@ public class FabWindow extends GameWindow
 		}
 	}
 	
-	public void displayRecipes(Point mousePos, DrawingOnPanel DP)
+	public void displayRecipes(Point mousePos)
 	{
 		if (recipes == null) { return ;}
 		if (recipes.isEmpty()) { return ;}
@@ -56,7 +57,7 @@ public class FabWindow extends GameWindow
 		int sy = font.getSize() + 1 ;
 		int id = window ;
 		Color textColor = Game.colorPalette[5] ;
-		double stdAngle = DrawingOnPanel.stdAngle ;
+		double stdAngle = Draw.stdAngle ;
 		
 		// draw ingredients
 		Item[] ingredients = new Item[0];
@@ -67,7 +68,7 @@ public class FabWindow extends GameWindow
 			String ingredientName = ingredients[i].getName() ;
 			int ingredientAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
 			String text = ingredientAmount + " " + ingredientName ;
-			DP.DrawTextUntil(textPos, Align.topLeft, stdAngle, text, font, textColor, 10, mousePos) ;
+			Draw.textUntil(textPos, Align.topLeft, stdAngle, text, font, textColor, 10, mousePos) ;
 		}
 		
 		// draw products
@@ -79,11 +80,11 @@ public class FabWindow extends GameWindow
 			String productsName = products[i].getName() ;
 			int productsAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
 			String text = productsAmount + " " + productsName ;
-			DP.DrawTextUntil(textPos, Align.topRight, stdAngle, text, font, textColor, 10, mousePos) ;
+			Draw.textUntil(textPos, Align.topRight, stdAngle, text, font, textColor, 10, mousePos) ;
 		}
 	}
 
-	public void display(Point mousePos, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawPrimitives DP)
 	{
 //		System.out.println("displaying fab window");
 		
@@ -95,12 +96,12 @@ public class FabWindow extends GameWindow
 		//window = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, NumberOfPages) ;
 		//Font titleFont = new Font(Game.MainFontName, Font.BOLD, 16) ;
 		
-		DP.DrawImage(image, windowPos, DrawingOnPanel.stdAngle, Scale.unit, Align.center) ;
+		DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.center) ;
 		//DP.DrawText(new Point(windowPos.x - 3 * imageL / 8, windowPos.y - imageH / 5 - sy/4), "BotLeft", OverallAngle, "Ingredientes:", titleFont, ColorPalette[5]) ;
 		//DP.DrawText(new Point(windowPos.x + 3 * imageL / 8, windowPos.y - imageH / 5 - sy/4), "TopRight", OverallAngle, "Produtos", titleFont, ColorPalette[5]) ;		
-		displayRecipes(mousePos, DP) ;
+		displayRecipes(mousePos) ;
 		
 		Point arrowsPos = UtilG.Translate(windowPos, 0, image.getHeight(null) / 2) ;
-		DP.DrawWindowArrows(arrowsPos, image.getWidth(null), window, numberWindows - 1) ;
+		Draw.windowArrows(arrowsPos, image.getWidth(null), window, numberWindows - 1) ;
 	}
 }

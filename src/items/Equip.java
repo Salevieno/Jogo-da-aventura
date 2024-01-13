@@ -8,7 +8,7 @@ import java.util.List;
 import attributes.AttributeBonus;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
-import graphics.DrawingOnPanel;
+import graphics.DrawPrimitives;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
@@ -313,9 +313,9 @@ public class Equip extends Item
 		user.getElem()[4] = user.hasSuperElement() ? user.getElem()[1] : Elements.neutral ;
 	}
 	
-	public void display(Point pos, double angle, Scale scale, Align align, DrawingOnPanel DP)
+	public void display(Point pos, double angle, Scale scale, Align align, DrawPrimitives DP)
 	{
-		DP.DrawImage(this.fullSizeImage(), pos, angle, scale, align) ;
+		DP.drawImage(this.fullSizeImage(), pos, angle, scale, align) ;
 	}
 	
 	@Override

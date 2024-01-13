@@ -8,7 +8,7 @@ import java.awt.Point;
 
 import components.GameButton;
 import components.IconFunction;
-import graphics.DrawingOnPanel;
+import graphics.DrawPrimitives;
 import liveBeings.Player;
 import main.Game;
 import utilities.Align;
@@ -35,9 +35,14 @@ public abstract class GameWindow
 	protected String stdMenuDown = Player.ActionKeys[0] ;
 	protected String stdWindowUp = Player.ActionKeys[3] ;
 	protected String stdWindowDown = Player.ActionKeys[1] ;
+	protected String stdEnter = "Enter" ;
 	protected String stdReturn = "MouseRightClick" ;
-	protected String stdExit = "Escape" ;
-	
+	protected String stdExit = "Escape" ;	
+
+	protected static final Image buttonWindowUpImage = UtilS.loadImage("\\Windows\\" + "moveUp.png") ;
+	protected static final Image selectedButtonWindowUpImage = UtilS.loadImage("\\Windows\\" + "SelectedMoveUp.gif") ;
+	protected static final Image buttonWindowDownImage = UtilS.loadImage("\\Windows\\" + "moveDown.png") ;
+	protected static final Image selectedButtonWindowDownImage = UtilS.loadImage("\\Windows\\" + "selectedMoveDown.gif") ;
 	protected static final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	protected static final Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 11) ;
 	protected static final Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -63,29 +68,25 @@ public abstract class GameWindow
 		size = image != null ? new Dimension(image.getWidth(null), image.getHeight(null)) : new Dimension(0, 0) ;
 	}
 	public boolean isOpen() {return isOpen ;}
-	public int getMenu() {return menu ;}
-	public int getTab() {return tab ;}
-	public int getWindow() {return window ;}
-	public int getItem() {return item ;}
+	protected int getMenu() {return menu ;}
+	protected int getTab() {return tab ;}
+	protected int getWindow() {return window ;}
+	protected int getItem() {return item ;}
 	protected void setItem(int newValue) {item = newValue ;}
 	
 	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
 	protected GameButton windowUpButton(Point pos, Align align)
 	{
-		Image buttonImage = UtilS.loadImage("\\Windows\\" + "moveUp.png") ;
-		Image selectedButtonImage = UtilS.loadImage("\\Windows\\" + "SelectedMoveUp.gif") ;
 		IconFunction action = () -> { windowUp() ;} ;
-		return new GameButton(pos, align, buttonImage, selectedButtonImage, action) ;
+		return new GameButton(pos, align, buttonWindowUpImage, selectedButtonWindowUpImage, action) ;
 	}
 	protected GameButton windowDownButton(Point pos, Align align)
 	{
-		Image buttonImage = UtilS.loadImage("\\Windows\\" + "moveDown.png") ;
-		Image selectedButtonImage = UtilS.loadImage("\\Windows\\" + "selectedMoveDown.gif") ;
 		IconFunction action = () -> { windowDown() ;} ;
-		return new GameButton(pos, align, buttonImage, selectedButtonImage, action) ;
+		return new GameButton(pos, align, buttonWindowDownImage, selectedButtonWindowDownImage, action) ;
 	}
 	
-	public boolean mouseIsOver(Point mousePos) { return UtilG.isInside(mousePos, topLeftPos, size) ;}
+	protected boolean mouseIsOver(Point mousePos) { return UtilG.isInside(mousePos, topLeftPos, size) ;}
 	
 	public void open() { isOpen = true ;}
 	public void close() { isOpen = false ;}
@@ -158,7 +159,7 @@ public abstract class GameWindow
 		item = 0 ;
 	}
 	
-	public Color getTextColor(boolean isSelected) { return isSelected ? selColor : stdColor ;}
+	protected Color getTextColor(boolean isSelected) { return isSelected ? selColor : stdColor ;}
 	
 	protected void checkMouseSelection(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
 	{
@@ -168,6 +169,16 @@ public abstract class GameWindow
 		item = itemID ;
 	}
 	
+	protected void stdNavigation(String action)
+	{
+		if (action.equals(stdWindowUp)) { windowUp() ;}
+		if (action.equals(stdWindowDown)) { windowDown() ;}
+		if (action.equals(stdMenuUp)) { menuUp() ;}
+		if (action.equals(stdMenuDown)) { menuDown() ;}
+		if (action.equals(stdEnter)) { tabUp() ;}
+		if (action.equals(stdReturn)) { tabDown() ;}
+	}
+	
 	public abstract void navigate(String action) ;
-	public abstract void display(Point MousePos, DrawingOnPanel DP) ;
+	public abstract void display(Point mousePos, DrawPrimitives DP) ;
 }

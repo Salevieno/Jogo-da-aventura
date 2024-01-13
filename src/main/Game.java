@@ -45,7 +45,8 @@ import components.Quest ;
 import components.QuestSkills;
 import components.SpellTypes ;
 import graphics.Animation ;
-import graphics.DrawingOnPanel ;
+import graphics.Draw ;
+import graphics.DrawPrimitives;
 import items.Alchemy ;
 import items.Arrow ;
 import items.Equip ;
@@ -114,15 +115,14 @@ public class Game extends JPanel
 	private static GameStates state = GameStates.loading ;
 	private static boolean cheatMode = false ;
 	private static Languages gameLanguage ;
-	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to handle multiple repaint
-											// requests at once
+	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
 
 	public static Color[] colorPalette ;
 	public static int DayDuration ;
 	public static Map<TextCategories, String[]> allText ;
 
-	private DrawingOnPanel DP ;
+	private DrawPrimitives DP ;
 	private static Player player ;
 	private static Pet pet ;
 	public static int difficultLevel ;
@@ -161,7 +161,7 @@ public class Game extends JPanel
 
 	public Game()
 	{
-		DP = new DrawingOnPanel() ;
+		DP = new DrawPrimitives() ;
 		player = new Player("", "", 1) ;
 
 		addMouseListener(new MouseEventDemo()) ;
@@ -186,7 +186,7 @@ public class Game extends JPanel
 	public static Spell[] getAllSpells() { return allSpells ;}
 	public static List<Animation> getAnimations() { return animations ;}
 	public static boolean getShouldRepaint() { return shouldRepaint ;}
-	public static Point getMousePos() { return mousePos ;}
+	public static Point getmousePos() { return mousePos ;}
 	
 	public static List<Item> getItems(int[] itemIDs)
 	{
@@ -294,7 +294,7 @@ public class Game extends JPanel
 	private static void checkKonamiCode(List<String> combo)
 	{
 		if (!Arrays.equals(combo.toArray(new String[combo.size()]), konamiCode)) { return ;}
-		
+		System.out.println("Activating konami code!");
 		konamiCodeActive = !konamiCodeActive ;
 		player.resetCombo() ;
 	}
@@ -305,13 +305,13 @@ public class Game extends JPanel
 		colorPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Konami") ;
 		if (Sky.dayTime.getCounter() % 1200 <= 300)
 		{
-			DrawingOnPanel.stdAngle += 0.04 ;
+			Draw.stdAngle += 0.04 ;
 		} else if (Sky.dayTime.getCounter() % 1200 <= 900)
 		{
-			DrawingOnPanel.stdAngle -= 0.04 ;
+			Draw.stdAngle -= 0.04 ;
 		} else
 		{
-			DrawingOnPanel.stdAngle += 0.04 ;
+			Draw.stdAngle += 0.04 ;
 		}
 	}
 
@@ -1065,7 +1065,7 @@ public class Game extends JPanel
 		}
 	}
 
-	private void playGifs(DrawingOnPanel DP)
+	private void playGifs(DrawPrimitives DP)
 	{
 		/*
 		 * if (!testGif.isTimeStopper()) { testGif.play(new Point(100, 100),
@@ -1118,7 +1118,7 @@ public class Game extends JPanel
 	{
 		if (player.canAct() & player.hasActed())
 		{
-			player.acts(pet, mousePos, sideBar) ;
+			player.acts(pet, mousePos) ;
 
 			if (player.getMoveCounter().finished())
 			{
@@ -1182,7 +1182,7 @@ public class Game extends JPanel
 		}
 	}
 	
-	private void run(DrawingOnPanel DP)
+	private void run(DrawPrimitives DP)
 	{
 
 		incrementCounters() ;
@@ -1194,7 +1194,7 @@ public class Game extends JPanel
 			konamiCode() ;
 		}
 
-		DP.DrawFullMap(player.getPos(), player.getMap(), sky) ;
+		Draw.fullMap(player.getPos(), player.getMap(), sky) ;
 		sideBar.display(player, pet, mousePos, DP) ;
 		sideBar.act(player.getCurrentAction(), mousePos) ;
 
@@ -1409,12 +1409,12 @@ public class Game extends JPanel
 	
 	
 	@Override
-	protected void paintComponent(Graphics g)
+	protected void paintComponent(Graphics graphs)
 	{
-		super.paintComponent(g) ;
-		mousePos = UtilG.GetMousePos(mainPanel) ;
-		DP.setGraphics((Graphics2D) g) ;
-
+		super.paintComponent(graphs) ;
+		mousePos = UtilG.GetmousePos(mainPanel) ;
+		DP.setGraphics((Graphics2D) graphs) ;
+		Draw.setDP(DP) ;
 		TimeCounter.updateAll() ;
 		switch (state)
 		{
@@ -1472,7 +1472,7 @@ public class Game extends JPanel
 		}
 
 		Toolkit.getDefaultToolkit().sync() ;
-		g.dispose() ;
+		graphs.dispose() ;
 	}
 
 	

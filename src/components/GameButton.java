@@ -8,7 +8,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import main.Game;
 import utilities.Align;
 import utilities.Scale;
@@ -81,46 +82,46 @@ public class GameButton
 	public void act() { action.act() ;}
 	
 	
-	public void displayGeneralButton(DrawingOnPanel DP)
+	public void displayGeneralButton(DrawPrimitives DP)
 	{
 		DP.drawGradRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[3], Game.colorPalette[3], true) ;
-		DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
+		DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 	}
 	
-	public void displayHovered(double angle, boolean displayText, DrawingOnPanel DP)
+	public void displayHovered(double angle, boolean displayText, DrawPrimitives DP)
 	{
 		if (selectedImage != null)
 		{
-			DP.DrawImage(selectedImage, topLeft, angle, Scale.unit, Align.topLeft) ;
+			DP.drawImage(selectedImage, topLeft, angle, Scale.unit, Align.topLeft) ;
 			if (displayText)
 			{
-				DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
+				DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 			}
 		}
 		else
 		{
 			DP.drawGradRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[5], Game.colorPalette[6], true) ;
-			DP.DrawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
+			DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 		}
 	}
 	
-	public void displayNotHovered(double angle, boolean displayText, DrawingOnPanel DP)
+	public void displayNotHovered(double angle, boolean displayText, DrawPrimitives DP)
 	{
 		if (image != null)
 		{
-			DP.DrawImage(image, topLeft, angle, Scale.unit, Align.topLeft) ;
+			DP.drawImage(image, topLeft, angle, Scale.unit, Align.topLeft) ;
 			
 			if (!displayText) { return ;}
 			
-			DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
+			DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
 			return ;
 		}
 		
 		DP.drawGradRoundRect(topLeft, Align.topLeft, size, 2, Game.colorPalette[5], Game.colorPalette[6], true) ;
-		DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
+		DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
 	}
 	
-	public void display(double angle, boolean displayText, Point mousePos, DrawingOnPanel DP)
+	public void display(double angle, boolean displayText, Point mousePos, DrawPrimitives DP)
 	{
 		
 		if (!isActive) { return ;}
@@ -133,21 +134,21 @@ public class GameButton
 			return ;
 		}
 		
-		DP.DrawImage(imageDisplayed, topLeft, angle, Scale.unit, Align.topLeft) ;
+		DP.drawImage(imageDisplayed, topLeft, angle, Scale.unit, Align.topLeft) ;
 
 		if (!displayText) { return ;}
 		if (name == null) { return ;}
 		
-		DP.DrawText(getCenter(), Align.center, 0, name, font, textColor) ;
+		DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
 		
 	}
 	
-	public void displayHoverMessage(DrawingOnPanel DP)
+	public void displayHoverMessage(DrawPrimitives DP)
 	{
 		if (description != null)
 		{
 			DP.drawGradRoundRect(new Point(topLeft.x + 20, topLeft.y - 10), alignment, size, 5, Color.lightGray, Color.gray, true) ;
-			DP.DrawFitText(new Point(topLeft.x + 20, topLeft.y - 10), 14, alignment, description, new Font(Game.MainFontName, Font.BOLD, 12), 20, Color.blue) ;
+			Draw.fitText(new Point(topLeft.x + 20, topLeft.y - 10), 14, alignment, description, new Font(Game.MainFontName, Font.BOLD, 12), 20, Color.blue) ;
 		}
 	}
 

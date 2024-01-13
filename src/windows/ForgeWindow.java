@@ -9,7 +9,8 @@ import java.util.List;
 
 import components.GameButton;
 import graphics.Animation;
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import items.Equip;
 import items.Forge;
 import items.Item;
@@ -143,20 +144,20 @@ public class ForgeWindow extends GameWindow
 		// TODO overwrite save
 	}
 	
-	public void display(Point mousePos, DrawingOnPanel DP)
+	public void display(Point mousePos, DrawPrimitives DP)
 	{
 
 		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 16) ;
 		Point messagePos = UtilG.Translate(windowPos, size.width / 2, 36) ;
-		double angle = DrawingOnPanel.stdAngle ;
+		double angle = Draw.stdAngle ;
 		List<Equip> itemsOnWindow = NumberItemsPerWindow <= itemsForForge.size() ? itemsForForge.subList(0, NumberItemsPerWindow) : itemsForForge ;
 		
 		if (itemsOnWindow.size() == 0) { item = -1 ;}
 		
-		DP.DrawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
+		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
 		
-		DP.DrawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[1]) ;
-		DP.DrawText(messagePos, Align.center, angle, "Selecione o equipamento", stdFont, stdColor) ;
+		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[1]) ;
+		DP.drawText(messagePos, Align.center, angle, "Selecione o equipamento", stdFont, stdColor) ;
 		
 		Point itemPos = UtilG.Translate(windowPos, 24, 70) ;
 		
@@ -172,13 +173,13 @@ public class ForgeWindow extends GameWindow
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(200, 10), i) ;
 			Equip equip = itemsOnWindow.get(i) ;
 			Color itemColor = this.item == itemsOnWindow.indexOf(equip) ? selColor : stdColor ;
-			DP.DrawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
-			DP.DrawImage(equip.getImage(), itemPos, angle, Scale.unit, Align.center) ;
-			DP.DrawText(namePos, Align.centerLeft, angle, equip.getName() + " + " + equip.getForgeLevel(), stdFont, itemColor) ;
+			DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
+			DP.drawImage(equip.getImage(), itemPos, angle, Scale.unit, Align.center) ;
+			DP.drawText(namePos, Align.centerLeft, angle, equip.getName() + " + " + equip.getForgeLevel(), stdFont, itemColor) ;
 			// TODO draw required rune
-			DP.DrawText(runePos, Align.centerLeft, angle, reqRune(equip).getName(), stdFont, itemColor) ;
-			DP.DrawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
-			DP.DrawText(pricePos, Align.centerLeft, angle, String.valueOf(forgePrice(equip.getForgeLevel())), stdFont, itemColor) ;
+			DP.drawText(runePos, Align.centerLeft, angle, reqRune(equip).getName(), stdFont, itemColor) ;
+			DP.drawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
+			DP.drawText(pricePos, Align.centerLeft, angle, String.valueOf(forgePrice(equip.getForgeLevel())), stdFont, itemColor) ;
 			itemPos.y += 28 ;
 		}
 		

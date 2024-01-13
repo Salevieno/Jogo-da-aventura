@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 import components.Collider;
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
@@ -101,15 +102,15 @@ public class MapElement
 		}
 	}
 	
-	public void displayColliders(DrawingOnPanel DP)
+	public void displayColliders(DrawPrimitives DP)
 	{
 		for (Collider collider : colliders)
 		{
-			DP.DrawRect(collider.getPos(), Align.center, new Dimension(1, 1), 1, Color.red, null) ;
+			DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), 1, Color.red, null) ;
 		}
 	}
 	
-	public void display(Point playerPos, DrawingOnPanel DP)
+	public void display(Point playerPos, DrawPrimitives DP)
 	{
 		double alpha = playerIsBehind(playerPos) ? 0.5 : 1.0 ;
 //		if (!playerIsBehind(playerPos))
@@ -120,7 +121,7 @@ public class MapElement
 //			return ;
 //		}
 		
-		DP.DrawImage(image, topLeft, DrawingOnPanel.stdAngle, Scale.unit, false, false, Align.topLeft, alpha) ;
+		DP.drawImage(image, topLeft, Draw.stdAngle, Scale.unit, false, false, Align.topLeft, alpha) ;
 		
 	}
 }

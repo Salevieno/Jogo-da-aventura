@@ -22,7 +22,8 @@ import attributes.PersonalAttributes;
 import components.GameButton;
 import components.IconFunction;
 import graphics.Animation;
-import graphics.DrawingOnPanel;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import liveBeings.Creature;
 import liveBeings.Genetics;
 import liveBeings.LiveBeingStatus;
@@ -35,8 +36,8 @@ import main.Game;
 import utilities.Align;
 import utilities.AtkEffects;
 import utilities.Directions;
-import utilities.Scale;
 import utilities.FrameCounter;
+import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.CreatureAttributesWindow;
@@ -652,10 +653,10 @@ public abstract class PlayerEvolutionSimulation
 
 		if (player.getBag().isOpen())
 		{
-			if (player.getBag().getTab() == 1 & (player.getCurrentAction().equals("Enter") | player.getCurrentAction().equals("LeftClick")))
-			{
-				player.useItem(player.getBag().getSelectedItem()) ;
-			}
+//			if (player.getBag().getTab() == 1 & (player.getCurrentAction().equals("Enter") | player.getCurrentAction().equals("LeftClick")))
+//			{
+//				player.useItem(player.getBag().getSelectedItem()) ;
+//			}
 			
 			return ;
 		}
@@ -674,7 +675,7 @@ public abstract class PlayerEvolutionSimulation
 		return player.getAttWindow() ;
 	}
 	
-	public static void run(Point mousePos, List<Animation> animations, DrawingOnPanel DP)
+	public static void run(Point mousePos, List<Animation> animations, DrawPrimitives DP)
 	{
 		player.incrementCounters() ;
 		player.activateCounters() ;
@@ -743,20 +744,20 @@ public abstract class PlayerEvolutionSimulation
 		player.resetAction() ;
 	}
 	
-	public static void drawBar(Point pos, int currentHeight, int maxHeight, Color color, DrawingOnPanel DP)
+	public static void drawBar(Point pos, int currentHeight, int maxHeight, Color color, DrawPrimitives DP)
 	{
 		int width = 10 ;
-		DP.DrawRect(pos, Align.bottomLeft, new Dimension(width, currentHeight), 1, color, null) ;
-		DP.DrawRect(pos, Align.bottomLeft, new Dimension(width, maxHeight), 1, null, color) ;
+		DP.drawRect(pos, Align.bottomLeft, new Dimension(width, currentHeight), 1, color, null) ;
+		DP.drawRect(pos, Align.bottomLeft, new Dimension(width, maxHeight), 1, null, color) ;
 	}
 	
-	public static void displayBattleStats(DrawingOnPanel DP)
+	public static void displayBattleStats(DrawPrimitives DP)
 	{
 		Point pos = new Point(10, 400) ;
 		int barsHeight = 50 ;
 		
 		int numberOpponentsToPlayerLevelUp = PersonalAttributes.numberFightsToLevelUp(player.getExp().getCurrentValue(), player.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), player.getExp().getMultiplier()) ;
-		DP.DrawText(UtilG.Translate(pos, 170, 10), Align.bottomCenter, DrawingOnPanel.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.colorPalette[5]);
+		DP.drawText(UtilG.Translate(pos, 170, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.colorPalette[5]);
 
 		int playerExpBarSize = (int) (player.getExp().getRate() * barsHeight) ;
 		drawBar(UtilG.Translate(pos, 170, 70), playerExpBarSize, barsHeight, Game.colorPalette[5], DP) ;
@@ -764,7 +765,7 @@ public abstract class PlayerEvolutionSimulation
 		if (pet != null)
 		{
 			int numberOpponentsToPetLevelUp = PersonalAttributes.numberFightsToLevelUp(pet.getExp().getCurrentValue(), pet.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), pet.getExp().getMultiplier()) ;
-			DP.DrawText(UtilG.Translate(pos, 200, 10), Align.bottomCenter, DrawingOnPanel.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Game.colorPalette[2]);
+			DP.drawText(UtilG.Translate(pos, 200, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Game.colorPalette[2]);
 			
 			int petExpBarSize = (int) (pet.getExp().getRate() * barsHeight) ;
 			drawBar(UtilG.Translate(pos, 200, 70), petExpBarSize, barsHeight, Game.colorPalette[2], DP) ;
@@ -772,19 +773,19 @@ public abstract class PlayerEvolutionSimulation
 		
 		String percPlayerWins = 1 <= numberFights ? " (" + UtilG.Round((100 * numberPlayerWins) / (double)numberFights, 2) + "%)" : "" ;
 		String percCreatureWins = 1 <= numberFights ? " (" + UtilG.Round((100 * numberCreatureWins) / (double)numberFights, 2) + "%)" : "" ;
-		DP.DrawText(UtilG.Translate(pos, 0, 30), Align.bottomLeft, DrawingOnPanel.stdAngle, "total fights = " + numberFights, font, Game.colorPalette[5]);
-		DP.DrawText(UtilG.Translate(pos, 0, 50), Align.bottomLeft, DrawingOnPanel.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.colorPalette[5]);
-		DP.DrawText(UtilG.Translate(pos, 0, 70), Align.bottomLeft, DrawingOnPanel.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.colorPalette[5]);
+		DP.drawText(UtilG.Translate(pos, 0, 30), Align.bottomLeft, Draw.stdAngle, "total fights = " + numberFights, font, Game.colorPalette[5]);
+		DP.drawText(UtilG.Translate(pos, 0, 50), Align.bottomLeft, Draw.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.colorPalette[5]);
+		DP.drawText(UtilG.Translate(pos, 0, 70), Align.bottomLeft, Draw.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.colorPalette[5]);
 
 	}
 	
 	
-	public static void displayInterface(Point mousePos, DrawingOnPanel DP)
+	public static void displayInterface(Point mousePos, DrawPrimitives DP)
 	{
 		
 //		DP.DrawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), 1, Color.black, null) ;
-		DP.DrawImage(screenImage, new Point(0, 0), Align.topLeft) ;
-		DP.DrawText(new Point(300, 13), Align.center, DrawingOnPanel.stdAngle, "Simulador do jogo", font, Game.colorPalette[0]) ;
+		DP.drawImage(screenImage, new Point(0, 0), Align.topLeft) ;
+		DP.drawText(new Point(300, 13), Align.center, Draw.stdAngle, "Simulador do jogo", font, Game.colorPalette[0]) ;
 		
 		buttons.forEach(button -> button.display(0, true, mousePos, DP)) ;
 
@@ -806,7 +807,7 @@ public abstract class PlayerEvolutionSimulation
 		
 		if (player.isInBattle())
 		{
-			DP.DrawImage(fightingImage, new Point(300, 240), Align.center) ;
+			DP.drawImage(fightingImage, new Point(300, 240), Align.center) ;
 		}
 		
 		displayBattleStats(DP) ;

@@ -1,7 +1,6 @@
 package maps;
 
 import java.awt.Image;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
