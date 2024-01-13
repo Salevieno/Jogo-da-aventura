@@ -63,7 +63,7 @@ import windows.BankWindow;
 import windows.BestiaryWindow;
 import windows.CraftWindow;
 import windows.ElementalWindow;
-import windows.FabWindow;
+import windows.BookWindow;
 import windows.ForgeWindow;
 import windows.GameWindow;
 import windows.HintsWindow;
@@ -88,7 +88,7 @@ public class Player extends LiveBeing
 	private SpellsTreeWindow spellsTree ;
 	private MapWindow mapWindow ;
 	private List<Recipe> knownRecipes ;
-	private FabWindow fabWindow ;
+	private BookWindow fabWindow ;
 	private List<Quest> quests ;
 	private QuestWindow questWindow ;
 	private HintsWindow hintsWindow ;
@@ -197,7 +197,7 @@ public class Player extends LiveBeing
 		questWindow = new QuestWindow() ;
 		quests = new ArrayList<>() ;
 		knownRecipes = new ArrayList<>() ;
-		fabWindow = new FabWindow() ;
+		fabWindow = new BookWindow() ;
 		mapWindow = new MapWindow() ;
 		hintsWindow = new HintsWindow() ;
 		spellsTree = new SpellsTreeWindow(job) ;
@@ -345,7 +345,7 @@ public class Player extends LiveBeing
 	public SettingsWindow getSettings() {return settings ;}
 	public QuestWindow getQuestWindow() {return questWindow ;}
 	public MapWindow getMapWindow() {return mapWindow ;}
-	public FabWindow getFabWindow() {return fabWindow ;}
+	public BookWindow getFabWindow() {return fabWindow ;}
 	public List<Recipe> getKnownRecipes() { return knownRecipes ;}
 	public SpellsTreeWindow getSpellsTreeWindow() {return spellsTree ;}
 	public HintsWindow getHintsindow() {return hintsWindow ;}

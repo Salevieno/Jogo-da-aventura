@@ -4,53 +4,48 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Item;
 import items.Recipe;
-import liveBeings.Player;
 import main.Game;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
 
-public class FabWindow extends GameWindow
+public class BookWindow extends GameWindow
 {
-    private List<Recipe> recipes ;
+    private List<Recipe> recipes = new ArrayList<>() ;
 
-	private static final Point windowPos = Game.getScreen().pos(0.5, 0.5) ;
+	private static final Point windowPos = Game.getScreen().getCenter() ;
 	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Book.png") ;
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 	
-	public FabWindow()
+	public BookWindow()
 	{
-		super("Livro", windowPos, windowImage, 0, 0, 0, 3) ;
+		super("Livro", windowPos, windowImage, 0, 0, 0, 0) ;
 		//LoadCraftingRecipes() ;
 		//numberWindows = recipes.size() ;
 	}
 
-	public void setRecipes(List<Recipe> recipes) { this.recipes = recipes ;}
+	public void setRecipes(List<Recipe> recipes) { this.recipes = recipes ; numberWindows = recipes.size() ;}
+	
+	public void addRecipes(List<Recipe> newRecipes) { recipes.addAll(newRecipes) ; numberWindows = recipes.size() ;}
 
 	public void navigate(String action)
 	{
-		if (action.equals(Player.ActionKeys[3]))
-		{
-			windowUp() ;
-		}
-		if (action.equals(Player.ActionKeys[1]))
-		{
-			windowDown() ;
-		}
+		stdNavigation(action) ;
 	}
 	
 	public void displayRecipes(Point mousePos)
 	{
 		if (recipes == null) { return ;}
 		if (recipes.isEmpty()) { return ;}
-		
+
 		Point ingredientsCol = UtilG.Translate(windowPos, -image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
 		Point productsCol = UtilG.Translate(windowPos, image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
 		
@@ -84,6 +79,15 @@ public class FabWindow extends GameWindow
 		}
 	}
 
+	private void displayPageNumber(DrawPrimitives DP)
+	{
+		if (numberWindows == 0) { return ;}
+		
+		Point textPos = UtilG.Translate(UtilG.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
+		String pageText = (window + 1) + " / " + numberWindows ;
+		DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Game.colorPalette[0]) ;
+	}
+	
 	public void display(Point mousePos, DrawPrimitives DP)
 	{
 //		System.out.println("displaying fab window");
@@ -100,8 +104,8 @@ public class FabWindow extends GameWindow
 		//DP.DrawText(new Point(windowPos.x - 3 * imageL / 8, windowPos.y - imageH / 5 - sy/4), "BotLeft", OverallAngle, "Ingredientes:", titleFont, ColorPalette[5]) ;
 		//DP.DrawText(new Point(windowPos.x + 3 * imageL / 8, windowPos.y - imageH / 5 - sy/4), "TopRight", OverallAngle, "Produtos", titleFont, ColorPalette[5]) ;		
 		displayRecipes(mousePos) ;
+		displayPageNumber(DP) ;
 		
-		Point arrowsPos = UtilG.Translate(windowPos, 0, image.getHeight(null) / 2) ;
-		Draw.windowArrows(arrowsPos, image.getWidth(null), window, numberWindows - 1) ;
+		Draw.windowArrows(UtilG.getPosAt(windowPos, Align.center, Align.bottomLeft, size), image.getWidth(null), window, numberWindows) ;
 	}
 }

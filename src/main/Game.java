@@ -1611,6 +1611,9 @@ public class Game extends JPanel
 			{
 				player.setCurrentAction("MouseRightClick") ;
         		player.setPos(mousePos) ;
+        		
+				player.getFabWindow().addRecipes(allRecipes.subList(0, 10)) ;
+				player.getFabWindow().addRecipes(allRecipes.subList(20, 23)) ;
 				// testGif2.start() ;
 			}
 			// shouldRepaint = true ;

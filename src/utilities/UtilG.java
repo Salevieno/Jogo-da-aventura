@@ -547,6 +547,13 @@ public abstract class UtilG
 		return UtilG.Translate(pos, offset.x, offset.y) ;
 	}
 	
+	public static Point getPosAt(Point pos, Align alignment, Align newAlignment, Dimension size)
+	{
+		Point topLeft = getTopLeft(pos, alignment, size) ;
+		Point offset = UtilG.offsetForAlignment(newAlignment, size) ;
+		return UtilG.Translate(topLeft, offset.x, -offset.y) ;
+	}
+	
 	public static int[] ArrayWithValuesGreaterThan(int[] OriginalArray, int MinValue)
 	{
 		int NewArrayLength = 0 ;
