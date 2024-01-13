@@ -18,6 +18,7 @@ import graphics.Gif;
 import items.Equip;
 import liveBeings.Player;
 import screen.Screen;
+import screen.SideBar;
 import utilities.Align;
 import utilities.Elements;
 import utilities.LiveInput;
@@ -159,7 +160,7 @@ public abstract class Opening
     	Image startImage = UtilG.loadImage(path + "Start.png") ;
     	Image startImageSelected = UtilG.loadImage(path + "Start Selected.gif") ;
 		IconFunction startAction = () -> { loadingStep = 12 ;} ;
-    	startButton = new GameButton(Game.getScreen().getCenter(), Align.center, "start", startImage, startImageSelected, startAction) ;
+    	startButton = new GameButton(Game.getScreen().pos(0.5, 0.83), Align.center, "start", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
     	
     	// TODO get text from json. AllText is not loaded here yet Game.allText.get(TextCategories.newGame)
@@ -305,26 +306,26 @@ public abstract class Opening
 	{
 		Color textColor = Game.colorPalette[0] ;
 		Point moveInfoTopLeft = new Point(60, 60) ;
-		DP.drawText(UtilG.Translate(moveInfoTopLeft, 150, 0), Align.center, 0, "Como se mover", smallFont, textColor) ;
+		DP.drawText(UtilG.Translate(moveInfoTopLeft, 150, 0), Align.center, 0, "Principais ações", font, textColor) ;
 		
-		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().idleGif, Equip.StaffImage, Elements.water.image} ;
-		String[] moveInfoText = new String[] {"W A S D ou setas", "", ""} ;
+		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().movingRightGif, SideBar.icons.get(1), Game.getPlayer().getMovingAni().idleGif, SideBar.icons.get(2)} ;
+		String[] moveInfoText = new String[] {"Moving: W A S D ou setas", "Mochila: B", "Janela do jogador: C", "Quests: Q"} ;
 		for (int i = 0 ; i <= moveInfoImages.length - 1; i += 1)
 		{
-			Point imageCenterLeft = UtilG.Translate(moveInfoTopLeft, 0, 40 + 25 * i) ;
-			DP.drawImage(moveInfoImages[i], imageCenterLeft, Align.centerLeft);
+			Point imageCenterLeft = UtilG.Translate(moveInfoTopLeft, 0, 40 + 50 * i) ;
+			DP.drawImage(moveInfoImages[i], imageCenterLeft, Align.center);
 			DP.drawText(UtilG.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, moveInfoText[i], smallFont, textColor) ;
 		}
 		
 		
 		Point atkInfoTopLeft = new Point(360, 60) ;
-		DP.drawText(UtilG.Translate(atkInfoTopLeft, 150, 0), Align.center, 0, "Como lutar", smallFont, textColor) ;
+		DP.drawText(UtilG.Translate(atkInfoTopLeft, 150, 0), Align.center, 0, "Ações de luta", font, textColor) ;
 		
-		Image[] atkInfoImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Equip.StaffImage} ;
-		String[] atkInfoText = new String[] {"Y", "U", "0, 1...F11, F12"} ;
+		Image[] atkInfoImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Player.MagicBlissGif} ;
+		String[] atkInfoText = new String[] {"Attack: Y", "Defense: U", "Spells: 0, 1...F11, F12"} ;
 		for (int i = 0 ; i <= atkInfoImages.length - 1; i += 1)
 		{
-			Point imageCenterLeft = UtilG.Translate(atkInfoTopLeft, 0, 40 + 25 * i) ;
+			Point imageCenterLeft = UtilG.Translate(atkInfoTopLeft, 0, 40 + 50 * i) ;
 			DP.drawImage(atkInfoImages[i], imageCenterLeft, Align.center);
 			DP.drawText(UtilG.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, atkInfoText[i], smallFont, textColor) ;
 		}

@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,12 +33,24 @@ public class SideBar
 	private static final Point barPos = Game.getScreen().pos(1, 1) ;
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	public static final Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
+	public static final String[] iconNames ;
+	public static final List<Image> icons = new ArrayList<>() ;
+	public static final List<Image> iconsSelected = new ArrayList<>() ;
+	
+	static
+	{
+		iconNames = new String[] {"settings", "bag", "quest", "map", "book", "tent"} ; // "player", "pet"
+		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
+		{			
+			icons.add(UtilS.loadImage("\\SideBar\\Icon" + i + "_" + iconNames[i] + ".png")) ;
+			iconsSelected.add(UtilS.loadImage("\\SideBar\\Icon" + i + "_" + iconNames[i] + "Selected.png")) ;
+		}
+	}
 		
 	public SideBar(Player player, Image playerImage, Image petImage)
 	{
 		
-		String[] names = new String[] {"settings", "bag", "quest", "map", "book", "tent"} ; // "player", "pet"
-		IconFunction[] actions = new IconFunction[names.length] ;
+		IconFunction[] actions = new IconFunction[iconNames.length] ;
 		actions[0] = () -> { player.switchOpenClose(player.getSettings()) ;} ; 
 		actions[1] = () -> { player.switchOpenClose(player.getBag()) ;} ; 
 		actions[2] = () -> { 
@@ -72,10 +85,10 @@ public class SideBar
 
     	int offsetY = 0 ;
 		buttons = new HashSet<>() ;
-		for (int i = 0; i <= names.length - 1 ; i += 1)
+		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
 		{			
-			Image image = UtilS.loadImage("\\SideBar\\Icon" + i + "_" + names[i] + ".png") ;
-			Image selImage = UtilS.loadImage("\\SideBar\\Icon" + i + "_" + names[i] + "Selected.png") ;
+			Image image = UtilS.loadImage("\\SideBar\\Icon" + i + "_" + iconNames[i] + ".png") ;
+			Image selImage = UtilS.loadImage("\\SideBar\\Icon" + i + "_" + iconNames[i] + "Selected.png") ;
 			Point botCenterPos = UtilG.Translate(barPos, 20, -220 - offsetY) ;
 			buttons.add(new GameButton(botCenterPos, Align.bottomCenter, image, selImage, actions[i])) ;
 
