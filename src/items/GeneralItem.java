@@ -27,7 +27,7 @@ public class GeneralItem extends Item
 			String description = input.get(p)[3] ;
 			int price = Integer.parseInt(input.get(p)[5]) ;
 			double dropChance = Double.parseDouble(input.get(p)[6]) ;
-			AllGeneralItems[p] = new GeneralItem(id, name, description, price, dropChance);
+			AllGeneralItems[p] = new GeneralItem(id, name, description, price, dropChance) ;
 		}
 	}
 	
@@ -91,15 +91,4 @@ public class GeneralItem extends Item
 	{
 		return "GeneralItem," + id + "," + name ;
 	}
-	
-
-//	public void printAtt()
-//	{
-//		System.out.println("General item id: " + AllGeneralItems[id].getId() +
-//				"   name: " + AllGeneralItems[id].getName() +
-//				"   description: " + AllGeneralItems[id].getDescription() +
-//				"   price: " + AllGeneralItems[id].getPrice() +
-//				"   drop chance: " + AllGeneralItems[id].getDropChance() + "%");
-//	}
-	
 }

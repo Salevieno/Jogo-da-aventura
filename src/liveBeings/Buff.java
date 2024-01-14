@@ -77,8 +77,7 @@ public class Buff
 	@Override
 	public String toString()
 	{
-		return "Buff [percentIncrease=" + percentIncrease + "\n valueIncrease=" + valueIncrease + "\n chance=" + chance
-				+ "]";
+		return "Buff: inc% = " + percentIncrease + "\n incValue = " + valueIncrease + "\n chance = " + chance ;
 	}
 	
 	

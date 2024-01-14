@@ -1202,7 +1202,7 @@ public class Player extends LiveBeing
 		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[1], elem[4]} ;
 		Elements[] DefElem = receiver.defElems() ;
 		double receiverElemMod = 1 ;
-		System.out.println("Player used offensive spell");
+		System.out.println("Player used " + spell.getName() + " level " + spell.getLevel());
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
 		spell.activate() ;
 		
