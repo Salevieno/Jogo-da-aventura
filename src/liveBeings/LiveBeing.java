@@ -595,18 +595,32 @@ public abstract class LiveBeing
 		}
 		if (style == 1)
 		{
+//			Point topLeft = Game.getScreen().pos(0.01, 0.02) ;
+//			Dimension barSize = new Dimension(120, 5) ;
+//			int stroke = 1 ;
+//			DP.drawImage(AttImage, topLeft, Align.topLeft) ;
+//			Point offset = new Point(70, 7) ;
+//			Point barPos = UtilG.Translate(topLeft, offset.x, offset.y) ;
+//			for (int att = 0; att <= attRate.size() - 1; att += 1)
+//			{
+//				Dimension rateSize = new Dimension((int)(attRate.get(att) * barSize.width), barSize.height) ;
+//				DP.drawRect(barPos, Align.centerLeft, barSize, stroke, null, Game.colorPalette[0]) ;
+//				DP.drawRect(barPos, Align.centerLeft, rateSize, stroke, attColor.get(att), null) ;
+//				barPos.y += barSize.height + 6 ;
+//			}
+			
 			Point topLeft = Game.getScreen().pos(0.01, 0.02) ;
-			Dimension barSize = new Dimension(120, 5) ;
+			Dimension barSize = new Dimension(5, 35) ;
 			int stroke = 1 ;
 			DP.drawImage(AttImage, topLeft, Align.topLeft) ;
-			Point offset = new Point(70, 7) ;
+			Point offset = new Point(36, 40) ;
 			Point barPos = UtilG.Translate(topLeft, offset.x, offset.y) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
-				Dimension rateSize = new Dimension((int)(attRate.get(att) * barSize.width), barSize.height) ;
-				DP.drawRect(barPos, Align.centerLeft, barSize, stroke, null, Game.colorPalette[0]) ;
-				DP.drawRect(barPos, Align.centerLeft, rateSize, stroke, attColor.get(att), null) ;
-				barPos.y += barSize.height + 6 ;
+				Dimension rateSize = new Dimension(barSize.width, (int) (attRate.get(att) *  barSize.height)) ;
+				DP.drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Game.colorPalette[0]) ;
+				DP.drawRect(barPos, Align.bottomCenter, rateSize, stroke, attColor.get(att), null) ;
+				barPos.x += barSize.width + 15 ;
 			}
 		}
 		

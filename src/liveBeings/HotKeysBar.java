@@ -20,14 +20,14 @@ public class HotKeysBar
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 	private static final Color textColor = Game.colorPalette[19] ;
 	
-	public static final Image slotImage = UtilS.loadImage("\\Windows\\" + "BagSlot.png") ;
+	public static final Image slotImage = UtilS.loadImage("\\SideBar\\" + "Slot.png") ;
 
 	public static void display(Item[] hotItems, Point mousePos, DrawPrimitives DP)
 	{
 		Point barTopLeft = new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70) ;
 		Dimension slotSize = new Dimension(slotImage.getWidth(null), slotImage.getHeight(null)) ;
 		
-		DP.drawGradRoundRect(barTopLeft, Align.topLeft, new Dimension(36, 60), 1, Game.colorPalette[3], Game.colorPalette[3], true) ;
+//		DP.drawGradRoundRect(barTopLeft, Align.topLeft, new Dimension(36, 60), 1, Game.colorPalette[3], Game.colorPalette[3], true) ;
 		
 		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 		{

@@ -216,7 +216,7 @@ public class Spell
 	@Override
 	public String toString()
 	{
-		return "id = " + id + " name = " + name ;
+		return "spell " + id + ": " + name + " level " + level ;
 //		return "Spell [name=" + name + ", image=" + image + ", level=" + level + ", maxLevel=" + maxLevel + ", mpCost=" + mpCost + ", type="
 //				+ type + ", preRequisites=" + preRequisites + ", buffs=" + buffs + ", AtkMod=" + Arrays.toString(atkMod) + ", DefMod="
 //				+ Arrays.toString(defMod) + ", DexMod=" + Arrays.toString(dexMod) + ", AgiMod="

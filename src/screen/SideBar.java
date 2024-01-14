@@ -28,7 +28,6 @@ import utilities.UtilS;
 public class SideBar
 {
 	private Set<GameButton> buttons ;
-	private List<Spell> spells ;
 	
 	private static final Point barPos = Game.getScreen().pos(1, 1) ;
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
@@ -69,8 +68,7 @@ public class SideBar
 			player.switchOpenClose(player.getFabWindow()) ;
 		} ; 
 		actions[5] = () -> { System.out.println("opening tent") ;} ;
-		spells = player.getActiveSpells() ;
-		SpellsBar.updateSpells(spells) ;
+		SpellsBar.updateSpells(player.getActiveSpells()) ;
 
 //	case "player":
 //		((PlayerAttributesWindow) attWindow).setPlayer(this) ;
@@ -137,7 +135,7 @@ public class SideBar
 			i += 1 ;
 		}
 		
-		SpellsBar.display(player.getMp().getCurrentValue(), spells, mousePos, DP);
+		SpellsBar.display(player.getMp().getCurrentValue(), mousePos, DP);
 		HotKeysBar.display(player.getHotItems(), mousePos, DP) ;
 
 	}

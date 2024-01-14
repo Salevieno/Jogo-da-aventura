@@ -28,8 +28,6 @@ public class BookWindow extends GameWindow
 	public BookWindow()
 	{
 		super("Livro", windowPos, windowImage, 0, 0, 0, 0) ;
-		//LoadCraftingRecipes() ;
-		//numberWindows = recipes.size() ;
 	}
 
 	public void setRecipes(List<Recipe> recipes) { this.recipes = recipes ; numberWindows = recipes.size() ;}
@@ -52,7 +50,6 @@ public class BookWindow extends GameWindow
 		int sy = font.getSize() + 1 ;
 		int id = window ;
 		Color textColor = Game.colorPalette[5] ;
-		double stdAngle = Draw.stdAngle ;
 		
 		// draw ingredients
 		Item[] ingredients = new Item[0];
@@ -63,7 +60,7 @@ public class BookWindow extends GameWindow
 			String ingredientName = ingredients[i].getName() ;
 			int ingredientAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
 			String text = ingredientAmount + " " + ingredientName ;
-			Draw.textUntil(textPos, Align.topLeft, stdAngle, text, font, textColor, 10, mousePos) ;
+			Draw.textUntil(textPos, Align.topLeft, Draw.stdAngle, text, font, textColor, 10, mousePos) ;
 		}
 		
 		// draw products
@@ -75,7 +72,7 @@ public class BookWindow extends GameWindow
 			String productsName = products[i].getName() ;
 			int productsAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
 			String text = productsAmount + " " + productsName ;
-			Draw.textUntil(textPos, Align.topRight, stdAngle, text, font, textColor, 10, mousePos) ;
+			Draw.textUntil(textPos, Align.topRight, Draw.stdAngle, text, font, textColor, 10, mousePos) ;
 		}
 	}
 
@@ -90,19 +87,7 @@ public class BookWindow extends GameWindow
 	
 	public void display(Point mousePos, DrawPrimitives DP)
 	{
-//		System.out.println("displaying fab window");
-		
-		/*if (Ingredients != null)
-		{
-			NumberOfPages = Ingredients.length - 1 ;
-		}*/
-		
-		//window = Uts.MenuSelection(Player.ActionKeys[1], Player.ActionKeys[3], action, window, NumberOfPages) ;
-		//Font titleFont = new Font(Game.MainFontName, Font.BOLD, 16) ;
-		
 		DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.center) ;
-		//DP.DrawText(new Point(windowPos.x - 3 * imageL / 8, windowPos.y - imageH / 5 - sy/4), "BotLeft", OverallAngle, "Ingredientes:", titleFont, ColorPalette[5]) ;
-		//DP.DrawText(new Point(windowPos.x + 3 * imageL / 8, windowPos.y - imageH / 5 - sy/4), "TopRight", OverallAngle, "Produtos", titleFont, ColorPalette[5]) ;		
 		displayRecipes(mousePos) ;
 		displayPageNumber(DP) ;
 		

@@ -70,6 +70,7 @@ import liveBeings.Player ;
 import liveBeings.PlayerJobs ;
 import liveBeings.Pterodactile ;
 import liveBeings.Spell ;
+import liveBeings.SpellsBar;
 import maps.CityMap ;
 import maps.CollectibleTypes;
 import maps.Continents ;
@@ -113,7 +114,7 @@ public class Game extends JPanel
 	private JPanel mainPanel = this ;
 	private static Point mousePos ;
 	private static GameStates state = GameStates.loading ;
-	private static boolean cheatMode = false ;
+	private static boolean cheatMode = true ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
@@ -1275,10 +1276,15 @@ public class Game extends JPanel
 //		}
 
     	player.getBag().addGold(30000) ;
-//    	for (Spell spell : player.getSpells())
-//    	{
-//    		spell.incLevel(5) ;
-//    	}
+    	for (Spell spell : Player.getAnimalSpells())
+    	{
+    		player.getSpells().add(spell) ;
+    	}
+    	for (Spell spell : player.getSpells())
+    	{
+    		spell.incLevel(5) ;
+    	}
+    	SpellsBar.updateSpells(player.getActiveSpells()) ;
 //
 //    	
 //    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
@@ -1612,8 +1618,6 @@ public class Game extends JPanel
 				player.setCurrentAction("MouseRightClick") ;
         		player.setPos(mousePos) ;
         		
-				player.getFabWindow().addRecipes(allRecipes.subList(0, 10)) ;
-				player.getFabWindow().addRecipes(allRecipes.subList(20, 23)) ;
 				// testGif2.start() ;
 			}
 			// shouldRepaint = true ;
