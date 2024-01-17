@@ -957,7 +957,7 @@ public class Player extends LiveBeing
 		train(new AtkResults(AtkTypes.magical, AtkEffects.none, 0)) ;
 		stats.incNumberMagAtk() ;
 		System.out.println("used spell " + spell.getName());
-		Log.buffs(spell.getBuffs()) ;
+
 		switch (spell.getType())
 		{
 			case support : useSupportSpell(spell) ;

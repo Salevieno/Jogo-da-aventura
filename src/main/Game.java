@@ -141,6 +141,8 @@ public class Game extends JPanel
 	private static NPCType[] NPCTypes ;
 	private static List<Recipe> allRecipes ;
 	private static Item[] allItems ;
+	private static List<Buff> allBuffs ;
+	private static List<Buff> allDebuffs ;
 	private static Spell[] allSpells ;
 	private static Quest[] allQuests ;
 	private static List<Projectiles> projs ;
@@ -351,7 +353,7 @@ public class Game extends JPanel
 
 	}
 
-	private static List<Recipe> LoadCraftingRecipes()
+	private static List<Recipe> loadCraftingRecipes()
 	{
 		List<Recipe> recipes = new ArrayList<>() ;
 		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "craftRecipes.json") ;
@@ -383,7 +385,7 @@ public class Game extends JPanel
 		return recipes ;
 	}
 
-	private static NPCType[] initializeNPCTypes(Languages language)
+	private static NPCType[] loadNPCTypes(Languages language)
 	{
 		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "NPCTypes.csv") ;
 		NPCType[] npcType = new NPCType[input.size()] ;
@@ -422,7 +424,7 @@ public class Game extends JPanel
 		return npcType ;
 	}
 
-	private static BuildingType[] initializeBuildingTypes()
+	private static BuildingType[] loadBuildingTypes()
 	{
 		JSONArray input = UtilG.readJsonArray("./json/buildingTypes.json") ;
 		BuildingType[] buildingTypes = new BuildingType[input.size()] ;
@@ -448,7 +450,7 @@ public class Game extends JPanel
 		return buildingTypes ;
 	}
 
-	private static CreatureType[] initializeCreatureTypes(Languages language, int difficultLevel)
+	private static CreatureType[] loadCreatureTypes(Languages language, int difficultLevel)
 	{
 		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
 		CreatureType.setNumberOfCreatureTypes(input.size()) ;
@@ -557,7 +559,7 @@ public class Game extends JPanel
 		return creatureTypes ;
 	}
 
-	private static CityMap[] initializeCityMaps()
+	private static CityMap[] loadCityMaps()
 	{
 		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "mapsCity.json") ;
 		CityMap[] cityMaps = new CityMap[input.size()] ;
@@ -631,7 +633,7 @@ public class Game extends JPanel
 		return cityMaps ;
 	}
 
-	private static FieldMap[] initializeFieldMaps()
+	private static FieldMap[] loadFieldMaps()
 	{
 		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "mapsField.json") ;
 		FieldMap[] fieldMaps = new FieldMap[input.size()] ;
@@ -728,7 +730,7 @@ public class Game extends JPanel
 		return fieldMaps ;
 	}
 
-	private static SpecialMap[] initializeSpecialMaps()
+	private static SpecialMap[] loadSpecialMaps()
 	{
 		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;
 		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
@@ -772,12 +774,12 @@ public class Game extends JPanel
 		return specialMaps ;
 	}
 
-	private static GameMap[] initializeAllMaps()
+	private static GameMap[] loadAllMaps()
 	{
 
-		cityMaps = initializeCityMaps() ;
-		fieldMaps = initializeFieldMaps() ;
-		specialMaps = initializeSpecialMaps() ;
+		cityMaps = loadCityMaps() ;
+		fieldMaps = loadFieldMaps() ;
+		specialMaps = loadSpecialMaps() ;
 		GameMap[] allMaps = new GameMap[cityMaps.length + fieldMaps.length + specialMaps.length] ;
 		for (int i = 0 ; i <= cityMaps.length - 1 ; i += 1)
 		{
@@ -804,18 +806,7 @@ public class Game extends JPanel
 
 	}
 
-	public static void initalizeMapsTest()
-	{
-		allSpells = initializeAllSpells(gameLanguage) ;
-		allItems = initializeAllItems() ;
-		creatureTypes = initializeCreatureTypes(gameLanguage, 1) ;
-		allRecipes = LoadCraftingRecipes() ;
-		NPCTypes = initializeNPCTypes(gameLanguage) ;
-		buildingTypes = initializeBuildingTypes() ;
-		allMaps = initializeAllMaps() ;
-	}
-
-	private static Quest[] initializeQuests(Languages language, int playerJob)
+	private static Quest[] loadQuests(Languages language, int playerJob)
 	{
 		List<String[]> inputs = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
 		Quest[] quests = new Quest[inputs.size()] ;
@@ -862,11 +853,33 @@ public class Game extends JPanel
 		return quests ;
 	}
 
-	private static Spell[] initializeAllSpells(Languages language)
+	private static List<Buff> loadAllBuffs()
+	{
+		List<Buff> buffs = new ArrayList<>() ;
+		List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
+		
+		for (int i = 0 ; i <= spellsBuffsInput.size() - 1 ; i += 1)
+		{
+			buffs.add(Buff.load(spellsBuffsInput.get(i))) ;
+		}
+		return buffs ;
+	}
+	
+	private static List<Buff> loadAllDebuffs()
+	{
+		List<Buff> debuffs = new ArrayList<>() ;
+		List<String[]> spellsDebuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "Debuffs.csv") ;
+		
+		for (int i = 0 ; i <= spellsDebuffsInput.size() - 1 ; i += 1)
+		{
+			debuffs.add(Buff.load(spellsDebuffsInput.get(i))) ;
+		}
+		return debuffs ;
+	}
+	
+	private static Spell[] loadAllSpells(Languages language)
 	{
 		List<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;
-		List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
-		List<String[]> spellsNerfsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsNerfs.csv") ;
 
 		Spell[] allSpells = new Spell[spellTypesInput.size()] ;
 		String[][] info = new String[allSpells.length][2] ;
@@ -875,13 +888,7 @@ public class Game extends JPanel
 		{
 			int id = i ;
 
-			List<Buff> buffs = new ArrayList<>() ;
-			buffs.add(Buff.load(spellsBuffsInput.get(id))) ;
-
-			List<Buff> nerfs = new ArrayList<>() ;
-			nerfs.add(Buff.load(spellsNerfsInput.get(id))) ;
-
-			info[i] = new String[] { spellTypesInput.get(id)[42], spellTypesInput.get(id)[43 + 2 * language.ordinal()] } ;
+			info[i] = new String[] { spellTypesInput.get(id)[44], spellTypesInput.get(id)[45 + 2 * language.ordinal()] } ;
 			String name = spellTypesInput.get(id)[4] ;
 			String job = PlayerJobs.jobFromSpellID(i).toString() ;
 			Image image = UtilS.loadImage("\\Spells\\" + "spell" + job + i + ".png") ;
@@ -919,16 +926,21 @@ public class Game extends JPanel
 					Double.parseDouble(spellTypesInput.get(id)[36]), Double.parseDouble(spellTypesInput.get(id)[37]) } ;
 			double[] silenceMod = new double[] { Double.parseDouble(spellTypesInput.get(id)[38]),
 					Double.parseDouble(spellTypesInput.get(id)[39]), Double.parseDouble(spellTypesInput.get(id)[40]) } ;
-			Elements elem = Elements.valueOf(spellTypesInput.get(id)[41]) ;
 
-			allSpells[i] = new Spell(id, name, image, maxLevel, mpCost, type, preRequisites, buffs, nerfs, atkMod,
+			int buffId = spellTypesInput.get(id)[41].equals("-") ? -1 : Integer.parseInt(spellTypesInput.get(id)[41]) ;
+			int debuffId = spellTypesInput.get(id)[42].equals("-") ? -1 : Integer.parseInt(spellTypesInput.get(id)[42]) ;
+			Buff buffs = buffId == -1 ? null : allBuffs.get(buffId);
+			Buff debuffs = debuffId == -1 ? null : allDebuffs.get(debuffId);
+			Elements elem = Elements.valueOf(spellTypesInput.get(id)[43]) ;
+
+			allSpells[i] = new Spell(id, name, image, maxLevel, mpCost, type, preRequisites, buffs, debuffs, atkMod,
 					defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod,
 					cooldown, duration, elem, info[i]) ;
 		}
 		return allSpells ;
 	}
 
-	private static Item[] initializeAllItems()
+	private static Item[] loadAllItems()
 	{
 		List<Item> allItems = new ArrayList<>() ;
 		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
@@ -1352,42 +1364,44 @@ public class Game extends JPanel
 				return ;
 				
 			case 2:
-				allSpells = initializeAllSpells(gameLanguage) ;
+				allBuffs = loadAllBuffs() ;
+				allDebuffs = loadAllDebuffs() ;
+				allSpells = loadAllSpells(gameLanguage) ;
 				Log.loadTime("spells", initialTime) ;
 				return ;
 				
 			case 3:
-				allItems = initializeAllItems() ;
+				allItems = loadAllItems() ;
 				Log.loadTime("items", initialTime) ;
 				return ;
 				
 			case 4:
-				creatureTypes = initializeCreatureTypes(gameLanguage, difficultLevel) ;
+				creatureTypes = loadCreatureTypes(gameLanguage, difficultLevel) ;
 				Log.loadTime("creature types", initialTime) ;
 				return ;
 				
 			case 5:
-				allRecipes = LoadCraftingRecipes() ;
+				allRecipes = loadCraftingRecipes() ;
 				Log.loadTime("recipes", initialTime) ;
 				return ;
 				
 			case 6:
-				NPCTypes = initializeNPCTypes(gameLanguage) ;
+				NPCTypes = loadNPCTypes(gameLanguage) ;
 				Log.loadTime("npc types", initialTime) ;
 				return ;
 				
 			case 7:
-				buildingTypes = initializeBuildingTypes() ;
+				buildingTypes = loadBuildingTypes() ;
 				Log.loadTime("building types", initialTime) ;
 				return ;
 				
 			case 8:
-				allQuests = initializeQuests(gameLanguage, player.getJob()) ;
+				allQuests = loadQuests(gameLanguage, player.getJob()) ;
 				Log.loadTime("quests", initialTime) ;
 				return ;
 				
 			case 9:
-				allMaps = initializeAllMaps() ;
+				allMaps = loadAllMaps() ;
 				Log.loadTime("maps", initialTime) ;
 				return ;
 				

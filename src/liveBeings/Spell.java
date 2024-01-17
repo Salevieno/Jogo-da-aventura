@@ -22,8 +22,8 @@ public class Spell
 	private int mpCost ;
 	private SpellTypes type ;
 	private Map<Spell, Integer> preRequisites ;
-	private List<Buff> buffs;
-	private List<Buff> nerfs;
+	private Buff buffs;
+	private Buff nerfs;
 	private double[] atkMod ;
 	private double[] defMod ;
 	private double[] dexMod ;
@@ -44,7 +44,7 @@ public class Spell
 	
 	
 	public Spell(int id, String name, Image image, int maxLevel, int mpCost, SpellTypes type, Map<Spell, Integer> preRequisites,
-			List<Buff> buffs, List<Buff> nerfs, double[] atkMod, double[] defMod, double[] dexMod, double[] agiMod,
+			Buff buffs, Buff nerfs, double[] atkMod, double[] defMod, double[] dexMod, double[] agiMod,
 			double[] atkCritMod, double[] defCritMod, double[] stunMod, double[] blockMod, double[] bloodMod,
 			double[] poisonMod, double[] silenceMod, int cooldown, int duration, Elements elem, String[] info)
 	{
@@ -86,7 +86,7 @@ public class Spell
 	public SpellTypes getType() {return type ;}
 	public Map<Spell, Integer> getPreRequisites() {return preRequisites ;}
 	public int getCooldown() {return cooldownCounter.getDuration() ;}
-	public List<Buff> getBuffs() {return buffs ;}
+	public Buff getBuffs() {return buffs ;}
 //	public List<Buff> getNerfs() {return nerfs ;}
 	public double[] getAtkMod() {return atkMod ;}
 	public double[] getDefMod() {return defMod ;}
@@ -196,10 +196,7 @@ public class Spell
 		int mult = activate ? 1 : -1 ;
 		System.out.println("buff mult " + mult);
 		System.out.println("BA = " + receiver.getBA());
-		for (Buff buff : buffs)
-		{
-			applyBuff(mult, receiver, buff) ;
-		}
+		applyBuff(mult, receiver, buffs) ;
 		System.out.println("new BA = " + receiver.getBA());
 	}
 
@@ -207,10 +204,7 @@ public class Spell
 	{
 		int mult = activate ? 1 : -1 ;
 
-		for (Buff nerf : nerfs)
-		{
-			applyBuff(mult, receiver, nerf) ;
-		}
+		applyBuff(mult, receiver, nerfs) ;
 	}
 	
 	@Override
