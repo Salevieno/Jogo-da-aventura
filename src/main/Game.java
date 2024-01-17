@@ -87,6 +87,7 @@ import simulations.PlayerEvolutionSimulation ;
 import utilities.Align ;
 import utilities.Elements ;
 import utilities.GameStates ;
+import utilities.Log;
 import utilities.Scale ;
 import utilities.TimeCounter;
 import utilities.UtilG ;
@@ -1333,7 +1334,7 @@ public class Game extends JPanel
 	private static void initialize(int step)
 	{
 		
-		long elapsedTime = System.nanoTime();
+		long initialTime = System.nanoTime();
 
 		switch (step)
 		{
@@ -1342,52 +1343,52 @@ public class Game extends JPanel
 				sky = new Sky() ;
 				screen.setBorders(new int[] { 0, Sky.height, screen.getSize().width, screen.getSize().height }) ;
 				screen.setMapCenter() ;
-				System.out.println("Loaded initial stuff in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				Log.loadTime("initial stuff", initialTime) ;
 				return ;
 				
 			case 1:
 				loadAllText() ;
-				System.out.println("Loaded text in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				Log.loadTime("text", initialTime) ;
 				return ;
 				
 			case 2:
 				allSpells = initializeAllSpells(gameLanguage) ;
-				System.out.println("Loaded spells in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				Log.loadTime("spells", initialTime) ;
 				return ;
 				
 			case 3:
 				allItems = initializeAllItems() ;
-				System.out.println("Loaded items in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				Log.loadTime("items", initialTime) ;
 				return ;
 				
 			case 4:
 				creatureTypes = initializeCreatureTypes(gameLanguage, difficultLevel) ;
-				System.out.println("Loaded creature types in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				Log.loadTime("creature types", initialTime) ;
 				return ;
 				
 			case 5:
 				allRecipes = LoadCraftingRecipes() ;
-				System.out.println("Loaded recipes in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				Log.loadTime("recipes", initialTime) ;
 				return ;
 				
 			case 6:
 				NPCTypes = initializeNPCTypes(gameLanguage) ;
-				System.out.println("Loaded npc types in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				Log.loadTime("npc types", initialTime) ;
 				return ;
 				
 			case 7:
 				buildingTypes = initializeBuildingTypes() ;
-				System.out.println("Loaded building types in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				Log.loadTime("building types", initialTime) ;
 				return ;
 				
 			case 8:
 				allQuests = initializeQuests(gameLanguage, player.getJob()) ;
-				System.out.println("Loaded quests in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				Log.loadTime("quests", initialTime) ;
 				return ;
 				
 			case 9:
 				allMaps = initializeAllMaps() ;
-				System.out.println("Loaded maps in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				Log.loadTime("maps", initialTime) ;
 				return ;
 				
 			case 10:
@@ -1404,7 +1405,7 @@ public class Game extends JPanel
 				{
 					Music.SwitchMusic(player.getMap().getMusic()) ;
 				}
-				System.out.println("Loaded last stuff in " + (System.nanoTime() - elapsedTime) / 1000000) ;
+				Log.loadTime("last stuff", initialTime) ;
 				return ;
 			
 			default: return ;
