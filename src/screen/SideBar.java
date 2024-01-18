@@ -22,6 +22,7 @@ import liveBeings.Spell;
 import liveBeings.SpellsBar;
 import main.Game;
 import utilities.Align;
+import utilities.Log;
 import utilities.UtilG;
 import utilities.UtilS;
 

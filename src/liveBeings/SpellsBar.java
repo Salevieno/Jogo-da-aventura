@@ -83,7 +83,7 @@ public abstract class SpellsBar
 //		DP.drawImage(image, barPos, Align.bottomLeft) ;
 		
 		DP.drawText(titlePos, Align.topCenter, Draw.stdAngle, title, titlefont, Game.colorPalette[5]) ;
-		
+
 		for (int i = 0 ; i <= spells.size() - 1 ; i += 1)
 		{
 			Spell spell = spells.get(i) ;

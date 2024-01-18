@@ -291,7 +291,6 @@ public class Player extends LiveBeing
 	
 	public void InitializeSpells()
     {
-		
 		spells = new ArrayList<>() ;	
     	int numberSpells = NumberOfSpellsPerJob[job] ;
 

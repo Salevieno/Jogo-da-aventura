@@ -32,7 +32,7 @@ public class TimeCounter
 
 	public void start() { initialTime = System.nanoTime() * Math.pow(10, -9) ; active = true ;}
 	public void stop() { active = false ;}
-	public void reset() { initialTime = System.nanoTime() * Math.pow(10, -9) ;}
+	public void reset() { initialTime = System.nanoTime() * Math.pow(10, -9) ; counter = 0 ;}
 //	public double current()
 //	{
 //		if (!active) { return counter ;}

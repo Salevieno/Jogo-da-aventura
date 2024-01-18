@@ -25,6 +25,7 @@ import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.FrameCounter;
+import utilities.Log;
 import utilities.RelativePos;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -302,7 +303,7 @@ public abstract class LiveBeing
 		{
 			if (spell.isActive())
 			{
-				spell.getDurationCounter().inc() ;
+				Log.counter(spell.getDurationCounter()) ;
 			}
 			if (spell.getDurationCounter().finished())
 			{

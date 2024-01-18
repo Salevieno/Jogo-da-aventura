@@ -3,10 +3,14 @@ package items;
 import java.awt.Image;
 import java.util.List;
 
+import liveBeings.Creature;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
+import main.Battle;
 import main.Game;
 import maps.GroundTypes;
+import utilities.AtkEffects;
+import utilities.Elements;
 import utilities.UtilG;
 import utilities.UtilS;
 
@@ -48,6 +52,15 @@ public class GeneralItem extends Item
 		
 		switch (id)
 		{
+			case 0:
+				if (!(user instanceof Player)) { return ;}
+				if (!((Player) user).isInBattle()) { return ;}
+				
+				Battle.throwItem(user, ((Player) user).getOpponent(), 10, Elements.air) ;
+				((Player) user).getBag().remove(this, 1) ;
+				
+				return ;
+				
 			case 27: 
 			{
 				if (!(user instanceof Player) | !user.isTouching(GroundTypes.water))
@@ -78,7 +91,7 @@ public class GeneralItem extends Item
 				((Player) user).getBag().remove(this, 1) ;
 				((Player) user).getBag().add(AllGeneralItems[32], 1) ;
 			}
-			case 30: user.getPA().getThirst().incCurrentValue(30) ; return ;
+			case 30: user.getPA().getThirst().incCurrentValue(30) ; return ; // TODO esses não estão consumindo o item
 			case 31: user.getPA().getThirst().incCurrentValue(60) ; return ;
 			case 32: user.getPA().getThirst().incCurrentValue(100) ; return ;
 		}

@@ -879,59 +879,59 @@ public class Game extends JPanel
 	
 	private static Spell[] loadAllSpells(Languages language)
 	{
-		List<String[]> spellTypesInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;
+		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;
 
-		Spell[] allSpells = new Spell[spellTypesInput.size()] ;
+		Spell[] allSpells = new Spell[input.size()] ;
 		String[][] info = new String[allSpells.length][2] ;
 
 		for (int i = 0 ; i <= allSpells.length - 1 ; i += 1)
 		{
 			int id = i ;
 
-			info[i] = new String[] { spellTypesInput.get(id)[44], spellTypesInput.get(id)[45 + 2 * language.ordinal()] } ;
-			String name = spellTypesInput.get(id)[4] ;
+			info[i] = new String[] { input.get(id)[44], input.get(id)[45 + 2 * language.ordinal()] } ;
+			String name = input.get(id)[4] ;
 			String job = PlayerJobs.jobFromSpellID(i).toString() ;
 			Image image = UtilS.loadImage("\\Spells\\" + "spell" + job + i + ".png") ;
-			int maxLevel = Integer.parseInt(spellTypesInput.get(id)[5]) ;
-			int mpCost = Integer.parseInt(spellTypesInput.get(id)[6]) ;
-			SpellTypes type = SpellTypes.valueOf(spellTypesInput.get(id)[7]) ;
+			int maxLevel = Integer.parseInt(input.get(id)[5]) ;
+			int mpCost = Integer.parseInt(input.get(id)[6]) ;
+			SpellTypes type = SpellTypes.valueOf(input.get(id)[7]) ;
 			Map<Spell, Integer> preRequisites = new HashMap<>() ;
 			for (int p = 0 ; p <= 6 - 1 ; p += 2)
 			{
-				if (-1 < Integer.parseInt(spellTypesInput.get(id)[p + 8]))
+				if (-1 < Integer.parseInt(input.get(id)[p + 8]))
 				{
-					preRequisites.put(allSpells[Integer.parseInt(spellTypesInput.get(id)[p + 8])],
-							Integer.parseInt(spellTypesInput.get(id)[p + 9])) ;
+					preRequisites.put(allSpells[Integer.parseInt(input.get(id)[p + 8])],
+							Integer.parseInt(input.get(id)[p + 9])) ;
 				}
 			}
-			int cooldown = Integer.parseInt(spellTypesInput.get(id)[14]) ;
-			int duration = Integer.parseInt(spellTypesInput.get(id)[15]) ;
-			double[] atkMod = new double[] { Double.parseDouble(spellTypesInput.get(id)[16]),
-					Double.parseDouble(spellTypesInput.get(id)[17]) } ;
-			double[] defMod = new double[] { Double.parseDouble(spellTypesInput.get(id)[18]),
-					Double.parseDouble(spellTypesInput.get(id)[19]) } ;
-			double[] dexMod = new double[] { Double.parseDouble(spellTypesInput.get(id)[20]),
-					Double.parseDouble(spellTypesInput.get(id)[21]) } ;
-			double[] agiMod = new double[] { Double.parseDouble(spellTypesInput.get(id)[22]),
-					Double.parseDouble(spellTypesInput.get(id)[23]) } ;
-			double[] atkCritMod = new double[] { Double.parseDouble(spellTypesInput.get(id)[24]) } ;
-			double[] defCritMod = new double[] { Double.parseDouble(spellTypesInput.get(id)[25]) } ;
-			double[] stunMod = new double[] { Double.parseDouble(spellTypesInput.get(id)[26]),
-					Double.parseDouble(spellTypesInput.get(id)[27]), Double.parseDouble(spellTypesInput.get(id)[28]) } ;
-			double[] blockMod = new double[] { Double.parseDouble(spellTypesInput.get(id)[29]),
-					Double.parseDouble(spellTypesInput.get(id)[30]), Double.parseDouble(spellTypesInput.get(id)[31]) } ;
-			double[] bloodMod = new double[] { Double.parseDouble(spellTypesInput.get(id)[32]),
-					Double.parseDouble(spellTypesInput.get(id)[33]), Double.parseDouble(spellTypesInput.get(id)[34]) } ;
-			double[] poisonMod = new double[] { Double.parseDouble(spellTypesInput.get(id)[35]),
-					Double.parseDouble(spellTypesInput.get(id)[36]), Double.parseDouble(spellTypesInput.get(id)[37]) } ;
-			double[] silenceMod = new double[] { Double.parseDouble(spellTypesInput.get(id)[38]),
-					Double.parseDouble(spellTypesInput.get(id)[39]), Double.parseDouble(spellTypesInput.get(id)[40]) } ;
+			int cooldown = Integer.parseInt(input.get(id)[14]) ;
+			int duration = Integer.parseInt(input.get(id)[15]) ;
+			double[] atkMod = new double[] { Double.parseDouble(input.get(id)[16]),
+					Double.parseDouble(input.get(id)[17]) } ;
+			double[] defMod = new double[] { Double.parseDouble(input.get(id)[18]),
+					Double.parseDouble(input.get(id)[19]) } ;
+			double[] dexMod = new double[] { Double.parseDouble(input.get(id)[20]),
+					Double.parseDouble(input.get(id)[21]) } ;
+			double[] agiMod = new double[] { Double.parseDouble(input.get(id)[22]),
+					Double.parseDouble(input.get(id)[23]) } ;
+			double[] atkCritMod = new double[] { Double.parseDouble(input.get(id)[24]) } ;
+			double[] defCritMod = new double[] { Double.parseDouble(input.get(id)[25]) } ;
+			double[] stunMod = new double[] { Double.parseDouble(input.get(id)[26]),
+					Double.parseDouble(input.get(id)[27]), Double.parseDouble(input.get(id)[28]) } ;
+			double[] blockMod = new double[] { Double.parseDouble(input.get(id)[29]),
+					Double.parseDouble(input.get(id)[30]), Double.parseDouble(input.get(id)[31]) } ;
+			double[] bloodMod = new double[] { Double.parseDouble(input.get(id)[32]),
+					Double.parseDouble(input.get(id)[33]), Double.parseDouble(input.get(id)[34]) } ;
+			double[] poisonMod = new double[] { Double.parseDouble(input.get(id)[35]),
+					Double.parseDouble(input.get(id)[36]), Double.parseDouble(input.get(id)[37]) } ;
+			double[] silenceMod = new double[] { Double.parseDouble(input.get(id)[38]),
+					Double.parseDouble(input.get(id)[39]), Double.parseDouble(input.get(id)[40]) } ;
 
-			int buffId = spellTypesInput.get(id)[41].equals("-") ? -1 : Integer.parseInt(spellTypesInput.get(id)[41]) ;
-			int debuffId = spellTypesInput.get(id)[42].equals("-") ? -1 : Integer.parseInt(spellTypesInput.get(id)[42]) ;
+			int buffId = input.get(id)[41].equals("-") ? -1 : Integer.parseInt(input.get(id)[41]) ;
+			int debuffId = input.get(id)[42].equals("-") ? -1 : Integer.parseInt(input.get(id)[42]) ;
 			Buff buffs = buffId == -1 ? null : allBuffs.get(buffId);
 			Buff debuffs = debuffId == -1 ? null : allDebuffs.get(debuffId);
-			Elements elem = Elements.valueOf(spellTypesInput.get(id)[43]) ;
+			Elements elem = Elements.valueOf(input.get(id)[43]) ;
 
 			allSpells[i] = new Spell(id, name, image, maxLevel, mpCost, type, preRequisites, buffs, debuffs, atkMod,
 					defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod,
@@ -1281,18 +1281,23 @@ public class Game extends JPanel
     	player.setMap(fieldMaps[1]) ;
 //    	player.setPos(new Point(393, 140)) ;
 
-    	letThereBePet() ;
+//    	letThereBePet() ;
 
 //		for (int i = 0 ; i <= fieldMaps.length - 1 ; i += 1)
 //		{
 //			player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
 //		}
 
+
+		player.getPA().getLife().incMaxValue(1000) ;
+		player.getPA().getMp().incMaxValue(1000); ;	
+		player.getBA().getPhyAtk().incBaseValue(1000) ;
+		player.getBA().getMagAtk().incBaseValue(1000) ;
+		player.getBA().getPhyDef().incBaseValue(1000) ;
+		player.getBA().getMagDef().incBaseValue(1000) ;
+		player.getBA().getAgi().incBaseValue(1000) ;
+		player.getBA().getDex().incBaseValue(1000) ;
     	player.getBag().addGold(30000) ;
-    	for (Spell spell : Player.getAnimalSpells())
-    	{
-    		player.getSpells().add(spell) ;
-    	}
     	for (Spell spell : player.getSpells())
     	{
     		spell.incLevel(5) ;

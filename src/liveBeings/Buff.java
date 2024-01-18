@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import attributes.Attributes;
+import attributes.BasicAttribute;
+import attributes.BasicBattleAttribute;
+import attributes.BattleSpecialAttribute;
 
 public class Buff
 {
@@ -40,6 +43,44 @@ public class Buff
 	public void setChance(Map<Attributes, Double> chance)
 	{
 		this.chance = chance;
+	}
+	
+	public void apply(int mult, int level, LiveBeing receiver)
+	{
+		if (receiver == null) { System.out.println("Tentando usar buffs de magia em ninguém!") ; return ;}
+
+		for (Attributes att : Attributes.values())
+		{
+			if (att.equals(Attributes.exp) | att.equals(Attributes.satiation) | att.equals(Attributes.thirst))
+			{
+				continue ;
+			}
+			
+			BasicAttribute personalAttribute = receiver.getPA().mapAttributes(att) ;
+			if (personalAttribute != null)
+			{
+				double increment = personalAttribute.getMaxValue() * percentIncrease.get(att) + valueIncrease.get(att) ;
+				personalAttribute.incBonus((int) Math.round(increment * level * mult));
+				
+				continue ;
+			}
+			
+			BasicBattleAttribute battleAttribute = receiver.getBA().mapAttributes(att) ;
+			if (battleAttribute != null)
+			{
+				double increment = battleAttribute.getBaseValue() * percentIncrease.get(att) + valueIncrease.get(att) ;
+				battleAttribute.incBonus(Math.round(increment * level * mult));
+
+				continue ;
+			}
+			
+			BattleSpecialAttribute battleSpecialAttribute = receiver.getBA().mapSpecialAttributes(att) ;
+			if (battleSpecialAttribute != null)
+			{
+				battleSpecialAttribute.incAtkChanceBonus(Math.round(percentIncrease.get(att) * level * mult));
+				battleSpecialAttribute.incAtkChanceBonus(Math.round(valueIncrease.get(att) * level * mult));
+			}
+		}
 	}
 	
 	public static Buff load(String[] spellsBuffsInp)

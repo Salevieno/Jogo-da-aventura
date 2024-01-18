@@ -205,7 +205,7 @@ public abstract class Battle
 		double randomMult = UtilG.RandomMult(randomAmp) ;
 		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElems[0], defElems[0], atkElems[2]) ;
 		PrintElement(atkElems[0], atkElems[1], defElems[0], defElems[0], atkElems[2], elemMult) ;
-		System.out.println(randomMult + " " + elemMult + " " + elemMod + " " + damage);
+//		System.out.println(randomMult + " " + elemMult + " " + elemMod + " " + damage);
 		damage = (int) UtilG.Round(randomMult * elemMult * elemMod * damage, 0) ;
 		return damage ;
 	}
@@ -222,6 +222,27 @@ public abstract class Battle
 			}
 		}
 		return status ;
+	}
+	
+	public static void throwItem(LiveBeing attacker, LiveBeing receiver, double itemPower, Elements itemElem)
+	{
+		double atkDex = attacker.getBA().TotalDex() ;
+		double defAgi = receiver.getBA().TotalAgi() ;
+		double atkCrit = attacker.getBA().TotalCritAtkChance() ;
+		double defCrit = receiver.getBA().TotalCritDefChance() ;
+		double defBlock = receiver.getBA().getStatus().getBlock() ;
+		double defPhyDef = receiver.getBA().TotalPhyDef() ;
+		
+		Elements[] atkElems = new Elements[] {itemElem, Elements.neutral, Elements.neutral} ;
+		AtkEffects effect = calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
+		
+		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return ;}
+		
+		int damage = Battle.calcDamage(AtkEffects.hit, itemPower, defPhyDef, atkElems, receiver.defElems(), 1.0) ;
+		receiver.getPA().getLife().decTotalValue(damage) ;
+		AtkResults atkResults = new AtkResults(AtkTypes.physical, effect, damage) ;
+		playDamageAnimation(receiver, atkResults) ;
+		startAtkAnimations(attacker, atkResults.getAtkType()) ;
 	}
 	
 	private static AtkTypes atkTypeFromAction(LiveBeing attacker)
@@ -431,7 +452,7 @@ public abstract class Battle
 		checkSpendArrow(attacker) ;
 		
 		AtkEffects effect = atkResult.getEffect() ;
-		
+		// TODO using mystical inspirations effect = null
 		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResult ;}
 		
 //		if (attacker instanceof Creature) { System.out.println(atkResult) ;}
@@ -541,7 +562,7 @@ public abstract class Battle
 		
 		for (Spell spell : player.getSpells())
 		{
-			spell.getEffectCounter().reset() ;
+			spell.getDurationCounter().reset() ;
 		}
 	
 		
