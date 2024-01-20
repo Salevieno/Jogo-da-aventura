@@ -8,7 +8,9 @@ import utilities.UtilS;
 
 public abstract class AttributesWindow extends GameWindow
 {
-	
+
+	public static final Image lifeIcon = UtilS.loadImage("\\Windows\\attIcons\\" + "LifeIcon.png") ;
+	public static final Image mpIcon = UtilS.loadImage("\\Windows\\attIcons\\" + "MPIcon.png") ;
 	public static final Image phyAtkIcon = UtilS.loadImage("\\Windows\\attIcons\\" + "PhyAtkIcon.png") ;
 	public static final Image phyDefIcon = UtilS.loadImage("\\Windows\\attIcons\\" + "PhyDefIcon.png") ;
 	public static final Image magAtkIcon = UtilS.loadImage("\\Windows\\attIcons\\" + "MagAtkIcon.png") ;
@@ -28,6 +30,11 @@ public abstract class AttributesWindow extends GameWindow
 		super("Atributos", new Point(0, 0), image, 0, numberTabs, 0, 0) ;
 	}
 
+	public static Image[] getIcons()
+	{
+		return new Image[] {lifeIcon, mpIcon, phyAtkIcon, magAtkIcon, phyDefIcon, magDefIcon, dexIcon, agiIcon} ;
+	}
+	
 	@Override
 	public void navigate(String action)
 	{

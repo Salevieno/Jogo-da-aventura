@@ -56,9 +56,8 @@ public abstract class SpellsBar
 	public static void updateSpells(List<Spell> newSpells)
 	{
 		spells = newSpells ;
-		Point grid = UtilG.calcGrid(spells.size(), maxNumberRows) ;
-		nRows = grid.x ;
-		nCols = grid.y ;
+		nCols = UtilG.calcGridNumberColumns(spells.size(), maxNumberRows) ;
+		nRows = maxNumberRows ;
 	}
 	
 	public static void displayCooldown(Point slotCenter, Spell spell, DrawPrimitives DP)

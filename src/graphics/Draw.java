@@ -185,6 +185,11 @@ public abstract class Draw
 		}
 	}
 	
+	public static void menu(Point pos, Align align, Dimension size)
+	{
+		DP.drawRoundRect(pos, align, size, 1, Game.colorPalette[3], true);
+	}
+	
 	public static void time(Sky sky)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;

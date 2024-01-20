@@ -2,11 +2,13 @@ package maps;
 
 import java.awt.Point;
 
+import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Item;
 import main.Game;
 import utilities.Align;
 import utilities.FrameCounter;
+import utilities.UtilG;
 
 public class Collectible extends Item
 {
@@ -49,6 +51,11 @@ public class Collectible extends Item
 	private static CollectibleTypes type(int itemID)
 	{
 		return CollectibleTypes.values()[typeID(itemID)] ;
+	}
+
+	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	{
+		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
 	}
 	
 	public void display(DrawPrimitives DP) {DP.drawImage(image, pos, Align.center) ;}

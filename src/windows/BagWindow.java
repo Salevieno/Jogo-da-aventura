@@ -48,10 +48,12 @@ public class BagWindow extends GameWindow
 	private int gold ;
 	private Item itemFetched ;
 	
-	private final int numberSlotMax = 20 ;
 	private final List<GameButton> buttons ;
+	
 
 	private static final Point windowPos = Game.getScreen().pos(0.28, 0.4) ;
+	private static final int numberSlotMax ;
+	private static final List<Point> itemsPos ;
 	private static final Point spacing = new Point(161, 21) ;
 	private static final Dimension itemNameSize = new Dimension(140, 10) ;
 	private static final Image BagImage = UtilS.loadImage("\\Windows\\" + "Bag.png") ;
@@ -62,10 +64,30 @@ public class BagWindow extends GameWindow
 	public static final Image SlotImage = UtilS.loadImage("\\Windows\\" + "BagSlot.png") ;
 	public static final Image SelectedSlotImage = UtilS.loadImage("\\Windows\\" + "BagSelectedSlot.png") ;
 	
+	static
+	{
+		numberSlotMax = 20 ;
+		itemsPos = new ArrayList<>() ;
+		for (int i = 0 ; i <= numberSlotMax - 1; i += 1)
+		{
+			itemsPos.add(calcSlotCenter(i)) ;
+		}
+//		itemsPos = List.of(new Point()) ;
+	}
+	
     public BagWindow()
 	{
-		
-		super("Mochila", windowPos, BagImage, 10, 2, 0, 0) ;
+    	super("Mochila", windowPos, BagImage, 10, 2, 0, 0) ;
+//		new BagWindow(new LinkedHashMap<Potion, Integer>(), new LinkedHashMap<Alchemy, Integer>(),
+//				new LinkedHashMap<Forge, Integer>(), new LinkedHashMap<PetItem, Integer>(),
+//				new LinkedHashMap<Food, Integer>(), new LinkedHashMap<Arrow, Integer>(),
+//				new LinkedHashMap<Equip, Integer>(), new LinkedHashMap<GeneralItem, Integer>(),
+//				new LinkedHashMap<Fab, Integer>(), new LinkedHashMap<QuestItem, Integer>()) ;
+		buttons = List.of(windowUpButton(new Point(windowPos.x + BagImage.getWidth(null) - 10, windowPos.y + BagImage.getHeight(null) + 10), Align.topLeft),
+				windowDownButton(new Point(windowPos.x + 10, windowPos.y + BagImage.getHeight(null) + 10), Align.topLeft)) ;
+
+
+//		super("Mochila", windowPos, BagImage, 10, 2, 0, 0) ;
 		this.pot = new LinkedHashMap<Potion, Integer>() ;
 		this.alch = new LinkedHashMap<Alchemy, Integer>() ;
 		this.forges = new LinkedHashMap<Forge, Integer>() ;
@@ -79,34 +101,29 @@ public class BagWindow extends GameWindow
 		itemsOnWindow = new LinkedHashMap<>() ;
 		gold = 0 ;
 		
-		buttons = List.of(windowUpButton(new Point(windowPos.x + BagImage.getWidth(null) - 10, windowPos.y + BagImage.getHeight(null) + 10), Align.topLeft),
-						windowDownButton(new Point(windowPos.x + 10, windowPos.y + BagImage.getHeight(null) + 10), Align.topLeft)) ;
-		
 	}
     
-	public BagWindow(Map<Potion, Integer> pot, Map<Alchemy, Integer> alch, Map<Forge, Integer> forge, Map<PetItem, Integer> petItem,
-			Map<Food, Integer> food, Map<Arrow, Integer> arrow, Map<Equip, Integer> equip, Map<GeneralItem, Integer> genItem,
-			Map<Fab, Integer> fab, Map<QuestItem, Integer> quest)
-	{
-		
-		super("Mochila", windowPos, BagImage, 10, 2, 0, 0) ;
-		this.pot = pot ;
-		this.alch = alch ;
-		this.forges = forge ;
-		this.petItems = petItem ;
-		this.foods = food ;
-		this.arrows = arrow ;
-		this.equips = equip ;
-		this.genItems = genItem ;
-		this.fabItems = fab ;
-		this.questItems = quest ;
-		itemsOnWindow = new LinkedHashMap<>() ;
-		gold = 0 ;
-		
-		buttons = List.of(windowUpButton(new Point(windowPos.x + BagImage.getWidth(null) - 10, windowPos.y + BagImage.getHeight(null) + 10), Align.topLeft),
-						windowDownButton(new Point(windowPos.x + 10, windowPos.y + BagImage.getHeight(null) + 10), Align.topLeft)) ;
-		
-	}
+//	private BagWindow(Map<Potion, Integer> pot, Map<Alchemy, Integer> alch, Map<Forge, Integer> forge, Map<PetItem, Integer> petItem,
+//			Map<Food, Integer> food, Map<Arrow, Integer> arrow, Map<Equip, Integer> equip, Map<GeneralItem, Integer> genItem,
+//			Map<Fab, Integer> fab, Map<QuestItem, Integer> quest)
+//	{
+//		
+//		super("Mochila", windowPos, BagImage, 10, 2, 0, 0) ;
+//		this.pot = pot ;
+//		this.alch = alch ;
+//		this.forges = forge ;
+//		this.petItems = petItem ;
+//		this.foods = food ;
+//		this.arrows = arrow ;
+//		this.equips = equip ;
+//		this.genItems = genItem ;
+//		this.fabItems = fab ;
+//		this.questItems = quest ;
+//		itemsOnWindow = new LinkedHashMap<>() ;
+//		gold = 0 ;
+//		buttons = List.of(windowUpButton(new Point(windowPos.x + BagImage.getWidth(null) - 10, windowPos.y + BagImage.getHeight(null) + 10), Align.topLeft),
+//				windowDownButton(new Point(windowPos.x + 10, windowPos.y + BagImage.getHeight(null) + 10), Align.topLeft)) ;
+//	}
 
 	public Map<Potion, Integer> getPotions() {return pot ;}
 	public Map<Alchemy, Integer> getAlchemy() {return alch ;}
@@ -122,6 +139,16 @@ public class BagWindow extends GameWindow
 	public Item getItemFetched() { return itemFetched ;}
 	
 	public void setItemFetched(Item itemFetched) { this.itemFetched = itemFetched ;}
+
+	private static Point calcSlotCenter(int itemID)
+	{
+		int row = itemID % ( numberSlotMax / 2) ;
+		int col = itemID / ( numberSlotMax / 2) ;
+		int slotW = SlotImage.getWidth(null) ;
+		int slotH = SlotImage.getHeight(null) ;
+		Point offset = new Point(70 + border + slotW / 2, border + padding + 2 + slotH / 2) ;
+		return UtilG.Translate(windowPos, offset.x + col * spacing.x, offset.y + row * spacing.y) ;
+	}
 	
 	public void navigate(String action)
 	{
@@ -640,22 +667,7 @@ public class BagWindow extends GameWindow
 		
 		return value ;
 	}
-	
-	private Point calcSlotCenter(int itemID)
-	{
-		int row = itemID % ( numberSlotMax / 2) ;
-		int col = itemID / ( numberSlotMax / 2) ;
-		int slotW = SlotImage.getWidth(null) ;
-		int slotH = SlotImage.getHeight(null) ;
-		Point offset = new Point(70 + border + slotW / 2, border + padding + 2 + slotH / 2) ;
-		return UtilG.Translate(windowPos, offset.x + col * spacing.x, offset.y + row * spacing.y) ;
-	}
-	
-	private Point calcTextCenterLeft(Point slotCenter)
-	{
-		return new Point(slotCenter.x + SlotImage.getWidth(null) / 2 + 5, slotCenter.y) ;
-	}
-	
+		
 	public Item itemHovered(Point mousePos)
 	{
 		itemsOnWindow = getItemsOnWindow() ;		
@@ -664,7 +676,7 @@ public class BagWindow extends GameWindow
 
 		for (int i = 0 ; i <= numberItemsDisplayed - 1; i += 1)
 		{
-			Point slotCenter = calcSlotCenter(i) ;
+			Point slotCenter = itemsPos.get(i) ;
 			Point slotCenterLeft = UtilG.getPosAt(slotCenter, Align.center, Align.centerLeft, UtilG.getSize(SlotImage)) ;
 			if (UtilG.isInside(mousePos, slotCenterLeft, itemNameSize)) { return itemsDisplayed.get(i) ;}
 		}
@@ -701,12 +713,12 @@ public class BagWindow extends GameWindow
 		for (int i = 0 ; i <= numberItemsDisplayed - 1; i += 1)
 		{
 			int itemID = i + window * numberSlotMax ;
-			Point slotCenter = calcSlotCenter(i) ;
+			Point slotCenter = itemsPos.get(i) ; // calcSlotCenter(i) ;
 			Point slotCenterLeft = UtilG.getPosAt(slotCenter, Align.center, Align.centerLeft, UtilG.getSize(SlotImage)) ;
 			String itemText = itemsDisplayed.get(i).getName() + " (x " + amountsDisplayed.get(i) + ")" ;
-			Point textPos = calcTextCenterLeft(slotCenter) ;
+			Point textPos = UtilG.Translate(slotCenterLeft, SlotImage.getWidth(null) + 5, 0) ;
 			checkMouseSelection(mousePos, slotCenterLeft, Align.centerLeft, itemNameSize, itemID) ;
-			Color textColor = getTextColor(itemID == item - window * numberSlotMax) ;
+			Color textColor = getTextColor(itemID == item) ;
 			
 			DP.drawImage(SlotImage, slotCenter, Align.center) ;
 			DP.drawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;

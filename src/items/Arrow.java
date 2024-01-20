@@ -1,12 +1,16 @@
 package items;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.util.List;
 
 import attributes.BattleAttributes;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
+import utilities.Align;
 import utilities.UtilG;
 import utilities.UtilS;
 
@@ -87,6 +91,11 @@ public class Arrow extends Item
 		BA.getPhyAtk().incBonus(atkPower * mult) ;
 	}
 
+	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	{
+		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
+	}
+	
 	@Override
 	public String toString()
 	{

@@ -1,9 +1,13 @@
 package items;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.util.List;
 
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import main.Game;
+import utilities.Align;
 import utilities.UtilG;
 import utilities.UtilS;
 
@@ -42,6 +46,11 @@ public class Forge extends Item
 		if (id % 2 == 1) { return specialRuneDef ;}
 		
 		return null ;
+	}
+
+	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	{
+		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
 	}
 	
 	public String toString()

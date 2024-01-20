@@ -1,12 +1,16 @@
 package items;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.util.List;
 
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
 import maps.GroundTypes;
+import utilities.Align;
 import utilities.Elements;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -105,7 +109,11 @@ public class GeneralItem extends Item
 		}
 				
 	}
-	
+
+	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	{
+		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
+	}
 	
 	@Override
 	public String toString()

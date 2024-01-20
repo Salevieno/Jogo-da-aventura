@@ -1,11 +1,15 @@
 package items;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.util.List;
 
 import attributes.PersonalAttributes;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import liveBeings.LiveBeing;
 import main.Game;
+import utilities.Align;
 import utilities.UtilG;
 import utilities.UtilS;
 
@@ -54,6 +58,11 @@ public class Alchemy extends Item
 		PersonalAttributes PA = target.getPA() ;
 		PA.getLife().incCurrentValue((int) (lifeHeal * PA.getLife().getMaxValue() * powerMult)); ;
 		PA.getMp().incCurrentValue((int) (MPHeal * PA.getMp().getMaxValue() * powerMult)); ;
+	}
+	
+	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	{
+		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
 	}
 
 	@Override

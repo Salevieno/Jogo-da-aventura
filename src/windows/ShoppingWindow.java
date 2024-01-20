@@ -162,6 +162,11 @@ public class ShoppingWindow extends GameWindow
 			DP.drawText(namePos, Align.centerLeft, angle, bagItem.getName(), stdFont, itemColor) ;
 			DP.drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), stdFont, Game.colorPalette[14]) ;
 			DP.drawImage(Player.CoinIcon, coinPos, Align.center) ;
+			
+			if (this.item == itemsOnWindow.indexOf(bagItem))
+			{
+				bagItem.displayInfo(UtilG.Translate(windowPos, -10, 0), Align.topRight, DP) ;
+			}
 			itemPos.y += 23 ;
 		}
 		

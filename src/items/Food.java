@@ -1,11 +1,15 @@
 package items;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.util.List;
 
 import attributes.PersonalAttributes;
+import graphics.Draw;
+import graphics.DrawPrimitives;
 import liveBeings.LiveBeing;
 import main.Game;
+import utilities.Align;
 import utilities.UtilG;
 import utilities.UtilS;
 
@@ -57,6 +61,11 @@ public class Food extends Item
 		PA.getSatiation().incCurrentValue((int) (SatiationHeal / 310.0 * PA.getSatiation().getMaxValue())) ;
 	}
 
+	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	{
+		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
+	}
+	
 	@Override
 	public String toString()
 	{

@@ -462,14 +462,23 @@ public abstract class UtilG
 		return (double)(Math.max(0, 1 - amplitude + 2 * amplitude * Math.random())) ;
 	}
 
-	public static Point calcGrid(int numberItems, int maxNumberRows)
+	public static int calcGridNumberColumns(int numberCells, int maxNumberRows)
 	{
-
-		int nCols = Math.max((int) (Math.ceil(numberItems / (double)maxNumberRows)), 1) ;
-		int nRows = numberItems / nCols + 1 ;
-		
-		return new Point(nRows, nCols) ;
+		return Math.max((int) (Math.ceil(numberCells / (double)maxNumberRows)), 1) ;
 	}
+	
+	public static Point calcGridPos(Point topLeft, int cellID, int numberRows, Point spacing)
+	{
+		return UtilG.Translate(topLeft, spacing.x * (cellID / numberRows), spacing.y * (cellID % numberRows)) ;
+	}
+	
+//	public static Point calcGrid(int numberCells, int maxNumberRows)
+//	{
+//		int nCols = Math.max((int) (Math.ceil(numberCells / (double)maxNumberRows)), 1) ;
+//		int nRows = numberCells / nCols + 1 ;
+//		
+//		return new Point(nRows, nCols) ;
+//	}
 	
 	public static Point offsetForAlignment(Align alignment, Dimension size)
 	{

@@ -1,5 +1,7 @@
 package items;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.Arrays;
@@ -8,6 +10,7 @@ import java.util.List;
 import attributes.AttributeBonus;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
+import graphics.Draw;
 import graphics.DrawPrimitives;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
@@ -17,6 +20,8 @@ import utilities.Elements;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
+import windows.AttributesWindow;
+import windows.BagWindow;
 
 public class Equip extends Item
 {
@@ -311,6 +316,23 @@ public class Equip extends Item
 		applyBonus(user.getPA(), user.getBA(), Equip.getAll()[id], 1) ;
 			
 		user.getElem()[4] = user.hasSuperElement() ? user.getElem()[1] : Elements.neutral ;
+	}
+	
+	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	{
+		DP.drawImage(infoMenu, pos, align) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
+		int numberRows = 4 ;
+		Point topLeftSlotCenter = UtilG.Translate(pos, 18 - UtilG.getSize(infoMenu).width, 18) ;
+		int[] attOrder = new int[] {0, 2, 4, 6, 1, 3, 5, 7} ;
+		for (int i = 0 ; i <= attOrder.length - 1 ; i += 1)
+		{
+			Point imagePos = UtilG.calcGridPos(topLeftSlotCenter, i, numberRows, new Point(90, 23)) ;
+			DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
+			
+			Point textPos = UtilG.Translate(imagePos, 10, 0) ;
+			DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Game.colorPalette[0]) ;
+		}
 	}
 	
 	public void display(Point pos, double angle, Scale scale, Align align, DrawPrimitives DP)
