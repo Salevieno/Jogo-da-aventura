@@ -46,11 +46,14 @@ public class BagWindow extends GameWindow
 	private Map<QuestItem, Integer> questItems ;
 	private Map<Item, Integer> itemsOnWindow ;
 	private int gold ;
+	private Item itemFetched ;
 	
 	private final int numberSlotMax = 20 ;
 	private final List<GameButton> buttons ;
 
 	private static final Point windowPos = Game.getScreen().pos(0.28, 0.4) ;
+	private static final Point spacing = new Point(161, 21) ;
+	private static final Dimension itemNameSize = new Dimension(140, 10) ;
 	private static final Image BagImage = UtilS.loadImage("\\Windows\\" + "Bag.png") ;
 	private static final Image SelectedBag = UtilS.loadImage("\\Windows\\" + "BagSelected.png") ;
 	private static final Image MenuImage = UtilS.loadImage("\\Windows\\" + "BagMenu.png") ;
@@ -116,6 +119,9 @@ public class BagWindow extends GameWindow
 	public Map<Fab, Integer> getFab() {return fabItems ;}
 	public Map<QuestItem, Integer> getQuest() {return questItems ;}
 	public int getGold() {return gold ;}
+	public Item getItemFetched() { return itemFetched ;}
+	
+	public void setItemFetched(Item itemFetched) { this.itemFetched = itemFetched ;}
 	
 	public void navigate(String action)
 	{
@@ -635,6 +641,37 @@ public class BagWindow extends GameWindow
 		return value ;
 	}
 	
+	private Point calcSlotCenter(int itemID)
+	{
+		int row = itemID % ( numberSlotMax / 2) ;
+		int col = itemID / ( numberSlotMax / 2) ;
+		int slotW = SlotImage.getWidth(null) ;
+		int slotH = SlotImage.getHeight(null) ;
+		Point offset = new Point(70 + border + slotW / 2, border + padding + 2 + slotH / 2) ;
+		return UtilG.Translate(windowPos, offset.x + col * spacing.x, offset.y + row * spacing.y) ;
+	}
+	
+	private Point calcTextCenterLeft(Point slotCenter)
+	{
+		return new Point(slotCenter.x + SlotImage.getWidth(null) / 2 + 5, slotCenter.y) ;
+	}
+	
+	public Item itemHovered(Point mousePos)
+	{
+		itemsOnWindow = getItemsOnWindow() ;		
+		List<Item> itemsDisplayed = new ArrayList<>(itemsOnWindow.keySet()) ;
+		int numberItemsDisplayed = Math.min(numberSlotMax, itemsDisplayed.size()) ;
+
+		for (int i = 0 ; i <= numberItemsDisplayed - 1; i += 1)
+		{
+			Point slotCenter = calcSlotCenter(i) ;
+			Point slotCenterLeft = UtilG.getPosAt(slotCenter, Align.center, Align.centerLeft, UtilG.getSize(SlotImage)) ;
+			if (UtilG.isInside(mousePos, slotCenterLeft, itemNameSize)) { return itemsDisplayed.get(i) ;}
+		}
+		
+		return null ;
+	}
+	
 	public void display(Point mousePos, DrawPrimitives DP)
 	{
 		String[] menuNames = Game.allText.get(TextCategories.bagMenus) ;
@@ -655,35 +692,28 @@ public class BagWindow extends GameWindow
 		// draw bag
 		DP.drawImage(tab == 0 ? image : SelectedBag, windowPos, Align.topLeft) ;
 		
-		// draw items
-		int slotW = SlotImage.getWidth(null) ;
-		int slotH = SlotImage.getHeight(null) ;
-		int itemID = window * numberSlotMax ;
-		
+		// draw items		
 		itemsOnWindow = getItemsOnWindow() ;		
 		List<Item> itemsDisplayed = new ArrayList<>(itemsOnWindow.keySet()) ;
 		List<Integer> amountsDisplayed = new ArrayList<>(itemsOnWindow.values()) ;
+		int numberItemsDisplayed = Math.min(numberSlotMax, itemsDisplayed.size()) ;
 		
-		for (int i = 0 ; i <= itemsDisplayed.size() - 1; i += 1)
+		for (int i = 0 ; i <= numberItemsDisplayed - 1; i += 1)
 		{
-			if ((window + 1) * numberSlotMax <= itemID) { break ;}
-			
-			int row = (itemID - window * numberSlotMax) % ( numberSlotMax / 2) ;
-			int col = (itemID - window * numberSlotMax) / ( numberSlotMax / 2) ;
-			Point slotCenter = UtilG.Translate(windowPos, 70 + 6 + slotW / 2 + col * (140 + slotW), border + padding + 2 + slotH / 2 + row * 21) ;
+			int itemID = i + window * numberSlotMax ;
+			Point slotCenter = calcSlotCenter(i) ;
+			Point slotCenterLeft = UtilG.getPosAt(slotCenter, Align.center, Align.centerLeft, UtilG.getSize(SlotImage)) ;
 			String itemText = itemsDisplayed.get(i).getName() + " (x " + amountsDisplayed.get(i) + ")" ;
-			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
-			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), itemID) ;
-			Color textColor = getTextColor(itemID == item) ;
+			Point textPos = calcTextCenterLeft(slotCenter) ;
+			checkMouseSelection(mousePos, slotCenterLeft, Align.centerLeft, itemNameSize, itemID) ;
+			Color textColor = getTextColor(itemID == item - window * numberSlotMax) ;
 			
 			DP.drawImage(SlotImage, slotCenter, Align.center) ;
 			DP.drawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
 			Draw.textUntil(textPos, Align.centerLeft, Draw.stdAngle, itemText, stdFont, textColor, 10, mousePos) ;
-			itemID += 1 ;
 		}
 		
 		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos, DP)) ;
-//		DP.DrawWindowArrows(UtilG.Translate(windowPos, 0, size.height + 5), size.width, window, numberWindows) ;
 		
 	}
 	

@@ -62,6 +62,7 @@ import items.Recipe ;
 import liveBeings.Buff ;
 import liveBeings.Creature ;
 import liveBeings.CreatureType ;
+import liveBeings.HotKeysBar;
 import liveBeings.LiveBeingStates ;
 import liveBeings.LiveBeingStatus ;
 import liveBeings.MovingAnimations ;
@@ -1255,6 +1256,11 @@ public class Game extends JPanel
 		{
 			updateProjectiles() ;
 		}
+		
+		if (player.getBag().getItemFetched() != null)
+		{
+			DP.drawImage(player.getBag().getItemFetched().getImage(), mousePos, Align.center) ;
+		}
 
 		player.resetAction() ;
 
@@ -1607,7 +1613,27 @@ public class Game extends JPanel
 		@Override
 		public void mouseClicked(MouseEvent evt)
 		{
-		}
+			//		state = GameStates.opening ;
+//			shouldRepaint = true ;
+//			Player.levelUpGif.play(mousePos, Align.center, DP);
+//			Opening.openingGif.getTimeCounter().reset(); ;
+				if (evt.getButton() == 1) // Left click
+				{
+					player.setCurrentAction("LeftClick") ;
+
+//	        		TestingAnimations.runTests(ani) ;
+					// testGif.start() ;
+				}
+				if (evt.getButton() == 3) // Right click
+				{
+					player.setCurrentAction("MouseRightClick") ;
+	        		player.setPos(mousePos) ;
+	        		
+					// testGif2.start() ;
+				}
+				// shouldRepaint = true ;
+//				System.out.println(UtilG.Round(mousePos.x / 600.0, 2) + "," + UtilG.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;
+			}
 
 		@Override
 		public void mouseEntered(MouseEvent arg0)
@@ -1622,31 +1648,23 @@ public class Game extends JPanel
 		@Override
 		public void mousePressed(MouseEvent evt)
 		{
-//		state = GameStates.opening ;
-//		shouldRepaint = true ;
-//		Player.levelUpGif.play(mousePos, Align.center, DP);
-//		Opening.openingGif.getTimeCounter().reset(); ;
-			if (evt.getButton() == 1) // Left click
+			if (player.getBag().isOpen())
 			{
-				player.setCurrentAction("LeftClick") ;
-
-//        		TestingAnimations.runTests(ani) ;
-				// testGif.start() ;
+				player.getBag().setItemFetched(player.getBag().itemHovered(mousePos)) ;
 			}
-			if (evt.getButton() == 3) // Right click
-			{
-				player.setCurrentAction("MouseRightClick") ;
-        		player.setPos(mousePos) ;
-        		
-				// testGif2.start() ;
-			}
-			// shouldRepaint = true ;
-//			System.out.println(UtilG.Round(mousePos.x / 600.0, 2) + "," + UtilG.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e)
 		{
+			int hotKeySlotHovered = HotKeysBar.slotHovered(mousePos) ;
+			
+			if (-1 < hotKeySlotHovered)
+			{
+				player.getHotItems()[hotKeySlotHovered] = player.getBag().getItemFetched() ;
+			}
+
+			player.getBag().setItemFetched(null) ;
 		}
 	}
 

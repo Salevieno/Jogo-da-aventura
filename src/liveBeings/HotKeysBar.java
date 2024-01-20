@@ -22,6 +22,22 @@ public class HotKeysBar
 	
 	public static final Image slotImage = UtilS.loadImage("\\SideBar\\" + "Slot.png") ;
 
+	public static int slotHovered(Point mousePos)
+	{
+		Point barTopLeft = new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70) ;
+		Dimension slotSize = new Dimension(slotImage.getWidth(null), slotImage.getHeight(null)) ;
+		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
+		{
+			Point slotCenter = UtilG.Translate(barTopLeft, 10, 10 + 20 * i) ;
+			if (UtilG.isInside(mousePos, UtilG.Translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize))
+			{
+				return i ;
+			}
+		}
+		
+		return -1 ;
+	}
+	
 	public static void display(Item[] hotItems, Point mousePos, DrawPrimitives DP)
 	{
 		Point barTopLeft = new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70) ;
