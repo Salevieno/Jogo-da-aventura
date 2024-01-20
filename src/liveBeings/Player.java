@@ -1268,7 +1268,13 @@ public class Player extends LiveBeing
 		return new AtkResults(AtkTypes.magical, effect, damage) ;
 		
 	}
-		
+	
+	private void throwItem(GeneralItem item)
+	{
+		Battle.throwItem(this, opponent, item.getPower(), item.getElem()) ;
+		bag.remove(item, 1) ;
+	}
+	
 	public void useItem(Item item)
 	{
 		if (item == null) { return ;}
@@ -1333,6 +1339,13 @@ public class Player extends LiveBeing
 		if (item instanceof GeneralItem)
 		{
 			GeneralItem genItem = (GeneralItem) item ;
+			
+			if (isInBattle() & genItem.isThrowable())
+			{
+				throwItem(genItem) ;
+				
+				return ;
+			}
 			
 			genItem.use(this) ;
 			

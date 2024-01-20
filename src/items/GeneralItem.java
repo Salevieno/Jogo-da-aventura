@@ -3,19 +3,19 @@ package items;
 import java.awt.Image;
 import java.util.List;
 
-import liveBeings.Creature;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
-import main.Battle;
 import main.Game;
 import maps.GroundTypes;
-import utilities.AtkEffects;
 import utilities.Elements;
 import utilities.UtilG;
 import utilities.UtilS;
 
 public class GeneralItem extends Item
 {
+	private double power ;
+	private Elements elem ;
+	
 	private static GeneralItem[] AllGeneralItems ;
 	
 	private static final Image generalItemIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconGenItem.png") ;
@@ -35,12 +35,20 @@ public class GeneralItem extends Item
 		}
 	}
 	
+	public boolean isThrowable() { return 0 < power ;}
+	
 	public GeneralItem(int id, String Name, String Description, int price, double dropChance)
 	{
 		super(id, Name, Description, imageFromID(id), price, dropChance) ;
+		power = 0 ;
+		elem = Elements.neutral ;
 	}
 
 	public static GeneralItem[] getAll() {return AllGeneralItems ;}
+	
+	public double getPower() { return power ;}
+	
+	public Elements getElem() { return elem ;}
 	
 	public static Image imageFromID(int id)
 	{		
@@ -52,15 +60,15 @@ public class GeneralItem extends Item
 		
 		switch (id)
 		{
-			case 0:
-				if (!(user instanceof Player)) { return ;}
-				if (!((Player) user).isInBattle()) { return ;}
-				
-				Battle.throwItem(user, ((Player) user).getOpponent(), 10, Elements.air) ;
-				((Player) user).getBag().remove(this, 1) ;
-				
-				return ;
-				
+//			case 0:
+//				if (!(user instanceof Player)) { return ;}
+//				if (!((Player) user).isInBattle()) { return ;}
+//				
+//				Battle.throwItem(user, ((Player) user).getOpponent(), 10, Elements.air) ;
+//				((Player) user).getBag().remove(this, 1) ;
+//				
+//				return ;
+//				
 			case 27: 
 			{
 				if (!(user instanceof Player) | !user.isTouching(GroundTypes.water))
