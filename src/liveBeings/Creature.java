@@ -163,7 +163,7 @@ public class Creature extends LiveBeing
 
 		Point newPos = calcNewPos(dir, CurrentPos, step) ;
 
-		if (!Game.getScreen().posIsInMap(newPos)) { return ;}
+		if (!Game.getScreen().posIsWithinBorders(newPos)) { return ;}
 		if (!map.groundIsWalkable(newPos, null)) { return ;}
 
 		setPos(newPos) ;

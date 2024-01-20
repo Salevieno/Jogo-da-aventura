@@ -560,7 +560,7 @@ public class Player extends LiveBeing
 		
 		Point newPos = calcNewPos() ;
 		
-		if (!Game.getScreen().posIsInMap(newPos))
+		if (!Game.getScreen().posIsWithinBorders(newPos))
 		{
 			moveToNewMap(pos, dir, map, step) ;
 

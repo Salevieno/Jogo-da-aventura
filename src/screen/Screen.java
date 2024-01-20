@@ -25,7 +25,7 @@ public class Screen
 	public void calcCenter() {center = new Point(size.width / 2, size.height / 2) ;}
 	public void setMapCenter() {mapCenter = new Point(size.width / 2, (size.height + borders[1]) / 2) ;}
 	
-	public boolean posIsInMap(Point pos)
+	public boolean posIsWithinBorders(Point pos)
 	{
 		return (borders[0] < pos.x & borders[1] < pos.y & pos.x < borders[2] & pos.y < borders[3]) ;
 	}

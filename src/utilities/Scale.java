@@ -12,4 +12,9 @@ public class Scale
 		this.x = x ;
 		this.y = y ;
 	}
+
+	@Override
+	public String toString() {
+		return "Scale [x=" + x + ", y=" + y + "]";
+	}	
 }

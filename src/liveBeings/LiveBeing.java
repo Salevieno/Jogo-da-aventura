@@ -613,7 +613,7 @@ public abstract class LiveBeing
 			Dimension barSize = new Dimension(5, 35) ;
 			int stroke = 1 ;
 			DP.drawImage(AttImage, topLeft, Align.topLeft) ;
-			Point offset = new Point(36, 40) ;
+			Point offset = new Point(37, 44) ;
 			Point barPos = UtilG.Translate(topLeft, offset.x, offset.y) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{

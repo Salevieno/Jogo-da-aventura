@@ -338,7 +338,7 @@ public abstract class Opening
 			Dimension loadingBarSize = new Dimension(400, 30) ;
 			Dimension loadedBarSize = new Dimension(loadingStep * loadingBarSize.width / 11, loadingBarSize.height) ;
 			DP.drawImage(LoadingGif, loadingTextCenter, Align.center) ;
-			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 1, null, true);
+			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, true);
 			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Game.colorPalette[18], false);
 		}
 		

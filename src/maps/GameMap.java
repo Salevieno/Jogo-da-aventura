@@ -24,6 +24,7 @@ import liveBeings.Player;
 import main.Game;
 import main.Music;
 import main.TextCategories;
+import screen.Sky;
 import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
@@ -525,13 +526,15 @@ public class GameMap
  	
  	public void display(DrawPrimitives DP)
  	{
- 		// TODO choose scale by map size
- 		if (name.contains("Cave"))
- 		{
- 			DP.drawImage(image, Game.getScreen().getCenter(), Align.center) ;
- 			return ;
- 		}
- 		
+// 		Dimension screenSize = Game.getScreen().getSize() ;
+// 		Scale scale = new Scale(screenSize.width / image.getWidth(null), (screenSize.height - Sky.height) / image.getHeight(null)) ;
+// 		System.out.println(scale);
+ 		// 		if (name.contains("Cave"))
+// 		{
+// 			DP.drawImage(image, Game.getScreen().getCenter(), Align.center) ;
+// 			return ;
+// 		}
+// 		
  		if (name.equals("City of the animals"))
  		{
  			DP.drawImage(image, Game.getScreen().getMapCenter(), new Scale(0.5, 0.5), Align.center) ;

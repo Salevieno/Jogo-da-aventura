@@ -413,7 +413,7 @@ public abstract class Draw
 		DP.drawImage(sailorImage, currentPos, Align.center) ;
 		DP.drawImage(playerImage, currentPos, Align.center) ;
 		
-		if (Game.getScreen().posIsInMap(currentPos)) { return ;}
+		if (Game.getScreen().posIsWithinBorders(currentPos)) { return ;}
 		
 		
 //		else
