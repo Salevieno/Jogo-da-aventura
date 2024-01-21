@@ -93,7 +93,7 @@ public class CraftWindow extends GameWindow
 	{
 		String message = messages.get(i) ;
 		Point pos = UtilG.Translate(windowPos, 0, - 30) ;
-		Game.getAnimations().get(12).start(200, new Object[] {pos, message, Game.colorPalette[0]}) ;
+//		Game.getAnimations().get(12).start(200, new Object[] {pos, message, Game.colorPalette[0]}) ;
 	}
 	
 	public void display(Point mousePos, DrawPrimitives DP)

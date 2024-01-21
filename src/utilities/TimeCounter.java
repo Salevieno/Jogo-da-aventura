@@ -28,7 +28,7 @@ public class TimeCounter
 	
 	public double getCounter() { return counter ;}
 	public double getDuration() {return duration ;}	
-	public void setDuration(int duration) { this.duration = duration ;}
+	public void setDuration(double duration) { this.duration = duration ;}
 
 	public void start() { initialTime = System.nanoTime() * Math.pow(10, -9) ; active = true ;}
 	public void stop() { active = false ;}

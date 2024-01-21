@@ -86,6 +86,7 @@ import screen.SideBar ;
 import screen.Sky ;
 import simulations.PlayerEvolutionSimulation ;
 import utilities.Align ;
+import utilities.AtkEffects;
 import utilities.Elements ;
 import utilities.GameStates ;
 import utilities.Log;
@@ -98,6 +99,7 @@ import windows.BankWindow ;
 public class Game extends JPanel
 {
 	// TODO soundtrack
+	// TODO corrigir bug ao se mover para um mapa maior
 	// TODO design das construções
 	// TODO spells
 	// TODO nomes das criaturas
@@ -147,7 +149,7 @@ public class Game extends JPanel
 	private static Spell[] allSpells ;
 	private static Quest[] allQuests ;
 	private static List<Projectiles> projs ;
-	private static List<Animation> animations ;
+//	private static List<Animation> animations ;
 
 	static
 	{
@@ -158,7 +160,7 @@ public class Game extends JPanel
 //		state = GameStates.loading ;
 		colorPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette4.png"), "Normal") ;
 		konamiCodeActive = false ;
-		initializeAnimations() ;
+//		initializeAnimations() ;
 
 		allText = new HashMap<>() ;
 		shouldRepaint = false ;
@@ -189,7 +191,7 @@ public class Game extends JPanel
 	public static List<Recipe> getAllRecipes() { return allRecipes ;}
 	public static Item[] getAllItems() { return allItems ;}
 	public static Spell[] getAllSpells() { return allSpells ;}
-	public static List<Animation> getAnimations() { return animations ;}
+//	public static List<Animation> getAnimations() { return animations ;}
 	public static boolean getShouldRepaint() { return shouldRepaint ;}
 	public static Point getmousePos() { return mousePos ;}
 	
@@ -209,7 +211,7 @@ public class Game extends JPanel
 	public static void playStopTimeGif() { state = GameStates.playingStopTimeGif ;}
 	public static void shouldNotRepaint() { shouldRepaint = false ;}
 
-	public static boolean someAnimationIsActive() { return (animations.get(3).isActive() | animations.get(4).isActive() | animations.get(5).isActive()) ;}
+//	public static boolean someAnimationIsActive() { return (animations.get(3).isActive() | animations.get(4).isActive() | animations.get(5).isActive()) ;}
 
 	private static void loadNPCText(JSONObject textData, Object key, TextCategories catName)
 	{
@@ -285,16 +287,16 @@ public class Game extends JPanel
 
 	}
 
-	private static void initializeAnimations()
-	{
-		animations = new ArrayList<>() ;
-		for (int i = 0 ; i <= 13 - 1 ; i += 1)
-		{
-			Animation ani = new Animation(i) ;
-			animations.add(ani) ;
-		}
-		
-	}
+//	private static void initializeAnimations()
+//	{
+//		animations = new ArrayList<>() ;
+//		for (int i = 0 ; i <= 13 - 1 ; i += 1)
+//		{
+//			Animation ani = new Animation(i) ;
+//			animations.add(ani) ;
+//		}
+//		
+//	}
 
 	private static void checkKonamiCode(List<String> combo)
 	{
@@ -1239,14 +1241,14 @@ public class Game extends JPanel
 
 		if (player.shouldLevelUP())
 		{
-			player.levelUp(animations.get(6)) ;
+//			player.levelUp(animations.get(6)) ;
 		}
 		
 		if (pet != null)
 		{
 			if (pet.shouldLevelUP())
 			{
-				pet.levelUp(animations.get(7)) ;
+//				pet.levelUp(animations.get(7)) ;
 			}	
 		}
 
@@ -1264,16 +1266,17 @@ public class Game extends JPanel
 
 		player.resetAction() ;
 
+		Animation.playAll(DP) ;
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
 
-		for (int i = 0 ; i <= animations.size() - 1 ; i += 1)
-		{
-			animations.get(i).run(DP) ;
+//		for (int i = 0 ; i <= animations.size() - 1 ; i += 1)
+//		{
+//			animations.get(i).run(DP) ;
 //			if (!ani.isActive())
 //			{
 //				animations.remove(ani) ;
 //			}
-		}
+//		}
 //		System.out.println(animations.size());
 
 	}
@@ -1289,10 +1292,10 @@ public class Game extends JPanel
 
 //    	letThereBePet() ;
 
-//		for (int i = 0 ; i <= fieldMaps.length - 1 ; i += 1)
-//		{
-//			player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
-//		}
+		for (int i = 0 ; i <= fieldMaps.length - 1 ; i += 1)
+		{
+			player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType()) ;
+		}
 
 
 		player.getPA().getLife().incMaxValue(1000) ;
@@ -1313,19 +1316,19 @@ public class Game extends JPanel
 //    	
 //    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
-    	for (Item item : Forge.getAll()) { player.getBag().add(item, 1) ;}
-    	for (Item item : PetItem.getAll()) { player.getBag().add(item, 2) ;}
+//    	for (Item item : Forge.getAll()) { player.getBag().add(item, 1) ;}
+//    	for (Item item : PetItem.getAll()) { player.getBag().add(item, 2) ;}
 //    	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
-    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
-    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
 //    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
-    	player.getElem()[4] = Elements.water ;
+//    	player.getElem()[4] = Elements.water ;
 //
     	for (QuestSkills skill : QuestSkills.values())
     	{
-//    		player.getQuestSkills().replace(skill, true) ;
+    		player.getQuestSkills().replace(skill, true) ;
     	}
     	
 //    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
@@ -1486,7 +1489,7 @@ public class Game extends JPanel
 				break ;
 
 			case simulation:
-				PlayerEvolutionSimulation.run(mousePos, animations, DP) ;	
+//				PlayerEvolutionSimulation.run(mousePos, animations, DP) ;	
 				break ;
 
 			case running:
@@ -1628,7 +1631,9 @@ public class Game extends JPanel
 				{
 					player.setCurrentAction("MouseRightClick") ;
 	        		player.setPos(mousePos) ;
-	        		
+//	        		Animation ani = new Animation(0) ;
+	        		Animation.start(0, new Object[] {new Point(200, 200), new Dimension(20, 20), new AtkResults(AtkTypes.physical, AtkEffects.hit, 20), 0, Game.colorPalette[5]}) ;
+	        		Animation.start(1, new Object[] {new Item[] {allItems[0]}}) ;
 					// testGif2.start() ;
 				}
 				// shouldRepaint = true ;

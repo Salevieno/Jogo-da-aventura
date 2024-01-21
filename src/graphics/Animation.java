@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import components.AnimationDisplayFunction;
 import items.Item;
@@ -14,31 +18,56 @@ import main.AtkResults;
 import main.Game;
 import utilities.Align;
 import utilities.Directions;
-import utilities.FrameCounter;
+import utilities.TimeCounter;
 import utilities.UtilG;
 
 public class Animation 
 {
-	private FrameCounter counter ;
-	private boolean isActive ;
+	private TimeCounter counter ;
 	private Object[] vars ;
 	private AnimationDisplayFunction displayFunction ;
 	
-	public Animation(int type)
+	private static final List<Animation> all = new ArrayList<>() ;
+	private static final List<Animation> aniTypes = new ArrayList<>() ;
+	
+	static
 	{
-		counter = new FrameCounter(0, 0) ;
-		isActive = false ;
+		aniTypes.add(new Animation(2)) ;
+		aniTypes.add(new Animation(1)) ;
+	}
+
+	private Animation(Animation ani)
+	{
+		this.counter = new TimeCounter(ani.getCounter().getDuration()) ;
+		this.vars = null ;
+		this.displayFunction = displayFunctionFromType(aniTypes.indexOf(ani)) ;
+	}
+	private Animation(double duration)
+	{
+		counter = new TimeCounter(duration) ;
 		vars = null ;
-		displayFunction = displayFunctionFromType(type) ;
+		displayFunction = displayFunctionFromType(aniTypes.size()) ;
+//		aniTypes.add(this) ;
+//		System.out.println("number of types of animations = " + aniTypes.size()) ;
 	}
 	
-	public FrameCounter getCounter() { return counter ;}
-	public void activate() {isActive = true ;}
-	public void start(int duration, Object[] vars)
+	public List<Animation> getAll() { return all ;}
+	public TimeCounter getCounter() { return counter ;}
+	
+	public static void start(int type, Object[] vars)
 	{
-		isActive = true ;
-		this.vars = vars ;
-		counter.setDuration(duration) ;
+		start(type, aniTypes.get(type).getCounter().getDuration(), vars) ;		
+	}
+	
+	public static void start(int type, double duration, Object[] vars)
+	{
+		Animation ani = new Animation(aniTypes.get(type)) ;
+		all.add(ani) ;
+		ani.getCounter().setDuration(duration) ;
+		ani.vars = vars ;
+		ani.getCounter().start() ;
+//		System.out.println("created ani " + ani);
+//		System.out.println("number of animations = " + all.size()) ;
 	}
 	
 	private AnimationDisplayFunction displayFunctionFromType(int type)
@@ -56,27 +85,7 @@ public class Animation
 					Draw.damageAnimation(pos, atkResults, counter, style, textColor) ;
 				} ;
 				
-//			case 1 :
-//				return (vars, DP) -> {
-//					Point targetPos = (Point) vars[0] ;
-//					Dimension targetSize = (Dimension) vars[1] ;
-//					AtkResults atkResults = (AtkResults) vars[2] ;
-//					int style = (int) vars[3] ;
-//					Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
-//					DP.DrawDamageAnimation(pos, atkResults, counter, style, Game.colorPalette[6]) ;
-//				} ;
-//				
-//			case 2 :
-//				return (vars, DP) -> {
-//					Point targetPos = (Point) vars[0] ;
-//					Dimension targetSize = (Dimension) vars[1] ;
-//					AtkResults atkResults = (AtkResults) vars[2] ;
-//					int style = (int) vars[3] ;
-//					Point pos = new Point(targetPos.x, targetPos.y - targetSize.height - 25) ;
-//					DP.DrawDamageAnimation(pos, atkResults, counter, style, Game.colorPalette[6]) ;
-//				} ;				
-				
-			case 3 :
+			case 1 :
 				return (vars, DP) -> {
 					Item[] itemsObtained = (Item[]) vars[0] ;
 					Draw.winAnimation(counter, itemsObtained) ;
@@ -183,16 +192,20 @@ public class Animation
 			default: return null ;
 		}
 	}
-	
-	public void setDisplayFunction(AnimationDisplayFunction displayFunction) { this.displayFunction = displayFunction ;}
 
-	public boolean isActive() { return isActive ;}
-	 	
-	public void run(DrawPrimitives DP)
-	{	
-		
-		if (!isActive) { return ;}
-		
+	public boolean isActive() { return counter.isActive() ;}
+	
+	public static void playAll(DrawPrimitives DP)
+	{
+		for (int i = 0 ; i <= all.size() - 1; i += 1)
+		{
+			all.get(i).run(DP) ;
+		}
+	}
+	
+	private void run(DrawPrimitives DP)
+	{
+
 		if (counter.finished())
 		{
 			end() ;
@@ -200,21 +213,19 @@ public class Animation
 		}
 
 		displayFunction.act(vars, DP) ;
-		counter.inc() ;
 		
 	}
 	
 	private void end()
 	{
 		counter.reset() ;
-		isActive = false ;
-		Game.getAnimations().remove(this) ;
+		all.remove(this) ;
 	}
 
-	@Override
-	public String toString()
-	{
-		return "Animations [counter=" + counter + ", isActive=" + isActive + ", vars=" + Arrays.toString(vars) + "]";
-	}
+//	@Override
+//	public String toString()
+//	{
+//		return "Animations [counter=" + counter + ", vars=" + Arrays.toString(vars) + "]";
+//	}
 
 }

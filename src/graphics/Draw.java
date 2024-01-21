@@ -23,6 +23,7 @@ import utilities.Align;
 import utilities.AtkEffects;
 import utilities.FrameCounter;
 import utilities.Scale;
+import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.PlayerAttributesWindow;
@@ -217,7 +218,7 @@ public abstract class Draw
 		time(sky) ;
 	}
 
-	public static void damageAnimation(Point initialPos, AtkResults atkResults, FrameCounter counter, int style, Color color)
+	public static void damageAnimation(Point initialPos, AtkResults atkResults, TimeCounter counter, int style, Color color)
 	{
 		AtkEffects effect = atkResults.getEffect() ;
 		
@@ -302,7 +303,7 @@ public abstract class Draw
 		DP.drawImage(TentImage, Pos, Align.center) ;
 	}
 
-	public static void winAnimation(FrameCounter counter, Item[] items)
+	public static void winAnimation(TimeCounter counter, Item[] items)
 	{
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -325,7 +326,7 @@ public abstract class Draw
 		}
 	}
 
-	public static void gainGoldAnimation(FrameCounter counter, int goldObtained)
+	public static void gainGoldAnimation(TimeCounter counter, int goldObtained)
 	{
 		
 		Point pos = Game.getScreen().pos(0.45, 0.1) ;
@@ -343,7 +344,7 @@ public abstract class Draw
 		
 	}
 
-	public static void notEnoughGold(FrameCounter counter)
+	public static void notEnoughGold(TimeCounter counter)
 	{
 
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
@@ -354,11 +355,11 @@ public abstract class Draw
 		
 //		Point textPos = UtilG.Translate(pos, 5, 0) ;
 //		DrawText(textPos, Align.centerLeft, stdAngle, "Você não tem ouro suficiente!", font, titleColor) ;
-		Game.getAnimations().get(12).start(200, new Object[] {pos, "Você não tem ouro suficiente!", Game.colorPalette[0]}) ;
+//		Game.getAnimations().get(12).start(200, new Object[] {pos, "Você não tem ouro suficiente!", Game.colorPalette[0]}) ;
 		
 	}
 
-	public static void quickTextAnimation(Point pos, FrameCounter counter, String text, Color color)
+	public static void quickTextAnimation(Point pos, TimeCounter counter, String text, Color color)
 	{
 
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -370,7 +371,7 @@ public abstract class Draw
 		
 	}
 	
-	public static void levelUpAnimation(FrameCounter counter, double[] AttributeIncrease, int playerLevel, Color textColor)
+	public static void levelUpAnimation(TimeCounter counter, double[] AttributeIncrease, int playerLevel, Color textColor)
 	{
 
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
@@ -476,7 +477,7 @@ public abstract class Draw
 		Draw.gif(FishingGif, pos, Align.center) ;
 	}
 	
-	public static void pterodactileAnimation(FrameCounter counter, Image pterodactile, Image speakingBubble, String[] message)
+	public static void pterodactileAnimation(TimeCounter counter, Image pterodactile, Image speakingBubble, String[] message)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		int screenWidth = screenSize.width ;

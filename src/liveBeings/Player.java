@@ -508,7 +508,7 @@ public class Player extends LiveBeing
 
     	removeCollectibleFromMap(currentCollectible) ;
         finishCollecting() ;
-    	Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), msg, Game.colorPalette[4]}) ;      
+//    	Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), msg, Game.colorPalette[4]}) ;      
 
     }
 	
@@ -580,12 +580,12 @@ public class Player extends LiveBeing
 
 	private void obtainItemsAnimation(List<Item> itemsObtained)
 	{		
-		Game.getAnimations().get(3).start(300, new Object[] {itemsObtained.toArray(new Item[0])}) ;
+//		Game.getAnimations().get(3).start(300, new Object[] {itemsObtained.toArray(new Item[0])}) ;
 	}
 
 	private void obtainGoldAnimation(int amount)
 	{
-		Game.getAnimations().get(10).start(200, new Object[] {amount}) ;
+//		Game.getAnimations().get(10).start(200, new Object[] {amount}) ;
 	}
 	
 	public void engageInFight(Creature Opponent)
@@ -875,7 +875,7 @@ public class Player extends LiveBeing
 			{
 				if (collectLevel[collectible.typeNumber() - 1] + 1 < ((FieldMap) map).getLevel())
 				{
-					Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), "Nível de coleta insuficiente", Game.colorPalette[4]}) ;
+//					Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), "Nível de coleta insuficiente", Game.colorPalette[4]}) ;
 					break ;
 				}
 			}
@@ -932,7 +932,8 @@ public class Player extends LiveBeing
 	
 	public void checkMeet(Point mousePos, DrawPrimitives DP)
 	{
-		if (state == LiveBeingStates.collecting | isInBattle() | Game.someAnimationIsActive()) { return ;}
+		// TODO revive animation active check
+		if (state == LiveBeingStates.collecting | isInBattle()) { return ;} //  | Game.someAnimationIsActive()
 
 		meetWithTreasureChests() ;
 		

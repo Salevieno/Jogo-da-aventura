@@ -289,7 +289,7 @@ public class Equip extends Item
 		if (player.getEquips()[type] == Equip.getAll()[id])
 		{
 			// unequip
-			Game.getAnimations().get(12).start(160, new Object[] {Game.getScreen().pos(0.4, 0.3), "Desequipado!", Game.colorPalette[0]}) ;
+//			Game.getAnimations().get(12).start(160, new Object[] {Game.getScreen().pos(0.4, 0.3), "Desequipado!", Game.colorPalette[0]}) ;
 			applyBonus(user.getPA(), user.getBA(), Equip.getAll()[id], -1) ;
 			user.getElem()[type + 1] = Elements.neutral ;
 			if (Player.setIsFormed(player.getEquips()))
@@ -304,7 +304,7 @@ public class Equip extends Item
 		}
 		
 		// equip
-		Game.getAnimations().get(12).start(160, new Object[] {Game.getScreen().pos(0.4, 0.3), "Equipado!", Game.colorPalette[0]}) ;
+//		Game.getAnimations().get(12).start(160, new Object[] {Game.getScreen().pos(0.4, 0.3), "Equipado!", Game.colorPalette[0]}) ;
 		player.getEquips()[type] = Equip.getAll()[id] ;
 		user.getElem()[type + 1] = Equip.getAll()[id].elem ;				
 		if (Player.setIsFormed(player.getEquips()))

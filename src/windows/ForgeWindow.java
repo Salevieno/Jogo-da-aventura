@@ -66,7 +66,7 @@ public class ForgeWindow extends GameWindow
 		Point pos = UtilG.Translate(windowPos, 0, - 30) ;
 		// TODO animation index is varying when damage animation is removed
 		// create a new animation every time
-		new Animation(12).start(200, new Object[] {pos, message, Game.colorPalette[0]}) ;
+//		new Animation(12).start(200, new Object[] {pos, message, Game.colorPalette[0]}) ;
 	}
 	
 	public void navigate(String action)

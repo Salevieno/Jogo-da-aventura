@@ -101,13 +101,13 @@ public class ShoppingWindow extends GameWindow
 		Item selectedItem = selectedItem() ;
 		if (bag.getGold() < selectedItem.getPrice())
 		{
-			Game.getAnimations().get(11).start(200, new Object[] {});
+//			Game.getAnimations().get(11).start(200, new Object[] {});
 			return ;
 		}
 		
 		bag.add(selectedItem, 1) ;
 		bag.addGold(-selectedItem.getPrice()) ;
-		Game.getAnimations().get(3).start(300, new Object[] {new Item[] {selectedItem}});
+//		Game.getAnimations().get(3).start(300, new Object[] {new Item[] {selectedItem}});
 	}
 	
 	public void sellItem(BagWindow bag)
@@ -120,7 +120,7 @@ public class ShoppingWindow extends GameWindow
 		bag.remove(selectedItem, 1) ;
 		bag.addGold(selectedItem.getPrice()) ;
 		setIemsForSellingMode(bag) ;
-		Game.getAnimations().get(10).start(200, new Object[] {selectedItem.getPrice()}) ;
+//		Game.getAnimations().get(10).start(200, new Object[] {selectedItem.getPrice()}) ;
 
 	}
 	

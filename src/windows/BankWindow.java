@@ -150,7 +150,7 @@ public class BankWindow extends GameWindow
 		Point msgPos = Game.getScreen().pos(0.4, 0.3) ;
 		String msg = "Você não tem ouro suficiente!" ;
 		Color msgColor = Game.colorPalette[0] ;
-		Game.getAnimations().get(12).start(160, new Object[] {msgPos, msg, msgColor}) ; 
+//		Game.getAnimations().get(12).start(160, new Object[] {msgPos, msg, msgColor}) ; 
 	}
 	
 	public void display(Point mousePos, DrawPrimitives DP)

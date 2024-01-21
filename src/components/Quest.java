@@ -130,7 +130,7 @@ public class Quest
 		for (Item item : reqItems.keySet()) { bag.remove(item, 1) ;}
 		for (Item item : rewardItems.keySet()) { bag.add(item, 1) ; System.out.println("added " + item);}
 		giveSkillRewards(skills) ;
-		Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), "Quest completa!", Game.colorPalette[4]}) ;
+//		Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), "Quest completa!", Game.colorPalette[4]}) ;
 		
 		
 		isComplete = true ;

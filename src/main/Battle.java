@@ -93,12 +93,12 @@ public abstract class Battle
 	
 	private static void playDamageAnimation(LiveBeing receiver, AtkResults atkResults)
 	{
-		Animation damageAni = new Animation(0) ;
-		Game.getAnimations().add(damageAni) ;
+//		Animation damageAni = new Animation(0) ;
+//		Game.getAnimations().add(damageAni) ;
 		// TODO atkResults foi null here
 		System.out.println(atkResults) ;
 		Color textColor = atkResults.getAtkType().equals(AtkTypes.magical) ? magAtkColor : phyAtkColor ;
-		damageAni.start(100, new Object[] {receiver.center(), receiver.getSize(), atkResults, damageStyle, textColor}) ;
+//		damageAni.start(100, new Object[] {receiver.center(), receiver.getSize(), atkResults, damageStyle, textColor}) ;
 //		damageAni.forEach(ani -> ani.start(100, new Object[] {receiver.getPos(), receiver.getSize(), atkResults, damageStyle})) ;
 	}
 	

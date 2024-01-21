@@ -346,7 +346,7 @@ public abstract class PlayerEvolutionSimulation
 	}
 	
 	private static void petTrain()
-	{
+	{// TODO check if this is right
 		player.train(new AtkResults(AtkTypes.physical, AtkEffects.hit, 0)) ;
 	}
 	
@@ -737,10 +737,7 @@ public abstract class PlayerEvolutionSimulation
 			}
 		}
 
-		for (Animation ani : animations)
-		{
-			ani.run(DP) ;
-		}
+		Animation.playAll(DP) ;
 		player.resetAction() ;
 	}
 	
