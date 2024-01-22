@@ -348,7 +348,7 @@ public class Pet extends LiveBeing
 		
 		if (attIncAnimation == null) { return ;}
 		
-		attIncAnimation.start(150, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level}) ;
+//		attIncAnimation.start(150, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level}) ;
 	}
 	
 	public double[] calcAttributesIncrease()

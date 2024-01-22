@@ -13,6 +13,8 @@ import items.Item;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.AtkResults;
+import main.AtkTypes;
+import main.Battle;
 import main.Game;
 import main.TextCategories;
 import maps.Continents;
@@ -218,7 +220,7 @@ public abstract class Draw
 		time(sky) ;
 	}
 
-	public static void damageAnimation(Point initialPos, AtkResults atkResults, TimeCounter counter, int style, Color color)
+	public static void damageAnimation(Point initialPos, AtkResults atkResults, TimeCounter counter, int style)
 	{
 		AtkEffects effect = atkResults.getEffect() ;
 		
@@ -232,34 +234,32 @@ public abstract class Draw
 			case hit: message = damage ; break ;
 			case crit: message = damage + "!" ; break ;
 			case block: message = "Block" ;	break ;
-			default: break ;
+			default: message = "" ;
 		}
+//		String m2 = 
+//		switch (effect)
+//		{
+//			case miss: -> "Miss" ;
+//			case hit: -> damage ;
+//			case crit: -> damage + "!" ;
+//			case block: -> "Block" ;
+//			default: -> "" ;
+//		}
 
 		double rate = Math.pow(counter.rate(), 0.6) ;
-//		Point[] movement = new Point[] {
-//				new Point(0, (int) (-20 * rate)),
-//				new Point((int) (Math.pow(8 * rate, 2)), (int) (-20 * rate)),
-//				new Point((int) (Math.pow(rate, 2)), (int) (-20 * rate))
-//		};
 		
-		Point move = new Point() ;
+		Point trajectory = new Point() ;
 		switch (style)
 		{
-			case 1: move = new Point((int) (Math.pow(8 * rate, 2)), (int) (-20 * rate)) ; break ;
-			case 2: move = new Point((int) (Math.pow(rate, 2)), (int) (-20 * rate)) ; break ;
-			default: move = new Point(0, (int) (-20 * rate)) ; break ;
+			case 0: trajectory = new Point(0, (int) (-20 * rate)) ; break ;
+			case 1: trajectory = new Point((int) (Math.pow(8 * rate, 2)), (int) (-20 * rate)) ; break ;
+			default: trajectory = new Point(0, 0) ;
 		}
-				
-//		Point move = switch(effect)
-//				{
-//		case 1 -> new Point((int) (Math.pow(8 * rate, 2)), (int) (-20 * rate)) ;
-//		case 2 -> new Point((int) (Math.pow(rate, 2)), (int) (-20 * rate)) ;
-//		default -> new Point(0, (int) (-20 * rate)) ;
-//				}
 
 		Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
-		Point currentPos = UtilG.Translate(initialPos, move.x, move.y) ;
-		DP.drawText(currentPos, Align.center, stdAngle, message, font, color) ;
+		Point currentPos = UtilG.Translate(initialPos, trajectory) ;
+		Color textColor = atkResults.getAtkType().equals(AtkTypes.magical) ? Battle.magAtkColor : Battle.phyAtkColor ;
+		DP.drawText(currentPos, Align.center, stdAngle, message, font, textColor) ;
 		
 	}
 	
@@ -479,36 +479,33 @@ public abstract class Draw
 	
 	public static void pterodactileAnimation(TimeCounter counter, Image pterodactile, Image speakingBubble, String[] message)
 	{
-		Font font = new Font(Game.MainFontName, Font.BOLD, 15) ;
-		int screenWidth = screenSize.width ;
-		int screenHeight = screenSize.height ;
-		Point currentPos = new Point(screenWidth + pterodactile.getWidth(null)/2, (int)(0.25*screenSize.height)) ;
-		Point messagePos = currentPos ;
+		Font font = DrawPrimitives.stdFont ;
 		int imageWidth = pterodactile.getWidth(null) ;
+		Point pos = new Point(-imageWidth / 2, (int)(0.25*screenSize.height)) ;
 		
-		if (counter.rate() < 0.25)
+		if (counter.rate() <= 0.25)
 		{
-			currentPos.x += -4 * imageWidth * counter.rate() ;
-			currentPos.y += screenHeight * counter.rate() ;
+			pos.x += 4 * counter.rate() * (screenSize.width / 2 + imageWidth / 2) ;
+			pos.y += screenSize.height * counter.rate() ;
 		}
-		else if (counter.rate() < 0.5)
+		else if (counter.rate() <= 0.5)
 		{
-			currentPos.x += -0.5*(screenWidth + imageWidth) ;
-			currentPos.y += 0.25*screenHeight ;
-			speech(messagePos, message[1], font, speakingBubble, Game.colorPalette[19]) ;
+			pos.x += screenSize.width / 2 + imageWidth / 2 ;
+			pos.y += 0.25 * screenSize.height ;
+			speech(UtilG.Translate(pos, 0, -10), message[0], font, speakingBubble, Game.colorPalette[19]) ;
 		}
-		else if (counter.rate() < 0.75)
+		else if (counter.rate() <= 0.75)
 		{
-			currentPos.x += -0.5*(screenWidth + imageWidth) ;
-			currentPos.y += -screenHeight * (counter.rate() - 0.5) ;
-			speech(messagePos, message[2], font, speakingBubble, Game.colorPalette[19]) ;
+			pos.x +=screenSize.width / 2 + imageWidth / 2 ;
+			pos.y += 0.25 * screenSize.height ;
+			speech(UtilG.Translate(pos, 0, -10), message[1], font, speakingBubble, Game.colorPalette[19]) ;
 		}
 		else
 		{
-			currentPos.x += -2 * (screenWidth + imageWidth) * (counter.rate() - 0.75 + 0.25) ;
-			currentPos.y += screenHeight * (counter.rate() - 0.75 + 0.25) ;
+			pos.x += (screenSize.width / 2 + imageWidth / 2) + 2 * (screenSize.width + imageWidth) * (counter.rate() - 0.75) ;
+			pos.y += 0.25 * screenSize.height - 1 * screenSize.height * (counter.rate() - 0.75) ;
 		}
-		DP.drawImage(pterodactile, currentPos, Align.center) ;
+		DP.drawImage(pterodactile, pos, Align.center) ;
 		
 	}
 	

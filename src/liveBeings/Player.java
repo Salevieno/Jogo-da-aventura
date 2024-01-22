@@ -1458,7 +1458,7 @@ public class Player extends LiveBeing
 		
 		if (attIncAnimation == null) { return ;}
 		
-		attIncAnimation.start(600, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level}) ;
+//		attIncAnimation.start(600, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level}) ;
 	}
 	
 	private double[] calcAttributesIncrease()

@@ -45,6 +45,7 @@ import components.Quest ;
 import components.QuestSkills;
 import components.SpellTypes ;
 import graphics.Animation ;
+import graphics.AnimationTypes;
 import graphics.Draw ;
 import graphics.DrawPrimitives;
 import items.Alchemy ;
@@ -85,6 +86,7 @@ import screen.Screen ;
 import screen.SideBar ;
 import screen.Sky ;
 import simulations.PlayerEvolutionSimulation ;
+import testing.TestingAnimations;
 import utilities.Align ;
 import utilities.AtkEffects;
 import utilities.Elements ;
@@ -1212,8 +1214,6 @@ public class Game extends JPanel
 		}
 
 		Draw.fullMap(player.getPos(), player.getMap(), sky) ;
-		sideBar.display(player, pet, mousePos, DP) ;
-		sideBar.act(player.getCurrentAction(), mousePos) ;
 
 		if (player.getMap().isAField())
 		{
@@ -1264,20 +1264,14 @@ public class Game extends JPanel
 			DP.drawImage(player.getBag().getItemFetched().getImage(), mousePos, Align.center) ;
 		}
 
+		Animation.playAll(DP) ;
+		
+		sideBar.display(player, pet, mousePos, DP) ;
+		sideBar.act(player.getCurrentAction(), mousePos) ;
+
 		player.resetAction() ;
 
-		Animation.playAll(DP) ;
 //		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
-
-//		for (int i = 0 ; i <= animations.size() - 1 ; i += 1)
-//		{
-//			animations.get(i).run(DP) ;
-//			if (!ani.isActive())
-//			{
-//				animations.remove(ani) ;
-//			}
-//		}
-//		System.out.println(animations.size());
 
 	}
 
@@ -1422,8 +1416,6 @@ public class Game extends JPanel
 			case 10:
 				NPCs.setIDs() ;
 
-				Pterodactile.setMessage(Game.allText.get(TextCategories.pterodactile)) ;
-
 				player.InitializeSpells() ;
 				player.setMap(Game.getMaps()[player.getJob()]) ;
 				player.setPos(Game.getScreen().getCenter()) ;
@@ -1481,8 +1473,9 @@ public class Game extends JPanel
 	
 				if (Opening.gameStarted())
 				{
-			    	player.switchOpenClose(player.getHintsindow()) ;
+//			    	player.switchOpenClose(player.getHintsindow()) ;
 					if (cheatMode) { setCheatMode() ;}
+					TestingAnimations.run() ;;
 					Game.setState(GameStates.running) ;
 				}
 				shouldRepaint = true ;
@@ -1631,10 +1624,6 @@ public class Game extends JPanel
 				{
 					player.setCurrentAction("MouseRightClick") ;
 	        		player.setPos(mousePos) ;
-//	        		Animation ani = new Animation(0) ;
-	        		Animation.start(0, new Object[] {new Point(200, 200), new Dimension(20, 20), new AtkResults(AtkTypes.physical, AtkEffects.hit, 20), 0, Game.colorPalette[5]}) ;
-	        		Animation.start(1, new Object[] {new Item[] {allItems[0]}}) ;
-					// testGif2.start() ;
 				}
 				// shouldRepaint = true ;
 //				System.out.println(UtilG.Round(mousePos.x / 600.0, 2) + "," + UtilG.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;

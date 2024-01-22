@@ -31,8 +31,8 @@ public abstract class Battle
 	public static final Clip hitSound ;
 	
 	private static int damageStyle ;
-	private static final Color phyAtkColor = Game.colorPalette[6] ;
-	private static final Color magAtkColor = Game.colorPalette[5] ;
+	public static final Color phyAtkColor = Game.colorPalette[6] ;
+	public static final Color magAtkColor = Game.colorPalette[5] ;
 	
 
 	static

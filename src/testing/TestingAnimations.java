@@ -1,34 +1,30 @@
 package testing;
 
-import java.awt.Dimension;
 import java.awt.Point;
 
 import graphics.Animation;
+import graphics.AnimationTypes;
+import items.Item;
 import liveBeings.Pterodactile;
 import main.AtkResults;
 import main.AtkTypes;
+import main.Game;
 import utilities.AtkEffects;
+import utilities.Directions;
 
 public class TestingAnimations
 {
-	public static void runTests(Animation[] ani)
+	public static void run()
 	{    	
-
-		Object[] object0 = new Object[] {new Point(200, 200), new Dimension(100, 100), new AtkResults(AtkTypes.magical, AtkEffects.crit, 200), 1} ;
-    	ani[0].start(100, object0) ;
-    	
-		Object[] object1 = new Object[] {new Point(200, 300), new Dimension(100, 100), new AtkResults(AtkTypes.magical, AtkEffects.crit, 200), 1} ;
-    	ani[1].start(100, object1) ;
-    	
-    	Object[] object2 = new Object[] {new Point(300, 200), new Dimension(100, 100), new AtkResults(AtkTypes.magical, AtkEffects.crit, 300), 1} ;
-    	ani[2].start(100, object2) ;
-    	   	
-
-		Object[] object3 = new Object[] {new String[] {"a", "b", "c"}} ;
-    	ani[3].start(200, object3) ;
-
-		Object[] object4 = new Object[] {new double[] {2, 5, 2, 1, 3, 1}, 1} ;
-		ani[4].start(200, object4) ;
+		Animation.start(AnimationTypes.damage, new Object[] {new Point(200, 200), 0, new AtkResults(AtkTypes.physical, AtkEffects.hit, 20)});
+		Animation.start(AnimationTypes.damage, new Object[] {new Point(220, 200), 1, new AtkResults(AtkTypes.physical, AtkEffects.crit, 20)});
+		Animation.start(AnimationTypes.damage, new Object[] {new Point(250, 200), 1, new AtkResults(AtkTypes.magical, AtkEffects.hit, 20)});
+		
+		Animation.start(AnimationTypes.win, new Object[] {new Item[] {Game.getAllItems()[0], Game.getAllItems()[1]}} ) ;
+		
+		Animation.start(AnimationTypes.fishing, new Object[] {new Point(400, 300), Directions.up} ) ;
+		
+		Animation.start(AnimationTypes.message, new Object[] {new Point(400, 300), "Oi", Game.colorPalette[5]} ) ;
 
 		Pterodactile.speak() ;
 		
