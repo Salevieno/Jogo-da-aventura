@@ -632,7 +632,7 @@ public class Player extends LiveBeing
 	
 	public void tent(DrawPrimitives DP)
 	{
-		TentGif.play(pos, Align.bottomCenter, DP) ;
+//		TentGif.start(pos, Align.bottomCenter) ;
 		tentCounter.inc() ;
 		if (tentCounter.finished())
 		{

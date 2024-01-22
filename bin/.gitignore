@@ -1,12 +1,5 @@
 /main/
-/maps/
-/screen/
-/simulations/
-/test/
-/testing/
 /utilities/
-/windows/
-/liveBeings/
-/items/
 /graphics/
-/components/
+/liveBeings/
+/testing/

@@ -2,7 +2,7 @@ package main ;
 
 import java.awt.Color ;
 import java.awt.Dimension ;
-import java.awt.Graphics ;
+import java.awt.Graphics;
 import java.awt.Graphics2D ;
 import java.awt.Image ;
 import java.awt.Point ;
@@ -45,9 +45,9 @@ import components.Quest ;
 import components.QuestSkills;
 import components.SpellTypes ;
 import graphics.Animation ;
-import graphics.AnimationTypes;
 import graphics.Draw ;
 import graphics.DrawPrimitives;
+import graphics.Gif;
 import items.Alchemy ;
 import items.Arrow ;
 import items.Equip ;
@@ -70,7 +70,6 @@ import liveBeings.MovingAnimations ;
 import liveBeings.Pet ;
 import liveBeings.Player ;
 import liveBeings.PlayerJobs ;
-import liveBeings.Pterodactile ;
 import liveBeings.Spell ;
 import liveBeings.SpellsBar;
 import maps.CityMap ;
@@ -85,10 +84,8 @@ import maps.TreasureChest ;
 import screen.Screen ;
 import screen.SideBar ;
 import screen.Sky ;
-import simulations.PlayerEvolutionSimulation ;
 import testing.TestingAnimations;
 import utilities.Align ;
-import utilities.AtkEffects;
 import utilities.Elements ;
 import utilities.GameStates ;
 import utilities.Log;
@@ -1078,7 +1075,7 @@ public class Game extends JPanel
 	{
 		if (Opening.getOpeningGif().isTimeStopper())
 		{
-			Opening.getOpeningGif().play(new Point(0, 0), Align.topLeft, DP) ;
+//			Opening.getOpeningGif().start(new Point(0, 0), Align.topLeft) ;
 
 			repaint() ;
 		}
@@ -1265,13 +1262,12 @@ public class Game extends JPanel
 		}
 
 		Animation.playAll(DP) ;
+		Gif.playAll() ;
 		
 		sideBar.display(player, pet, mousePos, DP) ;
 		sideBar.act(player.getCurrentAction(), mousePos) ;
 
 		player.resetAction() ;
-
-//		for (Gif gif : allGifs) { gif.play(mousePos, null, DP) ;}
 
 	}
 
@@ -1475,7 +1471,6 @@ public class Game extends JPanel
 				{
 //			    	player.switchOpenClose(player.getHintsindow()) ;
 					if (cheatMode) { setCheatMode() ;}
-					TestingAnimations.run() ;;
 					Game.setState(GameStates.running) ;
 				}
 				shouldRepaint = true ;
@@ -1624,6 +1619,7 @@ public class Game extends JPanel
 				{
 					player.setCurrentAction("MouseRightClick") ;
 	        		player.setPos(mousePos) ;
+	        		Player.levelUpGif.start(mousePos, Align.center) ;
 				}
 				// shouldRepaint = true ;
 //				System.out.println(UtilG.Round(mousePos.x / 600.0, 2) + "," + UtilG.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;

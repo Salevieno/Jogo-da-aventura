@@ -1,23 +1,21 @@
 package graphics ;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import components.AnimationDisplayFunction;
 import items.Item;
-import liveBeings.Pet;
 import liveBeings.Player;
 import main.AtkResults;
-import main.Game;
 import utilities.Align;
 import utilities.Directions;
+import utilities.Log;
 import utilities.TimeCounter;
 import utilities.UtilG;
+import utilities.UtilS;
 
 public class Animation 
 {
@@ -26,6 +24,7 @@ public class Animation
 	private AnimationDisplayFunction displayFunction ;
 	
 	private static final List<Animation> all = new ArrayList<>() ;
+	public static final Image obtainedItem = UtilS.loadImage("ObtainedItem.png") ;
 
 	private Animation(AnimationTypes type)
 	{
@@ -49,6 +48,7 @@ public class Animation
 		ani.getCounter().setDuration(duration) ;
 		ani.vars = vars ;
 		ani.getCounter().start() ;
+		Log.animationStart(ani) ;
 	}
 	
 	private AnimationDisplayFunction displayFunctionFromType(int type)
@@ -140,7 +140,7 @@ public class Animation
 							break ;
 					}
 
-					Player.FishingGif.play(fishingPos, Align.bottomCenter, DP) ;
+//					Player.FishingGif.start(fishingPos, Align.bottomCenter) ;
 //					if (Player.FishingGif.isDonePlaying())
 //					{
 //						Player.FishingGif.resetTimeCounter() ;
@@ -177,11 +177,11 @@ public class Animation
 	{
 		for (int i = 0 ; i <= all.size() - 1; i += 1)
 		{
-			all.get(i).run(DP) ;
+			all.get(i).play(DP) ;
 		}
 	}
 	
-	private void run(DrawPrimitives DP)
+	private void play(DrawPrimitives DP)
 	{
 
 		if (counter.finished())

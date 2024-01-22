@@ -226,35 +226,24 @@ public abstract class Draw
 		
 		if (effect == AtkEffects.none) { return ;}
 
-		String message = null ;
 		String damage = String.valueOf(UtilG.Round(atkResults.getDamage(), 1)) ;
-		switch (effect)
+		String message = switch (effect)
 		{
-			case miss: message = "Miss" ; break ;
-			case hit: message = damage ; break ;
-			case crit: message = damage + "!" ; break ;
-			case block: message = "Block" ;	break ;
-			default: message = "" ;
-		}
-//		String m2 = 
-//		switch (effect)
-//		{
-//			case miss: -> "Miss" ;
-//			case hit: -> damage ;
-//			case crit: -> damage + "!" ;
-//			case block: -> "Block" ;
-//			default: -> "" ;
-//		}
+			case miss -> "Miss" ;
+			case hit -> damage ;
+			case crit -> damage + "!" ;
+			case block -> "Block" ;
+			default -> "" ;
+		} ;
 
 		double rate = Math.pow(counter.rate(), 0.6) ;
 		
-		Point trajectory = new Point() ;
-		switch (style)
+		Point trajectory = switch (style)
 		{
-			case 0: trajectory = new Point(0, (int) (-20 * rate)) ; break ;
-			case 1: trajectory = new Point((int) (Math.pow(8 * rate, 2)), (int) (-20 * rate)) ; break ;
-			default: trajectory = new Point(0, 0) ;
-		}
+			case 0 -> new Point(0, (int) (-20 * rate)) ;
+			case 1 -> new Point((int) (Math.pow(8 * rate, 2)), (int) (-20 * rate)) ;
+			default -> new Point(0, 0) ;
+		} ;
 
 		Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
 		Point currentPos = UtilG.Translate(initialPos, trajectory) ;
@@ -363,11 +352,11 @@ public abstract class Draw
 	{
 
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Dimension size = new Dimension(200, 20) ; // UtilG.TextL(text, font, graph2D) + 10, 20
-		Color bgColor = Game.colorPalette[3] ;
+		Font smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		
-		DP.drawGradRoundRect(pos, Align.topLeft, size, 2, bgColor, bgColor, true) ;
-		DP.drawText(UtilG.Translate(pos, 5, 5), Align.topLeft, stdAngle, text, font, color) ;
+		DP.drawImage(Animation.obtainedItem, pos, Align.topCenter) ;
+		DP.drawText(UtilG.Translate(pos, 0, 3), Align.topCenter, stdAngle, "Você obteve", font, color) ;;
+		DP.drawText(UtilG.Translate(pos, 5 - Animation.obtainedItem.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
 		
 	}
 	
