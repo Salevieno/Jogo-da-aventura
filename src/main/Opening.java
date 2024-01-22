@@ -62,7 +62,7 @@ public abstract class Opening
 	    smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		String path = Game.ImagesPath  + "\\Opening\\";
 		backgroundImage = UtilG.loadImage(path + "Opening.png") ;
-		openingGif = new Gif(UtilG.loadImage(path + "Opening.gif"), 0.7, false, true) ;
+		openingGif = new Gif("Opening", UtilG.loadImage(path + "Opening.gif"), 0.7, false, true) ;
 		LoadingGif = UtilG.loadImage(path + "Loading.gif") ;
 		LoadingSlot = UtilG.loadImage(path + "LoadingSlot.png") ;
 		LoadingSlotSelected = UtilG.loadImage(path + "LoadingSlotSelected.png") ;

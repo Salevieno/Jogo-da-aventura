@@ -33,16 +33,17 @@ public class PlayerAttributesWindow extends AttributesWindow
 //	private Arrow equippedArrow ;
 	public Map<Attributes, GameButton> incAttButtons ;
 
-	private Image tab1Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow2.png") ;
-	private Image tab2Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow3.png") ;
+	public static final Image tab0Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow1.png") ;
+	public static final Image tab1Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow2.png") ;
+	public static final Image tab2Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow3.png") ;
 	
 	private Image plusSign = UtilS.loadImage("\\SideBar\\" + "PlusSign.png") ;
 	private Image selectedPlusSign = UtilS.loadImage("\\SideBar\\" + "ShiningPlusSign.png") ;
 	
-	public PlayerAttributesWindow(Image image)
+	public PlayerAttributesWindow()
 	{
 		
-		super(image, 3) ;
+		super(tab0Image, 3) ;
 		
 		incAttButtons = new HashMap<>() ;	
 		

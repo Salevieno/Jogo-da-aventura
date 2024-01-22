@@ -4,6 +4,7 @@ import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays ;
 import java.util.List;
 
@@ -13,7 +14,8 @@ import maps.GroundType;
 import maps.GroundTypes;
 
 public abstract class UtilS 
-{	
+{
+	public static final List<String> paths = new ArrayList<>() ;
 	
 	public static Color[] ReadColorPalette(Image paletteImage, String mode)
 	{
@@ -51,7 +53,12 @@ public abstract class UtilS
 
 	public static String RelPos(Point point, Point refPos) { return refPos.x < point.x ? "Right" : "Left" ;}
 	
-	public static Image loadImage(String path) { return UtilG.loadImage(Game.ImagesPath + path) ;}
+	public static Image loadImage(String path) {
+		if (paths.contains(path))
+		{
+			System.out.println(path + " repetido ");
+		}
+		paths.add(path); return UtilG.loadImage(Game.ImagesPath + path) ;}
 	
 	public static int MirrorFromRelPos(String relPos) { return relPos.equals("Left") ? -1 : 1 ;}
 	

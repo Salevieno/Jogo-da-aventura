@@ -85,13 +85,11 @@ public class SideBar
     	int offsetY = 0 ;
 		buttons = new HashSet<>() ;
 		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
-		{			
-			Image image = UtilS.loadImage("\\SideBar\\Icon" + i + "_" + iconNames[i] + ".png") ;
-			Image selImage = UtilS.loadImage("\\SideBar\\Icon" + i + "_" + iconNames[i] + "Selected.png") ;
+		{
 			Point botCenterPos = UtilG.Translate(barPos, 20, -220 - offsetY) ;
-			buttons.add(new GameButton(botCenterPos, Align.bottomCenter, image, selImage, actions[i])) ;
+			buttons.add(new GameButton(botCenterPos, Align.bottomCenter, icons.get(i), iconsSelected.get(i), actions[i])) ;
 
-			offsetY += image.getHeight(null) + 10 ;
+			offsetY += icons.get(i).getHeight(null) + 10 ;
 		}
 		
 		buttons.forEach(GameButton::activate);

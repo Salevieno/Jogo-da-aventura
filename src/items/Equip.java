@@ -40,7 +40,7 @@ public class Equip extends Item
 	private static final Image daggerIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconDagger.png") ;
 	private static final Image shieldIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconShield.png") ;
 	private static final Image armorIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconArmor.png") ;
-	private static final Image emblemIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconArmor.png") ;
+	private static final Image emblemIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconEmblem.png") ;
 	
 	public static final Image SwordImage = UtilS.loadImage("\\Equips\\" + "Eq0_Sword.png") ;
 	public static final Image StaffImage = UtilS.loadImage("\\Equips\\" + "Eq1_Staff.png") ;

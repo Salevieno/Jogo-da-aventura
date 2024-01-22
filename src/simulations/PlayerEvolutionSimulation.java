@@ -25,6 +25,7 @@ import graphics.Animation;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import liveBeings.Creature;
+import liveBeings.CreatureType;
 import liveBeings.Genetics;
 import liveBeings.LiveBeingStatus;
 import liveBeings.Pet;
@@ -733,7 +734,7 @@ public abstract class PlayerEvolutionSimulation
 		{
 			if (player.getOpponent().getAttWindow().isOpen())
 			{
-				((CreatureAttributesWindow) player.getOpponent().getAttWindow()).display(player.getOpponent(), DP) ;
+				CreatureType.attWindow.display(player.getOpponent().getType(), DP) ;
 			}
 		}
 

@@ -105,6 +105,7 @@ public class Game extends JPanel
 	// TODO descrição dos itens
 	// TODO no superelemento de fogo, todos os panos na mochila viram panos em chamas
 	// TODO conferir a contagem das estatísticas do player
+	// TODO emblem image
 	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] { "Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A" } ;
 	public static final String JSONPath = ".\\json\\" ;
@@ -1619,7 +1620,6 @@ public class Game extends JPanel
 				{
 					player.setCurrentAction("MouseRightClick") ;
 	        		player.setPos(mousePos) ;
-	        		Player.levelUpGif.start(mousePos, Align.center) ;
 				}
 				// shouldRepaint = true ;
 //				System.out.println(UtilG.Round(mousePos.x / 600.0, 2) + "," + UtilG.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;

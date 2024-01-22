@@ -61,7 +61,7 @@ public class NPCs
 		numberMenus = 0 ;
 
 		if (type.getSpeech() != null) { numberMenus = type.getSpeech().length - 1 ;}
-		
+
 		switch (type.getJob())
 		{
 			case equipsSeller: case itemsSeller: case smuggleSeller:

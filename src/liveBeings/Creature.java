@@ -44,7 +44,7 @@ public class Creature extends LiveBeing
 	
  	public Creature(CreatureType CT)
 	{
- 		super(CT.getPA(), CT.getBA(), CT.getMovingAnimations(), new CreatureAttributesWindow()) ;
+ 		super(CT.getPA(), CT.getBA(), CT.getMovingAnimations(), CreatureType.attWindow) ;
 		
 		this.type = CT ;		
 		this.name = CT.name;

@@ -122,32 +122,25 @@ public class Player extends LiveBeing
     public static final Image CollectingMessage = UtilS.loadImage("\\Collect\\" + "CollectingMessage.gif") ;   
     public static final Image collectingGif = UtilS.loadImage("\\Collect\\" + "Collecting.gif") ;
 //    public static final Image TentImage = UtilS.loadImage("\\SideBar\\" + "Icon5_tent.png") ;
-    public static final Gif TentGif = new Gif(UtilS.loadImage("Tent.png"), 1000, false, false) ;
+    public static final Gif TentGif = new Gif("Tent", UtilS.loadImage("Tent.png"), 1000, false, false) ;
     public static final Image DragonAuraImage = UtilS.loadImage("\\Player\\" + "dragonAura.gif") ;
     public static final Image RidingImage = UtilS.loadImage("\\Player\\" + "Tiger.png") ;
 	public static final Image CoinIcon = UtilS.loadImage("\\Player\\" + "CoinIcon.png") ;    
 	public static final Image DiggingGif = UtilS.loadImage("\\Player\\" + "Digging.gif") ;   
 	public static final Image MagicBlissGif = UtilS.loadImage("\\Player\\" + "MagicBliss.gif") ;
-    public static final Gif FishingGif = new Gif(UtilS.loadImage("\\Player\\" + "Fishing.gif"), 220, false, false) ;
+    public static final Gif FishingGif = new Gif("Fishing", UtilS.loadImage("\\Player\\" + "Fishing.gif"), 220, false, false) ;
     
 	public final static List<String[]> Properties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
 	public final static List<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public final static int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public final static Color[] ClassColors = new Color[] {Game.colorPalette[21], Game.colorPalette[5], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
-    public final static Gif levelUpGif = new Gif(UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 4.5, false, false) ;
-    
+
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
 	public static List<String> ArrowKeys = List.of("Acima", "Abaixo", "Esquerda", "Direita") ;
     public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
 	public static final String[] HotKeys = new String[] {"T", "Y", "U"} ;
 
-	public final static Image[] AttWindowImages = new Image[]
-								{
-									UtilS.loadImage("\\Windows\\" + "PlayerAttWindow1.png"),
-									UtilS.loadImage("\\Windows\\" + "PlayerAttWindow2.png"),
-									UtilS.loadImage("\\Windows\\" + "PlayerAttWindow3.png")
-								} ;
     public final static Image settingsWindowImage = UtilS.loadImage("\\Windows\\" + "windowSettings.png") ;
 	
 	
@@ -157,7 +150,7 @@ public class Player extends LiveBeing
 				InitializePersonalAttributes(job),
 				InitializeBattleAttributes(job),
 				InitializeMovingAnimations(),
-				new PlayerAttributesWindow(AttWindowImages[0])
+				new PlayerAttributesWindow()
 				) ;
 		((PlayerAttributesWindow) attWindow).initializeAttIncButtons(this) ;
 		
@@ -170,7 +163,7 @@ public class Player extends LiveBeing
 		pos = new Point();
 		dir = Directions.up;
 		state = LiveBeingStates.idle;
-	    size = UtilG.getSize(UtilS.loadImage("\\Player\\" + "PlayerBack.gif")) ;
+	    size = UtilG.getSize(movingAni.idleGif) ;
 		range = Integer.parseInt(Properties.get(job)[4]) ;
 		step = Integer.parseInt(Properties.get(job)[33]);
 	    elem = new Elements[] {Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral};

@@ -15,6 +15,7 @@ import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
 import utilities.UtilS;
+import windows.CreatureAttributesWindow;
 
 public class CreatureType 
 {
@@ -44,6 +45,7 @@ public class CreatureType
 	
 	private static int NumberOfCreatureTypes ;
 	public static final List<MovingAnimations> moveAni ;
+	public static final CreatureAttributesWindow attWindow ;
 	
 	static
 	{
@@ -57,6 +59,8 @@ public class CreatureType
 			UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingleft.gif"),
 			UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingright.gif"))) ;
 		}
+		
+		attWindow = new CreatureAttributesWindow() ;
 	}
 	
 	public CreatureType(

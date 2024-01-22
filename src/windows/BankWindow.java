@@ -27,12 +27,13 @@ public class BankWindow extends GameWindow
 	private LiveInput liveInput ;
 
 	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
+	private static final Image image = UtilS.loadImage("\\Windows\\" + "Banco.png") ;
 	private static final String[] investmentRiskLevels = new String[] {"low", "high"} ;
 	public static final Image clock = UtilS.loadImage("\\Windows\\" + "clock.png") ;
 
 	public BankWindow()
 	{
-		super("Banco", windowPos, UtilS.loadImage("\\Windows\\" + "Banco.png"), 1, 1, 1, 1) ;
+		super("Banco", windowPos, image, 1, 1, 1, 1) ;
 		mode = "" ;
 		amountTyped = 0 ;
 		balance = 0 ;

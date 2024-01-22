@@ -36,8 +36,9 @@ public class BestiaryWindow extends GameWindow
 	{
 	}
 	
-	public void displayCreatureInfo(Point mainWindowPos, CreatureType creatureType, DrawPrimitives DP)
+	public void displayCreatureInfo(Point pos, CreatureType creatureType, DrawPrimitives DP)
 	{
+		
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String[] text = Game.allText.get(TextCategories.bestiary) ;
@@ -46,14 +47,11 @@ public class BestiaryWindow extends GameWindow
 		
 		int offset = 5 ;
 		int sy = infoFont.getSize() ;
-		
-		mainWindowPos.y += - (int) (0.5 * Game.getScreen().getSize().height) ;
 
 		Dimension windowSize = new Dimension(128, 240) ;
-		Point windowPos = UtilG.Translate(mainWindowPos, 0, -30) ;
-		DP.drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
+		DP.drawGradRoundRect(pos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
 		
-		Point creaturePos = UtilG.Translate(mainWindowPos, 40, offset) ;
+		Point creaturePos = UtilG.Translate(pos, 40, offset) ;
 		creatureType.display(creaturePos, Scale.unit, DP) ;
 		
 		List<String> textInfo = new ArrayList<>() ;
@@ -65,7 +63,7 @@ public class BestiaryWindow extends GameWindow
 		creatureType.getItems().forEach(item -> textInfo.add(item.getName())) ;
 
 		// draw text
-		Point textPos = UtilG.Translate(mainWindowPos, offset, creatureType.getSize().height + offset) ;
+		Point textPos = UtilG.Translate(pos, offset, creatureType.getSize().height + offset) ;
 		DP.drawText(textPos, Align.topLeft, angle, creatureType.getName(), namefont, textColor) ;
 		textPos = UtilG.Translate(textPos, 0, sy) ;
 		for (int i = 0 ; i <= text.length - 1 ; i += 1)
@@ -112,7 +110,7 @@ public class BestiaryWindow extends GameWindow
 		if (item < 0) { return ;}
 		
 		CreatureType selectedCreature = discoveredCreatures.get(item) ;
-		Point creatureInfoPos = UtilG.Translate(windowPos, windowSize.width, windowSize.height) ;
+		Point creatureInfoPos = UtilG.Translate(windowPos, windowSize.width, 0) ;
 		displayCreatureInfo(creatureInfoPos, selectedCreature, DP) ;
 	}
 }

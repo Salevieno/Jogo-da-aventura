@@ -62,19 +62,21 @@ public abstract class LiveBeing
 	protected AttributesWindow attWindow ;
 	
 	public static final Image AttImage = UtilS.loadImage("\\Player\\" + "Attributes.png") ;
-	public static final Image[] StatusImages = new Image[] {
-			UtilS.loadImage("\\Status\\" + "Stun.png"),
-			UtilS.loadImage("\\Status\\" + "Block.png"),
-			UtilS.loadImage("\\Status\\" + "Blood.png"),
-			UtilS.loadImage("\\Status\\" + "Poison.png"),
-			UtilS.loadImage("\\Status\\" + "Silence.png")
-			};
+//	public static final Image[] StatusImages = new Image[] {
+//			UtilS.loadImage("\\Status\\" + "Stun.png"),
+//			UtilS.loadImage("\\Status\\" + "Block.png"),
+//			UtilS.loadImage("\\Status\\" + "Blood.png"),
+//			UtilS.loadImage("\\Status\\" + "Poison.png"),
+//			UtilS.loadImage("\\Status\\" + "Silence.png")
+//			};
 	public static final Image defendingImage = UtilS.loadImage("\\Battle\\" + "ShieldIcon.png") ;
 	public static final Image powerBarImage = UtilS.loadImage("PowerBar.png") ;
 	public static final String[] BattleKeys = new String[] {"Y", "U"} ;	
 	public static final List<String> SpellKeys = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12") ;
-	public final Gif phyHitGif = new Gif(UtilS.loadImage("\\Battle\\" + "PhysicalHit.gif"), (int) (75 / 1.5), false, false) ;
-	public final Gif magHitGif = new Gif(UtilS.loadImage("\\Battle\\" + "SpellHit.gif"), (int) (90 / 1.5), false, false) ;
+
+	protected final static Gif levelUpGif = new Gif("Level up", UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 170, false, false) ;
+	private static final Gif phyHitGif = new Gif("phyHit", UtilS.loadImage("\\Battle\\" + "PhysicalHit.gif"), (int) (75 / 1.5), false, false) ;
+	private static final Gif magHitGif = new Gif("magHit", UtilS.loadImage("\\Battle\\" + "SpellHit.gif"), (int) (90 / 1.5), false, false) ;
 	
 	
 	public LiveBeing(PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, AttributesWindow attWindow)
@@ -118,6 +120,8 @@ public abstract class LiveBeing
 	public FrameCounter getStepCounter() {return stepCounter ;}
 	public List<String> getCombo() {return combo ;}
 	public List<Spell> getSpells() {return spells ;}
+	public AttributesWindow getAttWindow() {return attWindow ;}
+	public MovingAnimations getMovingAni() {return movingAni ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
 	public void setMpCounter(FrameCounter mpCounter) { this.mpCounter = mpCounter ;}
 	public void setActionCounter(FrameCounter actionCounter) { this.actionCounter = actionCounter ;}	
@@ -150,9 +154,6 @@ public abstract class LiveBeing
 	public void setPA(PersonalAttributes pA) { PA = pA ;}
 	public BattleAttributes getBA() {return BA ;}
 	public void setBA(BattleAttributes bA) { BA = bA ;}
-
-	public AttributesWindow getAttWindow() {return attWindow ;}
-	public MovingAnimations getMovingAni() {return movingAni ;}
 	
 	public static Directions randomDir() { return Directions.getDir(UtilG.randomIntFromTo(0, 3)) ;}
 	
@@ -632,7 +633,7 @@ public abstract class LiveBeing
 		double rate = battleActionCounter.rate() ;
 		int mirror = UtilS.MirrorFromRelPos(relPos) ;
 		Dimension barSize = new Dimension(2 + size.height / 20, size.height) ;
-		Dimension offset = new Dimension (barSize.width / 2 + (StatusImages[0].getWidth(null) + 5), barSize.height / 2) ;
+		Dimension offset = new Dimension (barSize.width / 2 + (LiveBeingStatus.stunImage.getWidth(null) + 5), barSize.height / 2) ;
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
 		Point rectPos = UtilG.Translate(center(), mirror * offset.width, offset.height) ;
 		

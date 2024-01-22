@@ -29,11 +29,11 @@ public class LiveBeingStatus
 	private int poison ;
 	private int silence ;
 	
-	private static Image stunImage = UtilS.loadImage("\\Status\\" + "Stun.png") ;
-	private static Image blockImage = UtilS.loadImage("\\Status\\" + "Block.png") ;
-	private static Image bloodImage = UtilS.loadImage("\\Status\\" + "Blood.png") ;
-	private static Image poisonImage = UtilS.loadImage("\\Status\\" + "Poison.png") ;
-	private static Image silenceImage = UtilS.loadImage("\\Status\\" + "Silence.png") ;
+	public static final Image stunImage = UtilS.loadImage("\\Status\\" + "Stun.png") ;
+	public static final Image blockImage = UtilS.loadImage("\\Status\\" + "Block.png") ;
+	public static final Image bloodImage = UtilS.loadImage("\\Status\\" + "Blood.png") ;
+	public static final Image poisonImage = UtilS.loadImage("\\Status\\" + "Poison.png") ;
+	public static final Image silenceImage = UtilS.loadImage("\\Status\\" + "Silence.png") ;
 	
 	
 	public int getLife()

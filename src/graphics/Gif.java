@@ -26,13 +26,12 @@ public class Gif
 	
 	private static final List<Gif> all = new ArrayList<>() ;
 	
-	public Gif(Image image, double duration, boolean loop, boolean timeStopper)
+	public Gif(String name, Image image, double duration, boolean loop, boolean timeStopper)
 	{
 		this.image = image;
 		counter = new TimeCounter(duration) ;
 		this.loop = loop;
 		this.timeStopper = timeStopper;
-		System.out.println(1);
 	}
 	
 	public Image getImage() { return image ;}	
