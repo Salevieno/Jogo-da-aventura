@@ -687,7 +687,11 @@ public class Player extends LiveBeing
 			case 14: 
 				if (!questSkills.get(QuestSkills.bestiary)) { return ;}
 				switchOpenClose(bestiary) ; return ;
-				
+
+
+				// Book action
+//				player.getFabWindow().setRecipes(player.getKnownRecipes()) ;
+//				player.switchOpenClose(player.getFabWindow()) ;
 			default: return ;
 		}
 		

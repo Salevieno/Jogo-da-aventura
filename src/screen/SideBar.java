@@ -18,87 +18,86 @@ import graphics.DrawPrimitives;
 import liveBeings.HotKeysBar;
 import liveBeings.Pet;
 import liveBeings.Player;
-import liveBeings.Spell;
 import liveBeings.SpellsBar;
 import main.Game;
 import utilities.Align;
-import utilities.Log;
 import utilities.UtilG;
 import utilities.UtilS;
+import windows.PetAttributesWindow;
+import windows.PlayerAttributesWindow;
 
-public class SideBar
+public abstract class SideBar
 {
-	private Set<GameButton> buttons ;
 	
-	private static final Point barPos = Game.getScreen().pos(1, 1) ;
+	private static final Point barPos = Game.getScreen().pos(1, 0) ;
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	public static final Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
-	public static final String[] iconNames ;
-	public static final List<Image> icons = new ArrayList<>() ;
-	public static final List<Image> iconsSelected = new ArrayList<>() ;
+	private static final List<GameButton> buttons = new ArrayList<>() ;
 	
 	static
 	{
-		iconNames = new String[] {"settings", "bag", "quest", "map", "book", "tent"} ; // "player", "pet"
-		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
-		{			
-			icons.add(UtilS.loadImage("\\SideBar\\Icon" + i + "_" + iconNames[i] + ".png")) ;
-			iconsSelected.add(UtilS.loadImage("\\SideBar\\Icon" + i + "_" + iconNames[i] + "Selected.png")) ;
-		}
-	}
-		
-	public SideBar(Player player, Image playerImage, Image petImage)
-	{
-		
+		String[] iconNames = new String[] {"map", "quest", "bag", "settings"} ;
 		IconFunction[] actions = new IconFunction[iconNames.length] ;
-		actions[0] = () -> { player.switchOpenClose(player.getSettings()) ;} ; 
-		actions[1] = () -> { player.switchOpenClose(player.getBag()) ;} ; 
-		actions[2] = () -> { 
-			player.getQuestWindow().setQuests(player.getQuests()) ;
-			player.getQuestWindow().setBag(player.getBag()) ;
-			player.switchOpenClose(player.getQuestWindow()) ;
-		} ; 
-		actions[3] = () -> {
+		
+		Player player = Game.getPlayer() ;
+		Image playerImage = player.getMovingAni().idleGif ;
+		IconFunction playerAction = () -> {
+			((PlayerAttributesWindow) player.getAttWindow()).setPlayer(player) ;
+			((PlayerAttributesWindow) player.getAttWindow()).updateAttIncButtons(player) ;
+			player.switchOpenClose(player.getAttWindow()) ;
+		} ;
+		actions[0] = () -> {
 			if (!player.getQuestSkills().get(QuestSkills.getContinentMap(player.getMap().getContinentName(player).name()))) { return ;}
 			player.getMapWindow().setPlayerPos(player.getPos()) ;
 			player.getMapWindow().setCurrentMap(player.getMap()) ;
 			player.switchOpenClose(player.getMapWindow()) ;
 		} ; 
-		actions[4] = () -> { 
-			player.getFabWindow().setRecipes(player.getKnownRecipes()) ;
-			player.switchOpenClose(player.getFabWindow()) ;
+		actions[1] = () -> { 
+			player.getQuestWindow().setQuests(player.getQuests()) ;
+			player.getQuestWindow().setBag(player.getBag()) ;
+			player.switchOpenClose(player.getQuestWindow()) ;
 		} ; 
-		actions[5] = () -> { System.out.println("opening tent") ;} ;
-		SpellsBar.updateSpells(player.getActiveSpells()) ;
+		actions[2] = () -> { player.switchOpenClose(player.getBag()) ;} ; 
+		actions[3] = () -> { player.switchOpenClose(player.getSettings()) ;} ;
 
-//	case "player":
-//		((PlayerAttributesWindow) attWindow).setPlayer(this) ;
-//		((PlayerAttributesWindow) attWindow).updateAttIncButtons(this) ;
-//		switchOpenClose(attWindow) ;
-//		return ;
-//		
-//	case "pet":
-//		if (pet == null) { return ;}
-//		((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
-//		switchOpenClose(pet.getAttWindow()) ; return ;
+		
+		setPet(player, Game.getPet()) ;
 
-    	int offsetY = 0 ;
-		buttons = new HashSet<>() ;
+		Point iconPos = UtilG.Translate(barPos, 20, 50) ;
+		buttons.add(new GameButton(iconPos, Align.topCenter, playerImage, playerImage, playerAction)) ;
+		iconPos.y += playerImage.getHeight(null) + 10 ;
 		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
 		{
-			Point botCenterPos = UtilG.Translate(barPos, 20, -220 - offsetY) ;
-			buttons.add(new GameButton(botCenterPos, Align.bottomCenter, icons.get(i), iconsSelected.get(i), actions[i])) ;
+			Image iconImg = UtilS.loadImage("\\SideBar\\Icon" + "_" + iconNames[i] + ".png");
+			Image iconSelectedImg = UtilS.loadImage("\\SideBar\\Icon" + "_" + iconNames[i] + "Selected.png") ;
+			buttons.add(new GameButton(iconPos, Align.topCenter, iconNames[i], iconImg, iconSelectedImg, actions[i])) ;
 
-			offsetY += icons.get(i).getHeight(null) + 10 ;
+			iconPos.y += iconImg.getHeight(null) + 10 ;
 		}
 		
 		buttons.forEach(GameButton::activate);
-		
 	}
 	
-	public Set<GameButton> getButtons() { return buttons ;}
+	public static void initialize()
+	{
+		SpellsBar.updateSpells(Game.getPlayer().getActiveSpells()) ;
+	}
+	
+	public static void setPet(Player player, Pet pet)
+	{
+		if (pet == null) { return ;}
 		
-	public void act(String action, Point mousePos)
+		Image petImage = pet.getMovingAnimations().idleGif ;
+		IconFunction petAction = () -> {
+			((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
+			player.switchOpenClose(pet.getAttWindow()) ;
+		} ;
+		buttons.add(new GameButton(UtilG.Translate(barPos, 20, 10), Align.topCenter, petImage, petImage, petAction)) ;
+	}
+		
+	public static List<GameButton> getButtons() { return buttons ;}
+		
+	public static void act(String action, Point mousePos)
 	{
 		if (action == null) { return ;}
 		
@@ -111,18 +110,11 @@ public class SideBar
 		}
 	}
 	
-	public void display(Player player, Pet pet, Point mousePos, DrawPrimitives DP)
+	private static void displayKeys(DrawPrimitives DP)
 	{
-		
-		double stdAngle = Draw.stdAngle ;
-		String[] keys = new String[] {null, Player.ActionKeys[4], Player.ActionKeys[9], Player.ActionKeys[7], null, null, null, null} ;
-		Color textColor = Game.colorPalette[0] ;
-		
-		DP.drawRect(barPos, Align.bottomLeft, size, 1, Game.colorPalette[0], null) ;
-		
-		buttons.forEach(button -> button.display(stdAngle, false, mousePos, DP)) ;
-		
+		String[] keys = new String[] {null, Player.ActionKeys[7], Player.ActionKeys[9], Player.ActionKeys[4], null, null} ;
 		Dimension textSize = new Dimension(12, 12) ;
+		Color textColor = Game.colorPalette[0] ;
 		int i = 0 ;
 		for (GameButton button : buttons)
 		{
@@ -130,9 +122,18 @@ public class SideBar
 			if (keys[i] == null) { i += 1 ; continue ;}
 			Point rectCenter = UtilG.Translate(button.getTopLeftPos(), 5, 0) ;
 			DP.drawRoundRect(rectCenter, Align.center, textSize, 1, Game.colorPalette[3], true, 2, 2) ;
-			DP.drawText(rectCenter, Align.center, stdAngle, keys[i], font, textColor) ;
+			DP.drawText(rectCenter, Align.center, Draw.stdAngle, keys[i], font, textColor) ;
 			i += 1 ;
 		}
+	}
+	
+	public static void display(Player player, Pet pet, Point mousePos, DrawPrimitives DP)
+	{
+		
+		DP.drawRect(barPos, Align.topLeft, size, 1, Game.colorPalette[0], null) ;
+		
+		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos, DP)) ;
+		displayKeys(DP) ;
 		
 		SpellsBar.display(player.getMp().getCurrentValue(), mousePos, DP);
 		HotKeysBar.display(player.getHotItems(), mousePos, DP) ;

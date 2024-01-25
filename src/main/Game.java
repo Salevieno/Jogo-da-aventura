@@ -99,7 +99,6 @@ public class Game extends JPanel
 {
 	// TODO soundtrack
 	// TODO corrigir bug ao se mover para um mapa maior
-	// TODO design das construções
 	// TODO spells
 	// TODO nomes das criaturas
 	// TODO descrição dos itens
@@ -134,7 +133,7 @@ public class Game extends JPanel
 
 	private static Screen screen ;
 	private static Sky sky ;
-	private static SideBar sideBar ;
+//	private static SideBar sideBar ;
 	private static CreatureType[] creatureTypes ;
 	private static CityMap[] cityMaps ;
 	private static FieldMap[] fieldMaps ;
@@ -341,6 +340,7 @@ public class Game extends JPanel
 			pet.getBA().getDex().incBaseValue(1 * spellLevel) ;
 			pet.getBA().getAgi().incBaseValue(1 * spellLevel) ;
 		}
+		SideBar.setPet(player, pet) ;
 	}
 
 	private static NPCs readNPCfromJson(JSONObject npcJSONObject)
@@ -1265,8 +1265,8 @@ public class Game extends JPanel
 		Animation.playAll(DP) ;
 		Gif.playAll() ;
 		
-		sideBar.display(player, pet, mousePos, DP) ;
-		sideBar.act(player.getCurrentAction(), mousePos) ;
+		SideBar.display(player, pet, mousePos, DP) ;
+		SideBar.act(player.getCurrentAction(), mousePos) ;
 
 		player.resetAction() ;
 
@@ -1281,7 +1281,7 @@ public class Game extends JPanel
     	player.setMap(fieldMaps[1]) ;
 //    	player.setPos(new Point(393, 140)) ;
 
-//    	letThereBePet() ;
+    	letThereBePet() ;
 
 		for (int i = 0 ; i <= fieldMaps.length - 1 ; i += 1)
 		{
@@ -1305,16 +1305,16 @@ public class Game extends JPanel
     	SpellsBar.updateSpells(player.getActiveSpells()) ;
 //
 //    	
-//    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
-//    	for (Item item : Forge.getAll()) { player.getBag().add(item, 1) ;}
-//    	for (Item item : PetItem.getAll()) { player.getBag().add(item, 2) ;}
-//    	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
-//    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
-//    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
+    	for (Item item : Forge.getAll()) { player.getBag().add(item, 1) ;}
+    	for (Item item : PetItem.getAll()) { player.getBag().add(item, 2) ;}
+    	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
+    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
 //    	player.getElem()[4] = Elements.water ;
 //
     	for (QuestSkills skill : QuestSkills.values())
@@ -1417,7 +1417,9 @@ public class Game extends JPanel
 				player.setMap(Game.getMaps()[player.getJob()]) ;
 				player.setPos(Game.getScreen().getCenter()) ;
 				Battle.updateDamageAnimation(player.getSettings().getDamageAnimation()) ;
-				sideBar = new SideBar(player, player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
+				SideBar.initialize();
+				// deBar = new SideBar(player, player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
+				
 				if (player.getSettings().getMusicIsOn())
 				{
 					Music.SwitchMusic(player.getMap().getMusic()) ;

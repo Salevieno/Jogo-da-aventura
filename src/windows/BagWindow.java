@@ -684,6 +684,13 @@ public class BagWindow extends GameWindow
 		return null ;
 	}
 	
+	private void checkMenuMouseSelection(Point mousePos, Point menuPos, int menuID)
+	{
+		if (!UtilG.isInside(mousePos, menuPos, UtilG.getSize(MenuImage))) { return ;}
+		
+		menu = menuID ;
+	}
+	
 	public void display(Point mousePos, DrawPrimitives DP)
 	{
 		String[] menuNames = Game.allText.get(TextCategories.bagMenus) ;
@@ -696,6 +703,7 @@ public class BagWindow extends GameWindow
 			Point textPos = UtilG.Translate(menuPos, 3, MenuImage.getHeight(null) / 2) ;
 			Color textColor = getTextColor(m == menu) ;
 			Image menuImage = m == menu ? (tab == 0 ? SelectedMenuTab0 : SelectedMenuTab1) : MenuImage ;
+			checkMenuMouseSelection(mousePos, menuPos, m) ;
 			
 			DP.drawImage(menuImage, menuPos, Align.topLeft) ;
 			DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, menuNames[m], titleFont, textColor) ;
@@ -724,6 +732,8 @@ public class BagWindow extends GameWindow
 			DP.drawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
 			Draw.textUntil(textPos, Align.centerLeft, Draw.stdAngle, itemText, stdFont, textColor, 10, mousePos) ;
 		}
+		
+		itemsDisplayed.get(item).displayInfo(windowPos, Align.topRight, DP) ;
 		
 		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos, DP)) ;
 		

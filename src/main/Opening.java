@@ -308,7 +308,7 @@ public abstract class Opening
 		Point moveInfoTopLeft = new Point(60, 60) ;
 		DP.drawText(UtilG.Translate(moveInfoTopLeft, 150, 0), Align.center, 0, "Principais ações", font, textColor) ;
 		
-		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().movingRightGif, SideBar.icons.get(1), Game.getPlayer().getMovingAni().idleGif, SideBar.icons.get(2)} ;
+		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().movingRightGif, SideBar.getButtons().get(3).getImage(), Game.getPlayer().getMovingAni().idleGif, SideBar.getButtons().get(2).getImage()} ;
 		String[] moveInfoText = new String[] {"Moving: W A S D ou setas", "Mochila: B", "Janela do jogador: C", "Quests: Q"} ;
 		for (int i = 0 ; i <= moveInfoImages.length - 1; i += 1)
 		{

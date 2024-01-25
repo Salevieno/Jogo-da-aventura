@@ -107,7 +107,7 @@ public class PetAttributesWindow extends AttributesWindow
 				
 		BasicBattleAttribute[] attributes = pet.getBA().basicAttributes() ;
 		Point initialAttPos = UtilG.Translate(windowPos, border + padding + 34, 124) ;
-		for (int i = 0; i <= attributes.length - 1; i += 1)
+		for (int i = 0; i <= attIcons.length - 1; i += 1)
 		{
 			Point attPos = UtilG.Translate(initialAttPos, 117 * (i / 3), (i % 3) * 22) ;
 			String attValue = UtilG.Round(attributes[i].getBaseValue(), 1) + " + " + UtilG.Round(attributes[i].getBonus(), 1) + " + " + UtilG.Round(attributes[i].getTrain(), 1) ;
