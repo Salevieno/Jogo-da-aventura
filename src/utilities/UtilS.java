@@ -4,6 +4,7 @@ import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays ;
 import java.util.List;
@@ -51,6 +52,19 @@ public abstract class UtilS
 		return palette ;
 	}
 
+	public static List<String> arrowKeys()
+	{
+		return List.of(KeyEvent.getKeyText(KeyEvent.VK_UP),
+				KeyEvent.getKeyText(KeyEvent.VK_LEFT),
+				KeyEvent.getKeyText(KeyEvent.VK_DOWN),
+				KeyEvent.getKeyText(KeyEvent.VK_RIGHT)) ;
+	}
+
+	public static boolean actionIsArrowKey(String action)
+	{
+		return arrowKeys().contains(action) ;
+	}
+	
 	public static String RelPos(Point point, Point refPos) { return refPos.x < point.x ? "Right" : "Left" ;}
 	
 	public static Image loadImage(String path) {

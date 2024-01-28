@@ -180,13 +180,14 @@ public class Statistics
 	public void incNumberSilenceInflicted() { numberSilenceInflicted += 1 ;}
 	
 
-	public void update(AtkResults atkResult)
+	public void update(AtkResults atkResults)
 	{		
-		if (atkResult == null) { return ;}
+		if (atkResults == null) { return ;}
+		if (atkResults.getEffect().equals(AtkEffects.none)) { return ;}
 		
-		AtkTypes atkType = atkResult.getAtkType() ;
-		AtkEffects effect = (AtkEffects) atkResult.getEffect() ;
-		int damage = (int) atkResult.getDamage() ;
+		AtkTypes atkType = atkResults.getAtkType() ;
+		AtkEffects effect = atkResults.getEffect() ;
+		int damage = (int) atkResults.getDamage() ;
 		
 		
 		if (0 <= damage)

@@ -411,13 +411,13 @@ public abstract class LiveBeing
 	public boolean actionIsSpell()
 	{
 		// TODO 1 this can replace usedSpell
-		if (!hasActed()) { return false ;}		
-		
+		if (!hasActed()) { return false ;}
+
 		if (!Player.SpellKeys.contains(currentAction)) { return false ;}
 		
 		int spellID = SpellKeys.indexOf(currentAction) ;
 		
-		if (spells.size() <= spellID) { return false ;}
+		if (spells.size() <= spellID) { return false ;}	
 		
 		Spell spell = spells.get(spellID) ;
 
@@ -441,7 +441,7 @@ public abstract class LiveBeing
 	public boolean isDefending()
 	{
 		if (combo == null) { return false ;}
-		if (combo.size() == 0) { return false ;}
+		if (combo.isEmpty()) { return false ;}
 		
 		if (this instanceof Player)
 		{
@@ -527,10 +527,14 @@ public abstract class LiveBeing
 		BA.getPhyDef().incBonus(-BA.getPhyDef().getBaseValue()) ;
 		BA.getMagDef().incBonus(-BA.getMagDef().getBaseValue()) ;
 	}
-	public void train(AtkResults atkResult)
+	public void train(AtkResults atkResults)
 	{
-		AtkEffects effect = (AtkEffects) atkResult.getEffect() ;
-		AtkTypes atkType = atkResult.getAtkType() ;
+		
+		if (atkResults.getAtkType() == null) { return ;}		
+		if (atkResults.getEffect().equals(AtkEffects.none)) { return ;}
+		
+		AtkEffects effect = atkResults.getEffect() ;
+		AtkTypes atkType = atkResults.getAtkType() ;
 		if (atkType.equals(AtkTypes.physical))
 		{
 			BA.getPhyAtk().incTrain(0.025 / (BA.getPhyAtk().getTrain() + 1)) ;					
@@ -641,6 +645,13 @@ public abstract class LiveBeing
 		DP.drawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null) ;
 	}
 
+	public void takeDamage(int damage)
+	{
+		if (damage <= 0) { return ;}
+		
+		PA.getLife().decTotalValue(damage) ;
+	}
+	
 	public void TakeBloodAndPoisonDamage(double totalBloodAtk, double totalPoisonAtk)
 	{// TODO transferir para blood and poison
 		int bloodDamage = 0, poisonDamage = 0 ;

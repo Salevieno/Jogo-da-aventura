@@ -246,25 +246,21 @@ public class Pet extends LiveBeing
 	public void fight()
 	{
 		int move = -1 ;
-		if (10 <= PA.getMp().getCurrentValue())	// if there is enough mp
+		// TODO pet spells
+		if (10 <= PA.getMp().getCurrentValue())
 		{
-			move = UtilG.randomIntFromTo(0, 3) ;	// consider using spell
+			move = UtilG.randomIntFromTo(0, 3) ;
 		}
 		else
 		{
-			move = UtilG.randomIntFromTo(0, 2) ;	// only physical atk of def
+			move = UtilG.randomIntFromTo(0, 2) ;
 		}
-		if (move == 0)
+		switch (move)
 		{
-			currentAction = BattleKeys[0] ;
-		}
-		if (move == 1)
-		{
-			currentAction = BattleKeys[1] ;
-		}
-		if (move == 2)
-		{
-			currentAction = String.valueOf(UtilG.randomIntFromTo(0, 4)) ;
+			case 0: currentAction = BattleKeys[0] ; return ;
+			case 1: currentAction = BattleKeys[1] ; return ;
+			case 2: currentAction = String.valueOf(UtilG.randomIntFromTo(0, 4)) ; return ;
+			default: return ;
 		}
 	}
 	

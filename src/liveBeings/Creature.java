@@ -209,11 +209,17 @@ public class Creature extends LiveBeing
 		
 	}
 	
-	public int chooseFightMove(String playerMove)
+	public void chooseFightMove(String playerMove)
 	{
 		List<Double> modifiedGenes = type.getGenes().getModifiedGenes(playerMove) ;
 		
-		return UtilG.randomFromChanceList(modifiedGenes) ;
+		int move = UtilG.randomFromChanceList(modifiedGenes) ;
+		switch (move)
+		{
+			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
+			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
+			case 2:	setCurrentAction(String.valueOf(UtilG.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
+		}		
 	}
 	
 	public void think()
@@ -239,18 +245,6 @@ public class Creature extends LiveBeing
 		
 		actionCounter.reset() ;
 		return ;
-	}
-	
-	public void useFightMove(String playerMove)
-	{
-		int move = chooseFightMove(playerMove) ;
-
-		switch (move)
-		{
-			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
-			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
-			case 2:	setCurrentAction(String.valueOf(UtilG.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
-		}
 	}
 	
 	public void applyPassiveSpell(Spell spell)

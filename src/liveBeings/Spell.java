@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import components.SpellTypes;
+import main.AtkResults;
+import main.AtkTypes;
+import utilities.AtkEffects;
 import utilities.Elements;
 import utilities.FrameCounter;
 import utilities.TimeCounter;
@@ -20,7 +23,7 @@ public class Spell
 	private SpellTypes type ;
 	private Map<Spell, Integer> preRequisites ;
 	private Buff buffs;
-	private Buff nerfs;
+	private Buff deBuffs;
 	private double[] atkMod ;
 	private double[] defMod ;
 	private double[] dexMod ;
@@ -41,7 +44,7 @@ public class Spell
 	
 	
 	public Spell(int id, String name, Image image, int maxLevel, int mpCost, SpellTypes type, Map<Spell, Integer> preRequisites,
-			Buff buffs, Buff nerfs, double[] atkMod, double[] defMod, double[] dexMod, double[] agiMod,
+			Buff buffs, Buff deBuffs, double[] atkMod, double[] defMod, double[] dexMod, double[] agiMod,
 			double[] atkCritMod, double[] defCritMod, double[] stunMod, double[] blockMod, double[] bloodMod,
 			double[] poisonMod, double[] silenceMod, int cooldown, int duration, Elements elem, String[] info)
 	{
@@ -54,7 +57,7 @@ public class Spell
 		this.type = type;
 		this.preRequisites = preRequisites;
 		this.buffs = buffs;
-		this.nerfs = nerfs;
+		this.deBuffs = deBuffs;
 		this.atkMod = atkMod;
 		this.defMod = defMod;
 		this.dexMod = dexMod;
@@ -100,7 +103,6 @@ public class Spell
 	public FrameCounter getCooldownCounter() {return cooldownCounter ;}
 	public TimeCounter getDurationCounter() {return effectCounter ;}
 	public String[] getInfo() {return info ;}
-//	public FrameCounter getEffectCounter() { return effectCounter ;}
 
 	public boolean isReady() { return cooldownCounter.finished() ;}
 	public boolean isActive() { return isActive ;}
@@ -162,10 +164,10 @@ public class Spell
 	public void applyNerfs(boolean activate, LiveBeing receiver)
 	{
 		
-		if (nerfs == null) { return ;}
+		if (deBuffs == null) { return ;}
 		int mult = activate ? 1 : -1 ;
 		
-		nerfs.apply(mult, level, receiver) ;
+		deBuffs.apply(mult, level, receiver) ;
 	}
 	
 	@Override

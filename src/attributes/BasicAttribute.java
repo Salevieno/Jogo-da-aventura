@@ -29,7 +29,7 @@ public class BasicAttribute extends LiveBeingAttribute
 	}
 	public void decTotalValue(int amount)
 	{
-		if (amount <= 0) { System.out.println("tentando usar decTotalValue com valor negativo ou 0 -> basicAttribute") ; return ;}
+		if (amount <= 0) { System.out.println("tentando usar decTotalValue com valor negativo ou 0") ; return ;}
 		
 		if (Math.abs(amount) <= bonus) { bonus += -amount ; return ;}
 		

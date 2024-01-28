@@ -525,6 +525,7 @@ public class Game extends JPanel
 			// TODO spells para as criaturas
 			List<Spell> spells = new ArrayList<>() ;
 			spells.add(allSpells[0]) ;
+			spells.get(0).incLevel(1) ;
 //			spells.add(allSpells[1]) ;
 //			spells.add(allSpells[2]) ;
 //			spells.add(allSpells[3]) ;
@@ -1225,7 +1226,7 @@ public class Game extends JPanel
 
 		playerActs() ;
 
-		if (!player.getMap().IsACity())
+		if (player.getMap().isAField())
 		{
 			player.setClosestCreature(player.closestCreatureInRange()) ;
 		}
@@ -1276,12 +1277,13 @@ public class Game extends JPanel
 	{
 
 		
-//    	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
+    	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
 //    	player.setLevel(50) ;
     	player.setMap(fieldMaps[1]) ;
+//    	fieldMaps[1].getCreatures().get(0).setPos(player.getPos());
 //    	player.setPos(new Point(393, 140)) ;
 
-    	letThereBePet() ;
+//    	letThereBePet() ;
 
 		for (int i = 0 ; i <= fieldMaps.length - 1 ; i += 1)
 		{
@@ -1293,11 +1295,12 @@ public class Game extends JPanel
 		player.getPA().getMp().incMaxValue(1000); ;	
 		player.getBA().getPhyAtk().incBaseValue(1000) ;
 		player.getBA().getMagAtk().incBaseValue(1000) ;
-		player.getBA().getPhyDef().incBaseValue(1000) ;
-		player.getBA().getMagDef().incBaseValue(1000) ;
-		player.getBA().getAgi().incBaseValue(1000) ;
+//		player.getBA().getPhyDef().incBaseValue(1000) ;
+//		player.getBA().getMagDef().incBaseValue(1000) ;
+//		player.getBA().getAgi().incBaseValue(1000) ;
 		player.getBA().getDex().incBaseValue(1000) ;
-    	player.getBag().addGold(30000) ;
+		player.getPA().getLife().setToMaximum() ;
+		player.getBag().addGold(30000) ;
     	for (Spell spell : player.getSpells())
     	{
     		spell.incLevel(5) ;
@@ -1505,94 +1508,19 @@ public class Game extends JPanel
 
 	class TAdapter extends KeyAdapter
 	{
-		// TODO transformar actions em keyEvents
 		@Override
-		public void keyPressed(KeyEvent e)
+		public void keyPressed(KeyEvent event)
 		{
-			int key = e.getKeyCode() ;
-
 			shouldRepaint = true ;
-			switch (key)
+			int keyCode = event.getKeyCode() ;
+			
+			if (KeyEvent.VK_NUMPAD0 <= keyCode & keyCode <= KeyEvent.VK_NUMPAD9)
 			{
-			case KeyEvent.VK_LEFT:
-			case KeyEvent.VK_UP:
-			case KeyEvent.VK_DOWN:
-			case KeyEvent.VK_RIGHT:
-				player.setCurrentAction(KeyEvent.getKeyText(key)) ;
+				player.setCurrentAction(String.valueOf(keyCode - 96)) ;
 				return ;
-
-			case KeyEvent.VK_ENTER:
-			case KeyEvent.VK_ESCAPE:
-			case KeyEvent.VK_BACK_SPACE:
-			case KeyEvent.VK_SPACE:
-			case KeyEvent.VK_F1:
-			case KeyEvent.VK_F2:
-			case KeyEvent.VK_F3:
-			case KeyEvent.VK_F4:
-			case KeyEvent.VK_F5:
-			case KeyEvent.VK_F6:
-			case KeyEvent.VK_F7:
-			case KeyEvent.VK_F8:
-			case KeyEvent.VK_F9:
-			case KeyEvent.VK_F10:
-			case KeyEvent.VK_F11:
-			case KeyEvent.VK_F12:
-			case KeyEvent.VK_A:
-			case KeyEvent.VK_B:
-			case KeyEvent.VK_C:
-			case KeyEvent.VK_D:
-			case KeyEvent.VK_E:
-			case KeyEvent.VK_F:
-			case KeyEvent.VK_G:
-			case KeyEvent.VK_H:
-			case KeyEvent.VK_I:
-			case KeyEvent.VK_J:
-			case KeyEvent.VK_K:
-			case KeyEvent.VK_L:
-			case KeyEvent.VK_M:
-			case KeyEvent.VK_N:
-			case KeyEvent.VK_O:
-			case KeyEvent.VK_P:
-			case KeyEvent.VK_Q:
-			case KeyEvent.VK_R:
-			case KeyEvent.VK_S:
-			case KeyEvent.VK_T:
-			case KeyEvent.VK_U:
-			case KeyEvent.VK_V:
-			case KeyEvent.VK_W:
-			case KeyEvent.VK_X:
-			case KeyEvent.VK_Y:
-			case KeyEvent.VK_Z:
-			case KeyEvent.VK_0:
-			case KeyEvent.VK_1:
-			case KeyEvent.VK_2:
-			case KeyEvent.VK_3:
-			case KeyEvent.VK_4:
-			case KeyEvent.VK_5:
-			case KeyEvent.VK_6:
-			case KeyEvent.VK_7:
-			case KeyEvent.VK_8:
-			case KeyEvent.VK_9:
-				player.setCurrentAction(KeyEvent.getKeyText(key)) ;
-				return ;
-
-			case KeyEvent.VK_NUMPAD0:
-			case KeyEvent.VK_NUMPAD1:
-			case KeyEvent.VK_NUMPAD2:
-			case KeyEvent.VK_NUMPAD3:
-			case KeyEvent.VK_NUMPAD4:
-			case KeyEvent.VK_NUMPAD5:
-			case KeyEvent.VK_NUMPAD6:
-			case KeyEvent.VK_NUMPAD7:
-			case KeyEvent.VK_NUMPAD8:
-			case KeyEvent.VK_NUMPAD9:
-				player.setCurrentAction(String.valueOf(key - 96)) ;
-				return ;
-
-			case KeyEvent.VK_PAUSE: return ;
-
-			default: return ;
 			}
+
+			player.setCurrentAction(KeyEvent.getKeyText(keyCode)) ;
 		}
 
 		@Override

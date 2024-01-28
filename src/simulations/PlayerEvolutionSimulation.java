@@ -38,10 +38,10 @@ import utilities.Align;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.FrameCounter;
+import utilities.Log;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
-import windows.CreatureAttributesWindow;
 import windows.GameWindow;
 import windows.PlayerAttributesWindow;
 
@@ -403,7 +403,7 @@ public abstract class PlayerEvolutionSimulation
 	
 	private static void simulateBattle()
 	{
-		Battle.PrintStart() ;
+		Log.battleStart() ;
 		ResetBattleResults() ;
 		CreateNewCreature() ;
 		player.engageInFight(playerOpponent) ;

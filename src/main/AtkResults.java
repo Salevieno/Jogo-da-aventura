@@ -26,6 +26,11 @@ public class AtkResults
 	{
 		return atkType;
 	}
+	
+	public void setAtkType(AtkTypes atkType)
+	{
+		this.atkType = atkType ;
+	}
 
 	public AtkEffects getEffect()
 	{

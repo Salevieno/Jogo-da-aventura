@@ -137,8 +137,8 @@ public class Player extends LiveBeing
     public final static Color[] ClassColors = new Color[] {Game.colorPalette[21], Game.colorPalette[5], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
 
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
-	public static List<String> ArrowKeys = List.of("Acima", "Abaixo", "Esquerda", "Direita") ;
-    public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
+//	public static List<String> ArrowKeys = List.of("Acima", "Abaixo", "Esquerda", "Direita") ;
+//    public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
 	public static final String[] HotKeys = new String[] {"T", "Y", "U"} ;
 
     public final static Image settingsWindowImage = UtilS.loadImage("\\Windows\\" + "windowSettings.png") ;
@@ -384,7 +384,7 @@ public class Player extends LiveBeing
 	public boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
-	private boolean actionIsAMove() { return Arrays.asList(MoveKeys).contains(currentAction) ;}
+	private boolean actionIsAMove() { return List.of("W", "A", "S", "D").contains(currentAction) | UtilS.actionIsArrowKey(currentAction) ;}
 	private boolean hitsCreature() { return (usedPhysicalAtk() | actionIsSpell()) & closestCreature != null ;}
 	public boolean isInBattle() { return opponent != null | state.equals(LiveBeingStates.fighting) ;}
 	public boolean isCollecting() { return state.equals(LiveBeingStates.collecting) ;}
@@ -697,8 +697,6 @@ public class Player extends LiveBeing
 		
 	}
 	
-	private static boolean actionIsArrowKeys(String action) { return ArrowKeys.contains(action);}
-	
 	public void doCurrentAction(DrawPrimitives DP)
 	{
 		switch (state)
@@ -715,15 +713,24 @@ public class Player extends LiveBeing
 		// I like to move it, move it!
 		if (actionIsAMove())
 		{
-			switch (currentAction)
+			if (currentAction.equals(UtilS.arrowKeys().get(0)) | currentAction.equals("W"))
 			{
-				case "Acima": case "W": setDir(Directions.up) ; break ;
-				case "Abaixo": case "S": setDir(Directions.down) ; break ;
-				case "Esquerda": case "A": setDir(Directions.left) ; break ;
-				case "Direita": case "D": setDir(Directions.right) ; break ;
+				setDir(Directions.up) ;
+			}
+			if (currentAction.equals(UtilS.arrowKeys().get(1)) | currentAction.equals("A"))
+			{
+				setDir(Directions.left) ;
+			}
+			if (currentAction.equals(UtilS.arrowKeys().get(2)) | currentAction.equals("S"))
+			{
+				setDir(Directions.down) ;
+			}
+			if (currentAction.equals(UtilS.arrowKeys().get(3)) | currentAction.equals("D"))
+			{
+				setDir(Directions.right) ;
 			}
 
-			if (actionIsArrowKeys(currentAction) | (!isFocusedOnWindow() & !metAnyNPC()))
+			if (UtilS.actionIsArrowKey(currentAction) | (!isFocusedOnWindow() & !metAnyNPC()))
 			{
 				startMove() ;
 			}
@@ -945,7 +952,6 @@ public class Player extends LiveBeing
 
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
-		// TODO move useSpell para Spell
 		if (spell.getLevel() <= 0) { return null ;}
 		if (!spell.isReady()) { return null ;}
 		if (!hasEnoughMP(spell)) { return null ;}
@@ -955,14 +961,13 @@ public class Player extends LiveBeing
 		stats.incNumberMagAtk() ;
 		System.out.println("used spell " + spell.getName());
 
+		spell.activate() ;
+		PA.getMp().decTotalValue(spell.getMpCost()) ;
+		
 		switch (spell.getType())
 		{
-			case support : useSupportSpell(spell) ;
-				return null ;
-				
-			case offensive : if (!isInBattle()) { return null ;}
-				return useOffensiveSpell(spell, receiver) ;
-				
+			case support : useSupportSpell(spell) ; return null ;
+			case offensive : return useOffensiveSpell(spell, receiver) ;
 			default : return null ;
 		}
 		
@@ -1060,11 +1065,8 @@ public class Player extends LiveBeing
 
 	private void useSupportSpell(Spell spell)
 	{	
-		
-		spell.activate() ;		
-		resetBattleActions() ;
+			
 		System.out.println("Player used support spell");
-		PA.getMp().decTotalValue(spell.getMpCost()) ;
 		switch (spell.getId())
 		{
 			case 4: 
@@ -1172,6 +1174,7 @@ public class Player extends LiveBeing
 	
 	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
 	{
+		if (receiver == null) { return null ;}
 		
 		int spellLevel = spell.getLevel() ;
 		int spellID = spells.indexOf(spell) ;
@@ -1202,8 +1205,6 @@ public class Player extends LiveBeing
 		Elements[] DefElem = receiver.defElems() ;
 		double receiverElemMod = 1 ;
 		System.out.println("Player used " + spell.getName() + " level " + spell.getLevel());
-		PA.getMp().decTotalValue(spell.getMpCost()) ;
-		spell.activate() ;
 		
 		switch (job)
 		{

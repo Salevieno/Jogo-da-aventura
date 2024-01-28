@@ -48,7 +48,7 @@ public class Animation
 		ani.getCounter().setDuration(duration) ;
 		ani.vars = vars ;
 		ani.getCounter().start() ;
-		Log.animationStart(ani) ;
+//		Log.animationStart(ani) ;
 	}
 	
 	private AnimationDisplayFunction displayFunctionFromType(int type)
