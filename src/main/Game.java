@@ -1250,6 +1250,11 @@ public class Game extends JPanel
 //				pet.levelUp(animations.get(7)) ;
 			}	
 		}
+		
+		if (player.isTalkingToNPC())
+		{
+			player.talkToNPC(mousePos, DP) ;
+		}
 
 		player.showWindows(pet, mousePos, DP) ;
 

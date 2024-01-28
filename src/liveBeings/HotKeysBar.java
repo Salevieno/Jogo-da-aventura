@@ -10,6 +10,7 @@ import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Item;
 import main.Game;
+import screen.SideBar;
 import utilities.Align;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -19,13 +20,11 @@ public class HotKeysBar
 {
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 	private static final Color textColor = Game.colorPalette[19] ;
-	
-	public static final Image slotImage = UtilS.loadImage("\\SideBar\\" + "Slot.png") ;
 
 	public static int slotHovered(Point mousePos)
 	{
 		Point barTopLeft = new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70) ;
-		Dimension slotSize = new Dimension(slotImage.getWidth(null), slotImage.getHeight(null)) ;
+		Dimension slotSize = UtilG.getSize(SideBar.slotImage) ;
 		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 		{
 			Point slotCenter = UtilG.Translate(barTopLeft, 10, 10 + 20 * i) ;
@@ -41,7 +40,7 @@ public class HotKeysBar
 	public static void display(Item[] hotItems, Point mousePos, DrawPrimitives DP)
 	{
 		Point barTopLeft = new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70) ;
-		Dimension slotSize = new Dimension(slotImage.getWidth(null), slotImage.getHeight(null)) ;
+		Dimension slotSize = UtilG.getSize(SideBar.slotImage) ;
 		
 //		DP.drawGradRoundRect(barTopLeft, Align.topLeft, new Dimension(36, 60), 1, Game.colorPalette[3], Game.colorPalette[3], true) ;
 		

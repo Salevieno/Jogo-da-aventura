@@ -113,6 +113,7 @@ public class Player extends LiveBeing
 	
 	private Creature closestCreature ;		// creature that is currently closest to the player
     private Creature opponent ;				// creature that is currently in battle with the player
+    private NPCs npcInContact ;
     private Collectible currentCollectible ;
     private TreasureChest currentChest ;
     private Item[] hotItems ;				// items on the hotkeys
@@ -137,9 +138,7 @@ public class Player extends LiveBeing
     public final static Color[] ClassColors = new Color[] {Game.colorPalette[21], Game.colorPalette[5], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
 
     public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
-//	public static List<String> ArrowKeys = List.of("Acima", "Abaixo", "Esquerda", "Direita") ;
-//    public static final String[] MoveKeys = new String[] {"W", "A", "S", "D", KeyEvent.getKeyText(KeyEvent.VK_UP), KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN), KeyEvent.getKeyText(KeyEvent.VK_RIGHT)} ;
-	public static final String[] HotKeys = new String[] {"T", "Y", "U"} ;
+    public static final String[] HotKeys = new String[] {"T", "Y", "U"} ;
 
     public final static Image settingsWindowImage = UtilS.loadImage("\\Windows\\" + "windowSettings.png") ;
 	
@@ -231,6 +230,7 @@ public class Player extends LiveBeing
 
 		closestCreature = null ;
 	    opponent = null ;
+	    npcInContact = null ;
 	    currentCollectible = null ;
 	    currentChest = null ;
 		settings = new SettingsWindow(settingsWindowImage, false, true, false, 1, 1) ;
@@ -380,6 +380,7 @@ public class Player extends LiveBeing
 		spells.addAll(Arrays.asList(Arrays.copyOfRange(Game.getAllSpells(), firstSpellID - 1, firstSpellID + 10))) ;
 	}
 
+	public boolean isTalkingToNPC() { return npcInContact != null ;}
 	public boolean isFocusedOnWindow() { if (focusWindow == null) { return false ;} return focusWindow.isOpen() ;}
 	public boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
@@ -730,7 +731,7 @@ public class Player extends LiveBeing
 				setDir(Directions.right) ;
 			}
 
-			if (UtilS.actionIsArrowKey(currentAction) | (!isFocusedOnWindow() & !metAnyNPC()))
+			if (UtilS.actionIsArrowKey(currentAction) | (!isFocusedOnWindow()))
 			{
 				startMove() ;
 			}
@@ -907,13 +908,27 @@ public class Player extends LiveBeing
 
 	public void meetWithNPCs(Point mousePos, DrawPrimitives DP)
 	{
+		if (npcInContact != null)
+		{
+			if (!metNPC(npcInContact))
+			{
+				npcInContact = null ;
+			}
+		}
+		
+		if (currentAction == null) { return ;}
+		if (!currentAction.equals("E")) { return ;}		
+		
+		if (npcInContact != null) { npcInContact = null ; return ;}
+		
 		if (map.getNPCs() != null)
 		{
 			for (NPCs npc : map.getNPCs())
 			{
 				if (!metNPC(npc)) { npc.resetMenu() ; continue ;}
 				
-				npc.action(this, Game.getPet(), mousePos, DP) ;
+				npcInContact = npc ;
+				npcInContact.resetMenu();
 				
 				break ;
 			}
@@ -926,12 +941,18 @@ public class Player extends LiveBeing
 			for (NPCs npc : building.getNPCs())
 			{				
 				if (!metNPC(npc)) { npc.resetMenu() ; continue ;}
-				
-				npc.action(this, Game.getPet(), mousePos, DP) ;
+
+				npcInContact = npc ;
+				npcInContact.resetMenu();
 				
 				break ;
 			}
 		}
+	}
+	
+	public void talkToNPC(Point mousePos, DrawPrimitives DP)
+	{
+		npcInContact.action(this, Game.getPet(), mousePos, DP) ;
 	}
 	
 	public void checkMeet(Point mousePos, DrawPrimitives DP)

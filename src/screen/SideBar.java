@@ -32,6 +32,7 @@ public abstract class SideBar
 	private static final Point barPos = Game.getScreen().pos(1, 0) ;
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	public static final Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
+	public static final Image slotImage = UtilS.loadImage("\\SideBar\\" + "Slot.png") ;
 	private static final List<GameButton> buttons = new ArrayList<>() ;
 	
 	static

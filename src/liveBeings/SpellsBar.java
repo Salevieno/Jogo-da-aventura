@@ -11,6 +11,7 @@ import graphics.Draw;
 import graphics.DrawPrimitives;
 import main.Game;
 import main.TextCategories;
+import screen.SideBar;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
@@ -25,7 +26,6 @@ public abstract class SpellsBar
 	private static final Color textColor ;
 
 	private static final Image image ;
-	private static final Image slotImage ;
 	private static final Image slotImageNoMP ;
 	private static final Image cooldownImage ;	
 	private static final Dimension size ;
@@ -45,7 +45,6 @@ public abstract class SpellsBar
 		textColor = Game.colorPalette[3] ;
 
 		image = UtilS.loadImage("\\SideBar\\" + "SpellsBar.png") ;
-		slotImage = UtilS.loadImage("\\SideBar\\" + "Slot.png") ;
 		slotImageNoMP = UtilS.loadImage("\\SideBar\\" + "SlotNoMP.png") ;
 		cooldownImage = UtilS.loadImage("\\SideBar\\" + "Cooldown.png") ;
 		size = UtilG.getSize(image) ;
@@ -74,7 +73,7 @@ public abstract class SpellsBar
 	
 	public static void display(int userMP, Point mousePos, DrawPrimitives DP)
 	{
-		Dimension slotSize = UtilG.getSize(slotImage) ;
+		Dimension slotSize = UtilG.getSize(SideBar.slotImage) ;
 		Point offset = new Point(slotSize.width / 2 + 4, slotSize.height / 2 + 15) ;
 		int sx = (int) UtilG.spacing(size.width - 4, nCols, slotSize.width, 0) ;
 		int sy = (int) UtilG.spacing(size.height, nRows, slotSize.height, 15) ;
@@ -91,7 +90,7 @@ public abstract class SpellsBar
 			int row = i % nRows ;
 			int col = i / nRows ;
 			Point slotCenter = UtilG.Translate(barPos, offset.x + col * sx, - size.height + offset.y + row * sy) ;
-			Image image = spell.getMpCost() < userMP ? slotImage : slotImageNoMP ;
+			Image image = spell.getMpCost() < userMP ? SideBar.slotImage : slotImageNoMP ;
 			DP.drawImage(image, slotCenter, Align.center) ;
 			DP.drawText(slotCenter, Align.center, Draw.stdAngle, Player.SpellKeys.get(i), font, textColor) ;
 			
