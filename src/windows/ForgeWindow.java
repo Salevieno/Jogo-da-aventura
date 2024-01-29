@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import components.GameButton;
+import graphics.Animation;
+import graphics.AnimationTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Equip;
@@ -37,7 +39,7 @@ public class ForgeWindow extends GameWindow
 			"Essa não! A forja não funcionou!") ;
 	
 	private static final int NumberItemsPerWindow = 10 ;
-	private static final Point windowPos = Game.getScreen().getPointWithinBorders(0.2, 0.1) ;
+	private static final Point windowPos = Game.getScreen().getPointWithinBorders(0.2, 0.05) ;
 	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Forge.png") ;
 	
 
@@ -63,9 +65,7 @@ public class ForgeWindow extends GameWindow
 	{
 		message = messages.get(i) ;
 		Point pos = UtilG.Translate(windowPos, 0, - 30) ;
-		// TODO animation index is varying when damage animation is removed
-		// create a new animation every time
-//		new Animation(12).start(200, new Object[] {pos, message, Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.message, new Object[] {pos, message, Game.colorPalette[0]}) ;
 	}
 	
 	public void navigate(String action)
@@ -164,46 +164,32 @@ public class ForgeWindow extends GameWindow
 		{			
 			if (itemsOnWindow.get(i) == null) { continue ;}
 			
-			Point namePos = UtilG.Translate(itemPos, 14, -6) ;
-			Point runePos = UtilG.Translate(itemPos, 154, -6) ;
-			Point coinPos = UtilG.Translate(itemPos, 264, -6) ;
-			Point pricePos = UtilG.Translate(itemPos, 274, -6) ;
+			Point namePos = UtilG.Translate(itemPos, 14, 0) ;
+			Point runePos = UtilG.Translate(itemPos, 154, 0) ;
+			Point pricePos = UtilG.Translate(itemPos, 184, 0) ;
+			Point coinPos = UtilG.Translate(itemPos, 194, 0) ;
 			
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(200, 10), i) ;
+			
 			Equip equip = itemsOnWindow.get(i) ;
 			Color itemColor = this.item == itemsOnWindow.indexOf(equip) ? selColor : stdColor ;
 			DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
 			DP.drawImage(equip.getImage(), itemPos, angle, Scale.unit, Align.center) ;
 			DP.drawText(namePos, Align.centerLeft, angle, equip.getName() + " + " + equip.getForgeLevel(), stdFont, itemColor) ;
-			// TODO draw required rune
-			DP.drawText(runePos, Align.centerLeft, angle, reqRune(equip).getName(), stdFont, itemColor) ;
+			DP.drawImage(reqRune(equip).getImage(), runePos, Align.center) ;
+			
+			if (UtilG.isInside(mousePos, UtilG.getTopLeft(runePos, Align.center, UtilG.getSize(Item.slot)), UtilG.getSize(Item.slot)))
+			{
+				Point runeNamePos = UtilG.Translate(runePos, -Item.slot.getWidth(null) / 2, -Item.slot.getHeight(null) / 2 - 5) ;
+				DP.drawText(runeNamePos, Align.centerLeft, Draw.stdAngle, reqRune(equip).getName(), stdFont, stdColor) ;
+			}
+			
 			DP.drawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
 			DP.drawText(pricePos, Align.centerLeft, angle, String.valueOf(forgePrice(equip.getForgeLevel())), stdFont, itemColor) ;
 			itemPos.y += 28 ;
 		}
 		
-//		for (Equip item : itemsOnWindow)
-//		{
-//			if (item == null) { continue ;}
-//			
-//			Point namePos = UtilG.Translate(itemPos, 14, -6) ;
-//			Point runePos = UtilG.Translate(itemPos, 154, -6) ;
-//			Point coinPos = UtilG.Translate(itemPos, 264, -6) ;
-//			Point pricePos = UtilG.Translate(itemPos, 274, -6) ;
-//			
-//			checkMouseSelection(mousePos, namePos, new Dimension(140, 10), item) ;
-//			Color itemColor = this.item == itemsOnWindow.indexOf(item) ? selColor : stdColor ;
-//			DP.DrawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
-//			DP.DrawImage(item.getImage(), itemPos, angle, Scale.unit, Align.center) ;
-//			DP.DrawText(namePos, Align.centerLeft, angle, item.getName() + " + " + item.getForgeLevel(), stdFont, itemColor) ;
-//			// TODO draw required rune
-//			DP.DrawText(runePos, Align.centerLeft, angle, reqRune(item).getName(), stdFont, itemColor) ;
-//			DP.DrawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
-//			DP.DrawText(pricePos, Align.centerLeft, angle, String.valueOf(forgePrice(item.getForgeLevel())), stdFont, itemColor) ;
-//			itemPos.y += 28 ;
-//		}
-		
-		forgeButton.display(angle, false, mousePos, DP) ;
+//		forgeButton.display(angle, false, mousePos, DP) ;
 		
 	}
 

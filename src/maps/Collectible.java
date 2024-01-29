@@ -53,6 +53,8 @@ public class Collectible extends Item
 		return CollectibleTypes.values()[typeID(itemID)] ;
 	}
 
+	public double chance(int playerLevel) { return 1 - 1 / (1 + Math.pow(1.1, playerLevel - level));}
+	
 	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
 	{
 		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;

@@ -1142,37 +1142,9 @@ public class Game extends JPanel
 				player.getMoveCounter().reset() ;
 			}
 		}
-		if (player.isMoving())
-		{
-			player.move(pet) ;
-			if (player.isDoneMoving())	// TODO whaaaaaaat?
-			{
-				if (player.getOpponent() == null)
-				{
-					player.setState(LiveBeingStates.idle) ;
-				}
-				else
-				{
-					player.setState(LiveBeingStates.fighting) ;
-				}
-			}
-		}
 
-		if (player.isCollecting())
-		{
-			player.collect(DP) ;
-		}
+		player.doCurrentAction(DP) ;
 		
-		if (player.isFishing())
-		{
-			player.fish() ;
-		}
-
-		if (player.isOpeningChest())
-		{
-			player.openChest() ;
-		}
-
 		player.applyAdjacentGroundEffect() ;
 		player.displayAttributes(player.getSettings().getAttDisplay(), DP) ;
 		player.display(player.getPos(), Scale.unit, player.getDir(), player.getSettings().getShowAtkRange(), DP) ;
@@ -1181,9 +1153,6 @@ public class Game extends JPanel
 			player.drawWeapon(player.getPos(), Scale.unit, DP) ;
 		}
 		player.displayState(DP) ;
-//		player.getMap().displayInfoWindow(DP) ;
-
-		player.doCurrentAction(DP) ;
 	}
 	
 	private void updateProjectiles()

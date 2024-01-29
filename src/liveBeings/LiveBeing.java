@@ -144,7 +144,7 @@ public abstract class LiveBeing
 	public void setCombo(List<String> newValue) {combo = newValue ;}
 	public void setCurrentAtkType(AtkTypes ba) { currentAtkType = ba ;}
 	
-	public boolean isMoving() { return (state.equals(LiveBeingStates.moving)) ;}
+	public boolean isMoving() { return state.equals(LiveBeingStates.moving) ;}
 	public boolean canAct() { return actionCounter.finished() & (state.equals(LiveBeingStates.idle) | state.equals(LiveBeingStates.fighting)) ;}
 	
 	public void resetAction() { currentAction = null ;}
@@ -652,8 +652,8 @@ public abstract class LiveBeing
 		PA.getLife().decTotalValue(damage) ;
 	}
 	
-	public void TakeBloodAndPoisonDamage(double totalBloodAtk, double totalPoisonAtk)
-	{// TODO transferir para blood and poison
+	public void takeBloodAndPoisonDamage(double totalBloodAtk, double totalPoisonAtk)
+	{
 		int bloodDamage = 0, poisonDamage = 0 ;
 		double bloodMult = 1, poisonMult = 1 ;
 		if (this instanceof Player & job == 4)

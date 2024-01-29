@@ -77,7 +77,6 @@ import windows.SpellsTreeWindow;
 
 public class Player extends LiveBeing
 {
-//	private String language ;
 	private String sex ;
 	private Color color ;
 	
@@ -97,9 +96,6 @@ public class Player extends LiveBeing
 	private int attPoints ;			// attribute points available (to upgrade the attributes)
 	private int spellPoints ;		// spell points available (to upgrade the spells)
 	private double[] collectLevel ;	// 0: herb, 1: wood, 2: metal
-	private FrameCounter collectCounter ;	// counts the progress of the player's collection
-	private FrameCounter digCounter ;		// counts the progress of digging
-	private FrameCounter tentCounter ;		// counts the progress of sleeping at the tent
 	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor
 	private Arrow equippedArrow ;
 	private int storedGold ;
@@ -119,15 +115,14 @@ public class Player extends LiveBeing
 	private Statistics stats ;
     
 	public static final int maxLevel = 99 ;
-    public static final Image CollectingMessage = UtilS.loadImage("\\Collect\\" + "CollectingMessage.gif") ;   
-    public static final Image collectingGif = UtilS.loadImage("\\Collect\\" + "Collecting.gif") ;
-//    public static final Image TentImage = UtilS.loadImage("\\SideBar\\" + "Icon5_tent.png") ;
-    public static final Gif TentGif = new Gif("Tent", UtilS.loadImage("Tent.png"), 1000, false, false) ;
+    public static final Image CollectingMessage = UtilS.loadImage("\\Collect\\" + "CollectingMessage.gif") ; 
     public static final Image DragonAuraImage = UtilS.loadImage("\\Player\\" + "dragonAura.gif") ;
     public static final Image RidingImage = UtilS.loadImage("\\Player\\" + "Tiger.png") ;
-	public static final Image CoinIcon = UtilS.loadImage("\\Player\\" + "CoinIcon.png") ;    
-	public static final Image DiggingGif = UtilS.loadImage("\\Player\\" + "Digging.gif") ;   
+	public static final Image CoinIcon = UtilS.loadImage("\\Player\\" + "CoinIcon.png") ;
 	public static final Image MagicBlissGif = UtilS.loadImage("\\Player\\" + "MagicBliss.gif") ;
+    public static final Gif CollectingGif = new Gif("Collecting", UtilS.loadImage("\\Collect\\" + "Collecting.gif"), 5, false, false) ;
+    public static final Gif TentGif = new Gif("Tent", UtilS.loadImage("Tent.png"), 5, false, false) ;
+	public static final Gif DiggingGif = new Gif("Digging", UtilS.loadImage("\\Player\\" + "Digging.gif"), 2, false, false) ;
     public static final Gif FishingGif = new Gif("Fishing", UtilS.loadImage("\\Player\\" + "Fishing.gif"), 2, false, false) ;
     
 	public final static List<String[]> Properties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
@@ -136,7 +131,6 @@ public class Player extends LiveBeing
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public final static Color[] ClassColors = new Color[] {Game.colorPalette[21], Game.colorPalette[5], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
 
-//    private static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
     public static final String[] HotKeys = new String[] {"T", "Y", "U"} ;
 
     public final static Image settingsWindowImage = UtilS.loadImage("\\Windows\\" + "windowSettings.png") ;
@@ -173,7 +167,6 @@ public class Player extends LiveBeing
 		stepCounter = new FrameCounter(0, 20) ;
 		combo = new ArrayList<>() ;
 	    
-//		this.language = Language ;
 		this.sex = Sex ;
 		
 		
@@ -209,9 +202,6 @@ public class Player extends LiveBeing
 		}
 		isRiding = false ;
 		stats = new Statistics() ;
-		collectCounter = new FrameCounter(0, 240) ;
-		digCounter = new FrameCounter(0, 500) ;
-		tentCounter = new FrameCounter(0, 200) ;
 		attPoints = 0 ;
 		
 		
@@ -360,13 +350,18 @@ public class Player extends LiveBeing
 	public static Spell[] getArcherSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 70, 84) ;}
 	public static Spell[] getAnimalSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 105, 118) ;}
 	public static Spell[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 139, 152) ;}
-	
-	
 
+	public static boolean setIsFormed(Equip[] EquipID)
+	{
+		if (EquipID[0] == null | EquipID[1] == null | EquipID[2] == null) { return false ;}
+		
+		return (EquipID[0].getId() + 1) == EquipID[1].getId() & (EquipID[1].getId() + 1) == EquipID[2].getId() ;
+	}
 	public static double calcExpToLevelUp(int level)
 	{
 		return 10 * (3 * Math.pow(level - 1, 2) + 3 * (level - 1) + 1) - 5 ;
 	}
+	
 	
 	public void setAttPoints(int attPoints)
 	{
@@ -380,23 +375,15 @@ public class Player extends LiveBeing
 	}
 
 	public boolean isTalkingToNPC() { return npcInContact != null ;}
-	public boolean isFocusedOnWindow() { if (focusWindow == null) { return false ;} return focusWindow.isOpen() ;}
-	public boolean isDoneMoving() { return stepCounter.finished() ;}
+	private boolean isFocusedOnWindow() { if (focusWindow == null) { return false ;} return focusWindow.isOpen() ;}
+	private boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
 	private boolean actionIsAMove() { return List.of("W", "A", "S", "D").contains(currentAction) | UtilS.actionIsArrowKey(currentAction) ;}
 	private boolean hitCreature() { return (usedPhysicalAtk() | actionIsSpell()) & closestCreature != null ;}
 	public boolean isInBattle() { return opponent != null | state.equals(LiveBeingStates.fighting) ;}
-	public boolean isCollecting() { return state.equals(LiveBeingStates.collecting) ;}
-	public boolean isFishing() { return state.equals(LiveBeingStates.fishing) ;}
-	public boolean isOpeningChest() { return state.equals(LiveBeingStates.openingChest) ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
-	public static boolean setIsFormed(Equip[] EquipID)
-	{
-		if (EquipID[0] == null | EquipID[1] == null | EquipID[2] == null) { return false ;}
-		
-		return (EquipID[0].getId() + 1) == EquipID[1].getId() & (EquipID[1].getId() + 1) == EquipID[2].getId() ;
-	}
+	
 
 	
 //	private Point feetPos() {return new Point(pos.x, pos.y) ;}	
@@ -470,38 +457,30 @@ public class Player extends LiveBeing
 
 		((FieldMap) map).removeCollectible(collectible) ;
 	}
-	
-	public void finishCollecting()
-	{
-		collectCounter.reset() ;
-        collectingGif.flush() ;
-    	setState(LiveBeingStates.idle) ;
-        currentCollectible = null ;
-	}
-	
+
 	public void collect(DrawPrimitives DP)
     {
 		
-		collectCounter.inc() ;
-		Draw.gif(collectingGif, getPos(), Align.center);
-        
-        if (!collectCounter.finished()) { return ;}
+		if (CollectingGif.isActive()) { return ;}
+		
+		CollectingGif.start(pos, Align.center) ;
+		
+        if (!CollectingGif.isDonePlaying()) { return ;}
         
         boolean isBerry = currentCollectible.typeNumber() == 0 ;
-        int mapLevel = ((FieldMap) map).getLevel() ;
-        double collectChance = isBerry ? 1 : 1 - 1 / (1 + Math.pow(1.1, collectLevel[currentCollectible.typeNumber() - 1] - mapLevel)) ;
-//        String msg = "Falha na coleta!" ;        
-    	
-        if (UtilG.chance(collectChance))
+        boolean collectSuccessful = isBerry ? true : UtilG.chance(currentCollectible.chance(level)) ;        
+    	String msg = collectSuccessful ? currentCollectible.getName() : "Falha na coleta" ;
+        
+        if (collectSuccessful)
         {
-//        	msg = "Coleta com sucesso!" ;
         	addCollectibleToBag(currentCollectible, bag) ;
         	trainCollecting(currentCollectible) ;
+        	Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.colorPalette[0]});
         }
 
     	removeCollectibleFromMap(currentCollectible) ;
-        finishCollecting() ;
-//    	Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), msg, Game.colorPalette[4]}) ;      
+    	setState(LiveBeingStates.idle) ;
+        currentCollectible = null ;
 
     }
 	
@@ -551,23 +530,38 @@ public class Player extends LiveBeing
 		
 		stepCounter.inc() ;
 		
-		Point newPos = calcNewPos() ;
-		
-		if (!Game.getScreen().posIsWithinBorders(newPos))
-		{
-			moveToNewMap(pos, dir, map, step) ;
 
-			if (pet != null) { pet.setPos(pos) ;}
+		if (isDoneMoving())
+		{
+			if (opponent == null)
+			{
+				setState(LiveBeingStates.idle) ;
+			}
+			else
+			{
+				setState(LiveBeingStates.fighting) ;
+			}
 			
-			if (opponent != null) { opponent.setFollow(false) ;}
-			closestCreature = null ;
-			opponent = null ;
 			return ;
 		}
 		
-		if (!map.groundIsWalkable(newPos, elem[4])) { return ;}
+		Point newPos = calcNewPos() ;
 		
-		setPos(newPos) ;
+		if (Game.getScreen().posIsWithinBorders(newPos))
+		{
+			if (!map.groundIsWalkable(newPos, elem[4])) { return ;}
+			
+			setPos(newPos) ;
+			
+			return ;
+		}
+
+		moveToNewMap(pos, dir, map, step) ;
+
+		if (pet != null) { pet.setPos(pos) ;}
+		if (opponent != null) { opponent.setFollow(false) ;}
+		resetClosestCreature() ;
+		resetOpponent() ;
 		
 	}
 
@@ -588,10 +582,11 @@ public class Player extends LiveBeing
 		state = LiveBeingStates.fighting ;
 	}
 	
-	private void startFishing()
+	public void fish()
 	{
-		setState(LiveBeingStates.fishing) ;
-		
+
+		if (FishingGif.isActive()) { return ;}
+
 		Point fishingPos = switch (dir)
 		{
 			case left -> UtilG.Translate(pos, -Player.FishingGif.size().width, 0) ;
@@ -599,36 +594,27 @@ public class Player extends LiveBeing
 			case up -> UtilG.Translate(pos, 0, -Player.FishingGif.size().height) ;
 			case down -> UtilG.Translate(pos, 0, Player.FishingGif.size().height) ;
 		};
-		Player.FishingGif.start(fishingPos, Align.center) ;
-	}
-	
-	private void finishFishing()
-	{
+		FishingGif.start(fishingPos, Align.center) ;
+		
+		if (!Player.FishingGif.isDonePlaying()) { return ;}
+		
 		int fishType = UtilG.randomIntFromTo(6, 8) ;
 		Item fish = Food.getAll()[fishType] ;
 		bag.add(fish, 1) ;
 		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.colorPalette[0]}) ;
     	setState(LiveBeingStates.idle) ;
-	}
-	
-	public void fish()
-	{
-		
-		if (Player.FishingGif.isDonePlaying())
-		{
-			finishFishing() ;
-		}
 		
 	}
 
-	private void dig(DrawPrimitives DP)
-	{		
-		digCounter.inc() ;
-		DP.drawImage(DiggingGif, pos, Align.center) ;
+	private void dig()
+	{
+
+		if (DiggingGif.isActive()) { return ;}
 		
-		if (!digCounter.finished()) { return ;}
+		DiggingGif.start(pos, Align.center) ;
 		
-		digCounter.reset() ;		
+		if (!DiggingGif.isDonePlaying()) { return ;}
+				
 		setState(LiveBeingStates.idle) ;
 		
 		if (map.getDiggingItems().isEmpty()) { return ;}
@@ -638,21 +624,21 @@ public class Player extends LiveBeing
 
 		int itemID = UtilG.randomFromChanceList(listChances) ;
 		bag.add(listItems.get(itemID), 1) ;
-		obtainItemsAnimation(Arrays.asList(listItems.get(itemID))) ;
-		
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.2, 0.2), listItems.get(itemID).getName(), Game.colorPalette[0]}) ;;
+
 	}
 	
-	public void tent(DrawPrimitives DP)
+	public void tent()
 	{
-//		TentGif.start(pos, Align.bottomCenter) ;
-		tentCounter.inc() ;
-		if (tentCounter.finished())
-		{
-			tentCounter.reset() ;
-			PA.getLife().setToMaximum() ;
-			PA.getMp().setToMaximum() ;
-			setState(LiveBeingStates.idle) ;
-		}
+		if (TentGif.isActive()) { return ;}
+		
+		TentGif.start(pos, Align.bottomCenter) ;
+		
+		if (!TentGif.isDonePlaying()) { return ;}
+		
+		PA.getLife().setToMaximum() ;
+		PA.getMp().setToMaximum() ;
+		setState(LiveBeingStates.idle) ;
 	}
 	
 	private void windowActions(Pet pet)
@@ -674,7 +660,7 @@ public class Player extends LiveBeing
 				
 			case interact:
 				if (!bag.contains(Game.getAllItems()[1340]) | !isTouching(GroundTypes.water)) { return ;}
-				startFishing() ; return ;
+				setState(LiveBeingStates.fishing) ; return ;
 				
 			case map:
 				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
@@ -701,6 +687,7 @@ public class Player extends LiveBeing
 				
 			case tent:
 				if (isInBattle()) { return ;}		
+				setState(LiveBeingStates.sleeping) ;
 				return ;
 				
 			case dig: 
@@ -720,8 +707,12 @@ public class Player extends LiveBeing
 	{
 		switch (state)
 		{
-			case digging: dig(DP) ; return ;
-			case sleeping: tent(DP) ; return ;
+			case moving: move(Game.getPet()) ; return ;
+			case collecting: collect(DP) ; return ;
+			case fishing: fish() ; return ;
+			case openingChest: openChest() ; return ;
+			case digging: dig() ; return ;
+			case sleeping: tent() ; return ;
 			default: return ;
 		}
 	}

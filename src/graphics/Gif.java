@@ -52,7 +52,6 @@ public class Gif
 		this.align = align ;
 		all.add(this) ;
 		counter.start() ;
-		Log.gifStart(this) ;
 	}
 	
 	private void play()
