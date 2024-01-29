@@ -4,7 +4,6 @@ import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import attributes.BasicAttribute;
@@ -16,7 +15,6 @@ import attributes.PersonalAttributes;
 import graphics.Animation;
 import graphics.Draw;
 import graphics.DrawPrimitives;
-import graphics.Gif;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
@@ -28,7 +26,6 @@ import utilities.Elements;
 import utilities.FrameCounter;
 import utilities.Scale;
 import utilities.UtilG;
-import utilities.UtilS;
 import windows.PetAttributesWindow;
 
 public class Pet extends LiveBeing

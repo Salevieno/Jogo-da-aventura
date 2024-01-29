@@ -1,6 +1,5 @@
 package items;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
@@ -21,7 +20,6 @@ import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.AttributesWindow;
-import windows.BagWindow;
 
 public class Equip extends Item
 {

@@ -12,6 +12,7 @@ import graphics.DrawPrimitives;
 import items.Item;
 import liveBeings.CreatureType;
 import liveBeings.Player;
+import liveBeings.PlayerActions;
 import main.Game;
 import utilities.Align;
 import utilities.Scale;
@@ -38,11 +39,11 @@ public class QuestWindow extends GameWindow
 
 	public void navigate(String action)
 	{
-		if (action.equals(Player.ActionKeys[3]))
+		if (action.equals(stdWindowUp))
 		{
 			windowUp() ;
 		}
-		if (action.equals(Player.ActionKeys[1]))
+		if (action.equals(stdWindowDown))
 		{
 			windowDown() ;
 		}

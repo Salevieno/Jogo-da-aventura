@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 import graphics.Draw;
 import graphics.DrawPrimitives;
-import liveBeings.Player;
+import liveBeings.PlayerActions;
 import main.Battle;
 import main.Game;
 import main.TextCategories;
@@ -25,7 +25,6 @@ public class SettingsWindow extends GameWindow
 	private boolean showAtkRange ;
 	private int attDisplay ;
 	private int damageAnimation ;
-//	private String[] actionKeys ;
 	private int selectedActionKeyID ;
 	
 	
@@ -60,46 +59,46 @@ public class SettingsWindow extends GameWindow
 	{
 		if (getMenu() == 0)
 		{
-			if (action.equals(Player.ActionKeys[2]))
+			if (action.equals(stdMenuDown))
 			{
 				itemUp() ;
 			}
-			if (action.equals(Player.ActionKeys[0]))
+			if (action.equals(stdMenuUp))
 			{
 				itemDown() ;
 			}
-			if (action.equals("Enter") | action.equals("LeftClick") | action.equals(Player.ActionKeys[3]))
+			if (actionIsForward(action) | action.equals(stdWindowUp))
 			{
 				updateSetting() ;
 			}
-			if (action.equals("Escape"))
+			if (action.equals(stdExit))
 			{
 				close() ;
 			}
 		}
 		else if (getMenu() == 1)
 		{
-			if (action.equals(Player.ActionKeys[2]))
+			if (action.equals(stdWindowDown))
 			{
 				itemUp() ;
 			}
-			if (action.equals(Player.ActionKeys[0]))
+			if (action.equals(stdWindowUp))
 			{
 				itemDown() ;
 			}
-			if (action.equals(Player.ActionKeys[3]))
+			if (action.equals(stdMenuUp))
 			{
 				windowUp() ;
 			}
-			if (action.equals(Player.ActionKeys[1]))
+			if (action.equals(stdMenuDown))
 			{
 				windowDown() ;
 			}
-			if (action.equals("Enter") | action.equals("LeftClick"))
+			if (actionIsForward(action))
 			{
 				selectActionKey() ;
 			}
-			if (action.equals("Escape"))
+			if (action.equals(stdExit))
 			{
 				menu = 0 ;
 				numberItems = 6 ;
@@ -108,13 +107,13 @@ public class SettingsWindow extends GameWindow
 		}
 		else if (getMenu() == 2)
 		{
-			if (!action.equals("Escape") & !action.equals("Enter"))
+			if (!actionIsForward(action))
 			{
 				updateActionKey(action) ;
 				selectedActionKeyID = -1 ;
 				menu = 1 ;
 			}
-			if (action.equals("Escape"))
+			if (action.equals(stdExit))
 			{
 				selectedActionKeyID = -1 ;
 				menu = 1 ;
@@ -149,7 +148,7 @@ public class SettingsWindow extends GameWindow
 		{
 			menu = 1 ;
 			item = 0 ;
-			numberItems = Player.ActionKeys.length ;
+			numberItems = PlayerActions.values().length ;
 		}
 	}
 	
@@ -161,7 +160,7 @@ public class SettingsWindow extends GameWindow
 	
 	public void updateActionKey(String action)
 	{
-		Player.ActionKeys[item] = action;
+		PlayerActions.values()[item].setKey(action) ;
 	}
 	
 	public void displayValue(Point textPos, boolean selected, String text, double angle, DrawPrimitives DP)
@@ -222,19 +221,19 @@ public class SettingsWindow extends GameWindow
 		int sx = image.getWidth(null) - 45 ;
 		int sy = font.getSize() + 4 ;
 		
-		for (int i = 0 ; i <= Player.ActionKeys.length - 1 ; i += 1)
+		for (int i = 0 ; i <= PlayerActions.values().length - 1 ; i += 1)
 		{
 			optionPos.y += sy ;
 			Point actionKeyPos = UtilG.Translate(optionPos, sx, 0) ;
 			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
 			Color textColor = getTextColor(item == i) ;
 			DP.drawText(optionPos, Align.bottomLeft, angle, text[i + 6], font, textColor) ;
-			DP.drawText(actionKeyPos, Align.bottomCenter, angle, Player.ActionKeys[i], font, Game.colorPalette[5]) ;			
+			DP.drawText(actionKeyPos, Align.bottomCenter, angle, PlayerActions.values()[i].getKey(), font, Game.colorPalette[5]) ;			
 		}
 		if (selectedActionKeyID <= -1) { return ;}
 
 		Point actionKeyPos = new Point(optionPos.x + sx, optionPos.y + (selectedActionKeyID + 1)*sy) ;
-		DP.drawText(actionKeyPos, Align.bottomCenter, angle, Player.ActionKeys[selectedActionKeyID], font, Game.colorPalette[3]) ;
+		DP.drawText(actionKeyPos, Align.bottomCenter, angle, PlayerActions.values()[selectedActionKeyID].getKey(), font, Game.colorPalette[3]) ;
 	}
 	
 	public void display(Point mousePos, DrawPrimitives DP)
@@ -243,13 +242,13 @@ public class SettingsWindow extends GameWindow
 		Point textPos = UtilG.Translate(windowPos, 25, 42) ;
 		Image menuImage = menu == 0 ? image : deeperMenuImage ;
 		String[] text = Game.allText.get(TextCategories.settings) ;
-		Color[] textColor = new Color[3 + Player.ActionKeys.length] ;
+		Color[] textColor = new Color[3 + PlayerActions.values().length] ;
 		Arrays.fill(textColor, Game.colorPalette[0]) ;
 		textColor[item] = Game.colorPalette[18] ;
 		
 		DP.drawImage(menuImage, windowPos, Align.topLeft) ;
 		Point titlePos = UtilG.Translate(textPos, image.getWidth(null) / 2 - 15, -6) ;
-		DP.drawText(titlePos, Align.bottomCenter, angle, "Opções", font, Game.colorPalette[0]) ;
+		DP.drawText(titlePos, Align.bottomCenter, angle, name, font, Game.colorPalette[0]) ;
 		if (menu == 0)
 		{
 			numberItems = 6 ;
@@ -260,7 +259,7 @@ public class SettingsWindow extends GameWindow
 		
 		if (menu == 1 | menu == 2)
 		{
-			numberItems = Player.ActionKeys.length ;
+			numberItems = PlayerActions.values().length ;
 			displayMenu1(mousePos, text, DP) ;
 		}
 	}

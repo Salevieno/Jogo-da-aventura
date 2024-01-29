@@ -3,7 +3,6 @@ package liveBeings ;
 import java.awt.Color ;
 import java.awt.Image ;
 import java.awt.Point;
-import java.awt.event.KeyEvent ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.HashMap;
@@ -26,6 +25,7 @@ import components.Quest;
 import components.QuestSkills;
 import components.SpellTypes;
 import graphics.Animation;
+import graphics.AnimationTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import graphics.Gif;
@@ -55,16 +55,15 @@ import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.FrameCounter;
-import utilities.Log;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.BagWindow;
 import windows.BankWindow;
 import windows.BestiaryWindow;
+import windows.BookWindow;
 import windows.CraftWindow;
 import windows.ElementalWindow;
-import windows.BookWindow;
 import windows.ForgeWindow;
 import windows.GameWindow;
 import windows.HintsWindow;
@@ -129,7 +128,7 @@ public class Player extends LiveBeing
 	public static final Image CoinIcon = UtilS.loadImage("\\Player\\" + "CoinIcon.png") ;    
 	public static final Image DiggingGif = UtilS.loadImage("\\Player\\" + "Digging.gif") ;   
 	public static final Image MagicBlissGif = UtilS.loadImage("\\Player\\" + "MagicBliss.gif") ;
-    public static final Gif FishingGif = new Gif("Fishing", UtilS.loadImage("\\Player\\" + "Fishing.gif"), 220, false, false) ;
+    public static final Gif FishingGif = new Gif("Fishing", UtilS.loadImage("\\Player\\" + "Fishing.gif"), 2, false, false) ;
     
 	public final static List<String[]> Properties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
 	public final static List<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
@@ -137,7 +136,7 @@ public class Player extends LiveBeing
 	public final static int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public final static Color[] ClassColors = new Color[] {Game.colorPalette[21], Game.colorPalette[5], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
 
-    public static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
+//    private static String[] ActionKeys = new String[] {"W", "A", "S", "D", "B", "C", "F", "M", "P", "Q", "H", "R", "T", "X", "Z"} ;	// [Up, Left, Down, Right, Bag, Char window, Fab, Map, Pet window, Quest, Hint, Ride, Tent, Dig, Bestiary]
     public static final String[] HotKeys = new String[] {"T", "Y", "U"} ;
 
     public final static Image settingsWindowImage = UtilS.loadImage("\\Windows\\" + "windowSettings.png") ;
@@ -386,9 +385,10 @@ public class Player extends LiveBeing
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
 	private boolean actionIsAMove() { return List.of("W", "A", "S", "D").contains(currentAction) | UtilS.actionIsArrowKey(currentAction) ;}
-	private boolean hitsCreature() { return (usedPhysicalAtk() | actionIsSpell()) & closestCreature != null ;}
+	private boolean hitCreature() { return (usedPhysicalAtk() | actionIsSpell()) & closestCreature != null ;}
 	public boolean isInBattle() { return opponent != null | state.equals(LiveBeingStates.fighting) ;}
 	public boolean isCollecting() { return state.equals(LiveBeingStates.collecting) ;}
+	public boolean isFishing() { return state.equals(LiveBeingStates.fishing) ;}
 	public boolean isOpeningChest() { return state.equals(LiveBeingStates.openingChest) ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	public static boolean setIsFormed(Equip[] EquipID)
@@ -467,16 +467,15 @@ public class Player extends LiveBeing
 	private void removeCollectibleFromMap(Collectible collectible)
 	{        
 		if (!map.isAField()) { return ;}
-		// TODO essa função devia estar em fieldMap
-		List<Collectible> collectibles = ((FieldMap) map).getCollectibles() ;
-		collectibles.remove(collectible) ;
+
+		((FieldMap) map).removeCollectible(collectible) ;
 	}
 	
 	public void finishCollecting()
 	{
 		collectCounter.reset() ;
         collectingGif.flush() ;
-    	state = LiveBeingStates.idle ;
+    	setState(LiveBeingStates.idle) ;
         currentCollectible = null ;
 	}
 	
@@ -491,11 +490,11 @@ public class Player extends LiveBeing
         boolean isBerry = currentCollectible.typeNumber() == 0 ;
         int mapLevel = ((FieldMap) map).getLevel() ;
         double collectChance = isBerry ? 1 : 1 - 1 / (1 + Math.pow(1.1, collectLevel[currentCollectible.typeNumber() - 1] - mapLevel)) ;
-        String msg = "Falha na coleta!" ;        
+//        String msg = "Falha na coleta!" ;        
     	
         if (UtilG.chance(collectChance))
         {
-        	msg = "Coleta com sucesso!" ;
+//        	msg = "Coleta com sucesso!" ;
         	addCollectibleToBag(currentCollectible, bag) ;
         	trainCollecting(currentCollectible) ;
         }
@@ -589,17 +588,36 @@ public class Player extends LiveBeing
 		state = LiveBeingStates.fighting ;
 	}
 	
-	private void fish()
+	private void startFishing()
 	{
-		
-		Point offset = new Point() ;
-		offset.x =  dir.equals(Directions.left) ? -size.width : dir.equals(Directions.right) ? size.width : 0 ;
-		offset.y =  dir.equals(Directions.up) ? -size.height : dir.equals(Directions.down) ? size.height : 0 ;
-
 		setState(LiveBeingStates.fishing) ;
 		
-//		Animation fishingAnimation = Game.getAnimations().get(9) ;
-//		fishingAnimation.start(FishingGif.getDuration(), new Object[] {pos, dir}) ;
+		Point fishingPos = switch (dir)
+		{
+			case left -> UtilG.Translate(pos, -Player.FishingGif.size().width, 0) ;
+			case right -> UtilG.Translate(pos, Player.FishingGif.size().width, 0) ;
+			case up -> UtilG.Translate(pos, 0, -Player.FishingGif.size().height) ;
+			case down -> UtilG.Translate(pos, 0, Player.FishingGif.size().height) ;
+		};
+		Player.FishingGif.start(fishingPos, Align.center) ;
+	}
+	
+	private void finishFishing()
+	{
+		int fishType = UtilG.randomIntFromTo(6, 8) ;
+		Item fish = Food.getAll()[fishType] ;
+		bag.add(fish, 1) ;
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.colorPalette[0]}) ;
+    	setState(LiveBeingStates.idle) ;
+	}
+	
+	public void fish()
+	{
+		
+		if (Player.FishingGif.isDonePlaying())
+		{
+			finishFishing() ;
+		}
 		
 	}
 
@@ -637,62 +655,62 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	private void keyboardActions(Pet pet)
+	private void windowActions(Pet pet)
 	{
-		int actionId = Arrays.asList(ActionKeys).indexOf(currentAction) ;
-		switch (actionId)
+
+		PlayerActions action = PlayerActions.actionOfKey(currentAction) ;
+		
+		if (action == null) { return ;}
+
+		switch (action)
 		{
-			case 4: switchOpenClose(bag) ; return ;
+			case bag: switchOpenClose(bag) ; return ;
 			
-			case 5:
+			case attWindow:
 				((PlayerAttributesWindow) attWindow).setPlayer(this) ;
 				((PlayerAttributesWindow) attWindow).updateAttIncButtons(this) ;
 				switchOpenClose(attWindow) ;
 				return ;
 				
-			case 6:
+			case interact:
 				if (!bag.contains(Game.getAllItems()[1340]) | !isTouching(GroundTypes.water)) { return ;}
-				fish() ; return ;
+				startFishing() ; return ;
 				
-			case 7:
+			case map:
 				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
 				mapWindow.setPlayerPos(pos) ;
 				mapWindow.setCurrentMap(map) ;
 				switchOpenClose(mapWindow) ; return ;
 				
-			case 8:
+			case pet:
 				if (pet == null) { return ;}
 				((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
 				switchOpenClose(pet.getAttWindow()) ; return ;
 				
-			case 9: 
+			case quest: 
 				questWindow.setQuests(quests) ;
 				questWindow.setBag(bag) ;
 				switchOpenClose(questWindow) ; return ;
 				
-			case 10: switchOpenClose(hintsWindow) ; return ;
+			case hints: switchOpenClose(hintsWindow) ; return ;
 			
-			case 11:
+			case ride:
 				if (!questSkills.get(QuestSkills.ride)) { return ;}				
 				activateRide() ;				
 				return ;
 				
-			case 12:
+			case tent:
 				if (isInBattle()) { return ;}		
 				return ;
 				
-			case 13: 
+			case dig: 
 				if (!questSkills.get(QuestSkills.dig)) { return ;}
 				setState(LiveBeingStates.digging) ; return ;
 			
-			case 14: 
+			case bestiary: 
 				if (!questSkills.get(QuestSkills.bestiary)) { return ;}
 				switchOpenClose(bestiary) ; return ;
 
-
-				// Book action
-//				player.getFabWindow().setRecipes(player.getKnownRecipes()) ;
-//				player.switchOpenClose(player.getFabWindow()) ;
 			default: return ;
 		}
 		
@@ -738,7 +756,7 @@ public class Player extends LiveBeing
 			
 		}
 
-		keyboardActions(pet) ;
+		windowActions(pet) ;
 		
 		
 		// using spells
@@ -749,7 +767,7 @@ public class Player extends LiveBeing
 		}		
 		
 		// if hits creature, enters battle
-		if (hitsCreature() & !isInBattle())
+		if (hitCreature() & !isInBattle())
 		{
 			engageInFight(closestCreature) ;
 		}
@@ -763,7 +781,6 @@ public class Player extends LiveBeing
 		{
 			((PlayerAttributesWindow) attWindow).act(this, mousePos, currentAction) ;
 		}
-//		System.out.println("focus = " + focusWindow);
 		
 		// navigating through open windows
 		if (focusWindow != null)
@@ -821,34 +838,33 @@ public class Player extends LiveBeing
 	
 	private boolean metNPC(NPCs npc) { return isInCloseRange(npc.getPos()) ;}
 	
-	private boolean metAnyNPC()
-	{
-		if (map.getNPCs() == null) { return false ;}
-		
-		for (NPCs npc : map.getNPCs())
-		{
-			if (metNPC(npc)) { return true ;}
-		}
-
-		if (map.getBuildings() == null) { return false ;}
-		
-		for (Building building : map.getBuildings())
-		{
-			for (NPCs npc : building.getNPCs())
-			{
-				if (metNPC(npc)) { return true ;}
-			}
-		}
-		
-		return false ;
-	}
+//	private boolean metAnyNPC()
+//	{
+//		if (map.getNPCs() == null) { return false ;}
+//		
+//		for (NPCs npc : map.getNPCs())
+//		{
+//			if (metNPC(npc)) { return true ;}
+//		}
+//
+//		if (map.getBuildings() == null) { return false ;}
+//		
+//		for (Building building : map.getBuildings())
+//		{
+//			for (NPCs npc : building.getNPCs())
+//			{
+//				if (metNPC(npc)) { return true ;}
+//			}
+//		}
+//		
+//		return false ;
+//	}
 
 	public void meetWithTreasureChests()
 	{
 		if (!map.isSpecial()) { return ;}
 
-		List<MapElement> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).
-				collect(Collectors.toList()) ;
+		List<MapElement> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).collect(Collectors.toList()) ;
 		for (MapElement chest : chests)
 		{
 
@@ -916,8 +932,8 @@ public class Player extends LiveBeing
 			}
 		}
 		
-		if (currentAction == null) { return ;}
-		if (!currentAction.equals("E")) { return ;}		
+		if (PlayerActions.actionOfKey(currentAction) == null) { return ;}
+		if (!PlayerActions.actionOfKey(currentAction).equals(PlayerActions.interact)) { return ;}		
 		
 		if (npcInContact != null) { npcInContact = null ; return ;}
 		

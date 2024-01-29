@@ -79,11 +79,11 @@ public class PlayerAttributesWindow extends AttributesWindow
 	
 	public void navigate(String action)
 	{
-		if (action.equals(Player.ActionKeys[2]))
+		if (action.equals(stdWindowDown))
 		{
 			tabUp() ;
 		}
-		if (action.equals(Player.ActionKeys[0]))
+		if (action.equals(stdWindowUp))
 		{
 			tabDown() ;
 		}

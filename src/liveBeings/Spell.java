@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import components.SpellTypes;
-import main.AtkResults;
-import main.AtkTypes;
-import utilities.AtkEffects;
 import utilities.Elements;
 import utilities.FrameCounter;
 import utilities.TimeCounter;

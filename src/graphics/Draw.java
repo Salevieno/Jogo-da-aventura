@@ -12,6 +12,7 @@ import components.GameButton;
 import items.Item;
 import liveBeings.Pet;
 import liveBeings.Player;
+import liveBeings.PlayerActions;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
@@ -115,14 +116,14 @@ public abstract class Draw
 			Point leftArrowPos = UtilG.Translate(pos, 25, 0) ; // (int)(0.25 * width)
 			Point textPos = UtilG.Translate(leftArrowPos, 20, 0) ;
 			DP.drawImage(ArrowIconImage, leftArrowPos, stdAngle, new Scale(-1, -1), Align.center) ;
-			DP.drawText(textPos, Align.topLeft, stdAngle, Player.ActionKeys[1], font, colorPalette[0]) ;			
+			DP.drawText(textPos, Align.topLeft, stdAngle, PlayerActions.moveLeft.getKey(), font, colorPalette[0]) ;			
 		}
 		if (selectedWindow < numberWindows - 1)
 		{
 			Point rightArrowPos = UtilG.Translate(pos, width - 25, 0) ; // (int)(0.75 * width)
 			Point textPos = UtilG.Translate(rightArrowPos, -20, 0) ;
 			DP.drawImage(ArrowIconImage, rightArrowPos, stdAngle, new Scale(1, -1), Align.center) ;
-			DP.drawText(textPos, Align.topRight, stdAngle, Player.ActionKeys[3], font, colorPalette[0]) ;		
+			DP.drawText(textPos, Align.topRight, stdAngle, PlayerActions.moveRight.getKey(), font, colorPalette[0]) ;		
 		}
 	}
 	
@@ -443,28 +444,28 @@ public abstract class Draw
 //		}
 	}
 	
-	public static void fishingAnimation(Point playerPos, Image FishingGif, String WaterPos)
-	{
-		int offset = 23 ;
-		Point pos = new Point(playerPos.x, playerPos.y) ;
-		if (WaterPos.equals("Touching Up"))
-		{
-			pos = new Point(playerPos.x, playerPos.y - offset) ;
-		}
-		else if (WaterPos.equals("Touching Down"))
-		{
-			pos = new Point(playerPos.x, playerPos.y + offset) ;
-		}
-		else if (WaterPos.equals("Touching Right"))
-		{
-			pos = new Point(playerPos.x + offset, playerPos.y) ;
-		}
-		else if (WaterPos.equals("Touching Left"))
-		{
-			pos = new Point(playerPos.x - offset, playerPos.y) ;
-		}
-		Draw.gif(FishingGif, pos, Align.center) ;
-	}
+//	public static void fishingAnimation(Point playerPos, Image FishingGif, String WaterPos)
+//	{
+//		int offset = 23 ;
+//		Point pos = new Point(playerPos.x, playerPos.y) ;
+//		if (WaterPos.equals("Touching Up"))
+//		{
+//			pos = new Point(playerPos.x, playerPos.y - offset) ;
+//		}
+//		else if (WaterPos.equals("Touching Down"))
+//		{
+//			pos = new Point(playerPos.x, playerPos.y + offset) ;
+//		}
+//		else if (WaterPos.equals("Touching Right"))
+//		{
+//			pos = new Point(playerPos.x + offset, playerPos.y) ;
+//		}
+//		else if (WaterPos.equals("Touching Left"))
+//		{
+//			pos = new Point(playerPos.x - offset, playerPos.y) ;
+//		}
+//		Draw.gif(FishingGif, pos, Align.center) ;
+//	}
 	
 	public static void pterodactileAnimation(TimeCounter counter, Image pterodactile, Image speakingBubble, String[] message)
 	{

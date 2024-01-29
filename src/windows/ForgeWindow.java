@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import components.GameButton;
-import graphics.Animation;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Equip;
@@ -73,11 +72,11 @@ public class ForgeWindow extends GameWindow
 	{
 		if (action == null) { return ;}
 		
-		if (action.equals(Player.ActionKeys[2]))
+		if (action.equals(stdWindowDown))
 		{
 			itemUp() ;
 		}
-		if (action.equals(Player.ActionKeys[0]))
+		if (action.equals(stdWindowUp))
 		{
 			itemDown() ;
 		}

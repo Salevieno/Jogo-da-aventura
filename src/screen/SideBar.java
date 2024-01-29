@@ -6,9 +6,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import components.GameButton;
 import components.IconFunction;
@@ -18,6 +16,7 @@ import graphics.DrawPrimitives;
 import liveBeings.HotKeysBar;
 import liveBeings.Pet;
 import liveBeings.Player;
+import liveBeings.PlayerActions;
 import liveBeings.SpellsBar;
 import main.Game;
 import utilities.Align;
@@ -113,7 +112,7 @@ public abstract class SideBar
 	
 	private static void displayKeys(DrawPrimitives DP)
 	{
-		String[] keys = new String[] {null, Player.ActionKeys[7], Player.ActionKeys[9], Player.ActionKeys[4], null, null} ;
+		String[] keys = new String[] {null, PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null} ;
 		Dimension textSize = new Dimension(12, 12) ;
 		Color textColor = Game.colorPalette[0] ;
 		int i = 0 ;

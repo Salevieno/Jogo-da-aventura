@@ -3,7 +3,6 @@ package liveBeings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Point;
 
 import graphics.Draw;
@@ -13,7 +12,6 @@ import main.Game;
 import screen.SideBar;
 import utilities.Align;
 import utilities.UtilG;
-import utilities.UtilS;
 import windows.BagWindow;
 
 public class HotKeysBar

@@ -54,20 +54,20 @@ public class ShoppingWindow extends GameWindow
 	{
 		if (action == null) { return ;}
 		
-		if (action.equals(Player.ActionKeys[2]))
+		if (action.equals(stdWindowDown))
 		{
 			itemUp() ;
 		}
-		if (action.equals(Player.ActionKeys[0]))
+		if (action.equals(stdWindowUp))
 		{
 			itemDown() ;
 		}
-		if (action.equals(Player.ActionKeys[3]))
+		if (action.equals(stdMenuUp))
 		{
 			windowUp() ;
 			updateWindow() ;
 		}
-		if (action.equals(Player.ActionKeys[1]))
+		if (action.equals(stdMenuDown))
 		{
 			windowDown() ;
 			updateWindow() ;

@@ -1,7 +1,6 @@
 package liveBeings;
 
 import java.awt.Image;
-import java.util.Arrays;
 
 import graphics.Animation;
 import graphics.AnimationTypes;

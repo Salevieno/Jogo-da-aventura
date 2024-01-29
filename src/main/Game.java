@@ -84,7 +84,6 @@ import maps.TreasureChest ;
 import screen.Screen ;
 import screen.SideBar ;
 import screen.Sky ;
-import testing.TestingAnimations;
 import utilities.Align ;
 import utilities.Elements ;
 import utilities.GameStates ;
@@ -1162,6 +1161,11 @@ public class Game extends JPanel
 		if (player.isCollecting())
 		{
 			player.collect(DP) ;
+		}
+		
+		if (player.isFishing())
+		{
+			player.fish() ;
 		}
 
 		if (player.isOpeningChest())

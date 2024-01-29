@@ -5,11 +5,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 
 import components.GameButton;
 import components.IconFunction;
 import graphics.DrawPrimitives;
-import liveBeings.Player;
+import liveBeings.PlayerActions;
 import main.Game;
 import utilities.Align;
 import utilities.UtilG;
@@ -31,13 +32,13 @@ public abstract class GameWindow
 	protected int numberWindows ;
 	protected Dimension size ;
 	
-	protected String stdMenuUp = Player.ActionKeys[2] ;
-	protected String stdMenuDown = Player.ActionKeys[0] ;
-	protected String stdWindowUp = Player.ActionKeys[3] ;
-	protected String stdWindowDown = Player.ActionKeys[1] ;
-	protected String stdEnter = "Enter" ;
+	protected String stdMenuUp = PlayerActions.moveUp.getKey() ;
+	protected String stdMenuDown = PlayerActions.moveDown.getKey() ;
+	protected String stdWindowUp = PlayerActions.moveRight.getKey() ;
+	protected String stdWindowDown = PlayerActions.moveLeft.getKey() ;
+	protected String stdEnter = KeyEvent.getKeyText(KeyEvent.VK_ENTER) ;
 	protected String stdReturn = "MouseRightClick" ;
-	protected String stdExit = "Escape" ;	
+	protected String stdExit = KeyEvent.getKeyText(KeyEvent.VK_ESCAPE) ;	
 
 	protected static final Image buttonWindowUpImage = UtilS.loadImage("\\Windows\\" + "moveUp.png") ;
 	protected static final Image selectedButtonWindowUpImage = UtilS.loadImage("\\Windows\\" + "SelectedMoveUp.gif") ;

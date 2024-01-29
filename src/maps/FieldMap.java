@@ -167,6 +167,8 @@ public class FieldMap extends GameMap
 		
 	} 	
 	
+	public void removeCollectible(Collectible collectible) { collectibles.remove(collectible) ;}
+	
  	public void displayCollectibles(DrawPrimitives DP)
  	{
  		for (Collectible collectible : collectibles)

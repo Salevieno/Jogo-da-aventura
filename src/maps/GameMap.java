@@ -24,7 +24,6 @@ import liveBeings.Player;
 import main.Game;
 import main.Music;
 import main.TextCategories;
-import screen.Sky;
 import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;

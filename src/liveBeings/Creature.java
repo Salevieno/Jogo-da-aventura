@@ -29,7 +29,6 @@ import utilities.Elements;
 import utilities.FrameCounter;
 import utilities.Scale;
 import utilities.UtilG;
-import windows.CreatureAttributesWindow;
 
 public class Creature extends LiveBeing
 {

@@ -18,6 +18,7 @@ import items.Equip;
 import items.Recipe;
 import liveBeings.Pet;
 import liveBeings.Player;
+import liveBeings.PlayerActions;
 import main.Game;
 import main.TextCategories;
 import maps.GameMap;
@@ -412,11 +413,11 @@ public class NPCs
 		if (type.getOptions().size() <= 0) { return ;}
 		if (type.getOptions().get(menu) == null) { return ;}
 		
-		if (action.equals(Player.ActionKeys[2]) & selOption <= type.getOptions().get(menu).size() - 2)
+		if (action.equals(PlayerActions.moveDown.getKey()) & selOption <= type.getOptions().get(menu).size() - 2)
 		{
 			selOption += 1 ;
 		}
-		if (action.equals(Player.ActionKeys[0]) & 1 <= selOption)
+		if (action.equals(PlayerActions.moveUp.getKey()) & 1 <= selOption)
 		{
 			selOption += -1 ;
 		}

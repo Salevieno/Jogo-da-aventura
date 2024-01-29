@@ -96,17 +96,17 @@ public class SpellsTreeWindow extends GameWindow
 	{
 		if (action == null) { return ;}
 
-		if (action.equals(Player.ActionKeys[1]))
+		if (action.equals(stdMenuDown))
 		{
 			itemDown() ;
 		}
-		if (action.equals(Player.ActionKeys[3]))
+		if (action.equals(stdMenuUp))
 		{
 			itemUp() ;
 		}
 		if (1 <= numberTabs)
 		{
-			if (action.equals(Player.ActionKeys[0]))
+			if (action.equals(stdWindowUp))
 			{
 				item = 0 ;
 				tabDown() ;
@@ -114,7 +114,7 @@ public class SpellsTreeWindow extends GameWindow
 				updateSpellsDistribution() ;
 				numberItems = spellsOnWindow.size() ;
 			}
-			if (action.equals(Player.ActionKeys[2]))
+			if (action.equals(stdWindowDown))
 			{
 				item = 0 ;
 				tabUp() ;

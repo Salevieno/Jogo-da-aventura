@@ -79,11 +79,11 @@ public class ElementalWindow extends GameWindow
 	public void navigate(String action)
 	{
 		
-		if (action.equals(Player.ActionKeys[2]))
+		if (action.equals(stdWindowDown))
 		{
 			itemUp() ;
 		}
-		if (action.equals(Player.ActionKeys[0]))
+		if (action.equals(stdWindowUp))
 		{
 			itemDown() ;
 		}

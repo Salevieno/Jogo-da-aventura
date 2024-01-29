@@ -154,13 +154,13 @@ public class BagWindow extends GameWindow
 	{
 		if (tab == 0)
 		{
-			if (action.equals(stdMenuUp))
+			if (action.equals(stdMenuDown))
 			{
 				menuUp() ;
 				window = 0 ;
 				updateWindow() ;
 			}
-			if (action.equals(stdMenuDown))
+			if (action.equals(stdMenuUp))
 			{
 				menuDown() ;
 				window = 0 ;
@@ -173,11 +173,11 @@ public class BagWindow extends GameWindow
 		}
 		if (tab == 1)
 		{
-			if (action.equals(stdMenuUp))
+			if (action.equals(stdMenuDown))
 			{
 				itemUp() ;
 			}
-			if (action.equals(stdMenuDown))
+			if (action.equals(stdMenuUp))
 			{
 				if (numberSlotMax * window + 1 <= item)
 				{
@@ -733,17 +733,10 @@ public class BagWindow extends GameWindow
 			Draw.textUntil(textPos, Align.centerLeft, Draw.stdAngle, itemText, stdFont, textColor, 10, mousePos) ;
 		}
 		
-		itemsDisplayed.get(item).displayInfo(windowPos, Align.topRight, DP) ;
+		itemsDisplayed.get(item - window * numberSlotMax).displayInfo(windowPos, Align.topRight, DP) ;
 		
 		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos, DP)) ;
 		
 	}
-	
-//	@Override
-//	public String toString() {
-//		return "Bag [pot=" + pot + ", alch=" + alch + ", forge=" + forges + ", petItem=" + petItems + ", food=" + foods
-//				+ ", arrow=" + arrows + ", equip=" + equips + ", genItem=" + genItems + ", fab=" + fabItems + ", quest=" + questItems
-//				+ "]";
-//	}
 	
 }
