@@ -4,6 +4,7 @@ import java.util.List;
 
 import graphics.Animation;
 import graphics.Gif;
+import items.Item;
 import liveBeings.Buff;
 import liveBeings.LiveBeing;
 import liveBeings.Spell;
@@ -11,6 +12,11 @@ import main.AtkResults;
 
 public abstract class Log
 {
+	public static void valorNegativo(String metodo)
+	{
+		System.out.println("tentando usar " + metodo + " com valor negativo") ;
+	}
+	
 	public static void buffs(List<Buff> buffs)
 	{
 		buffs.forEach(System.out::println) ;
@@ -19,6 +25,16 @@ public abstract class Log
 	public static void spells(List<Spell> spells)
 	{
 		spells.forEach(System.out::println) ;
+	}
+	
+	public static void spellUsed(LiveBeing user, String spellName, int spellLevel)
+	{
+		System.out.println(user.getName() + " used " + spellName + " level " + spellLevel);
+	}
+	
+	public static void itemUsed(LiveBeing user, Item item)
+	{
+		System.out.println(user.getName() + " used " + item.getName());
 	}
 	
 	public static void counter(TimeCounter counter)

@@ -85,7 +85,7 @@ public class Pet extends LiveBeing
 		}
 	}
 	
-	private static PersonalAttributes InitializePersonalAttributes(int Job)
+	public static PersonalAttributes InitializePersonalAttributes(int Job)
 	{
 		BasicAttribute life = new BasicAttribute(Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2]), 1) ;
 		BasicAttribute mp = new BasicAttribute(Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3]), 1) ;
@@ -95,7 +95,7 @@ public class Pet extends LiveBeing
 		return new PersonalAttributes(life, mp, exp, satiation, thirst) ;
 	}
 	
-	private static BattleAttributes InitializeBattleAttributes(int Job)
+	public static BattleAttributes InitializeBattleAttributes(int Job)
 	{
 		BasicBattleAttribute phyAtk = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[5]), 0, 0) ;
 		BasicBattleAttribute magAtk = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[6]), 0, 0) ;
@@ -126,14 +126,13 @@ public class Pet extends LiveBeing
 
 	public List<Spell> InitializePetSpells()
     {
-		Spell[] allSpells = Game.getAllSpells() ;		
 		ArrayList<Spell> petspells = new ArrayList<>() ;
 		
 		for (int i = 0 ; i <= Pet.NumberOfSpells - 1 ; i += 1)
 		{
 			int ID = i + job * Pet.NumberOfSpells ;
 			
-			petspells.add(allSpells[ID]) ;	
+			petspells.add(Spell.all.get(ID)) ;	
 		}
 		
 		petspells.get(0).incLevel(1) ;
@@ -271,10 +270,22 @@ public class Pet extends LiveBeing
 	
 	public void applyPassiveSpell(Spell spell)
 	{
-		
+		switch (spell.getId())
+		{
+			case 117: 
+				PA.getLife().incMaxValue(10) ;
+				PA.getLife().setToMaximum() ;
+				PA.getMp().incMaxValue(10) ;
+				PA.getMp().setToMaximum() ;
+				BA.getPhyAtk().incBaseValue(2) ;
+				BA.getMagAtk().incBaseValue(2) ;
+				BA.getDex().incBaseValue(1) ;
+				BA.getAgi().incBaseValue(1) ;
+				return ;
+		}
 	}
 	
-	public void useAutoSpells(boolean activate)
+	public void useAutoSpell(boolean activate, Spell spell)
 	{
 		
 	}

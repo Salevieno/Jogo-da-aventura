@@ -57,7 +57,8 @@ public abstract class Battle
 		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
 	}
 
-
+	public static void removeRandomness() { randomAmp = 0 ;}
+	
 	public static void updateDamageAnimation(int newDamageStyle)
 	{
 		damageStyle = newDamageStyle ;
@@ -122,13 +123,14 @@ public abstract class Battle
 		double defPhyDef = receiver.getBA().TotalPhyDef() ;
 		Elements[] atkElems = attacker.atkElems() ;
 		Elements[] defElems = receiver.defElems() ;
+		double elemRes = attacker.getBA().getElemResistanceMult().get(receiver.defElems()[0]) ;
 		
 		AtkEffects effect = calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
-		int damage = calcDamage(effect, atkPhyAtk + arrowPower, defPhyDef, atkElems, defElems, 1) ;
+		int damage = calcDamage(effect, atkPhyAtk + arrowPower, defPhyDef, atkElems, defElems, elemRes) ;
 
 		return new AtkResults(AtkTypes.physical, effect, damage) ;
 	}
-	// TODO learn spell
+
 	public static AtkEffects calcEffect(double dex, double agi, double critAtk, double critDef, double blockDef)
 	{
 		if (block(blockDef))
@@ -158,7 +160,7 @@ public abstract class Battle
 		};
 		
 		double randomMult = UtilG.RandomMult(randomAmp) ;
-		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElems[0], defElems[0], atkElems[2]) ;		
+		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElems[0], defElems[0], atkElems[2]) ;
 		return (int) UtilG.Round(randomMult * elemMult * elemMod * baseDamage, 0) ;
 	}
 		
@@ -187,10 +189,10 @@ public abstract class Battle
 		
 		Elements[] atkElems = new Elements[] {itemElem, Elements.neutral, Elements.neutral} ;
 		AtkEffects effect = calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
+		double elemRes = attacker.getBA().getElemResistanceMult().get(receiver.defElems()[0]) ;
 		
 		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return ;}
-		
-		int damage = Battle.calcDamage(AtkEffects.hit, itemPower, defPhyDef, atkElems, receiver.defElems(), 1.0) ;
+		int damage = Battle.calcDamage(AtkEffects.hit, itemPower, defPhyDef, atkElems, receiver.defElems(), elemRes) ;
 		receiver.getPA().getLife().decTotalValue(damage) ;
 		AtkResults atkResults = new AtkResults(AtkTypes.physical, effect, damage) ;
 		playDamageAnimation(receiver, atkResults) ;
@@ -355,6 +357,8 @@ public abstract class Battle
 		if (!player.usedPhysicalAtk() & !player.usedSpell()) { return ;}
 		
 		player.spendArrow() ;
+		
+		attacker.useAutoSpell(true, player.getSpells().get(13)) ;
 	}
 
 	private static AtkResults performAtk(AtkTypes atkType, LiveBeing attacker, LiveBeing receiver)
@@ -435,8 +439,6 @@ public abstract class Battle
 		AtkResults atkResults = performAtk(atkType, attacker, receiver) ;
 		if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
 		if (attacker instanceof Player) { ((Player) attacker).getStatistics().update(atkResults) ;}
-		
-		attacker.useAutoSpells(true) ;
 
 		attacker.updateCombo() ;
 		attacker.resetBattleActions() ;
@@ -450,7 +452,6 @@ public abstract class Battle
 		{
 			Music.PlayMusic(hitSound) ;
 		}
-
 		
 	}
 		

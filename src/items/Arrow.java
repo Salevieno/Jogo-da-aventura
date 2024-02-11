@@ -50,6 +50,10 @@ public class Arrow extends Item
 	public String getElem() {return elem ;}
 	public static Arrow[] getAll() {return AllArrow ;}
 
+	public boolean isElemental() { return elementalArrows().contains(this) ;}
+	
+	public static List<Item> elementalArrows() { return List.of(AllArrow[6], AllArrow[7], AllArrow[8], AllArrow[9], AllArrow[10], AllArrow[11], AllArrow[12], AllArrow[13], AllArrow[14]) ;}
+	
 	public static Image imageFromID(int id)
 	{
 		if (id % 3 == 0) { return woodArrowIcon ;}

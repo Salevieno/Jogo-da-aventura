@@ -25,7 +25,6 @@ import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.FrameCounter;
-import utilities.Log;
 import utilities.RelativePos;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -93,7 +92,7 @@ public abstract class LiveBeing
 	public abstract Point center() ;
 	public abstract AtkResults useSpell(Spell spell, LiveBeing receiver) ;
 	public abstract void applyPassiveSpell(Spell spell) ;	
-	public abstract void useAutoSpells(boolean activate);
+	public abstract void useAutoSpell(boolean activate, Spell spell);
 	public abstract void dies() ;
 	
 	public String getName() {return name ;}
@@ -154,6 +153,8 @@ public abstract class LiveBeing
 	public void setPA(PersonalAttributes pA) { PA = pA ;}
 	public BattleAttributes getBA() {return BA ;}
 	public void setBA(BattleAttributes bA) { BA = bA ;}
+	
+	protected double magicAtkBonus() { return 1 + Math.min(0.25, 0.25 * BA.TotalMagAtk() / 200.0) ;}
 	
 	public static Directions randomDir() { return Directions.getDir(UtilG.randomIntFromTo(0, 3)) ;}
 	
@@ -302,10 +303,10 @@ public abstract class LiveBeing
 	{
 		for (Spell spell : spells)
 		{
-			if (spell.isActive())
-			{
-				Log.counter(spell.getDurationCounter()) ;
-			}
+//			if (spell.isActive())
+//			{
+//				Log.counter(spell.getDurationCounter()) ;
+//			}
 			if (spell.getDurationCounter().finished())
 			{
 				spell.getDurationCounter().reset() ;

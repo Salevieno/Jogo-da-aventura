@@ -19,7 +19,6 @@ import utilities.UtilS;
 
 public class SettingsWindow extends GameWindow
 {
-	private Image deeperMenuImage ;
 	private boolean musicIsOn ;
 	private boolean soundEffectsAreOn ;
 	private boolean showAtkRange ;
@@ -28,13 +27,22 @@ public class SettingsWindow extends GameWindow
 	private int selectedActionKeyID ;
 	
 	
-	private static final Point windowPos = Game.getScreen().pos(0.4, 0.35) ;
-	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	private static final Point windowPos ;
+	private static final Font font ;
+    public final static Image imageMenu0 ;
+	private static final Image imageMenu1 ;
 	
-	public SettingsWindow(Image image, boolean musicIsOn, boolean soundEffectsAreOn, boolean showAtkRange, int attDisplay, int damageAnimation)
+	static
 	{
-		super("Opções", windowPos, image, 3, 0, 6, 0) ;
-		deeperMenuImage = UtilS.loadImage("\\Windows\\" + "settingsDeeperWindow.png") ;
+		windowPos = Game.getScreen().pos(0.4, 0.35) ;
+		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	    imageMenu0 = UtilS.loadImage("\\Windows\\" + "windowSettings.png") ;
+		imageMenu1 = UtilS.loadImage("\\Windows\\" + "settingsDeeperWindow.png") ;
+	}
+	
+	public SettingsWindow(boolean musicIsOn, boolean soundEffectsAreOn, boolean showAtkRange, int attDisplay, int damageAnimation)
+	{
+		super("Opções", windowPos, imageMenu0, 3, 0, 6, 0) ;
 		this.musicIsOn = musicIsOn ;
 		this.soundEffectsAreOn = soundEffectsAreOn ;
 		this.showAtkRange = showAtkRange ;
@@ -240,7 +248,7 @@ public class SettingsWindow extends GameWindow
 	{
 		double angle = Draw.stdAngle ;
 		Point textPos = UtilG.Translate(windowPos, 25, 42) ;
-		Image menuImage = menu == 0 ? image : deeperMenuImage ;
+		Image menuImage = menu == 0 ? image : imageMenu1 ;
 		String[] text = Game.allText.get(TextCategories.settings) ;
 		Color[] textColor = new Color[3 + PlayerActions.values().length] ;
 		Arrays.fill(textColor, Game.colorPalette[0]) ;

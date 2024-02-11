@@ -1,401 +1,401 @@
-ï»¿ID,Nome,Name,Descrição,Description,Price,Drop chance
-0,pêlo,fur,-,-,5,60
-1,asas,wings,-,-,7,60
-2,noz,nut,-,-,10,60
-3,couro,leather,-,-,12,60
-4,pedra,rock,-,-,15,60
-5,pedra estranhamente redonda,strangely round rock,-,-,18,60
-6,esporos,spores,-,-,5,60
-7,gosma,slime,-,-,7,60
-8,folha,leaf,-,-,10,60
-9,casca,shell,-,-,12,60
-10,ambrosia,ambrosia,-,-,15,60
-11,samambaia,fern,-,-,18,60
-12,hedera,ivy,-,-,20,60
-13,folha de maple,maple leaf,-,-,5,60
-14,tulsi,tulsi,-,-,7,60
-15,orquídea,orchid,-,-,10,60
-16,violeta,violet,-,-,12,60
-17,espinho preto,black haw,-,-,15,60
-18,orvalho,dew,-,-,18,60
-19,lilás,lilac,-,-,5,60
-20,flor,flower,-,-,7,60
-21,fogueira,campfire,heals life over time,recupera vida com o tempo,10,60
-22,antídoto,antidote,stops poison,para veneno,12,60
-23,bandaid,bandaid,heals life,recupera vida,15,60
-24,megafone,megaphone,-,-,18,60
-25,minhoca,worms,increases fishing chance,aumenta chance de pesca,20,60
-26,garrafa pequena,little bottle,can be filled with water,pode ser enchida com água,5,60
-27,garrafa média,medium bottle,can be filled with water,pode ser enchida com água,7,60
-28,garrafa grande,big bottle,can be filled with water,pode ser enchida com água,10,60
-29,garrafa pequena de água,little water bottle,-,-,12,60
-30,garrafa média de água,medium water bottle,-,-,15,60
-31,garrafa grande de água,big water bottle,-,-,18,60
-32,arame,wire,-,-,20,60
-33,pedra pesada,heavy rock,-,-,25,60
-34,corrente fina,thin chain,-,-,30,60
-35,seda animal,animal silk,-,-,35,60
-36,pá,shovel,-,-,40,60
-37,escada,ladder,-,permite entrar e sair da caverna,45,60
-38,tenda,tent,-,-,50,60
-39,corda,rope,-,permite entrar e sair da caverna (consumível),55,60
-40,vara de pescar,fishing rod,-,permite pescar,60,60
-41,casca sardenta,freckly shell,-,-,65,60
-42,carteira,wallet,-,-,70,60
-43,animal que late,barking animal,-,-,75,60
-44,cipó,vine,-,-,80,60
-45,perna de inseto,insect leg,-,-,85,60
-46,galhos,branches,-,-,90,60
-47,bola de pêlos,fur ball,-,-,95,60
-48,lentes refletivas,reflective lens,-,-,100,60
-49,mola,spring,-,-,105,60
-50,tecla de piano,piano key,-,-,110,60
-51,braço peludo,furry arm,-,-,115,60
-52,caulo seco,dry stalk,-,-,120,60
-53,telescópio,telescope,-,-,125,60
-54,asas de morcego,bat wings,-,-,130,60
-55,olhos brilhantes,shiny eyes,-,-,135,60
-56,ovo pequeno,small egg,-,-,140,60
-57,ovo pontudo,edgy egg,-,-,145,60
-58,espírito frenético,frenetic spirit,-,-,150,60
-59,pepita de ouro,gold nugget,-,-,500,10
-60,diamante,diamond,-,-,5000,1
-61,grafeno,graphene,-,-,165,60
-62,corda dourada,golden string,-,-,170,60
-63,pena colorida,colorful feather,-,-,175,60
-64,esporo venenoso,poisonous spore,-,causes poison,180,60
-65,escama cortante,cutting scale,-,causes blood,185,60
-66,escama protetora,protective scale,-,causes block,190,60
-67,tábua atordoante,stunning planck,-,causes stun,195,60
-68,chifre,horn,-,-,200,60
-69,zípper silenciador,silencing zipper,-,causes silence,205,60
-70,mordaça,gag,-,causes silence,210,60
-71,madeira com pregos,nailled wood,-,causes stun,215,60
-72,seringa,syringe,-,-,220,60
-73,seringa envenenada,poison syringe,-,causes poison,225,60
-74,cogumelo alucinógeno,hallucinogenic mushroom,-,causes drunk,230,60
-75,casco robusto,sturdy shell,-,causes block,235,60
-76,copo vazio,empty glass,-,Mas sem espaço para especulaçÃµes filosóficas,240,60
-77,óculos de sol,sunglasses,-,-,245,60
-78,copo com veneno,poison glass,-,causes poison,250,60
-79,pequena dose de adrenalina,little adrenaline dose,-,increases atk speed,255,60
-80,pedra energizada,energetic stone,-,aumenta chance de refino de atk,260,60
-81,fluido viscoso,viscous fluid,-,stops blood,265,60
-82,calmante,sedative,-,stops blood and reduces atk speed,270,60
-83,seringa com adrenalina,adrenaline syringe,-,increases atk speed,275,60
-84,engrossador de sangue,blood thickening,-,stops blood,280,60
-85,elástico,elastic,-,-,285,60
-86,binóculos,binoculars,increases dex,aumenta dex,290,60
-87,óculos de alta precisão,high-precision glasses,increases dex,aumenta dex,295,60
-88,cachimbo,smoking pipe,-,-,300,60
-89,poção mágica,magic potion,increases magatk and magdef,aumenta atk mag e def mag,305,60
-90,pó cintilante,sparkling dust,-,aumenta chance de refino de special atk,310,60
-91,neve cintilante,sparkling snow,-,-,315,60
-92,presa curva,curvy fang,-,-,320,60
-93,gás de enxofre,sulfer gas,-,fede,325,60
-94,fumaça colorida,colorful smoke,-,-,330,60
-95,orbe mágico,magic orb,-,-,335,60
-96,fósforos,matches,-,-,340,60
-97,ignidor,igniter,-,-,345,60
-98,asas celestiais,celestial wings,-,-,350,60
-99,vareta encantada,enchanted stick,-,aumenta chance de refino de def,355,60
-100,manifesto eclíptico,ecliptic manifest,-,aumenta chance de refino de special def,360,60
-101,manhã pacífica,peaceful morning,-,-,365,60
-102,estilingue,slingshot,-,-,370,60
-103,língua grudenta,sticky tongue,-,-,375,60
-104,olhos de águia,eagle's eyes, não os seus (não aumenta dex),são os olhos dela,380,60
-105,copo de cerveja,beer cup,-,causes drunk,385,60
-106,galão de cerveja,beer gallon,-,causes drunk,390,60
-107,pintura festiva,festive ink,-,-,395,60
-108,orelhas de elfo,elven ears, essas orelhas te deixam élficu,lendárias e super raras,400,60
-109,teia de tarântula,tarantula web,reduces agi,diminui agi,405,60
-110,pílulas suspeitas,suspicious pills,-,você não tomaria pílulas tão suspeitas,410,60
-111,voz gravada,recorded voice,-,stops silence,415,60
-112,remédio,medicine,-,-,420,60
-113,lama suja,dirty mud,-,e tem lama limpa?,425,60
-114,pano molhado,wet cloth,-,causes water atk,430,60
-115,pano em chamas,burning cloth,-,causes fire atk,435,60
-116,semente de crescimento rápido,fast growth seed,-,causes plant atk,440,60
-117,bola de argila,ball of clay,-,causes earth atk,445,60
-118,ar vibrante,vibrant air,-,causes air atk,450,60
-119,pano atritado,rubbed rug,-,causes thunder atk,455,60
-120,vidro luminoso,luminous glass,-,causes light atk,460,60
-121,capa sombria,somber robe,-,causes dark atk,465,60
-122,bola de neve,snowball,-,causes snow atk,470,60
-123,arma d'água,water gun,-,causes water atk,475,60
-124,panela fervente,burning pan,-,causes fire atk,480,60
-125,folha afiada,sharp leaf,-,causes plant atk,485,60
-126,rochedo,boulder,-,causes earth atk,490,60
-127,ar pressurizado,pressurized air,-,causes air atk,495,60
-128,fio elétrico,electric wire,-,causes thunder atk,500,60
-129,lanterna,flashlight,-,causes light atk,505,60
-130,venda,blindfold,-,causes dark atk,510,60
-131,punhado de neve,snowchunck,-,causes snow atk,515,60
-132,canhão de água,water cannon,-,causes water atk,520,60
-133,incinerador,incinerator,-,causes fire atk,525,60
-134,pé de feijão,beanstalk,-,causes plant atk,530,60
-135,montanha,mountain,-,causes earth atk,535,60
-136,espinho faiscante,sparky spike,-,causes air atk,540,60
-137,nuvem carregada,charged cloud,-,causes thunder atk,545,60
-138,holofote,spotlight,-,causes light atk,550,60
-139,tábua molhada,wet plank,-,causes dark atk,555,60
-140,avalanche,avalanche,-,causes snow atk,560,60
-141,seixo cósmico,cosmic pebble,-,-,565,60
-142,estrela cadente,falling star,-,-,570,60
-143,raiz subterrânea,underground root,-,-,575,60
-144,fragmento de pulsar,pulsar fragment,-,-,580,60
-145,cérebro ativo,active brain,-,-,585,60
-146,coração latejante,pulsant heart,-,-,590,60
-147,rabo verdejante,verdant tail,-,-,595,60
-148,nove caudas,nine tails,-,-,600,60
-149,desenho animalesco,animalistic drawing,-,-,605,60
-150,bastão acrômico,acromic bat,-,-,610,60
-151,vírus indomado,untamed virus,-,-,615,60
-152,gel cromático,cromatic gel,-,-,620,60
-153,desenho de giz de cera,crayon drawing,-,-,625,60
-154,solo fértil,fertile soil,-,-,630,60
-155,solo úmido,humid soil,-,-,635,60
-156,raiz úmida,moisty root,-,-,640,60
-157,semente frutífera,frutiferous seed,-,-,645,60
-158,criaturinha saltitante,bouncy little creature,-,-,650,60
-159,corda ascendente,ascending rope,-,-,655,60
-160,tiara florida,flowey tiara,-,-,660,60
-161,anel rochoso,rocky ring,-,-,665,60
-162,xilema rugoso,rugged xylem,-,-,670,60
-163,pele áspera,scratchy skin,-,-,675,60
-164,pedaço de nuvem,piece of cloud,-,-,680,60
-165,corda vibrante,vibrant string,-,-,685,60
-166,rocha ressonante,ressonant rock,-,-,690,60
-167,estalactite,stalactite,-,-,695,60
-168,estalagmite,stalagmite,-,-,700,60
-169,gancho trepador,climbing hook,-,-,705,60
-170,astrolábio primitivo,primitive astrolabe,-,-,710,60
-171,relíquia descoberta,discovered relic,-,-,715,60
-172,poeira estelar,stardust,-,-,720,60
-173,osso quebrado,broken bone,-,-,725,60
-174,limo escorregadio,slippery lime,-,-,730,60
-175,mineral brilhante,shiny mineral,-,-,735,60
-176,água cristalina,crystaline water,-,-,740,60
-177,mochila de expedição,expedition bag,-,-,745,60
-178,gosma bioluminescente,bioluminescent jelly,-,-,750,60
-179,formação cristalina,crystallic formation,-,-,755,60
-180,paredes úmidas,moist walls,-,-,760,60
-181,tecido mole,soft tissue,-,-,765,60
-182,olhos não-usados,unused eyes,-,-,770,60
-183,larva subcutânea,subcutaneous verm,-,-,775,60
-184,braço obnóxio,obnoxious arm,-,-,780,60
-185,boca articulada,articulate mouth,-,-,785,60
-186,falésia íngreme,steep cliff,-,-,790,60
-187,desenho arqueológico,arqueological drawing,-,-,795,60
-188,fluido superdosado,overdosed fluid,-,-,800,60
-189,catarro grudento,sticky mucus,-,-,805,60
-190,asas cintilantes,sparkling wings,-,-,810,60
-191,rocha subterrânea,underground rock,-,-,815,60
-192,formação subsólida,subsolid formation,-,-,820,60
-193,pó brilhante,brilliant dust,-,-,825,60
-194,olhos brilhantes divinos,divine shiny eyes,-,-,830,60
-195,cabelo crocante,crispy hair,-,-,835,60
-196,bloco capilar,capilar block,-,-,840,60
-197,pés rebitados,clinchy toes,-,-,845,60
-198,pata urrante,howling paw,-,-,850,60
-199,lei metralhante,strafing law,-,-,855,60
-200,bactéria corona,corona bacteria,-,-,860,60
-201,hélice rotacional,rotational helix,-,-,865,60
-202,núcleo vórtico,vortexy nuclei,-,-,870,60
-203,relíquia escavada,dug relic,-,-,875,60
-204,musgo exótico,exotic moss,-,-,880,60
-205,substrato do solo,ground substrate,-,-,885,60
-206,substância biológica,biologic substance,-,-,890,60
-207,cheio putrefado,putrefied smell,-,-,895,60
-208,flor única,unique flower,-,-,900,60
-209,parte do corpo retorcida,twisted body part,-,-,905,60
-210,lanterna de escavação,excavation flashlight,-,-,910,60
-211,vela parafinada morna,warm waxed candle,-,-,915,60
-212,vela derretida,melted candle,-,-,920,60
-213,organismo intrínseco,intrinsic organism,-,-,925,60
-214,mensagem criptografada,encrypted message,-,-,930,60
-215,olho petrificado,petrified eye,-,-,935,60
-216,turbante carismático,carismatic turbant,-,-,940,60
-217,padrão intrincado,intricate pattern,-,-,945,60
-218,chapéu medieval,medieval hat,-,-,950,60
-219,ancião poligâmico,polygamous elder,-,-,955,60
-220,ferramenta torta,crooked tool,-,-,960,60
-221,caixa secreta,secret box,-,-,965,60
-222,peça de madeira compacta,compact wood piece,-,-,970,60
-223,rocha sedimentada,sedimented rock,-,-,975,60
-224,solo em camadas,layered soil,-,-,980,60
-225,orbe ornamentado,ornate orb,-,-,985,60
-226,pata de carangueijo,crab leg,-,-,990,60
-227,shuriken,shuriken,-,-,995,60
-228,casca de côco,coconut shell,-,-,1000,60
-229,joelheira,knee pad,-,-,1005,60
-230,areia grossa,granular sand,-,-,1010,60
-231,bico pontiagudo,pointy beak,-,-,1015,60
-232,folha de palha,palm leaf,-,-,1020,60
-233,casca de palma,palm shell,-,-,1025,60
-234,saia nativa,native skirt,-,-,1030,60
-235,colar florido,flowery collar,-,-,1035,60
-236,prancha pintada,painted surfboard,-,-,1040,60
-237,tábua parafinada,waxed board,-,-,1045,60
-238,bandeira fanática,fanatic flag,-,-,1050,60
-239,pombo orgástico,orgastic dove,-,-,1055,60
-240,tímpano ritualístico,ritualistic timpano,-,-,1060,60
-241,disco aerodinâmico,aerodynamic disk,-,-,1065,60
-242,concha ondulada,wavy shell,-,-,1070,60
-243,toalha salina,saline towel,-,-,1075,60
-244,flutuante com sardas,freckled floater,-,-,1080,60
-245,balde d'água,water bucket,-,-,1085,60
-246,fantasia contemporânea,contemporaneous costume,-,-,1090,60
-247,filhote veloz,swift pup,-,-,1095,60
-248,argila moldada,molded clay,-,-,1100,60
-249,castelo de areia,sand castle,-,-,1105,60
-250,caravela inchada,swollen jellyfish,-,-,1110,60
-251,música praieira,beachy music,-,-,1115,60
-252,peteca aerada,airy shuttlecock,-,-,1120,60
-253,leque,fan,-,-,1125,60
-254,água salgada,salt water,-,-,1130,60
-255,boné,sun hat,-,-,1135,60
-256,tentáculo grudento,sticky tentacle,-,-,1140,60
-257,cauda elétrica,electric tail,-,-,1145,60
-258,asa marinha,marine wing,-,-,1150,60
-259,arcada óssea adaptada,adapted bone arch,-,-,1155,60
-260,antena exótica,exotic feeler,-,-,1160,60
-261,boca assustadora,creepy mouth,-,-,1165,60
-262,forma sem formato,shapeless form,-,-,1170,60
-263,vórtex sinérgico,synergic vortex,-,-,1175,60
-264,líquido florescente,fluorescent liquid,-,-,1180,60
-265,mente psicológica,psychological mind,-,-,1185,60
-266,alma emocionada,emotive soul,-,-,1190,60
-267,dente incisivo,incisive tooth,-,-,1195,60
-268,pele escamada,scaling skin,-,-,1200,60
-269,coração vigoroso,vigorous heart,-,-,1205,60
-270,movimento avantajado,topping move,-,-,1210,60
-271,pele táctil,tactile skin,-,-,1215,60
-272,dentes duros,hard teeth,-,-,1220,60
-273,véu luminoso,luminous veil,-,-,1225,60
-274,som inumano,inhumane sound,-,-,1230,60
-275,fluido interno,internal fluid,-,-,1235,60
-276,pérola refinada,refined pearl,-,-,1240,60
-277,rolo superredondo,overround roll,-,-,1245,60
-278,seixo escarlate,scarlet pebble,-,-,1250,60
-279,energia estática,static energy,-,-,1255,60
-280,anel da êxtase,ecstatic ring,-,-,1260,60
-281,óculos inoculares,inocular glasses,-,-,1265,60
-282,forma reluzente,relucent shape,-,-,1270,60
-283,algemas apertadas,tight handcuffs,-,-,1275,60
-284,piercing gradiente,gradient piercing,-,-,1280,60
-285,octaedro barbudo,bearded octahedron,-,-,1285,60
-286,unhas esmaltadas,enamelled nails,-,-,1290,60
-287,eletroldo,electrode,-,-,1295,60
-288,banha,lard,-,-,1300,60
-289,lentes magnéticas,magnetic lens,-,-,1305,60
-290,queratina tingida,dyed queratin,-,-,1310,60
-291,relaxante muscular,muscle relaxant,-,-,1315,60
-292,ovo brilhante,shiny egg,-,-,1320,60
-293,magma,magma,-,-,1325,60
-294,máscara de raposa,kitsune mask,-,-,1330,60
-295,rocha ígnea,igneous rock,-,-,1335,60
-296,fogo incandescente,incandescent fire,-,-,1340,60
-297,pele de cobra,snake skin,-,-,1345,60
-298,criatura fantástica,fantastic beast,-,-,1350,60
-299,platina,platinum,-,-,1355,60
-300,foice ameaçadora,treacherous scythe,-,-,1360,60
-301,núcleo,core,-,-,1365,60
-302,tela digital,digital screen,-,-,1370,60
-303,nave romântica,romantic ship,-,-,1375,60
-304,motor improbabilístico,improbabilistic motor,-,-,1380,60
-305,fone de ouvido superfaturado,overpriced headphone,-,-,1385,60
-306,guarda-chuva arco-íris,rainbow umbrella,-,-,1390,60
-307,morcego sapeca,naughty bat,-,-,1395,60
-308,forma de vida inteligente,intelligent lifeform,-,-,1400,60
-309,veia latejante,pulsant vein,-,-,1405,60
-310,membro pulsante,throbbing member,-,-,1410,60
-311,espiral flexível,flexible spiral,-,-,1415,60
-312,canhão carregado,loaded cannon,-,-,1420,60
-313,saudação alienígena,alien greeting,-,-,1425,60
-314,conto do submundo,tale of the underworld,-,-,1430,60
-315,olho hipnótico,hipnotic eye,-,-,1435,60
-316,esqueleto arcaico,archaic skeleton,-,-,1440,60
-317,asas tortuosas,tortuous wings,-,-,1445,60
-318,colar entusiástico,enthusiastic collar,-,-,1450,60
-319,pluma galática,galactic plum,-,-,1455,60
-320,canto sábio,wise corner,-,-,1460,60
-321,encanto lunático,lunatic spell,-,-,1465,60
-322,bastão encantado,wicked bat,-,-,1470,60
-323,totem ignitivo,ignitive totem,-,-,1475,60
-324,trilhão de bolinhas,trillion tiny balls,-,-,1480,60
-325,metal improvável,improbable metal,-,-,1485,60
-326,flauta da ventania,windy flute,-,-,1490,60
-327,buraco dimensional,dimensional hole,-,-,1495,60
-328,disco artístico,artistic disk,-,-,1500,60
-329,sorriso furtivo,stealthy smile,-,-,1505,60
-330,papel celestial,celestial paper,-,-,1510,60
-331,gás pressurizado,pressurized gas,-,-,1515,60
-332,melodia harmônica,harmonic melody,-,-,1520,60
-333,tempero apimentado,spicy seasoning,-,-,1525,60
-334,cauda dracônica,draconic tail,-,-,1530,60
-335,engrenagem poderosa,power gear,-,-,1535,60
-336,língua empoeirada,dusty tongue,-,-,1540,60
-337,pergaminho enterrado,burried scroll,-,-,1545,60
-338,vaso restaurado,restored vase,-,-,1550,60
-339,corpo negro,blackbody,-,-,1555,60
-340,gota de chuva com sol,sunny raindrop,-,-,1560,60
-341,corpo de inseto,insect body,-,-,1565,60
-342,véu transparente,transparent veil,-,-,1570,60
-343,energia vulcânica,volcanic energy,-,-,1575,60
-344,robô rabugento,grumpy robot,-,-,1580,60
-345,orbe imaterial,immaterial orb,-,-,1585,60
-346,vidro translúcido,translucid glass,-,-,1590,60
-347,rede de captura,capture net,-,-,1595,60
-348,tecido bom de arranhar,scratchy cloth,-,-,1600,60
-349,testa em chamas,burning forehead,-,-,1605,60
-350,tendão tensionado,tensioned tendon,-,-,1610,60
-351,adesivo de nuvem,cloud adhesive,-,-,1615,60
-352,nervo sensível,sensitive nerve,-,-,1620,60
-353,giroscópio,gyroscope,-,-,1625,60
-354,inquietação giratória,spinning fidget,-,-,1630,60
-355,canino doentio,ill canine,-,-,1635,60
-356,músculo quente,hot muscle,-,-,1640,60
-357,bola de cristal,crystal ball,-,-,1645,60
-358,olho de sapo,froggy eye,-,-,1650,60
-359,lâmina moldada,moulded blade,-,-,1655,60
-360,mão esperançosa,hopeful hand,-,-,1660,60
-361,caneta entortada,twisted pen,-,-,1665,60
-362,espada nebulosa,misty sword,-,-,1670,60
-363,marionete nublada,cloudy puppet,-,-,1675,60
-364,bumbum dançante,jiggly butt,-,-,1680,60
-365,cauda peluda,furry tail,-,-,1685,60
-366,hélice aerada,airy helix,-,-,1690,60
-367,bracelete espiral,spiral bracelet,-,-,1695,60
-368,flor em fractal,fractal flower,-,-,1700,60
-369,floco de neve,snowflake,-,-,1705,60
-370,cubo de gelo,ice cube,-,-,1710,60
-371,biscoitos congelados,frozen cookies,-,-,1715,60
-372,pêlo branco,white fur,-,-,1720,60
-373,lança glacial,glacial spear,-,-,1725,60
-374,berrante de tyrande,tyrande's horn,-,-,1730,60
-375,biscoitos assados,baked cookies,-,-,1735,60
-376,cachecol aconchegante,cozy scarf,-,-,1740,60
-377,grande aquecedor de rosto,large facewarmer,-,-,1745,60
-378,chapéu viking,viking hat,-,-,1750,60
-379,janela da queda da noite,nightfall window,-,-,1755,60
-380,companhia celestial,celestial companion,-,-,1760,60
-381,luvas brancas de neve,snowwhite gloves,-,-,1765,60
-382,noite estrelada,starry night,-,-,1770,60
-383,casaco de isolamento térmico,thermal isolating coat,-,-,1775,60
-384,grande pé,big foot,-,-,1780,60
-385,bandeira de exploração,exploration flag,-,-,1785,60
-386,visão da luz da noite,nightlight vision,-,-,1790,60
-387,cabeça do homem das neves,snowman head,-,-,1795,60
-388,pele congelada,frosted skin,-,-,1800,60
-389,marca da aventura,mark of the adventure,-,-,1805,60
-390,esfera neutra,neutral sphere,-,-,0,60
-391,esfera de água,sphere of water,-,-,0,60
-392,esfera de fogo,sphere of fire,-,-,0,60
-393,esfera de planta,sphere of plant,-,-,0,60
-394,esfera de terra,sphere of earth,-,-,0,60
-395,esfera de ar,sphere of air,-,-,0,60
-396,esfera de trovão,sphere of thunder,-,-,0,60
-397,esfera de luz,sphere of light,-,-,0,60
-398,esfera negra,sphere of dark,-,-,0,60
-399,esfera de neve,sphere of snow,-,-,0,60
+Id,Nome,Name,Descrição,Description,Price,Drop chance,Power
+0,pêlo,fur,-,-,5,60,0
+1,asas,wings,-,-,7,60,0
+2,noz,nut,-,-,10,60,2
+3,couro,leather,-,-,12,60,0
+4,pedra,rock,-,-,15,60,3
+5,pedra estranhamente redonda,strangely round rock,-,-,18,60,4
+6,esporos,spores,-,-,5,60,0
+7,gosma,slime,-,-,7,60,0
+8,folha,leaf,-,-,10,60,0
+9,casca,shell,-,-,12,60,0
+10,ambrosia,ambrosia,-,-,15,60,0
+11,samambaia,fern,-,-,18,60,0
+12,hedera,ivy,-,-,20,60,0
+13,folha de maple,maple leaf,-,-,5,60,0
+14,tulsi,tulsi,-,-,7,60,0
+15,orquídea,orchid,-,-,10,60,0
+16,violeta,violet,-,-,12,60,0
+17,espinho preto,black haw,-,-,15,60,3
+18,orvalho,dew,-,-,18,60,0
+19,lilás,lilac,-,-,5,60,0
+20,flor,flower,-,-,7,60,0
+21,fogueira,campfire,heals life over time,recupera vida com o tempo,10,60,0
+22,antídoto,antidote,stops poison,para veneno,12,60,0
+23,bandaid,bandaid,heals life,recupera vida,15,60,0
+24,megafone,megaphone,-,-,18,60,0
+25,minhoca,worms,increases fishing chance,aumenta chance de pesca,20,60,0
+26,garrafa pequena,little bottle,can be filled with water,pode ser enchida com água,5,60,0
+27,garrafa média,medium bottle,can be filled with water,pode ser enchida com água,7,60,0
+28,garrafa grande,big bottle,can be filled with water,pode ser enchida com água,10,60,0
+29,garrafa pequena de água,little water bottle,-,-,12,60,0
+30,garrafa média de água,medium water bottle,-,-,15,60,0
+31,garrafa grande de água,big water bottle,-,-,18,60,0
+32,arame,wire,-,-,20,60,0
+33,pedra pesada,heavy rock,-,-,25,60,7
+34,corrente fina,thin chain,-,-,30,60,0
+35,seda animal,animal silk,-,-,35,60,0
+36,pá,shovel,-,-,40,60,5
+37,escada,ladder,-,permite entrar e sair da caverna,45,60,0
+38,tenda,tent,-,-,50,60,0
+39,corda,rope,-,permite entrar e sair da caverna (consumível),55,60,0
+40,vara de pescar,fishing rod,-,permite pescar,60,60,0
+41,casca sardenta,freckly shell,-,-,65,60,0
+42,carteira,wallet,-,-,70,60,0
+43,animal que late,barking animal,-,-,75,60,0
+44,cipó,vine,-,-,80,60,0
+45,perna de inseto,insect leg,-,-,85,60,0
+46,galhos,branches,-,-,90,60,2
+47,bola de pêlos,fur ball,-,-,95,60,0
+48,lentes refletivas,reflective lens,-,-,100,60,0
+49,mola,spring,-,-,105,60,0
+50,tecla de piano,piano key,-,-,110,60,0
+51,braço peludo,furry arm,-,-,115,60,0
+52,caulo seco,dry stalk,-,-,120,60,0
+53,telescópio,telescope,-,-,125,60,0
+54,asas de morcego,bat wings,-,-,130,60,0
+55,olhos brilhantes,shiny eyes,-,-,135,60,0
+56,ovo pequeno,small egg,-,-,140,60,0
+57,ovo pontudo,edgy egg,-,-,145,60,0
+58,espírito frenético,frenetic spirit,-,-,150,60,0
+59,pepita de ouro,gold nugget,-,-,500,10,0
+60,diamante,diamond,-,-,5000,1,0
+61,grafeno,graphene,-,-,165,60,0
+62,corda dourada,golden string,-,-,170,60,0
+63,pena colorida,colorful feather,-,-,175,60,0
+64,esporo venenoso,poisonous spore,-,causes poison,180,60,10
+65,escama cortante,cutting scale,-,causes blood,185,60,10
+66,escama protetora,protective scale,-,causes block,190,60,10
+67,tábua atordoante,stunning planck,-,causes stun,195,60,10
+68,chifre,horn,-,-,200,60,0
+69,zípper silenciador,silencing zipper,-,causes silence,205,60,10
+70,mordaça,gag,-,causes silence,210,60,20
+71,madeira com pregos,nailled wood,-,causes stun,215,60,20
+72,seringa,syringe,-,-,220,60,0
+73,seringa envenenada,poison syringe,-,causes poison,225,60,20
+74,cogumelo alucinógeno,hallucinogenic mushroom,-,causes drunk,230,60,0
+75,casco robusto,sturdy shell,-,causes block,235,60,20
+76,copo vazio,empty glass,-,Mas sem espaço para especulaçÃµes filosóficas,240,60,0
+77,óculos de sol,sunglasses,-,-,245,60,0
+78,copo com veneno,poison glass,-,causes poison,250,60,20
+79,pequena dose de adrenalina,little adrenaline dose,-,increases atk speed,255,60,0
+80,pedra energizada,energetic stone,-,aumenta chance de refino de atk,260,60,0
+81,fluido viscoso,viscous fluid,-,stops blood,265,60,0
+82,calmante,sedative,-,stops blood and reduces atk speed,270,60,0
+83,seringa com adrenalina,adrenaline syringe,-,increases atk speed,275,60,0
+84,engrossador de sangue,blood thickening,-,stops blood,280,60,0
+85,elástico,elastic,-,-,285,60,0
+86,binóculos,binoculars,increases dex,aumenta dex,290,60,0
+87,óculos de alta precisão,high-precision glasses,increases dex,aumenta dex,295,60,0
+88,cachimbo,smoking pipe,-,-,300,60,0
+89,poção mágica,magic potion,increases magatk and magdef,aumenta atk mag e def mag,305,60,0
+90,pó cintilante,sparkling dust,-,aumenta chance de refino de special atk,310,60,0
+91,neve cintilante,sparkling snow,-,-,315,60,0
+92,presa curva,curvy fang,-,-,320,60,0
+93,gás de enxofre,sulfer gas,-,fede,325,60,0
+94,fumaça colorida,colorful smoke,-,-,330,60,0
+95,orbe mágico,magic orb,-,-,335,60,0
+96,fósforos,matches,-,-,340,60,0
+97,ignidor,igniter,-,-,345,60,0
+98,asas celestiais,celestial wings,-,-,350,60,0
+99,vareta encantada,enchanted stick,-,aumenta chance de refino de def,355,60,0
+100,manifesto eclíptico,ecliptic manifest,-,aumenta chance de refino de special def,360,60,0
+101,manhã pacífica,peaceful morning,-,-,365,60,0
+102,estilingue,slingshot,-,-,370,60,0
+103,língua grudenta,sticky tongue,-,-,375,60,0
+104,olhos de águia,eagle's eyes,não os seus (não aumenta dex),são os olhos dela,380,60,0
+105,copo de cerveja,beer cup,-,causes drunk,385,60,0
+106,galão de cerveja,beer gallon,-,causes drunk,390,60,0
+107,pintura festiva,festive ink,-,-,395,60,0
+108,orelhas de elfo,elven ears,essas orelhas te deixam élficu,lendárias e super raras,400,60,0
+109,teia de tarântula,tarantula web,reduces agi,diminui agi,405,60,0
+110,pílulas suspeitas,suspicious pills,-,você não tomaria pílulas tão suspeitas,410,60,0
+111,voz gravada,recorded voice,-,stops silence,415,60,0
+112,remédio,medicine,-,-,420,60,0
+113,lama suja,dirty mud,-,e tem lama limpa?,425,60,0
+114,pano molhado,wet cloth,-,causes water atk,430,60,30
+115,pano em chamas,burning cloth,-,causes fire atk,435,60,30
+116,semente de crescimento rápido,fast growth seed,-,causes plant atk,440,60,30
+117,bola de argila,ball of clay,-,causes earth atk,445,60,30
+118,ar vibrante,vibrant air,-,causes air atk,450,60,30
+119,pano atritado,rubbed rug,-,causes thunder atk,455,60,30
+120,vidro luminoso,luminous glass,-,causes light atk,460,60,30
+121,capa sombria,somber robe,-,causes dark atk,465,60,30
+122,bola de neve,snowball,-,causes snow atk,470,60,30
+123,arma d'água,water gun,-,causes water atk,475,60,40
+124,panela fervente,burning pan,-,causes fire atk,480,60,40
+125,folha afiada,sharp leaf,-,causes plant atk,485,60,40
+126,rochedo,boulder,-,causes earth atk,490,60,40
+127,ar pressurizado,pressurized air,-,causes air atk,495,60,40
+128,fio elétrico,electric wire,-,causes thunder atk,500,60,40
+129,lanterna,flashlight,-,causes light atk,505,60,40
+130,venda,blindfold,-,causes dark atk,510,60,40
+131,punhado de neve,snowchunck,-,causes snow atk,515,60,40
+132,canhão de água,water cannon,-,causes water atk,520,60,50
+133,incinerador,incinerator,-,causes fire atk,525,60,50
+134,pé de feijão,beanstalk,-,causes plant atk,530,60,50
+135,montanha,mountain,-,causes earth atk,535,60,50
+136,espinho faiscante,sparky spike,-,causes air atk,540,60,50
+137,nuvem carregada,charged cloud,-,causes thunder atk,545,60,50
+138,holofote,spotlight,-,causes light atk,550,60,50
+139,tábua molhada,wet plank,-,causes dark atk,555,60,50
+140,avalanche,avalanche,-,causes snow atk,560,60,50
+141,seixo cósmico,cosmic pebble,-,-,565,60,0
+142,estrela cadente,falling star,-,-,570,60,0
+143,raiz subterrânea,underground root,-,-,575,60,0
+144,fragmento de pulsar,pulsar fragment,-,-,580,60,0
+145,cérebro ativo,active brain,-,-,585,60,0
+146,coração latejante,pulsant heart,-,-,590,60,0
+147,rabo verdejante,verdant tail,-,-,595,60,0
+148,nove caudas,nine tails,-,-,600,60,0
+149,desenho animalesco,animalistic drawing,-,-,605,60,0
+150,bastão acrômico,acromic bat,-,-,610,60,0
+151,vírus indomado,untamed virus,-,-,615,60,0
+152,gel cromático,cromatic gel,-,-,620,60,0
+153,desenho de giz de cera,crayon drawing,-,-,625,60,0
+154,solo fértil,fertile soil,-,-,630,60,0
+155,solo úmido,humid soil,-,-,635,60,0
+156,raiz úmida,moisty root,-,-,640,60,0
+157,semente frutífera,frutiferous seed,-,-,645,60,0
+158,criaturinha saltitante,bouncy little creature,-,-,650,60,0
+159,corda ascendente,ascending rope,-,-,655,60,0
+160,tiara florida,flowey tiara,-,-,660,60,0
+161,anel rochoso,rocky ring,-,-,665,60,0
+162,xilema rugoso,rugged xylem,-,-,670,60,0
+163,pele áspera,scratchy skin,-,-,675,60,0
+164,pedaço de nuvem,piece of cloud,-,-,680,60,0
+165,corda vibrante,vibrant string,-,-,685,60,0
+166,rocha ressonante,ressonant rock,-,-,690,60,0
+167,estalactite,stalactite,-,-,695,60,0
+168,estalagmite,stalagmite,-,-,700,60,0
+169,gancho trepador,climbing hook,-,-,705,60,0
+170,astrolábio primitivo,primitive astrolabe,-,-,710,60,0
+171,relíquia descoberta,discovered relic,-,-,715,60,0
+172,poeira estelar,stardust,-,-,720,60,0
+173,osso quebrado,broken bone,-,-,725,60,0
+174,limo escorregadio,slippery lime,-,-,730,60,0
+175,mineral brilhante,shiny mineral,-,-,735,60,0
+176,água cristalina,crystaline water,-,-,740,60,0
+177,mochila de expedição,expedition bag,-,-,745,60,0
+178,gosma bioluminescente,bioluminescent jelly,-,-,750,60,0
+179,formação cristalina,crystallic formation,-,-,755,60,0
+180,paredes úmidas,moist walls,-,-,760,60,0
+181,tecido mole,soft tissue,-,-,765,60,0
+182,olhos não-usados,unused eyes,-,-,770,60,0
+183,larva subcutânea,subcutaneous verm,-,-,775,60,0
+184,braço obnóxio,obnoxious arm,-,-,780,60,0
+185,boca articulada,articulate mouth,-,-,785,60,0
+186,falésia íngreme,steep cliff,-,-,790,60,0
+187,desenho arqueológico,arqueological drawing,-,-,795,60,0
+188,fluido superdosado,overdosed fluid,-,-,800,60,0
+189,catarro grudento,sticky mucus,-,-,805,60,0
+190,asas cintilantes,sparkling wings,-,-,810,60,0
+191,rocha subterrânea,underground rock,-,-,815,60,0
+192,formação subsólida,subsolid formation,-,-,820,60,0
+193,pó brilhante,brilliant dust,-,-,825,60,0
+194,olhos brilhantes divinos,divine shiny eyes,-,-,830,60,0
+195,cabelo crocante,crispy hair,-,-,835,60,0
+196,bloco capilar,capilar block,-,-,840,60,0
+197,pés rebitados,clinchy toes,-,-,845,60,0
+198,pata urrante,howling paw,-,-,850,60,0
+199,lei metralhante,strafing law,-,-,855,60,0
+200,bactéria corona,corona bacteria,-,-,860,60,0
+201,hélice rotacional,rotational helix,-,-,865,60,0
+202,núcleo vórtico,vortexy nuclei,-,-,870,60,0
+203,relíquia escavada,dug relic,-,-,875,60,0
+204,musgo exótico,exotic moss,-,-,880,60,0
+205,substrato do solo,ground substrate,-,-,885,60,0
+206,substância biológica,biologic substance,-,-,890,60,0
+207,cheio putrefado,putrefied smell,-,-,895,60,0
+208,flor única,unique flower,-,-,900,60,0
+209,parte do corpo retorcida,twisted body part,-,-,905,60,0
+210,lanterna de escavação,excavation flashlight,-,-,910,60,0
+211,vela parafinada morna,warm waxed candle,-,-,915,60,0
+212,vela derretida,melted candle,-,-,920,60,0
+213,organismo intrínseco,intrinsic organism,-,-,925,60,0
+214,mensagem criptografada,encrypted message,-,-,930,60,0
+215,olho petrificado,petrified eye,-,-,935,60,0
+216,turbante carismático,carismatic turbant,-,-,940,60,0
+217,padrão intrincado,intricate pattern,-,-,945,60,0
+218,chapéu medieval,medieval hat,-,-,950,60,0
+219,ancião poligâmico,polygamous elder,-,-,955,60,0
+220,ferramenta torta,crooked tool,-,-,960,60,0
+221,caixa secreta,secret box,-,-,965,60,0
+222,peça de madeira compacta,compact wood piece,-,-,970,60,0
+223,rocha sedimentada,sedimented rock,-,-,975,60,0
+224,solo em camadas,layered soil,-,-,980,60,0
+225,orbe ornamentado,ornate orb,-,-,985,60,0
+226,pata de carangueijo,crab leg,-,-,990,60,0
+227,shuriken,shuriken,-,-,995,60,0
+228,casca de côco,coconut shell,-,-,1000,60,0
+229,joelheira,knee pad,-,-,1005,60,0
+230,areia grossa,granular sand,-,-,1010,60,0
+231,bico pontiagudo,pointy beak,-,-,1015,60,0
+232,folha de palha,palm leaf,-,-,1020,60,0
+233,casca de palma,palm shell,-,-,1025,60,0
+234,saia nativa,native skirt,-,-,1030,60,0
+235,colar florido,flowery collar,-,-,1035,60,0
+236,prancha pintada,painted surfboard,-,-,1040,60,0
+237,tábua parafinada,waxed board,-,-,1045,60,0
+238,bandeira fanática,fanatic flag,-,-,1050,60,0
+239,pombo orgástico,orgastic dove,-,-,1055,60,0
+240,tímpano ritualístico,ritualistic timpano,-,-,1060,60,0
+241,disco aerodinâmico,aerodynamic disk,-,-,1065,60,0
+242,concha ondulada,wavy shell,-,-,1070,60,0
+243,toalha salina,saline towel,-,-,1075,60,0
+244,flutuante com sardas,freckled floater,-,-,1080,60,0
+245,balde d'água,water bucket,-,-,1085,60,0
+246,fantasia contemporânea,contemporaneous costume,-,-,1090,60,0
+247,filhote veloz,swift pup,-,-,1095,60,0
+248,argila moldada,molded clay,-,-,1100,60,0
+249,castelo de areia,sand castle,-,-,1105,60,0
+250,caravela inchada,swollen jellyfish,-,-,1110,60,0
+251,música praieira,beachy music,-,-,1115,60,0
+252,peteca aerada,airy shuttlecock,-,-,1120,60,0
+253,leque,fan,-,-,1125,60,0
+254,água salgada,salt water,-,-,1130,60,0
+255,boné,sun hat,-,-,1135,60,0
+256,tentáculo grudento,sticky tentacle,-,-,1140,60,0
+257,cauda elétrica,electric tail,-,-,1145,60,0
+258,asa marinha,marine wing,-,-,1150,60,0
+259,arcada óssea adaptada,adapted bone arch,-,-,1155,60,0
+260,antena exótica,exotic feeler,-,-,1160,60,0
+261,boca assustadora,creepy mouth,-,-,1165,60,0
+262,forma sem formato,shapeless form,-,-,1170,60,0
+263,vórtex sinérgico,synergic vortex,-,-,1175,60,0
+264,líquido florescente,fluorescent liquid,-,-,1180,60,0
+265,mente psicológica,psychological mind,-,-,1185,60,0
+266,alma emocionada,emotive soul,-,-,1190,60,0
+267,dente incisivo,incisive tooth,-,-,1195,60,0
+268,pele escamada,scaling skin,-,-,1200,60,0
+269,coração vigoroso,vigorous heart,-,-,1205,60,0
+270,movimento avantajado,topping move,-,-,1210,60,0
+271,pele táctil,tactile skin,-,-,1215,60,0
+272,dentes duros,hard teeth,-,-,1220,60,0
+273,véu luminoso,luminous veil,-,-,1225,60,0
+274,som inumano,inhumane sound,-,-,1230,60,0
+275,fluido interno,internal fluid,-,-,1235,60,0
+276,pérola refinada,refined pearl,-,-,1240,60,0
+277,rolo superredondo,overround roll,-,-,1245,60,0
+278,seixo escarlate,scarlet pebble,-,-,1250,60,0
+279,energia estática,static energy,-,-,1255,60,0
+280,anel da êxtase,ecstatic ring,-,-,1260,60,0
+281,óculos inoculares,inocular glasses,-,-,1265,60,0
+282,forma reluzente,relucent shape,-,-,1270,60,0
+283,algemas apertadas,tight handcuffs,-,-,1275,60,0
+284,piercing gradiente,gradient piercing,-,-,1280,60,0
+285,octaedro barbudo,bearded octahedron,-,-,1285,60,0
+286,unhas esmaltadas,enamelled nails,-,-,1290,60,0
+287,eletroldo,electrode,-,-,1295,60,0
+288,banha,lard,-,-,1300,60,0
+289,lentes magnéticas,magnetic lens,-,-,1305,60,0
+290,queratina tingida,dyed queratin,-,-,1310,60,0
+291,relaxante muscular,muscle relaxant,-,-,1315,60,0
+292,ovo brilhante,shiny egg,-,-,1320,60,0
+293,magma,magma,-,-,1325,60,0
+294,máscara de raposa,kitsune mask,-,-,1330,60,0
+295,rocha ígnea,igneous rock,-,-,1335,60,0
+296,fogo incandescente,incandescent fire,-,-,1340,60,0
+297,pele de cobra,snake skin,-,-,1345,60,0
+298,criatura fantástica,fantastic beast,-,-,1350,60,0
+299,platina,platinum,-,-,1355,60,0
+300,foice ameaçadora,treacherous scythe,-,-,1360,60,0
+301,núcleo,core,-,-,1365,60,0
+302,tela digital,digital screen,-,-,1370,60,0
+303,nave romântica,romantic ship,-,-,1375,60,0
+304,motor improbabilístico,improbabilistic motor,-,-,1380,60,0
+305,fone de ouvido superfaturado,overpriced headphone,-,-,1385,60,0
+306,guarda-chuva arco-íris,rainbow umbrella,-,-,1390,60,0
+307,morcego sapeca,naughty bat,-,-,1395,60,0
+308,forma de vida inteligente,intelligent lifeform,-,-,1400,60,0
+309,veia latejante,pulsant vein,-,-,1405,60,0
+310,membro pulsante,throbbing member,-,-,1410,60,0
+311,espiral flexível,flexible spiral,-,-,1415,60,0
+312,canhão carregado,loaded cannon,-,-,1420,60,0
+313,saudação alienígena,alien greeting,-,-,1425,60,0
+314,conto do submundo,tale of the underworld,-,-,1430,60,0
+315,olho hipnótico,hipnotic eye,-,-,1435,60,0
+316,esqueleto arcaico,archaic skeleton,-,-,1440,60,0
+317,asas tortuosas,tortuous wings,-,-,1445,60,0
+318,colar entusiástico,enthusiastic collar,-,-,1450,60,0
+319,pluma galática,galactic plum,-,-,1455,60,0
+320,canto sábio,wise corner,-,-,1460,60,0
+321,encanto lunático,lunatic spell,-,-,1465,60,0
+322,bastão encantado,wicked bat,-,-,1470,60,0
+323,totem ignitivo,ignitive totem,-,-,1475,60,0
+324,trilhão de bolinhas,trillion tiny balls,-,-,1480,60,0
+325,metal improvável,improbable metal,-,-,1485,60,0
+326,flauta da ventania,windy flute,-,-,1490,60,0
+327,buraco dimensional,dimensional hole,-,-,1495,60,0
+328,disco artístico,artistic disk,-,-,1500,60,0
+329,sorriso furtivo,stealthy smile,-,-,1505,60,0
+330,papel celestial,celestial paper,-,-,1510,60,0
+331,gás pressurizado,pressurized gas,-,-,1515,60,0
+332,melodia harmônica,harmonic melody,-,-,1520,60,0
+333,tempero apimentado,spicy seasoning,-,-,1525,60,0
+334,cauda dracônica,draconic tail,-,-,1530,60,0
+335,engrenagem poderosa,power gear,-,-,1535,60,0
+336,língua empoeirada,dusty tongue,-,-,1540,60,0
+337,pergaminho enterrado,burried scroll,-,-,1545,60,0
+338,vaso restaurado,restored vase,-,-,1550,60,0
+339,corpo negro,blackbody,-,-,1555,60,0
+340,gota de chuva com sol,sunny raindrop,-,-,1560,60,0
+341,corpo de inseto,insect body,-,-,1565,60,0
+342,véu transparente,transparent veil,-,-,1570,60,0
+343,energia vulcânica,volcanic energy,-,-,1575,60,0
+344,robô rabugento,grumpy robot,-,-,1580,60,0
+345,orbe imaterial,immaterial orb,-,-,1585,60,0
+346,vidro translúcido,translucid glass,-,-,1590,60,0
+347,rede de captura,capture net,-,-,1595,60,0
+348,tecido bom de arranhar,scratchy cloth,-,-,1600,60,0
+349,testa em chamas,burning forehead,-,-,1605,60,0
+350,tendão tensionado,tensioned tendon,-,-,1610,60,0
+351,adesivo de nuvem,cloud adhesive,-,-,1615,60,0
+352,nervo sensível,sensitive nerve,-,-,1620,60,0
+353,giroscópio,gyroscope,-,-,1625,60,0
+354,inquietação giratória,spinning fidget,-,-,1630,60,0
+355,canino doentio,ill canine,-,-,1635,60,0
+356,músculo quente,hot muscle,-,-,1640,60,0
+357,bola de cristal,crystal ball,-,-,1645,60,0
+358,olho de sapo,froggy eye,-,-,1650,60,0
+359,lâmina moldada,moulded blade,-,-,1655,60,0
+360,mão esperançosa,hopeful hand,-,-,1660,60,0
+361,caneta entortada,twisted pen,-,-,1665,60,0
+362,espada nebulosa,misty sword,-,-,1670,60,0
+363,marionete nublada,cloudy puppet,-,-,1675,60,0
+364,bumbum dançante,jiggly butt,-,-,1680,60,0
+365,cauda peluda,furry tail,-,-,1685,60,0
+366,hélice aerada,airy helix,-,-,1690,60,0
+367,bracelete espiral,spiral bracelet,-,-,1695,60,0
+368,flor em fractal,fractal flower,-,-,1700,60,0
+369,floco de neve,snowflake,-,-,1705,60,0
+370,cubo de gelo,ice cube,-,-,1710,60,0
+371,biscoitos congelados,frozen cookies,-,-,1715,60,0
+372,pêlo branco,white fur,-,-,1720,60,0
+373,lança glacial,glacial spear,-,-,1725,60,0
+374,berrante de tyrande,tyrande's horn,-,-,1730,60,0
+375,biscoitos assados,baked cookies,-,-,1735,60,0
+376,cachecol aconchegante,cozy scarf,-,-,1740,60,0
+377,grande aquecedor de rosto,large facewarmer,-,-,1745,60,0
+378,chapéu viking,viking hat,-,-,1750,60,0
+379,janela da queda da noite,nightfall window,-,-,1755,60,0
+380,companhia celestial,celestial companion,-,-,1760,60,0
+381,luvas brancas de neve,snowwhite gloves,-,-,1765,60,0
+382,noite estrelada,starry night,-,-,1770,60,0
+383,casaco de isolamento térmico,thermal isolating coat,-,-,1775,60,0
+384,grande pé,big foot,-,-,1780,60,0
+385,bandeira de exploração,exploration flag,-,-,1785,60,0
+386,visão da luz da noite,nightlight vision,-,-,1790,60,0
+387,cabeça do homem das neves,snowman head,-,-,1795,60,0
+388,pele congelada,frosted skin,-,-,1800,60,0
+389,marca da aventura,mark of the adventure,-,-,1805,60,0
+390,esfera neutra,neutral sphere,-,-,0,60,0
+391,esfera de água,sphere of water,-,-,0,60,0
+392,esfera de fogo,sphere of fire,-,-,0,60,0
+393,esfera de planta,sphere of plant,-,-,0,60,0
+394,esfera de terra,sphere of earth,-,-,0,60,0
+395,esfera de ar,sphere of air,-,-,0,60,0
+396,esfera de trovão,sphere of thunder,-,-,0,60,0
+397,esfera de luz,sphere of light,-,-,0,60,0
+398,esfera negra,sphere of dark,-,-,0,60,0
+399,esfera de neve,sphere of snow,-,-,0,60,0

@@ -2,6 +2,7 @@ package windows;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 
 import graphics.Draw;
@@ -14,12 +15,20 @@ import utilities.UtilS;
 
 public class HintsWindow extends GameWindow
 {
-	private static final Point windowPos = Game.getScreen().pos(0.15, 0.4) ;
-	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
+	private static final Point windowPos ;
+	private static final Font font ;
+	private static final Image image ;
+	
+	static
+	{
+		windowPos = Game.getScreen().pos(0.15, 0.4) ;
+		font = new Font(Game.MainFontName, Font.BOLD, 12) ;
+		image = UtilS.loadImage("\\Windows\\" + "Hints.png") ;
+	}
 	
 	public HintsWindow()
 	{
-		super("Dicas", windowPos, UtilS.loadImage("\\Windows\\" + "Hints.png"), 0, 0, 0, 0) ;
+		super("Dicas", windowPos, image, 0, 0, 0, 0) ;
 	}
 	
 	public void navigate(String action)

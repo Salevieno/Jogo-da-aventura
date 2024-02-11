@@ -2,7 +2,9 @@ package items;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import graphics.Draw;
 import graphics.DrawPrimitives;
@@ -35,16 +37,19 @@ public class GeneralItem extends Item
 			String description = input.get(p)[3] ;
 			int price = Integer.parseInt(input.get(p)[5]) ;
 			double dropChance = Double.parseDouble(input.get(p)[6]) ;
-			AllGeneralItems[p] = new GeneralItem(id, name, description, price, dropChance) ;
+			int power = Integer.parseInt(input.get(p)[7]) ;
+			AllGeneralItems[p] = new GeneralItem(id, name, description, price, dropChance, power) ;
 		}
 	}
 	
+	public static List<Item> throwableItems() { return Arrays.asList(AllGeneralItems).stream().filter(item -> 0 < item.power).collect(Collectors.toList()) ;}
+	
 	public boolean isThrowable() { return 0 < power ;}
 	
-	public GeneralItem(int id, String Name, String Description, int price, double dropChance)
+	public GeneralItem(int id, String Name, String Description, int price, double dropChance, int power)
 	{
 		super(id, Name, Description, imageFromID(id), price, dropChance) ;
-		power = 0 ;
+		this.power = power ;
 		elem = Elements.neutral ;
 	}
 
@@ -64,15 +69,6 @@ public class GeneralItem extends Item
 		
 		switch (id)
 		{
-//			case 0:
-//				if (!(user instanceof Player)) { return ;}
-//				if (!((Player) user).isInBattle()) { return ;}
-//				
-//				Battle.throwItem(user, ((Player) user).getOpponent(), 10, Elements.air) ;
-//				((Player) user).getBag().remove(this, 1) ;
-//				
-//				return ;
-//				
 			case 27: 
 			{
 				if (!(user instanceof Player) | !user.isTouching(GroundTypes.water))
@@ -118,6 +114,6 @@ public class GeneralItem extends Item
 	@Override
 	public String toString()
 	{
-		return "GeneralItem," + id + "," + name ;
+		return name ;
 	}
 }

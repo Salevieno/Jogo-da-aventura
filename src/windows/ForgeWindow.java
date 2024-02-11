@@ -181,7 +181,7 @@ public class ForgeWindow extends GameWindow
 			if (UtilG.isInside(mousePos, UtilG.getTopLeft(runePos, Align.center, UtilG.getSize(Item.slot)), UtilG.getSize(Item.slot)))
 			{
 				Point runeNamePos = UtilG.Translate(runePos, -Item.slot.getWidth(null) / 2, -Item.slot.getHeight(null) / 2 - 5) ;
-				DP.drawText(runeNamePos, Align.centerLeft, Draw.stdAngle, reqRune(equip).getName(), stdFont, stdColor) ;
+				DP.drawText(runeNamePos, Align.centerLeft, angle, reqRune(equip).getName(), stdFont, stdColor) ;
 			}
 			
 			DP.drawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;

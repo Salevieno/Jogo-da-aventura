@@ -251,7 +251,7 @@ public class Creature extends LiveBeing
 		
 	}
 	
-	public void useAutoSpells(boolean activate)
+	public void useAutoSpell(boolean activate, Spell spell)
 	{
 		
 	}

@@ -36,18 +36,18 @@ public class Alchemy extends Item
 	
 	public Alchemy(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal)
 	{
+		
 		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
 		
 	}
 	
-	public static Image imageFromID(int id)
-	{
-		return id % 3 == 0 ? HerbIcon :
-		id % 3 == 1 ? WoodIcon :
-		MetalIcon ;
-	}
+	public static boolean isHerb(int id) {return id % 3 == 0 ;}
+	public static boolean isWood(int id) {return id % 3 == 1 ;}
+	public static boolean isMetal(int id) {return id % 3 == 2 ;}
+	
+	public static Image imageFromID(int id) { return isHerb(id) ? HerbIcon : isWood(id) ? WoodIcon : MetalIcon ;}
 	
 	public float getLifeHeal() {return lifeHeal ;}
 	public float getMPHeal() {return MPHeal ;}

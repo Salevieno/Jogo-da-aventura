@@ -70,7 +70,7 @@ public class NPCs
 				
 			case alchemist:
 			{
-		    	List<Recipe> recipes = Game.getAllRecipes().subList(0, 39) ;
+		    	List<Recipe> recipes = Recipe.all.subList(0, 39) ;
 				
 				window = new CraftWindow(recipes) ;
 				
@@ -78,7 +78,7 @@ public class NPCs
 			}
 			case woodcrafter:
 			{
-		    	List<Recipe> recipes = Game.getAllRecipes().subList(40, 59) ;
+		    	List<Recipe> recipes = Recipe.all.subList(40, 59) ;
 				
 				window = new CraftWindow(recipes) ;
 				
@@ -86,7 +86,7 @@ public class NPCs
 			}
 			case crafter:
 			{
-		    	List<Recipe> recipes = Game.getAllRecipes().subList(60, Game.getAllRecipes().size()) ;
+		    	List<Recipe> recipes = Recipe.all.subList(60, Recipe.all.size()) ;
 				
 				window = new CraftWindow(recipes) ;
 				
@@ -141,25 +141,6 @@ public class NPCs
 		}
 		
 		return null ;
-	}
-	
-	public static List<NPCs> getNPC(int mapID)
-	{
-		List<NPCs> npcsInMap = new ArrayList<>() ;
-		switch (mapID)
-		{
-			case 0: 
-				
-				npcsInMap.add(new NPCs(Game.getNPCTypes()[12], Game.getScreen().pos(0.27, 0.73))) ;
-				npcsInMap.add(new NPCs(Game.getNPCTypes()[13], Game.getScreen().pos(0.87, 0.63))) ;
-				return npcsInMap ;
-			
-			default: 
-
-				npcsInMap.add(new NPCs(Game.getNPCTypes()[12], Game.getScreen().pos(0.27, 0.73))) ;
-				npcsInMap.add(new NPCs(Game.getNPCTypes()[13], Game.getScreen().pos(0.87, 0.63))) ;
-				return npcsInMap ;
-		}
 	}
 	
 	public void resetMenu() { menu = 0 ;}

@@ -27,18 +27,24 @@ import utilities.UtilS;
 public class PlayerAttributesWindow extends AttributesWindow
 {
 	
-	private Point windowPos = new Point((int) (0.1 * Game.getScreen().getSize().width), (int)(0.2 * Game.getScreen().getSize().height)) ;
+	private Point windowPos = Game.getScreen().pos(0.1, 0.2) ;
 	private Player player ;
-//	private Equip[] equips ;
-//	private Arrow equippedArrow ;
 	public Map<Attributes, GameButton> incAttButtons ;
 
-	public static final Image tab0Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow1.png") ;
-	public static final Image tab1Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow2.png") ;
-	public static final Image tab2Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow3.png") ;
+	public static final Image tab0Image ;
+	public static final Image tab1Image ;
+	public static final Image tab2Image ;	
+	private static final Image plusSign ;
+	private static final Image selectedPlusSign ;
 	
-	private Image plusSign = UtilS.loadImage("\\SideBar\\" + "PlusSign.png") ;
-	private Image selectedPlusSign = UtilS.loadImage("\\SideBar\\" + "ShiningPlusSign.png") ;
+	static
+	{
+		tab0Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow1.png") ;
+		tab1Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow2.png") ;
+		tab2Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow3.png") ;
+		plusSign = UtilS.loadImage("\\SideBar\\" + "PlusSign.png") ;
+		selectedPlusSign = UtilS.loadImage("\\SideBar\\" + "ShiningPlusSign.png") ;
+	}
 	
 	public PlayerAttributesWindow()
 	{

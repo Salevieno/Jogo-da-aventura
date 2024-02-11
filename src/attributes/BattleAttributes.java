@@ -1,8 +1,12 @@
 package attributes ;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.simple.JSONObject;
 
 import liveBeings.LiveBeingStatus;
+import utilities.Elements;
 
 public class BattleAttributes
 {
@@ -19,6 +23,7 @@ public class BattleAttributes
 	private BattleSpecialAttributeWithDamage blood ;
 	private BattleSpecialAttributeWithDamage poison ;
 	private BattleSpecialAttribute silence ;
+	private Map<Elements, Double> elemResistanceMult ;
 	
 	private LiveBeingStatus status ;
 	
@@ -41,6 +46,11 @@ public class BattleAttributes
 		this.poison = poison ;
 		this.silence = silence ;
 		this.status = status ;
+		elemResistanceMult = new HashMap<>() ;
+		for (Elements elem : Elements.values())
+		{
+			elemResistanceMult.put(elem, 1.0) ;
+		}
 	}
 
 	public BasicBattleAttribute getPhyAtk() {return phyAtk ;}
@@ -57,6 +67,7 @@ public class BattleAttributes
 	public BattleSpecialAttributeWithDamage getPoison() {return poison ;}
 	public BattleSpecialAttribute getSilence() {return silence ;}
 	public LiveBeingStatus getStatus() {return status ;}
+	public Map<Elements, Double> getElemResistanceMult() { return elemResistanceMult ;}
 	
 	public void resetStatus() { status = new LiveBeingStatus() ;}
 
@@ -90,6 +101,8 @@ public class BattleAttributes
 			default: return null ;
 		}
 	}
+	
+	public void setElemResistance(Elements elem, double amount) { elemResistanceMult.put(elem, amount) ;}
 	
 	public double TotalPhyAtk()
 	{

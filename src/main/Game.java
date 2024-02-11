@@ -16,11 +16,9 @@ import java.awt.event.MouseWheelListener ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.HashMap ;
-import java.util.HashSet ;
 import java.util.Iterator ;
 import java.util.List ;
 import java.util.Map ;
-import java.util.Set ;
 
 import javax.sound.sampled.Clip ;
 import javax.swing.JPanel ;
@@ -28,12 +26,6 @@ import javax.swing.JPanel ;
 import org.json.simple.JSONArray ;
 import org.json.simple.JSONObject ;
 
-import attributes.BasicAttribute ;
-import attributes.BasicBattleAttribute ;
-import attributes.BattleAttributes ;
-import attributes.BattleSpecialAttribute ;
-import attributes.BattleSpecialAttributeWithDamage ;
-import attributes.PersonalAttributes ;
 import components.Building ;
 import components.BuildingNames ;
 import components.BuildingType ;
@@ -43,7 +35,6 @@ import components.NPCs ;
 import components.Projectiles ;
 import components.Quest ;
 import components.QuestSkills;
-import components.SpellTypes ;
 import graphics.Animation ;
 import graphics.Draw ;
 import graphics.DrawPrimitives;
@@ -64,12 +55,8 @@ import liveBeings.Buff ;
 import liveBeings.Creature ;
 import liveBeings.CreatureType ;
 import liveBeings.HotKeysBar;
-import liveBeings.LiveBeingStates ;
-import liveBeings.LiveBeingStatus ;
-import liveBeings.MovingAnimations ;
 import liveBeings.Pet ;
 import liveBeings.Player ;
-import liveBeings.PlayerJobs ;
 import liveBeings.Spell ;
 import liveBeings.SpellsBar;
 import maps.CityMap ;
@@ -85,7 +72,6 @@ import screen.Screen ;
 import screen.SideBar ;
 import screen.Sky ;
 import utilities.Align ;
-import utilities.Elements ;
 import utilities.GameStates ;
 import utilities.Log;
 import utilities.Scale ;
@@ -98,12 +84,11 @@ public class Game extends JPanel
 {
 	// TODO soundtrack
 	// TODO corrigir bug ao se mover para um mapa maior
-	// TODO spells
 	// TODO nomes das criaturas
 	// TODO descrição dos itens
 	// TODO no superelemento de fogo, todos os panos na mochila viram panos em chamas
 	// TODO conferir a contagem das estatísticas do player
-	// TODO emblem image
+	// TODO Arte: emblem 
 	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] { "Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A" } ;
 	public static final String JSONPath = ".\\json\\" ;
@@ -140,7 +125,7 @@ public class Game extends JPanel
 	private static GameMap[] allMaps ;
 	private static BuildingType[] buildingTypes ;
 	private static NPCType[] NPCTypes ;
-	private static List<Recipe> allRecipes ;
+//	private static List<Recipe> allRecipes ;
 	private static Item[] allItems ;
 	private static List<Buff> allBuffs ;
 	private static List<Buff> allDebuffs ;
@@ -174,7 +159,7 @@ public class Game extends JPanel
 		addKeyListener(new TAdapter()) ;
 		setFocusable(true) ;
 	}
-
+//public static void setPet(Pet newPet) { pet = newPet ;}
 	public static GameStates getState() { return state ;}
 	public static Languages getLanguage() { return gameLanguage ;}
 	public static Screen getScreen() { return screen ;}
@@ -186,7 +171,7 @@ public class Game extends JPanel
 	public static BuildingType[] getBuildingTypes() { return buildingTypes ;}
 	public static GameMap[] getMaps() { return allMaps ;}
 	public static Quest[] getAllQuests() { return allQuests ;}
-	public static List<Recipe> getAllRecipes() { return allRecipes ;}
+//	public static List<Recipe> getAllRecipes() { return allRecipes ;}
 	public static Item[] getAllItems() { return allItems ;}
 	public static Spell[] getAllSpells() { return allSpells ;}
 //	public static List<Animation> getAnimations() { return animations ;}
@@ -355,37 +340,37 @@ public class Game extends JPanel
 
 	}
 
-	private static List<Recipe> loadCraftingRecipes()
-	{
-		List<Recipe> recipes = new ArrayList<>() ;
-		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "craftRecipes.json") ;
-
-		for (int i = 0 ; i <= input.size() - 1 ; i += 1)
-		{
-			JSONObject recipe = (JSONObject) input.get(i) ;
-
-			JSONArray listIngredients = (JSONArray) recipe.get("IngredientIDs") ;
-			JSONArray listIngredientAmounts = (JSONArray) recipe.get("IngredientAmounts") ;
-			Map<Item, Integer> ingredients = new HashMap<>() ;
-			for (int ing = 0 ; ing <= listIngredients.size() - 1 ; ing += 1)
-			{
-				ingredients.put(allItems[(int) (long) listIngredients.get(ing)],
-						(int) (long) listIngredientAmounts.get(ing)) ;
-			}
-
-			JSONArray listProducts = (JSONArray) recipe.get("ProductIDs") ;
-			JSONArray listProductAmounts = (JSONArray) recipe.get("ProductAmounts") ;
-			Map<Item, Integer> products = new HashMap<>() ;
-			for (int prod = 0 ; prod <= listProducts.size() - 1 ; prod += 1)
-			{
-				products.put(allItems[(int) (long) listProducts.get(prod)], (int) (long) listProductAmounts.get(prod)) ;
-			}
-
-			recipes.add(new Recipe(ingredients, products)) ;
-		}
-
-		return recipes ;
-	}
+//	private static List<Recipe> loadCraftingRecipes()
+//	{
+//		List<Recipe> recipes = new ArrayList<>() ;
+//		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "craftRecipes.json") ;
+//
+//		for (int i = 0 ; i <= input.size() - 1 ; i += 1)
+//		{
+//			JSONObject recipe = (JSONObject) input.get(i) ;
+//
+//			JSONArray listIngredients = (JSONArray) recipe.get("IngredientIDs") ;
+//			JSONArray listIngredientAmounts = (JSONArray) recipe.get("IngredientAmounts") ;
+//			Map<Item, Integer> ingredients = new HashMap<>() ;
+//			for (int ing = 0 ; ing <= listIngredients.size() - 1 ; ing += 1)
+//			{
+//				ingredients.put(allItems[(int) (long) listIngredients.get(ing)],
+//						(int) (long) listIngredientAmounts.get(ing)) ;
+//			}
+//
+//			JSONArray listProducts = (JSONArray) recipe.get("ProductIDs") ;
+//			JSONArray listProductAmounts = (JSONArray) recipe.get("ProductAmounts") ;
+//			Map<Item, Integer> products = new HashMap<>() ;
+//			for (int prod = 0 ; prod <= listProducts.size() - 1 ; prod += 1)
+//			{
+//				products.put(allItems[(int) (long) listProducts.get(prod)], (int) (long) listProductAmounts.get(prod)) ;
+//			}
+//
+//			recipes.add(new Recipe(ingredients, products)) ;
+//		}
+//
+//		return recipes ;
+//	}
 
 	private static NPCType[] loadNPCTypes(Languages language)
 	{
@@ -452,115 +437,115 @@ public class Game extends JPanel
 		return buildingTypes ;
 	}
 
-	private static CreatureType[] loadCreatureTypes(Languages language, int difficultLevel)
-	{
-		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
-		CreatureType.setNumberOfCreatureTypes(input.size()) ;
-		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()] ;
-		Color[] color = new Color[creatureTypes.length] ;
-		int numberCreatureTypes = 7 ;
-		double diffMult = difficultLevel == 0 ? 0.6 : (difficultLevel == 1 ? 0.8 : 1.0) ;
-		
-		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
-		{
-			int colorid = (int) ((Creature.getskinColor().length - 1) * Math.random()) ;
-			color[ct] = Creature.getskinColor()[colorid] ;
-			if (270 < ct & ct <= 299) // Ocean creatures
-			{
-				color[ct] = colorPalette[5] ;
-			}
-
-			MovingAnimations moveAni = CreatureType.moveAni.get(ct % numberCreatureTypes) ;
-
-			BasicAttribute Life = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[5]) * diffMult),
-					(int) (Integer.parseInt(input.get(ct)[5]) * diffMult), 1) ;
-			BasicAttribute Mp = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[6]) * diffMult),
-					(int) (Integer.parseInt(input.get(ct)[6]) * diffMult), 1) ;
-			BasicAttribute Exp = new BasicAttribute(Integer.parseInt(input.get(ct)[36]), 999999999, 1) ;
-			BasicAttribute Satiation = new BasicAttribute(100, 100, 1) ;
-			BasicAttribute Thirst = new BasicAttribute(100, 100, 1) ;
-			PersonalAttributes PA = new PersonalAttributes(Life, Mp, Exp, Satiation, Thirst) ;
-
-			BasicBattleAttribute PhyAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[8]) * diffMult, 0,
-					0) ;
-			BasicBattleAttribute MagAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[9]) * diffMult, 0,
-					0) ;
-			BasicBattleAttribute PhyDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[10]) * diffMult, 0,
-					0) ;
-			BasicBattleAttribute MagDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[11]) * diffMult, 0,
-					0) ;
-			BasicBattleAttribute Dex = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[12]) * diffMult, 0, 0) ;
-			BasicBattleAttribute Agi = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[13]) * diffMult, 0, 0) ;
-			BasicBattleAttribute CritAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[14]) * diffMult, 0,
-					0) ;
-			BasicBattleAttribute CritDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[15]) * diffMult, 0,
-					0) ;
-			BattleSpecialAttribute Stun = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[16]) * diffMult,
-					0, Double.parseDouble(input.get(ct)[17]) * diffMult, 0,
-					(int) (Double.parseDouble(input.get(ct)[18]) * diffMult)) ;
-			BattleSpecialAttribute Block = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[19]) * diffMult,
-					0, Double.parseDouble(input.get(ct)[20]) * diffMult, 0,
-					(int) (Double.parseDouble(input.get(ct)[21]) * diffMult)) ;
-			BattleSpecialAttributeWithDamage Blood = new BattleSpecialAttributeWithDamage(
-					Double.parseDouble(input.get(ct)[22]) * diffMult, 0,
-					Double.parseDouble(input.get(ct)[23]) * diffMult, 0,
-					(int) (Double.parseDouble(input.get(ct)[24]) * diffMult), 0,
-					(int) (Double.parseDouble(input.get(ct)[25]) * diffMult), 0,
-					(int) (Integer.parseInt(input.get(ct)[26]) * diffMult)) ;
-			BattleSpecialAttributeWithDamage Poison = new BattleSpecialAttributeWithDamage(
-					Double.parseDouble(input.get(ct)[27]) * diffMult, 0,
-					Double.parseDouble(input.get(ct)[28]) * diffMult, 0,
-					(int) (Double.parseDouble(input.get(ct)[29]) * diffMult), 0,
-					(int) (Double.parseDouble(input.get(ct)[30]) * diffMult), 0,
-					(int) (Integer.parseInt(input.get(ct)[31]) * diffMult)) ;
-			BattleSpecialAttribute Silence = new BattleSpecialAttribute(
-					Double.parseDouble(input.get(ct)[32]) * diffMult, 0,
-					Double.parseDouble(input.get(ct)[33]) * diffMult, 0,
-					(int) (Double.parseDouble(input.get(ct)[34]) * diffMult)) ;
-			LiveBeingStatus status = new LiveBeingStatus() ;
-			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, CritAtk, CritDef, Stun,
-					Block, Blood, Poison, Silence, status) ;
-
-			// TODO spells para as criaturas
-			List<Spell> spells = new ArrayList<>() ;
-			spells.add(allSpells[0]) ;
-			spells.get(0).incLevel(1) ;
-//			spells.add(allSpells[1]) ;
-//			spells.add(allSpells[2]) ;
-//			spells.add(allSpells[3]) ;
-//			spells.add(allSpells[4]) ;
-
-			Set<Item> items = new HashSet<>() ;
-			for (int i = 0 ; i <= 10 - 1 ; i += 1)
-			{
-				int itemID = Integer.parseInt(input.get(ct)[37 + i]) ;
-				if (-1 < itemID)
-				{
-					items.add(allItems[itemID]) ;
-				}
-			}
-
-			int Gold = Integer.parseInt(input.get(ct)[47]) ;
-			int[] StatusCounter = new int[8] ;
-
-			String name = input.get(ct)[1 + language.ordinal()] ;
-			int level = Integer.parseInt(input.get(ct)[3]) ;
-			Dimension size = new Dimension(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;
-			int range = (int) (Integer.parseInt(input.get(ct)[7]) * diffMult) ;
-			int step = Integer.parseInt(input.get(ct)[48]) ;
-			Elements[] elem = new Elements[] { Elements.valueOf(input.get(ct)[35]) } ;
-			int mpDuration = Integer.parseInt(input.get(ct)[49]) ;
-			int satiationDuration = 100 ;
-			int numberSteps = Integer.parseInt(input.get(ct)[50]) ;
-			int battleActionDuration = Integer.parseInt(input.get(ct)[51]) ;
-			int stepCounter = 0 ;
-
-			creatureTypes[ct] = new CreatureType(ct, name, level, size, range, step, elem, mpDuration,
-					satiationDuration, numberSteps, battleActionDuration, stepCounter, moveAni, PA, BA, spells, items,
-					Gold, color[ct], StatusCounter) ;
-		}
-		return creatureTypes ;
-	}
+//	private static CreatureType[] loadCreatureTypes(Languages language, int difficultLevel)
+//	{
+//		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
+//		CreatureType.setNumberOfCreatureTypes(input.size()) ;
+//		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()] ;
+//		Color[] color = new Color[creatureTypes.length] ;
+//		int numberCreatureTypes = 7 ;
+//		double diffMult = difficultLevel == 0 ? 0.6 : (difficultLevel == 1 ? 0.8 : 1.0) ;
+//		
+//		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
+//		{
+//			int colorid = (int) ((Creature.getskinColor().length - 1) * Math.random()) ;
+//			color[ct] = Creature.getskinColor()[colorid] ;
+//			if (270 < ct & ct <= 299) // Ocean creatures
+//			{
+//				color[ct] = colorPalette[5] ;
+//			}
+//
+//			MovingAnimations moveAni = CreatureType.moveAni.get(ct % numberCreatureTypes) ;
+//
+//			BasicAttribute Life = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[5]) * diffMult),
+//					(int) (Integer.parseInt(input.get(ct)[5]) * diffMult), 1) ;
+//			BasicAttribute Mp = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[6]) * diffMult),
+//					(int) (Integer.parseInt(input.get(ct)[6]) * diffMult), 1) ;
+//			BasicAttribute Exp = new BasicAttribute(Integer.parseInt(input.get(ct)[36]), 999999999, 1) ;
+//			BasicAttribute Satiation = new BasicAttribute(100, 100, 1) ;
+//			BasicAttribute Thirst = new BasicAttribute(100, 100, 1) ;
+//			PersonalAttributes PA = new PersonalAttributes(Life, Mp, Exp, Satiation, Thirst) ;
+//
+//			BasicBattleAttribute PhyAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[8]) * diffMult, 0,
+//					0) ;
+//			BasicBattleAttribute MagAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[9]) * diffMult, 0,
+//					0) ;
+//			BasicBattleAttribute PhyDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[10]) * diffMult, 0,
+//					0) ;
+//			BasicBattleAttribute MagDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[11]) * diffMult, 0,
+//					0) ;
+//			BasicBattleAttribute Dex = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[12]) * diffMult, 0, 0) ;
+//			BasicBattleAttribute Agi = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[13]) * diffMult, 0, 0) ;
+//			BasicBattleAttribute CritAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[14]) * diffMult, 0,
+//					0) ;
+//			BasicBattleAttribute CritDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[15]) * diffMult, 0,
+//					0) ;
+//			BattleSpecialAttribute Stun = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[16]) * diffMult,
+//					0, Double.parseDouble(input.get(ct)[17]) * diffMult, 0,
+//					(int) (Double.parseDouble(input.get(ct)[18]) * diffMult)) ;
+//			BattleSpecialAttribute Block = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[19]) * diffMult,
+//					0, Double.parseDouble(input.get(ct)[20]) * diffMult, 0,
+//					(int) (Double.parseDouble(input.get(ct)[21]) * diffMult)) ;
+//			BattleSpecialAttributeWithDamage Blood = new BattleSpecialAttributeWithDamage(
+//					Double.parseDouble(input.get(ct)[22]) * diffMult, 0,
+//					Double.parseDouble(input.get(ct)[23]) * diffMult, 0,
+//					(int) (Double.parseDouble(input.get(ct)[24]) * diffMult), 0,
+//					(int) (Double.parseDouble(input.get(ct)[25]) * diffMult), 0,
+//					(int) (Integer.parseInt(input.get(ct)[26]) * diffMult)) ;
+//			BattleSpecialAttributeWithDamage Poison = new BattleSpecialAttributeWithDamage(
+//					Double.parseDouble(input.get(ct)[27]) * diffMult, 0,
+//					Double.parseDouble(input.get(ct)[28]) * diffMult, 0,
+//					(int) (Double.parseDouble(input.get(ct)[29]) * diffMult), 0,
+//					(int) (Double.parseDouble(input.get(ct)[30]) * diffMult), 0,
+//					(int) (Integer.parseInt(input.get(ct)[31]) * diffMult)) ;
+//			BattleSpecialAttribute Silence = new BattleSpecialAttribute(
+//					Double.parseDouble(input.get(ct)[32]) * diffMult, 0,
+//					Double.parseDouble(input.get(ct)[33]) * diffMult, 0,
+//					(int) (Double.parseDouble(input.get(ct)[34]) * diffMult)) ;
+//			LiveBeingStatus status = new LiveBeingStatus() ;
+//			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, CritAtk, CritDef, Stun,
+//					Block, Blood, Poison, Silence, status) ;
+//
+//			// TODO spells para as criaturas
+//			List<Spell> spells = new ArrayList<>() ;
+//			spells.add(allSpells[0]) ;
+//			spells.get(0).incLevel(1) ;
+////			spells.add(allSpells[1]) ;
+////			spells.add(allSpells[2]) ;
+////			spells.add(allSpells[3]) ;
+////			spells.add(allSpells[4]) ;
+//
+//			Set<Item> items = new HashSet<>() ;
+//			for (int i = 0 ; i <= 10 - 1 ; i += 1)
+//			{
+//				int itemID = Integer.parseInt(input.get(ct)[37 + i]) ;
+//				if (-1 < itemID)
+//				{
+//					items.add(allItems[itemID]) ;
+//				}
+//			}
+//
+//			int Gold = Integer.parseInt(input.get(ct)[47]) ;
+//			int[] StatusCounter = new int[8] ;
+//
+//			String name = input.get(ct)[1 + language.ordinal()] ;
+//			int level = Integer.parseInt(input.get(ct)[3]) ;
+//			Dimension size = new Dimension(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;
+//			int range = (int) (Integer.parseInt(input.get(ct)[7]) * diffMult) ;
+//			int step = Integer.parseInt(input.get(ct)[48]) ;
+//			Elements[] elem = new Elements[] { Elements.valueOf(input.get(ct)[35]) } ;
+//			int mpDuration = Integer.parseInt(input.get(ct)[49]) ;
+//			int satiationDuration = 100 ;
+//			int numberSteps = Integer.parseInt(input.get(ct)[50]) ;
+//			int battleActionDuration = Integer.parseInt(input.get(ct)[51]) ;
+//			int stepCounter = 0 ;
+//
+//			creatureTypes[ct] = new CreatureType(ct, name, level, size, range, step, elem, mpDuration,
+//					satiationDuration, numberSteps, battleActionDuration, stepCounter, moveAni, PA, BA, spells, items,
+//					Gold, color[ct], StatusCounter) ;
+//		}
+//		return creatureTypes ;
+//	}
 
 	private static CityMap[] loadCityMaps()
 	{
@@ -679,7 +664,7 @@ public class Game extends JPanel
 			}
 
 			JSONArray listNPCs = (JSONArray) mapData.get("NPCs") ;
-			List<NPCs> npcs = NPCs.getNPC(id) ;
+			List<NPCs> npcs = FieldMap.createQuestNPCs(id) ;
 //			List<NPCs> npcs = new ArrayList<>() ;
 //			for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
 //			{
@@ -856,139 +841,129 @@ public class Game extends JPanel
 		return quests ;
 	}
 
-	private static List<Buff> loadAllBuffs()
-	{
-		List<Buff> buffs = new ArrayList<>() ;
-		List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "SpellsBuffs.csv") ;
-		
-		for (int i = 0 ; i <= spellsBuffsInput.size() - 1 ; i += 1)
-		{
-			buffs.add(Buff.load(spellsBuffsInput.get(i))) ;
-		}
-		return buffs ;
-	}
+//	public static List<Buff> loadAllBuffs()
+//	{
+//		List<Buff> buffs = new ArrayList<>() ;
+//		List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "Buffs.csv") ;
+//		
+//		for (int i = 0 ; i <= spellsBuffsInput.size() - 1 ; i += 1)
+//		{
+//			buffs.add(Buff.load(spellsBuffsInput.get(i))) ;
+//		}
+//		return buffs ;
+//	}
 	
-	private static List<Buff> loadAllDebuffs()
-	{
-		List<Buff> debuffs = new ArrayList<>() ;
-		List<String[]> spellsDebuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "Debuffs.csv") ;
-		
-		for (int i = 0 ; i <= spellsDebuffsInput.size() - 1 ; i += 1)
-		{
-			debuffs.add(Buff.load(spellsDebuffsInput.get(i))) ;
-		}
-		return debuffs ;
-	}
+//	public static List<Buff> loadAllDebuffs()
+//	{
+//		List<Buff> debuffs = new ArrayList<>() ;
+//		List<String[]> spellsDebuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "Debuffs.csv") ;
+//		
+//		for (int i = 0 ; i <= spellsDebuffsInput.size() - 1 ; i += 1)
+//		{
+//			debuffs.add(Buff.load(spellsDebuffsInput.get(i))) ;
+//		}
+//		return debuffs ;
+//	}
 	
-	private static Spell[] loadAllSpells(Languages language)
-	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;
+//	private static Spell[] loadAllSpells(Languages language)
+//	{
+//		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;
+//
+//		Spell[] allSpells = new Spell[input.size()] ;
+//		String[][] info = new String[allSpells.length][2] ;
+//
+//		for (int row = 0 ; row <= allSpells.length - 1 ; row += 1)
+//		{
+//			int id = row ;
+//			String[] col = input.get(row) ;
+//			info[row] = new String[] { col[44], col[45 + 2 * language.ordinal()] } ;
+//			String name = col[4] ;
+//			String job = PlayerJobs.jobFromSpellID(row).toString() ;
+//			Image image = UtilS.loadImage("\\Spells\\" + "spell" + job + row + ".png") ;
+//			int maxLevel = Integer.parseInt(col[5]) ;
+//			int mpCost = Integer.parseInt(col[6]) ;
+//			SpellTypes type = SpellTypes.valueOf(col[7]) ;
+//			Map<Spell, Integer> preRequisites = new HashMap<>() ;
+//			for (int p = 0 ; p <= 6 - 1 ; p += 2)
+//			{
+//				if (-1 < Integer.parseInt(col[p + 8]))
+//				{
+//					preRequisites.put(allSpells[Integer.parseInt(col[p + 8])], Integer.parseInt(col[p + 9])) ;
+//				}
+//			}
+//			int cooldown = Integer.parseInt(col[14]) ;
+//			int duration = Integer.parseInt(col[15]) ;
+//			double[] atkMod = new double[] { Double.parseDouble(col[16]), Double.parseDouble(col[17]) } ;
+//			double[] defMod = new double[] { Double.parseDouble(col[18]), Double.parseDouble(col[19]) } ;
+//			double[] dexMod = new double[] { Double.parseDouble(col[20]), Double.parseDouble(col[21]) } ;
+//			double[] agiMod = new double[] { Double.parseDouble(col[22]), Double.parseDouble(col[23]) } ;
+//			double[] atkCritMod = new double[] { Double.parseDouble(col[24]) } ;
+//			double[] defCritMod = new double[] { Double.parseDouble(col[25]) } ;
+//			double[] stunMod = new double[] { Double.parseDouble(col[26]), Double.parseDouble(col[27]), Double.parseDouble(col[28]) } ;
+//			double[] blockMod = new double[] { Double.parseDouble(col[29]), Double.parseDouble(col[30]), Double.parseDouble(col[31]) } ;
+//			double[] bloodMod = new double[] { Double.parseDouble(col[32]), Double.parseDouble(col[33]), Double.parseDouble(col[34]) } ;
+//			double[] poisonMod = new double[] { Double.parseDouble(col[35]), Double.parseDouble(col[36]), Double.parseDouble(col[37]) } ;
+//			double[] silenceMod = new double[] { Double.parseDouble(col[38]), Double.parseDouble(col[39]), Double.parseDouble(col[40]) } ;
+//
+//			int buffId = col[41].equals("-") ? -1 : Integer.parseInt(col[41]) ;
+//			int debuffId = col[42].equals("-") ? -1 : Integer.parseInt(col[42]) ;
+//			Buff buffs = buffId == -1 ? null : allBuffs.get(buffId);
+//			Buff debuffs = debuffId == -1 ? null : allDebuffs.get(debuffId);
+//			Elements elem = Elements.valueOf(col[43]) ;
+//
+//			allSpells[row] = new Spell(id, name, image, maxLevel, mpCost, type, preRequisites, buffs, debuffs, atkMod,
+//					defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod,
+//					cooldown, duration, elem, info[row]) ;
+//		}
+//		return allSpells ;
+//	}
 
-		Spell[] allSpells = new Spell[input.size()] ;
-		String[][] info = new String[allSpells.length][2] ;
-
-		for (int i = 0 ; i <= allSpells.length - 1 ; i += 1)
-		{
-			int id = i ;
-
-			info[i] = new String[] { input.get(id)[44], input.get(id)[45 + 2 * language.ordinal()] } ;
-			String name = input.get(id)[4] ;
-			String job = PlayerJobs.jobFromSpellID(i).toString() ;
-			Image image = UtilS.loadImage("\\Spells\\" + "spell" + job + i + ".png") ;
-			int maxLevel = Integer.parseInt(input.get(id)[5]) ;
-			int mpCost = Integer.parseInt(input.get(id)[6]) ;
-			SpellTypes type = SpellTypes.valueOf(input.get(id)[7]) ;
-			Map<Spell, Integer> preRequisites = new HashMap<>() ;
-			for (int p = 0 ; p <= 6 - 1 ; p += 2)
-			{
-				if (-1 < Integer.parseInt(input.get(id)[p + 8]))
-				{
-					preRequisites.put(allSpells[Integer.parseInt(input.get(id)[p + 8])],
-							Integer.parseInt(input.get(id)[p + 9])) ;
-				}
-			}
-			int cooldown = Integer.parseInt(input.get(id)[14]) ;
-			int duration = Integer.parseInt(input.get(id)[15]) ;
-			double[] atkMod = new double[] { Double.parseDouble(input.get(id)[16]),
-					Double.parseDouble(input.get(id)[17]) } ;
-			double[] defMod = new double[] { Double.parseDouble(input.get(id)[18]),
-					Double.parseDouble(input.get(id)[19]) } ;
-			double[] dexMod = new double[] { Double.parseDouble(input.get(id)[20]),
-					Double.parseDouble(input.get(id)[21]) } ;
-			double[] agiMod = new double[] { Double.parseDouble(input.get(id)[22]),
-					Double.parseDouble(input.get(id)[23]) } ;
-			double[] atkCritMod = new double[] { Double.parseDouble(input.get(id)[24]) } ;
-			double[] defCritMod = new double[] { Double.parseDouble(input.get(id)[25]) } ;
-			double[] stunMod = new double[] { Double.parseDouble(input.get(id)[26]),
-					Double.parseDouble(input.get(id)[27]), Double.parseDouble(input.get(id)[28]) } ;
-			double[] blockMod = new double[] { Double.parseDouble(input.get(id)[29]),
-					Double.parseDouble(input.get(id)[30]), Double.parseDouble(input.get(id)[31]) } ;
-			double[] bloodMod = new double[] { Double.parseDouble(input.get(id)[32]),
-					Double.parseDouble(input.get(id)[33]), Double.parseDouble(input.get(id)[34]) } ;
-			double[] poisonMod = new double[] { Double.parseDouble(input.get(id)[35]),
-					Double.parseDouble(input.get(id)[36]), Double.parseDouble(input.get(id)[37]) } ;
-			double[] silenceMod = new double[] { Double.parseDouble(input.get(id)[38]),
-					Double.parseDouble(input.get(id)[39]), Double.parseDouble(input.get(id)[40]) } ;
-
-			int buffId = input.get(id)[41].equals("-") ? -1 : Integer.parseInt(input.get(id)[41]) ;
-			int debuffId = input.get(id)[42].equals("-") ? -1 : Integer.parseInt(input.get(id)[42]) ;
-			Buff buffs = buffId == -1 ? null : allBuffs.get(buffId);
-			Buff debuffs = debuffId == -1 ? null : allDebuffs.get(debuffId);
-			Elements elem = Elements.valueOf(input.get(id)[43]) ;
-
-			allSpells[i] = new Spell(id, name, image, maxLevel, mpCost, type, preRequisites, buffs, debuffs, atkMod,
-					defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod,
-					cooldown, duration, elem, info[i]) ;
-		}
-		return allSpells ;
-	}
-
-	private static Item[] loadAllItems()
-	{
-		List<Item> allItems = new ArrayList<>() ;
-		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
-		{
-			allItems.add(Potion.getAll()[i]) ;
-		}
-		for (int i = 0 ; i <= Alchemy.getAll().length - 1 ; i += 1)
-		{
-			allItems.add(Alchemy.getAll()[i]) ;
-		}
-		for (int i = 0 ; i <= Forge.getAll().length - 1 ; i += 1)
-		{
-			allItems.add(Forge.getAll()[i]) ;
-		}
-		for (int i = 0 ; i <= PetItem.getAll().length - 1 ; i += 1)
-		{
-			allItems.add(PetItem.getAll()[i]) ;
-		}
-		for (int i = 0 ; i <= Food.getAll().length - 1 ; i += 1)
-		{
-			allItems.add(Food.getAll()[i]) ;
-		}
-		for (int i = 0 ; i <= Arrow.getAll().length - 1 ; i += 1)
-		{
-			allItems.add(Arrow.getAll()[i]) ;
-		}
-		for (int i = 0 ; i <= Equip.getAll().length - 1 ; i += 1)
-		{
-			allItems.add(Equip.getAll()[i]) ;
-		}
-		for (int i = 0 ; i <= GeneralItem.getAll().length - 1 ; i += 1)
-		{
-			allItems.add(GeneralItem.getAll()[i]) ;
-		}
-		for (int i = 0 ; i <= Fab.getAll().length - 1 ; i += 1)
-		{
-			allItems.add(Fab.getAll()[i]) ;
-		}
-		for (int i = 0 ; i <= QuestItem.getAll().length - 1 ; i += 1)
-		{
-			allItems.add(QuestItem.getAll()[i]) ;
-		}
-
-		return (Item[]) allItems.toArray(new Item[allItems.size()]) ;
-	}
+//	private static Item[] loadAllItems()
+//	{
+//		List<Item> allItems = new ArrayList<>() ;
+//		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
+//		{
+//			allItems.add(Potion.getAll()[i]) ;
+//		}
+//		for (int i = 0 ; i <= Alchemy.getAll().length - 1 ; i += 1)
+//		{
+//			allItems.add(Alchemy.getAll()[i]) ;
+//		}
+//		for (int i = 0 ; i <= Forge.getAll().length - 1 ; i += 1)
+//		{
+//			allItems.add(Forge.getAll()[i]) ;
+//		}
+//		for (int i = 0 ; i <= PetItem.getAll().length - 1 ; i += 1)
+//		{
+//			allItems.add(PetItem.getAll()[i]) ;
+//		}
+//		for (int i = 0 ; i <= Food.getAll().length - 1 ; i += 1)
+//		{
+//			allItems.add(Food.getAll()[i]) ;
+//		}
+//		for (int i = 0 ; i <= Arrow.getAll().length - 1 ; i += 1)
+//		{
+//			allItems.add(Arrow.getAll()[i]) ;
+//		}
+//		for (int i = 0 ; i <= Equip.getAll().length - 1 ; i += 1)
+//		{
+//			allItems.add(Equip.getAll()[i]) ;
+//		}
+//		for (int i = 0 ; i <= GeneralItem.getAll().length - 1 ; i += 1)
+//		{
+//			allItems.add(GeneralItem.getAll()[i]) ;
+//		}
+//		for (int i = 0 ; i <= Fab.getAll().length - 1 ; i += 1)
+//		{
+//			allItems.add(Fab.getAll()[i]) ;
+//		}
+//		for (int i = 0 ; i <= QuestItem.getAll().length - 1 ; i += 1)
+//		{
+//			allItems.add(QuestItem.getAll()[i]) ;
+//		}
+//
+//		return (Item[]) allItems.toArray(new Item[allItems.size()]) ;
+//	}
 
 	public static List<NPCs> getAllNPCs()
 	{
@@ -1143,7 +1118,7 @@ public class Game extends JPanel
 			}
 		}
 
-		player.doCurrentAction(DP) ;
+		player.doCurrentAction() ;
 		
 		player.applyAdjacentGroundEffect() ;
 		player.displayAttributes(player.getSettings().getAttDisplay(), DP) ;
@@ -1240,6 +1215,11 @@ public class Game extends JPanel
 		{
 			DP.drawImage(player.getBag().getItemFetched().getImage(), mousePos, Align.center) ;
 		}
+		
+		if (player.getJob() == 3)
+		{
+			player.useAutoSpell(true, player.getSpells().get(12)) ;
+		}
 
 		Animation.playAll(DP) ;
 		Gif.playAll() ;
@@ -1261,7 +1241,7 @@ public class Game extends JPanel
 //    	fieldMaps[1].getCreatures().get(0).setPos(player.getPos());
 //    	player.setPos(new Point(393, 140)) ;
 
-//    	letThereBePet() ;
+    	letThereBePet() ;
 
 		for (int i = 0 ; i <= fieldMaps.length - 1 ; i += 1)
 		{
@@ -1278,6 +1258,7 @@ public class Game extends JPanel
 //		player.getBA().getAgi().incBaseValue(1000) ;
 		player.getBA().getDex().incBaseValue(1000) ;
 		player.getPA().getLife().setToMaximum() ;
+		player.takeDamage(500);
 		player.getBag().addGold(30000) ;
     	for (Spell spell : player.getSpells())
     	{
@@ -1329,7 +1310,7 @@ public class Game extends JPanel
     	
 	}
 	
-	private static void initialize(int step)
+	public static void initialize(int step)
 	{
 		
 		long initialTime = System.nanoTime();
@@ -1350,24 +1331,27 @@ public class Game extends JPanel
 				return ;
 				
 			case 2:
-				allBuffs = loadAllBuffs() ;
-				allDebuffs = loadAllDebuffs() ;
-				allSpells = loadAllSpells(gameLanguage) ;
+//				allBuffs = loadAllBuffs() ;
+//				allDebuffs = loadAllDebuffs() ;
+				Spell.load(gameLanguage, Buff.allBuffs, Buff.allDebuffs) ;
+//				allSpells = loadAllSpells(gameLanguage) ;
 				Log.loadTime("spells", initialTime) ;
 				return ;
 				
 			case 3:
-				allItems = loadAllItems() ;
+				Item.load();
+//				allItems = loadAllItems() ;
 				Log.loadTime("items", initialTime) ;
 				return ;
 				
 			case 4:
-				creatureTypes = loadCreatureTypes(gameLanguage, difficultLevel) ;
+				CreatureType.load(gameLanguage, difficultLevel) ;
+//				creatureTypes = CreatureType.all;
 				Log.loadTime("creature types", initialTime) ;
 				return ;
 				
 			case 5:
-				allRecipes = loadCraftingRecipes() ;
+				Recipe.load(Item.allItems) ;
 				Log.loadTime("recipes", initialTime) ;
 				return ;
 				

@@ -2,6 +2,8 @@ package items;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 import graphics.DrawPrimitives;
 import utilities.Align;
@@ -17,6 +19,7 @@ public abstract class Item
 	protected double dropChance ;
 	
 	protected static final Image infoMenu = UtilS.loadImage("itemInfoWindow.png") ;
+	public static final List<Item> allItems = new ArrayList<>() ;
 	
 
     public static Image slot = UtilS.loadImage("itemSlot.png") ;
@@ -29,6 +32,7 @@ public abstract class Item
 		this.image = image ;
 		this.price = price ;
 		this.dropChance = dropChance ;
+		allItems.add(this);
 	}
 
 	public int getId() {return id ;}
@@ -39,6 +43,51 @@ public abstract class Item
 	public double getDropChance() {return dropChance ;}
 	
 	public abstract void displayInfo(Point pos, Align align, DrawPrimitives DP) ;
+	
+	public static void load()
+	{
+		List<Item> allItems = new ArrayList<>() ;
+		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Potion.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= Alchemy.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Alchemy.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= Forge.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Forge.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= PetItem.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(PetItem.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= Food.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Food.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= Arrow.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Arrow.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= Equip.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Equip.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= GeneralItem.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(GeneralItem.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= Fab.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(Fab.getAll()[i]) ;
+		}
+		for (int i = 0 ; i <= QuestItem.getAll().length - 1 ; i += 1)
+		{
+			allItems.add(QuestItem.getAll()[i]) ;
+		}
+	}
 	
 	@Override
 	public String toString()

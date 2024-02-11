@@ -5,7 +5,6 @@ import java.awt.Point;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Item;
-import main.Game;
 import utilities.Align;
 import utilities.FrameCounter;
 import utilities.UtilG;
@@ -20,9 +19,9 @@ public class Collectible extends Item
 	
 	public Collectible(int itemID, int level, Point pos, int delay)
 	{
-		super(itemID, Game.getAllItems()[itemID].getName(), Game.getAllItems()[itemID].getDescription(),
-				type(itemID).getImage(), Game.getAllItems()[itemID].getPrice(),
-					Game.getAllItems()[itemID].getDropChance()) ;
+		super(itemID, Item.allItems.get(itemID).getName(), Item.allItems.get(itemID).getDescription(),
+				type(itemID).getImage(), Item.allItems.get(itemID).getPrice(),
+					Item.allItems.get(itemID).getDropChance()) ;
 		this.itemID = itemID ;
 		this.level = level ;
 		this.pos = pos ;
@@ -34,7 +33,7 @@ public class Collectible extends Item
 	public int getLevel() { return level ; }
 	public Point getPos() { return pos ; }
 	public FrameCounter getCounter() { return counter ; }
-	public Item getItem() {return Game.getAllItems()[itemID] ;}
+	public Item getItem() {return Item.allItems.get(itemID) ;}
 
 	public int typeNumber()
 	{

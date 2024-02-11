@@ -8,7 +8,6 @@ import java.util.List;
 
 import main.MainGame3_4;
 import utilities.Align;
-import utilities.Log;
 import utilities.TimeCounter;
 import utilities.UtilG;
 

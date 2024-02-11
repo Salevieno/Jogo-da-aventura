@@ -9,9 +9,11 @@ import java.util.Map;
 
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import items.Arrow;
+import items.GeneralItem;
 import items.Item;
 import items.Recipe;
-import liveBeings.PlayerActions;
+import liveBeings.Player;
 import main.Game;
 import utilities.Align;
 import utilities.Scale;
@@ -59,6 +61,7 @@ public class CraftWindow extends GameWindow
 	public void craft(BagWindow bag)
 	{
 		Recipe recipe = recipesInWindow.get(item) ;
+		
 //		System.out.println("Crafing");
 		if (!bag.hasEnough(recipe.getIngredients())) { displayMessage(1) ; return ;}
 //		System.out.println("bag hs enough items");
@@ -71,17 +74,49 @@ public class CraftWindow extends GameWindow
 		recipe.getProducts().forEach( (product, qtd) -> {
 			bag.add(product, qtd) ;
 		});
-		
+
 		displayMessage(0) ;
 //		System.out.println("added new items to the bag");
 	}
 	
-	public void act(BagWindow bag, String action)
+	private boolean meetsElementalArrowRules(Recipe recipe, Player player)
+	{
+		int spellLevel = player.getSpells().get(7).getLevel() ;
+		List<Item> arrowsLevel0 = List.of(Arrow.getAll()[6], Arrow.getAll()[7]) ;
+		List<Item> arrowsLevel1 = List.of(Arrow.getAll()[8], Arrow.getAll()[9]) ;
+		List<Item> arrowsLevel2 = List.of(Arrow.getAll()[10], Arrow.getAll()[11]) ;
+		List<Item> arrowsLevel3 = List.of(Arrow.getAll()[12], Arrow.getAll()[13]) ;
+		List<Item> arrowsLevel4 = List.of(Arrow.getAll()[14]) ;
+		if (recipe.productsContainAny(arrowsLevel0) & spellLevel <= 0) { return false ;}
+		if (recipe.productsContainAny(arrowsLevel1) & spellLevel <= 1) { return false ;}
+		if (recipe.productsContainAny(arrowsLevel2) & spellLevel <= 2) { return false ;}
+		if (recipe.productsContainAny(arrowsLevel3) & spellLevel <= 3) { return false ;}
+		if (recipe.productsContainAny(arrowsLevel4) & spellLevel <= 4) { return false ;}
+		
+		return true ;
+	}
+	
+	private boolean meetsPoisonousPotionsRules(Recipe recipe, Player player)
+	{
+		if (player.getJob() != 4) { return false ;}
+
+		int spellLevel = player.getSpells().get(9).getLevel() ;
+		if (recipe.productsContain(GeneralItem.getAll()[78]) & spellLevel <= 0) { return false ;}
+		
+		return true ;
+	}
+	
+	public void act(BagWindow bag, String action, Player player)
 	{
 		if (action == null) { return ;}
 		
 		if (action.equals("Enter"))
 		{
+			Recipe recipe = recipesInWindow.get(item) ;
+			// TODO outras profissões podem fazer craft de tudo aqui
+			if (player.getJob() == 2 & !meetsElementalArrowRules(recipe, player)) { return ;}
+			if (player.getJob() == 4 & !meetsPoisonousPotionsRules(recipe, player)) { return ;}
+			
 			for (int i = 0 ; i <= amountOfCrafts - 1; i += 1)
 			{
 				craft(bag) ;
@@ -93,6 +128,7 @@ public class CraftWindow extends GameWindow
 	{
 		String message = messages.get(i) ;
 		Point pos = UtilG.Translate(windowPos, 0, - 30) ;
+		// TODO craft window messages
 //		Game.getAnimations().get(12).start(200, new Object[] {pos, message, Game.colorPalette[0]}) ;
 	}
 	

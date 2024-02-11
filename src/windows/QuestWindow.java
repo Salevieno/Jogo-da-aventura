@@ -2,6 +2,7 @@ package windows;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,6 @@ import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Item;
 import liveBeings.CreatureType;
-import liveBeings.Player;
-import liveBeings.PlayerActions;
 import main.Game;
 import utilities.Align;
 import utilities.Scale;
@@ -24,12 +23,20 @@ public class QuestWindow extends GameWindow
 	private List<Quest> quests ;
 	private BagWindow bag ;
 	
-	private static final Point windowPos = Game.getScreen().pos(0.3, 0.15) ;
-	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	private static final Point windowPos ;
+	private static final Font font ;
+	private static final Image image ;
+	
+	static
+	{
+		windowPos = Game.getScreen().pos(0.3, 0.15) ;
+		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		image = UtilS.loadImage("\\Windows\\" + "Quest.png") ;
+	}
 	
 	public QuestWindow()
 	{
-		super("Quest", windowPos, UtilS.loadImage("\\Windows\\" + "Quest.png"), 0, 0, 0, 0) ;
+		super("Quest", windowPos, image, 0, 0, 0, 0) ;
 	}
 	
 	

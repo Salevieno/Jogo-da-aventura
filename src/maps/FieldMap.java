@@ -129,6 +129,17 @@ public class FieldMap extends GameMap
 	}
 	public void setCreatures(List<Creature> newValue) {creatures = newValue ;}
 	
+	public static List<NPCs> createQuestNPCs(int mapID)
+	{
+		NPCs questExp = new NPCs(Game.getNPCTypes()[12], Game.getScreen().pos(0.27, 0.73)) ;
+		NPCs questItem = new NPCs(Game.getNPCTypes()[13], Game.getScreen().pos(0.87, 0.63)) ;
+		switch (mapID)
+		{
+			case 0: return List.of(questExp, questItem) ;
+			default: return List.of(questExp, questItem) ;
+		}
+	}
+	
 	public boolean hasCreatures() { return creatures != null ;}
 	
 	public void IncCollectiblesCounter() { collectibleCounter.values().forEach(FrameCounter::inc) ;}

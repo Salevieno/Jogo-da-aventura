@@ -1,12 +1,16 @@
 package liveBeings;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
+import main.Game;
+import utilities.UtilG;
 
 public class Buff
 {
@@ -14,12 +18,42 @@ public class Buff
 	Map<Attributes, Double> valueIncrease;
 	Map<Attributes, Double> chance;
 	
+	public static final List<Buff> allBuffs ;
+	public static final List<Buff> allDebuffs ;
+	
+	static
+	{
+		allBuffs = new ArrayList<>() ;
+		allDebuffs = new ArrayList<>() ;
+	}
+	
 	public Buff(Map<Attributes, Double> percentIncrease, Map<Attributes, Double> valueIncrease, Map<Attributes, Double> chance)
 	{
 		this.percentIncrease = percentIncrease;
 		this.valueIncrease = valueIncrease;
 		this.chance = chance;
 	}
+	
+	public static void loadBuffs()
+	{
+		List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "Buffs.csv") ;
+		
+		for (int i = 0 ; i <= spellsBuffsInput.size() - 1 ; i += 1)
+		{
+			allBuffs.add(Buff.load(spellsBuffsInput.get(i))) ;
+		}
+	}
+	
+	public static void loadDebuffs()
+	{
+		List<String[]> spellsDebuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "Debuffs.csv") ;
+		
+		for (int i = 0 ; i <= spellsDebuffsInput.size() - 1 ; i += 1)
+		{
+			allDebuffs.add(Buff.load(spellsDebuffsInput.get(i))) ;
+		}
+	}
+	
 	public Map<Attributes, Double> getPercentIncrease()
 	{
 		return percentIncrease;
@@ -60,7 +94,7 @@ public class Buff
 			if (personalAttribute != null)
 			{
 				double increment = personalAttribute.getMaxValue() * percentIncrease.get(att) + valueIncrease.get(att) ;
-				personalAttribute.incBonus((int) Math.round(increment * level * mult));
+				personalAttribute.incBonus((int) (increment * level * mult));
 				
 				continue ;
 			}
@@ -69,7 +103,7 @@ public class Buff
 			if (battleAttribute != null)
 			{
 				double increment = battleAttribute.getBaseValue() * percentIncrease.get(att) + valueIncrease.get(att) ;
-				battleAttribute.incBonus(Math.round(increment * level * mult));
+				battleAttribute.incBonus(increment * level * mult);
 
 				continue ;
 			}
@@ -77,8 +111,8 @@ public class Buff
 			BattleSpecialAttribute battleSpecialAttribute = receiver.getBA().mapSpecialAttributes(att) ;
 			if (battleSpecialAttribute != null)
 			{
-				battleSpecialAttribute.incAtkChanceBonus(Math.round(percentIncrease.get(att) * level * mult));
-				battleSpecialAttribute.incAtkChanceBonus(Math.round(valueIncrease.get(att) * level * mult));
+				battleSpecialAttribute.incAtkChanceBonus(percentIncrease.get(att) * level * mult);
+				battleSpecialAttribute.incAtkChanceBonus(valueIncrease.get(att) * level * mult);
 			}
 		}
 	}

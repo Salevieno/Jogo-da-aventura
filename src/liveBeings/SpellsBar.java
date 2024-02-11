@@ -38,7 +38,7 @@ public abstract class SpellsBar
 	
 	static
 	{
-		maxNumberRows = 12 ;
+		maxNumberRows = 8 ;
 		titlefont = new Font("SansSerif", Font.BOLD, 10) ;
 		font = new Font("SansSerif", Font.BOLD, 9) ;
 		title = Game.allText.get(TextCategories.spellsBar)[0] ;
@@ -48,7 +48,7 @@ public abstract class SpellsBar
 		slotImageNoMP = UtilS.loadImage("\\SideBar\\" + "SlotNoMP.png") ;
 		cooldownImage = UtilS.loadImage("\\SideBar\\" + "Cooldown.png") ;
 		size = UtilG.getSize(image) ;
-		barPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height - 70) ;
+		barPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height - 50) ;
 		titlePos = new Point(barPos.x + size.width / 2 + 2, barPos.y - size.height + 2) ;
 	}
 	

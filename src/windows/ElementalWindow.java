@@ -12,7 +12,6 @@ import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Equip;
 import items.GeneralItem;
-import liveBeings.Player;
 import main.Game;
 import utilities.Align;
 import utilities.Elements;

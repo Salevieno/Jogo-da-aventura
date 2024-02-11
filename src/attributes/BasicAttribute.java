@@ -2,6 +2,8 @@ package attributes;
 
 import org.json.simple.JSONObject;
 
+import utilities.Log;
+
 public class BasicAttribute extends LiveBeingAttribute
 {
 	private int currentValue ;
@@ -29,7 +31,7 @@ public class BasicAttribute extends LiveBeingAttribute
 	}
 	public void decTotalValue(int amount)
 	{
-		if (amount <= 0) { System.out.println("tentando usar decTotalValue com valor negativo ou 0") ; return ;}
+		if (amount <= 0) { if (amount < 0) {Log.valorNegativo("decTotalValue") ;} return ;}
 		
 		if (Math.abs(amount) <= bonus) { bonus += -amount ; return ;}
 		
