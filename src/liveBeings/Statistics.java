@@ -162,6 +162,12 @@ public class Statistics
 	public void incNumberHitsInflicted() { numberHitsInflicted += 1 ;}
 	public void incNumberDodges() { numberDodges += 1 ;}
 	public void incNumberCritInflicted() { numberCritInflicted += 1 ;}
+	public void incNumberStunInflicted() { numberStunInflicted += 1 ;}
+	public void incNumberBlockInflicted() { numberBlockInflicted += 1 ;}
+	public void incNumberBloodInflicted() { numberBloodInflicted += 1 ;}
+	public void incNumberPoisonInflicted() { numberPoisonInflicted += 1 ;}
+	public void incNumberSilenceInflicted() { numberSilenceInflicted += 1 ;}
+
 	public void incPhyDamageInflicted(int amount) { phyDamageInflicted += amount ;}
 	public void incPhyDamageReceived(int amount) { phyDamageReceived += amount ;}
 	public void incPhyDamageDefended(int amount) { phyDamageDefended += amount ;}
@@ -169,18 +175,17 @@ public class Statistics
 	public void incMagDamageReceived(int amount) { magDamageReceived += amount ;}
 	public void incMagDamageDefended(int amount) { magDamageDefended += amount ;}
 	public void incCritDamageInflicted(int amount) { critDamageInflicted += amount ;}
-	public void incNumberStunInflicted() { numberStunInflicted += 1 ;}
-	public void incNumberBlockInflicted() { numberBlockInflicted += 1 ;}
-	public void incNumberBloodInflicted() { numberBloodInflicted += 1 ;}
+	public void incCritDamageReceived(int amount) { critDamageReceived += amount ;}
+	public void incCritDamageDefended(int amount) { critDamageDefended += amount ;}
 	public void incBloodDamageInflicted(int amount) { bloodDamageInflicted += amount ;}
+	public void incBloodDamageReceived(int amount) { bloodDamageReceived += amount ;}
 	public void incBloodDamageDefended(int amount) { bloodDamageDefended += amount ;}
-	public void incNumberPoisonInflicted() { numberPoisonInflicted += 1 ;}
 	public void incPoisonDamageInflicted(int amount) { poisonDamageInflicted += amount ;}
+	public void incPoisonDamageReceived(int amount) { poisonDamageReceived += amount ;}
 	public void incPoisonDamageDefended(int amount) { poisonDamageDefended += amount ;}
-	public void incNumberSilenceInflicted() { numberSilenceInflicted += 1 ;}
 	
 
-	public void update(AtkResults atkResults)
+	public void updateOffensive(AtkResults atkResults)
 	{		
 		if (atkResults == null) { return ;}
 		if (atkResults.getEffect().equals(AtkEffects.none)) { return ;}
@@ -188,77 +193,89 @@ public class Statistics
 		AtkTypes atkType = atkResults.getAtkType() ;
 		AtkEffects effect = atkResults.getEffect() ;
 		int damage = (int) atkResults.getDamage() ;
-		
-		
-		if (0 <= damage)
-		{	
-			if (atkType.equals(AtkTypes.magical))
-			{
-				incNumberMagAtk() ;
-				if (effect.equals(AtkEffects.hit))
-				{
-					incMagDamageInflicted(damage) ;
-				}
-				highestMagDamageInflicted = Math.max(highestMagDamageInflicted, damage) ;
-			}
-			else
-			{
-				incNumberPhyAtk() ;
-				if (effect.equals(AtkEffects.hit))
-				{
-					incPhyDamageInflicted(damage) ;
-				}
-				highestPhyDamageInflicted = Math.max(highestPhyDamageInflicted, damage) ;
-			}			
-		}
-		
+
 		if (atkType.equals(AtkTypes.defense))
 		{
 			incNumberDef() ;
-		}
-		
-		if (effect == null) { return ;}
-		
-		if (effect.equals(AtkEffects.hit))							// player performed a successful hit
-		{
-			incNumberHitsInflicted() ;
-		}
-		if (effect.equals(AtkEffects.crit))
-		{
-			incNumberHitsInflicted() ;
-			incNumberCritInflicted() ;
-			incCritDamageInflicted(damage) ;
-		}
-	}
-	public void updatedefensiveStats(int damage, AtkEffects effect, boolean creaturePhyAtk, Creature creature)
-	{
-		if (effect.equals(AtkEffects.hit))
-		{
-			if (creaturePhyAtk)
-			{				
-				incPhyDamageReceived(damage) ;
-//				stats[7] += BA.TotalPhyDef() ;		// total phy damage defended by the player
-			}
-			else				// Creature magical atk
-			{
-				incMagDamageReceived(damage) ;
-//				stats[8] += BA.TotalMagDef() ;		// total mag damage defended by the player
-			}
-//			if (0 < BA.getSpecialStatus()[2])
-//			{
-//				statistics[18] += BA.getBlood()[3] + BA.getBlood()[4] ;		// total number of blood defended by the player
-//			}
-//			if (0 < BA.getSpecialStatus()[3])
-//			{
-//				statistics[21] += BA.getPoison()[3] + BA.getPoison()[4] ;	// total number of blood defended by the player
-//			}
-			
 			return ;
 		}
-
-		incNumberDodges() ;
+		
+		switch (effect)
+		{
+			case hit:
+				incNumberHitsInflicted() ;
+				if (atkType.equals(AtkTypes.magical))
+				{
+					incNumberMagAtk() ;
+					if (0 <= damage)
+					{
+						incMagDamageInflicted(damage) ;
+						highestMagDamageInflicted = Math.max(highestMagDamageInflicted, damage) ;
+					}
+				}
+				if (atkType.equals(AtkTypes.physical))
+				{
+					incNumberPhyAtk() ;
+					if (0 <= damage)
+					{
+						incPhyDamageInflicted(damage) ;
+						highestPhyDamageInflicted = Math.max(highestPhyDamageInflicted, damage) ;
+					}
+				}
+				return ;
+				
+			case crit: 
+				incNumberCritInflicted() ;
+				incCritDamageInflicted(damage) ;
+				return ;
+				
+			default: return ;
+		}
+		
 	}
+	public void updateDefensive(AtkResults atkResults, double receiverPhyDef, double receiverMagDef)
+	{
+		if (atkResults == null) { return ;}
+		if (atkResults.getEffect().equals(AtkEffects.none)) { return ;}
 
+		AtkTypes atkType = atkResults.getAtkType() ;
+		AtkEffects effect = atkResults.getEffect() ;
+		int damage = (int) atkResults.getDamage() ;
+		
+		switch (effect)
+		{
+			case hit:
+				switch (atkType)
+				{
+					case physical: incPhyDamageReceived(damage) ; incPhyDamageDefended((int) receiverPhyDef) ; return ;
+					case magical: incMagDamageReceived(damage) ; incMagDamageDefended((int) receiverMagDef) ; return ;
+					default: return ;
+				}
+			case crit: incCritDamageReceived(damage) ; return ;	
+			case miss: incNumberDodges() ; return ;	
+			case block: incNumberBlockInflicted() ; return ;
+			default: return ;
+		}
+	}
+	public void updateInflictedBlood(int damageInflicted)
+	{
+		incBloodDamageInflicted(damageInflicted) ;
+	}
+	public void updateInflictedPoison(int damageInflicted)
+	{
+		incPoisonDamageInflicted(damageInflicted) ;
+	}
+	public void updateReceivedBlood(int damageReceived, double damageDefended)
+	{
+		incBloodDamageReceived(damageReceived) ;
+		incBloodDamageDefended((int) damageDefended) ;
+	}
+	public void updateReceivedPoison(int damageReceived, double damageDefended)
+	{
+		incPoisonDamageReceived(damageReceived) ;
+		incPoisonDamageDefended((int) damageDefended) ;
+	}
+	
 	public Map<String, Integer> numberStats()
 	{
 		String[] statsText = Game.allText.get(TextCategories.statistics) ;
@@ -303,7 +320,8 @@ public class Statistics
 		Map<String, Double> allStats = new LinkedHashMap<>() ;
 		String[] statsText = Game.allText.get(TextCategories.statistics) ;
 		Field[] fields = Statistics.class.getDeclaredFields() ;
-		for (int i = 0 ; i <= fields.length - 1 ; i += 1)
+
+		for (int i = 0 ; i <= statsText.length - 1 ; i += 1)
 		{
 			try
 			{
@@ -320,23 +338,16 @@ public class Statistics
 			catch (IllegalAccessException e) { e.printStackTrace() ;}
 		}
 		
-//		for (Field field : fields)
-//		{
-//			try
-//			{
-//				if (field.getType().equals(int.class))
-//				{
-//					allStats.put(field.getName(), (Double) (double) (int) (Integer) field.get(this)) ;
-//				}
-//				else
-//				{
-//					allStats.put(field.getName(), (Double) field.get(this)) ;
-//				}
-//			}
-//			catch (IllegalArgumentException e) { e.printStackTrace() ;}
-//			catch (IllegalAccessException e) { e.printStackTrace() ;}
-//		}
-		
 		return allStats ;
+	}
+	
+	public void updateInflicedStatus(int[] appliedStatus)
+	{
+		if (appliedStatus.length <= 4) { return ;}
+		if (0 < appliedStatus[0]) { incNumberStunInflicted() ;}
+		if (0 < appliedStatus[1]) { incNumberBlockInflicted() ;}
+		if (0 < appliedStatus[2]) { incNumberBloodInflicted() ;}
+		if (0 < appliedStatus[3]) { incNumberPoisonInflicted() ;}
+		if (0 < appliedStatus[4]) { incNumberSilenceInflicted() ;}
 	}
 }

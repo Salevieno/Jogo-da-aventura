@@ -20,7 +20,7 @@ import liveBeings.CreatureType;
 import main.Game;
 import screen.Screen;
 import screen.Sky;
-import utilities.FrameCounter;
+import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 
@@ -30,7 +30,7 @@ public class FieldMap extends GameMap
 	private List<Creature> creatures ;
 	private int level ;
 	private int[] collectibleDelay ;
-	private Map<CollectibleTypes, FrameCounter> collectibleCounter ;
+	private Map<CollectibleTypes, TimeCounter> collectibleCounters ;
 	
 	private static final int numberTrees = 5 ;
 	private static final int numberGrass = 30 ;
@@ -81,11 +81,13 @@ public class FieldMap extends GameMap
 		
 		// add collectbiles
 		collectibles = new ArrayList<Collectible>() ;
-		collectibleCounter = new HashMap<>() ;
+		collectibleCounters = new HashMap<>() ;
 		for (CollectibleTypes type : CollectibleTypes.values())
 		{
 			addCollectible(type) ;
-			collectibleCounter.put(type, new FrameCounter(0, type.getSpawnTime())) ;
+			TimeCounter collectibleCounter = new TimeCounter(type.getSpawnTime()) ;
+			collectibleCounter.start();
+			collectibleCounters.put(type, collectibleCounter) ;
 		}
 		
 		
@@ -95,7 +97,7 @@ public class FieldMap extends GameMap
 		{
 			if (creatureTypeID <= -1) { continue ;}
 			
-			CreatureType creatureType = Game.getCreatureTypes()[creatureTypeID];
+			CreatureType creatureType = CreatureType.all.get(creatureTypeID);
 			Creature creature = new Creature(creatureType) ;
 			creatures.add(creature) ;
 		}
@@ -142,17 +144,14 @@ public class FieldMap extends GameMap
 	
 	public boolean hasCreatures() { return creatures != null ;}
 	
-	public void IncCollectiblesCounter() { collectibleCounter.values().forEach(FrameCounter::inc) ;}
-	
-	public void ActivateCollectiblesCounter()
+	public void activateCollectiblesCounter()
 	{
-		// TODO use filter ;)
-		collectibleCounter.entrySet().forEach(entry -> 
+		collectibleCounters.entrySet().forEach(entry -> 
 		{
 			if (entry.getValue().finished())
 			{
 				addCollectible(entry.getKey()) ;
-				entry.getValue().reset() ;
+				entry.getValue().start() ;
 			}
 		}) ;
 
@@ -160,7 +159,6 @@ public class FieldMap extends GameMap
 	
 	public void addCollectible(CollectibleTypes type)
 	{
-		
 		Point pos = randomPosInMap() ;
 		while (groundTypeAtPoint(pos) != null)
 		{

@@ -19,6 +19,15 @@ public class PersonalAttributes
 		this.satiation = Satiation ;
 		this.thirst = Thirst ;
 	}
+	
+	public PersonalAttributes(PersonalAttributes PA)
+	{
+		this.life = new BasicAttribute(PA.getLife()) ;
+		this.mp = new BasicAttribute(PA.getMp()) ;
+		this.exp = new BasicAttribute(PA.getExp()) ;
+		this.satiation = new BasicAttribute(PA.getSatiation()) ;
+		this.thirst = new BasicAttribute(PA.getThirst()) ;
+	}
 	public BasicAttribute getLife() {return life ;}
 	public BasicAttribute getMp() {return mp ;}
 	public BasicAttribute getExp() {return exp ;}

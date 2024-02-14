@@ -13,8 +13,10 @@ import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import graphics.Animation;
+import graphics.AnimationTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import items.PetItem;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
@@ -34,9 +36,9 @@ public class Pet extends LiveBeing
 	private int job ;
 	private int spellPoints ;
 	private double[] ElemMult ;		// [Neutral, Water, Fire, Plant, Earth, Air, Thunder, Light, Dark, Snow]
-//	private int[] StatusCounter ;	// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
-	
-	public static int NumberOfSpells = 5 ;
+	private PetItem equip ;
+	private int alchBuffId ;
+
 	public static double[] AttributeIncrease ;
 	public static double[] ChanceIncrease ;
 	
@@ -64,6 +66,8 @@ public class Pet extends LiveBeing
 		battleActionCounter = new FrameCounter(0, Integer.parseInt(PetProperties.get(Job)[36])) ;
 		stepCounter = new FrameCounter(0, 20) ;
 		combo = new ArrayList<>();
+		equip = null ;
+		alchBuffId = -1 ;
 		
 		this.job = Job ;
 		Color[] colorPalette = Game.colorPalette ;
@@ -74,7 +78,6 @@ public class Pet extends LiveBeing
 
 		
 		ElemMult = new double[10] ;
-//		StatusCounter = new int[8] ;
 			
     	AttributeIncrease = new double[8] ;
     	ChanceIncrease = new double[8] ;
@@ -126,17 +129,21 @@ public class Pet extends LiveBeing
 
 	public List<Spell> InitializePetSpells()
     {
-		ArrayList<Spell> petspells = new ArrayList<>() ;
-		
-		for (int i = 0 ; i <= Pet.NumberOfSpells - 1 ; i += 1)
+		int[] spellIDs = switch (job)
 		{
-			int ID = i + job * Pet.NumberOfSpells ;
-			
-			petspells.add(Spell.all.get(ID)) ;	
+			case 0 -> new int[] {0, 5, 6, 12, 13} ;
+			case 1 -> new int[] {35, 37, 45, 47, 49} ;
+			case 2 -> new int[] {72, 74, 75, 83, 148} ;
+			case 3 -> new int[] {106, 109, 110, 115, 116} ;
+			default -> new int[] {} ;
+		};
+		List<Spell> spells = new ArrayList<>() ;
+		for (int id : spellIDs)
+		{
+			spells.add(new Spell(Spell.all.get(id))) ;
 		}
-		
-		petspells.get(0).incLevel(1) ;
-		return petspells ;
+		spells.get(0).incLevel(1) ;
+		return spells ;
     }
 	
 	public Color getColor() {return color ;}
@@ -162,6 +169,10 @@ public class Pet extends LiveBeing
 	public double[] getElemMult() {return ElemMult ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public BasicAttribute getSatiation() {return PA.getSatiation() ;}
+	public PetItem getEquip() { return equip ;}
+	public void setEquip(PetItem equip) { this.equip = equip ;}
+	public int getAlchBuffId() { return alchBuffId ;}
+	public void setAlchBuffId(int alchBuffId) { this.alchBuffId = alchBuffId ;}
 
 	public boolean isAlive() { return 0 < PA.getLife().getCurrentValue() ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
@@ -222,9 +233,16 @@ public class Pet extends LiveBeing
 		if (state.equals(LiveBeingStates.moving))
 		{
 			move(player.getPos(), player.getMap(), player.getOpponent(), player.getElem()[4]) ;
+			return ;
 		}
-		else if (state.equals(LiveBeingStates.fighting))
+		
+		if (state.equals(LiveBeingStates.fighting))
 		{
+			if (!player.getOpponent().isInRange(pos))
+			{
+				move(player.getPos(), player.getMap(), player.getOpponent(), player.getElem()[4]) ;
+				return ;
+			}
 			fight() ;
 		}
 		
@@ -241,29 +259,17 @@ public class Pet extends LiveBeing
 	
 	public void fight()
 	{
-		int move = -1 ;
-		// TODO pet spells
-		if (10 <= PA.getMp().getCurrentValue())
-		{
-			move = UtilG.randomIntFromTo(0, 3) ;
-		}
-		else
-		{
-			move = UtilG.randomIntFromTo(0, 2) ;
-		}
+		int move = UtilG.randomIntFromTo(0, 1 + getActiveSpells().size()) ;
 		switch (move)
 		{
 			case 0: currentAction = BattleKeys[0] ; return ;
 			case 1: currentAction = BattleKeys[1] ; return ;
-			case 2: currentAction = String.valueOf(UtilG.randomIntFromTo(0, 4)) ; return ;
-			default: return ;
+			default: currentAction = String.valueOf(move - 2) ; return ;
 		}
 	}
 	
 	public void dies()
 	{
-		// TODO pet dies
-
 		resetBattleActions() ;
 		setPos(Game.getPlayer().getPos()) ;
 	}
@@ -292,9 +298,11 @@ public class Pet extends LiveBeing
 	
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
+		if (spell == null) { return null ;}
+		if (receiver == null) { return null ;}
+		
 		int spellLevel = spell.getLevel() ;
-		int damage = -1 ;
-		AtkEffects effect = null ;
+		PA.getMp().decTotalValue(spell.getMpCost()) ;
 
 		double MagAtk = BA.TotalMagAtk() ;
 		double MagDef = receiver.getBA().TotalMagDef() ;
@@ -307,6 +315,13 @@ public class Pet extends LiveBeing
 		double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
 		double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
 		double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
+		double[] stunMod = new double[] {spell.getStunMod()[0] * spellLevel, 1 + spell.getStunMod()[1] * spellLevel} ;
+		double[] blockMod = new double[] {spell.getBlockMod()[0] * spellLevel, 1 + spell.getBlockMod()[1] * spellLevel} ;
+		double[] bloodMod = new double[] {spell.getBloodMod()[0] * spellLevel, 1 + spell.getBloodMod()[1] * spellLevel} ;
+		double[] poisonMod = new double[] {spell.getPoisonMod()[0] * spellLevel, 1 + spell.getPoisonMod()[1] * spellLevel} ;
+		double[] silenceMod = new double[] {spell.getSilenceMod()[0] * spellLevel, 1 + spell.getSilenceMod()[1] * spellLevel} ;
+		double[] atkChances = new double[] {stunMod[0], blockMod[0], bloodMod[0], poisonMod[0], silenceMod[0]} ;
+		
 		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;	// Critical atk modifier
 		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;	// Critical def modifier
 		double BlockDef = receiver.getBA().getStatus().getBlock() ;
@@ -317,11 +332,13 @@ public class Pet extends LiveBeing
 		
 		BasicAtk = MagAtk ;
 		BasicDef = MagDef ;
+
+		AtkEffects effect = Battle.calcEffect(DexMod[0] + AtkDex*DexMod[1], AgiMod[0] + DefAgi*AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
+		int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
+		int[] inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
-		effect = Battle.calcEffect(DexMod[0] + AtkDex*DexMod[1], AgiMod[0] + DefAgi*AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
-		damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
-		
-		return new AtkResults(AtkTypes.magical, effect, damage) ;
+		displayUsedSpellMessage(spell, Game.getScreen().pos(0.23, 0.2), Game.colorPalette[12]);
+		return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
 	}
 	
 	public void win(Creature creature)
@@ -329,7 +346,7 @@ public class Pet extends LiveBeing
 		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())); ;
 	}
 	
-	public void levelUp(Animation attIncAnimation)
+	public void levelUp()
 	{
 		double[] attIncrease = calcAttributesIncrease() ;
 		setLevel(level + 1) ;
@@ -345,12 +362,8 @@ public class Pet extends LiveBeing
 		BA.getAgi().incBaseValue(attIncrease[6]) ;
 		BA.getDex().incBaseValue(attIncrease[7]) ;
 		PA.getExp().incMaxValue((int) attIncrease[8]) ;
-
-//		Game.getAnimations().get(5).start(levelUpGif.getDuration(), new Object[] {pos}) ;
 		
-		if (attIncAnimation == null) { return ;}
-		
-//		attIncAnimation.start(150, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level}) ;
+		Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, level});
 	}
 	
 	public double[] calcAttributesIncrease()

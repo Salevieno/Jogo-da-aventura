@@ -33,7 +33,8 @@ public abstract class Opening
     private static List<GameButton> loadSlotButtons ;
     private static GameButton startButton ;
     private static String[] stepMessage ;
-    private static String[] jobInfo ;
+    private static String[] jobDescriptionPtBr ;
+    private static String[] jobDescriptionEn ;
     private static int step ;
     private static int loadingStep ;
     private static boolean newGame ;
@@ -83,9 +84,9 @@ public abstract class Opening
 		IconFunction portAction = () -> { } ;
 		IconFunction enAction = () -> { } ;
 		IconFunction newGameAction = () -> {} ;
-		IconFunction loadSlot1 = () -> { Game.setPlayer(players[0]) ; isOver = true ;} ;
-		IconFunction loadSlot2 = () -> { Game.setPlayer(players[1]) ; isOver = true ;} ;
-		IconFunction loadSlot3 = () -> { Game.setPlayer(players[2]) ; isOver = true ;} ;
+		IconFunction loadSlot1 = () -> { Game.setPlayer(players[0]) ; Game.setSlotLoaded(0) ; isOver = true ;} ;
+		IconFunction loadSlot2 = () -> { Game.setPlayer(players[1]) ; Game.setSlotLoaded(1) ; isOver = true ;} ;
+		IconFunction loadSlot3 = () -> { Game.setPlayer(players[2]) ; Game.setSlotLoaded(2) ; isOver = true ;} ;
 		IconFunction loadGameAction = () -> {
 			newGame = false ;
 			players[0] = Player.load(1) ;
@@ -162,13 +163,20 @@ public abstract class Opening
     	startButton = new GameButton(Game.getScreen().pos(0.5, 0.83), Align.center, "start", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
     	
-    	// TODO get text from json. AllText is not loaded here yet Game.allText.get(TextCategories.newGame)
     	stepMessage = new String[] {"", "Qual o seu nome?", "", "", "", ""} ;
-    	jobInfo = new String[]
+    	jobDescriptionEn = new String[]
+		{
+			"Knights are powerful melee warriors. They have great attack, power and vitality and are the strongest warriors in the realm.",
+		    "Mages have the greatest magical power. They control the elements and can use supernatural powers to manipulate magic and life.",
+		    "Archers are specialized in distance fighting. They use physical power combined with the power of the elements.",
+		    "Animals live in harmony with nature and can enjoy its powers. They have great power over life and are incredibly agile.",
+		    "Thieves are the fastest in the whole realm. They brutally attack any enemy that crosses their way, looking for power and wealth."	
+		};
+    	jobDescriptionPtBr = new String[]
 		{
 			"Cavaleiros são poderosos guerreiros corpo-a-corpo. Eles tem grande ataque, poder e vitalidade e são os guerreiros mais fortes do reino.",
 		    "Magos tem o maior poder mágico. Eles controlam os elementos e podem usar poderes sobrenaturais para manipular a magia e a vida.",
-		    "Arqueiros são guerreiros especializados em luta à distância. Eles usam poder físico combinado com o controle dos elementos.",
+		    "Arqueiros são guerreiros especializados em luta à distância. Eles usam poder físico combinado com o poder dos elementos.",
 		    "Animais vivem em harmonia com a natureza e podem usufruir dos seus poderes. Eles tem grande poder sobre a vida e incrível agilidade.",
 		    "Ladrões são os mais ágeis em todo o reino. Eles atacam cruelmente qualquer inimigo que cruze o seu caminho buscando poder e riqueza."	
 		};
@@ -344,23 +352,24 @@ public abstract class Opening
 		if (startButton.isActive())
 		{
 			startButton.display(0, true, mousePos, DP) ;
-		}
-		if (startButton.isClicked(mousePos, action))
-		{
-			startButton.act() ;
+			if (startButton.isClicked(mousePos, action))
+			{
+				startButton.act() ;
+			}
 		}
 	}
 	
-	private static void displayJobInfo(DrawPrimitives DP)
+	private static void displayJobDescription(DrawPrimitives DP)
 	{
 		Color textColor = Game.colorPalette[0] ;
 		Color bgColor = Game.colorPalette[3] ;
+		String[] description = Game.getLanguage() == Languages.portugues ? jobDescriptionPtBr : jobDescriptionEn ;
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
 			Point rectPos = Game.getScreen().pos(0.04 + i * 0.2, 0.4) ;
 			Point textPos = UtilG.Translate(rectPos, 5, 5) ;
 			DP.drawGradRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, bgColor, true) ;
-			Draw.fitText(textPos, 10, Align.topLeft, jobInfo[i], smallFont, 18, textColor) ;
+			Draw.fitText(textPos, 10, Align.topLeft, description[i], smallFont, 18, textColor) ;
 		}
 	}
 	
@@ -383,7 +392,7 @@ public abstract class Opening
 		}
 		if (step == 4)
 		{
-			displayJobInfo(DP) ;
+			displayJobDescription(DP) ;
 		}
 		
 		if (stepMessage.length - 1 <= step) { return ;}

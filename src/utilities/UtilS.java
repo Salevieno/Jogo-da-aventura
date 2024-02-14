@@ -142,5 +142,22 @@ public abstract class UtilS
  		return adjGround.equals(RelativePos.inside) ;
  	}
 
+//	private static void saveSpellImages()
+//	{
+//		BufferedImage img = UtilG.toBufferedImage(UtilS.loadImage("genericSpell.png")) ;
+//		for (int i = 0 ; i <= 172 - 1; i += 1)
+//		{
+//			PlayerJobs job = PlayerJobs.jobFromSpellID(i) ;
+////			System.out.println("spell" + job + i + ".png");
+//			try
+//			{
+//				UtilG.saveImage(img, Game.ImagesPath + "\\Spells\\" + "spell" + job + i) ;
+//			}
+//			catch (IOException e)
+//			{
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 }

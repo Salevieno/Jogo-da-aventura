@@ -41,7 +41,7 @@ public class SpellsTreeWindow extends GameWindow
 	private static final Image spellPoints = UtilS.loadImage("\\Windows\\" + "SpellPoints.png") ;
 	
 	public SpellsTreeWindow(int playerJob)
-	{// TODO arrumar a árvore de magias. Spells tá se confundindo com spellsOnWindow
+	{
 
 		super("Árvore de magias", windowTopLeft, noTabsImage, 0, 1, 0, 1) ;
 		
@@ -62,13 +62,13 @@ public class SpellsTreeWindow extends GameWindow
 	public void acquireSpell(Player player)
 	{
 		Spell spell = spellsOnWindow.get(item) ;
-		if (!spells.contains(spell))
+		if (!spells.contains(spell)) { return ;}
+
+		if (spell.getLevel() == 0)
 		{
-			spells.add(spell) ;
-			
+			player.learnSpell(spell);
 			return ;
 		}
-		
 		spell.incLevel(1) ;
 		if (spell.getType().equals(SpellTypes.passive))
 		{
@@ -132,9 +132,8 @@ public class SpellsTreeWindow extends GameWindow
 	public void act(Player player)
 	{
 		String action = player.getCurrentAction() ;
-		Spell spell = spellsOnWindow.get(item) ;
 		
-		if (canAcquireSpell(points) & actionIsForward(action) & spell.hasPreRequisitesMet(playerCurrentSpells))
+		if (canAcquireSpell(points) & actionIsForward(action))
 		{
 			acquireSpell(player) ;
 			points += -1 ;

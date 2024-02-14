@@ -6,11 +6,15 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import components.SpellTypes;
+import graphics.Animation;
+import graphics.AnimationTypes;
 import graphics.DrawPrimitives;
 import graphics.Gif;
 import main.AtkResults;
@@ -20,6 +24,7 @@ import maps.Continents;
 import maps.GameMap;
 import maps.GroundType;
 import maps.GroundTypes;
+import screen.Sky;
 import utilities.Align;
 import utilities.AtkEffects;
 import utilities.Directions;
@@ -91,7 +96,43 @@ public abstract class LiveBeing
 
 	public abstract Point center() ;
 	public abstract AtkResults useSpell(Spell spell, LiveBeing receiver) ;
-	public abstract void applyPassiveSpell(Spell spell) ;	
+	public abstract void applyPassiveSpell(Spell spell) ;
+	
+
+	protected void useSupportSpell(Spell spell, LiveBeing receiver)
+	{
+		// apenas efeitos permanentes entram aqui. Efeitos temporários são causados pelos buffs
+		switch (spell.getId())
+		{
+			case 44:
+				double perc = 0.04 * spell.getLevel() * magicAtkBonus() ;
+				PA.getLife().incCurrentValue((int) (perc * PA.getLife().getMaxValue())) ;
+				break ;
+				
+			case 112:
+				perc = 0.04 * spell.getLevel() * magicAtkBonus() ;
+				receiver.getPA().getLife().incCurrentValue((int) (perc * receiver.getPA().getLife().getCurrentValue())) ;
+				break ;
+				
+			case 141:
+				if (!(this instanceof Player)) { return ;}
+				if (!(receiver instanceof Creature)) { return ;}
+				Creature creature = (Creature) receiver ;
+				((Player) this).getBag().add(creature.getRandomElemFromBag(), 1) ;
+				break ;
+			
+			default: break ;
+		}
+
+		
+		spell.applyBuffs(true, this) ;
+		
+		if (receiver == null) { return ;}
+		
+		spell.applyDebuffs(true, receiver) ;
+		
+	}
+	
 	public abstract void useAutoSpell(boolean activate, Spell spell);
 	public abstract void dies() ;
 	
@@ -194,39 +235,81 @@ public abstract class LiveBeing
 		
 	}
 	
-	public static Point calcNewMapPos(Point pos, Directions dir, GameMap currentMap, int step)
+	public static Point calcNewMapPos(Point pos, Directions dir, GameMap currentMap, GameMap newMap)
 	{
 		int[] screenBorder = Game.getScreen().getBorders() ;
 		Dimension screenSize = Game.getScreen().getSize() ;
+//		int screenH = Game.getScreen().getSize().height ;
 		Point currentPos = new Point(pos) ;
-		int[] mapConnections = currentMap.getConnections() ;
-		boolean meetsTwoMapsUp = mapConnections[1] != mapConnections[0] ;
-		boolean meetsTwoMapsLeft = mapConnections[3] != mapConnections[2] ;
-		boolean meetsTwoMapsDown = mapConnections[4] != mapConnections[5] ;
-		boolean meetsTwoMapsRight = mapConnections[6] != mapConnections[7] ;
 		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
-		boolean topSide = currentPos.y <= Game.getScreen().getSize().height / 2 ;
+//		boolean topSide = currentPos.y <= Game.getScreen().getSize().height / 2 ;
+		int stepOffset = Player.stepDuration ;
 
 		switch (dir)
 		{
 			case up:
-				if (!meetsTwoMapsUp) { return new Point(currentPos.x, screenBorder[3] - step) ;}
-				return leftSide ? new Point(currentPos.x + screenSize.width / 2 - 1, screenBorder[3] - step) : new Point(currentPos.x - screenSize.width / 2, screenBorder[3] - step) ;				
+				if (!currentMap.meetsTwoMapsUp()) { return new Point(currentPos.x, screenBorder[3] - stepOffset) ;}
+				return leftSide ? new Point(currentPos.x + screenSize.width / 2 - 1, screenBorder[3] - stepOffset) : new Point(currentPos.x - screenSize.width / 2, screenBorder[3] - stepOffset) ;				
 			
 			case left:
-				if (!meetsTwoMapsLeft) { return new Point(screenBorder[2] - step, currentPos.y) ;}
-				return topSide ? new Point(screenBorder[2] - step, currentPos.y + screenSize.height / 2 - 1) : new Point(screenBorder[2] - step, currentPos.y - screenSize.height / 2) ;
+				int newX = screenBorder[2] - stepOffset ;
+				if (!currentMap.meetsTwoMapsLeft())
+				{
+					if (!newMap.meetsTwoMapsRight())
+					{
+						return new Point(newX, currentPos.y) ;
+					}
+				}
+				int newY = calcNewYGoingLeft(Arrays.asList(Game.getMaps()).indexOf(newMap) == currentMap.getConnections()[2], currentPos.y) ;
+
+				return new Point(newX, newY) ;
 			
 			case down:
-				if (!meetsTwoMapsDown) { return new Point(currentPos.x, screenBorder[1] + step) ;}
-				return leftSide ? new Point(currentPos.x + screenSize.width / 2 - 1, screenBorder[1] + step) : new Point(currentPos.x - screenSize.width / 2, screenBorder[1] + step) ;			
+				if (!currentMap.meetsTwoMapsDown()) { return new Point(currentPos.x, screenBorder[1] + stepOffset) ;}
+				return leftSide ? new Point(currentPos.x + screenSize.width / 2 - 1, screenBorder[1] + stepOffset) : new Point(currentPos.x - screenSize.width / 2, screenBorder[1] + stepOffset) ;			
 			
 			case right:
-				if (!meetsTwoMapsRight) { return new Point(screenBorder[0] + step, currentPos.y) ;}
-				return topSide ? new Point(screenBorder[0] + step, currentPos.y + screenSize.height / 2 - 1) : new Point(screenBorder[0] + step, currentPos.y - screenSize.height / 2) ;
+				int newRX = screenBorder[0] + stepOffset ;
+				if (!currentMap.meetsTwoMapsRight())
+				{
+					if (!newMap.meetsTwoMapsLeft())
+					{
+						return new Point(newRX, currentPos.y) ;
+					}
+					
+					int newRY = calcNewYGoingRight(Arrays.asList(Game.getMaps()).indexOf(currentMap) == newMap.getConnections()[2], currentPos.y) ;
+					return new Point(newRX, newRY) ;
+				}
+//				return topSide ? new Point(newRX, currentPos.y + screenH / 2 - 1) : new Point(screenBorder[0] + stepOffset, currentPos.y - screenH / 2) ;
 			
 			default: return null ;
 		}
+	}
+	
+	private static int calcNewYGoingLeft(boolean newMapIsAtTop, int posY)
+	{
+		int screenH = Game.getScreen().getSize().height ;
+		if (newMapIsAtTop)
+		{
+			double a = (screenH - Sky.height) / (double) (screenH / 2 - Sky.height) ;
+			return (int) (Sky.height + a * (posY - Sky.height)) ;
+		}
+
+		double a = (screenH - Sky.height) / (double) (screenH / 2) ;
+		return (int) (Sky.height + (screenH - Sky.height) * (1 - a) + a * (posY - Sky.height)) ;
+	}
+	
+	private static int calcNewYGoingRight(boolean currentMapIsAtTop, int posY)
+	{
+		int screenH = Game.getScreen().getSize().height ;
+		if (currentMapIsAtTop)
+		{
+			double a = (screenH / 2 - Sky.height) / (double) (screenH - Sky.height) ;
+			return (int) (Sky.height + a * (posY - Sky.height)) ;
+		}
+
+		double a = (screenH / 2) / (double) (screenH - Sky.height) ;
+		return (int) (Sky.height + (screenH / 2 - Sky.height) + a * (posY - Sky.height)) ;
 	}
 
 	public void displayState(DrawPrimitives DP)
@@ -240,6 +323,11 @@ public abstract class LiveBeing
 		DP.drawText(pos, Align.center, 0, stateText, font, Game.colorPalette[0]) ;
 	}
 
+	public void displayUsedSpellMessage(Spell spell, Point pos, Color color)
+	{
+		Animation.start(AnimationTypes.message, new Object[] {pos, spell.getName(), color}) ;
+	}
+	
 	public void displayPowerBar(Point pos, DrawPrimitives DP)
 	{
 		int maxPower = 1000 ;
@@ -267,7 +355,6 @@ public abstract class LiveBeing
 	public Point calcNewPos(Directions dir, Point currentPos, int step)
 	{
 		Point newPos = new Point(0, 0) ;
-		step = 1 ;	// TODO step = 1
 		switch (dir)
 		{
 			case up: newPos = new Point(currentPos.x, currentPos.y - step) ; break ;
@@ -279,14 +366,15 @@ public abstract class LiveBeing
 		return newPos ;
 	}
 	
-	protected void moveToNewMap(Point pos, Directions dir, GameMap currentMap, int step)
+	protected void moveToNewMap(Point pos, Directions dir, GameMap currentMap)
 	{
 		GameMap newMap = calcNewMap(pos, dir, currentMap) ;
 		
 		if (newMap == null) { return ;}
+		if (!newMap.getContinent().equals(Continents.forest)) { return ;}
 		
-		Point newPos = calcNewMapPos(pos, dir, currentMap, step) ;
-		
+		Point newPos = calcNewMapPos(pos, dir, currentMap, newMap) ;
+
 		setMap(newMap) ;
 		setPos(newPos) ;
 	}
@@ -294,7 +382,6 @@ public abstract class LiveBeing
 	public void incrementCounters()
 	{
 		incActionCounters() ;
-//		if (this instanceof Player) { ((Player) this).spellCounters() ;}
 		spellCounters() ;
 		BA.getStatus().decreaseStatus() ;
 	}
@@ -303,12 +390,16 @@ public abstract class LiveBeing
 	{
 		for (Spell spell : spells)
 		{
-//			if (spell.isActive())
-//			{
-//				Log.counter(spell.getDurationCounter()) ;
-//			}
-			if (spell.getDurationCounter().finished())
+			if (0 < spell.getDurationCounter().getDuration() & spell.getDurationCounter().finished())
 			{
+				if (this instanceof Player & job == 3 & spell.getId() == 114)
+				{
+					if (10 <= Game.getPet().getAlchBuffId() & Game.getPet().getAlchBuffId() <= 12)
+					{
+						Buff.allBuffs.get(Game.getPet().getAlchBuffId()).apply(-1, spells.get(10).getLevel(), Game.getPet()) ;
+						Game.getPet().setAlchBuffId(-1) ;
+					}
+				}
 				spell.getDurationCounter().reset() ;
 				spell.applyBuffs(false, this) ;
 				spell.deactivate() ;
@@ -351,7 +442,7 @@ public abstract class LiveBeing
 	
 	public int totalPower()
 	{
-		// TODO consider life, dex and agi, special ba, element mult, mp with spells and items
+		// TODO - optional consider life, dex and agi, special ba, element mult, mp with spells and items
 		// Dano = nHits . hitRate . (PhyAtkRate . PhyDam + MagAtkRate . MagDam + BloodRate . BloodDam + PoisonRate . PoisonDam)
 		double FPS = 200 / 3.0 ;
 		double maxPhyAtkPossible = BA.getPhyAtk().getTotal() ;
@@ -385,19 +476,7 @@ public abstract class LiveBeing
 		}
 	}
 	
-	public List<Spell> getActiveSpells()
-	{
-		List<Spell> activeSpells = new ArrayList<Spell>() ;
-		for (Spell spell : spells)
-		{
-			if (!spell.getType().equals(SpellTypes.passive) & !spell.getType().equals(SpellTypes.auto) & 0 < spell.getLevel())
-			{
-				activeSpells.add(spell) ;
-			}
-		}
-		
-		return activeSpells ;
-	}
+	public List<Spell> getActiveSpells() { return spells.stream().filter(Spell::isUsable).collect(Collectors.toList()) ;}
 	
 	public boolean isAlive() {return 0 < PA.getLife().getTotalValue() ;}
 	public boolean hasTheSpell(String action) {return Player.SpellKeys.indexOf(action) < getActiveSpells().size() ;}
@@ -411,30 +490,43 @@ public abstract class LiveBeing
 	public boolean hasActed() {return currentAction != null ;}
 	public boolean actionIsSpell()
 	{
-		// TODO 1 this can replace usedSpell
 		if (!hasActed()) { return false ;}
 
-		if (!Player.SpellKeys.contains(currentAction)) { return false ;}
+		if (!SpellKeys.contains(currentAction)) { return false ;}
 		
 		int spellID = SpellKeys.indexOf(currentAction) ;
 		
-		if (spells.size() <= spellID) { return false ;}	
+		if (getActiveSpells().size() <= spellID) { return false ;}
 		
-		Spell spell = spells.get(spellID) ;
+		return true ;
+	}
+	public boolean usedSpell()
+	{
+		if (!actionIsSpell()) { return false ;}
 
+		int spellID = SpellKeys.indexOf(currentAction) ;
+		Spell spell = getActiveSpells().get(spellID);
+		
+		if (!canUseSpell(spell)) { return false ;}
+		
+		return true ;
+	}
+	public boolean canUseSpell(Spell spell)
+	{
+
+		if (isSilent()) { return false ;}
 		if (!spell.isReady()) { return false ;}
 		if (!hasEnoughMP(spell)) { return false ;}
 		
 		return 1 <= spell.getLevel() ;
+		
 	}
 	public boolean usedPhysicalAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
-	public boolean usedSpell() { return (actionIsSpell() & !isSilent()) ;}
 	public boolean usedDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}
 	public boolean actionIsArrowAtk()
 	{
 		if (!( this instanceof Player)) { return false ;}
-		// TODO consider spells
-		return hasActed() ? currentAction.equals(BattleKeys[0]) & ((Player) this).arrowIsEquipped() : false ;
+		return (usedPhysicalAtk() | usedSpell()) & ((Player) this).arrowIsEquipped() ;
 	}
 	
 	public boolean canAtk() {return battleActionCounter.finished() & !BA.isStun() ;}
@@ -653,21 +745,33 @@ public abstract class LiveBeing
 		PA.getLife().decTotalValue(damage) ;
 	}
 	
-	public void takeBloodAndPoisonDamage(double totalBloodAtk, double totalPoisonAtk)
+	public void takeBloodAndPoisonDamage(LiveBeing attacker, double totalBloodAtk, double totalPoisonAtk)
 	{
 		int bloodDamage = 0, poisonDamage = 0 ;
 		double bloodMult = 1, poisonMult = 1 ;
 		if (this instanceof Player & job == 4)
 		{
-			poisonMult += -0.1*spells.get(13).getLevel() ;
+			poisonMult += -0.1 * spells.get(13).getLevel() ;
 		}
 		if (0 < BA.getStatus().getBlood())
 		{
 			bloodDamage = (int) Math.max(totalBloodAtk * bloodMult - BA.getBlood().TotalDef(), 0) ;
+			if (attacker instanceof Player)
+			{
+				Player player = ((Player) attacker) ;
+				if (player.getJob() == 4 & 1 < player.getSpells().get(12).getLevel())
+				{
+					player.getLife().incCurrentValue(bloodDamage) ;
+				}
+				player.getStatistics().updateInflictedBlood(bloodDamage) ;
+			}
+			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedBlood(bloodDamage, BA.getBlood().TotalDef()) ;}
 		}
 		if (0 < BA.getStatus().getPoison())
 		{
 			poisonDamage = (int) Math.max(totalPoisonAtk * poisonMult - BA.getPoison().TotalDef(), 0) ;
+			if (attacker instanceof Player) {((Player) attacker).getStatistics().updateInflictedPoison(poisonDamage) ;}
+			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedPoison(poisonDamage, BA.getPoison().TotalDef()) ;}
 		}
 		
 		if (bloodDamage + poisonDamage <= 0) { return ;}

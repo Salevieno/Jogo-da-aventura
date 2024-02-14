@@ -119,7 +119,6 @@ public class GameMap
 
 	public String getName() {return name ;}
 	public Continents getContinent() {return continent ;}
-	public Continents getContinentName(Player player) {  return Continents.values()[continent.ordinal() + 1] ;}
 	public Image getimage() {return image ;}
 	public Clip getMusic() { return music ;}
 	public List<GroundType> getgroundTypes() {return groundTypes ;}
@@ -259,6 +258,10 @@ public class GameMap
 	public boolean IsACity() { return (this instanceof CityMap) ;}
 	public boolean isAField() { return (this instanceof FieldMap) ;}
 	public boolean isSpecial() { return (this instanceof SpecialMap) ;}
+	public boolean meetsTwoMapsUp() { return connections[1] != connections[0] ;}
+	public boolean meetsTwoMapsLeft() { return connections[3] != connections[2] ;}
+	public boolean meetsTwoMapsDown() { return connections[4] != connections[5] ;}
+	public boolean meetsTwoMapsRight() { return connections[6] != connections[7] ;}
 	public boolean groundIsWalkable(Point pos, Elements superElem)
 	{
 
@@ -442,11 +445,11 @@ public class GameMap
 		buildings.forEach(building -> building.display(playerPos, cityID, DP)) ;
  	}
 	
-	public void displayNPCs(DrawPrimitives DP)
+	public void displayNPCs(Point playerPos, DrawPrimitives DP)
 	{
 		if (npcs == null) { return ;}
 
-		npcs.forEach(npc -> npc.display(DP));
+		npcs.forEach(npc -> npc.display(playerPos, DP));
 	}
 	
 	public void displayGroundTypes(DrawPrimitives DP)

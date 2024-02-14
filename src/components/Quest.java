@@ -1,6 +1,8 @@
 package components ;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import attributes.PersonalAttributes;
@@ -25,6 +27,13 @@ public class Quest
 	private Map<Item, Integer> rewardItems ;
 	private String description ;
 	
+	public static final List<Quest> all ;
+	
+	static
+	{
+		all = new ArrayList<>() ;
+	}
+	
 	public Quest(int id, String type, boolean isRepeatable, Map<CreatureType, Integer> reqCreatureTypes, Map<Item, Integer> reqItems,
 			int goldReward, int expReward, Map<Item, Integer> rewardItems, String description)
 	{
@@ -46,7 +55,7 @@ public class Quest
 		this.expReward = expReward ;
 		this.rewardItems = rewardItems ;
 		this.description = description ;
-		
+		all.add(this);
 	}
 
 	public int getID() {return id ;}
@@ -110,7 +119,7 @@ public class Quest
 			case 50: skills.replace(QuestSkills.islandMap, true) ; return ;
 			case 51: skills.replace(QuestSkills.ride, true) ; return ;
 			case 56: skills.replace(QuestSkills.volcanoMap, true) ; return ;
-			case 57: return ; // TODO advanced crafting (add recipes)
+			case 57: return ; // TODO pro advanced crafting (add recipes)
 			case 60: skills.replace(QuestSkills.dragonAura, true) ; return ;
 			case 62: skills.replace(QuestSkills.snowlandMap, true) ; return ;
 			default: return ;

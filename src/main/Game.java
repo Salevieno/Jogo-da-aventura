@@ -71,6 +71,7 @@ import maps.TreasureChest ;
 import screen.Screen ;
 import screen.SideBar ;
 import screen.Sky ;
+import testing.TestingAnimations;
 import utilities.Align ;
 import utilities.GameStates ;
 import utilities.Log;
@@ -82,13 +83,11 @@ import windows.BankWindow ;
 
 public class Game extends JPanel
 {
-	// TODO soundtrack
-	// TODO corrigir bug ao se mover para um mapa maior
-	// TODO nomes das criaturas
-	// TODO descrição dos itens
-	// TODO no superelemento de fogo, todos os panos na mochila viram panos em chamas
-	// TODO conferir a contagem das estatísticas do player
-	// TODO Arte: emblem 
+	// TODO arte - soundtrack
+	// TODO arte - emblem 
+	// TODO arquivos - corrigir as receitas
+	// TODO arquivos - nomes das criaturas
+	// TODO arquivos - descrição dos itens
 	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] { "Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A" } ;
 	public static final String JSONPath = ".\\json\\" ;
@@ -107,32 +106,26 @@ public class Game extends JPanel
 	private static boolean konamiCodeActive ;
 
 	public static Color[] colorPalette ;
-	public static int DayDuration ;
 	public static Map<TextCategories, String[]> allText ;
 
 	private DrawPrimitives DP ;
 	private static Player player ;
 	private static Pet pet ;
 	public static int difficultLevel ;
+	private static int slotLoaded = -1 ;
 
 	private static Screen screen ;
 	private static Sky sky ;
-//	private static SideBar sideBar ;
-	private static CreatureType[] creatureTypes ;
 	private static CityMap[] cityMaps ;
 	private static FieldMap[] fieldMaps ;
 	private static SpecialMap[] specialMaps ;
 	private static GameMap[] allMaps ;
 	private static BuildingType[] buildingTypes ;
 	private static NPCType[] NPCTypes ;
-//	private static List<Recipe> allRecipes ;
 	private static Item[] allItems ;
-	private static List<Buff> allBuffs ;
-	private static List<Buff> allDebuffs ;
 	private static Spell[] allSpells ;
 	private static Quest[] allQuests ;
 	private static List<Projectiles> projs ;
-//	private static List<Animation> animations ;
 
 	static
 	{
@@ -152,7 +145,7 @@ public class Game extends JPanel
 	public Game()
 	{
 		DP = new DrawPrimitives() ;
-		player = new Player("", "", 1) ;
+		player = new Player("", "", 4) ;
 
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -164,7 +157,7 @@ public class Game extends JPanel
 	public static Languages getLanguage() { return gameLanguage ;}
 	public static Screen getScreen() { return screen ;}
 	public static Sky getSky() { return sky ;}
-	public static CreatureType[] getCreatureTypes() { return creatureTypes ;}
+//	public static CreatureType[] getCreatureTypes() { return creatureTypes ;}
 	public static NPCType[] getNPCTypes() { return NPCTypes ;}
 	public static Player getPlayer() { return player ;}
 	public static Pet getPet() { return pet ;}
@@ -177,13 +170,15 @@ public class Game extends JPanel
 //	public static List<Animation> getAnimations() { return animations ;}
 	public static boolean getShouldRepaint() { return shouldRepaint ;}
 	public static Point getmousePos() { return mousePos ;}
+	public static int getSlotLoaded() { return slotLoaded ;}
+	public static void setSlotLoaded(int newSlotLoaded) { slotLoaded = newSlotLoaded ;}
 	
 	public static List<Item> getItems(int[] itemIDs)
 	{
 		List<Item> items = new ArrayList<>() ;
     	for (int itemID : itemIDs)
     	{
-    		items.add(Game.getAllItems()[itemID]) ;
+    		items.add(Item.allItems.get(itemID)) ;
     	}
     	
     	return items ;
@@ -270,17 +265,6 @@ public class Game extends JPanel
 
 	}
 
-//	private static void initializeAnimations()
-//	{
-//		animations = new ArrayList<>() ;
-//		for (int i = 0 ; i <= 13 - 1 ; i += 1)
-//		{
-//			Animation ani = new Animation(i) ;
-//			animations.add(ani) ;
-//		}
-//		
-//	}
-
 	private static void checkKonamiCode(List<String> combo)
 	{
 		if (!Arrays.equals(combo.toArray(new String[combo.size()]), konamiCode)) { return ;}
@@ -291,12 +275,12 @@ public class Game extends JPanel
 
 	private static void konamiCode()
 	{
-		DayDuration = 12 ;
+		Sky.dayCounter.setDuration(5) ;
 		colorPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Konami") ;
-		if (Sky.dayTime.getCounter() % 1200 <= 300)
+		if (Sky.dayCounter.getCounter() % 1200 <= 300)
 		{
 			Draw.stdAngle += 0.04 ;
-		} else if (Sky.dayTime.getCounter() % 1200 <= 900)
+		} else if (Sky.dayCounter.getCounter() % 1200 <= 900)
 		{
 			Draw.stdAngle -= 0.04 ;
 		} else
@@ -339,38 +323,6 @@ public class Game extends JPanel
 		return new NPCs(npcType, npcPos) ;
 
 	}
-
-//	private static List<Recipe> loadCraftingRecipes()
-//	{
-//		List<Recipe> recipes = new ArrayList<>() ;
-//		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "craftRecipes.json") ;
-//
-//		for (int i = 0 ; i <= input.size() - 1 ; i += 1)
-//		{
-//			JSONObject recipe = (JSONObject) input.get(i) ;
-//
-//			JSONArray listIngredients = (JSONArray) recipe.get("IngredientIDs") ;
-//			JSONArray listIngredientAmounts = (JSONArray) recipe.get("IngredientAmounts") ;
-//			Map<Item, Integer> ingredients = new HashMap<>() ;
-//			for (int ing = 0 ; ing <= listIngredients.size() - 1 ; ing += 1)
-//			{
-//				ingredients.put(allItems[(int) (long) listIngredients.get(ing)],
-//						(int) (long) listIngredientAmounts.get(ing)) ;
-//			}
-//
-//			JSONArray listProducts = (JSONArray) recipe.get("ProductIDs") ;
-//			JSONArray listProductAmounts = (JSONArray) recipe.get("ProductAmounts") ;
-//			Map<Item, Integer> products = new HashMap<>() ;
-//			for (int prod = 0 ; prod <= listProducts.size() - 1 ; prod += 1)
-//			{
-//				products.put(allItems[(int) (long) listProducts.get(prod)], (int) (long) listProductAmounts.get(prod)) ;
-//			}
-//
-//			recipes.add(new Recipe(ingredients, products)) ;
-//		}
-//
-//		return recipes ;
-//	}
 
 	private static NPCType[] loadNPCTypes(Languages language)
 	{
@@ -436,116 +388,6 @@ public class Game extends JPanel
 
 		return buildingTypes ;
 	}
-
-//	private static CreatureType[] loadCreatureTypes(Languages language, int difficultLevel)
-//	{
-//		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "CreatureTypes.csv") ;
-//		CreatureType.setNumberOfCreatureTypes(input.size()) ;
-//		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()] ;
-//		Color[] color = new Color[creatureTypes.length] ;
-//		int numberCreatureTypes = 7 ;
-//		double diffMult = difficultLevel == 0 ? 0.6 : (difficultLevel == 1 ? 0.8 : 1.0) ;
-//		
-//		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
-//		{
-//			int colorid = (int) ((Creature.getskinColor().length - 1) * Math.random()) ;
-//			color[ct] = Creature.getskinColor()[colorid] ;
-//			if (270 < ct & ct <= 299) // Ocean creatures
-//			{
-//				color[ct] = colorPalette[5] ;
-//			}
-//
-//			MovingAnimations moveAni = CreatureType.moveAni.get(ct % numberCreatureTypes) ;
-//
-//			BasicAttribute Life = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[5]) * diffMult),
-//					(int) (Integer.parseInt(input.get(ct)[5]) * diffMult), 1) ;
-//			BasicAttribute Mp = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[6]) * diffMult),
-//					(int) (Integer.parseInt(input.get(ct)[6]) * diffMult), 1) ;
-//			BasicAttribute Exp = new BasicAttribute(Integer.parseInt(input.get(ct)[36]), 999999999, 1) ;
-//			BasicAttribute Satiation = new BasicAttribute(100, 100, 1) ;
-//			BasicAttribute Thirst = new BasicAttribute(100, 100, 1) ;
-//			PersonalAttributes PA = new PersonalAttributes(Life, Mp, Exp, Satiation, Thirst) ;
-//
-//			BasicBattleAttribute PhyAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[8]) * diffMult, 0,
-//					0) ;
-//			BasicBattleAttribute MagAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[9]) * diffMult, 0,
-//					0) ;
-//			BasicBattleAttribute PhyDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[10]) * diffMult, 0,
-//					0) ;
-//			BasicBattleAttribute MagDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[11]) * diffMult, 0,
-//					0) ;
-//			BasicBattleAttribute Dex = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[12]) * diffMult, 0, 0) ;
-//			BasicBattleAttribute Agi = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[13]) * diffMult, 0, 0) ;
-//			BasicBattleAttribute CritAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[14]) * diffMult, 0,
-//					0) ;
-//			BasicBattleAttribute CritDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[15]) * diffMult, 0,
-//					0) ;
-//			BattleSpecialAttribute Stun = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[16]) * diffMult,
-//					0, Double.parseDouble(input.get(ct)[17]) * diffMult, 0,
-//					(int) (Double.parseDouble(input.get(ct)[18]) * diffMult)) ;
-//			BattleSpecialAttribute Block = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[19]) * diffMult,
-//					0, Double.parseDouble(input.get(ct)[20]) * diffMult, 0,
-//					(int) (Double.parseDouble(input.get(ct)[21]) * diffMult)) ;
-//			BattleSpecialAttributeWithDamage Blood = new BattleSpecialAttributeWithDamage(
-//					Double.parseDouble(input.get(ct)[22]) * diffMult, 0,
-//					Double.parseDouble(input.get(ct)[23]) * diffMult, 0,
-//					(int) (Double.parseDouble(input.get(ct)[24]) * diffMult), 0,
-//					(int) (Double.parseDouble(input.get(ct)[25]) * diffMult), 0,
-//					(int) (Integer.parseInt(input.get(ct)[26]) * diffMult)) ;
-//			BattleSpecialAttributeWithDamage Poison = new BattleSpecialAttributeWithDamage(
-//					Double.parseDouble(input.get(ct)[27]) * diffMult, 0,
-//					Double.parseDouble(input.get(ct)[28]) * diffMult, 0,
-//					(int) (Double.parseDouble(input.get(ct)[29]) * diffMult), 0,
-//					(int) (Double.parseDouble(input.get(ct)[30]) * diffMult), 0,
-//					(int) (Integer.parseInt(input.get(ct)[31]) * diffMult)) ;
-//			BattleSpecialAttribute Silence = new BattleSpecialAttribute(
-//					Double.parseDouble(input.get(ct)[32]) * diffMult, 0,
-//					Double.parseDouble(input.get(ct)[33]) * diffMult, 0,
-//					(int) (Double.parseDouble(input.get(ct)[34]) * diffMult)) ;
-//			LiveBeingStatus status = new LiveBeingStatus() ;
-//			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, CritAtk, CritDef, Stun,
-//					Block, Blood, Poison, Silence, status) ;
-//
-//			// TODO spells para as criaturas
-//			List<Spell> spells = new ArrayList<>() ;
-//			spells.add(allSpells[0]) ;
-//			spells.get(0).incLevel(1) ;
-////			spells.add(allSpells[1]) ;
-////			spells.add(allSpells[2]) ;
-////			spells.add(allSpells[3]) ;
-////			spells.add(allSpells[4]) ;
-//
-//			Set<Item> items = new HashSet<>() ;
-//			for (int i = 0 ; i <= 10 - 1 ; i += 1)
-//			{
-//				int itemID = Integer.parseInt(input.get(ct)[37 + i]) ;
-//				if (-1 < itemID)
-//				{
-//					items.add(allItems[itemID]) ;
-//				}
-//			}
-//
-//			int Gold = Integer.parseInt(input.get(ct)[47]) ;
-//			int[] StatusCounter = new int[8] ;
-//
-//			String name = input.get(ct)[1 + language.ordinal()] ;
-//			int level = Integer.parseInt(input.get(ct)[3]) ;
-//			Dimension size = new Dimension(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;
-//			int range = (int) (Integer.parseInt(input.get(ct)[7]) * diffMult) ;
-//			int step = Integer.parseInt(input.get(ct)[48]) ;
-//			Elements[] elem = new Elements[] { Elements.valueOf(input.get(ct)[35]) } ;
-//			int mpDuration = Integer.parseInt(input.get(ct)[49]) ;
-//			int satiationDuration = 100 ;
-//			int numberSteps = Integer.parseInt(input.get(ct)[50]) ;
-//			int battleActionDuration = Integer.parseInt(input.get(ct)[51]) ;
-//			int stepCounter = 0 ;
-//
-//			creatureTypes[ct] = new CreatureType(ct, name, level, size, range, step, elem, mpDuration,
-//					satiationDuration, numberSteps, battleActionDuration, stepCounter, moveAni, PA, BA, spells, items,
-//					Gold, color[ct], StatusCounter) ;
-//		}
-//		return creatureTypes ;
-//	}
 
 	private static CityMap[] loadCityMaps()
 	{
@@ -718,7 +560,7 @@ public class Game extends JPanel
 		return fieldMaps ;
 	}
 
-	private static SpecialMap[] loadSpecialMaps()
+	private static SpecialMap[] loadSpecialMaps(List<Item> allItems)
 	{
 		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;
 		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
@@ -750,7 +592,7 @@ public class Game extends JPanel
 					int itemID = Integer.parseInt(input.get(id)[12 + 13 * chest + item]) ;
 					if (-1 < itemID)
 					{
-						itemRewards.add(allItems[itemID]) ;
+						itemRewards.add(allItems.get(itemID)) ;
 					}
 				}
 				int goldReward = Integer.parseInt(input.get(id)[22 + 13 * chest]) ;
@@ -762,12 +604,12 @@ public class Game extends JPanel
 		return specialMaps ;
 	}
 
-	private static GameMap[] loadAllMaps()
+	private static GameMap[] loadAllMaps(List<Item> allItems)
 	{
 
 		cityMaps = loadCityMaps() ;
 		fieldMaps = loadFieldMaps() ;
-		specialMaps = loadSpecialMaps() ;
+		specialMaps = loadSpecialMaps(allItems) ;
 		GameMap[] allMaps = new GameMap[cityMaps.length + fieldMaps.length + specialMaps.length] ;
 		for (int i = 0 ; i <= cityMaps.length - 1 ; i += 1)
 		{
@@ -794,7 +636,7 @@ public class Game extends JPanel
 
 	}
 
-	private static Quest[] loadQuests(Languages language, int playerJob)
+	private static Quest[] loadQuests(Languages language, int playerJob, List<CreatureType> creatureTypes, List<Item> allItems)
 	{
 		List<String[]> inputs = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
 		Quest[] quests = new Quest[inputs.size()] ;
@@ -810,14 +652,14 @@ public class Game extends JPanel
 			{
 				if (Integer.parseInt(input[j]) <= -1) { continue ;}
 				
-				reqCreatureTypes.put(creatureTypes[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
+				reqCreatureTypes.put(creatureTypes.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
 			}
 
 			for (int j = 8 ; j <= 18 - 1 ; j += 2)
 			{
 				if (Integer.parseInt(input[j]) <= -1) { continue ;}
 				
-				reqItems.put(allItems[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
+				reqItems.put(allItems.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
 			}
 
 			int goldReward = Integer.parseInt(input[18]) ;
@@ -829,7 +671,7 @@ public class Game extends JPanel
 			{
 				if (Integer.parseInt(input[j + 1]) <= -1) { continue ;}
 				
-				rewardItems.put(allItems[Integer.parseInt(input[j])], Integer.parseInt(input[j + 1])) ;
+				rewardItems.put(allItems.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
 			}
 
 			String description = input[30 + language.ordinal()] ;
@@ -841,157 +683,33 @@ public class Game extends JPanel
 		return quests ;
 	}
 
-//	public static List<Buff> loadAllBuffs()
+//	public static List<NPCs> getAllNPCs()
 //	{
-//		List<Buff> buffs = new ArrayList<>() ;
-//		List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "Buffs.csv") ;
-//		
-//		for (int i = 0 ; i <= spellsBuffsInput.size() - 1 ; i += 1)
+//		List<NPCs> allNPCs = new ArrayList<>() ;
+//		for (GameMap map : allMaps)
 //		{
-//			buffs.add(Buff.load(spellsBuffsInput.get(i))) ;
-//		}
-//		return buffs ;
-//	}
-	
-//	public static List<Buff> loadAllDebuffs()
-//	{
-//		List<Buff> debuffs = new ArrayList<>() ;
-//		List<String[]> spellsDebuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "Debuffs.csv") ;
-//		
-//		for (int i = 0 ; i <= spellsDebuffsInput.size() - 1 ; i += 1)
-//		{
-//			debuffs.add(Buff.load(spellsDebuffsInput.get(i))) ;
-//		}
-//		return debuffs ;
-//	}
-	
-//	private static Spell[] loadAllSpells(Languages language)
-//	{
-//		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;
-//
-//		Spell[] allSpells = new Spell[input.size()] ;
-//		String[][] info = new String[allSpells.length][2] ;
-//
-//		for (int row = 0 ; row <= allSpells.length - 1 ; row += 1)
-//		{
-//			int id = row ;
-//			String[] col = input.get(row) ;
-//			info[row] = new String[] { col[44], col[45 + 2 * language.ordinal()] } ;
-//			String name = col[4] ;
-//			String job = PlayerJobs.jobFromSpellID(row).toString() ;
-//			Image image = UtilS.loadImage("\\Spells\\" + "spell" + job + row + ".png") ;
-//			int maxLevel = Integer.parseInt(col[5]) ;
-//			int mpCost = Integer.parseInt(col[6]) ;
-//			SpellTypes type = SpellTypes.valueOf(col[7]) ;
-//			Map<Spell, Integer> preRequisites = new HashMap<>() ;
-//			for (int p = 0 ; p <= 6 - 1 ; p += 2)
+//			if (map.getNPCs() == null)
 //			{
-//				if (-1 < Integer.parseInt(col[p + 8]))
-//				{
-//					preRequisites.put(allSpells[Integer.parseInt(col[p + 8])], Integer.parseInt(col[p + 9])) ;
-//				}
+//				continue ;
 //			}
-//			int cooldown = Integer.parseInt(col[14]) ;
-//			int duration = Integer.parseInt(col[15]) ;
-//			double[] atkMod = new double[] { Double.parseDouble(col[16]), Double.parseDouble(col[17]) } ;
-//			double[] defMod = new double[] { Double.parseDouble(col[18]), Double.parseDouble(col[19]) } ;
-//			double[] dexMod = new double[] { Double.parseDouble(col[20]), Double.parseDouble(col[21]) } ;
-//			double[] agiMod = new double[] { Double.parseDouble(col[22]), Double.parseDouble(col[23]) } ;
-//			double[] atkCritMod = new double[] { Double.parseDouble(col[24]) } ;
-//			double[] defCritMod = new double[] { Double.parseDouble(col[25]) } ;
-//			double[] stunMod = new double[] { Double.parseDouble(col[26]), Double.parseDouble(col[27]), Double.parseDouble(col[28]) } ;
-//			double[] blockMod = new double[] { Double.parseDouble(col[29]), Double.parseDouble(col[30]), Double.parseDouble(col[31]) } ;
-//			double[] bloodMod = new double[] { Double.parseDouble(col[32]), Double.parseDouble(col[33]), Double.parseDouble(col[34]) } ;
-//			double[] poisonMod = new double[] { Double.parseDouble(col[35]), Double.parseDouble(col[36]), Double.parseDouble(col[37]) } ;
-//			double[] silenceMod = new double[] { Double.parseDouble(col[38]), Double.parseDouble(col[39]), Double.parseDouble(col[40]) } ;
-//
-//			int buffId = col[41].equals("-") ? -1 : Integer.parseInt(col[41]) ;
-//			int debuffId = col[42].equals("-") ? -1 : Integer.parseInt(col[42]) ;
-//			Buff buffs = buffId == -1 ? null : allBuffs.get(buffId);
-//			Buff debuffs = debuffId == -1 ? null : allDebuffs.get(debuffId);
-//			Elements elem = Elements.valueOf(col[43]) ;
-//
-//			allSpells[row] = new Spell(id, name, image, maxLevel, mpCost, type, preRequisites, buffs, debuffs, atkMod,
-//					defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod,
-//					cooldown, duration, elem, info[row]) ;
+//			if (map.getNPCs().isEmpty())
+//			{
+//				continue ;
+//			}
+//			allNPCs.addAll(map.getNPCs()) ;
 //		}
-//		return allSpells ;
+//
+//		return allNPCs ;
 //	}
-
-//	private static Item[] loadAllItems()
-//	{
-//		List<Item> allItems = new ArrayList<>() ;
-//		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
-//		{
-//			allItems.add(Potion.getAll()[i]) ;
-//		}
-//		for (int i = 0 ; i <= Alchemy.getAll().length - 1 ; i += 1)
-//		{
-//			allItems.add(Alchemy.getAll()[i]) ;
-//		}
-//		for (int i = 0 ; i <= Forge.getAll().length - 1 ; i += 1)
-//		{
-//			allItems.add(Forge.getAll()[i]) ;
-//		}
-//		for (int i = 0 ; i <= PetItem.getAll().length - 1 ; i += 1)
-//		{
-//			allItems.add(PetItem.getAll()[i]) ;
-//		}
-//		for (int i = 0 ; i <= Food.getAll().length - 1 ; i += 1)
-//		{
-//			allItems.add(Food.getAll()[i]) ;
-//		}
-//		for (int i = 0 ; i <= Arrow.getAll().length - 1 ; i += 1)
-//		{
-//			allItems.add(Arrow.getAll()[i]) ;
-//		}
-//		for (int i = 0 ; i <= Equip.getAll().length - 1 ; i += 1)
-//		{
-//			allItems.add(Equip.getAll()[i]) ;
-//		}
-//		for (int i = 0 ; i <= GeneralItem.getAll().length - 1 ; i += 1)
-//		{
-//			allItems.add(GeneralItem.getAll()[i]) ;
-//		}
-//		for (int i = 0 ; i <= Fab.getAll().length - 1 ; i += 1)
-//		{
-//			allItems.add(Fab.getAll()[i]) ;
-//		}
-//		for (int i = 0 ; i <= QuestItem.getAll().length - 1 ; i += 1)
-//		{
-//			allItems.add(QuestItem.getAll()[i]) ;
-//		}
-//
-//		return (Item[]) allItems.toArray(new Item[allItems.size()]) ;
-//	}
-
-	public static List<NPCs> getAllNPCs()
-	{
-		// TODO function for dev only
-		List<NPCs> allNPCs = new ArrayList<>() ;
-		for (GameMap map : allMaps)
-		{
-			if (map.getNPCs() == null)
-			{
-				continue ;
-			}
-			if (map.getNPCs().isEmpty())
-			{
-				continue ;
-			}
-			allNPCs.addAll(map.getNPCs()) ;
-		}
-
-		return allNPCs ;
-	}
 
 	
 	private void incrementCounters()
-	{
-		Sky.dayTime.inc() ;
-		if (Sky.dayTime.finished())
+	{	
+		if (Sky.dayCounter.finished())
 		{
-			Sky.dayTime.reset() ;
+			Sky.dayCounter.reset() ;
+			Sky.dayCounter.start() ;
+			NPCs.renewStocks() ;
 		}
 		player.incrementCounters() ;
 
@@ -1004,7 +722,6 @@ public class Game extends JPanel
 		{
 			FieldMap fm = (FieldMap) player.getMap() ;
 			fm.getCreatures().forEach(Creature::incrementCounters) ;
-			fm.IncCollectiblesCounter() ;
 		}
 
 		for (CityMap city : cityMaps)
@@ -1032,18 +749,15 @@ public class Game extends JPanel
 		{
 			if (0 < pet.getLife().getCurrentValue())
 			{
-				// pet.ActivateActionCounters(ani.SomeAnimationIsActive()) ;
+				 pet.activateCounters() ;
 			}
 		}
 
-		if (!player.getMap().isAField())
-		{
-			return ;
-		}
+		if (!player.getMap().isAField()) { return ;}
 
 		FieldMap fm = (FieldMap) player.getMap() ;
-//		fm.getCreatures().forEach(creature -> creature.ActivateActionCounters()) ;			
-		fm.ActivateCollectiblesCounter() ;
+		fm.getCreatures().forEach(Creature::activateCounters) ;			
+		fm.activateCollectiblesCounter() ;
 
 	}
 
@@ -1103,7 +817,7 @@ public class Game extends JPanel
 		pet.think(player.isInBattle(), player.getPos()) ;
 		pet.act(player) ;
 		pet.display(pet.getPos(), Scale.unit, DP) ;
-//		pet.displayAttributes(0, DP) ;
+		pet.displayAttributes(0, DP) ;
 	}
 	
 	private void playerActs()
@@ -1188,14 +902,14 @@ public class Game extends JPanel
 
 		if (player.shouldLevelUP())
 		{
-//			player.levelUp(animations.get(6)) ;
+			player.levelUp() ;
 		}
 		
 		if (pet != null)
 		{
 			if (pet.shouldLevelUP())
 			{
-//				pet.levelUp(animations.get(7)) ;
+				pet.levelUp() ;
 			}	
 		}
 		
@@ -1237,11 +951,13 @@ public class Game extends JPanel
 		
     	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
 //    	player.setLevel(50) ;
-    	player.setMap(fieldMaps[1]) ;
+    	player.setMap(fieldMaps[24]) ;
 //    	fieldMaps[1].getCreatures().get(0).setPos(player.getPos());
 //    	player.setPos(new Point(393, 140)) ;
 
     	letThereBePet() ;
+//    	pet.takeDamage(40);
+//    	pet.getMp().decTotalValue(50);
 
 		for (int i = 0 ; i <= fieldMaps.length - 1 ; i += 1)
 		{
@@ -1251,21 +967,41 @@ public class Game extends JPanel
 
 		player.getPA().getLife().incMaxValue(1000) ;
 		player.getPA().getMp().incMaxValue(1000); ;	
-		player.getBA().getPhyAtk().incBaseValue(1000) ;
-		player.getBA().getMagAtk().incBaseValue(1000) ;
+//		player.getBA().getPhyAtk().incBaseValue(1000) ;
+//		player.getBA().getMagAtk().incBaseValue(1000) ;
 //		player.getBA().getPhyDef().incBaseValue(1000) ;
 //		player.getBA().getMagDef().incBaseValue(1000) ;
 //		player.getBA().getAgi().incBaseValue(1000) ;
 		player.getBA().getDex().incBaseValue(1000) ;
 		player.getPA().getLife().setToMaximum() ;
+		
+//		player.getBA().getStun().incAtkChance(1) ;
+		player.getBA().getStun().incDuration(100) ;
+		
+//		player.getBA().getBlock().incAtkChance(1) ;
+		player.getBA().getBlock().incDuration(100) ;
+		
+//		player.getBA().getBlood().incAtkChance(1) ;
+		player.getBA().getBlood().incAtkBonus(8);
+		player.getBA().getBlood().incDefBonus(1);
+		player.getBA().getBlood().incDuration(100);
+		
+//		player.getBA().getPoison().incAtkChance(1) ;
+		player.getBA().getPoison().incAtkBonus(1);
+		player.getBA().getPoison().incDefBonus(1);
+		player.getBA().getPoison().incDuration(100);
+
+//		player.getBA().getSilence().incAtkChance(1) ;
+		player.getBA().getSilence().incDuration(100) ;
+		
 		player.takeDamage(500);
-		player.getBag().addGold(30000) ;
+		player.getBag().addGold(300) ;
     	for (Spell spell : player.getSpells())
     	{
     		spell.incLevel(5) ;
     	}
     	SpellsBar.updateSpells(player.getActiveSpells()) ;
-//
+		
 //    	
     	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
     	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
@@ -1273,7 +1009,7 @@ public class Game extends JPanel
     	for (Item item : PetItem.getAll()) { player.getBag().add(item, 2) ;}
     	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
     	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
-    	for (Item item : Equip.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : Equip.getAll()) { player.getBag().add(item, 20) ;}
     	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
     	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
     	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
@@ -1283,6 +1019,7 @@ public class Game extends JPanel
     	{
     		player.getQuestSkills().replace(skill, true) ;
     	}
+    	Quest.all.forEach(quest -> player.addQuest(quest)) ;
     	
 //    	for (int i = 0 ; i <= 50 - 1 ; i += 1)
 //    	{
@@ -1318,7 +1055,6 @@ public class Game extends JPanel
 		switch (step)
 		{
 			case 0:
-				DayDuration = 120000 ;
 				sky = new Sky() ;
 				screen.setBorders(new int[] { 0, Sky.height, screen.getSize().width, screen.getSize().height }) ;
 				screen.setMapCenter() ;
@@ -1331,22 +1067,19 @@ public class Game extends JPanel
 				return ;
 				
 			case 2:
-//				allBuffs = loadAllBuffs() ;
-//				allDebuffs = loadAllDebuffs() ;
+				Buff.loadBuffs() ;
+				Buff.loadDebuffs() ;
 				Spell.load(gameLanguage, Buff.allBuffs, Buff.allDebuffs) ;
-//				allSpells = loadAllSpells(gameLanguage) ;
 				Log.loadTime("spells", initialTime) ;
 				return ;
 				
 			case 3:
 				Item.load();
-//				allItems = loadAllItems() ;
 				Log.loadTime("items", initialTime) ;
 				return ;
 				
 			case 4:
 				CreatureType.load(gameLanguage, difficultLevel) ;
-//				creatureTypes = CreatureType.all;
 				Log.loadTime("creature types", initialTime) ;
 				return ;
 				
@@ -1366,12 +1099,12 @@ public class Game extends JPanel
 				return ;
 				
 			case 8:
-				allQuests = loadQuests(gameLanguage, player.getJob()) ;
+				allQuests = loadQuests(gameLanguage, player.getJob(), CreatureType.all, Item.allItems) ;
 				Log.loadTime("quests", initialTime) ;
 				return ;
 				
 			case 9:
-				allMaps = loadAllMaps() ;
+				allMaps = loadAllMaps(Item.allItems) ;
 				Log.loadTime("maps", initialTime) ;
 				return ;
 				
@@ -1383,7 +1116,6 @@ public class Game extends JPanel
 				player.setPos(Game.getScreen().getCenter()) ;
 				Battle.updateDamageAnimation(player.getSettings().getDamageAnimation()) ;
 				SideBar.initialize();
-				// deBar = new SideBar(player, player.getMovingAni().idleGif, pet != null ? pet.getMovingAni().idleGif : null) ;
 				
 				if (player.getSettings().getMusicIsOn())
 				{
@@ -1473,6 +1205,7 @@ public class Game extends JPanel
 		@Override
 		public void keyPressed(KeyEvent event)
 		{
+			
 			shouldRepaint = true ;
 			int keyCode = event.getKeyCode() ;
 			
@@ -1481,8 +1214,21 @@ public class Game extends JPanel
 				player.setCurrentAction(String.valueOf(keyCode - 96)) ;
 				return ;
 			}
+			
+			if (keyCode == KeyEvent.VK_PAUSE)
+			{
+				if (state.equals(GameStates.paused))
+				{
+					MainGame3_4.resumeGame();
+				}
+				else
+				{
+					MainGame3_4.pauseGame() ;
+				}
+			}
 
 			player.setCurrentAction(KeyEvent.getKeyText(keyCode)) ;
+			
 		}
 
 		@Override
@@ -1497,25 +1243,22 @@ public class Game extends JPanel
 		@Override
 		public void mouseClicked(MouseEvent evt)
 		{
-			//		state = GameStates.opening ;
-//			shouldRepaint = true ;
-//			Player.levelUpGif.play(mousePos, Align.center, DP);
-//			Opening.openingGif.getTimeCounter().reset(); ;
-				if (evt.getButton() == 1) // Left click
-				{
-					player.setCurrentAction("LeftClick") ;
-
-//	        		TestingAnimations.runTests(ani) ;
-					// testGif.start() ;
-				}
-				if (evt.getButton() == 3) // Right click
-				{
-					player.setCurrentAction("MouseRightClick") ;
-	        		player.setPos(mousePos) ;
-				}
-				// shouldRepaint = true ;
-//				System.out.println(UtilG.Round(mousePos.x / 600.0, 2) + "," + UtilG.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;
+			
+			if (evt.getButton() == 1) // Left click
+			{
+				player.setCurrentAction("LeftClick") ;
+//					System.out.println(UtilG.Round(mousePos.x / 600.0, 2) + "," + UtilG.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;	
 			}
+			if (evt.getButton() == 3) // Right click
+			{
+				player.setCurrentAction("MouseRightClick") ;
+        		player.setPos(mousePos) ;
+        		if (pet != null) { pet.setPos(player.getPos()) ;}
+        		//	        		TestingAnimations.run() ;
+//					testGif.start() ;
+			}
+			
+		}
 
 		@Override
 		public void mouseEntered(MouseEvent arg0)

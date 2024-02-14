@@ -17,6 +17,7 @@ import items.Forge;
 import items.Item;
 import liveBeings.Player;
 import main.Game;
+import main.TextCategories;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
@@ -29,20 +30,18 @@ public class ForgeWindow extends GameWindow
 	private String message ;
 	private GameButton forgeButton ;
 	private BagWindow bag ;
-	// TODO colocar esse texto no json
-	private static final List<String> messages = Arrays.asList(
-			"Selecione o equipamento",
-			"O equipamento já está no nível máximo!",
-			"Você precisa de uma runa apropriada!",
-			"Você precisa de mais ouro!",
-			"Item forjado!",
-			"Essa não! A forja não funcionou!") ;
+	private static final List<String> messages ;
 	
 	private static final int NumberItemsPerWindow = 10 ;
 	private static final Point windowPos = Game.getScreen().getPointWithinBorders(0.2, 0.05) ;
 	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Forge.png") ;
 	
 
+	static
+	{
+		messages = Arrays.asList(Game.allText.get(TextCategories.forgeWindowMessages)) ;
+	}
+	
 	public ForgeWindow()
 	{
 		super("Forge", windowPos, windowImage, 1, 1, 1, 1) ;
@@ -104,6 +103,7 @@ public class ForgeWindow extends GameWindow
 	
 	public void forge()
 	{
+		
 		Equip selectedEquip = selectedEquip() ;
 		
 		if (selectedEquip == null) { return ;}
@@ -137,10 +137,12 @@ public class ForgeWindow extends GameWindow
 		selectedEquip.resetForgeLevel() ;
 		bag.remove(selectedEquip, 1);
 		
+		if (-1 < Game.getSlotLoaded())
+		{
+			Game.getPlayer().save(Game.getSlotLoaded()) ;
+		}
 		displayMessage(5) ; return ; 
-
-
-		// TODO overwrite save
+		
 	}
 	
 	public void display(Point mousePos, DrawPrimitives DP)
@@ -156,7 +158,7 @@ public class ForgeWindow extends GameWindow
 		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
 		
 		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[1]) ;
-		DP.drawText(messagePos, Align.center, angle, "Selecione o equipamento", stdFont, stdColor) ;
+		DP.drawText(messagePos, Align.center, angle, messages.get(0), stdFont, stdColor) ;
 		
 		Point itemPos = UtilG.Translate(windowPos, 24, 70) ;
 		

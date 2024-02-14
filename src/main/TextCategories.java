@@ -13,6 +13,7 @@ public enum TextCategories
 	
 	settings("menu de opções"),
 	signMessages("mensagem das placas"),
+	forgeWindowMessages("mensagens da janela de forja"),
 	specialAttributesProperties("propriedades dos atributos especiais"),
 	spellsBar("barra de magias"),
 	statistics("estatísticas do jogador"),

@@ -41,7 +41,7 @@ public class MainGame3_4 extends JFrame implements ActionListener
 		previousState = GameStates.opening ;
         add(new Game()) ;				// adding game panel on the JFrame
     }
-    
+	
 	public static void pauseGame()
 	{
         timer.stop() ;

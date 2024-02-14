@@ -75,7 +75,7 @@ public abstract class GameWindow
 	protected int getItem() {return item ;}
 	protected void setItem(int newValue) {item = newValue ;}
 	
-	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
+	public static boolean actionIsForward(String action) { return action == null ? false : action.equals("Enter") | action.equals("LeftClick") ;}
 	protected GameButton windowUpButton(Point pos, Align align)
 	{
 		IconFunction action = () -> { windowUp() ;} ;

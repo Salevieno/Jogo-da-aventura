@@ -21,6 +21,15 @@ public class BattleSpecialAttribute
 		this.duration = duration;
 	}
 	
+	public BattleSpecialAttribute(BattleSpecialAttribute battleSA)
+	{
+		this.basicAtkChance = battleSA.getBasicAtkChance();
+		this.basicAtkChanceBonus = battleSA.getBasicAtkChanceBonus();
+		this.basicDefChance = battleSA.getBasicDefChance();
+		this.basicDefChanceBonus = battleSA.getBasicDefChanceBonus();
+		this.duration = battleSA.getDuration();
+	}
+	
 	public double getBasicAtkChance()
 	{
 		return basicAtkChance;

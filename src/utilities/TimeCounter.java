@@ -9,9 +9,8 @@ public class TimeCounter
 	private double initialTime ;
 	private double counter ;
 	private double duration ;
-	// TODO testar essa classe com o jogo pausado 
 	private static Set<TimeCounter> allCounters ;
-	
+	// jogo pausado não funciona
 	static 
 	{
 		allCounters = new HashSet<>() ;

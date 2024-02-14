@@ -9,10 +9,12 @@ import java.awt.Point;
 import attributes.BasicBattleAttribute;
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import items.Equip;
 import liveBeings.Pet;
 import main.Game;
 import main.TextCategories;
 import utilities.Align;
+import utilities.Elements;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -52,40 +54,20 @@ public class PetAttributesWindow extends AttributesWindow
 		DP.drawText(namePos, Align.center, angle, pet.getName(), namefont, textColor) ;		
 		DP.drawText(levelPos, Align.center, angle, attText[0] + ": " + pet.getLevel(), font, colorPalette[6]) ;
 		
-		
-		// TODO pet equips
 		//	Equips
-//		if (pet.equips != null)
-//		{
-//			int[] eqSlotW = new int[] {51, 51, 51, 8} ;
-//			int[] eqSlotH = new int[] {51, 51, 51, 24} ;
-//			Point[] eqSlotCenter = new Point[] {UtilG.Translate(windowPos, 66, 110),
-//					UtilG.Translate(windowPos, 244, 62),
-//					UtilG.Translate(windowPos, 244, 134), 
-//					UtilG.Translate(windowPos, 95, 117)} ;
-//			for (int eq = 0 ; eq <= equips.length - 1 ; eq += 1)
-//			{
-//				if (equips[eq] == null) { continue ;}
-//				
-//				Equip equip = equips[eq] ;
-//				Image[] eqImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Equip.ArmorImage, Equip.ArrowImage} ;
-//				Point textPos = UtilG.Translate(eqSlotCenter[eq], -eqSlotW[eq] / 2 - 5, -eqSlotH[eq] / 2 - 2) ;
-//
-//				DP.DrawImage(eqImages[eq], eqSlotCenter[eq], Align.center) ;
-//				if (0 < equip.getForgeLevel())
-//				{
-//					DP.DrawText(textPos, Align.bottomCenter, angle, equipsText[eq + 1] + " + " + equip.getForgeLevel(), font, textColor) ;					
-//				}
-//				
-//				Elements eqElem = pet.getElem()[eq + 1] ;
-//				if (eqElem != null) { continue ;}
-//				
-//				int elemID = Elements.getID(eqElem) ;
-//				Image elemImage = DrawingOnPanel.ElementImages[elemID] ;
-//				Point elemPos = UtilG.Translate(eqSlotCenter[eq], eqSlotW[eq] - 12, eqSlotH[eq] / 2) ;
-//				DP.DrawImage(elemImage, elemPos, angle, new Scale(0.12, 0.12), Align.center) ;
-//			}
-//		}
+		if (pet.getEquip() != null)
+		{
+			Point slotCenter = UtilG.Translate(windowPos, 190, 62) ;
+			Dimension slotSize = new Dimension(51, 51) ;
+			DP.drawImage(Equip.ArmorImage, slotCenter, Align.center) ;
+			Elements eqElem = pet.getElem()[0] ;
+			if (eqElem != null)
+			{
+
+				Point elemPos = UtilG.Translate(slotCenter, slotSize.width - 12, slotSize.height / 2) ;
+				DP.drawImage(eqElem.image, elemPos, angle, new Scale(0.12, 0.12), Align.center) ;
+			}
+		}
 		
 		
 		// super element

@@ -10,15 +10,15 @@ import graphics.DrawPrimitives;
 import main.Game;
 import utilities.Align;
 import utilities.FrameCounter;
+import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 
 public class Sky 
 {
-	public static FrameCounter dayTime ;
+	public static TimeCounter dayCounter ;
 	private static SkyComponent[] clouds;
 	private static SkyComponent[] stars ;
-	private static boolean isDay ;
 	private static Color color ;
 
 	public static final int height = (int)(0.2 * Game.getScreen().getSize().height) ;
@@ -38,11 +38,10 @@ public class Sky
 	
 	public Sky ()
 	{
-		dayTime = new FrameCounter(Game.DayDuration / 2, Game.DayDuration) ;
-		isDay = true ;
+		dayCounter = new TimeCounter(600) ;
+		dayCounter.start() ;
 		updateSkyColor() ;
     	
-    	// initialize clouds
     	clouds = new SkyComponent[5] ;
 		for (int c = 0 ; c <= clouds.length - 1 ; c += 1)
 		{
@@ -53,7 +52,6 @@ public class Sky
 	    	clouds[c] = new SkyComponent(image, initPos, speed) ;
 		}
 		
-		// initialize stars
     	stars = new SkyComponent[50] ;
 		for (int s = 0 ; s <= stars.length - 1 ; s += 1)
 		{
@@ -62,6 +60,8 @@ public class Sky
 			stars[s] = new SkyComponent(image, pos, new Point(0, 0)) ;
 		}
 	}
+	
+	public static double dayTimeRate() { return dayCounter.rate() <= 0.5 ? dayCounter.rate() + 0.5 : dayCounter.rate() - 0.5 ;}
 	
 	private Image randomCloudImage()
 	{
@@ -82,7 +82,7 @@ public class Sky
 		return null ;
 	}
 	
-	public void updateIsDay() { isDay = (0.25 <= dayTime.rate() & dayTime.rate() <= 0.75) ;}
+	public boolean isDay() { return (0.25 <= dayTimeRate() & dayTimeRate() <= 0.75) ;}
 	
 	private void resetCloudMovement(SkyComponent cloud)
 	{
@@ -102,14 +102,15 @@ public class Sky
 			{
 				resetCloudMovement(cloud) ;
 			}
-			double alpha = -16 * Math.pow(dayTime.rate(), 2) + 16 * dayTime.rate() - 3 ;
+			double alpha = -16 * Math.pow(dayTimeRate(), 2) + 16 * dayTimeRate() - 3 ;
 			cloud.display(Draw.stdAngle, alpha, DP) ;
 		}
 	}
 	
 	private void displayNightSky(DrawPrimitives DP)
 	{
-		double alpha = -16 * Math.pow(dayTime.rate() - 0.5, 2) + 16 * Math.abs(dayTime.rate() - 0.5) - 3 ;
+		double alpha = -16 * Math.pow(dayTimeRate() - 0.5, 2) + 16 * Math.abs(dayTimeRate() - 0.5) - 3 ;
+		
 		for (SkyComponent star : stars)
 		{
 			star.display(Draw.stdAngle, alpha, DP) ;
@@ -118,21 +119,19 @@ public class Sky
 	
 	private void updateSkyColor()
 	{
-		double ColorMult = 1 - 1.8 * Math.abs(dayTime.rate() - 0.5) ;
-		int red = Math.max(0, Math.min((int)(Game.colorPalette[21].getRed() * ColorMult), 255)) ;
-		int green = Math.max(0, Math.min((int)(Game.colorPalette[21].getGreen() * ColorMult), 255)) ;
-		int blue = Math.max(0, Math.min((int)(Game.colorPalette[21].getBlue() * ColorMult), 255)) ;
+		double mult = 1 - 1.8 * Math.abs(dayTimeRate() - 0.5) ;
+		int red = Math.max(0, Math.min((int)(Game.colorPalette[21].getRed() * mult), 255)) ;
+		int green = Math.max(0, Math.min((int)(Game.colorPalette[21].getGreen() * mult), 255)) ;
+		int blue = Math.max(0, Math.min((int)(Game.colorPalette[21].getBlue() * mult), 255)) ;
 		color = new Color(red, green, blue) ;
 	}
 	
 	public void display(DrawPrimitives DP)
 	{
-
-		updateIsDay() ;
 		updateSkyColor() ;
 		DP.drawRect(new Point(0, height), Align.bottomLeft, size, 1, color, null) ;
 		
-		if (isDay)
+		if (isDay())
 		{
 			displayDaySky(DP) ;
 			

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sound.sampled.Clip;
@@ -11,6 +12,7 @@ import javax.sound.sampled.Clip;
 import graphics.Animation;
 import graphics.AnimationTypes;
 import graphics.DrawPrimitives;
+import liveBeings.AttackModifiers;
 import liveBeings.Creature;
 import liveBeings.LiveBeing;
 import liveBeings.LiveBeingStates;
@@ -84,10 +86,7 @@ public abstract class Battle
 		return UtilG.chance(hitChance) ;
 	}
 	
-	public static boolean block(double blockDef)
-	{
-		return UtilG.chance(blockDef) ;
-	}
+	public static boolean block(double blockDef) { return UtilG.chance(blockDef) ;}
 
 	public static boolean criticalAtk(double critAtk, double critDef)
 	{
@@ -127,8 +126,9 @@ public abstract class Battle
 		
 		AtkEffects effect = calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
 		int damage = calcDamage(effect, atkPhyAtk + arrowPower, defPhyDef, atkElems, defElems, elemRes) ;
-
-		return new AtkResults(AtkTypes.physical, effect, damage) ;
+		int[] inflictedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
+		
+		return new AtkResults(AtkTypes.physical, effect, damage, inflictedStatus) ;
 	}
 
 	public static AtkEffects calcEffect(double dex, double agi, double critAtk, double critDef, double blockDef)
@@ -164,21 +164,26 @@ public abstract class Battle
 		return (int) UtilG.Round(randomMult * elemMult * elemMod * baseDamage, 0) ;
 	}
 		
-	private static int[] calcStatus(double[] atkChances, double[] defChances, int[] durations)
+	public static int[] calcStatus(double[] atkChances, double[] defChances, int[] durations)
 	{
-		int[] status = new int[atkChances.length] ;
+		int stun = 0 ;
+		int block = 0 ;
+		int blood = 0 ;
+		int poison = 0 ;
+		int silence = 0 ;
+		if (UtilG.chance(atkChances[1] - defChances[1])) {block = durations[1] ;}
+		if (0 < block) { return new int[] {0, block, 0, 0, 0} ;}
 		
-		for (int i = 0; i <= atkChances.length - 1; i += 1)
-		{
-			if (UtilG.chance(atkChances[i] - defChances[i]))
-			{
-				status[i] = durations[i] ;
-			}
-		}
-		return status ;
+		if (UtilG.chance(atkChances[0] - defChances[0])) {stun = durations[0] ;}
+		if (UtilG.chance(atkChances[2] - defChances[2])) {blood = durations[2] ;}
+		if (UtilG.chance(atkChances[3] - defChances[3])) {poison = durations[3] ;}
+		if (UtilG.chance(atkChances[4] - defChances[4])) {silence = durations[4] ;}
+		
+		
+		return new int[] {stun, block, blood, poison, silence} ;
 	}
 	
-	public static void throwItem(LiveBeing attacker, LiveBeing receiver, double itemPower, Elements itemElem)
+	public static void throwItem(LiveBeing attacker, LiveBeing receiver, double itemPower, AttackModifiers itemAtkMod, Elements itemElem)
 	{
 		double atkDex = attacker.getBA().TotalDex() ;
 		double defAgi = receiver.getBA().TotalAgi() ;
@@ -186,6 +191,7 @@ public abstract class Battle
 		double defCrit = receiver.getBA().TotalCritDefChance() ;
 		double defBlock = receiver.getBA().getStatus().getBlock() ;
 		double defPhyDef = receiver.getBA().TotalPhyDef() ;
+		double[] baseAtkChances = itemAtkMod == null ? new double[5] : new double[] {itemAtkMod.getStunMod()[0], itemAtkMod.getBlockMod()[0], itemAtkMod.getBloodMod()[0], itemAtkMod.getPoisonMod()[0], itemAtkMod.getSilenceMod()[0]} ;
 		
 		Elements[] atkElems = new Elements[] {itemElem, Elements.neutral, Elements.neutral} ;
 		AtkEffects effect = calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
@@ -193,26 +199,24 @@ public abstract class Battle
 		
 		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return ;}
 		int damage = Battle.calcDamage(AtkEffects.hit, itemPower, defPhyDef, atkElems, receiver.defElems(), elemRes) ;
-		receiver.getPA().getLife().decTotalValue(damage) ;
-		AtkResults atkResults = new AtkResults(AtkTypes.physical, effect, damage) ;
+		int[] inflictedStatus = calcStatus(baseAtkChances, receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
+		
+		AtkResults atkResults = new AtkResults(AtkTypes.physical, effect, damage, inflictedStatus) ;
+		receiver.takeDamage(atkResults.getDamage()) ;
+		if (attacker instanceof Player)
+		{
+			((Player) attacker).getStatistics().updateInflicedStatus(atkResults.getStatus());
+		}
+		receiver.getBA().getStatus().receiveStatus(atkResults.getStatus()) ;
 		playDamageAnimation(receiver, atkResults) ;
 		startAtkAnimations(attacker, atkResults.getAtkType()) ;
 	}
 	
 	private static AtkTypes atkTypeFromAction(LiveBeing attacker)
 	{
-		if (attacker.usedPhysicalAtk() | attacker.actionIsArrowAtk())
-		{
-			return AtkTypes.physical ;
-		}
-		if (attacker.actionIsSpell() & !attacker.isSilent())
-		{
-			return AtkTypes.magical ;
-		}
-		if (attacker.usedDef())
-		{
-			return AtkTypes.defense ;
-		}
+		if (attacker.usedPhysicalAtk() | attacker.actionIsArrowAtk()) { return AtkTypes.physical ;}
+		if (attacker.actionIsSpell()) { return AtkTypes.magical ;}
+		if (attacker.usedDef()) { return AtkTypes.defense ;}
 		
 		return null ;
 	}
@@ -242,7 +246,6 @@ public abstract class Battle
 			{
 				player.deactivateDef() ;
 			}
-//			UtilS.PrintBattleActions(6, "Player", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
 		}
 		if (pet != null)
 		{
@@ -250,7 +253,6 @@ public abstract class Battle
 			{
 				if (pet.getCurrentAtkType().equals(AtkTypes.defense))
 				{
-//					UtilS.PrintBattleActions(6, "Pet", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
 		 			pet.deactivateDef() ;
 				}
 			}
@@ -259,14 +261,9 @@ public abstract class Battle
 		{
 			if (creature.getCurrentAtkType().equals(AtkTypes.defense))
 			{
-//				UtilS.PrintBattleActions(6, "Creature", "creature", 0, 0, player.getBA().getSpecialStatus(), creature.getElem()) ;
 	 			creature.deactivateDef() ;
 			}
 		}
-		
-//		player.ActivateBattleActionCounters() ;
-//		pet.ActivateBattleActionCounters() ;
-//		creature.ActivateBattleActionCounters() ;
 		
 		if (player.getBattleActionCounter().finished())
 		{
@@ -283,35 +280,11 @@ public abstract class Battle
 		{
 			creature.resetBattleAction() ;
 		}
-		/*for (int i = 0 ; i <= Items.ItemsWithEffects.length - 1 ; ++i)
-		{
-			int ItemID = Items.ItemsWithEffects[i] ;
-			for (int j = 0 ; j <= items[ItemID].getBuffs().length - 1 ; ++j)
-			{
-				if (0 < items[ItemID].getBuffs()[j][12] & PlayerItemEffectCounter[i][j] == items[ItemID].getBuffs()[j][12])
-				{
-					BuffsAndNerfs(player, pet, creature, items[ItemID].getBuffs(), 1, j, false, Items.ItemsTargets[i], "deactivate") ;
-					PlayerItemEffectCounter[i][j] = 0 ;
-					ItemEffectIsActive[i][j] = false ;
-				}
-			}
-		}*/
 	}
 		
 	public static boolean isOver(Player player, Pet pet, Creature creature)
 	{
-		// TODO add pet life condition to finish battle
-//		if (pet != null)
-//		{
-//			if (creature.isAlive() & (player.isAlive() | pet.isAlive())) { return false ;}
-//		}
-//		else
-//		{
-//			if (creature.isAlive() & player.isAlive()) { return false ;}
-//		}
-		if (creature.isAlive() & player.isAlive()) { return false ;}
-		
-		return true ;
+		return pet == null ? !creature.isAlive() | !player.isAlive() : !creature.isAlive() | (!player.isAlive() & !pet.isAlive()) ;
 	}
 			
 	private static void startAtkAnimations(LiveBeing user, AtkTypes atkType)
@@ -326,8 +299,8 @@ public abstract class Battle
 		}
 	}
 		
-	private static void playAtkAnimations(LiveBeing user, Point pos, DrawPrimitives DP)
-	{
+//	private static void playAtkAnimations(LiveBeing user, Point pos, DrawPrimitives DP)
+//	{
 //		if (user.phyHitGif.isPlaying())
 //		{
 //			user.phyHitGif.play(pos, Align.center, DP) ;
@@ -344,7 +317,7 @@ public abstract class Battle
 //		{
 //			user.magHitGif.resetTimeCounter() ;
 //		}
-	}
+//	}
 			
 	private static void checkSpendArrow(LiveBeing attacker)
 	{
@@ -352,30 +325,30 @@ public abstract class Battle
 		
 		Player player = (Player) attacker ;
 		
-//		if (player.getJob() != 2) { return ;}
 		if (!player.arrowIsEquipped()) { return ;}
 		if (!player.usedPhysicalAtk() & !player.usedSpell()) { return ;}
 		
 		player.spendArrow() ;
-		
-		attacker.useAutoSpell(true, player.getSpells().get(13)) ;
+		if (player.getJob() == 2)
+		{
+			attacker.useAutoSpell(true, player.getSpells().get(13)) ;
+		}
 	}
 
 	private static AtkResults performAtk(AtkTypes atkType, LiveBeing attacker, LiveBeing receiver)
-	{		
-		
+	{
+
 		if (atkType == null) { return new AtkResults() ;}
 		
-		
 
-		AtkResults atkResult = switch (atkType)
+		AtkResults atkResults = switch (atkType)
 		{
 			case physical -> calcPhysicalAtk(attacker, receiver) ;
 			case magical ->
 			{
 				int spellID = Player.SpellKeys.indexOf(attacker.getCurrentAction()) ;
-				Spell spell = attacker.getSpells().get(spellID) ;
-				if (spell.isReady() & attacker.hasEnoughMP(spell))
+				Spell spell = attacker.getActiveSpells().get(spellID) ;
+				if (attacker.canUseSpell(spell))
 				{
 					yield attacker.useSpell(spell, receiver);
 				}
@@ -389,7 +362,7 @@ public abstract class Battle
 			case defense ->
 			{
 	 			attacker.activateDef() ;
-				yield new AtkResults(AtkTypes.defense , AtkEffects.none, 0);
+				yield new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
 			}
 			default -> new AtkResults() ;
 		} ;
@@ -398,17 +371,18 @@ public abstract class Battle
 		
 		
 		
-		AtkEffects effect = atkResult.getEffect() ;
-		// TODO using mystical inspirations effect = null
-		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResult ;}
+		AtkEffects effect = atkResults.getEffect() ;
+		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
 
 
-		receiver.takeDamage(atkResult.getDamage()) ;
-		int[] appliedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(),
-				attacker.getBA().baseDurations()) ;				
-		receiver.getBA().getStatus().receiveStatus(appliedStatus) ;
+		receiver.takeDamage(atkResults.getDamage()) ;
+		if (attacker instanceof Player)
+		{
+			((Player) attacker).getStatistics().updateInflicedStatus(atkResults.getStatus());
+		}
+		receiver.getBA().getStatus().receiveStatus(atkResults.getStatus()) ;
 
-		return atkResult ;
+		return atkResults ;
 	}	
 		
 	private static void runTurn(LiveBeing attacker, LiveBeing receiver, DrawPrimitives DP)
@@ -416,10 +390,10 @@ public abstract class Battle
 		
 		if (!attacker.isAlive()) { return ;}
 		
-		// TODO criatura tem que tomar blood and poison dano do player e do pet
+		receiver.takeBloodAndPoisonDamage(attacker, attacker.getBA().getBlood().TotalAtk(), attacker.getBA().getPoison().TotalAtk());
 		attacker.drawTimeBar("Left", Game.colorPalette[13], DP) ;
 
-		playAtkAnimations(attacker, receiver.center(), DP) ;
+//		playAtkAnimations(attacker, receiver.center(), DP) ;
 		if (attacker.isDefending())
 		{
 			attacker.displayDefending(DP) ;
@@ -438,7 +412,8 @@ public abstract class Battle
 		attacker.setCurrentAtkType(atkType) ;
 		AtkResults atkResults = performAtk(atkType, attacker, receiver) ;
 		if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
-		if (attacker instanceof Player) { ((Player) attacker).getStatistics().update(atkResults) ;}
+		if (attacker instanceof Player) { ((Player) attacker).getStatistics().updateOffensive(atkResults) ;}
+		if (receiver instanceof Player) { ((Player) receiver).getStatistics().updateDefensive(atkResults, receiver.getBA().getPhyDef().getTotal(), receiver.getBA().getMagDef().getTotal()) ;}
 
 		attacker.updateCombo() ;
 		attacker.resetBattleActions() ;
@@ -463,8 +438,11 @@ public abstract class Battle
 		activateCounters(player, pet, creature) ;
 		
 		LiveBeing creatureTarget = player ;
-		if (pet != null) { creatureTarget = creature.chooseTarget(player.isAlive(), pet.isAlive()).equals("player") ? player : pet ;}
-
+		if (pet != null)
+		{
+			creatureTarget = creature.chooseTarget(player.isAlive(), pet.isAlive()).equals("player") ? player : pet ;
+		}
+		
 		runTurn(player, creature, DP) ;
 		if (pet != null) { runTurn(pet, creature, DP) ;}
 		runTurn(creature, creatureTarget, DP) ;
@@ -508,15 +486,18 @@ public abstract class Battle
 					pet.win(creature) ;
 				}
 			}
-//			creature.dies() ;
+			creature.dies() ;
 			
 			return ;
 		}
 		
 		creature.getPA().getLife().setToMaximum() ;
 		creature.getPA().getMp().setToMaximum() ;
-//		player.dies() ;
-//		if (pet != null) {pet.dies() ; pet.setPos(player.getPos());}
+		player.dies() ;
+		if (pet != null)
+		{
+			pet.dies() ;
+		}
 		creature.setFollow(false) ;
 	}
 

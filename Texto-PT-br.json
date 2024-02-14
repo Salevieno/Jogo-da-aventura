@@ -138,6 +138,16 @@
     "Bem vindo à cidade dos ladrões! Ao norte fica a cidade dos cavaleiros. Ao leste fica a cidade dos magos. Ao nordeste ficam as cidades dos arqueiros e dos animais."
   ],
 
+  "mensagens da janela de forja":
+  [
+    "Selecione o equipamento",
+    "O equipamento já está no nível máximo!",
+    "Você precisa de uma runa apropriada!",
+    "Você precisa de mais ouro!",
+    "Item forjado!",
+    "Essa não! A forja não funcionou!"
+  ],
+
   "propriedades dos atributos especiais": [
     "Chance do efeito",
     "Ataque",

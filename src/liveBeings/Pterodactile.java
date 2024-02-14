@@ -16,7 +16,6 @@ public class Pterodactile
     
     public static void speak()
     {
-    	// TODO pterodactile speak
 		Object[] object = new Object[] { image, SpeakingBubbleImage, message } ;
 		Animation.start(AnimationTypes.pterodactile, object);
 		

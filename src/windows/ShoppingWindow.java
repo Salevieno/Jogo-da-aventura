@@ -2,11 +2,14 @@ package windows;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import graphics.Animation;
+import graphics.AnimationTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Item;
@@ -25,10 +28,11 @@ public class ShoppingWindow extends GameWindow
 
 	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
 	private static final int numberItemsPerWindow = 10 ;
+	private static final Image image = UtilS.loadImage("\\Windows\\" + "Shopping.png") ;
 	
 	public ShoppingWindow(List<Item> itemsForSale)
 	{
-		super("Shopping", windowPos, UtilS.loadImage("\\Windows\\" + "Shopping.png"), 1, 1, Math.min(itemsForSale.size(), numberItemsPerWindow), calcNumberWindows(itemsForSale.size())) ;
+		super("Shopping", windowPos, image, 1, 1, Math.min(itemsForSale.size(), numberItemsPerWindow), calcNumberWindows(itemsForSale.size())) ;
 		this.itemsForSale = itemsForSale ;
 		itemsOnWindow = calcItemsOnWindow() ;
 		buyMode = true ;
@@ -52,31 +56,28 @@ public class ShoppingWindow extends GameWindow
 	
 	public void navigate(String action)
 	{
-		if (action == null) { return ;}
-		
 		if (action.equals(stdWindowDown))
 		{
-			itemUp() ;
+			windowDown() ;
+			updateWindow() ;
 		}
 		if (action.equals(stdWindowUp))
-		{
-			itemDown() ;
-		}
-		if (action.equals(stdMenuUp))
 		{
 			windowUp() ;
 			updateWindow() ;
 		}
+		if (action.equals(stdMenuUp))
+		{
+			itemDown() ;
+		}
 		if (action.equals(stdMenuDown))
 		{
-			windowDown() ;
-			updateWindow() ;
+			itemUp() ;
 		}
 	}
 	
 	public void act(String action, BagWindow bag)
 	{
-		// TODO reaction with "bought" or "not enough gold"
 		if (actionIsForward(action))
 		{
 			if (buyMode)
@@ -96,18 +97,25 @@ public class ShoppingWindow extends GameWindow
 		numberItems = itemsOnWindow.size() ;
 	}
 	
+	public void displayMessage(int i)
+	{
+		if (i == 0)
+		{
+			Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.1, 0.2), "Você não possui ouro suficiente", Game.colorPalette[0]}) ;
+			return ;
+		}
+
+		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.1, 0.2), selectedItem().getName(), Game.colorPalette[0]}) ;
+	}
+	
 	public void buyItem(BagWindow bag)
 	{
 		Item selectedItem = selectedItem() ;
-		if (bag.getGold() < selectedItem.getPrice())
-		{
-//			Game.getAnimations().get(11).start(200, new Object[] {});
-			return ;
-		}
+		if (bag.getGold() < selectedItem.getPrice()) { displayMessage(0) ; return ;}
 		
+		displayMessage(1) ;
 		bag.add(selectedItem, 1) ;
 		bag.addGold(-selectedItem.getPrice()) ;
-//		Game.getAnimations().get(3).start(300, new Object[] {new Item[] {selectedItem}});
 	}
 	
 	public void sellItem(BagWindow bag)

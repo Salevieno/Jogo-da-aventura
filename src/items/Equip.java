@@ -9,6 +9,8 @@ import java.util.List;
 import attributes.AttributeBonus;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
+import graphics.Animation;
+import graphics.AnimationTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import liveBeings.LiveBeing;
@@ -29,6 +31,7 @@ public class Equip extends Item
 	private Elements originalElem ;
 	
 	private static Equip[] allEquips ;
+	private static final double setBonus = 0.2 ;
 	public static final int maxForgeLevel = 10 ;
 	
 	private static final Image swordIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconSword.png") ;
@@ -276,44 +279,62 @@ public class Equip extends Item
 	}
 	
 	public void use(LiveBeing user)
-	{
-		
+	{		
 		if (!(user instanceof Player)) { return ;}
 		
-		int type = numTypeFromID(id) ;
-		double setBonus = 0.2 ;
 		Player player = (Player) user ;
-		// TODO corrigir bug de equipar armas diferentes uma seguida da outra
-		if (player.getEquips()[type] == Equip.getAll()[id])
+		int type = numTypeFromID(id) ;
+
+		boolean isEquippingTheSameEquip = player.getEquips()[type] != null ? player.getEquips()[type].getId() == id : false ;
+		if (player.getEquips()[type] != null)
 		{
-			// unequip
-//			Game.getAnimations().get(12).start(160, new Object[] {Game.getScreen().pos(0.4, 0.3), "Desequipado!", Game.colorPalette[0]}) ;
-			applyBonus(user.getPA(), user.getBA(), Equip.getAll()[id], -1) ;
-			user.getElem()[type + 1] = Elements.neutral ;
-			if (Player.setIsFormed(player.getEquips()))
-			{
-				applyBonus(user.getPA(), user.getBA(), player.getEquips()[0], -setBonus) ;
-				applyBonus(user.getPA(), user.getBA(), player.getEquips()[1], -setBonus) ;
-				applyBonus(user.getPA(), user.getBA(), player.getEquips()[2], -setBonus) ;
-			}				
-			player.getEquips()[type] = null ;
-			
-			return ;
+			unequip(player, player.getEquips()[type]) ;
 		}
 		
-		// equip
-//		Game.getAnimations().get(12).start(160, new Object[] {Game.getScreen().pos(0.4, 0.3), "Equipado!", Game.colorPalette[0]}) ;
-		player.getEquips()[type] = Equip.getAll()[id] ;
-		user.getElem()[type + 1] = Equip.getAll()[id].elem ;				
+		if (!isEquippingTheSameEquip)
+		{
+			equip(player, Equip.getAll()[id]) ;
+		}
+		
+	}
+	
+	private void equip(Player player, Equip equip)
+	{
+		int type = numTypeFromID(id) ;
+		player.getEquips()[type] = equip ;
+		player.getElem()[type + 1] = equip.elem ;
+		
 		if (Player.setIsFormed(player.getEquips()))
 		{
-			applyBonus(user.getPA(), user.getBA(), player.getEquips()[0], setBonus) ;
-			applyBonus(user.getPA(), user.getBA(), player.getEquips()[1], setBonus) ;
-			applyBonus(user.getPA(), user.getBA(), player.getEquips()[2], setBonus) ;
+			applyBonus(player.getPA(), player.getBA(), player.getEquips()[0], setBonus) ;
+			applyBonus(player.getPA(), player.getBA(), player.getEquips()[1], setBonus) ;
+			applyBonus(player.getPA(), player.getBA(), player.getEquips()[2], setBonus) ;
 		}				
-		applyBonus(user.getPA(), user.getBA(), Equip.getAll()[id], 1) ;
-			
-		user.getElem()[4] = user.hasSuperElement() ? user.getElem()[1] : Elements.neutral ;
+		applyBonus(player.getPA(), player.getBA(), equip, 1) ;
+
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Game.colorPalette[0]}) ;
+		player.getElem()[4] = player.hasSuperElement() ? player.getElem()[1] : Elements.neutral ;
+		if (player.hasSuperElement())
+		{
+			player.receiveSuperElementEffect(player.getElem()[4]) ;
+		}
+	}
+	
+	private void unequip(Player player, Equip equip)
+	{
+		int type = numTypeFromID(id) ;
+		applyBonus(player.getPA(), player.getBA(), equip, -1) ;
+		player.getElem()[type + 1] = Elements.neutral ;
+		
+		if (Player.setIsFormed(player.getEquips()))
+		{
+			applyBonus(player.getPA(), player.getBA(), player.getEquips()[0], -setBonus) ;
+			applyBonus(player.getPA(), player.getBA(), player.getEquips()[1], -setBonus) ;
+			applyBonus(player.getPA(), player.getBA(), player.getEquips()[2], -setBonus) ;
+		}		
+		
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Game.colorPalette[0]}) ;
+		player.getEquips()[type] = null ;
 	}
 	
 	public void displayInfo(Point pos, Align align, DrawPrimitives DP)

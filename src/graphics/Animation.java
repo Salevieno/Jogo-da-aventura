@@ -23,6 +23,7 @@ public class Animation
 	
 	private static final List<Animation> all = new ArrayList<>() ;
 	public static final Image obtainedItem = UtilS.loadImage("ObtainedItem.png") ;
+	public static final Image messageBox = UtilS.loadImage("messageBox.png") ;
 
 	private Animation(AnimationTypes type)
 	{
@@ -63,7 +64,7 @@ public class Animation
 				
 			case 1 :
 				return (vars, DP) -> {
-					Item[] itemsObtained = (Item[]) vars[0] ;
+					List<Item> itemsObtained = (List<Item>) vars[0] ;
 					Draw.winAnimation(counter, itemsObtained) ;
 				} ;				
 //				
@@ -138,32 +139,31 @@ public class Animation
 							break ;
 					}
 
-//					Player.FishingGif.start(fishingPos, Align.bottomCenter) ;
-//					if (Player.FishingGif.isDonePlaying())
-//					{
-//						Player.FishingGif.resetTimeCounter() ;
-//					}
-
-				} ;				
-				
-//			case 10 :
-//				return (vars, DP) -> {
-//					int goldObtained = (int) vars[0] ;
-//					Draw.gainGoldAnimation(counter, goldObtained) ;
-//				} ;				
-//				
-//			case 11 :
-//				return (vars, DP) -> {
-//					Draw.notEnoughGold(counter) ;
-//				} ;				
+				} ;
 				
 			case 4 :
+				return (vars, DP) -> {
+					double[] attributesInc = (double[]) vars[0] ;
+					int playerLevel = (int) vars[1] ;
+
+					Draw.levelUpAnimation(counter, attributesInc, playerLevel) ;
+				} ;	
+				
+			case 5 :
 				return (vars, DP) -> {
 					Point pos = (Point) vars[0] ;
 					String message = (String) vars[1] ;
 					Color color = (Color) vars[2] ;
 					Draw.quickTextAnimation(pos, counter, message, color) ;
-				} ;				
+				} ;	
+				
+			case 6 :
+				return (vars, DP) -> {
+					Point pos = (Point) vars[0] ;
+					String message = (String) vars[1] ;
+					Color color = (Color) vars[2] ;
+					Draw.obtainedItemAnimation(pos, counter, message, color) ;
+				} ;			
 				
 			default: return null ;
 		}

@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import graphics.Animation;
+import graphics.AnimationTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Equip;
 import items.GeneralItem;
+import liveBeings.Player;
 import main.Game;
 import utilities.Align;
 import utilities.Elements;
@@ -38,10 +41,10 @@ public class ElementalWindow extends GameWindow
 		super("Elemental", windowPos, windowImage, 2, 1, 1, 2) ;
 		spheres = null ;
 		selectedEquip = null ;
-		selectedSphere = null ; // ArrayList<Item>) ((ArrayList<?>) equipsForElemChange))
+		selectedSphere = null ;
 		equipsForElemChange = null ;
 	}
-	// TODO fazer a janela fechar após a seleção da esfera
+
 	public static List<GeneralItem> spheresInBag(BagWindow bag)
 	{
 		
@@ -77,38 +80,41 @@ public class ElementalWindow extends GameWindow
 	@Override
 	public void navigate(String action)
 	{
-		
-		if (action.equals(stdWindowDown))
+		if (action.equals(stdMenuDown))
 		{
 			itemUp() ;
 		}
-		if (action.equals(stdWindowUp))
+		if (action.equals(stdMenuUp))
 		{
 			itemDown() ;
 		}
-//		if (action.equals("Escape")) { menu = 0 ; close() ; return ;}
-
+		if (action.equals(stdWindowUp))
+		{
+			windowUp() ;
+		}
+		if (action.equals(stdWindowDown))
+		{
+			windowDown() ;
+		}
 	}
 	
-	public void act(BagWindow bag, String action)
+	public void act(BagWindow bag, String action, Player player)
 	{
-		if (action == null) { return ;}
+		if (!actionIsForward(action)) { return ;}
 		
-		
-		if (!action.equals("Enter") & !action.equals("LeftClick")) { return ;}
-		
-		System.out.println("menu = " + menu);
 		switch (menu)
 		{
 			case 0:
 				selectEquip() ;
 				menu += 1 ;
+				player.resetAction() ;
 				return ;
 				
 			case 1:
 				selectSphere() ;
 				changeEquipElement(bag) ;
-				menu = 0 ;
+				player.switchOpenClose(this) ;
+				player.resetAction() ;
 				return ;
 			
 			default: return ;
@@ -116,34 +122,41 @@ public class ElementalWindow extends GameWindow
 		
 	}
 	
-	public void selectEquip()
-	{System.out.println("equips available = " + equipsForElemChange) ;System.out.println("selecting " + equipsForElemChange.get(item));
-		selectedEquip = equipsForElemChange.get(item) ;
-	}
+	public void selectEquip() { selectedEquip = equipsForElemChange.get(item) ;}
 	
 	public void selectSphere()
 	{
-		if (spheres == null | spheres.size() == 0) { return ;}
-		selectedSphere = spheres.get(item) ; item = 0 ;
-		System.out.println("bag spheres: " + spheres);
-		System.out.println("selected sphere: " + selectedSphere.getName());
+		if (spheres == null) { return ;}
+		if (spheres.isEmpty()) { return ;}
+		selectedSphere = spheres.get(item) ;
+		item = 0 ;
+	}
+	
+	private void displayMessage(int i)
+	{
+		String message = switch(i)
+		{
+			case 0 -> "Nenhum equipamento selecionado" ;
+			case 1 -> "Nenhuma esfera selecionada" ;
+			case 2 -> "Você não possui esta esfera" ; 
+			case 3 -> "Elemento mudado com sucesso!" ;
+			default -> "" ;
+		};
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.1, 0.1), message, Game.colorPalette[0]}) ;
 	}
 	
 	public void changeEquipElement(BagWindow bag)
 	{
-		if (selectedEquip == null) { return ;}
-		if (selectedSphere == null) { return ;}
+		if (selectedEquip == null) { displayMessage(0) ; return ;}
+		if (selectedSphere == null) { displayMessage(1) ; return ;}
 		
 		Elements sphereElem = Elements.values()[selectedSphere.getId() - firstSphereID] ;
 		
-		if (!bag.contains(selectedSphere)) { return ;}
-		
-		System.out.println(selectedEquip.getName() + ": " + selectedEquip.getElem() + " -> " + sphereElem);
+		if (!bag.contains(selectedSphere)) { displayMessage(2) ; return ;}
 		
 		selectedEquip.setElem(sphereElem) ;
 		bag.remove(selectedSphere, 1) ;
-		
-		System.out.println("Equip new elem: " + selectedEquip.getElem());
+		displayMessage(3) ;
 		
 	}
 
@@ -159,8 +172,8 @@ public class ElementalWindow extends GameWindow
 		List<Equip> equipsOnWindow = getEquipsOnWindow() ;
 		for (int i = 0 ; i <= equipsOnWindow.size() - 1; i += 1)
 		{
-			int row = (i - window * numberItemsOnWindow) % ( numberItemsOnWindow / 1) ;
-			int col = (i - window * numberItemsOnWindow) / ( numberItemsOnWindow / 1) ;
+			int row = i % ( numberItemsOnWindow / 1) ;
+			int col = i / ( numberItemsOnWindow / 1) ;
 			Equip equip = equipsForElemChange.get(i) ;
 			Point slotCenter = UtilG.Translate(windowPos,
 					border + padding + 6 + slotW / 2 + col * (140 + slotW),

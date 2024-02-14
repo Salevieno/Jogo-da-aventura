@@ -5,13 +5,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
+import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
+import attributes.PersonalAttributes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Item;
@@ -43,15 +46,15 @@ public class Creature extends LiveBeing
 	
  	public Creature(CreatureType CT)
 	{
- 		super(CT.getPA(), CT.getBA(), CT.getMovingAnimations(), CreatureType.attWindow) ;
+ 		super(new PersonalAttributes(CT.getPA()), new BattleAttributes(CT.getBA()), CT.getMovingAnimations(), CreatureType.attWindow) ;
 		
 		this.type = CT ;		
 		this.name = CT.name;
 		this.level = CT.level;
-		this.size = CT.size;
+		this.size = new Dimension(CT.size);
 		this.range = CT.range;
 		this.step = CT.step;
-		this.elem = CT.elem;
+		this.elem = Arrays.copyOf(CT.elem, CT.elem.length);
 		mpCounter = new FrameCounter(0, CT.mpDuration);
 		satiationCounter = new FrameCounter(0, CT.satiationDuration);
 		actionCounter = new FrameCounter(0, CT.numberSteps) ;
@@ -62,8 +65,8 @@ public class Creature extends LiveBeing
 		dir = Directions.up ;
 		state = LiveBeingStates.idle ;
 		currentAction = "" ;
-		spells = CT.getSpell() ;
-		this.items = CT.getItems() ;
+		spells = List.copyOf(CT.getSpell()) ;
+		this.items = Set.copyOf(CT.getItems()) ;
 		this.gold = CT.getGold() ;
 		this.color = CT.getColor() ;
 		
@@ -114,6 +117,23 @@ public class Creature extends LiveBeing
 	{
 		int MPcost = 10 * spellID ;
 		return (MPcost <= PA.getMp().getCurrentValue()) ;
+	}
+	
+	public Item getRandomElemFromBag()
+	{
+		int i = 0 ;
+		int itemID = UtilG.randomIntFromTo(0, items.size() - 1) ;
+		for (Item item : items)
+		{
+			if (i == itemID)
+			{
+				return item ;
+			}
+			
+			i += 1 ;
+		}
+		
+		return null ;
 	}
 	
 	public void displayName(Point pos, Align alignment, Color color, DrawPrimitives DP)
@@ -170,7 +190,7 @@ public class Creature extends LiveBeing
 	}
 	
 	public String chooseTarget(boolean playerIsAlive, boolean petIsAlive)
-	{// TODO refatorar creature choose target
+	{// TODO - optional retornar liveBeing
 		if (!playerIsAlive & !petIsAlive) { return null ;}		
 		if (!playerIsAlive) { return "pet"  ;}
 		if (!petIsAlive) { return "player" ;}
@@ -184,7 +204,6 @@ public class Creature extends LiveBeing
 
 		if (!state.equals(LiveBeingStates.moving)) { return ;}
 		
-		// TODO quando não está em batalha mas está seguindo, ela só se aproxima, mas não entra na batalha
 		if (follow)
 		{
 			setPos(follow(pos, PlayerPos, step, range)) ;
@@ -256,11 +275,9 @@ public class Creature extends LiveBeing
 		
 	}
 	
-	public AtkResults useSpell(Spell spell, LiveBeing receiver)
+	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
 	{
 		int spellLevel = spell.getLevel() ;
-		int damage = -1 ;
-		AtkEffects effect = null ;
 
 		double MagAtk = BA.TotalMagAtk() ;
 		double MagDef = receiver.getBA().TotalMagDef() ;
@@ -273,8 +290,15 @@ public class Creature extends LiveBeing
 		double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
 		double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
 		double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
-		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;	// Critical atk modifier
-		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;	// Critical def modifier
+		double[] stunMod = new double[] {spell.getStunMod()[0] * spellLevel, 1 + spell.getStunMod()[1] * spellLevel} ;
+		double[] blockMod = new double[] {spell.getBlockMod()[0] * spellLevel, 1 + spell.getBlockMod()[1] * spellLevel} ;
+		double[] bloodMod = new double[] {spell.getBloodMod()[0] * spellLevel, 1 + spell.getBloodMod()[1] * spellLevel} ;
+		double[] poisonMod = new double[] {spell.getPoisonMod()[0] * spellLevel, 1 + spell.getPoisonMod()[1] * spellLevel} ;
+		double[] silenceMod = new double[] {spell.getSilenceMod()[0] * spellLevel, 1 + spell.getSilenceMod()[1] * spellLevel} ;
+		double[] atkChances = new double[] {stunMod[0], blockMod[0], bloodMod[0], poisonMod[0], silenceMod[0]} ;
+		
+		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;
+		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;
 		double BlockDef = receiver.getBA().getStatus().getBlock() ;
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
@@ -283,11 +307,29 @@ public class Creature extends LiveBeing
 		
 		BasicAtk = MagAtk ;
 		BasicDef = MagDef ;
+
+		AtkEffects effect = Battle.calcEffect(DexMod[0] + AtkDex*DexMod[1], AgiMod[0] + DefAgi*AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
+		int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
+		int[] inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
-		effect = Battle.calcEffect(DexMod[0] + AtkDex*DexMod[1], AgiMod[0] + DefAgi*AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
-		damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
+		return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
+	}
+	
+	public AtkResults useSpell(Spell spell, LiveBeing receiver)
+	{
+		if (spell == null) { return null ;}
+		if (receiver == null) { return null ;}
+		if (!hasEnoughMP(spell)) { return new AtkResults() ;}
+
+		displayUsedSpellMessage(spell, Game.getScreen().pos(0.63, 0.2), Game.colorPalette[0]);
+		PA.getMp().decTotalValue(spell.getMpCost()) ;
+		switch (spell.getType())
+		{
+			case support : useSupportSpell(spell, receiver) ; return new AtkResults(AtkTypes.magical) ;
+			case offensive : return useOffensiveSpell(spell, receiver) ;
+			default : return new AtkResults(AtkTypes.magical) ;
+		}
 		
-		return new AtkResults(AtkTypes.magical, effect, damage) ;
 	}
 	
 	public void dies()

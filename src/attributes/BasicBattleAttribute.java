@@ -15,6 +15,13 @@ public class BasicBattleAttribute extends LiveBeingAttribute
 		this.baseValue = baseValue;
 		this.train = train ;
 	}
+	
+	public BasicBattleAttribute(BasicBattleAttribute basicBA)
+	{
+		super(basicBA.getBonus());
+		this.baseValue = basicBA.getBaseValue();
+		this.train = basicBA.getTrain() ;
+	}
 
 	public double getBaseValue()
 	{

@@ -15,6 +15,7 @@ import attributes.PersonalAttributes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Equip;
+import items.Item;
 import items.Recipe;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -22,6 +23,7 @@ import liveBeings.PlayerActions;
 import main.Game;
 import main.TextCategories;
 import maps.GameMap;
+import screen.Sky;
 import utilities.Align;
 import utilities.Scale;
 import utilities.UtilG;
@@ -45,6 +47,8 @@ public class NPCs
 	private int menu ;
 	private GameWindow window ;
 	private List<Collider> colliders ;
+	
+	private static boolean renewStocks = false ;
 
 	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	public static final Image speakingBubble = UtilS.loadImage("\\NPCs\\" + "SpeechBubble.png") ;
@@ -147,6 +151,8 @@ public class NPCs
 	public void incMenu() { if (menu <= numberMenus - 1) menu += 1 ;}
 	public void decMenu() { if (1 <= menu) menu += -1 ;}
 
+	public boolean isClose(Point target) {return pos.distance(target) <= type.getImage().getWidth(null) ;}
+	
 	public static NPCType typeFromJob(NPCJobs job) { return Arrays.asList(Game.getNPCTypes()).stream().filter(npcType -> job.equals(npcType.getJob())).toList().get(0) ;}
 	public static void setIDs()
 	{
@@ -214,6 +220,26 @@ public class NPCs
 		return null ;
 	}
 	
+	private int[] newSmuggledStock()
+	{
+		List<Integer> fullStock = new ArrayList<>() ;
+		for (int i = 0 ; i <= 99 - 1 ; i += 1)
+		{
+			fullStock.add(200 + i) ;
+		}
+		int[] newStockIDs = new int[12] ; 
+		for (int i = 0 ; i <= newStockIDs.length - 1 ; i += 1)
+		{
+			int newItem = UtilG.randomIntFromTo(0, fullStock.size() - 1) ;
+			newStockIDs[i] = fullStock.get(newItem) ;
+			fullStock.remove(newItem) ;
+		}
+		
+		return newStockIDs ;
+	}
+	
+	public static void renewStocks() { renewStocks = true ;}
+	
 	public void action(Player player, Pet pet, Point mousePos, DrawPrimitives DP)
 	{
 		
@@ -258,7 +284,7 @@ public class NPCs
 			{
 				if (pet == null) { doctorAction(playerAction, player.getPA(), null) ;}
 				else { doctorAction(playerAction, player.getPA(), pet.getPA()) ;}
-				
+
 				break ;
 			}
 			case elemental:
@@ -297,12 +323,17 @@ public class NPCs
 		    	break ;
 				
 			case smuggleSeller:
-				int[] itemids = new int[] {400, 405, 407, 409, 415, 422, 426, 428, 432, 436, 440, 444} ;
+				int[] itemids = newSmuggledStock() ;
+				if (renewStocks)
+				{
+					itemids = newSmuggledStock() ;
+					renewStocks = false ;
+				}
 				int cityID = id / 17 ;
-				for (int i = 0 ; i <= itemids.length - 1; i += 1) { itemids[i] += 200 * cityID ;}
-//		    	List<Item> itemsOnSale = new ArrayList<>() ;
-//		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
-				// TODO smuggle seller renew stock
+				for (int i = 0 ; i <= itemids.length - 1; i += 1)
+				{
+					itemids[i] += 200 * cityID ;
+				}
 		    	
 		    	window = new ShoppingWindow(Game.getItems(itemids)) ;
 		    	
@@ -520,11 +551,11 @@ public class NPCs
 
 	private void crafterAction(Player player, BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawPrimitives DP)
 	{
-//		System.out.println("crafting menu = " + menu);
 		if (action == null) { return ;}
 
 		if (menu == 0 & selOption == 0 & actionIsForward(action))
 		{
+			craftWindow.setBag(bag) ;
 			player.switchOpenClose(craftWindow) ;
 		}
 	}
@@ -606,7 +637,7 @@ public class NPCs
 
 	private void portalAction(Player player)
 	{
-		// TODO usar o move to map
+		// TODO pro usar o move to map
 		if (player.getMap().getName().equals("Forest 2")) { player.setMap(Game.getMaps()[30]) ; player.setPos(UtilG.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
 		if (player.getMap().getName().equals("Cave 1")) { player.setMap(Game.getMaps()[6]) ; player.setPos(UtilG.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
 	}
@@ -648,7 +679,7 @@ public class NPCs
 	}
 	
 	private void sailorAction(Player player, String action)
-	{// TODO sailor animation
+	{// TODO pro sailor animation
 		if (action == null) { return ;}		
 
 		if (action.equals("Enter") & selOption == 0)
@@ -698,9 +729,14 @@ public class NPCs
 		
 	}
 
-	public void display(DrawPrimitives DP)
+	public void display(Point playerPos, DrawPrimitives DP)
 	{
 		DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
+		if (isClose(playerPos))
+		{
+			Point interactionButtonPos = UtilG.Translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;
+			DP.drawImage(Player.InteractionButton, interactionButtonPos, Draw.stdAngle, Scale.unit, Align.center) ;
+		}
 	}
 
 	@Override

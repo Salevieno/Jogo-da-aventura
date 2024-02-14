@@ -101,6 +101,7 @@ public class Player extends LiveBeing
 	private Arrow equippedArrow ;
 	private int storedGold ;
 	private double goldMultiplier ;	// multiplies the amount of gold the player wins
+	private double digBonus ;
 	private Map<QuestSkills, Boolean> questSkills ;	// skills gained with quests
 	private boolean isRiding ;		// true if the player is riding
 
@@ -116,11 +117,13 @@ public class Player extends LiveBeing
 	private Statistics stats ;
     
 	public static final int maxLevel = 99 ;
+	public static final int stepDuration = 20 ;
     public static final Image CollectingMessage = UtilS.loadImage("\\Collect\\" + "CollectingMessage.gif") ; 
     public static final Image DragonAuraImage = UtilS.loadImage("\\Player\\" + "dragonAura.gif") ;
     public static final Image RidingImage = UtilS.loadImage("\\Player\\" + "Tiger.png") ;
 	public static final Image CoinIcon = UtilS.loadImage("\\Player\\" + "CoinIcon.png") ;
 	public static final Image MagicBlissGif = UtilS.loadImage("\\Player\\" + "MagicBliss.gif") ;
+    public static final Image InteractionButton = UtilS.loadImage("\\Player\\" + "InteractionButton.png") ; 
     public static final Gif CollectingGif = new Gif("Collecting", UtilS.loadImage("\\Collect\\" + "Collecting.gif"), 5, false, false) ;
     public static final Gif TentGif = new Gif("Tent", UtilS.loadImage("Tent.png"), 5, false, false) ;
 	public static final Gif DiggingGif = new Gif("Digging", UtilS.loadImage("\\Player\\" + "Digging.gif"), 2, false, false) ;
@@ -175,7 +178,7 @@ public class Player extends LiveBeing
 		thirstCounter = new FrameCounter(0, Integer.parseInt(InitialStats.get(job)[39])) ;
 		mpCounter = new FrameCounter(0, Integer.parseInt(InitialStats.get(job)[40])) ;
 		battleActionCounter = new FrameCounter(0, Integer.parseInt(InitialStats.get(job)[41])) ;
-		stepCounter = new FrameCounter(0, 20) ;
+		stepCounter = new FrameCounter(0, stepDuration) ;
 		combo = new ArrayList<>() ;
 	    
 		this.sex = Sex ;
@@ -205,7 +208,8 @@ public class Player extends LiveBeing
     	
 		collectLevel = new double[3] ;
 		storedGold = 0 ;
-		goldMultiplier = Double.parseDouble(InitialStats.get(job)[32]) ; 
+		goldMultiplier = Double.parseDouble(InitialStats.get(job)[32]) ;
+		digBonus = 0 ;
 		questSkills = new HashMap<QuestSkills, Boolean>() ;
 		for (QuestSkills questSkill : QuestSkills.values())
 		{
@@ -316,7 +320,6 @@ public class Player extends LiveBeing
 	public BasicAttribute getSatiation() {return PA.getSatiation() ;}
 	public BasicAttribute getThirst() {return PA.getThirst() ;}
 	public Map<QuestSkills, Boolean> getQuestSkills() {return questSkills ;}
-	public Statistics getStats() {return stats ;}
 	public int getAttPoints() {return attPoints ;}
 	public AttributeBonus getAttIncrease() {return attIncrease ;}	
 	public void setAttIncrease(AttributeBonus attIncrease) { this.attIncrease = attIncrease ;}	
@@ -338,6 +341,7 @@ public class Player extends LiveBeing
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
 	public void setHotItem(Item item, int slot) { hotItems[slot] = item ;}	
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
+	public double getDigBonus() { return digBonus ;}
 	public void setFocusWindow(GameWindow W) { focusWindow = W ;}
 
 	public Point center()
@@ -371,7 +375,7 @@ public class Player extends LiveBeing
 	{
 		int firstSpellID = spells.size() + CumNumberOfSpellsPerJob[job] ;
 		firstSpellID += proJob == 1 ? 0 : 10 ;
-		spells.addAll(Arrays.asList(Arrays.copyOfRange(Game.getAllSpells(), firstSpellID - 1, firstSpellID + 10))) ;
+		spells.addAll(Spell.all.subList(firstSpellID - 1, firstSpellID + 10)) ;
 	}
 	public void learnSpell(Spell spell)
 	{
@@ -388,7 +392,7 @@ public class Player extends LiveBeing
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
 	private boolean actionIsAMove() { return List.of("W", "A", "S", "D").contains(currentAction) | UtilS.actionIsArrowKey(currentAction) ;}
-	private boolean hitCreature() { return (usedPhysicalAtk() | actionIsSpell()) & closestCreature != null ;}
+	private boolean hitCreature() { return (usedPhysicalAtk() | usedSpell()) & closestCreature != null ;}
 	public boolean isInBattle() { return opponent != null | state.equals(LiveBeingStates.fighting) ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	private boolean canThrowItem(GeneralItem item)
@@ -493,7 +497,7 @@ public class Player extends LiveBeing
             	useAutoSpell(true, spells.get(4)) ;
         	}
         	trainCollecting(collectible) ;
-        	Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.colorPalette[0]});
+        	Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.colorPalette[0]});
         }
 
     	removeCollectibleFromMap(collectible) ;
@@ -564,7 +568,7 @@ public class Player extends LiveBeing
 		}
 		
 		Point newPos = calcNewPos() ;
-		
+
 		if (Game.getScreen().posIsWithinBorders(newPos))
 		{
 			if (!map.groundIsWalkable(newPos, elem[4])) { return ;}
@@ -574,7 +578,7 @@ public class Player extends LiveBeing
 			return ;
 		}
 
-		moveToNewMap(pos, dir, map, step) ;
+		moveToNewMap(pos, dir, map) ;
 
 		if (pet != null) { pet.setPos(pos) ;}
 		if (opponent != null) { opponent.setFollow(false) ;}
@@ -593,9 +597,9 @@ public class Player extends LiveBeing
 //		Game.getAnimations().get(10).start(200, new Object[] {amount}) ;
 	}
 	
-	public void engageInFight(Creature Opponent)
+	public void engageInFight(Creature newOpponent)
 	{
-		opponent = Opponent ;
+		opponent = newOpponent ;
 		opponent.setFollow(true) ;
 		state = LiveBeingStates.fighting ;
 	}
@@ -619,7 +623,7 @@ public class Player extends LiveBeing
 		int fishType = UtilG.randomIntFromTo(6, 8) ;
 		Item fish = Food.getAll()[fishType] ;
 		bag.add(fish, 1) ;
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.colorPalette[0]}) ;
     	setState(LiveBeingStates.idle) ;
 		
 	}
@@ -641,8 +645,18 @@ public class Player extends LiveBeing
 		List<Double> listChances = new ArrayList<Double>(map.getDiggingItems().values()) ;
 
 		int itemID = UtilG.randomFromChanceList(listChances) ;
+		if (job == 4 & 1 <= spells.get(6).getLevel())
+		{
+			while (3 <= listChances.get(itemID))
+			{
+				if (UtilG.chance(0.04 * spells.get(6).getLevel()))
+				{
+					itemID = UtilG.randomFromChanceList(listChances) ;
+				}
+			}
+		}
 		bag.add(listItems.get(itemID), 1) ;
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.2, 0.2), listItems.get(itemID).getName(), Game.colorPalette[0]}) ;;
+		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.2), listItems.get(itemID).getName(), Game.colorPalette[0]}) ;;
 
 	}
 	
@@ -659,7 +673,7 @@ public class Player extends LiveBeing
 		setState(LiveBeingStates.idle) ;
 	}
 	
-	private void windowActions(Pet pet)
+	private void playerActions(Pet pet)
 	{
 
 		PlayerActions action = PlayerActions.actionOfKey(currentAction) ;
@@ -676,12 +690,12 @@ public class Player extends LiveBeing
 				switchOpenClose(attWindow) ;
 				return ;
 				
-			case interact: // TODO isso é window action?
-				if (!bag.contains(Game.getAllItems()[1340]) | !isTouching(GroundTypes.water)) { return ;}
+			case interact:
+				if (!bag.contains(Item.allItems.get(1340)) | !isTouching(GroundTypes.water)) { return ;}
 				setState(LiveBeingStates.fishing) ; return ;
 				
 			case map:
-				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinentName(this).name()))) { return ;}
+				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinent().name()))) { return ;}
 				mapWindow.setPlayerPos(pos) ;
 				mapWindow.setCurrentMap(map) ;
 				switchOpenClose(mapWindow) ; return ;
@@ -737,6 +751,7 @@ public class Player extends LiveBeing
 	
 	public void acts(Pet pet, Point mousePos)
 	{
+		if (currentAction == null) { return ;}
 		
 		// I like to move it, move it!
 		if (actionIsAMove())
@@ -765,17 +780,19 @@ public class Player extends LiveBeing
 			
 		}
 
-		windowActions(pet) ;
+		playerActions(pet) ;
 		
 		
 		// using spells
 		if (actionIsSpell() & !isInBattle())
 		{
-			Spell spell = spells.get(SpellKeys.indexOf(currentAction));
-			useSpell(spell, this) ;
-		}		
-		
-		// if hits creature, enters battle
+			Spell spell = getActiveSpells().get(SpellKeys.indexOf(currentAction));
+			if (canUseSpell(spell))
+			{
+				useSpell(spell, this) ;
+			}
+		}
+
 		if (hitCreature() & !isInBattle())
 		{
 			engageInFight(closestCreature) ;
@@ -796,7 +813,7 @@ public class Player extends LiveBeing
 		{
 			if (focusWindow.isOpen())
 			{
-				if (currentAction.equals("Escape"))	// TODO bag: tab = 0, other windows: menu = 0
+				if (currentAction.equals("Escape"))
 				{
 					switchOpenClose(focusWindow) ;
 				}
@@ -823,7 +840,8 @@ public class Player extends LiveBeing
 			}
 			if (focusWindow instanceof ElementalWindow)
 			{
-				((ElementalWindow) focusWindow).act(bag, currentAction) ;
+				((ElementalWindow) focusWindow).act(bag, currentAction, this) ;
+				return ;
 			}
 			if (focusWindow instanceof ForgeWindow)
 			{
@@ -844,30 +862,6 @@ public class Player extends LiveBeing
 		updateCombo() ;
 		
 	}
-	
-	private boolean metNPC(NPCs npc) { return isInCloseRange(npc.getPos()) ;}
-	
-//	private boolean metAnyNPC()
-//	{
-//		if (map.getNPCs() == null) { return false ;}
-//		
-//		for (NPCs npc : map.getNPCs())
-//		{
-//			if (metNPC(npc)) { return true ;}
-//		}
-//
-//		if (map.getBuildings() == null) { return false ;}
-//		
-//		for (Building building : map.getBuildings())
-//		{
-//			for (NPCs npc : building.getNPCs())
-//			{
-//				if (metNPC(npc)) { return true ;}
-//			}
-//		}
-//		
-//		return false ;
-//	}
 
 	public void meetWithTreasureChests()
 	{
@@ -935,7 +929,7 @@ public class Player extends LiveBeing
 	{
 		if (npcInContact != null)
 		{
-			if (!metNPC(npcInContact))
+			if (!npcInContact.isClose(pos))
 			{
 				npcInContact = null ;
 			}
@@ -950,7 +944,7 @@ public class Player extends LiveBeing
 		{
 			for (NPCs npc : map.getNPCs())
 			{
-				if (!metNPC(npc)) { npc.resetMenu() ; continue ;}
+				if (!npc.isClose(pos)) { npc.resetMenu() ; continue ;}
 				
 				npcInContact = npc ;
 				npcInContact.resetMenu();
@@ -965,7 +959,7 @@ public class Player extends LiveBeing
 		{
 			for (NPCs npc : building.getNPCs())
 			{				
-				if (!metNPC(npc)) { npc.resetMenu() ; continue ;}
+				if (!npc.isClose(pos)) { npc.resetMenu() ; continue ;}
 
 				npcInContact = npc ;
 				npcInContact.resetMenu();
@@ -982,8 +976,8 @@ public class Player extends LiveBeing
 	
 	public void checkMeet(Point mousePos, DrawPrimitives DP)
 	{
-		// TODO revive animation active check
-		if (state == LiveBeingStates.collecting | isInBattle()) { return ;} //  | Game.someAnimationIsActive()
+		if (isInBattle()) { return ;}
+		if (state != LiveBeingStates.idle & state != LiveBeingStates.moving ) { return ;}
 
 		meetWithTreasureChests() ;
 		
@@ -998,30 +992,31 @@ public class Player extends LiveBeing
 
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
-		if (spell.getLevel() <= 0) { return null ;}
-		if (!spell.isReady()) { return null ;}
-		if (!hasEnoughMP(spell)) { return null ;}
+		if (!canUseSpell(spell)) { return null ;}
 		
 		spell.getCooldownCounter().reset() ;
-		train(new AtkResults(AtkTypes.magical, AtkEffects.none, 0)) ;
+		train(new AtkResults(AtkTypes.magical)) ;
 		stats.incNumberMagAtk() ;
-		Log.spellUsed(this, spell.getName(), spell.getLevel());
-
+		displayUsedSpellMessage(spell, Game.getScreen().pos(0.43, 0.2), Game.colorPalette[4]);
+		
 		spell.activate() ;
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
+		if (job == 1 & 1 <= spells.get(8).getLevel())
+		{
+			useAutoSpell(true, spells.get(8)) ;
+		}
 		
 		switch (spell.getType())
 		{
-			case support : useSupportSpell(spell, receiver) ; return null ;
+			case support : useSupportSpell(spell, receiver) ; return new AtkResults(AtkTypes.magical) ;
 			case offensive : return useOffensiveSpell(spell, receiver) ;
-			default : return null ;
+			default : return new AtkResults(AtkTypes.magical) ;
 		}
 		
 	}
 	
 	public void applyPassiveSpell(Spell spell)
 	{
-//		Log.spellUsed(this, spell.getName(), spell.getLevel());
 		switch (spell.getId())
 		{
 			case 1: PA.getLife().incMaxValue(10 + (int) (0.05 * PA.getLife().getMaxValue())) ; PA.getLife().setToMaximum() ; return ;
@@ -1035,13 +1030,12 @@ public class Player extends LiveBeing
 //			case 19: return ; // TODO pro aumenta bônus do atk físico da arma em até 50%
 //			case 23: return ; // TODO pro aumenta o efeito do treinamento em 20%
 			case 24: PA.getLife().incMaxValue(202) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(5) ; BA.getPhyDef().incBaseValue(9) ; return ;
-			case 26: BA.getBlock().incAtkChance(0.06) ; return ; // TODO teste
+			case 26: BA.getBlock().incAtkChance(0.06) ; return ;
 			case 27: BA.getMagDef().incBaseValue(0.1 * BA.getMagDef().getBaseValue()) ; return ;
 			case 28: BA.getCritDef().incBaseValue(0.15) ; return ;
 			case 29: BA.getPoison().incDefChance(0.1) ; return ;
 			
-			case 36: BA.getMagAtk().incBaseValue(2 + (int) (0.04 * BA.getMagAtk().getBaseValue())) ; return ;
-			case 42: BA.getMagDef().incBaseValue(2 + (int) (0.04 * BA.getMagDef().getBaseValue())) ; return ; // TODO lança uma magia a depender do resultado das cartas, sem uso de mana, a cada 100 frames
+			case 36: BA.getMagAtk().incBaseValue(2 + (int) (0.04 * BA.getMagAtk().getBaseValue())) ; BA.getMagDef().incBaseValue(2 + (int) (0.04 * BA.getMagDef().getBaseValue())) ; return ;
 			case 49: PA.getMp().incMaxValue(202) ; PA.getMp().setToMaximum() ; BA.getMagAtk().incBaseValue(9) ; BA.getMagDef().incBaseValue(5) ; return ;
 //			case 54: return ; // TODO pro reduz o cooldown das magias em 50%
 //			case 57: return ; // TODO pro descobre o próximo movimento da criatura com chance de 70%
@@ -1085,7 +1079,7 @@ public class Player extends LiveBeing
 			
 			case 139: BA.getAgi().incBaseValue(1) ; return ;
 			case 142: BA.getPhyAtk().incBaseValue(3) ; BA.getDex().incBaseValue(1) ; return ;
-			case 144:  return ; // TODO aumenta em 20% a chance de obter itens raros na escavação
+			case 144: digBonus += 0.04 ; return ;
 			case 146:  return ; // permite o uso de itens na batalha
 			case 147:  return ; // permite a fabricação de poções venenosas
 			case 151: BA.getPoison().incBasicDef(1); return ;
@@ -1102,41 +1096,6 @@ public class Player extends LiveBeing
 		}
 	}
 
-	private void useSupportSpell(Spell spell, LiveBeing receiver)
-	{
-		
-		switch (spell.getId())
-		{
-			case 4:
-				PA.getLife().incCurrentValue((int) (0.2 * spell.getLevel() * PA.getLife().getCurrentValue())) ;
-				if (UtilG.chance(0.01 * spell.getLevel()))
-				{
-					BA.getStatus().receiveStatus(new int[] {100, 0, 0, 0, 0}) ;
-				}
-				break ;
-				// TODO checar se esses buffs desativam automaticante
-			case 44:
-				double perc = 0.04 * spell.getLevel() * magicAtkBonus() ;
-				PA.getLife().incCurrentValue((int) (perc * PA.getLife().getMaxValue())) ;
-				break ;
-				
-			case 112:
-				perc = 0.04 * spell.getLevel() * magicAtkBonus() ;
-				receiver.getPA().getLife().incCurrentValue((int) (perc * receiver.getPA().getLife().getCurrentValue())) ;
-				break ;
-			
-			default: break ;
-		}
-
-		
-		spell.applyBuffs(true, this) ;
-		
-		if (receiver == null) { return ;}
-		
-		spell.applyDebuffs(true, receiver) ;
-		
-	}
-
 	public void useAutoSpell(boolean activate, Spell spell)
 	{
 		if (!spell.getType().equals(SpellTypes.auto)) { return ;}
@@ -1144,9 +1103,14 @@ public class Player extends LiveBeing
 		if (spell.isActive() & activate) { return ;}
 		if (!spell.isActive() & !activate) { return ;}
 
-		Log.spellUsed(this, spell.getName(), spell.getLevel());
+//		Log.spellUsed(this, spell.getName(), spell.getLevel());
 		switch (spell.getId())
 		{
+			case 42:
+				if (UtilG.chance(0.5)) { return ;}
+				Spell lastSpellUsed = getActiveSpells().get(Integer.parseInt(currentAction)) ;
+				PA.getMp().incCurrentValue((int) (0.04 * spell.getLevel()* lastSpellUsed.getMpCost())) ;
+				
 			case 82:
 				if (UtilG.chance(0.1 * spell.getLevel())) { return ;}
 				bag.add(equippedArrow, 1) ;
@@ -1159,10 +1123,16 @@ public class Player extends LiveBeing
 				return ;
 			
 			case 116:
-				if (!(PA.getLife().getRate() <= 0.2)) { return ;}
+				if (!(PA.getLife().getRate() <= 0.2) & spell.isActive())
+				{
+					spell.deactivate();
+					spell.applyBuffs(false, this) ;
+					spell.applyDebuffs(false, this) ;
+					return ;
+				}
 				spell.activate();
-				spell.applyBuffs(activate, this) ;
-				spell.applyDebuffs(activate, this) ;
+				spell.applyBuffs(true, this) ;
+				spell.applyDebuffs(true, this) ;
 
 				return ;
 			
@@ -1174,34 +1144,15 @@ public class Player extends LiveBeing
 				
 			default: return ;
 		}
-
-		// TODO steal item
-//		private int StealItem(Creature creature, Item[] items, int spellLevel)
-//		{	
-//			int ID = (int)(UtilG.ArrayWithValuesGreaterThan(creature.getBag(), -1).length*Math.random() - 0.01) ;
-//			int StolenItemID = -1 ;
-//			if(-1 < creature.getBag()[ID])
-//			{
-//				if(Math.random() <= 0.01*items[creature.getBag()[ID]].getDropChance() + 0.01*spellLevel)
-//				{
-//					//Bag[creature.getBag()[ID]] += 1 ;
-//					StolenItemID = items[creature.getBag()[ID]].getID() ;
-//				}
-//			}
-//			return StolenItemID ;
-			
-//			return 0 ;
-//		}
 	}
 	
 	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
 	{
+		if (spell == null) { return null ;}
 		if (receiver == null) { return null ;}
 		
 		int spellLevel = spell.getLevel() ;
 		int spellID = spells.indexOf(spell) ;
-		int damage = -1 ;
-		AtkEffects effect = AtkEffects.none ;
 		
 		double PhyAtk = BA.TotalPhyAtk() ;
 		double MagAtk = BA.TotalMagAtk() ;
@@ -1216,6 +1167,13 @@ public class Player extends LiveBeing
 		double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
 		double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
 		double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
+		double[] stunMod = new double[] {spell.getStunMod()[0] * spellLevel, 1 + spell.getStunMod()[1] * spellLevel} ;
+		double[] blockMod = new double[] {spell.getBlockMod()[0] * spellLevel, 1 + spell.getBlockMod()[1] * spellLevel} ;
+		double[] bloodMod = new double[] {spell.getBloodMod()[0] * spellLevel, 1 + spell.getBloodMod()[1] * spellLevel} ;
+		double[] poisonMod = new double[] {spell.getPoisonMod()[0] * spellLevel, 1 + spell.getPoisonMod()[1] * spellLevel} ;
+		double[] silenceMod = new double[] {spell.getSilenceMod()[0] * spellLevel, 1 + spell.getSilenceMod()[1] * spellLevel} ;
+		double[] atkChances = new double[] {stunMod[0], blockMod[0], bloodMod[0], poisonMod[0], silenceMod[0]} ;
+		
 		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;
 		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;
 		double BlockDef = receiver.getBA().getStatus().getBlock() ;
@@ -1279,20 +1237,21 @@ public class Player extends LiveBeing
 				break ;
 			
 		}
+
+		AtkEffects effect = Battle.calcEffect(DexMod[0] + AtkDex * DexMod[1], AgiMod[0] + DefAgi * AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
+		int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk * AtkMod[1], DefMod[0] + BasicDef * DefMod[1], AtkElem, DefElem, receiverElemMod) ;
+		int[] inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
-		effect = Battle.calcEffect(DexMod[0] + AtkDex * DexMod[1], AgiMod[0] + DefAgi * AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
-		damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk * AtkMod[1], DefMod[0] + BasicDef * DefMod[1], AtkElem, DefElem, receiverElemMod) ;
 		spell.applyBuffs(true, this) ;
 		spell.applyDebuffs(true, receiver) ;
-		return new AtkResults(AtkTypes.magical, effect, damage) ;
+		return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
 		
 	}
 	
 	private void throwItem(GeneralItem item, LiveBeing receiver)
 	{
 		double itemPower = item.getPower() * (1 + 0.1 * spells.get(9).getLevel()) ;
-		// TODO apply item effects
-		Battle.throwItem(this, receiver, itemPower, item.getElem()) ;
+		Battle.throwItem(this, receiver, itemPower, item.getAtkMod(), item.getElem()) ;
 		bag.remove(item, 1) ;
 	}
 	
@@ -1301,7 +1260,7 @@ public class Player extends LiveBeing
 		if (item == null) { System.out.println("Tentando usar item nulo!"); return ;}
 		if (!bag.contains(item)) { System.out.println("Tentando usar item que não tem na mochila!"); return ;}
 
-		Log.itemUsed(this, item) ;
+//		Log.itemUsed(this, item) ;
 		if (item instanceof Potion)
 		{
 			Potion pot = (Potion) item ;
@@ -1317,10 +1276,13 @@ public class Player extends LiveBeing
 			Alchemy alch = (Alchemy) item ;
 			double powerMult = job == 3 & 1 <= spells.get(7).getLevel() ? 1 + 0.06 * spells.get(7).getLevel() : 1 ;
 			
-			if (job == 3)
-			{// TODO check if this pet buff is resetted
-				Buff alchBuff = Alchemy.isHerb(alch.getId()) ? Buff.allBuffs.get(10) : Alchemy.isWood(alch.getId()) ? Buff.allBuffs.get(11) : Buff.allBuffs.get(12) ;
+			if (job == 3 & 0 < spells.get(10).getLevel() & !spells.get(10).isActive())
+			{
+				int alchBuffId = Alchemy.isHerb(alch.getId()) ? 10 : Alchemy.isWood(alch.getId()) ? 11 : 12 ;
+				Buff alchBuff = Buff.allBuffs.get(alchBuffId) ;
 				alchBuff.apply(1, spells.get(10).getLevel(), Game.getPet());
+				spells.get(10).activate();
+				Game.getPet().setAlchBuffId(alchBuffId) ;
 			}
 			
 			alch.use(this, powerMult) ;
@@ -1341,10 +1303,10 @@ public class Player extends LiveBeing
 		}
 		if (item instanceof PetItem)
 		{
-			// TODO use pet item
-//			PetItem petItem = (PetItem) item ;
+			if (Game.getPet() == null) { return ;}
+			PetItem petItem = (PetItem) item ;
 			
-//			petItem.use(pet) ;
+			petItem.use(Game.getPet()) ;
 			
 			return ;			
 		}
@@ -1458,16 +1420,15 @@ public class Player extends LiveBeing
 		{
 			quest.IncReqCreaturesCounter(creature.getType()) ;
 			quest.checkCompletion(bag) ;
-		}
-		
+		};
 		if (showAnimation)
 		{
-			obtainItemsAnimation(itemsObtained) ;
+			Animation.start(AnimationTypes.win, new Object[] {itemsObtained}) ;
 		}
 		
 	}
 	
-	public void levelUp(Animation attIncAnimation)
+	public void levelUp()
 	{
 		if (level == maxLevel) { return ;}
 		
@@ -1481,7 +1442,7 @@ public class Player extends LiveBeing
 		BA.getMagDef().incBaseValue(attIncrease[5]) ;
 		BA.getAgi().incBaseValue(attIncrease[6]) ;
 		BA.getDex().incBaseValue(attIncrease[7]) ;
-		PA.getExp().incMaxValue((int) attIncrease[8]); ;
+		PA.getExp().incMaxValue((int) attIncrease[8]) ;
 		PA.getLife().setToMaximum() ;
 		PA.getMp().setToMaximum() ;
 		spellPoints += 1 ;
@@ -1489,11 +1450,7 @@ public class Player extends LiveBeing
 		
 		((PlayerAttributesWindow) attWindow).activateIncAttButtons(attPoints) ;
 		
-//		Game.getAnimations().get(4).start(levelUpGif.getDuration(), new Object[] {UtilG.Translate(pos, 8, 0)}) ;
-		
-		if (attIncAnimation == null) { return ;}
-		
-//		attIncAnimation.start(600, new Object[] {Arrays.copyOf(attIncrease, attIncrease.length - 1), level}) ;
+		Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, level});
 	}
 	
 	private double[] calcAttributesIncrease()
@@ -1618,8 +1575,22 @@ public class Player extends LiveBeing
 		{
 			drawRange(DP) ;
 		}
-		
+
 		displayStatus(DP) ;
+	}
+
+
+	
+	public void receiveSuperElementEffect(Elements elem)
+	{
+
+		// TODO superelementos de: planta, terra, luz: ilumina a caverna, escuridão: aura escura, trovão e neve
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.2), "Super element " + elem, Game.colorPalette[7]}) ;
+		switch (elem)
+		{
+			case fire: bag.setClothOnFire() ; return ;
+			default: return ;
+		}
 	}
 	
 }

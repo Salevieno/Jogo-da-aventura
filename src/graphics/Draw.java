@@ -197,19 +197,22 @@ public abstract class Draw
 	public static void time(Sky sky)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
-		float time = (float)(Sky.dayTime.getCounter()) / Game.DayDuration ;
-		String message = (int)(24*time) + ":" + (int)(24*60*time % 60) ;
+		float time = (float) Sky.dayTimeRate() ;
+		String message = (int) (24 * time) + ":" + (int) (24 * 60 * time % 60) ;
 		DP.drawText(Game.getScreen().pos(0, 0.99), Align.bottomLeft, stdAngle, message, font, colorPalette[20]) ;
 	}
 	
 	public static void fullMap(Point playerPos, GameMap map, Sky sky)
 	{
-		if ( !map.getContinent().equals(Continents.cave) ) { sky.display(DP) ; sky.updateIsDay() ;}
+		if (!map.getContinent().equals(Continents.cave))
+		{
+			sky.display(DP) ;
+		}
 		
 		map.display(DP) ;
 		map.displayElements(playerPos, DP) ;
 		map.displayBuildings(playerPos, Arrays.asList(Game.getMaps()).indexOf(map), DP) ;
-		map.displayNPCs(DP) ;
+		map.displayNPCs(playerPos, DP) ;
 		map.displayGroundTypes(DP) ;
 		
 		if (map instanceof FieldMap)
@@ -293,7 +296,7 @@ public abstract class Draw
 		DP.drawImage(TentImage, Pos, Align.center) ;
 	}
 
-	public static void winAnimation(TimeCounter counter, Item[] items)
+	public static void winAnimation(TimeCounter counter, List<Item> items)
 	{
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
@@ -306,12 +309,12 @@ public abstract class Draw
 		
 		if ( counter.rate() <= 0.3 ) { return ;}
 		
-		for (int i = 0 ; i <= items.length - 1 ; i += 1)
+		for (int i = 0 ; i <= items.size() - 1 ; i += 1)
 		{
-			if ( 0.3 + 0.5 * i / items.length <= counter.rate() )
+			if ( 0.3 + 0.5 * i / items.size() <= counter.rate() )
 			{
 				Point newTextPos = UtilG.Translate(textPos, 0, (i + 1) * (font.getSize() + 2)) ;
-				DP.drawText(newTextPos, Align.bottomLeft, stdAngle, items[i].getName(), font, itemNamesColor) ;
+				DP.drawText(newTextPos, Align.bottomLeft, stdAngle, items.get(i).getName(), font, itemNamesColor) ;
 			}
 		}
 	}
@@ -352,16 +355,26 @@ public abstract class Draw
 	public static void quickTextAnimation(Point pos, TimeCounter counter, String text, Color color)
 	{
 
+		Font smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
+		
+		DP.drawImage(Animation.messageBox, pos, Align.topCenter) ;
+		DP.drawText(UtilG.Translate(pos, 5 - Animation.messageBox.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
+		
+	}
+
+	public static void obtainedItemAnimation(Point pos, TimeCounter counter, String text, Color color)
+	{
+
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Font smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		
 		DP.drawImage(Animation.obtainedItem, pos, Align.topCenter) ;
-		DP.drawText(UtilG.Translate(pos, 0, 3), Align.topCenter, stdAngle, "Você obteve", font, color) ;;
+		DP.drawText(UtilG.Translate(pos, 0, 3), Align.topCenter, stdAngle, "Você obteve", font, color) ;
 		DP.drawText(UtilG.Translate(pos, 5 - Animation.obtainedItem.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
 		
 	}
 	
-	public static void levelUpAnimation(TimeCounter counter, double[] AttributeIncrease, int playerLevel, Color textColor)
+	public static void levelUpAnimation(TimeCounter counter, double[] AttributeIncrease, int playerLevel)
 	{
 
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
@@ -371,18 +384,17 @@ public abstract class Draw
 		
 		DP.drawImage(menuWindow, pos, scale, Align.topLeft) ;
 		Point textPos = UtilG.Translate(pos, 5, font.getSize() + 5) ;
-		DP.drawText(textPos, Align.bottomLeft, stdAngle, attText[0] + " " + playerLevel + "!", font, textColor) ;
+		DP.drawText(textPos, Align.bottomLeft, stdAngle, attText[0] + " " + playerLevel + "!", font, Game.colorPalette[6]) ;
 		
 		if ( counter.rate() <= 0.3 ) { return ;}
 		
-//		String[] attNames = new String[] {"Vida", "MP", "Ataque f�sico", "Ataque mágico", "Defesa física", "Defesa mágica", "Destreza", "Agilidade"} ;
 		String[] attNames = Arrays.copyOfRange(attText, 1, 9) ;
-		for (int i = 0 ; i <= AttributeIncrease.length - 1 ; i += 1)
+		for (int i = 0 ; i <= attNames.length - 1 ; i += 1)
 		{
-			if ( 0.3 + 0.5 * i / (AttributeIncrease.length - 1) <= counter.rate() )
+			if ( 0.3 + 0.5 * i / (attNames.length - 1) <= counter.rate() )
 			{
 				Point newTextPos = UtilG.Translate(textPos, 0, (i + 1) * (font.getSize() + 2)) ;
-				DP.drawText(newTextPos, Align.bottomLeft, stdAngle, attNames[i] + " + " + AttributeIncrease[i], font, textColor) ;
+				DP.drawText(newTextPos, Align.bottomLeft, stdAngle, attNames[i] + " + " + AttributeIncrease[i], font, Game.colorPalette[6]) ;
 			}
 		}
 		

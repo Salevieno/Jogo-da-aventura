@@ -52,6 +52,29 @@ public class BattleAttributes
 			elemResistanceMult.put(elem, 1.0) ;
 		}
 	}
+	
+	public BattleAttributes(BattleAttributes BA)
+	{
+		this.phyAtk = new BasicBattleAttribute(BA.getPhyAtk()) ;
+		this.magAtk = new BasicBattleAttribute(BA.getMagAtk()) ;
+		this.phyDef = new BasicBattleAttribute(BA.getPhyDef()) ;
+		this.magDef = new BasicBattleAttribute(BA.getMagDef()) ;
+		this.dex = new BasicBattleAttribute(BA.getDex()) ;
+		this.agi = new BasicBattleAttribute(BA.getAgi()) ;
+		this.critAtk = new BasicBattleAttribute(BA.getCritAtk()) ;
+		this.critDef = new BasicBattleAttribute(BA.getCritDef()) ;
+		this.stun = new BattleSpecialAttribute(BA.getStun()) ;
+		this.block = new BattleSpecialAttribute(BA.getBlock()) ;
+		this.blood = new BattleSpecialAttributeWithDamage(BA.getBlood()) ;
+		this.poison = new BattleSpecialAttributeWithDamage(BA.getPoison()) ;
+		this.silence = new BattleSpecialAttribute(BA.getSilence()) ;
+		this.status = new LiveBeingStatus(BA.getStatus()) ;
+		elemResistanceMult = new HashMap<>() ;
+		for (Elements elem : Elements.values())
+		{
+			elemResistanceMult.put(elem, 1.0) ;
+		}
+	}
 
 	public BasicBattleAttribute getPhyAtk() {return phyAtk ;}
 	public BasicBattleAttribute getMagAtk() {return magAtk ;}

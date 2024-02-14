@@ -40,7 +40,7 @@ public class QuestWindow extends GameWindow
 	}
 	
 	
-	public void setQuests(List<Quest> quests) { this.quests = quests ;}
+	public void setQuests(List<Quest> quests) { this.quests = quests ; numberWindows = quests.size() ;}
 	public void setBag(BagWindow bag) { this.bag = bag ;}
 
 
@@ -117,9 +117,7 @@ public class QuestWindow extends GameWindow
 	}
 	
 	public void display(Point mousePos, DrawPrimitives DP)
-	{		
-
-		numberWindows = quests.size() ;	// TODO quest number windows, set when opening window
+	{
 		
 		double angle = Draw.stdAngle ;
 
@@ -135,5 +133,6 @@ public class QuestWindow extends GameWindow
 		displayReqItems(UtilG.Translate(windowPos, 0, 230), DP) ;
 		
 		Draw.windowArrows(UtilG.Translate(windowPos, size.width / 2, size.height + 5), size.width, window, numberWindows) ;
+		
 	}
 }

@@ -7,10 +7,10 @@ import utilities.UtilS;
 
 public enum CollectibleTypes
 {
-	berry (4000, UtilS.loadImage("\\Collect\\" + "Col0_Berry.png")),
-	herb (128000, UtilS.loadImage("\\Collect\\" + "Col1_Herb.png")),
-	wood (153600, UtilS.loadImage("\\Collect\\" + "Col2_Wood.png")),
-	metal (256000, UtilS.loadImage("\\Collect\\" + "Col3_Metal.png"));
+	berry (100, UtilS.loadImage("\\Collect\\" + "Col0_Berry.png")),
+	herb (1280, UtilS.loadImage("\\Collect\\" + "Col1_Herb.png")),
+	wood (1530, UtilS.loadImage("\\Collect\\" + "Col2_Wood.png")),
+	metal (2560, UtilS.loadImage("\\Collect\\" + "Col3_Metal.png"));
 	
 	int spawnTime ;
 	Image image ;

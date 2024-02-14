@@ -52,7 +52,7 @@ public abstract class PlayerEvolutionSimulation
 	private static Player player = Game.getPlayer() ;
 	private static Pet pet = Game.getPet() ;
 	private static int playerOpponentID = 0 ;
-	private static Creature playerOpponent = new Creature(Game.getCreatureTypes()[playerOpponentID]) ;
+	private static Creature playerOpponent = new Creature(CreatureType.all.get(playerOpponentID)) ;
 	
 	private static int playerPreviousExp = player.getExp().getCurrentValue() ;	
 	private static int numberFights = 0 ;
@@ -337,18 +337,18 @@ public abstract class PlayerEvolutionSimulation
 			if (99 <= player.getLevel()) { break ;}
 			
 			player.getExp().incCurrentValue(player.getExp().getMaxValue());
-			player.levelUp(null) ; // Game.getAnimations()[4]			
+			player.levelUp() ;	
 		}
 	}
 	
 	private static void playerTrain()
 	{
-		player.train(new AtkResults(AtkTypes.physical, AtkEffects.hit, 0)) ;
+		player.train(new AtkResults(AtkTypes.physical, AtkEffects.hit, 0, null)) ;
 	}
 	
 	private static void petTrain()
-	{// TODO check if this is right
-		player.train(new AtkResults(AtkTypes.physical, AtkEffects.hit, 0)) ;
+	{// TODO pro check if this is right
+		player.train(new AtkResults(AtkTypes.physical, AtkEffects.hit, 0, null)) ;
 	}
 	
 	private static void petLevelUp(int times)
@@ -360,16 +360,16 @@ public abstract class PlayerEvolutionSimulation
 			if (99 <= pet.getLevel()) { break ;}
 
 			pet.getExp().incCurrentValue(pet.getExp().getMaxValue());
-			pet.levelUp(null) ; // Game.getAnimations()[4]
+			pet.levelUp() ;
 		}
 	}
 	
 	private static void incPlayerOpponentID(int amount)
 	{
-		if (playerOpponentID + amount <= Game.getCreatureTypes().length - 1)
+		if (playerOpponentID + amount <= CreatureType.all.size() - 1)
 		{
 			playerOpponentID += amount ;
-			playerOpponent = new Creature(Game.getCreatureTypes()[playerOpponentID]) ;
+			playerOpponent = new Creature(CreatureType.all.get(playerOpponentID)) ;
 		}
 	}
 	
@@ -378,7 +378,7 @@ public abstract class PlayerEvolutionSimulation
 		if (0 <= playerOpponentID - amount)
 		{
 			playerOpponentID += -amount ;
-			playerOpponent = new Creature(Game.getCreatureTypes()[playerOpponentID]) ;
+			playerOpponent = new Creature(CreatureType.all.get(playerOpponentID)) ;
 		}
 	}
 	
@@ -396,7 +396,7 @@ public abstract class PlayerEvolutionSimulation
 	
 	private static void CreateNewCreature()
 	{
-		playerOpponent = new Creature(Game.getCreatureTypes()[playerOpponentID]) ;
+		playerOpponent = new Creature(CreatureType.all.get(playerOpponentID)) ;
 		playerOpponent.setPos(player.getPos());
 		playerOpponent.getType().setGenes(new Genetics(newGenes.getGenes(), newGenes.getGeneMods()));
 	}
@@ -428,10 +428,10 @@ public abstract class PlayerEvolutionSimulation
 			totalExpUntilMaxLevel += (int) Player.calcExpToLevelUp(level) ;
 		}
 
-		int numberCreatures = Game.getCreatureTypes().length ;
+		int numberCreatures = CreatureType.all.size() ;
 //		for (int creatureID = 0 ; creatureID <= numberCreatures - 1; creatureID += 1)
 //		{
-//			Creature creature = new Creature(Game.getCreatureTypes()[creatureID]) ;
+//			Creature creature = new Creature(CreatureType.all.get(creatureID]) ;
 //			int itemsValue = 0 ;
 //			for (Item item : creature.getBag())
 //			{
@@ -446,7 +446,7 @@ public abstract class PlayerEvolutionSimulation
 //		double avrGoldUntilMaxLevel = 0 ;
 		for (int creatureID = 0 ; creatureID <= numberCreatures - 1; creatureID += 1)
 		{
-			Creature creature = new Creature(Game.getCreatureTypes()[creatureID]) ;
+			Creature creature = new Creature(CreatureType.all.get(creatureID)) ;
 			int numberWinsToMaxLevel = totalExpUntilMaxLevel / creature.getExp().getCurrentValue() + 1 ;
 //			int cumGoldUntilMaxLevel = creature.getGold() * numberWinsToMaxLevel ;
 //			avrGoldUntilMaxLevel += cumGoldUntilMaxLevel / (double) numberCreatures ;
@@ -455,7 +455,7 @@ public abstract class PlayerEvolutionSimulation
 			{
 				player.win(creature, false) ;
 				checkPlayerWin() ;
-				if (player.shouldLevelUP()) { player.levelUp(null) ;}
+				if (player.shouldLevelUP()) { player.levelUp() ;}
 			}
 			
 			System.out.println(player.getBag().calcValue());
@@ -719,13 +719,13 @@ public abstract class PlayerEvolutionSimulation
 		PlayerEvolutionSimulation.displayInterface(mousePos, DP) ;
 		if (player.shouldLevelUP())
 		{
-			player.levelUp(null) ;
+			player.levelUp() ;
 		}
 		if (pet != null)
 		{
 			if (pet.shouldLevelUP())
 			{
-				pet.levelUp(null) ;
+				pet.levelUp() ;
 			}
 		}
 		player.showWindows(pet, mousePos, DP) ;

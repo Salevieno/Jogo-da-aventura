@@ -20,6 +20,15 @@ public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
 		this.basicDef = basicDef ;
 		this.basicDefBonus = basicDefBonus ;
 	}
+	
+	public BattleSpecialAttributeWithDamage(BattleSpecialAttributeWithDamage battleSAWD)
+	{
+		super(battleSAWD.getBasicAtkChance(), battleSAWD.getBasicAtkChanceBonus(), battleSAWD.getBasicDefChance(), battleSAWD.getBasicDefChanceBonus(), battleSAWD.getDuration()) ;
+		this.basicAtk = battleSAWD.getBasicAtk() ;
+		this.basicAtkBonus = battleSAWD.getBasicAtkBonus() ;
+		this.basicDef = battleSAWD.getBasicDef() ;
+		this.basicDefBonus = battleSAWD.getBasicDefBonus() ;
+	}
 		
 	public double getBasicAtk()
 	{

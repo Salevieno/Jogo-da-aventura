@@ -55,7 +55,7 @@ public class CreatureType
 	public static final List<CreatureType> all ;
 	public static final List<MovingAnimations> moveAni ;
 	public static final CreatureAttributesWindow attWindow ;
-	
+
 	static
 	{
 		moveAni = new ArrayList<>() ;
@@ -153,103 +153,115 @@ public class CreatureType
 		int numberCreatureTypes = 7 ;
 		double diffMult = difficultLevel == 0 ? 0.6 : (difficultLevel == 1 ? 0.8 : 1.0) ;
 		
-		for (int ct = 0 ; ct <= creatureTypes.length - 1 ; ct += 1)
+		for (int row = 0 ; row <= creatureTypes.length - 1 ; row += 1)
 		{
 			int colorid = (int) ((Creature.getskinColor().length - 1) * Math.random()) ;
-			color[ct] = Creature.getskinColor()[colorid] ;
-			if (270 < ct & ct <= 299) // Ocean creatures
+			String[] inp = input.get(row) ;
+			color[row] = Creature.getskinColor()[colorid] ;
+			if (270 < row & row <= 299) // Ocean creatures
 			{
-				color[ct] = Game.colorPalette[5] ;
+				color[row] = Game.colorPalette[5] ;
 			}
 
-			MovingAnimations moveAni = CreatureType.moveAni.get(ct % numberCreatureTypes) ;
+			MovingAnimations moveAni = CreatureType.moveAni.get(row % numberCreatureTypes) ;
 
-			BasicAttribute Life = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[5]) * diffMult),
-					(int) (Integer.parseInt(input.get(ct)[5]) * diffMult), 1) ;
-			BasicAttribute Mp = new BasicAttribute((int) (Integer.parseInt(input.get(ct)[6]) * diffMult),
-					(int) (Integer.parseInt(input.get(ct)[6]) * diffMult), 1) ;
-			BasicAttribute Exp = new BasicAttribute(Integer.parseInt(input.get(ct)[36]), 999999999, 1) ;
+			BasicAttribute Life = new BasicAttribute((int) (Integer.parseInt(inp[5]) * diffMult),
+					(int) (Integer.parseInt(inp[5]) * diffMult), 1) ;
+			BasicAttribute Mp = new BasicAttribute((int) (Integer.parseInt(inp[6]) * diffMult),
+					(int) (Integer.parseInt(inp[6]) * diffMult), 1) ;
+			BasicAttribute Exp = new BasicAttribute(Integer.parseInt(inp[36]), 999999999, 1) ;
 			BasicAttribute Satiation = new BasicAttribute(100, 100, 1) ;
 			BasicAttribute Thirst = new BasicAttribute(100, 100, 1) ;
 			PersonalAttributes PA = new PersonalAttributes(Life, Mp, Exp, Satiation, Thirst) ;
 
-			BasicBattleAttribute PhyAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[8]) * diffMult, 0,
+			BasicBattleAttribute PhyAtk = new BasicBattleAttribute(Double.parseDouble(inp[8]) * diffMult, 0,
 					0) ;
-			BasicBattleAttribute MagAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[9]) * diffMult, 0,
+			BasicBattleAttribute MagAtk = new BasicBattleAttribute(Double.parseDouble(inp[9]) * diffMult, 0,
 					0) ;
-			BasicBattleAttribute PhyDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[10]) * diffMult, 0,
+			BasicBattleAttribute PhyDef = new BasicBattleAttribute(Double.parseDouble(inp[10]) * diffMult, 0,
 					0) ;
-			BasicBattleAttribute MagDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[11]) * diffMult, 0,
+			BasicBattleAttribute MagDef = new BasicBattleAttribute(Double.parseDouble(inp[11]) * diffMult, 0,
 					0) ;
-			BasicBattleAttribute Dex = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[12]) * diffMult, 0, 0) ;
-			BasicBattleAttribute Agi = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[13]) * diffMult, 0, 0) ;
-			BasicBattleAttribute CritAtk = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[14]) * diffMult, 0,
+			BasicBattleAttribute Dex = new BasicBattleAttribute(Double.parseDouble(inp[12]) * diffMult, 0, 0) ;
+			BasicBattleAttribute Agi = new BasicBattleAttribute(Double.parseDouble(inp[13]) * diffMult, 0, 0) ;
+			BasicBattleAttribute CritAtk = new BasicBattleAttribute(Double.parseDouble(inp[14]) * diffMult, 0,
 					0) ;
-			BasicBattleAttribute CritDef = new BasicBattleAttribute(Double.parseDouble(input.get(ct)[15]) * diffMult, 0,
+			BasicBattleAttribute CritDef = new BasicBattleAttribute(Double.parseDouble(inp[15]) * diffMult, 0,
 					0) ;
-			BattleSpecialAttribute Stun = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[16]) * diffMult,
-					0, Double.parseDouble(input.get(ct)[17]) * diffMult, 0,
-					(int) (Double.parseDouble(input.get(ct)[18]) * diffMult)) ;
-			BattleSpecialAttribute Block = new BattleSpecialAttribute(Double.parseDouble(input.get(ct)[19]) * diffMult,
-					0, Double.parseDouble(input.get(ct)[20]) * diffMult, 0,
-					(int) (Double.parseDouble(input.get(ct)[21]) * diffMult)) ;
+			BattleSpecialAttribute Stun = new BattleSpecialAttribute(Double.parseDouble(inp[16]) * diffMult,
+					0, Double.parseDouble(inp[17]) * diffMult, 0,
+					(int) (Double.parseDouble(inp[18]) * diffMult)) ;
+			BattleSpecialAttribute Block = new BattleSpecialAttribute(Double.parseDouble(inp[19]) * diffMult,
+					0, Double.parseDouble(inp[20]) * diffMult, 0,
+					(int) (Double.parseDouble(inp[21]) * diffMult)) ;
 			BattleSpecialAttributeWithDamage Blood = new BattleSpecialAttributeWithDamage(
-					Double.parseDouble(input.get(ct)[22]) * diffMult, 0,
-					Double.parseDouble(input.get(ct)[23]) * diffMult, 0,
-					(int) (Double.parseDouble(input.get(ct)[24]) * diffMult), 0,
-					(int) (Double.parseDouble(input.get(ct)[25]) * diffMult), 0,
-					(int) (Integer.parseInt(input.get(ct)[26]) * diffMult)) ;
+					Double.parseDouble(inp[22]) * diffMult, 0,
+					Double.parseDouble(inp[23]) * diffMult, 0,
+					(int) (Double.parseDouble(inp[24]) * diffMult), 0,
+					(int) (Double.parseDouble(inp[25]) * diffMult), 0,
+					(int) (Integer.parseInt(inp[26]) * diffMult)) ;
 			BattleSpecialAttributeWithDamage Poison = new BattleSpecialAttributeWithDamage(
-					Double.parseDouble(input.get(ct)[27]) * diffMult, 0,
-					Double.parseDouble(input.get(ct)[28]) * diffMult, 0,
-					(int) (Double.parseDouble(input.get(ct)[29]) * diffMult), 0,
-					(int) (Double.parseDouble(input.get(ct)[30]) * diffMult), 0,
-					(int) (Integer.parseInt(input.get(ct)[31]) * diffMult)) ;
+					Double.parseDouble(inp[27]) * diffMult, 0,
+					Double.parseDouble(inp[28]) * diffMult, 0,
+					(int) (Double.parseDouble(inp[29]) * diffMult), 0,
+					(int) (Double.parseDouble(inp[30]) * diffMult), 0,
+					(int) (Integer.parseInt(inp[31]) * diffMult)) ;
 			BattleSpecialAttribute Silence = new BattleSpecialAttribute(
-					Double.parseDouble(input.get(ct)[32]) * diffMult, 0,
-					Double.parseDouble(input.get(ct)[33]) * diffMult, 0,
-					(int) (Double.parseDouble(input.get(ct)[34]) * diffMult)) ;
+					Double.parseDouble(inp[32]) * diffMult, 0,
+					Double.parseDouble(inp[33]) * diffMult, 0,
+					(int) (Double.parseDouble(inp[34]) * diffMult)) ;
 			LiveBeingStatus status = new LiveBeingStatus() ;
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, CritAtk, CritDef, Stun,
 					Block, Blood, Poison, Silence, status) ;
 
-			// TODO spells para as criaturas
 			List<Spell> spells = new ArrayList<>() ;
-			spells.add(Spell.all.get(0)) ;
-			spells.get(0).incLevel(1) ;
-//			spells.add(allSpells[1]) ;
-//			spells.add(allSpells[2]) ;
-//			spells.add(allSpells[3]) ;
-//			spells.add(allSpells[4]) ;
+			int[] spellIDs = switch (row % 3)
+			{
+				case 0 -> new int[] {104} ;
+				case 1 -> new int[] {44} ;
+				case 2 -> new int[] {106} ;
+				case 3 -> new int[] {110} ;
+				case 4 -> new int[] {143} ;
+				case 5 -> new int[] {16} ;
+				case 6 -> new int[] {6} ;
+				case 7 -> new int[] {34} ;
+				case 8 -> new int[] {41} ;
+				default -> new int[] {} ;
+			};
+			for (int id : spellIDs)
+			{
+				spells.add(new Spell(Spell.all.get(id))) ;
+			}
+			spells.forEach(spell -> spell.incLevel(1)) ;
 
 			Set<Item> items = new HashSet<>() ;
 			for (int i = 0 ; i <= 10 - 1 ; i += 1)
 			{
-				int itemID = Integer.parseInt(input.get(ct)[37 + i]) ;
+				int itemID = Integer.parseInt(inp[37 + i]) ;
 				if (-1 < itemID)
 				{
 					items.add(Item.allItems.get(itemID)) ;
 				}
 			}
 
-			int Gold = Integer.parseInt(input.get(ct)[47]) ;
+			int Gold = Integer.parseInt(inp[47]) ;
 			int[] StatusCounter = new int[8] ;
 
-			String name = input.get(ct)[1 + language.ordinal()] ;
-			int level = Integer.parseInt(input.get(ct)[3]) ;
+			String name = inp[1 + language.ordinal()] ;
+			int level = Integer.parseInt(inp[3]) ;
 			Dimension size = new Dimension(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null)) ;
-			int range = (int) (Integer.parseInt(input.get(ct)[7]) * diffMult) ;
-			int step = Integer.parseInt(input.get(ct)[48]) ;
-			Elements[] elem = new Elements[] { Elements.valueOf(input.get(ct)[35]) } ;
-			int mpDuration = Integer.parseInt(input.get(ct)[49]) ;
+			int range = (int) (Integer.parseInt(inp[7]) * diffMult) ;
+			int step = Integer.parseInt(inp[48]) ;
+			Elements[] elem = new Elements[] { Elements.valueOf(inp[35]) } ;
+			int mpDuration = Integer.parseInt(inp[49]) ;
 			int satiationDuration = 100 ;
-			int numberSteps = Integer.parseInt(input.get(ct)[50]) ;
-			int battleActionDuration = Integer.parseInt(input.get(ct)[51]) ;
+			int numberSteps = Integer.parseInt(inp[50]) ;
+			int battleActionDuration = Integer.parseInt(inp[51]) ;
 			int stepCounter = 0 ;
 
-			new CreatureType(ct, name, level, size, range, step, elem, mpDuration,
+			new CreatureType(row, name, level, size, range, step, elem, mpDuration,
 					satiationDuration, numberSteps, battleActionDuration, stepCounter, moveAni, PA, BA, spells, items,
-					Gold, color[ct], StatusCounter) ;
+					Gold, color[row], StatusCounter) ;
 		}
 	}
 	

@@ -47,7 +47,7 @@ public abstract class SideBar
 			player.switchOpenClose(player.getAttWindow()) ;
 		} ;
 		actions[0] = () -> {
-			if (!player.getQuestSkills().get(QuestSkills.getContinentMap(player.getMap().getContinentName(player).name()))) { return ;}
+			if (!player.getQuestSkills().get(QuestSkills.getContinentMap(player.getMap().getContinent().name()))) { return ;}
 			player.getMapWindow().setPlayerPos(player.getPos()) ;
 			player.getMapWindow().setCurrentMap(player.getMap()) ;
 			player.switchOpenClose(player.getMapWindow()) ;

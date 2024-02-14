@@ -17,6 +17,14 @@ public class BasicAttribute extends LiveBeingAttribute
 		this.maxValue = maxValue;
 		this.multiplier = multiplier;
 	}
+	
+	public BasicAttribute(BasicAttribute basicAtt)
+	{
+		super(0);
+		this.currentValue = basicAtt.getCurrentValue();
+		this.maxValue = basicAtt.getMaxValue();
+		this.multiplier = basicAtt.getMultiplier();
+	}
 
 	public int getCurrentValue() { return currentValue ;}
 	public int getMaxValue() { return maxValue ;}

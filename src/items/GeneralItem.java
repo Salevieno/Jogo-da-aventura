@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import liveBeings.AttackModifiers;
+import liveBeings.Buff;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
@@ -20,6 +22,7 @@ import utilities.UtilS;
 public class GeneralItem extends Item
 {
 	private double power ;
+	private AttackModifiers atkMod ;
 	private Elements elem ;
 	
 	private static GeneralItem[] AllGeneralItems ;
@@ -38,26 +41,47 @@ public class GeneralItem extends Item
 			int price = Integer.parseInt(input.get(p)[5]) ;
 			double dropChance = Double.parseDouble(input.get(p)[6]) ;
 			int power = Integer.parseInt(input.get(p)[7]) ;
-			AllGeneralItems[p] = new GeneralItem(id, name, description, price, dropChance, power) ;
+			AttackModifiers atkMod = calcAtkMod(id) ;
+			Elements elem = Elements.valueOf(input.get(p)[8]) ;
+			AllGeneralItems[p] = new GeneralItem(id, name, description, price, dropChance, power, atkMod, elem) ;
 		}
+	}
+	
+	private static AttackModifiers calcAtkMod(int id)
+	{
+		return switch (id)
+		{
+			case 64 -> new AttackModifiers(new double[3], new double[3], new double[3], new double[] {0.5, 0, 0}, new double[3]) ;
+			case 65 -> new AttackModifiers(new double[3], new double[3], new double[] {1, 0, 0}, new double[3], new double[3]) ;
+			case 66 -> new AttackModifiers(new double[3], new double[] {0.5, 0, 0}, new double[3], new double[3], new double[3]) ;
+			case 67 -> new AttackModifiers(new double[] {0.5, 0, 0}, new double[3], new double[3], new double[3], new double[3]) ;
+			case 69 -> new AttackModifiers(new double[3], new double[3], new double[3], new double[3], new double[] {1, 0, 0}) ;
+			case 71 -> new AttackModifiers(new double[] {1, 0, 0}, new double[3], new double[3], new double[3], new double[3]) ;
+			case 73 -> new AttackModifiers(new double[3], new double[3], new double[3], new double[] {0.8, 0, 0}, new double[3]) ;
+			case 75 -> new AttackModifiers(new double[3], new double[] {1, 0, 0}, new double[3], new double[3], new double[3]) ;
+			case 78 -> new AttackModifiers(new double[3], new double[3], new double[3], new double[] {1, 0, 0}, new double[3]) ;
+			default -> new AttackModifiers() ;
+		};
+		// TODO item effects for ids 21, 22, 23, 25, 74, 79, 80, 81, 82, 83, 84, 86, 87, 89, 90, 99, 100, 105, 106, 109 & 111
 	}
 	
 	public static List<Item> throwableItems() { return Arrays.asList(AllGeneralItems).stream().filter(item -> 0 < item.power).collect(Collectors.toList()) ;}
 	
 	public boolean isThrowable() { return 0 < power ;}
 	
-	public GeneralItem(int id, String Name, String Description, int price, double dropChance, int power)
+	public GeneralItem(int id, String Name, String Description, int price, double dropChance, int power, AttackModifiers atkMod, Elements elem)
 	{
 		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 		this.power = power ;
-		elem = Elements.neutral ;
+		this.atkMod = atkMod ;
+		this.elem = elem ;
 	}
 
 	public static GeneralItem[] getAll() {return AllGeneralItems ;}
 	
 	public double getPower() { return power ;}
-	
 	public Elements getElem() { return elem ;}
+	public AttackModifiers getAtkMod() { return atkMod ;}
 	
 	public static Image imageFromID(int id)
 	{		
@@ -99,9 +123,9 @@ public class GeneralItem extends Item
 				((Player) user).getBag().remove(this, 1) ;
 				((Player) user).getBag().add(AllGeneralItems[32], 1) ;
 			}
-			case 30: user.getPA().getThirst().incCurrentValue(30) ; return ; // TODO esses não estão consumindo o item
-			case 31: user.getPA().getThirst().incCurrentValue(60) ; return ;
-			case 32: user.getPA().getThirst().incCurrentValue(100) ; return ;
+			case 30: user.getPA().getThirst().incCurrentValue(30) ; ((Player) user).getBag().remove(this, 1) ; return ;
+			case 31: user.getPA().getThirst().incCurrentValue(60) ; ((Player) user).getBag().remove(this, 1) ; return ;
+			case 32: user.getPA().getThirst().incCurrentValue(100) ; ((Player) user).getBag().remove(this, 1) ; return ;
 		}
 				
 	}

@@ -78,13 +78,13 @@ public class Building
 		}
 	}
 	
-	public void displayNPCs(DrawPrimitives DP)
+	public void displayNPCs(Point playerPos, DrawPrimitives DP)
 	{
 		if (npcs == null) { return ;}
 		
 		for (NPCs npc : npcs)
 		{
-			npc.display(DP) ;
+			npc.display(playerPos, DP) ;
 		}
 	}
 	
@@ -112,7 +112,7 @@ public class Building
 		if (type.getInsideImage() == null)
 		{
 			DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomLeft) ;
-			displayNPCs(DP) ;
+			displayNPCs(playerPos, DP) ;
 			
 			return ;
 		}
@@ -126,7 +126,7 @@ public class Building
 		}
 
 		DP.drawImage(type.getInsideImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomLeft) ;
-		displayNPCs(DP) ;
+		displayNPCs(playerPos, DP) ;
 		
 	}
 

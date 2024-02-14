@@ -41,7 +41,7 @@ public class SpellTest
 	static Pet pet ;
 	
 	static Creature refCreature ;
-	
+	// TODO - optional test jackpot spell
 	@BeforeAll
 	static void initializeGame()
 	{
@@ -57,10 +57,7 @@ public class SpellTest
 		archerLevel0 = new Player("Player", "", 2) ;
 		animalLevel0 = new Player("Player", "", 3) ;
 		thiefLevel0 = new Player("Player", "", 4) ;
-		List.of(knightLevel0, mageLevel0, archerLevel0, animalLevel0, thiefLevel0).forEach(player -> {
-			player.InitializeSpells() ;
-
-		}) ;
+		List.of(knightLevel0, mageLevel0, archerLevel0, animalLevel0, thiefLevel0).forEach(Player::InitializeSpells) ;
 		
 		pet = new Pet(1) ;
 		
@@ -113,7 +110,22 @@ public class SpellTest
 		}) ;
 	}
 	
+
 	
+	@Test
+	void spellLevelIncrease()
+	{
+		Player player = knightLevel0 ;
+		Spell pancada = player.getSpells().get(0) ;
+		
+		assertEquals(1, pancada.getLevel()) ;
+		assertEquals(20, pancada.getMpCost()) ;
+		
+		pancada.incLevel(4); ;
+		
+		assertEquals(5, pancada.getLevel()) ;
+		assertEquals(39, pancada.getMpCost()) ;
+	}
 	
 	@Test
 	void knightOffensiveSpells()
@@ -189,8 +201,7 @@ public class SpellTest
 	
 	@Test
 	void thiefOffensiveSpells()
-	{// TODO furto é ofensivo?
-		// TODO corrigir mp required
+	{
 		Player player = thiefLevel0 ;
 		Spell ataqueFurtivo = player.getSpells().get(0) ;
 		AtkResults atkResults = player.useSpell(ataqueFurtivo, refCreature) ;
@@ -283,6 +294,20 @@ public class SpellTest
 		assertEquals(15, player.getBA().getDex().getBaseValue(), 0.0001) ;
 		assertEquals(7, player.getBA().getAgi().getBaseValue(), 0.0001) ;
 	}
+
+	
+//	@Test
+//	void passive26improvedBlock()
+//	{
+//		// Teste de shielder, ainda precisa implementar.
+//		Player player = mageLevel0 ;
+//		Spell bloqueioMelhorado = player.getSpells().get(2) ;
+//		for (int i = 0 ; i <= 5 - 1; i += 1)
+//		{
+//			player.applyPassiveSpell(bloqueioMelhorado);
+//		}
+//		assertEquals(15, player.getBA().getMagAtk().getBaseValue(), 0.0001) ;
+//	}
 	
 	
 	@Test
@@ -295,21 +320,8 @@ public class SpellTest
 			player.applyPassiveSpell(meditation);
 		}
 		assertEquals(15, player.getBA().getMagAtk().getBaseValue(), 0.0001) ;
-	}
-	
-	
-	@Test
-	void passive42magicalResistance()
-	{
-		Player player = mageLevel0 ;
-		Spell resistenciaMagica = player.getSpells().get(8) ;
-		for (int i = 0 ; i <= 5 - 1; i += 1)
-		{
-			player.applyPassiveSpell(resistenciaMagica);
-		}
 		assertEquals(15, player.getBA().getMagDef().getBaseValue(), 0.0001) ;
 	}
-	
 	
 	@Test
 	void passive70archery()
@@ -612,6 +624,21 @@ public class SpellTest
 	}
 
 	
+	@Test
+	void passive144Jackpot()
+	{
+		Player player = thiefLevel0 ;
+		Spell bolada = player.getSpells().get(6) ;
+		
+		assertEquals(0.0, player.getDigBonus(), 0.0001) ;
+		for (int i = 0 ; i <= 5 - 1; i += 1)
+		{
+			player.applyPassiveSpell(bolada);
+		}
+		assertEquals(0.2, player.getDigBonus(), 0.0001) ;
+	}
+
+	
 	
 
 	@Test
@@ -751,11 +778,41 @@ public class SpellTest
 	
 	
 	@Test
+	void support141steal()
+	{
+		Player player = thiefLevel0 ;
+		Spell roubo = player.getSpells().get(3) ;
+		
+		assertTrue(!player.getBag().contains(Item.allItems.get(0))) ;
+		player.useSpell(roubo, refCreature);
+		
+		boolean containsAny = false ;
+		for (Item item : refCreature.getBag())
+		{
+			if (player.getBag().contains(item))
+			{
+				containsAny = true ;
+			}
+		}
+		assertTrue(containsAny) ;
+	}
+	
+	
+	@Test
 	void support44heal()
 	{
 		mageLevel0.takeDamage(40) ;
 		mageLevel0.useSpell(mageLevel0.getSpells().get(10), mageLevel0) ;
 		assertEquals(20, mageLevel0.getPA().getLife().getTotalValue()) ;
+	}
+	
+	@Test
+	void auto42Restoration()
+	{
+		Player player = mageLevel0 ;
+		player.setCurrentAction("0") ;
+		player.useSpell(player.getSpells().get(0), refCreature) ;
+		assertEquals(68, player.getMp().getCurrentValue()) ;
 	}
 	
 	@Test	
