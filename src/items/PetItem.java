@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
-import attributes.AttributeBonus;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.Animation;
@@ -14,7 +13,6 @@ import graphics.DrawPrimitives;
 import liveBeings.Pet;
 import main.Game;
 import utilities.Align;
-import utilities.Elements;
 import utilities.UtilG;
 import utilities.UtilS;
 

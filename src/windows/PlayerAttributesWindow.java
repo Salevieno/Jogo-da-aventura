@@ -173,7 +173,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 				Image elemImage = eqElem.image ;
 				Point elemPos = UtilG.Translate(eqSlotCenter[eq], eqSlotSize / 2 - 12, eqSlotSize / 2 - 12) ;
 
-				DP.drawImage(elemImage, elemPos, angle, new Scale(0.25, 0.25), Align.center) ;
+				DP.drawImage(elemImage, elemPos, angle, new Scale(0.5, 0.5), Align.center) ;
 			}
 		}
 		

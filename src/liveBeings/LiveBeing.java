@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
-import components.SpellTypes;
 import graphics.Animation;
 import graphics.AnimationTypes;
 import graphics.DrawPrimitives;
@@ -31,6 +30,7 @@ import utilities.Directions;
 import utilities.Elements;
 import utilities.FrameCounter;
 import utilities.RelativePos;
+import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;
 import windows.AttributesWindow;
@@ -59,6 +59,7 @@ public abstract class LiveBeing
 	protected AtkTypes currentAtkType ;
 	protected List<String> combo ;				// record of the last 10 movements
 	protected List<Spell> spells ;
+	protected TimeCounter drunk ;
 	
 	protected PersonalAttributes PA ;
 	protected BattleAttributes BA ;
@@ -66,13 +67,6 @@ public abstract class LiveBeing
 	protected AttributesWindow attWindow ;
 	
 	public static final Image AttImage = UtilS.loadImage("\\Player\\" + "Attributes.png") ;
-//	public static final Image[] StatusImages = new Image[] {
-//			UtilS.loadImage("\\Status\\" + "Stun.png"),
-//			UtilS.loadImage("\\Status\\" + "Block.png"),
-//			UtilS.loadImage("\\Status\\" + "Blood.png"),
-//			UtilS.loadImage("\\Status\\" + "Poison.png"),
-//			UtilS.loadImage("\\Status\\" + "Silence.png")
-//			};
 	public static final Image defendingImage = UtilS.loadImage("\\Battle\\" + "ShieldIcon.png") ;
 	public static final Image powerBarImage = UtilS.loadImage("PowerBar.png") ;
 	public static final String[] BattleKeys = new String[] {"Y", "U"} ;	
@@ -89,9 +83,9 @@ public abstract class LiveBeing
 		this.BA = BA;
 		this.movingAni = movingAni;
 		this.attWindow = attWindow ;
-//		displayDamage = new TimeCounter(0, 100) ;
 		currentAction = null ;
 		currentAtkType = null ;
+		drunk = new TimeCounter(20) ;
 	}
 
 	public abstract Point center() ;
@@ -156,7 +150,6 @@ public abstract class LiveBeing
 	public FrameCounter getThirstCounter() {return thirstCounter ;}
 	public FrameCounter getMoveCounter() {return actionCounter ;}
 	public FrameCounter getBattleActionCounter() {return battleActionCounter ;}
-//	public TimeCounter getDisplayDamage() {return displayDamage ;}
 	public FrameCounter getStepCounter() {return stepCounter ;}
 	public List<String> getCombo() {return combo ;}
 	public List<Spell> getSpells() {return spells ;}
@@ -199,6 +192,16 @@ public abstract class LiveBeing
 	
 	public static Directions randomDir() { return Directions.getDir(UtilG.randomIntFromTo(0, 3)) ;}
 	
+	public static Directions randomPerpendicularDir(Directions originalDir)
+	{
+		int side = UtilG.randomIntFromTo(0, 1) ;
+		return switch (originalDir)
+		{
+			case up, down -> side == 0 ? Directions.left : Directions.right ;
+			case left, right -> side == 0 ? Directions.up : Directions.down ;
+		};
+	}
+	
 	public static GameMap calcNewMap(Point pos, Directions dir, GameMap currentMap)
 	{
 		Point currentPos = new Point(pos) ;
@@ -239,10 +242,8 @@ public abstract class LiveBeing
 	{
 		int[] screenBorder = Game.getScreen().getBorders() ;
 		Dimension screenSize = Game.getScreen().getSize() ;
-//		int screenH = Game.getScreen().getSize().height ;
 		Point currentPos = new Point(pos) ;
 		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
-//		boolean topSide = currentPos.y <= Game.getScreen().getSize().height / 2 ;
 		int stepOffset = Player.stepDuration ;
 
 		switch (dir)
@@ -342,7 +343,13 @@ public abstract class LiveBeing
 	
 	public Point calcNewPos()
 	{
-		switch (dir)
+		Directions moveDir = dir ;
+		if (drunk.isActive() & UtilG.chance(0.8 * (1 - drunk.rate())))
+		{
+			moveDir = randomPerpendicularDir(dir) ;
+		}
+		
+		switch (moveDir)
 		{
 			case up: return new Point(pos.x, pos.y - step) ;
 			case down: return new Point(pos.x, pos.y + step) ;
@@ -789,6 +796,12 @@ public abstract class LiveBeing
 		Point offset = new Point(size.width / 2 + defendingImage.getWidth(null) / 2 + 2, 0) ;
 		Point imagePos = UtilG.Translate(center(), offset.x, 0) ;
 		DP.drawImage(defendingImage, imagePos, Align.center) ;
+	}
+
+	public void getsDrunk(int duration)
+	{
+		drunk.setDuration(duration) ;
+		drunk.start() ;
 	}
 
 }

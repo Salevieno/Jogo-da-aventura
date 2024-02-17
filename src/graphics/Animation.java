@@ -24,6 +24,7 @@ public class Animation
 	private static final List<Animation> all = new ArrayList<>() ;
 	public static final Image obtainedItem = UtilS.loadImage("ObtainedItem.png") ;
 	public static final Image messageBox = UtilS.loadImage("messageBox.png") ;
+	public static final Image win = UtilS.loadImage("Win.png") ;
 
 	private Animation(AnimationTypes type)
 	{

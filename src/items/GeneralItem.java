@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import liveBeings.AttackModifiers;
-import liveBeings.Buff;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
@@ -126,6 +125,9 @@ public class GeneralItem extends Item
 			case 30: user.getPA().getThirst().incCurrentValue(30) ; ((Player) user).getBag().remove(this, 1) ; return ;
 			case 31: user.getPA().getThirst().incCurrentValue(60) ; ((Player) user).getBag().remove(this, 1) ; return ;
 			case 32: user.getPA().getThirst().incCurrentValue(100) ; ((Player) user).getBag().remove(this, 1) ; return ;
+			case 74: user.getsDrunk(20) ; ((Player) user).getBag().remove(this, 1) ; return ;
+			case 105: user.getsDrunk(50) ; ((Player) user).getBag().remove(this, 1) ; return ;
+			case 106: user.getsDrunk(150) ; ((Player) user).getBag().remove(this, 1) ; return ;
 		}
 				
 	}

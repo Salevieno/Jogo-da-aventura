@@ -71,7 +71,6 @@ import maps.TreasureChest ;
 import screen.Screen ;
 import screen.SideBar ;
 import screen.Sky ;
-import testing.TestingAnimations;
 import utilities.Align ;
 import utilities.GameStates ;
 import utilities.Log;
@@ -682,26 +681,7 @@ public class Game extends JPanel
 
 		return quests ;
 	}
-
-//	public static List<NPCs> getAllNPCs()
-//	{
-//		List<NPCs> allNPCs = new ArrayList<>() ;
-//		for (GameMap map : allMaps)
-//		{
-//			if (map.getNPCs() == null)
-//			{
-//				continue ;
-//			}
-//			if (map.getNPCs().isEmpty())
-//			{
-//				continue ;
-//			}
-//			allNPCs.addAll(map.getNPCs()) ;
-//		}
-//
-//		return allNPCs ;
-//	}
-
+	
 	
 	private void incrementCounters()
 	{	

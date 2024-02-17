@@ -9,7 +9,6 @@ import graphics.Draw;
 import graphics.DrawPrimitives;
 import main.Game;
 import utilities.Align;
-import utilities.FrameCounter;
 import utilities.TimeCounter;
 import utilities.UtilG;
 import utilities.UtilS;

@@ -39,12 +39,12 @@ public abstract class Draw
 
 	public static double stdAngle = DrawPrimitives.stdAngle;
 	private static Color[] colorPalette = Game.colorPalette;
-	private static Image menuWindow ;
+//	private static Image menuWindow ;
 	private static Image ArrowIconImage ;
 	
 	static
 	{
-		menuWindow = UtilS.loadImage("MenuWindow.png") ;
+//		menuWindow = UtilS.loadImage("MenuWindow.png") ;
 		ArrowIconImage = UtilS.loadImage("\\Windows\\" + "ArrowIcon.png") ;
 	}
 
@@ -299,13 +299,11 @@ public abstract class Draw
 	public static void winAnimation(TimeCounter counter, List<Item> items)
 	{
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Color titleColor = Game.colorPalette[5] ;
-		Color itemNamesColor = Game.colorPalette[6] ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 
-		DP.drawImage(menuWindow, pos, Scale.unit, Align.topLeft) ;
-		Point textPos = UtilG.Translate(pos, 5, font.getSize() + 5) ;
-		DP.drawText(textPos, Align.bottomLeft, stdAngle, "Você obteve!", font, titleColor) ;
+		DP.drawImage(Animation.win, pos, Scale.unit, Align.topLeft) ;
+		Point textPos = UtilG.Translate(pos, 65, font.getSize() + 5) ;
+		DP.drawText(textPos, Align.bottomCenter, stdAngle, "Você obteve!", font, Game.colorPalette[5]) ;
 		
 		if ( counter.rate() <= 0.3 ) { return ;}
 		
@@ -313,8 +311,8 @@ public abstract class Draw
 		{
 			if ( 0.3 + 0.5 * i / items.size() <= counter.rate() )
 			{
-				Point newTextPos = UtilG.Translate(textPos, 0, (i + 1) * (font.getSize() + 2)) ;
-				DP.drawText(newTextPos, Align.bottomLeft, stdAngle, items.get(i).getName(), font, itemNamesColor) ;
+				Point itemTextPos = UtilG.Translate(pos, 15, (i + 1) * (font.getSize() + 4)) ;
+				DP.drawText(itemTextPos, Align.bottomLeft, stdAngle, items.get(i).getName(), font, Game.colorPalette[6]) ;
 			}
 		}
 	}
@@ -334,21 +332,6 @@ public abstract class Draw
 		
 		Point amountPos = UtilG.Translate(pos, 35, 0) ;
 		DP.drawText(amountPos, Align.centerLeft, stdAngle, String.valueOf(goldObtained), font, textColor) ;
-		
-	}
-
-	public static void notEnoughGold(TimeCounter counter)
-	{
-
-		Point pos = Game.getScreen().pos(0.45, 0.2) ;
-//		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-//		Color titleColor = Game.colorPalette[3] ;
-
-//		DrawImage(menuWindow, pos, Scale.unit, Align.topLeft) ;
-		
-//		Point textPos = UtilG.Translate(pos, 5, 0) ;
-//		DrawText(textPos, Align.centerLeft, stdAngle, "Você não tem ouro suficiente!", font, titleColor) ;
-//		Game.getAnimations().get(12).start(200, new Object[] {pos, "Você não tem ouro suficiente!", Game.colorPalette[0]}) ;
 		
 	}
 
@@ -379,12 +362,12 @@ public abstract class Draw
 
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
 		Scale scale = Scale.unit ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		String[] attText = Game.allText.get(TextCategories.attributes) ;
 		
-		DP.drawImage(menuWindow, pos, scale, Align.topLeft) ;
-		Point textPos = UtilG.Translate(pos, 5, font.getSize() + 5) ;
-		DP.drawText(textPos, Align.bottomLeft, stdAngle, attText[0] + " " + playerLevel + "!", font, Game.colorPalette[6]) ;
+		DP.drawImage(Animation.win, pos, scale, Align.topLeft) ;
+		Point textPos = UtilG.Translate(pos, 65, font.getSize() + 5) ;
+		DP.drawText(textPos, Align.bottomCenter, stdAngle, attText[0] + " " + playerLevel + "!", font, Game.colorPalette[6]) ;
 		
 		if ( counter.rate() <= 0.3 ) { return ;}
 		
@@ -393,8 +376,8 @@ public abstract class Draw
 		{
 			if ( 0.3 + 0.5 * i / (attNames.length - 1) <= counter.rate() )
 			{
-				Point newTextPos = UtilG.Translate(textPos, 0, (i + 1) * (font.getSize() + 2)) ;
-				DP.drawText(newTextPos, Align.bottomLeft, stdAngle, attNames[i] + " + " + AttributeIncrease[i], font, Game.colorPalette[6]) ;
+				Point attTextPos = UtilG.Translate(pos, 15, (i + 1) * (font.getSize() + 4)) ;
+				DP.drawText(attTextPos, Align.bottomLeft, stdAngle, attNames[i] + " + " + AttributeIncrease[i], font, Game.colorPalette[6]) ;
 			}
 		}
 		

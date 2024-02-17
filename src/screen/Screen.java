@@ -2,7 +2,6 @@ package screen ;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.Arrays;
 
 public class Screen
 {

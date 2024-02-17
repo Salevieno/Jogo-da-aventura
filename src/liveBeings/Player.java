@@ -55,7 +55,6 @@ import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.FrameCounter;
-import utilities.Log;
 import utilities.Scale;
 import utilities.UtilG;
 import utilities.UtilS;
@@ -555,14 +554,7 @@ public class Player extends LiveBeing
 
 		if (isDoneMoving())
 		{
-			if (opponent == null)
-			{
-				setState(LiveBeingStates.idle) ;
-			}
-			else
-			{
-				setState(LiveBeingStates.fighting) ;
-			}
+			setState(opponent == null ? LiveBeingStates.idle : LiveBeingStates.fighting) ;
 			
 			return ;
 		}
@@ -772,7 +764,7 @@ public class Player extends LiveBeing
 			{
 				setDir(Directions.right) ;
 			}
-
+			
 			if (UtilS.actionIsArrowKey(currentAction) | (!isFocusedOnWindow()))
 			{
 				startMove() ;
@@ -1260,7 +1252,6 @@ public class Player extends LiveBeing
 		if (item == null) { System.out.println("Tentando usar item nulo!"); return ;}
 		if (!bag.contains(item)) { System.out.println("Tentando usar item que não tem na mochila!"); return ;}
 
-//		Log.itemUsed(this, item) ;
 		if (item instanceof Potion)
 		{
 			Potion pot = (Potion) item ;
@@ -1336,7 +1327,6 @@ public class Player extends LiveBeing
 		if (item instanceof GeneralItem)
 		{
 			GeneralItem genItem = (GeneralItem) item ;
-			if (opponent == null) { return ;}
 			
 			if (isInBattle() & canThrowItem(genItem))
 			{
