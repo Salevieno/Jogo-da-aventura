@@ -22,6 +22,7 @@ import main.AtkTypes;
 import main.Battle;
 import main.Game;
 import maps.GameMap;
+import utilities.Align;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
@@ -387,7 +388,7 @@ public class Pet extends LiveBeing
 	
 	public void display(Point pos, Scale scale, DrawPrimitives DP)
 	{
-		movingAni.display(dir, pos, Draw.stdAngle, scale, DP) ;
+		movingAni.displayMoving(dir, pos, Draw.stdAngle, scale, Align.bottomCenter, DP) ;
 		
 		displayStatus(DP) ;
 	}

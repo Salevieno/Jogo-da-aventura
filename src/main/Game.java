@@ -144,7 +144,7 @@ public class Game extends JPanel
 	public Game()
 	{
 		DP = new DrawPrimitives() ;
-		player = new Player("", "", 4) ;
+		player = new Player("", "", 1) ;
 
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -821,7 +821,7 @@ public class Game extends JPanel
 		{
 			player.drawWeapon(player.getPos(), Scale.unit, DP) ;
 		}
-		player.displayState(DP) ;
+//		player.displayState(DP) ;
 	}
 	
 	private void updateProjectiles()
@@ -854,7 +854,7 @@ public class Game extends JPanel
 			konamiCode() ;
 		}
 
-		Draw.fullMap(player.getPos(), player.getMap(), sky) ;
+		Draw.map(player.getMap(), sky) ;
 
 		if (player.getMap().isAField())
 		{
@@ -898,6 +898,7 @@ public class Game extends JPanel
 			player.talkToNPC(mousePos, DP) ;
 		}
 
+		Draw.mapElements(player.getPos(), player.getMap(), sky) ;
 		player.showWindows(pet, mousePos, DP) ;
 
 		if (projs != null)

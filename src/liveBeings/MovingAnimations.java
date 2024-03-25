@@ -21,14 +21,19 @@ public class MovingAnimations
 		this.movingRightGif = movingRightGif ;
 	}
 	
-	public void display(Directions direction, Point feetPos, double angle, Scale scale, DrawPrimitives DP)
+	public void displayIdle(Point pos, double angle, Scale scale, Align align, DrawPrimitives DP)
+	{
+		DP.drawImage(idleGif, pos, angle, scale, align) ;
+	}
+	
+	public void displayMoving(Directions direction, Point pos, double angle, Scale scale, Align align, DrawPrimitives DP)
 	{
 		switch (direction)
 		{
-			case up: DP.drawImage(movingUpGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
-			case down: DP.drawImage(movingDownGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
-			case left: DP.drawImage(movingLeftGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
-			case right: DP.drawImage(movingRightGif, feetPos, angle, scale, Align.bottomCenter) ; break ;
+			case up: DP.drawImage(movingUpGif, pos, angle, scale, align) ; break ;
+			case down: DP.drawImage(movingDownGif, pos, angle, scale, align) ; break ;
+			case left: DP.drawImage(movingLeftGif, pos, angle, scale, align) ; break ;
+			case right: DP.drawImage(movingRightGif, pos, angle, scale, align) ; break ;
 		}
 	}
 }

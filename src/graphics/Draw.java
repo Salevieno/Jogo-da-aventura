@@ -202,18 +202,21 @@ public abstract class Draw
 		DP.drawText(Game.getScreen().pos(0, 0.99), Align.bottomLeft, stdAngle, message, font, colorPalette[20]) ;
 	}
 	
-	public static void fullMap(Point playerPos, GameMap map, Sky sky)
+	public static void map(GameMap map, Sky sky)
 	{
 		if (!map.getContinent().equals(Continents.cave))
 		{
 			sky.display(DP) ;
 		}
-		
 		map.display(DP) ;
+		map.displayGroundTypes(DP) ;
+	}
+	
+	public static void mapElements(Point playerPos, GameMap map, Sky sky)
+	{		
 		map.displayElements(playerPos, DP) ;
 		map.displayBuildings(playerPos, Arrays.asList(Game.getMaps()).indexOf(map), DP) ;
 		map.displayNPCs(playerPos, DP) ;
-		map.displayGroundTypes(DP) ;
 		
 		if (map instanceof FieldMap)
 		{

@@ -39,17 +39,17 @@ public abstract class SpellsBar
 	static
 	{
 		maxNumberRows = 8 ;
-		titlefont = new Font("SansSerif", Font.BOLD, 10) ;
+		titlefont = new Font("SansSerif", Font.BOLD, 9) ;
 		font = new Font("SansSerif", Font.BOLD, 9) ;
 		title = Game.allText.get(TextCategories.spellsBar)[0] ;
-		textColor = Game.colorPalette[3] ;
+		textColor = Game.colorPalette[19] ;
 
 		image = UtilS.loadImage("\\SideBar\\" + "SpellsBar.png") ;
 		slotImageNoMP = UtilS.loadImage("\\SideBar\\" + "SlotNoMP.png") ;
 		cooldownImage = UtilS.loadImage("\\SideBar\\" + "Cooldown.png") ;
 		size = UtilG.getSize(image) ;
-		barPos = new Point(Game.getScreen().getSize().width, Game.getScreen().getSize().height - 50) ;
-		titlePos = new Point(barPos.x + size.width / 2 + 2, barPos.y - size.height + 2) ;
+		barPos = new Point(Game.getScreen().getSize().width + 2, Game.getScreen().getSize().height - 80) ;
+		titlePos = new Point(barPos.x + size.width / 2, barPos.y - size.height + 4) ;
 	}
 	
 	public static void updateSpells(List<Spell> newSpells)
@@ -74,13 +74,13 @@ public abstract class SpellsBar
 	public static void display(int userMP, Point mousePos, DrawPrimitives DP)
 	{
 		Dimension slotSize = UtilG.getSize(SideBar.slotImage) ;
-		Point offset = new Point(slotSize.width / 2 + 4, slotSize.height / 2 + 15) ;
-		int sx = (int) UtilG.spacing(size.width - 4, nCols, slotSize.width, 0) ;
-		int sy = (int) UtilG.spacing(size.height, nRows, slotSize.height, 15) ;
+		Point offset = new Point(4, 7) ;
+		int sx = (int) UtilG.spacing(size.width, nCols, slotSize.width, offset.x) ;
+		int sy = (int) UtilG.spacing(size.height, nRows, slotSize.height, offset.y) ;
 		
-//		DP.drawImage(image, barPos, Align.bottomLeft) ;
+		DP.drawImage(image, barPos, Align.bottomLeft) ;
 		
-		DP.drawText(titlePos, Align.topCenter, Draw.stdAngle, title, titlefont, Game.colorPalette[5]) ;
+		DP.drawText(titlePos, Align.topCenter, Draw.stdAngle, title, titlefont, textColor) ;
 
 		for (int i = 0 ; i <= spells.size() - 1 ; i += 1)
 		{
@@ -89,7 +89,7 @@ public abstract class SpellsBar
 			
 			int row = i % nRows ;
 			int col = i / nRows ;
-			Point slotCenter = UtilG.Translate(barPos, offset.x + col * sx, - size.height + offset.y + row * sy) ;
+			Point slotCenter = UtilG.Translate(barPos, offset.x + slotSize.width / 2 + col * sx, - size.height + slotSize.height / 2 + 8 + offset.y + row * sy) ;
 			Image image = spell.getMpCost() < userMP ? SideBar.slotImage : slotImageNoMP ;
 			DP.drawImage(image, slotCenter, Align.center) ;
 			DP.drawText(slotCenter, Align.center, Draw.stdAngle, Player.SpellKeys.get(i), font, textColor) ;

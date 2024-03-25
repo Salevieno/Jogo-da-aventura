@@ -1555,11 +1555,11 @@ public class Player extends LiveBeing
 			DP.drawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
 		}
 		
-		movingAni.display(direction, pos, angle, Scale.unit, DP) ;
+		movingAni.displayMoving(direction, pos, angle, Scale.unit, Align.bottomCenter, DP) ;
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
 			Point auraPos = UtilG.Translate(pos, -size.width / 2, 0) ;
-			DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
+//			DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
 		}
 		if (showRange)
 		{

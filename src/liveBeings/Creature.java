@@ -144,7 +144,14 @@ public class Creature extends LiveBeing
 	
 	public void display(Point pos, Scale scale, DrawPrimitives DP)
 	{
-		DP.drawImage(type.movingAni.idleGif, pos, scale, Align.center) ;
+		if (state.equals(LiveBeingStates.moving))
+		{
+			type.movingAni.displayMoving(dir, pos, 0, scale, Align.center, DP) ;
+		}
+		else
+		{
+			type.movingAni.displayIdle(pos, 0, scale, Align.center, DP) ;
+		}
 		displayAttributes(0, DP) ;
 		displayStatus(DP) ;
 	}
