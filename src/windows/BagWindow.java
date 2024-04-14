@@ -691,7 +691,14 @@ public class BagWindow extends GameWindow
 			Draw.textUntil(textPos, Align.centerLeft, Draw.stdAngle, itemText, stdFont, textColor, 10, mousePos) ;
 		}
 		
-		itemsDisplayed.get(item - window * numberSlotMax).displayInfo(windowPos, Align.topRight, DP) ;
+		if (0 < numberItemsDisplayed)
+		{
+			Item selectedItem = itemsDisplayed.get(item - window * numberSlotMax) ;
+			if (selectedItem instanceof Equip)
+			{
+				selectedItem.displayInfo(windowPos, Align.topRight, DP) ;
+			}
+		}
 		
 		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos, DP)) ;
 		

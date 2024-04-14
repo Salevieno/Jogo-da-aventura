@@ -29,7 +29,7 @@ public class QuestWindow extends GameWindow
 	
 	static
 	{
-		windowPos = Game.getScreen().pos(0.3, 0.15) ;
+		windowPos = Game.getScreen().pos(0.3, 0.1) ;
 		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		image = UtilS.loadImage("\\Windows\\" + "Quest.png") ;
 	}
@@ -72,11 +72,11 @@ public class QuestWindow extends GameWindow
 		DP.drawText(sectionPos, Align.center, angle, "Criaturas necessárias", font, textColor) ;
 		DP.drawLine(UtilG.Translate(sectionPos, -60, 20), UtilG.Translate(sectionPos, 60, 20), 1, textColor) ;
 		
-		Point creaturePos = UtilG.Translate(sectionPos, 10, 10) ;
+		Point creaturePos = UtilG.Translate(sectionPos, -60, 10) ;
 		for (CreatureType creatureType : reqCreatureType)
 		{
 			String creatureName = creatureType.getName() ;
-			creaturePos = UtilG.Translate(creaturePos, 0, creatureType.getSize().height + 4) ;
+			creaturePos.y += creatureType.getSize().height + 4 ;
 			Point textPos = UtilG.Translate(creaturePos, 25, 0) ;
 			int numberReq = reqCreatureTypes.get(creatureType) ;
 			int numberCounter = quest.getCounter().get(creatureType) ;
@@ -102,12 +102,12 @@ public class QuestWindow extends GameWindow
 		DP.drawText(sectionPos, Align.center, angle, "Itens necessários", font, textColor) ;
 		DP.drawLine(UtilG.Translate(sectionPos, -60, 20), UtilG.Translate(sectionPos, 60, 20), 1, textColor) ;
 		
-		Point circlePos = UtilG.Translate(sectionPos, 10, 20) ;
-		Point itemPos = UtilG.Translate(circlePos, 10, 0) ;
+		Point circlePos = UtilG.Translate(sectionPos, -80, 20) ;
+		Point itemPos = UtilG.Translate(circlePos, 13, 0) ;
 		for (Item item : reqItem)
 		{
-			itemPos = UtilG.Translate(itemPos, 0, font.getSize() + 4) ;
-			circlePos = UtilG.Translate(circlePos, 0, font.getSize() + 4) ;
+			itemPos.y += font.getSize() + 4 ;
+			circlePos.y += font.getSize() + 4 ;
 			Point textPos = UtilG.Translate(itemPos, 15, 0) ;
 			DP.drawCircle(circlePos, 10, 0, bag.contains(item) ? Game.colorPalette[3] : Game.colorPalette[6], null) ;
 			DP.drawImage(item.getImage(), itemPos, Align.center) ;
@@ -127,12 +127,12 @@ public class QuestWindow extends GameWindow
 		
 		Quest quest = quests.get(window) ;
 		Point questPos = UtilG.Translate(windowPos, image.getWidth(null) / 2, 30) ;
-		DP.drawText(questPos, Align.center, angle, quest.getName() + " " + quest.getID(), font, Game.colorPalette[8]) ;
+		DP.drawText(questPos, Align.center, angle, quest.getName(), font, Game.colorPalette[8]) ;
 		
-		displayReqCreatures(UtilG.Translate(windowPos, 0 , 60), quest, DP) ;
-		displayReqItems(UtilG.Translate(windowPos, 0, 230), DP) ;
+		displayReqCreatures(UtilG.Translate(windowPos, size.width / 2 , 60), quest, DP) ;
+		displayReqItems(UtilG.Translate(windowPos, size.width / 2, 230), DP) ;
 		
-		Draw.windowArrows(UtilG.Translate(windowPos, size.width / 2, size.height + 5), size.width, window, numberWindows) ;
+		Draw.windowArrows(UtilG.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows) ;
 		
 	}
 }

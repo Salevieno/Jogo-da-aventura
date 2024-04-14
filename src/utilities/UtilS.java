@@ -67,12 +67,15 @@ public abstract class UtilS
 	
 	public static String RelPos(Point point, Point refPos) { return refPos.x < point.x ? "Right" : "Left" ;}
 	
-	public static Image loadImage(String path) {
+	public static Image loadImage(String path)
+	{
 		if (paths.contains(path))
 		{
 			System.out.println(path + " repetido ");
 		}
-		paths.add(path); return UtilG.loadImage(Game.ImagesPath + path) ;}
+		paths.add(path);
+		return UtilG.loadImage(Game.ImagesPath + path) ;
+	}
 	
 	public static int MirrorFromRelPos(String relPos) { return relPos.equals("Left") ? -1 : 1 ;}
 	

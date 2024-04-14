@@ -35,16 +35,14 @@ public abstract class Draw
 {
 	
 	private static DrawPrimitives DP ;
-	private static Dimension screenSize = Game.getScreen().getSize() ;
-
-	public static double stdAngle = DrawPrimitives.stdAngle;
-	private static Color[] colorPalette = Game.colorPalette;
-//	private static Image menuWindow ;
+	private static Dimension screenSize ;
 	private static Image ArrowIconImage ;
+	public static double stdAngle ;
 	
 	static
 	{
-//		menuWindow = UtilS.loadImage("MenuWindow.png") ;
+		screenSize = Game.getScreen().getSize() ;
+		stdAngle = DrawPrimitives.stdAngle;
 		ArrowIconImage = UtilS.loadImage("\\Windows\\" + "ArrowIcon.png") ;
 	}
 
@@ -69,6 +67,7 @@ public abstract class Draw
 			DP.drawText(new Point(pos.x, pos.y + i*sy), align, stdAngle, FitText.get(i), font, color) ;						
 		}
 	}
+	
 	public static void textUntil(Point pos, Align align, double angle, String text, Font font, Color color, int maxLength, Point mousePos)
 	{
 		Point offset = UtilG.offsetForAlignment(align, new Dimension(maxLength, UtilG.TextH(font.getSize()))) ;
@@ -93,7 +92,7 @@ public abstract class Draw
 		// obs: text must end with . , ? or ! for this function to work
 		int bubbleL = speechBubble.getWidth(null), bubbleH = speechBubble.getHeight(null) ;
 		boolean flipH = 0.7 * screenSize.width < pos.x ? true : false ;
-		Color textColor = color != null ? color : colorPalette[21] ;
+		Color textColor = color != null ? color : Game.colorPalette[21] ;
 		
 		if (pos.x <= 0.3 * screenSize.width)
 		{
@@ -116,14 +115,14 @@ public abstract class Draw
 			Point leftArrowPos = UtilG.Translate(pos, 25, 0) ; // (int)(0.25 * width)
 			Point textPos = UtilG.Translate(leftArrowPos, 20, 0) ;
 			DP.drawImage(ArrowIconImage, leftArrowPos, stdAngle, new Scale(-1, -1), Align.center) ;
-			DP.drawText(textPos, Align.topLeft, stdAngle, PlayerActions.moveLeft.getKey(), font, colorPalette[0]) ;			
+			DP.drawText(textPos, Align.topLeft, stdAngle, PlayerActions.moveLeft.getKey(), font, Game.colorPalette[0]) ;			
 		}
 		if (selectedWindow < numberWindows - 1)
 		{
 			Point rightArrowPos = UtilG.Translate(pos, width - 25, 0) ; // (int)(0.75 * width)
 			Point textPos = UtilG.Translate(rightArrowPos, -20, 0) ;
 			DP.drawImage(ArrowIconImage, rightArrowPos, stdAngle, new Scale(1, -1), Align.center) ;
-			DP.drawText(textPos, Align.topRight, stdAngle, PlayerActions.moveRight.getKey(), font, colorPalette[0]) ;		
+			DP.drawText(textPos, Align.topRight, stdAngle, PlayerActions.moveRight.getKey(), font, Game.colorPalette[0]) ;		
 		}
 	}
 	
@@ -134,7 +133,7 @@ public abstract class Draw
 		Point[] WindowPos = new Point[] {Game.getScreen().pos(0.15, 0.2), Game.getScreen().pos(0.65, 0.2), Game.getScreen().pos(0.5, 0.2)} ;
 		Font font = new Font("SansSerif", Font.BOLD, 28) ;
 		
-		DP.drawText(Game.getScreen().pos(0.5, 0.05), Align.center, stdAngle, "Slot " + (SlotID + 1), font, colorPalette[5]) ;
+		DP.drawText(Game.getScreen().pos(0.5, 0.05), Align.center, stdAngle, "Slot " + (SlotID + 1), font, Game.colorPalette[5]) ;
 		((PlayerAttributesWindow) player.getAttWindow()).display(new Point(0, 0), DP) ;
 		if (0 < pet.getLife().getCurrentValue())
 		{
@@ -151,7 +150,7 @@ public abstract class Draw
 				new Point((int)(0.65*screenSize.width), (int)(0.2*screenSize.height)),
 				new Point((int)(0.5*screenSize.width), (int)(0.2*screenSize.height))} ;
 		DP.drawGradRoundRect(WindowPos[0], Align.topLeft, new Dimension(screenSize.width / 3, screenSize.height / 2), 2, Color.white, Color.lightGray, true) ;
-		DP.drawText(new Point(WindowPos[0].x + screenSize.width / 6, WindowPos[0].y + screenSize.height / 4), Align.center, stdAngle, "Slot " + String.valueOf(SlotID + 1) + " is empty", new Font("SansSerif", Font.BOLD, 20), colorPalette[5]) ;
+		DP.drawText(new Point(WindowPos[0].x + screenSize.width / 6, WindowPos[0].y + screenSize.height / 4), Align.center, stdAngle, "Slot " + String.valueOf(SlotID + 1) + " is empty", new Font("SansSerif", Font.BOLD, 20), Game.colorPalette[5]) ;
 		windowArrows(new Point(WindowPos[0].x, WindowPos[0].y + screenSize.height / 2), screenSize.width / 3, SlotID, NumSlots) ;
 	}
 
@@ -160,7 +159,7 @@ public abstract class Draw
 		for (int i = 0 ; i <= screenSize.width/spacing[0] - 1 ; ++i)
 		{
 			int LineThickness = 1 ;
-			Color color = colorPalette[21] ;
+			Color color = Game.colorPalette[21] ;
 			if (i % 10 == 0)
 			{
 				LineThickness = 2 ;
@@ -168,13 +167,13 @@ public abstract class Draw
 			if (i % 20 == 0)
 			{
 				LineThickness = 2 ;
-				color = colorPalette[5] ;
+				color = Game.colorPalette[5] ;
 			}
 			DP.drawLine(new Point(i*spacing[0], 0), new Point(i*spacing[0], screenSize.height), LineThickness, color) ;
 			for (int j = 0 ; j <= screenSize.height/spacing[1] - 1 ; ++j)
 			{
 				LineThickness = 1 ;
-				color = colorPalette[21] ;
+				color = Game.colorPalette[21] ;
 				if (j % 10 == 0)
 				{
 					LineThickness = 2 ;
@@ -182,7 +181,7 @@ public abstract class Draw
 				if (j % 20 == 0)
 				{
 					LineThickness = 2 ;
-					color = colorPalette[5] ;
+					color = Game.colorPalette[5] ;
 				}
 				DP.drawLine(new Point(0, j*spacing[1]), new Point(screenSize.width, j*spacing[1]), LineThickness, color) ;
 			}							
@@ -199,7 +198,7 @@ public abstract class Draw
 		Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 		float time = (float) Sky.dayTimeRate() ;
 		String message = (int) (24 * time) + ":" + (int) (24 * 60 * time % 60) ;
-		DP.drawText(Game.getScreen().pos(0, 0.99), Align.bottomLeft, stdAngle, message, font, colorPalette[20]) ;
+		DP.drawText(Game.getScreen().pos(0, 0.99), Align.bottomLeft, stdAngle, message, font, Game.colorPalette[20]) ;
 	}
 	
 	public static void map(GameMap map, Sky sky)
@@ -263,35 +262,6 @@ public abstract class Draw
 	{
 		Font font = new Font("SansSerif", Font.BOLD, 18) ;
 		DP.drawText(Pos, Align.center, stdAngle, SkillName, font, color) ;
-	}
-	
-	public static void collectingAnimation(Point Pos, int counter, int delay, int MessageTime, int CollectibleType, String Message)
-	{
-		/*int TextCat = AllTextCat[9] ;
-		Font font = new Font("SansSerif", Font.BOLD, 20) ;
-		int DotsDelay = 10 ;
-		int L = 200 ;
-		String[] CollectibleName = new String[] {AllText[TextCat][2], AllText[TextCat][3], AllText[TextCat][4], AllText[TextCat][5]} ;
-		Color[] CollectibleColor = new Color[] {MapsTypeColor[12], MapsTypeColor[13], MapsTypeColor[14], MapsTypeColor[15]} ;
-		if (counter <= delay - MessageTime)
-		{			
-			if (counter % (3*DotsDelay) < DotsDelay)
-			{
-				DrawText(new Point(Pos.x + (int)(0.05*screenSize.width) - L/2, Pos.y - (int)(0.05*screenSize.height)), alignPoints.bottomLeft, OverallAngle, AllText[TextCat][1] + " " + CollectibleName[CollectibleType] + ".", font, CollectibleColor[CollectibleType]) ;
-			} else if (counter % (3*DotsDelay) < 2*DotsDelay)
-			{
-				DrawText(new Point(Pos.x + (int)(0.05*screenSize.width) - L/2, Pos.y - (int)(0.05*screenSize.height)), alignPoints.bottomLeft, OverallAngle, AllText[TextCat][1] + " " + CollectibleName[CollectibleType] + "..", font, CollectibleColor[CollectibleType]) ;
-			} else
-			{
-				DrawText(new Point(Pos.x + (int)(0.05*screenSize.width) - L/2, Pos.y - (int)(0.05*screenSize.height)), alignPoints.bottomLeft, OverallAngle, AllText[TextCat][1] + " " + CollectibleName[CollectibleType] + "...", font, CollectibleColor[CollectibleType]) ;				
-			}	
-			DrawTimeBar(Pos, counter, delay, L, new int[] {0, 0}, "Right", "Horizontal", CollectibleColor[CollectibleType]) ;
-		}
-		else
-		{
-			DrawText(new Point(Pos.x + (int)(0.05*screenSize.width) - L/2, Pos.y - (int)(0.05*screenSize.height)), alignPoints.bottomLeft, OverallAngle, Message, font, CollectibleColor[CollectibleType]) ;			
-		}
-		*/
 	}
 	
 	public static void tentAnimation(Point Pos, int counter, int delay, Image TentImage)
@@ -441,30 +411,7 @@ public abstract class Draw
 //			}
 //		}
 	}
-	
-//	public static void fishingAnimation(Point playerPos, Image FishingGif, String WaterPos)
-//	{
-//		int offset = 23 ;
-//		Point pos = new Point(playerPos.x, playerPos.y) ;
-//		if (WaterPos.equals("Touching Up"))
-//		{
-//			pos = new Point(playerPos.x, playerPos.y - offset) ;
-//		}
-//		else if (WaterPos.equals("Touching Down"))
-//		{
-//			pos = new Point(playerPos.x, playerPos.y + offset) ;
-//		}
-//		else if (WaterPos.equals("Touching Right"))
-//		{
-//			pos = new Point(playerPos.x + offset, playerPos.y) ;
-//		}
-//		else if (WaterPos.equals("Touching Left"))
-//		{
-//			pos = new Point(playerPos.x - offset, playerPos.y) ;
-//		}
-//		Draw.gif(FishingGif, pos, Align.center) ;
-//	}
-	
+		
 	public static void pterodactileAnimation(TimeCounter counter, Image pterodactile, Image speakingBubble, String[] message)
 	{
 		Font font = DrawPrimitives.stdFont ;

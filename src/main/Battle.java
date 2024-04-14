@@ -74,10 +74,7 @@ public abstract class Battle
 		
 	}
 	
-	public static double basicElemMult(Elements atk, Elements def)
-	{
-		return ElemMult[ElemID.indexOf(atk)][ElemID.indexOf(def)] ;
-	}
+	public static double basicElemMult(Elements atk, Elements def) { return ElemMult[ElemID.indexOf(atk)][ElemID.indexOf(def)] ;}
 	
 	public static boolean hit(double dex, double agi)
 	{
@@ -87,10 +84,7 @@ public abstract class Battle
 	
 	public static boolean block(double blockDef) { return UtilG.chance(blockDef) ;}
 
-	public static boolean criticalAtk(double critAtk, double critDef)
-	{
-		return UtilG.chance(critAtk - critDef) ;
-	}
+	public static boolean criticalAtk(double critAtk, double critDef) {return UtilG.chance(critAtk - critDef) ;}
 		
 	public static double calcElemMult(Elements atk, Elements weapon, Elements armor, Elements shield, Elements superElem)
 	{

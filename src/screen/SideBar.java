@@ -32,13 +32,25 @@ public abstract class SideBar
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	public static final Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
 	public static final Image slotImage = UtilS.loadImage("\\SideBar\\" + "Slot.png") ;
+	private static final String[] iconNames ;
+	private static final Image[] iconImages ;
+	private static final Image[] iconSelectedImages ;
 	private static final List<GameButton> buttons = new ArrayList<>() ;
 	
 	static
 	{
-		String[] iconNames = new String[] {"map", "quest", "bag", "settings"} ;
-		IconFunction[] actions = new IconFunction[iconNames.length] ;
-		
+		iconNames = new String[] {"map", "quest", "bag", "settings"} ;
+		iconImages = new Image[iconNames.length] ;
+		iconSelectedImages = new Image[iconNames.length] ;
+		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
+		{
+			iconImages[i] = UtilS.loadImage("\\SideBar\\Icon" + "_" + iconNames[i] + ".png");
+			iconSelectedImages[i] = UtilS.loadImage("\\SideBar\\Icon" + "_" + iconNames[i] + "Selected.png") ;
+		}
+	}
+	
+	public static void initialize()
+	{
 		Player player = Game.getPlayer() ;
 		Image playerImage = player.getMovingAni().idleGif ;
 		IconFunction playerAction = () -> {
@@ -46,6 +58,7 @@ public abstract class SideBar
 			((PlayerAttributesWindow) player.getAttWindow()).updateAttIncButtons(player) ;
 			player.switchOpenClose(player.getAttWindow()) ;
 		} ;
+		IconFunction[] actions = new IconFunction[iconNames.length] ;
 		actions[0] = () -> {
 			if (!player.getQuestSkills().get(QuestSkills.getContinentMap(player.getMap().getContinent().name()))) { return ;}
 			player.getMapWindow().setPlayerPos(player.getPos()) ;
@@ -60,27 +73,22 @@ public abstract class SideBar
 		actions[2] = () -> { player.switchOpenClose(player.getBag()) ;} ; 
 		actions[3] = () -> { player.switchOpenClose(player.getSettings()) ;} ;
 
-		
+		SpellsBar.updateSpells(player.getActiveSpells()) ;
 		setPet(player, Game.getPet()) ;
+		
 
 		Point iconPos = UtilG.Translate(barPos, 20, 50) ;
 		buttons.add(new GameButton(iconPos, Align.topCenter, playerImage, playerImage, playerAction)) ;
 		iconPos.y += playerImage.getHeight(null) + 10 ;
 		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
 		{
-			Image iconImg = UtilS.loadImage("\\SideBar\\Icon" + "_" + iconNames[i] + ".png");
-			Image iconSelectedImg = UtilS.loadImage("\\SideBar\\Icon" + "_" + iconNames[i] + "Selected.png") ;
-			buttons.add(new GameButton(iconPos, Align.topCenter, iconNames[i], iconImg, iconSelectedImg, actions[i])) ;
+			buttons.add(new GameButton(iconPos, Align.topCenter, iconNames[i], iconImages[i], iconSelectedImages[i], actions[i])) ;
 
-			iconPos.y += iconImg.getHeight(null) + 10 ;
+			iconPos.y += iconImages[i].getHeight(null) + 10 ;
 		}
 		
 		buttons.forEach(GameButton::activate);
-	}
-	
-	public static void initialize()
-	{
-		SpellsBar.updateSpells(Game.getPlayer().getActiveSpells()) ;
+		
 	}
 	
 	public static void setPet(Player player, Pet pet)
@@ -95,6 +103,7 @@ public abstract class SideBar
 		buttons.add(new GameButton(UtilG.Translate(barPos, 20, 10), Align.topCenter, petImage, petImage, petAction)) ;
 	}
 		
+	public static Image[] getIconImages() { return iconImages ;}
 	public static List<GameButton> getButtons() { return buttons ;}
 		
 	public static void act(String action, Point mousePos)

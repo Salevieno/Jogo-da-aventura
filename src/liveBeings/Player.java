@@ -171,7 +171,7 @@ public class Player extends LiveBeing
 	    size = UtilG.getSize(movingAni.idleGif) ;
 		range = Integer.parseInt(InitialStats.get(job)[4]) ;
 		step = Integer.parseInt(InitialStats.get(job)[33]);
-	    elem = new Elements[] {Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral};
+	    elem = new Elements[] {Elements.neutral, null, null, null, null};
 		actionCounter = new FrameCounter(0, Integer.parseInt(InitialStats.get(job)[37])) ;
 		satiationCounter = new FrameCounter(0, Integer.parseInt(InitialStats.get(job)[38])) ;
 		thirstCounter = new FrameCounter(0, Integer.parseInt(InitialStats.get(job)[39])) ;
@@ -534,9 +534,12 @@ public class Player extends LiveBeing
 
 	public void applyAdjacentGroundEffect()
 	{
-		if (isInside(GroundTypes.lava) & !elem[4].equals(Elements.fire))
+		if (isInside(GroundTypes.lava) & elem[4] != null)
 		{
-			PA.getLife().decTotalValue(5) ;
+			if (!elem[4].equals(Elements.fire))
+			{
+				PA.getLife().decTotalValue(5) ;
+			}
 		}
 		if (isTouching(GroundTypes.water))
 		{
@@ -905,7 +908,6 @@ public class Player extends LiveBeing
 
 	public void meetWithCreatures(FieldMap map)
 	{
-//		System.out.println("checking meet with creatures") ;
 		List<Creature> creaturesInMap = map.getCreatures() ;
 		for (Creature creature : creaturesInMap)
 		{

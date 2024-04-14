@@ -50,6 +50,7 @@ public abstract class Opening
 
     private static final Font font ;
     private static final Font smallFont ;
+	private static final Image LoadingEnfeite ;
 	private static final Image LoadingGif ;
 	private static final Image LoadingSlot ;
 	private static final Image LoadingSlotSelected ;
@@ -63,6 +64,7 @@ public abstract class Opening
 		String path = Game.ImagesPath  + "\\Opening\\";
 		backgroundImage = UtilG.loadImage(path + "Opening.png") ;
 		openingGif = new Gif("Opening", UtilG.loadImage(path + "Opening.gif"), 0.7, false, true) ;
+		LoadingEnfeite = UtilS.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
 		LoadingGif = UtilG.loadImage(path + "Loading.gif") ;
 		LoadingSlot = UtilG.loadImage(path + "LoadingSlot.png") ;
 		LoadingSlotSelected = UtilG.loadImage(path + "LoadingSlotSelected.png") ;
@@ -160,7 +162,7 @@ public abstract class Opening
     	Image startImage = UtilG.loadImage(path + "Start.png") ;
     	Image startImageSelected = UtilG.loadImage(path + "Start Selected.gif") ;
 		IconFunction startAction = () -> { loadingStep = 12 ;} ;
-    	startButton = new GameButton(Game.getScreen().pos(0.5, 0.83), Align.center, "start", startImage, startImageSelected, startAction) ;
+    	startButton = new GameButton(new Point(320, 400), Align.center, "start", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
     	
     	stepMessage = new String[] {"", "Qual o seu nome?", "", "", "", ""} ;
@@ -312,30 +314,32 @@ public abstract class Opening
 	public static void displayLoadingScreen(String action, Point mousePos, DrawPrimitives DP)
 	{
 		Color textColor = Game.colorPalette[0] ;
-		Point moveInfoTopLeft = new Point(60, 60) ;
-		DP.drawText(UtilG.Translate(moveInfoTopLeft, 150, 0), Align.center, 0, "Principais ações", font, textColor) ;
+		Point moveInfoTopLeft = new Point(40, 60) ;
+		DP.drawText(UtilG.Translate(moveInfoTopLeft, 100, 0), Align.center, 0, "Principais ações", font, textColor) ;
 		
-		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().movingRightGif, SideBar.getButtons().get(3).getImage(), Game.getPlayer().getMovingAni().idleGif, SideBar.getButtons().get(2).getImage()} ;
+		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().movingRightGif, SideBar.getIconImages()[2], Game.getPlayer().getMovingAni().idleGif, SideBar.getIconImages()[1]} ;
 		String[] moveInfoText = new String[] {"Moving: W A S D ou setas", "Mochila: B", "Janela do jogador: C", "Quests: Q"} ;
 		for (int i = 0 ; i <= moveInfoImages.length - 1; i += 1)
 		{
-			Point imageCenterLeft = UtilG.Translate(moveInfoTopLeft, 0, 40 + 50 * i) ;
+			Point imageCenterLeft = UtilG.Translate(moveInfoTopLeft, 0, 100 + 50 * i) ;
 			DP.drawImage(moveInfoImages[i], imageCenterLeft, Align.center);
 			DP.drawText(UtilG.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, moveInfoText[i], smallFont, textColor) ;
 		}
 		
 		
-		Point atkInfoTopLeft = new Point(360, 60) ;
-		DP.drawText(UtilG.Translate(atkInfoTopLeft, 150, 0), Align.center, 0, "Ações de luta", font, textColor) ;
+		Point atkInfoTopLeft = new Point(380, 60) ;
+		DP.drawText(UtilG.Translate(atkInfoTopLeft, 120, 0), Align.center, 0, "Ações de luta", font, textColor) ;
 		
 		Image[] atkInfoImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Player.MagicBlissGif} ;
 		String[] atkInfoText = new String[] {"Attack: Y", "Defense: U", "Spells: 0, 1...F11, F12"} ;
 		for (int i = 0 ; i <= atkInfoImages.length - 1; i += 1)
 		{
-			Point imageCenterLeft = UtilG.Translate(atkInfoTopLeft, 0, 40 + 50 * i) ;
+			Point imageCenterLeft = UtilG.Translate(atkInfoTopLeft, 0, 100 + 50 * i) ;
 			DP.drawImage(atkInfoImages[i], imageCenterLeft, Align.center);
 			DP.drawText(UtilG.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, atkInfoText[i], smallFont, textColor) ;
 		}
+		
+		DP.drawImage(LoadingEnfeite, new Point(0, 0), Align.topLeft) ;
 		
 		
 		if (!loadingIsOver())
@@ -348,7 +352,7 @@ public abstract class Opening
 			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, true);
 			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Game.colorPalette[18], false);
 		}
-		
+
 		if (startButton.isActive())
 		{
 			startButton.display(0, true, mousePos, DP) ;
@@ -401,17 +405,18 @@ public abstract class Opening
 
 	public static void run(Player player, Point mousePos, DrawPrimitives DP)
 	{
-//		if (openingGif.isStarting())
-//		{
-//			Music.PlayMusic(thunderSound) ;
-//			Music.PlayMusic(introMusic) ;
-//		}
-//		openingGif.play(new Point(0, 0), Align.topLeft, DP);
-//		if (!openingGif.isDonePlaying())
-//    	{
-//    		return ;
-//    	}
-
+		if (!openingGif.hasPlayed())
+		{
+			if (!openingGif.isActive() & !openingGif.isDonePlaying())
+			{
+				Music.PlayMusic(thunderSound) ;
+				Music.PlayMusic(introMusic) ;
+				openingGif.start(new Point(0, 0), Align.topLeft);
+			}
+			Gif.playAll() ;
+    		return ;
+		}
+		
 		act(player.getCurrentAction(), mousePos) ;
 		if (newGame)
 		{

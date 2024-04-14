@@ -60,7 +60,7 @@ public class Pet extends LiveBeing
 		size = new Dimension (movingAni.idleGif.getWidth(null), movingAni.idleGif.getHeight(null)) ;	
 		range = Integer.parseInt(PetProperties.get(Job)[4]) ;
 		step = Integer.parseInt(PetProperties.get(Job)[32]) ;
-		elem = new Elements[] {Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral, Elements.neutral} ;
+		elem = new Elements[] {Elements.neutral, null, null, null, null} ;
 		actionCounter = new FrameCounter(0, Integer.parseInt(PetProperties.get(Job)[33])) ;
 		satiationCounter = new FrameCounter(0, Integer.parseInt(PetProperties.get(Job)[34])) ;
 		mpCounter = new FrameCounter(0, Integer.parseInt(PetProperties.get(Job)[35])) ;

@@ -16,18 +16,17 @@ public class Gif
 	private Image image ;
 	Point pos ;
 	Align align ;
-//	private int timeCounter ;
-//	private int duration ;
+	boolean hasPlayed ;
+	private TimeCounter counter ;
 	private boolean loop ;
 	private boolean timeStopper ;
-	
-	private TimeCounter counter ;
 	
 	private static final List<Gif> all = new ArrayList<>() ;
 	
 	public Gif(String name, Image image, double duration, boolean loop, boolean timeStopper)
 	{
 		this.image = image;
+		hasPlayed = false ;
 		counter = new TimeCounter(duration) ;
 		this.loop = loop;
 		this.timeStopper = timeStopper;
@@ -36,6 +35,7 @@ public class Gif
 	public Image getImage() { return image ;}	
 	public double getDuration() { return counter.getDuration() ;}
 	public TimeCounter getCounter() { return counter ;}
+	public boolean hasPlayed() { return hasPlayed ;}
 	
 	public boolean isLoop() { return loop ;}
 	public boolean isTimeStopper() { return timeStopper ;}
@@ -73,13 +73,14 @@ public class Gif
 	
 	private void end()
 	{
+		hasPlayed = true ;
 		counter.reset() ;
 		this.getImage().flush() ;
 		all.remove(this) ;
 	}
 	
 	public static void playAll()
-	{ 
+	{
 		for (int i = 0 ; i <= all.size() - 1; i += 1)
 		{
 			all.get(i).play() ;

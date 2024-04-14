@@ -10,7 +10,6 @@ import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Item;
 import main.Game;
-import main.TextCategories;
 import screen.SideBar;
 import utilities.Align;
 import utilities.UtilG;
@@ -27,7 +26,7 @@ public class HotKeysBar
 	static
 	{
 		font = new Font(Game.MainFontName, Font.BOLD, 12) ;
-		textColor = Game.colorPalette[18] ;
+		textColor = Game.colorPalette[0] ;
 		image = UtilS.loadImage("\\SideBar\\" + "HotBar.png") ;
 		barPos = new Point(Game.getScreen().getSize().width + 2, Game.getScreen().getSize().height - 5) ;
 	}
