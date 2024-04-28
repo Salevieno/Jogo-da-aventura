@@ -12,9 +12,9 @@ import java.util.Set;
 import components.Collider;
 import graphics.Draw;
 import graphics.DrawPrimitives;
-import utilities.Align;
+import libUtil.Align;
+import libUtil.Util;
 import utilities.Scale;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class MapElement
@@ -59,7 +59,7 @@ public class MapElement
 	public void setName(String N) {name = N ;}
 	public void setPos(Point P) {topLeft = P ;}
 	
-	private boolean playerIsBehind(Point playerPos) { return UtilG.isInside(playerPos, topLeft, UtilG.getSize(image)) ;}
+	private boolean playerIsBehind(Point playerPos) { return Util.isInside(playerPos, topLeft, Util.getSize(image)) ;}
 
 	private static Image getImage(String name)
 	{
@@ -69,7 +69,7 @@ public class MapElement
 		{
 			case "Knight'sCityWall": return knightsCityWallImage ;
 			case "ForestTree": return treeImage ;
-			case "grass": return grassImages.stream().skip(UtilG.randomIntFromTo(0, grassImages.size() - 1)).findFirst().get() ;
+			case "grass": return grassImages.stream().skip(Util.randomIntFromTo(0, grassImages.size() - 1)).findFirst().get() ;
 			case "rock": return rockImage ;
 			case "treasureChest": return treasureChestsImage ;
 			default: return null;
@@ -93,7 +93,7 @@ public class MapElement
 			case "rock":
 				for (int i = 5 ; i <= 11 ; i += 1)
 				{
-					colliders.add(new Collider(UtilG.Translate(topLeft, i, image.getHeight(null) - 2))) ;
+					colliders.add(new Collider(Util.Translate(topLeft, i, image.getHeight(null) - 2))) ;
 				}
 				
 				return ;

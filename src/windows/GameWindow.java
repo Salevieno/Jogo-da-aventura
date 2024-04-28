@@ -10,10 +10,10 @@ import java.awt.event.KeyEvent;
 import components.GameButton;
 import components.IconFunction;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.PlayerActions;
 import main.Game;
-import utilities.Align;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public abstract class GameWindow
@@ -87,7 +87,7 @@ public abstract class GameWindow
 		return new GameButton(pos, align, buttonWindowDownImage, selectedButtonWindowDownImage, action) ;
 	}
 	
-	protected boolean mouseIsOver(Point mousePos) { return UtilG.isInside(mousePos, topLeftPos, size) ;}
+	protected boolean mouseIsOver(Point mousePos) { return Util.isInside(mousePos, topLeftPos, size) ;}
 	
 	public void open() { isOpen = true ;}
 	public void close() { isOpen = false ;}
@@ -164,8 +164,8 @@ public abstract class GameWindow
 	
 	protected void checkMouseSelection(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
 	{
-		Point textTopLeft = UtilG.getTopLeft(itemPos, align, itemSize) ;
-		if (!UtilG.isInside(mousePos, textTopLeft, itemSize)) { return ;}
+		Point textTopLeft = Util.getTopLeft(itemPos, align, itemSize) ;
+		if (!Util.isInside(mousePos, textTopLeft, itemSize)) { return ;}
 		
 		item = itemID ;
 	}

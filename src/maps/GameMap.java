@@ -20,13 +20,13 @@ import graphics.DrawPrimitives;
 import items.Fab;
 import items.GeneralItem;
 import items.Item;
+import libUtil.Align;
+import libUtil.Util;
 import main.Game;
 import main.Music;
 import main.TextCategories;
-import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class GameMap 
@@ -288,7 +288,7 @@ public class GameMap
 		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
 		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (float)(Game.getSky().height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
 		
-		return UtilG.RandomPos(minCoord, range, new Dimension(1, 1)) ;
+		return Util.RandomPos(minCoord, range, new Dimension(1, 1)) ;
 	}
 	
 	public static GameMap[] inForest()
@@ -424,7 +424,7 @@ public class GameMap
 		
 		for (GroundType groundType : groundTypes)
 		{
-			if (UtilG.isInside(pos, groundType.getPos(), groundType.getSize())) { return groundType.getType() ;}			
+			if (Util.isInside(pos, groundType.getPos(), groundType.getSize())) { return groundType.getType() ;}			
 		}
 		
 		return null ;
@@ -476,10 +476,10 @@ public class GameMap
 		
 		DP.drawImage(infoWindow, pos, Align.topLeft) ;
 		
-		Point titlePos = UtilG.Translate(pos, size.width / 2 + 5, 13) ;
+		Point titlePos = Util.Translate(pos, size.width / 2 + 5, 13) ;
 		DP.drawText(titlePos, Align.center, 0, name, titleFont, Game.colorPalette[0]) ;
 		
-		Point diggingItemsPos = UtilG.Translate(pos, 10, 43) ;
+		Point diggingItemsPos = Util.Translate(pos, 10, 43) ;
 		DP.drawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Game.colorPalette[0]) ;
 		diggingItemsPos.y += 14 ;
 		for (Item item : diggingItems.keySet())
@@ -492,10 +492,10 @@ public class GameMap
 		{
 			FieldMap fm = (FieldMap) this ;
 			
-			Point levelPos = UtilG.Translate(titlePos, 0, 14) ;
+			Point levelPos = Util.Translate(titlePos, 0, 14) ;
 			DP.drawText(levelPos, Align.center, 0, "Nível " + String.valueOf(fm.getLevel()), largeFont, Game.colorPalette[6]) ;
 			
-			Point allItemsPos = UtilG.Translate(pos, 160, 43) ;
+			Point allItemsPos = Util.Translate(pos, 160, 43) ;
 			DP.drawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Game.colorPalette[0]) ;
 			allItemsPos.y += 14 ;
 			for (Item item : fm.getItems())
@@ -507,7 +507,7 @@ public class GameMap
 			return ;
 		}
 		
-		Point levelPos = UtilG.Translate(titlePos, 0, 14) ;
+		Point levelPos = Util.Translate(titlePos, 0, 14) ;
 		DP.drawText(levelPos, Align.center, 0, "Nível 0", largeFont, Game.colorPalette[6]) ;
 
 	}

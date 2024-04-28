@@ -7,10 +7,10 @@ import java.awt.Point;
 
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import main.Game;
-import utilities.Align;
 import utilities.TimeCounter;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class Sky 
@@ -64,13 +64,13 @@ public class Sky
 	
 	private Image randomCloudImage()
 	{
-		int cloudNumber = UtilG.randomIntFromTo(1, 3) ;
+		int cloudNumber = Util.randomIntFromTo(1, 3) ;
 		return cloudNumber == 1 ? cloudImage1 : (cloudNumber == 2 ? cloudImage2 : cloudImage3) ;
 	}
 	
 	private Image randomStarImage()
 	{
-		int starNumber = UtilG.randomIntFromTo(0, starImages.length - 1) ;
+		int starNumber = Util.randomIntFromTo(0, starImages.length - 1) ;
 		for (int i = 0; i <= starImages.length  - 1; i += 1)
 		{
 			if (i != starNumber) { continue ;}

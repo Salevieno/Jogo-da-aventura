@@ -8,11 +8,11 @@ import java.util.List;
 
 import components.AnimationDisplayFunction;
 import items.Item;
+import libUtil.Util;
 import liveBeings.Player;
 import main.AtkResults;
 import utilities.Directions;
 import utilities.TimeCounter;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class Animation 
@@ -119,24 +119,24 @@ public class Animation
 				return (vars, DP) -> {
 					Point playerPos = (Point) vars[0] ;
 					Directions playerDir = (Directions) vars[1] ;
-					Point fishingPos = UtilG.Translate(playerPos, 0, 0) ;
+					Point fishingPos = Util.Translate(playerPos, 0, 0) ;
 
 					switch (playerDir)
 					{
 						case left:
-							fishingPos = UtilG.Translate(playerPos, -Player.FishingGif.size().width, 0) ;
+							fishingPos = Util.Translate(playerPos, -Player.FishingGif.size().width, 0) ;
 							break ;
 							
 						case right:
-							fishingPos = UtilG.Translate(playerPos, Player.FishingGif.size().width, 0) ;
+							fishingPos = Util.Translate(playerPos, Player.FishingGif.size().width, 0) ;
 							break ;
 							
 						case up:
-							fishingPos = UtilG.Translate(playerPos, 0, -Player.FishingGif.size().height) ;
+							fishingPos = Util.Translate(playerPos, 0, -Player.FishingGif.size().height) ;
 							break ;
 							
 						case down:
-							fishingPos = UtilG.Translate(playerPos, 0, Player.FishingGif.size().height) ;
+							fishingPos = Util.Translate(playerPos, 0, Player.FishingGif.size().height) ;
 							break ;
 					}
 

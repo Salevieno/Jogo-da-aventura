@@ -1,0 +1,61 @@
+﻿ID,Nome,Name,Descrição,Description,Price,Drop chance,Life heal,Mp heal,Satiation heal
+0,poção de hp do pet 1,pet hp pot 1,-,-,20,20,0.05,0,5
+1,poção de mp do pet 1,pet mp pot 1,-,-,20,20,0,0.05,10
+2,ração de pet,pet ration,-,-,104,20,0.1,0,15
+3,set da madeira do pet,pet's wood set,-,-,167,20,0,0.1,20
+4,poção de hp do pet 2,pet hp pot 2,-,-,242,20,0.15,0,25
+5,poção de mp do pet 2,pet mp pot 2,-,-,242,20,0,0.15,30
+6,refresco de banana,banana smoothie,-,-,426,20,0.2,0,35
+7,set de metal do pet,pet's metal set,-,-,534,20,0,0.2,40
+8,poção de hp do pet 3,pet hp pot 3,-,-,651,20,0.25,0,45
+9,poção de mp do pet 3,pet mp pot 3,-,-,651,20,0,0.25,50
+10,refresco de maçã,apple smoothie,-,-,914,20,0.3,0,55
+11,set de aço do pet,pet's steel set,-,-,1059,20,0,0.3,60
+12,poção de hp do pet 4,pet hp pot 4,-,-,1212,20,0.35,0,65
+13,poção de mp do pet 4,pet mp pot 4,-,-,1212,20,0,0.35,70
+14,refresco de amora,blackb smoothie,-,-,1545,20,0.4,0,75
+15,set rochoso do pet,pet's rocky set,-,-,1723,20,0,0.4,80
+16,poção de hp do pet 5,pet hp pot 5,-,-,1910,20,0.45,0,85
+17,poção de mp do pet 5,pet mp pot 5,-,-,1910,20,0,0.45,90
+18,refresco de morango,strawberry smoothie,-,-,2307,20,0.5,0,95
+19,set fossilizado do pet,pet's fossilized set,-,-,2516,20,0,0.5,100
+20,poção de hp do pet 6,pet hp pot 6,-,-,2734,20,0.55,0,105
+21,poção de mp do pet 6,pet mp pot 6,-,-,2734,20,0,0.55,110
+22,mini côco,mini coconut,-,-,3190,20,0.6,0,115
+23,set das ruínas do pet,pet's ruins set,-,-,3429,20,0,0.6,120
+24,poção de hp do pet 7,pet hp pot 7,-,-,3675,20,0.65,0,125
+25,poção de mp do pet 7,pet mp pot 7,-,-,3675,20,0,0.65,130
+26,água fresca,fresh water,-,-,4188,20,0.7,0,135
+27,set tropical do pet,pet's tropical set,-,-,4455,20,0,0.7,140
+28,poção de hp do pet 8,pet hp pot 8,-,-,4729,20,0.75,0,145
+29,poção de mp do pet 8,pet mp pot 8,-,-,4729,20,0,0.75,150
+30,energético do pet,pet energy drink,-,-,5296,20,0.8,0,155
+31,set de côco do pet,pet's coconut set,-,-,5589,20,0,0.8,160
+32,poção de hp do pet 9,pet hp pot 9,-,-,5889,20,0.85,0,165
+33,poção de mp do pet 9,pet mp pot 9,-,-,5889,20,0,0.85,170
+34,olho de águia,eagle eye,-,-,6508,20,0.9,0,175
+35,set do oceano do pet,pet's ocean set,-,-,6827,20,0,0.9,180
+36,poção de hp do pet 10,pet hp pot 10,-,-,7153,20,0.95,0,185
+37,poção de mp do pet 10,pet mp pot 10,-,-,7153,20,0,0.95,190
+38,plâncton,plancton,-,-,7822,20,1,0,195
+39,set da lava do pet,pet's magma set,-,-,8166,20,0,1,200
+40,poção de hp do pet 11,pet hp pot 11,-,-,8516,20,1.05,0,205
+41,poção de mp do pet 11,pet mp pot 11,-,-,8516,20,0,1.05,210
+42,cinzas,ashes,-,-,9233,20,1.1,0,215
+43,set de chocolate do pet,pet's chocolate set,-,-,9601,20,0,1.1,220
+44,poção de hp do pet 12,pet hp pot 12,-,-,9975,20,1.15,0,225
+45,poção de mp do pet 12,pet mp pot 12,-,-,9975,20,0,1.15,230
+46,água fervente,boiling water,-,-,10740,20,1.2,0,235
+47,set da fênix do pet,pet's fenix set,-,-,11131,20,0,1.2,240
+48,poção de hp do pet 13,pet hp pot 13,-,-,11528,20,1.25,0,245
+49,poção de mp do pet 13,pet mp pot 13,-,-,11528,20,0,1.25,250
+50,lanchinho,snacks,-,-,12339,20,1.3,0,255
+51,set do dragão do pet,pet's dragon set,-,-,12753,20,0,1.3,260
+52,poção de hp do pet 14,pet hp pot 14,-,-,13172,20,1.35,0,265
+53,poção de mp do pet 14,pet mp pot 14,-,-,13172,20,0,1.35,270
+54,cauda de serpente,serpent tail,-,-,14028,20,1.4,0,275
+55,set gelado do pet,pet's cold set,-,-,14465,20,0,1.4,280
+56,poção de hp do pet 15,pet hp pot 15,-,-,14906,20,1.45,0,285
+57,poção de mp do pet 15,pet mp pot 15,-,-,14906,20,0,1.45,290
+58,floco de gelo,ice flock,-,-,15806,20,1.5,0,295
+59,set do boneco de neve do pet,pet's snowman set,-,-,16264,20,0,1.5,300

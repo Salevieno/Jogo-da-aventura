@@ -9,8 +9,8 @@ import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
+import libUtil.Util;
 import main.Game;
-import utilities.UtilG;
 
 public class Buff
 {
@@ -36,7 +36,7 @@ public class Buff
 	
 	public static void loadBuffs()
 	{
-		List<String[]> spellsBuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "Buffs.csv") ;
+		List<String[]> spellsBuffsInput = Util.ReadcsvFile(Game.CSVPath + "Buffs.csv") ;
 		
 		for (int i = 0 ; i <= spellsBuffsInput.size() - 1 ; i += 1)
 		{
@@ -46,7 +46,7 @@ public class Buff
 	
 	public static void loadDebuffs()
 	{
-		List<String[]> spellsDebuffsInput = UtilG.ReadcsvFile(Game.CSVPath + "Debuffs.csv") ;
+		List<String[]> spellsDebuffsInput = Util.ReadcsvFile(Game.CSVPath + "Debuffs.csv") ;
 		
 		for (int i = 0 ; i <= spellsDebuffsInput.size() - 1 ; i += 1)
 		{

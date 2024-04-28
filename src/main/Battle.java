@@ -11,6 +11,7 @@ import javax.sound.sampled.Clip;
 import graphics.Animation;
 import graphics.AnimationTypes;
 import graphics.DrawPrimitives;
+import libUtil.Util;
 import liveBeings.AttackModifiers;
 import liveBeings.Creature;
 import liveBeings.LiveBeing;
@@ -18,12 +19,11 @@ import liveBeings.LiveBeingStates;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Spell;
-import simulations.PlayerEvolutionSimulation;
+import simulations.EvolutionSimulation;
 import utilities.AtkEffects;
 import utilities.Elements;
 import utilities.GameStates;
 import utilities.Log;
-import utilities.UtilG;
 
 public abstract class Battle 
 {
@@ -43,7 +43,7 @@ public abstract class Battle
 		int NumElem = 10 ;
     	ElemID = new ArrayList<>() ;
 		ElemMult = new double[NumElem][NumElem] ;
-		List<String[]> ElemInput = UtilG.ReadcsvFile(Game.CSVPath + "Elem.csv") ;
+		List<String[]> ElemInput = Util.ReadcsvFile(Game.CSVPath + "Elem.csv") ;
 		for (int i = 0 ; i <= NumElem - 1 ; ++i)
 		{
 			ElemID.add(Elements.valueOf(ElemInput.get(i)[0])) ;
@@ -79,12 +79,12 @@ public abstract class Battle
 	public static boolean hit(double dex, double agi)
 	{
 		double hitChance = 1 - 1 / (1 + Math.pow(1.1, dex - agi)) ;
-		return UtilG.chance(hitChance) ;
+		return Util.chance(hitChance) ;
 	}
 	
-	public static boolean block(double blockDef) { return UtilG.chance(blockDef) ;}
+	public static boolean block(double blockDef) { return Util.chance(blockDef) ;}
 
-	public static boolean criticalAtk(double critAtk, double critDef) {return UtilG.chance(critAtk - critDef) ;}
+	public static boolean criticalAtk(double critAtk, double critDef) {return Util.chance(critAtk - critDef) ;}
 		
 	public static double calcElemMult(Elements atk, Elements weapon, Elements armor, Elements shield, Elements superElem)
 	{
@@ -152,9 +152,9 @@ public abstract class Battle
 			default -> 0 ;
 		};
 		
-		double randomMult = UtilG.RandomMult(randomAmp) ;
+		double randomMult = Util.RandomMult(randomAmp) ;
 		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElems[0], defElems[0], atkElems[2]) ;
-		return (int) UtilG.Round(randomMult * elemMult * elemMod * baseDamage, 0) ;
+		return (int) Util.Round(randomMult * elemMult * elemMod * baseDamage, 0) ;
 	}
 		
 	public static int[] calcStatus(double[] atkChances, double[] defChances, int[] durations)
@@ -164,13 +164,13 @@ public abstract class Battle
 		int blood = 0 ;
 		int poison = 0 ;
 		int silence = 0 ;
-		if (UtilG.chance(atkChances[1] - defChances[1])) {block = durations[1] ;}
+		if (Util.chance(atkChances[1] - defChances[1])) {block = durations[1] ;}
 		if (0 < block) { return new int[] {0, block, 0, 0, 0} ;}
 		
-		if (UtilG.chance(atkChances[0] - defChances[0])) {stun = durations[0] ;}
-		if (UtilG.chance(atkChances[2] - defChances[2])) {blood = durations[2] ;}
-		if (UtilG.chance(atkChances[3] - defChances[3])) {poison = durations[3] ;}
-		if (UtilG.chance(atkChances[4] - defChances[4])) {silence = durations[4] ;}
+		if (Util.chance(atkChances[0] - defChances[0])) {stun = durations[0] ;}
+		if (Util.chance(atkChances[2] - defChances[2])) {blood = durations[2] ;}
+		if (Util.chance(atkChances[3] - defChances[3])) {poison = durations[3] ;}
+		if (Util.chance(atkChances[4] - defChances[4])) {silence = durations[4] ;}
 		
 		
 		return new int[] {stun, block, blood, poison, silence} ;
@@ -451,7 +451,7 @@ public abstract class Battle
 	{
 		if (Game.getState().equals(GameStates.simulation))
 		{
-			PlayerEvolutionSimulation.setBattleResults(player.getLife().getCurrentValue(), creature.getLife().getCurrentValue()) ;
+			EvolutionSimulation.setBattleResults(player.getLife().getCurrentValue(), creature.getLife().getCurrentValue()) ;
 		}
 		
 		player.setState(LiveBeingStates.idle) ;

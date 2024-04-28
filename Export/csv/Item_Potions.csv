@@ -1,0 +1,61 @@
+﻿ID,Nome,Name,Descricao,Description,Price,Drop chance,Life heal,Mp heal
+0,hp da floresta 1,Forest hp pot 1,hp da floresta 1,Forest hp pot 1,15,25,0.1,0
+1,mp da floresta 1,Forest mp pot 1,mp da floresta 1,Forest mp pot 1,15,25,0,0.1
+2,hp da floresta 2,Forest hp pot 2,hp da floresta 2,Forest hp pot 2,61,25,0.2,0
+3,mp da floresta 2,Forest mp pot 2,mp da floresta 2,Forest mp pot 2,61,25,0,0.2
+4,hp da floresta 3,Forest hp pot 3,hp da floresta 3,Forest hp pot 3,119,25,0.3,0
+5,mp da floresta 3,Forest mp pot 3,mp da floresta 3,Forest mp pot 3,119,25,0,0.3
+6,hp da floresta 4,Forest hp pot 4,hp da floresta 4,Forest hp pot 4,184,25,0.4,0
+7,mp da floresta 4,Forest mp pot 4,mp da floresta 4,Forest mp pot 4,184,25,0,0.4
+8,hp da floresta 5,Forest hp pot 5,hp da floresta 5,Forest hp pot 5,254,25,0.5,0
+9,mp da floresta 5,Forest mp pot 5,mp da floresta 5,Forest mp pot 5,254,25,0,0.5
+10,hp da floresta 6,Forest hp pot 6,hp da floresta 6,Forest hp pot 6,330,25,0,0
+11,mp da floresta 6,Forest mp pot 6,mp da floresta 6,Forest mp pot 6,330,25,0,0
+12,hp da floresta 7,Forest hp pot 7,hp da floresta 7,Forest hp pot 7,410,25,0,0
+13,mp da floresta 7,Forest mp pot 7,mp da floresta 7,Forest mp pot 7,410,25,0,0
+14,hp da floresta 8,Forest hp pot 8,hp da floresta 8,Forest hp pot 8,494,25,0,0
+15,mp da floresta 8,Forest mp pot 8,mp da floresta 8,Forest mp pot 8,494,25,0,0
+16,hp da floresta 9,Forest hp pot 9,hp da floresta 9,Forest hp pot 9,581,25,0,0
+17,mp da floresta 9,Forest mp pot 9,mp da floresta 9,Forest mp pot 9,581,25,0,0
+18,hp da floresta 10,Forest hp pot 10,hp da floresta 10,Forest hp pot 10,671,25,0,0
+19,mp da floresta 10,Forest mp pot 10,mp da floresta 10,Forest mp pot 10,671,25,0,0
+20,hp da floresta 11,Forest hp pot 11,hp da floresta 11,Forest hp pot 11,764,25,0,0
+21,mp da floresta 11,Forest mp pot 11,mp da floresta 11,Forest mp pot 11,764,25,0,0
+22,hp da caverna 1,Cave hp pot 1,hp da caverna 1,Cave hp pot 1,860,25,0,0
+23,mp da caverna 1,Cave mp pot 1,mp da caverna 1,Cave mp pot 1,860,25,0,0
+24,hp da caverna 2,Cave hp pot 2,hp da caverna 2,Cave hp pot 2,958,25,0,0
+25,mp da caverna 2,Cave mp pot 2,mp da caverna 2,Cave mp pot 2,958,25,0,0
+26,hp da ilha 1,Island hp pot 1,hp da ilha 1,Island hp pot 1,1059,20,0,0
+27,mp da ilha 1,Island mp pot 1,mp da ilha 1,Island mp pot 1,1059,20,0,0
+28,hp do oceano 1,Ocean hp pot 1,hp do oceano 1,Ocean hp pot 1,1162,20,0,0
+29,mp do oceano 1,Ocean mp pot 1,mp do oceano 1,Ocean mp pot 1,1162,20,0,0
+30,hp do vulcão 1,Volcano hp pot 1,hp do vulcão 1,Volcano hp pot 1,1267,20,0,0
+31,mp do vulcão 1,Volcano mp pot 1,mp do vulcão 1,Volcano mp pot 1,1267,20,0,0
+32,hp do vulcão 2,Volcano hp pot 2,hp do vulcão 2,Volcano hp pot 2,1375,20,0,0
+33,mp do vulcão 2,Volcano mp pot 2,mp do vulcão 2,Volcano mp pot 2,1375,20,0,0
+34,hp do vulcão 3,Volcano hp pot 3,hp do vulcão 3,Volcano hp pot 3,1484,15,0,0
+35,mp do vulcão 3,Volcano mp pot 3,mp do vulcão 3,Volcano mp pot 3,1484,15,0,0
+36,hp da terra das neves 1,Snowland hp pot 1,hp da terra das neves 1,Snowland hp pot 1,1595,15,0,0
+37,mp da terra das neves 1,Snowland mp pot 1,mp da terra das neves 1,Snowland mp pot 1,1595,15,0,0
+38,hp da terra das neves 2,Snowland hp pot 2,hp da terra das neves 2,Snowland hp pot 2,1708,15,0,0
+39,mp da terra das neves 2,Snowland mp pot 2,mp da terra das neves 2,Snowland mp pot 2,1708,15,0,0
+40,Bebida de água,Water boost,Impulso de água,Water boost,1500,5,0,0
+41,Bebida de fogo,Fire boost,Impulso de fogo,Fire boost,1500,5,0,0
+42,Bebida de planta,Plant boost,Impulso de planta,Plant boost,1500,5,0,0
+43,Bebida de terra,Earth boost,Impulso de terra,Earth boost,1500,5,0,0
+44,Bebida de ar,Air boost,Impulso de ar,Air boost,1500,5,0,0
+45,Bebida de trovão,Thunder boost,Impulso de trovão,Thunder boost,1500,5,0,0
+46,Bebida de luz,Light boost,Impulso de luz,Light boost,1500,5,0,0
+47,Bebida de escuridão,Dark boost,Impulso de escuridão,Dark boost,200,8,0,0
+48,Bebida de neve,Snow boost,Impulso de neve,Snow boost,200,8,0,0
+49,Bebida de ataque físico,Phy atk boost,Impulso de ataque físico,Phy atk boost,200,8,0,0
+50,Bebida de ataque mágico,Mag atk boost,Impulso de ataque mágico,Mag atk boost,200,8,0,0
+51,Bebida de defesa,Def boost,Impulso de defesa,Def boost,200,8,0,0
+52,Bebida de dex e agi,Dex and agi boost,Impulso de destreza e agilidade,Dex and agi boost,200,8,0,0
+53,Bebida de atordoamento,Stun boost,Impulso de atordoamento,Stun boost,1500,6,0,0
+54,Bebida de bloqueio,Block boost,Impulso de bloqueio,Block boost,1500,6,0,0
+55,Bebida de sangue,Blood boost,Impulso de sangue,Blood boost,1500,6,0,0
+56,Bebida de veneno,Poison boost,Impulso de veneno,Poison boost,1500,6,0,0
+57,Bebida de silêncio,Silence boost,Impulso de silêncio,Silence boost,1500,6,0,0
+58,Bebida de velocidade,Speed boost,Impulso de velocidade,Speed boost,1500,6,0,0
+59,Bebida do dragão,Dragon drink,Bebida do dragão,Dragon drink,1500,4,0,0

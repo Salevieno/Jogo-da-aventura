@@ -7,11 +7,11 @@ import java.util.List;
 import attributes.BattleAttributes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
-import utilities.Align;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class Arrow extends Item
@@ -29,7 +29,7 @@ public class Arrow extends Item
 	
 	static
 	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Arrow.csv") ;
+		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Arrow.csv") ;
 		AllArrow = new Arrow[input.size()] ;
 		for (int p = 0; p <= AllArrow.length - 1; p += 1)
 		{
@@ -97,7 +97,7 @@ public class Arrow extends Item
 
 	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
 	{
-		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}
 	
 	@Override

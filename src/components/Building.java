@@ -8,11 +8,11 @@ import java.util.List;
 
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import main.Game;
 import main.TextCategories;
-import utilities.Align;
 import utilities.Scale;
-import utilities.UtilG;
 
 public class Building
 {
@@ -44,7 +44,7 @@ public class Building
 //		{
 //			for (int j = 0 ; j <= collidersImage.getHeight(null) - 1 ; j += 1)
 //			{
-//				if (!UtilG.isTransparent(collidersImage, new Point(i, j)))
+//				if (!Util.isTransparent(collidersImage, new Point(i, j)))
 //				{
 //					colliders.add(new Collider(new Point(pos.x + i, pos.y - type.getImage().getHeight(null) + j))) ;
 //				}
@@ -58,7 +58,7 @@ public class Building
 	public List<NPCs> getNPCs() {return npcs ;}
 	public List<Collider> getColliders() { return colliders ;}
 	
-	public boolean isInside(Point pos) {return UtilG.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null)), UtilG.getSize(type.getImage())) ;}
+	public boolean isInside(Point pos) {return Util.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null)), Util.getSize(type.getImage())) ;}
 	public boolean hasNPCs() {return npcs != null ;}
 		
 	public void addStandardNPCs()
@@ -66,14 +66,14 @@ public class Building
 		npcs = new ArrayList<>() ;
 		switch (type.getName())
 		{
-			case hospital: npcs.add(new NPCs(Game.getNPCTypes()[0], UtilG.Translate(pos, 120, -60))) ; break ;
+			case hospital: npcs.add(new NPCs(Game.getNPCTypes()[0], Util.Translate(pos, 120, -60))) ; break ;
 			case store: 
-				npcs.add(new NPCs(Game.getNPCTypes()[1], UtilG.Translate(pos, 120, -60))) ;
-				npcs.add(new NPCs(Game.getNPCTypes()[2], UtilG.Translate(pos, 80, -60))) ;
+				npcs.add(new NPCs(Game.getNPCTypes()[1], Util.Translate(pos, 120, -60))) ;
+				npcs.add(new NPCs(Game.getNPCTypes()[2], Util.Translate(pos, 80, -60))) ;
 				
 				break ;
-			case bank: npcs.add(new NPCs(Game.getNPCTypes()[4], UtilG.Translate(pos, 40, -30))) ; break ;
-			case craft: npcs.add(new NPCs(Game.getNPCTypes()[8], UtilG.Translate(pos, 40, -30))) ; break ;
+			case bank: npcs.add(new NPCs(Game.getNPCTypes()[4], Util.Translate(pos, 40, -30))) ; break ;
+			case craft: npcs.add(new NPCs(Game.getNPCTypes()[8], Util.Translate(pos, 40, -30))) ; break ;
 			default: break;
 		}
 	}
@@ -91,7 +91,7 @@ public class Building
 	public void displaySignMessage(int cityID, DrawPrimitives DP)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
-		Point messagePos = UtilG.Translate(pos, 10, 10) ;
+		Point messagePos = Util.Translate(pos, 10, 10) ;
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
 		DP.drawGradRoundRect(pos, Align.topLeft, new Dimension(230, 80), 2, Game.colorPalette[3], Game.colorPalette[3], true) ;			
 		Draw.fitText(messagePos, font.getSize() + 2, Align.centerLeft, message, font, 40, Game.colorPalette[0]) ;	

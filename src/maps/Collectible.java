@@ -5,9 +5,9 @@ import java.awt.Point;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Item;
-import utilities.Align;
+import libUtil.Align;
+import libUtil.Util;
 import utilities.FrameCounter;
-import utilities.UtilG;
 
 public class Collectible extends Item
 {
@@ -56,7 +56,7 @@ public class Collectible extends Item
 	
 	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
 	{
-		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}
 	
 	public void display(DrawPrimitives DP) {DP.drawImage(image, pos, Align.center) ;}

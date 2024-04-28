@@ -16,6 +16,8 @@ import graphics.Animation;
 import graphics.AnimationTypes;
 import graphics.DrawPrimitives;
 import graphics.Gif;
+import libUtil.Align;
+import libUtil.Util;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Game;
@@ -24,14 +26,12 @@ import maps.GameMap;
 import maps.GroundType;
 import maps.GroundTypes;
 import screen.Sky;
-import utilities.Align;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.FrameCounter;
 import utilities.RelativePos;
 import utilities.TimeCounter;
-import utilities.UtilG;
 import utilities.UtilS;
 import windows.AttributesWindow;
 
@@ -190,11 +190,11 @@ public abstract class LiveBeing
 	
 	protected double magicAtkBonus() { return 1 + Math.min(0.25, 0.25 * BA.TotalMagAtk() / 200.0) ;}
 	
-	public static Directions randomDir() { return Directions.getDir(UtilG.randomIntFromTo(0, 3)) ;}
+	public static Directions randomDir() { return Directions.getDir(Util.randomIntFromTo(0, 3)) ;}
 	
 	public static Directions randomPerpendicularDir(Directions originalDir)
 	{
-		int side = UtilG.randomIntFromTo(0, 1) ;
+		int side = Util.randomIntFromTo(0, 1) ;
 		return switch (originalDir)
 		{
 			case up, down -> side == 0 ? Directions.left : Directions.right ;
@@ -338,13 +338,13 @@ public abstract class LiveBeing
 		
 		DP.drawRect(pos, Align.bottomCenter, barSize, 0, color, null) ;
 		DP.drawImage(powerBarImage, pos, Align.bottomCenter) ;
-		DP.drawText(UtilG.Translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
+		DP.drawText(Util.Translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
 	}
 	
 	public Point calcNewPos()
 	{
 		Directions moveDir = dir ;
-		if (drunk.isActive() & UtilG.chance(0.8 * (1 - drunk.rate())))
+		if (drunk.isActive() & Util.chance(0.8 * (1 - drunk.rate())))
 		{
 			moveDir = randomPerpendicularDir(dir) ;
 		}
@@ -705,7 +705,7 @@ public abstract class LiveBeing
 //			int stroke = 1 ;
 //			DP.drawImage(AttImage, topLeft, Align.topLeft) ;
 //			Point offset = new Point(70, 7) ;
-//			Point barPos = UtilG.Translate(topLeft, offset.x, offset.y) ;
+//			Point barPos = Util.Translate(topLeft, offset.x, offset.y) ;
 //			for (int att = 0; att <= attRate.size() - 1; att += 1)
 //			{
 //				Dimension rateSize = new Dimension((int)(attRate.get(att) * barSize.width), barSize.height) ;
@@ -719,7 +719,7 @@ public abstract class LiveBeing
 			int stroke = 1 ;
 			DP.drawImage(AttImage, topLeft, Align.topLeft) ;
 			Point offset = new Point(37, 44) ;
-			Point barPos = UtilG.Translate(topLeft, offset.x, offset.y) ;
+			Point barPos = Util.Translate(topLeft, offset.x, offset.y) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
 				Dimension rateSize = new Dimension(barSize.width, (int) (attRate.get(att) *  barSize.height)) ;
@@ -739,7 +739,7 @@ public abstract class LiveBeing
 		Dimension barSize = new Dimension(2 + size.height / 20, size.height) ;
 		Dimension offset = new Dimension (barSize.width / 2 + (LiveBeingStatus.stunImage.getWidth(null) + 5), barSize.height / 2) ;
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
-		Point rectPos = UtilG.Translate(center(), mirror * offset.width, offset.height) ;
+		Point rectPos = Util.Translate(center(), mirror * offset.width, offset.height) ;
 		
 		DP.drawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.colorPalette[0]) ;
 		DP.drawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null) ;
@@ -794,7 +794,7 @@ public abstract class LiveBeing
 	public void displayDefending(DrawPrimitives DP)
 	{
 		Point offset = new Point(size.width / 2 + defendingImage.getWidth(null) / 2 + 2, 0) ;
-		Point imagePos = UtilG.Translate(center(), offset.x, 0) ;
+		Point imagePos = Util.Translate(center(), offset.x, 0) ;
 		DP.drawImage(defendingImage, imagePos, Align.center) ;
 	}
 

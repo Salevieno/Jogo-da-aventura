@@ -7,10 +7,10 @@ import java.util.List;
 import attributes.PersonalAttributes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.LiveBeing;
 import main.Game;
-import utilities.Align;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class Potion extends Item
@@ -29,7 +29,7 @@ public class Potion extends Item
 	
 	static
 	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Potions.csv") ;
+		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Potions.csv") ;
 		AllPotions = new Potion[input.size()] ;
 		for (int p = 0; p <= AllPotions.length - 1; p += 1)
 		{
@@ -77,7 +77,7 @@ public class Potion extends Item
 
 	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
 	{
-		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}
 		
 	@Override

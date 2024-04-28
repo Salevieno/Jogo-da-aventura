@@ -13,11 +13,11 @@ import graphics.AnimationTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Item;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.Player;
 import main.Game;
-import utilities.Align;
 import utilities.Scale;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class ShoppingWindow extends GameWindow
@@ -147,8 +147,8 @@ public class ShoppingWindow extends GameWindow
 	
 	public void display(Point mousePos, DrawPrimitives DP)
 	{
-		Point itemPos = UtilG.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + 20 + padding + Item.slot.getHeight(null) / 2) ;
-		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 16) ;
+		Point itemPos = Util.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + 20 + padding + Item.slot.getHeight(null) / 2) ;
+		Point titlePos = Util.Translate(windowPos, size.width / 2, 16) ;
 		double angle = Draw.stdAngle ;
 		
 		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
@@ -159,9 +159,9 @@ public class ShoppingWindow extends GameWindow
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
 		{
 			Item bagItem = itemsOnWindow.get(i) ;
-			Point namePos = UtilG.Translate(itemPos, border + 10, 0) ;
-			Point pricePos = UtilG.Translate(namePos, size.width - border - padding - 50, 0) ;
-			Point coinPos = UtilG.Translate(pricePos, 10, 0) ;
+			Point namePos = Util.Translate(itemPos, border + 10, 0) ;
+			Point pricePos = Util.Translate(namePos, size.width - border - padding - 50, 0) ;
+			Point coinPos = Util.Translate(pricePos, 10, 0) ;
 			
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(100, 10), i) ;
 			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? selColor : stdColor ;
@@ -173,12 +173,12 @@ public class ShoppingWindow extends GameWindow
 			
 			if (this.item == itemsOnWindow.indexOf(bagItem))
 			{
-				bagItem.displayInfo(UtilG.Translate(windowPos, -10, 0), Align.topRight, DP) ;
+				bagItem.displayInfo(Util.Translate(windowPos, -10, 0), Align.topRight, DP) ;
 			}
 			itemPos.y += 23 ;
 		}
 		
-		Draw.windowArrows(UtilG.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows) ;
+		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows) ;
 		
 	}
 }

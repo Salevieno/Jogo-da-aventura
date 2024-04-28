@@ -11,12 +11,12 @@ import java.util.List;
 import components.SpellTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.Player;
 import liveBeings.Spell;
 import main.Game;
-import utilities.Align;
 import utilities.Scale;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class SpellsTreeWindow extends GameWindow
@@ -146,8 +146,8 @@ public class SpellsTreeWindow extends GameWindow
 	{
 		Point offset = new Point(windowTopLeft.x + border + padding, windowTopLeft.y + border + padding + 20) ;
 		
-		double spacingX = UtilG.spacing(288, numberCols, slotSize.width, padding) ;
-		double spacingY = UtilG.spacing(320, numberRows, slotSize.height, padding) ;
+		double spacingX = Util.spacing(288, numberCols, slotSize.width, padding) ;
+		double spacingY = Util.spacing(320, numberRows, slotSize.height, padding) ;
 
 		Point slotPos = new Point((int) (offset.x + col * spacingX), (int) (offset.y + row * spacingY)) ;
 		
@@ -160,9 +160,9 @@ public class SpellsTreeWindow extends GameWindow
 		if (spellsOnWindow.get(item) == null) { return ;}
 		
 		double angle = Draw.stdAngle ;
-		Point pos = UtilG.Translate(windowTopLeft, 0, -66) ;
+		Point pos = Util.Translate(windowTopLeft, 0, -66) ;
 		Color textColor = Game.colorPalette[0] ;
-		Point spellNamePos = UtilG.Translate(windowTopLeft, spellInfo.getWidth(null) / 2, - 66 - 10) ;
+		Point spellNamePos = Util.Translate(windowTopLeft, spellInfo.getWidth(null) / 2, - 66 - 10) ;
 		DP.drawImage(spellInfo, pos, Align.topLeft) ;
 		DP.drawText(spellNamePos, Align.center, angle, spellsOnWindow.get(item).getName(), regularFont, textColor) ;
 		pos.x += 5 ;
@@ -177,12 +177,12 @@ public class SpellsTreeWindow extends GameWindow
 	public void displaySpellPoints(int points, DrawPrimitives DP)
 	{
 		double angle = Draw.stdAngle ;
-		Point pointsPos = UtilG.Translate(windowTopLeft, size.width + 10 + 28, size.height - 6 - 40) ;
+		Point pointsPos = Util.Translate(windowTopLeft, size.width + 10 + 28, size.height - 6 - 40) ;
 		Color color = Game.colorPalette[21] ;
 		
 		DP.drawImage(spellPoints, pointsPos, Align.topCenter) ;
-		DP.drawText(UtilG.Translate(pointsPos, 0, 6), Align.topCenter, angle, "Pontos", regularFont, color) ;
-		DP.drawText(UtilG.Translate(pointsPos, 0, 24), Align.topCenter, angle, String.valueOf(points), regularFont, color) ;
+		DP.drawText(Util.Translate(pointsPos, 0, 6), Align.topCenter, angle, "Pontos", regularFont, color) ;
+		DP.drawText(Util.Translate(pointsPos, 0, 24), Align.topCenter, angle, String.valueOf(points), regularFont, color) ;
 		
 	}
 	
@@ -195,9 +195,9 @@ public class SpellsTreeWindow extends GameWindow
 			return ;
 		}
 		
-		Point displayPos = UtilG.Translate(windowTopLeft, -23, 0) ;
-		Point tab1Pos = UtilG.Translate(windowTopLeft, -10, 6 + 75/2) ;
-		Point tab2Pos = UtilG.Translate(windowTopLeft, -10, 6 + 75 + 75/2) ;
+		Point displayPos = Util.Translate(windowTopLeft, -23, 0) ;
+		Point tab1Pos = Util.Translate(windowTopLeft, -10, 6 + 75/2) ;
+		Point tab2Pos = Util.Translate(windowTopLeft, -10, 6 + 75 + 75/2) ;
 		Image displayImage = tab == 0 ? tab0Image : tab1Image ;
 		Color tabTextColor = Game.colorPalette[21] ;
 		DP.drawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
@@ -231,7 +231,7 @@ public class SpellsTreeWindow extends GameWindow
 		displaySpellsInfo(DP) ;
 		displayWindow(DP) ;
 		
-		Point titlePos = UtilG.Translate(windowTopLeft, size.width / 2, 6 + 9) ;
+		Point titlePos = Util.Translate(windowTopLeft, size.width / 2, 6 + 9) ;
 		DP.drawText(titlePos, Align.center, angle, name, largeFont, Game.colorPalette[21]);
 		
 		if (spells == null) { return ;}
@@ -258,8 +258,8 @@ public class SpellsTreeWindow extends GameWindow
 				slotImage = hasPreReq ? spellSlotSelected : spellInactiveSlot;
 			}
 			
-			Point spellImagePos = UtilG.Translate(slotPos, slotSize.width / 2, 4 + 14) ;
-			Point spellLevelPos = UtilG.Translate(slotPos, slotSize.width / 2, slotSize.height / 2 + 18) ;
+			Point spellImagePos = Util.Translate(slotPos, slotSize.width / 2, 4 + 14) ;
+			Point spellLevelPos = Util.Translate(slotPos, slotSize.width / 2, slotSize.height / 2 + 18) ;
 					
 			DP.drawImage(slotImage, slotPos, Align.topLeft) ;
 			DP.drawImage(spell.getImage(), spellImagePos, Align.center) ;

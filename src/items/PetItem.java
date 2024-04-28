@@ -10,10 +10,10 @@ import graphics.Animation;
 import graphics.AnimationTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.Pet;
 import main.Game;
-import utilities.Align;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class PetItem extends Item
@@ -32,7 +32,7 @@ public class PetItem extends Item
 	
 	static
 	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_PetItem.csv") ;
+		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_PetItem.csv") ;
 		AllPetItems = new PetItem[input.size()] ;
 		for (int p = 0; p <= AllPetItems.length - 1; p += 1)
 		{
@@ -154,7 +154,7 @@ public class PetItem extends Item
 	
 	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
 	{
-		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}
 	
 	@Override

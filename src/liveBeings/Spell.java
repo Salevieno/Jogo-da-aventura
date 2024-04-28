@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import components.SpellTypes;
+import libUtil.Util;
 import main.Game;
 import main.Languages;
 import utilities.Elements;
 import utilities.FrameCounter;
 import utilities.TimeCounter;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class Spell 
@@ -167,7 +167,7 @@ public class Spell
 	
 	public static void load(Languages language, List<Buff> allBuffs, List<Buff> allDebuffs)
 	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;
+		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;
 
 		Spell[] allSpells = new Spell[input.size()] ;
 		String[][] info = new String[allSpells.length][2] ;

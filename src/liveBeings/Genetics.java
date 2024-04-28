@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import utilities.UtilG;
+import libUtil.Util;
 
 public class Genetics
 {
@@ -44,7 +44,7 @@ public class Genetics
 	
 	public void randomizeGenes()
 	{
-		genes.replaceAll(gene -> UtilG.Round(Math.random(), 3));
+		genes.replaceAll(gene -> Util.Round(Math.random(), 3));
 		genes = normalize(genes) ;
 	}
 	
@@ -56,7 +56,7 @@ public class Genetics
 			geneMods.replaceAll(geneMod -> normalize(geneMod)) ;
 		} while (!geneModsOk()) ;
 		
-		geneMods.forEach(geneMod -> geneMod.replaceAll(mod -> UtilG.Round(mod, 3))) ;
+		geneMods.forEach(geneMod -> geneMod.replaceAll(mod -> Util.Round(mod, 3))) ;
 		
 	}
 	
@@ -94,7 +94,7 @@ public class Genetics
 		List<Double> avr = new ArrayList<>() ;
 		for (int i = 0 ; i <= genes1.size() - 1; i += 1)
 		{
-			avr.add(UtilG.Round((genes1.get(i) + genes2.get(i)) / 2.0, 3) ) ;
+			avr.add(Util.Round((genes1.get(i) + genes2.get(i)) / 2.0, 3) ) ;
 		}
 		
 		return avr ;
@@ -110,7 +110,7 @@ public class Genetics
 		}
 		
 		final double finalSum = sum ;
-		list.replaceAll(value -> UtilG.Round(value / finalSum, 3));
+		list.replaceAll(value -> Util.Round(value / finalSum, 3));
 		
 		return list ;
 	}
@@ -152,12 +152,12 @@ public class Genetics
 	
 	public void breed(List<List<Double>> bestGenes, int totalParentFitness)
 	{
-		int i1 = UtilG.randomIntFromTo(0, bestGenes.size() - 1 ) ;
-		int i2 = UtilG.randomIntFromTo(0, bestGenes.size() - 1 ) ;
+		int i1 = Util.randomIntFromTo(0, bestGenes.size() - 1 ) ;
+		int i2 = Util.randomIntFromTo(0, bestGenes.size() - 1 ) ;
 
 		double mutationChance = 0.2 * (1 - totalParentFitness / (6 * 2000)) ;
 		
-		if (UtilG.chance(mutationChance))
+		if (Util.chance(mutationChance))
 		{
 			mutate() ;
 			return ;
@@ -168,12 +168,12 @@ public class Genetics
 	
 	public void breed2(List<Genetics> bestGenes, int totalParentFitness)
 	{
-		int i1 = UtilG.randomIntFromTo(0, bestGenes.size() - 1 ) ;
-		int i2 = UtilG.randomIntFromTo(0, bestGenes.size() - 1 ) ;
+		int i1 = Util.randomIntFromTo(0, bestGenes.size() - 1 ) ;
+		int i2 = Util.randomIntFromTo(0, bestGenes.size() - 1 ) ;
 		
 		double mutationChance = 0.2 * (1 - totalParentFitness / (6 * 2000)) ;
 		
-		if (UtilG.chance(mutationChance))
+		if (Util.chance(mutationChance))
 		{
 			mutate() ;
 			return ;
@@ -181,7 +181,7 @@ public class Genetics
 		
 		for (int i = 0 ; i <= genes.size() - 1 ; i += 1)
 		{
-			boolean getFromParent1 = UtilG.chance(0.5) ;
+			boolean getFromParent1 = Util.chance(0.5) ;
 			genes.set(i, getFromParent1 ? bestGenes.get(i1).getGenes().get(i) : bestGenes.get(i2).getGenes().get(i)) ;
 			geneMods.set(i, getFromParent1 ? bestGenes.get(i1).getGeneMods().get(i) : bestGenes.get(i2).getGeneMods().get(i)) ;
 		}

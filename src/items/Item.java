@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import graphics.DrawPrimitives;
-import utilities.Align;
+import libUtil.Align;
 import utilities.UtilS;
 
 public abstract class Item

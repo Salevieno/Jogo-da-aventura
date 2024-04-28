@@ -6,9 +6,9 @@ import java.util.List;
 
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import main.Game;
-import utilities.Align;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class QuestItem extends Item
@@ -19,7 +19,7 @@ public class QuestItem extends Item
 	
 	static
 	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Quest.csv") ;
+		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Quest.csv") ;
 		AllQuests = new QuestItem[input.size()] ;
 		for (int p = 0; p <= AllQuests.length - 1; p += 1)
 		{
@@ -40,7 +40,7 @@ public class QuestItem extends Item
 
 	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
 	{
-		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}
 	
 	@Override

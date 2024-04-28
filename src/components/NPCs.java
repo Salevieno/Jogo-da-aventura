@@ -16,15 +16,15 @@ import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Equip;
 import items.Recipe;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.TextCategories;
 import maps.GameMap;
-import utilities.Align;
 import utilities.Scale;
-import utilities.UtilG;
 import utilities.UtilS;
 import windows.BagWindow;
 import windows.BankWindow;
@@ -228,7 +228,7 @@ public class NPCs
 		int[] newStockIDs = new int[12] ; 
 		for (int i = 0 ; i <= newStockIDs.length - 1 ; i += 1)
 		{
-			int newItem = UtilG.randomIntFromTo(0, fullStock.size() - 1) ;
+			int newItem = Util.randomIntFromTo(0, fullStock.size() - 1) ;
 			newStockIDs[i] = fullStock.get(newItem) ;
 			fullStock.remove(newItem) ;
 		}
@@ -242,7 +242,7 @@ public class NPCs
 	{
 		
 		speak(pos, DP) ;
-		drawOptions(UtilG.Translate(pos, 20, -10), DP) ;
+		drawOptions(Util.Translate(pos, 20, -10), DP) ;
 				
 		String playerAction = player.getCurrentAction() ;
 		
@@ -445,7 +445,7 @@ public class NPCs
 		
 		if (content == null) { return ;}
 		
-		Point speechPos = UtilG.Translate(pos, -22, -2 - type.height()) ;
+		Point speechPos = Util.Translate(pos, -22, -2 - type.height()) ;
 
 		Draw.speech(speechPos, content, NPCfont, speakingBubble, stdColor) ;
 		
@@ -467,7 +467,7 @@ public class NPCs
 		int sy = NPCfont.getSize() + 5 ;
 		for (int i = 0 ; i <= options.size() - 1 ; i += 1)
 		{
-			Point textPos = UtilG.Translate(windowPos, 5, 5 + i * sy) ;
+			Point textPos = Util.Translate(windowPos, 5, 5 + i * sy) ;
 			Color textColor = i == selOption ? selColor : stdColor ;
 			DP.drawText(textPos, Align.topLeft, Draw.stdAngle, options.get(i), NPCfont, textColor) ;
 		}
@@ -636,8 +636,8 @@ public class NPCs
 	private void portalAction(Player player)
 	{
 		// TODO pro usar o move to map
-		if (player.getMap().getName().equals("Forest 2")) { player.setMap(Game.getMaps()[30]) ; player.setPos(UtilG.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
-		if (player.getMap().getName().equals("Cave 1")) { player.setMap(Game.getMaps()[6]) ; player.setPos(UtilG.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
+		if (player.getMap().getName().equals("Forest 2")) { player.setMap(Game.getMaps()[30]) ; player.setPos(Util.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
+		if (player.getMap().getName().equals("Cave 1")) { player.setMap(Game.getMaps()[6]) ; player.setPos(Util.Translate(pos, type.getImage().getWidth(null), 0)) ; return ;}
 	}
 	
 	private void questAction(List<Quest> quests, BagWindow bag, PersonalAttributes PA, Map<QuestSkills, Boolean> skills, String action)
@@ -732,7 +732,7 @@ public class NPCs
 		DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
 		if (isClose(playerPos))
 		{
-			Point interactionButtonPos = UtilG.Translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;
+			Point interactionButtonPos = Util.Translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;
 			DP.drawImage(Player.InteractionButton, interactionButtonPos, Draw.stdAngle, Scale.unit, Align.center) ;
 		}
 	}
@@ -894,7 +894,7 @@ public class NPCs
 				{
 					Menu[npc.getID()] = 3 ;
 					UtilS.LiveTyping(new Point(WindowPos.x + 30, WindowPos.y - 8), Textangle, Choice, NPCTextFont, Color.yellow, DP) ;	// Clean the typed text
-					if (!TypedDeposit.equals("") & UtilG.isNumeric(TypedDeposit))
+					if (!TypedDeposit.equals("") & Util.isNumeric(TypedDeposit))
 					{
 						Deposit = Integer.parseInt(TypedDeposit) ;	
 						if (Deposit + Tax*player.getGold()[0] <= player.getGold()[0])
@@ -936,7 +936,7 @@ public class NPCs
 			{
 				Menu[npc.getID()] = 3 ;
 				UtilS.LiveTyping(new Point((int)(0.3*ScreenL), (int)(0.5*ScreenH)), Textangle, Choice, NPCTextFont, Color.yellow, DP) ;	// Clean the typed text
-				if (!TypedWithdraw.equals("") & UtilG.isNumeric(TypedWithdraw))
+				if (!TypedWithdraw.equals("") & Util.isNumeric(TypedWithdraw))
 				{
 					Withdraw = Integer.parseInt(TypedWithdraw) ;	
 					if (Withdraw <= player.getGold()[1])

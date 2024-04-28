@@ -4,8 +4,11 @@ import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import attributes.AttributeIncrease;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
@@ -17,18 +20,18 @@ import graphics.AnimationTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.PetItem;
+import libUtil.Align;
+import libUtil.Util;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
 import main.Game;
 import maps.GameMap;
-import utilities.Align;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.FrameCounter;
 import utilities.Scale;
-import utilities.UtilG;
 import windows.PetAttributesWindow;
 
 public class Pet extends LiveBeing
@@ -39,18 +42,16 @@ public class Pet extends LiveBeing
 	private double[] ElemMult ;		// [Neutral, Water, Fire, Plant, Earth, Air, Thunder, Light, Dark, Snow]
 	private PetItem equip ;
 	private int alchBuffId ;
-
-	public static double[] AttributeIncrease ;
-	public static double[] ChanceIncrease ;
+	private AttributeIncrease attInc ;
 	
-	private static List<String[]> PetProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
-	private static List<String[]> PetEvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
+	private static final List<String[]> initialAttributes = Util.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
+	private static final List<String[]> attEvolution = Util.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
     	
 	public Pet(int Job)
 	{
 		super(InitializePersonalAttributes(Job), InitializeBattleAttributes(Job), initializeMovingAnimations(Job), new PetAttributesWindow()) ;
 		
-		name = PetProperties.get(Job)[0] ;
+		name = initialAttributes.get(Job)[0] ;
 		level = 1 ;
 		proJob = 0 ;
 		map = null ;
@@ -58,13 +59,13 @@ public class Pet extends LiveBeing
 		dir = Directions.up ;
 		state = LiveBeingStates.idle ;
 		size = new Dimension (movingAni.idleGif.getWidth(null), movingAni.idleGif.getHeight(null)) ;	
-		range = Integer.parseInt(PetProperties.get(Job)[4]) ;
-		step = Integer.parseInt(PetProperties.get(Job)[32]) ;
+		range = Integer.parseInt(initialAttributes.get(Job)[4]) ;
+		step = Integer.parseInt(initialAttributes.get(Job)[32]) ;
 		elem = new Elements[] {Elements.neutral, null, null, null, null} ;
-		actionCounter = new FrameCounter(0, Integer.parseInt(PetProperties.get(Job)[33])) ;
-		satiationCounter = new FrameCounter(0, Integer.parseInt(PetProperties.get(Job)[34])) ;
-		mpCounter = new FrameCounter(0, Integer.parseInt(PetProperties.get(Job)[35])) ;
-		battleActionCounter = new FrameCounter(0, Integer.parseInt(PetProperties.get(Job)[36])) ;
+		actionCounter = new FrameCounter(0, Integer.parseInt(initialAttributes.get(Job)[33])) ;
+		satiationCounter = new FrameCounter(0, Integer.parseInt(initialAttributes.get(Job)[34])) ;
+		mpCounter = new FrameCounter(0, Integer.parseInt(initialAttributes.get(Job)[35])) ;
+		battleActionCounter = new FrameCounter(0, Integer.parseInt(initialAttributes.get(Job)[36])) ;
 		stepCounter = new FrameCounter(0, 20) ;
 		combo = new ArrayList<>();
 		equip = null ;
@@ -79,20 +80,14 @@ public class Pet extends LiveBeing
 
 		
 		ElemMult = new double[10] ;
-			
-    	AttributeIncrease = new double[8] ;
-    	ChanceIncrease = new double[8] ;
-		for (int i = 0 ; i <= 7 ; ++i)
-		{
-			AttributeIncrease[i] = Double.parseDouble(PetEvolutionProperties.get(Job)[i + 1]) ;
-			ChanceIncrease[i] = Double.parseDouble(PetEvolutionProperties.get(Job)[i + 9]) ;
-		}
+		attInc = calcAttributeIncrease(job) ;
+		
 	}
 	
 	public static PersonalAttributes InitializePersonalAttributes(int Job)
 	{
-		BasicAttribute life = new BasicAttribute(Integer.parseInt(PetProperties.get(Job)[2]), Integer.parseInt(PetProperties.get(Job)[2]), 1) ;
-		BasicAttribute mp = new BasicAttribute(Integer.parseInt(PetProperties.get(Job)[3]), Integer.parseInt(PetProperties.get(Job)[3]), 1) ;
+		BasicAttribute life = new BasicAttribute(Integer.parseInt(initialAttributes.get(Job)[2]), Integer.parseInt(initialAttributes.get(Job)[2]), 1) ;
+		BasicAttribute mp = new BasicAttribute(Integer.parseInt(initialAttributes.get(Job)[3]), Integer.parseInt(initialAttributes.get(Job)[3]), 1) ;
 		BasicAttribute exp = new BasicAttribute(0, 50, 1) ;
 		BasicAttribute satiation = new BasicAttribute(100, 100, 1) ;
 		BasicAttribute thirst = new BasicAttribute(100, 100, 1) ;
@@ -101,19 +96,19 @@ public class Pet extends LiveBeing
 	
 	public static BattleAttributes InitializeBattleAttributes(int Job)
 	{
-		BasicBattleAttribute phyAtk = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[5]), 0, 0) ;
-		BasicBattleAttribute magAtk = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[6]), 0, 0) ;
-		BasicBattleAttribute phyDef = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[7]), 0, 0) ;
-		BasicBattleAttribute magDef = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[8]), 0, 0) ;
-		BasicBattleAttribute dex = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[9]), 0, 0) ;
-		BasicBattleAttribute agi = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[10]), 0, 0) ;
-		BasicBattleAttribute critAtk = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[11]), 0, 0) ;
-		BasicBattleAttribute critDef = new BasicBattleAttribute(Double.parseDouble(PetProperties.get(Job)[12]), 0, 0) ;
-		BattleSpecialAttribute stun = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[13]), 0, Double.parseDouble(PetProperties.get(Job)[14]), 0, Integer.parseInt(PetProperties.get(Job)[15])) ;
-		BattleSpecialAttribute block = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[16]), 0, Double.parseDouble(PetProperties.get(Job)[17]), 0, Integer.parseInt(PetProperties.get(Job)[18])) ;
-		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(PetProperties.get(Job)[19]), 0, Double.parseDouble(PetProperties.get(Job)[20]), 0, Integer.parseInt(PetProperties.get(Job)[21]), 0, Integer.parseInt(PetProperties.get(Job)[22]), 0, Integer.parseInt(PetProperties.get(Job)[23])) ;
-		BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(PetProperties.get(Job)[24]), 0, Double.parseDouble(PetProperties.get(Job)[25]), 0, Integer.parseInt(PetProperties.get(Job)[26]), 0, Integer.parseInt(PetProperties.get(Job)[27]), 0, Integer.parseInt(PetProperties.get(Job)[28])) ;
-		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(PetProperties.get(Job)[29]), 0, Double.parseDouble(PetProperties.get(Job)[30]), 0, Integer.parseInt(PetProperties.get(Job)[31])) ;
+		BasicBattleAttribute phyAtk = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[5]), 0, 0) ;
+		BasicBattleAttribute magAtk = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[6]), 0, 0) ;
+		BasicBattleAttribute phyDef = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[7]), 0, 0) ;
+		BasicBattleAttribute magDef = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[8]), 0, 0) ;
+		BasicBattleAttribute dex = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[9]), 0, 0) ;
+		BasicBattleAttribute agi = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[10]), 0, 0) ;
+		BasicBattleAttribute critAtk = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[11]), 0, 0) ;
+		BasicBattleAttribute critDef = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[12]), 0, 0) ;
+		BattleSpecialAttribute stun = new BattleSpecialAttribute(Double.parseDouble(initialAttributes.get(Job)[13]), 0, Double.parseDouble(initialAttributes.get(Job)[14]), 0, Integer.parseInt(initialAttributes.get(Job)[15])) ;
+		BattleSpecialAttribute block = new BattleSpecialAttribute(Double.parseDouble(initialAttributes.get(Job)[16]), 0, Double.parseDouble(initialAttributes.get(Job)[17]), 0, Integer.parseInt(initialAttributes.get(Job)[18])) ;
+		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(initialAttributes.get(Job)[19]), 0, Double.parseDouble(initialAttributes.get(Job)[20]), 0, Integer.parseInt(initialAttributes.get(Job)[21]), 0, Integer.parseInt(initialAttributes.get(Job)[22]), 0, Integer.parseInt(initialAttributes.get(Job)[23])) ;
+		BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(initialAttributes.get(Job)[24]), 0, Double.parseDouble(initialAttributes.get(Job)[25]), 0, Integer.parseInt(initialAttributes.get(Job)[26]), 0, Integer.parseInt(initialAttributes.get(Job)[27]), 0, Integer.parseInt(initialAttributes.get(Job)[28])) ;
+		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(initialAttributes.get(Job)[29]), 0, Double.parseDouble(initialAttributes.get(Job)[30]), 0, Integer.parseInt(initialAttributes.get(Job)[31])) ;
 		LiveBeingStatus status = new LiveBeingStatus() ;
 		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef, stun, block, blood, poison, silence, status) ;
 	}
@@ -121,11 +116,11 @@ public class Pet extends LiveBeing
 	public static MovingAnimations initializeMovingAnimations(int Job)
 	{
 		String filePath = Game.ImagesPath + "\\Pet\\" + "PetType" ;
-		return new MovingAnimations(UtilG.loadImage(filePath + String.valueOf(Job) + ".png"),
-				UtilG.loadImage(filePath + String.valueOf(Job) + ".png"),
-				UtilG.loadImage(filePath + String.valueOf(Job) + ".png"),
-				UtilG.loadImage(filePath + String.valueOf(Job) + ".png"),
-				UtilG.loadImage(filePath + String.valueOf(Job) + ".png")) ;
+		return new MovingAnimations(Util.loadImage(filePath + String.valueOf(Job) + ".png"),
+				Util.loadImage(filePath + String.valueOf(Job) + ".png"),
+				Util.loadImage(filePath + String.valueOf(Job) + ".png"),
+				Util.loadImage(filePath + String.valueOf(Job) + ".png"),
+				Util.loadImage(filePath + String.valueOf(Job) + ".png")) ;
 	}
 
 	public List<Spell> InitializePetSpells()
@@ -147,11 +142,21 @@ public class Pet extends LiveBeing
 		return spells ;
     }
 	
+	private static AttributeIncrease calcAttributeIncrease(int job)
+	{
+		List<Double> attIncrements = Arrays.asList(attEvolution.get(job)).subList(1, 9).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		List<Double> incChances = Arrays.asList(attEvolution.get(job)).subList(9, 17).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		AttributeIncrease attInc = new AttributeIncrease(attIncrements, incChances) ;
+		
+		return attInc ;
+	}
+	
 	public Color getColor() {return color ;}
 	public int getJob() {return job ;}
 	public MovingAnimations getMovingAnimations() {return movingAni ;}
 	public List<Spell> getSpells() {return spells ;}
 	public int getSpellPoints() {return spellPoints ;}
+	public AttributeIncrease getAttInc() { return attInc ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
 	public BasicAttribute getMp() {return PA.getMp() ;}
 	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
@@ -177,7 +182,7 @@ public class Pet extends LiveBeing
 
 	public boolean isAlive() { return 0 < PA.getLife().getCurrentValue() ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
-	public boolean closeToPlayer(Point playerPos) { return UtilG.dist(pos, playerPos) <= 40 ; }
+	public boolean closeToPlayer(Point playerPos) { return Util.dist(pos, playerPos) <= 40 ; }
 	
 	public Point center()
 	{
@@ -202,9 +207,9 @@ public class Pet extends LiveBeing
 		}
 		else if (closeToPlayer(playerPos))
 		{
-			if (UtilG.chance(0.8)) { return pos ;}
+			if (Util.chance(0.8)) { return pos ;}
 			
-			if (UtilG.chance(0.2))
+			if (Util.chance(0.2))
 			{
 				dir = randomDir() ;
 			}
@@ -222,7 +227,7 @@ public class Pet extends LiveBeing
 		{
 			if (!closeToPlayer(playerPos)) { setState(LiveBeingStates.moving) ; return ;}
 			
-			if (UtilG.chance(0.8)) { setState(LiveBeingStates.idle) ; return ;}
+			if (Util.chance(0.8)) { setState(LiveBeingStates.idle) ; return ;}
 			else { setState(LiveBeingStates.moving) ; return ;}
 		}
 		
@@ -260,7 +265,7 @@ public class Pet extends LiveBeing
 	
 	public void fight()
 	{
-		int move = UtilG.randomIntFromTo(0, 1 + getActiveSpells().size()) ;
+		int move = Util.randomIntFromTo(0, 1 + getActiveSpells().size()) ;
 		switch (move)
 		{
 			case 0: currentAction = BattleKeys[0] ; return ;
@@ -369,16 +374,17 @@ public class Pet extends LiveBeing
 	
 	public double[] calcAttributesIncrease()
 	{
-		double[] Increase = new double[AttributeIncrease.length + 1] ;
-		for (int i = 0 ; i <= AttributeIncrease.length - 1 ; ++i)
+		double[] increase = new double[attInc.getIncrement().basic().length + 1] ;
+
+		for (int i = 0 ; i <= attInc.getIncrement().basic().length - 1 ; i += 1)
 		{
-			if (Math.random() <= ChanceIncrease[i])
-			{
-				Increase[i] = AttributeIncrease[i] ;
-			}
+			if (attInc.getChance().basic()[i] <= Math.random()) { continue ;}
+			
+			increase[i] = attInc.getIncrement().basic()[i] ;
 		}
-		Increase[AttributeIncrease.length] = (double) (10 * (3 * Math.pow(level - 1, 2) + 3 * (level - 1) + 1) - 5) ;
-		return Increase ;
+		
+		increase[attInc.getIncrement().basic().length] = (double) (10 * (3 * Math.pow(level - 1, 2) + 3 * (level - 1) + 1) - 5) ;
+		return increase ;
 	}
 
 	public void Load(String[][] ReadFile)

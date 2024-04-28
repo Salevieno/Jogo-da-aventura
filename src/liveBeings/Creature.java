@@ -18,6 +18,8 @@ import attributes.PersonalAttributes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Item;
+import libUtil.Align;
+import libUtil.Util;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
@@ -25,13 +27,11 @@ import main.Game;
 import maps.GameMap;
 import screen.Screen;
 import screen.Sky;
-import utilities.Align;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.FrameCounter;
 import utilities.Scale;
-import utilities.UtilG;
 
 public class Creature extends LiveBeing
 {
@@ -72,7 +72,7 @@ public class Creature extends LiveBeing
 		
 		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
 		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
-		Point initialPos = UtilG.RandomPos(minCoord, range, new Dimension(1, 1)) ;
+		Point initialPos = Util.RandomPos(minCoord, range, new Dimension(1, 1)) ;
 		setPos(initialPos) ;
 		
 
@@ -122,7 +122,7 @@ public class Creature extends LiveBeing
 	public Item getRandomElemFromBag()
 	{
 		int i = 0 ;
-		int itemID = UtilG.randomIntFromTo(0, items.size() - 1) ;
+		int itemID = Util.randomIntFromTo(0, items.size() - 1) ;
 		for (Item item : items)
 		{
 			if (i == itemID)
@@ -168,7 +168,7 @@ public class Creature extends LiveBeing
 		Point minCoord = new Point(0, (int) (0.2*screen.getSize().height)) ;
 		Dimension range = new Dimension(screen.getSize().width, (int) (screen.getBorders()[3] - screen.getBorders()[1])) ;
 		Dimension step = new Dimension(1, 1) ;
-		setPos(UtilG.RandomPos(minCoord, range, step)) ;
+		setPos(Util.RandomPos(minCoord, range, step)) ;
 	}
 	
 	public Directions newMoveDirection(Directions originalDir)
@@ -217,7 +217,7 @@ public class Creature extends LiveBeing
 			return ;
 		}
 
-		int numberSwitchDirection = UtilG.randomIntFromTo(1, 5) ;
+		int numberSwitchDirection = Util.randomIntFromTo(1, 5) ;
 		boolean switchDirection = stepCounter.getCounter() % (stepCounter.getDuration() / numberSwitchDirection) == 0 ;
 		if (switchDirection)
 		{
@@ -238,18 +238,18 @@ public class Creature extends LiveBeing
 	{
 		List<Double> modifiedGenes = type.getGenes().getModifiedGenes(playerMove) ;
 		
-		int move = UtilG.randomFromChanceList(modifiedGenes) ;
+		int move = Util.randomFromChanceList(modifiedGenes) ;
 		switch (move)
 		{
 			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
 			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
-			case 2:	setCurrentAction(String.valueOf(UtilG.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
+			case 2:	setCurrentAction(String.valueOf(Util.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
 		}		
 	}
 	
 	public void think()
 	{
-		if (UtilG.chance(0.6)) { setState(LiveBeingStates.idle) ; return ;}
+		if (Util.chance(0.6)) { setState(LiveBeingStates.idle) ; return ;}
 		else { setState(LiveBeingStates.moving) ; return ;}
 	}
 	
@@ -257,11 +257,11 @@ public class Creature extends LiveBeing
 	{
 		if (!state.equals(LiveBeingStates.idle)) { return ;}
 		
-//		boolean startMoving = UtilG.chance(0.3) ;
+//		boolean startMoving = Util.chance(0.3) ;
 //		
 //		if (!startMoving) { return ;}
 //
-//		boolean switchDirection = UtilG.chance(0.5) ;
+//		boolean switchDirection = Util.chance(0.5) ;
 //		if (switchDirection)
 //		{
 //			setDir(newMoveDirection(dir)) ;

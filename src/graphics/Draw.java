@@ -10,6 +10,8 @@ import java.util.List;
 
 import components.GameButton;
 import items.Item;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
@@ -22,12 +24,10 @@ import maps.Continents;
 import maps.FieldMap;
 import maps.GameMap;
 import screen.Sky;
-import utilities.Align;
 import utilities.AtkEffects;
 import utilities.FrameCounter;
 import utilities.Scale;
 import utilities.TimeCounter;
-import utilities.UtilG;
 import utilities.UtilS;
 import windows.PlayerAttributesWindow;
 
@@ -54,14 +54,14 @@ public abstract class Draw
 	public static void gif(Image gif, Point pos, Align align)
 	{
 		Dimension size = new Dimension(gif.getWidth(null), gif.getHeight(null)) ;
-		Point offset = UtilG.offsetForAlignment(align, size) ;
-		DP.drawImage(gif, UtilG.Translate(pos, offset.x, offset.y), align);
+		Point offset = Util.offsetForAlignment(align, size) ;
+		DP.drawImage(gif, Util.Translate(pos, offset.x, offset.y), align);
 //		graphs.drawImage(gif, pos.x + offset.x, pos.y + offset.y, null) ;
 	}
 	
 	public static void fitText(Point pos, int sy, Align align, String text, Font font, int maxLength, Color color)
 	{
-		List<String> FitText = UtilG.FitText(text, maxLength) ;
+		List<String> FitText = Util.FitText(text, maxLength) ;
 		for (int i = 0 ; i <= FitText.size() - 1 ; i += 1)
 		{
 			DP.drawText(new Point(pos.x, pos.y + i*sy), align, stdAngle, FitText.get(i), font, color) ;						
@@ -70,7 +70,7 @@ public abstract class Draw
 	
 	public static void textUntil(Point pos, Align align, double angle, String text, Font font, Color color, int maxLength, Point mousePos)
 	{
-		Point offset = UtilG.offsetForAlignment(align, new Dimension(maxLength, UtilG.TextH(font.getSize()))) ;
+		Point offset = Util.offsetForAlignment(align, new Dimension(maxLength, Util.TextH(font.getSize()))) ;
 		int minlength = 3 ;	// 3 is the length of "..."
 		String shortText = text ;
 		maxLength = Math.max(maxLength, minlength) ;
@@ -81,9 +81,9 @@ public abstract class Draw
 			shortText = String.valueOf(chararray) ;
 		}
 		
-		Point topLeftPos = UtilG.Translate(pos, offset.x, offset.y) ;
-		Dimension size = new Dimension(DP.TextL(shortText, font), UtilG.TextH(font.getSize())) ;
-		String textDrawn =  text.length() <= maxLength | UtilG.isInside(mousePos, topLeftPos, size) ? text : shortText + "..." ;
+		Point topLeftPos = Util.Translate(pos, offset.x, offset.y) ;
+		Dimension size = new Dimension(DP.TextL(shortText, font), Util.TextH(font.getSize())) ;
+		String textDrawn =  text.length() <= maxLength | Util.isInside(mousePos, topLeftPos, size) ? text : shortText + "..." ;
 		DP.drawText(pos, align, stdAngle, textDrawn, font, color) ;
 	}
 	
@@ -96,12 +96,12 @@ public abstract class Draw
 		
 		if (pos.x <= 0.3 * screenSize.width)
 		{
-			pos = UtilG.Translate(pos, 50, 0) ;
+			pos = Util.Translate(pos, 50, 0) ;
 		}
 
 		DP.drawImage(speechBubble, pos, DrawPrimitives.stdAngle, Scale.unit, flipH, false, Align.bottomCenter, 1) ;
 		
-		Point textPos = UtilG.Translate(pos, 12 - bubbleL / 2, 5 - bubbleH) ;
+		Point textPos = Util.Translate(pos, 12 - bubbleL / 2, 5 - bubbleH) ;
 		int maxTextL = 35 ;
 		int sy = font.getSize() + 1 ;
 		fitText(textPos, sy, Align.topLeft, text, font, maxTextL, textColor) ;
@@ -112,15 +112,15 @@ public abstract class Draw
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		if (0 < selectedWindow)
 		{
-			Point leftArrowPos = UtilG.Translate(pos, 25, 0) ; // (int)(0.25 * width)
-			Point textPos = UtilG.Translate(leftArrowPos, 20, 0) ;
+			Point leftArrowPos = Util.Translate(pos, 25, 0) ; // (int)(0.25 * width)
+			Point textPos = Util.Translate(leftArrowPos, 20, 0) ;
 			DP.drawImage(ArrowIconImage, leftArrowPos, stdAngle, new Scale(-1, -1), Align.center) ;
 			DP.drawText(textPos, Align.topLeft, stdAngle, PlayerActions.moveLeft.getKey(), font, Game.colorPalette[0]) ;			
 		}
 		if (selectedWindow < numberWindows - 1)
 		{
-			Point rightArrowPos = UtilG.Translate(pos, width - 25, 0) ; // (int)(0.75 * width)
-			Point textPos = UtilG.Translate(rightArrowPos, -20, 0) ;
+			Point rightArrowPos = Util.Translate(pos, width - 25, 0) ; // (int)(0.75 * width)
+			Point textPos = Util.Translate(rightArrowPos, -20, 0) ;
 			DP.drawImage(ArrowIconImage, rightArrowPos, stdAngle, new Scale(1, -1), Align.center) ;
 			DP.drawText(textPos, Align.topRight, stdAngle, PlayerActions.moveRight.getKey(), font, Game.colorPalette[0]) ;		
 		}
@@ -232,7 +232,7 @@ public abstract class Draw
 		
 		if (effect == AtkEffects.none) { return ;}
 
-		String damage = String.valueOf(UtilG.Round(atkResults.getDamage(), 1)) ;
+		String damage = String.valueOf(Util.Round(atkResults.getDamage(), 1)) ;
 		String message = switch (effect)
 		{
 			case miss -> "Miss" ;
@@ -252,7 +252,7 @@ public abstract class Draw
 		} ;
 
 		Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
-		Point currentPos = UtilG.Translate(initialPos, trajectory) ;
+		Point currentPos = Util.Translate(initialPos, trajectory) ;
 		Color textColor = atkResults.getAtkType().equals(AtkTypes.magical) ? Battle.magAtkColor : Battle.phyAtkColor ;
 		DP.drawText(currentPos, Align.center, stdAngle, message, font, textColor) ;
 		
@@ -275,7 +275,7 @@ public abstract class Draw
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 
 		DP.drawImage(Animation.win, pos, Scale.unit, Align.topLeft) ;
-		Point textPos = UtilG.Translate(pos, 65, font.getSize() + 5) ;
+		Point textPos = Util.Translate(pos, 65, font.getSize() + 5) ;
 		DP.drawText(textPos, Align.bottomCenter, stdAngle, "Você obteve!", font, Game.colorPalette[5]) ;
 		
 		if ( counter.rate() <= 0.3 ) { return ;}
@@ -284,7 +284,7 @@ public abstract class Draw
 		{
 			if ( 0.3 + 0.5 * i / items.size() <= counter.rate() )
 			{
-				Point itemTextPos = UtilG.Translate(pos, 15, (i + 1) * (font.getSize() + 4)) ;
+				Point itemTextPos = Util.Translate(pos, 15, (i + 1) * (font.getSize() + 4)) ;
 				DP.drawText(itemTextPos, Align.bottomLeft, stdAngle, items.get(i).getName(), font, Game.colorPalette[6]) ;
 			}
 		}
@@ -297,13 +297,13 @@ public abstract class Draw
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Color textColor = Game.colorPalette[14] ;
 
-		Point textPos = UtilG.Translate(pos, 5, 0) ;
+		Point textPos = Util.Translate(pos, 5, 0) ;
 		DP.drawText(textPos, Align.centerLeft, stdAngle, "+", font, textColor) ;
 		
-		Point coinPos = UtilG.Translate(pos, 15, 0) ;
+		Point coinPos = Util.Translate(pos, 15, 0) ;
 		DP.drawImage(Player.CoinIcon, coinPos, Scale.unit, Align.centerLeft) ;
 		
-		Point amountPos = UtilG.Translate(pos, 35, 0) ;
+		Point amountPos = Util.Translate(pos, 35, 0) ;
 		DP.drawText(amountPos, Align.centerLeft, stdAngle, String.valueOf(goldObtained), font, textColor) ;
 		
 	}
@@ -314,7 +314,7 @@ public abstract class Draw
 		Font smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		
 		DP.drawImage(Animation.messageBox, pos, Align.topCenter) ;
-		DP.drawText(UtilG.Translate(pos, 5 - Animation.messageBox.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
+		DP.drawText(Util.Translate(pos, 5 - Animation.messageBox.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
 		
 	}
 
@@ -325,8 +325,8 @@ public abstract class Draw
 		Font smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		
 		DP.drawImage(Animation.obtainedItem, pos, Align.topCenter) ;
-		DP.drawText(UtilG.Translate(pos, 0, 3), Align.topCenter, stdAngle, "Você obteve", font, color) ;
-		DP.drawText(UtilG.Translate(pos, 5 - Animation.obtainedItem.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
+		DP.drawText(Util.Translate(pos, 0, 3), Align.topCenter, stdAngle, "Você obteve", font, color) ;
+		DP.drawText(Util.Translate(pos, 5 - Animation.obtainedItem.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
 		
 	}
 	
@@ -336,10 +336,12 @@ public abstract class Draw
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
 		Scale scale = Scale.unit ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
+		Point offset = new Point(15, 15) ;
+		int sy = font.getSize() + 4 ;
 		String[] attText = Game.allText.get(TextCategories.attributes) ;
 		
 		DP.drawImage(Animation.win, pos, scale, Align.topLeft) ;
-		Point textPos = UtilG.Translate(pos, 65, font.getSize() + 5) ;
+		Point textPos = Util.Translate(pos, Animation.win.getWidth(null) / 2, offset.y) ;
 		DP.drawText(textPos, Align.bottomCenter, stdAngle, attText[0] + " " + playerLevel + "!", font, Game.colorPalette[6]) ;
 		
 		if ( counter.rate() <= 0.3 ) { return ;}
@@ -349,7 +351,7 @@ public abstract class Draw
 		{
 			if ( 0.3 + 0.5 * i / (attNames.length - 1) <= counter.rate() )
 			{
-				Point attTextPos = UtilG.Translate(pos, 15, (i + 1) * (font.getSize() + 4)) ;
+				Point attTextPos = Util.Translate(pos, offset.x, offset.y + i * (font.getSize() + 4)) ;
 				DP.drawText(attTextPos, Align.bottomLeft, stdAngle, attNames[i] + " + " + AttributeIncrease[i], font, Game.colorPalette[6]) ;
 			}
 		}
@@ -366,7 +368,7 @@ public abstract class Draw
 		}
 		int step = 1 ;
 		Point startPos = new Point(step, (int)(0.5*screenSize.height)) ;	
-		Point currentPos = UtilG.Translate(startPos, (int) (step * counter.rate()), 0) ;
+		Point currentPos = Util.Translate(startPos, (int) (step * counter.rate()), 0) ;
 
 		DP.drawImage(boatImage, currentPos, Align.center) ;
 		DP.drawImage(sailorImage, currentPos, Align.center) ;
@@ -427,13 +429,13 @@ public abstract class Draw
 		{
 			pos.x += screenSize.width / 2 + imageWidth / 2 ;
 			pos.y += 0.25 * screenSize.height ;
-			speech(UtilG.Translate(pos, 0, -10), message[0], font, speakingBubble, Game.colorPalette[19]) ;
+			speech(Util.Translate(pos, 0, -10), message[0], font, speakingBubble, Game.colorPalette[19]) ;
 		}
 		else if (counter.rate() <= 0.75)
 		{
 			pos.x +=screenSize.width / 2 + imageWidth / 2 ;
 			pos.y += 0.25 * screenSize.height ;
-			speech(UtilG.Translate(pos, 0, -10), message[1], font, speakingBubble, Game.colorPalette[19]) ;
+			speech(Util.Translate(pos, 0, -10), message[1], font, speakingBubble, Game.colorPalette[19]) ;
 		}
 		else
 		{

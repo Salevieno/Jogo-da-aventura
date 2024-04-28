@@ -5,11 +5,11 @@ import java.awt.Image;
 import java.awt.Point;
 
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import main.Game;
 import maps.GameMap;
-import utilities.Align;
 import utilities.Scale;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class MapWindow extends GameWindow
@@ -192,8 +192,8 @@ public class MapWindow extends GameWindow
 	
 	private Point calcMapOffset(int numberRows, int numberCols, Scale scale, Point spacing)
 	{		
-		int offsetX = (int) UtilG.calcOffset(numberCols, image.getWidth(null), scale.x * 600, spacing.x) ;
-		int offsetY = (int) UtilG.calcOffset(numberRows, image.getHeight(null), scale.y * 384, spacing.y) ;
+		int offsetX = (int) Util.calcOffset(numberCols, image.getWidth(null), scale.x * 600, spacing.x) ;
+		int offsetY = (int) Util.calcOffset(numberRows, image.getHeight(null), scale.y * 384, spacing.y) ;
 		return new Point(offsetX, offsetY) ;
 	}
 	
@@ -202,7 +202,7 @@ public class MapWindow extends GameWindow
 
 		double playerRelXPos = playerPos.x / (double) Game.getScreen().getSize().width ;
 		double playerRelYPos = playerPos.y / (double) (Game.getScreen().getSize().height) ;
-		Point circlePos = UtilG.Translate(mapPos, (int) (scale.x * screenSize.width * playerRelXPos),
+		Point circlePos = Util.Translate(mapPos, (int) (scale.x * screenSize.width * playerRelXPos),
 				(int) (-scale.y * screenSize.height * (1 - playerRelYPos))) ;
 		DP.drawCircle(circlePos, 5, 0, Game.colorPalette[6], null) ;
 	}
@@ -251,10 +251,10 @@ public class MapWindow extends GameWindow
 			
 			if (cell == null) { continue ;}
 			
-			Point mapPos = UtilG.Translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
+			Point mapPos = Util.Translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
 					size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
 			map.display(mapPos, scale, DP) ;
-			Point textPos = UtilG.Translate(mapPos, (int) (scale.x * screenSize.width / 2),
+			Point textPos = Util.Translate(mapPos, (int) (scale.x * screenSize.width / 2),
 					(int) (-scale.y * screenSize.height / 2)) ;
 			DP.drawText(textPos, Align.center, 0, map.getName(), stdFont, Game.colorPalette[0]) ;
 			

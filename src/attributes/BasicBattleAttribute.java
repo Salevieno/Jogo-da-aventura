@@ -2,7 +2,7 @@ package attributes;
 
 import org.json.simple.JSONObject;
 
-import utilities.UtilG;
+import libUtil.Util;
 
 public class BasicBattleAttribute extends LiveBeingAttribute
 {
@@ -38,7 +38,7 @@ public class BasicBattleAttribute extends LiveBeingAttribute
 
 	public void incBaseValue(double inc) {baseValue += inc ;}
 	public void incTrain(double inc) {train += inc ;}
-	public String text() {return UtilG.Round(baseValue, 1) + " + " + UtilG.Round(bonus, 1) + " + " + UtilG.Round(train, 1) ;}
+	public String text() {return Util.Round(baseValue, 1) + " + " + Util.Round(bonus, 1) + " + " + Util.Round(train, 1) ;}
 	
 	public double getTotal() {return baseValue + bonus + train ;}
 

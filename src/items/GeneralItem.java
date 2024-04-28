@@ -8,14 +8,14 @@ import java.util.stream.Collectors;
 
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.AttackModifiers;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
 import maps.GroundTypes;
-import utilities.Align;
 import utilities.Elements;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class GeneralItem extends Item
@@ -30,7 +30,7 @@ public class GeneralItem extends Item
 	
 	static
 	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_GeneralItem.csv") ;
+		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_GeneralItem.csv") ;
 		AllGeneralItems = new GeneralItem[input.size()] ;
 		for (int p = 0; p <= AllGeneralItems.length - 1; p += 1)
 		{
@@ -134,7 +134,7 @@ public class GeneralItem extends Item
 
 	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
 	{
-		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}
 	
 	@Override

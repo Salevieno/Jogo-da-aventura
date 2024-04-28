@@ -16,12 +16,12 @@ import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import graphics.DrawPrimitives;
 import items.Item;
+import libUtil.Align;
+import libUtil.Util;
 import main.Game;
 import main.Languages;
-import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
-import utilities.UtilG;
 import utilities.UtilS;
 import windows.CreatureAttributesWindow;
 
@@ -146,7 +146,7 @@ public class CreatureType
 	public static void setNumberOfCreatureTypes(int num) { NumberOfCreatureTypes = num ;}
 	public static void load(Languages language, int difficultLevel)
 	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "CreatureTypes.csv") ;
+		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "CreatureTypes.csv") ;
 		CreatureType.setNumberOfCreatureTypes(input.size()) ;
 		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()] ;
 		Color[] color = new Color[creatureTypes.length] ;

@@ -51,6 +51,8 @@ import items.PetItem ;
 import items.Potion ;
 import items.QuestItem ;
 import items.Recipe ;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.Buff ;
 import liveBeings.Creature ;
 import liveBeings.CreatureType ;
@@ -71,12 +73,12 @@ import maps.TreasureChest ;
 import screen.Screen ;
 import screen.SideBar ;
 import screen.Sky ;
-import utilities.Align ;
+import simulations.EvolutionSimulation;
+import simulations.JobBuild;
 import utilities.GameStates ;
 import utilities.Log;
 import utilities.Scale ;
 import utilities.TimeCounter;
-import utilities.UtilG ;
 import utilities.UtilS ;
 import windows.BankWindow ;
 
@@ -232,7 +234,7 @@ public class Game extends JPanel
 	private static void loadAllText()
 	{
 
-		JSONObject textData = UtilG.readJsonObject(TextPathBR) ;
+		JSONObject textData = Util.readJsonObject(TextPathBR) ;
 
 		Iterator<?> iterator = textData.keySet().iterator() ;
 
@@ -292,7 +294,7 @@ public class Game extends JPanel
 
 	public static void letThereBePet()
 	{
-		int job = UtilG.randomIntFromTo(0, 3) ;
+		int job = Util.randomIntFromTo(0, 3) ;
 		pet = new Pet(job) ;
 		pet.setPos(player.getPos()) ;
 		if (player.getJob() == 3 & 0 < player.getSpells().get(13).getLevel()) // Best friend
@@ -325,7 +327,7 @@ public class Game extends JPanel
 
 	private static NPCType[] loadNPCTypes(Languages language)
 	{
-		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "NPCTypes.csv") ;
+		List<String[]> input = Util.ReadcsvFile(CSVPath + "NPCTypes.csv") ;
 		NPCType[] npcType = new NPCType[input.size()] ;
 		for (int i = 0 ; i <= npcType.length - 1 ; i += 1)
 		{
@@ -364,22 +366,22 @@ public class Game extends JPanel
 
 	private static BuildingType[] loadBuildingTypes()
 	{
-		JSONArray input = UtilG.readJsonArray("./json/buildingTypes.json") ;
+		JSONArray input = Util.readJsonArray("./json/buildingTypes.json") ;
 		BuildingType[] buildingTypes = new BuildingType[input.size()] ;
 		String path = ImagesPath + "\\Buildings\\" ;
 		for (int i = 0 ; i <= input.size() - 1 ; i += 1)
 		{
 			JSONObject type = (JSONObject) input.get(i) ;
 			BuildingNames name = BuildingNames.valueOf((String) type.get("name")) ;
-			Image outsideImage = UtilG.loadImage(path + "Building" + name + ".png") ;
+			Image outsideImage = Util.loadImage(path + "Building" + name + ".png") ;
 
 			buildingTypes[i] = new BuildingType(name, outsideImage) ;
 
 			boolean hasInterior = (boolean) type.get("hasInterior") ;
 			if (hasInterior)
 			{
-				Image insideImage = UtilG.loadImage(path + "Building" + name + "Inside.png") ;
-				Image[] OrnamentImages = new Image[] { UtilG.loadImage(path + "Building" + name + "Ornament.png") } ;
+				Image insideImage = Util.loadImage(path + "Building" + name + "Inside.png") ;
+				Image[] OrnamentImages = new Image[] { Util.loadImage(path + "Building" + name + "Ornament.png") } ;
 				buildingTypes[i].setInsideImage(insideImage) ;
 				buildingTypes[i].setOrnamentImages(OrnamentImages) ;
 			}
@@ -390,7 +392,7 @@ public class Game extends JPanel
 
 	private static CityMap[] loadCityMaps()
 	{
-		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "mapsCity.json") ;
+		JSONArray input = Util.readJsonArray(Game.JSONPath + "mapsCity.json") ;
 		CityMap[] cityMaps = new CityMap[input.size()] ;
 
 		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
@@ -464,7 +466,7 @@ public class Game extends JPanel
 
 	private static FieldMap[] loadFieldMaps()
 	{
-		JSONArray input = UtilG.readJsonArray(Game.JSONPath + "mapsField.json") ;
+		JSONArray input = Util.readJsonArray(Game.JSONPath + "mapsField.json") ;
 		FieldMap[] fieldMaps = new FieldMap[input.size()] ;
 
 		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
@@ -561,7 +563,7 @@ public class Game extends JPanel
 
 	private static SpecialMap[] loadSpecialMaps(List<Item> allItems)
 	{
-		List<String[]> input = UtilG.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;
+		List<String[]> input = Util.ReadcsvFile(CSVPath + "MapsSpecial.csv") ;
 		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
 		
 
@@ -637,7 +639,7 @@ public class Game extends JPanel
 
 	private static Quest[] loadQuests(Languages language, int playerJob, List<CreatureType> creatureTypes, List<Item> allItems)
 	{
-		List<String[]> inputs = UtilG.ReadcsvFile(CSVPath + "Quests.csv") ;
+		List<String[]> inputs = Util.ReadcsvFile(CSVPath + "Quests.csv") ;
 		Quest[] quests = new Quest[inputs.size()] ;
 		for (int i = 0 ; i <= quests.length - 1 ; i += 1)
 		{
@@ -1116,7 +1118,7 @@ public class Game extends JPanel
 	protected void paintComponent(Graphics graphs)
 	{
 		super.paintComponent(graphs) ;
-		mousePos = UtilG.GetmousePos(mainPanel) ;
+		mousePos = Util.GetMousePos(mainPanel) ;
 		DP.setGraphics((Graphics2D) graphs) ;
 		Draw.setDP(DP) ;
 		TimeCounter.updateAll() ;
@@ -1145,6 +1147,7 @@ public class Game extends JPanel
 					if (Opening.loadingIsOver())
 					{
 						Opening.activateStartButton() ;
+						JobBuild.printAll() ;
 					}
 				}
 	
@@ -1153,18 +1156,19 @@ public class Game extends JPanel
 //			    	player.switchOpenClose(player.getHintsindow()) ;
 					if (cheatMode) { setCheatMode() ;}
 					Game.setState(GameStates.running) ;
+					player.levelUp();
 				}
 				shouldRepaint = true ;
 				break ;
 
 			case simulation:
-//				PlayerEvolutionSimulation.run(mousePos, animations, DP) ;	
+				EvolutionSimulation.run(mousePos, DP) ;	
 				break ;
 
 			case running:
 				run(DP) ;
 				playGifs(DP) ;
-				// DP.DrawImage(UtilG.loadImage("./images/test.png"), mousePos, Align.center) ;	
+				// DP.DrawImage(Util.loadImage("./images/test.png"), mousePos, Align.center) ;	
 				break ;
 
 			case playingStopTimeGif:
@@ -1228,7 +1232,7 @@ public class Game extends JPanel
 			if (evt.getButton() == 1) // Left click
 			{
 				player.setCurrentAction("LeftClick") ;
-//					System.out.println(UtilG.Round(mousePos.x / 600.0, 2) + "," + UtilG.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;	
+//					System.out.println(Util.Round(mousePos.x / 600.0, 2) + "," + Util.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;	
 			}
 			if (evt.getButton() == 3) // Right click
 			{

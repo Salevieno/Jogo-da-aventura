@@ -5,7 +5,7 @@ import java.awt.Image;
 import java.awt.Point;
 
 import graphics.DrawPrimitives;
-import utilities.Align;
+import libUtil.Align;
 import utilities.Scale;
 
 public class SkyComponent

@@ -15,13 +15,13 @@ import javax.sound.sampled.Clip;
 import components.NPCs;
 import graphics.DrawPrimitives;
 import items.Item;
+import libUtil.Util;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
 import main.Game;
 import screen.Screen;
 import screen.Sky;
 import utilities.TimeCounter;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class FieldMap extends GameMap
@@ -64,17 +64,17 @@ public class FieldMap extends GameMap
 
 		for (int i = 0 ; i <= numberRocks - 1 ; i += 1)
 		{
-			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
+			Point randomPos = Util.RandomPos(minCoord, range, step) ;
 			mapElems.add(new MapElement(i, "rock", randomPos)) ;				
 		}
 		for (int i = 0 ; i <= numberTrees - 1 ; i += 1)
 		{
-			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
+			Point randomPos = Util.RandomPos(minCoord, range, step) ;
 			mapElems.add(new MapElement(i, "ForestTree", randomPos)) ;				
 		}
 		for (int i = 0 ; i <= numberGrass - 1 ; i += 1)
 		{
-			Point randomPos = UtilG.RandomPos(minCoord, range, step) ;
+			Point randomPos = Util.RandomPos(minCoord, range, step) ;
 			mapElems.add(new MapElement(i, "grass", randomPos)) ;				
 		}
 		

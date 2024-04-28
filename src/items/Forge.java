@@ -6,9 +6,9 @@ import java.util.List;
 
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import main.Game;
-import utilities.Align;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class Forge extends Item
@@ -23,7 +23,7 @@ public class Forge extends Item
 	
 	static
 	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Forge.csv") ;
+		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Forge.csv") ;
 		AllForge = new Forge[input.size()] ;
 		for (int p = 0; p <= AllForge.length - 1; p += 1)
 		{
@@ -50,7 +50,7 @@ public class Forge extends Item
 
 	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
 	{
-		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}
 	
 	public String toString()

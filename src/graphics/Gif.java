@@ -6,10 +6,10 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import libUtil.Align;
+import libUtil.Util;
 import main.MainGame3_4;
-import utilities.Align;
 import utilities.TimeCounter;
-import utilities.UtilG;
 
 public class Gif
 {
@@ -41,7 +41,7 @@ public class Gif
 	public boolean isTimeStopper() { return timeStopper ;}
 	public boolean isActive() { return counter.isActive() ;}
 	public boolean isDonePlaying() { return counter.finished() ;}
-	public Dimension size() { return UtilG.getSize(image) ;}
+	public Dimension size() { return Util.getSize(image) ;}
 
 	public void start(Point pos, Align align)
 	{

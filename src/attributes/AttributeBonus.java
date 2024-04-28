@@ -1,5 +1,7 @@
 package attributes;
 
+import java.util.List;
+
 public class AttributeBonus
 {
 	private int life ;
@@ -108,16 +110,16 @@ public class AttributeBonus
 	public double getSilenceDefChance() {return silenceDefChance ;}
 	public int getSilenceDuration() {return silenceDuration ;}
 
-	public void setBasic(double[] basicAttInc)
+	public void setBasic(List<Double> basicAttInc)
 	{
-		life = (int) basicAttInc[0] ;
-		MP = (int) basicAttInc[1] ;
-		phyAtk = (double) basicAttInc[2] ;
-		magAtk = (double) basicAttInc[3] ;
-		phyDef = (double) basicAttInc[4] ;
-		magDef = (double) basicAttInc[5] ;
-		dex = (double) basicAttInc[6] ;
-		agi = (double) basicAttInc[7] ;
+		life = (int) (double) basicAttInc.get(0) ;
+		MP = (int) (double) basicAttInc.get(1) ;
+		phyAtk = (double) basicAttInc.get(2) ;
+		magAtk = (double) basicAttInc.get(3) ;
+		phyDef = (double) basicAttInc.get(4) ;
+		magDef = (double) basicAttInc.get(5) ;
+		dex = (double) basicAttInc.get(6) ;
+		agi = (double) basicAttInc.get(7) ;
 	}
 	
 	public double[] basic()

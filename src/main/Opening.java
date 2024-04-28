@@ -16,13 +16,13 @@ import graphics.Draw;
 import graphics.DrawPrimitives;
 import graphics.Gif;
 import items.Equip;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.Player;
 import screen.Screen;
 import screen.SideBar;
-import utilities.Align;
 import utilities.LiveInput;
 import utilities.Scale;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public abstract class Opening
@@ -62,12 +62,12 @@ public abstract class Opening
 		font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 	    smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		String path = Game.ImagesPath  + "\\Opening\\";
-		backgroundImage = UtilG.loadImage(path + "Opening.png") ;
-		openingGif = new Gif("Opening", UtilG.loadImage(path + "Opening.gif"), 0.7, false, true) ;
+		backgroundImage = Util.loadImage(path + "Opening.png") ;
+		openingGif = new Gif("Opening", Util.loadImage(path + "Opening.gif"), 0.7, false, true) ;
 		LoadingEnfeite = UtilS.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
-		LoadingGif = UtilG.loadImage(path + "Loading.gif") ;
-		LoadingSlot = UtilG.loadImage(path + "LoadingSlot.png") ;
-		LoadingSlotSelected = UtilG.loadImage(path + "LoadingSlotSelected.png") ;
+		LoadingGif = Util.loadImage(path + "Loading.gif") ;
+		LoadingSlot = Util.loadImage(path + "LoadingSlot.png") ;
+		LoadingSlotSelected = Util.loadImage(path + "LoadingSlotSelected.png") ;
 
 		thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
 		introMusic = Music.loadMusicFile("1-Intro.wav") ;
@@ -140,10 +140,10 @@ public abstract class Opening
 				knightAction, mageAction, archerAction, animalAction, thiefAction} ;
 		for (int i = 0 ; i <= btNames.length - 1; i += 1)
 		{
-			Image btImage = UtilG.loadImage(path + btNames[i] + ".png") ;
-			Image btImageSelected = UtilG.loadImage(path + btNames[i] + " Selected.gif") ;
+			Image btImage = Util.loadImage(path + btNames[i] + ".png") ;
+			Image btImageSelected = Util.loadImage(path + btNames[i] + " Selected.gif") ;
 			if (btImage == null) { btImage = UtilS.loadImage("ButtonGeneral.png") ;}
-			if (btImageSelected == null) { btImageSelected = UtilG.loadImage(path + btNames[i] + " Selected.png") ;}
+			if (btImageSelected == null) { btImageSelected = Util.loadImage(path + btNames[i] + " Selected.png") ;}
 			if (btImageSelected == null) { btImageSelected = UtilS.loadImage("ButtonGeneralSelected.png") ;}
 			buttons.add(new GameButton(btPos[i], Align.center, btNames[i], btImage, btImageSelected, btAction[i])) ;
 			buttons.get(buttons.size() - 1).deactivate() ;
@@ -159,8 +159,8 @@ public abstract class Opening
     	buttons.get(2).activate() ;
     	buttons.get(3).activate() ;
 
-    	Image startImage = UtilG.loadImage(path + "Start.png") ;
-    	Image startImageSelected = UtilG.loadImage(path + "Start Selected.gif") ;
+    	Image startImage = Util.loadImage(path + "Start.png") ;
+    	Image startImageSelected = Util.loadImage(path + "Start Selected.gif") ;
 		IconFunction startAction = () -> { loadingStep = 12 ;} ;
     	startButton = new GameButton(new Point(320, 400), Align.center, "start", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
@@ -289,13 +289,13 @@ public abstract class Opening
 		double angle = Draw.stdAngle ;
 		Color textColor = Game.colorPalette[0] ;
 		
-		Point textPos = UtilG.Translate(pos, 75, 10) ;
+		Point textPos = Util.Translate(pos, 75, 10) ;
 		DP.drawText(textPos, Align.center, angle, "Slot " + (slotNumber + 1), font, textColor) ;
 
-		Point namePos = UtilG.Translate(pos, 75, 30) ;
+		Point namePos = Util.Translate(pos, 75, 30) ;
 		DP.drawText(namePos, Align.center, angle, player.getName(), smallFont, textColor) ;
 		
-		Point levelPos = UtilG.Translate(pos, 10, 45) ;
+		Point levelPos = Util.Translate(pos, 10, 45) ;
 		DP.drawText(levelPos, Align.centerLeft, angle, "Nível: " + player.getLevel(), smallFont, textColor) ;
 		
 	}
@@ -315,28 +315,28 @@ public abstract class Opening
 	{
 		Color textColor = Game.colorPalette[0] ;
 		Point moveInfoTopLeft = new Point(40, 60) ;
-		DP.drawText(UtilG.Translate(moveInfoTopLeft, 100, 0), Align.center, 0, "Principais ações", font, textColor) ;
+		DP.drawText(Util.Translate(moveInfoTopLeft, 100, 0), Align.center, 0, "Principais ações", font, textColor) ;
 		
 		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().movingRightGif, SideBar.getIconImages()[2], Game.getPlayer().getMovingAni().idleGif, SideBar.getIconImages()[1]} ;
 		String[] moveInfoText = new String[] {"Moving: W A S D ou setas", "Mochila: B", "Janela do jogador: C", "Quests: Q"} ;
 		for (int i = 0 ; i <= moveInfoImages.length - 1; i += 1)
 		{
-			Point imageCenterLeft = UtilG.Translate(moveInfoTopLeft, 0, 100 + 50 * i) ;
+			Point imageCenterLeft = Util.Translate(moveInfoTopLeft, 0, 100 + 50 * i) ;
 			DP.drawImage(moveInfoImages[i], imageCenterLeft, Align.center);
-			DP.drawText(UtilG.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, moveInfoText[i], smallFont, textColor) ;
+			DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, moveInfoText[i], smallFont, textColor) ;
 		}
 		
 		
 		Point atkInfoTopLeft = new Point(380, 60) ;
-		DP.drawText(UtilG.Translate(atkInfoTopLeft, 120, 0), Align.center, 0, "Ações de luta", font, textColor) ;
+		DP.drawText(Util.Translate(atkInfoTopLeft, 120, 0), Align.center, 0, "Ações de luta", font, textColor) ;
 		
 		Image[] atkInfoImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Player.MagicBlissGif} ;
 		String[] atkInfoText = new String[] {"Attack: Y", "Defense: U", "Spells: 0, 1...F11, F12"} ;
 		for (int i = 0 ; i <= atkInfoImages.length - 1; i += 1)
 		{
-			Point imageCenterLeft = UtilG.Translate(atkInfoTopLeft, 0, 100 + 50 * i) ;
+			Point imageCenterLeft = Util.Translate(atkInfoTopLeft, 0, 100 + 50 * i) ;
 			DP.drawImage(atkInfoImages[i], imageCenterLeft, Align.center);
-			DP.drawText(UtilG.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, atkInfoText[i], smallFont, textColor) ;
+			DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, atkInfoText[i], smallFont, textColor) ;
 		}
 		
 		DP.drawImage(LoadingEnfeite, new Point(0, 0), Align.topLeft) ;
@@ -371,7 +371,7 @@ public abstract class Opening
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
 			Point rectPos = Game.getScreen().pos(0.04 + i * 0.2, 0.4) ;
-			Point textPos = UtilG.Translate(rectPos, 5, 5) ;
+			Point textPos = Util.Translate(rectPos, 5, 5) ;
 			DP.drawGradRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, bgColor, true) ;
 			Draw.fitText(textPos, 10, Align.topLeft, description[i], smallFont, 18, textColor) ;
 		}

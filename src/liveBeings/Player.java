@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
 
-import attributes.AttributeBonus;
+import attributes.AttributeIncrease;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
@@ -41,6 +41,8 @@ import items.PetItem;
 import items.Potion;
 import items.QuestItem;
 import items.Recipe;
+import libUtil.Align;
+import libUtil.Util;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
@@ -50,13 +52,11 @@ import maps.FieldMap;
 import maps.GroundTypes;
 import maps.MapElement;
 import maps.TreasureChest;
-import utilities.Align;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.FrameCounter;
 import utilities.Scale;
-import utilities.UtilG;
 import utilities.UtilS;
 import windows.BagWindow;
 import windows.BankWindow;
@@ -95,6 +95,7 @@ public class Player extends LiveBeing
 	
 	private int attPoints ;			// attribute points available (to upgrade the attributes)
 	private int spellPoints ;		// spell points available (to upgrade the spells)
+	private AttributeIncrease attInc ;
 	private double[] collectLevel ;	// 0: herb, 1: wood, 2: metal
 	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor
 	private Arrow equippedArrow ;
@@ -103,9 +104,6 @@ public class Player extends LiveBeing
 	private double digBonus ;
 	private Map<QuestSkills, Boolean> questSkills ;	// skills gained with quests
 	private boolean isRiding ;		// true if the player is riding
-
-	private AttributeBonus attIncrease ;	// Amount of increase in each attribute when the player levels up
-	private AttributeBonus attChanceIncrease ;	// Chance of increase of these attributes
 	
 	private Creature closestCreature ;		// creature that is currently closest to the player
     private Creature opponent ;				// creature that is currently in battle with the player
@@ -128,8 +126,8 @@ public class Player extends LiveBeing
 	public static final Gif DiggingGif = new Gif("Digging", UtilS.loadImage("\\Player\\" + "Digging.gif"), 2, false, false) ;
     public static final Gif FishingGif = new Gif("Fishing", UtilS.loadImage("\\Player\\" + "Fishing.gif"), 2, false, false) ;
     
-	public static final List<String[]> InitialStats = UtilG.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
-	public static final List<String[]> EvolutionProperties = UtilG.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
+	public static final List<String[]> InitialStats = Util.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
+	public static final List<String[]> EvolutionProperties = Util.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public static final int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public static final int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public static final Color[] ClassColors = new Color[] {Game.colorPalette[21], Game.colorPalette[5], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
@@ -156,7 +154,7 @@ public class Player extends LiveBeing
 				InitializeBattleAttributes(job),
 				movingAnimations,
 				new PlayerAttributesWindow()
-				) ;
+			) ;
 		((PlayerAttributesWindow) attWindow).initializeAttIncButtons(this) ;
 		
 		this.name = name ;
@@ -168,7 +166,7 @@ public class Player extends LiveBeing
 		pos = new Point();
 		dir = Directions.up;
 		state = LiveBeingStates.idle;
-	    size = UtilG.getSize(movingAni.idleGif) ;
+	    size = Util.getSize(movingAni.idleGif) ;
 		range = Integer.parseInt(InitialStats.get(job)[4]) ;
 		step = Integer.parseInt(InitialStats.get(job)[33]);
 	    elem = new Elements[] {Elements.neutral, null, null, null, null};
@@ -218,18 +216,7 @@ public class Player extends LiveBeing
 		stats = new Statistics() ;
 		attPoints = 0 ;
 		
-		
-		double [] basicAttInc = new double[8] ;
-		double [] basicAttChanceInc = new double[8] ;
-		for (int att = 0 ; att <= basicAttInc.length - 1 ; att += 1)
-		{
-			basicAttInc[att] = Double.parseDouble(EvolutionProperties.get(3 * job)[att + 2]) ;
-			basicAttChanceInc[att] = Double.parseDouble(EvolutionProperties.get(3 * job)[att + 10]) ;
-		}
-		attIncrease = new AttributeBonus() ;
-		attIncrease.setBasic(basicAttInc) ;
-		attChanceIncrease = new AttributeBonus() ;
-		attChanceIncrease.setBasic(basicAttChanceInc) ;
+		attInc = calcAttributeIncrease(job, proJob) ;
 
 		closestCreature = null ;
 	    opponent = null ;
@@ -290,6 +277,20 @@ public class Player extends LiveBeing
 		
     }
 	
+	private static AttributeIncrease calcAttributeIncrease(int job, int proJob)
+	{
+		List<Double> attIncrements = Arrays.asList(EvolutionProperties.get(3 * job + proJob)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		List<Double> incChances = Arrays.asList(EvolutionProperties.get(3 * job + proJob)).subList(10, 18).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		AttributeIncrease attInc = new AttributeIncrease(attIncrements, incChances) ;
+
+		return attInc ;
+	}
+	
+	public void updateAttributeIncrease()
+	{
+		attInc = calcAttributeIncrease(job, proJob) ;
+	}
+	
 	public String getSex() {return sex ;}
 	public Directions getDir() {return dir ;}
 	public Color getColor() {return color ;}
@@ -298,6 +299,7 @@ public class Player extends LiveBeing
 	public Equip[] getEquips() {return equips ;}
 	public Arrow getEquippedArrow() {return equippedArrow ;}
 	public int getSpellPoints() {return spellPoints ;}
+	public AttributeIncrease getAttInc() { return attInc ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
 	public BasicAttribute getMp() {return PA.getMp() ;}
 	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
@@ -320,12 +322,7 @@ public class Player extends LiveBeing
 	public BasicAttribute getThirst() {return PA.getThirst() ;}
 	public Map<QuestSkills, Boolean> getQuestSkills() {return questSkills ;}
 	public int getAttPoints() {return attPoints ;}
-	public AttributeBonus getAttIncrease() {return attIncrease ;}	
-	public void setAttIncrease(AttributeBonus attIncrease) { this.attIncrease = attIncrease ;}	
-	public AttributeBonus getAttChanceIncrease() { return attChanceIncrease ;}
-	public void setAttChanceIncrease(AttributeBonus attChanceIncrease) { this.attChanceIncrease = attChanceIncrease ;}
-	public void setEquippedArrow(Arrow equippedArrow) {this.equippedArrow = equippedArrow ;}	
-	public AttributeBonus getChanceIncrease() {return attChanceIncrease ;}
+	public void setEquippedArrow(Arrow equippedArrow) {this.equippedArrow = equippedArrow ;}
 	public SettingsWindow getSettings() {return settings ;}
 	public QuestWindow getQuestWindow() {return questWindow ;}
 	public MapWindow getMapWindow() {return mapWindow ;}
@@ -485,7 +482,7 @@ public class Player extends LiveBeing
 		
         if (!CollectingGif.isDonePlaying()) { return ;}
         boolean isBerry = collectible.typeNumber() == 0 ;
-        boolean collectSuccessful = isBerry ? true : UtilG.chance(collectible.chance(level)) ;        
+        boolean collectSuccessful = isBerry ? true : Util.chance(collectible.chance(level)) ;        
     	String msg = collectSuccessful ? collectible.getName() : "Falha na coleta" ;
         
         if (collectSuccessful)
@@ -606,16 +603,16 @@ public class Player extends LiveBeing
 
 		Point fishingPos = switch (dir)
 		{
-			case left -> UtilG.Translate(pos, -Player.FishingGif.size().width, 0) ;
-			case right -> UtilG.Translate(pos, Player.FishingGif.size().width, 0) ;
-			case up -> UtilG.Translate(pos, 0, -Player.FishingGif.size().height) ;
-			case down -> UtilG.Translate(pos, 0, Player.FishingGif.size().height) ;
+			case left -> Util.Translate(pos, -Player.FishingGif.size().width, 0) ;
+			case right -> Util.Translate(pos, Player.FishingGif.size().width, 0) ;
+			case up -> Util.Translate(pos, 0, -Player.FishingGif.size().height) ;
+			case down -> Util.Translate(pos, 0, Player.FishingGif.size().height) ;
 		};
 		FishingGif.start(fishingPos, Align.center) ;
 		
 		if (!Player.FishingGif.isDonePlaying()) { return ;}
 		
-		int fishType = UtilG.randomIntFromTo(6, 8) ;
+		int fishType = Util.randomIntFromTo(6, 8) ;
 		Item fish = Food.getAll()[fishType] ;
 		bag.add(fish, 1) ;
 		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.colorPalette[0]}) ;
@@ -639,14 +636,14 @@ public class Player extends LiveBeing
 		List<Item> listItems = new ArrayList<Item>(map.getDiggingItems().keySet()) ;
 		List<Double> listChances = new ArrayList<Double>(map.getDiggingItems().values()) ;
 
-		int itemID = UtilG.randomFromChanceList(listChances) ;
+		int itemID = Util.randomFromChanceList(listChances) ;
 		if (job == 4 & 1 <= spells.get(6).getLevel())
 		{
 			while (3 <= listChances.get(itemID))
 			{
-				if (UtilG.chance(0.04 * spells.get(6).getLevel()))
+				if (Util.chance(0.04 * spells.get(6).getLevel()))
 				{
-					itemID = UtilG.randomFromChanceList(listChances) ;
+					itemID = Util.randomFromChanceList(listChances) ;
 				}
 			}
 		}
@@ -1101,18 +1098,18 @@ public class Player extends LiveBeing
 		switch (spell.getId())
 		{
 			case 42:
-				if (UtilG.chance(0.5)) { return ;}
+				if (Util.chance(0.5)) { return ;}
 				Spell lastSpellUsed = getActiveSpells().get(Integer.parseInt(currentAction)) ;
 				PA.getMp().incCurrentValue((int) (0.04 * spell.getLevel()* lastSpellUsed.getMpCost())) ;
 				
 			case 82:
-				if (UtilG.chance(0.1 * spell.getLevel())) { return ;}
+				if (Util.chance(0.1 * spell.getLevel())) { return ;}
 				bag.add(equippedArrow, 1) ;
 
 				return ;
 				
 			case 108:
-				if (!UtilG.chance(0.14 * spell.getLevel())) { return ;}
+				if (!Util.chance(0.14 * spell.getLevel())) { return ;}
 	        	bag.add(currentCollectible.getItem(), 1) ;
 				return ;
 			
@@ -1132,7 +1129,7 @@ public class Player extends LiveBeing
 			
 			case 149:
 				if (opponent == null) { return ;}
-				if (!UtilG.chance(0.2 * spell.getLevel())) { return ;}
+				if (!Util.chance(0.2 * spell.getLevel())) { return ;}
 				opponent.takeDamage((int) (0.4 * spell.getLevel() * BA.getPhyAtk().getTotal())) ;
 				return ;
 				
@@ -1381,7 +1378,7 @@ public class Player extends LiveBeing
 	{
 		if (equippedArrow == null) { return ;}		
 		
-		if (!UtilG.chance(0.1 * spells.get(13).getLevel()))
+		if (!Util.chance(0.1 * spells.get(13).getLevel()))
 		{
 			bag.remove(equippedArrow, 1) ;
 		}
@@ -1399,13 +1396,13 @@ public class Player extends LiveBeing
 		List<Item> itemsObtained = new ArrayList<>() ;
 		for (Item item : creature.getBag())
 		{
-			if (!UtilG.chance(0.01 * item.getDropChance())) { continue ;}
+			if (!Util.chance(0.01 * item.getDropChance())) { continue ;}
 			
 			itemsObtained.add(item) ;
 			bag.add(item, 1) ;
 		}		
 		
-		bag.addGold((int) (creature.getGold() * UtilG.RandomMult(0.1 * goldMultiplier))) ;
+		bag.addGold((int) (creature.getGold() * Util.RandomMult(0.1 * goldMultiplier))) ;
 		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())) ;
 		
 		for (Quest quest : quests)
@@ -1447,18 +1444,16 @@ public class Player extends LiveBeing
 	
 	private double[] calcAttributesIncrease()
 	{
-		double[] attributeIncrease = attIncrease.basic() ;
-		double[] chanceIncrease = attChanceIncrease.basic() ;
-		double[] increase = new double[attributeIncrease.length + 1] ;
+		double[] increase = new double[attInc.getIncrement().basic().length + 1] ;
 
-		for (int i = 0 ; i <= attributeIncrease.length - 1 ; i += 1)
+		for (int i = 0 ; i <= attInc.getIncrement().basic().length - 1 ; i += 1)
 		{
-			if (chanceIncrease[i] <= Math.random()) { continue ;}
+			if (attInc.getChance().basic()[i] <= Math.random()) { continue ;}
 			
-			increase[i] = attributeIncrease[i] ;
+			increase[i] = attInc.getIncrement().basic()[i] ;
 		}
 		
-		increase[attributeIncrease.length] = calcExpToLevelUp(level) ;
+		increase[attInc.getIncrement().basic().length] = calcExpToLevelUp(level) ;
 		
 		return increase ;
 	}
@@ -1504,7 +1499,7 @@ public class Player extends LiveBeing
         content.put("PA", PA.toJsonObject()) ;
         content.put("BA", BA.toJsonObject()) ;
         
-        UtilG.writeJson(content, "save " + slot) ;
+        Util.writeJson(content, "save " + slot) ;
         
 		
 	}
@@ -1512,7 +1507,7 @@ public class Player extends LiveBeing
 	public static Player load(int slot)
 	{
 		
-		JSONObject jsonData = UtilG.readJsonObject("save " + slot + ".json") ;
+		JSONObject jsonData = Util.readJsonObject("save " + slot + ".json") ;
 		if (jsonData == null) { return null ;}
 		System.out.println("jsonData " + jsonData);
 		String name = (String) jsonData.get("name") ;
@@ -1542,7 +1537,7 @@ public class Player extends LiveBeing
 		
 		double[] angle = new double[] {-50, 30, 0, 0, 0} ;
 		Point offset = new Point((int) (0.16 * size.width * scale.x), (int) (0.4 * size.height * scale.y)) ;
-		Point eqPos = UtilG.Translate(pos, offset.x, -offset.y) ;
+		Point eqPos = Util.Translate(pos, offset.x, -offset.y) ;
 		
 		equips[0].display(eqPos, angle[job], new Scale(0.6, 0.6), Align.center, DP) ;
 		
@@ -1553,14 +1548,14 @@ public class Player extends LiveBeing
 		double angle = Draw.stdAngle ;
 		if (isRiding)
 		{
-			Point ridePos = UtilG.Translate(pos, -RidingImage.getWidth(null) / 2, RidingImage.getHeight(null) / 2) ;
+			Point ridePos = Util.Translate(pos, -RidingImage.getWidth(null) / 2, RidingImage.getHeight(null) / 2) ;
 			DP.drawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
 		}
 		
 		movingAni.displayMoving(direction, pos, angle, Scale.unit, Align.bottomCenter, DP) ;
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
-			Point auraPos = UtilG.Translate(pos, -size.width / 2, 0) ;
+			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ;
 //			DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
 		}
 		if (showRange)

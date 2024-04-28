@@ -14,12 +14,12 @@ import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Equip;
 import items.GeneralItem;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.Player;
 import main.Game;
-import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class ElementalWindow extends GameWindow
@@ -175,7 +175,7 @@ public class ElementalWindow extends GameWindow
 			int row = i % ( numberItemsOnWindow / 1) ;
 			int col = i / ( numberItemsOnWindow / 1) ;
 			Equip equip = equipsForElemChange.get(i) ;
-			Point slotCenter = UtilG.Translate(windowPos,
+			Point slotCenter = Util.Translate(windowPos,
 					border + padding + 6 + slotW / 2 + col * (140 + slotW),
 					border + padding + 22 + slotH / 2 + row * 21) ;
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
@@ -199,7 +199,7 @@ public class ElementalWindow extends GameWindow
 			int row = (i - window * numberItemsOnWindow) % numberItemsOnWindow ;
 			int col = (i - window * numberItemsOnWindow) / numberItemsOnWindow ;
 			GeneralItem sphere = spheres.get(i) ;
-			Point slotCenter = UtilG.Translate(windowPos,
+			Point slotCenter = Util.Translate(windowPos,
 					border + padding + 6 + slotW / 2 + col * (140 + slotW),
 					border + padding + 22 + slotH / 2 + row * 21) ;
 
@@ -216,7 +216,7 @@ public class ElementalWindow extends GameWindow
 	public void display(Point mousePos, DrawPrimitives DP)
 	{
 		
-		Point titlePos = UtilG.Translate(windowPos, size.width / 2, 18) ;
+		Point titlePos = Util.Translate(windowPos, size.width / 2, 18) ;
 		double angle = Draw.stdAngle ;
 		
 		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
@@ -229,7 +229,7 @@ public class ElementalWindow extends GameWindow
 		}
 		
 		
-		Draw.windowArrows(UtilG.Translate(windowPos, 0, size.height + 5), size.width, window, numberWindows) ;
+		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 5), size.width, window, numberWindows) ;
 		
 	}
 

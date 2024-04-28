@@ -7,10 +7,10 @@ import java.util.List;
 import attributes.PersonalAttributes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.LiveBeing;
 import main.Game;
-import utilities.Align;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class Food extends Item
@@ -25,7 +25,7 @@ public class Food extends Item
 	
 	static
 	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Food.csv") ;
+		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Food.csv") ;
 		AllFood = new Food[input.size()] ;
 		iconFoodBerry = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconFoodBerry.png") ;
 		for (int p = 0; p <= AllFood.length - 1; p += 1)
@@ -63,7 +63,7 @@ public class Food extends Item
 
 	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
 	{
-		Draw.menu(pos, align, UtilG.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}
 	
 	@Override

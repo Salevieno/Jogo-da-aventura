@@ -12,10 +12,10 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 
+import libUtil.Align;
+import libUtil.Util;
 import main.Game;
-import utilities.Align;
 import utilities.Scale;
-import utilities.UtilG;
 
 public class DrawPrimitives
 {
@@ -48,8 +48,8 @@ public class DrawPrimitives
 	public void drawText(Point pos, Align align, double angle, String text, Font font, Color color)
 	{
 		// by default starts at the left bottom
-		Dimension size = new Dimension(TextL(text, font), UtilG.TextH(font.getSize())) ;
-		Point offset = UtilG.offsetForAlignment(align, size) ;
+		Dimension size = new Dimension(TextL(text, font), Util.TextH(font.getSize())) ;
+		Point offset = Util.offsetForAlignment(align, size) ;
 		AffineTransform backup = graphs.getTransform() ;		
 		
 		graphs.transform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
@@ -110,7 +110,7 @@ public class DrawPrimitives
 	public void drawRect(Point pos, Align align, Dimension size, int stroke, Color color, Color contourColor)
 	{
 		// Rectangle by default starts at the left top
-		Point offset = UtilG.offsetForAlignment(align, size) ;
+		Point offset = Util.offsetForAlignment(align, size) ;
 		graphs.setStroke(new BasicStroke(stroke)) ;
 		if (color != null)
 		{
@@ -131,7 +131,7 @@ public class DrawPrimitives
 	public void drawRoundRect(Point pos, Align align, Dimension size, int stroke, Color fillColor, boolean contour, int arcWidth, int arcHeight)
 	{
 		// Round rectangle by default starts at the left top
-		Point offset = UtilG.offsetForAlignment(align, size) ;
+		Point offset = Util.offsetForAlignment(align, size) ;
 		graphs.setStroke(new BasicStroke(stroke)) ;
 		if (fillColor != null)
 		{
@@ -156,7 +156,7 @@ public class DrawPrimitives
 	public void drawGradRoundRect(Point pos, Align align, Dimension size, int stroke, int arcWidth, int arcHeight, Color topColor, Color botColor, boolean contour)
 	{
 		// Round rectangle by default starts at the left top
-		Point offset = UtilG.offsetForAlignment(align, size) ;
+		Point offset = Util.offsetForAlignment(align, size) ;
 		int[] corner = new int[] {pos.x + offset.x, pos.y + offset.y} ;
 		graphs.setStroke(new BasicStroke(stroke)) ;
 		if (topColor != null & botColor != null)
@@ -229,7 +229,7 @@ public class DrawPrimitives
 		
 		Dimension size = new Dimension((int)(scale.x * image.getWidth(null)), (int)(scale.y * image.getHeight(null))) ;
 		size = new Dimension ((!flipH ? 1 : -1) * size.width, (!flipV ? 1 : -1) * size.height) ;
-		Point offset = UtilG.offsetForAlignment(align, size) ;
+		Point offset = Util.offsetForAlignment(align, size) ;
 		AffineTransform backup = graphs.getTransform() ;
 		graphs.transform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
 		graphs.setComposite(AlphaComposite.SrcOver.derive((float) alpha)) ;

@@ -11,10 +11,10 @@ import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Item;
 import items.Recipe;
+import libUtil.Align;
+import libUtil.Util;
 import main.Game;
-import utilities.Align;
 import utilities.Scale;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class BookWindow extends GameWindow
@@ -44,8 +44,8 @@ public class BookWindow extends GameWindow
 		if (recipes == null) { return ;}
 		if (recipes.isEmpty()) { return ;}
 
-		Point ingredientsCol = UtilG.Translate(windowPos, -image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
-		Point productsCol = UtilG.Translate(windowPos, image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
+		Point ingredientsCol = Util.Translate(windowPos, -image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
+		Point productsCol = Util.Translate(windowPos, image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
 		
 		int sy = font.getSize() + 1 ;
 		int id = window ;
@@ -80,7 +80,7 @@ public class BookWindow extends GameWindow
 	{
 		if (numberWindows == 0) { return ;}
 		
-		Point textPos = UtilG.Translate(UtilG.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
+		Point textPos = Util.Translate(Util.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
 		String pageText = (window + 1) + " / " + numberWindows ;
 		DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Game.colorPalette[0]) ;
 	}
@@ -91,6 +91,6 @@ public class BookWindow extends GameWindow
 		displayRecipes(mousePos) ;
 		displayPageNumber(DP) ;
 		
-		Draw.windowArrows(UtilG.getPosAt(windowPos, Align.center, Align.bottomLeft, size), image.getWidth(null), window, numberWindows) ;
+		Draw.windowArrows(Util.getPosAt(windowPos, Align.center, Align.bottomLeft, size), image.getWidth(null), window, numberWindows) ;
 	}
 }

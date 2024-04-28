@@ -5,12 +5,12 @@ import java.awt.Point;
 import java.util.List;
 
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.Creature;
 import liveBeings.Pet;
 import liveBeings.Player;
-import utilities.Align;
 import utilities.Scale;
-import utilities.UtilG;
 
 public class Projectiles
 {
@@ -46,7 +46,7 @@ public class Projectiles
 	
 	public void DrawImage(DrawPrimitives DP)
 	{
-		DP.drawImage(image, pos, UtilG.getAngle(speed), Scale.unit, Align.center) ;
+		DP.drawImage(image, pos, Util.getAngle(speed), Scale.unit, Align.center) ;
 	}
 	public void move()
 	{

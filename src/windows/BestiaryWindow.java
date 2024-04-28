@@ -9,12 +9,12 @@ import java.util.List;
 
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.CreatureType;
 import main.Game;
 import main.TextCategories;
-import utilities.Align;
 import utilities.Scale;
-import utilities.UtilG;
 
 public class BestiaryWindow extends GameWindow
 {
@@ -51,7 +51,7 @@ public class BestiaryWindow extends GameWindow
 		Dimension windowSize = new Dimension(128, 240) ;
 		DP.drawGradRoundRect(pos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
 		
-		Point creaturePos = UtilG.Translate(pos, 40, offset) ;
+		Point creaturePos = Util.Translate(pos, 40, offset) ;
 		creatureType.display(creaturePos, Scale.unit, DP) ;
 		
 		List<String> textInfo = new ArrayList<>() ;
@@ -63,12 +63,12 @@ public class BestiaryWindow extends GameWindow
 		creatureType.getItems().forEach(item -> textInfo.add(item.getName())) ;
 
 		// draw text
-		Point textPos = UtilG.Translate(pos, offset, creatureType.getSize().height + offset) ;
+		Point textPos = Util.Translate(pos, offset, creatureType.getSize().height + offset) ;
 		DP.drawText(textPos, Align.topLeft, angle, creatureType.getName(), namefont, textColor) ;
-		textPos = UtilG.Translate(textPos, 0, sy) ;
+		textPos = Util.Translate(textPos, 0, sy) ;
 		for (int i = 0 ; i <= text.length - 1 ; i += 1)
 		{
-			textPos = UtilG.Translate(textPos, 0, sy) ;
+			textPos = Util.Translate(textPos, 0, sy) ;
 			DP.drawText(textPos, Align.topLeft, angle, textInfo.get(i), infoFont, textColor) ;
 		}
 	}
@@ -80,8 +80,8 @@ public class BestiaryWindow extends GameWindow
 		
 		int offset = 12 ;
 		Dimension slotSize = new Dimension(windowSize.width / (numCols + 1) - 2 * offset / numCols, windowSize.height / (numRows + 1) - 2 * offset / numRows) ;
-		int sx = (int) UtilG.spacing(windowSize.width, numCols, slotSize.width, offset) ;
-		int sy = (int) UtilG.spacing(windowSize.height, numRows, slotSize.height, offset) ;
+		int sx = (int) Util.spacing(windowSize.width, numCols, slotSize.width, offset) ;
+		int sy = (int) Util.spacing(windowSize.height, numRows, slotSize.height, offset) ;
 
 		
 		// draw window
@@ -94,8 +94,8 @@ public class BestiaryWindow extends GameWindow
 		for (int slot = 0 ; slot <= numSlotsInWindow - 1 ; slot += 1)
 		{
 			// draw slots
-			Point slotTopLeft = UtilG.Translate(windowPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
-			Point slotCenter = UtilG.Translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
+			Point slotTopLeft = Util.Translate(windowPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
+			Point slotCenter = Util.Translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
 			DP.drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Game.colorPalette[20], Game.colorPalette[3], true) ;
 
 			// draw creatures
@@ -110,7 +110,7 @@ public class BestiaryWindow extends GameWindow
 		if (item < 0) { return ;}
 		
 		CreatureType selectedCreature = discoveredCreatures.get(item) ;
-		Point creatureInfoPos = UtilG.Translate(windowPos, windowSize.width, 0) ;
+		Point creatureInfoPos = Util.Translate(windowPos, windowSize.width, 0) ;
 		displayCreatureInfo(creatureInfoPos, selectedCreature, DP) ;
 	}
 }

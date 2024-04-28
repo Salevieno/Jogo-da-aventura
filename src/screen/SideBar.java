@@ -13,14 +13,14 @@ import components.IconFunction;
 import components.QuestSkills;
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.HotKeysBar;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
 import liveBeings.SpellsBar;
 import main.Game;
-import utilities.Align;
-import utilities.UtilG;
 import utilities.UtilS;
 import windows.PetAttributesWindow;
 import windows.PlayerAttributesWindow;
@@ -77,7 +77,7 @@ public abstract class SideBar
 		setPet(player, Game.getPet()) ;
 		
 
-		Point iconPos = UtilG.Translate(barPos, 20, 50) ;
+		Point iconPos = Util.Translate(barPos, 20, 50) ;
 		buttons.add(new GameButton(iconPos, Align.topCenter, playerImage, playerImage, playerAction)) ;
 		iconPos.y += playerImage.getHeight(null) + 10 ;
 		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
@@ -100,7 +100,7 @@ public abstract class SideBar
 			((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
 			player.switchOpenClose(pet.getAttWindow()) ;
 		} ;
-		buttons.add(new GameButton(UtilG.Translate(barPos, 20, 10), Align.topCenter, petImage, petImage, petAction)) ;
+		buttons.add(new GameButton(Util.Translate(barPos, 20, 10), Align.topCenter, petImage, petImage, petAction)) ;
 	}
 		
 	public static Image[] getIconImages() { return iconImages ;}
@@ -129,7 +129,7 @@ public abstract class SideBar
 		{
 
 			if (keys[i] == null) { i += 1 ; continue ;}
-			Point rectCenter = UtilG.Translate(button.getTopLeftPos(), 5, 0) ;
+			Point rectCenter = Util.Translate(button.getTopLeftPos(), 5, 0) ;
 			DP.drawRoundRect(rectCenter, Align.center, textSize, 1, Game.colorPalette[3], true, 2, 2) ;
 			DP.drawText(rectCenter, Align.center, Draw.stdAngle, keys[i], font, textColor) ;
 			i += 1 ;

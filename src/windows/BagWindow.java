@@ -26,11 +26,11 @@ import items.Item;
 import items.PetItem;
 import items.Potion;
 import items.QuestItem;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.Player;
 import main.Game;
 import main.TextCategories;
-import utilities.Align;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class BagWindow extends GameWindow
@@ -120,7 +120,7 @@ public class BagWindow extends GameWindow
 		int slotW = SlotImage.getWidth(null) ;
 		int slotH = SlotImage.getHeight(null) ;
 		Point offset = new Point(70 + border + slotW / 2, border + padding + 2 + slotH / 2) ;
-		return UtilG.Translate(windowPos, offset.x + col * spacing.x, offset.y + row * spacing.y) ;
+		return Util.Translate(windowPos, offset.x + col * spacing.x, offset.y + row * spacing.y) ;
 	}
 	
 	public void navigate(String action)
@@ -635,8 +635,8 @@ public class BagWindow extends GameWindow
 		for (int i = 0 ; i <= numberItemsDisplayed - 1; i += 1)
 		{
 			Point slotCenter = itemsPos.get(i) ;
-			Point slotCenterLeft = UtilG.getPosAt(slotCenter, Align.center, Align.centerLeft, UtilG.getSize(SlotImage)) ;
-			if (UtilG.isInside(mousePos, slotCenterLeft, itemNameSize)) { return itemsDisplayed.get(i) ;}
+			Point slotCenterLeft = Util.getPosAt(slotCenter, Align.center, Align.centerLeft, Util.getSize(SlotImage)) ;
+			if (Util.isInside(mousePos, slotCenterLeft, itemNameSize)) { return itemsDisplayed.get(i) ;}
 		}
 		
 		return null ;
@@ -644,7 +644,7 @@ public class BagWindow extends GameWindow
 	
 	private void checkMenuMouseSelection(Point mousePos, Point tabPos, int tabID)
 	{
-		if (!UtilG.isInside(mousePos, tabPos, UtilG.getSize(MenuImage))) { return ;}
+		if (!Util.isInside(mousePos, tabPos, Util.getSize(MenuImage))) { return ;}
 		
 		tab = tabID ;
 	}
@@ -656,9 +656,9 @@ public class BagWindow extends GameWindow
 		// draw tabs
 		for (int m = 0 ; m <= tabNames.length - 1 ; m += 1)
 		{
-			Point tabPos = UtilG.Translate(windowPos, 0, border + m * MenuImage.getHeight(null)) ;
+			Point tabPos = Util.Translate(windowPos, 0, border + m * MenuImage.getHeight(null)) ;
 			tabPos.x += m == tab ? 3 : 0 ; 
-			Point textPos = UtilG.Translate(tabPos, 3, MenuImage.getHeight(null) / 2) ;
+			Point textPos = Util.Translate(tabPos, 3, MenuImage.getHeight(null) / 2) ;
 			Color textColor = getTextColor(m == tab) ;
 			Image tabImage = m == tab ? (menu == 0 ? SelectedMenuTab0 : SelectedMenuTab1) : MenuImage ;
 			checkMenuMouseSelection(mousePos, tabPos, m) ;
@@ -680,9 +680,9 @@ public class BagWindow extends GameWindow
 		{
 			int itemID = i + window * numberSlotMax ;
 			Point slotCenter = itemsPos.get(i) ; // calcSlotCenter(i) ;
-			Point slotCenterLeft = UtilG.getPosAt(slotCenter, Align.center, Align.centerLeft, UtilG.getSize(SlotImage)) ;
+			Point slotCenterLeft = Util.getPosAt(slotCenter, Align.center, Align.centerLeft, Util.getSize(SlotImage)) ;
 			String itemText = itemsDisplayed.get(i).getName() + " (x " + amountsDisplayed.get(i) + ")" ;
-			Point textPos = UtilG.Translate(slotCenterLeft, SlotImage.getWidth(null) + 5, 0) ;
+			Point textPos = Util.Translate(slotCenterLeft, SlotImage.getWidth(null) + 5, 0) ;
 			checkMouseSelection(mousePos, slotCenterLeft, Align.centerLeft, itemNameSize, itemID) ;
 			Color textColor = getTextColor(itemID == item) ;
 			

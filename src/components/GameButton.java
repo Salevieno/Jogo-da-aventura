@@ -10,10 +10,10 @@ import java.util.List;
 
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import main.Game;
-import utilities.Align;
 import utilities.Scale;
-import utilities.UtilG;
 
 public class GameButton
 {
@@ -40,9 +40,9 @@ public class GameButton
 		this.image = image ;
 		this.selectedImage = selectedImage ;
 		isActive = true ;
-		size = image != null ? UtilG.getSize(image) : new Dimension(100, 50) ;
+		size = image != null ? Util.getSize(image) : new Dimension(100, 50) ;
 		this.alignment = alignment ;
-		this.topLeft = UtilG.getTopLeft(pos, alignment, size) ;
+		this.topLeft = Util.getTopLeft(pos, alignment, size) ;
 		this.action = action ;
 	}
 	
@@ -52,9 +52,9 @@ public class GameButton
 		this.image = image ;
 		this.selectedImage = selectedImage ;
 		isActive = true ;
-		size = image != null ? UtilG.getSize(image) : new Dimension(100, 50) ;
+		size = image != null ? Util.getSize(image) : new Dimension(100, 50) ;
 		this.alignment = alignment ;
-		this.topLeft = UtilG.getTopLeft(pos, alignment, size) ;
+		this.topLeft = Util.getTopLeft(pos, alignment, size) ;
 		this.action = action ;
 	}
 
@@ -65,11 +65,11 @@ public class GameButton
 	public Image getSelectedImage() {return selectedImage ;}
 	public void setTopLeftPos(Point P) {topLeft = P ;}
 	
-	public Point getCenter() {return UtilG.Translate(topLeft, size.width / 2, size.height / 2) ;}
+	public Point getCenter() {return Util.Translate(topLeft, size.width / 2, size.height / 2) ;}
 	
 	public static void addToAllIconsList(GameButton icon) { allButtons.add(icon) ;}
 
-	public boolean ishovered(Point mousePos) { return UtilG.isInside(mousePos, topLeft, size) ;}
+	public boolean ishovered(Point mousePos) { return Util.isInside(mousePos, topLeft, size) ;}
 	public boolean isClicked(Point mousePos, String action)
 	{
 		if (action == null) { return false ;}

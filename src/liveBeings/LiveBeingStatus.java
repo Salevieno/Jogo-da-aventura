@@ -7,9 +7,9 @@ import java.awt.Point;
 import org.json.simple.JSONObject;
 
 import graphics.DrawPrimitives;
-import utilities.Align;
+import libUtil.Align;
+import libUtil.Util;
 import utilities.Directions;
-import utilities.UtilG;
 import utilities.UtilS;
 
 public class LiveBeingStatus
@@ -198,13 +198,13 @@ public class LiveBeingStatus
 
 		if (0 < stun)
 		{
-			Point imgPos = UtilG.Translate(bodyCenter, 0, -offset.y) ;
+			Point imgPos = Util.Translate(bodyCenter, 0, -offset.y) ;
 			DP.drawImage(stunImage, imgPos, Align.center) ;
 		}
 		
 		int[] statusList = new int[] {block, blood, poison, silence} ;
 		Image[] imgList = new Image[] {blockImage, bloodImage, poisonImage, silenceImage} ;
-		Point imgPos = UtilG.Translate(bodyCenter, mirror * offset.x, -offset.y) ;
+		Point imgPos = Util.Translate(bodyCenter, mirror * offset.x, -offset.y) ;
 		for (int i = 0 ; i <= statusList.length - 1 ; i += 1)
 		{
 			if (statusList[i] <= 0) { continue ;}

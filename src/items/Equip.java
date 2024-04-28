@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 import attributes.AttributeBonus;
 import attributes.BattleAttributes;
@@ -13,13 +15,13 @@ import graphics.Animation;
 import graphics.AnimationTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
+import libUtil.Align;
+import libUtil.Util;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
-import utilities.Align;
 import utilities.Elements;
 import utilities.Scale;
-import utilities.UtilG;
 import utilities.UtilS;
 import windows.AttributesWindow;
 
@@ -62,7 +64,7 @@ public class Equip extends Item
 
 	static
 	{
-		List<String[]> input = UtilG.ReadcsvFile(Game.CSVPath + "Item_Equip.csv") ;
+		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Equip.csv") ;
 		allEquips = new Equip[input.size()] ;
 		for (int p = 0; p <= allEquips.length - 1; p += 1)
 		{
@@ -240,7 +242,7 @@ public class Equip extends Item
 		{
 			initialBonus[i] = initialBonus[i] / Math.pow((1 + forgeBonus), forgeLevel) ;
 		}
-		attBonus.setBasic(initialBonus) ;
+		attBonus.setBasic(DoubleStream.of(initialBonus).boxed().collect(Collectors.toList())) ;
 		forgeLevel = 0 ;
 	}
 	
@@ -342,14 +344,14 @@ public class Equip extends Item
 		DP.drawImage(infoMenu, pos, align) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
 		int numberRows = 4 ;
-		Point topLeftSlotCenter = UtilG.Translate(pos, 18 - UtilG.getSize(infoMenu).width, 18) ;
+		Point topLeftSlotCenter = Util.Translate(pos, 18 - Util.getSize(infoMenu).width, 18) ;
 		int[] attOrder = new int[] {0, 2, 4, 6, 1, 3, 5, 7} ;
 		for (int i = 0 ; i <= attOrder.length - 1 ; i += 1)
 		{
-			Point imagePos = UtilG.calcGridPos(topLeftSlotCenter, i, numberRows, new Point(90, 23)) ;
+			Point imagePos = Util.calcGridPos(topLeftSlotCenter, i, numberRows, new Point(90, 23)) ;
 			DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
 			
-			Point textPos = UtilG.Translate(imagePos, 10, 0) ;
+			Point textPos = Util.Translate(imagePos, 10, 0) ;
 			DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Game.colorPalette[0]) ;
 		}
 	}
