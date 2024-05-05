@@ -93,7 +93,7 @@ public class Building
 		Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		Point messagePos = Util.Translate(pos, 10, 10) ;
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
-		DP.drawGradRoundRect(pos, Align.topLeft, new Dimension(230, 80), 2, Game.colorPalette[3], Game.colorPalette[3], true) ;			
+		DP.drawRoundRect(pos, Align.topLeft, new Dimension(230, 80), 2, Game.colorPalette[3], true) ;			
 		Draw.fitText(messagePos, font.getSize() + 2, Align.centerLeft, message, font, 40, Game.colorPalette[0]) ;	
 	}
 	

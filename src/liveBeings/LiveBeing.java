@@ -320,7 +320,7 @@ public abstract class LiveBeing
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String stateText = 0 < combo.size() ? state.toString() : "" ;
 		
-		DP.drawGradRoundRect(pos, Align.center, size, 1, Game.colorPalette[21], Game.colorPalette[21], true);
+		DP.drawRoundRect(pos, Align.center, size, 1, Game.colorPalette[21], true);
 		DP.drawText(pos, Align.center, 0, stateText, font, Game.colorPalette[0]) ;
 	}
 

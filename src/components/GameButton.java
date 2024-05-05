@@ -84,7 +84,7 @@ public class GameButton
 	
 	public void displayGeneralButton(DrawPrimitives DP)
 	{
-		DP.drawGradRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[3], Game.colorPalette[3], true) ;
+		DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[3], true) ;
 		DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 	}
 	
@@ -100,7 +100,7 @@ public class GameButton
 		}
 		else
 		{
-			DP.drawGradRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[5], Game.colorPalette[6], true) ;
+			DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[5], true) ;
 			DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 		}
 	}
@@ -117,7 +117,7 @@ public class GameButton
 			return ;
 		}
 		
-		DP.drawGradRoundRect(topLeft, Align.topLeft, size, 2, Game.colorPalette[5], Game.colorPalette[6], true) ;
+		DP.drawRoundRect(topLeft, Align.topLeft, size, 2, Game.colorPalette[5], true) ;
 		DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
 	}
 	
@@ -147,7 +147,7 @@ public class GameButton
 	{
 		if (description != null)
 		{
-			DP.drawGradRoundRect(new Point(topLeft.x + 20, topLeft.y - 10), alignment, size, 5, Color.lightGray, Color.gray, true) ;
+			DP.drawGradRoundRect(new Point(topLeft.x + 20, topLeft.y - 10), alignment, size, 5, Game.colorPalette[1], Game.colorPalette[2], true) ;
 			Draw.fitText(new Point(topLeft.x + 20, topLeft.y - 10), 14, alignment, description, new Font(Game.MainFontName, Font.BOLD, 12), 20, Color.blue) ;
 		}
 	}

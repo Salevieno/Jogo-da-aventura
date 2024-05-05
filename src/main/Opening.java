@@ -372,7 +372,7 @@ public abstract class Opening
 		{
 			Point rectPos = Game.getScreen().pos(0.04 + i * 0.2, 0.4) ;
 			Point textPos = Util.Translate(rectPos, 5, 5) ;
-			DP.drawGradRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, bgColor, true) ;
+			DP.drawRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, true) ;
 			Draw.fitText(textPos, 10, Align.topLeft, description[i], smallFont, 18, textColor) ;
 		}
 	}

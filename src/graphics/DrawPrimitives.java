@@ -60,7 +60,6 @@ public class DrawPrimitives
         
 		graphs.setTransform(backup) ;
 	}
-	
 	public void drawText(Point pos, Align align, String text, Color color)
 	{
 		drawText(pos, align, stdAngle, text, stdFont, color) ;
@@ -75,11 +74,11 @@ public class DrawPrimitives
 		
 		graphs.setStroke(new BasicStroke(stdStroke)) ;
 	}
-	
 	public void drawLine(Point p1, Point p2, Color color)
 	{
 		drawLine(p1, p2, stdStroke, color) ;
 	}
+	
 	public void drawArc(Point center, int diameter, int stroke, int startAngle, int endAngle, Color color, Color contourColor)
 	{
 		graphs.setColor(color) ;
@@ -130,20 +129,7 @@ public class DrawPrimitives
 	}
 	public void drawRoundRect(Point pos, Align align, Dimension size, int stroke, Color fillColor, boolean contour, int arcWidth, int arcHeight)
 	{
-		// Round rectangle by default starts at the left top
-		Point offset = Util.offsetForAlignment(align, size) ;
-		graphs.setStroke(new BasicStroke(stroke)) ;
-		if (fillColor != null)
-		{
-		    graphs.setColor(fillColor) ;
-			graphs.fillRoundRect(pos.x + offset.x, pos.y + offset.y, size.width, size.height, arcWidth, arcHeight) ;
-		}
-		if (contour)
-		{
-			graphs.setColor(Game.colorPalette[0]) ;
-			graphs.drawRoundRect(pos.x + offset.x, pos.y + offset.y, size.width, size.height, arcWidth, arcHeight) ;
-		}
-		graphs.setStroke(new BasicStroke(stdStroke)) ;
+		drawGradRoundRect(pos, align, size, stroke, arcWidth, arcHeight, fillColor, fillColor, contour) ;
 	}
 	public void drawRoundRect(Point pos, Align align, Dimension size, int stroke, Color fillColor, boolean contour)
 	{
@@ -153,7 +139,8 @@ public class DrawPrimitives
 	{
 		drawRoundRect(pos, align, size, stdStroke, fillColor, contour, 10, 10) ;
 	}
-	public void drawGradRoundRect(Point pos, Align align, Dimension size, int stroke, int arcWidth, int arcHeight, Color topColor, Color botColor, boolean contour)
+	
+	public void drawGradRoundRect(Point pos, Align align, Dimension size, int stroke, int arcW, int arcH, Color botColor, Color topColor, boolean contour)
 	{
 		// Round rectangle by default starts at the left top
 		Point offset = Util.offsetForAlignment(align, size) ;
@@ -163,23 +150,24 @@ public class DrawPrimitives
 		{
 		    GradientPaint gradient = new GradientPaint(corner[0], corner[1], topColor, corner[0], corner[1] + size.height, botColor) ;
 		    graphs.setPaint(gradient) ;
-			graphs.fillRoundRect(corner[0], corner[1], size.width, size.height, arcWidth, arcHeight) ;
+			graphs.fillRoundRect(corner[0], corner[1], size.width, size.height, arcW, arcH) ;
 		}
 		if (contour)
 		{
 			graphs.setColor(Game.colorPalette[0]) ;
-			graphs.drawRoundRect(corner[0], corner[1], size.width, size.height, arcWidth, arcHeight) ;
+			graphs.drawRoundRect(corner[0], corner[1], size.width, size.height, arcW, arcH) ;
 		}
 		graphs.setStroke(new BasicStroke(stdStroke)) ;
 	}
-	public void drawGradRoundRect(Point pos, Align align, Dimension size, int stroke, Color topColor, Color botColor, boolean contour)
+	public void drawGradRoundRect(Point pos, Align align, Dimension size, int stroke, Color botColor, Color topColor, boolean contour)
 	{
-		drawGradRoundRect(pos, align, size, stroke, 10, 10, topColor, botColor, contour) ;
+		drawGradRoundRect(pos, align, size, stroke, 10, 10, botColor, topColor, contour) ;
 	}
-	public void drawGradRoundRect(Point pos, Align align, Dimension size, Color topColor, Color botColor, boolean contour)
+	public void drawGradRoundRect(Point pos, Align align, Dimension size, Color botColor, Color topColor, boolean contour)
 	{
-		drawGradRoundRect(pos, align, size, stdStroke, topColor, botColor, contour) ;
+		drawGradRoundRect(pos, align, size, stdStroke, botColor, topColor, contour) ;
 	}
+	
 	public void drawCircle(Point center, int diameter, int stroke, Color color, Color contourColor)
 	{
 		graphs.setColor(color) ;

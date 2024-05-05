@@ -45,7 +45,7 @@ public class LiveInput
 
 		if (showBackground)
 		{
-			DP.drawGradRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.colorPalette[3], Game.colorPalette[3], true) ;
+			DP.drawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.colorPalette[3], true) ;
 		}
 		int offsetX = (int) (7.3 * text.length()) ;
 		DP.drawLine(Util.Translate(pos, 20 + offsetX, 5), Util.Translate(pos, 20 + offsetX, -5), 2, Game.colorPalette[0]) ;

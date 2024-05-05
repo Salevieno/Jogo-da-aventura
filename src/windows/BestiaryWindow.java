@@ -49,7 +49,7 @@ public class BestiaryWindow extends GameWindow
 		int sy = infoFont.getSize() ;
 
 		Dimension windowSize = new Dimension(128, 240) ;
-		DP.drawGradRoundRect(pos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
+		DP.drawGradRoundRect(pos, Align.topLeft, windowSize, 3, Game.colorPalette[5], Game.colorPalette[14], true) ;
 		
 		Point creaturePos = Util.Translate(pos, 40, offset) ;
 		creatureType.display(creaturePos, Scale.unit, DP) ;
@@ -85,7 +85,7 @@ public class BestiaryWindow extends GameWindow
 
 		
 		// draw window
-		DP.drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.colorPalette[14], Game.colorPalette[5], true) ;
+		DP.drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.colorPalette[5], Game.colorPalette[14], true) ;
 		
 		if (discoveredCreatures == null) { return ;}
 		
@@ -96,7 +96,7 @@ public class BestiaryWindow extends GameWindow
 			// draw slots
 			Point slotTopLeft = Util.Translate(windowPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
 			Point slotCenter = Util.Translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
-			DP.drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Game.colorPalette[20], Game.colorPalette[3], true) ;
+			DP.drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Game.colorPalette[3], Game.colorPalette[20], true) ;
 
 			// draw creatures
 			CreatureType creatureType = discoveredCreatures.get(slot) ;

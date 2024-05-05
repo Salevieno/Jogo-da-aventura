@@ -149,12 +149,12 @@ public abstract class Draw
 		Point[] WindowPos = new Point[] {new Point((int)(0.35*screenSize.width), (int)(0.2*screenSize.height)),
 				new Point((int)(0.65*screenSize.width), (int)(0.2*screenSize.height)),
 				new Point((int)(0.5*screenSize.width), (int)(0.2*screenSize.height))} ;
-		DP.drawGradRoundRect(WindowPos[0], Align.topLeft, new Dimension(screenSize.width / 3, screenSize.height / 2), 2, Color.white, Color.lightGray, true) ;
+		DP.drawRoundRect(WindowPos[0], Align.topLeft, new Dimension(screenSize.width / 3, screenSize.height / 2), 2, Game.colorPalette[3], true) ;
 		DP.drawText(new Point(WindowPos[0].x + screenSize.width / 6, WindowPos[0].y + screenSize.height / 4), Align.center, stdAngle, "Slot " + String.valueOf(SlotID + 1) + " is empty", new Font("SansSerif", Font.BOLD, 20), Game.colorPalette[5]) ;
 		windowArrows(new Point(WindowPos[0].x, WindowPos[0].y + screenSize.height / 2), screenSize.width / 3, SlotID, NumSlots) ;
 	}
 
-	public static void grid(int[] spacing)
+	public static void gameGrid(int[] spacing)
 	{
 		for (int i = 0 ; i <= screenSize.width/spacing[0] - 1 ; ++i)
 		{
