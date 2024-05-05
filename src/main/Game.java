@@ -1169,8 +1169,6 @@ public class Game extends JPanel
 				run(DP) ;
 				playGifs(DP) ;
 				// DP.DrawImage(Util.loadImage("./images/test.png"), mousePos, Align.center) ;	
-				DP.drawRoundRect(new Point(200, 200), Align.center, new Dimension(50, 50), 1, Color.white, true, 10, 10) ;
-				DP.drawGradRoundRect(new Point(300, 200), Align.center, new Dimension(50, 50), 1, 10, 10, Color.white, Color.white, true) ;
 				break ;
 
 			case playingStopTimeGif:

@@ -330,30 +330,29 @@ public abstract class Draw
 		
 	}
 	
-	public static void levelUpAnimation(TimeCounter counter, double[] AttributeIncrease, int playerLevel)
+	public static void levelUpAnimation(TimeCounter counter, double[] attributeInc, int newLevel)
 	{
 
 		Point pos = Game.getScreen().pos(0.45, 0.2) ;
-		Scale scale = Scale.unit ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		Point offset = new Point(15, 15) ;
-		int sy = font.getSize() + 4 ;
 		String[] attText = Game.allText.get(TextCategories.attributes) ;
 		
-		DP.drawImage(Animation.win, pos, scale, Align.topLeft) ;
+		DP.drawImage(Animation.win, pos, Scale.unit, Align.topLeft) ;
 		Point textPos = Util.Translate(pos, Animation.win.getWidth(null) / 2, offset.y) ;
-		DP.drawText(textPos, Align.bottomCenter, stdAngle, attText[0] + " " + playerLevel + "!", font, Game.colorPalette[6]) ;
 		
-		if ( counter.rate() <= 0.3 ) { return ;}
+		DP.drawText(textPos, Align.bottomCenter, stdAngle, attText[0] + " " + newLevel + "!", font, Game.colorPalette[6]) ;
+		
+		if (counter.rate() <= 0.2) { return ;}
 		
 		String[] attNames = Arrays.copyOfRange(attText, 1, 9) ;
+		Point attTextOffset = new Point(10, 35) ;
 		for (int i = 0 ; i <= attNames.length - 1 ; i += 1)
 		{
-			if ( 0.3 + 0.5 * i / (attNames.length - 1) <= counter.rate() )
-			{
-				Point attTextPos = Util.Translate(pos, offset.x, offset.y + i * (font.getSize() + 4)) ;
-				DP.drawText(attTextPos, Align.bottomLeft, stdAngle, attNames[i] + " + " + AttributeIncrease[i], font, Game.colorPalette[6]) ;
-			}
+			if (counter.rate() <= 0.2 + 0.5 * i / (attNames.length - 1)) { continue ;}
+			
+			Point attTextPos = Util.Translate(pos, attTextOffset.x, attTextOffset.y + i * (font.getSize() + 4)) ;
+			DP.drawText(attTextPos, Align.bottomLeft, stdAngle, attNames[i] + " + " + attributeInc[i], font, Game.colorPalette[6]) ;
 		}
 		
 	}
