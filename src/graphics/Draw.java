@@ -29,6 +29,8 @@ import utilities.FrameCounter;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilS;
+import windows.AttributesWindow;
+import windows.BagWindow;
 import windows.PlayerAttributesWindow;
 
 public abstract class Draw 
@@ -90,18 +92,15 @@ public abstract class Draw
 	public static void speech(Point pos, String text, Font font, Image speechBubble, Color color)
 	{
 		// obs: text must end with . , ? or ! for this function to work
-		int bubbleL = speechBubble.getWidth(null), bubbleH = speechBubble.getHeight(null) ;
-		boolean flipH = 0.7 * screenSize.width < pos.x ? true : false ;
+		int bubbleL = speechBubble.getWidth(null) ;
+		int bubbleH = speechBubble.getHeight(null) ;
+		boolean flipH = Game.getScreen().getSize().width / 2 <= pos.x ;
 		Color textColor = color != null ? color : Game.colorPalette[21] ;
 		
-		if (pos.x <= 0.3 * screenSize.width)
-		{
-			pos = Util.Translate(pos, 50, 0) ;
-		}
-
 		DP.drawImage(speechBubble, pos, DrawPrimitives.stdAngle, Scale.unit, flipH, false, Align.bottomCenter, 1) ;
 		
-		Point textPos = Util.Translate(pos, 12 - bubbleL / 2, 5 - bubbleH) ;
+		Point textOffset = new Point(6, 5) ;
+		Point textPos = Util.Translate(pos, textOffset.x - bubbleL / 2, textOffset.y - bubbleH) ;
 		int maxTextL = 35 ;
 		int sy = font.getSize() + 1 ;
 		fitText(textPos, sy, Align.topLeft, text, font, maxTextL, textColor) ;
@@ -269,27 +268,6 @@ public abstract class Draw
 		DP.drawImage(TentImage, Pos, Align.center) ;
 	}
 
-	public static void winAnimation(TimeCounter counter, List<Item> items)
-	{
-		Point pos = Game.getScreen().pos(0.45, 0.2) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
-
-		DP.drawImage(Animation.win, pos, Scale.unit, Align.topLeft) ;
-		Point textPos = Util.Translate(pos, 65, font.getSize() + 5) ;
-		DP.drawText(textPos, Align.bottomCenter, stdAngle, "Você obteve!", font, Game.colorPalette[5]) ;
-		
-		if ( counter.rate() <= 0.3 ) { return ;}
-		
-		for (int i = 0 ; i <= items.size() - 1 ; i += 1)
-		{
-			if ( 0.3 + 0.5 * i / items.size() <= counter.rate() )
-			{
-				Point itemTextPos = Util.Translate(pos, 15, (i + 1) * (font.getSize() + 4)) ;
-				DP.drawText(itemTextPos, Align.bottomLeft, stdAngle, items.get(i).getName(), font, Game.colorPalette[6]) ;
-			}
-		}
-	}
-
 	public static void gainGoldAnimation(TimeCounter counter, int goldObtained)
 	{
 		
@@ -329,30 +307,69 @@ public abstract class Draw
 		DP.drawText(Util.Translate(pos, 5 - Animation.obtainedItem.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
 		
 	}
+
+	public static void winAnimation(TimeCounter counter, List<Item> items)
+	{
+		Point pos = Game.getScreen().pos(0.35, 0.2) ;
+		Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
+
+		DP.drawImage(Animation.win, pos, Scale.unit, Align.topLeft) ;
+		
+		if ( counter.rate() <= 0.1 ) { return ;}
+		
+		Point textPos = Util.Translate(pos, 65, 15) ;
+		DP.drawText(textPos, Align.bottomCenter, stdAngle, "Você obteve!", titleFont, Game.colorPalette[0]) ;
+		
+		if ( counter.rate() <= 0.3 ) { return ;}
+		
+		for (int i = 0 ; i <= items.size() - 1 ; i += 1)
+		{
+			if ( 0.3 + 0.5 * i / items.size() <= counter.rate() )
+			{
+				Point itemTextPos = Util.Translate(pos, 10, 20 + (i + 1) * 15) ;
+				DP.drawText(itemTextPos, Align.bottomLeft, stdAngle, items.get(i).getName(), font, Game.colorPalette[3]) ;
+			}
+		}
+	}
 	
 	public static void levelUpAnimation(TimeCounter counter, double[] attributeInc, int newLevel)
 	{
 
-		Point pos = Game.getScreen().pos(0.45, 0.2) ;
+		Point pos = Game.getScreen().pos(0.55, 0.2) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		Point offset = new Point(15, 15) ;
 		String[] attText = Game.allText.get(TextCategories.attributes) ;
 		
-		DP.drawImage(Animation.win, pos, Scale.unit, Align.topLeft) ;
+		DP.drawImage(Animation.levelUp, pos, Scale.unit, Align.topLeft) ;
 		Point textPos = Util.Translate(pos, Animation.win.getWidth(null) / 2, offset.y) ;
 		
-		DP.drawText(textPos, Align.bottomCenter, stdAngle, attText[0] + " " + newLevel + "!", font, Game.colorPalette[6]) ;
+		DP.drawText(textPos, Align.bottomCenter, stdAngle, attText[0] + " " + newLevel + "!", font, Game.colorPalette[0]) ;
+
+		int nRows = 4 ;
+		int nCols = 2 ;
+		int sy = font.getSize() + 15 ;
+		Point topLeftSlotCenter = Util.Translate(pos, 18, 35) ;
+		int[] attOrder = new int[] {0, 2, 4, 6, 1, 3, 5, 7} ;
+		for (int i = 0 ; i <= attOrder.length - 1 ; i += 1)
+		{
+			Point imagePos = Util.calcGridPos(topLeftSlotCenter, i, nRows, new Point(80, sy)) ;
+			DP.drawImage(BagWindow.slotImage, imagePos, Align.center) ;
+			DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
+		}
 		
 		if (counter.rate() <= 0.2) { return ;}
 		
 		String[] attNames = Arrays.copyOfRange(attText, 1, 9) ;
-		Point attTextOffset = new Point(10, 35) ;
+		
 		for (int i = 0 ; i <= attNames.length - 1 ; i += 1)
 		{
 			if (counter.rate() <= 0.2 + 0.5 * i / (attNames.length - 1)) { continue ;}
-			
-			Point attTextPos = Util.Translate(pos, attTextOffset.x, attTextOffset.y + i * (font.getSize() + 4)) ;
-			DP.drawText(attTextPos, Align.bottomLeft, stdAngle, attNames[i] + " + " + attributeInc[i], font, Game.colorPalette[6]) ;
+
+			int row = i % nCols ;
+			int col = i / nCols ;
+			Point attTextPos = Util.Translate(pos, 28 + row * 80, 40 + col * sy) ;
+			DP.drawText(attTextPos, Align.bottomLeft, stdAngle, " + " + attributeInc[i], font, Game.colorPalette[0]) ;
 		}
 		
 	}

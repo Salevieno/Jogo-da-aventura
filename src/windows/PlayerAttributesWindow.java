@@ -183,7 +183,6 @@ public class PlayerAttributesWindow extends AttributesWindow
 			DP.drawImage(player.getEquippedArrow().fullSizeImage(), Util.Translate(windowPos, 100, 133), Align.bottomCenter) ;
 		}
 		
-		
 		// super element
 		if (player.hasSuperElement())
 		{

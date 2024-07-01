@@ -184,10 +184,8 @@ public class Pet extends LiveBeing
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	public boolean closeToPlayer(Point playerPos) { return Util.dist(pos, playerPos) <= 40 ; }
 	
-	public Point center()
-	{
-		return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;
-	}
+	public Point center() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
+	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - size.height)) ;}
 
 	public Directions newMoveDirection(Directions originalDir)
 	{

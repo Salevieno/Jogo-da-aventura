@@ -445,7 +445,7 @@ public class NPCs
 		
 		if (content == null) { return ;}
 		
-		Point speechPos = Util.Translate(pos, -22, -2 - type.height()) ;
+		Point speechPos = Util.Translate(pos, 0, 10 - type.height()) ;
 
 		Draw.speech(speechPos, content, NPCfont, speakingBubble, stdColor) ;
 		

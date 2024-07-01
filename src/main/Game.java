@@ -857,6 +857,7 @@ public class Game extends JPanel
 		}
 
 		Draw.map(player.getMap(), sky) ;
+		Draw.mapElements(player.getPos(), player.getMap(), sky) ;
 
 		if (player.getMap().isAField())
 		{
@@ -900,7 +901,6 @@ public class Game extends JPanel
 			player.talkToNPC(mousePos, DP) ;
 		}
 
-		Draw.mapElements(player.getPos(), player.getMap(), sky) ;
 		player.showWindows(pet, mousePos, DP) ;
 
 		if (projs != null)
@@ -993,7 +993,7 @@ public class Game extends JPanel
     	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
     	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
     	for (Item item : Equip.getAll()) { player.getBag().add(item, 20) ;}
-    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
+//    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
     	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
     	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
 //    	player.getElem()[4] = Elements.water ;
@@ -1147,7 +1147,7 @@ public class Game extends JPanel
 					if (Opening.loadingIsOver())
 					{
 						Opening.activateStartButton() ;
-						JobBuild.printAll() ;
+//						JobBuild.printAll() ;
 					}
 				}
 	
@@ -1156,7 +1156,7 @@ public class Game extends JPanel
 //			    	player.switchOpenClose(player.getHintsindow()) ;
 					if (cheatMode) { setCheatMode() ;}
 					Game.setState(GameStates.running) ;
-					player.levelUp();
+//					player.levelUp();
 				}
 				shouldRepaint = true ;
 				break ;

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sound.sampled.Clip;
@@ -70,7 +71,7 @@ public abstract class Battle
 		
 		if (atkResults.getAtkType() == null) { return ;}
 		
-		Animation.start(AnimationTypes.damage, new Object[] {receiver.getPos(), damageStyle, atkResults});
+		Animation.start(AnimationTypes.damage, new Object[] {receiver.headPos(), damageStyle, atkResults});
 		
 	}
 	
@@ -89,12 +90,12 @@ public abstract class Battle
 	public static double calcElemMult(Elements atk, Elements weapon, Elements armor, Elements shield, Elements superElem)
 	{
 		double mult = 1 ;
-		mult = basicElemMult(atk, armor) * mult ;
-		mult = basicElemMult(atk, shield) * mult ;
-		mult = basicElemMult(weapon, armor) * mult ;
-		mult = basicElemMult(weapon, shield) * mult ;
-		mult = basicElemMult(superElem, armor) * mult ;
-		mult = basicElemMult(superElem, shield) * mult ;
+		mult *= atk != null && armor != null ? basicElemMult(atk, armor) : 1 ;
+		mult *= atk != null && shield != null ? basicElemMult(atk, shield) : 1 ;
+		mult *= weapon != null && armor != null ? basicElemMult(weapon, armor) : 1 ;
+		mult *= weapon != null && shield != null ? basicElemMult(weapon, shield) : 1 ;
+		mult *= superElem != null && armor != null ? basicElemMult(superElem, armor) : 1 ;
+		mult *= superElem != null && shield != null ? basicElemMult(superElem, shield) : 1 ;
 		return mult ;
 	}
 
@@ -115,7 +116,7 @@ public abstract class Battle
 		double defPhyDef = receiver.getBA().TotalPhyDef() ;
 		Elements[] atkElems = attacker.atkElems() ;
 		Elements[] defElems = receiver.defElems() ;
-		double elemRes = attacker.getBA().getElemResistanceMult().get(receiver.defElems()[0]) ;
+		double elemRes = receiver.defElems()[0] != null ? attacker.getBA().getElemResistanceMult().get(receiver.defElems()[0]) : 1.0 ;
 		
 		AtkEffects effect = calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
 		int damage = calcDamage(effect, atkPhyAtk + arrowPower, defPhyDef, atkElems, defElems, elemRes) ;

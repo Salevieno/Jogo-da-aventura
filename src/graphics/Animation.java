@@ -24,6 +24,7 @@ public class Animation
 	private static final List<Animation> all = new ArrayList<>() ;
 	public static final Image obtainedItem = UtilS.loadImage("ObtainedItem.png") ;
 	public static final Image messageBox = UtilS.loadImage("messageBox.png") ;
+	public static final Image levelUp = UtilS.loadImage("LevelUp.png") ;
 	public static final Image win = UtilS.loadImage("Win.png") ;
 
 	private Animation(AnimationTypes type)
@@ -67,46 +68,8 @@ public class Animation
 				return (vars, DP) -> {
 					List<Item> itemsObtained = (List<Item>) vars[0] ;
 					Draw.winAnimation(counter, itemsObtained) ;
-				} ;				
-//				
-//			case 4 :
-//				return (vars, DP) -> {
-//					Point playerPos = (Point) vars[0] ;
-//					Player.levelUpGif.play(playerPos, Align.bottomCenter, DP) ;
-////					if (Player.levelUpGif.isDonePlaying())
-////					{
-////						Player.levelUpGif.resetTimeCounter() ;
-////					}
-//				} ;				
-//				
-//			case 5 :
-//				return (vars, DP) -> {
-//					Point petPos = (Point) vars[0] ;
-//					Pet.levelUpGif.play(petPos, Align.bottomCenter, DP) ;
-////					if (Pet.levelUpGif.isDonePlaying())
-////					{
-////						Pet.levelUpGif.resetTimeCounter() ;
-////					}
-//				} ;				
-//				
-//			case 6 :
-//				return (vars, DP) -> {
-//					double[] attributesInc = (double[]) vars[0] ;
-//					int playerLevel = (int) vars[1] ;
-//					Color textColor = Game.colorPalette[6] ;
-//
-//					Draw.levelUpAnimation(counter, attributesInc, playerLevel, textColor) ;
-//				} ;				
-//				
-//			case 7 :
-//				return (vars, DP) -> {
-//					double[] attributesInc = (double[]) vars[0] ;
-//					int playerLevel = (int) vars[1] ;
-//					Color textColor = Game.colorPalette[6] ;
-//
-//					Draw.levelUpAnimation(counter, attributesInc, playerLevel, textColor) ;
-//				} ;				
-//				
+				} ;
+				
 			case 2 :
 				return (vars, DP) -> {
 					Image PterodactileImage = (Image) vars[0] ;

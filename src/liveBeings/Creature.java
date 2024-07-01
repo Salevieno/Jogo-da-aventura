@@ -112,6 +112,8 @@ public class Creature extends LiveBeing
 	public static Color[] getshadeColor() {return shadeColor ;}
 
 	public Point center() { return new Point(pos) ;}
+
+	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
 	
 	public boolean hasEnoughMP(int spellID)
 	{

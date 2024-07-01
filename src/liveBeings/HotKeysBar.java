@@ -59,7 +59,7 @@ public class HotKeysBar
 			Point slotCenter = Util.Translate(barTopLeft, 13, 10 + 20 * i) ;
 			Point keyTextPos = Util.Translate(slotCenter, slotSize.width / 2 + 6, slotSize.height / 2) ;
 			
-			DP.drawImage(BagWindow.SlotImage, slotCenter, Align.center) ;
+			DP.drawImage(BagWindow.slotImage, slotCenter, Align.center) ;
 			DP.drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.HotKeys[i], font, textColor) ;
 			
 			if (hotItems[i] == null) { continue ;}

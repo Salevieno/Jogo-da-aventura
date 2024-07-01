@@ -89,6 +89,7 @@ public abstract class LiveBeing
 	}
 
 	public abstract Point center() ;
+	public abstract Point headPos() ;
 	public abstract AtkResults useSpell(Spell spell, LiveBeing receiver) ;
 	public abstract void applyPassiveSpell(Spell spell) ;
 	
@@ -425,11 +426,14 @@ public abstract class LiveBeing
 	public void activateCounters()
 	{
 		if (mpCounter.finished()) { PA.getMp().incCurrentValue(1) ; mpCounter.reset() ;}
-		if (satiationCounter.finished())
+		if (!(this instanceof Creature))
 		{
-			PA.getSatiation().incCurrentValue(-1) ;
-			satiationCounter.reset() ;
-			if (PA.getSatiation().getCurrentValue() == 0) { PA.getLife().incCurrentValue(-1) ;}
+			if (satiationCounter.finished())
+			{
+				PA.getSatiation().incCurrentValue(-1) ;
+				satiationCounter.reset() ;
+				if (PA.getSatiation().getCurrentValue() == 0) { PA.getLife().incCurrentValue(-1) ;}
+			}
 		}
 		
 		if (this instanceof Player)

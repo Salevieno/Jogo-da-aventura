@@ -42,7 +42,7 @@ public class ElementalWindow extends GameWindow
 		spheres = null ;
 		selectedEquip = null ;
 		selectedSphere = null ;
-		equipsForElemChange = null ;
+		equipsForElemChange = new ArrayList<>() ;
 	}
 
 	public static List<GeneralItem> spheresInBag(BagWindow bag)
@@ -105,6 +105,8 @@ public class ElementalWindow extends GameWindow
 		switch (menu)
 		{
 			case 0:
+				if (equipsForElemChange == null || equipsForElemChange.isEmpty()) { return ;}
+				
 				selectEquip() ;
 				menu += 1 ;
 				player.resetAction() ;
@@ -167,8 +169,11 @@ public class ElementalWindow extends GameWindow
 	
 	private void displayEquipSelectionMenu(Point mousePos, DrawPrimitives DP)
 	{
-		int slotW = BagWindow.SlotImage.getWidth(null) ;
-		int slotH = BagWindow.SlotImage.getHeight(null) ;
+		int slotW = BagWindow.slotImage.getWidth(null) ;
+		int slotH = BagWindow.slotImage.getHeight(null) ;
+		
+		if (equipsForElemChange == null || equipsForElemChange.isEmpty()) { return ;}
+		
 		List<Equip> equipsOnWindow = getEquipsOnWindow() ;
 		for (int i = 0 ; i <= equipsOnWindow.size() - 1; i += 1)
 		{
@@ -179,7 +184,7 @@ public class ElementalWindow extends GameWindow
 					border + padding + 6 + slotW / 2 + col * (140 + slotW),
 					border + padding + 22 + slotH / 2 + row * 21) ;
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
-			Image slotImage = i == item ? BagWindow.SelectedSlotImage : BagWindow.SlotImage ;
+			Image slotImage = i == item ? BagWindow.selectedSlotImage : BagWindow.slotImage ;
 			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
 			Color textColor = getTextColor(i == item) ;
 			
@@ -191,8 +196,8 @@ public class ElementalWindow extends GameWindow
 	
 	private void displaySphereSelectionMenu(Point mousePos, DrawPrimitives DP)
 	{
-		int slotW = BagWindow.SlotImage.getWidth(null) ;
-		int slotH = BagWindow.SlotImage.getHeight(null) ;
+		int slotW = BagWindow.slotImage.getWidth(null) ;
+		int slotH = BagWindow.slotImage.getHeight(null) ;
 
 		for (int i = 0 ; i <= spheres.size() - 1; i += 1)
 		{
@@ -204,7 +209,7 @@ public class ElementalWindow extends GameWindow
 					border + padding + 22 + slotH / 2 + row * 21) ;
 
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
-			Image slotImage = item == i ? BagWindow.SelectedSlotImage : BagWindow.SlotImage ;
+			Image slotImage = item == i ? BagWindow.selectedSlotImage : BagWindow.slotImage ;
 			DP.drawImage(slotImage, slotCenter, Align.center) ;
 			DP.drawImage(sphere.getImage(), slotCenter, Align.center) ;
 			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;

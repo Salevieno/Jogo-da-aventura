@@ -340,10 +340,8 @@ public class Player extends LiveBeing
 	public double getDigBonus() { return digBonus ;}
 	public void setFocusWindow(GameWindow W) { focusWindow = W ;}
 
-	public Point center()
-	{
-		return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;
-	}
+	public Point center() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
+	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - size.height)) ;}
 	
 	public static Spell[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpells(), 14) ;}
 	public static Spell[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 34, 49) ;}
