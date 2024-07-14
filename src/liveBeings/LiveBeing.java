@@ -489,7 +489,7 @@ public abstract class LiveBeing
 	
 	public List<Spell> getActiveSpells() { return spells.stream().filter(Spell::isUsable).collect(Collectors.toList()) ;}
 	
-	public boolean isAlive() {return 0 < PA.getLife().getTotalValue() ;}
+	public boolean isAlive() { return 0 < PA.getLife().getTotalValue() ;}
 	public boolean hasTheSpell(String action) {return Player.SpellKeys.indexOf(action) < getActiveSpells().size() ;}
 	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
 	public boolean hasSuperElement()
@@ -690,7 +690,7 @@ public abstract class LiveBeing
 		
 		if (style == 0)
 		{
-			Point Pos = new Point((int)(pos.x - size.width / 2), (int)(pos.y - size.height - 5 * (1 + attRate.size()))) ;
+			Point Pos = new Point((int)(pos.x - size.width / 2), (int)(pos.y - size.height)) ;
 			Dimension screenSize = Game.getScreen().getSize() ;
 			Dimension size = new Dimension((int)(0.05*screenSize.width), (int)(0.01*screenSize.height)) ;
 			int Sy = (int)(0.01*screenSize.height) ;

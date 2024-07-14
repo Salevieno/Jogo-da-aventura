@@ -154,7 +154,7 @@ public class Creature extends LiveBeing
 		{
 			type.movingAni.displayIdle(pos, 0, scale, Align.center, DP) ;
 		}
-		displayAttributes(0, DP) ;
+//		displayAttributes(0, DP) ;
 		displayStatus(DP) ;
 	}
 	
@@ -246,7 +246,8 @@ public class Creature extends LiveBeing
 			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
 			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
 			case 2:	setCurrentAction(String.valueOf(Util.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
-		}		
+		}
+
 	}
 	
 	public void think()

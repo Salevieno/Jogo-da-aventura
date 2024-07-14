@@ -180,7 +180,7 @@ public class Pet extends LiveBeing
 	public int getAlchBuffId() { return alchBuffId ;}
 	public void setAlchBuffId(int alchBuffId) { this.alchBuffId = alchBuffId ;}
 
-	public boolean isAlive() { return 0 < PA.getLife().getCurrentValue() ;}
+//	public boolean isAlive() { return 0 < PA.getLife().getCurrentValue() ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	public boolean closeToPlayer(Point playerPos) { return Util.dist(pos, playerPos) <= 40 ; }
 	

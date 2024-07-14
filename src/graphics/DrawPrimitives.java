@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.util.List;
 
 import libUtil.Align;
 import libUtil.Util;
@@ -22,20 +23,24 @@ public class DrawPrimitives
 	private Graphics2D graphs ;
 	
 	public static double stdAngle ;
-	public static final int stdStroke ;
-	public static final Font stdFont ;
+	public static int stdStroke ;
+	public static Font stdFont ;
 
 	static
 	{
 		stdAngle = 0 ;
 		stdStroke = 1;
-		stdFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		stdFont = new Font("Comics", Font.BOLD, 13) ;
 	}
 	
 	public void setGraphics(Graphics2D graph2D)
 	{
 		this.graphs = graph2D ;
 	}
+
+	public void setStdAngle(double newAngle) { stdAngle = newAngle ;}
+	public void setStdFont(Font newFont) { stdFont = newFont ;}
+	public void setStdStroke(int newStroke) { stdStroke = newStroke ;}
 	
 	public int TextL(String text, Font font)
 	{
@@ -104,6 +109,10 @@ public class DrawPrimitives
 	public void drawPolyLine(int[] x, int[] y, Color color)
 	{
 		drawPolyLine(x, y, stdStroke, color) ;
+	}
+	public void drawPolyLine(List<Integer> x, List<Integer> y, Color color)
+	{
+		drawPolyLine(x.stream().mapToInt(Integer::intValue).toArray(), y.stream().mapToInt(Integer::intValue).toArray(), stdStroke, color) ;
 	}
 	
 	public void drawRect(Point pos, Align align, Dimension size, int stroke, Color color, Color contourColor)

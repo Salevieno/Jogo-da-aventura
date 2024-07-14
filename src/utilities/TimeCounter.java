@@ -8,12 +8,13 @@ public class TimeCounter
 	private boolean active ;
 	private double initialTime ;
 	private double counter ;
-	private double duration ;
-	private static Set<TimeCounter> allCounters ;
-	// jogo pausado não funciona
+	private double duration ;	// duration of the counter in seconds
+	
+	private static final Set<TimeCounter> all ;
+	// TODO jogo pausado não funciona
 	static 
 	{
-		allCounters = new HashSet<>() ;
+		all = new HashSet<>() ;
 	}
 	
 	public TimeCounter(double duration)
@@ -22,7 +23,7 @@ public class TimeCounter
 		this.counter = 0 ;
 		this.duration = duration ;
 		
-		allCounters.add(this) ;
+		all.add(this) ;
 	}
 	
 	public double getCounter() { return counter ;}
@@ -38,9 +39,9 @@ public class TimeCounter
 //		
 //		return Math.min((System.nanoTime() - counter) * Math.pow(10, -9), duration)  ;
 //	}
-	public double rate() { return getCounter() / duration ;}
+	public double rate() { return counter / duration ;}
 	public boolean isActive() { return active ;}
-	public boolean finished() { return duration <= getCounter() ;}
+	public boolean finished() { return duration <= counter ;}
 	
 	public void update()
 	{
@@ -56,7 +57,7 @@ public class TimeCounter
 	
 	public static void updateAll()
 	{
-		allCounters.forEach(TimeCounter::update);
+		all.forEach(TimeCounter::update);
 	}
 
 //	public void inc() { if (counter <= duration) {counter = System.nanoTime() - counter ;}}
@@ -65,6 +66,6 @@ public class TimeCounter
 	@Override
 	public String toString()
 	{
-		return "TimeCounter [active = " + active + "time = " + getCounter() + ", duration = " + duration + "]";
+		return "TimeCounter [active = " + active + "time = " + counter + ", duration = " + duration + "]";
 	}
 }
