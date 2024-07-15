@@ -61,7 +61,6 @@ import liveBeings.Player ;
 import liveBeings.Spell ;
 import liveBeings.SpellsBar;
 import maps.CityMap ;
-import maps.CollectibleTypes;
 import maps.Continents ;
 import maps.FieldMap ;
 import maps.GameMap ;
@@ -99,7 +98,7 @@ public class Game extends JPanel
 	private JPanel mainPanel = this ;
 	private static Point mousePos ;
 	private static GameStates state = GameStates.loading ;
-	private static boolean cheatMode = false ;
+	private static boolean cheatMode = true ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
@@ -491,11 +490,6 @@ public class Game extends JPanel
 
 			JSONObject collectibles = (JSONObject) mapData.get("Collectibles") ;
 			int collectibleLevel = (int) (long) collectibles.get("level") ;
-			int[] collectiblesDelay = new int[] {
-					CollectibleTypes.berry.getSpawnTime(),
-					CollectibleTypes.herb.getSpawnTime(),
-					CollectibleTypes.wood.getSpawnTime(),
-					CollectibleTypes.metal.getSpawnTime()} ;
 
 			List<Long> creatures = (List<Long>) mapData.get("Creatures") ;
 			int[] creatureIDs = new int[creatures.size()] ;
@@ -513,7 +507,7 @@ public class Game extends JPanel
 //			}
 
 			FieldMap map = new FieldMap(name, continent, connections, image, music, collectibleLevel,
-					collectiblesDelay, creatureIDs, npcs) ;
+					creatureIDs, npcs) ;
 
 			switch (id)
 			{
@@ -710,7 +704,7 @@ public class Game extends JPanel
 			if (bank.hasInvestment())
 			{
 //				System.out.println(bank.isInvested() + " " + bank.getInvestmentCounter()) ;
-				bank.incInvestmentCounter() ;
+//				bank.incInvestmentCounter() ;
 				if (bank.investmentIsComplete())
 				{
 					bank.completeInvestment() ;
@@ -806,9 +800,9 @@ public class Game extends JPanel
 		{
 			player.acts(pet, mousePos) ;
 
-			if (player.getMoveCounter().finished())
+			if (player.getActionCounter().finished())
 			{
-				player.getMoveCounter().reset() ;
+				player.getActionCounter().reset() ;
 			}
 		}
 
@@ -1153,6 +1147,7 @@ public class Game extends JPanel
 				{
 //			    	player.switchOpenClose(player.getHintsindow()) ;
 					if (cheatMode) { setCheatMode() ;}
+					player.startCounters() ;
 					Game.setState(GameStates.running) ;
 //					player.levelUp();
 				}

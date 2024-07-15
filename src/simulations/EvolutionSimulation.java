@@ -38,9 +38,9 @@ import main.Battle;
 import main.Game;
 import utilities.AtkEffects;
 import utilities.Directions;
-import utilities.FrameCounter;
 import utilities.Log;
 import utilities.Scale;
+import utilities.TimeCounter;
 import utilities.UtilS;
 import windows.PlayerAttributesWindow;
 
@@ -302,11 +302,11 @@ public abstract class EvolutionSimulation
 		
 		player.setRange(Integer.parseInt(prop.get(newJob)[4])) ;
 		player.setStep(Integer.parseInt(prop.get(newJob)[33])) ;
-		player.setActionCounter(new FrameCounter(0, Integer.parseInt(prop.get(newJob)[37]))) ;
-		player.setSatiationCounter(new FrameCounter(0, Integer.parseInt(prop.get(newJob)[38]))) ;
-		player.setThirstCounter(new FrameCounter(0, Integer.parseInt(prop.get(newJob)[39]))) ;
-		player.setMpCounter(new FrameCounter(0, Integer.parseInt(prop.get(newJob)[40]))) ;
-		player.setBattleActionCounter(new FrameCounter(0, Integer.parseInt(prop.get(newJob)[41]))) ;
+		player.setActionCounter(new TimeCounter(Integer.parseInt(prop.get(newJob)[37]))) ;
+		player.setSatiationCounter(new TimeCounter(Integer.parseInt(prop.get(newJob)[38]))) ;
+		player.setThirstCounter(new TimeCounter(Integer.parseInt(prop.get(newJob)[39]))) ;
+		player.setMpCounter(new TimeCounter(Integer.parseInt(prop.get(newJob)[40]))) ;
+		player.setBattleActionCounter(new TimeCounter(Integer.parseInt(prop.get(newJob)[41]))) ;
 		player.setGoldMultiplier(Double.parseDouble(prop.get(newJob)[32])) ;
 		
 		// TODO reset attribute increase

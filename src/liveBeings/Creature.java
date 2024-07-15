@@ -30,8 +30,8 @@ import screen.Sky;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
-import utilities.FrameCounter;
 import utilities.Scale;
+import utilities.TimeCounter;
 
 public class Creature extends LiveBeing
 {
@@ -55,11 +55,11 @@ public class Creature extends LiveBeing
 		this.range = CT.range;
 		this.step = CT.step;
 		this.elem = Arrays.copyOf(CT.elem, CT.elem.length);
-		mpCounter = new FrameCounter(0, CT.mpDuration);
-		satiationCounter = new FrameCounter(0, CT.satiationDuration);
-		actionCounter = new FrameCounter(0, CT.numberSteps) ;
-		battleActionCounter = new FrameCounter(0, CT.battleActionDuration) ;
-		this.stepCounter = new FrameCounter(0, CT.numberSteps) ;
+		mpCounter = new TimeCounter(CT.mpDuration);
+		satiationCounter = new TimeCounter(CT.satiationDuration);
+		actionCounter = new TimeCounter(CT.numberSteps) ;
+		battleActionCounter = new TimeCounter(CT.battleActionDuration) ;
+		this.stepCounter = new TimeCounter(CT.numberSteps) ;
 		combo = new ArrayList<>() ;
 		
 		dir = Directions.up ;
@@ -80,6 +80,7 @@ public class Creature extends LiveBeing
 		{
 			setPos(Game.getScreen().getCenter()) ;
 		}
+		startCounters() ;
 		
 		follow = false ;
 	}
@@ -212,6 +213,13 @@ public class Creature extends LiveBeing
 	{
 
 		if (!state.equals(LiveBeingStates.moving)) { return ;}
+
+		if (stepCounter.finished())
+		{
+			setState(LiveBeingStates.idle) ;
+			stepCounter.reset() ;
+			return ;
+		}
 		
 		if (follow)
 		{
@@ -219,20 +227,13 @@ public class Creature extends LiveBeing
 			return ;
 		}
 
-		int numberSwitchDirection = Util.randomIntFromTo(1, 5) ;
-		boolean switchDirection = stepCounter.getCounter() % (stepCounter.getDuration() / numberSwitchDirection) == 0 ;
+		boolean switchDirection = 0.47 <= stepCounter.rate() & stepCounter.rate() <= 0.5 ;
 		if (switchDirection)
 		{
 			setDir(newMoveDirection(dir)) ;
 		}
 	
 		updatePos(dir, pos, step, map) ;
-		stepCounter.inc() ;
-		if (stepCounter.finished())
-		{
-			setState(LiveBeingStates.idle) ;
-			stepCounter.reset() ;
-		}
 		
 	}
 	
@@ -253,13 +254,12 @@ public class Creature extends LiveBeing
 	public void think()
 	{
 		if (Util.chance(0.6)) { setState(LiveBeingStates.idle) ; return ;}
-		else { setState(LiveBeingStates.moving) ; return ;}
+		else { setState(LiveBeingStates.moving) ; stepCounter.start() ; return ;}
 	}
 	
 	public void act()
 	{
 		if (!state.equals(LiveBeingStates.idle)) { return ;}
-		
 //		boolean startMoving = Util.chance(0.3) ;
 //		
 //		if (!startMoving) { return ;}
@@ -269,7 +269,6 @@ public class Creature extends LiveBeing
 //		{
 //			setDir(newMoveDirection(dir)) ;
 //		}
-//		setState(LiveBeingStates.moving) ;
 		
 		actionCounter.reset() ;
 		return ;

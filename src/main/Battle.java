@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.sound.sampled.Clip;
@@ -227,9 +226,9 @@ public abstract class Battle
 		
 	private static void incrementCounters(Player player, Pet pet, Creature creature)
 	{
-		player.incrementBattleActionCounters() ;
-		if (pet != null) {pet.incrementBattleActionCounters() ;}
-		creature.incrementBattleActionCounters() ;
+//		player.incrementBattleActionCounters() ;
+//		if (pet != null) {pet.incrementBattleActionCounters() ;}
+//		creature.incrementBattleActionCounters() ;
 	}
  	
 	private static void activateCounters(Player player, Pet pet, Creature creature)

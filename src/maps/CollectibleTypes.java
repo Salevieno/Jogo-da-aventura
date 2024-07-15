@@ -12,21 +12,21 @@ public enum CollectibleTypes
 	wood (1530, UtilS.loadImage("\\Collect\\" + "Col2_Wood.png")),
 	metal (2560, UtilS.loadImage("\\Collect\\" + "Col3_Metal.png"));
 	
-	int spawnTime ;
+	double spawnTime ;
 	Image image ;
 	
-	private CollectibleTypes(int spawnTime, Image image)
+	private CollectibleTypes(double spawnTime, Image image)
 	{
 		this.spawnTime = spawnTime ;
 		this.image = image ;
 	}
 	
-	public int getSpawnTime() { return spawnTime ;}
+	public double getSpawnTime() { return spawnTime ;}
 	public Image getImage() { return image ;}
 	
 	public Item getItem(FieldMap map)
 	{
-		return new Collectible(220, map.getLevel(), map.randomPosInMap(), spawnTime) ;
+		return new Collectible(220, map.getLevel(), map.randomPosInMap()) ;
 	}
 	
 }

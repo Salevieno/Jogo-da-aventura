@@ -4,15 +4,17 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 
+import graphics.Animation;
+import graphics.AnimationTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import libUtil.Align;
 import libUtil.Util;
 import liveBeings.Player;
 import main.Game;
-import utilities.FrameCounter;
 import utilities.LiveInput;
 import utilities.Scale;
+import utilities.TimeCounter;
 import utilities.UtilS;
 
 public class BankWindow extends GameWindow
@@ -23,7 +25,7 @@ public class BankWindow extends GameWindow
 	private int investedAmount ;
 	private boolean hasInvestement ;
 	private String investmentRisk ;
-	private FrameCounter investmentCounter ;
+	private TimeCounter investmentCounter ;
 	private LiveInput liveInput ;
 
 	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
@@ -39,21 +41,21 @@ public class BankWindow extends GameWindow
 		balance = 0 ;
 		investedAmount = 0 ;
 		hasInvestement = false ;
-		investmentCounter = new FrameCounter(0, 10000) ;
+		investmentCounter = new TimeCounter(500) ;
 		liveInput = new LiveInput() ;
 	}
 
 	
 	public int getAmountTyped() { return amountTyped ;}
 	public int getBalance() { return balance;}
-	public FrameCounter getInvestmentCounter() { return investmentCounter ;}
+	public TimeCounter getInvestmentCounter() { return investmentCounter ;}
 	public void setMode(String mode) { this.mode = mode ;}
 	
 	private boolean isReadingInput() { return mode.equals("deposit") | mode.equals("withdraw") | mode.equals("investment low risk") | mode.equals("investment hight risk") ;}
 	public boolean hasInvestment() { return hasInvestement;}
 	public boolean investmentIsComplete() { return investmentCounter.finished() ;}
 	
-	public void incInvestmentCounter() { investmentCounter.inc() ;}
+//	public void incInvestmentCounter() { investmentCounter.inc() ;}
 	public void completeInvestment()
 	{
 		double rate = investmentRisk.equals(investmentRiskLevels[0]) ? Math.random() <= 0.95 ? 1.05 : 0.95 : Math.random() <= 0.6 ? 1.2 : 0.9 ;
@@ -127,6 +129,7 @@ public class BankWindow extends GameWindow
 		
 		investmentRisk = highRisk ? investmentRiskLevels[1] : investmentRiskLevels[0] ;
 		hasInvestement = true ;
+		investmentCounter.start() ;
 		investedAmount += amount ;
 		bag.removeGold(amount) ;
 	}
@@ -151,7 +154,7 @@ public class BankWindow extends GameWindow
 		Point msgPos = Game.getScreen().pos(0.4, 0.3) ;
 		String msg = "Você não tem ouro suficiente!" ;
 		Color msgColor = Game.colorPalette[0] ;
-//		Game.getAnimations().get(12).start(160, new Object[] {msgPos, msg, msgColor}) ; 
+		Animation.start(AnimationTypes.message, new Object[] {msgPos, msg, msgColor}) ;
 	}
 	
 	public void display(Point mousePos, DrawPrimitives DP)

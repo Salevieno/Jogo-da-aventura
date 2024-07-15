@@ -29,7 +29,6 @@ import screen.Sky;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
-import utilities.FrameCounter;
 import utilities.RelativePos;
 import utilities.TimeCounter;
 import utilities.UtilS;
@@ -49,12 +48,12 @@ public abstract class LiveBeing
 	protected int range ;
 	protected int step ;
 	protected Elements[] elem ;					// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
-	protected FrameCounter mpCounter ;
-	protected FrameCounter satiationCounter ;
-	protected FrameCounter thirstCounter ;
-	protected FrameCounter actionCounter ;
-	protected FrameCounter battleActionCounter ;
-	protected FrameCounter stepCounter ;			// counts the steps in the movement
+	protected TimeCounter mpCounter ;
+	protected TimeCounter satiationCounter ;
+	protected TimeCounter thirstCounter ;
+	protected TimeCounter actionCounter ;
+	protected TimeCounter battleActionCounter ;
+	protected TimeCounter stepCounter ;			// counts the steps in the movement
 	protected String currentAction ;
 	protected AtkTypes currentAtkType ;
 	protected List<String> combo ;				// record of the last 10 movements
@@ -146,23 +145,23 @@ public abstract class LiveBeing
 	public int getStep() {return step ;}
 	public String getCurrentAction() {return currentAction ;}
 	public AtkTypes getCurrentAtkType() { return currentAtkType ;}
-	public FrameCounter getMpCounter() {return mpCounter ;}
-	public FrameCounter getSatiationCounter() {return satiationCounter ;}
-	public FrameCounter getThirstCounter() {return thirstCounter ;}
-	public FrameCounter getMoveCounter() {return actionCounter ;}
-	public FrameCounter getBattleActionCounter() {return battleActionCounter ;}
-	public FrameCounter getStepCounter() {return stepCounter ;}
+	public TimeCounter getMpCounter() {return mpCounter ;}
+	public TimeCounter getSatiationCounter() {return satiationCounter ;}
+	public TimeCounter getThirstCounter() {return thirstCounter ;}
+	public TimeCounter getActionCounter() {return actionCounter ;}
+	public TimeCounter getBattleActionCounter() {return battleActionCounter ;}
+	public TimeCounter getStepCounter() {return stepCounter ;}
 	public List<String> getCombo() {return combo ;}
 	public List<Spell> getSpells() {return spells ;}
 	public AttributesWindow getAttWindow() {return attWindow ;}
 	public MovingAnimations getMovingAni() {return movingAni ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
-	public void setMpCounter(FrameCounter mpCounter) { this.mpCounter = mpCounter ;}
-	public void setActionCounter(FrameCounter actionCounter) { this.actionCounter = actionCounter ;}	
-	public void setBattleActionCounter(FrameCounter battleActionCounter) { this.battleActionCounter = battleActionCounter ;}
-	public void setSatiationCounter(FrameCounter satiationCounter) { this.satiationCounter = satiationCounter ;}
-	public void setThirstCounter(FrameCounter thirstCounter) { this.thirstCounter = thirstCounter ;}
-	public void setStepCounter(FrameCounter stepCounter) { this.stepCounter = stepCounter ;}
+	public void setMpCounter(TimeCounter mpCounter) { this.mpCounter = mpCounter ;}
+	public void setActionCounter(TimeCounter actionCounter) { this.actionCounter = actionCounter ;}	
+	public void setBattleActionCounter(TimeCounter battleActionCounter) { this.battleActionCounter = battleActionCounter ;}
+	public void setSatiationCounter(TimeCounter satiationCounter) { this.satiationCounter = satiationCounter ;}
+	public void setThirstCounter(TimeCounter thirstCounter) { this.thirstCounter = thirstCounter ;}
+	public void setStepCounter(TimeCounter stepCounter) { this.stepCounter = stepCounter ;}
 
 	public void setName(String newValue) {name = newValue ;}
 	public void setLevel(int newValue) {level = newValue ;}
@@ -245,7 +244,7 @@ public abstract class LiveBeing
 		Dimension screenSize = Game.getScreen().getSize() ;
 		Point currentPos = new Point(pos) ;
 		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
-		int stepOffset = Player.stepDuration ;
+		int stepOffset = (int) (80 * Player.stepDuration) ; // TODO verificar se essa linha sempre funciona
 
 		switch (dir)
 		{
@@ -387,9 +386,17 @@ public abstract class LiveBeing
 		setPos(newPos) ;
 	}
 	
+	public void startCounters()
+	{
+		mpCounter.start() ;
+		satiationCounter.start() ;
+		if (this instanceof Player) { thirstCounter.start() ;}
+		actionCounter.start() ;
+		spells.forEach(spell -> spell.getCooldownCounter().start()) ;
+	}
+	
 	public void incrementCounters()
 	{
-		incActionCounters() ;
 		spellCounters() ;
 		BA.getStatus().decreaseStatus() ;
 	}
@@ -398,41 +405,46 @@ public abstract class LiveBeing
 	{
 		for (Spell spell : spells)
 		{
-			if (0 < spell.getDurationCounter().getDuration() & spell.getDurationCounter().finished())
+			if (spell.getDurationCounter().getDuration() <= 0 | !spell.getDurationCounter().finished())
 			{
-				if (this instanceof Player & job == 3 & spell.getId() == 114)
-				{
-					if (10 <= Game.getPet().getAlchBuffId() & Game.getPet().getAlchBuffId() <= 12)
-					{
-						Buff.allBuffs.get(Game.getPet().getAlchBuffId()).apply(-1, spells.get(10).getLevel(), Game.getPet()) ;
-						Game.getPet().setAlchBuffId(-1) ;
-					}
-				}
-				spell.getDurationCounter().reset() ;
-				spell.applyBuffs(false, this) ;
-				spell.deactivate() ;
+				continue ;
 			}
-			spell.getCooldownCounter().inc() ;
+			
+			if (this instanceof Player & job == 3 & spell.getId() == 114)
+			{
+				if (10 <= Game.getPet().getAlchBuffId() & Game.getPet().getAlchBuffId() <= 12)
+				{
+					Buff.allBuffs.get(Game.getPet().getAlchBuffId()).apply(-1, spells.get(10).getLevel(), Game.getPet()) ;
+					Game.getPet().setAlchBuffId(-1) ;
+				}
+			}
+			spell.getDurationCounter().reset() ;
+			spell.applyBuffs(false, this) ;
+			spell.deactivate() ;
 		}
 	}
 	
-	public void incActionCounters()
-	{
-		mpCounter.inc() ;
-		satiationCounter.inc() ;
-		if (this instanceof Player) { thirstCounter.inc() ;}
-		actionCounter.inc() ;
-	}
 	public void activateCounters()
 	{
-		if (mpCounter.finished()) { PA.getMp().incCurrentValue(1) ; mpCounter.reset() ;}
+		if (actionCounter.finished() & hasActed())
+		{
+			actionCounter.start() ;
+		}
+		if (mpCounter.finished())
+		{
+			PA.getMp().incCurrentValue(1) ;
+			mpCounter.start() ;
+		}
 		if (!(this instanceof Creature))
 		{
 			if (satiationCounter.finished())
 			{
 				PA.getSatiation().incCurrentValue(-1) ;
-				satiationCounter.reset() ;
-				if (PA.getSatiation().getCurrentValue() == 0) { PA.getLife().incCurrentValue(-1) ;}
+				satiationCounter.start() ;
+				if (PA.getSatiation().getCurrentValue() == 0)
+				{
+					PA.getLife().incCurrentValue(-1) ;
+				}
 			}
 		}
 		
@@ -441,15 +453,18 @@ public abstract class LiveBeing
 			if (thirstCounter.finished())
 			{
 				PA.getThirst().incCurrentValue(-1) ;
-				thirstCounter.reset() ;
-				if (PA.getThirst().getCurrentValue() == 0) { PA.getLife().incCurrentValue(-1) ;}
+				thirstCounter.start() ;
+				if (PA.getThirst().getCurrentValue() == 0)
+				{
+					PA.getLife().incCurrentValue(-1) ;
+				}
 			}
 		}
 		
 		if (!isAlive()) { dies() ;}
 	}
-	public void incrementBattleActionCounters() {battleActionCounter.inc() ; } // displayDamage.inc() ;
-	public void resetBattleActions() {battleActionCounter.reset() ; }
+	
+	public void resetBattleActions() { battleActionCounter.start() ; }
 	
 	public int totalPower()
 	{

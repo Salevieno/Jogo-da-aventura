@@ -30,8 +30,8 @@ import maps.GameMap;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
-import utilities.FrameCounter;
 import utilities.Scale;
+import utilities.TimeCounter;
 import windows.PetAttributesWindow;
 
 public class Pet extends LiveBeing
@@ -62,11 +62,11 @@ public class Pet extends LiveBeing
 		range = Integer.parseInt(initialAttributes.get(Job)[4]) ;
 		step = Integer.parseInt(initialAttributes.get(Job)[32]) ;
 		elem = new Elements[] {Elements.neutral, null, null, null, null} ;
-		actionCounter = new FrameCounter(0, Integer.parseInt(initialAttributes.get(Job)[33])) ;
-		satiationCounter = new FrameCounter(0, Integer.parseInt(initialAttributes.get(Job)[34])) ;
-		mpCounter = new FrameCounter(0, Integer.parseInt(initialAttributes.get(Job)[35])) ;
-		battleActionCounter = new FrameCounter(0, Integer.parseInt(initialAttributes.get(Job)[36])) ;
-		stepCounter = new FrameCounter(0, 20) ;
+		actionCounter = new TimeCounter(Double.parseDouble(initialAttributes.get(Job)[33])) ;
+		satiationCounter = new TimeCounter(Double.parseDouble(initialAttributes.get(Job)[34])) ;
+		mpCounter = new TimeCounter(Double.parseDouble(initialAttributes.get(Job)[35])) ;
+		battleActionCounter = new TimeCounter(Double.parseDouble(initialAttributes.get(Job)[36])) ;
+		stepCounter = new TimeCounter(20) ;
 		combo = new ArrayList<>();
 		equip = null ;
 		alchBuffId = -1 ;
@@ -78,7 +78,8 @@ public class Pet extends LiveBeing
 		spells = InitializePetSpells();
 		spellPoints = 0 ;
 
-		
+
+		startCounters() ;
 		ElemMult = new double[10] ;
 		attInc = calcAttributeIncrease(job) ;
 		
@@ -236,6 +237,7 @@ public class Pet extends LiveBeing
 	{
 		if (state.equals(LiveBeingStates.moving))
 		{
+			stepCounter.start() ;
 			move(player.getPos(), player.getMap(), player.getOpponent(), player.getElem()[4]) ;
 			return ;
 		}

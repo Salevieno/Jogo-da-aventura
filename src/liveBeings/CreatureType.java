@@ -35,10 +35,10 @@ public class CreatureType
 	protected int range;
 	protected int step;
 	protected Elements[] elem; // 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
-	protected int mpDuration; // counts the mp reduction
-	protected int satiationDuration; // counts the satiation reduction
-	protected int numberSteps; // counts the steps
-	protected int battleActionDuration;// counts the battle actions
+	protected double mpDuration; // counts the mp reduction
+	protected double satiationDuration; // counts the satiation reduction
+	protected double numberSteps; // counts the steps
+	protected double battleActionDuration;// counts the battle actions
 
 	private Genetics genes;
 
@@ -74,7 +74,7 @@ public class CreatureType
 	}
 
 	public CreatureType(int id, String name, int level, Dimension size, int range, int step, Elements[] elem,
-			int mpDuration, int satiationDuration, int numberSteps, int battleActionDuration, int stepCounter,
+			double mpDuration, double satiationDuration, double numberSteps, double battleActionDuration, int stepCounter,
 			MovingAnimations movingAni, PersonalAttributes PA, BattleAttributes BA, List<Spell> spell, Set<Item> items,
 			int gold, Color color, int[] StatusCounter)
 	{
@@ -309,10 +309,10 @@ public class CreatureType
 			int range = (int) (Integer.parseInt(inp[7]) * diffMult);
 			int step = Integer.parseInt(inp[48]);
 			Elements[] elem = new Elements[] { Elements.valueOf(inp[35]) };
-			int mpDuration = Integer.parseInt(inp[49]);
-			int satiationDuration = 100;
-			int numberSteps = Integer.parseInt(inp[50]);
-			int battleActionDuration = Integer.parseInt(inp[51]);
+			double mpDuration = Double.parseDouble(inp[49]);
+			double satiationDuration = 1.25;
+			double numberSteps = Double.parseDouble(inp[50]);
+			double battleActionDuration = Double.parseDouble(inp[51]);
 			int stepCounter = 0;
 
 			new CreatureType(row, name, level, size, range, step, elem, mpDuration, satiationDuration, numberSteps,

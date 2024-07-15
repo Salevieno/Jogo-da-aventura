@@ -66,6 +66,6 @@ public class TimeCounter
 	@Override
 	public String toString()
 	{
-		return "TimeCounter [active = " + active + "time = " + counter + ", duration = " + duration + "]";
+		return "TimeCounter [active = " + active + " time = " + counter + ", duration = " + duration + "]";
 	}
 }

@@ -29,7 +29,6 @@ public class FieldMap extends GameMap
 	private List<Collectible> collectibles ;
 	private List<Creature> creatures ;
 	private int level ;
-	private int[] collectibleDelay ;
 	private Map<CollectibleTypes, TimeCounter> collectibleCounters ;
 	
 	private static final int numberTrees = 5 ;
@@ -49,11 +48,10 @@ public class FieldMap extends GameMap
 		}
 	}
 	
-	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, int[] collectibleDelay, int[] creatureTypeIDs, List<NPCs> npcs)
+	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, int[] creatureTypeIDs, List<NPCs> npcs)
 	{
 		super(name, continent, connections, image, music, null, npcs) ;
 		this.level = collectibleLevel ;
-		this.collectibleDelay = collectibleDelay ;
 		
 		
 		// add map elements
@@ -148,10 +146,12 @@ public class FieldMap extends GameMap
 	{
 		collectibleCounters.entrySet().forEach(entry -> 
 		{
-			if (entry.getValue().finished())
+			CollectibleTypes type = entry.getKey() ;
+			TimeCounter spawnCounter = entry.getValue() ;
+			if (spawnCounter.finished())
 			{
-				addCollectible(entry.getKey()) ;
-				entry.getValue().start() ;
+				addCollectible(type) ;
+				spawnCounter.start() ;
 			}
 		}) ;
 
@@ -167,10 +167,10 @@ public class FieldMap extends GameMap
 		
 		switch (type)
 		{
-			case berry: collectibles.add(new Collectible(220, level, pos, collectibleDelay[0])) ; return ;
-			case herb: collectibles.add(new Collectible(60 + 3 * (level - 1), level, pos, collectibleDelay[1])) ; return ;
-			case wood: collectibles.add(new Collectible(61 + 3 * (level - 1), level, pos, collectibleDelay[2])) ; return ;
-			case metal: collectibles.add(new Collectible(62 + 3 * (level - 1), level, pos, collectibleDelay[3])) ; return ;
+			case berry: collectibles.add(new Collectible(220, level, pos)) ; return ;
+			case herb: collectibles.add(new Collectible(60 + 3 * (level - 1), level, pos)) ; return ;
+			case wood: collectibles.add(new Collectible(61 + 3 * (level - 1), level, pos)) ; return ;
+			case metal: collectibles.add(new Collectible(62 + 3 * (level - 1), level, pos)) ; return ;
 			default: return ;
 		}
 		

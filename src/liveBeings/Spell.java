@@ -11,7 +11,6 @@ import libUtil.Util;
 import main.Game;
 import main.Languages;
 import utilities.Elements;
-import utilities.FrameCounter;
 import utilities.TimeCounter;
 import utilities.UtilS;
 
@@ -29,7 +28,7 @@ public class Spell
 	private Buff deBuffs;
 	private AttackModifiers atkMod ;
 	private boolean isActive ;
-	private FrameCounter cooldownCounter ;
+	private TimeCounter cooldownCounter ;
 	private TimeCounter effectCounter ;
 	private Elements elem ;
 	private String[] info ;	// effect and description
@@ -55,7 +54,7 @@ public class Spell
 		this.deBuffs = deBuffs;
 		this.atkMod = new AttackModifiers(atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod) ;
 		isActive = false;
-		cooldownCounter = new FrameCounter(0, cooldown) ;
+		cooldownCounter = new TimeCounter(cooldown / 80.0) ;
 		effectCounter = new TimeCounter(duration) ;
 		this.elem = elem;
 		this.info = info;
@@ -64,8 +63,7 @@ public class Spell
 	}
 
 	public Spell(Spell spell)
-	{
-
+	{		
 		this.id = spell.id ;
 		this.name = spell.name;
 		this.image = spell.image;
@@ -78,7 +76,7 @@ public class Spell
 		this.deBuffs = spell.deBuffs;
 		this.atkMod = new AttackModifiers(spell.atkMod.getAtkMod(), spell.atkMod.getDefMod(), spell.atkMod.getDexMod(), spell.atkMod.getAgiMod(), spell.atkMod.getAtkCritMod(), spell.atkMod.getDefCritMod(), spell.atkMod.getStunMod(), spell.atkMod.getBlockMod(), spell.atkMod.getBloodMod(), spell.atkMod.getPoisonMod(), spell.atkMod.getSilenceMod()) ;
 		isActive = false;
-		cooldownCounter = new FrameCounter(0, spell.cooldownCounter.getDuration()) ;
+		cooldownCounter = new TimeCounter(spell.cooldownCounter.getDuration() / 80.0) ;
 		effectCounter = new TimeCounter(spell.effectCounter.getDuration()) ;
 		this.elem = spell.elem;
 		this.info = spell.info;
@@ -92,7 +90,7 @@ public class Spell
 	public int getMpCost() {return mpCost ;}
 	public SpellTypes getType() {return type ;}
 	public Map<Spell, Integer> getPreRequisites() {return preRequisites ;}
-	public int getCooldown() {return cooldownCounter.getDuration() ;}
+	public double getCooldown() {return cooldownCounter.getDuration() ;}
 	public Buff getBuffs() {return buffs ;}
 	public double[] getAtkMod() {return atkMod.getAtkMod() ;}
 	public double[] getDefMod() {return atkMod.getDefMod() ;}
@@ -106,7 +104,7 @@ public class Spell
 	public double[] getPoisonMod() {return atkMod.getPoisonMod() ;}
 	public double[] getSilenceMod() {return atkMod.getSilenceMod() ;}
 	public Elements getElem() {return elem ;}
-	public FrameCounter getCooldownCounter() {return cooldownCounter ;}
+	public TimeCounter getCooldownCounter() {return cooldownCounter ;}
 	public TimeCounter getDurationCounter() {return effectCounter ;}
 	public String[] getInfo() {return info ;}
 

@@ -102,10 +102,10 @@ public class SpellTest
 	    		spell.incLevel(5) ;
 	    		
 	    		// make spell ready
-	    		for (int i = 0 ; i <= spell.getCooldownCounter().getDuration() - 1; i += 1)
-	    		{
-	    			spell.getCooldownCounter().inc() ;
-	    		}
+//	    		for (int i = 0 ; i <= spell.getCooldownCounter().getDuration() - 1; i += 1)
+//	    		{
+//	    			spell.getCooldownCounter().inc() ;
+//	    		}
 	    	}
 		}) ;
 	}

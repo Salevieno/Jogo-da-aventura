@@ -55,8 +55,8 @@ import maps.TreasureChest;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
-import utilities.FrameCounter;
 import utilities.Scale;
+import utilities.TimeCounter;
 import utilities.UtilS;
 import windows.BagWindow;
 import windows.BankWindow;
@@ -114,7 +114,7 @@ public class Player extends LiveBeing
 	private Statistics stats ;
     
 	public static final int maxLevel = 99 ;
-	public static final int stepDuration = 20 ;
+	public static final double stepDuration = 0.25 ;
     public static final Image CollectingMessage = UtilS.loadImage("\\Collect\\" + "CollectingMessage.gif") ; 
     public static final Image DragonAuraImage = UtilS.loadImage("\\Player\\" + "dragonAura.gif") ;
     public static final Image RidingImage = UtilS.loadImage("\\Player\\" + "Tiger.png") ;
@@ -170,12 +170,12 @@ public class Player extends LiveBeing
 		range = Integer.parseInt(InitialStats.get(job)[4]) ;
 		step = Integer.parseInt(InitialStats.get(job)[33]);
 	    elem = new Elements[] {Elements.neutral, null, null, null, null};
-		actionCounter = new FrameCounter(0, Integer.parseInt(InitialStats.get(job)[37])) ;
-		satiationCounter = new FrameCounter(0, Integer.parseInt(InitialStats.get(job)[38])) ;
-		thirstCounter = new FrameCounter(0, Integer.parseInt(InitialStats.get(job)[39])) ;
-		mpCounter = new FrameCounter(0, Integer.parseInt(InitialStats.get(job)[40])) ;
-		battleActionCounter = new FrameCounter(0, Integer.parseInt(InitialStats.get(job)[41])) ;
-		stepCounter = new FrameCounter(0, stepDuration) ;
+		actionCounter = new TimeCounter(Double.parseDouble(InitialStats.get(job)[37])) ;
+		satiationCounter = new TimeCounter(Double.parseDouble(InitialStats.get(job)[38])) ;
+		thirstCounter = new TimeCounter(Double.parseDouble(InitialStats.get(job)[39])) ;
+		mpCounter = new TimeCounter(Double.parseDouble(InitialStats.get(job)[40])) ;
+		battleActionCounter = new TimeCounter(Double.parseDouble(InitialStats.get(job)[41])) ;
+		stepCounter = new TimeCounter(stepDuration) ;
 		combo = new ArrayList<>() ;
 	    
 		this.sex = Sex ;
@@ -513,12 +513,12 @@ public class Player extends LiveBeing
 		
 		if (0 < currentChest.getGoldReward())
 		{
-			obtainGoldAnimation(currentChest.getGoldReward()) ;
+//			obtainGoldAnimation(currentChest.getGoldReward()) ; TODO chest animation
 		}
 		
 		if (!currentChest.getItemRewards().isEmpty())
 		{
-			obtainItemsAnimation(currentChest.getItemRewards()) ;
+//			obtainItemsAnimation(currentChest.getItemRewards()) ;
 		}
     	
         state = LiveBeingStates.idle ;
@@ -542,16 +542,14 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	private void startMove() { state = LiveBeingStates.moving ; stepCounter.reset() ;}
+	private void startMove() { state = LiveBeingStates.moving ; stepCounter.start() ;}
 
 	public void move(Pet pet)
 	{
-		
-		stepCounter.inc() ;
-		
 
 		if (isDoneMoving())
 		{
+			stepCounter.reset() ;
 			setState(opponent == null ? LiveBeingStates.idle : LiveBeingStates.fighting) ;
 			
 			return ;
@@ -577,21 +575,18 @@ public class Player extends LiveBeing
 		
 	}
 
-	private void obtainItemsAnimation(List<Item> itemsObtained)
-	{		
-//		Game.getAnimations().get(3).start(300, new Object[] {itemsObtained.toArray(new Item[0])}) ;
-	}
-
-	private void obtainGoldAnimation(int amount)
-	{
-//		Game.getAnimations().get(10).start(200, new Object[] {amount}) ;
-	}
-	
 	public void engageInFight(Creature newOpponent)
 	{
 		opponent = newOpponent ;
 		opponent.setFollow(true) ;
 		state = LiveBeingStates.fighting ;
+		
+		battleActionCounter.start() ;
+		opponent.getBattleActionCounter().start() ;
+		if (Game.getPet() != null)
+		{
+			Game.getPet().getBattleActionCounter().start() ;
+		}
 	}
 	
 	public void fish()
@@ -983,7 +978,7 @@ public class Player extends LiveBeing
 	{
 		if (!canUseSpell(spell)) { return null ;}
 		
-		spell.getCooldownCounter().reset() ;
+		spell.getCooldownCounter().start() ;
 		train(new AtkResults(AtkTypes.magical)) ;
 		stats.incNumberMagAtk() ;
 		displayUsedSpellMessage(spell, Game.getScreen().pos(0.43, 0.2), Game.colorPalette[4]);
@@ -1553,7 +1548,7 @@ public class Player extends LiveBeing
 		movingAni.displayMoving(direction, pos, angle, Scale.unit, Align.bottomCenter, DP) ;
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
-			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ;
+//			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ; TODO dragon aura
 //			DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
 		}
 		if (showRange)
