@@ -55,7 +55,6 @@ public class BankWindow extends GameWindow
 	public boolean hasInvestment() { return hasInvestement;}
 	public boolean investmentIsComplete() { return investmentCounter.finished() ;}
 	
-//	public void incInvestmentCounter() { investmentCounter.inc() ;}
 	public void completeInvestment()
 	{
 		double rate = investmentRisk.equals(investmentRiskLevels[0]) ? Math.random() <= 0.95 ? 1.05 : 0.95 : Math.random() <= 0.6 ? 1.2 : 0.9 ;
@@ -85,21 +84,13 @@ public class BankWindow extends GameWindow
 		{
 			amountTyped = Integer.parseInt(liveInput.getText()) ;
 			liveInput.clearText() ;
-			if (mode.equals("deposit"))
+			switch(mode)
 			{
-				deposit(bag, amountTyped) ;
-			}
-			if (mode.equals("withdraw"))
-			{
-				withdraw(bag, amountTyped) ;
-			}
-			if (mode.equals("investment low risk"))
-			{
-				invest(bag, amountTyped, false) ;
-			}
-			if (mode.equals("investment hight risk"))
-			{
-				invest(bag, amountTyped, true) ;
+				case "deposit": deposit(bag, amountTyped) ; return ;
+				case "withdraw": withdraw(bag, amountTyped) ; return ;
+				case "investment low risk": invest(bag, amountTyped, false) ; return ;
+				case "investment hight risk": invest(bag, amountTyped, true) ; return ;
+				default: return ;
 			}
 		}
 		

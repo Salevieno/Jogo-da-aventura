@@ -124,7 +124,6 @@ public class ShoppingWindow extends GameWindow
 		Item selectedItem = selectedItem() ;
 		if (!bag.contains(selectedItem)) { System.out.println("Tentando vender item que não possui") ; return ;}
 		
-		System.out.println("Vendendo " + selectedItem.getName());
 		bag.remove(selectedItem, 1) ;
 		bag.addGold(selectedItem.getPrice()) ;
 		setIemsForSellingMode(bag) ;

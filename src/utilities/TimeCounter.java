@@ -11,7 +11,8 @@ public class TimeCounter
 	private double duration ;	// duration of the counter in seconds
 	
 	private static final Set<TimeCounter> all ;
-	// TODO jogo pausado não funciona
+	private static double timeAtStop ;
+	private double timeElapsedAtStop ;
 	static 
 	{
 		all = new HashSet<>() ;
@@ -29,25 +30,22 @@ public class TimeCounter
 	public double getCounter() { return counter ;}
 	public double getDuration() {return duration ;}	
 	public void setDuration(double duration) { this.duration = duration ;}
-
-	public void start() { initialTime = System.nanoTime() * Math.pow(10, -9) ; active = true ;}
+	private static double timeNowInSec() { return System.nanoTime() * Math.pow(10, -9) ;}
+	
+	public void start() { initialTime = timeNowInSec() ; active = true ;}
 	public void stop() { active = false ;}
-	public void reset() { initialTime = System.nanoTime() * Math.pow(10, -9) ; counter = 0 ;}
-//	public double current()
-//	{
-//		if (!active) { return counter ;}
-//		
-//		return Math.min((System.nanoTime() - counter) * Math.pow(10, -9), duration)  ;
-//	}
+	public void resume() { active = hasStarted() ;}
+	public void reset() { initialTime = timeNowInSec() ; timeElapsedAtStop = 0 ; counter = 0 ;}
 	public double rate() { return counter / duration ;}
 	public boolean isActive() { return active ;}
+	public boolean hasStarted() { return 0 < counter ;}
 	public boolean finished() { return duration <= counter ;}
 	
 	public void update()
 	{
 		if (!active) { return ;}
 		
-		counter = (System.nanoTime() * Math.pow(10, -9) - initialTime) ;
+		counter = (timeNowInSec() - initialTime - timeElapsedAtStop) ;
 		if (duration <= counter)
 		{
 			counter = duration ;
@@ -55,13 +53,22 @@ public class TimeCounter
 		}
 	}
 	
+	public static void stopAll()
+	{
+		timeAtStop = timeNowInSec() ;
+		all.forEach(TimeCounter::stop) ;
+	}
+	
+	public static void resumeAll()
+	{
+		all.forEach(timeCounter -> timeCounter.timeElapsedAtStop += timeCounter.hasStarted() ? timeNowInSec() - timeAtStop : 0) ;
+		all.forEach(TimeCounter::resume) ;
+	}
+	
 	public static void updateAll()
 	{
 		all.forEach(TimeCounter::update);
 	}
-
-//	public void inc() { if (counter <= duration) {counter = System.nanoTime() - counter ;}}
-	
 
 	@Override
 	public String toString()

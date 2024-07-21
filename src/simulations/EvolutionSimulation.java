@@ -762,8 +762,7 @@ public abstract class EvolutionSimulation
 	{
 		Font textFont = new Font(font.getName(), font.getStyle(), 11) ;
 		Color textColor = Game.colorPalette[0] ;
-		double FPS = 240 / 3.0 ;
-		double movesPerSec = FPS / attacker.getBattleActionCounter().getDuration() ;
+		double movesPerSec = 1 / attacker.getBattleActionCounter().getDuration() ;
 		double phyAtkMaxPerSec = attacker.getBA().getPhyAtk().getTotal() * movesPerSec ;
 		double damMaxPerSec = (attacker.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal()) * movesPerSec ;
 		double timeToWin = defender.getPA().getLife().getMaxValue() / damMaxPerSec ;

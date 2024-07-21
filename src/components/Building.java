@@ -58,7 +58,7 @@ public class Building
 	public List<NPCs> getNPCs() {return npcs ;}
 	public List<Collider> getColliders() { return colliders ;}
 	
-	public boolean isInside(Point pos) {return Util.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null) * 2 / 10), Util.getSize(type.getImage())) ;}
+	public boolean isInside(Point pos) {return Util.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null)), Util.getSize(type.getImage())) ;}
 	public boolean hasNPCs() {return npcs != null ;}
 		
 	public void addStandardNPCs()

@@ -82,8 +82,7 @@ import windows.BankWindow ;
 public class Game extends JPanel
 {
 	// TODO arte - soundtrack
-	// TODO arte - emblem 
-	// TODO arquivos - corrigir as receitas
+	// TODO funcionalizar emblema
 	// TODO arquivos - nomes das criaturas
 	// TODO arquivos - descrição dos itens
 	private static final long serialVersionUID = 1L ;
@@ -150,22 +149,19 @@ public class Game extends JPanel
 		addKeyListener(new TAdapter()) ;
 		setFocusable(true) ;
 	}
-//public static void setPet(Pet newPet) { pet = newPet ;}
+
 	public static GameStates getState() { return state ;}
 	public static Languages getLanguage() { return gameLanguage ;}
 	public static Screen getScreen() { return screen ;}
 	public static Sky getSky() { return sky ;}
-//	public static CreatureType[] getCreatureTypes() { return creatureTypes ;}
 	public static NPCType[] getNPCTypes() { return NPCTypes ;}
 	public static Player getPlayer() { return player ;}
 	public static Pet getPet() { return pet ;}
 	public static BuildingType[] getBuildingTypes() { return buildingTypes ;}
 	public static GameMap[] getMaps() { return allMaps ;}
 	public static Quest[] getAllQuests() { return allQuests ;}
-//	public static List<Recipe> getAllRecipes() { return allRecipes ;}
 	public static Item[] getAllItems() { return allItems ;}
 	public static Spell[] getAllSpells() { return allSpells ;}
-//	public static List<Animation> getAnimations() { return animations ;}
 	public static boolean getShouldRepaint() { return shouldRepaint ;}
 	public static Point getmousePos() { return mousePos ;}
 	public static int getSlotLoaded() { return slotLoaded ;}
@@ -187,8 +183,53 @@ public class Game extends JPanel
 	public static void playStopTimeGif() { state = GameStates.playingStopTimeGif ;}
 	public static void shouldNotRepaint() { shouldRepaint = false ;}
 
-//	public static boolean someAnimationIsActive() { return (animations.get(3).isActive() | animations.get(4).isActive() | animations.get(5).isActive()) ;}
+	private static void checkKonamiCode(List<String> combo)
+	{
+		if (!Arrays.equals(combo.toArray(new String[combo.size()]), konamiCode)) { return ;}
+		System.out.println("Activating konami code!");
+		konamiCodeActive = !konamiCodeActive ;
+		player.resetCombo() ;
+	}
 
+	private static void konamiCode()
+	{
+		Sky.dayCounter.setDuration(5) ;
+		colorPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Konami") ;
+		if (Sky.dayCounter.getCounter() % 1200 <= 300)
+		{
+			Draw.stdAngle += 0.04 ;
+		} else if (Sky.dayCounter.getCounter() % 1200 <= 900)
+		{
+			Draw.stdAngle -= 0.04 ;
+		} else
+		{
+			Draw.stdAngle += 0.04 ;
+		}
+	}
+
+	public static void removePet() { pet = null ;}
+
+	public static void letThereBePet()
+	{
+		int job = Util.randomIntFromTo(0, 3) ;
+		pet = new Pet(job) ;
+		pet.setPos(player.getPos()) ;
+		if (player.getJob() == 3 & 0 < player.getSpells().get(13).getLevel()) // Best friend
+		{
+			int spellLevel = player.getSpells().get(13).getLevel() ;
+			pet.getPA().getLife().incMaxValue(10 * spellLevel) ;
+			pet.getPA().getLife().setToMaximum() ;
+			pet.getPA().getMp().incMaxValue(10 * spellLevel) ;
+			pet.getPA().getMp().setToMaximum() ;
+			pet.getBA().getPhyAtk().incBaseValue(2 * spellLevel) ;
+			pet.getBA().getMagAtk().incBaseValue(2 * spellLevel) ;
+			pet.getBA().getDex().incBaseValue(1 * spellLevel) ;
+			pet.getBA().getAgi().incBaseValue(1 * spellLevel) ;
+		}
+		SideBar.setPet(player, pet) ;
+	}
+	
+	
 	private static void loadNPCText(JSONObject textData, Object key, TextCategories catName)
 	{
 		JSONArray npcData = (JSONArray) textData.get(key) ;
@@ -261,52 +302,6 @@ public class Game extends JPanel
 
 //		allText.entrySet().forEach(text -> System.out.println(text.getKey() + " " + Arrays.toString(text.getValue()))) ;
 
-	}
-
-	private static void checkKonamiCode(List<String> combo)
-	{
-		if (!Arrays.equals(combo.toArray(new String[combo.size()]), konamiCode)) { return ;}
-		System.out.println("Activating konami code!");
-		konamiCodeActive = !konamiCodeActive ;
-		player.resetCombo() ;
-	}
-
-	private static void konamiCode()
-	{
-		Sky.dayCounter.setDuration(5) ;
-		colorPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Konami") ;
-		if (Sky.dayCounter.getCounter() % 1200 <= 300)
-		{
-			Draw.stdAngle += 0.04 ;
-		} else if (Sky.dayCounter.getCounter() % 1200 <= 900)
-		{
-			Draw.stdAngle -= 0.04 ;
-		} else
-		{
-			Draw.stdAngle += 0.04 ;
-		}
-	}
-
-	public static void removePet() { pet = null ;}
-
-	public static void letThereBePet()
-	{
-		int job = Util.randomIntFromTo(0, 3) ;
-		pet = new Pet(job) ;
-		pet.setPos(player.getPos()) ;
-		if (player.getJob() == 3 & 0 < player.getSpells().get(13).getLevel()) // Best friend
-		{
-			int spellLevel = player.getSpells().get(13).getLevel() ;
-			pet.getPA().getLife().incMaxValue(10 * spellLevel) ;
-			pet.getPA().getLife().setToMaximum() ;
-			pet.getPA().getMp().incMaxValue(10 * spellLevel) ;
-			pet.getPA().getMp().setToMaximum() ;
-			pet.getBA().getPhyAtk().incBaseValue(2 * spellLevel) ;
-			pet.getBA().getMagAtk().incBaseValue(2 * spellLevel) ;
-			pet.getBA().getDex().incBaseValue(1 * spellLevel) ;
-			pet.getBA().getAgi().incBaseValue(1 * spellLevel) ;
-		}
-		SideBar.setPet(player, pet) ;
 	}
 
 	private static NPCs readNPCfromJson(JSONObject npcJSONObject)
@@ -815,7 +810,6 @@ public class Game extends JPanel
 		{
 			player.drawWeapon(player.getPos(), Scale.unit, DP) ;
 		}
-//		player.displayState(DP) ;
 	}
 	
 	private void updateProjectiles()
@@ -926,7 +920,7 @@ public class Game extends JPanel
 		
     	player.setName("Rosquinhawwwwwwwwwwwwwww") ;
 //    	player.setLevel(50) ;
-    	player.setMap(fieldMaps[24]) ;
+    	player.setMap(cityMaps[2]) ;
 //    	fieldMaps[1].getCreatures().get(0).setPos(player.getPos());
 //    	player.setPos(new Point(393, 140)) ;
 
@@ -1198,10 +1192,12 @@ public class Game extends JPanel
 				if (state.equals(GameStates.paused))
 				{
 					MainGame3_4.resumeGame();
+					TimeCounter.resumeAll() ;
 				}
 				else
 				{
 					MainGame3_4.pauseGame() ;
+					TimeCounter.stopAll() ;
 				}
 			}
 

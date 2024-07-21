@@ -385,7 +385,7 @@ public class Player extends LiveBeing
 	private boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
-	private boolean actionIsAMove() { return List.of("W", "A", "S", "D").contains(currentAction) | UtilS.actionIsArrowKey(currentAction) ;}
+	private boolean actionIsAMove() { return UtilS.actionIsArrowKey(currentAction) ;} // List.of("W", "A", "S", "D").contains(currentAction) | 
 	private boolean hitCreature() { return (usedPhysicalAtk() | usedSpell()) & closestCreature != null ;}
 	public boolean isInBattle() { return opponent != null | state.equals(LiveBeingStates.fighting) ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
@@ -475,7 +475,7 @@ public class Player extends LiveBeing
     {
 		
 		if (CollectingGif.isActive()) { return ;}
-		
+
 		CollectingGif.start(pos, Align.center) ;
 		
         if (!CollectingGif.isDonePlaying()) { return ;}
@@ -513,7 +513,7 @@ public class Player extends LiveBeing
 		
 		if (0 < currentChest.getGoldReward())
 		{
-//			obtainGoldAnimation(currentChest.getGoldReward()) ; TODO chest animation
+//			obtainGoldAnimation(currentChest.getGoldReward()) ; TODO arte - chest animation
 		}
 		
 		if (!currentChest.getItemRewards().isEmpty())
@@ -1548,7 +1548,7 @@ public class Player extends LiveBeing
 		movingAni.displayMoving(direction, pos, angle, Scale.unit, Align.bottomCenter, DP) ;
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
-//			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ; TODO dragon aura
+//			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ; TODO arte - dragon aura
 //			DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
 		}
 		if (showRange)
