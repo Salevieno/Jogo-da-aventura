@@ -6,12 +6,15 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import attributes.AttributeIncrease;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
@@ -302,14 +305,17 @@ public abstract class EvolutionSimulation
 		
 		player.setRange(Integer.parseInt(prop.get(newJob)[4])) ;
 		player.setStep(Integer.parseInt(prop.get(newJob)[33])) ;
-		player.setActionCounter(new TimeCounter(Integer.parseInt(prop.get(newJob)[37]))) ;
-		player.setSatiationCounter(new TimeCounter(Integer.parseInt(prop.get(newJob)[38]))) ;
-		player.setThirstCounter(new TimeCounter(Integer.parseInt(prop.get(newJob)[39]))) ;
-		player.setMpCounter(new TimeCounter(Integer.parseInt(prop.get(newJob)[40]))) ;
-		player.setBattleActionCounter(new TimeCounter(Integer.parseInt(prop.get(newJob)[41]))) ;
+		player.setActionCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[37]))) ;
+		player.setSatiationCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[38]))) ;
+		player.setThirstCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[39]))) ;
+		player.setMpCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[40]))) ;
+		player.setBattleActionCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[41]))) ;
 		player.setGoldMultiplier(Double.parseDouble(prop.get(newJob)[32])) ;
 		
-		// TODO reset attribute increase
+		List<Double> attIncrements = Arrays.asList(Player.EvolutionProperties.get(3 * newJob + 0)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		List<Double> incChances = Arrays.asList(Player.EvolutionProperties.get(3 * newJob + 0)).subList(10, 18).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		AttributeIncrease attInc = new AttributeIncrease(attIncrements, incChances) ;
+		player.setAttInc(attInc) ;
 
     	player.InitializeSpells() ;
 	}

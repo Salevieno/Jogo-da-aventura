@@ -237,81 +237,6 @@ public abstract class LiveBeing
 		return Game.getMaps()[newMapID] ;
 		
 	}
-	
-	public static Point calcNewMapPos(Point pos, Directions dir, GameMap currentMap, GameMap newMap)
-	{
-		int[] screenBorder = Game.getScreen().getBorders() ;
-		Dimension screenSize = Game.getScreen().getSize() ;
-		Point currentPos = new Point(pos) ;
-		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
-		int stepOffset = (int) (80 * Player.stepDuration) ; // TODO verificar se essa linha sempre funciona
-
-		switch (dir)
-		{
-			case up:
-				if (!currentMap.meetsTwoMapsUp()) { return new Point(currentPos.x, screenBorder[3] - stepOffset) ;}
-				return leftSide ? new Point(currentPos.x + screenSize.width / 2 - 1, screenBorder[3] - stepOffset) : new Point(currentPos.x - screenSize.width / 2, screenBorder[3] - stepOffset) ;				
-			
-			case left:
-				int newX = screenBorder[2] - stepOffset ;
-				if (!currentMap.meetsTwoMapsLeft())
-				{
-					if (!newMap.meetsTwoMapsRight())
-					{
-						return new Point(newX, currentPos.y) ;
-					}
-				}
-				int newY = calcNewYGoingLeft(Arrays.asList(Game.getMaps()).indexOf(newMap) == currentMap.getConnections()[2], currentPos.y) ;
-
-				return new Point(newX, newY) ;
-			
-			case down:
-				if (!currentMap.meetsTwoMapsDown()) { return new Point(currentPos.x, screenBorder[1] + stepOffset) ;}
-				return leftSide ? new Point(currentPos.x + screenSize.width / 2 - 1, screenBorder[1] + stepOffset) : new Point(currentPos.x - screenSize.width / 2, screenBorder[1] + stepOffset) ;			
-			
-			case right:
-				int newRX = screenBorder[0] + stepOffset ;
-				if (!currentMap.meetsTwoMapsRight())
-				{
-					if (!newMap.meetsTwoMapsLeft())
-					{
-						return new Point(newRX, currentPos.y) ;
-					}
-					
-					int newRY = calcNewYGoingRight(Arrays.asList(Game.getMaps()).indexOf(currentMap) == newMap.getConnections()[2], currentPos.y) ;
-					return new Point(newRX, newRY) ;
-				}
-//				return topSide ? new Point(newRX, currentPos.y + screenH / 2 - 1) : new Point(screenBorder[0] + stepOffset, currentPos.y - screenH / 2) ;
-			
-			default: return null ;
-		}
-	}
-	
-	private static int calcNewYGoingLeft(boolean newMapIsAtTop, int posY)
-	{
-		int screenH = Game.getScreen().getSize().height ;
-		if (newMapIsAtTop)
-		{
-			double a = (screenH - Sky.height) / (double) (screenH / 2 - Sky.height) ;
-			return (int) (Sky.height + a * (posY - Sky.height)) ;
-		}
-
-		double a = (screenH - Sky.height) / (double) (screenH / 2) ;
-		return (int) (Sky.height + (screenH - Sky.height) * (1 - a) + a * (posY - Sky.height)) ;
-	}
-	
-	private static int calcNewYGoingRight(boolean currentMapIsAtTop, int posY)
-	{
-		int screenH = Game.getScreen().getSize().height ;
-		if (currentMapIsAtTop)
-		{
-			double a = (screenH / 2 - Sky.height) / (double) (screenH - Sky.height) ;
-			return (int) (Sky.height + a * (posY - Sky.height)) ;
-		}
-
-		double a = (screenH / 2) / (double) (screenH - Sky.height) ;
-		return (int) (Sky.height + (screenH / 2 - Sky.height) + a * (posY - Sky.height)) ;
-	}
 
 	public void displayState(DrawPrimitives DP)
 	{
@@ -371,20 +296,7 @@ public abstract class LiveBeing
 		}
 		
 		return newPos ;
-	}
-	
-	protected void moveToNewMap(Point pos, Directions dir, GameMap currentMap)
-	{
-		GameMap newMap = calcNewMap(pos, dir, currentMap) ;
-		
-		if (newMap == null) { return ;}
-		if (!newMap.getContinent().equals(Continents.forest)) { return ;}
-		
-		Point newPos = calcNewMapPos(pos, dir, currentMap, newMap) ;
-
-		setMap(newMap) ;
-		setPos(newPos) ;
-	}
+	}	
 	
 	public void startCounters()
 	{

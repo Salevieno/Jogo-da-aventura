@@ -1,6 +1,7 @@
 package liveBeings ;
 
 import java.awt.Color ;
+import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 import java.util.ArrayList ;
@@ -48,10 +49,13 @@ import main.AtkTypes;
 import main.Battle;
 import main.Game;
 import maps.Collectible;
+import maps.Continents;
 import maps.FieldMap;
+import maps.GameMap;
 import maps.GroundTypes;
 import maps.MapElement;
 import maps.TreasureChest;
+import screen.Sky;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
@@ -334,6 +338,7 @@ public class Player extends LiveBeing
 	public Item[] getHotItems() { return hotItems ;}
 	public Statistics getStatistics() { return stats ;}
 	public void setSex(String sex) { this.sex = sex ;}
+	public void setAttInc(AttributeIncrease newAttInc) { attInc = newAttInc ;}
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
 	public void setHotItem(Item item, int slot) { hotItems[slot] = item ;}	
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
@@ -540,6 +545,94 @@ public class Player extends LiveBeing
 		{
 			PA.getThirst().incCurrentValue(1) ;
 		}
+	}
+	
+	private static int calcNewYGoingLeft(boolean newMapIsAtTop, int posY)
+	{
+		int screenH = Game.getScreen().getSize().height ;
+		if (newMapIsAtTop)
+		{
+			double a = (screenH - Sky.height) / (double) (screenH / 2 - Sky.height) ;
+			return (int) (Sky.height + a * (posY - Sky.height)) ;
+		}
+
+		double a = (screenH - Sky.height) / (double) (screenH / 2) ;
+		return (int) (Sky.height + (screenH - Sky.height) * (1 - a) + a * (posY - Sky.height)) ;
+	}
+	
+	private static int calcNewYGoingRight(boolean currentMapIsAtTop, int posY)
+	{
+		int screenH = Game.getScreen().getSize().height ;
+		if (currentMapIsAtTop)
+		{
+			double a = (screenH / 2 - Sky.height) / (double) (screenH - Sky.height) ;
+			return (int) (Sky.height + a * (posY - Sky.height)) ;
+		}
+
+		double a = (screenH / 2) / (double) (screenH - Sky.height) ;
+		return (int) (Sky.height + (screenH / 2 - Sky.height) + a * (posY - Sky.height)) ;
+	}
+	
+	private static Point calcNewMapPos(Point pos, Directions dir, GameMap currentMap, GameMap newMap)
+	{
+		int[] screenBorder = Game.getScreen().getBorders() ;
+		Dimension screenSize = Game.getScreen().getSize() ;
+		Point currentPos = new Point(pos) ;
+		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
+		int stepOffset = (int) (68 * Player.stepDuration) ; // isso é uma aproximação. O qto o player anda depende da velocidade dos frames
+
+		switch (dir)
+		{
+			case up:
+				if (!currentMap.meetsTwoMapsUp()) { return new Point(currentPos.x, screenBorder[3] - stepOffset) ;}
+				return leftSide ? new Point(currentPos.x + screenSize.width / 2 - 1, screenBorder[3] - stepOffset) : new Point(currentPos.x - screenSize.width / 2, screenBorder[3] - stepOffset) ;				
+			
+			case left:
+				int newX = screenBorder[2] - stepOffset ;
+				if (!currentMap.meetsTwoMapsLeft())
+				{
+					if (!newMap.meetsTwoMapsRight())
+					{
+						return new Point(newX, currentPos.y) ;
+					}
+				}
+				int newY = calcNewYGoingLeft(Arrays.asList(Game.getMaps()).indexOf(newMap) == currentMap.getConnections()[2], currentPos.y) ;
+
+				return new Point(newX, newY) ;
+			
+			case down:
+				if (!currentMap.meetsTwoMapsDown()) { return new Point(currentPos.x, screenBorder[1] + stepOffset) ;}
+				return leftSide ? new Point(currentPos.x + screenSize.width / 2 - 1, screenBorder[1] + stepOffset) : new Point(currentPos.x - screenSize.width / 2, screenBorder[1] + stepOffset) ;			
+			
+			case right:
+				int newRX = screenBorder[0] + stepOffset ;
+				if (!currentMap.meetsTwoMapsRight())
+				{
+					if (!newMap.meetsTwoMapsLeft())
+					{
+						return new Point(newRX, currentPos.y) ;
+					}
+					
+					int newRY = calcNewYGoingRight(Arrays.asList(Game.getMaps()).indexOf(currentMap) == newMap.getConnections()[2], currentPos.y) ;
+					return new Point(newRX, newRY) ;
+				}
+//				return topSide ? new Point(newRX, currentPos.y + screenH / 2 - 1) : new Point(screenBorder[0] + stepOffset, currentPos.y - screenH / 2) ;
+			
+			default: return null ;
+		}
+	}
+	
+	private void moveToNewMap(Point pos, Directions dir, GameMap currentMap)
+	{
+		GameMap newMap = calcNewMap(pos, dir, currentMap) ;
+		
+		if (newMap == null) { return ;}
+		if (!newMap.getContinent().equals(Continents.forest)) { return ;}
+		
+		Point newPos = calcNewMapPos(pos, dir, currentMap, newMap) ;
+
+		setMap(newMap) ;
+		setPos(newPos) ;
 	}
 	
 	private void startMove() { state = LiveBeingStates.moving ; stepCounter.start() ;}
