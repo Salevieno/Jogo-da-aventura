@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +24,6 @@ import maps.Continents;
 import maps.GameMap;
 import maps.GroundType;
 import maps.GroundTypes;
-import screen.Sky;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
@@ -48,6 +46,7 @@ public abstract class LiveBeing
 	protected int range ;
 	protected int step ;
 	protected Elements[] elem ;					// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
+	protected TimeCounter hpCounter ;
 	protected TimeCounter mpCounter ;
 	protected TimeCounter satiationCounter ;
 	protected TimeCounter thirstCounter ;
@@ -59,6 +58,7 @@ public abstract class LiveBeing
 	protected List<String> combo ;				// record of the last 10 movements
 	protected List<Spell> spells ;
 	protected TimeCounter drunk ;
+	protected TimeCounter atkSpeedBonusCounter ;
 	
 	protected PersonalAttributes PA ;
 	protected BattleAttributes BA ;
@@ -84,7 +84,9 @@ public abstract class LiveBeing
 		this.attWindow = attWindow ;
 		currentAction = null ;
 		currentAtkType = null ;
+		hpCounter = new TimeCounter(20) ;
 		drunk = new TimeCounter(20) ;
+		atkSpeedBonusCounter = new TimeCounter(20) ;
 	}
 
 	public abstract Point center() ;
@@ -145,6 +147,8 @@ public abstract class LiveBeing
 	public int getStep() {return step ;}
 	public String getCurrentAction() {return currentAction ;}
 	public AtkTypes getCurrentAtkType() { return currentAtkType ;}
+	public TimeCounter getHpCounter() {return hpCounter ;}
+	public TimeCounter getAtkSpeedBonusCounter() { return atkSpeedBonusCounter ;}
 	public TimeCounter getMpCounter() {return mpCounter ;}
 	public TimeCounter getSatiationCounter() {return satiationCounter ;}
 	public TimeCounter getThirstCounter() {return thirstCounter ;}
@@ -179,6 +183,8 @@ public abstract class LiveBeing
 	
 	public boolean isMoving() { return state.equals(LiveBeingStates.moving) ;}
 	public boolean canAct() { return actionCounter.finished() & (state.equals(LiveBeingStates.idle) | state.equals(LiveBeingStates.fighting)) ;}
+	
+	public boolean isPlayerAlly() { return (this instanceof Player | this instanceof Pet) ;}
 	
 	public void resetAction() { currentAction = null ;}
 	public void resetBattleAction() { currentAtkType = null ;}
@@ -256,7 +262,7 @@ public abstract class LiveBeing
 	
 	public void displayPowerBar(Point pos, DrawPrimitives DP)
 	{
-		int maxPower = 1000 ;
+		int maxPower = 2000 ;
 		Color color = Game.colorPalette[6] ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		Dimension barSize = new Dimension(21, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
@@ -342,10 +348,19 @@ public abstract class LiveBeing
 		{
 			actionCounter.start() ;
 		}
+		if (hpCounter.isActive() & hpCounter.crossedTime(0.75))
+		{
+			PA.getLife().incCurrentValue(2) ;
+		}
 		if (mpCounter.finished())
 		{
 			PA.getMp().incCurrentValue(1) ;
 			mpCounter.start() ;
+		}
+		if (atkSpeedBonusCounter.finished())
+		{
+			battleActionCounter.setDuration(battleActionCounter.getDuration()*1.2) ;
+			atkSpeedBonusCounter.reset() ;
 		}
 		if (!(this instanceof Creature))
 		{
@@ -382,11 +397,10 @@ public abstract class LiveBeing
 	{
 		// TODO - optional consider life, dex and agi, special ba, element mult, mp with spells and items
 		// Dano = nHits . hitRate . (PhyAtkRate . PhyDam + MagAtkRate . MagDam + BloodRate . BloodDam + PoisonRate . PoisonDam)
-		double FPS = 200 / 3.0 ;
 		double maxPhyAtkPossible = BA.getPhyAtk().getTotal() ;
 		double maxMagAtkPossible = BA.getMagAtk().getTotal() ;
 		double maxDamagePossible = Math.max(maxPhyAtkPossible, maxMagAtkPossible) ;
-		double maxDPS = FPS * maxDamagePossible / battleActionCounter.getDuration() ;
+		double maxDPS = maxDamagePossible / battleActionCounter.getDuration() ;
 		int totalPower = (int) maxDPS ;
 		
 		return totalPower ;
@@ -521,7 +535,7 @@ public abstract class LiveBeing
 	{
 		
 		Point pos = new Point(userPos) ;
-		step = 1 ;
+		step = 1 ; // TODO step is ignored
 		double distY = Math.abs(pos.y - target.y) ;
 		double distX = Math.abs(pos.x - target.x) ;
 
@@ -725,7 +739,7 @@ public abstract class LiveBeing
 	public void displayDefending(DrawPrimitives DP)
 	{
 		Point offset = new Point(size.width / 2 + defendingImage.getWidth(null) / 2 + 2, 0) ;
-		Point imagePos = Util.Translate(center(), offset.x, 0) ;
+		Point imagePos = Util.Translate(center(), -offset.x, 0) ;
 		DP.drawImage(defendingImage, imagePos, Align.center) ;
 	}
 

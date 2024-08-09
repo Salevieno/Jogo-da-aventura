@@ -693,8 +693,9 @@ public class BagWindow extends GameWindow
 		
 		if (0 < numberItemsDisplayed)
 		{
+			// TODO corrigir bug ao clicar com botão direito com mochila aberta. Window = -1
 			Item selectedItem = itemsDisplayed.get(item - window * numberSlotMax) ;
-			if (selectedItem instanceof Equip)
+			if (selectedItem instanceof Equip || selectedItem instanceof GeneralItem)
 			{
 				selectedItem.displayInfo(windowPos, Align.topRight, DP) ;
 			}

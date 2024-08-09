@@ -148,10 +148,7 @@ public class Spell
 		if (buffs == null) { return ;}
 		
 		int mult = activate ? 1 : -1 ;
-//		System.out.println("buff mult " + mult);
-//		System.out.println("BA = " + receiver.getBA());
 		buffs.apply(mult, level, receiver) ;
-//		System.out.println("new BA = " + receiver.getBA());
 	}
 
 	public void applyDebuffs(boolean activate, LiveBeing receiver)

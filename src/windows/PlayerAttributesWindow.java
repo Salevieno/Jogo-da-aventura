@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import attributes.Attributes;
@@ -56,8 +57,6 @@ public class PlayerAttributesWindow extends AttributesWindow
 	}
 	
 	public void setPlayer(Player player) { this.player = player ;}
-//	public void setEquips(Equip[] equips) { this.equips = equips ;}
-//	public void setEquippedArrow(Arrow equippedArrow) { this.equippedArrow = equippedArrow ;}
 
 	public void initializeAttIncButtons(Player player)
 	{
@@ -125,6 +124,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		
 		Color[] colorPalette = Game.colorPalette ;		
 		Font font = subTitleFont ;
+		Font smallFont = new Font(Game.MainFontName, Font.BOLD, 9) ;
 		double angle = Draw.stdAngle ;
 
 		String[] classesText = Game.allText.get(TextCategories.classes) ;
@@ -150,25 +150,30 @@ public class PlayerAttributesWindow extends AttributesWindow
 		if (equips != null)
 		{
 			int eqSlotSize = 51 ;
-			Point[] eqSlotCenter = new Point[] {Util.Translate(windowPos, 70, 110), Util.Translate(windowPos, 259, 63), Util.Translate(windowPos, 259, 135)} ;
+			Point[] eqSlotCenter = new Point[] {
+					Util.Translate(windowPos, 70, 110),
+					Util.Translate(windowPos, 259, 63),
+					Util.Translate(windowPos, 259, 135),
+					Util.Translate(windowPos, 165, 80)} ;
 			for (int eq = 0 ; eq <= equips.length - 1 ; eq += 1)
 			{
 				if (equips[eq] == null) { continue ;}
 				
-				Equip equip = equips[eq] ;		
+				Equip equip = equips[eq] ;
+				Point bottomTextPos = Util.Translate(eqSlotCenter[eq], -eqSlotSize / 2, eqSlotSize / 2 + 13) ;
 
 				DP.drawImage(equip.fullSizeImage(), eqSlotCenter[eq], Align.center) ;
-//				DP.DrawTextUntil(textPos, Align.bottomLeft, angle, equip.getName(), font, textColor, 14, mousePos) ;
-				
-				Point textPos = Util.Translate(eqSlotCenter[eq], 0, -eqSlotSize / 2 - 3) ;
+				Draw.textUntil(bottomTextPos, Align.bottomLeft, angle, equip.getName(), smallFont, textColor, 14, mousePos) ;
+
+				Point upperTextPos = Util.Translate(eqSlotCenter[eq], 0, -eqSlotSize / 2 - 3) ;
 				if (0 < equip.getForgeLevel())
 				{
-					DP.drawText(textPos, Align.bottomCenter, angle, equipsText[eq] + " + " + equip.getForgeLevel(), font, textColor) ;					
+					DP.drawText(upperTextPos, Align.bottomCenter, angle, equipsText[eq] + " + " + equip.getForgeLevel(), smallFont, textColor) ;					
 				}
 				
 				Elements eqElem = player.getElem()[eq + 1] ;
 
-				if (eqElem == null) { continue ;}
+				if (eqElem == null || eq == 3) { continue ;}
 				
 				Image elemImage = eqElem.image ;
 				Point elemPos = Util.Translate(eqSlotCenter[eq], eqSlotSize / 2 - 12, eqSlotSize / 2 - 12) ;
@@ -198,7 +203,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		String lifeText = attText[1] + ": " + Util.Round(player.getPA().getLife().getTotalValue(), 1) ;
 		String mpText = attText[2] + ": " + Util.Round(player.getPA().getMp().getTotalValue(), 1) ;
 		DP.drawText(lifePos, Align.centerLeft, angle, lifeText, font, colorPalette[7]) ;
-		DP.drawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[21]) ;
+		DP.drawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[20]) ;
 		
 		BasicBattleAttribute[] attributes = player.getBA().basicAttributes() ;
 		int attOffset = 4 ;
@@ -239,7 +244,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Point goldPos = Util.Translate(windowPos, 197 + attOffset, 332) ;
 		String goldValue = String.valueOf(Util.Round(player.getBag().getGold(), 1)) ;
 		DP.drawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
-		DP.drawText(goldPos, Align.centerLeft, angle, goldValue, font, Game.colorPalette[15]) ;
+		DP.drawText(goldPos, Align.centerLeft, angle, goldValue, font, Game.colorPalette[13]) ;
 		
 		incAttButtons.values().forEach(button -> button.display(angle, false, mousePos, DP)) ;
 	}
@@ -295,24 +300,27 @@ public class PlayerAttributesWindow extends AttributesWindow
 	{
 		
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
+		String title = "Totais" ;
+		List<String> subTitles = List.of("Causados", "Recebidos", "Defendidos") ;
 		Color textColor = Game.colorPalette[0] ;
 		
 		Map<String, Integer> numberStats = player.getStatistics().numberStats() ;
 		Map<String, Double> damageStats = player.getStatistics().damageStats() ;
 		Map<String, Double> maxStats = player.getStatistics().maxStats() ;
-		Point[] titlesPos = new Point[] {Util.Translate(windowPos, size.width / 2, 35 + 12 + 6 - 2), Util.Translate(windowPos, size.width / 2, 195 - 2)} ;
-		Point topLeft1 = Util.Translate(windowPos, 32 + 16, 35 + 25 + 10) ;
-		Point topLeft2 = Util.Translate(windowPos, 32, 190 + 12) ;
+		Point titlesPos = Util.Translate(windowPos, size.width / 2, 35 + 12 + 6 - 2) ;
+		Point subTitlesPos = Util.Translate(windowPos, 21 + 48, 195 + 25 + 6) ;
+		Point topLeft1 = Util.Translate(windowPos, 35 + 16, 35 + 31 + 10) ;
+		Point topLeft2 = Util.Translate(windowPos, 32, 193 + 12) ;
 		Point topLeft3 = Util.Translate(windowPos, 32 + 16, 195 + 25 + 27) ;
 		
 		// Titles
-		DP.drawText(titlesPos[0], Align.bottomCenter, Draw.stdAngle, "Totais", font, textColor) ;
-		DP.drawText(titlesPos[1], Align.bottomCenter, Draw.stdAngle, "Danos", font, textColor) ;
+		DP.drawText(titlesPos, Align.bottomCenter, Draw.stdAngle, title, font, textColor) ;
 
 		// subtitles
-		DP.drawText(Util.Translate(windowPos, 21 + 48, 195 + 25 + 6), Align.topCenter, Draw.stdAngle, "Causados", font, textColor) ;
-		DP.drawText(Util.Translate(windowPos, 21 + 3 * 48, 195 + 25 + 6), Align.topCenter, Draw.stdAngle, "Recebidos", font, textColor) ;
-		DP.drawText(Util.Translate(windowPos, 21 + 5 * 48, 195 + 25 + 6), Align.topCenter, Draw.stdAngle, "Defendidos", font, textColor) ;
+		subTitles.forEach(sub -> {
+			DP.drawText(subTitlesPos, Align.topCenter, Draw.stdAngle, sub, font, textColor) ;
+			subTitlesPos.x += 2 * 21 ;
+		}) ;
 		
 		// number stats
 		int i = 0 ;

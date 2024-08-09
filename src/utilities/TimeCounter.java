@@ -7,12 +7,13 @@ public class TimeCounter
 {
 	private boolean active ;
 	private double initialTime ;
+	private double prevCounter ;
 	private double counter ;
 	private double duration ;	// duration of the counter in seconds
+	private double timeElapsedAtStop ;
 	
 	private static final Set<TimeCounter> all ;
 	private static double timeAtStop ;
-	private double timeElapsedAtStop ;
 	static 
 	{
 		all = new HashSet<>() ;
@@ -22,6 +23,7 @@ public class TimeCounter
 	{
 		this.active = false ;
 		this.counter = 0 ;
+		this.prevCounter = counter ;
 		this.duration = duration ;
 		
 		all.add(this) ;
@@ -35,8 +37,9 @@ public class TimeCounter
 	public void start() { initialTime = timeNowInSec() ; active = true ;}
 	public void stop() { active = false ;}
 	public void resume() { active = hasStarted() ;}
-	public void reset() { initialTime = timeNowInSec() ; timeElapsedAtStop = 0 ; counter = 0 ;}
+	public void reset() { initialTime = timeNowInSec() ; timeElapsedAtStop = 0 ; counter = 0 ; prevCounter = 0 ;}
 	public double rate() { return counter / duration ;}
+	public boolean crossedTime(double time) { return active && prevCounter == 0 | (counter % time <= prevCounter % time) ;}
 	public boolean isActive() { return active ;}
 	public boolean hasStarted() { return 0 < counter ;}
 	public boolean finished() { return duration <= counter ;}
@@ -45,6 +48,7 @@ public class TimeCounter
 	{
 		if (!active) { return ;}
 		
+		prevCounter = counter ;
 		counter = (timeNowInSec() - initialTime - timeElapsedAtStop) ;
 		if (duration <= counter)
 		{

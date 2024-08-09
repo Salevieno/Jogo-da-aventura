@@ -517,7 +517,7 @@ public class GameMap
  		Point pos = new Point(500, 10) ;
  		String text = Game.allText.get(TextCategories.allIsGood)[0] ;
  		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
- 		DP.drawText(pos, Align.topLeft, 0, text, font, Game.colorPalette[20]) ;
+ 		DP.drawText(pos, Align.topLeft, 0, text, font, Game.colorPalette[19]) ;
  	}
 	
  	public void display(Point pos, Scale scale, DrawPrimitives DP)
@@ -527,15 +527,6 @@ public class GameMap
  	
  	public void display(DrawPrimitives DP)
  	{
-// 		Dimension screenSize = Game.getScreen().getSize() ;
-// 		Scale scale = new Scale(screenSize.width / image.getWidth(null), (screenSize.height - Sky.height) / image.getHeight(null)) ;
-// 		System.out.println(scale);
- 		// 		if (name.contains("Cave"))
-// 		{
-// 			DP.drawImage(image, Game.getScreen().getCenter(), Align.center) ;
-// 			return ;
-// 		}
-// 		
  		if (name.equals("City of the animals"))
  		{
  			DP.drawImage(image, Game.getScreen().getMapCenter(), new Scale(0.5, 0.5), Align.center) ;

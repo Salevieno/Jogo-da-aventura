@@ -11,6 +11,7 @@ import javax.sound.sampled.Clip;
 import graphics.Animation;
 import graphics.AnimationTypes;
 import graphics.DrawPrimitives;
+import libUtil.Align;
 import libUtil.Util;
 import liveBeings.AttackModifiers;
 import liveBeings.Creature;
@@ -53,7 +54,6 @@ public abstract class Battle
 			}				
 		}
 		damageStyle = 0 ;
-//		damageAni = new ArrayList<>() ;
 		randomAmp = (double)0.1 ;
 		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
 	}
@@ -184,7 +184,7 @@ public abstract class Battle
 		double defCrit = receiver.getBA().TotalCritDefChance() ;
 		double defBlock = receiver.getBA().getStatus().getBlock() ;
 		double defPhyDef = receiver.getBA().TotalPhyDef() ;
-		double[] baseAtkChances = itemAtkMod == null ? new double[5] : new double[] {itemAtkMod.getStunMod()[0], itemAtkMod.getBlockMod()[0], itemAtkMod.getBloodMod()[0], itemAtkMod.getPoisonMod()[0], itemAtkMod.getSilenceMod()[0]} ;
+		double[] baseAtkChances = itemAtkMod == null ? new double[5] : itemAtkMod.getBaseAtkChances() ;
 		
 		Elements[] atkElems = new Elements[] {itemElem, Elements.neutral, Elements.neutral} ;
 		AtkEffects effect = calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
@@ -223,14 +223,7 @@ public abstract class Battle
 		Point destiny = new Point(targetPos.x + travelX, targetPos.y + travelY) ;
 		return destiny ;
 	}
-		
-	private static void incrementCounters(Player player, Pet pet, Creature creature)
-	{
-//		player.incrementBattleActionCounters() ;
-//		if (pet != null) {pet.incrementBattleActionCounters() ;}
-//		creature.incrementBattleActionCounters() ;
-	}
- 	
+
 	private static void activateCounters(Player player, Pet pet, Creature creature)
 	{
 		if (player.getBattleActionCounter().finished() & player.getCurrentAtkType() != null)
@@ -331,7 +324,7 @@ public abstract class Battle
 	private static AtkResults performAtk(AtkTypes atkType, LiveBeing attacker, LiveBeing receiver)
 	{
 
-		if (atkType == null) { return new AtkResults() ;}
+		if (atkType == null) { System.out.println("Warn: atkType null at Battle.performAtk") ; return new AtkResults() ;}
 		
 
 		AtkResults atkResults = switch (atkType)
@@ -404,7 +397,7 @@ public abstract class Battle
 		AtkTypes atkType = atkTypeFromAction(attacker) ;
 		attacker.setCurrentAtkType(atkType) ;
 		AtkResults atkResults = performAtk(atkType, attacker, receiver) ;
-		if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
+//		if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}	// TODO restore
 		if (attacker instanceof Player) { ((Player) attacker).getStatistics().updateOffensive(atkResults) ;}
 		if (receiver instanceof Player) { ((Player) receiver).getStatistics().updateDefensive(atkResults, receiver.getBA().getPhyDef().getTotal(), receiver.getBA().getMagDef().getTotal()) ;}
 
@@ -414,7 +407,7 @@ public abstract class Battle
 		Log.atkResults(attacker, atkResults) ;
 		
 		playDamageAnimation(receiver, atkResults) ;
-		startAtkAnimations(attacker, atkType) ;
+//		startAtkAnimations(attacker, atkType) ;
 
 		if (Game.getPlayer().getSettings().getSoundEffectsAreOn())
 		{
@@ -427,7 +420,6 @@ public abstract class Battle
 	
 	public static void runBattle(Player player, Pet pet, Creature creature, DrawPrimitives DP)
 	{
-		incrementCounters(player, pet, creature) ;
 		activateCounters(player, pet, creature) ;
 		
 		LiveBeing creatureTarget = player ;

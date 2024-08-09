@@ -75,6 +75,8 @@ public abstract class EvolutionSimulation
 	private static int BattleResultsCreatureLife = 0 ;
 	private static long battleClock ;
 	
+	private static Map<String, Double> stats = new LinkedHashMap<>() ;
+	
 	private static int numberRandomGeneRounds = 6 ;
 	private static int numberRoundsToEvolve = 4 ;
 	private static int currentFitness = 0 ;
@@ -82,9 +84,7 @@ public abstract class EvolutionSimulation
 	private static int avrFitness = 0 ;
 	private static int highestFitness = 0 ;
 	private static List<Integer> listBestFitness = new ArrayList<>() ;
-//	private static List<List<Double>> listBestGenes = new ArrayList<>() ;
 	private static List<Genetics> listBestGenes = new ArrayList<>() ;
-//	private static List<Double> bestGenes = new ArrayList<>() ;
 	private static Genetics newGenes = new Genetics() ;
 	private static boolean evolutionIsOn = false ;
 	
@@ -92,6 +92,7 @@ public abstract class EvolutionSimulation
 	{
 		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		buttons = new ArrayList<>() ;
+		
 		player = Game.getPlayer() ;
 		player.setPos(new Point(45, 230)) ;
 		pet = Game.getPet() ;
@@ -103,6 +104,9 @@ public abstract class EvolutionSimulation
 		playerOpponent.setPos(new Point(460, 340)) ;
 		
 		playerPreviousExp = player.getExp().getCurrentValue() ;
+		
+		stats.put("CreatureMoves", 0.0) ;
+		stats.put("BattleTimeAvr", 0.0) ;
 		
 		addJobSection() ;	
 		
@@ -397,12 +401,14 @@ public abstract class EvolutionSimulation
 	{
 		BattleResultsPlayerLife = 0 ;
 		BattleResultsCreatureLife = 0 ;
+		stats.put("CreatureMoves", 0.0) ;
 	}
 	
 	private static void CreateNewCreature()
 	{
 		playerOpponent = new Creature(CreatureType.all.get(playerOpponentID)) ;
-		playerOpponent.setPos(player.getPos());
+		playerOpponent.setPos(new Point(460, 340)) ;
+		playerOpponent.setRange(1000) ;
 		playerOpponent.getType().setGenes(new Genetics(newGenes.getGenes(), newGenes.getGeneMods()));
 	}
 	
@@ -411,8 +417,10 @@ public abstract class EvolutionSimulation
 		Log.battleStart() ;
 		ResetBattleResults() ;
 		CreateNewCreature() ;
+		player.setRange(1000) ;
 		player.engageInFight(playerOpponent) ;
 		incNumberFights() ;
+		Battle.removeRandomness() ;
 		battleClock = System.nanoTime() ;
 	}
 
@@ -605,16 +613,17 @@ public abstract class EvolutionSimulation
 	{
 		
 		if (!player.isAlive()) { return ;}
-		
-		int move = Util.randomIntFromTo(0, 2) ;
+
+		int move = Util.randomIntFromTo(0, 1) ;
+		System.out.println(move);
 		switch (move)
 		{
 			case 0: player.setCurrentAction("Y") ; break ;
 			case 1: player.setCurrentAction("U") ; break ;
-			case 2:
-				int spell = Util.randomIntFromTo(0, player.getActiveSpells().size() - 1) ;
-				player.setCurrentAction(String.valueOf(spell)) ;
-				break ;
+//			case 2:
+//				int spell = Util.randomIntFromTo(0, player.getActiveSpells().size() - 1) ;
+//				player.setCurrentAction(String.valueOf(spell)) ;
+//				break ;
 			
 		}
 		
@@ -622,7 +631,6 @@ public abstract class EvolutionSimulation
 	
 	public static void act(String action, Point mousePos)
 	{
-
 		switch (action)
 		{
 			case "B": player.getBag().open() ; break ;
@@ -636,7 +644,20 @@ public abstract class EvolutionSimulation
 				break ;
 			case "P": if (pet != null) { pet.getAttWindow().open() ;} ; break ;
 			case "T": player.getSpellsTreeWindow().setSpells(player.getSpells()) ; player.getSpellsTreeWindow().open() ; break ;
-			case "O": if (player.getOpponent() != null) { player.getOpponent().getAttWindow().open() ;} ; break ;
+			case "O":
+				if (playerOpponent == null) { break ;}
+				
+				if (!playerOpponent.getAttWindow().isOpen())
+				{
+					playerOpponent.getAttWindow().open() ;
+				}
+				else
+				{
+					playerOpponent.getAttWindow().close() ;
+				}
+				
+				break ;
+				
 			case "MouseWheelUp": incPlayerOpponentID(1) ; break ;
 			case "MouseWheelDown": decPlayerOpponentID(1) ; break ;
 		}
@@ -707,15 +728,11 @@ public abstract class EvolutionSimulation
 		}
 		if (player.isInBattle())
 		{
-//	        		Creature creature = player.getOpponent() ;
-//	        		creature.fight() ;
-			
 			player.getOpponent().incrementCounters() ;
-//			EvolutionSimulation.playerAutoFight() ;
-			player.setCurrentAction("Y") ;
-			
-			
-//	        		if (pet != null) { pet.fight() ;}
+			if (player.canAtk())
+			{
+				EvolutionSimulation.playerAutoFight() ;
+			}
 			Battle.runBattle(player, pet, player.getOpponent(), DP) ;
 			if (!player.isInBattle())
 			{
@@ -727,13 +744,26 @@ public abstract class EvolutionSimulation
 				}
 				EvolutionSimulation.checkPlayerWin() ;
 				EvolutionSimulation.stopBattleClock() ;
+				player.setPos(new Point(45, 230)) ;
+				pet = Game.getPet() ;
+				if (pet != null)
+				{
+					pet.setPos(new Point(450, 230)) ;
+				}
 			}
+			EvolutionSimulation.updateStats() ;
 		}
 		else
 		{
 			EvolutionSimulation.checkBattleRepeat() ;
 		}
 		EvolutionSimulation.displayInterface(mousePos, DP) ;
+		if (player.isInBattle())
+		{
+			if (player.isDefending()) { player.displayDefending(DP) ;}
+			if (pet != null && pet.isDefending()) { pet.displayDefending(DP) ;}
+			if (player.getOpponent().isDefending()) { player.getOpponent().displayDefending(DP) ;}
+		}
 		if (player.shouldLevelUP())
 		{
 			player.levelUp() ;
@@ -747,11 +777,11 @@ public abstract class EvolutionSimulation
 		}
 		player.showWindows(pet, mousePos, DP) ;
 
-		if (player.getOpponent() != null)
+		if (playerOpponent != null)
 		{
-			if (player.getOpponent().getAttWindow().isOpen())
+			if (playerOpponent.getAttWindow().isOpen())
 			{
-				CreatureType.attWindow.display(player.getOpponent().getType(), DP) ;
+				CreatureType.attWindow.display(playerOpponent.getType(), DP) ;
 			}
 		}
 
@@ -759,26 +789,67 @@ public abstract class EvolutionSimulation
 		player.resetAction() ;
 	}
 	
+	private static void updateStats()
+	{
+		if (playerOpponent.canAtk())
+		{
+			stats.put("CreatureMoves", stats.get("CreatureMoves") + 1) ;
+		}
+		if (!player.isInBattle() & 1 <= numberFights)
+		{
+			double battleTime = Math.round(100 * (battleClock) * Math.pow(10, -9)) / 100.0 ;
+			double totalBattleTime = stats.get("BattleTimeAvr") * (numberFights - 1) + battleTime ;
+			stats.put("BattleTimeAvr", Util.Round(totalBattleTime / numberFights, 2)) ;
+		}
+	}
+	
 	private static void stopBattleClock()
 	{
 		battleClock = System.nanoTime() - battleClock ;
 	}
 
+	public static void drawBattleStatictics(Point pos, DrawPrimitives DP)
+	{
+		Font textFont = new Font(font.getName(), font.getStyle(), 11) ;
+		Color textColor = Game.colorPalette[0] ;
+		
+		Iterator<?> it = stats.keySet().iterator();
+
+		int i = 0 ;
+	    while (it.hasNext())
+	    {
+	    	String attName = (String) it.next() ;
+	    	double attValue = stats.get(attName) ;
+	    	DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + ": " + attValue, textFont, textColor) ;
+			i += 1;
+	    }
+
+	}
+	
 	public static void drawDerivedBattleAttributes(Point pos, LiveBeing attacker, LiveBeing defender, DrawPrimitives DP)
 	{
 		Font textFont = new Font(font.getName(), font.getStyle(), 11) ;
 		Color textColor = Game.colorPalette[0] ;
+		double atkRate = 0.5 ;
+		double critRate = attacker.getBA().getCritAtk().getTotal() - defender.getBA().getCritDef().getTotal() ;
+		double hitRate = 1 - 1 / (1 + Math.pow(1.1, attacker.getBA().getDex().getTotal() - defender.getBA().getAgi().getTotal())) ;
+		int phyDamBase = Math.max((int) Util.Round(attacker.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
+		int phyDamInDefense = Math.max((int) Util.Round(attacker.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
+		int phyDamCrit = (int) Util.Round(attacker.getBA().getPhyAtk().getTotal(), 0) ;
+		
+		
 		double movesPerSec = 1 / attacker.getBattleActionCounter().getDuration() ;
-		double phyAtkMaxPerSec = attacker.getBA().getPhyAtk().getTotal() * movesPerSec ;
-		double damMaxPerSec = (attacker.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal()) * movesPerSec ;
-		double timeToWin = defender.getPA().getLife().getMaxValue() / damMaxPerSec ;
+		double damAvr = (1 - critRate) * (atkRate * phyDamBase + (1 - atkRate) * phyDamInDefense) + critRate * phyDamCrit ;
+		double damPerSec = damAvr * hitRate * atkRate * movesPerSec ;
+		double timeToWin = defender.getPA().getLife().getMaxValue() / damPerSec ;
 		
 		Map<String, Double> atts = new LinkedHashMap<>() ;
-		atts.put("Life: ", attacker.getPA().getLife().getMaxValue() * 1.0) ;
+		atts.put("Life max: ", attacker.getPA().getLife().getMaxValue() * 1.0) ;
 		atts.put("Move / s: ", movesPerSec) ;
-		atts.put("PhyAtkMax / s: ", phyAtkMaxPerSec) ;
-		atts.put("DamMax / s: ", damMaxPerSec) ;
-		atts.put("Time to win: ", timeToWin) ;
+		atts.put("Hit rate: ", hitRate) ;
+		atts.put("Crit rate: ", critRate) ;
+		atts.put("Damage / s: ", damPerSec) ;
+		atts.put("Time to win: ", Util.Round(timeToWin, 2)) ;
 		
 		Iterator<?> it = atts.keySet().iterator();
 
@@ -787,11 +858,9 @@ public abstract class EvolutionSimulation
 	    {
 	    	String attName = (String) it.next() ;
 	    	double attValue = Math.round(100 * atts.get(attName)) / 100.0 ;
-	    	DP.drawText(Util.Translate(pos, 0, i * 15), Align.topLeft, Draw.stdAngle, attName + attValue, textFont, textColor) ;
+	    	DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + attValue, textFont, textColor) ;
 			i += 1;
 	    }
-		
-		
 	}
 	
 	public static void drawBar(Point pos, int currentHeight, int maxHeight, Color color, DrawPrimitives DP)
@@ -838,8 +907,8 @@ public abstract class EvolutionSimulation
 		buttons.forEach(button -> button.display(0, true, mousePos, DP)) ;
 
 		playerOpponent.displayName(new Point(460, 300), Align.center, Color.yellow, DP);
-		playerOpponent.display(new Point(460, 340), Scale.unit, DP);
-		drawDerivedBattleAttributes(new Point(440, 380), playerOpponent, player, DP) ;
+		playerOpponent.display(playerOpponent.getPos(), Scale.unit, DP);
+		drawDerivedBattleAttributes(new Point(310, 400), playerOpponent, player, DP) ;
 		
 		if (player.isAlive())
 		{
@@ -852,6 +921,8 @@ public abstract class EvolutionSimulation
 			pet.display(pet.getPos(), Scale.unit, DP) ;
 			drawDerivedBattleAttributes(new Point(440, 170), pet, playerOpponent, DP) ;
 		}
+		
+		drawBattleStatictics(new Point(440, 400), DP) ;
 
 		double battleTime = Math.round(100 * (battleClock) * Math.pow(10, -9)) / 100.0 ;
 		if (player.isInBattle())

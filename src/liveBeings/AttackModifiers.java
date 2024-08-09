@@ -106,6 +106,10 @@ public class AttackModifiers
 	public double[] getSilenceMod() {
 		return silenceMod;
 	}
+	
+	public double[] getBaseAtkChances() {
+		return new double[] {stunMod[0], blockMod[0], bloodMod[0], poisonMod[0], silenceMod[0]} ;
+	}
 
 	@Override
 	public String toString() {

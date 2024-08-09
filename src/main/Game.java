@@ -45,6 +45,7 @@ import items.Equip ;
 import items.Fab ;
 import items.Food ;
 import items.Forge ;
+import items.GeneralItem;
 import items.Item ;
 import items.PetItem ;
 import items.Potion ;
@@ -82,9 +83,9 @@ import windows.BankWindow ;
 public class Game extends JPanel
 {
 	// TODO arte - soundtrack
-	// TODO funcionalizar emblema
 	// TODO arquivos - nomes das criaturas
-	// TODO arquivos - descrição dos itens
+	// TODO drunk icon
+	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] { "Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A" } ;
 	public static final String JSONPath = ".\\json\\" ;
@@ -108,7 +109,7 @@ public class Game extends JPanel
 	private DrawPrimitives DP ;
 	private static Player player ;
 	private static Pet pet ;
-	public static int difficultLevel ;
+	public static int difficultLevel = 2 ;
 	private static int slotLoaded = -1 ;
 
 	private static Screen screen ;
@@ -979,7 +980,7 @@ public class Game extends JPanel
     	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
     	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
     	for (Item item : Equip.getAll()) { player.getBag().add(item, 20) ;}
-//    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 10) ;}
+    	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 2) ;}
     	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
     	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
 //    	player.getElem()[4] = Elements.water ;

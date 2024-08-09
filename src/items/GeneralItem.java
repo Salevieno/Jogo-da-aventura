@@ -1,5 +1,6 @@
 package items;
 
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.Arrays;
@@ -61,7 +62,6 @@ public class GeneralItem extends Item
 			case 78 -> new AttackModifiers(new double[3], new double[3], new double[3], new double[] {1, 0, 0}, new double[3]) ;
 			default -> new AttackModifiers() ;
 		};
-		// TODO item effects for ids 21, 22, 23, 25, 74, 79, 80, 81, 82, 83, 84, 86, 87, 89, 90, 99, 100, 105, 106, 109 & 111
 	}
 	
 	public static List<Item> throwableItems() { return Arrays.asList(AllGeneralItems).stream().filter(item -> 0 < item.power).collect(Collectors.toList()) ;}
@@ -89,45 +89,51 @@ public class GeneralItem extends Item
 	
 	public void use(LiveBeing user)
 	{
+
+		// TODO item effects for ids 80, 81, 82, 83, 84, 86, 87, 89, 90, 99, 100, 105, 106, 109 & 111
+		((Player) user).getBag().remove(this, 1) ;
 		
 		switch (id)
 		{
-			case 27: 
-			{
-				if (!(user instanceof Player) | !user.isTouching(GroundTypes.water))
-				{
-					return ;
-				}
+			case 21:
+				if (!user.isPlayerAlly()) { return ;}
 				
-				((Player) user).getBag().remove(this, 1) ;
-				((Player) user).getBag().add(AllGeneralItems[30], 1) ;
-			}
-			case 28: 
-			{
-				if (!(user instanceof Player) | !user.isTouching(GroundTypes.water))
-				{
-					return ;
-				}
+				user.getHpCounter().reset() ;
+				user.getHpCounter().start() ;
 				
-				((Player) user).getBag().remove(this, 1) ;
-				((Player) user).getBag().add(AllGeneralItems[31], 1) ;
-			}
-			case 29: 
-			{
-				if (!(user instanceof Player) | !user.isTouching(GroundTypes.water))
-				{
-					return ;
-				}
+				return ;
 				
-				((Player) user).getBag().remove(this, 1) ;
-				((Player) user).getBag().add(AllGeneralItems[32], 1) ;
-			}
-			case 30: user.getPA().getThirst().incCurrentValue(30) ; ((Player) user).getBag().remove(this, 1) ; return ;
-			case 31: user.getPA().getThirst().incCurrentValue(60) ; ((Player) user).getBag().remove(this, 1) ; return ;
-			case 32: user.getPA().getThirst().incCurrentValue(100) ; ((Player) user).getBag().remove(this, 1) ; return ;
-			case 74: user.getsDrunk(20) ; ((Player) user).getBag().remove(this, 1) ; return ;
-			case 105: user.getsDrunk(50) ; ((Player) user).getBag().remove(this, 1) ; return ;
-			case 106: user.getsDrunk(150) ; ((Player) user).getBag().remove(this, 1) ; return ;
+			case 22:
+				if (!user.isPlayerAlly()) { return ;}
+				
+				user.getBA().getStatus().resetPoison() ;
+				
+				return ;
+				
+			case 23:
+				if (!user.isPlayerAlly()) { return ;}
+				
+				user.getPA().getLife().incCurrentValue(20) ;
+				return ;
+				
+			case 27, 28, 29: 
+				if (!(user instanceof Player) | !user.isTouching(GroundTypes.water)) { return ;}
+				
+				((Player) user).getBag().add(AllGeneralItems[id + 3], 1) ;
+				return ;
+			
+			case 30: user.getPA().getThirst().incCurrentValue(30) ;  return ;
+			case 31: user.getPA().getThirst().incCurrentValue(60) ;  return ;
+			case 32: user.getPA().getThirst().incCurrentValue(100) ;  return ;
+			case 74: user.getsDrunk(20) ;  return ;
+			case 79:
+				user.getAtkSpeedBonusCounter().reset() ;
+				user.getAtkSpeedBonusCounter().start() ;
+				user.getBattleActionCounter().setDuration(user.getBattleActionCounter().getDuration()/1.2) ;
+				return ;
+				
+			case 105: user.getsDrunk(50) ;  return ;
+			case 106: user.getsDrunk(150) ;  return ;
 		}
 				
 	}
@@ -135,6 +141,9 @@ public class GeneralItem extends Item
 	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
 	{
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
+		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
+		Point textPos = Util.Translate(pos, 5 - Util.getSize(infoMenu).width, 10) ;		
+		DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, description, font, Game.colorPalette[0]) ;
 	}
 	
 	@Override

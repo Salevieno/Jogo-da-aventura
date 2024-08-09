@@ -240,13 +240,22 @@ public class Creature extends LiveBeing
 	public void chooseFightMove(String playerMove)
 	{
 		List<Double> modifiedGenes = type.getGenes().getModifiedGenes(playerMove) ;
+
+		// TODO restore
+//		int move = Util.randomFromChanceList(modifiedGenes) ;
+//		switch (move)
+//		{
+//			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
+//			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
+//			case 2:	setCurrentAction(String.valueOf(Util.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
+//		}
 		
-		int move = Util.randomFromChanceList(modifiedGenes) ;
+		int move = Util.randomIntFromTo(0, 1) ;
 		switch (move)
 		{
-			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
-			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
-			case 2:	setCurrentAction(String.valueOf(Util.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
+			case 0: setCurrentAction("Y") ; break ;
+			case 1: setCurrentAction("U") ; break ;
+			
 		}
 
 	}

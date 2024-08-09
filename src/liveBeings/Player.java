@@ -101,7 +101,7 @@ public class Player extends LiveBeing
 	private int spellPoints ;		// spell points available (to upgrade the spells)
 	private AttributeIncrease attInc ;
 	private double[] collectLevel ;	// 0: herb, 1: wood, 2: metal
-	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor
+	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor, 3: emblem
 	private Arrow equippedArrow ;
 	private int storedGold ;
 	private double goldMultiplier ;	// multiplies the amount of gold the player wins
@@ -202,7 +202,7 @@ public class Player extends LiveBeing
 		hintsWindow = new HintsWindow() ;
 		spellsTree = new SpellsTreeWindow(job) ;
 		bestiary = new BestiaryWindow() ;
-		equips = new Equip[3] ;
+		equips = new Equip[4] ;
 		equippedArrow = null ;
 		spellPoints = 0 ;
 		color = Game.colorPalette[12] ;
@@ -698,11 +698,22 @@ public class Player extends LiveBeing
 		
 		if (!Player.FishingGif.isDonePlaying()) { return ;}
 		
+		Item worm = GeneralItem.getAll()[25] ;
+		double getFishChance = 0.1 ;
+		if (bag.contains(worm))
+		{
+			getFishChance += 0.1 ;
+			bag.remove(worm, 1) ;
+		}
+		
+    	setState(LiveBeingStates.idle) ;
+    	
+		if (!Util.chance(getFishChance)) { return ;}
+		
 		int fishType = Util.randomIntFromTo(6, 8) ;
 		Item fish = Food.getAll()[fishType] ;
 		bag.add(fish, 1) ;
 		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.colorPalette[0]}) ;
-    	setState(LiveBeingStates.idle) ;
 		
 	}
 
@@ -1641,7 +1652,7 @@ public class Player extends LiveBeing
 		movingAni.displayMoving(direction, pos, angle, Scale.unit, Align.bottomCenter, DP) ;
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
-//			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ; TODO arte - dragon aura
+//			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ; TODO pro arte - dragon aura
 //			DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
 		}
 		if (showRange)
