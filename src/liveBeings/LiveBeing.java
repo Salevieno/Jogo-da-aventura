@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import attributes.Attributes;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.Animation;
@@ -313,13 +314,7 @@ public abstract class LiveBeing
 		spells.forEach(spell -> spell.getCooldownCounter().start()) ;
 	}
 	
-	public void incrementCounters()
-	{
-		spellCounters() ;
-		BA.getStatus().decreaseStatus() ;
-	}
-
-	public void spellCounters()
+	public void activateSpellCounters()
 	{
 		for (Spell spell : spells)
 		{
@@ -481,8 +476,9 @@ public abstract class LiveBeing
 		return (usedPhysicalAtk() | usedSpell()) & ((Player) this).arrowIsEquipped() ;
 	}
 	
-	public boolean canAtk() {return battleActionCounter.finished() & !BA.isStun() ;}
-	public boolean isSilent() {return 0 < BA.getStatus().getSilence() ;}
+	public boolean canAtk() {return battleActionCounter.finished() & !isStun() ;}
+	public boolean isStun() { return BA.getStatus().get(Attributes.stun).isActive() ;}
+	public boolean isSilent() {return BA.getStatus().get(Attributes.silence).isActive() ;}
 	public boolean isDefending()
 	{
 		if (combo == null) { return false ;}
@@ -682,7 +678,7 @@ public abstract class LiveBeing
 		double rate = battleActionCounter.rate() ;
 		int mirror = UtilS.MirrorFromRelPos(relPos) ;
 		Dimension barSize = new Dimension(2 + size.height / 20, size.height) ;
-		Dimension offset = new Dimension (barSize.width / 2 + (LiveBeingStatus.stunImage.getWidth(null) + 5), barSize.height / 2) ;
+		Dimension offset = new Dimension (barSize.width / 2 + (LiveBeingStatus.images.get(Attributes.stun).getWidth(null) + 5), barSize.height / 2) ;
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
 		Point rectPos = Util.Translate(center(), mirror * offset.width, offset.height) ;
 		
@@ -697,17 +693,21 @@ public abstract class LiveBeing
 		PA.getLife().decTotalValue(damage) ;
 	}
 	
-	public void takeBloodAndPoisonDamage(LiveBeing attacker, double totalBloodAtk, double totalPoisonAtk)
+	public void takeBloodAndPoisonDamage(LiveBeing attacker)
 	{
 		int bloodDamage = 0, poisonDamage = 0 ;
 		double bloodMult = 1, poisonMult = 1 ;
+		LiveBeingStatus bloodStatus = BA.getStatus().get(Attributes.blood) ;
+		LiveBeingStatus poisonStatus = BA.getStatus().get(Attributes.poison) ;
 		if (this instanceof Player & job == 4)
 		{
 			poisonMult += -0.1 * spells.get(13).getLevel() ;
 		}
-		if (0 < BA.getStatus().getBlood())
+		if (bloodStatus.isActive() & bloodStatus.getCounter().crossedTime(0.5))
 		{
-			bloodDamage = (int) Math.max(totalBloodAtk * bloodMult - BA.getBlood().TotalDef(), 0) ;
+			bloodDamage = (int) (bloodStatus.getIntensity() * bloodMult) ;
+			// TODO animation showing damage
+			// TODO move this statistics part and remove attribute attacker
 			if (attacker instanceof Player)
 			{
 				Player player = ((Player) attacker) ;
@@ -719,9 +719,9 @@ public abstract class LiveBeing
 			}
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedBlood(bloodDamage, BA.getBlood().TotalDef()) ;}
 		}
-		if (0 < BA.getStatus().getPoison())
+		if (poisonStatus.isActive() & poisonStatus.getCounter().crossedTime(0.5))
 		{
-			poisonDamage = (int) Math.max(totalPoisonAtk * poisonMult - BA.getPoison().TotalDef(), 0) ;
+			poisonDamage = (int) (poisonStatus.getIntensity() * poisonMult) ;
 			if (attacker instanceof Player) {((Player) attacker).getStatistics().updateInflictedPoison(poisonDamage) ;}
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedPoison(poisonDamage, BA.getPoison().TotalDef()) ;}
 		}
@@ -733,7 +733,16 @@ public abstract class LiveBeing
 	
 	public void displayStatus(DrawPrimitives DP)
 	{
-		BA.getStatus().display(center(), size, dir, DP) ;
+		Point offset = new Point(-size.width / 2 + 4, size.height / 2 + 4) ;
+		Point imgPos = Util.Translate(center(), offset.x, -offset.y) ;
+		
+		for (Attributes att : Attributes.values())
+		{
+			if (!BA.getStatus().get(att).isActive()) { continue ;}
+			
+			BA.getStatus().get(att).display(imgPos, size, dir, DP) ;
+			imgPos.y += 22 ;
+		}
 	}
 	
 	public void displayDefending(DrawPrimitives DP)

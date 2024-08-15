@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.sound.sampled.Clip;
 
+import attributes.Attributes;
 import graphics.Animation;
 import graphics.AnimationTypes;
 import graphics.DrawPrimitives;
@@ -110,7 +111,7 @@ public abstract class Battle
 		double defAgi = receiver.getBA().TotalAgi() ;
 		double atkCrit = attacker.getBA().TotalCritAtkChance() ;
 		double defCrit = receiver.getBA().TotalCritDefChance() ;
-		double defBlock = receiver.getBA().getStatus().getBlock() ;
+		double defBlock = receiver.getBA().getBlock().TotalDefChance() ;
 		double atkPhyAtk = attacker.getBA().TotalPhyAtk() ;
 		double defPhyDef = receiver.getBA().TotalPhyDef() ;
 		Elements[] atkElems = attacker.atkElems() ;
@@ -182,7 +183,7 @@ public abstract class Battle
 		double defAgi = receiver.getBA().TotalAgi() ;
 		double atkCrit = attacker.getBA().TotalCritAtkChance() ;
 		double defCrit = receiver.getBA().TotalCritDefChance() ;
-		double defBlock = receiver.getBA().getStatus().getBlock() ;
+		double defBlock = receiver.getBA().getBlock().TotalDefChance() ;
 		double defPhyDef = receiver.getBA().TotalPhyDef() ;
 		double[] baseAtkChances = itemAtkMod == null ? new double[5] : itemAtkMod.getBaseAtkChances() ;
 		
@@ -200,7 +201,7 @@ public abstract class Battle
 		{
 			((Player) attacker).getStatistics().updateInflicedStatus(atkResults.getStatus());
 		}
-		receiver.getBA().getStatus().receiveStatus(atkResults.getStatus()) ;
+//		receiver.getBA().getStatus().receiveStatus(atkResults.getStatus()) ;
 		playDamageAnimation(receiver, atkResults) ;
 		startAtkAnimations(attacker, atkResults.getAtkType()) ;
 	}
@@ -366,7 +367,27 @@ public abstract class Battle
 		{
 			((Player) attacker).getStatistics().updateInflicedStatus(atkResults.getStatus());
 		}
-		receiver.getBA().getStatus().receiveStatus(atkResults.getStatus()) ;
+		
+		if (0 < atkResults.getStatus()[0])
+		{
+			receiver.getBA().getStatus().get(Attributes.stun).inflictStatus(0, attacker.getBA().getStun().getDuration()) ;
+		}
+		if (0 < atkResults.getStatus()[1])
+		{
+			receiver.getBA().getStatus().get(Attributes.block).inflictStatus(0, attacker.getBA().getBlock().getDuration()) ;
+		}
+		if (0 < atkResults.getStatus()[2])
+		{
+			receiver.getBA().getStatus().get(Attributes.blood).inflictStatus(Math.max(attacker.getBA().getBlood().TotalAtk() - receiver.getBA().getBlood().TotalDef(), 0), attacker.getBA().getBlood().getDuration()) ;
+		}
+		if (0 < atkResults.getStatus()[3])
+		{
+			receiver.getBA().getStatus().get(Attributes.poison).inflictStatus(Math.max(attacker.getBA().getPoison().TotalAtk() - receiver.getBA().getPoison().TotalDef(), 0), attacker.getBA().getPoison().getDuration()) ;
+		}
+		if (0 < atkResults.getStatus()[4])
+		{
+			receiver.getBA().getStatus().get(Attributes.silence).inflictStatus(0, attacker.getBA().getSilence().getDuration()) ;
+		}
 
 		return atkResults ;
 	}	
@@ -376,7 +397,7 @@ public abstract class Battle
 		
 		if (!attacker.isAlive()) { return ;}
 		
-		receiver.takeBloodAndPoisonDamage(attacker, attacker.getBA().getBlood().TotalAtk(), attacker.getBA().getPoison().TotalAtk());
+//		receiver.takeBloodAndPoisonDamage(attacker, attacker.getBA().getBlood().TotalAtk(), attacker.getBA().getPoison().TotalAtk());
 		attacker.drawTimeBar("Left", Game.colorPalette[13], DP) ;
 
 //		playAtkAnimations(attacker, receiver.center(), DP) ;
@@ -397,7 +418,7 @@ public abstract class Battle
 		AtkTypes atkType = atkTypeFromAction(attacker) ;
 		attacker.setCurrentAtkType(atkType) ;
 		AtkResults atkResults = performAtk(atkType, attacker, receiver) ;
-//		if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}	// TODO restore
+		if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
 		if (attacker instanceof Player) { ((Player) attacker).getStatistics().updateOffensive(atkResults) ;}
 		if (receiver instanceof Player) { ((Player) receiver).getStatistics().updateDefensive(atkResults, receiver.getBA().getPhyDef().getTotal(), receiver.getBA().getMagDef().getTotal()) ;}
 

@@ -14,6 +14,7 @@ import graphics.Draw;
 import graphics.DrawPrimitives;
 import items.Equip;
 import items.Forge;
+import items.GeneralItem;
 import items.Item;
 import libUtil.Align;
 import libUtil.Util;
@@ -101,6 +102,28 @@ public class ForgeWindow extends GameWindow
 		return Forge.getAll()[runeId] ;
 	}
 	
+	private double forgeChanceBonus(Equip selectedEquip, BagWindow bag)
+	{
+		int runeId = selectedEquip.isSpecial() ? 20 : 0 ;
+		runeId += 2 * selectedEquip.getForgeLevel() ;
+		runeId += selectedEquip.isWeapon() ? 0 : 1 ;
+		int runeType = Forge.typeFromID(runeId) ;
+		
+		Item bonusItem = switch (runeType)
+		{
+			case 0 -> GeneralItem.getAll()[80] ;
+			case 1 -> GeneralItem.getAll()[99] ;
+			case 2 -> GeneralItem.getAll()[90] ;
+			case 3 -> GeneralItem.getAll()[100] ;
+			default -> null ;
+		};
+		
+		if (bonusItem == null || !bag.contains(bonusItem)) { return 0.0 ;}
+		
+		bag.remove(bonusItem, 1) ;
+		return 0.1 ;
+	}
+	
 	public void forge()
 	{
 		
@@ -120,8 +143,8 @@ public class ForgeWindow extends GameWindow
 
 		if (!bag.hasEnoughGold(forgePrice)) { displayMessage(3) ; return ;}
 
-
-		double chanceForge = 1 - 0.08 * forgeLevel ;
+		double chanceBonus = forgeChanceBonus(selectedEquip, bag) ;
+		double chanceForge = 1 - 0.08 * forgeLevel + chanceBonus ;
 
 		bag.removeGold(forgePrice) ;
 		bag.remove(rune, 1) ;

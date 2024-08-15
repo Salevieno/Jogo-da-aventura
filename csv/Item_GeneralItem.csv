@@ -79,7 +79,7 @@ Id,Nome,Name,Descrição,Description,Price,Drop chance,Power,Elem
 77,óculos de sol,sunglasses,-,-,245,60,0,neutral
 78,copo com veneno,poison glass,causa envenenamento,causes poison,250,60,20,neutral
 79,pequena dose de adrenalina,little adrenaline dose,aumenta a velocidade de ataque,increases attack speed,255,60,0,neutral
-80,pedra energizada,energetic stone,aumenta chance de refino de armas,increases the chance of forging weapons,260,60,0,neutral
+80,pedra energizada,energetic stone,aumenta chance de refino de armas (usada automagicamente),increases the chance of forging weapons (consumed automagically),260,60,0,neutral
 81,fluido viscoso,viscous fluid,para o sangramento,stops blood,265,60,0,neutral
 82,calmante,sedative,para o sangramento e reduz a velocidade de ataque,stops blood and reduces attack speed,270,60,0,neutral
 83,seringa com adrenalina,adrenaline syringe,aumenta a velocidade de ataque,increases attack speed,275,60,0,neutral
@@ -89,7 +89,7 @@ Id,Nome,Name,Descrição,Description,Price,Drop chance,Power,Elem
 87,óculos de alta precisão,high-precision glasses,aumenta dex,increases dex,295,60,0,neutral
 88,cachimbo,smoking pipe,-,-,300,60,0,neutral
 89,poção mágica,magic potion,aumenta ataque e defesa mágicos,increases magical attack and defense,305,60,0,neutral
-90,pó cintilante,sparkling dust,aumenta chance de refino de armas especiais,increases the chance of forging special weapons,310,60,0,neutral
+90,pó cintilante,sparkling dust,aumenta chance de refino de armas especiais (usado automagicamente),increases the chance of forging special weapons (consumed automagically),310,60,0,neutral
 91,neve cintilante,sparkling snow,-,-,315,60,0,neutral
 92,presa curva,curvy fang,-,-,320,60,0,neutral
 93,gás de enxofre,sulfer gas,-,fede,325,60,0,neutral
@@ -98,12 +98,12 @@ Id,Nome,Name,Descrição,Description,Price,Drop chance,Power,Elem
 96,fósforos,matches,-,-,340,60,0,neutral
 97,ignidor,igniter,-,-,345,60,0,neutral
 98,asas celestiais,celestial wings,-,-,350,60,0,neutral
-99,vareta encantada,enchanted stick,aumenta chance de refino de escudos e armaduras,increases the chance of forging shields and armors,355,60,0,neutral
-100,manifesto eclíptico,ecliptic manifest,aumenta chance de refino de escudos e armaduras especiais,increases the chance of forging special shields and armors,360,60,0,neutral
+99,vareta encantada,enchanted stick,aumenta chance de refino de escudos e armaduras (usada automagicamente),increases the chance of forging shields and armors (consumed automagically),355,60,0,neutral
+100,manifesto eclíptico,ecliptic manifest,aumenta chance de refino de escudos e armaduras especiais (usado automagicamente),increases the chance of forging special shields and armors (consumed automagically),360,60,0,neutral
 101,manhã pacífica,peaceful morning,-,-,365,60,0,neutral
 102,estilingue,slingshot,-,-,370,60,0,neutral
 103,língua grudenta,sticky tongue,-,-,375,60,0,neutral
-104,olhos de águia,eagle's eyes,são os olhos dela...não os seus (não aumenta dex),its eyes...not yours,380,60,0,neutral
+104,olhos de águia,eagle's eyes,são os olhos dela...não os seus (não aumenta dex),its eyes...not yours (does not increase dex),380,60,0,neutral
 105,copo de cerveja,beer cup,deixa bêbado,causes drunk,385,60,0,neutral
 106,galão de cerveja,beer gallon,deixa muito bêbado,causes a whola lotta drunk,390,60,0,neutral
 107,pintura festiva,festive ink,-,-,395,60,0,neutral

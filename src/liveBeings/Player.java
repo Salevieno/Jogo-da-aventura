@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.json.simple.JSONObject;
 
 import attributes.AttributeIncrease;
+import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
@@ -259,8 +260,12 @@ public class Player extends LiveBeing
 		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(InitialStats.get(job)[19]), 0, Double.parseDouble(InitialStats.get(job)[20]), 0, Integer.parseInt(InitialStats.get(job)[21]), 0, Integer.parseInt(InitialStats.get(job)[22]), 0, Integer.parseInt(InitialStats.get(job)[23])) ;
 		BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(InitialStats.get(job)[24]), 0, Double.parseDouble(InitialStats.get(job)[25]), 0, Integer.parseInt(InitialStats.get(job)[26]), 0, Integer.parseInt(InitialStats.get(job)[27]), 0, Integer.parseInt(InitialStats.get(job)[28])) ;
 		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(InitialStats.get(job)[29]), 0, Double.parseDouble(InitialStats.get(job)[30]), 0, Integer.parseInt(InitialStats.get(job)[31])) ;
-		LiveBeingStatus status = new LiveBeingStatus() ;
+		Map<Attributes, LiveBeingStatus> status = new HashMap<>() ;
 
+		for (Attributes att : Attributes.values())
+		{
+			status.put(att, new LiveBeingStatus(att)) ;
+		}
 		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef, stun, block, blood, poison, silence, status) ;
 	
 	}
@@ -1264,7 +1269,7 @@ public class Player extends LiveBeing
 		
 		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;
 		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;
-		double BlockDef = receiver.getBA().getStatus().getBlock() ;
+		double BlockDef = receiver.getBA().getBlock().TotalDefChance() ;
 		
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;

@@ -37,6 +37,16 @@ public class Forge extends Item
 	}
 
 	public static Forge[] getAll() {return AllForge ;}
+
+	public static int typeFromID(int id)
+	{
+		if (id % 2 == 0 & id <= 19) { return 0 ;}
+		if (id % 2 == 1 & id <= 19) { return 1 ;}
+		if (id % 2 == 0) { return 2 ;}
+		if (id % 2 == 1) { return 3 ;}
+		
+		return -1 ;
+	}
 	
 	public static Image imageFromID(int id)
 	{

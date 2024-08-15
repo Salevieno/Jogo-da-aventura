@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
@@ -317,7 +318,7 @@ public class Creature extends LiveBeing
 		
 		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;
 		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;
-		double BlockDef = receiver.getBA().getStatus().getBlock() ;
+		double BlockDef = receiver.getBA().getBlock().TotalDefChance() ;
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
 		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[0], Elements.neutral} ;

@@ -5,10 +5,13 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import attributes.AttributeIncrease;
+import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
@@ -110,7 +113,12 @@ public class Pet extends LiveBeing
 		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(initialAttributes.get(Job)[19]), 0, Double.parseDouble(initialAttributes.get(Job)[20]), 0, Integer.parseInt(initialAttributes.get(Job)[21]), 0, Integer.parseInt(initialAttributes.get(Job)[22]), 0, Integer.parseInt(initialAttributes.get(Job)[23])) ;
 		BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(initialAttributes.get(Job)[24]), 0, Double.parseDouble(initialAttributes.get(Job)[25]), 0, Integer.parseInt(initialAttributes.get(Job)[26]), 0, Integer.parseInt(initialAttributes.get(Job)[27]), 0, Integer.parseInt(initialAttributes.get(Job)[28])) ;
 		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(initialAttributes.get(Job)[29]), 0, Double.parseDouble(initialAttributes.get(Job)[30]), 0, Integer.parseInt(initialAttributes.get(Job)[31])) ;
-		LiveBeingStatus status = new LiveBeingStatus() ;
+		Map<Attributes, LiveBeingStatus> status = new HashMap<>() ;
+
+		for (Attributes att : Attributes.values())
+		{
+			status.put(att, new LiveBeingStatus(att)) ;
+		}
 		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef, stun, block, blood, poison, silence, status) ;
 	}
 	
@@ -330,7 +338,7 @@ public class Pet extends LiveBeing
 		
 		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;	// Critical atk modifier
 		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;	// Critical def modifier
-		double BlockDef = receiver.getBA().getStatus().getBlock() ;
+		double BlockDef = receiver.getBA().getBlock().TotalDefChance() ;
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
 		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[1], elem[4]} ;

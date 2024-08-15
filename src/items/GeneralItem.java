@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import attributes.Attributes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import libUtil.Align;
@@ -90,7 +91,7 @@ public class GeneralItem extends Item
 	public void use(LiveBeing user)
 	{
 
-		// TODO item effects for ids 80, 81, 82, 83, 84, 86, 87, 89, 90, 99, 100, 105, 106, 109 & 111
+		// TODO item effects for ids 82, 83, 86, 87, 89, 109 & 111
 		((Player) user).getBag().remove(this, 1) ;
 		
 		switch (id)
@@ -106,7 +107,7 @@ public class GeneralItem extends Item
 			case 22:
 				if (!user.isPlayerAlly()) { return ;}
 				
-				user.getBA().getStatus().resetPoison() ;
+				user.getBA().getStatus().get(Attributes.poison).reset() ;
 				
 				return ;
 				
@@ -132,6 +133,7 @@ public class GeneralItem extends Item
 				user.getBattleActionCounter().setDuration(user.getBattleActionCounter().getDuration()/1.2) ;
 				return ;
 				
+			case 81, 84: user.getBA().getStatus().get(Attributes.blood).reset() ; return ;
 			case 105: user.getsDrunk(50) ;  return ;
 			case 106: user.getsDrunk(150) ;  return ;
 		}

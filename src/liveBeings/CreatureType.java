@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
@@ -266,7 +269,12 @@ public class CreatureType
 					0, (int) (Integer.parseInt(inp[31]) * diffMult));
 			BattleSpecialAttribute Silence = new BattleSpecialAttribute(Double.parseDouble(inp[32]) * diffMult, 0,
 					Double.parseDouble(inp[33]) * diffMult, 0, (int) (Double.parseDouble(inp[34]) * diffMult));
-			LiveBeingStatus status = new LiveBeingStatus();
+			Map<Attributes, LiveBeingStatus> status = new HashMap<>() ;
+
+			for (Attributes att : Attributes.values())
+			{
+				status.put(att, new LiveBeingStatus(att)) ;
+			}
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, CritAtk, CritDef, Stun,
 					Block, Blood, Poison, Silence, status);
 

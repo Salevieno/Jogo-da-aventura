@@ -26,6 +26,7 @@ import javax.swing.JPanel ;
 import org.json.simple.JSONArray ;
 import org.json.simple.JSONObject ;
 
+import attributes.Attributes;
 import components.Building ;
 import components.BuildingNames ;
 import components.BuildingType ;
@@ -57,6 +58,7 @@ import liveBeings.Buff ;
 import liveBeings.Creature ;
 import liveBeings.CreatureType ;
 import liveBeings.HotKeysBar;
+import liveBeings.LiveBeing;
 import liveBeings.Pet ;
 import liveBeings.Player ;
 import liveBeings.Spell ;
@@ -681,17 +683,17 @@ public class Game extends JPanel
 			Sky.dayCounter.start() ;
 			NPCs.renewStocks() ;
 		}
-		player.incrementCounters() ;
+		player.activateSpellCounters() ;
 
 		if (pet != null)
 		{
-			pet.incrementCounters() ;
+			pet.activateSpellCounters() ;
 		}
 
 		if (player.getMap().isAField())
 		{
 			FieldMap fm = (FieldMap) player.getMap() ;
-			fm.getCreatures().forEach(Creature::incrementCounters) ;
+			fm.getCreatures().forEach(Creature::activateSpellCounters) ;
 		}
 
 		for (CityMap city : cityMaps)
@@ -762,6 +764,8 @@ public class Game extends JPanel
 		List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
 		for (Creature creature : creaturesInMap)
 		{
+			creature.takeBloodAndPoisonDamage(null) ;
+			creature.getBA().checkResetStatus() ;
 			if (creature.isMoving())
 			{
 				creature.move(player.getPos(), player.getMap()) ;
@@ -782,7 +786,9 @@ public class Game extends JPanel
 	private void petActs()
 	{
 		if (!pet.isAlive()) { return ;}
-		
+
+		pet.takeBloodAndPoisonDamage(null) ;
+		pet.getBA().checkResetStatus() ;
 		pet.updateCombo() ;
 		pet.think(player.isInBattle(), player.getPos()) ;
 		pet.act(player) ;
@@ -792,6 +798,10 @@ public class Game extends JPanel
 	
 	private void playerActs()
 	{
+
+		player.takeBloodAndPoisonDamage(null) ;
+		player.getBA().checkResetStatus() ;
+		
 		if (player.canAct() & player.hasActed())
 		{
 			player.acts(pet, mousePos) ;
@@ -965,7 +975,7 @@ public class Game extends JPanel
 		player.getBA().getSilence().incDuration(100) ;
 		
 		player.takeDamage(500);
-		player.getBag().addGold(300) ;
+		player.getBag().addGold(30000) ;
     	for (Spell spell : player.getSpells())
     	{
     		spell.incLevel(5) ;
@@ -975,16 +985,20 @@ public class Game extends JPanel
 //    	
     	for (Item item : Potion.getAll()) { player.getBag().add(item, 10) ;}
     	for (Item item : Alchemy.getAll()) { player.getBag().add(item, 20) ;}
-    	for (Item item : Forge.getAll()) { player.getBag().add(item, 1) ;}
+    	for (Item item : Forge.getAll()) { player.getBag().add(item, 3) ;}
     	for (Item item : PetItem.getAll()) { player.getBag().add(item, 2) ;}
     	for (Item item : Food.getAll()) { player.getBag().add(item, 10) ;}
     	for (Item item : Arrow.getAll()) { player.getBag().add(item, 20) ;}
-    	for (Item item : Equip.getAll()) { player.getBag().add(item, 20) ;}
+//    	for (Item item : Equip.getAll()) { player.getBag().add(item, 20) ;}
     	for (Item item : GeneralItem.getAll()) { player.getBag().add(item, 2) ;}
     	for (Item item : Fab.getAll()) { player.getBag().add(item, 10) ;}
     	for (Item item : QuestItem.getAll()) { player.getBag().add(item, 10) ;}
 //    	player.getElem()[4] = Elements.water ;
 //
+    	player.getBag().add(Equip.getAll()[0], 20) ;
+    	player.getBag().add(Equip.getAll()[1], 20) ;
+    	player.getBag().add(Equip.getAll()[100], 20) ;
+    	player.getBag().add(Equip.getAll()[102], 20) ;
     	for (QuestSkills skill : QuestSkills.values())
     	{
     		player.getQuestSkills().replace(skill, true) ;
@@ -1228,7 +1242,11 @@ public class Game extends JPanel
 			{
 				player.setCurrentAction("MouseRightClick") ;
         		player.setPos(mousePos) ;
-        		if (pet != null) { pet.setPos(player.getPos()) ;}
+//        		player.getBA().inflictStatus(Attributes.poison, 1, 2);
+        		if (pet != null)
+        		{
+        			pet.setPos(player.getPos()) ;
+        		}
         		//	        		TestingAnimations.run() ;
 //					testGif.start() ;
 			}

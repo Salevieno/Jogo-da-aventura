@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import attributes.AttributeIncrease;
+import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
@@ -303,8 +305,12 @@ public abstract class EvolutionSimulation
 		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(prop.get(newJob)[19]), 0, Double.parseDouble(prop.get(newJob)[20]), 0, Integer.parseInt(prop.get(newJob)[21]), 0, Integer.parseInt(prop.get(newJob)[22]), 0, Integer.parseInt(prop.get(newJob)[23])) ;
 		BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(prop.get(newJob)[24]), 0, Double.parseDouble(prop.get(newJob)[25]), 0, Integer.parseInt(prop.get(newJob)[26]), 0, Integer.parseInt(prop.get(newJob)[27]), 0, Integer.parseInt(prop.get(newJob)[28])) ;
 		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(prop.get(newJob)[29]), 0, Double.parseDouble(prop.get(newJob)[30]), 0, Integer.parseInt(prop.get(newJob)[31])) ;
-		LiveBeingStatus status = new LiveBeingStatus() ;
-		
+		Map<Attributes, LiveBeingStatus> status = new HashMap<>() ;
+
+		for (Attributes att : Attributes.values())
+		{
+			status.put(att, new LiveBeingStatus(null)) ;
+		}
 		player.setBA(new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef, stun, block, blood, poison, silence, status)) ;
 		
 		player.setRange(Integer.parseInt(prop.get(newJob)[4])) ;
@@ -711,13 +717,13 @@ public abstract class EvolutionSimulation
 	public static void run(Point mousePos, DrawPrimitives DP)
 	{
 		
-		player.incrementCounters() ;
+		player.activateSpellCounters() ;
 		player.activateCounters() ;
 		player.getSatiation().setToMaximum() ;
 		player.getThirst().setToMaximum() ;
 		if (pet != null)
 		{
-			pet.incrementCounters() ;
+			pet.activateSpellCounters() ;
 			pet.activateCounters() ;
 			pet.getSatiation().setToMaximum() ;
 		}
@@ -728,7 +734,7 @@ public abstract class EvolutionSimulation
 		}
 		if (player.isInBattle())
 		{
-			player.getOpponent().incrementCounters() ;
+			player.getOpponent().activateSpellCounters() ;
 			if (player.canAtk())
 			{
 				EvolutionSimulation.playerAutoFight() ;

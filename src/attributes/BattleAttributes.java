@@ -1,6 +1,7 @@
 package attributes ;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
@@ -23,14 +24,13 @@ public class BattleAttributes
 	private BattleSpecialAttributeWithDamage blood ;
 	private BattleSpecialAttributeWithDamage poison ;
 	private BattleSpecialAttribute silence ;
+	private Map<Attributes, LiveBeingStatus> status ;
 	private Map<Elements, Double> elemResistanceMult ;
-	
-	private LiveBeingStatus status ;
 	
 	public BattleAttributes(BasicBattleAttribute phyAtk, BasicBattleAttribute magAtk, BasicBattleAttribute phyDef, BasicBattleAttribute magDef, BasicBattleAttribute dex, BasicBattleAttribute agi,
 			BasicBattleAttribute critAtk, BasicBattleAttribute critDef,
 			BattleSpecialAttribute stun, BattleSpecialAttribute block, BattleSpecialAttributeWithDamage blood, BattleSpecialAttributeWithDamage poison, BattleSpecialAttribute silence,
-			LiveBeingStatus status)
+			Map<Attributes, LiveBeingStatus> status)
 	{
 		this.phyAtk = phyAtk ;
 		this.magAtk = magAtk ;
@@ -68,7 +68,12 @@ public class BattleAttributes
 		this.blood = new BattleSpecialAttributeWithDamage(BA.getBlood()) ;
 		this.poison = new BattleSpecialAttributeWithDamage(BA.getPoison()) ;
 		this.silence = new BattleSpecialAttribute(BA.getSilence()) ;
-		this.status = new LiveBeingStatus(BA.getStatus()) ;
+
+		this.status = new HashMap<>() ;
+		for (Attributes att : Attributes.values())
+		{
+			this.status.put(att, new LiveBeingStatus(att)) ;
+		}
 		elemResistanceMult = new HashMap<>() ;
 		for (Elements elem : Elements.values())
 		{
@@ -89,10 +94,18 @@ public class BattleAttributes
 	public BattleSpecialAttributeWithDamage getBlood() {return blood ;}
 	public BattleSpecialAttributeWithDamage getPoison() {return poison ;}
 	public BattleSpecialAttribute getSilence() {return silence ;}
-	public LiveBeingStatus getStatus() {return status ;}
+	public Map<Attributes, LiveBeingStatus> getStatus() {return status ;}
 	public Map<Elements, Double> getElemResistanceMult() { return elemResistanceMult ;}
+
+	public void checkResetStatus() { status.values().stream().filter(st -> !st.isActive()).forEach(st -> st.reset()) ;}
 	
-	public void resetStatus() { status = new LiveBeingStatus() ;}
+	public void resetStatus()
+	{
+		for (Attributes att : Attributes.values())
+		{
+			status.get(att).reset() ;
+		}
+	}
 
 	public BasicBattleAttribute mapAttributes(Attributes att)
 	{
@@ -159,11 +172,14 @@ public class BattleAttributes
 	{
 		return critDef.getTotal() ;
 	}
-
 	
-	public boolean isStun()
+	public void inflictStatus(Attributes att, double intensity, int duration)
 	{
-		return 0 < status.getStun() ;
+		if (Attributes.phyAtk.equals(att))
+		{
+			phyAtk.incBonus(2) ;
+		}
+		status.get(att).inflictStatus(intensity, duration);
 	}
 	
 	public BasicBattleAttribute[] basicAttributes() { return new BasicBattleAttribute[] {getPhyAtk(), getMagAtk(), getPhyDef(), getMagDef(), getDex(), getAgi(), critAtk, critDef};}
@@ -208,7 +224,10 @@ public class BattleAttributes
         {
             content.put(att.toString(), mapSpecialAttributes(att).toJsonObject());
         }
-        content.put("status", status.toJsonObject());
+        for (Attributes att : Attributes.getSpecial())
+        {
+            content.put("status", status.get(att).toJsonObject());
+        }
         
         return content ;
         
@@ -233,7 +252,8 @@ public class BattleAttributes
 		BattleSpecialAttributeWithDamage poison = BattleSpecialAttributeWithDamage.fromJson((JSONObject) jsonData.get("poison")) ;
 		BattleSpecialAttribute silence = BattleSpecialAttribute.fromJson((JSONObject) jsonData.get("silence")) ;
 		
-		LiveBeingStatus status = LiveBeingStatus.fromJson((JSONObject) jsonData.get("status")) ;
+		Map<Attributes, LiveBeingStatus> status = new HashMap<>() ; 
+		// LiveBeingStatus.fromJson((JSONObject) jsonData.get("status")) ;
 		
 		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef,
 				stun, block, blood, poison, silence,
