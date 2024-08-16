@@ -21,4 +21,10 @@ public class LiveBeingAttribute
 
 	public void incBonus(double inc) {bonus += inc ;}
 
+	@Override
+	public String toString()
+	{
+		return "LiveBeingAttribute [bonus=" + bonus + "]";
+	}
+	
 }

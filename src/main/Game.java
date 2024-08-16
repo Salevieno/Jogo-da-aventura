@@ -1157,7 +1157,7 @@ public class Game extends JPanel
 //			    	player.switchOpenClose(player.getHintsindow()) ;
 					if (cheatMode) { setCheatMode() ;}
 					player.startCounters() ;
-					Game.setState(GameStates.running) ;
+					Game.setState(GameStates.simulation) ;
 //					player.levelUp();
 				}
 				shouldRepaint = true ;

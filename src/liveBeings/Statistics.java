@@ -341,7 +341,7 @@ public class Statistics
 		return allStats ;
 	}
 	
-	public void updateInflicedStatus(int[] appliedStatus)
+	public void updateInflicedStatus(double[] appliedStatus)
 	{
 		if (appliedStatus.length <= 4) { return ;}
 		if (0 < appliedStatus[0]) { incNumberStunInflicted() ;}

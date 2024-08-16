@@ -44,7 +44,7 @@ public class LiveBeingStatus
 	public double getIntensity() { return intensity ;}
 	public boolean isActive() { return counter.isActive() ;}
 
-	public void inflictStatus(double intensity, int duration)
+	public void inflictStatus(double intensity, double duration)
 	{
 		this.intensity = intensity ;
 		counter.setDuration(duration) ;

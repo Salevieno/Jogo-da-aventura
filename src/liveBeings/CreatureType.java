@@ -77,9 +77,9 @@ public class CreatureType
 	}
 
 	public CreatureType(int id, String name, int level, Dimension size, int range, int step, Elements[] elem,
-			double mpDuration, double satiationDuration, double numberSteps, double battleActionDuration, int stepCounter,
-			MovingAnimations movingAni, PersonalAttributes PA, BattleAttributes BA, List<Spell> spell, Set<Item> items,
-			int gold, Color color, int[] StatusCounter)
+			double mpDuration, double satiationDuration, double numberSteps, double battleActionDuration,
+			int stepCounter, MovingAnimations movingAni, PersonalAttributes PA, BattleAttributes BA, List<Spell> spell,
+			Set<Item> items, int gold, Color color, int[] StatusCounter)
 	{
 		this.id = id;
 
@@ -269,14 +269,25 @@ public class CreatureType
 					0, (int) (Integer.parseInt(inp[31]) * diffMult));
 			BattleSpecialAttribute Silence = new BattleSpecialAttribute(Double.parseDouble(inp[32]) * diffMult, 0,
 					Double.parseDouble(inp[33]) * diffMult, 0, (int) (Double.parseDouble(inp[34]) * diffMult));
-			Map<Attributes, LiveBeingStatus> status = new HashMap<>() ;
+			Map<Attributes, LiveBeingStatus> status = new HashMap<>();
 
 			for (Attributes att : Attributes.values())
 			{
-				status.put(att, new LiveBeingStatus(att)) ;
+				status.put(att, new LiveBeingStatus(att));
 			}
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, CritAtk, CritDef, Stun,
 					Block, Blood, Poison, Silence, status);
+//			System.out.println("First BA");
+//			System.out.println(BA);
+			String[] myAtts = new String[inp.length - 3] ;
+			for (int i = 0 ; i <= myAtts.length - 1 ; i += 1)
+			{
+				myAtts[i] = inp[i + 3] ;
+			}
+			BA = new BattleAttributes(myAtts, diffMult) ;
+//			System.out.println("sECONDS BA");
+//			System.out.println(new BattleAttributes(myAtts));
+
 
 			List<Spell> spells = new ArrayList<>();
 			int[] spellIDs = switch (row % 3)

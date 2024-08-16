@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import attributes.BattleAttributes;
 import components.SpellTypes;
 import items.Arrow;
 import items.Fab;
@@ -79,13 +80,13 @@ public class SpellTest
 		archerLevel0.setPA(Player.InitializePersonalAttributes(2)) ;
 		animalLevel0.setPA(Player.InitializePersonalAttributes(3)) ;
 		thiefLevel0.setPA(Player.InitializePersonalAttributes(4)) ;
-		knightLevel0.setBA(Player.InitializeBattleAttributes(0)) ;
-		mageLevel0.setBA(Player.InitializeBattleAttributes(1)) ;
-		archerLevel0.setBA(Player.InitializeBattleAttributes(2)) ;
-		animalLevel0.setBA(Player.InitializeBattleAttributes(3)) ;
-		thiefLevel0.setBA(Player.InitializeBattleAttributes(4)) ;
+		knightLevel0.setBA(new BattleAttributes(Player.InitialAtts.get(1), 1)) ;
+		mageLevel0.setBA(new BattleAttributes(Player.InitialAtts.get(2), 1)) ;
+		archerLevel0.setBA(new BattleAttributes(Player.InitialAtts.get(3), 1)) ;
+		animalLevel0.setBA(new BattleAttributes(Player.InitialAtts.get(4), 1)) ;
+		thiefLevel0.setBA(new BattleAttributes(Player.InitialAtts.get(5), 1)) ;
 		pet.setPA(Pet.InitializePersonalAttributes(pet.getJob())) ;
-		pet.setBA(Pet.InitializeBattleAttributes(pet.getJob())) ;
+		pet.setBA(new BattleAttributes(Pet.InitialAtts.get(pet.getJob()), 1)) ;
 		refCreature.setPA(CreatureType.all.get(0).getPA());
 		refCreature.setBA(CreatureType.all.get(0).getBA());
 		knightLevel0.engageInFight(refCreature) ;

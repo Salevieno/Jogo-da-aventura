@@ -131,7 +131,7 @@ public class Player extends LiveBeing
 	public static final Gif DiggingGif = new Gif("Digging", UtilS.loadImage("\\Player\\" + "Digging.gif"), 2, false, false) ;
     public static final Gif FishingGif = new Gif("Fishing", UtilS.loadImage("\\Player\\" + "Fishing.gif"), 2, false, false) ;
     
-	public static final List<String[]> InitialStats = Util.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
+	public static final List<String[]> InitialAtts = Util.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
 	public static final List<String[]> EvolutionProperties = Util.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public static final int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public static final int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
@@ -156,7 +156,7 @@ public class Player extends LiveBeing
 	{
 		super(
 				InitializePersonalAttributes(job),
-				InitializeBattleAttributes(job),
+				new BattleAttributes(InitialAtts.get(job), 1),
 				movingAnimations,
 				new PlayerAttributesWindow()
 			) ;
@@ -172,14 +172,14 @@ public class Player extends LiveBeing
 		dir = Directions.up;
 		state = LiveBeingStates.idle;
 	    size = Util.getSize(movingAni.idleGif) ;
-		range = Integer.parseInt(InitialStats.get(job)[4]) ;
-		step = Integer.parseInt(InitialStats.get(job)[33]);
+		range = Integer.parseInt(InitialAtts.get(job)[4]) ;
+		step = Integer.parseInt(InitialAtts.get(job)[33]);
 	    elem = new Elements[] {Elements.neutral, null, null, null, null};
-		actionCounter = new TimeCounter(Double.parseDouble(InitialStats.get(job)[37])) ;
-		satiationCounter = new TimeCounter(Double.parseDouble(InitialStats.get(job)[38])) ;
-		thirstCounter = new TimeCounter(Double.parseDouble(InitialStats.get(job)[39])) ;
-		mpCounter = new TimeCounter(Double.parseDouble(InitialStats.get(job)[40])) ;
-		battleActionCounter = new TimeCounter(Double.parseDouble(InitialStats.get(job)[41])) ;
+		actionCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[37])) ;
+		satiationCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[38])) ;
+		thirstCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[39])) ;
+		mpCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[40])) ;
+		battleActionCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[41])) ;
 		stepCounter = new TimeCounter(stepDuration) ;
 		combo = new ArrayList<>() ;
 	    
@@ -210,7 +210,7 @@ public class Player extends LiveBeing
     	
 		collectLevel = new double[3] ;
 		storedGold = 0 ;
-		goldMultiplier = Double.parseDouble(InitialStats.get(job)[32]) ;
+		goldMultiplier = Double.parseDouble(InitialAtts.get(job)[32]) ;
 		digBonus = 0 ;
 		questSkills = new HashMap<QuestSkills, Boolean>() ;
 		for (QuestSkills questSkill : QuestSkills.values())
@@ -236,38 +236,12 @@ public class Player extends LiveBeing
 
 	public static PersonalAttributes InitializePersonalAttributes(int job)
 	{
-	    BasicAttribute life = new BasicAttribute(Integer.parseInt(InitialStats.get(job)[2]), Integer.parseInt(InitialStats.get(job)[2]), 1) ;
-	    BasicAttribute mp = new BasicAttribute(Integer.parseInt(InitialStats.get(job)[3]), Integer.parseInt(InitialStats.get(job)[3]), 1) ;
-		BasicAttribute exp = new BasicAttribute(0, 5, Double.parseDouble(InitialStats.get(job)[34])) ;
-		BasicAttribute satiation = new BasicAttribute(100, 100, Integer.parseInt(InitialStats.get(job)[35])) ;
-		BasicAttribute thirst = new BasicAttribute(100, 100, Integer.parseInt(InitialStats.get(job)[36])) ;
+	    BasicAttribute life = new BasicAttribute(Integer.parseInt(InitialAtts.get(job)[2]), Integer.parseInt(InitialAtts.get(job)[2]), 1) ;
+	    BasicAttribute mp = new BasicAttribute(Integer.parseInt(InitialAtts.get(job)[3]), Integer.parseInt(InitialAtts.get(job)[3]), 1) ;
+		BasicAttribute exp = new BasicAttribute(0, 5, Double.parseDouble(InitialAtts.get(job)[34])) ;
+		BasicAttribute satiation = new BasicAttribute(100, 100, Integer.parseInt(InitialAtts.get(job)[35])) ;
+		BasicAttribute thirst = new BasicAttribute(100, 100, Integer.parseInt(InitialAtts.get(job)[36])) ;
 		return new PersonalAttributes(life, mp, exp, satiation,	thirst) ;
-	}
-	
-	public static BattleAttributes InitializeBattleAttributes(int job)
-	{
-
-		BasicBattleAttribute phyAtk = new BasicBattleAttribute (Double.parseDouble(InitialStats.get(job)[5]), 0, 0) ;
-		BasicBattleAttribute magAtk = new BasicBattleAttribute (Double.parseDouble(InitialStats.get(job)[6]), 0, 0) ;
-		BasicBattleAttribute phyDef = new BasicBattleAttribute (Double.parseDouble(InitialStats.get(job)[7]), 0, 0) ;
-		BasicBattleAttribute magDef = new BasicBattleAttribute (Double.parseDouble(InitialStats.get(job)[8]), 0, 0) ;
-		BasicBattleAttribute dex = new BasicBattleAttribute (Double.parseDouble(InitialStats.get(job)[9]), 0, 0) ;	
-		BasicBattleAttribute agi = new BasicBattleAttribute (Double.parseDouble(InitialStats.get(job)[10]), 0, 0) ;
-		BasicBattleAttribute critAtk = new BasicBattleAttribute (Double.parseDouble(InitialStats.get(job)[11]), 0, 0) ;
-		BasicBattleAttribute critDef = new BasicBattleAttribute (Double.parseDouble(InitialStats.get(job)[12]), 0, 0) ;
-		BattleSpecialAttribute stun = new BattleSpecialAttribute(Double.parseDouble(InitialStats.get(job)[13]), 0, Double.parseDouble(InitialStats.get(job)[14]), 0, Integer.parseInt(InitialStats.get(job)[15])) ;
-		BattleSpecialAttribute block = new BattleSpecialAttribute(Double.parseDouble(InitialStats.get(job)[16]), 0, Double.parseDouble(InitialStats.get(job)[17]), 0, Integer.parseInt(InitialStats.get(job)[18])) ;
-		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(InitialStats.get(job)[19]), 0, Double.parseDouble(InitialStats.get(job)[20]), 0, Integer.parseInt(InitialStats.get(job)[21]), 0, Integer.parseInt(InitialStats.get(job)[22]), 0, Integer.parseInt(InitialStats.get(job)[23])) ;
-		BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(InitialStats.get(job)[24]), 0, Double.parseDouble(InitialStats.get(job)[25]), 0, Integer.parseInt(InitialStats.get(job)[26]), 0, Integer.parseInt(InitialStats.get(job)[27]), 0, Integer.parseInt(InitialStats.get(job)[28])) ;
-		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(InitialStats.get(job)[29]), 0, Double.parseDouble(InitialStats.get(job)[30]), 0, Integer.parseInt(InitialStats.get(job)[31])) ;
-		Map<Attributes, LiveBeingStatus> status = new HashMap<>() ;
-
-		for (Attributes att : Attributes.values())
-		{
-			status.put(att, new LiveBeingStatus(att)) ;
-		}
-		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef, stun, block, blood, poison, silence, status) ;
-	
 	}
 		
 	public void InitializeSpells()
@@ -1333,7 +1307,7 @@ public class Player extends LiveBeing
 
 		AtkEffects effect = Battle.calcEffect(DexMod[0] + AtkDex * DexMod[1], AgiMod[0] + DefAgi * AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
 		int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk * AtkMod[1], DefMod[0] + BasicDef * DefMod[1], AtkElem, DefElem, receiverElemMod) ;
-		int[] inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
+		double[] inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
 		spell.applyBuffs(true, this) ;
 		spell.applyDebuffs(true, receiver) ;

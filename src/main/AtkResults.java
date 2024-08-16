@@ -7,7 +7,7 @@ public class AtkResults
 	private AtkTypes atkType ;
 	private AtkEffects effect ;
 	private int damage ;
-	private int[] status ;
+	private double[] status ;
 
 	public AtkResults()
 	{
@@ -25,7 +25,7 @@ public class AtkResults
 		this.status = null ;
 	}
 	
-	public AtkResults(AtkTypes atkType, AtkEffects effect, int damage, int[] status)
+	public AtkResults(AtkTypes atkType, AtkEffects effect, int damage, double[] status)
 	{
 		this.atkType = atkType;
 		this.effect = effect;
@@ -52,7 +52,7 @@ public class AtkResults
 	{
 		return damage;
 	}
-	public int[] getStatus()
+	public double[] getStatus()
 	{
 		return status ;
 	}

@@ -8,11 +8,11 @@ public class BattleSpecialAttribute
 	protected double basicAtkChanceBonus ;
 	protected double basicDefChance ;
 	protected double basicDefChanceBonus ;
-	protected int duration ;
+	protected double duration ;
 	
 	
 	public BattleSpecialAttribute(double basicAtkChance, double basicAtkChanceBonus, double basicDefChance,
-			double basicDefChanceBonus, int duration)
+			double basicDefChanceBonus, double duration)
 	{
 		this.basicAtkChance = basicAtkChance;
 		this.basicAtkChanceBonus = basicAtkChanceBonus;
@@ -46,7 +46,7 @@ public class BattleSpecialAttribute
 	{
 		return basicDefChanceBonus;
 	}
-	public int getDuration()
+	public double getDuration()
 	{
 		return duration;
 	}
@@ -98,6 +98,14 @@ public class BattleSpecialAttribute
 		int duration = (int) (long) jsonData.get("duration") ;
 		return new BattleSpecialAttribute(basicAtkChance, basicDefChance, basicAtkChanceBonus, basicDefChanceBonus, duration) ;
 		
+	}
+
+	@Override
+	public String toString()
+	{
+		return "BattleSpecialAttribute [basicAtkChance=" + basicAtkChance + ", basicAtkChanceBonus="
+				+ basicAtkChanceBonus + ", basicDefChance=" + basicDefChance + ", basicDefChanceBonus="
+				+ basicDefChanceBonus + ", duration=" + duration + "]";
 	}
 	
 }

@@ -81,6 +81,60 @@ public class BattleAttributes
 		}
 	}
 
+
+	
+//	public BattleAttributes(double[] initialAtts)
+//	{
+//		phyAtk = new BasicBattleAttribute(initialAtts[5], 0, 0) ;
+//		magAtk = new BasicBattleAttribute(initialAtts[6], 0, 0) ;
+//		phyDef = new BasicBattleAttribute(initialAtts[7], 0, 0) ;
+//		magDef = new BasicBattleAttribute(initialAtts[8], 0, 0) ;
+//		dex = new BasicBattleAttribute(initialAtts[9], 0, 0) ;
+//		agi = new BasicBattleAttribute(initialAtts[10], 0, 0) ;
+//		critAtk = new BasicBattleAttribute(initialAtts[11], 0, 0) ;
+//		critDef = new BasicBattleAttribute(initialAtts[12], 0, 0) ;
+//		stun = new BattleSpecialAttribute(initialAtts[13], 0, initialAtts[14], 0, initialAtts[15]) ;
+//		block = new BattleSpecialAttribute(initialAtts[16], 0, initialAtts[17], 0, initialAtts[18]) ;
+//		blood = new BattleSpecialAttributeWithDamage(initialAtts[19], 0, initialAtts[20], 0, initialAtts[21], 0, initialAtts[22], 0, initialAtts[23]) ;
+//		poison = new BattleSpecialAttributeWithDamage(initialAtts[24], 0, initialAtts[25], 0, initialAtts[26], 0, initialAtts[27], 0, initialAtts[28]) ;
+//		silence = new BattleSpecialAttribute(initialAtts[29], 0, initialAtts[30], 0, initialAtts[31]) ;
+//		status = new HashMap<>() ;
+//		for (Attributes att : Attributes.values())
+//		{
+//			status.put(att, new LiveBeingStatus(att)) ;
+//		}
+//	}
+	
+	public BattleAttributes(String[] initialAtts, double attMult)
+	{		
+		phyAtk = new BasicBattleAttribute(Double.parseDouble(initialAtts[5]) * attMult, 0, 0) ;
+		magAtk = new BasicBattleAttribute(Double.parseDouble(initialAtts[6]) * attMult, 0, 0) ;
+		phyDef = new BasicBattleAttribute(Double.parseDouble(initialAtts[7]) * attMult, 0, 0) ;
+		magDef = new BasicBattleAttribute(Double.parseDouble(initialAtts[8]) * attMult, 0, 0) ;
+		dex = new BasicBattleAttribute(Double.parseDouble(initialAtts[9]) * attMult, 0, 0) ;
+		agi = new BasicBattleAttribute(Double.parseDouble(initialAtts[10]) * attMult, 0, 0) ;
+		critAtk = new BasicBattleAttribute(Double.parseDouble(initialAtts[11]) * attMult, 0, 0) ;
+		critDef = new BasicBattleAttribute(Double.parseDouble(initialAtts[12]) * attMult, 0, 0) ;
+		stun = new BattleSpecialAttribute(Double.parseDouble(initialAtts[13]) * attMult, 0, Double.parseDouble(initialAtts[14]) * attMult, 0, Double.parseDouble(initialAtts[15]) * attMult) ;
+		block = new BattleSpecialAttribute(Double.parseDouble(initialAtts[16]) * attMult, 0, Double.parseDouble(initialAtts[17]) * attMult, 0, Double.parseDouble(initialAtts[18]) * attMult) ;
+		blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(initialAtts[19]) * attMult, 0,
+													Double.parseDouble(initialAtts[20]) * attMult, 0,
+													Double.parseDouble(initialAtts[21]) * attMult, 0,
+													Double.parseDouble(initialAtts[22]) * attMult, 0,
+													Double.parseDouble(initialAtts[23]) * attMult) ;
+		poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(initialAtts[24]) * attMult, 0,
+													Double.parseDouble(initialAtts[25]) * attMult, 0,
+													Double.parseDouble(initialAtts[26]) * attMult, 0,
+													Double.parseDouble(initialAtts[27]) * attMult, 0,
+													Double.parseDouble(initialAtts[28]) * attMult) ;
+		silence = new BattleSpecialAttribute(Double.parseDouble(initialAtts[29]) * attMult, 0, Double.parseDouble(initialAtts[30]) * attMult, 0, Double.parseDouble(initialAtts[31]) * attMult) ;
+		status = new HashMap<>() ;
+		for (Attributes att : Attributes.values())
+		{
+			status.put(att, new LiveBeingStatus(att)) ;
+		}
+	}
+	
 	public BasicBattleAttribute getPhyAtk() {return phyAtk ;}
 	public BasicBattleAttribute getMagAtk() {return magAtk ;}
 	public BasicBattleAttribute getPhyDef() {return phyDef ;}
@@ -205,9 +259,9 @@ public class BattleAttributes
 	{
 		return new double[] {stun.TotalDefChance(), block.TotalDefChance(), blood.TotalDefChance(), poison.TotalDefChance(), silence.TotalDefChance()} ;
 	}
-	public int[] baseDurations()
+	public double[] baseDurations()
 	{
-		return new int[] {stun.getDuration(), block.getDuration(), blood.getDuration(), poison.getDuration(), silence.getDuration()} ;
+		return new double[] {stun.getDuration(), block.getDuration(), blood.getDuration(), poison.getDuration(), silence.getDuration()} ;
 	}
 	
 	
@@ -263,9 +317,9 @@ public class BattleAttributes
 	@Override
 	public String toString()
 	{
-		return "BattleAttributes [phyAtk=" + phyAtk + ", magAtk=" + magAtk + ", phyDef=" + phyDef + ", magDef=" + magDef
-				+ ", dex=" + dex + ", agi=" + agi + ", critAtk=" + critAtk + ", critDef=" + critDef + ", stun=" + stun + ", block="
-				+ block + ", blood=" + blood + ", poison=" + poison + ", silence=" + silence + ", status=" + status
+		return "BattleAttributes [phyAtk=" + phyAtk + "\n magAtk=" + magAtk + "\n phyDef=" + phyDef + "\n magDef=" + magDef
+				+ "\n dex=" + dex + "\n agi=" + agi + "\n critAtk=" + critAtk + "\n critDef=" + critDef + "\n stun=" + stun + "\n block="
+				+ block + "\n blood=" + blood + "\n poison=" + poison + "\n silence=" + silence + "\n status=" + status
 				+ "]";
 	}
 

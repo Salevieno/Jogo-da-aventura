@@ -42,19 +42,22 @@ public class Pet extends LiveBeing
 	private Color color ;
 	private int job ;
 	private int spellPoints ;
-	private double[] ElemMult ;		// [Neutral, Water, Fire, Plant, Earth, Air, Thunder, Light, Dark, Snow]
+	private double[] ElemMult ;		// [Neutral, Water, Fire, Plant, Earth, Air, Thunder, Light, Dark, Snow] TODO pq só o pet tem isso?
 	private PetItem equip ;
 	private int alchBuffId ;
 	private AttributeIncrease attInc ;
 	
-	private static final List<String[]> initialAttributes = Util.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
+	public static final List<String[]> InitialAtts = Util.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
 	private static final List<String[]> attEvolution = Util.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
     	
 	public Pet(int Job)
 	{
-		super(InitializePersonalAttributes(Job), InitializeBattleAttributes(Job), initializeMovingAnimations(Job), new PetAttributesWindow()) ;
+		super(InitializePersonalAttributes(Job),
+				new BattleAttributes(InitialAtts.get(Job), 1),
+				initializeMovingAnimations(Job),
+				new PetAttributesWindow()) ;
 		
-		name = initialAttributes.get(Job)[0] ;
+		name = InitialAtts.get(Job)[0] ;
 		level = 1 ;
 		proJob = 0 ;
 		map = null ;
@@ -62,13 +65,13 @@ public class Pet extends LiveBeing
 		dir = Directions.up ;
 		state = LiveBeingStates.idle ;
 		size = new Dimension (movingAni.idleGif.getWidth(null), movingAni.idleGif.getHeight(null)) ;	
-		range = Integer.parseInt(initialAttributes.get(Job)[4]) ;
-		step = Integer.parseInt(initialAttributes.get(Job)[32]) ;
+		range = Integer.parseInt(InitialAtts.get(Job)[4]) ;
+		step = Integer.parseInt(InitialAtts.get(Job)[32]) ;
 		elem = new Elements[] {Elements.neutral, null, null, null, null} ;
-		actionCounter = new TimeCounter(Double.parseDouble(initialAttributes.get(Job)[33])) ;
-		satiationCounter = new TimeCounter(Double.parseDouble(initialAttributes.get(Job)[34])) ;
-		mpCounter = new TimeCounter(Double.parseDouble(initialAttributes.get(Job)[35])) ;
-		battleActionCounter = new TimeCounter(Double.parseDouble(initialAttributes.get(Job)[36])) ;
+		actionCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(Job)[33])) ;
+		satiationCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(Job)[34])) ;
+		mpCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(Job)[35])) ;
+		battleActionCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(Job)[36])) ;
 		stepCounter = new TimeCounter(20) ;
 		combo = new ArrayList<>();
 		equip = null ;
@@ -90,36 +93,12 @@ public class Pet extends LiveBeing
 	
 	public static PersonalAttributes InitializePersonalAttributes(int Job)
 	{
-		BasicAttribute life = new BasicAttribute(Integer.parseInt(initialAttributes.get(Job)[2]), Integer.parseInt(initialAttributes.get(Job)[2]), 1) ;
-		BasicAttribute mp = new BasicAttribute(Integer.parseInt(initialAttributes.get(Job)[3]), Integer.parseInt(initialAttributes.get(Job)[3]), 1) ;
+		BasicAttribute life = new BasicAttribute(Integer.parseInt(InitialAtts.get(Job)[2]), Integer.parseInt(InitialAtts.get(Job)[2]), 1) ;
+		BasicAttribute mp = new BasicAttribute(Integer.parseInt(InitialAtts.get(Job)[3]), Integer.parseInt(InitialAtts.get(Job)[3]), 1) ;
 		BasicAttribute exp = new BasicAttribute(0, 50, 1) ;
 		BasicAttribute satiation = new BasicAttribute(100, 100, 1) ;
 		BasicAttribute thirst = new BasicAttribute(100, 100, 1) ;
 		return new PersonalAttributes(life, mp, exp, satiation, thirst) ;
-	}
-	
-	public static BattleAttributes InitializeBattleAttributes(int Job)
-	{
-		BasicBattleAttribute phyAtk = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[5]), 0, 0) ;
-		BasicBattleAttribute magAtk = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[6]), 0, 0) ;
-		BasicBattleAttribute phyDef = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[7]), 0, 0) ;
-		BasicBattleAttribute magDef = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[8]), 0, 0) ;
-		BasicBattleAttribute dex = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[9]), 0, 0) ;
-		BasicBattleAttribute agi = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[10]), 0, 0) ;
-		BasicBattleAttribute critAtk = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[11]), 0, 0) ;
-		BasicBattleAttribute critDef = new BasicBattleAttribute(Double.parseDouble(initialAttributes.get(Job)[12]), 0, 0) ;
-		BattleSpecialAttribute stun = new BattleSpecialAttribute(Double.parseDouble(initialAttributes.get(Job)[13]), 0, Double.parseDouble(initialAttributes.get(Job)[14]), 0, Integer.parseInt(initialAttributes.get(Job)[15])) ;
-		BattleSpecialAttribute block = new BattleSpecialAttribute(Double.parseDouble(initialAttributes.get(Job)[16]), 0, Double.parseDouble(initialAttributes.get(Job)[17]), 0, Integer.parseInt(initialAttributes.get(Job)[18])) ;
-		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(initialAttributes.get(Job)[19]), 0, Double.parseDouble(initialAttributes.get(Job)[20]), 0, Integer.parseInt(initialAttributes.get(Job)[21]), 0, Integer.parseInt(initialAttributes.get(Job)[22]), 0, Integer.parseInt(initialAttributes.get(Job)[23])) ;
-		BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(initialAttributes.get(Job)[24]), 0, Double.parseDouble(initialAttributes.get(Job)[25]), 0, Integer.parseInt(initialAttributes.get(Job)[26]), 0, Integer.parseInt(initialAttributes.get(Job)[27]), 0, Integer.parseInt(initialAttributes.get(Job)[28])) ;
-		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(initialAttributes.get(Job)[29]), 0, Double.parseDouble(initialAttributes.get(Job)[30]), 0, Integer.parseInt(initialAttributes.get(Job)[31])) ;
-		Map<Attributes, LiveBeingStatus> status = new HashMap<>() ;
-
-		for (Attributes att : Attributes.values())
-		{
-			status.put(att, new LiveBeingStatus(att)) ;
-		}
-		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef, stun, block, blood, poison, silence, status) ;
 	}
 	
 	public static MovingAnimations initializeMovingAnimations(int Job)
@@ -349,7 +328,7 @@ public class Pet extends LiveBeing
 
 		AtkEffects effect = Battle.calcEffect(DexMod[0] + AtkDex*DexMod[1], AgiMod[0] + DefAgi*AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
 		int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
-		int[] inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
+		double[] inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
 		displayUsedSpellMessage(spell, Game.getScreen().pos(0.23, 0.2), Game.colorPalette[12]);
 		return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;

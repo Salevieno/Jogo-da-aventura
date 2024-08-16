@@ -12,7 +12,7 @@ public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
 	private double basicDefBonus ;
 	
 	public BattleSpecialAttributeWithDamage(double basicAtkChance, double basicAtkChanceBonus, double basicDefChance,
-			double basicDefChanceBonus, double basicAtk, double basicAtkBonus, double basicDef, double basicDefBonus, int duration)
+			double basicDefChanceBonus, double basicAtk, double basicAtkBonus, double basicDef, double basicDefBonus, double duration)
 	{
 		super(basicAtkChance, basicAtkChanceBonus, basicDefChance, basicDefChanceBonus, duration) ;
 		this.basicAtk = basicAtk ;

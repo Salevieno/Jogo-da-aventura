@@ -120,7 +120,7 @@ public abstract class Battle
 		
 		AtkEffects effect = calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
 		int damage = calcDamage(effect, atkPhyAtk + arrowPower, defPhyDef, atkElems, defElems, elemRes) ;
-		int[] inflictedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
+		double[] inflictedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
 		
 		return new AtkResults(AtkTypes.physical, effect, damage, inflictedStatus) ;
 	}
@@ -158,15 +158,15 @@ public abstract class Battle
 		return (int) Util.Round(randomMult * elemMult * elemMod * baseDamage, 0) ;
 	}
 		
-	public static int[] calcStatus(double[] atkChances, double[] defChances, int[] durations)
+	public static double[] calcStatus(double[] atkChances, double[] defChances, double[] durations)
 	{
-		int stun = 0 ;
-		int block = 0 ;
-		int blood = 0 ;
-		int poison = 0 ;
-		int silence = 0 ;
+		double stun = 0 ;
+		double block = 0 ;
+		double blood = 0 ;
+		double poison = 0 ;
+		double silence = 0 ;
 		if (Util.chance(atkChances[1] - defChances[1])) {block = durations[1] ;}
-		if (0 < block) { return new int[] {0, block, 0, 0, 0} ;}
+		if (0 < block) { return new double[] {0, block, 0, 0, 0} ;}
 		
 		if (Util.chance(atkChances[0] - defChances[0])) {stun = durations[0] ;}
 		if (Util.chance(atkChances[2] - defChances[2])) {blood = durations[2] ;}
@@ -174,7 +174,7 @@ public abstract class Battle
 		if (Util.chance(atkChances[4] - defChances[4])) {silence = durations[4] ;}
 		
 		
-		return new int[] {stun, block, blood, poison, silence} ;
+		return new double[] {stun, block, blood, poison, silence} ;
 	}
 	
 	public static void throwItem(LiveBeing attacker, LiveBeing receiver, double itemPower, AttackModifiers itemAtkMod, Elements itemElem)
@@ -193,7 +193,7 @@ public abstract class Battle
 		
 		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return ;}
 		int damage = Battle.calcDamage(AtkEffects.hit, itemPower, defPhyDef, atkElems, receiver.defElems(), elemRes) ;
-		int[] inflictedStatus = calcStatus(baseAtkChances, receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
+		double[] inflictedStatus = calcStatus(baseAtkChances, receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
 		
 		AtkResults atkResults = new AtkResults(AtkTypes.physical, effect, damage, inflictedStatus) ;
 		receiver.takeDamage(atkResults.getDamage()) ;

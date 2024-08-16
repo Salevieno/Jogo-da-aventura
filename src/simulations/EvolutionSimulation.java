@@ -283,7 +283,7 @@ public abstract class EvolutionSimulation
 		player.setLevel(1) ;
 		player.setJob(newJob) ;
 		
-		List<String[]> prop = Player.InitialStats ;
+		List<String[]> prop = Player.InitialAtts ;
 	    BasicAttribute life = new BasicAttribute(Integer.parseInt(prop.get(newJob)[2]), Integer.parseInt(prop.get(newJob)[2]), 1) ;
 	    BasicAttribute mp = new BasicAttribute(Integer.parseInt(prop.get(newJob)[3]), Integer.parseInt(prop.get(newJob)[3]), 1) ;
 		BasicAttribute exp = new BasicAttribute(0, 5, Double.parseDouble(prop.get(newJob)[34])) ;
