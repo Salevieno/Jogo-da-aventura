@@ -269,24 +269,17 @@ public class CreatureType
 					0, (int) (Integer.parseInt(inp[31]) * diffMult));
 			BattleSpecialAttribute Silence = new BattleSpecialAttribute(Double.parseDouble(inp[32]) * diffMult, 0,
 					Double.parseDouble(inp[33]) * diffMult, 0, (int) (Double.parseDouble(inp[34]) * diffMult));
-			Map<Attributes, LiveBeingStatus> status = new HashMap<>();
+			BasicBattleAttribute AtkSpeed = new BasicBattleAttribute(Double.parseDouble(inp[51]) * diffMult, 0, 0);
 
-			for (Attributes att : Attributes.values())
-			{
-				status.put(att, new LiveBeingStatus(att));
-			}
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, CritAtk, CritDef, Stun,
-					Block, Blood, Poison, Silence, status);
-//			System.out.println("First BA");
-//			System.out.println(BA);
-			String[] myAtts = new String[inp.length - 3] ;
-			for (int i = 0 ; i <= myAtts.length - 1 ; i += 1)
-			{
-				myAtts[i] = inp[i + 3] ;
-			}
-			BA = new BattleAttributes(myAtts, diffMult) ;
-//			System.out.println("sECONDS BA");
-//			System.out.println(new BattleAttributes(myAtts));
+					Block, Blood, Poison, Silence, AtkSpeed);
+
+//			String[] myAtts = new String[inp.length - 3] ;
+//			for (int i = 0 ; i <= myAtts.length - 1 ; i += 1)
+//			{
+//				myAtts[i] = inp[i + 3] ;
+//			}
+//			BA = new BattleAttributes(myAtts, diffMult) ;
 
 
 			List<Spell> spells = new ArrayList<>();
@@ -331,7 +324,7 @@ public class CreatureType
 			double mpDuration = Double.parseDouble(inp[49]);
 			double satiationDuration = 1.25;
 			double numberSteps = Double.parseDouble(inp[50]);
-			double battleActionDuration = Double.parseDouble(inp[51]);
+			double battleActionDuration = BA.TotalAtkSpeed();
 			int stepCounter = 0;
 
 			new CreatureType(row, name, level, size, range, step, elem, mpDuration, satiationDuration, numberSteps,

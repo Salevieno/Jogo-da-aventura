@@ -53,7 +53,7 @@ public class LiveBeingStatus
 	
 	public void reset()
 	{
-		counter = new TimeCounter(0) ;
+		counter = new TimeCounter(counter.getDuration()) ;
 		intensity = 0.0 ;
 	}
 	
@@ -63,7 +63,12 @@ public class LiveBeingStatus
 		
 		DP.drawImage(image, pos, Align.center) ;
 	}
-	
+
+	@Override
+	public String toString()
+	{
+		return "LiveBeingStatus [counter=" + counter + ", intensity=" + intensity + ", image=" + image + "]";
+	}
 
 	public static LiveBeingStatus fromJson(JSONObject jsonData)
 	{

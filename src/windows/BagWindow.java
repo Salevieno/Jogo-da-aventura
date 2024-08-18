@@ -646,6 +646,7 @@ public class BagWindow extends GameWindow
 	{
 		if (!Util.isInside(mousePos, tabPos, Util.getSize(menuImage))) { return ;}
 		
+		item = 0 ;
 		tab = tabID ;
 	}
 	

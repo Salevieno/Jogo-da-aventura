@@ -370,23 +370,23 @@ public abstract class Battle
 		
 		if (0 < atkResults.getStatus()[0])
 		{
-			receiver.getBA().getStatus().get(Attributes.stun).inflictStatus(0, attacker.getBA().getStun().getDuration()) ;
+			receiver.getStatus().get(Attributes.stun).inflictStatus(0, attacker.getBA().getStun().getDuration()) ;
 		}
 		if (0 < atkResults.getStatus()[1])
 		{
-			receiver.getBA().getStatus().get(Attributes.block).inflictStatus(0, attacker.getBA().getBlock().getDuration()) ;
+			receiver.getStatus().get(Attributes.block).inflictStatus(0, attacker.getBA().getBlock().getDuration()) ;
 		}
 		if (0 < atkResults.getStatus()[2])
 		{
-			receiver.getBA().getStatus().get(Attributes.blood).inflictStatus(Math.max(attacker.getBA().getBlood().TotalAtk() - receiver.getBA().getBlood().TotalDef(), 0), attacker.getBA().getBlood().getDuration()) ;
+			receiver.getStatus().get(Attributes.blood).inflictStatus(Math.max(attacker.getBA().getBlood().TotalAtk() - receiver.getBA().getBlood().TotalDef(), 0), attacker.getBA().getBlood().getDuration()) ;
 		}
 		if (0 < atkResults.getStatus()[3])
 		{
-			receiver.getBA().getStatus().get(Attributes.poison).inflictStatus(Math.max(attacker.getBA().getPoison().TotalAtk() - receiver.getBA().getPoison().TotalDef(), 0), attacker.getBA().getPoison().getDuration()) ;
+			receiver.getStatus().get(Attributes.poison).inflictStatus(Math.max(attacker.getBA().getPoison().TotalAtk() - receiver.getBA().getPoison().TotalDef(), 0), attacker.getBA().getPoison().getDuration()) ;
 		}
 		if (0 < atkResults.getStatus()[4])
 		{
-			receiver.getBA().getStatus().get(Attributes.silence).inflictStatus(0, attacker.getBA().getSilence().getDuration()) ;
+			receiver.getStatus().get(Attributes.silence).inflictStatus(0, attacker.getBA().getSilence().getDuration()) ;
 		}
 
 		return atkResults ;

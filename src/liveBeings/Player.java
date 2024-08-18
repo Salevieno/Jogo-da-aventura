@@ -156,7 +156,7 @@ public class Player extends LiveBeing
 	{
 		super(
 				InitializePersonalAttributes(job),
-				new BattleAttributes(InitialAtts.get(job), 1),
+				new BattleAttributes(InitialAtts.get(job), 1, InitialAtts.get(job)[41]),
 				movingAnimations,
 				new PlayerAttributesWindow()
 			) ;
@@ -1556,7 +1556,7 @@ public class Player extends LiveBeing
 		PA.getMp().setToMaximum(); ;
 		PA.getSatiation().setToMaximum() ;
 		PA.getThirst().setToMaximum() ;
-		BA.resetStatus() ;
+		resetStatus() ;
 		state = LiveBeingStates.idle ;
 		if (opponent != null) { opponent.setFollow(false) ;}
 		resetOpponent() ;
@@ -1574,7 +1574,10 @@ public class Player extends LiveBeing
         content.put("job", job);
         content.put("PA", PA.toJsonObject()) ;
         content.put("BA", BA.toJsonObject()) ;
-        
+        for (Attributes att : Attributes.getSpecial())
+        {
+            content.put("status", status.get(att).toJsonObject());
+        }
         Util.writeJson(content, "save " + slot) ;
         
 		
@@ -1597,6 +1600,9 @@ public class Player extends LiveBeing
 		newPlayer.setLevel(level);
 		newPlayer.setPA(PersonalAttributes.fromJson(PAData));
 		newPlayer.setBA(BattleAttributes.fromJson(BAData));
+		
+		Map<Attributes, LiveBeingStatus> status = new HashMap<>() ; 
+//		status = LiveBeingStatus.fromJson((JSONObject) jsonData.get("status")) ;
 		
 		return newPlayer ;
 		

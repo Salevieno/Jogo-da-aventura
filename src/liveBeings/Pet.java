@@ -53,7 +53,7 @@ public class Pet extends LiveBeing
 	public Pet(int Job)
 	{
 		super(InitializePersonalAttributes(Job),
-				new BattleAttributes(InitialAtts.get(Job), 1),
+				new BattleAttributes(InitialAtts.get(Job), 1, InitialAtts.get(Job)[36]),
 				initializeMovingAnimations(Job),
 				new PetAttributesWindow()) ;
 		

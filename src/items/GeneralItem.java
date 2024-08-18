@@ -91,7 +91,6 @@ public class GeneralItem extends Item
 	public void use(LiveBeing user)
 	{
 
-		// TODO item effects for ids 82, 83, 86, 87, 89, 109 & 111
 		((Player) user).getBag().remove(this, 1) ;
 		
 		switch (id)
@@ -107,7 +106,7 @@ public class GeneralItem extends Item
 			case 22:
 				if (!user.isPlayerAlly()) { return ;}
 				
-				user.getBA().getStatus().get(Attributes.poison).reset() ;
+				user.getStatus().get(Attributes.poison).reset() ;
 				
 				return ;
 				
@@ -128,14 +127,68 @@ public class GeneralItem extends Item
 			case 32: user.getPA().getThirst().incCurrentValue(100) ;  return ;
 			case 74: user.getsDrunk(20) ;  return ;
 			case 79:
-				user.getAtkSpeedBonusCounter().reset() ;
-				user.getAtkSpeedBonusCounter().start() ;
-				user.getBattleActionCounter().setDuration(user.getBattleActionCounter().getDuration()/1.2) ;
+				user.getBA().getAtkSpeed().incBonus(-user.getStatus().get(Attributes.atkSpeed).getIntensity()) ;
+				user.getBA().getAtkSpeed().incBonus(-0.2) ;
+				user.getBattleActionCounter().setDuration(user.getBA().TotalAtkSpeed()) ;
+				user.getStatus().get(Attributes.atkSpeed).inflictStatus(-0.2, 5) ;
 				return ;
 				
-			case 81, 84: user.getBA().getStatus().get(Attributes.blood).reset() ; return ;
+			case 81, 84: user.getStatus().get(Attributes.blood).reset() ; return ;
+			
+			case 82:
+				user.getStatus().get(Attributes.blood).reset() ;
+				user.getBA().getAtkSpeed().incBonus(-user.getStatus().get(Attributes.atkSpeed).getIntensity()) ;
+				user.getBA().getAtkSpeed().incBonus(0.2) ;
+				user.getBattleActionCounter().setDuration(user.getBA().TotalAtkSpeed()) ;
+				user.getStatus().get(Attributes.atkSpeed).inflictStatus(0.2, 5) ;
+				return ;
+				
+			case 83:
+				user.getBA().getAtkSpeed().incBonus(-user.getStatus().get(Attributes.atkSpeed).getIntensity()) ;
+				user.getBA().getAtkSpeed().incBonus(-0.3) ;
+				user.getBattleActionCounter().setDuration(user.getBA().TotalAtkSpeed()) ;
+				user.getStatus().get(Attributes.atkSpeed).inflictStatus(-0.3, 5) ;
+				
+				return ;
+			case 86:
+				user.getBA().getDex().incBonus(-user.getStatus().get(Attributes.dex).getIntensity()) ;
+				user.getBA().getDex().incBonus(10) ;
+				user.getStatus().get(Attributes.dex).inflictStatus(10, 100) ;
+				return ;
+				
+			case 87:
+				user.getBA().getDex().incBonus(-user.getStatus().get(Attributes.dex).getIntensity()) ;
+				user.getBA().getDex().incBonus(20) ;
+				user.getStatus().get(Attributes.dex).inflictStatus(20, 100) ;
+				return ;
+				
+			case 89:
+				user.getBA().getMagAtk().incBonus(-user.getStatus().get(Attributes.magAtk).getIntensity()) ;
+				user.getBA().getMagDef().incBonus(-user.getStatus().get(Attributes.magDef).getIntensity()) ;
+				user.getBA().getPhyDef().incBonus(-user.getStatus().get(Attributes.phyDef).getIntensity()) ;
+				user.getBA().getMagAtk().incBonus(5) ;
+				user.getBA().getMagDef().incBonus(5) ;
+				user.getBA().getPhyDef().incBonus(5) ;
+				user.getStatus().get(Attributes.magAtk).inflictStatus(5, 100) ;
+				user.getStatus().get(Attributes.magDef).inflictStatus(5, 100) ;
+				user.getStatus().get(Attributes.phyDef).inflictStatus(5, 100) ;
+				return ;
+				
 			case 105: user.getsDrunk(50) ;  return ;
 			case 106: user.getsDrunk(150) ;  return ;
+			
+			case 109:
+				user.getBA().getAgi().incBonus(-user.getStatus().get(Attributes.agi).getIntensity()) ;
+				user.getBA().getAgi().incBonus(-10) ;
+				user.getStatus().get(Attributes.agi).inflictStatus(-10, 100) ;
+				return ;
+				
+			case 111: 
+				if (!user.isPlayerAlly()) { return ;}
+				
+				user.getStatus().get(Attributes.silence).reset() ;
+				
+				return ;
 		}
 				
 	}

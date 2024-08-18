@@ -1,12 +1,10 @@
 package attributes ;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
 
-import liveBeings.LiveBeingStatus;
 import utilities.Elements;
 
 public class BattleAttributes
@@ -24,13 +22,13 @@ public class BattleAttributes
 	private BattleSpecialAttributeWithDamage blood ;
 	private BattleSpecialAttributeWithDamage poison ;
 	private BattleSpecialAttribute silence ;
-	private Map<Attributes, LiveBeingStatus> status ;
+	private BasicBattleAttribute atkSpeed ;
 	private Map<Elements, Double> elemResistanceMult ;
 	
 	public BattleAttributes(BasicBattleAttribute phyAtk, BasicBattleAttribute magAtk, BasicBattleAttribute phyDef, BasicBattleAttribute magDef, BasicBattleAttribute dex, BasicBattleAttribute agi,
 			BasicBattleAttribute critAtk, BasicBattleAttribute critDef,
 			BattleSpecialAttribute stun, BattleSpecialAttribute block, BattleSpecialAttributeWithDamage blood, BattleSpecialAttributeWithDamage poison, BattleSpecialAttribute silence,
-			Map<Attributes, LiveBeingStatus> status)
+			BasicBattleAttribute atkSpeed)
 	{
 		this.phyAtk = phyAtk ;
 		this.magAtk = magAtk ;
@@ -45,7 +43,7 @@ public class BattleAttributes
 		this.blood = blood ;
 		this.poison = poison ;
 		this.silence = silence ;
-		this.status = status ;
+		this.atkSpeed = atkSpeed ;
 		elemResistanceMult = new HashMap<>() ;
 		for (Elements elem : Elements.values())
 		{
@@ -68,12 +66,8 @@ public class BattleAttributes
 		this.blood = new BattleSpecialAttributeWithDamage(BA.getBlood()) ;
 		this.poison = new BattleSpecialAttributeWithDamage(BA.getPoison()) ;
 		this.silence = new BattleSpecialAttribute(BA.getSilence()) ;
+		this.atkSpeed = new BasicBattleAttribute(BA.getAtkSpeed()) ;
 
-		this.status = new HashMap<>() ;
-		for (Attributes att : Attributes.values())
-		{
-			this.status.put(att, new LiveBeingStatus(att)) ;
-		}
 		elemResistanceMult = new HashMap<>() ;
 		for (Elements elem : Elements.values())
 		{
@@ -105,7 +99,7 @@ public class BattleAttributes
 //		}
 //	}
 	
-	public BattleAttributes(String[] initialAtts, double attMult)
+	public BattleAttributes(String[] initialAtts, double attMult, String atkSpeed)
 	{		
 		phyAtk = new BasicBattleAttribute(Double.parseDouble(initialAtts[5]) * attMult, 0, 0) ;
 		magAtk = new BasicBattleAttribute(Double.parseDouble(initialAtts[6]) * attMult, 0, 0) ;
@@ -128,10 +122,12 @@ public class BattleAttributes
 													Double.parseDouble(initialAtts[27]) * attMult, 0,
 													Double.parseDouble(initialAtts[28]) * attMult) ;
 		silence = new BattleSpecialAttribute(Double.parseDouble(initialAtts[29]) * attMult, 0, Double.parseDouble(initialAtts[30]) * attMult, 0, Double.parseDouble(initialAtts[31]) * attMult) ;
-		status = new HashMap<>() ;
-		for (Attributes att : Attributes.values())
+		this.atkSpeed = new BasicBattleAttribute(Double.parseDouble(atkSpeed) * attMult, 0, 0) ;
+		
+		elemResistanceMult = new HashMap<>() ;
+		for (Elements elem : Elements.values())
 		{
-			status.put(att, new LiveBeingStatus(att)) ;
+			elemResistanceMult.put(elem, 1.0) ;
 		}
 	}
 	
@@ -148,18 +144,12 @@ public class BattleAttributes
 	public BattleSpecialAttributeWithDamage getBlood() {return blood ;}
 	public BattleSpecialAttributeWithDamage getPoison() {return poison ;}
 	public BattleSpecialAttribute getSilence() {return silence ;}
-	public Map<Attributes, LiveBeingStatus> getStatus() {return status ;}
+	public BasicBattleAttribute getAtkSpeed() {return atkSpeed ;}
 	public Map<Elements, Double> getElemResistanceMult() { return elemResistanceMult ;}
 
-	public void checkResetStatus() { status.values().stream().filter(st -> !st.isActive()).forEach(st -> st.reset()) ;}
+//	public void checkResetStatus() { status.values().stream().filter(st -> !st.isActive()).forEach(st -> st.reset()) ;}
 	
-	public void resetStatus()
-	{
-		for (Attributes att : Attributes.values())
-		{
-			status.get(att).reset() ;
-		}
-	}
+
 
 	public BasicBattleAttribute mapAttributes(Attributes att)
 	{
@@ -173,6 +163,7 @@ public class BattleAttributes
 			case agi: return agi ;
 			case critAtk: return critAtk ;
 			case critDef: return critDef ;
+			case atkSpeed: return atkSpeed ;
 			
 			default: return null ;
 		}
@@ -226,30 +217,25 @@ public class BattleAttributes
 	{
 		return critDef.getTotal() ;
 	}
-	
-	public void inflictStatus(Attributes att, double intensity, int duration)
+	public double TotalAtkSpeed()
 	{
-		if (Attributes.phyAtk.equals(att))
-		{
-			phyAtk.incBonus(2) ;
-		}
-		status.get(att).inflictStatus(intensity, duration);
+		return atkSpeed.getTotal() ;
 	}
 	
 	public BasicBattleAttribute[] basicAttributes() { return new BasicBattleAttribute[] {getPhyAtk(), getMagAtk(), getPhyDef(), getMagDef(), getDex(), getAgi(), critAtk, critDef};}
 	public BattleSpecialAttribute[] specialAttributes() { return new BattleSpecialAttribute[] {stun, block, blood, poison, silence} ;}
-	public double[] getBaseValues()
-	{
-		return new double[] {
-				phyAtk.getBaseValue(), magAtk.getBaseValue(), phyDef.getBaseValue(), magDef.getBaseValue(),
-				dex.getBaseValue(), agi.getBaseValue(), critAtk.getBaseValue(),
-				stun.getBasicAtkChance(),
-				block.getBasicAtkChance(),
-				blood.getBasicAtkChance(), blood.getBasicDefChance(), blood.getBasicAtk(), blood.getBasicDef(),
-				poison.getBasicAtkChance(), poison.getBasicDefChance(), poison.getBasicAtk(),poison.getBasicDef(),
-				silence.getBasicAtkChance()
-				} ;
-	}
+//	public double[] getBaseValues()
+//	{
+//		return new double[] {
+//				phyAtk.getBaseValue(), magAtk.getBaseValue(), phyDef.getBaseValue(), magDef.getBaseValue(),
+//				dex.getBaseValue(), agi.getBaseValue(), critAtk.getBaseValue(),
+//				stun.getBasicAtkChance(),
+//				block.getBasicAtkChance(),
+//				blood.getBasicAtkChance(), blood.getBasicDefChance(), blood.getBasicAtk(), blood.getBasicDef(),
+//				poison.getBasicAtkChance(), poison.getBasicDefChance(), poison.getBasicAtk(),poison.getBasicDef(),
+//				silence.getBasicAtkChance()
+//				} ;
+//	}
 	public double[] totalValues() { return new double[] {TotalPhyAtk(), TotalMagAtk(), TotalPhyDef(), TotalMagDef(), TotalDex(), TotalAgi()} ;}
 	public double[] baseAtkChances()
 	{
@@ -278,10 +264,6 @@ public class BattleAttributes
         {
             content.put(att.toString(), mapSpecialAttributes(att).toJsonObject());
         }
-        for (Attributes att : Attributes.getSpecial())
-        {
-            content.put("status", status.get(att).toJsonObject());
-        }
         
         return content ;
         
@@ -298,20 +280,16 @@ public class BattleAttributes
 		BasicBattleAttribute dex = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("dex")) ;
 		BasicBattleAttribute agi = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("agi")) ;
 		BasicBattleAttribute critAtk = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("critAtk")) ;
-		BasicBattleAttribute critDef = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("critDef")) ;
-		
+		BasicBattleAttribute critDef = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("critDef")) ;		
 		BattleSpecialAttribute stun = BattleSpecialAttribute.fromJson((JSONObject) jsonData.get("stun")) ;
 		BattleSpecialAttribute block = BattleSpecialAttribute.fromJson((JSONObject) jsonData.get("block")) ;
 		BattleSpecialAttributeWithDamage blood = BattleSpecialAttributeWithDamage.fromJson((JSONObject) jsonData.get("blood")) ;
 		BattleSpecialAttributeWithDamage poison = BattleSpecialAttributeWithDamage.fromJson((JSONObject) jsonData.get("poison")) ;
 		BattleSpecialAttribute silence = BattleSpecialAttribute.fromJson((JSONObject) jsonData.get("silence")) ;
-		
-		Map<Attributes, LiveBeingStatus> status = new HashMap<>() ; 
-		// LiveBeingStatus.fromJson((JSONObject) jsonData.get("status")) ;
+		BasicBattleAttribute atkSpeed = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("atkSpeed")) ;
 		
 		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef,
-				stun, block, blood, poison, silence,
-				status) ;
+				stun, block, blood, poison, silence, atkSpeed) ;
 	}
 	
 	@Override
@@ -319,8 +297,7 @@ public class BattleAttributes
 	{
 		return "BattleAttributes [phyAtk=" + phyAtk + "\n magAtk=" + magAtk + "\n phyDef=" + phyDef + "\n magDef=" + magDef
 				+ "\n dex=" + dex + "\n agi=" + agi + "\n critAtk=" + critAtk + "\n critDef=" + critDef + "\n stun=" + stun + "\n block="
-				+ block + "\n blood=" + blood + "\n poison=" + poison + "\n silence=" + silence + "\n status=" + status
-				+ "]";
+				+ block + "\n blood=" + blood + "\n poison=" + poison + "\n silence=" + silence + "]";
 	}
 
 	

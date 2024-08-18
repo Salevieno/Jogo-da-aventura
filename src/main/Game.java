@@ -59,6 +59,7 @@ import liveBeings.Creature ;
 import liveBeings.CreatureType ;
 import liveBeings.HotKeysBar;
 import liveBeings.LiveBeing;
+import liveBeings.LiveBeingStatus;
 import liveBeings.Pet ;
 import liveBeings.Player ;
 import liveBeings.Spell ;
@@ -765,7 +766,6 @@ public class Game extends JPanel
 		for (Creature creature : creaturesInMap)
 		{
 			creature.takeBloodAndPoisonDamage(null) ;
-			creature.getBA().checkResetStatus() ;
 			if (creature.isMoving())
 			{
 				creature.move(player.getPos(), player.getMap()) ;
@@ -778,6 +778,7 @@ public class Game extends JPanel
 				creature.act() ;
 			}
 			creature.display(creature.getPos(), Scale.unit, DP) ;
+//			creature.getBA().finishStatus() ;
 //			creature.displayAdditionalInfo(DP) ;
 		}
 		shouldRepaint = true ;
@@ -788,19 +789,18 @@ public class Game extends JPanel
 		if (!pet.isAlive()) { return ;}
 
 		pet.takeBloodAndPoisonDamage(null) ;
-		pet.getBA().checkResetStatus() ;
 		pet.updateCombo() ;
 		pet.think(player.isInBattle(), player.getPos()) ;
 		pet.act(player) ;
 		pet.display(pet.getPos(), Scale.unit, DP) ;
 		pet.displayAttributes(0, DP) ;
+//		pet.getBA().finishStatus() ;
 	}
 	
 	private void playerActs()
 	{
 
 		player.takeBloodAndPoisonDamage(null) ;
-		player.getBA().checkResetStatus() ;
 		
 		if (player.canAct() & player.hasActed())
 		{
@@ -820,7 +820,9 @@ public class Game extends JPanel
 		if (player.weaponIsEquipped())
 		{
 			player.drawWeapon(player.getPos(), Scale.unit, DP) ;
-		}
+		}		
+
+		player.finishStatus() ;
 	}
 	
 	private void updateProjectiles()
@@ -1157,7 +1159,7 @@ public class Game extends JPanel
 //			    	player.switchOpenClose(player.getHintsindow()) ;
 					if (cheatMode) { setCheatMode() ;}
 					player.startCounters() ;
-					Game.setState(GameStates.simulation) ;
+					Game.setState(GameStates.running) ;
 //					player.levelUp();
 				}
 				shouldRepaint = true ;
@@ -1242,7 +1244,7 @@ public class Game extends JPanel
 			{
 				player.setCurrentAction("MouseRightClick") ;
         		player.setPos(mousePos) ;
-//        		player.getBA().inflictStatus(Attributes.poison, 1, 2);
+        		player.inflictStatus(Attributes.silence, 1, 10);
         		if (pet != null)
         		{
         			pet.setPos(player.getPos()) ;

@@ -19,7 +19,8 @@ public enum Attributes
 	block,
 	blood,
 	poison,
-	silence;
+	silence,
+	atkSpeed;
 
 	public static Attributes[] getBasicPersonal()
 	{

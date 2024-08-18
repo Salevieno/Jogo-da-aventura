@@ -126,7 +126,7 @@ public class Buff
 
 		for (Attributes att : Attributes.values())
 		{
-			if (att.equals(Attributes.exp) | att.equals(Attributes.satiation) | att.equals(Attributes.thirst))
+			if (att.equals(Attributes.exp) | att.equals(Attributes.satiation) | att.equals(Attributes.thirst) | att.equals(Attributes.atkSpeed))
 			{
 				continue ;
 			}

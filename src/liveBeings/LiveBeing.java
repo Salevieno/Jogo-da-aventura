@@ -6,7 +6,9 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import attributes.Attributes;
@@ -59,7 +61,7 @@ public abstract class LiveBeing
 	protected List<String> combo ;				// record of the last 10 movements
 	protected List<Spell> spells ;
 	protected TimeCounter drunk ;
-	protected TimeCounter atkSpeedBonusCounter ;
+	protected Map<Attributes, LiveBeingStatus> status ;
 	
 	protected PersonalAttributes PA ;
 	protected BattleAttributes BA ;
@@ -87,7 +89,11 @@ public abstract class LiveBeing
 		currentAtkType = null ;
 		hpCounter = new TimeCounter(20) ;
 		drunk = new TimeCounter(20) ;
-		atkSpeedBonusCounter = new TimeCounter(20) ;
+		status = new HashMap<>() ;
+		for (Attributes att : Attributes.values())
+		{
+			status.put(att, new LiveBeingStatus(att)) ;
+		}
 	}
 
 	public abstract Point center() ;
@@ -149,7 +155,6 @@ public abstract class LiveBeing
 	public String getCurrentAction() {return currentAction ;}
 	public AtkTypes getCurrentAtkType() { return currentAtkType ;}
 	public TimeCounter getHpCounter() {return hpCounter ;}
-	public TimeCounter getAtkSpeedBonusCounter() { return atkSpeedBonusCounter ;}
 	public TimeCounter getMpCounter() {return mpCounter ;}
 	public TimeCounter getSatiationCounter() {return satiationCounter ;}
 	public TimeCounter getThirstCounter() {return thirstCounter ;}
@@ -160,6 +165,7 @@ public abstract class LiveBeing
 	public List<Spell> getSpells() {return spells ;}
 	public AttributesWindow getAttWindow() {return attWindow ;}
 	public MovingAnimations getMovingAni() {return movingAni ;}
+	public Map<Attributes, LiveBeingStatus> getStatus() {return status ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
 	public void setMpCounter(TimeCounter mpCounter) { this.mpCounter = mpCounter ;}
 	public void setActionCounter(TimeCounter actionCounter) { this.actionCounter = actionCounter ;}	
@@ -189,6 +195,97 @@ public abstract class LiveBeing
 	
 	public void resetAction() { currentAction = null ;}
 	public void resetBattleAction() { currentAtkType = null ;}
+
+	
+	public void inflictStatus(Attributes att, double intensity, int duration)
+	{
+		if (Attributes.phyAtk.equals(att))
+		{
+			BA.getPhyAtk().incBonus(2) ;
+		}
+		status.get(att).inflictStatus(intensity, duration);
+	}
+	public void resetStatus()
+	{
+		for (Attributes att : Attributes.values())
+		{
+			status.get(att).reset() ;
+		}
+	}
+	public void finishStatus()
+	{
+		for (Attributes att : Attributes.values())
+		{
+			switch (att)
+			{			
+				case phyAtk:
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					{
+						BA.getPhyAtk().incBonus(-status.get(att).getIntensity()) ;
+						status.get(att).reset() ;
+					}
+					continue ;
+			
+				case magAtk:
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					{
+						BA.getMagAtk().incBonus(-status.get(att).getIntensity()) ;
+						status.get(att).reset() ;
+					}
+					continue ;
+					
+				case magDef:
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					{
+						BA.getMagDef().incBonus(-status.get(att).getIntensity()) ;
+						status.get(att).reset() ;
+					}
+					continue ;
+					
+				case phyDef:
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					{
+						BA.getPhyDef().incBonus(-status.get(att).getIntensity()) ;
+						status.get(att).reset() ;
+					}
+					continue ;
+					
+				case dex:
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					{
+						BA.getDex().incBonus(-status.get(att).getIntensity()) ;
+						status.get(att).reset() ;
+					}
+					continue ;
+					
+				case agi:
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					{
+						BA.getAgi().incBonus(-status.get(att).getIntensity()) ;
+						status.get(att).reset() ;
+					}
+					continue ;
+					
+				case atkSpeed:
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					{
+						BA.getAtkSpeed().incBonus(-status.get(att).getIntensity()) ;
+						battleActionCounter.setDuration(BA.TotalAtkSpeed()) ;
+						status.get(att).reset() ;
+					}
+					continue ;
+					
+				case stun, block, blood, poison, silence:
+					if (!status.get(att).isActive())
+					{
+						status.get(att).reset() ;
+					}
+					continue ;
+					
+				default: continue ;
+			}
+		}
+	}
 	
 	public PersonalAttributes getPA() {return PA ;}
 	public void setPA(PersonalAttributes pA) { PA = pA ;}
@@ -352,11 +449,6 @@ public abstract class LiveBeing
 			PA.getMp().incCurrentValue(1) ;
 			mpCounter.start() ;
 		}
-		if (atkSpeedBonusCounter.finished())
-		{
-			battleActionCounter.setDuration(battleActionCounter.getDuration()*1.2) ;
-			atkSpeedBonusCounter.reset() ;
-		}
 		if (!(this instanceof Creature))
 		{
 			if (satiationCounter.finished())
@@ -477,8 +569,8 @@ public abstract class LiveBeing
 	}
 	
 	public boolean canAtk() {return battleActionCounter.finished() & !isStun() ;}
-	public boolean isStun() { return BA.getStatus().get(Attributes.stun).isActive() ;}
-	public boolean isSilent() {return BA.getStatus().get(Attributes.silence).isActive() ;}
+	public boolean isStun() { return status.get(Attributes.stun).isActive() ;}
+	public boolean isSilent() {return status.get(Attributes.silence).isActive() ;}
 	public boolean isDefending()
 	{
 		if (combo == null) { return false ;}
@@ -697,8 +789,8 @@ public abstract class LiveBeing
 	{
 		int bloodDamage = 0, poisonDamage = 0 ;
 		double bloodMult = 1, poisonMult = 1 ;
-		LiveBeingStatus bloodStatus = BA.getStatus().get(Attributes.blood) ;
-		LiveBeingStatus poisonStatus = BA.getStatus().get(Attributes.poison) ;
+		LiveBeingStatus bloodStatus = status.get(Attributes.blood) ;
+		LiveBeingStatus poisonStatus = status.get(Attributes.poison) ;
 		if (this instanceof Player & job == 4)
 		{
 			poisonMult += -0.1 * spells.get(13).getLevel() ;
@@ -730,7 +822,7 @@ public abstract class LiveBeing
 		
 		PA.getLife().decTotalValue(bloodDamage + poisonDamage) ;	
 	}
-	
+		
 	public void displayStatus(DrawPrimitives DP)
 	{
 		Point offset = new Point(-size.width / 2 + 4, size.height / 2 + 4) ;
@@ -738,9 +830,9 @@ public abstract class LiveBeing
 		
 		for (Attributes att : Attributes.values())
 		{
-			if (!BA.getStatus().get(att).isActive()) { continue ;}
+			if (!status.get(att).isActive()) { continue ;}
 			
-			BA.getStatus().get(att).display(imgPos, size, dir, DP) ;
+			status.get(att).display(imgPos, size, dir, DP) ;
 			imgPos.y += 22 ;
 		}
 	}
