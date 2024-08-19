@@ -170,7 +170,6 @@ public class BagWindow extends GameWindow
 			if (action.equals(stdExit) | action.equals(stdReturn))
 			{
 				menuDown() ;
-				setItem(0) ;
 			}
 		}
 	}
@@ -530,20 +529,6 @@ public class BagWindow extends GameWindow
 		Map<Item, Integer> allItems = getAllItems() ;
 
 		return qtd <= allItems.get(item) ;
-		
-//		if (item instanceof Potion) { return qtd <= pot.get(item) ;}
-//		if (item instanceof Alchemy) { return qtd <= alch.get(item) ;}
-//		if (item instanceof Forge) { return qtd <= forges.get(item) ;}
-//		if (item instanceof PetItem) { return qtd <= petItems.get(item) ;}
-//		if (item instanceof Food) { return qtd <= foods.get(item) ;}
-//		if (item instanceof Arrow) { return qtd <= arrows.get(item) ;}
-//		if (item instanceof Equip) { return qtd <= equips.get(item) ;}
-//		if (item instanceof GeneralItem) { return qtd <= genItems.get(item) ;}
-//		if (item instanceof Fab) { return qtd <= fabItems.get(item) ;}
-//		if (item instanceof QuestItem) { return qtd <= questItems.get(item) ;}
-//
-//		System.out.println("Item procurado na mochila não pertence a uma categoria válida");
-//		return false ;
 	}
 	
 	public boolean hasEnough(Map<Item, Integer> items)
@@ -647,6 +632,7 @@ public class BagWindow extends GameWindow
 		if (!Util.isInside(mousePos, tabPos, Util.getSize(menuImage))) { return ;}
 		
 		item = 0 ;
+		window = 0 ;
 		tab = tabID ;
 	}
 	
@@ -680,7 +666,7 @@ public class BagWindow extends GameWindow
 		for (int i = 0 ; i <= numberItemsDisplayed - 1; i += 1)
 		{
 			int itemID = i + window * numberSlotMax ;
-			Point slotCenter = itemsPos.get(i) ; // calcSlotCenter(i) ;
+			Point slotCenter = itemsPos.get(i) ;
 			Point slotCenterLeft = Util.getPosAt(slotCenter, Align.center, Align.centerLeft, Util.getSize(slotImage)) ;
 			String itemText = itemsDisplayed.get(i).getName() + " (x " + amountsDisplayed.get(i) + ")" ;
 			Point textPos = Util.Translate(slotCenterLeft, slotImage.getWidth(null) + 5, 0) ;
@@ -694,7 +680,6 @@ public class BagWindow extends GameWindow
 		
 		if (0 < numberItemsDisplayed)
 		{
-			// TODO corrigir bug ao clicar com botão direito com mochila aberta. Window = -1
 			Item selectedItem = itemsDisplayed.get(item - window * numberSlotMax) ;
 			if (selectedItem instanceof Equip || selectedItem instanceof GeneralItem)
 			{

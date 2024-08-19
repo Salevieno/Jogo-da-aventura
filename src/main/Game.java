@@ -1244,7 +1244,7 @@ public class Game extends JPanel
 			{
 				player.setCurrentAction("MouseRightClick") ;
         		player.setPos(mousePos) ;
-        		player.inflictStatus(Attributes.silence, 1, 10);
+//        		player.inflictStatus(Attributes.silence, 1, 10);
         		if (pet != null)
         		{
         			pet.setPos(player.getPos()) ;
