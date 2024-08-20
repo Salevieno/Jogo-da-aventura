@@ -999,6 +999,7 @@ public class Game extends JPanel
 //
     	player.getBag().add(Equip.getAll()[0], 20) ;
     	player.getBag().add(Equip.getAll()[1], 20) ;
+    	player.getBag().add(Equip.getAll()[2], 20) ;
     	player.getBag().add(Equip.getAll()[100], 20) ;
     	player.getBag().add(Equip.getAll()[102], 20) ;
     	for (QuestSkills skill : QuestSkills.values())

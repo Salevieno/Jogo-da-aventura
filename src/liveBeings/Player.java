@@ -387,9 +387,6 @@ public class Player extends LiveBeing
 		return true ;
 	}
 
-	
-//	private Point feetPos() {return new Point(pos.x, pos.y) ;}	
-
 	public Creature closestCreatureInRange()
 	{			
 		
@@ -696,19 +693,8 @@ public class Player extends LiveBeing
 		
 	}
 
-	private void dig()
+	private Item determineDiggedItem()
 	{
-
-		if (DiggingGif.isActive()) { return ;}
-		
-		DiggingGif.start(pos, Align.center) ;
-		
-		if (!DiggingGif.isDonePlaying()) { return ;}
-				
-		setState(LiveBeingStates.idle) ;
-		
-		if (map.getDiggingItems().isEmpty()) { return ;}
-		
 		List<Item> listItems = new ArrayList<Item>(map.getDiggingItems().keySet()) ;
 		List<Double> listChances = new ArrayList<Double>(map.getDiggingItems().values()) ;
 
@@ -723,8 +709,52 @@ public class Player extends LiveBeing
 				}
 			}
 		}
-		bag.add(listItems.get(itemID), 1) ;
-		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.2), listItems.get(itemID).getName(), Game.colorPalette[0]}) ;;
+		
+		return listItems.get(itemID) ;
+	}
+	
+	private void dig()
+	{
+
+		if (DiggingGif.isActive()) { return ;}
+		
+		DiggingGif.start(pos, Align.center) ;
+		
+		if (!DiggingGif.isDonePlaying()) { return ;}
+				
+		setState(LiveBeingStates.idle) ;
+		
+		if (map.getDiggingItems().isEmpty()) { return ;}
+		
+//		List<Item> listItems = new ArrayList<Item>(map.getDiggingItems().keySet()) ;
+//		List<Double> listChances = new ArrayList<Double>(map.getDiggingItems().values()) ;
+//
+//		int itemID = Util.randomFromChanceList(listChances) ;
+//		if (job == 4 & 1 <= spells.get(6).getLevel())
+//		{
+//			while (3 <= listChances.get(itemID))
+//			{
+//				if (Util.chance(0.04 * spells.get(6).getLevel()))
+//				{
+//					itemID = Util.randomFromChanceList(listChances) ;
+//				}
+//			}
+//		}
+		
+		Item diggedItem = determineDiggedItem() ;
+		
+		bag.add(diggedItem, 1) ;
+		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.2), diggedItem.getName(), Game.colorPalette[0]}) ;
+		
+		if (elem[4] == Elements.earth)
+		{
+			
+			Item diggedItem2 = determineDiggedItem() ;
+			
+			bag.add(diggedItem2, 1) ;
+			Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.25), diggedItem2.getName(), Game.colorPalette[0]}) ;
+			
+		}
 
 	}
 	
@@ -1653,15 +1683,23 @@ public class Player extends LiveBeing
 
 
 	
-	public void receiveSuperElementEffect(Elements elem)
+	public void applySuperElementEffect(Elements elem, boolean apply)
 	{
-
-		// TODO superelementos de: planta, terra
 		// TODO pro superelementos luz: ilumina a caverna, escuridão: aura escura, trovão e neve
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.2), "Super element " + elem, Game.colorPalette[7]}) ;
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Game.colorPalette[7]}) ;
 		switch (elem)
 		{
-			case fire: bag.setClothOnFire() ; return ;
+			case fire:
+				if (!apply) { return ;}
+				
+				bag.setClothOnFire() ;
+				return ;
+				
+			case plant:
+				double mult = apply ? 1.5 : 1 / 1.5 ;
+				satiationCounter.setDuration(satiationCounter.getDuration() * mult) ;
+				return ;
+			
 			default: return ;
 		}
 	}

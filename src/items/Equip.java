@@ -318,7 +318,7 @@ public class Equip extends Item
 		player.getElem()[4] = player.hasSuperElement() ? player.getElem()[1] : Elements.neutral ;
 		if (player.hasSuperElement())
 		{
-			player.receiveSuperElementEffect(player.getElem()[4]) ;
+			player.applySuperElementEffect(player.getElem()[4], true) ;
 		}
 	}
 	
@@ -333,7 +333,10 @@ public class Equip extends Item
 			applyBonus(player.getPA(), player.getBA(), player.getEquips()[0], -setBonus) ;
 			applyBonus(player.getPA(), player.getBA(), player.getEquips()[1], -setBonus) ;
 			applyBonus(player.getPA(), player.getBA(), player.getEquips()[2], -setBonus) ;
-		}		
+		}
+		
+		player.applySuperElementEffect(player.getElem()[4], false) ;
+		player.getElem()[4] = Elements.neutral ;
 		
 		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Game.colorPalette[0]}) ;
 		player.getEquips()[type] = null ;
