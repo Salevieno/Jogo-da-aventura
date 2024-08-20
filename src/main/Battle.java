@@ -35,7 +35,7 @@ public abstract class Battle
 	
 	public static final Clip hitSound ;
 	
-	private static int damageStyle ;
+	public static int damageStyle ;
 	public static final Color phyAtkColor = Game.colorPalette[6] ;
 	public static final Color magAtkColor = Game.colorPalette[5] ;
 	
@@ -65,15 +65,15 @@ public abstract class Battle
 	{
 		damageStyle = newDamageStyle ;
 	}
-	
-	private static void playDamageAnimation(LiveBeing receiver, AtkResults atkResults)
-	{
-		
-		if (atkResults.getAtkType() == null) { return ;}
-		
-		Animation.start(AnimationTypes.damage, new Object[] {receiver.headPos(), damageStyle, atkResults});
-		
-	}
+//	
+//	public static void playDamageAnimation(LiveBeing receiver, AtkResults atkResults)
+//	{
+//		
+//		if (atkResults.getAtkType() == null) { return ;}
+//		
+//		Animation.start(AnimationTypes.damage, new Object[] {receiver.headPos(), damageStyle, atkResults});
+//		
+//	}
 	
 	public static double basicElemMult(Elements atk, Elements def) { return ElemMult[ElemID.indexOf(atk)][ElemID.indexOf(def)] ;}
 	
@@ -202,7 +202,8 @@ public abstract class Battle
 			((Player) attacker).getStatistics().updateInflicedStatus(atkResults.getStatus());
 		}
 //		receiver.getBA().getStatus().receiveStatus(atkResults.getStatus()) ;
-		playDamageAnimation(receiver, atkResults) ;
+//		playDamageAnimation(receiver, atkResults) ;
+		receiver.playDamageAnimation(damageStyle, atkResults, Game.colorPalette[7]) ;
 		startAtkAnimations(attacker, atkResults.getAtkType()) ;
 	}
 	
@@ -427,7 +428,7 @@ public abstract class Battle
 		
 		Log.atkResults(attacker, atkResults) ;
 		
-		playDamageAnimation(receiver, atkResults) ;
+		receiver.playDamageAnimation(damageStyle, atkResults, Game.colorPalette[7]) ;
 //		startAtkAnimations(attacker, atkType) ;
 
 		if (Game.getPlayer().getSettings().getSoundEffectsAreOn())

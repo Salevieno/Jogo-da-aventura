@@ -1633,7 +1633,10 @@ public class Player extends LiveBeing
 			Point ridePos = Util.Translate(pos, -RidingImage.getWidth(null) / 2, RidingImage.getHeight(null) / 2) ;
 			DP.drawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
 		}
-		
+		if (isDrunk())
+		{
+			displayDrunk(DP) ;
+		}
 		movingAni.displayMoving(direction, pos, angle, Scale.unit, Align.bottomCenter, DP) ;
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
@@ -1653,13 +1656,32 @@ public class Player extends LiveBeing
 	public void receiveSuperElementEffect(Elements elem)
 	{
 
-		// TODO superelementos de: planta, terra, luz: ilumina a caverna, escuridão: aura escura, trovão e neve
+		// TODO superelementos de: planta, terra
+		// TODO pro superelementos luz: ilumina a caverna, escuridão: aura escura, trovão e neve
 		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.2), "Super element " + elem, Game.colorPalette[7]}) ;
 		switch (elem)
 		{
 			case fire: bag.setClothOnFire() ; return ;
 			default: return ;
 		}
+	}
+
+
+	public void updateBloodAndPoisonStatistics()
+	{
+		double bloodMult = 1, poisonMult = 1 ;
+		if (job == 4)
+		{
+			poisonMult += -0.1 * spells.get(13).getLevel() ;
+		}
+		int bloodDamage = (int) (status.get(Attributes.blood).getIntensity() * bloodMult) ;
+		int poisonDamage = (int) (status.get(Attributes.poison).getIntensity() * poisonMult) ;
+		if (job == 4 & 1 < spells.get(12).getLevel())
+		{
+			PA.getLife().incCurrentValue(bloodDamage) ;
+		}
+		stats.updateInflictedBlood(bloodDamage) ;		
+		stats.updateInflictedPoison(poisonDamage) ;
 	}
 	
 }

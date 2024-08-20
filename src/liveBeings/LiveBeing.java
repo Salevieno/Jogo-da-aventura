@@ -22,6 +22,7 @@ import libUtil.Align;
 import libUtil.Util;
 import main.AtkResults;
 import main.AtkTypes;
+import main.Battle;
 import main.Game;
 import maps.Continents;
 import maps.GameMap;
@@ -69,6 +70,7 @@ public abstract class LiveBeing
 	protected AttributesWindow attWindow ;
 	
 	public static final Image AttImage = UtilS.loadImage("\\Player\\" + "Attributes.png") ;
+	public static final Image drunkImage = UtilS.loadImage("\\Status\\" + "Drunk.png") ;
 	public static final Image defendingImage = UtilS.loadImage("\\Battle\\" + "ShieldIcon.png") ;
 	public static final Image powerBarImage = UtilS.loadImage("PowerBar.png") ;
 	public static final String[] BattleKeys = new String[] {"Y", "U"} ;	
@@ -482,7 +484,7 @@ public abstract class LiveBeing
 	
 	public int totalPower()
 	{
-		// TODO - optional consider life, dex and agi, special ba, element mult, mp with spells and items
+		// TODO optional - consider life, dex and agi, special ba, element mult, mp with spells and items
 		// Dano = nHits . hitRate . (PhyAtkRate . PhyDam + MagAtkRate . MagDam + BloodRate . BloodDam + PoisonRate . PoisonDam)
 		double maxPhyAtkPossible = BA.getPhyAtk().getTotal() ;
 		double maxMagAtkPossible = BA.getMagAtk().getTotal() ;
@@ -582,6 +584,7 @@ public abstract class LiveBeing
 		}
 		return usedDef() ;
 	}
+	public boolean isDrunk() {return drunk.isActive() ;}
 	public boolean isInCloseRange(Point target) {return pos.distance(target) <= size.getWidth() ;}
 	public boolean isInRange(Point target) {return pos.distance(target) <= range ;}
 	public boolean isTouching(GroundTypes groundType) { return UtilS.isTouching(pos, map, groundType) ;}
@@ -619,11 +622,11 @@ public abstract class LiveBeing
 		return null ;
 	}
 	
-	public Point follow(Point userPos, Point target, int step, int minDist)
+	public Point follow(Point userPos, Point target, int minDist)
 	{
 		
 		Point pos = new Point(userPos) ;
-		step = 1 ; // TODO step is ignored
+		int step = 1 ;
 		double distY = Math.abs(pos.y - target.y) ;
 		double distX = Math.abs(pos.x - target.x) ;
 
@@ -785,7 +788,7 @@ public abstract class LiveBeing
 		PA.getLife().decTotalValue(damage) ;
 	}
 	
-	public void takeBloodAndPoisonDamage(LiveBeing attacker)
+	public void takeBloodAndPoisonDamage()
 	{
 		int bloodDamage = 0, poisonDamage = 0 ;
 		double bloodMult = 1, poisonMult = 1 ;
@@ -798,31 +801,30 @@ public abstract class LiveBeing
 		if (bloodStatus.isActive() & bloodStatus.getCounter().crossedTime(0.5))
 		{
 			bloodDamage = (int) (bloodStatus.getIntensity() * bloodMult) ;
-			// TODO animation showing damage
-			// TODO move this statistics part and remove attribute attacker
-			if (attacker instanceof Player)
-			{
-				Player player = ((Player) attacker) ;
-				if (player.getJob() == 4 & 1 < player.getSpells().get(12).getLevel())
-				{
-					player.getLife().incCurrentValue(bloodDamage) ;
-				}
-				player.getStatistics().updateInflictedBlood(bloodDamage) ;
-			}
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedBlood(bloodDamage, BA.getBlood().TotalDef()) ;}
+			playDamageAnimation(Battle.damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, bloodDamage, null), Game.colorPalette[7]) ;
 		}
 		if (poisonStatus.isActive() & poisonStatus.getCounter().crossedTime(0.5))
 		{
 			poisonDamage = (int) (poisonStatus.getIntensity() * poisonMult) ;
-			if (attacker instanceof Player) {((Player) attacker).getStatistics().updateInflictedPoison(poisonDamage) ;}
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedPoison(poisonDamage, BA.getPoison().TotalDef()) ;}
+			playDamageAnimation(Battle.damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, poisonDamage, null), Game.colorPalette[18]) ;
 		}
 		
 		if (bloodDamage + poisonDamage <= 0) { return ;}
 		
-		PA.getLife().decTotalValue(bloodDamage + poisonDamage) ;	
+		PA.getLife().decTotalValue(bloodDamage + poisonDamage) ;
 	}
+
+	public void playDamageAnimation(int damageStyle, AtkResults atkResults, Color color)
+	{
 		
+		if (atkResults.getAtkType() == null) { return ;}
+		
+		Animation.start(AnimationTypes.damage, new Object[] {headPos(), damageStyle, atkResults, color});
+		
+	}
+	
 	public void displayStatus(DrawPrimitives DP)
 	{
 		Point offset = new Point(-size.width / 2 + 4, size.height / 2 + 4) ;
@@ -835,6 +837,13 @@ public abstract class LiveBeing
 			status.get(att).display(imgPos, size, dir, DP) ;
 			imgPos.y += 22 ;
 		}
+	}
+	
+	public void displayDrunk(DrawPrimitives DP)
+	{
+		Point offset = new Point(size.width / 2 + drunkImage.getWidth(null) / 2 + 2, defendingImage.getHeight(null) + 2) ;
+		Point imagePos = Util.Translate(center(), -offset.x, 0) ;
+		DP.drawImage(drunkImage, imagePos, Align.center) ;
 	}
 	
 	public void displayDefending(DrawPrimitives DP)

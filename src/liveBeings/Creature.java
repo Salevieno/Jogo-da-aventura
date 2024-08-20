@@ -156,6 +156,10 @@ public class Creature extends LiveBeing
 		{
 			type.movingAni.displayIdle(pos, 0, scale, Align.center, DP) ;
 		}
+		if (isDrunk())
+		{
+			displayDrunk(DP) ;
+		}
 //		displayAttributes(0, DP) ;
 		displayStatus(DP) ;
 	}
@@ -201,7 +205,7 @@ public class Creature extends LiveBeing
 	}
 	
 	public String chooseTarget(boolean playerIsAlive, boolean petIsAlive)
-	{// TODO - optional retornar liveBeing
+	{// TODO optional - retornar liveBeing
 		if (!playerIsAlive & !petIsAlive) { return null ;}		
 		if (!playerIsAlive) { return "pet"  ;}
 		if (!petIsAlive) { return "player" ;}
@@ -224,7 +228,7 @@ public class Creature extends LiveBeing
 		
 		if (follow)
 		{
-			setPos(follow(pos, PlayerPos, step, range)) ;
+			setPos(follow(pos, PlayerPos, range)) ;
 			return ;
 		}
 
@@ -242,21 +246,12 @@ public class Creature extends LiveBeing
 	{
 		List<Double> modifiedGenes = type.getGenes().getModifiedGenes(playerMove) ;
 
-		// TODO restore
-//		int move = Util.randomFromChanceList(modifiedGenes) ;
-//		switch (move)
-//		{
-//			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
-//			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
-//			case 2:	setCurrentAction(String.valueOf(Util.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
-//		}
-		
-		int move = Util.randomIntFromTo(0, 1) ;
+		int move = Util.randomFromChanceList(modifiedGenes) ;
 		switch (move)
 		{
-			case 0: setCurrentAction("Y") ; break ;
-			case 1: setCurrentAction("U") ; break ;
-			
+			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
+			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
+			case 2:	setCurrentAction(String.valueOf(Util.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
 		}
 
 	}

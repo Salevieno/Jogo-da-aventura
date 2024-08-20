@@ -42,7 +42,6 @@ public class Pet extends LiveBeing
 	private Color color ;
 	private int job ;
 	private int spellPoints ;
-	private double[] ElemMult ;		// [Neutral, Water, Fire, Plant, Earth, Air, Thunder, Light, Dark, Snow] TODO pq só o pet tem isso?
 	private PetItem equip ;
 	private int alchBuffId ;
 	private AttributeIncrease attInc ;
@@ -86,7 +85,6 @@ public class Pet extends LiveBeing
 
 
 		startCounters() ;
-		ElemMult = new double[10] ;
 		attInc = calcAttributeIncrease(job) ;
 		
 	}
@@ -160,7 +158,6 @@ public class Pet extends LiveBeing
 	public BattleSpecialAttributeWithDamage getBlood() {return BA.getBlood() ;}
 	public BattleSpecialAttributeWithDamage getPoison() {return BA.getPoison() ;}
 	public BattleSpecialAttribute getSilence() {return BA.getSilence() ;}
-	public double[] getElemMult() {return ElemMult ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public BasicAttribute getSatiation() {return PA.getSatiation() ;}
 	public PetItem getEquip() { return equip ;}
@@ -189,7 +186,7 @@ public class Pet extends LiveBeing
 	{
 		if (opponent != null)
 		{
-			return follow(pos, opponent.getPos(), step, step) ;
+			return follow(pos, opponent.getPos(), step) ;
 		}
 		else if (closeToPlayer(playerPos))
 		{
@@ -203,7 +200,7 @@ public class Pet extends LiveBeing
 		}
 		else
 		{
-			return follow(pos, playerPos, step, step) ;
+			return follow(pos, playerPos, step) ;
 		}
 	}
 	
@@ -382,6 +379,11 @@ public class Pet extends LiveBeing
 	public void display(Point pos, Scale scale, DrawPrimitives DP)
 	{
 		movingAni.displayMoving(dir, pos, Draw.stdAngle, scale, Align.bottomCenter, DP) ;
+
+		if (isDrunk())
+		{
+			displayDrunk(DP) ;
+		}
 		
 		displayStatus(DP) ;
 	}

@@ -61,7 +61,8 @@ public class Animation
 					Point pos = (Point) vars[0] ;
 					int style = (int) vars[1] ;
 					AtkResults atkResults = (AtkResults) vars[2] ;
-					Draw.damageAnimation(pos, atkResults, counter, style) ;
+					Color color = (Color) vars[3] ;
+					Draw.damageAnimation(pos, atkResults, counter, style, color) ;
 				} ;
 				
 			case 1 :

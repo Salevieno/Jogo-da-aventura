@@ -224,7 +224,7 @@ public abstract class Draw
 		time(sky) ;
 	}
 
-	public static void damageAnimation(Point initialPos, AtkResults atkResults, TimeCounter counter, int style)
+	public static void damageAnimation(Point initialPos, AtkResults atkResults, TimeCounter counter, int style, Color color)
 	{
 		AtkEffects effect = atkResults.getEffect() ;
 		
@@ -251,7 +251,7 @@ public abstract class Draw
 
 		Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
 		Point currentPos = Util.Translate(initialPos, trajectory) ;
-		Color textColor = atkResults.getAtkType().equals(AtkTypes.magical) ? Battle.magAtkColor : Battle.phyAtkColor ;
+		Color textColor = color != null ? color : (atkResults.getAtkType().equals(AtkTypes.magical) ? Battle.magAtkColor : Battle.phyAtkColor) ;
 		DP.drawText(currentPos, Align.center, stdAngle, message, font, textColor) ;
 		
 	}

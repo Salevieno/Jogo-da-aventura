@@ -87,7 +87,6 @@ public class Game extends JPanel
 {
 	// TODO arte - soundtrack
 	// TODO arquivos - nomes das criaturas
-	// TODO drunk icon
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] { "Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A" } ;
@@ -765,7 +764,7 @@ public class Game extends JPanel
 		List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
 		for (Creature creature : creaturesInMap)
 		{
-			creature.takeBloodAndPoisonDamage(null) ;
+			creature.takeBloodAndPoisonDamage() ;
 			if (creature.isMoving())
 			{
 				creature.move(player.getPos(), player.getMap()) ;
@@ -788,7 +787,7 @@ public class Game extends JPanel
 	{
 		if (!pet.isAlive()) { return ;}
 
-		pet.takeBloodAndPoisonDamage(null) ;
+		pet.takeBloodAndPoisonDamage() ;
 		pet.updateCombo() ;
 		pet.think(player.isInBattle(), player.getPos()) ;
 		pet.act(player) ;
@@ -800,7 +799,8 @@ public class Game extends JPanel
 	private void playerActs()
 	{
 
-		player.takeBloodAndPoisonDamage(null) ;
+		player.takeBloodAndPoisonDamage() ;
+		player.updateBloodAndPoisonStatistics() ;
 		
 		if (player.canAct() & player.hasActed())
 		{
@@ -1244,7 +1244,8 @@ public class Game extends JPanel
 			{
 				player.setCurrentAction("MouseRightClick") ;
         		player.setPos(mousePos) ;
-//        		player.inflictStatus(Attributes.silence, 1, 10);
+//        		player.inflictStatus(Attributes.blood, 3, 10);
+//        		player.inflictStatus(Attributes.poison, 2, 6);
         		if (pet != null)
         		{
         			pet.setPos(player.getPos()) ;
