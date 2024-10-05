@@ -30,7 +30,7 @@ public class ElementalWindow extends GameWindow
 	private List<Equip> equipsForElemChange ;
 	private Equip selectedEquip ;
 
-	private static final Point windowPos = Game.getScreen().pos(0.35, 0.21) ;
+	private static final Point windowPos = Game.getScreen().pos(0.35, 0.23) ;
 	private static final List<String> menuTitles = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
 	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Elemental.png") ;
 	private static final int firstSphereID = 390 ;
@@ -151,7 +151,7 @@ public class ElementalWindow extends GameWindow
 			case 3 -> "Elemento mudado com sucesso!" ;
 			default -> "" ;
 		};
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.1, 0.1), message, Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.5, 0.2), message, Game.colorPalette[0]}) ;
 	}
 	
 	public void changeEquipElement(BagWindow bag)

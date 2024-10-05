@@ -290,8 +290,9 @@ public abstract class Draw
 
 		Font smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		
-		DP.drawImage(Animation.messageBox, pos, Align.topCenter) ;
-		DP.drawText(Util.Translate(pos, 5 - Animation.messageBox.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
+		pos = Util.Translate(pos, 0, (int) (-30 * counter.rate())) ;
+		DP.drawImage(Animation.messageBox, pos, stdAngle, Scale.unit, Align.topCenter, 0.9) ;
+		DP.drawText(Util.Translate(pos, 5 - Animation.messageBox.getWidth(null) / 2, 20), Align.centerLeft, stdAngle, text, smallFont, color) ;
 		
 	}
 

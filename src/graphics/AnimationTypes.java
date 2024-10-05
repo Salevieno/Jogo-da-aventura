@@ -7,7 +7,7 @@ public enum AnimationTypes
 	pterodactile(20),
 	fishing(5),
 	levelUp(12),
-	message(2),
+	message(4),
 	obtainedItem(2) ;
 	
 	private double duration ;
