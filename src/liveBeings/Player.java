@@ -178,8 +178,8 @@ public class Player extends LiveBeing
 		actionCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[37])) ;
 		satiationCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[38])) ;
 		thirstCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[39])) ;
-		mpCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[40])) ;
-		battleActionCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[41])) ;
+		mpCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[40]) / 1.0) ;
+		battleActionCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[41]) / 1.0) ;
 		stepCounter = new TimeCounter(stepDuration) ;
 		combo = new ArrayList<>() ;
 	    
@@ -1631,7 +1631,7 @@ public class Player extends LiveBeing
 		newPlayer.setPA(PersonalAttributes.fromJson(PAData));
 		newPlayer.setBA(BattleAttributes.fromJson(BAData));
 		
-		Map<Attributes, LiveBeingStatus> status = new HashMap<>() ; 
+//		Map<Attributes, LiveBeingStatus> status = new HashMap<>() ; 
 //		status = LiveBeingStatus.fromJson((JSONObject) jsonData.get("status")) ;
 		
 		return newPlayer ;

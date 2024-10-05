@@ -288,8 +288,8 @@ public class NPCs
 			case elemental:
 			{
 				List<Equip> listEquips = new ArrayList<Equip> (playerBag.getEquip().keySet()) ;
-				((ElementalWindow) window).setEquipsForElemChange(listEquips) ;
-				((ElementalWindow) window).setSpheres(ElementalWindow.spheresInBag(playerBag)) ;
+
+				((ElementalWindow) window).setItems(listEquips, ElementalWindow.spheresInBag(playerBag)) ;
 				
 				elementalAction(player, playerBag, (ElementalWindow) window, player.getCurrentAction(), DP) ;
 

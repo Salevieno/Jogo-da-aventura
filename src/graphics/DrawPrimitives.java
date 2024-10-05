@@ -220,6 +220,10 @@ public class DrawPrimitives
 	{
 		drawImage(image, pos, angle, scale, false, false, align, 1) ;
 	}
+	public void drawImage(Image image, Point pos, double angle, Scale scale, Align align, double alpha)
+	{
+		drawImage(image, pos, angle, scale, false, false, align, alpha) ;
+	}
 	public void drawImage(Image image, Point pos, double angle, Scale scale, boolean flipH, boolean flipV, Align align, double alpha)
 	{       
 		if (image == null) { System.out.println("Tentando desenhar imagem nula na pos " + pos) ; return ; }

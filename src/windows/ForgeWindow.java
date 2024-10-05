@@ -72,11 +72,11 @@ public class ForgeWindow extends GameWindow
 	{
 		if (action == null) { return ;}
 		
-		if (action.equals(stdWindowDown))
+		if (action.equals(stdMenuDown))
 		{
 			itemUp() ;
 		}
-		if (action.equals(stdWindowUp))
+		if (action.equals(stdMenuUp))
 		{
 			itemDown() ;
 		}
@@ -178,7 +178,7 @@ public class ForgeWindow extends GameWindow
 		
 		if (itemsOnWindow.size() == 0) { item = -1 ;}
 		
-		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
+		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
 		
 		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[1]) ;
 		DP.drawText(messagePos, Align.center, angle, messages.get(0), stdFont, stdColor) ;
@@ -190,9 +190,9 @@ public class ForgeWindow extends GameWindow
 			if (itemsOnWindow.get(i) == null) { continue ;}
 			
 			Point namePos = Util.Translate(itemPos, 14, 0) ;
-			Point runePos = Util.Translate(itemPos, 154, 0) ;
-			Point pricePos = Util.Translate(itemPos, 184, 0) ;
-			Point coinPos = Util.Translate(itemPos, 194, 0) ;
+			Point runePos = Util.Translate(itemPos, 160, 0) ;
+			Point pricePos = Util.Translate(itemPos, 185, 0) ;
+			Point coinPos = Util.Translate(itemPos, 210, 0) ;
 			
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(200, 10), i) ;
 			

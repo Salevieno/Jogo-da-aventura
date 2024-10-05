@@ -220,6 +220,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		DP.drawImage(critIcon, Util.Translate(windowPos, 35, 333), Scale.unit, Align.center) ;
 		DP.drawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
 
+		// Power bar
 		Point powerPos = Util.Translate(windowPos, 260, 300) ;
 		player.displayPowerBar(powerPos, DP) ;
 		
@@ -310,7 +311,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Point titlesPos = Util.Translate(windowPos, size.width / 2, 35 + 12 + 6 - 2) ;
 		Point subTitlesPos = Util.Translate(windowPos, 21 + 48, 195 + 25 + 6) ;
 		Point topLeft1 = Util.Translate(windowPos, 35 + 16, 35 + 31 + 10) ;
-		Point topLeft2 = Util.Translate(windowPos, 32, 193 + 12) ;
+		Point topLeft2 = Util.Translate(windowPos, 32 + 6, 193 + 12) ;
 		Point topLeft3 = Util.Translate(windowPos, 32 + 16, 195 + 25 + 27) ;
 		
 		// Titles
@@ -318,8 +319,8 @@ public class PlayerAttributesWindow extends AttributesWindow
 
 		// subtitles
 		subTitles.forEach(sub -> {
-			DP.drawText(subTitlesPos, Align.topCenter, Draw.stdAngle, sub, font, textColor) ;
-			subTitlesPos.x += 2 * 21 ;
+			DP.drawText(subTitlesPos, Align.center, Draw.stdAngle, sub, font, textColor) ;
+			subTitlesPos.x += 96 ;
 		}) ;
 		
 		// number stats
@@ -346,8 +347,8 @@ public class PlayerAttributesWindow extends AttributesWindow
 		i = 0 ;
 		for (String key : maxStats.keySet())
 		{
-			String text = key + ": " + String.valueOf(Util.Round((double) maxStats.get(key), 1)) ;
-			Point textPos = Util.Translate(topLeft2, (i + 1) * 70, 0) ;
+			String text = "dano " + key + " máx: " + String.valueOf(Util.Round((double) maxStats.get(key), 1)) ;
+			Point textPos = Util.Translate(topLeft2, i * 126, 0) ;
 			DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, text, font, textColor) ;
 			i += 1 ;
 		}

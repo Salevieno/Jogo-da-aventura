@@ -9,10 +9,7 @@ import java.util.List;
 import javax.sound.sampled.Clip;
 
 import attributes.Attributes;
-import graphics.Animation;
-import graphics.AnimationTypes;
 import graphics.DrawPrimitives;
-import libUtil.Align;
 import libUtil.Util;
 import liveBeings.AttackModifiers;
 import liveBeings.Creature;
@@ -25,7 +22,6 @@ import simulations.EvolutionSimulation;
 import utilities.AtkEffects;
 import utilities.Elements;
 import utilities.GameStates;
-import utilities.Log;
 
 public abstract class Battle 
 {
@@ -203,7 +199,7 @@ public abstract class Battle
 		}
 //		receiver.getBA().getStatus().receiveStatus(atkResults.getStatus()) ;
 //		playDamageAnimation(receiver, atkResults) ;
-		receiver.playDamageAnimation(damageStyle, atkResults, Game.colorPalette[7]) ;
+//		receiver.playDamageAnimation(damageStyle, atkResults, Game.colorPalette[7]) ;
 		startAtkAnimations(attacker, atkResults.getAtkType()) ;
 	}
 	
@@ -336,6 +332,7 @@ public abstract class Battle
 			{
 				int spellID = Player.SpellKeys.indexOf(attacker.getCurrentAction()) ;
 				Spell spell = attacker.getActiveSpells().get(spellID) ;
+				if (!attacker.canUseSpell(spell)) { System.out.println(attacker.getName() + ": trying to use spell. But no can use, baby!") ;}
 				if (attacker.canUseSpell(spell))
 				{
 					yield attacker.useSpell(spell, receiver);
@@ -398,7 +395,6 @@ public abstract class Battle
 		
 		if (!attacker.isAlive()) { return ;}
 		
-//		receiver.takeBloodAndPoisonDamage(attacker, attacker.getBA().getBlood().TotalAtk(), attacker.getBA().getPoison().TotalAtk());
 		attacker.drawTimeBar("Left", Game.colorPalette[13], DP) ;
 
 //		playAtkAnimations(attacker, receiver.center(), DP) ;
@@ -415,7 +411,6 @@ public abstract class Battle
 		}
 
 		if (!attacker.hasActed()) { return ;}
-		
 		AtkTypes atkType = atkTypeFromAction(attacker) ;
 		attacker.setCurrentAtkType(atkType) ;
 		AtkResults atkResults = performAtk(atkType, attacker, receiver) ;
@@ -426,10 +421,11 @@ public abstract class Battle
 		attacker.updateCombo() ;
 		attacker.resetBattleActions() ;
 		
-		Log.atkResults(attacker, atkResults) ;
+//		Log.atkResults(attacker, atkResults) ;
+		EvolutionSimulation.updateBattleStats(attacker, receiver, atkResults) ;
 		
 		receiver.playDamageAnimation(damageStyle, atkResults, Game.colorPalette[7]) ;
-//		startAtkAnimations(attacker, atkType) ;
+		startAtkAnimations(attacker, atkType) ;
 
 		if (Game.getPlayer().getSettings().getSoundEffectsAreOn())
 		{
@@ -454,14 +450,14 @@ public abstract class Battle
 		if (pet != null) { runTurn(pet, creature, DP) ;}
 		runTurn(creature, creatureTarget, DP) ;
 		
-		if (!isOver(player, pet, creature)) { return ;}
+//		if (!isOver(player, pet, creature)) { return ;}
 		
-		finishBattle(player, pet, creature) ;
+//		finishBattle(player, pet, creature) ;
 	}
 		
 	
 	
-	private static void finishBattle(Player player, Pet pet, Creature creature)
+	public static void finishBattle(Player player, Pet pet, Creature creature)
 	{
 		if (Game.getState().equals(GameStates.simulation))
 		{

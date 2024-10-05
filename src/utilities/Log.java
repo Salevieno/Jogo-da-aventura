@@ -6,6 +6,7 @@ import graphics.Animation;
 import graphics.Gif;
 import items.Item;
 import liveBeings.Buff;
+import liveBeings.CreatureType;
 import liveBeings.LiveBeing;
 import liveBeings.Spell;
 import main.AtkResults;
@@ -92,6 +93,13 @@ public abstract class Log
 		System.out.println("attacker.actionIsSpell(): " + attacker.actionIsSpell());
 		System.out.println("attacker.isSilent(): " + attacker.isSilent());
 		System.out.println("attacker.usedDef(): " + attacker.usedDef() + "\n");
+	}
+
+	public static void allEntityListsLength()
+	{
+		System.out.println("\n All entity lists length");
+		System.out.println("Animations: " + Animation.getAll().size()) ;
+		System.out.println("Creature types: " + CreatureType.all.size()) ;
 	}
 	
 	public static void __()

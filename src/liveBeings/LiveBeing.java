@@ -362,7 +362,7 @@ public abstract class LiveBeing
 	
 	public void displayPowerBar(Point pos, DrawPrimitives DP)
 	{
-		int maxPower = 2000 ;
+		int maxPower = 10000 ;
 		Color color = Game.colorPalette[6] ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		Dimension barSize = new Dimension(21, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
@@ -459,7 +459,8 @@ public abstract class LiveBeing
 				satiationCounter.start() ;
 				if (PA.getSatiation().getCurrentValue() == 0)
 				{
-					PA.getLife().incCurrentValue(-1) ;
+//					PA.getLife().incCurrentValue(-1) ;
+					takeDamage(1) ;
 				}
 			}
 		}
@@ -472,25 +473,48 @@ public abstract class LiveBeing
 				thirstCounter.start() ;
 				if (PA.getThirst().getCurrentValue() == 0)
 				{
-					PA.getLife().incCurrentValue(-1) ;
+//					PA.getLife().incCurrentValue(-1) ;
+					takeDamage(1) ;
 				}
 			}
 		}
 		
-		if (!isAlive()) { dies() ;}
+//		if (!isAlive()) { dies() ;}
 	}
 	
 	public void resetBattleActions() { battleActionCounter.start() ; }
 	
 	public int totalPower()
 	{
-		// TODO optional - consider life, dex and agi, special ba, element mult, mp with spells and items
+		// TODO optional - consider special ba, element mult, mp with spells and items
 		// Dano = nHits . hitRate . (PhyAtkRate . PhyDam + MagAtkRate . MagDam + BloodRate . BloodDam + PoisonRate . PoisonDam)
-		double maxPhyAtkPossible = BA.getPhyAtk().getTotal() ;
-		double maxMagAtkPossible = BA.getMagAtk().getTotal() ;
-		double maxDamagePossible = Math.max(maxPhyAtkPossible, maxMagAtkPossible) ;
-		double maxDPS = maxDamagePossible / battleActionCounter.getDuration() ;
-		int totalPower = (int) maxDPS ;
+		
+		LiveBeing defender = new Creature(CreatureType.all.get(0)) ;
+
+//		new CreatureType(0, "", 0, new Dimension(0, 0), 60, 0, new Elements[] {Elements.water}, 0, 0, 0, 0, 0, null,
+//				new PersonalAttributes(new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1)),
+//				new BattleAttributes(new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0),
+//						new BasicBattleAttribute(0.1, 0, 0), new BasicBattleAttribute(0, 0, 0),
+//						new BattleSpecialAttribute(0, 0, 0, 0, 0), new BattleSpecialAttribute(0, 0, 0, 0, 0), new BattleSpecialAttributeWithDamage(0, 0, 0, 0, 0, 0, 0, 0, 0), new BattleSpecialAttributeWithDamage(0, 0, 0, 0, 0, 0, 0, 0, 0), new BattleSpecialAttribute(0, 0, 0, 0, 0),
+//						new BasicBattleAttribute(1, 0, 0)),
+//				new ArrayList<>(),
+//				new HashSet<>(),
+//				0, null, new int[] {})
+
+		double attackerAtkRate = 1 ;
+		double defenderAtkRate = 1 ;
+		double critRate = this.getBA().getCritAtk().getTotal() - defender.getBA().getCritDef().getTotal() ;
+		double hitRate = 1 - 1 / (1 + Math.pow(1.1, this.getBA().getDex().getTotal() - defender.getBA().getAgi().getTotal())) ;
+		int phyDamBase = Math.max((int) Util.Round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
+		int phyDamInDefense = Math.max((int) Util.Round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
+		int phyDamCrit = (int) Util.Round(this.getBA().getPhyAtk().getTotal(), 0) ;
+
+
+		double movesPerSec = 1 / this.getBattleActionCounter().getDuration() ;
+		double damAvr = (1 - critRate) * (defenderAtkRate * phyDamBase + (1 - defenderAtkRate) * phyDamInDefense) + critRate * phyDamCrit ;
+		double damPerSec = damAvr * hitRate * attackerAtkRate * movesPerSec ;
+		double timeToWin = defender.getPA().getLife().getMaxValue() / damPerSec ;		
+		int totalPower = (int) (10000 / timeToWin) ;
 		
 		return totalPower ;
 		
@@ -555,9 +579,9 @@ public abstract class LiveBeing
 	public boolean canUseSpell(Spell spell)
 	{
 
-		if (isSilent()) { return false ;}
-		if (!spell.isReady()) { return false ;}
-		if (!hasEnoughMP(spell)) { return false ;}
+		if (isSilent()) { return false ;} // System.out.println(name + " silent") ; 
+		if (!spell.isReady()) { return false ;} // System.out.println(name + " spell not ready") ; 
+		if (!hasEnoughMP(spell)) { return false ;} // System.out.println(name + " not enough mp") ; 
 		
 		return 1 <= spell.getLevel() ;
 		
@@ -786,6 +810,7 @@ public abstract class LiveBeing
 		if (damage <= 0) { return ;}
 		
 		PA.getLife().decTotalValue(damage) ;
+		playDamageAnimation(Battle.damageStyle, new AtkResults(1), Game.colorPalette[7]) ;
 	}
 	
 	public void takeBloodAndPoisonDamage()
@@ -812,14 +837,27 @@ public abstract class LiveBeing
 		}
 		
 		if (bloodDamage + poisonDamage <= 0) { return ;}
+
+		if (this instanceof Player)
+		{
+			System.out.println("blood dam = " + bloodDamage);
+		}
 		
 		PA.getLife().decTotalValue(bloodDamage + poisonDamage) ;
 	}
 
-	public void playDamageAnimation(int damageStyle, AtkResults atkResults, Color color)
+	public void playDamageAnimation(int damageStyle, AtkResults atkResults)
 	{
 		
-		if (atkResults.getAtkType() == null) { return ;}
+		if (atkResults == null) { System.out.println("Playing damage animation with atkResults null") ; return ;}
+		if (atkResults.getAtkType() == null) { System.out.println("Playing damage animation with atkType null") ; return ;}
+		
+		Animation.start(AnimationTypes.damage, new Object[] {headPos(), damageStyle, atkResults, null});
+
+	}
+
+	public void playDamageAnimation(int damageStyle, AtkResults atkResults, Color color)
+	{
 		
 		Animation.start(AnimationTypes.damage, new Object[] {headPos(), damageStyle, atkResults, color});
 		

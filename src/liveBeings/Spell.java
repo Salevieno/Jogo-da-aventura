@@ -55,10 +55,9 @@ public class Spell
 		this.atkMod = new AttackModifiers(atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod) ;
 		isActive = false;
 		cooldownCounter = new TimeCounter(cooldown / 80.0) ;
-		effectCounter = new TimeCounter(duration) ;
+		effectCounter = new TimeCounter(duration / 1.0) ;
 		this.elem = elem;
 		this.info = info;
-		
 		all.add(this);
 	}
 
@@ -77,7 +76,7 @@ public class Spell
 		this.atkMod = new AttackModifiers(spell.atkMod.getAtkMod(), spell.atkMod.getDefMod(), spell.atkMod.getDexMod(), spell.atkMod.getAgiMod(), spell.atkMod.getAtkCritMod(), spell.atkMod.getDefCritMod(), spell.atkMod.getStunMod(), spell.atkMod.getBlockMod(), spell.atkMod.getBloodMod(), spell.atkMod.getPoisonMod(), spell.atkMod.getSilenceMod()) ;
 		isActive = false;
 		cooldownCounter = new TimeCounter(spell.cooldownCounter.getDuration() / 80.0) ;
-		effectCounter = new TimeCounter(spell.effectCounter.getDuration()) ;
+		effectCounter = new TimeCounter(spell.effectCounter.getDuration() / 1.0) ;
 		this.elem = spell.elem;
 		this.info = spell.info;
 	}

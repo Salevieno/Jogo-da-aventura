@@ -34,23 +34,23 @@
     "Connections": {"topLeft": 8, "leftTop": 5, "leftBottom": 5, "bottomLeft": -1, "bottomRight": -1, "rightBottom": -1, "rightTop": -1, "topRight": 8},
     "Buildings":
     [
-      {"name": "hospital", "pos": {"x": 0.62, "y": 0.88}},
-      {"name": "store", "pos": {"x": 0.7, "y": 0.35}},
-      {"name": "craft", "pos": {"x": 0.02, "y": 0.86}},
+      {"name": "hospital", "pos": {"x": 0.62, "y": 0.9}},
+      {"name": "store", "pos": {"x": 0.55, "y": 0.35}},
+      {"name": "craft", "pos": {"x": 0.05, "y": 0.9}},
       {"name": "bank", "pos": {"x": 0.1, "y": 0.3}},
       {"name": "forge", "pos": {"x": 0.66, "y": 0.1}},
       {"name": "sign", "pos": {"x": 0.48, "y": 0.1}}
     ],
     "NPCs":
     [
-      {"name": "smuggleSeller", "pos": {"x": 0.07, "y": 0.66}},
+      {"name": "smuggleSeller", "pos": {"x": 0.18, "y": 0.54}},
       {"name": "alchemist", "pos": {"x": 0.78, "y": 0.12}},
       {"name": "woodcrafter", "pos": {"x": 0.4, "y": 0.18}},
       {"name": "forger", "pos": {"x": 0.64, "y": 0.1}},
       {"name": "elemental", "pos": {"x": 0.36, "y": 0.05}},
-      {"name": "saver", "pos": {"x": 0.87, "y": 0.91}},
+      {"name": "saver", "pos": {"x": 0.82, "y": 0.92}},
       {"name": "master", "pos": {"x": 0.64, "y": 0.47}},
-      {"name": "questExp", "pos": {"x": 0.07, "y": 0.35}},
+      {"name": "questExp", "pos": {"x": 0.18, "y": 0.35}},
       {"name": "citizen4", "pos": {"x": 0.42, "y": 0.88}},
       {"name": "citizen5", "pos": {"x": 0.38, "y": 0.38}},
       {"name": "citizen6", "pos": {"x": 0.6, "y": 0.9}},

@@ -60,7 +60,6 @@ public abstract class SideBar
 		} ;
 		IconFunction[] actions = new IconFunction[iconNames.length] ;
 		actions[0] = () -> {
-			if (!player.getQuestSkills().get(QuestSkills.getContinentMap(player.getMap().getContinent().name()))) { return ;}
 			player.getMapWindow().setPlayerPos(player.getPos()) ;
 			player.getMapWindow().setCurrentMap(player.getMap()) ;
 			player.switchOpenClose(player.getMapWindow()) ;
@@ -74,10 +73,10 @@ public abstract class SideBar
 		actions[3] = () -> { player.switchOpenClose(player.getSettings()) ;} ;
 
 		SpellsBar.updateSpells(player.getActiveSpells()) ;
-		setPet(player, Game.getPet()) ;
+		addPetButton(player, Game.getPet()) ;
 		
 
-		Point iconPos = Util.Translate(barPos, 20, 50) ;
+		Point iconPos = Util.Translate(barPos, 20, 45) ;
 		buttons.add(new GameButton(iconPos, Align.topCenter, playerImage, playerImage, playerAction)) ;
 		iconPos.y += playerImage.getHeight(null) + 10 ;
 		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
@@ -87,11 +86,14 @@ public abstract class SideBar
 			iconPos.y += iconImages[i].getHeight(null) + 10 ;
 		}
 		
-		buttons.forEach(GameButton::activate);
-		
+		buttons.forEach(GameButton::activate) ;
+		if (!player.getQuestSkills().get(QuestSkills.getContinentMap(player.getMap().getContinent().name())))
+		{
+			buttons.get(1).deactivate() ;
+		}
 	}
 	
-	public static void setPet(Player player, Pet pet)
+	public static void addPetButton(Player player, Pet pet)
 	{
 		if (pet == null) { return ;}
 		
@@ -101,6 +103,11 @@ public abstract class SideBar
 			player.switchOpenClose(pet.getAttWindow()) ;
 		} ;
 		buttons.add(new GameButton(Util.Translate(barPos, 20, 10), Align.topCenter, petImage, petImage, petAction)) ;
+	}
+	
+	public static void addMapButton(Player player)
+	{
+		buttons.get(1).activate() ;
 	}
 		
 	public static Image[] getIconImages() { return iconImages ;}
@@ -121,14 +128,15 @@ public abstract class SideBar
 	
 	private static void displayKeys(DrawPrimitives DP)
 	{
-		String[] keys = new String[] {null, PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null} ;
+		String[] keys = new String[] {PlayerActions.attWindow.getKey(), PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null} ;
 		Dimension textSize = new Dimension(12, 12) ;
 		Color textColor = Game.colorPalette[0] ;
 		int i = 0 ;
 		for (GameButton button : buttons)
 		{
 
-			if (keys[i] == null) { i += 1 ; continue ;}
+			if (keys[i] == null | !button.isActive()) { i += 1 ; continue ;}
+
 			Point rectCenter = Util.Translate(button.getTopLeftPos(), 5, 0) ;
 			DP.drawRoundRect(rectCenter, Align.center, textSize, 1, Game.colorPalette[3], true, 2, 2) ;
 			DP.drawText(rectCenter, Align.center, Draw.stdAngle, keys[i], font, textColor) ;

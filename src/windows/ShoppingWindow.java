@@ -150,14 +150,15 @@ public class ShoppingWindow extends GameWindow
 		Point titlePos = Util.Translate(windowPos, size.width / 2, 16) ;
 		double angle = Draw.stdAngle ;
 		
-		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
+		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
 		
-		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[1]) ;
+		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[0]) ;
 				
 		
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
 		{
 			Item bagItem = itemsOnWindow.get(i) ;
+			String qtdItem = buyMode ? "" : "" ; // TODO pegar bag e mostrar qtos itens tem
 			Point namePos = Util.Translate(itemPos, border + 10, 0) ;
 			Point pricePos = Util.Translate(namePos, size.width - border - padding - 50, 0) ;
 			Point coinPos = Util.Translate(pricePos, 10, 0) ;
@@ -166,7 +167,7 @@ public class ShoppingWindow extends GameWindow
 			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? selColor : stdColor ;
 			DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
 			DP.drawImage(bagItem.getImage(), itemPos, angle, Scale.unit, Align.center) ;
-			DP.drawText(namePos, Align.centerLeft, angle, bagItem.getName(), stdFont, itemColor) ;
+			DP.drawText(namePos, Align.centerLeft, angle, bagItem.getName() + qtdItem, stdFont, itemColor) ;
 			DP.drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), stdFont, Game.colorPalette[14]) ;
 			DP.drawImage(Player.CoinIcon, coinPos, Align.center) ;
 			

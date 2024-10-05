@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Arrays;
+
 import utilities.AtkEffects;
 
 public class AtkResults
@@ -14,6 +16,14 @@ public class AtkResults
 		this.atkType = null;
 		this.effect = AtkEffects.none;
 		this.damage = 0;
+		this.status = null ;
+	}
+	
+	public AtkResults(int damage)
+	{
+		this.atkType = null;
+		this.effect = AtkEffects.hit;
+		this.damage = damage;
 		this.status = null ;
 	}
 
@@ -60,7 +70,7 @@ public class AtkResults
 	@Override
 	public String toString()
 	{
-		return "AtkResults: type = " + atkType + ", effect = " + effect + ", damage = " + damage + " status = " + status ;
+		return "AtkResults: type = " + atkType + ", effect = " + effect + ", damage = " + damage + " status = " + Arrays.toString(status) ;
 	}
 	
 	

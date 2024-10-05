@@ -8,7 +8,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,7 +33,6 @@ import liveBeings.Creature;
 import liveBeings.CreatureType;
 import liveBeings.Genetics;
 import liveBeings.LiveBeing;
-import liveBeings.LiveBeingStatus;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.AtkResults;
@@ -43,7 +41,6 @@ import main.Battle;
 import main.Game;
 import utilities.AtkEffects;
 import utilities.Directions;
-import utilities.Log;
 import utilities.Scale;
 import utilities.TimeCounter;
 import utilities.UtilS;
@@ -78,6 +75,7 @@ public abstract class EvolutionSimulation
 	private static long battleClock ;
 	
 	private static Map<String, Double> stats = new LinkedHashMap<>() ;
+	private static List<Double> battletimes = new ArrayList<>() ;
 	
 	private static int numberRandomGeneRounds = 6 ;
 	private static int numberRoundsToEvolve = 4 ;
@@ -96,6 +94,7 @@ public abstract class EvolutionSimulation
 		buttons = new ArrayList<>() ;
 		
 		player = Game.getPlayer() ;
+		player.setName("Player") ;
 		player.setPos(new Point(45, 230)) ;
 		pet = Game.getPet() ;
 		if (pet != null)
@@ -109,6 +108,25 @@ public abstract class EvolutionSimulation
 		
 		stats.put("CreatureMoves", 0.0) ;
 		stats.put("BattleTimeAvr", 0.0) ;
+		stats.put("NCreatureMoves", 0.0) ;
+		stats.put("NCreature" + "none", 0.0) ;
+		stats.put("NCreature" + "miss", 0.0) ;
+		stats.put("NCreature" + "hit", 0.0) ;
+		stats.put("NCreature" + "crit", 0.0) ;
+		stats.put("NCreature" + "block", 0.0) ;
+		stats.put("NCreatureAtks", 0.0) ;
+		stats.put("NCreatureDefs", 0.0) ;
+		stats.put("NCreatureSpells", 0.0) ;
+		stats.put("NBloodApplied", 0.0) ;
+		stats.put("NPlayerMoves", 0.0) ;
+		stats.put("NPlayer" + "none", 0.0) ;
+		stats.put("NPlayer" + "miss", 0.0) ;
+		stats.put("NPlayer" + "hit", 0.0) ;
+		stats.put("NPlayer" + "crit", 0.0) ;
+		stats.put("NPlayer" + "block", 0.0) ;
+		stats.put("NPlayerAtks", 0.0) ;
+		stats.put("NPlayerDefs", 0.0) ;
+		stats.put("NPlayerSpells", 0.0) ;
 		
 		addJobSection() ;	
 		
@@ -315,7 +333,7 @@ public abstract class EvolutionSimulation
 		player.setSatiationCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[38]))) ;
 		player.setThirstCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[39]))) ;
 		player.setMpCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[40]))) ;
-		player.setBattleActionCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[41]))) ;
+		player.setBattleActionCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[41]) / 100.0)) ;
 		player.setGoldMultiplier(Double.parseDouble(prop.get(newJob)[32])) ;
 		
 		List<Double> attIncrements = Arrays.asList(Player.EvolutionProperties.get(3 * newJob + 0)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
@@ -416,7 +434,7 @@ public abstract class EvolutionSimulation
 	
 	private static void simulateBattle()
 	{
-		Log.battleStart() ;
+//		Log.battleStart() ;
 		ResetBattleResults() ;
 		CreateNewCreature() ;
 		player.setRange(1000) ;
@@ -433,7 +451,7 @@ public abstract class EvolutionSimulation
 
 	private static void simulateBattle100x()
 	{
-		numberFightsRepetition = 100 ;
+		numberFightsRepetition = 300 ;
 	}
 		
 	private static void simulateWinsUntilLevel99()
@@ -524,6 +542,14 @@ public abstract class EvolutionSimulation
 		}
 		else
 		{
+			if (numberFights == numberFightsRepetition)
+			{
+//				System.out.println();
+//				battletimes.forEach(bat -> System.out.println(bat)) ;
+				stats.forEach((key, value) -> System.out.println(key + "," + value));
+				System.out.println();
+				numberFights = 0 ;
+			}
 			numberFightsRepetition = 0 ;
 		}
 		
@@ -615,18 +641,17 @@ public abstract class EvolutionSimulation
 	{
 		
 		if (!player.isAlive()) { return ;}
+		
+		int spell = Util.randomIntFromTo(0, player.getActiveSpells().size() - 1) ;
+		int qtdAvailableMoves = player.canUseSpell(player.getSpells().get(spell)) ? 2 : 1 ;
 
-		int move = Util.randomIntFromTo(0, 1) ;
-		System.out.println(move);
+		int move = Util.randomIntFromTo(0, qtdAvailableMoves) ;
+//		System.out.println(move);
 		switch (move)
 		{
 			case 0: player.setCurrentAction("Y") ; break ;
 			case 1: player.setCurrentAction("U") ; break ;
-//			case 2:
-//				int spell = Util.randomIntFromTo(0, player.getActiveSpells().size() - 1) ;
-//				player.setCurrentAction(String.valueOf(spell)) ;
-//				break ;
-			
+			case 2: player.setCurrentAction(String.valueOf(spell)) ; break ;
 		}
 		
 	}
@@ -712,18 +737,23 @@ public abstract class EvolutionSimulation
 	
 	public static void run(Point mousePos, DrawPrimitives DP)
 	{
-		
+		player.takeBloodAndPoisonDamage() ;
 		player.activateSpellCounters() ;
 		player.activateCounters() ;
 		player.getSatiation().setToMaximum() ;
 		player.getThirst().setToMaximum() ;
 		if (pet != null)
 		{
+			pet.takeBloodAndPoisonDamage() ;
 			pet.activateSpellCounters() ;
 			pet.activateCounters() ;
 			pet.getSatiation().setToMaximum() ;
 		}
 
+		if (playerOpponent != null)
+		{
+			playerOpponent.takeBloodAndPoisonDamage() ;
+		}
 		if (player.getCurrentAction() != null)
 		{
 			EvolutionSimulation.act(player.getCurrentAction(), mousePos) ;
@@ -736,8 +766,12 @@ public abstract class EvolutionSimulation
 				EvolutionSimulation.playerAutoFight() ;
 			}
 			Battle.runBattle(player, pet, player.getOpponent(), DP) ;
-			if (!player.isInBattle())
+			if (!player.isAlive() | !player.getOpponent().isAlive())
 			{
+				Battle.finishBattle(player, pet, player.getOpponent()) ;
+			}
+			if (!player.isInBattle())
+			{				
 				EvolutionSimulation.updateFitness() ;
 				if (EvolutionSimulation.shouldUpdateGenes())
 				{
@@ -781,6 +815,8 @@ public abstract class EvolutionSimulation
 
 		if (playerOpponent != null)
 		{
+			playerOpponent.activateSpellCounters() ;
+			playerOpponent.activateCounters() ;
 			if (playerOpponent.getAttWindow().isOpen())
 			{
 				CreatureType.attWindow.display(playerOpponent.getType(), DP) ;
@@ -789,6 +825,58 @@ public abstract class EvolutionSimulation
 
 		Animation.playAll(DP) ;
 		player.resetAction() ;
+	}
+	
+	public static void updateBattleStats(LiveBeing attacker, LiveBeing receiver, AtkResults atkResults)
+	{
+		if (attacker instanceof Player)
+		{
+			stats.put("NPlayerMoves", stats.get("NPlayerMoves") + 1 ) ;
+			stats.put("NPlayer" + atkResults.getEffect(), stats.get("NPlayer" + atkResults.getEffect()) + 1 ) ;
+//			System.out.println("Player: " + attacker.getCurrentAction()) ;
+			switch (attacker.getCurrentAction())
+			{
+				case "Y":
+					stats.put("NPlayerAtks", stats.get("NPlayerAtks") + 1 ) ;
+					break ;
+				
+				case "U":
+					stats.put("NPlayerDefs", stats.get("NPlayerDefs") + 1 ) ;
+					break ;
+				
+				default:
+					break ;
+			}
+		}
+		if (!(attacker instanceof Player))
+		{
+			stats.put("NCreatureMoves", stats.get("NCreatureMoves") + 1 ) ;
+			stats.put("NCreature" + atkResults.getEffect(), stats.get("NCreature" + atkResults.getEffect()) + 1 ) ;
+//			System.out.println(Arrays.toString(atkResults.getStatus())) ;
+			if (atkResults != null && atkResults.getStatus() != null && 0 < atkResults.getStatus()[2])
+			{
+				System.out.println("Applied blood!" + (receiver.getStatus().get(Attributes.blood).isActive() ? " Already in blood" : ""));
+				stats.put("NBloodApplied", stats.get("NBloodApplied") + 1) ;
+			}
+			switch (attacker.getCurrentAction())
+			{
+				case "Y":
+					stats.put("NCreatureAtks", stats.get("NCreatureAtks") + 1 ) ;
+					break ;
+				
+				case "U":
+					stats.put("NCreatureDefs", stats.get("NCreatureDefs") + 1 ) ;
+					break ;
+					
+				case "0":
+					stats.put("NCreatureSpells", stats.get("NCreatureSpells") + 1 ) ;
+					break ;
+				
+				default:
+					break ;
+			}
+		}
+		
 	}
 	
 	private static void updateStats()
@@ -802,6 +890,7 @@ public abstract class EvolutionSimulation
 			double battleTime = Math.round(100 * (battleClock) * Math.pow(10, -9)) / 100.0 ;
 			double totalBattleTime = stats.get("BattleTimeAvr") * (numberFights - 1) + battleTime ;
 			stats.put("BattleTimeAvr", Util.Round(totalBattleTime / numberFights, 2)) ;
+			battletimes.add(stats.get("CreatureMoves")) ;
 		}
 	}
 	
@@ -832,17 +921,44 @@ public abstract class EvolutionSimulation
 	{
 		Font textFont = new Font(font.getName(), font.getStyle(), 11) ;
 		Color textColor = Game.colorPalette[0] ;
-		double atkRate = 0.5 ;
+		
+		double rateMagAtkAttacker =	attacker instanceof Player ? 0.4147 :  0.366;
+		double ratePhyAtkAttacker = 0.5 - rateMagAtkAttacker / 2.0  ;
+		double rateDefDefender = 0.5 - rateMagAtkAttacker / 2.0 ;
+
 		double critRate = attacker.getBA().getCritAtk().getTotal() - defender.getBA().getCritDef().getTotal() ;
 		double hitRate = 1 - 1 / (1 + Math.pow(1.1, attacker.getBA().getDex().getTotal() - defender.getBA().getAgi().getTotal())) ;
-		int phyDamBase = Math.max((int) Util.Round(attacker.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
-		int phyDamInDefense = Math.max((int) Util.Round(attacker.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
-		int phyDamCrit = (int) Util.Round(attacker.getBA().getPhyAtk().getTotal(), 0) ;
+		double bloodRate = Math.max(attacker.getBA().getBlood().getBasicAtkChance() - defender.getBA().getBlood().getBasicDefChance(), 0) ;
 		
+		double spellDam = attacker instanceof Player ? 2.0 + attacker.getBA().getMagAtk().getTotal() - defender.getBA().getMagDef().getTotal() : 1 + 1.02 * attacker.getBA().getMagAtk().getTotal() - defender.getBA().getMagDef().getTotal() ;
+		
+		int phyDamBase = Math.max((int) Util.Round(attacker.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
+		int spellDamBase = Math.max((int) Util.Round(spellDam, 0), 0) ;
+		int phyDamInDefense = Math.max((int) Util.Round(attacker.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
+		int magDamInDefense = Math.max((int) Util.Round(spellDam - defender.getBA().getMagDef().getBaseValue(), 0), 0) ;
+		int bloodDam = Math.max((int) Util.Round(attacker.getBA().getBlood().TotalAtk() - defender.getBA().getBlood().TotalDef(), 0), 0) ;
+		int phyDamCrit = (int) Util.Round(attacker.getBA().getPhyAtk().getTotal(), 0) ;
+		int spellDamCrit = (int) Util.Round(attacker instanceof Player ? 2.0 + attacker.getBA().getMagAtk().getTotal() : 1 + 1.02 * attacker.getBA().getMagAtk().getTotal(), 0) ;
+		
+		double bloodDuration = attacker.getBA().getBlood().getDuration() ;
+		double damPerMove = ratePhyAtkAttacker * hitRate * ((1 - critRate) * ((1 - rateDefDefender) * phyDamBase + rateDefDefender * phyDamInDefense) + critRate * phyDamCrit) +
+							rateMagAtkAttacker * hitRate * ((1 - critRate) * ((1 - rateDefDefender) * spellDamBase + rateDefDefender * magDamInDefense) + critRate * spellDamCrit) +
+							bloodRate * bloodDam * bloodDuration ;
 		
 		double movesPerSec = 1 / attacker.getBattleActionCounter().getDuration() ;
-		double damAvr = (1 - critRate) * (atkRate * phyDamBase + (1 - atkRate) * phyDamInDefense) + critRate * phyDamCrit ;
-		double damPerSec = damAvr * hitRate * atkRate * movesPerSec ;
+//		System.out.println();
+//		System.out.println(attacker.getName());
+//		System.out.println("hitRate: " + hitRate);
+//		System.out.println("phyDamBase: " + phyDamBase);
+//		System.out.println("spellDamBase: " + spellDamBase);
+//		System.out.println("phyDamInDefense: " + phyDamInDefense);
+//		System.out.println("magDamInDefense: " + magDamInDefense);
+//		System.out.println("phyDamCrit: " + phyDamCrit);
+//		System.out.println("spellDamCrit: " + spellDamCrit);
+//		System.out.println("phyDamPerMove: " + (ratePhyAtkAttacker * hitRate * ((1 - critRate) * ((1 - rateDefDefender) * phyDamBase + rateDefDefender * phyDamInDefense) + critRate * phyDamCrit)));
+//		System.out.println("spellDamPerMove: " + (rateMagAtkAttacker * hitRate * ((1 - critRate) * ((1 - rateDefDefender) * spellDamBase + rateDefDefender * magDamInDefense) + critRate * spellDamCrit)));
+//		System.out.println(attacker.getName() + " moves to win: " + defender.getPA().getLife().getMaxValue() / damPerMove) ;
+		double damPerSec = damPerMove * hitRate  * movesPerSec ;
 		double timeToWin = defender.getPA().getLife().getMaxValue() / damPerSec ;
 		
 		Map<String, Double> atts = new LinkedHashMap<>() ;
@@ -851,7 +967,7 @@ public abstract class EvolutionSimulation
 		atts.put("Hit rate: ", hitRate) ;
 		atts.put("Crit rate: ", critRate) ;
 		atts.put("Damage / s: ", damPerSec) ;
-		atts.put("Time to win: ", Util.Round(timeToWin, 2)) ;
+		atts.put("Time to win: ", timeToWin <= Math.pow(10, 8) ? Util.Round(timeToWin, 2) : timeToWin) ;
 		
 		Iterator<?> it = atts.keySet().iterator();
 
@@ -863,6 +979,16 @@ public abstract class EvolutionSimulation
 	    	DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + attValue, textFont, textColor) ;
 			i += 1;
 	    }
+	}
+	
+	private static void printCreaturesPowerList()
+	{
+		for (int i = 0 ; i <= CreatureType.all.size() - 1; i += 1)
+		{
+			Creature creature = new Creature(CreatureType.all.get(i)) ;
+			System.out.println(creature.totalPower()) ;
+		}
+		
 	}
 	
 	public static void drawBar(Point pos, int currentHeight, int maxHeight, Color color, DrawPrimitives DP)
@@ -910,6 +1036,7 @@ public abstract class EvolutionSimulation
 
 		playerOpponent.displayName(new Point(460, 300), Align.center, Color.yellow, DP);
 		playerOpponent.display(playerOpponent.getPos(), Scale.unit, DP);
+		playerOpponent.displayPowerBar(new Point(520, 360), DP) ;
 		drawDerivedBattleAttributes(new Point(310, 400), playerOpponent, player, DP) ;
 		
 		if (player.isAlive())

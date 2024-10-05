@@ -73,7 +73,7 @@ public class Building
 				
 				break ;
 			case bank: npcs.add(new NPCs(Game.getNPCTypes()[4], Util.Translate(pos, 40, -30))) ; break ;
-			case craft: npcs.add(new NPCs(Game.getNPCTypes()[8], Util.Translate(pos, 40, -30))) ; break ;
+			case craft: npcs.add(new NPCs(Game.getNPCTypes()[8], Util.Translate(pos, 100, -30))) ; break ;
 			default: break;
 		}
 	}

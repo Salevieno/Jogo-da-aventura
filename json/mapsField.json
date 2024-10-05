@@ -13,7 +13,7 @@
     "Collectibles": {"level": 1, "berryDelay": 40, "herbDelay": 1280, "woodDelay": 1536, "metalDelay": 2560},
     "Connections": {"topLeft": -1, "leftTop": -1, "leftBottom": -1, "bottomLeft": 4, "bottomRight": 4, "rightBottom": 7, "rightTop": 7, "topRight": -1},
     "Creatures": [-1, -1, -1, 20, 20, 21, 22, 22, 23, 24],
-    "NPCs": [{"name": "caveEntry", "pos": {"x": 0.22, "y": 0.22}}, {"name": "questItem", "pos": {"x": 0.27, "y": 0.33}}]
+    "NPCs": [{"name": "questItem", "pos": {"x": 0.27, "y": 0.33}}]
   },
   {
     "Name": "Forest 3",
@@ -21,7 +21,7 @@
     "Collectibles": {"level": 2, "berryDelay": 40, "herbDelay": 1280, "woodDelay": 1536, "metalDelay": 2560},
     "Connections": {"topLeft": 10, "leftTop": 6, "leftBottom": 6, "bottomLeft": 5, "bottomRight": 5, "rightBottom": 8, "rightTop": 8, "topRight": 10},
     "Creatures": [45, 45, 45, 46, 46, 47, 47, 48, 48, 49],
-    "NPCs": [{"name": "questExp", "pos": {"x": 0.2, "y": 0.3}}]
+    "NPCs": [{"name": "caveEntry", "pos": {"x": 0.22, "y": 0.22}}, {"name": "questExp", "pos": {"x": 0.2, "y": 0.3}}]
   },
   {
     "Name": "Forest 4",

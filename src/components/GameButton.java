@@ -63,6 +63,7 @@ public class GameButton
 	public boolean isActive() { return isActive ;}
 	public Image getImage() {return image ;}
 	public Image getSelectedImage() {return selectedImage ;}
+	public void setName(String newName) { name = newName ;}
 	public void setTopLeftPos(Point P) {topLeft = P ;}
 	
 	public Point getCenter() {return Util.Translate(topLeft, size.width / 2, size.height / 2) ;}

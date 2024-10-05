@@ -34,7 +34,7 @@ public class Animation
 		this.displayFunction = displayFunctionFromType(type.ordinal()) ;
 	}
 	
-	public List<Animation> getAll() { return all ;}
+	public static List<Animation> getAll() { return all ;}
 	public TimeCounter getCounter() { return counter ;}
 	
 	public static void start(AnimationTypes type, Object[] vars)

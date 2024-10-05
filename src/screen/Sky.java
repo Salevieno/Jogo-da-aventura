@@ -15,7 +15,7 @@ import utilities.UtilS;
 
 public class Sky 
 {
-	public static TimeCounter dayCounter ;
+	public static TimeCounter dayCounter = new TimeCounter(600) ;
 	private static SkyComponent[] clouds;
 	private static SkyComponent[] stars ;
 	private static Color color ;
@@ -37,7 +37,6 @@ public class Sky
 	
 	public Sky ()
 	{
-		dayCounter = new TimeCounter(600) ;
 		dayCounter.start() ;
 		updateSkyColor() ;
     	

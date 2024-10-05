@@ -501,6 +501,16 @@ public class BagWindow extends GameWindow
 		
 		return null ;
 	}
+
+	public int getAmount(Item item)
+	{
+		Map<Item, Integer> tabItems = getAllItems() ;
+
+		if (!tabItems.containsKey(item)) { return 0 ;}
+		
+		return tabItems.get(item) ;
+
+	}
 	
 	public boolean contains(Item item)
 	{

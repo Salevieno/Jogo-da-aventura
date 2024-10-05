@@ -72,16 +72,17 @@ public class QuestWindow extends GameWindow
 		DP.drawText(sectionPos, Align.center, angle, "Criaturas necessárias", font, textColor) ;
 		DP.drawLine(Util.Translate(sectionPos, -60, 20), Util.Translate(sectionPos, 60, 20), 1, textColor) ;
 		
-		Point creaturePos = Util.Translate(sectionPos, -60, 10) ;
+		Point creaturePos = Util.Translate(sectionPos, -60, 20) ;
 		for (CreatureType creatureType : reqCreatureType)
 		{
 			String creatureName = creatureType.getName() ;
-			creaturePos.y += creatureType.getSize().height + 4 ;
+			creaturePos.y += creatureType.getSize().height / 2 + 6 ;
 			Point textPos = Util.Translate(creaturePos, 25, 0) ;
 			int numberReq = reqCreatureTypes.get(creatureType) ;
 			int numberCounter = quest.getCounter().get(creatureType) ;
 			creatureType.display(creaturePos, Scale.unit, DP) ;
 			DP.drawText(textPos, Align.centerLeft, angle, creatureName + " : " + numberCounter + " / " + numberReq, font, textColor) ;
+			creaturePos.y += creatureType.getSize().height / 2 ;
 		}	
 		
 	}
@@ -130,7 +131,7 @@ public class QuestWindow extends GameWindow
 		DP.drawText(questPos, Align.center, angle, quest.getName(), font, Game.colorPalette[8]) ;
 		
 		displayReqCreatures(Util.Translate(windowPos, size.width / 2 , 60), quest, DP) ;
-		displayReqItems(Util.Translate(windowPos, size.width / 2, 230), DP) ;
+		displayReqItems(Util.Translate(windowPos, size.width / 2, 260), DP) ;
 		
 		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows) ;
 		

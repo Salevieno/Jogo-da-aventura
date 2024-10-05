@@ -30,7 +30,7 @@ public class ElementalWindow extends GameWindow
 	private List<Equip> equipsForElemChange ;
 	private Equip selectedEquip ;
 
-	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
+	private static final Point windowPos = Game.getScreen().pos(0.35, 0.21) ;
 	private static final List<String> menuTitles = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
 	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Elemental.png") ;
 	private static final int firstSphereID = 390 ;
@@ -38,7 +38,7 @@ public class ElementalWindow extends GameWindow
 
 	public ElementalWindow()
 	{
-		super("Elemental", windowPos, windowImage, 2, 1, 1, 2) ;
+		super("Elemental", windowPos, windowImage, 2, 1, 1, 1) ;
 		spheres = null ;
 		selectedEquip = null ;
 		selectedSphere = null ;
@@ -64,20 +64,14 @@ public class ElementalWindow extends GameWindow
 	public List<Equip> getEquipsForElemChange() { return equipsForElemChange ;}
 	public Equip getSelectedEquip() { return equipsForElemChange == null | equipsForElemChange.size() == 0 ? null : equipsForElemChange.get(item) ;}
 
-	public void setEquipsForElemChange(List<Equip> equipsForElemChange)
+	public void setItems(List<Equip> equipsForElemChange, List<GeneralItem> spheres)
 	{
-		this.equipsForElemChange = new ArrayList<>() ;
 		this.equipsForElemChange = equipsForElemChange ;
-		numberItems = this.equipsForElemChange.size() ;
-	}
-
-	public void setSpheres(List<GeneralItem> spheres)
-	{
 		this.spheres = spheres ;
-		numberItems = this.spheres.size() ;
+		numberItems = menu == 0 ? getEquipsOnWindow().size() : (menu == 1 ? spheres.size() : 0) ;
+		numberWindows = menu == 0 ? 1 + equipsForElemChange.size() / numberItemsOnWindow : (menu == 1 ? spheres.size() : 1) ;
 	}
 
-	@Override
 	public void navigate(String action)
 	{
 		if (action.equals(stdMenuDown))
@@ -91,11 +85,19 @@ public class ElementalWindow extends GameWindow
 		if (action.equals(stdWindowUp))
 		{
 			windowUp() ;
+			updateWindow() ;
 		}
 		if (action.equals(stdWindowDown))
 		{
 			windowDown() ;
+			updateWindow() ;
 		}
+	}
+
+	private void updateWindow()
+	{
+		item = 0 ;
+		numberItems = menu == 0 ? getEquipsOnWindow().size() : (menu == 1 ? spheres.size() : 0) ;
 	}
 	
 	public void act(BagWindow bag, String action, Player player)
@@ -109,6 +111,7 @@ public class ElementalWindow extends GameWindow
 				
 				selectEquip() ;
 				menu += 1 ;
+				updateWindow() ;
 				player.resetAction() ;
 				return ;
 				
@@ -124,14 +127,18 @@ public class ElementalWindow extends GameWindow
 		
 	}
 	
-	public void selectEquip() { selectedEquip = equipsForElemChange.get(item) ;}
+	public void selectEquip()
+	{
+		if (equipsForElemChange == null) { return ;}
+		if (equipsForElemChange.isEmpty()) { return ;}
+		selectedEquip = equipsForElemChange.get(item) ;
+	}
 	
 	public void selectSphere()
 	{
 		if (spheres == null) { return ;}
 		if (spheres.isEmpty()) { return ;}
 		selectedSphere = spheres.get(item) ;
-		item = 0 ;
 	}
 	
 	private void displayMessage(int i)
@@ -164,22 +171,28 @@ public class ElementalWindow extends GameWindow
 
 	private List<Equip> getEquipsOnWindow()
 	{
-		return equipsForElemChange.subList(numberItemsOnWindow * window, numberItemsOnWindow * (window + 1)) ;
+		if (equipsForElemChange.size() <= numberItemsOnWindow) { return equipsForElemChange ;}
+		
+		int minIndex = numberItemsOnWindow * window ;
+		int maxIndex = Math.min(numberItemsOnWindow * (window + 1), equipsForElemChange.size()) ;
+		return equipsForElemChange.subList(minIndex, maxIndex) ;
 	}
 	
 	private void displayEquipSelectionMenu(Point mousePos, DrawPrimitives DP)
 	{
+		
+		if (equipsForElemChange == null) { return ;}
+		if (equipsForElemChange.isEmpty()) { return ;}
+		
 		int slotW = BagWindow.slotImage.getWidth(null) ;
 		int slotH = BagWindow.slotImage.getHeight(null) ;
-		
-		if (equipsForElemChange == null || equipsForElemChange.isEmpty()) { return ;}
 		
 		List<Equip> equipsOnWindow = getEquipsOnWindow() ;
 		for (int i = 0 ; i <= equipsOnWindow.size() - 1; i += 1)
 		{
 			int row = i % ( numberItemsOnWindow / 1) ;
 			int col = i / ( numberItemsOnWindow / 1) ;
-			Equip equip = equipsForElemChange.get(i) ;
+			Equip equip = equipsOnWindow.get(i) ;
 			Point slotCenter = Util.Translate(windowPos,
 					border + padding + 6 + slotW / 2 + col * (140 + slotW),
 					border + padding + 22 + slotH / 2 + row * 21) ;
@@ -221,11 +234,11 @@ public class ElementalWindow extends GameWindow
 	public void display(Point mousePos, DrawPrimitives DP)
 	{
 		
-		Point titlePos = Util.Translate(windowPos, size.width / 2, 18) ;
-		double angle = Draw.stdAngle ;
+		Point titlePos = Util.Translate(windowPos, size.width / 2, 2 + 9) ;
 		
-		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
-		DP.drawText(titlePos, Align.center, angle, menuTitles.get(menu), titleFont, stdColor) ;
+		DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
+		DP.drawText(titlePos, Align.center, Draw.stdAngle, menuTitles.get(menu), titleFont, stdColor) ;
+		
 		switch (menu)
 		{
 			case 0: displayEquipSelectionMenu(mousePos, DP) ; break ;

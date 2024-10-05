@@ -24,7 +24,7 @@ public class TimeCounter
 		this.active = false ;
 		this.counter = 0 ;
 		this.prevCounter = counter ;
-		this.duration = duration ;
+		this.duration = duration/1.0 ;
 		
 		all.add(this) ;
 	}

@@ -2,6 +2,7 @@ package main ;
 
 import java.awt.Color ;
 import java.awt.Dimension ;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D ;
 import java.awt.Image ;
@@ -26,7 +27,6 @@ import javax.swing.JPanel ;
 import org.json.simple.JSONArray ;
 import org.json.simple.JSONObject ;
 
-import attributes.Attributes;
 import components.Building ;
 import components.BuildingNames ;
 import components.BuildingType ;
@@ -58,8 +58,6 @@ import liveBeings.Buff ;
 import liveBeings.Creature ;
 import liveBeings.CreatureType ;
 import liveBeings.HotKeysBar;
-import liveBeings.LiveBeing;
-import liveBeings.LiveBeingStatus;
 import liveBeings.Pet ;
 import liveBeings.Player ;
 import liveBeings.Spell ;
@@ -99,7 +97,8 @@ public class Game extends JPanel
 
 	private JPanel mainPanel = this ;
 	private static Point mousePos ;
-	private static GameStates state = GameStates.loading ;
+	private static GameStates initialState = GameStates.loading ;
+	private static GameStates mainState = GameStates.running ;
 	private static boolean cheatMode = true ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
@@ -153,7 +152,7 @@ public class Game extends JPanel
 		setFocusable(true) ;
 	}
 
-	public static GameStates getState() { return state ;}
+	public static GameStates getState() { return initialState ;}
 	public static Languages getLanguage() { return gameLanguage ;}
 	public static Screen getScreen() { return screen ;}
 	public static Sky getSky() { return sky ;}
@@ -182,8 +181,8 @@ public class Game extends JPanel
 	}
 	
 	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
-	public static void setState(GameStates newState) { state = newState ;}
-	public static void playStopTimeGif() { state = GameStates.playingStopTimeGif ;}
+	public static void setState(GameStates newState) { initialState = newState ;}
+	public static void playStopTimeGif() { initialState = GameStates.playingStopTimeGif ;}
 	public static void shouldNotRepaint() { shouldRepaint = false ;}
 
 	private static void checkKonamiCode(List<String> combo)
@@ -229,7 +228,7 @@ public class Game extends JPanel
 			pet.getBA().getDex().incBaseValue(1 * spellLevel) ;
 			pet.getBA().getAgi().incBaseValue(1 * spellLevel) ;
 		}
-		SideBar.setPet(player, pet) ;
+		SideBar.addPetButton(player, pet) ;
 	}
 	
 	
@@ -509,6 +508,13 @@ public class Game extends JPanel
 
 			switch (id)
 			{
+				case 2:
+					map.addGroundType(new GroundType(GroundTypes.water, new Point(551, 96 + 269), new Dimension(49, 83))) ;
+					break ;
+					
+				case 3:
+					map.addGroundType(new GroundType(GroundTypes.water, new Point(0, 96 + 269), new Dimension(64, 83))) ;
+					break ;
 //			case 1:
 //				map.addGroundType(new GroundType(GroundTypes.water, new Point(120, 200), new Dimension(50, 20))) ;
 //				break ;
@@ -880,6 +886,10 @@ public class Game extends JPanel
 		if (player.isInBattle())
 		{
 			Battle.runBattle(player, pet, player.getOpponent(), DP) ;
+			if (Battle.isOver(player, pet, player.getOpponent()))
+			{
+				Battle.finishBattle(player, pet, player.getOpponent()) ;
+			}
 		}
 
 		if (player.shouldLevelUP())
@@ -924,6 +934,7 @@ public class Game extends JPanel
 		SideBar.act(player.getCurrentAction(), mousePos) ;
 
 		player.resetAction() ;
+//		Log.allEntityListsLength() ;
 
 	}
 
@@ -1002,6 +1013,15 @@ public class Game extends JPanel
     	player.getBag().add(Equip.getAll()[2], 20) ;
     	player.getBag().add(Equip.getAll()[100], 20) ;
     	player.getBag().add(Equip.getAll()[102], 20) ;
+    	player.getBag().add(Equip.getAll()[110], 20) ;
+    	player.getBag().add(Equip.getAll()[111], 20) ;
+    	player.getBag().add(Equip.getAll()[112], 20) ;
+    	player.getBag().add(Equip.getAll()[115], 20) ;
+    	player.getBag().add(Equip.getAll()[116], 20) ;
+    	player.getBag().add(Equip.getAll()[117], 20) ;
+    	player.getBag().add(Equip.getAll()[121], 20) ;
+    	player.getBag().add(Equip.getAll()[122], 20) ;
+    	player.getBag().add(Equip.getAll()[123], 20) ;
     	for (QuestSkills skill : QuestSkills.values())
     	{
     		player.getQuestSkills().replace(skill, true) ;
@@ -1126,7 +1146,7 @@ public class Game extends JPanel
 		DP.setGraphics((Graphics2D) graphs) ;
 		Draw.setDP(DP) ;
 		TimeCounter.updateAll() ;
-		switch (state)
+		switch (initialState)
 		{
 			case opening:
 				Opening.run(player, mousePos, DP) ;
@@ -1157,10 +1177,10 @@ public class Game extends JPanel
 	
 				if (Opening.gameStarted())
 				{
-//			    	player.switchOpenClose(player.getHintsindow()) ;
+			    	player.switchOpenClose(player.getHintsindow()) ;
 					if (cheatMode) { setCheatMode() ;}
 					player.startCounters() ;
-					Game.setState(GameStates.running) ;
+					Game.setState(mainState) ;
 //					player.levelUp();
 				}
 				shouldRepaint = true ;
@@ -1207,7 +1227,7 @@ public class Game extends JPanel
 			
 			if (keyCode == KeyEvent.VK_PAUSE)
 			{
-				if (state.equals(GameStates.paused))
+				if (initialState.equals(GameStates.paused))
 				{
 					MainGame3_4.resumeGame();
 					TimeCounter.resumeAll() ;

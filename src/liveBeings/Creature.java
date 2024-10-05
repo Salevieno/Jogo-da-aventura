@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
@@ -31,6 +30,7 @@ import screen.Sky;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
+import utilities.GameStates;
 import utilities.Scale;
 import utilities.TimeCounter;
 
@@ -56,10 +56,10 @@ public class Creature extends LiveBeing
 		this.range = CT.range;
 		this.step = CT.step;
 		this.elem = Arrays.copyOf(CT.elem, CT.elem.length);
-		mpCounter = new TimeCounter(CT.mpDuration);
+		mpCounter = new TimeCounter(CT.mpDuration / 1.0);
 		satiationCounter = new TimeCounter(CT.satiationDuration);
 		actionCounter = new TimeCounter(CT.numberSteps) ;
-		battleActionCounter = new TimeCounter(CT.battleActionDuration) ;
+		battleActionCounter = new TimeCounter(CT.battleActionDuration / 1.0) ;
 		this.stepCounter = new TimeCounter(CT.numberSteps) ;
 		combo = new ArrayList<>() ;
 		
@@ -214,6 +214,35 @@ public class Creature extends LiveBeing
 		else { return "pet" ;}
 	}
 		
+	public void chooseFightMove(String playerMove)
+	{
+		
+		if (Game.getState().equals(GameStates.simulation))
+		{
+			int qtdAvailableMoves = canUseSpell(spells.get(0)) ? 2 : 1 ;
+			int move = Util.randomIntFromTo(0, qtdAvailableMoves) ;
+//			System.out.println(move);
+			switch (move)
+			{
+				case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
+				case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
+				case 2:	setCurrentAction(String.valueOf(Util.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
+			}
+			return ;
+		}
+		
+		List<Double> modifiedGenes = type.getGenes().getModifiedGenes(playerMove) ;
+
+		int move = Util.randomFromChanceList(modifiedGenes) ;
+		switch (move)
+		{
+			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
+			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
+			case 2:	setCurrentAction(String.valueOf(Util.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
+		}
+
+	}
+	
 	public void move(Point PlayerPos, GameMap map)
 	{
 
@@ -240,20 +269,6 @@ public class Creature extends LiveBeing
 	
 		updatePos(dir, pos, step, map) ;
 		
-	}
-	
-	public void chooseFightMove(String playerMove)
-	{
-		List<Double> modifiedGenes = type.getGenes().getModifiedGenes(playerMove) ;
-
-		int move = Util.randomFromChanceList(modifiedGenes) ;
-		switch (move)
-		{
-			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
-			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
-			case 2:	setCurrentAction(String.valueOf(Util.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
-		}
-
 	}
 	
 	public void think()

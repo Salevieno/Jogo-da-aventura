@@ -68,10 +68,13 @@
     "Dica",
     "Anterior",
     "Próxima",
-    "(Enter para fechar)",
-    "Você pode abrir a janela de dicas a qualquer momento apertando 'H'.",
-    "Teste passar o mouse sobre as coisas.",
-    "Nas configurações padrão 'W' e 'S' movem os menus pra cima e para baixo e 'A' e 'D' para esquerda e direita. 'Esc' volta para o menu anterior.",
+    "('H' para fechar)",
+	"Não sabe o que fazer? Fale com os habitantes da cidade! Aproxime-se deles e aperte 'E'. Você também pode ler mais dicas apertando 'D'.",
+	"Atenção! Você pode morrar fácil se ficar com fome ou com sede! Para evitar isto, sempre tenha comida na sua mochila e fique próximo a uma fonte de água. Você também pode carregar garrafas d'água para beber em qualquer lugar. E, sim, fome e sede podem ocorrer durante uma batalha."
+	"Você pode obter comida fora da cidade, coletando frutinhas ou matando criaturas. Para beber água, toque em um corpo d'água.",
+	"Criaturas são encontradas fora da cidade. Matá-las te dará itens, ouro e experiência. Juntando experiência vc passa de nível.",
+	"Estar nos mapas certos é fundamental para não encontrar criaturas fortes demais. Comece sempre pelo mapa mais próximo à sua cidade",
+    "'W' e 'S' movem os menus pra cima e para baixo e 'A' e 'D' para esquerda e direita. 'Esc' volta para o menu anterior.",
     "Durante a batalha, use 'Y' para atacar, 'U' para defender e os números e teclas F1, F2... para usar magias!",
     "Lembre-se de sempre ter comida reserva para não morrer de fome, principalmente em viagens longas!",
     "Fale com o seu mestre a cada passagem de nível para ganhar novas habilidades ou fortalecer as que vc já possui.",
@@ -218,7 +221,7 @@
       "Nome": "Vendedor de equipamentos",
       "Falas":
       [
-        "Olá, o que deseja fazer?",
+        "Os melhores equipamentos aqui! O que deseja?",
         "Escolha seu equipamento!",
         "Volte sempre!"
       ],
@@ -228,7 +231,7 @@
       "Nome": "Vendedor de itens",
       "Falas":
       [
-        "Olá, o que deseja fazer?",
+        "Itens em geral. Chegue pra loja! O que deseja?",
         "O que deseja comprar?",
         "Até mais!"
       ],
@@ -238,7 +241,7 @@
       "Nome": "Contrabandista",
       "Falas":
       [
-        "Olá, o que deseja fazer?",
+        "Itens especiais por preços exagerados. O que deseja?",
         "O que deseja comprar?",
         "Até mais!"
       ],

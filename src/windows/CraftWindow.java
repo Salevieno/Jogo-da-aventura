@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import components.GameButton;
 import graphics.Animation;
 import graphics.AnimationTypes;
 import graphics.Draw;
@@ -28,20 +29,23 @@ public class CraftWindow extends GameWindow
 	private BagWindow playerBag ;
 	private List<Recipe> recipes ;
 	private List<Recipe> recipesInWindow ;
+	private GameButton craftButton ;
 	
-	private static final Point windowPos = Game.getScreen().pos(0.34, 0.22) ;	
+	private static final Point windowPos = Game.getScreen().pos(0.03, 0.25) ;	
 	private static final int RecipesPerWindow = 1 ;
+	private static final Image buttonImg = UtilS.loadImage("\\Windows\\" + "CraftButton.png") ;
 	private static final List<String> messages = Arrays.asList(
-			"Items criados!",
-			"Vc não possui todos os ingredientes") ;
+																"Items criados!",
+																"Vc não possui todos os ingredientes") ;
 	public static final Image craftImage = UtilS.loadImage("\\Windows\\" + "Craft.png") ;
 
 	public CraftWindow(List<Recipe> recipes)
 	{
-		super("Criação", windowPos, craftImage, 1, 1, RecipesPerWindow, recipes.size() / RecipesPerWindow) ;
+		super("", windowPos, craftImage, 1, 1, RecipesPerWindow, recipes.size() / RecipesPerWindow) ;
 		amountOfCrafts = 1 ;
 		this.recipes = recipes ;
 		recipesInWindow = RecipesPerWindow <= recipes.size() ? recipes.subList(window, RecipesPerWindow + window) : recipes ;
+		craftButton = new GameButton(Util.Translate(windowPos, 286, 100), Align.center, "Fabricar " + String.valueOf(amountOfCrafts), buttonImg, buttonImg, () -> {craft(playerBag) ;}) ;
 	}
 	
 	public void navigate(String action)
@@ -56,11 +60,11 @@ public class CraftWindow extends GameWindow
 			windowDown() ;
 			itemDown() ;
 		}
-		if (action.equals(stdMenuUp))
+		if (action.equals(stdMenuUp) || action.equals("MouseWheelUp"))
 		{
 			amountOfCrafts += 1 ;
 		}
-		if (action.equals(stdMenuDown))
+		if (action.equals(stdMenuDown) || action.equals("MouseWheelDown"))
 		{
 			if (amountOfCrafts <= 1) { return ;}
 			amountOfCrafts += -1 ;
@@ -144,29 +148,31 @@ public class CraftWindow extends GameWindow
 		Color textColor = Game.colorPalette[0] ;
 		double angle = Draw.stdAngle ;		
 		
-		DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.topLeft) ;
+		DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
 		
 		DP.drawText(titlePos, Align.center, angle, name, titleFont, textColor) ;
 		
-		Point ingredientsTextPos = Util.Translate(windowPos, border + padding + 84, border + 32) ;
-		Point productsTextPos = Util.Translate(windowPos, border + padding + 170 + 84, border + 32) ;
-		Point amountTextPos = Util.Translate(windowPos, border + padding + 84, border + 152) ;
+		Point ingredientsTextPos = Util.Translate(windowPos, border + padding + 84, border + 10) ;
+		Point productsTextPos = Util.Translate(windowPos, border + padding + 362 + 84, border + 10) ;
+//		Point amountTextPos = Util.Translate(windowPos, border + padding + 276, border + 30) ;
 		DP.drawText(ingredientsTextPos, Align.center, angle, "Ingredientes", subTitleFont, textColor) ;
 		DP.drawText(productsTextPos, Align.center, angle, "Produtos", subTitleFont, textColor) ;
-		DP.drawText(amountTextPos, Align.center, angle, "Quantidade " + amountOfCrafts, subTitleFont, textColor) ;
+//		DP.drawText(amountTextPos, Align.center, angle, "Fabricar", subTitleFont, textColor) ;
+//		DP.drawText(Util.Translate(amountTextPos, 0, 70), Align.center, angle, String.valueOf(amountOfCrafts), titleFont, textColor) ;
 
-		Point ingredientsPos = Util.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + padding + Item.slot.getHeight(null) / 2 + 44) ;
-		Point productsPos = Util.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2 + 169, border + padding + Item.slot.getHeight(null) / 2 + 44) ;
+		Point ingredientsPos = Util.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + padding + Item.slot.getHeight(null) / 2 + 30) ;
+		Point productsPos = Util.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2 + 362, border + padding + Item.slot.getHeight(null) / 2 + 30) ;
 		for (Recipe recipe : recipesInWindow)
 		{
 			Map<Item, Integer> ingredients = recipe.getIngredients() ;
 			Map<Item, Integer> products = recipe.getProducts() ;
 			
 			ingredients.forEach( (item, qtd) -> {
-				Color itemNameColor = playerBag.hasEnough(item, qtd * amountOfCrafts) ? textColor : Game.colorPalette[7] ;
+				Color itemNameColor = playerBag.hasEnough(item, qtd * amountOfCrafts) ? textColor : Game.colorPalette[2] ;
+				String msg = qtd * amountOfCrafts + " " + item.getName() + " (" + playerBag.getAmount(item) + ")" ;
 				DP.drawImage(Item.slot, ingredientsPos, angle, Scale.unit, Align.center) ;
 				DP.drawImage(item.getImage(), ingredientsPos, Draw.stdAngle, Scale.unit, Align.center) ;
-				DP.drawText(Util.Translate(ingredientsPos, 14, 0), Align.centerLeft, Draw.stdAngle, qtd * amountOfCrafts + " " + item.getName(), stdFont, itemNameColor) ;
+				DP.drawText(Util.Translate(ingredientsPos, 14, 0), Align.centerLeft, Draw.stdAngle, msg, stdFont, itemNameColor) ;
 				ingredientsPos.y += 23 ;
 			}) ;
 			
@@ -178,6 +184,9 @@ public class CraftWindow extends GameWindow
 				productsPos.y += 23 ;
 			}) ;		
 		}
+		
+		craftButton.setName("Fabricar " + amountOfCrafts) ;
+		craftButton.display(0.0, true, mousePos, DP) ;
 		
 		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows) ;
 		
