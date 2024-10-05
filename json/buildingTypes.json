@@ -8,7 +8,7 @@
     "name": "store",
     "npcs": [{"job": "equipsSeller", "pos": [0, 0]}, {"job": "itemsSeller", "pos": [0, 0]}],
     "hasInterior": true    
-  },  
+  },
   {
     "name": "craft",
     "npcs": [{"job": "crafter", "pos": [0, 0]}],

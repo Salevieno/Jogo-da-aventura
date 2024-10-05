@@ -2,6 +2,7 @@ package components ;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import libUtil.Util;
 import main.Game;
 import main.TextCategories;
 import utilities.Scale;
+import utilities.UtilS;
 
 public class Building
 {
@@ -27,29 +29,31 @@ public class Building
 		this.pos = pos ;
 		addStandardNPCs() ;
 		colliders = new ArrayList<>() ;
+//		addColliders() ;
 	}
 	
 	public Building(BuildingType type, Point pos, List<NPCs> npcs)
 	{
-		this.type = type ;
-		this.pos = pos ;
+		this(type, pos) ;
 		this.npcs = npcs ;
-		colliders = new ArrayList<>() ;
+	}
+	
+	private void addColliders()
+	{
+		Image collidersImage = UtilS.loadImage("\\Buildings\\" + "Building" + type.getName() + "Colliders.png") ;
 		
-//		Image collidersImage = UtilS.loadImage("\\Buildings\\" + "Building" + type.getName() + "Colliders.png") ;
-//		
-//		if (collidersImage == null) { return ;}
-//		
-//		for (int i = 0 ; i <= collidersImage.getWidth(null) - 1 ; i += 1)
-//		{
-//			for (int j = 0 ; j <= collidersImage.getHeight(null) - 1 ; j += 1)
-//			{
-//				if (!Util.isTransparent(collidersImage, new Point(i, j)))
-//				{
-//					colliders.add(new Collider(new Point(pos.x + i, pos.y - type.getImage().getHeight(null) + j))) ;
-//				}
-//			}
-//		}
+		if (collidersImage == null) { return ;}
+		
+		for (int i = 0 ; i <= collidersImage.getWidth(null) - 1 ; i += 1)
+		{
+			for (int j = 0 ; j <= collidersImage.getHeight(null) - 1 ; j += 1)
+			{
+				if (!Util.isTransparent(collidersImage, new Point(i, j)))
+				{
+					colliders.add(new Collider(new Point(pos.x + i, pos.y - type.getImage().getHeight(null) + j))) ;
+				}
+			}
+		}
 	}
 
 	
@@ -66,7 +70,7 @@ public class Building
 		npcs = new ArrayList<>() ;
 		switch (type.getName())
 		{
-			case hospital: npcs.add(new NPCs(Game.getNPCTypes()[0], Util.Translate(pos, 120, -60))) ; break ;
+			case hospital: npcs.add(new NPCs(Game.getNPCTypes()[0], Util.Translate(pos, 50, -20))) ; break ;
 			case store: 
 				npcs.add(new NPCs(Game.getNPCTypes()[1], Util.Translate(pos, 120, -60))) ;
 				npcs.add(new NPCs(Game.getNPCTypes()[2], Util.Translate(pos, 80, -60))) ;
@@ -104,11 +108,6 @@ public class Building
 			displaySignMessage(cityID, DP) ;
 		}
 		
-//		for (Collider collider : colliders)
-//		{
-//			DP.DrawRect(collider.getPos(), Align.center, new Dimension(1, 1), 1, Color.black, null) ;
-//		}
-		
 		if (type.getInsideImage() == null)
 		{
 			DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomLeft) ;
@@ -127,6 +126,11 @@ public class Building
 
 		DP.drawImage(type.getInsideImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomLeft) ;
 		displayNPCs(playerPos, DP) ;
+		
+		for (Collider collider : colliders)
+		{
+			DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), 1, Game.colorPalette[0], null) ;
+		}
 		
 	}
 
