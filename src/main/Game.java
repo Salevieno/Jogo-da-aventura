@@ -448,8 +448,7 @@ public class Game extends JPanel
 			switch (id)
 			{
 				case 2:
-					cityMaps[id]
-							.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
+					cityMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
 					break ;
 				default: break ;
 			}

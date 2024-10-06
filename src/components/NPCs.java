@@ -440,7 +440,7 @@ public class NPCs
 		if (type.getSpeech().length <= menu) { return ;}
 		if (type.getSpeech()[menu].isEmpty()) { return ;}
 		if (type.getImage() == null) { return ;}
-		
+
 		String content = type.getSpeech()[menu] ;
 		
 		if (content == null) { return ;}
@@ -518,7 +518,6 @@ public class NPCs
 	private void doctorAction(String action, PersonalAttributes playerPA, PersonalAttributes petPA)
 	{
 
-		if (action == null) { return ;}
 		if (petPA == null & playerPA.getLife().isMaxed())
 		{			
 			menu = 1 ;
@@ -530,7 +529,7 @@ public class NPCs
 			return ;
 		}
 		
-		if (menu == 1 & selOption == 0 & actionIsForward(action))
+		if (selOption == 0 & actionIsForward(action))
 		{
 
 			if (petPA != null)
