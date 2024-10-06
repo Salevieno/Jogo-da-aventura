@@ -72,17 +72,17 @@
     ],
     "NPCs":
     [
-      {"name": "smuggleSeller", "pos": {"x": 0.04, "y": 0.92}},
+      {"name": "smuggleSeller", "pos": {"x": 0.24, "y": 0.92}},
       {"name": "alchemist", "pos": {"x": 0.67, "y": 0.93}},
       {"name": "woodcrafter", "pos": {"x": 0.58, "y": 0.15}},
       {"name": "forger", "pos": {"x": 0.46, "y": 0.2}},
-      {"name": "elemental", "pos": {"x": 0.4, "y": 0.1}},
-      {"name": "saver", "pos": {"x": 0.06, "y": 0.65}},
+      {"name": "elemental", "pos": {"x": 0.5, "y": 0.1}},
+      {"name": "saver", "pos": {"x": 0.18, "y": 0.45}},
       {"name": "master", "pos": {"x": 0.37, "y": 0.47}},
       {"name": "questExp", "pos": {"x": 0.66, "y": 0.1}},
-      {"name": "citizen8", "pos": {"x": 0.05, "y": 0.16}},
+      {"name": "citizen8", "pos": {"x": 0.3, "y": 0.56}},
       {"name": "citizen9", "pos": {"x": 0.43, "y": 0.94}},
-      {"name": "citizen10", "pos": {"x": 0.71, "y": 0.46}},
+      {"name": "citizen10", "pos": {"x": 0.71, "y": 0.6}},
       {"name": "citizen11", "pos": {"x": 0.39, "y": 0.32}}
     ]
   },

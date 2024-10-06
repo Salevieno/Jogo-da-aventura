@@ -106,7 +106,7 @@ public class MapElement
 	{
 		for (Collider collider : colliders)
 		{
-			DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), 1, Color.red, null) ;
+			DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Color.red, null) ;
 		}
 	}
 	

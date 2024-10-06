@@ -367,7 +367,7 @@ public abstract class LiveBeing
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		Dimension barSize = new Dimension(21, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
 		
-		DP.drawRect(pos, Align.bottomCenter, barSize, 0, color, null) ;
+		DP.drawRect(pos, Align.bottomCenter, barSize, 0, color, null, 1.0) ;
 		DP.drawImage(powerBarImage, pos, Align.bottomCenter) ;
 		DP.drawText(Util.Translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
 	}
@@ -755,7 +755,7 @@ public abstract class LiveBeing
 			{
 				Point pos =new Point(Pos.x, Pos.y + (att + 1) * Sy) ;
 				Dimension size2 = new Dimension((int)(attRate.get(att) * size.width), size.height) ;
-				DP.drawRect(pos, Align.topLeft, size2, barthick, attColor.get(att), Game.colorPalette[0]) ;
+				DP.drawRect(pos, Align.topLeft, size2, barthick, attColor.get(att), Game.colorPalette[0], 1.0) ;
 			}
 		}
 		if (style == 1)
@@ -783,8 +783,8 @@ public abstract class LiveBeing
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
 				Dimension rateSize = new Dimension(barSize.width, (int) (attRate.get(att) *  barSize.height)) ;
-				DP.drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Game.colorPalette[0]) ;
-				DP.drawRect(barPos, Align.bottomCenter, rateSize, stroke, attColor.get(att), null) ;
+				DP.drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Game.colorPalette[0], 1.0) ;
+				DP.drawRect(barPos, Align.bottomCenter, rateSize, stroke, attColor.get(att), null, 1.0) ;
 				barPos.x += barSize.width + 15 ;
 			}
 		}
@@ -801,8 +801,8 @@ public abstract class LiveBeing
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
 		Point rectPos = Util.Translate(center(), mirror * offset.width, offset.height) ;
 		
-		DP.drawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.colorPalette[0]) ;
-		DP.drawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null) ;
+		DP.drawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.colorPalette[0], 1.0) ;
+		DP.drawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null, 1.0) ;
 	}
 
 	public void takeDamage(int damage)

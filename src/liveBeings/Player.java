@@ -137,7 +137,7 @@ public class Player extends LiveBeing
 	public static final int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public static final Color[] ClassColors = new Color[] {Game.colorPalette[21], Game.colorPalette[5], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
 
-    public static final String[] HotKeys = new String[] {"T", "Y", "U"} ;
+    public static final String[] HotKeys = new String[] {"F", "G", "V"} ;
 
 	private static final MovingAnimations movingAnimations ;
 	

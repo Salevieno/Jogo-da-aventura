@@ -115,10 +115,11 @@ public class DrawPrimitives
 		drawPolyLine(x.stream().mapToInt(Integer::intValue).toArray(), y.stream().mapToInt(Integer::intValue).toArray(), stdStroke, color) ;
 	}
 	
-	public void drawRect(Point pos, Align align, Dimension size, int stroke, Color color, Color contourColor)
+	public void drawRect(Point pos, Align align, Dimension size, int stroke, Color color, Color contourColor, double opacity)
 	{
 		// Rectangle by default starts at the left top
 		Point offset = Util.offsetForAlignment(align, size) ;
+		graphs.setComposite(AlphaComposite.SrcOver.derive((float) opacity)) ;
 		graphs.setStroke(new BasicStroke(stroke)) ;
 		if (color != null)
 		{
@@ -134,7 +135,11 @@ public class DrawPrimitives
 	}
 	public void drawRect(Point pos, Align align, Dimension size, Color color, Color contourColor)
 	{
-		drawRect(pos, align, size, stdStroke, color, contourColor) ;
+		drawRect(pos, align, size, stdStroke, color, contourColor, 1.0) ;
+	}
+	public void drawRect(Point pos, Align align, Dimension size, Color color, Color contourColor, double opacity)
+	{
+		drawRect(pos, align, size, stdStroke, color, contourColor, opacity) ;
 	}
 	public void drawRoundRect(Point pos, Align align, Dimension size, int stroke, Color fillColor, boolean contour, int arcWidth, int arcHeight)
 	{
@@ -212,6 +217,10 @@ public class DrawPrimitives
 	{
 		drawImage(image, pos, 0, Scale.unit, false, false, align, 1) ;
 	}
+	public void drawImage(Image image, Point pos, Align align, double opacity)
+	{
+		drawImage(image, pos, 0, Scale.unit, false, false, align, opacity) ;
+	}
 	public void drawImage(Image image, Point pos, Scale scale, Align align)
 	{
 		drawImage(image, pos, 0, scale, false, false, align, 1) ;
@@ -220,11 +229,11 @@ public class DrawPrimitives
 	{
 		drawImage(image, pos, angle, scale, false, false, align, 1) ;
 	}
-	public void drawImage(Image image, Point pos, double angle, Scale scale, Align align, double alpha)
+	public void drawImage(Image image, Point pos, double angle, Scale scale, Align align, double opacity)
 	{
-		drawImage(image, pos, angle, scale, false, false, align, alpha) ;
+		drawImage(image, pos, angle, scale, false, false, align, opacity) ;
 	}
-	public void drawImage(Image image, Point pos, double angle, Scale scale, boolean flipH, boolean flipV, Align align, double alpha)
+	public void drawImage(Image image, Point pos, double angle, Scale scale, boolean flipH, boolean flipV, Align align, double opacity)
 	{       
 		if (image == null) { System.out.println("Tentando desenhar imagem nula na pos " + pos) ; return ; }
 		
@@ -233,7 +242,7 @@ public class DrawPrimitives
 		Point offset = Util.offsetForAlignment(align, size) ;
 		AffineTransform backup = graphs.getTransform() ;
 		graphs.transform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
-		graphs.setComposite(AlphaComposite.SrcOver.derive((float) alpha)) ;
+		graphs.setComposite(AlphaComposite.SrcOver.derive((float) opacity)) ;
 		
 		graphs.drawImage(image, pos.x + offset.x, pos.y + offset.y, size.width, size.height, null) ;
 		

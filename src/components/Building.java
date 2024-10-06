@@ -129,7 +129,7 @@ public class Building
 		
 		for (Collider collider : colliders)
 		{
-			DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), 1, Game.colorPalette[0], null) ;
+			DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Game.colorPalette[0], null) ;
 		}
 		
 	}

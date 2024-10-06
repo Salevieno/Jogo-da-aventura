@@ -310,7 +310,7 @@ public class NPCs
 		    	break ;
 			}
 			case itemsSeller:
-				int[] itemIDs = new int[] {0, 1, 4, 5, 121, 122, 125, 130, 1301, 1305, 1702, 1708, 1710, 1713} ;
+				int[] itemIDs = new int[] {1329, 0, 1, 4, 5, 121, 122, 125, 130, 1301, 1305, 1702, 1708, 1710, 1713} ;
 //		    	List<Item> itemsOnSale = new ArrayList<>() ;
 //		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
 		    	
@@ -519,12 +519,12 @@ public class NPCs
 	{
 
 		if (petPA == null & playerPA.getLife().isMaxed())
-		{			
+		{
 			menu = 1 ;
 			return ;
 		}
 		if (playerPA.getLife().isMaxed() & petPA.getLife().isMaxed())
-		{			
+		{
 			menu = 1 ;
 			return ;
 		}

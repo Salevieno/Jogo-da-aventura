@@ -116,15 +116,15 @@ public class GeneralItem extends Item
 				user.getPA().getLife().incCurrentValue(20) ;
 				return ;
 				
-			case 27, 28, 29: 
+			case 26, 27, 28: 
 				if (!(user instanceof Player) | !user.isTouching(GroundTypes.water)) { return ;}
 				
 				((Player) user).getBag().add(AllGeneralItems[id + 3], 1) ;
 				return ;
 			
-			case 30: user.getPA().getThirst().incCurrentValue(30) ;  return ;
-			case 31: user.getPA().getThirst().incCurrentValue(60) ;  return ;
-			case 32: user.getPA().getThirst().incCurrentValue(100) ;  return ;
+			case 29: user.getPA().getThirst().incCurrentValue(30) ;  return ;
+			case 30: user.getPA().getThirst().incCurrentValue(60) ;  return ;
+			case 31: user.getPA().getThirst().incCurrentValue(100) ;  return ;
 			case 74: user.getsDrunk(20) ;  return ;
 			case 79:
 				user.getBA().getAtkSpeed().incBonus(-user.getStatus().get(Attributes.atkSpeed).getIntensity()) ;

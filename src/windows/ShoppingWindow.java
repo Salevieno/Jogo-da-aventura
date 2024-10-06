@@ -105,7 +105,7 @@ public class ShoppingWindow extends GameWindow
 			return ;
 		}
 
-		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.1, 0.2), selectedItem().getName(), Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.5, 0.2), selectedItem().getName(), Game.colorPalette[0]}) ;
 	}
 	
 	public void buyItem(BagWindow bag)
@@ -178,7 +178,7 @@ public class ShoppingWindow extends GameWindow
 			itemPos.y += 23 ;
 		}
 		
-		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows) ;
+		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
 		
 	}
 }

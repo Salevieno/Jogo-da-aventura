@@ -1092,7 +1092,6 @@ public class Game extends JPanel
 			case 5:
 				Recipe.load(Item.allItems) ;
 				Log.loadTime("recipes", initialTime) ;
-				Recipe.all.forEach(recipe -> System.out.println(recipe)) ;
 				return ;
 				
 			case 6:

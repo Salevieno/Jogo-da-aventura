@@ -122,7 +122,7 @@ public class QuestWindow extends GameWindow
 		
 		double angle = Draw.stdAngle ;
 
-		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
+		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
 
 		if (quests.size() <= 0) { return ;}
 		
@@ -133,7 +133,7 @@ public class QuestWindow extends GameWindow
 		displayReqCreatures(Util.Translate(windowPos, size.width / 2 , 60), quest, DP) ;
 		displayReqItems(Util.Translate(windowPos, size.width / 2, 260), DP) ;
 		
-		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows) ;
+		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
 		
 	}
 }

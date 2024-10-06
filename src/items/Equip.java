@@ -347,11 +347,11 @@ public class Equip extends Item
 		DP.drawImage(infoMenu, pos, align) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
 		int nRows = 4 ;
-		Point topLeftSlotCenter = Util.Translate(pos, 18 - Util.getSize(infoMenu).width, 18) ;
+		Point topLeftSlotCenter = Util.Translate(pos, 15 - Util.getSize(infoMenu).width, 18) ;
 		int[] attOrder = new int[] {0, 2, 4, 6, 1, 3, 5, 7} ;
 		for (int i = 0 ; i <= attOrder.length - 1 ; i += 1)
 		{
-			Point imagePos = Util.calcGridPos(topLeftSlotCenter, i, nRows, new Point(90, 23)) ;
+			Point imagePos = Util.calcGridPos(topLeftSlotCenter, i, nRows, new Point(70, 25)) ;
 			DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
 			
 			Point textPos = Util.Translate(imagePos, 10, 0) ;

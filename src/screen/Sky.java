@@ -127,7 +127,7 @@ public class Sky
 	public void display(DrawPrimitives DP)
 	{
 		updateSkyColor() ;
-		DP.drawRect(new Point(0, height), Align.bottomLeft, size, 1, color, null) ;
+		DP.drawRect(new Point(0, height), Align.bottomLeft, size, color, null) ;
 		
 		if (isDay())
 		{

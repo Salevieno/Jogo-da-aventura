@@ -37,17 +37,19 @@ public abstract class Draw
 	
 	private static DrawPrimitives DP ;
 	private static Dimension screenSize ;
-	private static Image ArrowIconImage ;
+	private static final Image ArrowIconImage ;
+	private static final Image KeyboardButtonImage ;
 	public static double stdAngle ;
 	
 	private static final Font stdFont = DrawPrimitives.stdFont ;
-	private static final Font smallFont = new Font(DrawPrimitives.stdFont.getName(), Font.BOLD, 10) ; ;
+	private static final Font smallFont = new Font(DrawPrimitives.stdFont.getName(), Font.BOLD, 10) ;
 	
 	static
 	{
 		screenSize = Game.getScreen().getSize() ;
 		stdAngle = DrawPrimitives.stdAngle;
 		ArrowIconImage = UtilS.loadImage("\\Windows\\" + "ArrowIcon.png") ;
+		KeyboardButtonImage = UtilS.loadImage("KeyboardButton.png") ;
 	}
 
 	public static void setDP(DrawPrimitives newDP)
@@ -108,21 +110,23 @@ public abstract class Draw
 		fitText(textPos, sy, Align.topLeft, text, font, maxTextL, textColor) ;
 	}
 	
-	public static void windowArrows(Point pos, int width, int selectedWindow, int numberWindows)
+	public static void windowArrows(Point pos, int width, int selectedWindow, int numberWindows, double opacity)
 	{
 		if (0 < selectedWindow)
 		{
-			Point leftArrowPos = Util.Translate(pos, 25, 0) ; // (int)(0.25 * width)
-			Point textPos = Util.Translate(leftArrowPos, 20, 0) ;
-			DP.drawImage(ArrowIconImage, leftArrowPos, stdAngle, new Scale(-1, -1), Align.center) ;
-			DP.drawText(textPos, Align.topLeft, stdAngle, PlayerActions.moveLeft.getKey(), stdFont, Game.colorPalette[0]) ;			
+			Point leftArrowPos = Util.Translate(pos, 25, 0) ;
+			Point textPos = Util.Translate(leftArrowPos, 18, 0) ;
+			DP.drawImage(ArrowIconImage, leftArrowPos, stdAngle, new Scale(-1, -1), Align.center, opacity) ;
+			DP.drawImage(KeyboardButtonImage, textPos, Align.center, opacity) ;
+			DP.drawText(textPos, Align.center, stdAngle, PlayerActions.moveLeft.getKey(), stdFont, Game.colorPalette[0]) ;			
 		}
 		if (selectedWindow < numberWindows - 1)
 		{
-			Point rightArrowPos = Util.Translate(pos, width - 25, 0) ; // (int)(0.75 * width)
-			Point textPos = Util.Translate(rightArrowPos, -20, 0) ;
-			DP.drawImage(ArrowIconImage, rightArrowPos, stdAngle, new Scale(1, -1), Align.center) ;
-			DP.drawText(textPos, Align.topRight, stdAngle, PlayerActions.moveRight.getKey(), stdFont, Game.colorPalette[0]) ;		
+			Point rightArrowPos = Util.Translate(pos, width - 25, 0) ;
+			Point textPos = Util.Translate(rightArrowPos, -18, 0) ;
+			DP.drawImage(ArrowIconImage, rightArrowPos, stdAngle, new Scale(1, -1), Align.center, opacity) ;
+			DP.drawImage(KeyboardButtonImage, textPos, Align.center, opacity) ;
+			DP.drawText(textPos, Align.center, stdAngle, PlayerActions.moveRight.getKey(), stdFont, Game.colorPalette[0]) ;		
 		}
 	}
 	
@@ -141,7 +145,7 @@ public abstract class Draw
 		}
  		if (ArrowIconImage == null) { return ;}
 		
- 		windowArrows(WindowPos[2], (int)(0.5*screenSize.width), SlotID, NumberOfUsedSlots - 1) ;
+ 		windowArrows(WindowPos[2], (int)(0.5*screenSize.width), SlotID, NumberOfUsedSlots - 1, 1.0) ;
 	}
 	
 	public static void emptyLoadingSlot(int SlotID, int NumSlots)
@@ -151,7 +155,7 @@ public abstract class Draw
 				new Point((int)(0.5*screenSize.width), (int)(0.2*screenSize.height))} ;
 		DP.drawRoundRect(WindowPos[0], Align.topLeft, new Dimension(screenSize.width / 3, screenSize.height / 2), 2, Game.colorPalette[3], true) ;
 		DP.drawText(new Point(WindowPos[0].x + screenSize.width / 6, WindowPos[0].y + screenSize.height / 4), Align.center, stdAngle, "Slot " + String.valueOf(SlotID + 1) + " is empty", new Font("SansSerif", Font.BOLD, 20), Game.colorPalette[5]) ;
-		windowArrows(new Point(WindowPos[0].x, WindowPos[0].y + screenSize.height / 2), screenSize.width / 3, SlotID, NumSlots) ;
+		windowArrows(new Point(WindowPos[0].x, WindowPos[0].y + screenSize.height / 2), screenSize.width / 3, SlotID, NumSlots, 1.0) ;
 	}
 
 	public static void gameGrid(int[] spacing)
@@ -287,7 +291,7 @@ public abstract class Draw
 	}
 
 	public static void quickTextAnimation(Point pos, TimeCounter counter, String text, Color color)
-	{		
+	{
 		pos = Util.Translate(pos, 0, (int) (-30 * counter.rate())) ;
 		DP.drawImage(Animation.messageBox, pos, stdAngle, Scale.unit, Align.topCenter, 0.9) ;
 		DP.drawText(Util.Translate(pos, 5 - Animation.messageBox.getWidth(null) / 2, 20), Align.centerLeft, stdAngle, text, smallFont, color) ;
@@ -296,6 +300,7 @@ public abstract class Draw
 
 	public static void obtainedItemAnimation(Point pos, TimeCounter counter, String text, Color color)
 	{
+		pos = Util.Translate(pos, 0, (int) (-30 * counter.rate())) ;
 		DP.drawImage(Animation.obtainedItem, pos, Align.topCenter) ;
 		DP.drawText(Util.Translate(pos, 0, 3), Align.topCenter, stdAngle, "Você obteve", stdFont, color) ;
 		DP.drawText(Util.Translate(pos, 5 - Animation.obtainedItem.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;

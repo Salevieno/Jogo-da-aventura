@@ -147,7 +147,7 @@ public abstract class SideBar
 	public static void display(Player player, Pet pet, Point mousePos, DrawPrimitives DP)
 	{
 		
-		DP.drawRect(barPos, Align.topLeft, size, 1, Game.colorPalette[0], null) ;
+		DP.drawRect(barPos, Align.topLeft, size, Game.colorPalette[0], null) ;
 		
 		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos, DP)) ;
 		displayKeys(DP) ;

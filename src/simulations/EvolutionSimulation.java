@@ -994,8 +994,8 @@ public abstract class EvolutionSimulation
 	public static void drawBar(Point pos, int currentHeight, int maxHeight, Color color, DrawPrimitives DP)
 	{
 		int width = 10 ;
-		DP.drawRect(pos, Align.bottomLeft, new Dimension(width, currentHeight), 1, color, null) ;
-		DP.drawRect(pos, Align.bottomLeft, new Dimension(width, maxHeight), 1, null, color) ;
+		DP.drawRect(pos, Align.bottomLeft, new Dimension(width, currentHeight), color, null) ;
+		DP.drawRect(pos, Align.bottomLeft, new Dimension(width, maxHeight), null, color) ;
 	}
 	
 	public static void displayBattleStats(DrawPrimitives DP)

@@ -247,7 +247,7 @@ public class ElementalWindow extends GameWindow
 		}
 		
 		
-		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 5), size.width, window, numberWindows) ;
+		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 5), size.width, window, numberWindows, stdOpacity) ;
 		
 	}
 
