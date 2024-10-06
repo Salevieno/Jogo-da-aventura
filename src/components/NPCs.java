@@ -517,24 +517,32 @@ public class NPCs
 	
 	private void doctorAction(String action, PersonalAttributes playerPA, PersonalAttributes petPA)
 	{
-		if (menu != 1) { return ;}
-		
-		if (playerPA.getLife().isMaxed())
+
+		if (action == null) { return ;}
+		if (petPA == null & playerPA.getLife().isMaxed())
 		{			
 			menu = 1 ;
 			return ;
 		}
-
-		if (petPA != null)
+		if (playerPA.getLife().isMaxed() & petPA.getLife().isMaxed())
+		{			
+			menu = 1 ;
+			return ;
+		}
+		
+		if (menu == 1 & selOption == 0 & actionIsForward(action))
 		{
-			petPA.getLife().setToMaximum() ;
-			petPA.getMp().setToMaximum() ;
-		}		
-		
-		playerPA.getLife().setToMaximum() ;
-		playerPA.getMp().setToMaximum() ;
-		
-		menu = 3 ;
+
+			if (petPA != null)
+			{
+				petPA.getLife().setToMaximum() ;
+				petPA.getMp().setToMaximum() ;
+			}		
+			
+			playerPA.getLife().setToMaximum() ;
+			playerPA.getMp().setToMaximum() ;
+		}
+
 	}
 
 	private void elementalAction(Player player, BagWindow bag, ElementalWindow elementalWindow, String action, DrawPrimitives DP)

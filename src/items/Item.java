@@ -32,7 +32,7 @@ public abstract class Item
 		this.image = image ;
 		this.price = price ;
 		this.dropChance = dropChance ;
-		allItems.add(this);
+//		allItems.add(this);
 	}
 
 	public int getId() {return id ;}
@@ -46,7 +46,7 @@ public abstract class Item
 	
 	public static void load()
 	{
-		List<Item> allItems = new ArrayList<>() ;
+//		List<Item> allItems = new ArrayList<>() ;
 		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
 		{
 			allItems.add(Potion.getAll()[i]) ;
