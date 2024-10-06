@@ -696,8 +696,8 @@ public class NPCs
 		DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
 		if (isClose(playerPos))
 		{
-			Point interactionButtonPos = Util.Translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;
-			DP.drawImage(Player.InteractionButton, interactionButtonPos, Draw.stdAngle, Scale.unit, Align.center) ;
+			Point buttonPos = Util.Translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;
+			Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey()) ;
 		}
 	}
 

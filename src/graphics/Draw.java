@@ -38,7 +38,7 @@ public abstract class Draw
 	private static DrawPrimitives DP ;
 	private static Dimension screenSize ;
 	private static final Image ArrowIconImage ;
-	private static final Image KeyboardButtonImage ;
+	public static final Image KeyboardButtonImage ;
 	public static double stdAngle ;
 	
 	private static final Font stdFont = DrawPrimitives.stdFont ;
@@ -109,6 +109,17 @@ public abstract class Draw
 		int sy = font.getSize() + 1 ;
 		fitText(textPos, sy, Align.topLeft, text, font, maxTextL, textColor) ;
 	}
+
+	public static void keyboardButton(Point pos, String key)
+	{
+		keyboardButton(pos, key, Game.colorPalette[0]) ;
+	}
+	
+	public static void keyboardButton(Point pos, String key, Color color)
+	{
+		DP.drawImage(Draw.KeyboardButtonImage, pos, Draw.stdAngle, Scale.unit, Align.center) ;
+		DP.drawText(pos, Align.center, Draw.stdAngle, key, Draw.stdFont, Game.colorPalette[0]) ;	
+	}
 	
 	public static void windowArrows(Point pos, int width, int selectedWindow, int numberWindows, double opacity)
 	{
@@ -117,16 +128,14 @@ public abstract class Draw
 			Point leftArrowPos = Util.Translate(pos, 25, 0) ;
 			Point textPos = Util.Translate(leftArrowPos, 18, 0) ;
 			DP.drawImage(ArrowIconImage, leftArrowPos, stdAngle, new Scale(-1, -1), Align.center, opacity) ;
-			DP.drawImage(KeyboardButtonImage, textPos, Align.center, opacity) ;
-			DP.drawText(textPos, Align.center, stdAngle, PlayerActions.moveLeft.getKey(), stdFont, Game.colorPalette[0]) ;			
+			Draw.keyboardButton(textPos, PlayerActions.moveLeft.getKey()) ;			
 		}
 		if (selectedWindow < numberWindows - 1)
 		{
 			Point rightArrowPos = Util.Translate(pos, width - 25, 0) ;
 			Point textPos = Util.Translate(rightArrowPos, -18, 0) ;
 			DP.drawImage(ArrowIconImage, rightArrowPos, stdAngle, new Scale(1, -1), Align.center, opacity) ;
-			DP.drawImage(KeyboardButtonImage, textPos, Align.center, opacity) ;
-			DP.drawText(textPos, Align.center, stdAngle, PlayerActions.moveRight.getKey(), stdFont, Game.colorPalette[0]) ;		
+			Draw.keyboardButton(textPos, PlayerActions.moveRight.getKey()) ;	
 		}
 	}
 	

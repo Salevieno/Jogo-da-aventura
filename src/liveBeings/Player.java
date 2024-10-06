@@ -125,7 +125,7 @@ public class Player extends LiveBeing
     public static final Image RidingImage = UtilS.loadImage("\\Player\\" + "Tiger.png") ;
 	public static final Image CoinIcon = UtilS.loadImage("\\Player\\" + "CoinIcon.png") ;
 	public static final Image MagicBlissGif = UtilS.loadImage("\\Player\\" + "MagicBliss.gif") ;
-    public static final Image InteractionButton = UtilS.loadImage("\\Player\\" + "InteractionButton.png") ; 
+//    public static final Image InteractionButton = UtilS.loadImage("\\Player\\" + "InteractionButton.png") ; 
     public static final Gif CollectingGif = new Gif("Collecting", UtilS.loadImage("\\Collect\\" + "Collecting.gif"), 5, false, false) ;
     public static final Gif TentGif = new Gif("Tent", UtilS.loadImage("Tent.png"), 5, false, false) ;
 	public static final Gif DiggingGif = new Gif("Digging", UtilS.loadImage("\\Player\\" + "Digging.gif"), 2, false, false) ;
