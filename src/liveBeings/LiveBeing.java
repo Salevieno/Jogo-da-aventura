@@ -365,9 +365,9 @@ public abstract class LiveBeing
 		int maxPower = 10000 ;
 		Color color = Game.colorPalette[6] ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
-		Dimension barSize = new Dimension(21, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
+		Dimension barSize = new Dimension(15, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
 		
-		DP.drawRect(pos, Align.bottomCenter, barSize, 0, color, null, 1.0) ;
+		DP.drawRect(Util.Translate(pos, -powerBarImage.getWidth(null) / 2 + 12, -13), Align.bottomLeft, barSize, 0, color, null, 1.0) ;
 		DP.drawImage(powerBarImage, pos, Align.bottomCenter) ;
 		DP.drawText(Util.Translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
 	}

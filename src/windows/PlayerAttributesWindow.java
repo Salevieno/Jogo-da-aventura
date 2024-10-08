@@ -221,7 +221,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		DP.drawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
 
 		// Power bar
-		Point powerPos = Util.Translate(windowPos, 260, 300) ;
+		Point powerPos = Util.Translate(windowPos, 260, 310) ;
 		player.displayPowerBar(powerPos, DP) ;
 		
 		//	Collecting
