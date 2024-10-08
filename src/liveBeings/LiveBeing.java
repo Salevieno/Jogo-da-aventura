@@ -746,34 +746,18 @@ public abstract class LiveBeing
 		
 		if (style == 0)
 		{
-			Point Pos = new Point((int)(pos.x - size.width / 2), (int)(pos.y - size.height)) ;
-			Dimension screenSize = Game.getScreen().getSize() ;
-			Dimension size = new Dimension((int)(0.05*screenSize.width), (int)(0.01*screenSize.height)) ;
-			int Sy = (int)(0.01*screenSize.height) ;
-			int barthick = 1 ;
-			for (int att = 0; att <= attRate.size() - 1; att += 1)
+			Dimension barSize = new Dimension(32, 4) ;
+			int sy = barSize.height;
+			int clearSpace = 2 ;
+			for (int i = 0; i <= attRate.size() - 1; i += 1)
 			{
-				Point pos =new Point(Pos.x, Pos.y + (att + 1) * Sy) ;
-				Dimension size2 = new Dimension((int)(attRate.get(att) * size.width), size.height) ;
-				DP.drawRect(pos, Align.topLeft, size2, barthick, attColor.get(att), Game.colorPalette[0], 1.0) ;
+				Point barPos = Util.Translate(pos, -size.width / 2, -size.height - attRate.size() * barSize.height - clearSpace + i * sy) ;
+				Dimension filledSize = new Dimension((int)(attRate.get(i) * barSize.width), barSize.height) ;
+				DP.drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Game.colorPalette[0], 1.0) ;
 			}
 		}
 		if (style == 1)
-		{
-//			Point topLeft = Game.getScreen().pos(0.01, 0.02) ;
-//			Dimension barSize = new Dimension(120, 5) ;
-//			int stroke = 1 ;
-//			DP.drawImage(AttImage, topLeft, Align.topLeft) ;
-//			Point offset = new Point(70, 7) ;
-//			Point barPos = Util.Translate(topLeft, offset.x, offset.y) ;
-//			for (int att = 0; att <= attRate.size() - 1; att += 1)
-//			{
-//				Dimension rateSize = new Dimension((int)(attRate.get(att) * barSize.width), barSize.height) ;
-//				DP.drawRect(barPos, Align.centerLeft, barSize, stroke, null, Game.colorPalette[0]) ;
-//				DP.drawRect(barPos, Align.centerLeft, rateSize, stroke, attColor.get(att), null) ;
-//				barPos.y += barSize.height + 6 ;
-//			}
-			
+		{			
 			Point topLeft = Game.getScreen().pos(0.01, 0.02) ;
 			Dimension barSize = new Dimension(5, 35) ;
 			int stroke = 1 ;

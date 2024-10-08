@@ -1169,7 +1169,8 @@ public class Game extends JPanel
 					Opening.incLoadingStep() ;
 					if (Opening.loadingIsOver())
 					{
-						Opening.activateStartButton() ;
+//						Opening.activateStartButton() ;
+						Opening.incLoadingStep() ;
 //						JobBuild.printAll() ;
 					}
 				}

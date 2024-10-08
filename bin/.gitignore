@@ -1,9 +1,13 @@
+/attributes/
 /components/
-/windows/
-/main/
 /graphics/
 /items/
 /liveBeings/
+/main/
 /maps/
 /screen/
 /simulations/
+/test/
+/testing/
+/utilities/
+/windows/

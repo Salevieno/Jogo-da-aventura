@@ -59,6 +59,7 @@ public abstract class Draw
 
 	public static void gif(Image gif, Point pos, Align align)
 	{
+		
 		Dimension size = new Dimension(gif.getWidth(null), gif.getHeight(null)) ;
 		Point offset = Util.offsetForAlignment(align, size) ;
 		DP.drawImage(gif, Util.Translate(pos, offset.x, offset.y), align);
