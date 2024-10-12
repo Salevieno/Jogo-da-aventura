@@ -423,55 +423,55 @@ public class SpellTest
     	{
         	craftWindow.navigate(PlayerActions.moveRight.getKey());
     	}
-    	craftWindow.act(player.getBag(), "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
 		assertTrue(!player.getBag().contains(Arrow.getAll()[6])) ;
 
 		flechasElementais.incLevel(1) ;
-    	craftWindow.act(player.getBag(), "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
     	assertTrue(player.getBag().hasEnough(Arrow.getAll()[6], 20)) ;
 		
     	for (int i = 0 ; i <= 2 - 1; i += 1)
     	{
         	craftWindow.navigate(PlayerActions.moveRight.getKey());
     	}
-    	craftWindow.act(player.getBag(), "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
     	assertTrue(!player.getBag().contains(Arrow.getAll()[8])) ;
 
 		flechasElementais.incLevel(1) ;
-    	craftWindow.act(player.getBag(), "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
     	assertTrue(player.getBag().hasEnough(Arrow.getAll()[8], 20)) ;
 		
     	for (int i = 0 ; i <= 2 - 1; i += 1)
     	{
         	craftWindow.navigate(PlayerActions.moveRight.getKey());
     	}
-    	craftWindow.act(player.getBag(), "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
     	assertTrue(!player.getBag().contains(Arrow.getAll()[10])) ;
 
 		flechasElementais.incLevel(1) ;
-    	craftWindow.act(player.getBag(), "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
     	assertTrue(player.getBag().hasEnough(Arrow.getAll()[10], 20)) ;
 		
     	for (int i = 0 ; i <= 2 - 1; i += 1)
     	{
         	craftWindow.navigate(PlayerActions.moveRight.getKey());
     	}
-    	craftWindow.act(player.getBag(), "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
     	assertTrue(!player.getBag().contains(Arrow.getAll()[12])) ;
 
 		flechasElementais.incLevel(1) ;
-    	craftWindow.act(player.getBag(), "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
     	assertTrue(player.getBag().hasEnough(Arrow.getAll()[12], 20)) ;
 		
     	for (int i = 0 ; i <= 2 - 1; i += 1)
     	{
         	craftWindow.navigate(PlayerActions.moveRight.getKey());
     	}
-    	craftWindow.act(player.getBag(), "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
     	assertTrue(!player.getBag().contains(Arrow.getAll()[14])) ;
 
 		flechasElementais.incLevel(1) ;
-    	craftWindow.act(player.getBag(), "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
     	assertTrue(player.getBag().hasEnough(Arrow.getAll()[14], 20)) ;
 	}
 	
@@ -690,12 +690,12 @@ public class SpellTest
     	{
         	craftWindow.navigate(PlayerActions.moveRight.getKey());
     	}
-    	craftWindow.act(player.getBag(), "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
 		assertTrue(!player.getBag().contains(Item.allItems.get(1378))) ;
 
 		pocaoVenenosa.incLevel(1) ;
-    	craftWindow.act(player.getBag(), "Enter", player) ;
-    	craftWindow.act(player.getBag(), "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
+    	craftWindow.act(player.getBag(), null, "Enter", player) ;
     	assertTrue(player.getBag().hasEnough(Item.allItems.get(1378), 2)) ;
 
     	player.useItem(Item.allItems.get(1378));

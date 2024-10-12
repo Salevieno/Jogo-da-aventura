@@ -214,8 +214,8 @@ public class ElementalWindow extends GameWindow
 
 		for (int i = 0 ; i <= spheres.size() - 1; i += 1)
 		{
-			int row = (i - window * numberItemsOnWindow) % numberItemsOnWindow ;
-			int col = (i - window * numberItemsOnWindow) / numberItemsOnWindow ;
+			int row = i % numberItemsOnWindow ;
+			int col = i / numberItemsOnWindow ;
 			GeneralItem sphere = spheres.get(i) ;
 			Point slotCenter = Util.Translate(windowPos,
 					border + padding + 6 + slotW / 2 + col * (140 + slotW),

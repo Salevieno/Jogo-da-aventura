@@ -73,6 +73,7 @@ public class GameButton
 	public boolean ishovered(Point mousePos) { return Util.isInside(mousePos, topLeft, size) ;}
 	public boolean isClicked(Point mousePos, String action)
 	{
+		if (mousePos == null) { return false ;}
 		if (action == null) { return false ;}
 		
 		return ishovered(mousePos) & action.equals("LeftClick") ;

@@ -1178,7 +1178,7 @@ public class Game extends JPanel
 	
 				if (Opening.gameStarted())
 				{
-			    	player.switchOpenClose(player.getHintsindow()) ;
+//			    	player.switchOpenClose(player.getHintsindow()) ;
 					if (cheatMode) { setCheatMode() ;}
 					player.startCounters() ;
 					Game.setState(mainState) ;

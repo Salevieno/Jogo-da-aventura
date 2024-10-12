@@ -934,7 +934,7 @@ public class Player extends LiveBeing
 			}
 			if (focusWindow instanceof CraftWindow)
 			{
-				((CraftWindow) focusWindow).act(bag, currentAction, this) ;
+				((CraftWindow) focusWindow).act(bag, mousePos, currentAction, this) ;
 			}
 			if (focusWindow instanceof ElementalWindow)
 			{
