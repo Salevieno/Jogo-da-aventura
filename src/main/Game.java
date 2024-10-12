@@ -85,6 +85,7 @@ public class Game extends JPanel
 {
 	// TODO arte - soundtrack
 	// TODO arquivos - nomes das criaturas
+	// TODO como reviver o pet quando ele/ela morre? :O
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] { "Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A" } ;

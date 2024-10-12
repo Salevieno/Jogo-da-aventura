@@ -137,7 +137,7 @@ public class ForgeWindow extends GameWindow
 
 		if (!bag.contains(rune)) { displayMessage(2) ; return ;}
 
-		int forgeLevel = selectedEquip.getForgeLevel() ; ;
+		int forgeLevel = selectedEquip.getForgeLevel() ;
 		int forgePrice = forgePrice(forgeLevel) ;
 
 
