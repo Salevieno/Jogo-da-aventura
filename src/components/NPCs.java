@@ -72,7 +72,7 @@ public class NPCs
 				
 			case alchemist:
 			{
-		    	List<Recipe> recipes = Recipe.all.subList(0, 39) ;
+		    	List<Recipe> recipes = Recipe.all.subList(0, 41) ;
 				
 				window = new CraftWindow(recipes) ;
 				
@@ -80,7 +80,7 @@ public class NPCs
 			}
 			case woodcrafter:
 			{
-		    	List<Recipe> recipes = Recipe.all.subList(40, 59) ;
+		    	List<Recipe> recipes = Recipe.all.subList(42, 59) ;
 				
 				window = new CraftWindow(recipes) ;
 				
