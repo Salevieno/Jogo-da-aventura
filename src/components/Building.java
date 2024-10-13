@@ -22,6 +22,7 @@ public class Building
 	private Point pos ;
 	private List<NPCs> npcs ;
 	private List<Collider> colliders ;
+	private static final Image signBoard = UtilS.loadImage("\\Buildings\\" + "SignBoard.png") ;
 
 	public Building(BuildingType type, Point pos)
 	{
@@ -95,10 +96,12 @@ public class Building
 	public void displaySignMessage(int cityID, DrawPrimitives DP)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
-		Point messagePos = Util.Translate(pos, 10, 10) ;
+		Point boardPos = Util.Translate(pos, type.getImage().getWidth(null), 0) ;
+		Point messagePos = Util.Translate(boardPos, 12, 15 - signBoard.getHeight(null)) ;
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
-		DP.drawRoundRect(pos, Align.topLeft, new Dimension(230, 80), 2, Game.colorPalette[3], true) ;			
-		Draw.fitText(messagePos, font.getSize() + 2, Align.centerLeft, message, font, 40, Game.colorPalette[0]) ;	
+//		DP.drawRoundRect(pos, Align.topLeft, new Dimension(230, 80), 2, Game.colorPalette[3], true) ;
+		DP.drawImage(signBoard, boardPos, Align.bottomLeft, 0.85) ;
+		Draw.fitText(messagePos, font.getSize() + 2, Align.bottomLeft, message, font, 40, Game.colorPalette[0]) ;	
 	}
 	
 	public void display(Point playerPos, int cityID, DrawPrimitives DP)

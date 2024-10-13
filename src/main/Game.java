@@ -100,7 +100,7 @@ public class Game extends JPanel
 	private static Point mousePos ;
 	private static GameStates initialState = GameStates.loading ;
 	private static GameStates mainState = GameStates.running ;
-	private static boolean cheatMode = true ;
+	private static boolean cheatMode = false ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
@@ -671,10 +671,11 @@ public class Game extends JPanel
 				rewardItems.put(allItems.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
 			}
 
-			String description = input[30 + language.ordinal()] ;
+			String name = input[30 + language.ordinal()] ;
+			String description = input[32 + language.ordinal()] ;
 
 			quests[i] = new Quest(id, type, isRepeatable, reqCreatureTypes, reqItems, goldReward, expReward,
-					rewardItems, description) ;
+					rewardItems, name, description) ;
 		}
 
 		return quests ;

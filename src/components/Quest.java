@@ -35,11 +35,11 @@ public class Quest
 	}
 	
 	public Quest(int id, String type, boolean isRepeatable, Map<CreatureType, Integer> reqCreatureTypes, Map<Item, Integer> reqItems,
-			int goldReward, int expReward, Map<Item, Integer> rewardItems, String description)
+			int goldReward, int expReward, Map<Item, Integer> rewardItems, String name, String description)
 	{
 		
 		this.id = id ;
-		name = String.valueOf("Quest " + id) ;
+		this.name = name ;
 		this.type = type ;
 		isComplete = false ;
 		this.isRepeatable = isRepeatable ;
