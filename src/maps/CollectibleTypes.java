@@ -24,9 +24,9 @@ public enum CollectibleTypes
 	public double getSpawnTime() { return spawnTime ;}
 	public Image getImage() { return image ;}
 	
-	public Item getItem(FieldMap map)
-	{
-		return new Collectible(220, map.getLevel(), map.randomPosInMap()) ;
-	}
+//	public Item getItem(FieldMap map)
+//	{
+//		return new Collectible(220, map.getLevel(), map.randomPosInMap()) ;
+//	}
 	
 }

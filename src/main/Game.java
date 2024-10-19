@@ -751,22 +751,6 @@ public class Game extends JPanel
 			repaint() ;
 		}
 	}
-
-	private void playGifs(DrawPrimitives DP)
-	{
-		/*
-		 * if (!testGif.isTimeStopper()) { testGif.play(new Point(100, 100),
-		 * AlignmentPoints.topLeft, DP) ;
-		 * 
-		 * repaint() ; }
-		 */
-		/*
-		 * if (testGif.isPlaying()) { testGif.play(mousePos, Align.center, DP) ;
-		 * shouldRepaint = true ; } if (testGif2.isPlaying()) { testGif2.play(new
-		 * Point(300, 100), Align.center, DP) ; shouldRepaint = true ; }
-		 */
-	}
-
 	
 	private void creaturesAct()
 	{
@@ -1251,11 +1235,6 @@ public class Game extends JPanel
 
 			case running:
 				run(DP) ;
-				playGifs(DP) ;
-				if (player.getMap() instanceof FieldMap)
-				{
-					System.out.println(((FieldMap) player.getMap()).getCollectibles()); ;
-				}
 				// DP.DrawImage(Util.loadImage("./images/test.png"), mousePos, Align.center) ;	
 				break ;
 
