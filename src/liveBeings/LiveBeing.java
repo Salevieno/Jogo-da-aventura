@@ -7,6 +7,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,6 +18,7 @@ import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.Animation;
 import graphics.AnimationTypes;
+import graphics.Draw;
 import graphics.DrawPrimitives;
 import graphics.Gif;
 import libUtil.Align;
@@ -513,11 +516,44 @@ public abstract class LiveBeing
 		double movesPerSec = 1 / this.getBattleActionCounter().getDuration() ;
 		double damAvr = (1 - critRate) * (defenderAtkRate * phyDamBase + (1 - defenderAtkRate) * phyDamInDefense) + critRate * phyDamCrit ;
 		double damPerSec = damAvr * hitRate * attackerAtkRate * movesPerSec ;
-		double timeToWin = defender.getPA().getLife().getMaxValue() / damPerSec ;		
-		int totalPower = (int) (10000 / timeToWin) ;
+		double timeToWin = defender.getPA().getLife().getMaxValue() / damPerSec ;
 		
+		int totalPower = (int) (10000 / timeToWin(defender)) ;
 		return totalPower ;
 		
+	}
+	
+	private double timeToWin(LiveBeing defender)
+	{		
+		double rateMagAtkAttacker =	this instanceof Player ? 0.4147 :  0.366;
+		double ratePhyAtkAttacker = 0.5 - rateMagAtkAttacker / 2.0  ;
+		double rateDefDefender = 0.5 - rateMagAtkAttacker / 2.0 ;
+
+		double critRate = this.getBA().getCritAtk().getTotal() - defender.getBA().getCritDef().getTotal() ;
+		double hitRate = 1 - 1 / (1 + Math.pow(1.1, this.getBA().getDex().getTotal() - defender.getBA().getAgi().getTotal())) ;
+		double bloodRate = 0 ; // Math.max(this.getBA().getBlood().getBasicAtkChance() - defender.getBA().getBlood().getBasicDefChance(), 0)
+		
+		double spellDam = this instanceof Player ? 2.0 + this.getBA().getMagAtk().getTotal() - defender.getBA().getMagDef().getTotal() : 1 + 1.02 * this.getBA().getMagAtk().getTotal() - defender.getBA().getMagDef().getTotal() ;
+		
+		int phyDamBase = Math.max((int) Util.Round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
+		int spellDamBase = Math.max((int) Util.Round(spellDam, 0), 0) ;
+		int phyDamInDefense = Math.max((int) Util.Round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
+		int magDamInDefense = Math.max((int) Util.Round(spellDam - defender.getBA().getMagDef().getBaseValue(), 0), 0) ;
+		int bloodDam = Math.max((int) Util.Round(this.getBA().getBlood().TotalAtk() - defender.getBA().getBlood().TotalDef(), 0), 0) ;
+		int phyDamCrit = (int) Util.Round(this.getBA().getPhyAtk().getTotal(), 0) ;
+		int spellDamCrit = (int) Util.Round(this instanceof Player ? 2.0 + this.getBA().getMagAtk().getTotal() : 1 + 1.02 * this.getBA().getMagAtk().getTotal(), 0) ;
+		
+		double bloodDuration = this.getBA().getBlood().getDuration() ;
+		double damPerMove = ratePhyAtkAttacker * hitRate * ((1 - critRate) * ((1 - rateDefDefender) * phyDamBase + rateDefDefender * phyDamInDefense) + critRate * phyDamCrit) +
+							rateMagAtkAttacker * hitRate * ((1 - critRate) * ((1 - rateDefDefender) * spellDamBase + rateDefDefender * magDamInDefense) + critRate * spellDamCrit) +
+							bloodRate * bloodDam * bloodDuration ;
+		
+		
+		double movesPerSec = 1 / this.getBattleActionCounter().getDuration() ;
+		double damPerSec = damPerMove * hitRate  * movesPerSec ;
+		double timeToWin = defender.getPA().getLife().getMaxValue() / damPerSec ;
+
+		return timeToWin ;
 	}
 	
 	public void resetCombo()
@@ -687,11 +723,10 @@ public abstract class LiveBeing
 		BA.getPhyDef().incBonus(-BA.getPhyDef().getBaseValue()) ;
 		BA.getMagDef().incBonus(-BA.getMagDef().getBaseValue()) ;
 	}
-	public void train(AtkResults atkResults)
+	public void trainOffensive(AtkResults atkResults)
 	{
-		
+
 		if (atkResults.getAtkType() == null) { return ;}		
-		if (atkResults.getEffect().equals(AtkEffects.none)) { return ;}
 		
 		AtkEffects effect = atkResults.getEffect() ;
 		AtkTypes atkType = atkResults.getAtkType() ;
@@ -722,6 +757,21 @@ public abstract class LiveBeing
 			BA.getPhyDef().incTrain(0.025 / (BA.getPhyDef().getTrain() + 1)) ;
 			BA.getMagDef().incTrain(0.025 / (BA.getMagDef().getTrain() + 1)) ;
 		}
+		
+	}
+	
+	public void trainDefensive(AtkResults atkResults)
+	{
+		
+		if (atkResults.getAtkType() == null) { return ;}
+		
+		AtkEffects effect = atkResults.getEffect() ;
+		AtkTypes atkType = atkResults.getAtkType() ;
+		if (!atkType.equals(AtkTypes.defense) & effect.equals(AtkEffects.miss))
+		{
+			BA.getAgi().incTrain(0.0125 / (BA.getAgi().getTrain() + 1)) ;					
+		}
+		
 	}
 	
 	public void displayAttributes(int style, DrawPrimitives DP)

@@ -25,6 +25,7 @@ import attributes.PersonalAttributes;
 import components.GameButton;
 import components.IconFunction;
 import graphics.Animation;
+import graphics.AnimationTypes;
 import graphics.Draw;
 import graphics.DrawPrimitives;
 import libUtil.Align;
@@ -356,7 +357,7 @@ public abstract class EvolutionSimulation
 		}
 		pet = Game.getPet() ;
 	}
-	
+
 	private static void playerLevelUp(int times)
 	{
 		for (int i = 0 ; i <= times - 1 ; i += 1)
@@ -368,16 +369,78 @@ public abstract class EvolutionSimulation
 		}
 	}
 	
+	public static void playerLevelUpAvr()
+	{	
+
+		if (Player.maxLevel <= player.getLevel()) { return ;}
+		
+		AttributeIncrease attInc = player.getAttInc() ;
+		double[] attIncrease =  new double[attInc.getIncrement().basic().length + 1] ;
+
+		for (int i = 0 ; i <= attInc.getIncrement().basic().length - 1 ; i += 1)
+		{
+//			if (attInc.getChance().basic()[i] <= Math.random()) { continue ;}
+			
+			attIncrease[i] = attInc.getIncrement().basic()[i] * attInc.getChance().basic()[i] ;
+		}
+		
+		attIncrease[attInc.getIncrement().basic().length] = Player.calcExpToLevelUp(player.getLevel()) ;
+		
+		
+		player.setLevel(player.getLevel() + 1) ;
+		player.getPA().getLife().incMaxValue((int) attIncrease[0]) ;
+		player.getPA().getMp().incMaxValue((int) attIncrease[1]); ;	
+		player.getBA().getPhyAtk().incBaseValue(attIncrease[2]) ;
+		player.getBA().getMagAtk().incBaseValue(attIncrease[3]) ;
+		player.getBA().getPhyDef().incBaseValue(attIncrease[4]) ;
+		player.getBA().getMagDef().incBaseValue(attIncrease[5]) ;
+		player.getBA().getAgi().incBaseValue(attIncrease[6]) ;
+		player.getBA().getDex().incBaseValue(attIncrease[7]) ;
+		player.getPA().getExp().incMaxValue((int) attIncrease[8]) ;
+		player.getPA().getLife().setToMaximum() ;
+		player.getPA().getMp().setToMaximum() ;
+//		spellPoints += 1 ;
+		player.setAttPoints(player.getAttPoints() + 2) ;
+		
+		((PlayerAttributesWindow) player.getAttWindow()).activateIncAttButtons(player.getAttPoints()) ;
+		
+		Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, player.getLevel()});
+	}
+	
+	public static void autoApplyAttPoints(Player player)
+	{
+		double sum = player.getAttInc().getChance().getPhyAtk() + player.getAttInc().getChance().getMagAtk() + 
+						player.getAttInc().getChance().getPhyDef() + player.getAttInc().getChance().getMagDef() + 
+						player.getAttInc().getChance().getDex() + player.getAttInc().getChance().getAgi() ;
+		player.getBA().getPhyAtk().incBaseValue(2 * player.getAttInc().getChance().getPhyAtk() / sum) ;
+		player.getBA().getMagAtk().incBaseValue(2 * player.getAttInc().getChance().getMagAtk() / sum) ;
+		player.getBA().getPhyDef().incBaseValue(2 * player.getAttInc().getChance().getPhyDef() / sum) ;
+		player.getBA().getMagDef().incBaseValue(2 * player.getAttInc().getChance().getMagDef() / sum) ;
+		player.getBA().getDex().incBaseValue(2 * player.getAttInc().getChance().getDex() / sum) ;
+		player.getBA().getAgi().incBaseValue(2 * player.getAttInc().getChance().getAgi() / sum) ;
+		player.decAttPoints(2) ;
+	}
+
+	public static void trainAvr(Player player)
+	{
+		player.getBA().getPhyAtk().incTrain(0.2 * player.getAttInc().getChance().getPhyAtk() ) ;
+		player.getBA().getMagAtk().incTrain(0.2 * player.getAttInc().getChance().getMagAtk() ) ;
+		player.getBA().getPhyDef().incTrain(0.33 * player.getAttInc().getChance().getPhyDef() ) ;
+		player.getBA().getMagDef().incTrain(0.33 * player.getAttInc().getChance().getMagDef() ) ;
+		player.getBA().getDex().incTrain(0.35 * player.getAttInc().getChance().getDex() ) ;
+		player.getBA().getAgi().incTrain(0.3 * player.getAttInc().getChance().getAgi() ) ;
+	}
+	
 	private static void playerTrain()
 	{
-		player.train(new AtkResults(AtkTypes.physical, AtkEffects.hit, 0, null)) ;
+		player.trainOffensive(new AtkResults(AtkTypes.physical, AtkEffects.hit, 0, null)) ;
 	}
 	
 	private static void petTrain()
 	{
 		if (pet == null) { return ;}
 		
- 		pet.train(new AtkResults(AtkTypes.physical, AtkEffects.hit, 0, null)) ;
+ 		pet.trainOffensive(new AtkResults(AtkTypes.physical, AtkEffects.hit, 0, null)) ;
 	}
 	
 	private static void petLevelUp(int times)
@@ -546,8 +609,8 @@ public abstract class EvolutionSimulation
 			{
 //				System.out.println();
 //				battletimes.forEach(bat -> System.out.println(bat)) ;
-				stats.forEach((key, value) -> System.out.println(key + "," + value));
-				System.out.println();
+//				stats.forEach((key, value) -> System.out.println(key + "," + value));
+//				System.out.println();
 				numberFights = 0 ;
 			}
 			numberFightsRepetition = 0 ;

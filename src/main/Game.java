@@ -2,7 +2,6 @@ package main ;
 
 import java.awt.Color ;
 import java.awt.Dimension ;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D ;
 import java.awt.Image ;
@@ -17,9 +16,12 @@ import java.awt.event.MouseWheelListener ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.HashMap ;
+import java.util.HashSet;
 import java.util.Iterator ;
 import java.util.List ;
 import java.util.Map ;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.sound.sampled.Clip ;
 import javax.swing.JPanel ;
@@ -145,7 +147,7 @@ public class Game extends JPanel
 	public Game()
 	{
 		DP = new DrawPrimitives() ;
-		player = new Player("", "", 1) ;
+		player = new Player("", "", 0) ;
 
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
@@ -1130,6 +1132,61 @@ public class Game extends JPanel
 					Music.SwitchMusic(player.getMap().getMusic()) ;
 				}
 				Log.loadTime("last stuff", initialTime) ;
+				// TODO incluir criaturas 230 a 234 em algum mapa
+//				Map<Integer, Integer> mapLevelPower = new HashMap<>() ;
+//				for (CreatureType creatureType : CreatureType.all)
+//				{
+//					Creature creature = new Creature(creatureType) ;
+//					System.out.println(creature.getType().getID() + " " + creature.getType().getLevel() + " " + creature.totalPower());
+//					if (mapLevelPower.get(creature.getType().getLevel()) == null)
+//					{
+//						mapLevelPower.put(creature.getType().getLevel(), creature.totalPower()) ;
+//					}
+//					else
+//					{
+//						mapLevelPower.put(creature.getType().getLevel(), mapLevelPower.get(creature.getType().getLevel()) + creature.totalPower()) ;
+//					}
+//				}
+//				
+//				mapLevelPower.forEach((key, value) -> System.out.println(key + " " + (value / 5.0))) ;
+//				for (Item item : Equip.getAll()) { player.getBag().add(item, 20) ;}
+//				for (int i = 0 ; i <= 0 ; i += 1)
+//				{
+////					player.useItem(Equip.getAll()[200 * player.getJob() + i]) ;
+//					System.out.println(player.totalPower()) ;
+//					EvolutionSimulation.playerLevelUpAvr() ;
+//					EvolutionSimulation.autoApplyAttPoints(player) ;
+//					EvolutionSimulation.trainAvr(player) ;
+//				}
+				
+//				int numCat = 12 ;
+//				int maxPontos = 100 ;
+//				
+//				for (int crea = 0 ; crea <= 300 - 1 ; crea += 1)
+//				{
+//					List<Integer> ptsPorCat = new ArrayList<>() ;
+//
+//					for (int i = 0 ; i <= numCat - 1 ; i += 1)
+//					{
+//						ptsPorCat.add(0) ;
+//					}
+//					for (int i = 0 ; i <= (maxPontos * numCat - 1) / 2 ; i += 1)
+//					{
+//						List<Integer> validCats = new ArrayList<>() ;
+//						for (int j = 0 ; j <= ptsPorCat.size() - 1 ; j += 1)
+//						{
+//							if (ptsPorCat.get(j) < maxPontos)
+//							{
+//								validCats.add(j) ;
+//							}
+//						}
+//						int randomCat = validCats.get(Util.randomIntFromTo(0, validCats.size() - 1)) ;
+//						ptsPorCat.set(randomCat, ptsPorCat.get(randomCat) + 1) ;
+//					}
+//					System.out.println(ptsPorCat) ;
+////					System.out.println(ptsPorCat.stream().mapToInt(i -> i).sum()) ;
+//				}
+				
 				return ;
 			
 			default: return ;
@@ -1195,6 +1252,10 @@ public class Game extends JPanel
 			case running:
 				run(DP) ;
 				playGifs(DP) ;
+				if (player.getMap() instanceof FieldMap)
+				{
+					System.out.println(((FieldMap) player.getMap()).getCollectibles()); ;
+				}
 				// DP.DrawImage(Util.loadImage("./images/test.png"), mousePos, Align.center) ;	
 				break ;
 

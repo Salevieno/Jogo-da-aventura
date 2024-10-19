@@ -414,7 +414,8 @@ public abstract class Battle
 		AtkTypes atkType = atkTypeFromAction(attacker) ;
 		attacker.setCurrentAtkType(atkType) ;
 		AtkResults atkResults = performAtk(atkType, attacker, receiver) ;
-		if (!(attacker instanceof Creature)) { attacker.train(atkResults) ;}
+		if (!(attacker instanceof Creature)) { attacker.trainOffensive(atkResults) ;}
+		if (attacker instanceof Creature) { receiver.trainDefensive(atkResults) ;}
 		if (attacker instanceof Player) { ((Player) attacker).getStatistics().updateOffensive(atkResults) ;}
 		if (receiver instanceof Player) { ((Player) receiver).getStatistics().updateDefensive(atkResults, receiver.getBA().getPhyDef().getTotal(), receiver.getBA().getMagDef().getTotal()) ;}
 

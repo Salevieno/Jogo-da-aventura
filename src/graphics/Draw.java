@@ -243,7 +243,7 @@ public abstract class Draw
 	{
 		AtkEffects effect = atkResults.getEffect() ;
 		
-		if (effect == AtkEffects.none) { System.out.println("Damage animation with effect = none") ; return ;}
+		if (effect == AtkEffects.none) { return ;} //  System.out.println("Damage animation with effect = none") ;
 
 		String damage = String.valueOf(Util.Round(atkResults.getDamage(), 1)) ;
 		String message = switch (effect)

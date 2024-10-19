@@ -1092,7 +1092,7 @@ public class Player extends LiveBeing
 		if (!canUseSpell(spell)) { return null ;}
 		
 		spell.getCooldownCounter().start() ;
-		train(new AtkResults(AtkTypes.magical)) ;
+		trainOffensive(new AtkResults(AtkTypes.magical)) ;
 		stats.incNumberMagAtk() ;
 		displayUsedSpellMessage(spell, Game.getScreen().pos(0.43, 0.2), Game.colorPalette[4]);
 		
@@ -1526,7 +1526,13 @@ public class Player extends LiveBeing
 	public void levelUp()
 	{
 		if (level == maxLevel) { return ;}
-		
+		System.out.println(BA.getPhyAtk().getTrain() / BA.getPhyAtk().getBaseValue()) ;
+		System.out.println(BA.getMagAtk().getTrain() / BA.getMagAtk().getBaseValue()) ;
+		System.out.println(BA.getPhyDef().getTrain() / BA.getPhyDef().getBaseValue()) ;
+		System.out.println(BA.getMagDef().getTrain() / BA.getMagDef().getBaseValue()) ;
+		System.out.println(BA.getDex().getTrain() / BA.getDex().getBaseValue()) ;
+		System.out.println(BA.getAgi().getTrain() / BA.getAgi().getBaseValue()) ;
+		System.out.println() ;
 		double[] attIncrease = calcAttributesIncrease() ;
 		setLevel(level + 1) ;
 		PA.getLife().incMaxValue((int) attIncrease[0]) ;

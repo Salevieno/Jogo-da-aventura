@@ -90,7 +90,7 @@ public class FieldMap extends GameMap
 		
 		
 		// add creatures
-		creatures = new ArrayList<Creature>() ;			
+		creatures = new ArrayList<Creature>() ;
 		for (int creatureTypeID : creatureTypeIDs)
 		{
 			if (creatureTypeID <= -1) { continue ;}
