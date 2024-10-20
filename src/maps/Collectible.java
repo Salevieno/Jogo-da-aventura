@@ -17,7 +17,7 @@ public class Collectible extends Item
 	
 	public Collectible(int itemID, int level, Point pos)
 	{
-		super(itemID-1000, Item.allItems.get(itemID).getName(), Item.allItems.get(itemID).getDescription(),
+		super(itemID, Item.allItems.get(itemID).getName(), Item.allItems.get(itemID).getDescription(),
 				type(itemID).getImage(), Item.allItems.get(itemID).getPrice(),
 					Item.allItems.get(itemID).getDropChance()) ;		
 		this.itemID = itemID ;

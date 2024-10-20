@@ -21,7 +21,7 @@ public class Gif
 	private boolean loop ;
 	private boolean timeStopper ;
 	
-	private static final List<Gif> all = new ArrayList<>() ;
+	private static final List<Gif> activeGifs = new ArrayList<>() ;
 	
 	public Gif(String name, Image image, double duration, boolean loop, boolean timeStopper)
 	{
@@ -49,7 +49,7 @@ public class Gif
 		
 		this.pos = pos ;
 		this.align = align ;
-		all.add(this) ;
+		activeGifs.add(this) ;
 		counter.start() ;
 	}
 	
@@ -62,13 +62,7 @@ public class Gif
 			return ;
 		}
 		
-
-//		if (isStarting() & timeStopper)
-//		{
-//			Game.playStopTimeGif() ;
-//		}
 		Draw.gif(image, pos, align) ;
-//		incTimeCounter() ;
 	}
 	
 	private void end()
@@ -76,15 +70,12 @@ public class Gif
 		hasPlayed = true ;
 		counter.reset() ;
 		this.getImage().flush() ;
-		all.remove(this) ;
+		activeGifs.remove(this) ;
 	}
 	
 	public static void playAll()
 	{
-		for (int i = 0 ; i <= all.size() - 1; i += 1)
-		{
-			all.get(i).play() ;
-		}
+		activeGifs.forEach(gif -> gif.play()) ;
 	}
 
 	@Override

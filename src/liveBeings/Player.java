@@ -125,8 +125,12 @@ public class Player extends LiveBeing
     public static final Image RidingImage = UtilS.loadImage("\\Player\\" + "Tiger.png") ;
 	public static final Image CoinIcon = UtilS.loadImage("\\Player\\" + "CoinIcon.png") ;
 	public static final Image MagicBlissGif = UtilS.loadImage("\\Player\\" + "MagicBliss.gif") ;
-//    public static final Image InteractionButton = UtilS.loadImage("\\Player\\" + "InteractionButton.png") ; 
-    public static final Gif CollectingGif = new Gif("Collecting", UtilS.loadImage("\\Collect\\" + "Collecting.gif"), 5, false, false) ;
+    public static final Gif[] CollectingGifs = new Gif[] {
+													    		new Gif("Collecting", UtilS.loadImage("\\Collect\\" + "CollectingFruit.gif"), 3.6, false, false),
+													    		new Gif("Collecting", UtilS.loadImage("\\Collect\\" + "CollectingHerb.gif"), 3.6, false, false),
+													    		new Gif("Collecting", UtilS.loadImage("\\Collect\\" + "CollectingWood.gif"), 3.6, false, false),
+													    		new Gif("Collecting", UtilS.loadImage("\\Collect\\" + "CollectingMetal.gif"), 3.6, false, false)
+												    		} ;
     public static final Gif TentGif = new Gif("Tent", UtilS.loadImage("Tent.png"), 5, false, false) ;
 	public static final Gif DiggingGif = new Gif("Digging", UtilS.loadImage("\\Player\\" + "Digging.gif"), 2, false, false) ;
     public static final Gif FishingGif = new Gif("Fishing", UtilS.loadImage("\\Player\\" + "Fishing.gif"), 2, false, false) ;
@@ -455,11 +459,17 @@ public class Player extends LiveBeing
 	public void collect(Collectible collectible)
     {
 		
-		if (CollectingGif.isActive()) { return ;}
-
-		CollectingGif.start(pos, Align.center) ;
+		Gif collectibleGif = CollectingGifs[collectible.typeNumber()] ;
 		
-        if (!CollectingGif.isDonePlaying()) { return ;}
+		if (collectibleGif.isActive()) { return ;}
+		
+
+        if (!collectibleGif.isDonePlaying())
+        {
+    		collectibleGif.start(pos, Align.center) ;
+    		return ;
+        }
+        
         boolean isBerry = collectible.typeNumber() == 0 ;
         boolean collectSuccessful = isBerry ? true : Util.chance(collectible.chance(level)) ;        
     	String msg = collectSuccessful ? collectible.getName() : "Falha na coleta" ;
@@ -474,8 +484,13 @@ public class Player extends LiveBeing
         	trainCollecting(collectible) ;
         	Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.colorPalette[0]});
         }
+        else
+        {
+        	Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.colorPalette[0]});
+        }
 
     	removeCollectibleFromMap(collectible) ;
+
     	setState(LiveBeingStates.idle) ;
         currentCollectible = null ;
 
@@ -988,7 +1003,7 @@ public class Player extends LiveBeing
 		for (int i = 0 ; i <= collectibles.size() - 1 ; i += 1)
 		{
 			
-			if (collectibles.size() - 1 < i) { break ;}
+//			if (collectibles.size() - 1 < i) { break ;}
 			
 			Collectible collectible = collectibles.get(i) ;
 			if (!isInCloseRange(collectible.getPos())) { continue ;}
