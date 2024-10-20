@@ -1003,8 +1003,6 @@ public class Player extends LiveBeing
 		for (int i = 0 ; i <= collectibles.size() - 1 ; i += 1)
 		{
 			
-//			if (collectibles.size() - 1 < i) { break ;}
-			
 			Collectible collectible = collectibles.get(i) ;
 			if (!isInCloseRange(collectible.getPos())) { continue ;}
 			
@@ -1012,7 +1010,10 @@ public class Player extends LiveBeing
 			{
 				if (collectLevel[collectible.typeNumber() - 1] + 1 < ((FieldMap) map).getLevel())
 				{
-//					Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), "Nível de coleta insuficiente", Game.colorPalette[4]}) ;
+					if (Animation.getAll().size() == 0)
+					{
+						Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.5, 0.1), "Nível de coleta insuficiente", Game.colorPalette[4]}) ;
+					}
 					break ;
 				}
 			}

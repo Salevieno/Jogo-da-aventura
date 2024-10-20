@@ -75,7 +75,10 @@ public class Gif
 	
 	public static void playAll()
 	{
-		activeGifs.forEach(gif -> gif.play()) ;
+		for (int i = 0 ; i <= activeGifs.size() - 1 ; i += 1)
+		{
+			activeGifs.get(i).play() ;
+		}
 	}
 
 	@Override
