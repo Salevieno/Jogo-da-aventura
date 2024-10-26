@@ -535,8 +535,8 @@ public class Game extends JPanel
 //				map
 //						.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
 //				break ;
-			case 13:
-				map.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
+			case 8, 12:
+				map.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
 				break ;
 //			case 14:
 //				map
