@@ -52,6 +52,7 @@ public class CreatureType
 	private int[] StatusCounter;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood,
 								// Poison, Silence]
 
+	public static final int numberCreatureTypesImages ;
 	private static int NumberOfCreatureTypes;
 	public static final List<CreatureType> all;
 	public static final List<MovingAnimations> moveAni;
@@ -59,8 +60,9 @@ public class CreatureType
 
 	static
 	{
+		numberCreatureTypesImages = 9;
 		moveAni = new ArrayList<>();
-		for (int i = 0; i <= 7 - 1; i += 1)
+		for (int i = 0; i <= numberCreatureTypesImages - 1; i += 1)
 		{
 			moveAni.add(new MovingAnimations(UtilS.loadImage("\\Creatures\\" + "creature" + i + "_idle.gif"),
 					UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingup.gif"),
@@ -220,7 +222,6 @@ public class CreatureType
 		CreatureType.setNumberOfCreatureTypes(input.size());
 		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()];
 		Color[] color = new Color[creatureTypes.length];
-		int numberCreatureTypes = 7;
 		double diffMult = difficultLevel == 0 ? 0.6 : (difficultLevel == 1 ? 0.8 : 1.0);
 
 		for (int row = 0; row <= creatureTypes.length - 1; row += 1)
@@ -233,7 +234,7 @@ public class CreatureType
 				color[row] = Game.colorPalette[5];
 			}
 
-			MovingAnimations moveAni = CreatureType.moveAni.get(row % numberCreatureTypes);
+			MovingAnimations moveAni = CreatureType.moveAni.get(row % numberCreatureTypesImages);
 
 			BasicAttribute Life = new BasicAttribute((int) (Integer.parseInt(inp[5]) * diffMult),
 					(int) (Integer.parseInt(inp[5]) * diffMult), 1);

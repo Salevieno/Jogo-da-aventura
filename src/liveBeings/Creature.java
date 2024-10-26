@@ -192,10 +192,14 @@ public class Creature extends LiveBeing
 		
 	}
 	
-	public void updatePos(Directions dir, Point CurrentPos, int step, GameMap map)
+	public void updatePos(Directions dir, Point CurrentPos, int step, int movePattern, double moveRate, GameMap map)
 	{
-
-		Point newPos = calcNewPos(dir, CurrentPos, step) ;
+		Point newPos = switch (movePattern)
+		{
+			case 0 -> calcNewPos(dir, CurrentPos, step) ;
+			case 1 -> calcNewPos(dir, step, CurrentPos, moveRate) ;
+			default -> calcNewPos(dir, CurrentPos, step) ;
+		} ;
 
 		if (!Game.getScreen().posIsWithinBorders(newPos)) { return ;}
 		if (!map.groundIsWalkable(newPos, null)) { return ;}
@@ -266,8 +270,9 @@ public class Creature extends LiveBeing
 		{
 			setDir(newMoveDirection(dir)) ;
 		}
-	
-		updatePos(dir, pos, step, map) ;
+		
+		int movePattern = type.getID() % CreatureType.numberCreatureTypesImages == 0 ? 1 : 0 ;
+		updatePos(dir, pos, step, movePattern, stepCounter.rate(), map) ;
 		
 	}
 	

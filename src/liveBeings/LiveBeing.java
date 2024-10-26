@@ -395,18 +395,30 @@ public abstract class LiveBeing
 
 	public Point calcNewPos(Directions dir, Point currentPos, int step)
 	{
-		Point newPos = new Point(0, 0) ;
-		switch (dir)
+		Point newPos = switch (dir)
 		{
-			case up: newPos = new Point(currentPos.x, currentPos.y - step) ; break ;
-			case down: newPos = new Point(currentPos.x, currentPos.y + step) ; break ;
-			case left: newPos = new Point(currentPos.x - step, currentPos.y) ; break ;
-			case right: newPos = new Point(currentPos.x + step, currentPos.y) ; break ;
-		}
+			case up -> new Point(currentPos.x, currentPos.y - step) ;
+			case down -> new Point(currentPos.x, currentPos.y + step) ;
+			case left -> new Point(currentPos.x - step, currentPos.y) ;
+			case right -> new Point(currentPos.x + step, currentPos.y) ;
+		} ;
 		
 		return newPos ;
-	}	
-	
+	}
+
+	public Point calcNewPos(Directions dir, int step, Point currentPos, double moveRate)
+	{
+		Point newPos = switch (dir)
+		{
+			case up -> new Point(currentPos.x + (int) (2 * step * Math.cos(2 * (Math.PI / 2 + 3 * Math.PI / 2 * moveRate))), currentPos.y - step) ;
+			case down -> new Point(currentPos.x + (int) (2 * step * Math.cos(2 * (Math.PI / 2 + 3 * Math.PI / 2 * moveRate))), currentPos.y + step) ;
+			case left -> new Point(currentPos.x - step, currentPos.y + (int) (2 * step * Math.cos(2 * (Math.PI / 2 + 3 * Math.PI / 2 * moveRate)))) ;
+			case right -> new Point(currentPos.x + step, currentPos.y + (int) (2 * step * Math.cos(2 * (Math.PI / 2 + 3 * Math.PI / 2 * moveRate)))) ;
+		} ;
+		
+		return newPos ;
+	}
+
 	public void startCounters()
 	{
 		mpCounter.start() ;

@@ -1008,9 +1008,9 @@ public class Player extends LiveBeing
 			
 			if (0 < collectible.typeNumber())
 			{
-				if (collectLevel[collectible.typeNumber() - 1] + 1 < ((FieldMap) map).getLevel())
+				if (collectLevel[collectible.typeNumber() - 1] + 1 < map.getLevel())
 				{
-					if (Animation.getAll().size() == 0)
+					if (Animation.getAll().isEmpty())
 					{
 						Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.5, 0.1), "Nível de coleta insuficiente", Game.colorPalette[4]}) ;
 					}
