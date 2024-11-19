@@ -408,7 +408,7 @@ public class Game extends JPanel
 			connections[7] = (int) (long) connectionIDs.get("rightTop") ;
 
 			Image image = CityMap.images.get(id) ;
-			Clip music = GameMap.musicForest ;
+			Clip music = GameMap.musicCities ;
 
 			JSONArray listBuildings = (JSONArray) map.get("Buildings") ;
 			List<Building> buildings = new ArrayList<>() ;

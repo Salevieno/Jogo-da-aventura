@@ -50,6 +50,7 @@ public class GameMap
 	protected static final Image beachGif ;
 	protected static final Image infoWindow ;
 	public static final Map<Item, Double> allDiggingItems ;
+	public static final Clip musicCities ;
 	public static final Clip musicForest ;
 	public static final Clip musicSpecial ;
 
@@ -73,8 +74,9 @@ public class GameMap
 		}
 		beachGif = UtilS.loadImage("\\Maps\\" + "Map2_beach.gif") ;
 		infoWindow = UtilS.loadImage("\\Windows\\" + "MapInfo.png") ;
-		
-		musicForest = Music.musicFileToClip(new File(Game.MusicPath + "7-Forest.wav").getAbsoluteFile()) ;
+
+		musicCities = Music.musicFileToClip(new File(Game.MusicPath + "cidade.wav").getAbsoluteFile()) ;
+		musicForest = Music.musicFileToClip(new File(Game.MusicPath + "floresta.wav").getAbsoluteFile()) ;
 		musicSpecial = Music.musicFileToClip(new File(Game.MusicPath + "12-Special.wav").getAbsoluteFile()) ;
 		
 //		allDiggingItems.entrySet().forEach(System.out::println);

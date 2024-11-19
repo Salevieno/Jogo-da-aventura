@@ -70,7 +70,7 @@ public abstract class Opening
 		LoadingSlotSelected = Util.loadImage(path + "LoadingSlotSelected.png") ;
 
 		thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
-		introMusic = Music.loadMusicFile("1-Intro.wav") ;
+		introMusic = Music.loadMusicFile("intro.wav") ;
 		
 		GameButton.selectedIconID = 2 ;
     	step = 0 ;
