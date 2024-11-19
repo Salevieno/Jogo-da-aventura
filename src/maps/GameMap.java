@@ -25,6 +25,7 @@ import libUtil.Util;
 import main.Game;
 import main.Music;
 import main.TextCategories;
+import screen.Sky;
 import utilities.Elements;
 import utilities.Scale;
 import utilities.UtilS;
@@ -275,14 +276,12 @@ public class GameMap
 	public boolean meetsTwoMapsRight() { return connections[6] != connections[7] ;}
 	public boolean groundIsWalkable(Point pos, Elements superElem)
 	{
-
-		if (superElem != null) { if (superElem.equals(Elements.air)) { return true ;}}
 		
 		// checking colliders
  		List<Collider> allColliders = allColliders() ;
  		for (Collider collider : allColliders)
  		{
- 			if (pos.equals(collider.getPos())) { return false ;}
+ 			if (pos.equals(collider.getPos()) & superElem != Elements.air) { return false ;}
  		}
 
  		// checking ground types
@@ -295,10 +294,31 @@ public class GameMap
  		}
 		
 	}
+	
+	protected Point randomPosOnLand(Point minCoord, Dimension range, Dimension step)
+	{
+
+		Point randomPos = Util.RandomPos(minCoord, range, step) ;
+		while (groundTypeAtPoint(randomPos) != null)
+		{
+			randomPos = Util.RandomPos(minCoord, range, step) ;
+		}
+		return randomPos ;
+	}
+	
+	protected Point randomPosOnLand()
+	{
+		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
+		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (float)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
+		Dimension step = new Dimension(1, 1) ;
+
+		return randomPosOnLand(minCoord, range, step) ;
+	}
+	
 	public Point randomPosInMap()
 	{
 		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
-		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (float)(Game.getSky().height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
+		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (float)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
 		
 		return Util.RandomPos(minCoord, range, new Dimension(1, 1)) ;
 	}
@@ -436,7 +456,7 @@ public class GameMap
 		
 		for (GroundType groundType : groundTypes)
 		{
-			if (Util.isInside(pos, groundType.getPos(), groundType.getSize())) { return groundType.getType() ;}			
+			if (Util.isInside(pos, groundType.getTopLeftPos(), groundType.getSize())) { return groundType.getType() ;}			
 		}
 		
 		return null ;
@@ -467,14 +487,7 @@ public class GameMap
 	{
  		if (groundTypes == null) { return ;}
  		
-		groundTypes.forEach(groundType -> {
-			switch (groundType.type)
-			{
-				case water: DP.drawRect(groundType.pos, Align.topLeft, groundType.size, Game.colorPalette[20], null) ; break ;
-				case lava: DP.drawRect(groundType.pos, Align.topLeft, groundType.size, Game.colorPalette[7], null) ; break ;
-				default: break ;
-			}
-		});
+		groundTypes.forEach(groundType -> groundType.display(DP)) ;
 	}
 
 	public void displayInfoWindow(DrawPrimitives DP)

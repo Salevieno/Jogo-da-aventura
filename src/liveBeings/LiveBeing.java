@@ -7,8 +7,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,7 +16,6 @@ import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.Animation;
 import graphics.AnimationTypes;
-import graphics.Draw;
 import graphics.DrawPrimitives;
 import graphics.Gif;
 import libUtil.Align;
@@ -670,7 +667,7 @@ public abstract class LiveBeing
 		RelativePos relPos = null ;
 		for (GroundType gt : map.getgroundTypes())
 		{
-			relPos = UtilS.calcRelativePos(pos, gt.getPos(), gt.getSize()) ;
+			relPos = UtilS.calcRelativePos(pos, gt.getTopLeftPos(), gt.getSize()) ;
 		}
 		
     	return relPos ;

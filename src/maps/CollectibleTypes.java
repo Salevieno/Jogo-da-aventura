@@ -2,7 +2,6 @@ package maps;
 
 import java.awt.Image;
 
-import items.Item;
 import utilities.UtilS;
 
 public enum CollectibleTypes

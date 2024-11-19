@@ -3,25 +3,39 @@ package maps ;
 import java.awt.Dimension;
 import java.awt.Point ;
 
+import graphics.DrawPrimitives;
+import libUtil.Align;
+import main.Game;
+
 public class GroundType
 {
 	
 	GroundTypes type ;
-	Point pos ;
+	Point topLeftPos ;
 	Dimension size ;
 	
-	public GroundType(GroundTypes type, Point pos, Dimension size)
+	public GroundType(GroundTypes type, Point topLeftPos, Dimension size)
 	{
 		this.type = type ;
-		this.pos = pos ;
+		this.topLeftPos = topLeftPos ;
 		this.size = size ;
 	}
 	
 	public GroundTypes getType() { return type ;}
-	public Point getPos() { return pos ;}
+	public Point getTopLeftPos() { return topLeftPos ;}
 	public Dimension getSize() { return size ;}
 
+	public void display(DrawPrimitives DP)
+	{
+		switch (type)
+		{
+			case water: DP.drawRect(topLeftPos, Align.topLeft, size, Game.colorPalette[20], null) ; return ;
+			case lava: DP.drawRect(topLeftPos, Align.topLeft, size, Game.colorPalette[7], null) ; return ;
+			default: return ;
+		}
+	}
+	
 	@Override
-	public String toString() { return "GroundType [type=" + type + ", pos=" + pos + ", size=" + size + "]" ;}	
+	public String toString() { return "GroundType [type=" + type + ", pos=" + topLeftPos + ", size=" + size + "]" ;}	
 	
 }

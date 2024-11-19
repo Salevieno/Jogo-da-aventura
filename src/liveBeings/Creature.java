@@ -86,6 +86,12 @@ public class Creature extends LiveBeing
 		follow = false ;
 	}
 
+ 	public Creature(CreatureType CT, Point pos)
+ 	{
+ 		this(CT) ;
+ 		this.pos = pos ;
+ 	}
+ 	
 	public CreatureType getType() {return type ;}
 	public List<Spell> getSpell() {return spells ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}

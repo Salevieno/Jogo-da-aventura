@@ -15,7 +15,6 @@ import javax.sound.sampled.Clip;
 import components.NPCs;
 import graphics.DrawPrimitives;
 import items.Item;
-import libUtil.Util;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
 import main.Game;
@@ -48,71 +47,10 @@ public class FieldMap extends GameMap
 		}
 	}
 	
-	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, int[] creatureTypeIDs, List<NPCs> npcs)
+	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPCs> npcs)
 	{
 		super(name, continent, connections, image, music, null, npcs) ;
 		this.level = collectibleLevel ;
-		
-		
-		// add map elements
-		Screen screen = Game.getScreen() ;
-		Point minCoord = new Point(20, Sky.height + 20) ;
-		Dimension range = new Dimension(screen.getSize().width - 100, screen.getSize().height - Sky.height - 100) ;
-		Dimension step = new Dimension(1, 1) ;
-
-		for (int i = 0 ; i <= numberRocks - 1 ; i += 1)
-		{
-			Point randomPos = Util.RandomPos(minCoord, range, step) ;
-			mapElems.add(new MapElement(i, "rock", randomPos)) ;				
-		}
-		for (int i = 0 ; i <= numberTrees - 1 ; i += 1)
-		{
-			Point randomPos = Util.RandomPos(minCoord, range, step) ;
-			mapElems.add(new MapElement(i, "ForestTree", randomPos)) ;				
-		}
-		for (int i = 0 ; i <= numberGrass - 1 ; i += 1)
-		{
-			Point randomPos = Util.RandomPos(minCoord, range, step) ;
-			mapElems.add(new MapElement(i, "grass", randomPos)) ;				
-		}
-		
-		
-		// add collectbiles
-		collectibles = new ArrayList<Collectible>() ;
-		collectibleCounters = new HashMap<>() ;
-		for (CollectibleTypes type : CollectibleTypes.values())
-		{
-			addCollectible(type) ;
-			TimeCounter collectibleCounter = new TimeCounter(type.getSpawnTime()) ;
-			collectibleCounter.start();
-			collectibleCounters.put(type, collectibleCounter) ;
-		}
-		
-		
-		// add creatures
-		creatures = new ArrayList<Creature>() ;
-		for (int creatureTypeID : creatureTypeIDs)
-		{
-			if (creatureTypeID <= -1) { continue ;}
-			
-			CreatureType creatureType = CreatureType.all.get(creatureTypeID);
-			Creature creature = new Creature(creatureType) ;
-			creatures.add(creature) ;
-		}
-		
-		for (Item item : allDiggingItems.keySet())
-		{
-			if (!containsItem(item)) { continue ;}
-			
-			diggingItems.put(item, allDiggingItems.get(item)) ;
-		}
-		calcDigItemChances() ;
-		
-		
-//		System.out.println(name);
-//		System.out.println(diggingItems);
-		
-		// add npcs
 		this.npcs = npcs ;
 	}
 	
@@ -128,6 +66,69 @@ public class FieldMap extends GameMap
 		return allItems ;
 	}
 	public void setCreatures(List<Creature> newValue) {creatures = newValue ;}
+	
+	public void addMapElements()
+	{
+		// TODO map elements caindo dentro da água
+		Screen screen = Game.getScreen() ;
+		Point minCoord = new Point(20, Sky.height + 20) ;
+		Dimension range = new Dimension(screen.getSize().width - 100, screen.getSize().height - Sky.height - 100) ;
+		Dimension step = new Dimension(1, 1) ;
+
+		for (int i = 0 ; i <= numberRocks - 1 ; i += 1)
+		{
+			Point randomPos = randomPosOnLand(minCoord, range, step) ;
+			mapElems.add(new MapElement(i, "rock", randomPos)) ;			
+		}
+		for (int i = 0 ; i <= numberTrees - 1 ; i += 1)
+		{
+			Point randomPos = randomPosOnLand(minCoord, range, step) ;
+			mapElems.add(new MapElement(i, "ForestTree", randomPos)) ;				
+		}
+		for (int i = 0 ; i <= numberGrass - 1 ; i += 1)
+		{
+			Point randomPos = randomPosOnLand(minCoord, range, step) ;
+			mapElems.add(new MapElement(i, "grass", randomPos)) ;				
+		}
+	}
+
+	public void addCollectibles()
+	{
+		collectibles = new ArrayList<Collectible>() ;
+		collectibleCounters = new HashMap<>() ;
+		for (CollectibleTypes type : CollectibleTypes.values())
+		{
+			addCollectible(type) ;
+			TimeCounter collectibleCounter = new TimeCounter(type.getSpawnTime()) ;
+			collectibleCounter.start();
+			collectibleCounters.put(type, collectibleCounter) ;
+		}
+	}
+
+	public void addCreatures(int[] creatureTypeIDs)
+	{
+		creatures = new ArrayList<Creature>() ;
+		
+		for (int creatureTypeID : creatureTypeIDs)
+		{
+			if (creatureTypeID <= -1) { continue ;}
+			
+			CreatureType creatureType = CreatureType.all.get(creatureTypeID);
+			Creature creature = new Creature(creatureType, randomPosOnLand()) ;
+			creatures.add(creature) ;
+		}
+	}
+	
+	public void addDiggingItems()
+	{
+		for (Item item : allDiggingItems.keySet())
+		{
+			if (!containsItem(item)) { continue ;}
+			
+			diggingItems.put(item, allDiggingItems.get(item)) ;
+		}
+		calcDigItemChances() ;
+	}
 	
 	public static List<NPCs> createQuestNPCs(int mapID)
 	{
@@ -162,7 +163,7 @@ public class FieldMap extends GameMap
 		Point pos = randomPosInMap() ;
 		while (groundTypeAtPoint(pos) != null)
 		{
-			pos = randomPosInMap() ;
+			pos = randomPosOnLand() ;
 		}
 		
 		switch (type)

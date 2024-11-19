@@ -16,12 +16,9 @@ import java.awt.event.MouseWheelListener ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.HashMap ;
-import java.util.HashSet;
 import java.util.Iterator ;
 import java.util.List ;
 import java.util.Map ;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.sound.sampled.Clip ;
 import javax.swing.JPanel ;
@@ -100,7 +97,7 @@ public class Game extends JPanel
 
 	private JPanel mainPanel = this ;
 	private static Point mousePos ;
-	private static GameStates initialState = GameStates.loading ;
+	private static GameStates initialState = GameStates.opening ;
 	private static GameStates mainState = GameStates.running ;
 	private static boolean cheatMode = false ;
 	private static Languages gameLanguage ;
@@ -505,8 +502,7 @@ public class Game extends JPanel
 //				npcs.add(readNPCfromJson((JSONObject) listNPCs.get(i))) ;
 //			}
 
-			FieldMap map = new FieldMap(name, continent, connections, image, music, collectibleLevel,
-					creatureIDs, npcs) ;
+			FieldMap map = new FieldMap(name, continent, connections, image, music, collectibleLevel, npcs) ;
 
 			switch (id)
 			{
@@ -517,42 +513,23 @@ public class Game extends JPanel
 				case 3:
 					map.addGroundType(new GroundType(GroundTypes.water, new Point(0, 96 + 269), new Dimension(64, 83))) ;
 					break ;
-//			case 1:
-//				map.addGroundType(new GroundType(GroundTypes.water, new Point(120, 200), new Dimension(50, 20))) ;
-//				break ;
-//			case 3:
-//				map.addGroundType(new GroundType(GroundTypes.water, new Point(120, 100), new Dimension(45, 30))) ;
-//				break ;
-//			case 8:
-//				map
-//						.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
-//				break ;
-//			case 9:
-//				map
-//						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
-//				break ;
-//			case 12:
-//				map
-//						.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
-//				break ;
-			case 8, 12:
-				map.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
-				break ;
-//			case 14:
-//				map
-//						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
-//				break ;
-//			case 15:
-//				map
-//						.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
-//				break ;
-			case 22:
-				map.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
-				break ;
-			default:
-				break ;
+					
+				case 8, 12:
+					map.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
+					break ;
+					
+				case 22:
+					map.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
+					break ;
+					
+				default:
+					break ;
 			}
 
+			map.addCollectibles() ;
+			map.addCreatures(creatureIDs) ;
+			map.addMapElements() ;
+			map.addDiggingItems() ;
 			fieldMaps[id] = map ;
 		}
 

@@ -132,7 +132,7 @@ public abstract class UtilS
 		{
 			if (!groundType.getType().equals(targetGroundType)) { continue ;}	
 			
-			return calcRelativePos(userPos, groundType.getPos(), groundType.getSize()) ;
+			return calcRelativePos(userPos, groundType.getTopLeftPos(), groundType.getSize()) ;
 		}
 		
 		return null ;
