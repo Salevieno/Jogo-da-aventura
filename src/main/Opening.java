@@ -287,7 +287,7 @@ public abstract class Opening
 		
 		Player player = players[slotNumber] ;
 		double angle = Draw.stdAngle ;
-		Color textColor = Game.colorPalette[0] ;
+		Color textColor = Game.palette[0] ;
 		
 		Point textPos = Util.Translate(pos, 75, 10) ;
 		DP.drawText(textPos, Align.center, angle, "Slot " + (slotNumber + 1), font, textColor) ;
@@ -313,7 +313,7 @@ public abstract class Opening
 	
 	public static void displayLoadingScreen(String action, Point mousePos, DrawPrimitives DP)
 	{
-		Color textColor = Game.colorPalette[0] ;
+		Color textColor = Game.palette[0] ;
 		Point moveInfoTopLeft = new Point(40, 60) ;
 		DP.drawText(Util.Translate(moveInfoTopLeft, 100, 0), Align.center, 0, "Principais ações", font, textColor) ;
 		
@@ -349,8 +349,8 @@ public abstract class Opening
 			Dimension loadingBarSize = new Dimension(400, 30) ;
 			Dimension loadedBarSize = new Dimension(loadingStep * loadingBarSize.width / 11, loadingBarSize.height) ;
 			DP.drawImage(LoadingGif, loadingTextCenter, Align.center) ;
-			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, true);
-			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Game.colorPalette[18], false);
+			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, Game.palette[0], true);
+			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Game.palette[18], Game.palette[0], false);
 		}
 
 		if (startButton.isActive())
@@ -365,14 +365,14 @@ public abstract class Opening
 	
 	private static void displayJobDescription(DrawPrimitives DP)
 	{
-		Color textColor = Game.colorPalette[0] ;
-		Color bgColor = Game.colorPalette[3] ;
+		Color textColor = Game.palette[0] ;
+		Color bgColor = Game.palette[3] ;
 		String[] description = Game.getLanguage() == Languages.portugues ? jobDescriptionPtBr : jobDescriptionEn ;
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
 			Point rectPos = Game.getScreen().pos(0.04 + i * 0.2, 0.4) ;
 			Point textPos = Util.Translate(rectPos, 5, 5) ;
-			DP.drawRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, true) ;
+			DP.drawRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, Game.palette[0], true) ;
 			Draw.fitText(textPos, 10, Align.topLeft, description[i], smallFont, 18, textColor) ;
 		}
 	}
@@ -380,7 +380,7 @@ public abstract class Opening
 	public static void display(String action, Point mousePos, DrawPrimitives DP)
 	{
 		Point textPos = Game.getScreen().pos(0.5, 0.3) ;
-		Color textColor = Game.colorPalette[0] ;
+		Color textColor = Game.palette[0] ;
 		
 		DP.drawImage(backgroundImage, new Point(0, 0), 0, Scale.unit, Align.topLeft) ;		
 		for (GameButton button : buttons)

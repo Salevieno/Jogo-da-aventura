@@ -42,14 +42,14 @@ public class BestiaryWindow extends GameWindow
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String[] text = Game.allText.get(TextCategories.bestiary) ;
-		Color textColor = Game.colorPalette[0] ;
+		Color textColor = Game.palette[0] ;
 		double angle = Draw.stdAngle ;
 		
 		int offset = 5 ;
 		int sy = infoFont.getSize() ;
 
 		Dimension windowSize = new Dimension(128, 240) ;
-		DP.drawGradRoundRect(pos, Align.topLeft, windowSize, 3, Game.colorPalette[5], Game.colorPalette[14], true) ;
+		DP.drawGradRoundRect(pos, Align.topLeft, windowSize, 3, Game.palette[5], Game.palette[14], Game.palette[0], true) ;
 		
 		Point creaturePos = Util.Translate(pos, 40, offset) ;
 		creatureType.display(creaturePos, Scale.unit, DP) ;
@@ -85,7 +85,7 @@ public class BestiaryWindow extends GameWindow
 
 		
 		// draw window
-		DP.drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.colorPalette[5], Game.colorPalette[14], true) ;
+		DP.drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.palette[5], Game.palette[14], Game.palette[0], true) ;
 		
 		if (discoveredCreatures == null) { return ;}
 		
@@ -96,7 +96,7 @@ public class BestiaryWindow extends GameWindow
 			// draw slots
 			Point slotTopLeft = Util.Translate(windowPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
 			Point slotCenter = Util.Translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
-			DP.drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Game.colorPalette[3], Game.colorPalette[20], true) ;
+			DP.drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Game.palette[3], Game.palette[20], Game.palette[0], true) ;
 
 			// draw creatures
 			CreatureType creatureType = discoveredCreatures.get(slot) ;

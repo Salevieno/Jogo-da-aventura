@@ -65,7 +65,7 @@ public class QuestWindow extends GameWindow
 		if (reqCreatureTypes.isEmpty()) { return ;}
 		
 		double angle = Draw.stdAngle ;
-		Color textColor = Game.colorPalette[0] ;
+		Color textColor = Game.palette[0] ;
 		
 		CreatureType[] reqCreatureType = new CreatureType[0];
 		reqCreatureType = reqCreatureTypes.keySet().toArray(reqCreatureType) ;
@@ -96,7 +96,7 @@ public class QuestWindow extends GameWindow
 		if (reqItems.isEmpty()) { return ;}
 
 		double angle = Draw.stdAngle ;
-		Color textColor = Game.colorPalette[0] ;
+		Color textColor = Game.palette[0] ;
 		
 		Item[] reqItem = new Item[0] ;
 		reqItem = reqItems.keySet().toArray(reqItem) ;
@@ -110,7 +110,7 @@ public class QuestWindow extends GameWindow
 			itemPos.y += font.getSize() + 4 ;
 			circlePos.y += font.getSize() + 4 ;
 			Point textPos = Util.Translate(itemPos, 15, 0) ;
-			DP.drawCircle(circlePos, 10, 0, bag.contains(item) ? Game.colorPalette[3] : Game.colorPalette[6], null) ;
+			DP.drawCircle(circlePos, 10, 0, bag.contains(item) ? Game.palette[3] : Game.palette[6], null) ;
 			DP.drawImage(item.getImage(), itemPos, Align.center) ;
 			DP.drawText(textPos, Align.centerLeft, angle, item.getName(), font, textColor) ;
 		}
@@ -128,7 +128,7 @@ public class QuestWindow extends GameWindow
 		
 		Quest quest = quests.get(window) ;
 		Point questPos = Util.Translate(windowPos, image.getWidth(null) / 2, 30) ;
-		DP.drawText(questPos, Align.center, angle, quest.getName(), font, Game.colorPalette[8]) ;
+		DP.drawText(questPos, Align.center, angle, quest.getName(), font, Game.palette[8]) ;
 		
 		displayReqCreatures(Util.Translate(windowPos, size.width / 2 , 60), quest, DP) ;
 		displayReqItems(Util.Translate(windowPos, size.width / 2, 260), DP) ;

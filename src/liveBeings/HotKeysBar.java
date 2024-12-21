@@ -26,7 +26,7 @@ public class HotKeysBar
 	static
 	{
 		font = new Font(Game.MainFontName, Font.BOLD, 12) ;
-		textColor = Game.colorPalette[0] ;
+		textColor = Game.palette[0] ;
 		image = UtilS.loadImage("\\SideBar\\" + "HotBar.png") ;
 		barPos = new Point(Game.getScreen().getSize().width + 2, Game.getScreen().getSize().height - 5) ;
 	}

@@ -42,8 +42,8 @@ public class Creature extends LiveBeing
 	private Color color ;
 	private boolean follow ;
 	
-	private static Color[] skinColor = new Color[] {Game.colorPalette[0], Game.colorPalette[5]} ;
-	private static Color[] shadeColor = new Color[] {Game.colorPalette[2], Game.colorPalette[3]} ;
+	private static Color[] skinColor = new Color[] {Game.palette[0], Game.palette[5]} ;
+	private static Color[] shadeColor = new Color[] {Game.palette[2], Game.palette[3]} ;
 	
  	public Creature(CreatureType CT)
 	{
@@ -361,7 +361,7 @@ public class Creature extends LiveBeing
 		if (receiver == null) { return null ;}
 		if (!hasEnoughMP(spell)) { return new AtkResults() ;}
 
-		displayUsedSpellMessage(spell, Game.getScreen().pos(0.63, 0.2), Game.colorPalette[0]);
+		displayUsedSpellMessage(spell, Game.getScreen().pos(0.63, 0.2), Game.palette[0]);
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
 		switch (spell.getType())
 		{

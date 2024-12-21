@@ -1,5 +1,6 @@
 package main ;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue ;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,7 @@ public class MainGame3_4 extends JFrame implements ActionListener
 	private static Timer timer ;		// Main timer of the game
 	private static final Dimension windowSize = new Dimension(640, 480) ;
 	private static GameStates previousState ;
+	private static final Game game = new Game() ;
 
 	private MainGame3_4()
     {
@@ -39,7 +41,7 @@ public class MainGame3_4 extends JFrame implements ActionListener
         timer = new Timer(10, this) ;			// timer of the game, first number = frame duration
 		timer.start() ;							// Game will start checking for keyboard events every "timer" miliseconds
 		previousState = GameStates.opening ;
-        add(new Game()) ;				// adding game panel on the JFrame
+        add(game) ;				// adding game panel on the JFrame
     }
 	
 	public static void pauseGame()
@@ -59,6 +61,16 @@ public class MainGame3_4 extends JFrame implements ActionListener
 	{
 //		MainGame3_4() ;
 		EventQueue.invokeLater(() -> {new MainGame3_4() ;}) ;
+	}
+
+	public static void setCursorToDefault()
+	{
+		game.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)) ;
+	}
+	
+	public static void setCursorToHand()
+	{
+		game.setCursor(new Cursor(Cursor.HAND_CURSOR)) ;
 	}
 	
 	public static Dimension getWindowsize() { return windowSize ;}

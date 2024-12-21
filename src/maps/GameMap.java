@@ -504,14 +504,14 @@ public class GameMap
 		DP.drawImage(infoWindow, pos, Align.topLeft) ;
 		
 		Point titlePos = Util.Translate(pos, size.width / 2 + 5, 13) ;
-		DP.drawText(titlePos, Align.center, 0, name, titleFont, Game.colorPalette[0]) ;
+		DP.drawText(titlePos, Align.center, 0, name, titleFont, Game.palette[0]) ;
 		
 		Point diggingItemsPos = Util.Translate(pos, 10, 43) ;
-		DP.drawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Game.colorPalette[0]) ;
+		DP.drawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Game.palette[0]) ;
 		diggingItemsPos.y += 14 ;
 		for (Item item : diggingItems.keySet())
 		{
-			DP.drawText(diggingItemsPos, Align.centerLeft, 0, item.getName(), font, Game.colorPalette[0]) ;
+			DP.drawText(diggingItemsPos, Align.centerLeft, 0, item.getName(), font, Game.palette[0]) ;
 			diggingItemsPos.y += 10 ;
 		}
 		
@@ -520,14 +520,14 @@ public class GameMap
 			FieldMap fm = (FieldMap) this ;
 			
 			Point levelPos = Util.Translate(titlePos, 0, 14) ;
-			DP.drawText(levelPos, Align.center, 0, "Nível " + String.valueOf(fm.getLevel()), largeFont, Game.colorPalette[6]) ;
+			DP.drawText(levelPos, Align.center, 0, "Nível " + String.valueOf(fm.getLevel()), largeFont, Game.palette[6]) ;
 			
 			Point allItemsPos = Util.Translate(pos, 160, 43) ;
-			DP.drawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Game.colorPalette[0]) ;
+			DP.drawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Game.palette[0]) ;
 			allItemsPos.y += 14 ;
 			for (Item item : fm.getItems())
 			{
-				DP.drawText(allItemsPos, Align.centerLeft, 0, item.getName(), font, Game.colorPalette[0]) ;
+				DP.drawText(allItemsPos, Align.centerLeft, 0, item.getName(), font, Game.palette[0]) ;
 				allItemsPos.y += 10 ;
 			}
 			
@@ -535,7 +535,7 @@ public class GameMap
 		}
 		
 		Point levelPos = Util.Translate(titlePos, 0, 14) ;
-		DP.drawText(levelPos, Align.center, 0, "Nível 0", largeFont, Game.colorPalette[6]) ;
+		DP.drawText(levelPos, Align.center, 0, "Nível 0", largeFont, Game.palette[6]) ;
 
 	}
  	
@@ -544,7 +544,7 @@ public class GameMap
  		Point pos = new Point(500, 10) ;
  		String text = Game.allText.get(TextCategories.allIsGood)[0] ;
  		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
- 		DP.drawText(pos, Align.topLeft, 0, text, font, Game.colorPalette[19]) ;
+ 		DP.drawText(pos, Align.topLeft, 0, text, font, Game.palette[19]) ;
  	}
 	
  	public void display(Point pos, Scale scale, DrawPrimitives DP)

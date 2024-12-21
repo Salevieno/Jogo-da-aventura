@@ -24,9 +24,9 @@ public class TestingAnimations
 		
 		Animation.start(AnimationTypes.fishing, new Object[] {new Point(400, 300), Directions.up} ) ;
 		
-		Animation.start(AnimationTypes.message, new Object[] {new Point(400, 300), "Oi", Game.colorPalette[5]} ) ;
+		Animation.start(AnimationTypes.message, new Object[] {new Point(400, 300), "Oi", Game.palette[5]} ) ;
 		
-		Animation.start(AnimationTypes.obtainedItem, new Object[] {new Point(100, 300), "Oi", Game.colorPalette[5]} ) ;
+		Animation.start(AnimationTypes.obtainedItem, new Object[] {new Point(100, 300), "Oi", Game.palette[5]} ) ;
 
 		Pterodactile.speak() ;
 		

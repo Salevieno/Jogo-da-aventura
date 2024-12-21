@@ -98,8 +98,7 @@ public class GeneralItem extends Item
 			case 21:
 				if (!user.isPlayerAlly()) { return ;}
 				
-				user.getHpCounter().reset() ;
-				user.getHpCounter().start() ;
+				user.getHpCounter().restart() ;
 				
 				return ;
 				
@@ -198,7 +197,7 @@ public class GeneralItem extends Item
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
 		Point textPos = Util.Translate(pos, 5 - Util.getSize(infoMenu).width, 10) ;		
-		DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, description, font, Game.colorPalette[0]) ;
+		DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, description, font, Game.palette[0]) ;
 	}
 	
 	@Override

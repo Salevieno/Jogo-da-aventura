@@ -139,7 +139,7 @@ public class Player extends LiveBeing
 	public static final List<String[]> EvolutionProperties = Util.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public static final int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	public static final int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
-    public static final Color[] ClassColors = new Color[] {Game.colorPalette[21], Game.colorPalette[5], Game.colorPalette[2], Game.colorPalette[3], Game.colorPalette[4]} ;
+    public static final Color[] ClassColors = new Color[] {Game.palette[21], Game.palette[5], Game.palette[2], Game.palette[3], Game.palette[4]} ;
 
     public static final String[] HotKeys = new String[] {"F", "G", "V"} ;
 
@@ -210,7 +210,7 @@ public class Player extends LiveBeing
 		equips = new Equip[4] ;
 		equippedArrow = null ;
 		spellPoints = 0 ;
-		color = Game.colorPalette[12] ;
+		color = Game.palette[12] ;
     	
 		collectLevel = new double[3] ;
 		storedGold = 0 ;
@@ -482,11 +482,11 @@ public class Player extends LiveBeing
             	useAutoSpell(true, spells.get(4)) ;
         	}
         	trainCollecting(collectible) ;
-        	Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.colorPalette[0]});
+        	Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.palette[0]});
         }
         else
         {
-        	Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.colorPalette[0]});
+        	Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.palette[0]});
         }
 
     	removeCollectibleFromMap(collectible) ;
@@ -704,7 +704,7 @@ public class Player extends LiveBeing
 		int fishType = Util.randomIntFromTo(6, 8) ;
 		Item fish = Food.getAll()[fishType] ;
 		bag.add(fish, 1) ;
-		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.palette[0]}) ;
 		
 	}
 
@@ -759,7 +759,7 @@ public class Player extends LiveBeing
 		Item diggedItem = determineDiggedItem() ;
 		
 		bag.add(diggedItem, 1) ;
-		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.2), diggedItem.getName(), Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.2), diggedItem.getName(), Game.palette[0]}) ;
 		
 		if (elem[4] == Elements.earth)
 		{
@@ -767,7 +767,7 @@ public class Player extends LiveBeing
 			Item diggedItem2 = determineDiggedItem() ;
 			
 			bag.add(diggedItem2, 1) ;
-			Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.25), diggedItem2.getName(), Game.colorPalette[0]}) ;
+			Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.25), diggedItem2.getName(), Game.palette[0]}) ;
 			
 		}
 
@@ -1012,7 +1012,7 @@ public class Player extends LiveBeing
 				{
 					if (Animation.getAll().isEmpty())
 					{
-						Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.5, 0.1), "Nível de coleta insuficiente", Game.colorPalette[4]}) ;
+						Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.5, 0.1), "Nível de coleta insuficiente", Game.palette[4]}) ;
 					}
 					break ;
 				}
@@ -1110,7 +1110,7 @@ public class Player extends LiveBeing
 		spell.getCooldownCounter().start() ;
 		trainOffensive(new AtkResults(AtkTypes.magical)) ;
 		stats.incNumberMagAtk() ;
-		displayUsedSpellMessage(spell, Game.getScreen().pos(0.43, 0.2), Game.colorPalette[4]);
+		displayUsedSpellMessage(spell, Game.getScreen().pos(0.43, 0.2), Game.palette[4]);
 		
 		spell.activate() ;
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
@@ -1662,7 +1662,7 @@ public class Player extends LiveBeing
 	
 	private void drawRange(DrawPrimitives DP)
 	{
-		DP.drawCircle(pos, (int)(2 * range), 2, null, Game.colorPalette[job]) ;
+		DP.drawCircle(pos, (int)(2 * range), 2, null, Game.palette[job]) ;
 	}
 
 	public void drawWeapon(Point pos, Scale scale, DrawPrimitives DP)
@@ -1708,7 +1708,7 @@ public class Player extends LiveBeing
 	public void applySuperElementEffect(Elements elem, boolean apply)
 	{
 		// TODO pro superelementos luz: ilumina a caverna, escuridão: aura escura, trovão e neve
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Game.colorPalette[7]}) ;
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Game.palette[7]}) ;
 		switch (elem)
 		{
 			case fire:

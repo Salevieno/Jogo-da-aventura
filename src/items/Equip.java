@@ -314,7 +314,7 @@ public class Equip extends Item
 		}				
 		applyBonus(player.getPA(), player.getBA(), equip, 1) ;
 
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Game.palette[0]}) ;
 		player.getElem()[4] = player.hasSuperElement() ? player.getElem()[1] : Elements.neutral ;
 		if (player.hasSuperElement())
 		{
@@ -338,7 +338,7 @@ public class Equip extends Item
 		player.applySuperElementEffect(player.getElem()[4], false) ;
 		player.getElem()[4] = Elements.neutral ;
 		
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Game.palette[0]}) ;
 		player.getEquips()[type] = null ;
 	}
 	
@@ -355,7 +355,7 @@ public class Equip extends Item
 			DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
 			
 			Point textPos = Util.Translate(imagePos, 10, 0) ;
-			DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Game.colorPalette[0]) ;
+			DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Game.palette[0]) ;
 		}
 	}
 	

@@ -38,6 +38,7 @@ public class TimeCounter
 	public void stop() { active = false ;}
 	public void resume() { active = hasStarted() ;}
 	public void reset() { initialTime = timeNowInSec() ; timeElapsedAtStop = 0 ; counter = 0 ; prevCounter = 0 ;}
+	public void restart() { reset() ; start() ;}
 	public double rate() { return counter / duration ;}
 	public boolean crossedTime(double time) { return active && prevCounter == 0 | (counter % time <= prevCounter % time) ;}
 	public boolean isActive() { return active ;}

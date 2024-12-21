@@ -29,8 +29,8 @@ public class GroundType
 	{
 		switch (type)
 		{
-			case water: DP.drawRect(topLeftPos, Align.topLeft, size, Game.colorPalette[20], null) ; return ;
-			case lava: DP.drawRect(topLeftPos, Align.topLeft, size, Game.colorPalette[7], null) ; return ;
+			case water: DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[20], null) ; return ;
+			case lava: DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[7], null) ; return ;
 			default: return ;
 		}
 	}

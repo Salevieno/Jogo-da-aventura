@@ -204,7 +204,7 @@ public class MapWindow extends GameWindow
 		double playerRelYPos = playerPos.y / (double) (Game.getScreen().getSize().height) ;
 		Point circlePos = Util.Translate(mapPos, (int) (scale.x * screenSize.width * playerRelXPos),
 				(int) (-scale.y * screenSize.height * (1 - playerRelYPos))) ;
-		DP.drawCircle(circlePos, 5, 0, Game.colorPalette[6], null) ;
+		DP.drawCircle(circlePos, 5, 0, Game.palette[6], null) ;
 	}
 	
 	public void display(Point mousePos, DrawPrimitives DP)
@@ -256,7 +256,7 @@ public class MapWindow extends GameWindow
 			map.display(mapPos, scale, DP) ;
 			Point textPos = Util.Translate(mapPos, (int) (scale.x * screenSize.width / 2),
 					(int) (-scale.y * screenSize.height / 2)) ;
-			DP.drawText(textPos, Align.center, 0, map.getName(), stdFont, Game.colorPalette[0]) ;
+			DP.drawText(textPos, Align.center, 0, map.getName(), stdFont, Game.palette[0]) ;
 			
 			if (!map.equals(currentMap)) { continue ;}
 			if (playerPos == null) { continue ;}

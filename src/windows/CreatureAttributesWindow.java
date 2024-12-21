@@ -40,7 +40,7 @@ public class CreatureAttributesWindow extends AttributesWindow
 
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;		
-		Color[] colorPalette = Game.colorPalette ;
+		Color[] colorPalette = Game.palette ;
 		Color textColor = colorPalette[0] ;
 		
 		String[] attText = Game.allText.get(TextCategories.attributes) ;		

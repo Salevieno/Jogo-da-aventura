@@ -101,7 +101,7 @@ public class Building
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
 //		DP.drawRoundRect(pos, Align.topLeft, new Dimension(230, 80), 2, Game.colorPalette[3], true) ;
 		DP.drawImage(signBoard, boardPos, Align.bottomLeft, 0.85) ;
-		Draw.fitText(messagePos, font.getSize() + 2, Align.bottomLeft, message, font, 40, Game.colorPalette[0]) ;	
+		Draw.fitText(messagePos, font.getSize() + 2, Align.bottomLeft, message, font, 40, Game.palette[0]) ;	
 	}
 	
 	public void display(Point playerPos, int cityID, DrawPrimitives DP)
@@ -132,7 +132,7 @@ public class Building
 		
 		for (Collider collider : colliders)
 		{
-			DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Game.colorPalette[0], null) ;
+			DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Game.palette[0], null) ;
 		}
 		
 	}

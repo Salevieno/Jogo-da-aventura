@@ -118,9 +118,9 @@ public class Sky
 	private void updateSkyColor()
 	{
 		double mult = 1 - 1.8 * Math.abs(dayTimeRate() - 0.5) ;
-		int red = Math.max(0, Math.min((int)(Game.colorPalette[21].getRed() * mult), 255)) ;
-		int green = Math.max(0, Math.min((int)(Game.colorPalette[21].getGreen() * mult), 255)) ;
-		int blue = Math.max(0, Math.min((int)(Game.colorPalette[21].getBlue() * mult), 255)) ;
+		int red = Math.max(0, Math.min((int)(Game.palette[21].getRed() * mult), 255)) ;
+		int green = Math.max(0, Math.min((int)(Game.palette[21].getGreen() * mult), 255)) ;
+		int blue = Math.max(0, Math.min((int)(Game.palette[21].getBlue() * mult), 255)) ;
 		color = new Color(red, green, blue) ;
 	}
 	

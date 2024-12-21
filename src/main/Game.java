@@ -82,7 +82,6 @@ import windows.BankWindow ;
 
 public class Game extends JPanel
 {
-	// TODO arte - soundtrack
 	// TODO arquivos - nomes das criaturas
 	// TODO como reviver o pet quando ele/ela morre? :O
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
@@ -95,16 +94,19 @@ public class Game extends JPanel
 	public static final String TextPathBR = "./Texto-PT-br.json" ;
 	public static final String MainFontName = "Comics" ;
 
+	public static final Color[] normalPalette ;
+	public static final Color[] konamiPalette ;
+
 	private JPanel mainPanel = this ;
 	private static Point mousePos ;
-	private static GameStates initialState = GameStates.opening ;
+	private static GameStates initialState = GameStates.loading ;
 	private static GameStates mainState = GameStates.running ;
-	private static boolean cheatMode = false ;
+	private static boolean cheatMode = true ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
 
-	public static Color[] colorPalette ;
+	public static Color[] palette ;
 	public static Map<TextCategories, String[]> allText ;
 
 	private DrawPrimitives DP ;
@@ -132,13 +134,15 @@ public class Game extends JPanel
 		screen = new Screen(new Dimension(windowSize.width - 40, windowSize.height), null) ;
 		screen.calcCenter() ;
 		gameLanguage = Languages.portugues ;
-//		state = GameStates.loading ;
-		colorPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette4.png"), "Normal") ;
+
+		normalPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette4.png"), "Normal") ;
+		konamiPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Konami") ;
+		palette = normalPalette ;
 		konamiCodeActive = false ;
-//		initializeAnimations() ;
 
 		allText = new HashMap<>() ;
 		shouldRepaint = false ;
+
 	}
 
 	public Game()
@@ -151,6 +155,9 @@ public class Game extends JPanel
 		addKeyListener(new TAdapter()) ;
 		setFocusable(true) ;
 	}
+	
+	public static void setCursorToDefault() { MainGame3_4.setCursorToDefault() ;}	
+	public static void setCursorToHand() { MainGame3_4.setCursorToHand() ;}
 
 	public static GameStates getState() { return initialState ;}
 	public static Languages getLanguage() { return gameLanguage ;}
@@ -195,15 +202,17 @@ public class Game extends JPanel
 
 	private static void konamiCode()
 	{
-		Sky.dayCounter.setDuration(5) ;
-		colorPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Konami") ;
+		Sky.dayCounter.setDuration(6) ;
+		palette = konamiPalette ;
 		if (Sky.dayCounter.getCounter() % 1200 <= 300)
 		{
 			Draw.stdAngle += 0.04 ;
-		} else if (Sky.dayCounter.getCounter() % 1200 <= 900)
+		}
+		else if (Sky.dayCounter.getCounter() % 1200 <= 900)
 		{
 			Draw.stdAngle -= 0.04 ;
-		} else
+		}
+		else
 		{
 			Draw.stdAngle += 0.04 ;
 		}
@@ -660,13 +669,12 @@ public class Game extends JPanel
 		return quests ;
 	}
 	
-	
-	private void incrementCounters()
-	{	
+
+	private void activateCounters()
+	{
 		if (Sky.dayCounter.finished())
 		{
-			Sky.dayCounter.reset() ;
-			Sky.dayCounter.start() ;
+			Sky.dayCounter.restart() ;
 			NPCs.renewStocks() ;
 		}
 		player.activateSpellCounters() ;
@@ -685,24 +693,14 @@ public class Game extends JPanel
 		for (CityMap city : cityMaps)
 		{
 			BankWindow bank = (BankWindow) city.getBuildings().get(3).getNPCs().get(0).getWindow() ;
-			if (bank.hasInvestment())
+			if (bank.hasInvestment() & bank.investmentIsComplete())
 			{
-//				System.out.println(bank.isInvested() + " " + bank.getInvestmentCounter()) ;
-//				bank.incInvestmentCounter() ;
-				if (bank.investmentIsComplete())
-				{
-					bank.completeInvestment() ;
-//					System.out.println("balance = " + bank.getBalance()) ;
-				}
+				bank.completeInvestment() ;
 			}
 		}
 
-	}
-
-	private void activateCounters()
-	{
-
 		player.activateCounters() ;
+		
 		if (pet != null)
 		{
 			if (0 < pet.getLife().getCurrentValue())
@@ -816,7 +814,6 @@ public class Game extends JPanel
 	private void run(DrawPrimitives DP)
 	{
 
-		incrementCounters() ;
 		activateCounters() ;
 
 		checkKonamiCode(player.getCombo()) ;
@@ -902,7 +899,7 @@ public class Game extends JPanel
 
 	}
 
-	private static void setCheatMode()
+	private static void initializeCheatMode()
 	{
 
 		
@@ -1198,7 +1195,7 @@ public class Game extends JPanel
 				if (Opening.gameStarted())
 				{
 //			    	player.switchOpenClose(player.getHintsindow()) ;
-					if (cheatMode) { setCheatMode() ;}
+					if (cheatMode) { initializeCheatMode() ;}
 					player.startCounters() ;
 					Game.setState(mainState) ;
 //					player.levelUp();

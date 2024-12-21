@@ -28,24 +28,12 @@ public class GameButton
 	private IconFunction action ;
 	
 	private static Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-	private static Color textColor = Game.colorPalette[0] ;
-	private static Color selectedTextColor = Game.colorPalette[18] ;
+	private static Color textColor = Game.palette[0] ;
+	private static Color selectedTextColor = Game.palette[18] ;
 	
 	public static int selectedIconID ;
-	public static List<GameButton> allButtons = new ArrayList<>() ;	// isn't it insane to create a list of all items of a class inside the class itself?
-	
-	public GameButton(Point pos, Align alignment, Image image, Image selectedImage, IconFunction action)
-	{
-		name = "" ;
-		this.image = image ;
-		this.selectedImage = selectedImage ;
-		isActive = true ;
-		size = image != null ? Util.getSize(image) : new Dimension(100, 50) ;
-		this.alignment = alignment ;
-		this.topLeft = Util.getTopLeft(pos, alignment, size) ;
-		this.action = action ;
-	}
-	
+	public static List<GameButton> allButtons = new ArrayList<>() ;
+		
 	public GameButton(Point pos, Align alignment, String name, Image image, Image selectedImage, IconFunction action)
 	{
 		this.name = name ;
@@ -56,6 +44,11 @@ public class GameButton
 		this.alignment = alignment ;
 		this.topLeft = Util.getTopLeft(pos, alignment, size) ;
 		this.action = action ;
+	}
+	
+	public GameButton(Point pos, Align alignment, Image image, Image selectedImage, IconFunction action)
+	{
+		this(pos, alignment, "", image, selectedImage, action) ;
 	}
 
 	public String getName() {return name ;}
@@ -86,7 +79,7 @@ public class GameButton
 	
 	public void displayGeneralButton(DrawPrimitives DP)
 	{
-		DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[3], true) ;
+		DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.palette[3], Game.palette[0], true) ;
 		DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 	}
 	
@@ -102,9 +95,11 @@ public class GameButton
 		}
 		else
 		{
-			DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.colorPalette[5], true) ;
+			DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.palette[5], Game.palette[0], true) ;
 			DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 		}
+		
+		Game.setCursorToHand() ;
 	}
 	
 	public void displayNotHovered(double angle, boolean displayText, DrawPrimitives DP)
@@ -119,7 +114,7 @@ public class GameButton
 			return ;
 		}
 		
-		DP.drawRoundRect(topLeft, Align.topLeft, size, 2, Game.colorPalette[5], true) ;
+		DP.drawRoundRect(topLeft, Align.topLeft, size, 2, Game.palette[5], Game.palette[0], true) ;
 		DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
 	}
 	
@@ -149,7 +144,7 @@ public class GameButton
 	{
 		if (description != null)
 		{
-			DP.drawGradRoundRect(new Point(topLeft.x + 20, topLeft.y - 10), alignment, size, 5, Game.colorPalette[1], Game.colorPalette[2], true) ;
+			DP.drawGradRoundRect(new Point(topLeft.x + 20, topLeft.y - 10), alignment, size, 5, Game.palette[1], Game.palette[2], Game.palette[0], true) ;
 			Draw.fitText(new Point(topLeft.x + 20, topLeft.y - 10), 14, alignment, description, new Font(Game.MainFontName, Font.BOLD, 12), 20, Color.blue) ;
 		}
 	}

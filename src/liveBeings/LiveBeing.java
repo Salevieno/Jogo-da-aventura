@@ -351,8 +351,8 @@ public abstract class LiveBeing
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String stateText = 0 < combo.size() ? state.toString() : "" ;
 		
-		DP.drawRoundRect(pos, Align.center, size, 1, Game.colorPalette[21], true);
-		DP.drawText(pos, Align.center, 0, stateText, font, Game.colorPalette[0]) ;
+		DP.drawRoundRect(pos, Align.center, size, 1, Game.palette[21], Game.palette[0], true);
+		DP.drawText(pos, Align.center, 0, stateText, font, Game.palette[0]) ;
 	}
 
 	public void displayUsedSpellMessage(Spell spell, Point pos, Color color)
@@ -363,7 +363,7 @@ public abstract class LiveBeing
 	public void displayPowerBar(Point pos, DrawPrimitives DP)
 	{
 		int maxPower = 10000 ;
-		Color color = Game.colorPalette[6] ;
+		Color color = Game.palette[6] ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		Dimension barSize = new Dimension(15, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
 		
@@ -790,17 +790,17 @@ public abstract class LiveBeing
 		List<Color> attColor = new ArrayList<>() ;
 		
 		attRate.add(PA.getLife().getRate()) ;
-		attColor.add(Game.colorPalette[7]) ;
+		attColor.add(Game.palette[7]) ;
 		attRate.add(PA.getMp().getRate()) ;
-		attColor.add(Game.colorPalette[20]) ;
+		attColor.add(Game.palette[20]) ;
 		if (!(this instanceof Creature))
 		{
 			attRate.add(PA.getExp().getRate()) ;
-			attColor.add(Game.colorPalette[5]) ;
+			attColor.add(Game.palette[5]) ;
 			attRate.add(PA.getSatiation().getRate()) ;
-			attColor.add(Game.colorPalette[15]) ;
+			attColor.add(Game.palette[15]) ;
 			attRate.add(PA.getThirst().getRate()) ;
-			attColor.add(Game.colorPalette[21]) ;
+			attColor.add(Game.palette[21]) ;
 		}
 		
 		if (style == 0)
@@ -812,7 +812,7 @@ public abstract class LiveBeing
 			{
 				Point barPos = Util.Translate(pos, -size.width / 2, -size.height - attRate.size() * barSize.height - clearSpace + i * sy) ;
 				Dimension filledSize = new Dimension((int)(attRate.get(i) * barSize.width), barSize.height) ;
-				DP.drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Game.colorPalette[0], 1.0) ;
+				DP.drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Game.palette[0], 1.0) ;
 			}
 		}
 		if (style == 1)
@@ -826,7 +826,7 @@ public abstract class LiveBeing
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
 				Dimension rateSize = new Dimension(barSize.width, (int) (attRate.get(att) *  barSize.height)) ;
-				DP.drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Game.colorPalette[0], 1.0) ;
+				DP.drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Game.palette[0], 1.0) ;
 				DP.drawRect(barPos, Align.bottomCenter, rateSize, stroke, attColor.get(att), null, 1.0) ;
 				barPos.x += barSize.width + 15 ;
 			}
@@ -844,7 +844,7 @@ public abstract class LiveBeing
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
 		Point rectPos = Util.Translate(center(), mirror * offset.width, offset.height) ;
 		
-		DP.drawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.colorPalette[0], 1.0) ;
+		DP.drawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.palette[0], 1.0) ;
 		DP.drawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null, 1.0) ;
 	}
 
@@ -853,7 +853,7 @@ public abstract class LiveBeing
 		if (damage <= 0) { return ;}
 		
 		PA.getLife().decTotalValue(damage) ;
-		playDamageAnimation(Battle.damageStyle, new AtkResults(1), Game.colorPalette[7]) ;
+		playDamageAnimation(Battle.damageStyle, new AtkResults(1), Game.palette[7]) ;
 	}
 	
 	public void takeBloodAndPoisonDamage()
@@ -870,13 +870,13 @@ public abstract class LiveBeing
 		{
 			bloodDamage = (int) (bloodStatus.getIntensity() * bloodMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedBlood(bloodDamage, BA.getBlood().TotalDef()) ;}
-			playDamageAnimation(Battle.damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, bloodDamage, null), Game.colorPalette[7]) ;
+			playDamageAnimation(Battle.damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, bloodDamage, null), Game.palette[7]) ;
 		}
 		if (poisonStatus.isActive() & poisonStatus.getCounter().crossedTime(0.5))
 		{
 			poisonDamage = (int) (poisonStatus.getIntensity() * poisonMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedPoison(poisonDamage, BA.getPoison().TotalDef()) ;}
-			playDamageAnimation(Battle.damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, poisonDamage, null), Game.colorPalette[18]) ;
+			playDamageAnimation(Battle.damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, poisonDamage, null), Game.palette[18]) ;
 		}
 		
 		if (bloodDamage + poisonDamage <= 0) { return ;}

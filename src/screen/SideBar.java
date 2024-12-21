@@ -130,7 +130,7 @@ public abstract class SideBar
 	{
 		String[] keys = new String[] {PlayerActions.attWindow.getKey(), PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null} ;
 		Dimension textSize = new Dimension(12, 12) ;
-		Color textColor = Game.colorPalette[0] ;
+		Color textColor = Game.palette[0] ;
 		int i = 0 ;
 		for (GameButton button : buttons)
 		{
@@ -138,7 +138,7 @@ public abstract class SideBar
 			if (keys[i] == null | !button.isActive()) { i += 1 ; continue ;}
 
 			Point rectCenter = Util.Translate(button.getTopLeftPos(), 5, 0) ;
-			DP.drawRoundRect(rectCenter, Align.center, textSize, 1, Game.colorPalette[3], true, 2, 2) ;
+			DP.drawRoundRect(rectCenter, Align.center, textSize, 1, Game.palette[3], Game.palette[0], true, 2, 2) ;
 			DP.drawText(rectCenter, Align.center, Draw.stdAngle, keys[i], font, textColor) ;
 			i += 1 ;
 		}
@@ -147,7 +147,7 @@ public abstract class SideBar
 	public static void display(Player player, Pet pet, Point mousePos, DrawPrimitives DP)
 	{
 		
-		DP.drawRect(barPos, Align.topLeft, size, Game.colorPalette[0], null) ;
+		DP.drawRect(barPos, Align.topLeft, size, Game.palette[0], null) ;
 		
 		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos, DP)) ;
 		displayKeys(DP) ;

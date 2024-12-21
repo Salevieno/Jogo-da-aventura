@@ -26,6 +26,7 @@ public abstract class SpellsBar
 	private static final Color textColor ;
 
 	private static final Image image ;
+	private static final Image spellIcon ;
 	private static final Image slotImageNoMP ;
 	private static final Image cooldownImage ;	
 	private static final Dimension size ;
@@ -42,14 +43,15 @@ public abstract class SpellsBar
 		titlefont = new Font("SansSerif", Font.BOLD, 9) ;
 		font = new Font("SansSerif", Font.BOLD, 9) ;
 		title = Game.allText.get(TextCategories.spellsBar)[0] ;
-		textColor = Game.colorPalette[19] ;
+		textColor = Game.palette[19] ;
 
 		image = UtilS.loadImage("\\SideBar\\" + "SpellsBar.png") ;
+		spellIcon = UtilS.loadImage("\\SideBar\\" + "SpellIcon.png") ;
 		slotImageNoMP = UtilS.loadImage("\\SideBar\\" + "SlotNoMP.png") ;
 		cooldownImage = UtilS.loadImage("\\SideBar\\" + "Cooldown.png") ;
 		size = Util.getSize(image) ;
 		barPos = new Point(Game.getScreen().getSize().width + 2, Game.getScreen().getSize().height - 80) ;
-		titlePos = new Point(barPos.x + size.width / 2, barPos.y - size.height + 4) ;
+		titlePos = new Point(barPos.x + size.width / 2, barPos.y - size.height + 2) ;
 	}
 	
 	public static void updateSpells(List<Spell> newSpells)
@@ -78,9 +80,8 @@ public abstract class SpellsBar
 		int sx = (int) Util.spacing(size.width, nCols, slotSize.width, offset.x) ;
 		int sy = (int) Util.spacing(size.height, nRows, slotSize.height, offset.y) ;
 		
-		DP.drawImage(image, barPos, Align.bottomLeft) ;
-		
-		DP.drawText(titlePos, Align.topCenter, Draw.stdAngle, title, titlefont, textColor) ;
+		DP.drawImage(image, barPos, Align.bottomLeft) ;		
+		DP.drawImage(spellIcon, titlePos, Align.topCenter);
 
 		for (int i = 0 ; i <= spells.size() - 1 ; i += 1)
 		{
@@ -100,7 +101,7 @@ public abstract class SpellsBar
 			if (!Util.isInside(mousePos, slotTopLeft, slotSize)) { continue ;}
 			
 			Point textPos = new Point(slotCenter.x - slotSize.width, slotCenter.y) ;
-			DP.drawText(textPos, Align.centerRight, Draw.stdAngle, spell.getName(), titlefont, textColor) ;
+			Draw.bufferedText(textPos, Align.centerRight, spell.getName(), titlefont, textColor) ;
 		
 		}
 	}

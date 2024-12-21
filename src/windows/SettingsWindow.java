@@ -178,7 +178,7 @@ public class SettingsWindow extends GameWindow
 			text = selected ? "On" : "Off" ;
 		}
 			
-		Color textColor = selected ? Game.colorPalette[20] : Game.colorPalette[2] ;
+		Color textColor = selected ? Game.palette[20] : Game.palette[2] ;
 
 		DP.drawText(textPos, Align.bottomCenter, angle, text, font, textColor) ;	
 	}
@@ -247,12 +247,12 @@ public class SettingsWindow extends GameWindow
 		Image menuImage = menu == 0 ? image : imageMenu1 ;
 		String[] text = Game.allText.get(TextCategories.settings) ;
 		Color[] textColor = new Color[3 + PlayerActions.values().length] ;
-		Arrays.fill(textColor, Game.colorPalette[0]) ;
-		textColor[item] = Game.colorPalette[18] ;
+		Arrays.fill(textColor, Game.palette[0]) ;
+		textColor[item] = Game.palette[18] ;
 		
 		DP.drawImage(menuImage, windowPos, Align.topLeft) ;
 		Point titlePos = Util.Translate(textPos, image.getWidth(null) / 2 - 15, -6) ;
-		DP.drawText(titlePos, Align.bottomCenter, angle, name, font, Game.colorPalette[0]) ;
+		DP.drawText(titlePos, Align.bottomCenter, angle, name, font, Game.palette[0]) ;
 		if (menu == 0)
 		{
 			numberItems = 6 ;

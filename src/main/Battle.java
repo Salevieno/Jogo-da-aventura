@@ -25,34 +25,37 @@ import utilities.GameStates;
 
 public abstract class Battle 
 {
+	public static int damageStyle ;
 	private static double randomAmp ;
 	private static List<Elements> ElemID ;
 	private static double[][] ElemMult ;
 	
 	public static final Clip hitSound ;
 	
-	public static int damageStyle ;
-	public static final Color phyAtkColor = Game.colorPalette[6] ;
-	public static final Color magAtkColor = Game.colorPalette[5] ;
+	public static final Color phyAtkColor ;
+	public static final Color magAtkColor ;
 	
 
 	static
 	{
-		int NumElem = 10 ;
+		damageStyle = 0 ;
+		randomAmp = (double)0.1 ;
+		
     	ElemID = new ArrayList<>() ;
-		ElemMult = new double[NumElem][NumElem] ;
 		List<String[]> ElemInput = Util.ReadcsvFile(Game.CSVPath + "Elem.csv") ;
-		for (int i = 0 ; i <= NumElem - 1 ; ++i)
+		ElemMult = new double[ElemInput.size()][ElemInput.size()] ;
+		for (int i = 0 ; i <= ElemInput.size() - 1 ; ++i)
 		{
 			ElemID.add(Elements.valueOf(ElemInput.get(i)[0])) ;
-			for (int j = 0 ; j <= NumElem - 1 ; ++j)
+			for (int j = 0 ; j <= ElemInput.size() - 1 ; ++j)
 			{
 				ElemMult[i][j] = Double.parseDouble(ElemInput.get(i)[j + 1]) ;
 			}				
 		}
-		damageStyle = 0 ;
-		randomAmp = (double)0.1 ;
+		
 		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
+		phyAtkColor = Game.palette[6] ;
+		magAtkColor = Game.palette[5] ;
 	}
 
 	public static void removeRandomness() { randomAmp = 0 ;}
@@ -395,7 +398,7 @@ public abstract class Battle
 		
 		if (!attacker.isAlive()) { return ;}
 		
-		attacker.drawTimeBar("Left", Game.colorPalette[13], DP) ;
+		attacker.drawTimeBar("Left", Game.palette[13], DP) ;
 
 //		playAtkAnimations(attacker, receiver.center(), DP) ;
 		if (attacker.isDefending())
@@ -425,7 +428,7 @@ public abstract class Battle
 //		Log.atkResults(attacker, atkResults) ;
 		EvolutionSimulation.updateBattleStats(attacker, receiver, atkResults) ;
 		
-		receiver.playDamageAnimation(damageStyle, atkResults, Game.colorPalette[7]) ;
+		receiver.playDamageAnimation(damageStyle, atkResults, Game.palette[7]) ;
 		startAtkAnimations(attacker, atkType) ;
 
 		if (Game.getPlayer().getSettings().getSoundEffectsAreOn())
@@ -451,9 +454,6 @@ public abstract class Battle
 		if (pet != null) { runTurn(pet, creature, DP) ;}
 		runTurn(creature, creatureTarget, DP) ;
 		
-//		if (!isOver(player, pet, creature)) { return ;}
-		
-//		finishBattle(player, pet, creature) ;
 	}
 		
 	

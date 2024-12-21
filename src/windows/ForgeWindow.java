@@ -65,7 +65,7 @@ public class ForgeWindow extends GameWindow
 	{
 		message = messages.get(i) ;
 		Point pos = Util.Translate(windowPos, 0, - 30) ;
-		Animation.start(AnimationTypes.message, new Object[] {pos, message, Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.message, new Object[] {pos, message, Game.palette[0]}) ;
 	}
 	
 	public void navigate(String action)
@@ -180,7 +180,7 @@ public class ForgeWindow extends GameWindow
 		
 		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
 		
-		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[1]) ;
+		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[1]) ;
 		DP.drawText(messagePos, Align.center, angle, messages.get(0), stdFont, stdColor) ;
 		
 		Point itemPos = Util.Translate(windowPos, 24, 70) ;

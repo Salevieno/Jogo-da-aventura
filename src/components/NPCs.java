@@ -51,8 +51,8 @@ public class NPCs
 	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	public static final Image speakingBubble = UtilS.loadImage("\\NPCs\\" + "SpeechBubble.png") ;
 	public static final Image choicesWindow = UtilS.loadImage("\\NPCs\\" + "ChoicesWindow.png") ;
-	private static final Color stdColor = Game.colorPalette[0] ;
-	private static final Color selColor = Game.colorPalette[18] ;
+	private static final Color stdColor = Game.palette[0] ;
+	private static final Color selColor = Game.palette[18] ;
 
 	public NPCs(NPCType type, Point pos)
 	{

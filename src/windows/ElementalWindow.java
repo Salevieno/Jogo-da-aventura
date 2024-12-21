@@ -151,7 +151,7 @@ public class ElementalWindow extends GameWindow
 			case 3 -> "Elemento mudado com sucesso!" ;
 			default -> "" ;
 		};
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.5, 0.2), message, Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.5, 0.2), message, Game.palette[0]}) ;
 	}
 	
 	public void changeEquipElement(BagWindow bag)

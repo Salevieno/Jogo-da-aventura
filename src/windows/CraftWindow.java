@@ -143,7 +143,7 @@ public class CraftWindow extends GameWindow
 	{
 		String message = messages.get(i) ;
 		Point pos = Util.Translate(windowPos, 320, -30) ;
-		Animation.start(AnimationTypes.message, new Object[] {pos, message, Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.message, new Object[] {pos, message, Game.palette[0]}) ;
 	}
 	
 	public void display(Point mousePos, DrawPrimitives DP)
@@ -172,7 +172,7 @@ public class CraftWindow extends GameWindow
 			Map<Item, Integer> products = recipe.getProducts() ;
 			
 			ingredients.forEach((item, qtd) -> {
-				Color itemNameColor = playerBag.hasEnough(item, qtd * amountOfCrafts) ? stdColor : Game.colorPalette[2] ;
+				Color itemNameColor = playerBag.hasEnough(item, qtd * amountOfCrafts) ? stdColor : Game.palette[2] ;
 				String msg = qtd * amountOfCrafts + " " + item.getName() + " (" + playerBag.getAmount(item) + ")" ;
 				DP.drawImage(Item.slot, ingredientsPos, angle, Scale.unit, Align.center) ;
 				DP.drawImage(item.getImage(), ingredientsPos, Draw.stdAngle, Scale.unit, Align.center) ;

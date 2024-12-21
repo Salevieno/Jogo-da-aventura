@@ -101,11 +101,11 @@ public class ShoppingWindow extends GameWindow
 	{
 		if (i == 0)
 		{
-			Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.1, 0.2), "Você não possui ouro suficiente", Game.colorPalette[0]}) ;
+			Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.1, 0.2), "Você não possui ouro suficiente", Game.palette[0]}) ;
 			return ;
 		}
 
-		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.5, 0.2), selectedItem().getName(), Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.5, 0.2), selectedItem().getName(), Game.palette[0]}) ;
 	}
 	
 	public void buyItem(BagWindow bag)
@@ -152,7 +152,7 @@ public class ShoppingWindow extends GameWindow
 		
 		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
 		
-		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[0]) ;
+		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[0]) ;
 				
 		
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
@@ -168,7 +168,7 @@ public class ShoppingWindow extends GameWindow
 			DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
 			DP.drawImage(bagItem.getImage(), itemPos, angle, Scale.unit, Align.center) ;
 			DP.drawText(namePos, Align.centerLeft, angle, bagItem.getName() + qtdItem, stdFont, itemColor) ;
-			DP.drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), stdFont, Game.colorPalette[14]) ;
+			DP.drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), stdFont, Game.palette[14]) ;
 			DP.drawImage(Player.CoinIcon, coinPos, Align.center) ;
 			
 			if (this.item == itemsOnWindow.indexOf(bagItem))

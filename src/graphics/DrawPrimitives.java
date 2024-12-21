@@ -65,9 +65,32 @@ public class DrawPrimitives
         
 		graphs.setTransform(backup) ;
 	}
+	
 	public void drawText(Point pos, Align align, String text, Color color)
 	{
 		drawText(pos, align, stdAngle, text, stdFont, color) ;
+	}
+		
+	public void drawBufferedText(Point pos, Align align, double angle, String text, Font font, Color color, Color outlineColor, int outlineWidth)
+	{
+		// by default starts at the left bottom
+		Dimension size = new Dimension(TextL(text, font), Util.TextH(font.getSize())) ;
+		Point offset = Util.offsetForAlignment(align, size) ;
+		AffineTransform backup = graphs.getTransform() ;
+				
+		graphs.transform(AffineTransform.getRotateInstance(-angle * Math.PI / 180, pos.x, pos.y)) ;
+
+		graphs.setFont(font) ;
+		graphs.setColor(outlineColor) ;
+		graphs.drawString(text, pos.x + offset.x - outlineWidth, pos.y + offset.y + size.height - outlineWidth) ;
+		graphs.drawString(text, pos.x + offset.x - outlineWidth, pos.y + offset.y + size.height + outlineWidth) ;
+		graphs.drawString(text, pos.x + offset.x + outlineWidth, pos.y + offset.y + size.height - outlineWidth) ;
+		graphs.drawString(text, pos.x + offset.x + outlineWidth, pos.y + offset.y + size.height + outlineWidth) ;
+		
+		graphs.setColor(color) ;
+		graphs.drawString(text, pos.x + offset.x, pos.y + offset.y + size.height) ;
+        
+		graphs.setTransform(backup) ;
 	}
 	
 	public void drawLine(Point p1, Point p2, int stroke, Color color)
@@ -141,20 +164,20 @@ public class DrawPrimitives
 	{
 		drawRect(pos, align, size, stdStroke, color, contourColor, opacity) ;
 	}
-	public void drawRoundRect(Point pos, Align align, Dimension size, int stroke, Color fillColor, boolean contour, int arcWidth, int arcHeight)
+	public void drawRoundRect(Point pos, Align align, Dimension size, int stroke, Color fillColor, Color contourColor, boolean contour, int arcWidth, int arcHeight)
 	{
-		drawGradRoundRect(pos, align, size, stroke, arcWidth, arcHeight, fillColor, fillColor, contour) ;
+		drawGradRoundRect(pos, align, size, stroke, arcWidth, arcHeight, fillColor, fillColor, contourColor, contour) ;
 	}
-	public void drawRoundRect(Point pos, Align align, Dimension size, int stroke, Color fillColor, boolean contour)
+	public void drawRoundRect(Point pos, Align align, Dimension size, int stroke, Color fillColor, Color contourColor, boolean contour)
 	{
-		drawRoundRect(pos, align, size, stroke, fillColor, contour, 10, 10) ;
+		drawRoundRect(pos, align, size, stroke, fillColor, contourColor, contour, 10, 10) ;
 	}
-	public void drawRoundRect(Point pos, Align align, Dimension size, Color fillColor, boolean contour)
+	public void drawRoundRect(Point pos, Align align, Dimension size, Color fillColor, Color contourColor, boolean contour)
 	{
-		drawRoundRect(pos, align, size, stdStroke, fillColor, contour, 10, 10) ;
+		drawRoundRect(pos, align, size, stdStroke, fillColor, contourColor, contour, 10, 10) ;
 	}
 	
-	public void drawGradRoundRect(Point pos, Align align, Dimension size, int stroke, int arcW, int arcH, Color botColor, Color topColor, boolean contour)
+	public void drawGradRoundRect(Point pos, Align align, Dimension size, int stroke, int arcW, int arcH, Color botColor, Color topColor, Color contourColor, boolean contour)
 	{
 		// Round rectangle by default starts at the left top
 		Point offset = Util.offsetForAlignment(align, size) ;
@@ -166,20 +189,20 @@ public class DrawPrimitives
 		    graphs.setPaint(gradient) ;
 			graphs.fillRoundRect(corner[0], corner[1], size.width, size.height, arcW, arcH) ;
 		}
-		if (contour)
+		if (contour & contourColor != null)
 		{
-			graphs.setColor(Game.colorPalette[0]) ;
+			graphs.setColor(contourColor) ;
 			graphs.drawRoundRect(corner[0], corner[1], size.width, size.height, arcW, arcH) ;
 		}
 		graphs.setStroke(new BasicStroke(stdStroke)) ;
 	}
-	public void drawGradRoundRect(Point pos, Align align, Dimension size, int stroke, Color botColor, Color topColor, boolean contour)
+	public void drawGradRoundRect(Point pos, Align align, Dimension size, int stroke, Color botColor, Color topColor, Color contourColor, boolean contour)
 	{
-		drawGradRoundRect(pos, align, size, stroke, 10, 10, botColor, topColor, contour) ;
+		drawGradRoundRect(pos, align, size, stroke, 10, 10, botColor, topColor, contourColor, contour) ;
 	}
-	public void drawGradRoundRect(Point pos, Align align, Dimension size, Color botColor, Color topColor, boolean contour)
+	public void drawGradRoundRect(Point pos, Align align, Dimension size, Color botColor, Color topColor, Color contourColor, boolean contour)
 	{
-		drawGradRoundRect(pos, align, size, stdStroke, botColor, topColor, contour) ;
+		drawGradRoundRect(pos, align, size, stdStroke, botColor, topColor, contourColor, contour) ;
 	}
 	
 	public void drawCircle(Point center, int diameter, int stroke, Color color, Color contourColor)

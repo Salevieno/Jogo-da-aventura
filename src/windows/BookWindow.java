@@ -49,7 +49,7 @@ public class BookWindow extends GameWindow
 		
 		int sy = font.getSize() + 1 ;
 		int id = window ;
-		Color textColor = Game.colorPalette[5] ;
+		Color textColor = Game.palette[5] ;
 		
 		// draw ingredients
 		Item[] ingredients = new Item[0];
@@ -82,7 +82,7 @@ public class BookWindow extends GameWindow
 		
 		Point textPos = Util.Translate(Util.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
 		String pageText = (window + 1) + " / " + numberWindows ;
-		DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Game.colorPalette[0]) ;
+		DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Game.palette[0]) ;
 	}
 	
 	public void display(Point mousePos, DrawPrimitives DP)

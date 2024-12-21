@@ -122,7 +122,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 	public void displayTab0(Point mousePos, DrawPrimitives DP)
 	{
 		
-		Color[] colorPalette = Game.colorPalette ;		
+		Color[] colorPalette = Game.palette ;		
 		Font font = subTitleFont ;
 		Font smallFont = new Font(Game.MainFontName, Font.BOLD, 9) ;
 		double angle = Draw.stdAngle ;
@@ -245,7 +245,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Point goldPos = Util.Translate(windowPos, 197 + attOffset, 332) ;
 		String goldValue = String.valueOf(Util.Round(player.getBag().getGold(), 1)) ;
 		DP.drawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
-		DP.drawText(goldPos, Align.centerLeft, angle, goldValue, font, Game.colorPalette[13]) ;
+		DP.drawText(goldPos, Align.centerLeft, angle, goldValue, font, Game.palette[13]) ;
 		
 		incAttButtons.values().forEach(button -> button.display(angle, false, mousePos, DP)) ;
 	}
@@ -254,7 +254,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 	{
 		
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
-		Color textColor = Game.colorPalette[0] ;
+		Color textColor = Game.palette[0] ;
 		double angle = Draw.stdAngle ;
 		String[] attText = Game.allText.get(TextCategories.attributes) ;
 		
@@ -303,7 +303,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		String title = "Totais" ;
 		List<String> subTitles = List.of("Causados", "Recebidos", "Defendidos") ;
-		Color textColor = Game.colorPalette[0] ;
+		Color textColor = Game.palette[0] ;
 		
 		Map<String, Integer> numberStats = player.getStatistics().numberStats() ;
 		Map<String, Double> damageStats = player.getStatistics().damageStats() ;
@@ -367,7 +367,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Point tabsTextPos = Util.Translate(windowPos, 7, 6 + 22) ;
 		for (int i = 0 ; i <= 3 - 1 ; i += 1)
 		{
-			Color tabTextColor = i == tab ? Game.colorPalette[18] : Game.colorPalette[0] ;
+			Color tabTextColor = i == tab ? Game.palette[18] : Game.palette[0] ;
 			DP.drawText(tabsTextPos, Align.center, 90, tabsText[i], stdFont, tabTextColor) ;
 			tabsTextPos.y += 45 ;
 		}
@@ -381,7 +381,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 
 		// Player name
 		Point namePos = Util.Translate(windowPos, size.width / 2, 11) ;
-		DP.drawText(namePos, Align.center, Draw.stdAngle, player.getName(), titleFont, Game.colorPalette[0]) ;	
+		DP.drawText(namePos, Align.center, Draw.stdAngle, player.getName(), titleFont, Game.palette[0]) ;	
 		
 	}
 	

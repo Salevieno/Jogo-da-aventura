@@ -161,7 +161,7 @@ public class SpellsTreeWindow extends GameWindow
 		
 		double angle = Draw.stdAngle ;
 		Point pos = Util.Translate(windowTopLeft, 0, -66) ;
-		Color textColor = Game.colorPalette[0] ;
+		Color textColor = Game.palette[0] ;
 		Point spellNamePos = Util.Translate(windowTopLeft, spellInfo.getWidth(null) / 2, - 66 - 10) ;
 		DP.drawImage(spellInfo, pos, Align.topLeft) ;
 		DP.drawText(spellNamePos, Align.center, angle, spellsOnWindow.get(item).getName(), regularFont, textColor) ;
@@ -178,7 +178,7 @@ public class SpellsTreeWindow extends GameWindow
 	{
 		double angle = Draw.stdAngle ;
 		Point pointsPos = Util.Translate(windowTopLeft, size.width + 10 + 28, size.height - 6 - 40) ;
-		Color color = Game.colorPalette[21] ;
+		Color color = Game.palette[21] ;
 		
 		DP.drawImage(spellPoints, pointsPos, Align.topCenter) ;
 		DP.drawText(Util.Translate(pointsPos, 0, 6), Align.topCenter, angle, "Pontos", regularFont, color) ;
@@ -199,7 +199,7 @@ public class SpellsTreeWindow extends GameWindow
 		Point tab1Pos = Util.Translate(windowTopLeft, -10, 6 + 75/2) ;
 		Point tab2Pos = Util.Translate(windowTopLeft, -10, 6 + 75 + 75/2) ;
 		Image displayImage = tab == 0 ? tab0Image : tab1Image ;
-		Color tabTextColor = Game.colorPalette[21] ;
+		Color tabTextColor = Game.palette[21] ;
 		DP.drawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
 		DP.drawText(tab1Pos, Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
 		DP.drawText(tab2Pos, Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
@@ -224,15 +224,15 @@ public class SpellsTreeWindow extends GameWindow
 	{
 
 		double angle = Draw.stdAngle ;
-		Color selectedColor = Game.colorPalette[3] ;
-		Color hasPreReqColor = Game.colorPalette[21] ;
-		Color hasNotPreReqColor = Game.colorPalette[21] ;
+		Color selectedColor = Game.palette[3] ;
+		Color hasPreReqColor = Game.palette[21] ;
+		Color hasNotPreReqColor = Game.palette[21] ;
 		
 		displaySpellsInfo(DP) ;
 		displayWindow(DP) ;
 		
 		Point titlePos = Util.Translate(windowTopLeft, size.width / 2, 6 + 9) ;
-		DP.drawText(titlePos, Align.center, angle, name, largeFont, Game.colorPalette[21]);
+		DP.drawText(titlePos, Align.center, angle, name, largeFont, Game.palette[21]);
 		
 		if (spells == null) { return ;}
 		

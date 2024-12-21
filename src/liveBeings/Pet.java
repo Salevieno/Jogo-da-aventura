@@ -74,7 +74,7 @@ public class Pet extends LiveBeing
 		alchBuffId = -1 ;
 		
 		this.job = Job ;
-		Color[] colorPalette = Game.colorPalette ;
+		Color[] colorPalette = Game.palette ;
 		Color[] petColors = new Color[] {colorPalette[3], colorPalette[5], colorPalette[21], colorPalette[21]} ;
 		color = petColors[Job] ;
 		spells = InitializePetSpells();
@@ -324,7 +324,7 @@ public class Pet extends LiveBeing
 		int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
 		double[] inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
-		displayUsedSpellMessage(spell, Game.getScreen().pos(0.23, 0.2), Game.colorPalette[12]);
+		displayUsedSpellMessage(spell, Game.getScreen().pos(0.23, 0.2), Game.palette[12]);
 		return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
 	}
 	

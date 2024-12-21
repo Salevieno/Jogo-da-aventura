@@ -41,7 +41,7 @@ public class BankWindow extends GameWindow
 		balance = 0 ;
 		investedAmount = 0 ;
 		hasInvestement = false ;
-		investmentCounter = new TimeCounter(500) ;
+		investmentCounter = new TimeCounter(50) ;
 		liveInput = new LiveInput() ;
 	}
 
@@ -137,26 +137,26 @@ public class BankWindow extends GameWindow
 	private void drawInvestmentTimer(Point pos, double timeRate, DrawPrimitives DP)
 	{
 		DP.drawImage(clock, pos, Align.center) ;
-		DP.drawArc(Util.Translate(pos, 0, 2), 21, 1, 90, (int) (-360 * timeRate), Game.colorPalette[20], null) ;
+		DP.drawArc(Util.Translate(pos, 0, 2), 21, 1, 90, (int) (-360 * timeRate), Game.palette[20], null) ;
 	}
 	
 	private void displayNotEnoughGold()
 	{
 		Point msgPos = Game.getScreen().pos(0.4, 0.3) ;
 		String msg = "Você não tem ouro suficiente!" ;
-		Color msgColor = Game.colorPalette[0] ;
+		Color msgColor = Game.palette[0] ;
 		Animation.start(AnimationTypes.message, new Object[] {msgPos, msg, msgColor}) ;
 	}
 	
 	public void display(Point mousePos, DrawPrimitives DP)
 	{
 		Point titlePos = Util.Translate(windowPos, size.width / 2, border + 10) ;
-		Color textColor = Game.colorPalette[0] ;
+		Color textColor = Game.palette[0] ;
 		double angle = Draw.stdAngle ;
 		
 		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
 
-		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.colorPalette[0]) ;
+		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[0]) ;
 		
 		Point balancePos = Util.Translate(windowPos, border + padding + 4, (int) border + 30) ;
 		Point investmentPos = Util.Translate(windowPos, border + padding + 4, border + 90) ;

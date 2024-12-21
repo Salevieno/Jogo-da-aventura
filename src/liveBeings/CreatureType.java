@@ -231,7 +231,7 @@ public class CreatureType
 			color[row] = Creature.getskinColor()[colorid];
 			if (270 < row & row <= 299) // Ocean creatures
 			{
-				color[row] = Game.colorPalette[5];
+				color[row] = Game.palette[5];
 			}
 
 			MovingAnimations moveAni = CreatureType.moveAni.get(row % numberCreatureTypesImages);

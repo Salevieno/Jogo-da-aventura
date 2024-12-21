@@ -74,7 +74,7 @@ public class PetItem extends Item
 		
 		applyBonus(pet.getPA(), pet.getBA(), equip, 1) ;
 
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Game.palette[0]}) ;
 //		pet.getElem()[4] = pet.hasSuperElement() ? pet.getElem()[1] : Elements.neutral ;
 		pet.setEquip(equip) ;
 	}
@@ -84,7 +84,7 @@ public class PetItem extends Item
 		applyBonus(pet.getPA(), pet.getBA(), equip, -1) ;
 //		pet.setElem(Elements.neutral) ;
 		
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Game.colorPalette[0]}) ;
+		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Game.palette[0]}) ;
 		pet.setEquip(null) ;
 	}
 	
