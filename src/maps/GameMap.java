@@ -564,7 +564,7 @@ public class GameMap
  		
  		if (name.equals("City of the archers"))
  		{
- 	 		DP.drawImage(beachGif, new Point(Game.getScreen().getSize().width, 96), Align.topRight) ;
+ 	 		DP.drawImage(beachGif, new Point(Game.getScreen().getSize().width - 80, 96), Align.topRight) ;
  		}
  	}
 	

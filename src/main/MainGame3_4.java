@@ -3,12 +3,14 @@ package main ;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue ;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame ;
 import javax.swing.Timer;
 
+import libUtil.Util;
 import utilities.GameStates;
 
 /**
@@ -24,12 +26,15 @@ public class MainGame3_4 extends JFrame implements ActionListener
 	private static Timer timer ;		// Main timer of the game
 	private static final Dimension windowSize = new Dimension(640, 480) ;
 	private static GameStates previousState ;
+//	private static final ImageIcon icon = new ImageIcon(".\\images\\gameIcon.png") ; // getClass().getResource("/some/package/favicon.png")
+	private static final Image icon = Util.loadImage(".\\images\\gameIcon.png") ;
 	private static final Game game = new Game() ;
 
 	private MainGame3_4()
     {
 		// initialize the UI		
         setTitle("Jogo da aventura") ;
+	    setIconImage(icon) ;
         setPreferredSize(windowSize) ;
         pack() ;
         Dimension actualWindowSize = getContentPane().getSize() ;
