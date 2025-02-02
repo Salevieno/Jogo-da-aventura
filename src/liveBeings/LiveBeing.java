@@ -14,12 +14,11 @@ import java.util.stream.Collectors;
 import attributes.Attributes;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
-import graphics.Animation;
-import graphics.AnimationTypes;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import graphics.Gif;
-import libUtil.Align;
-import libUtil.Util;
+import graphics2.Animation;
+import graphics2.AnimationTypes;
+import graphics2.Gif;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
@@ -32,7 +31,8 @@ import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.RelativePos;
-import utilities.TimeCounter;
+import utilities.GameTimer;
+import utilities.Util;
 import utilities.UtilS;
 import windows.AttributesWindow;
 
@@ -50,18 +50,18 @@ public abstract class LiveBeing
 	protected int range ;
 	protected int step ;
 	protected Elements[] elem ;					// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
-	protected TimeCounter hpCounter ;
-	protected TimeCounter mpCounter ;
-	protected TimeCounter satiationCounter ;
-	protected TimeCounter thirstCounter ;
-	protected TimeCounter actionCounter ;
-	protected TimeCounter battleActionCounter ;
-	protected TimeCounter stepCounter ;			// counts the steps in the movement
+	protected GameTimer hpCounter ;
+	protected GameTimer mpCounter ;
+	protected GameTimer satiationCounter ;
+	protected GameTimer thirstCounter ;
+	protected GameTimer actionCounter ;
+	protected GameTimer battleActionCounter ;
+	protected GameTimer stepCounter ;			// counts the steps in the movement
 	protected String currentAction ;
 	protected AtkTypes currentAtkType ;
 	protected List<String> combo ;				// record of the last 10 movements
 	protected List<Spell> spells ;
-	protected TimeCounter drunk ;
+	protected GameTimer drunk ;
 	protected Map<Attributes, LiveBeingStatus> status ;
 	
 	protected PersonalAttributes PA ;
@@ -89,8 +89,8 @@ public abstract class LiveBeing
 		this.attWindow = attWindow ;
 		currentAction = null ;
 		currentAtkType = null ;
-		hpCounter = new TimeCounter(20) ;
-		drunk = new TimeCounter(20) ;
+		hpCounter = new GameTimer(20) ;
+		drunk = new GameTimer(20) ;
 		status = new HashMap<>() ;
 		for (Attributes att : Attributes.values())
 		{
@@ -156,25 +156,25 @@ public abstract class LiveBeing
 	public int getStep() {return step ;}
 	public String getCurrentAction() {return currentAction ;}
 	public AtkTypes getCurrentAtkType() { return currentAtkType ;}
-	public TimeCounter getHpCounter() {return hpCounter ;}
-	public TimeCounter getMpCounter() {return mpCounter ;}
-	public TimeCounter getSatiationCounter() {return satiationCounter ;}
-	public TimeCounter getThirstCounter() {return thirstCounter ;}
-	public TimeCounter getActionCounter() {return actionCounter ;}
-	public TimeCounter getBattleActionCounter() {return battleActionCounter ;}
-	public TimeCounter getStepCounter() {return stepCounter ;}
+	public GameTimer getHpCounter() {return hpCounter ;}
+	public GameTimer getMpCounter() {return mpCounter ;}
+	public GameTimer getSatiationCounter() {return satiationCounter ;}
+	public GameTimer getThirstCounter() {return thirstCounter ;}
+	public GameTimer getActionCounter() {return actionCounter ;}
+	public GameTimer getBattleActionCounter() {return battleActionCounter ;}
+	public GameTimer getStepCounter() {return stepCounter ;}
 	public List<String> getCombo() {return combo ;}
 	public List<Spell> getSpells() {return spells ;}
 	public AttributesWindow getAttWindow() {return attWindow ;}
 	public MovingAnimations getMovingAni() {return movingAni ;}
 	public Map<Attributes, LiveBeingStatus> getStatus() {return status ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
-	public void setMpCounter(TimeCounter mpCounter) { this.mpCounter = mpCounter ;}
-	public void setActionCounter(TimeCounter actionCounter) { this.actionCounter = actionCounter ;}	
-	public void setBattleActionCounter(TimeCounter battleActionCounter) { this.battleActionCounter = battleActionCounter ;}
-	public void setSatiationCounter(TimeCounter satiationCounter) { this.satiationCounter = satiationCounter ;}
-	public void setThirstCounter(TimeCounter thirstCounter) { this.thirstCounter = thirstCounter ;}
-	public void setStepCounter(TimeCounter stepCounter) { this.stepCounter = stepCounter ;}
+	public void setMpCounter(GameTimer mpCounter) { this.mpCounter = mpCounter ;}
+	public void setActionCounter(GameTimer actionCounter) { this.actionCounter = actionCounter ;}	
+	public void setBattleActionCounter(GameTimer battleActionCounter) { this.battleActionCounter = battleActionCounter ;}
+	public void setSatiationCounter(GameTimer satiationCounter) { this.satiationCounter = satiationCounter ;}
+	public void setThirstCounter(GameTimer thirstCounter) { this.thirstCounter = thirstCounter ;}
+	public void setStepCounter(GameTimer stepCounter) { this.stepCounter = stepCounter ;}
 
 	public void setName(String newValue) {name = newValue ;}
 	public void setLevel(int newValue) {level = newValue ;}
@@ -191,7 +191,7 @@ public abstract class LiveBeing
 	public void setCurrentAtkType(AtkTypes ba) { currentAtkType = ba ;}
 	
 	public boolean isMoving() { return state.equals(LiveBeingStates.moving) ;}
-	public boolean canAct() { return actionCounter.finished() & (state.equals(LiveBeingStates.idle) | state.equals(LiveBeingStates.fighting)) ;}
+	public boolean canAct() { return actionCounter.finished() & (state.equals(LiveBeingStates.idle) | state.equals(LiveBeingStates.moving) |state.equals(LiveBeingStates.fighting)) ;}
 	
 	public boolean isPlayerAlly() { return (this instanceof Player | this instanceof Pet) ;}
 	
@@ -296,11 +296,11 @@ public abstract class LiveBeing
 	
 	protected double magicAtkBonus() { return 1 + Math.min(0.25, 0.25 * BA.TotalMagAtk() / 200.0) ;}
 	
-	public static Directions randomDir() { return Directions.getDir(Util.randomIntFromTo(0, 3)) ;}
+	public static Directions randomDir() { return Directions.getDir(Util.randomInt(0, 3)) ;}
 	
 	public static Directions randomPerpendicularDir(Directions originalDir)
 	{
-		int side = Util.randomIntFromTo(0, 1) ;
+		int side = Util.randomInt(0, 1) ;
 		return switch (originalDir)
 		{
 			case up, down -> side == 0 ? Directions.left : Directions.right ;
@@ -832,7 +832,7 @@ public abstract class LiveBeing
 			}
 		}
 		
-	}	
+	}
 	
 	public void drawTimeBar(String relPos, Color color, DrawPrimitives DP)
 	{
@@ -846,6 +846,23 @@ public abstract class LiveBeing
 		
 		DP.drawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.palette[0], 1.0) ;
 		DP.drawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null, 1.0) ;
+	}
+	
+	public void drawTimeBar2(DrawPrimitives DP)
+	{
+		double rate = battleActionCounter.rate() ;
+		int stroke = 1 ;
+		int angleStart = 135 ;
+		int angleMaxSpan = 235 ;
+		int angleFilledSpan = (int) (angleMaxSpan * rate) ;
+		int innerRadius = 10 ;
+		int outerRadius = 15 ;
+		
+		// draw fill
+		DP.drawAnnularSector(pos, innerRadius, outerRadius, angleStart, angleFilledSpan, stroke, Game.palette[21], null) ;
+		
+		// draw contour
+		DP.drawAnnularSector(pos, innerRadius, outerRadius, angleStart, angleMaxSpan, stroke, null, Game.palette[0]) ;
 	}
 
 	public void takeDamage(int damage)

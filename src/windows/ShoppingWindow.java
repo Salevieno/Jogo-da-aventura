@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import graphics.Animation;
-import graphics.AnimationTypes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
+import graphics2.Animation;
+import graphics2.AnimationTypes;
+import graphics2.Draw;
 import items.Item;
-import libUtil.Align;
-import libUtil.Util;
 import liveBeings.Player;
 import main.Game;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 
 public class ShoppingWindow extends GameWindow

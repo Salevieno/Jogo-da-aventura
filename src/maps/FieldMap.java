@@ -12,6 +12,10 @@ import java.util.Set;
 
 import javax.sound.sampled.Clip;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import components.NPCType;
 import components.NPCs;
 import graphics.DrawPrimitives;
 import items.Item;
@@ -20,7 +24,8 @@ import liveBeings.CreatureType;
 import main.Game;
 import screen.Screen;
 import screen.Sky;
-import utilities.TimeCounter;
+import utilities.GameTimer;
+import utilities.Util;
 import utilities.UtilS;
 
 public class FieldMap extends GameMap
@@ -28,7 +33,7 @@ public class FieldMap extends GameMap
 	private List<Collectible> collectibles ;
 	private List<Creature> creatures ;
 	private int level ;
-	private Map<CollectibleTypes, TimeCounter> collectibleCounters ;
+	private Map<CollectibleTypes, GameTimer> collectibleCounters ;
 	
 	private static final int numberTrees = 5 ;
 	private static final int numberGrass = 30 ;
@@ -53,19 +58,87 @@ public class FieldMap extends GameMap
 		this.level = collectibleLevel ;
 		this.npcs = npcs ;
 	}
-	
-	public int getLevel() { return level ;}
-	public List<Creature> getCreatures() {return creatures ;}
-	public List<Collectible> getCollectibles() {return collectibles ;}
-	public Set<Item> getItems()
+
+
+	public static FieldMap[] load(NPCType[] npcTypes)
 	{
-		Set<Item> allItems = new HashSet<>() ;
-		
-		creatures.forEach(creature -> creature.getBag().forEach(item -> allItems.add(item))) ;
-		
-		return allItems ;
+		JSONArray input = Util.readJsonArray(dadosPath + "mapsField.json") ;
+		FieldMap[] fieldMaps = new FieldMap[input.size()] ;
+
+		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
+		{
+
+			JSONObject mapData = (JSONObject) input.get(id) ;
+
+			String name = (String) mapData.get("Name") ;
+			int continentID = (int) (long) mapData.get("Continent") ;
+			Continents continent = Continents.values()[continentID] ;
+			JSONObject connectionIDs = (JSONObject) mapData.get("Connections") ;
+			int[] connections = new int[8] ;
+			connections[0] = (int) (long) connectionIDs.get("topRight") ;
+			connections[1] = (int) (long) connectionIDs.get("topLeft") ;
+			connections[2] = (int) (long) connectionIDs.get("leftTop") ;
+			connections[3] = (int) (long) connectionIDs.get("leftBottom") ;
+			connections[4] = (int) (long) connectionIDs.get("bottomLeft") ;
+			connections[5] = (int) (long) connectionIDs.get("bottomRight") ;
+			connections[6] = (int) (long) connectionIDs.get("rightBottom") ;
+			connections[7] = (int) (long) connectionIDs.get("rightTop") ;
+
+			Image image = FieldMap.images.get(id) ;
+			Clip music = GameMap.musicForest ;
+
+			JSONObject collectibles = (JSONObject) mapData.get("Collectibles") ;
+			int collectibleLevel = (int) (long) collectibles.get("level") ;
+
+			List<Long> creatures = (List<Long>) mapData.get("Creatures") ;
+			int[] creatureIDs = new int[creatures.size()] ;
+			for (int i = 0 ; i <= creatures.size() - 1 ; i += 1)
+			{
+				creatureIDs[i] = (int) (long) creatures.get(i) ;
+			}
+
+			JSONArray listNPCs = (JSONArray) mapData.get("NPCs") ;
+			List<NPCs> npcs = FieldMap.createQuestNPCs(id, npcTypes) ;
+//			List<NPCs> npcs = new ArrayList<>() ;
+//			for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
+//			{
+//				npcs.add(readNPCfromJson((JSONObject) listNPCs.get(i))) ;
+//			}
+
+			FieldMap map = new FieldMap(name, continent, connections, image, music, collectibleLevel, npcs) ;
+
+			switch (id)
+			{
+				case 2:
+					map.addGroundType(new GroundType(GroundTypes.water, new Point(551, 96 + 269), new Dimension(49, 83))) ;
+					break ;
+					
+				case 3:
+					map.addGroundType(new GroundType(GroundTypes.water, new Point(0, 96 + 269), new Dimension(64, 83))) ;
+					break ;
+					
+				case 8, 12:
+					map.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
+					break ;
+					
+				case 22:
+					map.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
+					break ;
+					
+				default:
+					break ;
+			}
+
+			map.addCollectibles() ;
+			map.addCreatures(creatureIDs) ;
+			map.addMapElements() ;
+			map.addDiggingItems() ;
+			fieldMaps[id] = map ;
+		}
+
+		return fieldMaps ;
 	}
-	public void setCreatures(List<Creature> newValue) {creatures = newValue ;}
+
 	
 	public void addMapElements()
 	{
@@ -99,7 +172,7 @@ public class FieldMap extends GameMap
 		for (CollectibleTypes type : CollectibleTypes.values())
 		{
 			addCollectible(type) ;
-			TimeCounter collectibleCounter = new TimeCounter(type.getSpawnTime()) ;
+			GameTimer collectibleCounter = new GameTimer(type.getSpawnTime()) ;
 			collectibleCounter.start();
 			collectibleCounters.put(type, collectibleCounter) ;
 		}
@@ -130,10 +203,14 @@ public class FieldMap extends GameMap
 		calcDigItemChances() ;
 	}
 	
-	public static List<NPCs> createQuestNPCs(int mapID)
+	public static List<NPCs> createQuestNPCs(int mapID, NPCType[] npcTypes)
 	{
-		NPCs questExp = new NPCs(Game.getNPCTypes()[12], Game.getScreen().pos(0.27, 0.73)) ;
-		NPCs questItem = new NPCs(Game.getNPCTypes()[13], Game.getScreen().pos(0.87, 0.63)) ;
+		
+		if (npcTypes == null) { System.out.println("Erro ao criar npcs de quest: tipos de npc nulo") ; return null ;}
+		if (npcTypes.length <= 0) { System.out.println("Erro ao criar npcs de quest: sem tipos de npc") ; return null ;}
+		
+		NPCs questExp = new NPCs(npcTypes[12], Game.getScreen().pos(0.27, 0.73)) ;
+		NPCs questItem = new NPCs(npcTypes[13], Game.getScreen().pos(0.87, 0.63)) ;
 		switch (mapID)
 		{
 			case 0: return List.of(questExp, questItem) ;
@@ -148,7 +225,7 @@ public class FieldMap extends GameMap
 		collectibleCounters.entrySet().forEach(entry -> 
 		{
 			CollectibleTypes type = entry.getKey() ;
-			TimeCounter spawnCounter = entry.getValue() ;
+			GameTimer spawnCounter = entry.getValue() ;
 			if (spawnCounter.finished())
 			{
 				addCollectible(type) ;
@@ -199,7 +276,21 @@ public class FieldMap extends GameMap
  		
  		return false ;
  	} 	
- 	
+
+	
+	public int getLevel() { return level ;}
+	public List<Creature> getCreatures() {return creatures ;}
+	public List<Collectible> getCollectibles() {return collectibles ;}
+	public Set<Item> getItems()
+	{
+		Set<Item> allItems = new HashSet<>() ;
+		
+		creatures.forEach(creature -> creature.getBag().forEach(item -> allItems.add(item))) ;
+		
+		return allItems ;
+	}
+	public void setCreatures(List<Creature> newValue) {creatures = newValue ;}
+	
  	public void printItems()
  	{
  		System.out.println(name);

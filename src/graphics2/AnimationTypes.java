@@ -1,4 +1,4 @@
-package graphics;
+package graphics2;
 
 public enum AnimationTypes
 {

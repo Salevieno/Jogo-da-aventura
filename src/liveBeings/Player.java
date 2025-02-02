@@ -26,11 +26,13 @@ import components.NPCs;
 import components.Quest;
 import components.QuestSkills;
 import components.SpellTypes;
-import graphics.Animation;
-import graphics.AnimationTypes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import graphics.Gif;
+import graphics.Scale;
+import graphics2.Animation;
+import graphics2.AnimationTypes;
+import graphics2.Draw;
+import graphics2.Gif;
 import items.Alchemy;
 import items.Arrow;
 import items.Equip;
@@ -43,8 +45,6 @@ import items.PetItem;
 import items.Potion;
 import items.QuestItem;
 import items.Recipe;
-import libUtil.Align;
-import libUtil.Util;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
@@ -60,8 +60,8 @@ import screen.Sky;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
-import utilities.Scale;
-import utilities.TimeCounter;
+import utilities.GameTimer;
+import utilities.Util;
 import utilities.UtilS;
 import windows.BagWindow;
 import windows.BankWindow;
@@ -98,8 +98,8 @@ public class Player extends LiveBeing
 	private HintsWindow hintsWindow ;
 	private BestiaryWindow bestiary ;
 	
-	private int attPoints ;			// attribute points available (to upgrade the attributes)
-	private int spellPoints ;		// spell points available (to upgrade the spells)
+	private int attPoints ;
+	private int spellPoints ;
 	private AttributeIncrease attInc ;
 	private double[] collectLevel ;	// 0: herb, 1: wood, 2: metal
 	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor, 3: emblem
@@ -107,15 +107,15 @@ public class Player extends LiveBeing
 	private int storedGold ;
 	private double goldMultiplier ;	// multiplies the amount of gold the player wins
 	private double digBonus ;
-	private Map<QuestSkills, Boolean> questSkills ;	// skills gained with quests
-	private boolean isRiding ;		// true if the player is riding
+	private Map<QuestSkills, Boolean> questSkills ;
+	private boolean isRiding ;
 	
-	private Creature closestCreature ;		// creature that is currently closest to the player
-    private Creature opponent ;				// creature that is currently in battle with the player
+	private Creature closestCreature ;
+    private Creature opponent ;
     private NPCs npcInContact ;
     private Collectible currentCollectible ;
     private TreasureChest currentChest ;
-    private Item[] hotItems ;				// items on the hotkeys
+    private Item[] hotItems ;
 	private Statistics stats ;
     
 	public static final int maxLevel = 99 ;
@@ -138,7 +138,7 @@ public class Player extends LiveBeing
 	public static final List<String[]> InitialAtts = Util.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
 	public static final List<String[]> EvolutionProperties = Util.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
 	public static final int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
-	public static final int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
+	private static final int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public static final Color[] ClassColors = new Color[] {Game.palette[21], Game.palette[5], Game.palette[2], Game.palette[3], Game.palette[4]} ;
 
     public static final String[] HotKeys = new String[] {"F", "G", "V"} ;
@@ -156,7 +156,7 @@ public class Player extends LiveBeing
 		movingAnimations = new MovingAnimations(idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif) ;
 	}
 	
-	public Player(String name, String Sex, int job)
+	public Player(String name, String sex, int job)
 	{
 		super(
 				InitializePersonalAttributes(job),
@@ -170,6 +170,7 @@ public class Player extends LiveBeing
 		this.job = job ;
 		proJob = 0 ;
 		level = 1 ;
+		
 		if (Game.getMaps() != null) { map = Game.getMaps()[job] ;}
 
 		pos = new Point();
@@ -179,15 +180,15 @@ public class Player extends LiveBeing
 		range = Integer.parseInt(InitialAtts.get(job)[4]) ;
 		step = Integer.parseInt(InitialAtts.get(job)[33]);
 	    elem = new Elements[] {Elements.neutral, null, null, null, null};
-		actionCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[37])) ;
-		satiationCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[38])) ;
-		thirstCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[39])) ;
-		mpCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[40]) / 1.0) ;
-		battleActionCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(job)[41]) / 1.0) ;
-		stepCounter = new TimeCounter(stepDuration) ;
+		actionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[37])) ;
+		satiationCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[38])) ;
+		thirstCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[39])) ;
+		mpCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[40]) / 1.0) ;
+		battleActionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[41]) / 1.0) ;
+		stepCounter = new GameTimer(stepDuration) ;
 		combo = new ArrayList<>() ;
 	    
-		this.sex = Sex ;
+		this.sex = sex ;
 		
 		
 		spells = new ArrayList<Spell>() ;
@@ -373,7 +374,7 @@ public class Player extends LiveBeing
 	private boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
-	private boolean actionIsAMove() { return UtilS.actionIsArrowKey(currentAction) ;} // List.of("W", "A", "S", "D").contains(currentAction) | 
+	private boolean actionIsAMove() { return UtilS.actionIsArrowKey(currentAction) | List.of("W", "A", "S", "D").contains(currentAction) ;}
 	private boolean hitCreature() { return (usedPhysicalAtk() | usedSpell()) & closestCreature != null ;}
 	public boolean isInBattle() { return opponent != null | state.equals(LiveBeingStates.fighting) ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
@@ -393,7 +394,7 @@ public class Player extends LiveBeing
 
 	public Creature closestCreatureInRange()
 	{			
-		
+		// TODO melhorar performance
 		if (!map.isAField()) { return null ;}
 		
 		FieldMap fieldMap = (FieldMap) map ;
@@ -413,10 +414,10 @@ public class Player extends LiveBeing
 		}
 		for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 		{
-			Creature creature = fieldMap.getCreatures().get(i) ;
+			Creature closestCreature = fieldMap.getCreatures().get(i) ;
 			if (dist[i] == MinDist & fieldMap.getCreatures() != null & dist[i] <= range)
 			{
-				return creature ;	// Closest creature ID
+				return closestCreature ;
 			}
 		}
 		
@@ -626,7 +627,7 @@ public class Player extends LiveBeing
 		setPos(newPos) ;
 	}
 	
-	private void startMove() { state = LiveBeingStates.moving ; stepCounter.start() ;}
+	private void startMove() { state = LiveBeingStates.moving ; stepCounter.restart() ;}
 
 	public void move(Pet pet)
 	{
@@ -701,7 +702,7 @@ public class Player extends LiveBeing
     	
 		if (!Util.chance(getFishChance)) { return ;}
 		
-		int fishType = Util.randomIntFromTo(6, 8) ;
+		int fishType = Util.randomInt(6, 8) ;
 		Item fish = Food.getAll()[fishType] ;
 		bag.add(fish, 1) ;
 		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.palette[0]}) ;
@@ -862,6 +863,26 @@ public class Player extends LiveBeing
 		}
 	}
 	
+	private void chooseDirection(String action)
+	{
+		if (action.equals(UtilS.arrowKeys().get(0)) | action.equals("W"))
+		{
+			setDir(Directions.up) ;
+		}
+		if (action.equals(UtilS.arrowKeys().get(1)) | action.equals("A"))
+		{
+			setDir(Directions.left) ;
+		}
+		if (action.equals(UtilS.arrowKeys().get(2)) | action.equals("S"))
+		{
+			setDir(Directions.down) ;
+		}
+		if (action.equals(UtilS.arrowKeys().get(3)) | action.equals("D"))
+		{
+			setDir(Directions.right) ;
+		}
+	}
+	
 	public void acts(Pet pet, Point mousePos)
 	{
 		if (currentAction == null) { return ;}
@@ -869,23 +890,7 @@ public class Player extends LiveBeing
 		// I like to move it, move it!
 		if (actionIsAMove())
 		{
-			if (currentAction.equals(UtilS.arrowKeys().get(0)) | currentAction.equals("W"))
-			{
-				setDir(Directions.up) ;
-			}
-			if (currentAction.equals(UtilS.arrowKeys().get(1)) | currentAction.equals("A"))
-			{
-				setDir(Directions.left) ;
-			}
-			if (currentAction.equals(UtilS.arrowKeys().get(2)) | currentAction.equals("S"))
-			{
-				setDir(Directions.down) ;
-			}
-			if (currentAction.equals(UtilS.arrowKeys().get(3)) | currentAction.equals("D"))
-			{
-				setDir(Directions.right) ;
-			}
-			
+			chooseDirection(currentAction) ;
 			if (UtilS.actionIsArrowKey(currentAction) | (!isFocusedOnWindow()))
 			{
 				startMove() ;

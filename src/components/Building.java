@@ -7,13 +7,13 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics.Scale;
+import graphics2.Draw;
 import main.Game;
 import main.TextCategories;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 
 public class Building
@@ -68,6 +68,10 @@ public class Building
 		
 	public void addStandardNPCs()
 	{
+
+		if (Game.getNPCTypes() == null) { System.out.println("Erro ao adicionar NPCs nas construções: tipos de NPC não existem") ; return ;}
+		if (Game.getNPCTypes().length <= 0) { System.out.println("Erro ao adicionar NPCs nas construções: não há nenhum tipo de NPC") ; return ;}
+		
 		npcs = new ArrayList<>() ;
 		switch (type.getName())
 		{

@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Set;
 
 import components.Collider;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
-import utilities.Scale;
+import graphics.Scale;
+import graphics2.Draw;
+import utilities.Util;
 import utilities.UtilS;
 
 public class MapElement
@@ -69,7 +69,7 @@ public class MapElement
 		{
 			case "Knight'sCityWall": return knightsCityWallImage ;
 			case "ForestTree": return treeImage ;
-			case "grass": return grassImages.stream().skip(Util.randomIntFromTo(0, grassImages.size() - 1)).findFirst().get() ;
+			case "grass": return grassImages.stream().skip(Util.randomInt(0, grassImages.size() - 1)).findFirst().get() ;
 			case "rock": return rockImage ;
 			case "treasureChest": return treasureChestsImage ;
 			default: return null;

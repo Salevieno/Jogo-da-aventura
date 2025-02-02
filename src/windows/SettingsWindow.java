@@ -7,14 +7,14 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Arrays;
 
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics2.Draw;
 import liveBeings.PlayerActions;
 import main.Battle;
 import main.Game;
 import main.TextCategories;
+import utilities.Util;
 import utilities.UtilS;
 
 public class SettingsWindow extends GameWindow

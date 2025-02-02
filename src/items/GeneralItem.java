@@ -8,16 +8,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import attributes.Attributes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics2.Draw;
 import liveBeings.AttackModifiers;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
 import maps.GroundTypes;
 import utilities.Elements;
+import utilities.Util;
 import utilities.UtilS;
 
 public class GeneralItem extends Item

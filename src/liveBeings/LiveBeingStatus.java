@@ -9,16 +9,16 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 
 import attributes.Attributes;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
 import utilities.Directions;
-import utilities.TimeCounter;
+import utilities.GameTimer;
 import utilities.UtilS;
 
 public class LiveBeingStatus
 {
 	
-	private TimeCounter counter ;
+	private GameTimer counter ;
 	private double intensity ;
 	private final Image image ;
 
@@ -35,12 +35,12 @@ public class LiveBeingStatus
 	
 	public LiveBeingStatus(Attributes att)
 	{
-		counter = new TimeCounter(0) ;
+		counter = new GameTimer(0) ;
 		intensity = 0.0 ;
 		this.image = images.get(att) ;
 	}
 
-	public TimeCounter getCounter() { return counter ;}
+	public GameTimer getCounter() { return counter ;}
 	public double getIntensity() { return intensity ;}
 	public boolean isActive() { return counter.isActive() ;}
 
@@ -53,7 +53,7 @@ public class LiveBeingStatus
 	
 	public void reset()
 	{
-		counter = new TimeCounter(counter.getDuration()) ;
+		counter = new GameTimer(counter.getDuration()) ;
 		intensity = 0.0 ;
 	}
 	

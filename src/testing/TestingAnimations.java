@@ -2,8 +2,8 @@ package testing;
 
 import java.awt.Point;
 
-import graphics.Animation;
-import graphics.AnimationTypes;
+import graphics2.Animation;
+import graphics2.AnimationTypes;
 import items.Item;
 import liveBeings.Pterodactile;
 import main.AtkResults;

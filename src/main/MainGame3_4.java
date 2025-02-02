@@ -10,8 +10,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame ;
 import javax.swing.Timer;
 
-import libUtil.Util;
 import utilities.GameStates;
+import utilities.Util;
 
 /**
  * made with love by Salevieno
@@ -26,15 +26,14 @@ public class MainGame3_4 extends JFrame implements ActionListener
 	private static Timer timer ;		// Main timer of the game
 	private static final Dimension windowSize = new Dimension(640, 480) ;
 	private static GameStates previousState ;
-//	private static final ImageIcon icon = new ImageIcon(".\\images\\gameIcon.png") ; // getClass().getResource("/some/package/favicon.png")
 	private static final Image icon = Util.loadImage(".\\images\\gameIcon.png") ;
 	private static final Game game = new Game() ;
 
 	private MainGame3_4()
     {
-		// initialize the UI		
-        setTitle("Jogo da aventura") ;
+		// initialize the UI
 	    setIconImage(icon) ;
+        setTitle("Jogo da aventura") ;
         setPreferredSize(windowSize) ;
         pack() ;
         Dimension actualWindowSize = getContentPane().getSize() ;
@@ -43,7 +42,7 @@ public class MainGame3_4 extends JFrame implements ActionListener
         setLocation(500, 200) ;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         setVisible(true) ;
-        timer = new Timer(10, this) ;			// timer of the game, first number = frame duration
+        timer = new Timer(0, this) ;			// timer of the game, first number = frame duration
 		timer.start() ;							// Game will start checking for keyboard events every "timer" miliseconds
 		previousState = GameStates.opening ;
         add(game) ;				// adding game panel on the JFrame

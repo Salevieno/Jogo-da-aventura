@@ -7,14 +7,14 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics.Scale;
+import graphics2.Draw;
 import liveBeings.CreatureType;
 import main.Game;
 import main.TextCategories;
-import utilities.Scale;
+import utilities.Util;
 
 public class BestiaryWindow extends GameWindow
 {

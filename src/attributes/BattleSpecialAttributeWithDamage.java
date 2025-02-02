@@ -2,7 +2,7 @@ package attributes;
 
 import org.json.simple.JSONObject;
 
-import libUtil.Util;
+import utilities.Util;
 
 public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
 {

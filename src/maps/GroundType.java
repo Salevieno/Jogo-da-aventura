@@ -3,8 +3,8 @@ package maps ;
 import java.awt.Dimension;
 import java.awt.Point ;
 
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
 import main.Game;
 
 public class GroundType

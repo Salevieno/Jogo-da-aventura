@@ -8,18 +8,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import graphics.Animation;
-import graphics.AnimationTypes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
+import graphics2.Animation;
+import graphics2.AnimationTypes;
+import graphics2.Draw;
 import items.Equip;
 import items.GeneralItem;
-import libUtil.Align;
-import libUtil.Util;
 import liveBeings.Player;
 import main.Game;
 import utilities.Elements;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 
 public class ElementalWindow extends GameWindow

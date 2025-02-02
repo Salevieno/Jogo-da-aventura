@@ -9,11 +9,11 @@ import java.awt.event.KeyEvent;
 
 import components.GameButton;
 import components.IconFunction;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
 import liveBeings.PlayerActions;
 import main.Game;
+import utilities.Util;
 import utilities.UtilS;
 
 public abstract class GameWindow

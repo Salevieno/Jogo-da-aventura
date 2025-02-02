@@ -5,17 +5,17 @@ import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics2.Draw;
 import main.Game;
-import utilities.TimeCounter;
+import utilities.GameTimer;
+import utilities.Util;
 import utilities.UtilS;
 
 public class Sky 
 {
-	public static TimeCounter dayCounter = new TimeCounter(600) ;
+	public static GameTimer dayCounter = new GameTimer(600) ;
 	private static SkyComponent[] clouds;
 	private static SkyComponent[] stars ;
 	private static Color color ;
@@ -63,13 +63,13 @@ public class Sky
 	
 	private Image randomCloudImage()
 	{
-		int cloudNumber = Util.randomIntFromTo(1, 3) ;
+		int cloudNumber = Util.randomInt(1, 3) ;
 		return cloudNumber == 1 ? cloudImage1 : (cloudNumber == 2 ? cloudImage2 : cloudImage3) ;
 	}
 	
 	private Image randomStarImage()
 	{
-		int starNumber = Util.randomIntFromTo(0, starImages.length - 1) ;
+		int starNumber = Util.randomInt(0, starImages.length - 1) ;
 		for (int i = 0; i <= starImages.length  - 1; i += 1)
 		{
 			if (i != starNumber) { continue ;}

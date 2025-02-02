@@ -4,17 +4,17 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 
-import graphics.Animation;
-import graphics.AnimationTypes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics.Scale;
+import graphics2.Animation;
+import graphics2.AnimationTypes;
+import graphics2.Draw;
 import liveBeings.Player;
 import main.Game;
 import utilities.LiveInput;
-import utilities.Scale;
-import utilities.TimeCounter;
+import utilities.GameTimer;
+import utilities.Util;
 import utilities.UtilS;
 
 public class BankWindow extends GameWindow
@@ -25,7 +25,7 @@ public class BankWindow extends GameWindow
 	private int investedAmount ;
 	private boolean hasInvestement ;
 	private String investmentRisk ;
-	private TimeCounter investmentCounter ;
+	private GameTimer investmentCounter ;
 	private LiveInput liveInput ;
 
 	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
@@ -41,14 +41,14 @@ public class BankWindow extends GameWindow
 		balance = 0 ;
 		investedAmount = 0 ;
 		hasInvestement = false ;
-		investmentCounter = new TimeCounter(50) ;
+		investmentCounter = new GameTimer(50) ;
 		liveInput = new LiveInput() ;
 	}
 
 	
 	public int getAmountTyped() { return amountTyped ;}
 	public int getBalance() { return balance;}
-	public TimeCounter getInvestmentCounter() { return investmentCounter ;}
+	public GameTimer getInvestmentCounter() { return investmentCounter ;}
 	public void setMode(String mode) { this.mode = mode ;}
 	
 	private boolean isReadingInput() { return mode.equals("deposit") | mode.equals("withdraw") | mode.equals("investment low risk") | mode.equals("investment hight risk") ;}

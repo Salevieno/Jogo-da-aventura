@@ -6,14 +6,14 @@ import java.util.List;
 
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
-import graphics.Animation;
-import graphics.AnimationTypes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics2.Animation;
+import graphics2.AnimationTypes;
+import graphics2.Draw;
 import liveBeings.Pet;
 import main.Game;
+import utilities.Util;
 import utilities.UtilS;
 
 public class PetItem extends Item

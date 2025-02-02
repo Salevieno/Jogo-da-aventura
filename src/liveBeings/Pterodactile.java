@@ -2,8 +2,8 @@ package liveBeings;
 
 import java.awt.Image;
 
-import graphics.Animation;
-import graphics.AnimationTypes;
+import graphics2.Animation;
+import graphics2.AnimationTypes;
 import main.Game;
 import main.TextCategories;
 import utilities.UtilS;

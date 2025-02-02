@@ -12,17 +12,18 @@ import javax.sound.sampled.Clip;
 
 import components.GameButton;
 import components.IconFunction;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import graphics.Gif;
+import graphics.Scale;
+import graphics2.Draw;
+import graphics2.Gif;
 import items.Equip;
-import libUtil.Align;
-import libUtil.Util;
+import liveBeings.Pet;
 import liveBeings.Player;
 import screen.Screen;
 import screen.SideBar;
 import utilities.LiveInput;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 
 public abstract class Opening
@@ -56,6 +57,8 @@ public abstract class Opening
 	private static final Image LoadingSlotSelected ;
 	private static final Clip thunderSound ;
 	private static final Clip introMusic ;
+	
+	private static final Image petImage0 = Util.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(0) + ".png") ;
 	
 	static
 	{
@@ -313,34 +316,36 @@ public abstract class Opening
 	
 	public static void displayLoadingScreen(String action, Point mousePos, DrawPrimitives DP)
 	{
-		Color textColor = Game.palette[0] ;
-		Point moveInfoTopLeft = new Point(40, 60) ;
-		DP.drawText(Util.Translate(moveInfoTopLeft, 100, 0), Align.center, 0, "Principais ações", font, textColor) ;
+//		Color textColor = Game.palette[0] ;
+//		Point moveInfoTopLeft = new Point(40, 60) ;
+//		DP.drawText(Util.Translate(moveInfoTopLeft, 100, 0), Align.center, 0, "Principais ações", font, textColor) ;
+//		
+//		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().movingRightGif, SideBar.getIconImages()[2], Game.getPlayer().getMovingAni().idleGif, SideBar.getIconImages()[1]} ;
+//		String[] moveInfoText = new String[] {"Moving: W A S D ou setas", "Mochila: B", "Janela do jogador: C", "Quests: Q"} ;
+//		for (int i = 0 ; i <= moveInfoImages.length - 1; i += 1)
+//		{
+//			Point imageCenterLeft = Util.Translate(moveInfoTopLeft, 0, 100 + 50 * i) ;
+//			DP.drawImage(moveInfoImages[i], imageCenterLeft, Align.center);
+//			DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, moveInfoText[i], smallFont, textColor) ;
+//		}
+//		
+//		
+//		Point atkInfoTopLeft = new Point(380, 60) ;
+//		DP.drawText(Util.Translate(atkInfoTopLeft, 120, 0), Align.center, 0, "Ações de luta", font, textColor) ;
+//		
+//		Image[] atkInfoImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Player.MagicBlissGif} ;
+//		String[] atkInfoText = new String[] {"Attack: Y", "Defense: U", "Spells: 0, 1...F11, F12"} ;
+//		for (int i = 0 ; i <= atkInfoImages.length - 1; i += 1)
+//		{
+//			Point imageCenterLeft = Util.Translate(atkInfoTopLeft, 0, 100 + 50 * i) ;
+//			DP.drawImage(atkInfoImages[i], imageCenterLeft, Align.center);
+//			DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, atkInfoText[i], smallFont, textColor) ;
+//		}
+//		
+//		DP.drawImage(LoadingEnfeite, new Point(0, 0), Align.topLeft) ;
 		
-		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().movingRightGif, SideBar.getIconImages()[2], Game.getPlayer().getMovingAni().idleGif, SideBar.getIconImages()[1]} ;
-		String[] moveInfoText = new String[] {"Moving: W A S D ou setas", "Mochila: B", "Janela do jogador: C", "Quests: Q"} ;
-		for (int i = 0 ; i <= moveInfoImages.length - 1; i += 1)
-		{
-			Point imageCenterLeft = Util.Translate(moveInfoTopLeft, 0, 100 + 50 * i) ;
-			DP.drawImage(moveInfoImages[i], imageCenterLeft, Align.center);
-			DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, moveInfoText[i], smallFont, textColor) ;
-		}
-		
-		
-		Point atkInfoTopLeft = new Point(380, 60) ;
-		DP.drawText(Util.Translate(atkInfoTopLeft, 120, 0), Align.center, 0, "Ações de luta", font, textColor) ;
-		
-		Image[] atkInfoImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Player.MagicBlissGif} ;
-		String[] atkInfoText = new String[] {"Attack: Y", "Defense: U", "Spells: 0, 1...F11, F12"} ;
-		for (int i = 0 ; i <= atkInfoImages.length - 1; i += 1)
-		{
-			Point imageCenterLeft = Util.Translate(atkInfoTopLeft, 0, 100 + 50 * i) ;
-			DP.drawImage(atkInfoImages[i], imageCenterLeft, Align.center);
-			DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, atkInfoText[i], smallFont, textColor) ;
-		}
-		
-		DP.drawImage(LoadingEnfeite, new Point(0, 0), Align.topLeft) ;
-		
+		DP.drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().sizeWithSidebar(), Game.palette[0], null) ;
+		DP.drawImage(petImage0, Game.getScreen().getCenter(), Align.center) ;
 		
 		if (!loadingIsOver())
 		{

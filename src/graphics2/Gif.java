@@ -1,4 +1,4 @@
-package graphics;
+package graphics2;
 
 import java.awt.Dimension;
 import java.awt.Image;
@@ -6,10 +6,10 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import libUtil.Align;
-import libUtil.Util;
+import graphics.Align;
 import main.MainGame3_4;
-import utilities.TimeCounter;
+import utilities.GameTimer;
+import utilities.Util;
 
 public class Gif
 {
@@ -17,7 +17,7 @@ public class Gif
 	Point pos ;
 	Align align ;
 	boolean hasPlayed ;
-	private TimeCounter counter ;
+	private GameTimer counter ;
 	private boolean loop ;
 	private boolean timeStopper ;
 	
@@ -27,14 +27,14 @@ public class Gif
 	{
 		this.image = image;
 		hasPlayed = false ;
-		counter = new TimeCounter(duration) ;
+		counter = new GameTimer(duration) ;
 		this.loop = loop;
 		this.timeStopper = timeStopper;
 	}
 	
 	public Image getImage() { return image ;}	
 	public double getDuration() { return counter.getDuration() ;}
-	public TimeCounter getCounter() { return counter ;}
+	public GameTimer getCounter() { return counter ;}
 	public boolean hasPlayed() { return hasPlayed ;}
 	
 	public boolean isLoop() { return loop ;}

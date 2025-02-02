@@ -4,10 +4,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics2.Draw;
 import main.Game;
 
 public class LiveInput

@@ -15,11 +15,11 @@ import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
+import graphics2.Draw;
 import items.Item;
-import libUtil.Align;
-import libUtil.Util;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
@@ -31,8 +31,8 @@ import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.GameStates;
-import utilities.Scale;
-import utilities.TimeCounter;
+import utilities.GameTimer;
+import utilities.Util;
 
 public class Creature extends LiveBeing
 {
@@ -56,11 +56,11 @@ public class Creature extends LiveBeing
 		this.range = CT.range;
 		this.step = CT.step;
 		this.elem = Arrays.copyOf(CT.elem, CT.elem.length);
-		mpCounter = new TimeCounter(CT.mpDuration / 1.0);
-		satiationCounter = new TimeCounter(CT.satiationDuration);
-		actionCounter = new TimeCounter(CT.numberSteps) ;
-		battleActionCounter = new TimeCounter(CT.battleActionDuration / 1.0) ;
-		this.stepCounter = new TimeCounter(CT.numberSteps) ;
+		mpCounter = new GameTimer(CT.mpDuration / 1.0);
+		satiationCounter = new GameTimer(CT.satiationDuration);
+		actionCounter = new GameTimer(CT.numberSteps) ;
+		battleActionCounter = new GameTimer(CT.battleActionDuration / 1.0) ;
+		this.stepCounter = new GameTimer(CT.numberSteps) ;
 		combo = new ArrayList<>() ;
 		
 		dir = Directions.up ;
@@ -132,7 +132,7 @@ public class Creature extends LiveBeing
 	public Item getRandomElemFromBag()
 	{
 		int i = 0 ;
-		int itemID = Util.randomIntFromTo(0, items.size() - 1) ;
+		int itemID = Util.randomInt(0, items.size() - 1) ;
 		for (Item item : items)
 		{
 			if (i == itemID)
@@ -230,13 +230,13 @@ public class Creature extends LiveBeing
 		if (Game.getState().equals(GameStates.simulation))
 		{
 			int qtdAvailableMoves = canUseSpell(spells.get(0)) ? 2 : 1 ;
-			int move = Util.randomIntFromTo(0, qtdAvailableMoves) ;
+			int move = Util.randomInt(0, qtdAvailableMoves) ;
 //			System.out.println(move);
 			switch (move)
 			{
 				case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
 				case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
-				case 2:	setCurrentAction(String.valueOf(Util.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
+				case 2:	setCurrentAction(String.valueOf(Util.randomInt(0, spells.size() - 1))) ; return ;	// spell
 			}
 			return ;
 		}
@@ -248,7 +248,7 @@ public class Creature extends LiveBeing
 		{
 			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
 			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
-			case 2:	setCurrentAction(String.valueOf(Util.randomIntFromTo(0, spells.size() - 1))) ; return ;	// spell
+			case 2:	setCurrentAction(String.valueOf(Util.randomInt(0, spells.size() - 1))) ; return ;	// spell
 		}
 
 	}

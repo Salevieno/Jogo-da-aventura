@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import main.Game;
+import main.Languages;
+import main.TextCategories;
+import utilities.Util;
+import utilities.UtilS;
+
 public class NPCType
 {
 	private String name ;
@@ -16,6 +22,8 @@ public class NPCType
 	private String[] speech ;
 	private List<List<String>> options ;
 	private List<List<Integer>> destination ;
+	
+	private static final String path = Game.dadosPath + "npcs\\" ;
 	
 	public NPCType(String name, NPCJobs job, String info, Color color, Image image, String[] speech, List<List<String>> options)
 	{
@@ -134,11 +142,56 @@ public class NPCType
 		}
 	}
 
+	public static NPCType[] load(Languages language)
+	{
+		List<String[]> input = Util.ReadcsvFile(path + "NPCTypes.csv") ;
+		List<String[]> text = Util.ReadcsvFile(path + "NPCTypes-" + language.toString() + ".csv") ;
+		
+		if (input.isEmpty()) { System.out.println("Erro ao carregar NPC types") ; return null;}
+		
+		NPCType[] npcType = new NPCType[input.size()] ;
+		for (int i = 0 ; i <= npcType.length - 1 ; i += 1)
+		{
+			String name = text.get(i)[1] ;
+			NPCJobs job = NPCJobs.valueOf(input.get(i)[0]) ;
+			String info = text.get(i)[2] ;
+			Color color = job.getColor() ;
+			String imageExtension = !job.equals(NPCJobs.master) ? ".png" : ".gif" ;
+			Image image = UtilS.loadImage("\\NPCs\\" + "NPC_" + job.toString() + imageExtension) ;
+			String[] speech = null ;
+			List<List<String>> options = new ArrayList<>() ;
+			TextCategories speechName = TextCategories.catFromBRName("npcs" + name + "Falas") ;
+
+			if (Game.allText.get(speechName) != null)
+			{
+				speech = Game.allText.get(speechName) ;
+
+				for (int o = 0 ; o <= speech.length - 1 ; o += 1)
+				{
+					TextCategories optionName = TextCategories.catFromBRName("npcs" + name + "Opcoes" + o) ;
+
+					if (Game.allText.get(optionName) != null)
+					{
+						List<String> option = Arrays.asList(Game.allText.get(optionName)) ;
+						options.add(option) ;
+					}
+				}
+			}
+
+			npcType[i] = new NPCType(name, job, info, color, image, speech, options) ;
+		}
+
+		return npcType ;
+	}
+	
 	@Override
 	public String toString()
 	{
-		return "NPCType [name=" + name + ", job=" + job + ", info=" + info + ", color=" + color + ", image=" + image
-				+ ", speech=" + speech + ", options=" + options + "]";
+		return "\nNPCType" +
+				"\n name: " + name +
+				"\n job: " + job +
+				"\n info: " + info +
+				"\n" ;
 	}
 	
 }

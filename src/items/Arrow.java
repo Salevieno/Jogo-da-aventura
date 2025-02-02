@@ -5,13 +5,13 @@ import java.awt.Point;
 import java.util.List;
 
 import attributes.BattleAttributes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics2.Draw;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
+import utilities.Util;
 import utilities.UtilS;
 
 public class Arrow extends Item

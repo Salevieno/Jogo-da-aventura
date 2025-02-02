@@ -9,6 +9,8 @@ import attributes.PersonalAttributes;
 import items.Item;
 import liveBeings.CreatureType;
 import main.Game;
+import main.Languages;
+import utilities.Util;
 import windows.BagWindow;
 
 public class Quest
@@ -26,7 +28,8 @@ public class Quest
 	private int expReward ;
 	private Map<Item, Integer> rewardItems ;
 	private String description ;
-	
+
+	protected static final String dadosPath = Game.dadosPath + "quests\\" ;
 	public static final List<Quest> all ;
 	
 	static
@@ -58,22 +61,55 @@ public class Quest
 		all.add(this);
 	}
 
-	public int getID() {return id ;}
-	public String getName() {return name ;}
-	public String getType() {return type ;}
-	public Map<CreatureType, Integer> getCounter() {return reqCreaturesCounter ;}
-	public Map<CreatureType, Integer> getReqCreatures() {return reqCreatureTypes ;}
-	public Map<Item, Integer> getReqItems() {return reqItems ;}
-	public int getGoldReward() {return goldReward ;}
-	public int getExpReward() {return expReward ;}
-	public String getDescription() {return description ;}
-	public void setID(int id) {this.id = id ;}
-	public void setName(String N) {name = N ;}
-	public void setType(String T) {type = T ;}
-	public void setGoldReward(int GR) {goldReward = GR ;}
-	public void setExpReward(int ER) {expReward = ER ;}
-	public Map<Item, Integer> getRewardItems() {return rewardItems ;}
-	public void setDescription(String D) {description = D ;}
+
+	public static Quest[] load(Languages language, int playerJob, List<CreatureType> creatureTypes, List<Item> allItems)
+	{
+		List<String[]> inputs = Util.ReadcsvFile(dadosPath + "Quests.csv") ;
+		Quest[] quests = new Quest[inputs.size()] ;
+		for (int i = 0 ; i <= quests.length - 1 ; i += 1)
+		{
+			String[] input = inputs.get(i) ;
+			int id = Integer.parseInt(input[0]) ;
+			String type = input[1] ;
+			Map<CreatureType, Integer> reqCreatureTypes = new HashMap<>() ;
+			Map<Item, Integer> reqItems = new HashMap<>() ;
+
+			for (int j = 2 ; j <= 8 - 1 ; j += 2)
+			{
+				if (Integer.parseInt(input[j]) <= -1) { continue ;}
+				
+				reqCreatureTypes.put(creatureTypes.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
+			}
+
+			for (int j = 8 ; j <= 18 - 1 ; j += 2)
+			{
+				if (Integer.parseInt(input[j]) <= -1) { continue ;}
+				
+				reqItems.put(allItems.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
+			}
+
+			int goldReward = Integer.parseInt(input[18]) ;
+			int expReward = Integer.parseInt(input[19]) ;
+			boolean isRepeatable = 0 <= expReward ;
+			Map<Item, Integer> rewardItems = new HashMap<>() ;
+
+			for (int j = 20 ; j <= 28 - 1 ; j += 2)
+			{
+				if (Integer.parseInt(input[j + 1]) <= -1) { continue ;}
+				
+				rewardItems.put(allItems.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
+			}
+
+			String name = input[30 + language.ordinal()] ;
+			String description = input[32 + language.ordinal()] ;
+
+			quests[i] = new Quest(id, type, isRepeatable, reqCreatureTypes, reqItems, goldReward, expReward,
+					rewardItems, name, description) ;
+		}
+
+		return quests ;
+	}
+	
 	
 	public boolean isComplete() { return isComplete ;}
 	public boolean isRepeatable() { return isRepeatable ;}
@@ -146,6 +182,23 @@ public class Quest
 		
 	}
 
+	public int getID() {return id ;}
+	public String getName() {return name ;}
+	public String getType() {return type ;}
+	public Map<CreatureType, Integer> getCounter() {return reqCreaturesCounter ;}
+	public Map<CreatureType, Integer> getReqCreatures() {return reqCreatureTypes ;}
+	public Map<Item, Integer> getReqItems() {return reqItems ;}
+	public int getGoldReward() {return goldReward ;}
+	public int getExpReward() {return expReward ;}
+	public String getDescription() {return description ;}
+	public void setID(int id) {this.id = id ;}
+	public void setName(String N) {name = N ;}
+	public void setType(String T) {type = T ;}
+	public void setGoldReward(int GR) {goldReward = GR ;}
+	public void setExpReward(int ER) {expReward = ER ;}
+	public Map<Item, Integer> getRewardItems() {return rewardItems ;}
+	public void setDescription(String D) {description = D ;}
+	
 	@Override
 	public String toString()
 	{

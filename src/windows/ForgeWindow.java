@@ -8,20 +8,20 @@ import java.util.Arrays;
 import java.util.List;
 
 import components.GameButton;
-import graphics.Animation;
-import graphics.AnimationTypes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
+import graphics2.Animation;
+import graphics2.AnimationTypes;
+import graphics2.Draw;
 import items.Equip;
 import items.Forge;
 import items.GeneralItem;
 import items.Item;
-import libUtil.Align;
-import libUtil.Util;
 import liveBeings.Player;
 import main.Game;
 import main.TextCategories;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 
 public class ForgeWindow extends GameWindow

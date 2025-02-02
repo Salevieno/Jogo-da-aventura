@@ -24,6 +24,8 @@ public class Screen
 	public void setBorders(int[] B) {borders = B ;}
 	public void calcCenter() {center = new Point(size.width / 2, size.height / 2) ;}
 	public void setMapCenter() {mapCenter = new Point(size.width / 2, (size.height + borders[1]) / 2) ;}
+
+	public Dimension sizeWithSidebar() {return new Dimension(size.width + SideBar.size.width, size.height + SideBar.size.height) ;}
 	
 	public boolean posIsWithinBorders(Point pos)
 	{

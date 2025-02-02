@@ -4,11 +4,11 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics2.Draw;
 import main.Game;
+import utilities.Util;
 import utilities.UtilS;
 
 public class Forge extends Item

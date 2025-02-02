@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import components.SpellTypes;
-import libUtil.Util;
 import main.Game;
 import main.Languages;
 import utilities.Elements;
-import utilities.TimeCounter;
+import utilities.GameTimer;
+import utilities.Util;
 import utilities.UtilS;
 
 public class Spell 
@@ -28,8 +28,8 @@ public class Spell
 	private Buff deBuffs;
 	private AttackModifiers atkMod ;
 	private boolean isActive ;
-	private TimeCounter cooldownCounter ;
-	private TimeCounter effectCounter ;
+	private GameTimer cooldownCounter ;
+	private GameTimer effectCounter ;
 	private Elements elem ;
 	private String[] info ;	// effect and description
 	
@@ -54,8 +54,8 @@ public class Spell
 		this.deBuffs = deBuffs;
 		this.atkMod = new AttackModifiers(atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod) ;
 		isActive = false;
-		cooldownCounter = new TimeCounter(cooldown / 80.0) ;
-		effectCounter = new TimeCounter(duration / 1.0) ;
+		cooldownCounter = new GameTimer(cooldown / 80.0) ;
+		effectCounter = new GameTimer(duration / 1.0) ;
 		this.elem = elem;
 		this.info = info;
 		all.add(this);
@@ -75,8 +75,8 @@ public class Spell
 		this.deBuffs = spell.deBuffs;
 		this.atkMod = new AttackModifiers(spell.atkMod.getAtkMod(), spell.atkMod.getDefMod(), spell.atkMod.getDexMod(), spell.atkMod.getAgiMod(), spell.atkMod.getAtkCritMod(), spell.atkMod.getDefCritMod(), spell.atkMod.getStunMod(), spell.atkMod.getBlockMod(), spell.atkMod.getBloodMod(), spell.atkMod.getPoisonMod(), spell.atkMod.getSilenceMod()) ;
 		isActive = false;
-		cooldownCounter = new TimeCounter(spell.cooldownCounter.getDuration() / 80.0) ;
-		effectCounter = new TimeCounter(spell.effectCounter.getDuration() / 1.0) ;
+		cooldownCounter = new GameTimer(spell.cooldownCounter.getDuration() / 80.0) ;
+		effectCounter = new GameTimer(spell.effectCounter.getDuration() / 1.0) ;
 		this.elem = spell.elem;
 		this.info = spell.info;
 	}
@@ -103,8 +103,8 @@ public class Spell
 	public double[] getPoisonMod() {return atkMod.getPoisonMod() ;}
 	public double[] getSilenceMod() {return atkMod.getSilenceMod() ;}
 	public Elements getElem() {return elem ;}
-	public TimeCounter getCooldownCounter() {return cooldownCounter ;}
-	public TimeCounter getDurationCounter() {return effectCounter ;}
+	public GameTimer getCooldownCounter() {return cooldownCounter ;}
+	public GameTimer getDurationCounter() {return effectCounter ;}
 	public String[] getInfo() {return info ;}
 
 	public boolean isReady() { return cooldownCounter.finished() ;}

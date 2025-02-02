@@ -4,13 +4,13 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.util.List;
 
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics.Scale;
 import liveBeings.Creature;
 import liveBeings.Pet;
 import liveBeings.Player;
-import utilities.Scale;
+import utilities.Util;
 
 public class Projectiles
 {

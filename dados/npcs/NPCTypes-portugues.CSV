@@ -1,0 +1,39 @@
+﻿Job,Nome,Info
+doctor,Doutor,Cura a sua vida.
+equipsSeller,Vendedor de equipamentos,Vende equipamentos.
+itemsSeller,Vendedor de itens,Vende itens.
+smuggleSeller,Contrabandista,Vende itens ilegalmente.
+banker,Banqueiro,Guarda seu dinheiro por uma pequena taxa.
+alchemist,Alquimista,Fabrica poções.
+woodcrafter,Madeireiro,Fabrica itens de pet.
+forger,Forjador,Forja sua arma (há o risco de quebrá-la).
+crafter,Fabricante,Fabrica itens.
+elemental,Elemental,Muda o elemento dos equips.
+saver,Salvador,Salva seu jogo.
+master,Mestre,Te ensina novas habilidades e te faz evoluir.
+questExp,Quest exp,Te dá uma quest.
+questItem,Quest item,Te dá uma quest.
+citizen0,Cidadão 0,Morador da cidade
+citizen1,Cidadão 1,Morador da cidade
+citizen2,Cidadão 2,Morador da cidade
+citizen3,Cidadão 3,Morador da cidade
+citizen4,Cidadão 4,Morador da cidade
+citizen5,Cidadão 5,Morador da cidade
+citizen6,Cidadão 6,Morador da cidade
+citizen7,Cidadão 7,Morador da cidade
+citizen8,Cidadão 8,Morador da cidade
+citizen9,Cidadão 9,Morador da cidade
+citizen10,Cidadão 10,Morador da cidade
+citizen11,Cidadão 11,Morador da cidade
+citizen12,Cidadão 12,Morador da cidade
+citizen13,Cidadão 13,Morador da cidade
+citizen14,Cidadão 14,Morador da cidade
+citizen15,Cidadão 15,Morador da cidade
+citizen16,Cidadão 16,Morador da cidade
+citizen17,Cidadão 17,Morador da cidade
+citizen18,Cidadão 18,Morador da cidade
+citizen19,Cidadão 19,Morador da cidade
+caveEntry,Entrada da caverna,Entrada da caverna.
+caveExit,Saída da caverna,Saída da caverna.
+sailorToIsland,Navegador 1,Te leva para a ilha.
+sailorToForest,Navegador 2,Te traz para a floresta.

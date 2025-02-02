@@ -8,19 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 import components.GameButton;
-import graphics.Animation;
-import graphics.AnimationTypes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
+import graphics2.Animation;
+import graphics2.AnimationTypes;
+import graphics2.Draw;
 import items.Arrow;
 import items.GeneralItem;
 import items.Item;
 import items.Recipe;
-import libUtil.Align;
-import libUtil.Util;
 import liveBeings.Player;
 import main.Game;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 
 public class CraftWindow extends GameWindow

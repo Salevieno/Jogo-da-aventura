@@ -7,16 +7,16 @@ import java.awt.Image;
 import java.awt.Point;
 
 import attributes.BasicBattleAttribute;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
+import graphics2.Draw;
 import items.Equip;
-import libUtil.Align;
-import libUtil.Util;
 import liveBeings.Pet;
 import main.Game;
 import main.TextCategories;
 import utilities.Elements;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 
 public class PetAttributesWindow extends AttributesWindow

@@ -1,4 +1,4 @@
-package graphics ;
+package graphics2 ;
 
 import java.awt.Color;
 import java.awt.Image;
@@ -7,17 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import components.AnimationDisplayFunction;
+import graphics.DrawPrimitives;
 import items.Item;
-import libUtil.Util;
 import liveBeings.Player;
 import main.AtkResults;
 import utilities.Directions;
-import utilities.TimeCounter;
+import utilities.GameTimer;
+import utilities.Util;
 import utilities.UtilS;
 
 public class Animation 
 {
-	private TimeCounter counter ;
+	private GameTimer counter ;
 	private Object[] vars ;
 	private AnimationDisplayFunction displayFunction ;
 	
@@ -29,13 +30,13 @@ public class Animation
 
 	private Animation(AnimationTypes type)
 	{
-		this.counter = new TimeCounter(type.getDuration()) ;
+		this.counter = new GameTimer(type.getDuration()) ;
 		this.vars = null ;
 		this.displayFunction = displayFunctionFromType(type.ordinal()) ;
 	}
 	
 	public static List<Animation> getAll() { return all ;}
-	public TimeCounter getCounter() { return counter ;}
+	public GameTimer getCounter() { return counter ;}
 	
 	public static void start(AnimationTypes type, Object[] vars)
 	{

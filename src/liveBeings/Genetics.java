@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import libUtil.Util;
+import utilities.Util;
 
 public class Genetics
 {
@@ -152,8 +152,8 @@ public class Genetics
 	
 	public void breed(List<List<Double>> bestGenes, int totalParentFitness)
 	{
-		int i1 = Util.randomIntFromTo(0, bestGenes.size() - 1 ) ;
-		int i2 = Util.randomIntFromTo(0, bestGenes.size() - 1 ) ;
+		int i1 = Util.randomInt(0, bestGenes.size() - 1 ) ;
+		int i2 = Util.randomInt(0, bestGenes.size() - 1 ) ;
 
 		double mutationChance = 0.2 * (1 - totalParentFitness / (6 * 2000)) ;
 		
@@ -168,8 +168,8 @@ public class Genetics
 	
 	public void breed2(List<Genetics> bestGenes, int totalParentFitness)
 	{
-		int i1 = Util.randomIntFromTo(0, bestGenes.size() - 1 ) ;
-		int i2 = Util.randomIntFromTo(0, bestGenes.size() - 1 ) ;
+		int i1 = Util.randomInt(0, bestGenes.size() - 1 ) ;
+		int i2 = Util.randomInt(0, bestGenes.size() - 1 ) ;
 		
 		double mutationChance = 0.2 * (1 - totalParentFitness / (6 * 2000)) ;
 		

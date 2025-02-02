@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import components.Quest;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
+import graphics2.Draw;
 import items.Item;
-import libUtil.Align;
-import libUtil.Util;
 import liveBeings.CreatureType;
 import main.Game;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 
 public class QuestWindow extends GameWindow

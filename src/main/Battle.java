@@ -10,7 +10,6 @@ import javax.sound.sampled.Clip;
 
 import attributes.Attributes;
 import graphics.DrawPrimitives;
-import libUtil.Util;
 import liveBeings.AttackModifiers;
 import liveBeings.Creature;
 import liveBeings.LiveBeing;
@@ -22,6 +21,7 @@ import simulations.EvolutionSimulation;
 import utilities.AtkEffects;
 import utilities.Elements;
 import utilities.GameStates;
+import utilities.Util;
 
 public abstract class Battle 
 {
@@ -398,7 +398,15 @@ public abstract class Battle
 		
 		if (!attacker.isAlive()) { return ;}
 		
-		attacker.drawTimeBar("Left", Game.palette[13], DP) ;
+//		attacker.drawTimeBar("Left", Game.palette[13], DP) ;
+		if (attacker instanceof Player)
+		{			
+			attacker.drawTimeBar2(DP) ;
+		}
+		else
+		{
+			attacker.drawTimeBar("Left", Game.palette[13], DP) ;
+		}
 
 //		playAtkAnimations(attacker, receiver.center(), DP) ;
 		if (attacker.isDefending())

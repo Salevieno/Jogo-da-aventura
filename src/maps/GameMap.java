@@ -14,20 +14,22 @@ import java.util.Map;
 import javax.sound.sampled.Clip;
 
 import components.Building;
+import components.BuildingType;
 import components.Collider;
+import components.NPCType;
 import components.NPCs;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
 import items.Fab;
 import items.GeneralItem;
 import items.Item;
-import libUtil.Align;
-import libUtil.Util;
 import main.Game;
 import main.Music;
 import main.TextCategories;
 import screen.Sky;
 import utilities.Elements;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 
 public class GameMap 
@@ -49,6 +51,8 @@ public class GameMap
 	
 	protected static final Image beachGif ;
 	protected static final Image infoWindow ;
+	protected static final String dadosPath = Game.dadosPath + "gameMaps\\" ;
+	
 	public static final Map<Item, Double> allDiggingItems ;
 	public static final Clip musicCities ;
 	public static final Clip musicForest ;
@@ -119,16 +123,35 @@ public class GameMap
 		groundTypes = new ArrayList<>() ;
 	}
 
-	public String getName() {return name ;}
-	public Continents getContinent() {return continent ;}
-	public Image getimage() {return image ;}
-	public Clip getMusic() { return music ;}
-	public List<GroundType> getgroundTypes() {return groundTypes ;}
-	public int[] getConnections() {return connections ;}	
-	public List<MapElement> getMapElem() {return mapElems ;}
-	public List<NPCs> getNPCs() {return npcs ;}
-	public List<Building> getBuildings() {return buildings ;}
-	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
+
+	public static GameMap[] assemble(CityMap[] cityMaps, FieldMap[] fieldMaps, SpecialMap[] specialMaps)
+	{
+
+		GameMap[] allMaps = new GameMap[cityMaps.length + fieldMaps.length + specialMaps.length] ;
+		for (int i = 0 ; i <= cityMaps.length - 1 ; i += 1)
+		{
+			allMaps[i] = cityMaps[i] ;
+		}
+		for (int i = cityMaps.length ; i <= cityMaps.length + 34 - 1 ; i += 1)
+		{
+			allMaps[i] = fieldMaps[i - cityMaps.length] ;
+		}
+		allMaps[39] = specialMaps[0] ;
+		for (int i = 40 ; i <= 60 - 1 ; i += 1)
+		{
+			allMaps[i] = fieldMaps[i - cityMaps.length - 1] ;
+		}
+		allMaps[60] = specialMaps[1] ;
+		for (int i = 61 ; i <= cityMaps.length + fieldMaps.length + specialMaps.length - 1 ; i += 1)
+		{
+			allMaps[i] = fieldMaps[i - cityMaps.length - 2] ;
+		}
+//		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
+//		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
+//		System.arraycopy(specialMaps, 0, allMaps, cityMaps.length + fieldMaps.length, specialMaps.length) ;
+		return allMaps ;
+
+	}
 	
 	public void addGroundType (GroundType newGroundType) { groundTypes.add(newGroundType) ;}
 	public void removeMapElem (MapElement mapElem) { mapElems.remove(mapElem) ;}
@@ -568,6 +591,19 @@ public class GameMap
  		}
  	}
 	
+
+	public String getName() {return name ;}
+	public Continents getContinent() {return continent ;}
+	public Image getimage() {return image ;}
+	public Clip getMusic() { return music ;}
+	public List<GroundType> getgroundTypes() {return groundTypes ;}
+	public int[] getConnections() {return connections ;}	
+	public List<MapElement> getMapElem() {return mapElems ;}
+	public List<NPCs> getNPCs() {return npcs ;}
+	public List<Building> getBuildings() {return buildings ;}
+	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
+	
+ 	
 	@Override
 	public String toString()
 	{

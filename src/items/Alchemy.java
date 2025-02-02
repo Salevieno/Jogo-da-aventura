@@ -5,12 +5,12 @@ import java.awt.Point;
 import java.util.List;
 
 import attributes.PersonalAttributes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics2.Draw;
 import liveBeings.LiveBeing;
 import main.Game;
+import utilities.Util;
 import utilities.UtilS;
 
 public class Alchemy extends Item

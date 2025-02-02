@@ -1,0 +1,39 @@
+﻿Job,Name,Info
+doctor,Doctor,Heals your life.
+equipsSeller,Equips Seller,Sells equipment.
+itemsSeller,Items Seller,Sells items.
+smuggleSeller,Smuggle Seller,Sells items illegally.
+banker,Banker,Keeps your money safe for a small fee.
+alchemist,Alchemist,Crafts potions.
+woodcrafter,Woodcrafter,Crafts pet items.
+forger,Forger,Forges your weapon (there is a risk of breaking it).
+crafter,Crafter,Crafts items.
+elemental,Elemental,Changes the element of equips.
+saver,Saver,Saves your game.
+master,Master,Teaches you new skills and makes you evolve.
+questExp,Quest exp,Gives you a quest.
+questItem,Quest item,Gives you a quest.
+citizen0,Citizen 0,A citizen
+citizen1,Citizen 1,A citizen
+citizen2,Citizen 2,A citizen
+citizen3,Citizen 3,A citizen
+citizen4,Citizen 4,A citizen
+citizen5,Citizen 5,A citizen
+citizen6,Citizen 6,A citizen
+citizen7,Citizen 7,A citizen
+citizen8,Citizen 8,A citizen
+citizen9,Citizen 9,A citizen
+citizen10,Citizen 10,A citizen
+citizen11,Citizen 11,A citizen
+citizen12,Citizen 12,A citizen
+citizen13,Citizen 13,A citizen
+citizen14,Citizen 14,A citizen
+citizen15,Citizen 15,A citizen
+citizen16,Citizen 16,A citizen
+citizen17,Citizen 17,A citizen
+citizen18,Citizen 18,A citizen
+citizen19,Citizen 19,A citizen
+caveEntry,Cave entrance,Cave entrance.
+caveExit,Cave exit,Cave exit.
+sailorToIsland,Sailor 1,Takes you to the island.
+sailorToForest,Sailor 2,Brings you to the forest.

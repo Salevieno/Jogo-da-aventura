@@ -24,12 +24,12 @@ import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import components.GameButton;
 import components.IconFunction;
-import graphics.Animation;
-import graphics.AnimationTypes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics.Scale;
+import graphics2.Animation;
+import graphics2.AnimationTypes;
+import graphics2.Draw;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
 import liveBeings.Genetics;
@@ -42,8 +42,8 @@ import main.Battle;
 import main.Game;
 import utilities.AtkEffects;
 import utilities.Directions;
-import utilities.Scale;
-import utilities.TimeCounter;
+import utilities.GameTimer;
+import utilities.Util;
 import utilities.UtilS;
 import windows.PlayerAttributesWindow;
 
@@ -330,11 +330,11 @@ public abstract class EvolutionSimulation
 		
 		player.setRange(Integer.parseInt(prop.get(newJob)[4])) ;
 		player.setStep(Integer.parseInt(prop.get(newJob)[33])) ;
-		player.setActionCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[37]))) ;
-		player.setSatiationCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[38]))) ;
-		player.setThirstCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[39]))) ;
-		player.setMpCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[40]))) ;
-		player.setBattleActionCounter(new TimeCounter(Double.parseDouble(prop.get(newJob)[41]) / 100.0)) ;
+		player.setActionCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[37]))) ;
+		player.setSatiationCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[38]))) ;
+		player.setThirstCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[39]))) ;
+		player.setMpCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[40]))) ;
+		player.setBattleActionCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[41]) / 100.0)) ;
 		player.setGoldMultiplier(Double.parseDouble(prop.get(newJob)[32])) ;
 		
 		List<Double> attIncrements = Arrays.asList(Player.EvolutionProperties.get(3 * newJob + 0)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
@@ -705,10 +705,10 @@ public abstract class EvolutionSimulation
 		
 		if (!player.isAlive()) { return ;}
 		
-		int spell = Util.randomIntFromTo(0, player.getActiveSpells().size() - 1) ;
+		int spell = Util.randomInt(0, player.getActiveSpells().size() - 1) ;
 		int qtdAvailableMoves = player.canUseSpell(player.getSpells().get(spell)) ? 2 : 1 ;
 
-		int move = Util.randomIntFromTo(0, qtdAvailableMoves) ;
+		int move = Util.randomInt(0, qtdAvailableMoves) ;
 //		System.out.println(move);
 		switch (move)
 		{

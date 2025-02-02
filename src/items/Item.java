@@ -5,8 +5,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
 import utilities.UtilS;
 
 public abstract class Item

@@ -1,17 +1,21 @@
-package graphics ;
+package graphics2 ;
 
 import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Font ;
 import java.awt.Image ;
 import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.geom.Arc2D;
+import java.awt.geom.GeneralPath;
 import java.util.Arrays;
 import java.util.List;
 
 import components.GameButton;
+import graphics.Align;
+import graphics.DrawPrimitives;
+import graphics.Scale;
 import items.Item;
-import libUtil.Align;
-import libUtil.Util;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
@@ -25,8 +29,8 @@ import maps.FieldMap;
 import maps.GameMap;
 import screen.Sky;
 import utilities.AtkEffects;
-import utilities.Scale;
-import utilities.TimeCounter;
+import utilities.GameTimer;
+import utilities.Util;
 import utilities.UtilS;
 import windows.AttributesWindow;
 import windows.BagWindow;
@@ -74,13 +78,13 @@ public abstract class Draw
 		bufferedText(pos, align, text, stdFont, color) ;
 	}
 	
+	
 	public static void gif(Image gif, Point pos, Align align)
 	{
 		
 		Dimension size = new Dimension(gif.getWidth(null), gif.getHeight(null)) ;
 		Point offset = Util.offsetForAlignment(align, size) ;
 		DP.drawImage(gif, Util.Translate(pos, offset.x, offset.y), align);
-//		graphs.drawImage(gif, pos.x + offset.x, pos.y + offset.y, null) ;
 	}
 	
 	public static void fitText(Point pos, int sy, Align align, String text, Font font, int maxLength, Color color)
@@ -94,7 +98,7 @@ public abstract class Draw
 	
 	public static void textUntil(Point pos, Align align, double angle, String text, Font font, Color color, int maxLength, Point mousePos)
 	{
-		Point offset = Util.offsetForAlignment(align, new Dimension(maxLength, Util.TextH(font.getSize()))) ;
+		Point offset = Util.offsetForAlignment(align, new Dimension(maxLength, DrawPrimitives.textHeight(font.getSize()))) ;
 		int minlength = 3 ;	// 3 is the length of "..."
 		String shortText = text ;
 		maxLength = Math.max(maxLength, minlength) ;
@@ -106,7 +110,7 @@ public abstract class Draw
 		}
 		
 		Point topLeftPos = Util.Translate(pos, offset.x, offset.y) ;
-		Dimension size = new Dimension(DP.TextL(shortText, font), Util.TextH(font.getSize())) ;
+		Dimension size = new Dimension(DP.textLength(shortText, font), DrawPrimitives.textHeight(font.getSize())) ;
 		String textDrawn =  text.length() <= maxLength | Util.isInside(mousePos, topLeftPos, size) ? text : shortText + "..." ;
 		DP.drawText(pos, align, stdAngle, textDrawn, font, color) ;
 	}
@@ -256,7 +260,7 @@ public abstract class Draw
 		time(sky) ;
 	}
 
-	public static void damageAnimation(Point initialPos, AtkResults atkResults, TimeCounter counter, int style, Color color)
+	public static void damageAnimation(Point initialPos, AtkResults atkResults, GameTimer counter, int style, Color color)
 	{
 		AtkEffects effect = atkResults.getEffect() ;
 		
@@ -299,7 +303,7 @@ public abstract class Draw
 		DP.drawImage(TentImage, Pos, Align.center) ;
 	}
 
-	public static void gainGoldAnimation(TimeCounter counter, int goldObtained)
+	public static void gainGoldAnimation(GameTimer counter, int goldObtained)
 	{
 		
 		Point pos = Game.getScreen().pos(0.45, 0.1) ;
@@ -317,7 +321,7 @@ public abstract class Draw
 		
 	}
 
-	public static void quickTextAnimation(Point pos, TimeCounter counter, String text, Color color)
+	public static void quickTextAnimation(Point pos, GameTimer counter, String text, Color color)
 	{
 		pos = Util.Translate(pos, 0, (int) (-30 * counter.rate())) ;
 		DP.drawImage(Animation.messageBox, pos, stdAngle, Scale.unit, Align.topCenter, 0.9) ;
@@ -325,7 +329,7 @@ public abstract class Draw
 		
 	}
 
-	public static void obtainedItemAnimation(Point pos, TimeCounter counter, String text, Color color)
+	public static void obtainedItemAnimation(Point pos, GameTimer counter, String text, Color color)
 	{
 		pos = Util.Translate(pos, 0, (int) (-30 * counter.rate())) ;
 		DP.drawImage(Animation.obtainedItem, pos, Align.topCenter) ;
@@ -334,7 +338,7 @@ public abstract class Draw
 		
 	}
 
-	public static void winAnimation(TimeCounter counter, List<Item> items)
+	public static void winAnimation(GameTimer counter, List<Item> items)
 	{
 		Point pos = Game.getScreen().pos(0.35, 0.2) ;
 
@@ -357,7 +361,7 @@ public abstract class Draw
 		}
 	}
 	
-	public static void levelUpAnimation(TimeCounter counter, double[] attributeInc, int newLevel)
+	public static void levelUpAnimation(GameTimer counter, double[] attributeInc, int newLevel)
 	{
 
 		Point pos = Game.getScreen().pos(0.55, 0.2) ;
@@ -453,7 +457,7 @@ public abstract class Draw
 ////		}
 //	}
 		
-	public static void pterodactileAnimation(TimeCounter counter, Image pterodactile, Image speakingBubble, String[] message)
+	public static void pterodactileAnimation(GameTimer counter, Image pterodactile, Image speakingBubble, String[] message)
 	{
 		int imageWidth = pterodactile.getWidth(null) ;
 		Point pos = new Point(-imageWidth / 2, (int)(0.25*screenSize.height)) ;

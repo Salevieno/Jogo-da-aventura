@@ -2,8 +2,8 @@ package utilities;
 
 import java.util.List;
 
-import graphics.Animation;
-import graphics.Gif;
+import graphics2.Animation;
+import graphics2.Gif;
 import items.Item;
 import liveBeings.Buff;
 import liveBeings.CreatureType;
@@ -38,7 +38,7 @@ public abstract class Log
 		System.out.println(user.getName() + " used " + item.getName());
 	}
 	
-	public static void counter(TimeCounter counter)
+	public static void counter(GameTimer counter)
 	{
 		System.out.println("Counting " + counter.getCounter() + " until " + counter.getDuration()) ;
 	}

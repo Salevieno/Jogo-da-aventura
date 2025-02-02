@@ -13,8 +13,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import components.GameButton;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics2.Draw;
 import items.Alchemy;
 import items.Arrow;
 import items.Equip;
@@ -26,11 +27,10 @@ import items.Item;
 import items.PetItem;
 import items.Potion;
 import items.QuestItem;
-import libUtil.Align;
-import libUtil.Util;
 import liveBeings.Player;
 import main.Game;
 import main.TextCategories;
+import utilities.Util;
 import utilities.UtilS;
 
 public class BagWindow extends GameWindow

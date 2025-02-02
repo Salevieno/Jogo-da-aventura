@@ -1,6 +1,7 @@
 package maps;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,9 @@ import javax.sound.sampled.Clip;
 
 import items.Fab;
 import items.GeneralItem;
+import items.Item;
+import main.Game;
+import utilities.Util;
 import utilities.UtilS;
 
 public class SpecialMap extends GameMap
@@ -23,6 +27,7 @@ public class SpecialMap extends GameMap
 			images.add(UtilS.loadImage("\\Maps\\" + "MapSpecial" + String.valueOf(i) + ".png")) ;
 		}
 	}
+	
 	public SpecialMap(String Name, Continents Continent, int[] Connections, Image image, Clip music, List<TreasureChest> treasureChests)
 	{
 		super(Name, Continent, Connections, image, music, null, null) ;
@@ -55,4 +60,51 @@ public class SpecialMap extends GameMap
 		}
 		calcDigItemChances() ;
 	}	
+
+
+	public static SpecialMap[] load(List<Item> allItems)
+	{
+		List<String[]> input = Util.ReadcsvFile(dadosPath + "MapsSpecial.csv") ;
+		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
+
+		for (int id = 0 ; id <= specialMaps.length - 1 ; id += 1)
+		{
+			String name = input.get(id)[0] ;
+			Continents continent = Continents.values()[Integer.parseInt(input.get(id)[1])] ;
+			int[] connections = new int[] {
+												Integer.parseInt(input.get(id)[9]), Integer.parseInt(input.get(id)[2]),
+												Integer.parseInt(input.get(id)[3]), Integer.parseInt(input.get(id)[4]),
+												Integer.parseInt(input.get(id)[5]), Integer.parseInt(input.get(id)[6]),
+												Integer.parseInt(input.get(id)[7]), Integer.parseInt(input.get(id)[8])
+											} ;
+
+			Image image = SpecialMap.images.get(id) ;
+			Clip music = GameMap.musicForest ;
+			
+			// adding treasure chests
+			List<TreasureChest> treasureChests = new ArrayList<>() ;
+			for (int chest = 0 ; chest <= 5 - 1 ; chest += 1)
+			{
+				Point pos = new Point(
+										(int) (Double.parseDouble(input.get(id)[10 + 13 * chest]) * Game.getScreen().getSize().width),
+										(int) (Double.parseDouble(input.get(id)[11 + 13 * chest]) * Game.getScreen().getSize().height)
+									) ;
+				List<Item> itemRewards = new ArrayList<>() ;
+				for (int item = 0 ; item <= 10 - 1 ; item += 1)
+				{
+					int itemID = Integer.parseInt(input.get(id)[12 + 13 * chest + item]) ;
+					if (-1 < itemID)
+					{
+						itemRewards.add(allItems.get(itemID)) ;
+					}
+				}
+				int goldReward = Integer.parseInt(input.get(id)[22 + 13 * chest]) ;
+				treasureChests.add(new TreasureChest(chest, pos, itemRewards, goldReward)) ;
+			}
+			specialMaps[id] = new SpecialMap(name, continent, connections, image, music, treasureChests) ;
+		}
+
+		return specialMaps ;
+	}
+
 }

@@ -9,8 +9,8 @@ import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
-import libUtil.Util;
 import main.Game;
+import utilities.Util;
 
 public class Buff
 {

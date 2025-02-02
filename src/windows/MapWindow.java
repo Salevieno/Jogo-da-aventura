@@ -4,12 +4,12 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
-import libUtil.Util;
+import graphics.Scale;
 import main.Game;
 import maps.GameMap;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 
 public class MapWindow extends GameWindow

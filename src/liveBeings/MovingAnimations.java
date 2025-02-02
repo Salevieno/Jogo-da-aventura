@@ -3,10 +3,10 @@ package liveBeings;
 import java.awt.Image;
 import java.awt.Point;
 
+import graphics.Align;
 import graphics.DrawPrimitives;
-import libUtil.Align;
+import graphics.Scale;
 import utilities.Directions;
-import utilities.Scale;
 
 public class MovingAnimations
 {

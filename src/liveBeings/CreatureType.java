@@ -14,14 +14,14 @@ import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
 import items.Item;
-import libUtil.Align;
-import libUtil.Util;
 import main.Game;
 import main.Languages;
 import utilities.Elements;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 import windows.CreatureAttributesWindow;
 

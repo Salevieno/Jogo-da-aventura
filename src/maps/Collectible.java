@@ -2,11 +2,11 @@ package maps;
 
 import java.awt.Point;
 
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics2.Draw;
 import items.Item;
-import libUtil.Align;
-import libUtil.Util;
+import utilities.Util;
 
 public class Collectible extends Item
 {

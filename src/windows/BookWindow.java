@@ -7,14 +7,14 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
+import graphics2.Draw;
 import items.Item;
 import items.Recipe;
-import libUtil.Align;
-import libUtil.Util;
 import main.Game;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 
 public class BookWindow extends GameWindow

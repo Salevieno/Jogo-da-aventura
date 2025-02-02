@@ -12,19 +12,19 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import attributes.PersonalAttributes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
+import graphics2.Draw;
 import items.Equip;
 import items.Recipe;
-import libUtil.Align;
-import libUtil.Util;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.TextCategories;
 import maps.GameMap;
-import utilities.Scale;
+import utilities.Util;
 import utilities.UtilS;
 import windows.BagWindow;
 import windows.BankWindow;
@@ -56,6 +56,7 @@ public class NPCs
 
 	public NPCs(NPCType type, Point pos)
 	{
+		
 		this.id = 0 ;
 		this.type = type ;
 		this.pos = pos ;
@@ -63,7 +64,12 @@ public class NPCs
 		menu = 0 ;
 		numberMenus = 0 ;
 
-		if (type.getSpeech() != null) { numberMenus = type.getSpeech().length - 1 ;}
+		if (type == null) { System.out.println("Erro ao criar npc: tipo nulo") ; return ;}
+		
+		if (type.getSpeech() != null)
+		{
+			numberMenus = type.getSpeech().length - 1 ;
+		}
 
 		switch (type.getJob())
 		{
@@ -114,7 +120,7 @@ public class NPCs
 			}
 			default: window = null ; break ;
 		}
-		
+
 		colliders = new ArrayList<>() ;
 		colliders.add(new Collider(pos)) ;
 	}
@@ -131,6 +137,10 @@ public class NPCs
 	
 	public static NPCType typeFromName(String name)
 	{
+
+		if (Game.getNPCTypes() == null) { System.out.println("Erro ao obter nome do npc. Tipos de NPC não existem") ; return null ;}
+		if (Game.getNPCTypes().length == 0) { System.out.println("Erro ao obter nome do npc. Não há nenhum tipo de NPC") ; return null ;}
+		
 		NPCJobs npcJob = NPCJobs.valueOf(name) ;
 		for (NPCType type : Game.getNPCTypes())
 		{
@@ -228,7 +238,7 @@ public class NPCs
 		int[] newStockIDs = new int[12] ; 
 		for (int i = 0 ; i <= newStockIDs.length - 1 ; i += 1)
 		{
-			int newItem = Util.randomIntFromTo(0, fullStock.size() - 1) ;
+			int newItem = Util.randomInt(0, fullStock.size() - 1) ;
 			newStockIDs[i] = fullStock.get(newItem) ;
 			fullStock.remove(newItem) ;
 		}
@@ -693,12 +703,14 @@ public class NPCs
 
 	public void display(Point playerPos, DrawPrimitives DP)
 	{
+		
 		DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
 		if (isClose(playerPos))
 		{
 			Point buttonPos = Util.Translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;
 			Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey()) ;
 		}
+		
 	}
 
 	@Override

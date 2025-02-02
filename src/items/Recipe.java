@@ -8,8 +8,8 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import libUtil.Util;
 import main.Game;
+import utilities.Util;
 
 public class Recipe
 {

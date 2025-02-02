@@ -15,13 +15,13 @@ import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
-import graphics.Animation;
-import graphics.AnimationTypes;
-import graphics.Draw;
+import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
+import graphics2.Animation;
+import graphics2.AnimationTypes;
+import graphics2.Draw;
 import items.PetItem;
-import libUtil.Align;
-import libUtil.Util;
 import main.AtkResults;
 import main.AtkTypes;
 import main.Battle;
@@ -30,8 +30,8 @@ import maps.GameMap;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
-import utilities.Scale;
-import utilities.TimeCounter;
+import utilities.GameTimer;
+import utilities.Util;
 import windows.PetAttributesWindow;
 
 public class Pet extends LiveBeing
@@ -64,11 +64,11 @@ public class Pet extends LiveBeing
 		range = Integer.parseInt(InitialAtts.get(Job)[4]) ;
 		step = Integer.parseInt(InitialAtts.get(Job)[32]) ;
 		elem = new Elements[] {Elements.neutral, null, null, null, null} ;
-		actionCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(Job)[33])) ;
-		satiationCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(Job)[34])) ;
-		mpCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(Job)[35])) ;
-		battleActionCounter = new TimeCounter(Double.parseDouble(InitialAtts.get(Job)[36])) ;
-		stepCounter = new TimeCounter(20) ;
+		actionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[33])) ;
+		satiationCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[34])) ;
+		mpCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[35])) ;
+		battleActionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[36])) ;
+		stepCounter = new GameTimer(20) ;
 		combo = new ArrayList<>();
 		equip = null ;
 		alchBuffId = -1 ;
@@ -246,7 +246,7 @@ public class Pet extends LiveBeing
 	
 	public void fight()
 	{
-		int move = Util.randomIntFromTo(0, 1 + getActiveSpells().size()) ;
+		int move = Util.randomInt(0, 1 + getActiveSpells().size()) ;
 		switch (move)
 		{
 			case 0: currentAction = BattleKeys[0] ; return ;
