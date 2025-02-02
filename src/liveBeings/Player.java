@@ -22,6 +22,7 @@ import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import components.Building;
+import components.HitboxRectangle;
 import components.NPCs;
 import components.Quest;
 import components.QuestSkills;
@@ -187,6 +188,7 @@ public class Player extends LiveBeing
 		battleActionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[41]) / 1.0) ;
 		stepCounter = new GameTimer(stepDuration) ;
 		combo = new ArrayList<>() ;
+		hitbox = new HitboxRectangle(pos, size, 0.8) ;
 	    
 		this.sex = sex ;
 		
@@ -985,11 +987,11 @@ public class Player extends LiveBeing
 	{
 		if (!map.isSpecial()) { return ;}
 
-		List<MapElement> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).collect(Collectors.toList()) ;
-		for (MapElement chest : chests)
+		List<TreasureChest> chests = map.getMapElem().stream().filter(elem -> elem instanceof TreasureChest).map(elem -> (TreasureChest) elem).collect(Collectors.toList()) ;
+		for (TreasureChest chest : chests)
 		{
 
-			if (!isInCloseRange(chest.getPos())) { continue ;}
+			if (!hitbox.overlaps(chest.getHitbox())) { continue ;}
 
 			setState(LiveBeingStates.openingChest);
 			currentChest = (TreasureChest) chest ;
@@ -1009,7 +1011,7 @@ public class Player extends LiveBeing
 		{
 			
 			Collectible collectible = collectibles.get(i) ;
-			if (!isInCloseRange(collectible.getPos())) { continue ;}
+			if (!hitbox.overlaps(collectible.getHitbox())) { continue ;}
 			
 			if (0 < collectible.typeNumber())
 			{
@@ -1047,7 +1049,7 @@ public class Player extends LiveBeing
 	{
 		if (npcInContact != null)
 		{
-			if (!npcInContact.isClose(pos))
+			if (!hitbox.overlaps(npcInContact.getHitbox()))
 			{
 				npcInContact = null ;
 			}
@@ -1062,7 +1064,7 @@ public class Player extends LiveBeing
 		{
 			for (NPCs npc : map.getNPCs())
 			{
-				if (!npc.isClose(pos)) { npc.resetMenu() ; continue ;}
+				if (!hitbox.overlaps(npc.getHitbox())) { npc.resetMenu() ; continue ;}
 				
 				npcInContact = npc ;
 				npcInContact.resetMenu();
@@ -1077,7 +1079,7 @@ public class Player extends LiveBeing
 		{
 			for (NPCs npc : building.getNPCs())
 			{				
-				if (!npc.isClose(pos)) { npc.resetMenu() ; continue ;}
+				if (!hitbox.overlaps(npc.getHitbox())) { npc.resetMenu() ; continue ;}
 
 				npcInContact = npc ;
 				npcInContact.resetMenu();
@@ -1706,6 +1708,10 @@ public class Player extends LiveBeing
 		}
 
 		displayStatus(DP) ;
+		if (Game.displayHitboxes)
+		{			
+			hitbox.display(DP) ;
+		}
 	}
 
 

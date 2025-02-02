@@ -5,13 +5,11 @@ import java.awt.Dimension;
 import java.awt.Font ;
 import java.awt.Image ;
 import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.geom.Arc2D;
-import java.awt.geom.GeneralPath;
 import java.util.Arrays;
 import java.util.List;
 
 import components.GameButton;
+import components.Hitbox;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics.Scale;
@@ -245,11 +243,11 @@ public abstract class Draw
 		map.displayGroundTypes(DP) ;
 	}
 	
-	public static void mapElements(Point playerPos, GameMap map, Sky sky)
+	public static void mapElements(Hitbox playerHitbox, Point playerPos, GameMap map, Sky sky)
 	{		
 		map.displayElements(playerPos, DP) ;
-		map.displayBuildings(playerPos, Arrays.asList(Game.getMaps()).indexOf(map), DP) ;
-		map.displayNPCs(playerPos, DP) ;
+		map.displayBuildings(playerHitbox, playerPos, Arrays.asList(Game.getMaps()).indexOf(map), DP) ;
+		map.displayNPCs(playerHitbox, DP) ;
 		
 		if (map instanceof FieldMap)
 		{

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import attributes.Attributes;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
+import components.Hitbox;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics2.Animation;
@@ -30,8 +31,8 @@ import maps.GroundTypes;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
-import utilities.RelativePos;
 import utilities.GameTimer;
+import utilities.RelativePos;
 import utilities.Util;
 import utilities.UtilS;
 import windows.AttributesWindow;
@@ -49,6 +50,7 @@ public abstract class LiveBeing
 	protected Dimension size ;
 	protected int range ;
 	protected int step ;
+	protected Hitbox hitbox ;
 	protected Elements[] elem ;					// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
 	protected GameTimer hpCounter ;
 	protected GameTimer mpCounter ;
@@ -168,6 +170,7 @@ public abstract class LiveBeing
 	public AttributesWindow getAttWindow() {return attWindow ;}
 	public MovingAnimations getMovingAni() {return movingAni ;}
 	public Map<Attributes, LiveBeingStatus> getStatus() {return status ;}
+	public Hitbox getHitbox() {return hitbox ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
 	public void setMpCounter(GameTimer mpCounter) { this.mpCounter = mpCounter ;}
 	public void setActionCounter(GameTimer actionCounter) { this.actionCounter = actionCounter ;}	
@@ -183,7 +186,7 @@ public abstract class LiveBeing
 	public void setMap(GameMap newValue) {map = newValue ;}
 	public void setDir(Directions newValue) {dir = newValue ;}
 	public void setState(LiveBeingStates newValue) {state = newValue ;}
-	public void setPos(Point newValue) {pos = newValue ;}
+	public void setPos(Point newValue) {pos = newValue ; hitbox.setCenter(center()) ;}
 	public void setSize(Dimension newValue) {size = newValue ;}
 	public void setRange(int newValue) {range = newValue ;}
 	public void setStep(int newValue) {step = newValue ;}

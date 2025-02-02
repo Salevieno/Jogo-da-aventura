@@ -51,6 +51,7 @@ public class CreatureType
 	private Color color;
 	private int[] StatusCounter;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood,
 								// Poison, Silence]
+	private String hitboxType ;
 
 	public static final int numberCreatureTypesImages ;
 	private static int NumberOfCreatureTypes;
@@ -78,7 +79,7 @@ public class CreatureType
 	public CreatureType(int id, String name, int level, Dimension size, int range, int step, Elements[] elem,
 			double mpDuration, double satiationDuration, double numberSteps, double battleActionDuration,
 			int stepCounter, MovingAnimations movingAni, PersonalAttributes PA, BattleAttributes BA, List<Spell> spell,
-			Set<Item> items, int gold, Color color, int[] StatusCounter)
+			Set<Item> items, int gold, Color color, int[] StatusCounter, String hitboxType)
 	{
 		this.id = id;
 
@@ -101,6 +102,7 @@ public class CreatureType
 		this.gold = gold;
 		this.color = color;
 		this.StatusCounter = StatusCounter;
+		this.hitboxType = hitboxType ;
 
 		genes = new Genetics();
 		all.add(this);
@@ -169,6 +171,11 @@ public class CreatureType
 	public Genetics getGenes()
 	{
 		return genes;
+	}
+
+	public String getHitboxType()
+	{
+		return hitboxType;
 	}
 
 	public void setID(int I)
@@ -324,9 +331,10 @@ public class CreatureType
 			double numberSteps = Double.parseDouble(inp[50]);
 			double battleActionDuration = BA.TotalAtkSpeed();
 			int stepCounter = 0;
+			String hitboxType = inp[52] ;
 
 			new CreatureType(row, name, level, size, range, step, elem, mpDuration, satiationDuration, numberSteps,
-					battleActionDuration, stepCounter, moveAni, PA, BA, spells, items, Gold, color[row], StatusCounter);
+					battleActionDuration, stepCounter, moveAni, PA, BA, spells, items, Gold, color[row], StatusCounter, hitboxType);
 		}
 	}
 

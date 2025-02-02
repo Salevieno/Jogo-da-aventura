@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Set;
 
 import components.Collider;
+import components.Hitbox;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Draw;
+import main.Game;
 import utilities.Util;
 import utilities.UtilS;
 
@@ -23,55 +25,49 @@ public class MapElement
 	private String name ;
 	private Image image ;
 	private Point topLeft ;
+	protected Hitbox hitbox ;
 	private List<Collider> colliders ;
 
 	private static final Image knightsCityWallImage ;
-	private static final Image treeImage ;
-	private static final Image grassImage ;
-	private static final Image grassImage2 ;
-	private static final Image rockImage ;
-	private static final Image treasureChestsImage ;
 	
 	static
 	{
 		knightsCityWallImage = UtilS.loadImage("\\MapElements\\" + "Knight'sCityWall.png") ;
-		treeImage = UtilS.loadImage("\\MapElements\\" + "MapElem6_TreeForest.png") ;
-		grassImage = UtilS.loadImage("\\MapElements\\" + "MapElem8_Grass.png") ;
-		grassImage2 = UtilS.loadImage("\\MapElements\\" + "MapElem8_Grass2.png") ;
-		rockImage = UtilS.loadImage("\\MapElements\\" + "MapElem9_Rock.png") ;
-		treasureChestsImage = UtilS.loadImage("\\MapElements\\" + "MapElem15_Chest.png") ;
 	}
 
-	public MapElement(int id, String name, Point pos)
+	public MapElement(int id, String name, Image image, Point topLeftPos)
 	{
 		this.id = id ;
 		this.name = name ;
-		this.topLeft = pos ;
-		image = getImage(name) ;
+		this.topLeft = topLeftPos ;
+//		image = getImage(name) ;
+		this.image = image ;
 		addColliders(name) ;
 	}
 
 	public int getid() {return id ;}
 	public String getName() {return name ;}
 	public Point getPos() {return topLeft ;}
+	public Hitbox getHitbox() { return hitbox ;}
 	public List<Collider> getColliders() {return colliders ;}
 	public void setid(int I) {id = I ;}
 	public void setName(String N) {name = N ;}
 	public void setPos(Point P) {topLeft = P ;}
-	
+
+	public Point center() { return new Point((int) (topLeft.x + 0.5 * image.getHeight(null)), (int) (topLeft.y + 0.5 * image.getHeight(null))) ;}
 	private boolean playerIsBehind(Point playerPos) { return Util.isInside(playerPos, topLeft, Util.getSize(image)) ;}
 
 	private static Image getImage(String name)
 	{
 //		Image[] grassImages = new Image[] {grassImage, grassImage2} ;
-		Set<Image> grassImages = new HashSet<>(Set.of(grassImage, grassImage2)) ;
+//		Set<Image> grassImages = new HashSet<>(Set.of(grassImage, grassImage2)) ;
 		switch(name)
 		{
 			case "Knight'sCityWall": return knightsCityWallImage ;
-			case "ForestTree": return treeImage ;
-			case "grass": return grassImages.stream().skip(Util.randomInt(0, grassImages.size() - 1)).findFirst().get() ;
-			case "rock": return rockImage ;
-			case "treasureChest": return treasureChestsImage ;
+//			case "ForestTree": return treeImage ;
+//			case "grass": return grassImages.stream().skip(Util.randomInt(0, grassImages.size() - 1)).findFirst().get() ;
+//			case "rock": return rockImage ;
+//			case "treasureChest": return treasureChestsImage ;
 			default: return null;
 		}
 	}
@@ -113,15 +109,12 @@ public class MapElement
 	public void display(Point playerPos, DrawPrimitives DP)
 	{
 		double alpha = playerIsBehind(playerPos) ? 0.5 : 1.0 ;
-//		if (!playerIsBehind(playerPos))
-//		{
-//			DP.DrawImage(getImage(name), topLeft, DrawingOnPanel.stdAngle, Scale.unit, Align.topLeft) ;
-//
-//			
-//			return ;
-//		}
 		
 		DP.drawImage(image, topLeft, Draw.stdAngle, Scale.unit, false, false, Align.topLeft, alpha) ;
+		if (Game.displayHitboxes && hitbox != null)
+		{
+			hitbox.display(DP);
+		}
 		
 	}
 }

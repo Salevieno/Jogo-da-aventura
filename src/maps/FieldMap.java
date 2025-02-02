@@ -38,6 +38,10 @@ public class FieldMap extends GameMap
 	private static final int numberTrees = 5 ;
 	private static final int numberGrass = 30 ;
 	private static final int numberRocks = 10 ;
+	private static final Image treeImage ;
+	private static final Image grassImage ;
+	private static final Image grassImage2 ;
+	private static final Image rockImage ;
 
 	public static final List<Image> images ;
 	
@@ -50,6 +54,10 @@ public class FieldMap extends GameMap
 			
 			images.add(UtilS.loadImage("\\Maps\\" + "Map" + String.valueOf(i) + ".png")) ;
 		}
+		treeImage = UtilS.loadImage("\\MapElements\\" + "MapElem6_TreeForest.png") ;
+		grassImage = UtilS.loadImage("\\MapElements\\" + "MapElem8_Grass.png") ;
+		grassImage2 = UtilS.loadImage("\\MapElements\\" + "MapElem8_Grass2.png") ;
+		rockImage = UtilS.loadImage("\\MapElements\\" + "MapElem9_Rock.png") ;
 	}
 	
 	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPCs> npcs)
@@ -147,21 +155,22 @@ public class FieldMap extends GameMap
 		Point minCoord = new Point(20, Sky.height + 20) ;
 		Dimension range = new Dimension(screen.getSize().width - 100, screen.getSize().height - Sky.height - 100) ;
 		Dimension step = new Dimension(1, 1) ;
-
+		Set<Image> grassImages = new HashSet<>(Set.of(grassImage, grassImage2)) ;
+		
 		for (int i = 0 ; i <= numberRocks - 1 ; i += 1)
 		{
 			Point randomPos = randomPosOnLand(minCoord, range, step) ;
-			mapElems.add(new MapElement(i, "rock", randomPos)) ;			
+			mapElems.add(new MapElement(i, "rock", rockImage, randomPos)) ;			
 		}
 		for (int i = 0 ; i <= numberTrees - 1 ; i += 1)
 		{
 			Point randomPos = randomPosOnLand(minCoord, range, step) ;
-			mapElems.add(new MapElement(i, "ForestTree", randomPos)) ;				
+			mapElems.add(new MapElement(i, "ForestTree", treeImage, randomPos)) ;				
 		}
 		for (int i = 0 ; i <= numberGrass - 1 ; i += 1)
 		{
 			Point randomPos = randomPosOnLand(minCoord, range, step) ;
-			mapElems.add(new MapElement(i, "grass", randomPos)) ;				
+			mapElems.add(new MapElement(i, "grass", grassImages.stream().skip(Util.randomInt(0, grassImages.size() - 1)).findFirst().get(), randomPos)) ;				
 		}
 	}
 

@@ -87,13 +87,13 @@ public class Building
 		}
 	}
 	
-	public void displayNPCs(Point playerPos, DrawPrimitives DP)
+	public void displayNPCs(Hitbox playerHitbox, DrawPrimitives DP)
 	{
 		if (npcs == null) { return ;}
 		
 		for (NPCs npc : npcs)
 		{
-			npc.display(playerPos, DP) ;
+			npc.display(playerHitbox, DP) ;
 		}
 	}
 	
@@ -108,7 +108,7 @@ public class Building
 		Draw.fitText(messagePos, font.getSize() + 2, Align.bottomLeft, message, font, 40, Game.palette[0]) ;	
 	}
 	
-	public void display(Point playerPos, int cityID, DrawPrimitives DP)
+	public void display(Hitbox playerHitbox, Point playerPos, int cityID, DrawPrimitives DP)
 	{
 		if (type.getName().equals(BuildingNames.sign) & isInside(playerPos))
 		{
@@ -118,7 +118,7 @@ public class Building
 		if (type.getInsideImage() == null)
 		{
 			DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomLeft) ;
-			displayNPCs(playerPos, DP) ;
+			displayNPCs(playerHitbox, DP) ;
 			
 			return ;
 		}
@@ -132,7 +132,7 @@ public class Building
 		}
 
 		DP.drawImage(type.getInsideImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomLeft) ;
-		displayNPCs(playerPos, DP) ;
+		displayNPCs(playerHitbox, DP) ;
 		
 		for (Collider collider : colliders)
 		{

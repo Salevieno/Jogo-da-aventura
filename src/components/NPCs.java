@@ -44,6 +44,7 @@ public class NPCs
 	private int numberMenus ;
 	private int menu ;
 	private GameWindow window ;
+	private Hitbox hitbox ;
 	private List<Collider> colliders ;
 	
 	private static boolean renewStocks = false ;
@@ -121,6 +122,7 @@ public class NPCs
 			default: window = null ; break ;
 		}
 
+		hitbox = new HitboxRectangle(Util.Translate(pos, 0, -type.getImage().getHeight(null) / 2), Util.getSize(type.getImage()), 0.8) ;
 		colliders = new ArrayList<>() ;
 		colliders.add(new Collider(pos)) ;
 	}
@@ -131,6 +133,7 @@ public class NPCs
 	public Point getPos() {return pos ;}
 	public void setPos(Point P) {pos = P ;}	
 	public GameWindow getWindow() { return window ;}
+	public Hitbox getHitbox() {return hitbox ;}
 	public List<Collider> getColliders() { return colliders ;}
 	
 	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
@@ -159,7 +162,7 @@ public class NPCs
 	public void incMenu() { if (menu <= numberMenus - 1) menu += 1 ;}
 	public void decMenu() { if (1 <= menu) menu += -1 ;}
 
-	public boolean isClose(Point target) {return pos.distance(target) <= type.getImage().getWidth(null) ;}
+//	public boolean isClose(Point target) {return pos.distance(target) <= type.getImage().getWidth(null) ;}
 	
 	public static NPCType typeFromJob(NPCJobs job) { return Arrays.asList(Game.getNPCTypes()).stream().filter(npcType -> job.equals(npcType.getJob())).toList().get(0) ;}
 	public static void setIDs()
@@ -701,14 +704,19 @@ public class NPCs
 		
 	}
 
-	public void display(Point playerPos, DrawPrimitives DP)
+	public void display(Hitbox playerHitbox, DrawPrimitives DP)
 	{
 		
 		DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
-		if (isClose(playerPos))
+		if (hitbox.overlaps(playerHitbox))
 		{
 			Point buttonPos = Util.Translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;
 			Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey()) ;
+		}
+		
+		if (Game.displayHitboxes)
+		{
+			hitbox.display(DP) ;
 		}
 		
 	}

@@ -14,9 +14,8 @@ import java.util.Map;
 import javax.sound.sampled.Clip;
 
 import components.Building;
-import components.BuildingType;
 import components.Collider;
-import components.NPCType;
+import components.Hitbox;
 import components.NPCs;
 import graphics.Align;
 import graphics.DrawPrimitives;
@@ -494,18 +493,18 @@ public class GameMap
  		mapElems.forEach(mapElem -> mapElem.display(playerPos, DP)) ;
  	}
  	
- 	public void displayBuildings(Point playerPos, int cityID, DrawPrimitives DP)
+ 	public void displayBuildings(Hitbox playerHitbox, Point playerPos, int cityID, DrawPrimitives DP)
  	{
 		if (buildings == null) { return ;}
 		
-		buildings.forEach(building -> building.display(playerPos, cityID, DP)) ;
+		buildings.forEach(building -> building.display(playerHitbox, playerPos, cityID, DP)) ;
  	}
 	
-	public void displayNPCs(Point playerPos, DrawPrimitives DP)
+	public void displayNPCs(Hitbox playerHitbox, DrawPrimitives DP)
 	{
 		if (npcs == null) { return ;}
 
-		npcs.forEach(npc -> npc.display(playerPos, DP));
+		npcs.forEach(npc -> npc.display(playerHitbox, DP));
 	}
 	
 	public void displayGroundTypes(DrawPrimitives DP)

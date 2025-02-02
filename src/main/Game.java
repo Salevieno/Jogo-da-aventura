@@ -26,6 +26,8 @@ import org.json.simple.JSONObject ;
 
 import components.Building ;
 import components.BuildingType ;
+import components.Hitbox;
+import components.HitboxCircle;
 import components.NPCType ;
 import components.NPCs ;
 import components.Projectiles ;
@@ -91,6 +93,7 @@ public class Game extends JPanel
 
 	public static final Color[] normalPalette ;
 	public static final Color[] konamiPalette ;
+	public static final boolean displayHitboxes = false;
 
 	private JPanel mainPanel = this ;
 	private static Point mousePos ;
@@ -262,8 +265,7 @@ public class Game extends JPanel
 			for (int j = 0 ; j <= opcoes.size() - 1 ; j += 1)
 			{
 				List<String> opcoesMenu = (List<String>) opcoes.get(j) ;
-				TextCategories textCatOption = TextCategories
-						.catFromBRName(catName + npcName + "Opcoes" + j) ;
+				TextCategories textCatOption = TextCategories.catFromBRName(catName + npcName + "Opcoes" + j) ;
 
 				if (textCatOption == null)
 				{
@@ -460,7 +462,7 @@ public class Game extends JPanel
 		}
 
 		Draw.map(player.getMap(), sky) ;
-		Draw.mapElements(player.getPos(), player.getMap(), sky) ;
+		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap(), sky) ;
 
 		if (player.getMap().isAField())
 		{

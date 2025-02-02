@@ -15,6 +15,8 @@ import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
+import components.HitboxCircle;
+import components.HitboxRectangle;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics.Scale;
@@ -47,6 +49,11 @@ public class Creature extends LiveBeing
 	
  	public Creature(CreatureType CT)
 	{
+ 		this(CT, Util.RandomPos(new Point(0, (int) (0.2*Game.getScreen().getSize().height)), new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)), new Dimension(1, 1))) ;
+	}
+
+ 	public Creature(CreatureType CT, Point pos)
+ 	{
  		super(new PersonalAttributes(CT.getPA()), new BattleAttributes(CT.getBA()), CT.getMovingAnimations(), CreatureType.attWindow) ;
 		
 		this.type = CT ;		
@@ -62,6 +69,7 @@ public class Creature extends LiveBeing
 		battleActionCounter = new GameTimer(CT.battleActionDuration / 1.0) ;
 		this.stepCounter = new GameTimer(CT.numberSteps) ;
 		combo = new ArrayList<>() ;
+		hitbox = CT.getHitboxType().equals("circle") ? new HitboxCircle(new Point(), size.width / 2) : new HitboxRectangle(new Point(), size) ;
 		
 		dir = Directions.up ;
 		state = LiveBeingStates.idle ;
@@ -70,12 +78,6 @@ public class Creature extends LiveBeing
 		this.items = Set.copyOf(CT.getItems()) ;
 		this.gold = CT.getGold() ;
 		this.color = CT.getColor() ;
-		
-		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
-		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
-		Point initialPos = Util.RandomPos(minCoord, range, new Dimension(1, 1)) ;
-		setPos(initialPos) ;
-		
 
 		if (getName().equals("Dragão") | getName().equals("Dragon"))
 		{
@@ -84,12 +86,7 @@ public class Creature extends LiveBeing
 		startCounters() ;
 		
 		follow = false ;
-	}
-
- 	public Creature(CreatureType CT, Point pos)
- 	{
- 		this(CT) ;
- 		this.pos = pos ;
+ 		setPos(pos) ;
  	}
  	
 	public CreatureType getType() {return type ;}
@@ -114,7 +111,6 @@ public class Creature extends LiveBeing
 	public int getGold() {return gold ;}
 	public Color getColor() {return color ;}
 	public boolean getFollow() {return follow ;}
-	public void setPos(Point newValue) {pos = newValue ;}
 	public void setFollow(boolean F) {follow = F ;}
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
@@ -168,6 +164,10 @@ public class Creature extends LiveBeing
 		}
 //		displayAttributes(0, DP) ;
 		displayStatus(DP) ;
+		if (Game.displayHitboxes)
+		{			
+			hitbox.display(DP);
+		}
 	}
 	
 	public void displayAdditionalInfo(DrawPrimitives DP)
