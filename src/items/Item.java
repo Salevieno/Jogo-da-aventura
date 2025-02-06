@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import utilities.UtilS;
 
 public abstract class Item
@@ -42,7 +41,7 @@ public abstract class Item
 	public int getPrice() {return price ;}
 	public double getDropChance() {return dropChance ;}
 	
-	public abstract void displayInfo(Point pos, Align align, DrawPrimitives DP) ;
+	public abstract void displayInfo(Point pos, Align align) ;
 	
 	public static void load()
 	{

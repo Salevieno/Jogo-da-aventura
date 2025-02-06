@@ -16,7 +16,6 @@ import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
@@ -372,17 +371,21 @@ public class Pet extends LiveBeing
 	{
 	}
 	
-	
-	public void display(Point pos, Scale scale, DrawPrimitives DP)
+	public void display(Point pos, Scale scale)
 	{
-		movingAni.displayMoving(dir, pos, Draw.stdAngle, scale, Align.bottomCenter, DP) ;
+		movingAni.displayMoving(dir, pos, Draw.stdAngle, scale, Align.bottomCenter) ;
 
 		if (isDrunk())
 		{
-			displayDrunk(DP) ;
+			displayDrunk() ;
 		}
 		
-		displayStatus(DP) ;
+		displayStatus() ;
+	}
+	
+	public void display()
+	{
+		display(pos, Scale.unit) ;
 	}
 	
 }

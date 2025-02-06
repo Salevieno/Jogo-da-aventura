@@ -9,7 +9,6 @@ import java.util.List;
 import javax.sound.sampled.Clip;
 
 import attributes.Attributes;
-import graphics.DrawPrimitives;
 import liveBeings.AttackModifiers;
 import liveBeings.Creature;
 import liveBeings.LiveBeing;
@@ -286,11 +285,11 @@ public abstract class Battle
 		}
 	}
 		
-//	private static void playAtkAnimations(LiveBeing user, Point pos, DrawPrimitives DP)
+//	private static void playAtkAnimations(LiveBeing user, Point pos)
 //	{
 //		if (user.phyHitGif.isPlaying())
 //		{
-//			user.phyHitGif.play(pos, Align.center, DP) ;
+//			user.phyHitGif.play(pos, Align.center) ;
 //		}
 //		else
 //		{
@@ -298,7 +297,7 @@ public abstract class Battle
 //		}
 //		if (user.magHitGif.isPlaying())
 //		{
-//			user.magHitGif.play(pos, Align.center, DP) ;
+//			user.magHitGif.play(pos, Align.center) ;
 //		}
 //		else
 //		{
@@ -393,25 +392,25 @@ public abstract class Battle
 		return atkResults ;
 	}	
 		
-	private static void runTurn(LiveBeing attacker, LiveBeing receiver, DrawPrimitives DP)
+	private static void runTurn(LiveBeing attacker, LiveBeing receiver)
 	{
 		
 		if (!attacker.isAlive()) { return ;}
 		
-//		attacker.drawTimeBar("Left", Game.palette[13], DP) ;
+//		attacker.drawTimeBar("Left", Game.palette[13]) ;
 		if (attacker instanceof Player)
 		{			
-			attacker.drawTimeBar2(DP) ;
+			attacker.drawTimeBar2() ;
 		}
 		else
 		{
-			attacker.drawTimeBar("Left", Game.palette[13], DP) ;
+			attacker.drawTimeBar("Left", Game.palette[13]) ;
 		}
 
-//		playAtkAnimations(attacker, receiver.center(), DP) ;
+//		playAtkAnimations(attacker, receiver.center()) ;
 		if (attacker.isDefending())
 		{
-			attacker.displayDefending(DP) ;
+			attacker.displayDefending() ;
 		}
 		
 		if (!attacker.canAtk() | !attacker.isInRange(receiver.getPos())) { return ;}
@@ -448,7 +447,7 @@ public abstract class Battle
 		
 	
 	
-	public static void runBattle(Player player, Pet pet, Creature creature, DrawPrimitives DP)
+	public static void runBattle(Player player, Pet pet, Creature creature)
 	{
 		activateCounters(player, pet, creature) ;
 		
@@ -458,9 +457,9 @@ public abstract class Battle
 			creatureTarget = creature.chooseTarget(player.isAlive(), pet.isAlive()).equals("player") ? player : pet ;
 		}
 		
-		runTurn(player, creature, DP) ;
-		if (pet != null) { runTurn(pet, creature, DP) ;}
-		runTurn(creature, creatureTarget, DP) ;
+		runTurn(player, creature) ;
+		if (pet != null) { runTurn(pet, creature) ;}
+		runTurn(creature, creatureTarget) ;
 		
 	}
 		

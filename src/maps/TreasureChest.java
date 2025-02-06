@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
-import components.Hitbox;
 import components.HitboxRectangle;
 import items.Item;
 import utilities.Util;

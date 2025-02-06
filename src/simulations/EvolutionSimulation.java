@@ -25,7 +25,6 @@ import attributes.PersonalAttributes;
 import components.GameButton;
 import components.IconFunction;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
@@ -798,7 +797,7 @@ public abstract class EvolutionSimulation
 		
 	}
 	
-	public static void run(Point mousePos, DrawPrimitives DP)
+	public static void run(Point mousePos)
 	{
 		player.takeBloodAndPoisonDamage() ;
 		player.activateSpellCounters() ;
@@ -828,7 +827,7 @@ public abstract class EvolutionSimulation
 			{
 				EvolutionSimulation.playerAutoFight() ;
 			}
-			Battle.runBattle(player, pet, player.getOpponent(), DP) ;
+			Battle.runBattle(player, pet, player.getOpponent()) ;
 			if (!player.isAlive() | !player.getOpponent().isAlive())
 			{
 				Battle.finishBattle(player, pet, player.getOpponent()) ;
@@ -856,12 +855,12 @@ public abstract class EvolutionSimulation
 		{
 			EvolutionSimulation.checkBattleRepeat() ;
 		}
-		EvolutionSimulation.displayInterface(mousePos, DP) ;
+		EvolutionSimulation.displayInterface(mousePos) ;
 		if (player.isInBattle())
 		{
-			if (player.isDefending()) { player.displayDefending(DP) ;}
-			if (pet != null && pet.isDefending()) { pet.displayDefending(DP) ;}
-			if (player.getOpponent().isDefending()) { player.getOpponent().displayDefending(DP) ;}
+			if (player.isDefending()) { player.displayDefending() ;}
+			if (pet != null && pet.isDefending()) { pet.displayDefending() ;}
+			if (player.getOpponent().isDefending()) { player.getOpponent().displayDefending() ;}
 		}
 		if (player.shouldLevelUP())
 		{
@@ -874,7 +873,7 @@ public abstract class EvolutionSimulation
 				pet.levelUp() ;
 			}
 		}
-		player.showWindows(pet, mousePos, DP) ;
+		player.showWindows(pet, mousePos) ;
 
 		if (playerOpponent != null)
 		{
@@ -882,11 +881,11 @@ public abstract class EvolutionSimulation
 			playerOpponent.activateCounters() ;
 			if (playerOpponent.getAttWindow().isOpen())
 			{
-				CreatureType.attWindow.display(playerOpponent.getType(), DP) ;
+				CreatureType.attWindow.display(playerOpponent.getType()) ;
 			}
 		}
 
-		Animation.playAll(DP) ;
+		Animation.playAll() ;
 		player.resetAction() ;
 	}
 	
@@ -962,7 +961,7 @@ public abstract class EvolutionSimulation
 		battleClock = System.nanoTime() - battleClock ;
 	}
 
-	public static void drawBattleStatictics(Point pos, DrawPrimitives DP)
+	public static void drawBattleStatictics(Point pos)
 	{
 		Font textFont = new Font(font.getName(), font.getStyle(), 11) ;
 		Color textColor = Game.palette[0] ;
@@ -974,13 +973,13 @@ public abstract class EvolutionSimulation
 	    {
 	    	String attName = (String) it.next() ;
 	    	double attValue = stats.get(attName) ;
-	    	DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + ": " + attValue, textFont, textColor) ;
+	    	Game.DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + ": " + attValue, textFont, textColor) ;
 			i += 1;
 	    }
 
 	}
 	
-	public static void drawDerivedBattleAttributes(Point pos, LiveBeing attacker, LiveBeing defender, DrawPrimitives DP)
+	public static void drawDerivedBattleAttributes(Point pos, LiveBeing attacker, LiveBeing defender)
 	{
 		Font textFont = new Font(font.getName(), font.getStyle(), 11) ;
 		Color textColor = Game.palette[0] ;
@@ -1039,7 +1038,7 @@ public abstract class EvolutionSimulation
 	    {
 	    	String attName = (String) it.next() ;
 	    	double attValue = Math.round(100 * atts.get(attName)) / 100.0 ;
-	    	DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + attValue, textFont, textColor) ;
+	    	Game.DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + attValue, textFont, textColor) ;
 			i += 1;
 	    }
 	}
@@ -1054,78 +1053,78 @@ public abstract class EvolutionSimulation
 		
 	}
 	
-	public static void drawBar(Point pos, int currentHeight, int maxHeight, Color color, DrawPrimitives DP)
+	public static void drawBar(Point pos, int currentHeight, int maxHeight, Color color)
 	{
 		int width = 10 ;
-		DP.drawRect(pos, Align.bottomLeft, new Dimension(width, currentHeight), color, null) ;
-		DP.drawRect(pos, Align.bottomLeft, new Dimension(width, maxHeight), null, color) ;
+		Game.DP.drawRect(pos, Align.bottomLeft, new Dimension(width, currentHeight), color, null) ;
+		Game.DP.drawRect(pos, Align.bottomLeft, new Dimension(width, maxHeight), null, color) ;
 	}
 	
-	public static void displayBattleStats(DrawPrimitives DP)
+	public static void displayBattleStats()
 	{
 		Point pos = new Point(10, 400) ;
 		int barsHeight = 50 ;
 		
 		int numberOpponentsToPlayerLevelUp = PersonalAttributes.numberFightsToLevelUp(player.getExp().getCurrentValue(), player.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), player.getExp().getMultiplier()) ;
-		DP.drawText(Util.Translate(pos, 170, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.palette[5]);
+		Game.DP.drawText(Util.Translate(pos, 170, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.palette[5]);
 
 		int playerExpBarSize = (int) (player.getExp().getRate() * barsHeight) ;
-		drawBar(Util.Translate(pos, 170, 70), playerExpBarSize, barsHeight, Game.palette[5], DP) ;
+		drawBar(Util.Translate(pos, 170, 70), playerExpBarSize, barsHeight, Game.palette[5]) ;
 		
 		if (pet != null)
 		{
 			int numberOpponentsToPetLevelUp = PersonalAttributes.numberFightsToLevelUp(pet.getExp().getCurrentValue(), pet.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), pet.getExp().getMultiplier()) ;
-			DP.drawText(Util.Translate(pos, 200, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Game.palette[2]);
+			Game.DP.drawText(Util.Translate(pos, 200, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Game.palette[2]);
 			
 			int petExpBarSize = (int) (pet.getExp().getRate() * barsHeight) ;
-			drawBar(Util.Translate(pos, 200, 70), petExpBarSize, barsHeight, Game.palette[2], DP) ;
+			drawBar(Util.Translate(pos, 200, 70), petExpBarSize, barsHeight, Game.palette[2]) ;
 		}
 		
 		String percPlayerWins = 1 <= numberFights ? " (" + Util.Round((100 * numberPlayerWins) / (double)numberFights, 2) + "%)" : "" ;
 		String percCreatureWins = 1 <= numberFights ? " (" + Util.Round((100 * numberCreatureWins) / (double)numberFights, 2) + "%)" : "" ;
-		DP.drawText(Util.Translate(pos, 0, 30), Align.bottomLeft, Draw.stdAngle, "total fights = " + numberFights, font, Game.palette[5]);
-		DP.drawText(Util.Translate(pos, 0, 50), Align.bottomLeft, Draw.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.palette[5]);
-		DP.drawText(Util.Translate(pos, 0, 70), Align.bottomLeft, Draw.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.palette[5]);
+		Game.DP.drawText(Util.Translate(pos, 0, 30), Align.bottomLeft, Draw.stdAngle, "total fights = " + numberFights, font, Game.palette[5]);
+		Game.DP.drawText(Util.Translate(pos, 0, 50), Align.bottomLeft, Draw.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.palette[5]);
+		Game.DP.drawText(Util.Translate(pos, 0, 70), Align.bottomLeft, Draw.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.palette[5]);
 
 	}
 		
-	public static void displayInterface(Point mousePos, DrawPrimitives DP)
+	public static void displayInterface(Point mousePos)
 	{
 		
-		DP.drawImage(screenImage, new Point(0, 0), Align.topLeft) ;
-		DP.drawText(new Point(300, 13), Align.center, Draw.stdAngle, "Simulador do jogo", font, Game.palette[0]) ;
+		Game.DP.drawImage(screenImage, new Point(0, 0), Align.topLeft) ;
+		Game.DP.drawText(new Point(300, 13), Align.center, Draw.stdAngle, "Simulador do jogo", font, Game.palette[0]) ;
 		
-		buttons.forEach(button -> button.display(0, true, mousePos, DP)) ;
+		buttons.forEach(button -> button.display(0, true, mousePos)) ;
 
-		playerOpponent.displayName(new Point(460, 300), Align.center, Color.yellow, DP);
-		playerOpponent.display(playerOpponent.getPos(), Scale.unit, DP);
-		playerOpponent.displayPowerBar(new Point(520, 360), DP) ;
-		drawDerivedBattleAttributes(new Point(310, 400), playerOpponent, player, DP) ;
+		playerOpponent.displayName(new Point(460, 300), Align.center, Color.yellow);
+		playerOpponent.display(playerOpponent.getPos(), Scale.unit);
+		playerOpponent.displayPowerBar(new Point(520, 360)) ;
+		drawDerivedBattleAttributes(new Point(310, 400), playerOpponent, player) ;
 		
 		if (player.isAlive())
 		{
-			player.display(player.getPos(), new Scale(1.8, 1.8), Directions.right, false, DP) ;
-			drawDerivedBattleAttributes(new Point(100, 170), player, playerOpponent, DP) ;
+			player.display(player.getPos(), new Scale(1.8, 1.8), Directions.right, false) ;
+			drawDerivedBattleAttributes(new Point(100, 170), player, playerOpponent) ;
 		}
 		
 		if (pet != null && pet.isAlive())
 		{
-			pet.display(pet.getPos(), Scale.unit, DP) ;
-			drawDerivedBattleAttributes(new Point(440, 170), pet, playerOpponent, DP) ;
+			pet.display(pet.getPos(), Scale.unit) ;
+			drawDerivedBattleAttributes(new Point(440, 170), pet, playerOpponent) ;
 		}
 		
-		drawBattleStatictics(new Point(440, 400), DP) ;
+		drawBattleStatictics(new Point(440, 400)) ;
 
 		double battleTime = Math.round(100 * (battleClock) * Math.pow(10, -9)) / 100.0 ;
 		if (player.isInBattle())
 		{
 			battleTime = Math.round(100 * (System.nanoTime() - battleClock) * Math.pow(10, -9)) / 100.0 ;
-			DP.drawImage(fightingImage, new Point(300, 240), Align.center) ;
+			Game.DP.drawImage(fightingImage, new Point(300, 240), Align.center) ;
 		}
-		DP.drawText(new Point(10, 410), Align.centerLeft, Draw.stdAngle, "Battle time: " + battleTime + "s", font, Game.palette[0]) ;
+		Game.DP.drawText(new Point(10, 410), Align.centerLeft, Draw.stdAngle, "Battle time: " + battleTime + "s", font, Game.palette[0]) ;
 		
 		
-		displayBattleStats(DP) ;
+		displayBattleStats() ;
 		
 	}
 

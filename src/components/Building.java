@@ -5,18 +5,19 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Draw;
+import graphics2.Drawable;
 import main.Game;
 import main.TextCategories;
 import utilities.Util;
 import utilities.UtilS;
 
-public class Building
+public class Building implements Drawable
 {
 	private BuildingType type ;
 	private Point pos ;
@@ -87,58 +88,63 @@ public class Building
 		}
 	}
 	
-	public void displayNPCs(Hitbox playerHitbox, DrawPrimitives DP)
+	public void displayNPCs(Hitbox playerHitbox)
 	{
 		if (npcs == null) { return ;}
 		
 		for (NPCs npc : npcs)
 		{
-			npc.display(playerHitbox, DP) ;
+			npc.display(playerHitbox) ;
 		}
 	}
 	
-	public void displaySignMessage(int cityID, DrawPrimitives DP)
+	public void displaySignMessage(int cityID)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		Point boardPos = Util.Translate(pos, type.getImage().getWidth(null), 0) ;
 		Point messagePos = Util.Translate(boardPos, 12, 15 - signBoard.getHeight(null)) ;
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
-//		DP.drawRoundRect(pos, Align.topLeft, new Dimension(230, 80), 2, Game.colorPalette[3], true) ;
-		DP.drawImage(signBoard, boardPos, Align.bottomLeft, 0.85) ;
+//		Game.DP.drawRoundRect(pos, Align.topLeft, new Dimension(230, 80), 2, Game.colorPalette[3], true) ;
+		Game.DP.drawImage(signBoard, boardPos, Align.bottomLeft, 0.85) ;
 		Draw.fitText(messagePos, font.getSize() + 2, Align.bottomLeft, message, font, 40, Game.palette[0]) ;	
 	}
 	
-	public void display(Hitbox playerHitbox, Point playerPos, int cityID, DrawPrimitives DP)
+	public void display(Hitbox playerHitbox, Point playerPos, int cityID)
 	{
 		if (type.getName().equals(BuildingNames.sign) & isInside(playerPos))
 		{
-			displaySignMessage(cityID, DP) ;
+			displaySignMessage(cityID) ;
 		}
 		
 		if (type.getInsideImage() == null)
 		{
-			DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomLeft) ;
-			displayNPCs(playerHitbox, DP) ;
+			Game.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
+			displayNPCs(playerHitbox) ;
 			
 			return ;
 		}
 		
 		if (!isInside(playerPos))
 		{
-			DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomLeft) ;
+			Game.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
 			
 			
 			return ;
 		}
 
-		DP.drawImage(type.getInsideImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomLeft) ;
-		displayNPCs(playerHitbox, DP) ;
+		Game.DP.drawImage(type.getInsideImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
+		displayNPCs(playerHitbox) ;
 		
 		for (Collider collider : colliders)
 		{
-			DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Game.palette[0], null) ;
+			Game.DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Game.palette[0], null) ;
 		}
 		
+	}
+
+	public void display()
+	{
+		display(Game.getPlayer().getHitbox(), Game.getPlayer().getPos(), Arrays.asList(Game.getMaps()).indexOf(Game.getPlayer().getMap())) ;
 	}
 
 

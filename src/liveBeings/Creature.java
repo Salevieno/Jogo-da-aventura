@@ -18,7 +18,6 @@ import attributes.PersonalAttributes;
 import components.HitboxCircle;
 import components.HitboxRectangle;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Draw;
 import items.Item;
@@ -142,38 +141,43 @@ public class Creature extends LiveBeing
 		return null ;
 	}
 	
-	public void displayName(Point pos, Align alignment, Color color, DrawPrimitives DP)
+	public void displayName(Point pos, Align alignment, Color color)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		DP.drawText(pos, alignment, Draw.stdAngle, name, font, color) ;
+		Game.DP.drawText(pos, alignment, Draw.stdAngle, name, font, color) ;
 	}
 	
-	public void display(Point pos, Scale scale, DrawPrimitives DP)
+	public void display(Point pos, Scale scale)
 	{
 		if (state.equals(LiveBeingStates.moving))
 		{
-			type.movingAni.displayMoving(dir, pos, 0, scale, Align.center, DP) ;
+			type.movingAni.displayMoving(dir, pos, 0, scale, Align.center) ;
 		}
 		else
 		{
-			type.movingAni.displayIdle(pos, 0, scale, Align.center, DP) ;
+			type.movingAni.displayIdle(pos, 0, scale, Align.center) ;
 		}
 		if (isDrunk())
 		{
-			displayDrunk(DP) ;
+			displayDrunk() ;
 		}
-//		displayAttributes(0, DP) ;
-		displayStatus(DP) ;
+//		displayAttributes(0) ;
+		displayStatus() ;
 		if (Game.displayHitboxes)
 		{			
-			hitbox.display(DP);
+			hitbox.display();
 		}
+	}	
+	
+	public void display()
+	{
+		display(pos, Scale.unit) ;
 	}
 	
-	public void displayAdditionalInfo(DrawPrimitives DP)
+	public void displayAdditionalInfo()
 	{
-		DP.drawText(new Point(pos.x, pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
-		DP.drawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
+		Game.DP.drawText(new Point(pos.x, pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
+		Game.DP.drawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
 	}
 	
 	public void setRandomPos()

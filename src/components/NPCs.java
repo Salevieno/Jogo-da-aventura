@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 import attributes.PersonalAttributes;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Draw;
 import items.Equip;
@@ -251,11 +250,11 @@ public class NPCs
 	
 	public static void renewStocks() { renewStocks = true ;}
 	
-	public void action(Player player, Pet pet, Point mousePos, DrawPrimitives DP)
+	public void action(Player player, Pet pet, Point mousePos)
 	{
 		
-		speak(pos, DP) ;
-		drawOptions(Util.Translate(pos, 20, -10), DP) ;
+		speak(pos) ;
+		drawOptions(Util.Translate(pos, 20, -10)) ;
 				
 		String playerAction = player.getCurrentAction() ;
 		
@@ -269,13 +268,13 @@ public class NPCs
 		{
 			case alchemist: case woodcrafter: case crafter:
 			{
-				crafterAction(player, playerBag, playerAction, mousePos, (CraftWindow) window, DP) ;
+				crafterAction(player, playerBag, playerAction, mousePos, (CraftWindow) window) ;
 				
 				break ;
 			}
 			case banker:
 			{
-				bankerAction(player, (BankWindow) window, playerAction, DP) ;
+				bankerAction(player, (BankWindow) window, playerAction) ;
 
 				break ;
 			}
@@ -304,7 +303,7 @@ public class NPCs
 
 				((ElementalWindow) window).setItems(listEquips, ElementalWindow.spheresInBag(playerBag)) ;
 				
-				elementalAction(player, playerBag, (ElementalWindow) window, player.getCurrentAction(), DP) ;
+				elementalAction(player, playerBag, (ElementalWindow) window, player.getCurrentAction()) ;
 
 				break ;
 			}
@@ -318,7 +317,7 @@ public class NPCs
 		    	
 		    	window = new ShoppingWindow(Game.getItems(itemIDs)) ;
 		    	
-		    	sellerAction(player, playerAction, (ShoppingWindow) window, DP) ;
+		    	sellerAction(player, playerAction, (ShoppingWindow) window) ;
 		    	
 		    	break ;
 			}
@@ -329,7 +328,7 @@ public class NPCs
 		    	
 		    	window = new ShoppingWindow(Game.getItems(itemIDs)) ;
 		    	
-		    	sellerAction(player, playerAction, (ShoppingWindow) window, DP) ;
+		    	sellerAction(player, playerAction, (ShoppingWindow) window) ;
 		    	
 		    	break ;
 				
@@ -348,7 +347,7 @@ public class NPCs
 		    	
 		    	window = new ShoppingWindow(Game.getItems(itemids)) ;
 		    	
-		    	sellerAction(player, playerAction, (ShoppingWindow) window, DP) ;
+		    	sellerAction(player, playerAction, (ShoppingWindow) window) ;
 				
 		    	break ;
 				
@@ -361,7 +360,7 @@ public class NPCs
 				((ForgeWindow) window).setItemsForForge(equipsForForge);
 				((ForgeWindow) window).setBag(playerBag);
 				
-				forgerAction(player, playerBag, playerAction, (ForgeWindow) window, DP) ;
+				forgerAction(player, playerBag, playerAction, (ForgeWindow) window) ;
 				
 				break ;
 			}
@@ -379,7 +378,7 @@ public class NPCs
 				}
 				window = player.getSpellsTreeWindow() ;
 				
-				masterAction(player, player.getCurrentAction(), mousePos, (SpellsTreeWindow) window, DP) ;
+				masterAction(player, player.getCurrentAction(), mousePos, (SpellsTreeWindow) window) ;
 
 				break ;
 			}
@@ -446,7 +445,7 @@ public class NPCs
 		}
 	}
 	
-	public void speak(Point pos, DrawPrimitives DP)
+	public void speak(Point pos)
 	{
 		
 		if (type.getSpeech() == null) { return ;}
@@ -464,7 +463,7 @@ public class NPCs
 		
 	}
 
-	public void drawOptions(Point windowPos, DrawPrimitives DP)
+	public void drawOptions(Point windowPos)
 	{
 		if (type.getOptions() == null) { return ;}
 		if (type.getOptions().size() <= menu) { return ;}
@@ -475,19 +474,19 @@ public class NPCs
 		if (options == null) { return ;}		
 		if (options.size() <= 0) { return ;}
 		
-		DP.drawImage(choicesWindow, windowPos, Align.topLeft) ;
+		Game.DP.drawImage(choicesWindow, windowPos, Align.topLeft) ;
 		
 		int sy = NPCfont.getSize() + 5 ;
 		for (int i = 0 ; i <= options.size() - 1 ; i += 1)
 		{
 			Point textPos = Util.Translate(windowPos, 5, 5 + i * sy) ;
 			Color textColor = i == selOption ? selColor : stdColor ;
-			DP.drawText(textPos, Align.topLeft, Draw.stdAngle, options.get(i), NPCfont, textColor) ;
+			Game.DP.drawText(textPos, Align.topLeft, Draw.stdAngle, options.get(i), NPCfont, textColor) ;
 		}
 		
 	}
 
-	private void bankerAction(Player player, BankWindow bankWindow, String action, DrawPrimitives DP)
+	private void bankerAction(Player player, BankWindow bankWindow, String action)
 	{
 
 		if (action == null) { return ;}
@@ -517,7 +516,7 @@ public class NPCs
 		}
 	}
 
-	private void crafterAction(Player player, BagWindow bag, String action, Point mousePos, CraftWindow craftWindow, DrawPrimitives DP)
+	private void crafterAction(Player player, BagWindow bag, String action, Point mousePos, CraftWindow craftWindow)
 	{
 		if (action == null) { return ;}
 
@@ -557,7 +556,7 @@ public class NPCs
 
 	}
 
-	private void elementalAction(Player player, BagWindow bag, ElementalWindow elementalWindow, String action, DrawPrimitives DP)
+	private void elementalAction(Player player, BagWindow bag, ElementalWindow elementalWindow, String action)
 	{
 		
 		if (action == null) { return ;}
@@ -569,7 +568,7 @@ public class NPCs
 		
 	}
 	
-	private void forgerAction(Player player, BagWindow bag, String action, ForgeWindow forgeWindow, DrawPrimitives DP)
+	private void forgerAction(Player player, BagWindow bag, String action, ForgeWindow forgeWindow)
 	{
 
 		if (action == null) { return ;}
@@ -581,7 +580,7 @@ public class NPCs
 		
 	}
 
-	private void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree, DrawPrimitives DP)
+	private void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree)
 	{
 		if (50 <= player.getLevel() & player.getProJob() == 0 & menu == 3)
 		{
@@ -687,7 +686,7 @@ public class NPCs
 		
 	}
 	
-	private void sellerAction(Player player, String action, ShoppingWindow shopping, DrawPrimitives DP)
+	private void sellerAction(Player player, String action, ShoppingWindow shopping)
 	{
 
 		if (action == null) { return ;}
@@ -704,10 +703,10 @@ public class NPCs
 		
 	}
 
-	public void display(Hitbox playerHitbox, DrawPrimitives DP)
+	public void display(Hitbox playerHitbox)
 	{
 		
-		DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
+		Game.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
 		if (hitbox.overlaps(playerHitbox))
 		{
 			Point buttonPos = Util.Translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;
@@ -716,7 +715,7 @@ public class NPCs
 		
 		if (Game.displayHitboxes)
 		{
-			hitbox.display(DP) ;
+			hitbox.display() ;
 		}
 		
 	}

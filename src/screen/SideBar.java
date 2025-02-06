@@ -12,7 +12,6 @@ import components.GameButton;
 import components.IconFunction;
 import components.QuestSkills;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Draw;
 import liveBeings.HotKeysBar;
 import liveBeings.Pet;
@@ -126,7 +125,7 @@ public abstract class SideBar
 		}
 	}
 	
-	private static void displayKeys(DrawPrimitives DP)
+	private static void displayKeys()
 	{
 		String[] keys = new String[] {PlayerActions.attWindow.getKey(), PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null} ;
 		Dimension textSize = new Dimension(12, 12) ;
@@ -138,22 +137,22 @@ public abstract class SideBar
 			if (keys[i] == null | !button.isActive()) { i += 1 ; continue ;}
 
 			Point rectCenter = Util.Translate(button.getTopLeftPos(), 5, 0) ;
-			DP.drawRoundRect(rectCenter, Align.center, textSize, 1, Game.palette[3], Game.palette[0], true, 2, 2) ;
-			DP.drawText(rectCenter, Align.center, Draw.stdAngle, keys[i], font, textColor) ;
+			Game.DP.drawRoundRect(rectCenter, Align.center, textSize, 1, Game.palette[3], Game.palette[0], true, 2, 2) ;
+			Game.DP.drawText(rectCenter, Align.center, Draw.stdAngle, keys[i], font, textColor) ;
 			i += 1 ;
 		}
 	}
 	
-	public static void display(Player player, Pet pet, Point mousePos, DrawPrimitives DP)
+	public static void display(Player player, Pet pet, Point mousePos)
 	{
 		
-		DP.drawRect(barPos, Align.topLeft, size, Game.palette[0], null) ;
+		Game.DP.drawRect(barPos, Align.topLeft, size, Game.palette[0], null) ;
 		
-		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos, DP)) ;
-		displayKeys(DP) ;
+		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos)) ;
+		displayKeys() ;
 		
-		SpellsBar.display(player.getMp().getCurrentValue(), mousePos, DP);
-		HotKeysBar.display(player.getHotItems(), mousePos, DP) ;
+		SpellsBar.display(player.getMp().getCurrentValue(), mousePos);
+		HotKeysBar.display(player.getHotItems(), mousePos) ;
 
 	}
 	

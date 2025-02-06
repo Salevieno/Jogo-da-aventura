@@ -5,7 +5,6 @@ import java.awt.Image;
 import java.awt.Point;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import main.Game;
 import maps.GameMap;
@@ -197,17 +196,17 @@ public class MapWindow extends GameWindow
 		return new Point(offsetX, offsetY) ;
 	}
 	
-	public void displayPlayer(Point mapPos, Dimension screenSize, Scale scale, DrawPrimitives DP)
+	public void displayPlayer(Point mapPos, Dimension screenSize, Scale scale)
 	{
 
 		double playerRelXPos = playerPos.x / (double) Game.getScreen().getSize().width ;
 		double playerRelYPos = playerPos.y / (double) (Game.getScreen().getSize().height) ;
 		Point circlePos = Util.Translate(mapPos, (int) (scale.x * screenSize.width * playerRelXPos),
 				(int) (-scale.y * screenSize.height * (1 - playerRelYPos))) ;
-		DP.drawCircle(circlePos, 5, 0, Game.palette[6], null) ;
+		Game.DP.drawCircle(circlePos, 5, 0, Game.palette[6], null) ;
 	}
 	
-	public void display(Point mousePos, DrawPrimitives DP)
+	public void display(Point mousePos)
 	{
 		if (currentMap == null) { return ;}
 		
@@ -220,7 +219,7 @@ public class MapWindow extends GameWindow
 		Point spacing = new Point((int) ((640 * scale.x - mapSize.width)), (int) ((480 * scale.y - mapSize.height))) ;
 		GameMap[] maps = null ;
 
-		DP.drawImage(image, windowPos, Align.topLeft) ;
+		Game.DP.drawImage(image, windowPos, Align.topLeft) ;
 
 		switch (currentMap.getContinent())
 		{
@@ -253,15 +252,15 @@ public class MapWindow extends GameWindow
 			
 			Point mapPos = Util.Translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
 					size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
-			map.display(mapPos, scale, DP) ;
+			map.display(mapPos, scale) ;
 			Point textPos = Util.Translate(mapPos, (int) (scale.x * screenSize.width / 2),
 					(int) (-scale.y * screenSize.height / 2)) ;
-			DP.drawText(textPos, Align.center, 0, map.getName(), stdFont, Game.palette[0]) ;
+			Game.DP.drawText(textPos, Align.center, 0, map.getName(), stdFont, Game.palette[0]) ;
 			
 			if (!map.equals(currentMap)) { continue ;}
 			if (playerPos == null) { continue ;}
 			
-			displayPlayer(mapPos, screenSize, scale, DP) ;
+			displayPlayer(mapPos, screenSize, scale) ;
 		}
 	}
 }

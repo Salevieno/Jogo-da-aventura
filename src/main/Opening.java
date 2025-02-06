@@ -13,15 +13,11 @@ import javax.sound.sampled.Clip;
 import components.GameButton;
 import components.IconFunction;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Draw;
 import graphics2.Gif;
-import items.Equip;
-import liveBeings.Pet;
 import liveBeings.Player;
 import screen.Screen;
-import screen.SideBar;
 import utilities.LiveInput;
 import utilities.Util;
 import utilities.UtilS;
@@ -284,68 +280,68 @@ public abstract class Opening
 		
 	}
 	
-	private static void displaySlot(Point pos, int slotNumber, DrawPrimitives DP)
+	private static void displaySlot(Point pos, int slotNumber)
 	{
-//		DP.DrawImage(LoadingSlot, pos, Align.topLeft) ;
+//		Game.DP.DrawImage(LoadingSlot, pos, Align.topLeft) ;
 		
 		Player player = players[slotNumber] ;
 		double angle = Draw.stdAngle ;
 		Color textColor = Game.palette[0] ;
 		
 		Point textPos = Util.Translate(pos, 75, 10) ;
-		DP.drawText(textPos, Align.center, angle, "Slot " + (slotNumber + 1), font, textColor) ;
+		Game.DP.drawText(textPos, Align.center, angle, "Slot " + (slotNumber + 1), font, textColor) ;
 
 		Point namePos = Util.Translate(pos, 75, 30) ;
-		DP.drawText(namePos, Align.center, angle, player.getName(), smallFont, textColor) ;
+		Game.DP.drawText(namePos, Align.center, angle, player.getName(), smallFont, textColor) ;
 		
 		Point levelPos = Util.Translate(pos, 10, 45) ;
-		DP.drawText(levelPos, Align.centerLeft, angle, "Nível: " + player.getLevel(), smallFont, textColor) ;
+		Game.DP.drawText(levelPos, Align.centerLeft, angle, "Nível: " + player.getLevel(), smallFont, textColor) ;
 		
 	}
 	
-	private static void displayLoadingSlot(Player player, Point mousePos, DrawPrimitives DP)
+	private static void displayLoadingSlot(Player player, Point mousePos)
 	{
 		for (int i = 0 ; i <= loadSlotButtons.size() - 1 ; i += 1)
 		{
 			if (!loadSlotButtons.get(i).isActive()) { continue ;}
 			
-			loadSlotButtons.get(i).display(0, true, mousePos, DP) ;
-			displaySlot(new Point(60 + 200 * i, 100), i, DP) ;
+			loadSlotButtons.get(i).display(0, true, mousePos) ;
+			displaySlot(new Point(60 + 200 * i, 100), i) ;
 		}
 	}
 	
-	public static void displayLoadingScreen(String action, Point mousePos, DrawPrimitives DP)
+	public static void displayLoadingScreen(String action, Point mousePos)
 	{
 //		Color textColor = Game.palette[0] ;
 //		Point moveInfoTopLeft = new Point(40, 60) ;
-//		DP.drawText(Util.Translate(moveInfoTopLeft, 100, 0), Align.center, 0, "Principais ações", font, textColor) ;
+//		Game.DP.drawText(Util.Translate(moveInfoTopLeft, 100, 0), Align.center, 0, "Principais ações", font, textColor) ;
 //		
 //		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().movingRightGif, SideBar.getIconImages()[2], Game.getPlayer().getMovingAni().idleGif, SideBar.getIconImages()[1]} ;
 //		String[] moveInfoText = new String[] {"Moving: W A S D ou setas", "Mochila: B", "Janela do jogador: C", "Quests: Q"} ;
 //		for (int i = 0 ; i <= moveInfoImages.length - 1; i += 1)
 //		{
 //			Point imageCenterLeft = Util.Translate(moveInfoTopLeft, 0, 100 + 50 * i) ;
-//			DP.drawImage(moveInfoImages[i], imageCenterLeft, Align.center);
-//			DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, moveInfoText[i], smallFont, textColor) ;
+//			Game.DP.drawImage(moveInfoImages[i], imageCenterLeft, Align.center);
+//			Game.DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, moveInfoText[i], smallFont, textColor) ;
 //		}
 //		
 //		
 //		Point atkInfoTopLeft = new Point(380, 60) ;
-//		DP.drawText(Util.Translate(atkInfoTopLeft, 120, 0), Align.center, 0, "Ações de luta", font, textColor) ;
+//		Game.DP.drawText(Util.Translate(atkInfoTopLeft, 120, 0), Align.center, 0, "Ações de luta", font, textColor) ;
 //		
 //		Image[] atkInfoImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Player.MagicBlissGif} ;
 //		String[] atkInfoText = new String[] {"Attack: Y", "Defense: U", "Spells: 0, 1...F11, F12"} ;
 //		for (int i = 0 ; i <= atkInfoImages.length - 1; i += 1)
 //		{
 //			Point imageCenterLeft = Util.Translate(atkInfoTopLeft, 0, 100 + 50 * i) ;
-//			DP.drawImage(atkInfoImages[i], imageCenterLeft, Align.center);
-//			DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, atkInfoText[i], smallFont, textColor) ;
+//			Game.DP.drawImage(atkInfoImages[i], imageCenterLeft, Align.center);
+//			Game.DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, atkInfoText[i], smallFont, textColor) ;
 //		}
 //		
-//		DP.drawImage(LoadingEnfeite, new Point(0, 0), Align.topLeft) ;
+//		Game.DP.drawImage(LoadingEnfeite, new Point(0, 0), Align.topLeft) ;
 		
-		DP.drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().sizeWithSidebar(), Game.palette[0], null) ;
-		DP.drawImage(petImage0, Game.getScreen().getCenter(), Align.center) ;
+		Game.DP.drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().sizeWithSidebar(), Game.palette[0], null) ;
+		Game.DP.drawImage(petImage0, Game.getScreen().getCenter(), Align.center) ;
 		
 		if (!loadingIsOver())
 		{
@@ -353,14 +349,14 @@ public abstract class Opening
 			Point loadingBarCenterLeft = new Point(120, 400) ;
 			Dimension loadingBarSize = new Dimension(400, 30) ;
 			Dimension loadedBarSize = new Dimension(loadingStep * loadingBarSize.width / 11, loadingBarSize.height) ;
-			DP.drawImage(LoadingGif, loadingTextCenter, Align.center) ;
-			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, Game.palette[0], true);
-			DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Game.palette[18], Game.palette[0], false);
+			Game.DP.drawImage(LoadingGif, loadingTextCenter, Align.center) ;
+			Game.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, Game.palette[0], true);
+			Game.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Game.palette[18], Game.palette[0], false);
 		}
 
 		if (startButton.isActive())
 		{
-			startButton.display(0, true, mousePos, DP) ;
+			startButton.display(0, true, mousePos) ;
 			if (startButton.isClicked(mousePos, action))
 			{
 				startButton.act() ;
@@ -368,7 +364,7 @@ public abstract class Opening
 		}
 	}
 	
-	private static void displayJobDescription(DrawPrimitives DP)
+	private static void displayJobDescription()
 	{
 		Color textColor = Game.palette[0] ;
 		Color bgColor = Game.palette[3] ;
@@ -377,38 +373,38 @@ public abstract class Opening
 		{
 			Point rectPos = Game.getScreen().pos(0.04 + i * 0.2, 0.4) ;
 			Point textPos = Util.Translate(rectPos, 5, 5) ;
-			DP.drawRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, Game.palette[0], true) ;
+			Game.DP.drawRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, Game.palette[0], true) ;
 			Draw.fitText(textPos, 10, Align.topLeft, description[i], smallFont, 18, textColor) ;
 		}
 	}
 	
-	public static void display(String action, Point mousePos, DrawPrimitives DP)
+	public static void display(String action, Point mousePos)
 	{
 		Point textPos = Game.getScreen().pos(0.5, 0.3) ;
 		Color textColor = Game.palette[0] ;
 		
-		DP.drawImage(backgroundImage, new Point(0, 0), 0, Scale.unit, Align.topLeft) ;		
+		Game.DP.drawImage(backgroundImage, new Point(0, 0), 0, Scale.unit, Align.topLeft) ;		
 		for (GameButton button : buttons)
 		{
 			if (!button.isActive()) { continue ;}
 			
-			button.display(0, false, mousePos, DP) ;
+			button.display(0, false, mousePos) ;
 		}
 		
 		if (step == 1)
 		{
-			liveInput.displayTypingField(Game.getScreen().pos(0.34, 0.36), false, DP) ;
+			liveInput.displayTypingField(Game.getScreen().pos(0.34, 0.36), false) ;
 		}
 		if (step == 4)
 		{
-			displayJobDescription(DP) ;
+			displayJobDescription() ;
 		}
 		
 		if (stepMessage.length - 1 <= step) { return ;}
-		DP.drawText(textPos, Align.center, Draw.stdAngle, stepMessage[step], font, textColor) ;
+		Game.DP.drawText(textPos, Align.center, Draw.stdAngle, stepMessage[step], font, textColor) ;
 	}
 
-	public static void run(Player player, Point mousePos, DrawPrimitives DP)
+	public static void run(Player player, Point mousePos)
 	{
 		if (!openingGif.hasPlayed())
 		{
@@ -425,11 +421,11 @@ public abstract class Opening
 		act(player.getCurrentAction(), mousePos) ;
 		if (newGame)
 		{
-			display(player.getCurrentAction(), mousePos, DP) ;
+			display(player.getCurrentAction(), mousePos) ;
 		}
 		else
 		{
-			displayLoadingSlot(player, mousePos, DP) ;
+			displayLoadingSlot(player, mousePos) ;
 		}
 		player.resetAction() ;
 	}

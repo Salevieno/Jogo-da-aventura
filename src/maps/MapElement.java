@@ -5,21 +5,19 @@ import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import components.Collider;
 import components.Hitbox;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Draw;
+import graphics2.Drawable;
 import main.Game;
 import utilities.Util;
 import utilities.UtilS;
 
-public class MapElement
+public class MapElement implements Drawable
 {
 	private int id ;
 	private String name ;
@@ -47,7 +45,7 @@ public class MapElement
 
 	public int getid() {return id ;}
 	public String getName() {return name ;}
-	public Point getPos() {return topLeft ;}
+	public Point getPos() {return Util.getPosAt(topLeft, Align.topCenter, Align.bottomCenter, Util.getSize(image)) ;}
 	public Hitbox getHitbox() { return hitbox ;}
 	public List<Collider> getColliders() {return colliders ;}
 	public void setid(int I) {id = I ;}
@@ -98,23 +96,28 @@ public class MapElement
 		}
 	}
 	
-	public void displayColliders(DrawPrimitives DP)
+	public void displayColliders()
 	{
 		for (Collider collider : colliders)
 		{
-			DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Color.red, null) ;
+			Game.DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Color.red, null) ;
 		}
 	}
 	
-	public void display(Point playerPos, DrawPrimitives DP)
+	public void display(Point playerPos)
 	{
 		double alpha = playerIsBehind(playerPos) ? 0.5 : 1.0 ;
 		
-		DP.drawImage(image, topLeft, Draw.stdAngle, Scale.unit, false, false, Align.topLeft, alpha) ;
+		Game.DP.drawImage(image, topLeft, Draw.stdAngle, Scale.unit, false, false, Align.topLeft, alpha) ;
 		if (Game.displayHitboxes && hitbox != null)
 		{
-			hitbox.display(DP);
+			hitbox.display();
 		}
 		
+	}
+	
+	public void display()
+	{
+		display(Game.getPlayer().getPos()) ;
 	}
 }

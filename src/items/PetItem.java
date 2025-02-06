@@ -7,7 +7,6 @@ import java.util.List;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
 import graphics2.Draw;
@@ -152,7 +151,7 @@ public class PetItem extends Item
 //		BA.getSilence().incDuration(attBonus.getSilenceDuration() * mult) ;
 	}
 	
-	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	public void displayInfo(Point pos, Align align)
 	{
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}

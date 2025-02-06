@@ -67,7 +67,7 @@ public class GameTimer
 		}
 	}
 
-	public void display(Point botLeftPos, Align align, Color color, DrawPrimitives DP)
+	public void display(Point botLeftPos, Align align, Color color)
 	{
 		int stroke = DrawPrimitives.stdStroke ;
 		Dimension barSize = new Dimension(6, 24) ;
@@ -75,18 +75,18 @@ public class GameTimer
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate())) ;
 		Point rectPos = Util.Translate(botLeftPos, offset.width, offset.height) ;
 		
-		DP.drawRect(rectPos, align, barSize, stroke, null, Game.palette[0], 1.0) ;
-		DP.drawRect(rectPos, align, fillSize, stroke, color, null, 1.0) ;
+		Game.DP.drawRect(rectPos, align, barSize, stroke, null, Game.palette[0], 1.0) ;
+		Game.DP.drawRect(rectPos, align, fillSize, stroke, color, null, 1.0) ;
 	}
 	
-	public void display(Point botLeftPos, Color color, DrawPrimitives DP)
+	public void display(Point botLeftPos, Color color)
 	{
-		display(botLeftPos, Align.bottomLeft, Game.palette[18], DP) ;
+		display(botLeftPos, Align.bottomLeft, Game.palette[18]) ;
 	}
 	
-	public void display(Point botLeftPos, DrawPrimitives DP)
+	public void display(Point botLeftPos)
 	{
-		display(botLeftPos, Game.palette[18], DP) ;
+		display(botLeftPos, Game.palette[18]) ;
 	}
 	
 	public static void stopAll()

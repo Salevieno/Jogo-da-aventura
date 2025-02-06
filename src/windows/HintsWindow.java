@@ -6,7 +6,6 @@ import java.awt.Image;
 import java.awt.Point;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Draw;
 import main.Game;
@@ -37,7 +36,7 @@ public class HintsWindow extends GameWindow
 		stdNavigation(action);
 	}
 	
-	public void display(Point mousePos, DrawPrimitives DP)
+	public void display(Point mousePos)
 	{
 		String[] text = Game.allText.get(TextCategories.hints) ;
 		Point textPos = new Point(windowPos.x + 15, windowPos.y + 10) ;
@@ -46,12 +45,12 @@ public class HintsWindow extends GameWindow
 		int sy = font.getSize() + 2 ;
 		numberWindows = text.length - 6 ;
 		
-		DP.drawImage(image, windowPos, 0, Scale.unit, Align.topLeft, stdOpacity) ;
+		Game.DP.drawImage(image, windowPos, 0, Scale.unit, Align.topLeft, stdOpacity) ;
 		
-		DP.drawText(Util.Translate(windowPos, size.width / 2, 20), Align.center, angle, text[0], font, textColor) ;
-		DP.drawText(Util.Translate(textPos, 10, size.height - 35), Align.topLeft, angle, text[1], font, textColor) ;
-		DP.drawText(Util.Translate(textPos, (int)(0.9 * size.width), size.height - 35), Align.topRight, angle, text[2], font, textColor) ;
-		DP.drawText(Util.Translate(textPos, size.width / 2, size.height - 40), Align.center, angle, text[3], font, textColor) ;
+		Game.DP.drawText(Util.Translate(windowPos, size.width / 2, 20), Align.center, angle, text[0], font, textColor) ;
+		Game.DP.drawText(Util.Translate(textPos, 10, size.height - 35), Align.topLeft, angle, text[1], font, textColor) ;
+		Game.DP.drawText(Util.Translate(textPos, (int)(0.9 * size.width), size.height - 35), Align.topRight, angle, text[2], font, textColor) ;
+		Game.DP.drawText(Util.Translate(textPos, size.width / 2, size.height - 40), Align.center, angle, text[3], font, textColor) ;
 		Draw.fitText(Util.Translate(textPos, 0, 30), sy, Align.topLeft, text[window + 4], font, 70, textColor) ;
 		
 		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows - 1, stdOpacity) ;

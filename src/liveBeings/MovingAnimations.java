@@ -4,8 +4,8 @@ import java.awt.Image;
 import java.awt.Point;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
+import main.Game;
 import utilities.Directions;
 
 public class MovingAnimations
@@ -21,19 +21,19 @@ public class MovingAnimations
 		this.movingRightGif = movingRightGif ;
 	}
 	
-	public void displayIdle(Point pos, double angle, Scale scale, Align align, DrawPrimitives DP)
+	public void displayIdle(Point pos, double angle, Scale scale, Align align)
 	{
-		DP.drawImage(idleGif, pos, angle, scale, align) ;
+		Game.DP.drawImage(idleGif, pos, angle, scale, align) ;
 	}
 	
-	public void displayMoving(Directions direction, Point pos, double angle, Scale scale, Align align, DrawPrimitives DP)
+	public void displayMoving(Directions direction, Point pos, double angle, Scale scale, Align align)
 	{
 		switch (direction)
 		{
-			case up: DP.drawImage(movingUpGif, pos, angle, scale, align) ; break ;
-			case down: DP.drawImage(movingDownGif, pos, angle, scale, align) ; break ;
-			case left: DP.drawImage(movingLeftGif, pos, angle, scale, align) ; break ;
-			case right: DP.drawImage(movingRightGif, pos, angle, scale, align) ; break ;
+			case up: Game.DP.drawImage(movingUpGif, pos, angle, scale, align) ; break ;
+			case down: Game.DP.drawImage(movingDownGif, pos, angle, scale, align) ; break ;
+			case left: Game.DP.drawImage(movingLeftGif, pos, angle, scale, align) ; break ;
+			case right: Game.DP.drawImage(movingRightGif, pos, angle, scale, align) ; break ;
 		}
 	}
 }

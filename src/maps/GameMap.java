@@ -18,7 +18,6 @@ import components.Collider;
 import components.Hitbox;
 import components.NPCs;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import items.Fab;
 import items.GeneralItem;
@@ -486,35 +485,35 @@ public class GameMap
 		return null ;
 	}
  	
- 	public void displayElements(Point playerPos, DrawPrimitives DP)
+ 	public void displayElements(Point playerPos)
  	{ 		
  		if (mapElems == null) { return ;}
  		
- 		mapElems.forEach(mapElem -> mapElem.display(playerPos, DP)) ;
+ 		mapElems.forEach(mapElem -> mapElem.display(playerPos)) ;
  	}
  	
- 	public void displayBuildings(Hitbox playerHitbox, Point playerPos, int cityID, DrawPrimitives DP)
+ 	public void displayBuildings(Hitbox playerHitbox, Point playerPos, int cityID)
  	{
 		if (buildings == null) { return ;}
 		
-		buildings.forEach(building -> building.display(playerHitbox, playerPos, cityID, DP)) ;
+		buildings.forEach(building -> building.display(playerHitbox, playerPos, cityID)) ;
  	}
 	
-	public void displayNPCs(Hitbox playerHitbox, DrawPrimitives DP)
+	public void displayNPCs(Hitbox playerHitbox)
 	{
 		if (npcs == null) { return ;}
 
-		npcs.forEach(npc -> npc.display(playerHitbox, DP));
+		npcs.forEach(npc -> npc.display(playerHitbox));
 	}
 	
-	public void displayGroundTypes(DrawPrimitives DP)
+	public void displayGroundTypes()
 	{
  		if (groundTypes == null) { return ;}
  		
-		groundTypes.forEach(groundType -> groundType.display(DP)) ;
+		groundTypes.forEach(groundType -> groundType.display()) ;
 	}
 
-	public void displayInfoWindow(DrawPrimitives DP)
+	public void displayInfoWindow()
 	{
 
 		Point pos = new Point(200, 30) ;
@@ -523,17 +522,17 @@ public class GameMap
 		Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 		Font titleFont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		
-		DP.drawImage(infoWindow, pos, Align.topLeft) ;
+		Game.DP.drawImage(infoWindow, pos, Align.topLeft) ;
 		
 		Point titlePos = Util.Translate(pos, size.width / 2 + 5, 13) ;
-		DP.drawText(titlePos, Align.center, 0, name, titleFont, Game.palette[0]) ;
+		Game.DP.drawText(titlePos, Align.center, 0, name, titleFont, Game.palette[0]) ;
 		
 		Point diggingItemsPos = Util.Translate(pos, 10, 43) ;
-		DP.drawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Game.palette[0]) ;
+		Game.DP.drawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Game.palette[0]) ;
 		diggingItemsPos.y += 14 ;
 		for (Item item : diggingItems.keySet())
 		{
-			DP.drawText(diggingItemsPos, Align.centerLeft, 0, item.getName(), font, Game.palette[0]) ;
+			Game.DP.drawText(diggingItemsPos, Align.centerLeft, 0, item.getName(), font, Game.palette[0]) ;
 			diggingItemsPos.y += 10 ;
 		}
 		
@@ -542,14 +541,14 @@ public class GameMap
 			FieldMap fm = (FieldMap) this ;
 			
 			Point levelPos = Util.Translate(titlePos, 0, 14) ;
-			DP.drawText(levelPos, Align.center, 0, "Nível " + String.valueOf(fm.getLevel()), largeFont, Game.palette[6]) ;
+			Game.DP.drawText(levelPos, Align.center, 0, "Nível " + String.valueOf(fm.getLevel()), largeFont, Game.palette[6]) ;
 			
 			Point allItemsPos = Util.Translate(pos, 160, 43) ;
-			DP.drawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Game.palette[0]) ;
+			Game.DP.drawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Game.palette[0]) ;
 			allItemsPos.y += 14 ;
 			for (Item item : fm.getItems())
 			{
-				DP.drawText(allItemsPos, Align.centerLeft, 0, item.getName(), font, Game.palette[0]) ;
+				Game.DP.drawText(allItemsPos, Align.centerLeft, 0, item.getName(), font, Game.palette[0]) ;
 				allItemsPos.y += 10 ;
 			}
 			
@@ -557,36 +556,36 @@ public class GameMap
 		}
 		
 		Point levelPos = Util.Translate(titlePos, 0, 14) ;
-		DP.drawText(levelPos, Align.center, 0, "Nível 0", largeFont, Game.palette[6]) ;
+		Game.DP.drawText(levelPos, Align.center, 0, "Nível 0", largeFont, Game.palette[6]) ;
 
 	}
  	
- 	public void displayTudoEstaBem(DrawPrimitives DP)
+ 	public void displayTudoEstaBem()
  	{
  		Point pos = new Point(500, 10) ;
  		String text = Game.allText.get(TextCategories.allIsGood)[0] ;
  		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
- 		DP.drawText(pos, Align.topLeft, 0, text, font, Game.palette[19]) ;
+ 		Game.DP.drawText(pos, Align.topLeft, 0, text, font, Game.palette[19]) ;
  	}
 	
- 	public void display(Point pos, Scale scale, DrawPrimitives DP)
+ 	public void display(Point pos, Scale scale)
  	{
- 		DP.drawImage(image, pos, scale, Align.bottomLeft) ;
+ 		Game.DP.drawImage(image, pos, scale, Align.bottomLeft) ;
  	}
  	
- 	public void display(DrawPrimitives DP)
+ 	public void display()
  	{
  		if (name.equals("City of the animals"))
  		{
- 			DP.drawImage(image, Game.getScreen().getMapCenter(), new Scale(0.5, 0.5), Align.center) ;
+ 			Game.DP.drawImage(image, Game.getScreen().getMapCenter(), new Scale(0.5, 0.5), Align.center) ;
  			return ;
  		}
  		
- 		DP.drawImage(image, Game.getScreen().getMapCenter(), Align.center) ;
+ 		Game.DP.drawImage(image, Game.getScreen().getMapCenter(), Align.center) ;
  		
  		if (name.equals("City of the archers"))
  		{
- 	 		DP.drawImage(beachGif, new Point(Game.getScreen().getSize().width - 80, 96), Align.topRight) ;
+ 	 		Game.DP.drawImage(beachGif, new Point(Game.getScreen().getSize().width - 80, 96), Align.topRight) ;
  		}
  	}
 	

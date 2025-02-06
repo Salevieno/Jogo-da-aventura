@@ -2,7 +2,6 @@ package components;
 
 import java.awt.Point;
 
-import graphics.DrawPrimitives;
 import main.Game;
 import utilities.Util;
 
@@ -46,9 +45,9 @@ public class HitboxCircle implements Hitbox
 		return false ;
 	}
 	
-	public void display(DrawPrimitives DP)
+	public void display()
 	{
-		DP.drawCircle(center, 2 * radius, null, Game.palette[3]);
+		Game.DP.drawCircle(center, 2 * radius, null, Game.palette[3]);
 	}
 
 	public Point getCenter() { return center ;}

@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import attributes.Attributes;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Draw;
 import liveBeings.AttackModifiers;
 import liveBeings.LiveBeing;
@@ -192,12 +191,12 @@ public class GeneralItem extends Item
 				
 	}
 
-	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	public void displayInfo(Point pos, Align align)
 	{
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
 		Point textPos = Util.Translate(pos, 5 - Util.getSize(infoMenu).width, 10) ;		
-		DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, description, font, Game.palette[0]) ;
+		Game.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, description, font, Game.palette[0]) ;
 	}
 	
 	@Override

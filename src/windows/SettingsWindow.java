@@ -8,7 +8,6 @@ import java.awt.Point;
 import java.util.Arrays;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Draw;
 import liveBeings.PlayerActions;
 import main.Battle;
@@ -171,7 +170,7 @@ public class SettingsWindow extends GameWindow
 		PlayerActions.values()[item].setKey(action) ;
 	}
 	
-	public void displayValue(Point textPos, boolean selected, String text, double angle, DrawPrimitives DP)
+	public void displayValue(Point textPos, boolean selected, String text, double angle)
 	{
 		if (text == null)
 		{
@@ -180,11 +179,11 @@ public class SettingsWindow extends GameWindow
 			
 		Color textColor = selected ? Game.palette[20] : Game.palette[2] ;
 
-		DP.drawText(textPos, Align.bottomCenter, angle, text, font, textColor) ;	
+		Game.DP.drawText(textPos, Align.bottomCenter, angle, text, font, textColor) ;	
 	}
 	
 	
-	private void displayMenu0(Point mousePos, String[] text, DrawPrimitives DP)
+	private void displayMenu0(Point mousePos, String[] text)
 	{
 		
 		boolean[] keyIsOn = new boolean[] {musicIsOn, soundEffectsAreOn, showAtkRange, false, false} ;
@@ -199,16 +198,16 @@ public class SettingsWindow extends GameWindow
 			Point actionKeyPos = Util.Translate(optionPos, sx, 0) ;
 			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
 			Color textColor = getTextColor(item == i) ;
-			DP.drawText(optionPos, Align.bottomLeft, angle, text[i], font, textColor) ;
+			Game.DP.drawText(optionPos, Align.bottomLeft, angle, text[i], font, textColor) ;
 			
 			if (i == 3)
 			{
-				displayValue(actionKeyPos, keyIsOn[i], String.valueOf(getAttDisplay()), angle, DP) ;
+				displayValue(actionKeyPos, keyIsOn[i], String.valueOf(getAttDisplay()), angle) ;
 				continue ;
 			}
 			if (i == 4)
 			{
-				displayValue(actionKeyPos, keyIsOn[i], String.valueOf(getDamageAnimation()), angle, DP) ;
+				displayValue(actionKeyPos, keyIsOn[i], String.valueOf(getDamageAnimation()), angle) ;
 				continue ;
 			}
 
@@ -217,12 +216,12 @@ public class SettingsWindow extends GameWindow
 				continue ;
 			}
 			
-			displayValue(actionKeyPos, keyIsOn[i], null, angle, DP) ;
+			displayValue(actionKeyPos, keyIsOn[i], null, angle) ;
 		}				
 		
 	}
 	
-	private void displayMenu1(Point mousePos, String[] text, DrawPrimitives DP)
+	private void displayMenu1(Point mousePos, String[] text)
 	{
 		Point optionPos = Util.Translate(windowPos, 25, 42) ;
 		double angle = Draw.stdAngle ;
@@ -235,12 +234,12 @@ public class SettingsWindow extends GameWindow
 			Point actionKeyPos = Util.Translate(optionPos, sx, 0) ;
 			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
 			Color textColor = getTextColor(item == i) ;
-			DP.drawText(optionPos, Align.bottomLeft, angle, text[i + 6], font, textColor) ;
-			DP.drawText(actionKeyPos, Align.bottomCenter, angle, PlayerActions.values()[i].getKey(), font, getTextColor(selectedActionKeyID == i)) ;			
+			Game.DP.drawText(optionPos, Align.bottomLeft, angle, text[i + 6], font, textColor) ;
+			Game.DP.drawText(actionKeyPos, Align.bottomCenter, angle, PlayerActions.values()[i].getKey(), font, getTextColor(selectedActionKeyID == i)) ;			
 		}
 	}
 	
-	public void display(Point mousePos, DrawPrimitives DP)
+	public void display(Point mousePos)
 	{
 		double angle = Draw.stdAngle ;
 		Point textPos = Util.Translate(windowPos, 25, 42) ;
@@ -250,13 +249,13 @@ public class SettingsWindow extends GameWindow
 		Arrays.fill(textColor, Game.palette[0]) ;
 		textColor[item] = Game.palette[18] ;
 		
-		DP.drawImage(menuImage, windowPos, Align.topLeft) ;
+		Game.DP.drawImage(menuImage, windowPos, Align.topLeft) ;
 		Point titlePos = Util.Translate(textPos, image.getWidth(null) / 2 - 15, -6) ;
-		DP.drawText(titlePos, Align.bottomCenter, angle, name, font, Game.palette[0]) ;
+		Game.DP.drawText(titlePos, Align.bottomCenter, angle, name, font, Game.palette[0]) ;
 		if (menu == 0)
 		{
 			numberItems = 6 ;
-			displayMenu0(mousePos, text, DP) ;
+			displayMenu0(mousePos, text) ;
 			
 			return ;
 		}
@@ -264,7 +263,7 @@ public class SettingsWindow extends GameWindow
 		if (menu == 1 | menu == 2)
 		{
 			numberItems = PlayerActions.values().length ;
-			displayMenu1(mousePos, text, DP) ;
+			displayMenu1(mousePos, text) ;
 		}
 	}
 }

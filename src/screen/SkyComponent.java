@@ -5,8 +5,8 @@ import java.awt.Image;
 import java.awt.Point;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
+import main.Game;
 
 public class SkyComponent
 {
@@ -51,8 +51,8 @@ public class SkyComponent
 		setPos(new Point(pos.x + speed.x, pos.y + speed.y)) ;
 	}
 	
-	public void display(double angle, double alpha, DrawPrimitives DP)
+	public void display(double angle, double alpha)
 	{
-		DP.drawImage(image, pos, angle, Scale.unit, false, false, Align.topLeft, alpha) ;
+		Game.DP.drawImage(image, pos, angle, Scale.unit, false, false, Align.topLeft, alpha) ;
 	}
 }

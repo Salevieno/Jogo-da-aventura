@@ -6,7 +6,6 @@ import java.util.List;
 
 import attributes.BattleAttributes;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
@@ -95,7 +94,7 @@ public class Arrow extends Item
 		BA.getPhyAtk().incBonus(atkPower * mult) ;
 	}
 
-	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	public void displayInfo(Point pos, Align align)
 	{
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}

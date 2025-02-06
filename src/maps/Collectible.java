@@ -5,7 +5,6 @@ import java.awt.Point;
 import components.Hitbox;
 import components.HitboxRectangle;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Draw;
 import items.Item;
 import main.Game;
@@ -47,17 +46,17 @@ public class Collectible extends Item
 
 	public double chance(int playerLevel) { return 1 - 1 / (1 + Math.pow(1.1, playerLevel - level)) ;}
 	
-	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	public void displayInfo(Point pos, Align align)
 	{
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}
 	
-	public void display(DrawPrimitives DP)
+	public void display()
 	{
-		DP.drawImage(image, pos, Align.center) ;
+		Game.DP.drawImage(image, pos, Align.center) ;
 		if (Game.displayHitboxes)
 		{
-			hitbox.display(DP) ;
+			hitbox.display() ;
 		}
 	}
 

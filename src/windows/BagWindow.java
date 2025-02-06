@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 import components.GameButton;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Draw;
 import items.Alchemy;
 import items.Arrow;
@@ -646,7 +645,7 @@ public class BagWindow extends GameWindow
 		tab = tabID ;
 	}
 	
-	public void display(Point mousePos, DrawPrimitives DP)
+	public void display(Point mousePos)
 	{
 		String[] tabNames = Game.allText.get(TextCategories.bagMenus) ;
 		
@@ -660,12 +659,12 @@ public class BagWindow extends GameWindow
 			Image tabImage = m == tab ? (menu == 0 ? selectedMenuTab0 : selectedMenuTab1) : menuImage ;
 			checkMenuMouseSelection(mousePos, tabPos, m) ;
 			
-			DP.drawImage(tabImage, tabPos, Align.topLeft) ;
-			DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, tabNames[m], titleFont, textColor) ;
+			Game.DP.drawImage(tabImage, tabPos, Align.topLeft) ;
+			Game.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, tabNames[m], titleFont, textColor) ;
 		}
 		
 		// draw bag
-		DP.drawImage(menu == 0 ? image : selectedBag, windowPos, Align.topLeft) ;
+		Game.DP.drawImage(menu == 0 ? image : selectedBag, windowPos, Align.topLeft) ;
 		
 		// draw items		
 		itemsOnWindow = getItemsOnWindow() ;		
@@ -683,8 +682,8 @@ public class BagWindow extends GameWindow
 			checkMouseSelection(mousePos, slotCenterLeft, Align.centerLeft, itemNameSize, itemID) ;
 			Color textColor = getTextColor(itemID == item) ;
 			
-			DP.drawImage(slotImage, slotCenter, Align.center) ;
-			DP.drawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
+			Game.DP.drawImage(slotImage, slotCenter, Align.center) ;
+			Game.DP.drawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
 			Draw.textUntil(textPos, Align.centerLeft, Draw.stdAngle, itemText, stdFont, textColor, 10, mousePos) ;
 		}
 		
@@ -693,11 +692,11 @@ public class BagWindow extends GameWindow
 			Item selectedItem = itemsDisplayed.get(item - window * numberSlotMax) ;
 			if (selectedItem instanceof Equip || selectedItem instanceof GeneralItem)
 			{
-				selectedItem.displayInfo(windowPos, Align.topRight, DP) ;
+				selectedItem.displayInfo(windowPos, Align.topRight) ;
 			}
 		}
 		
-		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos, DP)) ;
+		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos)) ;
 		
 	}
 	

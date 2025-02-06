@@ -5,11 +5,11 @@ import java.awt.Point;
 import java.util.List;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import liveBeings.Creature;
 import liveBeings.Pet;
 import liveBeings.Player;
+import main.Game;
 import utilities.Util;
 
 public class Projectiles
@@ -44,9 +44,9 @@ public class Projectiles
 	public void setrange(int R) {range = R ;}
 	public void setImage(Image I) {image = I ;}
 	
-	public void DrawImage(DrawPrimitives DP)
+	public void DrawImage()
 	{
-		DP.drawImage(image, pos, Util.getAngle(speed), Scale.unit, Align.center) ;
+		Game.DP.drawImage(image, pos, Util.getAngle(speed), Scale.unit, Align.center) ;
 	}
 	public void move()
 	{
@@ -75,9 +75,9 @@ public class Projectiles
 		}
 		return -3 ;	// if the projectile has not hit anything
 	}
-	public void go(Player player, List<Creature> creature, Pet pet, DrawPrimitives DP)
+	public void go(Player player, List<Creature> creature, Pet pet)
 	{
-		DrawImage(DP) ;
+		DrawImage() ;
 		move() ;
 		int hit = collidedwith(player, creature, pet) ;
 		if (hit == -1 & type == 1)

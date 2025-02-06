@@ -6,7 +6,6 @@ import java.util.List;
 
 import attributes.PersonalAttributes;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
 import main.Game;
@@ -76,7 +75,7 @@ public class Potion extends Item
 		// TODO pro - bebidas
 	}
 
-	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	public void displayInfo(Point pos, Align align)
 	{
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}

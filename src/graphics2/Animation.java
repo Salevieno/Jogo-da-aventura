@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import components.AnimationDisplayFunction;
-import graphics.DrawPrimitives;
 import items.Item;
 import liveBeings.Player;
 import main.AtkResults;
@@ -58,7 +57,7 @@ public class Animation
 		switch(type)
 		{
 			case 0 :
-				return (vars, DP) -> {
+				return (vars) -> {
 					Point pos = (Point) vars[0] ;
 					int style = (int) vars[1] ;
 					AtkResults atkResults = (AtkResults) vars[2] ;
@@ -67,13 +66,13 @@ public class Animation
 				} ;
 				
 			case 1 :
-				return (vars, DP) -> {
+				return (vars) -> {
 					List<Item> itemsObtained = (List<Item>) vars[0] ;
 					Draw.winAnimation(counter, itemsObtained) ;
 				} ;
 				
 			case 2 :
-				return (vars, DP) -> {
+				return (vars) -> {
 					Image PterodactileImage = (Image) vars[0] ;
 					Image SpeakingBubbleImage = (Image) vars[1] ;
 					String[] message = (String[]) vars[2] ;
@@ -81,7 +80,7 @@ public class Animation
 				} ;				
 				
 			case 3 :
-				return (vars, DP) -> {
+				return (vars) -> {
 					Point playerPos = (Point) vars[0] ;
 					Directions playerDir = (Directions) vars[1] ;
 					Point fishingPos = Util.Translate(playerPos, 0, 0) ;
@@ -108,7 +107,7 @@ public class Animation
 				} ;
 				
 			case 4 :
-				return (vars, DP) -> {
+				return (vars) -> {
 					double[] attributesInc = (double[]) vars[0] ;
 					int playerLevel = (int) vars[1] ;
 
@@ -116,7 +115,7 @@ public class Animation
 				} ;	
 				
 			case 5 :
-				return (vars, DP) -> {
+				return (vars) -> {
 					Point pos = (Point) vars[0] ;
 					String message = (String) vars[1] ;
 					Color color = (Color) vars[2] ;
@@ -124,7 +123,7 @@ public class Animation
 				} ;	
 				
 			case 6 :
-				return (vars, DP) -> {
+				return (vars) -> {
 					Point pos = (Point) vars[0] ;
 					String message = (String) vars[1] ;
 					Color color = (Color) vars[2] ;
@@ -137,15 +136,15 @@ public class Animation
 
 	public boolean isActive() { return counter.isActive() ;}
 	
-	public static void playAll(DrawPrimitives DP)
+	public static void playAll()
 	{
 		for (int i = 0 ; i <= all.size() - 1; i += 1)
 		{
-			all.get(i).play(DP) ;
+			all.get(i).play() ;
 		}
 	}
 	
-	private void play(DrawPrimitives DP)
+	private void play()
 	{
 
 		if (counter.finished())
@@ -154,7 +153,7 @@ public class Animation
 			return ;
 		}
 
-		displayFunction.act(vars, DP) ;
+		displayFunction.act(vars) ;
 		
 	}
 	

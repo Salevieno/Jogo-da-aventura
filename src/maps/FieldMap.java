@@ -17,7 +17,6 @@ import org.json.simple.JSONObject;
 
 import components.NPCType;
 import components.NPCs;
-import graphics.DrawPrimitives;
 import items.Item;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
@@ -265,11 +264,11 @@ public class FieldMap extends GameMap
 	
 	public void removeCollectible(Collectible collectible) { collectibles.remove(collectible) ;}
 	
- 	public void displayCollectibles(DrawPrimitives DP)
+ 	public void displayCollectibles()
  	{
  		for (Collectible collectible : collectibles)
 		{
- 			collectible.display(DP) ;
+ 			collectible.display() ;
 		}
  	}
 

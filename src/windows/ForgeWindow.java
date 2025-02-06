@@ -9,7 +9,6 @@ import java.util.List;
 
 import components.GameButton;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
@@ -168,7 +167,7 @@ public class ForgeWindow extends GameWindow
 		
 	}
 	
-	public void display(Point mousePos, DrawPrimitives DP)
+	public void display(Point mousePos)
 	{
 
 		Point titlePos = Util.Translate(windowPos, size.width / 2, 16) ;
@@ -178,10 +177,10 @@ public class ForgeWindow extends GameWindow
 		
 		if (itemsOnWindow.size() == 0) { item = -1 ;}
 		
-		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
+		Game.DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
 		
-		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[1]) ;
-		DP.drawText(messagePos, Align.center, angle, messages.get(0), stdFont, stdColor) ;
+		Game.DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[1]) ;
+		Game.DP.drawText(messagePos, Align.center, angle, messages.get(0), stdFont, stdColor) ;
 		
 		Point itemPos = Util.Translate(windowPos, 24, 70) ;
 		
@@ -198,23 +197,23 @@ public class ForgeWindow extends GameWindow
 			
 			Equip equip = itemsOnWindow.get(i) ;
 			Color itemColor = this.item == itemsOnWindow.indexOf(equip) ? selColor : stdColor ;
-			DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
-			DP.drawImage(equip.getImage(), itemPos, angle, Scale.unit, Align.center) ;
-			DP.drawText(namePos, Align.centerLeft, angle, equip.getName() + " + " + equip.getForgeLevel(), stdFont, itemColor) ;
-			DP.drawImage(reqRune(equip).getImage(), runePos, Align.center) ;
+			Game.DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
+			Game.DP.drawImage(equip.getImage(), itemPos, angle, Scale.unit, Align.center) ;
+			Game.DP.drawText(namePos, Align.centerLeft, angle, equip.getName() + " + " + equip.getForgeLevel(), stdFont, itemColor) ;
+			Game.DP.drawImage(reqRune(equip).getImage(), runePos, Align.center) ;
 			
 			if (Util.isInside(mousePos, Util.getTopLeft(runePos, Align.center, Util.getSize(Item.slot)), Util.getSize(Item.slot)))
 			{
 				Point runeNamePos = Util.Translate(runePos, -Item.slot.getWidth(null) / 2, -Item.slot.getHeight(null) / 2 - 5) ;
-				DP.drawText(runeNamePos, Align.centerLeft, angle, reqRune(equip).getName(), stdFont, stdColor) ;
+				Game.DP.drawText(runeNamePos, Align.centerLeft, angle, reqRune(equip).getName(), stdFont, stdColor) ;
 			}
 			
-			DP.drawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
-			DP.drawText(pricePos, Align.centerLeft, angle, String.valueOf(forgePrice(equip.getForgeLevel())), stdFont, itemColor) ;
+			Game.DP.drawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
+			Game.DP.drawText(pricePos, Align.centerLeft, angle, String.valueOf(forgePrice(equip.getForgeLevel())), stdFont, itemColor) ;
 			itemPos.y += 28 ;
 		}
 		
-//		forgeButton.display(angle, false, mousePos, DP) ;
+//		forgeButton.display(angle, false, mousePos) ;
 		
 	}
 

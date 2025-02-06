@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Point;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Draw;
 import main.Game;
 
@@ -39,16 +38,16 @@ public class LiveInput
 		addChar(newChar) ;
 	}
 	
-	public void displayTypingField(Point pos, boolean showBackground, DrawPrimitives DP)
+	public void displayTypingField(Point pos, boolean showBackground)
 	{
 
 		if (showBackground)
 		{
-			DP.drawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.palette[3], Game.palette[0], true) ;
+			Game.DP.drawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.palette[3], Game.palette[0], true) ;
 		}
 		int offsetX = (int) (7.3 * text.length()) ;
-		DP.drawLine(Util.Translate(pos, 20 + offsetX, 5), Util.Translate(pos, 20 + offsetX, -5), 2, Game.palette[0]) ;
-		DP.drawText(Util.Translate(pos, 20, 0), Align.centerLeft, Draw.stdAngle, text, font, Game.palette[0]) ;
+		Game.DP.drawLine(Util.Translate(pos, 20 + offsetX, 5), Util.Translate(pos, 20 + offsetX, -5), 2, Game.palette[0]) ;
+		Game.DP.drawText(Util.Translate(pos, 20, 0), Align.centerLeft, Draw.stdAngle, text, font, Game.palette[0]) ;
 	
 	}
 }

@@ -3,7 +3,6 @@ package windows;
 import java.awt.Image;
 import java.awt.Point;
 
-import graphics.DrawPrimitives;
 import utilities.UtilS;
 
 public abstract class AttributesWindow extends GameWindow
@@ -40,5 +39,5 @@ public abstract class AttributesWindow extends GameWindow
 	{
 	}
 
-	public void display(Point mousePos, DrawPrimitives DP) { }
+	public void display(Point mousePos) { }
 }

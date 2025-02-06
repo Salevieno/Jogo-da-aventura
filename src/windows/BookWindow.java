@@ -76,20 +76,20 @@ public class BookWindow extends GameWindow
 		}
 	}
 
-	private void displayPageNumber(DrawPrimitives DP)
+	private void displayPageNumber()
 	{
 		if (numberWindows == 0) { return ;}
 		
 		Point textPos = Util.Translate(Util.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
 		String pageText = (window + 1) + " / " + numberWindows ;
-		DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Game.palette[0]) ;
+		Game.DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Game.palette[0]) ;
 	}
 	
-	public void display(Point mousePos, DrawPrimitives DP)
+	public void display(Point mousePos)
 	{
-		DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.center) ;
+		Game.DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.center) ;
 		displayRecipes(mousePos) ;
-		displayPageNumber(DP) ;
+		displayPageNumber() ;
 		
 		Draw.windowArrows(Util.getPosAt(windowPos, Align.center, Align.bottomLeft, size), image.getWidth(null), window, numberWindows, stdOpacity) ;
 	}

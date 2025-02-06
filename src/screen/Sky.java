@@ -6,7 +6,6 @@ import java.awt.Image ;
 import java.awt.Point;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Draw;
 import main.Game;
 import utilities.GameTimer;
@@ -91,7 +90,7 @@ public class Sky
 	
 	private boolean passedScreen(int x) { return Game.getScreen().getSize().width <= x ;}
 	
-	private void displayDaySky(DrawPrimitives DP)
+	private void displayDaySky()
 	{
 		for (SkyComponent cloud : clouds)
 		{
@@ -101,17 +100,17 @@ public class Sky
 				resetCloudMovement(cloud) ;
 			}
 			double alpha = -16 * Math.pow(dayTimeRate(), 2) + 16 * dayTimeRate() - 3 ;
-			cloud.display(Draw.stdAngle, alpha, DP) ;
+			cloud.display(Draw.stdAngle, alpha) ;
 		}
 	}
 	
-	private void displayNightSky(DrawPrimitives DP)
+	private void displayNightSky()
 	{
 		double alpha = -16 * Math.pow(dayTimeRate() - 0.5, 2) + 16 * Math.abs(dayTimeRate() - 0.5) - 3 ;
 		
 		for (SkyComponent star : stars)
 		{
-			star.display(Draw.stdAngle, alpha, DP) ;
+			star.display(Draw.stdAngle, alpha) ;
 		}
 	}
 	
@@ -124,19 +123,19 @@ public class Sky
 		color = new Color(red, green, blue) ;
 	}
 	
-	public void display(DrawPrimitives DP)
+	public void display()
 	{
 		updateSkyColor() ;
-		DP.drawRect(new Point(0, height), Align.bottomLeft, size, color, null) ;
+		Game.DP.drawRect(new Point(0, height), Align.bottomLeft, size, color, null) ;
 		
 		if (isDay())
 		{
-			displayDaySky(DP) ;
+			displayDaySky() ;
 			
 			return ;
 		}
 		
-		displayNightSky(DP) ;
+		displayNightSky() ;
 		
 	}
 

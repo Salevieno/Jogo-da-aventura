@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import components.GameButton;
 import components.IconFunction;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import liveBeings.PlayerActions;
 import main.Game;
 import utilities.Util;
@@ -182,5 +181,5 @@ public abstract class GameWindow
 	}
 	
 	public abstract void navigate(String action) ;
-	public abstract void display(Point mousePos, DrawPrimitives DP) ;
+	public abstract void display(Point mousePos) ;
 }

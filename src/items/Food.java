@@ -6,7 +6,6 @@ import java.util.List;
 
 import attributes.PersonalAttributes;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
 import main.Game;
@@ -61,7 +60,7 @@ public class Food extends Item
 		PA.getSatiation().incCurrentValue((int) (SatiationHeal / 310.0 * PA.getSatiation().getMaxValue())) ;
 	}
 
-	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	public void displayInfo(Point pos, Align align)
 	{
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}

@@ -28,7 +28,6 @@ import components.Quest;
 import components.QuestSkills;
 import components.SpellTypes;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
@@ -55,7 +54,6 @@ import maps.Continents;
 import maps.FieldMap;
 import maps.GameMap;
 import maps.GroundTypes;
-import maps.MapElement;
 import maps.TreasureChest;
 import screen.Sky;
 import utilities.AtkEffects;
@@ -1045,7 +1043,7 @@ public class Player extends LiveBeing
 		}
 	}
 
-	public void meetWithNPCs(Point mousePos, DrawPrimitives DP)
+	public void meetWithNPCs(Point mousePos)
 	{
 		if (npcInContact != null)
 		{
@@ -1089,12 +1087,12 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	public void talkToNPC(Point mousePos, DrawPrimitives DP)
+	public void talkToNPC(Point mousePos)
 	{
-		npcInContact.action(this, Game.getPet(), mousePos, DP) ;
+		npcInContact.action(this, Game.getPet(), mousePos) ;
 	}
 	
-	public void checkMeet(Point mousePos, DrawPrimitives DP)
+	public void checkMeet(Point mousePos)
 	{
 		if (isInBattle()) { return ;}
 		if (state != LiveBeingStates.idle & state != LiveBeingStates.moving ) { return ;}
@@ -1107,7 +1105,7 @@ public class Player extends LiveBeing
 			meetWithCreatures((FieldMap) map) ;			
 		}	
 		
-		meetWithNPCs(mousePos, DP) ;
+		meetWithNPCs(mousePos) ;
 	}
 
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
@@ -1497,9 +1495,9 @@ public class Player extends LiveBeing
 	
 	
 	// called every time the window is repainted
-	public void showWindows(Pet pet, Point mousePos, DrawPrimitives DP)
+	public void showWindows(Pet pet, Point mousePos)
 	{
-		openWindows.forEach(win -> win.display(mousePos, DP)) ;
+		openWindows.forEach(win -> win.display(mousePos)) ;
 	}
 		
 	
@@ -1667,12 +1665,12 @@ public class Player extends LiveBeing
 		
 	}
 	
-	private void drawRange(DrawPrimitives DP)
+	private void drawRange()
 	{
-		DP.drawCircle(pos, (int)(2 * range), 2, null, Game.palette[job]) ;
+		Game.DP.drawCircle(pos, (int)(2 * range), 2, null, Game.palette[job]) ;
 	}
 
-	public void drawWeapon(Point pos, Scale scale, DrawPrimitives DP)
+	public void drawWeapon(Point pos, Scale scale)
 	{
 		if (equips[0] == null) { return ;}
 		
@@ -1680,38 +1678,51 @@ public class Player extends LiveBeing
 		Point offset = new Point((int) (0.16 * size.width * scale.x), (int) (0.4 * size.height * scale.y)) ;
 		Point eqPos = Util.Translate(pos, offset.x, -offset.y) ;
 		
-		equips[0].display(eqPos, angle[job], new Scale(0.6, 0.6), Align.center, DP) ;
+		equips[0].display(eqPos, angle[job], new Scale(0.6, 0.6), Align.center) ;
 		
 	}
 	
-	public void display(Point pos, Scale scale, Directions direction, boolean showRange, DrawPrimitives DP)
+	public void display(Point pos, Scale scale, Directions direction, boolean showRange)
 	{
 		double angle = Draw.stdAngle ;
+		
+
+		displayAttributes(settings.getAttDisplay()) ;
 		if (isRiding)
 		{
 			Point ridePos = Util.Translate(pos, -RidingImage.getWidth(null) / 2, RidingImage.getHeight(null) / 2) ;
-			DP.drawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
+			Game.DP.drawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
 		}
 		if (isDrunk())
 		{
-			displayDrunk(DP) ;
+			displayDrunk() ;
 		}
-		movingAni.displayMoving(direction, pos, angle, Scale.unit, Align.bottomCenter, DP) ;
+		movingAni.displayMoving(direction, pos, angle, Scale.unit, Align.bottomCenter) ;
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
 //			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ; TODO pro arte - dragon aura
-//			DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
+//			Game.DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
 		}
 		if (showRange)
 		{
-			drawRange(DP) ;
+			drawRange() ;
+		}		
+
+		if (weaponIsEquipped())
+		{
+			drawWeapon(pos, Scale.unit) ;
 		}
 
-		displayStatus(DP) ;
+		displayStatus() ;
 		if (Game.displayHitboxes)
 		{			
-			hitbox.display(DP) ;
+			hitbox.display() ;
 		}
+	}
+	
+	public void display()
+	{
+		display(pos, Scale.unit, dir, settings.getShowAtkRange()) ;
 	}
 
 

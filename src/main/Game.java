@@ -14,6 +14,7 @@ import java.awt.event.MouseWheelEvent ;
 import java.awt.event.MouseWheelListener ;
 import java.util.ArrayList ;
 import java.util.Arrays ;
+import java.util.Comparator;
 import java.util.HashMap ;
 import java.util.Iterator ;
 import java.util.List ;
@@ -26,8 +27,6 @@ import org.json.simple.JSONObject ;
 
 import components.Building ;
 import components.BuildingType ;
-import components.Hitbox;
-import components.HitboxCircle;
 import components.NPCType ;
 import components.NPCs ;
 import components.Projectiles ;
@@ -38,6 +37,7 @@ import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Animation;
 import graphics2.Draw;
+import graphics2.Drawable;
 import graphics2.Gif;
 import items.Alchemy ;
 import items.Arrow ;
@@ -60,6 +60,7 @@ import liveBeings.Player ;
 import liveBeings.Spell ;
 import liveBeings.SpellsBar;
 import maps.CityMap ;
+import maps.Continents;
 import maps.FieldMap ;
 import maps.GameMap ;
 import maps.SpecialMap ;
@@ -107,7 +108,7 @@ public class Game extends JPanel
 	public static Color[] palette ;
 	public static Map<TextCategories, String[]> allText ;
 
-	private DrawPrimitives DP ;
+	public static final DrawPrimitives DP ;
 	private static Player player ;
 	private static Pet pet ;
 	public static int difficultLevel = 2 ;
@@ -139,13 +140,13 @@ public class Game extends JPanel
 		konamiCodeActive = false ;
 
 		allText = new HashMap<>() ;
+		DP = new DrawPrimitives() ;
 		shouldRepaint = false ;
 
 	}
 
 	public Game()
 	{
-		DP = new DrawPrimitives() ;
 		player = new Player("", "", 0) ;
 
 		addMouseListener(new MouseEventDemo()) ;
@@ -383,7 +384,7 @@ public class Game extends JPanel
 			if (creature.isMoving())
 			{
 				creature.move(player.getPos(), player.getMap()) ;
-				creature.display(creature.getPos(), Scale.unit, DP) ;
+				creature.display(creature.getPos(), Scale.unit) ;
 				continue ;
 			}
 			if (creature.canAct())
@@ -391,9 +392,6 @@ public class Game extends JPanel
 				creature.think() ;
 				creature.act() ;
 			}
-			creature.display(creature.getPos(), Scale.unit, DP) ;
-//			creature.getBA().finishStatus() ;
-//			creature.displayAdditionalInfo(DP) ;
 		}
 		shouldRepaint = true ;
 	}
@@ -406,9 +404,6 @@ public class Game extends JPanel
 		pet.updateCombo() ;
 		pet.think(player.isInBattle(), player.getPos()) ;
 		pet.act(player) ;
-		pet.display(pet.getPos(), Scale.unit, DP) ;
-		pet.displayAttributes(0, DP) ;
-//		pet.getBA().finishStatus() ;
 	}
 	
 	private void playerActs()
@@ -427,7 +422,7 @@ public class Game extends JPanel
 			}
 		}
 
-		player.doCurrentAction() ;		
+		player.doCurrentAction() ;
 		player.applyAdjacentGroundEffect() ;
 		player.finishStatus() ;
 	}
@@ -442,7 +437,7 @@ public class Game extends JPanel
 		}
 		for (Projectiles proj : projs)
 		{
-			proj.go(player, creaturesInMap, pet, DP) ;
+			proj.go(player, creaturesInMap, pet) ;
 			if (proj.collidedwith(player, creaturesInMap, pet) != -3) // if the projectile has hit some live being
 			{
 				projs.remove(proj) ;
@@ -450,7 +445,7 @@ public class Game extends JPanel
 		}
 	}
 	
-	private void run(DrawPrimitives DP)
+	private void run()
 	{
 
 		activateCounters() ;
@@ -460,9 +455,6 @@ public class Game extends JPanel
 		{
 			konamiCode() ;
 		}
-
-		Draw.map(player.getMap(), sky) ;
-		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap(), sky) ;
 
 		if (player.getMap().isAField())
 		{
@@ -475,25 +467,17 @@ public class Game extends JPanel
 		}
 
 		playerActs() ;
-		
-		player.displayAttributes(player.getSettings().getAttDisplay(), DP) ;
-		player.display(player.getPos(), Scale.unit, player.getDir(), player.getSettings().getShowAtkRange(), DP) ;
-
-		if (player.weaponIsEquipped())
-		{
-			player.drawWeapon(player.getPos(), Scale.unit, DP) ;
-		}
 
 		if (player.getMap().isAField())
 		{
 			player.setClosestCreature(player.closestCreatureInRange()) ;
 		}
 
-		player.checkMeet(mousePos, DP) ;
+		player.checkMeet(mousePos) ;
 
 		if (player.isInBattle())
 		{
-			Battle.runBattle(player, pet, player.getOpponent(), DP) ;
+			Battle.runBattle(player, pet, player.getOpponent()) ;
 			if (Battle.isOver(player, pet, player.getOpponent()))
 			{
 				Battle.finishBattle(player, pet, player.getOpponent()) ;
@@ -515,35 +499,88 @@ public class Game extends JPanel
 		
 		if (player.isTalkingToNPC())
 		{
-			player.talkToNPC(mousePos, DP) ;
+			player.talkToNPC(mousePos) ;
 		}
 
-		player.showWindows(pet, mousePos, DP) ;
 
 		if (projs != null)
 		{
 			updateProjectiles() ;
 		}
 		
-		if (player.getBag().getItemFetched() != null)
-		{
-			DP.drawImage(player.getBag().getItemFetched().getImage(), mousePos, Align.center) ;
-		}
-		
 		if (player.getJob() == 3)
 		{
 			player.useAutoSpell(true, player.getSpells().get(12)) ;
 		}
-
-		Animation.playAll(DP) ;
-		Gif.playAll() ;
 		
-		SideBar.display(player, pet, mousePos, DP) ;
 		SideBar.act(player.getCurrentAction(), mousePos) ;
 
 		player.resetAction() ;
-//		Log.allEntityListsLength() ;
+		
+		draw() ;
+		
+//		player.display(player.getPos(), Scale.unit, player.getDir(), player.getSettings().getShowAtkRange()) ;
+//		player.getMap().displayBuildings(player.getHitbox(), player.getPos(), Arrays.asList(Game.getMaps()).indexOf(player.getMap())) ;
 
+
+	}
+	
+	private void draw()
+	{
+
+//		Draw.map(player.getMap(), sky) ;
+
+		if (!player.getMap().getContinent().equals(Continents.cave))
+		{
+			sky.display() ;
+		}
+		player.getMap().display() ;
+		player.getMap().displayGroundTypes() ;
+		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap(), sky) ;
+		
+
+		List<Drawable> drawables = new ArrayList<>() ;
+		
+		if (player.getMap().isAField())
+		{
+			List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
+			for (Creature creature : creaturesInMap)
+			{
+				drawables.add(creature) ;
+			}	
+		}
+		
+
+		if (pet != null)
+		{
+//			pet.display(pet.getPos(), Scale.unit) ;
+//			pet.displayAttributes(0) ;
+
+			drawables.add(pet) ;
+		}
+		
+		drawables.add(player) ;
+		if (player.getMap().getBuildings() != null)
+		{			
+			player.getMap().getBuildings().forEach(building -> drawables.add(building)) ;
+		}
+		player.getMap().getMapElem().forEach(mapElem -> drawables.add(mapElem));
+		drawables.sort(Comparator.comparingInt(d -> d.getPos().y));
+		drawables.forEach(drawable -> drawable.display()) ;
+		//		Log.allEntityListsLength() ;
+		
+		player.showWindows(pet, mousePos) ;
+		
+		if (player.getBag().getItemFetched() != null)
+		{
+			Game.DP.drawImage(player.getBag().getItemFetched().getImage(), mousePos, Align.center) ;
+		}
+
+		Animation.playAll() ;
+		Gif.playAll() ;
+		
+		SideBar.display(player, pet, mousePos) ;
+		
 	}
 
 	private static void initializeCheatMode()
@@ -809,13 +846,13 @@ public class Game extends JPanel
 	{
 		super.paintComponent(graphs) ;
 		mousePos = Util.GetMousePos(mainPanel) ;
-		DP.setGraphics((Graphics2D) graphs) ;
+		Game.DP.setGraphics((Graphics2D) graphs) ;
 		Draw.setDP(DP) ;
 		GameTimer.updateAll() ;
 		switch (initialState)
 		{
 			case opening:
-				Opening.run(player, mousePos, DP) ;
+				Opening.run(player, mousePos) ;
 				if (Opening.isOver())
 				{
 					if (Opening.newGame())
@@ -829,7 +866,7 @@ public class Game extends JPanel
 				break ;
 
 			case loading:
-				Opening.displayLoadingScreen(player.getCurrentAction(), mousePos, DP) ;
+				Opening.displayLoadingScreen(player.getCurrentAction(), mousePos) ;
 				if (!Opening.loadingIsOver())
 				{
 					initialize(Opening.getLoadingStep()) ;
@@ -854,12 +891,12 @@ public class Game extends JPanel
 				break ;
 
 			case simulation:
-				EvolutionSimulation.run(mousePos, DP) ;	
+				EvolutionSimulation.run(mousePos) ;	
 				break ;
 
 			case running:
-				run(DP) ;
-				// DP.DrawImage(Util.loadImage("./images/test.png"), mousePos, Align.center) ;	
+				run() ;
+				// Game.DP.DrawImage(Util.loadImage("./images/test.png"), mousePos, Align.center) ;	
 				break ;
 
 			case playingStopTimeGif:

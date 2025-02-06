@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
@@ -144,15 +143,15 @@ public class ShoppingWindow extends GameWindow
 		return itemsForSale.subList(firstItemID, lastItemID) ;		
 	}
 	
-	public void display(Point mousePos, DrawPrimitives DP)
+	public void display(Point mousePos)
 	{
 		Point itemPos = Util.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + 20 + padding + Item.slot.getHeight(null) / 2) ;
 		Point titlePos = Util.Translate(windowPos, size.width / 2, 16) ;
 		double angle = Draw.stdAngle ;
 		
-		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
+		Game.DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
 		
-		DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[0]) ;
+		Game.DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[0]) ;
 				
 		
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
@@ -165,15 +164,15 @@ public class ShoppingWindow extends GameWindow
 			
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(100, 10), i) ;
 			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? selColor : stdColor ;
-			DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
-			DP.drawImage(bagItem.getImage(), itemPos, angle, Scale.unit, Align.center) ;
-			DP.drawText(namePos, Align.centerLeft, angle, bagItem.getName() + qtdItem, stdFont, itemColor) ;
-			DP.drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), stdFont, Game.palette[14]) ;
-			DP.drawImage(Player.CoinIcon, coinPos, Align.center) ;
+			Game.DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
+			Game.DP.drawImage(bagItem.getImage(), itemPos, angle, Scale.unit, Align.center) ;
+			Game.DP.drawText(namePos, Align.centerLeft, angle, bagItem.getName() + qtdItem, stdFont, itemColor) ;
+			Game.DP.drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), stdFont, Game.palette[14]) ;
+			Game.DP.drawImage(Player.CoinIcon, coinPos, Align.center) ;
 			
 			if (this.item == itemsOnWindow.indexOf(bagItem))
 			{
-				bagItem.displayInfo(Util.Translate(windowPos, -10, 0), Align.topRight, DP) ;
+				bagItem.displayInfo(Util.Translate(windowPos, -10, 0), Align.topRight) ;
 			}
 			itemPos.y += 23 ;
 		}

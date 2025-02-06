@@ -12,7 +12,6 @@ import attributes.AttributeBonus;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
@@ -342,9 +341,9 @@ public class Equip extends Item
 		player.getEquips()[type] = null ;
 	}
 	
-	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	public void displayInfo(Point pos, Align align)
 	{
-		DP.drawImage(infoMenu, pos, align) ;
+		Game.DP.drawImage(infoMenu, pos, align) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
 		int nRows = 4 ;
 		Point topLeftSlotCenter = Util.Translate(pos, 15 - Util.getSize(infoMenu).width, 18) ;
@@ -352,16 +351,16 @@ public class Equip extends Item
 		for (int i = 0 ; i <= attOrder.length - 1 ; i += 1)
 		{
 			Point imagePos = Util.calcGridPos(topLeftSlotCenter, i, nRows, new Point(70, 25)) ;
-			DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
+			Game.DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
 			
 			Point textPos = Util.Translate(imagePos, 10, 0) ;
-			DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Game.palette[0]) ;
+			Game.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Game.palette[0]) ;
 		}
 	}
 	
-	public void display(Point pos, double angle, Scale scale, Align align, DrawPrimitives DP)
+	public void display(Point pos, double angle, Scale scale, Align align)
 	{
-		DP.drawImage(this.fullSizeImage(), pos, angle, scale, align) ;
+		Game.DP.drawImage(this.fullSizeImage(), pos, angle, scale, align) ;
 	}
 	
 	@Override

@@ -7,7 +7,6 @@ import java.awt.Point;
 
 import attributes.BasicBattleAttribute;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Draw;
 import liveBeings.CreatureType;
@@ -27,16 +26,16 @@ public class CreatureAttributesWindow extends AttributesWindow
 		super(image, 1);
 	}
 
-	public void display(CreatureType creatureType, DrawPrimitives DP)
+	public void display(CreatureType creatureType)
 	{
 
 		double angle = Draw.stdAngle ;
 		
-		DP.drawImage(image, windowPos, Align.topLeft) ;
+		Game.DP.drawImage(image, windowPos, Align.topLeft) ;
 
 		Image userImage = creatureType.getMovingAnimations().idleGif ;
 		Point userPos = Util.Translate(windowPos, size.width / 2, 60) ;
-		DP.drawImage(userImage, userPos, Align.center) ;
+		Game.DP.drawImage(userImage, userPos, Align.center) ;
 
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;		
@@ -46,8 +45,8 @@ public class CreatureAttributesWindow extends AttributesWindow
 		String[] attText = Game.allText.get(TextCategories.attributes) ;		
 		Point namePos = Util.Translate(windowPos, size.width / 2, 14) ;
 		Point levelPos = Util.Translate(windowPos, size.width / 2, 30) ;
-		DP.drawText(namePos, Align.center, angle, creatureType.getName(), namefont, textColor) ;		
-		DP.drawText(levelPos, Align.center, angle, attText[0] + ": " + creatureType.getLevel(), font, colorPalette[6]) ;
+		Game.DP.drawText(namePos, Align.center, angle, creatureType.getName(), namefont, textColor) ;		
+		Game.DP.drawText(levelPos, Align.center, angle, attText[0] + ": " + creatureType.getLevel(), font, colorPalette[6]) ;
 		
 		
 		// attributes
@@ -55,8 +54,8 @@ public class CreatureAttributesWindow extends AttributesWindow
 		Point mpPos = Util.Translate(windowPos, 20, border + padding + 37 + 26) ;
 		String lifeText = attText[1] + ": " + Util.Round(creatureType.getPA().getLife().getCurrentValue(), 1) ;
 		String mpText = attText[2] + ": " + Util.Round(creatureType.getPA().getMp().getCurrentValue(), 1) ;
-		DP.drawText(lifePos, Align.centerLeft, angle, lifeText, font, colorPalette[6]) ;
-		DP.drawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[5]) ;
+		Game.DP.drawText(lifePos, Align.centerLeft, angle, lifeText, font, colorPalette[6]) ;
+		Game.DP.drawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[5]) ;
 				
 		BasicBattleAttribute[] attributes = creatureType.getBA().basicAttributes() ;
 		Point initialAttPos = Util.Translate(windowPos, border + padding + 34, 124) ;
@@ -65,13 +64,13 @@ public class CreatureAttributesWindow extends AttributesWindow
 			Point attPos = Util.Translate(initialAttPos, 117 * (i / 3), (i % 3) * 22) ;
 			String attValue = Util.Round(attributes[i].getBaseValue(), 1) + " + " + Util.Round(attributes[i].getBonus(), 1) + " + " + Util.Round(attributes[i].getTrain(), 1) ;
 			
-			DP.drawImage(attIcons[i], Util.Translate(attPos, -15, 0), Scale.unit, Align.center) ;
-			DP.drawText(attPos, Align.centerLeft, angle, attValue, font, textColor) ;
+			Game.DP.drawImage(attIcons[i], Util.Translate(attPos, -15, 0), Scale.unit, Align.center) ;
+			Game.DP.drawText(attPos, Align.centerLeft, angle, attValue, font, textColor) ;
 		}
 		Point critPos = Util.Translate(initialAttPos, 0, 71) ;
 		String critValue = attText[9] + ": " + Util.Round(100 * creatureType.getBA().TotalCritAtkChance(), 1) + "%" ;
-		DP.drawImage(critIcon, Util.Translate(initialAttPos, -15, 72), Scale.unit, Align.center) ;
-		DP.drawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
+		Game.DP.drawImage(critIcon, Util.Translate(initialAttPos, -15, 72), Scale.unit, Align.center) ;
+		Game.DP.drawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
 		
 		
 	}

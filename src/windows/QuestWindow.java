@@ -9,7 +9,6 @@ import java.util.Map;
 
 import components.Quest;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Draw;
 import items.Item;
@@ -56,7 +55,7 @@ public class QuestWindow extends GameWindow
 		}
 	}
 	
-	public void displayReqCreatures(Point sectionPos, Quest quest, DrawPrimitives DP)
+	public void displayReqCreatures(Point sectionPos, Quest quest)
 	{
 		
 		Map<CreatureType, Integer> reqCreatureTypes = quests.get(window).getReqCreatures() ;
@@ -69,8 +68,8 @@ public class QuestWindow extends GameWindow
 		
 		CreatureType[] reqCreatureType = new CreatureType[0];
 		reqCreatureType = reqCreatureTypes.keySet().toArray(reqCreatureType) ;
-		DP.drawText(sectionPos, Align.center, angle, "Criaturas necessárias", font, textColor) ;
-		DP.drawLine(Util.Translate(sectionPos, -60, 20), Util.Translate(sectionPos, 60, 20), 1, textColor) ;
+		Game.DP.drawText(sectionPos, Align.center, angle, "Criaturas necessárias", font, textColor) ;
+		Game.DP.drawLine(Util.Translate(sectionPos, -60, 20), Util.Translate(sectionPos, 60, 20), 1, textColor) ;
 		
 		Point creaturePos = Util.Translate(sectionPos, -60, 20) ;
 		for (CreatureType creatureType : reqCreatureType)
@@ -80,14 +79,14 @@ public class QuestWindow extends GameWindow
 			Point textPos = Util.Translate(creaturePos, 25, 0) ;
 			int numberReq = reqCreatureTypes.get(creatureType) ;
 			int numberCounter = quest.getCounter().get(creatureType) ;
-			creatureType.display(creaturePos, Scale.unit, DP) ;
-			DP.drawText(textPos, Align.centerLeft, angle, creatureName + " : " + numberCounter + " / " + numberReq, font, textColor) ;
+			creatureType.display(creaturePos, Scale.unit) ;
+			Game.DP.drawText(textPos, Align.centerLeft, angle, creatureName + " : " + numberCounter + " / " + numberReq, font, textColor) ;
 			creaturePos.y += creatureType.getSize().height / 2 ;
 		}	
 		
 	}
 	
-	public void displayReqItems(Point sectionPos, DrawPrimitives DP)
+	public void displayReqItems(Point sectionPos)
 	{
 		
 		Map<Item, Integer> reqItems = quests.get(window).getReqItems() ;
@@ -100,8 +99,8 @@ public class QuestWindow extends GameWindow
 		
 		Item[] reqItem = new Item[0] ;
 		reqItem = reqItems.keySet().toArray(reqItem) ;
-		DP.drawText(sectionPos, Align.center, angle, "Itens necessários", font, textColor) ;
-		DP.drawLine(Util.Translate(sectionPos, -60, 20), Util.Translate(sectionPos, 60, 20), 1, textColor) ;
+		Game.DP.drawText(sectionPos, Align.center, angle, "Itens necessários", font, textColor) ;
+		Game.DP.drawLine(Util.Translate(sectionPos, -60, 20), Util.Translate(sectionPos, 60, 20), 1, textColor) ;
 		
 		Point circlePos = Util.Translate(sectionPos, -80, 20) ;
 		Point itemPos = Util.Translate(circlePos, 13, 0) ;
@@ -110,28 +109,28 @@ public class QuestWindow extends GameWindow
 			itemPos.y += font.getSize() + 4 ;
 			circlePos.y += font.getSize() + 4 ;
 			Point textPos = Util.Translate(itemPos, 15, 0) ;
-			DP.drawCircle(circlePos, 10, 0, bag.contains(item) ? Game.palette[3] : Game.palette[6], null) ;
-			DP.drawImage(item.getImage(), itemPos, Align.center) ;
-			DP.drawText(textPos, Align.centerLeft, angle, item.getName(), font, textColor) ;
+			Game.DP.drawCircle(circlePos, 10, 0, bag.contains(item) ? Game.palette[3] : Game.palette[6], null) ;
+			Game.DP.drawImage(item.getImage(), itemPos, Align.center) ;
+			Game.DP.drawText(textPos, Align.centerLeft, angle, item.getName(), font, textColor) ;
 		}
 		
 	}
 	
-	public void display(Point mousePos, DrawPrimitives DP)
+	public void display(Point mousePos)
 	{
 		
 		double angle = Draw.stdAngle ;
 
-		DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
+		Game.DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
 
 		if (quests.size() <= 0) { return ;}
 		
 		Quest quest = quests.get(window) ;
 		Point questPos = Util.Translate(windowPos, image.getWidth(null) / 2, 30) ;
-		DP.drawText(questPos, Align.center, angle, quest.getName(), font, Game.palette[8]) ;
+		Game.DP.drawText(questPos, Align.center, angle, quest.getName(), font, Game.palette[8]) ;
 		
-		displayReqCreatures(Util.Translate(windowPos, size.width / 2 , 60), quest, DP) ;
-		displayReqItems(Util.Translate(windowPos, size.width / 2, 260), DP) ;
+		displayReqCreatures(Util.Translate(windowPos, size.width / 2 , 60), quest) ;
+		displayReqItems(Util.Translate(windowPos, size.width / 2, 260)) ;
 		
 		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
 		

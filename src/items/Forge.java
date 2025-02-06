@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.util.List;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Draw;
 import main.Game;
 import utilities.Util;
@@ -58,7 +57,7 @@ public class Forge extends Item
 		return null ;
 	}
 
-	public void displayInfo(Point pos, Align align, DrawPrimitives DP)
+	public void displayInfo(Point pos, Align align)
 	{
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}

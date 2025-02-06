@@ -15,7 +15,6 @@ import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import items.Item;
 import main.Game;
@@ -338,9 +337,9 @@ public class CreatureType
 		}
 	}
 
-	public void display(Point pos, Scale scale, DrawPrimitives DP)
+	public void display(Point pos, Scale scale)
 	{
-		DP.drawImage(movingAni.idleGif, pos, scale, Align.center);
+		Game.DP.drawImage(movingAni.idleGif, pos, scale, Align.center);
 	}
 
 	public String toString()

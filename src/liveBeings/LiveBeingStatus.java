@@ -10,7 +10,7 @@ import org.json.simple.JSONObject;
 
 import attributes.Attributes;
 import graphics.Align;
-import graphics.DrawPrimitives;
+import main.Game;
 import utilities.Directions;
 import utilities.GameTimer;
 import utilities.UtilS;
@@ -57,11 +57,11 @@ public class LiveBeingStatus
 		intensity = 0.0 ;
 	}
 	
-	public void display(Point pos, Dimension size, Directions dir, DrawPrimitives DP)
+	public void display(Point pos, Dimension size, Directions dir)
 	{
 		if (!isActive()) { return ;}
 		
-		DP.drawImage(image, pos, Align.center) ;
+		Game.DP.drawImage(image, pos, Align.center) ;
 	}
 
 	@Override

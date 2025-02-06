@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
@@ -178,7 +177,7 @@ public class ElementalWindow extends GameWindow
 		return equipsForElemChange.subList(minIndex, maxIndex) ;
 	}
 	
-	private void displayEquipSelectionMenu(Point mousePos, DrawPrimitives DP)
+	private void displayEquipSelectionMenu(Point mousePos)
 	{
 		
 		if (equipsForElemChange == null) { return ;}
@@ -201,13 +200,13 @@ public class ElementalWindow extends GameWindow
 			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
 			Color textColor = getTextColor(i == item) ;
 			
-			DP.drawImage(slotImage, slotCenter, Align.center) ;
-			DP.drawImage(equip.getImage(), slotCenter, Align.center) ;
-			DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, equip.getName(), stdFont, textColor) ;
+			Game.DP.drawImage(slotImage, slotCenter, Align.center) ;
+			Game.DP.drawImage(equip.getImage(), slotCenter, Align.center) ;
+			Game.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, equip.getName(), stdFont, textColor) ;
 		}
 	}
 	
-	private void displaySphereSelectionMenu(Point mousePos, DrawPrimitives DP)
+	private void displaySphereSelectionMenu(Point mousePos)
 	{
 		int slotW = BagWindow.slotImage.getWidth(null) ;
 		int slotH = BagWindow.slotImage.getHeight(null) ;
@@ -223,26 +222,26 @@ public class ElementalWindow extends GameWindow
 
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
 			Image slotImage = item == i ? BagWindow.selectedSlotImage : BagWindow.slotImage ;
-			DP.drawImage(slotImage, slotCenter, Align.center) ;
-			DP.drawImage(sphere.getImage(), slotCenter, Align.center) ;
+			Game.DP.drawImage(slotImage, slotCenter, Align.center) ;
+			Game.DP.drawImage(sphere.getImage(), slotCenter, Align.center) ;
 			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
 			Color textColor = getTextColor(i == item) ;
-			DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, sphere.getName(), stdFont, textColor) ;
+			Game.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, sphere.getName(), stdFont, textColor) ;
 		}
 	}
 	
-	public void display(Point mousePos, DrawPrimitives DP)
+	public void display(Point mousePos)
 	{
 		
 		Point titlePos = Util.Translate(windowPos, size.width / 2, 2 + 9) ;
 		
-		DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
-		DP.drawText(titlePos, Align.center, Draw.stdAngle, menuTitles.get(menu), titleFont, stdColor) ;
+		Game.DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
+		Game.DP.drawText(titlePos, Align.center, Draw.stdAngle, menuTitles.get(menu), titleFont, stdColor) ;
 		
 		switch (menu)
 		{
-			case 0: displayEquipSelectionMenu(mousePos, DP) ; break ;
-			case 1: displaySphereSelectionMenu(mousePos, DP) ; break ;
+			case 0: displayEquipSelectionMenu(mousePos) ; break ;
+			case 1: displaySphereSelectionMenu(mousePos) ; break ;
 			default: break ;
 		}
 		

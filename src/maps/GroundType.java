@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Point ;
 
 import graphics.Align;
-import graphics.DrawPrimitives;
 import main.Game;
 
 public class GroundType
@@ -25,12 +24,12 @@ public class GroundType
 	public Point getTopLeftPos() { return topLeftPos ;}
 	public Dimension getSize() { return size ;}
 
-	public void display(DrawPrimitives DP)
+	public void display()
 	{
 		switch (type)
 		{
-			case water: DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[20], null) ; return ;
-			case lava: DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[7], null) ; return ;
+			case water: Game.DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[20], null) ; return ;
+			case lava: Game.DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[7], null) ; return ;
 			default: return ;
 		}
 	}

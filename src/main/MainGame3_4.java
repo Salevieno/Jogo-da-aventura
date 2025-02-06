@@ -24,7 +24,7 @@ public class MainGame3_4 extends JFrame implements ActionListener
 	private static final long serialVersionUID = 1L ;
 	
 	private static Timer timer ;		// Main timer of the game
-	private static final Dimension windowSize = new Dimension(640, 480) ;
+	private static final Dimension windowSize = new Dimension(1280,960) ;
 	private static GameStates previousState ;
 	private static final Image icon = Util.loadImage(".\\images\\gameIcon.png") ;
 	private static final Game game = new Game() ;
@@ -39,13 +39,30 @@ public class MainGame3_4 extends JFrame implements ActionListener
         Dimension actualWindowSize = getContentPane().getSize() ;
         Dimension extraSize = new Dimension(windowSize.width - actualWindowSize.width, windowSize.height - actualWindowSize.height) ;
         setSize(new Dimension(windowSize.width + extraSize.width, windowSize.height + extraSize.height)) ;      
-        setLocation(500, 200) ;
+        setLocation(200, 20) ;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         setVisible(true) ;
         timer = new Timer(0, this) ;			// timer of the game, first number = frame duration
 		timer.start() ;							// Game will start checking for keyboard events every "timer" miliseconds
 		previousState = GameStates.opening ;
         add(game) ;				// adding game panel on the JFrame
+//        System.out.println(Toolkit.getDefaultToolkit().getScreenResolution());
+//        System.setProperty("sun.java2d.uiScale", "1.0");
+//        System.out.println(Toolkit.getDefaultToolkit().getScreenResolution());
+//        System.out.println(getSize());
+//        System.out.println(getContentPane().getSize());
+//        
+//        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+//        System.out.println("Scale Factor: " + gd.getDefaultConfiguration().getDefaultTransform().getScaleX());
+//        
+//        System.out.println("Frame Size: " + getSize());
+//        System.out.println("Content Pane Size: " + getContentPane().getSize());
+//        
+//        Graphics2D g2 = (Graphics2D) getGraphics();
+//        System.out.println("Graphics Scale X: " + g2.getTransform().getScaleX());
+//        System.out.println("Graphics Scale Y: " + g2.getTransform().getScaleY());
+
+
     }
 	
 	public static void pauseGame()
