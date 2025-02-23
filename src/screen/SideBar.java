@@ -19,6 +19,7 @@ import liveBeings.Player;
 import liveBeings.PlayerActions;
 import liveBeings.SpellsBar;
 import main.Game;
+import main.MainGame3_4;
 import utilities.Util;
 import utilities.UtilS;
 import windows.PetAttributesWindow;
@@ -27,18 +28,21 @@ import windows.PlayerAttributesWindow;
 public abstract class SideBar
 {
 	
-	private static final Point barPos = Game.getScreen().pos(1, 0) ;
+	private static final Point barPos = Game.getScreen().posInMap(1, 0) ;
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
-	public static final Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
-	public static final Image slotImage = UtilS.loadImage("\\SideBar\\" + "Slot.png") ;
 	private static final String[] iconNames ;
 	private static final Image[] iconImages ;
 	private static final Image[] iconSelectedImages ;
 	private static final List<GameButton> buttons = new ArrayList<>() ;
+	private static final Color bgColor = Game.palette[1] ;
+	
+	public static final Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
+	public static final Image slotImage = UtilS.loadImage("\\SideBar\\" + "Slot.png") ;
+	public static final int sy = 10 ;
 	
 	static
 	{
-		iconNames = new String[] {"map", "quest", "bag", "settings"} ;
+		iconNames = new String[] {"map", "quest", "bag", "settings", "exit"} ;
 		iconImages = new Image[iconNames.length] ;
 		iconSelectedImages = new Image[iconNames.length] ;
 		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
@@ -70,6 +74,7 @@ public abstract class SideBar
 		} ; 
 		actions[2] = () -> { player.switchOpenClose(player.getBag()) ;} ; 
 		actions[3] = () -> { player.switchOpenClose(player.getSettings()) ;} ;
+		actions[4] = () -> { MainGame3_4.closeGame() ;} ;
 
 		SpellsBar.updateSpells(player.getActiveSpells()) ;
 		addPetButton(player, Game.getPet()) ;
@@ -146,7 +151,8 @@ public abstract class SideBar
 	public static void display(Player player, Pet pet, Point mousePos)
 	{
 		
-		Game.DP.drawRect(barPos, Align.topLeft, size, Game.palette[0], null) ;
+		Game.DP.drawRect(barPos, Align.topLeft, size, bgColor, null) ;
+//		Game.DP.drawLine(Util.Translate(barPos, size.width, 0), Util.Translate(barPos, size.width, size.height), Game.palette[1]) ;
 		
 		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos)) ;
 		displayKeys() ;

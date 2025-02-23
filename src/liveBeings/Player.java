@@ -402,20 +402,20 @@ public class Player extends LiveBeing
 		
 		int NumberOfCreaturesInMap = fieldMap.getCreatures().size() ;
 		double[] dist = new double[NumberOfCreaturesInMap] ;
-		double MinDist = Game.getScreen().getSize().width + Game.getScreen().getSize().height ;
+		double minDist = Game.getScreen().getSize().width ;
 		for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 		{
 			Creature creature = fieldMap.getCreatures().get(i) ;
 			if (fieldMap.getCreatures().get(i) != null)
 			{
 				dist[i] = (double) new Point(pos.x, pos.y).distance(new Point(creature.getPos().x, creature.getPos().y)) ;				
-				MinDist = Math.min(MinDist, dist[i]) ;
+				minDist = Math.min(minDist, dist[i]) ;
 			}	
 		}
 		for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
 		{
 			Creature closestCreature = fieldMap.getCreatures().get(i) ;
-			if (dist[i] == MinDist & fieldMap.getCreatures() != null & dist[i] <= range)
+			if (dist[i] == minDist & fieldMap.getCreatures() != null & dist[i] <= range)
 			{
 				return closestCreature ;
 			}
@@ -568,10 +568,10 @@ public class Player extends LiveBeing
 	private static Point calcNewMapPos(Point pos, Directions dir, GameMap currentMap, GameMap newMap)
 	{
 		int[] screenBorder = Game.getScreen().getBorders() ;
-		Dimension screenSize = Game.getScreen().getSize() ;
+		Dimension screenSize = Game.getScreen().mapSize() ;
 		Point currentPos = new Point(pos) ;
 		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
-		int stepOffset = (int) (68 * Player.stepDuration) ; // isso é uma aproximação. O qto o player anda depende da velocidade dos frames
+		int stepOffset = (int) (68 * Player.stepDuration) ; // TODO isso é uma aproximação. O qto o player anda depende da velocidade dos frames
 
 		switch (dir)
 		{

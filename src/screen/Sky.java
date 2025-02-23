@@ -14,25 +14,36 @@ import utilities.UtilS;
 
 public class Sky 
 {
-	public static GameTimer dayCounter = new GameTimer(600) ;
+	public static GameTimer dayCounter ;
 	private static SkyComponent[] clouds;
 	private static SkyComponent[] stars ;
 	private static Color color ;
 
-	public static final int height = (int)(0.2 * Game.getScreen().getSize().height) ;
-	public static final Dimension size = new Dimension(Game.getScreen().getSize().width, height) ;
-	public static final Image cloudImage1 = UtilS.loadImage("\\Sky\\" + "Cloud1.png") ;
-	public static final Image cloudImage2 = UtilS.loadImage("\\Sky\\" + "Cloud2.png") ;
-	public static final Image cloudImage3 = UtilS.loadImage("\\Sky\\" + "Cloud3.png") ;
-	private static final Image[] starImages = new Image[] {
-			UtilS.loadImage("\\Sky\\" + "Star1.png") ,
-			UtilS.loadImage("\\Sky\\" + "Star2.png") ,
-			UtilS.loadImage("\\Sky\\" + "Star3.png") ,
-			UtilS.loadImage("\\Sky\\" + "Star4.png") ,
-			UtilS.loadImage("\\Sky\\" + "Star5.png") ,
-			UtilS.loadImage("\\Sky\\" + "Star6.png") ,
-			UtilS.loadImage("\\Sky\\" + "Star7.png")
-	} ;
+	public static final int height ;
+	public static final Dimension size ;
+	public static final Image cloudImage1 ;
+	public static final Image cloudImage2 ;
+	public static final Image cloudImage3 ;
+	private static final Image[] starImages ;
+	
+	static
+	{
+		dayCounter = new GameTimer(600) ;
+		height = (int)(0.2 * Game.getScreen().getSize().height) ;
+		size = new Dimension(Game.getScreen().getSize().width - 40, height) ;
+		cloudImage1 = UtilS.loadImage("\\Sky\\" + "Cloud1.png") ;
+		cloudImage2 = UtilS.loadImage("\\Sky\\" + "Cloud2.png") ;
+		cloudImage3 = UtilS.loadImage("\\Sky\\" + "Cloud3.png") ;
+		starImages = new Image[] {
+				UtilS.loadImage("\\Sky\\" + "Star1.png") ,
+				UtilS.loadImage("\\Sky\\" + "Star2.png") ,
+				UtilS.loadImage("\\Sky\\" + "Star3.png") ,
+				UtilS.loadImage("\\Sky\\" + "Star4.png") ,
+				UtilS.loadImage("\\Sky\\" + "Star5.png") ,
+				UtilS.loadImage("\\Sky\\" + "Star6.png") ,
+				UtilS.loadImage("\\Sky\\" + "Star7.png")
+		} ;
+	}
 	
 	public Sky ()
 	{
@@ -88,7 +99,7 @@ public class Sky
 		cloud.setCounter(0) ;
 	}
 	
-	private boolean passedScreen(int x) { return Game.getScreen().getSize().width <= x ;}
+	private boolean passedScreen(int x) { return Game.getScreen().mapSize().width <= x ;}
 	
 	private void displayDaySky()
 	{

@@ -97,7 +97,6 @@ public class GameButton
 			Game.DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.palette[5], Game.palette[0], true) ;
 			Game.DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 		}
-		
 		Game.setCursorToHand() ;
 	}
 	
@@ -137,6 +136,14 @@ public class GameButton
 		
 		Game.DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
 		
+		if (ishovered(mousePos))
+		{
+			Game.setCursorToHand() ;
+		}
+		else
+		{
+			Game.setCursorToDefault() ;
+		}
 	}
 	
 	public void displayHoverMessage()

@@ -86,8 +86,8 @@ public class SpecialMap extends GameMap
 			for (int chest = 0 ; chest <= 5 - 1 ; chest += 1)
 			{
 				Point pos = new Point(
-										(int) (Double.parseDouble(input.get(id)[10 + 13 * chest]) * Game.getScreen().getSize().width),
-										(int) (Double.parseDouble(input.get(id)[11 + 13 * chest]) * Game.getScreen().getSize().height)
+										(int) (Double.parseDouble(input.get(id)[10 + 13 * chest]) * Game.getScreen().mapSize().width),
+										(int) (Double.parseDouble(input.get(id)[11 + 13 * chest]) * Game.getScreen().mapSize().height)
 									) ;
 				List<Item> itemRewards = new ArrayList<>() ;
 				for (int item = 0 ; item <= 10 - 1 ; item += 1)

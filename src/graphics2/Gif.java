@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import graphics.Align;
-import main.MainGame3_4;
+import main.GameFrame;
 import utilities.GameTimer;
 import utilities.Util;
 
@@ -57,7 +57,7 @@ public class Gif
 	{
 		if (counter.finished())
 		{
-			if (timeStopper) { MainGame3_4.resumeGame() ;}
+			if (timeStopper) { GameFrame.resumeGame() ;}
 			end() ;
 			return ;
 		}

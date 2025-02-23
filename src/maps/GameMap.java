@@ -332,7 +332,7 @@ public class GameMap
 	protected Point randomPosOnLand()
 	{
 		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
-		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (float)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
+		Dimension range = new Dimension(Game.getScreen().mapSize().width, (int) ((1 - (float)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
 		Dimension step = new Dimension(1, 1) ;
 
 		return randomPosOnLand(minCoord, range, step) ;
@@ -341,7 +341,7 @@ public class GameMap
 	public Point randomPosInMap()
 	{
 		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
-		Dimension range = new Dimension(Game.getScreen().getSize().width, (int) ((1 - (float)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
+		Dimension range = new Dimension(Game.getScreen().mapSize().width, (int) ((1 - (float)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
 		
 		return Util.RandomPos(minCoord, range, new Dimension(1, 1)) ;
 	}
@@ -585,7 +585,7 @@ public class GameMap
  		
  		if (name.equals("City of the archers"))
  		{
- 	 		Game.DP.drawImage(beachGif, new Point(Game.getScreen().getSize().width - 80, 96), Align.topRight) ;
+ 	 		Game.DP.drawImage(beachGif, new Point(Game.getScreen().mapSize().width - 80, 96), Align.topRight) ;
  		}
  	}
 	

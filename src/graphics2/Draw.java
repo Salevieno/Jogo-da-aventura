@@ -118,7 +118,7 @@ public abstract class Draw
 		// obs: text must end with . , ? or ! for this function to work
 		int bubbleL = speechBubble.getWidth(null) ;
 		int bubbleH = speechBubble.getHeight(null) ;
-		boolean flipH = Game.getScreen().getSize().width / 2 <= pos.x ;
+		boolean flipH = Game.getScreen().mapSize().width / 2 <= pos.x ;
 		Color textColor = color != null ? color : Game.palette[21] ;
 		
 		Game.DP.drawImage(speechBubble, pos, DrawPrimitives.stdAngle, Scale.unit, flipH, false, Align.bottomCenter, 1) ;

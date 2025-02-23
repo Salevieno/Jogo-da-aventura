@@ -152,7 +152,7 @@ public class FieldMap extends GameMap
 		// TODO map elements caindo dentro da água
 		Screen screen = Game.getScreen() ;
 		Point minCoord = new Point(20, Sky.height + 20) ;
-		Dimension range = new Dimension(screen.getSize().width - 100, screen.getSize().height - Sky.height - 100) ;
+		Dimension range = new Dimension(screen.mapSize().width - 100, screen.mapSize().height - 100) ;
 		Dimension step = new Dimension(1, 1) ;
 		Set<Image> grassImages = new HashSet<>(Set.of(grassImage, grassImage2)) ;
 		

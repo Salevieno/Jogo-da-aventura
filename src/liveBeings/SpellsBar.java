@@ -49,7 +49,7 @@ public abstract class SpellsBar
 		slotImageNoMP = UtilS.loadImage("\\SideBar\\" + "SlotNoMP.png") ;
 		cooldownImage = UtilS.loadImage("\\SideBar\\" + "Cooldown.png") ;
 		size = Util.getSize(image) ;
-		barPos = new Point(Game.getScreen().getSize().width + 2, Game.getScreen().getSize().height - 80) ;
+		barPos = new Point(Game.getScreen().mapSize().width + 2, HotKeysBar.topLeft().y - SideBar.sy) ;
 		titlePos = new Point(barPos.x + size.width / 2, barPos.y - size.height + 2) ;
 	}
 	
@@ -79,7 +79,7 @@ public abstract class SpellsBar
 		int sx = (int) Util.spacing(size.width, nCols, slotSize.width, offset.x) ;
 		int sy = (int) Util.spacing(size.height, nRows, slotSize.height, offset.y) ;
 		
-		Game.DP.drawImage(image, barPos, Align.bottomLeft) ;		
+		Game.DP.drawImage(image, barPos, Align.bottomLeft) ;
 		Game.DP.drawImage(spellIcon, titlePos, Align.topCenter);
 
 		for (int i = 0 ; i <= spells.size() - 1 ; i += 1)

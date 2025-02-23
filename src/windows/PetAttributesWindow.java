@@ -22,8 +22,7 @@ public class PetAttributesWindow extends AttributesWindow
 {
 	private Pet pet ;
 
-	Dimension screenSize = Game.getScreen().getSize() ;
-	Point windowPos = new Point((int) (0.52 * screenSize.width), (int)(0.14 * screenSize.height)) ;
+	Point windowPos = Game.getScreen().pos(0.52, 0.14) ;
 	
 	private static final Image image = UtilS.loadImage("\\Windows\\" + "PetAttWindow.png") ;
 	

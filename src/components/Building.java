@@ -104,13 +104,13 @@ public class Building implements Drawable
 		Point boardPos = Util.Translate(pos, type.getImage().getWidth(null), 0) ;
 		Point messagePos = Util.Translate(boardPos, 12, 15 - signBoard.getHeight(null)) ;
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
-//		Game.DP.drawRoundRect(pos, Align.topLeft, new Dimension(230, 80), 2, Game.colorPalette[3], true) ;
 		Game.DP.drawImage(signBoard, boardPos, Align.bottomLeft, 0.85) ;
 		Draw.fitText(messagePos, font.getSize() + 2, Align.bottomLeft, message, font, 40, Game.palette[0]) ;	
 	}
 	
 	public void display(Hitbox playerHitbox, Point playerPos, int cityID)
 	{
+
 		if (type.getName().equals(BuildingNames.sign) & isInside(playerPos))
 		{
 			displaySignMessage(cityID) ;
@@ -126,8 +126,7 @@ public class Building implements Drawable
 		
 		if (!isInside(playerPos))
 		{
-			Game.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
-			
+			Game.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;			
 			
 			return ;
 		}

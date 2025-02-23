@@ -199,8 +199,8 @@ public class MapWindow extends GameWindow
 	public void displayPlayer(Point mapPos, Dimension screenSize, Scale scale)
 	{
 
-		double playerRelXPos = playerPos.x / (double) Game.getScreen().getSize().width ;
-		double playerRelYPos = playerPos.y / (double) (Game.getScreen().getSize().height) ;
+		double playerRelXPos = playerPos.x / (double) Game.getScreen().mapSize().width ;
+		double playerRelYPos = playerPos.y / (double) (Game.getScreen().mapSize().height) ;
 		Point circlePos = Util.Translate(mapPos, (int) (scale.x * screenSize.width * playerRelXPos),
 				(int) (-scale.y * screenSize.height * (1 - playerRelYPos))) ;
 		Game.DP.drawCircle(circlePos, 5, 0, Game.palette[6], null) ;
@@ -212,7 +212,6 @@ public class MapWindow extends GameWindow
 		
 		// full map = 14 x 15 mapas
 		// continent maps = max 6 x 8 maps
-		Dimension screenSize = Game.getScreen().getSize() ;
 		Scale scale = new Scale(0.1, 0.1) ;
 		Point offset = new Point(padding + border, padding + border) ;
 		Dimension mapSize = new Dimension((int) (600 * scale.x), (int) (384 * scale.y)) ;
@@ -253,14 +252,14 @@ public class MapWindow extends GameWindow
 			Point mapPos = Util.Translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
 					size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
 			map.display(mapPos, scale) ;
-			Point textPos = Util.Translate(mapPos, (int) (scale.x * screenSize.width / 2),
-					(int) (-scale.y * screenSize.height / 2)) ;
+			Point textPos = Util.Translate(mapPos, (int) (scale.x * Game.getScreen().mapSize().width / 2),
+					(int) (-scale.y * Game.getScreen().mapSize().height / 2)) ;
 			Game.DP.drawText(textPos, Align.center, 0, map.getName(), stdFont, Game.palette[0]) ;
 			
 			if (!map.equals(currentMap)) { continue ;}
 			if (playerPos == null) { continue ;}
 			
-			displayPlayer(mapPos, screenSize, scale) ;
+			displayPlayer(mapPos, Game.getScreen().mapSize(), scale) ;
 		}
 	}
 }

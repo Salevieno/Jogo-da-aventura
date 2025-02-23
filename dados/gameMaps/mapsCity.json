@@ -5,7 +5,7 @@
     "Connections": {"topLeft": -1, "leftTop": -1, "leftBottom": -1, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 14, "rightTop": 14, "topRight": -1},
     "Buildings":
     [
-      {"name": "hospital", "pos": {"x": 0.546, "y": 0.88}},
+      {"name": "hospital", "pos": {"x": 0.5, "y": 0.0}},
       {"name": "store", "pos": {"x": 0.40, "y": 0.49}},
       {"name": "craft", "pos": {"x": 0.056, "y": 0.86}},
       {"name": "bank", "pos": {"x": 0.096, "y": 0.26}},

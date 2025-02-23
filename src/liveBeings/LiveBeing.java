@@ -317,8 +317,8 @@ public abstract class LiveBeing implements Drawable
 		Point currentPos = new Point(pos) ;
 		int newMapID = -1 ;
 		int[] mapConnections = currentMap.getConnections() ;
-		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
-		boolean topSide = currentPos.y <= Game.getScreen().getSize().height / 2 ;
+		boolean leftSide = currentPos.x <= Game.getScreen().mapSize().width / 2 ;
+		boolean topSide = currentPos.y <= Game.getScreen().getBorders()[1] + Game.getScreen().mapSize().height / 2 ;
 		switch (dir)
 		{
 			case up:

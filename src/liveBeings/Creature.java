@@ -48,7 +48,7 @@ public class Creature extends LiveBeing
 	
  	public Creature(CreatureType CT)
 	{
- 		this(CT, Util.RandomPos(new Point(0, (int) (0.2*Game.getScreen().getSize().height)), new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)), new Dimension(1, 1))) ;
+ 		this(CT, Util.RandomPos(new Point(0, (int) (0.2*Game.getScreen().mapSize().height)), new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)), new Dimension(1, 1))) ;
 	}
 
  	public Creature(CreatureType CT, Point pos)
@@ -183,8 +183,8 @@ public class Creature extends LiveBeing
 	public void setRandomPos()
 	{
 		Screen screen = Game.getScreen() ;
-		Point minCoord = new Point(0, (int) (0.2*screen.getSize().height)) ;
-		Dimension range = new Dimension(screen.getSize().width, (int) (screen.getBorders()[3] - screen.getBorders()[1])) ;
+		Point minCoord = new Point(0, (int) (0.2*screen.mapSize().height)) ;
+		Dimension range = new Dimension(screen.mapSize().width, (int) (screen.getBorders()[3] - screen.getBorders()[1])) ;
 		Dimension step = new Dimension(1, 1) ;
 		setPos(Util.RandomPos(minCoord, range, step)) ;
 	}

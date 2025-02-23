@@ -161,7 +161,7 @@ public abstract class Opening
     	Image startImage = Util.loadImage(path + "Start.png") ;
     	Image startImageSelected = Util.loadImage(path + "Start Selected.gif") ;
 		IconFunction startAction = () -> { loadingStep = 12 ;} ;
-    	startButton = new GameButton(new Point(320, 400), Align.center, "start", startImage, startImageSelected, startAction) ;
+    	startButton = new GameButton(Util.Translate(Game.getScreen().getCenter(), 0, 80), Align.center, "start", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
     	
     	stepMessage = new String[] {"", "Qual o seu nome?", "", "", "", ""} ;
@@ -340,14 +340,14 @@ public abstract class Opening
 //		
 //		Game.DP.drawImage(LoadingEnfeite, new Point(0, 0), Align.topLeft) ;
 		
-		Game.DP.drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().sizeWithSidebar(), Game.palette[0], null) ;
+		Game.DP.drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), Game.palette[0], null) ;
 		Game.DP.drawImage(petImage0, Game.getScreen().getCenter(), Align.center) ;
 		
 		if (!loadingIsOver())
 		{
-			Point loadingTextCenter = new Point(320, 360) ;
-			Point loadingBarCenterLeft = new Point(120, 400) ;
 			Dimension loadingBarSize = new Dimension(400, 30) ;
+			Point loadingTextCenter = Util.Translate(Game.getScreen().getCenter(), 0, 80) ;
+			Point loadingBarCenterLeft = Util.Translate(Game.getScreen().getCenter(), -loadingBarSize.width / 2, 80) ;
 			Dimension loadedBarSize = new Dimension(loadingStep * loadingBarSize.width / 11, loadingBarSize.height) ;
 			Game.DP.drawImage(LoadingGif, loadingTextCenter, Align.center) ;
 			Game.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, Game.palette[0], true);

@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent ;
 import java.awt.event.MouseListener ;
 import java.awt.event.MouseWheelEvent ;
 import java.awt.event.MouseWheelListener ;
+import java.awt.geom.Point2D;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.Comparator;
@@ -27,6 +28,7 @@ import org.json.simple.JSONObject ;
 
 import components.Building ;
 import components.BuildingType ;
+import components.GameButton;
 import components.NPCType ;
 import components.NPCs ;
 import components.Projectiles ;
@@ -129,34 +131,30 @@ public class Game extends JPanel
 
 	static
 	{
-		Dimension windowSize = MainGame3_4.getWindowsize() ;
-		screen = new Screen(new Dimension(windowSize.width - 40, windowSize.height), null) ;
-		screen.calcCenter() ;
+		Dimension windowSize = GameFrame.getWindowsize() ;
+		screen = new Screen(new Dimension(windowSize.width, windowSize.height), null) ;
 		gameLanguage = Languages.portugues ;
-
 		normalPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette4.png"), "Normal") ;
 		konamiPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Konami") ;
 		palette = normalPalette ;
 		konamiCodeActive = false ;
-
 		allText = new HashMap<>() ;
 		DP = new DrawPrimitives() ;
 		shouldRepaint = false ;
-
 	}
 
 	public Game()
 	{
 		player = new Player("", "", 0) ;
-
+		setBackground(palette[0]) ;
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
 		addKeyListener(new TAdapter()) ;
 		setFocusable(true) ;
 	}
 	
-	public static void setCursorToDefault() { MainGame3_4.setCursorToDefault() ;}	
-	public static void setCursorToHand() { MainGame3_4.setCursorToHand() ;}
+	public static void setCursorToDefault() { GameFrame.setCursorToDefault() ;}	
+	public static void setCursorToHand() { GameFrame.setCursorToHand() ;}
 
 	public static GameStates getState() { return initialState ;}
 	public static Languages getLanguage() { return gameLanguage ;}
@@ -514,10 +512,12 @@ public class Game extends JPanel
 		}
 		
 		SideBar.act(player.getCurrentAction(), mousePos) ;
-
+		
 		player.resetAction() ;
 		
 		draw() ;
+		
+		
 		
 //		player.display(player.getPos(), Scale.unit, player.getDir(), player.getSettings().getShowAtkRange()) ;
 //		player.getMap().displayBuildings(player.getHitbox(), player.getPos(), Arrays.asList(Game.getMaps()).indexOf(player.getMap())) ;
@@ -708,8 +708,9 @@ public class Game extends JPanel
 		{
 			case 0:
 				sky = new Sky() ;
-				screen.setBorders(new int[] { 0, Sky.height, screen.getSize().width, screen.getSize().height }) ;
+				screen.setBorders(new int[] { 0, Sky.height, screen.getSize().width - 40, screen.getSize().height }) ;
 				screen.setMapCenter() ;
+				System.out.println(screen.getMapCenter());
 				Log.loadTime("initial stuff", initialTime) ;
 				return ;
 				
@@ -839,14 +840,34 @@ public class Game extends JPanel
 		
 	}
 
+
+	private void updateMousePos()
+	{
+		mousePos = Util.GetMousePos(mainPanel) ;
+        mousePos.x = (int) (mousePos.x / screen.getScale().x) ;
+        mousePos.y = (int) (mousePos.y / screen.getScale().y) ;
+	}
 	
+	
+
+	// Ensure focused when added
+	@Override
+    public void addNotify() {
+        super.addNotify();
+        requestFocusInWindow();
+    }
 	
 	@Override
 	protected void paintComponent(Graphics graphs)
 	{
 		super.paintComponent(graphs) ;
-		mousePos = Util.GetMousePos(mainPanel) ;
-		Game.DP.setGraphics((Graphics2D) graphs) ;
+//		mousePos = Util.GetMousePos(mainPanel) ;
+		updateMousePos() ;
+		
+        Graphics2D graphs2D = (Graphics2D) graphs ;
+        graphs2D.scale(screen.getScale().x, screen.getScale().y);
+//        System.out.println(screen.getScale());
+		Game.DP.setGraphics(graphs2D) ;
 		Draw.setDP(DP) ;
 		GameTimer.updateAll() ;
 		switch (initialState)
@@ -932,16 +953,27 @@ public class Game extends JPanel
 			{
 				if (initialState.equals(GameStates.paused))
 				{
-					MainGame3_4.resumeGame();
+					GameFrame.resumeGame();
 					GameTimer.resumeAll() ;
 				}
 				else
 				{
-					MainGame3_4.pauseGame() ;
+					GameFrame.pauseGame() ;
 					GameTimer.stopAll() ;
 				}
 			}
+			
+			if (keyCode == KeyEvent.VK_6)
+			{
+				GameFrame.getMe().resizeWindow() ;
+				screen.updateScale() ;
+			}
 
+			if (keyCode == KeyEvent.VK_ESCAPE)
+			{
+				MainGame3_4.closeGame() ;
+			}
+			
 			player.setCurrentAction(KeyEvent.getKeyText(keyCode)) ;
 			
 		}

@@ -27,16 +27,20 @@ public class HotKeysBar
 		font = new Font(Game.MainFontName, Font.BOLD, 12) ;
 		textColor = Game.palette[0] ;
 		image = UtilS.loadImage("\\SideBar\\" + "HotBar.png") ;
-		barPos = new Point(Game.getScreen().getSize().width + 2, Game.getScreen().getSize().height - 5) ;
+		barPos = new Point(Game.getScreen().mapSize().width + 2, Game.getScreen().getSize().height - SideBar.sy) ;
+		System.out.println("screen h " + Game.getScreen().getSize().height);
+		System.out.println(barPos);
 	}
+	
+	public static Dimension size() { return Util.getSize(image) ;}
+	public static Point topLeft() { return new Point(barPos.x, barPos.y - size().height) ;}
 
 	public static int slotHovered(Point mousePos)
 	{
-		Point barTopLeft = new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70) ;
 		Dimension slotSize = Util.getSize(SideBar.slotImage) ;
 		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 		{
-			Point slotCenter = Util.Translate(barTopLeft, 10, 10 + 20 * i) ;
+			Point slotCenter = Util.Translate(topLeft(), 10, 10 + 20 * i) ;
 			if (Util.isInside(mousePos, Util.Translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize))
 			{
 				return i ;
@@ -48,14 +52,13 @@ public class HotKeysBar
 	
 	public static void display(Item[] hotItems, Point mousePos)
 	{
-		Point barTopLeft = new Point(Game.getScreen().getSize().width + 1, Game.getScreen().getSize().height - 70) ;
 		Dimension slotSize = Util.getSize(SideBar.slotImage) ;
 
 		Game.DP.drawImage(image, barPos, Align.bottomLeft) ;
 		
 		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 		{
-			Point slotCenter = Util.Translate(barTopLeft, 13, 10 + 20 * i) ;
+			Point slotCenter = Util.Translate(topLeft(), 13, 10 + 20 * i) ;
 			Point keyTextPos = Util.Translate(slotCenter, slotSize.width / 2 + 6, slotSize.height / 2) ;
 			
 			Game.DP.drawImage(BagWindow.slotImage, slotCenter, Align.center) ;
