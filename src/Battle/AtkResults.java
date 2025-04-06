@@ -1,4 +1,4 @@
-package main;
+package Battle;
 
 import java.util.Arrays;
 

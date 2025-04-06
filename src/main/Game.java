@@ -2,17 +2,10 @@ package main ;
 
 import java.awt.Color ;
 import java.awt.Dimension ;
-import java.awt.Graphics;
-import java.awt.Graphics2D ;
-import java.awt.Point ;
-import java.awt.Toolkit ;
-import java.awt.event.KeyAdapter ;
-import java.awt.event.KeyEvent ;
-import java.awt.event.MouseEvent ;
-import java.awt.event.MouseListener ;
-import java.awt.event.MouseWheelEvent ;
-import java.awt.event.MouseWheelListener ;
-import java.awt.geom.Point2D;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.Comparator;
@@ -21,26 +14,24 @@ import java.util.Iterator ;
 import java.util.List ;
 import java.util.Map ;
 
-import javax.swing.JPanel ;
-
 import org.json.simple.JSONArray ;
 import org.json.simple.JSONObject ;
 
+import Battle.Battle;
 import components.Building ;
 import components.BuildingType ;
-import components.GameButton;
 import components.NPCType ;
 import components.NPCs ;
 import components.Projectiles ;
 import components.Quest ;
 import components.QuestSkills;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Animation;
 import graphics2.Draw;
 import graphics2.Drawable;
 import graphics2.Gif;
+import graphics2.SpriteAnimation;
 import items.Alchemy ;
 import items.Arrow ;
 import items.Equip ;
@@ -77,14 +68,13 @@ import utilities.Util;
 import utilities.UtilS ;
 import windows.BankWindow ;
 
-public class Game extends JPanel
+public class Game
 {
 	// TODO arquivos - nomes das criaturas
 	// TODO como reviver o pet quando ele/ela morre? :O
 	// TODO animação tela de carregamento
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	// TODO make game run by time
-	private static final long serialVersionUID = 1L ;
 	private static final String[] konamiCode = new String[] { "Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A" } ;
 	public static final String JSONPath = ".\\json\\" ;
 	public static final String CSVPath = ".\\csv\\" ;
@@ -98,8 +88,6 @@ public class Game extends JPanel
 	public static final Color[] konamiPalette ;
 	public static final boolean displayHitboxes = false;
 
-	private JPanel mainPanel = this ;
-	private static Point mousePos ;
 	private static GameStates initialState = GameStates.loading ;
 	private static GameStates mainState = GameStates.running ;
 	private static boolean cheatMode = false ;
@@ -110,7 +98,6 @@ public class Game extends JPanel
 	public static Color[] palette ;
 	public static Map<TextCategories, String[]> allText ;
 
-	public static final DrawPrimitives DP ;
 	private static Player player ;
 	private static Pet pet ;
 	public static int difficultLevel = 2 ;
@@ -139,37 +126,28 @@ public class Game extends JPanel
 		palette = normalPalette ;
 		konamiCodeActive = false ;
 		allText = new HashMap<>() ;
-		DP = new DrawPrimitives() ;
 		shouldRepaint = false ;
 	}
 
 	public Game()
 	{
-		player = new Player("", "", 0) ;
-		setBackground(palette[0]) ;
-		addMouseListener(new MouseEventDemo()) ;
-		addMouseWheelListener(new MouseWheelEventDemo()) ;
-		addKeyListener(new TAdapter()) ;
-		setFocusable(true) ;
+		player = new Player("", "", 2) ;
 	}
 	
-	public static void setCursorToDefault() { GameFrame.setCursorToDefault() ;}	
-	public static void setCursorToHand() { GameFrame.setCursorToHand() ;}
-
 	public static GameStates getState() { return initialState ;}
 	public static Languages getLanguage() { return gameLanguage ;}
 	public static Screen getScreen() { return screen ;}
-	public static Sky getSky() { return sky ;}
+//	public static Sky getSky() { return sky ;}
 	public static NPCType[] getNPCTypes() { return npcTypes ;}
 	public static Player getPlayer() { return player ;}
 	public static Pet getPet() { return pet ;}
-	public static BuildingType[] getBuildingTypes() { return buildingTypes ;}
+//	public static BuildingType[] getBuildingTypes() { return buildingTypes ;}
 	public static GameMap[] getMaps() { return allMaps ;}
 	public static Quest[] getAllQuests() { return allQuests ;}
 	public static Item[] getAllItems() { return allItems ;}
 	public static Spell[] getAllSpells() { return allSpells ;}
 	public static boolean getShouldRepaint() { return shouldRepaint ;}
-	public static Point getmousePos() { return mousePos ;}
+//	public static Point getmousePos() { return GamePanel.getMousePos() ;}
 	public static int getSlotLoaded() { return slotLoaded ;}
 	public static void setSlotLoaded(int newSlotLoaded) { slotLoaded = newSlotLoaded ;}
 	
@@ -186,8 +164,7 @@ public class Game extends JPanel
 	
 	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
 	public static void setState(GameStates newState) { initialState = newState ;}
-	public static void playStopTimeGif() { initialState = GameStates.playingStopTimeGif ;}
-	public static void shouldNotRepaint() { shouldRepaint = false ;}
+//	public static void playStopTimeGif() { initialState = GameStates.playingStopTimeGif ;}
 
 	private static void checkKonamiCode(List<String> combo)
 	{
@@ -311,278 +288,6 @@ public class Game extends JPanel
 
 	}
 
-
-	private void activateCounters()
-	{
-		if (Sky.dayCounter.finished())
-		{
-			Sky.dayCounter.restart() ;
-			NPCs.renewStocks() ;
-		}
-		player.activateSpellCounters() ;
-
-		if (pet != null)
-		{
-			pet.activateSpellCounters() ;
-		}
-
-		if (player.getMap().isAField())
-		{
-			FieldMap fm = (FieldMap) player.getMap() ;
-			fm.getCreatures().forEach(Creature::activateSpellCounters) ;
-		}
-
-		for (CityMap city : cityMaps)
-		{
-			Building bank = city.getBank() ;
-			
-			if (!bank.hasNPCs()) { continue ;}
-			
-			BankWindow bankWindow = (BankWindow) bank.getNPCs().get(0).getWindow() ;
-			if (bankWindow.hasInvestment() & bankWindow.investmentIsComplete())
-			{
-				bankWindow.completeInvestment() ;
-			}
-		}
-
-		player.activateCounters() ;
-		
-		if (pet != null)
-		{
-			if (0 < pet.getLife().getCurrentValue())
-			{
-				 pet.activateCounters() ;
-			}
-		}
-
-		if (!player.getMap().isAField()) { return ;}
-
-		FieldMap fm = (FieldMap) player.getMap() ;
-		fm.getCreatures().forEach(Creature::activateCounters) ;			
-		fm.activateCollectiblesCounter() ;
-
-	}
-
-	private void playStopTimeGifs()
-	{
-		if (Opening.getOpeningGif().isTimeStopper())
-		{
-//			Opening.getOpeningGif().start(new Point(0, 0), Align.topLeft) ;
-
-			repaint() ;
-		}
-	}
-	
-	private void creaturesAct()
-	{
-		List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
-		for (Creature creature : creaturesInMap)
-		{
-			creature.takeBloodAndPoisonDamage() ;
-			if (creature.isMoving())
-			{
-				creature.move(player.getPos(), player.getMap()) ;
-				creature.display(creature.getPos(), Scale.unit) ;
-				continue ;
-			}
-			if (creature.canAct())
-			{
-				creature.think() ;
-				creature.act() ;
-			}
-		}
-		shouldRepaint = true ;
-	}
-	
-	private void petActs()
-	{
-		if (!pet.isAlive()) { return ;}
-
-		pet.takeBloodAndPoisonDamage() ;
-		pet.updateCombo() ;
-		pet.think(player.isInBattle(), player.getPos()) ;
-		pet.act(player) ;
-	}
-	
-	private void playerActs()
-	{
-
-		player.takeBloodAndPoisonDamage() ;
-		player.updateBloodAndPoisonStatistics() ;
-		
-		if (player.canAct() & player.hasActed())
-		{
-			player.acts(pet, mousePos) ;
-
-			if (player.getActionCounter().finished())
-			{
-				player.getActionCounter().reset() ;
-			}
-		}
-
-		player.doCurrentAction() ;
-		player.applyAdjacentGroundEffect() ;
-		player.finishStatus() ;
-	}
-	
-	private void updateProjectiles()
-	{
-		List<Creature> creaturesInMap = new ArrayList<>() ;
-		if (!player.getMap().IsACity())
-		{
-			FieldMap fm = (FieldMap) player.getMap() ;
-			creaturesInMap = fm.getCreatures() ;
-		}
-		for (Projectiles proj : projs)
-		{
-			proj.go(player, creaturesInMap, pet) ;
-			if (proj.collidedwith(player, creaturesInMap, pet) != -3) // if the projectile has hit some live being
-			{
-				projs.remove(proj) ;
-			}
-		}
-	}
-	
-	private void run()
-	{
-
-		activateCounters() ;
-
-		checkKonamiCode(player.getCombo()) ;
-		if (konamiCodeActive)
-		{
-			konamiCode() ;
-		}
-
-		if (player.getMap().isAField())
-		{
-			creaturesAct() ;
-		}
-
-		if (pet != null)
-		{
-			petActs() ;
-		}
-
-		playerActs() ;
-
-		if (player.getMap().isAField())
-		{
-			player.setClosestCreature(player.closestCreatureInRange()) ;
-		}
-
-		player.checkMeet(mousePos) ;
-
-		if (player.isInBattle())
-		{
-			Battle.runBattle(player, pet, player.getOpponent()) ;
-			if (Battle.isOver(player, pet, player.getOpponent()))
-			{
-				Battle.finishBattle(player, pet, player.getOpponent()) ;
-			}
-		}
-
-		if (player.shouldLevelUP())
-		{
-			player.levelUp() ;
-		}
-		
-		if (pet != null)
-		{
-			if (pet.shouldLevelUP())
-			{
-				pet.levelUp() ;
-			}	
-		}
-		
-		if (player.isTalkingToNPC())
-		{
-			player.talkToNPC(mousePos) ;
-		}
-
-
-		if (projs != null)
-		{
-			updateProjectiles() ;
-		}
-		
-		if (player.getJob() == 3)
-		{
-			player.useAutoSpell(true, player.getSpells().get(12)) ;
-		}
-		
-		SideBar.act(player.getCurrentAction(), mousePos) ;
-		
-		player.resetAction() ;
-		
-		draw() ;
-		
-		
-		
-//		player.display(player.getPos(), Scale.unit, player.getDir(), player.getSettings().getShowAtkRange()) ;
-//		player.getMap().displayBuildings(player.getHitbox(), player.getPos(), Arrays.asList(Game.getMaps()).indexOf(player.getMap())) ;
-
-
-	}
-	
-	private void draw()
-	{
-
-//		Draw.map(player.getMap(), sky) ;
-
-		if (!player.getMap().getContinent().equals(Continents.cave))
-		{
-			sky.display() ;
-		}
-		player.getMap().display() ;
-		player.getMap().displayGroundTypes() ;
-		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap(), sky) ;
-		
-
-		List<Drawable> drawables = new ArrayList<>() ;
-		
-		if (player.getMap().isAField())
-		{
-			List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
-			for (Creature creature : creaturesInMap)
-			{
-				drawables.add(creature) ;
-			}	
-		}
-		
-
-		if (pet != null)
-		{
-//			pet.display(pet.getPos(), Scale.unit) ;
-//			pet.displayAttributes(0) ;
-
-			drawables.add(pet) ;
-		}
-		
-		drawables.add(player) ;
-		if (player.getMap().getBuildings() != null)
-		{			
-			player.getMap().getBuildings().forEach(building -> drawables.add(building)) ;
-		}
-		player.getMap().getMapElem().forEach(mapElem -> drawables.add(mapElem));
-		drawables.sort(Comparator.comparingInt(d -> d.getPos().y));
-		drawables.forEach(drawable -> drawable.display()) ;
-		//		Log.allEntityListsLength() ;
-		
-		player.showWindows(pet, mousePos) ;
-		
-		if (player.getBag().getItemFetched() != null)
-		{
-			Game.DP.drawImage(player.getBag().getItemFetched().getImage(), mousePos, Align.center) ;
-		}
-
-		Animation.playAll() ;
-		Gif.playAll() ;
-		
-		SideBar.display(player, pet, mousePos) ;
-		
-	}
-
 	private static void initializeCheatMode()
 	{
 
@@ -699,7 +404,7 @@ public class Game extends JPanel
     	
 	}
 	
-	public static void initialize(int step)
+	private static void initialize(int step)
 	{
 		
 		long initialTime = System.nanoTime();
@@ -841,39 +546,285 @@ public class Game extends JPanel
 	}
 
 
-	private void updateMousePos()
+	private void activateCounters()
 	{
-		mousePos = Util.GetMousePos(mainPanel) ;
-        mousePos.x = (int) (mousePos.x / screen.getScale().x) ;
-        mousePos.y = (int) (mousePos.y / screen.getScale().y) ;
+		if (Sky.dayCounter.finished())
+		{
+			Sky.dayCounter.restart() ;
+			NPCs.renewStocks() ;
+		}
+		player.activateSpellCounters() ;
+
+		if (pet != null)
+		{
+			pet.activateSpellCounters() ;
+		}
+
+		if (player.getMap().isAField())
+		{
+			FieldMap fm = (FieldMap) player.getMap() ;
+			fm.getCreatures().forEach(Creature::activateSpellCounters) ;
+		}
+
+		for (CityMap city : cityMaps)
+		{
+			Building bank = city.getBank() ;
+			
+			if (!bank.hasNPCs()) { continue ;}
+			
+			BankWindow bankWindow = (BankWindow) bank.getNPCs().get(0).getWindow() ;
+			if (bankWindow.hasInvestment() & bankWindow.investmentIsComplete())
+			{
+				bankWindow.completeInvestment() ;
+			}
+		}
+
+		player.activateCounters() ;
+		
+		if (pet != null)
+		{
+			if (0 < pet.getLife().getCurrentValue())
+			{
+				 pet.activateCounters() ;
+			}
+		}
+
+		if (!player.getMap().isAField()) { return ;}
+
+		FieldMap fm = (FieldMap) player.getMap() ;
+		fm.getCreatures().forEach(Creature::activateCounters) ;			
+		fm.activateCollectiblesCounter() ;
+
+	}
+
+	private void playStopTimeGifs()
+	{
+		if (Opening.getOpeningGif().isTimeStopper())
+		{
+//			Opening.getOpeningGif().start(new Point(0, 0), Align.topLeft) ;
+
+//			repaint() ;
+		}
 	}
 	
-	
-
-	// Ensure focused when added
-	@Override
-    public void addNotify() {
-        super.addNotify();
-        requestFocusInWindow();
-    }
-	
-	@Override
-	protected void paintComponent(Graphics graphs)
+	private void creaturesAct()
 	{
-		super.paintComponent(graphs) ;
-//		mousePos = Util.GetMousePos(mainPanel) ;
-		updateMousePos() ;
+		List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
+		for (Creature creature : creaturesInMap)
+		{
+			creature.takeBloodAndPoisonDamage() ;
+			if (creature.isMoving())
+			{
+				creature.move(player.getPos(), player.getMap()) ;
+				creature.display(creature.getPos(), Scale.unit) ;
+				continue ;
+			}
+			if (creature.canAct())
+			{
+				creature.think() ;
+				creature.act() ;
+			}
+		}
+		shouldRepaint = true ;
+	}
+	
+	private void petActs()
+	{
+		if (!pet.isAlive()) { return ;}
+
+		pet.takeBloodAndPoisonDamage() ;
+		pet.updateCombo() ;
+		pet.think(player.isInBattle(), player.getPos()) ;
+		pet.act(player) ;
+	}
+	
+	private void playerActs()
+	{
+
+		player.takeBloodAndPoisonDamage() ;
+		player.updateBloodAndPoisonStatistics() ;
 		
-        Graphics2D graphs2D = (Graphics2D) graphs ;
-        graphs2D.scale(screen.getScale().x, screen.getScale().y);
-//        System.out.println(screen.getScale());
-		Game.DP.setGraphics(graphs2D) ;
-		Draw.setDP(DP) ;
-		GameTimer.updateAll() ;
+		if (player.canAct() & player.hasActed())
+		{
+			player.acts(pet, GamePanel.getMousePos()) ;
+
+			if (player.getActionCounter().finished())
+			{
+				player.getActionCounter().reset() ;
+			}
+		}
+
+		player.doCurrentAction() ;
+		player.applyAdjacentGroundEffect() ;
+		player.finishStatus() ;
+	}
+	
+	private void updateProjectiles()
+	{
+		List<Creature> creaturesInMap = new ArrayList<>() ;
+		if (!player.getMap().IsACity())
+		{
+			FieldMap fm = (FieldMap) player.getMap() ;
+			creaturesInMap = fm.getCreatures() ;
+		}
+		for (Projectiles proj : projs)
+		{
+			proj.go(player, creaturesInMap, pet) ;
+			if (proj.collidedwith(player, creaturesInMap, pet) != -3) // if the projectile has hit some live being
+			{
+				projs.remove(proj) ;
+			}
+		}
+	}
+	
+	private void run()
+	{
+
+		activateCounters() ;
+
+		checkKonamiCode(player.getCombo()) ;
+		if (konamiCodeActive)
+		{
+			konamiCode() ;
+		}
+
+		if (player.getMap().isAField())
+		{
+			creaturesAct() ;
+		}
+
+		if (pet != null)
+		{
+			petActs() ;
+		}
+
+		playerActs() ;
+
+		if (player.getMap().isAField())
+		{
+			player.setClosestCreature(player.closestCreatureInRange()) ;
+		}
+
+		player.checkMeet(GamePanel.getMousePos()) ;
+
+		if (player.isInBattle())
+		{
+			Battle.runBattle(player, pet, player.getOpponent()) ;
+			if (Battle.isOver(player, pet, player.getOpponent()))
+			{
+				Battle.finishBattle(player, pet, player.getOpponent()) ;
+			}
+		}
+
+		if (player.shouldLevelUP())
+		{
+			player.levelUp() ;
+		}
+		
+		if (pet != null)
+		{
+			if (pet.shouldLevelUP())
+			{
+				pet.levelUp() ;
+			}	
+		}
+		
+		if (player.isTalkingToNPC())
+		{
+			player.talkToNPC(GamePanel.getMousePos()) ;
+		}
+
+
+		if (projs != null)
+		{
+			updateProjectiles() ;
+		}
+		
+		if (player.getJob() == 3)
+		{
+			player.useAutoSpell(true, player.getSpells().get(12)) ;
+		}
+		
+		SideBar.act(player.getCurrentAction(), GamePanel.getMousePos()) ;
+		
+		player.resetAction() ;
+
+		SpriteAnimation.updateAll();
+		
+		draw() ;
+		
+		
+		
+//		player.display(player.getPos(), Scale.unit, player.getDir(), player.getSettings().getShowAtkRange()) ;
+//		player.getMap().displayBuildings(player.getHitbox(), player.getPos(), Arrays.asList(Game.getMaps()).indexOf(player.getMap())) ;
+
+
+	}
+	
+	private void draw()
+	{
+//		Draw.map(player.getMap(), sky) ;
+
+		if (!player.getMap().getContinent().equals(Continents.cave))
+		{
+			sky.display() ;
+		}
+		player.getMap().display() ;
+		player.getMap().displayGroundTypes() ;
+		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap(), sky) ;
+		
+
+		List<Drawable> drawables = new ArrayList<>() ;
+		
+		if (player.getMap().isAField())
+		{
+			List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
+			for (Creature creature : creaturesInMap)
+			{
+				drawables.add(creature) ;
+			}	
+		}
+		
+
+		if (pet != null)
+		{
+//			pet.display(pet.getPos(), Scale.unit) ;
+//			pet.displayAttributes(0) ;
+
+			drawables.add(pet) ;
+		}
+		
+		drawables.add(player) ;
+		if (player.getMap().getBuildings() != null)
+		{			
+			player.getMap().getBuildings().forEach(building -> drawables.add(building)) ;
+		}
+		player.getMap().getMapElem().forEach(mapElem -> drawables.add(mapElem));
+		drawables.sort(Comparator.comparingInt(d -> d.getPos().y));
+		drawables.forEach(drawable -> drawable.display()) ;
+		//		Log.allEntityListsLength() ;
+		
+		player.showWindows(pet, GamePanel.getMousePos()) ;
+		
+		if (player.getBag().getItemFetched() != null)
+		{
+			GamePanel.DP.drawImage(player.getBag().getItemFetched().getImage(), GamePanel.getMousePos(), Align.center) ;
+		}
+
+		Animation.playAll() ;
+		Gif.playAll() ;
+		SpriteAnimation.displayAll(GamePanel.DP) ;
+		
+		SideBar.display(player, pet, GamePanel.getMousePos()) ;
+		
+	}
+
+	protected void update()
+	{
 		switch (initialState)
 		{
 			case opening:
-				Opening.run(player, mousePos) ;
+				Opening.run(player, GamePanel.getMousePos()) ;
 				if (Opening.isOver())
 				{
 					if (Opening.newGame())
@@ -887,7 +838,7 @@ public class Game extends JPanel
 				break ;
 
 			case loading:
-				Opening.displayLoadingScreen(player.getCurrentAction(), mousePos) ;
+				Opening.displayLoadingScreen(player.getCurrentAction(), GamePanel.getMousePos()) ;
 				if (!Opening.loadingIsOver())
 				{
 					initialize(Opening.getLoadingStep()) ;
@@ -912,12 +863,12 @@ public class Game extends JPanel
 				break ;
 
 			case simulation:
-				EvolutionSimulation.run(mousePos) ;	
+				EvolutionSimulation.run(GamePanel.getMousePos()) ;	
 				break ;
 
 			case running:
 				run() ;
-				// Game.DP.DrawImage(Util.loadImage("./images/test.png"), mousePos, Align.center) ;	
+				// GamePanel.DP.DrawImage(Util.loadImage("./images/test.png"), mousePos, Align.center) ;	
 				break ;
 
 			case playingStopTimeGif:
@@ -927,138 +878,94 @@ public class Game extends JPanel
 			case paused: break ;
 			default: break ;
 		}
-
-		Toolkit.getDefaultToolkit().sync() ;
-		graphs.dispose() ;
 	}
-
 	
-
-	class TAdapter extends KeyAdapter
+	public void keyAction(KeyEvent event)
 	{
-		@Override
-		public void keyPressed(KeyEvent event)
+		
+		int keyCode = event.getKeyCode() ;
+		if (KeyEvent.VK_NUMPAD0 <= keyCode & keyCode <= KeyEvent.VK_NUMPAD9)
 		{
-			
-			shouldRepaint = true ;
-			int keyCode = event.getKeyCode() ;
-			
-			if (KeyEvent.VK_NUMPAD0 <= keyCode & keyCode <= KeyEvent.VK_NUMPAD9)
-			{
-				player.setCurrentAction(String.valueOf(keyCode - 96)) ;
-				return ;
-			}
-			
-			if (keyCode == KeyEvent.VK_PAUSE)
-			{
-				if (initialState.equals(GameStates.paused))
-				{
-					GameFrame.resumeGame();
-					GameTimer.resumeAll() ;
-				}
-				else
-				{
-					GameFrame.pauseGame() ;
-					GameTimer.stopAll() ;
-				}
-			}
-			
-			if (keyCode == KeyEvent.VK_6)
-			{
-				GameFrame.getMe().resizeWindow() ;
-				screen.updateScale() ;
-			}
-
-			if (keyCode == KeyEvent.VK_ESCAPE)
-			{
-				MainGame3_4.closeGame() ;
-			}
-			
-			player.setCurrentAction(KeyEvent.getKeyText(keyCode)) ;
-			
+			player.setCurrentAction(String.valueOf(keyCode - 96)) ;
+			return ;
 		}
-
-		@Override
-		public void keyReleased(KeyEvent e)
+		
+		if (keyCode == KeyEvent.VK_PAUSE)
 		{
-
-		}
-	}
-
-	class MouseEventDemo implements MouseListener
-	{
-		@Override
-		public void mouseClicked(MouseEvent evt)
-		{
-			
-			if (evt.getButton() == 1) // Left click
+			if (initialState.equals(GameStates.paused))
 			{
-				player.setCurrentAction("LeftClick") ;
-//					System.out.println(Util.Round(mousePos.x / 600.0, 2) + "," + Util.Round((mousePos.y - 96) / 384.0, 2) + " " + mousePos.x + " " + mousePos.y) ;	
-			}
-			if (evt.getButton() == 3) // Right click
-			{
-				player.setCurrentAction("MouseRightClick") ;
-        		player.setPos(mousePos) ;
-//        		player.inflictStatus(Attributes.blood, 3, 10);
-//        		player.inflictStatus(Attributes.poison, 2, 6);
-        		if (pet != null)
-        		{
-        			pet.setPos(player.getPos()) ;
-        		}
-        		//	        		TestingAnimations.run() ;
-//					testGif.start() ;
-			}
-			
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent arg0)
-		{
-		}
-
-		@Override
-		public void mouseExited(MouseEvent arg0)
-		{
-		}
-
-		@Override
-		public void mousePressed(MouseEvent evt)
-		{
-			if (player.getBag().isOpen())
-			{
-				player.getBag().setItemFetched(player.getBag().itemHovered(mousePos)) ;
-			}
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e)
-		{
-			int hotKeySlotHovered = HotKeysBar.slotHovered(mousePos) ;
-			
-			if (-1 < hotKeySlotHovered)
-			{
-				player.getHotItems()[hotKeySlotHovered] = player.getBag().getItemFetched() ;
-			}
-
-			player.getBag().setItemFetched(null) ;
-		}
-	}
-
-	class MouseWheelEventDemo implements MouseWheelListener
-	{
-		@Override
-		public void mouseWheelMoved(MouseWheelEvent evt)
-		{
-			if (evt.getWheelRotation() < 0) // wheel up
-			{
-				player.setCurrentAction("MouseWheelUp") ;
+				GameFrame.resumeGame();
+				GameTimer.resumeAll() ;
 			}
 			else
 			{
-				player.setCurrentAction("MouseWheelDown") ;
+				GameFrame.pauseGame() ;
+				GameTimer.stopAll() ;
 			}
 		}
+		
+		if (keyCode == KeyEvent.VK_6)
+		{
+			GameFrame.getMe().resizeWindow() ;
+			screen.updateScale() ;
+		}
+
+		if (keyCode == KeyEvent.VK_ESCAPE)
+		{
+			MainGame3_4.closeGame() ;
+		}
+		
+		player.setCurrentAction(KeyEvent.getKeyText(keyCode)) ;
 	}
+	
+	public void mouseAction(MouseEvent evt)
+	{
+		if (evt.getButton() == 1)
+		{
+			player.setCurrentAction("LeftClick") ;
+		}
+		if (evt.getButton() == 3)
+		{
+			player.setCurrentAction("MouseRightClick") ;
+    		player.setPos(GamePanel.getMousePos()) ;
+    		if (pet != null)
+    		{
+    			pet.setPos(player.getPos()) ;
+    		}
+		}
+	}
+	
+	public void mousePressedAction(MouseEvent evt)
+	{
+		if (player.getBag().isOpen())
+		{
+			player.getBag().setItemFetched(player.getBag().itemHovered(GamePanel.getMousePos())) ;
+		}
+	}
+	
+	public void mouseReleaseAction(MouseEvent evt)
+	{
+		int hotKeySlotHovered = HotKeysBar.slotHovered(GamePanel.getMousePos()) ;
+		
+		if (-1 < hotKeySlotHovered)
+		{
+			player.getHotItems()[hotKeySlotHovered] = player.getBag().getItemFetched() ;
+		}
+
+		player.getBag().setItemFetched(null) ;
+	}
+	
+	public void mouseWheelAction(MouseWheelEvent evt)
+	{
+		if (evt.getWheelRotation() < 0)
+		{
+			player.setCurrentAction("MouseWheelUp") ;
+		}
+		else
+		{
+			player.setCurrentAction("MouseWheelDown") ;
+		}
+	}
+
 
 }

@@ -10,6 +10,7 @@ import graphics.Align;
 import graphics2.Draw;
 import items.Item;
 import main.Game;
+import main.GamePanel;
 import screen.SideBar;
 import utilities.Util;
 import utilities.UtilS;
@@ -54,24 +55,24 @@ public class HotKeysBar
 	{
 		Dimension slotSize = Util.getSize(SideBar.slotImage) ;
 
-		Game.DP.drawImage(image, barPos, Align.bottomLeft) ;
+		GamePanel.DP.drawImage(image, barPos, Align.bottomLeft) ;
 		
 		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 		{
 			Point slotCenter = Util.Translate(topLeft(), 13, 10 + 20 * i) ;
 			Point keyTextPos = Util.Translate(slotCenter, slotSize.width / 2 + 6, slotSize.height / 2) ;
 			
-			Game.DP.drawImage(BagWindow.slotImage, slotCenter, Align.center) ;
-			Game.DP.drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.HotKeys[i], font, textColor) ;
+			GamePanel.DP.drawImage(BagWindow.slotImage, slotCenter, Align.center) ;
+			GamePanel.DP.drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.HotKeys[i], font, textColor) ;
 			
 			if (hotItems[i] == null) { continue ;}
 
-			Game.DP.drawImage(hotItems[i].getImage(), slotCenter, Align.center) ;
+			GamePanel.DP.drawImage(hotItems[i].getImage(), slotCenter, Align.center) ;
 			
 			if (!Util.isInside(mousePos, Util.Translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize)) { continue ;}
 			
 			Point textPos = Util.Translate(slotCenter, - slotSize.width / 2 - 10, 0);
-			Game.DP.drawText(textPos, Align.centerRight, Draw.stdAngle, hotItems[i].getName(), font, textColor) ;
+			GamePanel.DP.drawText(textPos, Align.centerRight, Draw.stdAngle, hotItems[i].getName(), font, textColor) ;
 		}
 	}
 }

@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import main.AtkResults;
-import main.AtkTypes;
+import Battle.AtkResults;
+import Battle.AtkTypes;
 import main.Game;
 import main.TextCategories;
 import utilities.AtkEffects;

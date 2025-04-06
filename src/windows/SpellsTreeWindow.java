@@ -15,6 +15,7 @@ import graphics2.Draw;
 import liveBeings.Player;
 import liveBeings.Spell;
 import main.Game;
+import main.GamePanel;
 import utilities.Util;
 import utilities.UtilS;
 
@@ -162,8 +163,8 @@ public class SpellsTreeWindow extends GameWindow
 		Point pos = Util.Translate(windowTopLeft, 0, -66) ;
 		Color textColor = Game.palette[0] ;
 		Point spellNamePos = Util.Translate(windowTopLeft, spellInfo.getWidth(null) / 2, - 66 - 10) ;
-		Game.DP.drawImage(spellInfo, pos, Align.topLeft) ;
-		Game.DP.drawText(spellNamePos, Align.center, angle, spellsOnWindow.get(item).getName(), regularFont, textColor) ;
+		GamePanel.DP.drawImage(spellInfo, pos, Align.topLeft) ;
+		GamePanel.DP.drawText(spellNamePos, Align.center, angle, spellsOnWindow.get(item).getName(), regularFont, textColor) ;
 		pos.x += 5 ;
 		pos.y += 8 ;
 		for (String info : spellsOnWindow.get(item).getInfo())
@@ -179,9 +180,9 @@ public class SpellsTreeWindow extends GameWindow
 		Point pointsPos = Util.Translate(windowTopLeft, size.width + 10 + 28, size.height - 6 - 40) ;
 		Color color = Game.palette[21] ;
 		
-		Game.DP.drawImage(spellPoints, pointsPos, Align.topCenter) ;
-		Game.DP.drawText(Util.Translate(pointsPos, 0, 6), Align.topCenter, angle, "Pontos", regularFont, color) ;
-		Game.DP.drawText(Util.Translate(pointsPos, 0, 24), Align.topCenter, angle, String.valueOf(points), regularFont, color) ;
+		GamePanel.DP.drawImage(spellPoints, pointsPos, Align.topCenter) ;
+		GamePanel.DP.drawText(Util.Translate(pointsPos, 0, 6), Align.topCenter, angle, "Pontos", regularFont, color) ;
+		GamePanel.DP.drawText(Util.Translate(pointsPos, 0, 24), Align.topCenter, angle, String.valueOf(points), regularFont, color) ;
 		
 	}
 	
@@ -190,7 +191,7 @@ public class SpellsTreeWindow extends GameWindow
 		double angle = Draw.stdAngle ;
 		if (numberTabs <= 1)
 		{
-			Game.DP.drawImage(image, windowTopLeft, angle, Scale.unit, Align.topLeft) ;
+			GamePanel.DP.drawImage(image, windowTopLeft, angle, Scale.unit, Align.topLeft) ;
 			return ;
 		}
 		
@@ -199,9 +200,9 @@ public class SpellsTreeWindow extends GameWindow
 		Point tab2Pos = Util.Translate(windowTopLeft, -10, 6 + 75 + 75/2) ;
 		Image displayImage = tab == 0 ? tab0Image : tab1Image ;
 		Color tabTextColor = Game.palette[21] ;
-		Game.DP.drawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
-		Game.DP.drawText(tab1Pos, Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
-		Game.DP.drawText(tab2Pos, Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
+		GamePanel.DP.drawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
+		GamePanel.DP.drawText(tab1Pos, Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
+		GamePanel.DP.drawText(tab2Pos, Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
 	}
 	
 	public List<Spell> basicSpells()
@@ -231,7 +232,7 @@ public class SpellsTreeWindow extends GameWindow
 		displayWindow() ;
 		
 		Point titlePos = Util.Translate(windowTopLeft, size.width / 2, 6 + 9) ;
-		Game.DP.drawText(titlePos, Align.center, angle, name, largeFont, Game.palette[21]);
+		GamePanel.DP.drawText(titlePos, Align.center, angle, name, largeFont, Game.palette[21]);
 		
 		if (spells == null) { return ;}
 		
@@ -260,9 +261,9 @@ public class SpellsTreeWindow extends GameWindow
 			Point spellImagePos = Util.Translate(slotPos, slotSize.width / 2, 4 + 14) ;
 			Point spellLevelPos = Util.Translate(slotPos, slotSize.width / 2, slotSize.height / 2 + 18) ;
 					
-			Game.DP.drawImage(slotImage, slotPos, Align.topLeft) ;
-			Game.DP.drawImage(spell.getImage(), spellImagePos, Align.center) ;
-			Game.DP.drawText(spellLevelPos, Align.center, angle, String.valueOf(spell.getLevel()), regularFont, textColor) ;
+			GamePanel.DP.drawImage(slotImage, slotPos, Align.topLeft) ;
+			GamePanel.DP.drawImage(spell.getImage(), spellImagePos, Align.center) ;
+			GamePanel.DP.drawText(spellLevelPos, Align.center, angle, String.valueOf(spell.getLevel()), regularFont, textColor) ;
 			col += 1 ;			
 			
 			if (spellsDistribution[row] <= col)

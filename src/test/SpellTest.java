@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import Battle.AtkResults;
+import Battle.Battle;
 import attributes.BattleAttributes;
 import components.SpellTypes;
 import items.Arrow;
@@ -24,8 +26,6 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
 import liveBeings.Spell;
-import main.AtkResults;
-import main.Battle;
 import main.Languages;
 import utilities.Elements;
 import windows.CraftWindow;

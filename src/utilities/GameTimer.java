@@ -11,6 +11,7 @@ import graphics.Align;
 import graphics.DrawPrimitives;
 import liveBeings.LiveBeingStatus;
 import main.Game;
+import main.GamePanel;
 
 public class GameTimer
 {
@@ -75,8 +76,8 @@ public class GameTimer
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate())) ;
 		Point rectPos = Util.Translate(botLeftPos, offset.width, offset.height) ;
 		
-		Game.DP.drawRect(rectPos, align, barSize, stroke, null, Game.palette[0], 1.0) ;
-		Game.DP.drawRect(rectPos, align, fillSize, stroke, color, null, 1.0) ;
+		GamePanel.DP.drawRect(rectPos, align, barSize, stroke, null, Game.palette[0], 1.0) ;
+		GamePanel.DP.drawRect(rectPos, align, fillSize, stroke, color, null, 1.0) ;
 	}
 	
 	public void display(Point botLeftPos, Color color)

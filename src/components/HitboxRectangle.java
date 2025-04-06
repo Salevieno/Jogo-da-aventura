@@ -5,6 +5,7 @@ import java.awt.Point;
 
 import graphics.Align;
 import main.Game;
+import main.GamePanel;
 
 public class HitboxRectangle implements Hitbox
 {
@@ -32,6 +33,7 @@ public class HitboxRectangle implements Hitbox
 	
 	public boolean overlaps(Hitbox box2)
 	{
+		// TODO check hitbox overlap with npcs
 		if (box2 instanceof HitboxRectangle)
 		{
 			HitboxRectangle rectBox2 = (HitboxRectangle) box2 ;
@@ -62,7 +64,7 @@ public class HitboxRectangle implements Hitbox
 	
 	public void display()
 	{
-		Game.DP.drawRect(center, Align.center, size, null, Game.palette[3]);
+		GamePanel.DP.drawRect(center, Align.center, size, null, Game.palette[3]);
 	}
 
 	public Point getCenter() { return center ;}

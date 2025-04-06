@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import Battle.AtkResults;
+import Battle.AtkTypes;
+import Battle.Battle;
 import attributes.Attributes;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
@@ -21,10 +24,8 @@ import graphics2.Animation;
 import graphics2.AnimationTypes;
 import graphics2.Drawable;
 import graphics2.Gif;
-import main.AtkResults;
-import main.AtkTypes;
-import main.Battle;
 import main.Game;
+import main.GamePanel;
 import maps.Continents;
 import maps.GameMap;
 import maps.GroundType;
@@ -355,8 +356,8 @@ public abstract class LiveBeing implements Drawable
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String stateText = 0 < combo.size() ? state.toString() : "" ;
 		
-		Game.DP.drawRoundRect(pos, Align.center, size, 1, Game.palette[21], Game.palette[0], true);
-		Game.DP.drawText(pos, Align.center, 0, stateText, font, Game.palette[0]) ;
+		GamePanel.DP.drawRoundRect(pos, Align.center, size, 1, Game.palette[21], Game.palette[0], true);
+		GamePanel.DP.drawText(pos, Align.center, 0, stateText, font, Game.palette[0]) ;
 	}
 
 	public void displayUsedSpellMessage(Spell spell, Point pos, Color color)
@@ -371,9 +372,9 @@ public abstract class LiveBeing implements Drawable
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		Dimension barSize = new Dimension(15, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
 		
-		Game.DP.drawRect(Util.Translate(pos, 0, -13), Align.bottomCenter, barSize, 0, color, null, 1.0) ;
-		Game.DP.drawImage(powerBarImage, pos, Align.bottomCenter) ;
-		Game.DP.drawText(Util.Translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
+		GamePanel.DP.drawRect(Util.Translate(pos, 0, -13), Align.bottomCenter, barSize, 0, color, null, 1.0) ;
+		GamePanel.DP.drawImage(powerBarImage, pos, Align.bottomCenter) ;
+		GamePanel.DP.drawText(Util.Translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
 	}
 	
 	public Point calcNewPos()
@@ -816,7 +817,7 @@ public abstract class LiveBeing implements Drawable
 			{
 				Point barPos = Util.Translate(pos, -size.width / 2, -size.height - attRate.size() * barSize.height - clearSpace + i * sy) ;
 				Dimension filledSize = new Dimension((int)(attRate.get(i) * barSize.width), barSize.height) ;
-				Game.DP.drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Game.palette[0], 1.0) ;
+				GamePanel.DP.drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Game.palette[0], 1.0) ;
 			}
 		}
 		if (style == 1)
@@ -824,14 +825,14 @@ public abstract class LiveBeing implements Drawable
 			Point topLeft = Game.getScreen().pos(0.01, 0.02) ;
 			Dimension barSize = new Dimension(5, 35) ;
 			int stroke = 1 ;
-			Game.DP.drawImage(AttImage, topLeft, Align.topLeft) ;
+			GamePanel.DP.drawImage(AttImage, topLeft, Align.topLeft) ;
 			Point offset = new Point(37, 44) ;
 			Point barPos = Util.Translate(topLeft, offset.x, offset.y) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
 				Dimension rateSize = new Dimension(barSize.width, (int) (attRate.get(att) *  barSize.height)) ;
-				Game.DP.drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Game.palette[0], 1.0) ;
-				Game.DP.drawRect(barPos, Align.bottomCenter, rateSize, stroke, attColor.get(att), null, 1.0) ;
+				GamePanel.DP.drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Game.palette[0], 1.0) ;
+				GamePanel.DP.drawRect(barPos, Align.bottomCenter, rateSize, stroke, attColor.get(att), null, 1.0) ;
 				barPos.x += barSize.width + 15 ;
 			}
 		}
@@ -848,8 +849,8 @@ public abstract class LiveBeing implements Drawable
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
 		Point rectPos = Util.Translate(center(), mirror * offset.width, offset.height) ;
 		
-		Game.DP.drawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.palette[0], 1.0) ;
-		Game.DP.drawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null, 1.0) ;
+		GamePanel.DP.drawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.palette[0], 1.0) ;
+		GamePanel.DP.drawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null, 1.0) ;
 	}
 	
 	public void drawTimeBar2()
@@ -863,10 +864,10 @@ public abstract class LiveBeing implements Drawable
 		int outerRadius = 15 ;
 		
 		// draw fill
-		Game.DP.drawAnnularSector(pos, innerRadius, outerRadius, angleStart, angleFilledSpan, stroke, Game.palette[21], null) ;
+		GamePanel.DP.drawAnnularSector(pos, innerRadius, outerRadius, angleStart, angleFilledSpan, stroke, Game.palette[21], null) ;
 		
 		// draw contour
-		Game.DP.drawAnnularSector(pos, innerRadius, outerRadius, angleStart, angleMaxSpan, stroke, null, Game.palette[0]) ;
+		GamePanel.DP.drawAnnularSector(pos, innerRadius, outerRadius, angleStart, angleMaxSpan, stroke, null, Game.palette[0]) ;
 	}
 
 	public void takeDamage(int damage)
@@ -945,14 +946,14 @@ public abstract class LiveBeing implements Drawable
 	{
 		Point offset = new Point(size.width / 2 + drunkImage.getWidth(null) / 2 + 2, defendingImage.getHeight(null) + 2) ;
 		Point imagePos = Util.Translate(center(), -offset.x, 0) ;
-		Game.DP.drawImage(drunkImage, imagePos, Align.center) ;
+		GamePanel.DP.drawImage(drunkImage, imagePos, Align.center) ;
 	}
 	
 	public void displayDefending()
 	{
 		Point offset = new Point(size.width / 2 + defendingImage.getWidth(null) / 2 + 2, 0) ;
 		Point imagePos = Util.Translate(center(), -offset.x, 0) ;
-		Game.DP.drawImage(defendingImage, imagePos, Align.center) ;
+		GamePanel.DP.drawImage(defendingImage, imagePos, Align.center) ;
 	}
 
 	public void getsDrunk(int duration)

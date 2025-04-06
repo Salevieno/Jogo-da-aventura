@@ -7,6 +7,7 @@ import java.awt.Point;
 import graphics.Align;
 import graphics2.Draw;
 import main.Game;
+import main.GamePanel;
 
 public class LiveInput
 {
@@ -43,11 +44,11 @@ public class LiveInput
 
 		if (showBackground)
 		{
-			Game.DP.drawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.palette[3], Game.palette[0], true) ;
+			GamePanel.DP.drawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.palette[3], Game.palette[0], true) ;
 		}
 		int offsetX = (int) (7.3 * text.length()) ;
-		Game.DP.drawLine(Util.Translate(pos, 20 + offsetX, 5), Util.Translate(pos, 20 + offsetX, -5), 2, Game.palette[0]) ;
-		Game.DP.drawText(Util.Translate(pos, 20, 0), Align.centerLeft, Draw.stdAngle, text, font, Game.palette[0]) ;
+		GamePanel.DP.drawLine(Util.Translate(pos, 20 + offsetX, 5), Util.Translate(pos, 20 + offsetX, -5), 2, Game.palette[0]) ;
+		GamePanel.DP.drawText(Util.Translate(pos, 20, 0), Align.centerLeft, Draw.stdAngle, text, font, Game.palette[0]) ;
 	
 	}
 }

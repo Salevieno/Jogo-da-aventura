@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import graphics.Align;
 import graphics.Scale;
-import main.Game;
+import main.GamePanel;
 
 public class SkyComponent
 {
@@ -53,6 +53,6 @@ public class SkyComponent
 	
 	public void display(double angle, double alpha)
 	{
-		Game.DP.drawImage(image, pos, angle, Scale.unit, false, false, Align.topLeft, alpha) ;
+		GamePanel.DP.drawImage(image, pos, angle, Scale.unit, false, false, Align.topLeft, alpha) ;
 	}
 }

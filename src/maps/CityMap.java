@@ -71,6 +71,64 @@ public class CityMap extends GameMap
 		return new NPCs(npcType, npcPos) ;
 
 	}
+	
+	private static List<NPCs> loadNPCs(JSONObject map)
+	{
+		JSONArray listNPCs = (JSONArray) map.get("NPCs") ;
+		List<NPCs> npcs = new ArrayList<>() ;
+		for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
+		{
+			NPCs npc = readNPCfromJson((JSONObject) listNPCs.get(i)) ;
+			npcs.add(npc) ;
+		}
+		
+		return npcs ;
+	}
+	
+	private static List<Building> loadBuildings(BuildingType[] buildingTypes, JSONObject map)
+	{		
+		JSONArray listBuildings = (JSONArray) map.get("Buildings") ;
+		List<Building> buildings = new ArrayList<>() ;
+		for (int i = 0 ; i <= listBuildings.size() - 1 ; i += 1)
+		{
+			JSONObject building = (JSONObject) listBuildings.get(i) ;
+			BuildingNames buildingName = BuildingNames.valueOf((String) building.get("name")) ;
+			double posX = (Double) ((JSONObject) building.get("pos")).get("x") ;
+			double posY = (Double) ((JSONObject) building.get("pos")).get("y") ;
+			Point buildingPos = Game.getScreen().getPointWithinBorders(posX, posY) ;
+
+			BuildingType buildingType = null ;
+			for (BuildingType type : buildingTypes)
+			{
+				if (!buildingName.equals(type.getName()))
+				{
+					continue ;
+				}
+
+				buildingType = type ;
+			}
+
+			buildings.add(new Building(buildingType, buildingPos)) ;
+		}
+		
+		return buildings ;
+	}
+	
+	private static int[] loadConnections(JSONObject map)
+	{
+		JSONObject connectionIDs = (JSONObject) map.get("Connections") ;
+		int[] connections = new int[8] ;
+		connections[0] = (int) (long) connectionIDs.get("topRight") ;
+		connections[1] = (int) (long) connectionIDs.get("topLeft") ;
+		connections[2] = (int) (long) connectionIDs.get("leftTop") ;
+		connections[3] = (int) (long) connectionIDs.get("leftBottom") ;
+		connections[4] = (int) (long) connectionIDs.get("bottomLeft") ;
+		connections[5] = (int) (long) connectionIDs.get("bottomRight") ;
+		connections[6] = (int) (long) connectionIDs.get("rightBottom") ;
+		connections[7] = (int) (long) connectionIDs.get("rightTop") ;
+		
+		return connections ;
+	}
 
 	public static CityMap[] load(BuildingType[] buildingTypes)
 	{
@@ -84,59 +142,18 @@ public class CityMap extends GameMap
 			String name = (String) map.get("Name") ;
 			int continentID = (int) (long) map.get("Continent") ;
 			Continents continent = Continents.values()[continentID] ;
-			JSONObject connectionIDs = (JSONObject) map.get("Connections") ;
-			int[] connections = new int[8] ;
-			connections[0] = (int) (long) connectionIDs.get("topRight") ;
-			connections[1] = (int) (long) connectionIDs.get("topLeft") ;
-			connections[2] = (int) (long) connectionIDs.get("leftTop") ;
-			connections[3] = (int) (long) connectionIDs.get("leftBottom") ;
-			connections[4] = (int) (long) connectionIDs.get("bottomLeft") ;
-			connections[5] = (int) (long) connectionIDs.get("bottomRight") ;
-			connections[6] = (int) (long) connectionIDs.get("rightBottom") ;
-			connections[7] = (int) (long) connectionIDs.get("rightTop") ;
-
+			int[] connections = loadConnections(map) ;
 			Image image = CityMap.images.get(id) ;
 			Clip music = GameMap.musicCities ;
-
-			JSONArray listBuildings = (JSONArray) map.get("Buildings") ;
-			List<Building> buildings = new ArrayList<>() ;
-			for (int i = 0 ; i <= listBuildings.size() - 1 ; i += 1)
-			{
-				JSONObject building = (JSONObject) listBuildings.get(i) ;
-				BuildingNames buildingName = BuildingNames.valueOf((String) building.get("name")) ;
-				double posX = (Double) ((JSONObject) building.get("pos")).get("x") ;
-				double posY = (Double) ((JSONObject) building.get("pos")).get("y") ;
-				Point buildingPos = Game.getScreen().getPointWithinBorders(posX, posY) ;
-
-				BuildingType buildingType = null ;
-				for (BuildingType type : buildingTypes)
-				{
-					if (!buildingName.equals(type.getName()))
-					{
-						continue ;
-					}
-
-					buildingType = type ;
-				}
-
-				buildings.add(new Building(buildingType, buildingPos)) ;
-
-			}
-
-			JSONArray listNPCs = (JSONArray) map.get("NPCs") ;
-			List<NPCs> npcs = new ArrayList<>() ;
-			for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
-			{
-				NPCs npc = readNPCfromJson((JSONObject) listNPCs.get(i)) ;
-				npcs.add(npc) ;
-			}
+			List<Building> buildings = loadBuildings(buildingTypes, map) ;
+			List<NPCs> npcs = loadNPCs(map) ;
 
 			cityMaps[id] = new CityMap(name, continent, connections, image, music, buildings, npcs) ;
 			
 			switch (id)
 			{
 				case 2:
-					cityMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
+//					cityMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
 					break ;
 				default: break ;
 			}

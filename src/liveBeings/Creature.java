@@ -9,6 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import Battle.AtkResults;
+import Battle.AtkTypes;
+import Battle.Battle;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
@@ -21,10 +24,8 @@ import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
 import items.Item;
-import main.AtkResults;
-import main.AtkTypes;
-import main.Battle;
 import main.Game;
+import main.GamePanel;
 import maps.GameMap;
 import screen.Screen;
 import screen.Sky;
@@ -144,7 +145,7 @@ public class Creature extends LiveBeing
 	public void displayName(Point pos, Align alignment, Color color)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Game.DP.drawText(pos, alignment, Draw.stdAngle, name, font, color) ;
+		GamePanel.DP.drawText(pos, alignment, Draw.stdAngle, name, font, color) ;
 	}
 	
 	public void display(Point pos, Scale scale)
@@ -176,8 +177,8 @@ public class Creature extends LiveBeing
 	
 	public void displayAdditionalInfo()
 	{
-		Game.DP.drawText(new Point(pos.x, pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
-		Game.DP.drawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
+		GamePanel.DP.drawText(new Point(pos.x, pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
+		GamePanel.DP.drawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
 	}
 	
 	public void setRandomPos()

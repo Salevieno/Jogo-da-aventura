@@ -14,6 +14,7 @@ import graphics2.Draw;
 import items.Item;
 import items.Recipe;
 import main.Game;
+import main.GamePanel;
 import utilities.Util;
 import utilities.UtilS;
 
@@ -82,12 +83,12 @@ public class BookWindow extends GameWindow
 		
 		Point textPos = Util.Translate(Util.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
 		String pageText = (window + 1) + " / " + numberWindows ;
-		Game.DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Game.palette[0]) ;
+		GamePanel.DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Game.palette[0]) ;
 	}
 	
 	public void display(Point mousePos)
 	{
-		Game.DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.center) ;
 		displayRecipes(mousePos) ;
 		displayPageNumber() ;
 		

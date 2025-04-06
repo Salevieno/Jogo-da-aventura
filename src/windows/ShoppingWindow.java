@@ -16,6 +16,7 @@ import graphics2.Draw;
 import items.Item;
 import liveBeings.Player;
 import main.Game;
+import main.GamePanel;
 import utilities.Util;
 import utilities.UtilS;
 
@@ -149,9 +150,9 @@ public class ShoppingWindow extends GameWindow
 		Point titlePos = Util.Translate(windowPos, size.width / 2, 16) ;
 		double angle = Draw.stdAngle ;
 		
-		Game.DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
+		GamePanel.DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
 		
-		Game.DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[0]) ;
+		GamePanel.DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[0]) ;
 				
 		
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
@@ -164,11 +165,11 @@ public class ShoppingWindow extends GameWindow
 			
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(100, 10), i) ;
 			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? selColor : stdColor ;
-			Game.DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
-			Game.DP.drawImage(bagItem.getImage(), itemPos, angle, Scale.unit, Align.center) ;
-			Game.DP.drawText(namePos, Align.centerLeft, angle, bagItem.getName() + qtdItem, stdFont, itemColor) ;
-			Game.DP.drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), stdFont, Game.palette[14]) ;
-			Game.DP.drawImage(Player.CoinIcon, coinPos, Align.center) ;
+			GamePanel.DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
+			GamePanel.DP.drawImage(bagItem.getImage(), itemPos, angle, Scale.unit, Align.center) ;
+			GamePanel.DP.drawText(namePos, Align.centerLeft, angle, bagItem.getName() + qtdItem, stdFont, itemColor) ;
+			GamePanel.DP.drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), stdFont, Game.palette[14]) ;
+			GamePanel.DP.drawImage(Player.CoinIcon, coinPos, Align.center) ;
 			
 			if (this.item == itemsOnWindow.indexOf(bagItem))
 			{

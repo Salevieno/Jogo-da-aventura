@@ -19,6 +19,7 @@ import graphics2.Draw;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
+import main.GamePanel;
 import utilities.Elements;
 import utilities.Util;
 import utilities.UtilS;
@@ -343,7 +344,7 @@ public class Equip extends Item
 	
 	public void displayInfo(Point pos, Align align)
 	{
-		Game.DP.drawImage(infoMenu, pos, align) ;
+		GamePanel.DP.drawImage(infoMenu, pos, align) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
 		int nRows = 4 ;
 		Point topLeftSlotCenter = Util.Translate(pos, 15 - Util.getSize(infoMenu).width, 18) ;
@@ -351,16 +352,16 @@ public class Equip extends Item
 		for (int i = 0 ; i <= attOrder.length - 1 ; i += 1)
 		{
 			Point imagePos = Util.calcGridPos(topLeftSlotCenter, i, nRows, new Point(70, 25)) ;
-			Game.DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
+			GamePanel.DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
 			
 			Point textPos = Util.Translate(imagePos, 10, 0) ;
-			Game.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Game.palette[0]) ;
+			GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Game.palette[0]) ;
 		}
 	}
 	
 	public void display(Point pos, double angle, Scale scale, Align align)
 	{
-		Game.DP.drawImage(this.fullSizeImage(), pos, angle, scale, align) ;
+		GamePanel.DP.drawImage(this.fullSizeImage(), pos, angle, scale, align) ;
 	}
 	
 	@Override

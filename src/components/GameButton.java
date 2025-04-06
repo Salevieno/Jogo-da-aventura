@@ -12,6 +12,7 @@ import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
 import main.Game;
+import main.GamePanel;
 import utilities.Util;
 
 public class GameButton
@@ -78,42 +79,42 @@ public class GameButton
 	
 	public void displayGeneralButton()
 	{
-		Game.DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.palette[3], Game.palette[0], true) ;
-		Game.DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
+		GamePanel.DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.palette[3], Game.palette[0], true) ;
+		GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 	}
 	
 	public void displayHovered(double angle, boolean displayText)
 	{
 		if (selectedImage != null)
 		{
-			Game.DP.drawImage(selectedImage, topLeft, angle, Scale.unit, Align.topLeft) ;
+			GamePanel.DP.drawImage(selectedImage, topLeft, angle, Scale.unit, Align.topLeft) ;
 			if (displayText)
 			{
-				Game.DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
+				GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 			}
 		}
 		else
 		{
-			Game.DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.palette[5], Game.palette[0], true) ;
-			Game.DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
+			GamePanel.DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.palette[5], Game.palette[0], true) ;
+			GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 		}
-		Game.setCursorToHand() ;
+		GamePanel.setCursorToHand() ;
 	}
 	
 	public void displayNotHovered(double angle, boolean displayText)
 	{
 		if (image != null)
 		{
-			Game.DP.drawImage(image, topLeft, angle, Scale.unit, Align.topLeft) ;
+			GamePanel.DP.drawImage(image, topLeft, angle, Scale.unit, Align.topLeft) ;
 			
 			if (!displayText) { return ;}
 			
-			Game.DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
+			GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
 			return ;
 		}
 		
-		Game.DP.drawRoundRect(topLeft, Align.topLeft, size, 2, Game.palette[5], Game.palette[0], true) ;
-		Game.DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
+		GamePanel.DP.drawRoundRect(topLeft, Align.topLeft, size, 2, Game.palette[5], Game.palette[0], true) ;
+		GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
 	}
 	
 	public void display(double angle, boolean displayText, Point mousePos)
@@ -129,20 +130,20 @@ public class GameButton
 			return ;
 		}
 		
-		Game.DP.drawImage(imageDisplayed, topLeft, angle, Scale.unit, Align.topLeft) ;
+		GamePanel.DP.drawImage(imageDisplayed, topLeft, angle, Scale.unit, Align.topLeft) ;
 
 		if (!displayText) { return ;}
 		if (name == null) { return ;}
 		
-		Game.DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
+		GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
 		
 		if (ishovered(mousePos))
 		{
-			Game.setCursorToHand() ;
+			GamePanel.setCursorToHand() ;
 		}
 		else
 		{
-			Game.setCursorToDefault() ;
+			GamePanel.setCursorToDefault() ;
 		}
 	}
 	
@@ -150,7 +151,7 @@ public class GameButton
 	{
 		if (description != null)
 		{
-			Game.DP.drawGradRoundRect(new Point(topLeft.x + 20, topLeft.y - 10), alignment, size, 5, Game.palette[1], Game.palette[2], Game.palette[0], true) ;
+			GamePanel.DP.drawGradRoundRect(new Point(topLeft.x + 20, topLeft.y - 10), alignment, size, 5, Game.palette[1], Game.palette[2], Game.palette[0], true) ;
 			Draw.fitText(new Point(topLeft.x + 20, topLeft.y - 10), 14, alignment, description, new Font(Game.MainFontName, Font.BOLD, 12), 20, Color.blue) ;
 		}
 	}

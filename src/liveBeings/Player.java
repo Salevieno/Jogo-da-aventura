@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
 
+import Battle.AtkResults;
+import Battle.AtkTypes;
+import Battle.Battle;
 import attributes.AttributeIncrease;
 import attributes.Attributes;
 import attributes.BasicAttribute;
@@ -45,10 +48,8 @@ import items.PetItem;
 import items.Potion;
 import items.QuestItem;
 import items.Recipe;
-import main.AtkResults;
-import main.AtkTypes;
-import main.Battle;
 import main.Game;
+import main.GamePanel;
 import maps.Collectible;
 import maps.Continents;
 import maps.FieldMap;
@@ -1052,10 +1053,10 @@ public class Player extends LiveBeing
 				npcInContact = null ;
 			}
 		}
-		
+
 		if (PlayerActions.actionOfKey(currentAction) == null) { return ;}
 		if (!PlayerActions.actionOfKey(currentAction).equals(PlayerActions.interact)) { return ;}		
-		
+
 		if (npcInContact != null) { npcInContact = null ; return ;}
 		
 		if (map.getNPCs() != null)
@@ -1667,7 +1668,7 @@ public class Player extends LiveBeing
 	
 	private void drawRange()
 	{
-		Game.DP.drawCircle(pos, (int)(2 * range), 2, null, Game.palette[job]) ;
+		GamePanel.DP.drawCircle(pos, (int)(2 * range), 2, null, Game.palette[job]) ;
 	}
 
 	public void drawWeapon(Point pos, Scale scale)
@@ -1691,7 +1692,7 @@ public class Player extends LiveBeing
 		if (isRiding)
 		{
 			Point ridePos = Util.Translate(pos, -RidingImage.getWidth(null) / 2, RidingImage.getHeight(null) / 2) ;
-			Game.DP.drawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
+			GamePanel.DP.drawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
 		}
 		if (isDrunk())
 		{
@@ -1701,7 +1702,7 @@ public class Player extends LiveBeing
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
 //			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ; TODO pro arte - dragon aura
-//			Game.DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
+//			GamePanel.DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
 		}
 		if (showRange)
 		{

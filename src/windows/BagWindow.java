@@ -28,6 +28,7 @@ import items.Potion;
 import items.QuestItem;
 import liveBeings.Player;
 import main.Game;
+import main.GamePanel;
 import main.TextCategories;
 import utilities.Util;
 import utilities.UtilS;
@@ -659,12 +660,12 @@ public class BagWindow extends GameWindow
 			Image tabImage = m == tab ? (menu == 0 ? selectedMenuTab0 : selectedMenuTab1) : menuImage ;
 			checkMenuMouseSelection(mousePos, tabPos, m) ;
 			
-			Game.DP.drawImage(tabImage, tabPos, Align.topLeft) ;
-			Game.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, tabNames[m], titleFont, textColor) ;
+			GamePanel.DP.drawImage(tabImage, tabPos, Align.topLeft) ;
+			GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, tabNames[m], titleFont, textColor) ;
 		}
 		
 		// draw bag
-		Game.DP.drawImage(menu == 0 ? image : selectedBag, windowPos, Align.topLeft) ;
+		GamePanel.DP.drawImage(menu == 0 ? image : selectedBag, windowPos, Align.topLeft) ;
 		
 		// draw items		
 		itemsOnWindow = getItemsOnWindow() ;		
@@ -682,8 +683,8 @@ public class BagWindow extends GameWindow
 			checkMouseSelection(mousePos, slotCenterLeft, Align.centerLeft, itemNameSize, itemID) ;
 			Color textColor = getTextColor(itemID == item) ;
 			
-			Game.DP.drawImage(slotImage, slotCenter, Align.center) ;
-			Game.DP.drawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
+			GamePanel.DP.drawImage(slotImage, slotCenter, Align.center) ;
+			GamePanel.DP.drawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
 			Draw.textUntil(textPos, Align.centerLeft, Draw.stdAngle, itemText, stdFont, textColor, 10, mousePos) ;
 		}
 		

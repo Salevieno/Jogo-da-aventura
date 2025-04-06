@@ -8,6 +8,7 @@ import java.awt.Point;
 import graphics.Align;
 import graphics2.Draw;
 import main.Game;
+import main.GamePanel;
 import utilities.GameTimer;
 import utilities.Util;
 import utilities.UtilS;
@@ -137,7 +138,7 @@ public class Sky
 	public void display()
 	{
 		updateSkyColor() ;
-		Game.DP.drawRect(new Point(0, height), Align.bottomLeft, size, color, null) ;
+		GamePanel.DP.drawRect(new Point(0, height), Align.bottomLeft, size, color, null) ;
 		
 		if (isDay())
 		{

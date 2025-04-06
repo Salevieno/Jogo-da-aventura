@@ -1,33 +1,8 @@
-//package test;
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//
-//import java.awt.Dimension;
-//import java.util.ArrayList;
-//import java.util.HashSet;
-//
-//import org.junit.jupiter.api.Test;
-//
-//import attributes.BasicAttribute;
-//import attributes.BasicBattleAttribute;
-//import attributes.BattleAttributes;
-//import attributes.BattleSpecialAttribute;
-//import attributes.BattleSpecialAttributeWithDamage;
-//import attributes.PersonalAttributes;
-//import liveBeings.Creature;
-//import liveBeings.CreatureType;
-//import liveBeings.LiveBeing;
-//import liveBeings.LiveBeingStatus;
-//import liveBeings.Player;
-//import main.AtkResults;
-//import main.AtkTypes;
-//import main.Battle;
-//import utilities.AtkEffects;
-//import utilities.Elements;
-//
-//class BattleTest
-//{
-//
+package test;
+
+class BattleTest
+{
+
 //	LiveBeing knightLevel0 = new Player("", "", 0) ;
 //	LiveBeing refCreature = new Creature(
 //			new CreatureType(0, "", 0, new Dimension(0, 0), 60, 0, new Elements[] {Elements.water}, 0, 0, 0, 0, 0, null,
@@ -134,5 +109,5 @@
 //		assertEquals(3.0, actualResult) ;
 //		
 //	}
-//
-//}
+
+}

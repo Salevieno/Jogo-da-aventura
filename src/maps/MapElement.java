@@ -14,6 +14,7 @@ import graphics.Scale;
 import graphics2.Draw;
 import graphics2.Drawable;
 import main.Game;
+import main.GamePanel;
 import utilities.Util;
 import utilities.UtilS;
 
@@ -100,7 +101,7 @@ public class MapElement implements Drawable
 	{
 		for (Collider collider : colliders)
 		{
-			Game.DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Color.red, null) ;
+			GamePanel.DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Color.red, null) ;
 		}
 	}
 	
@@ -108,7 +109,7 @@ public class MapElement implements Drawable
 	{
 		double alpha = playerIsBehind(playerPos) ? 0.5 : 1.0 ;
 		
-		Game.DP.drawImage(image, topLeft, Draw.stdAngle, Scale.unit, false, false, Align.topLeft, alpha) ;
+		GamePanel.DP.drawImage(image, topLeft, Draw.stdAngle, Scale.unit, false, false, Align.topLeft, alpha) ;
 		if (Game.displayHitboxes && hitbox != null)
 		{
 			hitbox.display();

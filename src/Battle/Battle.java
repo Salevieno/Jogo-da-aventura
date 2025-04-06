@@ -1,4 +1,4 @@
-package main ;
+package Battle ;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -16,6 +16,8 @@ import liveBeings.LiveBeingStates;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Spell;
+import main.Game;
+import main.Music;
 import simulations.EvolutionSimulation;
 import utilities.AtkEffects;
 import utilities.Elements;
@@ -326,33 +328,61 @@ public abstract class Battle
 
 		if (atkType == null) { System.out.println("Warn: atkType null at Battle.performAtk") ; return new AtkResults() ;}
 		
-
-		AtkResults atkResults = switch (atkType)
+		// TODO usar o switch com retorno aqui estava gerando um bug louco, que passou a acontecer qdo GamePanel foi criada
+		AtkResults atkResults = null ;
+		switch (atkType)
 		{
-			case physical -> calcPhysicalAtk(attacker, receiver) ;
-			case magical ->
+			case physical: atkResults = calcPhysicalAtk(attacker, receiver) ;
+			case magical:
 			{
 				int spellID = Player.SpellKeys.indexOf(attacker.getCurrentAction()) ;
 				Spell spell = attacker.getActiveSpells().get(spellID) ;
 				if (!attacker.canUseSpell(spell)) { System.out.println(attacker.getName() + ": trying to use spell. But no can use, baby!") ;}
 				if (attacker.canUseSpell(spell))
 				{
-					yield attacker.useSpell(spell, receiver);
+					atkResults =  attacker.useSpell(spell, receiver);
 				}
 				
-				yield new AtkResults();
+				atkResults = new AtkResults();
 			}
-			case physicalMagical ->
+			case physicalMagical:
 			{
-				yield new AtkResults();
+				atkResults = new AtkResults();
 			}
-			case defense ->
+			case defense:
 			{
 	 			attacker.activateDef() ;
-				yield new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
+	 			atkResults = new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
 			}
-			default -> new AtkResults() ;
+			default: atkResults = new AtkResults() ;
 		} ;
+		
+//		AtkResults atkResults = switch (atkType)
+//		{
+//			case physical -> calcPhysicalAtk(attacker, receiver) ;
+//			case magical ->
+//			{
+//				int spellID = Player.SpellKeys.indexOf(attacker.getCurrentAction()) ;
+//				Spell spell = attacker.getActiveSpells().get(spellID) ;
+//				if (!attacker.canUseSpell(spell)) { System.out.println(attacker.getName() + ": trying to use spell. But no can use, baby!") ;}
+//				if (attacker.canUseSpell(spell))
+//				{
+//					yield attacker.useSpell(spell, receiver);
+//				}
+//				
+//				yield new AtkResults();
+//			}
+//			case physicalMagical ->
+//			{
+//				yield new AtkResults();
+//			}
+//			case defense ->
+//			{
+//	 			attacker.activateDef() ;
+//				yield new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
+//			}
+//			default -> new AtkResults() ;
+//		} ;
 		
 		checkSpendArrow(attacker) ;
 		

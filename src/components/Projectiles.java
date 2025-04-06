@@ -9,7 +9,7 @@ import graphics.Scale;
 import liveBeings.Creature;
 import liveBeings.Pet;
 import liveBeings.Player;
-import main.Game;
+import main.GamePanel;
 import utilities.Util;
 
 public class Projectiles
@@ -46,7 +46,7 @@ public class Projectiles
 	
 	public void DrawImage()
 	{
-		Game.DP.drawImage(image, pos, Util.getAngle(speed), Scale.unit, Align.center) ;
+		GamePanel.DP.drawImage(image, pos, Util.getAngle(speed), Scale.unit, Align.center) ;
 	}
 	public void move()
 	{

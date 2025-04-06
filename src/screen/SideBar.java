@@ -19,6 +19,7 @@ import liveBeings.Player;
 import liveBeings.PlayerActions;
 import liveBeings.SpellsBar;
 import main.Game;
+import main.GamePanel;
 import main.MainGame3_4;
 import utilities.Util;
 import utilities.UtilS;
@@ -142,8 +143,8 @@ public abstract class SideBar
 			if (keys[i] == null | !button.isActive()) { i += 1 ; continue ;}
 
 			Point rectCenter = Util.Translate(button.getTopLeftPos(), 5, 0) ;
-			Game.DP.drawRoundRect(rectCenter, Align.center, textSize, 1, Game.palette[3], Game.palette[0], true, 2, 2) ;
-			Game.DP.drawText(rectCenter, Align.center, Draw.stdAngle, keys[i], font, textColor) ;
+			GamePanel.DP.drawRoundRect(rectCenter, Align.center, textSize, 1, Game.palette[3], Game.palette[0], true, 2, 2) ;
+			GamePanel.DP.drawText(rectCenter, Align.center, Draw.stdAngle, keys[i], font, textColor) ;
 			i += 1 ;
 		}
 	}
@@ -151,8 +152,8 @@ public abstract class SideBar
 	public static void display(Player player, Pet pet, Point mousePos)
 	{
 		
-		Game.DP.drawRect(barPos, Align.topLeft, size, bgColor, null) ;
-//		Game.DP.drawLine(Util.Translate(barPos, size.width, 0), Util.Translate(barPos, size.width, size.height), Game.palette[1]) ;
+		GamePanel.DP.drawRect(barPos, Align.topLeft, size, bgColor, null) ;
+//		GamePanel.DP.drawLine(Util.Translate(barPos, size.width, 0), Util.Translate(barPos, size.width, size.height), Game.palette[1]) ;
 		
 		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos)) ;
 		displayKeys() ;

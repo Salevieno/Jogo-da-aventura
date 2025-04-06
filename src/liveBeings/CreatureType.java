@@ -18,6 +18,7 @@ import graphics.Align;
 import graphics.Scale;
 import items.Item;
 import main.Game;
+import main.GamePanel;
 import main.Languages;
 import utilities.Elements;
 import utilities.Util;
@@ -339,7 +340,7 @@ public class CreatureType
 
 	public void display(Point pos, Scale scale)
 	{
-		Game.DP.drawImage(movingAni.idleGif, pos, scale, Align.center);
+		GamePanel.DP.drawImage(movingAni.idleGif, pos, scale, Align.center);
 	}
 
 	public String toString()

@@ -13,6 +13,7 @@ import graphics.Scale;
 import graphics2.Draw;
 import graphics2.Drawable;
 import main.Game;
+import main.GamePanel;
 import main.TextCategories;
 import utilities.Util;
 import utilities.UtilS;
@@ -104,7 +105,7 @@ public class Building implements Drawable
 		Point boardPos = Util.Translate(pos, type.getImage().getWidth(null), 0) ;
 		Point messagePos = Util.Translate(boardPos, 12, 15 - signBoard.getHeight(null)) ;
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
-		Game.DP.drawImage(signBoard, boardPos, Align.bottomLeft, 0.85) ;
+		GamePanel.DP.drawImage(signBoard, boardPos, Align.bottomLeft, 0.85) ;
 		Draw.fitText(messagePos, font.getSize() + 2, Align.bottomLeft, message, font, 40, Game.palette[0]) ;	
 	}
 	
@@ -118,7 +119,7 @@ public class Building implements Drawable
 		
 		if (type.getInsideImage() == null)
 		{
-			Game.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
+			GamePanel.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
 			displayNPCs(playerHitbox) ;
 			
 			return ;
@@ -126,17 +127,17 @@ public class Building implements Drawable
 		
 		if (!isInside(playerPos))
 		{
-			Game.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;			
+			GamePanel.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;			
 			
 			return ;
 		}
 
-		Game.DP.drawImage(type.getInsideImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.DP.drawImage(type.getInsideImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
 		displayNPCs(playerHitbox) ;
 		
 		for (Collider collider : colliders)
 		{
-			Game.DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Game.palette[0], null) ;
+			GamePanel.DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Game.palette[0], null) ;
 		}
 		
 	}

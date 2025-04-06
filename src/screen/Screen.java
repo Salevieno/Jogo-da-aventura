@@ -6,7 +6,6 @@ import java.awt.Toolkit;
 import java.awt.geom.Point2D;
 
 import main.GameFrame;
-import main.MainGame3_4;
 
 public class Screen
 {

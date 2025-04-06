@@ -8,6 +8,7 @@ import graphics.Align;
 import graphics2.Draw;
 import items.Item;
 import main.Game;
+import main.GamePanel;
 import utilities.Util;
 
 public class Collectible extends Item
@@ -53,7 +54,7 @@ public class Collectible extends Item
 	
 	public void display()
 	{
-		Game.DP.drawImage(image, pos, Align.center) ;
+		GamePanel.DP.drawImage(image, pos, Align.center) ;
 		if (Game.displayHitboxes)
 		{
 			hitbox.display() ;

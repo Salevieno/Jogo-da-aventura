@@ -21,6 +21,7 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Game;
+import main.GamePanel;
 import main.TextCategories;
 import maps.GameMap;
 import utilities.Util;
@@ -474,14 +475,14 @@ public class NPCs
 		if (options == null) { return ;}		
 		if (options.size() <= 0) { return ;}
 		
-		Game.DP.drawImage(choicesWindow, windowPos, Align.topLeft) ;
+		GamePanel.DP.drawImage(choicesWindow, windowPos, Align.topLeft) ;
 		
 		int sy = NPCfont.getSize() + 5 ;
 		for (int i = 0 ; i <= options.size() - 1 ; i += 1)
 		{
 			Point textPos = Util.Translate(windowPos, 5, 5 + i * sy) ;
 			Color textColor = i == selOption ? selColor : stdColor ;
-			Game.DP.drawText(textPos, Align.topLeft, Draw.stdAngle, options.get(i), NPCfont, textColor) ;
+			GamePanel.DP.drawText(textPos, Align.topLeft, Draw.stdAngle, options.get(i), NPCfont, textColor) ;
 		}
 		
 	}
@@ -706,7 +707,7 @@ public class NPCs
 	public void display(Hitbox playerHitbox)
 	{
 		
-		Game.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
+		GamePanel.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
 		if (hitbox.overlaps(playerHitbox))
 		{
 			Point buttonPos = Util.Translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;

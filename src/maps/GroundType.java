@@ -5,6 +5,7 @@ import java.awt.Point ;
 
 import graphics.Align;
 import main.Game;
+import main.GamePanel;
 
 public class GroundType
 {
@@ -28,8 +29,8 @@ public class GroundType
 	{
 		switch (type)
 		{
-			case water: Game.DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[20], null) ; return ;
-			case lava: Game.DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[7], null) ; return ;
+			case water: GamePanel.DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[20], null) ; return ;
+			case lava: GamePanel.DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[7], null) ; return ;
 			default: return ;
 		}
 	}

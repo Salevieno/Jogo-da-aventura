@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import Battle.AtkResults;
+import Battle.AtkTypes;
+import Battle.Battle;
 import attributes.AttributeIncrease;
 import attributes.Attributes;
 import attributes.BasicAttribute;
@@ -35,10 +38,8 @@ import liveBeings.Genetics;
 import liveBeings.LiveBeing;
 import liveBeings.Pet;
 import liveBeings.Player;
-import main.AtkResults;
-import main.AtkTypes;
-import main.Battle;
 import main.Game;
+import main.GamePanel;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.GameTimer;
@@ -973,7 +974,7 @@ public abstract class EvolutionSimulation
 	    {
 	    	String attName = (String) it.next() ;
 	    	double attValue = stats.get(attName) ;
-	    	Game.DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + ": " + attValue, textFont, textColor) ;
+	    	GamePanel.DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + ": " + attValue, textFont, textColor) ;
 			i += 1;
 	    }
 
@@ -1038,7 +1039,7 @@ public abstract class EvolutionSimulation
 	    {
 	    	String attName = (String) it.next() ;
 	    	double attValue = Math.round(100 * atts.get(attName)) / 100.0 ;
-	    	Game.DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + attValue, textFont, textColor) ;
+	    	GamePanel.DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + attValue, textFont, textColor) ;
 			i += 1;
 	    }
 	}
@@ -1056,8 +1057,8 @@ public abstract class EvolutionSimulation
 	public static void drawBar(Point pos, int currentHeight, int maxHeight, Color color)
 	{
 		int width = 10 ;
-		Game.DP.drawRect(pos, Align.bottomLeft, new Dimension(width, currentHeight), color, null) ;
-		Game.DP.drawRect(pos, Align.bottomLeft, new Dimension(width, maxHeight), null, color) ;
+		GamePanel.DP.drawRect(pos, Align.bottomLeft, new Dimension(width, currentHeight), color, null) ;
+		GamePanel.DP.drawRect(pos, Align.bottomLeft, new Dimension(width, maxHeight), null, color) ;
 	}
 	
 	public static void displayBattleStats()
@@ -1066,7 +1067,7 @@ public abstract class EvolutionSimulation
 		int barsHeight = 50 ;
 		
 		int numberOpponentsToPlayerLevelUp = PersonalAttributes.numberFightsToLevelUp(player.getExp().getCurrentValue(), player.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), player.getExp().getMultiplier()) ;
-		Game.DP.drawText(Util.Translate(pos, 170, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.palette[5]);
+		GamePanel.DP.drawText(Util.Translate(pos, 170, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.palette[5]);
 
 		int playerExpBarSize = (int) (player.getExp().getRate() * barsHeight) ;
 		drawBar(Util.Translate(pos, 170, 70), playerExpBarSize, barsHeight, Game.palette[5]) ;
@@ -1074,7 +1075,7 @@ public abstract class EvolutionSimulation
 		if (pet != null)
 		{
 			int numberOpponentsToPetLevelUp = PersonalAttributes.numberFightsToLevelUp(pet.getExp().getCurrentValue(), pet.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), pet.getExp().getMultiplier()) ;
-			Game.DP.drawText(Util.Translate(pos, 200, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Game.palette[2]);
+			GamePanel.DP.drawText(Util.Translate(pos, 200, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Game.palette[2]);
 			
 			int petExpBarSize = (int) (pet.getExp().getRate() * barsHeight) ;
 			drawBar(Util.Translate(pos, 200, 70), petExpBarSize, barsHeight, Game.palette[2]) ;
@@ -1082,17 +1083,17 @@ public abstract class EvolutionSimulation
 		
 		String percPlayerWins = 1 <= numberFights ? " (" + Util.Round((100 * numberPlayerWins) / (double)numberFights, 2) + "%)" : "" ;
 		String percCreatureWins = 1 <= numberFights ? " (" + Util.Round((100 * numberCreatureWins) / (double)numberFights, 2) + "%)" : "" ;
-		Game.DP.drawText(Util.Translate(pos, 0, 30), Align.bottomLeft, Draw.stdAngle, "total fights = " + numberFights, font, Game.palette[5]);
-		Game.DP.drawText(Util.Translate(pos, 0, 50), Align.bottomLeft, Draw.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.palette[5]);
-		Game.DP.drawText(Util.Translate(pos, 0, 70), Align.bottomLeft, Draw.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.palette[5]);
+		GamePanel.DP.drawText(Util.Translate(pos, 0, 30), Align.bottomLeft, Draw.stdAngle, "total fights = " + numberFights, font, Game.palette[5]);
+		GamePanel.DP.drawText(Util.Translate(pos, 0, 50), Align.bottomLeft, Draw.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.palette[5]);
+		GamePanel.DP.drawText(Util.Translate(pos, 0, 70), Align.bottomLeft, Draw.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.palette[5]);
 
 	}
 		
 	public static void displayInterface(Point mousePos)
 	{
 		
-		Game.DP.drawImage(screenImage, new Point(0, 0), Align.topLeft) ;
-		Game.DP.drawText(new Point(300, 13), Align.center, Draw.stdAngle, "Simulador do jogo", font, Game.palette[0]) ;
+		GamePanel.DP.drawImage(screenImage, new Point(0, 0), Align.topLeft) ;
+		GamePanel.DP.drawText(new Point(300, 13), Align.center, Draw.stdAngle, "Simulador do jogo", font, Game.palette[0]) ;
 		
 		buttons.forEach(button -> button.display(0, true, mousePos)) ;
 
@@ -1119,9 +1120,9 @@ public abstract class EvolutionSimulation
 		if (player.isInBattle())
 		{
 			battleTime = Math.round(100 * (System.nanoTime() - battleClock) * Math.pow(10, -9)) / 100.0 ;
-			Game.DP.drawImage(fightingImage, new Point(300, 240), Align.center) ;
+			GamePanel.DP.drawImage(fightingImage, new Point(300, 240), Align.center) ;
 		}
-		Game.DP.drawText(new Point(10, 410), Align.centerLeft, Draw.stdAngle, "Battle time: " + battleTime + "s", font, Game.palette[0]) ;
+		GamePanel.DP.drawText(new Point(10, 410), Align.centerLeft, Draw.stdAngle, "Battle time: " + battleTime + "s", font, Game.palette[0]) ;
 		
 		
 		displayBattleStats() ;

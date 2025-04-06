@@ -7,6 +7,7 @@ import java.awt.Point;
 import graphics.Align;
 import graphics.Scale;
 import main.Game;
+import main.GamePanel;
 import maps.GameMap;
 import utilities.Util;
 import utilities.UtilS;
@@ -203,7 +204,7 @@ public class MapWindow extends GameWindow
 		double playerRelYPos = playerPos.y / (double) (Game.getScreen().mapSize().height) ;
 		Point circlePos = Util.Translate(mapPos, (int) (scale.x * screenSize.width * playerRelXPos),
 				(int) (-scale.y * screenSize.height * (1 - playerRelYPos))) ;
-		Game.DP.drawCircle(circlePos, 5, 0, Game.palette[6], null) ;
+		GamePanel.DP.drawCircle(circlePos, 5, 0, Game.palette[6], null) ;
 	}
 	
 	public void display(Point mousePos)
@@ -218,7 +219,7 @@ public class MapWindow extends GameWindow
 		Point spacing = new Point((int) ((640 * scale.x - mapSize.width)), (int) ((480 * scale.y - mapSize.height))) ;
 		GameMap[] maps = null ;
 
-		Game.DP.drawImage(image, windowPos, Align.topLeft) ;
+		GamePanel.DP.drawImage(image, windowPos, Align.topLeft) ;
 
 		switch (currentMap.getContinent())
 		{
@@ -254,7 +255,7 @@ public class MapWindow extends GameWindow
 			map.display(mapPos, scale) ;
 			Point textPos = Util.Translate(mapPos, (int) (scale.x * Game.getScreen().mapSize().width / 2),
 					(int) (-scale.y * Game.getScreen().mapSize().height / 2)) ;
-			Game.DP.drawText(textPos, Align.center, 0, map.getName(), stdFont, Game.palette[0]) ;
+			GamePanel.DP.drawText(textPos, Align.center, 0, map.getName(), stdFont, Game.palette[0]) ;
 			
 			if (!map.equals(currentMap)) { continue ;}
 			if (playerPos == null) { continue ;}

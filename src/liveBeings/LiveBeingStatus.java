@@ -10,7 +10,7 @@ import org.json.simple.JSONObject;
 
 import attributes.Attributes;
 import graphics.Align;
-import main.Game;
+import main.GamePanel;
 import utilities.Directions;
 import utilities.GameTimer;
 import utilities.UtilS;
@@ -61,7 +61,7 @@ public class LiveBeingStatus
 	{
 		if (!isActive()) { return ;}
 		
-		Game.DP.drawImage(image, pos, Align.center) ;
+		GamePanel.DP.drawImage(image, pos, Align.center) ;
 	}
 
 	@Override

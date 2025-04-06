@@ -14,6 +14,7 @@ import liveBeings.AttackModifiers;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
+import main.GamePanel;
 import maps.GroundTypes;
 import utilities.Elements;
 import utilities.Util;
@@ -196,7 +197,7 @@ public class GeneralItem extends Item
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
 		Point textPos = Util.Translate(pos, 5 - Util.getSize(infoMenu).width, 10) ;		
-		Game.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, description, font, Game.palette[0]) ;
+		GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, description, font, Game.palette[0]) ;
 	}
 	
 	@Override

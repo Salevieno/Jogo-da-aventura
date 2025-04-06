@@ -7,11 +7,12 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Arrays;
 
+import Battle.Battle;
 import graphics.Align;
 import graphics2.Draw;
 import liveBeings.PlayerActions;
-import main.Battle;
 import main.Game;
+import main.GamePanel;
 import main.TextCategories;
 import utilities.Util;
 import utilities.UtilS;
@@ -179,7 +180,7 @@ public class SettingsWindow extends GameWindow
 			
 		Color textColor = selected ? Game.palette[20] : Game.palette[2] ;
 
-		Game.DP.drawText(textPos, Align.bottomCenter, angle, text, font, textColor) ;	
+		GamePanel.DP.drawText(textPos, Align.bottomCenter, angle, text, font, textColor) ;	
 	}
 	
 	
@@ -198,7 +199,7 @@ public class SettingsWindow extends GameWindow
 			Point actionKeyPos = Util.Translate(optionPos, sx, 0) ;
 			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
 			Color textColor = getTextColor(item == i) ;
-			Game.DP.drawText(optionPos, Align.bottomLeft, angle, text[i], font, textColor) ;
+			GamePanel.DP.drawText(optionPos, Align.bottomLeft, angle, text[i], font, textColor) ;
 			
 			if (i == 3)
 			{
@@ -234,8 +235,8 @@ public class SettingsWindow extends GameWindow
 			Point actionKeyPos = Util.Translate(optionPos, sx, 0) ;
 			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
 			Color textColor = getTextColor(item == i) ;
-			Game.DP.drawText(optionPos, Align.bottomLeft, angle, text[i + 6], font, textColor) ;
-			Game.DP.drawText(actionKeyPos, Align.bottomCenter, angle, PlayerActions.values()[i].getKey(), font, getTextColor(selectedActionKeyID == i)) ;			
+			GamePanel.DP.drawText(optionPos, Align.bottomLeft, angle, text[i + 6], font, textColor) ;
+			GamePanel.DP.drawText(actionKeyPos, Align.bottomCenter, angle, PlayerActions.values()[i].getKey(), font, getTextColor(selectedActionKeyID == i)) ;			
 		}
 	}
 	
@@ -249,9 +250,9 @@ public class SettingsWindow extends GameWindow
 		Arrays.fill(textColor, Game.palette[0]) ;
 		textColor[item] = Game.palette[18] ;
 		
-		Game.DP.drawImage(menuImage, windowPos, Align.topLeft) ;
+		GamePanel.DP.drawImage(menuImage, windowPos, Align.topLeft) ;
 		Point titlePos = Util.Translate(textPos, image.getWidth(null) / 2 - 15, -6) ;
-		Game.DP.drawText(titlePos, Align.bottomCenter, angle, name, font, Game.palette[0]) ;
+		GamePanel.DP.drawText(titlePos, Align.bottomCenter, angle, name, font, Game.palette[0]) ;
 		if (menu == 0)
 		{
 			numberItems = 6 ;

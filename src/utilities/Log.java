@@ -2,6 +2,7 @@ package utilities;
 
 import java.util.List;
 
+import Battle.AtkResults;
 import graphics2.Animation;
 import graphics2.Gif;
 import items.Item;
@@ -9,7 +10,6 @@ import liveBeings.Buff;
 import liveBeings.CreatureType;
 import liveBeings.LiveBeing;
 import liveBeings.Spell;
-import main.AtkResults;
 
 public abstract class Log
 {
