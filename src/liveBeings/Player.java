@@ -304,6 +304,7 @@ public class Player extends LiveBeing
 	public BattleSpecialAttributeWithDamage getBlood() {return BA.getBlood() ;}
 	public BattleSpecialAttributeWithDamage getPoison() {return BA.getPoison() ;}
 	public BattleSpecialAttribute getSilence() {return BA.getSilence() ;}
+	public NPCs getNPCInContact() { return npcInContact ;}
 	public double[] getCollect() {return collectLevel ;}
 	public Integer getStoredGold() {return storedGold ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
@@ -1766,5 +1767,8 @@ public class Player extends LiveBeing
 		stats.updateInflictedBlood(bloodDamage) ;		
 		stats.updateInflictedPoison(poisonDamage) ;
 	}
+
+
+
 	
 }

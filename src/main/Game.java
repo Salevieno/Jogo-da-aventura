@@ -75,7 +75,7 @@ public class Game
 	// TODO animação tela de carregamento
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	// TODO make game run by time
-	private static final String[] konamiCode = new String[] { "Acima", "Acima", "Abaixo", "Abaixo", "Esquerda", "Direita", "Esquerda", "Direita", "B", "A" } ;
+	private static final String[] konamiCode = new String[] { "Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A" } ;
 	public static final String JSONPath = ".\\json\\" ;
 	public static final String CSVPath = ".\\csv\\" ;
 	public static final String dadosPath = ".\\dados\\" ;
@@ -151,16 +151,6 @@ public class Game
 	public static int getSlotLoaded() { return slotLoaded ;}
 	public static void setSlotLoaded(int newSlotLoaded) { slotLoaded = newSlotLoaded ;}
 	
-	public static List<Item> getItems(int[] itemIDs)
-	{
-		List<Item> items = new ArrayList<>() ;
-    	for (int itemID : itemIDs)
-    	{
-    		items.add(Item.allItems.get(itemID)) ;
-    	}
-    	
-    	return items ;
-	}
 	
 	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
 	public static void setState(GameStates newState) { initialState = newState ;}
@@ -788,9 +778,6 @@ public class Game
 
 		if (pet != null)
 		{
-//			pet.display(pet.getPos(), Scale.unit) ;
-//			pet.displayAttributes(0) ;
-
 			drawables.add(pet) ;
 		}
 		
@@ -802,7 +789,12 @@ public class Game
 		player.getMap().getMapElem().forEach(mapElem -> drawables.add(mapElem));
 		drawables.sort(Comparator.comparingInt(d -> d.getPos().y));
 		drawables.forEach(drawable -> drawable.display()) ;
-		//		Log.allEntityListsLength() ;
+		
+		if (player.isTalkingToNPC())
+		{
+			player.getNPCInContact().displaySpeech() ;
+			player.getNPCInContact().displayOptions() ;
+		}
 		
 		player.showWindows(pet, GamePanel.getMousePos()) ;
 		

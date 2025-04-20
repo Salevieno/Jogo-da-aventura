@@ -3,7 +3,9 @@ package items;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import graphics.Align;
 import utilities.UtilS;
@@ -34,6 +36,11 @@ public abstract class Item
 //		allItems.add(this);
 	}
 
+	public static List<Item> getItems(int[] itemIDs)
+	{
+		return Arrays.stream(itemIDs).mapToObj(itemID -> allItems.get(itemID)).collect(Collectors.toList());
+	}
+	
 	public int getId() {return id ;}
 	public String getName() {return name ;}
 	public String getDescription() {return description ;}

@@ -1,6 +1,7 @@
 package components ;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
@@ -16,6 +17,7 @@ import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
 import items.Equip;
+import items.Item;
 import items.Recipe;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -253,9 +255,6 @@ public class NPCs
 	
 	public void action(Player player, Pet pet, Point mousePos)
 	{
-		
-		speak(pos) ;
-		drawOptions(Util.Translate(pos, 20, -10)) ;
 				
 		String playerAction = player.getCurrentAction() ;
 		
@@ -316,7 +315,7 @@ public class NPCs
 //		    	List<Item> itemsOnSale = new ArrayList<>() ;
 //		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
 		    	
-		    	window = new ShoppingWindow(Game.getItems(itemIDs)) ;
+		    	window = new ShoppingWindow(Item.getItems(itemIDs)) ;
 		    	
 		    	sellerAction(player, playerAction, (ShoppingWindow) window) ;
 		    	
@@ -327,7 +326,7 @@ public class NPCs
 //		    	List<Item> itemsOnSale = new ArrayList<>() ;
 //		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
 		    	
-		    	window = new ShoppingWindow(Game.getItems(itemIDs)) ;
+		    	window = new ShoppingWindow(Item.getItems(itemIDs)) ;
 		    	
 		    	sellerAction(player, playerAction, (ShoppingWindow) window) ;
 		    	
@@ -346,7 +345,7 @@ public class NPCs
 					itemids[i] += 200 * cityID ;
 				}
 		    	
-		    	window = new ShoppingWindow(Game.getItems(itemids)) ;
+		    	window = new ShoppingWindow(Item.getItems(itemids)) ;
 		    	
 		    	sellerAction(player, playerAction, (ShoppingWindow) window) ;
 				
@@ -446,9 +445,9 @@ public class NPCs
 		}
 	}
 	
-	public void speak(Point pos)
+	public void displaySpeech(Point pos)
 	{
-		
+
 		if (type.getSpeech() == null) { return ;}
 		if (type.getSpeech().length <= menu) { return ;}
 		if (type.getSpeech()[menu].isEmpty()) { return ;}
@@ -462,9 +461,11 @@ public class NPCs
 
 		Draw.speech(speechPos, content, NPCfont, speakingBubble, stdColor) ;
 		
-	}
+	}	
+	
+	public void displaySpeech() { displaySpeech(pos) ;}
 
-	public void drawOptions(Point windowPos)
+	public void displayOptions(Point windowPos)
 	{
 		if (type.getOptions() == null) { return ;}
 		if (type.getOptions().size() <= menu) { return ;}
@@ -481,11 +482,18 @@ public class NPCs
 		for (int i = 0 ; i <= options.size() - 1 ; i += 1)
 		{
 			Point textPos = Util.Translate(windowPos, 5, 5 + i * sy) ;
-			Color textColor = i == selOption ? selColor : stdColor ;
-			GamePanel.DP.drawText(textPos, Align.topLeft, Draw.stdAngle, options.get(i), NPCfont, textColor) ;
+			String text = options.get(i) ;
+			Color textColor = stdColor ;
+			if (i == selOption)
+			{
+				Draw.textSelection(Util.getPosAt(textPos, Align.topLeft, Align.center, new Dimension(-45, 8)), new Dimension(45, 8)) ;
+			}
+			GamePanel.DP.drawText(textPos, Align.topLeft, Draw.stdAngle, text, NPCfont, textColor) ;
 		}
 		
 	}
+	
+	public void displayOptions() { displayOptions(Util.Translate(pos, 20, -10)) ;}
 
 	private void bankerAction(Player player, BankWindow bankWindow, String action)
 	{

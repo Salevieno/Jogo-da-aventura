@@ -41,6 +41,7 @@ public abstract class Draw
 	private static Dimension screenSize ;
 	private static final Image ArrowIconImage ;
 	public static final Image KeyboardButtonImage ;
+	private static final List<Image> textSelectionImages ;
 	public static double stdAngle ;
 	
 	private static final Font stdFont = DrawPrimitives.stdFont ;
@@ -52,6 +53,10 @@ public abstract class Draw
 		stdAngle = DrawPrimitives.stdAngle;
 		ArrowIconImage = UtilS.loadImage("\\Windows\\" + "ArrowIcon.png") ;
 		KeyboardButtonImage = UtilS.loadImage("KeyboardButton.png") ;
+		textSelectionImages = List.of(UtilS.loadImage("TextSelectionTopLeft.png"),
+										UtilS.loadImage("TextSelectionTopRight.png"),
+										UtilS.loadImage("TextSelectionBottomRight.png"),
+										UtilS.loadImage("TextSelectionBottomLeft.png")) ;
 	}
 
 	public static void setDP(DrawPrimitives newDP)
@@ -74,6 +79,13 @@ public abstract class Draw
 	public static void bufferedText(Point pos, Align align, String text, Color color)
 	{
 		bufferedText(pos, align, text, stdFont, color) ;
+	}
+	public static void textSelection(Point center, Dimension size)
+	{
+		GamePanel.DP.drawImage(textSelectionImages.get(0), Util.Translate(center, -size.width / 2, -size.height / 2), Align.bottomRight) ;
+		GamePanel.DP.drawImage(textSelectionImages.get(1), Util.Translate(center, size.width / 2, -size.height / 2), Align.bottomLeft) ;
+		GamePanel.DP.drawImage(textSelectionImages.get(2), Util.Translate(center, size.width / 2, size.height / 2), Align.topLeft) ;
+		GamePanel.DP.drawImage(textSelectionImages.get(3), Util.Translate(center, -size.width / 2, size.height / 2), Align.topRight) ;
 	}
 	
 	
