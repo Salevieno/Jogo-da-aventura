@@ -37,8 +37,6 @@ public class Screen
 	
 	private static Point2D.Double calcScale()
 	{
-		System.out.println("Calc scale");
-
 		if (!GameFrame.fullScreen) { return new Point2D.Double(1.0, 1.0) ;}
 		
 		Dimension laptopScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -47,8 +45,6 @@ public class Screen
         double aspectRatio = GameFrame.getWindowsize().width / GameFrame.getWindowsize().height ;
         double currentRatio = (double) laptopScreenSize.width / laptopScreenSize.height;
 
-		System.out.println(laptopScreenSize);
-		System.out.println(new Point2D.Double(scaleX, scaleY));
         if (aspectRatio < currentRatio)
         {
             scaleX = scaleY ;

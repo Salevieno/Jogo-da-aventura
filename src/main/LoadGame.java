@@ -1,6 +1,6 @@
 package main;
 
-public abstract class Loading
+public abstract class LoadGame
 {
 //	private int selectedSlot, tab ;
 	
@@ -14,6 +14,7 @@ public abstract class Loading
 	
 	public void Run()
 	{
+		// TODO load saved game
 		/*DrawPrimitives DP = DF.getDrawPrimitives() ;
 		Font font = new Font("BoldSansSerif", Font.BOLD, 20) ;
 		int NumberOfSlots = 3 ;

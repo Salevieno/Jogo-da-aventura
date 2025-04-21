@@ -29,8 +29,6 @@ public class HotKeysBar
 		textColor = Game.palette[0] ;
 		image = UtilS.loadImage("\\SideBar\\" + "HotBar.png") ;
 		barPos = new Point(Game.getScreen().mapSize().width + 2, Game.getScreen().getSize().height - SideBar.sy) ;
-		System.out.println("screen h " + Game.getScreen().getSize().height);
-		System.out.println(barPos);
 	}
 	
 	public static Dimension size() { return Util.getSize(image) ;}

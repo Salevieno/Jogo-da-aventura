@@ -59,8 +59,7 @@ public class GameFrame extends JFrame implements ActionListener
 		timer.start() ;							// Game will start checking for keyboard events every "timer" miliseconds
 		previousState = GameStates.opening ;
 
-        add(GamePanel.getMe()) ;								// adding game panel on the JFrame
-//        add(game) ;								// adding game panel on the JFrame
+        add(GamePanel.getMe()) ;
 
     }
 	
@@ -101,7 +100,7 @@ public class GameFrame extends JFrame implements ActionListener
         previousState = Game.getState() ;
         Game.setState(GameStates.paused) ;
 	}
-	
+
 	public static void resumeGame()
 	{
         timer.start() ;

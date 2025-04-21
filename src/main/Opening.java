@@ -24,16 +24,14 @@ import utilities.UtilS;
 
 public abstract class Opening
 {
-	private static Image backgroundImage;
 	public static Gif openingGif ;
+	private static Image backgroundImage;
     private static List<GameButton> buttons ;
     private static List<GameButton> loadSlotButtons ;
-    private static GameButton startButton ;
     private static String[] stepMessage ;
     private static String[] jobDescriptionPtBr ;
     private static String[] jobDescriptionEn ;
     private static int step ;
-    private static int loadingStep ;
     private static boolean newGame ;
     private static boolean isOver ;
     
@@ -48,13 +46,11 @@ public abstract class Opening
     private static final Font font ;
     private static final Font smallFont ;
 	private static final Image LoadingEnfeite ;
-	private static final Image LoadingGif ;
 	private static final Image LoadingSlot ;
 	private static final Image LoadingSlotSelected ;
 	private static final Clip thunderSound ;
 	private static final Clip introMusic ;
 	
-	private static final Image petImage0 = Util.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(0) + ".png") ;
 	
 	static
 	{
@@ -64,7 +60,6 @@ public abstract class Opening
 		backgroundImage = Util.loadImage(path + "Opening.png") ;
 		openingGif = new Gif("Opening", Util.loadImage(path + "Opening.gif"), 0.7, false, true) ;
 		LoadingEnfeite = UtilS.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
-		LoadingGif = Util.loadImage(path + "Loading.gif") ;
 		LoadingSlot = Util.loadImage(path + "LoadingSlot.png") ;
 		LoadingSlotSelected = Util.loadImage(path + "LoadingSlotSelected.png") ;
 
@@ -73,7 +68,6 @@ public abstract class Opening
 		
 		GameButton.selectedIconID = 2 ;
     	step = 0 ;
-    	loadingStep = 0 ;
     	newGame = true ;
     	isOver = false ;
 		liveInput = new LiveInput() ;
@@ -158,11 +152,6 @@ public abstract class Opening
     	buttons.get(2).activate() ;
     	buttons.get(3).activate() ;
 
-    	Image startImage = Util.loadImage(path + "Start.png") ;
-    	Image startImageSelected = Util.loadImage(path + "Start Selected.gif") ;
-		IconFunction startAction = () -> { loadingStep = 12 ;} ;
-    	startButton = new GameButton(Util.Translate(Game.getScreen().getCenter(), 0, 80), Align.center, "start", startImage, startImageSelected, startAction) ;
-    	startButton.deactivate() ;
     	
     	stepMessage = new String[] {"", "Qual o seu nome?", "", "", "", ""} ;
     	jobDescriptionEn = new String[]
@@ -185,12 +174,7 @@ public abstract class Opening
 	}
 
 	public static Player getChosenPlayer() { return new Player(chosenName, chosenSex, chosenJob) ;}
-	public static String getChosenName() { return chosenName ;}
 	public static int getChosenDifficultLevel() { return difficultLevel ;}
-	public static String getChosenSex() { return chosenSex ;}
-	public static int getChosenJob() { return chosenJob ;}
-	
-	
 	public static Gif getOpeningGif() { return openingGif ;}
 
 	private static void act(String action, Point mousePos)
@@ -282,7 +266,6 @@ public abstract class Opening
 	
 	private static void displaySlot(Point pos, int slotNumber)
 	{
-//		GamePanel.DP.DrawImage(LoadingSlot, pos, Align.topLeft) ;
 		
 		Player player = players[slotNumber] ;
 		double angle = Draw.stdAngle ;
@@ -307,60 +290,6 @@ public abstract class Opening
 			
 			loadSlotButtons.get(i).display(0, true, mousePos) ;
 			displaySlot(new Point(60 + 200 * i, 100), i) ;
-		}
-	}
-	
-	public static void displayLoadingScreen(String action, Point mousePos)
-	{
-//		Color textColor = Game.palette[0] ;
-//		Point moveInfoTopLeft = new Point(40, 60) ;
-//		GamePanel.DP.drawText(Util.Translate(moveInfoTopLeft, 100, 0), Align.center, 0, "Principais ações", font, textColor) ;
-//		
-//		Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().movingRightGif, SideBar.getIconImages()[2], Game.getPlayer().getMovingAni().idleGif, SideBar.getIconImages()[1]} ;
-//		String[] moveInfoText = new String[] {"Moving: W A S D ou setas", "Mochila: B", "Janela do jogador: C", "Quests: Q"} ;
-//		for (int i = 0 ; i <= moveInfoImages.length - 1; i += 1)
-//		{
-//			Point imageCenterLeft = Util.Translate(moveInfoTopLeft, 0, 100 + 50 * i) ;
-//			GamePanel.DP.drawImage(moveInfoImages[i], imageCenterLeft, Align.center);
-//			GamePanel.DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, moveInfoText[i], smallFont, textColor) ;
-//		}
-//		
-//		
-//		Point atkInfoTopLeft = new Point(380, 60) ;
-//		GamePanel.DP.drawText(Util.Translate(atkInfoTopLeft, 120, 0), Align.center, 0, "Ações de luta", font, textColor) ;
-//		
-//		Image[] atkInfoImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Player.MagicBlissGif} ;
-//		String[] atkInfoText = new String[] {"Attack: Y", "Defense: U", "Spells: 0, 1...F11, F12"} ;
-//		for (int i = 0 ; i <= atkInfoImages.length - 1; i += 1)
-//		{
-//			Point imageCenterLeft = Util.Translate(atkInfoTopLeft, 0, 100 + 50 * i) ;
-//			GamePanel.DP.drawImage(atkInfoImages[i], imageCenterLeft, Align.center);
-//			GamePanel.DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, atkInfoText[i], smallFont, textColor) ;
-//		}
-//		
-//		GamePanel.DP.drawImage(LoadingEnfeite, new Point(0, 0), Align.topLeft) ;
-		
-		GamePanel.DP.drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), Game.palette[0], null) ;
-		GamePanel.DP.drawImage(petImage0, Game.getScreen().getCenter(), Align.center) ;
-		
-		if (!loadingIsOver())
-		{
-			Dimension loadingBarSize = new Dimension(400, 30) ;
-			Point loadingTextCenter = Util.Translate(Game.getScreen().getCenter(), 0, 80) ;
-			Point loadingBarCenterLeft = Util.Translate(Game.getScreen().getCenter(), -loadingBarSize.width / 2, 80) ;
-			Dimension loadedBarSize = new Dimension(loadingStep * loadingBarSize.width / 11, loadingBarSize.height) ;
-			GamePanel.DP.drawImage(LoadingGif, loadingTextCenter, Align.center) ;
-			GamePanel.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, Game.palette[0], true);
-			GamePanel.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Game.palette[18], Game.palette[0], false);
-		}
-
-		if (startButton.isActive())
-		{
-			startButton.display(0, true, mousePos) ;
-			if (startButton.isClicked(mousePos, action))
-			{
-				startButton.act() ;
-			}
 		}
 	}
 	
@@ -429,12 +358,6 @@ public abstract class Opening
 		}
 		player.resetAction() ;
 	}
-	
-	public static int getLoadingStep() { return loadingStep ;}
-	public static void incLoadingStep() { loadingStep += 1 ;}
-	public static boolean loadingIsOver() { return 11 <= loadingStep ;}
-	public static boolean gameStarted() { return loadingStep == 12 ;}
-	public static void activateStartButton() { startButton.activate() ;}
 	
 	public static boolean newGame() { return newGame ;}
 	public static boolean isOver() { return isOver ;}

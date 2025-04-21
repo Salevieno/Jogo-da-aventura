@@ -72,10 +72,12 @@ public class Game
 {
 	// TODO arquivos - nomes das criaturas
 	// TODO como reviver o pet quando ele/ela morre? :O
-	// TODO animação tela de carregamento
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	// TODO make game run by time
 	private static final String[] konamiCode = new String[] { "Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A" } ;
+	private static final Color[] normalPalette ;
+	private static final Color[] konamiPalette ;
+	
 	public static final String JSONPath = ".\\json\\" ;
 	public static final String CSVPath = ".\\csv\\" ;
 	public static final String dadosPath = ".\\dados\\" ;
@@ -84,16 +86,15 @@ public class Game
 	public static final String TextPathBR = "./Texto-PT-br.json" ;
 	public static final String MainFontName = "Comics" ;
 
-	public static final Color[] normalPalette ;
-	public static final Color[] konamiPalette ;
+	private static final GameStates mainState = GameStates.running ;
+	private static final boolean cheatMode = false ;
 	public static final boolean displayHitboxes = false;
 
-	private static GameStates initialState = GameStates.loading ;
-	private static GameStates mainState = GameStates.running ;
-	private static boolean cheatMode = false ;
+	private static GameStates state = GameStates.loading ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
+
 
 	public static Color[] palette ;
 	public static Map<TextCategories, String[]> allText ;
@@ -103,7 +104,7 @@ public class Game
 	public static int difficultLevel = 2 ;
 	private static int slotLoaded = -1 ;
 
-	private static Screen screen ;
+	private static final Screen screen ;
 	private static Sky sky ;
 	private static CityMap[] cityMaps ;
 	private static FieldMap[] fieldMaps ;
@@ -114,7 +115,6 @@ public class Game
 	private static Item[] allItems ;
 	private static Spell[] allSpells ;
 	private static Quest[] allQuests ;
-	private static List<Projectiles> projs ;
 
 	static
 	{
@@ -134,27 +134,24 @@ public class Game
 		player = new Player("", "", 2) ;
 	}
 	
-	public static GameStates getState() { return initialState ;}
+	public static GameStates getState() { return state ;}
 	public static Languages getLanguage() { return gameLanguage ;}
 	public static Screen getScreen() { return screen ;}
-//	public static Sky getSky() { return sky ;}
 	public static NPCType[] getNPCTypes() { return npcTypes ;}
 	public static Player getPlayer() { return player ;}
 	public static Pet getPet() { return pet ;}
-//	public static BuildingType[] getBuildingTypes() { return buildingTypes ;}
 	public static GameMap[] getMaps() { return allMaps ;}
 	public static Quest[] getAllQuests() { return allQuests ;}
 	public static Item[] getAllItems() { return allItems ;}
 	public static Spell[] getAllSpells() { return allSpells ;}
 	public static boolean getShouldRepaint() { return shouldRepaint ;}
-//	public static Point getmousePos() { return GamePanel.getMousePos() ;}
 	public static int getSlotLoaded() { return slotLoaded ;}
 	public static void setSlotLoaded(int newSlotLoaded) { slotLoaded = newSlotLoaded ;}
 	
 	
 	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
-	public static void setState(GameStates newState) { initialState = newState ;}
-//	public static void playStopTimeGif() { initialState = GameStates.playingStopTimeGif ;}
+	public static void setState(GameStates newState) { state = newState ;}
+	public static void switchToMainState() { state = mainState ;}
 
 	private static void checkKonamiCode(List<String> combo)
 	{
@@ -394,7 +391,7 @@ public class Game
     	
 	}
 	
-	private static void initialize(int step)
+	protected static void initialize(int step)
 	{
 		
 		long initialTime = System.nanoTime();
@@ -405,7 +402,6 @@ public class Game
 				sky = new Sky() ;
 				screen.setBorders(new int[] { 0, Sky.height, screen.getSize().width - 40, screen.getSize().height }) ;
 				screen.setMapCenter() ;
-				System.out.println(screen.getMapCenter());
 				Log.loadTime("initial stuff", initialTime) ;
 				return ;
 				
@@ -473,6 +469,13 @@ public class Game
 					Music.SwitchMusic(player.getMap().getMusic()) ;
 				}
 				Log.loadTime("last stuff", initialTime) ;
+				
+
+				if (Game.cheatMode)
+				{
+					Game.initializeCheatMode() ;
+				}
+				
 				// TODO incluir criaturas 230 a 234 em algum mapa
 //				Map<Integer, Integer> mapLevelPower = new HashMap<>() ;
 //				for (CreatureType creatureType : CreatureType.all)
@@ -649,23 +652,6 @@ public class Game
 		player.finishStatus() ;
 	}
 	
-	private void updateProjectiles()
-	{
-		List<Creature> creaturesInMap = new ArrayList<>() ;
-		if (!player.getMap().IsACity())
-		{
-			FieldMap fm = (FieldMap) player.getMap() ;
-			creaturesInMap = fm.getCreatures() ;
-		}
-		for (Projectiles proj : projs)
-		{
-			proj.go(player, creaturesInMap, pet) ;
-			if (proj.collidedwith(player, creaturesInMap, pet) != -3) // if the projectile has hit some live being
-			{
-				projs.remove(proj) ;
-			}
-		}
-	}
 	
 	private void run()
 	{
@@ -722,13 +708,10 @@ public class Game
 		if (player.isTalkingToNPC())
 		{
 			player.talkToNPC(GamePanel.getMousePos()) ;
+
 		}
 
-
-		if (projs != null)
-		{
-			updateProjectiles() ;
-		}
+		Projectiles.updateAll(player, pet);
 		
 		if (player.getJob() == 3)
 		{
@@ -813,7 +796,7 @@ public class Game
 
 	protected void update()
 	{
-		switch (initialState)
+		switch (state)
 		{
 			case opening:
 				Opening.run(player, GamePanel.getMousePos()) ;
@@ -830,28 +813,29 @@ public class Game
 				break ;
 
 			case loading:
-				Opening.displayLoadingScreen(player.getCurrentAction(), GamePanel.getMousePos()) ;
-				if (!Opening.loadingIsOver())
-				{
-					initialize(Opening.getLoadingStep()) ;
-					Opening.incLoadingStep() ;
-					if (Opening.loadingIsOver())
-					{
-						Opening.activateStartButton() ;
-//						Opening.incLoadingStep() ;
-//						JobBuild.printAll() ;
-					}
-				}
-	
-				if (Opening.gameStarted())
-				{
-//			    	player.switchOpenClose(player.getHintsindow()) ;
-					if (cheatMode) { initializeCheatMode() ;}
-					player.startCounters() ;
-					Game.setState(mainState) ;
-//					player.levelUp();
-				}
+				LoadingGame.run(player, GamePanel.getMousePos()) ;
 				shouldRepaint = true ;
+//				Opening.displayLoadingScreen(player.getCurrentAction(), GamePanel.getMousePos()) ;
+//				if (!Opening.loadingIsOver())
+//				{
+//					initialize(Opening.getLoadingStep()) ;
+//					Opening.incLoadingStep() ;
+//					if (Opening.loadingIsOver())
+//					{
+//						Opening.activateStartButton() ;
+////						Opening.incLoadingStep() ;
+////						JobBuild.printAll() ;
+//					}
+//				}
+//	
+//				if (Opening.gameStarted())
+//				{
+////			    	player.switchOpenClose(player.getHintsindow()) ;
+//					if (cheatMode) { initializeCheatMode() ;}
+//					player.startCounters() ;
+//					Game.setState(mainState) ;
+////					player.levelUp();
+//				}
 				break ;
 
 			case simulation:
@@ -884,7 +868,7 @@ public class Game
 		
 		if (keyCode == KeyEvent.VK_PAUSE)
 		{
-			if (initialState.equals(GameStates.paused))
+			if (state.equals(GameStates.paused))
 			{
 				GameFrame.resumeGame();
 				GameTimer.resumeAll() ;
@@ -937,12 +921,13 @@ public class Game
 	
 	public void mouseReleaseAction(MouseEvent evt)
 	{
-		int hotKeySlotHovered = HotKeysBar.slotHovered(GamePanel.getMousePos()) ;
-		
-		if (-1 < hotKeySlotHovered)
-		{
-			player.getHotItems()[hotKeySlotHovered] = player.getBag().getItemFetched() ;
-		}
+		// TODO must work only when game is runnning
+//		int hotKeySlotHovered = HotKeysBar.slotHovered(GamePanel.getMousePos()) ;
+//		
+//		if (-1 < hotKeySlotHovered)
+//		{
+//			player.getHotItems()[hotKeySlotHovered] = player.getBag().getItemFetched() ;
+//		}
 
 		player.getBag().setItemFetched(null) ;
 	}

@@ -2,6 +2,7 @@ package components ;
 
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import graphics.Align;
@@ -10,6 +11,7 @@ import liveBeings.Creature;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.GamePanel;
+import maps.FieldMap;
 import utilities.Util;
 
 public class Projectiles
@@ -20,6 +22,8 @@ public class Projectiles
 	private double[] speed ;	// [vx, vy]
 	private int range ;
 	private Image image ;
+	
+	private static List<Projectiles> all ;
 	
 	public Projectiles(Point Pos, int Type, int damage, double[] speed, int range, Image image)
 	{
@@ -75,6 +79,7 @@ public class Projectiles
 		}
 		return -3 ;	// if the projectile has not hit anything
 	}
+	
 	public void go(Player player, List<Creature> creature, Pet pet)
 	{
 		DrawImage() ;
@@ -106,4 +111,25 @@ public class Projectiles
 			}
 		}
 	}
+
+	public static void updateAll(Player player, Pet pet)
+	{
+		if (all == null || all.isEmpty()) { return ;}
+
+		List<Creature> creaturesInMap = new ArrayList<>() ;
+		if (!player.getMap().IsACity())
+		{
+			FieldMap fm = (FieldMap) player.getMap() ;
+			creaturesInMap = fm.getCreatures() ;
+		}
+		for (Projectiles proj : all)
+		{
+			proj.go(player, creaturesInMap, pet) ;
+			if (proj.collidedwith(player, creaturesInMap, pet) != -3) // if the projectile has hit some live being
+			{
+				all.remove(proj) ;
+			}
+		}
+	}
+
 }
