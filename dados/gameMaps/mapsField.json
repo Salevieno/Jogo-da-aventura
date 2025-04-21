@@ -380,7 +380,7 @@
     "Continent": 4,
     "Collectibles": {"level": 9, "berryDelay": 40, "herbDelay": 1280, "woodDelay": 1536, "metalDelay": 2560},
     "Connections": {"topLeft": -1, "leftTop": 52, "leftBottom": 52, "bottomLeft": 50, "bottomRight": 50, "rightBottom": 54, "rightTop": 54, "topRight": -1},
-    "Creatures": [195, 195, 195, 196, 196, 197, 197, 198, 198, 199],
+    "Creatures": [230, 230, 230, 231, 231, 232, 232, 233, 233, 234],
     "NPCs": [{"name": "questItem", "pos": {"x": 0.11, "y": 0.73}}]
   },
   {

@@ -16,7 +16,7 @@ import javax.sound.sampled.Clip;
 import components.Building;
 import components.Collider;
 import components.Hitbox;
-import components.NPCs;
+import components.NPC;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.SpriteAnimation;
@@ -43,7 +43,7 @@ public class GameMap
 	protected List<GroundType> groundTypes ;	
 	protected List<MapElement> mapElems ;
 	protected List<Building> buildings ;
-	protected List<NPCs> npcs ;
+	protected List<NPC> npcs ;
 	protected Map<Item, Double> diggingItems ;
 	
 	public static Image[] CollectibleImage ;
@@ -108,7 +108,7 @@ public class GameMap
 //		GroundImage = new Image[] {Water, Lava, Ice} ;
 	}
 	
-	public GameMap(String Name, Continents continent, int[] Connections, Image image, Clip music, List<Building> building, List<NPCs> npc)
+	public GameMap(String Name, Continents continent, int[] Connections, Image image, Clip music, List<Building> building, List<NPC> npc)
 	{
 		this.name = Name ;
 		this.continent = continent ;
@@ -599,7 +599,7 @@ public class GameMap
 	public List<GroundType> getgroundTypes() {return groundTypes ;}
 	public int[] getConnections() {return connections ;}	
 	public List<MapElement> getMapElem() {return mapElems ;}
-	public List<NPCs> getNPCs() {return npcs ;}
+	public List<NPC> getNPCs() {return npcs ;}
 	public List<Building> getBuildings() {return buildings ;}
 	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
 	

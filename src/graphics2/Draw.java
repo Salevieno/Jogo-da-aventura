@@ -36,8 +36,7 @@ import windows.PlayerAttributesWindow;
 
 public abstract class Draw 
 {
-	
-	private static DrawPrimitives DP ;
+
 	private static Dimension screenSize ;
 	private static final Image ArrowIconImage ;
 	public static final Image KeyboardButtonImage ;
@@ -57,11 +56,6 @@ public abstract class Draw
 										UtilS.loadImage("TextSelectionTopRight.png"),
 										UtilS.loadImage("TextSelectionBottomRight.png"),
 										UtilS.loadImage("TextSelectionBottomLeft.png")) ;
-	}
-
-	public static void setDP(DrawPrimitives newDP)
-	{
-		DP = newDP ;
 	}
 
 	public static void bufferedText(Point pos, Align align, double angle, String text, Font font, Color color, Color outlineColor, int outlineWidth)

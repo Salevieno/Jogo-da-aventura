@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.sound.sampled.Clip;
 
@@ -16,7 +17,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import components.NPCType;
-import components.NPCs;
+import components.NPC;
 import items.Item;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
@@ -59,7 +60,7 @@ public class FieldMap extends GameMap
 		rockImage = UtilS.loadImage("\\MapElements\\" + "MapElem9_Rock.png") ;
 	}
 	
-	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPCs> npcs)
+	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs)
 	{
 		super(name, continent, connections, image, music, null, npcs) ;
 		this.level = collectibleLevel ;
@@ -105,7 +106,7 @@ public class FieldMap extends GameMap
 			}
 
 			JSONArray listNPCs = (JSONArray) mapData.get("NPCs") ;
-			List<NPCs> npcs = FieldMap.createQuestNPCs(id, npcTypes) ;
+			List<NPC> npcs = FieldMap.createQuestNPCs(id, npcTypes) ;
 //			List<NPCs> npcs = new ArrayList<>() ;
 //			for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
 //			{
@@ -211,14 +212,14 @@ public class FieldMap extends GameMap
 		calcDigItemChances() ;
 	}
 	
-	public static List<NPCs> createQuestNPCs(int mapID, NPCType[] npcTypes)
+	public static List<NPC> createQuestNPCs(int mapID, NPCType[] npcTypes)
 	{
 		
 		if (npcTypes == null) { System.out.println("Erro ao criar npcs de quest: tipos de npc nulo") ; return null ;}
 		if (npcTypes.length <= 0) { System.out.println("Erro ao criar npcs de quest: sem tipos de npc") ; return null ;}
 		
-		NPCs questExp = new NPCs(npcTypes[12], Game.getScreen().pos(0.27, 0.73)) ;
-		NPCs questItem = new NPCs(npcTypes[13], Game.getScreen().pos(0.87, 0.63)) ;
+		NPC questExp = new NPC(npcTypes[12], Game.getScreen().pos(0.27, 0.73)) ;
+		NPC questItem = new NPC(npcTypes[13], Game.getScreen().pos(0.87, 0.63)) ;
 		switch (mapID)
 		{
 			case 0: return List.of(questExp, questItem) ;
@@ -305,5 +306,14 @@ public class FieldMap extends GameMap
  		creatures.forEach(creature -> creature.getBag().forEach(System.out::println));
  		System.out.println();
  	}
+
+
+	@Override
+	public String toString()
+	{
+		return "FieldMap " + name + " level " + level + " " + "creatures " + creatures.stream().map(creature -> creature.getType().getID()).collect(Collectors.toList()) ;
+	}
+ 	
+
 	 	
 }

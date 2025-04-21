@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import attributes.PersonalAttributes;
 import graphics.Align;
 import graphics.Scale;
@@ -37,7 +40,7 @@ import windows.GameWindow;
 import windows.ShoppingWindow;
 import windows.SpellsTreeWindow;
 
-public class NPCs
+public class NPC
 {
 	private int id ;
 	private NPCType type ;
@@ -57,7 +60,7 @@ public class NPCs
 	private static final Color stdColor = Game.palette[0] ;
 	private static final Color selColor = Game.palette[18] ;
 
-	public NPCs(NPCType type, Point pos)
+	public NPC(NPCType type, Point pos)
 	{
 		
 		this.id = 0 ;
@@ -138,6 +141,7 @@ public class NPCs
 	public Hitbox getHitbox() {return hitbox ;}
 	public List<Collider> getColliders() { return colliders ;}
 	
+	
 	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
 	
 	public static NPCType typeFromName(String name)
@@ -159,6 +163,45 @@ public class NPCs
 		
 		return null ;
 	}
+
+	public static void loadText(JSONObject textData, Object key, Map <TextCategories, String[]> allText, TextCategories catName)
+	{
+		JSONArray npcData = (JSONArray) textData.get(key) ;
+
+		for (int i = 0 ; i <= npcData.size() - 1 ; i += 1)
+		{
+			JSONObject npc = (JSONObject) npcData.get(i) ;
+			String npcName = (String) npc.get("Nome") ;
+			List<String> falas = (List<String>) npc.get("Falas") ;
+			List<JSONArray> opcoes = (List<JSONArray>) npc.get("Opcoes") ;
+			TextCategories textCatName = TextCategories.catFromBRName(catName + "Nome") ;
+			TextCategories textCatFala = TextCategories.catFromBRName(catName + npcName + "Falas") ;
+
+			if (textCatName != null)
+			{
+				allText.put(textCatName, falas.toArray(new String[0])) ;
+			}
+
+			if (textCatFala != null)
+			{
+				allText.put(textCatFala, falas.toArray(new String[0])) ;
+			}
+
+			for (int j = 0 ; j <= opcoes.size() - 1 ; j += 1)
+			{
+				List<String> opcoesMenu = (List<String>) opcoes.get(j) ;
+				TextCategories textCatOption = TextCategories.catFromBRName(catName + npcName + "Opcoes" + j) ;
+
+				if (textCatOption == null)
+				{
+					continue ;
+				}
+
+				allText.put(textCatOption, opcoesMenu.toArray(new String[0])) ;
+			}
+		}
+	}
+	
 	
 	public void resetMenu() { menu = 0 ;}
 	public void incMenu() { if (menu <= numberMenus - 1) menu += 1 ;}
@@ -174,26 +217,26 @@ public class NPCs
 
 		for (GameMap map : allMaps)
 		{
-			List<NPCs> npcsInMap = map.getNPCs() ;
+			List<NPC> npcsInMap = map.getNPCs() ;
 
 			if (npcsInMap == null) { continue ;}
 			if (npcsInMap.isEmpty()) { continue ;}
 			
-			for (NPCs npc : npcsInMap)
+			for (NPC npc : npcsInMap)
 			{
 				npc.setID(i) ;
 				i += 1 ;
 			}
 		}
 	}
-	public static int getQuestNPCid(NPCs questNPC)
+	public static int getQuestNPCid(NPC questNPC)
 	{
 		GameMap[] allMaps = Game.getMaps() ;
 		int questId = 0 ;
 
 		for (GameMap map : allMaps)
 		{
-			List<NPCs> npcsInMap = map.getNPCs() ;
+			List<NPC> npcsInMap = map.getNPCs() ;
 			if (npcsInMap == null) { continue ;}
 			if (npcsInMap.isEmpty()) { continue ;}
 			
@@ -216,11 +259,11 @@ public class NPCs
 		int questNPCid = 0 ;
 		for (GameMap map : allMaps)
 		{
-			List<NPCs> npcsInMap = map.getNPCs() ;
+			List<NPC> npcsInMap = map.getNPCs() ;
 			if (npcsInMap == null) { return null ;}
 			if (npcsInMap.isEmpty()) { return null ;}
 			
-			for (NPCs npc : npcsInMap)
+			for (NPC npc : npcsInMap)
 			{
 				NPCJobs npcJob = npc.getType().getJob() ;
 				if (!npcJob.equals(NPCJobs.questExp) & !npcJob.equals(NPCJobs.questItem)) { continue ;}

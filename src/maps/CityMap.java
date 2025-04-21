@@ -15,7 +15,7 @@ import components.Building;
 import components.BuildingNames;
 import components.BuildingType;
 import components.NPCType;
-import components.NPCs;
+import components.NPC;
 import items.Fab;
 import items.GeneralItem;
 import main.Game;
@@ -37,7 +37,7 @@ public class CityMap extends GameMap
 		}
 	}
 	
-	public CityMap(String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPCs> npcs)
+	public CityMap(String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs)
 	{
 		super(Name, Continent, Connections, image, music, buildings, npcs) ;
 		
@@ -59,7 +59,7 @@ public class CityMap extends GameMap
 	
 
 
-	private static NPCs readNPCfromJson(JSONObject npcJSONObject)
+	private static NPC readNPCfromJson(JSONObject npcJSONObject)
 	{
 
 		JSONObject npc = npcJSONObject ;
@@ -67,18 +67,18 @@ public class CityMap extends GameMap
 		double posX = (Double) ((JSONObject) npc.get("pos")).get("x") ;
 		double posY = (Double) ((JSONObject) npc.get("pos")).get("y") ;
 		Point npcPos = Game.getScreen().getPointWithinBorders(posX, posY) ;
-		NPCType npcType = NPCs.typeFromName(npcName) ;
-		return new NPCs(npcType, npcPos) ;
+		NPCType npcType = NPC.typeFromName(npcName) ;
+		return new NPC(npcType, npcPos) ;
 
 	}
 	
-	private static List<NPCs> loadNPCs(JSONObject map)
+	private static List<NPC> loadNPCs(JSONObject map)
 	{
 		JSONArray listNPCs = (JSONArray) map.get("NPCs") ;
-		List<NPCs> npcs = new ArrayList<>() ;
+		List<NPC> npcs = new ArrayList<>() ;
 		for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
 		{
-			NPCs npc = readNPCfromJson((JSONObject) listNPCs.get(i)) ;
+			NPC npc = readNPCfromJson((JSONObject) listNPCs.get(i)) ;
 			npcs.add(npc) ;
 		}
 		
@@ -146,7 +146,7 @@ public class CityMap extends GameMap
 			Image image = CityMap.images.get(id) ;
 			Clip music = GameMap.musicCities ;
 			List<Building> buildings = loadBuildings(buildingTypes, map) ;
-			List<NPCs> npcs = loadNPCs(map) ;
+			List<NPC> npcs = loadNPCs(map) ;
 
 			cityMaps[id] = new CityMap(name, continent, connections, image, music, buildings, npcs) ;
 			

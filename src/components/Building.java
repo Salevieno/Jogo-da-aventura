@@ -22,7 +22,7 @@ public class Building implements Drawable
 {
 	private BuildingType type ;
 	private Point pos ;
-	private List<NPCs> npcs ;
+	private List<NPC> npcs ;
 	private List<Collider> colliders ;
 	private static final Image signBoard = UtilS.loadImage("\\Buildings\\" + "SignBoard.png") ;
 
@@ -35,7 +35,7 @@ public class Building implements Drawable
 //		addColliders() ;
 	}
 	
-	public Building(BuildingType type, Point pos, List<NPCs> npcs)
+	public Building(BuildingType type, Point pos, List<NPC> npcs)
 	{
 		this(type, pos) ;
 		this.npcs = npcs ;
@@ -62,7 +62,7 @@ public class Building implements Drawable
 	
 	public BuildingType getType() { return type ;}
 	public Point getPos() { return pos ;}
-	public List<NPCs> getNPCs() {return npcs ;}
+	public List<NPC> getNPCs() {return npcs ;}
 	public List<Collider> getColliders() { return colliders ;}
 	
 	public boolean isInside(Point pos) {return Util.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null)), Util.getSize(type.getImage())) ;}
@@ -77,14 +77,14 @@ public class Building implements Drawable
 		npcs = new ArrayList<>() ;
 		switch (type.getName())
 		{
-			case hospital: npcs.add(new NPCs(Game.getNPCTypes()[0], Util.Translate(pos, 50, -20))) ; break ;
+			case hospital: npcs.add(new NPC(Game.getNPCTypes()[0], Util.Translate(pos, 50, -20))) ; break ;
 			case store: 
-				npcs.add(new NPCs(Game.getNPCTypes()[1], Util.Translate(pos, 120, -60))) ;
-				npcs.add(new NPCs(Game.getNPCTypes()[2], Util.Translate(pos, 80, -60))) ;
+				npcs.add(new NPC(Game.getNPCTypes()[1], Util.Translate(pos, 120, -60))) ;
+				npcs.add(new NPC(Game.getNPCTypes()[2], Util.Translate(pos, 80, -60))) ;
 				
 				break ;
-			case bank: npcs.add(new NPCs(Game.getNPCTypes()[4], Util.Translate(pos, 40, -30))) ; break ;
-			case craft: npcs.add(new NPCs(Game.getNPCTypes()[8], Util.Translate(pos, 100, -30))) ; break ;
+			case bank: npcs.add(new NPC(Game.getNPCTypes()[4], Util.Translate(pos, 40, -30))) ; break ;
+			case craft: npcs.add(new NPC(Game.getNPCTypes()[8], Util.Translate(pos, 100, -30))) ; break ;
 			default: break;
 		}
 	}
@@ -93,7 +93,7 @@ public class Building implements Drawable
 	{
 		if (npcs == null) { return ;}
 		
-		for (NPCs npc : npcs)
+		for (NPC npc : npcs)
 		{
 			npc.display(playerHitbox) ;
 		}

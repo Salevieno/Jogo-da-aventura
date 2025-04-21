@@ -20,7 +20,7 @@ import Battle.Battle;
 import components.Building ;
 import components.BuildingType ;
 import components.NPCType ;
-import components.NPCs ;
+import components.NPC ;
 import components.Projectiles ;
 import components.Quest ;
 import components.QuestSkills;
@@ -46,6 +46,7 @@ import items.Recipe ;
 import liveBeings.Buff ;
 import liveBeings.Creature ;
 import liveBeings.CreatureType ;
+import liveBeings.HotKeysBar;
 import liveBeings.Pet ;
 import liveBeings.Player ;
 import liveBeings.Spell ;
@@ -75,8 +76,7 @@ public class Game
 	private static final String[] konamiCode = new String[] { "Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A" } ;
 	private static final Color[] normalPalette ;
 	private static final Color[] konamiPalette ;
-	
-	public static final String JSONPath = ".\\json\\" ;
+
 	public static final String CSVPath = ".\\csv\\" ;
 	public static final String dadosPath = ".\\dados\\" ;
 	public static final String ImagesPath = ".\\images\\" ;
@@ -88,7 +88,7 @@ public class Game
 	private static final boolean cheatMode = false ;
 	public static final boolean displayHitboxes = false;
 
-	private static GameStates state = GameStates.opening ;
+	private static GameStates state = GameStates.loading ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
@@ -200,44 +200,6 @@ public class Game
 	}
 	
 	
-	private static void loadNPCText(JSONObject textData, Object key, TextCategories catName)
-	{
-		JSONArray npcData = (JSONArray) textData.get(key) ;
-
-		for (int i = 0 ; i <= npcData.size() - 1 ; i += 1)
-		{
-			JSONObject npc = (JSONObject) npcData.get(i) ;
-			String npcName = (String) npc.get("Nome") ;
-			List<String> falas = (List<String>) npc.get("Falas") ;
-			List<JSONArray> opcoes = (List<JSONArray>) npc.get("Opcoes") ;
-			TextCategories textCatName = TextCategories.catFromBRName(catName + "Nome") ;
-			TextCategories textCatFala = TextCategories.catFromBRName(catName + npcName + "Falas") ;
-
-			if (textCatName != null)
-			{
-				allText.put(textCatName, falas.toArray(new String[0])) ;
-			}
-
-			if (textCatFala != null)
-			{
-				allText.put(textCatFala, falas.toArray(new String[0])) ;
-			}
-
-			for (int j = 0 ; j <= opcoes.size() - 1 ; j += 1)
-			{
-				List<String> opcoesMenu = (List<String>) opcoes.get(j) ;
-				TextCategories textCatOption = TextCategories.catFromBRName(catName + npcName + "Opcoes" + j) ;
-
-				if (textCatOption == null)
-				{
-					continue ;
-				}
-
-				allText.put(textCatOption, opcoesMenu.toArray(new String[0])) ;
-			}
-		}
-	}
-	
 	private static void loadAllText()
 	{
 
@@ -254,7 +216,7 @@ public class Game
 			
 			if (catName.equals(TextCategories.npcs))
 			{
-				loadNPCText(textData, key, catName) ;
+				NPC.loadText(textData, key, allText, catName) ;
 				continue ;
 			}
 
@@ -454,7 +416,7 @@ public class Game
 				return ;
 				
 			case 10:
-				NPCs.setIDs() ;
+				NPC.setIDs() ;
 
 				player.InitializeSpells() ;
 				player.setMap(Game.getMaps()[player.getJob()]) ;
@@ -473,62 +435,7 @@ public class Game
 				{
 					Game.initializeCheatMode() ;
 				}
-				
-				// TODO incluir criaturas 230 a 234 em algum mapa
-//				Map<Integer, Integer> mapLevelPower = new HashMap<>() ;
-//				for (CreatureType creatureType : CreatureType.all)
-//				{
-//					Creature creature = new Creature(creatureType) ;
-//					System.out.println(creature.getType().getID() + " " + creature.getType().getLevel() + " " + creature.totalPower());
-//					if (mapLevelPower.get(creature.getType().getLevel()) == null)
-//					{
-//						mapLevelPower.put(creature.getType().getLevel(), creature.totalPower()) ;
-//					}
-//					else
-//					{
-//						mapLevelPower.put(creature.getType().getLevel(), mapLevelPower.get(creature.getType().getLevel()) + creature.totalPower()) ;
-//					}
-//				}
-//				
-//				mapLevelPower.forEach((key, value) -> System.out.println(key + " " + (value / 5.0))) ;
-//				for (Item item : Equip.getAll()) { player.getBag().add(item, 20) ;}
-//				for (int i = 0 ; i <= 0 ; i += 1)
-//				{
-////					player.useItem(Equip.getAll()[200 * player.getJob() + i]) ;
-//					System.out.println(player.totalPower()) ;
-//					EvolutionSimulation.playerLevelUpAvr() ;
-//					EvolutionSimulation.autoApplyAttPoints(player) ;
-//					EvolutionSimulation.trainAvr(player) ;
-//				}
-				
-//				int numCat = 12 ;
-//				int maxPontos = 100 ;
-//				
-//				for (int crea = 0 ; crea <= 300 - 1 ; crea += 1)
-//				{
-//					List<Integer> ptsPorCat = new ArrayList<>() ;
-//
-//					for (int i = 0 ; i <= numCat - 1 ; i += 1)
-//					{
-//						ptsPorCat.add(0) ;
-//					}
-//					for (int i = 0 ; i <= (maxPontos * numCat - 1) / 2 ; i += 1)
-//					{
-//						List<Integer> validCats = new ArrayList<>() ;
-//						for (int j = 0 ; j <= ptsPorCat.size() - 1 ; j += 1)
-//						{
-//							if (ptsPorCat.get(j) < maxPontos)
-//							{
-//								validCats.add(j) ;
-//							}
-//						}
-//						int randomCat = validCats.get(Util.randomInt(0, validCats.size() - 1)) ;
-//						ptsPorCat.set(randomCat, ptsPorCat.get(randomCat) + 1) ;
-//					}
-//					System.out.println(ptsPorCat) ;
-////					System.out.println(ptsPorCat.stream().mapToInt(i -> i).sum()) ;
-//				}
-				
+
 				return ;
 			
 			default: return ;
@@ -542,7 +449,7 @@ public class Game
 		if (Sky.dayCounter.finished())
 		{
 			Sky.dayCounter.restart() ;
-			NPCs.renewStocks() ;
+			NPC.renewStocks() ;
 		}
 		player.activateSpellCounters() ;
 
@@ -823,7 +730,8 @@ public class Game
 		}
 	}
 	
-	public void keyAction(KeyEvent event)
+	
+	protected void keyAction(KeyEvent event)
 	{
 		
 		int keyCode = event.getKeyCode() ;
@@ -861,7 +769,7 @@ public class Game
 		player.setCurrentAction(KeyEvent.getKeyText(keyCode)) ;
 	}
 	
-	public void mouseAction(MouseEvent evt)
+	protected void mouseAction(MouseEvent evt)
 	{
 		if (evt.getButton() == 1)
 		{
@@ -878,28 +786,31 @@ public class Game
 		}
 	}
 	
-	public void mousePressedAction(MouseEvent evt)
+	protected void mousePressedAction(MouseEvent evt)
 	{
+		if (!GameStates.running.equals(state)) { return ;}
+
 		if (player.getBag().isOpen())
 		{
 			player.getBag().setItemFetched(player.getBag().itemHovered(GamePanel.getMousePos())) ;
 		}
 	}
 	
-	public void mouseReleaseAction(MouseEvent evt)
+	protected void mouseReleaseAction(MouseEvent evt)
 	{
-		// TODO must work only when game is runnning
-//		int hotKeySlotHovered = HotKeysBar.slotHovered(GamePanel.getMousePos()) ;
-//		
-//		if (-1 < hotKeySlotHovered)
-//		{
-//			player.getHotItems()[hotKeySlotHovered] = player.getBag().getItemFetched() ;
-//		}
+		if (!GameStates.running.equals(state)) { return ;}
+		
+		int hotKeySlotHovered = HotKeysBar.slotHovered(GamePanel.getMousePos()) ;
+		
+		if (-1 < hotKeySlotHovered)
+		{
+			player.getHotItems()[hotKeySlotHovered] = player.getBag().getItemFetched() ;
+		}
 
 		player.getBag().setItemFetched(null) ;
 	}
 	
-	public void mouseWheelAction(MouseWheelEvent evt)
+	protected void mouseWheelAction(MouseWheelEvent evt)
 	{
 		if (evt.getWheelRotation() < 0)
 		{

@@ -81,7 +81,6 @@ public class GamePanel extends JPanel
         Graphics2D graphs2D = (Graphics2D) graphs ;
         graphs2D.scale(Game.getScreen().getScale().x, Game.getScreen().getScale().y);
 		DP.setGraphics(graphs2D) ;
-		Draw.setDP(DP) ;
 		GameTimer.updateAll() ;
 		game.update() ;
 

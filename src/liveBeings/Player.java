@@ -26,7 +26,7 @@ import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import components.Building;
 import components.HitboxRectangle;
-import components.NPCs;
+import components.NPC;
 import components.Quest;
 import components.QuestSkills;
 import components.SpellTypes;
@@ -112,7 +112,7 @@ public class Player extends LiveBeing
 	
 	private Creature closestCreature ;
     private Creature opponent ;
-    private NPCs npcInContact ;
+    private NPC npcInContact ;
     private Collectible currentCollectible ;
     private TreasureChest currentChest ;
     private Item[] hotItems ;
@@ -304,7 +304,7 @@ public class Player extends LiveBeing
 	public BattleSpecialAttributeWithDamage getBlood() {return BA.getBlood() ;}
 	public BattleSpecialAttributeWithDamage getPoison() {return BA.getPoison() ;}
 	public BattleSpecialAttribute getSilence() {return BA.getSilence() ;}
-	public NPCs getNPCInContact() { return npcInContact ;}
+	public NPC getNPCInContact() { return npcInContact ;}
 	public double[] getCollect() {return collectLevel ;}
 	public Integer getStoredGold() {return storedGold ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
@@ -1062,7 +1062,7 @@ public class Player extends LiveBeing
 		
 		if (map.getNPCs() != null)
 		{
-			for (NPCs npc : map.getNPCs())
+			for (NPC npc : map.getNPCs())
 			{
 				if (!hitbox.overlaps(npc.getHitbox())) { npc.resetMenu() ; continue ;}
 				
@@ -1077,7 +1077,7 @@ public class Player extends LiveBeing
 		
 		for (Building building : map.getBuildings())
 		{
-			for (NPCs npc : building.getNPCs())
+			for (NPC npc : building.getNPCs())
 			{				
 				if (!hitbox.overlaps(npc.getHitbox())) { npc.resetMenu() ; continue ;}
 
