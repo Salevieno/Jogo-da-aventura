@@ -2,7 +2,6 @@ package main ;
 
 import java.awt.Color ;
 import java.awt.Dimension ;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -47,7 +46,6 @@ import items.Recipe ;
 import liveBeings.Buff ;
 import liveBeings.Creature ;
 import liveBeings.CreatureType ;
-import liveBeings.HotKeysBar;
 import liveBeings.Pet ;
 import liveBeings.Player ;
 import liveBeings.Spell ;
@@ -90,7 +88,7 @@ public class Game
 	private static final boolean cheatMode = false ;
 	public static final boolean displayHitboxes = false;
 
-	private static GameStates state = GameStates.loading ;
+	private static GameStates state = GameStates.opening ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
@@ -800,42 +798,12 @@ public class Game
 		{
 			case opening:
 				Opening.run(player, GamePanel.getMousePos()) ;
-				if (Opening.isOver())
-				{
-					if (Opening.newGame())
-					{
-						difficultLevel = Opening.getChosenDifficultLevel() ;
-						player = Opening.getChosenPlayer() ;
-					}
-					Game.setState(GameStates.loading) ;
-				}
 				shouldRepaint = true ;
 				break ;
 
 			case loading:
 				LoadingGame.run(player, GamePanel.getMousePos()) ;
 				shouldRepaint = true ;
-//				Opening.displayLoadingScreen(player.getCurrentAction(), GamePanel.getMousePos()) ;
-//				if (!Opening.loadingIsOver())
-//				{
-//					initialize(Opening.getLoadingStep()) ;
-//					Opening.incLoadingStep() ;
-//					if (Opening.loadingIsOver())
-//					{
-//						Opening.activateStartButton() ;
-////						Opening.incLoadingStep() ;
-////						JobBuild.printAll() ;
-//					}
-//				}
-//	
-//				if (Opening.gameStarted())
-//				{
-////			    	player.switchOpenClose(player.getHintsindow()) ;
-//					if (cheatMode) { initializeCheatMode() ;}
-//					player.startCounters() ;
-//					Game.setState(mainState) ;
-////					player.levelUp();
-//				}
 				break ;
 
 			case simulation:
@@ -844,7 +812,6 @@ public class Game
 
 			case running:
 				run() ;
-				// GamePanel.DP.DrawImage(Util.loadImage("./images/test.png"), mousePos, Align.center) ;	
 				break ;
 
 			case playingStopTimeGif:

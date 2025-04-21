@@ -18,6 +18,7 @@ import graphics2.Draw;
 import graphics2.Gif;
 import liveBeings.Player;
 import screen.Screen;
+import utilities.GameStates;
 import utilities.LiveInput;
 import utilities.Util;
 import utilities.UtilS;
@@ -357,6 +358,17 @@ public abstract class Opening
 			displayLoadingSlot(player, mousePos) ;
 		}
 		player.resetAction() ;
+		
+		if (isOver())
+		{
+			if (newGame())
+			{
+				Game.difficultLevel = getChosenDifficultLevel() ;
+				Game.setPlayer(getChosenPlayer()) ;
+			}
+			Game.setState(GameStates.loading) ;
+		}
+
 	}
 	
 	public static boolean newGame() { return newGame ;}
