@@ -160,9 +160,9 @@ public class ForgeWindow extends GameWindow
 		selectedEquip.resetForgeLevel() ;
 		bag.remove(selectedEquip, 1);
 		
-		if (-1 < Game.getSlotLoaded())
+		if (-1 < Game.getSaveSlotInUse())
 		{
-			Game.getPlayer().save(Game.getSlotLoaded()) ;
+			Game.getPlayer().save(Game.getSaveSlotInUse()) ;
 		}
 		displayMessage(5) ; return ; 
 		

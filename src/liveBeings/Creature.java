@@ -249,6 +249,7 @@ public class Creature extends LiveBeing
 		List<Double> modifiedGenes = type.getGenes().getModifiedGenes(playerMove) ;
 
 		int move = Util.randomFromChanceList(modifiedGenes) ;
+//		System.out.println("move = " + move);
 		switch (move)
 		{
 			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack

@@ -65,7 +65,7 @@ public class GeneralItem extends Item
 		};
 	}
 	
-	public static List<Item> throwableItems() { return Arrays.asList(AllGeneralItems).stream().filter(item -> 0 < item.power).collect(Collectors.toList()) ;}
+	public static List<Item> throwableItems() { return Arrays.asList(AllGeneralItems).stream().filter(item -> item.isThrowable()).collect(Collectors.toList()) ;}
 	
 	public boolean isThrowable() { return 0 < power ;}
 	

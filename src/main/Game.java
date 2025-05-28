@@ -100,7 +100,7 @@ public class Game
 	private static Player player ;
 	private static Pet pet ;
 	public static int difficultLevel = 2 ;
-	private static int slotLoaded = -1 ;
+	private static int saveSlotInUse = -1 ;
 
 	private static final Screen screen ;
 	private static Sky sky ;
@@ -143,8 +143,8 @@ public class Game
 	public static Item[] getAllItems() { return allItems ;}
 	public static Spell[] getAllSpells() { return allSpells ;}
 	public static boolean getShouldRepaint() { return shouldRepaint ;}
-	public static int getSlotLoaded() { return slotLoaded ;}
-	public static void setSlotLoaded(int newSlotLoaded) { slotLoaded = newSlotLoaded ;}
+	public static int getSaveSlotInUse() { return saveSlotInUse ;}
+	public static void setSaveSlotInUse(int newSaveSlotInUse) { saveSlotInUse = newSaveSlotInUse ;}
 	
 	
 	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
@@ -693,7 +693,6 @@ public class Game
 
 		Animation.playAll() ;
 		Gif.playAll() ;
-		SpriteAnimation.displayAll(GamePanel.DP) ;
 		
 		SideBar.display(player, pet, GamePanel.getMousePos()) ;
 		
@@ -763,7 +762,7 @@ public class Game
 
 		if (keyCode == KeyEvent.VK_ESCAPE)
 		{
-			MainGame3_4.closeGame() ;
+//			MainGame3_4.closeGame() ;
 		}
 		
 		player.setCurrentAction(KeyEvent.getKeyText(keyCode)) ;

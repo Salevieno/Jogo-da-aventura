@@ -54,7 +54,7 @@ public class NPC
 	
 	private static boolean renewStocks = false ;
 
-	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 10) ;
+	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	public static final Image speakingBubble = UtilS.loadImage("\\NPCs\\" + "SpeechBubble.png") ;
 	public static final Image choicesWindow = UtilS.loadImage("\\NPCs\\" + "ChoicesWindow.png") ;
 	private static final Color stdColor = Game.palette[0] ;
@@ -734,6 +734,7 @@ public class NPC
 		{
 			int slot = selOption + 1 ;
 	        player.save(slot) ;
+	        Game.setSaveSlotInUse(slot) ;
 		}
 		
 	}

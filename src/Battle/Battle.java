@@ -332,7 +332,10 @@ public abstract class Battle
 		AtkResults atkResults = null ;
 		switch (atkType)
 		{
-			case physical: atkResults = calcPhysicalAtk(attacker, receiver) ;
+			case physical:
+				atkResults = calcPhysicalAtk(attacker, receiver) ;
+				break ;
+				
 			case magical:
 			{
 				int spellID = Player.SpellKeys.indexOf(attacker.getCurrentAction()) ;
@@ -340,21 +343,27 @@ public abstract class Battle
 				if (!attacker.canUseSpell(spell)) { System.out.println(attacker.getName() + ": trying to use spell. But no can use, baby!") ;}
 				if (attacker.canUseSpell(spell))
 				{
-					atkResults =  attacker.useSpell(spell, receiver);
+					atkResults = attacker.useSpell(spell, receiver);
+				}
+				else
+				{					
+					atkResults = new AtkResults();
 				}
 				
-				atkResults = new AtkResults();
+				break ;
 			}
 			case physicalMagical:
 			{
 				atkResults = new AtkResults();
+				break ;
 			}
 			case defense:
 			{
 	 			attacker.activateDef() ;
 	 			atkResults = new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
+	 			break ;
 			}
-			default: atkResults = new AtkResults() ;
+			default: atkResults = new AtkResults() ; break ;
 		} ;
 		
 //		AtkResults atkResults = switch (atkType)

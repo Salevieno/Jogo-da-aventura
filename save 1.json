@@ -1,0 +1,133 @@
+{
+    "PA": {
+        "mp": {
+            "maxValue": 120,
+            "multiplier": 1.0,
+            "currentValue": 120
+        },
+        "thirst": {
+            "maxValue": 100,
+            "multiplier": 1.0,
+            "currentValue": 98
+        },
+        "exp": {
+            "maxValue": 10,
+            "multiplier": 1.0,
+            "currentValue": 0
+        },
+        "life": {
+            "maxValue": 60,
+            "multiplier": 1.0,
+            "currentValue": 60
+        },
+        "satiation": {
+            "maxValue": 100,
+            "multiplier": 1.0,
+            "currentValue": 99
+        }
+    },
+    "level": 2,
+    "sex": "M",
+    "name": "",
+    "job": 1,
+    "BA": {
+        "agi": {
+            "baseValue": 2.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "magAtk": {
+            "baseValue": 7.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "poison": {
+            "duration": 0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkBonus": 0.0,
+            "basicDef": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicAtk": 0.0,
+            "basicDefChanceBonus": 0.0,
+            "basicDefBonus": 0.0
+        },
+        "critDef": {
+            "baseValue": 0.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "phyAtk": {
+            "baseValue": 4.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "stun": {
+            "duration": 0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicDefChanceBonus": 0.0
+        },
+        "blood": {
+            "duration": 0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkBonus": 0.0,
+            "basicDef": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicAtk": 0.0,
+            "basicDefChanceBonus": 0.0,
+            "basicDefBonus": 0.0
+        },
+        "critAtk": {
+            "baseValue": 0.1,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "phyDef": {
+            "baseValue": 3.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "magDef": {
+            "baseValue": 7.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "dex": {
+            "baseValue": 8.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "block": {
+            "duration": 0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicDefChanceBonus": 0.0
+        },
+        "silence": {
+            "duration": 0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicDefChanceBonus": 0.0
+        },
+        "status": {
+            "agi": 0,
+            "mp": 0,
+            "magAtk": 0,
+            "poison": 0,
+            "phyAtk": 0,
+            "stun": 0,
+            "blood": 0,
+            "life": 0,
+            "phyDef": 0,
+            "magDef": 0,
+            "dex": 0,
+            "block": 0,
+            "silence": 0
+        }
+    }
+}

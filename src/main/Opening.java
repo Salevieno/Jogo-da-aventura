@@ -55,8 +55,8 @@ public abstract class Opening
 	
 	static
 	{
-		font = new Font(Game.MainFontName, Font.BOLD, 14) ;
-	    smallFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
+		font = new Font(Game.MainFontName, Font.BOLD, 16) ;
+	    smallFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String path = Game.ImagesPath  + "\\Opening\\";
 		backgroundImage = Util.loadImage(path + "Opening.png") ;
 		openingGif = new Gif("Opening", Util.loadImage(path + "Opening.png"), 0.7, false, true) ;
@@ -80,9 +80,9 @@ public abstract class Opening
 		IconFunction portAction = () -> { } ;
 		IconFunction enAction = () -> { } ;
 		IconFunction newGameAction = () -> {} ;
-		IconFunction loadSlot1 = () -> { Game.setPlayer(players[0]) ; Game.setSlotLoaded(0) ; isOver = true ;} ;
-		IconFunction loadSlot2 = () -> { Game.setPlayer(players[1]) ; Game.setSlotLoaded(1) ; isOver = true ;} ;
-		IconFunction loadSlot3 = () -> { Game.setPlayer(players[2]) ; Game.setSlotLoaded(2) ; isOver = true ;} ;
+		IconFunction loadSlot1 = () -> { Game.setPlayer(players[0]) ; Game.setSaveSlotInUse(0) ; isOver = true ;} ;
+		IconFunction loadSlot2 = () -> { Game.setPlayer(players[1]) ; Game.setSaveSlotInUse(1) ; isOver = true ;} ;
+		IconFunction loadSlot3 = () -> { Game.setPlayer(players[2]) ; Game.setSaveSlotInUse(2) ; isOver = true ;} ;
 		IconFunction loadGameAction = () -> {
 			newGame = false ;
 			players[0] = Player.load(1) ;
