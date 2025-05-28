@@ -73,6 +73,12 @@ public class Game
 	// TODO como reviver o pet quando ele/ela morre? :O
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	// TODO make game run by time
+	// TODO redraw art for new screen size
+	// TODO resize fonts
+	// TODO pause screen
+	// TODO add fullscreen to the settings
+	// TODO settings outside the player
+	// TODO animations gif -> spritesheet
 	private static final String[] konamiCode = new String[] { "Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A" } ;
 	private static final Color[] normalPalette ;
 	private static final Color[] konamiPalette ;
