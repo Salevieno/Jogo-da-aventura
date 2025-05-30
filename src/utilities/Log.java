@@ -85,6 +85,12 @@ public abstract class Log
 		System.out.println("Elements: atk = " + atkElem + " | weapon = " + weaponElem + " | armor = " + armorElem + " | def = " + shieldElem + " | super = " + superElem + " | mult = " + elemMult) ;
 	}
 	
+	public static void attributes(LiveBeing being)
+	{
+		System.out.println(being.getName() + " attributes") ;
+		System.out.println("action delay: " + being.getActionCounter().getDuration() + "\n");
+	}
+	
 	public static void atkType(LiveBeing attacker)
 	{
 		System.out.println("attacker action: " + attacker.getCurrentAction());

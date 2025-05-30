@@ -682,7 +682,7 @@ public class Game
 		}
 		player.getMap().getMapElem().forEach(mapElem -> drawables.add(mapElem));
 		drawables.sort(Comparator.comparingInt(d -> d.getPos().y));
-		drawables.forEach(drawable -> drawable.display()) ;
+		drawables.forEach(Drawable::display) ;
 		
 		if (player.isTalkingToNPC())
 		{

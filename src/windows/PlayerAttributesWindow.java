@@ -119,133 +119,149 @@ public class PlayerAttributesWindow extends AttributesWindow
 		}
 	}
 	
-	public void displayTab0(Point mousePos)
+	private void displayEquips(Point leftSlotCenter, Point mousePos, double angle, Color textColor)
 	{
-		
-		Color[] colorPalette = Game.palette ;		
-		Font font = subTitleFont ;
-		Font smallFont = new Font(Game.MainFontName, Font.BOLD, 9) ;
-		double angle = Draw.stdAngle ;
-
-		String[] classesText = Game.allText.get(TextCategories.classes) ;
-		String[] proClassesText = Game.allText.get(TextCategories.proclasses) ;
-		String[] attText = Game.allText.get(TextCategories.attributes) ;
-		String[] equipsText = Game.allText.get(TextCategories.equipments) ;
-		Color textColor = colorPalette[0] ;
-		
-		Image userImage = player.getMovingAni().idleGif ;
-		Point userPos = Util.Translate(windowPos, size.width / 2, 120) ;
-		GamePanel.DP.drawImage(userImage, userPos, Align.center) ;
-
-		Point levelPos = Util.Translate(windowPos, size.width / 2, 38) ;	
-		GamePanel.DP.drawText(levelPos, Align.center, angle, attText[0] + ": " + player.getLevel(), font, colorPalette[7]) ;
-		
-		String jobText = player.getProJob() == 0 ? classesText[player.getJob()] : proClassesText[2 * player.getJob() + player.getProJob() - 1] ;
-		Point jobTextPos = Util.Translate(windowPos, size.width / 2, 56) ;
-		GamePanel.DP.drawText(jobTextPos, Align.center, angle, jobText, font, colorPalette[0]) ;
-		
-		
-		//	Equips
 		Equip[] equips = player.getEquips() ;
-		if (equips != null)
+
+		if (equips == null) { return ;}
+
+		Font smallFont = new Font(Game.MainFontName, Font.BOLD, 9) ;
+		String[] equipsText = Game.allText.get(TextCategories.equipments) ;
+		int eqSlotSize = 51 ;
+		Point[] eqSlotCenter = new Point[] {
+				Util.Translate(windowPos, leftSlotCenter.x, leftSlotCenter.y),
+				Util.Translate(leftSlotCenter, 259, 63),
+				Util.Translate(leftSlotCenter, 259, 135),
+				Util.Translate(leftSlotCenter, 165, 80)} ;
+		for (int eq = 0 ; eq <= equips.length - 1 ; eq += 1)
 		{
-			int eqSlotSize = 51 ;
-			Point[] eqSlotCenter = new Point[] {
-					Util.Translate(windowPos, 70, 110),
-					Util.Translate(windowPos, 259, 63),
-					Util.Translate(windowPos, 259, 135),
-					Util.Translate(windowPos, 165, 80)} ;
-			for (int eq = 0 ; eq <= equips.length - 1 ; eq += 1)
+			if (equips[eq] == null) { continue ;}
+			
+			Equip equip = equips[eq] ;
+			Point bottomTextPos = Util.Translate(eqSlotCenter[eq], -eqSlotSize / 2, eqSlotSize / 2 + 13) ;
+
+			GamePanel.DP.drawImage(equip.fullSizeImage(), eqSlotCenter[eq], Align.center) ;
+			Draw.textUntil(bottomTextPos, Align.bottomLeft, angle, equip.getName(), smallFont, textColor, 14, mousePos) ;
+
+			Point upperTextPos = Util.Translate(eqSlotCenter[eq], 0, -eqSlotSize / 2 - 3) ;
+			if (0 < equip.getForgeLevel())
 			{
-				if (equips[eq] == null) { continue ;}
-				
-				Equip equip = equips[eq] ;
-				Point bottomTextPos = Util.Translate(eqSlotCenter[eq], -eqSlotSize / 2, eqSlotSize / 2 + 13) ;
-
-				GamePanel.DP.drawImage(equip.fullSizeImage(), eqSlotCenter[eq], Align.center) ;
-				Draw.textUntil(bottomTextPos, Align.bottomLeft, angle, equip.getName(), smallFont, textColor, 14, mousePos) ;
-
-				Point upperTextPos = Util.Translate(eqSlotCenter[eq], 0, -eqSlotSize / 2 - 3) ;
-				if (0 < equip.getForgeLevel())
-				{
-					GamePanel.DP.drawText(upperTextPos, Align.bottomCenter, angle, equipsText[eq] + " + " + equip.getForgeLevel(), smallFont, textColor) ;					
-				}
-				
-				Elements eqElem = player.getElem()[eq + 1] ;
-
-				if (eqElem == null || eq == 3) { continue ;}
-				
-				Image elemImage = eqElem.image ;
-				Point elemPos = Util.Translate(eqSlotCenter[eq], eqSlotSize / 2 - 12, eqSlotSize / 2 - 12) ;
-
-				GamePanel.DP.drawImage(elemImage, elemPos, angle, new Scale(0.5, 0.5), Align.center) ;
+				String equipText = equipsText[eq] + " + " + equip.getForgeLevel() ;
+				GamePanel.DP.drawText(upperTextPos, Align.bottomCenter, angle, equipText, smallFont, textColor) ;					
 			}
+			
+			Elements eqElem = player.getElem()[eq + 1] ;
+
+			if (eqElem == null || eq == 3) { continue ;}
+			
+			Image elemImage = eqElem.image ;
+			Point elemPos = Util.Translate(eqSlotCenter[eq], eqSlotSize / 2 - 12, eqSlotSize / 2 - 12) ;
+
+			GamePanel.DP.drawImage(elemImage, elemPos, angle, new Scale(0.5, 0.5), Align.center) ;
 		}
-		
+
 		// Arrow
 		if (player.getEquippedArrow() != null)
 		{
 			GamePanel.DP.drawImage(player.getEquippedArrow().fullSizeImage(), Util.Translate(windowPos, 100, 133), Align.bottomCenter) ;
 		}
+	}
+	
+	private void displayAttributes(Point topLeftPos, double angle, Color textColor)
+	{
+		Font font = titleFont ;
+		String[] attText = Game.allText.get(TextCategories.attributes) ;
+		Point lifePos = topLeftPos ;
+		Point mpPos = Util.Translate(topLeftPos, 0, 25) ;
+		int attOffset = 4 ;
+		Point battleAttTopLeft = Util.Translate(topLeftPos, 22 + attOffset, 300) ;
+		int battleAttSy = 22 ;
+		Point collectTopLeft = Util.Translate(battleAttTopLeft, 300 + attOffset, 3 * battleAttSy) ;
+		int collecSy = 22 ;
+		Point goldPos = Util.Translate(collectTopLeft, 0, 75) ;
+
+		String lifeText = attText[1] + ": " + Util.Round(player.getPA().getLife().getTotalValue(), 1) ;
+		String mpText = attText[2] + ": " + Util.Round(player.getPA().getMp().getTotalValue(), 1) ;
+		GamePanel.DP.drawText(lifePos, Align.centerLeft, angle, lifeText, font, Game.palette[7]) ;
+		GamePanel.DP.drawText(mpPos, Align.centerLeft, angle, mpText, font, Game.palette[20]) ;
+		
+		BasicBattleAttribute[] attributes = player.getBA().basicAttributes() ;
+		for (int i = 0; i <= attributes.length - 3; i += 1)
+		{
+			Point attValuePos = Util.Translate(battleAttTopLeft, 0, i * battleAttSy) ;
+			Point attImagePos = Util.Translate(battleAttTopLeft, -13, i * battleAttSy) ;
+			GamePanel.DP.drawImage(attIcons[i], attImagePos, Scale.unit, Align.center) ;
+			GamePanel.DP.drawText(attValuePos, Align.centerLeft, angle, attributes[i].text(), font, textColor) ;
+		}
+		Point critPos = Util.Translate(battleAttTopLeft, 0, 9 + (attributes.length - 2) * battleAttSy) ;
+		Point critImagePos = Util.Translate(battleAttTopLeft, -13, (attributes.length - 2) * battleAttSy) ;
+		String critValue = Util.Round(100 * player.getBA().TotalCritAtkChance(), 1) + "%" ;
+		GamePanel.DP.drawImage(critIcon, critImagePos, Scale.unit, Align.center) ;
+		GamePanel.DP.drawText(critPos, Align.centerLeft, angle, critValue, font, Game.palette[6]) ;
+
+		
+		//	Collecting
+		GamePanel.DP.drawImage(collectIcons[0], Util.Translate(collectTopLeft, -13, 0), Scale.unit, Align.center) ;
+		GamePanel.DP.drawImage(collectIcons[1], Util.Translate(collectTopLeft, -13, collecSy), Scale.unit, Align.center) ;
+		GamePanel.DP.drawImage(collectIcons[2], Util.Translate(collectTopLeft, -13, 2 * collecSy), Scale.unit, Align.center) ;
+		
+		Point herbPos = collectTopLeft ;
+		Point woodPos = Util.Translate(collectTopLeft, 0, collecSy) ;
+		Point metalPos = Util.Translate(collectTopLeft, 0, 2 * collecSy) ;
+		String herbValue = String.valueOf(Util.Round(player.getCollect()[0], 1)) ;
+		String woodValue = String.valueOf(Util.Round(player.getCollect()[1], 1)) ;
+		String metalValue = String.valueOf(Util.Round(player.getCollect()[2], 1)) ;
+		GamePanel.DP.drawText(herbPos, Align.centerLeft, angle, herbValue, font, Game.palette[4]) ;
+		GamePanel.DP.drawText(woodPos, Align.centerLeft, angle, woodValue, font, Game.palette[8]) ;
+		GamePanel.DP.drawText(metalPos, Align.centerLeft, angle, metalValue, font, Game.palette[1]) ;
+
+		//	Gold
+		Point coinPos = Util.Translate(goldPos, -13, 0) ;
+		String goldValue = String.valueOf(Util.Round(player.getBag().getGold(), 1)) ;
+		GamePanel.DP.drawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
+		GamePanel.DP.drawText(goldPos, Align.centerLeft, angle, goldValue, font, Game.palette[13]) ;	
+	}
+	
+	public void displayTab0(Point mousePos)
+	{
+		
+		Color[] colorPalette = Game.palette ;
+		Font font = subTitleFont ;
+		double angle = Draw.stdAngle ;
+
+		String[] classesText = Game.allText.get(TextCategories.classes) ;
+		String[] proClassesText = Game.allText.get(TextCategories.proclasses) ;
+		Color textColor = colorPalette[0] ;
+		
+		Image userImage = player.getMovingAni().idleGif ;
+		Point userPos = Util.Translate(windowPos, size.width / 2, 120) ;
+		Point equipsLeftSlotCenter = new Point(70, 110) ;
+		Point superElemPos = Util.Translate(userPos, 0, 35) ;
+		Point attTopLeftPos = Util.Translate(windowPos, 37, 39) ;
+
+		GamePanel.DP.drawImage(userImage, userPos, Align.center) ;
+
+		Point levelPos = Util.Translate(windowPos, size.width / 2, 38) ;	
+		GamePanel.DP.drawText(levelPos, Align.center, angle, "Level: " + player.getLevel(), font, colorPalette[7]) ;
+		
+		String jobText = player.getProJob() == 0 ? classesText[player.getJob()] : proClassesText[2 * player.getJob() + player.getProJob() - 1] ;
+		Point jobTextPos = Util.Translate(windowPos, size.width / 2, 56) ;
+		GamePanel.DP.drawText(jobTextPos, Align.center, angle, jobText, font, colorPalette[0]) ;
+		
+		displayEquips(equipsLeftSlotCenter, mousePos, angle, textColor) ;		
 		
 		// super element
 		if (player.hasSuperElement())
 		{
-			Point superElemPos = Util.Translate(userPos, 0, 35) ;
 			Image superElemImage = player.getElem()[4].image ;
 			GamePanel.DP.drawImage(superElemImage, superElemPos, angle, new Scale(0.3, 0.3), Align.center) ;
 		}
 		
-		
-		// attributes
-		Point lifePos = Util.Translate(windowPos, 22, 39) ;
-		Point mpPos = Util.Translate(windowPos, 22, 58) ;
-		String lifeText = attText[1] + ": " + Util.Round(player.getPA().getLife().getTotalValue(), 1) ;
-		String mpText = attText[2] + ": " + Util.Round(player.getPA().getMp().getTotalValue(), 1) ;
-		GamePanel.DP.drawText(lifePos, Align.centerLeft, angle, lifeText, font, colorPalette[7]) ;
-		GamePanel.DP.drawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[20]) ;
-		
-		BasicBattleAttribute[] attributes = player.getBA().basicAttributes() ;
-		int attOffset = 4 ;
-		Point initialAttPos = Util.Translate(windowPos, 44 + attOffset, 191) ;
-		for (int i = 0; i <= attributes.length - 3; i += 1)
-		{
-			Point attValuePos = Util.Translate(initialAttPos, 0, i * 22) ;
-			Point attImagePos = Util.Translate(windowPos, 35, 191 + i * 22) ;
-			GamePanel.DP.drawImage(attIcons[i], attImagePos, Scale.unit, Align.center) ;
-			GamePanel.DP.drawText(attValuePos, Align.centerLeft, angle, attributes[i].text(), font, textColor) ;
-		}
-		Point critPos = Util.Translate(initialAttPos, 0, 9 + (attributes.length - 2) * 22) ;
-		String critValue = Util.Round(100 * player.getBA().TotalCritAtkChance(), 1) + "%" ;
-		GamePanel.DP.drawImage(critIcon, Util.Translate(windowPos, 35, 333), Scale.unit, Align.center) ;
-		GamePanel.DP.drawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
+		displayAttributes(attTopLeftPos, angle, textColor) ;
 
 		// Power bar
-		Point powerPos = Util.Translate(windowPos, 260, 310) ;
+		Point powerPos = Util.Translate(windowPos, 410, 460) ;
 		player.displayPowerBar(powerPos) ;
-		
-		//	Collecting
-		GamePanel.DP.drawImage(collectIcons[0], Util.Translate(windowPos, 188, 257), Scale.unit, Align.center) ;
-		GamePanel.DP.drawImage(collectIcons[1], Util.Translate(windowPos, 188, 279), Scale.unit, Align.center) ;
-		GamePanel.DP.drawImage(collectIcons[2], Util.Translate(windowPos, 188, 301), Scale.unit, Align.center) ;
-		
-		Point herbPos = Util.Translate(windowPos, 197 + attOffset, 257) ;
-		Point woodPos = Util.Translate(windowPos, 197 + attOffset, 279) ;
-		Point metalPos = Util.Translate(windowPos, 197 + attOffset, 301) ;
-		String herbValue = String.valueOf(Util.Round(player.getCollect()[0], 1)) ;
-		String woodValue = String.valueOf(Util.Round(player.getCollect()[1], 1)) ;
-		String metalValue = String.valueOf(Util.Round(player.getCollect()[2], 1)) ;
-		GamePanel.DP.drawText(herbPos, Align.centerLeft, angle, herbValue, font, colorPalette[4]) ;
-		GamePanel.DP.drawText(woodPos, Align.centerLeft, angle, woodValue, font, colorPalette[8]) ;
-		GamePanel.DP.drawText(metalPos, Align.centerLeft, angle, metalValue, font, colorPalette[1]) ;
-
-
-		//	Gold
-		Point coinPos = Util.Translate(windowPos, 185, 332) ;
-		Point goldPos = Util.Translate(windowPos, 197 + attOffset, 332) ;
-		String goldValue = String.valueOf(Util.Round(player.getBag().getGold(), 1)) ;
-		GamePanel.DP.drawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
-		GamePanel.DP.drawText(goldPos, Align.centerLeft, angle, goldValue, font, Game.palette[13]) ;
 		
 		incAttButtons.values().forEach(button -> button.display(angle, false, mousePos)) ;
 	}
@@ -364,12 +380,12 @@ public class PlayerAttributesWindow extends AttributesWindow
 		// Main window
 		GamePanel.DP.drawImage(windowImage, windowPos, Align.topLeft) ;
 
-		Point tabsTextPos = Util.Translate(windowPos, 7, 6 + 22) ;
+		Point tabsTextPos = Util.Translate(windowPos, 18, 6 + 30) ;
 		for (int i = 0 ; i <= 3 - 1 ; i += 1)
 		{
 			Color tabTextColor = i == tab ? Game.palette[18] : Game.palette[0] ;
-			GamePanel.DP.drawText(tabsTextPos, Align.center, 90, tabsText[i], stdFont, tabTextColor) ;
-			tabsTextPos.y += 45 ;
+			GamePanel.DP.drawText(tabsTextPos, Align.center, 90, tabsText[i], titleFont, tabTextColor) ;
+			tabsTextPos.y += 90 ;
 		}
 			
 		switch (tab)

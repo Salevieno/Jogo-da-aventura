@@ -61,6 +61,7 @@ import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
 import utilities.GameTimer;
+import utilities.Log;
 import utilities.Util;
 import utilities.UtilS;
 import windows.BagWindow;
@@ -237,6 +238,7 @@ public class Player extends LiveBeing
 		settings = new SettingsWindow(false, true, false, 1, 1) ;
 		hotItems = new Item[3] ;
 		
+		Log.attributes(this) ;
 	}
 	
 
