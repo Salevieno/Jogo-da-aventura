@@ -62,7 +62,8 @@ public class PetAttributesWindow extends AttributesWindow
 			Point slotCenter = Util.Translate(windowPos, 222, 72) ;
 			Dimension slotSize = new Dimension(51, 51) ;
 			GamePanel.DP.drawImage(Equip.ArmorImage, slotCenter, Align.center) ;
-			Elements eqElem = pet.getElem()[0] ;
+			// TODO pegar elemento do equip
+			Elements eqElem = pet.getAtkElem() ;
 			if (eqElem != null)
 			{
 
@@ -73,12 +74,12 @@ public class PetAttributesWindow extends AttributesWindow
 		
 		
 		// super element
-		if (pet.hasSuperElement())
-		{
-			Point superElemPos = Util.Translate(userPos, 0, 35) ;
-			Image superElemImage = pet.getElem()[4].image ;
-			GamePanel.DP.drawImage(superElemImage, superElemPos, angle, new Scale(0.3, 0.3), Align.center) ;
-		}
+//		if (pet.hasSuperElement())
+//		{
+//			Point superElemPos = Util.Translate(userPos, 0, 35) ;
+//			Image superElemImage = pet.getElem()[4].image ;
+//			GamePanel.DP.drawImage(superElemImage, superElemPos, angle, new Scale(0.3, 0.3), Align.center) ;
+//		}
 		
 		
 		// attributes

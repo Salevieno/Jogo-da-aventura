@@ -62,7 +62,7 @@ public class Pet extends LiveBeing
 		size = new Dimension (movingAni.idleGif.getWidth(null), movingAni.idleGif.getHeight(null)) ;	
 		range = Integer.parseInt(InitialAtts.get(Job)[4]) ;
 		step = Integer.parseInt(InitialAtts.get(Job)[32]) ;
-		elem = new Elements[] {Elements.neutral, null, null, null, null} ;
+		atkElem = Elements.neutral ;
 		actionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[33])) ;
 		satiationCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[34])) ;
 		mpCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[35])) ;
@@ -218,7 +218,7 @@ public class Pet extends LiveBeing
 		if (state.equals(LiveBeingStates.moving))
 		{
 			stepCounter.start() ;
-			move(player.getPos(), player.getMap(), player.getOpponent(), player.getElem()[4]) ;
+			move(player.getPos(), player.getMap(), player.getOpponent(), player.getSuperElem()) ;
 			return ;
 		}
 		
@@ -226,7 +226,7 @@ public class Pet extends LiveBeing
 		{
 			if (!player.getOpponent().isInRange(pos))
 			{
-				move(player.getPos(), player.getMap(), player.getOpponent(), player.getElem()[4]) ;
+				move(player.getPos(), player.getMap(), player.getOpponent(), player.getSuperElem()) ;
 				return ;
 			}
 			fight() ;
@@ -313,7 +313,8 @@ public class Pet extends LiveBeing
 		double BlockDef = receiver.getBA().getBlock().TotalDefChance() ;
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
-		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[1], elem[4]} ;
+		/// TODO weapon elem, second in the array below, should come from equip.getelem()
+		Elements[] AtkElem = new Elements[] {spell.getElem(), null, null} ;
 		Elements[] DefElem = receiver.defElems() ;
 		
 		BasicAtk = MagAtk ;
@@ -352,6 +353,9 @@ public class Pet extends LiveBeing
 		Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, level});
 	}
 	
+	public Elements[] atkElems() { return new Elements[] {atkElem, atkElem} ;}
+	public Elements[] defElems() { return new Elements[] {Elements.neutral, Elements.neutral} ;} // TODO pegar elem do equip
+
 	public double[] calcAttributesIncrease()
 	{
 		double[] increase = new double[attInc.getIncrement().basic().length + 1] ;

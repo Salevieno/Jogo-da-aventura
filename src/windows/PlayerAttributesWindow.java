@@ -68,7 +68,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 			GameButton newAttButton = new GameButton(pos, Align.center, plusSign, selectedPlusSign, method) ;
 			newAttButton.deactivate() ;
 			incAttButtons.put(att, newAttButton) ;
-			pos = Util.Translate(pos, 0, 22) ;
+			pos.y += 22 ;
 		}
 		
 	}
@@ -76,7 +76,11 @@ public class PlayerAttributesWindow extends AttributesWindow
 	public void updateAttIncButtons(Player player)
 	{
 
-		if (player.getAttPoints() <= 0) { incAttButtons.values().forEach(button -> button.deactivate()) ; return ;}
+		if (player.getAttPoints() <= 0)
+		{
+			incAttButtons.values().forEach(button -> button.deactivate()) ;
+			return ;
+		}
 		
 		incAttButtons.values().forEach(button -> button.activate()) ;
 		
@@ -149,8 +153,8 @@ public class PlayerAttributesWindow extends AttributesWindow
 				String equipText = equipsText[eq] + " + " + equip.getForgeLevel() ;
 				GamePanel.DP.drawText(upperTextPos, Align.bottomCenter, angle, equipText, smallFont, textColor) ;					
 			}
-			
-			Elements eqElem = player.getElem()[eq + 1] ;
+
+			Elements eqElem = player.getEquips()[eq + 1].getElem() ;
 
 			if (eqElem == null || eq == 3) { continue ;}
 			
@@ -208,9 +212,9 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Point herbPos = collectTopLeft ;
 		Point woodPos = Util.Translate(collectTopLeft, 0, collecSy) ;
 		Point metalPos = Util.Translate(collectTopLeft, 0, 2 * collecSy) ;
-		String herbValue = String.valueOf(Util.Round(player.getCollect()[0], 1)) ;
-		String woodValue = String.valueOf(Util.Round(player.getCollect()[1], 1)) ;
-		String metalValue = String.valueOf(Util.Round(player.getCollect()[2], 1)) ;
+		String herbValue = String.valueOf(Util.Round(player.getCollect().get(0), 1)) ;
+		String woodValue = String.valueOf(Util.Round(player.getCollect().get(1), 1)) ;
+		String metalValue = String.valueOf(Util.Round(player.getCollect().get(2), 1)) ;
 		GamePanel.DP.drawText(herbPos, Align.centerLeft, angle, herbValue, font, Game.palette[4]) ;
 		GamePanel.DP.drawText(woodPos, Align.centerLeft, angle, woodValue, font, Game.palette[8]) ;
 		GamePanel.DP.drawText(metalPos, Align.centerLeft, angle, metalValue, font, Game.palette[1]) ;
@@ -253,7 +257,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		// super element
 		if (player.hasSuperElement())
 		{
-			Image superElemImage = player.getElem()[4].image ;
+			Image superElemImage = player.getSuperElem().image ;
 			GamePanel.DP.drawImage(superElemImage, superElemPos, angle, new Scale(0.3, 0.3), Align.center) ;
 		}
 		

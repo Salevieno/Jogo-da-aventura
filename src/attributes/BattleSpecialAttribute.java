@@ -95,7 +95,7 @@ public class BattleSpecialAttribute
 		double basicDefChance = (double) (Double) jsonData.get("basicDefChance") ;
 		double basicAtkChanceBonus = (double) (Double) jsonData.get("basicAtkChanceBonus") ;
 		double basicDefChanceBonus = (double) (Double) jsonData.get("basicDefChanceBonus") ;
-		int duration = (int) (long) jsonData.get("duration") ;
+		double duration = (double) (Double) jsonData.get("duration") ;
 		return new BattleSpecialAttribute(basicAtkChance, basicDefChance, basicAtkChanceBonus, basicDefChanceBonus, duration) ;
 		
 	}

@@ -34,7 +34,11 @@ public class CreatureType
 	protected Dimension size;
 	protected int range;
 	protected int step;
-	protected Elements[] elem; // 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
+	protected Elements atkElem ;
+	protected Elements weaponElem ;
+	protected Elements armorElem ;
+	protected Elements shieldElem ;
+	protected Elements superElem ;
 	protected double mpDuration; // counts the mp reduction
 	protected double satiationDuration; // counts the satiation reduction
 	protected double numberSteps; // counts the steps
@@ -88,7 +92,11 @@ public class CreatureType
 		this.size = size;
 		this.range = range;
 		this.step = step;
-		this.elem = elem;
+		this.atkElem = elem[0];
+		this.weaponElem = elem[0];
+		this.armorElem = elem[0];
+		this.shieldElem = elem[0];
+		this.superElem = elem[0];
 		this.mpDuration = mpDuration;
 		this.satiationDuration = satiationDuration;
 		this.numberSteps = numberSteps;

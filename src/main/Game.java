@@ -19,8 +19,8 @@ import org.json.simple.JSONObject ;
 import Battle.Battle;
 import components.Building ;
 import components.BuildingType ;
-import components.NPCType ;
 import components.NPC ;
+import components.NPCType ;
 import components.Projectiles ;
 import components.Quest ;
 import components.QuestSkills;
@@ -94,7 +94,7 @@ public class Game
 	private static final boolean cheatMode = false ;
 	public static final boolean displayHitboxes = false;
 
-	private static GameStates state = GameStates.loading ;
+	private static GameStates state = GameStates.opening ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
@@ -809,7 +809,7 @@ public class Game
 		
 		if (-1 < hotKeySlotHovered)
 		{
-			player.getHotItems()[hotKeySlotHovered] = player.getBag().getItemFetched() ;
+			player.getHotItems().set(hotKeySlotHovered, player.getBag().getItemFetched()) ;
 		}
 
 		player.getBag().setItemFetched(null) ;

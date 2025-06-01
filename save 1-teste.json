@@ -13,7 +13,7 @@
         "exp": {
             "maxValue": 10,
             "multiplier": 1.0,
-            "currentValue": 0
+            "currentValue": 100
         },
         "life": {
             "maxValue": 60,
@@ -28,8 +28,11 @@
     },
     "level": 2,
     "sex": "M",
-    "name": "",
+    "name": "123",
     "job": 1,
+	"range": 160,
+	"step": 2,
+	"proJob": 0,
     "BA": {
         "agi": {
             "baseValue": 2.0,
@@ -42,7 +45,7 @@
             "train": 0.0
         },
         "poison": {
-            "duration": 0,
+            "duration": 0.0,
             "basicDefChance": 0.0,
             "basicAtkChance": 0.0,
             "basicAtkBonus": 0.0,
@@ -63,14 +66,14 @@
             "train": 0.0
         },
         "stun": {
-            "duration": 0,
+            "duration": 0.0,
             "basicDefChance": 0.0,
             "basicAtkChance": 0.0,
             "basicAtkChanceBonus": 0.0,
             "basicDefChanceBonus": 0.0
         },
         "blood": {
-            "duration": 0,
+            "duration": 0.0,
             "basicDefChance": 0.0,
             "basicAtkChance": 0.0,
             "basicAtkBonus": 0.0,
@@ -101,19 +104,24 @@
             "train": 0.0
         },
         "block": {
-            "duration": 0,
+            "duration": 0.0,
             "basicDefChance": 0.0,
             "basicAtkChance": 0.0,
             "basicAtkChanceBonus": 0.0,
             "basicDefChanceBonus": 0.0
         },
         "silence": {
-            "duration": 0,
+            "duration": 0.0,
             "basicDefChance": 0.0,
             "basicAtkChance": 0.0,
             "basicAtkChanceBonus": 0.0,
             "basicDefChanceBonus": 0.0
         },
+		"atkSpeed": {
+            "baseValue": 1.0,
+            "bonus": 0.0,
+            "train": 0.0
+	    },
         "status": {
             "agi": 0,
             "mp": 0,

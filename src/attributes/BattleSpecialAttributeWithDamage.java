@@ -104,7 +104,7 @@ public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
 		double basicAtkBonus = (double) (Double) jsonData.get("basicAtkBonus") ;
 		double basicDefChanceBonus = (double) (Double) jsonData.get("basicDefChanceBonus") ;
 		double basicDefBonus = (double) (Double) jsonData.get("basicDefBonus") ;
-		int duration = (int) (long) jsonData.get("duration") ;
+		double duration = (double) (Double) jsonData.get("duration") ;
 		return new BattleSpecialAttributeWithDamage(basicAtkChance, basicAtk,
 				basicDefChance, basicDef,
 				basicAtkChanceBonus, basicAtkBonus,

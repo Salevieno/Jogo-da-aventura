@@ -1,0 +1,207 @@
+{
+    "digBonus": 0.0,
+    "level": 1,
+    "spellPoints": 0,
+    "stepCounter": {
+        "duration": 0.25,
+        "initialTime": 3154.1671721000002,
+        "prevCounter": 0.0,
+        "active": false,
+        "timeElapsedAtStop": 0.0,
+        "counter": 0.0
+    },
+    "sex": "M",
+    "proJob": 0,
+    "combo": [
+        "MouseRightClick",
+        "E",
+        "Enter",
+        "S",
+        "Enter"
+    ],
+    "range": 140,
+    "mpCounter": {
+        "duration": 0.0625,
+        "initialTime": 3154.1829966,
+        "prevCounter": 0.014640500000041357,
+        "active": true,
+        "timeElapsedAtStop": 0.0,
+        "counter": 0.02370629999995799
+    },
+    "actionCounter": {
+        "duration": 0.0375,
+        "initialTime": 3154.2072808000003,
+        "prevCounter": 0.0,
+        "active": true,
+        "timeElapsedAtStop": 0.0,
+        "counter": 0.0
+    },
+    "PA": {
+        "mp": {
+            "maxValue": 100,
+            "multiplier": 1.0,
+            "currentValue": 100
+        },
+        "thirst": {
+            "maxValue": 100,
+            "multiplier": 1.0,
+            "currentValue": 99
+        },
+        "exp": {
+            "maxValue": 5,
+            "multiplier": 1.0,
+            "currentValue": 0
+        },
+        "life": {
+            "maxValue": 50,
+            "multiplier": 1.0,
+            "currentValue": 50
+        },
+        "satiation": {
+            "maxValue": 100,
+            "multiplier": 1.0,
+            "currentValue": 100
+        }
+    },
+    "drunk": {
+        "duration": 20.0,
+        "initialTime": 0.0,
+        "prevCounter": 0.0,
+        "active": false,
+        "timeElapsedAtStop": 0.0,
+        "counter": 0.0
+    },
+    "isRiding": false,
+    "hpCounter": {
+        "duration": 20.0,
+        "initialTime": 0.0,
+        "prevCounter": 0.0,
+        "active": false,
+        "timeElapsedAtStop": 0.0,
+        "counter": 0.0
+    },
+    "name": "",
+    "battleActionCounter": {
+        "duration": 1.0,
+        "initialTime": 0.0,
+        "prevCounter": 0.0,
+        "active": false,
+        "timeElapsedAtStop": 0.0,
+        "counter": 0.0
+    },
+    "step": 1,
+    "job": 1,
+    "collectLevel": [
+        0.0,
+        0.0,
+        0.0
+    ],
+    "satiationCounter": {
+        "duration": 5.0,
+        "initialTime": 3151.1201465000004,
+        "prevCounter": 3.0774634999997943,
+        "active": true,
+        "timeElapsedAtStop": 0.0,
+        "counter": 3.086538799999744
+    },
+    "attPoints": 0,
+    "thirstCounter": {
+        "duration": 2.5,
+        "initialTime": 3153.6328199000004,
+        "prevCounter": 0.5639007999998285,
+        "active": true,
+        "timeElapsedAtStop": 0.0,
+        "counter": 0.573246499999641
+    },
+    "BA": {
+        "agi": {
+            "baseValue": 1.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "magAtk": {
+            "baseValue": 5.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "poison": {
+            "duration": 0.0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkBonus": 0.0,
+            "basicDef": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicAtk": 0.0,
+            "basicDefChanceBonus": 0.0,
+            "basicDefBonus": 0.0
+        },
+        "critDef": {
+            "baseValue": 0.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "phyAtk": {
+            "baseValue": 2.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "stun": {
+            "duration": 0.0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicDefChanceBonus": 0.0
+        },
+        "blood": {
+            "duration": 0.0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkBonus": 0.0,
+            "basicDef": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicAtk": 0.0,
+            "basicDefChanceBonus": 0.0,
+            "basicDefBonus": 0.0
+        },
+        "atkSpeed": {
+            "baseValue": 1.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "critAtk": {
+            "baseValue": 0.1,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "phyDef": {
+            "baseValue": 2.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "magDef": {
+            "baseValue": 5.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "dex": {
+            "baseValue": 7.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "block": {
+            "duration": 0.0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicDefChanceBonus": 0.0
+        },
+        "silence": {
+            "duration": 0.0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicDefChanceBonus": 0.0
+        }
+    },
+    "status": {}
+}

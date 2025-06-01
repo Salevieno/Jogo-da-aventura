@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.json.simple.JSONObject;
 
@@ -84,7 +85,6 @@ import windows.SpellsTreeWindow;
 public class Player extends LiveBeing
 {
 	private String sex ;
-	private Color color ;
 	
 	private GameWindow focusWindow ;
 	private List<GameWindow> openWindows ;
@@ -102,12 +102,12 @@ public class Player extends LiveBeing
 	private int attPoints ;
 	private int spellPoints ;
 	private AttributeIncrease attInc ;
-	private double[] collectLevel ;	// 0: herb, 1: wood, 2: metal
+	private List<Double> collectLevel ;	// 0: herb, 1: wood, 2: metal
 	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor, 3: emblem
 	private Arrow equippedArrow ;
-	private int storedGold ;
 	private double goldMultiplier ;	// multiplies the amount of gold the player wins
 	private double digBonus ;
+	protected Elements superElem ;
 	private Map<QuestSkills, Boolean> questSkills ;
 	private boolean isRiding ;
 	
@@ -116,7 +116,7 @@ public class Player extends LiveBeing
     private NPC npcInContact ;
     private Collectible currentCollectible ;
     private TreasureChest currentChest ;
-    private Item[] hotItems ;
+    private List<Item> hotItems ;
 	private Statistics stats ;
     
 	public static final int maxLevel = 99 ;
@@ -159,12 +159,8 @@ public class Player extends LiveBeing
 	
 	public Player(String name, String sex, int job)
 	{
-		super(
-				InitializePersonalAttributes(job),
-				new BattleAttributes(InitialAtts.get(job), 1, InitialAtts.get(job)[41]),
-				movingAnimations,
-				new PlayerAttributesWindow()
-			) ;
+		super(InitializePersonalAttributes(job), new BattleAttributes(InitialAtts.get(job), 1, InitialAtts.get(job)[41]), movingAnimations, new PlayerAttributesWindow()) ;
+
 		((PlayerAttributesWindow) attWindow).initializeAttIncButtons(this) ;
 		
 		this.name = name ;
@@ -180,7 +176,7 @@ public class Player extends LiveBeing
 	    size = Util.getSize(movingAni.idleGif) ;
 		range = Integer.parseInt(InitialAtts.get(job)[4]) ;
 		step = Integer.parseInt(InitialAtts.get(job)[33]);
-	    elem = new Elements[] {Elements.neutral, null, null, null, null};
+	    atkElem = Elements.neutral ;
 		actionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[37])) ;
 		satiationCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[38])) ;
 		thirstCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[39])) ;
@@ -213,10 +209,8 @@ public class Player extends LiveBeing
 		equips = new Equip[4] ;
 		equippedArrow = null ;
 		spellPoints = 0 ;
-		color = Game.palette[12] ;
     	
-		collectLevel = new double[3] ;
-		storedGold = 0 ;
+		collectLevel = List.of(0.0, 0.0, 0.0);
 		goldMultiplier = Double.parseDouble(InitialAtts.get(job)[32]) ;
 		digBonus = 0 ;
 		questSkills = new HashMap<QuestSkills, Boolean>() ;
@@ -236,7 +230,7 @@ public class Player extends LiveBeing
 	    currentCollectible = null ;
 	    currentChest = null ;
 		settings = new SettingsWindow(false, true, false, 1, 1) ;
-		hotItems = new Item[3] ;
+		hotItems = Arrays.asList(null, null, null) ;
 		
 		Log.attributes(this) ;
 	}
@@ -284,7 +278,6 @@ public class Player extends LiveBeing
 	
 	public String getSex() {return sex ;}
 	public Directions getDir() {return dir ;}
-	public Color getColor() {return color ;}
 	public List<Quest> getQuests() {return quests ;}
 	public BagWindow getBag() {return bag ;}
 	public Equip[] getEquips() {return equips ;}
@@ -307,12 +300,12 @@ public class Player extends LiveBeing
 	public BattleSpecialAttributeWithDamage getPoison() {return BA.getPoison() ;}
 	public BattleSpecialAttribute getSilence() {return BA.getSilence() ;}
 	public NPC getNPCInContact() { return npcInContact ;}
-	public double[] getCollect() {return collectLevel ;}
-	public Integer getStoredGold() {return storedGold ;}
+	public List<Double> getCollect() {return collectLevel ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public BasicAttribute getSatiation() {return PA.getSatiation() ;}
 	public BasicAttribute getThirst() {return PA.getThirst() ;}
 	public Map<QuestSkills, Boolean> getQuestSkills() {return questSkills ;}
+	public Elements getSuperElem() { return superElem ;}
 	public int getAttPoints() {return attPoints ;}
 	public void setEquippedArrow(Arrow equippedArrow) {this.equippedArrow = equippedArrow ;}
 	public SettingsWindow getSettings() {return settings ;}
@@ -323,12 +316,12 @@ public class Player extends LiveBeing
 	public SpellsTreeWindow getSpellsTreeWindow() {return spellsTree ;}
 	public HintsWindow getHintsindow() {return hintsWindow ;}
 	public Creature getOpponent() { return opponent ;}
-	public Item[] getHotItems() { return hotItems ;}
+	public List<Item> getHotItems() { return hotItems ;}
 	public Statistics getStatistics() { return stats ;}
 	public void setSex(String sex) { this.sex = sex ;}
 	public void setAttInc(AttributeIncrease newAttInc) { attInc = newAttInc ;}
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
-	public void setHotItem(Item item, int slot) { hotItems[slot] = item ;}	
+	public void setHotItem(Item item, int slot) { hotItems.set(slot, item) ;}	
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
 	public double getDigBonus() { return digBonus ;}
 	public void setFocusWindow(GameWindow W) { focusWindow = W ;}
@@ -395,7 +388,19 @@ public class Player extends LiveBeing
 		
 		return true ;
 	}
+	public boolean hasSuperElement()
+	{
+		if (equips[0] == null | equips[1] == null | equips[2] == null) { return false ;}
+		
+		return equips[0].getElem().equals(equips[1].getElem()) & equips[1].getElem().equals(equips[2].getElem()) ;
+	}
 
+	public Elements[] atkElems() { return new Elements[] {atkElem, equips[0].getElem(), superElem} ;}
+	public Elements[] defElems() { return new Elements[] {equips[1].getElem(), equips[2].getElem()} ;}
+	public void updateSuperElem()
+	{
+		superElem = hasSuperElement() ? equips[0].getElem() : Elements.neutral ;
+	}
 	public Creature closestCreatureInRange()
 	{			
 		// TODO melhorar performance
@@ -450,7 +455,8 @@ public class Player extends LiveBeing
 		
 		if (collectible.typeNumber() <= 0) { return ;}
 		
-		collectLevel[collectible.typeNumber() - 1] += 0.25 / (collectLevel[collectible.typeNumber() - 1] + 1) ;
+		double currentLevel = collectLevel.get(collectible.typeNumber() - 1) ;
+		collectLevel.set(collectible.typeNumber() - 1, currentLevel + 0.25 / (currentLevel + 1)) ;
 		
 	}
 	
@@ -530,9 +536,9 @@ public class Player extends LiveBeing
 
 	public void applyAdjacentGroundEffect()
 	{
-		if (isInside(GroundTypes.lava) & elem[4] != null)
+		if (isInside(GroundTypes.lava) & superElem != null)
 		{
-			if (!elem[4].equals(Elements.fire))
+			if (!superElem.equals(Elements.fire))
 			{
 				PA.getLife().decTotalValue(5) ;
 			}
@@ -648,7 +654,7 @@ public class Player extends LiveBeing
 
 		if (Game.getScreen().posIsWithinBorders(newPos))
 		{
-			if (!map.groundIsWalkable(newPos, elem[4])) { return ;}
+			if (!map.groundIsWalkable(newPos, superElem)) { return ;}
 			
 			setPos(newPos) ;
 			
@@ -766,7 +772,7 @@ public class Player extends LiveBeing
 		bag.add(diggedItem, 1) ;
 		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.2), diggedItem.getName(), Game.palette[0]}) ;
 		
-		if (elem[4] == Elements.earth)
+		if (superElem == Elements.earth)
 		{
 			
 			Item diggedItem2 = determineDiggedItem() ;
@@ -975,9 +981,9 @@ public class Player extends LiveBeing
 		// using hotItems
 		for (int i = 0; i <= HotKeys.length - 1 ; i += 1)
 		{
-			if (!currentAction.equals(HotKeys[i]) | hotItems[i] == null) { continue ;}
+			if (!currentAction.equals(HotKeys[i]) | hotItems.get(i) == null) { continue ;}
 			
-			useItem(hotItems[i]) ;
+			useItem(hotItems.get(i)) ;
 		}
 		
 		
@@ -1017,7 +1023,7 @@ public class Player extends LiveBeing
 			
 			if (0 < collectible.typeNumber())
 			{
-				if (collectLevel[collectible.typeNumber() - 1] + 1 < map.getLevel())
+				if (collectLevel.get(collectible.typeNumber() - 1) + 1 < map.getLevel())
 				{
 					if (Animation.getAll().isEmpty())
 					{
@@ -1303,7 +1309,9 @@ public class Player extends LiveBeing
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
 		
-		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[1], elem[4]} ;
+		// TODO weaponElem should come from the equip
+		Elements weaponElem = equips[0].getElem() ;
+		Elements[] AtkElem = new Elements[] {spell.getElem(), weaponElem, superElem} ;
 		Elements[] DefElem = receiver.defElems() ;
 		double receiverElemMod = 1 ;
 		
@@ -1633,6 +1641,29 @@ public class Player extends LiveBeing
         content.put("sex", sex);
         content.put("level", level);
         content.put("job", job);
+		content.put("proJob", proJob);
+		content.put("combo", combo) ;
+        content.put("range", range);
+		content.put("step", step) ;
+		content.put("hpCounter", hpCounter.toJson()) ;
+		content.put("mpCounter", mpCounter.toJson()) ;
+		content.put("satiationCounter", satiationCounter.toJson()) ;
+		content.put("thirstCounter", thirstCounter.toJson()) ;
+		content.put("actionCounter", actionCounter.toJson()) ;
+		content.put("battleActionCounter", battleActionCounter.toJson()) ;
+		content.put("stepCounter", stepCounter.toJson()) ;
+		content.put("drunk", drunk.toJson()) ;
+		content.put("digBonus", digBonus) ;
+		content.put("isRiding", isRiding) ;
+		content.put("collectLevel", collectLevel) ;
+		content.put("attPoints", attPoints) ;
+		content.put("spellPoints", spellPoints) ;
+		
+		if (equippedArrow != null)
+		{			
+			content.put("equippedArrowID", equippedArrow.getId()) ;
+		}
+		
         content.put("PA", PA.toJsonObject()) ;
         content.put("BA", BA.toJsonObject()) ;
         for (Attributes att : Attributes.getSpecial())
@@ -1644,24 +1675,61 @@ public class Player extends LiveBeing
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Player load(int slot)
 	{
 		
 		JSONObject jsonData = Util.readJsonObject("save " + slot + ".json") ;
 		if (jsonData == null) { return null ;}
-		System.out.println("jsonData " + jsonData);
+
 		String name = (String) jsonData.get("name") ;
 		String sex = (String) jsonData.get("sex") ;
-		int level = (int) (long) jsonData.get("level") ;
 		int job = (int) (long) jsonData.get("job") ;
+		int level = (int) (long) jsonData.get("level") ;
+		int range = (int) (long) jsonData.get("range") ;
+		int step = (int) (long) jsonData.get("step") ;
+		int proJob = (int) (long) jsonData.get("proJob") ;
+		List<String> combo = (List<String>) jsonData.get("combo") ;
+		List<Double> collectLevel = (List<Double>) jsonData.get("collectLevel") ;
+		JSONObject hpCounterData = (JSONObject) jsonData.get("hpCounter") ;
+		JSONObject mpCounterData = (JSONObject) jsonData.get("mpCounter") ;
+		JSONObject satiationCounterData = (JSONObject) jsonData.get("satiationCounter") ;
+		JSONObject thirstCounterData = (JSONObject) jsonData.get("thirstCounter") ;
+		JSONObject actionCounterData = (JSONObject) jsonData.get("actionCounter") ;
+		JSONObject battleActionCounterData = (JSONObject) jsonData.get("battleActionCounter") ;
+		JSONObject stepCounterData = (JSONObject) jsonData.get("stepCounter") ;
+		JSONObject drunkData = (JSONObject) jsonData.get("drunk") ;
 		JSONObject PAData = (JSONObject) jsonData.get("PA") ;
 		JSONObject BAData = (JSONObject) jsonData.get("BA") ;
+		double digBonus = (double) (Double) jsonData.get("digBonus") ;
+		boolean isRiding = (boolean) jsonData.get("isRiding") ;
+		int attPoints = (int) (long) jsonData.get("attPoints") ;
+		int spellPoints = (int) (long) jsonData.get("spellPoints") ;		
+		Arrow equippedArrow = jsonData.get("equippedArrowID") != null ? Arrow.getAll()[(int) (long) jsonData.get("equippedArrowID")] : null ;
 		
 		Player newPlayer = new Player(name, sex, job) ;
 		newPlayer.setLevel(level);
+		newPlayer.setRange(range);
+		newPlayer.step = step ;
+		newPlayer.proJob = proJob ;
+		newPlayer.combo = combo ;
+		newPlayer.collectLevel = collectLevel ;
+		newPlayer.hpCounter = GameTimer.fromJson(hpCounterData) ;
+		newPlayer.mpCounter = GameTimer.fromJson(mpCounterData) ;
+		newPlayer.satiationCounter = GameTimer.fromJson(satiationCounterData) ;
+		newPlayer.thirstCounter = GameTimer.fromJson(thirstCounterData) ;
+		newPlayer.actionCounter = GameTimer.fromJson(actionCounterData) ;
+		newPlayer.battleActionCounter = GameTimer.fromJson(battleActionCounterData) ;
+		newPlayer.stepCounter = GameTimer.fromJson(stepCounterData) ;
+		newPlayer.drunk = GameTimer.fromJson(drunkData) ;
+		newPlayer.digBonus = digBonus ;
+		newPlayer.isRiding = isRiding ;
+		newPlayer.attPoints = attPoints ;
+		newPlayer.spellPoints = spellPoints ;
+		newPlayer.equippedArrow = equippedArrow ;
 		newPlayer.setPA(PersonalAttributes.fromJson(PAData));
 		newPlayer.setBA(BattleAttributes.fromJson(BAData));
-		
+
 //		Map<Attributes, LiveBeingStatus> status = new HashMap<>() ; 
 //		status = LiveBeingStatus.fromJson((JSONObject) jsonData.get("status")) ;
 		

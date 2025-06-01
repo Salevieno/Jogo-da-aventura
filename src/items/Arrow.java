@@ -4,21 +4,25 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
+import org.json.simple.JSONObject;
+
 import attributes.BattleAttributes;
 import graphics.Align;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
+import utilities.Elements;
+import utilities.GameTimer;
 import utilities.Util;
 import utilities.UtilS;
 
 public class Arrow extends Item
 {
 	private float atkPower ;
-	private String elem ;
+	private Elements elem ;
 	
-	private static Arrow[] AllArrow ;
+	private static Arrow[] all ;
 
 	private static final Image woodArrowIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconWoodArrow.png") ;
 	private static final Image strongArrowIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconStrongArrow.png") ;
@@ -29,16 +33,16 @@ public class Arrow extends Item
 	static
 	{
 		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Arrow.csv") ;
-		AllArrow = new Arrow[input.size()] ;
-		for (int p = 0; p <= AllArrow.length - 1; p += 1)
+		all = new Arrow[input.size()] ;
+		for (int p = 0; p <= all.length - 1; p += 1)
 		{
-			AllArrow[p] = new Arrow(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3],
+			all[p] = new Arrow(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3],
 					Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]),
-					Float.parseFloat(input.get(p)[7]), input.get(p)[8]);
+					Float.parseFloat(input.get(p)[7]), Elements.valueOf(input.get(p)[8]));
 		}
 	}
 	
-	public Arrow(int id, String Name, String Description, int price, float dropChance, float atkPower, String elem)
+	private Arrow(int id, String Name, String Description, int price, float dropChance, float atkPower, Elements elem)
 	{
 		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 		this.atkPower = atkPower ;
@@ -46,12 +50,12 @@ public class Arrow extends Item
 	}
 
 	public float getAtkPower() {return atkPower ;}
-	public String getElem() {return elem ;}
-	public static Arrow[] getAll() {return AllArrow ;}
+	public Elements getElem() {return elem ;}
+	public static Arrow[] getAll() {return all ;}
 
 	public boolean isElemental() { return elementalArrows().contains(this) ;}
 	
-	public static List<Item> elementalArrows() { return List.of(AllArrow[6], AllArrow[7], AllArrow[8], AllArrow[9], AllArrow[10], AllArrow[11], AllArrow[12], AllArrow[13], AllArrow[14]) ;}
+	public static List<Item> elementalArrows() { return List.of(all[6], all[7], all[8], all[9], all[10], all[11], all[12], all[13], all[14]) ;}
 	
 	public static Image imageFromID(int id)
 	{
@@ -105,18 +109,5 @@ public class Arrow extends Item
 //		return "Arrow [atkPower=" + atkPower + ", elem=" + elem + ", id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance=" + dropChance + "]";
 		return "Arrow," + id + "," + name;
 	}
-	
-	
-
-//	public void printAtt()
-//	{
-//		System.out.println("Arrow id: " + AllArrow[id].getId() +
-//				"   name: " + AllArrow[id].getName() +
-//				"   description: " + AllArrow[id].getDescription() +
-//				"   price: " + AllArrow[id].getPrice() +
-//				"   drop chance: " + AllArrow[id].getDropChance() + "%" + 
-//				"   atk power: " + AllArrow[id].getAtkPower() + 
-//				"   elem: " + AllArrow[id].getElem());
-//	}
 	
 }

@@ -6,7 +6,10 @@ import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.json.simple.JSONObject;
+
 import attributes.Attributes;
+import attributes.BasicAttribute;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import liveBeings.LiveBeingStatus;
@@ -106,7 +109,37 @@ public class GameTimer
 	{
 		all.forEach(GameTimer::update);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject toJson()
+	{
 
+        JSONObject content = new JSONObject();
+        content.put("active", active);
+        content.put("initialTime", initialTime);
+        content.put("prevCounter", prevCounter);
+        content.put("counter", counter);
+        content.put("duration", duration);
+        content.put("timeElapsedAtStop", timeElapsedAtStop);
+        
+        return content ;
+	}
+	
+
+	public static GameTimer fromJson(JSONObject jsonData)
+	{
+		double duration = (double) (Double) jsonData.get("duration") ;
+		GameTimer timer = new GameTimer(duration) ;
+		
+		timer.active = (boolean) jsonData.get("active") ;
+		timer.initialTime = (double) (Double) jsonData.get("initialTime") ;
+		timer.prevCounter = (double) (Double) jsonData.get("prevCounter") ;
+		timer.counter = (double) (Double) jsonData.get("counter") ;
+		timer.timeElapsedAtStop = (double) (Double) jsonData.get("timeElapsedAtStop") ;
+		
+		return timer ;
+	}
+	
 	@Override
 	public String toString()
 	{

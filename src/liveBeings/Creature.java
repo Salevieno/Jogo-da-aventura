@@ -62,7 +62,7 @@ public class Creature extends LiveBeing
 		this.size = new Dimension(CT.size);
 		this.range = CT.range;
 		this.step = CT.step;
-		this.elem = Arrays.copyOf(CT.elem, CT.elem.length);
+		this.atkElem = CT.atkElem;
 		mpCounter = new GameTimer(CT.mpDuration / 1.0);
 		satiationCounter = new GameTimer(CT.satiationDuration);
 		actionCounter = new GameTimer(CT.numberSteps) ;
@@ -320,7 +320,10 @@ public class Creature extends LiveBeing
 	{
 		
 	}
-	
+
+	public Elements[] atkElems() { return new Elements[] {atkElem, Elements.neutral, Elements.neutral} ;}
+	public Elements[] defElems() { return new Elements[] {atkElem, atkElem} ;}
+
 	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
 	{
 		int spellLevel = spell.getLevel() ;
@@ -348,7 +351,7 @@ public class Creature extends LiveBeing
 		double BlockDef = receiver.getBA().getBlock().TotalDefChance() ;
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
-		Elements[] AtkElem = new Elements[] {spell.getElem(), elem[0], Elements.neutral} ;
+		Elements[] AtkElem = new Elements[] {spell.getElem(), atkElem, Elements.neutral} ;
 		Elements[] DefElem = receiver.defElems() ;
 		
 		BasicAtk = MagAtk ;

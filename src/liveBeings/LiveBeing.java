@@ -53,7 +53,7 @@ public abstract class LiveBeing implements Drawable
 	protected int range ;
 	protected int step ;
 	protected Hitbox hitbox ;
-	protected Elements[] elem ;					// 0: Atk, 1: Weapon, 2: Armor, 3: Shield, 4: SuperElem
+	protected Elements atkElem ;
 	protected GameTimer hpCounter ;
 	protected GameTimer mpCounter ;
 	protected GameTimer satiationCounter ;
@@ -80,7 +80,7 @@ public abstract class LiveBeing implements Drawable
 	public static final String[] BattleKeys = new String[] {"Y", "U"} ;	
 	public static final List<String> SpellKeys = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12") ;
 
-	protected final static Gif levelUpGif = new Gif("Level up", UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 170, false, false) ;
+	protected static final Gif levelUpGif = new Gif("Level up", UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 170, false, false) ;
 	private static final Gif phyHitGif = new Gif("phyHit", UtilS.loadImage("\\Battle\\" + "PhysicalHit.gif"), (int) (75 / 1.5), false, false) ;
 	private static final Gif magHitGif = new Gif("magHit", UtilS.loadImage("\\Battle\\" + "SpellHit.gif"), (int) (90 / 1.5), false, false) ;
 	
@@ -155,7 +155,7 @@ public abstract class LiveBeing implements Drawable
 	public LiveBeingStates getState() {return state ;}
 	public Point getPos() {return pos ;}
 	public Dimension getSize() {return size ;}
-	public Elements[] getElem() {return elem ;}
+	public Elements getAtkElem() { return atkElem ;}
 	public double getRange() {return range ;}
 	public int getStep() {return step ;}
 	public String getCurrentAction() {return currentAction ;}
@@ -596,12 +596,6 @@ public abstract class LiveBeing implements Drawable
 	public boolean isAlive() { return 0 < PA.getLife().getTotalValue() ;}
 	public boolean hasTheSpell(String action) {return Player.SpellKeys.indexOf(action) < getActiveSpells().size() ;}
 	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
-	public boolean hasSuperElement()
-	{
-		if (elem[1] == null | elem[2] == null | elem[3] == null) { return false ;}
-		
-		return elem[1].equals(elem[2]) & elem[2].equals(elem[3]) ;
-	}
 	public boolean hasActed() {return currentAction != null ;}
 	public boolean actionIsSpell()
 	{
@@ -679,22 +673,8 @@ public abstract class LiveBeing implements Drawable
     	
 	}
 	
-	public Elements[] atkElems()
-	{
-		if (this instanceof Player) { return new Elements[] {elem[0], elem[1], elem[4]} ;}
-		else if (this instanceof Pet) { return new Elements[] {elem[0], elem[1], elem[4]} ;}
-		else if (this instanceof Creature) { return new Elements[] {elem[0], Elements.neutral, Elements.neutral} ;}
-		
-		return null ;
-	}
-	public Elements[] defElems()
-	{
-		if (this instanceof Player) { return new Elements[] {elem[2], elem[3]} ;}
-		else if (this instanceof Pet) { return new Elements[] {elem[2], elem[3]} ;}
-		else if (this instanceof Creature) { return new Elements[] {elem[0], elem[0]} ;}
-		
-		return null ;
-	}
+	public abstract Elements[] atkElems() ;
+	public abstract Elements[] defElems() ;
 	
 	public Point follow(Point userPos, Point target, int minDist)
 	{

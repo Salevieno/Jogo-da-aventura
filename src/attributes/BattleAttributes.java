@@ -264,6 +264,7 @@ public class BattleAttributes
         {
             content.put(att.toString(), mapSpecialAttributes(att).toJsonObject());
         }
+        content.put("atkSpeed", mapAttributes(Attributes.atkSpeed).toJsonObject()) ;
         
         return content ;
         

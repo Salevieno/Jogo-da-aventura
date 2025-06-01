@@ -88,6 +88,10 @@ public abstract class Opening
 			players[0] = Player.load(1) ;
 			players[1] = Player.load(2) ;
 			players[2] = Player.load(3) ;
+			
+			System.out.println(players[0] != null ? "Info: save 1 loaded successfully!" : "Info: save 1 not found!");
+			System.out.println(players[1] != null ? "Info: save 2 loaded successfully!" : "Info: save 2 not found!");
+			System.out.println(players[2] != null ? "Info: save 3 loaded successfully!" : "Info: save 3 not found!");
 	
 	    	loadSlotButtons.add(new GameButton(new Point(60, 100), Align.topLeft, "Load slot 1", LoadingSlot, LoadingSlotSelected, loadSlot1)) ;
 	    	loadSlotButtons.add(new GameButton(new Point(260, 100), Align.topLeft, "Load slot 2", LoadingSlot, LoadingSlotSelected, loadSlot2)) ;
@@ -288,7 +292,7 @@ public abstract class Opening
 		for (int i = 0 ; i <= loadSlotButtons.size() - 1 ; i += 1)
 		{
 			if (!loadSlotButtons.get(i).isActive()) { continue ;}
-			
+
 			loadSlotButtons.get(i).display(0, true, mousePos) ;
 			displaySlot(new Point(60 + 200 * i, 100), i) ;
 		}
@@ -340,8 +344,8 @@ public abstract class Opening
 		{
 			if (!openingGif.isActive() & !openingGif.isDonePlaying())
 			{
-				Music.PlayMusic(thunderSound) ;
-				Music.PlayMusic(introMusic) ;
+//				Music.PlayMusic(thunderSound) ;
+//				Music.PlayMusic(introMusic) ;
 				openingGif.start(new Point(0, 0), Align.topLeft);
 			}
 			Gif.playAll() ;

@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.List;
 
 import graphics.Align;
 import graphics2.Draw;
@@ -49,7 +50,7 @@ public class HotKeysBar
 		return -1 ;
 	}
 	
-	public static void display(Item[] hotItems, Point mousePos)
+	public static void display(List<Item> hotItems, Point mousePos)
 	{
 		Dimension slotSize = Util.getSize(SideBar.slotImage) ;
 
@@ -63,14 +64,14 @@ public class HotKeysBar
 			GamePanel.DP.drawImage(BagWindow.slotImage, slotCenter, Align.center) ;
 			GamePanel.DP.drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.HotKeys[i], font, textColor) ;
 			
-			if (hotItems[i] == null) { continue ;}
+			if (hotItems.get(i) == null) { continue ;}
 
-			GamePanel.DP.drawImage(hotItems[i].getImage(), slotCenter, Align.center) ;
+			GamePanel.DP.drawImage(hotItems.get(i).getImage(), slotCenter, Align.center) ;
 			
 			if (!Util.isInside(mousePos, Util.Translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize)) { continue ;}
 			
 			Point textPos = Util.Translate(slotCenter, - slotSize.width / 2 - 10, 0);
-			GamePanel.DP.drawText(textPos, Align.centerRight, Draw.stdAngle, hotItems[i].getName(), font, textColor) ;
+			GamePanel.DP.drawText(textPos, Align.centerRight, Draw.stdAngle, hotItems.get(i).getName(), font, textColor) ;
 		}
 	}
 }

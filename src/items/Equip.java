@@ -304,7 +304,7 @@ public class Equip extends Item
 	{
 		int type = numTypeFromID(id) ;
 		player.getEquips()[type] = equip ;
-		player.getElem()[type + 1] = equip.elem ;
+//		player.getElem()[type + 1] = equip.elem ;
 		
 		if (Player.setIsFormed(player.getEquips()))
 		{
@@ -315,10 +315,11 @@ public class Equip extends Item
 		applyBonus(player.getPA(), player.getBA(), equip, 1) ;
 
 		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Game.palette[0]}) ;
-		player.getElem()[4] = player.hasSuperElement() ? player.getElem()[1] : Elements.neutral ;
+		player.updateSuperElem() ;
+//		player.getElem()[4] = player.hasSuperElement() ? equip.elem : Elements.neutral ;
 		if (player.hasSuperElement())
 		{
-			player.applySuperElementEffect(player.getElem()[4], true) ;
+			player.applySuperElementEffect(player.getSuperElem(), true) ;
 		}
 	}
 	
@@ -326,7 +327,7 @@ public class Equip extends Item
 	{
 		int type = numTypeFromID(id) ;
 		applyBonus(player.getPA(), player.getBA(), equip, -1) ;
-		player.getElem()[type + 1] = Elements.neutral ;
+//		player.getElem()[type + 1] = Elements.neutral ;
 		
 		if (Player.setIsFormed(player.getEquips()))
 		{
@@ -335,8 +336,9 @@ public class Equip extends Item
 			applyBonus(player.getPA(), player.getBA(), player.getEquips()[2], -setBonus) ;
 		}
 		
-		player.applySuperElementEffect(player.getElem()[4], false) ;
-		player.getElem()[4] = Elements.neutral ;
+		player.applySuperElementEffect(player.getSuperElem(), false) ;
+		player.updateSuperElem() ;
+//		player.getElem()[4] = Elements.neutral ;
 		
 		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Game.palette[0]}) ;
 		player.getEquips()[type] = null ;
