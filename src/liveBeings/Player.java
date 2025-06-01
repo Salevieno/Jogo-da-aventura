@@ -395,8 +395,8 @@ public class Player extends LiveBeing
 		return equips[0].getElem().equals(equips[1].getElem()) & equips[1].getElem().equals(equips[2].getElem()) ;
 	}
 
-	public Elements[] atkElems() { return new Elements[] {atkElem, equips[0].getElem(), superElem} ;}
-	public Elements[] defElems() { return new Elements[] {equips[1].getElem(), equips[2].getElem()} ;}
+	public Elements[] atkElems() { return new Elements[] {atkElem, equips[0] != null ? equips[0].getElem() : null, superElem} ;}
+	public Elements[] defElems() { return new Elements[] {equips[1] != null ? equips[1].getElem() : null, equips[2] != null ? equips[2].getElem() : null} ;}
 	public void updateSuperElem()
 	{
 		superElem = hasSuperElement() ? equips[0].getElem() : Elements.neutral ;
@@ -1309,8 +1309,7 @@ public class Player extends LiveBeing
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
 		
-		// TODO weaponElem should come from the equip
-		Elements weaponElem = equips[0].getElem() ;
+		Elements weaponElem = equips[0] != null ? equips[0].getElem() : null ;
 		Elements[] AtkElem = new Elements[] {spell.getElem(), weaponElem, superElem} ;
 		Elements[] DefElem = receiver.defElems() ;
 		double receiverElemMod = 1 ;
@@ -1663,6 +1662,7 @@ public class Player extends LiveBeing
 		{			
 			content.put("equippedArrowID", equippedArrow.getId()) ;
 		}
+		content.put("statistics", stats.toJson()) ;
 		
         content.put("PA", PA.toJsonObject()) ;
         content.put("BA", BA.toJsonObject()) ;
@@ -1706,6 +1706,7 @@ public class Player extends LiveBeing
 		int attPoints = (int) (long) jsonData.get("attPoints") ;
 		int spellPoints = (int) (long) jsonData.get("spellPoints") ;		
 		Arrow equippedArrow = jsonData.get("equippedArrowID") != null ? Arrow.getAll()[(int) (long) jsonData.get("equippedArrowID")] : null ;
+		Statistics stats = Statistics.fromJson((JSONObject) jsonData.get("statistics")) ;
 		
 		Player newPlayer = new Player(name, sex, job) ;
 		newPlayer.setLevel(level);
@@ -1727,6 +1728,7 @@ public class Player extends LiveBeing
 		newPlayer.attPoints = attPoints ;
 		newPlayer.spellPoints = spellPoints ;
 		newPlayer.equippedArrow = equippedArrow ;
+		newPlayer.stats = stats ;
 		newPlayer.setPA(PersonalAttributes.fromJson(PAData));
 		newPlayer.setBA(BattleAttributes.fromJson(BAData));
 

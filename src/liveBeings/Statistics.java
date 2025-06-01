@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
+
 import Battle.AtkResults;
 import Battle.AtkTypes;
 import main.Game;
@@ -349,5 +351,75 @@ public class Statistics
 		if (0 < appliedStatus[2]) { incNumberBloodInflicted() ;}
 		if (0 < appliedStatus[3]) { incNumberPoisonInflicted() ;}
 		if (0 < appliedStatus[4]) { incNumberSilenceInflicted() ;}
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject toJson()
+	{
+		JSONObject content = new JSONObject();
+		content.put("numberPhyAtk", numberPhyAtk);
+		content.put("numberMagAtk", numberMagAtk);
+		content.put("numberDef", numberDef);
+		content.put("numberHitsInflicted", numberHitsInflicted);
+		content.put("numberDodges", numberDodges);
+		content.put("numberCritInflicted", numberCritInflicted);
+		content.put("numberStunInflicted", numberStunInflicted);
+		content.put("numberBlockInflicted", numberBlockInflicted);
+		content.put("numberBloodInflicted", numberBloodInflicted);
+		content.put("numberPoisonInflicted", numberPoisonInflicted);
+		content.put("numberSilenceInflicted", numberSilenceInflicted);
+		content.put("phyDamageInflicted", phyDamageInflicted);
+		content.put("phyDamageReceived", phyDamageReceived);
+		content.put("phyDamageDefended", phyDamageDefended);
+		content.put("magDamageInflicted", magDamageInflicted);
+		content.put("magDamageReceived", magDamageReceived);
+		content.put("magDamageDefended", magDamageDefended);
+		content.put("critDamageInflicted", critDamageInflicted);
+		content.put("critDamageReceived", critDamageReceived);
+		content.put("critDamageDefended", critDamageDefended);
+		content.put("bloodDamageInflicted", bloodDamageInflicted);
+		content.put("bloodDamageReceived", bloodDamageReceived);
+		content.put("bloodDamageDefended", bloodDamageDefended);
+		content.put("poisonDamageInflicted", poisonDamageInflicted);
+		content.put("poisonDamageReceived", poisonDamageReceived);
+		content.put("poisonDamageDefended", poisonDamageDefended);
+		content.put("highestPhyDamageInflicted", highestPhyDamageInflicted);
+		content.put("highestMagDamageInflicted", highestMagDamageInflicted);
+		return content;
+	}
+
+	public static Statistics fromJson(JSONObject jsonData)
+	{
+		Statistics stats = new Statistics();
+		stats.numberPhyAtk = (int) (long) jsonData.get("numberPhyAtk");
+		stats.numberMagAtk = (int) (long) jsonData.get("numberMagAtk");
+		stats.numberDef = (int) (long) jsonData.get("numberDef");
+		stats.numberHitsInflicted = (int) (long) jsonData.get("numberHitsInflicted");
+		stats.numberDodges = (int) (long) jsonData.get("numberDodges");
+		stats.numberCritInflicted = (int) (long) jsonData.get("numberCritInflicted");
+		stats.numberStunInflicted = (int) (long) jsonData.get("numberStunInflicted");
+		stats.numberBlockInflicted = (int) (long) jsonData.get("numberBlockInflicted");
+		stats.numberBloodInflicted = (int) (long) jsonData.get("numberBloodInflicted");
+		stats.numberPoisonInflicted = (int) (long) jsonData.get("numberPoisonInflicted");
+		stats.numberSilenceInflicted = (int) (long) jsonData.get("numberSilenceInflicted");
+		stats.phyDamageInflicted = (int) (long) jsonData.get("phyDamageInflicted");
+		stats.phyDamageReceived = (int) (long) jsonData.get("phyDamageReceived");
+		stats.phyDamageDefended = (int) (long) jsonData.get("phyDamageDefended");
+		stats.magDamageInflicted = (int) (long) jsonData.get("magDamageInflicted");
+		stats.magDamageReceived = (int) (long) jsonData.get("magDamageReceived");
+		stats.magDamageDefended = (int) (long) jsonData.get("magDamageDefended");
+		stats.critDamageInflicted = (int) (long) jsonData.get("critDamageInflicted");
+		stats.critDamageReceived = (int) (long) jsonData.get("critDamageReceived");
+		stats.critDamageDefended = (int) (long) jsonData.get("critDamageDefended");
+		stats.bloodDamageInflicted = (int) (long) jsonData.get("bloodDamageInflicted");
+		stats.bloodDamageReceived = (int) (long) jsonData.get("bloodDamageReceived");
+		stats.bloodDamageDefended = (int) (long) jsonData.get("bloodDamageDefended");
+		stats.poisonDamageInflicted = (int) (long) jsonData.get("poisonDamageInflicted");
+		stats.poisonDamageReceived = (int) (long) jsonData.get("poisonDamageReceived");
+		stats.poisonDamageDefended = (int) (long) jsonData.get("poisonDamageDefended");
+		stats.highestPhyDamageInflicted = (int) (long) jsonData.get("highestPhyDamageInflicted");
+		stats.highestMagDamageInflicted = (int) (long) jsonData.get("highestMagDamageInflicted");
+		return stats;
 	}
 }
