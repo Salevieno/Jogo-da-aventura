@@ -311,6 +311,7 @@ public class CreatureType
 			};
 			for (int id : spellIDs)
 			{
+				// TODO eu só preciso de uma cópia do spell existente aqui
 				spells.add(new Spell(Spell.all.get(id)));
 			}
 			spells.forEach(spell -> spell.incLevel(1));

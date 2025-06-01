@@ -587,7 +587,7 @@ public class NPC
 			menu = 1 ;
 			return ;
 		}
-		if (playerPA.getLife().isMaxed() & petPA.getLife().isMaxed())
+		if (petPA != null && petPA.getLife().isMaxed() & playerPA.getLife().isMaxed())
 		{
 			menu = 1 ;
 			return ;

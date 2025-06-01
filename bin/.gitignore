@@ -1,9 +1,13 @@
 /liveBeings/
+/components/
+/graphics2/
 /main/
+/utilities/
+/Battle/
+/attributes/
+/items/
 /maps/
 /screen/
 /simulations/
 /test/
-/testing/
-/utilities/
 /windows/

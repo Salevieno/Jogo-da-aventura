@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
+
 import components.SpellTypes;
 import main.Game;
 import main.Languages;
@@ -16,28 +18,30 @@ import utilities.UtilS;
 
 public class Spell 
 {	
-	private int id ;
-	private String name ;
-	private Image image ;
 	private int level ;
-	private int maxLevel ;
 	private int mpCost ;
-	private SpellTypes type ;
-	private Map<Spell, Integer> preRequisites ;
-	private Buff buffs;
-	private Buff deBuffs;
-	private AttackModifiers atkMod ;
 	private boolean isActive ;
-	private GameTimer cooldownCounter ;
-	private GameTimer effectCounter ;
-	private Elements elem ;
-	private String[] info ;	// effect and description
+
+	private final int id ;
+	private final String name ;
+	private final Image image ;
+	private final int maxLevel ;
+	private final SpellTypes type ;
+	private final Map<Spell, Integer> preRequisites ;
+	private final Buff buffs;
+	private final Buff deBuffs;
+	private final AttackModifiers atkMod ;
+	private final GameTimer cooldownCounter ;
+	private final GameTimer effectCounter ;
+	private final Elements elem ;
+	private final String effect ;
+	private final String description ;
 	
 	public static final List<Spell> all = new ArrayList<>() ;
 
 	
 	
-	public Spell(int id, String name, Image image, int maxLevel, int mpCost, SpellTypes type, Map<Spell, Integer> preRequisites,
+	private Spell(int id, String name, Image image, int maxLevel, int mpCost, SpellTypes type, Map<Spell, Integer> preRequisites,
 			Buff buffs, Buff deBuffs, double[] atkMod, double[] defMod, double[] dexMod, double[] agiMod,
 			double[] atkCritMod, double[] defCritMod, double[] stunMod, double[] blockMod, double[] bloodMod,
 			double[] poisonMod, double[] silenceMod, int cooldown, int duration, Elements elem, String[] info)
@@ -57,7 +61,8 @@ public class Spell
 		cooldownCounter = new GameTimer(cooldown / 80.0) ;
 		effectCounter = new GameTimer(duration / 1.0) ;
 		this.elem = elem;
-		this.info = info;
+		this.effect = info[0];
+		this.description = info[1];
 		all.add(this);
 	}
 
@@ -78,7 +83,8 @@ public class Spell
 		cooldownCounter = new GameTimer(spell.cooldownCounter.getDuration() / 80.0) ;
 		effectCounter = new GameTimer(spell.effectCounter.getDuration() / 1.0) ;
 		this.elem = spell.elem;
-		this.info = spell.info;
+		this.effect = spell.effect;
+		this.description = spell.description;
 	}
 
 	public int getId() {return id ;}
@@ -105,7 +111,8 @@ public class Spell
 	public Elements getElem() {return elem ;}
 	public GameTimer getCooldownCounter() {return cooldownCounter ;}
 	public GameTimer getDurationCounter() {return effectCounter ;}
-	public String[] getInfo() {return info ;}
+	public String getEffect() {return effect ;}
+	public String getDescription() {return description ;}
 
 	public boolean isReady() { return cooldownCounter.finished() ;}
 	public boolean isActive() { return isActive ;}
@@ -211,6 +218,75 @@ public class Spell
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public JSONObject toJson()
+	{
+		JSONObject content = new JSONObject();
+		content.put("id", id);
+		content.put("name", name);
+		content.put("level", level);
+		content.put("maxLevel", maxLevel);
+		content.put("mpCost", mpCost);
+		content.put("type", type != null ? type.name() : null);
+		content.put("isActive", isActive);
+		content.put("elem", elem != null ? elem.name() : null);
+//		content.put("info0", info != null && info.length > 0 ? info[0] : null);
+//		content.put("info1", info != null && info.length > 1 ? info[1] : null);
+		content.put("cooldownCounter", cooldownCounter != null ? cooldownCounter.toJson() : null);
+		content.put("effectCounter", effectCounter != null ? effectCounter.toJson() : null);
+		// Note: Buffs, deBuffs, atkMod, preRequisites, and image are omitted for simplicity.
+		return content;
+	}
+
+	public static Spell fromJson(JSONObject jsonData)
+	{
+		int id = ((Long) jsonData.get("id")).intValue();
+		String name = (String) jsonData.get("name");
+		int level = ((Long) jsonData.get("level")).intValue();
+		int maxLevel = ((Long) jsonData.get("maxLevel")).intValue();
+		int mpCost = ((Long) jsonData.get("mpCost")).intValue();
+		SpellTypes type = jsonData.get("type") != null ? SpellTypes.valueOf((String) jsonData.get("type")) : null;
+		boolean isActive = jsonData.get("isActive") != null && (Boolean) jsonData.get("isActive");
+		Elements elem = jsonData.get("elem") != null ? Elements.valueOf((String) jsonData.get("elem")) : null;
+		String[] info = new String[] {
+			(String) jsonData.get("info0"),
+			(String) jsonData.get("info1")
+		};
+		JSONObject cooldownObj = (JSONObject) jsonData.get("cooldownCounter");
+		JSONObject effectObj = (JSONObject) jsonData.get("effectCounter");
+		GameTimer cooldownCounter = cooldownObj != null ? GameTimer.fromJson(cooldownObj) : null;
+		GameTimer effectCounter = effectObj != null ? GameTimer.fromJson(effectObj) : null;
+
+		// The following fields are set to null/defaults as full deserialization is not implemented here:
+		Image image = null;
+		Map<Spell, Integer> preRequisites = new HashMap<>();
+		Buff buffs = null;
+		Buff deBuffs = null;
+		double[] atkMod = new double[2];
+		double[] defMod = new double[2];
+		double[] dexMod = new double[2];
+		double[] agiMod = new double[2];
+		double[] atkCritMod = new double[1];
+		double[] defCritMod = new double[1];
+		double[] stunMod = new double[3];
+		double[] blockMod = new double[3];
+		double[] bloodMod = new double[3];
+		double[] poisonMod = new double[3];
+		double[] silenceMod = new double[3];
+		int cooldown = 0;
+		int duration = 0;
+
+		Spell spell = new Spell(id, name, image, maxLevel, mpCost, type, preRequisites, buffs, deBuffs,
+			atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod,
+			cooldown, duration, elem, info);
+		spell.level = level;
+		spell.isActive = isActive;
+//		if (cooldownCounter != null) spell.cooldownCounter = cooldownCounter;
+//		if (effectCounter != null) spell.effectCounter = effectCounter;
+		return spell;
+	}
+
+
 	@Override
 	public String toString()
 	{
