@@ -342,7 +342,7 @@ public abstract class EvolutionSimulation
 		AttributeIncrease attInc = new AttributeIncrease(attIncrements, incChances) ;
 		player.setAttInc(attInc) ;
 
-    	player.InitializeSpells() ;
+    	player.setSpells(Player.jobSpells(player.getJob())) ;
 	}
 	
 	private static void petReset()

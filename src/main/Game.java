@@ -424,7 +424,11 @@ public class Game
 			case 10:
 				NPC.setIDs() ;
 
-				player.InitializeSpells() ;
+//				player.InitializeSpells() ;
+				if (player.getSpells().isEmpty())
+				{
+					player.setSpells(Player.jobSpells(player.getJob())) ;
+				}
 				player.setMap(Game.getMaps()[player.getJob()]) ;
 				player.setPos(Game.getScreen().getCenter()) ;
 				Battle.updateDamageAnimation(player.getSettings().getDamageAnimation()) ;
@@ -784,6 +788,7 @@ public class Game
 		{
 			player.setCurrentAction("MouseRightClick") ;
     		player.setPos(GamePanel.getMousePos()) ;
+    		Log.attributes(player) ;
     		if (pet != null)
     		{
     			pet.setPos(player.getPos()) ;

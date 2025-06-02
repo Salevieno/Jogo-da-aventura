@@ -21,6 +21,8 @@ public class Spell
 	private int level ;
 	private int mpCost ;
 	private boolean isActive ;
+	private GameTimer cooldownCounter ;
+	private GameTimer effectCounter ;
 
 	private final int id ;
 	private final String name ;
@@ -31,8 +33,6 @@ public class Spell
 	private final Buff buffs;
 	private final Buff deBuffs;
 	private final AttackModifiers atkMod ;
-	private final GameTimer cooldownCounter ;
-	private final GameTimer effectCounter ;
 	private final Elements elem ;
 	private final String effect ;
 	private final String description ;
@@ -223,66 +223,31 @@ public class Spell
 	{
 		JSONObject content = new JSONObject();
 		content.put("id", id);
-		content.put("name", name);
 		content.put("level", level);
-		content.put("maxLevel", maxLevel);
 		content.put("mpCost", mpCost);
-		content.put("type", type != null ? type.name() : null);
 		content.put("isActive", isActive);
-		content.put("elem", elem != null ? elem.name() : null);
-//		content.put("info0", info != null && info.length > 0 ? info[0] : null);
-//		content.put("info1", info != null && info.length > 1 ? info[1] : null);
-		content.put("cooldownCounter", cooldownCounter != null ? cooldownCounter.toJson() : null);
-		content.put("effectCounter", effectCounter != null ? effectCounter.toJson() : null);
-		// Note: Buffs, deBuffs, atkMod, preRequisites, and image are omitted for simplicity.
+		content.put("cooldownCounter", cooldownCounter.toJson());
+		content.put("effectCounter", effectCounter.toJson());
 		return content;
 	}
 
 	public static Spell fromJson(JSONObject jsonData)
 	{
 		int id = ((Long) jsonData.get("id")).intValue();
-		String name = (String) jsonData.get("name");
 		int level = ((Long) jsonData.get("level")).intValue();
-		int maxLevel = ((Long) jsonData.get("maxLevel")).intValue();
 		int mpCost = ((Long) jsonData.get("mpCost")).intValue();
-		SpellTypes type = jsonData.get("type") != null ? SpellTypes.valueOf((String) jsonData.get("type")) : null;
 		boolean isActive = jsonData.get("isActive") != null && (Boolean) jsonData.get("isActive");
-		Elements elem = jsonData.get("elem") != null ? Elements.valueOf((String) jsonData.get("elem")) : null;
-		String[] info = new String[] {
-			(String) jsonData.get("info0"),
-			(String) jsonData.get("info1")
-		};
-		JSONObject cooldownObj = (JSONObject) jsonData.get("cooldownCounter");
-		JSONObject effectObj = (JSONObject) jsonData.get("effectCounter");
-		GameTimer cooldownCounter = cooldownObj != null ? GameTimer.fromJson(cooldownObj) : null;
-		GameTimer effectCounter = effectObj != null ? GameTimer.fromJson(effectObj) : null;
+		JSONObject cooldownData = (JSONObject) jsonData.get("cooldownCounter");
+		JSONObject effectData = (JSONObject) jsonData.get("effectCounter");
+		GameTimer cooldownCounter = GameTimer.fromJson(cooldownData);
+		GameTimer effectCounter = GameTimer.fromJson(effectData);
 
-		// The following fields are set to null/defaults as full deserialization is not implemented here:
-		Image image = null;
-		Map<Spell, Integer> preRequisites = new HashMap<>();
-		Buff buffs = null;
-		Buff deBuffs = null;
-		double[] atkMod = new double[2];
-		double[] defMod = new double[2];
-		double[] dexMod = new double[2];
-		double[] agiMod = new double[2];
-		double[] atkCritMod = new double[1];
-		double[] defCritMod = new double[1];
-		double[] stunMod = new double[3];
-		double[] blockMod = new double[3];
-		double[] bloodMod = new double[3];
-		double[] poisonMod = new double[3];
-		double[] silenceMod = new double[3];
-		int cooldown = 0;
-		int duration = 0;
-
-		Spell spell = new Spell(id, name, image, maxLevel, mpCost, type, preRequisites, buffs, deBuffs,
-			atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod,
-			cooldown, duration, elem, info);
+		Spell spell = all.get(id) ;
 		spell.level = level;
 		spell.isActive = isActive;
-//		if (cooldownCounter != null) spell.cooldownCounter = cooldownCounter;
-//		if (effectCounter != null) spell.effectCounter = effectCounter;
+		spell.mpCost = mpCost ;
+		spell.cooldownCounter = cooldownCounter;
+		spell.effectCounter = effectCounter;
 		return spell;
 	}
 

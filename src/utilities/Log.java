@@ -13,6 +13,10 @@ import liveBeings.Spell;
 
 public abstract class Log
 {
+	public static void loadingStatus(boolean loadedSuccessfully, int slot)
+	{
+		System.out.println(loadedSuccessfully ? "Info: save " + slot + " loaded successfully!" : "Info: save " + slot + " not loaded correctly or not found!");
+	}
 	public static void valorNegativo(String metodo)
 	{
 		System.out.println("tentando usar " + metodo + " com valor negativo") ;
@@ -87,8 +91,11 @@ public abstract class Log
 	
 	public static void attributes(LiveBeing being)
 	{
-		System.out.println(being.getName() + " attributes") ;
-		System.out.println("action delay: " + being.getActionCounter().getDuration() + "\n");
+		System.out.println(" ====== player " + being.getName() + " attributes ======") ;
+		System.out.println("action delay: " + being.getActionCounter().getDuration());
+		System.out.println("spells");
+		being.getSpells().forEach(System.out::println);
+		System.out.println("==================\n");
 	}
 	
 	public static void atkType(LiveBeing attacker)

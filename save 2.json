@@ -1,1 +1,574 @@
-{"digBonus":0.0,"stepCounter":{"duration":0.25,"initialTime":34339.2879962,"prevCounter":0.0,"active":false,"timeElapsedAtStop":0.0,"counter":0.0},"proJob":0,"range":140,"drunk":{"duration":20.0,"initialTime":0.0,"prevCounter":0.0,"active":false,"timeElapsedAtStop":0.0,"counter":0.0},"isRiding":false,"battleActionCounter":{"duration":1.0,"initialTime":34337.078537,"prevCounter":0.9969960000016727,"active":false,"timeElapsedAtStop":0.0,"counter":1.0},"collectLevel":[0.0,0.0,0.0],"level":1,"spellPoints":0,"sex":"M","combo":["Enter","S","Enter","E","MouseRightClick","S","S","S","C","MouseRightClick"],"mpCounter":{"duration":0.0625,"initialTime":34346.9902134,"prevCounter":0.0301882999992813,"active":true,"timeElapsedAtStop":0.0,"counter":0.0449912990006851},"actionCounter":{"duration":0.0375,"initialTime":34347.0356131,"prevCounter":0.0,"active":true,"timeElapsedAtStop":0.0,"counter":0.0},"PA":{"mp":{"maxValue":100,"multiplier":1.0,"currentValue":100},"thirst":{"maxValue":100,"multiplier":1.0,"currentValue":71},"exp":{"maxValue":5,"multiplier":1.0,"currentValue":0},"life":{"maxValue":50,"multiplier":1.0,"currentValue":40},"satiation":{"maxValue":100,"multiplier":1.0,"currentValue":86}},"hpCounter":{"duration":20.0,"initialTime":0.0,"prevCounter":0.0,"active":false,"timeElapsedAtStop":0.0,"counter":0.0},"name":"Player","step":1,"job":1,"satiationCounter":{"duration":5.0,"initialTime":34344.4446179,"prevCounter":2.575889100000495,"active":true,"timeElapsedAtStop":0.0,"counter":2.5906937990002916},"attPoints":0,"thirstCounter":{"duration":2.5,"initialTime":34346.9747635,"prevCounter":0.04545520000101533,"active":true,"timeElapsedAtStop":0.0,"counter":0.060251299997617025},"statistics":{"bloodDamageDefended":0,"highestPhyDamageInflicted":0,"phyDamageReceived":10,"bloodDamageInflicted":0,"magDamageReceived":0,"phyDamageInflicted":0,"critDamageInflicted":8,"highestMagDamageInflicted":0,"poisonDamageInflicted":0,"numberBloodInflicted":0,"phyDamageDefended":2,"numberDodges":0,"numberPhyAtk":0,"bloodDamageReceived":0,"magDamageDefended":0,"numberDef":0,"numberPoisonInflicted":0,"critDamageDefended":0,"numberMagAtk":24,"numberCritInflicted":1,"critDamageReceived":0,"numberSilenceInflicted":0,"numberStunInflicted":0,"magDamageInflicted":0,"numberBlockInflicted":0,"poisonDamageDefended":0,"numberHitsInflicted":2,"poisonDamageReceived":0},"BA":{"agi":{"baseValue":1.0,"bonus":0.0,"train":0.0},"magAtk":{"baseValue":5.0,"bonus":0.0,"train":0.6005798341539298},"poison":{"duration":0.0,"basicDefChance":0.0,"basicAtkChance":0.0,"basicAtkBonus":0.0,"basicDef":0.0,"basicAtkChanceBonus":0.0,"basicAtk":0.0,"basicDefChanceBonus":0.0,"basicDefBonus":0.0},"critDef":{"baseValue":0.0,"bonus":0.0,"train":0.0},"phyAtk":{"baseValue":2.0,"bonus":0.0,"train":0.0},"stun":{"duration":0.0,"basicDefChance":0.0,"basicAtkChance":0.0,"basicAtkChanceBonus":0.0,"basicDefChanceBonus":0.0},"blood":{"duration":0.0,"basicDefChance":0.0,"basicAtkChance":0.0,"basicAtkBonus":0.0,"basicDef":0.0,"basicAtkChanceBonus":0.0,"basicAtk":0.0,"basicDefChanceBonus":0.0,"basicDefBonus":0.0},"atkSpeed":{"baseValue":1.0,"bonus":0.0,"train":0.0},"critAtk":{"baseValue":0.1,"bonus":0.0,"train":0.0},"phyDef":{"baseValue":2.0,"bonus":0.0,"train":0.04939024390243903},"magDef":{"baseValue":5.0,"bonus":0.0,"train":0.04939024390243903},"dex":{"baseValue":7.0,"bonus":0.0,"train":0.04939024390243903},"block":{"duration":0.0,"basicDefChance":0.0,"basicAtkChance":0.0,"basicAtkChanceBonus":0.0,"basicDefChanceBonus":0.0},"silence":{"duration":0.0,"basicDefChance":0.0,"basicAtkChance":0.0,"basicAtkChanceBonus":0.0,"basicDefChanceBonus":0.0}},"status":{}}
+{
+    "digBonus": 0.0,
+    "stepCounter": {
+        "duration": 0.25,
+        "initialTime": 109286.945758,
+        "prevCounter": 0.21855330000107642,
+        "active": true,
+        "timeElapsedAtStop": 0.0,
+        "counter": 0.23252879999927245
+    },
+    "proJob": 0,
+    "range": 140,
+    "drunk": {
+        "duration": 20.0,
+        "initialTime": 0.0,
+        "prevCounter": 0.0,
+        "active": false,
+        "timeElapsedAtStop": 0.0,
+        "counter": 0.0
+    },
+    "isRiding": false,
+    "battleActionCounter": {
+        "duration": 1.0,
+        "initialTime": 34337.078537,
+        "prevCounter": 0.9969960000016727,
+        "active": false,
+        "timeElapsedAtStop": 0.0,
+        "counter": 1.0
+    },
+    "spells": [
+        {
+            "level": 2,
+            "cooldownCounter": {
+                "duration": 0.75,
+                "initialTime": 109282.77445200001,
+                "prevCounter": 0.7409547999995993,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.75
+            },
+            "mpCost": 24,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 34,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": 0.25,
+                "initialTime": 109282.77445330001,
+                "prevCounter": 0.24326210000435822,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.25
+            },
+            "mpCost": 20,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 35,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": -0.0125,
+                "initialTime": 109282.77445380001,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": -0.0125
+            },
+            "mpCost": -1,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 36,
+            "isActive": false
+        },
+        {
+            "level": 2,
+            "cooldownCounter": {
+                "duration": 0.25,
+                "initialTime": 109282.7744542,
+                "prevCounter": 0.24383220000891015,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.25
+            },
+            "mpCost": 36,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 37,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": 0.25,
+                "initialTime": 109282.7744545,
+                "prevCounter": 0.2437981000111904,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.25
+            },
+            "mpCost": 30,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 38,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": 0.625,
+                "initialTime": 109282.774455,
+                "prevCounter": 0.6188664999936009,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.625
+            },
+            "mpCost": 30,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 39,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": 0.625,
+                "initialTime": 109282.77445540001,
+                "prevCounter": 0.6183691999904113,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.625
+            },
+            "mpCost": 50,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 40,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": 0.625,
+                "initialTime": 109282.77445580001,
+                "prevCounter": 0.6188905999879353,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.625
+            },
+            "mpCost": 50,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 41,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": -0.0125,
+                "initialTime": 109282.7744561,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": -0.0125
+            },
+            "mpCost": -1,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 42,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": 1.875,
+                "initialTime": 109282.7744565,
+                "prevCounter": 1.8672195999970427,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 1.875
+            },
+            "mpCost": 50,
+            "effectCounter": {
+                "duration": 150.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 43,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": 1.25,
+                "initialTime": 109282.7744569,
+                "prevCounter": 1.240849399997387,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 1.25
+            },
+            "mpCost": 70,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 44,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": 2.5,
+                "initialTime": 109282.77445730001,
+                "prevCounter": 2.488746100003482,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 2.5
+            },
+            "mpCost": 70,
+            "effectCounter": {
+                "duration": 50.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 45,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": 0.625,
+                "initialTime": 109282.77445770001,
+                "prevCounter": 0.6187232999945991,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.625
+            },
+            "mpCost": 70,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 46,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": 0.625,
+                "initialTime": 109282.7744581,
+                "prevCounter": 0.6191519999993034,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.625
+            },
+            "mpCost": 80,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 47,
+            "isActive": false
+        },
+        {
+            "level": 0,
+            "cooldownCounter": {
+                "duration": 1.25,
+                "initialTime": 109282.7744583,
+                "prevCounter": 1.2409602000116138,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 1.25
+            },
+            "mpCost": 80,
+            "effectCounter": {
+                "duration": -1.0,
+                "initialTime": 0.0,
+                "prevCounter": 0.0,
+                "active": false,
+                "timeElapsedAtStop": 0.0,
+                "counter": 0.0
+            },
+            "id": 48,
+            "isActive": false
+        }
+    ],
+    "collectLevel": [
+        0.0,
+        0.0,
+        0.0
+    ],
+    "level": 6,
+    "spellPoints": 7,
+    "sex": "M",
+    "combo": [
+        "Enter",
+        "S",
+        "Enter",
+        "E",
+        "MouseRightClick",
+        "Enter",
+        "S",
+        "Enter",
+        "E",
+        "MouseRightClick"
+    ],
+    "mpCounter": {
+        "duration": 0.0625,
+        "initialTime": 109287.1653472,
+        "prevCounter": 0.0625,
+        "active": true,
+        "timeElapsedAtStop": 0.0,
+        "counter": 0.013069699998595752
+    },
+    "actionCounter": {
+        "duration": 0.0375,
+        "initialTime": 109287.1792195,
+        "prevCounter": 0.0,
+        "active": true,
+        "timeElapsedAtStop": 0.0,
+        "counter": 0.0
+    },
+    "PA": {
+        "mp": {
+            "maxValue": 200,
+            "multiplier": 1.0,
+            "currentValue": 200
+        },
+        "thirst": {
+            "maxValue": 100,
+            "multiplier": 1.0,
+            "currentValue": 52
+        },
+        "exp": {
+            "maxValue": 1230,
+            "multiplier": 1.0,
+            "currentValue": 1000
+        },
+        "life": {
+            "maxValue": 100,
+            "multiplier": 1.0,
+            "currentValue": 100
+        },
+        "satiation": {
+            "maxValue": 100,
+            "multiplier": 1.0,
+            "currentValue": 78
+        }
+    },
+    "hpCounter": {
+        "duration": 20.0,
+        "initialTime": 0.0,
+        "prevCounter": 0.0,
+        "active": false,
+        "timeElapsedAtStop": 0.0,
+        "counter": 0.0
+    },
+    "name": "Player",
+    "step": 1,
+    "job": 1,
+    "satiationCounter": {
+        "duration": 5.0,
+        "initialTime": 109282.7743438,
+        "prevCounter": 4.390205900010187,
+        "active": true,
+        "timeElapsedAtStop": 0.0,
+        "counter": 4.404070500007947
+    },
+    "attPoints": 10,
+    "thirstCounter": {
+        "duration": 2.5,
+        "initialTime": 109285.28048890001,
+        "prevCounter": 1.8846863999933703,
+        "active": true,
+        "timeElapsedAtStop": 0.0,
+        "counter": 1.8985138999996707
+    },
+    "statistics": {
+        "bloodDamageDefended": 0,
+        "highestPhyDamageInflicted": 0,
+        "phyDamageReceived": 10,
+        "bloodDamageInflicted": 0,
+        "magDamageReceived": 0,
+        "phyDamageInflicted": 0,
+        "critDamageInflicted": 8,
+        "highestMagDamageInflicted": 0,
+        "poisonDamageInflicted": 0,
+        "numberBloodInflicted": 0,
+        "phyDamageDefended": 2,
+        "numberDodges": 0,
+        "numberPhyAtk": 0,
+        "bloodDamageReceived": 0,
+        "magDamageDefended": 0,
+        "numberDef": 0,
+        "numberPoisonInflicted": 0,
+        "critDamageDefended": 0,
+        "numberMagAtk": 24,
+        "numberCritInflicted": 1,
+        "critDamageReceived": 0,
+        "numberSilenceInflicted": 0,
+        "numberStunInflicted": 0,
+        "magDamageInflicted": 0,
+        "numberBlockInflicted": 0,
+        "poisonDamageDefended": 0,
+        "numberHitsInflicted": 2,
+        "poisonDamageReceived": 0
+    },
+    "BA": {
+        "agi": {
+            "baseValue": 4.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "magAtk": {
+            "baseValue": 15.0,
+            "bonus": 0.0,
+            "train": 0.6005798341539298
+        },
+        "poison": {
+            "duration": 0.0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkBonus": 0.0,
+            "basicDef": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicAtk": 0.0,
+            "basicDefChanceBonus": 0.0,
+            "basicDefBonus": 0.0
+        },
+        "critDef": {
+            "baseValue": 0.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "phyAtk": {
+            "baseValue": 6.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "stun": {
+            "duration": 0.0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicDefChanceBonus": 0.0
+        },
+        "blood": {
+            "duration": 0.0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkBonus": 0.0,
+            "basicDef": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicAtk": 0.0,
+            "basicDefChanceBonus": 0.0,
+            "basicDefBonus": 0.0
+        },
+        "atkSpeed": {
+            "baseValue": 1.0,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "critAtk": {
+            "baseValue": 0.1,
+            "bonus": 0.0,
+            "train": 0.0
+        },
+        "phyDef": {
+            "baseValue": 7.0,
+            "bonus": 0.0,
+            "train": 0.04939024390243903
+        },
+        "magDef": {
+            "baseValue": 13.0,
+            "bonus": 0.0,
+            "train": 0.04939024390243903
+        },
+        "dex": {
+            "baseValue": 9.0,
+            "bonus": 0.0,
+            "train": 0.04939024390243903
+        },
+        "block": {
+            "duration": 0.0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicDefChanceBonus": 0.0
+        },
+        "silence": {
+            "duration": 0.0,
+            "basicDefChance": 0.0,
+            "basicAtkChance": 0.0,
+            "basicAtkChanceBonus": 0.0,
+            "basicDefChanceBonus": 0.0
+        }
+    },
+    "status": {}
+}

@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import Battle.AtkResults;
@@ -246,9 +246,10 @@ public class Player extends LiveBeing
 		return new PersonalAttributes(life, mp, exp, satiation,	thirst) ;
 	}
 		
-	public void InitializeSpells()
-    {
-		spells = new ArrayList<>() ;	
+	
+	public static List<Spell> jobSpells(int job)
+	{
+		List<Spell> spells = new ArrayList<>() ;	
     	int numberSpells = NumberOfSpellsPerJob[job] ;
 
     	for (int i = 0 ; i <= numberSpells - 1 ; i += 1)
@@ -260,7 +261,8 @@ public class Player extends LiveBeing
     	
 		spells.get(0).incLevel(1) ;
 		
-    }
+		return spells ;
+	}
 	
 	private static AttributeIncrease calcAttributeIncrease(int job, int proJob)
 	{
@@ -325,6 +327,7 @@ public class Player extends LiveBeing
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
 	public double getDigBonus() { return digBonus ;}
 	public void setFocusWindow(GameWindow W) { focusWindow = W ;}
+	public void setSpells(List<Spell> spells) { this.spells = spells ;}
 
 	public Point center() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
 	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - size.height)) ;}
@@ -1657,6 +1660,7 @@ public class Player extends LiveBeing
 		content.put("collectLevel", collectLevel) ;
 		content.put("attPoints", attPoints) ;
 		content.put("spellPoints", spellPoints) ;
+		content.put("spells", spells.stream().map(spell -> spell.toJson()).toList()) ;
 		
 		if (equippedArrow != null)
 		{			
@@ -1704,7 +1708,8 @@ public class Player extends LiveBeing
 		double digBonus = (double) (Double) jsonData.get("digBonus") ;
 		boolean isRiding = (boolean) jsonData.get("isRiding") ;
 		int attPoints = (int) (long) jsonData.get("attPoints") ;
-		int spellPoints = (int) (long) jsonData.get("spellPoints") ;		
+		int spellPoints = (int) (long) jsonData.get("spellPoints") ;
+		JSONArray spellsData = (JSONArray) jsonData.get("spells") ;
 		Arrow equippedArrow = jsonData.get("equippedArrowID") != null ? Arrow.getAll()[(int) (long) jsonData.get("equippedArrowID")] : null ;
 		Statistics stats = Statistics.fromJson((JSONObject) jsonData.get("statistics")) ;
 		
@@ -1729,6 +1734,7 @@ public class Player extends LiveBeing
 		newPlayer.spellPoints = spellPoints ;
 		newPlayer.equippedArrow = equippedArrow ;
 		newPlayer.stats = stats ;
+		newPlayer.setSpells(spellsData.stream().map(spellData -> Spell.fromJson((JSONObject) spellData)).toList()) ;
 		newPlayer.setPA(PersonalAttributes.fromJson(PAData));
 		newPlayer.setBA(BattleAttributes.fromJson(BAData));
 

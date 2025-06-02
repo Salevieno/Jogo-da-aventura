@@ -16,10 +16,13 @@ import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
 import graphics2.Gif;
+import liveBeings.Buff;
 import liveBeings.Player;
+import liveBeings.Spell;
 import screen.Screen;
 import utilities.GameStates;
 import utilities.LiveInput;
+import utilities.Log;
 import utilities.Util;
 import utilities.UtilS;
 
@@ -85,13 +88,17 @@ public abstract class Opening
 		IconFunction loadSlot3 = () -> { Game.setPlayer(players[2]) ; Game.setSaveSlotInUse(2) ; isOver = true ;} ;
 		IconFunction loadGameAction = () -> {
 			newGame = false ;
+			// TODO
+			Buff.loadBuffs() ;
+			Buff.loadDebuffs() ;
+			Spell.load(Languages.portugues, Buff.allBuffs, Buff.allDebuffs) ;
 			players[0] = Player.load(1) ;
 			players[1] = Player.load(2) ;
 			players[2] = Player.load(3) ;
 			
-			System.out.println(players[0] != null ? "Info: save 1 loaded successfully!" : "Info: save 1 not found!");
-			System.out.println(players[1] != null ? "Info: save 2 loaded successfully!" : "Info: save 2 not found!");
-			System.out.println(players[2] != null ? "Info: save 3 loaded successfully!" : "Info: save 3 not found!");
+			Log.loadingStatus(players[0] != null, 1);
+			Log.loadingStatus(players[1] != null, 2);
+			Log.loadingStatus(players[2] != null, 3);
 	
 	    	loadSlotButtons.add(new GameButton(new Point(60, 100), Align.topLeft, "Load slot 1", LoadingSlot, LoadingSlotSelected, loadSlot1)) ;
 	    	loadSlotButtons.add(new GameButton(new Point(260, 100), Align.topLeft, "Load slot 2", LoadingSlot, LoadingSlotSelected, loadSlot2)) ;

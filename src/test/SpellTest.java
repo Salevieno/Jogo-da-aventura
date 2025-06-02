@@ -58,7 +58,7 @@ public class SpellTest
 		archerLevel0 = new Player("Player", "", 2) ;
 		animalLevel0 = new Player("Player", "", 3) ;
 		thiefLevel0 = new Player("Player", "", 4) ;
-		List.of(knightLevel0, mageLevel0, archerLevel0, animalLevel0, thiefLevel0).forEach(Player::InitializeSpells) ;
+//		List.of(knightLevel0, mageLevel0, archerLevel0, animalLevel0, thiefLevel0).forEach(Player::InitializeSpells) ;
 		
 		pet = new Pet(1) ;
 		
