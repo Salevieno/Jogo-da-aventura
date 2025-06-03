@@ -165,8 +165,8 @@ public class Pet extends LiveBeing
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	public boolean closeToPlayer(Point playerPos) { return Util.dist(pos, playerPos) <= 40 ; }
 	
-	public Point center() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
-	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - size.height)) ;}
+	public Point center() { return new Point(pos.x, pos.y - size.height / 2) ;}
+	public Point headPos() { return new Point(pos.x, pos.y - size.height) ;}
 
 	public Directions newMoveDirection(Directions originalDir)
 	{
@@ -199,30 +199,45 @@ public class Pet extends LiveBeing
 			return follow(pos, playerPos, step) ;
 		}
 	}
-	
+
+
 	public void think(boolean isInBattle, Point playerPos)
 	{
-		if (!isInBattle)
+		if (isInBattle)
 		{
-			if (!closeToPlayer(playerPos)) { setState(LiveBeingStates.moving) ; return ;}
-			
-			if (Util.chance(0.8)) { setState(LiveBeingStates.idle) ; return ;}
-			else { setState(LiveBeingStates.moving) ; return ;}
+			setState(LiveBeingStates.fighting) ;
+			return ;
 		}
 		
-		setState(LiveBeingStates.fighting) ;
+		if (!closeToPlayer(playerPos))
+		{
+			startMove() ;
+			return ;
+		}
+		
+		if (Util.chance(0.8))
+		{
+			setState(LiveBeingStates.idle) ;
+			return ;
+		}
+		else
+		{
+			startMove() ;
+			return ;
+		}
+		
 	}
 	
 	public void act(Player player)
 	{
-		if (state.equals(LiveBeingStates.moving))
+		if (isMoving())
 		{
 			stepCounter.start() ;
 			move(player.getPos(), player.getMap(), player.getOpponent(), player.getSuperElem()) ;
 			return ;
 		}
 		
-		if (state.equals(LiveBeingStates.fighting))
+		if (isFighting())
 		{
 			if (!player.getOpponent().isInRange(pos))
 			{
@@ -233,7 +248,12 @@ public class Pet extends LiveBeing
 		}
 		
 	}
-	
+
+	private void startMove()
+	{
+		stepCounter.restart() ;
+	}
+
 	public void move(Point playerPos, GameMap playerMap, Creature opponent, Elements playerElem)
 	{
 		Point nextPos = findNextPos(playerPos, opponent) ;
@@ -382,6 +402,11 @@ public class Pet extends LiveBeing
 		if (isDrunk())
 		{
 			displayDrunk() ;
+		}
+
+		if (isFighting())
+		{
+			displayBattleActionCounter() ;
 		}
 		
 		displayStatus() ;

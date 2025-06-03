@@ -94,8 +94,7 @@ public abstract class EvolutionSimulation
 		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		buttons = new ArrayList<>() ;
 		
-		player = Game.getPlayer() ;
-		player.setName("Player") ;
+		player = new Player("Player", "f", 0) ;
 		player.setPos(new Point(45, 230)) ;
 		pet = Game.getPet() ;
 		if (pet != null)
@@ -821,7 +820,7 @@ public abstract class EvolutionSimulation
 		{
 			EvolutionSimulation.act(player.getCurrentAction(), mousePos) ;
 		}
-		if (player.isInBattle())
+		if (player.isFighting())
 		{
 			player.getOpponent().activateSpellCounters() ;
 			if (player.canAtk())
@@ -833,7 +832,7 @@ public abstract class EvolutionSimulation
 			{
 				Battle.finishBattle(player, pet, player.getOpponent()) ;
 			}
-			if (!player.isInBattle())
+			if (!player.isFighting())
 			{				
 				EvolutionSimulation.updateFitness() ;
 				if (EvolutionSimulation.shouldUpdateGenes())
@@ -857,7 +856,7 @@ public abstract class EvolutionSimulation
 			EvolutionSimulation.checkBattleRepeat() ;
 		}
 		EvolutionSimulation.displayInterface(mousePos) ;
-		if (player.isInBattle())
+		if (player.isFighting())
 		{
 			if (player.isDefending()) { player.displayDefending() ;}
 			if (pet != null && pet.isDefending()) { pet.displayDefending() ;}
@@ -896,7 +895,6 @@ public abstract class EvolutionSimulation
 		{
 			stats.put("NPlayerMoves", stats.get("NPlayerMoves") + 1 ) ;
 			stats.put("NPlayer" + atkResults.getEffect(), stats.get("NPlayer" + atkResults.getEffect()) + 1 ) ;
-//			System.out.println("Player: " + attacker.getCurrentAction()) ;
 			switch (attacker.getCurrentAction())
 			{
 				case "Y":
@@ -915,7 +913,6 @@ public abstract class EvolutionSimulation
 		{
 			stats.put("NCreatureMoves", stats.get("NCreatureMoves") + 1 ) ;
 			stats.put("NCreature" + atkResults.getEffect(), stats.get("NCreature" + atkResults.getEffect()) + 1 ) ;
-//			System.out.println(Arrays.toString(atkResults.getStatus())) ;
 			if (atkResults != null && atkResults.getStatus() != null && 0 < atkResults.getStatus()[2])
 			{
 				System.out.println("Applied blood!" + (receiver.getStatus().get(Attributes.blood).isActive() ? " Already in blood" : ""));
@@ -948,7 +945,7 @@ public abstract class EvolutionSimulation
 		{
 			stats.put("CreatureMoves", stats.get("CreatureMoves") + 1) ;
 		}
-		if (!player.isInBattle() & 1 <= numberFights)
+		if (!player.isFighting() & 1 <= numberFights)
 		{
 			double battleTime = Math.round(100 * (battleClock) * Math.pow(10, -9)) / 100.0 ;
 			double totalBattleTime = stats.get("BattleTimeAvr") * (numberFights - 1) + battleTime ;
@@ -1117,7 +1114,7 @@ public abstract class EvolutionSimulation
 		drawBattleStatictics(new Point(440, 400)) ;
 
 		double battleTime = Math.round(100 * (battleClock) * Math.pow(10, -9)) / 100.0 ;
-		if (player.isInBattle())
+		if (player.isFighting())
 		{
 			battleTime = Math.round(100 * (System.nanoTime() - battleClock) * Math.pow(10, -9)) / 100.0 ;
 			GamePanel.DP.drawImage(fightingImage, new Point(300, 240), Align.center) ;

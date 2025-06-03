@@ -195,8 +195,8 @@ public abstract class LiveBeing implements Drawable
 	public void setCombo(List<String> newValue) {combo = newValue ;}
 	public void setCurrentAtkType(AtkTypes ba) { currentAtkType = ba ;}
 	
-	public boolean isMoving() { return state.equals(LiveBeingStates.moving) ;}
-	public boolean canAct() { return actionCounter.finished() & (state.equals(LiveBeingStates.idle) | state.equals(LiveBeingStates.moving) |state.equals(LiveBeingStates.fighting)) ;}
+	public boolean isMoving() { return stepCounter.isActive() ;}
+	public boolean canAct() { return actionCounter.finished() & (state.equals(LiveBeingStates.idle) | isMoving() | isFighting()) ;}
 	
 	public boolean isPlayerAlly() { return (this instanceof Player | this instanceof Pet) ;}
 	
@@ -351,13 +351,13 @@ public abstract class LiveBeing implements Drawable
 
 	public void displayState()
 	{
-		Point pos = new Point(540, 100) ;
+		Point displayPos = Util.Translate(pos, 0, size.height + 10) ;
 		Dimension size = new Dimension(60, 20) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String stateText = 0 < combo.size() ? state.toString() : "" ;
+		String stateText = state.toString() ;
 		
-		GamePanel.DP.drawRoundRect(pos, Align.center, size, 1, Game.palette[21], Game.palette[0], true);
-		GamePanel.DP.drawText(pos, Align.center, 0, stateText, font, Game.palette[0]) ;
+//		GamePanel.DP.drawRoundRect(displayPos, Align.center, size, 1, Game.palette[21], Game.palette[0], true);
+		GamePanel.DP.drawText(displayPos, Align.center, 0, stateText, font, Game.palette[0]) ;
 	}
 
 	public void displayUsedSpellMessage(Spell spell, Point pos, Color color)
@@ -579,14 +579,14 @@ public abstract class LiveBeing implements Drawable
 	{
 		if (currentAction != null)
 		{
-			if (getCombo().size() <= 9)
+			if (combo.size() <= 9)
 			{
-				getCombo().add(currentAction) ;
+				combo.add(currentAction) ;
 			}
 			else
 			{
-				getCombo().add(0, currentAction) ;
-				getCombo().remove(getCombo().size() - 1) ;
+				combo.add(0, currentAction) ;
+				combo.remove(combo.size() - 1) ;
 			}
 		}
 	}
@@ -657,6 +657,7 @@ public abstract class LiveBeing implements Drawable
 	public boolean isInRange(Point target) {return pos.distance(target) <= range ;}
 	public boolean isTouching(GroundTypes groundType) { return UtilS.isTouching(pos, map, groundType) ;}
 	public boolean isInside(GroundTypes groundType) { return UtilS.isInside(pos, map, groundType) ;}
+	public boolean isFighting() { return state.equals(LiveBeingStates.fighting) ;}
 	
 	public RelativePos relPosToGroundType(GroundTypes groundType)
 	{
@@ -833,7 +834,7 @@ public abstract class LiveBeing implements Drawable
 		GamePanel.DP.drawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null, 1.0) ;
 	}
 	
-	public void drawTimeBar2()
+	public void displayBattleActionCounter()
 	{
 		double rate = battleActionCounter.rate() ;
 		int stroke = 1 ;

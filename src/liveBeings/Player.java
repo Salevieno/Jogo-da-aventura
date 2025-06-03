@@ -165,10 +165,13 @@ public class Player extends LiveBeing
 		
 		this.name = name ;
 		this.job = job ;
-		proJob = 0 ;
-		level = 1 ;
+		this.proJob = 0 ;
+		this.level = 1 ;
 		
-		if (Game.getMaps() != null) { map = Game.getMaps()[job] ;}
+		if (Game.getMaps() != null)
+		{
+			map = Game.getMaps()[job] ;
+		}
 
 		pos = new Point();
 		dir = Directions.up;
@@ -375,8 +378,7 @@ public class Player extends LiveBeing
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
 	private boolean actionIsAMove() { return UtilS.actionIsArrowKey(currentAction) | List.of("W", "A", "S", "D").contains(currentAction) ;}
-	private boolean hitCreature() { return (usedPhysicalAtk() | usedSpell()) & closestCreature != null ;}
-	public boolean isInBattle() { return opponent != null | state.equals(LiveBeingStates.fighting) ;}
+	private boolean hitCreature() { return (usedPhysicalAtk() | usedSpell()) & closestCreature != null ;}	
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	private boolean canThrowItem(GeneralItem item)
 	{
@@ -640,7 +642,10 @@ public class Player extends LiveBeing
 		setPos(newPos) ;
 	}
 	
-	private void startMove() { state = LiveBeingStates.moving ; stepCounter.restart() ;}
+	private void startMove()
+	{
+		stepCounter.restart() ;
+	}
 
 	public void move(Pet pet)
 	{
@@ -652,7 +657,7 @@ public class Player extends LiveBeing
 			
 			return ;
 		}
-		
+
 		Point newPos = calcNewPos() ;
 
 		if (Game.getScreen().posIsWithinBorders(newPos))
@@ -666,8 +671,14 @@ public class Player extends LiveBeing
 
 		moveToNewMap(pos, dir, map) ;
 
-		if (pet != null) { pet.setPos(pos) ;}
-		if (opponent != null) { opponent.setFollow(false) ;}
+		if (pet != null)
+		{
+			pet.setPos(pos) ;
+		}
+		if (opponent != null)
+		{
+			opponent.setFollow(false) ;
+		}
 		resetClosestCreature() ;
 		resetOpponent() ;
 		
@@ -677,9 +688,10 @@ public class Player extends LiveBeing
 	{
 		opponent = newOpponent ;
 		opponent.setFollow(true) ;
-		state = LiveBeingStates.fighting ;
+		setState(LiveBeingStates.fighting) ;
 		
 		battleActionCounter.start() ;
+		opponent.setState(LiveBeingStates.fighting);
 		opponent.getBattleActionCounter().start() ;
 		if (Game.getPet() != null)
 		{
@@ -845,7 +857,7 @@ public class Player extends LiveBeing
 				return ;
 				
 			case tent:
-				if (isInBattle()) { return ;}		
+				if (isFighting()) { return ;}		
 				setState(LiveBeingStates.sleeping) ;
 				return ;
 				
@@ -864,9 +876,15 @@ public class Player extends LiveBeing
 	
 	public void doCurrentAction()
 	{
+		
+		if (isMoving())
+		{
+			move(Game.getPet()) ;
+			return ;
+		}
+		
 		switch (state)
 		{
-			case moving: move(Game.getPet()) ; return ;
 			case collecting: collect(currentCollectible) ; return ;
 			case fishing: fish() ; return ;
 			case openingChest: openChest() ; return ;
@@ -915,7 +933,7 @@ public class Player extends LiveBeing
 		
 		
 		// using spells
-		if (actionIsSpell() & !isInBattle())
+		if (actionIsSpell() & !isFighting())
 		{
 			Spell spell = getActiveSpells().get(SpellKeys.indexOf(currentAction));
 			if (canUseSpell(spell))
@@ -924,7 +942,7 @@ public class Player extends LiveBeing
 			}
 		}
 
-		if (hitCreature() & !isInBattle())
+		if (hitCreature() & !isFighting())
 		{
 			engageInFight(closestCreature) ;
 		}
@@ -1107,8 +1125,8 @@ public class Player extends LiveBeing
 	
 	public void checkMeet(Point mousePos)
 	{
-		if (isInBattle()) { return ;}
-		if (state != LiveBeingStates.idle & state != LiveBeingStates.moving ) { return ;}
+		if (isFighting()) { return ;}
+		if (state != LiveBeingStates.idle & !isMoving() ) { return ;}
 
 		meetWithTreasureChests() ;
 		
@@ -1468,7 +1486,7 @@ public class Player extends LiveBeing
 		{
 			GeneralItem genItem = (GeneralItem) item ;
 			
-			if (isInBattle() & canThrowItem(genItem))
+			if (isFighting() & canThrowItem(genItem))
 			{
 				throwItem(genItem, opponent) ;
 				
@@ -1629,11 +1647,50 @@ public class Player extends LiveBeing
 		PA.getThirst().setToMaximum() ;
 		resetStatus() ;
 		state = LiveBeingStates.idle ;
-		if (opponent != null) { opponent.setFollow(false) ;}
+		if (opponent != null)
+		{
+			opponent.setState(LiveBeingStates.idle) ;
+			opponent.setFollow(false) ;
+		}
 		resetOpponent() ;
 		resetPosition() ;
 	}
 		
+	
+	// TODO save and load
+/*
+	salvar um gameState ao invés de playerState, pois tem coisas que são do jogo:
+	 - Settings
+	 - Windows
+
+	Para salvar e carregar:
+	protected Map<Attributes, LiveBeingStatus> status ;
+	private BagWindow bag ;
+	private Map<QuestSkills, Boolean> questSkills ;
+	private List<Recipe> knownRecipes ;
+	private BestiaryWindow bestiary ;	
+	private List<Quest> quests ;
+	private Equip[] equips ;
+    private Item[] hotItems ;
+	private SettingsWindow settings ;
+
+	Para inicializar:
+	protected Elements[] elem ;
+	private double goldMultiplier ;
+	protected Hitbox hitbox ;
+	protected GameMap map ;
+	protected Point pos ;
+	protected Directions dir ;
+	protected LiveBeingStates state ;
+	protected String currentAction ;
+	protected AtkTypes currentAtkType ;
+	private Creature closestCreature ;
+   	private Creature opponent ;
+	private List<GameWindow> openWindows ;
+	private GameWindow focusWindow ;
+    private NPC npcInContact ;
+ */
+	
 	@SuppressWarnings("unchecked")
 	public void save(int slot)
 	{
@@ -1747,7 +1804,7 @@ public class Player extends LiveBeing
 	
 	private void drawRange()
 	{
-		GamePanel.DP.drawCircle(pos, (int)(2 * range), 2, null, Game.palette[job]) ;
+		GamePanel.DP.drawCircle(pos, (int)(2 * range), 2, null, Game.palette[10]) ;
 	}
 
 	public void drawWeapon(Point pos, Scale scale)
@@ -1764,20 +1821,18 @@ public class Player extends LiveBeing
 	
 	public void display(Point pos, Scale scale, Directions direction, boolean showRange)
 	{
-		double angle = Draw.stdAngle ;
-		
 
 		displayAttributes(settings.getAttDisplay()) ;
 		if (isRiding)
 		{
 			Point ridePos = Util.Translate(pos, -RidingImage.getWidth(null) / 2, RidingImage.getHeight(null) / 2) ;
-			GamePanel.DP.drawImage(RidingImage, ridePos, angle, scale, Align.bottomLeft) ;
+			GamePanel.DP.drawImage(RidingImage, ridePos, Draw.stdAngle , scale, Align.bottomLeft) ;
 		}
 		if (isDrunk())
 		{
 			displayDrunk() ;
 		}
-		movingAni.displayMoving(direction, pos, angle, Scale.unit, Align.bottomCenter) ;
+		movingAni.displayMoving(direction, pos, Draw.stdAngle , Scale.unit, Align.bottomCenter) ;
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
 //			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ; TODO pro arte - dragon aura
@@ -1786,7 +1841,11 @@ public class Player extends LiveBeing
 		if (showRange)
 		{
 			drawRange() ;
-		}		
+		}
+		if (isFighting())
+		{
+			displayBattleActionCounter() ;
+		}
 
 		if (weaponIsEquipped())
 		{
@@ -1794,6 +1853,7 @@ public class Player extends LiveBeing
 		}
 
 		displayStatus() ;
+		displayState() ;
 		if (Game.displayHitboxes)
 		{			
 			hitbox.display() ;

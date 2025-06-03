@@ -29,8 +29,8 @@ public class BestiaryWindow extends GameWindow
 		discoveredCreatures = new ArrayList<>() ;
 	}
 	
-	public List<CreatureType> getDiscoveredCreatures() { return discoveredCreatures ; }
-	public void addDiscoveredCreature(CreatureType newCreature) { discoveredCreatures.add(newCreature) ; }
+	public List<CreatureType> getDiscoveredCreatures() { return discoveredCreatures ;}
+	public void addDiscoveredCreature(CreatureType newCreature) { discoveredCreatures.add(newCreature) ;}
 	
 	public void navigate(String action)
 	{

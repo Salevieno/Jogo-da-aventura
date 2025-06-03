@@ -436,17 +436,6 @@ public abstract class Battle
 		
 		if (!attacker.isAlive()) { return ;}
 		
-//		attacker.drawTimeBar("Left", Game.palette[13]) ;
-		if (attacker instanceof Player)
-		{			
-			attacker.drawTimeBar2() ;
-		}
-		else
-		{
-			attacker.drawTimeBar("Left", Game.palette[13]) ;
-		}
-
-//		playAtkAnimations(attacker, receiver.center()) ;
 		if (attacker.isDefending())
 		{
 			attacker.displayDefending() ;
@@ -470,8 +459,7 @@ public abstract class Battle
 
 		attacker.updateCombo() ;
 		attacker.resetBattleActions() ;
-		
-//		Log.atkResults(attacker, atkResults) ;
+
 		EvolutionSimulation.updateBattleStats(attacker, receiver, atkResults) ;
 		
 		receiver.playDamageAnimation(damageStyle, atkResults, Game.palette[7]) ;
@@ -497,7 +485,10 @@ public abstract class Battle
 		}
 		
 		runTurn(player, creature) ;
-		if (pet != null) { runTurn(pet, creature) ;}
+		if (pet != null)
+		{
+			runTurn(pet, creature) ;
+		}
 		runTurn(creature, creatureTarget) ;
 		
 	}

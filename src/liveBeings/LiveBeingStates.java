@@ -8,7 +8,6 @@ public enum LiveBeingStates
 	fighting,
 	fishing,
 	idle,
-	moving,
 	openingChest,
 	sleeping
 	

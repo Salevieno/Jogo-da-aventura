@@ -150,7 +150,7 @@ public class Creature extends LiveBeing
 	
 	public void display(Point pos, Scale scale)
 	{
-		if (state.equals(LiveBeingStates.moving))
+		if (isMoving())
 		{
 			type.movingAni.displayMoving(dir, pos, 0, scale, Align.center) ;
 		}
@@ -158,12 +158,17 @@ public class Creature extends LiveBeing
 		{
 			type.movingAni.displayIdle(pos, 0, scale, Align.center) ;
 		}
+		if (isFighting())
+		{
+			displayBattleActionCounter() ;
+		}
 		if (isDrunk())
 		{
 			displayDrunk() ;
 		}
 //		displayAttributes(0) ;
 		displayStatus() ;
+		displayState() ;
 		if (Game.displayHitboxes)
 		{			
 			hitbox.display();
@@ -262,11 +267,11 @@ public class Creature extends LiveBeing
 	public void move(Point PlayerPos, GameMap map)
 	{
 
-		if (!state.equals(LiveBeingStates.moving)) { return ;}
+		if (!isMoving()) { return ;}
 
 		if (stepCounter.finished())
 		{
-			setState(LiveBeingStates.idle) ;
+//			setState(LiveBeingStates.idle) ;
 			stepCounter.reset() ;
 			return ;
 		}
@@ -290,8 +295,14 @@ public class Creature extends LiveBeing
 	
 	public void think()
 	{
-		if (Util.chance(0.6)) { setState(LiveBeingStates.idle) ; return ;}
-		else { setState(LiveBeingStates.moving) ; stepCounter.start() ; return ;}
+		if (Util.chance(0.6))
+		{
+//			setState(LiveBeingStates.idle) ;
+			return ;
+		}
+
+		stepCounter.start() ;
+		return ;		
 	}
 	
 	public void act()
@@ -383,6 +394,7 @@ public class Creature extends LiveBeing
 	
 	public void dies()
 	{
+		setState(LiveBeingStates.idle) ;
 		PA.getLife().setToMaximum() ;
 		PA.getMp().setToMaximum() ;
 		if (currentAtkType != null)

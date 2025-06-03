@@ -542,7 +542,7 @@ public class Game
 
 		pet.takeBloodAndPoisonDamage() ;
 		pet.updateCombo() ;
-		pet.think(player.isInBattle(), player.getPos()) ;
+		pet.think(player.isFighting(), player.getPos()) ;
 		pet.act(player) ;
 	}
 	
@@ -598,7 +598,7 @@ public class Game
 
 		player.checkMeet(GamePanel.getMousePos()) ;
 
-		if (player.isInBattle())
+		if (player.isFighting() && player.getOpponent() != null)
 		{
 			Battle.runBattle(player, pet, player.getOpponent()) ;
 			if (Battle.isOver(player, pet, player.getOpponent()))
