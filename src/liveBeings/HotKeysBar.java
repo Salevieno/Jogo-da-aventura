@@ -17,7 +17,7 @@ import utilities.Util;
 import utilities.UtilS;
 import windows.BagWindow;
 
-public class HotKeysBar
+public abstract class HotKeysBar
 {
 	private static final Font font ;
 	private static final Color textColor  ;

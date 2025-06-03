@@ -109,7 +109,7 @@ public class GamePanel extends JPanel
 		@Override
 		public void mouseClicked(MouseEvent evt)
 		{
-			game.mouseAction(evt) ;
+			game.mouseClickedAction(evt) ;
 		}
 
 		@Override

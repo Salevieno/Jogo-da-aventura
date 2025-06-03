@@ -37,7 +37,7 @@ public abstract class SideBar
 	private static final List<GameButton> buttons = new ArrayList<>() ;
 	private static final Color bgColor = Game.palette[1] ;
 	
-	public static final Dimension size = new Dimension(40, Game.getScreen().getSize().height) ;
+	public static final Dimension size = new Dimension(60, Game.getScreen().getSize().height) ;
 	public static final Image slotImage = UtilS.loadImage("\\SideBar\\" + "Slot.png") ;
 	public static final int sy = 10 ;
 	
@@ -81,7 +81,7 @@ public abstract class SideBar
 		addPetButton(player, Game.getPet()) ;
 		
 
-		Point iconPos = Util.Translate(barPos, 20, 45) ;
+		Point iconPos = Util.Translate(barPos, size.width / 2, 45) ;
 		buttons.add(new GameButton(iconPos, Align.topCenter, playerImage, playerImage, playerAction)) ;
 		iconPos.y += playerImage.getHeight(null) + 10 ;
 		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
@@ -107,7 +107,7 @@ public abstract class SideBar
 			((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
 			player.switchOpenClose(pet.getAttWindow()) ;
 		} ;
-		buttons.add(new GameButton(Util.Translate(barPos, 20, 10), Align.topCenter, petImage, petImage, petAction)) ;
+		buttons.add(new GameButton(Util.Translate(barPos, size.width / 2, 10), Align.topCenter, petImage, petImage, petAction)) ;
 	}
 	
 	public static void addMapButton(Player player)

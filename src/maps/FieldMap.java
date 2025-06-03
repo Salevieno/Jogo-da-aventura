@@ -122,11 +122,11 @@ public class FieldMap extends GameMap
 					break ;
 					
 				case 3:
-					map.addGroundType(new GroundType(GroundTypes.water, new Point(0, 96 + 269), new Dimension(64, 83))) ;
+					map.addGroundType(new GroundType(GroundTypes.water, new Point(282, 192 + 460), new Dimension(103, 85))) ;
 					break ;
 					
 				case 8, 12:
-					map.addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
+					map.addGroundType(new GroundType(GroundTypes.water, new Point(282, Sky.height + 460), new Dimension(140, 480 - Sky.height))) ;
 					break ;
 					
 				case 22:

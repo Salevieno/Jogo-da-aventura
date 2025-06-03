@@ -30,8 +30,8 @@ public class Sky
 	static
 	{
 		dayCounter = new GameTimer(600) ;
-		height = (int)(0.2 * Game.getScreen().getSize().height) ;
-		size = new Dimension(Game.getScreen().getSize().width - 40, height) ;
+		height = 192 ;
+		size = new Dimension(Game.getScreen().getSize().width - 60, height) ;
 		cloudImage1 = UtilS.loadImage("\\Sky\\" + "Cloud1.png") ;
 		cloudImage2 = UtilS.loadImage("\\Sky\\" + "Cloud2.png") ;
 		cloudImage3 = UtilS.loadImage("\\Sky\\" + "Cloud3.png") ;

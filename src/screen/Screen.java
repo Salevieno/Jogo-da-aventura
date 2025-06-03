@@ -28,11 +28,10 @@ public class Screen
 	public Point getCenter() {return center ;}
 	public Point getMapCenter() {return mapCenter ;}
 	public Point2D.Double getScale() {return scale ;}
-	public void setSize(Dimension D) {size = D ;}
 	public void setBorders(int[] B) {borders = B ;}
 	public void calcCenter() {center = new Point(size.width / 2, size.height / 2) ;}
-	public void setMapCenter() {mapCenter = new Point((size.width - 40) / 2, (size.height + borders[1]) / 2) ;}
-	public Dimension mapSize() { return new Dimension(size.width - 40, size.height - borders[1]) ;}
+	public void setMapCenter() {mapCenter = new Point((size.width - 60) / 2, (size.height + borders[1]) / 2) ;}
+	public Dimension mapSize() { return new Dimension(size.width - 60, size.height - borders[1]) ;}
 	
 	
 	private static Point2D.Double calcScale()

@@ -366,7 +366,7 @@ public class Game
 		{
 			case 0:
 				sky = new Sky() ;
-				screen.setBorders(new int[] { 0, Sky.height, screen.getSize().width - 40, screen.getSize().height }) ;
+				screen.setBorders(new int[] {0 + 20, Sky.height + 20, screen.getSize().width - 60 - 20, screen.getSize().height - 20}) ;
 				screen.setMapCenter() ;
 				Log.loadTime("initial stuff", initialTime) ;
 				return ;
@@ -778,7 +778,7 @@ public class Game
 		player.setCurrentAction(KeyEvent.getKeyText(keyCode)) ;
 	}
 	
-	protected void mouseAction(MouseEvent evt)
+	protected void mouseClickedAction(MouseEvent evt)
 	{
 		if (evt.getButton() == 1)
 		{
@@ -789,6 +789,7 @@ public class Game
 			player.setCurrentAction("MouseRightClick") ;
     		player.setPos(GamePanel.getMousePos()) ;
     		Log.attributes(player) ;
+    		System.out.println("map: " + player.getMap().getName());
     		if (pet != null)
     		{
     			pet.setPos(player.getPos()) ;
