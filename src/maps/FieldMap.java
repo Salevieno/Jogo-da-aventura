@@ -67,7 +67,7 @@ public class FieldMap extends GameMap
 		this.npcs = npcs ;
 	}
 
-
+	@SuppressWarnings("unchecked")
 	public static FieldMap[] load(NPCType[] npcTypes)
 	{
 		JSONArray input = Util.readJsonArray(dadosPath + "mapsField.json") ;
@@ -105,7 +105,7 @@ public class FieldMap extends GameMap
 				creatureIDs[i] = (int) (long) creatures.get(i) ;
 			}
 
-			JSONArray listNPCs = (JSONArray) mapData.get("NPCs") ;
+			// JSONArray listNPCs = (JSONArray) mapData.get("NPCs") ;
 			List<NPC> npcs = FieldMap.createQuestNPCs(id, npcTypes) ;
 //			List<NPCs> npcs = new ArrayList<>() ;
 //			for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)

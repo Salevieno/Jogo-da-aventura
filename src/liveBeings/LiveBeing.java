@@ -81,8 +81,8 @@ public abstract class LiveBeing implements Drawable
 	public static final List<String> SpellKeys = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12") ;
 
 	protected static final Gif levelUpGif = new Gif("Level up", UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 170, false, false) ;
-	private static final Gif phyHitGif = new Gif("phyHit", UtilS.loadImage("\\Battle\\" + "PhysicalHit.gif"), (int) (75 / 1.5), false, false) ;
-	private static final Gif magHitGif = new Gif("magHit", UtilS.loadImage("\\Battle\\" + "SpellHit.gif"), (int) (90 / 1.5), false, false) ;
+	// private static final Gif phyHitGif = new Gif("phyHit", UtilS.loadImage("\\Battle\\" + "PhysicalHit.gif"), (int) (75 / 1.5), false, false) ;
+	// private static final Gif magHitGif = new Gif("magHit", UtilS.loadImage("\\Battle\\" + "SpellHit.gif"), (int) (90 / 1.5), false, false) ;
 	
 	
 	public LiveBeing(PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, AttributesWindow attWindow)
@@ -352,7 +352,7 @@ public abstract class LiveBeing implements Drawable
 	public void displayState()
 	{
 		Point displayPos = Util.Translate(pos, 0, size.height + 10) ;
-		Dimension size = new Dimension(60, 20) ;
+		// Dimension size = new Dimension(60, 20) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String stateText = state.toString() ;
 		

@@ -1041,15 +1041,14 @@ public abstract class EvolutionSimulation
 	    }
 	}
 	
-	private static void printCreaturesPowerList()
-	{
-		for (int i = 0 ; i <= CreatureType.all.size() - 1; i += 1)
-		{
-			Creature creature = new Creature(CreatureType.all.get(i)) ;
-			System.out.println(creature.totalPower()) ;
-		}
-		
-	}
+	// private static void printCreaturesPowerList()
+	// {
+	// 	for (int i = 0 ; i <= CreatureType.all.size() - 1; i += 1)
+	// 	{
+	// 		Creature creature = new Creature(CreatureType.all.get(i)) ;
+	// 		System.out.println(creature.totalPower()) ;
+	// 	}		
+	// }
 	
 	public static void drawBar(Point pos, int currentHeight, int maxHeight, Color color)
 	{

@@ -199,8 +199,8 @@ public class SpellsTreeWindow extends GameWindow
 		Image displayImage = tab == 0 ? tab0Image : tab1Image ;
 		Color tabTextColor = Game.palette[21] ;
 		GamePanel.DP.drawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
-		GamePanel.DP.drawText(tab1Pos, Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
-		GamePanel.DP.drawText(tab2Pos, Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
+		GamePanel.DP.drawText(tab1Pos, Align.center, 90, "Basic", largeFont, tab == 0 ? Game.selColor : tabTextColor);
+		GamePanel.DP.drawText(tab2Pos, Align.center, 90, "Pro", largeFont, tab == 1 ? Game.selColor : tabTextColor);
 	}
 	
 	public List<Spell> basicSpells()

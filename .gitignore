@@ -1,2 +1,6 @@
 
-json-simple-1.1.1.jar
+# jar files
+*.jar
+
+# Class files
+*.class

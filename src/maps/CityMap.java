@@ -1,6 +1,5 @@
 package maps;
 
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -14,12 +13,11 @@ import org.json.simple.JSONObject;
 import components.Building;
 import components.BuildingNames;
 import components.BuildingType;
-import components.NPCType;
 import components.NPC;
+import components.NPCType;
 import items.Fab;
 import items.GeneralItem;
 import main.Game;
-import screen.Sky;
 import utilities.Util;
 import utilities.UtilS;
 

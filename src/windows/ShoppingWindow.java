@@ -164,7 +164,7 @@ public class ShoppingWindow extends GameWindow
 			Point coinPos = Util.Translate(pricePos, 10, 0) ;
 			
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(100, 10), i) ;
-			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? selColor : stdColor ;
+			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? Game.selColor : stdColor ;
 			GamePanel.DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
 			GamePanel.DP.drawImage(bagItem.getImage(), itemPos, angle, Scale.unit, Align.center) ;
 			GamePanel.DP.drawText(namePos, Align.centerLeft, angle, bagItem.getName() + qtdItem, stdFont, itemColor) ;

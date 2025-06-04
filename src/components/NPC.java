@@ -58,7 +58,6 @@ public class NPC
 	public static final Image speakingBubble = UtilS.loadImage("\\NPCs\\" + "SpeechBubble.png") ;
 	public static final Image choicesWindow = UtilS.loadImage("\\NPCs\\" + "ChoicesWindow.png") ;
 	private static final Color stdColor = Game.palette[0] ;
-	private static final Color selColor = Game.palette[18] ;
 
 	public NPC(NPCType type, Point pos)
 	{
@@ -164,6 +163,7 @@ public class NPC
 		return null ;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadText(JSONObject textData, Object key, Map <TextCategories, String[]> allText, TextCategories catName)
 	{
 		JSONArray npcData = (JSONArray) textData.get(key) ;

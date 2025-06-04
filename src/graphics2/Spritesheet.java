@@ -1,9 +1,6 @@
 package graphics2;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import utilities.Util;
 import utilities.UtilS;
@@ -18,18 +15,18 @@ public class Spritesheet
         sheet = Util.toBufferedImage(img) ;
     }
     
-    private static BufferedImage load(String path)
-    {
-        try
-        {
-            return ImageIO.read(Spritesheet.class.getResource(path)) ;
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace() ;
-            return null ;
-        }
-    }
+    // private static BufferedImage load(String path)
+    // {
+    //     try
+    //     {
+    //         return ImageIO.read(Spritesheet.class.getResource(path)) ;
+    //     }
+    //     catch (IOException e)
+    //     {
+    //         e.printStackTrace() ;
+    //         return null ;
+    //     }
+    // }
 
     public BufferedImage getSprite(int x, int y, int width, int height)
     {

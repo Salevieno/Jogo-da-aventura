@@ -4,8 +4,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
-import org.json.simple.JSONObject;
-
 import attributes.BattleAttributes;
 import graphics.Align;
 import graphics2.Draw;
@@ -13,7 +11,6 @@ import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
 import utilities.Elements;
-import utilities.GameTimer;
 import utilities.Util;
 import utilities.UtilS;
 

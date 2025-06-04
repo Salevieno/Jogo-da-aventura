@@ -12,7 +12,6 @@ import graphics.Scale;
 import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
-import main.TextCategories;
 import screen.SideBar;
 import utilities.Util;
 import utilities.UtilS;
@@ -22,7 +21,7 @@ public abstract class SpellsBar
 	private static final int maxNumberRows ;
 	private static final Font titlefont ;
 	private static final Font font ;
-	private static final String title ;
+	// private static final String title ;
 	private static final Color textColor ;
 
 	private static final Image image ;
@@ -42,7 +41,7 @@ public abstract class SpellsBar
 		maxNumberRows = 8 ;
 		titlefont = new Font("SansSerif", Font.BOLD, 9) ;
 		font = new Font("SansSerif", Font.BOLD, 9) ;
-		title = Game.allText.get(TextCategories.spellsBar)[0] ;
+		// title = Game.allText.get(TextCategories.spellsBar)[0] ;
 		textColor = Game.palette[19] ;
 
 		image = UtilS.loadImage("\\SideBar\\" + "SpellsBar.png") ;

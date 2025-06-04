@@ -48,7 +48,6 @@ public abstract class GameWindow
 	protected static final Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 11) ;
 	protected static final Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 	protected static final Color stdColor = Game.palette[0] ;
-	protected static final Color selColor = Game.palette[18] ;
 	protected static final int border = 6 ;
 	protected static final int padding = 4 ;
 	
@@ -160,7 +159,7 @@ public abstract class GameWindow
 		item = 0 ;
 	}
 	
-	protected Color getTextColor(boolean isSelected) { return isSelected ? selColor : stdColor ;}
+	protected Color getTextColor(boolean isSelected) { return isSelected ? Game.selColor : stdColor ;}
 	
 	protected void checkMouseSelection(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
 	{

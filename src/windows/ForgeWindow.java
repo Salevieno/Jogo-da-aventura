@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
 
-import components.GameButton;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Animation;
@@ -29,7 +28,7 @@ public class ForgeWindow extends GameWindow
 	
 	private List<Equip> itemsForForge ;
 	private String message ;
-	private GameButton forgeButton ;
+	// private GameButton forgeButton ;
 	private BagWindow bag ;
 	private static final List<String> messages ;
 	
@@ -47,7 +46,7 @@ public class ForgeWindow extends GameWindow
 	{
 		super("Forge", windowPos, windowImage, 1, 1, 1, 1) ;
 		bag = null ;
-		forgeButton = new GameButton(new Point(200, 300), Align.topLeft, null, null, () -> {forge() ;}) ;
+		// forgeButton = new GameButton(new Point(200, 300), Align.topLeft, null, null, () -> {forge() ;}) ;
 		itemsForForge = null ;
 		message = messages.get(0) ;
 		item = 0 ;
@@ -197,7 +196,7 @@ public class ForgeWindow extends GameWindow
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(200, 10), i) ;
 			
 			Equip equip = itemsOnWindow.get(i) ;
-			Color itemColor = this.item == itemsOnWindow.indexOf(equip) ? selColor : stdColor ;
+			Color itemColor = this.item == itemsOnWindow.indexOf(equip) ? Game.selColor : stdColor ;
 			GamePanel.DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
 			GamePanel.DP.drawImage(equip.getImage(), itemPos, angle, Scale.unit, Align.center) ;
 			GamePanel.DP.drawText(namePos, Align.centerLeft, angle, equip.getName() + " + " + equip.getForgeLevel(), stdFont, itemColor) ;

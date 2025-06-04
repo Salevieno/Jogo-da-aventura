@@ -8,8 +8,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sound.sampled.Clip;
-
 import components.GameButton;
 import components.IconFunction;
 import graphics.Align;
@@ -49,11 +47,11 @@ public abstract class Opening
 
     private static final Font font ;
     private static final Font smallFont ;
-	private static final Image LoadingEnfeite ;
+	// private static final Image LoadingEnfeite ;
 	private static final Image LoadingSlot ;
 	private static final Image LoadingSlotSelected ;
-	private static final Clip thunderSound ;
-	private static final Clip introMusic ;
+	// private static final Clip thunderSound ;
+	// private static final Clip introMusic ;
 	
 	
 	static
@@ -63,12 +61,12 @@ public abstract class Opening
 		String path = Game.ImagesPath  + "\\Opening\\";
 		backgroundImage = Util.loadImage(path + "Opening.png") ;
 		openingGif = new Gif("Opening", Util.loadImage(path + "Opening.png"), 0.7, false, true) ;
-		LoadingEnfeite = UtilS.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
+		// LoadingEnfeite = UtilS.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
 		LoadingSlot = Util.loadImage(path + "LoadingSlot.png") ;
 		LoadingSlotSelected = Util.loadImage(path + "LoadingSlotSelected.png") ;
 
-		thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
-		introMusic = Music.loadMusicFile("intro.wav") ;
+		// thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
+		// introMusic = Music.loadMusicFile("intro.wav") ;
 		
 		GameButton.selectedIconID = 2 ;
     	step = 0 ;

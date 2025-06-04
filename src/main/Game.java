@@ -80,6 +80,9 @@ public class Game
 	// TODO settings outside the player
 	// TODO animations gif -> spritesheet
 	private static final String[] konamiCode = new String[] { "Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A" } ;
+	
+	public static Color[] palette ;
+	public static final Color selColor ;
 	private static final Color[] normalPalette ;
 	private static final Color[] konamiPalette ;
 
@@ -101,7 +104,6 @@ public class Game
 	public static GameTimer dayCounter = new GameTimer(600) ;
 
 
-	public static Color[] palette ;
 	public static Map<TextCategories, String[]> allText ;
 
 	private static Player player ;
@@ -128,6 +130,7 @@ public class Game
 		normalPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette4.png"), "Normal") ;
 		konamiPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Konami") ;
 		palette = normalPalette ;
+		selColor = Game.palette[18] ;
 		konamiCodeActive = false ;
 		allText = new HashMap<>() ;
 		shouldRepaint = false ;

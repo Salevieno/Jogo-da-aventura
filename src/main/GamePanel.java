@@ -15,7 +15,6 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JPanel;
 
 import graphics.DrawPrimitives;
-import graphics2.Draw;
 import utilities.GameTimer;
 import utilities.Util;
 
@@ -23,7 +22,6 @@ public class GamePanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 
-	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static Point mousePos ;
 	public static final DrawPrimitives DP ;
 	private static final GamePanel gamePanel = new GamePanel() ;
@@ -93,7 +91,6 @@ public class GamePanel extends JPanel
 		@Override
 		public void keyPressed(KeyEvent event)
 		{
-			shouldRepaint = true ;			
 			game.keyAction(event) ;
 		}
 

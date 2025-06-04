@@ -9,7 +9,6 @@ import java.util.Set;
 import org.json.simple.JSONObject;
 
 import attributes.Attributes;
-import attributes.BasicAttribute;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import liveBeings.LiveBeingStatus;

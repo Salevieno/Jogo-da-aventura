@@ -16,7 +16,6 @@ import graphics2.Drawable;
 import main.Game;
 import main.GamePanel;
 import utilities.Util;
-import utilities.UtilS;
 
 public class MapElement implements Drawable
 {
@@ -27,11 +26,11 @@ public class MapElement implements Drawable
 	protected Hitbox hitbox ;
 	private List<Collider> colliders ;
 
-	private static final Image knightsCityWallImage ;
+	// private static final Image knightsCityWallImage ;
 	
 	static
 	{
-		knightsCityWallImage = UtilS.loadImage("\\MapElements\\" + "Knight'sCityWall.png") ;
+		// knightsCityWallImage = UtilS.loadImage("\\MapElements\\" + "Knight'sCityWall.png") ;
 	}
 
 	public MapElement(int id, String name, Image image, Point topLeftPos)
@@ -56,20 +55,20 @@ public class MapElement implements Drawable
 	public Point center() { return new Point((int) (topLeft.x + 0.5 * image.getHeight(null)), (int) (topLeft.y + 0.5 * image.getHeight(null))) ;}
 	private boolean playerIsBehind(Point playerPos) { return Util.isInside(playerPos, topLeft, Util.getSize(image)) ;}
 
-	private static Image getImage(String name)
-	{
-//		Image[] grassImages = new Image[] {grassImage, grassImage2} ;
-//		Set<Image> grassImages = new HashSet<>(Set.of(grassImage, grassImage2)) ;
-		switch(name)
-		{
-			case "Knight'sCityWall": return knightsCityWallImage ;
-//			case "ForestTree": return treeImage ;
-//			case "grass": return grassImages.stream().skip(Util.randomInt(0, grassImages.size() - 1)).findFirst().get() ;
-//			case "rock": return rockImage ;
-//			case "treasureChest": return treasureChestsImage ;
-			default: return null;
-		}
-	}
+// 	private static Image getImage(String name)
+// 	{
+// //		Image[] grassImages = new Image[] {grassImage, grassImage2} ;
+// //		Set<Image> grassImages = new HashSet<>(Set.of(grassImage, grassImage2)) ;
+// 		switch(name)
+// 		{
+// 			case "Knight'sCityWall": return knightsCityWallImage ;
+// //			case "ForestTree": return treeImage ;
+// //			case "grass": return grassImages.stream().skip(Util.randomInt(0, grassImages.size() - 1)).findFirst().get() ;
+// //			case "rock": return rockImage ;
+// //			case "treasureChest": return treasureChestsImage ;
+// 			default: return null;
+// 		}
+// 	}
 	
 	private void addColliders(String name)
 	{

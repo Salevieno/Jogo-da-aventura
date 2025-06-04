@@ -25,7 +25,6 @@ import main.GamePanel;
 import main.TextCategories;
 import maps.FieldMap;
 import maps.GameMap;
-import screen.Sky;
 import utilities.AtkEffects;
 import utilities.GameTimer;
 import utilities.Util;
