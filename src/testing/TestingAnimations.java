@@ -2,8 +2,8 @@ package testing;
 
 import java.awt.Point;
 
-import Battle.AtkResults;
-import Battle.AtkTypes;
+import battle.AtkResults;
+import battle.AtkTypes;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
 import items.Item;

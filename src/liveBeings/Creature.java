@@ -9,15 +9,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import Battle.AtkResults;
-import Battle.AtkTypes;
-import Battle.Battle;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
+import battle.AtkResults;
+import battle.AtkTypes;
+import battle.Battle;
 import components.HitboxCircle;
 import components.HitboxRectangle;
 import graphics.Align;

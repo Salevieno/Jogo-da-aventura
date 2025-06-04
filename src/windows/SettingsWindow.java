@@ -7,7 +7,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Arrays;
 
-import Battle.Battle;
+import battle.Battle;
 import graphics.Align;
 import graphics2.Draw;
 import liveBeings.PlayerActions;

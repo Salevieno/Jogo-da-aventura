@@ -1,4 +1,4 @@
-package Battle;
+package battle;
 
 public enum BattleActions
 {

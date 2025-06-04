@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
-import Battle.AtkResults;
-import Battle.AtkTypes;
+import battle.AtkResults;
+import battle.AtkTypes;
 import main.Game;
 import main.TextCategories;
 import utilities.AtkEffects;

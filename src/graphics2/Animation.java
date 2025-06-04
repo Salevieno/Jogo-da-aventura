@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import Battle.AtkResults;
+import battle.AtkResults;
 import components.AnimationDisplayFunction;
 import items.Item;
 import liveBeings.Player;

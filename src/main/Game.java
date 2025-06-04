@@ -16,7 +16,7 @@ import java.util.Map ;
 import org.json.simple.JSONArray ;
 import org.json.simple.JSONObject ;
 
-import Battle.Battle;
+import battle.Battle;
 import components.Building ;
 import components.BuildingType ;
 import components.NPC ;
@@ -98,6 +98,7 @@ public class Game
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
+	public static GameTimer dayCounter = new GameTimer(600) ;
 
 
 	public static Color[] palette ;
@@ -109,7 +110,6 @@ public class Game
 	private static int saveSlotInUse = -1 ;
 
 	private static final Screen screen ;
-	private static Sky sky ;
 	private static CityMap[] cityMaps ;
 	private static FieldMap[] fieldMaps ;
 	private static SpecialMap[] specialMaps ;
@@ -151,7 +151,8 @@ public class Game
 	public static boolean getShouldRepaint() { return shouldRepaint ;}
 	public static int getSaveSlotInUse() { return saveSlotInUse ;}
 	public static void setSaveSlotInUse(int newSaveSlotInUse) { saveSlotInUse = newSaveSlotInUse ;}
-	
+
+	public static double dayTimeRate() { return dayCounter.rate() <= 0.5 ? dayCounter.rate() + 0.5 : dayCounter.rate() - 0.5 ;}
 	
 	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
 	public static void setState(GameStates newState) { state = newState ;}
@@ -167,13 +168,13 @@ public class Game
 
 	private static void konamiCode()
 	{
-		Sky.dayCounter.setDuration(6) ;
+		dayCounter.setDuration(6) ;
 		palette = konamiPalette ;
-		if (Sky.dayCounter.getCounter() % 1200 <= 300)
+		if (dayCounter.getCounter() % 1200 <= 300)
 		{
 			Draw.stdAngle += 0.04 ;
 		}
-		else if (Sky.dayCounter.getCounter() % 1200 <= 900)
+		else if (dayCounter.getCounter() % 1200 <= 900)
 		{
 			Draw.stdAngle -= 0.04 ;
 		}
@@ -365,7 +366,6 @@ public class Game
 		switch (step)
 		{
 			case 0:
-				sky = new Sky() ;
 				screen.setBorders(new int[] {0 + 20, Sky.height + 20, screen.getSize().width - 60 - 20, screen.getSize().height - 20}) ;
 				screen.setMapCenter() ;
 				Log.loadTime("initial stuff", initialTime) ;
@@ -438,6 +438,7 @@ public class Game
 				{
 					Music.SwitchMusic(player.getMap().getMusic()) ;
 				}
+				dayCounter.start() ;
 				Log.loadTime("last stuff", initialTime) ;
 				
 
@@ -456,9 +457,9 @@ public class Game
 
 	private void activateCounters()
 	{
-		if (Sky.dayCounter.finished())
+		if (dayCounter.finished())
 		{
-			Sky.dayCounter.restart() ;
+			dayCounter.restart() ;
 			NPC.renewStocks() ;
 		}
 		player.activateSpellCounters() ;
@@ -651,15 +652,13 @@ public class Game
 	
 	private void draw()
 	{
-//		Draw.map(player.getMap(), sky) ;
-
 		if (!player.getMap().getContinent().equals(Continents.cave))
 		{
-			sky.display() ;
+			screen.displaySky() ;
 		}
 		player.getMap().display() ;
 		player.getMap().displayGroundTypes() ;
-		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap(), sky) ;
+		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap()) ;
 		
 
 		List<Drawable> drawables = new ArrayList<>() ;

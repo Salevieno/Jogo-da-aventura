@@ -8,9 +8,9 @@ import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
 
-import Battle.AtkResults;
-import Battle.AtkTypes;
-import Battle.Battle;
+import battle.AtkResults;
+import battle.AtkTypes;
+import battle.Battle;
 import components.GameButton;
 import components.Hitbox;
 import graphics.Align;
@@ -232,14 +232,14 @@ public abstract class Draw
 		GamePanel.DP.drawRoundRect(pos, align, size, 1, Game.palette[3], Game.palette[0], true);
 	}
 	
-	public static void time(Sky sky)
+	public static void time()
 	{
-		float time = (float) Sky.dayTimeRate() ;
+		float time = (float) Game.dayTimeRate() ;
 		String message = (int) (24 * time) + ":" + (int) (24 * 60 * time % 60) ;
 		GamePanel.DP.drawText(Game.getScreen().pos(0, 0.99), Align.bottomLeft, stdAngle, message, stdFont, Game.palette[20]) ;
 	}
 	
-	public static void mapElements(Hitbox playerHitbox, Point playerPos, GameMap map, Sky sky)
+	public static void mapElements(Hitbox playerHitbox, Point playerPos, GameMap map)
 	{
 		map.displayNPCs(playerHitbox) ;
 		
@@ -249,7 +249,7 @@ public abstract class Draw
 			fm.displayCollectibles() ;
 		}
 		map.displayTudoEstaBem();
-		time(sky) ;
+		time() ;
 	}
 
 	public static void damageAnimation(Point initialPos, AtkResults atkResults, GameTimer counter, int style, Color color)

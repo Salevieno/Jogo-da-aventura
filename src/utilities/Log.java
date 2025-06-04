@@ -2,7 +2,7 @@ package utilities;
 
 import java.util.List;
 
-import Battle.AtkResults;
+import battle.AtkResults;
 import graphics2.Animation;
 import graphics2.Gif;
 import items.Item;

@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import Battle.AtkResults;
-import Battle.AtkTypes;
-import Battle.Battle;
 import attributes.Attributes;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
+import battle.AtkResults;
+import battle.AtkTypes;
+import battle.Battle;
 import components.Hitbox;
 import graphics.Align;
 import graphics.DrawPrimitives;

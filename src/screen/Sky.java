@@ -9,19 +9,17 @@ import graphics.Align;
 import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
-import utilities.GameTimer;
 import utilities.Util;
 import utilities.UtilS;
 
 public class Sky 
 {
-	public static GameTimer dayCounter ;
+	public final Dimension size ;
 	private static SkyComponent[] clouds;
 	private static SkyComponent[] stars ;
 	private static Color color ;
 
 	public static final int height ;
-	public static final Dimension size ;
 	public static final Image cloudImage1 ;
 	public static final Image cloudImage2 ;
 	public static final Image cloudImage3 ;
@@ -29,9 +27,7 @@ public class Sky
 	
 	static
 	{
-		dayCounter = new GameTimer(600) ;
 		height = 192 ;
-		size = new Dimension(Game.getScreen().getSize().width - 60, height) ;
 		cloudImage1 = UtilS.loadImage("\\Sky\\" + "Cloud1.png") ;
 		cloudImage2 = UtilS.loadImage("\\Sky\\" + "Cloud2.png") ;
 		cloudImage3 = UtilS.loadImage("\\Sky\\" + "Cloud3.png") ;
@@ -46,17 +42,15 @@ public class Sky
 		} ;
 	}
 	
-	public Sky ()
+	public Sky (int screenWidth)
 	{
-		dayCounter.start() ;
-		updateSkyColor() ;
+		size = new Dimension(screenWidth - 60, height) ;
     	
     	clouds = new SkyComponent[5] ;
 		for (int c = 0 ; c <= clouds.length - 1 ; c += 1)
 		{
 			Image image = randomCloudImage() ;
-			Point initPos = Game.getScreen().pos(Math.random(), 0) ;
-			initPos.y += 2 + (int) ((height - image.getHeight(null)) * Math.random()) ;
+			Point initPos = Util.RandomPos(new Point(), new Dimension(size.width, size.height - image.getHeight(null)), new Dimension(1, 1)) ;
 			Point speed = new Point((int) (1 + 2 * Math.random()), 0) ;
 	    	clouds[c] = new SkyComponent(image, initPos, speed) ;
 		}
@@ -64,13 +58,12 @@ public class Sky
     	stars = new SkyComponent[50] ;
 		for (int s = 0 ; s <= stars.length - 1 ; s += 1)
 		{
-			Point pos = Game.getScreen().pos(Math.random(), 0.01 + 0.18 * Math.random()) ;
+			Point pos = Util.RandomPos(new Point(), size, new Dimension(1, 1)) ;
 			Image image = randomStarImage() ;
 			stars[s] = new SkyComponent(image, pos, new Point(0, 0)) ;
 		}
 	}
 	
-	public static double dayTimeRate() { return dayCounter.rate() <= 0.5 ? dayCounter.rate() + 0.5 : dayCounter.rate() - 0.5 ;}
 	
 	private Image randomCloudImage()
 	{
@@ -91,7 +84,6 @@ public class Sky
 		return null ;
 	}
 	
-	public boolean isDay() { return (0.25 <= dayTimeRate() & dayTimeRate() <= 0.75) ;}
 	
 	private void resetCloudMovement(SkyComponent cloud)
 	{
@@ -102,6 +94,8 @@ public class Sky
 	
 	private boolean passedScreen(int x) { return Game.getScreen().mapSize().width <= x ;}
 	
+	private static boolean isDay() { return (0.25 <= Game.dayTimeRate() & Game.dayTimeRate() <= 0.75) ;}
+	
 	private void displayDaySky()
 	{
 		for (SkyComponent cloud : clouds)
@@ -111,14 +105,14 @@ public class Sky
 			{
 				resetCloudMovement(cloud) ;
 			}
-			double alpha = -16 * Math.pow(dayTimeRate(), 2) + 16 * dayTimeRate() - 3 ;
+			double alpha = -16 * Math.pow(Game.dayTimeRate(), 2) + 16 * Game.dayTimeRate() - 3 ;
 			cloud.display(Draw.stdAngle, alpha) ;
 		}
 	}
 	
 	private void displayNightSky()
 	{
-		double alpha = -16 * Math.pow(dayTimeRate() - 0.5, 2) + 16 * Math.abs(dayTimeRate() - 0.5) - 3 ;
+		double alpha = -16 * Math.pow(Game.dayTimeRate() - 0.5, 2) + 16 * Math.abs(Game.dayTimeRate() - 0.5) - 3 ;
 		
 		for (SkyComponent star : stars)
 		{
@@ -128,7 +122,7 @@ public class Sky
 	
 	private void updateSkyColor()
 	{
-		double mult = 1 - 1.8 * Math.abs(dayTimeRate() - 0.5) ;
+		double mult = 1 - 1.8 * Math.abs(Game.dayTimeRate() - 0.5) ;
 		int red = Math.max(0, Math.min((int)(Game.palette[21].getRed() * mult), 255)) ;
 		int green = Math.max(0, Math.min((int)(Game.palette[21].getGreen() * mult), 255)) ;
 		int blue = Math.max(0, Math.min((int)(Game.palette[21].getBlue() * mult), 255)) ;

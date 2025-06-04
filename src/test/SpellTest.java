@@ -9,9 +9,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import Battle.AtkResults;
-import Battle.Battle;
 import attributes.BattleAttributes;
+import battle.AtkResults;
+import battle.Battle;
 import components.SpellTypes;
 import items.Arrow;
 import items.Fab;

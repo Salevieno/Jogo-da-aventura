@@ -14,12 +14,14 @@ public class Screen
 	private Point center ;	// center of the entire screen, including the sky
 	private Point mapCenter ;	// center of the walkable map
 	private Point2D.Double scale ;
+	private Sky sky ;
 
 	public Screen(Dimension size, int[] borders)
 	{
 		this.size = size ;
 		this.borders = borders ;
 		this.scale = calcScale() ;
+		sky = new Sky(size.width) ;
 		calcCenter() ;
 	}
 
@@ -76,5 +78,10 @@ public class Screen
 	public Point getPointWithinBorders(double x, double y)
 	{
 		return new Point((int)(x * mapSize().width), (int)(borders[1] + y * mapSize().height)) ;
+	}
+	
+	public void displaySky()
+	{
+		sky.display() ;
 	}
 }
