@@ -66,6 +66,7 @@ import utilities.Log;
 import utilities.Util;
 import utilities.UtilS ;
 import windows.BankWindow ;
+import windows.PauseWindow;
 
 public class Game
 {
@@ -122,6 +123,8 @@ public class Game
 	private static Spell[] allSpells ;
 	private static Quest[] allQuests ;
 
+	private static final PauseWindow settingsWindow ;
+
 	static
 	{
 		Dimension windowSize = GameFrame.getWindowsize() ;
@@ -135,6 +138,8 @@ public class Game
 		allText = new HashMap<>() ;
 		shouldRepaint = false ;
 		dayCounter = new GameTimer(600) ;
+
+		settingsWindow = new PauseWindow() ;
 	}
 
 	public Game()
@@ -641,8 +646,6 @@ public class Game
 		player.resetAction() ;
 
 		SpriteAnimation.updateAll();
-		
-		draw() ;
 
 	}
 	
@@ -656,7 +659,6 @@ public class Game
 		player.getMap().displayGroundTypes() ;
 		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap()) ;
 		
-
 		List<Drawable> drawables = new ArrayList<>() ;
 		
 		if (player.getMap().isAField())
@@ -666,8 +668,7 @@ public class Game
 			{
 				drawables.add(creature) ;
 			}	
-		}
-		
+		}		
 
 		if (pet != null)
 		{
@@ -701,6 +702,11 @@ public class Game
 		
 		SideBar.display(player, pet, GamePanel.getMousePos()) ;
 		
+		if (settingsWindow.isOpen())
+		{
+			settingsWindow.display(GamePanel.getMousePos()) ;
+		}
+
 		if (debugMode)
 		{
 			screen.displayBorders() ;
@@ -714,27 +720,29 @@ public class Game
 			case opening:
 				Opening.run(player, GamePanel.getMousePos()) ;
 				shouldRepaint = true ;
-				break ;
+				return ;
 
 			case loading:
 				LoadingGame.run(player, GamePanel.getMousePos()) ;
 				shouldRepaint = true ;
-				break ;
+				return ;
 
 			case simulation:
 				EvolutionSimulation.run(GamePanel.getMousePos()) ;	
-				break ;
+				return ;
 
 			case running:
 				run() ;
-				break ;
+				draw() ;
+				return ;
 
 			case playingStopTimeGif:
 				playStopTimeGifs() ;	
-				break ;
+				return ;
 
-			case paused: break ;
-			default: break ;
+			case paused: return ;
+
+			default: return ;
 		}
 	}
 	
@@ -772,6 +780,7 @@ public class Game
 		if (keyCode == KeyEvent.VK_ESCAPE)
 		{
 //			MainGame3_4.closeGame() ;
+			settingsWindow.switchOpenClose() ;
 		}
 		
 		player.setCurrentAction(KeyEvent.getKeyText(keyCode)) ;

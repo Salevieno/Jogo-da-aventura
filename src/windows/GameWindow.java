@@ -90,6 +90,7 @@ public abstract class GameWindow
 	
 	public void open() { isOpen = true ;}
 	public void close() { isOpen = false ;}
+	public void switchOpenClose() { isOpen = !isOpen ;}
 	
 	protected void menuUp()
 	{
