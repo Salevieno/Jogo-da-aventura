@@ -1854,7 +1854,7 @@ public class Player extends LiveBeing
 
 		displayStatus() ;
 		displayState() ;
-		if (Game.displayHitboxes)
+		if (Game.debugMode)
 		{			
 			hitbox.display() ;
 		}

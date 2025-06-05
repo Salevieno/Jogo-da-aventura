@@ -95,13 +95,13 @@ public class Game
 
 	private static final GameStates mainState = GameStates.running ;
 	private static final boolean cheatMode = false ;
-	public static final boolean displayHitboxes = false;
+	public static final boolean debugMode = true;
 
 	private static GameStates state = GameStates.opening ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
-	public static GameTimer dayCounter = new GameTimer(600) ;
+	public static GameTimer dayCounter ;
 
 
 	public static Map<TextCategories, String[]> allText ;
@@ -134,6 +134,7 @@ public class Game
 		konamiCodeActive = false ;
 		allText = new HashMap<>() ;
 		shouldRepaint = false ;
+		dayCounter = new GameTimer(600) ;
 	}
 
 	public Game()
@@ -240,8 +241,6 @@ public class Game
 
 			allText.put(catName, listValues.toArray(new String[] {})) ;
 		}
-
-//		allText.entrySet().forEach(text -> System.out.println(text.getKey() + " " + Arrays.toString(text.getValue()))) ;
 
 	}
 
@@ -644,12 +643,6 @@ public class Game
 		SpriteAnimation.updateAll();
 		
 		draw() ;
-		
-		
-		
-//		player.display(player.getPos(), Scale.unit, player.getDir(), player.getSettings().getShowAtkRange()) ;
-//		player.getMap().displayBuildings(player.getHitbox(), player.getPos(), Arrays.asList(Game.getMaps()).indexOf(player.getMap())) ;
-
 
 	}
 	
@@ -708,6 +701,10 @@ public class Game
 		
 		SideBar.display(player, pet, GamePanel.getMousePos()) ;
 		
+		if (debugMode)
+		{
+			screen.displayBorders() ;
+		}
 	}
 
 	protected void update()

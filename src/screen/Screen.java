@@ -5,7 +5,10 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.geom.Point2D;
 
+import graphics.Align;
+import main.Game;
 import main.GameFrame;
+import main.GamePanel;
 
 public class Screen
 {
@@ -78,6 +81,12 @@ public class Screen
 	public Point getPointWithinBorders(double x, double y)
 	{
 		return new Point((int)(x * mapSize().width), (int)(borders[1] + y * mapSize().height)) ;
+	}
+
+	public void displayBorders()
+	{
+		Point botLeft = new Point(borders[0], borders[3]) ;
+		GamePanel.DP.drawRect(botLeft, Align.bottomLeft, new Dimension(borders[2] - borders[0], borders[3] - borders[1]), null, Game.palette[1]) ;
 	}
 	
 	public void displaySky()

@@ -766,7 +766,7 @@ public class NPC
 			Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey()) ;
 		}
 		
-		if (Game.displayHitboxes)
+		if (Game.debugMode)
 		{
 			hitbox.display() ;
 		}

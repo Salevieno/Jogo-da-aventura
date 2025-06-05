@@ -55,7 +55,7 @@ public class Collectible extends Item
 	public void display()
 	{
 		GamePanel.DP.drawImage(image, pos, Align.center) ;
-		if (Game.displayHitboxes)
+		if (Game.debugMode)
 		{
 			hitbox.display() ;
 		}

@@ -168,7 +168,7 @@ public class Creature extends LiveBeing
 //		displayAttributes(0) ;
 		displayStatus() ;
 		displayState() ;
-		if (Game.displayHitboxes)
+		if (Game.debugMode)
 		{			
 			hitbox.display();
 		}
