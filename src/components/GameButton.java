@@ -44,6 +44,7 @@ public class GameButton
 		this.alignment = alignment ;
 		this.topLeft = Util.getTopLeft(pos, alignment, size) ;
 		this.action = action ;
+		allButtons.add(this) ;
 	}
 	
 	public GameButton(Point pos, Align alignment, Image image, Image selectedImage, IconFunction action)
@@ -58,11 +59,20 @@ public class GameButton
 	public Image getSelectedImage() {return selectedImage ;}
 	public void setName(String newName) { name = newName ;}
 	public void setTopLeftPos(Point P) {topLeft = P ;}
-	
-	public Point getCenter() {return Util.Translate(topLeft, size.width / 2, size.height / 2) ;}
-	
-	public static void addToAllIconsList(GameButton icon) { allButtons.add(icon) ;}
 
+	public static boolean anyIsHovered(Point mousePos) { return allButtons.stream().filter(button -> button.isActive() && button.ishovered(mousePos)).findAny().isPresent() ;}
+	public static void updateMouseCursor(Point mousePos)
+	{
+		if (GameButton.anyIsHovered(GamePanel.getMousePos()))
+		{
+			GamePanel.setCursorToHand() ;
+		}
+		else
+		{
+			GamePanel.setCursorToDefault() ;
+		}
+	}
+	public Point getCenter() {return Util.Translate(topLeft, size.width / 2, size.height / 2) ;}	
 	public boolean ishovered(Point mousePos) { return Util.isInside(mousePos, topLeft, size) ;}
 	public boolean isClicked(Point mousePos, String action)
 	{
@@ -98,7 +108,6 @@ public class GameButton
 			GamePanel.DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.palette[5], Game.palette[0], true) ;
 			GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 		}
-		GamePanel.setCursorToHand() ;
 	}
 	
 	public void displayNotHovered(double angle, boolean displayText)
@@ -136,15 +145,6 @@ public class GameButton
 		if (name == null) { return ;}
 		
 		GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
-		
-		if (ishovered(mousePos))
-		{
-			GamePanel.setCursorToHand() ;
-		}
-		else
-		{
-			GamePanel.setCursorToDefault() ;
-		}
 	}
 	
 	public void displayHoverMessage()
@@ -159,7 +159,7 @@ public class GameButton
 	
 	@Override
 	public String toString() {
-		return "GameButton [name=" + name + "]";
+		return "GameButton name:" + name + "";
 	}
 
 

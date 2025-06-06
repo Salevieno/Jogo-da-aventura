@@ -26,7 +26,7 @@ public abstract class LoadingGame
     	Image startImage = Util.loadImage(path + "Start.png") ;
     	Image startImageSelected = Util.loadImage(path + "Start Selected.gif") ;
 		IconFunction startAction = () -> { loadingStep = 12 ;} ;
-    	startButton = new GameButton(Util.Translate(Game.getScreen().getCenter(), 0, 80), Align.center, "", startImage, startImageSelected, startAction) ;
+    	startButton = new GameButton(Util.Translate(Game.getScreen().getCenter(), 0, 80), Align.center, "start game", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
     	
 		LoadingGif = Util.loadImage(path + "Loading.gif") ;
@@ -46,6 +46,11 @@ public abstract class LoadingGame
 			Game.initialize(loadingStep) ;
 			loadingStep += 1 ;
 		}
+
+		if (startButton.isClicked(mousePos, player.getCurrentAction()))
+		{
+			startButton.act() ;
+		}
 		
 		if (loadingIsOver())
 		{
@@ -53,7 +58,8 @@ public abstract class LoadingGame
 		}
 
 		if (startGameButtonClicked())
-		{			
+		{
+			startButton.deactivate() ;			
 			player.startCounters() ;
 			Game.switchToMainState() ;
 		}
@@ -106,10 +112,6 @@ public abstract class LoadingGame
 		if (startButton.isActive())
 		{
 			startButton.display(0, true, mousePos) ;
-			if (startButton.isClicked(mousePos, action))
-			{
-				startButton.act() ;
-			}
 		}
 	}
 }

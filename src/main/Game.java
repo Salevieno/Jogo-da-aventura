@@ -19,6 +19,7 @@ import org.json.simple.JSONObject ;
 import battle.Battle;
 import components.Building ;
 import components.BuildingType ;
+import components.GameButton;
 import components.NPC ;
 import components.NPCType ;
 import components.Projectiles ;
@@ -715,6 +716,7 @@ public class Game
 
 	protected void update()
 	{
+		GameButton.updateMouseCursor(GamePanel.getMousePos()) ;
 		switch (state)
 		{
 			case opening:

@@ -81,11 +81,13 @@ public abstract class Opening
 		IconFunction portAction = () -> { } ;
 		IconFunction enAction = () -> { } ;
 		IconFunction newGameAction = () -> {} ;
-		IconFunction loadSlot1 = () -> { Game.setPlayer(players[0]) ; Game.setSaveSlotInUse(0) ; isOver = true ;} ;
-		IconFunction loadSlot2 = () -> { Game.setPlayer(players[1]) ; Game.setSaveSlotInUse(1) ; isOver = true ;} ;
-		IconFunction loadSlot3 = () -> { Game.setPlayer(players[2]) ; Game.setSaveSlotInUse(2) ; isOver = true ;} ;
+		IconFunction loadSlot1 = () -> { Game.setPlayer(players[0]) ; Game.setSaveSlotInUse(0) ; loadSlotButtons.forEach(GameButton::deactivate) ; isOver = true ;} ;
+		IconFunction loadSlot2 = () -> { Game.setPlayer(players[1]) ; Game.setSaveSlotInUse(1) ; loadSlotButtons.forEach(GameButton::deactivate) ; isOver = true ;} ;
+		IconFunction loadSlot3 = () -> { Game.setPlayer(players[2]) ; Game.setSaveSlotInUse(2) ; loadSlotButtons.forEach(GameButton::deactivate) ; isOver = true ;} ;
 		IconFunction loadGameAction = () -> {
 			newGame = false ;
+			buttons.get(2).deactivate() ;
+			buttons.get(3).deactivate() ;
 			// TODO
 			Buff.loadBuffs() ;
 			Buff.loadDebuffs() ;
@@ -152,11 +154,7 @@ public abstract class Opening
 			buttons.get(buttons.size() - 1).deactivate() ;
 		
 		}
-		
-    	for (GameButton button : buttons)
-    	{
-     		GameButton.addToAllIconsList(button) ;
-    	}
+
     	buttons.get(0).activate() ;
     	buttons.get(1).activate() ;
     	buttons.get(2).activate() ;

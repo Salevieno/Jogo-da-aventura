@@ -35,7 +35,7 @@ public class Screen
 	public Point2D.Double getScale() {return scale ;}
 	public void setBorders(int[] B) {borders = B ;}
 	public void calcCenter() {center = new Point(size.width / 2, size.height / 2) ;}
-	public void setMapCenter() {mapCenter = new Point((size.width - 60) / 2, (size.height + borders[1]) / 2) ;}
+	public void setMapCenter() {mapCenter = new Point((size.width - 60) / 2, (size.height + Sky.height) / 2) ;}
 	public Dimension mapSize() { return new Dimension(size.width - 60, size.height - borders[1]) ;}
 	
 	

@@ -1,11 +1,9 @@
 package windows;
 
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 
 import graphics.Align;
-import main.Game;
 import main.GamePanel;
 import utilities.UtilS;
 
