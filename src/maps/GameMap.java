@@ -40,7 +40,7 @@ public class GameMap
 	protected Image image ;
 	protected Clip music ;
 	
-	protected List<GroundType> groundTypes ;	
+	protected List<GroundRegion> groundTypes ;	
 	protected List<MapElement> mapElems ;
 	protected List<Building> buildings ;
 	protected List<NPC> npcs ;
@@ -153,7 +153,7 @@ public class GameMap
 
 	}
 	
-	public void addGroundType (GroundType newGroundType) { groundTypes.add(newGroundType) ;}
+	public void addGroundType (GroundRegion newGroundType) { groundTypes.add(newGroundType) ;}
 	public void removeMapElem (MapElement mapElem) { mapElems.remove(mapElem) ;}
 	
 // 	public void initializeGroundTypes(int SkyHeight, Dimension screenDim)
@@ -475,11 +475,11 @@ public class GameMap
  		return allColliders ;
  	}
 
-	public GroundTypes groundTypeAtPoint(Point pos)
+	public GroundType groundTypeAtPoint(Point pos)
 	{
 		if (!hasGroundTypes()) { return null ;}
 		
-		for (GroundType groundType : groundTypes)
+		for (GroundRegion groundType : groundTypes)
 		{
 			if (!groundType.containsPoint(pos)) { continue ;}
 			
@@ -598,7 +598,7 @@ public class GameMap
 	public Continents getContinent() {return continent ;}
 	public Image getimage() {return image ;}
 	public Clip getMusic() { return music ;}
-	public List<GroundType> getgroundTypes() {return groundTypes ;}
+	public List<GroundRegion> getgroundTypes() {return groundTypes ;}
 	public int[] getConnections() {return connections ;}	
 	public List<MapElement> getMapElem() {return mapElems ;}
 	public List<NPC> getNPCs() {return npcs ;}

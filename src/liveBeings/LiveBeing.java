@@ -28,8 +28,8 @@ import main.Game;
 import main.GamePanel;
 import maps.Continents;
 import maps.GameMap;
+import maps.GroundRegion;
 import maps.GroundType;
-import maps.GroundTypes;
 import utilities.AtkEffects;
 import utilities.Directions;
 import utilities.Elements;
@@ -655,17 +655,17 @@ public abstract class LiveBeing implements Drawable
 	public boolean isDrunk() {return drunk.isActive() ;}
 	public boolean isInCloseRange(Point target) {return pos.distance(target) <= size.getWidth() ;}
 	public boolean isInRange(Point target) {return pos.distance(target) <= range ;}
-	public boolean isTouching(GroundTypes groundType) { return UtilS.isTouching(pos, map, groundType) ;}
-	public boolean isInside(GroundTypes groundType) { return UtilS.isInside(pos, map, groundType) ;}
+	public boolean isTouching(GroundType groundType) { return UtilS.isTouching(pos, map, groundType) ;}
+	public boolean isInside(GroundType groundType) { return UtilS.isInside(pos, map, groundType) ;}
 	public boolean isFighting() { return state.equals(LiveBeingStates.fighting) ;}
 	
-	public RelativePos relPosToGroundType(GroundTypes groundType)
+	public RelativePos relPosToGroundType(GroundType groundType)
 	{
 
 		if (isTouching(groundType)) { return null ;}
 		
 		RelativePos relPos = null ;
-		for (GroundType gt : map.getgroundTypes())
+		for (GroundRegion gt : map.getgroundTypes())
 		{
 			relPos = UtilS.calcRelativePos(pos, gt.getTopLeftPos(), gt.getSize()) ;
 		}

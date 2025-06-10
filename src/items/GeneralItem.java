@@ -15,7 +15,7 @@ import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
-import maps.GroundTypes;
+import maps.GroundType;
 import utilities.Elements;
 import utilities.Util;
 import utilities.UtilS;
@@ -116,7 +116,7 @@ public class GeneralItem extends Item
 				return ;
 				
 			case 26, 27, 28: 
-				if (!(user instanceof Player) | !user.isTouching(GroundTypes.water)) { return ;}
+				if (!(user instanceof Player) | !user.isTouching(GroundType.water)) { return ;}
 				
 				((Player) user).getBag().add(AllGeneralItems[id + 3], 1) ;
 				return ;

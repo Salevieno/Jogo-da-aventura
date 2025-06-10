@@ -55,7 +55,7 @@ import maps.Collectible;
 import maps.Continents;
 import maps.FieldMap;
 import maps.GameMap;
-import maps.GroundTypes;
+import maps.GroundType;
 import maps.TreasureChest;
 import screen.Sky;
 import utilities.AtkEffects;
@@ -541,14 +541,14 @@ public class Player extends LiveBeing
 
 	public void applyAdjacentGroundEffect()
 	{
-		if (isInside(GroundTypes.lava) & superElem != null)
+		if (isInside(GroundType.lava) & superElem != null)
 		{
 			if (!superElem.equals(Elements.fire))
 			{
 				PA.getLife().decTotalValue(5) ;
 			}
 		}
-		if (isTouching(GroundTypes.water))
+		if (isTouching(GroundType.water))
 		{
 			PA.getThirst().incCurrentValue(1) ;
 		}
@@ -842,7 +842,7 @@ public class Player extends LiveBeing
 				return ;
 				
 			case interact:
-				if (!bag.contains(Item.allItems.get(1340)) | !isTouching(GroundTypes.water)) { return ;}
+				if (!bag.contains(Item.allItems.get(1340)) | !isTouching(GroundType.water)) { return ;}
 				setState(LiveBeingStates.fishing) ; return ;
 				
 			case map:

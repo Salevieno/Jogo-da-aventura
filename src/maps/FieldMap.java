@@ -118,19 +118,19 @@ public class FieldMap extends GameMap
 			switch (id)
 			{
 				case 2:
-					map.addGroundType(new GroundType(GroundTypes.water, new Point(551, 96 + 269), new Dimension(49, 83))) ;
+					map.addGroundType(new GroundRegion(GroundType.water, new Point(551, 96 + 269), new Dimension(49, 83))) ;
 					break ;
 					
 				case 3:
-					map.addGroundType(new GroundType(GroundTypes.water, new Point(282, 192 + 460), new Dimension(103, 85))) ;
+					map.addGroundType(new GroundRegion(GroundType.water, new Point(282, 192 + 460), new Dimension(103, 85))) ;
 					break ;
 					
 				case 8, 12:
-					map.addGroundType(new GroundType(GroundTypes.water, new Point(282, Sky.height + 460), new Dimension(140, 480 - Sky.height))) ;
+					map.addGroundType(new GroundRegion(GroundType.water, new Point(282, Sky.height + 460), new Dimension(140, 480 - Sky.height))) ;
 					break ;
 					
 				case 22:
-					map.addGroundType(new GroundType(GroundTypes.water, new Point(50, 250), new Dimension(120, 210))) ;
+					map.addGroundType(new GroundRegion(GroundType.water, new Point(50, 250), new Dimension(120, 210))) ;
 					break ;
 					
 				default:

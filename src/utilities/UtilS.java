@@ -11,8 +11,8 @@ import java.util.List;
 
 import main.Game;
 import maps.GameMap;
+import maps.GroundRegion;
 import maps.GroundType;
-import maps.GroundTypes;
 
 public abstract class UtilS 
 {
@@ -118,7 +118,7 @@ public abstract class UtilS
 		return null ;
 	}
 		
- 	public static RelativePos checkAdjacentGround(Point pos, GameMap map, GroundTypes targetGroundType)
+ 	public static RelativePos checkAdjacentGround(Point pos, GameMap map, GroundType targetGroundType)
 	{
  		
  		Point userPos = new Point(pos) ;
@@ -127,7 +127,7 @@ public abstract class UtilS
 		
 		if (map.getgroundTypes() == null) { return null ;}
 
-		for (GroundType groundType : map.getgroundTypes())
+		for (GroundRegion groundType : map.getgroundTypes())
 		{
 			if (!groundType.getType().equals(targetGroundType)) { continue ;}	
 			
@@ -138,7 +138,7 @@ public abstract class UtilS
 		
 	}
  	
- 	public static boolean isTouching(Point pos, GameMap map, GroundTypes groundType)
+ 	public static boolean isTouching(Point pos, GameMap map, GroundType groundType)
  	{
  		RelativePos adjGround = checkAdjacentGround(pos, map, groundType) ;
  		
@@ -149,7 +149,7 @@ public abstract class UtilS
  		return adjPositions.contains(adjGround) ;
  	}
  	
- 	public static boolean isInside(Point pos, GameMap map, GroundTypes groundType)
+ 	public static boolean isInside(Point pos, GameMap map, GroundType groundType)
  	{
  		RelativePos adjGround = checkAdjacentGround(pos, map, groundType) ;
  		
