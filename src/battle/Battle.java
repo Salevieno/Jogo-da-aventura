@@ -12,7 +12,6 @@ import attributes.Attributes;
 import liveBeings.AttackModifiers;
 import liveBeings.Creature;
 import liveBeings.LiveBeing;
-import liveBeings.LiveBeingStates;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Spell;

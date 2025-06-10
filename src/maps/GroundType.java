@@ -6,6 +6,7 @@ import java.awt.Point ;
 import graphics.Align;
 import main.Game;
 import main.GamePanel;
+import utilities.Util;
 
 public class GroundType
 {
@@ -25,10 +26,13 @@ public class GroundType
 	public Point getTopLeftPos() { return topLeftPos ;}
 	public Dimension getSize() { return size ;}
 
+	public boolean containsPoint(Point point) { return Util.isInside(point, topLeftPos, size) ;}
+
 	public void display()
 	{
 		switch (type)
 		{
+			case wall: GamePanel.DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[2], null) ; return ;
 			case water: GamePanel.DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[20], null) ; return ;
 			case lava: GamePanel.DP.drawRect(topLeftPos, Align.topLeft, size, Game.palette[7], null) ; return ;
 			default: return ;

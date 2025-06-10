@@ -319,10 +319,10 @@ public class GameMap
  		}
 		
 	}
-	
+	private boolean hasGroundTypes() { return groundTypes != null && !groundTypes.isEmpty() ;}
+
 	protected Point randomPosOnLand(Point minCoord, Dimension range, Dimension step)
 	{
-
 		Point randomPos = Util.RandomPos(minCoord, range, step) ;
 		while (groundTypeAtPoint(randomPos) != null)
 		{
@@ -477,11 +477,13 @@ public class GameMap
 
 	public GroundTypes groundTypeAtPoint(Point pos)
 	{
-		if (groundTypes == null) { return null ;}		
+		if (!hasGroundTypes()) { return null ;}
 		
 		for (GroundType groundType : groundTypes)
 		{
-			if (Util.isInside(pos, groundType.getTopLeftPos(), groundType.getSize())) { return groundType.getType() ;}			
+			if (!groundType.containsPoint(pos)) { continue ;}
+			
+			return groundType.getType() ;
 		}
 		
 		return null ;

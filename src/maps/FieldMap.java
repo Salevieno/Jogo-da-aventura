@@ -150,7 +150,6 @@ public class FieldMap extends GameMap
 	
 	public void addMapElements()
 	{
-		// TODO map elements caindo dentro da água
 		Screen screen = Game.getScreen() ;
 		Point minCoord = new Point(20, Sky.height + 20) ;
 		Dimension range = new Dimension(screen.mapSize().width - 100, screen.mapSize().height - 100) ;
@@ -227,7 +226,7 @@ public class FieldMap extends GameMap
 		}
 	}
 	
-	public boolean hasCreatures() { return creatures != null ;}
+	public boolean hasCreatures() { return creatures != null && !creatures.isEmpty() ;}
 	
 	public void activateCollectiblesCounter()
 	{
