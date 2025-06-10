@@ -28,7 +28,7 @@ import utilities.UtilS;
 public class PlayerAttributesWindow extends AttributesWindow
 {
 	
-	private Point windowPos = Game.getScreen().pos(0.01, 0.2) ;
+	private Point windowPos = Game.getScreen().pos(0.01, 0.25) ;
 	private Player player ;
 	public Map<Attributes, GameButton> incAttButtons ;
 

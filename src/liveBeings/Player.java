@@ -633,11 +633,12 @@ public class Player extends LiveBeing
 	{
 		GameMap newMap = calcNewMap(pos, dir, currentMap) ;
 		
-		if (newMap == null) { return ;}
-		if (!newMap.getContinent().equals(Continents.forest)) { return ;}
+		if (newMap == null) { System.out.println("Warn: trying to move to null map") ; return ;}
+		if (!newMap.getContinent().equals(Continents.forest)) { System.out.println("Warn: trying to leave the forest"); return ;}
 		
 		Point newPos = calcNewMapPos(pos, dir, currentMap, newMap) ;
 
+		leaveBattle() ;
 		setMap(newMap) ;
 		setPos(newPos) ;
 	}
@@ -697,6 +698,17 @@ public class Player extends LiveBeing
 		{
 			Game.getPet().getBattleActionCounter().start() ;
 		}
+	}
+
+	public void leaveBattle()
+	{
+		if (opponent != null)
+		{
+			opponent.leaveBattle() ;
+		}
+		setState(LiveBeingStates.idle) ;
+		resetOpponent() ;
+		resetClosestCreature() ;
 	}
 	
 	public void fish()

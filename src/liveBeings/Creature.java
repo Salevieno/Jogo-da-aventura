@@ -118,6 +118,14 @@ public class Creature extends LiveBeing
 
 	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
 	
+	public void leaveBattle()
+	{
+		setState(LiveBeingStates.idle) ;
+		PA.getLife().setToMaximum() ;
+		PA.getMp().setToMaximum() ;
+		setFollow(false) ;
+	}
+
 	public boolean hasEnoughMP(int spellID)
 	{
 		int MPcost = 10 * spellID ;

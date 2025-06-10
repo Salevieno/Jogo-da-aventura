@@ -502,9 +502,7 @@ public abstract class Battle
 			EvolutionSimulation.setBattleResults(player.getLife().getCurrentValue(), creature.getLife().getCurrentValue()) ;
 		}
 		
-		player.setState(LiveBeingStates.idle) ;
-		player.resetOpponent() ;
-		player.resetClosestCreature() ;
+		player.leaveBattle() ;
 		
 		for (Spell spell : player.getSpells())
 		{
@@ -532,14 +530,12 @@ public abstract class Battle
 			return ;
 		}
 		
-		creature.getPA().getLife().setToMaximum() ;
-		creature.getPA().getMp().setToMaximum() ;
+		creature.leaveBattle() ;
 		player.dies() ;
 		if (pet != null)
 		{
 			pet.dies() ;
 		}
-		creature.setFollow(false) ;
 	}
 
 
