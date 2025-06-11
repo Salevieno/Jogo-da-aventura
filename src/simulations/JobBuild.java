@@ -9,7 +9,6 @@ import attributes.BattleAttributes;
 import liveBeings.LiveBeing;
 import liveBeings.Pet;
 import liveBeings.Player;
-import utilities.UtilS;
 
 public abstract class JobBuild
 {
@@ -137,6 +136,19 @@ public abstract class JobBuild
 	private static void levelUpTo50(LiveBeing player, boolean addChosenPoints) { levelUp(player, 49, addChosenPoints) ;}
 	private static void levelUpTo99(LiveBeing player, boolean addChosenPoints) { levelUp(player, 50, addChosenPoints) ;}
 	
+	private static String jobName(int job, int proJob)
+	{
+		return switch (job)
+		{
+			case 0 -> proJob == 0 ? "knight" : proJob == 1 ? "lord" : "shielder" ;
+			case 1 -> proJob == 0 ? "mage" : proJob == 1 ? "archmage" : "healer" ;
+			case 2 -> proJob == 0 ? "archer" : proJob == 1 ? "ranger" : "elementalist" ;
+			case 3 -> proJob == 0 ? "animal" : proJob == 1 ? "forest's king" : "wild" ;
+			case 4 -> proJob == 0 ? "thief" : proJob == 1 ? "assassin" : "mercenary" ;
+			default -> "" ;
+		} ;
+	}
+
 	private static void printBaseBuildsLevel1()
 	{
 		printBuilds("Base attributes at level 1", Stream.concat(players.stream().filter(player -> player.getProJob() == 0), pets.stream()).collect(Collectors.toList())) ;
@@ -179,7 +191,7 @@ public abstract class JobBuild
 	
 	private static void printBuild(LiveBeing liveBeing)
 	{
-		String jobName = liveBeing instanceof Pet ? liveBeing.getName() : UtilS.jobName(liveBeing.getJob(), liveBeing.getProJob()) ;
+		String jobName = liveBeing instanceof Pet ? liveBeing.getName() : jobName(liveBeing.getJob(), liveBeing.getProJob()) ;
 		System.out.print(jobName + "	") ;
 		System.out.print(liveBeing.getPA().getLife().getCurrentValue() + "	") ;
 		System.out.print(liveBeing.getPA().getMp().getCurrentValue() + "	") ;

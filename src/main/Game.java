@@ -2,6 +2,8 @@ package main ;
 
 import java.awt.Color ;
 import java.awt.Dimension ;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -147,7 +149,7 @@ public class Game
 	{
 		player = new Player("", "", 2) ;
 	}
-	
+
 	public static GameStates getState() { return state ;}
 	public static Languages getLanguage() { return gameLanguage ;}
 	public static Screen getScreen() { return screen ;}

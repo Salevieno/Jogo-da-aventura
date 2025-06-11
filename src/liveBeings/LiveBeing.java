@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -476,7 +477,6 @@ public abstract class LiveBeing implements Drawable
 				satiationCounter.start() ;
 				if (PA.getSatiation().getCurrentValue() == 0)
 				{
-//					PA.getLife().incCurrentValue(-1) ;
 					takeDamage(1) ;
 				}
 			}
@@ -518,19 +518,19 @@ public abstract class LiveBeing implements Drawable
 //				new HashSet<>(),
 //				0, null, new int[] {})
 
-		double attackerAtkRate = 1 ;
-		double defenderAtkRate = 1 ;
-		double critRate = this.getBA().getCritAtk().getTotal() - defender.getBA().getCritDef().getTotal() ;
-		double hitRate = 1 - 1 / (1 + Math.pow(1.1, this.getBA().getDex().getTotal() - defender.getBA().getAgi().getTotal())) ;
-		int phyDamBase = Math.max((int) Util.Round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
-		int phyDamInDefense = Math.max((int) Util.Round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
-		int phyDamCrit = (int) Util.Round(this.getBA().getPhyAtk().getTotal(), 0) ;
+		// double attackerAtkRate = 1 ;
+		// double defenderAtkRate = 1 ;
+		// double critRate = this.getBA().getCritAtk().getTotal() - defender.getBA().getCritDef().getTotal() ;
+		// double hitRate = 1 - 1 / (1 + Math.pow(1.1, this.getBA().getDex().getTotal() - defender.getBA().getAgi().getTotal())) ;
+		// int phyDamBase = Math.max((int) Util.Round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
+		// int phyDamInDefense = Math.max((int) Util.Round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
+		// int phyDamCrit = (int) Util.Round(this.getBA().getPhyAtk().getTotal(), 0) ;
 
 
-		double movesPerSec = 1 / this.getBattleActionCounter().getDuration() ;
-		double damAvr = (1 - critRate) * (defenderAtkRate * phyDamBase + (1 - defenderAtkRate) * phyDamInDefense) + critRate * phyDamCrit ;
-		double damPerSec = damAvr * hitRate * attackerAtkRate * movesPerSec ;
-		double timeToWin = defender.getPA().getLife().getMaxValue() / damPerSec ;
+		// double movesPerSec = 1 / this.getBattleActionCounter().getDuration() ;
+		// double damAvr = (1 - critRate) * (defenderAtkRate * phyDamBase + (1 - defenderAtkRate) * phyDamInDefense) + critRate * phyDamCrit ;
+		// double damPerSec = damAvr * hitRate * attackerAtkRate * movesPerSec ;
+		// double timeToWin = defender.getPA().getLife().getMaxValue() / damPerSec ;
 		
 		int totalPower = (int) (10000 / timeToWin(defender)) ;
 		return totalPower ;
@@ -655,25 +655,49 @@ public abstract class LiveBeing implements Drawable
 	public boolean isDrunk() {return drunk.isActive() ;}
 	public boolean isInCloseRange(Point target) {return pos.distance(target) <= size.getWidth() ;}
 	public boolean isInRange(Point target) {return pos.distance(target) <= range ;}
-	public boolean isTouching(GroundType groundType) { return UtilS.isTouching(pos, map, groundType) ;}
-	public boolean isInside(GroundType groundType) { return UtilS.isInside(pos, map, groundType) ;}
-	public boolean isFighting() { return state.equals(LiveBeingStates.fighting) ;}
-	
-	public RelativePos relPosToGroundType(GroundType groundType)
-	{
 
-		if (isTouching(groundType)) { return null ;}
+	public boolean isTouching(GroundType groundType)
+	{		
+ 		RelativePos adjGround = checkAdjacentGround(pos, map, groundType) ;
+ 		
+ 		if (adjGround == null) { return false ;}
+ 		
+ 		List<RelativePos> adjPositions = Arrays.asList(RelativePos.values()) ;
+ 		
+ 		return adjPositions.contains(adjGround) ;
+	}
+
+	public boolean isInside(GroundType groundType)
+	{ 
+ 		RelativePos adjGround = checkAdjacentGround(pos, map, groundType) ;
+ 		
+ 		if (adjGround == null) { return false ;}
+ 		
+ 		return adjGround.equals(RelativePos.inside) ;
+	}
+
+	public boolean isFighting() { return state.equals(LiveBeingStates.fighting) ;}
 		
-		RelativePos relPos = null ;
-		for (GroundRegion gt : map.getgroundTypes())
+		
+ 	
+	public static RelativePos checkAdjacentGround(Point pos, GameMap map, GroundType targetGroundType)
+	{ 		
+ 		Point userPos = new Point(pos) ;
+
+		if (map == null) { return null ;}
+		
+		if (map.getgroundTypes() == null) { return null ;}
+
+		for (GroundRegion groundType : map.getgroundTypes())
 		{
-			relPos = UtilS.calcRelativePos(pos, gt.getTopLeftPos(), gt.getSize()) ;
+			if (!groundType.getType().equals(targetGroundType)) { continue ;}	
+			
+			return UtilS.posRelativeToRectangle(userPos, groundType.getTopLeftPos(), groundType.getSize()) ;
 		}
 		
-    	return relPos ;
-    	
+		return null ;		
 	}
-	
+
 	public abstract Elements[] atkElems() ;
 	public abstract Elements[] defElems() ;
 	
@@ -818,20 +842,6 @@ public abstract class LiveBeing implements Drawable
 			}
 		}
 		
-	}
-	
-	public void drawTimeBar(String relPos, Color color)
-	{
-		int stroke = DrawPrimitives.stdStroke ;
-		double rate = battleActionCounter.rate() ;
-		int mirror = UtilS.MirrorFromRelPos(relPos) ;
-		Dimension barSize = new Dimension(2 + size.height / 20, size.height) ;
-		Dimension offset = new Dimension (barSize.width / 2 + (LiveBeingStatus.images.get(Attributes.stun).getWidth(null) + 5), barSize.height / 2) ;
-		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate)) ;
-		Point rectPos = Util.Translate(center(), mirror * offset.width, offset.height) ;
-		
-		GamePanel.DP.drawRect(rectPos, Align.bottomLeft, barSize, stroke, null, Game.palette[0], 1.0) ;
-		GamePanel.DP.drawRect(rectPos, Align.bottomLeft, fillSize, stroke, color, null, 1.0) ;
 	}
 	
 	public void displayBattleActionCounter()

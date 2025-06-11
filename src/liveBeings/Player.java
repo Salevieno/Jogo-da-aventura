@@ -4,6 +4,7 @@ import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.HashMap;
@@ -143,6 +144,10 @@ public class Player extends LiveBeing
     public static final Color[] ClassColors = new Color[] {Game.palette[21], Game.palette[5], Game.palette[2], Game.palette[3], Game.palette[4]} ;
 
     public static final String[] HotKeys = new String[] {"F", "G", "V"} ;
+	private static final List<String> arrowKeys = List.of(KeyEvent.getKeyText(KeyEvent.VK_UP),
+															KeyEvent.getKeyText(KeyEvent.VK_LEFT),
+															KeyEvent.getKeyText(KeyEvent.VK_DOWN),
+															KeyEvent.getKeyText(KeyEvent.VK_RIGHT)) ;
 
 	private static final MovingAnimations movingAnimations ;
 	
@@ -377,7 +382,7 @@ public class Player extends LiveBeing
 	private boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
-	private boolean actionIsAMove() { return UtilS.actionIsArrowKey(currentAction) | List.of("W", "A", "S", "D").contains(currentAction) ;}
+	private boolean actionIsAMove() { return arrowKeys.contains(currentAction) || List.of("W", "A", "S", "D").contains(currentAction) ;}
 	private boolean hitCreature() { return (usedPhysicalAtk() | usedSpell()) & closestCreature != null ;}	
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	private boolean canThrowItem(GeneralItem item)
@@ -908,19 +913,21 @@ public class Player extends LiveBeing
 	
 	private void chooseDirection(String action)
 	{
-		if (action.equals(UtilS.arrowKeys().get(0)) | action.equals("W"))
+		if (action == null) { return ;}
+
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_UP)) | action.equals("W"))
 		{
 			setDir(Directions.up) ;
 		}
-		if (action.equals(UtilS.arrowKeys().get(1)) | action.equals("A"))
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_LEFT)) | action.equals("A"))
 		{
 			setDir(Directions.left) ;
 		}
-		if (action.equals(UtilS.arrowKeys().get(2)) | action.equals("S"))
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_DOWN)) | action.equals("S"))
 		{
 			setDir(Directions.down) ;
 		}
-		if (action.equals(UtilS.arrowKeys().get(3)) | action.equals("D"))
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_RIGHT)) | action.equals("D"))
 		{
 			setDir(Directions.right) ;
 		}
@@ -934,7 +941,7 @@ public class Player extends LiveBeing
 		if (actionIsAMove())
 		{
 			chooseDirection(currentAction) ;
-			if (UtilS.actionIsArrowKey(currentAction) | (!isFocusedOnWindow()))
+			if (!isFocusedOnWindow()) // UtilS.actionIsArrowKey(currentAction)
 			{
 				startMove() ;
 			}
