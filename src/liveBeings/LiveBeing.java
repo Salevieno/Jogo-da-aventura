@@ -20,7 +20,6 @@ import battle.AtkTypes;
 import battle.Battle;
 import components.Hitbox;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
 import graphics2.Drawable;

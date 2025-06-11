@@ -25,10 +25,11 @@ import utilities.Util;
 import utilities.UtilS;
 
 public abstract class Opening
-{
+{// TODO make new game possible 100% through keyboard
 	public static Gif openingGif ;
 	private static Image backgroundImage;
     private static List<GameButton> buttons ;
+    private static List<GameButton> languageButtons ;
     private static List<GameButton> loadSlotButtons ;
     private static String[] stepMessage ;
     private static String[] jobDescriptionPtBr ;
@@ -50,6 +51,8 @@ public abstract class Opening
 	// private static final Image LoadingEnfeite ;
 	private static final Image LoadingSlot ;
 	private static final Image LoadingSlotSelected ;
+	private static final Image generalButtonImg ;
+	private static final Image generalButtonSelectedImg ;
 	// private static final Clip thunderSound ;
 	// private static final Clip introMusic ;
 	
@@ -64,6 +67,8 @@ public abstract class Opening
 		// LoadingEnfeite = UtilS.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
 		LoadingSlot = Util.loadImage(path + "LoadingSlot.png") ;
 		LoadingSlotSelected = Util.loadImage(path + "LoadingSlotSelected.png") ;
+		generalButtonImg = Util.loadImage(path + "generalButton.png") ;
+		generalButtonSelectedImg = Util.loadImage(path + "generalButtonSelected.png") ;
 
 		// thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
 		// introMusic = Music.loadMusicFile("intro.wav") ;
@@ -86,8 +91,8 @@ public abstract class Opening
 		IconFunction loadSlot3 = () -> { Game.setPlayer(players[2]) ; Game.setSaveSlotInUse(2) ; loadSlotButtons.forEach(GameButton::deactivate) ; isOver = true ;} ;
 		IconFunction loadGameAction = () -> {
 			newGame = false ;
-			buttons.get(2).deactivate() ;
-			buttons.get(3).deactivate() ;
+			buttons.get(0).deactivate() ;
+			buttons.get(1).deactivate() ;
 			// TODO
 			Buff.loadBuffs() ;
 			Buff.loadDebuffs() ;
@@ -122,22 +127,23 @@ public abstract class Opening
 		IconFunction thiefAction = () -> { chosenJob = 4 ;} ;
 		
 		Screen screen = Game.getScreen() ;
+		GameButton portButton = new GameButton(screen.pos(0.85, 0.05), Align.center, "Port", Util.loadImage(path + "Port.png"), Util.loadImage(path + "PortSelected.png"), portAction) ;
+		GameButton enButton = new GameButton(screen.pos(0.95, 0.05), Align.center, "En", Util.loadImage(path + "En.png"), Util.loadImage(path + "EnSelected.png"), enAction) ;
+		languageButtons = List.of(portButton, enButton) ;
+
 		String[] btNames = new String[] {
-				"Port", "En",
 				"New Game", "Load Game",
 				"Confirm name",
 				"Male", "Female",
 				"Easy", "Medium", "Hard",
 				"Knight", "Mage", "Archer", "Animal", "Thief"} ;
 		Point[] btPos = new Point[] {
-				screen.pos(0.85, 0.05), screen.pos(0.95, 0.05),
 				screen.pos(0.45, 0.3), screen.pos(0.65, 0.3),
 				screen.pos(0.51, 0.45), 
 				screen.pos(0.4, 0.3), screen.pos(0.6, 0.3),
 				screen.pos(0.3, 0.3), screen.pos(0.5, 0.3), screen.pos(0.7, 0.3),
 				screen.pos(0.13, 0.3), screen.pos(0.33, 0.3), screen.pos(0.53, 0.3), screen.pos(0.73, 0.3), screen.pos(0.93, 0.3)} ;
 		IconFunction[] btAction = new IconFunction[] {
-				portAction, enAction,
 				newGameAction, loadGameAction,
 				confirmNameAction,
 				maleAction, femaleAction,
@@ -150,16 +156,13 @@ public abstract class Opening
 			if (btImage == null) { btImage = UtilS.loadImage("ButtonGeneral.png") ;}
 			if (btImageSelected == null) { btImageSelected = Util.loadImage(path + btNames[i] + " Selected.png") ;}
 			if (btImageSelected == null) { btImageSelected = UtilS.loadImage("ButtonGeneralSelected.png") ;}
-			buttons.add(new GameButton(btPos[i], Align.center, btNames[i], btImage, btImageSelected, btAction[i])) ;
-			buttons.get(buttons.size() - 1).deactivate() ;
-		
+			GameButton newButton = new GameButton(btPos[i], Align.center, btNames[i], generalButtonImg, generalButtonSelectedImg, btAction[i]) ;
+			newButton.deactivate() ;
+			buttons.add(newButton) ;		
 		}
 
     	buttons.get(0).activate() ;
     	buttons.get(1).activate() ;
-    	buttons.get(2).activate() ;
-    	buttons.get(3).activate() ;
-
     	
     	stepMessage = new String[] {"", "Qual o seu nome?", "", "", "", ""} ;
     	jobDescriptionEn = new String[]
@@ -228,42 +231,42 @@ public abstract class Opening
 		switch(step)
 		{
 			case 1:
-				buttons.get(2).deactivate() ;
-		    	buttons.get(3).deactivate() ;
-		    	buttons.get(4).activate() ;
+				buttons.get(0).deactivate() ;
+		    	buttons.get(1).deactivate() ;
+		    	buttons.get(2).activate() ;
 				return ;
 				
 			case 2:
-		    	buttons.get(4).deactivate() ;
-		    	buttons.get(5).activate() ;
-		    	buttons.get(6).activate() ;
+		    	buttons.get(2).deactivate() ;
+		    	buttons.get(3).activate() ;
+		    	buttons.get(4).activate() ;
 				return ;
 				
 			case 3:
-				buttons.get(5).deactivate() ;
-		    	buttons.get(6).deactivate() ;
+				buttons.get(3).deactivate() ;
+		    	buttons.get(4).deactivate() ;
+		    	buttons.get(5).activate() ;
+		    	buttons.get(6).activate() ;
 		    	buttons.get(7).activate() ;
-		    	buttons.get(8).activate() ;
-		    	buttons.get(9).activate() ;
 				return ;
 				
 			case 4:
+		    	buttons.get(5).deactivate() ;
+		    	buttons.get(6).deactivate() ;
 		    	buttons.get(7).deactivate() ;
-		    	buttons.get(8).deactivate() ;
-		    	buttons.get(9).deactivate() ;
+		    	buttons.get(8).activate() ;
+		    	buttons.get(9).activate() ;
 		    	buttons.get(10).activate() ;
 		    	buttons.get(11).activate() ;
 		    	buttons.get(12).activate() ;
-		    	buttons.get(13).activate() ;
-		    	buttons.get(14).activate() ;
 				return ;
 				
 			case 5:
-				buttons.get(10).deactivate() ;
+				buttons.get(8).deactivate() ;
+		    	buttons.get(9).deactivate() ;
+		    	buttons.get(10).deactivate() ;
 		    	buttons.get(11).deactivate() ;
 		    	buttons.get(12).deactivate() ;
-		    	buttons.get(13).deactivate() ;
-		    	buttons.get(14).deactivate() ;
 		    	isOver = true ;
 				return ;
 				
@@ -320,12 +323,20 @@ public abstract class Opening
 		Point textPos = Game.getScreen().pos(0.5, 0.3) ;
 		Color textColor = Game.palette[0] ;
 		
-		GamePanel.DP.drawImage(backgroundImage, new Point(0, 0), 0, Scale.unit, Align.topLeft) ;		
-		for (GameButton button : buttons)
+		GamePanel.DP.drawImage(backgroundImage, new Point(0, 0), 0, Scale.unit, Align.topLeft) ;
+
+		for (GameButton button : languageButtons)
 		{
 			if (!button.isActive()) { continue ;}
 			
 			button.display(0, false, mousePos) ;
+		}
+
+		for (GameButton button : buttons)
+		{
+			if (!button.isActive()) { continue ;}
+			
+			button.display(0, true, mousePos) ;
 		}
 		
 		if (step == 1)

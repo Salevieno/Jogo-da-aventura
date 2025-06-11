@@ -27,7 +27,7 @@ public class GameButton
 	private Image selectedImage ;
 	private IconFunction action ;
 	
-	private static Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	private static Font font = new Font(Game.MainFontName, Font.BOLD, 17) ;
 	private static Color textColor = Game.palette[0] ;
 	private static Color selectedTextColor = Game.palette[18] ;
 	
@@ -144,7 +144,8 @@ public class GameButton
 		if (!displayText) { return ;}
 		if (name == null) { return ;}
 		
-		GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
+		Point textPos = ishovered(mousePos) ? Util.Translate(getCenter(), 0, 3) : getCenter() ;
+		GamePanel.DP.drawText(textPos, Align.center, 0, name, font, textColor) ;
 	}
 	
 	public void displayHoverMessage()
