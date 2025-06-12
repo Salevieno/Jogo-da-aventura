@@ -54,7 +54,7 @@ public abstract class LoadingGame
 		
 		if (loadingIsOver())
 		{
-			startButton.activate() ;
+			startButton.activateAndSelect() ;
 		}
 
 		if (startGameButtonClicked())

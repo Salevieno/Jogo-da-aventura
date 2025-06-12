@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +26,14 @@ import utilities.Util;
 import utilities.UtilS;
 
 public abstract class Opening
-{// TODO make new game possible 100% through keyboard
+{
 	public static Gif openingGif ;
 	private static Image backgroundImage;
     private static List<GameButton> buttons ;
+    private static List<List<GameButton>> buttonsInStep ;
     private static List<GameButton> languageButtons ;
     private static List<GameButton> loadSlotButtons ;
+	private static Player[] players ;
     private static String[] stepMessage ;
     private static String[] jobDescriptionPtBr ;
     private static String[] jobDescriptionEn ;
@@ -44,7 +47,6 @@ public abstract class Opening
     private static int chosenJob ;
 	private static LiveInput liveInput ;
 	
-	private static Player[] players ;
 
     private static final Font font ;
     private static final Font smallFont ;
@@ -79,52 +81,24 @@ public abstract class Opening
     	isOver = false ;
 		liveInput = new LiveInput() ;
     	buttons = new ArrayList<>() ;
+		buttonsInStep = new ArrayList<>() ;
     	loadSlotButtons = new ArrayList<>() ;
-    	
-    	players = new Player[3] ;
 
-		IconFunction portAction = () -> { } ;
+		IconFunction portAction = () -> { } ; // TODO switch language
 		IconFunction enAction = () -> { } ;
-		IconFunction newGameAction = () -> {} ;
-		IconFunction loadSlot1 = () -> { Game.setPlayer(players[0]) ; Game.setSaveSlotInUse(0) ; loadSlotButtons.forEach(GameButton::deactivate) ; isOver = true ;} ;
-		IconFunction loadSlot2 = () -> { Game.setPlayer(players[1]) ; Game.setSaveSlotInUse(1) ; loadSlotButtons.forEach(GameButton::deactivate) ; isOver = true ;} ;
-		IconFunction loadSlot3 = () -> { Game.setPlayer(players[2]) ; Game.setSaveSlotInUse(2) ; loadSlotButtons.forEach(GameButton::deactivate) ; isOver = true ;} ;
-		IconFunction loadGameAction = () -> {
-			newGame = false ;
-			buttons.get(0).deactivate() ;
-			buttons.get(1).deactivate() ;
-			// TODO
-			Buff.loadBuffs() ;
-			Buff.loadDebuffs() ;
-			Spell.load(Languages.portugues, Buff.allBuffs, Buff.allDebuffs) ;
-			players[0] = Player.load(1) ;
-			players[1] = Player.load(2) ;
-			players[2] = Player.load(3) ;
-			
-			Log.loadingStatus(players[0] != null, 1);
-			Log.loadingStatus(players[1] != null, 2);
-			Log.loadingStatus(players[2] != null, 3);
-	
-	    	loadSlotButtons.add(new GameButton(new Point(60, 100), Align.topLeft, "Load slot 1", LoadingSlot, LoadingSlotSelected, loadSlot1)) ;
-	    	loadSlotButtons.add(new GameButton(new Point(260, 100), Align.topLeft, "Load slot 2", LoadingSlot, LoadingSlotSelected, loadSlot2)) ;
-	    	loadSlotButtons.add(new GameButton(new Point(460, 100), Align.topLeft, "Load slot 3", LoadingSlot, LoadingSlotSelected, loadSlot3)) ;
-	
-			if (players[0] == null) { loadSlotButtons.get(0).deactivate() ;}
-			if (players[1] == null) { loadSlotButtons.get(1).deactivate() ;}
-			if (players[2] == null) { loadSlotButtons.get(2).deactivate() ;}
-			
-		} ;
-		IconFunction confirmNameAction = () -> {chosenName = liveInput.getText() ;} ;
-		IconFunction maleAction = () -> { chosenSex = "M" ;} ;
-		IconFunction femaleAction = () -> { chosenSex = "F" ;} ;
-		IconFunction easyAction = () -> { difficultLevel = 0 ;} ;
-		IconFunction mediumAction = () -> { difficultLevel = 1 ;} ;
-		IconFunction hardAction = () -> { difficultLevel = 2 ;} ;
-		IconFunction knightAction = () -> { chosenJob = 0 ;} ;
-		IconFunction mageAction = () -> { chosenJob = 1 ;} ;
-		IconFunction archerAction = () -> { chosenJob = 2 ;} ;
-		IconFunction animalAction = () -> { chosenJob = 3 ;} ;
-		IconFunction thiefAction = () -> { chosenJob = 4 ;} ;
+		IconFunction newGameAction = () -> {advanceStep() ;} ;
+		IconFunction loadGameAction = () -> { switchToLoadGameScreen() ;} ;
+		IconFunction confirmNameAction = () -> {chosenName = liveInput.getText() ; advanceStep() ;} ;
+		IconFunction maleAction = () -> { chosenSex = "M" ; advanceStep() ;} ;
+		IconFunction femaleAction = () -> { chosenSex = "F" ; advanceStep() ;} ;
+		IconFunction easyAction = () -> { difficultLevel = 0 ; advanceStep() ;} ;
+		IconFunction mediumAction = () -> { difficultLevel = 1 ; advanceStep() ;} ;
+		IconFunction hardAction = () -> { difficultLevel = 2 ; advanceStep() ;} ;
+		IconFunction knightAction = () -> { chosenJob = 0 ; advanceStep() ;} ;
+		IconFunction mageAction = () -> { chosenJob = 1 ; advanceStep() ;} ;
+		IconFunction archerAction = () -> { chosenJob = 2 ; advanceStep() ;} ;
+		IconFunction animalAction = () -> { chosenJob = 3 ; advanceStep() ;} ;
+		IconFunction thiefAction = () -> { chosenJob = 4 ; advanceStep() ;} ;
 		
 		Screen screen = Game.getScreen() ;
 		GameButton portButton = new GameButton(screen.pos(0.85, 0.05), Align.center, "Port", Util.loadImage(path + "Port.png"), Util.loadImage(path + "PortSelected.png"), portAction) ;
@@ -138,7 +112,7 @@ public abstract class Opening
 				"Easy", "Medium", "Hard",
 				"Knight", "Mage", "Archer", "Animal", "Thief"} ;
 		Point[] btPos = new Point[] {
-				screen.pos(0.45, 0.3), screen.pos(0.65, 0.3),
+				screen.pos(0.4, 0.3), screen.pos(0.6, 0.3),
 				screen.pos(0.51, 0.45), 
 				screen.pos(0.4, 0.3), screen.pos(0.6, 0.3),
 				screen.pos(0.3, 0.3), screen.pos(0.5, 0.3), screen.pos(0.7, 0.3),
@@ -161,7 +135,13 @@ public abstract class Opening
 			buttons.add(newButton) ;		
 		}
 
-    	buttons.get(0).activate() ;
+		buttonsInStep.add(List.of(buttons.get(0), buttons.get(1))) ;
+		buttonsInStep.add(List.of(buttons.get(2))) ;
+		buttonsInStep.add(List.of(buttons.get(3), buttons.get(4))) ;
+		buttonsInStep.add(List.of(buttons.get(5), buttons.get(6), buttons.get(7))) ;
+		buttonsInStep.add(List.of(buttons.get(8), buttons.get(9), buttons.get(10), buttons.get(11), buttons.get(12))) ;
+
+    	buttons.get(0).activateAndSelect() ;	
     	buttons.get(1).activate() ;
     	
     	stepMessage = new String[] {"", "Qual o seu nome?", "", "", "", ""} ;
@@ -188,91 +168,102 @@ public abstract class Opening
 	public static int getChosenDifficultLevel() { return difficultLevel ;}
 	public static Gif getOpeningGif() { return openingGif ;}
 
-	private static void act(String action, Point mousePos)
-	{
+	private static void switchToLoadGameScreen()
+	{		
+		players = new Player[3] ;
+
+		newGame = false ;
+		buttons.get(0).deactivate() ;
+		buttons.get(1).deactivate() ;
+		// TODO
+		Buff.loadBuffs() ;
+		Buff.loadDebuffs() ;
+		Spell.load(Languages.portugues, Buff.allBuffs, Buff.allDebuffs) ;
+		players[0] = Player.load(1) ;
+		players[1] = Player.load(2) ;
+		players[2] = Player.load(3) ;
 		
+		Log.loadingStatus(players[0] != null, 1);
+		Log.loadingStatus(players[1] != null, 2);
+		Log.loadingStatus(players[2] != null, 3);
+
+		IconFunction loadSlot1 = () -> { loadGame(players, 0) ;} ;
+		IconFunction loadSlot2 = () -> { loadGame(players, 1) ;} ;
+		IconFunction loadSlot3 = () -> { loadGame(players, 2) ;} ;
+		
+		loadSlotButtons.add(new GameButton(new Point(60, 100), Align.topLeft, "Load slot 1", LoadingSlot, LoadingSlotSelected, loadSlot1)) ;
+		loadSlotButtons.add(new GameButton(new Point(260, 100), Align.topLeft, "Load slot 2", LoadingSlot, LoadingSlotSelected, loadSlot2)) ;
+		loadSlotButtons.add(new GameButton(new Point(460, 100), Align.topLeft, "Load slot 3", LoadingSlot, LoadingSlotSelected, loadSlot3)) ;
+
+		if (players[0] == null) { loadSlotButtons.get(0).deactivate() ;}
+		if (players[1] == null) { loadSlotButtons.get(1).deactivate() ;}
+		if (players[2] == null) { loadSlotButtons.get(2).deactivate() ;}
+	}
+
+	private static void loadGame(Player[] players, int slot)
+	{
+		Game.setPlayer(players[slot]) ;
+		Game.setSaveSlotInUse(slot) ;
+		loadSlotButtons.forEach(GameButton::deactivate) ;
+		isOver = true ;
+	}
+
+	private static void navigate(String action)
+	{
 		if (action == null) { return ;}
 
-		boolean advanceStep = false ;
-		for (GameButton button : buttons)
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_LEFT)) | action.equals("A"))
 		{
-			if (!button.isActive()) { continue ;}
-			if (!button.isClicked(mousePos, action)) { continue ;}
-			
-			button.act() ;
-			if (button.getName().equals("Load Game"))
-			{
-				return ;
-			}
-			if (!button.getName().equals("Port") & !button.getName().equals("En"))
-			{
-				advanceStep = true ;
-			}
-			break ;
+			selectPreviousButton() ;
 		}
-		
-		for (GameButton button : loadSlotButtons)
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_RIGHT)) | action.equals("D"))
 		{
-			if (!button.isActive()) { continue ;}
-			if (!button.isClicked(mousePos, action)) { continue ;}
-			
-			button.act() ;
-			break ;
+			selectNextButton() ;
 		}
-		
-		if (step == 1)
+	}
+
+	private static void selectNextButton()
+	{
+		List<GameButton> screenButtons = buttonsInStep.get(step) ;
+		GameButton selectedButton = screenButtons.stream().filter(GameButton::isSelected).findFirst().orElse(null) ;
+
+		if (selectedButton == null) { System.out.println("Warn: no button selected when trying to select next") ; return ;}
+
+		int selectedButtonIndex = screenButtons.indexOf(selectedButton) ;
+		int nextButtonIndex = screenButtons.size() == selectedButtonIndex + 1 ? 0 : selectedButtonIndex + 1 ;
+
+		screenButtons.get(selectedButtonIndex).unSelect() ;
+		screenButtons.get(nextButtonIndex).select() ;
+	}
+
+	private static void selectPreviousButton()
+	{
+		List<GameButton> screenButtons = buttonsInStep.get(step) ;
+		GameButton selectedButton = screenButtons.stream().filter(GameButton::isSelected).findFirst().orElse(null) ;
+
+		if (selectedButton == null) { System.out.println("Warn: no button selected when trying to select previous") ; return ;}
+
+		int selectedButtonIndex = screenButtons.indexOf(selectedButton) ;
+		int previousButtonIndex = 0 == selectedButtonIndex ? screenButtons.size() - 1 : selectedButtonIndex - 1 ;
+
+		screenButtons.get(selectedButtonIndex).unSelect() ;
+		screenButtons.get(previousButtonIndex).select() ;
+	}
+
+	private static void advanceStep()
+	{
+		if (step == 4)
 		{
-			liveInput.receiveInput(action) ;
+			buttonsInStep.get(step).forEach(GameButton::deactivate) ;
+			step += 1 ;
+			isOver = true ;
+			return ;
 		}
-		
-		if (!advanceStep) { return ;}
-		
+
+		buttonsInStep.get(step).forEach(GameButton::deactivate) ;
+		buttonsInStep.get(step + 1).forEach(GameButton::activate) ;
+		buttonsInStep.get(step + 1).get(0).activateAndSelect() ;
 		step += 1 ;
-		switch(step)
-		{
-			case 1:
-				buttons.get(0).deactivate() ;
-		    	buttons.get(1).deactivate() ;
-		    	buttons.get(2).activate() ;
-				return ;
-				
-			case 2:
-		    	buttons.get(2).deactivate() ;
-		    	buttons.get(3).activate() ;
-		    	buttons.get(4).activate() ;
-				return ;
-				
-			case 3:
-				buttons.get(3).deactivate() ;
-		    	buttons.get(4).deactivate() ;
-		    	buttons.get(5).activate() ;
-		    	buttons.get(6).activate() ;
-		    	buttons.get(7).activate() ;
-				return ;
-				
-			case 4:
-		    	buttons.get(5).deactivate() ;
-		    	buttons.get(6).deactivate() ;
-		    	buttons.get(7).deactivate() ;
-		    	buttons.get(8).activate() ;
-		    	buttons.get(9).activate() ;
-		    	buttons.get(10).activate() ;
-		    	buttons.get(11).activate() ;
-		    	buttons.get(12).activate() ;
-				return ;
-				
-			case 5:
-				buttons.get(8).deactivate() ;
-		    	buttons.get(9).deactivate() ;
-		    	buttons.get(10).deactivate() ;
-		    	buttons.get(11).deactivate() ;
-		    	buttons.get(12).deactivate() ;
-		    	isOver = true ;
-				return ;
-				
-			default: return ;
-		}
-		
 	}
 	
 	private static void displaySlot(Point pos, int slotNumber)
@@ -366,7 +357,12 @@ public abstract class Opening
     		return ;
 		}
 		
-		act(player.getCurrentAction(), mousePos) ;
+		navigate(player.getCurrentAction()) ;
+		if (step == 1 && player.getCurrentAction() != null)
+		{
+			liveInput.receiveInput(player.getCurrentAction()) ;
+		}
+		// act(player.getCurrentAction(), mousePos) ;
 		if (newGame)
 		{
 			display(player.getCurrentAction(), mousePos) ;

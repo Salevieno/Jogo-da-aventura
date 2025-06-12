@@ -717,6 +717,8 @@ public class Game
 	protected void update()
 	{
 		GameButton.updateMouseCursor(GamePanel.getMousePos()) ;
+		GameButton.updateSelected(GamePanel.getMousePos()) ;
+		GameButton.actWhenClicked(GamePanel.getMousePos(), player.getCurrentAction());
 		switch (state)
 		{
 			case opening:

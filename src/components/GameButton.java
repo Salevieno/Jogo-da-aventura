@@ -22,6 +22,7 @@ public class GameButton
 	private Align alignment ;
 	private Dimension size ;
 	private boolean isActive ;
+	private boolean isSelected ;
 	private String description ;
 	private Image image ;
 	private Image selectedImage ;
@@ -32,19 +33,20 @@ public class GameButton
 	private static Color selectedTextColor = Game.palette[18] ;
 	
 	public static int selectedIconID ;
-	public static List<GameButton> allButtons = new ArrayList<>() ;
+	public static List<GameButton> all = new ArrayList<>() ;
 		
 	public GameButton(Point pos, Align alignment, String name, Image image, Image selectedImage, IconFunction action)
 	{
 		this.name = name ;
 		this.image = image ;
 		this.selectedImage = selectedImage ;
-		isActive = true ;
-		size = image != null ? Util.getSize(image) : new Dimension(100, 50) ;
+		this.isActive = true ;
+		this.isSelected = false ;
+		this.size = image != null ? Util.getSize(image) : new Dimension(100, 50) ;
 		this.alignment = alignment ;
 		this.topLeft = Util.getTopLeft(pos, alignment, size) ;
 		this.action = action ;
-		allButtons.add(this) ;
+		all.add(this) ;
 	}
 	
 	public GameButton(Point pos, Align alignment, Image image, Image selectedImage, IconFunction action)
@@ -60,7 +62,18 @@ public class GameButton
 	public void setName(String newName) { name = newName ;}
 	public void setTopLeftPos(Point P) {topLeft = P ;}
 
-	public static boolean anyIsHovered(Point mousePos) { return allButtons.stream().filter(button -> button.isActive() && button.ishovered(mousePos)).findAny().isPresent() ;}
+	public static boolean anyIsHovered(Point mousePos) { return all.stream().filter(button -> button.isActive() && button.ishovered(mousePos)).findAny().isPresent() ;}
+	public static void updateSelected(Point mousePos)
+	{
+		for (GameButton button : all)
+		{
+			if (!button.isActive || !button.ishovered(mousePos)) { continue ;}
+
+			all.forEach(GameButton::unSelect) ;
+			button.select() ;
+			return ;
+		}
+	}
 	public static void updateMouseCursor(Point mousePos)
 	{
 		if (GameButton.anyIsHovered(GamePanel.getMousePos()))
@@ -72,8 +85,23 @@ public class GameButton
 			GamePanel.setCursorToDefault() ;
 		}
 	}
+	public static void actWhenClicked(Point mousePos, String action)
+	{
+		if (action == null) { return ;}
+
+		for (int i = 0 ; i <= all.size() - 1; i += 1)
+		{
+			GameButton button = all.get(i) ;
+
+			if (!button.isActive || !button.isSelected || (!button.isClicked(mousePos, action) && !action.equals("Enter"))) { continue ;}
+
+			button.act() ;
+			return ;
+		}
+	}
 	public Point getCenter() {return Util.Translate(topLeft, size.width / 2, size.height / 2) ;}	
 	public boolean ishovered(Point mousePos) { return Util.isInside(mousePos, topLeft, size) ;}
+	public boolean isSelected() { return isSelected ;}
 	public boolean isClicked(Point mousePos, String action)
 	{
 		if (mousePos == null) { return false ;}
@@ -84,6 +112,11 @@ public class GameButton
 	
 	public void activate() { isActive = true ;}
 	public void deactivate() { isActive = false ;}
+	public void select() { isSelected = true ;}
+	public void unSelect() { isSelected = false ;}
+	public void activateAndSelect() { activate() ; select() ;}
+
+	// TODO remover
 	public void act() { action.act() ;}
 	
 	
@@ -131,7 +164,7 @@ public class GameButton
 		
 		if (!isActive) { return ;}
 		
-		Image imageDisplayed = ishovered(mousePos) ? selectedImage : image ;
+		Image imageDisplayed = isSelected ? selectedImage : image ;
 		
 		if (imageDisplayed == null)
 		{
@@ -144,7 +177,7 @@ public class GameButton
 		if (!displayText) { return ;}
 		if (name == null) { return ;}
 		
-		Point textPos = ishovered(mousePos) ? Util.Translate(getCenter(), 0, 3) : getCenter() ;
+		Point textPos = isSelected ? Util.Translate(getCenter(), 0, 3) : getCenter() ;
 		GamePanel.DP.drawText(textPos, Align.center, 0, name, font, textColor) ;
 	}
 	
