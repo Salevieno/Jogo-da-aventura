@@ -10,7 +10,6 @@ import java.util.List;
 
 import battle.AtkResults;
 import battle.AtkTypes;
-import battle.Battle;
 import components.GameButton;
 import components.Hitbox;
 import graphics.Align;
@@ -38,7 +37,7 @@ public abstract class Draw
 
 	private static Dimension screenSize ;
 	private static final Image ArrowIconImage ;
-	public static final Image KeyboardButtonImage ;
+	private static final Image KeyboardButtonImage ;
 	private static final List<Image> textSelectionImages ;
 	public static double stdAngle ;
 	
@@ -253,6 +252,8 @@ public abstract class Draw
 
 	public static void damageAnimation(Point initialPos, AtkResults atkResults, GameTimer counter, int style, Color color)
 	{
+		Color phyAtkColor  = Game.palette[6] ;
+		Color magAtkColor = Game.palette[5] ;
 		AtkEffects effect = atkResults.getEffect() ;
 		
 		if (effect == AtkEffects.none) { return ;} //  System.out.println("Damage animation with effect = none") ;
@@ -278,7 +279,7 @@ public abstract class Draw
 
 		Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
 		Point currentPos = Util.Translate(initialPos, trajectory) ;
-		Color textColor = color != null ? color : (atkResults.getAtkType().equals(AtkTypes.magical) ? Battle.magAtkColor : Battle.phyAtkColor) ;
+		Color textColor = color != null ? color : (atkResults.getAtkType().equals(AtkTypes.magical) ? magAtkColor : phyAtkColor) ;
 		GamePanel.DP.drawText(currentPos, Align.center, stdAngle, message, font, textColor) ;
 		
 	}
@@ -391,63 +392,7 @@ public abstract class Draw
 		}
 		
 	}
-	
-//	public static void sailingAnimation(Image playerImage, Image sailorImage, Image boatImage, TimeCounter counter, String destination)
-//	{
-////		int Step = player.getStep()/2 ;
-////		Dimension sailorSize = new Dimension(sailorImage.getWidth(null), sailorImage.getHeight(null)) ;
-//		if (destination.equals("Island"))
-//		{
-//			
-//		}
-//		int step = 1 ;
-//		Point startPos = new Point(step, (int)(0.5*screenSize.height)) ;	
-//		Point currentPos = Util.Translate(startPos, (int) (step * counter.rate()), 0) ;
-//
-//		GamePanel.DP.drawImage(boatImage, currentPos, Align.center) ;
-//		GamePanel.DP.drawImage(sailorImage, currentPos, Align.center) ;
-//		GamePanel.DP.drawImage(playerImage, currentPos, Align.center) ;
-//		
-//		if (Game.getScreen().posIsWithinBorders(currentPos)) { return ;}
-//		
-//		
-////		else
-////		{
-////			player.setPos(startPos) ;
-////			player.setMap(maps[player.getMap().getid() + 1]) ;
-////			if (player.getMap().getid() == 65)
-////			{
-////				player.setPos(new Point(20, 500)) ;
-////				player.setMap(maps[40]) ;
-////			}
-////		}
-////		else if (Destination.equals("Forest"))
-////		{
-////			Point InitialPos = new Point(screenSize.width - Step, (int)(0.5*screenSize.height)) ;
-////			Point Pos = new Point((InitialPos.x - Step*(counter % (screenSize.width/Step - 1))) % screenSize.width, InitialPos.y) ;
-////			if (0 < Pos.x - Step)
-////			{
-////				DrawImage(BoatImage, Pos, OverallAngle, new float[] {(float)1, (float)1}, new boolean[] {false, false}, alignPoints.bottomLeft, 1) ;
-////				DrawImage(npc, new Point(Pos.x + NPCLength, (int) (Pos.y - 0.5*NPCHeight)), OverallAngle, new float[] {(float)0.5, (float)0.5}, new boolean[] {false, false}, alignPoints.center, 1) ;
-////				player.setPos(new Point(Pos.x - Step, Pos.y)) ;
-////			}
-////			else
-////			{
-////				player.setPos(InitialPos) ;
-////				player.setMap(maps[player.getMap().getid() - 1]) ;
-////				if (player.getMap().getid() == 60)
-////				{
-////					player.setPos(new Point(640, 500)) ;
-////					player.setMap(maps[13]) ;
-////					//if (MusicIsOn)
-////					//{
-////					//	UtilGeral.SwitchMusic(Music[11], Music[MusicInMap[player.getMap()]]) ;
-////					//}
-////				}
-////			}
-////		}
-//	}
-		
+
 	public static void pterodactileAnimation(GameTimer counter, Image pterodactile, Image speakingBubble, String[] message)
 	{
 		int imageWidth = pterodactile.getWidth(null) ;

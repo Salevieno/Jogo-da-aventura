@@ -1,9 +1,8 @@
 package battle ;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sound.sampled.Clip;
@@ -25,45 +24,31 @@ import utilities.Util;
 
 public abstract class Battle 
 {
-	public static int damageStyle ;
 	private static double randomAmp ;
-	private static List<Elements> ElemID ;
-	private static double[][] ElemMult ;
+	private static List<Elements> allElements ;
+	private static double[][] elemMult ;
 	
-	public static final Clip hitSound ;
-	
-	public static final Color phyAtkColor ;
-	public static final Color magAtkColor ;
-	
+	private static final Clip hitSound ;	
 
 	static
 	{
-		damageStyle = 0 ;
-		randomAmp = (double)0.1 ;
-		
-    	ElemID = new ArrayList<>() ;
+		randomAmp = (double)0.1 ;		
+    	allElements = Arrays.asList(Elements.values()) ;
 		List<String[]> ElemInput = Util.ReadcsvFile(Game.CSVPath + "Elem.csv") ;
-		ElemMult = new double[ElemInput.size()][ElemInput.size()] ;
+		elemMult = new double[ElemInput.size()][ElemInput.size()] ;
 		for (int i = 0 ; i <= ElemInput.size() - 1 ; ++i)
 		{
-			ElemID.add(Elements.valueOf(ElemInput.get(i)[0])) ;
 			for (int j = 0 ; j <= ElemInput.size() - 1 ; ++j)
 			{
-				ElemMult[i][j] = Double.parseDouble(ElemInput.get(i)[j + 1]) ;
+				elemMult[i][j] = Double.parseDouble(ElemInput.get(i)[j + 1]) ;
 			}				
 		}
 		
-		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;
-		phyAtkColor = Game.palette[6] ;
-		magAtkColor = Game.palette[5] ;
+		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;		
 	}
 
 	public static void removeRandomness() { randomAmp = 0 ;}
 	
-	public static void updateDamageAnimation(int newDamageStyle)
-	{
-		damageStyle = newDamageStyle ;
-	}
 //	
 //	public static void playDamageAnimation(LiveBeing receiver, AtkResults atkResults)
 //	{
@@ -74,7 +59,7 @@ public abstract class Battle
 //		
 //	}
 	
-	public static double basicElemMult(Elements atk, Elements def) { return ElemMult[ElemID.indexOf(atk)][ElemID.indexOf(def)] ;}
+	public static double basicElemMult(Elements atk, Elements def) { return elemMult[allElements.indexOf(atk)][allElements.indexOf(def)] ;}
 	
 	public static boolean hit(double dex, double agi)
 	{
@@ -337,7 +322,7 @@ public abstract class Battle
 				
 			case magical:
 			{
-				int spellID = Player.SpellKeys.indexOf(attacker.getCurrentAction()) ;
+				int spellID = Player.spellKeys.indexOf(attacker.getCurrentAction()) ;
 				Spell spell = attacker.getActiveSpells().get(spellID) ;
 				if (!attacker.canUseSpell(spell)) { System.out.println(attacker.getName() + ": trying to use spell. But no can use, baby!") ;}
 				if (attacker.canUseSpell(spell))
@@ -461,7 +446,7 @@ public abstract class Battle
 
 		EvolutionSimulation.updateBattleStats(attacker, receiver, atkResults) ;
 		
-		receiver.playDamageAnimation(damageStyle, atkResults, Game.palette[7]) ;
+		receiver.playDamageAnimation(atkResults, Game.palette[7]) ;
 		startAtkAnimations(attacker, atkType) ;
 
 		if (Game.getPlayer().getSettings().getSoundEffectsAreOn())

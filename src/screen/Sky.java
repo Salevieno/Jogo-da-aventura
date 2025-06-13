@@ -14,16 +14,16 @@ import utilities.UtilS;
 
 public class Sky 
 {
-	public final Dimension size ;
+	private final Dimension size ;
+	
 	private static SkyComponent[] clouds;
 	private static SkyComponent[] stars ;
 	private static Color color ;
-
-	public static final int height ;
-	public static final Image cloudImage1 ;
-	public static final Image cloudImage2 ;
-	public static final Image cloudImage3 ;
+	private static final Image cloudImage1 ;
+	private static final Image cloudImage2 ;
+	private static final Image cloudImage3 ;
 	private static final Image[] starImages ;
+	public static final int height ;
 	
 	static
 	{
@@ -89,6 +89,7 @@ public class Sky
 	{
 		Point originPos = new Point(-cloud.getImage().getWidth(null), cloud.getPos().y) ;
 		cloud.setPos(originPos) ;
+		// TODO
 		cloud.setCounter(0) ;
 	}
 	

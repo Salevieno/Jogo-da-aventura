@@ -17,29 +17,29 @@ import utilities.Util;
 
 public class GameButton
 {
-	private String name ;
 	private Point topLeft ;
-	private Align alignment ;
-	private Dimension size ;
+	private String name ;
 	private boolean isActive ;
 	private boolean isSelected ;
-	private String description ;
-	private Image image ;
-	private Image selectedImage ;
-	private IconFunction action ;
+	private final String hoverMessage ;
+	private final Align alignment ;
+	private final Dimension size ;
+	private final Image image ;
+	private final Image selectedImage ;
+	private final ButtonFunction action ;
 	
-	private static Font font = new Font(Game.MainFontName, Font.BOLD, 17) ;
-	private static Color textColor = Game.palette[0] ;
-	private static Color selectedTextColor = Game.palette[18] ;
+	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 17) ;
+	private static final Color textColor = Game.palette[0] ;
+	private static final Color selectedTextColor = Game.palette[18] ;
 	
-	public static int selectedIconID ;
-	public static List<GameButton> all = new ArrayList<>() ;
+	private static List<GameButton> all = new ArrayList<>() ;
 		
-	public GameButton(Point pos, Align alignment, String name, Image image, Image selectedImage, IconFunction action)
+	public GameButton(Point pos, Align alignment, String name, Image image, Image selectedImage, ButtonFunction action)
 	{
 		this.name = name ;
 		this.image = image ;
 		this.selectedImage = selectedImage ;
+		this.hoverMessage = null ;
 		this.isActive = true ;
 		this.isSelected = false ;
 		this.size = image != null ? Util.getSize(image) : new Dimension(100, 50) ;
@@ -49,7 +49,7 @@ public class GameButton
 		all.add(this) ;
 	}
 	
-	public GameButton(Point pos, Align alignment, Image image, Image selectedImage, IconFunction action)
+	public GameButton(Point pos, Align alignment, Image image, Image selectedImage, ButtonFunction action)
 	{
 		this(pos, alignment, "", image, selectedImage, action) ;
 	}
@@ -183,10 +183,10 @@ public class GameButton
 	
 	public void displayHoverMessage()
 	{
-		if (description != null)
+		if (hoverMessage != null)
 		{
 			GamePanel.DP.drawGradRoundRect(new Point(topLeft.x + 20, topLeft.y - 10), alignment, size, 5, Game.palette[1], Game.palette[2], Game.palette[0], true) ;
-			Draw.fitText(new Point(topLeft.x + 20, topLeft.y - 10), 14, alignment, description, new Font(Game.MainFontName, Font.BOLD, 12), 20, Color.blue) ;
+			Draw.fitText(new Point(topLeft.x + 20, topLeft.y - 10), 14, alignment, hoverMessage, new Font(Game.MainFontName, Font.BOLD, 12), 20, Color.blue) ;
 		}
 	}
 

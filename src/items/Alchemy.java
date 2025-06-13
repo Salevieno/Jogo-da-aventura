@@ -14,14 +14,14 @@ import utilities.UtilS;
 
 public class Alchemy extends Item
 {
-	private float lifeHeal ;
-	private float MPHeal ;
+	private final float lifeHeal ;
+	private final float MPHeal ;
 	
-	private static Alchemy[] AllAlchemy ;
+	private static final Alchemy[] AllAlchemy ;
 	
-	private static Image HerbIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconHerb.png") ;
-	private static Image WoodIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconWood.png") ;
-	private static Image MetalIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMetal.png") ;
+	private static final Image HerbIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconHerb.png") ;
+	private static final Image WoodIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconWood.png") ;
+	private static final Image MetalIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMetal.png") ;
 	
 	static
 	{
@@ -70,18 +70,4 @@ public class Alchemy extends Item
 //		return "Alchemy [lifeHeal=" + lifeHeal + ", MPHeal=" + MPHeal + ", id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance=" + dropChance + "]";
 		return "Alchemy," + id + "," + name;
 	}
-	
-	
-	
-//	public void printAtt()
-//	{
-//		System.out.println("alchemy id: " + AllAlchemy[id].getId() +
-//				"   name: " + AllAlchemy[id].getName() +
-//				"   description: " + AllAlchemy[id].getDescription() +
-//				"   price: " + AllAlchemy[id].getPrice() +
-//				"   drop chance: " + AllAlchemy[id].getDropChance() + "%" + 
-//				"   life heal: " + 100 * AllAlchemy[id].getLifeHeal() + "%" + 
-//				"   mp heal: " + 100 * AllAlchemy[id].getMPHeal() + "%");
-//	}
-	
 }

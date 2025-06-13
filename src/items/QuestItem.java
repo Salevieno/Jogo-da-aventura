@@ -12,7 +12,7 @@ import utilities.UtilS;
 
 public class QuestItem extends Item
 {
-	private static QuestItem[] AllQuests ;
+	private static final QuestItem[] AllQuests ;
 	
 	private static final Image questItemIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconQuestItem.png") ;
 	

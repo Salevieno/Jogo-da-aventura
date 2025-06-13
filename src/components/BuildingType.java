@@ -10,8 +10,8 @@ import utilities.Util;
 
 public class BuildingType
 {
-	private BuildingNames name ;
-	private Image image ;
+	private final BuildingNames name ;
+	private final Image image ;
 	private Image insideImage ;
 	private Image[] ornamentImages ;
 

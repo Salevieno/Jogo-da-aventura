@@ -10,7 +10,11 @@ import utilities.Directions;
 
 public class MovingAnimations
 {
-	public Image idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif ;
+	public final Image idleGif ;
+	public final Image movingUpGif ;
+	public final Image movingDownGif ;
+	public final Image movingLeftGif ;
+	public final Image movingRightGif ;
 	
 	public MovingAnimations(Image idleGif, Image movingUpGif, Image movingDownGif, Image movingLeftGif, Image movingRightGif)
 	{

@@ -16,10 +16,10 @@ import utilities.UtilS;
 
 public class Arrow extends Item
 {
-	private float atkPower ;
-	private Elements elem ;
+	private final float atkPower ;
+	private final Elements elem ;
 	
-	private static Arrow[] all ;
+	private static final Arrow[] all ;
 
 	private static final Image woodArrowIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconWoodArrow.png") ;
 	private static final Image strongArrowIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconStrongArrow.png") ;
@@ -70,7 +70,7 @@ public class Arrow extends Item
 	
 	public void use(LiveBeing user)
 	{
-		if (!(user instanceof Player)) { return ;}
+		if (!(user instanceof Player)) { System.out.println("Warn: non-player livebeing trying to use arrow") ; return ;}
 
 		Player player = (Player) user ;
 		Arrow arrow = Arrow.getAll()[id] ;
@@ -86,6 +86,7 @@ public class Arrow extends Item
 		
 		// equip		
 		if (!player.getBag().contains(arrow)) { return ;}
+
 		applyBonus(user.getBA(), arrow, 1) ;
 		player.setEquippedArrow(arrow) ;
 	}

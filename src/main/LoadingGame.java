@@ -5,32 +5,28 @@ import java.awt.Image;
 import java.awt.Point;
 
 import components.GameButton;
-import components.IconFunction;
+import components.ButtonFunction;
 import graphics.Align;
 import liveBeings.Player;
 import utilities.Util;
 
 public abstract class LoadingGame
 {
-	
-    private static int loadingStep ;
-    private static GameButton startButton ;
 
-	private static final Image LoadingGif ;
-	private static final Image petImage0 ;
+    private static int loadingStep = 0 ;
+    private static final GameButton startButton ;
+	private static final String path = Game.ImagesPath  + "\\Opening\\";
+	private static final Image LoadingGif = Util.loadImage(path + "Loading.gif") ;
+	private static final Image petImage0 = Util.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(0) + ".png") ;
 	
     static
     {
-    	loadingStep = 0 ;
-		String path = Game.ImagesPath  + "\\Opening\\";
+		Point startButtonPos = Util.Translate(Game.getScreen().getCenter(), 0, 80) ;
     	Image startImage = Util.loadImage(path + "Start.png") ;
     	Image startImageSelected = Util.loadImage(path + "Start Selected.gif") ;
-		IconFunction startAction = () -> { loadingStep = 12 ;} ;
-    	startButton = new GameButton(Util.Translate(Game.getScreen().getCenter(), 0, 80), Align.center, "start game", startImage, startImageSelected, startAction) ;
+		ButtonFunction startAction = () -> { loadingStep = 12 ;} ;
+    	startButton = new GameButton(startButtonPos, Align.center, "start game", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
-    	
-		LoadingGif = Util.loadImage(path + "Loading.gif") ;
-		petImage0 = Util.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(0) + ".png") ;
     }
     
     

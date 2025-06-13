@@ -10,10 +10,10 @@ import main.GamePanel;
 
 public class SkyComponent
 {
-	private Image image ;
+	private final Image image ;
 	private Point pos ;
-	private Point speed ;
-	private Dimension size ;
+	private final Point speed ;
+	private final Dimension size ;
 	private int counter ;
 	
 	public SkyComponent(Image image, Point pos, Point speed)
@@ -35,16 +35,9 @@ public class SkyComponent
 	public Point getSpeed() {return speed ;}
 	public Dimension getSize() {return size ;}
 	public int getCounter() {return counter ;}
-	public void setImage(Image I) {image = I ;}
 	public void setPos(Point P) {pos = P ;}
-	public void setSpeed(Point S) {speed = S ;}
 	public void setCounter(int C) {counter = C ;}
-	
 
-	public void incCounter(int MaxCounter)
-	{
-		counter = (counter + 1) % MaxCounter ;
-	}
 	
 	public void move()
 	{

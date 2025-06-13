@@ -8,7 +8,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 
 import components.GameButton;
-import components.IconFunction;
+import components.ButtonFunction;
 import graphics.Align;
 import liveBeings.PlayerActions;
 import main.Game;
@@ -77,12 +77,12 @@ public abstract class GameWindow
 	public static boolean actionIsForward(String action) { return action == null ? false : action.equals("Enter") | action.equals("LeftClick") ;}
 	protected GameButton windowUpButton(Point pos, Align align)
 	{
-		IconFunction action = () -> { windowUp() ;} ;
+		ButtonFunction action = () -> { windowUp() ;} ;
 		return new GameButton(pos, align, buttonWindowUpImage, selectedButtonWindowUpImage, action) ;
 	}
 	protected GameButton windowDownButton(Point pos, Align align)
 	{
-		IconFunction action = () -> { windowDown() ;} ;
+		ButtonFunction action = () -> { windowDown() ;} ;
 		return new GameButton(pos, align, buttonWindowDownImage, selectedButtonWindowDownImage, action) ;
 	}
 	

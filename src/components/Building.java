@@ -20,8 +20,8 @@ import utilities.UtilS;
 
 public class Building implements Drawable
 {
-	private BuildingType type ;
-	private Point pos ;
+	private final BuildingType type ;
+	private final Point pos ;
 	private List<NPC> npcs ;
 	private List<Collider> colliders ;
 	private static final Image signBoard = UtilS.loadImage("\\Buildings\\" + "SignBoard.png") ;
@@ -41,23 +41,23 @@ public class Building implements Drawable
 		this.npcs = npcs ;
 	}
 	
-	private void addColliders()
-	{
-		Image collidersImage = UtilS.loadImage("\\Buildings\\" + "Building" + type.getName() + "Colliders.png") ;
+	// private void addColliders()
+	// {
+	// 	Image collidersImage = UtilS.loadImage("\\Buildings\\" + "Building" + type.getName() + "Colliders.png") ;
 		
-		if (collidersImage == null) { return ;}
+	// 	if (collidersImage == null) { return ;}
 		
-		for (int i = 0 ; i <= collidersImage.getWidth(null) - 1 ; i += 1)
-		{
-			for (int j = 0 ; j <= collidersImage.getHeight(null) - 1 ; j += 1)
-			{
-				if (!Util.isTransparent(collidersImage, new Point(i, j)))
-				{
-					colliders.add(new Collider(new Point(pos.x + i, pos.y - type.getImage().getHeight(null) + j))) ;
-				}
-			}
-		}
-	}
+	// 	for (int i = 0 ; i <= collidersImage.getWidth(null) - 1 ; i += 1)
+	// 	{
+	// 		for (int j = 0 ; j <= collidersImage.getHeight(null) - 1 ; j += 1)
+	// 		{
+	// 			if (!Util.isTransparent(collidersImage, new Point(i, j)))
+	// 			{
+	// 				colliders.add(new Collider(new Point(pos.x + i, pos.y - type.getImage().getHeight(null) + j))) ;
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	
 	public BuildingType getType() { return type ;}

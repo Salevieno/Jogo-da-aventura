@@ -11,12 +11,6 @@ public enum EquipTypes
 	armor,
 	emblem;
 
-	private EquipTypes()
-	{
-		
-	}
-
-
 	public static EquipTypes[] weapons() { return new EquipTypes[] {sword, staff, bow, claws, dagger} ;}
 
 }

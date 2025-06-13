@@ -10,7 +10,6 @@ import attributes.BasicBattleAttribute;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
-import items.Equip;
 import liveBeings.Pet;
 import main.Game;
 import main.GamePanel;
@@ -61,7 +60,7 @@ public class PetAttributesWindow extends AttributesWindow
 		{
 			Point slotCenter = Util.Translate(windowPos, 222, 72) ;
 			Dimension slotSize = new Dimension(51, 51) ;
-			GamePanel.DP.drawImage(Equip.ArmorImage, slotCenter, Align.center) ;
+			GamePanel.DP.drawImage(pet.getEquip().fullSizeImage(), slotCenter, Align.center) ;
 			// TODO pegar elemento do equip
 			Elements eqElem = pet.getAtkElem() ;
 			if (eqElem != null)

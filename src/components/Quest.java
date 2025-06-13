@@ -15,19 +15,19 @@ import windows.BagWindow;
 
 public class Quest
 {
-	private int id ;
-	private String name ;
-	private String type ;
-//	private boolean isActive ;
+	private final int id ;
+	private final String name ;
+	private final String type ;
+//	private final boolean isActive ;
+	private final boolean isRepeatable ;
+	private final Map<CreatureType, Integer> reqCreaturesCounter ;
+	private final Map<CreatureType, Integer> reqCreatureTypes;
+	private final Map<Item, Integer> reqItems;
+	private final int goldReward ;
+	private final int expReward ;
+	private final Map<Item, Integer> rewardItems ;
+	private final String description ;
 	private boolean isComplete ;
-	private boolean isRepeatable ;
-	private Map<CreatureType, Integer> reqCreaturesCounter ;
-	private Map<CreatureType, Integer> reqCreatureTypes;
-	private Map<Item, Integer> reqItems;
-	private int goldReward ;
-	private int expReward ;
-	private Map<Item, Integer> rewardItems ;
-	private String description ;
 
 	protected static final String dadosPath = Game.dadosPath + "quests\\" ;
 	public static final List<Quest> all ;
@@ -191,22 +191,12 @@ public class Quest
 	public int getGoldReward() {return goldReward ;}
 	public int getExpReward() {return expReward ;}
 	public String getDescription() {return description ;}
-	public void setID(int id) {this.id = id ;}
-	public void setName(String N) {name = N ;}
-	public void setType(String T) {type = T ;}
-	public void setGoldReward(int GR) {goldReward = GR ;}
-	public void setExpReward(int ER) {expReward = ER ;}
 	public Map<Item, Integer> getRewardItems() {return rewardItems ;}
-	public void setDescription(String D) {description = D ;}
 	
 	@Override
 	public String toString()
 	{
 		return id + ";" + type + ";" + isRepeatable + ";" + reqCreatureTypes + ";" + reqItems + ";" + goldReward + ";" + expReward + ";" + rewardItems ;
-//		return "Quest [id=" + id + ", name=" + name + ", type=" + type + ", isComplete="
-//				+ isComplete + ", isRepeatable=" + isRepeatable + ", reqCreaturesCounter=" + reqCreaturesCounter
-//				+ ", reqCreatureTypes=" + reqCreatureTypes + ", reqItems=" + reqItems + ", goldReward=" + goldReward
-//				+ ", expReward=" + expReward + ", rewardItems=" + rewardItems + ", description=" + description + "]";
 	}
 		
 	

@@ -14,14 +14,14 @@ import utilities.UtilS;
 
 public class NPCType
 {
-	private String name ;
-	private NPCJobs job ;
-	private String info ;
-	private Color color ;
-	private Image image ;
-	private String[] speech ;
-	private List<List<String>> options ;
-	private List<List<Integer>> destination ;
+	private final String name ;
+	private final NPCJobs job ;
+	private final String info ;
+	private final Color color ;
+	private final Image image ;
+	private final String[] speech ;
+	private final List<List<String>> options ;
+	private final List<List<Integer>> destination ;
 	
 	private static final String path = Game.dadosPath + "npcs\\" ;
 	

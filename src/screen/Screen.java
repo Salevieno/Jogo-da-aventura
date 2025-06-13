@@ -12,12 +12,12 @@ import main.GamePanel;
 
 public class Screen
 {
-	private Dimension size ;
+	private final Dimension size ;
+	private final Sky sky ;
 	private int[] borders ;	// min x, min y, max x, max y
 	private Point center ;	// center of the entire screen, including the sky
 	private Point mapCenter ;	// center of the walkable map
 	private Point2D.Double scale ;
-	private Sky sky ;
 
 	public Screen(Dimension size, int[] borders)
 	{

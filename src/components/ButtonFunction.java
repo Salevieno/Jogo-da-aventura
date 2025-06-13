@@ -1,6 +1,6 @@
 package components;
 
-public interface IconFunction
+public interface ButtonFunction
 {
 	void act() ;
 }

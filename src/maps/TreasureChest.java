@@ -11,8 +11,8 @@ import utilities.UtilS;
 
 public class TreasureChest extends MapElement
 {
-	private List<Item> items ;
-	private int gold ;
+	private final List<Item> items ;
+	private final int gold ;
 	
 	private static final Image treasureChestsImage ;
 

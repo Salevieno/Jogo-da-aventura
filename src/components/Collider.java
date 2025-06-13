@@ -4,7 +4,7 @@ import java.awt.Point;
 
 public class Collider
 {
-	private Point pos ;
+	private final Point pos ;
 
 	public Collider(Point pos)
 	{

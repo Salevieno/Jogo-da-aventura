@@ -27,40 +27,39 @@ import windows.CreatureAttributesWindow;
 
 public class CreatureType
 {
-	private int id;
+	private final int id;
 
-	protected String name;
-	protected int level;
-	protected Dimension size;
-	protected int range;
-	protected int step;
-	protected Elements atkElem ;
-	protected Elements weaponElem ;
-	protected Elements armorElem ;
-	protected Elements shieldElem ;
-	protected Elements superElem ;
-	protected double mpDuration; // counts the mp reduction
-	protected double satiationDuration; // counts the satiation reduction
-	protected double numberSteps; // counts the steps
-	protected double battleActionDuration;// counts the battle actions
+	protected final String name;
+	protected final int level;
+	protected final Dimension size;
+	protected final int range;
+	protected final int step;
+	protected final Elements atkElem ;
+	protected final Elements weaponElem ;
+	protected final Elements armorElem ;
+	protected final Elements shieldElem ;
+	protected final Elements superElem ;
+	protected final double mpDuration;
+	protected final double satiationDuration;
+	protected final double numberSteps;
+	protected final double battleActionDuration;
+	protected final MovingAnimations movingAni;
+	protected final PersonalAttributes PA;
+	protected final BattleAttributes BA;
 
 	private Genetics genes;
 
-	protected MovingAnimations movingAni;
-	protected PersonalAttributes PA;
-	protected BattleAttributes BA;
-	private List<Spell> spell;
-	private Set<Item> items;
-	private int gold;
-	private Color color;
-	private int[] StatusCounter;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood,
-								// Poison, Silence]
-	private String hitboxType ;
+	private final List<Spell> spell;
+	private final Set<Item> items;
+	private final int gold;
+	private final Color color;
+	private final int[] StatusCounter;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
+	private final String hitboxType ;
 
-	public static final int numberCreatureTypesImages ;
 	private static int NumberOfCreatureTypes;
+	private static final List<MovingAnimations> moveAni;
+	public static final int numberCreatureTypesImages ;
 	public static final List<CreatureType> all;
-	public static final List<MovingAnimations> moveAni;
 	public static final CreatureAttributesWindow attWindow;
 
 	static
@@ -184,36 +183,6 @@ public class CreatureType
 	public String getHitboxType()
 	{
 		return hitboxType;
-	}
-
-	public void setID(int I)
-	{
-		id = I;
-	}
-
-	public void setSpell(List<Spell> S)
-	{
-		spell = S;
-	}
-
-	public void setItems(Set<Item> B)
-	{
-		items = B;
-	}
-
-	public void setGold(int G)
-	{
-		gold = G;
-	}
-
-	public void setColor(Color C)
-	{
-		color = C;
-	}
-
-	public void setStatusCounter(int[] S)
-	{
-		StatusCounter = S;
 	}
 
 	public void setGenes(Genetics newGenes)

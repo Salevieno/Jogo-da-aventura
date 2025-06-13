@@ -44,119 +44,34 @@ public class Statistics
 	private int highestMagDamageInflicted ;
 		
 	
-	public int getNumberPhyAtk()
-	{
-		return numberPhyAtk;
-	}
-	public int getNumberMagAtk()
-	{
-		return numberMagAtk;
-	}
-	public int getNumberDef()
-	{
-		return numberDef;
-	}
-	public int getNumberHitsInflicted()
-	{
-		return numberHitsInflicted;
-	}
-	public int getNumberDodges()
-	{
-		return numberDodges;
-	}
-	public int getNumberCritInflicted()
-	{
-		return numberCritInflicted;
-	}
-	public int getNumberStunInflicted()
-	{
-		return numberStunInflicted;
-	}
-	public int getNumberBlockInflicted()
-	{
-		return numberBlockInflicted;
-	}
-	public int getNumberBloodInflicted()
-	{
-		return numberBloodInflicted;
-	}
-	public int getNumberPoisonInflicted()
-	{
-		return numberPoisonInflicted;
-	}
-	public int getNumberSilenceInflicted()
-	{
-		return numberSilenceInflicted;
-	}
-	public int getPhyDamageInflicted()
-	{
-		return phyDamageInflicted;
-	}
-	public int getPhyDamageReceived()
-	{
-		return phyDamageReceived;
-	}
-	public int getPhyDamageDefended()
-	{
-		return phyDamageDefended;
-	}
-	public int getMagDamageInflicted()
-	{
-		return magDamageInflicted;
-	}
-	public int getMagDamageReceived()
-	{
-		return magDamageReceived;
-	}
-	public int getMagDamageDefended()
-	{
-		return magDamageDefended;
-	}
-	public int getCritDamageInflicted()
-	{
-		return critDamageInflicted;
-	}
-	public int getCritDamageReceived()
-	{
-		return critDamageReceived;
-	}
-	public int getCritDamageDefended()
-	{
-		return critDamageDefended;
-	}
-	public int getBloodDamageInflicted()
-	{
-		return bloodDamageInflicted;
-	}
-	public int getBloodDamageReceived()
-	{
-		return bloodDamageReceived;
-	}
-	public int getBloodDamageDefended()
-	{
-		return bloodDamageDefended;
-	}
-	public int getPoisonDamageInflicted()
-	{
-		return poisonDamageInflicted;
-	}
-	public int getPoisonDamageReceived()
-	{
-		return poisonDamageReceived;
-	}
-	public int getPoisonDamageDefended()
-	{
-		return poisonDamageDefended;
-	}
-	public int getHighestPhyDamageInflicted()
-	{
-		return highestPhyDamageInflicted;
-	}
-	public int getHighestMagDamageInflicted()
-	{
-		return highestMagDamageInflicted;
-	}
-	
+	public int getNumberPhyAtk() { return numberPhyAtk ;}
+	public int getNumberMagAtk() { return numberMagAtk ;}
+	public int getNumberDef() { return numberDef ;}
+	public int getNumberHitsInflicted() { return numberHitsInflicted ;}
+	public int getNumberDodges() { return numberDodges ;}
+	public int getNumberCritInflicted() { return numberCritInflicted ;}
+	public int getNumberStunInflicted() { return numberStunInflicted ;}
+	public int getNumberBlockInflicted() { return numberBlockInflicted ;}
+	public int getNumberBloodInflicted() { return numberBloodInflicted ;}
+	public int getNumberPoisonInflicted() { return numberPoisonInflicted ;}
+	public int getNumberSilenceInflicted() { return numberSilenceInflicted ;}
+	public int getPhyDamageInflicted() { return phyDamageInflicted ;}
+	public int getPhyDamageReceived() { return phyDamageReceived ;}
+	public int getPhyDamageDefended() { return phyDamageDefended ;}
+	public int getMagDamageInflicted() { return magDamageInflicted ;}
+	public int getMagDamageReceived() { return magDamageReceived ;}
+	public int getMagDamageDefended() { return magDamageDefended ;}
+	public int getCritDamageInflicted() { return critDamageInflicted ;}
+	public int getCritDamageReceived() { return critDamageReceived ;}
+	public int getCritDamageDefended() { return critDamageDefended ;}
+	public int getBloodDamageInflicted() { return bloodDamageInflicted ;}
+	public int getBloodDamageReceived() { return bloodDamageReceived ;}
+	public int getBloodDamageDefended() { return bloodDamageDefended ;}
+	public int getPoisonDamageInflicted() { return poisonDamageInflicted ;}
+	public int getPoisonDamageReceived() { return poisonDamageReceived ;}
+	public int getPoisonDamageDefended() { return poisonDamageDefended ;}
+	public int getHighestPhyDamageInflicted() { return highestPhyDamageInflicted ;}
+	public int getHighestMagDamageInflicted() { return highestMagDamageInflicted ;}
 	
 	public void incNumberPhyAtk() { numberPhyAtk += 1 ;}
 	public void incNumberMagAtk() { numberMagAtk += 1 ;}
@@ -169,7 +84,6 @@ public class Statistics
 	public void incNumberBloodInflicted() { numberBloodInflicted += 1 ;}
 	public void incNumberPoisonInflicted() { numberPoisonInflicted += 1 ;}
 	public void incNumberSilenceInflicted() { numberSilenceInflicted += 1 ;}
-
 	public void incPhyDamageInflicted(int amount) { phyDamageInflicted += amount ;}
 	public void incPhyDamageReceived(int amount) { phyDamageReceived += amount ;}
 	public void incPhyDamageDefended(int amount) { phyDamageDefended += amount ;}
@@ -186,7 +100,6 @@ public class Statistics
 	public void incPoisonDamageReceived(int amount) { poisonDamageReceived += amount ;}
 	public void incPoisonDamageDefended(int amount) { poisonDamageDefended += amount ;}
 	
-
 	public void updateOffensive(AtkResults atkResults)
 	{		
 		if (atkResults == null) { return ;}

@@ -30,9 +30,9 @@ import utilities.UtilS;
 
 public class FieldMap extends GameMap
 {
-	private List<Collectible> collectibles ;
+	private final int level ;
 	private List<Creature> creatures ;
-	private int level ;
+	private List<Collectible> collectibles ;
 	private Map<CollectibleTypes, GameTimer> collectibleCounters ;
 	
 	private static final int numberTrees = 5 ;
@@ -43,7 +43,7 @@ public class FieldMap extends GameMap
 	private static final Image grassImage2 ;
 	private static final Image rockImage ;
 
-	public static final List<Image> images ;
+	private static final List<Image> images ;
 	
 	static
 	{

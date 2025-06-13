@@ -37,10 +37,10 @@ import utilities.Util;
 
 public class Creature extends LiveBeing
 {
-	private CreatureType type ;
-	private Set<Item> items ;
-	private int gold ;
-	private Color color ;
+	private final CreatureType type ;
+	private final Set<Item> items ;
+	private final int gold ;
+	private final Color color ;
 	private boolean follow ;
 	
 	private static Color[] skinColor = new Color[] {Game.palette[0], Game.palette[5]} ;
@@ -251,8 +251,8 @@ public class Creature extends LiveBeing
 //			System.out.println(move);
 			switch (move)
 			{
-				case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
-				case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
+				case 0:	setCurrentAction(battleKeys[0]) ; return ;	// Physical attack
+				case 1:	setCurrentAction(battleKeys[1]) ; return ;	// Defense
 				case 2:	setCurrentAction(String.valueOf(Util.randomInt(0, spells.size() - 1))) ; return ;	// spell
 			}
 			return ;
@@ -264,8 +264,8 @@ public class Creature extends LiveBeing
 //		System.out.println("move = " + move);
 		switch (move)
 		{
-			case 0:	setCurrentAction(BattleKeys[0]) ; return ;	// Physical attack
-			case 1:	setCurrentAction(BattleKeys[1]) ; return ;	// Defense
+			case 0:	setCurrentAction(battleKeys[0]) ; return ;	// Physical attack
+			case 1:	setCurrentAction(battleKeys[1]) ; return ;	// Defense
 			case 2:	setCurrentAction(String.valueOf(Util.randomInt(0, spells.size() - 1))) ; return ;	// spell
 		}
 

@@ -17,7 +17,7 @@ import utilities.UtilS;
 public class SpecialMap extends GameMap
 {
 	
-	public static final List<Image> images ;
+	private static final List<Image> images ;
 	
 	static
 	{

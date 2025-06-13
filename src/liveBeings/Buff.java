@@ -14,9 +14,9 @@ import utilities.Util;
 
 public class Buff
 {
-	Map<Attributes, Double> percentIncrease;
-	Map<Attributes, Double> valueIncrease;
-	Map<Attributes, Double> chance;
+	private final Map<Attributes, Double> percentIncrease;
+	private final Map<Attributes, Double> valueIncrease;
+	private final Map<Attributes, Double> chance;
 	
 	public static final List<Buff> allBuffs ;
 	public static final List<Buff> allDebuffs ;
@@ -54,30 +54,9 @@ public class Buff
 		}
 	}
 	
-	public Map<Attributes, Double> getPercentIncrease()
-	{
-		return percentIncrease;
-	}
-	public void setPercentIncrease(Map<Attributes, Double> percentIncrease)
-	{
-		this.percentIncrease = percentIncrease;
-	}
-	public Map<Attributes, Double> getValueIncrease()
-	{
-		return valueIncrease;
-	}
-	public void setValueIncrease(Map<Attributes, Double> valueIncrease)
-	{
-		this.valueIncrease = valueIncrease;
-	}
-	public Map<Attributes, Double> getChance()
-	{
-		return chance;
-	}
-	public void setChance(Map<Attributes, Double> chance)
-	{
-		this.chance = chance;
-	}
+	public Map<Attributes, Double> getPercentIncrease() { return percentIncrease ;}
+	public Map<Attributes, Double> getValueIncrease() { return valueIncrease ;}
+	public Map<Attributes, Double> getChance() { return chance ;}
 	
 	public void apply(int mult, int level, LiveBeing receiver)
 	{

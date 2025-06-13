@@ -13,7 +13,7 @@ import utilities.UtilS;
 public class Forge extends Item
 {
 	
-	private static Forge[] AllForge ;
+	private static final Forge[] allForge ;
 	
 	private static final Image runeAtk = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconRuneAtk.png") ;
 	private static final Image runeDef = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconRuneDef.png") ;
@@ -23,10 +23,10 @@ public class Forge extends Item
 	static
 	{
 		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Forge.csv") ;
-		AllForge = new Forge[input.size()] ;
-		for (int p = 0; p <= AllForge.length - 1; p += 1)
+		allForge = new Forge[input.size()] ;
+		for (int p = 0; p <= allForge.length - 1; p += 1)
 		{
-			AllForge[p] = new Forge(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]));
+			allForge[p] = new Forge(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]));
 		}	
 	}
 	
@@ -35,7 +35,7 @@ public class Forge extends Item
 		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 	}
 
-	public static Forge[] getAll() {return AllForge ;}
+	public static Forge[] getAll() {return allForge ;}
 
 	public static int typeFromID(int id)
 	{

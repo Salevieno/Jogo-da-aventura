@@ -9,7 +9,7 @@ import javax.sound.sampled.Clip;
 public class Music
 {
 //	private boolean isOn ;
-	private Clip clip ;
+	private final Clip clip ;
 	
 	private static Clip currentlyPlayingClip = null ;
 	

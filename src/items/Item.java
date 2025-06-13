@@ -12,12 +12,12 @@ import utilities.UtilS;
 
 public abstract class Item
 {
-	protected int id ;
-	protected String name ;
-	protected String description ;
-	protected Image image ;
-	protected int price ;
-	protected double dropChance ;
+	protected final int id ;
+	protected final String name ;
+	protected final String description ;
+	protected final Image image ;
+	protected final int price ;
+	protected final double dropChance ;
 	
 	protected static final Image infoMenu = UtilS.loadImage("itemInfoWindow.png") ;
 	public static final List<Item> allItems = new ArrayList<>() ;

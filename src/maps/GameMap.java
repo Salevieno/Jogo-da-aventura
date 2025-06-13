@@ -46,8 +46,8 @@ public class GameMap
 	protected List<NPC> npcs ;
 	protected Map<Item, Double> diggingItems ;
 	
-	public static Image[] CollectibleImage ;
-	public static Image[] GroundImage ;	
+	// private static Image[] CollectibleImage ;
+	// private static Image[] GroundImage ;	
 	
 	protected static final SpriteAnimation beachGif ;
 	protected static final Image infoWindow ;

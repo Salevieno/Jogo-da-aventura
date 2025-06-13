@@ -7,9 +7,9 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Arrays;
 
-import battle.Battle;
 import graphics.Align;
 import graphics2.Draw;
+import liveBeings.LiveBeing;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
@@ -150,7 +150,7 @@ public class SettingsWindow extends GameWindow
 		if (item == 4)
 		{
 			damageAnimation = (damageAnimation + 1) % 4 ;
-			Battle.updateDamageAnimation(damageAnimation) ;
+			LiveBeing.updateDamageAnimation(damageAnimation) ;
 		}
 		if (item == 5)
 		{

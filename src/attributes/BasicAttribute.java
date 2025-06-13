@@ -76,7 +76,6 @@ public class BasicAttribute extends LiveBeingAttribute
 	public String toString()
 	{
 		return "BasicAttribute [currentValue=" + currentValue + ", bonus=" + bonus + ", maxValue=" + maxValue + " totalValue=" + getTotalValue() + ", multiplier=" + multiplier+ "]" ;
-//		return " bonus=" + bonus ;
 	}
 	
 }

@@ -92,7 +92,7 @@ public abstract class SpellsBar
 			Point slotCenter = Util.Translate(barPos, offset.x + slotSize.width / 2 + col * sx, - size.height + slotSize.height / 2 + 8 + offset.y + row * sy) ;
 			Image image = spell.getMpCost() < userMP ? SideBar.slotImage : slotImageNoMP ;
 			GamePanel.DP.drawImage(image, slotCenter, Align.center) ;
-			GamePanel.DP.drawText(slotCenter, Align.center, Draw.stdAngle, Player.SpellKeys.get(i), font, textColor) ;
+			GamePanel.DP.drawText(slotCenter, Align.center, Draw.stdAngle, Player.spellKeys.get(i), font, textColor) ;
 			
 			displayCooldown(slotCenter, spell) ;
 

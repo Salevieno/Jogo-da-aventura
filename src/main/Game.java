@@ -48,6 +48,7 @@ import liveBeings.Buff ;
 import liveBeings.Creature ;
 import liveBeings.CreatureType ;
 import liveBeings.HotKeysBar;
+import liveBeings.LiveBeing;
 import liveBeings.Pet ;
 import liveBeings.Player ;
 import liveBeings.Spell ;
@@ -439,7 +440,7 @@ public class Game
 				}
 				player.setMap(Game.getMaps()[player.getJob()]) ;
 				player.setPos(Game.getScreen().getCenter()) ;
-				Battle.updateDamageAnimation(player.getSettings().getDamageAnimation()) ;
+				LiveBeing.updateDamageAnimation(player.getSettings().getDamageAnimation()) ;
 				SideBar.initialize();
 				
 				if (player.getSettings().getMusicIsOn())

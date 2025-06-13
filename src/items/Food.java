@@ -14,22 +14,22 @@ import utilities.UtilS;
 
 public class Food extends Item
 {
-	private float lifeHeal ;
-	private float MPHeal ;
-	private int SatiationHeal ;
+	private final float lifeHeal ;
+	private final float MPHeal ;
+	private final int satiationHeal ;
 	
-	private static Food[] AllFood ;
+	private static final Food[] allFood ;
 	
 	private static final Image iconFoodBerry ;
 	
 	static
 	{
 		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Food.csv") ;
-		AllFood = new Food[input.size()] ;
+		allFood = new Food[input.size()] ;
 		iconFoodBerry = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconFoodBerry.png") ;
-		for (int p = 0; p <= AllFood.length - 1; p += 1)
+		for (int p = 0; p <= allFood.length - 1; p += 1)
 		{
-			AllFood[p] = new Food(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3],
+			allFood[p] = new Food(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3],
 					Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]),
 					Float.parseFloat(input.get(p)[7]), Float.parseFloat(input.get(p)[8]),
 					Integer.parseInt(input.get(p)[9]));
@@ -42,13 +42,13 @@ public class Food extends Item
 		super(id, Name, Description, imageFromID(id), price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
-		this.SatiationHeal = SatiationHeal ;
+		this.satiationHeal = SatiationHeal ;
 	}
 
 	public float getLifeHeal() {return lifeHeal ;}
 	public float getMPHeal() {return MPHeal ;}	
-	public int getSatiationHeal() {return SatiationHeal ;}	
-	public static Food[] getAll() {return AllFood ;}
+	public int getSatiationHeal() {return satiationHeal ;}	
+	public static Food[] getAll() {return allFood ;}
 
 	public static Image imageFromID(int id) { return iconFoodBerry ;}
 	
@@ -57,7 +57,7 @@ public class Food extends Item
 		PersonalAttributes PA = user.getPA() ;
 		PA.getLife().incCurrentValue((int) (lifeHeal * PA.getLife().getMaxValue())) ;
 		PA.getMp().incCurrentValue((int) (MPHeal * PA.getMp().getMaxValue())) ;
-		PA.getSatiation().incCurrentValue((int) (SatiationHeal / 310.0 * PA.getSatiation().getMaxValue())) ;
+		PA.getSatiation().incCurrentValue((int) (satiationHeal / 310.0 * PA.getSatiation().getMaxValue())) ;
 	}
 
 	public void displayInfo(Point pos, Align align)

@@ -15,34 +15,15 @@ public enum QuestSkills
 	
 	public static QuestSkills getContinentMap(String continent)
 	{
-		switch (continent)
+		return switch (continent)
 		{
-			case "forest":
-			{
-				return forestMap ;
-			}
-			case "cave":
-			{
-				return caveMap ;
-			}
-			case "island":
-			{
-				return islandMap ;
-			}
-			case "volcano":
-			{
-				return volcanoMap ;
-			}
-			case "snowland":
-			{
-				return snowlandMap ;
-			}
-			case "special":
-			{
-				return null ;
-			}
-			default: 
-				return null ;
-		}
+			case "forest" -> forestMap ;
+			case "cave" -> caveMap ;
+			case "island" -> islandMap ;
+			case "volcano" -> volcanoMap ;
+			case "snowland" -> snowlandMap ;
+			case "special" -> null ;
+			default -> null ;
+		};
 	}
 }

@@ -13,8 +13,8 @@ import utilities.Util;
 
 public class Recipe
 {
-	Map<Item, Integer> Ingredients ;
-	Map<Item, Integer> Products ;
+	private final Map<Item, Integer> Ingredients ;
+	private final Map<Item, Integer> Products ;
 	
 	public static final List<Recipe> all ;
 	

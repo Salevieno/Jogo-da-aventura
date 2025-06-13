@@ -22,11 +22,11 @@ import utilities.UtilS;
 
 public class GeneralItem extends Item
 {
-	private double power ;
-	private AttackModifiers atkMod ;
-	private Elements elem ;
+	private final double power ;
+	private final AttackModifiers atkMod ;
+	private final Elements elem ;
 	
-	private static GeneralItem[] AllGeneralItems ;
+	private static final GeneralItem[] AllGeneralItems ;
 	
 	private static final Image generalItemIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconGenItem.png") ;
 	

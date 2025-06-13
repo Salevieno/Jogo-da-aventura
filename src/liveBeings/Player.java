@@ -954,7 +954,7 @@ public class Player extends LiveBeing
 		// using spells
 		if (actionIsSpell() & !isFighting())
 		{
-			Spell spell = getActiveSpells().get(SpellKeys.indexOf(currentAction));
+			Spell spell = getActiveSpells().get(spellKeys.indexOf(currentAction));
 			if (canUseSpell(spell))
 			{
 				useSpell(spell, this) ;

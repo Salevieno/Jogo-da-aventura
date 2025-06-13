@@ -4,8 +4,8 @@ import java.util.List;
 
 public class AttributeIncrease
 {
-	private AttributeBonus increment ;
-	private AttributeBonus chance ;
+	private final AttributeBonus increment ;
+	private final AttributeBonus chance ;
 	
 	public AttributeIncrease(List<Double> increments, List<Double> chances)
 	{
@@ -16,7 +16,6 @@ public class AttributeIncrease
 	}
 
 	public AttributeBonus getIncrement() { return increment ;}
-	public AttributeBonus getChance() { return chance ;}
-	
+	public AttributeBonus getChance() { return chance ;}	
 	
 }

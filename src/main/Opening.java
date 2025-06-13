@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import components.GameButton;
-import components.IconFunction;
+import components.ButtonFunction;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
@@ -75,7 +75,6 @@ public abstract class Opening
 		// thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
 		// introMusic = Music.loadMusicFile("intro.wav") ;
 		
-		GameButton.selectedIconID = 2 ;
     	step = 0 ;
     	newGame = true ;
     	isOver = false ;
@@ -84,21 +83,21 @@ public abstract class Opening
 		buttonsInStep = new ArrayList<>() ;
     	loadSlotButtons = new ArrayList<>() ;
 
-		IconFunction portAction = () -> { } ; // TODO switch language
-		IconFunction enAction = () -> { } ;
-		IconFunction newGameAction = () -> {advanceStep() ;} ;
-		IconFunction loadGameAction = () -> { switchToLoadGameScreen() ;} ;
-		IconFunction confirmNameAction = () -> {chosenName = liveInput.getText() ; advanceStep() ;} ;
-		IconFunction maleAction = () -> { chosenSex = "M" ; advanceStep() ;} ;
-		IconFunction femaleAction = () -> { chosenSex = "F" ; advanceStep() ;} ;
-		IconFunction easyAction = () -> { difficultLevel = 0 ; advanceStep() ;} ;
-		IconFunction mediumAction = () -> { difficultLevel = 1 ; advanceStep() ;} ;
-		IconFunction hardAction = () -> { difficultLevel = 2 ; advanceStep() ;} ;
-		IconFunction knightAction = () -> { chosenJob = 0 ; advanceStep() ;} ;
-		IconFunction mageAction = () -> { chosenJob = 1 ; advanceStep() ;} ;
-		IconFunction archerAction = () -> { chosenJob = 2 ; advanceStep() ;} ;
-		IconFunction animalAction = () -> { chosenJob = 3 ; advanceStep() ;} ;
-		IconFunction thiefAction = () -> { chosenJob = 4 ; advanceStep() ;} ;
+		ButtonFunction portAction = () -> { } ; // TODO switch language
+		ButtonFunction enAction = () -> { } ;
+		ButtonFunction newGameAction = () -> {advanceStep() ;} ;
+		ButtonFunction loadGameAction = () -> { switchToLoadGameScreen() ;} ;
+		ButtonFunction confirmNameAction = () -> {chosenName = liveInput.getText() ; advanceStep() ;} ;
+		ButtonFunction maleAction = () -> { chosenSex = "M" ; advanceStep() ;} ;
+		ButtonFunction femaleAction = () -> { chosenSex = "F" ; advanceStep() ;} ;
+		ButtonFunction easyAction = () -> { difficultLevel = 0 ; advanceStep() ;} ;
+		ButtonFunction mediumAction = () -> { difficultLevel = 1 ; advanceStep() ;} ;
+		ButtonFunction hardAction = () -> { difficultLevel = 2 ; advanceStep() ;} ;
+		ButtonFunction knightAction = () -> { chosenJob = 0 ; advanceStep() ;} ;
+		ButtonFunction mageAction = () -> { chosenJob = 1 ; advanceStep() ;} ;
+		ButtonFunction archerAction = () -> { chosenJob = 2 ; advanceStep() ;} ;
+		ButtonFunction animalAction = () -> { chosenJob = 3 ; advanceStep() ;} ;
+		ButtonFunction thiefAction = () -> { chosenJob = 4 ; advanceStep() ;} ;
 		
 		Screen screen = Game.getScreen() ;
 		GameButton portButton = new GameButton(screen.pos(0.85, 0.05), Align.center, "Port", Util.loadImage(path + "Port.png"), Util.loadImage(path + "PortSelected.png"), portAction) ;
@@ -117,7 +116,7 @@ public abstract class Opening
 				screen.pos(0.4, 0.3), screen.pos(0.6, 0.3),
 				screen.pos(0.3, 0.3), screen.pos(0.5, 0.3), screen.pos(0.7, 0.3),
 				screen.pos(0.13, 0.3), screen.pos(0.33, 0.3), screen.pos(0.53, 0.3), screen.pos(0.73, 0.3), screen.pos(0.93, 0.3)} ;
-		IconFunction[] btAction = new IconFunction[] {
+		ButtonFunction[] btAction = new ButtonFunction[] {
 				newGameAction, loadGameAction,
 				confirmNameAction,
 				maleAction, femaleAction,
@@ -187,9 +186,9 @@ public abstract class Opening
 		Log.loadingStatus(players[1] != null, 2);
 		Log.loadingStatus(players[2] != null, 3);
 
-		IconFunction loadSlot1 = () -> { loadGame(players, 0) ;} ;
-		IconFunction loadSlot2 = () -> { loadGame(players, 1) ;} ;
-		IconFunction loadSlot3 = () -> { loadGame(players, 2) ;} ;
+		ButtonFunction loadSlot1 = () -> { loadGame(players, 0) ;} ;
+		ButtonFunction loadSlot2 = () -> { loadGame(players, 1) ;} ;
+		ButtonFunction loadSlot3 = () -> { loadGame(players, 2) ;} ;
 		
 		loadSlotButtons.add(new GameButton(new Point(60, 100), Align.topLeft, "Load slot 1", LoadingSlot, LoadingSlotSelected, loadSlot1)) ;
 		loadSlotButtons.add(new GameButton(new Point(260, 100), Align.topLeft, "Load slot 2", LoadingSlot, LoadingSlotSelected, loadSlot2)) ;

@@ -17,12 +17,12 @@ import utilities.UtilS;
 
 public class PetItem extends Item
 {
-	private float lifeHeal ;
-	private float mpHeal ;
-	private int satiationHeal ;
-	private int power ;
+	private final float lifeHeal ;
+	private final float mpHeal ;
+	private final int satiationHeal ;
+	private final int power ;
 	
-	private static PetItem[] AllPetItems ;
+	private static final PetItem[] AllPetItems ;
 
 	private static final Image petLifePotion = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconPetLifePotion.png") ;
 	private static final Image petMPPotion = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconPetMPPotion.png") ;
@@ -57,6 +57,8 @@ public class PetItem extends Item
 	public static boolean isFood(int id) { return id % 4 == 2 ;}
 	public static boolean isEquipSet(int id) { return id % 4 == 3 ;}
 	
+	public Image fullSizeImage() { return petSet ;}
+
 	public static Image imageFromID(int id)
 	{		
 		if (isLifePotion(id)) { return petLifePotion ;}

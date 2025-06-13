@@ -4,17 +4,17 @@ import java.util.Arrays;
 
 public class AttackModifiers
 {
-	private double[] atkMod ;
-	private double[] defMod ;
-	private double[] dexMod ;
-	private double[] agiMod ;
-	private double[] atkCritMod ;
-	private double[] defCritMod ;
-	private double[] stunMod ;
-	private double[] blockMod ;
-	private double[] bloodMod ;
-	private double[] poisonMod ;
-	private double[] silenceMod ;
+	private final double[] atkMod ;
+	private final double[] defMod ;
+	private final double[] dexMod ;
+	private final double[] agiMod ;
+	private final double[] atkCritMod ;
+	private final double[] defCritMod ;
+	private final double[] stunMod ;
+	private final double[] blockMod ;
+	private final double[] bloodMod ;
+	private final double[] poisonMod ;
+	private final double[] silenceMod ;
 
 	public AttackModifiers()
 	{
@@ -63,53 +63,18 @@ public class AttackModifiers
 		this.silenceMod = silenceMod;
 	}
 
-	public double[] getAtkMod() {
-		return atkMod;
-	}
-
-	public double[] getDefMod() {
-		return defMod;
-	}
-
-	public double[] getDexMod() {
-		return dexMod;
-	}
-
-	public double[] getAgiMod() {
-		return agiMod;
-	}
-
-	public double[] getAtkCritMod() {
-		return atkCritMod;
-	}
-
-	public double[] getDefCritMod() {
-		return defCritMod;
-	}
-
-	public double[] getStunMod() {
-		return stunMod;
-	}
-
-	public double[] getBlockMod() {
-		return blockMod;
-	}
-
-	public double[] getBloodMod() {
-		return bloodMod;
-	}
-
-	public double[] getPoisonMod() {
-		return poisonMod;
-	}
-
-	public double[] getSilenceMod() {
-		return silenceMod;
-	}
-	
-	public double[] getBaseAtkChances() {
-		return new double[] {stunMod[0], blockMod[0], bloodMod[0], poisonMod[0], silenceMod[0]} ;
-	}
+	public double[] getAtkMod() { return atkMod;}
+	public double[] getDefMod() { return defMod;}
+	public double[] getDexMod() { return dexMod;}
+	public double[] getAgiMod() { return agiMod;}
+	public double[] getAtkCritMod() { return atkCritMod;}
+	public double[] getDefCritMod() { return defCritMod;}
+	public double[] getStunMod() { return stunMod;}
+	public double[] getBlockMod() { return blockMod;}
+	public double[] getBloodMod() { return bloodMod;}
+	public double[] getPoisonMod() { return poisonMod;}
+	public double[] getSilenceMod() { return silenceMod;}	
+	public double[] getBaseAtkChances() { return new double[] {stunMod[0], blockMod[0], bloodMod[0], poisonMod[0], silenceMod[0]} ;}
 
 	@Override
 	public String toString() {

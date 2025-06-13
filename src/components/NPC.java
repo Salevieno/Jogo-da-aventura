@@ -43,20 +43,20 @@ import windows.SpellsTreeWindow;
 public class NPC
 {
 	private int id ;
-	private NPCType type ;
-	private Point pos ;
+	private final NPCType type ;
+	private final Point pos ;
+	private int menu ;
 	private int selOption ;
 	private int numberMenus ;
-	private int menu ;
 	private GameWindow window ;
 	private Hitbox hitbox ;
-	private List<Collider> colliders ;
+	private final List<Collider> colliders ;
 	
 	private static boolean renewStocks = false ;
 
-	public static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
-	public static final Image speakingBubble = UtilS.loadImage("\\NPCs\\" + "SpeechBubble.png") ;
-	public static final Image choicesWindow = UtilS.loadImage("\\NPCs\\" + "ChoicesWindow.png") ;
+	private static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
+	private static final Image speakingBubble = UtilS.loadImage("\\NPCs\\" + "SpeechBubble.png") ;
+	private static final Image choicesWindow = UtilS.loadImage("\\NPCs\\" + "ChoicesWindow.png") ;
 	private static final Color stdColor = Game.palette[0] ;
 
 	public NPC(NPCType type, Point pos)
@@ -68,6 +68,8 @@ public class NPC
 		selOption = 0 ;
 		menu = 0 ;
 		numberMenus = 0 ;
+		colliders = new ArrayList<>() ;
+		hitbox = null ;
 
 		if (type == null) { System.out.println("Erro ao criar npc: tipo nulo") ; return ;}
 		
@@ -127,7 +129,6 @@ public class NPC
 		}
 
 		hitbox = new HitboxRectangle(Util.Translate(pos, 0, -type.getImage().getHeight(null) / 2), Util.getSize(type.getImage()), 0.8) ;
-		colliders = new ArrayList<>() ;
 		colliders.add(new Collider(pos)) ;
 	}
 
@@ -135,7 +136,6 @@ public class NPC
 	public void setID(int I) {id = I ;}
 	public NPCType getType() {return type ;}
 	public Point getPos() {return pos ;}
-	public void setPos(Point P) {pos = P ;}	
 	public GameWindow getWindow() { return window ;}
 	public Hitbox getHitbox() {return hitbox ;}
 	public List<Collider> getColliders() { return colliders ;}

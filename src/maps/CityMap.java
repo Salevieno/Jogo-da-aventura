@@ -24,7 +24,7 @@ import utilities.UtilS;
 public class CityMap extends GameMap
 {
 
-	public static final List<Image> images ;
+	private static final List<Image> images ;
 	
 	static
 	{

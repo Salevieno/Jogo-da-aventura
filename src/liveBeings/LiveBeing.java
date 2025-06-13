@@ -17,7 +17,6 @@ import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import battle.AtkResults;
 import battle.AtkTypes;
-import battle.Battle;
 import components.Hitbox;
 import graphics.Align;
 import graphics2.Animation;
@@ -73,12 +72,13 @@ public abstract class LiveBeing implements Drawable
 	protected MovingAnimations movingAni ;
 	protected AttributesWindow attWindow ;
 	
-	public static final Image AttImage = UtilS.loadImage("\\Player\\" + "Attributes.png") ;
-	public static final Image drunkImage = UtilS.loadImage("\\Status\\" + "Drunk.png") ;
-	public static final Image defendingImage = UtilS.loadImage("\\Battle\\" + "ShieldIcon.png") ;
-	public static final Image powerBarImage = UtilS.loadImage("PowerBar.png") ;
-	public static final String[] BattleKeys = new String[] {"Y", "U"} ;	
-	public static final List<String> SpellKeys = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12") ;
+	private static int damageStyle = 0 ;
+	private static final Image attImage = UtilS.loadImage("\\Player\\" + "Attributes.png") ;
+	private static final Image drunkImage = UtilS.loadImage("\\Status\\" + "Drunk.png") ;
+	private static final Image defendingImage = UtilS.loadImage("\\Battle\\" + "ShieldIcon.png") ;
+	private static final Image powerBarImage = UtilS.loadImage("PowerBar.png") ;
+	public static final String[] battleKeys = new String[] {"Y", "U"} ;	
+	public static final List<String> spellKeys = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12") ;
 
 	protected static final Gif levelUpGif = new Gif("Level up", UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 170, false, false) ;
 	// private static final Gif phyHitGif = new Gif("phyHit", UtilS.loadImage("\\Battle\\" + "PhysicalHit.gif"), (int) (75 / 1.5), false, false) ;
@@ -204,6 +204,7 @@ public abstract class LiveBeing implements Drawable
 	public void resetBattleAction() { currentAtkType = null ;}
 
 	
+	public static void updateDamageAnimation(int newDamageStyle) { damageStyle = newDamageStyle ;}
 	public void inflictStatus(Attributes att, double intensity, int duration)
 	{
 		if (Attributes.phyAtk.equals(att))
@@ -593,16 +594,16 @@ public abstract class LiveBeing implements Drawable
 	public List<Spell> getActiveSpells() { return spells.stream().filter(Spell::isUsable).collect(Collectors.toList()) ;}
 	
 	public boolean isAlive() { return 0 < PA.getLife().getTotalValue() ;}
-	public boolean hasTheSpell(String action) {return Player.SpellKeys.indexOf(action) < getActiveSpells().size() ;}
+	public boolean hasTheSpell(String action) {return Player.spellKeys.indexOf(action) < getActiveSpells().size() ;}
 	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
 	public boolean hasActed() {return currentAction != null ;}
 	public boolean actionIsSpell()
 	{
 		if (!hasActed()) { return false ;}
 
-		if (!SpellKeys.contains(currentAction)) { return false ;}
+		if (!spellKeys.contains(currentAction)) { return false ;}
 		
-		int spellID = SpellKeys.indexOf(currentAction) ;
+		int spellID = spellKeys.indexOf(currentAction) ;
 		
 		if (getActiveSpells().size() <= spellID) { return false ;}
 		
@@ -612,7 +613,7 @@ public abstract class LiveBeing implements Drawable
 	{
 		if (!actionIsSpell()) { return false ;}
 
-		int spellID = SpellKeys.indexOf(currentAction) ;
+		int spellID = spellKeys.indexOf(currentAction) ;
 		Spell spell = getActiveSpells().get(spellID);
 		
 		if (!canUseSpell(spell)) { return false ;}
@@ -629,8 +630,8 @@ public abstract class LiveBeing implements Drawable
 		return 1 <= spell.getLevel() ;
 		
 	}
-	public boolean usedPhysicalAtk() {return hasActed() ? currentAction.equals(BattleKeys[0]) : false ;}
-	public boolean usedDef() {return hasActed() ? currentAction.equals(BattleKeys[1]) : false ;}
+	public boolean usedPhysicalAtk() {return hasActed() ? currentAction.equals(battleKeys[0]) : false ;}
+	public boolean usedDef() {return hasActed() ? currentAction.equals(battleKeys[1]) : false ;}
 	public boolean actionIsArrowAtk()
 	{
 		if (!( this instanceof Player)) { return false ;}
@@ -647,7 +648,7 @@ public abstract class LiveBeing implements Drawable
 		
 		if (this instanceof Player)
 		{
-			return (!battleActionCounter.finished() & combo.get(0).equals(BattleKeys[1])) ;
+			return (!battleActionCounter.finished() & combo.get(0).equals(battleKeys[1])) ;
 		}
 		return usedDef() ;
 	}
@@ -829,7 +830,7 @@ public abstract class LiveBeing implements Drawable
 			Point topLeft = Game.getScreen().pos(0.01, 0.02) ;
 			Dimension barSize = new Dimension(5, 35) ;
 			int stroke = 1 ;
-			GamePanel.DP.drawImage(AttImage, topLeft, Align.topLeft) ;
+			GamePanel.DP.drawImage(attImage, topLeft, Align.topLeft) ;
 			Point offset = new Point(37, 44) ;
 			Point barPos = Util.Translate(topLeft, offset.x, offset.y) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
@@ -865,7 +866,7 @@ public abstract class LiveBeing implements Drawable
 		if (damage <= 0) { return ;}
 		
 		PA.getLife().decTotalValue(damage) ;
-		playDamageAnimation(Battle.damageStyle, new AtkResults(1), Game.palette[7]) ;
+		playDamageAnimation(damageStyle, new AtkResults(1), Game.palette[7]) ;
 	}
 	
 	public void takeBloodAndPoisonDamage()
@@ -882,13 +883,13 @@ public abstract class LiveBeing implements Drawable
 		{
 			bloodDamage = (int) (bloodStatus.getIntensity() * bloodMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedBlood(bloodDamage, BA.getBlood().TotalDef()) ;}
-			playDamageAnimation(Battle.damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, bloodDamage, null), Game.palette[7]) ;
+			playDamageAnimation(damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, bloodDamage, null), Game.palette[7]) ;
 		}
 		if (poisonStatus.isActive() & poisonStatus.getCounter().crossedTime(0.5))
 		{
 			poisonDamage = (int) (poisonStatus.getIntensity() * poisonMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedPoison(poisonDamage, BA.getPoison().TotalDef()) ;}
-			playDamageAnimation(Battle.damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, poisonDamage, null), Game.palette[18]) ;
+			playDamageAnimation(damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, poisonDamage, null), Game.palette[18]) ;
 		}
 		
 		if (bloodDamage + poisonDamage <= 0) { return ;}
@@ -917,6 +918,8 @@ public abstract class LiveBeing implements Drawable
 		Animation.start(AnimationTypes.damage, new Object[] {headPos(), damageStyle, atkResults, color});
 		
 	}
+
+	public void playDamageAnimation(AtkResults atkResults, Color color) { playDamageAnimation(damageStyle, atkResults, color) ;}
 	
 	public void displayStatus()
 	{

@@ -35,12 +35,12 @@ import windows.PetAttributesWindow;
 
 public class Pet extends LiveBeing
 {
-	private Color color ;
-	private int job ;
+	private final Color color ;
+	private final int job ;
+	private final AttributeIncrease attInc ;
 	private int spellPoints ;
 	private PetItem equip ;
 	private int alchBuffId ;
-	private AttributeIncrease attInc ;
 	
 	public static final List<String[]> InitialAtts = Util.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
 	private static final List<String[]> attEvolution = Util.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
@@ -268,8 +268,8 @@ public class Pet extends LiveBeing
 		int move = Util.randomInt(0, 1 + getActiveSpells().size()) ;
 		switch (move)
 		{
-			case 0: currentAction = BattleKeys[0] ; return ;
-			case 1: currentAction = BattleKeys[1] ; return ;
+			case 0: currentAction = battleKeys[0] ; return ;
+			case 1: currentAction = battleKeys[1] ; return ;
 			default: currentAction = String.valueOf(move - 2) ; return ;
 		}
 	}

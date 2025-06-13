@@ -14,17 +14,17 @@ import utilities.UtilS;
 
 public class Potion extends Item
 {
-	private double lifeHeal ;
-	private double MPHeal ;
+	private final double lifeHeal ;
+	private final double MPHeal ;
 	
-	private static Potion[] AllPotions ;
+	private static final Potion[] AllPotions ;
 	
-	private static Image lifePotionSmall = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconLifePotionSmall.png") ;
-	private static Image lifePotionMedium = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconLifePotionMedium.png") ;
-	private static Image lifePotionLarge = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconLifePotionLarge.png") ;
-	private static Image mpPotionSmall = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMpPotionSmall.png") ;
-	private static Image mpPotionMedium = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMpPotionMedium.png") ;
-	private static Image mpPotionLarge = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMpPotionLarge.png") ;
+	private static final Image lifePotionSmall = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconLifePotionSmall.png") ;
+	private static final Image lifePotionMedium = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconLifePotionMedium.png") ;
+	private static final Image lifePotionLarge = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconLifePotionLarge.png") ;
+	private static final Image mpPotionSmall = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMpPotionSmall.png") ;
+	private static final Image mpPotionMedium = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMpPotionMedium.png") ;
+	private static final Image mpPotionLarge = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMpPotionLarge.png") ;
 	
 	static
 	{

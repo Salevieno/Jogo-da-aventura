@@ -2,7 +2,6 @@ package liveBeings;
 
 public enum LiveBeingStates
 {
-
 	collecting,
 	digging,
 	fighting,
@@ -10,5 +9,4 @@ public enum LiveBeingStates
 	idle,
 	openingChest,
 	sleeping
-	
 }

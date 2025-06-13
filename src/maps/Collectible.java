@@ -14,10 +14,10 @@ import utilities.Util;
 public class Collectible extends Item
 {
 	
-	private int itemID ;
-	private int level ;
-	private Point pos ;
-	private Hitbox hitbox ;
+	private final int itemID ;
+	private final int level ;
+	private final Point pos ;
+	private final Hitbox hitbox ;
 	
 	public Collectible(int itemID, int level, Point pos)
 	{

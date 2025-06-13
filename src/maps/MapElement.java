@@ -19,10 +19,10 @@ import utilities.Util;
 
 public class MapElement implements Drawable
 {
-	private int id ;
-	private String name ;
-	private Image image ;
-	private Point topLeft ;
+	private final int id ;
+	private final String name ;
+	private final Image image ;
+	private final Point topLeft ;
 	protected Hitbox hitbox ;
 	private List<Collider> colliders ;
 
@@ -48,9 +48,6 @@ public class MapElement implements Drawable
 	public Point getPos() {return Util.getPosAt(topLeft, Align.topCenter, Align.bottomCenter, Util.getSize(image)) ;}
 	public Hitbox getHitbox() { return hitbox ;}
 	public List<Collider> getColliders() {return colliders ;}
-	public void setid(int I) {id = I ;}
-	public void setName(String N) {name = N ;}
-	public void setPos(Point P) {topLeft = P ;}
 
 	public Point center() { return new Point((int) (topLeft.x + 0.5 * image.getHeight(null)), (int) (topLeft.y + 0.5 * image.getHeight(null))) ;}
 	private boolean playerIsBehind(Point playerPos) { return Util.isInside(playerPos, topLeft, Util.getSize(image)) ;}

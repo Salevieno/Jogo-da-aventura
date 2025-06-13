@@ -26,7 +26,7 @@ import battle.AtkResults;
 import battle.AtkTypes;
 import battle.Battle;
 import components.GameButton;
-import components.IconFunction;
+import components.ButtonFunction;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Animation;
@@ -137,7 +137,7 @@ public abstract class EvolutionSimulation
 		addBattleSection() ;
 	}
 	
-	private static GameButton newButton(Point pos, String text, IconFunction action)
+	private static GameButton newButton(Point pos, String text, ButtonFunction action)
 	{
 		return new GameButton(pos, Align.topLeft, text, buttonImage, buttonSelectedImage, action) ;
 	}
@@ -146,7 +146,7 @@ public abstract class EvolutionSimulation
 	{
 		Point sectionPos = new Point(80, 32) ;
 		
-		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		Map<String, ButtonFunction> namesActions = new LinkedHashMap<>() ;
 		namesActions.put("cavaleiro", () -> { playerResetJob(0) ;}) ;
 		namesActions.put("mago", () -> { playerResetJob(1) ;}) ;
 		namesActions.put("arqueiro", () -> { playerResetJob(2) ;}) ;
@@ -167,7 +167,7 @@ public abstract class EvolutionSimulation
 	{
 		Point sectionPos = new Point(10, 60 + 10) ;
 
-		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		Map<String, ButtonFunction> namesActions = new LinkedHashMap<>() ;
 		namesActions.put("encher vida", () -> { playerFullLife() ;}) ;
 		namesActions.put("train", () -> { playerTrain() ;}) ;
 		
@@ -178,7 +178,7 @@ public abstract class EvolutionSimulation
 	{
 		Point sectionPos = new Point(100, 60 + 10) ;
 		
-		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		Map<String, ButtonFunction> namesActions = new LinkedHashMap<>() ;
 		namesActions.put("+ level", () -> { playerLevelUp(1) ;}) ;
 		namesActions.put("+ 5 level", () -> { playerLevelUp(5) ;}) ;
 		namesActions.put("+ 10 level", () -> { playerLevelUp(10) ;}) ;
@@ -190,7 +190,7 @@ public abstract class EvolutionSimulation
 	{
 		Point sectionPos = new Point(190, 60 + 10) ;
 		
-		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		Map<String, ButtonFunction> namesActions = new LinkedHashMap<>() ;
 		namesActions.put("win until 99", () -> { simulateWinsUntilLevel99() ;}) ;
 		
 		addSection(sectionPos, new Point(0, 30), namesActions) ;
@@ -206,7 +206,7 @@ public abstract class EvolutionSimulation
 	{
 		Point sectionPos = new Point(311, 60 + 10) ;
 
-		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		Map<String, ButtonFunction> namesActions = new LinkedHashMap<>() ;
 		namesActions.put("pet", () -> { petReset() ;}) ;
 		namesActions.put("encher vida", () -> { petFullLife() ;}) ;
 		namesActions.put("train", () -> { petTrain() ;}) ;
@@ -218,7 +218,7 @@ public abstract class EvolutionSimulation
 	{
 		Point sectionPos = new Point(401, 60 + 10) ;
 
-		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		Map<String, ButtonFunction> namesActions = new LinkedHashMap<>() ;
 		namesActions.put("+ level", () -> { petLevelUp(1) ;}) ;
 		namesActions.put("+ 5 level", () -> { petLevelUp(5) ;}) ;
 		namesActions.put("+ 10 level", () -> { petLevelUp(10) ;}) ;
@@ -236,7 +236,7 @@ public abstract class EvolutionSimulation
 	{
 		Point sectionPos = new Point(10, 266 + 10) ;
 
-		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		Map<String, ButtonFunction> namesActions = new LinkedHashMap<>() ;
 		namesActions.put("Reset fights", () -> { resetFights() ;}) ;
 		
 		addSection(sectionPos, new Point(0, 30), namesActions) ;
@@ -246,7 +246,7 @@ public abstract class EvolutionSimulation
 	{
 		Point sectionPos = new Point(100, 266 + 10) ;
 
-		Map<String, IconFunction> namesActions = new LinkedHashMap<>() ;
+		Map<String, ButtonFunction> namesActions = new LinkedHashMap<>() ;
 		namesActions.put("Battle", () -> { simulateBattle() ;}) ;
 		namesActions.put("Battle x 10", () -> { simulateBattle10x() ;}) ;
 		namesActions.put("Battle x 100", () -> { simulateBattle100x() ;}) ;
@@ -255,7 +255,7 @@ public abstract class EvolutionSimulation
 		addSection(sectionPos, new Point(0, 30), namesActions) ;
 	}
 	
-	private static void addSection(Point pos, Point spacing, Map<String, IconFunction> sectionNamesActions)
+	private static void addSection(Point pos, Point spacing, Map<String, ButtonFunction> sectionNamesActions)
 	{
 		Iterator<?> it = sectionNamesActions.keySet().iterator();
 
@@ -263,7 +263,7 @@ public abstract class EvolutionSimulation
 	    while (it.hasNext())
 	    {
 	    	String key = (String) it.next() ;
-	    	IconFunction action = sectionNamesActions.get(key) ;
+	    	ButtonFunction action = sectionNamesActions.get(key) ;
 			Point buttonPos = Util.Translate(pos, i * spacing.x, i * spacing.y) ;
 			buttons.add(newButton(buttonPos, key, action)) ;
 			i++ ;

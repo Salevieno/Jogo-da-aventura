@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import components.GameButton;
-import components.IconFunction;
+import components.ButtonFunction;
 import components.QuestSkills;
 import graphics.Align;
 import graphics2.Draw;
@@ -37,7 +37,7 @@ public abstract class SideBar
 	private static final List<GameButton> buttons = new ArrayList<>() ;
 	private static final Color bgColor = Game.palette[1] ;
 	
-	public static final Dimension size = new Dimension(60, Game.getScreen().getSize().height) ;
+	private static final Dimension size = new Dimension(60, Game.getScreen().getSize().height) ;
 	public static final Image slotImage = UtilS.loadImage("\\SideBar\\" + "Slot.png") ;
 	public static final int sy = 10 ;
 	
@@ -57,12 +57,12 @@ public abstract class SideBar
 	{
 		Player player = Game.getPlayer() ;
 		Image playerImage = player.getMovingAni().idleGif ;
-		IconFunction playerAction = () -> {
+		ButtonFunction playerAction = () -> {
 			((PlayerAttributesWindow) player.getAttWindow()).setPlayer(player) ;
 			((PlayerAttributesWindow) player.getAttWindow()).updateAttIncButtons(player) ;
 			player.switchOpenClose(player.getAttWindow()) ;
 		} ;
-		IconFunction[] actions = new IconFunction[iconNames.length] ;
+		ButtonFunction[] actions = new ButtonFunction[iconNames.length] ;
 		actions[0] = () -> {
 			player.getMapWindow().setPlayerPos(player.getPos()) ;
 			player.getMapWindow().setCurrentMap(player.getMap()) ;
@@ -103,7 +103,7 @@ public abstract class SideBar
 		if (pet == null) { return ;}
 		
 		Image petImage = pet.getMovingAnimations().idleGif ;
-		IconFunction petAction = () -> {
+		ButtonFunction petAction = () -> {
 			((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
 			player.switchOpenClose(pet.getAttWindow()) ;
 		} ;
