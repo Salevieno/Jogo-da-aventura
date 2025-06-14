@@ -136,9 +136,7 @@ public class Game
 		konamiPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Konami") ;
 		palette = normalPalette ;
 		selColor = Game.palette[18] ;
-		konamiCodeActive = false ;
 		allText = new HashMap<>() ;
-		shouldRepaint = false ;
 		dayCounter = new GameTimer(600) ;
 
 		settingsWindow = new PauseWindow() ;

@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
@@ -9,8 +8,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import components.GameButton;
 import components.ButtonFunction;
+import components.GameButton;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
@@ -27,8 +26,6 @@ import utilities.UtilS;
 
 public abstract class Opening
 {
-	public static Gif openingGif ;
-	private static Image backgroundImage;
     private static List<GameButton> buttons ;
     private static List<List<GameButton>> buttonsInStep ;
     private static List<GameButton> languageButtons ;
@@ -45,33 +42,27 @@ public abstract class Opening
     private static int difficultLevel ;
     private static String chosenSex ;
     private static int chosenJob ;
-	private static LiveInput liveInput ;
-	
+	private static LiveInput liveInput ;	
 
-    private static final Font font ;
-    private static final Font smallFont ;
+    private static final Font font = new Font(Game.MainFontName, Font.BOLD, 16) ;
+    private static final Font smallFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
+
+	private static final String path = Game.ImagesPath  + "\\Opening\\";
+	public static final Gif openingGif = new Gif("Opening", Util.loadImage(path + "Opening.gif"), 0.7, false, true) ;
+	private static final Image backgroundImage = Util.loadImage(path + "Opening.png") ;
+	private static final Image LoadingSlot = Util.loadImage(path + "LoadingSlot.png") ;
+	private static final Image LoadingSlotSelected = Util.loadImage(path + "LoadingSlotSelected.png") ;
+	private static final Image generalButtonImg = Util.loadImage(path + "generalButton.png") ;
+	private static final Image generalButtonSelectedImg = Util.loadImage(path + "generalButtonSelected.png") ;
+	private static final Image jobDescriptionBackground = Util.loadImage(path + "JobDescriptionBackground.png") ;
 	// private static final Image LoadingEnfeite ;
-	private static final Image LoadingSlot ;
-	private static final Image LoadingSlotSelected ;
-	private static final Image generalButtonImg ;
-	private static final Image generalButtonSelectedImg ;
 	// private static final Clip thunderSound ;
 	// private static final Clip introMusic ;
 	
 	
 	static
 	{
-		font = new Font(Game.MainFontName, Font.BOLD, 16) ;
-	    smallFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String path = Game.ImagesPath  + "\\Opening\\";
-		backgroundImage = Util.loadImage(path + "Opening.png") ;
-		openingGif = new Gif("Opening", Util.loadImage(path + "Opening.png"), 0.7, false, true) ;
 		// LoadingEnfeite = UtilS.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
-		LoadingSlot = Util.loadImage(path + "LoadingSlot.png") ;
-		LoadingSlotSelected = Util.loadImage(path + "LoadingSlotSelected.png") ;
-		generalButtonImg = Util.loadImage(path + "generalButton.png") ;
-		generalButtonSelectedImg = Util.loadImage(path + "generalButtonSelected.png") ;
-
 		// thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
 		// introMusic = Music.loadMusicFile("intro.wav") ;
 		
@@ -115,7 +106,7 @@ public abstract class Opening
 				screen.pos(0.51, 0.45), 
 				screen.pos(0.4, 0.3), screen.pos(0.6, 0.3),
 				screen.pos(0.3, 0.3), screen.pos(0.5, 0.3), screen.pos(0.7, 0.3),
-				screen.pos(0.13, 0.3), screen.pos(0.33, 0.3), screen.pos(0.53, 0.3), screen.pos(0.73, 0.3), screen.pos(0.93, 0.3)} ;
+				screen.pos(0.1, 0.3), screen.pos(0.3, 0.3), screen.pos(0.5, 0.3), screen.pos(0.7, 0.3), screen.pos(0.9, 0.3)} ;
 		ButtonFunction[] btAction = new ButtonFunction[] {
 				newGameAction, loadGameAction,
 				confirmNameAction,
@@ -297,14 +288,13 @@ public abstract class Opening
 	private static void displayJobDescription()
 	{
 		Color textColor = Game.palette[0] ;
-		Color bgColor = Game.palette[3] ;
 		String[] description = Game.getLanguage() == Languages.portugues ? jobDescriptionPtBr : jobDescriptionEn ;
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
-			Point rectPos = Game.getScreen().pos(0.04 + i * 0.2, 0.4) ;
-			Point textPos = Util.Translate(rectPos, 5, 5) ;
-			GamePanel.DP.drawRoundRect(rectPos, Align.topLeft, new Dimension(110, 150), 2, bgColor, Game.palette[0], true) ;
-			Draw.fitText(textPos, 10, Align.topLeft, description[i], smallFont, 18, textColor) ;
+			Point rectPos = Game.getScreen().pos(0.02 + i * 0.2, 0.4) ;
+			Point textPos = Util.Translate(rectPos, 10, 10) ;
+			GamePanel.DP.drawImage(jobDescriptionBackground, rectPos, Align.topLeft) ;
+			Draw.fitText(textPos, font.getSize() + 12, Align.topLeft, description[i], font, 24, textColor) ;
 		}
 	}
 	
