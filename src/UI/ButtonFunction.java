@@ -1,4 +1,4 @@
-package components;
+package UI;
 
 public interface ButtonFunction
 {

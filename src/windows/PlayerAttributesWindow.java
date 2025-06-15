@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import UI.ButtonFunction;
+import UI.GameButton;
 import attributes.Attributes;
 import attributes.BasicBattleAttribute;
-import components.GameButton;
-import components.ButtonFunction;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;

@@ -8,8 +8,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import components.ButtonFunction;
-import components.GameButton;
+import UI.ButtonFunction;
+import UI.GameButton;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;

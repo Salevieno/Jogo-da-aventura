@@ -19,9 +19,10 @@ public class Alchemy extends Item
 	
 	private static final Alchemy[] AllAlchemy ;
 	
-	private static final Image HerbIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconHerb.png") ;
-	private static final Image WoodIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconWood.png") ;
-	private static final Image MetalIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMetal.png") ;
+	private static final String pathImg = "\\Windows\\bagIcons\\" ;
+	private static final Image HerbIcon = UtilS.loadImage(pathImg + "IconHerb.png") ;
+	private static final Image WoodIcon = UtilS.loadImage(pathImg + "IconWood.png") ;
+	private static final Image MetalIcon = UtilS.loadImage(pathImg + "IconMetal.png") ;
 	
 	static
 	{

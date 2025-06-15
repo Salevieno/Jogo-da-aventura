@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import UI.ButtonFunction;
+import UI.GameButton;
 import attributes.AttributeIncrease;
 import attributes.Attributes;
 import attributes.BasicAttribute;
@@ -25,8 +27,6 @@ import attributes.PersonalAttributes;
 import battle.AtkResults;
 import battle.AtkTypes;
 import battle.Battle;
-import components.GameButton;
-import components.ButtonFunction;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Animation;

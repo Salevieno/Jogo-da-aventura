@@ -19,11 +19,11 @@ public abstract class Item
 	protected final int price ;
 	protected final double dropChance ;
 	
-	protected static final Image infoMenu = UtilS.loadImage("itemInfoWindow.png") ;
+	protected static final Image infoMenu = UtilS.loadImage("\\Windows\\bagIcons\\" + "itemInfoWindow.png") ;
 	public static final List<Item> allItems = new ArrayList<>() ;
 	
 
-    public static Image slot = UtilS.loadImage("itemSlot.png") ;
+    public static final Image slot = UtilS.loadImage("itemSlot.png") ;
 	
 	public Item(int id, String name, String description, Image image, int price, double dropChance)
 	{

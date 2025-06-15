@@ -18,6 +18,7 @@ import attributes.PersonalAttributes;
 import battle.AtkResults;
 import battle.AtkTypes;
 import battle.Battle;
+import components.HitboxRectangle;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Animation;
@@ -69,6 +70,7 @@ public class Pet extends LiveBeing
 		battleActionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[36])) ;
 		stepCounter = new GameTimer(20) ;
 		combo = new ArrayList<>();
+		hitbox = new HitboxRectangle(pos, size, 0.8) ;
 		equip = null ;
 		alchBuffId = -1 ;
 		
@@ -410,6 +412,10 @@ public class Pet extends LiveBeing
 		}
 		
 		displayStatus() ;
+		if (Game.debugMode)
+		{			
+			hitbox.display() ;
+		}
 	}
 	
 	public void display()

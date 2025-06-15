@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import components.GameButton;
+import UI.GameButton;
 import graphics.Align;
 import graphics2.Draw;
 import items.Alchemy;

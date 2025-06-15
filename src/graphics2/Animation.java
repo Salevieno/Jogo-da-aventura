@@ -10,7 +10,6 @@ import battle.AtkResults;
 import components.AnimationDisplayFunction;
 import items.Item;
 import utilities.GameTimer;
-import utilities.UtilS;
 
 public class Animation 
 {
@@ -19,10 +18,6 @@ public class Animation
 	private AnimationDisplayFunction displayFunction ;
 	
 	private static final List<Animation> all = new ArrayList<>() ;
-	public static final Image obtainedItem = UtilS.loadImage("ObtainedItem.png") ;
-	public static final Image messageBox = UtilS.loadImage("messageBox.png") ;
-	public static final Image levelUp = UtilS.loadImage("LevelUp.png") ;
-	public static final Image win = UtilS.loadImage("Win.png") ;
 
 	private Animation(AnimationTypes type)
 	{

@@ -8,8 +8,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import components.GameButton;
-import components.ButtonFunction;
+import UI.ButtonFunction;
+import UI.GameButton;
 import components.QuestSkills;
 import graphics.Align;
 import graphics2.Draw;
@@ -133,7 +133,7 @@ public abstract class SideBar
 	
 	private static void displayKeys()
 	{
-		String[] keys = new String[] {PlayerActions.attWindow.getKey(), PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null} ;
+		String[] keys = new String[] {PlayerActions.attWindow.getKey(), PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null, null} ;
 		Dimension textSize = new Dimension(12, 12) ;
 		Color textColor = Game.palette[0] ;
 		int i = 0 ;

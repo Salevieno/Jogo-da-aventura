@@ -16,10 +16,10 @@ import java.util.Map ;
 import org.json.simple.JSONArray ;
 import org.json.simple.JSONObject ;
 
+import UI.GameButton;
 import battle.Battle;
 import components.Building ;
 import components.BuildingType ;
-import components.GameButton;
 import components.NPC ;
 import components.NPCType ;
 import components.Projectiles ;
@@ -97,7 +97,7 @@ public class Game
 	public static final String MainFontName = "Comics" ;
 
 	private static final GameStates mainState = GameStates.running ;
-	private static final boolean cheatMode = false ;
+	private static final boolean cheatMode = true ;
 	public static final boolean debugMode = true;
 
 	private static GameStates state = GameStates.opening ;

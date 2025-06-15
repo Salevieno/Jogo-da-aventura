@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 
-import components.GameButton;
-import components.ButtonFunction;
+import UI.ButtonFunction;
+import UI.GameButton;
 import graphics.Align;
 import liveBeings.Player;
 import utilities.Util;

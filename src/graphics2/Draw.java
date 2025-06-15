@@ -7,10 +7,12 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
+import UI.GameButton;
 import battle.AtkResults;
 import battle.AtkTypes;
-import components.GameButton;
 import components.Hitbox;
 import graphics.Align;
 import graphics.DrawPrimitives;
@@ -35,25 +37,36 @@ import windows.PlayerAttributesWindow;
 public abstract class Draw 
 {
 
-	private static Dimension screenSize ;
+	private static final Dimension screenSize ;
 	private static final Image ArrowIconImage ;
 	private static final Image KeyboardButtonImage ;
 	private static final List<Image> textSelectionImages ;
-	public static double stdAngle ;
 	
 	private static final Font stdFont = DrawPrimitives.stdFont ;
 	private static final Font smallFont = new Font(DrawPrimitives.stdFont.getName(), Font.BOLD, 10) ;
+	private static final Font damageAnimationFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
+	private static final Font loadingGameScreenFont = new Font("SansSerif", Font.BOLD, 28) ;
+
+	private static final Image levelUpAttImg = UtilS.loadImage("LevelUp.png") ;
+	private static final Image winObtainedItemsImg = UtilS.loadImage("Win.png") ;
+	private static final Image obtainedItem = UtilS.loadImage("ObtainedItem.png") ;
+	private static final Image messageBoxImg = UtilS.loadImage("messageBox.png") ;
+
+	public static double stdAngle ;
 	
 	static
 	{
 		screenSize = Game.getScreen().getSize() ;
 		stdAngle = DrawPrimitives.stdAngle;
 		ArrowIconImage = UtilS.loadImage("\\Windows\\" + "ArrowIcon.png") ;
-		KeyboardButtonImage = UtilS.loadImage("KeyboardButton.png") ;
-		textSelectionImages = List.of(UtilS.loadImage("TextSelectionTopLeft.png"),
-										UtilS.loadImage("TextSelectionTopRight.png"),
-										UtilS.loadImage("TextSelectionBottomRight.png"),
-										UtilS.loadImage("TextSelectionBottomLeft.png")) ;
+		KeyboardButtonImage = UtilS.loadImage("\\UI\\" + "KeyboardButton.png") ;
+		textSelectionImages = Arrays.asList(UtilS.loadImage("\\UI\\" + "TextSelectionTopLeft.png"),
+										UtilS.loadImage("\\UI\\" + "TextSelectionTopRight.png"),
+										UtilS.loadImage("\\UI\\" + "TextSelectionBottomRight.png"),
+										UtilS.loadImage("\\UI\\" + "TextSelectionBottomLeft.png"))
+									.stream()
+									.filter(Objects::nonNull)
+									.collect(Collectors.toList()) ;
 	}
 
 	public static void bufferedText(Point pos, Align align, double angle, String text, Font font, Color color, Color outlineColor, int outlineWidth)
@@ -168,9 +181,8 @@ public abstract class Draw
 	public static void loadingGameScreen(Player player, Pet pet, GameButton[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
 	{
 		Point[] WindowPos = new Point[] {Game.getScreen().pos(0.15, 0.2), Game.getScreen().pos(0.65, 0.2), Game.getScreen().pos(0.5, 0.2)} ;
-		Font font = new Font("SansSerif", Font.BOLD, 28) ;
 		
-		GamePanel.DP.drawText(Game.getScreen().pos(0.5, 0.05), Align.center, stdAngle, "Slot " + (SlotID + 1), font, Game.palette[5]) ;
+		GamePanel.DP.drawText(Game.getScreen().pos(0.5, 0.05), Align.center, stdAngle, "Slot " + (SlotID + 1), loadingGameScreenFont, Game.palette[5]) ;
 		((PlayerAttributesWindow) player.getAttWindow()).display(new Point(0, 0)) ;
 		if (0 < pet.getLife().getCurrentValue())
 		{
@@ -179,16 +191,6 @@ public abstract class Draw
  		if (ArrowIconImage == null) { return ;}
 		
  		windowArrows(WindowPos[2], (int)(0.5*screenSize.width), SlotID, NumberOfUsedSlots - 1, 1.0) ;
-	}
-	
-	public static void emptyLoadingSlot(int SlotID, int NumSlots)
-	{
-		Point[] WindowPos = new Point[] {new Point((int)(0.35*screenSize.width), (int)(0.2*screenSize.height)),
-				new Point((int)(0.65*screenSize.width), (int)(0.2*screenSize.height)),
-				new Point((int)(0.5*screenSize.width), (int)(0.2*screenSize.height))} ;
-		GamePanel.DP.drawRoundRect(WindowPos[0], Align.topLeft, new Dimension(screenSize.width / 3, screenSize.height / 2), 2, Game.palette[3], Game.palette[0], true) ;
-		GamePanel.DP.drawText(new Point(WindowPos[0].x + screenSize.width / 6, WindowPos[0].y + screenSize.height / 4), Align.center, stdAngle, "Slot " + String.valueOf(SlotID + 1) + " is empty", new Font("SansSerif", Font.BOLD, 20), Game.palette[5]) ;
-		windowArrows(new Point(WindowPos[0].x, WindowPos[0].y + screenSize.height / 2), screenSize.width / 3, SlotID, NumSlots, 1.0) ;
 	}
 
 	public static void gameGrid(int[] spacing)
@@ -277,24 +279,12 @@ public abstract class Draw
 			default -> new Point(0, 0) ;
 		} ;
 
-		Font font = new Font(Game.MainFontName, Font.BOLD, 12) ;
 		Point currentPos = Util.Translate(initialPos, trajectory) ;
 		Color textColor = color != null ? color : (atkResults.getAtkType().equals(AtkTypes.magical) ? magAtkColor : phyAtkColor) ;
-		GamePanel.DP.drawText(currentPos, Align.center, stdAngle, message, font, textColor) ;
+		GamePanel.DP.drawText(currentPos, Align.center, stdAngle, message, damageAnimationFont, textColor) ;
 		
 	}
-	
-	public static void skillNameAnimation(Point Pos, String SkillName, Color color)
-	{
-		Font largeFont = new Font("SansSerif", Font.BOLD, 18) ;
-		GamePanel.DP.drawText(Pos, Align.center, stdAngle, SkillName, largeFont, color) ;
-	}
-	
-	public static void tentAnimation(Point Pos, int counter, int delay, Image TentImage)
-	{
-		GamePanel.DP.drawImage(TentImage, Pos, Align.center) ;
-	}
-
+	// TODO
 	public static void gainGoldAnimation(GameTimer counter, int goldObtained)
 	{
 		
@@ -316,17 +306,17 @@ public abstract class Draw
 	public static void quickTextAnimation(Point pos, GameTimer counter, String text, Color color)
 	{
 		pos = Util.Translate(pos, 0, (int) (-30 * counter.rate())) ;
-		GamePanel.DP.drawImage(Animation.messageBox, pos, stdAngle, Scale.unit, Align.topCenter, 0.9) ;
-		GamePanel.DP.drawText(Util.Translate(pos, 5 - Animation.messageBox.getWidth(null) / 2, 20), Align.centerLeft, stdAngle, text, smallFont, color) ;
+		GamePanel.DP.drawImage(messageBoxImg, pos, stdAngle, Scale.unit, Align.topCenter, 0.9) ;
+		GamePanel.DP.drawText(Util.Translate(pos, 5 - messageBoxImg.getWidth(null) / 2, 20), Align.centerLeft, stdAngle, text, smallFont, color) ;
 		
 	}
 
 	public static void obtainedItemAnimation(Point pos, GameTimer counter, String text, Color color)
 	{
 		pos = Util.Translate(pos, 0, (int) (-30 * counter.rate())) ;
-		GamePanel.DP.drawImage(Animation.obtainedItem, pos, Align.topCenter) ;
+		GamePanel.DP.drawImage(obtainedItem, pos, Align.topCenter) ;
 		GamePanel.DP.drawText(Util.Translate(pos, 0, 3), Align.topCenter, stdAngle, "Você obteve", stdFont, color) ;
-		GamePanel.DP.drawText(Util.Translate(pos, 5 - Animation.obtainedItem.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
+		GamePanel.DP.drawText(Util.Translate(pos, 5 - obtainedItem.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
 		
 	}
 
@@ -334,7 +324,7 @@ public abstract class Draw
 	{
 		Point pos = Game.getScreen().pos(0.35, 0.2) ;
 
-		GamePanel.DP.drawImage(Animation.win, pos, Scale.unit, Align.topLeft) ;
+		GamePanel.DP.drawImage(winObtainedItemsImg, pos, Scale.unit, Align.topLeft) ;
 		
 		if ( counter.rate() <= 0.1 ) { return ;}
 		
@@ -360,8 +350,8 @@ public abstract class Draw
 		Point offset = new Point(15, 15) ;
 		String[] attText = Game.allText.get(TextCategories.attributes) ;
 		
-		GamePanel.DP.drawImage(Animation.levelUp, pos, Scale.unit, Align.topLeft) ;
-		Point textPos = Util.Translate(pos, Animation.win.getWidth(null) / 2, offset.y) ;
+		GamePanel.DP.drawImage(levelUpAttImg, pos, Scale.unit, Align.topLeft) ;
+		Point textPos = Util.Translate(pos, winObtainedItemsImg.getWidth(null) / 2, offset.y) ;
 		
 		GamePanel.DP.drawText(textPos, Align.bottomCenter, stdAngle, attText[0] + " " + newLevel + "!", smallFont, Game.palette[0]) ;
 

@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import components.GameButton;
+import UI.GameButton;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Animation;

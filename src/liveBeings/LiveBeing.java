@@ -188,7 +188,11 @@ public abstract class LiveBeing implements Drawable
 	public void setMap(GameMap newValue) {map = newValue ;}
 	public void setDir(Directions newValue) {dir = newValue ;}
 	public void setState(LiveBeingStates newValue) {state = newValue ;}
-	public void setPos(Point newValue) {pos = newValue ; hitbox.setCenter(center()) ;}
+	public void setPos(Point newValue)
+	{
+		pos = newValue ;
+		hitbox.setCenter(center()) ;
+	}
 	public void setSize(Dimension newValue) {size = newValue ;}
 	public void setRange(int newValue) {range = newValue ;}
 	public void setStep(int newValue) {step = newValue ;}
