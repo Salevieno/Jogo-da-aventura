@@ -52,7 +52,7 @@ public class FieldMap extends GameMap
 		{
 			if (i == 39 | i == 60) { continue ;}
 			
-			images.add(UtilS.loadImage("\\Maps\\" + "Map" + String.valueOf(i) + ".png")) ;
+			images.add(UtilS.loadImage(pathMaps + "Map" + String.valueOf(i) + ".png")) ;
 		}
 		treeImage = UtilS.loadImage("\\MapElements\\" + "MapElem6_TreeForest.png") ;
 		grassImage = UtilS.loadImage("\\MapElements\\" + "MapElem8_Grass.png") ;
@@ -122,11 +122,12 @@ public class FieldMap extends GameMap
 					break ;
 					
 				case 3:
-					map.addGroundType(new GroundRegion(GroundType.water, new Point(282, 192 + 460), new Dimension(103, 85))) ;
+					map.addGroundType(new GroundRegion(GroundType.water, new Point(108, 192 + 556), new Dimension(198, 121 + 3))) ;
 					break ;
 					
 				case 8, 12:
-					map.addGroundType(new GroundRegion(GroundType.water, new Point(282, Sky.height + 460), new Dimension(140, 480 - Sky.height))) ;
+					int waterWidth = 300 ;
+					map.addGroundType(new GroundRegion(GroundType.water, new Point(screenSize.width - waterWidth, Sky.height), new Dimension(waterWidth, screenSize.height - Sky.height))) ;
 					break ;
 					
 				case 22:

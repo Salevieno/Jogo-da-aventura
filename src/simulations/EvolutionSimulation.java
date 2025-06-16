@@ -65,10 +65,11 @@ public abstract class EvolutionSimulation
 	
 	private static List<GameButton> buttons ;
 
-	private static final Image screenImage = UtilS.loadImage("SimulationScreen.png") ;
-	private static final Image buttonImage = UtilS.loadImage("ButtonGeneral.png") ;
-	private static final Image buttonSelectedImage = UtilS.loadImage("ButtonGeneralSelected.png") ;
-	private static final Image fightingImage = UtilS.loadImage("fightingIcon.png") ;
+	private static final String pathSimulation = "\\Simulation\\" ;
+	private static final Image screenImage = UtilS.loadImage(pathSimulation + "SimulationScreen.png") ;
+	private static final Image buttonImage = UtilS.loadImage(pathSimulation + "ButtonGeneral.png") ;
+	private static final Image buttonSelectedImage = UtilS.loadImage(pathSimulation + "ButtonGeneralSelected.png") ;
+	private static final Image fightingImage = UtilS.loadImage(pathSimulation + "fightingIcon.png") ;
 	
 	
 	private static int BattleResultsPlayerLife = 0 ;

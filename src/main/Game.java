@@ -100,7 +100,7 @@ public class Game
 	private static final boolean cheatMode = true ;
 	public static final boolean debugMode = true;
 
-	private static GameStates state = GameStates.opening ;
+	private static GameStates state = GameStates.loading ;
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
@@ -129,13 +129,12 @@ public class Game
 
 	static
 	{
-		Dimension windowSize = GameFrame.getWindowsize() ;
-		screen = new Screen(new Dimension(windowSize.width, windowSize.height), null) ;
-		gameLanguage = Languages.portugues ;
-		normalPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette4.png"), "Normal") ;
-		konamiPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Konami") ;
+		screen = new Screen(new Dimension(GameFrame.getWindowsize().width, GameFrame.getWindowsize().height), null) ;
+		normalPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Normal") ;
+		konamiPalette = UtilS.ReadColorPalette(UtilS.loadImage("KonamiPalette.png"), "Konami") ;
+		selColor = normalPalette[18] ;
 		palette = normalPalette ;
-		selColor = Game.palette[18] ;
+		gameLanguage = Languages.portugues ;
 		allText = new HashMap<>() ;
 		dayCounter = new GameTimer(600) ;
 
@@ -144,7 +143,7 @@ public class Game
 
 	public Game()
 	{
-		player = new Player("", "", 2) ;
+		player = new Player("", "", 1) ;
 	}
 
 	public static GameStates getState() { return state ;}

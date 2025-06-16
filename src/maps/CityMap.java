@@ -1,5 +1,6 @@
 package maps;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import components.NPCType;
 import items.Fab;
 import items.GeneralItem;
 import main.Game;
+import screen.Sky;
 import utilities.Util;
 import utilities.UtilS;
 
@@ -31,7 +33,7 @@ public class CityMap extends GameMap
 		images = new ArrayList<>() ;
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
-			images.add(UtilS.loadImage("\\Maps\\" + "Map" + String.valueOf(i) + ".png")) ;
+			images.add(UtilS.loadImage(pathMaps + "Map" + String.valueOf(i) + ".png")) ;
 		}
 	}
 	
@@ -151,7 +153,8 @@ public class CityMap extends GameMap
 			switch (id)
 			{
 				case 2:
-//					cityMaps[id].addGroundType(new GroundType(GroundTypes.water, new Point(500, Sky.height), new Dimension(140, 480 - Sky.height))) ;
+					int waterWidth = 300 ;
+					cityMaps[id].addGroundType(new GroundRegion(GroundType.water, new Point(screenSize.width - waterWidth, Sky.height), new Dimension(waterWidth, screenSize.height - Sky.height))) ;
 					break ;
 				default: break ;
 			}

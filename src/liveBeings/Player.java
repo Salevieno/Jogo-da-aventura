@@ -122,20 +122,17 @@ public class Player extends LiveBeing
     
 	public static final int maxLevel = 99 ;
 	public static final double stepDuration = 0.25 ;
-    public static final Image CollectingMessage = UtilS.loadImage("\\Collect\\" + "CollectingMessage.gif") ; 
-    public static final Image DragonAuraImage = UtilS.loadImage("\\Player\\" + "dragonAura.gif") ;
-    public static final Image RidingImage = UtilS.loadImage("\\Player\\" + "Tiger.png") ;
-	public static final Image CoinIcon = UtilS.loadImage("\\Player\\" + "CoinIcon.png") ;
-	public static final Image MagicBlissGif = UtilS.loadImage("\\Player\\" + "MagicBliss.gif") ;
-    public static final Gif[] CollectingGifs = new Gif[] {
-													    		new Gif("Collecting", UtilS.loadImage("\\Collect\\" + "CollectingFruit.gif"), 3.6, false, false),
-													    		new Gif("Collecting", UtilS.loadImage("\\Collect\\" + "CollectingHerb.gif"), 3.6, false, false),
-													    		new Gif("Collecting", UtilS.loadImage("\\Collect\\" + "CollectingWood.gif"), 3.6, false, false),
-													    		new Gif("Collecting", UtilS.loadImage("\\Collect\\" + "CollectingMetal.gif"), 3.6, false, false)
-												    		} ;
-    public static final Gif TentGif = new Gif("Tent", UtilS.loadImage("Tent.png"), 5, false, false) ;
-	public static final Gif DiggingGif = new Gif("Digging", UtilS.loadImage("\\Player\\" + "Digging.gif"), 2, false, false) ;
-    public static final Gif FishingGif = new Gif("Fishing", UtilS.loadImage("\\Player\\" + "Fishing.gif"), 2, false, false) ;
+	private static final String pathPlayerImg = "\\Player\\" ;
+	private static final String pathCollectImg = "\\Collect\\" ;
+    public static final Image CollectingMessage = UtilS.loadImage(pathCollectImg + "CollectingMessage.gif") ; 
+    public static final Image DragonAuraImage = UtilS.loadImage(pathPlayerImg + "dragonAura.gif") ;
+    public static final Image RidingImage = UtilS.loadImage(pathPlayerImg + "Tiger.png") ;
+	public static final Image CoinIcon = UtilS.loadImage(pathPlayerImg + "CoinIcon.png") ;
+	public static final Image MagicBlissGif = UtilS.loadImage(pathPlayerImg + "MagicBliss.gif") ;
+    public static final Gif[] collectingGifs ;
+    public static final Gif TentGif = new Gif("Tent", UtilS.loadImage(pathPlayerImg + "Tent.png"), 5, false, false) ;
+	public static final Gif DiggingGif = new Gif("Digging", UtilS.loadImage(pathPlayerImg + "Digging.gif"), 2, false, false) ;
+    public static final Gif FishingGif = new Gif("Fishing", UtilS.loadImage(pathPlayerImg + "Fishing.gif"), 2, false, false) ;
     
 	public static final List<String[]> InitialAtts = Util.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
 	public static final List<String[]> EvolutionProperties = Util.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
@@ -153,11 +150,18 @@ public class Player extends LiveBeing
 	
 	static
 	{
-	    Image idleGif = UtilS.loadImage("\\Player\\" + "PlayerIdle.gif") ;
-	    Image movingUpGif = UtilS.loadImage("\\Player\\" + "PlayerBack.gif") ;
-		Image movingDownGif = UtilS.loadImage("\\Player\\" + "PlayerFront.gif") ;
-		Image movingLeftGif = UtilS.loadImage("\\Player\\" + "PlayerMovingLeft.gif") ;
-		Image movingRightGif = UtilS.loadImage("\\Player\\" + "PlayerRight.gif") ;
+		collectingGifs = new Gif[] {
+			new Gif("Collecting", UtilS.loadImage(pathCollectImg + "CollectingFruit.gif"), 3.6, false, false),
+			new Gif("Collecting", UtilS.loadImage(pathCollectImg + "CollectingHerb.gif"), 3.6, false, false),
+			new Gif("Collecting", UtilS.loadImage(pathCollectImg + "CollectingWood.gif"), 3.6, false, false),
+			new Gif("Collecting", UtilS.loadImage(pathCollectImg + "CollectingMetal.gif"), 3.6, false, false)
+		} ;
+
+	    Image idleGif = UtilS.loadImage(pathPlayerImg + "PlayerIdle.gif") ;
+	    Image movingUpGif = UtilS.loadImage(pathPlayerImg + "PlayerBack.gif") ;
+		Image movingDownGif = UtilS.loadImage(pathPlayerImg + "PlayerFront.gif") ;
+		Image movingLeftGif = UtilS.loadImage(pathPlayerImg + "PlayerMovingLeft.gif") ;
+		Image movingRightGif = UtilS.loadImage(pathPlayerImg + "PlayerRight.gif") ;
 		
 		movingAnimations = new MovingAnimations(idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif) ;
 	}
@@ -480,7 +484,7 @@ public class Player extends LiveBeing
 	public void collect(Collectible collectible)
     {
 		
-		Gif collectibleGif = CollectingGifs[collectible.typeNumber()] ;
+		Gif collectibleGif = collectingGifs[collectible.typeNumber()] ;
 		
 		if (collectibleGif.isActive()) { return ;}
 		

@@ -47,11 +47,15 @@ public class GameMap
 	protected Map<Item, Double> diggingItems ;
 	
 	// private static Image[] CollectibleImage ;
-	// private static Image[] GroundImage ;	
+	// private static Image[] GroundImage ;
+	protected static final Dimension screenSize = Game.getScreen().getSize() ;
 	
-	protected static final SpriteAnimation beachGif ;
-	protected static final Image infoWindow ;
+	protected static final String pathMaps = "\\Maps\\" ;
 	protected static final String dadosPath = Game.dadosPath + "gameMaps\\" ;
+	protected static final Image dockImg = UtilS.loadImage(pathMaps + "Dock.png") ;
+	protected static final Image boatImg = UtilS.loadImage(pathMaps + "Boat.png") ;
+	protected static final Image infoWindow ;
+	protected static final SpriteAnimation beachGif ;
 	
 	public static final Map<Item, Double> allDiggingItems ;
 	public static final Clip musicCities ;
@@ -76,7 +80,7 @@ public class GameMap
 		{
 			allDiggingItems.put(GeneralItem.getAll()[genItemIDs[i]], genItemPotentials[i]) ;
 		}
-		beachGif = new SpriteAnimation("\\Maps\\" + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, new Dimension(80, 384), 12, 15) ;
+		beachGif = new SpriteAnimation(pathMaps + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, new Dimension(80, 384), 12, 15) ;
 		infoWindow = UtilS.loadImage("\\Windows\\" + "MapInfo.png") ;
 
 		musicCities = Music.musicFileToClip(new File(Game.MusicPath + "cidade.wav").getAbsoluteFile()) ;
@@ -579,6 +583,8 @@ public class GameMap
  	
  	public void display()
  	{
+		if (name == null) { System.out.println("Warn: trying to display map with no name") ; return ;}
+
  		if (name.equals("City of the animals"))
  		{
  			GamePanel.DP.drawImage(image, Game.getScreen().getMapCenter(), new Scale(0.5, 0.5), Align.center) ;
@@ -587,9 +593,15 @@ public class GameMap
  		
  		GamePanel.DP.drawImage(image, Game.getScreen().getMapCenter(), Align.center) ;
  		
- 		if (name.equals("City of the archers"))
+ 		if (name.equals("City of the archers") || name.equals("Forest 9") || name.equals("Forest 13"))
  		{
  			beachGif.display(GamePanel.DP) ;
+ 		}
+ 		
+ 		if (name.equals("Forest 9"))
+ 		{
+ 			GamePanel.DP.drawImage(dockImg, Game.getScreen().pos(0.6, 0.85), Align.centerLeft) ;
+ 			GamePanel.DP.drawImage(boatImg, Game.getScreen().pos(0.75, 0.8), Align.centerLeft) ;
  		}
  	}
 	
