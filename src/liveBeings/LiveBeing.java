@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -390,17 +391,21 @@ public abstract class LiveBeing implements Drawable
 			moveDir = randomPerpendicularDir(dir) ;
 		}
 		
-		switch (moveDir)
-		{
-			case up: return new Point(pos.x, pos.y - step) ;
-			case down: return new Point(pos.x, pos.y + step) ;
-			case left: return new Point(pos.x - step, pos.y) ;
-			case right: return new Point(pos.x + step, pos.y) ;	
-			default: return new Point(pos) ;
-		}
+		return calcNewPos(moveDir, pos, step) ;
+
+		// switch (moveDir)
+		// {
+		// 	case up: return new Point(pos.x, pos.y - step) ;
+		// 	case down: return new Point(pos.x, pos.y + step) ;
+		// 	case left: return new Point(pos.x - step, pos.y) ;
+		// 	case right: return new Point(pos.x + step, pos.y) ;	
+		// 	default: return new Point(pos) ;
+		// }
 	}
 
-	public Point calcNewPos(Directions dir, Point currentPos, int step)
+	public Point calcNewPos(Directions dir) { return calcNewPos(dir, pos, step) ;}
+
+	public static Point calcNewPos(Directions dir, Point currentPos, int step)
 	{
 		Point newPos = switch (dir)
 		{
@@ -662,7 +667,7 @@ public abstract class LiveBeing implements Drawable
 
 	public boolean isTouching(GroundType groundType)
 	{		
- 		RelativePos adjGround = checkAdjacentGround(pos, map, groundType) ;
+ 		RelativePos adjGround = checkAdjacentGround(pos, map, groundType, step) ;
  		
  		if (adjGround == null) { return false ;}
  		
@@ -673,7 +678,7 @@ public abstract class LiveBeing implements Drawable
 
 	public boolean isInside(GroundType groundType)
 	{ 
- 		RelativePos adjGround = checkAdjacentGround(pos, map, groundType) ;
+ 		RelativePos adjGround = checkAdjacentGround(pos, map, groundType, step) ;
  		
  		if (adjGround == null) { return false ;}
  		
@@ -684,22 +689,33 @@ public abstract class LiveBeing implements Drawable
 		
 		
  	
-	public static RelativePos checkAdjacentGround(Point pos, GameMap map, GroundType targetGroundType)
+	public static RelativePos checkAdjacentGround(Point pos, GameMap map, GroundType targetGroundType, int step)
 	{ 		
  		Point userPos = new Point(pos) ;
 
 		if (map == null) { return null ;}
 		
-		if (map.getgroundTypes() == null) { return null ;}
+		if (map.getgroundTypes() == null || map.getgroundTypes().isEmpty()) { return null ;}
 
 		for (GroundRegion groundType : map.getgroundTypes())
 		{
 			if (!groundType.getType().equals(targetGroundType)) { continue ;}	
 			
-			return UtilS.posRelativeToRectangle(userPos, groundType.getTopLeftPos(), groundType.getSize()) ;
+			return posRelativeToPolygon(userPos, groundType.getRegion(), step) ; // UtilS.posRelativeToRectangle(userPos, groundType.getTopLeftPos(), groundType.getSize()) ;
 		}
 		
 		return null ;		
+	}
+
+	private static RelativePos posRelativeToPolygon(Point pos, Polygon polygon, int step)
+	{
+		if (polygon.contains(pos)) { return RelativePos.inside ;}
+		if (polygon.contains(calcNewPos(Directions.down, pos, step))) { return RelativePos.above ;}
+		if (polygon.contains(calcNewPos(Directions.right, pos, step))) { return RelativePos.left ;}
+		if (polygon.contains(calcNewPos(Directions.left, pos, step))) { return RelativePos.right ;}
+		if (polygon.contains(calcNewPos(Directions.up, pos, step))) { return RelativePos.below ;}
+
+		return null ;
 	}
 
 	public abstract Elements[] atkElems() ;

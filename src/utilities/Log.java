@@ -1,6 +1,7 @@
 package utilities;
 
 import java.util.List;
+import java.util.Map;
 
 import battle.AtkResults;
 import graphics2.Animation;
@@ -113,6 +114,11 @@ public abstract class Log
 		System.out.println("\n All entity lists length");
 		System.out.println("Animations: " + Animation.getAll().size()) ;
 		System.out.println("Creature types: " + CreatureType.all.size()) ;
+	}
+	
+	public static void diggingItems(Map<Item, Double> allDiggingItems)
+	{
+		allDiggingItems.entrySet().forEach(System.out::println);
 	}
 	
 	public static void __()

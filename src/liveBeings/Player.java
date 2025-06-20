@@ -671,7 +671,7 @@ public class Player extends LiveBeing
 		Point newPos = calcNewPos() ;
 
 		if (Game.getScreen().posIsWithinBorders(newPos))
-		{
+		{System.out.println(map.groundTypeAtPoint(newPos));
 			if (!map.groundIsWalkable(newPos, superElem)) { return ;}
 			
 			setPos(newPos) ;

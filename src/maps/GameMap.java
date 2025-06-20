@@ -40,16 +40,13 @@ public class GameMap
 	protected Image image ;
 	protected Clip music ;
 	
-	protected List<GroundRegion> groundTypes ;	
+	protected List<GroundRegion> groundRegions ;	
 	protected List<MapElement> mapElems ;
 	protected List<Building> buildings ;
 	protected List<NPC> npcs ;
 	protected Map<Item, Double> diggingItems ;
-	
-	// private static Image[] CollectibleImage ;
-	// private static Image[] GroundImage ;
-	protected static final Dimension screenSize = Game.getScreen().getSize() ;
-	
+
+	protected static final Dimension screenSize = Game.getScreen().getSize() ;	
 	protected static final String pathMaps = "\\Maps\\" ;
 	protected static final String dadosPath = Game.dadosPath + "gameMaps\\" ;
 	protected static final Image dockImg = UtilS.loadImage(pathMaps + "Dock.png") ;
@@ -87,29 +84,7 @@ public class GameMap
 		musicForest = Music.musicFileToClip(new File(Game.MusicPath + "floresta.wav").getAbsoluteFile()) ;
 		musicSpecial = Music.musicFileToClip(new File(Game.MusicPath + "12-Special.wav").getAbsoluteFile()) ;
 		
-//		allDiggingItems.entrySet().forEach(System.out::println);
-	}
-	
-	
-	static
-	{
-//		Image Water = UtilS.loadImage("MapElem0_Water.png") ;
-		/*Image Wall = UtilS.loadImage("MapElem1_Wall.png") ;
-		Image Berry = UtilS.loadImage("MapElem2_Berry.png") ;
-		Image Herb = UtilS.loadImage("MapElem3_Herb.png") ;
-		Image Wood = UtilS.loadImage("MapElem4_Wood.png") ;
-		Image Metal = UtilS.loadImage("MapElem5_Metal.png") ;
-		Image TreeForest = UtilS.loadImage("MapElem6_TreeForest.png") ;
-		Image PalmTree = UtilS.loadImage("MapElem7_PalmTree.png") ;
-		Image Grass = UtilS.loadImage("MapElem8_Grass.png") ;
-		Image Rock = UtilS.loadImage("MapElem9_Rock.png") ;
-		Image Crystal = UtilS.loadImage("MapElem10_Crystal.png") ;
-		Image Stalactite = UtilS.loadImage("MapElem11_Stalactite.png") ;
-		Image Volcano = UtilS.loadImage("MapElem12_Volcano.png") ;*/
-//		Image Lava = UtilS.loadImage("MapElem13_Lava.png") ;
-//		Image Ice = UtilS.loadImage("MapElem14_Ice.png") ;
-		//Image Chest = UtilS.loadImage("MapElem15_Chest.png") ;	
-//		GroundImage = new Image[] {Water, Lava, Ice} ;
+		// Log.diggingItems(allDiggingItems) ;
 	}
 	
 	public GameMap(String Name, Continents continent, int[] Connections, Image image, Clip music, List<Building> building, List<NPC> npc)
@@ -124,7 +99,7 @@ public class GameMap
 		diggingItems = new HashMap<>() ;
 		
 		mapElems = new ArrayList<>() ;
-		groundTypes = new ArrayList<>() ;
+		groundRegions = new ArrayList<>() ;
 	}
 
 
@@ -150,151 +125,12 @@ public class GameMap
 		{
 			allMaps[i] = fieldMaps[i - cityMaps.length - 2] ;
 		}
-//		System.arraycopy(cityMaps, 0, allMaps, 0, cityMaps.length) ;
-//		System.arraycopy(fieldMaps, 0, allMaps, cityMaps.length, fieldMaps.length) ;
-//		System.arraycopy(specialMaps, 0, allMaps, cityMaps.length + fieldMaps.length, specialMaps.length) ;
 		return allMaps ;
 
 	}
 	
-	public void addGroundType (GroundRegion newGroundType) { groundTypes.add(newGroundType) ;}
+	public void addGroundType (GroundRegion newGroundType) { groundRegions.add(newGroundType) ;}
 	public void removeMapElem (MapElement mapElem) { mapElems.remove(mapElem) ;}
-	
-// 	public void initializeGroundTypes(int SkyHeight, Dimension screenDim)
-// 	{
-// 		groundTypes = new ArrayList<>() ;
-//		if (continent.equals(Continents.forest))
-//		{
-//			if (name.equals("City of archers"))
-//			{
-//				for (int j = SkyHeight ; j <= screenDim.height - 1 ; j += 1)
-//				{
-//					for (int k = (screenDim.width * 4 / 5) ; k <= screenDim.width - 1 ; k += 1)
-//					{
-//						groundTypes.add(new GroundType(GroundTypes.water, new Point(j, k), new Dimension(1, 1))) ;
-//					}
-//				}
-//			}
-//			if (name.equals("City of thieves"))
-//			{
-//				for (int j = 3 ; j <= 21 ; j += 1)
-//				{
-//					groundTypes.add(new GroundType(GroundTypes.water, new Point(j, 10), new Dimension(1, 1))) ;	// outer wall (horizontal top)
-//				}
-//				for (int k = 10 ; k <= 20 ; k += 1)
-//				{
-//					groundTypes.add(new GroundType(GroundTypes.water, new Point(3, k), new Dimension(1, 1))) ;	// outer wall (vertical left edge)
-//					groundTypes.add(new GroundType(GroundTypes.water, new Point(21, k), new Dimension(1, 1))) ;	// outer wall (vertical left edge)
-//				}
-//				for (int j = 8 ; j <= 26 ; j += 1)
-//				{
-//					groundTypes.add(new GroundType(GroundTypes.water, new Point(j, 23), new Dimension(1, 1))) ;	// inner wall (horizontal bottom)
-//				}
-//				for (int k = 16 ; k <= 23 ; k += 1)
-//				{
-//					groundTypes.add(new GroundType(GroundTypes.water, new Point(8, k), new Dimension(1, 1))) ;	// inner wall (vertical left edge)
-//					groundTypes.add(new GroundType(GroundTypes.water, new Point(26, k), new Dimension(1, 1))) ;	// inner wall (vertical right edge)
-//				}
-//			}
-//			switch(name)
-//			{
-//				case "Forest 3":
-//					groundTypes.add(new GroundType(GroundTypes.water, new Point(551, 269), new Dimension(49, 83))) ;
-//					return ;
-//					
-//				case "Forest 4":
-//					groundTypes.add(new GroundType(GroundTypes.water, new Point(0, 269), new Dimension(64, 83))) ;
-//					return ;
-//					
-//				default: return ;
-//			}
-//			/*if (id == 13 | id == 17)	// shore
-//			{ 
-//				RangeX = (float)(0.6) ;
-//				for (double k = Skyratio ; k <= 1.0 ; k += 1.0 / screenDim[1])
-//				{
-//					for (double j = 0.8 ; j <= 1.0 ; j += 1.0 / screenDim[0])
-//					{
-//						if (!Utg.isInside(new double[] {j, k}, new double[] {0.8, 0.8}, 0.1, 0.08) & !Utg.isInside(new double[] {j, k}, new double[] {0.9, 0.808}, 0.05, 0.16))
-//						{
-//							water = Utg.AddElem(water, new Point((int) (j * screenDim[0]), (int) (k * screenDim[1]))) ;
-//						}
-//					}
-//				}
-//			}*/
-//		}
-//		/*if (Continent == 1)	// cave
-//		{
-//			if (id == 36)
-//			{
-//				// Positions of the maze walls are in % of the screen size
-//				int[] MazeStartPos = new int[] {10, 15, 51, 15, 39, 2, 35, 17, 77, 92, 67, 17, 57, 88, 49, 4, 81, 2, 5, 54, 71, 15, 58, 11, 39, 12, 80, 59, 5, 3, 0, 54} ;
-//				int[] MazeEndPos = new int[] {93, 88, 77, 39, 51, 27, 77, 67, 81, 100, 77, 46, 71, 100, 70, 25, 96, 70, 25, 77, 100, 25, 71, 20, 45, 61, 94, 80, 20, 20, 42, 100} ;
-//				int[] MazeHorizontalWallsPos = new int[] {2, 5, 12, 15, 16, 32, 32, 39, 42, 42, 45, 54, 54, 54, 74, 77, 80} ;
-//				int[] MazeVerticalWallsPos = new int[] {10, 15, 17, 38, 39, 45, 51, 67, 77, 81, 85, 88, 93, 100, 100} ;
-//				for (int k = 0 ; k <= MazeHorizontalWallsPos.length - 1 ; k += 1)
-//				{
-//					for (int j = MazeStartPos[k] ; j <= MazeEndPos[k] ; j += 1)
-//					{
-//						invisible_wall = Utg.AddElem(invisible_wall, new Point(j * 35 / 100, MazeHorizontalWallsPos[k] * 35 / 100)) ;		// maze invisible wall - horizontal parts
-//					}
-//				}
-//				for (int j = 0 ; j <= MazeVerticalWallsPos.length - 1 ; j += 1)
-//				{
-//					for (int k = MazeStartPos[j + MazeHorizontalWallsPos.length] ; k <= MazeEndPos[j + MazeHorizontalWallsPos.length] ; k += 1)
-//					{
-//						invisible_wall = Utg.AddElem(invisible_wall, new Point(MazeVerticalWallsPos[j] * 35 / 100, k * 35 / 100)) ;			// maze invisible wall - vertical parts
-//					}
-//				}
-//			}
-//		}
-//		if (Continent == 3)	// volcano
-//		{
-//			for (int j = 0 ; j <= 40 ; ++j)
-//			{
-//				int [] randomPos = new int[] {Utg.RandomCoord1D(screenDim[0], MinX, RangeX, 1), Utg.RandomCoord1D(screenDim[1], MinY, RangeY, 1)} ;
-//				lava = Utg.AddElem(lava, new Point(randomPos[0], randomPos[1])) ;	// lava
-//			}
-//		}
-//		if (Continent == 4)	// snowland
-//		{
-//			for (int j = 0 ; j <= 4 ; ++j)
-//			{
-//				int [] randomPos = new int[] {Utg.RandomCoord1D(screenDim[0], MinX, RangeX, 1), Utg.RandomCoord1D(screenDim[1], MinY, RangeY, 1)} ;
-//				ice = Utg.AddElem(ice, new Point(randomPos[0], randomPos[1])) ;	// ice			
-//			}
-//		}
-//		if (60 < id & id <= 66)	// ocean maps
-//		{
-//			water = new Point[screenDim[0] * screenDim[1]] ;
-//			for (int j = 0 ; j <= screenDim[0] - 1 ; ++j)
-//			{
-//				for (int k = 0 ; k <= screenDim[1] - 1 ; ++k)
-//				{
-//					water[j * screenDim[1] + k] = new Point(j, k) ;	// water
-//				}
-//			}
-//		}*/
-//		
-//		// add colliders to map elements
-//		/*if (MapElem != null)
-//		{
-//			for (int me = 0 ; me <= MapElem.length - 1 ; me += 1)
-//			{
-//				if (MapElem[me].getBlock() != null)
-//				{
-//					for (int b = 0 ; b <= MapElem[me].getBlock().length - 1 ; b += 1)
-//					{
-//						int[] Pos = new int[] {MapElem[me].getPos()[0] + MapElem[me].getBlock()[b][0], MapElem[me].getPos()[1] - MapElem[me].getBlock()[b][1]} ;
-//						if (Pos[0] <= 400 & Pos[1] <= 400)
-//						{
-//							invisible_wall = Utg.AddElem(invisible_wall, new Point(Pos[0], Pos[1])) ;	// collider
-//						}
-//					}
-//				}
-//			}
-//		}*/
-// 	}
 
 	public boolean IsACity() { return (this instanceof CityMap) ;}
 	public boolean isAField() { return (this instanceof FieldMap) ;}
@@ -323,7 +159,7 @@ public class GameMap
  		}
 		
 	}
-	private boolean hasGroundTypes() { return groundTypes != null && !groundTypes.isEmpty() ;}
+	private boolean hasGroundTypes() { return groundRegions != null && !groundRegions.isEmpty() ;}
 
 	protected Point randomPosOnLand(Point minCoord, Dimension range, Dimension step)
 	{
@@ -483,7 +319,7 @@ public class GameMap
 	{
 		if (!hasGroundTypes()) { return null ;}
 		
-		for (GroundRegion groundType : groundTypes)
+		for (GroundRegion groundType : groundRegions)
 		{
 			if (!groundType.containsPoint(pos)) { continue ;}
 			
@@ -516,9 +352,9 @@ public class GameMap
 	
 	public void displayGroundTypes()
 	{
- 		if (groundTypes == null) { return ;}
+ 		if (groundRegions == null) { return ;}
  		
-		groundTypes.forEach(groundType -> groundType.display()) ;
+		groundRegions.forEach(groundType -> groundType.display()) ;
 	}
 
 	public void displayInfoWindow()
@@ -610,7 +446,7 @@ public class GameMap
 	public Continents getContinent() {return continent ;}
 	public Image getimage() {return image ;}
 	public Clip getMusic() { return music ;}
-	public List<GroundRegion> getgroundTypes() {return groundTypes ;}
+	public List<GroundRegion> getgroundTypes() {return groundRegions ;}
 	public int[] getConnections() {return connections ;}	
 	public List<MapElement> getMapElem() {return mapElems ;}
 	public List<NPC> getNPCs() {return npcs ;}

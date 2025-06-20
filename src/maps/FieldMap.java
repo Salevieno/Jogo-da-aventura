@@ -16,8 +16,8 @@ import javax.sound.sampled.Clip;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import components.NPCType;
 import components.NPC;
+import components.NPCType;
 import items.Item;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
@@ -38,33 +38,22 @@ public class FieldMap extends GameMap
 	private static final int numberTrees = 5 ;
 	private static final int numberGrass = 30 ;
 	private static final int numberRocks = 10 ;
-	private static final Image treeImage ;
-	private static final Image grassImage ;
-	private static final Image grassImage2 ;
-	private static final Image rockImage ;
+	private static final String mapElementsPath = "\\MapElements\\" ;
+	private static final Image treeImage = UtilS.loadImage(mapElementsPath + "MapElem6_TreeForest.png") ;
+	private static final Image grassImage = UtilS.loadImage(mapElementsPath + "MapElem8_Grass.png") ;
+	private static final Image grassImage2 = UtilS.loadImage(mapElementsPath + "MapElem8_Grass2.png") ;
+	private static final Image rockImage = UtilS.loadImage(mapElementsPath + "MapElem9_Rock.png") ;
 
-	private static final List<Image> images ;
-	
-	static
-	{
-		images = new ArrayList<>() ;
-		for (int i = 5 ; i <= 67 - 1 ; i += 1)
-		{
-			if (i == 39 | i == 60) { continue ;}
-			
-			images.add(UtilS.loadImage(pathMaps + "Map" + String.valueOf(i) + ".png")) ;
-		}
-		treeImage = UtilS.loadImage("\\MapElements\\" + "MapElem6_TreeForest.png") ;
-		grassImage = UtilS.loadImage("\\MapElements\\" + "MapElem8_Grass.png") ;
-		grassImage2 = UtilS.loadImage("\\MapElements\\" + "MapElem8_Grass2.png") ;
-		rockImage = UtilS.loadImage("\\MapElements\\" + "MapElem9_Rock.png") ;
-	}
-	
-	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs)
+	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions)
 	{
 		super(name, continent, connections, image, music, null, npcs) ;
+		this.groundRegions = groundRegions ;
 		this.level = collectibleLevel ;
 		this.npcs = npcs ;
+	}
+	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs)
+	{
+		this(name, continent, connections, image, music, collectibleLevel, npcs, null) ;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -92,7 +81,7 @@ public class FieldMap extends GameMap
 			connections[6] = (int) (long) connectionIDs.get("rightBottom") ;
 			connections[7] = (int) (long) connectionIDs.get("rightTop") ;
 
-			Image image = FieldMap.images.get(id) ;
+			Image image = UtilS.loadImage(pathMaps + "Map" + String.valueOf(id + 5) + ".png") ;
 			Clip music = GameMap.musicForest ;
 
 			JSONObject collectibles = (JSONObject) mapData.get("Collectibles") ;
@@ -105,38 +94,10 @@ public class FieldMap extends GameMap
 				creatureIDs[i] = (int) (long) creatures.get(i) ;
 			}
 
-			// JSONArray listNPCs = (JSONArray) mapData.get("NPCs") ;
 			List<NPC> npcs = FieldMap.createQuestNPCs(id, npcTypes) ;
-//			List<NPCs> npcs = new ArrayList<>() ;
-//			for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
-//			{
-//				npcs.add(readNPCfromJson((JSONObject) listNPCs.get(i))) ;
-//			}
+			List<GroundRegion> groundRegions = groundRegionsFromJson((JSONObject) mapData.get("GroundRegions")) ;
 
-			FieldMap map = new FieldMap(name, continent, connections, image, music, collectibleLevel, npcs) ;
-
-			switch (id)
-			{
-				case 2:
-					map.addGroundType(new GroundRegion(GroundType.water, new Point(551, 96 + 269), new Dimension(49, 83))) ;
-					break ;
-					
-				case 3:
-					map.addGroundType(new GroundRegion(GroundType.water, new Point(108, 192 + 556), new Dimension(198, 121 + 3))) ;
-					break ;
-					
-				case 8, 12:
-					int waterWidth = 300 ;
-					map.addGroundType(new GroundRegion(GroundType.water, new Point(screenSize.width - waterWidth, Sky.height), new Dimension(waterWidth, screenSize.height - Sky.height))) ;
-					break ;
-					
-				case 22:
-					map.addGroundType(new GroundRegion(GroundType.water, new Point(50, 250), new Dimension(120, 210))) ;
-					break ;
-					
-				default:
-					break ;
-			}
+			FieldMap map = new FieldMap(name, continent, connections, image, music, collectibleLevel, npcs, groundRegions) ;
 
 			map.addCollectibles() ;
 			map.addCreatures(creatureIDs) ;
@@ -146,6 +107,182 @@ public class FieldMap extends GameMap
 		}
 
 		return fieldMaps ;
+	}
+
+// 	public void initializeGroundTypes(int SkyHeight, Dimension screenDim)
+// 	{
+// 		groundTypes = new ArrayList<>() ;
+//		if (continent.equals(Continents.forest))
+//		{
+//			if (name.equals("City of archers"))
+//			{
+//				for (int j = SkyHeight ; j <= screenDim.height - 1 ; j += 1)
+//				{
+//					for (int k = (screenDim.width * 4 / 5) ; k <= screenDim.width - 1 ; k += 1)
+//					{
+//						groundTypes.add(new GroundType(GroundTypes.water, new Point(j, k), new Dimension(1, 1))) ;
+//					}
+//				}
+//			}
+//			if (name.equals("City of thieves"))
+//			{
+//				for (int j = 3 ; j <= 21 ; j += 1)
+//				{
+//					groundTypes.add(new GroundType(GroundTypes.water, new Point(j, 10), new Dimension(1, 1))) ;	// outer wall (horizontal top)
+//				}
+//				for (int k = 10 ; k <= 20 ; k += 1)
+//				{
+//					groundTypes.add(new GroundType(GroundTypes.water, new Point(3, k), new Dimension(1, 1))) ;	// outer wall (vertical left edge)
+//					groundTypes.add(new GroundType(GroundTypes.water, new Point(21, k), new Dimension(1, 1))) ;	// outer wall (vertical left edge)
+//				}
+//				for (int j = 8 ; j <= 26 ; j += 1)
+//				{
+//					groundTypes.add(new GroundType(GroundTypes.water, new Point(j, 23), new Dimension(1, 1))) ;	// inner wall (horizontal bottom)
+//				}
+//				for (int k = 16 ; k <= 23 ; k += 1)
+//				{
+//					groundTypes.add(new GroundType(GroundTypes.water, new Point(8, k), new Dimension(1, 1))) ;	// inner wall (vertical left edge)
+//					groundTypes.add(new GroundType(GroundTypes.water, new Point(26, k), new Dimension(1, 1))) ;	// inner wall (vertical right edge)
+//				}
+//			}
+//			switch(name)
+//			{
+//				case "Forest 3":
+//					groundTypes.add(new GroundType(GroundTypes.water, new Point(551, 269), new Dimension(49, 83))) ;
+//					return ;
+//					
+//				case "Forest 4":
+//					groundTypes.add(new GroundType(GroundTypes.water, new Point(0, 269), new Dimension(64, 83))) ;
+//					return ;
+//					
+//				default: return ;
+//			}
+//			/*if (id == 13 | id == 17)	// shore
+//			{ 
+//				RangeX = (float)(0.6) ;
+//				for (double k = Skyratio ; k <= 1.0 ; k += 1.0 / screenDim[1])
+//				{
+//					for (double j = 0.8 ; j <= 1.0 ; j += 1.0 / screenDim[0])
+//					{
+//						if (!Utg.isInside(new double[] {j, k}, new double[] {0.8, 0.8}, 0.1, 0.08) & !Utg.isInside(new double[] {j, k}, new double[] {0.9, 0.808}, 0.05, 0.16))
+//						{
+//							water = Utg.AddElem(water, new Point((int) (j * screenDim[0]), (int) (k * screenDim[1]))) ;
+//						}
+//					}
+//				}
+//			}*/
+//		}
+//		/*if (Continent == 1)	// cave
+//		{
+//			if (id == 36)
+//			{
+//				// Positions of the maze walls are in % of the screen size
+//				int[] MazeStartPos = new int[] {10, 15, 51, 15, 39, 2, 35, 17, 77, 92, 67, 17, 57, 88, 49, 4, 81, 2, 5, 54, 71, 15, 58, 11, 39, 12, 80, 59, 5, 3, 0, 54} ;
+//				int[] MazeEndPos = new int[] {93, 88, 77, 39, 51, 27, 77, 67, 81, 100, 77, 46, 71, 100, 70, 25, 96, 70, 25, 77, 100, 25, 71, 20, 45, 61, 94, 80, 20, 20, 42, 100} ;
+//				int[] MazeHorizontalWallsPos = new int[] {2, 5, 12, 15, 16, 32, 32, 39, 42, 42, 45, 54, 54, 54, 74, 77, 80} ;
+//				int[] MazeVerticalWallsPos = new int[] {10, 15, 17, 38, 39, 45, 51, 67, 77, 81, 85, 88, 93, 100, 100} ;
+//				for (int k = 0 ; k <= MazeHorizontalWallsPos.length - 1 ; k += 1)
+//				{
+//					for (int j = MazeStartPos[k] ; j <= MazeEndPos[k] ; j += 1)
+//					{
+//						invisible_wall = Utg.AddElem(invisible_wall, new Point(j * 35 / 100, MazeHorizontalWallsPos[k] * 35 / 100)) ;		// maze invisible wall - horizontal parts
+//					}
+//				}
+//				for (int j = 0 ; j <= MazeVerticalWallsPos.length - 1 ; j += 1)
+//				{
+//					for (int k = MazeStartPos[j + MazeHorizontalWallsPos.length] ; k <= MazeEndPos[j + MazeHorizontalWallsPos.length] ; k += 1)
+//					{
+//						invisible_wall = Utg.AddElem(invisible_wall, new Point(MazeVerticalWallsPos[j] * 35 / 100, k * 35 / 100)) ;			// maze invisible wall - vertical parts
+//					}
+//				}
+//			}
+//		}
+//		if (Continent == 3)	// volcano
+//		{
+//			for (int j = 0 ; j <= 40 ; ++j)
+//			{
+//				int [] randomPos = new int[] {Utg.RandomCoord1D(screenDim[0], MinX, RangeX, 1), Utg.RandomCoord1D(screenDim[1], MinY, RangeY, 1)} ;
+//				lava = Utg.AddElem(lava, new Point(randomPos[0], randomPos[1])) ;	// lava
+//			}
+//		}
+//		if (Continent == 4)	// snowland
+//		{
+//			for (int j = 0 ; j <= 4 ; ++j)
+//			{
+//				int [] randomPos = new int[] {Utg.RandomCoord1D(screenDim[0], MinX, RangeX, 1), Utg.RandomCoord1D(screenDim[1], MinY, RangeY, 1)} ;
+//				ice = Utg.AddElem(ice, new Point(randomPos[0], randomPos[1])) ;	// ice			
+//			}
+//		}
+//		if (60 < id & id <= 66)	// ocean maps
+//		{
+//			water = new Point[screenDim[0] * screenDim[1]] ;
+//			for (int j = 0 ; j <= screenDim[0] - 1 ; ++j)
+//			{
+//				for (int k = 0 ; k <= screenDim[1] - 1 ; ++k)
+//				{
+//					water[j * screenDim[1] + k] = new Point(j, k) ;	// water
+//				}
+//			}
+//		}*/
+//		
+//		// add colliders to map elements
+//		/*if (MapElem != null)
+//		{
+//			for (int me = 0 ; me <= MapElem.length - 1 ; me += 1)
+//			{
+//				if (MapElem[me].getBlock() != null)
+//				{
+//					for (int b = 0 ; b <= MapElem[me].getBlock().length - 1 ; b += 1)
+//					{
+//						int[] Pos = new int[] {MapElem[me].getPos()[0] + MapElem[me].getBlock()[b][0], MapElem[me].getPos()[1] - MapElem[me].getBlock()[b][1]} ;
+//						if (Pos[0] <= 400 & Pos[1] <= 400)
+//						{
+//							invisible_wall = Utg.AddElem(invisible_wall, new Point(Pos[0], Pos[1])) ;	// collider
+//						}
+//					}
+//				}
+//			}
+//		}*/
+// 	}
+
+	private static List<GroundRegion> groundRegionsFromJson(JSONObject json)
+	{
+		List<GroundRegion> groundRegions = new ArrayList<>() ;
+
+		for (GroundType groundType : GroundType.values())
+		{
+			List<List<Point>> points = groundRegionPointsFromJson(json, groundType) ;
+
+			if (points == null || points.isEmpty()) { continue ;}
+
+			points.forEach(point -> groundRegions.add(new GroundRegion(groundType, point))) ;
+		}
+
+		return groundRegions ;
+	}
+
+	private static List<List<Point>> groundRegionPointsFromJson(JSONObject json, GroundType key)
+	{
+		JSONArray polygons = (JSONArray) json.get(key.toString());
+		
+		if (polygons == null || polygons.isEmpty()) { return null ;}
+		
+		List<List<Point>> regionsPoints = new ArrayList<>();
+		for (int i = 0 ; i <= polygons.size() - 1 ; i += 1)
+		{
+			JSONArray points = (JSONArray) polygons.get(i);
+			List<Point> polygonPoints = new ArrayList<>() ;
+			for (Object pointObj : points)
+			{
+				int x = ((Long) ((JSONObject) pointObj).get("x")).intValue();
+				int y = ((Long) ((JSONObject) pointObj).get("y")).intValue() + Sky.height;
+				polygonPoints.add(new Point(x, y));
+			}
+
+			regionsPoints.add(polygonPoints) ;
+		}
+
+		return regionsPoints ;
 	}
 
 	
