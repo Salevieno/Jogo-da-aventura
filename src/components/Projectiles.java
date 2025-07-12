@@ -117,7 +117,7 @@ public class Projectiles
 		if (all == null || all.isEmpty()) { return ;}
 
 		List<Creature> creaturesInMap = new ArrayList<>() ;
-		if (!player.getMap().IsACity())
+		if (!player.getMap().isCity())
 		{
 			FieldMap fm = (FieldMap) player.getMap() ;
 			creaturesInMap = fm.getCreatures() ;

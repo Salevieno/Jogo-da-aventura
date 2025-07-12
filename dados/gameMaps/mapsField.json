@@ -23,7 +23,9 @@
     "Collectibles": {"level": 2, "berryDelay": 40, "herbDelay": 1280, "woodDelay": 1536, "metalDelay": 2560},
     "Connections": {"topLeft": 10, "leftTop": 6, "leftBottom": 6, "bottomLeft": 5, "bottomRight": 5, "rightBottom": 8, "rightTop": 8, "topRight": 10},
     "Creatures": [45, 45, 45, 46, 46, 47, 47, 48, 48, 49],
-    "GroundRegions": {},
+    "GroundRegions": {
+      "water": [[{"x": 20, "y": 348}, {"x": 20, "y": 467}, {"x": 219, "y": 467}, {"x": 219, "y": 348}]]
+    },
     "NPCs": [{"name": "caveEntry", "pos": {"x": 0.22, "y": 0.22}}, {"name": "questExp", "pos": {"x": 0.2, "y": 0.3}}]
   },
   {
@@ -34,7 +36,7 @@
     "Creatures": [-1, -1, -1, 5, 5, 6, 7, 7, 8, 9],
     "GroundRegions":
     {
-      "water": [[{"x": 107, "y": 555}, {"x": 107, "y": 682}, {"x": 307, "y": 682}, {"x": 307, "y": 555}]],
+      "water": [[{"x": 100, "y": 568}, {"x": 100, "y": 687}, {"x": 299, "y": 687}, {"x": 299, "y": 568}]],
       "walkingPath": [[
         {"x": 0, "y": 479}, {"x": 197, "y": 492}, {"x": 302, "y": 492}, {"x": 407, "y": 538}, {"x": 423, "y": 647},
         {"x": 445, "y": 698}, {"x": 490, "y": 729}, {"x": 535, "y": 767}, {"x": 573, "y": 740}, {"x": 502, "y": 683},

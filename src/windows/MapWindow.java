@@ -9,6 +9,7 @@ import graphics.Scale;
 import main.Game;
 import main.GamePanel;
 import maps.GameMap;
+import screen.Sky;
 import utilities.Util;
 import utilities.UtilS;
 
@@ -18,7 +19,7 @@ public class MapWindow extends GameWindow
 	private GameMap currentMap ;
 	
 	private static final boolean displayFull = false ;
-	private static final Point windowPos = new Point(30, 30) ;
+	private static final Point windowPos = new Point(150, 100) ;
 	private static final Image image = UtilS.loadImage("\\Windows\\" + "MapWindow.png") ;
 	
 	public MapWindow()
@@ -192,18 +193,18 @@ public class MapWindow extends GameWindow
 	
 	private Point calcMapOffset(int numberRows, int numberCols, Scale scale, Point spacing)
 	{		
-		int offsetX = (int) Util.calcOffset(numberCols, image.getWidth(null), scale.x * 600, spacing.x) ;
-		int offsetY = (int) Util.calcOffset(numberRows, image.getHeight(null), scale.y * 384, spacing.y) ;
+		int offsetX = (int) Util.calcOffset(numberCols, image.getWidth(null), scale.x * GameMap.width(), spacing.x) ;
+		int offsetY = (int) Util.calcOffset(numberRows, image.getHeight(null), scale.y * GameMap.height(), spacing.y) ;
 		return new Point(offsetX, offsetY) ;
 	}
 	
-	public void displayPlayer(Point mapPos, Dimension screenSize, Scale scale)
+	public void displayPlayer(Point mapPos, Dimension screenSize)
 	{
 
 		double playerRelXPos = playerPos.x / (double) Game.getScreen().mapSize().width ;
-		double playerRelYPos = playerPos.y / (double) (Game.getScreen().mapSize().height) ;
-		Point circlePos = Util.Translate(mapPos, (int) (scale.x * screenSize.width * playerRelXPos),
-				(int) (-scale.y * screenSize.height * (1 - playerRelYPos))) ;
+		double playerRelYPos = (playerPos.y - Sky.height) / (double) Game.getScreen().mapSize().height ;
+		Point circlePos = Util.Translate(mapPos, (int) (screenSize.width * playerRelXPos),
+												(int) (-screenSize.height * (1 - playerRelYPos))) ;
 		GamePanel.DP.drawCircle(circlePos, 5, 0, Game.palette[6], null) ;
 	}
 	
@@ -212,11 +213,11 @@ public class MapWindow extends GameWindow
 		if (currentMap == null) { return ;}
 		
 		// full map = 14 x 15 mapas
-		// continent maps = max 6 x 8 maps
+		// continent maps = 6 x 8 maps (max)
 		Scale scale = new Scale(0.1, 0.1) ;
 		Point offset = new Point(padding + border, padding + border) ;
-		Dimension mapSize = new Dimension((int) (600 * scale.x), (int) (384 * scale.y)) ;
-		Point spacing = new Point((int) ((640 * scale.x - mapSize.width)), (int) ((480 * scale.y - mapSize.height))) ;
+		Dimension mapSize = new Dimension((int) (GameMap.width() * scale.x), (int) (GameMap.height() * scale.y)) ; // TODO replace with Screen.mapsize
+		Point spacing = new Point(6, 6) ;
 		GameMap[] maps = null ;
 
 		GamePanel.DP.drawImage(image, windowPos, Align.topLeft) ;
@@ -239,8 +240,6 @@ public class MapWindow extends GameWindow
 		{
 			maps = Game.getMaps() ;
 			scale = new Scale(0.05, 0.05) ;
-			mapSize = new Dimension((int) (600 * scale.x), (int) (384 * scale.y)) ;
-			spacing = new Point((int) ((640 * scale.x - mapSize.width)), (int) ((480 * scale.y - mapSize.height))) ;
 			offset = calcMapOffset(15, 14, scale, spacing) ;
 		}
 		
@@ -251,16 +250,17 @@ public class MapWindow extends GameWindow
 			if (cell == null) { continue ;}
 			
 			Point mapPos = Util.Translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
-					size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
-			map.display(mapPos, scale) ;
-			Point textPos = Util.Translate(mapPos, (int) (scale.x * Game.getScreen().mapSize().width / 2),
-					(int) (-scale.y * Game.getScreen().mapSize().height / 2)) ;
-			GamePanel.DP.drawText(textPos, Align.center, 0, map.getName(), stdFont, Game.palette[0]) ;
+													size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
+			map.display(mapPos, Align.bottomLeft, scale) ;
+
+			Point mapNamePos = Util.Translate(mapPos, (int) (scale.x * Game.getScreen().mapSize().width / 2),
+													(int) (-scale.y * Game.getScreen().mapSize().height / 2)) ;
+			GamePanel.DP.drawText(mapNamePos, Align.center, 0, map.getName(), stdFont, Game.palette[0]) ;
 			
 			if (!map.equals(currentMap)) { continue ;}
 			if (playerPos == null) { continue ;}
-			
-			displayPlayer(mapPos, Game.getScreen().mapSize(), scale) ;
+
+			displayPlayer(mapPos, mapSize) ;
 		}
 	}
 }

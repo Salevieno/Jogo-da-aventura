@@ -24,6 +24,7 @@ import items.Fab;
 import items.GeneralItem;
 import items.Item;
 import main.Game;
+import main.GameFrame;
 import main.GamePanel;
 import main.Music;
 import main.TextCategories;
@@ -32,7 +33,7 @@ import utilities.Elements;
 import utilities.Util;
 import utilities.UtilS;
 
-public class GameMap 
+public class GameMap
 {
 	protected String name ;
 	protected Continents continent ;
@@ -132,8 +133,8 @@ public class GameMap
 	public void addGroundType (GroundRegion newGroundType) { groundRegions.add(newGroundType) ;}
 	public void removeMapElem (MapElement mapElem) { mapElems.remove(mapElem) ;}
 
-	public boolean IsACity() { return (this instanceof CityMap) ;}
-	public boolean isAField() { return (this instanceof FieldMap) ;}
+	public boolean isCity() { return (this instanceof CityMap) ;}
+	public boolean isField() { return (this instanceof FieldMap) ;}
 	public boolean isSpecial() { return (this instanceof SpecialMap) ;}
 	public boolean meetsTwoMapsUp() { return connections[1] != connections[0] ;}
 	public boolean meetsTwoMapsLeft() { return connections[3] != connections[2] ;}
@@ -160,6 +161,9 @@ public class GameMap
 		
 	}
 	private boolean hasGroundTypes() { return groundRegions != null && !groundRegions.isEmpty() ;}
+
+	public static int width() { return GameFrame.width() - 60 ;}
+	public static int height() { return GameFrame.height() - Sky.height ;}
 
 	protected Point randomPosOnLand(Point minCoord, Dimension range, Dimension step)
 	{
@@ -412,9 +416,9 @@ public class GameMap
  		GamePanel.DP.drawText(pos, Align.topLeft, 0, text, font, Game.palette[19]) ;
  	}
 	
- 	public void display(Point pos, Scale scale)
+ 	public void display(Point pos, Align align, Scale scale)
  	{
- 		GamePanel.DP.drawImage(image, pos, scale, Align.bottomLeft) ;
+ 		GamePanel.DP.drawImage(image, pos, scale, align) ;
  	}
  	
  	public void display()

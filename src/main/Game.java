@@ -126,6 +126,10 @@ public class Game
 	private static Quest[] allQuests ;
 
 	private static final PauseWindow settingsWindow ;
+	public static final List<String> arrowKeys = List.of(KeyEvent.getKeyText(KeyEvent.VK_UP),
+															KeyEvent.getKeyText(KeyEvent.VK_LEFT),
+															KeyEvent.getKeyText(KeyEvent.VK_DOWN),
+															KeyEvent.getKeyText(KeyEvent.VK_RIGHT)) ;
 
 	static
 	{
@@ -475,7 +479,7 @@ public class Game
 			pet.activateSpellCounters() ;
 		}
 
-		if (player.getMap().isAField())
+		if (player.getMap().isField())
 		{
 			FieldMap fm = (FieldMap) player.getMap() ;
 			fm.getCreatures().forEach(Creature::activateSpellCounters) ;
@@ -504,7 +508,7 @@ public class Game
 			}
 		}
 
-		if (!player.getMap().isAField()) { return ;}
+		if (!player.getMap().isField()) { return ;}
 
 		FieldMap fm = (FieldMap) player.getMap() ;
 		fm.getCreatures().forEach(Creature::activateCounters) ;			
@@ -572,6 +576,14 @@ public class Game
 		player.doCurrentAction() ;
 		player.applyAdjacentGroundEffect() ;
 		player.finishStatus() ;
+
+		if (player.isMoving())
+		{
+			for (int i = 0 ; i <= 0 ; i += 1)
+			{
+				player.move(pet);
+			}
+		}
 	}
 	
 	
@@ -586,7 +598,7 @@ public class Game
 			konamiCode() ;
 		}
 
-		if (player.getMap().isAField())
+		if (player.getMap().isField())
 		{
 			creaturesAct() ;
 		}
@@ -598,7 +610,7 @@ public class Game
 
 		playerActs() ;
 
-		if (player.getMap().isAField())
+		if (player.getMap().isField())
 		{
 			player.setClosestCreature(player.closestCreatureInRange()) ;
 		}
@@ -660,7 +672,7 @@ public class Game
 		
 		List<Drawable> drawables = new ArrayList<>() ;
 		
-		if (player.getMap().isAField())
+		if (player.getMap().isField())
 		{
 			List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
 			for (Creature creature : creaturesInMap)
@@ -748,32 +760,37 @@ public class Game
 		}
 	}
 	
+	private String keypadNumberValue(int keyCode) { return String.valueOf(keyCode - 96) ;}
 	
-	protected void keyAction(KeyEvent event)
+	private void switchPauseRunning()
 	{
-		
+		if (state.equals(GameStates.paused))
+		{
+			GameFrame.resumeGame();
+			GameTimer.resumeAll() ;
+		}
+		else
+		{
+			GameFrame.pauseGame() ;
+			GameTimer.stopAll() ;
+		}
+	}
+
+	protected void keyPressedAction(KeyEvent event)
+	{		
 		int keyCode = event.getKeyCode() ;
 		if (KeyEvent.VK_NUMPAD0 <= keyCode & keyCode <= KeyEvent.VK_NUMPAD9)
 		{
-			player.setCurrentAction(String.valueOf(keyCode - 96)) ;
+			player.setCurrentAction(keypadNumberValue(keyCode)) ;
 			return ;
 		}
 		
 		if (keyCode == KeyEvent.VK_PAUSE)
 		{
-			if (state.equals(GameStates.paused))
-			{
-				GameFrame.resumeGame();
-				GameTimer.resumeAll() ;
-			}
-			else
-			{
-				GameFrame.pauseGame() ;
-				GameTimer.stopAll() ;
-			}
+			switchPauseRunning() ;
 		}
 		
-		if (keyCode == KeyEvent.VK_6)
+		if (keyCode == KeyEvent.VK_F12)
 		{
 			GameFrame.getMe().resizeWindow() ;
 			screen.updateScale() ;
@@ -781,11 +798,28 @@ public class Game
 
 		if (keyCode == KeyEvent.VK_ESCAPE)
 		{
-//			MainGame3_4.closeGame() ;
 			settingsWindow.switchOpenClose() ;
+		}
+
+		if (arrowKeys.contains(KeyEvent.getKeyText(keyCode)))
+		{
+			player.addKeyPressed(KeyEvent.getKeyText(keyCode)) ;
+			if (player.isMoving())
+			{
+				player.chooseDirection(KeyEvent.getKeyText(keyCode)) ;
+			}
 		}
 		
 		player.setCurrentAction(KeyEvent.getKeyText(keyCode)) ;
+	}
+
+	protected void keyReleasedAction(KeyEvent event)
+	{
+		int keyCode = event.getKeyCode() ;
+		if (arrowKeys.contains(KeyEvent.getKeyText(keyCode)))
+		{
+			player.removeKeyPressed(KeyEvent.getKeyText(keyCode)) ;
+		}
 	}
 	
 	protected void mouseClickedAction(MouseEvent evt)

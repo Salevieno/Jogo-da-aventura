@@ -91,13 +91,13 @@ public class GamePanel extends JPanel
 		@Override
 		public void keyPressed(KeyEvent event)
 		{
-			game.keyAction(event) ;
+			game.keyPressedAction(event) ;
 		}
 
 		@Override
-		public void keyReleased(KeyEvent e)
+		public void keyReleased(KeyEvent event)
 		{
-
+			game.keyReleasedAction(event) ;
 		}
 	}
 

@@ -43,15 +43,16 @@ public class FieldMap extends GameMap
 	private static final Image grassImage = UtilS.loadImage(mapElementsPath + "MapElem8_Grass.png") ;
 	private static final Image grassImage2 = UtilS.loadImage(mapElementsPath + "MapElem8_Grass2.png") ;
 	private static final Image rockImage = UtilS.loadImage(mapElementsPath + "MapElem9_Rock.png") ;
+	private static final String jsonPath = dadosPath + "mapsField.json" ;
 
-	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions)
+	private FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions)
 	{
 		super(name, continent, connections, image, music, null, npcs) ;
 		this.groundRegions = groundRegions ;
 		this.level = collectibleLevel ;
 		this.npcs = npcs ;
 	}
-	public FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs)
+	private FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs)
 	{
 		this(name, continent, connections, image, music, collectibleLevel, npcs, null) ;
 	}
@@ -59,7 +60,7 @@ public class FieldMap extends GameMap
 	@SuppressWarnings("unchecked")
 	public static FieldMap[] load(NPCType[] npcTypes)
 	{
-		JSONArray input = Util.readJsonArray(dadosPath + "mapsField.json") ;
+		JSONArray input = Util.readJsonArray(jsonPath) ;
 		FieldMap[] fieldMaps = new FieldMap[input.size()] ;
 
 		for (int id = 0 ; id <= input.size() - 1 ; id += 1)

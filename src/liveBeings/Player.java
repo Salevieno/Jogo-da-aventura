@@ -8,8 +8,10 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
@@ -110,6 +112,7 @@ public class Player extends LiveBeing
 	private double digBonus ;
 	protected Elements superElem ;
 	private Map<QuestSkills, Boolean> questSkills ;
+	private Set<String> keysPressed ;
 	private boolean isRiding ;
 	
 	private Creature closestCreature ;
@@ -141,10 +144,6 @@ public class Player extends LiveBeing
     public static final Color[] ClassColors = new Color[] {Game.palette[21], Game.palette[5], Game.palette[2], Game.palette[3], Game.palette[4]} ;
 
     public static final String[] HotKeys = new String[] {"F", "G", "V"} ;
-	private static final List<String> arrowKeys = List.of(KeyEvent.getKeyText(KeyEvent.VK_UP),
-															KeyEvent.getKeyText(KeyEvent.VK_LEFT),
-															KeyEvent.getKeyText(KeyEvent.VK_DOWN),
-															KeyEvent.getKeyText(KeyEvent.VK_RIGHT)) ;
 
 	private static final MovingAnimations movingAnimations ;
 	
@@ -230,6 +229,7 @@ public class Player extends LiveBeing
 		{
 			questSkills.put(questSkill, false) ;
 		}
+		keysPressed = new HashSet<>() ;
 		isRiding = false ;
 		stats = new Statistics() ;
 		attPoints = 0 ;
@@ -383,10 +383,9 @@ public class Player extends LiveBeing
 	
 	public boolean isTalkingToNPC() { return npcInContact != null ;}
 	private boolean isFocusedOnWindow() { if (focusWindow == null) { return false ;} return focusWindow.isOpen() ;}
-	private boolean isDoneMoving() { return stepCounter.finished() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
-	private boolean actionIsAMove() { return arrowKeys.contains(currentAction) || List.of("W", "A", "S", "D").contains(currentAction) ;}
+	private boolean actionIsAMove() { return Game.arrowKeys.contains(currentAction) || List.of("W", "A", "S", "D").contains(currentAction) ;}
 	private boolean hitCreature() { return (usedPhysicalAtk() | usedSpell()) & closestCreature != null ;}	
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	private boolean canThrowItem(GeneralItem item)
@@ -418,7 +417,7 @@ public class Player extends LiveBeing
 	public Creature closestCreatureInRange()
 	{			
 		// TODO melhorar performance
-		if (!map.isAField()) { return null ;}
+		if (!map.isField()) { return null ;}
 		
 		FieldMap fieldMap = (FieldMap) map ;
 		if (!fieldMap.hasCreatures()) { return null ;}
@@ -476,7 +475,7 @@ public class Player extends LiveBeing
 	
 	private void removeCollectibleFromMap(Collectible collectible)
 	{        
-		if (!map.isAField()) { return ;}
+		if (!map.isField()) { return ;}
 
 		((FieldMap) map).removeCollectible(collectible) ;
 	}
@@ -652,26 +651,18 @@ public class Player extends LiveBeing
 		setPos(newPos) ;
 	}
 	
-	private void startMove()
-	{
-		stepCounter.restart() ;
-	}
+	public void addKeyPressed(String key) { keysPressed.add(key) ;}
+	public void removeKeyPressed(String key) { keysPressed.remove(key) ;}
+
+	public void startMove() { stepCounter.restart() ;}
+	public boolean isMoving() { return keysPressed.stream().anyMatch(Game.arrowKeys::contains) ;}
 
 	public void move(Pet pet)
 	{
-
-		if (isDoneMoving())
-		{
-			stepCounter.reset() ;
-			setState(opponent == null ? LiveBeingStates.idle : LiveBeingStates.fighting) ;
-			
-			return ;
-		}
-
 		Point newPos = calcNewPos() ;
 
 		if (Game.getScreen().posIsWithinBorders(newPos))
-		{System.out.println(map.groundTypeAtPoint(newPos));
+		{
 			if (!map.groundIsWalkable(newPos, superElem)) { return ;}
 			
 			setPos(newPos) ;
@@ -690,8 +681,7 @@ public class Player extends LiveBeing
 			opponent.setFollow(false) ;
 		}
 		resetClosestCreature() ;
-		resetOpponent() ;
-		
+		resetOpponent() ;		
 	}
 
 	public void engageInFight(Creature newOpponent)
@@ -896,14 +886,7 @@ public class Player extends LiveBeing
 	}
 	
 	public void doCurrentAction()
-	{
-		
-		if (isMoving())
-		{
-			move(Game.getPet()) ;
-			return ;
-		}
-		
+	{		
 		switch (state)
 		{
 			case collecting: collect(currentCollectible) ; return ;
@@ -915,7 +898,7 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	private void chooseDirection(String action)
+	public void chooseDirection(String action)
 	{
 		if (action == null) { return ;}
 
@@ -936,7 +919,7 @@ public class Player extends LiveBeing
 			setDir(Directions.right) ;
 		}
 	}
-	
+
 	public void acts(Pet pet, Point mousePos)
 	{
 		if (currentAction == null) { return ;}
@@ -945,7 +928,7 @@ public class Player extends LiveBeing
 		if (actionIsAMove())
 		{
 			chooseDirection(currentAction) ;
-			if (!isFocusedOnWindow()) // UtilS.actionIsArrowKey(currentAction)
+			if (!isFocusedOnWindow())
 			{
 				startMove() ;
 			}
@@ -1153,7 +1136,7 @@ public class Player extends LiveBeing
 
 		meetWithTreasureChests() ;
 		
-		if (map.isAField())
+		if (map.isField())
 		{
 			meetWithCollectibles((FieldMap) map) ;
 			meetWithCreatures((FieldMap) map) ;			

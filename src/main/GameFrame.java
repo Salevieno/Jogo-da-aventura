@@ -113,6 +113,8 @@ public class GameFrame extends JFrame implements ActionListener
 	}
 	
 	public static Dimension getWindowsize() { return windowSize ;}
+	public static int width() { return windowSize.width ;}
+	public static int height() { return windowSize.height ;}
 
 	@Override
     public void actionPerformed(ActionEvent e) 
