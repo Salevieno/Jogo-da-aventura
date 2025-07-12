@@ -652,8 +652,6 @@ public class Game
 			player.useAutoSpell(true, player.getSpells().get(12)) ;
 		}
 		
-		SideBar.act(player.getCurrentAction(), GamePanel.getMousePos()) ;
-		
 		player.resetAction() ;
 
 		SpriteAnimation.updateAll();
@@ -824,6 +822,20 @@ public class Game
 	
 	protected void mouseClickedAction(MouseEvent evt)
 	{
+	}
+	
+	protected void mousePressedAction(MouseEvent evt)
+	{
+		if (!GameStates.running.equals(state)) { return ;}
+
+		if (player.getBag().isOpen())
+		{
+			player.getBag().setItemFetched(player.getBag().itemHovered(GamePanel.getMousePos())) ;
+		}
+	}
+	
+	protected void mouseReleaseAction(MouseEvent evt)
+	{
 		if (evt.getButton() == 1)
 		{
 			player.setCurrentAction("LeftClick") ;
@@ -839,22 +851,9 @@ public class Game
     			pet.setPos(player.getPos()) ;
     		}
 		}
-	}
-	
-	protected void mousePressedAction(MouseEvent evt)
-	{
+
 		if (!GameStates.running.equals(state)) { return ;}
 
-		if (player.getBag().isOpen())
-		{
-			player.getBag().setItemFetched(player.getBag().itemHovered(GamePanel.getMousePos())) ;
-		}
-	}
-	
-	protected void mouseReleaseAction(MouseEvent evt)
-	{
-		if (!GameStates.running.equals(state)) { return ;}
-		
 		int hotKeySlotHovered = HotKeysBar.slotHovered(GamePanel.getMousePos()) ;
 		
 		if (-1 < hotKeySlotHovered)

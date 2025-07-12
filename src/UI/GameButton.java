@@ -106,7 +106,7 @@ public class GameButton
 	{
 		if (mousePos == null) { return false ;}
 		if (action == null) { return false ;}
-		
+
 		return ishovered(mousePos) & action.equals("LeftClick") ;
 	}
 	

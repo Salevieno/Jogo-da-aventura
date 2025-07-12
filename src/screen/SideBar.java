@@ -68,7 +68,7 @@ public abstract class SideBar
 			player.getMapWindow().setCurrentMap(player.getMap()) ;
 			player.switchOpenClose(player.getMapWindow()) ;
 		} ; 
-		actions[1] = () -> { 
+		actions[1] = () -> {
 			player.getQuestWindow().setQuests(player.getQuests()) ;
 			player.getQuestWindow().setBag(player.getBag()) ;
 			player.switchOpenClose(player.getQuestWindow()) ;
@@ -108,27 +108,6 @@ public abstract class SideBar
 			player.switchOpenClose(pet.getAttWindow()) ;
 		} ;
 		buttons.add(new GameButton(Util.Translate(barPos, size.width / 2, 10), Align.topCenter, petImage, petImage, petAction)) ;
-	}
-	
-	public static void addMapButton(Player player)
-	{
-		buttons.get(1).activate() ;
-	}
-		
-	public static Image[] getIconImages() { return iconImages ;}
-	public static List<GameButton> getButtons() { return buttons ;}
-		
-	public static void act(String action, Point mousePos)
-	{
-		if (action == null) { return ;}
-		
-		for (GameButton button : buttons)
-		{
-			if (!button.isActive()) { continue ;}
-			if (!button.isClicked(mousePos, action)) { continue ;}
-			
-			button.act() ;
-		}
 	}
 	
 	private static void displayKeys()
