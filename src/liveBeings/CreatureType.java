@@ -72,7 +72,8 @@ public class CreatureType
 					UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingup.gif"),
 					UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingdown.gif"),
 					UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingleft.gif"),
-					UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingright.gif")));
+					UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingright.gif"),
+					""));
 		}
 
 		attWindow = new CreatureAttributesWindow();

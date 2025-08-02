@@ -162,7 +162,7 @@ public class Player extends LiveBeing
 		Image movingLeftGif = UtilS.loadImage(pathPlayerImg + "PlayerMovingLeft.gif") ;
 		Image movingRightGif = UtilS.loadImage(pathPlayerImg + "PlayerRight.gif") ;
 		
-		movingAnimations = new MovingAnimations(idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif) ;
+		movingAnimations = new MovingAnimations(idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif, pathPlayerImg + "spritesheet.png") ;
 	}
 	
 	public Player(String name, String sex, int job)
@@ -1838,7 +1838,14 @@ public class Player extends LiveBeing
 		{
 			displayDrunk() ;
 		}
-		movingAni.displayMoving(direction, pos, Draw.stdAngle , Scale.unit, Align.bottomCenter) ;
+		if (isMoving())
+		{
+			movingAni.displayMoving(direction, pos, Draw.stdAngle , Scale.unit, Align.bottomCenter) ;
+		}
+		else
+		{
+			GamePanel.DP.drawImage(movingAni.idleGif, pos, Draw.stdAngle , Scale.unit, Align.bottomCenter) ;
+		}
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
 //			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ; TODO pro arte - dragon aura
@@ -1859,9 +1866,9 @@ public class Player extends LiveBeing
 		}
 
 		displayStatus() ;
-		displayState() ;
 		if (Game.debugMode)
-		{			
+		{
+			displayState() ;
 			hitbox.display() ;
 		}
 	}

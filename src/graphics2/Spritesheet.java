@@ -12,11 +12,25 @@ public class Spritesheet
     public Spritesheet(String path)
     {
     	Image img = UtilS.loadImage(path) ;
+
+        if (img == null)
+        {
+            System.out.println("Error loading spritesheet: image not found at " + path) ;
+            sheet = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB) ;
+            return ;
+        }
+
         sheet = Util.toBufferedImage(img) ;
     }
 
     public BufferedImage getSprite(int x, int y, int width, int height)
     {
+        if (sheet.getWidth() < x + width || sheet.getHeight() < y + height)
+        {
+            System.out.println("Error getting sprite: pos outside of boundaries") ;
+            return null ;
+        }
+
         return sheet.getSubimage(x, y, width, height);
     }
 

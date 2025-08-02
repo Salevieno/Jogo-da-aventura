@@ -71,9 +71,14 @@ public class SpriteAnimation
         }
     }
     
-    public void display(DrawPrimitives DP)
+    public void display(DrawPrimitives DP, Point pos, Align align)
     {
     	DP.drawImage(getCurrentFrame(), pos, align) ;
+    }
+    
+    public void display(DrawPrimitives DP)
+    {
+    	display(DP, pos, align) ;
     }
 
     public BufferedImage getCurrentFrame()

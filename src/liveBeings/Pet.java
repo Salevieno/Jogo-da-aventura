@@ -104,7 +104,8 @@ public class Pet extends LiveBeing
 				Util.loadImage(filePath + String.valueOf(Job) + ".png"),
 				Util.loadImage(filePath + String.valueOf(Job) + ".png"),
 				Util.loadImage(filePath + String.valueOf(Job) + ".png"),
-				Util.loadImage(filePath + String.valueOf(Job) + ".png")) ;
+				Util.loadImage(filePath + String.valueOf(Job) + ".png"),
+				"") ;
 	}
 
 	public List<Spell> InitializePetSpells()
@@ -413,7 +414,8 @@ public class Pet extends LiveBeing
 		
 		displayStatus() ;
 		if (Game.debugMode)
-		{			
+		{
+			displayState() ;
 			hitbox.display() ;
 		}
 	}
