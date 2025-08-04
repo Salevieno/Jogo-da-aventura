@@ -4,3 +4,6 @@
 
 # Class files
 *.class
+
+# referências folder
+/referências
