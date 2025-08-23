@@ -3,6 +3,7 @@ package liveBeings ;
 import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +25,7 @@ import graphics.Scale;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
 import graphics2.Draw;
+import graphics2.SpriteAnimation;
 import items.PetItem;
 import main.Game;
 import maps.GameMap;
@@ -57,10 +59,10 @@ public class Pet extends LiveBeing
 		level = 1 ;
 		proJob = 0 ;
 		map = null ;
-		pos = new Point(0, 0) ;
+		pos = new Point2D.Double(0, 0) ;
 		dir = Directions.up ;
 		state = LiveBeingStates.idle ;
-		size = new Dimension (movingAni.idleGif.getWidth(null), movingAni.idleGif.getHeight(null)) ;	
+		size = new Dimension(movingAni.spriteIdle.getFrameSize().width, movingAni.spriteIdle.getFrameSize().height) ;	
 		range = Integer.parseInt(InitialAtts.get(Job)[4]) ;
 		step = Integer.parseInt(InitialAtts.get(Job)[32]) ;
 		atkElem = Elements.neutral ;
@@ -70,7 +72,7 @@ public class Pet extends LiveBeing
 		battleActionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[36])) ;
 		stepCounter = new GameTimer(20) ;
 		combo = new ArrayList<>();
-		hitbox = new HitboxRectangle(pos, size, 0.8) ;
+		hitbox = new HitboxRectangle(getPos(), size, 0.8) ;
 		equip = null ;
 		alchBuffId = -1 ;
 		
@@ -99,13 +101,13 @@ public class Pet extends LiveBeing
 	
 	public static MovingAnimations initializeMovingAnimations(int Job)
 	{
-		String filePath = Game.ImagesPath + "\\Pet\\" + "PetType" ;
-		return new MovingAnimations(Util.loadImage(filePath + String.valueOf(Job) + ".png"),
-				Util.loadImage(filePath + String.valueOf(Job) + ".png"),
-				Util.loadImage(filePath + String.valueOf(Job) + ".png"),
-				Util.loadImage(filePath + String.valueOf(Job) + ".png"),
-				Util.loadImage(filePath + String.valueOf(Job) + ".png"),
-				"") ;
+		return new MovingAnimations(
+			new SpriteAnimation("\\Pet\\" + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation("\\Pet\\" + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation("\\Pet\\" + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation("\\Pet\\" + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation("\\Pet\\" + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5)
+		);
 	}
 
 	public List<Spell> InitializePetSpells()
@@ -166,12 +168,12 @@ public class Pet extends LiveBeing
 
 //	public boolean isAlive() { return 0 < PA.getLife().getCurrentValue() ;}
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
-	public boolean closeToPlayer(Point playerPos) { return Util.dist(pos, playerPos) <= 40 ; }
+	public boolean closeToPlayer(Point2D.Double playerPos) { return pos.distance(playerPos) <= 40 ; }
 	
-	public Point center() { return new Point(pos.x, pos.y - size.height / 2) ;}
-	public Point headPos() { return new Point(pos.x, pos.y - size.height) ;}
+	public Point center() { return new Point((int) pos.x, (int) pos.y - size.height / 2) ;}
+	public Point headPos() { return new Point((int) pos.x, (int) pos.y - size.height) ;}
 
-	public Directions newMoveDirection(Directions originalDir)
+	public Directions randomNewDirection(Directions originalDir)
 	{
 		Directions newDir = randomDir() ;
 		while (Directions.areOpposite(originalDir, newDir))
@@ -181,11 +183,11 @@ public class Pet extends LiveBeing
 		return newDir ;
 	}
 	
-	private Point findNextPos(Point playerPos, Creature opponent)
+	private Point2D.Double findNextPos(Point2D.Double playerPos, Creature opponent, double dt)
 	{
 		if (opponent != null)
 		{
-			return follow(pos, opponent.getPos(), step) ;
+			return chase(pos, opponent.getPosAsDouble(), step) ;
 		}
 		else if (closeToPlayer(playerPos))
 		{
@@ -195,16 +197,16 @@ public class Pet extends LiveBeing
 			{
 				dir = randomDir() ;
 			}
-			return calcNewPos(dir, pos, step) ;
+			return MovePattern.calcNewPos(MovePattern.pattern0, dir, pos, step, dt) ;
 		}
 		else
 		{
-			return follow(pos, playerPos, step) ;
+			return chase(pos, playerPos, step) ;
 		}
 	}
 
 
-	public void think(boolean isInBattle, Point playerPos)
+	public void think(boolean isInBattle, Point2D.Double playerPos)
 	{
 		if (isInBattle)
 		{
@@ -214,7 +216,7 @@ public class Pet extends LiveBeing
 		
 		if (!closeToPlayer(playerPos))
 		{
-			startMove() ;
+			restartMoving() ;
 			return ;
 		}
 		
@@ -225,18 +227,18 @@ public class Pet extends LiveBeing
 		}
 		else
 		{
-			startMove() ;
+			restartMoving() ;
 			return ;
 		}
 		
 	}
 	
-	public void act(Player player)
+	public void act(Player player, double dt)
 	{
 		if (isMoving())
 		{
-			stepCounter.start() ;
-			move(player.getPos(), player.getMap(), player.getOpponent(), player.getSuperElem()) ;
+			startMoving() ;
+			move(player.getPosAsDouble(), player.getMap(), player.getOpponent(), player.getSuperElem(), dt) ;
 			return ;
 		}
 		
@@ -244,7 +246,7 @@ public class Pet extends LiveBeing
 		{
 			if (!player.getOpponent().isInRange(pos))
 			{
-				move(player.getPos(), player.getMap(), player.getOpponent(), player.getSuperElem()) ;
+				move(player.getPosAsDouble(), player.getMap(), player.getOpponent(), player.getSuperElem(), dt) ;
 				return ;
 			}
 			fight() ;
@@ -252,15 +254,11 @@ public class Pet extends LiveBeing
 		
 	}
 
-	private void startMove()
-	{
-		stepCounter.restart() ;
-	}
 
-	public void move(Point playerPos, GameMap playerMap, Creature opponent, Elements playerElem)
+	public void move(Point2D.Double playerPos, GameMap playerMap, Creature opponent, Elements playerElem, double dt)
 	{
-		Point nextPos = findNextPos(playerPos, opponent) ;
-		if (playerMap.groundIsWalkable(nextPos, playerElem))
+		Point2D.Double nextPos = findNextPos(playerPos, opponent, dt) ;
+		if (playerMap.groundIsWalkable(new Point((int) nextPos.x, (int) nextPos.y), playerElem))
 		{
 			setPos(nextPos) ;
 		}
@@ -422,7 +420,7 @@ public class Pet extends LiveBeing
 	
 	public void display()
 	{
-		display(pos, Scale.unit) ;
+		display(getPos(), Scale.unit) ;
 	}
 	
 }

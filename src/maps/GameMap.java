@@ -78,7 +78,7 @@ public class GameMap
 		{
 			allDiggingItems.put(GeneralItem.getAll()[genItemIDs[i]], genItemPotentials[i]) ;
 		}
-		beachGif = new SpriteAnimation(pathMaps + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, new Dimension(80, 384), 12, 15) ;
+		beachGif = new SpriteAnimation(pathMaps + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, 12, 15) ;
 		infoWindow = UtilS.loadImage("\\Windows\\" + "MapInfo.png") ;
 
 		musicCities = Music.musicFileToClip(new File(Game.MusicPath + "cidade.wav").getAbsoluteFile()) ;

@@ -373,7 +373,7 @@ public class FieldMap extends GameMap
 		{
 			CollectibleTypes type = entry.getKey() ;
 			GameTimer spawnCounter = entry.getValue() ;
-			if (spawnCounter.finished())
+			if (spawnCounter.hasFinished())
 			{
 				addCollectible(type) ;
 				spawnCounter.start() ;

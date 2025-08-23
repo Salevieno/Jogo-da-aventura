@@ -16,6 +16,7 @@ import attributes.BasicBattleAttribute;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
+import graphics2.SpriteAnimation;
 import items.Equip;
 import liveBeings.Player;
 import main.Game;
@@ -237,13 +238,13 @@ public class PlayerAttributesWindow extends AttributesWindow
 		String[] proClassesText = Game.allText.get(TextCategories.proclasses) ;
 		Color textColor = colorPalette[0] ;
 		
-		Image userImage = player.getMovingAni().idleGif ;
+		SpriteAnimation userImage = player.getMovingAni().spriteIdle ;
 		Point userPos = Util.Translate(windowPos, size.width / 2, 120) ;
 		Point equipsLeftSlotCenter = new Point(70, 110) ;
 		Point superElemPos = Util.Translate(userPos, 0, 35) ;
 		Point attTopLeftPos = Util.Translate(windowPos, 37, 39) ;
 
-		GamePanel.DP.drawImage(userImage, userPos, Align.center) ;
+		userImage.display(GamePanel.DP, userPos, Align.center) ;
 
 		Point levelPos = Util.Translate(windowPos, size.width / 2, 38) ;	
 		GamePanel.DP.drawText(levelPos, Align.center, angle, "Level: " + player.getLevel(), font, colorPalette[7]) ;

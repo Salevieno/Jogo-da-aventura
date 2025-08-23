@@ -212,7 +212,7 @@ public abstract class Battle
 
 	private static void activateCounters(Player player, Pet pet, Creature creature)
 	{
-		if (player.getBattleActionCounter().finished() & player.getCurrentAtkType() != null)
+		if (player.getBattleActionCounter().hasFinished() & player.getCurrentAtkType() != null)
 		{
 			if (player.getCurrentAtkType().equals(AtkTypes.defense))
 			{
@@ -221,7 +221,7 @@ public abstract class Battle
 		}
 		if (pet != null)
 		{
-			if (pet.isAlive() & pet.getBattleActionCounter().finished() & pet.getCurrentAtkType() != null)
+			if (pet.isAlive() & pet.getBattleActionCounter().hasFinished() & pet.getCurrentAtkType() != null)
 			{
 				if (pet.getCurrentAtkType().equals(AtkTypes.defense))
 				{
@@ -229,7 +229,7 @@ public abstract class Battle
 				}
 			}
 		}
-		if (creature.getBattleActionCounter().finished() & creature.getCurrentAtkType() != null)
+		if (creature.getBattleActionCounter().hasFinished() & creature.getCurrentAtkType() != null)
 		{
 			if (creature.getCurrentAtkType().equals(AtkTypes.defense))
 			{
@@ -237,18 +237,18 @@ public abstract class Battle
 			}
 		}
 		
-		if (player.getBattleActionCounter().finished())
+		if (player.getBattleActionCounter().hasFinished())
 		{
 			player.resetBattleAction() ;
 		}
 		if (pet != null)
 		{
-			if (pet.getBattleActionCounter().finished())
+			if (pet.getBattleActionCounter().hasFinished())
 			{
 				pet.resetBattleAction() ;
 			}
 		}
-		if (creature.getBattleActionCounter().finished())
+		if (creature.getBattleActionCounter().hasFinished())
 		{
 			creature.resetBattleAction() ;
 		}
@@ -425,7 +425,7 @@ public abstract class Battle
 			attacker.displayDefending() ;
 		}
 		
-		if (!attacker.canAtk() | !attacker.isInRange(receiver.getPos())) { return ;}
+		if (!attacker.canAtk() | !attacker.isInRange(receiver.getPosAsDouble())) { return ;}
 		
 		if (attacker instanceof Creature)
 		{

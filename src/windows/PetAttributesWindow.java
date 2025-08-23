@@ -10,6 +10,7 @@ import attributes.BasicBattleAttribute;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
+import graphics2.SpriteAnimation;
 import liveBeings.Pet;
 import main.Game;
 import main.GamePanel;
@@ -40,9 +41,9 @@ public class PetAttributesWindow extends AttributesWindow
 		
 		GamePanel.DP.drawImage(image, windowPos, Align.topLeft, stdOpacity) ;
 
-		Image userImage = pet.getMovingAni().idleGif ;
+		SpriteAnimation userImage = pet.getMovingAni().spriteIdle ;
 		Point userPos = Util.Translate(windowPos, size.width / 2, 73) ;
-		GamePanel.DP.drawImage(userImage, userPos, Align.center) ;
+		userImage.display(GamePanel.DP, userPos, Align.center); ;
 
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;		

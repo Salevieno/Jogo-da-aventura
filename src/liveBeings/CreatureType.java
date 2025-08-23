@@ -16,13 +16,12 @@ import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import graphics.Align;
 import graphics.Scale;
+import graphics2.SpriteAnimation;
 import items.Item;
 import main.Game;
-import main.GamePanel;
 import main.Languages;
 import utilities.Elements;
 import utilities.Util;
-import utilities.UtilS;
 import windows.CreatureAttributesWindow;
 
 public class CreatureType
@@ -41,7 +40,9 @@ public class CreatureType
 	protected final Elements superElem ;
 	protected final double mpDuration;
 	protected final double satiationDuration;
-	protected final double numberSteps;
+	protected final double actionDuration;
+	protected final double stepDuration;
+	protected final MovePattern movePattern ;
 	protected final double battleActionDuration;
 	protected final MovingAnimations movingAni;
 	protected final PersonalAttributes PA;
@@ -53,6 +54,7 @@ public class CreatureType
 	private final Set<Item> items;
 	private final int gold;
 	private final Color color;
+	// TODO remover
 	private final int[] StatusCounter;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 	private final String hitboxType ;
 
@@ -64,24 +66,24 @@ public class CreatureType
 
 	static
 	{
-		numberCreatureTypesImages = 9;
+		numberCreatureTypesImages = 2;
 		moveAni = new ArrayList<>();
 		for (int i = 0; i <= numberCreatureTypesImages - 1; i += 1)
 		{
-			moveAni.add(new MovingAnimations(UtilS.loadImage("\\Creatures\\" + "creature" + i + "_idle.gif"),
-					UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingup.gif"),
-					UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingdown.gif"),
-					UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingleft.gif"),
-					UtilS.loadImage("\\Creatures\\" + "creature" + i + "_movingright.gif"),
-					""));
+			moveAni.add(new MovingAnimations(
+					new SpriteAnimation("\\Creatures\\" + "creature" + i + "_idle" + ".png", new Point(0, 0), Align.bottomCenter, 9, 13),
+					new SpriteAnimation("\\Creatures\\" + "creature" + i + "_movingup" + ".png", new Point(0, 0), Align.bottomCenter, 4, 5),
+					new SpriteAnimation("\\Creatures\\" + "creature" + i + "_movingdown" + ".png", new Point(0, 0), Align.bottomCenter, 4, 5),
+					new SpriteAnimation("\\Creatures\\" + "creature" + i + "_movingleft" + ".png", new Point(0, 0), Align.bottomCenter, 4, 5),
+					new SpriteAnimation("\\Creatures\\" + "creature" + i + "_movingright" + ".png", new Point(0, 0), Align.bottomCenter, 4, 5)));
 		}
 
 		attWindow = new CreatureAttributesWindow();
 		all = new ArrayList<>();
 	}
 
-	public CreatureType(int id, String name, int level, Dimension size, int range, int step, Elements[] elem,
-			double mpDuration, double satiationDuration, double numberSteps, double battleActionDuration,
+	public CreatureType(int id, String name, int level, Dimension size, int range, int step, MovePattern movePattern, Elements[] elem,
+			double mpDuration, double satiationDuration, double actionDuration, double stepDuration, double battleActionDuration,
 			int stepCounter, MovingAnimations movingAni, PersonalAttributes PA, BattleAttributes BA, List<Spell> spell,
 			Set<Item> items, int gold, Color color, int[] StatusCounter, String hitboxType)
 	{
@@ -99,7 +101,9 @@ public class CreatureType
 		this.superElem = elem[0];
 		this.mpDuration = mpDuration;
 		this.satiationDuration = satiationDuration;
-		this.numberSteps = numberSteps;
+		this.actionDuration = actionDuration;
+		this.stepDuration = stepDuration;
+		this.movePattern = movePattern ;
 		this.battleActionDuration = battleActionDuration;
 
 		this.movingAni = movingAni;
@@ -201,6 +205,8 @@ public class CreatureType
 		NumberOfCreatureTypes = num;
 	}
 
+	private static boolean isOceanCreature(int id) { return 270 < id & id <= 299 ;}
+
 	public static void load(Languages language, int difficultLevel)
 	{
 		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "CreatureTypes.csv");
@@ -214,7 +220,7 @@ public class CreatureType
 			int colorid = (int) ((Creature.getskinColor().length - 1) * Math.random());
 			String[] inp = input.get(row);
 			color[row] = Creature.getskinColor()[colorid];
-			if (270 < row & row <= 299) // Ocean creatures
+			if (isOceanCreature(row))
 			{
 				color[row] = Game.palette[5];
 			}
@@ -252,32 +258,24 @@ public class CreatureType
 					0, (int) (Integer.parseInt(inp[31]) * diffMult));
 			BattleSpecialAttribute Silence = new BattleSpecialAttribute(Double.parseDouble(inp[32]) * diffMult, 0,
 					Double.parseDouble(inp[33]) * diffMult, 0, (int) (Double.parseDouble(inp[34]) * diffMult));
-			BasicBattleAttribute AtkSpeed = new BasicBattleAttribute(Double.parseDouble(inp[51]) * diffMult, 0, 0);
+			BasicBattleAttribute AtkSpeed = new BasicBattleAttribute(Double.parseDouble(inp[52]) * diffMult, 0, 0);
 
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, CritAtk, CritDef, Stun,
 					Block, Blood, Poison, Silence, AtkSpeed);
 
-//			String[] myAtts = new String[inp.length - 3] ;
-//			for (int i = 0 ; i <= myAtts.length - 1 ; i += 1)
-//			{
-//				myAtts[i] = inp[i + 3] ;
-//			}
-//			BA = new BattleAttributes(myAtts, diffMult) ;
-
-
 			List<Spell> spells = new ArrayList<>();
 			int[] spellIDs = switch (row % 3)
 			{
-			case 0 -> new int[] { 104 };
-			case 1 -> new int[] { 44 };
-			case 2 -> new int[] { 106 };
-			case 3 -> new int[] { 110 };
-			case 4 -> new int[] { 143 };
-			case 5 -> new int[] { 16 };
-			case 6 -> new int[] { 6 };
-			case 7 -> new int[] { 34 };
-			case 8 -> new int[] { 41 };
-			default -> new int[] {};
+				case 0 -> new int[] { 104 };
+				case 1 -> new int[] { 44 };
+				case 2 -> new int[] { 106 };
+				case 3 -> new int[] { 110 };
+				case 4 -> new int[] { 143 };
+				case 5 -> new int[] { 16 };
+				case 6 -> new int[] { 6 };
+				case 7 -> new int[] { 34 };
+				case 8 -> new int[] { 41 };
+				default -> new int[] {};
 			};
 			for (int id : spellIDs)
 			{
@@ -301,25 +299,27 @@ public class CreatureType
 
 			String name = inp[1 + language.ordinal()];
 			int level = Integer.parseInt(inp[3]);
-			Dimension size = new Dimension(moveAni.idleGif.getWidth(null), moveAni.idleGif.getHeight(null));
+			Dimension size = new Dimension(moveAni.spriteIdle.getFrameSize().width, moveAni.spriteIdle.getFrameSize().height);
 			int range = (int) (Integer.parseInt(inp[7]) * diffMult);
 			int step = Integer.parseInt(inp[48]);
 			Elements[] elem = new Elements[] { Elements.valueOf(inp[35]) };
 			double mpDuration = Double.parseDouble(inp[49]);
 			double satiationDuration = 1.25;
-			double numberSteps = Double.parseDouble(inp[50]);
+			double actionDuration = Double.parseDouble(inp[51]);
+			double stepDuration = Double.parseDouble(inp[50]);
 			double battleActionDuration = BA.TotalAtkSpeed();
 			int stepCounter = 0;
-			String hitboxType = inp[52] ;
+			String hitboxType = inp[53] ;
+			MovePattern movePattern = MovePattern.values()[Integer.parseInt(inp[54])] ;
 
-			new CreatureType(row, name, level, size, range, step, elem, mpDuration, satiationDuration, numberSteps,
+			new CreatureType(row, name, level, size, range, step, movePattern, elem, mpDuration, satiationDuration, actionDuration, stepDuration,
 					battleActionDuration, stepCounter, moveAni, PA, BA, spells, items, Gold, color[row], StatusCounter, hitboxType);
 		}
 	}
 
 	public void display(Point pos, Scale scale)
 	{
-		GamePanel.DP.drawImage(movingAni.idleGif, pos, scale, Align.center);
+		movingAni.displayIdle(pos, 0.0, scale, Align.center);
 	}
 
 	public String toString()

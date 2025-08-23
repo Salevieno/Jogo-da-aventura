@@ -3,6 +3,7 @@ package test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -58,7 +59,7 @@ public class MapMoveTest
 			System.out.println(map.getName());
 			possiblePositions.keySet().forEach(id -> 
 			{
-				Point pos = possiblePositions.get(id) ;
+				Point2D.Double pos = new Point2D.Double(possiblePositions.get(id).x, possiblePositions.get(id).y) ;
 				Directions dir = possibleDirections.get(id) ;
 				String moveName = moveNames.get(id) ;
 				GameMap newMap = LiveBeing.calcNewMap(pos, dir, map) ;

@@ -40,7 +40,7 @@ public class Gif
 	public boolean isLoop() { return loop ;}
 	public boolean isTimeStopper() { return timeStopper ;}
 	public boolean isActive() { return counter.isActive() ;}
-	public boolean isDonePlaying() { return counter.finished() ;}
+	public boolean isDonePlaying() { return counter.hasFinished() ;}
 	public Dimension size() { return Util.getSize(image) ;}
 
 	public void start(Point pos, Align align)
@@ -55,7 +55,7 @@ public class Gif
 	
 	private void play()
 	{
-		if (counter.finished())
+		if (counter.hasFinished())
 		{
 			if (timeStopper) { GameFrame.resumeGame() ;}
 			end() ;

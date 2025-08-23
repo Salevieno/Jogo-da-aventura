@@ -106,11 +106,6 @@ public class MapElement implements Drawable
 		double alpha = playerIsBehind(playerPos) ? 0.5 : 1.0 ;
 		
 		GamePanel.DP.drawImage(image, topLeft, Draw.stdAngle, Scale.unit, false, false, Align.topLeft, alpha) ;
-		if (Game.debugMode && hitbox != null)
-		{
-			hitbox.display();
-		}
-		
 	}
 	
 	public void display()

@@ -63,7 +63,7 @@ public class Screen
 	
 	public void updateScale() { scale = calcScale() ;}
 	
-	public boolean posIsWithinBorders(Point pos)
+	public boolean posIsWithinBorders(Point2D.Double pos)
 	{
 		return (borders[0] < pos.x & borders[1] < pos.y & pos.x < borders[2] & pos.y < borders[3]) ;
 	}

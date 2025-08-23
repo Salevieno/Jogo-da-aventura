@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public abstract class LiveBeing implements Drawable
 	protected int proJob ;
 	protected int level;
 	protected GameMap map ;
-	protected Point pos ;						// bottomCenter
+	protected Point2D.Double pos ;
 	protected Directions dir ;
 	protected LiveBeingStates state ;
 	protected Dimension size ;
@@ -154,7 +155,8 @@ public abstract class LiveBeing implements Drawable
 	public GameMap getMap() {return map ;}
 	public Directions getDir() {return dir ;}
 	public LiveBeingStates getState() {return state ;}
-	public Point getPos() {return pos ;}
+	public Point getPos() { return new Point((int) pos.x, (int)pos.y) ;}
+	public Point2D.Double getPosAsDouble() {return pos ;}
 	public Dimension getSize() {return size ;}
 	public Elements getAtkElem() { return atkElem ;}
 	public double getRange() {return range ;}
@@ -189,10 +191,15 @@ public abstract class LiveBeing implements Drawable
 	public void setMap(GameMap newValue) {map = newValue ;}
 	public void setDir(Directions newValue) {dir = newValue ;}
 	public void setState(LiveBeingStates newValue) {state = newValue ;}
-	public void setPos(Point newValue)
+	public void setPos(Point2D.Double newValue)
 	{
 		pos = newValue ;
 		hitbox.setCenter(center()) ;
+	}
+	// TODO eliminar essa função
+	public void setPos(Point newValue)
+	{
+		setPos(new Point2D.Double(newValue.x, newValue.y)) ;
 	}
 	public void setSize(Dimension newValue) {size = newValue ;}
 	public void setRange(int newValue) {range = newValue ;}
@@ -201,13 +208,14 @@ public abstract class LiveBeing implements Drawable
 	public void setCurrentAtkType(AtkTypes ba) { currentAtkType = ba ;}
 	
 	public boolean isMoving() { return stepCounter.isActive() ;}
-	public boolean canAct() { return actionCounter.finished() & (state.equals(LiveBeingStates.idle) | isMoving() | isFighting()) ;}
+	public boolean canAct() { return actionCounter.hasFinished() & (state.equals(LiveBeingStates.idle) | isMoving() | isFighting()) ;}
 	
 	public boolean isPlayerAlly() { return (this instanceof Player | this instanceof Pet) ;}
 	
 	public void resetAction() { currentAction = null ;}
 	public void resetBattleAction() { currentAtkType = null ;}
-
+	protected void startMoving() { stepCounter.start() ;}
+	protected void restartMoving() { stepCounter.restart() ;}
 	
 	public static void updateDamageAnimation(int newDamageStyle) { damageStyle = newDamageStyle ;}
 	public void inflictStatus(Attributes att, double intensity, int duration)
@@ -232,7 +240,7 @@ public abstract class LiveBeing implements Drawable
 			switch (att)
 			{			
 				case phyAtk:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
 					{
 						BA.getPhyAtk().incBonus(-status.get(att).getIntensity()) ;
 						status.get(att).reset() ;
@@ -240,7 +248,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 			
 				case magAtk:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
 					{
 						BA.getMagAtk().incBonus(-status.get(att).getIntensity()) ;
 						status.get(att).reset() ;
@@ -248,7 +256,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 					
 				case magDef:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
 					{
 						BA.getMagDef().incBonus(-status.get(att).getIntensity()) ;
 						status.get(att).reset() ;
@@ -256,7 +264,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 					
 				case phyDef:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
 					{
 						BA.getPhyDef().incBonus(-status.get(att).getIntensity()) ;
 						status.get(att).reset() ;
@@ -264,7 +272,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 					
 				case dex:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
 					{
 						BA.getDex().incBonus(-status.get(att).getIntensity()) ;
 						status.get(att).reset() ;
@@ -272,7 +280,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 					
 				case agi:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
 					{
 						BA.getAgi().incBonus(-status.get(att).getIntensity()) ;
 						status.get(att).reset() ;
@@ -280,7 +288,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 					
 				case atkSpeed:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().finished())
+					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
 					{
 						BA.getAtkSpeed().incBonus(-status.get(att).getIntensity()) ;
 						battleActionCounter.setDuration(BA.TotalAtkSpeed()) ;
@@ -319,9 +327,24 @@ public abstract class LiveBeing implements Drawable
 		};
 	}
 	
-	public static GameMap calcNewMap(Point pos, Directions dir, GameMap currentMap)
+	public Directions randomNewDirection(Directions originalDir)
 	{
-		Point currentPos = new Point(pos) ;
+		
+		Directions newDir = randomDir() ;
+		// TODO otimizar
+		while (Directions.areOpposite(originalDir, newDir))
+		{
+			newDir = randomDir() ;
+		}
+		
+		return newDir ;
+		
+	}
+	
+	public static GameMap calcNewMap(Point2D.Double pos, Directions dir, GameMap currentMap)
+	{
+		// TODO eliminar clone
+		Point2D.Double currentPos = (Point2D.Double) pos.clone() ;
 		int newMapID = -1 ;
 		int[] mapConnections = currentMap.getConnections() ;
 		boolean leftSide = currentPos.x <= Game.getScreen().mapSize().width / 2 ;
@@ -357,7 +380,7 @@ public abstract class LiveBeing implements Drawable
 
 	public void displayState()
 	{
-		Point displayPos = Util.Translate(pos, 0, size.height + 10) ;
+		Point displayPos = Util.Translate(getPos(), 0, size.height + 10) ;
 		// Dimension size = new Dimension(60, 20) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String stateText = state.toString() ;
@@ -382,53 +405,17 @@ public abstract class LiveBeing implements Drawable
 		GamePanel.DP.drawImage(powerBarImage, pos, Align.bottomCenter) ;
 		GamePanel.DP.drawText(Util.Translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
 	}
+
+	private static Directions calcDrunkDir(Directions dir, GameTimer drunk)
+	{
+		boolean changeDir = Util.chance(0.8 * (1 - drunk.rate())) ;
+		return changeDir ? randomPerpendicularDir(dir) : dir ;
+	}
 	
-	public Point calcNewPos()
+	public Point2D.Double calcNewPos()
 	{
-		Directions moveDir = dir ;
-		if (drunk.isActive() & Util.chance(0.8 * (1 - drunk.rate())))
-		{
-			moveDir = randomPerpendicularDir(dir) ;
-		}
-		
-		return calcNewPos(moveDir, pos, step) ;
-
-		// switch (moveDir)
-		// {
-		// 	case up: return new Point(pos.x, pos.y - step) ;
-		// 	case down: return new Point(pos.x, pos.y + step) ;
-		// 	case left: return new Point(pos.x - step, pos.y) ;
-		// 	case right: return new Point(pos.x + step, pos.y) ;	
-		// 	default: return new Point(pos) ;
-		// }
-	}
-
-	public Point calcNewPos(Directions dir) { return calcNewPos(dir, pos, step) ;}
-
-	public static Point calcNewPos(Directions dir, Point currentPos, int step)
-	{
-		Point newPos = switch (dir)
-		{
-			case up -> new Point(currentPos.x, currentPos.y - step) ;
-			case down -> new Point(currentPos.x, currentPos.y + step) ;
-			case left -> new Point(currentPos.x - step, currentPos.y) ;
-			case right -> new Point(currentPos.x + step, currentPos.y) ;
-		} ;
-		
-		return newPos ;
-	}
-
-	public Point calcNewPos(Directions dir, int step, Point currentPos, double moveRate)
-	{
-		Point newPos = switch (dir)
-		{
-			case up -> new Point(currentPos.x + (int) (2 * step * Math.cos(2 * (Math.PI / 2 + 3 * Math.PI / 2 * moveRate))), currentPos.y - step) ;
-			case down -> new Point(currentPos.x + (int) (2 * step * Math.cos(2 * (Math.PI / 2 + 3 * Math.PI / 2 * moveRate))), currentPos.y + step) ;
-			case left -> new Point(currentPos.x - step, currentPos.y + (int) (2 * step * Math.cos(2 * (Math.PI / 2 + 3 * Math.PI / 2 * moveRate)))) ;
-			case right -> new Point(currentPos.x + step, currentPos.y + (int) (2 * step * Math.cos(2 * (Math.PI / 2 + 3 * Math.PI / 2 * moveRate)))) ;
-		} ;
-		
-		return newPos ;
+		Directions moveDir = isDrunk() ? calcDrunkDir(dir, drunk) : dir ;		
+		return MovePattern.calcNewPos(moveDir, pos, step) ;
 	}
 
 	public void startCounters()
@@ -444,7 +431,7 @@ public abstract class LiveBeing implements Drawable
 	{
 		for (Spell spell : spells)
 		{
-			if (spell.getDurationCounter().getDuration() <= 0 | !spell.getDurationCounter().finished())
+			if (spell.getDurationCounter().getDuration() <= 0 | !spell.getDurationCounter().hasFinished())
 			{
 				continue ;
 			}
@@ -465,7 +452,7 @@ public abstract class LiveBeing implements Drawable
 	
 	public void activateCounters()
 	{
-		if (actionCounter.finished() & hasActed())
+		if (actionCounter.hasFinished() & hasActed())
 		{
 			actionCounter.start() ;
 		}
@@ -473,14 +460,14 @@ public abstract class LiveBeing implements Drawable
 		{
 			PA.getLife().incCurrentValue(2) ;
 		}
-		if (mpCounter.finished())
+		if (mpCounter.hasFinished())
 		{
 			PA.getMp().incCurrentValue(1) ;
 			mpCounter.start() ;
 		}
 		if (!(this instanceof Creature))
 		{
-			if (satiationCounter.finished())
+			if (satiationCounter.hasFinished())
 			{
 				PA.getSatiation().incCurrentValue(-1) ;
 				satiationCounter.start() ;
@@ -493,7 +480,7 @@ public abstract class LiveBeing implements Drawable
 		
 		if (this instanceof Player)
 		{
-			if (thirstCounter.finished())
+			if (thirstCounter.hasFinished())
 			{
 				PA.getThirst().incCurrentValue(-1) ;
 				thirstCounter.start() ;
@@ -647,7 +634,7 @@ public abstract class LiveBeing implements Drawable
 		return (usedPhysicalAtk() | usedSpell()) & ((Player) this).arrowIsEquipped() ;
 	}
 	
-	public boolean canAtk() {return battleActionCounter.finished() & !isStun() ;}
+	public boolean canAtk() {return battleActionCounter.hasFinished() & !isStun() ;}
 	public boolean isStun() { return status.get(Attributes.stun).isActive() ;}
 	public boolean isSilent() {return status.get(Attributes.silence).isActive() ;}
 	public boolean isDefending()
@@ -657,13 +644,13 @@ public abstract class LiveBeing implements Drawable
 		
 		if (this instanceof Player)
 		{
-			return (!battleActionCounter.finished() & combo.get(0).equals(battleKeys[1])) ;
+			return (!battleActionCounter.hasFinished() & combo.get(0).equals(battleKeys[1])) ;
 		}
 		return usedDef() ;
 	}
 	public boolean isDrunk() {return drunk.isActive() ;}
-	public boolean isInCloseRange(Point target) {return pos.distance(target) <= size.getWidth() ;}
-	public boolean isInRange(Point target) {return pos.distance(target) <= range ;}
+	public boolean isInCloseRange(Point2D.Double target) {return pos.distance(target) <= size.getWidth() ;}
+	public boolean isInRange(Point2D.Double target) {return pos.distance(target) <= range ;}
 
 	public boolean isTouching(GroundType groundType)
 	{		
@@ -689,9 +676,9 @@ public abstract class LiveBeing implements Drawable
 		
 		
  	
-	public static RelativePos checkAdjacentGround(Point pos, GameMap map, GroundType targetGroundType, int step)
+	public static RelativePos checkAdjacentGround(Point2D.Double pos, GameMap map, GroundType targetGroundType, int step)
 	{ 		
- 		Point userPos = new Point(pos) ;
+ 		Point2D.Double userPos = new Point2D.Double(pos.x, pos.y) ;
 
 		if (map == null) { return null ;}
 		
@@ -707,13 +694,13 @@ public abstract class LiveBeing implements Drawable
 		return null ;		
 	}
 
-	private static RelativePos posRelativeToPolygon(Point pos, Polygon polygon, int step)
+	private static RelativePos posRelativeToPolygon(Point2D.Double pos, Polygon polygon, int step)
 	{
 		if (polygon.contains(pos)) { return RelativePos.inside ;}
-		if (polygon.contains(calcNewPos(Directions.down, pos, step))) { return RelativePos.above ;}
-		if (polygon.contains(calcNewPos(Directions.right, pos, step))) { return RelativePos.left ;}
-		if (polygon.contains(calcNewPos(Directions.left, pos, step))) { return RelativePos.right ;}
-		if (polygon.contains(calcNewPos(Directions.up, pos, step))) { return RelativePos.below ;}
+		if (polygon.contains(MovePattern.calcNewPos(Directions.down, pos, step))) { return RelativePos.above ;}
+		if (polygon.contains(MovePattern.calcNewPos(Directions.right, pos, step))) { return RelativePos.left ;}
+		if (polygon.contains(MovePattern.calcNewPos(Directions.left, pos, step))) { return RelativePos.right ;}
+		if (polygon.contains(MovePattern.calcNewPos(Directions.up, pos, step))) { return RelativePos.below ;}
 
 		return null ;
 	}
@@ -721,10 +708,10 @@ public abstract class LiveBeing implements Drawable
 	public abstract Elements[] atkElems() ;
 	public abstract Elements[] defElems() ;
 	
-	public Point follow(Point userPos, Point target, int minDist)
+	public Point2D.Double chase(Point2D.Double userPos, Point2D.Double target, int minDist)
 	{
 		
-		Point pos = new Point(userPos) ;
+		Point2D.Double pos = (Point2D.Double) userPos.clone() ;
 		int step = 1 ;
 		double distY = Math.abs(pos.y - target.y) ;
 		double distX = Math.abs(pos.x - target.x) ;
@@ -733,20 +720,20 @@ public abstract class LiveBeing implements Drawable
 		
 		if (distY < distX)
 		{
-			if (pos.x < target.x) { return new Point(pos.x + step, pos.y) ;}
+			if (pos.x < target.x) { return new Point2D.Double(pos.x + step, pos.y) ;}
 			
-			return new Point(pos.x - step, pos.y) ;
+			return new Point2D.Double(pos.x - step, pos.y) ;
 		}
 		
-		if (pos.y < target.y) { return new Point(pos.x, pos.y + step) ;}
+		if (pos.y < target.y) { return new Point2D.Double(pos.x, pos.y + step) ;}
 		
-		return new Point(pos.x, pos.y - step) ;
+		return new Point2D.Double(pos.x, pos.y - step) ;
 
 	}
 	
 	public void checkDeactivateDef()
 	{
-		if (battleActionCounter.finished() & isDefending())
+		if (battleActionCounter.hasFinished() & isDefending())
 		{
 			deactivateDef() ;
 		}
@@ -840,7 +827,7 @@ public abstract class LiveBeing implements Drawable
 			int clearSpace = 2 ;
 			for (int i = 0; i <= attRate.size() - 1; i += 1)
 			{
-				Point barPos = Util.Translate(pos, -size.width / 2, -size.height - attRate.size() * barSize.height - clearSpace + i * sy) ;
+				Point barPos = Util.Translate(getPos(), -size.width / 2, -size.height - attRate.size() * barSize.height - clearSpace + i * sy) ;
 				Dimension filledSize = new Dimension((int)(attRate.get(i) * barSize.width), barSize.height) ;
 				GamePanel.DP.drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Game.palette[0], 1.0) ;
 			}
@@ -875,10 +862,10 @@ public abstract class LiveBeing implements Drawable
 		int outerRadius = 15 ;
 		
 		// draw fill
-		GamePanel.DP.drawAnnularSector(pos, innerRadius, outerRadius, angleStart, angleFilledSpan, stroke, Game.palette[21], null) ;
+		GamePanel.DP.drawAnnularSector(getPos(), innerRadius, outerRadius, angleStart, angleFilledSpan, stroke, Game.palette[21], null) ;
 		
 		// draw contour
-		GamePanel.DP.drawAnnularSector(pos, innerRadius, outerRadius, angleStart, angleMaxSpan, stroke, null, Game.palette[0]) ;
+		GamePanel.DP.drawAnnularSector(getPos(), innerRadius, outerRadius, angleStart, angleMaxSpan, stroke, null, Game.palette[0]) ;
 	}
 
 	public void takeDamage(int damage)

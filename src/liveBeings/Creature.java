@@ -4,15 +4,13 @@ import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import attributes.BasicAttribute;
-import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
-import attributes.BattleSpecialAttribute;
-import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import battle.AtkResults;
 import battle.AtkTypes;
@@ -41,10 +39,13 @@ public class Creature extends LiveBeing
 	private final Set<Item> items ;
 	private final int gold ;
 	private final Color color ;
-	private boolean follow ;
+	private boolean chasePlayer ;
+	private boolean hasSwitchedDirection ;
+	private GameTimer notMovingTimer ;
 	
-	private static Color[] skinColor = new Color[] {Game.palette[0], Game.palette[5]} ;
-	private static Color[] shadeColor = new Color[] {Game.palette[2], Game.palette[3]} ;
+	private static final double idleDuration = 10 ;
+	private static final Color[] skinColor = new Color[] {Game.palette[0], Game.palette[5]} ;
+	private static final Color[] shadeColor = new Color[] {Game.palette[2], Game.palette[3]} ;
 	
  	public Creature(CreatureType CT)
 	{
@@ -55,25 +56,25 @@ public class Creature extends LiveBeing
  	{
  		super(new PersonalAttributes(CT.getPA()), new BattleAttributes(CT.getBA()), CT.getMovingAnimations(), CreatureType.attWindow) ;
 		
-		this.type = CT ;		
+		this.type = CT ;
 		this.name = CT.name;
 		this.level = CT.level;
 		this.size = new Dimension(CT.size);
 		this.range = CT.range;
 		this.step = CT.step;
 		this.atkElem = CT.atkElem;
-		mpCounter = new GameTimer(CT.mpDuration / 1.0);
-		satiationCounter = new GameTimer(CT.satiationDuration);
-		actionCounter = new GameTimer(CT.numberSteps) ;
-		battleActionCounter = new GameTimer(CT.battleActionDuration / 1.0) ;
-		this.stepCounter = new GameTimer(CT.numberSteps) ;
-		combo = new ArrayList<>() ;
-		hitbox = CT.getHitboxType().equals("circle") ? new HitboxCircle(new Point(), size.width / 2) : new HitboxRectangle(new Point(), size) ;
+		this.mpCounter = new GameTimer(CT.mpDuration / 1.0);
+		this.satiationCounter = new GameTimer(CT.satiationDuration);
+		this.actionCounter = new GameTimer(CT.stepDuration) ;
+		this.battleActionCounter = new GameTimer(CT.battleActionDuration / 1.0) ;
+		this.stepCounter = new GameTimer(CT.movePattern.getDuration()) ;
+		this.combo = new ArrayList<>() ;
+		this.hitbox = CT.getHitboxType().equals("circle") ? new HitboxCircle(new Point(), size.width / 2) : new HitboxRectangle(new Point(), size) ;
 		
-		dir = Directions.up ;
-		state = LiveBeingStates.idle ;
-		currentAction = "" ;
-		spells = List.copyOf(CT.getSpell()) ;
+		this.dir = Directions.up ;
+		this.state = LiveBeingStates.idle ;
+		this.currentAction = "" ;
+		this.spells = List.copyOf(CT.getSpell()) ;
 		this.items = Set.copyOf(CT.getItems()) ;
 		this.gold = CT.getGold() ;
 		this.color = CT.getColor() ;
@@ -84,37 +85,22 @@ public class Creature extends LiveBeing
 		}
 		startCounters() ;
 		
-		follow = false ;
+		this.chasePlayer = false ;
+		this.notMovingTimer = new GameTimer(idleDuration) ;
  		setPos(pos) ;
  	}
  	
 	public CreatureType getType() {return type ;}
 	public List<Spell> getSpell() {return spells ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
-	public BasicAttribute getMp() {return PA.getMp() ;}
-	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
-	public BasicBattleAttribute getMagAtk() {return BA.getMagAtk() ;}
-	public BasicBattleAttribute getPhyDef() {return BA.getPhyDef() ;}
-	public BasicBattleAttribute getMagDef() {return BA.getMagDef() ;}
-	public BasicBattleAttribute getDex() {return BA.getDex() ;}
-	public BasicBattleAttribute getAgi() {return BA.getAgi() ;}
-	public BasicBattleAttribute getCritAtk() {return BA.getCritAtk() ;}
-	public BasicBattleAttribute getCritDef() {return BA.getCritDef() ;}
-	public BattleSpecialAttribute getStun() {return BA.getStun() ;}
-	public BattleSpecialAttribute getBlock() {return BA.getBlock() ;}
-	public BattleSpecialAttributeWithDamage getBlood() {return BA.getBlood() ;}
-	public BattleSpecialAttributeWithDamage getPoison() {return BA.getPoison() ;}
-	public BattleSpecialAttribute getSilence() {return BA.getSilence() ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public Set<Item> getBag() {return items ;}
 	public int getGold() {return gold ;}
-	public Color getColor() {return color ;}
-	public boolean getFollow() {return follow ;}
-	public void setFollow(boolean F) {follow = F ;}
+	public void setChasePlayer(boolean F) {chasePlayer = F ;}
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
 
-	public Point center() { return new Point(pos) ;}
+	public Point center() { return new Point((int) pos.x, (int) pos.y) ;}
 
 	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
 	
@@ -123,7 +109,7 @@ public class Creature extends LiveBeing
 		setState(LiveBeingStates.idle) ;
 		PA.getLife().setToMaximum() ;
 		PA.getMp().setToMaximum() ;
-		setFollow(false) ;
+		setChasePlayer(false) ;
 	}
 
 	public boolean hasEnoughMP(int spellID)
@@ -149,50 +135,6 @@ public class Creature extends LiveBeing
 		return null ;
 	}
 	
-	public void displayName(Point pos, Align alignment, Color color)
-	{
-		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		GamePanel.DP.drawText(pos, alignment, Draw.stdAngle, name, font, color) ;
-	}
-	
-	public void display(Point pos, Scale scale)
-	{
-		if (isMoving())
-		{
-			type.movingAni.displayMoving(dir, pos, 0, scale, Align.center) ;
-		}
-		else
-		{
-			type.movingAni.displayIdle(pos, 0, scale, Align.center) ;
-		}
-		if (isFighting())
-		{
-			displayBattleActionCounter() ;
-		}
-		if (isDrunk())
-		{
-			displayDrunk() ;
-		}
-//		displayAttributes(0) ;
-		displayStatus() ;
-		if (Game.debugMode)
-		{
-			displayState() ;
-			hitbox.display();
-		}
-	}	
-	
-	public void display()
-	{
-		display(pos, Scale.unit) ;
-	}
-	
-	public void displayAdditionalInfo()
-	{
-		GamePanel.DP.drawText(new Point(pos.x, pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
-		GamePanel.DP.drawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
-	}
-	
 	public void setRandomPos()
 	{
 		Screen screen = Game.getScreen() ;
@@ -202,30 +144,15 @@ public class Creature extends LiveBeing
 		setPos(Util.RandomPos(minCoord, range, step)) ;
 	}
 	
-	public Directions newMoveDirection(Directions originalDir)
-	{
-		
-		Directions newDir = randomDir() ;
-		while (Directions.areOpposite(originalDir, newDir))
-		{
-			newDir = randomDir() ;
-		}
-		
-		return newDir ;
-		
-	}
-	
-	public void updatePos(Directions dir, Point CurrentPos, int step, int movePattern, double moveRate, GameMap map)
-	{
-		Point newPos = switch (movePattern)
-		{
-			case 0 -> calcNewPos(dir, CurrentPos, step) ;
-			case 1 -> calcNewPos(dir, step, CurrentPos, moveRate) ;
-			default -> calcNewPos(dir, CurrentPos, step) ;
-		} ;
+	private void switchDirection() { setDir(randomNewDirection(dir)) ;}
 
+	public void updatePos(Directions dir, Point2D.Double CurrentPos, int step, double dt, double moveRate, GameMap map)
+	{
+		Point2D.Double newPos = MovePattern.calcNewPos(type.movePattern, dir, step, dt, CurrentPos, moveRate) ;
+		// if (type.movePattern == MovePattern.pattern2) System.out.println(pos + " to pos " + newPos);
+ 
 		if (!Game.getScreen().posIsWithinBorders(newPos)) { return ;}
-		if (!map.groundIsWalkable(newPos, null)) { return ;}
+		if (!map.groundIsWalkable(new Point((int) newPos.x, (int) newPos.y), null)) { return ;}
 
 		setPos(newPos) ;
 	
@@ -270,69 +197,37 @@ public class Creature extends LiveBeing
 		}
 
 	}
-	
-	public void move(Point PlayerPos, GameMap map)
+
+	public void move(Point2D.Double PlayerPos, GameMap map, double dt)
 	{
-
-		if (!isMoving()) { return ;}
-
-		if (stepCounter.finished())
-		{
-//			setState(LiveBeingStates.idle) ;
-			stepCounter.reset() ;
-			return ;
-		}
 		
-		if (follow)
+		if (chasePlayer)
 		{
-			setPos(follow(pos, PlayerPos, range)) ;
+			setPos(chase(pos, PlayerPos, range)) ;
 			return ;
 		}
 
-		boolean switchDirection = 0.47 <= stepCounter.rate() & stepCounter.rate() <= 0.5 ;
-		if (switchDirection)
-		{
-			setDir(newMoveDirection(dir)) ;
-		}
-		
-		int movePattern = type.getID() % CreatureType.numberCreatureTypesImages == 0 ? 1 : 0 ;
-		updatePos(dir, pos, step, movePattern, stepCounter.rate(), map) ;
+		updatePos(dir, pos, step, dt, stepCounter.rate(), map) ;
 		
 	}
-	
+
 	public void think()
 	{
-		if (Util.chance(0.6))
-		{
-//			setState(LiveBeingStates.idle) ;
-			return ;
-		}
+		if (notMovingTimer.isActive()) { return ;}
 
-		stepCounter.start() ;
-		return ;		
+		notMovingTimer.restart() ;
+		switchDirection() ;
+		restartMoving() ;
 	}
 	
 	public void act()
 	{
 		if (!state.equals(LiveBeingStates.idle)) { return ;}
-//		boolean startMoving = Util.chance(0.3) ;
-//		
-//		if (!startMoving) { return ;}
-//
-//		boolean switchDirection = Util.chance(0.5) ;
-//		if (switchDirection)
-//		{
-//			setDir(newMoveDirection(dir)) ;
-//		}
 		
 		actionCounter.reset() ;
-		return ;
 	}
 	
-	public void applyPassiveSpell(Spell spell)
-	{
-		
-	}
+	public void applyPassiveSpell(Spell spell) { }
 	
 	public void useAutoSpell(boolean activate, Spell spell)
 	{
@@ -399,6 +294,53 @@ public class Creature extends LiveBeing
 		
 	}
 	
+	public void displayName(Point pos, Align alignment, Color color)
+	{
+		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		GamePanel.DP.drawText(pos, alignment, Draw.stdAngle, name, font, color) ;
+	}
+	
+	public void display(Point pos, Scale scale)
+	{
+		if (isMoving())
+		{
+			type.movingAni.displayMoving(dir, pos, 0, scale, Align.center) ;
+		}
+		else
+		{
+			type.movingAni.displayIdle(pos, 0, scale, Align.center) ;
+		}
+		if (isFighting())
+		{
+			displayBattleActionCounter() ;
+		}
+		if (isDrunk())
+		{
+			displayDrunk() ;
+		}
+//		displayAttributes(0) ;
+		displayStatus() ;
+		GamePanel.DP.drawText(Util.Translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.movePattern.toString(), Color.black) ;
+		// GamePanel.DP.drawText(Util.Translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
+		// GamePanel.DP.drawText(Util.Translate(pos, 0, -40), Align.bottomCenter, "is moving: " + isMoving(), Color.black) ;
+		if (Game.debugMode)
+		{
+			displayState() ;
+			hitbox.display();
+		}
+	}	
+	
+	public void display()
+	{
+		display(getPos(), Scale.unit) ;
+	}
+	
+	public void displayAdditionalInfo()
+	{
+		GamePanel.DP.drawText(new Point((int) pos.x, (int) pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
+		GamePanel.DP.drawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
+	}
+	
 	public void dies()
 	{
 		setState(LiveBeingStates.idle) ;
@@ -412,13 +354,13 @@ public class Creature extends LiveBeing
 			}
 		}
 		setRandomPos() ;
-		follow = false ;
+		chasePlayer = false ;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return "Creature [type=" + type + ", Bag=" + items + ", Gold=" + gold + ", color=" + color + ", follow=" + follow + "]";
+		return "Creature [type=" + type + ", Bag=" + items + ", Gold=" + gold + ", color=" + color + ", follow=" + chasePlayer + "]";
 	}
 
 	

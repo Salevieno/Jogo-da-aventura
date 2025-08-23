@@ -15,8 +15,9 @@ public class SpriteAnimation
     private int currentFrame;
     private int frameCount;
     private int frameDuration;
+    private Dimension frameSize;
     private int tick; // TODO converter para time
-    private Point pos ;
+    private Point pos ; // TODO verificar necessidade
     private Align align ;
     private boolean active ;
     
@@ -27,13 +28,14 @@ public class SpriteAnimation
     	all = new HashSet<>() ;
     }
 
-    public SpriteAnimation(String path, Point pos, Align align, Dimension size, int qtdFrames, int frameDuration)
+    public SpriteAnimation(String path, Point pos, Align align, int qtdFrames, int frameDuration)
     {
     	Spritesheet sheet = new Spritesheet(path) ;
     	BufferedImage[] sheetFrames = new BufferedImage[qtdFrames] ;
+        this.frameSize = new Dimension(sheet.getSize().width / qtdFrames, sheet.getSize().height) ;
         for (int i = 0; i <= sheetFrames.length - 1 ; i++)
         {
-            sheetFrames[i] = sheet.getSprite(i * size.width, 0, size.width, size.height) ;
+            sheetFrames[i] = sheet.getSprite(i * frameSize.width, 0, frameSize.width, frameSize.height) ;
         }
         this.frames = sheetFrames;
         this.frameDuration = frameDuration;
@@ -46,6 +48,7 @@ public class SpriteAnimation
         all.add(this) ;
     }
     
+    public Dimension getFrameSize() { return frameSize ;}
     public void setPos(Point pos) { this.pos = pos ;}
     
     public void activate() { active = true ;}

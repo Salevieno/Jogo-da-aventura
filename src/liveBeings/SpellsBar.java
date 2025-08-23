@@ -63,7 +63,7 @@ public abstract class SpellsBar
 	public static void displayCooldown(Point slotCenter, Spell spell)
 	{
 
-		if (spell.getCooldownCounter().finished()) { return ;}
+		if (spell.getCooldownCounter().hasFinished()) { return ;}
 		
 		Dimension imgSize = Util.getSize(cooldownImage) ;
 		Scale scale = new Scale(1, 1 - spell.getCooldownCounter().rate()) ;

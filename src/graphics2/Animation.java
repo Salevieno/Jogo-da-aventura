@@ -140,7 +140,7 @@ public class Animation
 	private void play()
 	{
 
-		if (counter.finished())
+		if (counter.hasFinished())
 		{
 			end() ;
 			return ;

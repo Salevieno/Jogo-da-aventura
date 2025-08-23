@@ -56,7 +56,7 @@ public abstract class SideBar
 	public static void initialize()
 	{
 		Player player = Game.getPlayer() ;
-		Image playerImage = player.getMovingAni().idleGif ;
+		Image playerImage = player.getMovingAni().spriteIdle.getCurrentFrame() ;
 		ButtonFunction playerAction = () -> {
 			((PlayerAttributesWindow) player.getAttWindow()).setPlayer(player) ;
 			((PlayerAttributesWindow) player.getAttWindow()).updateAttIncButtons(player) ;
@@ -102,7 +102,7 @@ public abstract class SideBar
 	{
 		if (pet == null) { return ;}
 		
-		Image petImage = pet.getMovingAnimations().idleGif ;
+		Image petImage = pet.getMovingAnimations().spriteIdle.getCurrentFrame() ;
 		ButtonFunction petAction = () -> {
 			((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
 			player.switchOpenClose(pet.getAttWindow()) ;

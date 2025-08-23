@@ -114,7 +114,7 @@ public class Spell
 	public String getEffect() {return effect ;}
 	public String getDescription() {return description ;}
 
-	public boolean isReady() { return cooldownCounter.finished() ;}
+	public boolean isReady() { return cooldownCounter.hasFinished() ;}
 	public boolean isActive() { return isActive ;}
 	public boolean isMaxed() { return level == maxLevel ;}
 	public boolean isUsable() { return !type.equals(SpellTypes.passive) & !type.equals(SpellTypes.auto) & 0 < level ;}

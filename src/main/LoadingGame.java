@@ -7,6 +7,8 @@ import java.awt.Point;
 import UI.ButtonFunction;
 import UI.GameButton;
 import graphics.Align;
+import liveBeings.Creature;
+import liveBeings.CreatureType;
 import liveBeings.Player;
 import utilities.Util;
 

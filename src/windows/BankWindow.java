@@ -53,7 +53,7 @@ public class BankWindow extends GameWindow
 	
 	private boolean isReadingInput() { return mode.equals("deposit") | mode.equals("withdraw") | mode.equals("investment low risk") | mode.equals("investment hight risk") ;}
 	public boolean hasInvestment() { return hasInvestement;}
-	public boolean investmentIsComplete() { return investmentCounter.finished() ;}
+	public boolean investmentIsComplete() { return investmentCounter.hasFinished() ;}
 	
 	public void completeInvestment()
 	{

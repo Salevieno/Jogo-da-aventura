@@ -9,6 +9,7 @@ import attributes.BasicBattleAttribute;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
+import graphics2.SpriteAnimation;
 import liveBeings.CreatureType;
 import main.Game;
 import main.GamePanel;
@@ -34,9 +35,9 @@ public class CreatureAttributesWindow extends AttributesWindow
 		
 		GamePanel.DP.drawImage(image, windowPos, Align.topLeft) ;
 
-		Image userImage = creatureType.getMovingAnimations().idleGif ;
+		SpriteAnimation userImage = creatureType.getMovingAnimations().spriteIdle ;
 		Point userPos = Util.Translate(windowPos, size.width / 2, 60) ;
-		GamePanel.DP.drawImage(userImage, userPos, Align.center) ;
+		userImage.display(GamePanel.DP, userPos, Align.center) ;
 
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;		

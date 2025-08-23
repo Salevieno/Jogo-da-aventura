@@ -52,10 +52,10 @@ public class GameTimer
 	public void reset() { initialTime = timeNowInSec() ; timeElapsedAtStop = 0 ; counter = 0 ; prevCounter = 0 ;}
 	public void restart() { reset() ; start() ;}
 	public double rate() { return counter / duration ;}
-	public boolean crossedTime(double time) { return active && prevCounter == 0 | (counter % time <= prevCounter % time) ;}
+	public boolean crossedTime(double time) { return active && prevCounter == 0 || (counter % time <= prevCounter % time) ;}
 	public boolean isActive() { return active ;}
 	public boolean hasStarted() { return 0 < counter ;}
-	public boolean finished() { return duration <= counter ;}
+	public boolean hasFinished() { return duration <= counter ;}
 	
 	public void update()
 	{
@@ -63,11 +63,16 @@ public class GameTimer
 		
 		prevCounter = counter ;
 		counter = (timeNowInSec() - initialTime - timeElapsedAtStop) ;
-		if (duration <= counter)
+		if (hasFinished())
 		{
-			counter = duration ;
-			active = false ;
+			finish() ;
 		}
+	}
+
+	private void finish()
+	{
+		counter = duration ;
+		active = false ;
 	}
 
 	public void display(Point botLeftPos, Align align, Color color)

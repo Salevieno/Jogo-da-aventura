@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
 import java.util.ArrayList ;
 import java.util.Arrays ;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ import graphics2.Animation;
 import graphics2.AnimationTypes;
 import graphics2.Draw;
 import graphics2.Gif;
+import graphics2.SpriteAnimation;
 import items.Alchemy;
 import items.Arrow;
 import items.Equip;
@@ -155,14 +157,14 @@ public class Player extends LiveBeing
 			new Gif("Collecting", UtilS.loadImage(pathCollectImg + "CollectingWood.gif"), 3.6, false, false),
 			new Gif("Collecting", UtilS.loadImage(pathCollectImg + "CollectingMetal.gif"), 3.6, false, false)
 		} ;
-
-	    Image idleGif = UtilS.loadImage(pathPlayerImg + "PlayerIdle.gif") ;
-	    Image movingUpGif = UtilS.loadImage(pathPlayerImg + "PlayerBack.gif") ;
-		Image movingDownGif = UtilS.loadImage(pathPlayerImg + "PlayerFront.gif") ;
-		Image movingLeftGif = UtilS.loadImage(pathPlayerImg + "PlayerMovingLeft.gif") ;
-		Image movingRightGif = UtilS.loadImage(pathPlayerImg + "PlayerRight.gif") ;
 		
-		movingAnimations = new MovingAnimations(idleGif, movingUpGif, movingDownGif, movingLeftGif, movingRightGif, pathPlayerImg + "spritesheet.png") ;
+		movingAnimations = new MovingAnimations(
+			new SpriteAnimation(pathPlayerImg + "PlayerIdle.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation(pathPlayerImg + "PlayerFront.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation(pathPlayerImg + "PlayerBack.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation(pathPlayerImg + "PlayerLeft.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation(pathPlayerImg + "PlayerRight.png", new Point(0, 0), Align.bottomCenter, 6, 5)
+		);
 	}
 	
 	public Player(String name, String sex, int job)
@@ -181,10 +183,10 @@ public class Player extends LiveBeing
 			map = Game.getMaps()[job] ;
 		}
 
-		pos = new Point();
+		pos = new Point2D.Double();
 		dir = Directions.up;
 		state = LiveBeingStates.idle;
-	    size = Util.getSize(movingAni.idleGif) ;
+	    size = movingAni.spriteIdle.getFrameSize() ;
 		range = Integer.parseInt(InitialAtts.get(job)[4]) ;
 		step = Integer.parseInt(InitialAtts.get(job)[33]);
 	    atkElem = Elements.neutral ;
@@ -195,7 +197,7 @@ public class Player extends LiveBeing
 		battleActionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[41]) / 1.0) ;
 		stepCounter = new GameTimer(stepDuration) ;
 		combo = new ArrayList<>() ;
-		hitbox = new HitboxRectangle(pos, size, 0.8) ;
+		hitbox = new HitboxRectangle(getPos(), size, 0.8) ;
 	    
 		this.sex = sex ;
 		
@@ -430,7 +432,7 @@ public class Player extends LiveBeing
 			Creature creature = fieldMap.getCreatures().get(i) ;
 			if (fieldMap.getCreatures().get(i) != null)
 			{
-				dist[i] = (double) new Point(pos.x, pos.y).distance(new Point(creature.getPos().x, creature.getPos().y)) ;				
+				dist[i] = (double) pos.distance(creature.getPos()) ;				
 				minDist = Math.min(minDist, dist[i]) ;
 			}	
 		}
@@ -490,7 +492,7 @@ public class Player extends LiveBeing
 
         if (!collectibleGif.isDonePlaying())
         {
-    		collectibleGif.start(pos, Align.center) ;
+    		collectibleGif.start(getPos(), Align.center) ;
     		return ;
         }
         
@@ -562,7 +564,7 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	private static int calcNewYGoingLeft(boolean newMapIsAtTop, int posY)
+	private static int calcNewYGoingLeft(boolean newMapIsAtTop, Double posY)
 	{
 		int screenH = Game.getScreen().getSize().height ;
 		if (newMapIsAtTop)
@@ -575,7 +577,7 @@ public class Player extends LiveBeing
 		return (int) (Sky.height + (screenH - Sky.height) * (1 - a) + a * (posY - Sky.height)) ;
 	}
 	
-	private static int calcNewYGoingRight(boolean currentMapIsAtTop, int posY)
+	private static int calcNewYGoingRight(boolean currentMapIsAtTop, Double posY)
 	{
 		int screenH = Game.getScreen().getSize().height ;
 		if (currentMapIsAtTop)
@@ -588,19 +590,20 @@ public class Player extends LiveBeing
 		return (int) (Sky.height + (screenH / 2 - Sky.height) + a * (posY - Sky.height)) ;
 	}
 	
-	private static Point calcNewMapPos(Point pos, Directions dir, GameMap currentMap, GameMap newMap)
+	private static Point2D.Double calcNewMapPos(Point2D.Double pos, Directions dir, GameMap currentMap, GameMap newMap)
 	{
+		// TODO eliminar o clone
 		int[] screenBorder = Game.getScreen().getBorders() ;
 		Dimension screenSize = Game.getScreen().mapSize() ;
-		Point currentPos = new Point(pos) ;
+		Point2D.Double currentPos = (Point2D.Double) pos.clone() ;
 		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
 		int stepOffset = (int) (68 * Player.stepDuration) ; // TODO isso é uma aproximação. O qto o player anda depende da velocidade dos frames
 
 		switch (dir)
 		{
 			case up:
-				if (!currentMap.meetsTwoMapsUp()) { return new Point(currentPos.x, screenBorder[3] - stepOffset) ;}
-				return leftSide ? new Point(currentPos.x + screenSize.width / 2 - 1, screenBorder[3] - stepOffset) : new Point(currentPos.x - screenSize.width / 2, screenBorder[3] - stepOffset) ;				
+				if (!currentMap.meetsTwoMapsUp()) { return new Point2D.Double(currentPos.x, screenBorder[3] - stepOffset) ;}
+				return leftSide ? new Point2D.Double(currentPos.x + screenSize.width / 2 - 1, screenBorder[3] - stepOffset) : new Point2D.Double(currentPos.x - screenSize.width / 2, screenBorder[3] - stepOffset) ;				
 			
 			case left:
 				int newX = screenBorder[2] - stepOffset ;
@@ -608,16 +611,16 @@ public class Player extends LiveBeing
 				{
 					if (!newMap.meetsTwoMapsRight())
 					{
-						return new Point(newX, currentPos.y) ;
+						return new Point2D.Double(newX, currentPos.y) ;
 					}
 				}
 				int newY = calcNewYGoingLeft(Arrays.asList(Game.getMaps()).indexOf(newMap) == currentMap.getConnections()[2], currentPos.y) ;
 
-				return new Point(newX, newY) ;
+				return new Point2D.Double(newX, newY) ;
 			
 			case down:
-				if (!currentMap.meetsTwoMapsDown()) { return new Point(currentPos.x, screenBorder[1] + stepOffset) ;}
-				return leftSide ? new Point(currentPos.x + screenSize.width / 2 - 1, screenBorder[1] + stepOffset) : new Point(currentPos.x - screenSize.width / 2, screenBorder[1] + stepOffset) ;			
+				if (!currentMap.meetsTwoMapsDown()) { return new Point2D.Double(currentPos.x, screenBorder[1] + stepOffset) ;}
+				return leftSide ? new Point2D.Double(currentPos.x + screenSize.width / 2 - 1, screenBorder[1] + stepOffset) : new Point2D.Double(currentPos.x - screenSize.width / 2, screenBorder[1] + stepOffset) ;			
 			
 			case right:
 				int newRX = screenBorder[0] + stepOffset ;
@@ -625,11 +628,11 @@ public class Player extends LiveBeing
 				{
 					if (!newMap.meetsTwoMapsLeft())
 					{
-						return new Point(newRX, currentPos.y) ;
+						return new Point2D.Double(newRX, currentPos.y) ;
 					}
 					
 					int newRY = calcNewYGoingRight(Arrays.asList(Game.getMaps()).indexOf(currentMap) == newMap.getConnections()[2], currentPos.y) ;
-					return new Point(newRX, newRY) ;
+					return new Point2D.Double(newRX, newRY) ;
 				}
 //				return topSide ? new Point(newRX, currentPos.y + screenH / 2 - 1) : new Point(screenBorder[0] + stepOffset, currentPos.y - screenH / 2) ;
 			
@@ -637,14 +640,14 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	private void moveToNewMap(Point pos, Directions dir, GameMap currentMap)
+	private void moveToNewMap(Point2D.Double pos, Directions dir, GameMap currentMap)
 	{
 		GameMap newMap = calcNewMap(pos, dir, currentMap) ;
 		
 		if (newMap == null) { System.out.println("Warn: trying to move to null map") ; return ;}
 		if (!newMap.getContinent().equals(Continents.forest)) { System.out.println("Warn: trying to leave the forest"); return ;}
 		
-		Point newPos = calcNewMapPos(pos, dir, currentMap, newMap) ;
+		Point2D.Double newPos = calcNewMapPos(pos, dir, currentMap, newMap) ;
 
 		leaveBattle() ;
 		setMap(newMap) ;
@@ -654,16 +657,15 @@ public class Player extends LiveBeing
 	public void addKeyPressed(String key) { keysPressed.add(key) ;}
 	public void removeKeyPressed(String key) { keysPressed.remove(key) ;}
 
-	public void startMove() { stepCounter.restart() ;}
 	public boolean isMoving() { return keysPressed.stream().anyMatch(Game.arrowKeys::contains) ;}
 
 	public void move(Pet pet)
 	{
-		Point newPos = calcNewPos() ;
+		Point2D.Double newPos = calcNewPos() ;
 
 		if (Game.getScreen().posIsWithinBorders(newPos))
 		{
-			if (!map.groundIsWalkable(newPos, superElem)) { return ;}
+			if (!map.groundIsWalkable(new Point((int) newPos.x, (int) newPos.y), superElem)) { return ;}
 			
 			setPos(newPos) ;
 			
@@ -678,7 +680,7 @@ public class Player extends LiveBeing
 		}
 		if (opponent != null)
 		{
-			opponent.setFollow(false) ;
+			opponent.setChasePlayer(false) ;
 		}
 		resetClosestCreature() ;
 		resetOpponent() ;		
@@ -687,10 +689,10 @@ public class Player extends LiveBeing
 	public void engageInFight(Creature newOpponent)
 	{
 		opponent = newOpponent ;
-		opponent.setFollow(true) ;
 		setState(LiveBeingStates.fighting) ;
-		
 		battleActionCounter.start() ;
+		
+		opponent.setChasePlayer(true) ;
 		opponent.setState(LiveBeingStates.fighting);
 		opponent.getBattleActionCounter().start() ;
 		if (Game.getPet() != null)
@@ -717,10 +719,10 @@ public class Player extends LiveBeing
 
 		Point fishingPos = switch (dir)
 		{
-			case left -> Util.Translate(pos, -Player.FishingGif.size().width, 0) ;
-			case right -> Util.Translate(pos, Player.FishingGif.size().width, 0) ;
-			case up -> Util.Translate(pos, 0, -Player.FishingGif.size().height) ;
-			case down -> Util.Translate(pos, 0, Player.FishingGif.size().height) ;
+			case left -> Util.Translate(getPos(), -Player.FishingGif.size().width, 0) ;
+			case right -> Util.Translate(getPos(), Player.FishingGif.size().width, 0) ;
+			case up -> Util.Translate(getPos(), 0, -Player.FishingGif.size().height) ;
+			case down -> Util.Translate(getPos(), 0, Player.FishingGif.size().height) ;
 		};
 		FishingGif.start(fishingPos, Align.center) ;
 		
@@ -770,7 +772,7 @@ public class Player extends LiveBeing
 
 		if (DiggingGif.isActive()) { return ;}
 		
-		DiggingGif.start(pos, Align.center) ;
+		DiggingGif.start(getPos(), Align.center) ;
 		
 		if (!DiggingGif.isDonePlaying()) { return ;}
 				
@@ -814,7 +816,7 @@ public class Player extends LiveBeing
 	{
 		if (TentGif.isActive()) { return ;}
 		
-		TentGif.start(pos, Align.bottomCenter) ;
+		TentGif.start(getPos(), Align.bottomCenter) ;
 		
 		if (!TentGif.isDonePlaying()) { return ;}
 		
@@ -846,7 +848,7 @@ public class Player extends LiveBeing
 				
 			case map:
 				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinent().name()))) { return ;}
-				mapWindow.setPlayerPos(pos) ;
+				mapWindow.setPlayerPos(getPos()) ;
 				mapWindow.setCurrentMap(map) ;
 				switchOpenClose(mapWindow) ; return ;
 				
@@ -930,7 +932,7 @@ public class Player extends LiveBeing
 			chooseDirection(currentAction) ;
 			if (!isFocusedOnWindow())
 			{
-				startMove() ;
+				restartMoving() ;
 			}
 			
 		}
@@ -1072,7 +1074,7 @@ public class Player extends LiveBeing
 		List<Creature> creaturesInMap = map.getCreatures() ;
 		for (Creature creature : creaturesInMap)
 		{
-			if (isInCloseRange(creature.getPos()))
+			if (isInCloseRange(creature.getPosAsDouble()))
 			{
 				engageInFight(creature) ;
 				bestiary.addDiscoveredCreature(opponent.getType()) ;
@@ -1656,7 +1658,7 @@ public class Player extends LiveBeing
 		if (opponent != null)
 		{
 			opponent.setState(LiveBeingStates.idle) ;
-			opponent.setFollow(false) ;
+			opponent.setChasePlayer(false) ;
 		}
 		resetOpponent() ;
 		resetPosition() ;
@@ -1810,7 +1812,7 @@ public class Player extends LiveBeing
 	
 	private void drawRange()
 	{
-		GamePanel.DP.drawCircle(pos, (int)(2 * range), 2, null, Game.palette[10]) ;
+		GamePanel.DP.drawCircle(getPos(), (int)(2 * range), 2, null, Game.palette[10]) ;
 	}
 
 	public void drawWeapon(Point pos, Scale scale)
@@ -1844,7 +1846,7 @@ public class Player extends LiveBeing
 		}
 		else
 		{
-			GamePanel.DP.drawImage(movingAni.idleGif, pos, Draw.stdAngle , Scale.unit, Align.bottomCenter) ;
+			movingAni.displayIdle(pos, Draw.stdAngle , Scale.unit, Align.bottomCenter) ;
 		}
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
@@ -1875,7 +1877,7 @@ public class Player extends LiveBeing
 	
 	public void display()
 	{
-		display(pos, Scale.unit, dir, settings.getShowAtkRange()) ;
+		display(getPos(), Scale.unit, dir, settings.getShowAtkRange()) ;
 	}
 
 

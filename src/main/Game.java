@@ -26,7 +26,6 @@ import components.Projectiles ;
 import components.Quest ;
 import components.QuestSkills;
 import graphics.Align;
-import graphics.Scale;
 import graphics2.Animation;
 import graphics2.Draw;
 import graphics2.Drawable;
@@ -104,6 +103,7 @@ public class Game
 	private static Languages gameLanguage ;
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
+	private static double dt ;
 	public static GameTimer dayCounter ;
 
 
@@ -143,6 +143,7 @@ public class Game
 		dayCounter = new GameTimer(600) ;
 
 		settingsWindow = new PauseWindow() ;
+		dt = System.nanoTime() ;
 	}
 
 	public Game()
@@ -467,7 +468,7 @@ public class Game
 
 	private void activateCounters()
 	{
-		if (dayCounter.finished())
+		if (dayCounter.hasFinished())
 		{
 			dayCounter.restart() ;
 			NPC.renewStocks() ;
@@ -526,16 +527,17 @@ public class Game
 		}
 	}
 	
-	private void creaturesAct()
+	private void creaturesAct(double dt)
 	{
 		List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
 		for (Creature creature : creaturesInMap)
 		{
+			// if (creature == creaturesInMap.get(0) && creature.getStepCounter().isActive()) System.out.println(creature.getStepCounter() + " " + creature.getPos());
 			creature.takeBloodAndPoisonDamage() ;
+			
 			if (creature.isMoving())
 			{
-				creature.move(player.getPos(), player.getMap()) ;
-				creature.display(creature.getPos(), Scale.unit) ;
+				creature.move(player.getPosAsDouble(), player.getMap(), dt) ;
 				continue ;
 			}
 			if (creature.canAct())
@@ -547,14 +549,14 @@ public class Game
 		shouldRepaint = true ;
 	}
 	
-	private void petActs()
+	private void petActs(double dt)
 	{
 		if (!pet.isAlive()) { return ;}
 
 		pet.takeBloodAndPoisonDamage() ;
 		pet.updateCombo() ;
-		pet.think(player.isFighting(), player.getPos()) ;
-		pet.act(player) ;
+		pet.think(player.isFighting(), player.getPosAsDouble()) ;
+		pet.act(player, dt) ;
 	}
 	
 	private void playerActs()
@@ -567,7 +569,7 @@ public class Game
 		{
 			player.acts(pet, GamePanel.getMousePos()) ;
 
-			if (player.getActionCounter().finished())
+			if (player.getActionCounter().hasFinished())
 			{
 				player.getActionCounter().reset() ;
 			}
@@ -587,9 +589,9 @@ public class Game
 	}
 	
 	
-	private void run()
+	private void run(double dt)
 	{
-
+		// System.out.println("dt = " + dt / Math.pow(10, 6) + "     fr = " + 1 / (dt * Math.pow(10, -9)));
 		activateCounters() ;
 
 		checkKonamiCode(player.getCombo()) ;
@@ -600,12 +602,12 @@ public class Game
 
 		if (player.getMap().isField())
 		{
-			creaturesAct() ;
+			creaturesAct(dt / Math.pow(10, 9)) ;
 		}
 
 		if (pet != null)
 		{
-			petActs() ;
+			petActs(dt) ;
 		}
 
 		playerActs() ;
@@ -744,7 +746,12 @@ public class Game
 				return ;
 
 			case running:
-				run() ;
+				if (Math.pow(10, 10) <= System.nanoTime() - dt)
+				{
+					return ;
+				}
+				run(System.nanoTime() - dt) ;
+				dt = System.nanoTime() ;
 				draw() ;
 				return ;
 
@@ -844,8 +851,8 @@ public class Game
 		{
 			player.setCurrentAction("MouseRightClick") ;
     		player.setPos(GamePanel.getMousePos()) ;
-    		Log.attributes(player) ;
-    		System.out.println("map: " + player.getMap().getName());
+    		// Log.attributes(player) ;
+    		// System.out.println("map: " + player.getMap().getName());
     		if (pet != null)
     		{
     			pet.setPos(player.getPos()) ;
