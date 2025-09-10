@@ -7,8 +7,7 @@ import java.awt.Point;
 import UI.ButtonFunction;
 import UI.GameButton;
 import graphics.Align;
-import liveBeings.Creature;
-import liveBeings.CreatureType;
+import graphics2.SpriteAnimation;
 import liveBeings.Player;
 import utilities.Util;
 
@@ -19,8 +18,8 @@ public abstract class LoadingGame
     private static final GameButton startButton ;
 	private static final String path = Game.ImagesPath  + "\\Opening\\";
 	private static final Image LoadingGif = Util.loadImage(path + "Loading.gif") ;
-	private static final Image petImage0 = Util.loadImage(Game.ImagesPath + "\\Pet\\" + "PetType" + String.valueOf(0) + ".png") ;
-	
+	private static final SpriteAnimation petIdle = new SpriteAnimation("\\Pet\\" + "Pet0Idle.png", Game.getScreen().getCenter(), Align.center, 4, 0.13) ;
+
     static
     {
 		Point startButtonPos = Util.Translate(Game.getScreen().getCenter(), 0, 80) ;
@@ -29,6 +28,7 @@ public abstract class LoadingGame
 		ButtonFunction startAction = () -> { loadingStep = 12 ;} ;
     	startButton = new GameButton(startButtonPos, Align.center, "start game", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
+		petIdle.activate();
     }
     
     
@@ -94,8 +94,9 @@ public abstract class LoadingGame
 //			GamePanel.DP.drawImage(LoadingEnfeite, new Point(0, 0), Align.topLeft) ;
 		
 		GamePanel.DP.drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), Game.palette[0], null) ;
-		GamePanel.DP.drawImage(petImage0, Game.getScreen().getCenter(), Align.center) ;
-		
+		SpriteAnimation.updateAll();
+		petIdle.display(GamePanel.DP);
+
 		if (!loadingIsOver())
 		{
 			Dimension loadingBarSize = new Dimension(400, 30) ;

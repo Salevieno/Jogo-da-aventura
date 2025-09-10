@@ -8,15 +8,16 @@ import java.util.Set;
 
 import graphics.Align;
 import graphics.DrawPrimitives;
+import utilities.GameTimer;
 
 public class SpriteAnimation
 {
 	private BufferedImage[] frames;
     private int currentFrame;
     private int frameCount;
-    private int frameDuration;
+    private double frameDuration;
     private Dimension frameSize;
-    private int tick; // TODO converter para time
+    private GameTimer timer;
     private Point pos ; // TODO verificar necessidade
     private Align align ;
     private boolean active ;
@@ -28,7 +29,7 @@ public class SpriteAnimation
     	all = new HashSet<>() ;
     }
 
-    public SpriteAnimation(String path, Point pos, Align align, int qtdFrames, int frameDuration)
+    public SpriteAnimation(String path, Point pos, Align align, int qtdFrames, double frameDuration)
     {
     	Spritesheet sheet = new Spritesheet(path) ;
     	BufferedImage[] sheetFrames = new BufferedImage[qtdFrames] ;
@@ -41,18 +42,18 @@ public class SpriteAnimation
         this.frameDuration = frameDuration;
         this.frameCount = frames.length;
         this.currentFrame = 0;
-        this.tick = 0;
+        this.timer = new GameTimer(frameDuration * frames.length) ;
         this.pos = pos ;
         this.align = align ;
-        this.active = true ;
+        this.active = false ;
         all.add(this) ;
     }
     
     public Dimension getFrameSize() { return frameSize ;}
     public void setPos(Point pos) { this.pos = pos ;}
     
-    public void activate() { active = true ;}
-    public void deactivate() { active = false ;}    
+    public void activate() { active = true ; timer.start() ;}
+    public void deactivate() { active = false ; timer.stop() ;}    
     
     public static void updateAll()
     {
@@ -66,11 +67,13 @@ public class SpriteAnimation
 
     private void update()
     {
-        tick++;
-        if (frameDuration <= tick)
+        if (timer.crossedTime(frameDuration))
         {
-            tick = 0;
             currentFrame = (currentFrame + 1) % frameCount;
+        }
+        if (timer.hasFinished())
+        {
+            timer.restart();
         }
     }
     
