@@ -96,7 +96,7 @@ public class Game
 	public static final String MainFontName = "Comics" ;
 
 	private static final GameStates mainState = GameStates.running ;
-	private static final boolean cheatMode = true ;
+	private static final boolean cheatMode = false ;
 	public static final boolean debugMode = false;
 
 	private static GameStates state = GameStates.loading ;

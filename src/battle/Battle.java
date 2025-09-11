@@ -47,6 +47,7 @@ public abstract class Battle
 		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;		
 	}
 
+	public static double getRandomAmp() { return randomAmp ;}
 	public static void removeRandomness() { randomAmp = 0 ;}
 	
 //	
@@ -455,8 +456,6 @@ public abstract class Battle
 		}
 		
 	}
-		
-	
 	
 	public static void runBattle(Player player, Pet pet, Creature creature)
 	{
@@ -476,8 +475,6 @@ public abstract class Battle
 		runTurn(creature, creatureTarget) ;
 		
 	}
-		
-	
 	
 	public static void finishBattle(Player player, Pet pet, Creature creature)
 	{
@@ -522,6 +519,4 @@ public abstract class Battle
 		}
 	}
 
-
-	public static double getRandomAmp() { return randomAmp ;}
 }

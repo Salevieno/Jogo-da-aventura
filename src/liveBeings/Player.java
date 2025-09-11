@@ -159,11 +159,11 @@ public class Player extends LiveBeing
 		} ;
 		
 		movingAnimations = new MovingAnimations(
-			new SpriteAnimation(pathPlayerImg + "PlayerIdle.png", new Point(0, 0), Align.bottomCenter, 1, 5),
-			new SpriteAnimation(pathPlayerImg + "PlayerFront.png", new Point(0, 0), Align.bottomCenter, 1, 5),
-			new SpriteAnimation(pathPlayerImg + "PlayerBack.png", new Point(0, 0), Align.bottomCenter, 1, 5),
-			new SpriteAnimation(pathPlayerImg + "PlayerLeft.png", new Point(0, 0), Align.bottomCenter, 1, 5),
-			new SpriteAnimation(pathPlayerImg + "PlayerRight.png", new Point(0, 0), Align.bottomCenter, 6, 5)
+			new SpriteAnimation(pathPlayerImg + "PlayerIdle.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
+			new SpriteAnimation(pathPlayerImg + "PlayerFront.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
+			new SpriteAnimation(pathPlayerImg + "PlayerBack.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
+			new SpriteAnimation(pathPlayerImg + "PlayerLeft.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
+			new SpriteAnimation(pathPlayerImg + "PlayerRight.png", new Point(0, 0), Align.bottomCenter, 6, 0.1)
 		);
 	}
 	
@@ -1637,11 +1637,11 @@ public class Player extends LiveBeing
 		//setContinent(0) ;
 		switch (job)
 		{
-			case 0: setPos(new Point(340, 340)) ; break ;
-			case 1: setPos(new Point(340, 180)) ; break ;
-			case 2: setPos(new Point(40, 220)) ; break ;
-			case 3: setPos(new Point(340, 340)) ; break ;
-			case 4: setPos(new Point(340, 640)) ; break ;
+			case 0: setPos(new Point(340, 540)) ; break ;
+			case 1: setPos(new Point(340, 380)) ; break ;
+			case 2: setPos(new Point(40, 420)) ; break ;
+			case 3: setPos(new Point(340, 540)) ; break ;
+			case 4: setPos(new Point(340, 840)) ; break ;
 		}
 	}
 	

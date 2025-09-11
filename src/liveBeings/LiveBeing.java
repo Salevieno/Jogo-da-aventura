@@ -873,7 +873,7 @@ public abstract class LiveBeing implements Drawable
 		if (damage <= 0) { return ;}
 		
 		PA.getLife().decTotalValue(damage) ;
-		playDamageAnimation(damageStyle, new AtkResults(1), Game.palette[7]) ;
+		// playDamageAnimation(damageStyle, new AtkResults(1), Game.palette[7]) ;
 	}
 	
 	public void takeBloodAndPoisonDamage()
@@ -900,30 +900,21 @@ public abstract class LiveBeing implements Drawable
 		}
 		
 		if (bloodDamage + poisonDamage <= 0) { return ;}
-
-		if (this instanceof Player)
-		{
-			System.out.println("blood dam = " + bloodDamage);
-		}
 		
 		PA.getLife().decTotalValue(bloodDamage + poisonDamage) ;
 	}
 
 	public void playDamageAnimation(int damageStyle, AtkResults atkResults)
-	{
-		
-		if (atkResults == null) { System.out.println("Playing damage animation with atkResults null") ; return ;}
-		if (atkResults.getAtkType() == null) { System.out.println("Playing damage animation with atkType null") ; return ;}
+	{		
+		if (atkResults == null) { System.out.println("Warn: Playing damage animation with atkResults null") ; return ;}
+		if (atkResults.getAtkType() == null) { System.out.println("Warn: Playing damage animation with atkType null") ; return ;}
 		
 		Animation.start(AnimationTypes.damage, new Object[] {headPos(), damageStyle, atkResults, null});
-
 	}
 
 	public void playDamageAnimation(int damageStyle, AtkResults atkResults, Color color)
 	{
-		
 		Animation.start(AnimationTypes.damage, new Object[] {headPos(), damageStyle, atkResults, color});
-		
 	}
 
 	public void playDamageAnimation(AtkResults atkResults, Color color) { playDamageAnimation(damageStyle, atkResults, color) ;}
