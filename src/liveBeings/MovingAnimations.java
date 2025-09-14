@@ -24,9 +24,15 @@ public class MovingAnimations
 		this.spriteMovingLeft = spriteMovingLeft ;
 		this.spriteMovingRight = spriteMovingRight ;
 	}
-	
+
+	public double getIdleDuration()
+	{
+		return spriteIdle.getTotalDuration() ;
+	}
+
 	public void displayIdle(Point pos, double angle, Scale scale, Align align)
 	{
+		spriteIdle.activateIfInactive() ; 
 		spriteIdle.display(GamePanel.DP, pos, align) ;
 	}
 	
@@ -34,10 +40,10 @@ public class MovingAnimations
 	{
 		switch (direction)
 		{
-			case up: spriteMovingUp.display(GamePanel.DP, pos, align) ; return ;
-			case down: spriteMovingDown.display(GamePanel.DP, pos, align) ; return ;
-			case left: spriteMovingLeft.display(GamePanel.DP, pos, align) ; return ;
-			case right: spriteMovingRight.display(GamePanel.DP, pos, align) ; return ;
+			case up: spriteMovingUp.activateIfInactive() ; spriteMovingUp.display(GamePanel.DP, pos, align) ; return ;
+			case down: spriteMovingDown.activateIfInactive() ; spriteMovingDown.display(GamePanel.DP, pos, align) ; return ;
+			case left: spriteMovingLeft.activateIfInactive() ; spriteMovingLeft.display(GamePanel.DP, pos, align) ; return ;
+			case right: spriteMovingRight.activateIfInactive() ; spriteMovingRight.display(GamePanel.DP, pos, align) ; return ;
 		}
 	}
 }

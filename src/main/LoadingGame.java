@@ -57,6 +57,7 @@ public abstract class LoadingGame
 
 		if (startGameButtonClicked())
 		{
+			petIdle.deactivate() ;
 			startButton.deactivate() ;			
 			player.startCounters() ;
 			Game.switchToMainState() ;

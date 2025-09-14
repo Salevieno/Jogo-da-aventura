@@ -59,9 +59,9 @@ public abstract class LiveBeing implements Drawable
 	protected GameTimer mpCounter ;
 	protected GameTimer satiationCounter ;
 	protected GameTimer thirstCounter ;
-	protected GameTimer actionCounter ;
+	protected GameTimer actionCounter ; // TODO remover
 	protected GameTimer battleActionCounter ;
-	protected GameTimer stepCounter ;			// counts the steps in the movement
+	protected GameTimer stepCounter ;			// TODO remover - counts the steps in the movement
 	protected String currentAction ;
 	protected AtkTypes currentAtkType ;
 	protected List<String> combo ;				// record of the last 10 movements

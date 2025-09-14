@@ -134,7 +134,7 @@ public class Player extends LiveBeing
     public static final Image RidingImage = UtilS.loadImage(pathPlayerImg + "Tiger.png") ;
 	public static final Image CoinIcon = UtilS.loadImage(pathPlayerImg + "CoinIcon.png") ;
 	public static final Image MagicBlissGif = UtilS.loadImage(pathPlayerImg + "MagicBliss.gif") ;
-    public static final Gif[] collectingGifs ;
+    public static final SpriteAnimation[] collectingAnimations ;
     public static final Gif TentGif = new Gif("Tent", UtilS.loadImage(pathPlayerImg + "Tent.png"), 5, false, false) ;
 	public static final Gif DiggingGif = new Gif("Digging", UtilS.loadImage(pathPlayerImg + "Digging.gif"), 2, false, false) ;
     public static final Gif FishingGif = new Gif("Fishing", UtilS.loadImage(pathPlayerImg + "Fishing.gif"), 2, false, false) ;
@@ -151,11 +151,11 @@ public class Player extends LiveBeing
 	
 	static
 	{
-		collectingGifs = new Gif[] {
-			new Gif("Collecting", UtilS.loadImage(pathCollectImg + "CollectingFruit.gif"), 3.6, false, false),
-			new Gif("Collecting", UtilS.loadImage(pathCollectImg + "CollectingHerb.gif"), 3.6, false, false),
-			new Gif("Collecting", UtilS.loadImage(pathCollectImg + "CollectingWood.gif"), 3.6, false, false),
-			new Gif("Collecting", UtilS.loadImage(pathCollectImg + "CollectingMetal.gif"), 3.6, false, false)
+		collectingAnimations = new SpriteAnimation[] {
+			new SpriteAnimation(pathCollectImg + "CollectingFruit.png", new Point(300, 300), Align.center, false, 12, 0.3),
+			new SpriteAnimation(pathCollectImg + "CollectingHerb.png", new Point(300, 300), Align.center, false, 12, 0.3),
+			new SpriteAnimation(pathCollectImg + "CollectingWood.png", new Point(300, 300), Align.center, false, 12, 0.3),
+			new SpriteAnimation(pathCollectImg + "CollectingMetal.png", new Point(300, 300), Align.center, false, 12, 0.3)
 		} ;
 		
 		movingAnimations = new MovingAnimations(
@@ -223,7 +223,7 @@ public class Player extends LiveBeing
 		equippedArrow = null ;
 		spellPoints = 0 ;
     	
-		collectLevel = List.of(0.0, 0.0, 0.0);
+		collectLevel = new ArrayList<>(List.of(0.0, 0.0, 0.0));
 		goldMultiplier = Double.parseDouble(InitialAtts.get(job)[32]) ;
 		digBonus = 0 ;
 		questSkills = new HashMap<QuestSkills, Boolean>() ;
@@ -485,16 +485,15 @@ public class Player extends LiveBeing
 	public void collect(Collectible collectible)
     {
 		
-		Gif collectibleGif = collectingGifs[collectible.typeNumber()] ;
-		
-		if (collectibleGif.isActive()) { return ;}
-		
+		SpriteAnimation collectingAnimation = collectingAnimations[collectible.typeNumber()] ;
+		if (!collectingAnimation.isActive() && !collectingAnimation.hasFinished())
+		{
+			collectingAnimation.setPos(new Point((int) pos.x, (int) (pos.y - size.height))) ;
+			collectingAnimation.activate() ;
+			return ;
+		}
 
-        if (!collectibleGif.isDonePlaying())
-        {
-    		collectibleGif.start(getPos(), Align.center) ;
-    		return ;
-        }
+		if (collectingAnimation.isActive() && !collectingAnimation.hasFinished()) { return ;}
         
         boolean isBerry = collectible.typeNumber() == 0 ;
         boolean collectSuccessful = isBerry ? true : Util.chance(collectible.chance(level)) ;        

@@ -535,12 +535,13 @@ public class Game
 			// if (creature == creaturesInMap.get(0) && creature.getStepCounter().isActive()) System.out.println(creature.getStepCounter() + " " + creature.getPos());
 			creature.takeBloodAndPoisonDamage() ;
 			
+			if (creature.getType().getID() == 6) { System.out.println(creature.getNotMovingTimer().isActive() ? (creature.getNotMovingTimer().getCounter() + " / " + creature.getNotMovingTimer().getDuration()) : "") ;}
 			if (creature.isMoving())
 			{
 				creature.move(player.getPosAsDouble(), player.getMap(), dt) ;
 				continue ;
 			}
-			if (creature.canAct())
+			if (creature.canAct() && !creature.getNotMovingTimer().isActive())
 			{
 				creature.think() ;
 				creature.act() ;
@@ -710,6 +711,7 @@ public class Game
 
 		Animation.playAll() ;
 		Gif.playAll() ;
+		SpriteAnimation.displayAll(GamePanel.DP) ;
 		
 		SideBar.display(player, pet, GamePanel.getMousePos()) ;
 		
