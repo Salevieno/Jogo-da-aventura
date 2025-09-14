@@ -43,7 +43,6 @@ public class Creature extends LiveBeing
 	private boolean hasSwitchedDirection ;
 	private GameTimer notMovingTimer ;
 	
-	private static final double idleDuration = 10 ;
 	private static final Color[] skinColor = new Color[] {Game.palette[0], Game.palette[5]} ;
 	private static final Color[] shadeColor = new Color[] {Game.palette[2], Game.palette[3]} ;
 	
@@ -86,7 +85,7 @@ public class Creature extends LiveBeing
 		startCounters() ;
 		
 		this.chasePlayer = false ;
-		this.notMovingTimer = new GameTimer(idleDuration) ;
+		this.notMovingTimer = new GameTimer(CT.getMovingAnimations().getIdleDuration()) ;
  		setPos(pos) ;
  	}
  	
@@ -96,6 +95,7 @@ public class Creature extends LiveBeing
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public Set<Item> getBag() {return items ;}
 	public int getGold() {return gold ;}
+	public GameTimer getNotMovingTimer() {return notMovingTimer ;}
 	public void setChasePlayer(boolean F) {chasePlayer = F ;}
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
@@ -318,11 +318,10 @@ public class Creature extends LiveBeing
 		{
 			displayDrunk() ;
 		}
-//		displayAttributes(0) ;
 		displayStatus() ;
 		GamePanel.DP.drawText(Util.Translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.movePattern.toString(), Color.black) ;
-		// GamePanel.DP.drawText(Util.Translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
-		// GamePanel.DP.drawText(Util.Translate(pos, 0, -40), Align.bottomCenter, "is moving: " + isMoving(), Color.black) ;
+		GamePanel.DP.drawText(Util.Translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
+		GamePanel.DP.drawText(Util.Translate(pos, 0, -40), Align.bottomCenter, isMoving() ? "is moving: " + dir : "", Color.black) ;
 		if (Game.debugMode)
 		{
 			displayState() ;

@@ -20,6 +20,7 @@ public class SpriteAnimation
     private GameTimer timer;
     private Point pos ; // TODO verificar necessidade
     private Align align ;
+    private boolean loops ;
     private boolean active ;
     
     private static final Set<SpriteAnimation> all ;
@@ -29,7 +30,7 @@ public class SpriteAnimation
     	all = new HashSet<>() ;
     }
 
-    public SpriteAnimation(String path, Point pos, Align align, int qtdFrames, double frameDuration)
+    public SpriteAnimation(String path, Point pos, Align align, boolean loops, int qtdFrames, double frameDuration)
     {
     	Spritesheet sheet = new Spritesheet(path) ;
     	BufferedImage[] sheetFrames = new BufferedImage[qtdFrames] ;
@@ -45,15 +46,23 @@ public class SpriteAnimation
         this.timer = new GameTimer(frameDuration * frames.length) ;
         this.pos = pos ;
         this.align = align ;
+        this.loops = loops ;
         this.active = false ;
         all.add(this) ;
+    }
+
+    public SpriteAnimation(String path, Point pos, Align align, int qtdFrames, double frameDuration)
+    {
+    	this(path, pos, align, true, qtdFrames, frameDuration) ;
     }
     
     public Dimension getFrameSize() { return frameSize ;}
     public void setPos(Point pos) { this.pos = pos ;}
     
-    public void activate() { active = true ; timer.start() ;}
-    public void deactivate() { active = false ; timer.stop() ;}    
+    public boolean isActive() { return active ;}
+    public void activate() { active = true ; timer.restart() ;}
+    public void deactivate() { active = false ; timer.stop() ;}
+    public void activateIfInactive() { if (!active) activate() ;}
     
     public static void updateAll()
     {
@@ -67,14 +76,32 @@ public class SpriteAnimation
 
     private void update()
     {
+        if (frameCount == 12)
+        {
+            System.out.println(timer.crossedTime(frameDuration) + " " + timer);
+            // problem: timer is crossing time twice at the beginning
+        }
         if (timer.crossedTime(frameDuration))
         {
             currentFrame = (currentFrame + 1) % frameCount;
         }
         if (timer.hasFinished())
         {
-            timer.restart();
+            if (loops)
+            {
+                timer.restart();
+            }
+            else
+            {
+                deactivate();
+                currentFrame = 0;
+            }
         }
+    }
+
+    public boolean hasFinished()
+    {
+        return timer.hasFinished();
     }
     
     public void display(DrawPrimitives DP, Point pos, Align align)
@@ -90,5 +117,10 @@ public class SpriteAnimation
     public BufferedImage getCurrentFrame()
     {
         return frames[currentFrame];
+    }
+
+    public double getTotalDuration()
+    {
+        return frameDuration * frameCount;
     }
 }
