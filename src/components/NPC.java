@@ -663,7 +663,7 @@ public class NPC
 
 	private void portalAction(Player player)
 	{
-		// TODO pro usar o move to map
+		// proTODO usar o move to map
 		if (player.getMap().getName().equals("Forest 2"))
 		{
 			player.setMap(Game.getMaps()[30]) ;
@@ -716,7 +716,7 @@ public class NPC
 	}
 	
 	private void sailorAction(Player player, String action)
-	{// TODO pro sailor animation
+	{// proTODO sailor animation
 		if (action == null) { return ;}		
 
 		if (action.equals("Enter") & selOption == 0)

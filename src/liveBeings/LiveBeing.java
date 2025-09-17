@@ -61,7 +61,7 @@ public abstract class LiveBeing implements Drawable
 	protected GameTimer thirstCounter ;
 	protected GameTimer actionCounter ; // TODO remover
 	protected GameTimer battleActionCounter ;
-	protected GameTimer stepCounter ;			// TODO remover - counts the steps in the movement
+	protected GameTimer movingTimer ;
 	protected String currentAction ;
 	protected AtkTypes currentAtkType ;
 	protected List<String> combo ;				// record of the last 10 movements
@@ -169,7 +169,7 @@ public abstract class LiveBeing implements Drawable
 	public GameTimer getThirstCounter() {return thirstCounter ;}
 	public GameTimer getActionCounter() {return actionCounter ;}
 	public GameTimer getBattleActionCounter() {return battleActionCounter ;}
-	public GameTimer getStepCounter() {return stepCounter ;}
+	public GameTimer getMovingTimer() {return movingTimer ;}
 	public List<String> getCombo() {return combo ;}
 	public List<Spell> getSpells() {return spells ;}
 	public AttributesWindow getAttWindow() {return attWindow ;}
@@ -182,7 +182,7 @@ public abstract class LiveBeing implements Drawable
 	public void setBattleActionCounter(GameTimer battleActionCounter) { this.battleActionCounter = battleActionCounter ;}
 	public void setSatiationCounter(GameTimer satiationCounter) { this.satiationCounter = satiationCounter ;}
 	public void setThirstCounter(GameTimer thirstCounter) { this.thirstCounter = thirstCounter ;}
-	public void setStepCounter(GameTimer stepCounter) { this.stepCounter = stepCounter ;}
+	public void setMovingTimer(GameTimer stepCounter) { this.movingTimer = stepCounter ;}
 
 	public void setName(String newValue) {name = newValue ;}
 	public void setLevel(int newValue) {level = newValue ;}
@@ -207,15 +207,15 @@ public abstract class LiveBeing implements Drawable
 	public void setCombo(List<String> newValue) {combo = newValue ;}
 	public void setCurrentAtkType(AtkTypes ba) { currentAtkType = ba ;}
 	
-	public boolean isMoving() { return stepCounter.isActive() ;}
+	public boolean isMoving() { return movingTimer.isActive() ;}
 	public boolean canAct() { return actionCounter.hasFinished() & (state.equals(LiveBeingStates.idle) | isMoving() | isFighting()) ;}
 	
 	public boolean isPlayerAlly() { return (this instanceof Player | this instanceof Pet) ;}
 	
 	public void resetAction() { currentAction = null ;}
 	public void resetBattleAction() { currentAtkType = null ;}
-	protected void startMoving() { stepCounter.start() ;}
-	protected void restartMoving() { stepCounter.restart() ;}
+	protected void startMoving() { movingTimer.start() ;}
+	protected void restartMoving() { movingTimer.restart() ;}
 	
 	public static void updateDamageAnimation(int newDamageStyle) { damageStyle = newDamageStyle ;}
 	public void inflictStatus(Attributes att, double intensity, int duration)

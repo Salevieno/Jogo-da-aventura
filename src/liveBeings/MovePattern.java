@@ -7,7 +7,7 @@ import utilities.Directions;
 public enum MovePattern
 {
     pattern0(1.5),
-    pattern1(0.5),
+    pattern1(3.0),
 	pattern2(5.0),
 	pattern3(5.0);
 
@@ -45,7 +45,7 @@ public enum MovePattern
 
 	public static Point2D.Double calcNewPos(MovePattern pattern, Directions dir, int step, double dt, Point2D.Double currentPos, double moveRate)
 	{
-		Point2D.Double speed = calcPattern(pattern, moveRate) ;
+		Point2D.Double speed = calcSpeed(pattern, moveRate) ;
 
 		Point2D.Double newPos = switch (dir)
 		{
@@ -58,12 +58,12 @@ public enum MovePattern
 		return newPos ;
 	}
 
-	private static Point2D.Double calcPattern(MovePattern pattern, double moveRate)
+	private static Point2D.Double calcSpeed(MovePattern pattern, double moveRate)
 	{
 		return switch (pattern)
 		{
 			case pattern0 -> new Point2D.Double(100 * moveRate, 0.0) ;
-			case pattern1 -> new Point2D.Double(0.0, 0.0) ;
+			case pattern1 -> new Point2D.Double(100 * (3 * moveRate * moveRate - 3 * moveRate + 0.5), 0.0) ;
 			case pattern2 -> new Point2D.Double(600.0 * (moveRate / 2.0 - moveRate * moveRate / 2.0), 0.0) ;
 			case pattern3 -> new Point2D.Double(100.0 * Math.tanh(2 * moveRate), 0.0) ;
 		} ;

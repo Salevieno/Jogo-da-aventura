@@ -72,7 +72,7 @@ public class Potion extends Item
 		PersonalAttributes PA = target.getPA() ;
 		PA.getLife().incCurrentValue((int) (lifeHeal * PA.getLife().getMaxValue() * powerMult)) ;
 		PA.getMp().incCurrentValue((int) (MPHeal * PA.getMp().getMaxValue() * powerMult)) ;
-		// TODO pro - bebidas
+		// proTODO - bebidas
 	}
 
 	public void displayInfo(Point pos, Align align)

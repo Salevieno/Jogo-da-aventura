@@ -40,8 +40,8 @@ public class Creature extends LiveBeing
 	private final int gold ;
 	private final Color color ;
 	private boolean chasePlayer ;
-	private boolean hasSwitchedDirection ;
-	private GameTimer notMovingTimer ;
+	// private boolean hasSwitchedDirection ;
+	private GameTimer idleTimer ;
 	
 	private static final Color[] skinColor = new Color[] {Game.palette[0], Game.palette[5]} ;
 	private static final Color[] shadeColor = new Color[] {Game.palette[2], Game.palette[3]} ;
@@ -66,7 +66,7 @@ public class Creature extends LiveBeing
 		this.satiationCounter = new GameTimer(CT.satiationDuration);
 		this.actionCounter = new GameTimer(CT.stepDuration) ;
 		this.battleActionCounter = new GameTimer(CT.battleActionDuration / 1.0) ;
-		this.stepCounter = new GameTimer(CT.movePattern.getDuration()) ;
+		this.movingTimer = new GameTimer(CT.movePattern.getDuration()) ;
 		this.combo = new ArrayList<>() ;
 		this.hitbox = CT.getHitboxType().equals("circle") ? new HitboxCircle(new Point(), size.width / 2) : new HitboxRectangle(new Point(), size) ;
 		
@@ -85,7 +85,8 @@ public class Creature extends LiveBeing
 		startCounters() ;
 		
 		this.chasePlayer = false ;
-		this.notMovingTimer = new GameTimer(CT.getMovingAnimations().getIdleDuration()) ;
+		this.idleTimer = new GameTimer(CT.getMovingAnimations().getIdleDuration()) ;
+		this.idleTimer.start() ;
  		setPos(pos) ;
  	}
  	
@@ -95,7 +96,7 @@ public class Creature extends LiveBeing
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public Set<Item> getBag() {return items ;}
 	public int getGold() {return gold ;}
-	public GameTimer getNotMovingTimer() {return notMovingTimer ;}
+	public GameTimer getIdleTimer() {return idleTimer ;}
 	public void setChasePlayer(boolean F) {chasePlayer = F ;}
 	public static Color[] getskinColor() {return skinColor ;}
 	public static Color[] getshadeColor() {return shadeColor ;}
@@ -149,7 +150,6 @@ public class Creature extends LiveBeing
 	public void updatePos(Directions dir, Point2D.Double CurrentPos, int step, double dt, double moveRate, GameMap map)
 	{
 		Point2D.Double newPos = MovePattern.calcNewPos(type.movePattern, dir, step, dt, CurrentPos, moveRate) ;
-		// if (type.movePattern == MovePattern.pattern2) System.out.println(pos + " to pos " + newPos);
  
 		if (!Game.getScreen().posIsWithinBorders(newPos)) { return ;}
 		if (!map.groundIsWalkable(new Point((int) newPos.x, (int) newPos.y), null)) { return ;}
@@ -175,7 +175,6 @@ public class Creature extends LiveBeing
 		{
 			int qtdAvailableMoves = canUseSpell(spells.get(0)) ? 2 : 1 ;
 			int move = Util.randomInt(0, qtdAvailableMoves) ;
-//			System.out.println(move);
 			switch (move)
 			{
 				case 0:	setCurrentAction(battleKeys[0]) ; return ;	// Physical attack
@@ -188,7 +187,6 @@ public class Creature extends LiveBeing
 		List<Double> modifiedGenes = type.getGenes().getModifiedGenes(playerMove) ;
 
 		int move = Util.randomFromChanceList(modifiedGenes) ;
-//		System.out.println("move = " + move);
 		switch (move)
 		{
 			case 0:	setCurrentAction(battleKeys[0]) ; return ;	// Physical attack
@@ -207,24 +205,37 @@ public class Creature extends LiveBeing
 			return ;
 		}
 
-		updatePos(dir, pos, step, dt, stepCounter.rate(), map) ;
+		updatePos(dir, pos, step, dt, movingTimer.rate(), map) ;
 		
-	}
-
-	public void think()
-	{
-		if (notMovingTimer.isActive()) { return ;}
-
-		notMovingTimer.restart() ;
-		switchDirection() ;
-		restartMoving() ;
 	}
 	
-	public void act()
+	public void act(Point2D.Double playerPosAsDouble, GameMap playerMap, double dt)
 	{
-		if (!state.equals(LiveBeingStates.idle)) { return ;}
-		
-		actionCounter.reset() ;
+		switch (state)
+		{
+			case idle:
+				// does nothing
+				if (idleTimer.hasFinished())
+				{
+					setState(LiveBeingStates.moving) ;
+					movingTimer.restart() ;
+				}
+
+				return ;
+
+			case moving:
+				move(playerPosAsDouble, playerMap, dt) ;
+				if (movingTimer.hasFinished())
+				{
+					setState(LiveBeingStates.idle) ;
+					switchDirection() ;
+					idleTimer.restart();
+				}
+
+				return;
+			
+			default: return ;
+		}
 	}
 	
 	public void applyPassiveSpell(Spell spell) { }
@@ -302,7 +313,7 @@ public class Creature extends LiveBeing
 	
 	public void display(Point pos, Scale scale)
 	{
-		if (isMoving())
+		if (!idleTimer.isActive())
 		{
 			type.movingAni.displayMoving(dir, pos, 0, scale, Align.center) ;
 		}
@@ -321,7 +332,7 @@ public class Creature extends LiveBeing
 		displayStatus() ;
 		GamePanel.DP.drawText(Util.Translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.movePattern.toString(), Color.black) ;
 		GamePanel.DP.drawText(Util.Translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
-		GamePanel.DP.drawText(Util.Translate(pos, 0, -40), Align.bottomCenter, isMoving() ? "is moving: " + dir : "", Color.black) ;
+		GamePanel.DP.drawText(Util.Translate(pos, 0, -40), Align.bottomCenter, !idleTimer.isActive() ? "is moving: " + dir : "", Color.black) ;
 		if (Game.debugMode)
 		{
 			displayState() ;

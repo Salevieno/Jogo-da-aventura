@@ -48,6 +48,7 @@ import liveBeings.Creature ;
 import liveBeings.CreatureType ;
 import liveBeings.HotKeysBar;
 import liveBeings.LiveBeing;
+import liveBeings.LiveBeingStates;
 import liveBeings.Pet ;
 import liveBeings.Player ;
 import liveBeings.Spell ;
@@ -532,22 +533,9 @@ public class Game
 		List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures() ;
 		for (Creature creature : creaturesInMap)
 		{
-			// if (creature == creaturesInMap.get(0) && creature.getStepCounter().isActive()) System.out.println(creature.getStepCounter() + " " + creature.getPos());
 			creature.takeBloodAndPoisonDamage() ;
-			
-			if (creature.getType().getID() == 6) { System.out.println(creature.getNotMovingTimer().isActive() ? (creature.getNotMovingTimer().getCounter() + " / " + creature.getNotMovingTimer().getDuration()) : "") ;}
-			if (creature.isMoving())
-			{
-				creature.move(player.getPosAsDouble(), player.getMap(), dt) ;
-				continue ;
-			}
-			if (creature.canAct() && !creature.getNotMovingTimer().isActive())
-			{
-				creature.think() ;
-				creature.act() ;
-			}
+			creature.act(player.getPosAsDouble(), player.getMap(), dt);
 		}
-		shouldRepaint = true ;
 	}
 	
 	private void petActs(double dt)
@@ -592,7 +580,6 @@ public class Game
 	
 	private void run(double dt)
 	{
-		// System.out.println("dt = " + dt / Math.pow(10, 6) + "     fr = " + 1 / (dt * Math.pow(10, -9)));
 		activateCounters() ;
 
 		checkKonamiCode(player.getCombo()) ;
@@ -604,6 +591,7 @@ public class Game
 		if (player.getMap().isField())
 		{
 			creaturesAct(dt / Math.pow(10, 9)) ;
+			shouldRepaint = true ;
 		}
 
 		if (pet != null)

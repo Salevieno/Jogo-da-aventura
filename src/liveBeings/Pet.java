@@ -70,7 +70,7 @@ public class Pet extends LiveBeing
 		satiationCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[34])) ;
 		mpCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[35])) ;
 		battleActionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[36])) ;
-		stepCounter = new GameTimer(20) ;
+		movingTimer = new GameTimer(20) ;
 		combo = new ArrayList<>();
 		hitbox = new HitboxRectangle(getPos(), size, 0.8) ;
 		equip = null ;

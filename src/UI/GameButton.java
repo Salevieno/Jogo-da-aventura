@@ -116,7 +116,6 @@ public class GameButton
 	public void unSelect() { isSelected = false ;}
 	public void activateAndSelect() { activate() ; select() ;}
 
-	// TODO remover
 	public void act() { action.act() ;}
 	
 	

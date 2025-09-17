@@ -91,7 +91,7 @@ public class PetItem extends Item
 	
 	public void use(Pet pet)
 	{
-		// TODO pro - customizar pet item power
+		// proTODO - customizar pet item power
 		if (isLifePotion(id))
 		{
 			pet.getLife().incCurrentValue(20 + 10 * power) ;

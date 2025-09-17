@@ -155,7 +155,7 @@ public class Quest
 			case 50: skills.replace(QuestSkills.islandMap, true) ; return ;
 			case 51: skills.replace(QuestSkills.ride, true) ; return ;
 			case 56: skills.replace(QuestSkills.volcanoMap, true) ; return ;
-			case 57: return ; // TODO pro advanced crafting (add recipes)
+			case 57: return ; // proTODO advanced crafting (add recipes)
 			case 60: skills.replace(QuestSkills.dragonAura, true) ; return ;
 			case 62: skills.replace(QuestSkills.snowlandMap, true) ; return ;
 			default: return ;
@@ -173,7 +173,7 @@ public class Quest
 		bag.addGold(goldReward) ;
 
 		for (Item item : reqItems.keySet()) { bag.remove(item, 1) ;}
-		for (Item item : rewardItems.keySet()) { bag.add(item, 1) ; System.out.println("added " + item);}
+		for (Item item : rewardItems.keySet()) { bag.add(item, 1) ;}
 		giveSkillRewards(skills) ;
 //		Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), "Quest completa!", Game.colorPalette[4]}) ;
 		

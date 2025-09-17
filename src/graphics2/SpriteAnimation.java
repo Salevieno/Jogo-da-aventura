@@ -79,7 +79,7 @@ public class SpriteAnimation
         if (frameCount == 12)
         {
             System.out.println(timer.crossedTime(frameDuration) + " " + timer);
-            // problem: timer is crossing time twice at the beginning
+            // TODO problem: timer is crossing time twice at the beginning
         }
         if (timer.crossedTime(frameDuration))
         {

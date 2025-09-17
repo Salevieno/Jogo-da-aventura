@@ -33,7 +33,6 @@ public class HitboxRectangle implements Hitbox
 	
 	public boolean overlaps(Hitbox box2)
 	{
-		// TODO check hitbox overlap with npcs
 		if (box2 instanceof HitboxRectangle)
 		{
 			HitboxRectangle rectBox2 = (HitboxRectangle) box2 ;

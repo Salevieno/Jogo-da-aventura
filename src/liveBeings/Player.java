@@ -195,7 +195,7 @@ public class Player extends LiveBeing
 		thirstCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[39])) ;
 		mpCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[40]) / 1.0) ;
 		battleActionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[41]) / 1.0) ;
-		stepCounter = new GameTimer(stepDuration) ;
+		movingTimer = new GameTimer(stepDuration) ;
 		combo = new ArrayList<>() ;
 		hitbox = new HitboxRectangle(getPos(), size, 0.8) ;
 	    
@@ -1183,8 +1183,8 @@ public class Player extends LiveBeing
 			case 11: BA.getPhyAtk().incBaseValue(2) ; BA.getDex().incBaseValue(1) ; BA.getAgi().incBaseValue(1) ; return ;
 			case 14: PA.getLife().incMaxValue(202) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(9) ; BA.getPhyDef().incBaseValue(5) ; return ;
 			case 18: BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(3) ; BA.getStun().incAtkChance(0.04) ; return ;
-//			case 19: return ; // TODO pro aumenta bônus do atk físico da arma em até 50%
-//			case 23: return ; // TODO pro aumenta o efeito do treinamento em 20%
+//			case 19: return ; // proTODO aumenta bônus do atk físico da arma em até 50%
+//			case 23: return ; // proTODO aumenta o efeito do treinamento em 20%
 			case 24: PA.getLife().incMaxValue(202) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(5) ; BA.getPhyDef().incBaseValue(9) ; return ;
 			case 26: BA.getBlock().incAtkChance(0.06) ; return ;
 			case 27: BA.getMagDef().incBaseValue(0.1 * BA.getMagDef().getBaseValue()) ; return ;
@@ -1193,11 +1193,11 @@ public class Player extends LiveBeing
 			
 			case 36: BA.getMagAtk().incBaseValue(2 + (int) (0.04 * BA.getMagAtk().getBaseValue())) ; BA.getMagDef().incBaseValue(2 + (int) (0.04 * BA.getMagDef().getBaseValue())) ; return ;
 			case 49: PA.getMp().incMaxValue(202) ; PA.getMp().setToMaximum() ; BA.getMagAtk().incBaseValue(9) ; BA.getMagDef().incBaseValue(5) ; return ;
-//			case 54: return ; // TODO pro reduz o cooldown das magias em 50%
-//			case 57: return ; // TODO pro descobre o próximo movimento da criatura com chance de 70%
+//			case 54: return ; // proTODO reduz o cooldown das magias em 50%
+//			case 57: return ; // proTODO descobre o próximo movimento da criatura com chance de 70%
 			case 59: PA.getMp().incMaxValue(202) ; PA.getMp().setToMaximum() ; BA.getMagAtk().incBaseValue(5) ; BA.getMagDef().incBaseValue(9) ; return ;
-//			case 62: return ; // TODO pro regen de até 5% da vida, consome mp
-//			case 65: return ; // TODO pro chance de converter até 100% do dano mágico recebido em vida
+//			case 62: return ; // proTODO regen de até 5% da vida, consome mp
+//			case 65: return ; // proTODO chance de converter até 100% do dano mágico recebido em vida
 			
 			case 70: BA.getDex().incBaseValue(1) ; BA.getAgi().incBaseValue(0.4) ; return ;
 			case 73:  return ; // permite o uso de flechas mais poderosas
@@ -1207,12 +1207,12 @@ public class Player extends LiveBeing
 			case 82:  return ; // chance permanente de recuperar a flecha de até 50%
 			case 84: BA.getPhyAtk().incBaseValue(7) ; BA.getDex().incBaseValue(10) ; BA.getAgi().incBaseValue(3) ; return ;
 			case 86: range *= 1.148698 ; return ;
-//			case 88: return ; // TODO pro permite fabricar flechas especiais
-//			case 89: return ; // TODO pro permite se mover durante a batalha com redução de destreza
-//			case 92: return ; // TODO pro aumenta a saciedade, comidas recuperam vida
+//			case 88: return ; // proTODO permite fabricar flechas especiais
+//			case 89: return ; // proTODO permite se mover durante a batalha com redução de destreza
+//			case 92: return ; // proTODO aumenta a saciedade, comidas recuperam vida
 //			case 94: PA.getMp().incMaxValue(68) ; PA.getMp().setToMaximum() ; BA.getMagAtk().incBaseValue(7) ; BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(2) ; return ;
-//			case 96: return ; // TODO pro aumenta a resistência aos elementos em 30%
-//			case 99: return ; // TODO pro vê o elemento das criaturas
+//			case 96: return ; // proTODO aumenta a resistência aos elementos em 30%
+//			case 99: return ; // proTODO vê o elemento das criaturas
 			
 			case 105: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
 			case 107: BA.getCritAtk().incBaseValue(0.03) ; return ;
@@ -1230,8 +1230,8 @@ public class Player extends LiveBeing
 				return ;
 			case 118: PA.getMp().incMaxValue(48) ; PA.getMp().setToMaximum() ; BA.getPhyAtk().incBaseValue(7) ; BA.getMagAtk().incBaseValue(4) ; BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(3) ; return ;
 			case 128: PA.getLife().incMaxValue(28) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(11) ; BA.getPhyDef().incBaseValue(4) ; BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(5) ; return ;	
-//			case 129: return ; // TODO pro aumenta a velocidade de ataque
-//			case 133: return ; // TODO pro Se a criatura estiver com a vida abaixo de 30%, os ataques físicos e mágicos do Selvagem aumentam em 30%
+//			case 129: return ; // proTODO aumenta a velocidade de ataque
+//			case 133: return ; // proTODO Se a criatura estiver com a vida abaixo de 30%, os ataques físicos e mágicos do Selvagem aumentam em 30%
 			
 			case 139: BA.getAgi().incBaseValue(1) ; return ;
 			case 142: BA.getPhyAtk().incBaseValue(3) ; BA.getDex().incBaseValue(1) ; return ;
@@ -1240,12 +1240,12 @@ public class Player extends LiveBeing
 			case 147:  return ; // permite a fabricação de poções venenosas
 			case 151: BA.getPoison().incBasicDef(1); return ;
 //			case 152: PA.getLife().incMaxValue(10) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(6) ; BA.getPhyDef().incBaseValue(6) ; BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(10) ; return ;
-//			case 155: return ; // TODO pro chance de 30% de atacar sem gastar o turno
+//			case 155: return ; // proTODO chance de 30% de atacar sem gastar o turno
 //			case 156: BA.getStun().incDefChance(0.1) ; return ;
 //			case 162: PA.getLife().incMaxValue(16) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(3) ; BA.getPhyDef().incBaseValue(3) ; BA.getDex().incBaseValue(5) ; BA.getAgi().incBaseValue(6) ; return ;
-//			case 163: return ; // TODO pro aumenta o ganho de ouro em 20%
-//			case 165: return ; // TODO pro 50% do dano recebido de envenenamento é convertido em vida
-//			case 168: return ; // TODO pro aumenta o multiplicador de ataque em 5%
+//			case 163: return ; // proTODO aumenta o ganho de ouro em 20%
+//			case 165: return ; // proTODO 50% do dano recebido de envenenamento é convertido em vida
+//			case 168: return ; // proTODO aumenta o multiplicador de ataque em 5%
 			
 			default: return ;
 			
@@ -1717,7 +1717,7 @@ public class Player extends LiveBeing
 		content.put("thirstCounter", thirstCounter.toJson()) ;
 		content.put("actionCounter", actionCounter.toJson()) ;
 		content.put("battleActionCounter", battleActionCounter.toJson()) ;
-		content.put("stepCounter", stepCounter.toJson()) ;
+		content.put("stepCounter", movingTimer.toJson()) ;
 		content.put("drunk", drunk.toJson()) ;
 		content.put("digBonus", digBonus) ;
 		content.put("isRiding", isRiding) ;
@@ -1790,7 +1790,7 @@ public class Player extends LiveBeing
 		newPlayer.thirstCounter = GameTimer.fromJson(thirstCounterData) ;
 		newPlayer.actionCounter = GameTimer.fromJson(actionCounterData) ;
 		newPlayer.battleActionCounter = GameTimer.fromJson(battleActionCounterData) ;
-		newPlayer.stepCounter = GameTimer.fromJson(stepCounterData) ;
+		newPlayer.movingTimer = GameTimer.fromJson(stepCounterData) ;
 		newPlayer.drunk = GameTimer.fromJson(drunkData) ;
 		newPlayer.digBonus = digBonus ;
 		newPlayer.isRiding = isRiding ;
@@ -1849,7 +1849,7 @@ public class Player extends LiveBeing
 		}
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
-//			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ; TODO pro arte - dragon aura
+//			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ; proTODO arte - dragon aura
 //			GamePanel.DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
 		}
 		if (showRange)
@@ -1883,7 +1883,7 @@ public class Player extends LiveBeing
 	
 	public void applySuperElementEffect(Elements elem, boolean apply)
 	{
-		// TODO pro superelementos luz: ilumina a caverna, escuridão: aura escura, trovão e neve
+		// proTODO superelementos luz: ilumina a caverna, escuridão: aura escura, trovão e neve
 		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Game.palette[7]}) ;
 		switch (elem)
 		{
