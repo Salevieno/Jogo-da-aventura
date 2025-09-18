@@ -64,7 +64,6 @@ public class Creature extends LiveBeing
 		this.atkElem = CT.atkElem;
 		this.mpCounter = new GameTimer(CT.mpDuration / 1.0);
 		this.satiationCounter = new GameTimer(CT.satiationDuration);
-		this.actionCounter = new GameTimer(CT.stepDuration) ;
 		this.battleActionCounter = new GameTimer(CT.battleActionDuration / 1.0) ;
 		this.movingTimer = new GameTimer(CT.movePattern.getDuration()) ;
 		this.combo = new ArrayList<>() ;

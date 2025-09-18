@@ -66,7 +66,6 @@ public class Pet extends LiveBeing
 		range = Integer.parseInt(InitialAtts.get(Job)[4]) ;
 		step = Integer.parseInt(InitialAtts.get(Job)[32]) ;
 		atkElem = Elements.neutral ;
-		actionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[33])) ;
 		satiationCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[34])) ;
 		mpCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[35])) ;
 		battleActionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[36])) ;

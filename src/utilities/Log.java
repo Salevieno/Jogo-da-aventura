@@ -93,7 +93,6 @@ public abstract class Log
 	public static void attributes(LiveBeing being)
 	{
 		System.out.println(" ====== player " + being.getName() + " attributes ======") ;
-		System.out.println("action delay: " + being.getActionCounter().getDuration());
 		System.out.println("spells");
 		being.getSpells().forEach(System.out::println);
 		System.out.println("==================\n");

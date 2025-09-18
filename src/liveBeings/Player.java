@@ -190,7 +190,6 @@ public class Player extends LiveBeing
 		range = Integer.parseInt(InitialAtts.get(job)[4]) ;
 		step = Integer.parseInt(InitialAtts.get(job)[33]);
 	    atkElem = Elements.neutral ;
-		actionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[37])) ;
 		satiationCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[38])) ;
 		thirstCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[39])) ;
 		mpCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[40]) / 1.0) ;
@@ -1715,7 +1714,6 @@ public class Player extends LiveBeing
 		content.put("mpCounter", mpCounter.toJson()) ;
 		content.put("satiationCounter", satiationCounter.toJson()) ;
 		content.put("thirstCounter", thirstCounter.toJson()) ;
-		content.put("actionCounter", actionCounter.toJson()) ;
 		content.put("battleActionCounter", battleActionCounter.toJson()) ;
 		content.put("stepCounter", movingTimer.toJson()) ;
 		content.put("drunk", drunk.toJson()) ;
@@ -1763,7 +1761,6 @@ public class Player extends LiveBeing
 		JSONObject mpCounterData = (JSONObject) jsonData.get("mpCounter") ;
 		JSONObject satiationCounterData = (JSONObject) jsonData.get("satiationCounter") ;
 		JSONObject thirstCounterData = (JSONObject) jsonData.get("thirstCounter") ;
-		JSONObject actionCounterData = (JSONObject) jsonData.get("actionCounter") ;
 		JSONObject battleActionCounterData = (JSONObject) jsonData.get("battleActionCounter") ;
 		JSONObject stepCounterData = (JSONObject) jsonData.get("stepCounter") ;
 		JSONObject drunkData = (JSONObject) jsonData.get("drunk") ;
@@ -1788,7 +1785,6 @@ public class Player extends LiveBeing
 		newPlayer.mpCounter = GameTimer.fromJson(mpCounterData) ;
 		newPlayer.satiationCounter = GameTimer.fromJson(satiationCounterData) ;
 		newPlayer.thirstCounter = GameTimer.fromJson(thirstCounterData) ;
-		newPlayer.actionCounter = GameTimer.fromJson(actionCounterData) ;
 		newPlayer.battleActionCounter = GameTimer.fromJson(battleActionCounterData) ;
 		newPlayer.movingTimer = GameTimer.fromJson(stepCounterData) ;
 		newPlayer.drunk = GameTimer.fromJson(drunkData) ;

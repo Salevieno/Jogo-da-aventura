@@ -553,15 +553,10 @@ public class Game
 
 		player.takeBloodAndPoisonDamage() ;
 		player.updateBloodAndPoisonStatistics() ;
-		
+		System.out.println(player.canAct());
 		if (player.canAct() & player.hasActed())
 		{
 			player.acts(pet, GamePanel.getMousePos()) ;
-
-			if (player.getActionCounter().hasFinished())
-			{
-				player.getActionCounter().reset() ;
-			}
 		}
 
 		player.doCurrentAction() ;

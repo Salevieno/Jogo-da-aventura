@@ -59,7 +59,6 @@ public abstract class LiveBeing implements Drawable
 	protected GameTimer mpCounter ;
 	protected GameTimer satiationCounter ;
 	protected GameTimer thirstCounter ;
-	protected GameTimer actionCounter ; // TODO remover
 	protected GameTimer battleActionCounter ;
 	protected GameTimer movingTimer ;
 	protected String currentAction ;
@@ -167,7 +166,6 @@ public abstract class LiveBeing implements Drawable
 	public GameTimer getMpCounter() {return mpCounter ;}
 	public GameTimer getSatiationCounter() {return satiationCounter ;}
 	public GameTimer getThirstCounter() {return thirstCounter ;}
-	public GameTimer getActionCounter() {return actionCounter ;}
 	public GameTimer getBattleActionCounter() {return battleActionCounter ;}
 	public GameTimer getMovingTimer() {return movingTimer ;}
 	public List<String> getCombo() {return combo ;}
@@ -178,7 +176,6 @@ public abstract class LiveBeing implements Drawable
 	public Hitbox getHitbox() {return hitbox ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
 	public void setMpCounter(GameTimer mpCounter) { this.mpCounter = mpCounter ;}
-	public void setActionCounter(GameTimer actionCounter) { this.actionCounter = actionCounter ;}	
 	public void setBattleActionCounter(GameTimer battleActionCounter) { this.battleActionCounter = battleActionCounter ;}
 	public void setSatiationCounter(GameTimer satiationCounter) { this.satiationCounter = satiationCounter ;}
 	public void setThirstCounter(GameTimer thirstCounter) { this.thirstCounter = thirstCounter ;}
@@ -208,7 +205,7 @@ public abstract class LiveBeing implements Drawable
 	public void setCurrentAtkType(AtkTypes ba) { currentAtkType = ba ;}
 	
 	public boolean isMoving() { return movingTimer.isActive() ;}
-	public boolean canAct() { return actionCounter.hasFinished() & (state.equals(LiveBeingStates.idle) | isMoving() | isFighting()) ;}
+	public boolean canAct() { return (state.equals(LiveBeingStates.idle) | isMoving() | isFighting()) ;}
 	
 	public boolean isPlayerAlly() { return (this instanceof Player | this instanceof Pet) ;}
 	
@@ -423,7 +420,6 @@ public abstract class LiveBeing implements Drawable
 		mpCounter.start() ;
 		satiationCounter.start() ;
 		if (this instanceof Player) { thirstCounter.start() ;}
-		actionCounter.start() ;
 		spells.forEach(spell -> spell.getCooldownCounter().start()) ;
 	}
 	
@@ -452,10 +448,6 @@ public abstract class LiveBeing implements Drawable
 	
 	public void activateCounters()
 	{
-		if (actionCounter.hasFinished() & hasActed())
-		{
-			actionCounter.start() ;
-		}
 		if (hpCounter.isActive() & hpCounter.crossedTime(0.75))
 		{
 			PA.getLife().incCurrentValue(2) ;

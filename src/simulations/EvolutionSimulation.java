@@ -330,7 +330,6 @@ public abstract class EvolutionSimulation
 		
 		player.setRange(Integer.parseInt(prop.get(newJob)[4])) ;
 		player.setStep(Integer.parseInt(prop.get(newJob)[33])) ;
-		player.setActionCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[37]))) ;
 		player.setSatiationCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[38]))) ;
 		player.setThirstCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[39]))) ;
 		player.setMpCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[40]))) ;
