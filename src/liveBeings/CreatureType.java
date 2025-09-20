@@ -260,9 +260,10 @@ public class CreatureType
 			BattleSpecialAttribute Silence = new BattleSpecialAttribute(Double.parseDouble(inp[32]) * diffMult, 0,
 					Double.parseDouble(inp[33]) * diffMult, 0, (int) (Double.parseDouble(inp[34]) * diffMult));
 			BasicBattleAttribute AtkSpeed = new BasicBattleAttribute(Double.parseDouble(inp[52]) * diffMult, 0, 0);
+			BasicBattleAttribute knockbackPower = new BasicBattleAttribute(Double.parseDouble(inp[55]) * diffMult, 0, 0);
 
 			BattleAttributes BA = new BattleAttributes(PhyAtk, MagAtk, PhyDef, MagDef, Dex, Agi, CritAtk, CritDef, Stun,
-					Block, Blood, Poison, Silence, AtkSpeed);
+					Block, Blood, Poison, Silence, AtkSpeed, knockbackPower);
 
 			List<Spell> spells = new ArrayList<>();
 			int[] spellIDs = switch (row % 3)

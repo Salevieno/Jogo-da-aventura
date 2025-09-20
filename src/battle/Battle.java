@@ -201,7 +201,7 @@ public abstract class Battle
 		return null ;
 	}
 	
-	public static Point knockback(Point originPos, Point targetPos, int dist)
+	public static Point knockback(Point originPos, Point targetPos, double dist)
 	{
 		double angle = targetPos.x != originPos.x ? Math.atan((targetPos.y - originPos.y) / (double)(targetPos.x - originPos.x)) : Math.PI / 2.0 ;
 		int travelX = (int) (Math.signum(targetPos.x - originPos.x) * Math.cos(angle) * dist) ;
@@ -378,15 +378,13 @@ public abstract class Battle
 //			default -> new AtkResults() ;
 //		} ;
 		
-		checkSpendArrow(attacker) ;
-		
-		
+		checkSpendArrow(attacker) ;	
 		
 		AtkEffects effect = atkResults.getEffect() ;
 		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
 
-
 		receiver.takeDamage(atkResults.getDamage()) ;
+		receiver.setPos(knockback(attacker.getPos(), receiver.getPos(), attacker.getBA().getKnockbackPower().getTotal())) ;
 		if (attacker instanceof Player)
 		{
 			((Player) attacker).getStatistics().updateInflicedStatus(atkResults.getStatus());

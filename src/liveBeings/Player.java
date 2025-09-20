@@ -167,7 +167,7 @@ public class Player extends LiveBeing
 	
 	public Player(String name, String sex, int job)
 	{
-		super(InitializePersonalAttributes(job), new BattleAttributes(InitialAtts.get(job), 1, InitialAtts.get(job)[41]), movingAnimations, new PlayerAttributesWindow()) ;
+		super(InitializePersonalAttributes(job), new BattleAttributes(InitialAtts.get(job), 1, InitialAtts.get(job)[41], InitialAtts.get(job)[42]), movingAnimations, new PlayerAttributesWindow()) ;
 
 		((PlayerAttributesWindow) attWindow).initializeAttIncButtons(this) ;
 		

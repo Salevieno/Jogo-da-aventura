@@ -23,12 +23,13 @@ public class BattleAttributes
 	private BattleSpecialAttributeWithDamage poison ;
 	private BattleSpecialAttribute silence ;
 	private BasicBattleAttribute atkSpeed ;
+	private BasicBattleAttribute knockbackPower ;
 	private Map<Elements, Double> elemResistanceMult ;
 	
 	public BattleAttributes(BasicBattleAttribute phyAtk, BasicBattleAttribute magAtk, BasicBattleAttribute phyDef, BasicBattleAttribute magDef, BasicBattleAttribute dex, BasicBattleAttribute agi,
 			BasicBattleAttribute critAtk, BasicBattleAttribute critDef,
 			BattleSpecialAttribute stun, BattleSpecialAttribute block, BattleSpecialAttributeWithDamage blood, BattleSpecialAttributeWithDamage poison, BattleSpecialAttribute silence,
-			BasicBattleAttribute atkSpeed)
+			BasicBattleAttribute atkSpeed, BasicBattleAttribute knockbackPower)
 	{
 		this.phyAtk = phyAtk ;
 		this.magAtk = magAtk ;
@@ -44,6 +45,7 @@ public class BattleAttributes
 		this.poison = poison ;
 		this.silence = silence ;
 		this.atkSpeed = atkSpeed ;
+		this.knockbackPower = knockbackPower ;
 		elemResistanceMult = new HashMap<>() ;
 		for (Elements elem : Elements.values())
 		{
@@ -99,7 +101,7 @@ public class BattleAttributes
 //		}
 //	}
 	
-	public BattleAttributes(String[] initialAtts, double attMult, String atkSpeed)
+	public BattleAttributes(String[] initialAtts, double attMult, String atkSpeed, String knockbackPower)
 	{		
 		phyAtk = new BasicBattleAttribute(Double.parseDouble(initialAtts[5]) * attMult, 0, 0) ;
 		magAtk = new BasicBattleAttribute(Double.parseDouble(initialAtts[6]) * attMult, 0, 0) ;
@@ -123,6 +125,7 @@ public class BattleAttributes
 													Double.parseDouble(initialAtts[28]) * attMult) ;
 		silence = new BattleSpecialAttribute(Double.parseDouble(initialAtts[29]) * attMult, 0, Double.parseDouble(initialAtts[30]) * attMult, 0, Double.parseDouble(initialAtts[31]) * attMult) ;
 		this.atkSpeed = new BasicBattleAttribute(Double.parseDouble(atkSpeed) * attMult, 0, 0) ;
+		this.knockbackPower = new BasicBattleAttribute(Integer.parseInt(knockbackPower) * attMult, 0, 0) ;
 		
 		elemResistanceMult = new HashMap<>() ;
 		for (Elements elem : Elements.values())
@@ -145,6 +148,7 @@ public class BattleAttributes
 	public BattleSpecialAttributeWithDamage getPoison() {return poison ;}
 	public BattleSpecialAttribute getSilence() {return silence ;}
 	public BasicBattleAttribute getAtkSpeed() {return atkSpeed ;}
+	public BasicBattleAttribute getKnockbackPower() {return knockbackPower ;}
 	public Map<Elements, Double> getElemResistanceMult() { return elemResistanceMult ;}
 
 //	public void checkResetStatus() { status.values().stream().filter(st -> !st.isActive()).forEach(st -> st.reset()) ;}
@@ -288,9 +292,10 @@ public class BattleAttributes
 		BattleSpecialAttributeWithDamage poison = BattleSpecialAttributeWithDamage.fromJson((JSONObject) jsonData.get("poison")) ;
 		BattleSpecialAttribute silence = BattleSpecialAttribute.fromJson((JSONObject) jsonData.get("silence")) ;
 		BasicBattleAttribute atkSpeed = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("atkSpeed")) ;
+		BasicBattleAttribute knockbackPower = BasicBattleAttribute.fromJson((JSONObject) jsonData.get("knockbackPower")) ;
 		
 		return new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef,
-				stun, block, blood, poison, silence, atkSpeed) ;
+				stun, block, blood, poison, silence, atkSpeed, knockbackPower) ;
 	}
 	
 	@Override
