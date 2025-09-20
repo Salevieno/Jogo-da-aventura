@@ -9,8 +9,9 @@ import graphics.Align;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
 import main.Game;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class Alchemy extends Item
 {
@@ -20,13 +21,13 @@ public class Alchemy extends Item
 	private static final Alchemy[] AllAlchemy ;
 	
 	private static final String pathImg = "\\Windows\\bagIcons\\" ;
-	private static final Image HerbIcon = UtilS.loadImage(pathImg + "IconHerb.png") ;
-	private static final Image WoodIcon = UtilS.loadImage(pathImg + "IconWood.png") ;
-	private static final Image MetalIcon = UtilS.loadImage(pathImg + "IconMetal.png") ;
+	private static final Image HerbIcon = Game.loadImage(pathImg + "IconHerb.png") ;
+	private static final Image WoodIcon = Game.loadImage(pathImg + "IconWood.png") ;
+	private static final Image MetalIcon = Game.loadImage(pathImg + "IconMetal.png") ;
 	
 	static
 	{
-		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Alchemy.csv") ;
+		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Alchemy.csv") ;
 		AllAlchemy = new Alchemy[input.size()] ;
 		for (int a = 0; a <= AllAlchemy.length - 1; a += 1)
 		{

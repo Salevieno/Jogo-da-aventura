@@ -24,6 +24,7 @@ import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
+import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
 import battle.Battle;
@@ -38,13 +39,12 @@ import liveBeings.Genetics;
 import liveBeings.LiveBeing;
 import liveBeings.Pet;
 import liveBeings.Player;
+import main.Directions;
 import main.Game;
 import main.GamePanel;
-import utilities.AtkEffects;
-import utilities.Directions;
-import utilities.GameTimer;
+import main.GameTimer;
 import utilities.Util;
-import utilities.UtilS;
+
 import windows.PlayerAttributesWindow;
 
 public abstract class EvolutionSimulation
@@ -66,10 +66,10 @@ public abstract class EvolutionSimulation
 	private static List<GameButton> buttons ;
 
 	private static final String pathSimulation = "\\Simulation\\" ;
-	private static final Image screenImage = UtilS.loadImage(pathSimulation + "SimulationScreen.png") ;
-	private static final Image buttonImage = UtilS.loadImage(pathSimulation + "ButtonGeneral.png") ;
-	private static final Image buttonSelectedImage = UtilS.loadImage(pathSimulation + "ButtonGeneralSelected.png") ;
-	private static final Image fightingImage = UtilS.loadImage(pathSimulation + "fightingIcon.png") ;
+	private static final Image screenImage = Game.loadImage(pathSimulation + "SimulationScreen.png") ;
+	private static final Image buttonImage = Game.loadImage(pathSimulation + "ButtonGeneral.png") ;
+	private static final Image buttonSelectedImage = Game.loadImage(pathSimulation + "ButtonGeneralSelected.png") ;
+	private static final Image fightingImage = Game.loadImage(pathSimulation + "fightingIcon.png") ;
 	
 	
 	private static int BattleResultsPlayerLife = 0 ;
@@ -265,7 +265,7 @@ public abstract class EvolutionSimulation
 	    {
 	    	String key = (String) it.next() ;
 	    	ButtonFunction action = sectionNamesActions.get(key) ;
-			Point buttonPos = Util.Translate(pos, i * spacing.x, i * spacing.y) ;
+			Point buttonPos = Util.translate(pos, i * spacing.x, i * spacing.y) ;
 			buttons.add(newButton(buttonPos, key, action)) ;
 			i++ ;
 	    }
@@ -949,7 +949,7 @@ public abstract class EvolutionSimulation
 		{
 			double battleTime = Math.round(100 * (battleClock) * Math.pow(10, -9)) / 100.0 ;
 			double totalBattleTime = stats.get("BattleTimeAvr") * (numberFights - 1) + battleTime ;
-			stats.put("BattleTimeAvr", Util.Round(totalBattleTime / numberFights, 2)) ;
+			stats.put("BattleTimeAvr", Util.round(totalBattleTime / numberFights, 2)) ;
 			battletimes.add(stats.get("CreatureMoves")) ;
 		}
 	}
@@ -971,7 +971,7 @@ public abstract class EvolutionSimulation
 	    {
 	    	String attName = (String) it.next() ;
 	    	double attValue = stats.get(attName) ;
-	    	GamePanel.DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + ": " + attValue, textFont, textColor) ;
+	    	GamePanel.DP.drawText(Util.translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + ": " + attValue, textFont, textColor) ;
 			i += 1;
 	    }
 
@@ -992,13 +992,13 @@ public abstract class EvolutionSimulation
 		
 		double spellDam = attacker instanceof Player ? 2.0 + attacker.getBA().getMagAtk().getTotal() - defender.getBA().getMagDef().getTotal() : 1 + 1.02 * attacker.getBA().getMagAtk().getTotal() - defender.getBA().getMagDef().getTotal() ;
 		
-		int phyDamBase = Math.max((int) Util.Round(attacker.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
-		int spellDamBase = Math.max((int) Util.Round(spellDam, 0), 0) ;
-		int phyDamInDefense = Math.max((int) Util.Round(attacker.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
-		int magDamInDefense = Math.max((int) Util.Round(spellDam - defender.getBA().getMagDef().getBaseValue(), 0), 0) ;
-		int bloodDam = Math.max((int) Util.Round(attacker.getBA().getBlood().TotalAtk() - defender.getBA().getBlood().TotalDef(), 0), 0) ;
-		int phyDamCrit = (int) Util.Round(attacker.getBA().getPhyAtk().getTotal(), 0) ;
-		int spellDamCrit = (int) Util.Round(attacker instanceof Player ? 2.0 + attacker.getBA().getMagAtk().getTotal() : 1 + 1.02 * attacker.getBA().getMagAtk().getTotal(), 0) ;
+		int phyDamBase = Math.max((int) Util.round(attacker.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
+		int spellDamBase = Math.max((int) Util.round(spellDam, 0), 0) ;
+		int phyDamInDefense = Math.max((int) Util.round(attacker.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
+		int magDamInDefense = Math.max((int) Util.round(spellDam - defender.getBA().getMagDef().getBaseValue(), 0), 0) ;
+		int bloodDam = Math.max((int) Util.round(attacker.getBA().getBlood().TotalAtk() - defender.getBA().getBlood().TotalDef(), 0), 0) ;
+		int phyDamCrit = (int) Util.round(attacker.getBA().getPhyAtk().getTotal(), 0) ;
+		int spellDamCrit = (int) Util.round(attacker instanceof Player ? 2.0 + attacker.getBA().getMagAtk().getTotal() : 1 + 1.02 * attacker.getBA().getMagAtk().getTotal(), 0) ;
 		
 		double bloodDuration = attacker.getBA().getBlood().getDuration() ;
 		double damPerMove = ratePhyAtkAttacker * hitRate * ((1 - critRate) * ((1 - rateDefDefender) * phyDamBase + rateDefDefender * phyDamInDefense) + critRate * phyDamCrit) +
@@ -1027,7 +1027,7 @@ public abstract class EvolutionSimulation
 		atts.put("Hit rate: ", hitRate) ;
 		atts.put("Crit rate: ", critRate) ;
 		atts.put("Damage / s: ", damPerSec) ;
-		atts.put("Time to win: ", timeToWin <= Math.pow(10, 8) ? Util.Round(timeToWin, 2) : timeToWin) ;
+		atts.put("Time to win: ", timeToWin <= Math.pow(10, 8) ? Util.round(timeToWin, 2) : timeToWin) ;
 		
 		Iterator<?> it = atts.keySet().iterator();
 
@@ -1036,7 +1036,7 @@ public abstract class EvolutionSimulation
 	    {
 	    	String attName = (String) it.next() ;
 	    	double attValue = Math.round(100 * atts.get(attName)) / 100.0 ;
-	    	GamePanel.DP.drawText(Util.Translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + attValue, textFont, textColor) ;
+	    	GamePanel.DP.drawText(Util.translate(pos, 0, i * 13), Align.topLeft, Draw.stdAngle, attName + attValue, textFont, textColor) ;
 			i += 1;
 	    }
 	}
@@ -1063,25 +1063,25 @@ public abstract class EvolutionSimulation
 		int barsHeight = 50 ;
 		
 		int numberOpponentsToPlayerLevelUp = PersonalAttributes.numberFightsToLevelUp(player.getExp().getCurrentValue(), player.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), player.getExp().getMultiplier()) ;
-		GamePanel.DP.drawText(Util.Translate(pos, 170, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.palette[5]);
+		GamePanel.DP.drawText(Util.translate(pos, 170, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.palette[5]);
 
 		int playerExpBarSize = (int) (player.getExp().getRate() * barsHeight) ;
-		drawBar(Util.Translate(pos, 170, 70), playerExpBarSize, barsHeight, Game.palette[5]) ;
+		drawBar(Util.translate(pos, 170, 70), playerExpBarSize, barsHeight, Game.palette[5]) ;
 		
 		if (pet != null)
 		{
 			int numberOpponentsToPetLevelUp = PersonalAttributes.numberFightsToLevelUp(pet.getExp().getCurrentValue(), pet.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), pet.getExp().getMultiplier()) ;
-			GamePanel.DP.drawText(Util.Translate(pos, 200, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Game.palette[2]);
+			GamePanel.DP.drawText(Util.translate(pos, 200, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Game.palette[2]);
 			
 			int petExpBarSize = (int) (pet.getExp().getRate() * barsHeight) ;
-			drawBar(Util.Translate(pos, 200, 70), petExpBarSize, barsHeight, Game.palette[2]) ;
+			drawBar(Util.translate(pos, 200, 70), petExpBarSize, barsHeight, Game.palette[2]) ;
 		}
 		
-		String percPlayerWins = 1 <= numberFights ? " (" + Util.Round((100 * numberPlayerWins) / (double)numberFights, 2) + "%)" : "" ;
-		String percCreatureWins = 1 <= numberFights ? " (" + Util.Round((100 * numberCreatureWins) / (double)numberFights, 2) + "%)" : "" ;
-		GamePanel.DP.drawText(Util.Translate(pos, 0, 30), Align.bottomLeft, Draw.stdAngle, "total fights = " + numberFights, font, Game.palette[5]);
-		GamePanel.DP.drawText(Util.Translate(pos, 0, 50), Align.bottomLeft, Draw.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.palette[5]);
-		GamePanel.DP.drawText(Util.Translate(pos, 0, 70), Align.bottomLeft, Draw.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.palette[5]);
+		String percPlayerWins = 1 <= numberFights ? " (" + Util.round((100 * numberPlayerWins) / (double)numberFights, 2) + "%)" : "" ;
+		String percCreatureWins = 1 <= numberFights ? " (" + Util.round((100 * numberCreatureWins) / (double)numberFights, 2) + "%)" : "" ;
+		GamePanel.DP.drawText(Util.translate(pos, 0, 30), Align.bottomLeft, Draw.stdAngle, "total fights = " + numberFights, font, Game.palette[5]);
+		GamePanel.DP.drawText(Util.translate(pos, 0, 50), Align.bottomLeft, Draw.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.palette[5]);
+		GamePanel.DP.drawText(Util.translate(pos, 0, 70), Align.bottomLeft, Draw.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.palette[5]);
 
 	}
 		

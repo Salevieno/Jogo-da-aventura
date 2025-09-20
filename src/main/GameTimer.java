@@ -1,4 +1,4 @@
-package utilities;
+package main;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,8 +12,7 @@ import attributes.Attributes;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import liveBeings.LiveBeingStatus;
-import main.Game;
-import main.GamePanel;
+import utilities.Util;
 
 public class GameTimer
 {
@@ -81,7 +80,7 @@ public class GameTimer
 		Dimension barSize = new Dimension(6, 24) ;
 		Dimension offset = new Dimension (barSize.width / 2 + (LiveBeingStatus.images.get(Attributes.stun).getWidth(null) + 5), barSize.height / 2) ;
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate())) ;
-		Point rectPos = Util.Translate(botLeftPos, offset.width, offset.height) ;
+		Point rectPos = Util.translate(botLeftPos, offset.width, offset.height) ;
 		
 		GamePanel.DP.drawRect(rectPos, align, barSize, stroke, null, Game.palette[0], 1.0) ;
 		GamePanel.DP.drawRect(rectPos, align, fillSize, stroke, color, null, 1.0) ;

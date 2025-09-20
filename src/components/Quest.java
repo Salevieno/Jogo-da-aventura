@@ -10,6 +10,7 @@ import items.Item;
 import liveBeings.CreatureType;
 import main.Game;
 import main.Languages;
+import main.Path;
 import utilities.Util;
 import windows.BagWindow;
 
@@ -29,7 +30,7 @@ public class Quest
 	private final String description ;
 	private boolean isComplete ;
 
-	protected static final String dadosPath = Game.dadosPath + "quests\\" ;
+	protected static final String dadosPath = Path.DADOS + "quests\\" ;
 	public static final List<Quest> all ;
 	
 	static
@@ -64,7 +65,7 @@ public class Quest
 
 	public static Quest[] load(Languages language, int playerJob, List<CreatureType> creatureTypes, List<Item> allItems)
 	{
-		List<String[]> inputs = Util.ReadcsvFile(dadosPath + "Quests.csv") ;
+		List<String[]> inputs = Util.readcsvFile(dadosPath + "Quests.csv") ;
 		Quest[] quests = new Quest[inputs.size()] ;
 		for (int i = 0 ; i <= quests.length - 1 ; i += 1)
 		{

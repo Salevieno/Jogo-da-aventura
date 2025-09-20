@@ -13,12 +13,13 @@ import graphics2.Draw;
 import liveBeings.AttackModifiers;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
+import main.Elements;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import maps.GroundType;
-import utilities.Elements;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class GeneralItem extends Item
 {
@@ -28,11 +29,11 @@ public class GeneralItem extends Item
 	
 	private static final GeneralItem[] AllGeneralItems ;
 	
-	private static final Image generalItemIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconGenItem.png") ;
+	private static final Image generalItemIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconGenItem.png") ;
 	
 	static
 	{
-		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_GeneralItem.csv") ;
+		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_GeneralItem.csv") ;
 		AllGeneralItems = new GeneralItem[input.size()] ;
 		for (int p = 0; p <= AllGeneralItems.length - 1; p += 1)
 		{
@@ -196,7 +197,7 @@ public class GeneralItem extends Item
 	{
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
-		Point textPos = Util.Translate(pos, 5 - Util.getSize(infoMenu).width, 10) ;		
+		Point textPos = Util.translate(pos, 5 - Util.getSize(infoMenu).width, 10) ;		
 		GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, description, font, Game.palette[0]) ;
 	}
 	

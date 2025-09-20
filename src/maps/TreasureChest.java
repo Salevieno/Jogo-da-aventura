@@ -6,8 +6,10 @@ import java.util.List;
 
 import components.HitboxRectangle;
 import items.Item;
+import main.Game;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class TreasureChest extends MapElement
 {
@@ -18,7 +20,7 @@ public class TreasureChest extends MapElement
 
 	static
 	{
-		treasureChestsImage = UtilS.loadImage("\\MapElements\\" + "MapElem15_Chest.png") ;
+		treasureChestsImage = Game.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem15_Chest.png") ;
 	}
 	
 	public TreasureChest(int id, Point pos, List<Item> items, int gold)

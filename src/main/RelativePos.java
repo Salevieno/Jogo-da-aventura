@@ -1,4 +1,4 @@
-package utilities;
+package main;
 
 public enum RelativePos
 {

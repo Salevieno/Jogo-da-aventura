@@ -11,8 +11,9 @@ import items.Fab;
 import items.GeneralItem;
 import items.Item;
 import main.Game;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class SpecialMap extends GameMap
 {
@@ -24,7 +25,7 @@ public class SpecialMap extends GameMap
 		images = new ArrayList<>() ;
 		for (int i = 0 ; i <= 2 - 1 ; i += 1)
 		{
-			images.add(UtilS.loadImage("\\Maps\\" + "MapSpecial" + String.valueOf(i) + ".png")) ;
+			images.add(Game.loadImage(Path.MAPS_IMG+ "MapSpecial" + String.valueOf(i) + ".png")) ;
 		}
 	}
 	
@@ -64,7 +65,7 @@ public class SpecialMap extends GameMap
 
 	public static SpecialMap[] load(List<Item> allItems)
 	{
-		List<String[]> input = Util.ReadcsvFile(dadosPath + "MapsSpecial.csv") ;
+		List<String[]> input = Util.readcsvFile(dadosPath + "MapsSpecial.csv") ;
 		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
 
 		for (int id = 0 ; id <= specialMaps.length - 1 ; id += 1)

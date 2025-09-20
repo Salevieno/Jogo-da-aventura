@@ -22,11 +22,12 @@ import items.Item;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
 import main.Game;
+import main.GameTimer;
+import main.Path;
 import screen.Screen;
 import screen.Sky;
-import utilities.GameTimer;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class FieldMap extends GameMap
 {
@@ -38,11 +39,10 @@ public class FieldMap extends GameMap
 	private static final int numberTrees = 5 ;
 	private static final int numberGrass = 30 ;
 	private static final int numberRocks = 10 ;
-	private static final String mapElementsPath = "\\MapElements\\" ;
-	private static final Image treeImage = UtilS.loadImage(mapElementsPath + "MapElem6_TreeForest.png") ;
-	private static final Image grassImage = UtilS.loadImage(mapElementsPath + "MapElem8_Grass.png") ;
-	private static final Image grassImage2 = UtilS.loadImage(mapElementsPath + "MapElem8_Grass2.png") ;
-	private static final Image rockImage = UtilS.loadImage(mapElementsPath + "MapElem9_Rock.png") ;
+	private static final Image treeImage = Game.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem6_TreeForest.png") ;
+	private static final Image grassImage = Game.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem8_Grass.png") ;
+	private static final Image grassImage2 = Game.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem8_Grass2.png") ;
+	private static final Image rockImage = Game.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem9_Rock.png") ;
 	private static final String jsonPath = dadosPath + "mapsField.json" ;
 
 	private FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions)
@@ -82,7 +82,7 @@ public class FieldMap extends GameMap
 			connections[6] = (int) (long) connectionIDs.get("rightBottom") ;
 			connections[7] = (int) (long) connectionIDs.get("rightTop") ;
 
-			Image image = UtilS.loadImage(pathMaps + "Map" + String.valueOf(id + 5) + ".png") ;
+			Image image = Game.loadImage(Path.MAPS_IMG + "Map" + String.valueOf(id + 5) + ".png") ;
 			Clip music = GameMap.musicForest ;
 
 			JSONObject collectibles = (JSONObject) mapData.get("Collectibles") ;

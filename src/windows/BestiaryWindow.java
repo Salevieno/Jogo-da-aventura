@@ -51,7 +51,7 @@ public class BestiaryWindow extends GameWindow
 		Dimension windowSize = new Dimension(128, 240) ;
 		GamePanel.DP.drawGradRoundRect(pos, Align.topLeft, windowSize, 3, Game.palette[5], Game.palette[14], Game.palette[0], true) ;
 		
-		Point creaturePos = Util.Translate(pos, 40, offset) ;
+		Point creaturePos = Util.translate(pos, 40, offset) ;
 		creatureType.display(creaturePos, Scale.unit) ;
 		
 		List<String> textInfo = new ArrayList<>() ;
@@ -63,12 +63,12 @@ public class BestiaryWindow extends GameWindow
 		creatureType.getItems().forEach(item -> textInfo.add(item.getName())) ;
 
 		// draw text
-		Point textPos = Util.Translate(pos, offset, creatureType.getSize().height + offset) ;
+		Point textPos = Util.translate(pos, offset, creatureType.getSize().height + offset) ;
 		GamePanel.DP.drawText(textPos, Align.topLeft, angle, creatureType.getName(), namefont, textColor) ;
-		textPos = Util.Translate(textPos, 0, sy) ;
+		textPos = Util.translate(textPos, 0, sy) ;
 		for (int i = 0 ; i <= text.length - 1 ; i += 1)
 		{
-			textPos = Util.Translate(textPos, 0, sy) ;
+			textPos = Util.translate(textPos, 0, sy) ;
 			GamePanel.DP.drawText(textPos, Align.topLeft, angle, textInfo.get(i), infoFont, textColor) ;
 		}
 	}
@@ -94,8 +94,8 @@ public class BestiaryWindow extends GameWindow
 		for (int slot = 0 ; slot <= numSlotsInWindow - 1 ; slot += 1)
 		{
 			// draw slots
-			Point slotTopLeft = Util.Translate(windowPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
-			Point slotCenter = Util.Translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
+			Point slotTopLeft = Util.translate(windowPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
+			Point slotCenter = Util.translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
 			GamePanel.DP.drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Game.palette[3], Game.palette[20], Game.palette[0], true) ;
 
 			// draw creatures
@@ -110,7 +110,7 @@ public class BestiaryWindow extends GameWindow
 		if (item < 0) { return ;}
 		
 		CreatureType selectedCreature = discoveredCreatures.get(item) ;
-		Point creatureInfoPos = Util.Translate(windowPos, windowSize.width, 0) ;
+		Point creatureInfoPos = Util.translate(windowPos, windowSize.width, 0) ;
 		displayCreatureInfo(creatureInfoPos, selectedCreature) ;
 	}
 }

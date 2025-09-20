@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import graphics.Align;
-import utilities.UtilS;
+import main.Game;
+import main.Path;
+
 
 public abstract class Item
 {
@@ -19,11 +21,9 @@ public abstract class Item
 	protected final int price ;
 	protected final double dropChance ;
 	
-	protected static final Image infoMenu = UtilS.loadImage("\\Windows\\bagIcons\\" + "itemInfoWindow.png") ;
+	protected static final Image infoMenu = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "itemInfoWindow.png") ;
 	public static final List<Item> allItems = new ArrayList<>() ;
-	
-
-    public static final Image slot = UtilS.loadImage("itemSlot.png") ;
+    public static final Image slot = Game.loadImage("itemSlot.png") ;
 	
 	public Item(int id, String name, String description, Image image, int price, double dropChance)
 	{

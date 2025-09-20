@@ -19,9 +19,10 @@ import items.Item;
 import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import main.TextCategories;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class ForgeWindow extends GameWindow
 {
@@ -34,7 +35,7 @@ public class ForgeWindow extends GameWindow
 	
 	private static final int NumberItemsPerWindow = 10 ;
 	private static final Point windowPos = Game.getScreen().getPointWithinBorders(0.2, 0.05) ;
-	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Forge.png") ;
+	private static final Image windowImage = Game.loadImage(Path.WINDOWS_IMG + "Forge.png") ;
 	
 
 	static
@@ -63,7 +64,7 @@ public class ForgeWindow extends GameWindow
 	public void displayMessage(int i)
 	{
 		message = messages.get(i) ;
-		Point pos = Util.Translate(windowPos, 0, - 30) ;
+		Point pos = Util.translate(windowPos, 0, - 30) ;
 		Animation.start(AnimationTypes.message, new Object[] {pos, message, Game.palette[0]}) ;
 	}
 	
@@ -170,8 +171,8 @@ public class ForgeWindow extends GameWindow
 	public void display(Point mousePos)
 	{
 
-		Point titlePos = Util.Translate(windowPos, size.width / 2, 16) ;
-		Point messagePos = Util.Translate(windowPos, size.width / 2, 36) ;
+		Point titlePos = Util.translate(windowPos, size.width / 2, 16) ;
+		Point messagePos = Util.translate(windowPos, size.width / 2, 36) ;
 		double angle = Draw.stdAngle ;
 		List<Equip> itemsOnWindow = NumberItemsPerWindow <= itemsForForge.size() ? itemsForForge.subList(0, NumberItemsPerWindow) : itemsForForge ;
 		
@@ -182,16 +183,16 @@ public class ForgeWindow extends GameWindow
 		GamePanel.DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[1]) ;
 		GamePanel.DP.drawText(messagePos, Align.center, angle, messages.get(0), stdFont, stdColor) ;
 		
-		Point itemPos = Util.Translate(windowPos, 24, 70) ;
+		Point itemPos = Util.translate(windowPos, 24, 70) ;
 		
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
 		{			
 			if (itemsOnWindow.get(i) == null) { continue ;}
 			
-			Point namePos = Util.Translate(itemPos, 14, 0) ;
-			Point runePos = Util.Translate(itemPos, 160, 0) ;
-			Point pricePos = Util.Translate(itemPos, 185, 0) ;
-			Point coinPos = Util.Translate(itemPos, 210, 0) ;
+			Point namePos = Util.translate(itemPos, 14, 0) ;
+			Point runePos = Util.translate(itemPos, 160, 0) ;
+			Point pricePos = Util.translate(itemPos, 185, 0) ;
+			Point coinPos = Util.translate(itemPos, 210, 0) ;
 			
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(200, 10), i) ;
 			
@@ -204,7 +205,7 @@ public class ForgeWindow extends GameWindow
 			
 			if (Util.isInside(mousePos, Util.getTopLeft(runePos, Align.center, Util.getSize(Item.slot)), Util.getSize(Item.slot)))
 			{
-				Point runeNamePos = Util.Translate(runePos, -Item.slot.getWidth(null) / 2, -Item.slot.getHeight(null) / 2 - 5) ;
+				Point runeNamePos = Util.translate(runePos, -Item.slot.getWidth(null) / 2, -Item.slot.getHeight(null) / 2 - 5) ;
 				GamePanel.DP.drawText(runeNamePos, Align.centerLeft, angle, reqRune(equip).getName(), stdFont, stdColor) ;
 			}
 			

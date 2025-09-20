@@ -18,9 +18,10 @@ import graphics.Align;
 import graphics.Scale;
 import graphics2.SpriteAnimation;
 import items.Item;
+import main.Elements;
 import main.Game;
 import main.Languages;
-import utilities.Elements;
+import main.Path;
 import utilities.Util;
 import windows.CreatureAttributesWindow;
 
@@ -209,7 +210,7 @@ public class CreatureType
 
 	public static void load(Languages language, int difficultLevel)
 	{
-		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "CreatureTypes.csv");
+		List<String[]> input = Util.readcsvFile(Path.CSV + "CreatureTypes.csv");
 		CreatureType.setNumberOfCreatureTypes(input.size());
 		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()];
 		Color[] color = new Color[creatureTypes.length];

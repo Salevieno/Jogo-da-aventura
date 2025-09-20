@@ -2,6 +2,8 @@ package main ;
 
 import java.awt.Color ;
 import java.awt.Dimension ;
+import java.awt.Image ;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -48,7 +50,6 @@ import liveBeings.Creature ;
 import liveBeings.CreatureType ;
 import liveBeings.HotKeysBar;
 import liveBeings.LiveBeing;
-import liveBeings.LiveBeingStates;
 import liveBeings.Pet ;
 import liveBeings.Player ;
 import liveBeings.Spell ;
@@ -62,11 +63,7 @@ import screen.Screen ;
 import screen.SideBar ;
 import screen.Sky ;
 import simulations.EvolutionSimulation;
-import utilities.GameStates ;
-import utilities.GameTimer;
-import utilities.Log;
 import utilities.Util;
-import utilities.UtilS ;
 import windows.BankWindow ;
 import windows.PauseWindow;
 
@@ -89,12 +86,8 @@ public class Game
 	private static final Color[] normalPalette ;
 	private static final Color[] konamiPalette ;
 
-	public static final String CSVPath = ".\\csv\\" ;
-	public static final String dadosPath = ".\\dados\\" ;
-	public static final String ImagesPath = ".\\images\\" ;
-	public static final String MusicPath = ".\\music\\" ;
-	public static final String TextPathBR = "./Texto-PT-br.json" ;
 	public static final String MainFontName = "Comics" ;
+	private static final List<String> loadedImagePaths = new ArrayList<>() ;
 
 	private static final GameStates mainState = GameStates.running ;
 	private static final boolean cheatMode = false ;
@@ -135,8 +128,8 @@ public class Game
 	static
 	{
 		screen = new Screen(new Dimension(GameFrame.getWindowsize().width, GameFrame.getWindowsize().height), null) ;
-		normalPalette = UtilS.ReadColorPalette(UtilS.loadImage("ColorPalette.png"), "Normal") ;
-		konamiPalette = UtilS.ReadColorPalette(UtilS.loadImage("KonamiPalette.png"), "Konami") ;
+		normalPalette = readColorPalette(loadImage("ColorPalette.png"), "Normal") ;
+		konamiPalette = readColorPalette(loadImage("KonamiPalette.png"), "Konami") ;
 		selColor = normalPalette[18] ;
 		palette = normalPalette ;
 		gameLanguage = Languages.portugues ;
@@ -171,6 +164,44 @@ public class Game
 	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
 	public static void setState(GameStates newState) { state = newState ;}
 	public static void switchToMainState() { state = mainState ;}
+
+	private static Color[] readColorPalette(Image paletteImage, String mode)
+	{
+		Color[] palette = new Color[28] ;
+
+		switch (mode)
+		{
+			case "Normal":			
+				for (int y = 0 ; y <= 7 - 1 ; y += 1)
+				{
+					for (int x = 0 ; x <= 4 - 1 ; x += 1)
+					{
+						palette[x + 4 * y] = Util.getPixelColor(Util.toBufferedImage(paletteImage), new Point(x, y)) ;
+					}
+				}				
+				return palette ;
+			
+			case "Konami":			
+				for (int x = 0 ; x <= 4 - 1 ; x += 1)
+				{
+					for (int y = 0 ; y <= 7 - 1 ; y += 1)
+					{
+						palette[7 * x + y] = Util.getPixelColor(Util.toBufferedImage(paletteImage), new Point(x, y)) ;
+					}
+				}				
+				return palette ;
+
+			default: return null ;
+		}
+	}
+	
+	public static Image loadImage(String path)
+	{
+		if (loadedImagePaths.contains(path)) { System.out.println("Warn: Loading image " + path + " multiple times") ;}
+
+		loadedImagePaths.add(path);
+		return Util.loadImage(Path.IMAGES + path) ;
+	}
 
 	private static void checkKonamiCode(List<String> combo)
 	{
@@ -224,7 +255,7 @@ public class Game
 	private static void loadAllText()
 	{
 
-		JSONObject textData = Util.readJsonObject(TextPathBR) ;
+		JSONObject textData = Util.readJsonObject(Path.TEXT_BR) ;
 
 		Iterator<?> iterator = textData.keySet().iterator() ;
 

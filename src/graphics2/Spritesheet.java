@@ -3,8 +3,9 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import main.Game;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class Spritesheet
 {
@@ -12,7 +13,7 @@ public class Spritesheet
 
     public Spritesheet(String path)
     {
-    	Image img = UtilS.loadImage(path) ;
+    	Image img = Game.loadImage(path) ;
 
         if (img == null)
         {

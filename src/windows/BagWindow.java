@@ -29,9 +29,10 @@ import items.QuestItem;
 import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import main.TextCategories;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class BagWindow extends GameWindow
 {
@@ -57,13 +58,13 @@ public class BagWindow extends GameWindow
 	private static final List<Point> itemsPos ;
 	private static final Point spacing = new Point(161, 21) ;
 	private static final Dimension itemNameSize = new Dimension(140, 10) ;
-	private static final Image bagImage = UtilS.loadImage("\\Windows\\" + "Bag.png") ;
-	private static final Image selectedBag = UtilS.loadImage("\\Windows\\" + "BagSelected.png") ;
-	private static final Image menuImage = UtilS.loadImage("\\Windows\\" + "BagMenu.png") ;
-	private static final Image selectedMenuTab0 = UtilS.loadImage("\\Windows\\" + "BagSelectedMenuTab0.png") ;
-	private static final Image selectedMenuTab1 = UtilS.loadImage("\\Windows\\" + "BagSelectedMenuTab1.png") ;
-	public static final Image slotImage = UtilS.loadImage("\\Windows\\" + "BagSlot.png") ;
-	public static final Image selectedSlotImage = UtilS.loadImage("\\Windows\\" + "BagSelectedSlot.png") ;
+	private static final Image bagImage = Game.loadImage(Path.WINDOWS_IMG + "Bag.png") ;
+	private static final Image selectedBag = Game.loadImage(Path.WINDOWS_IMG + "BagSelected.png") ;
+	private static final Image menuImage = Game.loadImage(Path.WINDOWS_IMG + "BagMenu.png") ;
+	private static final Image selectedMenuTab0 = Game.loadImage(Path.WINDOWS_IMG + "BagSelectedMenuTab0.png") ;
+	private static final Image selectedMenuTab1 = Game.loadImage(Path.WINDOWS_IMG + "BagSelectedMenuTab1.png") ;
+	public static final Image slotImage = Game.loadImage(Path.WINDOWS_IMG + "BagSlot.png") ;
+	public static final Image selectedSlotImage = Game.loadImage(Path.WINDOWS_IMG + "BagSelectedSlot.png") ;
 	
 	static
 	{
@@ -120,7 +121,7 @@ public class BagWindow extends GameWindow
 		int slotW = slotImage.getWidth(null) ;
 		int slotH = slotImage.getHeight(null) ;
 		Point offset = new Point(70 + border + slotW / 2, border + padding + 2 + slotH / 2) ;
-		return Util.Translate(windowPos, offset.x + col * spacing.x, offset.y + row * spacing.y) ;
+		return Util.translate(windowPos, offset.x + col * spacing.x, offset.y + row * spacing.y) ;
 	}
 	
 	public void navigate(String action)
@@ -653,9 +654,9 @@ public class BagWindow extends GameWindow
 		// draw tabs
 		for (int m = 0 ; m <= tabNames.length - 1 ; m += 1)
 		{
-			Point tabPos = Util.Translate(windowPos, 0, border + m * menuImage.getHeight(null)) ;
+			Point tabPos = Util.translate(windowPos, 0, border + m * menuImage.getHeight(null)) ;
 			tabPos.x += m == tab ? 3 : 0 ; 
-			Point textPos = Util.Translate(tabPos, 3, menuImage.getHeight(null) / 2) ;
+			Point textPos = Util.translate(tabPos, 3, menuImage.getHeight(null) / 2) ;
 			Color textColor = getTextColor(m == tab) ;
 			Image tabImage = m == tab ? (menu == 0 ? selectedMenuTab0 : selectedMenuTab1) : menuImage ;
 			checkMenuMouseSelection(mousePos, tabPos, m) ;
@@ -679,7 +680,7 @@ public class BagWindow extends GameWindow
 			Point slotCenter = itemsPos.get(i) ;
 			Point slotCenterLeft = Util.getPosAt(slotCenter, Align.center, Align.centerLeft, Util.getSize(slotImage)) ;
 			String itemText = itemsDisplayed.get(i).getName() + " (x " + amountsDisplayed.get(i) + ")" ;
-			Point textPos = Util.Translate(slotCenterLeft, slotImage.getWidth(null) + 5, 0) ;
+			Point textPos = Util.translate(slotCenterLeft, slotImage.getWidth(null) + 5, 0) ;
 			checkMouseSelection(mousePos, slotCenterLeft, Align.centerLeft, itemNameSize, itemID) ;
 			Color textColor = getTextColor(itemID == item) ;
 			

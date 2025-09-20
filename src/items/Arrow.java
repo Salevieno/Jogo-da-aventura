@@ -9,10 +9,11 @@ import graphics.Align;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
+import main.Elements;
 import main.Game;
-import utilities.Elements;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class Arrow extends Item
 {
@@ -21,15 +22,15 @@ public class Arrow extends Item
 	
 	private static final Arrow[] all ;
 
-	private static final Image woodArrowIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconWoodArrow.png") ;
-	private static final Image strongArrowIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconStrongArrow.png") ;
-	private static final Image boltArrowIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconBoltArrow.png") ;
+	private static final Image woodArrowIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconWoodArrow.png") ;
+	private static final Image strongArrowIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconStrongArrow.png") ;
+	private static final Image boltArrowIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconBoltArrow.png") ;
 	
-	private static final Image ArrowImage = UtilS.loadImage("\\Equips\\" + "Eq7_Arrow.png") ;
+	private static final Image ArrowImage = Game.loadImage(Path.EQUIPS_IMG + "Eq7_Arrow.png") ;
 	
 	static
 	{
-		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Arrow.csv") ;
+		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Arrow.csv") ;
 		all = new Arrow[input.size()] ;
 		for (int p = 0; p <= all.length - 1; p += 1)
 		{

@@ -7,18 +7,19 @@ import java.util.List;
 import graphics.Align;
 import graphics2.Draw;
 import main.Game;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class Fab extends Item
 {
 	private static final Fab[] allFabs ;
 	
-	private static final Image ferkIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconFerk.png") ;
+	private static final Image ferkIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconFerk.png") ;
 	
 	static
 	{
-		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Fab.csv") ;
+		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Fab.csv") ;
 		allFabs = new Fab[input.size()] ;
 		for (int p = 0; p <= allFabs.length - 1; p += 1)
 		{

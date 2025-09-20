@@ -2,15 +2,15 @@ package testing;
 
 import java.awt.Point;
 
+import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
 import items.Item;
 import liveBeings.Pterodactile;
+import main.Directions;
 import main.Game;
-import utilities.AtkEffects;
-import utilities.Directions;
 
 public class TestingAnimations
 {

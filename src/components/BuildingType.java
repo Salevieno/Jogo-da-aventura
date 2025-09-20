@@ -5,7 +5,7 @@ import java.awt.Image;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import main.Game;
+import main.Path;
 import utilities.Util;
 
 public class BuildingType
@@ -15,8 +15,8 @@ public class BuildingType
 	private Image insideImage ;
 	private Image[] ornamentImages ;
 
-	private static final String dadosPath = Game.dadosPath + "buildings\\" ;
-	private static final String assetsPath = Game.ImagesPath + "\\Buildings\\" ;
+	private static final String dadosPath = Path.DADOS + "buildings\\" ;
+	private static final String assetsPath = Path.IMAGES + Path.BUILDINGS_IMG ;
 	
 	public BuildingType(BuildingNames name, Image image)
 	{

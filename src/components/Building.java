@@ -14,9 +14,10 @@ import graphics2.Draw;
 import graphics2.Drawable;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import main.TextCategories;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class Building implements Drawable
 {
@@ -24,7 +25,7 @@ public class Building implements Drawable
 	private final Point pos ;
 	private List<NPC> npcs ;
 	private List<Collider> colliders ;
-	private static final Image signBoard = UtilS.loadImage("\\Buildings\\" + "SignBoard.png") ;
+	private static final Image signBoard = Game.loadImage(Path.BUILDINGS_IMG + "SignBoard.png") ;
 
 	public Building(BuildingType type, Point pos)
 	{
@@ -43,7 +44,7 @@ public class Building implements Drawable
 	
 	// private void addColliders()
 	// {
-	// 	Image collidersImage = UtilS.loadImage("\\Buildings\\" + "Building" + type.getName() + "Colliders.png") ;
+	// 	Image collidersImage = Game.loadImage(Path.BUILDINGS_IMG + "Building" + type.getName() + "Colliders.png") ;
 		
 	// 	if (collidersImage == null) { return ;}
 		
@@ -77,14 +78,14 @@ public class Building implements Drawable
 		npcs = new ArrayList<>() ;
 		switch (type.getName())
 		{
-			case hospital: npcs.add(new NPC(Game.getNPCTypes()[0], Util.Translate(pos, 50, -20))) ; break ;
+			case hospital: npcs.add(new NPC(Game.getNPCTypes()[0], Util.translate(pos, 50, -20))) ; break ;
 			case store: 
-				npcs.add(new NPC(Game.getNPCTypes()[1], Util.Translate(pos, 120, -60))) ;
-				npcs.add(new NPC(Game.getNPCTypes()[2], Util.Translate(pos, 80, -60))) ;
+				npcs.add(new NPC(Game.getNPCTypes()[1], Util.translate(pos, 120, -60))) ;
+				npcs.add(new NPC(Game.getNPCTypes()[2], Util.translate(pos, 80, -60))) ;
 				
 				break ;
-			case bank: npcs.add(new NPC(Game.getNPCTypes()[4], Util.Translate(pos, 40, -30))) ; break ;
-			case craft: npcs.add(new NPC(Game.getNPCTypes()[8], Util.Translate(pos, 100, -30))) ; break ;
+			case bank: npcs.add(new NPC(Game.getNPCTypes()[4], Util.translate(pos, 40, -30))) ; break ;
+			case craft: npcs.add(new NPC(Game.getNPCTypes()[8], Util.translate(pos, 100, -30))) ; break ;
 			default: break;
 		}
 	}
@@ -102,8 +103,8 @@ public class Building implements Drawable
 	public void displaySignMessage(int cityID)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
-		Point boardPos = Util.Translate(pos, type.getImage().getWidth(null), 0) ;
-		Point messagePos = Util.Translate(boardPos, 12, 15 - signBoard.getHeight(null)) ;
+		Point boardPos = Util.translate(pos, type.getImage().getWidth(null), 0) ;
+		Point messagePos = Util.translate(boardPos, 12, 15 - signBoard.getHeight(null)) ;
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
 		GamePanel.DP.drawImage(signBoard, boardPos, Align.bottomLeft, 0.85) ;
 		Draw.fitText(messagePos, font.getSize() + 2, Align.bottomLeft, message, font, 40, Game.palette[0]) ;	

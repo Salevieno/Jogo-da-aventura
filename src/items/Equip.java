@@ -18,11 +18,11 @@ import graphics2.AnimationTypes;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
+import main.Elements;
 import main.Game;
 import main.GamePanel;
-import utilities.Elements;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
 import windows.AttributesWindow;
 
 public class Equip extends Item
@@ -36,35 +36,35 @@ public class Equip extends Item
 	private static final double setBonus = 0.2 ;
 	public static final int maxForgeLevel = 10 ;
 	
-	private static final Image swordIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconSword.png") ;
-	private static final Image staffIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconStaff.png") ;
-	private static final Image bowIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconBow.png") ;
-	private static final Image clawsIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconClaws.png") ;
-	private static final Image daggerIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconDagger.png") ;
-	private static final Image shieldIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconShield.png") ;
-	private static final Image armorIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconArmor.png") ;
-	private static final Image emblemIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconEmblem.png") ;
+	private static final Image swordIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconSword.png") ;
+	private static final Image staffIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconStaff.png") ;
+	private static final Image bowIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconBow.png") ;
+	private static final Image clawsIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconClaws.png") ;
+	private static final Image daggerIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconDagger.png") ;
+	private static final Image shieldIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconShield.png") ;
+	private static final Image armorIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconArmor.png") ;
+	private static final Image emblemIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconEmblem.png") ;
 	
-	private static final Image SwordImage = UtilS.loadImage("\\Equips\\" + "Eq0_Sword.png") ;
-	private static final Image StaffImage = UtilS.loadImage("\\Equips\\" + "Eq1_Staff.png") ;
-	private static final Image BowImage = UtilS.loadImage("\\Equips\\" + "Eq2_Bow.png") ;
-	private static final Image ClawsImage = UtilS.loadImage("\\Equips\\" + "Eq3_Claws.png") ;
-	private static final Image DaggerImage = UtilS.loadImage("\\Equips\\" + "Eq4_Dagger.png") ;
-	private static final Image ShieldImage = UtilS.loadImage("\\Equips\\" + "Eq5_Shield.png") ;
-	private static final Image ArmorImage = UtilS.loadImage("\\Equips\\" + "Eq6_Armor.png") ;
-	private static final Image emblemImage = UtilS.loadImage("\\Equips\\" + "Eq8_emblem.png") ;
+	private static final Image SwordImage = Game.loadImage(Path.EQUIPS_IMG + "Eq0_Sword.png") ;
+	private static final Image StaffImage = Game.loadImage(Path.EQUIPS_IMG + "Eq1_Staff.png") ;
+	private static final Image BowImage = Game.loadImage(Path.EQUIPS_IMG + "Eq2_Bow.png") ;
+	private static final Image ClawsImage = Game.loadImage(Path.EQUIPS_IMG + "Eq3_Claws.png") ;
+	private static final Image DaggerImage = Game.loadImage(Path.EQUIPS_IMG + "Eq4_Dagger.png") ;
+	private static final Image ShieldImage = Game.loadImage(Path.EQUIPS_IMG + "Eq5_Shield.png") ;
+	private static final Image ArmorImage = Game.loadImage(Path.EQUIPS_IMG + "Eq6_Armor.png") ;
+	private static final Image emblemImage = Game.loadImage(Path.EQUIPS_IMG + "Eq8_emblem.png") ;
 	
-	private static final Image ShiningSwordImage = UtilS.loadImage("\\Equips\\" + "Eq0_ShiningSword.png") ;
-	private static final Image ShiningStaffImage = UtilS.loadImage("\\Equips\\" + "Eq1_ShiningStaff.png") ;
-	private static final Image ShiningBowImage = UtilS.loadImage("\\Equips\\" + "Eq2_ShiningBow.png") ;
-	private static final Image ShiningClawsImage = UtilS.loadImage("\\Equips\\" + "Eq3_ShiningClaws.png") ;
-	private static final Image ShiningDaggerImage = UtilS.loadImage("\\Equips\\" + "Eq4_ShiningDagger.png") ;
-	private static final Image ShiningShieldImage = UtilS.loadImage("\\Equips\\" + "Eq5_ShiningShield.png") ;
-	private static final Image ShiningArmorImage = UtilS.loadImage("\\Equips\\" + "Eq6_ShiningArmor.png") ;
+	private static final Image ShiningSwordImage = Game.loadImage(Path.EQUIPS_IMG + "Eq0_ShiningSword.png") ;
+	private static final Image ShiningStaffImage = Game.loadImage(Path.EQUIPS_IMG + "Eq1_ShiningStaff.png") ;
+	private static final Image ShiningBowImage = Game.loadImage(Path.EQUIPS_IMG + "Eq2_ShiningBow.png") ;
+	private static final Image ShiningClawsImage = Game.loadImage(Path.EQUIPS_IMG + "Eq3_ShiningClaws.png") ;
+	private static final Image ShiningDaggerImage = Game.loadImage(Path.EQUIPS_IMG + "Eq4_ShiningDagger.png") ;
+	private static final Image ShiningShieldImage = Game.loadImage(Path.EQUIPS_IMG + "Eq5_ShiningShield.png") ;
+	private static final Image ShiningArmorImage = Game.loadImage(Path.EQUIPS_IMG + "Eq6_ShiningArmor.png") ;
 
 	static
 	{
-		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Equip.csv") ;
+		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Equip.csv") ;
 		allEquips = new Equip[input.size()] ;
 		for (int p = 0; p <= allEquips.length - 1; p += 1)
 		{
@@ -349,14 +349,14 @@ public class Equip extends Item
 		GamePanel.DP.drawImage(infoMenu, pos, align) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
 		int nRows = 4 ;
-		Point topLeftSlotCenter = Util.Translate(pos, 15 - Util.getSize(infoMenu).width, 18) ;
+		Point topLeftSlotCenter = Util.translate(pos, 15 - Util.getSize(infoMenu).width, 18) ;
 		int[] attOrder = new int[] {0, 2, 4, 6, 1, 3, 5, 7} ;
 		for (int i = 0 ; i <= attOrder.length - 1 ; i += 1)
 		{
 			Point imagePos = Util.calcGridPos(topLeftSlotCenter, i, nRows, new Point(70, 25)) ;
 			GamePanel.DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
 			
-			Point textPos = Util.Translate(imagePos, 10, 0) ;
+			Point textPos = Util.translate(imagePos, 10, 0) ;
 			GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Game.palette[0]) ;
 		}
 	}

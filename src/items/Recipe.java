@@ -9,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import main.Game;
+import main.Path;
 import utilities.Util;
 
 public class Recipe
@@ -32,7 +33,7 @@ public class Recipe
 	
 	public static void load(List<Item> allItems)
 	{
-		JSONArray input = Util.readJsonArray(Game.dadosPath + "craftRecipes.json") ;
+		JSONArray input = Util.readJsonArray(Path.DADOS + "craftRecipes.json") ;
 
 		for (int i = 0 ; i <= input.size() - 1 ; i += 1)
 		{

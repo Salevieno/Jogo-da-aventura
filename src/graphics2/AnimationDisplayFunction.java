@@ -1,4 +1,4 @@
-package components;
+package graphics2;
 
 public interface AnimationDisplayFunction
 {

@@ -8,7 +8,7 @@ public abstract class LoadGame
 //	{
 ////		selectedSlot = 0 ;
 ////		tab = 0 ;
-//		LoadingGif = UtilS.loadImage("\\Opening\\" + "Loading.gif") ;
+//		LoadingGif = Game.loadImage("\\Opening\\" + "Loading.gif") ;
 //    	
 //	}
 	

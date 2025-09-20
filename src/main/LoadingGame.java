@@ -16,13 +16,13 @@ public abstract class LoadingGame
 
     private static int loadingStep = 0 ;
     private static final GameButton startButton ;
-	private static final String path = Game.ImagesPath  + "\\Opening\\";
+	private static final String path = Path.IMAGES  + "\\Opening\\";
 	private static final Image LoadingGif = Util.loadImage(path + "Loading.gif") ;
-	private static final SpriteAnimation petIdle = new SpriteAnimation("\\Pet\\" + "Pet0Idle.png", Game.getScreen().getCenter(), Align.center, 4, 0.13) ;
+	private static final SpriteAnimation petIdle = new SpriteAnimation(Path.PET_IMG + "Pet0Idle.png", Game.getScreen().getCenter(), Align.center, 4, 0.13) ;
 
     static
     {
-		Point startButtonPos = Util.Translate(Game.getScreen().getCenter(), 0, 80) ;
+		Point startButtonPos = Util.translate(Game.getScreen().getCenter(), 0, 80) ;
     	Image startImage = Util.loadImage(path + "Start.png") ;
     	Image startImageSelected = Util.loadImage(path + "Start Selected.gif") ;
 		ButtonFunction startAction = () -> { loadingStep = 12 ;} ;
@@ -68,28 +68,28 @@ public abstract class LoadingGame
 	{
 //			Color textColor = Game.palette[0] ;
 //			Point moveInfoTopLeft = new Point(40, 60) ;
-//			GamePanel.DP.drawText(Util.Translate(moveInfoTopLeft, 100, 0), Align.center, 0, "Principais ações", font, textColor) ;
+//			GamePanel.DP.drawText(Util.translate(moveInfoTopLeft, 100, 0), Align.center, 0, "Principais ações", font, textColor) ;
 //			
 //			Image[] moveInfoImages = new Image[] {Game.getPlayer().getMovingAni().movingRightGif, SideBar.getIconImages()[2], Game.getPlayer().getMovingAni().idleGif, SideBar.getIconImages()[1]} ;
 //			String[] moveInfoText = new String[] {"Moving: W A S D ou setas", "Mochila: B", "Janela do jogador: C", "Quests: Q"} ;
 //			for (int i = 0 ; i <= moveInfoImages.length - 1; i += 1)
 //			{
-//				Point imageCenterLeft = Util.Translate(moveInfoTopLeft, 0, 100 + 50 * i) ;
+//				Point imageCenterLeft = Util.translate(moveInfoTopLeft, 0, 100 + 50 * i) ;
 //				GamePanel.DP.drawImage(moveInfoImages[i], imageCenterLeft, Align.center);
-//				GamePanel.DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, moveInfoText[i], smallFont, textColor) ;
+//				GamePanel.DP.drawText(Util.translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, moveInfoText[i], smallFont, textColor) ;
 //			}
 //			
 //			
 //			Point atkInfoTopLeft = new Point(380, 60) ;
-//			GamePanel.DP.drawText(Util.Translate(atkInfoTopLeft, 120, 0), Align.center, 0, "Ações de luta", font, textColor) ;
+//			GamePanel.DP.drawText(Util.translate(atkInfoTopLeft, 120, 0), Align.center, 0, "Ações de luta", font, textColor) ;
 //			
 //			Image[] atkInfoImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Player.MagicBlissGif} ;
 //			String[] atkInfoText = new String[] {"Attack: Y", "Defense: U", "Spells: 0, 1...F11, F12"} ;
 //			for (int i = 0 ; i <= atkInfoImages.length - 1; i += 1)
 //			{
-//				Point imageCenterLeft = Util.Translate(atkInfoTopLeft, 0, 100 + 50 * i) ;
+//				Point imageCenterLeft = Util.translate(atkInfoTopLeft, 0, 100 + 50 * i) ;
 //				GamePanel.DP.drawImage(atkInfoImages[i], imageCenterLeft, Align.center);
-//				GamePanel.DP.drawText(Util.Translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, atkInfoText[i], smallFont, textColor) ;
+//				GamePanel.DP.drawText(Util.translate(imageCenterLeft, 35, 0), Align.centerLeft, 0, atkInfoText[i], smallFont, textColor) ;
 //			}
 //			
 //			GamePanel.DP.drawImage(LoadingEnfeite, new Point(0, 0), Align.topLeft) ;
@@ -101,8 +101,8 @@ public abstract class LoadingGame
 		if (!loadingIsOver())
 		{
 			Dimension loadingBarSize = new Dimension(400, 30) ;
-			Point loadingTextCenter = Util.Translate(Game.getScreen().getCenter(), 0, 80) ;
-			Point loadingBarCenterLeft = Util.Translate(Game.getScreen().getCenter(), -loadingBarSize.width / 2, 80) ;
+			Point loadingTextCenter = Util.translate(Game.getScreen().getCenter(), 0, 80) ;
+			Point loadingBarCenterLeft = Util.translate(Game.getScreen().getCenter(), -loadingBarSize.width / 2, 80) ;
 			Dimension loadedBarSize = new Dimension(loadingStep * loadingBarSize.width / 11, loadingBarSize.height) ;
 			GamePanel.DP.drawImage(LoadingGif, loadingTextCenter, Align.center) ;
 			GamePanel.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, Game.palette[0], true);

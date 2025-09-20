@@ -9,8 +9,9 @@ import graphics.Align;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
 import main.Game;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class Potion extends Item
 {
@@ -19,16 +20,16 @@ public class Potion extends Item
 	
 	private static final Potion[] AllPotions ;
 	
-	private static final Image lifePotionSmall = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconLifePotionSmall.png") ;
-	private static final Image lifePotionMedium = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconLifePotionMedium.png") ;
-	private static final Image lifePotionLarge = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconLifePotionLarge.png") ;
-	private static final Image mpPotionSmall = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMpPotionSmall.png") ;
-	private static final Image mpPotionMedium = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMpPotionMedium.png") ;
-	private static final Image mpPotionLarge = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconMpPotionLarge.png") ;
+	private static final Image lifePotionSmall = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconLifePotionSmall.png") ;
+	private static final Image lifePotionMedium = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconLifePotionMedium.png") ;
+	private static final Image lifePotionLarge = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconLifePotionLarge.png") ;
+	private static final Image mpPotionSmall = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconMpPotionSmall.png") ;
+	private static final Image mpPotionMedium = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconMpPotionMedium.png") ;
+	private static final Image mpPotionLarge = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconMpPotionLarge.png") ;
 	
 	static
 	{
-		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Potions.csv") ;
+		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Potions.csv") ;
 		AllPotions = new Potion[input.size()] ;
 		for (int p = 0; p <= AllPotions.length - 1; p += 1)
 		{

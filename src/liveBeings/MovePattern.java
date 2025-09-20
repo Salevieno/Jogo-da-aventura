@@ -2,7 +2,7 @@ package liveBeings;
 
 import java.awt.geom.Point2D;
 
-import utilities.Directions;
+import main.Directions;
 
 public enum MovePattern
 {

@@ -23,15 +23,16 @@ import graphics2.SpriteAnimation;
 import items.Fab;
 import items.GeneralItem;
 import items.Item;
+import main.Elements;
 import main.Game;
 import main.GameFrame;
 import main.GamePanel;
 import main.Music;
+import main.Path;
 import main.TextCategories;
 import screen.Sky;
-import utilities.Elements;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class GameMap
 {
@@ -47,11 +48,10 @@ public class GameMap
 	protected List<NPC> npcs ;
 	protected Map<Item, Double> diggingItems ;
 
-	protected static final Dimension screenSize = Game.getScreen().getSize() ;	
-	protected static final String pathMaps = "\\Maps\\" ;
-	protected static final String dadosPath = Game.dadosPath + "gameMaps\\" ;
-	protected static final Image dockImg = UtilS.loadImage(pathMaps + "Dock.png") ;
-	protected static final Image boatImg = UtilS.loadImage(pathMaps + "Boat.png") ;
+	protected static final Dimension screenSize = Game.getScreen().getSize() ;
+	protected static final String dadosPath = Path.DADOS + "gameMaps\\" ;
+	protected static final Image dockImg = Game.loadImage(Path.MAPS_IMG + "Dock.png") ;
+	protected static final Image boatImg = Game.loadImage(Path.MAPS_IMG + "Boat.png") ;
 	protected static final Image infoWindow ;
 	protected static final SpriteAnimation beachGif ;
 	
@@ -78,12 +78,12 @@ public class GameMap
 		{
 			allDiggingItems.put(GeneralItem.getAll()[genItemIDs[i]], genItemPotentials[i]) ;
 		}
-		beachGif = new SpriteAnimation(pathMaps + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, 12, 15) ;
-		infoWindow = UtilS.loadImage("\\Windows\\" + "MapInfo.png") ;
+		beachGif = new SpriteAnimation(Path.MAPS_IMG + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, 12, 15) ;
+		infoWindow = Game.loadImage(Path.WINDOWS_IMG + "MapInfo.png") ;
 
-		musicCities = Music.musicFileToClip(new File(Game.MusicPath + "cidade.wav").getAbsoluteFile()) ;
-		musicForest = Music.musicFileToClip(new File(Game.MusicPath + "floresta.wav").getAbsoluteFile()) ;
-		musicSpecial = Music.musicFileToClip(new File(Game.MusicPath + "12-Special.wav").getAbsoluteFile()) ;
+		musicCities = Music.musicFileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
+		musicForest = Music.musicFileToClip(new File(Path.MUSIC + "floresta.wav").getAbsoluteFile()) ;
+		musicSpecial = Music.musicFileToClip(new File(Path.MUSIC + "12-Special.wav").getAbsoluteFile()) ;
 		
 		// Log.diggingItems(allDiggingItems) ;
 	}
@@ -167,10 +167,10 @@ public class GameMap
 
 	protected Point randomPosOnLand(Point minCoord, Dimension range, Dimension step)
 	{
-		Point randomPos = Util.RandomPos(minCoord, range, step) ;
+		Point randomPos = Util.randomPos(minCoord, range, step) ;
 		while (groundTypeAtPoint(randomPos) != null)
 		{
-			randomPos = Util.RandomPos(minCoord, range, step) ;
+			randomPos = Util.randomPos(minCoord, range, step) ;
 		}
 		return randomPos ;
 	}
@@ -189,7 +189,7 @@ public class GameMap
 		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
 		Dimension range = new Dimension(Game.getScreen().mapSize().width, (int) ((1 - (float)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
 		
-		return Util.RandomPos(minCoord, range, new Dimension(1, 1)) ;
+		return Util.randomPos(minCoord, range, new Dimension(1, 1)) ;
 	}
 	
 	public static GameMap[] inForest()
@@ -372,10 +372,10 @@ public class GameMap
 		
 		GamePanel.DP.drawImage(infoWindow, pos, Align.topLeft) ;
 		
-		Point titlePos = Util.Translate(pos, size.width / 2 + 5, 13) ;
+		Point titlePos = Util.translate(pos, size.width / 2 + 5, 13) ;
 		GamePanel.DP.drawText(titlePos, Align.center, 0, name, titleFont, Game.palette[0]) ;
 		
-		Point diggingItemsPos = Util.Translate(pos, 10, 43) ;
+		Point diggingItemsPos = Util.translate(pos, 10, 43) ;
 		GamePanel.DP.drawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Game.palette[0]) ;
 		diggingItemsPos.y += 14 ;
 		for (Item item : diggingItems.keySet())
@@ -388,10 +388,10 @@ public class GameMap
 		{
 			FieldMap fm = (FieldMap) this ;
 			
-			Point levelPos = Util.Translate(titlePos, 0, 14) ;
+			Point levelPos = Util.translate(titlePos, 0, 14) ;
 			GamePanel.DP.drawText(levelPos, Align.center, 0, "Nível " + String.valueOf(fm.getLevel()), largeFont, Game.palette[6]) ;
 			
-			Point allItemsPos = Util.Translate(pos, 160, 43) ;
+			Point allItemsPos = Util.translate(pos, 160, 43) ;
 			GamePanel.DP.drawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Game.palette[0]) ;
 			allItemsPos.y += 14 ;
 			for (Item item : fm.getItems())
@@ -403,7 +403,7 @@ public class GameMap
 			return ;
 		}
 		
-		Point levelPos = Util.Translate(titlePos, 0, 14) ;
+		Point levelPos = Util.translate(titlePos, 0, 14) ;
 		GamePanel.DP.drawText(levelPos, Align.center, 0, "Nível 0", largeFont, Game.palette[6]) ;
 
 	}

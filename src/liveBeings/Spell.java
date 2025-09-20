@@ -9,12 +9,13 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 
 import components.SpellTypes;
+import main.Elements;
 import main.Game;
+import main.GameTimer;
 import main.Languages;
-import utilities.Elements;
-import utilities.GameTimer;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class Spell 
 {	
@@ -168,7 +169,7 @@ public class Spell
 	
 	public static void load(Languages language, List<Buff> allBuffs, List<Buff> allDebuffs)
 	{
-		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "SpellTypes.csv") ;
+		List<String[]> input = Util.readcsvFile(Path.CSV + "SpellTypes.csv") ;
 
 		Spell[] allSpells = new Spell[input.size()] ;
 		String[][] info = new String[allSpells.length][2] ;
@@ -180,7 +181,7 @@ public class Spell
 			info[row] = new String[] { col[44], col[45 + 2 * language.ordinal()] } ;
 			String name = col[4] ;
 			String job = PlayerJobs.jobFromSpellID(row).toString() ;
-			Image image = UtilS.loadImage("\\Spells\\" + "spell" + job + row + ".png") ;
+			Image image = Game.loadImage(Path.SPELLS_IMG + "spell" + job + row + ".png") ;
 			int maxLevel = Integer.parseInt(col[5]) ;
 			int mpCost = Integer.parseInt(col[6]) ;
 			SpellTypes type = SpellTypes.valueOf(col[7]) ;

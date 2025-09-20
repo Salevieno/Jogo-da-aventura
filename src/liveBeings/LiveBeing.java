@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import attributes.Attributes;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
+import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
 import components.Hitbox;
@@ -25,19 +26,19 @@ import graphics2.Animation;
 import graphics2.AnimationTypes;
 import graphics2.Drawable;
 import graphics2.Gif;
+import main.Directions;
+import main.Elements;
 import main.Game;
 import main.GamePanel;
+import main.GameTimer;
+import main.Path;
+import main.RelativePos;
 import maps.Continents;
 import maps.GameMap;
 import maps.GroundRegion;
 import maps.GroundType;
-import utilities.AtkEffects;
-import utilities.Directions;
-import utilities.Elements;
-import utilities.GameTimer;
-import utilities.RelativePos;
 import utilities.Util;
-import utilities.UtilS;
+
 import windows.AttributesWindow;
 
 public abstract class LiveBeing implements Drawable
@@ -74,16 +75,16 @@ public abstract class LiveBeing implements Drawable
 	protected AttributesWindow attWindow ;
 	
 	private static int damageStyle = 0 ;
-	private static final Image attImage = UtilS.loadImage("\\Player\\" + "Attributes.png") ;
-	private static final Image drunkImage = UtilS.loadImage("\\Status\\" + "Drunk.png") ;
-	private static final Image defendingImage = UtilS.loadImage("\\Battle\\" + "ShieldIcon.png") ;
-	private static final Image powerBarImage = UtilS.loadImage("PowerBar.png") ;
+	private static final Image attImage = Game.loadImage(Path.PLAYER_IMG + "Attributes.png") ;
+	private static final Image drunkImage = Game.loadImage(Path.STATUS_IMG + "Drunk.png") ;
+	private static final Image defendingImage = Game.loadImage(Path.BATTLE_IMG + "ShieldIcon.png") ;
+	private static final Image powerBarImage = Game.loadImage("PowerBar.png") ;
 	public static final String[] battleKeys = new String[] {"Y", "U"} ;	
 	public static final List<String> spellKeys = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12") ;
 
-	protected static final Gif levelUpGif = new Gif("Level up", UtilS.loadImage("\\Player\\" + "LevelUp.gif"), 170, false, false) ;
-	// private static final Gif phyHitGif = new Gif("phyHit", UtilS.loadImage("\\Battle\\" + "PhysicalHit.gif"), (int) (75 / 1.5), false, false) ;
-	// private static final Gif magHitGif = new Gif("magHit", UtilS.loadImage("\\Battle\\" + "SpellHit.gif"), (int) (90 / 1.5), false, false) ;
+	protected static final Gif levelUpGif = new Gif("Level up", Game.loadImage(Path.PLAYER_IMG + "LevelUp.gif"), 170, false, false) ;
+	// private static final Gif phyHitGif = new Gif("phyHit", Game.loadImage(Path.BATTLE_IMG + "PhysicalHit.gif"), (int) (75 / 1.5), false, false) ;
+	// private static final Gif magHitGif = new Gif("magHit", Game.loadImage(Path.BATTLE_IMG + "SpellHit.gif"), (int) (90 / 1.5), false, false) ;
 	
 	
 	public LiveBeing(PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, AttributesWindow attWindow)
@@ -377,7 +378,7 @@ public abstract class LiveBeing implements Drawable
 
 	public void displayState()
 	{
-		Point displayPos = Util.Translate(getPos(), 0, size.height + 10) ;
+		Point displayPos = Util.translate(getPos(), 0, size.height + 10) ;
 		// Dimension size = new Dimension(60, 20) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String stateText = state.toString() ;
@@ -398,9 +399,9 @@ public abstract class LiveBeing implements Drawable
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		Dimension barSize = new Dimension(15, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
 		
-		GamePanel.DP.drawRect(Util.Translate(pos, 0, -13), Align.bottomCenter, barSize, 0, color, null, 1.0) ;
+		GamePanel.DP.drawRect(Util.translate(pos, 0, -13), Align.bottomCenter, barSize, 0, color, null, 1.0) ;
 		GamePanel.DP.drawImage(powerBarImage, pos, Align.bottomCenter) ;
-		GamePanel.DP.drawText(Util.Translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
+		GamePanel.DP.drawText(Util.translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
 	}
 
 	private static Directions calcDrunkDir(Directions dir, GameTimer drunk)
@@ -510,9 +511,9 @@ public abstract class LiveBeing implements Drawable
 		// double defenderAtkRate = 1 ;
 		// double critRate = this.getBA().getCritAtk().getTotal() - defender.getBA().getCritDef().getTotal() ;
 		// double hitRate = 1 - 1 / (1 + Math.pow(1.1, this.getBA().getDex().getTotal() - defender.getBA().getAgi().getTotal())) ;
-		// int phyDamBase = Math.max((int) Util.Round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
-		// int phyDamInDefense = Math.max((int) Util.Round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
-		// int phyDamCrit = (int) Util.Round(this.getBA().getPhyAtk().getTotal(), 0) ;
+		// int phyDamBase = Math.max((int) Util.round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
+		// int phyDamInDefense = Math.max((int) Util.round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
+		// int phyDamCrit = (int) Util.round(this.getBA().getPhyAtk().getTotal(), 0) ;
 
 
 		// double movesPerSec = 1 / this.getBattleActionCounter().getDuration() ;
@@ -537,13 +538,13 @@ public abstract class LiveBeing implements Drawable
 		
 		double spellDam = this instanceof Player ? 2.0 + this.getBA().getMagAtk().getTotal() - defender.getBA().getMagDef().getTotal() : 1 + 1.02 * this.getBA().getMagAtk().getTotal() - defender.getBA().getMagDef().getTotal() ;
 		
-		int phyDamBase = Math.max((int) Util.Round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
-		int spellDamBase = Math.max((int) Util.Round(spellDam, 0), 0) ;
-		int phyDamInDefense = Math.max((int) Util.Round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
-		int magDamInDefense = Math.max((int) Util.Round(spellDam - defender.getBA().getMagDef().getBaseValue(), 0), 0) ;
-		int bloodDam = Math.max((int) Util.Round(this.getBA().getBlood().TotalAtk() - defender.getBA().getBlood().TotalDef(), 0), 0) ;
-		int phyDamCrit = (int) Util.Round(this.getBA().getPhyAtk().getTotal(), 0) ;
-		int spellDamCrit = (int) Util.Round(this instanceof Player ? 2.0 + this.getBA().getMagAtk().getTotal() : 1 + 1.02 * this.getBA().getMagAtk().getTotal(), 0) ;
+		int phyDamBase = Math.max((int) Util.round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
+		int spellDamBase = Math.max((int) Util.round(spellDam, 0), 0) ;
+		int phyDamInDefense = Math.max((int) Util.round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
+		int magDamInDefense = Math.max((int) Util.round(spellDam - defender.getBA().getMagDef().getBaseValue(), 0), 0) ;
+		int bloodDam = Math.max((int) Util.round(this.getBA().getBlood().TotalAtk() - defender.getBA().getBlood().TotalDef(), 0), 0) ;
+		int phyDamCrit = (int) Util.round(this.getBA().getPhyAtk().getTotal(), 0) ;
+		int spellDamCrit = (int) Util.round(this instanceof Player ? 2.0 + this.getBA().getMagAtk().getTotal() : 1 + 1.02 * this.getBA().getMagAtk().getTotal(), 0) ;
 		
 		double bloodDuration = this.getBA().getBlood().getDuration() ;
 		double damPerMove = ratePhyAtkAttacker * hitRate * ((1 - critRate) * ((1 - rateDefDefender) * phyDamBase + rateDefDefender * phyDamInDefense) + critRate * phyDamCrit) +
@@ -680,10 +681,10 @@ public abstract class LiveBeing implements Drawable
 		{
 			if (!groundType.getType().equals(targetGroundType)) { continue ;}	
 			
-			return posRelativeToPolygon(userPos, groundType.getRegion(), step) ; // UtilS.posRelativeToRectangle(userPos, groundType.getTopLeftPos(), groundType.getSize()) ;
+			return posRelativeToPolygon(userPos, groundType.getRegion(), step) ;
 		}
 		
-		return null ;		
+		return null ;
 	}
 
 	private static RelativePos posRelativeToPolygon(Point2D.Double pos, Polygon polygon, int step)
@@ -819,7 +820,7 @@ public abstract class LiveBeing implements Drawable
 			int clearSpace = 2 ;
 			for (int i = 0; i <= attRate.size() - 1; i += 1)
 			{
-				Point barPos = Util.Translate(getPos(), -size.width / 2, -size.height - attRate.size() * barSize.height - clearSpace + i * sy) ;
+				Point barPos = Util.translate(getPos(), -size.width / 2, -size.height - attRate.size() * barSize.height - clearSpace + i * sy) ;
 				Dimension filledSize = new Dimension((int)(attRate.get(i) * barSize.width), barSize.height) ;
 				GamePanel.DP.drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Game.palette[0], 1.0) ;
 			}
@@ -831,7 +832,7 @@ public abstract class LiveBeing implements Drawable
 			int stroke = 1 ;
 			GamePanel.DP.drawImage(attImage, topLeft, Align.topLeft) ;
 			Point offset = new Point(37, 44) ;
-			Point barPos = Util.Translate(topLeft, offset.x, offset.y) ;
+			Point barPos = Util.translate(topLeft, offset.x, offset.y) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
 				Dimension rateSize = new Dimension(barSize.width, (int) (attRate.get(att) *  barSize.height)) ;
@@ -914,7 +915,7 @@ public abstract class LiveBeing implements Drawable
 	public void displayStatus()
 	{
 		Point offset = new Point(-size.width / 2 + 4, size.height / 2 + 4) ;
-		Point imgPos = Util.Translate(center(), offset.x, -offset.y) ;
+		Point imgPos = Util.translate(center(), offset.x, -offset.y) ;
 		
 		for (Attributes att : Attributes.values())
 		{
@@ -928,14 +929,14 @@ public abstract class LiveBeing implements Drawable
 	public void displayDrunk()
 	{
 		Point offset = new Point(size.width / 2 + drunkImage.getWidth(null) / 2 + 2, defendingImage.getHeight(null) + 2) ;
-		Point imagePos = Util.Translate(center(), -offset.x, 0) ;
+		Point imagePos = Util.translate(center(), -offset.x, 0) ;
 		GamePanel.DP.drawImage(drunkImage, imagePos, Align.center) ;
 	}
 	
 	public void displayDefending()
 	{
 		Point offset = new Point(size.width / 2 + defendingImage.getWidth(null) / 2 + 2, 0) ;
-		Point imagePos = Util.Translate(center(), -offset.x, 0) ;
+		Point imagePos = Util.translate(center(), -offset.x, 0) ;
 		GamePanel.DP.drawImage(defendingImage, imagePos, Align.center) ;
 	}
 

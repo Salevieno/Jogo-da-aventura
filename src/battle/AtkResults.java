@@ -2,8 +2,6 @@ package battle;
 
 import java.util.Arrays;
 
-import utilities.AtkEffects;
-
 public class AtkResults
 {
 	private AtkTypes atkType ;

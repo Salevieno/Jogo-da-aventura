@@ -2,7 +2,7 @@ package attributes;
 
 import org.json.simple.JSONObject;
 
-import utilities.Log;
+import main.Log;
 
 public class BasicAttribute extends LiveBeingAttribute
 {

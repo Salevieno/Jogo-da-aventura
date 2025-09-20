@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
-import utilities.Elements;
+import main.Elements;
 
 public class BattleAttributes
 {

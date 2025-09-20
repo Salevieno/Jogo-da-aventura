@@ -7,22 +7,23 @@ import java.util.List;
 import graphics.Align;
 import graphics2.Draw;
 import main.Game;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class Forge extends Item
 {
 	
 	private static final Forge[] allForge ;
 	
-	private static final Image runeAtk = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconRuneAtk.png") ;
-	private static final Image runeDef = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconRuneDef.png") ;
-	private static final Image specialRuneAtk = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconSpecialRuneAtk.png") ;
-	private static final Image specialRuneDef = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconSpecialRuneDef.png") ;
+	private static final Image runeAtk = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconRuneAtk.png") ;
+	private static final Image runeDef = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconRuneDef.png") ;
+	private static final Image specialRuneAtk = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconSpecialRuneAtk.png") ;
+	private static final Image specialRuneDef = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconSpecialRuneDef.png") ;
 	
 	static
 	{
-		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Forge.csv") ;
+		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Forge.csv") ;
 		allForge = new Forge[input.size()] ;
 		for (int p = 0; p <= allForge.length - 1; p += 1)
 		{

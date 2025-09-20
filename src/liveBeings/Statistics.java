@@ -6,11 +6,11 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
+import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
 import main.Game;
 import main.TextCategories;
-import utilities.AtkEffects;
 
 public class Statistics
 {

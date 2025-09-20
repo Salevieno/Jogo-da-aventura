@@ -12,6 +12,7 @@ import java.util.Set;
 import attributes.BasicAttribute;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
+import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
 import battle.Battle;
@@ -21,16 +22,15 @@ import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
 import items.Item;
+import main.Directions;
+import main.Elements;
 import main.Game;
 import main.GamePanel;
+import main.GameStates;
+import main.GameTimer;
 import maps.GameMap;
 import screen.Screen;
 import screen.Sky;
-import utilities.AtkEffects;
-import utilities.Directions;
-import utilities.Elements;
-import utilities.GameStates;
-import utilities.GameTimer;
 import utilities.Util;
 
 public class Creature extends LiveBeing
@@ -48,7 +48,7 @@ public class Creature extends LiveBeing
 	
  	public Creature(CreatureType CT)
 	{
- 		this(CT, Util.RandomPos(new Point(0, (int) (0.2*Game.getScreen().mapSize().height)), new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)), new Dimension(1, 1))) ;
+ 		this(CT, Util.randomPos(new Point(0, (int) (0.2*Game.getScreen().mapSize().height)), new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)), new Dimension(1, 1))) ;
 	}
 
  	public Creature(CreatureType CT, Point pos)
@@ -141,7 +141,7 @@ public class Creature extends LiveBeing
 		Point minCoord = new Point(0, (int) (0.2*screen.mapSize().height)) ;
 		Dimension range = new Dimension(screen.mapSize().width, (int) (screen.getBorders()[3] - screen.getBorders()[1])) ;
 		Dimension step = new Dimension(1, 1) ;
-		setPos(Util.RandomPos(minCoord, range, step)) ;
+		setPos(Util.randomPos(minCoord, range, step)) ;
 	}
 	
 	private void switchDirection() { setDir(randomNewDirection(dir)) ;}
@@ -329,9 +329,9 @@ public class Creature extends LiveBeing
 			displayDrunk() ;
 		}
 		displayStatus() ;
-		GamePanel.DP.drawText(Util.Translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.movePattern.toString(), Color.black) ;
-		GamePanel.DP.drawText(Util.Translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
-		GamePanel.DP.drawText(Util.Translate(pos, 0, -40), Align.bottomCenter, !idleTimer.isActive() ? "is moving: " + dir : "", Color.black) ;
+		GamePanel.DP.drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.movePattern.toString(), Color.black) ;
+		GamePanel.DP.drawText(Util.translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
+		GamePanel.DP.drawText(Util.translate(pos, 0, -40), Align.bottomCenter, !idleTimer.isActive() ? "is moving: " + dir : "", Color.black) ;
 		if (Game.debugMode)
 		{
 			displayState() ;

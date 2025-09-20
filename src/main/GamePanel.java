@@ -15,7 +15,6 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JPanel;
 
 import graphics.DrawPrimitives;
-import utilities.GameTimer;
 import utilities.Util;
 
 public class GamePanel extends JPanel
@@ -57,7 +56,7 @@ public class GamePanel extends JPanel
 	
 	public void updateMousePos()
 	{
-		mousePos = Util.GetMousePos(this) ;
+		mousePos = Util.getMousePos(this) ;
         mousePos.x = (int) (mousePos.x / Game.getScreen().getScale().x) ;
         mousePos.y = (int) (mousePos.y / Game.getScreen().getScale().y) ;
 	}

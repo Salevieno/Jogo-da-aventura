@@ -26,6 +26,7 @@ import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
+import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
 import battle.Battle;
@@ -54,8 +55,13 @@ import items.PetItem;
 import items.Potion;
 import items.QuestItem;
 import items.Recipe;
+import main.Directions;
+import main.Elements;
 import main.Game;
 import main.GamePanel;
+import main.GameTimer;
+import main.Log;
+import main.Path;
 import maps.Collectible;
 import maps.Continents;
 import maps.FieldMap;
@@ -63,13 +69,7 @@ import maps.GameMap;
 import maps.GroundType;
 import maps.TreasureChest;
 import screen.Sky;
-import utilities.AtkEffects;
-import utilities.Directions;
-import utilities.Elements;
-import utilities.GameTimer;
-import utilities.Log;
 import utilities.Util;
-import utilities.UtilS;
 import windows.BagWindow;
 import windows.BankWindow;
 import windows.BestiaryWindow;
@@ -127,20 +127,18 @@ public class Player extends LiveBeing
     
 	public static final int maxLevel = 99 ;
 	public static final double stepDuration = 0.25 ;
-	private static final String pathPlayerImg = "\\Player\\" ;
-	private static final String pathCollectImg = "\\Collect\\" ;
-    public static final Image CollectingMessage = UtilS.loadImage(pathCollectImg + "CollectingMessage.gif") ; 
-    public static final Image DragonAuraImage = UtilS.loadImage(pathPlayerImg + "dragonAura.gif") ;
-    public static final Image RidingImage = UtilS.loadImage(pathPlayerImg + "Tiger.png") ;
-	public static final Image CoinIcon = UtilS.loadImage(pathPlayerImg + "CoinIcon.png") ;
-	public static final Image MagicBlissGif = UtilS.loadImage(pathPlayerImg + "MagicBliss.gif") ;
+    public static final Image CollectingMessage = Game.loadImage(Path.COLLECTABLES_IMG + "CollectingMessage.gif") ; 
+    public static final Image DragonAuraImage = Game.loadImage(Path.PLAYER_IMG + "dragonAura.gif") ;
+    public static final Image RidingImage = Game.loadImage(Path.PLAYER_IMG + "Tiger.png") ;
+	public static final Image CoinIcon = Game.loadImage(Path.PLAYER_IMG + "CoinIcon.png") ;
+	public static final Image MagicBlissGif = Game.loadImage(Path.PLAYER_IMG + "MagicBliss.gif") ;
     public static final SpriteAnimation[] collectingAnimations ;
-    public static final Gif TentGif = new Gif("Tent", UtilS.loadImage(pathPlayerImg + "Tent.png"), 5, false, false) ;
-	public static final Gif DiggingGif = new Gif("Digging", UtilS.loadImage(pathPlayerImg + "Digging.gif"), 2, false, false) ;
-    public static final Gif FishingGif = new Gif("Fishing", UtilS.loadImage(pathPlayerImg + "Fishing.gif"), 2, false, false) ;
+    public static final Gif TentGif = new Gif("Tent", Game.loadImage(Path.PLAYER_IMG + "Tent.png"), 5, false, false) ;
+	public static final Gif DiggingGif = new Gif("Digging", Game.loadImage(Path.PLAYER_IMG + "Digging.gif"), 2, false, false) ;
+    public static final Gif FishingGif = new Gif("Fishing", Game.loadImage(Path.PLAYER_IMG + "Fishing.gif"), 2, false, false) ;
     
-	public static final List<String[]> InitialAtts = Util.ReadcsvFile(Game.CSVPath + "PlayerInitialStats.csv") ;
-	public static final List<String[]> EvolutionProperties = Util.ReadcsvFile(Game.CSVPath + "PlayerEvolution.csv") ;	
+	public static final List<String[]> InitialAtts = Util.readcsvFile(Path.CSV + "PlayerInitialStats.csv") ;
+	public static final List<String[]> EvolutionProperties = Util.readcsvFile(Path.CSV + "PlayerEvolution.csv") ;	
 	public static final int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	private static final int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     public static final Color[] ClassColors = new Color[] {Game.palette[21], Game.palette[5], Game.palette[2], Game.palette[3], Game.palette[4]} ;
@@ -152,18 +150,18 @@ public class Player extends LiveBeing
 	static
 	{
 		collectingAnimations = new SpriteAnimation[] {
-			new SpriteAnimation(pathCollectImg + "CollectingFruit.png", new Point(300, 300), Align.center, false, 12, 0.3),
-			new SpriteAnimation(pathCollectImg + "CollectingHerb.png", new Point(300, 300), Align.center, false, 12, 0.3),
-			new SpriteAnimation(pathCollectImg + "CollectingWood.png", new Point(300, 300), Align.center, false, 12, 0.3),
-			new SpriteAnimation(pathCollectImg + "CollectingMetal.png", new Point(300, 300), Align.center, false, 12, 0.3)
+			new SpriteAnimation(Path.COLLECTABLES_IMG + "CollectingFruit.png", new Point(300, 300), Align.center, false, 12, 0.3),
+			new SpriteAnimation(Path.COLLECTABLES_IMG + "CollectingHerb.png", new Point(300, 300), Align.center, false, 12, 0.3),
+			new SpriteAnimation(Path.COLLECTABLES_IMG + "CollectingWood.png", new Point(300, 300), Align.center, false, 12, 0.3),
+			new SpriteAnimation(Path.COLLECTABLES_IMG + "CollectingMetal.png", new Point(300, 300), Align.center, false, 12, 0.3)
 		} ;
 		
 		movingAnimations = new MovingAnimations(
-			new SpriteAnimation(pathPlayerImg + "PlayerIdle.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
-			new SpriteAnimation(pathPlayerImg + "PlayerFront.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
-			new SpriteAnimation(pathPlayerImg + "PlayerBack.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
-			new SpriteAnimation(pathPlayerImg + "PlayerLeft.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
-			new SpriteAnimation(pathPlayerImg + "PlayerRight.png", new Point(0, 0), Align.bottomCenter, 6, 0.1)
+			new SpriteAnimation(Path.PLAYER_IMG + "PlayerIdle.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
+			new SpriteAnimation(Path.PLAYER_IMG + "PlayerFront.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
+			new SpriteAnimation(Path.PLAYER_IMG + "PlayerBack.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
+			new SpriteAnimation(Path.PLAYER_IMG + "PlayerLeft.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
+			new SpriteAnimation(Path.PLAYER_IMG + "PlayerRight.png", new Point(0, 0), Align.bottomCenter, 6, 0.1)
 		);
 	}
 	
@@ -717,10 +715,10 @@ public class Player extends LiveBeing
 
 		Point fishingPos = switch (dir)
 		{
-			case left -> Util.Translate(getPos(), -Player.FishingGif.size().width, 0) ;
-			case right -> Util.Translate(getPos(), Player.FishingGif.size().width, 0) ;
-			case up -> Util.Translate(getPos(), 0, -Player.FishingGif.size().height) ;
-			case down -> Util.Translate(getPos(), 0, Player.FishingGif.size().height) ;
+			case left -> Util.translate(getPos(), -Player.FishingGif.size().width, 0) ;
+			case right -> Util.translate(getPos(), Player.FishingGif.size().width, 0) ;
+			case up -> Util.translate(getPos(), 0, -Player.FishingGif.size().height) ;
+			case down -> Util.translate(getPos(), 0, Player.FishingGif.size().height) ;
 		};
 		FishingGif.start(fishingPos, Align.center) ;
 		
@@ -1567,7 +1565,7 @@ public class Player extends LiveBeing
 			bag.add(item, 1) ;
 		}		
 		
-		bag.addGold((int) (creature.getGold() * Util.RandomMult(0.1 * goldMultiplier))) ;
+		bag.addGold((int) (creature.getGold() * Util.randomMult(0.1 * goldMultiplier))) ;
 		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())) ;
 		
 		for (Quest quest : quests)
@@ -1816,7 +1814,7 @@ public class Player extends LiveBeing
 		
 		double[] angle = new double[] {-50, 30, 0, 0, 0} ;
 		Point offset = new Point((int) (0.16 * size.width * scale.x), (int) (0.4 * size.height * scale.y)) ;
-		Point eqPos = Util.Translate(pos, offset.x, -offset.y) ;
+		Point eqPos = Util.translate(pos, offset.x, -offset.y) ;
 		
 		equips[0].display(eqPos, angle[job], new Scale(0.6, 0.6), Align.center) ;
 		
@@ -1828,7 +1826,7 @@ public class Player extends LiveBeing
 		displayAttributes(settings.getAttDisplay()) ;
 		if (isRiding)
 		{
-			Point ridePos = Util.Translate(pos, -RidingImage.getWidth(null) / 2, RidingImage.getHeight(null) / 2) ;
+			Point ridePos = Util.translate(pos, -RidingImage.getWidth(null) / 2, RidingImage.getHeight(null) / 2) ;
 			GamePanel.DP.drawImage(RidingImage, ridePos, Draw.stdAngle , scale, Align.bottomLeft) ;
 		}
 		if (isDrunk())
@@ -1845,7 +1843,7 @@ public class Player extends LiveBeing
 		}
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
-//			Point auraPos = Util.Translate(pos, -size.width / 2, 0) ; proTODO arte - dragon aura
+//			Point auraPos = Util.translate(pos, -size.width / 2, 0) ; proTODO arte - dragon aura
 //			GamePanel.DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
 		}
 		if (showRange)

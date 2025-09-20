@@ -4,8 +4,10 @@ import java.awt.Image;
 import java.awt.Point;
 
 import graphics.Align;
+import main.Game;
 import main.GamePanel;
-import utilities.UtilS;
+import main.Path;
+
 
 public class PauseWindow extends GameWindow
 {
@@ -16,7 +18,7 @@ public class PauseWindow extends GameWindow
     static
     {
         windowPos = new Point(20, 20) ;
-	    imageBg = UtilS.loadImage("\\Windows\\" + "SettingsBackground.png") ;
+	    imageBg = Game.loadImage(Path.WINDOWS_IMG + "SettingsBackground.png") ;
     }
 
     public PauseWindow()

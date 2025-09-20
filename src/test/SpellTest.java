@@ -26,8 +26,8 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
 import liveBeings.Spell;
+import main.Elements;
 import main.Languages;
-import utilities.Elements;
 import windows.CraftWindow;
 
 public class SpellTest

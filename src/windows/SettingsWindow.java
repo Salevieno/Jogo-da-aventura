@@ -13,9 +13,10 @@ import liveBeings.LiveBeing;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import main.TextCategories;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class SettingsWindow extends GameWindow
 {
@@ -36,8 +37,8 @@ public class SettingsWindow extends GameWindow
 	{
 		windowPos = Game.getScreen().pos(0.4, 0.35) ;
 		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-	    imageMenu0 = UtilS.loadImage("\\Windows\\" + "windowSettings.png") ;
-		imageMenu1 = UtilS.loadImage("\\Windows\\" + "settingsDeeperWindow.png") ;
+	    imageMenu0 = Game.loadImage(Path.WINDOWS_IMG + "windowSettings.png") ;
+		imageMenu1 = Game.loadImage(Path.WINDOWS_IMG + "settingsDeeperWindow.png") ;
 	}
 	
 	public SettingsWindow(boolean musicIsOn, boolean soundEffectsAreOn, boolean showAtkRange, int attDisplay, int damageAnimation)
@@ -188,7 +189,7 @@ public class SettingsWindow extends GameWindow
 	{
 		
 		boolean[] keyIsOn = new boolean[] {musicIsOn, soundEffectsAreOn, showAtkRange, false, false} ;
-		Point optionPos = Util.Translate(windowPos, 25, 42) ;
+		Point optionPos = Util.translate(windowPos, 25, 42) ;
 		double angle = Draw.stdAngle ;
 		int sx = image.getWidth(null) - 45 ;
 		int sy = font.getSize() + 4 ;
@@ -196,7 +197,7 @@ public class SettingsWindow extends GameWindow
 		for (int i = 0 ; i <= numberItems - 1 ; i += 1)
 		{
 			optionPos.y += sy ;
-			Point actionKeyPos = Util.Translate(optionPos, sx, 0) ;
+			Point actionKeyPos = Util.translate(optionPos, sx, 0) ;
 			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
 			Color textColor = getTextColor(item == i) ;
 			GamePanel.DP.drawText(optionPos, Align.bottomLeft, angle, text[i], font, textColor) ;
@@ -224,7 +225,7 @@ public class SettingsWindow extends GameWindow
 	
 	private void displayMenu1(Point mousePos, String[] text)
 	{
-		Point optionPos = Util.Translate(windowPos, 25, 42) ;
+		Point optionPos = Util.translate(windowPos, 25, 42) ;
 		double angle = Draw.stdAngle ;
 		int sx = image.getWidth(null) - 45 ;
 		int sy = font.getSize() + 4 ;
@@ -232,7 +233,7 @@ public class SettingsWindow extends GameWindow
 		for (int i = 0 ; i <= PlayerActions.values().length - 1 ; i += 1)
 		{
 			optionPos.y += sy ;
-			Point actionKeyPos = Util.Translate(optionPos, sx, 0) ;
+			Point actionKeyPos = Util.translate(optionPos, sx, 0) ;
 			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
 			Color textColor = getTextColor(item == i) ;
 			GamePanel.DP.drawText(optionPos, Align.bottomLeft, angle, text[i + 6], font, textColor) ;
@@ -243,7 +244,7 @@ public class SettingsWindow extends GameWindow
 	public void display(Point mousePos)
 	{
 		double angle = Draw.stdAngle ;
-		Point textPos = Util.Translate(windowPos, 25, 42) ;
+		Point textPos = Util.translate(windowPos, 25, 42) ;
 		Image menuImage = menu == 0 ? image : imageMenu1 ;
 		String[] text = Game.allText.get(TextCategories.settings) ;
 		Color[] textColor = new Color[3 + PlayerActions.values().length] ;
@@ -251,7 +252,7 @@ public class SettingsWindow extends GameWindow
 		textColor[item] = Game.palette[18] ;
 		
 		GamePanel.DP.drawImage(menuImage, windowPos, Align.topLeft) ;
-		Point titlePos = Util.Translate(textPos, image.getWidth(null) / 2 - 15, -6) ;
+		Point titlePos = Util.translate(textPos, image.getWidth(null) / 2 - 15, -6) ;
 		GamePanel.DP.drawText(titlePos, Align.bottomCenter, angle, name, font, Game.palette[0]) ;
 		if (menu == 0)
 		{

@@ -2,14 +2,15 @@ package maps;
 
 import java.awt.Image;
 
-import utilities.UtilS;
+import main.Game;
+import main.Path;
 
 public enum CollectibleTypes
 {
-	berry (100, UtilS.loadImage("\\Collect\\" + "Col0_Berry.png")),
-	herb (1280, UtilS.loadImage("\\Collect\\" + "Col1_Herb.png")),
-	wood (1530, UtilS.loadImage("\\Collect\\" + "Col2_Wood.png")),
-	metal (2560, UtilS.loadImage("\\Collect\\" + "Col3_Metal.png"));
+	berry (100, Game.loadImage(Path.COLLECTABLES_IMG + "Col0_Berry.png")),
+	herb (1280, Game.loadImage(Path.COLLECTABLES_IMG + "Col1_Herb.png")),
+	wood (1530, Game.loadImage(Path.COLLECTABLES_IMG + "Col2_Wood.png")),
+	metal (2560, Game.loadImage(Path.COLLECTABLES_IMG + "Col3_Metal.png"));
 	
 	double spawnTime ;
 	Image image ;

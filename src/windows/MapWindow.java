@@ -8,10 +8,11 @@ import graphics.Align;
 import graphics.Scale;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import maps.GameMap;
 import screen.Sky;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class MapWindow extends GameWindow
 {
@@ -20,7 +21,7 @@ public class MapWindow extends GameWindow
 	
 	private static final boolean displayFull = false ;
 	private static final Point windowPos = new Point(150, 100) ;
-	private static final Image image = UtilS.loadImage("\\Windows\\" + "MapWindow.png") ;
+	private static final Image image = Game.loadImage(Path.WINDOWS_IMG + "MapWindow.png") ;
 	
 	public MapWindow()
 	{
@@ -203,7 +204,7 @@ public class MapWindow extends GameWindow
 
 		double playerRelXPos = playerPos.x / (double) Game.getScreen().mapSize().width ;
 		double playerRelYPos = (playerPos.y - Sky.height) / (double) Game.getScreen().mapSize().height ;
-		Point circlePos = Util.Translate(mapPos, (int) (screenSize.width * playerRelXPos),
+		Point circlePos = Util.translate(mapPos, (int) (screenSize.width * playerRelXPos),
 												(int) (-screenSize.height * (1 - playerRelYPos))) ;
 		GamePanel.DP.drawCircle(circlePos, 5, 0, Game.palette[6], null) ;
 	}
@@ -249,11 +250,11 @@ public class MapWindow extends GameWindow
 			
 			if (cell == null) { continue ;}
 			
-			Point mapPos = Util.Translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
+			Point mapPos = Util.translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
 													size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
 			map.display(mapPos, Align.bottomLeft, scale) ;
 
-			Point mapNamePos = Util.Translate(mapPos, (int) (scale.x * Game.getScreen().mapSize().width / 2),
+			Point mapNamePos = Util.translate(mapPos, (int) (scale.x * Game.getScreen().mapSize().width / 2),
 													(int) (-scale.y * Game.getScreen().mapSize().height / 2)) ;
 			GamePanel.DP.drawText(mapNamePos, Align.center, 0, map.getName(), stdFont, Game.palette[0]) ;
 			

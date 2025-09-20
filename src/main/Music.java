@@ -26,7 +26,7 @@ public class Music
 	
 	public static Clip loadMusicFile(String fileName)
 	{
-		return musicFileToClip(new File(Game.MusicPath + fileName).getAbsoluteFile()) ;
+		return musicFileToClip(new File(Path.MUSIC + fileName).getAbsoluteFile()) ;
 	}
 	
 	public static Clip musicFileToClip(File MusicFile)

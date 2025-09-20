@@ -7,18 +7,19 @@ import java.util.List;
 import graphics.Align;
 import graphics2.Draw;
 import main.Game;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class QuestItem extends Item
 {
 	private static final QuestItem[] AllQuests ;
 	
-	private static final Image questItemIcon = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconQuestItem.png") ;
+	private static final Image questItemIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconQuestItem.png") ;
 	
 	static
 	{
-		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_Quest.csv") ;
+		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Quest.csv") ;
 		AllQuests = new QuestItem[input.size()] ;
 		for (int p = 0; p <= AllQuests.length - 1; p += 1)
 		{

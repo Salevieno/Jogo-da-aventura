@@ -8,9 +8,10 @@ import java.util.List;
 
 import main.Game;
 import main.Languages;
+import main.Path;
 import main.TextCategories;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class NPCType
 {
@@ -23,7 +24,7 @@ public class NPCType
 	private final List<List<String>> options ;
 	private final List<List<Integer>> destination ;
 	
-	private static final String path = Game.dadosPath + "npcs\\" ;
+	private static final String path = Path.DADOS + "npcs\\" ;
 	
 	public NPCType(String name, NPCJobs job, String info, Color color, Image image, String[] speech, List<List<String>> options)
 	{
@@ -144,8 +145,8 @@ public class NPCType
 
 	public static NPCType[] load(Languages language)
 	{
-		List<String[]> input = Util.ReadcsvFile(path + "NPCTypes.csv") ;
-		List<String[]> text = Util.ReadcsvFile(path + "NPCTypes-" + language.toString() + ".csv") ;
+		List<String[]> input = Util.readcsvFile(path + "NPCTypes.csv") ;
+		List<String[]> text = Util.readcsvFile(path + "NPCTypes-" + language.toString() + ".csv") ;
 		
 		if (input.isEmpty()) { System.out.println("Erro ao carregar NPC types") ; return null;}
 		
@@ -157,7 +158,7 @@ public class NPCType
 			String info = text.get(i)[2] ;
 			Color color = job.getColor() ;
 			String imageExtension = !job.equals(NPCJobs.master) ? ".png" : ".gif" ;
-			Image image = UtilS.loadImage("\\NPCs\\" + "NPC_" + job.toString() + imageExtension) ;
+			Image image = Game.loadImage(Path.NPC_IMG + "NPC_" + job.toString() + imageExtension) ;
 			String[] speech = null ;
 			List<List<String>> options = new ArrayList<>() ;
 			TextCategories speechName = TextCategories.catFromBRName("npcs" + name + "Falas") ;

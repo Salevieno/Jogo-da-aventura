@@ -16,8 +16,9 @@ import liveBeings.Player;
 import liveBeings.Spell;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class SpellsTreeWindow extends GameWindow
 {
@@ -31,14 +32,14 @@ public class SpellsTreeWindow extends GameWindow
 	private static final Point windowTopLeft = Game.getScreen().pos(0.4, 0.2) ;
 	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
-	private static final Image noTabsImage = UtilS.loadImage("\\Windows\\" + "SpellsTree.png") ;
-	private static final Image tab0Image = UtilS.loadImage("\\Windows\\" + "SpellsTreeTab0.png") ;
-	private static final Image tab1Image = UtilS.loadImage("\\Windows\\" + "SpellsTreeTab1.png") ;
-	private static final Image spellSlot = UtilS.loadImage("\\Windows\\" + "SpellSlot.png") ;
-	private static final Image spellSlotSelected = UtilS.loadImage("\\Windows\\" + "SpellSlotSelected.png") ;
-	private static final Image spellInactiveSlot = UtilS.loadImage("\\Windows\\" + "SpellInactiveSlot.png") ;
-	private static final Image spellInfo = UtilS.loadImage("\\Windows\\" + "SpellInfo.png") ;
-	private static final Image spellPoints = UtilS.loadImage("\\Windows\\" + "SpellPoints.png") ;
+	private static final Image noTabsImage = Game.loadImage(Path.WINDOWS_IMG + "SpellsTree.png") ;
+	private static final Image tab0Image = Game.loadImage(Path.WINDOWS_IMG + "SpellsTreeTab0.png") ;
+	private static final Image tab1Image = Game.loadImage(Path.WINDOWS_IMG + "SpellsTreeTab1.png") ;
+	private static final Image spellSlot = Game.loadImage(Path.WINDOWS_IMG + "SpellSlot.png") ;
+	private static final Image spellSlotSelected = Game.loadImage(Path.WINDOWS_IMG + "SpellSlotSelected.png") ;
+	private static final Image spellInactiveSlot = Game.loadImage(Path.WINDOWS_IMG + "SpellInactiveSlot.png") ;
+	private static final Image spellInfo = Game.loadImage(Path.WINDOWS_IMG + "SpellInfo.png") ;
+	private static final Image spellPoints = Game.loadImage(Path.WINDOWS_IMG + "SpellPoints.png") ;
 	
 	public SpellsTreeWindow(int playerJob)
 	{
@@ -160,9 +161,9 @@ public class SpellsTreeWindow extends GameWindow
 		if (spellsOnWindow.get(item) == null) { return ;}
 		
 		double angle = Draw.stdAngle ;
-		Point pos = Util.Translate(windowTopLeft, 0, -66) ;
+		Point pos = Util.translate(windowTopLeft, 0, -66) ;
 		Color textColor = Game.palette[0] ;
-		Point spellNamePos = Util.Translate(windowTopLeft, spellInfo.getWidth(null) / 2, - 66 - 10) ;
+		Point spellNamePos = Util.translate(windowTopLeft, spellInfo.getWidth(null) / 2, - 66 - 10) ;
 		GamePanel.DP.drawImage(spellInfo, pos, Align.topLeft) ;
 		GamePanel.DP.drawText(spellNamePos, Align.center, angle, spellsOnWindow.get(item).getName(), regularFont, textColor) ;
 		pos.x += 5 ;
@@ -175,12 +176,12 @@ public class SpellsTreeWindow extends GameWindow
 	public void displaySpellPoints(int points)
 	{
 		double angle = Draw.stdAngle ;
-		Point pointsPos = Util.Translate(windowTopLeft, size.width + 10 + 28, size.height - 6 - 40) ;
+		Point pointsPos = Util.translate(windowTopLeft, size.width + 10 + 28, size.height - 6 - 40) ;
 		Color color = Game.palette[21] ;
 		
 		GamePanel.DP.drawImage(spellPoints, pointsPos, Align.topCenter) ;
-		GamePanel.DP.drawText(Util.Translate(pointsPos, 0, 6), Align.topCenter, angle, "Pontos", regularFont, color) ;
-		GamePanel.DP.drawText(Util.Translate(pointsPos, 0, 24), Align.topCenter, angle, String.valueOf(points), regularFont, color) ;
+		GamePanel.DP.drawText(Util.translate(pointsPos, 0, 6), Align.topCenter, angle, "Pontos", regularFont, color) ;
+		GamePanel.DP.drawText(Util.translate(pointsPos, 0, 24), Align.topCenter, angle, String.valueOf(points), regularFont, color) ;
 		
 	}
 	
@@ -193,9 +194,9 @@ public class SpellsTreeWindow extends GameWindow
 			return ;
 		}
 		
-		Point displayPos = Util.Translate(windowTopLeft, -23, 0) ;
-		Point tab1Pos = Util.Translate(windowTopLeft, -10, 6 + 75/2) ;
-		Point tab2Pos = Util.Translate(windowTopLeft, -10, 6 + 75 + 75/2) ;
+		Point displayPos = Util.translate(windowTopLeft, -23, 0) ;
+		Point tab1Pos = Util.translate(windowTopLeft, -10, 6 + 75/2) ;
+		Point tab2Pos = Util.translate(windowTopLeft, -10, 6 + 75 + 75/2) ;
 		Image displayImage = tab == 0 ? tab0Image : tab1Image ;
 		Color tabTextColor = Game.palette[21] ;
 		GamePanel.DP.drawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
@@ -229,7 +230,7 @@ public class SpellsTreeWindow extends GameWindow
 		displaySpellsInfo() ;
 		displayWindow() ;
 		
-		Point titlePos = Util.Translate(windowTopLeft, size.width / 2, 6 + 9) ;
+		Point titlePos = Util.translate(windowTopLeft, size.width / 2, 6 + 9) ;
 		GamePanel.DP.drawText(titlePos, Align.center, angle, name, largeFont, Game.palette[21]);
 		
 		if (spells == null) { return ;}
@@ -256,8 +257,8 @@ public class SpellsTreeWindow extends GameWindow
 				slotImage = hasPreReq ? spellSlotSelected : spellInactiveSlot;
 			}
 			
-			Point spellImagePos = Util.Translate(slotPos, slotSize.width / 2, 4 + 14) ;
-			Point spellLevelPos = Util.Translate(slotPos, slotSize.width / 2, slotSize.height / 2 + 18) ;
+			Point spellImagePos = Util.translate(slotPos, slotSize.width / 2, 4 + 14) ;
+			Point spellLevelPos = Util.translate(slotPos, slotSize.width / 2, slotSize.height / 2 + 18) ;
 					
 			GamePanel.DP.drawImage(slotImage, slotPos, Align.topLeft) ;
 			GamePanel.DP.drawImage(spell.getImage(), spellImagePos, Align.center) ;

@@ -1,4 +1,4 @@
-package utilities;
+package main;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -6,8 +6,7 @@ import java.awt.Point;
 
 import graphics.Align;
 import graphics2.Draw;
-import main.Game;
-import main.GamePanel;
+import utilities.Util;
 
 public class LiveInput
 {
@@ -47,8 +46,8 @@ public class LiveInput
 			GamePanel.DP.drawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.palette[3], Game.palette[0], true) ;
 		}
 		int offsetX = (int) (7.3 * text.length()) ;
-		GamePanel.DP.drawLine(Util.Translate(pos, 20 + offsetX, 5), Util.Translate(pos, 20 + offsetX, -5), 2, Game.palette[0]) ;
-		GamePanel.DP.drawText(Util.Translate(pos, 20, 0), Align.centerLeft, Draw.stdAngle, text, font, Game.palette[0]) ;
+		GamePanel.DP.drawLine(Util.translate(pos, 20 + offsetX, 5), Util.translate(pos, 20 + offsetX, -5), 2, Game.palette[0]) ;
+		GamePanel.DP.drawText(Util.translate(pos, 20, 0), Align.centerLeft, Draw.stdAngle, text, font, Game.palette[0]) ;
 	
 	}
 }

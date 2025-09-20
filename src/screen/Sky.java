@@ -9,8 +9,9 @@ import graphics.Align;
 import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class Sky 
 {
@@ -28,17 +29,17 @@ public class Sky
 	static
 	{
 		height = 192 ;
-		cloudImage1 = UtilS.loadImage("\\Sky\\" + "Cloud1.png") ;
-		cloudImage2 = UtilS.loadImage("\\Sky\\" + "Cloud2.png") ;
-		cloudImage3 = UtilS.loadImage("\\Sky\\" + "Cloud3.png") ;
+		cloudImage1 = Game.loadImage(Path.SKY_IMG + "Cloud1.png") ;
+		cloudImage2 = Game.loadImage(Path.SKY_IMG + "Cloud2.png") ;
+		cloudImage3 = Game.loadImage(Path.SKY_IMG + "Cloud3.png") ;
 		starImages = new Image[] {
-				UtilS.loadImage("\\Sky\\" + "Star1.png") ,
-				UtilS.loadImage("\\Sky\\" + "Star2.png") ,
-				UtilS.loadImage("\\Sky\\" + "Star3.png") ,
-				UtilS.loadImage("\\Sky\\" + "Star4.png") ,
-				UtilS.loadImage("\\Sky\\" + "Star5.png") ,
-				UtilS.loadImage("\\Sky\\" + "Star6.png") ,
-				UtilS.loadImage("\\Sky\\" + "Star7.png")
+				Game.loadImage(Path.SKY_IMG + "Star1.png") ,
+				Game.loadImage(Path.SKY_IMG + "Star2.png") ,
+				Game.loadImage(Path.SKY_IMG + "Star3.png") ,
+				Game.loadImage(Path.SKY_IMG + "Star4.png") ,
+				Game.loadImage(Path.SKY_IMG + "Star5.png") ,
+				Game.loadImage(Path.SKY_IMG + "Star6.png") ,
+				Game.loadImage(Path.SKY_IMG + "Star7.png")
 		} ;
 	}
 	
@@ -50,7 +51,7 @@ public class Sky
 		for (int c = 0 ; c <= clouds.length - 1 ; c += 1)
 		{
 			Image image = randomCloudImage() ;
-			Point initPos = Util.RandomPos(new Point(), new Dimension(size.width, size.height - image.getHeight(null)), new Dimension(1, 1)) ;
+			Point initPos = Util.randomPos(new Point(), new Dimension(size.width, size.height - image.getHeight(null)), new Dimension(1, 1)) ;
 			Point speed = new Point((int) (1 + 2 * Math.random()), 0) ;
 	    	clouds[c] = new SkyComponent(image, initPos, speed) ;
 		}
@@ -58,7 +59,7 @@ public class Sky
     	stars = new SkyComponent[50] ;
 		for (int s = 0 ; s <= stars.length - 1 ; s += 1)
 		{
-			Point pos = Util.RandomPos(new Point(), size, new Dimension(1, 1)) ;
+			Point pos = Util.randomPos(new Point(), size, new Dimension(1, 1)) ;
 			Image image = randomStarImage() ;
 			stars[s] = new SkyComponent(image, pos, new Point(0, 0)) ;
 		}

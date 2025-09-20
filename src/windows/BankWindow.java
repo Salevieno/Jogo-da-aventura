@@ -12,10 +12,11 @@ import graphics2.Draw;
 import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
-import utilities.GameTimer;
-import utilities.LiveInput;
+import main.GameTimer;
+import main.LiveInput;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class BankWindow extends GameWindow
 {
@@ -29,9 +30,9 @@ public class BankWindow extends GameWindow
 	private LiveInput liveInput ;
 
 	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
-	private static final Image image = UtilS.loadImage("\\Windows\\" + "Banco.png") ;
+	private static final Image image = Game.loadImage(Path.WINDOWS_IMG + "Banco.png") ;
 	private static final String[] investmentRiskLevels = new String[] {"low", "high"} ;
-	public static final Image clock = UtilS.loadImage("\\Windows\\" + "clock.png") ;
+	public static final Image clock = Game.loadImage(Path.WINDOWS_IMG + "clock.png") ;
 
 	public BankWindow()
 	{
@@ -137,7 +138,7 @@ public class BankWindow extends GameWindow
 	private void drawInvestmentTimer(Point pos, double timeRate)
 	{
 		GamePanel.DP.drawImage(clock, pos, Align.center) ;
-		GamePanel.DP.drawArc(Util.Translate(pos, 0, 2), 21, 1, 90, (int) (-360 * timeRate), Game.palette[20], null) ;
+		GamePanel.DP.drawArc(Util.translate(pos, 0, 2), 21, 1, 90, (int) (-360 * timeRate), Game.palette[20], null) ;
 	}
 	
 	private void displayNotEnoughGold()
@@ -150,7 +151,7 @@ public class BankWindow extends GameWindow
 	
 	public void display(Point mousePos)
 	{
-		Point titlePos = Util.Translate(windowPos, size.width / 2, border + 10) ;
+		Point titlePos = Util.translate(windowPos, size.width / 2, border + 10) ;
 		Color textColor = Game.palette[0] ;
 		double angle = Draw.stdAngle ;
 		
@@ -158,27 +159,27 @@ public class BankWindow extends GameWindow
 
 		GamePanel.DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[0]) ;
 		
-		Point balancePos = Util.Translate(windowPos, border + padding + 4, (int) border + 30) ;
-		Point investmentPos = Util.Translate(windowPos, border + padding + 4, border + 90) ;
+		Point balancePos = Util.translate(windowPos, border + padding + 4, (int) border + 30) ;
+		Point investmentPos = Util.translate(windowPos, border + padding + 4, border + 90) ;
 		
 		GamePanel.DP.drawText(balancePos, Align.centerLeft, angle, "Saldo", stdFont, textColor) ;
 		GamePanel.DP.drawText(investmentPos, Align.centerLeft, angle, "Investimento", stdFont, textColor) ;
 		
-		drawInvestmentTimer(Util.Translate(investmentPos, 110, 10), investmentCounter.rate()) ;
+		drawInvestmentTimer(Util.translate(investmentPos, 110, 10), investmentCounter.rate()) ;
 
-		GamePanel.DP.drawImage(Player.CoinIcon, Util.Translate(balancePos, 0, 20), Align.centerLeft) ;
-		GamePanel.DP.drawText(Util.Translate(balancePos, 15, 20), Align.centerLeft, angle, String.valueOf(balance), stdFont, textColor) ;
-		GamePanel.DP.drawImage(Player.CoinIcon, Util.Translate(investmentPos, 0, 20), Align.centerLeft) ;
-		GamePanel.DP.drawText(Util.Translate(investmentPos, 15, 20), Align.centerLeft, angle, String.valueOf(investedAmount), stdFont, textColor) ;
+		GamePanel.DP.drawImage(Player.CoinIcon, Util.translate(balancePos, 0, 20), Align.centerLeft) ;
+		GamePanel.DP.drawText(Util.translate(balancePos, 15, 20), Align.centerLeft, angle, String.valueOf(balance), stdFont, textColor) ;
+		GamePanel.DP.drawImage(Player.CoinIcon, Util.translate(investmentPos, 0, 20), Align.centerLeft) ;
+		GamePanel.DP.drawText(Util.translate(investmentPos, 15, 20), Align.centerLeft, angle, String.valueOf(investedAmount), stdFont, textColor) ;
 		
 		if (!isReadingInput()) { return ;}
 
-		Point inputMessagePos = Util.Translate(windowPos, 0, border + size.height + 15) ;
+		Point inputMessagePos = Util.translate(windowPos, 0, border + size.height + 15) ;
 		GamePanel.DP.drawText(inputMessagePos, Align.centerLeft, angle, "Amount for " + mode, stdFont, textColor) ;
 		
-		Point inputPos = Util.Translate(windowPos, 0, border + size.height + 35) ;
+		Point inputPos = Util.translate(windowPos, 0, border + size.height + 35) ;
 		liveInput.displayTypingField(inputPos, true) ;
-		GamePanel.DP.drawImage(Player.CoinIcon, Util.Translate(inputPos, 5, 0), Align.centerLeft) ;
+		GamePanel.DP.drawImage(Player.CoinIcon, Util.translate(inputPos, 5, 0), Align.centerLeft) ;
 	}
 
 }

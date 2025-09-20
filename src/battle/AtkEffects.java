@@ -1,4 +1,4 @@
-package utilities;
+package battle;
 
 public enum AtkEffects
 {

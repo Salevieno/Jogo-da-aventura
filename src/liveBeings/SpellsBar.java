@@ -12,9 +12,10 @@ import graphics.Scale;
 import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import screen.SideBar;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public abstract class SpellsBar
 {	
@@ -44,10 +45,10 @@ public abstract class SpellsBar
 		// title = Game.allText.get(TextCategories.spellsBar)[0] ;
 		textColor = Game.palette[19] ;
 
-		image = UtilS.loadImage("\\SideBar\\" + "SpellsBar.png") ;
-		spellIcon = UtilS.loadImage("\\SideBar\\" + "SpellIcon.png") ;
-		slotImageNoMP = UtilS.loadImage("\\SideBar\\" + "SlotNoMP.png") ;
-		cooldownImage = UtilS.loadImage("\\SideBar\\" + "Cooldown.png") ;
+		image = Game.loadImage(Path.SIDEBAR_IMG + "SpellsBar.png") ;
+		spellIcon = Game.loadImage(Path.SIDEBAR_IMG + "SpellIcon.png") ;
+		slotImageNoMP = Game.loadImage(Path.SIDEBAR_IMG + "SlotNoMP.png") ;
+		cooldownImage = Game.loadImage(Path.SIDEBAR_IMG + "Cooldown.png") ;
 		size = Util.getSize(image) ;
 		barPos = new Point(Game.getScreen().mapSize().width + 2, HotKeysBar.topLeft().y - SideBar.sy) ;
 		titlePos = new Point(barPos.x + size.width / 2, barPos.y - size.height + 2) ;
@@ -89,7 +90,7 @@ public abstract class SpellsBar
 			
 			int row = i % nRows ;
 			int col = i / nRows ;
-			Point slotCenter = Util.Translate(barPos, offset.x + slotSize.width / 2 + col * sx, - size.height + slotSize.height / 2 + 8 + offset.y + row * sy) ;
+			Point slotCenter = Util.translate(barPos, offset.x + slotSize.width / 2 + col * sx, - size.height + slotSize.height / 2 + 8 + offset.y + row * sy) ;
 			Image image = spell.getMpCost() < userMP ? SideBar.slotImage : slotImageNoMP ;
 			GamePanel.DP.drawImage(image, slotCenter, Align.center) ;
 			GamePanel.DP.drawText(slotCenter, Align.center, Draw.stdAngle, Player.spellKeys.get(i), font, textColor) ;

@@ -10,9 +10,9 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import liveBeings.LiveBeing;
+import main.Directions;
 import main.Game;
 import maps.GameMap;
-import utilities.Directions;
 
 public class MapMoveTest
 {

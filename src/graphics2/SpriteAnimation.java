@@ -8,7 +8,7 @@ import java.util.Set;
 
 import graphics.Align;
 import graphics.DrawPrimitives;
-import utilities.GameTimer;
+import main.GameTimer;
 
 public class SpriteAnimation
 {

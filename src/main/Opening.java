@@ -18,11 +18,8 @@ import liveBeings.Buff;
 import liveBeings.Player;
 import liveBeings.Spell;
 import screen.Screen;
-import utilities.GameStates;
-import utilities.LiveInput;
-import utilities.Log;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public abstract class Opening
 {
@@ -47,7 +44,7 @@ public abstract class Opening
     private static final Font font = new Font(Game.MainFontName, Font.BOLD, 16) ;
     private static final Font smallFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 
-	private static final String path = Game.ImagesPath  + "\\Opening\\";
+	private static final String path = Path.IMAGES  + "\\Opening\\";
 	public static final Gif openingGif = new Gif("Opening", Util.loadImage(path + "Opening.gif"), 0.7, false, true) ;
 	private static final Image backgroundImage = Util.loadImage(path + "Opening.png") ;
 	private static final Image LoadingSlot = Util.loadImage(path + "LoadingSlot.png") ;
@@ -62,7 +59,7 @@ public abstract class Opening
 	
 	static
 	{
-		// LoadingEnfeite = UtilS.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
+		// LoadingEnfeite = Game.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
 		// thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
 		// introMusic = Music.loadMusicFile("intro.wav") ;
 		
@@ -117,9 +114,9 @@ public abstract class Opening
 		{
 			Image btImage = Util.loadImage(path + btNames[i] + ".png") ;
 			Image btImageSelected = Util.loadImage(path + btNames[i] + " Selected.gif") ;
-			if (btImage == null) { btImage = UtilS.loadImage("ButtonGeneral.png") ;}
+			if (btImage == null) { btImage = Game.loadImage("ButtonGeneral.png") ;}
 			if (btImageSelected == null) { btImageSelected = Util.loadImage(path + btNames[i] + " Selected.png") ;}
-			if (btImageSelected == null) { btImageSelected = UtilS.loadImage("ButtonGeneralSelected.png") ;}
+			if (btImageSelected == null) { btImageSelected = Game.loadImage("ButtonGeneralSelected.png") ;}
 			GameButton newButton = new GameButton(btPos[i], Align.center, btNames[i], generalButtonImg, generalButtonSelectedImg, btAction[i]) ;
 			newButton.deactivate() ;
 			buttons.add(newButton) ;		
@@ -263,13 +260,13 @@ public abstract class Opening
 		double angle = Draw.stdAngle ;
 		Color textColor = Game.palette[0] ;
 		
-		Point textPos = Util.Translate(pos, 75, 10) ;
+		Point textPos = Util.translate(pos, 75, 10) ;
 		GamePanel.DP.drawText(textPos, Align.center, angle, "Slot " + (slotNumber + 1), font, textColor) ;
 
-		Point namePos = Util.Translate(pos, 75, 30) ;
+		Point namePos = Util.translate(pos, 75, 30) ;
 		GamePanel.DP.drawText(namePos, Align.center, angle, player.getName(), smallFont, textColor) ;
 		
-		Point levelPos = Util.Translate(pos, 10, 45) ;
+		Point levelPos = Util.translate(pos, 10, 45) ;
 		GamePanel.DP.drawText(levelPos, Align.centerLeft, angle, "Nível: " + player.getLevel(), smallFont, textColor) ;
 		
 	}
@@ -292,7 +289,7 @@ public abstract class Opening
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
 			Point rectPos = Game.getScreen().pos(0.02 + i * 0.2, 0.4) ;
-			Point textPos = Util.Translate(rectPos, 10, 10) ;
+			Point textPos = Util.translate(rectPos, 10, 10) ;
 			GamePanel.DP.drawImage(jobDescriptionBackground, rectPos, Align.topLeft) ;
 			Draw.fitText(textPos, font.getSize() + 12, Align.topLeft, description[i], font, 24, textColor) ;
 		}

@@ -10,10 +10,12 @@ import org.json.simple.JSONObject;
 
 import attributes.Attributes;
 import graphics.Align;
+import main.Directions;
+import main.Game;
 import main.GamePanel;
-import utilities.Directions;
-import utilities.GameTimer;
-import utilities.UtilS;
+import main.GameTimer;
+import main.Path;
+
 
 public class LiveBeingStatus
 {
@@ -29,7 +31,7 @@ public class LiveBeingStatus
 		images = new HashMap<>() ;
 		for (Attributes att : Attributes.values())
 		{
-			images.put(att, UtilS.loadImage("\\Status\\" + att.toString() + ".png")) ;
+			images.put(att, Game.loadImage(Path.STATUS_IMG + att.toString() + ".png")) ;
 		}
 	}
 	

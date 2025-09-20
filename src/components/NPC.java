@@ -27,10 +27,11 @@ import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import main.TextCategories;
 import maps.GameMap;
 import utilities.Util;
-import utilities.UtilS;
+
 import windows.BagWindow;
 import windows.BankWindow;
 import windows.CraftWindow;
@@ -55,8 +56,8 @@ public class NPC
 	private static boolean renewStocks = false ;
 
 	private static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
-	private static final Image speakingBubble = UtilS.loadImage("\\NPCs\\" + "SpeechBubble.png") ;
-	private static final Image choicesWindow = UtilS.loadImage("\\NPCs\\" + "ChoicesWindow.png") ;
+	private static final Image speakingBubble = Game.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
+	private static final Image choicesWindow = Game.loadImage(Path.NPC_IMG + "ChoicesWindow.png") ;
 	private static final Color stdColor = Game.palette[0] ;
 
 	public NPC(NPCType type, Point pos)
@@ -128,7 +129,7 @@ public class NPC
 			default: window = null ; break ;
 		}
 
-		hitbox = new HitboxRectangle(Util.Translate(pos, 0, -type.getImage().getHeight(null) / 2), Util.getSize(type.getImage()), 0.8) ;
+		hitbox = new HitboxRectangle(Util.translate(pos, 0, -type.getImage().getHeight(null) / 2), Util.getSize(type.getImage()), 0.8) ;
 		colliders.add(new Collider(pos)) ;
 	}
 
@@ -500,7 +501,7 @@ public class NPC
 		
 		if (content == null) { return ;}
 		
-		Point speechPos = Util.Translate(pos, 0, 10 - type.height()) ;
+		Point speechPos = Util.translate(pos, 0, 10 - type.height()) ;
 
 		Draw.speech(speechPos, content, NPCfont, speakingBubble, stdColor) ;
 		
@@ -524,7 +525,7 @@ public class NPC
 		int sy = NPCfont.getSize() + 5 ;
 		for (int i = 0 ; i <= options.size() - 1 ; i += 1)
 		{
-			Point textPos = Util.Translate(windowPos, 5, 5 + i * sy) ;
+			Point textPos = Util.translate(windowPos, 5, 5 + i * sy) ;
 			String text = options.get(i) ;
 			Color textColor = stdColor ;
 			if (i == selOption)
@@ -536,7 +537,7 @@ public class NPC
 		
 	}
 	
-	public void displayOptions() { displayOptions(Util.Translate(pos, 20, -10)) ;}
+	public void displayOptions() { displayOptions(Util.translate(pos, 20, -10)) ;}
 
 	private void bankerAction(Player player, BankWindow bankWindow, String action)
 	{
@@ -667,14 +668,14 @@ public class NPC
 		if (player.getMap().getName().equals("Forest 2"))
 		{
 			player.setMap(Game.getMaps()[30]) ;
-			player.setPos(Util.Translate(pos, type.getImage().getWidth(null), 0)) ;
+			player.setPos(Util.translate(pos, type.getImage().getWidth(null), 0)) ;
 			return ;
 		}
 
 		if (player.getMap().getName().equals("Cave 1"))
 		{ 
 			player.setMap(Game.getMaps()[6]) ;
-			player.setPos(Util.Translate(pos, type.getImage().getWidth(null), 0)) ;
+			player.setPos(Util.translate(pos, type.getImage().getWidth(null), 0)) ;
 			return ;
 		}
 	}
@@ -773,7 +774,7 @@ public class NPC
 		GamePanel.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
 		if (hitbox.overlaps(playerHitbox))
 		{
-			Point buttonPos = Util.Translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;
+			Point buttonPos = Util.translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;
 			Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey()) ;
 		}
 		

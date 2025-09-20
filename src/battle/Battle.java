@@ -14,12 +14,12 @@ import liveBeings.LiveBeing;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Spell;
+import main.Elements;
 import main.Game;
+import main.GameStates;
 import main.Music;
+import main.Path;
 import simulations.EvolutionSimulation;
-import utilities.AtkEffects;
-import utilities.Elements;
-import utilities.GameStates;
 import utilities.Util;
 
 public abstract class Battle 
@@ -34,7 +34,7 @@ public abstract class Battle
 	{
 		randomAmp = (double)0.1 ;		
     	allElements = Arrays.asList(Elements.values()) ;
-		List<String[]> ElemInput = Util.ReadcsvFile(Game.CSVPath + "Elem.csv") ;
+		List<String[]> ElemInput = Util.readcsvFile(Path.CSV + "Elem.csv") ;
 		elemMult = new double[ElemInput.size()][ElemInput.size()] ;
 		for (int i = 0 ; i <= ElemInput.size() - 1 ; ++i)
 		{
@@ -44,7 +44,7 @@ public abstract class Battle
 			}				
 		}
 		
-		hitSound = Music.musicFileToClip(new File(Game.MusicPath + "16-Hit.wav").getAbsoluteFile()) ;		
+		hitSound = Music.musicFileToClip(new File(Path.MUSIC + "16-Hit.wav").getAbsoluteFile()) ;		
 	}
 
 	public static double getRandomAmp() { return randomAmp ;}
@@ -138,9 +138,9 @@ public abstract class Battle
 			default -> 0 ;
 		};
 		
-		double randomMult = Util.RandomMult(randomAmp) ;
+		double randomMult = Util.randomMult(randomAmp) ;
 		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElems[0], defElems[0], atkElems[2]) ;
-		return (int) Util.Round(randomMult * elemMult * elemMod * baseDamage, 0) ;
+		return (int) Util.round(randomMult * elemMult * elemMod * baseDamage, 0) ;
 	}
 		
 	public static double[] calcStatus(double[] atkChances, double[] defChances, double[] durations)

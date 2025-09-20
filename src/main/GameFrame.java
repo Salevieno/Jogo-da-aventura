@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame ;
 import javax.swing.Timer;
 
-import utilities.GameStates;
 import utilities.Util;
 
 public class GameFrame extends JFrame implements ActionListener

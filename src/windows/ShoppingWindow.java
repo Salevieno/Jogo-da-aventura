@@ -17,8 +17,9 @@ import items.Item;
 import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class ShoppingWindow extends GameWindow
 {
@@ -28,7 +29,7 @@ public class ShoppingWindow extends GameWindow
 
 	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
 	private static final int numberItemsPerWindow = 10 ;
-	private static final Image image = UtilS.loadImage("\\Windows\\" + "Shopping.png") ;
+	private static final Image image = Game.loadImage(Path.WINDOWS_IMG + "Shopping.png") ;
 	
 	public ShoppingWindow(List<Item> itemsForSale)
 	{
@@ -146,8 +147,8 @@ public class ShoppingWindow extends GameWindow
 	
 	public void display(Point mousePos)
 	{
-		Point itemPos = Util.Translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + 20 + padding + Item.slot.getHeight(null) / 2) ;
-		Point titlePos = Util.Translate(windowPos, size.width / 2, 16) ;
+		Point itemPos = Util.translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + 20 + padding + Item.slot.getHeight(null) / 2) ;
+		Point titlePos = Util.translate(windowPos, size.width / 2, 16) ;
 		double angle = Draw.stdAngle ;
 		
 		GamePanel.DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
@@ -159,9 +160,9 @@ public class ShoppingWindow extends GameWindow
 		{
 			Item bagItem = itemsOnWindow.get(i) ;
 			String qtdItem = buyMode ? "" : "" ; // TODO pegar bag e mostrar qtos itens tem
-			Point namePos = Util.Translate(itemPos, border + 10, 0) ;
-			Point pricePos = Util.Translate(namePos, size.width - border - padding - 50, 0) ;
-			Point coinPos = Util.Translate(pricePos, 10, 0) ;
+			Point namePos = Util.translate(itemPos, border + 10, 0) ;
+			Point pricePos = Util.translate(namePos, size.width - border - padding - 50, 0) ;
+			Point coinPos = Util.translate(pricePos, 10, 0) ;
 			
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(100, 10), i) ;
 			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? Game.selColor : stdColor ;
@@ -173,12 +174,12 @@ public class ShoppingWindow extends GameWindow
 			
 			if (this.item == itemsOnWindow.indexOf(bagItem))
 			{
-				bagItem.displayInfo(Util.Translate(windowPos, -10, 0), Align.topRight) ;
+				bagItem.displayInfo(Util.translate(windowPos, -10, 0), Align.topRight) ;
 			}
 			itemPos.y += 23 ;
 		}
 		
-		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(Util.translate(windowPos, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
 		
 	}
 }

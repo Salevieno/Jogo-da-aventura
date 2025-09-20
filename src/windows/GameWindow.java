@@ -12,8 +12,9 @@ import UI.GameButton;
 import graphics.Align;
 import liveBeings.PlayerActions;
 import main.Game;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public abstract class GameWindow
 {
@@ -40,10 +41,10 @@ public abstract class GameWindow
 	protected String stdExit = KeyEvent.getKeyText(KeyEvent.VK_ESCAPE) ;	
 	protected double stdOpacity = 0.95 ;
 
-	protected static final Image buttonWindowUpImage = UtilS.loadImage("\\Windows\\" + "moveUp.png") ;
-	protected static final Image selectedButtonWindowUpImage = UtilS.loadImage("\\Windows\\" + "SelectedMoveUp.gif") ;
-	protected static final Image buttonWindowDownImage = UtilS.loadImage("\\Windows\\" + "moveDown.png") ;
-	protected static final Image selectedButtonWindowDownImage = UtilS.loadImage("\\Windows\\" + "selectedMoveDown.gif") ;
+	protected static final Image buttonWindowUpImage = Game.loadImage(Path.WINDOWS_IMG + "moveUp.png") ;
+	protected static final Image selectedButtonWindowUpImage = Game.loadImage(Path.WINDOWS_IMG + "SelectedMoveUp.gif") ;
+	protected static final Image buttonWindowDownImage = Game.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;
+	protected static final Image selectedButtonWindowDownImage = Game.loadImage(Path.WINDOWS_IMG + "selectedMoveDown.gif") ;
 	protected static final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	protected static final Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 11) ;
 	protected static final Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;

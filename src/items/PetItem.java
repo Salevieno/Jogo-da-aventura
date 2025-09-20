@@ -12,8 +12,9 @@ import graphics2.AnimationTypes;
 import graphics2.Draw;
 import liveBeings.Pet;
 import main.Game;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class PetItem extends Item
 {
@@ -24,14 +25,14 @@ public class PetItem extends Item
 	
 	private static final PetItem[] AllPetItems ;
 
-	private static final Image petLifePotion = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconPetLifePotion.png") ;
-	private static final Image petMPPotion = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconPetMPPotion.png") ;
-	private static final Image petFood = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconPetFood.png") ;
-	private static final Image petSet = UtilS.loadImage("\\Windows\\bagIcons\\" + "IconPetSet.png") ;
+	private static final Image petLifePotion = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetLifePotion.png") ;
+	private static final Image petMPPotion = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetMPPotion.png") ;
+	private static final Image petFood = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetFood.png") ;
+	private static final Image petSet = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetSet.png") ;
 	
 	static
 	{
-		List<String[]> input = Util.ReadcsvFile(Game.CSVPath + "Item_PetItem.csv") ;
+		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_PetItem.csv") ;
 		AllPetItems = new PetItem[input.size()] ;
 		for (int p = 0; p <= AllPetItems.length - 1; p += 1)
 		{

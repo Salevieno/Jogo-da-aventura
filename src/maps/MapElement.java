@@ -25,12 +25,9 @@ public class MapElement implements Drawable
 	private final Point topLeft ;
 	protected Hitbox hitbox ;
 	private List<Collider> colliders ;
-
-	// private static final Image knightsCityWallImage ;
 	
 	static
 	{
-		// knightsCityWallImage = UtilS.loadImage("\\MapElements\\" + "Knight'sCityWall.png") ;
 	}
 
 	public MapElement(int id, String name, Image image, Point topLeftPos)
@@ -84,7 +81,7 @@ public class MapElement implements Drawable
 			case "rock":
 				for (int i = 5 ; i <= 11 ; i += 1)
 				{
-					colliders.add(new Collider(Util.Translate(topLeft, i, image.getHeight(null) - 2))) ;
+					colliders.add(new Collider(Util.translate(topLeft, i, image.getHeight(null) - 2))) ;
 				}
 				
 				return ;

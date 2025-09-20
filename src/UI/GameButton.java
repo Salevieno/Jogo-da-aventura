@@ -99,7 +99,7 @@ public class GameButton
 			return ;
 		}
 	}
-	public Point getCenter() {return Util.Translate(topLeft, size.width / 2, size.height / 2) ;}	
+	public Point getCenter() {return Util.translate(topLeft, size.width / 2, size.height / 2) ;}	
 	public boolean ishovered(Point mousePos) { return Util.isInside(mousePos, topLeft, size) ;}
 	public boolean isSelected() { return isSelected ;}
 	public boolean isClicked(Point mousePos, String action)
@@ -176,7 +176,7 @@ public class GameButton
 		if (!displayText) { return ;}
 		if (name == null) { return ;}
 		
-		Point textPos = isSelected ? Util.Translate(getCenter(), 0, 3) : getCenter() ;
+		Point textPos = isSelected ? Util.translate(getCenter(), 0, 3) : getCenter() ;
 		GamePanel.DP.drawText(textPos, Align.center, 0, name, font, textColor) ;
 	}
 	

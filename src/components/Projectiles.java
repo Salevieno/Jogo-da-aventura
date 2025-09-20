@@ -50,7 +50,7 @@ public class Projectiles
 	
 	public void DrawImage()
 	{
-		GamePanel.DP.drawImage(image, pos, Util.getAngle(speed), Scale.unit, Align.center) ;
+		GamePanel.DP.drawImage(image, pos, Util.getVectorAngle(speed), Scale.unit, Align.center) ;
 	}
 	public void move()
 	{

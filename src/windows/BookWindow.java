@@ -15,15 +15,16 @@ import items.Item;
 import items.Recipe;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class BookWindow extends GameWindow
 {
     private List<Recipe> recipes = new ArrayList<>() ;
 
 	private static final Point windowPos = Game.getScreen().getCenter() ;
-	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Book.png") ;
+	private static final Image windowImage = Game.loadImage(Path.WINDOWS_IMG + "Book.png") ;
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 	
 	public BookWindow()
@@ -45,8 +46,8 @@ public class BookWindow extends GameWindow
 		if (recipes == null) { return ;}
 		if (recipes.isEmpty()) { return ;}
 
-		Point ingredientsCol = Util.Translate(windowPos, -image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
-		Point productsCol = Util.Translate(windowPos, image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
+		Point ingredientsCol = Util.translate(windowPos, -image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
+		Point productsCol = Util.translate(windowPos, image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
 		
 		int sy = font.getSize() + 1 ;
 		int id = window ;
@@ -81,7 +82,7 @@ public class BookWindow extends GameWindow
 	{
 		if (numberWindows == 0) { return ;}
 		
-		Point textPos = Util.Translate(Util.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
+		Point textPos = Util.translate(Util.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
 		String pageText = (window + 1) + " / " + numberWindows ;
 		GamePanel.DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Game.palette[0]) ;
 	}

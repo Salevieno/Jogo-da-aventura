@@ -53,9 +53,9 @@ public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
 	public double[] attributes() { return new double[] {basicAtkChance, basicAtk, basicDefChance, basicDef, duration} ;}
 	public double[] bonuses() { return new double[] {basicAtkChanceBonus, basicAtkBonus, basicDefChanceBonus, basicDefBonus} ;}
 	public String textAtkChance() { return (int) (100 * basicAtkChance) + "% + " + (int) (100 * basicAtkChanceBonus) + "%" ;}
-	public String textAtk() { return Util.Round(basicAtk, 2) + " + " + Util.Round(basicAtkBonus, 2) ;}
+	public String textAtk() { return Util.round(basicAtk, 2) + " + " + Util.round(basicAtkBonus, 2) ;}
 	public String textDefChance() { return (int) (100 * basicDefChance) + "% + " + (int) (100 * basicDefChanceBonus) + "%" ;}
-	public String textDef() { return Util.Round(basicDef, 2) + " + " + Util.Round(basicDefBonus, 2) ;}
+	public String textDef() { return Util.round(basicDef, 2) + " + " + Util.round(basicDefBonus, 2) ;}
 	public String textDuration() { return String.valueOf(duration) ;}
 	public String[] texts() { return new String[] {textAtkChance(), textAtk(), textDefChance(), textDef(), textDuration()} ;}
 

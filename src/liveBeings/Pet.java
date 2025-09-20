@@ -16,6 +16,7 @@ import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
+import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
 import battle.Battle;
@@ -27,12 +28,12 @@ import graphics2.AnimationTypes;
 import graphics2.Draw;
 import graphics2.SpriteAnimation;
 import items.PetItem;
+import main.Directions;
+import main.Elements;
 import main.Game;
+import main.GameTimer;
+import main.Path;
 import maps.GameMap;
-import utilities.AtkEffects;
-import utilities.Directions;
-import utilities.Elements;
-import utilities.GameTimer;
 import utilities.Util;
 import windows.PetAttributesWindow;
 
@@ -45,8 +46,8 @@ public class Pet extends LiveBeing
 	private PetItem equip ;
 	private int alchBuffId ;
 	
-	public static final List<String[]> InitialAtts = Util.ReadcsvFile(Game.CSVPath + "PetInitialStats.csv") ;
-	private static final List<String[]> attEvolution = Util.ReadcsvFile(Game.CSVPath + "PetEvolution.csv") ;
+	public static final List<String[]> InitialAtts = Util.readcsvFile(Path.CSV + "PetInitialStats.csv") ;
+	private static final List<String[]> attEvolution = Util.readcsvFile(Path.CSV + "PetEvolution.csv") ;
     	
 	public Pet(int Job)
 	{
@@ -101,11 +102,11 @@ public class Pet extends LiveBeing
 	public static MovingAnimations initializeMovingAnimations(int Job)
 	{
 		return new MovingAnimations(
-			new SpriteAnimation("\\Pet\\" + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
-			new SpriteAnimation("\\Pet\\" + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
-			new SpriteAnimation("\\Pet\\" + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
-			new SpriteAnimation("\\Pet\\" + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
-			new SpriteAnimation("\\Pet\\" + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5)
+			new SpriteAnimation(Path.PET_IMG + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation(Path.PET_IMG + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation(Path.PET_IMG + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation(Path.PET_IMG + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation(Path.PET_IMG + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5)
 		);
 	}
 

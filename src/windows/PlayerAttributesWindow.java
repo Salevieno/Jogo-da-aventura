@@ -19,12 +19,13 @@ import graphics2.Draw;
 import graphics2.SpriteAnimation;
 import items.Equip;
 import liveBeings.Player;
+import main.Elements;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import main.TextCategories;
-import utilities.Elements;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class PlayerAttributesWindow extends AttributesWindow
 {
@@ -41,11 +42,11 @@ public class PlayerAttributesWindow extends AttributesWindow
 	
 	static
 	{
-		tab0Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow1.png") ;
-		tab1Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow2.png") ;
-		tab2Image = UtilS.loadImage("\\Windows\\" + "PlayerAttWindow3.png") ;
-		plusSign = UtilS.loadImage("\\SideBar\\" + "PlusSign.png") ;
-		selectedPlusSign = UtilS.loadImage("\\SideBar\\" + "ShiningPlusSign.png") ;
+		tab0Image = Game.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow1.png") ;
+		tab1Image = Game.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow2.png") ;
+		tab2Image = Game.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow3.png") ;
+		plusSign = Game.loadImage(Path.SIDEBAR_IMG + "PlusSign.png") ;
+		selectedPlusSign = Game.loadImage(Path.SIDEBAR_IMG + "ShiningPlusSign.png") ;
 	}
 	
 	public PlayerAttributesWindow()
@@ -62,7 +63,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 	public void initializeAttIncButtons(Player player)
 	{
 
-		Point pos = Util.Translate(windowPos, 27, 180) ;
+		Point pos = Util.translate(windowPos, 27, 180) ;
 		for (Attributes att : Arrays.asList(Attributes.getIncrementable()))
 		{
 			ButtonFunction method = () -> {player.getBA().mapAttributes(att).incBaseValue(1) ;} ;
@@ -134,21 +135,21 @@ public class PlayerAttributesWindow extends AttributesWindow
 		String[] equipsText = Game.allText.get(TextCategories.equipments) ;
 		int eqSlotSize = 51 ;
 		Point[] eqSlotCenter = new Point[] {
-				Util.Translate(windowPos, leftSlotCenter.x, leftSlotCenter.y),
-				Util.Translate(leftSlotCenter, 259, 63),
-				Util.Translate(leftSlotCenter, 259, 135),
-				Util.Translate(leftSlotCenter, 165, 80)} ;
+				Util.translate(windowPos, leftSlotCenter.x, leftSlotCenter.y),
+				Util.translate(leftSlotCenter, 259, 63),
+				Util.translate(leftSlotCenter, 259, 135),
+				Util.translate(leftSlotCenter, 165, 80)} ;
 		for (int eq = 0 ; eq <= equips.length - 1 ; eq += 1)
 		{
 			if (equips[eq] == null) { continue ;}
 			
 			Equip equip = equips[eq] ;
-			Point bottomTextPos = Util.Translate(eqSlotCenter[eq], -eqSlotSize / 2, eqSlotSize / 2 + 13) ;
+			Point bottomTextPos = Util.translate(eqSlotCenter[eq], -eqSlotSize / 2, eqSlotSize / 2 + 13) ;
 
 			GamePanel.DP.drawImage(equip.fullSizeImage(), eqSlotCenter[eq], Align.center) ;
 			Draw.textUntil(bottomTextPos, Align.bottomLeft, angle, equip.getName(), smallFont, textColor, 14, mousePos) ;
 
-			Point upperTextPos = Util.Translate(eqSlotCenter[eq], 0, -eqSlotSize / 2 - 3) ;
+			Point upperTextPos = Util.translate(eqSlotCenter[eq], 0, -eqSlotSize / 2 - 3) ;
 			if (0 < equip.getForgeLevel())
 			{
 				String equipText = equipsText[eq] + " + " + equip.getForgeLevel() ;
@@ -160,7 +161,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 			if (eqElem == null || eq == 3) { continue ;}
 			
 			Image elemImage = eqElem.image ;
-			Point elemPos = Util.Translate(eqSlotCenter[eq], eqSlotSize / 2 - 12, eqSlotSize / 2 - 12) ;
+			Point elemPos = Util.translate(eqSlotCenter[eq], eqSlotSize / 2 - 12, eqSlotSize / 2 - 12) ;
 
 			GamePanel.DP.drawImage(elemImage, elemPos, angle, new Scale(0.5, 0.5), Align.center) ;
 		}
@@ -168,7 +169,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		// Arrow
 		if (player.getEquippedArrow() != null)
 		{
-			GamePanel.DP.drawImage(player.getEquippedArrow().fullSizeImage(), Util.Translate(windowPos, 100, 133), Align.bottomCenter) ;
+			GamePanel.DP.drawImage(player.getEquippedArrow().fullSizeImage(), Util.translate(windowPos, 100, 133), Align.bottomCenter) ;
 		}
 	}
 	
@@ -177,52 +178,52 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Font font = titleFont ;
 		String[] attText = Game.allText.get(TextCategories.attributes) ;
 		Point lifePos = topLeftPos ;
-		Point mpPos = Util.Translate(topLeftPos, 0, 25) ;
+		Point mpPos = Util.translate(topLeftPos, 0, 25) ;
 		int attOffset = 4 ;
-		Point battleAttTopLeft = Util.Translate(topLeftPos, 22 + attOffset, 300) ;
+		Point battleAttTopLeft = Util.translate(topLeftPos, 22 + attOffset, 300) ;
 		int battleAttSy = 22 ;
-		Point collectTopLeft = Util.Translate(battleAttTopLeft, 300 + attOffset, 3 * battleAttSy) ;
+		Point collectTopLeft = Util.translate(battleAttTopLeft, 300 + attOffset, 3 * battleAttSy) ;
 		int collecSy = 22 ;
-		Point goldPos = Util.Translate(collectTopLeft, 0, 75) ;
+		Point goldPos = Util.translate(collectTopLeft, 0, 75) ;
 
-		String lifeText = attText[1] + ": " + Util.Round(player.getPA().getLife().getTotalValue(), 1) ;
-		String mpText = attText[2] + ": " + Util.Round(player.getPA().getMp().getTotalValue(), 1) ;
+		String lifeText = attText[1] + ": " + Util.round(player.getPA().getLife().getTotalValue(), 1) ;
+		String mpText = attText[2] + ": " + Util.round(player.getPA().getMp().getTotalValue(), 1) ;
 		GamePanel.DP.drawText(lifePos, Align.centerLeft, angle, lifeText, font, Game.palette[7]) ;
 		GamePanel.DP.drawText(mpPos, Align.centerLeft, angle, mpText, font, Game.palette[20]) ;
 		
 		BasicBattleAttribute[] attributes = player.getBA().basicAttributes() ;
 		for (int i = 0; i <= attributes.length - 3; i += 1)
 		{
-			Point attValuePos = Util.Translate(battleAttTopLeft, 0, i * battleAttSy) ;
-			Point attImagePos = Util.Translate(battleAttTopLeft, -13, i * battleAttSy) ;
+			Point attValuePos = Util.translate(battleAttTopLeft, 0, i * battleAttSy) ;
+			Point attImagePos = Util.translate(battleAttTopLeft, -13, i * battleAttSy) ;
 			GamePanel.DP.drawImage(attIcons[i], attImagePos, Scale.unit, Align.center) ;
 			GamePanel.DP.drawText(attValuePos, Align.centerLeft, angle, attributes[i].text(), font, textColor) ;
 		}
-		Point critPos = Util.Translate(battleAttTopLeft, 0, 9 + (attributes.length - 2) * battleAttSy) ;
-		Point critImagePos = Util.Translate(battleAttTopLeft, -13, (attributes.length - 2) * battleAttSy) ;
-		String critValue = Util.Round(100 * player.getBA().TotalCritAtkChance(), 1) + "%" ;
+		Point critPos = Util.translate(battleAttTopLeft, 0, 9 + (attributes.length - 2) * battleAttSy) ;
+		Point critImagePos = Util.translate(battleAttTopLeft, -13, (attributes.length - 2) * battleAttSy) ;
+		String critValue = Util.round(100 * player.getBA().TotalCritAtkChance(), 1) + "%" ;
 		GamePanel.DP.drawImage(critIcon, critImagePos, Scale.unit, Align.center) ;
 		GamePanel.DP.drawText(critPos, Align.centerLeft, angle, critValue, font, Game.palette[6]) ;
 
 		
 		//	Collecting
-		GamePanel.DP.drawImage(collectIcons[0], Util.Translate(collectTopLeft, -13, 0), Scale.unit, Align.center) ;
-		GamePanel.DP.drawImage(collectIcons[1], Util.Translate(collectTopLeft, -13, collecSy), Scale.unit, Align.center) ;
-		GamePanel.DP.drawImage(collectIcons[2], Util.Translate(collectTopLeft, -13, 2 * collecSy), Scale.unit, Align.center) ;
+		GamePanel.DP.drawImage(collectIcons[0], Util.translate(collectTopLeft, -13, 0), Scale.unit, Align.center) ;
+		GamePanel.DP.drawImage(collectIcons[1], Util.translate(collectTopLeft, -13, collecSy), Scale.unit, Align.center) ;
+		GamePanel.DP.drawImage(collectIcons[2], Util.translate(collectTopLeft, -13, 2 * collecSy), Scale.unit, Align.center) ;
 		
 		Point herbPos = collectTopLeft ;
-		Point woodPos = Util.Translate(collectTopLeft, 0, collecSy) ;
-		Point metalPos = Util.Translate(collectTopLeft, 0, 2 * collecSy) ;
-		String herbValue = String.valueOf(Util.Round(player.getCollect().get(0), 1)) ;
-		String woodValue = String.valueOf(Util.Round(player.getCollect().get(1), 1)) ;
-		String metalValue = String.valueOf(Util.Round(player.getCollect().get(2), 1)) ;
+		Point woodPos = Util.translate(collectTopLeft, 0, collecSy) ;
+		Point metalPos = Util.translate(collectTopLeft, 0, 2 * collecSy) ;
+		String herbValue = String.valueOf(Util.round(player.getCollect().get(0), 1)) ;
+		String woodValue = String.valueOf(Util.round(player.getCollect().get(1), 1)) ;
+		String metalValue = String.valueOf(Util.round(player.getCollect().get(2), 1)) ;
 		GamePanel.DP.drawText(herbPos, Align.centerLeft, angle, herbValue, font, Game.palette[4]) ;
 		GamePanel.DP.drawText(woodPos, Align.centerLeft, angle, woodValue, font, Game.palette[8]) ;
 		GamePanel.DP.drawText(metalPos, Align.centerLeft, angle, metalValue, font, Game.palette[1]) ;
 
 		//	Gold
-		Point coinPos = Util.Translate(goldPos, -13, 0) ;
-		String goldValue = String.valueOf(Util.Round(player.getBag().getGold(), 1)) ;
+		Point coinPos = Util.translate(goldPos, -13, 0) ;
+		String goldValue = String.valueOf(Util.round(player.getBag().getGold(), 1)) ;
 		GamePanel.DP.drawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
 		GamePanel.DP.drawText(goldPos, Align.centerLeft, angle, goldValue, font, Game.palette[13]) ;	
 	}
@@ -239,18 +240,18 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Color textColor = colorPalette[0] ;
 		
 		SpriteAnimation userImage = player.getMovingAni().spriteIdle ;
-		Point userPos = Util.Translate(windowPos, size.width / 2, 120) ;
+		Point userPos = Util.translate(windowPos, size.width / 2, 120) ;
 		Point equipsLeftSlotCenter = new Point(70, 110) ;
-		Point superElemPos = Util.Translate(userPos, 0, 35) ;
-		Point attTopLeftPos = Util.Translate(windowPos, 37, 39) ;
+		Point superElemPos = Util.translate(userPos, 0, 35) ;
+		Point attTopLeftPos = Util.translate(windowPos, 37, 39) ;
 
 		userImage.display(GamePanel.DP, userPos, Align.center) ;
 
-		Point levelPos = Util.Translate(windowPos, size.width / 2, 38) ;	
+		Point levelPos = Util.translate(windowPos, size.width / 2, 38) ;	
 		GamePanel.DP.drawText(levelPos, Align.center, angle, "Level: " + player.getLevel(), font, colorPalette[7]) ;
 		
 		String jobText = player.getProJob() == 0 ? classesText[player.getJob()] : proClassesText[2 * player.getJob() + player.getProJob() - 1] ;
-		Point jobTextPos = Util.Translate(windowPos, size.width / 2, 56) ;
+		Point jobTextPos = Util.translate(windowPos, size.width / 2, 56) ;
 		GamePanel.DP.drawText(jobTextPos, Align.center, angle, jobText, font, colorPalette[0]) ;
 		
 		displayEquips(equipsLeftSlotCenter, mousePos, angle, textColor) ;		
@@ -265,7 +266,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		displayAttributes(attTopLeftPos, angle, textColor) ;
 
 		// Power bar
-		Point powerPos = Util.Translate(windowPos, 410, 460) ;
+		Point powerPos = Util.translate(windowPos, 410, 460) ;
 		player.displayPowerBar(powerPos) ;
 		
 		incAttButtons.values().forEach(button -> button.display(angle, false, mousePos)) ;
@@ -286,18 +287,18 @@ public class PlayerAttributesWindow extends AttributesWindow
 		int bottomRowY = 35 + 261 ;
 		
 		// Titles
-		GamePanel.DP.drawText(Util.Translate(windowPos, leftColX, topRowY), Align.centerLeft, angle, attText[10], font, textColor) ;
-		GamePanel.DP.drawText(Util.Translate(windowPos, rightColX, topRowY), Align.centerLeft, angle, attText[11], font, textColor) ;
-		GamePanel.DP.drawText(Util.Translate(windowPos, leftColX, secondRowY), Align.centerLeft, angle, attText[12], font, textColor) ;
-		GamePanel.DP.drawText(Util.Translate(windowPos, rightColX, secondRowY), Align.centerLeft, angle, attText[13], font, textColor) ;
-		GamePanel.DP.drawText(Util.Translate(windowPos, leftColX, bottomRowY), Align.centerLeft, angle, attText[14], font, textColor) ;
+		GamePanel.DP.drawText(Util.translate(windowPos, leftColX, topRowY), Align.centerLeft, angle, attText[10], font, textColor) ;
+		GamePanel.DP.drawText(Util.translate(windowPos, rightColX, topRowY), Align.centerLeft, angle, attText[11], font, textColor) ;
+		GamePanel.DP.drawText(Util.translate(windowPos, leftColX, secondRowY), Align.centerLeft, angle, attText[12], font, textColor) ;
+		GamePanel.DP.drawText(Util.translate(windowPos, rightColX, secondRowY), Align.centerLeft, angle, attText[13], font, textColor) ;
+		GamePanel.DP.drawText(Util.translate(windowPos, leftColX, bottomRowY), Align.centerLeft, angle, attText[14], font, textColor) ;
 
 		// att values
-		Point stunValuesPos = Util.Translate(windowPos, leftColX, 56) ;
-		Point blockValuesPos = Util.Translate(windowPos, rightColX, 56) ;
-		Point bloodValuesPos = Util.Translate(windowPos, leftColX, 56 + 110) ;
-		Point poisonValuesPos = Util.Translate(windowPos, rightColX, 56 + 110) ;
-		Point silenceValuesPos = Util.Translate(windowPos, leftColX, 56 + 261) ;
+		Point stunValuesPos = Util.translate(windowPos, leftColX, 56) ;
+		Point blockValuesPos = Util.translate(windowPos, rightColX, 56) ;
+		Point bloodValuesPos = Util.translate(windowPos, leftColX, 56 + 110) ;
+		Point poisonValuesPos = Util.translate(windowPos, rightColX, 56 + 110) ;
+		Point silenceValuesPos = Util.translate(windowPos, leftColX, 56 + 261) ;
 		for (int i = 0 ; i <= 3 - 1 ; ++i)
 		{
 			GamePanel.DP.drawText(stunValuesPos, Align.centerLeft, angle, player.getBA().getStun().texts()[i], font, textColor) ;
@@ -329,11 +330,11 @@ public class PlayerAttributesWindow extends AttributesWindow
 		Map<String, Integer> numberStats = player.getStatistics().numberStats() ;
 		Map<String, Double> damageStats = player.getStatistics().damageStats() ;
 		Map<String, Double> maxStats = player.getStatistics().maxStats() ;
-		Point titlesPos = Util.Translate(windowPos, size.width / 2, 35 + 12 + 6 - 2) ;
-		Point subTitlesPos = Util.Translate(windowPos, 21 + 48, 195 + 25 + 6) ;
-		Point topLeft1 = Util.Translate(windowPos, 35 + 16, 35 + 31 + 10) ;
-		Point topLeft2 = Util.Translate(windowPos, 32 + 6, 193 + 12) ;
-		Point topLeft3 = Util.Translate(windowPos, 32 + 16, 195 + 25 + 27) ;
+		Point titlesPos = Util.translate(windowPos, size.width / 2, 35 + 12 + 6 - 2) ;
+		Point subTitlesPos = Util.translate(windowPos, 21 + 48, 195 + 25 + 6) ;
+		Point topLeft1 = Util.translate(windowPos, 35 + 16, 35 + 31 + 10) ;
+		Point topLeft2 = Util.translate(windowPos, 32 + 6, 193 + 12) ;
+		Point topLeft3 = Util.translate(windowPos, 32 + 16, 195 + 25 + 27) ;
 		
 		// Titles
 		GamePanel.DP.drawText(titlesPos, Align.bottomCenter, Draw.stdAngle, title, font, textColor) ;
@@ -349,7 +350,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		for (String key : numberStats.keySet())
 		{
 			String text = String.valueOf(numberStats.get(key)) ;
-			Point textPos = Util.Translate(topLeft1, (i / 6) * 140, (i % 6) * 18) ;
+			Point textPos = Util.translate(topLeft1, (i / 6) * 140, (i % 6) * 18) ;
 			GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, text, font, textColor) ;
 			i += 1 ;
 		}
@@ -358,8 +359,8 @@ public class PlayerAttributesWindow extends AttributesWindow
 		i = 0 ;
 		for (String key : damageStats.keySet())
 		{
-			String text = String.valueOf(Util.Round((double) damageStats.get(key), 1)) ;
-			Point textPos = Util.Translate(topLeft3, (i % 3) * 96, (i / 3) * 18) ;
+			String text = String.valueOf(Util.round((double) damageStats.get(key), 1)) ;
+			Point textPos = Util.translate(topLeft3, (i % 3) * 96, (i / 3) * 18) ;
 			GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, text, font, textColor) ;
 			i += 1 ;
 		}
@@ -368,8 +369,8 @@ public class PlayerAttributesWindow extends AttributesWindow
 		i = 0 ;
 		for (String key : maxStats.keySet())
 		{
-			String text = "dano " + key + " máx: " + String.valueOf(Util.Round((double) maxStats.get(key), 1)) ;
-			Point textPos = Util.Translate(topLeft2, i * 126, 0) ;
+			String text = "dano " + key + " máx: " + String.valueOf(Util.round((double) maxStats.get(key), 1)) ;
+			Point textPos = Util.translate(topLeft2, i * 126, 0) ;
 			GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, text, font, textColor) ;
 			i += 1 ;
 		}
@@ -385,7 +386,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		// Main window
 		GamePanel.DP.drawImage(windowImage, windowPos, Align.topLeft) ;
 
-		Point tabsTextPos = Util.Translate(windowPos, 18, 6 + 30) ;
+		Point tabsTextPos = Util.translate(windowPos, 18, 6 + 30) ;
 		for (int i = 0 ; i <= 3 - 1 ; i += 1)
 		{
 			Color tabTextColor = i == tab ? Game.palette[18] : Game.palette[0] ;
@@ -401,7 +402,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		}		
 
 		// Player name
-		Point namePos = Util.Translate(windowPos, size.width / 2, 11) ;
+		Point namePos = Util.translate(windowPos, size.width / 2, 11) ;
 		GamePanel.DP.drawText(namePos, Align.center, Draw.stdAngle, player.getName(), titleFont, Game.palette[0]) ;	
 		
 	}

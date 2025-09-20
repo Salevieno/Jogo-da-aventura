@@ -16,11 +16,12 @@ import graphics2.Draw;
 import items.Equip;
 import items.GeneralItem;
 import liveBeings.Player;
+import main.Elements;
 import main.Game;
 import main.GamePanel;
-import utilities.Elements;
+import main.Path;
 import utilities.Util;
-import utilities.UtilS;
+
 
 public class ElementalWindow extends GameWindow
 {
@@ -32,7 +33,7 @@ public class ElementalWindow extends GameWindow
 
 	private static final Point windowPos = Game.getScreen().pos(0.35, 0.23) ;
 	private static final List<String> menuTitles = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
-	private static final Image windowImage = UtilS.loadImage("\\Windows\\" + "Elemental.png") ;
+	private static final Image windowImage = Game.loadImage(Path.WINDOWS_IMG + "Elemental.png") ;
 	private static final int firstSphereID = 390 ;
 	private static final int numberItemsOnWindow = 10 ;
 
@@ -193,7 +194,7 @@ public class ElementalWindow extends GameWindow
 			int row = i % ( numberItemsOnWindow / 1) ;
 			int col = i / ( numberItemsOnWindow / 1) ;
 			Equip equip = equipsOnWindow.get(i) ;
-			Point slotCenter = Util.Translate(windowPos,
+			Point slotCenter = Util.translate(windowPos,
 					border + padding + 6 + slotW / 2 + col * (140 + slotW),
 					border + padding + 22 + slotH / 2 + row * 21) ;
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
@@ -217,7 +218,7 @@ public class ElementalWindow extends GameWindow
 			int row = i % numberItemsOnWindow ;
 			int col = i / numberItemsOnWindow ;
 			GeneralItem sphere = spheres.get(i) ;
-			Point slotCenter = Util.Translate(windowPos,
+			Point slotCenter = Util.translate(windowPos,
 					border + padding + 6 + slotW / 2 + col * (140 + slotW),
 					border + padding + 22 + slotH / 2 + row * 21) ;
 
@@ -234,7 +235,7 @@ public class ElementalWindow extends GameWindow
 	public void display(Point mousePos)
 	{
 		
-		Point titlePos = Util.Translate(windowPos, size.width / 2, 2 + 9) ;
+		Point titlePos = Util.translate(windowPos, size.width / 2, 2 + 9) ;
 		
 		GamePanel.DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
 		GamePanel.DP.drawText(titlePos, Align.center, Draw.stdAngle, menuTitles.get(menu), titleFont, stdColor) ;
@@ -247,7 +248,7 @@ public class ElementalWindow extends GameWindow
 		}
 		
 		
-		Draw.windowArrows(Util.Translate(windowPos, 0, size.height + 5), size.width, window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(Util.translate(windowPos, 0, size.height + 5), size.width, window, numberWindows, stdOpacity) ;
 		
 	}
 

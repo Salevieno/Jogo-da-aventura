@@ -8,7 +8,14 @@
             "type": "java",
             "name": "MainGame3_4",
             "request": "launch",
-            "mainClass": "main.MainGame3_4"
+            "mainClass": "main.MainGame3_4",
+            "projectName": "Jogo-da-aventura_ee5781ce"
+        },
+        {
+            "type": "java",
+            "name": "libs",
+            "request": "launch",
+            "mainClass": "main.Main"
         }
     ]
 }

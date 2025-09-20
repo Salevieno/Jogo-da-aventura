@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import battle.AtkResults;
-import components.AnimationDisplayFunction;
 import items.Item;
-import utilities.GameTimer;
+import main.GameTimer;
 
+// TODO? remove animation
 public class Animation 
 {
 	private GameTimer counter ;
@@ -76,24 +76,24 @@ public class Animation
 				return (vars) -> {
 					// Point playerPos = (Point) vars[0] ;
 					// Directions playerDir = (Directions) vars[1] ;
-					// Point fishingPos = Util.Translate(playerPos, 0, 0) ;
+					// Point fishingPos = Util.translate(playerPos, 0, 0) ;
 
 					// switch (playerDir)
 					// {
 					// 	case left:
-					// 		fishingPos = Util.Translate(playerPos, -Player.FishingGif.size().width, 0) ;
+					// 		fishingPos = Util.translate(playerPos, -Player.FishingGif.size().width, 0) ;
 					// 		break ;
 							
 					// 	case right:
-					// 		fishingPos = Util.Translate(playerPos, Player.FishingGif.size().width, 0) ;
+					// 		fishingPos = Util.translate(playerPos, Player.FishingGif.size().width, 0) ;
 					// 		break ;
 							
 					// 	case up:
-					// 		fishingPos = Util.Translate(playerPos, 0, -Player.FishingGif.size().height) ;
+					// 		fishingPos = Util.translate(playerPos, 0, -Player.FishingGif.size().height) ;
 					// 		break ;
 							
 					// 	case down:
-					// 		fishingPos = Util.Translate(playerPos, 0, Player.FishingGif.size().height) ;
+					// 		fishingPos = Util.translate(playerPos, 0, Player.FishingGif.size().height) ;
 					// 		break ;
 					// }
 

@@ -12,9 +12,10 @@ import graphics2.Draw;
 import items.Item;
 import main.Game;
 import main.GamePanel;
+import main.Path;
 import screen.SideBar;
 import utilities.Util;
-import utilities.UtilS;
+
 import windows.BagWindow;
 
 public abstract class HotKeysBar
@@ -28,7 +29,7 @@ public abstract class HotKeysBar
 	{
 		font = new Font(Game.MainFontName, Font.BOLD, 12) ;
 		textColor = Game.palette[0] ;
-		image = UtilS.loadImage("\\SideBar\\" + "HotBar.png") ;
+		image = Game.loadImage(Path.SIDEBAR_IMG + "HotBar.png") ;
 		barPos = new Point(Game.getScreen().mapSize().width + 2, Game.getScreen().getSize().height - SideBar.sy) ;
 	}
 	
@@ -40,8 +41,8 @@ public abstract class HotKeysBar
 		Dimension slotSize = Util.getSize(SideBar.slotImage) ;
 		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 		{
-			Point slotCenter = Util.Translate(topLeft(), 10, 10 + 20 * i) ;
-			if (Util.isInside(mousePos, Util.Translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize))
+			Point slotCenter = Util.translate(topLeft(), 10, 10 + 20 * i) ;
+			if (Util.isInside(mousePos, Util.translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize))
 			{
 				return i ;
 			}
@@ -58,8 +59,8 @@ public abstract class HotKeysBar
 		
 		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
 		{
-			Point slotCenter = Util.Translate(topLeft(), 13, 10 + 20 * i) ;
-			Point keyTextPos = Util.Translate(slotCenter, slotSize.width / 2 + 6, slotSize.height / 2) ;
+			Point slotCenter = Util.translate(topLeft(), 13, 10 + 20 * i) ;
+			Point keyTextPos = Util.translate(slotCenter, slotSize.width / 2 + 6, slotSize.height / 2) ;
 			
 			GamePanel.DP.drawImage(BagWindow.slotImage, slotCenter, Align.center) ;
 			GamePanel.DP.drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.HotKeys[i], font, textColor) ;
@@ -68,9 +69,9 @@ public abstract class HotKeysBar
 
 			GamePanel.DP.drawImage(hotItems.get(i).getImage(), slotCenter, Align.center) ;
 			
-			if (!Util.isInside(mousePos, Util.Translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize)) { continue ;}
+			if (!Util.isInside(mousePos, Util.translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize)) { continue ;}
 			
-			Point textPos = Util.Translate(slotCenter, - slotSize.width / 2 - 10, 0);
+			Point textPos = Util.translate(slotCenter, - slotSize.width / 2 - 10, 0);
 			GamePanel.DP.drawText(textPos, Align.centerRight, Draw.stdAngle, hotItems.get(i).getName(), font, textColor) ;
 		}
 	}

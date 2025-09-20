@@ -8,7 +8,7 @@ import java.util.List;
 
 import graphics.Align;
 import main.GameFrame;
-import utilities.GameTimer;
+import main.GameTimer;
 import utilities.Util;
 
 public class Gif

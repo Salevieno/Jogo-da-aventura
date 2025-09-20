@@ -5,8 +5,8 @@ import java.awt.Point;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.SpriteAnimation;
+import main.Directions;
 import main.GamePanel;
-import utilities.Directions;
 
 public class MovingAnimations
 {
