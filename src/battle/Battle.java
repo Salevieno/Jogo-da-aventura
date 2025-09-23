@@ -384,6 +384,7 @@ public abstract class Battle
 		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
 
 		receiver.takeDamage(atkResults.getDamage()) ;
+		//FIXME knock back pode lançar seres vivos em cima de lugares não caminháveis
 		receiver.setPos(knockback(attacker.getPos(), receiver.getPos(), attacker.getBA().getKnockbackPower().getTotal())) ;
 		if (attacker instanceof Player)
 		{

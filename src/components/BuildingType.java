@@ -13,7 +13,7 @@ public class BuildingType
 	private final BuildingNames name ;
 	private final Image image ;
 	private Image insideImage ;
-	private Image[] ornamentImages ;
+	// private Image[] ornamentImages ;
 
 	private static final String dadosPath = Path.DADOS + "buildings\\" ;
 	private static final String assetsPath = Path.IMAGES + Path.BUILDINGS_IMG ;
@@ -23,7 +23,7 @@ public class BuildingType
 		this.name = name ;
 		this.image = image ;
 		this.insideImage = null ;
-		this.ornamentImages = null ;
+		// this.ornamentImages = null ;
 	}
 
 	
@@ -44,9 +44,9 @@ public class BuildingType
 			if (hasInterior)
 			{
 				Image insideImage = Util.loadImage(assetsPath + "Building" + name + "Inside.png") ;
-				Image[] OrnamentImages = new Image[] { Util.loadImage(assetsPath + "Building" + name + "Ornament.png") } ;
+				// Image[] OrnamentImages = new Image[] { Util.loadImage(assetsPath + "Building" + name + "Ornament.png") } ;
 				buildingTypes[i].setInsideImage(insideImage) ;
-				buildingTypes[i].setOrnamentImages(OrnamentImages) ;
+				// buildingTypes[i].setOrnamentImages(OrnamentImages) ;
 			}
 		}
 
@@ -56,9 +56,9 @@ public class BuildingType
 	public BuildingNames getName() {return name ;}
 	public Image getImage() {return image ;}
 	public Image getInsideImage() {return insideImage ;}
-	public Image[] getOrnamentImages() {return ornamentImages ;}
+	// public Image[] getOrnamentImages() {return ornamentImages ;}
 	public void setInsideImage(Image insideImage) { this.insideImage = insideImage ;}
-	public void setOrnamentImages(Image[] ornamentImages) { this.ornamentImages = ornamentImages ;}
+	// public void setOrnamentImages(Image[] ornamentImages) { this.ornamentImages = ornamentImages ;}
 
 	@Override
 	public String toString()

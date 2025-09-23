@@ -129,12 +129,7 @@ public class Genetics
 		modifiedGenes.set(1, genes.get(1) + incDefGene) ;
 		modifiedGenes.set(2, genes.get(2) + incSpellGene) ;
 
-//		modifiedGenes = makePositive(modifiedGenes) ;
 		modifiedGenes = normalize(modifiedGenes) ;
-//		System.out.println("modified genes = " + modifiedGenes) ;
-		
-//		System.out.println("player move = " + playerMove);
-//		System.out.println("modifiedGenes = " + modifiedGenes + " = " + modifiedGenes.stream().mapToDouble(d -> d).sum()) ;
 		
 		return modifiedGenes ;
 	}

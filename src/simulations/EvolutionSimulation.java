@@ -630,16 +630,13 @@ public abstract class EvolutionSimulation
 		
 		if (highestFitness <= genes.getFitness())
 		{
-//			System.out.println(" ------ new best fitness ------ ") ;
 			highestFitness = genes.getFitness() ;
-//			bestGenes = new ArrayList<>(genes.getGenes());
 		}
 		
 		if (listBestFitness.size() <= numberRandomGeneRounds - 1)
 		{
 			listBestGenes.add(genes) ;
 			listBestFitness.add(genes.getFitness()) ;
-//			listBestFitness.sort(null) ;	
 		}
 		else if (genes.areSelected(listBestFitness))
 		{
@@ -648,10 +645,6 @@ public abstract class EvolutionSimulation
 			listBestGenes.add(genes) ;
 			listBestFitness.remove(indexMinFitness) ;
 			listBestFitness.add(genes.getFitness()) ;
-//			listBestFitness.sort(null) ;	
-			
-//			System.out.println("listFitness = " + listFitness) ;
-//			System.out.println("listBestGenes = " + listBestGenes) ;
 		}
 	}
 	
@@ -663,12 +656,7 @@ public abstract class EvolutionSimulation
 	}
 	
 	public static void updateCreatureGenes()
-	{		
-//		System.out.println("\n Fight n° " + numberFights) ;
-		System.out.print(numberFights + ";") ;
-		System.out.print(lowestFitness + ";") ;
-		System.out.print(avrFitness + ";") ;
-		System.out.print(highestFitness + ";") ;
+	{
 		for (double gene : playerOpponent.getType().getGenes().getGenes())
 		{
 			System.out.print(gene + ";") ;

@@ -612,9 +612,9 @@ public abstract class LiveBeing implements Drawable
 	public boolean canUseSpell(Spell spell)
 	{
 
-		if (isSilent()) { return false ;} // System.out.println(name + " silent") ; 
-		if (!spell.isReady()) { return false ;} // System.out.println(name + " spell not ready") ; 
-		if (!hasEnoughMP(spell)) { return false ;} // System.out.println(name + " not enough mp") ; 
+		if (isSilent()) { return false ;}
+		if (!spell.isReady()) { return false ;}
+		if (!hasEnoughMP(spell)) { return false ;}
 		
 		return 1 <= spell.getLevel() ;
 		

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.simple.JSONObject;
+
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
@@ -59,6 +61,27 @@ public class Building implements Drawable
 	// 		}
 	// 	}
 	// }
+
+	public static Building load(BuildingType[] buildingTypes, JSONObject buildingObj)
+	{
+		BuildingNames buildingName = BuildingNames.valueOf((String) buildingObj.get("name")) ;
+		double posX = (Double) ((JSONObject) buildingObj.get("pos")).get("x") ;
+		double posY = (Double) ((JSONObject) buildingObj.get("pos")).get("y") ;
+		Point buildingPos = Game.getScreen().getPointWithinBorders(posX, posY) ;
+
+		BuildingType buildingType = null ;
+		for (BuildingType type : buildingTypes)
+		{
+			if (!buildingName.equals(type.getName()))
+			{
+				continue ; 
+			}
+
+			buildingType = type ;
+		}
+
+		return new Building(buildingType, buildingPos) ;
+	}
 
 	
 	public BuildingType getType() { return type ;}

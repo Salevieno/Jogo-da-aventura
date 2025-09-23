@@ -60,7 +60,6 @@ import main.Elements;
 import main.Game;
 import main.GamePanel;
 import main.GameTimer;
-import main.Log;
 import main.Path;
 import maps.Collectible;
 import maps.Continents;
@@ -242,8 +241,6 @@ public class Player extends LiveBeing
 	    currentChest = null ;
 		settings = new SettingsWindow(false, true, false, 1, 1) ;
 		hotItems = Arrays.asList(null, null, null) ;
-		
-		Log.attributes(this) ;
 	}
 	
 
@@ -373,8 +370,8 @@ public class Player extends LiveBeing
 	}
 	public void learnSpell(Spell spell)
 	{
-		if (spell == null) { System.out.println("Trying to learn a null spell") ; return ;}
-		if (spell.getLevel() != 0) { System.out.println("Trying to learn a spell whose level is not 0"); return ;}
+		if (spell == null) { System.out.println("Warn: Trying to learn a null spell") ; return ;}
+		if (spell.getLevel() != 0) { System.out.println("Warn: Trying to learn a spell whose level is not 0"); return ;}
 		
 		spell.incLevel(1) ;
     	SpellsBar.updateSpells(getActiveSpells()) ;
@@ -1411,8 +1408,8 @@ public class Player extends LiveBeing
 	
 	public void useItem(Item item)
 	{
-		if (item == null) { System.out.println("Tentando usar item nulo!"); return ;}
-		if (!bag.contains(item)) { System.out.println("Tentando usar item que não tem na mochila!"); return ;}
+		if (item == null) { System.out.println("Warn: Tentando usar item nulo!"); return ;}
+		if (!bag.contains(item)) { System.out.println("Warn: Tentando usar item que não tem na mochila!"); return ;}
 
 		if (item instanceof Potion)
 		{
@@ -1583,13 +1580,7 @@ public class Player extends LiveBeing
 	public void levelUp()
 	{
 		if (level == maxLevel) { return ;}
-		System.out.println(BA.getPhyAtk().getTrain() / BA.getPhyAtk().getBaseValue()) ;
-		System.out.println(BA.getMagAtk().getTrain() / BA.getMagAtk().getBaseValue()) ;
-		System.out.println(BA.getPhyDef().getTrain() / BA.getPhyDef().getBaseValue()) ;
-		System.out.println(BA.getMagDef().getTrain() / BA.getMagDef().getBaseValue()) ;
-		System.out.println(BA.getDex().getTrain() / BA.getDex().getBaseValue()) ;
-		System.out.println(BA.getAgi().getTrain() / BA.getAgi().getBaseValue()) ;
-		System.out.println() ;
+
 		double[] attIncrease = calcAttributesIncrease() ;
 		setLevel(level + 1) ;
 		PA.getLife().incMaxValue((int) attIncrease[0]) ;

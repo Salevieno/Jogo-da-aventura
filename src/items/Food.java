@@ -71,20 +71,5 @@ public class Food extends Item
 	{
 //		return "Food [lifeHeal=" + lifeHeal + ", MPHeal=" + MPHeal + ", SatiationHeal=" + SatiationHeal + ", id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance=" + dropChance + "]";
 		return "Food," + id + "," + name;
-	}
-	
-	
-
-//	public void printAtt()
-//	{
-//		System.out.println("food id: " + AllFood[id].getId() +
-//				"   name: " + AllFood[id].getName() +
-//				"   description: " + AllFood[id].getDescription() +
-//				"   price: " + AllFood[id].getPrice() +
-//				"   drop chance: " + AllFood[id].getDropChance() + "%" + 
-//				"   life heal: " + 100 * AllFood[id].getLifeHeal() + "%" + 
-//				"   mp heal: " + 100 * AllFood[id].getMPHeal() + "%" + 
-//				"   satiation heal: " + AllFood[id].getSatiationHeal());
-//	}
-	
+	}	
 }
