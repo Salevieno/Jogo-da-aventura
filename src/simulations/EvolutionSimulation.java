@@ -65,7 +65,7 @@ public abstract class EvolutionSimulation
 	
 	private static List<GameButton> buttons ;
 
-	private static final String pathSimulation = "\\Simulation\\" ;
+	private static final String pathSimulation = "Simulation/" ;
 	private static final Image screenImage = Game.loadImage(pathSimulation + "SimulationScreen.png") ;
 	private static final Image buttonImage = Game.loadImage(pathSimulation + "ButtonGeneral.png") ;
 	private static final Image buttonSelectedImage = Game.loadImage(pathSimulation + "ButtonGeneralSelected.png") ;

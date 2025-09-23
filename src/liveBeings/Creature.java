@@ -329,11 +329,12 @@ public class Creature extends LiveBeing
 			displayDrunk() ;
 		}
 		displayStatus() ;
-		GamePanel.DP.drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.movePattern.toString(), Color.black) ;
-		GamePanel.DP.drawText(Util.translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
-		GamePanel.DP.drawText(Util.translate(pos, 0, -40), Align.bottomCenter, !idleTimer.isActive() ? "is moving: " + dir : "", Color.black) ;
+		displayAttributes(0);
 		if (Game.debugMode)
 		{
+			GamePanel.DP.drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.movePattern.toString(), Color.black) ;
+			GamePanel.DP.drawText(Util.translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
+			GamePanel.DP.drawText(Util.translate(pos, 0, -40), Align.bottomCenter, !idleTimer.isActive() ? "is moving: " + dir : "", Color.black) ;
 			displayState() ;
 			hitbox.display();
 		}

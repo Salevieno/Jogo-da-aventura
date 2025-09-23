@@ -6,7 +6,7 @@ public enum AnimationTypes
 	win(6),
 	pterodactile(20),
 	fishing(5),
-	levelUp(12),
+	levelUp(9),
 	message(4),
 	obtainedItem(2) ;
 	

@@ -257,7 +257,7 @@ public abstract class Battle
 		
 	public static boolean isOver(Player player, Pet pet, Creature creature)
 	{
-		return pet == null ? !creature.isAlive() | !player.isAlive() : !creature.isAlive() | (!player.isAlive() & !pet.isAlive()) ;
+		return pet == null ? !creature.isAlive() || !player.isAlive() : !creature.isAlive() || (!player.isAlive() & !pet.isAlive()) ;
 	}
 			
 	private static void startAtkAnimations(LiveBeing user, AtkTypes atkType)
@@ -480,24 +480,23 @@ public abstract class Battle
 		if (Game.getState().equals(GameStates.simulation))
 		{
 			EvolutionSimulation.setBattleResults(player.getLife().getCurrentValue(), creature.getLife().getCurrentValue()) ;
-		}
-		
-		player.leaveBattle() ;
+		}		
 		
 		for (Spell spell : player.getSpells())
 		{
 			spell.getDurationCounter().reset() ;
 		}
 	
-		
 		if (!creature.isAlive())
 		{
+			creature.dies() ;
 			if (player.isAlive())
 			{
 				player.win(creature, true) ;
 			}
 			player.resetAction() ;
 			player.resetBattleAction() ;
+			player.leaveBattle() ;
 			if (pet != null)
 			{
 				if (pet.isAlive())
@@ -505,12 +504,12 @@ public abstract class Battle
 					pet.win(creature) ;
 				}
 			}
-			creature.dies() ;
 			
 			return ;
 		}
 		
 		creature.leaveBattle() ;
+		player.leaveBattle() ;
 		player.dies() ;
 		if (pet != null)
 		{

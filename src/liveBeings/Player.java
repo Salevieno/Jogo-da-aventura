@@ -1600,6 +1600,8 @@ public class Player extends LiveBeing
 		((PlayerAttributesWindow) attWindow).activateIncAttButtons(attPoints) ;
 		
 		Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, level});
+		levelUpAni.setPos(getPos()) ;
+		levelUpAni.activate() ;
 	}
 	
 	private double[] calcAttributesIncrease()

@@ -26,6 +26,7 @@ import graphics2.Animation;
 import graphics2.AnimationTypes;
 import graphics2.Drawable;
 import graphics2.Gif;
+import graphics2.SpriteAnimation;
 import main.Directions;
 import main.Elements;
 import main.Game;
@@ -81,11 +82,7 @@ public abstract class LiveBeing implements Drawable
 	private static final Image powerBarImage = Game.loadImage("PowerBar.png") ;
 	public static final String[] battleKeys = new String[] {"Y", "U"} ;	
 	public static final List<String> spellKeys = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12") ;
-
-	protected static final Gif levelUpGif = new Gif("Level up", Game.loadImage(Path.PLAYER_IMG + "LevelUp.gif"), 170, false, false) ;
-	// private static final Gif phyHitGif = new Gif("phyHit", Game.loadImage(Path.BATTLE_IMG + "PhysicalHit.gif"), (int) (75 / 1.5), false, false) ;
-	// private static final Gif magHitGif = new Gif("magHit", Game.loadImage(Path.BATTLE_IMG + "SpellHit.gif"), (int) (90 / 1.5), false, false) ;
-	
+	protected static final SpriteAnimation levelUpAni = new SpriteAnimation(Path.PLAYER_IMG + "LevelUpSprite.png", new Point(), Align.bottomCenter, false, 45, 0.2) ;
 	
 	public LiveBeing(PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, AttributesWindow attWindow)
 	{
