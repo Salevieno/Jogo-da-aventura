@@ -41,7 +41,6 @@ import graphics.Scale;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
 import graphics2.Draw;
-import graphics2.Gif;
 import graphics2.SpriteAnimation;
 import items.Alchemy;
 import items.Arrow;
@@ -132,9 +131,13 @@ public class Player extends LiveBeing
 	public static final Image CoinIcon = Game.loadImage(Path.PLAYER_IMG + "CoinIcon.png") ;
 	public static final Image MagicBlissGif = Game.loadImage(Path.PLAYER_IMG + "MagicBliss.gif") ;
     public static final SpriteAnimation[] collectingAnimations ;
-    public static final Gif TentGif = new Gif("Tent", Game.loadImage(Path.PLAYER_IMG + "Tent.png"), 5, false, false) ;
-	public static final Gif DiggingGif = new Gif("Digging", Game.loadImage(Path.PLAYER_IMG + "Digging.gif"), 2, false, false) ;
-    public static final Gif FishingGif = new Gif("Fishing", Game.loadImage(Path.PLAYER_IMG + "Fishing.gif"), 2, false, false) ;
+    // public static final Gif TentGif = new Gif("Tent", Game.loadImage(Path.PLAYER_IMG + "Tent.png"), 5, false, false) ;
+	// public static final Gif DiggingGif = new Gif("Digging", Game.loadImage(Path.PLAYER_IMG + "Digging.gif"), 2, false, false) ;
+    // public static final Gif FishingGif = new Gif("Fishing", Game.loadImage(Path.PLAYER_IMG + "Fishing.gif"), 2, false, false) ;
+
+	public static final SpriteAnimation TentGif = new SpriteAnimation(Path.PLAYER_IMG + "Tent.png", new Point(), Align.bottomCenter, false, 1, 5) ;
+	public static final SpriteAnimation DiggingGif = new SpriteAnimation(Path.PLAYER_IMG + "Digging.gif", new Point(), Align.center, false, 7, 2/7.0) ;
+	public static final SpriteAnimation FishingGif = new SpriteAnimation(Path.PLAYER_IMG + "Fishing.gif", new Point(), Align.center, false, 11, 2/11.0) ;
     
 	public static final List<String[]> InitialAtts = Util.readcsvFile(Path.CSV + "PlayerInitialStats.csv") ;
 	public static final List<String[]> EvolutionProperties = Util.readcsvFile(Path.CSV + "PlayerEvolution.csv") ;	
@@ -712,14 +715,15 @@ public class Player extends LiveBeing
 
 		Point fishingPos = switch (dir)
 		{
-			case left -> Util.translate(getPos(), -Player.FishingGif.size().width, 0) ;
-			case right -> Util.translate(getPos(), Player.FishingGif.size().width, 0) ;
-			case up -> Util.translate(getPos(), 0, -Player.FishingGif.size().height) ;
-			case down -> Util.translate(getPos(), 0, Player.FishingGif.size().height) ;
+			case left -> Util.translate(getPos(), -Player.FishingGif.getFrameSize().width, 0) ;
+			case right -> Util.translate(getPos(), Player.FishingGif.getFrameSize().width, 0) ;
+			case up -> Util.translate(getPos(), 0, -Player.FishingGif.getFrameSize().height) ;
+			case down -> Util.translate(getPos(), 0, Player.FishingGif.getFrameSize().height) ;
 		};
-		FishingGif.start(fishingPos, Align.center) ;
+		FishingGif.setPos(fishingPos);
+		FishingGif.activate() ;
 		
-		if (!Player.FishingGif.isDonePlaying()) { return ;}
+		if (!Player.FishingGif.hasFinished()) { return ;}
 		
 		Item worm = GeneralItem.getAll()[25] ;
 		double getFishChance = 0.1 ;
@@ -765,9 +769,10 @@ public class Player extends LiveBeing
 
 		if (DiggingGif.isActive()) { return ;}
 		
-		DiggingGif.start(getPos(), Align.center) ;
+		DiggingGif.setPos(getPos()) ;
+		DiggingGif.activate() ;
 		
-		if (!DiggingGif.isDonePlaying()) { return ;}
+		if (!DiggingGif.hasFinished()) { return ;}
 				
 		setState(LiveBeingStates.idle) ;
 		
@@ -809,9 +814,10 @@ public class Player extends LiveBeing
 	{
 		if (TentGif.isActive()) { return ;}
 		
-		TentGif.start(getPos(), Align.bottomCenter) ;
+		TentGif.setPos(getPos()) ;
+		TentGif.activate() ;
 		
-		if (!TentGif.isDonePlaying()) { return ;}
+		if (!TentGif.hasFinished()) { return ;}
 		
 		PA.getLife().setToMaximum() ;
 		PA.getMp().setToMaximum() ;

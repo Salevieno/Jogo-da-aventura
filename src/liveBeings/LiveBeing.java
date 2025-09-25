@@ -25,7 +25,6 @@ import graphics.Align;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
 import graphics2.Drawable;
-import graphics2.Gif;
 import graphics2.SpriteAnimation;
 import main.Directions;
 import main.Elements;

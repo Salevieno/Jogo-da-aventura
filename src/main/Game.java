@@ -31,7 +31,6 @@ import graphics.Align;
 import graphics2.Animation;
 import graphics2.Draw;
 import graphics2.Drawable;
-import graphics2.Gif;
 import graphics2.SpriteAnimation;
 import items.Alchemy ;
 import items.Arrow ;
@@ -90,7 +89,7 @@ public class Game
 	private static final List<String> loadedImagePaths = new ArrayList<>() ;
 
 	private static final GameStates mainState = GameStates.running ;
-	private static final boolean cheatMode = false ;
+	private static final boolean testMode = true ;
 	public static final boolean debugMode = false;
 
 	private static GameStates state = GameStates.loading ;
@@ -98,7 +97,7 @@ public class Game
 	private static boolean shouldRepaint ; // tells if the panel should be repainted, created to respond multiple requests only once
 	private static boolean konamiCodeActive ;
 	private static double dt ;
-	public static GameTimer dayCounter ;
+	public static GameTimer dayTimer ;
 
 
 	public static Map<TextCategories, String[]> allText ;
@@ -134,7 +133,7 @@ public class Game
 		palette = normalPalette ;
 		gameLanguage = Languages.portugues ;
 		allText = new HashMap<>() ;
-		dayCounter = new GameTimer(600) ;
+		dayTimer = new GameTimer(600) ;
 
 		settingsWindow = new PauseWindow() ;
 		dt = System.nanoTime() ;
@@ -159,7 +158,7 @@ public class Game
 	public static int getSaveSlotInUse() { return saveSlotInUse ;}
 	public static void setSaveSlotInUse(int newSaveSlotInUse) { saveSlotInUse = newSaveSlotInUse ;}
 
-	public static double dayTimeRate() { return dayCounter.rate() <= 0.5 ? dayCounter.rate() + 0.5 : dayCounter.rate() - 0.5 ;}
+	public static double dayTimeRate() { return dayTimer.rate() <= 0.5 ? dayTimer.rate() + 0.5 : dayTimer.rate() - 0.5 ;}
 	
 	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
 	public static void setState(GameStates newState) { state = newState ;}
@@ -213,13 +212,13 @@ public class Game
 
 	private static void konamiCode()
 	{
-		dayCounter.setDuration(6) ;
+		dayTimer.setDuration(6) ;
 		palette = konamiPalette ;
-		if (dayCounter.getCounter() % 1200 <= 300)
+		if (dayTimer.getCounter() % 1200 <= 300)
 		{
 			Draw.stdAngle += 0.04 ;
 		}
-		else if (dayCounter.getCounter() % 1200 <= 900)
+		else if (dayTimer.getCounter() % 1200 <= 900)
 		{
 			Draw.stdAngle -= 0.04 ;
 		}
@@ -285,7 +284,7 @@ public class Game
 
 	}
 
-	private static void initializeCheatMode()
+	private static void initializeTestMode()
 	{
 
 		
@@ -481,13 +480,13 @@ public class Game
 				{
 					Music.SwitchMusic(player.getMap().getMusic()) ;
 				}
-				dayCounter.start() ;
+				dayTimer.start() ;
 				Log.loadTime("last stuff", initialTime) ;
 				
 
-				if (Game.cheatMode)
+				if (Game.testMode)
 				{
-					Game.initializeCheatMode() ;
+					Game.initializeTestMode() ;
 				}
 
 				return ;
@@ -500,9 +499,9 @@ public class Game
 
 	private void activateCounters()
 	{
-		if (dayCounter.hasFinished())
+		if (dayTimer.hasFinished())
 		{
-			dayCounter.restart() ;
+			dayTimer.restart() ;
 			NPC.renewStocks() ;
 		}
 		player.activateSpellCounters() ;
@@ -547,16 +546,6 @@ public class Game
 		fm.getCreatures().forEach(Creature::activateCounters) ;			
 		fm.activateCollectiblesCounter() ;
 
-	}
-
-	private void playStopTimeGifs()
-	{
-		if (Opening.getOpeningGif().isTimeStopper())
-		{
-//			Opening.getOpeningGif().start(new Point(0, 0), Align.topLeft) ;
-
-//			repaint() ;
-		}
 	}
 	
 	private void creaturesAct(double dt)
@@ -605,6 +594,9 @@ public class Game
 	
 	private void run(double dt)
 	{
+
+		if (Math.pow(10, 10) <= dt) { return ;}
+
 		activateCounters() ;
 
 		checkKonamiCode(player.getCombo()) ;
@@ -723,7 +715,6 @@ public class Game
 		}
 
 		Animation.playAll() ;
-		Gif.playAll() ;
 		SpriteAnimation.displayAll(GamePanel.DP) ;
 		
 		SideBar.display(player, pet, GamePanel.getMousePos()) ;
@@ -761,21 +752,12 @@ public class Game
 				return ;
 
 			case running:
-				if (Math.pow(10, 10) <= System.nanoTime() - dt)
-				{
-					return ;
-				}
 				run(System.nanoTime() - dt) ;
 				dt = System.nanoTime() ;
 				draw() ;
 				return ;
 
-			case playingStopTimeGif:
-				playStopTimeGifs() ;	
-				return ;
-
 			case paused: return ;
-
 			default: return ;
 		}
 	}

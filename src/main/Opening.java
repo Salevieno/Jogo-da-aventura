@@ -13,7 +13,7 @@ import UI.GameButton;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
-import graphics2.Gif;
+import graphics2.SpriteAnimation;
 import liveBeings.Buff;
 import liveBeings.Player;
 import liveBeings.Spell;
@@ -45,7 +45,9 @@ public abstract class Opening
     private static final Font smallFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 
 	private static final String path = Path.IMAGES  + "\\Opening\\";
-	public static final Gif openingGif = new Gif("Opening", Util.loadImage(path + "Opening.gif"), 0.7, false, true) ;
+	// private static final Gif openingGif = new Gif("Opening", Util.loadImage(path + "Opening.gif"), 0.7, false, true) ;
+	private static final SpriteAnimation openingAni = new SpriteAnimation(Path.IMAGES + "Opening.png", new Point(), Align.topLeft, 12, 0.05) ;
+	
 	private static final Image backgroundImage = Util.loadImage(path + "Opening.png") ;
 	private static final Image LoadingSlot = Util.loadImage(path + "LoadingSlot.png") ;
 	private static final Image LoadingSlotSelected = Util.loadImage(path + "LoadingSlotSelected.png") ;
@@ -153,7 +155,7 @@ public abstract class Opening
 
 	public static Player getChosenPlayer() { return new Player(chosenName, chosenSex, chosenJob) ;}
 	public static int getChosenDifficultLevel() { return difficultLevel ;}
-	public static Gif getOpeningGif() { return openingGif ;}
+	public static SpriteAnimation getOpeningGif() { return openingAni ;}
 
 	private static void switchToLoadGameScreen()
 	{		
@@ -331,15 +333,14 @@ public abstract class Opening
 
 	public static void run(Player player, Point mousePos)
 	{
-		if (!openingGif.hasPlayed())
+		if (!openingAni.hasFinished())
 		{
-			if (!openingGif.isActive() & !openingGif.isDonePlaying())
+			if (!openingAni.isActive() & !openingAni.hasFinished())
 			{
 //				Music.PlayMusic(thunderSound) ;
 //				Music.PlayMusic(introMusic) ;
-				openingGif.start(new Point(0, 0), Align.topLeft);
+				openingAni.activate() ;
 			}
-			Gif.playAll() ;
     		return ;
 		}
 		

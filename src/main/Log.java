@@ -5,7 +5,6 @@ import java.util.Map;
 
 import battle.AtkResults;
 import graphics2.Animation;
-import graphics2.Gif;
 import items.Item;
 import liveBeings.Buff;
 import liveBeings.CreatureType;
@@ -57,11 +56,6 @@ public abstract class Log
 	public static void animationStart(Animation ani)
 	{
 		System.out.println("Started playing animation " + ani);
-	}
-	
-	public static void gifStart(Gif gif)
-	{
-		System.out.println("Started playing gif " + gif);
 	}
 	
 
