@@ -127,8 +127,9 @@ public class Game
 	static
 	{
 		screen = new Screen(new Dimension(GameFrame.getWindowsize().width, GameFrame.getWindowsize().height), null) ;
-		normalPalette = readColorPalette(loadImage("ColorPalette.png"), "Normal") ;
-		konamiPalette = readColorPalette(loadImage("KonamiPalette.png"), "Konami") ;
+		Image paletteImage = loadImage(Path.GAME_IMG + "ColorPalette.png") ;
+		normalPalette = readColorPalette(paletteImage, "Normal") ;
+		konamiPalette = readColorPalette(paletteImage, "Konami") ;
 		selColor = normalPalette[18] ;
 		palette = normalPalette ;
 		gameLanguage = Languages.portugues ;

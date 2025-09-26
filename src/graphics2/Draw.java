@@ -48,10 +48,10 @@ public abstract class Draw
 	private static final Font damageAnimationFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	private static final Font loadingGameScreenFont = new Font("SansSerif", Font.BOLD, 28) ;
 
-	private static final Image levelUpAttImg = Game.loadImage("LevelUp.png") ;
-	private static final Image winObtainedItemsImg = Game.loadImage("Win.png") ;
-	private static final Image obtainedItem = Game.loadImage("ObtainedItem.png") ;
-	private static final Image messageBoxImg = Game.loadImage("messageBox.png") ;
+	private static final Image levelUpAttImg = Game.loadImage(Path.LIVE_BEINGS_IMG + "LevelUp.png") ;
+	private static final Image winObtainedItemsImg = Game.loadImage(Path.PLAYER_IMG + "Win.png") ;
+	private static final Image obtainedItem = Game.loadImage(Path.PLAYER_IMG + "ObtainedItem.png") ;
+	private static final Image messageBoxImg = Game.loadImage(Path.PLAYER_IMG + "messageBox.png") ;
 
 	public static double stdAngle ;
 	

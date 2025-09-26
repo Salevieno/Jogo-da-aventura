@@ -12,8 +12,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame ;
 import javax.swing.Timer;
 
-import utilities.Util;
-
 public class GameFrame extends JFrame implements ActionListener
 {
 	private static final long serialVersionUID = 1L ;
@@ -23,7 +21,7 @@ public class GameFrame extends JFrame implements ActionListener
 	// private static final Dimension screenSizeSmall = new Dimension(640,480) ;
 	private static final Dimension screenSizeBig = new Dimension(1280,960) ;
 	private static final Dimension windowSize = screenSizeBig ;
-	private static final Image icon = Util.loadImage(".\\images\\gameIcon.png") ;
+	private static final Image icon = Game.loadImage(Path.GAME_IMG + "gameIcon.png") ;
 	private static final GameFrame gameFrame = new GameFrame() ;
 	public static boolean fullScreen = false ;
 

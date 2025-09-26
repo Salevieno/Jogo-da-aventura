@@ -16,15 +16,14 @@ public abstract class LoadingGame
 
     private static int loadingStep = 0 ;
     private static final GameButton startButton ;
-	private static final String path = "Opening/";
-	private static final SpriteAnimation loadingAni = new SpriteAnimation(path + "LoadingSprite.png", new Point(), Align.center, 3, 0.2) ;
+	private static final SpriteAnimation loadingAni = new SpriteAnimation(Path.OPENING_IMG + "LoadingSprite.png", new Point(), Align.center, 3, 0.2) ;
 	private static final SpriteAnimation petIdle = new SpriteAnimation(Path.PET_IMG + "Pet0Idle.png", Game.getScreen().getCenter(), Align.center, 4, 0.13) ;
 
     static
     {
 		Point startButtonPos = Util.translate(Game.getScreen().getCenter(), 0, 80) ;
-    	Image startImage = Util.loadImage(Path.IMAGES + path + "Start.png") ;
-    	Image startImageSelected = Util.loadImage(Path.IMAGES + path + "StartSelected.png") ;
+    	Image startImage = Game.loadImage(Path.OPENING_IMG + "Start.png") ;
+    	Image startImageSelected = Game.loadImage(Path.OPENING_IMG + "StartSelected.png") ;
 		ButtonFunction startAction = () -> { loadingStep = 12 ;} ;
     	startButton = new GameButton(startButtonPos, Align.center, "start game", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;

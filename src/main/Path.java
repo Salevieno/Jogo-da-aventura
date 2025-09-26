@@ -16,9 +16,12 @@ public class Path
     public static String COLLECTABLES_IMG = "Collect/" ;
     public static String ELEMENTS_IMG = "Elements/" ;
     public static String EQUIPS_IMG = "Equips/" ;
+    public static String GAME_IMG = "Game/" ;
+    public static String LIVE_BEINGS_IMG = "LiveBeings/" ;
     public static String MAPS_IMG = "Maps/" ;
     public static String MAP_ELEMENTS_IMG = "MapElements/" ;
     public static String NPC_IMG = "NPCs/" ;
+    public static String OPENING_IMG = "Opening/" ;
     public static String PLAYER_IMG = "Player/" ;
     public static String PET_IMG = "Pet/" ;
     public static String SIDEBAR_IMG = "Sidebar/" ;
@@ -42,11 +45,14 @@ public class Path
             BATTLE_IMG = props.getProperty("BATTLE_IMG", BATTLE_IMG) ;
             BUILDINGS_IMG = props.getProperty("BUILDINGS_IMG", BUILDINGS_IMG) ;
             COLLECTABLES_IMG = props.getProperty("COLLECT_IMG", COLLECTABLES_IMG) ;
+            GAME_IMG = props.getProperty("GAME_IMG", GAME_IMG) ;
             ELEMENTS_IMG = props.getProperty("ELEMENTS_IMG", ELEMENTS_IMG) ;
             EQUIPS_IMG = props.getProperty("EQUIPS_IMG", EQUIPS_IMG) ;
+            LIVE_BEINGS_IMG = props.getProperty("LIVE_BEINGS_IMG", LIVE_BEINGS_IMG) ;
             MAPS_IMG = props.getProperty("MAPS_IMG", MAPS_IMG) ;
             MAP_ELEMENTS_IMG = props.getProperty("MAP_ELEMENTS_IMG", MAP_ELEMENTS_IMG) ;
             NPC_IMG = props.getProperty("NPC_IMG", NPC_IMG) ;
+            OPENING_IMG = props.getProperty("OPENING_IMG", OPENING_IMG) ;            
             PLAYER_IMG = props.getProperty("PLAYER_IMG", PLAYER_IMG) ;
             PET_IMG = props.getProperty("PET_IMG", PET_IMG) ;
             SIDEBAR_IMG = props.getProperty("SIDEBAR_IMG", SIDEBAR_IMG) ;

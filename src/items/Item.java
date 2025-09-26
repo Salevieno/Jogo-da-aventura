@@ -23,7 +23,7 @@ public abstract class Item
 	
 	protected static final Image infoMenu = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "itemInfoWindow.png") ;
 	public static final List<Item> allItems = new ArrayList<>() ;
-    public static final Image slot = Game.loadImage("itemSlot.png") ;
+    public static final Image slot = Game.loadImage(Path.WINDOWS_IMG + "itemSlot.png") ;
 	
 	public Item(int id, String name, String description, Image image, int price, double dropChance)
 	{

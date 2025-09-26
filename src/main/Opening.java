@@ -44,15 +44,14 @@ public abstract class Opening
     private static final Font font = new Font(Game.MainFontName, Font.BOLD, 16) ;
     private static final Font smallFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 
-	private static final String path = Path.IMAGES  + "\\Opening\\";
 	private static final SpriteAnimation openingAni = new SpriteAnimation(Path.IMAGES + "Opening.png", new Point(), Align.topLeft, 12, 0.05) ;
 	
-	private static final Image backgroundImage = Util.loadImage(path + "Opening.png") ;
-	private static final Image LoadingSlot = Util.loadImage(path + "LoadingSlot.png") ;
-	private static final Image LoadingSlotSelected = Util.loadImage(path + "LoadingSlotSelected.png") ;
-	private static final Image generalButtonImg = Util.loadImage(path + "generalButton.png") ;
-	private static final Image generalButtonSelectedImg = Util.loadImage(path + "generalButtonSelected.png") ;
-	private static final Image jobDescriptionBackground = Util.loadImage(path + "JobDescriptionBackground.png") ;
+	private static final Image backgroundImage = Game.loadImage(Path.OPENING_IMG + "Opening.png") ;
+	private static final Image LoadingSlot = Game.loadImage(Path.OPENING_IMG + "LoadingSlot.png") ;
+	private static final Image LoadingSlotSelected = Game.loadImage(Path.OPENING_IMG + "LoadingSlotSelected.png") ;
+	private static final Image generalButtonImg = Game.loadImage(Path.OPENING_IMG + "generalButton.png") ;
+	private static final Image generalButtonSelectedImg = Game.loadImage(Path.OPENING_IMG + "generalButtonSelected.png") ;
+	private static final Image jobDescriptionBackground = Game.loadImage(Path.OPENING_IMG + "JobDescriptionBackground.png") ;
 	// private static final Image LoadingEnfeite ;
 	// private static final Clip thunderSound ;
 	// private static final Clip introMusic ;
@@ -89,8 +88,8 @@ public abstract class Opening
 		ButtonFunction thiefAction = () -> { chosenJob = 4 ; advanceStep() ;} ;
 		
 		Screen screen = Game.getScreen() ;
-		GameButton portButton = new GameButton(screen.pos(0.85, 0.05), Align.center, "Port", Util.loadImage(path + "Port.png"), Util.loadImage(path + "PortSelected.png"), portAction) ;
-		GameButton enButton = new GameButton(screen.pos(0.95, 0.05), Align.center, "En", Util.loadImage(path + "En.png"), Util.loadImage(path + "EnSelected.png"), enAction) ;
+		GameButton portButton = new GameButton(screen.pos(0.85, 0.05), Align.center, "Port", Game.loadImage(Path.OPENING_IMG + "Port.png"), Game.loadImage(Path.OPENING_IMG + "PortSelected.png"), portAction) ;
+		GameButton enButton = new GameButton(screen.pos(0.95, 0.05), Align.center, "En", Game.loadImage(Path.OPENING_IMG + "En.png"), Game.loadImage(Path.OPENING_IMG + "EnSelected.png"), enAction) ;
 		languageButtons = List.of(portButton, enButton) ;
 
 		String[] btNames = new String[] {
@@ -113,10 +112,10 @@ public abstract class Opening
 				knightAction, mageAction, archerAction, animalAction, thiefAction} ;
 		for (int i = 0 ; i <= btNames.length - 1; i += 1)
 		{
-			Image btImage = Util.loadImage(path + btNames[i] + ".png") ;
-			Image btImageSelected = Util.loadImage(path + btNames[i] + " Selected.png") ;
+			Image btImage = Game.loadImage(Path.OPENING_IMG + btNames[i] + ".png") ;
+			Image btImageSelected = Game.loadImage(Path.OPENING_IMG + btNames[i] + " Selected.png") ;
 			if (btImage == null) { btImage = Game.loadImage("ButtonGeneral.png") ;}
-			if (btImageSelected == null) { btImageSelected = Util.loadImage(path + btNames[i] + " Selected.png") ;}
+			if (btImageSelected == null) { btImageSelected = Game.loadImage(Path.OPENING_IMG + btNames[i] + " Selected.png") ;}
 			if (btImageSelected == null) { btImageSelected = Game.loadImage("ButtonGeneralSelected.png") ;}
 			GameButton newButton = new GameButton(btPos[i], Align.center, btNames[i], generalButtonImg, generalButtonSelectedImg, btAction[i]) ;
 			newButton.deactivate() ;
