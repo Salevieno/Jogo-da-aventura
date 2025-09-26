@@ -17,7 +17,7 @@ public abstract class LoadingGame
     private static int loadingStep = 0 ;
     private static final GameButton startButton ;
 	private static final SpriteAnimation loadingAni = new SpriteAnimation(Path.OPENING_IMG + "LoadingSprite.png", new Point(), Align.center, 3, 0.2) ;
-	private static final SpriteAnimation petIdle = new SpriteAnimation(Path.PET_IMG + "Pet0Idle.png", Game.getScreen().getCenter(), Align.center, 4, 0.13) ;
+	private static final SpriteAnimation petIdle = new SpriteAnimation(Path.PET_IMG + "pet0_idle.png", Game.getScreen().getCenter(), Align.center, 4, 0.13) ;
 
     static
     {

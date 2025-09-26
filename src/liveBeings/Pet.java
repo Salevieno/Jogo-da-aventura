@@ -101,12 +101,13 @@ public class Pet extends LiveBeing
 	
 	public static MovingAnimations initializeMovingAnimations(int Job)
 	{
+		String rootPath = Path.PET_IMG + "pet" + Job;
 		return new MovingAnimations(
-			new SpriteAnimation(Path.PET_IMG + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
-			new SpriteAnimation(Path.PET_IMG + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
-			new SpriteAnimation(Path.PET_IMG + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
-			new SpriteAnimation(Path.PET_IMG + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5),
-			new SpriteAnimation(Path.PET_IMG + "PetMovingRight0.png", new Point(0, 0), Align.bottomCenter, 1, 5)
+			new SpriteAnimation(rootPath + "_idle.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation(rootPath + "_movingup.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation(rootPath + "_movingdown.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation(rootPath + "_movingleft.png", new Point(0, 0), Align.bottomCenter, 1, 5),
+			new SpriteAnimation(rootPath + "_movingright.png", new Point(0, 0), Align.bottomCenter, 1, 5)
 		);
 	}
 
