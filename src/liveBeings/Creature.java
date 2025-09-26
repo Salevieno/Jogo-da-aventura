@@ -56,16 +56,16 @@ public class Creature extends LiveBeing
  		super(new PersonalAttributes(CT.getPA()), new BattleAttributes(CT.getBA()), CT.getMovingAnimations(), CreatureType.attWindow) ;
 		
 		this.type = CT ;
-		this.name = CT.name;
-		this.level = CT.level;
-		this.size = new Dimension(CT.size);
-		this.range = CT.range;
-		this.step = CT.step;
-		this.atkElem = CT.atkElem;
-		this.mpCounter = new GameTimer(CT.mpDuration / 1.0);
-		this.satiationCounter = new GameTimer(CT.satiationDuration);
-		this.battleActionCounter = new GameTimer(CT.battleActionDuration / 1.0) ;
-		this.movingTimer = new GameTimer(CT.movePattern.getDuration()) ;
+		this.name = CT.getName();
+		this.level = CT.getLevel();
+		this.size = new Dimension(CT.getSize());
+		this.range = CT.getRange();
+		this.step = CT.getStep();
+		this.atkElem = CT.getAtkElem();
+		this.mpCounter = new GameTimer(CT.getMpTimerDuration() / 1.0);
+		this.satiationCounter = new GameTimer(CT.getSatiationTimerDuration());
+		this.battleActionCounter = new GameTimer(CT.getBattleActionTimerDuration() / 1.0) ;
+		this.movingTimer = new GameTimer(CT.getMovingTimerDuration()) ;
 		this.combo = new ArrayList<>() ;
 		this.hitbox = CT.getHitboxType().equals("circle") ? new HitboxCircle(new Point(), size.width / 2) : new HitboxRectangle(new Point(), size) ;
 		
@@ -148,7 +148,7 @@ public class Creature extends LiveBeing
 
 	public void updatePos(Directions dir, Point2D.Double CurrentPos, int step, double dt, double moveRate, GameMap map)
 	{
-		Point2D.Double newPos = MovePattern.calcNewPos(type.movePattern, dir, step, dt, CurrentPos, moveRate) ;
+		Point2D.Double newPos = MovePattern.calcNewPos(type.getMovePattern(), dir, step, dt, CurrentPos, moveRate) ;
  
 		if (!Game.getScreen().posIsWithinBorders(newPos)) { return ;}
 		if (!map.groundIsWalkable(new Point((int) newPos.x, (int) newPos.y), null)) { return ;}
@@ -314,11 +314,11 @@ public class Creature extends LiveBeing
 	{
 		if (!idleTimer.isActive())
 		{
-			type.movingAni.displayMoving(dir, pos, 0, scale, Align.center) ;
+			type.getMovingAnimations().displayMoving(dir, pos, 0, scale, Align.center) ;
 		}
 		else
 		{
-			type.movingAni.displayIdle(pos, 0, scale, Align.center) ;
+			type.getMovingAnimations().displayIdle(pos, 0, scale, Align.center) ;
 		}
 		if (isFighting())
 		{
@@ -332,7 +332,7 @@ public class Creature extends LiveBeing
 		displayAttributes(0);
 		if (Game.debugMode)
 		{
-			GamePanel.DP.drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.movePattern.toString(), Color.black) ;
+			GamePanel.DP.drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;
 			GamePanel.DP.drawText(Util.translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
 			GamePanel.DP.drawText(Util.translate(pos, 0, -40), Align.bottomCenter, !idleTimer.isActive() ? "is moving: " + dir : "", Color.black) ;
 			displayState() ;

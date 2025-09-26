@@ -33,7 +33,6 @@ import main.GamePanel;
 import main.GameTimer;
 import main.Path;
 import main.RelativePos;
-import maps.Continents;
 import maps.GameMap;
 import maps.GroundRegion;
 import maps.GroundType;

@@ -69,6 +69,7 @@ public class BattleAttributes
 		this.poison = new BattleSpecialAttributeWithDamage(BA.getPoison()) ;
 		this.silence = new BattleSpecialAttribute(BA.getSilence()) ;
 		this.atkSpeed = new BasicBattleAttribute(BA.getAtkSpeed()) ;
+		this.knockbackPower = new BasicBattleAttribute(BA.getKnockbackPower()) ;
 
 		elemResistanceMult = new HashMap<>() ;
 		for (Elements elem : Elements.values())

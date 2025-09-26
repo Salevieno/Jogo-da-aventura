@@ -28,36 +28,25 @@ import windows.CreatureAttributesWindow;
 public class CreatureType
 {
 	private final int id;
-
-	protected final String name;
-	protected final int level;
-	protected final Dimension size;
-	protected final int range;
-	protected final int step;
-	protected final Elements atkElem ;
-	protected final Elements weaponElem ;
-	protected final Elements armorElem ;
-	protected final Elements shieldElem ;
-	protected final Elements superElem ;
-	protected final double mpDuration;
-	protected final double satiationDuration;
-	protected final double actionDuration;
-	protected final double stepDuration;
-	protected final MovePattern movePattern ;
-	protected final double battleActionDuration;
-	protected final MovingAnimations movingAni;
-	protected final PersonalAttributes PA;
-	protected final BattleAttributes BA;
-
-	private Genetics genes;
-
+	private final String name;
+	private final int level;
+	private final Dimension size;
+	private final int range;
+	private final int step;
+	private final Elements atkElem ;
+	private final double mpDuration;
+	private final double satiationDuration;
+	private final MovePattern movePattern ;
+	private final double battleActionDuration;
+	private final MovingAnimations movingAni;
+	private final PersonalAttributes PA;
+	private final BattleAttributes BA;
 	private final List<Spell> spell;
 	private final Set<Item> items;
 	private final int gold;
 	private final Color color;
-	// TODO remover
-	private final int[] StatusCounter;// [Life, Mp, Phy atk, Phy def, Mag atk, Mag def, Dex, Agi, Stun, Block, Blood, Poison, Silence]
 	private final String hitboxType ;
+	private Genetics genes;
 
 	private static int NumberOfCreatureTypes;
 	private static final List<MovingAnimations> moveAni;
@@ -91,21 +80,14 @@ public class CreatureType
 			Set<Item> items, int gold, Color color, int[] StatusCounter, String hitboxType)
 	{
 		this.id = id;
-
 		this.name = name;
 		this.level = level;
 		this.size = size;
 		this.range = range;
 		this.step = step;
 		this.atkElem = elem[0];
-		this.weaponElem = elem[0];
-		this.armorElem = elem[0];
-		this.shieldElem = elem[0];
-		this.superElem = elem[0];
 		this.mpDuration = mpDuration;
 		this.satiationDuration = satiationDuration;
-		this.actionDuration = actionDuration;
-		this.stepDuration = stepDuration;
 		this.movePattern = movePattern ;
 		this.battleActionDuration = battleActionDuration;
 
@@ -116,98 +98,36 @@ public class CreatureType
 		this.items = items;
 		this.gold = gold;
 		this.color = color;
-		this.StatusCounter = StatusCounter;
 		this.hitboxType = hitboxType ;
 
 		genes = new Genetics();
 		all.add(this);
 	}
 
-	public int getID()
-	{
-		return id;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public Dimension getSize()
-	{
-		return size;
-	}
-
-	public int getLevel()
-	{
-		return level;
-	}
-
-	public MovingAnimations getMovingAnimations()
-	{
-		return movingAni;
-	}
-
-	public PersonalAttributes getPA()
-	{
-		return PA;
-	}
-
-	public BattleAttributes getBA()
-	{
-		return BA;
-	}
-
-	public List<Spell> getSpell()
-	{
-		return spell;
-	}
-
-	public Set<Item> getItems()
-	{
-		return items;
-	}
-
-	public int getGold()
-	{
-		return gold;
-	}
-
-	public Color getColor()
-	{
-		return color;
-	}
-
-	public int[] getStatusCounter()
-	{
-		return StatusCounter;
-	}
-
-	public Genetics getGenes()
-	{
-		return genes;
-	}
-
-	public String getHitboxType()
-	{
-		return hitboxType;
-	}
-
-	public void setGenes(Genetics newGenes)
-	{
-		genes = newGenes;
-	}
-
-	public static int getNumberOfCreatureTypes()
-	{
-		return NumberOfCreatureTypes;
-	}
-
-	public static void setNumberOfCreatureTypes(int num)
-	{
-		NumberOfCreatureTypes = num;
-	}
-
+	public int getID() { return id ;}
+	public String getName() { return name ;}
+	public Dimension getSize() { return size ;}
+	public int getLevel() { return level ;}
+	public int getRange() { return range ;}
+	public int getStep() { return step ;}
+	public Elements getAtkElem() { return atkElem ;}
+	public double getMpTimerDuration() { return mpDuration ;}
+	public double getSatiationTimerDuration() { return satiationDuration ;}
+	public double getBattleActionTimerDuration() { return battleActionDuration ;}
+	public double getMovingTimerDuration() { return movePattern.getDuration() ;}
+	public MovePattern getMovePattern() { return movePattern ;}
+	public MovingAnimations getMovingAnimations() { return movingAni ;}
+	public PersonalAttributes getPA() { return PA ;}
+	public BattleAttributes getBA() { return BA ;}
+	public List<Spell> getSpell() { return spell ;}
+	public Set<Item> getItems() { return items ;}
+	public int getGold() { return gold ;}
+	public Color getColor() { return color ;}
+	public String getHitboxType() { return hitboxType ;}
+	public Genetics getGenes() { return genes ;}
+	public void setGenes(Genetics newGenes) { genes = newGenes ;}
+	public static int getNumberOfCreatureTypes() { return NumberOfCreatureTypes ;}
+	public static void setNumberOfCreatureTypes(int num) { NumberOfCreatureTypes = num ;}
 	private static boolean isOceanCreature(int id) { return 270 < id & id <= 299 ;}
 
 	public static void load(Languages language, int difficultLevel)

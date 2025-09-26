@@ -295,7 +295,7 @@ public class Game
 //    	fieldMaps[1].getCreatures().get(0).setPos(player.getPos());
 //    	player.setPos(new Point(393, 140)) ;
 
-    	letThereBePet() ;
+    	// letThereBePet() ;
 //    	pet.takeDamage(40);
 //    	pet.getMp().decTotalValue(50);
 
