@@ -71,12 +71,14 @@ public class CreatureType
 		moveAni = new ArrayList<>();
 		for (int i = 0; i <= numberCreatureTypesImages - 1; i += 1)
 		{
+			String rootPath = Path.CREATURES_IMG + "creature" + i ;
 			moveAni.add(new MovingAnimations(
-					new SpriteAnimation("\\Creatures\\" + "creature" + i + "_idle" + ".png", new Point(0, 0), Align.bottomCenter, 9, 0.333),
-					new SpriteAnimation("\\Creatures\\" + "creature" + i + "_movingup" + ".png", new Point(0, 0), Align.bottomCenter, 4, 0.16),
-					new SpriteAnimation("\\Creatures\\" + "creature" + i + "_movingdown" + ".png", new Point(0, 0), Align.bottomCenter, 4, 0.16),
-					new SpriteAnimation("\\Creatures\\" + "creature" + i + "_movingleft" + ".png", new Point(0, 0), Align.bottomCenter, 4, 0.16),
-					new SpriteAnimation("\\Creatures\\" + "creature" + i + "_movingright" + ".png", new Point(0, 0), Align.bottomCenter, 4, 0.16)));
+				new SpriteAnimation(rootPath + "_idle.png", new Point(0, 0), Align.bottomCenter, 9, 0.333),
+				new SpriteAnimation(rootPath + "_movingup.png", new Point(0, 0), Align.bottomCenter, 4, 0.16),
+				new SpriteAnimation(rootPath + "_movingdown.png", new Point(0, 0), Align.bottomCenter, 4, 0.16),
+				new SpriteAnimation(rootPath + "_movingleft.png", new Point(0, 0), Align.bottomCenter, 4, 0.16),
+				new SpriteAnimation(rootPath + "_movingright.png", new Point(0, 0), Align.bottomCenter, 4, 0.16))
+			);
 		}
 
 		attWindow = new CreatureAttributesWindow();
