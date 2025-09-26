@@ -209,7 +209,7 @@ public class ForgeWindow extends GameWindow
 				GamePanel.DP.drawText(runeNamePos, Align.centerLeft, angle, reqRune(equip).getName(), stdFont, stdColor) ;
 			}
 			
-			GamePanel.DP.drawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
+			GamePanel.DP.drawImage(Player.getCoinImg(), coinPos, angle, Scale.unit, Align.center) ;
 			GamePanel.DP.drawText(pricePos, Align.centerLeft, angle, String.valueOf(forgePrice(equip.getForgeLevel())), stdFont, itemColor) ;
 			itemPos.y += 28 ;
 		}

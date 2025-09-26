@@ -70,33 +70,6 @@ public class Animation
 					Image SpeakingBubbleImage = (Image) vars[1] ;
 					String[] message = (String[]) vars[2] ;
 					Draw.pterodactileAnimation(counter, PterodactileImage, SpeakingBubbleImage, message) ;
-				} ;				
-				
-			case 3 :
-				return (vars) -> {
-					// Point playerPos = (Point) vars[0] ;
-					// Directions playerDir = (Directions) vars[1] ;
-					// Point fishingPos = Util.translate(playerPos, 0, 0) ;
-
-					// switch (playerDir)
-					// {
-					// 	case left:
-					// 		fishingPos = Util.translate(playerPos, -Player.FishingGif.size().width, 0) ;
-					// 		break ;
-							
-					// 	case right:
-					// 		fishingPos = Util.translate(playerPos, Player.FishingGif.size().width, 0) ;
-					// 		break ;
-							
-					// 	case up:
-					// 		fishingPos = Util.translate(playerPos, 0, -Player.FishingGif.size().height) ;
-					// 		break ;
-							
-					// 	case down:
-					// 		fishingPos = Util.translate(playerPos, 0, Player.FishingGif.size().height) ;
-					// 		break ;
-					// }
-
 				} ;
 				
 			case 4 :

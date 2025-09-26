@@ -289,18 +289,18 @@ public abstract class Draw
 	public static void gainGoldAnimation(GameTimer counter, int goldObtained)
 	{
 		
-		Point pos = Game.getScreen().pos(0.45, 0.1) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Color textColor = Game.palette[14] ;
+		// Point pos = Game.getScreen().pos(0.45, 0.1) ;
+		// Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		// Color textColor = Game.palette[14] ;
 
-		Point textPos = Util.translate(pos, 5, 0) ;
-		GamePanel.DP.drawText(textPos, Align.centerLeft, stdAngle, "+", font, textColor) ;
+		// Point textPos = Util.translate(pos, 5, 0) ;
+		// GamePanel.DP.drawText(textPos, Align.centerLeft, stdAngle, "+", font, textColor) ;
 		
-		Point coinPos = Util.translate(pos, 15, 0) ;
-		GamePanel.DP.drawImage(Player.CoinIcon, coinPos, Scale.unit, Align.centerLeft) ;
+		// Point coinPos = Util.translate(pos, 15, 0) ;
+		// GamePanel.DP.drawImage(Player.getCoinImg(), coinPos, Scale.unit, Align.centerLeft) ;
 		
-		Point amountPos = Util.translate(pos, 35, 0) ;
-		GamePanel.DP.drawText(amountPos, Align.centerLeft, stdAngle, String.valueOf(goldObtained), font, textColor) ;
+		// Point amountPos = Util.translate(pos, 35, 0) ;
+		// GamePanel.DP.drawText(amountPos, Align.centerLeft, stdAngle, String.valueOf(goldObtained), font, textColor) ;
 		
 	}
 

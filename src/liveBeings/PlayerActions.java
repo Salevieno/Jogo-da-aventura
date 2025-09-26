@@ -1,8 +1,5 @@
 package liveBeings;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public enum PlayerActions
 {
 	moveUp("W"),
@@ -46,17 +43,5 @@ public enum PlayerActions
 		}
 		
 		return null ;
-	}
-	
-	public static List<String> keys()
-	{
-		List<String> keys = new ArrayList<>() ;
-		
-		for (PlayerActions action : PlayerActions.values())
-		{
-			keys.add(action.key) ;
-		}
-		
-		return keys ;
 	}
 }

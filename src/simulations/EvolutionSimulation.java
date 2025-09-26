@@ -302,7 +302,7 @@ public abstract class EvolutionSimulation
 		player.setLevel(1) ;
 		player.setJob(newJob) ;
 		
-		List<String[]> prop = Player.InitialAtts ;
+		List<String[]> prop = Player.initialAttributes ;
 	    BasicAttribute life = new BasicAttribute(Integer.parseInt(prop.get(newJob)[2]), Integer.parseInt(prop.get(newJob)[2]), 1) ;
 	    BasicAttribute mp = new BasicAttribute(Integer.parseInt(prop.get(newJob)[3]), Integer.parseInt(prop.get(newJob)[3]), 1) ;
 		BasicAttribute exp = new BasicAttribute(0, 5, Double.parseDouble(prop.get(newJob)[34])) ;
@@ -337,8 +337,8 @@ public abstract class EvolutionSimulation
 		player.setBattleActionCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[41]) / 100.0)) ;
 		player.setGoldMultiplier(Double.parseDouble(prop.get(newJob)[32])) ;
 		
-		List<Double> attIncrements = Arrays.asList(Player.EvolutionProperties.get(3 * newJob + 0)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
-		List<Double> incChances = Arrays.asList(Player.EvolutionProperties.get(3 * newJob + 0)).subList(10, 18).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		List<Double> attIncrements = Arrays.asList(Player.attributeIncreaseOnLevelUp.get(3 * newJob + 0)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		List<Double> incChances = Arrays.asList(Player.attributeIncreaseOnLevelUp.get(3 * newJob + 0)).subList(10, 18).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
 		AttributeIncrease attInc = new AttributeIncrease(attIncrements, incChances) ;
 		player.setAttInc(attInc) ;
 

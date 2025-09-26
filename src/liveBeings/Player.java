@@ -1,6 +1,5 @@
 package liveBeings ;
 
-import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
@@ -106,11 +105,11 @@ public class Player extends LiveBeing
 	private int spellPoints ;
 	private AttributeIncrease attInc ;
 	private List<Double> collectLevel ;	// 0: herb, 1: wood, 2: metal
-	private Equip[] equips ;		// 0: weapon, 1: shield, 2: armor, 3: emblem
+	private Equip[] equips ;			// 0: weapon, 1: shield, 2: armor, 3: emblem
 	private Arrow equippedArrow ;
-	private double goldMultiplier ;	// multiplies the amount of gold the player wins
+	private double goldMultiplier ;
 	private double digBonus ;
-	protected Elements superElem ;
+	private Elements superElem ;
 	private Map<QuestSkills, Boolean> questSkills ;
 	private Set<String> keysPressed ;
 	private boolean isRiding ;
@@ -125,27 +124,23 @@ public class Player extends LiveBeing
     
 	public static final int maxLevel = 99 ;
 	public static final double stepDuration = 0.25 ;
-    public static final Image CollectingMessage = Game.loadImage(Path.COLLECTABLES_IMG + "CollectingMessage.gif") ; 
-    public static final Image DragonAuraImage = Game.loadImage(Path.PLAYER_IMG + "dragonAura.gif") ;
-    public static final Image RidingImage = Game.loadImage(Path.PLAYER_IMG + "Tiger.png") ;
-	public static final Image CoinIcon = Game.loadImage(Path.PLAYER_IMG + "CoinIcon.png") ;
-	public static final Image MagicBlissGif = Game.loadImage(Path.PLAYER_IMG + "MagicBliss.gif") ;
-    public static final SpriteAnimation[] collectingAnimations ;
-    // public static final Gif TentGif = new Gif("Tent", Game.loadImage(Path.PLAYER_IMG + "Tent.png"), 5, false, false) ;
-	// public static final Gif DiggingGif = new Gif("Digging", Game.loadImage(Path.PLAYER_IMG + "Digging.gif"), 2, false, false) ;
-    // public static final Gif FishingGif = new Gif("Fishing", Game.loadImage(Path.PLAYER_IMG + "Fishing.gif"), 2, false, false) ;
+	private static final double fishingChance = 0.1 ;
+    private static final Image tigerImg = Game.loadImage(Path.PLAYER_IMG + "Tiger.png") ;
+	private static final Image coinImg = Game.loadImage(Path.PLAYER_IMG + "CoinIcon.png") ;
+	// private static final SpriteAnimation magicBlissAni = new SpriteAnimation(Path.PLAYER_IMG + "MagicBlissSprite.png", new Point(), Align.center, 5, 0.15) ;
+    private static final SpriteAnimation[] collectingAnimations ;
 
-	public static final SpriteAnimation TentGif = new SpriteAnimation(Path.PLAYER_IMG + "Tent.png", new Point(), Align.bottomCenter, false, 1, 5) ;
-	public static final SpriteAnimation DiggingGif = new SpriteAnimation(Path.PLAYER_IMG + "Digging.gif", new Point(), Align.center, false, 7, 2/7.0) ;
-	public static final SpriteAnimation FishingGif = new SpriteAnimation(Path.PLAYER_IMG + "Fishing.gif", new Point(), Align.center, false, 11, 2/11.0) ;
+	private static final SpriteAnimation tentAni = new SpriteAnimation(Path.PLAYER_IMG + "Tent.png", new Point(), Align.bottomCenter, false, 1, 5) ;
+	private static final SpriteAnimation diggingAni = new SpriteAnimation(Path.PLAYER_IMG + "DiggingSprite.png", new Point(), Align.center, false, 7, 2/7.0) ;
+	private static final SpriteAnimation fishingAni = new SpriteAnimation(Path.PLAYER_IMG + "FishingSprite.png", new Point(), Align.center, false, 11, 2/11.0) ;
     
-	public static final List<String[]> InitialAtts = Util.readcsvFile(Path.CSV + "PlayerInitialStats.csv") ;
-	public static final List<String[]> EvolutionProperties = Util.readcsvFile(Path.CSV + "PlayerEvolution.csv") ;	
-	public static final int[] NumberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
-	private static final int[] CumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
-    public static final Color[] ClassColors = new Color[] {Game.palette[21], Game.palette[5], Game.palette[2], Game.palette[3], Game.palette[4]} ;
+	public static final List<String[]> initialAttributes = Util.readcsvFile(Path.CSV + "PlayerInitialStats.csv") ;
+	public static final List<String[]> attributeIncreaseOnLevelUp = Util.readcsvFile(Path.CSV + "PlayerEvolution.csv") ;	
+	public static final int[] numberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
+	private static final int[] cumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
+    // private static final Color[] jobColors = new Color[] {Game.palette[21], Game.palette[5], Game.palette[2], Game.palette[3], Game.palette[4]} ;
 
-    public static final String[] HotKeys = new String[] {"F", "G", "V"} ;
+    private static final String[] hotKeys = new String[] {"F", "G", "V"} ;
 
 	private static final MovingAnimations movingAnimations ;
 	
@@ -169,7 +164,7 @@ public class Player extends LiveBeing
 	
 	public Player(String name, String sex, int job)
 	{
-		super(InitializePersonalAttributes(job), new BattleAttributes(InitialAtts.get(job), 1, InitialAtts.get(job)[41], InitialAtts.get(job)[42]), movingAnimations, new PlayerAttributesWindow()) ;
+		super(InitializePersonalAttributes(job), new BattleAttributes(initialAttributes.get(job), 1, initialAttributes.get(job)[41], initialAttributes.get(job)[42]), movingAnimations, new PlayerAttributesWindow()) ;
 
 		((PlayerAttributesWindow) attWindow).initializeAttIncButtons(this) ;
 		
@@ -187,13 +182,13 @@ public class Player extends LiveBeing
 		dir = Directions.up;
 		state = LiveBeingStates.idle;
 	    size = movingAni.spriteIdle.getFrameSize() ;
-		range = Integer.parseInt(InitialAtts.get(job)[4]) ;
-		step = Integer.parseInt(InitialAtts.get(job)[33]);
+		range = Integer.parseInt(initialAttributes.get(job)[4]) ;
+		step = Integer.parseInt(initialAttributes.get(job)[33]);
 	    atkElem = Elements.neutral ;
-		satiationCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[38])) ;
-		thirstCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[39])) ;
-		mpCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[40]) / 1.0) ;
-		battleActionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(job)[41]) / 1.0) ;
+		satiationCounter = new GameTimer(Double.parseDouble(initialAttributes.get(job)[38])) ;
+		thirstCounter = new GameTimer(Double.parseDouble(initialAttributes.get(job)[39])) ;
+		mpCounter = new GameTimer(Double.parseDouble(initialAttributes.get(job)[40]) / 1.0) ;
+		battleActionCounter = new GameTimer(Double.parseDouble(initialAttributes.get(job)[41]) / 1.0) ;
 		movingTimer = new GameTimer(stepDuration) ;
 		combo = new ArrayList<>() ;
 		hitbox = new HitboxRectangle(getPos(), size, 0.8) ;
@@ -223,7 +218,7 @@ public class Player extends LiveBeing
 		spellPoints = 0 ;
     	
 		collectLevel = new ArrayList<>(List.of(0.0, 0.0, 0.0));
-		goldMultiplier = Double.parseDouble(InitialAtts.get(job)[32]) ;
+		goldMultiplier = Double.parseDouble(initialAttributes.get(job)[32]) ;
 		digBonus = 0 ;
 		questSkills = new HashMap<QuestSkills, Boolean>() ;
 		for (QuestSkills questSkill : QuestSkills.values())
@@ -249,11 +244,11 @@ public class Player extends LiveBeing
 
 	public static PersonalAttributes InitializePersonalAttributes(int job)
 	{
-	    BasicAttribute life = new BasicAttribute(Integer.parseInt(InitialAtts.get(job)[2]), Integer.parseInt(InitialAtts.get(job)[2]), 1) ;
-	    BasicAttribute mp = new BasicAttribute(Integer.parseInt(InitialAtts.get(job)[3]), Integer.parseInt(InitialAtts.get(job)[3]), 1) ;
-		BasicAttribute exp = new BasicAttribute(0, 5, Double.parseDouble(InitialAtts.get(job)[34])) ;
-		BasicAttribute satiation = new BasicAttribute(100, 100, Integer.parseInt(InitialAtts.get(job)[35])) ;
-		BasicAttribute thirst = new BasicAttribute(100, 100, Integer.parseInt(InitialAtts.get(job)[36])) ;
+	    BasicAttribute life = new BasicAttribute(Integer.parseInt(initialAttributes.get(job)[2]), Integer.parseInt(initialAttributes.get(job)[2]), 1) ;
+	    BasicAttribute mp = new BasicAttribute(Integer.parseInt(initialAttributes.get(job)[3]), Integer.parseInt(initialAttributes.get(job)[3]), 1) ;
+		BasicAttribute exp = new BasicAttribute(0, 5, Double.parseDouble(initialAttributes.get(job)[34])) ;
+		BasicAttribute satiation = new BasicAttribute(100, 100, Integer.parseInt(initialAttributes.get(job)[35])) ;
+		BasicAttribute thirst = new BasicAttribute(100, 100, Integer.parseInt(initialAttributes.get(job)[36])) ;
 		return new PersonalAttributes(life, mp, exp, satiation,	thirst) ;
 	}
 		
@@ -261,11 +256,11 @@ public class Player extends LiveBeing
 	public static List<Spell> jobSpells(int job)
 	{
 		List<Spell> spells = new ArrayList<>() ;	
-    	int numberSpells = NumberOfSpellsPerJob[job] ;
+    	int numberSpells = numberOfSpellsPerJob[job] ;
 
     	for (int i = 0 ; i <= numberSpells - 1 ; i += 1)
 		{
-    		int spellID = CumNumberOfSpellsPerJob[job] + i ;
+    		int spellID = cumNumberOfSpellsPerJob[job] + i ;
     		
 			spells.add(Spell.all.get(spellID)) ;
 		}
@@ -277,8 +272,8 @@ public class Player extends LiveBeing
 	
 	private static AttributeIncrease calcAttributeIncrease(int job, int proJob)
 	{
-		List<Double> attIncrements = Arrays.asList(EvolutionProperties.get(3 * job + proJob)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
-		List<Double> incChances = Arrays.asList(EvolutionProperties.get(3 * job + proJob)).subList(10, 18).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		List<Double> attIncrements = Arrays.asList(attributeIncreaseOnLevelUp.get(3 * job + proJob)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		List<Double> incChances = Arrays.asList(attributeIncreaseOnLevelUp.get(3 * job + proJob)).subList(10, 18).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
 		AttributeIncrease attInc = new AttributeIncrease(attIncrements, incChances) ;
 
 		return attInc ;
@@ -288,9 +283,7 @@ public class Player extends LiveBeing
 	{
 		attInc = calcAttributeIncrease(job, proJob) ;
 	}
-	
-	public String getSex() {return sex ;}
-	public Directions getDir() {return dir ;}
+
 	public List<Quest> getQuests() {return quests ;}
 	public BagWindow getBag() {return bag ;}
 	public Equip[] getEquips() {return equips ;}
@@ -299,19 +292,6 @@ public class Player extends LiveBeing
 	public AttributeIncrease getAttInc() { return attInc ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
 	public BasicAttribute getMp() {return PA.getMp() ;}
-	public BasicBattleAttribute getPhyAtk() {return BA.getPhyAtk() ;}
-	public BasicBattleAttribute getMagAtk() {return BA.getMagAtk() ;}
-	public BasicBattleAttribute getPhyDef() {return BA.getPhyDef() ;}
-	public BasicBattleAttribute getMagDef() {return BA.getMagDef() ;}
-	public BasicBattleAttribute getDex() {return BA.getDex() ;}
-	public BasicBattleAttribute getAgi() {return BA.getAgi() ;}
-	public BasicBattleAttribute getCritAtk() {return BA.getCritAtk() ;}
-	public BasicBattleAttribute getCritDef() {return BA.getCritDef() ;}
-	public BattleSpecialAttribute getStun() {return BA.getStun() ;}
-	public BattleSpecialAttribute getBlock() {return BA.getBlock() ;}
-	public BattleSpecialAttributeWithDamage getBlood() {return BA.getBlood() ;}
-	public BattleSpecialAttributeWithDamage getPoison() {return BA.getPoison() ;}
-	public BattleSpecialAttribute getSilence() {return BA.getSilence() ;}
 	public NPC getNPCInContact() { return npcInContact ;}
 	public List<Double> getCollect() {return collectLevel ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
@@ -324,30 +304,22 @@ public class Player extends LiveBeing
 	public SettingsWindow getSettings() {return settings ;}
 	public QuestWindow getQuestWindow() {return questWindow ;}
 	public MapWindow getMapWindow() {return mapWindow ;}
-	public BookWindow getFabWindow() {return fabWindow ;}
-	public List<Recipe> getKnownRecipes() { return knownRecipes ;}
 	public SpellsTreeWindow getSpellsTreeWindow() {return spellsTree ;}
-	public HintsWindow getHintsindow() {return hintsWindow ;}
 	public Creature getOpponent() { return opponent ;}
 	public List<Item> getHotItems() { return hotItems ;}
 	public Statistics getStatistics() { return stats ;}
-	public void setSex(String sex) { this.sex = sex ;}
 	public void setAttInc(AttributeIncrease newAttInc) { attInc = newAttInc ;}
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
-	public void setHotItem(Item item, int slot) { hotItems.set(slot, item) ;}	
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
 	public double getDigBonus() { return digBonus ;}
 	public void setFocusWindow(GameWindow W) { focusWindow = W ;}
 	public void setSpells(List<Spell> spells) { this.spells = spells ;}
 
+	public static String[] getHotKeys() { return hotKeys ;}
+	public static Image getCoinImg() { return coinImg ;}
+
 	public Point center() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
 	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - size.height)) ;}
-	
-	public static Spell[] getKnightSpells() { return Arrays.copyOf(Game.getAllSpells(), 14) ;}
-	public static Spell[] getMageSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 34, 49) ;}
-	public static Spell[] getArcherSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 70, 84) ;}
-	public static Spell[] getAnimalSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 105, 118) ;}
-	public static Spell[] getThiefSpells() { return Arrays.copyOfRange(Game.getAllSpells(), 139, 152) ;}
 
 	public static boolean setIsFormed(Equip[] EquipID)
 	{
@@ -367,7 +339,7 @@ public class Player extends LiveBeing
 	}
 	public void addProSpells()
 	{
-		int firstSpellID = spells.size() + CumNumberOfSpellsPerJob[job] ;
+		int firstSpellID = spells.size() + cumNumberOfSpellsPerJob[job] ;
 		firstSpellID += proJob == 1 ? 0 : 10 ;
 		spells.addAll(Spell.all.subList(firstSpellID - 1, firstSpellID + 10)) ;
 	}
@@ -710,32 +682,36 @@ public class Player extends LiveBeing
 	
 	public void fish()
 	{
-
-		if (FishingGif.isActive()) { return ;}
-
-		Point fishingPos = switch (dir)
+		if (!fishingAni.isActive() && !fishingAni.hasFinished())
 		{
-			case left -> Util.translate(getPos(), -Player.FishingGif.getFrameSize().width, 0) ;
-			case right -> Util.translate(getPos(), Player.FishingGif.getFrameSize().width, 0) ;
-			case up -> Util.translate(getPos(), 0, -Player.FishingGif.getFrameSize().height) ;
-			case down -> Util.translate(getPos(), 0, Player.FishingGif.getFrameSize().height) ;
-		};
-		FishingGif.setPos(fishingPos);
-		FishingGif.activate() ;
+			Point fishingPos = switch (dir)
+			{
+				case left -> Util.translate(getPos(), -Player.fishingAni.getFrameSize().width, 0) ;
+				case right -> Util.translate(getPos(), Player.fishingAni.getFrameSize().width, 0) ;
+				case up -> Util.translate(getPos(), 0, -Player.fishingAni.getFrameSize().height) ;
+				case down -> Util.translate(getPos(), 0, Player.fishingAni.getFrameSize().height) ;
+			};
+			fishingAni.setPos(fishingPos);
+			fishingAni.activate() ;
+		}
 		
-		if (!Player.FishingGif.hasFinished()) { return ;}
-		
+		if (!Player.fishingAni.hasFinished()) { return ;}
+
 		Item worm = GeneralItem.getAll()[25] ;
-		double getFishChance = 0.1 ;
+		double successChance = fishingChance ;
 		if (bag.contains(worm))
 		{
-			getFishChance += 0.1 ;
+			successChance += 0.1 ;
 			bag.remove(worm, 1) ;
 		}
 		
     	setState(LiveBeingStates.idle) ;
     	
-		if (!Util.chance(getFishChance)) { return ;}
+		if (!Util.chance(successChance))
+		{
+			Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.3, 0.2), "Não pegou peixe", Game.palette[0]}) ;
+			return ;
+		}
 		
 		int fishType = Util.randomInt(6, 8) ;
 		Item fish = Food.getAll()[fishType] ;
@@ -767,12 +743,12 @@ public class Player extends LiveBeing
 	private void dig()
 	{
 
-		if (DiggingGif.isActive()) { return ;}
+		if (diggingAni.isActive()) { return ;}
 		
-		DiggingGif.setPos(getPos()) ;
-		DiggingGif.activate() ;
+		diggingAni.setPos(getPos()) ;
+		diggingAni.activate() ;
 		
-		if (!DiggingGif.hasFinished()) { return ;}
+		if (!diggingAni.hasFinished()) { return ;}
 				
 		setState(LiveBeingStates.idle) ;
 		
@@ -812,12 +788,12 @@ public class Player extends LiveBeing
 	
 	public void tent()
 	{
-		if (TentGif.isActive()) { return ;}
+		if (tentAni.isActive()) { return ;}
 		
-		TentGif.setPos(getPos()) ;
-		TentGif.activate() ;
+		tentAni.setPos(getPos()) ;
+		tentAni.activate() ;
 		
-		if (!TentGif.hasFinished()) { return ;}
+		if (!tentAni.hasFinished()) { return ;}
 		
 		PA.getLife().setToMaximum() ;
 		PA.getMp().setToMaximum() ;
@@ -1007,9 +983,9 @@ public class Player extends LiveBeing
 		
 		
 		// using hotItems
-		for (int i = 0; i <= HotKeys.length - 1 ; i += 1)
+		for (int i = 0; i <= hotKeys.length - 1 ; i += 1)
 		{
-			if (!currentAction.equals(HotKeys[i]) | hotItems.get(i) == null) { continue ;}
+			if (!currentAction.equals(hotKeys[i]) | hotItems.get(i) == null) { continue ;}
 			
 			useItem(hotItems.get(i)) ;
 		}
@@ -1825,8 +1801,8 @@ public class Player extends LiveBeing
 		displayAttributes(settings.getAttDisplay()) ;
 		if (isRiding)
 		{
-			Point ridePos = Util.translate(pos, -RidingImage.getWidth(null) / 2, RidingImage.getHeight(null) / 2) ;
-			GamePanel.DP.drawImage(RidingImage, ridePos, Draw.stdAngle , scale, Align.bottomLeft) ;
+			Point ridePos = Util.translate(pos, -tigerImg.getWidth(null) / 2, tigerImg.getHeight(null) / 2) ;
+			GamePanel.DP.drawImage(tigerImg, ridePos, Draw.stdAngle , scale, Align.bottomLeft) ;
 		}
 		if (isDrunk())
 		{

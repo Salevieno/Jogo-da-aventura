@@ -82,7 +82,7 @@ public abstract class JobBuild
 		player.updateAttributeIncrease() ;
 		player.setProJob(originalProJob) ;
 		player.setPA(Player.InitializePersonalAttributes(player.getJob())) ;
-		player.setBA(new BattleAttributes(Player.InitialAtts.get(player.getJob()), 1, Player.InitialAtts.get(player.getJob())[41], Player.InitialAtts.get(player.getJob())[42])) ; // Player.InitializeBattleAttributes(player.getJob())
+		player.setBA(new BattleAttributes(Player.initialAttributes.get(player.getJob()), 1, Player.initialAttributes.get(player.getJob())[41], Player.initialAttributes.get(player.getJob())[42])) ; // Player.InitializeBattleAttributes(player.getJob())
 	}
 	// private static void resetToLevel50(Player player, boolean addChosenPoints)
 	// {

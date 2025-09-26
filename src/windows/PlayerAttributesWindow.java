@@ -224,7 +224,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		//	Gold
 		Point coinPos = Util.translate(goldPos, -13, 0) ;
 		String goldValue = String.valueOf(Util.round(player.getBag().getGold(), 1)) ;
-		GamePanel.DP.drawImage(Player.CoinIcon, coinPos, angle, Scale.unit, Align.center) ;
+		GamePanel.DP.drawImage(Player.getCoinImg(), coinPos, angle, Scale.unit, Align.center) ;
 		GamePanel.DP.drawText(goldPos, Align.centerLeft, angle, goldValue, font, Game.palette[13]) ;	
 	}
 	

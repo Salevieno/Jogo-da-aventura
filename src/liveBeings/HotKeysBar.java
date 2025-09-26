@@ -39,7 +39,7 @@ public abstract class HotKeysBar
 	public static int slotHovered(Point mousePos)
 	{
 		Dimension slotSize = Util.getSize(SideBar.slotImage) ;
-		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
+		for (int i = 0 ; i <= Player.getHotKeys().length - 1 ; i += 1)
 		{
 			Point slotCenter = Util.translate(topLeft(), 10, 10 + 20 * i) ;
 			if (Util.isInside(mousePos, Util.translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize))
@@ -57,13 +57,13 @@ public abstract class HotKeysBar
 
 		GamePanel.DP.drawImage(image, barPos, Align.bottomLeft) ;
 		
-		for (int i = 0 ; i <= Player.HotKeys.length - 1 ; i += 1)
+		for (int i = 0 ; i <= Player.getHotKeys().length - 1 ; i += 1)
 		{
 			Point slotCenter = Util.translate(topLeft(), 13, 10 + 20 * i) ;
 			Point keyTextPos = Util.translate(slotCenter, slotSize.width / 2 + 6, slotSize.height / 2) ;
 			
 			GamePanel.DP.drawImage(BagWindow.slotImage, slotCenter, Align.center) ;
-			GamePanel.DP.drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.HotKeys[i], font, textColor) ;
+			GamePanel.DP.drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.getHotKeys()[i], font, textColor) ;
 			
 			if (hotItems.get(i) == null) { continue ;}
 

@@ -167,9 +167,9 @@ public class BankWindow extends GameWindow
 		
 		drawInvestmentTimer(Util.translate(investmentPos, 110, 10), investmentCounter.rate()) ;
 
-		GamePanel.DP.drawImage(Player.CoinIcon, Util.translate(balancePos, 0, 20), Align.centerLeft) ;
+		GamePanel.DP.drawImage(Player.getCoinImg(), Util.translate(balancePos, 0, 20), Align.centerLeft) ;
 		GamePanel.DP.drawText(Util.translate(balancePos, 15, 20), Align.centerLeft, angle, String.valueOf(balance), stdFont, textColor) ;
-		GamePanel.DP.drawImage(Player.CoinIcon, Util.translate(investmentPos, 0, 20), Align.centerLeft) ;
+		GamePanel.DP.drawImage(Player.getCoinImg(), Util.translate(investmentPos, 0, 20), Align.centerLeft) ;
 		GamePanel.DP.drawText(Util.translate(investmentPos, 15, 20), Align.centerLeft, angle, String.valueOf(investedAmount), stdFont, textColor) ;
 		
 		if (!isReadingInput()) { return ;}
@@ -179,7 +179,7 @@ public class BankWindow extends GameWindow
 		
 		Point inputPos = Util.translate(windowPos, 0, border + size.height + 35) ;
 		liveInput.displayTypingField(inputPos, true) ;
-		GamePanel.DP.drawImage(Player.CoinIcon, Util.translate(inputPos, 5, 0), Align.centerLeft) ;
+		GamePanel.DP.drawImage(Player.getCoinImg(), Util.translate(inputPos, 5, 0), Align.centerLeft) ;
 	}
 
 }

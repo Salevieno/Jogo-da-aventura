@@ -45,7 +45,6 @@ public abstract class Opening
     private static final Font smallFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 
 	private static final String path = Path.IMAGES  + "\\Opening\\";
-	// private static final Gif openingGif = new Gif("Opening", Util.loadImage(path + "Opening.gif"), 0.7, false, true) ;
 	private static final SpriteAnimation openingAni = new SpriteAnimation(Path.IMAGES + "Opening.png", new Point(), Align.topLeft, 12, 0.05) ;
 	
 	private static final Image backgroundImage = Util.loadImage(path + "Opening.png") ;
@@ -115,7 +114,7 @@ public abstract class Opening
 		for (int i = 0 ; i <= btNames.length - 1; i += 1)
 		{
 			Image btImage = Util.loadImage(path + btNames[i] + ".png") ;
-			Image btImageSelected = Util.loadImage(path + btNames[i] + " Selected.gif") ;
+			Image btImageSelected = Util.loadImage(path + btNames[i] + " Selected.png") ;
 			if (btImage == null) { btImage = Game.loadImage("ButtonGeneral.png") ;}
 			if (btImageSelected == null) { btImageSelected = Util.loadImage(path + btNames[i] + " Selected.png") ;}
 			if (btImageSelected == null) { btImageSelected = Game.loadImage("ButtonGeneralSelected.png") ;}

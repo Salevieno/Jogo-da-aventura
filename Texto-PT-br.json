@@ -70,7 +70,7 @@
     "Próxima",
     "('H' para fechar)",
 	"Não sabe o que fazer? Fale com os habitantes da cidade! Aproxime-se deles e aperte 'E'. Você também pode ler mais dicas apertando 'D'.",
-	"Atenção! Você pode morrar fácil se ficar com fome ou com sede! Para evitar isto, sempre tenha comida na sua mochila e fique próximo a uma fonte de água. Você também pode carregar garrafas d'água para beber em qualquer lugar. E, sim, fome e sede podem ocorrer durante uma batalha."
+	"Atenção! Você pode morrar fácil se ficar com fome ou com sede! Para evitar isto, sempre tenha comida na sua mochila e fique próximo a uma fonte de água. Você também pode carregar garrafas d'água para beber em qualquer lugar. E, sim, fome e sede podem ocorrer durante uma batalha.",
 	"Você pode obter comida fora da cidade, coletando frutinhas ou matando criaturas. Para beber água, toque em um corpo d'água.",
 	"Criaturas são encontradas fora da cidade. Matá-las te dará itens, ouro e experiência. Juntando experiência vc passa de nível.",
 	"Estar nos mapas certos é fundamental para não encontrar criaturas fortes demais. Comece sempre pelo mapa mais próximo à sua cidade.",
@@ -122,14 +122,14 @@
     "Seleção para a direita:",
     "Mochila:",
     "Tela do personagem:",
-    "Livro de fabricação:",
+    "Ação:",
     "Mapa:",
     "Tela do pet:",
-    "Menu de opções:",
     "Menu de quests:",
     "Menu de dicas:",
     "Montar:",
     "Tenda:",
+    "Escavação:",
     "Bestiário:"
   ],
 

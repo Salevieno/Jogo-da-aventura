@@ -94,6 +94,7 @@ public class SpriteAnimation
             else
             {
                 deactivate();
+                timer.reset();
                 currentFrame = 0;
             }
         }
@@ -123,4 +124,14 @@ public class SpriteAnimation
     {
         return frameDuration * frameCount;
     }
+
+    @Override
+    public String toString()
+    {
+        return "SpriteAnimation [currentFrame=" + currentFrame + " / " + frameCount + ", frameDuration="
+                + frameDuration + ", timer=" + timer + ", pos=" + pos + ", align=" + align + ", loops=" + loops
+                + ", active=" + active + "]";
+    }
+
+
 }

@@ -206,7 +206,7 @@ public class SpellsTreeWindow extends GameWindow
 	
 	public List<Spell> basicSpells()
 	{
-		return spells.subList(0, Player.NumberOfSpellsPerJob[playerJob]) ;
+		return spells.subList(0, Player.numberOfSpellsPerJob[playerJob]) ;
 	}
 	
 	public List<Spell> proSpells()

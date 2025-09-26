@@ -16,15 +16,15 @@ public abstract class LoadingGame
 
     private static int loadingStep = 0 ;
     private static final GameButton startButton ;
-	private static final String path = Path.IMAGES  + "\\Opening\\";
-	private static final Image LoadingGif = Util.loadImage(path + "Loading.gif") ;
+	private static final String path = "Opening/";
+	private static final SpriteAnimation loadingAni = new SpriteAnimation(path + "LoadingSprite.png", new Point(), Align.center, 3, 0.2) ;
 	private static final SpriteAnimation petIdle = new SpriteAnimation(Path.PET_IMG + "Pet0Idle.png", Game.getScreen().getCenter(), Align.center, 4, 0.13) ;
 
     static
     {
 		Point startButtonPos = Util.translate(Game.getScreen().getCenter(), 0, 80) ;
-    	Image startImage = Util.loadImage(path + "Start.png") ;
-    	Image startImageSelected = Util.loadImage(path + "Start Selected.gif") ;
+    	Image startImage = Util.loadImage(Path.IMAGES + path + "Start.png") ;
+    	Image startImageSelected = Util.loadImage(Path.IMAGES + path + "StartSelected.png") ;
 		ButtonFunction startAction = () -> { loadingStep = 12 ;} ;
     	startButton = new GameButton(startButtonPos, Align.center, "start game", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
@@ -57,6 +57,7 @@ public abstract class LoadingGame
 
 		if (startGameButtonClicked())
 		{
+			loadingAni.deactivate() ;
 			petIdle.deactivate() ;
 			startButton.deactivate() ;			
 			player.startCounters() ;
@@ -83,7 +84,7 @@ public abstract class LoadingGame
 //			Point atkInfoTopLeft = new Point(380, 60) ;
 //			GamePanel.DP.drawText(Util.translate(atkInfoTopLeft, 120, 0), Align.center, 0, "Ações de luta", font, textColor) ;
 //			
-//			Image[] atkInfoImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Player.MagicBlissGif} ;
+//			Image[] atkInfoImages = new Image[] {Equip.SwordImage, Equip.ShieldImage, Player.MagicBlissAni} ;
 //			String[] atkInfoText = new String[] {"Attack: Y", "Defense: U", "Spells: 0, 1...F11, F12"} ;
 //			for (int i = 0 ; i <= atkInfoImages.length - 1; i += 1)
 //			{
@@ -104,9 +105,12 @@ public abstract class LoadingGame
 			Point loadingTextCenter = Util.translate(Game.getScreen().getCenter(), 0, 80) ;
 			Point loadingBarCenterLeft = Util.translate(Game.getScreen().getCenter(), -loadingBarSize.width / 2, 80) ;
 			Dimension loadedBarSize = new Dimension(loadingStep * loadingBarSize.width / 11, loadingBarSize.height) ;
-			GamePanel.DP.drawImage(LoadingGif, loadingTextCenter, Align.center) ;
+
 			GamePanel.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, Game.palette[0], true);
 			GamePanel.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Game.palette[18], Game.palette[0], false);
+			loadingAni.setPos(loadingTextCenter) ;
+			loadingAni.activateIfInactive() ;
+			loadingAni.display(GamePanel.DP);
 		}
 
 		if (startButton.isActive())

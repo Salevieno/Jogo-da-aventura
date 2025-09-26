@@ -99,7 +99,7 @@ public class GeneralItem extends Item
 			case 21:
 				if (!user.isPlayerAlly()) { return ;}
 				
-				user.getHpCounter().restart() ;
+				user.getHpCounter().restart() ; // TODO testar
 				
 				return ;
 				

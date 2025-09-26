@@ -147,24 +147,14 @@ public abstract class LiveBeing implements Drawable
 	public int getLevel() {return level ;}
 	public int getJob() {return job ;}
 	public int getProJob() {return proJob ;}
-	public Continents getContinent() {return map.getContinent() ;}
 	public GameMap getMap() {return map ;}
-	public Directions getDir() {return dir ;}
-	public LiveBeingStates getState() {return state ;}
 	public Point getPos() { return new Point((int) pos.x, (int)pos.y) ;}
 	public Point2D.Double getPosAsDouble() {return pos ;}
-	public Dimension getSize() {return size ;}
 	public Elements getAtkElem() { return atkElem ;}
-	public double getRange() {return range ;}
-	public int getStep() {return step ;}
 	public String getCurrentAction() {return currentAction ;}
 	public AtkTypes getCurrentAtkType() { return currentAtkType ;}
 	public GameTimer getHpCounter() {return hpCounter ;}
-	public GameTimer getMpCounter() {return mpCounter ;}
-	public GameTimer getSatiationCounter() {return satiationCounter ;}
-	public GameTimer getThirstCounter() {return thirstCounter ;}
 	public GameTimer getBattleActionCounter() {return battleActionCounter ;}
-	public GameTimer getMovingTimer() {return movingTimer ;}
 	public List<String> getCombo() {return combo ;}
 	public List<Spell> getSpells() {return spells ;}
 	public AttributesWindow getAttWindow() {return attWindow ;}
@@ -176,7 +166,6 @@ public abstract class LiveBeing implements Drawable
 	public void setBattleActionCounter(GameTimer battleActionCounter) { this.battleActionCounter = battleActionCounter ;}
 	public void setSatiationCounter(GameTimer satiationCounter) { this.satiationCounter = satiationCounter ;}
 	public void setThirstCounter(GameTimer thirstCounter) { this.thirstCounter = thirstCounter ;}
-	public void setMovingTimer(GameTimer stepCounter) { this.movingTimer = stepCounter ;}
 
 	public void setName(String newValue) {name = newValue ;}
 	public void setLevel(int newValue) {level = newValue ;}
@@ -195,7 +184,6 @@ public abstract class LiveBeing implements Drawable
 	{
 		setPos(new Point2D.Double(newValue.x, newValue.y)) ;
 	}
-	public void setSize(Dimension newValue) {size = newValue ;}
 	public void setRange(int newValue) {range = newValue ;}
 	public void setStep(int newValue) {step = newValue ;}
 	public void setCombo(List<String> newValue) {combo = newValue ;}

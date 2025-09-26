@@ -3,15 +3,7 @@ package main;
 public abstract class LoadGame
 {
 //	private int selectedSlot, tab ;
-	
-//	public Loading()
-//	{
-////		selectedSlot = 0 ;
-////		tab = 0 ;
-//		LoadingGif = Game.loadImage("\\Opening\\" + "Loading.gif") ;
-//    	
-//	}
-	
+
 	public void Run()
 	{
 		// TODO load saved game
