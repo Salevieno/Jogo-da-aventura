@@ -312,8 +312,7 @@ public abstract class Battle
 	{
 
 		if (atkType == null) { System.out.println("Warn: atkType null at Battle.performAtk") ; return new AtkResults() ;}
-		
-		// TODO usar o switch com retorno aqui estava gerando um bug louco, que passou a acontecer qdo GamePanel foi criada
+
 		AtkResults atkResults = null ;
 		switch (atkType)
 		{
@@ -350,34 +349,7 @@ public abstract class Battle
 			}
 			default: atkResults = new AtkResults() ; break ;
 		} ;
-		
-//		AtkResults atkResults = switch (atkType)
-//		{
-//			case physical -> calcPhysicalAtk(attacker, receiver) ;
-//			case magical ->
-//			{
-//				int spellID = Player.SpellKeys.indexOf(attacker.getCurrentAction()) ;
-//				Spell spell = attacker.getActiveSpells().get(spellID) ;
-//				if (!attacker.canUseSpell(spell)) { System.out.println(attacker.getName() + ": trying to use spell. But no can use, baby!") ;}
-//				if (attacker.canUseSpell(spell))
-//				{
-//					yield attacker.useSpell(spell, receiver);
-//				}
-//				
-//				yield new AtkResults();
-//			}
-//			case physicalMagical ->
-//			{
-//				yield new AtkResults();
-//			}
-//			case defense ->
-//			{
-//	 			attacker.activateDef() ;
-//				yield new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
-//			}
-//			default -> new AtkResults() ;
-//		} ;
-		
+
 		checkSpendArrow(attacker) ;	
 		
 		AtkEffects effect = atkResults.getEffect() ;
@@ -449,7 +421,10 @@ public abstract class Battle
 		attacker.updateCombo() ;
 		attacker.resetBattleActions() ;
 
-		EvolutionSimulation.updateBattleStats(attacker, receiver, atkResults) ;
+		if (Game.getState().equals(GameStates.simulation))
+		{
+			EvolutionSimulation.updateBattleStats(attacker, receiver, atkResults) ;
+		}
 		
 		receiver.playDamageAnimation(atkResults, Game.palette[7]) ;
 		startAtkAnimations(attacker, atkType) ;

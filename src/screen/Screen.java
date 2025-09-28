@@ -19,6 +19,8 @@ public class Screen
 	private Point mapCenter ;	// center of the walkable map
 	private Point2D.Double scale ;
 
+	public static final int borderOffset = 20 ;
+
 	public Screen(Dimension size, int[] borders)
 	{
 		this.size = size ;
@@ -87,6 +89,11 @@ public class Screen
 	{
 		Point botLeft = new Point(borders[0], borders[3]) ;
 		GamePanel.DP.drawRect(botLeft, Align.bottomLeft, new Dimension(borders[2] - borders[0], borders[3] - borders[1]), null, Game.palette[1]) ;
+	}
+
+	public void updateSky(double dt)
+	{
+		sky.update(dt) ;
 	}
 	
 	public void displaySky()

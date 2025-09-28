@@ -199,14 +199,7 @@ public abstract class LiveBeing implements Drawable
 	protected void restartMoving() { movingTimer.restart() ;}
 	
 	public static void updateDamageAnimation(int newDamageStyle) { damageStyle = newDamageStyle ;}
-	public void inflictStatus(Attributes att, double intensity, int duration)
-	{
-		if (Attributes.phyAtk.equals(att))
-		{
-			BA.getPhyAtk().incBonus(2) ;
-		}
-		status.get(att).inflictStatus(intensity, duration);
-	}
+
 	public void resetStatus()
 	{
 		for (Attributes att : Attributes.values())
@@ -221,7 +214,7 @@ public abstract class LiveBeing implements Drawable
 			switch (att)
 			{			
 				case phyAtk:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
+					if (0 < status.get(att).getTimer().getDuration() & status.get(att).getTimer().hasFinished())
 					{
 						BA.getPhyAtk().incBonus(-status.get(att).getIntensity()) ;
 						status.get(att).reset() ;
@@ -229,7 +222,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 			
 				case magAtk:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
+					if (0 < status.get(att).getTimer().getDuration() & status.get(att).getTimer().hasFinished())
 					{
 						BA.getMagAtk().incBonus(-status.get(att).getIntensity()) ;
 						status.get(att).reset() ;
@@ -237,7 +230,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 					
 				case magDef:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
+					if (0 < status.get(att).getTimer().getDuration() & status.get(att).getTimer().hasFinished())
 					{
 						BA.getMagDef().incBonus(-status.get(att).getIntensity()) ;
 						status.get(att).reset() ;
@@ -245,7 +238,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 					
 				case phyDef:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
+					if (0 < status.get(att).getTimer().getDuration() & status.get(att).getTimer().hasFinished())
 					{
 						BA.getPhyDef().incBonus(-status.get(att).getIntensity()) ;
 						status.get(att).reset() ;
@@ -253,7 +246,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 					
 				case dex:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
+					if (0 < status.get(att).getTimer().getDuration() & status.get(att).getTimer().hasFinished())
 					{
 						BA.getDex().incBonus(-status.get(att).getIntensity()) ;
 						status.get(att).reset() ;
@@ -261,7 +254,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 					
 				case agi:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
+					if (0 < status.get(att).getTimer().getDuration() & status.get(att).getTimer().hasFinished())
 					{
 						BA.getAgi().incBonus(-status.get(att).getIntensity()) ;
 						status.get(att).reset() ;
@@ -269,7 +262,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 					
 				case atkSpeed:
-					if (0 < status.get(att).getCounter().getDuration() & status.get(att).getCounter().hasFinished())
+					if (0 < status.get(att).getTimer().getDuration() & status.get(att).getTimer().hasFinished())
 					{
 						BA.getAtkSpeed().incBonus(-status.get(att).getIntensity()) ;
 						battleActionCounter.setDuration(BA.TotalAtkSpeed()) ;
@@ -278,7 +271,7 @@ public abstract class LiveBeing implements Drawable
 					continue ;
 					
 				case stun, block, blood, poison, silence:
-					if (!status.get(att).isActive())
+					if (0 < status.get(att).getTimer().getDuration() & status.get(att).getTimer().hasFinished())
 					{
 						status.get(att).reset() ;
 					}
@@ -310,53 +303,27 @@ public abstract class LiveBeing implements Drawable
 	
 	public Directions randomNewDirection(Directions originalDir)
 	{
-		
-		Directions newDir = randomDir() ;
-		// TODO otimizar
-		while (Directions.areOpposite(originalDir, newDir))
-		{
-			newDir = randomDir() ;
-		}
-		
-		return newDir ;
-		
+		List<Directions> allowedDirections = new ArrayList<>(Arrays.asList(Directions.values())) ;
+		allowedDirections.remove(originalDir) ;
+		return allowedDirections.get(Util.randomInt(0, allowedDirections.size() - 1)) ;	
 	}
 	
 	public static GameMap calcNewMap(Point2D.Double pos, Directions dir, GameMap currentMap)
 	{
-		// TODO eliminar clone
-		Point2D.Double currentPos = (Point2D.Double) pos.clone() ;
-		int newMapID = -1 ;
 		int[] mapConnections = currentMap.getConnections() ;
-		boolean leftSide = currentPos.x <= Game.getScreen().mapSize().width / 2 ;
-		boolean topSide = currentPos.y <= Game.getScreen().getBorders()[1] + Game.getScreen().mapSize().height / 2 ;
-		switch (dir)
+		boolean leftSide = pos.x <= Game.getScreen().mapSize().width / 2 ;
+		boolean topSide = pos.y <= Game.getScreen().getBorders()[1] + Game.getScreen().mapSize().height / 2 ;
+		int newMapID = switch (dir)
 		{
-			case up:
-				
-				newMapID = leftSide ? mapConnections[1] : mapConnections[0] ;				
-				break ;
-			
-			case left:
-				
-				newMapID = topSide ? mapConnections[2] : mapConnections[3] ;				
-				break ;
-			
-			case down:
-				
-				newMapID = leftSide ? mapConnections[4] : mapConnections[5] ;				
-				break ;
-			
-			case right:
-				
-				newMapID = topSide ? mapConnections[7] : mapConnections[6] ;				
-				break ;			
-		}
+			case up -> newMapID = leftSide ? mapConnections[1] : mapConnections[0] ;			
+			case left -> newMapID = topSide ? mapConnections[2] : mapConnections[3] ;
+			case down -> newMapID = leftSide ? mapConnections[4] : mapConnections[5] ;
+			case right -> newMapID = topSide ? mapConnections[7] : mapConnections[6] ;
+		};
 		
 		if (newMapID == -1) { return null ;}
 		
-		return Game.getMaps()[newMapID] ;
-		
+		return Game.getMaps()[newMapID] ;		
 	}
 
 	public void displayState()
@@ -862,13 +829,13 @@ public abstract class LiveBeing implements Drawable
 		{
 			poisonMult += -0.1 * spells.get(13).getLevel() ;
 		}
-		if (bloodStatus.isActive() & bloodStatus.getCounter().crossedTime(0.5))
+		if (bloodStatus.isActive() & bloodStatus.getTimer().crossedTime(0.5))
 		{
 			bloodDamage = (int) (bloodStatus.getIntensity() * bloodMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedBlood(bloodDamage, BA.getBlood().TotalDef()) ;}
 			playDamageAnimation(damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, bloodDamage, null), Game.palette[7]) ;
 		}
-		if (poisonStatus.isActive() & poisonStatus.getCounter().crossedTime(0.5))
+		if (poisonStatus.isActive() & poisonStatus.getTimer().crossedTime(0.5))
 		{
 			poisonDamage = (int) (poisonStatus.getIntensity() * poisonMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedPoison(poisonDamage, BA.getPoison().TotalDef()) ;}

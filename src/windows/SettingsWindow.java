@@ -12,6 +12,7 @@ import graphics2.Draw;
 import liveBeings.LiveBeing;
 import liveBeings.PlayerActions;
 import main.Game;
+import main.GameFrame;
 import main.GamePanel;
 import main.Path;
 import main.TextCategories;
@@ -155,6 +156,10 @@ public class SettingsWindow extends GameWindow
 		}
 		if (item == 5)
 		{
+			GameFrame.getMe().resizeWindow() ;
+		}
+		if (item == 6)
+		{
 			menu = 1 ;
 			item = 0 ;
 			numberItems = PlayerActions.values().length ;
@@ -213,7 +218,7 @@ public class SettingsWindow extends GameWindow
 				continue ;
 			}
 
-			if (i == 5)
+			if (i == 5 || i == 6)
 			{
 				continue ;
 			}
@@ -243,7 +248,6 @@ public class SettingsWindow extends GameWindow
 	
 	public void display(Point mousePos)
 	{
-		double angle = Draw.stdAngle ;
 		Point textPos = Util.translate(windowPos, 25, 42) ;
 		Image menuImage = menu == 0 ? image : imageMenu1 ;
 		String[] text = Game.allText.get(TextCategories.settings) ;
@@ -253,10 +257,10 @@ public class SettingsWindow extends GameWindow
 		
 		GamePanel.DP.drawImage(menuImage, windowPos, Align.topLeft) ;
 		Point titlePos = Util.translate(textPos, image.getWidth(null) / 2 - 15, -6) ;
-		GamePanel.DP.drawText(titlePos, Align.bottomCenter, angle, name, font, Game.palette[0]) ;
+		GamePanel.DP.drawText(titlePos, Align.bottomCenter, Draw.stdAngle, name, font, Game.palette[0]) ;
 		if (menu == 0)
 		{
-			numberItems = 6 ;
+			numberItems = 7 ;
 			displayMenu0(mousePos, text) ;
 			
 			return ;

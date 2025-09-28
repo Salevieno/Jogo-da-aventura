@@ -4,9 +4,11 @@ import java.awt.Color ;
 import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import graphics.Align;
-import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
 import main.Path;
@@ -17,8 +19,8 @@ public class Sky
 {
 	private final Dimension size ;
 	
-	private static SkyComponent[] clouds;
-	private static SkyComponent[] stars ;
+	private static List<SkyComponent> clouds;
+	private static List<SkyComponent> stars ;
 	private static Color color ;
 	private static final Image cloudImage1 ;
 	private static final Image cloudImage2 ;
@@ -47,32 +49,34 @@ public class Sky
 	{
 		size = new Dimension(screenWidth - 60, height) ;
     	
-    	clouds = new SkyComponent[5] ;
-		for (int c = 0 ; c <= clouds.length - 1 ; c += 1)
+    	clouds = new ArrayList<>() ;
+		for (int c = 0 ; c <= 5 - 1 ; c += 1)
 		{
 			Image image = randomCloudImage() ;
-			Point initPos = Util.randomPos(new Point(), new Dimension(size.width, size.height - image.getHeight(null)), new Dimension(1, 1)) ;
-			Point speed = new Point((int) (1 + 2 * Math.random()), 0) ;
-	    	clouds[c] = new SkyComponent(image, initPos, speed) ;
+			Point posAsPoint = Util.randomPos(new Point(), new Dimension(size.width, size.height - image.getHeight(null)), new Dimension(1, 1)) ;
+			Point2D.Double pos = new Point2D.Double(posAsPoint.x, posAsPoint.y) ;
+			Point2D.Double speed = new Point2D.Double((int) (20 + 100 * Math.random()), 0) ;
+	    	clouds.add(new SkyComponent(image, pos, speed)) ;
 		}
 		
-    	stars = new SkyComponent[50] ;
-		for (int s = 0 ; s <= stars.length - 1 ; s += 1)
+    	stars = new ArrayList<>() ;
+		for (int s = 0 ; s <= 50 - 1 ; s += 1)
 		{
-			Point pos = Util.randomPos(new Point(), size, new Dimension(1, 1)) ;
+			Point posAsPoint = Util.randomPos(new Point(), size, new Dimension(1, 1)) ;
+			Point2D.Double pos = new Point2D.Double(posAsPoint.x, posAsPoint.y) ;
 			Image image = randomStarImage() ;
-			stars[s] = new SkyComponent(image, pos, new Point(0, 0)) ;
+			stars.add(new SkyComponent(image, pos, new Point2D.Double(0, 0))) ;
 		}
 	}
 	
 	
-	private Image randomCloudImage()
+	private static Image randomCloudImage()
 	{
 		int cloudNumber = Util.randomInt(1, 3) ;
 		return cloudNumber == 1 ? cloudImage1 : (cloudNumber == 2 ? cloudImage2 : cloudImage3) ;
 	}
 	
-	private Image randomStarImage()
+	private static Image randomStarImage()
 	{
 		int starNumber = Util.randomInt(0, starImages.length - 1) ;
 		for (int i = 0; i <= starImages.length  - 1; i += 1)
@@ -88,38 +92,42 @@ public class Sky
 	
 	private void resetCloudMovement(SkyComponent cloud)
 	{
-		Point originPos = new Point(-cloud.getImage().getWidth(null), cloud.getPos().y) ;
+		Point2D.Double originPos = new Point2D.Double(-cloud.getImage().getWidth(null), cloud.getPos().y) ;
 		cloud.setPos(originPos) ;
-		// TODO
-		cloud.setCounter(0) ;
 	}
 	
-	private boolean passedScreen(int x) { return Game.getScreen().mapSize().width <= x ;}
+	private static boolean passedScreen(double x) { return Game.getScreen().mapSize().width <= x ;}
 	
 	private static boolean isDay() { return (0.25 <= Game.dayTimeRate() & Game.dayTimeRate() <= 0.75) ;}
 	
-	private void displayDaySky()
+	public void update(double dt)
 	{
+		updateSkyColor() ;
+
 		for (SkyComponent cloud : clouds)
 		{
-			cloud.move() ;
+			cloud.move(dt) ;
 			if (passedScreen(cloud.getPos().x))
 			{
 				resetCloudMovement(cloud) ;
 			}
-			double alpha = -16 * Math.pow(Game.dayTimeRate(), 2) + 16 * Game.dayTimeRate() - 3 ;
-			cloud.display(Draw.stdAngle, alpha) ;
+			cloud.setOpacity(-16 * Math.pow(Game.dayTimeRate(), 2) + 16 * Game.dayTimeRate() - 3) ;
 		}
+
+		for (SkyComponent star : stars)
+		{
+			star.setOpacity(-16 * Math.pow(Game.dayTimeRate() - 0.5, 2) + 16 * Math.abs(Game.dayTimeRate() - 0.5) - 3) ;
+		}
+	}
+
+	private void displayDaySky()
+	{
+		clouds.forEach(SkyComponent::display);
 	}
 	
 	private void displayNightSky()
 	{
-		double alpha = -16 * Math.pow(Game.dayTimeRate() - 0.5, 2) + 16 * Math.abs(Game.dayTimeRate() - 0.5) - 3 ;
-		
-		for (SkyComponent star : stars)
-		{
-			star.display(Draw.stdAngle, alpha) ;
-		}
+		stars.forEach(SkyComponent::display);
 	}
 	
 	private void updateSkyColor()
@@ -133,7 +141,6 @@ public class Sky
 	
 	public void display()
 	{
-		updateSkyColor() ;
 		GamePanel.DP.drawRect(new Point(0, height), Align.bottomLeft, size, color, null) ;
 		
 		if (isDay())
@@ -143,8 +150,7 @@ public class Sky
 			return ;
 		}
 		
-		displayNightSky() ;
-		
+		displayNightSky() ;		
 	}
 
 }

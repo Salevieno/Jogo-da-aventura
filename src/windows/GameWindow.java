@@ -43,7 +43,6 @@ public abstract class GameWindow
 
 	protected static final Image buttonWindowUpImage = Game.loadImage(Path.WINDOWS_IMG + "moveUp.png") ;
 	protected static final Image buttonWindowDownImage = Game.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;
-	// TODO habilitar botões com animações
 	protected static final Image selectedButtonWindowUpImage = Game.loadImage(Path.WINDOWS_IMG + "selectedMoveUpSprite.png") ;
 	protected static final Image selectedButtonWindowDownImage = Game.loadImage(Path.WINDOWS_IMG + "selectedMoveDownSprite.png") ;
 	protected static final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 10) ;

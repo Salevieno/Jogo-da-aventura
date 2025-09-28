@@ -72,12 +72,9 @@ public class Game
 	// TODO como reviver o pet quando ele/ela morre? :O
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	// TODO make game run by time
-	// TODO redraw art for new screen size
 	// TODO resize fonts
 	// TODO pause screen
-	// TODO add fullscreen to the settings
 	// TODO settings outside the player
-	// TODO animations gif -> spritesheet
 	private static final String[] konamiCode = new String[] { "Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A" } ;
 	
 	public static Color[] palette ;
@@ -118,7 +115,7 @@ public class Game
 	private static Spell[] allSpells ;
 	private static Quest[] allQuests ;
 
-	private static final PauseWindow settingsWindow ;
+	private static final PauseWindow pauseWindow ;
 	public static final List<String> arrowKeys = List.of(KeyEvent.getKeyText(KeyEvent.VK_UP),
 															KeyEvent.getKeyText(KeyEvent.VK_LEFT),
 															KeyEvent.getKeyText(KeyEvent.VK_DOWN),
@@ -136,7 +133,7 @@ public class Game
 		allText = new HashMap<>() ;
 		dayTimer = new GameTimer(600) ;
 
-		settingsWindow = new PauseWindow() ;
+		pauseWindow = new PauseWindow() ;
 		dt = System.nanoTime() ;
 	}
 
@@ -316,23 +313,23 @@ public class Game
 		player.getPA().getLife().setToMaximum() ;
 		
 //		player.getBA().getStun().incAtkChance(1) ;
-		player.getBA().getStun().incDuration(100) ;
+		player.getBA().getStun().incDuration(1) ;
 		
 //		player.getBA().getBlock().incAtkChance(1) ;
-		player.getBA().getBlock().incDuration(100) ;
+		player.getBA().getBlock().incDuration(1) ;
 		
 //		player.getBA().getBlood().incAtkChance(1) ;
 		player.getBA().getBlood().incAtkBonus(8);
 		player.getBA().getBlood().incDefBonus(1);
-		player.getBA().getBlood().incDuration(100);
+		player.getBA().getBlood().incDuration(1);
 		
 //		player.getBA().getPoison().incAtkChance(1) ;
 		player.getBA().getPoison().incAtkBonus(1);
 		player.getBA().getPoison().incDefBonus(1);
-		player.getBA().getPoison().incDuration(100);
+		player.getBA().getPoison().incDuration(1);
 
 //		player.getBA().getSilence().incAtkChance(1) ;
-		player.getBA().getSilence().incDuration(100) ;
+		player.getBA().getSilence().incDuration(1) ;
 		
 		player.takeDamage(500);
 		player.getBag().addGold(30000) ;
@@ -409,7 +406,7 @@ public class Game
 		switch (step)
 		{
 			case 0:
-				screen.setBorders(new int[] {0 + 20, Sky.height + 20, screen.getSize().width - 60 - 20, screen.getSize().height - 20}) ;
+				screen.setBorders(new int[] {0 + Screen.borderOffset, Sky.height + Screen.borderOffset, screen.getSize().width - 60 - Screen.borderOffset, screen.getSize().height - Screen.borderOffset}) ;
 				screen.setMapCenter() ;
 				Log.loadTime("initial stuff", initialTime) ;
 				return ;
@@ -598,6 +595,7 @@ public class Game
 
 		if (Math.pow(10, 10) <= dt) { return ;}
 
+		screen.updateSky(dt / Math.pow(10, 9)) ;
 		activateCounters() ;
 
 		checkKonamiCode(player.getCombo()) ;
@@ -720,9 +718,9 @@ public class Game
 		
 		SideBar.display(player, pet, GamePanel.getMousePos()) ;
 		
-		if (settingsWindow.isOpen())
+		if (pauseWindow.isOpen())
 		{
-			settingsWindow.display(GamePanel.getMousePos()) ;
+			pauseWindow.display(GamePanel.getMousePos()) ;
 		}
 
 		if (debugMode)
@@ -801,7 +799,7 @@ public class Game
 
 		if (keyCode == KeyEvent.VK_ESCAPE)
 		{
-			settingsWindow.switchOpenClose() ;
+			pauseWindow.switchOpenClose() ;
 		}
 
 		if (arrowKeys.contains(KeyEvent.getKeyText(keyCode)))

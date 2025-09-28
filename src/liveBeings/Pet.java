@@ -335,7 +335,6 @@ public class Pet extends LiveBeing
 		double BlockDef = receiver.getBA().getBlock().TotalDefChance() ;
 		double BasicAtk = 0 ;
 		double BasicDef = 0 ;
-		/// TODO weapon elem, second in the array below, should come from equip.getelem()
 		Elements[] AtkElem = new Elements[] {spell.getElem(), null, null} ;
 		Elements[] DefElem = receiver.defElems() ;
 		
@@ -376,7 +375,7 @@ public class Pet extends LiveBeing
 	}
 	
 	public Elements[] atkElems() { return new Elements[] {atkElem, atkElem} ;}
-	public Elements[] defElems() { return new Elements[] {Elements.neutral, Elements.neutral} ;} // TODO pegar elem do equip
+	public Elements[] defElems() { return new Elements[] {Elements.neutral, Elements.neutral} ;}
 
 	public double[] calcAttributesIncrease()
 	{

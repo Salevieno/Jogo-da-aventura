@@ -63,7 +63,6 @@ public class PetAttributesWindow extends AttributesWindow
 			Point slotCenter = Util.translate(windowPos, 222, 72) ;
 			Dimension slotSize = new Dimension(51, 51) ;
 			GamePanel.DP.drawImage(pet.getEquip().fullSizeImage(), slotCenter, Align.center) ;
-			// TODO pegar elemento do equip
 			Elements eqElem = pet.getAtkElem() ;
 			if (eqElem != null)
 			{

@@ -217,7 +217,7 @@ public class MapWindow extends GameWindow
 		// continent maps = 6 x 8 maps (max)
 		Scale scale = new Scale(0.1, 0.1) ;
 		Point offset = new Point(padding + border, padding + border) ;
-		Dimension mapSize = new Dimension((int) (GameMap.width() * scale.x), (int) (GameMap.height() * scale.y)) ; // TODO replace with Screen.mapsize
+		Dimension mapSize = new Dimension((int) (Game.getScreen().mapSize().width * scale.x), (int) (Game.getScreen().mapSize().height * scale.y)) ;
 		Point spacing = new Point(6, 6) ;
 		GameMap[] maps = null ;
 

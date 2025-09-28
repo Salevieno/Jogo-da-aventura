@@ -20,10 +20,7 @@ import org.json.simple.JSONObject;
 import attributes.AttributeIncrease;
 import attributes.Attributes;
 import attributes.BasicAttribute;
-import attributes.BasicBattleAttribute;
 import attributes.BattleAttributes;
-import attributes.BattleSpecialAttribute;
-import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import battle.AtkEffects;
 import battle.AtkResults;
@@ -65,6 +62,7 @@ import maps.FieldMap;
 import maps.GameMap;
 import maps.GroundType;
 import maps.TreasureChest;
+import screen.Screen;
 import screen.Sky;
 import utilities.Util;
 import windows.BagWindow;
@@ -386,36 +384,25 @@ public class Player extends LiveBeing
 		superElem = hasSuperElement() ? equips[0].getElem() : Elements.neutral ;
 	}
 	public Creature closestCreatureInRange()
-	{			
-		// TODO melhorar performance
+	{
 		if (!map.isField()) { return null ;}
-		
+
 		FieldMap fieldMap = (FieldMap) map ;
 		if (!fieldMap.hasCreatures()) { return null ;}
-		
-		int NumberOfCreaturesInMap = fieldMap.getCreatures().size() ;
-		double[] dist = new double[NumberOfCreaturesInMap] ;
+
+		Creature closestCreature = null ;
 		double minDist = Game.getScreen().getSize().width ;
-		for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
+		for (Creature creature : fieldMap.getCreatures())
 		{
-			Creature creature = fieldMap.getCreatures().get(i) ;
-			if (fieldMap.getCreatures().get(i) != null)
+			double dist = pos.distance(creature.getPos()) ;
+			if (dist <= range && dist < minDist)
 			{
-				dist[i] = (double) pos.distance(creature.getPos()) ;				
-				minDist = Math.min(minDist, dist[i]) ;
-			}	
-		}
-		for (int i = 0 ; i <= NumberOfCreaturesInMap - 1 ; ++i)
-		{
-			Creature closestCreature = fieldMap.getCreatures().get(i) ;
-			if (dist[i] == minDist & fieldMap.getCreatures() != null & dist[i] <= range)
-			{
-				return closestCreature ;
+				minDist = dist ;
+				closestCreature = creature ;
 			}
 		}
-		
-		return null ;
-		
+
+		return closestCreature ;
 	}
 	
 	public void discoverCreature(CreatureType creatureType) { bestiary.addDiscoveredCreature(creatureType) ;}
@@ -503,7 +490,7 @@ public class Player extends LiveBeing
 		
 		if (0 < currentChest.getGoldReward())
 		{
-//			obtainGoldAnimation(currentChest.getGoldReward()) ; TODO arte - chest animation
+//			obtainGoldAnimation(currentChest.getGoldReward()) ; proTODO arte - chest animation
 		}
 		
 		if (!currentChest.getItemRewards().isEmpty())
@@ -560,18 +547,16 @@ public class Player extends LiveBeing
 	
 	private static Point2D.Double calcNewMapPos(Point2D.Double pos, Directions dir, GameMap currentMap, GameMap newMap)
 	{
-		// TODO eliminar o clone
 		int[] screenBorder = Game.getScreen().getBorders() ;
 		Dimension screenSize = Game.getScreen().mapSize() ;
-		Point2D.Double currentPos = (Point2D.Double) pos.clone() ;
-		boolean leftSide = currentPos.x <= Game.getScreen().getSize().width / 2 ;
-		int stepOffset = (int) (68 * Player.stepDuration) ; // TODO isso é uma aproximação. O qto o player anda depende da velocidade dos frames
+		boolean leftSide = pos.x <= Game.getScreen().getSize().width / 2 ;
+		int stepOffset = Screen.borderOffset ;
 
 		switch (dir)
 		{
 			case up:
-				if (!currentMap.meetsTwoMapsUp()) { return new Point2D.Double(currentPos.x, screenBorder[3] - stepOffset) ;}
-				return leftSide ? new Point2D.Double(currentPos.x + screenSize.width / 2 - 1, screenBorder[3] - stepOffset) : new Point2D.Double(currentPos.x - screenSize.width / 2, screenBorder[3] - stepOffset) ;				
+				if (!currentMap.meetsTwoMapsUp()) { return new Point2D.Double(pos.x, screenBorder[3] - stepOffset) ;}
+				return leftSide ? new Point2D.Double(pos.x + screenSize.width / 2 - 1, screenBorder[3] - stepOffset) : new Point2D.Double(pos.x - screenSize.width / 2, screenBorder[3] - stepOffset) ;				
 			
 			case left:
 				int newX = screenBorder[2] - stepOffset ;
@@ -579,16 +564,16 @@ public class Player extends LiveBeing
 				{
 					if (!newMap.meetsTwoMapsRight())
 					{
-						return new Point2D.Double(newX, currentPos.y) ;
+						return new Point2D.Double(newX, pos.y) ;
 					}
 				}
-				int newY = calcNewYGoingLeft(Arrays.asList(Game.getMaps()).indexOf(newMap) == currentMap.getConnections()[2], currentPos.y) ;
+				int newY = calcNewYGoingLeft(Arrays.asList(Game.getMaps()).indexOf(newMap) == currentMap.getConnections()[2], pos.y) ;
 
 				return new Point2D.Double(newX, newY) ;
 			
 			case down:
-				if (!currentMap.meetsTwoMapsDown()) { return new Point2D.Double(currentPos.x, screenBorder[1] + stepOffset) ;}
-				return leftSide ? new Point2D.Double(currentPos.x + screenSize.width / 2 - 1, screenBorder[1] + stepOffset) : new Point2D.Double(currentPos.x - screenSize.width / 2, screenBorder[1] + stepOffset) ;			
+				if (!currentMap.meetsTwoMapsDown()) { return new Point2D.Double(pos.x, screenBorder[1] + stepOffset) ;}
+				return leftSide ? new Point2D.Double(pos.x + screenSize.width / 2 - 1, screenBorder[1] + stepOffset) : new Point2D.Double(pos.x - screenSize.width / 2, screenBorder[1] + stepOffset) ;			
 			
 			case right:
 				int newRX = screenBorder[0] + stepOffset ;
@@ -596,10 +581,10 @@ public class Player extends LiveBeing
 				{
 					if (!newMap.meetsTwoMapsLeft())
 					{
-						return new Point2D.Double(newRX, currentPos.y) ;
+						return new Point2D.Double(newRX, pos.y) ;
 					}
 					
-					int newRY = calcNewYGoingRight(Arrays.asList(Game.getMaps()).indexOf(currentMap) == newMap.getConnections()[2], currentPos.y) ;
+					int newRY = calcNewYGoingRight(Arrays.asList(Game.getMaps()).indexOf(currentMap) == newMap.getConnections()[2], pos.y) ;
 					return new Point2D.Double(newRX, newRY) ;
 				}
 //				return topSide ? new Point(newRX, currentPos.y + screenH / 2 - 1) : new Point(screenBorder[0] + stepOffset, currentPos.y - screenH / 2) ;

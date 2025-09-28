@@ -10,7 +10,6 @@ import battle.AtkResults;
 import items.Item;
 import main.GameTimer;
 
-// TODO? remove animation
 public class Animation 
 {
 	private GameTimer counter ;
@@ -41,7 +40,6 @@ public class Animation
 		ani.getCounter().setDuration(duration) ;
 		ani.vars = vars ;
 		ani.getCounter().start() ;
-//		Log.animationStart(ani) ;
 	}
 	
 	@SuppressWarnings("unchecked")

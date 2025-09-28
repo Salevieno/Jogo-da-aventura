@@ -8,30 +8,6 @@ public class AtkResults
 	private AtkEffects effect ;
 	private int damage ;
 	private double[] status ;
-
-	public AtkResults()
-	{
-		this.atkType = null;
-		this.effect = AtkEffects.none;
-		this.damage = 0;
-		this.status = null ;
-	}
-	
-	public AtkResults(int damage)
-	{
-		this.atkType = null;
-		this.effect = AtkEffects.hit;
-		this.damage = damage;
-		this.status = null ;
-	}
-
-	public AtkResults(AtkTypes atkType)
-	{
-		this.atkType = atkType;
-		this.effect = AtkEffects.none;
-		this.damage = 0;
-		this.status = null ;
-	}
 	
 	public AtkResults(AtkTypes atkType, AtkEffects effect, int damage, double[] status)
 	{
@@ -41,35 +17,24 @@ public class AtkResults
 		this.status = status;
 	}
 
-	public AtkTypes getAtkType()
+	public AtkResults()
 	{
-		return atkType;
-	}
-	
-	public void setAtkType(AtkTypes atkType)
-	{
-		this.atkType = atkType ;
+		this(null, AtkEffects.none, 0, null) ;
 	}
 
-	public AtkEffects getEffect()
+	public AtkResults(AtkTypes atkType)
 	{
-		return effect;
+		this(atkType, AtkEffects.none, 0, null) ;
 	}
 
-	public int getDamage()
-	{
-		return damage;
-	}
-	public double[] getStatus()
-	{
-		return status ;
-	}
+	public AtkTypes getAtkType() { return atkType ;}
+	public AtkEffects getEffect() { return effect ;}
+	public int getDamage() { return damage ;}
+	public double[] getStatus() { return status ;}
 
 	@Override
 	public String toString()
 	{
 		return "AtkResults: type = " + atkType + ", effect = " + effect + ", damage = " + damage + " status = " + Arrays.toString(status) ;
-	}
-	
-	
+	}	
 }

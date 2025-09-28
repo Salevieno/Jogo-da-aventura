@@ -20,7 +20,7 @@ import main.Path;
 public class LiveBeingStatus
 {
 	
-	private GameTimer counter ;
+	private GameTimer timer ;
 	private double intensity ;
 	private final Image image ;
 
@@ -37,25 +37,25 @@ public class LiveBeingStatus
 	
 	public LiveBeingStatus(Attributes att)
 	{
-		counter = new GameTimer(0) ;
+		timer = new GameTimer(0) ;
 		intensity = 0.0 ;
 		this.image = images.get(att) ;
 	}
 
-	public GameTimer getCounter() { return counter ;}
+	public GameTimer getTimer() { return timer ;}
 	public double getIntensity() { return intensity ;}
-	public boolean isActive() { return counter.isActive() ;}
+	public boolean isActive() { return timer.isActive() ;}
 
 	public void inflictStatus(double intensity, double duration)
 	{
 		this.intensity = intensity ;
-		counter.setDuration(duration) ;
-		counter.start() ;
+		timer.setDuration(duration) ;
+		timer.start() ;
 	}
 	
 	public void reset()
 	{
-		counter = new GameTimer(counter.getDuration()) ;
+		timer = new GameTimer(timer.getDuration()) ;
 		intensity = 0.0 ;
 	}
 	
@@ -69,7 +69,7 @@ public class LiveBeingStatus
 	@Override
 	public String toString()
 	{
-		return "LiveBeingStatus [counter=" + counter + ", intensity=" + intensity + ", image=" + image + "]";
+		return "LiveBeingStatus [timer=" + timer + ", intensity=" + intensity + ", image=" + image + "]";
 	}
 
 	public static LiveBeingStatus fromJson(JSONObject jsonData)

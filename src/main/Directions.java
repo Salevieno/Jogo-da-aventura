@@ -43,8 +43,8 @@ public enum Directions
 		}
 	}
 	
-	public static boolean areOpposite(Directions originalDir, Directions dir2)
+	public static boolean areOpposite(Directions dir1, Directions dir2)
 	{
-		return (originalDir.equals(Directions.getOpposite(dir2))) ;
+		return dir1.equals(Directions.getOpposite(dir2)) ;
 	}
 }
