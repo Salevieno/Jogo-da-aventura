@@ -183,6 +183,32 @@ public abstract class LiveBeing implements Drawable
 	{
 		setPos(new Point2D.Double(newValue.x, newValue.y)) ;
 	}
+	public void moveIfWalkable(Point2D.Double dist)
+	{
+		Point2D.Double newPos = new Point2D.Double(pos.x + dist.x, pos.y + dist.y) ;
+		Elements superElem = this instanceof Player ? ((Player) this).getSuperElem() : null ;
+		GameMap map = Game.getPlayer().getMap() ;
+		if (map.groundIsWalkable(new Point((int)newPos.x, (int)newPos.y), superElem))
+		{
+			setPos(newPos) ;
+		}
+		else
+		{
+			newPos = new Point2D.Double(pos.x + dist.x, pos.y) ;
+			if (map.groundIsWalkable(new Point((int)newPos.x, (int)newPos.y), superElem))
+			{
+				setPos(newPos) ;
+			}
+			else
+			{
+				newPos = new Point2D.Double(pos.x, pos.y + dist.y) ;
+				if (map.groundIsWalkable(new Point((int)newPos.x, (int)newPos.y), superElem))
+				{
+					setPos(newPos) ;
+				}
+			}
+		}
+	}
 	public void setRange(int newValue) {range = newValue ;}
 	public void setStep(int newValue) {step = newValue ;}
 	public void setCombo(List<String> newValue) {combo = newValue ;}

@@ -1,6 +1,7 @@
 package battle ;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +33,7 @@ public abstract class Battle
 
 	static
 	{
-		randomAmp = (double)0.1 ;		
+		randomAmp = 0.1 ;		
     	allElements = Arrays.asList(Elements.values()) ;
 		List<String[]> ElemInput = Util.readcsvFile(Path.CSV + "Elem.csv") ;
 		elemMult = new double[ElemInput.size()][ElemInput.size()] ;
@@ -47,7 +48,6 @@ public abstract class Battle
 		hitSound = Music.musicFileToClip(new File(Path.MUSIC + "16-Hit.wav").getAbsoluteFile()) ;		
 	}
 
-	public static double getRandomAmp() { return randomAmp ;}
 	public static void removeRandomness() { randomAmp = 0 ;}
 	
 //	
@@ -201,14 +201,10 @@ public abstract class Battle
 		return null ;
 	}
 	
-	public static Point knockback(Point originPos, Point targetPos, double dist)
+	public static Point2D.Double knockback(Point originPos, Point targetPos, double power)
 	{
-		double angle = targetPos.x != originPos.x ? Math.atan((targetPos.y - originPos.y) / (double)(targetPos.x - originPos.x)) : Math.PI / 2.0 ;
-		int travelX = (int) (Math.signum(targetPos.x - originPos.x) * Math.cos(angle) * dist) ;
-		int travelY = (int) (Math.signum(targetPos.y - originPos.y) * Math.sin(angle) * dist) ;
-		
-		Point destiny = new Point(targetPos.x + travelX, targetPos.y + travelY) ;
-		return destiny ;
+		double angle = Math.atan2((targetPos.y - originPos.y), (targetPos.x - originPos.x)) ;		
+		return new Point2D.Double(Math.cos(angle) * power, Math.sin(angle) * power) ;
 	}
 
 	private static void activateCounters(Player player, Pet pet, Creature creature)
@@ -356,13 +352,13 @@ public abstract class Battle
 		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
 
 		receiver.takeDamage(atkResults.getDamage()) ;
-		//FIXME knock back pode lançar seres vivos em cima de lugares não caminháveis
 		if (attacker.getBA().getKnockbackPower() == null)
 		{
 			System.out.println(attacker.getName() + " " + attacker.getBA());
 			System.out.println(attacker.getBA().getKnockbackPower());
 		}
-		receiver.setPos(knockback(attacker.getPos(), receiver.getPos(), attacker.getBA().getKnockbackPower().getTotal())) ;
+		Point2D.Double knockedDist = knockback(attacker.getPos(), receiver.getPos(), attacker.getBA().getKnockbackPower().getTotal()) ;
+		receiver.moveIfWalkable(knockedDist) ;
 		if (attacker instanceof Player)
 		{
 			((Player) attacker).getStatistics().updateInflicedStatus(atkResults.getStatus());
