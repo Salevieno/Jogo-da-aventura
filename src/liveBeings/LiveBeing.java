@@ -188,6 +188,7 @@ public abstract class LiveBeing implements Drawable
 		Point2D.Double newPos = new Point2D.Double(pos.x + dist.x, pos.y + dist.y) ;
 		Elements superElem = this instanceof Player ? ((Player) this).getSuperElem() : null ;
 		GameMap map = Game.getPlayer().getMap() ;
+		// TODO melhorar para pegar ponto "walkable" mais próximo e mover para ele, jogando para a projeção movível
 		if (map.groundIsWalkable(new Point((int)newPos.x, (int)newPos.y), superElem))
 		{
 			setPos(newPos) ;
@@ -365,7 +366,7 @@ public abstract class LiveBeing implements Drawable
 
 	public void displayUsedSpellMessage(Spell spell, Point pos, Color color)
 	{
-		Animation.start(AnimationTypes.message, new Object[] {pos, spell.getName(), color}) ;
+		Animation.start(AnimationTypes.message, battleActionCounter.getDuration(), new Object[] {pos, spell.getName(), color}) ;
 	}
 	
 	public void displayPowerBar(Point pos)
@@ -871,14 +872,6 @@ public abstract class LiveBeing implements Drawable
 		if (bloodDamage + poisonDamage <= 0) { return ;}
 		
 		PA.getLife().decTotalValue(bloodDamage + poisonDamage) ;
-	}
-
-	public void playDamageAnimation(int damageStyle, AtkResults atkResults)
-	{		
-		if (atkResults == null) { System.out.println("Warn: Playing damage animation with atkResults null") ; return ;}
-		if (atkResults.getAtkType() == null) { System.out.println("Warn: Playing damage animation with atkType null") ; return ;}
-		
-		Animation.start(AnimationTypes.damage, new Object[] {headPos(), damageStyle, atkResults, null});
 	}
 
 	public void playDamageAnimation(int damageStyle, AtkResults atkResults, Color color)

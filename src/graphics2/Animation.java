@@ -12,7 +12,7 @@ import main.GameTimer;
 
 public class Animation 
 {
-	private GameTimer counter ;
+	private GameTimer timer ;
 	private Object[] vars ;
 	private AnimationDisplayFunction displayFunction ;
 	
@@ -20,13 +20,13 @@ public class Animation
 
 	private Animation(AnimationTypes type)
 	{
-		this.counter = new GameTimer(type.getDuration()) ;
+		this.timer = new GameTimer(type.getDuration()) ;
 		this.vars = null ;
 		this.displayFunction = displayFunctionFromType(type.ordinal()) ;
 	}
 	
 	public static List<Animation> getAll() { return all ;}
-	public GameTimer getCounter() { return counter ;}
+	public GameTimer getTimer() { return timer ;}
 	
 	public static void start(AnimationTypes type, Object[] vars)
 	{
@@ -37,9 +37,9 @@ public class Animation
 	{
 		Animation ani = new Animation(AnimationTypes.values()[type.ordinal()]) ;
 		all.add(ani) ;
-		ani.getCounter().setDuration(duration) ;
+		ani.getTimer().setDuration(duration) ;
 		ani.vars = vars ;
-		ani.getCounter().start() ;
+		ani.getTimer().start() ;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -53,13 +53,13 @@ public class Animation
 					int style = (int) vars[1] ;
 					AtkResults atkResults = (AtkResults) vars[2] ;
 					Color color = (Color) vars[3] ;
-					Draw.damageAnimation(pos, atkResults, counter, style, color) ;
+					Draw.damageAnimation(pos, atkResults, timer, style, color) ;
 				} ;
 				
 			case 1 :
 				return (vars) -> {
 					List<Item> itemsObtained = (List<Item>) vars[0] ;
-					Draw.winAnimation(counter, itemsObtained) ;
+					Draw.winAnimation(timer, itemsObtained) ;
 				} ;
 				
 			case 2 :
@@ -67,7 +67,7 @@ public class Animation
 					Image PterodactileImage = (Image) vars[0] ;
 					Image SpeakingBubbleImage = (Image) vars[1] ;
 					String[] message = (String[]) vars[2] ;
-					Draw.pterodactileAnimation(counter, PterodactileImage, SpeakingBubbleImage, message) ;
+					Draw.pterodactileAnimation(timer, PterodactileImage, SpeakingBubbleImage, message) ;
 				} ;
 				
 			case 4 :
@@ -75,7 +75,7 @@ public class Animation
 					double[] attributesInc = (double[]) vars[0] ;
 					int playerLevel = (int) vars[1] ;
 
-					Draw.levelUpAnimation(counter, attributesInc, playerLevel) ;
+					Draw.levelUpAnimation(timer, attributesInc, playerLevel) ;
 				} ;	
 				
 			case 5 :
@@ -83,7 +83,7 @@ public class Animation
 					Point pos = (Point) vars[0] ;
 					String message = (String) vars[1] ;
 					Color color = (Color) vars[2] ;
-					Draw.quickTextAnimation(pos, counter, message, color) ;
+					Draw.quickTextAnimation(pos, timer, message, color) ;
 				} ;	
 				
 			case 6 :
@@ -91,14 +91,14 @@ public class Animation
 					Point pos = (Point) vars[0] ;
 					String message = (String) vars[1] ;
 					Color color = (Color) vars[2] ;
-					Draw.obtainedItemAnimation(pos, counter, message, color) ;
+					Draw.obtainedItemAnimation(pos, timer, message, color) ;
 				} ;			
 				
 			default: return null ;
 		}
 	}
 
-	public boolean isActive() { return counter.isActive() ;}
+	public boolean isActive() { return timer.isActive() ;}
 	
 	public static void playAll()
 	{
@@ -111,7 +111,7 @@ public class Animation
 	private void play()
 	{
 
-		if (counter.hasFinished())
+		if (timer.hasFinished())
 		{
 			end() ;
 			return ;
@@ -123,7 +123,7 @@ public class Animation
 	
 	private void end()
 	{
-		counter.reset() ;
+		timer.reset() ;
 		all.remove(this) ;
 	}
 

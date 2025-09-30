@@ -320,10 +320,11 @@ public abstract class Battle
 			{
 				int spellID = Player.spellKeys.indexOf(attacker.getCurrentAction()) ;
 				Spell spell = attacker.getActiveSpells().get(spellID) ;
-				if (!attacker.canUseSpell(spell)) { System.out.println(attacker.getName() + ": trying to use spell. But no can use, baby!") ;}
+				if (!attacker.canUseSpell(spell)) { System.out.println("Warn: " + attacker.getName() + " trying to use spell. But no can use, baby!") ;}
 				if (attacker.canUseSpell(spell))
 				{
 					atkResults = attacker.useSpell(spell, receiver);
+					attacker.displayUsedSpellMessage(spell, Util.translate(attacker.getPos(), 0, -50), Game.palette[5]) ;
 				}
 				else
 				{					
@@ -391,13 +392,7 @@ public abstract class Battle
 	private static void runTurn(LiveBeing attacker, LiveBeing receiver)
 	{
 		
-		if (!attacker.isAlive()) { return ;}
-		
-		if (attacker.isDefending())
-		{
-			attacker.displayDefending() ;
-		}
-		
+		if (!attacker.isAlive()) { return ;}		
 		if (!attacker.canAtk() | !attacker.isInRange(receiver.getPosAsDouble())) { return ;}
 		
 		if (attacker instanceof Creature)

@@ -286,6 +286,7 @@ public abstract class Draw
 		
 	}
 	// TODO
+	public static void gainExpAnimation() {}
 	public static void gainGoldAnimation(GameTimer counter, int goldObtained)
 	{
 		

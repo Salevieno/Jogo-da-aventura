@@ -156,7 +156,18 @@ public class Creature extends LiveBeing
 		setPos(newPos) ;
 	
 	}
-	
+
+	private void move(GameMap playerMap, double dt)
+	{		
+		updatePos(dir, pos, step, dt, movingTimer.rate(), playerMap) ;	
+		if (movingTimer.hasFinished())
+		{
+			setState(LiveBeingStates.idle) ;
+			switchDirection() ;
+			idleTimer.restart();
+		}
+	}
+
 	public String chooseTarget(boolean playerIsAlive, boolean petIsAlive)
 	{// TODO optional - retornar liveBeing
 		if (!playerIsAlive & !petIsAlive) { return null ;}		
@@ -194,22 +205,13 @@ public class Creature extends LiveBeing
 		}
 
 	}
-
-	public void move(Point2D.Double PlayerPos, GameMap map, double dt)
-	{
-		
-		if (chasePlayer)
-		{
-			setPos(chase(pos, PlayerPos, range)) ;
-			return ;
-		}
-
-		updatePos(dir, pos, step, dt, movingTimer.rate(), map) ;
-		
-	}
 	
 	public void act(Point2D.Double playerPosAsDouble, GameMap playerMap, double dt)
 	{
+		if (chasePlayer)
+		{
+			setPos(chase(pos, playerPosAsDouble, range)) ;
+		}
 		switch (state)
 		{
 			case idle:
@@ -222,17 +224,7 @@ public class Creature extends LiveBeing
 
 				return ;
 
-			case moving:
-				move(playerPosAsDouble, playerMap, dt) ;
-				if (movingTimer.hasFinished())
-				{
-					setState(LiveBeingStates.idle) ;
-					switchDirection() ;
-					idleTimer.restart();
-				}
-
-				return;
-			
+			case moving: move(playerMap, dt) ; return;			
 			default: return ;
 		}
 	}
@@ -293,7 +285,6 @@ public class Creature extends LiveBeing
 		if (receiver == null) { return null ;}
 		if (!hasEnoughMP(spell)) { return new AtkResults() ;}
 
-		displayUsedSpellMessage(spell, Game.getScreen().pos(0.63, 0.2), Game.palette[0]);
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
 		switch (spell.getType())
 		{
@@ -323,6 +314,10 @@ public class Creature extends LiveBeing
 		if (isFighting())
 		{
 			displayBattleActionCounter() ;
+		}		
+		if (isDefending())
+		{
+			displayDefending() ;
 		}
 		if (isDrunk())
 		{

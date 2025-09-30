@@ -1114,7 +1114,6 @@ public class Player extends LiveBeing
 		spell.getCooldownCounter().start() ;
 		trainOffensive(new AtkResults(AtkTypes.magical)) ;
 		stats.incNumberMagAtk() ;
-		displayUsedSpellMessage(spell, Game.getScreen().pos(0.43, 0.2), Game.palette[4]);
 		
 		spell.activate() ;
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
@@ -1792,6 +1791,10 @@ public class Player extends LiveBeing
 		if (isDrunk())
 		{
 			displayDrunk() ;
+		}
+		if (isDefending())
+		{
+			displayDefending() ;
 		}
 		if (isMoving())
 		{
