@@ -40,8 +40,8 @@ public abstract class SpellsBar
 	static
 	{
 		maxNumberRows = 8 ;
-		titlefont = new Font("SansSerif", Font.BOLD, 9) ;
-		font = new Font("SansSerif", Font.BOLD, 9) ;
+		titlefont = new Font("SansSerif", Font.BOLD, 12) ;
+		font = new Font("SansSerif", Font.BOLD, 12) ;
 		// title = Game.allText.get(TextCategories.spellsBar)[0] ;
 		textColor = Game.palette[19] ;
 
