@@ -727,14 +727,8 @@ public class Player extends LiveBeing
 	
 	private void dig()
 	{
+		if (diggingAni.isActive() && !diggingAni.hasFinished()) { return ;}
 
-		if (diggingAni.isActive()) { return ;}
-		
-		diggingAni.setPos(getPos()) ;
-		diggingAni.activate() ;
-		
-		if (!diggingAni.hasFinished()) { return ;}
-				
 		setState(LiveBeingStates.idle) ;
 		
 		if (map.getDiggingItems().isEmpty()) { return ;}
@@ -753,7 +747,7 @@ public class Player extends LiveBeing
 //				}
 //			}
 //		}
-		
+
 		Item diggedItem = determineDiggedItem() ;
 		
 		bag.add(diggedItem, 1) ;
@@ -761,14 +755,11 @@ public class Player extends LiveBeing
 		
 		if (superElem == Elements.earth)
 		{
+			Item diggedItemExtra = determineDiggedItem() ;
 			
-			Item diggedItem2 = determineDiggedItem() ;
-			
-			bag.add(diggedItem2, 1) ;
-			Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.25), diggedItem2.getName(), Game.palette[0]}) ;
-			
+			bag.add(diggedItemExtra, 1) ;
+			Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.25), diggedItemExtra.getName(), Game.palette[0]}) ;
 		}
-
 	}
 	
 	public void tent()
@@ -836,7 +827,10 @@ public class Player extends LiveBeing
 				
 			case dig: 
 				if (!questSkills.get(QuestSkills.dig)) { return ;}
-				setState(LiveBeingStates.digging) ; return ;
+				diggingAni.setPos(getPos()) ;
+				diggingAni.activate() ; 
+				setState(LiveBeingStates.digging) ;
+				return ;
 			
 			case bestiary: 
 				if (!questSkills.get(QuestSkills.bestiary)) { return ;}
