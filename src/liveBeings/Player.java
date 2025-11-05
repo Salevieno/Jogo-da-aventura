@@ -49,7 +49,6 @@ import items.Item;
 import items.PetItem;
 import items.Potion;
 import items.QuestItem;
-import items.Recipe;
 import main.Directions;
 import main.Elements;
 import main.Game;
@@ -68,7 +67,6 @@ import utilities.Util;
 import windows.BagWindow;
 import windows.BankWindow;
 import windows.BestiaryWindow;
-import windows.BookWindow;
 import windows.CraftWindow;
 import windows.ElementalWindow;
 import windows.ForgeWindow;
@@ -86,18 +84,16 @@ public class Player extends LiveBeing
 {
 	private String sex ;
 	
-	private GameWindow focusWindow ;
-	private List<GameWindow> openWindows ;
 	private BagWindow bag ;
 	private SettingsWindow settings ;
 	private SpellsTreeWindow spellsTree ;
 	private MapWindow mapWindow ;
-	private List<Recipe> knownRecipes ;
-	private BookWindow fabWindow ;
 	private List<Quest> quests ;
 	private QuestWindow questWindow ;
 	private HintsWindow hintsWindow ;
 	private BestiaryWindow bestiary ;
+	private GameWindow focusWindow ;
+	private List<GameWindow> openWindows ;
 	
 	private int attPoints ;
 	private int spellPoints ;
@@ -156,7 +152,7 @@ public class Player extends LiveBeing
 			new SpriteAnimation(Path.PLAYER_IMG + "PlayerFront.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
 			new SpriteAnimation(Path.PLAYER_IMG + "PlayerBack.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
 			new SpriteAnimation(Path.PLAYER_IMG + "PlayerLeft.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
-			new SpriteAnimation(Path.PLAYER_IMG + "PlayerRight.png", new Point(0, 0), Align.bottomCenter, 6, 0.1)
+			new SpriteAnimation(Path.PLAYER_IMG + "PlayerRight.png", new Point(0, 0), Align.bottomCenter, 1, 0.1)
 		);
 	}
 	
@@ -205,8 +201,6 @@ public class Player extends LiveBeing
 		}
 		questWindow = new QuestWindow() ;
 		quests = new ArrayList<>() ;
-		knownRecipes = new ArrayList<>() ;
-		fabWindow = new BookWindow() ;
 		mapWindow = new MapWindow() ;
 		hintsWindow = new HintsWindow() ;
 		spellsTree = new SpellsTreeWindow(job) ;

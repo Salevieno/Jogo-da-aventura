@@ -39,7 +39,7 @@ public abstract class GameWindow
 	protected String stdEnter = KeyEvent.getKeyText(KeyEvent.VK_ENTER) ;
 	protected String stdReturn = "MouseRightClick" ;
 	protected String stdExit = KeyEvent.getKeyText(KeyEvent.VK_ESCAPE) ;	
-	protected double stdOpacity = 0.95 ;
+	protected double stdOpacity = 0.9 ;
 
 	protected static final Image buttonWindowUpImage = Game.loadImage(Path.WINDOWS_IMG + "moveUp.png") ;
 	protected static final Image buttonWindowDownImage = Game.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;

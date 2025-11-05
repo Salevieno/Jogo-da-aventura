@@ -324,7 +324,10 @@ public class Creature extends LiveBeing
 			displayDrunk() ;
 		}
 		displayStatus() ;
-		displayAttributes(0);
+		if (isFighting())
+		{
+			displayAttributes(0);
+		}
 		if (Game.debugMode)
 		{
 			GamePanel.DP.drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;

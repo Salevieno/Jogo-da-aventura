@@ -30,8 +30,8 @@ public class SpellsTreeWindow extends GameWindow
 	private int points ;
 
 	private static final Point windowTopLeft = Game.getScreen().pos(0.4, 0.2) ;
-	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
-	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
+	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
+	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 14) ;
 	private static final Image noTabsImage = Game.loadImage(Path.WINDOWS_IMG + "SpellsTree.png") ;
 	private static final Image tab0Image = Game.loadImage(Path.WINDOWS_IMG + "SpellsTreeTab0.png") ;
 	private static final Image tab1Image = Game.loadImage(Path.WINDOWS_IMG + "SpellsTreeTab1.png") ;
@@ -40,7 +40,7 @@ public class SpellsTreeWindow extends GameWindow
 	private static final Image spellInactiveSlot = Game.loadImage(Path.WINDOWS_IMG + "SpellInactiveSlot.png") ;
 	private static final Image spellInfo = Game.loadImage(Path.WINDOWS_IMG + "SpellInfo.png") ;
 	private static final Image spellPoints = Game.loadImage(Path.WINDOWS_IMG + "SpellPoints.png") ;
-	
+
 	public SpellsTreeWindow(int playerJob)
 	{
 

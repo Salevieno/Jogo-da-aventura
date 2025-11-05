@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sound.sampled.Clip;
+
 import UI.ButtonFunction;
 import UI.GameButton;
 import graphics.Align;
@@ -44,7 +46,7 @@ public abstract class Opening
     private static final Font font = new Font(Game.MainFontName, Font.BOLD, 16) ;
     private static final Font smallFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 
-	private static final SpriteAnimation openingAni = new SpriteAnimation(Path.IMAGES + "Opening.png", new Point(), Align.topLeft, 12, 0.05) ;
+	private static final SpriteAnimation openingAni = new SpriteAnimation(Path.OPENING_IMG + "Opening.png", new Point(), Align.topLeft, 12, 0.05) ;
 	
 	private static final Image backgroundImage = Game.loadImage(Path.OPENING_IMG + "Opening.png") ;
 	private static final Image LoadingSlot = Game.loadImage(Path.OPENING_IMG + "LoadingSlot.png") ;
@@ -53,15 +55,15 @@ public abstract class Opening
 	private static final Image generalButtonSelectedImg = Game.loadImage(Path.OPENING_IMG + "generalButtonSelected.png") ;
 	private static final Image jobDescriptionBackground = Game.loadImage(Path.OPENING_IMG + "JobDescriptionBackground.png") ;
 	// private static final Image LoadingEnfeite ;
-	// private static final Clip thunderSound ;
-	// private static final Clip introMusic ;
+	private static final Clip thunderSound ;
+	private static final Clip introMusic ;
 	
 	
 	static
 	{
 		// LoadingEnfeite = Game.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
-		// thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
-		// introMusic = Music.loadMusicFile("intro.wav") ;
+		thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
+		introMusic = Music.loadMusicFile("intro.wav") ;
 		
     	step = 0 ;
     	newGame = true ;
@@ -335,8 +337,8 @@ public abstract class Opening
 		{
 			if (!openingAni.isActive() & !openingAni.hasFinished())
 			{
-//				Music.PlayMusic(thunderSound) ;
-//				Music.PlayMusic(introMusic) ;
+				Music.PlayMusic(thunderSound) ;
+				Music.PlayMusic(introMusic) ;
 				openingAni.activate() ;
 			}
     		return ;
@@ -360,6 +362,8 @@ public abstract class Opening
 		
 		if (isOver())
 		{
+			Music.StopMusic(introMusic) ;
+			openingAni.deactivate();
 			if (newGame())
 			{
 				Game.difficultLevel = getChosenDifficultLevel() ;

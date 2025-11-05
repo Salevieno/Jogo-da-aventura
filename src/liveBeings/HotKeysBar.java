@@ -27,10 +27,10 @@ public abstract class HotKeysBar
 	
 	static
 	{
-		font = new Font(Game.MainFontName, Font.BOLD, 12) ;
+		font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 		textColor = Game.palette[0] ;
 		image = Game.loadImage(Path.SIDEBAR_IMG + "HotBar.png") ;
-		barPos = new Point(Game.getScreen().mapSize().width + 2, Game.getScreen().getSize().height - SideBar.sy) ;
+		barPos = new Point(Game.getScreen().mapSize().width + 6, Game.getScreen().getSize().height - SideBar.sy) ;
 	}
 	
 	public static Dimension size() { return Util.getSize(image) ;}
@@ -59,7 +59,7 @@ public abstract class HotKeysBar
 		
 		for (int i = 0 ; i <= Player.getHotKeys().length - 1 ; i += 1)
 		{
-			Point slotCenter = Util.translate(topLeft(), 13, 10 + 20 * i) ;
+			Point slotCenter = Util.translate(topLeft(), 13, 16 + 24 * i) ;
 			Point keyTextPos = Util.translate(slotCenter, slotSize.width / 2 + 6, slotSize.height / 2) ;
 			
 			GamePanel.DP.drawImage(BagWindow.slotImage, slotCenter, Align.center) ;

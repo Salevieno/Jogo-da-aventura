@@ -55,7 +55,7 @@ public class Sky
 			Image image = randomCloudImage() ;
 			Point posAsPoint = Util.randomPos(new Point(), new Dimension(size.width, size.height - image.getHeight(null)), new Dimension(1, 1)) ;
 			Point2D.Double pos = new Point2D.Double(posAsPoint.x, posAsPoint.y) ;
-			Point2D.Double speed = new Point2D.Double((int) (20 + 100 * Math.random()), 0) ;
+			Point2D.Double speed = new Point2D.Double((int) (5 + 10 * Math.random()), 0) ;
 	    	clouds.add(new SkyComponent(image, pos, speed)) ;
 		}
 		

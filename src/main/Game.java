@@ -88,13 +88,12 @@ public class Game
 	private static final List<String> loadedImagePaths = new ArrayList<>();
 
 	private static final GameStates mainState = GameStates.running;
-	private static final boolean testMode = true;
+	private static final boolean testMode = false;
 	public static final boolean debugMode = false;
 
-	private static GameStates state = GameStates.loading;
+	private static GameStates state = GameStates.opening;
 	private static Languages gameLanguage;
-	private static boolean shouldRepaint; // tells if the panel should be repainted, created to respond multiple
-											// requests only once
+	private static boolean shouldRepaint; // tells if the panel should be repainted, responding to multiple requests only once
 	private static boolean konamiCodeActive;
 	private static double dt;
 	public static GameTimer dayTimer;

@@ -79,7 +79,7 @@ public class MapElement implements Drawable
 				return ;
 				
 			case "rock":
-				for (int i = 5 ; i <= 11 ; i += 1)
+				for (int i = 2 ; i <= 20 ; i += 1)
 				{
 					colliders.add(new Collider(Util.translate(topLeft, i, image.getHeight(null) - 2))) ;
 				}

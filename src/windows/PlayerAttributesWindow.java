@@ -156,7 +156,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 				GamePanel.DP.drawText(upperTextPos, Align.bottomCenter, angle, equipText, smallFont, textColor) ;					
 			}
 
-			Elements eqElem = player.getEquips()[eq + 1].getElem() ;
+			Elements eqElem = player.getEquips()[eq + 1] != null ? player.getEquips()[eq + 1].getElem() : null ;
 
 			if (eqElem == null || eq == 3) { continue ;}
 			
