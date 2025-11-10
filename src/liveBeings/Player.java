@@ -370,6 +370,7 @@ public class Player extends LiveBeing
 		
 		return equips[0].getElem().equals(equips[1].getElem()) & equips[1].getElem().equals(equips[2].getElem()) ;
 	}
+	public boolean hasWindowOpen() { return focusWindow != null && focusWindow.isOpen() ;}
 
 	public Elements[] atkElems() { return new Elements[] {atkElem, equips[0] != null ? equips[0].getElem() : null, superElem} ;}
 	public Elements[] defElems() { return new Elements[] {equips[1] != null ? equips[1].getElem() : null, equips[2] != null ? equips[2].getElem() : null} ;}

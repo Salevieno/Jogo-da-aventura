@@ -20,7 +20,7 @@ import utilities.Util;
 
 public class BankWindow extends GameWindow
 {
-	private String mode ;
+	private BankAction mode ;
 	private int amountTyped ;
 	private int balance ;
 	private int investedAmount ;
@@ -37,7 +37,6 @@ public class BankWindow extends GameWindow
 	public BankWindow()
 	{
 		super("Banco", windowPos, image, 1, 1, 1, 1) ;
-		mode = "" ;
 		amountTyped = 0 ;
 		balance = 0 ;
 		investedAmount = 0 ;
@@ -50,9 +49,9 @@ public class BankWindow extends GameWindow
 	public int getAmountTyped() { return amountTyped ;}
 	public int getBalance() { return balance;}
 	public GameTimer getInvestmentCounter() { return investmentCounter ;}
-	public void setMode(String mode) { this.mode = mode ;}
+	public void setMode(BankAction mode) { this.mode = mode ;}
 	
-	private boolean isReadingInput() { return mode.equals("deposit") | mode.equals("withdraw") | mode.equals("investment low risk") | mode.equals("investment hight risk") ;}
+	private boolean isReadingInput() { return mode.equals(BankAction.deposit) || mode.equals(BankAction.withdraw) || mode.equals(BankAction.investmentLowRisk) || mode.equals(BankAction.investmentHighRisk) ;}
 	public boolean hasInvestment() { return hasInvestement;}
 	public boolean investmentIsComplete() { return investmentCounter.hasFinished() ;}
 	
@@ -87,10 +86,10 @@ public class BankWindow extends GameWindow
 			liveInput.clearText() ;
 			switch(mode)
 			{
-				case "deposit": deposit(bag, amountTyped) ; return ;
-				case "withdraw": withdraw(bag, amountTyped) ; return ;
-				case "investment low risk": invest(bag, amountTyped, false) ; return ;
-				case "investment hight risk": invest(bag, amountTyped, true) ; return ;
+				case deposit: deposit(bag, amountTyped) ; return ;
+				case withdraw: withdraw(bag, amountTyped) ; return ;
+				case investmentLowRisk: invest(bag, amountTyped, false) ; return ;
+				case investmentHighRisk: invest(bag, amountTyped, true) ; return ;
 				default: return ;
 			}
 		}

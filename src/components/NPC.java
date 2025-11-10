@@ -33,6 +33,7 @@ import maps.GameMap;
 import utilities.Util;
 
 import windows.BagWindow;
+import windows.BankAction;
 import windows.BankWindow;
 import windows.CraftWindow;
 import windows.ElementalWindow;
@@ -456,7 +457,7 @@ public class NPC
 		
 		switchOption(action) ;
 
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) & menu <= numberMenus - 1)
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) && menu <= numberMenus - 1)
 		{
 			if (type.getOptions().size() == 0) { return ;}
 			if (type.getOptions().size() <= menu) { return ;}
@@ -465,7 +466,7 @@ public class NPC
 			selOption = 0 ;
 			return ;
 		}
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) & 0 < menu)
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) && 0 < menu)
 		{
 			menu = 0 ;
 			selOption = 0 ;
@@ -541,32 +542,18 @@ public class NPC
 
 	private void bankerAction(Player player, BankWindow bankWindow, String action)
 	{
+		if (action == null) { return ;}		
+		if (!actionIsForward(action)) { return ;}
+		if (menu != 0) { return ;}
 
-		if (action == null) { return ;}
-		
-		if (actionIsForward(action))
+		switch (selOption)
 		{
-			if (menu == 0 & (selOption == 0 | selOption == 1 | selOption == 2 | selOption == 3))
-			{
-				if (selOption == 0)
-				{
-					bankWindow.setMode("deposit");
-				}
-				if (selOption == 1)
-				{
-					bankWindow.setMode("withdraw");
-				}
-				if (selOption == 2)
-				{
-					bankWindow.setMode("investment low risk");
-				}
-				if (selOption == 3)
-				{
-					bankWindow.setMode("investment hight risk");
-				}
-				player.switchOpenClose(bankWindow) ;
-			}
-		}
+			case 0: bankWindow.setMode(BankAction.deposit) ; player.switchOpenClose(bankWindow) ; return ;
+			case 1: bankWindow.setMode(BankAction.withdraw) ; player.switchOpenClose(bankWindow) ; return ;
+			case 2: bankWindow.setMode(BankAction.investmentLowRisk) ; player.switchOpenClose(bankWindow) ; return ;
+			case 3: bankWindow.setMode(BankAction.investmentHighRisk) ; player.switchOpenClose(bankWindow) ; return ;
+			default: return ;
+		}		
 	}
 
 	private void crafterAction(Player player, BagWindow bag, String action, Point mousePos, CraftWindow craftWindow)

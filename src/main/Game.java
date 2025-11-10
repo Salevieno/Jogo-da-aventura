@@ -915,7 +915,7 @@ public class Game
 			screen.updateScale();
 		}
 
-		if (keyCode == KeyEvent.VK_ESCAPE)
+		if (keyCode == KeyEvent.VK_ESCAPE && !player.hasWindowOpen())
 		{
 			pauseWindow.switchOpenClose();
 		}
