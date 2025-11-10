@@ -55,7 +55,9 @@ public class GameFrame extends JFrame implements ActionListener
         timer = new Timer(0, this) ;			// timer of the game, first number = frame duration
 		timer.start() ;							// Game will start checking for keyboard events every "timer" miliseconds
 		previousState = GameStates.opening ;
-
+		
+		resizeWindow();
+		Game.getScreen().updateScale();
         add(GamePanel.getMe()) ;
 
     }
