@@ -51,7 +51,7 @@ public class GameTimer
 	public void reset() { initialTime = timeNowInSec() ; timeElapsedAtStop = 0 ; counter = 0 ; prevCounter = 0 ;}
 	public void restart() { reset() ; start() ;}
 	public double rate() { return counter / duration ;}
-	public boolean crossedTime(double time) { return active && prevCounter == 0 || (counter % time <= prevCounter % time) ;}
+	public boolean crossedTime(double time) { return active && (counter % time <= prevCounter % time) ;}
 	public boolean isActive() { return active ;}
 	public boolean hasStarted() { return 0 < counter ;}
 	public boolean hasFinished() { return duration <= counter ;}

@@ -91,7 +91,7 @@ public class Game
 	private static final boolean testMode = false;
 	public static final boolean debugMode = false;
 
-	private static GameStates state = GameStates.opening;
+	private static GameStates state = GameStates.loading;
 	private static Languages gameLanguage;
 	private static boolean shouldRepaint; // tells if the panel should be repainted, responding to multiple requests only once
 	private static boolean konamiCodeActive;

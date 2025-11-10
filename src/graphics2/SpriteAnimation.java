@@ -76,12 +76,7 @@ public class SpriteAnimation
 
     private void update()
     {
-        if (frameCount == 12)
-        {
-            System.out.println(timer.crossedTime(frameDuration) + " " + timer);
-            // TODO problem: timer is crossing time twice at the beginning
-        }
-        if (timer.crossedTime(frameDuration))
+        if (timer.crossedTime(frameDuration) && timer.getCounter() != 0)
         {
             currentFrame = (currentFrame + 1) % frameCount;
         }
