@@ -9,6 +9,7 @@ import java.util.List;
 
 import graphics.Align;
 import graphics.Scale;
+import graphics.UtilAlignment;
 import graphics2.Animation;
 import graphics2.AnimationTypes;
 import graphics2.Draw;
@@ -203,7 +204,7 @@ public class ForgeWindow extends GameWindow
 			GamePanel.DP.drawText(namePos, Align.centerLeft, angle, equip.getName() + " + " + equip.getForgeLevel(), stdFont, itemColor) ;
 			GamePanel.DP.drawImage(reqRune(equip).getImage(), runePos, Align.center) ;
 			
-			if (Util.isInside(mousePos, Util.getTopLeft(runePos, Align.center, Util.getSize(Item.slot)), Util.getSize(Item.slot)))
+			if (Util.isInside(mousePos, UtilAlignment.getTopLeft(runePos, Align.center, Util.getSize(Item.slot)), Util.getSize(Item.slot)))
 			{
 				Point runeNamePos = Util.translate(runePos, -Item.slot.getWidth(null) / 2, -Item.slot.getHeight(null) / 2 - 5) ;
 				GamePanel.DP.drawText(runeNamePos, Align.centerLeft, angle, reqRune(equip).getName(), stdFont, stdColor) ;

@@ -1581,11 +1581,11 @@ public class Player extends LiveBeing
 		//setContinent(0) ;
 		switch (job)
 		{
-			case 0: setPos(new Point(340, 540)) ; break ;
-			case 1: setPos(new Point(340, 380)) ; break ;
-			case 2: setPos(new Point(40, 420)) ; break ;
-			case 3: setPos(new Point(340, 540)) ; break ;
-			case 4: setPos(new Point(340, 840)) ; break ;
+			case 0: setPos(new Point2D.Double(340, 540)) ; break ;
+			case 1: setPos(new Point2D.Double(340, 380)) ; break ;
+			case 2: setPos(new Point2D.Double(40, 420)) ; break ;
+			case 3: setPos(new Point2D.Double(340, 540)) ; break ;
+			case 4: setPos(new Point2D.Double(340, 840)) ; break ;
 		}
 	}
 	
@@ -1606,6 +1606,10 @@ public class Player extends LiveBeing
 		}
 		resetOpponent() ;
 		resetPosition() ;
+		if (!Game.getPet().isAlive())
+		{
+			Game.getPet().revives() ;
+		}
 	}
 		
 	

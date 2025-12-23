@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import UI.GameButton;
 import graphics.Align;
+import graphics.UtilAlignment;
 import graphics2.Draw;
 import items.Alchemy;
 import items.Arrow;
@@ -631,7 +632,7 @@ public class BagWindow extends GameWindow
 		for (int i = 0 ; i <= numberItemsDisplayed - 1; i += 1)
 		{
 			Point slotCenter = itemsPos.get(i) ;
-			Point slotCenterLeft = Util.getPosAt(slotCenter, Align.center, Align.centerLeft, Util.getSize(slotImage)) ;
+			Point slotCenterLeft = UtilAlignment.getPosAt(slotCenter, Align.center, Align.centerLeft, Util.getSize(slotImage)) ;
 			if (Util.isInside(mousePos, slotCenterLeft, itemNameSize)) { return itemsDisplayed.get(i) ;}
 		}
 		
@@ -678,7 +679,7 @@ public class BagWindow extends GameWindow
 		{
 			int itemID = i + window * numberSlotMax ;
 			Point slotCenter = itemsPos.get(i) ;
-			Point slotCenterLeft = Util.getPosAt(slotCenter, Align.center, Align.centerLeft, Util.getSize(slotImage)) ;
+			Point slotCenterLeft = UtilAlignment.getPosAt(slotCenter, Align.center, Align.centerLeft, Util.getSize(slotImage)) ;
 			String itemText = itemsDisplayed.get(i).getName() + " (x " + amountsDisplayed.get(i) + ")" ;
 			Point textPos = Util.translate(slotCenterLeft, slotImage.getWidth(null) + 5, 0) ;
 			checkMouseSelection(mousePos, slotCenterLeft, Align.centerLeft, itemNameSize, itemID) ;

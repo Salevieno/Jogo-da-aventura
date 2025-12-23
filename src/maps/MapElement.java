@@ -11,6 +11,7 @@ import components.Collider;
 import components.Hitbox;
 import graphics.Align;
 import graphics.Scale;
+import graphics.UtilAlignment;
 import graphics2.Draw;
 import graphics2.Drawable;
 import main.Game;
@@ -42,7 +43,7 @@ public class MapElement implements Drawable
 
 	public int getid() {return id ;}
 	public String getName() {return name ;}
-	public Point getPos() {return Util.getPosAt(topLeft, Align.topCenter, Align.bottomCenter, Util.getSize(image)) ;}
+	public Point getPos() {return UtilAlignment.getPosAt(topLeft, Align.topCenter, Align.bottomCenter, Util.getSize(image)) ;}
 	public Hitbox getHitbox() { return hitbox ;}
 	public List<Collider> getColliders() {return colliders ;}
 

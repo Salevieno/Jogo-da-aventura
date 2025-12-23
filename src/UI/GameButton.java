@@ -10,6 +10,7 @@ import java.util.List;
 
 import graphics.Align;
 import graphics.Scale;
+import graphics.UtilAlignment;
 import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
@@ -44,7 +45,7 @@ public class GameButton
 		this.isSelected = false ;
 		this.size = image != null ? Util.getSize(image) : new Dimension(100, 50) ;
 		this.alignment = alignment ;
-		this.topLeft = Util.getTopLeft(pos, alignment, size) ;
+		this.topLeft = UtilAlignment.getTopLeft(pos, alignment, size) ;
 		this.action = action ;
 		all.add(this) ;
 	}

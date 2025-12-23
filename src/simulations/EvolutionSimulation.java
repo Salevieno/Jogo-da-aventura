@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -96,14 +97,14 @@ public abstract class EvolutionSimulation
 		buttons = new ArrayList<>() ;
 		
 		player = new Player("Player", "f", 0) ;
-		player.setPos(new Point(45, 230)) ;
+		player.setPos(new Point2D.Double(45, 230)) ;
 		pet = Game.getPet() ;
 		if (pet != null)
 		{
-			pet.setPos(new Point(450, 230)) ;
+			pet.setPos(new Point2D.Double(450, 230)) ;
 		}
 		playerOpponent = new Creature(CreatureType.all.get(playerOpponentID)) ;
-		playerOpponent.setPos(new Point(460, 340)) ;
+		playerOpponent.setPos(new Point2D.Double(460, 340)) ;
 		
 		playerPreviousExp = player.getExp().getCurrentValue() ;
 		
@@ -490,7 +491,7 @@ public abstract class EvolutionSimulation
 	private static void CreateNewCreature()
 	{
 		playerOpponent = new Creature(CreatureType.all.get(playerOpponentID)) ;
-		playerOpponent.setPos(new Point(460, 340)) ;
+		playerOpponent.setPos(new Point2D.Double(460, 340)) ;
 		playerOpponent.setRange(1000) ;
 		playerOpponent.getType().setGenes(new Genetics(newGenes.getGenes(), newGenes.getGeneMods()));
 	}
@@ -831,11 +832,11 @@ public abstract class EvolutionSimulation
 				}
 				EvolutionSimulation.checkPlayerWin() ;
 				EvolutionSimulation.stopBattleClock() ;
-				player.setPos(new Point(45, 230)) ;
+				player.setPos(new Point2D.Double(45, 230)) ;
 				pet = Game.getPet() ;
 				if (pet != null)
 				{
-					pet.setPos(new Point(450, 230)) ;
+					pet.setPos(new Point2D.Double(450, 230)) ;
 				}
 			}
 			EvolutionSimulation.updateStats() ;

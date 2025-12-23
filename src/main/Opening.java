@@ -164,7 +164,6 @@ public abstract class Opening
 		newGame = false ;
 		buttons.get(0).deactivate() ;
 		buttons.get(1).deactivate() ;
-		// TODO
 		Buff.loadBuffs() ;
 		Buff.loadDebuffs() ;
 		Spell.load(Languages.portugues, Buff.allBuffs, Buff.allDebuffs) ;

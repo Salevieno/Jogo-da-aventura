@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,6 +165,25 @@ public class GameMap
 
 	public static int width() { return GameFrame.width() - 60 ;}
 	public static int height() { return GameFrame.height() - Sky.height ;}
+
+	protected Point2D.Double randomPosOnLandDouble(Point2D.Double minCoord, Dimension range, Dimension step)
+	{
+		Point2D.Double randomPos = Util.randomPosDouble(minCoord, range, step) ;
+		while (groundTypeAtPoint(new Point((int)randomPos.x, (int)randomPos.y)) != null)
+		{
+			randomPos = Util.randomPosDouble(minCoord, range, step) ;
+		}
+		return randomPos ;
+	}
+	
+	protected Point2D.Double randomPosOnLandDouble()
+	{
+		Point2D.Double minCoord = new Point2D.Double(0, (int) (0.2*Game.getScreen().getSize().height)) ;
+		Dimension range = new Dimension(Game.getScreen().mapSize().width, (int) ((1 - (float)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
+		Dimension step = new Dimension(1, 1) ;
+
+		return randomPosOnLandDouble(minCoord, range, step) ;
+	}
 
 	protected Point randomPosOnLand(Point minCoord, Dimension range, Dimension step)
 	{

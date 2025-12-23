@@ -276,10 +276,16 @@ public class Pet extends LiveBeing
 		}
 	}
 	
+	public void revives()
+	{
+		PA.getLife().setToMaximum() ;
+		PA.getMp().setToMaximum() ;
+	}
+
 	public void dies()
 	{
 		resetBattleActions() ;
-		setPos(Game.getPlayer().getPos()) ;
+		setPos(Game.getPlayer().getPosAsDouble()) ;
 	}
 	
 	public void applyPassiveSpell(Spell spell)

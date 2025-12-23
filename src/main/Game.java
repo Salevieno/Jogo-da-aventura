@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -69,13 +70,9 @@ import windows.PauseWindow;
 public class Game
 {
 	// TODO arquivos - nomes das criaturas
-	// TODO como reviver o pet quando ele/ela morre? :O
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos
 	// liveBeings
-	// TODO make game run by time
-	// TODO resize fonts
-	// TODO pause screen
-	// TODO settings outside the player
+	// TODO optional - settings outside the player
 	private static final String[] konamiCode = new String[] { "Up", "Up", "Down", "Down", "Left", "Right", "Left",
 			"Right", "B", "A" };
 
@@ -305,7 +302,7 @@ public class Game
 	{
 		int job = Util.randomInt(0, 3);
 		pet = new Pet(job);
-		pet.setPos(player.getPos());
+		pet.setPos(player.getPosAsDouble());
 		if (player.getJob() == 3 & 0 < player.getSpells().get(13).getLevel()) // Best friend
 		{
 			int spellLevel = player.getSpells().get(13).getLevel();
@@ -573,7 +570,7 @@ public class Game
 				player.setSpells(Player.jobSpells(player.getJob()));
 			}
 			player.setMap(Game.getMaps()[player.getJob()]);
-			player.setPos(Game.getScreen().getCenter());
+			player.setPos(new Point2D.Double(Game.getScreen().getCenter().x, Game.getScreen().getCenter().y));
 			LiveBeing.updateDamageAnimation(player.getSettings().getDamageAnimation());
 			SideBar.initialize();
 
@@ -702,7 +699,7 @@ public class Game
 
 	private void run(double dt)
 	{
-
+System.out.println(dt);
 		if (Math.pow(10, 10) <= dt)
 		{
 			return;
@@ -967,12 +964,12 @@ public class Game
 		if (evt.getButton() == 3)
 		{
 			player.setCurrentAction("MouseRightClick");
-			player.setPos(GamePanel.getMousePos());
+			player.setPos(new Point2D.Double(GamePanel.getMousePos().x, GamePanel.getMousePos().y));
 			// Log.attributes(player) ;
 			// System.out.println("map: " + player.getMap().getName());
 			if (pet != null)
 			{
-				pet.setPos(player.getPos());
+				pet.setPos(player.getPosAsDouble());
 			}
 		}
 

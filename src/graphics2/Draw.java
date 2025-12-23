@@ -18,6 +18,7 @@ import components.Hitbox;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics.Scale;
+import graphics.UtilAlignment;
 import items.Item;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -99,7 +100,7 @@ public abstract class Draw
 	{
 		
 		Dimension size = new Dimension(gif.getWidth(null), gif.getHeight(null)) ;
-		Point offset = Util.offsetForAlignment(align, size) ;
+		Point offset = UtilAlignment.offsetForAlignment(align, size) ;
 		GamePanel.DP.drawImage(gif, Util.translate(pos, offset.x, offset.y), align);
 	}
 	
@@ -114,7 +115,7 @@ public abstract class Draw
 	
 	public static void textUntil(Point pos, Align align, double angle, String text, Font font, Color color, int maxLength, Point mousePos)
 	{
-		Point offset = Util.offsetForAlignment(align, new Dimension(maxLength, GamePanel.DP.textHeight(font))) ;
+		Point offset = UtilAlignment.offsetForAlignment(align, new Dimension(maxLength, GamePanel.DP.textHeight(font))) ;
 		int minlength = 3 ;	// 3 is the length of "..."
 		String shortText = text ;
 		maxLength = Math.max(maxLength, minlength) ;

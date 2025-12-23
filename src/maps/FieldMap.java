@@ -3,6 +3,7 @@ package maps;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -334,7 +335,8 @@ public class FieldMap extends GameMap
 			if (creatureTypeID <= -1) { continue ;}
 			
 			CreatureType creatureType = CreatureType.all.get(creatureTypeID);
-			Creature creature = new Creature(creatureType, randomPosOnLand()) ;
+			Point2D.Double randomPos = randomPosOnLandDouble() ;
+			Creature creature = new Creature(creatureType, randomPos) ;
 			creatures.add(creature) ;
 		}
 	}

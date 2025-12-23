@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import UI.ButtonFunction;
 import UI.GameButton;
 import graphics.Align;
+import graphics.UtilAlignment;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.Path;
@@ -165,7 +166,7 @@ public abstract class GameWindow
 	
 	protected void checkMouseSelection(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
 	{
-		Point textTopLeft = Util.getTopLeft(itemPos, align, itemSize) ;
+		Point textTopLeft = UtilAlignment.getTopLeft(itemPos, align, itemSize) ;
 		if (!Util.isInside(mousePos, textTopLeft, itemSize)) { return ;}
 		
 		item = itemID ;

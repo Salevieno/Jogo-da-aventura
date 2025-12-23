@@ -15,6 +15,7 @@ import main.GamePanel;
 import main.Path;
 import screen.SideBar;
 import utilities.Util;
+import graphics.UtilAlignment;
 
 
 public abstract class SpellsBar
@@ -97,7 +98,7 @@ public abstract class SpellsBar
 			
 			displayCooldown(slotCenter, spell) ;
 
-			Point slotTopLeft = Util.getTopLeft(slotCenter, Align.center, slotSize) ;
+			Point slotTopLeft = UtilAlignment.getTopLeft(slotCenter, Align.center, slotSize) ;
 			if (!Util.isInside(mousePos, slotTopLeft, slotSize)) { continue ;}
 			
 			Point textPos = new Point(slotCenter.x - slotSize.width, slotCenter.y) ;

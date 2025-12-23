@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 import attributes.PersonalAttributes;
 import graphics.Align;
 import graphics.Scale;
+import graphics.UtilAlignment;
 import graphics2.Draw;
 import items.Equip;
 import items.Item;
@@ -531,7 +532,7 @@ public class NPC
 			Color textColor = stdColor ;
 			if (i == selOption)
 			{
-				Draw.textSelection(Util.getPosAt(textPos, Align.topLeft, Align.center, new Dimension(-45, 8)), new Dimension(45, 8)) ;
+				Draw.textSelection(UtilAlignment.getPosAt(textPos, Align.topLeft, Align.center, new Dimension(-45, 8)), new Dimension(45, 8)) ;
 			}
 			GamePanel.DP.drawText(textPos, Align.topLeft, Draw.stdAngle, text, NPCfont, textColor) ;
 		}
@@ -655,14 +656,14 @@ public class NPC
 		if (player.getMap().getName().equals("Forest 2"))
 		{
 			player.setMap(Game.getMaps()[30]) ;
-			player.setPos(Util.translate(pos, type.getImage().getWidth(null), 0)) ;
+			// player.setPos(Util.translate(pos, type.getImage().getWidth(null), 0)) ;
 			return ;
 		}
 
 		if (player.getMap().getName().equals("Cave 1"))
 		{ 
 			player.setMap(Game.getMaps()[6]) ;
-			player.setPos(Util.translate(pos, type.getImage().getWidth(null), 0)) ;
+			// player.setPos(Util.translate(pos, type.getImage().getWidth(null), 0)) ;
 			return ;
 		}
 	}
@@ -712,13 +713,13 @@ public class NPC
 			if (player.getMap().getName().equals("Forest 13"))
 			{
 				player.setMap(Game.getMaps()[40]) ;
-				player.setPos(Game.getScreen().pos(0.2, 0.8)) ;
+				// player.setPos(Game.getScreen().pos(0.2, 0.8)) ;
 				return ;
 			}
 			if (player.getMap().getName().equals("Island 1"))
 			{
 				player.setMap(Game.getMaps()[17]) ;
-				player.setPos(Game.getScreen().pos(0.8, 0.8)) ;
+				// player.setPos(Game.getScreen().pos(0.8, 0.8)) ;
 				return ;
 			}
 		}

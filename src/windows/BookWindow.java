@@ -10,6 +10,7 @@ import java.util.List;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics.Scale;
+import graphics.UtilAlignment;
 import graphics2.Draw;
 import items.Item;
 import items.Recipe;
@@ -82,7 +83,7 @@ public class BookWindow extends GameWindow
 	{
 		if (numberWindows == 0) { return ;}
 		
-		Point textPos = Util.translate(Util.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
+		Point textPos = Util.translate(UtilAlignment.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
 		String pageText = (window + 1) + " / " + numberWindows ;
 		GamePanel.DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Game.palette[0]) ;
 	}
@@ -93,6 +94,6 @@ public class BookWindow extends GameWindow
 		displayRecipes(mousePos) ;
 		displayPageNumber() ;
 		
-		Draw.windowArrows(Util.getPosAt(windowPos, Align.center, Align.bottomLeft, size), image.getWidth(null), window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(UtilAlignment.getPosAt(windowPos, Align.center, Align.bottomLeft, size), image.getWidth(null), window, numberWindows, stdOpacity) ;
 	}
 }

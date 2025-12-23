@@ -18,7 +18,7 @@ public class SpriteAnimation
     private double frameDuration;
     private Dimension frameSize;
     private GameTimer timer;
-    private Point pos ; // TODO verificar necessidade
+    private Point pos ;
     private Align align ;
     private boolean loops ;
     private boolean active ;
@@ -54,6 +54,11 @@ public class SpriteAnimation
     public SpriteAnimation(String path, Point pos, Align align, int qtdFrames, double frameDuration)
     {
     	this(path, pos, align, true, qtdFrames, frameDuration) ;
+    }
+
+    public SpriteAnimation(String path, Align align, int qtdFrames, double frameDuration)
+    {
+    	this(path, null, align, true, qtdFrames, frameDuration) ;
     }
     
     public Dimension getFrameSize() { return frameSize ;}

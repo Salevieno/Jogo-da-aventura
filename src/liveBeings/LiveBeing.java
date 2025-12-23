@@ -178,11 +178,6 @@ public abstract class LiveBeing implements Drawable
 		pos = newValue ;
 		hitbox.setCenter(center()) ;
 	}
-	// TODO eliminar essa função
-	public void setPos(Point newValue)
-	{
-		setPos(new Point2D.Double(newValue.x, newValue.y)) ;
-	}
 	public void moveIfWalkable(Point2D.Double dist)
 	{
 		Point2D.Double newPos = new Point2D.Double(pos.x + dist.x, pos.y + dist.y) ;
