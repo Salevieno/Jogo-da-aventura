@@ -382,10 +382,10 @@ public abstract class LiveBeing implements Drawable
 		return changeDir ? randomPerpendicularDir(dir) : dir ;
 	}
 	
-	public Point2D.Double calcNewPos()
+	public Point2D.Double calcNewPos(double dt)
 	{
 		Directions moveDir = isDrunk() ? calcDrunkDir(dir, drunk) : dir ;		
-		return MovePattern.calcNewPos(moveDir, pos, step) ;
+		return MovePattern.calcNewPos(moveDir, pos, step, dt) ;
 	}
 
 	public void startCounters()
@@ -619,7 +619,7 @@ public abstract class LiveBeing implements Drawable
 
 	public boolean isTouching(GroundType groundType)
 	{		
- 		RelativePos adjGround = checkAdjacentGround(pos, map, groundType, step) ;
+ 		RelativePos adjGround = checkAdjacentGround(pos, size, map, groundType) ;
  		
  		if (adjGround == null) { return false ;}
  		
@@ -630,7 +630,7 @@ public abstract class LiveBeing implements Drawable
 
 	public boolean isInside(GroundType groundType)
 	{ 
- 		RelativePos adjGround = checkAdjacentGround(pos, map, groundType, step) ;
+ 		RelativePos adjGround = checkAdjacentGround(pos, size, map, groundType) ;
  		
  		if (adjGround == null) { return false ;}
  		
@@ -641,7 +641,7 @@ public abstract class LiveBeing implements Drawable
 		
 		
  	
-	public static RelativePos checkAdjacentGround(Point2D.Double pos, GameMap map, GroundType targetGroundType, int step)
+	private static RelativePos checkAdjacentGround(Point2D.Double pos, Dimension size, GameMap map, GroundType targetGroundType)
 	{ 		
  		Point2D.Double userPos = new Point2D.Double(pos.x, pos.y) ;
 
@@ -652,20 +652,20 @@ public abstract class LiveBeing implements Drawable
 		for (GroundRegion groundType : map.getgroundTypes())
 		{
 			if (!groundType.getType().equals(targetGroundType)) { continue ;}	
-			
-			return posRelativeToPolygon(userPos, groundType.getRegion(), step) ;
+
+			return posRelativeToPolygon(userPos, size, groundType.getRegion()) ;
 		}
 		
 		return null ;
 	}
 
-	private static RelativePos posRelativeToPolygon(Point2D.Double pos, Polygon polygon, int step)
+	private static RelativePos posRelativeToPolygon(Point2D.Double pos, Dimension size, Polygon polygon)
 	{
 		if (polygon.contains(pos)) { return RelativePos.inside ;}
-		if (polygon.contains(MovePattern.calcNewPos(Directions.down, pos, step))) { return RelativePos.above ;}
-		if (polygon.contains(MovePattern.calcNewPos(Directions.right, pos, step))) { return RelativePos.left ;}
-		if (polygon.contains(MovePattern.calcNewPos(Directions.left, pos, step))) { return RelativePos.right ;}
-		if (polygon.contains(MovePattern.calcNewPos(Directions.up, pos, step))) { return RelativePos.below ;}
+		if (polygon.contains(new Point2D.Double(pos.x, pos.y - size.height))) { return RelativePos.above ;}
+		if (polygon.contains(new Point2D.Double(pos.x - size.width, pos.y))) { return RelativePos.left ;}
+		if (polygon.contains(new Point2D.Double(pos.x + size.width, pos.y))) { return RelativePos.right ;}
+		if (polygon.contains(new Point2D.Double(pos.x, pos.y + size.height))) { return RelativePos.below ;}
 
 		return null ;
 	}

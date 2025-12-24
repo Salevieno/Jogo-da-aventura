@@ -607,9 +607,9 @@ public class Player extends LiveBeing
 
 	public boolean isMoving() { return keysPressed.stream().anyMatch(Game.arrowKeys::contains) ;}
 
-	public void move(Pet pet)
+	public void move(Pet pet, double dt)
 	{
-		Point2D.Double newPos = calcNewPos() ;
+		Point2D.Double newPos = calcNewPos(dt) ;
 
 		if (Game.getScreen().posIsWithinBorders(newPos))
 		{

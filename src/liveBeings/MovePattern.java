@@ -24,20 +24,20 @@ public enum MovePattern
         return calcNewPos(movePattern, dir, step, dt, currentPos, 0.0) ;
     }
 
-    public static Point2D.Double calcNewPos(double angle, Point2D.Double currentPos, int step)
+    private static Point2D.Double calcNewPos(double angle, Point2D.Double currentPos, double speed, double dt)
 	{
-		Point2D.Double newPos = new Point2D.Double((int) (currentPos.x + step * Math.cos(angle)), (int) (currentPos.y + step * Math.sin(angle))) ;
+		Point2D.Double newPos = new Point2D.Double(currentPos.x + speed * dt * Math.cos(angle), currentPos.y + speed * dt * Math.sin(angle)) ;
 		return newPos ;
 	}
 
-    public static Point2D.Double calcNewPos(Directions dir, Point2D.Double currentPos, int step)
-	{
+    public static Point2D.Double calcNewPos(Directions dir, Point2D.Double currentPos, double speed, double dt)
+	{// TODO corrigir bug às vezes o movimento é grande e atravessa paredes
 		Point2D.Double newPos = switch (dir)
 		{
-			case up -> calcNewPos(3 * Math.PI / 2, currentPos, step) ;
-			case down -> calcNewPos(Math.PI / 2, currentPos, step) ;
-			case left -> calcNewPos(Math.PI, currentPos, step) ;
-			case right -> calcNewPos(0, currentPos, step) ;
+			case up -> calcNewPos(3 * Math.PI / 2, currentPos, speed, dt) ;
+			case down -> calcNewPos(Math.PI / 2, currentPos, speed, dt) ;
+			case left -> calcNewPos(Math.PI, currentPos, speed, dt) ;
+			case right -> calcNewPos(0, currentPos, speed, dt) ;
 		} ;
 		
 		return newPos ;

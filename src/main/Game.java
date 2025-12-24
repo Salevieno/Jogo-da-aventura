@@ -674,7 +674,7 @@ public class Game
 		pet.act(player, dt);
 	}
 
-	private void playerActs()
+	private void playerActs(double dt)
 	{
 
 		player.takeBloodAndPoisonDamage();
@@ -692,14 +692,14 @@ public class Game
 		{
 			for (int i = 0; i <= 0; i += 1)
 			{
-				player.move(pet);
+				player.move(pet, dt);
 			}
 		}
 	}
 
 	private void run(double dt)
 	{
-System.out.println(dt);
+
 		if (Math.pow(10, 10) <= dt)
 		{
 			return;
@@ -725,7 +725,7 @@ System.out.println(dt);
 			petActs(dt);
 		}
 
-		playerActs();
+		playerActs(dt / Math.pow(10, 9));
 
 		if (player.getMap().isField())
 		{
