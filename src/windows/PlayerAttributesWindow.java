@@ -45,8 +45,8 @@ public class PlayerAttributesWindow extends AttributesWindow
 		tab0Image = Game.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow1.png") ;
 		tab1Image = Game.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow2.png") ;
 		tab2Image = Game.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow3.png") ;
-		plusSign = Game.loadImage(Path.SIDEBAR_IMG + "PlusSign.png") ;
-		selectedPlusSign = Game.loadImage(Path.SIDEBAR_IMG + "ShiningPlusSign.png") ;
+		plusSign = Game.loadImage(Path.WINDOWS_IMG + "PlusSign.png") ;
+		selectedPlusSign = Game.loadImage(Path.WINDOWS_IMG + "PlusSignShining.png") ;
 	}
 	
 	public PlayerAttributesWindow()
@@ -63,14 +63,14 @@ public class PlayerAttributesWindow extends AttributesWindow
 	public void initializeAttIncButtons(Player player)
 	{
 
-		Point pos = Util.translate(windowPos, 27, 180) ;
+		Point pos = Util.translate(windowPos, 27, 280) ;
 		for (Attributes att : Arrays.asList(Attributes.getIncrementable()))
 		{
 			ButtonFunction method = () -> {player.getBA().mapAttributes(att).incBaseValue(1) ;} ;
 			GameButton newAttButton = new GameButton(pos, Align.center, plusSign, selectedPlusSign, method) ;
 			newAttButton.deactivate() ;
 			incAttButtons.put(att, newAttButton) ;
-			pos.y += 22 ;
+			pos.y += 27 ;
 		}
 		
 	}
