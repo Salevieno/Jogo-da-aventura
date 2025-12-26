@@ -616,6 +616,10 @@ public class Player extends LiveBeing
 			if (!map.groundIsWalkable(new Point((int) newPos.x, (int) newPos.y), superElem)) { return ;}
 			
 			setPos(newPos) ;
+			if (levelUpAni.isActive())
+			{
+				levelUpAni.setPos(getPos());
+			}
 			
 			return ;
 		}
@@ -1554,7 +1558,7 @@ public class Player extends LiveBeing
 		
 		((PlayerAttributesWindow) attWindow).activateIncAttButtons(attPoints) ;
 		
-		Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, level});
+		// Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, level});
 		levelUpAni.setPos(getPos()) ;
 		levelUpAni.activate() ;
 	}
