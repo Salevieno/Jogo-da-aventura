@@ -637,7 +637,7 @@ public class Game
 
 		if (player.isMoving())
 		{
-			for (int i = 0; i <= 0; i += 1)
+			if (!player.isCollecting())
 			{
 				player.move(pet, dt);
 			}

@@ -605,6 +605,7 @@ public class Player extends LiveBeing
 	public void addKeyPressed(String key) { keysPressed.add(key) ;}
 	public void removeKeyPressed(String key) { keysPressed.remove(key) ;}
 
+	public boolean isCollecting() { return state == LiveBeingStates.collecting ;}
 	public boolean isMoving() { return keysPressed.stream().anyMatch(Game.arrowKeys::contains) ;}
 
 	public void move(Pet pet, double dt)
