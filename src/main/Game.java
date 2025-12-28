@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -73,8 +72,7 @@ public class Game
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos
 	// liveBeings
 	// TODO optional - settings outside the player
-	private static final String[] konamiCode = new String[] { "Up", "Up", "Down", "Down", "Left", "Right", "Left",
-			"Right", "B", "A" };
+	private static final List<String> konamiCode = List.of("Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A") ;
 
 	public static Color[] palette;
 	public static final Color selColor;
@@ -91,7 +89,7 @@ public class Game
 	private static GameStates state = GameStates.loading;
 	private static Languages gameLanguage;
 	private static boolean shouldRepaint; // tells if the panel should be repainted, responding to multiple requests only once
-	private static boolean konamiCodeActive;
+	private static boolean konamiCodeIsActive;
 	private static double dt;
 	public static GameTimer dayTimer;
 
@@ -99,7 +97,7 @@ public class Game
 
 	private static Player player;
 	private static Pet pet;
-	public static int difficultLevel = 2;
+	public static int difficultLevel = 0;
 	private static int saveSlotInUse = -1;
 
 	private static final Screen screen;
@@ -139,90 +137,23 @@ public class Game
 		player = new Player("", "", 1);
 	}
 
-	public static GameStates getState()
-	{
-		return state;
-	}
-
-	public static Languages getLanguage()
-	{
-		return gameLanguage;
-	}
-
-	public static Screen getScreen()
-	{
-		return screen;
-	}
-
-	public static NPCType[] getNPCTypes()
-	{
-		return npcTypes;
-	}
-
-	public static Player getPlayer()
-	{
-		return player;
-	}
-
-	public static Pet getPet()
-	{
-		return pet;
-	}
-
-	public static GameMap[] getMaps()
-	{
-		return allMaps;
-	}
-
-	public static Quest[] getAllQuests()
-	{
-		return allQuests;
-	}
-
-	public static Item[] getAllItems()
-	{
-		return allItems;
-	}
-
-	public static Spell[] getAllSpells()
-	{
-		return allSpells;
-	}
-
-	public static boolean getShouldRepaint()
-	{
-		return shouldRepaint;
-	}
-
-	public static int getSaveSlotInUse()
-	{
-		return saveSlotInUse;
-	}
-
-	public static void setSaveSlotInUse(int newSaveSlotInUse)
-	{
-		saveSlotInUse = newSaveSlotInUse;
-	}
-
-	public static double dayTimeRate()
-	{
-		return dayTimer.rate() <= 0.5 ? dayTimer.rate() + 0.5 : dayTimer.rate() - 0.5;
-	}
-
-	public static void setPlayer(Player newPlayer)
-	{
-		player = newPlayer;
-	}
-
-	public static void setState(GameStates newState)
-	{
-		state = newState;
-	}
-
-	public static void switchToMainState()
-	{
-		state = mainState;
-	}
+	public static GameStates getState() { return state ;}
+	public static Languages getLanguage() { return gameLanguage ;}
+	public static Screen getScreen() { return screen ;}
+	public static NPCType[] getNPCTypes() { return npcTypes ;}
+	public static Player getPlayer() { return player ;}
+	public static Pet getPet() { return pet ;}
+	public static GameMap[] getMaps() { return allMaps ;}
+	public static Quest[] getAllQuests() { return allQuests ;}
+	public static Item[] getAllItems() { return allItems ;}
+	public static Spell[] getAllSpells() { return allSpells ;}
+	public static boolean getShouldRepaint() { return shouldRepaint ;}
+	public static int getSaveSlotInUse() { return saveSlotInUse ;}
+	public static void setSaveSlotInUse(int newSaveSlotInUse) { saveSlotInUse = newSaveSlotInUse ;}
+	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
+	public static void setState(GameStates newState) { state = newState ;}
+	public static void switchToMainState() { state = mainState ;}
+	public static double dayTimeRate() { return dayTimer.rate() <= 0.5 ? dayTimer.rate() + 0.5 : dayTimer.rate() - 0.5 ;}
 
 	private static Color[] readColorPalette(Image paletteImage, String mode)
 	{
@@ -266,28 +197,46 @@ public class Game
 		return Util.loadImage(Path.IMAGES + path);
 	}
 
+	private static void activateKonamiEffect()
+	{
+		palette = konamiPalette;
+		dayTimer.setDuration(6);
+	}
+
+	private static void deactivateKonamiEffect()
+	{
+		palette = normalPalette;
+		dayTimer.setDuration(600);
+		Draw.stdAngle = 0;
+	}
+
 	private static void checkKonamiCode(List<String> combo)
 	{
-		if (!Arrays.equals(combo.toArray(new String[combo.size()]), konamiCode))
+		if (!konamiCode.equals(combo)) { return ;}
+
+		konamiCodeIsActive = !konamiCodeIsActive;
+		if (konamiCodeIsActive)
 		{
-			return;
+			activateKonamiEffect() ;
 		}
-		System.out.println("Activating konami code!");
-		konamiCodeActive = !konamiCodeActive;
+		else
+		{
+			deactivateKonamiEffect() ;
+		}
 		player.resetCombo();
 	}
 
-	private static void konamiCode()
+	private static void applyKonamiEffect(double dt)
 	{
-		dayTimer.setDuration(6);
-		palette = konamiPalette;
-		if (dayTimer.getCounter() % 1200 <= 300)
+		if (dayTimer.rate() <= 0.25)
 		{
 			Draw.stdAngle += 0.04;
-		} else if (dayTimer.getCounter() % 1200 <= 900)
+		}
+		else if (dayTimer.rate() <= 0.75)
 		{
 			Draw.stdAngle -= 0.04;
-		} else
+		}
+		else
 		{
 			Draw.stdAngle += 0.04;
 		}
@@ -330,10 +279,7 @@ public class Game
 			Object key = iterator.next();
 			TextCategories catName = TextCategories.catFromBRName((String) key);
 
-			if (catName == null)
-			{
-				continue;
-			}
+			if (catName == null) { continue ;}
 
 			if (catName.equals(TextCategories.npcs))
 			{
@@ -504,92 +450,92 @@ public class Game
 
 		switch (step)
 		{
-		case 0:
-			screen.setBorders(new int[] { 0 + Screen.borderOffset, Sky.height + Screen.borderOffset,
-					screen.getSize().width - 60 - Screen.borderOffset, screen.getSize().height - Screen.borderOffset });
-			screen.setMapCenter();
-			Log.loadTime("initial stuff", initialTime);
-			return;
+			case 0:
+				screen.setBorders(new int[] { 0 + Screen.borderOffset, Sky.height + Screen.borderOffset,
+						screen.getSize().width - 60 - Screen.borderOffset, screen.getSize().height - Screen.borderOffset });
+				screen.setMapCenter();
+				Log.loadTime("initial stuff", initialTime);
+				return;
 
-		case 1:
-			loadAllText();
-			Log.loadTime("text", initialTime);
-			return;
+			case 1:
+				loadAllText();
+				Log.loadTime("text", initialTime);
+				return;
 
-		case 2:
-			Buff.loadBuffs();
-			Buff.loadDebuffs();
-			Spell.load(gameLanguage, Buff.allBuffs, Buff.allDebuffs);
-			Log.loadTime("spells", initialTime);
-			return;
+			case 2:
+				Buff.loadBuffs();
+				Buff.loadDebuffs();
+				Spell.load(gameLanguage, Buff.allBuffs, Buff.allDebuffs);
+				Log.loadTime("spells", initialTime);
+				return;
 
-		case 3:
-			Item.load();
-			Log.loadTime("items", initialTime);
-			return;
+			case 3:
+				Item.load();
+				Log.loadTime("items", initialTime);
+				return;
 
-		case 4:
-			CreatureType.load(gameLanguage, difficultLevel);
-			Log.loadTime("creature types", initialTime);
-			return;
+			case 4:
+				CreatureType.load(gameLanguage, difficultLevel);
+				Log.loadTime("creature types", initialTime);
+				return;
 
-		case 5:
-			Recipe.load(Item.allItems);
-			Log.loadTime("recipes", initialTime);
-			return;
+			case 5:
+				Recipe.load(Item.allItems);
+				Log.loadTime("recipes", initialTime);
+				return;
 
-		case 6:
-			npcTypes = NPCType.load(gameLanguage);
-			Log.loadTime("npc types", initialTime);
-			return;
+			case 6:
+				npcTypes = NPCType.load(gameLanguage);
+				Log.loadTime("npc types", initialTime);
+				return;
 
-		case 7:
-			buildingTypes = BuildingType.load();
-			Log.loadTime("building types", initialTime);
-			return;
+			case 7:
+				buildingTypes = BuildingType.load();
+				Log.loadTime("building types", initialTime);
+				return;
 
-		case 8:
-			allQuests = Quest.load(gameLanguage, player.getJob(), CreatureType.all, Item.allItems);
-			Log.loadTime("quests", initialTime);
-			return;
+			case 8:
+				allQuests = Quest.load(gameLanguage, player.getJob(), CreatureType.all, Item.allItems);
+				Log.loadTime("quests", initialTime);
+				return;
 
-		case 9:
-			cityMaps = CityMap.load(buildingTypes);
-			fieldMaps = FieldMap.load(npcTypes);
-			specialMaps = SpecialMap.load(Item.allItems);
-			allMaps = GameMap.assemble(cityMaps, fieldMaps, specialMaps);
-			Log.loadTime("maps", initialTime);
-			return;
+			case 9:
+				cityMaps = CityMap.load(buildingTypes);
+				fieldMaps = FieldMap.load(npcTypes);
+				specialMaps = SpecialMap.load(Item.allItems);
+				allMaps = GameMap.assemble(cityMaps, fieldMaps, specialMaps);
+				Log.loadTime("maps", initialTime);
+				return;
 
-		case 10:
-			NPC.setIDs();
+			case 10:
+				NPC.setIDs();
 
-			// player.InitializeSpells() ;
-			if (player.getSpells().isEmpty())
-			{
-				player.setSpells(Player.jobSpells(player.getJob()));
-			}
-			player.setMap(Game.getMaps()[player.getJob()]);
-			player.setPos(new Point2D.Double(Game.getScreen().getCenter().x, Game.getScreen().getCenter().y));
-			LiveBeing.updateDamageAnimation(player.getSettings().getDamageAnimation());
-			SideBar.initialize();
+				// player.InitializeSpells() ;
+				if (player.getSpells().isEmpty())
+				{
+					player.setSpells(Player.jobSpells(player.getJob()));
+				}
+				player.setMap(Game.getMaps()[player.getJob()]);
+				player.setPos(new Point2D.Double(Game.getScreen().getCenter().x, Game.getScreen().getCenter().y));
+				LiveBeing.updateDamageAnimation(player.getSettings().getDamageAnimation());
+				SideBar.initialize();
 
-			if (player.getSettings().getMusicIsOn())
-			{
-				Music.SwitchMusic(player.getMap().getMusic());
-			}
-			dayTimer.start();
-			Log.loadTime("last stuff", initialTime);
+				if (player.getSettings().getMusicIsOn())
+				{
+					Music.SwitchMusic(player.getMap().getMusic());
+				}
+				dayTimer.start();
+				Log.loadTime("last stuff", initialTime);
 
-			if (Game.testMode)
-			{
-				Game.initializeTestMode();
-			}
+				if (Game.testMode)
+				{
+					Game.initializeTestMode();
+				}
 
-			return;
+				return;
 
-		default:
-			return;
+			default:
+				return;
 		}
 
 	}
@@ -709,9 +655,9 @@ public class Game
 		activateCounters();
 
 		checkKonamiCode(player.getCombo());
-		if (konamiCodeActive)
+		if (konamiCodeIsActive)
 		{
-			konamiCode();
+			applyKonamiEffect(dt);
 		}
 
 		if (player.getMap().isField())

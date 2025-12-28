@@ -136,7 +136,7 @@ public class CreatureType
 		CreatureType.setNumberOfCreatureTypes(input.size());
 		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()];
 		Color[] color = new Color[creatureTypes.length];
-		double diffMult = difficultLevel == 0 ? 0.6 : (difficultLevel == 1 ? 0.8 : 1.0);
+		double diffMult = difficultLevel == 0 ? 0.2 : (difficultLevel == 1 ? 0.8 : 1.0);
 
 		for (int row = 0; row <= creatureTypes.length - 1; row += 1)
 		{

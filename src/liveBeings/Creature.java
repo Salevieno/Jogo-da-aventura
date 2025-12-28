@@ -334,6 +334,7 @@ public class Creature extends LiveBeing
 			GamePanel.DP.drawText(Util.translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
 			GamePanel.DP.drawText(Util.translate(pos, 0, -40), Align.bottomCenter, !idleTimer.isActive() ? "is moving: " + dir : "", Color.black) ;
 			displayState() ;
+			GamePanel.DP.drawText(Util.translate(pos, 0, -50), Align.bottomCenter, totalPower() + " ", Color.black) ;
 			hitbox.display();
 		}
 	}	

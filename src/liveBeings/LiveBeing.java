@@ -74,6 +74,7 @@ public abstract class LiveBeing implements Drawable
 	protected AttributesWindow attWindow ;
 	
 	private static int damageStyle = 0 ;
+	private static final int MAX_COMBO_SIZE = 10 ;
 	private static final Image attImage = Game.loadImage(Path.PLAYER_IMG + "Attributes.png") ;
 	private static final Image drunkImage = Game.loadImage(Path.STATUS_IMG + "Drunk.png") ;
 	private static final Image defendingImage = Game.loadImage(Path.BATTLE_IMG + "ShieldIcon.png") ;
@@ -538,17 +539,12 @@ public abstract class LiveBeing implements Drawable
 	
 	public void updateCombo()
 	{
-		if (currentAction != null)
+		if (currentAction == null) { return ;}
+
+		combo.add(currentAction) ;
+		if (MAX_COMBO_SIZE < combo.size())
 		{
-			if (combo.size() <= 9)
-			{
-				combo.add(currentAction) ;
-			}
-			else
-			{
-				combo.add(0, currentAction) ;
-				combo.remove(combo.size() - 1) ;
-			}
+			combo.remove(0) ;
 		}
 	}
 	
