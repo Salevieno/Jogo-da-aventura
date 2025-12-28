@@ -89,8 +89,8 @@ public class PersonalAttributes
 	@Override
 	public String toString()
 	{
-		return "PersonalAttributes [Life=" + life + ", Mp=" + mp + ", Exp=" + exp + ", Satiation=" + satiation
-				+ ", Thirst=" + thirst + "]";
+		return String.format("Personal Attributes:\n  Life: %s\n  Mp: %s\n  Exp: %s\n  Satiation: %s\n  Thirst: %s\n",
+				life.toString(), mp.toString(), exp.toString(), satiation.toString(), thirst.toString()) ;
 	}
 
 }

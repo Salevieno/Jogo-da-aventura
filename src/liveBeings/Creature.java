@@ -45,11 +45,6 @@ public class Creature extends LiveBeing
 	
 	private static final Color[] skinColor = new Color[] {Game.palette[0], Game.palette[5]} ;
 	private static final Color[] shadeColor = new Color[] {Game.palette[2], Game.palette[3]} ;
-	
- 	public Creature(CreatureType CT)
-	{
- 		this(CT, Util.randomPosDouble(new Point2D.Double(0, (int) (0.2*Game.getScreen().mapSize().height)), new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)), new Dimension(1, 1))) ;
-	}
 
  	public Creature(CreatureType CT, Point2D.Double pos)
  	{
@@ -89,6 +84,11 @@ public class Creature extends LiveBeing
  		setPos(pos) ;
  	}
  	
+ 	public Creature(CreatureType CT)
+	{
+ 		this(CT, Util.randomPosDouble(new Point2D.Double(0, (int) (0.2*Game.getScreen().mapSize().height)), new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)), new Dimension(1, 1))) ;
+	}
+
 	public CreatureType getType() {return type ;}
 	public List<Spell> getSpell() {return spells ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
@@ -369,8 +369,7 @@ public class Creature extends LiveBeing
 	@Override
 	public String toString()
 	{
-		return "Creature [type=" + type + ", Bag=" + items + ", Gold=" + gold + ", color=" + color + ", follow=" + chasePlayer + "]";
-	}
-
-	
+		return String.format("Creature:\n  Name: %s\n  Level: %d\n  Color: %s\n  Gold: %d\n  Bag: %s\n  Type: %s\n",
+				name, level, color, gold, items.toString(), type) ;
+	}	
 }

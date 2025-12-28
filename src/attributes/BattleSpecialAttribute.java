@@ -100,12 +100,18 @@ public class BattleSpecialAttribute
 		
 	}
 
+	public String toStringSimple()
+	{
+		return String.format("Basic Atk Chance: %.3f + %.3f, Basic Def Chance: %.3f + %.3f, Duration: %.3f",
+				basicAtkChance, basicAtkChanceBonus, basicDefChance, basicDefChanceBonus,
+				duration) ;
+	}
+
 	@Override
 	public String toString()
 	{
-		return "BattleSpecialAttribute [basicAtkChance=" + basicAtkChance + ", basicAtkChanceBonus="
-				+ basicAtkChanceBonus + ", basicDefChance=" + basicDefChance + ", basicDefChanceBonus="
-				+ basicDefChanceBonus + ", duration=" + duration + "]";
+		return String.format("Battle Special Attribute: Basic Atk Chance: %.3f, Basic Atk Chance Bonus: %.3f, Basic Def Chance: %.3f, Basic Def Chance Bonus: %.3f, Duration: %.3f",
+				basicAtkChance, basicAtkChanceBonus, basicDefChance, basicDefChanceBonus, duration) ;
 	}
 	
 }

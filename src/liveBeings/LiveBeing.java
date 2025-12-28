@@ -463,13 +463,13 @@ public abstract class LiveBeing implements Drawable
 	
 	public void resetBattleActions() { battleActionCounter.start() ; }
 	
-	public int totalPower()
+	protected int totalPower()
 	{
 		// TODO optional - consider special ba, element mult, mp with spells and items
 		// Dano = nHits . hitRate . (PhyAtkRate . PhyDam + MagAtkRate . MagDam + BloodRate . BloodDam + PoisonRate . PoisonDam)
 		
 		LiveBeing defender = new Creature(CreatureType.all.get(0)) ;
-
+		System.out.println(defender);
 //		new CreatureType(0, "", 0, new Dimension(0, 0), 60, 0, new Elements[] {Elements.water}, 0, 0, 0, 0, 0, null,
 //				new PersonalAttributes(new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1)),
 //				new BattleAttributes(new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0),
@@ -796,17 +796,17 @@ public abstract class LiveBeing implements Drawable
 		if (style == 1)
 		{			
 			Point topLeft = Game.getScreen().pos(0.01, 0.02) ;
-			Dimension barSize = new Dimension(5, 35) ;
+			Dimension barSize = new Dimension(5, 60) ;
 			int stroke = 1 ;
-			GamePanel.DP.drawImage(attImage, topLeft, Align.topLeft) ;
-			Point offset = new Point(37, 44) ;
+			GamePanel.DP.drawImage(attImage, topLeft, Align.topLeft, 0.85) ;
+			Point offset = new Point(63, 70) ;
 			Point barPos = Util.translate(topLeft, offset.x, offset.y) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
 				Dimension rateSize = new Dimension(barSize.width, (int) (attRate.get(att) *  barSize.height)) ;
 				GamePanel.DP.drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Game.palette[0], 1.0) ;
 				GamePanel.DP.drawRect(barPos, Align.bottomCenter, rateSize, stroke, attColor.get(att), null, 1.0) ;
-				barPos.x += barSize.width + 15 ;
+				barPos.x += barSize.width + 26 ;
 			}
 		}
 		

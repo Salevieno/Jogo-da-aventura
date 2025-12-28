@@ -64,11 +64,18 @@ public class BasicBattleAttribute extends LiveBeingAttribute
 		return new BasicBattleAttribute(baseValue, bonus, train) ;
 		
 	}
+
+	public String toStringSimple()
+	{
+		return String.format("%.3f (%.3f + %.3f + %.3f)",
+				getTotal(), baseValue, bonus, train) ;
+	}
 	
 	@Override
 	public String toString()
 	{
-		return "BasicBattleAttribute [baseValue=" + baseValue + ", bonus=" + bonus + ", train=" + train + "]";
+		return String.format("Basic Battle Attribute: Base Value: %.3f, Bonus: %.3f, Train: %.3f, Total: %.3f",
+				baseValue, bonus, train, getTotal()) ;
 	}
 	
 	

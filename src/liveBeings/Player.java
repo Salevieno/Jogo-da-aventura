@@ -458,7 +458,7 @@ public class Player extends LiveBeing
             	useAutoSpell(true, spells.get(4)) ;
         	}
         	trainCollecting(collectible) ;
-        	Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.palette[0]});
+        	Animation.start(AnimationTypes.obtainedItem, new Object[] {new Point((int)pos.x, (int)(pos.y - 20 - size.height)), msg, Game.palette[0]});
         }
         else
         {
@@ -1009,7 +1009,7 @@ public class Player extends LiveBeing
 				{
 					if (Animation.getAll().isEmpty())
 					{
-						Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.5, 0.1), "Nível de coleta insuficiente", Game.palette[4]}) ;
+						Animation.start(AnimationTypes.message, new Object[] {new Point((int)pos.x, (int)(pos.y - 20 - size.height)), "Nível de coleta insuficiente", Game.palette[4]}) ;
 					}
 					break ;
 				}

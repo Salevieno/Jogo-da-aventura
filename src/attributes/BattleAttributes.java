@@ -302,9 +302,11 @@ public class BattleAttributes
 	@Override
 	public String toString()
 	{
-		return "BattleAttributes [phyAtk=" + phyAtk + "\n magAtk=" + magAtk + "\n phyDef=" + phyDef + "\n magDef=" + magDef
-				+ "\n dex=" + dex + "\n agi=" + agi + "\n critAtk=" + critAtk + "\n critDef=" + critDef + "\n stun=" + stun + "\n block="
-				+ block + "\n blood=" + blood + "\n poison=" + poison + "\n silence=" + silence + "]";
+		return String.format("Battle Attributes:\n  PhyAtk: %s\n  MagAtk: %s\n  PhyDef: %s\n  MagDef: %s\n  Dex: %s\n  Agi: %s\n  CritAtk: %s\n  CritDef: %s\n  Stun: %s\n  Block: %s\n  Blood: %s\n  Poison: %s\n  Silence: %s\n  AtkSpeed: %s\n  KnockbackPower: %s\n",
+				phyAtk.toStringSimple(), magAtk.toStringSimple(), phyDef.toStringSimple(), magDef.toStringSimple(),
+				dex.toStringSimple(), agi.toStringSimple(), critAtk.toStringSimple(), critDef.toStringSimple(),
+				stun.toStringSimple(), block.toStringSimple(), blood.toStringSimple(), poison.toStringSimple(), silence.toStringSimple(),
+				atkSpeed.toStringSimple(), knockbackPower.toStringSimple()) ;
 	}
 
 	

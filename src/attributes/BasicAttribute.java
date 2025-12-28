@@ -75,7 +75,8 @@ public class BasicAttribute extends LiveBeingAttribute
 	@Override
 	public String toString()
 	{
-		return "BasicAttribute [currentValue=" + currentValue + ", bonus=" + bonus + ", maxValue=" + maxValue + " totalValue=" + getTotalValue() + ", multiplier=" + multiplier+ "]" ;
+		return String.format("%d (%d + %.3f) / %d (x %.3f)",
+				getTotalValue(), currentValue, bonus, maxValue, multiplier) ;
 	}
 	
 }

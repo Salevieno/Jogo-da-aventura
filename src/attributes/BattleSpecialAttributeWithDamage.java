@@ -113,12 +113,21 @@ public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
 		
 	}
 
+	public String toStringSimple()
+	{
+		return String.format("Atk: %.3f + %.3f (%.3f%% + %.3f%%), Def: %.3f + %.3f (%.3f%% + %.3f%%), Duration: %.3f",
+				basicAtk, basicAtkBonus, basicAtkChance, basicAtkChanceBonus,
+				basicDef, basicDefBonus, basicDefChance, basicDefChanceBonus,
+				duration) ;
+	}
+
 	@Override
-	public String toString() {
-		return "BattleSpecialAttributeWithDamage [basicAtk=" + basicAtk + ", basicAtkBonus=" + basicAtkBonus
-				+ ", basicDef=" + basicDef + ", basicDefBonus=" + basicDefBonus + ", basicAtkChance=" + basicAtkChance
-				+ ", basicAtkChanceBonus=" + basicAtkChanceBonus + ", basicDefChance=" + basicDefChance
-				+ ", basicDefChanceBonus=" + basicDefChanceBonus + ", duration=" + duration + "]";
+	public String toString()
+	{
+		return String.format("Battle Special Attribute With Damage: Basic Atk Chance: %.3f, Basic Atk Chance Bonus: %.3f, Basic Def Chance: %.3f, Basic Def Chance Bonus: %.3f, Basic Atk: %.3f, Basic Atk Bonus: %.3f, Basic Def: %.3f, Basic Def Bonus: %.3f, Duration: %.3f",
+				basicAtkChance, basicAtkChanceBonus, basicDefChance, basicDefChanceBonus,
+				basicAtk, basicAtkBonus, basicDef, basicDefBonus,
+				duration) ;
 	}
 	
 }

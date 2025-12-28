@@ -84,7 +84,7 @@ public class Game
 
 	private static final GameStates mainState = GameStates.running;
 	private static final boolean testMode = false;
-	public static final boolean debugMode = false;
+	public static final boolean debugMode = true;
 
 	private static GameStates state = GameStates.loading;
 	private static Languages gameLanguage;

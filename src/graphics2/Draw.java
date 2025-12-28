@@ -318,7 +318,7 @@ public abstract class Draw
 	{
 		pos = Util.translate(pos, 0, (int) (-30 * counter.rate())) ;
 		GamePanel.DP.drawImage(obtainedItem, pos, Align.topCenter) ;
-		GamePanel.DP.drawText(Util.translate(pos, 0, 3), Align.topCenter, stdAngle, "Você obteve", stdFont, color) ;
+		GamePanel.DP.drawText(Util.translate(pos, 0, 0), Align.topCenter, stdAngle, "Você obteve", stdFont, color) ;
 		GamePanel.DP.drawText(Util.translate(pos, 5 - obtainedItem.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
 		
 	}

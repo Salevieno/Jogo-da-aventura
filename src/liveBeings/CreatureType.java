@@ -136,7 +136,7 @@ public class CreatureType
 		CreatureType.setNumberOfCreatureTypes(input.size());
 		CreatureType[] creatureTypes = new CreatureType[CreatureType.getNumberOfCreatureTypes()];
 		Color[] color = new Color[creatureTypes.length];
-		double diffMult = difficultLevel == 0 ? 0.2 : (difficultLevel == 1 ? 0.8 : 1.0);
+		double diffMult = difficultLevel == 0 ? 0.6 : (difficultLevel == 1 ? 0.8 : 1.0);
 
 		for (int row = 0; row <= creatureTypes.length - 1; row += 1)
 		{
@@ -247,6 +247,7 @@ public class CreatureType
 
 	public String toString()
 	{
-		return "CreatureTypes [Type=" + id + "]";
+		return String.format("CreatureType:\n  ID: %d\n  PA: %s\n  BA: %s\n  Spells: %s\n",
+				id, PA.toString(), BA.toString(), spell.toString()) ;
 	}
 }
