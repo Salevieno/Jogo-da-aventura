@@ -102,7 +102,7 @@ public class Sky
 	
 	public void update(double dt)
 	{
-		updateSkyColor() ;
+		updateColor() ;
 
 		for (SkyComponent cloud : clouds)
 		{
@@ -130,12 +130,15 @@ public class Sky
 		stars.forEach(SkyComponent::display);
 	}
 	
-	private void updateSkyColor()
+	private void updateColor()
 	{
-		double mult = 1 - 1.8 * Math.abs(Game.dayTimeRate() - 0.5) ;
-		int red = Math.max(0, Math.min((int)(Game.palette[21].getRed() * mult), 255)) ;
-		int green = Math.max(0, Math.min((int)(Game.palette[21].getGreen() * mult), 255)) ;
-		int blue = Math.max(0, Math.min((int)(Game.palette[21].getBlue() * mult), 255)) ;
+		double timeRate = Game.dayTimeRate() ;
+		double multRed = 48 * Math.pow(timeRate, 3) - 76 * Math.pow(timeRate, 2) + 28 * timeRate;
+		double multGreen = (16/3.0) * Math.pow(timeRate, 3) - 12 * Math.pow(timeRate, 2) + (20/3.0) * timeRate;
+		double multBlue = (-16/3.0) * Math.pow(timeRate, 3) + 4 * Math.pow(timeRate, 2) + (4/3.0) * timeRate;
+		int red = Math.max(0, Math.min((int)(Game.palette[21].getRed() * multRed), 255)) ;
+		int green = Math.max(0, Math.min((int)(Game.palette[21].getGreen() * multGreen), 255)) ;
+		int blue = Math.max(0, Math.min((int)(Game.palette[21].getBlue() * multBlue), 255)) ;
 		color = new Color(red, green, blue) ;
 	}
 	
