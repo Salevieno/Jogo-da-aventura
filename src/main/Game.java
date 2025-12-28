@@ -115,6 +115,7 @@ public class Game
 	public static final List<String> arrowKeys = List.of(KeyEvent.getKeyText(KeyEvent.VK_UP),
 			KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN),
 			KeyEvent.getKeyText(KeyEvent.VK_RIGHT));
+	private static final int DAY_DURATION = 600 ;
 
 	static
 	{
@@ -126,7 +127,7 @@ public class Game
 		palette = normalPalette;
 		gameLanguage = Languages.portugues;
 		allText = new HashMap<>();
-		dayTimer = new GameTimer(600);
+		dayTimer = new GameTimer(DAY_DURATION);
 
 		pauseWindow = new PauseWindow();
 		dt = System.nanoTime();
@@ -200,13 +201,13 @@ public class Game
 	private static void activateKonamiEffect()
 	{
 		palette = konamiPalette;
-		dayTimer.setDuration(6);
+		dayTimer.setDuration(DAY_DURATION / 100.0);
 	}
 
 	private static void deactivateKonamiEffect()
 	{
 		palette = normalPalette;
-		dayTimer.setDuration(600);
+		dayTimer.setDuration(DAY_DURATION);
 		Draw.stdAngle = 0;
 	}
 

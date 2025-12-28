@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
 
 import graphics.Align;
 import graphics.Scale;
+import graphics.UtilAlignment;
 import graphics2.Draw;
 import graphics2.Drawable;
 import main.Game;
@@ -89,7 +90,11 @@ public class Building implements Drawable
 	public List<NPC> getNPCs() {return npcs ;}
 	public List<Collider> getColliders() { return colliders ;}
 	
-	public boolean isInside(Point pos) {return Util.isInside(pos, new Point(this.pos.x, this.pos.y - type.getImage().getHeight(null)), Util.getSize(type.getImage())) ;}
+	public boolean isInside(Point pos)
+	{
+		Point topLeftPos = UtilAlignment.getPosAt(this.pos, Align.center, Align.topLeft, Util.getSize(type.getImage())) ;
+		return Util.isInside(pos, topLeftPos, Util.getSize(type.getImage())) ;
+	}
 	public boolean hasNPCs() {return npcs != null ;}
 		
 	public void addStandardNPCs()

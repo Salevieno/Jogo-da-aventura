@@ -111,12 +111,14 @@ public class Sky
 			{
 				resetCloudMovement(cloud) ;
 			}
-			cloud.setOpacity(-16 * Math.pow(Game.dayTimeRate(), 2) + 16 * Game.dayTimeRate() - 3) ;
+			double opacity = Math.max(0, -16 * Math.pow(Game.dayTimeRate(), 2) + 16 * Game.dayTimeRate() - 3) ;
+			cloud.setOpacity(opacity) ;
 		}
 
 		for (SkyComponent star : stars)
 		{
-			star.setOpacity(-16 * Math.pow(Game.dayTimeRate() - 0.5, 2) + 16 * Math.abs(Game.dayTimeRate() - 0.5) - 3) ;
+			double opacity = Math.max(0, -16 * Math.pow(Game.dayTimeRate() - 0.5, 2) + 16 * Math.abs(Game.dayTimeRate() - 0.5) - 3) ;
+			star.setOpacity(opacity) ;
 		}
 	}
 
