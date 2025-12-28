@@ -353,11 +353,6 @@ public abstract class Battle
 		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
 
 		receiver.takeDamage(atkResults.getDamage()) ;
-		if (attacker.getBA().getKnockbackPower() == null)
-		{
-			System.out.println(attacker.getName() + " " + attacker.getBA());
-			System.out.println(attacker.getBA().getKnockbackPower());
-		}
 		Point2D.Double knockedDist = knockback(attacker.getPos(), receiver.getPos(), attacker.getBA().getKnockbackPower().getTotal()) ;
 		receiver.moveIfWalkable(knockedDist) ;
 		if (attacker instanceof Player)

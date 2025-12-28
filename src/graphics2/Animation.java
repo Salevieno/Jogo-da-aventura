@@ -76,7 +76,7 @@ public class Animation
 					int playerLevel = (int) vars[1] ;
 
 					Draw.levelUpAnimation(timer, attributesInc, playerLevel) ;
-				} ;	
+				} ;
 				
 			case 5 :
 				return (vars) -> {
@@ -84,7 +84,7 @@ public class Animation
 					String message = (String) vars[1] ;
 					Color color = (Color) vars[2] ;
 					Draw.quickTextAnimation(pos, timer, message, color) ;
-				} ;	
+				} ;
 				
 			case 6 :
 				return (vars) -> {
@@ -92,7 +92,15 @@ public class Animation
 					String message = (String) vars[1] ;
 					Color color = (Color) vars[2] ;
 					Draw.obtainedItemAnimation(pos, timer, message, color) ;
-				} ;			
+				} ;
+				
+			case 7 :
+				return (vars) -> {
+					Point pos = (Point) vars[0] ;
+					String message = (String) vars[1] ;
+					Color color = (Color) vars[2] ;
+					Draw.bufferedTextAnimation(pos, timer, message, color) ;
+				} ;
 				
 			default: return null ;
 		}

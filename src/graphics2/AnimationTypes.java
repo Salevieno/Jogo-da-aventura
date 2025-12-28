@@ -8,7 +8,8 @@ public enum AnimationTypes
 	fishing(5),
 	levelUp(9),
 	message(4),
-	obtainedItem(2) ;
+	obtainedItem(2),
+	bufferedText(4) ;
 	
 	private double duration ;
 	private AnimationTypes(double duration)

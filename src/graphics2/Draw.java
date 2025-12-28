@@ -306,12 +306,17 @@ public abstract class Draw
 		
 	}
 
+	public static void bufferedTextAnimation(Point pos, GameTimer counter, String text, Color color)
+	{
+		pos = Util.translate(pos, 0, (int) (-30 * counter.rate())) ;
+		GamePanel.DP.drawBufferedText(pos, Align.centerLeft, stdAngle, text, stdFont, color, Game.palette[3], 2);
+	}
+
 	public static void quickTextAnimation(Point pos, GameTimer counter, String text, Color color)
 	{
 		pos = Util.translate(pos, 0, (int) (-30 * counter.rate())) ;
 		GamePanel.DP.drawImage(messageBoxImg, pos, stdAngle, Scale.unit, Align.topCenter, 0.9) ;
 		GamePanel.DP.drawText(Util.translate(pos, 5 - messageBoxImg.getWidth(null) / 2, 20), Align.centerLeft, stdAngle, text, smallFont, color) ;
-		
 	}
 
 	public static void obtainedItemAnimation(Point pos, GameTimer counter, String text, Color color)
@@ -320,7 +325,6 @@ public abstract class Draw
 		GamePanel.DP.drawImage(obtainedItem, pos, Align.topCenter) ;
 		GamePanel.DP.drawText(Util.translate(pos, 0, 0), Align.topCenter, stdAngle, "Você obteve", stdFont, color) ;
 		GamePanel.DP.drawText(Util.translate(pos, 5 - obtainedItem.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
-		
 	}
 
 	public static void winAnimation(GameTimer counter, List<Item> items)

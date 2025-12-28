@@ -362,7 +362,7 @@ public abstract class LiveBeing implements Drawable
 
 	public void displayUsedSpellMessage(Spell spell, Point pos, Color color)
 	{
-		Animation.start(AnimationTypes.message, battleActionCounter.getDuration(), new Object[] {pos, spell.getName(), color}) ;
+		Animation.start(AnimationTypes.bufferedText, battleActionCounter.getDuration(), new Object[] {pos, spell.getName(), color}) ;
 	}
 	
 	public void displayPowerBar(Point pos)
