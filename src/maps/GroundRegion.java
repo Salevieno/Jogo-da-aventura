@@ -50,5 +50,10 @@ public class GroundRegion
 			default: GamePanel.DP.drawPolyLine(region.xpoints, region.ypoints, type.getColor()) ; return ;
 		}
 	}
+	@Override
+	public String toString()
+	{
+		return "GroundRegion [type=" + type + ", region=" + region.getBounds() + "]";
+	}
 	
 }
