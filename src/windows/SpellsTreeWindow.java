@@ -32,7 +32,7 @@ public class SpellsTreeWindow extends GameWindow
 	private static final Point windowTopLeft = Game.getScreen().pos(0.4, 0.2) ;
 	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 14) ;
-	private static final Image noTabsImage = Game.loadImage(Path.WINDOWS_IMG + "SpellsTree.png") ;
+	private static final Image mainImage = Game.loadImage(Path.WINDOWS_IMG + "SpellsTree.png") ;
 	private static final Image tab0Image = Game.loadImage(Path.WINDOWS_IMG + "SpellsTreeTab0.png") ;
 	private static final Image tab1Image = Game.loadImage(Path.WINDOWS_IMG + "SpellsTreeTab1.png") ;
 	private static final Image spellSlot = Game.loadImage(Path.WINDOWS_IMG + "SpellSlot.png") ;
@@ -43,7 +43,7 @@ public class SpellsTreeWindow extends GameWindow
 	public SpellsTreeWindow(int playerJob)
 	{
 
-		super("Árvore de magias", windowTopLeft, noTabsImage, 0, 1, 0, 1) ;
+		super("Árvore de magias", windowTopLeft, mainImage, 0, 1, 0, 1) ;
 		this.playerJob = playerJob ;
 		playerCurrentSpells = new ArrayList<>() ;
 	}
@@ -145,8 +145,8 @@ public class SpellsTreeWindow extends GameWindow
 	{
 		int padding = 30 ;
 		Point offset = new Point(windowTopLeft.x + border + padding, windowTopLeft.y + 22 + padding) ;
-		double spacingX = Util.spacing(noTabsImage.getWidth(null) - border - padding, numberCols, slotSize.width, padding) ;
-		double spacingY = Util.spacing(noTabsImage.getHeight(null) - 22 - padding, numberRows, slotSize.height, padding) ;
+		double spacingX = Util.spacing(mainImage.getWidth(null) - border - padding, numberCols, slotSize.width, padding) ;
+		double spacingY = Util.spacing(mainImage.getHeight(null) - 22 - padding, numberRows, slotSize.height, padding) ;
 
 		Point slotPos = new Point((int) (offset.x + col * spacingX), (int) (offset.y + row * spacingY)) ;
 		

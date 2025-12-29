@@ -30,7 +30,7 @@ public class Spell
 	private final Image image ;
 	private final int maxLevel ;
 	private final SpellTypes type ;
-	private final Map<Spell, Integer> preRequisites ;
+	private final Map<Integer, Integer> preRequisites ;
 	private final Buff buffs;
 	private final Buff deBuffs;
 	private final AttackModifiers atkMod ;
@@ -42,7 +42,7 @@ public class Spell
 
 	
 	
-	private Spell(int id, String name, Image image, int maxLevel, int mpCost, SpellTypes type, Map<Spell, Integer> preRequisites,
+	private Spell(int id, String name, Image image, int maxLevel, int mpCost, SpellTypes type, Map<Integer, Integer> preRequisites,
 			Buff buffs, Buff deBuffs, double[] atkMod, double[] defMod, double[] dexMod, double[] agiMod,
 			double[] atkCritMod, double[] defCritMod, double[] stunMod, double[] blockMod, double[] bloodMod,
 			double[] poisonMod, double[] silenceMod, int cooldown, int duration, Elements elem, String[] info)
@@ -95,9 +95,6 @@ public class Spell
 	public int getMaxLevel() {return maxLevel ;}
 	public int getMpCost() {return mpCost ;}
 	public SpellTypes getType() {return type ;}
-	public Map<Spell, Integer> getPreRequisites() {return preRequisites ;}
-	public double getCooldown() {return cooldownCounter.getDuration() ;}
-	public Buff getBuffs() {return buffs ;}
 	public double[] getAtkMod() {return atkMod.getAtkMod() ;}
 	public double[] getDefMod() {return atkMod.getDefMod() ;}
 	public double[] getDexMod() {return atkMod.getDexMod() ;}
@@ -139,11 +136,11 @@ public class Spell
 	public boolean hasPreRequisitesMet(List<Spell> playerSpells)
 	{
 		if (preRequisites.isEmpty()) { return true ;}
-		
+
 		for (Spell spell : playerSpells)
 		{
-			if (!preRequisites.keySet().contains(spell)) { continue ;}
-			if (spell.getLevel() < preRequisites.get(spell)) { return false ;}
+			if (!preRequisites.keySet().contains(spell.getId())) { continue ;}
+			if (spell.getLevel() < preRequisites.get(spell.getId())) { return false ;}
 		}
 		
 		return true ;
@@ -185,12 +182,12 @@ public class Spell
 			int maxLevel = Integer.parseInt(col[5]) ;
 			int mpCost = Integer.parseInt(col[6]) ;
 			SpellTypes type = SpellTypes.valueOf(col[7]) ;
-			Map<Spell, Integer> preRequisites = new HashMap<>() ;
+			Map<Integer, Integer> preRequisites = new HashMap<>() ;
 			for (int p = 0 ; p <= 6 - 1 ; p += 2)
 			{
 				if (-1 < Integer.parseInt(col[p + 8]))
 				{
-					preRequisites.put(allSpells[Integer.parseInt(col[p + 8])], Integer.parseInt(col[p + 9])) ;
+					preRequisites.put(Integer.parseInt(col[p + 8]), Integer.parseInt(col[p + 9])) ;
 				}
 			}
 			int cooldown = Integer.parseInt(col[14]) ;
