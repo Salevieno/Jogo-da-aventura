@@ -1,4 +1,4 @@
-package components;
+package NPC;
 
 import java.awt.Color;
 

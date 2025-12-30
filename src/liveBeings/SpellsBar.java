@@ -21,9 +21,8 @@ import graphics.UtilAlignment;
 public abstract class SpellsBar
 {	
 	private static final int maxNumberRows ;
-	private static final Font titlefont ;
+	private static final Font largefont ;
 	private static final Font font ;
-	// private static final String title ;
 	private static final Color textColor ;
 
 	private static final Image image ;
@@ -41,10 +40,9 @@ public abstract class SpellsBar
 	static
 	{
 		maxNumberRows = 8 ;
-		titlefont = new Font("SansSerif", Font.BOLD, 12) ;
+		largefont = new Font("SansSerif", Font.BOLD, 14) ;
 		font = new Font("SansSerif", Font.BOLD, 12) ;
-		// title = Game.allText.get(TextCategories.spellsBar)[0] ;
-		textColor = Game.palette[19] ;
+		textColor = Game.palette[4] ;
 
 		image = Game.loadImage(Path.SIDEBAR_IMG + "SpellsBar.png") ;
 		spellIcon = Game.loadImage(Path.SIDEBAR_IMG + "SpellIcon.png") ;
@@ -99,10 +97,11 @@ public abstract class SpellsBar
 			displayCooldown(slotCenter, spell) ;
 
 			Point slotTopLeft = UtilAlignment.getTopLeft(slotCenter, Align.center, slotSize) ;
+
 			if (!Util.isInside(mousePos, slotTopLeft, slotSize)) { continue ;}
 			
 			Point textPos = new Point(slotCenter.x - slotSize.width, slotCenter.y) ;
-			Draw.bufferedText(textPos, Align.centerRight, spell.getName(), titlefont, textColor) ;
+			Draw.bufferedText(textPos, Align.centerRight, 0.0, spell.getName(), largefont, textColor, Game.palette[3], 2) ;
 		
 		}
 	}

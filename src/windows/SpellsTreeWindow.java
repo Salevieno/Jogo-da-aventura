@@ -8,12 +8,12 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import components.SpellTypes;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
 import liveBeings.Player;
 import liveBeings.Spell;
+import liveBeings.SpellTypes;
 import main.Game;
 import main.GamePanel;
 import main.Path;

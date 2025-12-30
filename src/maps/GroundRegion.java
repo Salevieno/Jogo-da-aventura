@@ -47,7 +47,18 @@ public class GroundRegion
 		switch (type)
 		{
 			case invisibleWall: return ;
-			default: GamePanel.DP.drawPolyLine(region.xpoints, region.ypoints, type.getColor()) ; return ;
+			default:
+				int[] closedXPoints = new int[region.npoints + 1];
+				int[] closedYPoints = new int[region.npoints + 1];
+
+				System.arraycopy(region.xpoints, 0, closedXPoints, 0, region.npoints);
+				System.arraycopy(region.ypoints, 0, closedYPoints, 0, region.npoints);
+
+				closedXPoints[region.npoints] = region.xpoints[0];
+				closedYPoints[region.npoints] = region.ypoints[0];
+
+				GamePanel.DP.drawPolyLine(closedXPoints, closedYPoints, 2, type.getColor());
+				return ;
 		}
 	}
 	@Override

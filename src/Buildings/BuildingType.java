@@ -1,4 +1,4 @@
-package components;
+package Buildings;
 
 import java.awt.Image;
 

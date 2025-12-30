@@ -14,10 +14,10 @@ import java.util.Map;
 
 import javax.sound.sampled.Clip;
 
-import components.Building;
+import Buildings.Building;
+import NPC.NPC;
 import components.Collider;
 import components.Hitbox;
-import components.NPC;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.SpriteAnimation;

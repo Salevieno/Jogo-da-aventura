@@ -193,12 +193,10 @@ public class Quest
 	public int getExpReward() {return expReward ;}
 	public String getDescription() {return description ;}
 	public Map<Item, Integer> getRewardItems() {return rewardItems ;}
-	
+
 	@Override
 	public String toString()
 	{
 		return id + ";" + type + ";" + isRepeatable + ";" + reqCreatureTypes + ";" + reqItems + ";" + goldReward + ";" + expReward + ";" + rewardItems ;
-	}
-		
-	
+	}	
 }

@@ -10,10 +10,10 @@ import javax.sound.sampled.Clip;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import components.Building;
-import components.BuildingType;
-import components.NPC;
-import components.NPCType;
+import Buildings.Building;
+import Buildings.BuildingType;
+import NPC.NPC;
+import NPC.NPCType;
 import items.Fab;
 import items.GeneralItem;
 import main.Game;

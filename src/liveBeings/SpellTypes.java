@@ -1,4 +1,4 @@
-package components;
+package liveBeings;
 
 public enum SpellTypes
 {

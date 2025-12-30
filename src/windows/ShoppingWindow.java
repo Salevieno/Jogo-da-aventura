@@ -121,15 +121,15 @@ public class ShoppingWindow extends GameWindow
 	
 	public void sellItem(BagWindow bag)
 	{
-		
+		if (itemsForSale == null || itemsForSale.isEmpty()) { return ;}
+
 		Item selectedItem = selectedItem() ;
+
 		if (!bag.contains(selectedItem)) { System.out.println("Tentando vender item que não possui") ; return ;}
 		
 		bag.remove(selectedItem, 1) ;
 		bag.addGold(selectedItem.getPrice()) ;
 		setIemsForSellingMode(bag) ;
-//		Game.getAnimations().get(10).start(200, new Object[] {selectedItem.getPrice()}) ;
-
 	}
 	
 	private List<Item> calcItemsOnWindow()

@@ -18,12 +18,12 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import Buildings.Building;
+import Buildings.BuildingType;
+import NPC.NPC;
+import NPC.NPCType;
 import UI.GameButton;
 import battle.Battle;
-import components.Building;
-import components.BuildingType;
-import components.NPC;
-import components.NPCType;
 import components.Projectiles;
 import components.Quest;
 import components.QuestSkills;

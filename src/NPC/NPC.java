@@ -1,7 +1,6 @@
-package components ;
+package NPC ;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
@@ -16,9 +15,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import attributes.PersonalAttributes;
+import components.Collider;
+import components.Hitbox;
+import components.HitboxRectangle;
+import components.Quest;
+import components.QuestSkills;
 import graphics.Align;
 import graphics.Scale;
-import graphics.UtilAlignment;
 import graphics2.Draw;
 import items.Equip;
 import items.Item;
@@ -32,7 +35,6 @@ import main.Path;
 import main.TextCategories;
 import maps.GameMap;
 import utilities.Util;
-
 import windows.BagWindow;
 import windows.BankAction;
 import windows.BankWindow;
@@ -53,14 +55,15 @@ public class NPC
 	private int numberMenus ;
 	private GameWindow window ;
 	private Hitbox hitbox ;
-	private final List<Collider> colliders ;
 	
+	private final List<Collider> colliders ;
+	// TODO fechar janela do npc ao sair e fechar diálogo ao finalizar interação
 	private static boolean renewStocks = false ;
-
-	private static final Font NPCfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
+	private static final Font stdfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	private static final Image speakingBubble = Game.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
 	private static final Image choicesWindow = Game.loadImage(Path.NPC_IMG + "ChoicesWindow.png") ;
 	private static final Color stdColor = Game.palette[0] ;
+	private static final Color selColor = Game.palette[18] ;
 
 	public NPC(NPCType type, Point pos)
 	{
@@ -135,7 +138,6 @@ public class NPC
 		colliders.add(new Collider(pos)) ;
 	}
 
-	public int getID() {return id ;}
 	public void setID(int I) {id = I ;}
 	public NPCType getType() {return type ;}
 	public Point getPos() {return pos ;}
@@ -505,7 +507,7 @@ public class NPC
 		
 		Point speechPos = Util.translate(pos, 0, 10 - type.height()) ;
 
-		Draw.speech(speechPos, content, NPCfont, speakingBubble, stdColor) ;
+		Draw.speech(speechPos, content, stdfont, speakingBubble, stdColor) ;
 		
 	}	
 	
@@ -524,7 +526,7 @@ public class NPC
 		
 		GamePanel.DP.drawImage(choicesWindow, windowPos, Align.topLeft) ;
 		
-		int sy = NPCfont.getSize() + 5 ;
+		int sy = stdfont.getSize() + 5 ;
 		for (int i = 0 ; i <= options.size() - 1 ; i += 1)
 		{
 			Point textPos = Util.translate(windowPos, 5, 5 + i * sy) ;
@@ -532,9 +534,9 @@ public class NPC
 			Color textColor = stdColor ;
 			if (i == selOption)
 			{
-				Draw.textSelection(UtilAlignment.getPosAt(textPos, Align.topLeft, Align.center, new Dimension(-45, 8)), new Dimension(45, 8)) ;
+				textColor = selColor ;
 			}
-			GamePanel.DP.drawText(textPos, Align.topLeft, Draw.stdAngle, text, NPCfont, textColor) ;
+			GamePanel.DP.drawText(textPos, Align.topLeft, Draw.stdAngle, text, stdfont, textColor) ;
 		}
 		
 	}

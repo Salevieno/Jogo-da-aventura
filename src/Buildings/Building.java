@@ -1,4 +1,4 @@
-package components ;
+package Buildings ;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -10,6 +10,9 @@ import java.util.List;
 
 import org.json.simple.JSONObject;
 
+import NPC.NPC;
+import components.Collider;
+import components.Hitbox;
 import graphics.Align;
 import graphics.Scale;
 import graphics.UtilAlignment;

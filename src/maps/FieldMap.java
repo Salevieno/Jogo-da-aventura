@@ -17,8 +17,8 @@ import javax.sound.sampled.Clip;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import components.NPC;
-import components.NPCType;
+import NPC.NPC;
+import NPC.NPCType;
 import items.Item;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
