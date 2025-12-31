@@ -703,10 +703,9 @@ public class Game
 			}
 		}
 
-		if (player.isTalkingToNPC())
+		if (player.isInContactWithNPC() && player.getNPCInContact().isInteracting())
 		{
-			player.talkToNPC(GamePanel.getMousePos());
-
+			player.getNPCInContact().act(player, pet, GamePanel.getMousePos()) ;
 		}
 
 		Projectiles.updateAll(player, pet);
@@ -757,7 +756,7 @@ public class Game
 		drawables.sort(Comparator.comparingInt(d -> d.getPos().y));
 		drawables.forEach(Drawable::display);
 
-		if (player.isTalkingToNPC())
+		if (player.isInContactWithNPC() && player.getNPCInContact().isInteracting())
 		{
 			player.getNPCInContact().displaySpeech();
 			player.getNPCInContact().displayOptions();

@@ -343,7 +343,7 @@ public class Player extends LiveBeing
     	SpellsBar.updateSpells(getActiveSpells()) ;
 	}
 	
-	public boolean isTalkingToNPC() { return npcInContact != null ;}
+	public boolean isInContactWithNPC() { return npcInContact != null ;}
 	private boolean isFocusedOnWindow() { if (focusWindow == null) { return false ;} return focusWindow.isOpen() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
@@ -968,12 +968,51 @@ public class Player extends LiveBeing
 			useItem(hotItems.get(i)) ;
 		}
 		
-		
 		updateCombo() ;
+		
+		// Interacting with NPCs
+		if (PlayerActions.actionOfKey(currentAction) == null) { return ;}
+		if (!PlayerActions.actionOfKey(currentAction).equals(PlayerActions.interact)) { return ;}		
+
+		if (npcInContact != null && npcInContact.isInteracting())
+		{
+			npcInContact = null ;
+			return ;
+		}
+		
+		if (map.getNPCs() != null)
+		{
+			for (NPC npc : map.getNPCs())
+			{
+				if (!hitbox.overlaps(npc.getHitbox())) { continue ;}
+				
+				npcInContact = npc ;
+				npcInContact.startInteraction() ;
+				npcInContact.resetMenu();
+				
+				break ;
+			}
+		}
+		
+		if (map.getBuildings() == null) { return ;}
+		
+		for (Building building : map.getBuildings())
+		{
+			for (NPC npc : building.getNPCs())
+			{				
+				if (!hitbox.overlaps(npc.getHitbox())) { continue ;}
+
+				npcInContact = npc ;
+				npcInContact.startInteraction() ;
+				npcInContact.resetMenu();
+				
+				break ;
+			}
+		}
 		
 	}
 
-	public void meetWithTreasureChests()
+	private void meetWithTreasureChests()
 	{
 		if (!map.isSpecial()) { return ;}
 
@@ -990,7 +1029,7 @@ public class Player extends LiveBeing
 		}
 	}
 
-	public void meetWithCollectibles(FieldMap map)
+	private void meetWithCollectibles(FieldMap map)
 	{
 		List<Collectible> collectibles = map.getCollectibles() ;
 
@@ -1022,7 +1061,7 @@ public class Player extends LiveBeing
 		}
 	}
 
-	public void meetWithCreatures(FieldMap map)
+	private void meetWithCreatures(FieldMap map)
 	{
 		List<Creature> creaturesInMap = map.getCreatures() ;
 		for (Creature creature : creaturesInMap)
@@ -1035,53 +1074,18 @@ public class Player extends LiveBeing
 		}
 	}
 
-	public void meetWithNPCs(Point mousePos)
+	private void meetWithNPCs(Point mousePos)
 	{
-		if (npcInContact != null)
+		if (npcInContact != null && !hitbox.overlaps(npcInContact.getHitbox()))
 		{
-			if (!hitbox.overlaps(npcInContact.getHitbox()))
-			{
-				npcInContact = null ;
-			}
-		}
-
-		if (PlayerActions.actionOfKey(currentAction) == null) { return ;}
-		if (!PlayerActions.actionOfKey(currentAction).equals(PlayerActions.interact)) { return ;}		
-
-		if (npcInContact != null) { npcInContact = null ; return ;}
-		
-		if (map.getNPCs() != null)
-		{
-			for (NPC npc : map.getNPCs())
-			{
-				if (!hitbox.overlaps(npc.getHitbox())) { npc.resetMenu() ; continue ;}
-				
-				npcInContact = npc ;
-				npcInContact.resetMenu();
-				
-				break ;
-			}
-		}
-		
-		if (map.getBuildings() == null) { return ;}
-		
-		for (Building building : map.getBuildings())
-		{
-			for (NPC npc : building.getNPCs())
-			{				
-				if (!hitbox.overlaps(npc.getHitbox())) { npc.resetMenu() ; continue ;}
-
-				npcInContact = npc ;
-				npcInContact.resetMenu();
-				
-				break ;
-			}
+			npcInContact.endInteraction() ;
+			npcInContact = null ;
 		}
 	}
 	
 	public void talkToNPC(Point mousePos)
 	{
-		npcInContact.action(this, Game.getPet(), mousePos) ;
+		npcInContact.act(this, Game.getPet(), mousePos) ;
 	}
 	
 	public void checkMeet(Point mousePos)

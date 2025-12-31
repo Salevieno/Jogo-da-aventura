@@ -55,6 +55,7 @@ public class NPC
 	private int numberMenus ;
 	private GameWindow window ;
 	private Hitbox hitbox ;
+	private boolean isInteracting ;
 	
 	private final List<Collider> colliders ;
 	// TODO fechar janela do npc ao sair e fechar diálogo ao finalizar interação
@@ -76,6 +77,7 @@ public class NPC
 		numberMenus = 0 ;
 		colliders = new ArrayList<>() ;
 		hitbox = null ;
+		isInteracting = false ;
 
 		if (type == null) { System.out.println("Erro ao criar npc: tipo nulo") ; return ;}
 		
@@ -140,10 +142,20 @@ public class NPC
 
 	public void setID(int I) {id = I ;}
 	public NPCType getType() {return type ;}
-	public Point getPos() {return pos ;}
 	public GameWindow getWindow() { return window ;}
 	public Hitbox getHitbox() {return hitbox ;}
 	public List<Collider> getColliders() { return colliders ;}
+	public boolean isInteracting() { return isInteracting ;}
+	public void startInteraction() { isInteracting = true ;}
+	public void endInteraction()
+	{
+		isInteracting = false ;
+		if (window != null)
+		{// TODO forge window not closing
+			window.close() ;
+		}
+	}
+	public void switchInteraction() { isInteracting = !isInteracting ;}
 	
 	
 	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
@@ -209,12 +221,6 @@ public class NPC
 	
 	
 	public void resetMenu() { menu = 0 ;}
-	public void incMenu() { if (menu <= numberMenus - 1) menu += 1 ;}
-	public void decMenu() { if (1 <= menu) menu += -1 ;}
-
-//	public boolean isClose(Point target) {return pos.distance(target) <= type.getImage().getWidth(null) ;}
-	
-	public static NPCType typeFromJob(NPCJobs job) { return Arrays.asList(Game.getNPCTypes()).stream().filter(npcType -> job.equals(npcType.getJob())).toList().get(0) ;}
 	public static void setIDs()
 	{
 		GameMap[] allMaps = Game.getMaps() ;
@@ -257,29 +263,6 @@ public class NPC
 		
 		return -1 ;
 	}
-	public static Quest getQuest(int id)
-	{
-		GameMap[] allMaps = Game.getMaps() ;
-		Quest[] allQuests = Game.getAllQuests() ;
-		int questNPCid = 0 ;
-		for (GameMap map : allMaps)
-		{
-			List<NPC> npcsInMap = map.getNPCs() ;
-			if (npcsInMap == null) { return null ;}
-			if (npcsInMap.isEmpty()) { return null ;}
-			
-			for (NPC npc : npcsInMap)
-			{
-				NPCJobs npcJob = npc.getType().getJob() ;
-				if (!npcJob.equals(NPCJobs.questExp) & !npcJob.equals(NPCJobs.questItem)) { continue ;}
-				if (questNPCid != id) { questNPCid += 1 ; continue ;}
-				
-				return allQuests[questNPCid] ;
-			}
-		}
-		
-		return null ;
-	}
 	
 	private int[] newSmuggledStock()
 	{
@@ -301,15 +284,12 @@ public class NPC
 	
 	public static void renewStocks() { renewStocks = true ;}
 	
-	public void action(Player player, Pet pet, Point mousePos)
-	{
-				
+	public void act(Player player, Pet pet, Point mousePos)
+	{				
 		String playerAction = player.getCurrentAction() ;
-		
 
-		if (playerAction == null) { return ;}
-				
-		if (window != null) { if (window.isOpen()) { return ;} ;}
+		if (playerAction == null) { return ;}				
+		if (window != null && window.isOpen()) { return ;}
 
 		BagWindow playerBag = player.getBag() ;
 		switch (type.getJob())
@@ -451,13 +431,12 @@ public class NPC
 			
 			default: break;			
 		}
-		navigate(playerAction) ;
-		
+
+		navigate(playerAction) ;		
 	}
 	
 	public void navigate(String action)
-	{
-		
+	{		
 		switchOption(action) ;
 
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) && menu <= numberMenus - 1)
@@ -466,6 +445,13 @@ public class NPC
 			if (type.getOptions().size() <= menu) { return ;}
 			if (type.getOptions().get(menu).isEmpty()) { return ;}
 			menu = type.getDestination().get(menu).get(selOption) ;
+			selOption = 0 ;
+			return ;
+		}
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) && menu == numberMenus)
+		{
+			endInteraction() ;
+			menu = 0 ;
 			selOption = 0 ;
 			return ;
 		}
@@ -774,8 +760,4 @@ public class NPC
 		}
 		
 	}
-
-	@Override
-	public String toString() { return type.getName() ;}
-
 }
