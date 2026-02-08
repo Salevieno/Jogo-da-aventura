@@ -66,7 +66,7 @@ public abstract class SpellsBar
 		Dimension imgSize = Util.getSize(cooldownImage) ;
 		Scale scale = new Scale(1, 1 - spell.getCooldownCounter().rate()) ;
 		Point imgPos = new Point(slotCenter.x - imgSize.width / 2, slotCenter.y + imgSize.height / 2);
-		GamePanel.DP.drawImage(cooldownImage, imgPos, Draw.stdAngle, scale, Align.bottomLeft) ;
+		GamePanel.DP.drawImage(cooldownImage, imgPos, Draw.stdAngle, scale, Align.bottomLeft, 0.5) ;
 	
 	}
 
