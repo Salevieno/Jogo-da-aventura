@@ -72,7 +72,7 @@ public abstract class SpellsBar
 
 	private static void displaySpellName(int slotCenterY, String spellName)
 	{
-		Point textPos = new Point(barPos.x - 30, slotCenterY) ;
+		Point textPos = new Point(barPos.x - 5, slotCenterY) ;
 		Draw.bufferedText(textPos, Align.centerRight, 0.0, spellName, largefont, textColor, Game.palette[3], 2) ;
 	}
 	

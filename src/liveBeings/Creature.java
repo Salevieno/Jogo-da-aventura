@@ -60,11 +60,11 @@ public class Creature extends LiveBeing
 		this.mpCounter = new GameTimer(CT.getMpTimerDuration() / 1.0);
 		this.satiationCounter = new GameTimer(CT.getSatiationTimerDuration());
 		this.battleActionCounter = new GameTimer(CT.getBattleActionTimerDuration() / 1.0) ;
-		this.movingTimer = new GameTimer(CT.getMovingTimerDuration()) ;
+		this.movingTimer = new GameTimer(CT.getMovingTimerDuration(), Math.random() * CT.getMovingTimerDuration()) ;
 		this.combo = new ArrayList<>() ;
 		this.hitbox = CT.getHitboxType().equals("circle") ? new HitboxCircle(new Point(), size.width / 2) : new HitboxRectangle(new Point(), size) ;
 		
-		this.dir = Directions.up ;
+		this.dir = LiveBeing.randomDir() ;
 		this.state = LiveBeingStates.idle ;
 		this.currentAction = "" ;
 		this.spells = List.copyOf(CT.getSpell()) ;

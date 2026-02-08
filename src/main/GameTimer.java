@@ -30,6 +30,16 @@ public class GameTimer
 		all = new HashSet<>() ;
 	}
 	
+	public GameTimer(double duration, double initialCounter)
+	{
+		this.active = false ;
+		this.counter = Math.min(duration, Math.max(initialCounter, 0.0)) ;
+		this.prevCounter = counter ;
+		this.duration = duration/1.0 ;
+		
+		all.add(this) ;
+	}
+	
 	public GameTimer(double duration)
 	{
 		this.active = false ;
