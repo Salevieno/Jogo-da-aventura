@@ -286,6 +286,23 @@ public abstract class Draw
 		GamePanel.DP.drawText(currentPos, Align.center, stdAngle, message, damageAnimationFont, textColor) ;
 		
 	}
+	
+	public static void keyboardKey(Point pos, String key, Font font, Color color)
+	{
+		GamePanel.DP.drawRoundRect(pos, Align.center, new Dimension(12, 12), 1, Game.palette[3], Game.palette[0], true, 2, 2) ;
+		GamePanel.DP.drawText(pos, Align.center, stdAngle, key, font, color) ;
+	}
+	public static void keyboardKey(Point pos, String key, Color color)
+	{
+		keyboardKey(pos, key, smallFont, color) ;
+	}
+	public static void keyboardKey(Point pos, String key)
+	{
+		keyboardKey(pos, key, smallFont, Game.palette[0]) ;
+	}
+	
+	
+	
 	// TODO
 	public static void gainExpAnimation() {}
 	public static void gainGoldAnimation(GameTimer counter, int goldObtained)

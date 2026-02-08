@@ -83,7 +83,7 @@ public class Game
 	private static final List<String> loadedImagePaths = new ArrayList<>();
 
 	private static final GameStates mainState = GameStates.running;
-	private static final boolean testMode = false;
+	private static final boolean testMode = true;
 	public static final boolean debugMode = false;
 
 	private static GameStates state = GameStates.loading;

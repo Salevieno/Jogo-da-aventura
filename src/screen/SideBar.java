@@ -114,17 +114,14 @@ public abstract class SideBar
 	private static void displayKeys()
 	{
 		String[] keys = new String[] {PlayerActions.attWindow.getKey(), PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null, null} ;
-		Dimension textSize = new Dimension(12, 12) ;
 		Color textColor = Game.palette[0] ;
 		int i = 0 ;
 		for (GameButton button : buttons)
 		{
-
 			if (keys[i] == null | !button.isActive()) { i += 1 ; continue ;}
 
 			Point rectCenter = Util.translate(button.getTopLeftPos(), 5, 0) ;
-			GamePanel.DP.drawRoundRect(rectCenter, Align.center, textSize, 1, Game.palette[3], Game.palette[0], true, 2, 2) ;
-			GamePanel.DP.drawText(rectCenter, Align.center, Draw.stdAngle, keys[i], font, textColor) ;
+			Draw.keyboardKey(rectCenter, keys[i], font, textColor);
 			i += 1 ;
 		}
 	}

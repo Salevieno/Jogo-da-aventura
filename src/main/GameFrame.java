@@ -18,9 +18,7 @@ public class GameFrame extends JFrame implements ActionListener
 	
 	private static Timer timer ;		// Main timer of the game
 	private static GameStates previousState ;
-	// private static final Dimension screenSizeSmall = new Dimension(640,480) ;
-	private static final Dimension screenSizeBig = new Dimension(1280,960) ;
-	private static final Dimension windowSize = screenSizeBig ;
+	private static final Dimension windowSize = new Dimension(1280,960) ; // TODO consider 1280 x 720
 	private static final Image icon = Game.loadImage(Path.GAME_IMG + "gameIcon.png") ;
 	private static final GameFrame gameFrame = new GameFrame() ;
 	public static boolean fullScreen = false ;
