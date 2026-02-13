@@ -116,6 +116,7 @@ public class Game
 			KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN),
 			KeyEvent.getKeyText(KeyEvent.VK_RIGHT));
 	private static final int DAY_DURATION = 600 ;
+    private static Settings settings ;
 
 	static
 	{
@@ -128,6 +129,7 @@ public class Game
 		gameLanguage = Languages.portugues;
 		allText = new HashMap<>();
 		dayTimer = new GameTimer(DAY_DURATION);
+		settings = new Settings(false, true, false, 1, 0) ;
 
 		pauseWindow = new PauseWindow();
 		dt = System.nanoTime();
@@ -140,6 +142,7 @@ public class Game
 
 	public static GameStates getState() { return state ;}
 	public static Languages getLanguage() { return gameLanguage ;}
+	public static Settings getSettings() { return settings ;}
 	public static Screen getScreen() { return screen ;}
 	public static NPCType[] getNPCTypes() { return npcTypes ;}
 	public static Player getPlayer() { return player ;}
@@ -521,7 +524,7 @@ public class Game
 				LiveBeing.updateDamageAnimation(player.getSettings().getDamageAnimation());
 				SideBar.initialize();
 
-				if (player.getSettings().getMusicIsOn())
+				if (settings.getMusicIsOn())
 				{
 					Music.SwitchMusic(player.getMap().getMusic());
 				}
@@ -646,7 +649,6 @@ public class Game
 
 	private void run(double dt)
 	{
-
 		if (Math.pow(10, 10) <= dt)
 		{
 			return;
@@ -713,6 +715,12 @@ public class Game
 		if (player.getJob() == 3)
 		{
 			player.useAutoSpell(true, player.getSpells().get(12));
+		}
+
+		
+		if (pauseWindow.isOpen())
+		{
+			pauseWindow.navigate(player.getCurrentAction()) ;
 		}
 
 		player.resetAction();
@@ -860,7 +868,8 @@ public class Game
 
 		if (keyCode == KeyEvent.VK_ESCAPE && !player.hasWindowOpen())
 		{
-			pauseWindow.switchOpenClose();
+			pauseWindow.updateButtons() ;
+			pauseWindow.switchOpenClose() ;
 		}
 
 		if (arrowKeys.contains(KeyEvent.getKeyText(keyCode)))
@@ -868,7 +877,7 @@ public class Game
 			player.addKeyPressed(KeyEvent.getKeyText(keyCode));
 			if (player.isMoving())
 			{
-				player.chooseDirection(KeyEvent.getKeyText(keyCode));
+				player.updateDirection(KeyEvent.getKeyText(keyCode));
 			}
 		}
 

@@ -8,12 +8,15 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sound.sampled.Clip;
+
 import graphics.Align;
 import graphics.Scale;
 import graphics.UtilAlignment;
 import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
+import main.Music;
 import utilities.Util;
 
 public class GameButton
@@ -28,19 +31,22 @@ public class GameButton
 	private final Image image ;
 	private final Image selectedImage ;
 	private final ButtonFunction action ;
+	private final Clip soundEffectOnHover ;
+	// TODO sound effect on hover
 	
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 17) ;
 	private static final Color textColor = Game.palette[0] ;
 	private static final Color selectedTextColor = Game.palette[18] ;
 	
 	private static List<GameButton> all = new ArrayList<>() ;
-		
-	public GameButton(Point pos, Align alignment, String name, Image image, Image selectedImage, ButtonFunction action)
+
+	public GameButton(Point pos, Align alignment, String name, Image image, Image selectedImage, ButtonFunction action, Clip soundEffectOnHover)
 	{
 		this.name = name ;
 		this.image = image ;
 		this.selectedImage = selectedImage ;
 		this.hoverMessage = null ;
+		this.soundEffectOnHover = soundEffectOnHover ;
 		this.isActive = true ;
 		this.isSelected = false ;
 		this.size = image != null ? Util.getSize(image) : new Dimension(100, 50) ;
@@ -48,6 +54,11 @@ public class GameButton
 		this.topLeft = UtilAlignment.getTopLeft(pos, alignment, size) ;
 		this.action = action ;
 		all.add(this) ;
+	}
+
+	public GameButton(Point pos, Align alignment, String name, Image image, Image selectedImage, ButtonFunction action)
+	{
+		this(pos, alignment, name, image, selectedImage, action, null) ;
 	}
 	
 	public GameButton(Point pos, Align alignment, Image image, Image selectedImage, ButtonFunction action)
@@ -68,9 +79,13 @@ public class GameButton
 	{
 		for (GameButton button : all)
 		{
-			if (!button.isActive || !button.ishovered(mousePos)) { continue ;}
+			if (button.isSelected || !button.isActive || !button.ishovered(mousePos)) { continue ;}
 
-			all.forEach(GameButton::unSelect) ;
+			all.forEach(GameButton::deSelect) ;
+			if (button.soundEffectOnHover != null && Game.getSettings().getSoundEffectsAreOn())
+			{
+				Music.PlayMusic(button.soundEffectOnHover) ;
+			}
 			button.select() ;
 			return ;
 		}
@@ -114,7 +129,7 @@ public class GameButton
 	public void activate() { isActive = true ;}
 	public void deactivate() { isActive = false ;}
 	public void select() { isSelected = true ;}
-	public void unSelect() { isSelected = false ;}
+	public void deSelect() { isSelected = false ;}
 	public void activateAndSelect() { activate() ; select() ;}
 
 	public void act() { action.act() ;}
@@ -159,7 +174,7 @@ public class GameButton
 		GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
 	}
 	
-	public void display(double angle, boolean displayText, Point mousePos)
+	public void display(double angle, boolean displayText, Point mousePos, Color textColor, double opacity)
 	{
 		
 		if (!isActive) { return ;}
@@ -172,13 +187,23 @@ public class GameButton
 			return ;
 		}
 		
-		GamePanel.DP.drawImage(imageDisplayed, topLeft, angle, Scale.unit, Align.topLeft) ;
+		GamePanel.DP.drawImage(imageDisplayed, topLeft, angle, Scale.unit, Align.topLeft, opacity) ;
 
 		if (!displayText) { return ;}
 		if (name == null) { return ;}
 		
 		Point textPos = isSelected ? Util.translate(getCenter(), 0, 3) : getCenter() ;
 		GamePanel.DP.drawText(textPos, Align.center, 0, name, font, textColor) ;
+	}
+	
+	public void display(double angle, boolean displayText, Point mousePos, Color textColor)
+	{
+		display(angle, displayText, mousePos, textColor, 1.0) ;
+	}
+	
+	public void display(double angle, boolean displayText, Point mousePos)
+	{
+		display(angle, displayText, mousePos, textColor) ;
 	}
 	
 	public void displayHoverMessage()

@@ -3,7 +3,6 @@ package liveBeings ;
 import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList ;
 import java.util.Arrays ;
@@ -344,10 +343,8 @@ public class Player extends LiveBeing
 	}
 	
 	public boolean isInContactWithNPC() { return npcInContact != null ;}
-	private boolean isFocusedOnWindow() { if (focusWindow == null) { return false ;} return focusWindow.isOpen() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
-	private boolean actionIsAMove() { return Game.arrowKeys.contains(currentAction) || List.of("W", "A", "S", "D").contains(currentAction) ;}
 	private boolean hitCreature() { return (usedPhysicalAtk() | usedSpell()) & closestCreature != null ;}	
 	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	private boolean canThrowItem(GeneralItem item)
@@ -853,25 +850,16 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	public void chooseDirection(String action)
+	public void updateDirection(String action)
 	{
 		if (action == null) { return ;}
 
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_UP)) | action.equals("W"))
+		switch (action)
 		{
-			setDir(Directions.up) ;
-		}
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_LEFT)) | action.equals("A"))
-		{
-			setDir(Directions.left) ;
-		}
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_DOWN)) | action.equals("S"))
-		{
-			setDir(Directions.down) ;
-		}
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_RIGHT)) | action.equals("D"))
-		{
-			setDir(Directions.right) ;
+			case "W", "Up" -> setDir(Directions.up) ;
+			case "A", "Left" -> setDir(Directions.left) ;
+			case "S", "Down" -> setDir(Directions.down) ;
+			case "D", "Right" -> setDir(Directions.right) ;
 		}
 	}
 
@@ -880,15 +868,14 @@ public class Player extends LiveBeing
 		if (currentAction == null) { return ;}
 		
 		// I like to move it, move it!
-		if (actionIsAMove())
-		{
-			chooseDirection(currentAction) ;
-			if (!isFocusedOnWindow())
-			{
-				restartMoving() ;
-			}
-			
-		}
+		// if (actionIsAMove())
+		// {
+			// updateDirection(currentAction) ;
+			// if (!isFocusedOnWindow())
+			// {
+			// 	restartMoving() ;
+			// }
+		// }
 
 		playerActions(pet) ;
 		
@@ -1783,7 +1770,7 @@ public class Player extends LiveBeing
 	public void display(Point pos, Scale scale, Directions direction, boolean showRange)
 	{
 
-		displayAttributes(settings.getAttDisplay()) ;
+		displayAttributes(Game.getSettings().getAttDisplay()) ;
 		if (isRiding)
 		{
 			Point ridePos = Util.translate(pos, -tigerImg.getWidth(null) / 2, tigerImg.getHeight(null) / 2) ;

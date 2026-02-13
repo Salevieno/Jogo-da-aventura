@@ -220,7 +220,7 @@ public abstract class Opening
 		int selectedButtonIndex = screenButtons.indexOf(selectedButton) ;
 		int nextButtonIndex = screenButtons.size() == selectedButtonIndex + 1 ? 0 : selectedButtonIndex + 1 ;
 
-		screenButtons.get(selectedButtonIndex).unSelect() ;
+		screenButtons.get(selectedButtonIndex).deSelect() ;
 		screenButtons.get(nextButtonIndex).select() ;
 	}
 
@@ -234,7 +234,7 @@ public abstract class Opening
 		int selectedButtonIndex = screenButtons.indexOf(selectedButton) ;
 		int previousButtonIndex = 0 == selectedButtonIndex ? screenButtons.size() - 1 : selectedButtonIndex - 1 ;
 
-		screenButtons.get(selectedButtonIndex).unSelect() ;
+		screenButtons.get(selectedButtonIndex).deSelect() ;
 		screenButtons.get(previousButtonIndex).select() ;
 	}
 

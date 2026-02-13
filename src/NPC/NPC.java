@@ -151,7 +151,7 @@ public class NPC
 	{
 		isInteracting = false ;
 		if (window != null)
-		{// TODO forge window not closing
+		{// TODO forge and spell window not closing
 			window.close() ;
 		}
 	}

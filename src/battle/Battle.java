@@ -415,7 +415,7 @@ public abstract class Battle
 		receiver.playDamageAnimation(atkResults, Game.palette[7]) ;
 		startAtkAnimations(attacker, atkType) ;
 
-		if (Game.getPlayer().getSettings().getSoundEffectsAreOn())
+		if (Game.getSettings().getSoundEffectsAreOn())
 		{
 			Music.PlayMusic(hitSound) ;
 		}

@@ -301,7 +301,71 @@ public abstract class Draw
 		keyboardKey(pos, key, smallFont, Game.palette[0]) ;
 	}
 	
+	public static void settingBars(Point pos, Align align, int height, int qtdFilledBars, int totalBars, boolean increasingHeights, Color fillColor)
+	{
+		int barWidth = 10 ;
+		int barSpacing = 5 ;
+		int maxBarHeight = height ;
+		Point bottomLeftBar = new Point(pos) ;
+		
+		for (int i = 0 ; i <= totalBars - 1 ; i += 1)
+		{
+			int barHeight = increasingHeights ? (int) ((i + 1) * maxBarHeight / totalBars) : maxBarHeight ;
+			Color color = i <= qtdFilledBars ? fillColor : null ;
+			GamePanel.DP.drawRoundRect(bottomLeftBar, align, new Dimension(barWidth, barHeight), 1, color, Game.palette[3], true) ;
+			bottomLeftBar.x += barWidth + barSpacing ;
+		}
+	}
+
+	public static void settingBars(Point pos, int height, int qtdFilledBars, int totalBars, boolean increasingHeights, Color fillColor)
+	{
+		settingBars(pos, Align.bottomLeft, height, qtdFilledBars, totalBars, increasingHeights, fillColor) ;
+	}
+
+	public static void settingBars(Point pos, int height, int qtdFilledBars, int totalBars, boolean increasingHeights)
+	{
+		settingBars(pos, height, qtdFilledBars, totalBars, increasingHeights, Game.palette[18]) ;
+	}
+
+	public static void settingBars(Point pos, Align align, int height, int qtdFilledBars, int totalBars)
+	{
+		settingBars(pos, align, height, qtdFilledBars, totalBars, false, Game.palette[18]) ;
+	}
 	
+	public static void settingBars(Point pos, int height, int qtdFilledBars, int totalBars)
+	{
+		settingBars(pos, height, qtdFilledBars, totalBars, false, Game.palette[18]) ;
+	}
+
+	public static void settingSwitch(Point pos, Align align, boolean isOn, Color fillColor)
+	{
+		int width = 60 ;
+		int height = 30 ;
+		int borderThickness = 1 ;
+		Color borderColor = Game.palette[0] ;
+		Color backgroundColor = isOn ? fillColor : null ;
+		
+		GamePanel.DP.drawRoundRect(pos, align, new Dimension(width, height), borderThickness, backgroundColor, borderColor, true, 25, 25) ;
+		
+		Point centerPos = UtilAlignment.getPosAt(pos, align, Align.center, new Dimension(width, height)) ;
+		Point circleCenter = Util.translate(centerPos, isOn ? width / 4 : -width / 4, 0) ;
+		GamePanel.DP.drawCircle(circleCenter, height / 2 - borderThickness, borderColor) ;
+	}
+	
+	public static void settingSwitch(Point pos, boolean isOn, Color fillColor)
+	{
+		settingSwitch(pos, Align.centerLeft, isOn, fillColor) ;
+	}
+
+	public static void settingSwitch(Point pos, Align align, boolean isOn)
+	{
+		settingSwitch(pos, align, isOn, Game.palette[3]) ;
+	}
+
+	public static void settingSwitch(Point pos, boolean isOn)
+	{
+		settingSwitch(pos, isOn, Game.palette[18]) ;
+	}
 	
 	// TODO
 	public static void gainExpAnimation() {}

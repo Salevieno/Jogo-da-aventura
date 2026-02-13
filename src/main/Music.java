@@ -49,11 +49,13 @@ public class Music
 	
 	public static void PlayMusic(Clip MusicFile)
  	{
-		if (MusicFile.isRunning() | MusicFile.isActive()) { return ;}
+		// Melhor manter a linha abaixo comentadas para efeitos sonoros
+		// if (MusicFile.isRunning() | MusicFile.isActive()) { return ;}
 		
  		try 
  		{
  			currentlyPlayingClip = MusicFile ;
+			MusicFile.setFramePosition(0) ;
 	        MusicFile.start() ;
  	    } 
  		catch(Exception ex) 
