@@ -75,8 +75,8 @@ public class PauseWindow extends GameWindow
         buttonsMainMenu.get(0).select() ;
 
         List<GameButton> buttonsPlayerMenu = List.of(
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 300), Align.center, "A T T D I S P L A Y", btnImg, selectedBtnImg, () -> {Game.getSettings().update(2) ;}, soundEffectOnHover),
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 400), Align.center, "A T K D I S P L A Y", btnImg, selectedBtnImg, () -> {Game.getSettings().update(3) ;}, soundEffectOnHover),
+            new GameButton(Util.translate(windowPos, windowSize.width / 2, 300), Align.center, "R A N G E D I S P L A Y", btnImg, selectedBtnImg, () -> {Game.getSettings().update(2) ;}, soundEffectOnHover),
+            new GameButton(Util.translate(windowPos, windowSize.width / 2, 400), Align.center, "A T T D I S P L A Y", btnImg, selectedBtnImg, () -> {Game.getSettings().update(3) ;}, soundEffectOnHover),
             new GameButton(Util.translate(windowPos, windowSize.width / 2, 500), Align.center, "D A M A G E S T Y L E", btnImg, selectedBtnImg, () -> {Game.getSettings().update(4) ;}, soundEffectOnHover),
             returnToMainMenu
         ) ;

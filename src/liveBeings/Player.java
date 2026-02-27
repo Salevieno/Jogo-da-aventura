@@ -74,7 +74,6 @@ import windows.MapWindow;
 import windows.PetAttributesWindow;
 import windows.PlayerAttributesWindow;
 import windows.QuestWindow;
-import windows.SettingsWindow;
 import windows.ShoppingWindow;
 import windows.SpellsTreeWindow;
 
@@ -83,7 +82,6 @@ public class Player extends LiveBeing
 	private String sex ;
 	
 	private BagWindow bag ;
-	private SettingsWindow settings ;
 	private SpellsTreeWindow spellsTree ;
 	private MapWindow mapWindow ;
 	private List<Quest> quests ;
@@ -227,7 +225,6 @@ public class Player extends LiveBeing
 	    npcInContact = null ;
 	    currentCollectible = null ;
 	    currentChest = null ;
-		settings = new SettingsWindow(false, true, false, 1, 1) ;
 		hotItems = Arrays.asList(null, null, null) ;
 	}
 	
@@ -291,7 +288,6 @@ public class Player extends LiveBeing
 	public Elements getSuperElem() { return superElem ;}
 	public int getAttPoints() {return attPoints ;}
 	public void setEquippedArrow(Arrow equippedArrow) {this.equippedArrow = equippedArrow ;}
-	public SettingsWindow getSettings() {return settings ;}
 	public QuestWindow getQuestWindow() {return questWindow ;}
 	public MapWindow getMapWindow() {return mapWindow ;}
 	public SpellsTreeWindow getSpellsTreeWindow() {return spellsTree ;}
@@ -1821,7 +1817,7 @@ public class Player extends LiveBeing
 	
 	public void display()
 	{
-		display(getPos(), Scale.unit, dir, settings.getShowAtkRange()) ;
+		display(getPos(), Scale.unit, dir, Game.getSettings().getShowAtkRange()) ;
 	}
 
 

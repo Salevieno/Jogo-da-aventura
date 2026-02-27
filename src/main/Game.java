@@ -521,7 +521,7 @@ public class Game
 				}
 				player.setMap(Game.getMaps()[player.getJob()]);
 				player.setPos(new Point2D.Double(Game.getScreen().getCenter().x, Game.getScreen().getCenter().y));
-				LiveBeing.updateDamageAnimation(player.getSettings().getDamageAnimation());
+				LiveBeing.updateDamageAnimation(settings.getDamageAnimation());
 				SideBar.initialize();
 
 				if (settings.getMusicIsOn())
