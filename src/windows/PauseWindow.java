@@ -28,14 +28,14 @@ public class PauseWindow extends GameWindow
 {
 
     private boolean isListeningToKeyInput ;
+    private final Map<Integer, List<GameButton>> menuButtons ;
+    private final Map<Integer, List<Integer>> menuSettings ;
 	private static final Point windowPos ;
     private static final Image imageBg ;
     private static final Clip soundEffectOnHover ;
     private static final Image textBgImg ;
     private static final Font largeFont ;
     private static final int settingColPosX ;
-    private final Map<Integer, List<GameButton>> menuButtons ;
-    private final Map<Integer, List<Integer>> menuSettings ;
 
     static
     {
@@ -50,55 +50,53 @@ public class PauseWindow extends GameWindow
 
     public PauseWindow()
     {
-        super("Opções", windowPos, imageBg, 2, 0, 5, 0) ;
+        super("Opções", windowPos, imageBg, 2, 0, 6, 0) ;
         
-        Dimension windowSize = Util.getSize(imageBg) ;
         Image btnImg = Game.loadImage(Path.UI_IMG + "SettingsButton.png") ;
         Image selectedBtnImg = Game.loadImage(Path.UI_IMG + "SettingsButtonSelected.png") ;
         Image btnShortImg = Game.loadImage(Path.UI_IMG + "SettingsShortButton.png") ;
         Image selectedBtnShortImg = Game.loadImage(Path.UI_IMG + "SettingsShortButtonSelected.png") ;
 
-        GameButton returnToMainMenu = new GameButton(Util.translate(windowPos, windowSize.width / 2, 850), Align.center, "V O L T A R", btnImg, selectedBtnImg, () -> { switchToMenu(0) ;}, soundEffectOnHover) ;
+        GameButton returnToMainMenu = new GameButton(gridPos(17, 1), Align.center, "V O L T A R", btnImg, selectedBtnImg, () -> { switchToMenu(0) ;}, soundEffectOnHover) ;
         returnToMainMenu.deactivate() ;
 
         List<GameButton> buttonsMainMenu = List.of(
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 200), Align.center, "R E S U M E", btnImg, selectedBtnImg, () -> { 
+            new GameButton(gridPos(4, 1), Align.center, "R E S U M E", btnImg, selectedBtnImg, () -> { 
 			updateButtons() ;
 			switchOpenClose() ;}, soundEffectOnHover),
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 300), Align.center, "P L A Y E R", btnImg, selectedBtnImg, () -> { switchToMenu(1) ;}, soundEffectOnHover),
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 400), Align.center, "A U D I O", btnImg, selectedBtnImg, () -> { switchToMenu(2) ;}, soundEffectOnHover),
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 500), Align.center, "V I D E O", btnImg, selectedBtnImg, () -> { switchToMenu(3) ;}, soundEffectOnHover),
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 600), Align.center, "C O N T R O L S", btnImg, selectedBtnImg, () -> { switchToMenu(4) ;}, soundEffectOnHover),
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 700), Align.center, "E X I T", btnImg, selectedBtnImg, () -> { MainGame3_4.closeGame() ;}, soundEffectOnHover)
+            new GameButton(gridPos(6, 1), Align.center, "P L A Y E R", btnImg, selectedBtnImg, () -> { switchToMenu(1) ;}, soundEffectOnHover),
+            new GameButton(gridPos(8, 1), Align.center, "A U D I O", btnImg, selectedBtnImg, () -> { switchToMenu(2) ;}, soundEffectOnHover),
+            new GameButton(gridPos(10, 1), Align.center, "V I D E O", btnImg, selectedBtnImg, () -> { switchToMenu(3) ;}, soundEffectOnHover),
+            new GameButton(gridPos(12, 1), Align.center, "C O N T R O L S", btnImg, selectedBtnImg, () -> { switchToMenu(4) ;}, soundEffectOnHover),
+            new GameButton(gridPos(14, 1), Align.center, "E X I T", btnImg, selectedBtnImg, () -> { MainGame3_4.closeGame() ;}, soundEffectOnHover)
         ) ;
         buttonsMainMenu.forEach(GameButton::deactivate) ;
         buttonsMainMenu.get(0).select() ;
 
         List<GameButton> buttonsPlayerMenu = List.of(
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 300), Align.center, "R A N G E D I S P L A Y", btnImg, selectedBtnImg, () -> {Game.getSettings().update(2) ;}, soundEffectOnHover),
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 400), Align.center, "A T T D I S P L A Y", btnImg, selectedBtnImg, () -> {Game.getSettings().update(3) ;}, soundEffectOnHover),
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 500), Align.center, "D A M A G E S T Y L E", btnImg, selectedBtnImg, () -> {Game.getSettings().update(4) ;}, soundEffectOnHover),
+            new GameButton(gridPos(6, 1), Align.center, "R A N G E D I S P L A Y", btnImg, selectedBtnImg, () -> {Game.getSettings().update(2) ;}, soundEffectOnHover),
+            new GameButton(gridPos(8, 1), Align.center, "A T T D I S P L A Y", btnImg, selectedBtnImg, () -> {Game.getSettings().update(3) ;}, soundEffectOnHover),
+            new GameButton(gridPos(10, 1), Align.center, "D A M A G E S T Y L E", btnImg, selectedBtnImg, () -> {Game.getSettings().update(4) ;}, soundEffectOnHover),
             returnToMainMenu
         ) ;
         buttonsPlayerMenu.forEach(GameButton::deactivate) ;
 
         List<GameButton> buttonsAudioMenu = List.of(
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 300), Align.center, "M U S I C", btnImg, selectedBtnImg, () -> {Game.getSettings().update(0) ;}, soundEffectOnHover),
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 400), Align.center, "S O U N D E F F E C T S", btnImg, selectedBtnImg, () -> {Game.getSettings().update(1) ;}, soundEffectOnHover),
+            new GameButton(gridPos(6, 1), Align.center, "M U S I C", btnImg, selectedBtnImg, () -> {Game.getSettings().update(0) ;}, soundEffectOnHover),
+            new GameButton(gridPos(8, 1), Align.center, "S O U N D E F F E C T S", btnImg, selectedBtnImg, () -> {Game.getSettings().update(1) ;}, soundEffectOnHover),
             returnToMainMenu) ;
         buttonsAudioMenu.forEach(GameButton::deactivate) ;
 
         List<GameButton> buttonsVideoMenu = List.of(
-            new GameButton(Util.translate(windowPos, windowSize.width / 2, 300), Align.center, "F U L L S C R E E N", btnImg, selectedBtnImg, () -> {Game.getSettings().update(5) ;}, soundEffectOnHover),
+            new GameButton(gridPos(6, 1), Align.center, "F U L L S C R E E N", btnImg, selectedBtnImg, () -> {Game.getSettings().update(5) ;}, soundEffectOnHover),
             returnToMainMenu) ;
         buttonsVideoMenu.forEach(GameButton::deactivate) ;
 
         List<GameButton> buttonsControlsMenu = new ArrayList<>() ;
-        System.out.println(PlayerActions.values().length) ;
         for (int i = 0 ; i <= PlayerActions.values().length - 1 ; i += 1)
         {
             final int index = i ;
-            buttonsControlsMenu.add(new GameButton(Util.translate(windowPos, windowSize.width / 2 - 100, 50 + i * 50), Align.center, PlayerActions.values()[i].toString(), btnShortImg, selectedBtnShortImg, () -> { item = index ; isListeningToKeyInput = !isListeningToKeyInput ;}, soundEffectOnHover)) ;
+            buttonsControlsMenu.add(new GameButton(gridPos(i + 1, 0), Align.center, PlayerActions.values()[i].toString(), btnShortImg, selectedBtnShortImg, () -> { item = index ; isListeningToKeyInput = !isListeningToKeyInput ;}, soundEffectOnHover)) ;
         }
         buttonsControlsMenu.add(returnToMainMenu) ;
 
@@ -120,6 +118,12 @@ public class PauseWindow extends GameWindow
         menuSettings.put(4, List.of()) ;
     }
 
+    private static Point gridPos(int row, int col)
+    {
+        Dimension windowSize = Util.getSize(imageBg) ;
+        return Util.translate(windowPos, windowSize.width / 2 + (col - 1) * 100, row * 50) ;
+    }
+
     public void updateButtons()
     {
         menuButtons.get(menu).forEach(!isOpen ? GameButton::activate : GameButton::deactivate) ;
@@ -130,8 +134,8 @@ public class PauseWindow extends GameWindow
         if (menu == newMenu) { return ;}
 
         menuButtons.get(menu).forEach(GameButton::deactivate) ;
+        menuButtons.get(newMenu).forEach(GameButton::activate) ;
         menu = newMenu ;
-        menuButtons.get(menu).forEach(GameButton::activate) ;
     }
 
     public void navigate(String action)
@@ -143,11 +147,13 @@ public class PauseWindow extends GameWindow
             case 0:                
                 if (action.equals(stdMenuDown))
                 {
+                    menuButtons.get(0).get(item).deSelect() ;
                     itemUp() ;
                     menuButtons.get(0).get(item).select() ;
                 }
                 if (action.equals(stdMenuUp))
                 {
+                    menuButtons.get(0).get(item).deSelect() ;
                     itemDown() ;
                     menuButtons.get(0).get(item).select() ;
                 }
