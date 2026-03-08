@@ -144,7 +144,7 @@ public abstract class Draw
 		
 		Point textOffset = new Point(6, 5) ;
 		Point textPos = Util.translate(pos, textOffset.x - bubbleL / 2, textOffset.y - bubbleH) ;
-		int maxTextL = 35 ;
+		int maxTextL = 45 ;
 		int sy = font.getSize() + 1 ;
 		fitText(textPos, sy, Align.topLeft, text, font, maxTextL, textColor) ;
 	}
