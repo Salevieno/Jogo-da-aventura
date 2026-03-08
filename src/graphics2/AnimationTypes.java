@@ -3,7 +3,7 @@ package graphics2;
 public enum AnimationTypes
 {
 	damage(1.2),
-	win(6),
+	win(8),
 	pterodactile(20),
 	fishing(5),
 	levelUp(9),

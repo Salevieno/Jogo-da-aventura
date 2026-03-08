@@ -45,7 +45,7 @@ public abstract class Draw
 	private static final List<Image> textSelectionImages ;
 	
 	private static final Font stdFont = DrawPrimitives.stdFont ;
-	private static final Font smallFont = new Font(DrawPrimitives.stdFont.getName(), Font.BOLD, 10) ;
+	private static final Font smallFont = new Font(DrawPrimitives.stdFont.getName(), Font.BOLD, 11) ;
 	private static final Font damageAnimationFont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 	private static final Font loadingGameScreenFont = new Font("SansSerif", Font.BOLD, 28) ;
 
@@ -418,17 +418,18 @@ public abstract class Draw
 		
 		if ( counter.rate() <= 0.1 ) { return ;}
 		
-		Point textPos = Util.translate(pos, 65, 15) ;
-		GamePanel.DP.drawText(textPos, Align.bottomCenter, stdAngle, "Você obteve!", stdFont, Game.palette[0]) ;
+		Point textPos = Util.translate(pos, 80, 11) ;
+		GamePanel.DP.drawText(textPos, Align.center, stdAngle, "Você obteve!", stdFont, Game.palette[3]) ;
 		
 		if ( counter.rate() <= 0.3 ) { return ;}
 		
+		Point itemTextPos = Util.translate(pos, 15, 40) ;
 		for (int i = 0 ; i <= items.size() - 1 ; i += 1)
 		{
 			if ( 0.3 + 0.5 * i / items.size() <= counter.rate() )
 			{
-				Point itemTextPos = Util.translate(pos, 10, 20 + (i + 1) * 15) ;
 				GamePanel.DP.drawText(itemTextPos, Align.bottomLeft, stdAngle, items.get(i).getName(), smallFont, Game.palette[3]) ;
+				itemTextPos.y += 15 ;
 			}
 		}
 	}
