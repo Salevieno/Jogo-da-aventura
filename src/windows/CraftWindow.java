@@ -46,7 +46,7 @@ public class CraftWindow extends GameWindow
 		amountOfCrafts = 1 ;
 		this.recipes = recipes ;
 		recipesInWindow = RecipesPerWindow <= recipes.size() ? recipes.subList(window, RecipesPerWindow + window) : recipes ;
-		craftButton = new GameButton(Util.translate(windowPos, 286, 130), Align.center, "Fabricar " + String.valueOf(amountOfCrafts), buttonImg, buttonImg, () -> {craft(playerBag) ;}) ;
+		craftButton = new GameButton(Util.translate(windowPos, 286, 130), Align.center, "Fabricar " + String.valueOf(amountOfCrafts), buttonImg, buttonImg, () -> {setBag(Game.getPlayer().getBag()) ; craft(playerBag) ;}) ;
 	}
 	
 	public void navigate(String action)
