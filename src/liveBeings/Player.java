@@ -540,7 +540,7 @@ public class Player extends LiveBeing
 		Dimension screenSize = Game.getScreen().mapSize() ;
 		boolean leftSide = pos.x <= Game.getScreen().getSize().width / 2 ;
 		int stepOffset = Screen.borderOffset ;
-
+		// TODO corrigir movimentação para mapas que tem o dobro ou metade do tamanho
 		switch (dir)
 		{
 			case up:

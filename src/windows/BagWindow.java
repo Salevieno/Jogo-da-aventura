@@ -57,7 +57,7 @@ public class BagWindow extends GameWindow
 	private static final Point windowPos = Game.getScreen().pos(0.28, 0.4) ;
 	private static final int numberSlotMax ;
 	private static final List<Point> itemsPos ;
-	private static final Point spacing = new Point(161, 21) ;
+	private static final Point spacing = new Point(300, 35) ;
 	private static final Dimension itemNameSize = new Dimension(140, 10) ;
 	private static final Image bagImage = Game.loadImage(Path.WINDOWS_IMG + "Bag.png") ;
 	private static final Image selectedBag = Game.loadImage(Path.WINDOWS_IMG + "BagSelected.png") ;
@@ -687,7 +687,7 @@ public class BagWindow extends GameWindow
 			
 			GamePanel.DP.drawImage(slotImage, slotCenter, Align.center) ;
 			GamePanel.DP.drawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
-			Draw.textUntil(textPos, Align.centerLeft, Draw.stdAngle, itemText, stdFont, textColor, 10, mousePos) ;
+			Draw.textUntil(textPos, Align.centerLeft, Draw.stdAngle, itemText, titleFont, textColor, 40, mousePos) ;
 		}
 		
 		if (0 < numberItemsDisplayed)

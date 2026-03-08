@@ -401,7 +401,6 @@ public class Creature extends LiveBeing
 		}		
 		if (isDefending())
 		{
-			System.out.println(BA.getPhyDef().getTotal()) ;
 			displayDefending() ;
 		}
 		if (isDrunk())
