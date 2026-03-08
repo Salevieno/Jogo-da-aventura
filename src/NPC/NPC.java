@@ -150,9 +150,9 @@ public class NPC
 	public void endInteraction()
 	{
 		isInteracting = false ;
-		if (window != null)
-		{// TODO forge and spell window not closing
-			window.close() ;
+		if (window != null && window.isOpen())
+		{
+			Game.getPlayer().switchOpenClose(window) ;
 		}
 	}
 	public void switchInteraction() { isInteracting = !isInteracting ;}

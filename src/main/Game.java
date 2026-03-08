@@ -310,7 +310,7 @@ public class Game
 
 		player.setName("Rosquinhawwwwwwwwwwwwwww");
 		// player.setLevel(50) ;
-		player.setMap(fieldMaps[20]);
+		player.setMap(cityMaps[1]);
 		// fieldMaps[1].getCreatures().get(0).setPos(player.getPos());
 		// player.setPos(new Point(393, 140)) ;
 

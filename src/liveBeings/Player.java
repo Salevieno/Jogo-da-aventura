@@ -978,7 +978,7 @@ public class Player extends LiveBeing
 		// using hotItems
 		for (int i = 0; i <= hotKeys.length - 1 ; i += 1)
 		{
-			if (!currentAction.equals(hotKeys[i]) || hotItems.get(i) == null) { continue ;}
+			if (!hotKeys[i].equals(currentAction) || hotItems.get(i) == null) { continue ;}
 			
 			useItem(hotItems.get(i)) ;
 		}
