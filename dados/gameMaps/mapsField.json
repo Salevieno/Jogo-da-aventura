@@ -98,7 +98,10 @@
     "Collectibles": {"level": 1, "berryDelay": 40, "herbDelay": 1280, "woodDelay": 1536, "metalDelay": 2560},
     "Connections": {"topLeft": 18, "leftTop": 0, "leftBottom": 0, "bottomLeft": 10, "bottomRight": 10, "rightBottom": 15, "rightTop": 15, "topRight": 18},
     "Creatures": [-1, -1, -1, 0, 0, 1, 2, 2, 3, 4],
-    "GroundRegions": {},
+    "GroundRegions":
+    {
+      "water": [[{"x": 382, "y": 630}, {"x": 382, "y": 745}, {"x": 576, "y": 745}, {"x": 576, "y": 630}]]
+    },
     "NPCs": [{"name": "questItem", "pos": {"x": 0.21, "y": 0.83}}]
   },
    {
@@ -215,7 +218,10 @@
     "Collectibles": {"level": 1, "berryDelay": 40, "herbDelay": 1280, "woodDelay": 1536, "metalDelay": 2560},
     "Connections": {"topLeft": 29, "leftTop": 26, "leftBottom": 26, "bottomLeft": 23, "bottomRight": 23, "rightBottom": 3, "rightTop": 3, "topRight": 29},
     "Creatures": [-1, -1, -1, 15, 15, 16, 17, 17, 18, 19],
-    "GroundRegions": {},
+    "GroundRegions": 
+    {
+      "water": [[{"x": 82, "y": 630}, {"x": 82, "y": 745}, {"x": 276, "y": 745}, {"x": 276, "y": 630}]]
+    },
     "NPCs": [{"name": "questItem", "pos": {"x": 0.17, "y": 0.86}}]
   },
   {
