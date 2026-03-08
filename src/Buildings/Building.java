@@ -32,6 +32,7 @@ public class Building implements Drawable
 	private List<NPC> npcs ;
 	private List<Collider> colliders ;
 	private static final Image signBoard = Game.loadImage(Path.BUILDINGS_IMG + "SignBoard.png") ;
+	private static final Font signBoardFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 
 	public Building(BuildingType type, Point pos)
 	{
@@ -133,12 +134,12 @@ public class Building implements Drawable
 	
 	public void displaySignMessage(int cityID)
 	{
-		Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
 		Point boardPos = Util.translate(pos, type.getImage().getWidth(null), 0) ;
-		Point messagePos = Util.translate(boardPos, 12, 15 - signBoard.getHeight(null)) ;
+		Point messagePos = Util.translate(boardPos, 18, 24 - signBoard.getHeight(null)) ;
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
 		GamePanel.DP.drawImage(signBoard, boardPos, Align.bottomLeft, 0.85) ;
-		Draw.fitText(messagePos, font.getSize() + 2, Align.bottomLeft, message, font, 40, Game.palette[0]) ;	
+		int maxTextLenght = 60 ;
+		Draw.fitText(messagePos, signBoardFont.getSize() + 2, Align.bottomLeft, message, signBoardFont, maxTextLenght, Game.palette[0]) ;	
 	}
 	
 	public void display(Hitbox playerHitbox, Point playerPos, int cityID)
