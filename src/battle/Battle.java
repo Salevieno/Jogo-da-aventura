@@ -1,6 +1,5 @@
 package battle ;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.Arrays;
@@ -8,7 +7,6 @@ import java.util.List;
 
 import javax.sound.sampled.Clip;
 
-import attributes.Attributes;
 import liveBeings.AttackModifiers;
 import liveBeings.Creature;
 import liveBeings.LiveBeing;
@@ -62,17 +60,17 @@ public abstract class Battle
 	
 	public static double basicElemMult(Elements atk, Elements def) { return elemMult[allElements.indexOf(atk)][allElements.indexOf(def)] ;}
 	
-	public static boolean hit(double dex, double agi)
+	private static boolean hit(double dex, double agi)
 	{
 		double hitChance = 1 - 1 / (1 + Math.pow(1.1, dex - agi)) ;
 		return Util.chance(hitChance) ;
 	}
 	
-	public static boolean block(double blockDef) { return Util.chance(blockDef) ;}
+	private static boolean block(double blockDef) { return Util.chance(blockDef) ;}
 
-	public static boolean criticalAtk(double critAtk, double critDef) {return Util.chance(critAtk - critDef) ;}
+	private static boolean criticalAtk(double critAtk, double critDef) {return Util.chance(critAtk - critDef) ;}
 		
-	public static double calcElemMult(Elements atk, Elements weapon, Elements armor, Elements shield, Elements superElem)
+	private static double calcElemMult(Elements atk, Elements weapon, Elements armor, Elements shield, Elements superElem)
 	{
 		double mult = 1 ;
 		mult *= atk != null && armor != null ? basicElemMult(atk, armor) : 1 ;
@@ -192,71 +190,18 @@ public abstract class Battle
 		startAtkAnimations(attacker, atkResults.getAtkType()) ;
 	}
 	
-	private static AtkTypes atkTypeFromAction(LiveBeing attacker)
-	{
-		if (attacker.usedPhysicalAtk() | attacker.actionIsArrowAtk()) { return AtkTypes.physical ;}
-		if (attacker.actionIsSpell()) { return AtkTypes.magical ;}
-		if (attacker.usedDef()) { return AtkTypes.defense ;}
-		
-		return null ;
-	}
-	
-	public static Point2D.Double knockback(Point originPos, Point targetPos, double power)
+	public static Point2D.Double knockback(Point2D.Double originPos, Point2D.Double targetPos, double power)
 	{
 		double angle = Math.atan2((targetPos.y - originPos.y), (targetPos.x - originPos.x)) ;		
 		return new Point2D.Double(Math.cos(angle) * power, Math.sin(angle) * power) ;
 	}
-
-	private static void activateCounters(Player player, Pet pet, Creature creature)
-	{
-		if (player.getBattleActionCounter().hasFinished() & player.getCurrentAtkType() != null)
-		{
-			if (player.getCurrentAtkType().equals(AtkTypes.defense))
-			{
-				player.deactivateDef() ;
-			}
-		}
-		if (pet != null)
-		{
-			if (pet.isAlive() & pet.getBattleActionCounter().hasFinished() & pet.getCurrentAtkType() != null)
-			{
-				if (pet.getCurrentAtkType().equals(AtkTypes.defense))
-				{
-		 			pet.deactivateDef() ;
-				}
-			}
-		}
-		if (creature.getBattleActionCounter().hasFinished() & creature.getCurrentAtkType() != null)
-		{
-			if (creature.getCurrentAtkType().equals(AtkTypes.defense))
-			{
-	 			creature.deactivateDef() ;
-			}
-		}
-		
-		if (player.getBattleActionCounter().hasFinished())
-		{
-			player.resetBattleAction() ;
-		}
-		if (pet != null)
-		{
-			if (pet.getBattleActionCounter().hasFinished())
-			{
-				pet.resetBattleAction() ;
-			}
-		}
-		if (creature.getBattleActionCounter().hasFinished())
-		{
-			creature.resetBattleAction() ;
-		}
-	}
-		
+	
 	public static boolean isOver(Player player, Pet pet, Creature creature)
 	{
 		return pet == null ? !creature.isAlive() || !player.isAlive() : !creature.isAlive() || (!player.isAlive() & !pet.isAlive()) ;
 	}
 			
-	private static void startAtkAnimations(LiveBeing user, AtkTypes atkType)
+	public static void startAtkAnimations(LiveBeing user, AtkTypes atkType)
 	{
 		if (atkType == null) { return ;}
 
@@ -287,159 +232,6 @@ public abstract class Battle
 //			user.magHitGif.resetTimeCounter() ;
 //		}
 //	}
-			
-	private static void checkSpendArrow(LiveBeing attacker)
-	{
-		if (!(attacker instanceof Player)) { return ;}
-		
-		Player player = (Player) attacker ;
-		
-		if (!player.arrowIsEquipped()) { return ;}
-		if (!player.usedPhysicalAtk() & !player.usedSpell()) { return ;}
-		
-		player.spendArrow() ;
-		if (player.getJob() == 2)
-		{
-			attacker.useAutoSpell(true, player.getSpells().get(13)) ;
-		}
-	}
-
-	private static AtkResults performAtk(AtkTypes atkType, LiveBeing attacker, LiveBeing receiver)
-	{
-
-		if (atkType == null) { System.out.println("Warn: atkType null at Battle.performAtk") ; return new AtkResults() ;}
-
-		AtkResults atkResults = null ;
-		switch (atkType)
-		{
-			case physical:
-				atkResults = calcPhysicalAtk(attacker, receiver) ;
-				break ;
-				
-			case magical:
-			{
-				int spellID = Player.spellKeys.indexOf(attacker.getCurrentAction()) ;
-				Spell spell = attacker.getActiveSpells().get(spellID) ;
-				if (!attacker.canUseSpell(spell)) { System.out.println("Warn: " + attacker.getName() + " trying to use spell. But no can use, baby!") ;}
-				if (attacker.canUseSpell(spell))
-				{
-					atkResults = attacker.useSpell(spell, receiver);
-					attacker.displayUsedSpellMessage(spell, Util.translate(attacker.getPos(), 0, -50), Game.palette[5]) ;
-				}
-				else
-				{					
-					atkResults = new AtkResults();
-				}
-				
-				break ;
-			}
-			case physicalMagical:
-			{
-				atkResults = new AtkResults();
-				break ;
-			}
-			case defense:
-			{
-	 			attacker.activateDef() ;
-	 			atkResults = new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
-	 			break ;
-			}
-			default: atkResults = new AtkResults() ; break ;
-		} ;
-
-		checkSpendArrow(attacker) ;	
-		
-		AtkEffects effect = atkResults.getEffect() ;
-		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
-
-		receiver.takeDamage(atkResults.getDamage()) ;
-		Point2D.Double knockedDist = knockback(attacker.getPos(), receiver.getPos(), attacker.getBA().getKnockbackPower().getTotal()) ;
-		receiver.moveIfWalkable(knockedDist) ;
-		if (attacker instanceof Player)
-		{
-			((Player) attacker).getStatistics().updateInflicedStatus(atkResults.getStatus());
-		}
-		
-		if (0 < atkResults.getStatus()[0])
-		{
-			receiver.getStatus().get(Attributes.stun).inflictStatus(0, attacker.getBA().getStun().getDuration()) ;
-		}
-		if (0 < atkResults.getStatus()[1])
-		{
-			receiver.getStatus().get(Attributes.block).inflictStatus(0, attacker.getBA().getBlock().getDuration()) ;
-		}
-		if (0 < atkResults.getStatus()[2])
-		{
-			receiver.getStatus().get(Attributes.blood).inflictStatus(Math.max(attacker.getBA().getBlood().TotalAtk() - receiver.getBA().getBlood().TotalDef(), 0), attacker.getBA().getBlood().getDuration()) ;
-		}
-		if (0 < atkResults.getStatus()[3])
-		{
-			receiver.getStatus().get(Attributes.poison).inflictStatus(Math.max(attacker.getBA().getPoison().TotalAtk() - receiver.getBA().getPoison().TotalDef(), 0), attacker.getBA().getPoison().getDuration()) ;
-		}
-		if (0 < atkResults.getStatus()[4])
-		{
-			receiver.getStatus().get(Attributes.silence).inflictStatus(0, attacker.getBA().getSilence().getDuration()) ;
-		}
-
-		return atkResults ;
-	}	
-		
-	private static void runTurn(LiveBeing attacker, LiveBeing receiver)
-	{
-		
-		if (!attacker.isAlive()) { return ;}		
-		if (!attacker.canAtk() | !attacker.isInRange(receiver.getPosAsDouble())) { return ;}
-		
-		if (attacker instanceof Creature)
-		{
-			((Creature) attacker).chooseFightMove(receiver.getCurrentAction()) ;
-		}
-
-		if (!attacker.hasActed()) { return ;}
-		AtkTypes atkType = atkTypeFromAction(attacker) ;
-		attacker.setCurrentAtkType(atkType) ;
-		AtkResults atkResults = performAtk(atkType, attacker, receiver) ;
-		if (!(attacker instanceof Creature)) { attacker.trainOffensive(atkResults) ;}
-		if (attacker instanceof Creature) { receiver.trainDefensive(atkResults) ;}
-		if (attacker instanceof Player) { ((Player) attacker).getStatistics().updateOffensive(atkResults) ;}
-		if (receiver instanceof Player) { ((Player) receiver).getStatistics().updateDefensive(atkResults, receiver.getBA().getPhyDef().getTotal(), receiver.getBA().getMagDef().getTotal()) ;}
-
-		attacker.updateCombo() ;
-		attacker.resetBattleActions() ;
-
-		if (Game.getState().equals(GameStates.simulation))
-		{
-			EvolutionSimulation.updateBattleStats(attacker, receiver, atkResults) ;
-		}
-		
-		receiver.playDamageAnimation(atkResults, Game.palette[7]) ;
-		startAtkAnimations(attacker, atkType) ;
-
-		if (Game.getSettings().getSoundEffectsAreOn())
-		{
-			Music.PlayMusic(hitSound) ;
-		}
-		
-	}
-	
-	public static void runBattle(Player player, Pet pet, Creature creature)
-	{
-		activateCounters(player, pet, creature) ;
-		
-		LiveBeing creatureTarget = player ;
-		if (pet != null)
-		{
-			creatureTarget = creature.chooseTarget(player.isAlive(), pet.isAlive()).equals("player") ? player : pet ;
-		}
-		
-		runTurn(player, creature) ;
-		if (pet != null)
-		{
-			runTurn(pet, creature) ;
-		}
-		runTurn(creature, creatureTarget) ;
-		
-	}
 	
 	public static void finishBattle(Player player, Pet pet, Creature creature)
 	{
@@ -482,5 +274,4 @@ public abstract class Battle
 			pet.dies() ;
 		}
 	}
-
 }

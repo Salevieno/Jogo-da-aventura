@@ -31,6 +31,7 @@ import main.GameTimer;
 import maps.GameMap;
 import screen.Screen;
 import screen.Sky;
+import simulations.EvolutionSimulation;
 import utilities.Util;
 
 public class Creature extends LiveBeing
@@ -206,11 +207,94 @@ public class Creature extends LiveBeing
 
 	}
 	
+	private AtkResults calcAtkResults(AtkTypes atkType, LiveBeing receiver)
+	{
+		switch (atkType)
+		{
+			case physical: return Battle.calcPhysicalAtk(this, receiver) ;
+				
+			case magical:
+			{
+				int spellID = Player.spellKeys.indexOf(currentAction) ;
+				Spell spell = getActiveSpells().get(spellID) ;
+				if (canUseSpell(spell))
+				{
+					return useSpell(spell, receiver);
+					// displayUsedSpellMessage(spell, Util.translate(getPos(), 0, -50), Game.palette[5]) ;
+				}
+				else
+				{
+					System.out.println("Warn: " + name + " trying to use spell. But no can use, baby!") ;		
+					return new AtkResults();
+				}				
+			}
+			case physicalMagical: return new AtkResults();
+			case defense:
+			{
+	 			activateDef() ;
+	 			return new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
+			}
+			default: return new AtkResults() ;
+		}
+	}
+
+	private AtkResults performAtk(AtkTypes atkType, LiveBeing receiver)
+	{
+		AtkResults atkResults = calcAtkResults(atkType, receiver) ;		
+		AtkEffects effect = atkResults.getEffect() ;
+		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
+
+		receiver.takeDamage(atkResults.getDamage()) ;
+		Point2D.Double knockedDist = Battle.knockback(pos, receiver.getPosAsDouble(), BA.getKnockbackPower().getTotal()) ;
+		receiver.moveIfWalkable(knockedDist) ;		
+		inflictStatus(atkResults, receiver) ;
+
+		return atkResults ;
+	}
+
+	private void doBattleAction()
+	{		
+		LiveBeing creatureTarget = Game.getPlayer() ;
+		if (Game.getPet() != null)
+		{
+			creatureTarget = chooseTarget(Game.getPlayer().isAlive(), Game.getPet().isAlive()).equals("player") ? Game.getPlayer() : Game.getPet() ;
+		}		
+		
+		if (!isAlive()) { return ;}		
+		if (!canAtk()) { return ;}
+		if (!isInRange(creatureTarget.getPosAsDouble())) { return ;}
+		
+		chooseFightMove(creatureTarget.getCurrentAction()) ;
+
+		if (!hasActed()) { return ;}
+
+		AtkTypes atkType = atkTypeFromAction() ;
+		
+		if (atkType == null) { return ;}
+
+		setCurrentAtkType(atkType) ;
+		AtkResults atkResults = performAtk(atkType, creatureTarget) ;
+		creatureTarget.trainDefensive(atkResults) ;
+		if (creatureTarget instanceof Player)
+		{
+			((Player) creatureTarget).getStatistics().updateDefensive(atkResults, creatureTarget.getBA().getPhyDef().getTotal(), creatureTarget.getBA().getMagDef().getTotal()) ;
+		}
+
+		updateCombo() ;
+		battleActionCounter.restart() ;
+
+		if (Game.getState().equals(GameStates.simulation))
+		{
+			EvolutionSimulation.updateBattleStats(this, creatureTarget, atkResults) ;
+		}
+	}
 	public void act(Point2D.Double playerPosAsDouble, GameMap playerMap, double dt)
 	{
-		if (chasePlayer)
+		if (chasePlayer) // TODO chasePlayer can be replaced with is fighting and playerIsAlive
 		{
+			// TODO should chase OR do battle action
 			setPos(chase(pos, playerPosAsDouble, range)) ;
+			doBattleAction() ;
 		}
 		switch (state)
 		{
@@ -317,6 +401,7 @@ public class Creature extends LiveBeing
 		}		
 		if (isDefending())
 		{
+			System.out.println(BA.getPhyDef().getTotal()) ;
 			displayDefending() ;
 		}
 		if (isDrunk())

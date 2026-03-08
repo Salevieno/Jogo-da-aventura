@@ -23,6 +23,7 @@ import Buildings.BuildingType;
 import NPC.NPC;
 import NPC.NPCType;
 import UI.GameButton;
+import battle.AtkTypes;
 import battle.Battle;
 import components.Projectiles;
 import components.Quest;
@@ -606,6 +607,11 @@ public class Game
 		List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures();
 		for (Creature creature : creaturesInMap)
 		{
+			// TODO corrigir deactivate def, em alguns momentos reduz a defesa da criatura a valores negativos muito rapidamente
+			if (creature.getBattleActionCounter().hasFinished() && AtkTypes.defense.equals(creature.getCurrentAtkType()))
+			{
+				creature.deactivateDef() ;
+			}
 			creature.takeBloodAndPoisonDamage();
 			creature.act(player.getPosAsDouble(), player.getMap(), dt);
 		}
@@ -626,36 +632,39 @@ public class Game
 
 	private void playerActs(double dt)
 	{
-
 		player.takeBloodAndPoisonDamage();
 		player.updateBloodAndPoisonStatistics();
-		if (player.canAct() & player.hasActed())
+		if (player.canAct() && player.hasActed())
 		{
-			player.acts(pet, GamePanel.getMousePos());
+			player.act(pet, GamePanel.getMousePos());
 		}
 
 		player.doCurrentAction();
 		player.applyAdjacentGroundEffect();
 		player.finishStatus();
 
-		if (player.isMoving())
+		if (player.isMoving() && !player.isCollecting())
 		{
-			if (!player.isCollecting())
-			{
-				player.move(pet, dt);
-			}
+			player.move(pet, dt);
 		}
+		player.updateCombo() ;
 	}
 
 	private void run(double dt)
 	{
-		if (Math.pow(10, 10) <= dt)
-		{
-			return;
-		}
+		if (Math.pow(10, 1) <= dt) { return ;}
 
-		screen.updateSky(dt / Math.pow(10, 9));
+		screen.updateSky(dt);
 		activateCounters();
+		
+		// TODO mover as verificações de batalha pra cá e unir às gerais
+		if (player.getBattleActionCounter().hasFinished() & player.getCurrentAtkType() != null)
+		{
+			if (player.getCurrentAtkType().equals(AtkTypes.defense))
+			{
+				player.deactivateDef() ;
+			}
+		}
 
 		checkKonamiCode(player.getCombo());
 		if (konamiCodeIsActive)
@@ -665,31 +674,34 @@ public class Game
 
 		if (player.getMap().isField())
 		{
-			creaturesAct(dt / Math.pow(10, 9));
+			creaturesAct(dt);
 			shouldRepaint = true;
 		}
 
-		if (pet != null)
+		if (pet != null && pet.isAlive())
 		{
+			if (pet.getBattleActionCounter().hasFinished() && AtkTypes.defense.equals(pet.getCurrentAtkType()))
+			{
+				pet.deactivateDef() ;
+			}
 			petActs(dt);
 		}
 
-		playerActs(dt / Math.pow(10, 9));
-
-		if (player.getMap().isField())
-		{
-			player.setClosestCreature(player.closestCreatureInRange());
-		}
+		playerActs(dt);
 
 		player.checkMeet(GamePanel.getMousePos());
 
 		if (player.isFighting() && player.getOpponent() != null)
 		{
-			Battle.runBattle(player, pet, player.getOpponent());
 			if (Battle.isOver(player, pet, player.getOpponent()))
 			{
 				Battle.finishBattle(player, pet, player.getOpponent());
 			}
+		}
+
+		if (player.getMap().isField())
+		{
+			player.setClosestCreature(player.closestCreatureInRange());
 		}
 
 		if (player.shouldLevelUP())
@@ -816,7 +828,7 @@ public class Game
 			return;
 
 		case running:
-			run(System.nanoTime() - dt);
+			run((System.nanoTime() - dt) / Math.pow(10, 9));
 			dt = System.nanoTime();
 			draw();
 			return;

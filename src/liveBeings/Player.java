@@ -51,6 +51,7 @@ import main.Directions;
 import main.Elements;
 import main.Game;
 import main.GamePanel;
+import main.GameStates;
 import main.GameTimer;
 import main.Path;
 import maps.Collectible;
@@ -61,6 +62,7 @@ import maps.GroundType;
 import maps.TreasureChest;
 import screen.Screen;
 import screen.Sky;
+import simulations.EvolutionSimulation;
 import utilities.Util;
 import windows.BagWindow;
 import windows.BankWindow;
@@ -768,7 +770,7 @@ public class Player extends LiveBeing
 		setState(LiveBeingStates.idle) ;
 	}
 	
-	private void playerActions(Pet pet)
+	private void performKeyboardAction(Pet pet)
 	{
 
 		PlayerActions action = PlayerActions.actionOfKey(currentAction) ;
@@ -859,22 +861,96 @@ public class Player extends LiveBeing
 		}
 	}
 
-	public void acts(Pet pet, Point mousePos)
+	private void checkSpendArrow()
+	{
+		if (!arrowIsEquipped()) { return ;}
+		if (!usedPhysicalAtk() & !usedSpell()) { return ;}
+		
+		spendArrow() ;
+		if (job == 2)
+		{
+			useAutoSpell(true, getSpells().get(13)) ;
+		}
+	}
+
+
+	private AtkResults calcAtkResults(AtkTypes atkType, LiveBeing receiver)
+	{
+		switch (atkType)
+		{
+			case physical: return Battle.calcPhysicalAtk(this, receiver) ;
+				
+			case magical:
+			{
+				int spellID = Player.spellKeys.indexOf(currentAction) ;
+				Spell spell = getActiveSpells().get(spellID) ;
+				if (canUseSpell(spell))
+				{
+					return useSpell(spell, receiver);
+					// this.displayUsedSpellMessage(spell, Util.translate(this.getPos(), 0, -50), Game.palette[5]) ;
+				}
+				else
+				{
+					System.out.println("Warn: " + name + " trying to use spell. But no can use, baby!") ;		
+					return new AtkResults();
+				}				
+			}
+			case physicalMagical: return new AtkResults();
+			case defense:
+			{
+	 			activateDef() ;
+	 			return new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
+			}
+			default: return new AtkResults() ;
+		}
+	}
+
+	private AtkResults performAtk(AtkTypes atkType, LiveBeing receiver)
+	{
+		AtkResults atkResults = calcAtkResults(atkType, receiver) ;		
+
+		checkSpendArrow() ;
+		
+		AtkEffects effect = atkResults.getEffect() ;
+		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
+
+		receiver.takeDamage(atkResults.getDamage()) ;
+		Point2D.Double knockedDist = Battle.knockback(pos, receiver.getPosAsDouble(), BA.getKnockbackPower().getTotal()) ;
+		receiver.moveIfWalkable(knockedDist) ;
+		inflictStatus(atkResults, receiver) ;
+		stats.updateInflicedStatus(atkResults.getStatus());
+
+		return atkResults ;
+	}
+
+	private void doBattleAction()
+	{
+		if (!isAlive()) { return ;}
+		if (!canAtk()) { return ;}
+		if (!isInRange(opponent.getPosAsDouble())) { return ;}
+		if (!hasActed()) { return ;}
+
+		AtkTypes atkType = atkTypeFromAction() ;
+		
+		if (atkType == null) { return ;}
+		
+		setCurrentAtkType(atkType) ;
+		AtkResults atkResults = performAtk(atkType, opponent) ;
+		trainOffensive(atkResults) ;
+		stats.updateOffensive(atkResults) ;
+		battleActionCounter.restart() ;
+
+		if (Game.getState().equals(GameStates.simulation))
+		{
+			EvolutionSimulation.updateBattleStats(this, opponent, atkResults) ;
+		}
+	}
+
+	public void act(Pet pet, Point mousePos)
 	{
 		if (currentAction == null) { return ;}
-		
-		// I like to move it, move it!
-		// if (actionIsAMove())
-		// {
-			// updateDirection(currentAction) ;
-			// if (!isFocusedOnWindow())
-			// {
-			// 	restartMoving() ;
-			// }
-		// }
 
-		playerActions(pet) ;
-		
+		performKeyboardAction(pet) ;		
 		
 		// using spells
 		if (actionIsSpell() & !isFighting())
@@ -891,6 +967,29 @@ public class Player extends LiveBeing
 			engageInFight(closestCreature) ;
 		}
 
+		if (isFighting() && opponent != null)
+		{
+			doBattleAction() ;
+		}
+		
+		// navigating through open windows
+		navigateThroughOpenWindows(mousePos) ;
+
+		// using hotItems
+		for (int i = 0; i <= hotKeys.length - 1 ; i += 1)
+		{
+			if (!currentAction.equals(hotKeys[i]) || hotItems.get(i) == null) { continue ;}
+			
+			useItem(hotItems.get(i)) ;
+		}
+
+		// Interacting with NPCs
+		interactWithNPCs() ;
+	}
+
+	private void navigateThroughOpenWindows(Point mousePos)
+	{
+
 		if (bag.isOpen())
 		{
 			bag.act(currentAction, mousePos, this) ;
@@ -900,60 +999,50 @@ public class Player extends LiveBeing
 		{
 			((PlayerAttributesWindow) attWindow).act(this, mousePos, currentAction) ;
 		}
-		
-		// navigating through open windows
-		if (focusWindow != null)
+
+		if (focusWindow == null) { return ;}
+
+		if (focusWindow.isOpen())
 		{
-			if (focusWindow.isOpen())
+			if (currentAction.equals("Escape"))
 			{
-				if (currentAction.equals("Escape"))
-				{
-					switchOpenClose(focusWindow) ;
-				}
-				else
-				{
-					focusWindow.navigate(currentAction) ;
-				}
+				switchOpenClose(focusWindow) ;
 			}
-			if (focusWindow instanceof ShoppingWindow)
+			else
 			{
-				((ShoppingWindow) focusWindow).act(currentAction, bag) ;
-			}
-			if (focusWindow instanceof SpellsTreeWindow)
-			{
-				((SpellsTreeWindow) focusWindow).act(this) ;
-			}
-			if (focusWindow instanceof BankWindow)
-			{
-				((BankWindow) focusWindow).act(bag, currentAction) ;
-			}
-			if (focusWindow instanceof CraftWindow)
-			{
-				((CraftWindow) focusWindow).act(bag, mousePos, currentAction, this) ;
-			}
-			if (focusWindow instanceof ElementalWindow)
-			{
-				((ElementalWindow) focusWindow).act(bag, currentAction, this) ;
-				return ;
-			}
-			if (focusWindow instanceof ForgeWindow)
-			{
-				((ForgeWindow) focusWindow).act(currentAction) ;
+				focusWindow.navigate(currentAction) ;
 			}
 		}
-		
-		
-		// using hotItems
-		for (int i = 0; i <= hotKeys.length - 1 ; i += 1)
+		if (focusWindow instanceof ShoppingWindow)
 		{
-			if (!currentAction.equals(hotKeys[i]) | hotItems.get(i) == null) { continue ;}
-			
-			useItem(hotItems.get(i)) ;
+			((ShoppingWindow) focusWindow).act(currentAction, bag) ;
+		}
+		if (focusWindow instanceof SpellsTreeWindow)
+		{
+			((SpellsTreeWindow) focusWindow).act(this) ;
+		}
+		if (focusWindow instanceof BankWindow)
+		{
+			((BankWindow) focusWindow).act(bag, currentAction) ;
+		}
+		if (focusWindow instanceof CraftWindow)
+		{
+			((CraftWindow) focusWindow).act(bag, mousePos, currentAction, this) ;
+		}
+		if (focusWindow instanceof ElementalWindow)
+		{
+			((ElementalWindow) focusWindow).act(bag, currentAction, this) ;
+			return ;
+		}
+		if (focusWindow instanceof ForgeWindow)
+		{
+			((ForgeWindow) focusWindow).act(currentAction) ;
 		}
 		
-		updateCombo() ;
-		
-		// Interacting with NPCs
+	}
+
+	private void interactWithNPCs()
+	{
 		if (PlayerActions.actionOfKey(currentAction) == null) { return ;}
 		if (!PlayerActions.actionOfKey(currentAction).equals(PlayerActions.interact)) { return ;}		
 
@@ -992,7 +1081,6 @@ public class Player extends LiveBeing
 				break ;
 			}
 		}
-		
 	}
 
 	private void meetWithTreasureChests()
@@ -1204,7 +1292,7 @@ public class Player extends LiveBeing
 		{
 			case 42:
 				if (Util.chance(0.5)) { return ;}
-				Spell lastSpellUsed = getActiveSpells().get(Integer.parseInt(currentAction)) ;
+				Spell lastSpellUsed = getActiveSpells().get(Integer.parseInt(currentAction)) ; // TODO parseInt doesn't work with F1 - F12
 				PA.getMp().incCurrentValue((int) (0.04 * spell.getLevel()* lastSpellUsed.getMpCost())) ;
 				
 			case 82:
@@ -1765,7 +1853,6 @@ public class Player extends LiveBeing
 	
 	public void display(Point pos, Scale scale, Directions direction, boolean showRange)
 	{
-
 		displayAttributes(Game.getSettings().getAttDisplay()) ;
 		if (isRiding)
 		{
@@ -1776,7 +1863,8 @@ public class Player extends LiveBeing
 		{
 			displayDrunk() ;
 		}
-		if (isDefending())
+		// TODO this should be the return of is defending
+		if (!battleActionCounter.hasFinished() && AtkTypes.defense.equals(getCurrentAtkType()))
 		{
 			displayDefending() ;
 		}

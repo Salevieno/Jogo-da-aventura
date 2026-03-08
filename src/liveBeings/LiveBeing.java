@@ -89,8 +89,6 @@ public abstract class LiveBeing implements Drawable
 		this.BA = BA;
 		this.movingAni = movingAni;
 		this.attWindow = attWindow ;
-		currentAction = null ;
-		currentAtkType = null ;
 		hpCounter = new GameTimer(20) ;
 		drunk = new GameTimer(20) ;
 		status = new HashMap<>() ;
@@ -212,9 +210,9 @@ public abstract class LiveBeing implements Drawable
 	public void setCurrentAtkType(AtkTypes ba) { currentAtkType = ba ;}
 	
 	public boolean isMoving() { return movingTimer.isActive() ;}
-	public boolean canAct() { return (state.equals(LiveBeingStates.idle) | isMoving() | isFighting()) ;}
+	public boolean canAct() { return (state.equals(LiveBeingStates.idle) || isMoving() || isFighting()) ;}
 	
-	public boolean isPlayerAlly() { return (this instanceof Player | this instanceof Pet) ;}
+	public boolean isPlayerAlly() { return (this instanceof Player || this instanceof Pet) ;}
 	
 	public void resetAction() { currentAction = null ;}
 	public void resetBattleAction() { currentAtkType = null ;}
@@ -461,7 +459,7 @@ public abstract class LiveBeing implements Drawable
 //		if (!isAlive()) { dies() ;}
 	}
 	
-	public void resetBattleActions() { battleActionCounter.start() ; }
+	public void resetBattleActions() { battleActionCounter.restart() ; }
 	
 	protected int totalPower()
 	{
@@ -604,7 +602,7 @@ public abstract class LiveBeing implements Drawable
 		
 		if (this instanceof Player)
 		{
-			return (!battleActionCounter.hasFinished() & combo.get(0).equals(battleKeys[1])) ;
+			return (!battleActionCounter.hasFinished() & combo.get(combo.size() - 1).equals(battleKeys[1])) ;
 		}
 		return usedDef() ;
 	}
@@ -633,8 +631,39 @@ public abstract class LiveBeing implements Drawable
 	}
 
 	public boolean isFighting() { return state.equals(LiveBeingStates.fighting) ;}
+
+	protected void inflictStatus(AtkResults atkResults, LiveBeing receiver)
+	{		
+		if (0 < atkResults.getStatus()[0])
+		{
+			receiver.getStatus().get(Attributes.stun).inflictStatus(0, this.getBA().getStun().getDuration()) ;
+		}
+		if (0 < atkResults.getStatus()[1])
+		{
+			receiver.getStatus().get(Attributes.block).inflictStatus(0, this.getBA().getBlock().getDuration()) ;
+		}
+		if (0 < atkResults.getStatus()[2])
+		{
+			receiver.getStatus().get(Attributes.blood).inflictStatus(Math.max(this.getBA().getBlood().TotalAtk() - receiver.getBA().getBlood().TotalDef(), 0), this.getBA().getBlood().getDuration()) ;
+		}
+		if (0 < atkResults.getStatus()[3])
+		{
+			receiver.getStatus().get(Attributes.poison).inflictStatus(Math.max(this.getBA().getPoison().TotalAtk() - receiver.getBA().getPoison().TotalDef(), 0), this.getBA().getPoison().getDuration()) ;
+		}
+		if (0 < atkResults.getStatus()[4])
+		{
+			receiver.getStatus().get(Attributes.silence).inflictStatus(0, this.getBA().getSilence().getDuration()) ;
+		}
+	}
+
+	protected AtkTypes atkTypeFromAction()
+	{
+		if (usedPhysicalAtk() | actionIsArrowAtk()) { return AtkTypes.physical ;}
+		if (actionIsSpell()) { return AtkTypes.magical ;}
+		if (usedDef()) { return AtkTypes.defense ;}
 		
-		
+		return null ;
+	}
  	
 	private static RelativePos checkAdjacentGround(Point2D.Double pos, Dimension size, GameMap map, GroundType targetGroundType)
 	{ 		
@@ -830,10 +859,10 @@ public abstract class LiveBeing implements Drawable
 
 	public void takeDamage(int damage)
 	{
-		if (damage <= 0) { return ;}
-		
+		if (damage < 0) { return ;}
+
+		playDamageAnimation(Game.getSettings().getDamageAnimation(), new AtkResults(AtkTypes.physical, AtkEffects.hit, damage), Game.palette[7]) ;
 		PA.getLife().decTotalValue(damage) ;
-		// playDamageAnimation(damageStyle, new AtkResults(1), Game.palette[7]) ;
 	}
 	
 	public void takeBloodAndPoisonDamage()
@@ -842,17 +871,17 @@ public abstract class LiveBeing implements Drawable
 		double bloodMult = 1, poisonMult = 1 ;
 		LiveBeingStatus bloodStatus = status.get(Attributes.blood) ;
 		LiveBeingStatus poisonStatus = status.get(Attributes.poison) ;
-		if (this instanceof Player & job == 4)
+		if (this instanceof Player && job == 4)
 		{
 			poisonMult += -0.1 * spells.get(13).getLevel() ;
 		}
-		if (bloodStatus.isActive() & bloodStatus.getTimer().crossedTime(0.5))
+		if (bloodStatus.isActive() && bloodStatus.getTimer().crossedTime(0.5))
 		{
 			bloodDamage = (int) (bloodStatus.getIntensity() * bloodMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedBlood(bloodDamage, BA.getBlood().TotalDef()) ;}
 			playDamageAnimation(damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, bloodDamage, null), Game.palette[7]) ;
 		}
-		if (poisonStatus.isActive() & poisonStatus.getTimer().crossedTime(0.5))
+		if (poisonStatus.isActive() && poisonStatus.getTimer().crossedTime(0.5))
 		{
 			poisonDamage = (int) (poisonStatus.getIntensity() * poisonMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedPoison(poisonDamage, BA.getPoison().TotalDef()) ;}

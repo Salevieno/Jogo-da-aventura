@@ -46,7 +46,7 @@ public abstract class Draw
 	
 	private static final Font stdFont = DrawPrimitives.stdFont ;
 	private static final Font smallFont = new Font(DrawPrimitives.stdFont.getName(), Font.BOLD, 10) ;
-	private static final Font damageAnimationFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
+	private static final Font damageAnimationFont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 	private static final Font loadingGameScreenFont = new Font("SansSerif", Font.BOLD, 28) ;
 
 	private static final Image levelUpAttImg = Game.loadImage(Path.LIVE_BEINGS_IMG + "LevelUp.png") ;
@@ -256,11 +256,13 @@ public abstract class Draw
 
 	public static void damageAnimation(Point initialPos, AtkResults atkResults, GameTimer counter, int style, Color color)
 	{
+		final int speed = 20 ;
 		Color phyAtkColor  = Game.palette[6] ;
 		Color magAtkColor = Game.palette[5] ;
 		AtkEffects effect = atkResults.getEffect() ;
+		double opacity = 1.0 - counter.rate() ;
 		
-		if (effect == AtkEffects.none) { return ;} //  System.out.println("Damage animation with effect = none") ;
+		if (effect == AtkEffects.none) { System.out.println("Warn: Damage animation with effect = none, will not display") ; return ;}
 
 		String damage = String.valueOf(Util.round(atkResults.getDamage(), 1)) ;
 		String message = switch (effect)
@@ -276,14 +278,14 @@ public abstract class Draw
 		
 		Point trajectory = switch (style)
 		{
-			case 0 -> new Point(0, (int) (-20 * rate)) ;
-			case 1 -> new Point((int) (Math.pow(8 * rate, 2)), (int) (-20 * rate)) ;
+			case 0 -> new Point(0, (int) (-speed - 3 * speed * rate  + speed * rate * rate)) ;
+			case 1 -> new Point((int) (Math.pow(8 * rate, 2)), (int) (-speed - 2 * speed * rate)) ;
 			default -> new Point(0, 0) ;
 		} ;
 
 		Point currentPos = Util.translate(initialPos, trajectory) ;
 		Color textColor = color != null ? color : (atkResults.getAtkType().equals(AtkTypes.magical) ? magAtkColor : phyAtkColor) ;
-		GamePanel.DP.drawText(currentPos, Align.center, stdAngle, message, damageAnimationFont, textColor) ;
+		GamePanel.DP.drawBufferedText(currentPos, Align.center, stdAngle, message, damageAnimationFont, textColor, Game.palette[2], 1, opacity) ;
 		
 	}
 	

@@ -31,9 +31,11 @@ import items.PetItem;
 import main.Directions;
 import main.Elements;
 import main.Game;
+import main.GameStates;
 import main.GameTimer;
 import main.Path;
 import maps.GameMap;
+import simulations.EvolutionSimulation;
 import utilities.Util;
 import windows.PetAttributesWindow;
 
@@ -234,6 +236,74 @@ public class Pet extends LiveBeing
 		
 	}
 	
+	private AtkResults calcAtkResults(AtkTypes atkType, LiveBeing receiver)
+	{
+		switch (atkType)
+		{
+			case physical: return Battle.calcPhysicalAtk(this, receiver) ;
+				
+			case magical:
+			{
+				int spellID = Player.spellKeys.indexOf(currentAction) ;
+				Spell spell = getActiveSpells().get(spellID) ;
+				if (canUseSpell(spell))
+				{
+					return useSpell(spell, receiver);
+					// this.displayUsedSpellMessage(spell, Util.translate(this.getPos(), 0, -50), Game.palette[5]) ;
+				}
+				else
+				{
+					System.out.println("Warn: " + name + " trying to use spell. But no can use, baby!") ;		
+					return new AtkResults();
+				}				
+			}
+			case physicalMagical: return new AtkResults();
+			case defense:
+			{
+	 			activateDef() ;
+	 			return new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
+			}
+			default: return new AtkResults() ;
+		}
+	}
+
+	private AtkResults performAtk(AtkTypes atkType, LiveBeing receiver)
+	{
+		AtkResults atkResults = calcAtkResults(atkType, receiver) ;
+		
+		AtkEffects effect = atkResults.getEffect() ;
+		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
+
+		receiver.takeDamage(atkResults.getDamage()) ;
+		Point2D.Double knockedDist = Battle.knockback(pos, receiver.getPosAsDouble(), BA.getKnockbackPower().getTotal()) ;
+		receiver.moveIfWalkable(knockedDist) ;
+		inflictStatus(atkResults, receiver) ;
+
+		return atkResults ;
+	}
+
+	private void doBattleAction()
+	{
+		if (!isAlive()) { return ;}
+		if (!canAtk()) { return ;}
+		if (!isInRange(Game.getPlayer().getOpponent().getPosAsDouble())) { return ;}
+		if (!hasActed()) { return ;}
+
+		AtkTypes atkType = atkTypeFromAction() ;
+		
+		if (atkType == null) { return ;}
+		
+		setCurrentAtkType(atkType) ;
+		AtkResults atkResults = performAtk(atkType, Game.getPlayer().getOpponent()) ;
+		trainOffensive(atkResults) ;
+		battleActionCounter.restart() ;
+
+		if (Game.getState().equals(GameStates.simulation))
+		{
+			EvolutionSimulation.updateBattleStats(this, Game.getPlayer().getOpponent(), atkResults) ;
+		}
+	}
+
 	public void act(Player player, double dt)
 	{
 		if (isMoving())
@@ -250,7 +320,8 @@ public class Pet extends LiveBeing
 				move(player.getPosAsDouble(), player.getMap(), player.getOpponent(), player.getSuperElem(), dt) ;
 				return ;
 			}
-			fight() ;
+			chooseFightMove() ;
+			doBattleAction() ;
 		}
 		
 	}
@@ -265,7 +336,7 @@ public class Pet extends LiveBeing
 		}
 	}
 	
-	public void fight()
+	public void chooseFightMove()
 	{
 		int move = Util.randomInt(0, 1 + getActiveSpells().size()) ;
 		switch (move)

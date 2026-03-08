@@ -817,7 +817,7 @@ public abstract class EvolutionSimulation
 			{
 				EvolutionSimulation.playerAutoFight() ;
 			}
-			Battle.runBattle(player, pet, player.getOpponent()) ;
+			// Battle.runBattle(player, pet, player.getOpponent()) ;
 			if (!player.isAlive() | !player.getOpponent().isAlive())
 			{
 				Battle.finishBattle(player, pet, player.getOpponent()) ;

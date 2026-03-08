@@ -17,14 +17,24 @@ public class AtkResults
 		this.status = status;
 	}
 
-	public AtkResults()
+	public AtkResults(AtkTypes atkType, AtkEffects effect, int damage)
 	{
-		this(null, AtkEffects.none, 0, null) ;
+		this(atkType, effect, damage, null) ;
+	}
+
+	public AtkResults(AtkTypes atkType, int damage)
+	{
+		this(atkType, AtkEffects.none, damage, null) ;
 	}
 
 	public AtkResults(AtkTypes atkType)
 	{
 		this(atkType, AtkEffects.none, 0, null) ;
+	}
+
+	public AtkResults()
+	{
+		this(null, AtkEffects.none, 0, null) ;
 	}
 
 	public AtkTypes getAtkType() { return atkType ;}
