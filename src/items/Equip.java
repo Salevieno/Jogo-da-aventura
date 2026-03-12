@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
+import animations.MessageAnimation;
 import attributes.AttributeBonus;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Animation;
-import graphics2.AnimationTypes;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
@@ -314,7 +313,9 @@ public class Equip extends Item
 		}				
 		applyBonus(player.getPA(), player.getBA(), equip, 1) ;
 
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Game.palette[0]}) ;
+		// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Game.palette[0]}) ;
+		MessageAnimation.start(Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Game.palette[0]) ;
+		
 		player.updateSuperElem() ;
 //		player.getElem()[4] = player.hasSuperElement() ? equip.elem : Elements.neutral ;
 		if (player.hasSuperElement())
@@ -340,7 +341,9 @@ public class Equip extends Item
 		player.updateSuperElem() ;
 //		player.getElem()[4] = Elements.neutral ;
 		
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Game.palette[0]}) ;
+		// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Game.palette[0]}) ;
+		MessageAnimation.start(Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Game.palette[0]) ;
+		
 		player.getEquips()[type] = null ;
 	}
 	

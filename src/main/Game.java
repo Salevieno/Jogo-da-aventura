@@ -23,13 +23,13 @@ import Buildings.BuildingType;
 import NPC.NPC;
 import NPC.NPCType;
 import UI.GameButton;
+import animations.Animation;
 import battle.AtkTypes;
 import battle.Battle;
 import components.Projectiles;
 import components.Quest;
 import components.QuestSkills;
 import graphics.Align;
-import graphics2.Animation;
 import graphics2.Draw;
 import graphics2.Drawable;
 import graphics2.SpriteAnimation;
@@ -705,7 +705,7 @@ public class Game
 		}
 
 		if (player.shouldLevelUP())
-		{
+		{// TODO level up animation (att increase)
 			player.levelUp();
 		}
 

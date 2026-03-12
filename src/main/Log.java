@@ -3,8 +3,8 @@ package main;
 import java.util.List;
 import java.util.Map;
 
+import animations.Animation;
 import battle.AtkResults;
-import graphics2.Animation;
 import items.Item;
 import liveBeings.Buff;
 import liveBeings.CreatureType;

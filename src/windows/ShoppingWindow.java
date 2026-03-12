@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import animations.MessageAnimation;
+import animations.ObtainedItemAnimation;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Animation;
-import graphics2.AnimationTypes;
 import graphics2.Draw;
 import items.Item;
 import liveBeings.Player;
@@ -102,11 +102,11 @@ public class ShoppingWindow extends GameWindow
 	{
 		if (i == 0)
 		{
-			Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.1, 0.2), "Você não possui ouro suficiente", Game.palette[0]}) ;
+			MessageAnimation.start(Game.getScreen().pos(0.1, 0.2), "Você não possui ouro suficiente", Game.palette[0]) ;
 			return ;
 		}
 
-		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.5, 0.2), selectedItem().getName(), Game.palette[0]}) ;
+		ObtainedItemAnimation.start(Game.getScreen().pos(0.5, 0.2), selectedItem().getName(), Game.palette[0]) ;
 	}
 	
 	public void buyItem(BagWindow bag)
@@ -151,10 +151,8 @@ public class ShoppingWindow extends GameWindow
 		Point titlePos = Util.translate(windowPos, size.width / 2, 16) ;
 		double angle = Draw.stdAngle ;
 		
-		GamePanel.DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
-		
-		GamePanel.DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[0]) ;
-				
+		GamePanel.DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;		
+		GamePanel.DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[0]) ;				
 		
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
 		{

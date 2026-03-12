@@ -23,8 +23,6 @@ import battle.Battle;
 import components.HitboxRectangle;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Animation;
-import graphics2.AnimationTypes;
 import graphics2.Draw;
 import graphics2.SpriteAnimation;
 import items.PetItem;
@@ -446,8 +444,8 @@ public class Pet extends LiveBeing
 		BA.getAgi().incBaseValue(attIncrease[6]) ;
 		BA.getDex().incBaseValue(attIncrease[7]) ;
 		PA.getExp().incMaxValue((int) attIncrease[8]) ;
-		
-		Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, level});
+
+		// Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, level});
 	}
 	
 	public Elements[] atkElems() { return new Elements[] {atkElem, atkElem} ;}

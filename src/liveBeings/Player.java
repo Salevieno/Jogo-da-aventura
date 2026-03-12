@@ -18,6 +18,10 @@ import org.json.simple.JSONObject;
 
 import Buildings.Building;
 import NPC.NPC;
+import animations.Animation;
+import animations.MessageAnimation;
+import animations.ObtainedItemAnimation;
+import animations.WinAnimation;
 import attributes.AttributeIncrease;
 import attributes.Attributes;
 import attributes.BasicAttribute;
@@ -32,8 +36,6 @@ import components.Quest;
 import components.QuestSkills;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Animation;
-import graphics2.AnimationTypes;
 import graphics2.Draw;
 import graphics2.SpriteAnimation;
 import items.Alchemy;
@@ -452,11 +454,13 @@ public class Player extends LiveBeing
             	useAutoSpell(true, spells.get(4)) ;
         	}
         	trainCollecting(collectible) ;
-        	Animation.start(AnimationTypes.obtainedItem, new Object[] {new Point((int)pos.x, (int)(pos.y - 20 - size.height)), msg, Game.palette[0]});
-        }
+        	// Animation.start(AnimationTypes.obtainedItem, new Object[] {new Point((int)pos.x, (int)(pos.y - 20 - size.height)), msg, Game.palette[0]});
+			ObtainedItemAnimation.start(new Point((int)pos.x, (int)(pos.y - 20 - size.height)), msg, Game.palette[0]) ;
+		}
         else
         {
-        	Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.palette[0]});
+        	// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.palette[0]});
+			MessageAnimation.start(Game.getScreen().pos(0.2, 0.2), msg, Game.palette[0]) ;
         }
 
     	removeCollectibleFromMap(collectible) ;
@@ -688,15 +692,16 @@ public class Player extends LiveBeing
     	
 		if (!Util.chance(successChance))
 		{
-			Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.3, 0.2), "Não pegou peixe", Game.palette[0]}) ;
+			// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.3, 0.2), "Não pegou peixe", Game.palette[0]}) ;
+			MessageAnimation.start(Game.getScreen().pos(0.3, 0.2), "Não pegou peixe", Game.palette[0]) ;
 			return ;
 		}
 		
 		int fishType = Util.randomInt(6, 8) ;
 		Item fish = Food.getAll()[fishType] ;
 		bag.add(fish, 1) ;
-		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.palette[0]}) ;
-		
+		// Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.palette[0]}) ;
+		ObtainedItemAnimation.start(Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.palette[0]) ;
 	}
 
 	private Item determineDiggedItem()
@@ -745,14 +750,13 @@ public class Player extends LiveBeing
 		Item diggedItem = determineDiggedItem() ;
 		
 		bag.add(diggedItem, 1) ;
-		Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.2), diggedItem.getName(), Game.palette[0]}) ;
-		
+		ObtainedItemAnimation.start(Game.getScreen().pos(0.2, 0.2), diggedItem.getName(), Game.palette[0]) ;
 		if (superElem == Elements.earth)
 		{
 			Item diggedItemExtra = determineDiggedItem() ;
 			
 			bag.add(diggedItemExtra, 1) ;
-			Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.2, 0.25), diggedItemExtra.getName(), Game.palette[0]}) ;
+			ObtainedItemAnimation.start(Game.getScreen().pos(0.2, 0.25), diggedItemExtra.getName(), Game.palette[0]) ;		
 		}
 	}
 	
@@ -1119,7 +1123,8 @@ public class Player extends LiveBeing
 				{
 					if (Animation.getAll().isEmpty())
 					{
-						Animation.start(AnimationTypes.message, new Object[] {new Point((int)pos.x, (int)(pos.y - 20 - size.height)), "Nível de coleta insuficiente", Game.palette[4]}) ;
+						// Animation.start(AnimationTypes.message, new Object[] {new Point((int)pos.x, (int)(pos.y - 20 - size.height)), "Nível de coleta insuficiente", Game.palette[4]}) ;
+						MessageAnimation.start(new Point((int)pos.x, (int)(pos.y - 20 - size.height)), "Nível de coleta insuficiente", Game.palette[4]) ;
 					}
 					break ;
 				}
@@ -1606,7 +1611,7 @@ public class Player extends LiveBeing
 		};
 		if (showAnimation)
 		{
-			Animation.start(AnimationTypes.win, new Object[] {itemsObtained}) ;
+			WinAnimation.start(itemsObtained);
 		}
 		
 	}
@@ -1913,7 +1918,8 @@ public class Player extends LiveBeing
 	public void applySuperElementEffect(Elements elem, boolean apply)
 	{
 		// proTODO superelementos luz: ilumina a caverna, escuridão: aura escura, trovão e neve
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Game.palette[7]}) ;
+		// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Game.palette[7]}) ;
+		MessageAnimation.start(Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Game.palette[7]) ;
 		switch (elem)
 		{
 			case fire:

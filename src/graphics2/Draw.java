@@ -11,29 +11,20 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import UI.GameButton;
-import battle.AtkEffects;
-import battle.AtkResults;
-import battle.AtkTypes;
 import components.Hitbox;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics.UtilAlignment;
-import items.Item;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
-import main.GameTimer;
 import main.Path;
-import main.TextCategories;
 import maps.FieldMap;
 import maps.GameMap;
 import utilities.Util;
-
-import windows.AttributesWindow;
-import windows.BagWindow;
 import windows.PlayerAttributesWindow;
 
 public abstract class Draw 
@@ -46,13 +37,7 @@ public abstract class Draw
 	
 	private static final Font stdFont = DrawPrimitives.stdFont ;
 	private static final Font smallFont = new Font(DrawPrimitives.stdFont.getName(), Font.BOLD, 11) ;
-	private static final Font damageAnimationFont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 	private static final Font loadingGameScreenFont = new Font("SansSerif", Font.BOLD, 28) ;
-
-	private static final Image levelUpAttImg = Game.loadImage(Path.LIVE_BEINGS_IMG + "LevelUp.png") ;
-	private static final Image winObtainedItemsImg = Game.loadImage(Path.PLAYER_IMG + "Win.png") ;
-	private static final Image obtainedItem = Game.loadImage(Path.PLAYER_IMG + "ObtainedItem.png") ;
-	private static final Image messageBoxImg = Game.loadImage(Path.PLAYER_IMG + "messageBox.png") ;
 
 	public static double stdAngle ;
 	
@@ -254,41 +239,6 @@ public abstract class Draw
 		time() ;
 	}
 
-	public static void damageAnimation(Point initialPos, AtkResults atkResults, GameTimer counter, int style, Color color)
-	{
-		final int speed = 20 ;
-		Color phyAtkColor  = Game.palette[6] ;
-		Color magAtkColor = Game.palette[5] ;
-		AtkEffects effect = atkResults.getEffect() ;
-		double opacity = 1.0 - counter.rate() ;
-		
-		if (effect == AtkEffects.none) { System.out.println("Warn: Damage animation with effect = none, will not display") ; return ;}
-
-		String damage = String.valueOf(Util.round(atkResults.getDamage(), 1)) ;
-		String message = switch (effect)
-		{
-			case miss -> "Miss" ;
-			case hit -> damage ;
-			case crit -> damage + "!" ;
-			case block -> "Block" ;
-			default -> "" ;
-		} ;
-
-		double rate = Math.pow(counter.rate(), 0.6) ;
-		
-		Point trajectory = switch (style)
-		{
-			case 0 -> new Point(0, (int) (-speed - 3 * speed * rate  + speed * rate * rate)) ;
-			case 1 -> new Point((int) (Math.pow(8 * rate, 2)), (int) (-speed - 2 * speed * rate)) ;
-			default -> new Point(0, 0) ;
-		} ;
-
-		Point currentPos = Util.translate(initialPos, trajectory) ;
-		Color textColor = color != null ? color : (atkResults.getAtkType().equals(AtkTypes.magical) ? magAtkColor : phyAtkColor) ;
-		GamePanel.DP.drawBufferedText(currentPos, Align.center, stdAngle, message, damageAnimationFont, textColor, Game.palette[2], 1, opacity) ;
-		
-	}
-	
 	public static void keyboardKey(Point pos, String key, Font font, Color color)
 	{
 		GamePanel.DP.drawRoundRect(pos, Align.center, new Dimension(12, 12), 1, Game.palette[3], Game.palette[0], true, 2, 2) ;
@@ -297,10 +247,6 @@ public abstract class Draw
 	public static void keyboardKey(Point pos, String key, Color color)
 	{
 		keyboardKey(pos, key, smallFont, color) ;
-	}
-	public static void keyboardKey(Point pos, String key)
-	{
-		keyboardKey(pos, key, smallFont, Game.palette[0]) ;
 	}
 	
 	public static void settingBars(Point pos, Align align, int height, int qtdFilledBars, int totalBars, boolean increasingHeights, Color fillColor)
@@ -319,25 +265,10 @@ public abstract class Draw
 		}
 	}
 
-	public static void settingBars(Point pos, int height, int qtdFilledBars, int totalBars, boolean increasingHeights, Color fillColor)
-	{
-		settingBars(pos, Align.bottomLeft, height, qtdFilledBars, totalBars, increasingHeights, fillColor) ;
-	}
-
-	public static void settingBars(Point pos, int height, int qtdFilledBars, int totalBars, boolean increasingHeights)
-	{
-		settingBars(pos, height, qtdFilledBars, totalBars, increasingHeights, Game.palette[18]) ;
-	}
-
 	public static void settingBars(Point pos, Align align, int height, int qtdFilledBars, int totalBars)
 	{
 		settingBars(pos, align, height, qtdFilledBars, totalBars, false, Game.palette[18]) ;
-	}
-	
-	public static void settingBars(Point pos, int height, int qtdFilledBars, int totalBars)
-	{
-		settingBars(pos, height, qtdFilledBars, totalBars, false, Game.palette[18]) ;
-	}
+	}	
 
 	public static void settingSwitch(Point pos, Align align, boolean isOn, Color fillColor)
 	{
@@ -354,155 +285,8 @@ public abstract class Draw
 		GamePanel.DP.drawCircle(circleCenter, height / 2 - borderThickness, borderColor) ;
 	}
 	
-	public static void settingSwitch(Point pos, boolean isOn, Color fillColor)
-	{
-		settingSwitch(pos, Align.centerLeft, isOn, fillColor) ;
-	}
-
 	public static void settingSwitch(Point pos, Align align, boolean isOn)
 	{
 		settingSwitch(pos, align, isOn, Game.palette[3]) ;
 	}
-
-	public static void settingSwitch(Point pos, boolean isOn)
-	{
-		settingSwitch(pos, isOn, Game.palette[18]) ;
-	}
-	
-	// TODO
-	public static void gainExpAnimation() {}
-	public static void gainGoldAnimation(GameTimer counter, int goldObtained)
-	{
-		
-		// Point pos = Game.getScreen().pos(0.45, 0.1) ;
-		// Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		// Color textColor = Game.palette[14] ;
-
-		// Point textPos = Util.translate(pos, 5, 0) ;
-		// GamePanel.DP.drawText(textPos, Align.centerLeft, stdAngle, "+", font, textColor) ;
-		
-		// Point coinPos = Util.translate(pos, 15, 0) ;
-		// GamePanel.DP.drawImage(Player.getCoinImg(), coinPos, Scale.unit, Align.centerLeft) ;
-		
-		// Point amountPos = Util.translate(pos, 35, 0) ;
-		// GamePanel.DP.drawText(amountPos, Align.centerLeft, stdAngle, String.valueOf(goldObtained), font, textColor) ;
-		
-	}
-
-	public static void bufferedTextAnimation(Point pos, GameTimer counter, String text, Color color)
-	{
-		pos = Util.translate(pos, 0, (int) (-30 * counter.rate())) ;
-		GamePanel.DP.drawBufferedText(pos, Align.centerLeft, stdAngle, text, stdFont, color, Game.palette[3], 2);
-	}
-
-	public static void quickTextAnimation(Point pos, GameTimer counter, String text, Color color)
-	{
-		pos = Util.translate(pos, 0, (int) (-30 * counter.rate())) ;
-		GamePanel.DP.drawImage(messageBoxImg, pos, stdAngle, Scale.unit, Align.topCenter, 0.9) ;
-		GamePanel.DP.drawText(Util.translate(pos, 5 - messageBoxImg.getWidth(null) / 2, 20), Align.centerLeft, stdAngle, text, smallFont, color) ;
-	}
-
-	public static void obtainedItemAnimation(Point pos, GameTimer counter, String text, Color color)
-	{
-		pos = Util.translate(pos, 0, (int) (-30 * counter.rate())) ;
-		GamePanel.DP.drawImage(obtainedItem, pos, Align.topCenter) ;
-		GamePanel.DP.drawText(Util.translate(pos, 0, 0), Align.topCenter, stdAngle, "Você obteve", stdFont, color) ;
-		GamePanel.DP.drawText(Util.translate(pos, 5 - obtainedItem.getWidth(null) / 2, 20), Align.topLeft, stdAngle, text, smallFont, color) ;
-	}
-
-	public static void winAnimation(GameTimer counter, List<Item> items)
-	{
-		Point pos = Game.getScreen().pos(0.35, 0.2) ;
-
-		GamePanel.DP.drawImage(winObtainedItemsImg, pos, Scale.unit, Align.topLeft) ;
-		
-		if ( counter.rate() <= 0.1 ) { return ;}
-		
-		Point textPos = Util.translate(pos, 80, 11) ;
-		GamePanel.DP.drawText(textPos, Align.center, stdAngle, "Você obteve!", stdFont, Game.palette[3]) ;
-		
-		if ( counter.rate() <= 0.3 ) { return ;}
-		
-		Point itemTextPos = Util.translate(pos, 15, 40) ;
-		for (int i = 0 ; i <= items.size() - 1 ; i += 1)
-		{
-			if ( 0.3 + 0.5 * i / items.size() <= counter.rate() )
-			{
-				GamePanel.DP.drawText(itemTextPos, Align.bottomLeft, stdAngle, items.get(i).getName(), smallFont, Game.palette[3]) ;
-				itemTextPos.y += 15 ;
-			}
-		}
-	}
-	
-	public static void levelUpAnimation(GameTimer counter, double[] attributeInc, int newLevel)
-	{
-
-		Point pos = Game.getScreen().pos(0.55, 0.2) ;
-		Point offset = new Point(15, 15) ;
-		String[] attText = Game.allText.get(TextCategories.attributes) ;
-		
-		GamePanel.DP.drawImage(levelUpAttImg, pos, Scale.unit, Align.topLeft) ;
-		Point textPos = Util.translate(pos, winObtainedItemsImg.getWidth(null) / 2, offset.y) ;
-		
-		GamePanel.DP.drawText(textPos, Align.bottomCenter, stdAngle, attText[0] + " " + newLevel + "!", smallFont, Game.palette[0]) ;
-
-		int nRows = 4 ;
-		int nCols = 2 ;
-		int sy = smallFont.getSize() + 15 ;
-		Point topLeftSlotCenter = Util.translate(pos, 18, 35) ;
-		int[] attOrder = new int[] {0, 2, 4, 6, 1, 3, 5, 7} ;
-		for (int i = 0 ; i <= attOrder.length - 1 ; i += 1)
-		{
-			Point imagePos = Util.calcGridPos(topLeftSlotCenter, i, nRows, new Point(80, sy)) ;
-			GamePanel.DP.drawImage(BagWindow.slotImage, imagePos, Align.center) ;
-			GamePanel.DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
-		}
-		
-		if (counter.rate() <= 0.2) { return ;}
-		
-		String[] attNames = Arrays.copyOfRange(attText, 1, 9) ;
-		
-		for (int i = 0 ; i <= attNames.length - 1 ; i += 1)
-		{
-			if (counter.rate() <= 0.2 + 0.5 * i / (attNames.length - 1)) { continue ;}
-
-			int row = i % nCols ;
-			int col = i / nCols ;
-			Point attTextPos = Util.translate(pos, 28 + row * 80, 40 + col * sy) ;
-			GamePanel.DP.drawText(attTextPos, Align.bottomLeft, stdAngle, " + " + attributeInc[i], smallFont, Game.palette[0]) ;
-		}
-		
-	}
-
-	public static void pterodactileAnimation(GameTimer counter, Image pterodactile, Image speakingBubble, String[] message)
-	{
-		int imageWidth = pterodactile.getWidth(null) ;
-		Point pos = new Point(-imageWidth / 2, (int)(0.25*screenSize.height)) ;
-		
-		if (counter.rate() <= 0.25)
-		{
-			pos.x += 4 * counter.rate() * (screenSize.width / 2 + imageWidth / 2) ;
-			pos.y += screenSize.height * counter.rate() ;
-		}
-		else if (counter.rate() <= 0.5)
-		{
-			pos.x += screenSize.width / 2 + imageWidth / 2 ;
-			pos.y += 0.25 * screenSize.height ;
-			speech(Util.translate(pos, 0, -10), message[0], stdFont, speakingBubble, Game.palette[19]) ;
-		}
-		else if (counter.rate() <= 0.75)
-		{
-			pos.x +=screenSize.width / 2 + imageWidth / 2 ;
-			pos.y += 0.25 * screenSize.height ;
-			speech(Util.translate(pos, 0, -10), message[1], stdFont, speakingBubble, Game.palette[19]) ;
-		}
-		else
-		{
-			pos.x += (screenSize.width / 2 + imageWidth / 2) + 2 * (screenSize.width + imageWidth) * (counter.rate() - 0.75) ;
-			pos.y += 0.25 * screenSize.height - 1 * screenSize.height * (counter.rate() - 0.75) ;
-		}
-		GamePanel.DP.drawImage(pterodactile, pos, Align.center) ;
-		
-	}
-	
 }

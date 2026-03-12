@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import UI.ButtonFunction;
 import UI.GameButton;
+import animations.Animation;
 import attributes.AttributeIncrease;
 import attributes.Attributes;
 import attributes.BasicAttribute;
@@ -31,8 +32,6 @@ import battle.AtkTypes;
 import battle.Battle;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Animation;
-import graphics2.AnimationTypes;
 import graphics2.Draw;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
@@ -45,7 +44,6 @@ import main.Game;
 import main.GamePanel;
 import main.GameTimer;
 import utilities.Util;
-
 import windows.PlayerAttributesWindow;
 
 public abstract class EvolutionSimulation
@@ -405,7 +403,7 @@ public abstract class EvolutionSimulation
 		
 		((PlayerAttributesWindow) player.getAttWindow()).activateIncAttButtons(player.getAttPoints()) ;
 		
-		Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, player.getLevel()});
+		// Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, player.getLevel()});
 	}
 	
 	public static void autoApplyAttPoints(Player player)

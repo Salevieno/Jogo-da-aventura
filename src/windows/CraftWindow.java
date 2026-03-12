@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import UI.GameButton;
+import animations.MessageAnimation;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Animation;
-import graphics2.AnimationTypes;
 import graphics2.Draw;
 import items.Arrow;
 import items.GeneralItem;
@@ -144,7 +143,7 @@ public class CraftWindow extends GameWindow
 	{
 		String message = messages.get(i) ;
 		Point pos = Util.translate(windowPos, 320, -30) ;
-		Animation.start(AnimationTypes.message, new Object[] {pos, message, Game.palette[0]}) ;
+		MessageAnimation.start(pos, message, Game.palette[0]) ;
 	}
 	
 	public void display(Point mousePos)

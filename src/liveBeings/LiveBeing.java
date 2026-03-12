@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import animations.DamageAnimation;
+import animations.ObtainedItemAnimation;
 import attributes.Attributes;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
@@ -22,8 +24,6 @@ import battle.AtkResults;
 import battle.AtkTypes;
 import components.Hitbox;
 import graphics.Align;
-import graphics2.Animation;
-import graphics2.AnimationTypes;
 import graphics2.Drawable;
 import graphics2.SpriteAnimation;
 import main.Directions;
@@ -37,7 +37,6 @@ import maps.GameMap;
 import maps.GroundRegion;
 import maps.GroundType;
 import utilities.Util;
-
 import windows.AttributesWindow;
 
 public abstract class LiveBeing implements Drawable
@@ -350,17 +349,15 @@ public abstract class LiveBeing implements Drawable
 	public void displayState()
 	{
 		Point displayPos = Util.translate(getPos(), 0, size.height + 10) ;
-		// Dimension size = new Dimension(60, 20) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String stateText = state.toString() ;
 		
-//		GamePanel.DP.drawRoundRect(displayPos, Align.center, size, 1, Game.palette[21], Game.palette[0], true);
 		GamePanel.DP.drawText(displayPos, Align.center, 0, stateText, font, Game.palette[0]) ;
 	}
 
 	public void displayUsedSpellMessage(Spell spell, Point pos, Color color)
 	{
-		Animation.start(AnimationTypes.bufferedText, battleActionCounter.getDuration(), new Object[] {pos, spell.getName(), color}) ;
+		ObtainedItemAnimation.start(pos, spell.getName(), color) ;
 	}
 	
 	public void displayPowerBar(Point pos)
@@ -895,7 +892,7 @@ public abstract class LiveBeing implements Drawable
 
 	public void playDamageAnimation(int damageStyle, AtkResults atkResults, Color color)
 	{
-		Animation.start(AnimationTypes.damage, new Object[] {headPos(), damageStyle, atkResults, color});
+		DamageAnimation.start(headPos(), atkResults, damageStyle, color) ;
 	}
 
 	public void playDamageAnimation(AtkResults atkResults, Color color) { playDamageAnimation(damageStyle, atkResults, color) ;}

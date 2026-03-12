@@ -4,10 +4,9 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 
+import animations.MessageAnimation;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Animation;
-import graphics2.AnimationTypes;
 import graphics2.Draw;
 import liveBeings.Player;
 import main.Game;
@@ -145,7 +144,7 @@ public class BankWindow extends GameWindow
 		Point msgPos = Game.getScreen().pos(0.4, 0.3) ;
 		String msg = "Você não tem ouro suficiente!" ;
 		Color msgColor = Game.palette[0] ;
-		Animation.start(AnimationTypes.message, new Object[] {msgPos, msg, msgColor}) ;
+		MessageAnimation.start(msgPos, msg, msgColor) ;
 	}
 	
 	public void display(Point mousePos)

@@ -7,11 +7,10 @@ import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
 
+import animations.MessageAnimation;
 import graphics.Align;
 import graphics.Scale;
 import graphics.UtilAlignment;
-import graphics2.Animation;
-import graphics2.AnimationTypes;
 import graphics2.Draw;
 import items.Equip;
 import items.Forge;
@@ -66,7 +65,7 @@ public class ForgeWindow extends GameWindow
 	{
 		message = messages.get(i) ;
 		Point pos = Util.translate(windowPos, 0, - 30) ;
-		Animation.start(AnimationTypes.message, new Object[] {pos, message, Game.palette[0]}) ;
+		MessageAnimation.start(pos, message, Game.palette[0]) ;
 	}
 	
 	public void navigate(String action)

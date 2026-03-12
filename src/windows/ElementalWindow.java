@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import animations.MessageAnimation;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Animation;
-import graphics2.AnimationTypes;
 import graphics2.Draw;
 import items.Equip;
 import items.GeneralItem;
@@ -152,7 +151,7 @@ public class ElementalWindow extends GameWindow
 			case 3 -> "Elemento mudado com sucesso!" ;
 			default -> "" ;
 		};
-		Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.5, 0.2), message, Game.palette[0]}) ;
+		MessageAnimation.start(Game.getScreen().pos(0.5, 0.2), message, Game.palette[0]) ;
 	}
 	
 	public void changeEquipElement(BagWindow bag)
