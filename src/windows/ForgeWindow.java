@@ -29,7 +29,6 @@ public class ForgeWindow extends GameWindow
 	
 	private List<Equip> itemsForForge ;
 	private String message ;
-	// private GameButton forgeButton ;
 	private BagWindow bag ;
 	private static final List<String> messages ;
 	
