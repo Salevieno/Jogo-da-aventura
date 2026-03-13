@@ -23,6 +23,8 @@ public class Sky
 	private static List<SkyComponent> stars ;
 	private static Color topColor ;
 	private static Color botColor ;
+	private static final Color[] topColors ;
+	private static final Color[] botColors ;
 	private static final Image cloudImage1 ;
 	private static final Image cloudImage2 ;
 	private static final Image cloudImage3 ;
@@ -32,6 +34,16 @@ public class Sky
 	static
 	{
 		height = 192 ;
+		topColors = new Color[8];
+		botColors = new Color[8];
+		
+		Image skyColors = Game.loadImage(Path.SKY_IMG + "Colors.png") ;
+		for (int i = 0; i <= 8 - 1; i += 1)
+		{
+			topColors[i] = Util.getPixelColor(Util.toBufferedImage(skyColors), new Point(10 * i, 0));
+			botColors[i] = Util.getPixelColor(Util.toBufferedImage(skyColors), new Point(10 * i, 10));
+		}
+
 		cloudImage1 = Game.loadImage(Path.SKY_IMG + "Cloud1.png") ;
 		cloudImage2 = Game.loadImage(Path.SKY_IMG + "Cloud2.png") ;
 		cloudImage3 = Game.loadImage(Path.SKY_IMG + "Cloud3.png") ;
@@ -103,7 +115,8 @@ public class Sky
 	
 	public void update(double dt)
 	{
-		updateColor() ;
+		updateTopColor() ;
+		updateBotColor() ;
 
 		for (SkyComponent cloud : clouds)
 		{
@@ -132,67 +145,52 @@ public class Sky
 	{
 		stars.forEach(SkyComponent::display);
 	}
-	
-	private void updateColor()
+
+	private void updateTopColor()
 	{
 		double timeRate = Game.dayTimeRate() ;
-		// double multRed = 48 * Math.pow(timeRate, 3) - 76 * Math.pow(timeRate, 2) + 28 * timeRate;
-		// double multGreen = (16/3.0) * Math.pow(timeRate, 3) - 12 * Math.pow(timeRate, 2) + (20/3.0) * timeRate;
-		// double multBlue = (-16/3.0) * Math.pow(timeRate, 3) + 4 * Math.pow(timeRate, 2) + (4/3.0) * timeRate;
-		// int red = Math.max(0, Math.min((int)(Game.palette[21].getRed() * multRed), 255)) ;
-		// int green = Math.max(0, Math.min((int)(Game.palette[21].getGreen() * multGreen), 255)) ;
-		// int blue = Math.max(0, Math.min((int)(Game.palette[21].getBlue() * multBlue), 255)) ;
-		double topRed = 0 ;
-		double topGreen = 0 ;
-		double topBlue = 0 ;
-		double botRed = 0 ;
-		double botGreen = 0 ;
-		double botBlue = 0 ;
 
-		if (0.0 <= timeRate & timeRate <= 0.25)
+		for (int i = 0; i <= topColors.length - 2; i += 1)
 		{
-			topRed = 252 * timeRate + 5 ;
-			topGreen = 396 * timeRate + 5 ;
-			topBlue = 528 * timeRate + 51 ;
-			botRed = 784 * timeRate + 5 ;
-			botGreen = 800 * timeRate + 5 ;
-			botBlue = -4 * timeRate + 51 ;
-		}
-		else if (0.25 <= timeRate & timeRate <= 0.5)
-		{
-			topRed = 348 * timeRate - 19 ;
-			topGreen = 392 * timeRate + 6 ;
-			topBlue = 172 * timeRate + 140 ;
-			botRed = -184 * timeRate + 247 ;
-			botGreen = -12 * timeRate + 208 ;
-			botBlue = 704 * timeRate - 126;
-		}
-		else if (0.5 <= timeRate & timeRate <= 0.75)
-		{
-			topRed = 184 * timeRate + 63 ;
-			topGreen = 12 * timeRate + 196 ;
-			topBlue = -704 * timeRate + 578 ;
-			botRed = -348 * timeRate + 329 ;
-			botGreen = -392 * timeRate + 398 ;
-			botBlue = -172 * timeRate + 312 ;
-		}
-		else
-		{
-			topRed = -784 * timeRate + 789 ;
-			topGreen = -800 * timeRate + 805 ;
-			topBlue = 4 * timeRate + 47 ;
-			botRed = -252 * timeRate + 257 ;
-			botGreen = -396 * timeRate + 401 ;
-			botBlue = -528 * timeRate + 579 ;
+			if (timeRate <= (i + 1) / (double)topColors.length)
+			{
+				topColor = interpolateColor(topColors[i] , topColors[i + 1], timeRate * topColors.length - i);
+				
+				return ;
+			}
 		}
 
-		topColor = new Color((int)topRed, (int)topGreen, (int)topBlue) ;
-		botColor = new Color((int)botRed, (int)botGreen, (int)botBlue) ;
+		topColor = interpolateColor(topColors[topColors.length - 1] , topColors[0], timeRate * topColors.length - (topColors.length - 1));
+	}
+
+	private void updateBotColor()
+	{
+		double timeRate = Game.dayTimeRate() ;
+
+		for (int i = 0; i <= botColors.length - 2; i += 1)
+		{
+			if (timeRate <= (i + 1) / (double)botColors.length)
+			{
+				botColor = interpolateColor(botColors[i] , botColors[i + 1], timeRate * botColors.length - i);
+				
+				return ;
+			}
+		}
+		botColor = interpolateColor(botColors[botColors.length - 1] , botColors[0], timeRate * botColors.length - (botColors.length - 1));
+	}
+
+	private Color interpolateColor(Color startColor, Color endColor, double timeRate)
+	{
+		int red = (int)(startColor.getRed() + (endColor.getRed() - startColor.getRed()) * timeRate) ;
+		int green = (int)(startColor.getGreen() + (endColor.getGreen() - startColor.getGreen()) * timeRate) ;
+		int blue = (int)(startColor.getBlue() + (endColor.getBlue() - startColor.getBlue()) * timeRate) ;
+		
+		return new Color(red, green, blue) ;
 	}
 	
 	public void display()
 	{ // new Point(0, height), Align.bottomLeft, size, color, null
-		GamePanel.DP.drawGradRoundRect(new Point(0, height), Align.bottomLeft, size, topColor, botColor, false) ;
+		GamePanel.DP.drawGradRoundRect(new Point(0, height), Align.bottomLeft, size, botColor, topColor, false) ;
 		
 		if (isDay())
 		{
