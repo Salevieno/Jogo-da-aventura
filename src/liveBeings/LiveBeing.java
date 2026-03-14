@@ -630,27 +630,30 @@ public abstract class LiveBeing implements Drawable
 	public boolean isFighting() { return state.equals(LiveBeingStates.fighting) ;}
 
 	protected void inflictStatus(AtkResults atkResults, LiveBeing receiver)
-	{		
-		if (0 < atkResults.getStatus()[0])
-		{
-			receiver.getStatus().get(Attributes.stun).inflictStatus(0, this.getBA().getStun().getDuration()) ;
+	{
+		for (Attributes att : Attributes.getSpecial())
+		{// TODO add blood and poison intensity
+			if (0 < atkResults.getStatus().get(att))
+			{
+				receiver.getStatus().get(att).inflictStatus(0, BA.getStun().getDuration()) ;
+			}
 		}
-		if (0 < atkResults.getStatus()[1])
-		{
-			receiver.getStatus().get(Attributes.block).inflictStatus(0, this.getBA().getBlock().getDuration()) ;
-		}
-		if (0 < atkResults.getStatus()[2])
-		{
-			receiver.getStatus().get(Attributes.blood).inflictStatus(Math.max(this.getBA().getBlood().TotalAtk() - receiver.getBA().getBlood().TotalDef(), 0), this.getBA().getBlood().getDuration()) ;
-		}
-		if (0 < atkResults.getStatus()[3])
-		{
-			receiver.getStatus().get(Attributes.poison).inflictStatus(Math.max(this.getBA().getPoison().TotalAtk() - receiver.getBA().getPoison().TotalDef(), 0), this.getBA().getPoison().getDuration()) ;
-		}
-		if (0 < atkResults.getStatus()[4])
-		{
-			receiver.getStatus().get(Attributes.silence).inflictStatus(0, this.getBA().getSilence().getDuration()) ;
-		}
+		// if (0 < atkResults.getStatus().get(receiver))
+		// {
+		// 	receiver.getStatus().get(Attributes.block).inflictStatus(0, BA.getBlock().getDuration()) ;
+		// }
+		// if (0 < atkResults.getStatus()[2])
+		// {
+		// 	receiver.getStatus().get(Attributes.blood).inflictStatus(Math.max(BA.getBlood().TotalAtk() - receiver.getBA().getBlood().TotalDef(), 0), BA.getBlood().getDuration()) ;
+		// }
+		// if (0 < atkResults.getStatus()[3])
+		// {
+		// 	receiver.getStatus().get(Attributes.poison).inflictStatus(Math.max(BA.getPoison().TotalAtk() - receiver.getBA().getPoison().TotalDef(), 0), BA.getPoison().getDuration()) ;
+		// }
+		// if (0 < atkResults.getStatus()[4])
+		// {
+		// 	receiver.getStatus().get(Attributes.silence).inflictStatus(0, BA.getSilence().getDuration()) ;
+		// }
 	}
 
 	protected AtkTypes atkTypeFromAction()
@@ -858,8 +861,15 @@ public abstract class LiveBeing implements Drawable
 	{
 		if (damage < 0) { return ;}
 
-		playDamageAnimation(Game.getSettings().getDamageAnimation(), new AtkResults(AtkTypes.physical, AtkEffects.hit, damage), Game.palette[7]) ;
+		// System.out.println("\033[0;31m" + name + " took " + damage + " damage" + "\033[0;37m") ;
+		// playDamageAnimation(Game.getSettings().getDamageAnimation(), new AtkResults(AtkTypes.physical, AtkEffects.hit, damage), Game.palette[7]) ;
 		PA.getLife().decTotalValue(damage) ;
+	}
+
+	public void displayDamageTaken(AtkResults atkResults)
+	{
+		if (AtkEffects.none.equals(atkResults.getEffect())) { return ;}
+		playDamageAnimation(Game.getSettings().getDamageAnimation(), atkResults, Game.palette[7]) ;
 	}
 	
 	public void takeBloodAndPoisonDamage()
@@ -874,6 +884,7 @@ public abstract class LiveBeing implements Drawable
 		}
 		if (bloodStatus.isActive() && bloodStatus.getTimer().crossedTime(0.5))
 		{
+			System.out.println("\033[0;31m" + name + " took " + (int) (bloodStatus.getIntensity() * bloodMult) + " blood damage" + "\033[0;37m") ;
 			bloodDamage = (int) (bloodStatus.getIntensity() * bloodMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedBlood(bloodDamage, BA.getBlood().TotalDef()) ;}
 			playDamageAnimation(damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, bloodDamage, null), Game.palette[7]) ;
@@ -892,7 +903,7 @@ public abstract class LiveBeing implements Drawable
 
 	public void playDamageAnimation(int damageStyle, AtkResults atkResults, Color color)
 	{
-		DamageAnimation.start(headPos(), atkResults, damageStyle, color) ;
+		DamageAnimation.start(headPos(), atkResults, damageStyle, null) ;
 	}
 
 	public void playDamageAnimation(AtkResults atkResults, Color color) { playDamageAnimation(damageStyle, atkResults, color) ;}

@@ -32,7 +32,6 @@ public class GameButton
 	private final Image selectedImage ;
 	private final ButtonFunction action ;
 	private final Clip soundEffectOnHover ;
-	// TODO sound effect on hover
 	
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 17) ;
 	private static final Color textColor = Game.palette[0] ;

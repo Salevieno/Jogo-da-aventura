@@ -901,7 +901,7 @@ public abstract class EvolutionSimulation
 		{
 			stats.put("NCreatureMoves", stats.get("NCreatureMoves") + 1 ) ;
 			stats.put("NCreature" + atkResults.getEffect(), stats.get("NCreature" + atkResults.getEffect()) + 1 ) ;
-			if (atkResults != null && atkResults.getStatus() != null && 0 < atkResults.getStatus()[2])
+			if (atkResults != null && atkResults.getStatus() != null && 0 < atkResults.getStatus().get(Attributes.blood))
 			{
 				System.out.println("Applied blood!" + (receiver.getStatus().get(Attributes.blood).isActive() ? " Already in blood" : ""));
 				stats.put("NBloodApplied", stats.get("NBloodApplied") + 1) ;

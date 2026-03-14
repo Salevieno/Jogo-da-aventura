@@ -4,9 +4,11 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.sound.sampled.Clip;
 
+import attributes.Attributes;
 import liveBeings.AttackModifiers;
 import liveBeings.Creature;
 import liveBeings.LiveBeing;
@@ -103,7 +105,7 @@ public abstract class Battle
 		
 		AtkEffects effect = calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
 		int damage = calcDamage(effect, atkPhyAtk + arrowPower, defPhyDef, atkElems, defElems, elemRes) ;
-		double[] inflictedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
+		Map<Attributes, Double> inflictedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
 		
 		return new AtkResults(AtkTypes.physical, effect, damage, inflictedStatus) ;
 	}
@@ -141,7 +143,26 @@ public abstract class Battle
 		return (int) Util.round(randomMult * elemMult * elemMod * baseDamage, 0) ;
 	}
 		
-	public static double[] calcStatus(double[] atkChances, double[] defChances, double[] durations)
+	// public static double[] calcStatus(double[] atkChances, double[] defChances, double[] durations)
+	// {
+	// 	double stun = 0 ;
+	// 	double block = 0 ;
+	// 	double blood = 0 ;
+	// 	double poison = 0 ;
+	// 	double silence = 0 ;
+	// 	if (Util.chance(atkChances[1] - defChances[1])) {block = durations[1] ;}
+	// 	if (0 < block) { return new double[] {0, block, 0, 0, 0} ;}
+		
+	// 	if (Util.chance(atkChances[0] - defChances[0])) {stun = durations[0] ;}
+	// 	if (Util.chance(atkChances[2] - defChances[2])) {blood = durations[2] ;}
+	// 	if (Util.chance(atkChances[3] - defChances[3])) {poison = durations[3] ;}
+	// 	if (Util.chance(atkChances[4] - defChances[4])) {silence = durations[4] ;}
+		
+		
+	// 	return new double[] {stun, block, blood, poison, silence} ;
+	// }
+
+	public static Map<Attributes, Double> calcStatus(double[] atkChances, double[] defChances, double[] durations)
 	{
 		double stun = 0 ;
 		double block = 0 ;
@@ -149,7 +170,16 @@ public abstract class Battle
 		double poison = 0 ;
 		double silence = 0 ;
 		if (Util.chance(atkChances[1] - defChances[1])) {block = durations[1] ;}
-		if (0 < block) { return new double[] {0, block, 0, 0, 0} ;}
+		if (0 < block) 
+		{
+			return Map.of(
+				Attributes.stun, 0.0,
+				Attributes.block, block,
+				Attributes.blood, 0.0,
+				Attributes.poison, 0.0,
+				Attributes.silence, 0.0
+			) ;
+		}
 		
 		if (Util.chance(atkChances[0] - defChances[0])) {stun = durations[0] ;}
 		if (Util.chance(atkChances[2] - defChances[2])) {blood = durations[2] ;}
@@ -157,7 +187,13 @@ public abstract class Battle
 		if (Util.chance(atkChances[4] - defChances[4])) {silence = durations[4] ;}
 		
 		
-		return new double[] {stun, block, blood, poison, silence} ;
+		return Map.of(
+			Attributes.stun, stun,
+			Attributes.block, block,
+			Attributes.blood, blood,
+			Attributes.poison, poison,
+			Attributes.silence, silence
+		) ;
 	}
 	
 	public static void throwItem(LiveBeing attacker, LiveBeing receiver, double itemPower, AttackModifiers itemAtkMod, Elements itemElem)
@@ -176,7 +212,7 @@ public abstract class Battle
 		
 		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return ;}
 		int damage = Battle.calcDamage(AtkEffects.hit, itemPower, defPhyDef, atkElems, receiver.defElems(), elemRes) ;
-		double[] inflictedStatus = calcStatus(baseAtkChances, receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
+		Map<Attributes, Double> inflictedStatus = calcStatus(baseAtkChances, receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
 		
 		AtkResults atkResults = new AtkResults(AtkTypes.physical, effect, damage, inflictedStatus) ;
 		receiver.takeDamage(atkResults.getDamage()) ;

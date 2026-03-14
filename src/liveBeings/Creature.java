@@ -7,8 +7,10 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
@@ -60,7 +62,7 @@ public class Creature extends LiveBeing
 		this.atkElem = CT.getAtkElem();
 		this.mpCounter = new GameTimer(CT.getMpTimerDuration() / 1.0);
 		this.satiationCounter = new GameTimer(CT.getSatiationTimerDuration());
-		this.battleActionCounter = new GameTimer(CT.getBattleActionTimerDuration() / 1.0) ;
+		this.battleActionCounter = new GameTimer(CT.getBattleActionTimerDuration() * 5.0) ;
 		this.movingTimer = new GameTimer(CT.getMovingTimerDuration(), Math.random() * CT.getMovingTimerDuration()) ;
 		this.combo = new ArrayList<>() ;
 		this.hitbox = CT.getHitboxType().equals("circle") ? new HitboxCircle(new Point(), size.width / 2) : new HitboxRectangle(new Point(), size) ;
@@ -240,8 +242,15 @@ public class Creature extends LiveBeing
 
 	private AtkResults performAtk(AtkTypes atkType, LiveBeing receiver)
 	{
-		AtkResults atkResults = calcAtkResults(atkType, receiver) ;		
+		AtkResults atkResults = calcAtkResults(atkType, receiver) ;
+
+		System.out.println(name + " performed " + atkType + " on " + receiver.getName() +
+							"\n with effect " + atkResults.getEffect() +
+							"\n and damage " + atkResults.getDamage() +
+							"\n and status " + atkResults.getStatus()) ;
+
 		AtkEffects effect = atkResults.getEffect() ;
+		receiver.displayDamageTaken(atkResults) ;
 		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
 
 		receiver.takeDamage(atkResults.getDamage()) ;
@@ -272,6 +281,7 @@ public class Creature extends LiveBeing
 		
 		if (atkType == null) { return ;}
 
+		System.out.println("\n============ " + name + " performing " + atkType + " ============") ;
 		setCurrentAtkType(atkType) ;
 		AtkResults atkResults = performAtk(atkType, creatureTarget) ;
 		creatureTarget.trainDefensive(atkResults) ;
@@ -287,7 +297,9 @@ public class Creature extends LiveBeing
 		{
 			EvolutionSimulation.updateBattleStats(this, creatureTarget, atkResults) ;
 		}
+		System.out.println("=======================================================") ;
 	}
+	
 	public void act(Point2D.Double playerPosAsDouble, GameMap playerMap, double dt)
 	{
 		if (chasePlayer) // TODO chasePlayer can be replaced with is fighting and playerIsAlive
@@ -358,7 +370,7 @@ public class Creature extends LiveBeing
 
 		AtkEffects effect = Battle.calcEffect(DexMod[0] + AtkDex*DexMod[1], AgiMod[0] + DefAgi*AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
 		int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
-		double[] inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
+		Map<Attributes, Double> inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
 		return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
 	}

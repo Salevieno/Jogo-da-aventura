@@ -70,9 +70,7 @@ import windows.PauseWindow;
 public class Game
 {
 	// TODO arquivos - nomes das criaturas
-	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos
-	// liveBeings
-	// TODO optional - settings outside the player
+	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	private static final List<String> konamiCode = List.of("Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A") ;
 
 	public static Color[] palette;
@@ -114,8 +112,9 @@ public class Game
 
 	private static final PauseWindow pauseWindow;
 	public static final List<String> arrowKeys = List.of(KeyEvent.getKeyText(KeyEvent.VK_UP),
-			KeyEvent.getKeyText(KeyEvent.VK_LEFT), KeyEvent.getKeyText(KeyEvent.VK_DOWN),
-			KeyEvent.getKeyText(KeyEvent.VK_RIGHT));
+															KeyEvent.getKeyText(KeyEvent.VK_LEFT),
+															KeyEvent.getKeyText(KeyEvent.VK_DOWN),
+															KeyEvent.getKeyText(KeyEvent.VK_RIGHT));
 	private static final int DAY_DURATION = 600 ;
     private static Settings settings ;
 
@@ -705,7 +704,7 @@ public class Game
 		}
 
 		if (player.shouldLevelUP())
-		{// TODO level up animation (att increase)
+		{
 			player.levelUp();
 		}
 

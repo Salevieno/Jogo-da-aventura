@@ -1,15 +1,17 @@
 package battle;
 
-import java.util.Arrays;
+import java.util.Map;
+
+import attributes.Attributes;
 
 public class AtkResults
 {
 	private AtkTypes atkType ;
 	private AtkEffects effect ;
 	private int damage ;
-	private double[] status ;
+	private Map<Attributes, Double> status ;
 	
-	public AtkResults(AtkTypes atkType, AtkEffects effect, int damage, double[] status)
+	public AtkResults(AtkTypes atkType, AtkEffects effect, int damage, Map<Attributes, Double> status)
 	{
 		this.atkType = atkType;
 		this.effect = effect;
@@ -40,11 +42,11 @@ public class AtkResults
 	public AtkTypes getAtkType() { return atkType ;}
 	public AtkEffects getEffect() { return effect ;}
 	public int getDamage() { return damage ;}
-	public double[] getStatus() { return status ;}
+	public Map<Attributes, Double> getStatus() { return status ;}
 
 	@Override
 	public String toString()
 	{
-		return "AtkResults: type = " + atkType + ", effect = " + effect + ", damage = " + damage + " status = " + Arrays.toString(status) ;
+		return "AtkResults: type = " + atkType + ", effect = " + effect + ", damage = " + damage + " status = " + status ;
 	}	
 }

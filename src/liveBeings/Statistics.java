@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
+import attributes.Attributes;
 import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
@@ -256,14 +257,13 @@ public class Statistics
 		return allStats ;
 	}
 	
-	public void updateInflicedStatus(double[] appliedStatus)
+	public void updateInflicedStatus(Map<Attributes, Double> appliedStatus)
 	{
-		if (appliedStatus.length <= 4) { return ;}
-		if (0 < appliedStatus[0]) { incNumberStunInflicted() ;}
-		if (0 < appliedStatus[1]) { incNumberBlockInflicted() ;}
-		if (0 < appliedStatus[2]) { incNumberBloodInflicted() ;}
-		if (0 < appliedStatus[3]) { incNumberPoisonInflicted() ;}
-		if (0 < appliedStatus[4]) { incNumberSilenceInflicted() ;}
+		if (0 < appliedStatus.get(Attributes.stun)) { incNumberStunInflicted() ;}
+		if (0 < appliedStatus.get(Attributes.block)) { incNumberBlockInflicted() ;}
+		if (0 < appliedStatus.get(Attributes.blood)) { incNumberBloodInflicted() ;}
+		if (0 < appliedStatus.get(Attributes.poison)) { incNumberPoisonInflicted() ;}
+		if (0 < appliedStatus.get(Attributes.silence)) { incNumberSilenceInflicted() ;}
 	}
 
 	

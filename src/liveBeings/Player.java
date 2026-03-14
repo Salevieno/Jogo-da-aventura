@@ -912,10 +912,16 @@ public class Player extends LiveBeing
 	private AtkResults performAtk(AtkTypes atkType, LiveBeing receiver)
 	{
 		AtkResults atkResults = calcAtkResults(atkType, receiver) ;		
-
+		
+		System.out.println(name + " performed " + atkType + " on " + receiver.getName() +
+							"\n with effect " + atkResults.getEffect() +
+							"\n and damage " + atkResults.getDamage() +
+							"\n and status " + atkResults.getStatus()) ;
+							
 		checkSpendArrow() ;
 		
 		AtkEffects effect = atkResults.getEffect() ;
+		receiver.displayDamageTaken(atkResults) ;
 		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
 
 		receiver.takeDamage(atkResults.getDamage()) ;
@@ -938,6 +944,7 @@ public class Player extends LiveBeing
 		
 		if (atkType == null) { return ;}
 		
+		System.out.println("\n============ " + name + " performing " + atkType + " ============") ;
 		setCurrentAtkType(atkType) ;
 		AtkResults atkResults = performAtk(atkType, opponent) ;
 		trainOffensive(atkResults) ;
@@ -948,6 +955,7 @@ public class Player extends LiveBeing
 		{
 			EvolutionSimulation.updateBattleStats(this, opponent, atkResults) ;
 		}
+		System.out.println("=======================================================") ;
 	}
 
 	public void act(Pet pet, Point mousePos)
@@ -1430,7 +1438,7 @@ public class Player extends LiveBeing
 
 		AtkEffects effect = Battle.calcEffect(DexMod[0] + AtkDex * DexMod[1], AgiMod[0] + DefAgi * AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
 		int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk * AtkMod[1], DefMod[0] + BasicDef * DefMod[1], AtkElem, DefElem, receiverElemMod) ;
-		double[] inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
+		Map<Attributes, Double> inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
 		spell.applyBuffs(true, this) ;
 		spell.applyDebuffs(true, receiver) ;

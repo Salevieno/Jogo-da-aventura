@@ -58,7 +58,6 @@ public class NPC
 	private boolean isInteracting ;
 	
 	private final List<Collider> colliders ;
-	// TODO fechar janela do npc ao sair e fechar diálogo ao finalizar interação
 	private static boolean renewStocks = false ;
 	private static final Font stdfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	private static final Image speakingBubble = Game.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
