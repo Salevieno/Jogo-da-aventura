@@ -816,7 +816,7 @@ public abstract class LiveBeing implements Drawable
 			int clearSpace = 2 ;
 			for (int i = 0; i <= attRate.size() - 1; i += 1)
 			{
-				Point barPos = Util.translate(getPos(), -size.width / 2, -size.height - attRate.size() * barSize.height - clearSpace + i * sy) ;
+				Point barPos = Util.translate(getPos(), -size.width / 2, -size.height / 2 - attRate.size() * barSize.height - clearSpace + i * sy) ;
 				Dimension filledSize = new Dimension((int)(attRate.get(i) * barSize.width), barSize.height) ;
 				GamePanel.DP.drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Game.palette[0], 1.0) ;
 			}

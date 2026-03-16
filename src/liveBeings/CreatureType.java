@@ -56,7 +56,7 @@ public class CreatureType
 	public static final CreatureAttributesWindow attWindow;
 
 	static
-	{
+	{// TODO imagens das criaturas tem que refletir o poder (1, 6, 11, 16 e 21) são as nível 0, pode ser a mesma imagem mudando cores
 		numberCreatureTypesImages = 3;
 		moveAni = new ArrayList<>();
 		for (int i = 0; i <= numberCreatureTypesImages - 1; i += 1)

@@ -18,15 +18,16 @@ public class MessageAnimation extends Animation
 {
 	private static final Font smallFont = DrawPrimitives.stdFont ;
 	private static final Image messageBoxImg = Game.loadImage(Path.PLAYER_IMG + "messageBox.png") ;
+    private static final double speed = 60 ;
 
-    private Point pos ;
+    private Point initialPos ;
     private final String text ;
     private final Color color ;
 
 	private MessageAnimation(Point pos, String text, Color color)
     {
-		super(4) ;
-		this.pos = pos ;
+		super(3) ;
+		this.initialPos = pos ;
 		this.text = text ;
 		this.color = color ;
 	}
@@ -39,7 +40,7 @@ public class MessageAnimation extends Animation
 
     public void play()
     {
-		pos = Util.translate(pos, 0, (int) (-30 * timer.rate())) ;
+		Point pos = Util.translate(initialPos, 0, (int) (-speed * timer.rate())) ;
 		GamePanel.DP.drawImage(messageBoxImg, pos, Draw.stdAngle, Scale.unit, Align.topCenter, 0.9) ;
 		GamePanel.DP.drawText(Util.translate(pos, 5 - messageBoxImg.getWidth(null) / 2, 20), Align.centerLeft, Draw.stdAngle, text, smallFont, color) ;
     }
