@@ -1687,8 +1687,8 @@ public class Player extends LiveBeing
 	{
 		spells.forEach(spell -> useAutoSpell(false, spell));
 		bag.addGold((int) (-0.2 * bag.getGold())) ;
-		PA.getLife().setToMaximum(); ;
-		PA.getMp().setToMaximum(); ;
+		PA.getLife().setToMaximum() ;
+		PA.getMp().setToMaximum() ;
 		PA.getSatiation().setToMaximum() ;
 		PA.getThirst().setToMaximum() ;
 		resetStatus() ;
@@ -1700,7 +1700,7 @@ public class Player extends LiveBeing
 		}
 		resetOpponent() ;
 		resetPosition() ;
-		if (!Game.getPet().isAlive())
+		if (Game.getPet() != null && !Game.getPet().isAlive())
 		{
 			Game.getPet().revives() ;
 		}

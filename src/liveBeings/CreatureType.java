@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -188,19 +189,7 @@ public class CreatureType
 					Block, Blood, Poison, Silence, AtkSpeed, knockbackPower);
 
 			List<Spell> spells = new ArrayList<>();
-			int[] spellIDs = switch (row % 3)
-			{
-				case 0 -> new int[] { 104 };
-				case 1 -> new int[] { 44 };
-				case 2 -> new int[] { 106 };
-				case 3 -> new int[] { 110 };
-				case 4 -> new int[] { 143 };
-				case 5 -> new int[] { 16 };
-				case 6 -> new int[] { 6 };
-				case 7 -> new int[] { 34 };
-				case 8 -> new int[] { 41 };
-				default -> new int[] {};
-			};
+			int[] spellIDs = Arrays.asList(inp[4].split(";")).stream().mapToInt(Integer::parseInt).toArray();
 			for (int id : spellIDs)
 			{
 				spells.add(new Spell(Spell.all.get(id)));
