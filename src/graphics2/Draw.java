@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font ;
 import java.awt.Image ;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -89,12 +90,32 @@ public abstract class Draw
 		GamePanel.DP.drawImage(gif, Util.translate(pos, offset.x, offset.y), align);
 	}
 	
+	private static List<String> textFitted(String text, Font font, int maxLength)
+	{
+		List<String> words = Arrays.asList(text.split(" ")) ;
+		List<String> lines = new ArrayList<>() ;
+		lines.add("") ;
+		for (String word : words)
+		{
+			String lastLine = lines.get(lines.size() - 1) ;
+			String newLineText = lastLine + word + " " ;
+			if (maxLength <= GamePanel.DP.textLength(newLineText, font))
+			{
+				lines.add("") ;
+				lines.set(lines.size() - 1, word + " ") ;
+				continue ;
+			}
+			lines.set(lines.size() - 1, newLineText) ;
+		}
+		return lines ;
+	}
+
 	public static void fitText(Point pos, int sy, Align align, String text, Font font, int maxLength, Color color)
 	{
-		List<String> FitText = Util.fitText(text, maxLength) ;
-		for (int i = 0 ; i <= FitText.size() - 1 ; i += 1)
+		List<String> lines = textFitted(text, font, maxLength) ;
+		for (int i = 0 ; i <= lines.size() - 1 ; i += 1)
 		{
-			GamePanel.DP.drawText(new Point(pos.x, pos.y + i*sy), align, stdAngle, FitText.get(i), font, color) ;						
+			GamePanel.DP.drawText(new Point(pos.x, pos.y + i*sy), align, stdAngle, lines.get(i), font, color) ;						
 		}
 	}
 	
@@ -129,7 +150,7 @@ public abstract class Draw
 		
 		Point textOffset = new Point(6, 5) ;
 		Point textPos = Util.translate(pos, textOffset.x - bubbleL / 2, textOffset.y - bubbleH) ;
-		int maxTextL = 45 ;
+		int maxTextL = 297 ;
 		int sy = font.getSize() + 1 ;
 		fitText(textPos, sy, Align.topLeft, text, font, maxTextL, textColor) ;
 	}
