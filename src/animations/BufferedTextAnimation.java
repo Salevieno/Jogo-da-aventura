@@ -14,15 +14,16 @@ import utilities.Util;
 public class BufferedTextAnimation extends Animation
 {
 	private static final Font smallFont = DrawPrimitives.stdFont ;
+    private static final double speed = 85 ;
 
-    private Point pos ;
+    private Point initPos ;
     private final String text ;
     private final Color color ;
 
 	private BufferedTextAnimation(Point pos, String text, Color color)
     {
-		super(4) ;
-        this.pos = pos ;
+		super(0.8) ;
+        this.initPos = pos ;
         this.text = text ;
         this.color = color ;
 	}
@@ -35,7 +36,7 @@ public class BufferedTextAnimation extends Animation
 
     public void play()
     {
-		pos = Util.translate(pos, 0, (int) (-30 * timer.rate())) ;
-		GamePanel.DP.drawBufferedText(pos, Align.centerLeft, Draw.stdAngle, text, smallFont, color, Game.palette[3], 2);
+		Point textPos = Util.translate(initPos, 0, (int) (-speed * timer.rate())) ;
+		GamePanel.DP.drawBufferedText(textPos, Align.center, Draw.stdAngle, text, smallFont, color, Game.palette[3], 2);
     }
 }

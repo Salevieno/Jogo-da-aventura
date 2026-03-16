@@ -19,6 +19,7 @@ import org.json.simple.JSONObject;
 import Buildings.Building;
 import NPC.NPC;
 import animations.Animation;
+import animations.BufferedTextAnimation;
 import animations.MessageAnimation;
 import animations.ObtainedItemAnimation;
 import animations.WinAnimation;
@@ -1196,6 +1197,7 @@ public class Player extends LiveBeing
 		trainOffensive(new AtkResults(AtkTypes.magical)) ;
 		stats.incNumberMagAtk() ;
 		
+		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Game.palette[5]) ;
 		spell.activate() ;
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
 		if (job == 1 & 1 <= spells.get(8).getLevel())

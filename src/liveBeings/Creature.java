@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import animations.BufferedTextAnimation;
 import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BattleAttributes;
@@ -381,6 +382,7 @@ public class Creature extends LiveBeing
 		if (receiver == null) { return null ;}
 		if (!hasEnoughMP(spell)) { return new AtkResults() ;}
 
+		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Game.palette[5]) ;
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
 		switch (spell.getType())
 		{

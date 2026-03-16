@@ -462,7 +462,7 @@ public abstract class LiveBeing implements Drawable
 	{
 		// TODO optional - consider special ba, element mult, mp with spells and items
 		// Dano = nHits . hitRate . (PhyAtkRate . PhyDam + MagAtkRate . MagDam + BloodRate . BloodDam + PoisonRate . PoisonDam)
-		
+		// TODO função para estudo de como o poder evolui com o aumento de cada atributo
 		LiveBeing defender = new Creature(CreatureType.all.get(0)) ;
 //		new CreatureType(0, "", 0, new Dimension(0, 0), 60, 0, new Elements[] {Elements.water}, 0, 0, 0, 0, 0, null,
 //				new PersonalAttributes(new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1)),

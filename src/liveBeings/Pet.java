@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import animations.BufferedTextAnimation;
 import attributes.AttributeIncrease;
 import attributes.Attributes;
 import attributes.BasicAttribute;
@@ -387,6 +388,8 @@ public class Pet extends LiveBeing
 		if (receiver == null) { return null ;}
 		
 		int spellLevel = spell.getLevel() ;
+		
+		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Game.palette[5]) ;
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
 
 		double MagAtk = BA.TotalMagAtk() ;
