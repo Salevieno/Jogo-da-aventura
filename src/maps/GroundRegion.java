@@ -5,6 +5,7 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.List;
 
+import main.Game;
 import main.GamePanel;
 
 public class GroundRegion
@@ -57,7 +58,10 @@ public class GroundRegion
 				closedXPoints[region.npoints] = region.xpoints[0];
 				closedYPoints[region.npoints] = region.ypoints[0];
 
-				GamePanel.DP.drawPolyLine(closedXPoints, closedYPoints, 2, type.getColor());
+				if (Game.debugMode)
+				{
+					GamePanel.DP.drawPolyLine(closedXPoints, closedYPoints, 2, type.getColor());
+				}
 				return ;
 		}
 	}
