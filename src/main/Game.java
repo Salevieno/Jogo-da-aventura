@@ -606,10 +606,10 @@ public class Game
 		List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures();
 		for (Creature creature : creaturesInMap)
 		{
-			// TODO corrigir deactivate def, em alguns momentos reduz a defesa da criatura a valores negativos muito rapidamente
 			if (creature.getBattleActionCounter().hasFinished() && AtkTypes.defense.equals(creature.getCurrentAtkType()))
 			{
 				creature.deactivateDef() ;
+				creature.setCurrentAtkType(null);
 			}
 			creature.takeBloodAndPoisonDamage();
 			creature.act(player.getPosAsDouble(), player.getMap(), dt);
@@ -662,6 +662,7 @@ public class Game
 			if (player.getCurrentAtkType().equals(AtkTypes.defense))
 			{
 				player.deactivateDef() ;
+				player.setCurrentAtkType(null);
 			}
 		}
 
