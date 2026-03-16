@@ -135,10 +135,10 @@ public class Building implements Drawable
 	public void displaySignMessage(int cityID)
 	{
 		Point boardPos = Util.translate(pos, type.getImage().getWidth(null), 0) ;
-		Point messagePos = Util.translate(boardPos, 18, 24 - signBoard.getHeight(null)) ;
+		Point messagePos = Util.translate(boardPos, 12, 24 - signBoard.getHeight(null)) ;
 		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
 		GamePanel.DP.drawImage(signBoard, boardPos, Align.bottomLeft, 0.85) ;
-		int maxTextLenght = 60 ;
+		int maxTextLenght = 435 ;
 		Draw.fitText(messagePos, signBoardFont.getSize() + 2, Align.bottomLeft, message, signBoardFont, maxTextLenght, Game.palette[0]) ;	
 	}
 	
