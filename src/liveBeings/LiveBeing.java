@@ -7,12 +7,15 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.sound.sampled.Clip;
 
 import animations.DamageAnimation;
 import animations.ObtainedItemAnimation;
@@ -31,6 +34,7 @@ import main.Elements;
 import main.Game;
 import main.GamePanel;
 import main.GameTimer;
+import main.Music;
 import main.Path;
 import main.RelativePos;
 import maps.GameMap;
@@ -81,6 +85,7 @@ public abstract class LiveBeing implements Drawable
 	public static final String[] battleKeys = new String[] {"Y", "U"} ;	
 	public static final List<String> spellKeys = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12") ;
 	protected static final SpriteAnimation levelUpAni = new SpriteAnimation(Path.PLAYER_IMG + "LevelUpSprite.png", new Point(), Align.bottomCenter, false, 45, 0.2) ;
+	protected static final Clip hitSound = Music.musicFileToClip(new File(Path.MUSIC + "16-Hit.wav").getAbsoluteFile()) ;	
 	
 	public LiveBeing(PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, AttributesWindow attWindow)
 	{

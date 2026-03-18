@@ -1,12 +1,9 @@
 package battle ;
 
 import java.awt.geom.Point2D;
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import javax.sound.sampled.Clip;
 
 import attributes.Attributes;
 import liveBeings.AttackModifiers;
@@ -18,7 +15,6 @@ import liveBeings.Spell;
 import main.Elements;
 import main.Game;
 import main.GameStates;
-import main.Music;
 import main.Path;
 import simulations.EvolutionSimulation;
 import utilities.Util;
@@ -28,8 +24,6 @@ public abstract class Battle
 	private static double randomAmp ;
 	private static List<Elements> allElements ;
 	private static double[][] elemMult ;
-	
-	private static final Clip hitSound ;	
 
 	static
 	{
@@ -43,24 +37,12 @@ public abstract class Battle
 			{
 				elemMult[i][j] = Double.parseDouble(ElemInput.get(i)[j + 1]) ;
 			}				
-		}
-		
-		hitSound = Music.musicFileToClip(new File(Path.MUSIC + "16-Hit.wav").getAbsoluteFile()) ;		
+		}	
 	}
 
 	public static void removeRandomness() { randomAmp = 0 ;}
-	
-//	
-//	public static void playDamageAnimation(LiveBeing receiver, AtkResults atkResults)
-//	{
-//		
-//		if (atkResults.getAtkType() == null) { return ;}
-//		
-//		Animation.start(AnimationTypes.damage, new Object[] {receiver.headPos(), damageStyle, atkResults});
-//		
-//	}
-	
-	public static double basicElemMult(Elements atk, Elements def) { return elemMult[allElements.indexOf(atk)][allElements.indexOf(def)] ;}
+
+	private static double basicElemMult(Elements atk, Elements def) { return elemMult[allElements.indexOf(atk)][allElements.indexOf(def)] ;}
 	
 	private static boolean hit(double dex, double agi)
 	{
@@ -142,25 +124,6 @@ public abstract class Battle
 		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElems[0], defElems[0], atkElems[2]) ;
 		return (int) Util.round(randomMult * elemMult * elemMod * baseDamage, 0) ;
 	}
-		
-	// public static double[] calcStatus(double[] atkChances, double[] defChances, double[] durations)
-	// {
-	// 	double stun = 0 ;
-	// 	double block = 0 ;
-	// 	double blood = 0 ;
-	// 	double poison = 0 ;
-	// 	double silence = 0 ;
-	// 	if (Util.chance(atkChances[1] - defChances[1])) {block = durations[1] ;}
-	// 	if (0 < block) { return new double[] {0, block, 0, 0, 0} ;}
-		
-	// 	if (Util.chance(atkChances[0] - defChances[0])) {stun = durations[0] ;}
-	// 	if (Util.chance(atkChances[2] - defChances[2])) {blood = durations[2] ;}
-	// 	if (Util.chance(atkChances[3] - defChances[3])) {poison = durations[3] ;}
-	// 	if (Util.chance(atkChances[4] - defChances[4])) {silence = durations[4] ;}
-		
-		
-	// 	return new double[] {stun, block, blood, poison, silence} ;
-	// }
 
 	public static Map<Attributes, Double> calcStatus(double[] atkChances, double[] defChances, double[] durations)
 	{
@@ -237,7 +200,7 @@ public abstract class Battle
 		return pet == null ? !creature.isAlive() || !player.isAlive() : !creature.isAlive() || (!player.isAlive() & !pet.isAlive()) ;
 	}
 			
-	public static void startAtkAnimations(LiveBeing user, AtkTypes atkType)
+	private static void startAtkAnimations(LiveBeing user, AtkTypes atkType)
 	{
 		if (atkType == null) { return ;}
 
@@ -248,27 +211,7 @@ public abstract class Battle
 			default: return ;
 		}
 	}
-		
-//	private static void playAtkAnimations(LiveBeing user, Point pos)
-//	{
-//		if (user.phyHitGif.isPlaying())
-//		{
-//			user.phyHitGif.play(pos, Align.center) ;
-//		}
-//		else
-//		{
-//			user.phyHitGif.resetTimeCounter() ;
-//		}
-//		if (user.magHitGif.isPlaying())
-//		{
-//			user.magHitGif.play(pos, Align.center) ;
-//		}
-//		else
-//		{
-//			user.magHitGif.resetTimeCounter() ;
-//		}
-//	}
-	
+
 	public static void finishBattle(Player player, Pet pet, Creature creature)
 	{
 		if (Game.getState().equals(GameStates.simulation))
