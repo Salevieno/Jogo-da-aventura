@@ -856,13 +856,13 @@ public class Player extends LiveBeing
 	public void updateDirection(String action)
 	{
 		if (action == null) { return ;}
-
+// TODO generalizar para qualquer linguagem de teclado
 		switch (action)
 		{
-			case "W", "Up" -> setDir(Directions.up) ;
-			case "A", "Left" -> setDir(Directions.left) ;
-			case "S", "Down" -> setDir(Directions.down) ;
-			case "D", "Right" -> setDir(Directions.right) ;
+			case "W", "Up", "Acima" -> setDir(Directions.up) ;
+			case "A", "Left", "Esquerda" -> setDir(Directions.left) ;
+			case "S", "Down", "Abaixo" -> setDir(Directions.down) ;
+			case "D", "Right", "Direita" -> setDir(Directions.right) ;
 		}
 	}
 
