@@ -163,9 +163,9 @@ public class SpellsTreeWindow extends GameWindow
 		GamePanel.DP.drawImage(spellInfo, pos, Align.topLeft) ;
 		pos.x += 5 ;
 		pos.y += 10 ;
-		Draw.fitText(pos, 16, Align.centerLeft, spellsOnWindow.get(item).getEffect(), regularFont, 90, textColor) ;
+		Draw.fitText(pos, 16, Align.centerLeft, spellsOnWindow.get(item).getEffect(), regularFont, 568, textColor) ;
 		pos.y += 34 ;
-		Draw.fitText(pos, 16, Align.centerLeft, spellsOnWindow.get(item).getDescription(), regularFont, 90, textColor) ;
+		Draw.fitText(pos, 16, Align.centerLeft, spellsOnWindow.get(item).getDescription(), regularFont, 568, textColor) ;
 	}
 	
 	public void displaySpellPoints(int points)
