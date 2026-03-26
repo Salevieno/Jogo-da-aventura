@@ -8,9 +8,7 @@
       {"name": "hospital", "pos": {"x": 0.5, "y": 0.0}},
       {"name": "store", "pos": {"x": 0.40, "y": 0.49}},
       {"name": "craft", "pos": {"x": 0.056, "y": 0.86}},
-      {"name": "bank", "pos": {"x": 0.096, "y": 0.26}},
-      {"name": "forge", "pos": {"x": 0.80, "y": 0.16}},
-      {"name": "sign", "pos": {"x": 0.97, "y": 0.52}}
+      {"name": "bank", "pos": {"x": 0.096, "y": 0.26}}
     ],
     "NPCs":
     [
@@ -26,7 +24,9 @@
       {"name": "citizen1", "pos": {"x": 0.36, "y": 0.33}},
       {"name": "citizen2", "pos": {"x": 0.60, "y": 0.64}},
       {"name": "citizen3", "pos": {"x": 0.86, "y": 0.28}}
-    ]
+    ],
+    "signPos": {"x": 0.97, "y": 0.52},
+    "forgePos": {"x": 0.80, "y": 0.16}
   },
   {
     "Name": "City of the mages",
@@ -37,9 +37,7 @@
       {"name": "hospital", "pos": {"x": 0.62, "y": 0.9}},
       {"name": "store", "pos": {"x": 0.75, "y": 0.30}},
       {"name": "craft", "pos": {"x": 0.15, "y": 0.8}},
-      {"name": "bank", "pos": {"x": 0.1, "y": 0.3}},
-      {"name": "forge", "pos": {"x": 0.66, "y": 0.1}},
-      {"name": "sign", "pos": {"x": 0.48, "y": 0.1}}
+      {"name": "bank", "pos": {"x": 0.1, "y": 0.3}}
     ],
     "NPCs":
     [
@@ -55,7 +53,9 @@
       {"name": "citizen5", "pos": {"x": 0.38, "y": 0.38}},
       {"name": "citizen6", "pos": {"x": 0.6, "y": 0.9}},
       {"name": "citizen7", "pos": {"x": 0.58, "y": 0.65}}
-    ]
+    ],
+    "signPos": {"x": 0.48, "y": 0.1},
+    "forgePos": {"x": 0.66, "y": 0.1}
   },
   {
     "Name": "City of the archers",
@@ -66,9 +66,7 @@
       {"name": "hospital", "pos": {"x": 0.42, "y": 0.88}},
       {"name": "store", "pos": {"x": 0.44, "y": 0.48}},
       {"name": "craft", "pos": {"x": 0.02, "y": 0.86}},
-      {"name": "bank", "pos": {"x": 0.1, "y": 0.3}},
-      {"name": "forge", "pos": {"x": 0.48, "y": 0.2}},
-      {"name": "sign", "pos": {"x": 0.07, "y": 0.52}}
+      {"name": "bank", "pos": {"x": 0.1, "y": 0.3}}
     ],
     "NPCs":
     [
@@ -84,7 +82,9 @@
       {"name": "citizen9", "pos": {"x": 0.43, "y": 0.94}},
       {"name": "citizen10", "pos": {"x": 0.71, "y": 0.6}},
       {"name": "citizen11", "pos": {"x": 0.39, "y": 0.32}}
-    ]
+    ],
+    "signPos": {"x": 0.07, "y": 0.52},
+    "forgePos": {"x": 0.48, "y": 0.2}
   },
   {
     "Name": "City of the animals",
@@ -95,9 +95,7 @@
       {"name": "hospital", "pos": {"x": 0.546, "y": 0.88}},
       {"name": "store", "pos": {"x": 0.40, "y": 0.49}},
       {"name": "craft", "pos": {"x": 0.056, "y": 0.86}},
-      {"name": "bank", "pos": {"x": 0.096, "y": 0.26}},
-      {"name": "forge", "pos": {"x": 0.80, "y": 0.14}},
-      {"name": "sign", "pos": {"x": 0.12, "y": 0.39}}
+      {"name": "bank", "pos": {"x": 0.096, "y": 0.26}}
     ],
     "NPCs":
     [
@@ -113,7 +111,9 @@
       {"name": "citizen13", "pos": {"x": 0.12, "y": 0.6}},
       {"name": "citizen14", "pos": {"x": 0.60, "y": 0.64}},
       {"name": "citizen15", "pos": {"x": 0.51, "y": 0.27}}
-    ]
+    ],
+    "signPos": {"x": 0.12, "y": 0.39},
+    "forgePos": {"x": 0.80, "y": 0.14}
   },
   {
     "Name": "City of the thieves",
@@ -124,9 +124,7 @@
       {"name": "hospital", "pos": {"x": 0.6, "y": 0.88}},
       {"name": "store", "pos": {"x": 0.54, "y": 0.49}},
       {"name": "craft", "pos": {"x": 0.056, "y": 0.86}},
-      {"name": "bank", "pos": {"x": 0.28, "y": 0.49}},
-      {"name": "forge", "pos": {"x": 0.9, "y": 0.19}},
-      {"name": "sign", "pos": {"x": 0.8, "y": 0.05}}
+      {"name": "bank", "pos": {"x": 0.28, "y": 0.49}}
     ],
     "NPCs":
     [
@@ -142,6 +140,8 @@
       {"name": "citizen17", "pos": {"x": 0.45, "y": 0.43}},
       {"name": "citizen18", "pos": {"x": 0.60, "y": 0.64}},
       {"name": "citizen19", "pos": {"x": 0.51, "y": 0.27}}
-    ]
+    ],
+    "signPos": {"x": 0.8, "y": 0.05},
+    "forgePos": {"x": 0.9, "y": 0.19}
   }
 ]

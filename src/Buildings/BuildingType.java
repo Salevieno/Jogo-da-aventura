@@ -2,67 +2,44 @@ package Buildings;
 
 import java.awt.Image;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import main.Game;
 import main.Path;
-import utilities.Util;
 
 public class BuildingType
 {
-	private final BuildingNames name ;
-	private final Image image ;
-	private Image insideImage ;
-	// private Image[] ornamentImages ;
-
-	private static final String dadosPath = Path.DADOS + "buildings\\" ;
-	
-	public BuildingType(BuildingNames name, Image image)
+	private final BuildingTypes type ;
+	private final Image exteriorImage ;
+	private final Image interiorImage ;
+	// TODO essa classe pode ser um enum?
+	private BuildingType(BuildingTypes type, Image image, Image interiorImage)
 	{
-		this.name = name ;
-		this.image = image ;
-		this.insideImage = null ;
-		// this.ornamentImages = null ;
+		this.type = type ;
+		this.exteriorImage = image ;
+		this.interiorImage = interiorImage ;
 	}
-
 	
-	public static BuildingType[] load()
+	public static BuildingType[] initialize()
 	{
-		JSONArray dados = Util.readJsonArray(dadosPath + "buildingTypes.json") ;
-		BuildingType[] buildingTypes = new BuildingType[dados.size()] ;
+		BuildingType[] buildingTypes = new BuildingType[BuildingTypes.values().length] ;
 		
-		for (int i = 0 ; i <= dados.size() - 1 ; i += 1)
+		for (int i = 0 ; i <= BuildingTypes.values().length - 1 ; i += 1)
 		{
-			JSONObject dado = (JSONObject) dados.get(i) ;
-			BuildingNames name = BuildingNames.valueOf((String) dado.get("name")) ;
+			BuildingTypes name = BuildingTypes.values()[i] ;
 			Image outsideImage = Game.loadImage(Path.BUILDINGS_IMG + "Building" + name + ".png") ;
-
-			buildingTypes[i] = new BuildingType(name, outsideImage) ;
-
-			boolean hasInterior = (boolean) dado.get("hasInterior") ;
-			if (hasInterior)
-			{
-				Image insideImage = Game.loadImage(Path.BUILDINGS_IMG + "Building" + name + "Inside.png") ;
-				// Image[] OrnamentImages = new Image[] { Game.loadImage(Path.BUILDINGS_IMG + "Building" + name + "Ornament.png") } ;
-				buildingTypes[i].setInsideImage(insideImage) ;
-				// buildingTypes[i].setOrnamentImages(OrnamentImages) ;
-			}
+			Image insideImage = Game.loadImage(Path.BUILDINGS_IMG + "Building" + name + "Inside.png") ;
+			buildingTypes[i] = new BuildingType(name, outsideImage, insideImage) ;
 		}
 
 		return buildingTypes ;
 	}	
 
-	public BuildingNames getName() {return name ;}
-	public Image getImage() {return image ;}
-	public Image getInsideImage() {return insideImage ;}
-	// public Image[] getOrnamentImages() {return ornamentImages ;}
-	public void setInsideImage(Image insideImage) { this.insideImage = insideImage ;}
-	// public void setOrnamentImages(Image[] ornamentImages) { this.ornamentImages = ornamentImages ;}
+	public BuildingTypes getType() {return type ;}
+	public Image getExteriorImage() {return exteriorImage ;}
+	public Image getInteriorImage() {return interiorImage ;}
 
 	@Override
 	public String toString()
 	{
-		return "BuildingType: " + name ;
+		return "BuildingType: " + type ;
 	}
 }

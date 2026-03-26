@@ -1,11 +1,9 @@
 package Buildings;
 
-public enum BuildingNames
+public enum BuildingTypes
 {
 	hospital,
 	bank,
 	store,
-	craft,
-	forge,
-	sign
+	craft
 }

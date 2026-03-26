@@ -12,6 +12,8 @@ import org.json.simple.JSONObject;
 
 import Buildings.Building;
 import Buildings.BuildingType;
+import Buildings.Forge;
+import Buildings.Sign;
 import NPC.NPC;
 import NPC.NPCType;
 import items.Fab;
@@ -24,6 +26,8 @@ import utilities.Util;
 public class CityMap extends GameMap
 {
 
+	private final Sign sign ;
+	private final Forge forge ;
 	private static final List<Image> images ;
 	
 	static
@@ -35,9 +39,11 @@ public class CityMap extends GameMap
 		}
 	}
 	
-	public CityMap(String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs)
+	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, Point forgePos)
 	{
-		super(Name, Continent, Connections, image, music, buildings, npcs) ;		
+		super(Name, Continent, Connections, image, music, buildings, npcs) ;
+		sign = new Sign(signPos, id) ;
+		forge = new Forge(forgePos) ;
 		diggingItems.put(Fab.getAll()[0], allDiggingItems.get(Fab.getAll()[0])) ;
 		diggingItems.put(Fab.getAll()[25], allDiggingItems.get(Fab.getAll()[25])) ;
 		diggingItems.put(GeneralItem.getAll()[4], allDiggingItems.get(GeneralItem.getAll()[4])) ;
@@ -119,17 +125,10 @@ public class CityMap extends GameMap
 			Clip music = GameMap.musicCities ;
 			List<Building> buildings = loadBuildings(buildingTypes, map) ;
 			List<NPC> npcs = loadNPCs(map) ;
+			Point signPos = Game.getScreen().getPointWithinBorders((Double) ((JSONObject) map.get("signPos")).get("x"), (Double) ((JSONObject) map.get("signPos")).get("y")) ;
+			Point forgePos =Game.getScreen().getPointWithinBorders((Double) ((JSONObject) map.get("forgePos")).get("x"), (Double) ((JSONObject) map.get("forgePos")).get("y")) ;
 
-			cityMaps[id] = new CityMap(name, continent, connections, image, music, buildings, npcs) ;
-			
-			switch (id)
-			{
-				case 2:
-					// int waterWidth = 300 ;
-					// cityMaps[id].addGroundType(new GroundRegion(GroundType.water, new Point(screenSize.width - waterWidth, Sky.height), new Dimension(waterWidth, screenSize.height - Sky.height))) ;
-					break ;
-				default: break ;
-			}
+			cityMaps[id] = new CityMap(id, name, continent, connections, image, music, buildings, npcs, signPos, forgePos) ;
 		}
 
 		return cityMaps ;
@@ -139,7 +138,7 @@ public class CityMap extends GameMap
 	public Building getStore() { return buildings.get(1) ;}
 	public Building getCraft() { return buildings.get(2) ;}
 	public Building getBank() { return buildings.get(3) ;}
-	public Building getForge() { return buildings.get(4) ;}
-	public Building getSign() { return buildings.get(5) ;}
+	public Sign getSign() { return sign ;}
+	public Forge getForge() { return forge ;}
 
 }

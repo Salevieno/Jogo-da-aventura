@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,7 +31,6 @@ import components.Projectiles;
 import components.Quest;
 import components.QuestSkills;
 import graphics.Align;
-import graphics.DrawPrimitives;
 import graphics2.Draw;
 import graphics2.Drawable;
 import graphics2.SpriteAnimation;
@@ -74,6 +74,8 @@ public class Game
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	// TODO ideia - magias e flechas são projéteis que precisam acertar o oponente para dar dano. O oponente pode se mover durante a luta E usar magias de longe enquanto se move (ou defender)
 	// TODO ideia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
+	// TODO sign deixa de ser building
+	// TODO shopping de cada cidade vender itens diferentes
 	private static final List<String> konamiCode = List.of("Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A") ;
 
 	public static Color[] palette;
@@ -497,7 +499,7 @@ public class Game
 				return;
 
 			case 7:
-				buildingTypes = BuildingType.load();
+				buildingTypes = BuildingType.initialize();
 				Log.loadTime("building types", initialTime);
 				return;
 
@@ -507,6 +509,7 @@ public class Game
 				return;
 
 			case 9:
+				System.out.println(Arrays.toString(buildingTypes));
 				cityMaps = CityMap.load(buildingTypes);
 				fieldMaps = FieldMap.load(npcTypes);
 				specialMaps = SpecialMap.load(Item.allItems);
@@ -778,6 +781,11 @@ public class Game
 		player.getMap().getMapElem().forEach(mapElem -> drawables.add(mapElem));
 		drawables.sort(Comparator.comparingInt(d -> d.getPos().y));
 		drawables.forEach(Drawable::display);
+		if (player.getMap() instanceof CityMap)
+		{
+			((CityMap) player.getMap()).getForge().display() ;
+			((CityMap) player.getMap()).getSign().display(player.getPos()) ;
+		}
 
 		if (player.isInContactWithNPC() && player.getNPCInContact().isInteracting())
 		{

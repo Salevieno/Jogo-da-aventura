@@ -51,6 +51,9 @@ public class GameMap
 
 	protected static final Dimension screenSize = Game.getScreen().getSize() ;
 	protected static final String dadosPath = Path.DADOS + "gameMaps\\" ;
+
+	// TODO if it makes sense, move forge, sign AND the dock and boat to a new class of map elements or in the map elements class
+
 	protected static final Image dockImg = Game.loadImage(Path.MAPS_IMG + "Dock.png") ;
 	protected static final Image boatImg = Game.loadImage(Path.MAPS_IMG + "Boat.png") ;
 	protected static final Image infoWindow ;
@@ -357,7 +360,7 @@ public class GameMap
  	{ 		
  		if (mapElems == null) { return ;}
  		
- 		mapElems.forEach(mapElem -> mapElem.display(playerPos)) ;
+ 		mapElems.forEach(mapElem -> mapElem.display()) ;
  	}
  	
  	public void displayBuildings(Hitbox playerHitbox, Point playerPos, int cityID)

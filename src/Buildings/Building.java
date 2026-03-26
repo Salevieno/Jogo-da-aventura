@@ -1,8 +1,6 @@
 package Buildings ;
 
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,8 +18,6 @@ import graphics2.Draw;
 import graphics2.Drawable;
 import main.Game;
 import main.GamePanel;
-import main.Path;
-import main.TextCategories;
 import utilities.Util;
 
 
@@ -31,8 +27,6 @@ public class Building implements Drawable
 	private final Point pos ;
 	private List<NPC> npcs ;
 	private List<Collider> colliders ;
-	private static final Image signBoard = Game.loadImage(Path.BUILDINGS_IMG + "SignBoard.png") ;
-	private static final Font signBoardFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 
 	public Building(BuildingType type, Point pos)
 	{
@@ -69,7 +63,7 @@ public class Building implements Drawable
 
 	public static Building load(BuildingType[] buildingTypes, JSONObject buildingObj)
 	{
-		BuildingNames buildingName = BuildingNames.valueOf((String) buildingObj.get("name")) ;
+		BuildingTypes buildingName = BuildingTypes.valueOf((String) buildingObj.get("name")) ;
 		double posX = (Double) ((JSONObject) buildingObj.get("pos")).get("x") ;
 		double posY = (Double) ((JSONObject) buildingObj.get("pos")).get("y") ;
 		Point buildingPos = Game.getScreen().getPointWithinBorders(posX, posY) ;
@@ -77,7 +71,7 @@ public class Building implements Drawable
 		BuildingType buildingType = null ;
 		for (BuildingType type : buildingTypes)
 		{
-			if (!buildingName.equals(type.getName()))
+			if (!buildingName.equals(type.getType()))
 			{
 				continue ; 
 			}
@@ -96,8 +90,8 @@ public class Building implements Drawable
 	
 	public boolean isInside(Point pos)
 	{
-		Point topLeftPos = UtilAlignment.getPosAt(this.pos, Align.center, Align.topLeft, Util.getSize(type.getImage())) ;
-		return Util.isInside(pos, topLeftPos, Util.getSize(type.getImage())) ;
+		Point topLeftPos = UtilAlignment.getPosAt(this.pos, Align.center, Align.topLeft, Util.getSize(type.getExteriorImage())) ;
+		return Util.isInside(pos, topLeftPos, Util.getSize(type.getExteriorImage())) ;
 	}
 	public boolean hasNPCs() {return npcs != null ;}
 		
@@ -108,7 +102,7 @@ public class Building implements Drawable
 		if (Game.getNPCTypes().length <= 0) { System.out.println("Erro ao adicionar NPCs nas construções: não há nenhum tipo de NPC") ; return ;}
 		
 		npcs = new ArrayList<>() ;
-		switch (type.getName())
+		switch (type.getType())
 		{
 			case hospital: npcs.add(new NPC(Game.getNPCTypes()[0], Util.translate(pos, 50, -20))) ; break ;
 			case store: 
@@ -132,27 +126,11 @@ public class Building implements Drawable
 		}
 	}
 	
-	public void displaySignMessage(int cityID)
-	{
-		Point boardPos = Util.translate(pos, type.getImage().getWidth(null), 0) ;
-		Point messagePos = Util.translate(boardPos, 12, 24 - signBoard.getHeight(null)) ;
-		String message = Game.allText.get(TextCategories.signMessages)[cityID] ;
-		GamePanel.DP.drawImage(signBoard, boardPos, Align.bottomLeft, 0.85) ;
-		int maxTextLenght = 435 ;
-		Draw.fitText(messagePos, signBoardFont.getSize() + 2, Align.bottomLeft, message, signBoardFont, maxTextLenght, Game.palette[0]) ;	
-	}
-	
 	public void display(Hitbox playerHitbox, Point playerPos, int cityID)
-	{
-
-		if (type.getName().equals(BuildingNames.sign) & isInside(playerPos))
+	{		
+		if (type.getInteriorImage() == null)
 		{
-			displaySignMessage(cityID) ;
-		}
-		
-		if (type.getInsideImage() == null)
-		{
-			GamePanel.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
+			GamePanel.DP.drawImage(type.getExteriorImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
 			displayNPCs(playerHitbox) ;
 			
 			return ;
@@ -160,12 +138,12 @@ public class Building implements Drawable
 		
 		if (!isInside(playerPos))
 		{
-			GamePanel.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;			
+			GamePanel.DP.drawImage(type.getExteriorImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;			
 			
 			return ;
 		}
 
-		GamePanel.DP.drawImage(type.getInsideImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.DP.drawImage(type.getInteriorImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
 		displayNPCs(playerHitbox) ;
 		
 		for (Collider collider : colliders)
