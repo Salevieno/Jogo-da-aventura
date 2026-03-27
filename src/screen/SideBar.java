@@ -65,8 +65,7 @@ public abstract class SideBar
 		} ;
 		ButtonFunction[] actions = new ButtonFunction[iconNames.length] ;
 		actions[0] = () -> {
-			player.getMapWindow().setPlayerPos(player.getPos()) ;
-			player.getMapWindow().setCurrentMap(player.getMap()) ;
+			player.getMapWindow().update(player.getPos(), player.getMap()) ;
 			player.switchOpenClose(player.getMapWindow()) ;
 		} ; 
 		actions[1] = () -> {

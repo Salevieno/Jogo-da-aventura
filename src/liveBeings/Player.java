@@ -798,8 +798,7 @@ public class Player extends LiveBeing
 				
 			case map:
 				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinent().name()))) { return ;}
-				mapWindow.setPlayerPos(getPos()) ;
-				mapWindow.setCurrentMap(map) ;
+				mapWindow.update(getPos(), map);
 				switchOpenClose(mapWindow) ; return ;
 				
 			case pet:

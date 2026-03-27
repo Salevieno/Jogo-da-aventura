@@ -66,6 +66,7 @@ public class GameMap
 
 	static
 	{
+		// TODO mover as coisas abaixo para json
 		int[] fabItemIDs = new int[] {0,3,4,6,7,11,13,16,17,25,30,48,51,59,60,61,62,63,64,65,75,76,77,78,79,80,86,87,88} ;
 		double[] fabItemPotentials = new double[] {5,4,3,3,3,1,4,5,1,5,3,4,4,4,3,5,5,5,4,4,2,2,3,2,1,1,5,3,2} ;
 
@@ -213,98 +214,7 @@ public class GameMap
 		Dimension range = new Dimension(Game.getScreen().mapSize().width, (int) ((1 - (float)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
 		
 		return Util.randomPos(minCoord, range, new Dimension(1, 1)) ;
-	}
-	
-	public static GameMap[] inForest()
-	{
-		GameMap[] forestMaps = new GameMap[30] ;
-		GameMap[] allMaps = Game.getMaps() ;
-
-		for (int i = 0 ; i <= 30 - 1 ; i += 1)
-		{
-			forestMaps[i] = allMaps[i] ;
-		}
-		
-		return forestMaps ;
-	}
-	
-	public static GameMap[] inCave()
-	{
-		GameMap[] caveMaps = new GameMap[10] ;
-		GameMap[] allMaps = Game.getMaps() ;
-
-		for (int i = 0 ; i <= 10 - 1 ; i += 1)
-		{
-			caveMaps[i] = allMaps[i + 30] ;
-		}
-		
-		return caveMaps ;
-	}
-	
-	public static GameMap[] inIsland()
-	{
-		GameMap[] islandMaps = new GameMap[5] ;
-		GameMap[] allMaps = Game.getMaps() ;
-
-		for (int i = 0 ; i <= 5 - 1 ; i += 1)
-		{
-			islandMaps[i] = allMaps[i + 40] ;
-		}
-		
-		return islandMaps ;
-	}
-	
-	public static GameMap[] inVolcano()
-	{
-		GameMap[] volcanoMaps = new GameMap[10] ;
-		GameMap[] allMaps = Game.getMaps() ;
-
-		for (int i = 0 ; i <= 10 - 1 ; i += 1)
-		{
-			volcanoMaps[i] = allMaps[i + 45] ;
-		}
-		
-		return volcanoMaps ;
-	}
-	
-	public static GameMap[] inOcean()
-	{
-		GameMap[] oceanMaps = new GameMap[6] ;
-		GameMap[] allMaps = Game.getMaps() ;
-
-		for (int i = 0 ; i <= 6 - 1 ; i += 1)
-		{
-			oceanMaps[i] = allMaps[i + 61] ;
-		}
-		
-		return oceanMaps ;
-	}
-	
-	public static GameMap[] inSnowland()
-	{
-		GameMap[] snowlandMaps = new GameMap[5] ;
-		GameMap[] allMaps = Game.getMaps() ;
-
-		for (int i = 0 ; i <= 5 - 1 ; i += 1)
-		{
-			snowlandMaps[i] = allMaps[i + 55] ;
-		}
-		
-		return snowlandMaps ;
-	}
-	
-	public static GameMap[] inSpecial()
-	{
-		GameMap[] specialMaps = new GameMap[7] ;
-		GameMap[] allMaps = Game.getMaps() ;
-		
-		for (int i = 0 ; i <= 7 - 1 ; i += 1)
-		{
-			specialMaps[i] = allMaps[i + 60] ;
-		}
-		
-		return specialMaps ;
-	}
+	}	
 	
 	public void calcDigItemChances()
 	{

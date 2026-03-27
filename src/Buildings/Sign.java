@@ -14,8 +14,6 @@ import main.Path;
 import main.TextCategories;
 import utilities.Util;
 
-
-
 public class Sign
 {
 	private final Point pos ;

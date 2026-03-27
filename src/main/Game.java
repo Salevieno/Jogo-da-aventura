@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -76,6 +75,7 @@ public class Game
 	// TODO ideia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
 	// TODO sign deixa de ser building
 	// TODO shopping de cada cidade vender itens diferentes
+	// TODO ideia: ao invés de ter mapa, os npcs indicarem a direção das cidades
 	private static final List<String> konamiCode = List.of("Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A") ;
 
 	public static Color[] palette;
@@ -87,7 +87,7 @@ public class Game
 	private static final List<String> loadedImagePaths = new ArrayList<>();
 
 	private static final GameStates mainState = GameStates.running;
-	private static final boolean testMode = false;
+	private static final boolean testMode = true;
 	public static final boolean debugMode = false;
 
 	private static GameStates state = GameStates.loading;
@@ -509,7 +509,6 @@ public class Game
 				return;
 
 			case 9:
-				System.out.println(Arrays.toString(buildingTypes));
 				cityMaps = CityMap.load(buildingTypes);
 				fieldMaps = FieldMap.load(npcTypes);
 				specialMaps = SpecialMap.load(Item.allItems);

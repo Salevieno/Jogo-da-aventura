@@ -3,12 +3,16 @@ package windows;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import graphics.Align;
 import graphics.Scale;
 import main.Game;
 import main.GamePanel;
 import main.Path;
+import maps.Continents;
 import maps.GameMap;
 import screen.Sky;
 import utilities.Util;
@@ -16,8 +20,13 @@ import utilities.Util;
 
 public class MapWindow extends GameWindow
 {
+	private final Point spacing = new Point(6, 6) ;
+	private Scale scale = new Scale(0.1, 0.1) ;
+	private Dimension mapSize ;
 	private Point playerPos ;
-	private GameMap currentMap ;
+	private GameMap mapWithPlayer ;
+	private Point offset ;
+	private List<GameMap> mapsDisplayed ;
 	
 	private static final boolean displayFull = false ;
 	private static final Point windowPos = new Point(150, 100) ;
@@ -26,10 +35,29 @@ public class MapWindow extends GameWindow
 	public MapWindow()
 	{
 		super("Mapa", windowPos, image, 0, 0, 0, 0) ;
+		mapsDisplayed = new ArrayList<>() ;
 	}
-	
-	public void setPlayerPos(Point playerPos) { this.playerPos = playerPos ;}
-	public void setCurrentMap(GameMap currentMap) { this.currentMap = currentMap ;}
+
+	public void update(Point playerPos, GameMap mapWithPlayer)
+	{
+		this.playerPos = playerPos ;
+		this.mapWithPlayer = mapWithPlayer ;
+		Continents continentWithPlayer = mapWithPlayer.getContinent() ;
+		scale = new Scale(0.1, 0.1) ;
+		mapSize = new Dimension((int) (Game.getScreen().mapSize().width * scale.x), (int) (Game.getScreen().mapSize().height * scale.y)) ;
+		this.mapsDisplayed = Arrays.asList(Game.getMaps()).stream().filter(map -> continentWithPlayer.equals(map.getContinent())).toList() ;
+		this.offset = switch(continentWithPlayer)
+		{
+			case forest -> calcMapOffset(8, 6, scale, spacing) ;
+			case cave -> calcMapOffset(2, 6, scale, spacing) ;
+			case island -> calcMapOffset(2, 3, scale, spacing) ;
+			case ocean -> calcMapOffset(3, 4, scale, spacing) ;
+			case volcano -> calcMapOffset(4, 3, scale, spacing) ;
+			case snowland -> calcMapOffset(2, 3, scale, spacing) ;
+			case special -> calcMapOffset(3, 4, scale, spacing) ;
+			default -> new Point() ;
+		};
+	}
 
 	public void navigate(String action)
 	{
@@ -199,56 +227,38 @@ public class MapWindow extends GameWindow
 		return new Point(offsetX, offsetY) ;
 	}
 	
-	public void displayPlayer(Point mapPos, Dimension screenSize)
+	public void displayPlayerLocation(Point mapPos, Dimension screenSize)
 	{
-
 		double playerRelXPos = playerPos.x / (double) Game.getScreen().mapSize().width ;
 		double playerRelYPos = (playerPos.y - Sky.height) / (double) Game.getScreen().mapSize().height ;
-		Point circlePos = Util.translate(mapPos, (int) (screenSize.width * playerRelXPos),
-												(int) (-screenSize.height * (1 - playerRelYPos))) ;
+		Point circlePos = Util.translate(mapPos, (int) (screenSize.width * playerRelXPos), (int) (-screenSize.height * (1 - playerRelYPos))) ;
 		GamePanel.DP.drawCircle(circlePos, 5, 0, Game.palette[6], null) ;
 	}
 	
 	public void display(Point mousePos)
-	{
-		if (currentMap == null) { return ;}
-		
+	{		
 		// full map = 14 x 15 mapas
 		// continent maps = 6 x 8 maps (max)
-		Scale scale = new Scale(0.1, 0.1) ;
-		Point offset = new Point(padding + border, padding + border) ;
-		Dimension mapSize = new Dimension((int) (Game.getScreen().mapSize().width * scale.x), (int) (Game.getScreen().mapSize().height * scale.y)) ;
-		Point spacing = new Point(6, 6) ;
-		GameMap[] maps = null ;
-
-		GamePanel.DP.drawImage(image, windowPos, Align.topLeft) ;
-
-		switch (currentMap.getContinent())
-		{
-			case forest: maps = GameMap.inForest() ; offset = calcMapOffset(8, 6, scale, spacing) ; break ;
-			case cave: maps = GameMap.inCave() ; offset = calcMapOffset(2, 6, scale, spacing) ; break ;
-			case island: maps = GameMap.inIsland() ; offset = calcMapOffset(2, 3, scale, spacing) ; break ;
-			case ocean: maps = GameMap.inOcean() ; offset = calcMapOffset(3, 4, scale, spacing) ; break ;
-			case volcano: maps = GameMap.inVolcano() ; offset = calcMapOffset(4, 3, scale, spacing) ; break ;
-			case snowland: maps = GameMap.inSnowland() ; offset = calcMapOffset(2, 3, scale, spacing) ; break ;
-//			case special: maps = GameMap.inSpecial() ; offset = calcMapOffset(3, 4, scale, spacing) ; break ;
-			default: break ;
-		}
 		
-		if (maps == null) { return ;}
+		GamePanel.DP.drawImage(image, windowPos, Align.topLeft) ;
+		
+		if (mapWithPlayer == null) { System.out.println("Warn: Map with player = null when displaying map") ; return ;}
+		if (mapsDisplayed == null) { System.out.println("Warn: Maps displayed = null when displaying map") ; return ;}
+		if (mapsDisplayed.isEmpty()) { System.out.println("Warn: Maps displayed = empty when displaying map") ; return ;}
 		
 		if (displayFull)
 		{
-			maps = Game.getMaps() ;
+			mapsDisplayed = Arrays.asList(Game.getMaps()) ;
 			scale = new Scale(0.05, 0.05) ;
+			mapSize = new Dimension((int) (Game.getScreen().mapSize().width * scale.x), (int) (Game.getScreen().mapSize().height * scale.y)) ;
 			offset = calcMapOffset(15, 14, scale, spacing) ;
 		}
 		
-		for (GameMap map : maps)
+		for (GameMap map : mapsDisplayed)
 		{
-			Point cell = displayFull ? getMapRowColFullMap(map.getName()): getMapRowCol(map.getName()) ;
-			
-			if (cell == null) { continue ;}
+			Point cell = displayFull ? getMapRowColFullMap(map.getName()) : getMapRowCol(map.getName()) ;
+	
+			if (cell == null) { System.out.println("Warn: cell = null when displaying map") ; continue ;}
 			
 			Point mapPos = Util.translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
 													size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
@@ -258,10 +268,10 @@ public class MapWindow extends GameWindow
 													(int) (-scale.y * Game.getScreen().mapSize().height / 2)) ;
 			GamePanel.DP.drawText(mapNamePos, Align.center, 0, map.getName(), stdFont, Game.palette[0]) ;
 			
-			if (!map.equals(currentMap)) { continue ;}
+			if (!map.equals(mapWithPlayer)) { continue ;}
 			if (playerPos == null) { continue ;}
 
-			displayPlayer(mapPos, mapSize) ;
+			displayPlayerLocation(mapPos, mapSize) ;
 		}
 	}
 }

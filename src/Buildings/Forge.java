@@ -11,8 +11,7 @@ import main.GamePanel;
 import main.Path;
 
 public class Forge
-{
-    
+{    
 	private final Point pos ;
 	private static final Image image = Game.loadImage(Path.BUILDINGS_IMG + "Forge.png") ;
 
