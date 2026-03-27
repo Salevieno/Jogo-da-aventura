@@ -11,6 +11,7 @@ import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Elements;
 import main.Game;
+import main.Log;
 import main.Path;
 import utilities.Util;
 
@@ -71,7 +72,7 @@ public class Arrow extends Item
 	
 	public void use(LiveBeing user)
 	{
-		if (!(user instanceof Player)) { System.out.println("Warn: non-player livebeing trying to use arrow") ; return ;}
+		if (!(user instanceof Player)) { Log.warn("Non-player livebeing trying to use arrow") ; return ;}
 
 		Player player = (Player) user ;
 		Arrow arrow = Arrow.getAll()[id] ;

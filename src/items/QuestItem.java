@@ -46,19 +46,6 @@ public class QuestItem extends Item
 	@Override
 	public String toString()
 	{
-//		return "QuestItem [id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance=" + dropChance + "]";
 		return "QuestItem," + id + "," + name;
 	}
-	
-	
-	
-//	public void printAtt()
-//	{
-//		System.out.println("Quest id: " + AllQuests[id].getId() +
-//				"   name: " + AllQuests[id].getName() +
-//				"   description: " + AllQuests[id].getDescription() +
-//				"   price: " + AllQuests[id].getPrice() +
-//				"   drop chance: " + AllQuests[id].getDropChance() + "%");
-//	}
-	
 }

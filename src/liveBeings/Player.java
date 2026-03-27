@@ -56,6 +56,7 @@ import main.Game;
 import main.GamePanel;
 import main.GameStates;
 import main.GameTimer;
+import main.Log;
 import main.Path;
 import maps.Collectible;
 import maps.Continents;
@@ -336,8 +337,8 @@ public class Player extends LiveBeing
 	}
 	public void learnSpell(Spell spell)
 	{
-		if (spell == null) { System.out.println("Warn: Trying to learn a null spell") ; return ;}
-		if (spell.getLevel() != 0) { System.out.println("Warn: Trying to learn a spell whose level is not 0"); return ;}
+		if (spell == null) { Log.warn("Trying to learn a null spell") ; return ;}
+		if (spell.getLevel() != 0) { Log.warn("Trying to learn a spell whose level is not 0"); return ;}
 		
 		spell.incLevel(1) ;
     	SpellsBar.updateSpells(getActiveSpells()) ;
@@ -591,8 +592,8 @@ public class Player extends LiveBeing
 	{
 		GameMap newMap = calcNewMap(pos, dir, currentMap) ;
 		
-		if (newMap == null) { System.out.println("Warn: trying to move to null map") ; return ;}
-		if (!newMap.getContinent().equals(Continents.forest)) { System.out.println("Warn: trying to leave the forest"); return ;}
+		if (newMap == null) { Log.warn("trying to move to null map") ; return ;}
+		if (!newMap.getContinent().equals(Continents.forest)) { Log.warn("trying to leave the forest"); return ;}
 		
 		Point2D.Double newPos = calcNewMapPos(pos, dir, currentMap, newMap) ;
 
@@ -895,7 +896,7 @@ public class Player extends LiveBeing
 				}
 				else
 				{
-					System.out.println("Warn: " + name + " trying to use spell. But no can use, baby!") ;		
+					Log.warn(name + " trying to use spell. But no can use, baby!") ;		
 					return new AtkResults();
 				}				
 			}
@@ -913,7 +914,7 @@ public class Player extends LiveBeing
 	{
 		AtkResults atkResults = calcAtkResults(atkType, receiver) ;		
 		
-		System.out.println(name + " performed " + atkType + " on " + receiver.getName() +
+		Log.info(name + " performed " + atkType + " on " + receiver.getName() +
 							"\n with effect " + atkResults.getEffect() +
 							"\n and damage " + atkResults.getDamage() +
 							"\n and status " + atkResults.getStatus()) ;
@@ -944,7 +945,7 @@ public class Player extends LiveBeing
 		
 		if (atkType == null) { return ;}
 		
-		System.out.println("\n============ " + name + " performing " + atkType + " ============") ;
+		Log.info("\n============ " + name + " performing " + atkType + " ============") ;
 		setCurrentAtkType(atkType) ;
 		AtkResults atkResults = performAtk(atkType, opponent) ;
 		trainOffensive(atkResults) ;
@@ -955,7 +956,7 @@ public class Player extends LiveBeing
 		{
 			EvolutionSimulation.updateBattleStats(this, opponent, atkResults) ;
 		}
-		System.out.println("=======================================================") ;
+		Log.info("=======================================================") ;
 	}
 
 	public void act(Pet pet, Point mousePos)
@@ -1456,8 +1457,8 @@ public class Player extends LiveBeing
 	
 	public void useItem(Item item)
 	{
-		if (item == null) { System.out.println("Warn: Tentando usar item nulo!"); return ;}
-		if (!bag.contains(item)) { System.out.println("Warn: Tentando usar item que não tem na mochila!"); return ;}
+		if (item == null) { Log.warn("Tentando usar item nulo!"); return ;}
+		if (!bag.contains(item)) { Log.warn("Tentando usar item que não tem na mochila!"); return ;}
 
 		if (item instanceof Potion)
 		{

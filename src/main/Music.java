@@ -40,7 +40,7 @@ public class Music
  	    } 
  		catch(Exception ex) 
  		{
- 	        System.out.println("Error loading clip.") ;
+ 	        Log.error("When loading clip.") ;
  	        ex.printStackTrace() ;
  	    }
 		
@@ -60,7 +60,7 @@ public class Music
  	    } 
  		catch(Exception ex) 
  		{
- 	        System.out.println("Error with playing sound.") ;
+ 	        Log.error("When with playing sound.") ;
  	        ex.printStackTrace() ;
  	    }
  	}
@@ -74,7 +74,7 @@ public class Music
  	    } 
  		catch(Exception ex) 
  		{
- 	        System.out.println("Error with playing sound.") ;
+ 	        Log.error("When with playing sound.") ;
  	        ex.printStackTrace() ;
  	    }
  	}
@@ -87,7 +87,7 @@ public class Music
  	    } 
  		catch(Exception ex) 
  		{
- 	        System.out.println("Error with stopping sound.") ;
+ 	        Log.error("When with stopping sound.") ;
  	        ex.printStackTrace() ;
  	    }
  	}

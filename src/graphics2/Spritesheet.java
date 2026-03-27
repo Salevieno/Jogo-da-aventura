@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import main.Game;
+import main.Log;
 import utilities.Util;
 
 
@@ -17,7 +18,7 @@ public class Spritesheet
 
         if (img == null)
         {
-            System.out.println("Error loading spritesheet: image not found at " + path) ;
+            Log.error("When loading spritesheet: image not found at " + path) ;
             sheet = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB) ;
             return ;
         }
@@ -29,7 +30,7 @@ public class Spritesheet
     {
         if (sheet.getWidth() < x + width || sheet.getHeight() < y + height)
         {
-            System.out.println("Error getting sprite: pos outside of boundaries") ;
+            Log.error("When getting sprite: pos outside of boundaries") ;
             return null ;
         }
 

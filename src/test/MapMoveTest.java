@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import liveBeings.LiveBeing;
 import main.Directions;
 import main.Game;
+import main.Log;
 import maps.GameMap;
 
 public class MapMoveTest
@@ -56,7 +57,7 @@ public class MapMoveTest
 		GameMap[] maps = Game.getMaps() ;
 		for (GameMap map : maps)
 		{
-			System.out.println(map.getName());
+			Log.info(map.getName());
 			possiblePositions.keySet().forEach(id -> 
 			{
 				Point2D.Double pos = new Point2D.Double(possiblePositions.get(id).x, possiblePositions.get(id).y) ;
@@ -64,9 +65,9 @@ public class MapMoveTest
 				String moveName = moveNames.get(id) ;
 				GameMap newMap = LiveBeing.calcNewMap(pos, dir, map) ;
 				String newMapName = newMap != null ? newMap.getName() : "-" ;
-				System.out.println(moveName + ":	" + newMapName);
+				Log.info(moveName + ":	" + newMapName);
 			}) ;
-			System.out.println();
+			Log.info("\n");
 		}
 		
 		assertEquals(true, true) ;

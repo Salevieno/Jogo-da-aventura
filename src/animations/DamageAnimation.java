@@ -11,6 +11,7 @@ import graphics.Align;
 import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
+import main.Log;
 import utilities.Util;
 
 public class DamageAnimation extends Animation
@@ -58,7 +59,7 @@ public class DamageAnimation extends Animation
 
     protected void play()
     {
-		if (AtkEffects.none.equals(atkResults.getEffect())) { System.out.println("Warn: Damage animation with effect = none, will not display") ; return ;}
+		if (AtkEffects.none.equals(atkResults.getEffect())) { Log.warn("Damage animation with effect = none, will not display") ; return ;}
 		double opacity = 1.0 - timer.rate() ;
 		double rate = Math.pow(timer.rate(), 0.6) ;
 		Point trajectory = switch (style)

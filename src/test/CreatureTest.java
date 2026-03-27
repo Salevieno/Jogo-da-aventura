@@ -20,9 +20,6 @@ public class CreatureTest
 //			numberDefs += fightMove == 1 ? 1 : 0 ;
 //			numberSpells += fightMove == 2 ? 1 : 0 ;
 //		}
-//		System.out.println("Atks: " + numberAtks) ;
-//		System.out.println("Defs: " + numberDefs) ;
-//		System.out.println("Spells: " + numberSpells) ;
 //		assertEquals(true, true) ;
 	}
 }

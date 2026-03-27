@@ -17,6 +17,7 @@ import items.Item;
 import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
+import main.Log;
 import main.Path;
 import utilities.Util;
 
@@ -125,7 +126,7 @@ public class ShoppingWindow extends GameWindow
 
 		Item selectedItem = selectedItem() ;
 
-		if (!bag.contains(selectedItem)) { System.out.println("Tentando vender item que não possui") ; return ;}
+		if (!bag.contains(selectedItem)) { Log.warn("Tentando vender item que não possui") ; return ;}
 		
 		bag.remove(selectedItem, 1) ;
 		bag.addGold(selectedItem.getPrice()) ;

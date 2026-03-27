@@ -30,6 +30,7 @@ import items.QuestItem;
 import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
+import main.Log;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -266,9 +267,9 @@ public class BagWindow extends GameWindow
 	public void remove(Item item, int amount)
 	{
 
-		if (item == null) { System.out.println("Tentando remover item nulo") ; return ;}
-		if (!contains(item)) { System.out.println("Tentando remover um item que não existe na mochila") ; return ;}
-		if (!hasEnough(item, amount)) { System.out.println("Tentando remover mais itens do que a quantidade existente na mochila") ; return ;}
+		if (item == null) { Log.warn("Tentando remover item nulo") ; return ;}
+		if (!contains(item)) { Log.warn("Tentando remover um item que não existe na mochila") ; return ;}
+		if (!hasEnough(item, amount)) { Log.warn("Tentando remover mais itens do que a quantidade existente na mochila") ; return ;}
 		
 		if (item instanceof Potion)
 		{
@@ -367,7 +368,7 @@ public class BagWindow extends GameWindow
 			return ;
 		}
 		
-		System.out.println("Tentando remover mais dinheiro do que o existente na mochila") ;
+		Log.warn("Tentando remover mais dinheiro do que o existente na mochila") ;
 	}
 
 	private Map<Item, Integer> getMenuItems()

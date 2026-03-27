@@ -31,6 +31,7 @@ import main.Game;
 import main.GamePanel;
 import main.GameStates;
 import main.GameTimer;
+import main.Log;
 import maps.GameMap;
 import screen.Screen;
 import screen.Sky;
@@ -227,7 +228,7 @@ public class Creature extends LiveBeing
 				}
 				else
 				{
-					System.out.println("Warn: " + name + " trying to use spell. But no can use, baby!") ;		
+					Log.warn(name + " trying to use spell. But no can use, baby!") ;		
 					return new AtkResults();
 				}				
 			}
@@ -245,7 +246,7 @@ public class Creature extends LiveBeing
 	{
 		AtkResults atkResults = calcAtkResults(atkType, receiver) ;
 
-		System.out.println(name + " performed " + atkType + " on " + receiver.getName() +
+		Log.info(name + " performed " + atkType + " on " + receiver.getName() +
 							"\n with effect " + atkResults.getEffect() +
 							"\n and damage " + atkResults.getDamage() +
 							"\n and status " + atkResults.getStatus()) ;
@@ -282,7 +283,7 @@ public class Creature extends LiveBeing
 		
 		if (atkType == null) { return ;}
 
-		System.out.println("\n============ " + name + " performing " + atkType + " ============") ;
+		Log.info("\n============ " + name + " performing " + atkType + " ============") ;
 		setCurrentAtkType(atkType) ;
 		AtkResults atkResults = performAtk(atkType, creatureTarget) ;
 		creatureTarget.trainDefensive(atkResults) ;
@@ -298,7 +299,7 @@ public class Creature extends LiveBeing
 		{
 			EvolutionSimulation.updateBattleStats(this, creatureTarget, atkResults) ;
 		}
-		System.out.println("=======================================================") ;
+		Log.info("=======================================================") ;
 	}
 	
 	public void act(Point2D.Double playerPosAsDouble, GameMap playerMap, double dt)

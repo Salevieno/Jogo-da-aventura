@@ -24,6 +24,7 @@ import liveBeings.Creature;
 import liveBeings.CreatureType;
 import main.Game;
 import main.GameTimer;
+import main.Log;
 import main.Path;
 import screen.Screen;
 import screen.Sky;
@@ -355,8 +356,8 @@ public class FieldMap extends GameMap
 	public static List<NPC> createQuestNPCs(int mapID, NPCType[] npcTypes)
 	{
 		
-		if (npcTypes == null) { System.out.println("Erro ao criar npcs de quest: tipos de npc nulo") ; return null ;}
-		if (npcTypes.length <= 0) { System.out.println("Erro ao criar npcs de quest: sem tipos de npc") ; return null ;}
+		if (npcTypes == null) { Log.error("Ao criar npcs de quest: tipos de npc nulo") ; return null ;}
+		if (npcTypes.length <= 0) { Log.error("Ao criar npcs de quest: sem tipos de npc") ; return null ;}
 		
 		NPC questExp = new NPC(npcTypes[12], Game.getScreen().pos(0.27, 0.73)) ;
 		NPC questItem = new NPC(npcTypes[13], Game.getScreen().pos(0.87, 0.63)) ;
@@ -440,20 +441,9 @@ public class FieldMap extends GameMap
 	}
 	public void setCreatures(List<Creature> newValue) {creatures = newValue ;}
 	
- 	public void printItems()
- 	{
- 		System.out.println(name);
- 		creatures.forEach(creature -> creature.getBag().forEach(System.out::println));
- 		System.out.println();
- 	}
-
-
 	@Override
 	public String toString()
 	{
 		return "FieldMap " + name + " level " + level + " " + "creatures " + creatures.stream().map(creature -> creature.getType().getID()).collect(Collectors.toList()) ;
 	}
- 	
-
-	 	
 }

@@ -199,7 +199,7 @@ public class Game
 	{
 		if (loadedImagePaths.contains(path))
 		{
-			System.out.println("Warn: Loading image " + path + " multiple times");
+			Log.warn("Loading image " + path + " multiple times");
 		}
 
 		loadedImagePaths.add(path);
@@ -452,6 +452,12 @@ public class Game
 
 	}
 
+	private static void logInitializationTime(String item, long initialTime)
+	{
+		long elapsedTime = (long) ((System.nanoTime() - initialTime) * Math.pow(10,  -6)) ;
+		Log.info("Loaded " + item + " in " + elapsedTime + " ms") ;
+	}
+
 	protected static void initialize(int step)
 	{
 
@@ -463,49 +469,49 @@ public class Game
 				screen.setBorders(new int[] { 0 + Screen.borderOffset, Sky.height + Screen.borderOffset,
 						screen.getSize().width - 60 - Screen.borderOffset, screen.getSize().height - Screen.borderOffset });
 				screen.setMapCenter();
-				Log.loadTime("initial stuff", initialTime);
+				logInitializationTime("initial stuff", initialTime) ;
 				return;
 
 			case 1:
 				loadAllText();
-				Log.loadTime("text", initialTime);
+				logInitializationTime("text", initialTime);
 				return;
 
 			case 2:
 				Buff.loadBuffs();
 				Buff.loadDebuffs();
 				Spell.load(gameLanguage, Buff.allBuffs, Buff.allDebuffs);
-				Log.loadTime("spells", initialTime);
+				logInitializationTime("spells", initialTime);
 				return;
 
 			case 3:
 				Item.load();
-				Log.loadTime("items", initialTime);
+				logInitializationTime("items", initialTime);
 				return;
 
 			case 4:
 				CreatureType.load(gameLanguage, difficultLevel);
-				Log.loadTime("creature types", initialTime);
+				logInitializationTime("creature types", initialTime);
 				return;
 
 			case 5:
 				Recipe.load(Item.allItems);
-				Log.loadTime("recipes", initialTime);
+				logInitializationTime("recipes", initialTime);
 				return;
 
 			case 6:
 				npcTypes = NPCType.load(gameLanguage);
-				Log.loadTime("npc types", initialTime);
+				logInitializationTime("npc types", initialTime);
 				return;
 
 			case 7:
 				buildingTypes = BuildingType.initialize();
-				Log.loadTime("building types", initialTime);
+				logInitializationTime("building types", initialTime);
 				return;
 
 			case 8:
 				allQuests = Quest.load(gameLanguage, player.getJob(), CreatureType.all, Item.allItems);
-				Log.loadTime("quests", initialTime);
+				logInitializationTime("quests", initialTime);
 				return;
 
 			case 9:
@@ -513,7 +519,7 @@ public class Game
 				fieldMaps = FieldMap.load(npcTypes);
 				specialMaps = SpecialMap.load(Item.allItems);
 				allMaps = GameMap.assemble(cityMaps, fieldMaps, specialMaps);
-				Log.loadTime("maps", initialTime);
+				logInitializationTime("maps", initialTime);
 				return;
 
 			case 10:
@@ -534,7 +540,7 @@ public class Game
 					Music.SwitchMusic(player.getMap().getMusic());
 				}
 				dayTimer.start();
-				Log.loadTime("last stuff", initialTime);
+				logInitializationTime("last stuff", initialTime);
 
 				if (Game.testMode)
 				{
@@ -943,7 +949,6 @@ public class Game
 			player.setCurrentAction("MouseRightClick");
 			player.setPos(new Point2D.Double(GamePanel.getMousePos().x, GamePanel.getMousePos().y));
 			// Log.attributes(player) ;
-			// System.out.println("map: " + player.getMap().getName());
 			if (pet != null)
 			{
 				pet.setPos(player.getPosAsDouble());

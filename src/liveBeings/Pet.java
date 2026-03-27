@@ -34,6 +34,7 @@ import main.Elements;
 import main.Game;
 import main.GameStates;
 import main.GameTimer;
+import main.Log;
 import main.Path;
 import maps.GameMap;
 import simulations.EvolutionSimulation;
@@ -254,7 +255,7 @@ public class Pet extends LiveBeing
 				}
 				else
 				{
-					System.out.println("Warn: " + name + " trying to use spell. But no can use, baby!") ;		
+					Log.warn(name + " trying to use spell. But no can use, baby!") ;		
 					return new AtkResults();
 				}				
 			}

@@ -28,6 +28,7 @@ import main.Elements;
 import main.Game;
 import main.GameFrame;
 import main.GamePanel;
+import main.Log;
 import main.Music;
 import main.Path;
 import main.TextCategories;
@@ -356,7 +357,7 @@ public class GameMap
  	
  	public void display()
  	{
-		if (name == null) { System.out.println("Warn: trying to display map with no name") ; return ;}
+		if (name == null) { Log.warn("trying to display map with no name") ; return ;}
 
  		if (name.equals("City of the animals"))
  		{

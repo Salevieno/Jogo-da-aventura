@@ -9,6 +9,7 @@ import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
+import main.Log;
 import main.Path;
 import utilities.Util;
 
@@ -60,7 +61,7 @@ public class Buff
 	
 	public void apply(int mult, int level, LiveBeing receiver)
 	{
-		if (receiver == null) { System.out.println("Tentando usar buffs de magia em ninguém!") ; return ;}
+		if (receiver == null) { Log.warn("Tentando usar buffs de magia em ninguém!") ; return ;}
 
 		for (Attributes att : Attributes.values())
 		{

@@ -18,6 +18,7 @@ import graphics2.Draw;
 import graphics2.Drawable;
 import main.Game;
 import main.GamePanel;
+import main.Log;
 import utilities.Util;
 
 
@@ -98,8 +99,8 @@ public class Building implements Drawable
 	public void addStandardNPCs()
 	{
 
-		if (Game.getNPCTypes() == null) { System.out.println("Erro ao adicionar NPCs nas construções: tipos de NPC não existem") ; return ;}
-		if (Game.getNPCTypes().length <= 0) { System.out.println("Erro ao adicionar NPCs nas construções: não há nenhum tipo de NPC") ; return ;}
+		if (Game.getNPCTypes() == null) { Log.error("Ao adicionar NPCs nas construções: tipos de NPC não existem") ; return ;}
+		if (Game.getNPCTypes().length <= 0) { Log.error("Ao adicionar NPCs nas construções: não há nenhum tipo de NPC") ; return ;}
 		
 		npcs = new ArrayList<>() ;
 		switch (type.getType())

@@ -170,10 +170,30 @@ public abstract class Opening
 		players[0] = Player.load(1) ;
 		players[1] = Player.load(2) ;
 		players[2] = Player.load(3) ;
-		
-		Log.loadingStatus(players[0] != null, 1);
-		Log.loadingStatus(players[1] != null, 2);
-		Log.loadingStatus(players[2] != null, 3);
+		if (players[0] != null)
+		{
+			Log.info("save 1 loaded successfully!");
+		}
+		else
+		{
+			Log.warn("save 1 not loaded correctly or not found!");
+		}
+		if (players[1] != null)
+		{
+			Log.info("save 2 loaded successfully!");
+		}
+		else
+		{
+			Log.warn("save 2 not loaded correctly or not found!");
+		}
+		if (players[2] != null)
+		{
+			Log.info("save 3 loaded successfully!");
+		}
+		else
+		{
+			Log.warn("save 3 not loaded correctly or not found!");
+		}
 
 		ButtonFunction loadSlot1 = () -> { loadGame(players, 0) ;} ;
 		ButtonFunction loadSlot2 = () -> { loadGame(players, 1) ;} ;
@@ -215,7 +235,7 @@ public abstract class Opening
 		List<GameButton> screenButtons = buttonsInStep.get(step) ;
 		GameButton selectedButton = screenButtons.stream().filter(GameButton::isSelected).findFirst().orElse(null) ;
 
-		if (selectedButton == null) { System.out.println("Warn: no button selected when trying to select next") ; return ;}
+		if (selectedButton == null) { Log.warn("No button selected when trying to select next") ; return ;}
 
 		int selectedButtonIndex = screenButtons.indexOf(selectedButton) ;
 		int nextButtonIndex = screenButtons.size() == selectedButtonIndex + 1 ? 0 : selectedButtonIndex + 1 ;
@@ -229,7 +249,7 @@ public abstract class Opening
 		List<GameButton> screenButtons = buttonsInStep.get(step) ;
 		GameButton selectedButton = screenButtons.stream().filter(GameButton::isSelected).findFirst().orElse(null) ;
 
-		if (selectedButton == null) { System.out.println("Warn: no button selected when trying to select previous") ; return ;}
+		if (selectedButton == null) { Log.warn("No button selected when trying to select previous") ; return ;}
 
 		int selectedButtonIndex = screenButtons.indexOf(selectedButton) ;
 		int previousButtonIndex = 0 == selectedButtonIndex ? screenButtons.size() - 1 : selectedButtonIndex - 1 ;

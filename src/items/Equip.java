@@ -20,6 +20,7 @@ import liveBeings.Player;
 import main.Elements;
 import main.Game;
 import main.GamePanel;
+import main.Log;
 import main.Path;
 import utilities.Util;
 import windows.AttributesWindow;
@@ -213,7 +214,7 @@ public class Equip extends Item
 		if (800 <= id & id <= 899) { return id % 3 == 2 ;}
 		if (900 <= id & id <= 999) { return id % 3 == 0 ;}
 		
-		System.out.println("Verificação se o equipamento é uma arma com item que não é equipamento");
+		Log.warn("Verificação se o equipamento é uma arma com item que não é equipamento");
 		return false ;
 	}
 	

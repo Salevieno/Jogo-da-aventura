@@ -34,6 +34,7 @@ import main.Elements;
 import main.Game;
 import main.GamePanel;
 import main.GameTimer;
+import main.Log;
 import main.Music;
 import main.Path;
 import main.RelativePos;
@@ -866,7 +867,6 @@ public abstract class LiveBeing implements Drawable
 	{
 		if (damage < 0) { return ;}
 
-		// System.out.println("\033[0;31m" + name + " took " + damage + " damage" + "\033[0;37m") ;
 		// playDamageAnimation(Game.getSettings().getDamageAnimation(), new AtkResults(AtkTypes.physical, AtkEffects.hit, damage), Game.palette[7]) ;
 		PA.getLife().decTotalValue(damage) ;
 	}
@@ -889,7 +889,7 @@ public abstract class LiveBeing implements Drawable
 		}
 		if (bloodStatus.isActive() && bloodStatus.getTimer().crossedTime(0.5))
 		{
-			System.out.println("\033[0;31m" + name + " took " + (int) (bloodStatus.getIntensity() * bloodMult) + " blood damage" + "\033[0;37m") ;
+			Log.info(name + " took " + (int) (bloodStatus.getIntensity() * bloodMult) + " blood damage") ;
 			bloodDamage = (int) (bloodStatus.getIntensity() * bloodMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedBlood(bloodDamage, BA.getBlood().TotalDef()) ;}
 			playDamageAnimation(damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, bloodDamage, null), Game.palette[7]) ;

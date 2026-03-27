@@ -9,6 +9,7 @@ import attributes.BattleAttributes;
 import liveBeings.LiveBeing;
 import liveBeings.Pet;
 import liveBeings.Player;
+import main.Log;
 
 public abstract class JobBuild
 {
@@ -192,25 +193,25 @@ public abstract class JobBuild
 	private static void printBuild(LiveBeing liveBeing)
 	{
 		String jobName = liveBeing instanceof Pet ? liveBeing.getName() : jobName(liveBeing.getJob(), liveBeing.getProJob()) ;
-		System.out.print(jobName + "	") ;
-		System.out.print(liveBeing.getPA().getLife().getCurrentValue() + "	") ;
-		System.out.print(liveBeing.getPA().getMp().getCurrentValue() + "	") ;
-		System.out.print((int) liveBeing.getBA().getPhyAtk().getTotal() + "	") ;
-		System.out.print((int) liveBeing.getBA().getMagAtk().getTotal() + "	") ;
-		System.out.print((int) liveBeing.getBA().getPhyDef().getTotal() + "	") ;
-		System.out.print((int) liveBeing.getBA().getMagDef().getTotal() + "	") ;
-		System.out.print((int) liveBeing.getBA().getDex().getTotal() + "	") ;
-		System.out.println((int) liveBeing.getBA().getAgi().getTotal() + "") ;
+		Log.info(jobName + "	") ;
+		Log.info(liveBeing.getPA().getLife().getCurrentValue() + "	") ;
+		Log.info(liveBeing.getPA().getMp().getCurrentValue() + "	") ;
+		Log.info((int) liveBeing.getBA().getPhyAtk().getTotal() + "	") ;
+		Log.info((int) liveBeing.getBA().getMagAtk().getTotal() + "	") ;
+		Log.info((int) liveBeing.getBA().getPhyDef().getTotal() + "	") ;
+		Log.info((int) liveBeing.getBA().getMagDef().getTotal() + "	") ;
+		Log.info((int) liveBeing.getBA().getDex().getTotal() + "	") ;
+		Log.info((int) liveBeing.getBA().getAgi().getTotal() + "") ;
 	}
 	
 	private static void printBuilds(String title, List<LiveBeing> liveBeings)
 	{
-		System.out.println("\n--------------- " + title + " ---------------") ;
-		System.out.println("Job	Life	MP 	PhyAtk	MagAtk	PhyDef	MagDef	Dex	Agi") ;
+		Log.info("\n--------------- " + title + " ---------------") ;
+		Log.info("Job	Life	MP 	PhyAtk	MagAtk	PhyDef	MagDef	Dex	Agi") ;
 		liveBeings.forEach(liveBeing -> printBuild(liveBeing)) ;
-		System.out.println() ;
+		Log.info("\n") ;
 	}
-	
+
 	public static void printAll()
 	{
 		printBaseBuildsLevel1() ;

@@ -11,6 +11,7 @@ import graphics.Align;
 import graphics.Scale;
 import main.Game;
 import main.GamePanel;
+import main.Log;
 import main.Path;
 import maps.Continents;
 import maps.GameMap;
@@ -242,9 +243,9 @@ public class MapWindow extends GameWindow
 		
 		GamePanel.DP.drawImage(image, windowPos, Align.topLeft) ;
 		
-		if (mapWithPlayer == null) { System.out.println("Warn: Map with player = null when displaying map") ; return ;}
-		if (mapsDisplayed == null) { System.out.println("Warn: Maps displayed = null when displaying map") ; return ;}
-		if (mapsDisplayed.isEmpty()) { System.out.println("Warn: Maps displayed = empty when displaying map") ; return ;}
+		if (mapWithPlayer == null) { Log.warn("Map with player = null when displaying map") ; return ;}
+		if (mapsDisplayed == null) { Log.warn("Maps displayed = null when displaying map") ; return ;}
+		if (mapsDisplayed.isEmpty()) { Log.warn("Maps displayed = empty when displaying map") ; return ;}
 		
 		if (displayFull)
 		{
@@ -258,7 +259,7 @@ public class MapWindow extends GameWindow
 		{
 			Point cell = displayFull ? getMapRowColFullMap(map.getName()) : getMapRowCol(map.getName()) ;
 	
-			if (cell == null) { System.out.println("Warn: cell = null when displaying map") ; continue ;}
+			if (cell == null) { Log.warn("cell = null when displaying map") ; continue ;}
 			
 			Point mapPos = Util.translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
 													size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;

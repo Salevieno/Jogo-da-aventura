@@ -66,7 +66,7 @@ public class Path
         }
         catch (IOException e)
         {
-            System.out.println("Erro ao carregar paths: " + e.getMessage()) ;
+            Log.error(" ao carregar paths: " + e.getMessage()) ;
             e.printStackTrace() ;
         }
     }

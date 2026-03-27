@@ -31,6 +31,7 @@ import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
+import main.Log;
 import main.Path;
 import main.TextCategories;
 import maps.GameMap;
@@ -78,7 +79,7 @@ public class NPC
 		hitbox = null ;
 		isInteracting = false ;
 
-		if (type == null) { System.out.println("Erro ao criar npc: tipo nulo") ; return ;}
+		if (type == null) { Log.error("Ao criar npc: tipo nulo") ; return ;}
 		
 		if (type.getSpeech() != null)
 		{
@@ -162,8 +163,8 @@ public class NPC
 	public static NPCType typeFromName(String name)
 	{
 
-		if (Game.getNPCTypes() == null) { System.out.println("Erro ao obter nome do npc. Tipos de NPC não existem") ; return null ;}
-		if (Game.getNPCTypes().length == 0) { System.out.println("Erro ao obter nome do npc. Não há nenhum tipo de NPC") ; return null ;}
+		if (Game.getNPCTypes() == null) { Log.error("Ao obter nome do npc. Tipos de NPC não existem") ; return null ;}
+		if (Game.getNPCTypes().length == 0) { Log.error("Ao obter nome do npc. Não há nenhum tipo de NPC") ; return null ;}
 		
 		NPCJobs npcJob = NPCJobs.valueOf(name) ;
 		for (NPCType type : Game.getNPCTypes())
@@ -662,7 +663,7 @@ public class NPC
 
 		int questID = getQuestNPCid(this) ;
 
-		if (questID == -1) { System.out.println("Quest id não encontrado para npc " + type.getName() + " " + id) ; return ;}
+		if (questID == -1) { Log.warn("Quest id não encontrado para npc " + type.getName() + " " + id) ; return ;}
 		Quest quest = Game.getAllQuests()[questID] ;
 
 		if (action.equals("Enter") & selOption == 0)

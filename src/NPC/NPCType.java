@@ -8,6 +8,7 @@ import java.util.List;
 
 import main.Game;
 import main.Languages;
+import main.Log;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -150,7 +151,7 @@ public class NPCType
 		List<String[]> input = Util.readcsvFile(path + "NPCTypes.csv") ;
 		List<String[]> text = Util.readcsvFile(path + "NPCTypes-" + language.toString() + ".csv") ;
 		
-		if (input.isEmpty()) { System.out.println("Erro ao carregar NPC types") ; return null;}
+		if (input.isEmpty()) { Log.error("Ao carregar NPC types") ; return null;}
 		
 		NPCType[] npcType = new NPCType[input.size()] ;
 		for (int i = 0 ; i <= npcType.length - 1 ; i += 1)

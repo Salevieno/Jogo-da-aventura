@@ -54,22 +54,6 @@ public class Recipe
 			{
 				products.put(allItems.get((int) (long) listProducts.get(prod)), (int) (long) listProductAmounts.get(prod)) ;
 			}
-//			String a = "" ;
-//			for (Object aa : listProducts)
-//			{
-//				a += aa.toString() + ",";
-//			}
-//			a = a.substring(0, a.length() - 1) ;
-//			String b = "" ;
-//			for (Object bb : products.values())
-//			{
-//				b += bb.toString() + ",";
-//			}
-//			b = b.substring(0, b.length() - 1) ;
-//			System.out.println("{\"ProductIDs\":[" + (int) (long) listIngredients.get(1) + "]," + 
-//								"\"ProductAmounts\":[" + (int) (long) listIngredientAmounts.get(1) + "]," + 
-//								"\"IngredientIDs\":[" + ((int) (long) listIngredients.get(0) + "," + a) + "]," + 
-//								"\"IngredientAmounts\":[" + b + "]},");
 			new Recipe(ingredients, products) ;
 		}
 	}

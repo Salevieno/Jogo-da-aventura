@@ -16,6 +16,7 @@ import liveBeings.Spell;
 import liveBeings.SpellTypes;
 import main.Game;
 import main.GamePanel;
+import main.Log;
 import main.Path;
 import utilities.Util;
 
@@ -235,7 +236,7 @@ public class SpellsTreeWindow extends GameWindow
 		int col = 0 ;
 		for (int i = 0 ; i <= spellsOnWindow.size() - 1 ; i += 1)
 		{
-			if (spellsDistribution.length <= row) { System.out.println("Tentando desenhar magias demais!") ; break ;}
+			if (spellsDistribution.length <= row) { Log.warn("Tentando desenhar magias demais!") ; break ;}
 			
 			Spell spell = spellsOnWindow.get(i) ;
 			boolean hasPreReq = spell.hasPreRequisitesMet(playerCurrentSpells) ;
