@@ -1,6 +1,5 @@
 package liveBeings;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -38,7 +37,6 @@ public class CreatureType
 	private final List<Spell> spell;
 	private final Set<Item> items;
 	private final int gold;
-	private final Color color;
 	private final String hitboxType ;
 	private Genetics genes;
 
@@ -78,7 +76,7 @@ public class CreatureType
 			double silenceAtkChance, double silenceDefChance, double silenceDuration,
 			double atkSpeed, double knockBackPower,
 			List<Integer> spellIDs,
-			Set<Integer> itemIDs, int gold, Color color, int[] StatusCounter, String hitboxType)
+			Set<Integer> itemIDs, int gold, int[] StatusCounter, String hitboxType)
 	{
 		this.id = id;
 		this.name = name;
@@ -119,7 +117,6 @@ public class CreatureType
 			}
 		}
 		this.gold = gold;
-		this.color = color;
 		this.hitboxType = hitboxType ;
 
 		genes = new Genetics();
@@ -137,7 +134,7 @@ public class CreatureType
 			double silenceAtkChance, double silenceDefChance, double silenceDuration,
 			double atkSpeed, double knockBackPower,
 			List<Integer> spellIDs,
-			Set<Integer> itemIDs, int gold, Color color, int[] StatusCounter, String hitboxType, double diffMult)
+			Set<Integer> itemIDs, int gold, int[] StatusCounter, String hitboxType, double diffMult)
 	{
 		this(id, name, level, range, step, movePatternID, elem,
 			mpDuration, satiationDuration, actionDuration, stepDuration,
@@ -149,7 +146,7 @@ public class CreatureType
 			blockAtkChance * diffMult, blockDefChance * diffMult, blockDuration * diffMult,
 			silenceAtkChance * diffMult, silenceDefChance * diffMult, silenceDuration * diffMult,
 			atkSpeed, knockBackPower,
-			spellIDs, itemIDs, gold, color, StatusCounter, hitboxType) ;
+			spellIDs, itemIDs, gold, StatusCounter, hitboxType) ;
 	}
 
 	public int getID() { return id ;}
@@ -170,7 +167,6 @@ public class CreatureType
 	public List<Spell> getSpell() { return spell ;}
 	public Set<Item> getItems() { return items ;}
 	public int getGold() { return gold ;}
-	public Color getColor() { return color ;}
 	public String getHitboxType() { return hitboxType ;}
 	public Genetics getGenes() { return genes ;}
 	public void setGenes(Genetics newGenes) { genes = newGenes ;}

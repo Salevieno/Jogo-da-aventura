@@ -44,13 +44,8 @@ public class Creature extends LiveBeing
 	private final CreatureType type ;
 	private final Set<Item> items ;
 	private final int gold ;
-	private final Color color ;
 	private boolean chasePlayer ;
-	// private boolean hasSwitchedDirection ;
 	private GameTimer idleTimer ;
-	
-	private static final Color[] skinColor = new Color[] {Palette.colors[0], Palette.colors[5]} ;
-	private static final Color[] shadeColor = new Color[] {Palette.colors[2], Palette.colors[3]} ;
 
  	public Creature(CreatureType CT, Point2D.Double pos)
  	{
@@ -76,7 +71,6 @@ public class Creature extends LiveBeing
 		this.spells = List.copyOf(CT.getSpell()) ;
 		this.items = Set.copyOf(CT.getItems()) ;
 		this.gold = CT.getGold() ;
-		this.color = CT.getColor() ;
 
 		if (getName().equals("Dragão") | getName().equals("Dragon"))
 		{
@@ -103,8 +97,6 @@ public class Creature extends LiveBeing
 	public int getGold() {return gold ;}
 	public GameTimer getIdleTimer() {return idleTimer ;}
 	public void setChasePlayer(boolean F) {chasePlayer = F ;}
-	public static Color[] getskinColor() {return skinColor ;}
-	public static Color[] getshadeColor() {return shadeColor ;}
 
 	public Point center() { return new Point((int) pos.x, (int) pos.y) ;}
 
@@ -225,7 +217,6 @@ public class Creature extends LiveBeing
 				if (canUseSpell(spell))
 				{
 					return useSpell(spell, receiver);
-					// displayUsedSpellMessage(spell, Util.translate(getPos(), 0, -50), Palette.colors[5]) ;
 				}
 				else
 				{
@@ -470,6 +461,6 @@ public class Creature extends LiveBeing
 	public String toString()
 	{
 		return String.format("Creature:\n  Name: %s\n  Level: %d\n  Color: %s\n  Gold: %d\n  Bag: %s\n  Type: %s\n",
-				name, level, color, gold, items.toString(), type) ;
+				name, level, gold, items.toString(), type) ;
 	}	
 }
