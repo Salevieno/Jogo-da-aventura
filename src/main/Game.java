@@ -74,6 +74,7 @@ public class Game
 	// TODO sign deixa de ser building
 	// TODO shopping de cada cidade vender itens diferentes
 	// TODO ideia: ao invés de ter mapa, os npcs indicarem a direção das cidades
+	// FIXME bichos andando sobre a água ao perseguir
 	private static final List<String> konamiCode = List.of("Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A") ;
 
 

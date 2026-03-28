@@ -76,7 +76,7 @@ public class CreatureType
 			double silenceAtkChance, double silenceDefChance, double silenceDuration,
 			double atkSpeed, double knockBackPower,
 			List<Integer> spellIDs,
-			Set<Integer> itemIDs, int gold, int[] StatusCounter, String hitboxType)
+			Set<Integer> itemIDs, int gold, String hitboxType)
 	{
 		this.id = id;
 		this.name = name;
@@ -134,7 +134,7 @@ public class CreatureType
 			double silenceAtkChance, double silenceDefChance, double silenceDuration,
 			double atkSpeed, double knockBackPower,
 			List<Integer> spellIDs,
-			Set<Integer> itemIDs, int gold, int[] StatusCounter, String hitboxType, double diffMult)
+			Set<Integer> itemIDs, int gold, String hitboxType, double diffMult)
 	{
 		this(id, name, level, range, step, movePatternID, elem,
 			mpDuration, satiationDuration, actionDuration, stepDuration,
@@ -146,7 +146,7 @@ public class CreatureType
 			blockAtkChance * diffMult, blockDefChance * diffMult, blockDuration * diffMult,
 			silenceAtkChance * diffMult, silenceDefChance * diffMult, silenceDuration * diffMult,
 			atkSpeed, knockBackPower,
-			spellIDs, itemIDs, gold, StatusCounter, hitboxType) ;
+			spellIDs, itemIDs, gold, hitboxType) ;
 	}
 
 	public int getID() { return id ;}

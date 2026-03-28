@@ -917,7 +917,7 @@ public abstract class LiveBeing implements Drawable
 	
 	public void displayStatus()
 	{
-		Point offset = new Point(-size.width / 2 + 4, size.height / 2 + 4) ;
+		Point offset = new Point(-size.width / 2 + 12, size.height / 2 + 4) ;
 		Point imgPos = Util.translate(center(), offset.x, -offset.y) ;
 		
 		for (Attributes att : Attributes.values())
