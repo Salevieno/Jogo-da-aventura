@@ -58,6 +58,7 @@ import main.GameStates;
 import main.GameTimer;
 import main.ImageLoader;
 import main.Log;
+import main.Palette;
 import main.Path;
 import maps.Collectible;
 import maps.Continents;
@@ -135,7 +136,7 @@ public class Player extends LiveBeing
 	public static final List<String[]> attributeIncreaseOnLevelUp = Util.readcsvFile(Path.CSV + "PlayerEvolution.csv") ;	
 	public static final int[] numberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	private static final int[] cumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
-    // private static final Color[] jobColors = new Color[] {Game.palette[21], Game.palette[5], Game.palette[2], Game.palette[3], Game.palette[4]} ;
+    // private static final Color[] jobColors = new Color[] {Palette.colors[21], Palette.colors[5], Palette.colors[2], Palette.colors[3], Palette.colors[4]} ;
 
     private static final String[] hotKeys = new String[] {"F", "G", "V"} ;
 
@@ -457,13 +458,13 @@ public class Player extends LiveBeing
             	useAutoSpell(true, spells.get(4)) ;
         	}
         	trainCollecting(collectible) ;
-        	// Animation.start(AnimationTypes.obtainedItem, new Object[] {new Point((int)pos.x, (int)(pos.y - 20 - size.height)), msg, Game.palette[0]});
-			ObtainedItemAnimation.start(new Point((int)pos.x, (int)(pos.y - 20 - size.height)), msg, Game.palette[0]) ;
+        	// Animation.start(AnimationTypes.obtainedItem, new Object[] {new Point((int)pos.x, (int)(pos.y - 20 - size.height)), msg, Palette.colors[0]});
+			ObtainedItemAnimation.start(new Point((int)pos.x, (int)(pos.y - 20 - size.height)), msg, Palette.colors[0]) ;
 		}
         else
         {
-        	// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Game.palette[0]});
-			MessageAnimation.start(Game.getScreen().pos(0.2, 0.2), msg, Game.palette[0]) ;
+        	// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Palette.colors[0]});
+			MessageAnimation.start(Game.getScreen().pos(0.2, 0.2), msg, Palette.colors[0]) ;
         }
 
     	removeCollectibleFromMap(collectible) ;
@@ -695,16 +696,16 @@ public class Player extends LiveBeing
     	
 		if (!Util.chance(successChance))
 		{
-			// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.3, 0.2), "Não pegou peixe", Game.palette[0]}) ;
-			MessageAnimation.start(Game.getScreen().pos(0.3, 0.2), "Não pegou peixe", Game.palette[0]) ;
+			// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.3, 0.2), "Não pegou peixe", Palette.colors[0]}) ;
+			MessageAnimation.start(Game.getScreen().pos(0.3, 0.2), "Não pegou peixe", Palette.colors[0]) ;
 			return ;
 		}
 		
 		int fishType = Util.randomInt(6, 8) ;
 		Item fish = Food.getAll()[fishType] ;
 		bag.add(fish, 1) ;
-		// Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.palette[0]}) ;
-		ObtainedItemAnimation.start(Game.getScreen().pos(0.3, 0.2), fish.getName(), Game.palette[0]) ;
+		// Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Palette.colors[0]}) ;
+		ObtainedItemAnimation.start(Game.getScreen().pos(0.3, 0.2), fish.getName(), Palette.colors[0]) ;
 	}
 
 	private Item determineDiggedItem()
@@ -753,13 +754,13 @@ public class Player extends LiveBeing
 		Item diggedItem = determineDiggedItem() ;
 		
 		bag.add(diggedItem, 1) ;
-		ObtainedItemAnimation.start(Game.getScreen().pos(0.2, 0.2), diggedItem.getName(), Game.palette[0]) ;
+		ObtainedItemAnimation.start(Game.getScreen().pos(0.2, 0.2), diggedItem.getName(), Palette.colors[0]) ;
 		if (superElem == Elements.earth)
 		{
 			Item diggedItemExtra = determineDiggedItem() ;
 			
 			bag.add(diggedItemExtra, 1) ;
-			ObtainedItemAnimation.start(Game.getScreen().pos(0.2, 0.25), diggedItemExtra.getName(), Game.palette[0]) ;		
+			ObtainedItemAnimation.start(Game.getScreen().pos(0.2, 0.25), diggedItemExtra.getName(), Palette.colors[0]) ;		
 		}
 	}
 	
@@ -893,7 +894,7 @@ public class Player extends LiveBeing
 				if (canUseSpell(spell))
 				{
 					return useSpell(spell, receiver);
-					// this.displayUsedSpellMessage(spell, Util.translate(this.getPos(), 0, -50), Game.palette[5]) ;
+					// this.displayUsedSpellMessage(spell, Util.translate(this.getPos(), 0, -50), Palette.colors[5]) ;
 				}
 				else
 				{
@@ -1133,8 +1134,8 @@ public class Player extends LiveBeing
 				{
 					if (Animation.getAll().isEmpty())
 					{
-						// Animation.start(AnimationTypes.message, new Object[] {new Point((int)pos.x, (int)(pos.y - 20 - size.height)), "Nível de coleta insuficiente", Game.palette[4]}) ;
-						MessageAnimation.start(new Point((int)pos.x, (int)(pos.y - 20 - size.height)), "Nível de coleta insuficiente", Game.palette[4]) ;
+						// Animation.start(AnimationTypes.message, new Object[] {new Point((int)pos.x, (int)(pos.y - 20 - size.height)), "Nível de coleta insuficiente", Palette.colors[4]}) ;
+						MessageAnimation.start(new Point((int)pos.x, (int)(pos.y - 20 - size.height)), "Nível de coleta insuficiente", Palette.colors[4]) ;
 					}
 					break ;
 				}
@@ -1198,7 +1199,7 @@ public class Player extends LiveBeing
 		trainOffensive(new AtkResults(AtkTypes.magical)) ;
 		stats.incNumberMagAtk() ;
 		
-		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Game.palette[5]) ;
+		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Palette.colors[5]) ;
 		spell.activate() ;
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
 		if (job == 1 & 1 <= spells.get(8).getLevel())
@@ -1852,7 +1853,7 @@ public class Player extends LiveBeing
 	
 	private void drawRange()
 	{
-		GamePanel.DP.drawCircle(getPos(), (int)(2 * range), 2, null, Game.palette[10]) ;
+		GamePanel.DP.drawCircle(getPos(), (int)(2 * range), 2, null, Palette.colors[10]) ;
 	}
 
 	public void drawWeapon(Point pos, Scale scale)
@@ -1929,8 +1930,8 @@ public class Player extends LiveBeing
 	public void applySuperElementEffect(Elements elem, boolean apply)
 	{
 		// proTODO superelementos luz: ilumina a caverna, escuridão: aura escura, trovão e neve
-		// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Game.palette[7]}) ;
-		MessageAnimation.start(Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Game.palette[7]) ;
+		// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Palette.colors[7]}) ;
+		MessageAnimation.start(Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Palette.colors[7]) ;
 		switch (elem)
 		{
 			case fire:

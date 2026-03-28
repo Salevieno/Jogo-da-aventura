@@ -13,6 +13,7 @@ import graphics2.Draw;
 import liveBeings.CreatureType;
 import main.Game;
 import main.GamePanel;
+import main.Palette;
 import main.TextCategories;
 import utilities.Util;
 
@@ -42,14 +43,14 @@ public class BestiaryWindow extends GameWindow
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String[] text = Game.allText.get(TextCategories.bestiary) ;
-		Color textColor = Game.palette[0] ;
+		Color textColor = Palette.colors[0] ;
 		double angle = Draw.stdAngle ;
 		
 		int offset = 5 ;
 		int sy = infoFont.getSize() ;
 
 		Dimension windowSize = new Dimension(128, 240) ;
-		GamePanel.DP.drawGradRoundRect(pos, Align.topLeft, windowSize, 3, Game.palette[5], Game.palette[14], Game.palette[0], true) ;
+		GamePanel.DP.drawGradRoundRect(pos, Align.topLeft, windowSize, 3, Palette.colors[5], Palette.colors[14], Palette.colors[0], true) ;
 		
 		Point creaturePos = Util.translate(pos, 40, offset) ;
 		creatureType.display(creaturePos, Scale.unit) ;
@@ -85,7 +86,7 @@ public class BestiaryWindow extends GameWindow
 
 		
 		// draw window
-		GamePanel.DP.drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Game.palette[5], Game.palette[14], Game.palette[0], true) ;
+		GamePanel.DP.drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Palette.colors[5], Palette.colors[14], Palette.colors[0], true) ;
 		
 		if (discoveredCreatures == null) { return ;}
 		
@@ -96,7 +97,7 @@ public class BestiaryWindow extends GameWindow
 			// draw slots
 			Point slotTopLeft = Util.translate(windowPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
 			Point slotCenter = Util.translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
-			GamePanel.DP.drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Game.palette[3], Game.palette[20], Game.palette[0], true) ;
+			GamePanel.DP.drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Palette.colors[3], Palette.colors[20], Palette.colors[0], true) ;
 
 			// draw creatures
 			CreatureType creatureType = discoveredCreatures.get(slot) ;

@@ -32,6 +32,7 @@ import main.GamePanel;
 import main.GameStates;
 import main.GameTimer;
 import main.Log;
+import main.Palette;
 import maps.GameMap;
 import screen.Screen;
 import screen.Sky;
@@ -48,8 +49,8 @@ public class Creature extends LiveBeing
 	// private boolean hasSwitchedDirection ;
 	private GameTimer idleTimer ;
 	
-	private static final Color[] skinColor = new Color[] {Game.palette[0], Game.palette[5]} ;
-	private static final Color[] shadeColor = new Color[] {Game.palette[2], Game.palette[3]} ;
+	private static final Color[] skinColor = new Color[] {Palette.colors[0], Palette.colors[5]} ;
+	private static final Color[] shadeColor = new Color[] {Palette.colors[2], Palette.colors[3]} ;
 
  	public Creature(CreatureType CT, Point2D.Double pos)
  	{
@@ -224,7 +225,7 @@ public class Creature extends LiveBeing
 				if (canUseSpell(spell))
 				{
 					return useSpell(spell, receiver);
-					// displayUsedSpellMessage(spell, Util.translate(getPos(), 0, -50), Game.palette[5]) ;
+					// displayUsedSpellMessage(spell, Util.translate(getPos(), 0, -50), Palette.colors[5]) ;
 				}
 				else
 				{
@@ -383,7 +384,7 @@ public class Creature extends LiveBeing
 		if (receiver == null) { return null ;}
 		if (!hasEnoughMP(spell)) { return new AtkResults() ;}
 
-		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Game.palette[5]) ;
+		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Palette.colors[5]) ;
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
 		switch (spell.getType())
 		{

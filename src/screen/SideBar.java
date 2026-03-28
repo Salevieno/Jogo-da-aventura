@@ -22,6 +22,7 @@ import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.MainGame3_4;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 import windows.PetAttributesWindow;
@@ -36,7 +37,7 @@ public abstract class SideBar
 	private static final Image[] iconImages ;
 	private static final Image[] iconSelectedImages ;
 	private static final List<GameButton> buttons = new ArrayList<>() ;
-	private static final Color bgColor = Game.palette[1] ;
+	private static final Color bgColor = Palette.colors[1] ;
 	
 	private static final Dimension size = new Dimension(60, Game.getScreen().getSize().height) ;
 	public static final Image slotImage = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Slot.png") ;
@@ -113,7 +114,7 @@ public abstract class SideBar
 	private static void displayKeys()
 	{
 		String[] keys = new String[] {PlayerActions.attWindow.getKey(), PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null, null} ;
-		Color textColor = Game.palette[0] ;
+		Color textColor = Palette.colors[0] ;
 		int i = 0 ;
 		for (GameButton button : buttons)
 		{
@@ -129,7 +130,7 @@ public abstract class SideBar
 	{
 		
 		GamePanel.DP.drawRect(barPos, Align.topLeft, size, bgColor, null) ;
-//		GamePanel.DP.drawLine(Util.translate(barPos, size.width, 0), Util.translate(barPos, size.width, size.height), Game.palette[1]) ;
+//		GamePanel.DP.drawLine(Util.translate(barPos, size.width, 0), Util.translate(barPos, size.width, size.height), Palette.colors[1]) ;
 		
 		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos)) ;
 		displayKeys() ;

@@ -14,6 +14,7 @@ import liveBeings.CreatureType;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -43,7 +44,7 @@ public class CreatureAttributesWindow extends AttributesWindow
 
 		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;		
-		Color[] colorPalette = Game.palette ;
+		Color[] colorPalette = Palette.colors ;
 		Color textColor = colorPalette[0] ;
 		
 		String[] attText = Game.allText.get(TextCategories.attributes) ;		

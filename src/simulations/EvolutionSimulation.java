@@ -45,6 +45,7 @@ import main.GamePanel;
 import main.GameTimer;
 import main.ImageLoader;
 import main.Log;
+import main.Palette;
 import utilities.Util;
 import windows.PlayerAttributesWindow;
 
@@ -943,7 +944,7 @@ public abstract class EvolutionSimulation
 	public static void drawBattleStatictics(Point pos)
 	{
 		Font textFont = new Font(font.getName(), font.getStyle(), 11) ;
-		Color textColor = Game.palette[0] ;
+		Color textColor = Palette.colors[0] ;
 		
 		Iterator<?> it = stats.keySet().iterator();
 
@@ -961,7 +962,7 @@ public abstract class EvolutionSimulation
 	public static void drawDerivedBattleAttributes(Point pos, LiveBeing attacker, LiveBeing defender)
 	{
 		Font textFont = new Font(font.getName(), font.getStyle(), 11) ;
-		Color textColor = Game.palette[0] ;
+		Color textColor = Palette.colors[0] ;
 		
 		double rateMagAtkAttacker =	attacker instanceof Player ? 0.4147 :  0.366;
 		double ratePhyAtkAttacker = 0.5 - rateMagAtkAttacker / 2.0  ;
@@ -1044,25 +1045,25 @@ public abstract class EvolutionSimulation
 		int barsHeight = 50 ;
 		
 		int numberOpponentsToPlayerLevelUp = PersonalAttributes.numberFightsToLevelUp(player.getExp().getCurrentValue(), player.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), player.getExp().getMultiplier()) ;
-		GamePanel.DP.drawText(Util.translate(pos, 170, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Game.palette[5]);
+		GamePanel.DP.drawText(Util.translate(pos, 170, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPlayerLevelUp, font, Palette.colors[5]);
 
 		int playerExpBarSize = (int) (player.getExp().getRate() * barsHeight) ;
-		drawBar(Util.translate(pos, 170, 70), playerExpBarSize, barsHeight, Game.palette[5]) ;
+		drawBar(Util.translate(pos, 170, 70), playerExpBarSize, barsHeight, Palette.colors[5]) ;
 		
 		if (pet != null)
 		{
 			int numberOpponentsToPetLevelUp = PersonalAttributes.numberFightsToLevelUp(pet.getExp().getCurrentValue(), pet.getExp().getMaxValue(), playerOpponent.getExp().getCurrentValue(), pet.getExp().getMultiplier()) ;
-			GamePanel.DP.drawText(Util.translate(pos, 200, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Game.palette[2]);
+			GamePanel.DP.drawText(Util.translate(pos, 200, 10), Align.bottomCenter, Draw.stdAngle, "+ " + numberOpponentsToPetLevelUp, font, Palette.colors[2]);
 			
 			int petExpBarSize = (int) (pet.getExp().getRate() * barsHeight) ;
-			drawBar(Util.translate(pos, 200, 70), petExpBarSize, barsHeight, Game.palette[2]) ;
+			drawBar(Util.translate(pos, 200, 70), petExpBarSize, barsHeight, Palette.colors[2]) ;
 		}
 		
 		String percPlayerWins = 1 <= numberFights ? " (" + Util.round((100 * numberPlayerWins) / (double)numberFights, 2) + "%)" : "" ;
 		String percCreatureWins = 1 <= numberFights ? " (" + Util.round((100 * numberCreatureWins) / (double)numberFights, 2) + "%)" : "" ;
-		GamePanel.DP.drawText(Util.translate(pos, 0, 30), Align.bottomLeft, Draw.stdAngle, "total fights = " + numberFights, font, Game.palette[5]);
-		GamePanel.DP.drawText(Util.translate(pos, 0, 50), Align.bottomLeft, Draw.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Game.palette[5]);
-		GamePanel.DP.drawText(Util.translate(pos, 0, 70), Align.bottomLeft, Draw.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Game.palette[5]);
+		GamePanel.DP.drawText(Util.translate(pos, 0, 30), Align.bottomLeft, Draw.stdAngle, "total fights = " + numberFights, font, Palette.colors[5]);
+		GamePanel.DP.drawText(Util.translate(pos, 0, 50), Align.bottomLeft, Draw.stdAngle, "player wins = " + numberPlayerWins + percPlayerWins, font, Palette.colors[5]);
+		GamePanel.DP.drawText(Util.translate(pos, 0, 70), Align.bottomLeft, Draw.stdAngle, "creature wins = " + numberCreatureWins + percCreatureWins, font, Palette.colors[5]);
 
 	}
 		
@@ -1070,7 +1071,7 @@ public abstract class EvolutionSimulation
 	{
 		
 		GamePanel.DP.drawImage(screenImage, new Point(0, 0), Align.topLeft) ;
-		GamePanel.DP.drawText(new Point(300, 13), Align.center, Draw.stdAngle, "Simulador do jogo", font, Game.palette[0]) ;
+		GamePanel.DP.drawText(new Point(300, 13), Align.center, Draw.stdAngle, "Simulador do jogo", font, Palette.colors[0]) ;
 		
 		buttons.forEach(button -> button.display(0, true, mousePos)) ;
 
@@ -1099,7 +1100,7 @@ public abstract class EvolutionSimulation
 			battleTime = Math.round(100 * (System.nanoTime() - battleClock) * Math.pow(10, -9)) / 100.0 ;
 			GamePanel.DP.drawImage(fightingImage, new Point(300, 240), Align.center) ;
 		}
-		GamePanel.DP.drawText(new Point(10, 410), Align.centerLeft, Draw.stdAngle, "Battle time: " + battleTime + "s", font, Game.palette[0]) ;
+		GamePanel.DP.drawText(new Point(10, 410), Align.centerLeft, Draw.stdAngle, "Battle time: " + battleTime + "s", font, Palette.colors[0]) ;
 		
 		
 		displayBattleStats() ;

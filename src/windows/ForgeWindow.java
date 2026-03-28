@@ -20,6 +20,7 @@ import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -65,7 +66,7 @@ public class ForgeWindow extends GameWindow
 	{
 		message = messages.get(i) ;
 		Point pos = Util.translate(windowPos, 0, - 30) ;
-		MessageAnimation.start(pos, message, Game.palette[0]) ;
+		MessageAnimation.start(pos, message, Palette.colors[0]) ;
 	}
 	
 	public void navigate(String action)
@@ -180,7 +181,7 @@ public class ForgeWindow extends GameWindow
 		
 		GamePanel.DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
 		
-		GamePanel.DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[1]) ;
+		GamePanel.DP.drawText(titlePos, Align.center, angle, name, titleFont, Palette.colors[1]) ;
 		GamePanel.DP.drawText(messagePos, Align.center, angle, messages.get(0), stdFont, stdColor) ;
 		
 		Point itemPos = Util.translate(windowPos, 24, 70) ;
@@ -197,7 +198,7 @@ public class ForgeWindow extends GameWindow
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(200, 10), i) ;
 			
 			Equip equip = itemsOnWindow.get(i) ;
-			Color itemColor = this.item == itemsOnWindow.indexOf(equip) ? Game.selColor : stdColor ;
+			Color itemColor = this.item == itemsOnWindow.indexOf(equip) ? selColor : stdColor ;
 			GamePanel.DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
 			GamePanel.DP.drawImage(equip.getImage(), itemPos, angle, Scale.unit, Align.center) ;
 			GamePanel.DP.drawText(namePos, Align.centerLeft, angle, equip.getName() + " + " + equip.getForgeLevel(), stdFont, itemColor) ;

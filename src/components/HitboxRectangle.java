@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import graphics.Align;
-import main.Game;
 import main.GamePanel;
+import main.Palette;
 
 public class HitboxRectangle implements Hitbox
 {
@@ -63,7 +63,7 @@ public class HitboxRectangle implements Hitbox
 	
 	public void display()
 	{
-		GamePanel.DP.drawRect(center, Align.center, size, null, Game.palette[3]);
+		GamePanel.DP.drawRect(center, Align.center, size, null, Palette.colors[3]);
 	}
 
 	public Point getCenter() { return center ;}

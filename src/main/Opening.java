@@ -279,7 +279,7 @@ public abstract class Opening
 		
 		Player player = players[slotNumber] ;
 		double angle = Draw.stdAngle ;
-		Color textColor = Game.palette[0] ;
+		Color textColor = Palette.colors[0] ;
 		
 		Point textPos = Util.translate(pos, 75, 10) ;
 		GamePanel.DP.drawText(textPos, Align.center, angle, "Slot " + (slotNumber + 1), font, textColor) ;
@@ -305,7 +305,7 @@ public abstract class Opening
 	
 	private static void displayJobDescription()
 	{
-		Color textColor = Game.palette[0] ;
+		Color textColor = Palette.colors[0] ;
 		String[] description = Game.getLanguage() == Languages.portugues ? jobDescriptionPtBr : jobDescriptionEn ;
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
@@ -319,7 +319,7 @@ public abstract class Opening
 	public static void display(String action, Point mousePos)
 	{
 		Point textPos = Game.getScreen().pos(0.5, 0.3) ;
-		Color textColor = Game.palette[0] ;
+		Color textColor = Palette.colors[0] ;
 		
 		GamePanel.DP.drawImage(backgroundImage, new Point(0, 0), 0, Scale.unit, Align.topLeft) ;
 

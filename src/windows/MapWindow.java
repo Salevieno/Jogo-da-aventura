@@ -13,6 +13,7 @@ import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
+import main.Palette;
 import main.Path;
 import maps.Continents;
 import maps.GameMap;
@@ -234,7 +235,7 @@ public class MapWindow extends GameWindow
 		double playerRelXPos = playerPos.x / (double) Game.getScreen().mapSize().width ;
 		double playerRelYPos = (playerPos.y - Sky.height) / (double) Game.getScreen().mapSize().height ;
 		Point circlePos = Util.translate(mapPos, (int) (screenSize.width * playerRelXPos), (int) (-screenSize.height * (1 - playerRelYPos))) ;
-		GamePanel.DP.drawCircle(circlePos, 5, 0, Game.palette[6], null) ;
+		GamePanel.DP.drawCircle(circlePos, 5, 0, Palette.colors[6], null) ;
 	}
 	
 	public void display(Point mousePos)
@@ -268,7 +269,7 @@ public class MapWindow extends GameWindow
 
 			Point mapNamePos = Util.translate(mapPos, (int) (scale.x * Game.getScreen().mapSize().width / 2),
 													(int) (-scale.y * Game.getScreen().mapSize().height / 2)) ;
-			GamePanel.DP.drawText(mapNamePos, Align.center, 0, map.getName(), stdFont, Game.palette[0]) ;
+			GamePanel.DP.drawText(mapNamePos, Align.center, 0, map.getName(), stdFont, Palette.colors[0]) ;
 			
 			if (!map.equals(mapWithPlayer)) { continue ;}
 			if (playerPos == null) { continue ;}

@@ -21,6 +21,7 @@ import main.GamePanel;
 import main.ImageLoader;
 import main.MainGame3_4;
 import main.Music;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 
@@ -195,7 +196,7 @@ public class PauseWindow extends GameWindow
         {
             if (!button.isActive()) { continue ;}
             
-            button.display(0, true, mousePos, Game.palette[3], 0.6) ;
+            button.display(0, true, mousePos, Palette.colors[3], 0.6) ;
         }
         for (int i = 0 ; i <= menuSettings.get(menu).size() - 1 ; i += 1)
         {
@@ -207,7 +208,7 @@ public class PauseWindow extends GameWindow
         {            
             for (int i = 0 ; i <= PlayerActions.values().length - 1 ; i += 1)
             {
-                Color textColor = isListeningToKeyInput && item == i ? Game.palette[18] : Game.palette[3] ;
+                Color textColor = isListeningToKeyInput && item == i ? Palette.colors[18] : Palette.colors[3] ;
                 int posY = menuButtons.get(menu).get(i).getCenter().y ;
                 GamePanel.DP.drawImage(textBgImg, new Point(settingColPosX, posY), Align.center, 0.5) ;
                 GamePanel.DP.drawText(new Point(settingColPosX, posY), Align.center, Draw.stdAngle, PlayerActions.values()[i].getKey(), largeFont, textColor) ;

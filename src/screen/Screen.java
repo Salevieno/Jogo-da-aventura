@@ -6,9 +6,9 @@ import java.awt.Toolkit;
 import java.awt.geom.Point2D;
 
 import graphics.Align;
-import main.Game;
 import main.GameFrame;
 import main.GamePanel;
+import main.Palette;
 
 public class Screen
 {
@@ -88,7 +88,7 @@ public class Screen
 	public void displayBorders()
 	{
 		Point botLeft = new Point(borders[0], borders[3]) ;
-		GamePanel.DP.drawRect(botLeft, Align.bottomLeft, new Dimension(borders[2] - borders[0], borders[3] - borders[1]), null, Game.palette[1]) ;
+		GamePanel.DP.drawRect(botLeft, Align.bottomLeft, new Dimension(borders[2] - borders[0], borders[3] - borders[1]), null, Palette.colors[1]) ;
 	}
 
 	public void updateSky(double dt)

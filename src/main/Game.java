@@ -1,9 +1,6 @@
 package main;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -78,10 +75,6 @@ public class Game
 	// TODO ideia: ao invés de ter mapa, os npcs indicarem a direção das cidades
 	private static final List<String> konamiCode = List.of("Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A") ;
 
-	public static Color[] palette;
-	public static final Color selColor;
-	private static final Color[] normalPalette;
-	private static final Color[] konamiPalette;
 
 	public static final String MainFontName = "Comics";
 	private static final GameStates mainState = GameStates.running;
@@ -124,11 +117,6 @@ public class Game
 	static
 	{
 		screen = new Screen(new Dimension(GameFrame.getWindowsize().width, GameFrame.getWindowsize().height), null);
-		Image paletteImage = ImageLoader.loadImage(Path.GAME_IMG + "ColorPalette.png");
-		normalPalette = readColorPalette(paletteImage, "Normal");
-		konamiPalette = readColorPalette(paletteImage, "Konami");
-		selColor = normalPalette[18];
-		palette = normalPalette;
 		gameLanguage = Languages.portugues;
 		allText = new HashMap<>();
 		dayTimer = new GameTimer(DAY_DURATION);
@@ -162,46 +150,15 @@ public class Game
 	public static void switchToMainState() { state = mainState ;}
 	public static double dayTimeRate() { return dayTimer.rate() <= 0.5 ? dayTimer.rate() + 0.5 : dayTimer.rate() - 0.5 ;}
 
-	private static Color[] readColorPalette(Image paletteImage, String mode)
-	{
-		Color[] palette = new Color[28];
-
-		switch (mode)
-		{
-		case "Normal":
-			for (int y = 0; y <= 7 - 1; y += 1)
-			{
-				for (int x = 0; x <= 4 - 1; x += 1)
-				{
-					palette[x + 4 * y] = Util.getPixelColor(Util.toBufferedImage(paletteImage), new Point(x, y));
-				}
-			}
-			return palette;
-
-		case "Konami":
-			for (int x = 0; x <= 4 - 1; x += 1)
-			{
-				for (int y = 0; y <= 7 - 1; y += 1)
-				{
-					palette[7 * x + y] = Util.getPixelColor(Util.toBufferedImage(paletteImage), new Point(x, y));
-				}
-			}
-			return palette;
-
-		default:
-			return null;
-		}
-	}
-
 	private static void activateKonamiEffect()
 	{
-		palette = konamiPalette;
+		Palette.switchToKonami() ;
 		dayTimer.setDuration(DAY_DURATION / 100.0);
 	}
 
 	private static void deactivateKonamiEffect()
 	{
-		palette = normalPalette;
+		Palette.switchToNormal() ;
 		dayTimer.setDuration(DAY_DURATION);
 		Draw.stdAngle = 0;
 	}

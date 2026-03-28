@@ -14,6 +14,7 @@ import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import screen.SideBar;
 import utilities.Util;
@@ -41,7 +42,7 @@ public abstract class SpellsBar
 	{
 		maxNumberRows = 8 ;
 		largefont = new Font("SansSerif", Font.BOLD, 14) ;
-		textColor = Game.palette[4] ;
+		textColor = Palette.colors[4] ;
 
 		barPos = new Point(Game.getScreen().mapSize().width + 2, HotKeysBar.topLeft().y - SideBar.sy) ;
 		barImage = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SpellsBar.png") ;
@@ -74,7 +75,7 @@ public abstract class SpellsBar
 	private static void displaySpellName(int slotCenterY, String spellName)
 	{
 		Point textPos = new Point(barPos.x - 5, slotCenterY) ;
-		Draw.bufferedText(textPos, Align.centerRight, 0.0, spellName, largefont, textColor, Game.palette[3], 2) ;
+		Draw.bufferedText(textPos, Align.centerRight, 0.0, spellName, largefont, textColor, Palette.colors[3], 2) ;
 	}
 	
 	public static void display(int userMP, Point mousePos)
@@ -96,7 +97,7 @@ public abstract class SpellsBar
 			Image image = spell.getMpCost() < userMP ? SideBar.slotImage : slotImageNoMP ;
 			GamePanel.DP.drawImage(image, slotCenter, Align.center, 0.8) ;
 			GamePanel.DP.drawImage(spell.getImage(), slotCenter, Align.center) ;
-			Draw.keyboardKey(slotTopLeft, Player.spellKeys.get(i), Game.palette[0]);
+			Draw.keyboardKey(slotTopLeft, Player.spellKeys.get(i), Palette.colors[0]);
 			
 			displayCooldown(slotCenter, spell) ;
 

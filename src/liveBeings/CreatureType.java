@@ -20,8 +20,8 @@ import graphics.Scale;
 import graphics2.SpriteAnimation;
 import items.Item;
 import main.Elements;
-import main.Game;
 import main.Languages;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 import windows.CreatureAttributesWindow;
@@ -146,7 +146,7 @@ public class CreatureType
 			color[row] = Creature.getskinColor()[colorid];
 			if (isOceanCreature(row))
 			{
-				color[row] = Game.palette[5];
+				color[row] = Palette.colors[5];
 			}
 
 			MovingAnimations moveAni = CreatureType.moveAni.get(row % numberCreatureTypesImages);

@@ -19,6 +19,7 @@ import graphics2.Drawable;
 import main.Game;
 import main.GamePanel;
 import main.Log;
+import main.Palette;
 import utilities.Util;
 
 
@@ -149,7 +150,7 @@ public class Building implements Drawable
 		
 		for (Collider collider : colliders)
 		{
-			GamePanel.DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Game.palette[0], null) ;
+			GamePanel.DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Palette.colors[0], null) ;
 		}
 		
 	}

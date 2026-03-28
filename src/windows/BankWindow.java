@@ -14,6 +14,7 @@ import main.GamePanel;
 import main.GameTimer;
 import main.ImageLoader;
 import main.LiveInput;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 
@@ -137,26 +138,26 @@ public class BankWindow extends GameWindow
 	private void drawInvestmentTimer(Point pos, double timeRate)
 	{
 		GamePanel.DP.drawImage(clock, pos, Align.center) ;
-		GamePanel.DP.drawArc(Util.translate(pos, 0, 2), 21, 1, 90, (int) (-360 * timeRate), Game.palette[20], null) ;
+		GamePanel.DP.drawArc(Util.translate(pos, 0, 2), 21, 1, 90, (int) (-360 * timeRate), Palette.colors[20], null) ;
 	}
 	
 	private void displayNotEnoughGold()
 	{
 		Point msgPos = Game.getScreen().pos(0.4, 0.3) ;
 		String msg = "Você não tem ouro suficiente!" ;
-		Color msgColor = Game.palette[0] ;
+		Color msgColor = Palette.colors[0] ;
 		MessageAnimation.start(msgPos, msg, msgColor) ;
 	}
 	
 	public void display(Point mousePos)
 	{
 		Point titlePos = Util.translate(windowPos, size.width / 2, border + 10) ;
-		Color textColor = Game.palette[0] ;
+		Color textColor = Palette.colors[0] ;
 		double angle = Draw.stdAngle ;
 		
 		GamePanel.DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
 
-		GamePanel.DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[0]) ;
+		GamePanel.DP.drawText(titlePos, Align.center, angle, name, titleFont, Palette.colors[0]) ;
 		
 		Point balancePos = Util.translate(windowPos, border + padding + 4, (int) border + 30) ;
 		Point investmentPos = Util.translate(windowPos, border + padding + 4, border + 90) ;

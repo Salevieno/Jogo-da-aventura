@@ -33,7 +33,7 @@ public class GamePanel extends JPanel
 	
 	private GamePanel()
 	{
-		setBackground(Game.palette[0]) ;
+		setBackground(Palette.colors[0]) ;
 		addMouseListener(new MouseEventDemo()) ;
 		addMouseWheelListener(new MouseWheelEventDemo()) ;
 		addKeyListener(new TAdapter()) ;

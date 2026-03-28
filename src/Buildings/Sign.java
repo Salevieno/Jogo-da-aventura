@@ -11,6 +11,7 @@ import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -41,7 +42,7 @@ public class Sign
 		Point boardPos = Util.translate(pos, image.getWidth(null), 0) ;
 		Point messagePos = Util.translate(boardPos, 12, 5) ;
 		GamePanel.DP.drawImage(boardImg, boardPos, Align.topLeft, 0.85) ;
-		Draw.fitText(messagePos, msgFont.getSize() + 2, Align.topLeft, message, msgFont, 435, Game.palette[0]) ;	
+		Draw.fitText(messagePos, msgFont.getSize() + 2, Align.topLeft, message, msgFont, 435, Palette.colors[0]) ;	
 	}
     
 	public void display(Point playerPos)

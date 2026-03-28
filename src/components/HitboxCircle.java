@@ -2,8 +2,8 @@ package components;
 
 import java.awt.Point;
 
-import main.Game;
 import main.GamePanel;
+import main.Palette;
 import utilities.Util;
 
 public class HitboxCircle implements Hitbox
@@ -48,7 +48,7 @@ public class HitboxCircle implements Hitbox
 	
 	public void display()
 	{
-		GamePanel.DP.drawCircle(center, 2 * radius, null, Game.palette[3]);
+		GamePanel.DP.drawCircle(center, 2 * radius, null, Palette.colors[3]);
 	}
 
 	public Point getCenter() { return center ;}

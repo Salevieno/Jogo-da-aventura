@@ -17,6 +17,7 @@ import items.Recipe;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 
@@ -53,7 +54,7 @@ public class BookWindow extends GameWindow
 		
 		int sy = font.getSize() + 1 ;
 		int id = window ;
-		Color textColor = Game.palette[5] ;
+		Color textColor = Palette.colors[5] ;
 		
 		// draw ingredients
 		Item[] ingredients = new Item[0];
@@ -86,7 +87,7 @@ public class BookWindow extends GameWindow
 		
 		Point textPos = Util.translate(UtilAlignment.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
 		String pageText = (window + 1) + " / " + numberWindows ;
-		GamePanel.DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Game.palette[0]) ;
+		GamePanel.DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Palette.colors[0]) ;
 	}
 	
 	public void display(Point mousePos)

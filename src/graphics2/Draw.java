@@ -23,6 +23,7 @@ import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import maps.FieldMap;
 import maps.GameMap;
@@ -64,7 +65,7 @@ public abstract class Draw
 	}
 	public static void bufferedText(Point pos, Align align, double angle, String text, Font font, Color color)
 	{
-		bufferedText(pos, align, angle, text, font, color, Game.palette[3], 1) ;
+		bufferedText(pos, align, angle, text, font, color, Palette.colors[3], 1) ;
 	}
 	public static void bufferedText(Point pos, Align align, String text, Font font, Color color)
 	{
@@ -145,7 +146,7 @@ public abstract class Draw
 		int bubbleL = speechBubble.getWidth(null) ;
 		int bubbleH = speechBubble.getHeight(null) ;
 		boolean flipH = Game.getScreen().mapSize().width / 2 <= pos.x ;
-		Color textColor = color != null ? color : Game.palette[21] ;
+		Color textColor = color != null ? color : Palette.colors[21] ;
 		
 		GamePanel.DP.drawImage(speechBubble, pos, DrawPrimitives.stdAngle, Scale.unit, flipH, false, Align.bottomCenter, 1) ;
 		
@@ -158,7 +159,7 @@ public abstract class Draw
 
 	public static void keyboardButton(Point pos, String key)
 	{
-		keyboardButton(pos, key, Game.palette[0]) ;
+		keyboardButton(pos, key, Palette.colors[0]) ;
 	}
 	
 	public static void keyboardButton(Point pos, String key, Color color)
@@ -191,7 +192,7 @@ public abstract class Draw
 	{
 		Point[] WindowPos = new Point[] {Game.getScreen().pos(0.15, 0.2), Game.getScreen().pos(0.65, 0.2), Game.getScreen().pos(0.5, 0.2)} ;
 		
-		GamePanel.DP.drawText(Game.getScreen().pos(0.5, 0.05), Align.center, stdAngle, "Slot " + (SlotID + 1), loadingGameScreenFont, Game.palette[5]) ;
+		GamePanel.DP.drawText(Game.getScreen().pos(0.5, 0.05), Align.center, stdAngle, "Slot " + (SlotID + 1), loadingGameScreenFont, Palette.colors[5]) ;
 		((PlayerAttributesWindow) player.getAttWindow()).display(new Point(0, 0)) ;
 		if (0 < pet.getLife().getCurrentValue())
 		{
@@ -207,7 +208,7 @@ public abstract class Draw
 		for (int i = 0 ; i <= screenSize.width/spacing[0] - 1 ; ++i)
 		{
 			int LineThickness = 1 ;
-			Color color = Game.palette[21] ;
+			Color color = Palette.colors[21] ;
 			if (i % 10 == 0)
 			{
 				LineThickness = 2 ;
@@ -215,13 +216,13 @@ public abstract class Draw
 			if (i % 20 == 0)
 			{
 				LineThickness = 2 ;
-				color = Game.palette[5] ;
+				color = Palette.colors[5] ;
 			}
 			GamePanel.DP.drawLine(new Point(i*spacing[0], 0), new Point(i*spacing[0], screenSize.height), LineThickness, color) ;
 			for (int j = 0 ; j <= screenSize.height/spacing[1] - 1 ; ++j)
 			{
 				LineThickness = 1 ;
-				color = Game.palette[21] ;
+				color = Palette.colors[21] ;
 				if (j % 10 == 0)
 				{
 					LineThickness = 2 ;
@@ -229,7 +230,7 @@ public abstract class Draw
 				if (j % 20 == 0)
 				{
 					LineThickness = 2 ;
-					color = Game.palette[5] ;
+					color = Palette.colors[5] ;
 				}
 				GamePanel.DP.drawLine(new Point(0, j*spacing[1]), new Point(screenSize.width, j*spacing[1]), LineThickness, color) ;
 			}							
@@ -238,14 +239,14 @@ public abstract class Draw
 	
 	public static void menu(Point pos, Align align, Dimension size)
 	{
-		GamePanel.DP.drawRoundRect(pos, align, size, 1, Game.palette[3], Game.palette[0], true);
+		GamePanel.DP.drawRoundRect(pos, align, size, 1, Palette.colors[3], Palette.colors[0], true);
 	}
 	
 	public static void time()
 	{
 		float time = (float) Game.dayTimeRate() ;
 		String message = (int) (24 * time) + ":" + (int) (24 * 60 * time % 60) ;
-		GamePanel.DP.drawText(Game.getScreen().pos(0, 0.99), Align.bottomLeft, stdAngle, message, stdFont, Game.palette[20]) ;
+		GamePanel.DP.drawText(Game.getScreen().pos(0, 0.99), Align.bottomLeft, stdAngle, message, stdFont, Palette.colors[20]) ;
 	}
 	
 	public static void mapElements(Hitbox playerHitbox, Point playerPos, GameMap map)
@@ -263,7 +264,7 @@ public abstract class Draw
 
 	public static void keyboardKey(Point pos, String key, Font font, Color color)
 	{
-		GamePanel.DP.drawRoundRect(pos, Align.center, new Dimension(12, 12), 1, Game.palette[3], Game.palette[0], true, 2, 2) ;
+		GamePanel.DP.drawRoundRect(pos, Align.center, new Dimension(12, 12), 1, Palette.colors[3], Palette.colors[0], true, 2, 2) ;
 		GamePanel.DP.drawText(pos, Align.center, stdAngle, key, font, color) ;
 	}
 	public static void keyboardKey(Point pos, String key, Color color)
@@ -282,14 +283,14 @@ public abstract class Draw
 		{
 			int barHeight = increasingHeights ? (int) ((i + 1) * maxBarHeight / totalBars) : maxBarHeight ;
 			Color color = i <= qtdFilledBars ? fillColor : null ;
-			GamePanel.DP.drawRoundRect(bottomLeftBar, align, new Dimension(barWidth, barHeight), 1, color, Game.palette[3], true) ;
+			GamePanel.DP.drawRoundRect(bottomLeftBar, align, new Dimension(barWidth, barHeight), 1, color, Palette.colors[3], true) ;
 			bottomLeftBar.x += barWidth + barSpacing ;
 		}
 	}
 
 	public static void settingBars(Point pos, Align align, int height, int qtdFilledBars, int totalBars)
 	{
-		settingBars(pos, align, height, qtdFilledBars, totalBars, false, Game.palette[18]) ;
+		settingBars(pos, align, height, qtdFilledBars, totalBars, false, Palette.colors[18]) ;
 	}	
 
 	public static void settingSwitch(Point pos, Align align, boolean isOn, Color fillColor)
@@ -297,7 +298,7 @@ public abstract class Draw
 		int width = 60 ;
 		int height = 30 ;
 		int borderThickness = 1 ;
-		Color borderColor = Game.palette[0] ;
+		Color borderColor = Palette.colors[0] ;
 		Color backgroundColor = isOn ? fillColor : null ;
 		
 		GamePanel.DP.drawRoundRect(pos, align, new Dimension(width, height), borderThickness, backgroundColor, borderColor, true, 25, 25) ;
@@ -309,6 +310,6 @@ public abstract class Draw
 	
 	public static void settingSwitch(Point pos, Align align, boolean isOn)
 	{
-		settingSwitch(pos, align, isOn, Game.palette[3]) ;
+		settingSwitch(pos, align, isOn, Palette.colors[3]) ;
 	}
 }

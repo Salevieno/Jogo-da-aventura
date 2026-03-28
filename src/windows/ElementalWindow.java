@@ -19,6 +19,7 @@ import main.Elements;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 
@@ -152,7 +153,7 @@ public class ElementalWindow extends GameWindow
 			case 3 -> "Elemento mudado com sucesso!" ;
 			default -> "" ;
 		};
-		MessageAnimation.start(Game.getScreen().pos(0.5, 0.2), message, Game.palette[0]) ;
+		MessageAnimation.start(Game.getScreen().pos(0.5, 0.2), message, Palette.colors[0]) ;
 	}
 	
 	public void changeEquipElement(BagWindow bag)

@@ -35,6 +35,7 @@ import main.Game;
 import main.GameStates;
 import main.GameTimer;
 import main.Log;
+import main.Palette;
 import main.Path;
 import maps.GameMap;
 import simulations.EvolutionSimulation;
@@ -81,7 +82,7 @@ public class Pet extends LiveBeing
 		alchBuffId = -1 ;
 		
 		this.job = Job ;
-		Color[] colorPalette = Game.palette ;
+		Color[] colorPalette = Palette.colors ;
 		Color[] petColors = new Color[] {colorPalette[3], colorPalette[5], colorPalette[21], colorPalette[21]} ;
 		color = petColors[Job] ;
 		spells = InitializePetSpells();
@@ -251,7 +252,7 @@ public class Pet extends LiveBeing
 				if (canUseSpell(spell))
 				{
 					return useSpell(spell, receiver);
-					// this.displayUsedSpellMessage(spell, Util.translate(this.getPos(), 0, -50), Game.palette[5]) ;
+					// this.displayUsedSpellMessage(spell, Util.translate(this.getPos(), 0, -50), Palette.colors[5]) ;
 				}
 				else
 				{
@@ -390,7 +391,7 @@ public class Pet extends LiveBeing
 		
 		int spellLevel = spell.getLevel() ;
 		
-		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Game.palette[5]) ;
+		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Palette.colors[5]) ;
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
 
 		double MagAtk = BA.TotalMagAtk() ;

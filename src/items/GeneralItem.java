@@ -17,6 +17,7 @@ import main.Elements;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import maps.GroundType;
 import utilities.Util;
@@ -199,7 +200,7 @@ public class GeneralItem extends Item
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
 		Point textPos = Util.translate(pos, 5 - Util.getSize(infoMenu).width, 10) ;		
-		GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, description, font, Game.palette[0]) ;
+		GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, description, font, Palette.colors[0]) ;
 	}
 	
 	@Override

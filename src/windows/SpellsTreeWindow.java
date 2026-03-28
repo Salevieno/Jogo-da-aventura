@@ -18,6 +18,7 @@ import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 
@@ -161,7 +162,7 @@ public class SpellsTreeWindow extends GameWindow
 		if (spellsOnWindow.get(item) == null) { return ;}
 	
 		Point pos = Util.translate(windowTopLeft, 0, -64) ;
-		Color textColor = Game.palette[0] ;
+		Color textColor = Palette.colors[0] ;
 		GamePanel.DP.drawImage(spellInfo, pos, Align.topLeft) ;
 		pos.x += 5 ;
 		pos.y += 10 ;
@@ -174,7 +175,7 @@ public class SpellsTreeWindow extends GameWindow
 	{
 		double angle = Draw.stdAngle ;
 		Point pointsPos = Util.translate(windowTopLeft, border + 6, size.height - border - padding - 6) ;
-		Color color = Game.palette[21] ;
+		Color color = Palette.colors[21] ;
 
 		GamePanel.DP.drawText(pointsPos, Align.centerLeft, angle, "Pontos: " + String.valueOf(points), regularFont, color) ;
 		
@@ -193,10 +194,10 @@ public class SpellsTreeWindow extends GameWindow
 		Point tab1Pos = Util.translate(windowTopLeft, -10, 6 + 75/2) ;
 		Point tab2Pos = Util.translate(windowTopLeft, -10, 6 + 75 + 75/2) ;
 		Image displayImage = tab == 0 ? tab0Image : tab1Image ;
-		Color tabTextColor = Game.palette[21] ;
+		Color tabTextColor = Palette.colors[21] ;
 		GamePanel.DP.drawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
-		GamePanel.DP.drawText(tab1Pos, Align.center, 90, "Basic", largeFont, tab == 0 ? Game.selColor : tabTextColor);
-		GamePanel.DP.drawText(tab2Pos, Align.center, 90, "Pro", largeFont, tab == 1 ? Game.selColor : tabTextColor);
+		GamePanel.DP.drawText(tab1Pos, Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
+		GamePanel.DP.drawText(tab2Pos, Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
 	}
 	
 	public List<Spell> basicSpells()
@@ -218,15 +219,15 @@ public class SpellsTreeWindow extends GameWindow
 	{
 
 		double angle = Draw.stdAngle ;
-		Color selectedColor = Game.palette[18] ;
-		Color hasPreReqColor = Game.palette[21] ;
-		Color hasNotPreReqColor = Game.palette[21] ;
+		Color selectedColor = Palette.colors[18] ;
+		Color hasPreReqColor = Palette.colors[21] ;
+		Color hasNotPreReqColor = Palette.colors[21] ;
 		
 		displaySpellsInfo() ;
 		displayWindow() ;
 		
 		Point titlePos = Util.translate(windowTopLeft, size.width / 2, 6 + 6) ;
-		GamePanel.DP.drawText(titlePos, Align.center, angle, name, largeFont, Game.palette[21]);
+		GamePanel.DP.drawText(titlePos, Align.center, angle, name, largeFont, Palette.colors[21]);
 		
 		if (spells == null) { return ;}
 		

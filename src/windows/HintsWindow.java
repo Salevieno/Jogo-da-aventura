@@ -11,6 +11,7 @@ import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -43,7 +44,7 @@ public class HintsWindow extends GameWindow
 	{
 		String[] text = Game.allText.get(TextCategories.hints) ;
 		Point textPos = new Point(windowPos.x + 15, windowPos.y + 10) ;
-		Color textColor = Game.palette[0] ;
+		Color textColor = Palette.colors[0] ;
 		double angle = Draw.stdAngle ;
 		int sy = font.getSize() + 2 ;
 		numberWindows = text.length - 6 ;

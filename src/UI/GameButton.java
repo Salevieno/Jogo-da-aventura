@@ -17,6 +17,7 @@ import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
 import main.Music;
+import main.Palette;
 import utilities.Util;
 
 public class GameButton
@@ -34,8 +35,8 @@ public class GameButton
 	private final Clip soundEffectOnHover ;
 	
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 17) ;
-	private static final Color textColor = Game.palette[0] ;
-	private static final Color selectedTextColor = Game.palette[18] ;
+	private static final Color textColor = Palette.colors[0] ;
+	private static final Color selectedTextColor = Palette.colors[18] ;
 	
 	private static List<GameButton> all = new ArrayList<>() ;
 
@@ -136,7 +137,7 @@ public class GameButton
 	
 	public void displayGeneralButton()
 	{
-		GamePanel.DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.palette[3], Game.palette[0], true) ;
+		GamePanel.DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Palette.colors[3], Palette.colors[0], true) ;
 		GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 	}
 	
@@ -152,7 +153,7 @@ public class GameButton
 		}
 		else
 		{
-			GamePanel.DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Game.palette[5], Game.palette[0], true) ;
+			GamePanel.DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Palette.colors[5], Palette.colors[0], true) ;
 			GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 		}
 	}
@@ -169,7 +170,7 @@ public class GameButton
 			return ;
 		}
 		
-		GamePanel.DP.drawRoundRect(topLeft, Align.topLeft, size, 2, Game.palette[5], Game.palette[0], true) ;
+		GamePanel.DP.drawRoundRect(topLeft, Align.topLeft, size, 2, Palette.colors[5], Palette.colors[0], true) ;
 		GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, textColor) ;
 	}
 	
@@ -209,7 +210,7 @@ public class GameButton
 	{
 		if (hoverMessage != null)
 		{
-			GamePanel.DP.drawGradRoundRect(new Point(topLeft.x + 20, topLeft.y - 10), alignment, size, 5, Game.palette[1], Game.palette[2], Game.palette[0], true) ;
+			GamePanel.DP.drawGradRoundRect(new Point(topLeft.x + 20, topLeft.y - 10), alignment, size, 5, Palette.colors[1], Palette.colors[2], Palette.colors[0], true) ;
 			Draw.fitText(new Point(topLeft.x + 20, topLeft.y - 10), 14, alignment, hoverMessage, new Font(Game.MainFontName, Font.BOLD, 12), 20, Color.blue) ;
 		}
 	}

@@ -2,16 +2,16 @@ package maps;
 
 import java.awt.Color;
 
-import main.Game;
+import main.Palette;
 
 public enum GroundType
 {
-    wall(Game.palette[2]),
-    water(Game.palette[20]),
-    ice(Game.palette[1]),
-    lava(Game.palette[7]),
+    wall(Palette.colors[2]),
+    water(Palette.colors[20]),
+    ice(Palette.colors[1]),
+    lava(Palette.colors[7]),
     invisibleWall(null),
-    walkingPath(Game.palette[10]) ;
+    walkingPath(Palette.colors[10]) ;
 
     private final Color color ;
 

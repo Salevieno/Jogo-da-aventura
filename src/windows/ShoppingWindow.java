@@ -19,6 +19,7 @@ import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 
@@ -104,11 +105,11 @@ public class ShoppingWindow extends GameWindow
 	{
 		if (i == 0)
 		{
-			MessageAnimation.start(Game.getScreen().pos(0.1, 0.2), "Você não possui ouro suficiente", Game.palette[0]) ;
+			MessageAnimation.start(Game.getScreen().pos(0.1, 0.2), "Você não possui ouro suficiente", Palette.colors[0]) ;
 			return ;
 		}
 
-		ObtainedItemAnimation.start(Game.getScreen().pos(0.5, 0.2), selectedItem().getName(), Game.palette[0]) ;
+		ObtainedItemAnimation.start(Game.getScreen().pos(0.5, 0.2), selectedItem().getName(), Palette.colors[0]) ;
 	}
 	
 	public void buyItem(BagWindow bag)
@@ -154,7 +155,7 @@ public class ShoppingWindow extends GameWindow
 		double angle = Draw.stdAngle ;
 		
 		GamePanel.DP.drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;		
-		GamePanel.DP.drawText(titlePos, Align.center, angle, name, titleFont, Game.palette[0]) ;				
+		GamePanel.DP.drawText(titlePos, Align.center, angle, name, titleFont, Palette.colors[0]) ;				
 		
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
 		{
@@ -165,11 +166,11 @@ public class ShoppingWindow extends GameWindow
 			Point coinPos = Util.translate(pricePos, 10, 0) ;
 			
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(100, 10), i) ;
-			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? Game.selColor : stdColor ;
+			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? selColor : stdColor ;
 			GamePanel.DP.drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
 			GamePanel.DP.drawImage(bagItem.getImage(), itemPos, angle, Scale.unit, Align.center) ;
 			GamePanel.DP.drawText(namePos, Align.centerLeft, angle, bagItem.getName() + qtdItem, stdFont, itemColor) ;
-			GamePanel.DP.drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), stdFont, Game.palette[14]) ;
+			GamePanel.DP.drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), stdFont, Palette.colors[14]) ;
 			GamePanel.DP.drawImage(Player.getCoinImg(), coinPos, Align.center) ;
 			
 			if (this.item == itemsOnWindow.indexOf(bagItem))

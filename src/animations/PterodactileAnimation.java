@@ -11,6 +11,7 @@ import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 
@@ -51,13 +52,13 @@ public class PterodactileAnimation extends Animation
 		{
 			pos.x += screenSize.width / 2 + imageWidth / 2 ;
 			pos.y += 0.25 * screenSize.height ;
-			Draw.speech(Util.translate(pos, 0, -10), message[0], stdFont, speakingBubble, Game.palette[19]) ;
+			Draw.speech(Util.translate(pos, 0, -10), message[0], stdFont, speakingBubble, Palette.colors[19]) ;
 		}
 		else if (timer.rate() <= 0.75)
 		{
 			pos.x +=screenSize.width / 2 + imageWidth / 2 ;
 			pos.y += 0.25 * screenSize.height ;
-			Draw.speech(Util.translate(pos, 0, -10), message[1], stdFont, speakingBubble, Game.palette[19]) ;
+			Draw.speech(Util.translate(pos, 0, -10), message[1], stdFont, speakingBubble, Palette.colors[19]) ;
 		}
 		else
 		{

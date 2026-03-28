@@ -12,13 +12,14 @@ import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
 import main.Log;
+import main.Palette;
 import utilities.Util;
 
 public class DamageAnimation extends Animation
 {
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 15) ;
-	private static final Color phyAtkColor  = Game.palette[6] ;
-	private static final Color magAtkColor = Game.palette[5] ;
+	private static final Color phyAtkColor  = Palette.colors[6] ;
+	private static final Color magAtkColor = Palette.colors[5] ;
 	private static final int speed = 20 ;
 
     private Point initialPos ;
@@ -70,6 +71,6 @@ public class DamageAnimation extends Animation
         } ;
 
 		Point pos = Util.translate(initialPos, trajectory) ;
-		GamePanel.DP.drawBufferedText(pos, Align.center, Draw.stdAngle, text, font, color, Game.palette[2], 1, opacity) ;
+		GamePanel.DP.drawBufferedText(pos, Align.center, Draw.stdAngle, text, font, color, Palette.colors[2], 1, opacity) ;
     }
 }

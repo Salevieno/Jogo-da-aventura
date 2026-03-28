@@ -13,6 +13,7 @@ import items.Item;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 
@@ -44,7 +45,7 @@ public class WinAnimation extends Animation
 		
 		if ( timer.rate() <= 0.1 ) { return ;}
 		
-		GamePanel.DP.drawText(textPos, Align.center, Draw.stdAngle, "Você obteve!", stdFont, Game.palette[3]) ;
+		GamePanel.DP.drawText(textPos, Align.center, Draw.stdAngle, "Você obteve!", stdFont, Palette.colors[3]) ;
 		
 		if ( timer.rate() <= 0.3 ) { return ;}
 		
@@ -53,7 +54,7 @@ public class WinAnimation extends Animation
 		{
 			if ( 0.3 + 0.5 * i / items.size() <= timer.rate() )
 			{
-				GamePanel.DP.drawText(itemTextPos, Align.bottomLeft, Draw.stdAngle, items.get(i).getName(), smallFont, Game.palette[3]) ;
+				GamePanel.DP.drawText(itemTextPos, Align.bottomLeft, Draw.stdAngle, items.get(i).getName(), smallFont, Palette.colors[3]) ;
 				itemTextPos.y += 15 ;
 			}
 		}

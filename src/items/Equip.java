@@ -22,6 +22,7 @@ import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 import windows.AttributesWindow;
@@ -315,8 +316,8 @@ public class Equip extends Item
 		}				
 		applyBonus(player.getPA(), player.getBA(), equip, 1) ;
 
-		// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Game.palette[0]}) ;
-		MessageAnimation.start(Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Game.palette[0]) ;
+		// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Palette.colors[0]}) ;
+		MessageAnimation.start(Game.getScreen().pos(0.4, 0.3), equip.getName() + " equipado!", Palette.colors[0]) ;
 		
 		player.updateSuperElem() ;
 //		player.getElem()[4] = player.hasSuperElement() ? equip.elem : Elements.neutral ;
@@ -343,8 +344,8 @@ public class Equip extends Item
 		player.updateSuperElem() ;
 //		player.getElem()[4] = Elements.neutral ;
 		
-		// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Game.palette[0]}) ;
-		MessageAnimation.start(Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Game.palette[0]) ;
+		// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Palette.colors[0]}) ;
+		MessageAnimation.start(Game.getScreen().pos(0.4, 0.36), equip.getName() + " desequipado!", Palette.colors[0]) ;
 		
 		player.getEquips()[type] = null ;
 	}
@@ -362,7 +363,7 @@ public class Equip extends Item
 			GamePanel.DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
 			
 			Point textPos = Util.translate(imagePos, 10, 0) ;
-			GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Game.palette[0]) ;
+			GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Palette.colors[0]) ;
 		}
 	}
 	

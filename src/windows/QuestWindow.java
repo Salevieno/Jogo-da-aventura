@@ -16,6 +16,7 @@ import liveBeings.CreatureType;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 
@@ -67,7 +68,7 @@ public class QuestWindow extends GameWindow
 		if (reqCreatureTypes.isEmpty()) { return ;}
 		
 		double angle = Draw.stdAngle ;
-		Color textColor = Game.palette[0] ;
+		Color textColor = Palette.colors[0] ;
 		
 		CreatureType[] reqCreatureType = new CreatureType[0];
 		reqCreatureType = reqCreatureTypes.keySet().toArray(reqCreatureType) ;
@@ -98,7 +99,7 @@ public class QuestWindow extends GameWindow
 		if (reqItems.isEmpty()) { return ;}
 
 		double angle = Draw.stdAngle ;
-		Color textColor = Game.palette[0] ;
+		Color textColor = Palette.colors[0] ;
 		
 		Item[] reqItem = new Item[0] ;
 		reqItem = reqItems.keySet().toArray(reqItem) ;
@@ -112,7 +113,7 @@ public class QuestWindow extends GameWindow
 			itemPos.y += font.getSize() + 4 ;
 			circlePos.y += font.getSize() + 4 ;
 			Point textPos = Util.translate(itemPos, 15, 0) ;
-			GamePanel.DP.drawCircle(circlePos, 10, 0, bag.contains(item) ? Game.palette[3] : Game.palette[6], null) ;
+			GamePanel.DP.drawCircle(circlePos, 10, 0, bag.contains(item) ? Palette.colors[3] : Palette.colors[6], null) ;
 			GamePanel.DP.drawImage(item.getImage(), itemPos, Align.center) ;
 			GamePanel.DP.drawText(textPos, Align.centerLeft, angle, item.getName(), font, textColor) ;
 		}
@@ -130,7 +131,7 @@ public class QuestWindow extends GameWindow
 		
 		Quest quest = quests.get(window) ;
 		Point questPos = Util.translate(windowPos, image.getWidth(null) / 2, 30) ;
-		GamePanel.DP.drawText(questPos, Align.center, angle, quest.getName(), font, Game.palette[8]) ;
+		GamePanel.DP.drawText(questPos, Align.center, angle, quest.getName(), font, Palette.colors[8]) ;
 		
 		displayReqCreatures(Util.translate(windowPos, size.width / 2 , 60), quest) ;
 		displayReqItems(Util.translate(windowPos, size.width / 2, 260)) ;

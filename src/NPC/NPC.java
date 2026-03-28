@@ -33,6 +33,7 @@ import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
+import main.Palette;
 import main.Path;
 import main.TextCategories;
 import maps.GameMap;
@@ -64,8 +65,8 @@ public class NPC
 	private static final Font stdfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	private static final Image speakingBubble = ImageLoader.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
 	private static final Image choicesWindow = ImageLoader.loadImage(Path.NPC_IMG + "ChoicesWindow.png") ;
-	private static final Color stdColor = Game.palette[0] ;
-	private static final Color selColor = Game.palette[18] ;
+	private static final Color stdColor = Palette.colors[0] ;
+	private static final Color selColor = Palette.colors[18] ;
 
 	public NPC(NPCType type, Point pos)
 	{

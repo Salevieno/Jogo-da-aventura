@@ -37,6 +37,7 @@ import main.GameTimer;
 import main.ImageLoader;
 import main.Log;
 import main.Music;
+import main.Palette;
 import main.Path;
 import main.RelativePos;
 import maps.GameMap;
@@ -359,7 +360,7 @@ public abstract class LiveBeing implements Drawable
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String stateText = state.toString() ;
 		
-		GamePanel.DP.drawText(displayPos, Align.center, 0, stateText, font, Game.palette[0]) ;
+		GamePanel.DP.drawText(displayPos, Align.center, 0, stateText, font, Palette.colors[0]) ;
 	}
 
 	public void displayUsedSpellMessage(Spell spell, Point pos, Color color)
@@ -370,7 +371,7 @@ public abstract class LiveBeing implements Drawable
 	public void displayPowerBar(Point pos)
 	{
 		int maxPower = 10000 ;
-		Color color = Game.palette[6] ;
+		Color color = Palette.colors[6] ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		Dimension barSize = new Dimension(15, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
 		
@@ -803,17 +804,17 @@ public abstract class LiveBeing implements Drawable
 		List<Color> attColor = new ArrayList<>() ;
 		
 		attRate.add(PA.getLife().getRate()) ;
-		attColor.add(Game.palette[7]) ;
+		attColor.add(Palette.colors[7]) ;
 		attRate.add(PA.getMp().getRate()) ;
-		attColor.add(Game.palette[20]) ;
+		attColor.add(Palette.colors[20]) ;
 		if (!(this instanceof Creature))
 		{
 			attRate.add(PA.getExp().getRate()) ;
-			attColor.add(Game.palette[5]) ;
+			attColor.add(Palette.colors[5]) ;
 			attRate.add(PA.getSatiation().getRate()) ;
-			attColor.add(Game.palette[15]) ;
+			attColor.add(Palette.colors[15]) ;
 			attRate.add(PA.getThirst().getRate()) ;
-			attColor.add(Game.palette[21]) ;
+			attColor.add(Palette.colors[21]) ;
 		}
 		
 		if (style == 0)
@@ -825,7 +826,7 @@ public abstract class LiveBeing implements Drawable
 			{
 				Point barPos = Util.translate(headPos(), -size.width / 2, - attRate.size() * barSize.height - clearSpace + i * sy) ;
 				Dimension filledSize = new Dimension((int)(attRate.get(i) * barSize.width), barSize.height) ;
-				GamePanel.DP.drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Game.palette[0], 1.0) ;
+				GamePanel.DP.drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Palette.colors[0], 1.0) ;
 			}
 		}
 		if (style == 1)
@@ -839,7 +840,7 @@ public abstract class LiveBeing implements Drawable
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
 				Dimension rateSize = new Dimension(barSize.width, (int) (attRate.get(att) *  barSize.height)) ;
-				GamePanel.DP.drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Game.palette[0], 1.0) ;
+				GamePanel.DP.drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Palette.colors[0], 1.0) ;
 				GamePanel.DP.drawRect(barPos, Align.bottomCenter, rateSize, stroke, attColor.get(att), null, 1.0) ;
 				barPos.x += barSize.width + 26 ;
 			}
@@ -858,24 +859,24 @@ public abstract class LiveBeing implements Drawable
 		int outerRadius = 15 ;
 		
 		// draw fill
-		GamePanel.DP.drawAnnularSector(getPos(), innerRadius, outerRadius, angleStart, angleFilledSpan, stroke, Game.palette[21], null) ;
+		GamePanel.DP.drawAnnularSector(getPos(), innerRadius, outerRadius, angleStart, angleFilledSpan, stroke, Palette.colors[21], null) ;
 		
 		// draw contour
-		GamePanel.DP.drawAnnularSector(getPos(), innerRadius, outerRadius, angleStart, angleMaxSpan, stroke, null, Game.palette[0]) ;
+		GamePanel.DP.drawAnnularSector(getPos(), innerRadius, outerRadius, angleStart, angleMaxSpan, stroke, null, Palette.colors[0]) ;
 	}
 
 	public void takeDamage(int damage)
 	{
 		if (damage < 0) { return ;}
 
-		// playDamageAnimation(Game.getSettings().getDamageAnimation(), new AtkResults(AtkTypes.physical, AtkEffects.hit, damage), Game.palette[7]) ;
+		// playDamageAnimation(Game.getSettings().getDamageAnimation(), new AtkResults(AtkTypes.physical, AtkEffects.hit, damage), Palette.colors[7]) ;
 		PA.getLife().decTotalValue(damage) ;
 	}
 
 	public void displayDamageTaken(AtkResults atkResults)
 	{
 		if (AtkEffects.none.equals(atkResults.getEffect())) { return ;}
-		playDamageAnimation(Game.getSettings().getDamageAnimation(), atkResults, Game.palette[7]) ;
+		playDamageAnimation(Game.getSettings().getDamageAnimation(), atkResults, Palette.colors[7]) ;
 	}
 	
 	public void takeBloodAndPoisonDamage()
@@ -893,13 +894,13 @@ public abstract class LiveBeing implements Drawable
 			Log.info(name + " took " + (int) (bloodStatus.getIntensity() * bloodMult) + " blood damage") ;
 			bloodDamage = (int) (bloodStatus.getIntensity() * bloodMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedBlood(bloodDamage, BA.getBlood().TotalDef()) ;}
-			playDamageAnimation(damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, bloodDamage, null), Game.palette[7]) ;
+			playDamageAnimation(damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, bloodDamage, null), Palette.colors[7]) ;
 		}
 		if (poisonStatus.isActive() && poisonStatus.getTimer().crossedTime(0.5))
 		{
 			poisonDamage = (int) (poisonStatus.getIntensity() * poisonMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedPoison(poisonDamage, BA.getPoison().TotalDef()) ;}
-			playDamageAnimation(damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, poisonDamage, null), Game.palette[18]) ;
+			playDamageAnimation(damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, poisonDamage, null), Palette.colors[18]) ;
 		}
 		
 		if (bloodDamage + poisonDamage <= 0) { return ;}

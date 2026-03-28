@@ -31,6 +31,7 @@ import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
 import main.Music;
+import main.Palette;
 import main.Path;
 import main.TextCategories;
 import screen.Sky;
@@ -308,14 +309,14 @@ public class GameMap
 		GamePanel.DP.drawImage(infoWindow, pos, Align.topLeft) ;
 		
 		Point titlePos = Util.translate(pos, size.width / 2 + 5, 13) ;
-		GamePanel.DP.drawText(titlePos, Align.center, 0, name, titleFont, Game.palette[0]) ;
+		GamePanel.DP.drawText(titlePos, Align.center, 0, name, titleFont, Palette.colors[0]) ;
 		
 		Point diggingItemsPos = Util.translate(pos, 10, 43) ;
-		GamePanel.DP.drawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Game.palette[0]) ;
+		GamePanel.DP.drawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Palette.colors[0]) ;
 		diggingItemsPos.y += 14 ;
 		for (Item item : diggingItems.keySet())
 		{
-			GamePanel.DP.drawText(diggingItemsPos, Align.centerLeft, 0, item.getName(), font, Game.palette[0]) ;
+			GamePanel.DP.drawText(diggingItemsPos, Align.centerLeft, 0, item.getName(), font, Palette.colors[0]) ;
 			diggingItemsPos.y += 10 ;
 		}
 		
@@ -324,14 +325,14 @@ public class GameMap
 			FieldMap fm = (FieldMap) this ;
 			
 			Point levelPos = Util.translate(titlePos, 0, 14) ;
-			GamePanel.DP.drawText(levelPos, Align.center, 0, "Nível " + String.valueOf(fm.getLevel()), largeFont, Game.palette[6]) ;
+			GamePanel.DP.drawText(levelPos, Align.center, 0, "Nível " + String.valueOf(fm.getLevel()), largeFont, Palette.colors[6]) ;
 			
 			Point allItemsPos = Util.translate(pos, 160, 43) ;
-			GamePanel.DP.drawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Game.palette[0]) ;
+			GamePanel.DP.drawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Palette.colors[0]) ;
 			allItemsPos.y += 14 ;
 			for (Item item : fm.getItems())
 			{
-				GamePanel.DP.drawText(allItemsPos, Align.centerLeft, 0, item.getName(), font, Game.palette[0]) ;
+				GamePanel.DP.drawText(allItemsPos, Align.centerLeft, 0, item.getName(), font, Palette.colors[0]) ;
 				allItemsPos.y += 10 ;
 			}
 			
@@ -339,7 +340,7 @@ public class GameMap
 		}
 		
 		Point levelPos = Util.translate(titlePos, 0, 14) ;
-		GamePanel.DP.drawText(levelPos, Align.center, 0, "Nível 0", largeFont, Game.palette[6]) ;
+		GamePanel.DP.drawText(levelPos, Align.center, 0, "Nível 0", largeFont, Palette.colors[6]) ;
 
 	}
  	
@@ -348,7 +349,7 @@ public class GameMap
  		Point pos = new Point(500, 10) ;
  		String text = Game.allText.get(TextCategories.allIsGood)[0] ;
  		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
- 		GamePanel.DP.drawText(pos, Align.topLeft, 0, text, font, Game.palette[19]) ;
+ 		GamePanel.DP.drawText(pos, Align.topLeft, 0, text, font, Palette.colors[19]) ;
  	}
 	
  	public void display(Point pos, Align align, Scale scale)

@@ -66,7 +66,7 @@ public abstract class LoadingGame
 	
 	private static void display(String action, Point mousePos)
 	{
-//			Color textColor = Game.palette[0] ;
+//			Color textColor = Palette.colors[0] ;
 //			Point moveInfoTopLeft = new Point(40, 60) ;
 //			GamePanel.DP.drawText(Util.translate(moveInfoTopLeft, 100, 0), Align.center, 0, "Principais ações", font, textColor) ;
 //			
@@ -94,7 +94,7 @@ public abstract class LoadingGame
 //			
 //			GamePanel.DP.drawImage(LoadingEnfeite, new Point(0, 0), Align.topLeft) ;
 		
-		GamePanel.DP.drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), Game.palette[0], null) ;
+		GamePanel.DP.drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), Palette.colors[0], null) ;
 		SpriteAnimation.updateAll();
 		petIdle.display(GamePanel.DP);
 
@@ -105,8 +105,8 @@ public abstract class LoadingGame
 			Point loadingBarCenterLeft = Util.translate(Game.getScreen().getCenter(), -loadingBarSize.width / 2, 80) ;
 			Dimension loadedBarSize = new Dimension(loadingStep * loadingBarSize.width / 11, loadingBarSize.height) ;
 
-			GamePanel.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, Game.palette[0], true);
-			GamePanel.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Game.palette[18], Game.palette[0], false);
+			GamePanel.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, Palette.colors[0], true);
+			GamePanel.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Palette.colors[18], Palette.colors[0], false);
 			loadingAni.setPos(loadingTextCenter) ;
 			loadingAni.activateIfInactive() ;
 			loadingAni.display(GamePanel.DP);

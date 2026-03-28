@@ -43,11 +43,11 @@ public class LiveInput
 
 		if (showBackground)
 		{
-			GamePanel.DP.drawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Game.palette[3], Game.palette[0], true) ;
+			GamePanel.DP.drawRoundRect(pos, Align.centerLeft, new Dimension(150, 20), 1, Palette.colors[3], Palette.colors[0], true) ;
 		}
 		int offsetX = (int) (7.3 * text.length()) ;
-		GamePanel.DP.drawLine(Util.translate(pos, 20 + offsetX, 5), Util.translate(pos, 20 + offsetX, -5), 2, Game.palette[0]) ;
-		GamePanel.DP.drawText(Util.translate(pos, 20, 0), Align.centerLeft, Draw.stdAngle, text, font, Game.palette[0]) ;
+		GamePanel.DP.drawLine(Util.translate(pos, 20 + offsetX, 5), Util.translate(pos, 20 + offsetX, -5), 2, Palette.colors[0]) ;
+		GamePanel.DP.drawText(Util.translate(pos, 20, 0), Align.centerLeft, Draw.stdAngle, text, font, Palette.colors[0]) ;
 	
 	}
 }

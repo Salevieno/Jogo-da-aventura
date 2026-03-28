@@ -20,6 +20,7 @@ import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 
@@ -144,7 +145,7 @@ public class CraftWindow extends GameWindow
 	{
 		String message = messages.get(i) ;
 		Point pos = Util.translate(windowPos, 320, -30) ;
-		MessageAnimation.start(pos, message, Game.palette[0]) ;
+		MessageAnimation.start(pos, message, Palette.colors[0]) ;
 	}
 	
 	public void display(Point mousePos)
@@ -173,7 +174,7 @@ public class CraftWindow extends GameWindow
 			Map<Item, Integer> products = recipe.getProducts() ;
 			
 			ingredients.forEach((item, qtd) -> {
-				Color itemNameColor = playerBag.hasEnough(item, qtd * amountOfCrafts) ? stdColor : Game.palette[2] ;
+				Color itemNameColor = playerBag.hasEnough(item, qtd * amountOfCrafts) ? stdColor : Palette.colors[2] ;
 				String msg = qtd * amountOfCrafts + " " + item.getName() + " (" + playerBag.getAmount(item) + ")" ;
 				GamePanel.DP.drawImage(Item.slot, ingredientsPos, angle, Scale.unit, Align.center) ;
 				GamePanel.DP.drawImage(item.getImage(), ingredientsPos, Draw.stdAngle, Scale.unit, Align.center) ;

@@ -14,6 +14,7 @@ import graphics.UtilAlignment;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 
@@ -50,9 +51,10 @@ public abstract class GameWindow
 	protected static final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	protected static final Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	protected static final Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-	protected static final Color stdColor = Game.palette[0] ;
+	protected static final Color stdColor = Palette.colors[0] ;
 	protected static final int border = 6 ;
 	protected static final int padding = 4 ;
+	protected static final Color selColor = Palette.colors[18];
 	
 	public GameWindow(String name, Point topLeftPos, Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
 	{
@@ -163,7 +165,7 @@ public abstract class GameWindow
 		item = 0 ;
 	}
 	
-	protected Color getTextColor(boolean isSelected) { return isSelected ? Game.selColor : stdColor ;}
+	protected Color getTextColor(boolean isSelected) { return isSelected ? selColor : stdColor ;}
 	
 	protected void checkMouseSelection(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
 	{
