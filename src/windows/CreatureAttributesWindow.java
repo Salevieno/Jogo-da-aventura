@@ -13,6 +13,7 @@ import graphics2.SpriteAnimation;
 import liveBeings.CreatureType;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -22,7 +23,7 @@ public class CreatureAttributesWindow extends AttributesWindow
 {
 
 	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
-	private static final Image image = Game.loadImage(Path.WINDOWS_IMG + "CreatureAttWindow.png") ;
+	private static final Image image = ImageLoader.loadImage(Path.WINDOWS_IMG + "CreatureAttWindow.png") ;
 	
 	public CreatureAttributesWindow()
 	{

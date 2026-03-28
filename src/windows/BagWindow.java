@@ -30,6 +30,7 @@ import items.QuestItem;
 import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Log;
 import main.Path;
 import main.TextCategories;
@@ -60,13 +61,13 @@ public class BagWindow extends GameWindow
 	private static final List<Point> itemsPos ;
 	private static final Point spacing = new Point(300, 35) ;
 	private static final Dimension itemNameSize = new Dimension(140, 10) ;
-	private static final Image bagImage = Game.loadImage(Path.WINDOWS_IMG + "Bag.png") ;
-	private static final Image selectedBag = Game.loadImage(Path.WINDOWS_IMG + "BagSelected.png") ;
-	private static final Image menuImage = Game.loadImage(Path.WINDOWS_IMG + "BagMenu.png") ;
-	private static final Image selectedMenuTab0 = Game.loadImage(Path.WINDOWS_IMG + "BagSelectedMenuTab0.png") ;
-	private static final Image selectedMenuTab1 = Game.loadImage(Path.WINDOWS_IMG + "BagSelectedMenuTab1.png") ;
-	public static final Image slotImage = Game.loadImage(Path.WINDOWS_IMG + "BagSlot.png") ;
-	public static final Image selectedSlotImage = Game.loadImage(Path.WINDOWS_IMG + "BagSelectedSlot.png") ;
+	private static final Image bagImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "Bag.png") ;
+	private static final Image selectedBag = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSelected.png") ;
+	private static final Image menuImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagMenu.png") ;
+	private static final Image selectedMenuTab0 = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSelectedMenuTab0.png") ;
+	private static final Image selectedMenuTab1 = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSelectedMenuTab1.png") ;
+	public static final Image slotImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSlot.png") ;
+	public static final Image selectedSlotImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSelectedSlot.png") ;
 	
 	static
 	{

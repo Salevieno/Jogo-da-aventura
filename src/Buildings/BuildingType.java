@@ -2,7 +2,7 @@ package Buildings;
 
 import java.awt.Image;
 
-import main.Game;
+import main.ImageLoader;
 import main.Path;
 
 public class BuildingType
@@ -25,8 +25,8 @@ public class BuildingType
 		for (int i = 0 ; i <= BuildingTypes.values().length - 1 ; i += 1)
 		{
 			BuildingTypes name = BuildingTypes.values()[i] ;
-			Image outsideImage = Game.loadImage(Path.BUILDINGS_IMG + "Building" + name + ".png") ;
-			Image insideImage = Game.loadImage(Path.BUILDINGS_IMG + "Building" + name + "Inside.png") ;
+			Image outsideImage = ImageLoader.loadImage(Path.BUILDINGS_IMG + "Building" + name + ".png") ;
+			Image insideImage = ImageLoader.loadImage(Path.BUILDINGS_IMG + "Building" + name + "Inside.png") ;
 			buildingTypes[i] = new BuildingType(name, outsideImage, insideImage) ;
 		}
 

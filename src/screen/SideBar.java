@@ -20,10 +20,10 @@ import liveBeings.PlayerActions;
 import liveBeings.SpellsBar;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.MainGame3_4;
 import main.Path;
 import utilities.Util;
-
 import windows.PetAttributesWindow;
 import windows.PlayerAttributesWindow;
 
@@ -39,7 +39,7 @@ public abstract class SideBar
 	private static final Color bgColor = Game.palette[1] ;
 	
 	private static final Dimension size = new Dimension(60, Game.getScreen().getSize().height) ;
-	public static final Image slotImage = Game.loadImage(Path.SIDEBAR_IMG + "Slot.png") ;
+	public static final Image slotImage = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Slot.png") ;
 	public static final int sy = 10 ;
 	
 	static
@@ -49,8 +49,8 @@ public abstract class SideBar
 		iconSelectedImages = new Image[iconNames.length] ;
 		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
 		{
-			iconImages[i] = Game.loadImage(Path.SIDEBAR_IMG + "Icon" + "_" + iconNames[i] + ".png");
-			iconSelectedImages[i] = Game.loadImage(Path.SIDEBAR_IMG + "Icon" + "_" + iconNames[i] + "Selected.png") ;
+			iconImages[i] = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Icon" + "_" + iconNames[i] + ".png");
+			iconSelectedImages[i] = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Icon" + "_" + iconNames[i] + "Selected.png") ;
 		}
 	}
 	

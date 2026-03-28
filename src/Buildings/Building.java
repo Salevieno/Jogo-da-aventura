@@ -46,7 +46,7 @@ public class Building implements Drawable
 	
 	// private void addColliders()
 	// {
-	// 	Image collidersImage = Game.loadImage(Path.BUILDINGS_IMG + "Building" + type.getName() + "Colliders.png") ;
+	// 	Image collidersImage = ImageLoader.loadImage(Path.BUILDINGS_IMG + "Building" + type.getName() + "Colliders.png") ;
 		
 	// 	if (collidersImage == null) { return ;}
 		

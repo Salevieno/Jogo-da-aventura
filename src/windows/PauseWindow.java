@@ -18,6 +18,7 @@ import graphics2.Draw;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.MainGame3_4;
 import main.Music;
 import main.Path;
@@ -40,9 +41,9 @@ public class PauseWindow extends GameWindow
     static
     {
         windowPos = new Point(20, 20) ;
-	    imageBg = Game.loadImage(Path.WINDOWS_IMG + "SettingsBackground.png") ;
+	    imageBg = ImageLoader.loadImage(Path.WINDOWS_IMG + "SettingsBackground.png") ;
         soundEffectOnHover = Music.loadMusicFile("PauseButtonHoverSoundEffect.wav") ;
-        textBgImg = Game.loadImage(Path.UI_IMG + "SettingsTextBackground.png") ;
+        textBgImg = ImageLoader.loadImage(Path.UI_IMG + "SettingsTextBackground.png") ;
         largeFont = new Font(Game.MainFontName, Font.BOLD, 20) ;
         Dimension windowSize = Util.getSize(imageBg) ; 
         settingColPosX = windowPos.x + (2 * windowSize.width) / 3 ;
@@ -52,10 +53,10 @@ public class PauseWindow extends GameWindow
     {
         super("Opções", windowPos, imageBg, 2, 0, 6, 0) ;
         
-        Image btnImg = Game.loadImage(Path.UI_IMG + "SettingsButton.png") ;
-        Image selectedBtnImg = Game.loadImage(Path.UI_IMG + "SettingsButtonSelected.png") ;
-        Image btnShortImg = Game.loadImage(Path.UI_IMG + "SettingsShortButton.png") ;
-        Image selectedBtnShortImg = Game.loadImage(Path.UI_IMG + "SettingsShortButtonSelected.png") ;
+        Image btnImg = ImageLoader.loadImage(Path.UI_IMG + "SettingsButton.png") ;
+        Image selectedBtnImg = ImageLoader.loadImage(Path.UI_IMG + "SettingsButtonSelected.png") ;
+        Image btnShortImg = ImageLoader.loadImage(Path.UI_IMG + "SettingsShortButton.png") ;
+        Image selectedBtnShortImg = ImageLoader.loadImage(Path.UI_IMG + "SettingsShortButtonSelected.png") ;
 
         GameButton returnToMainMenu = new GameButton(gridPos(17, 1), Align.center, "V O L T A R", btnImg, selectedBtnImg, () -> { switchToMenu(0) ;}, soundEffectOnHover) ;
         returnToMainMenu.deactivate() ;

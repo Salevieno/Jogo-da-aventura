@@ -18,6 +18,7 @@ import liveBeings.Player;
 import main.Elements;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -32,7 +33,7 @@ public class ElementalWindow extends GameWindow
 
 	private static final Point windowPos = Game.getScreen().pos(0.35, 0.23) ;
 	private static final List<String> menuTitles = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
-	private static final Image windowImage = Game.loadImage(Path.WINDOWS_IMG + "Elemental.png") ;
+	private static final Image windowImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "Elemental.png") ;
 	private static final int firstSphereID = 390 ;
 	private static final int numberItemsOnWindow = 10 ;
 

@@ -8,15 +8,15 @@ import java.awt.Point;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics2.Draw;
-import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
 public class ObtainedItemAnimation extends Animation
 {
 	private static final Font smallFont = DrawPrimitives.stdFont ;
-	private static final Image obtainedItemImg = Game.loadImage(Path.PLAYER_IMG + "ObtainedItem.png") ;
+	private static final Image obtainedItemImg = ImageLoader.loadImage(Path.PLAYER_IMG + "ObtainedItem.png") ;
     private static final double speed = 60 ;
 
     private Point initialPos ;

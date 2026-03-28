@@ -22,6 +22,7 @@ import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import maps.FieldMap;
 import maps.GameMap;
@@ -46,12 +47,12 @@ public abstract class Draw
 	{
 		screenSize = Game.getScreen().getSize() ;
 		stdAngle = DrawPrimitives.stdAngle;
-		ArrowIconImage = Game.loadImage(Path.WINDOWS_IMG + "ArrowIcon.png") ;
-		KeyboardButtonImage = Game.loadImage(Path.UI_IMG + "KeyboardButton.png") ;
-		textSelectionImages = Arrays.asList(Game.loadImage(Path.UI_IMG + "TextSelectionTopLeft.png"),
-										Game.loadImage(Path.UI_IMG + "TextSelectionTopRight.png"),
-										Game.loadImage(Path.UI_IMG + "TextSelectionBottomRight.png"),
-										Game.loadImage(Path.UI_IMG + "TextSelectionBottomLeft.png"))
+		ArrowIconImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "ArrowIcon.png") ;
+		KeyboardButtonImage = ImageLoader.loadImage(Path.UI_IMG + "KeyboardButton.png") ;
+		textSelectionImages = Arrays.asList(ImageLoader.loadImage(Path.UI_IMG + "TextSelectionTopLeft.png"),
+										ImageLoader.loadImage(Path.UI_IMG + "TextSelectionTopRight.png"),
+										ImageLoader.loadImage(Path.UI_IMG + "TextSelectionBottomRight.png"),
+										ImageLoader.loadImage(Path.UI_IMG + "TextSelectionBottomLeft.png"))
 									.stream()
 									.filter(Objects::nonNull)
 									.collect(Collectors.toList()) ;

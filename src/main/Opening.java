@@ -48,12 +48,12 @@ public abstract class Opening
 
 	private static final SpriteAnimation openingAni = new SpriteAnimation(Path.OPENING_IMG + "Opening.png", new Point(), Align.topLeft, 12, 0.05) ;
 	
-	private static final Image backgroundImage = Game.loadImage(Path.OPENING_IMG + "Opening.png") ;
-	private static final Image LoadingSlot = Game.loadImage(Path.OPENING_IMG + "LoadingSlot.png") ;
-	private static final Image LoadingSlotSelected = Game.loadImage(Path.OPENING_IMG + "LoadingSlotSelected.png") ;
-	private static final Image generalButtonImg = Game.loadImage(Path.OPENING_IMG + "generalButton.png") ;
-	private static final Image generalButtonSelectedImg = Game.loadImage(Path.OPENING_IMG + "generalButtonSelected.png") ;
-	private static final Image jobDescriptionBackground = Game.loadImage(Path.OPENING_IMG + "JobDescriptionBackground.png") ;
+	private static final Image backgroundImage = ImageLoader.loadImage(Path.OPENING_IMG + "Opening.png") ;
+	private static final Image LoadingSlot = ImageLoader.loadImage(Path.OPENING_IMG + "LoadingSlot.png") ;
+	private static final Image LoadingSlotSelected = ImageLoader.loadImage(Path.OPENING_IMG + "LoadingSlotSelected.png") ;
+	private static final Image generalButtonImg = ImageLoader.loadImage(Path.OPENING_IMG + "generalButton.png") ;
+	private static final Image generalButtonSelectedImg = ImageLoader.loadImage(Path.OPENING_IMG + "generalButtonSelected.png") ;
+	private static final Image jobDescriptionBackground = ImageLoader.loadImage(Path.OPENING_IMG + "JobDescriptionBackground.png") ;
 	// private static final Image LoadingEnfeite ;
 	private static final Clip thunderSound ;
 	private static final Clip introMusic ;
@@ -61,7 +61,7 @@ public abstract class Opening
 	
 	static
 	{
-		// LoadingEnfeite = Game.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
+		// LoadingEnfeite = ImageLoader.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
 		thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
 		introMusic = Music.loadMusicFile("intro.wav") ;
 		
@@ -90,8 +90,8 @@ public abstract class Opening
 		ButtonFunction thiefAction = () -> { chosenJob = 4 ; advanceStep() ;} ;
 		
 		Screen screen = Game.getScreen() ;
-		GameButton portButton = new GameButton(screen.pos(0.85, 0.05), Align.center, "Port", Game.loadImage(Path.OPENING_IMG + "Port.png"), Game.loadImage(Path.OPENING_IMG + "PortSelected.png"), portAction) ;
-		GameButton enButton = new GameButton(screen.pos(0.95, 0.05), Align.center, "En", Game.loadImage(Path.OPENING_IMG + "En.png"), Game.loadImage(Path.OPENING_IMG + "EnSelected.png"), enAction) ;
+		GameButton portButton = new GameButton(screen.pos(0.85, 0.05), Align.center, "Port", ImageLoader.loadImage(Path.OPENING_IMG + "Port.png"), ImageLoader.loadImage(Path.OPENING_IMG + "PortSelected.png"), portAction) ;
+		GameButton enButton = new GameButton(screen.pos(0.95, 0.05), Align.center, "En", ImageLoader.loadImage(Path.OPENING_IMG + "En.png"), ImageLoader.loadImage(Path.OPENING_IMG + "EnSelected.png"), enAction) ;
 		languageButtons = List.of(portButton, enButton) ;
 
 		String[] btNames = new String[] {
@@ -114,11 +114,11 @@ public abstract class Opening
 				knightAction, mageAction, archerAction, animalAction, thiefAction} ;
 		for (int i = 0 ; i <= btNames.length - 1; i += 1)
 		{
-			Image btImage = Game.loadImage(Path.OPENING_IMG + btNames[i] + ".png") ;
-			Image btImageSelected = Game.loadImage(Path.OPENING_IMG + btNames[i] + " Selected.png") ;
-			if (btImage == null) { btImage = Game.loadImage("ButtonGeneral.png") ;}
-			if (btImageSelected == null) { btImageSelected = Game.loadImage(Path.OPENING_IMG + btNames[i] + " Selected.png") ;}
-			if (btImageSelected == null) { btImageSelected = Game.loadImage("ButtonGeneralSelected.png") ;}
+			Image btImage = ImageLoader.loadImage(Path.OPENING_IMG + btNames[i] + ".png") ;
+			Image btImageSelected = ImageLoader.loadImage(Path.OPENING_IMG + btNames[i] + " Selected.png") ;
+			if (btImage == null) { btImage = ImageLoader.loadImage("ButtonGeneral.png") ;}
+			if (btImageSelected == null) { btImageSelected = ImageLoader.loadImage(Path.OPENING_IMG + btNames[i] + " Selected.png") ;}
+			if (btImageSelected == null) { btImageSelected = ImageLoader.loadImage("ButtonGeneralSelected.png") ;}
 			GameButton newButton = new GameButton(btPos[i], Align.center, btNames[i], generalButtonImg, generalButtonSelectedImg, btAction[i]) ;
 			newButton.deactivate() ;
 			buttons.add(newButton) ;		

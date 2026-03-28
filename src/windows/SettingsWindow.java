@@ -14,6 +14,7 @@ import liveBeings.PlayerActions;
 import main.Game;
 import main.GameFrame;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -38,8 +39,8 @@ public class SettingsWindow extends GameWindow
 	{
 		windowPos = Game.getScreen().pos(0.4, 0.35) ;
 		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-	    imageMenu0 = Game.loadImage(Path.WINDOWS_IMG + "windowSettings.png") ;
-		imageMenu1 = Game.loadImage(Path.WINDOWS_IMG + "settingsDeeperWindow.png") ;
+	    imageMenu0 = ImageLoader.loadImage(Path.WINDOWS_IMG + "windowSettings.png") ;
+		imageMenu1 = ImageLoader.loadImage(Path.WINDOWS_IMG + "settingsDeeperWindow.png") ;
 	}
 	
 	public SettingsWindow(boolean musicIsOn, boolean soundEffectsAreOn, boolean showAtkRange, int attDisplay, int damageAnimation)

@@ -28,6 +28,7 @@ import main.Elements;
 import main.Game;
 import main.GameFrame;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Log;
 import main.Music;
 import main.Path;
@@ -55,8 +56,8 @@ public class GameMap
 
 	// TODO if it makes sense, move forge, sign AND the dock and boat to a new class of map elements or in the map elements class
 
-	protected static final Image dockImg = Game.loadImage(Path.MAPS_IMG + "Dock.png") ;
-	protected static final Image boatImg = Game.loadImage(Path.MAPS_IMG + "Boat.png") ;
+	protected static final Image dockImg = ImageLoader.loadImage(Path.MAPS_IMG + "Dock.png") ;
+	protected static final Image boatImg = ImageLoader.loadImage(Path.MAPS_IMG + "Boat.png") ;
 	protected static final Image infoWindow ;
 	protected static final SpriteAnimation beachGif ;
 	
@@ -85,7 +86,7 @@ public class GameMap
 			allDiggingItems.put(GeneralItem.getAll()[genItemIDs[i]], genItemPotentials[i]) ;
 		}
 		beachGif = new SpriteAnimation(Path.MAPS_IMG + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, 12, 15) ;
-		infoWindow = Game.loadImage(Path.WINDOWS_IMG + "MapInfo.png") ;
+		infoWindow = ImageLoader.loadImage(Path.WINDOWS_IMG + "MapInfo.png") ;
 
 		musicCities = Music.musicFileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
 		musicForest = Music.musicFileToClip(new File(Path.MUSIC + "floresta.wav").getAbsoluteFile()) ;

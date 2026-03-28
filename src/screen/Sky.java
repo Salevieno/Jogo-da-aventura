@@ -11,6 +11,7 @@ import java.util.List;
 import graphics.Align;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -37,24 +38,24 @@ public class Sky
 		topColors = new Color[8];
 		botColors = new Color[8];
 		
-		Image skyColors = Game.loadImage(Path.SKY_IMG + "Colors.png") ;
+		Image skyColors = ImageLoader.loadImage(Path.SKY_IMG + "Colors.png") ;
 		for (int i = 0; i <= 8 - 1; i += 1)
 		{
 			topColors[i] = Util.getPixelColor(Util.toBufferedImage(skyColors), new Point(10 * i, 0));
 			botColors[i] = Util.getPixelColor(Util.toBufferedImage(skyColors), new Point(10 * i, 10));
 		}
 
-		cloudImage1 = Game.loadImage(Path.SKY_IMG + "Cloud1.png") ;
-		cloudImage2 = Game.loadImage(Path.SKY_IMG + "Cloud2.png") ;
-		cloudImage3 = Game.loadImage(Path.SKY_IMG + "Cloud3.png") ;
+		cloudImage1 = ImageLoader.loadImage(Path.SKY_IMG + "Cloud1.png") ;
+		cloudImage2 = ImageLoader.loadImage(Path.SKY_IMG + "Cloud2.png") ;
+		cloudImage3 = ImageLoader.loadImage(Path.SKY_IMG + "Cloud3.png") ;
 		starImages = new Image[] {
-				Game.loadImage(Path.SKY_IMG + "Star1.png") ,
-				Game.loadImage(Path.SKY_IMG + "Star2.png") ,
-				Game.loadImage(Path.SKY_IMG + "Star3.png") ,
-				Game.loadImage(Path.SKY_IMG + "Star4.png") ,
-				Game.loadImage(Path.SKY_IMG + "Star5.png") ,
-				Game.loadImage(Path.SKY_IMG + "Star6.png") ,
-				Game.loadImage(Path.SKY_IMG + "Star7.png")
+				ImageLoader.loadImage(Path.SKY_IMG + "Star1.png") ,
+				ImageLoader.loadImage(Path.SKY_IMG + "Star2.png") ,
+				ImageLoader.loadImage(Path.SKY_IMG + "Star3.png") ,
+				ImageLoader.loadImage(Path.SKY_IMG + "Star4.png") ,
+				ImageLoader.loadImage(Path.SKY_IMG + "Star5.png") ,
+				ImageLoader.loadImage(Path.SKY_IMG + "Star6.png") ,
+				ImageLoader.loadImage(Path.SKY_IMG + "Star7.png")
 		} ;
 	}
 	

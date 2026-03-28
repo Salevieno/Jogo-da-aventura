@@ -13,6 +13,7 @@ import graphics.UtilAlignment;
 import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import screen.SideBar;
 import utilities.Util;
@@ -43,12 +44,12 @@ public abstract class SpellsBar
 		textColor = Game.palette[4] ;
 
 		barPos = new Point(Game.getScreen().mapSize().width + 2, HotKeysBar.topLeft().y - SideBar.sy) ;
-		barImage = Game.loadImage(Path.SIDEBAR_IMG + "SpellsBar.png") ;
+		barImage = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SpellsBar.png") ;
 		barSize = Util.getSize(barImage) ;
-		slotImageNoMP = Game.loadImage(Path.SIDEBAR_IMG + "SlotNoMP.png") ;
+		slotImageNoMP = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SlotNoMP.png") ;
 		slotSize = Util.getSize(SideBar.slotImage) ;
 		slotsOffset = new Point(3, 4) ;
-		cooldownImage = Game.loadImage(Path.SIDEBAR_IMG + "Cooldown.png") ;
+		cooldownImage = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Cooldown.png") ;
 	}
 	
 	public static void updateSpells(List<Spell> newSpells)

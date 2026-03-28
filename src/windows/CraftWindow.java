@@ -19,6 +19,7 @@ import items.Recipe;
 import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -33,11 +34,11 @@ public class CraftWindow extends GameWindow
 	
 	private static final Point windowPos = Game.getScreen().pos(0.03, 0.25) ;	
 	private static final int RecipesPerWindow = 1 ;
-	private static final Image buttonImg = Game.loadImage(Path.WINDOWS_IMG + "CraftButton.png") ;
+	private static final Image buttonImg = ImageLoader.loadImage(Path.WINDOWS_IMG + "CraftButton.png") ;
 	private static final List<String> messages = Arrays.asList(
 																"Items criados!",
 																"Vc não possui todos os ingredientes") ;
-	public static final Image craftImage = Game.loadImage(Path.WINDOWS_IMG + "Craft.png") ;
+	public static final Image craftImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "Craft.png") ;
 
 	public CraftWindow(List<Recipe> recipes)
 	{

@@ -6,7 +6,7 @@ import java.util.List;
 
 import graphics.Align;
 import graphics2.Draw;
-import main.Game;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -16,10 +16,10 @@ public class Forge extends Item
 	
 	private static final Forge[] allForge ;
 	
-	private static final Image runeAtk = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconRuneAtk.png") ;
-	private static final Image runeDef = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconRuneDef.png") ;
-	private static final Image specialRuneAtk = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconSpecialRuneAtk.png") ;
-	private static final Image specialRuneDef = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconSpecialRuneDef.png") ;
+	private static final Image runeAtk = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconRuneAtk.png") ;
+	private static final Image runeDef = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconRuneDef.png") ;
+	private static final Image specialRuneAtk = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconSpecialRuneAtk.png") ;
+	private static final Image specialRuneDef = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconSpecialRuneDef.png") ;
 	
 	static
 	{

@@ -15,6 +15,7 @@ import items.Item;
 import liveBeings.CreatureType;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -32,7 +33,7 @@ public class QuestWindow extends GameWindow
 	{
 		windowPos = Game.getScreen().pos(0.3, 0.1) ;
 		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		image = Game.loadImage(Path.WINDOWS_IMG + "Quest.png") ;
+		image = ImageLoader.loadImage(Path.WINDOWS_IMG + "Quest.png") ;
 	}
 	
 	public QuestWindow()

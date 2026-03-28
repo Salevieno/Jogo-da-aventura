@@ -15,6 +15,7 @@ import liveBeings.Pet;
 import main.Elements;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -26,7 +27,7 @@ public class PetAttributesWindow extends AttributesWindow
 
 	Point windowPos = Game.getScreen().pos(0.52, 0.14) ;
 	
-	private static final Image image = Game.loadImage(Path.WINDOWS_IMG + "PetAttWindow.png") ;
+	private static final Image image = ImageLoader.loadImage(Path.WINDOWS_IMG + "PetAttWindow.png") ;
 	
 	public PetAttributesWindow()
 	{

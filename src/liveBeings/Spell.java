@@ -9,8 +9,8 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 
 import main.Elements;
-import main.Game;
 import main.GameTimer;
+import main.ImageLoader;
 import main.Languages;
 import main.Path;
 import utilities.Util;
@@ -177,7 +177,7 @@ public class Spell
 			info[row] = new String[] { col[44], col[45 + 2 * language.ordinal()] } ;
 			String name = col[4] ;
 			String job = PlayerJobs.jobFromSpellID(row).toString() ;
-			Image image = Game.loadImage(Path.SPELLS_IMG + "spell" + job + row + ".png") ;
+			Image image = ImageLoader.loadImage(Path.SPELLS_IMG + "spell" + job + row + ".png") ;
 			int maxLevel = Integer.parseInt(col[5]) ;
 			int mpCost = Integer.parseInt(col[6]) ;
 			SpellTypes type = SpellTypes.valueOf(col[7]) ;

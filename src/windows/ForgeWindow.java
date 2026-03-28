@@ -19,6 +19,7 @@ import items.Item;
 import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -34,7 +35,7 @@ public class ForgeWindow extends GameWindow
 	
 	private static final int NumberItemsPerWindow = 10 ;
 	private static final Point windowPos = Game.getScreen().getPointWithinBorders(0.2, 0.05) ;
-	private static final Image windowImage = Game.loadImage(Path.WINDOWS_IMG + "Forge.png") ;
+	private static final Image windowImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "Forge.png") ;
 	
 
 	static

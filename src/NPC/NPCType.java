@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import main.Game;
+import main.ImageLoader;
 import main.Languages;
 import main.Log;
 import main.Path;
@@ -160,7 +161,7 @@ public class NPCType
 			NPCJobs job = NPCJobs.valueOf(input.get(i)[0]) ;
 			String info = text.get(i)[2] ;
 			Color color = job.getColor() ;
-			Image image = Game.loadImage(Path.NPC_IMG + "NPC_" + job.toString() + ".png") ;
+			Image image = ImageLoader.loadImage(Path.NPC_IMG + "NPC_" + job.toString() + ".png") ;
 			String[] speech = null ;
 			List<List<String>> options = new ArrayList<>() ;
 			TextCategories speechName = TextCategories.catFromBRName("npcs" + name + "Falas") ;

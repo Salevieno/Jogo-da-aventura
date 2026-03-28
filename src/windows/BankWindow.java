@@ -12,6 +12,7 @@ import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.GameTimer;
+import main.ImageLoader;
 import main.LiveInput;
 import main.Path;
 import utilities.Util;
@@ -29,9 +30,9 @@ public class BankWindow extends GameWindow
 	private LiveInput liveInput ;
 
 	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
-	private static final Image image = Game.loadImage(Path.WINDOWS_IMG + "Banco.png") ;
+	private static final Image image = ImageLoader.loadImage(Path.WINDOWS_IMG + "Banco.png") ;
 	private static final String[] investmentRiskLevels = new String[] {"low", "high"} ;
-	public static final Image clock = Game.loadImage(Path.WINDOWS_IMG + "clock.png") ;
+	public static final Image clock = ImageLoader.loadImage(Path.WINDOWS_IMG + "clock.png") ;
 
 	public BankWindow()
 	{

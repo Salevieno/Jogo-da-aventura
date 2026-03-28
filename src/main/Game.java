@@ -84,8 +84,6 @@ public class Game
 	private static final Color[] konamiPalette;
 
 	public static final String MainFontName = "Comics";
-	private static final List<String> loadedImagePaths = new ArrayList<>();
-
 	private static final GameStates mainState = GameStates.running;
 	private static final boolean testMode = true;
 	public static final boolean debugMode = false;
@@ -126,7 +124,7 @@ public class Game
 	static
 	{
 		screen = new Screen(new Dimension(GameFrame.getWindowsize().width, GameFrame.getWindowsize().height), null);
-		Image paletteImage = loadImage(Path.GAME_IMG + "ColorPalette.png");
+		Image paletteImage = ImageLoader.loadImage(Path.GAME_IMG + "ColorPalette.png");
 		normalPalette = readColorPalette(paletteImage, "Normal");
 		konamiPalette = readColorPalette(paletteImage, "Konami");
 		selColor = normalPalette[18];
@@ -193,17 +191,6 @@ public class Game
 		default:
 			return null;
 		}
-	}
-
-	public static Image loadImage(String path)
-	{
-		if (loadedImagePaths.contains(path))
-		{
-			Log.warn("Loading image " + path + " multiple times");
-		}
-
-		loadedImagePaths.add(path);
-		return Util.loadImage(Path.IMAGES + path);
 	}
 
 	private static void activateKonamiEffect()

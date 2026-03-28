@@ -21,6 +21,7 @@ import liveBeings.Player;
 import main.Elements;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -42,11 +43,11 @@ public class PlayerAttributesWindow extends AttributesWindow
 	static
 	{
 		windowPos = Game.getScreen().pos(0.01, 0.25) ;
-		tab0Image = Game.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow1.png") ;
-		tab1Image = Game.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow2.png") ;
-		tab2Image = Game.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow3.png") ;
-		plusSign = Game.loadImage(Path.WINDOWS_IMG + "PlusSign.png") ;
-		selectedPlusSign = Game.loadImage(Path.WINDOWS_IMG + "PlusSignShining.png") ;
+		tab0Image = ImageLoader.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow1.png") ;
+		tab1Image = ImageLoader.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow2.png") ;
+		tab2Image = ImageLoader.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow3.png") ;
+		plusSign = ImageLoader.loadImage(Path.WINDOWS_IMG + "PlusSign.png") ;
+		selectedPlusSign = ImageLoader.loadImage(Path.WINDOWS_IMG + "PlusSignShining.png") ;
 	}
 	
 	public PlayerAttributesWindow()

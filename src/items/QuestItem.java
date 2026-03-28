@@ -6,7 +6,7 @@ import java.util.List;
 
 import graphics.Align;
 import graphics2.Draw;
-import main.Game;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -15,7 +15,7 @@ public class QuestItem extends Item
 {
 	private static final QuestItem[] AllQuests ;
 	
-	private static final Image questItemIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconQuestItem.png") ;
+	private static final Image questItemIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconQuestItem.png") ;
 	
 	static
 	{

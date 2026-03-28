@@ -6,14 +6,14 @@ import java.awt.Point;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
-import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 
 public class Forge
 {    
 	private final Point pos ;
-	private static final Image image = Game.loadImage(Path.BUILDINGS_IMG + "Forge.png") ;
+	private static final Image image = ImageLoader.loadImage(Path.BUILDINGS_IMG + "Forge.png") ;
 
 	public Forge(Point pos)
 	{

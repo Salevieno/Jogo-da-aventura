@@ -16,6 +16,7 @@ import items.Item;
 import items.Recipe;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -25,7 +26,7 @@ public class BookWindow extends GameWindow
     private List<Recipe> recipes = new ArrayList<>() ;
 
 	private static final Point windowPos = Game.getScreen().getCenter() ;
-	private static final Image windowImage = Game.loadImage(Path.WINDOWS_IMG + "Book.png") ;
+	private static final Image windowImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "Book.png") ;
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 	
 	public BookWindow()

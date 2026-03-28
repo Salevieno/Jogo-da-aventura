@@ -31,6 +31,7 @@ import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Log;
 import main.Path;
 import main.TextCategories;
@@ -61,8 +62,8 @@ public class NPC
 	private final List<Collider> colliders ;
 	private static boolean renewStocks = false ;
 	private static final Font stdfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
-	private static final Image speakingBubble = Game.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
-	private static final Image choicesWindow = Game.loadImage(Path.NPC_IMG + "ChoicesWindow.png") ;
+	private static final Image speakingBubble = ImageLoader.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
+	private static final Image choicesWindow = ImageLoader.loadImage(Path.NPC_IMG + "ChoicesWindow.png") ;
 	private static final Color stdColor = Game.palette[0] ;
 	private static final Color selColor = Game.palette[18] ;
 

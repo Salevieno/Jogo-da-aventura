@@ -12,10 +12,10 @@ import graphics2.Draw;
 import items.Item;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import screen.SideBar;
 import utilities.Util;
-
 import windows.BagWindow;
 
 public abstract class HotKeysBar
@@ -29,7 +29,7 @@ public abstract class HotKeysBar
 	{
 		font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 		textColor = Game.palette[0] ;
-		image = Game.loadImage(Path.SIDEBAR_IMG + "HotBar.png") ;
+		image = ImageLoader.loadImage(Path.SIDEBAR_IMG + "HotBar.png") ;
 		barPos = new Point(Game.getScreen().mapSize().width + 2, Game.getScreen().getSize().height - SideBar.sy) ;
 	}
 	

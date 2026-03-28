@@ -11,6 +11,7 @@ import graphics.Align;
 import graphics.Scale;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Log;
 import main.Path;
 import maps.Continents;
@@ -31,7 +32,7 @@ public class MapWindow extends GameWindow
 	
 	private static final boolean displayFull = false ;
 	private static final Point windowPos = new Point(150, 100) ;
-	private static final Image image = Game.loadImage(Path.WINDOWS_IMG + "MapWindow.png") ;
+	private static final Image image = ImageLoader.loadImage(Path.WINDOWS_IMG + "MapWindow.png") ;
 	
 	public MapWindow()
 	{

@@ -10,6 +10,7 @@ import graphics.UtilAlignment;
 import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -19,8 +20,8 @@ public class Sign
 	private final Point pos ;
 	private final String message ;
 
-	private static final Image image = Game.loadImage(Path.BUILDINGS_IMG + "Sign.png") ;
-	private static final Image boardImg = Game.loadImage(Path.BUILDINGS_IMG + "SignBoard.png") ;
+	private static final Image image = ImageLoader.loadImage(Path.BUILDINGS_IMG + "Sign.png") ;
+	private static final Image boardImg = ImageLoader.loadImage(Path.BUILDINGS_IMG + "SignBoard.png") ;
 	private static final Font msgFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
 
 	public Sign(Point pos, int cityID)

@@ -19,13 +19,12 @@ public class GameFrame extends JFrame implements ActionListener
 	private static Timer timer ;		// Main timer of the game
 	private static GameStates previousState ;
 	private static final Dimension windowSize = new Dimension(1280,960) ; // TODO consider 1280 x 720
-	private static final Image icon = Game.loadImage(Path.GAME_IMG + "gameIcon.png") ;
+	private static final Image icon = ImageLoader.loadImage(Path.GAME_IMG + "gameIcon.png") ;
 	private static final GameFrame gameFrame = new GameFrame() ;
 	public static boolean fullScreen = true ;
 
 	private GameFrame()
     {
-		
         System.setProperty("sun.java2d.uiScale", "1.0");
         
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -45,6 +44,7 @@ public class GameFrame extends JFrame implements ActionListener
 			setLocation(200, 20) ;
         }
 		
+		resizeWindow();
 		setIconImage(icon) ;
         setTitle("Jogo da aventura") ;
 
@@ -54,14 +54,13 @@ public class GameFrame extends JFrame implements ActionListener
 		timer.start() ;							// Game will start checking for keyboard events every "timer" miliseconds
 		previousState = GameStates.opening ;
 		
-		resizeWindow();
 		Game.getScreen().updateScale();
         add(GamePanel.getMe()) ;
 
     }
 	
 	public static GameFrame getMe() { return gameFrame ;}
-	
+
 	public void resizeWindow()
 	{
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();

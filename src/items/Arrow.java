@@ -10,7 +10,7 @@ import graphics2.Draw;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Elements;
-import main.Game;
+import main.ImageLoader;
 import main.Log;
 import main.Path;
 import utilities.Util;
@@ -23,11 +23,11 @@ public class Arrow extends Item
 	
 	private static final Arrow[] all ;
 
-	private static final Image woodArrowIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconWoodArrow.png") ;
-	private static final Image strongArrowIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconStrongArrow.png") ;
-	private static final Image boltArrowIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconBoltArrow.png") ;
+	private static final Image woodArrowIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconWoodArrow.png") ;
+	private static final Image strongArrowIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconStrongArrow.png") ;
+	private static final Image boltArrowIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconBoltArrow.png") ;
 	
-	private static final Image ArrowImage = Game.loadImage(Path.EQUIPS_IMG + "Eq7_Arrow.png") ;
+	private static final Image ArrowImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq7_Arrow.png") ;
 	
 	static
 	{

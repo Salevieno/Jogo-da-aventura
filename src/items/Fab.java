@@ -6,7 +6,7 @@ import java.util.List;
 
 import graphics.Align;
 import graphics2.Draw;
-import main.Game;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -15,7 +15,7 @@ public class Fab extends Item
 {
 	private static final Fab[] allFabs ;
 	
-	private static final Image ferkIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconFerk.png") ;
+	private static final Image ferkIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconFerk.png") ;
 	
 	static
 	{

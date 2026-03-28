@@ -10,6 +10,7 @@ import graphics.Scale;
 import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import main.TextCategories;
 import utilities.Util;
@@ -25,7 +26,7 @@ public class HintsWindow extends GameWindow
 	{
 		windowPos = Game.getScreen().pos(0.15, 0.4) ;
 		font = new Font(Game.MainFontName, Font.BOLD, 12) ;
-		image = Game.loadImage(Path.WINDOWS_IMG + "Hints.png") ;
+		image = ImageLoader.loadImage(Path.WINDOWS_IMG + "Hints.png") ;
 	}
 	
 	public HintsWindow()

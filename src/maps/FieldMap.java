@@ -24,6 +24,7 @@ import liveBeings.Creature;
 import liveBeings.CreatureType;
 import main.Game;
 import main.GameTimer;
+import main.ImageLoader;
 import main.Log;
 import main.Path;
 import screen.Screen;
@@ -41,10 +42,10 @@ public class FieldMap extends GameMap
 	private static final int numberTrees = 5 ;
 	private static final int numberGrass = 30 ;
 	private static final int numberRocks = 10 ;
-	private static final Image treeImage = Game.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem6_TreeForest.png") ;
-	private static final Image grassImage = Game.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem8_Grass.png") ;
-	private static final Image grassImage2 = Game.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem8_Grass2.png") ;
-	private static final Image rockImage = Game.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem9_Rock.png") ;
+	private static final Image treeImage = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem6_TreeForest.png") ;
+	private static final Image grassImage = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem8_Grass.png") ;
+	private static final Image grassImage2 = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem8_Grass2.png") ;
+	private static final Image rockImage = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem9_Rock.png") ;
 	private static final String jsonPath = dadosPath + "mapsField.json" ;
 
 	private FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions)
@@ -84,7 +85,7 @@ public class FieldMap extends GameMap
 			connections[6] = (int) (long) connectionIDs.get("rightBottom") ;
 			connections[7] = (int) (long) connectionIDs.get("rightTop") ;
 
-			Image image = Game.loadImage(Path.MAPS_IMG + "Map" + String.valueOf(id + 5) + ".png") ;
+			Image image = ImageLoader.loadImage(Path.MAPS_IMG + "Map" + String.valueOf(id + 5) + ".png") ;
 			Clip music = GameMap.musicForest ;
 
 			JSONObject collectibles = (JSONObject) mapData.get("Collectibles") ;

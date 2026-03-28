@@ -19,6 +19,7 @@ import NPC.NPCType;
 import items.Fab;
 import items.GeneralItem;
 import main.Game;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -35,7 +36,7 @@ public class CityMap extends GameMap
 		images = new ArrayList<>() ;
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
-			images.add(Game.loadImage(Path.MAPS_IMG + "Map" + String.valueOf(i) + ".png")) ;
+			images.add(ImageLoader.loadImage(Path.MAPS_IMG + "Map" + String.valueOf(i) + ".png")) ;
 		}
 	}
 	

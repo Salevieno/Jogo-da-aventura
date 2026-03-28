@@ -16,6 +16,7 @@ import liveBeings.Player;
 import main.Elements;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Path;
 import maps.GroundType;
 import utilities.Util;
@@ -29,7 +30,7 @@ public class GeneralItem extends Item
 	
 	private static final GeneralItem[] AllGeneralItems ;
 	
-	private static final Image generalItemIcon = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconGenItem.png") ;
+	private static final Image generalItemIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconGenItem.png") ;
 	
 	static
 	{

@@ -11,6 +11,7 @@ import graphics.Align;
 import graphics2.Draw;
 import liveBeings.Pet;
 import main.Game;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -24,10 +25,10 @@ public class PetItem extends Item
 	
 	private static final PetItem[] AllPetItems ;
 
-	private static final Image petLifePotion = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetLifePotion.png") ;
-	private static final Image petMPPotion = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetMPPotion.png") ;
-	private static final Image petFood = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetFood.png") ;
-	private static final Image petSet = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetSet.png") ;
+	private static final Image petLifePotion = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetLifePotion.png") ;
+	private static final Image petMPPotion = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetMPPotion.png") ;
+	private static final Image petFood = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetFood.png") ;
+	private static final Image petSet = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetSet.png") ;
 	
 	static
 	{

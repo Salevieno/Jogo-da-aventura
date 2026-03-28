@@ -13,6 +13,7 @@ import graphics.Align;
 import graphics.UtilAlignment;
 import liveBeings.PlayerActions;
 import main.Game;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -42,10 +43,10 @@ public abstract class GameWindow
 	protected String stdExit = KeyEvent.getKeyText(KeyEvent.VK_ESCAPE) ;	
 	protected double stdOpacity = 0.9 ;
 
-	protected static final Image buttonWindowUpImage = Game.loadImage(Path.WINDOWS_IMG + "moveUp.png") ;
-	protected static final Image buttonWindowDownImage = Game.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;
-	protected static final Image selectedButtonWindowUpImage = Game.loadImage(Path.WINDOWS_IMG + "selectedMoveUpSprite.png") ;
-	protected static final Image selectedButtonWindowDownImage = Game.loadImage(Path.WINDOWS_IMG + "selectedMoveDownSprite.png") ;
+	protected static final Image buttonWindowUpImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveUp.png") ;
+	protected static final Image buttonWindowDownImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;
+	protected static final Image selectedButtonWindowUpImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveUpSprite.png") ;
+	protected static final Image selectedButtonWindowDownImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveDownSprite.png") ;
 	protected static final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	protected static final Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	protected static final Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;

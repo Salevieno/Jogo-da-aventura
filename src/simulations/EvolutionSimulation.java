@@ -43,6 +43,7 @@ import main.Directions;
 import main.Game;
 import main.GamePanel;
 import main.GameTimer;
+import main.ImageLoader;
 import main.Log;
 import utilities.Util;
 import windows.PlayerAttributesWindow;
@@ -66,10 +67,10 @@ public abstract class EvolutionSimulation
 	private static List<GameButton> buttons ;
 
 	private static final String pathSimulation = "Simulation/" ;
-	private static final Image screenImage = Game.loadImage(pathSimulation + "SimulationScreen.png") ;
-	private static final Image buttonImage = Game.loadImage(pathSimulation + "ButtonGeneral.png") ;
-	private static final Image buttonSelectedImage = Game.loadImage(pathSimulation + "ButtonGeneralSelected.png") ;
-	private static final Image fightingImage = Game.loadImage(pathSimulation + "fightingIcon.png") ;
+	private static final Image screenImage = ImageLoader.loadImage(pathSimulation + "SimulationScreen.png") ;
+	private static final Image buttonImage = ImageLoader.loadImage(pathSimulation + "ButtonGeneral.png") ;
+	private static final Image buttonSelectedImage = ImageLoader.loadImage(pathSimulation + "ButtonGeneralSelected.png") ;
+	private static final Image fightingImage = ImageLoader.loadImage(pathSimulation + "fightingIcon.png") ;
 	
 	
 	private static int BattleResultsPlayerLife = 0 ;

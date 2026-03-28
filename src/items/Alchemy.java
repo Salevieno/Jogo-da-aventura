@@ -8,7 +8,7 @@ import attributes.PersonalAttributes;
 import graphics.Align;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
-import main.Game;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -21,9 +21,9 @@ public class Alchemy extends Item
 	private static final Alchemy[] AllAlchemy ;
 	
 	private static final String pathImg = "\\Windows\\bagIcons\\" ;
-	private static final Image HerbIcon = Game.loadImage(pathImg + "IconHerb.png") ;
-	private static final Image WoodIcon = Game.loadImage(pathImg + "IconWood.png") ;
-	private static final Image MetalIcon = Game.loadImage(pathImg + "IconMetal.png") ;
+	private static final Image HerbIcon = ImageLoader.loadImage(pathImg + "IconHerb.png") ;
+	private static final Image WoodIcon = ImageLoader.loadImage(pathImg + "IconWood.png") ;
+	private static final Image MetalIcon = ImageLoader.loadImage(pathImg + "IconMetal.png") ;
 	
 	static
 	{

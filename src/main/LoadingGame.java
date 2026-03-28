@@ -22,8 +22,8 @@ public abstract class LoadingGame
     static
     {
 		Point startButtonPos = Util.translate(Game.getScreen().getCenter(), 0, 80) ;
-    	Image startImage = Game.loadImage(Path.OPENING_IMG + "Start.png") ;
-    	Image startImageSelected = Game.loadImage(Path.OPENING_IMG + "StartSelected.png") ;
+    	Image startImage = ImageLoader.loadImage(Path.OPENING_IMG + "Start.png") ;
+    	Image startImageSelected = ImageLoader.loadImage(Path.OPENING_IMG + "StartSelected.png") ;
 		ButtonFunction startAction = () -> { loadingStep = 12 ;} ;
     	startButton = new GameButton(startButtonPos, Align.center, "start game", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;

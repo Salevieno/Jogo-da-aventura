@@ -56,6 +56,7 @@ import main.Game;
 import main.GamePanel;
 import main.GameStates;
 import main.GameTimer;
+import main.ImageLoader;
 import main.Log;
 import main.Path;
 import maps.Collectible;
@@ -121,8 +122,8 @@ public class Player extends LiveBeing
 	public static final int maxLevel = 99 ;
 	public static final double stepDuration = 0.25 ;
 	private static final double fishingChance = 0.1 ;
-    private static final Image tigerImg = Game.loadImage(Path.PLAYER_IMG + "Tiger.png") ;
-	private static final Image coinImg = Game.loadImage(Path.PLAYER_IMG + "CoinIcon.png") ;
+    private static final Image tigerImg = ImageLoader.loadImage(Path.PLAYER_IMG + "Tiger.png") ;
+	private static final Image coinImg = ImageLoader.loadImage(Path.PLAYER_IMG + "CoinIcon.png") ;
 	// private static final SpriteAnimation magicBlissAni = new SpriteAnimation(Path.PLAYER_IMG + "MagicBlissSprite.png", new Point(), Align.center, 5, 0.15) ;
     private static final SpriteAnimation[] collectingAnimations ;
 

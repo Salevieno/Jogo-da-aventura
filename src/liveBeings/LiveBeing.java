@@ -34,6 +34,7 @@ import main.Elements;
 import main.Game;
 import main.GamePanel;
 import main.GameTimer;
+import main.ImageLoader;
 import main.Log;
 import main.Music;
 import main.Path;
@@ -79,10 +80,10 @@ public abstract class LiveBeing implements Drawable
 	
 	private static int damageStyle = 0 ;
 	private static final int MAX_COMBO_SIZE = 10 ;
-	private static final Image attImage = Game.loadImage(Path.PLAYER_IMG + "Attributes.png") ;
-	private static final Image drunkImage = Game.loadImage(Path.STATUS_IMG + "Drunk.png") ;
-	private static final Image defendingImage = Game.loadImage(Path.BATTLE_IMG + "ShieldIcon.png") ;
-	private static final Image powerBarImage = Game.loadImage(Path.LIVE_BEINGS_IMG + "PowerBar.png") ;
+	private static final Image attImage = ImageLoader.loadImage(Path.PLAYER_IMG + "Attributes.png") ;
+	private static final Image drunkImage = ImageLoader.loadImage(Path.STATUS_IMG + "Drunk.png") ;
+	private static final Image defendingImage = ImageLoader.loadImage(Path.BATTLE_IMG + "ShieldIcon.png") ;
+	private static final Image powerBarImage = ImageLoader.loadImage(Path.LIVE_BEINGS_IMG + "PowerBar.png") ;
 	public static final String[] battleKeys = new String[] {"Y", "U"} ;	
 	public static final List<String> spellKeys = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12") ;
 	protected static final SpriteAnimation levelUpAni = new SpriteAnimation(Path.PLAYER_IMG + "LevelUpSprite.png", new Point(), Align.bottomCenter, false, 45, 0.2) ;

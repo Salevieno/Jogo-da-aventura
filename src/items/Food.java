@@ -8,7 +8,7 @@ import attributes.PersonalAttributes;
 import graphics.Align;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
-import main.Game;
+import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
@@ -27,7 +27,7 @@ public class Food extends Item
 	{
 		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Food.csv") ;
 		allFood = new Food[input.size()] ;
-		iconFoodBerry = Game.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconFoodBerry.png") ;
+		iconFoodBerry = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconFoodBerry.png") ;
 		for (int p = 0; p <= allFood.length - 1; p += 1)
 		{
 			allFood[p] = new Food(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3],
