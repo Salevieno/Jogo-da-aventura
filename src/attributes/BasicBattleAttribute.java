@@ -8,7 +8,14 @@ public class BasicBattleAttribute extends LiveBeingAttribute
 {
 	private double baseValue ;	// base value of the attribute
 	private double train ;		// training value of the attribute (increases with use)
-	
+
+	public BasicBattleAttribute(double baseValue)
+	{
+		super(0.0);
+		this.baseValue = baseValue;
+		this.train = 0.0 ;
+	}
+
 	public BasicBattleAttribute(double baseValue, double bonus, double train)
 	{
 		super(bonus);

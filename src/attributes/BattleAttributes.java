@@ -25,10 +25,43 @@ public class BattleAttributes
 	private BasicBattleAttribute atkSpeed ;
 	private BasicBattleAttribute knockbackPower ;
 	private Map<Elements, Double> elemResistanceMult ;
-	
+
+	public BattleAttributes(double phyAtk, double magAtk, double phyDef, double magDef, double dex, double agi,
+			double critAtk, double critDef,
+			double stunAtkChance, double stunDefChance, double stunDuration,
+			double blockAtkChance, double blockDefChance, double blockDuration,
+			double bloodAtkChance, double bloodAtk, double bloodDefChance, double bloodDef, double bloodDuration,
+			double poisonAtkChance, double poisonAtk, double poisonDefChance, double poisonDef, double poisonDuration,
+			double silenceAtkChance, double silenceDefChance, double silenceDuration,
+			double atkSpeed, double knockbackPower)
+	{
+		this.phyAtk = new BasicBattleAttribute(phyAtk) ;
+		this.magAtk = new BasicBattleAttribute(magAtk) ;
+		this.phyDef = new BasicBattleAttribute(phyDef) ;
+		this.magDef = new BasicBattleAttribute(magDef) ;
+		this.dex = new BasicBattleAttribute(dex) ;
+		this.agi = new BasicBattleAttribute(agi) ;
+		this.critAtk = new BasicBattleAttribute(critAtk) ;
+		this.critDef = new BasicBattleAttribute(critDef) ;
+		this.stun = new BattleSpecialAttribute(stunAtkChance, stunDefChance, stunDuration) ;
+		this.block = new BattleSpecialAttribute(bloodAtkChance, bloodDefChance, bloodDuration) ;
+		this.blood = new BattleSpecialAttributeWithDamage(bloodAtkChance, bloodDefChance, bloodAtk, bloodDef, bloodDuration) ;
+		this.poison = new BattleSpecialAttributeWithDamage(poisonAtkChance, poisonDefChance, poisonAtk, poisonDef, poisonDuration) ;
+		this.silence = new BattleSpecialAttribute(silenceAtkChance, silenceDefChance, silenceDuration) ;
+		this.atkSpeed = new BasicBattleAttribute(atkSpeed) ;
+		this.knockbackPower = new BasicBattleAttribute(knockbackPower) ;
+		elemResistanceMult = new HashMap<>() ;
+		for (Elements elem : Elements.values())
+		{
+			elemResistanceMult.put(elem, 1.0) ;
+		}
+	}
+
 	public BattleAttributes(BasicBattleAttribute phyAtk, BasicBattleAttribute magAtk, BasicBattleAttribute phyDef, BasicBattleAttribute magDef, BasicBattleAttribute dex, BasicBattleAttribute agi,
 			BasicBattleAttribute critAtk, BasicBattleAttribute critDef,
-			BattleSpecialAttribute stun, BattleSpecialAttribute block, BattleSpecialAttributeWithDamage blood, BattleSpecialAttributeWithDamage poison, BattleSpecialAttribute silence,
+			BattleSpecialAttribute stun, BattleSpecialAttribute block,
+			BattleSpecialAttributeWithDamage blood, BattleSpecialAttributeWithDamage poison,
+			BattleSpecialAttribute silence,
 			BasicBattleAttribute atkSpeed, BasicBattleAttribute knockbackPower)
 	{
 		this.phyAtk = phyAtk ;

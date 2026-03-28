@@ -20,6 +20,7 @@ import items.Potion;
 import items.Recipe;
 import liveBeings.Buff;
 import liveBeings.Creature;
+import liveBeings.CreatureData;
 import liveBeings.CreatureType;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -51,7 +52,7 @@ public class SpellTest
 		Spell.load(Languages.portugues, Buff.allBuffs, Buff.allDebuffs);
 		Item.load();
 		Recipe.load(Item.allItems) ;
-		CreatureType.load(Languages.portugues, 2);
+		CreatureData.load() ; // TODO level de dificuldade tem que ser 2 aqui
 
 		knightLevel0 = new Player("Player", "", 0) ;
 		mageLevel0 = new Player("Player", "", 1) ;

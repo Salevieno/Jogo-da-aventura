@@ -44,6 +44,7 @@ import items.QuestItem;
 import items.Recipe;
 import liveBeings.Buff;
 import liveBeings.Creature;
+import liveBeings.CreatureData;
 import liveBeings.CreatureType;
 import liveBeings.HotKeysBar;
 import liveBeings.LiveBeing;
@@ -434,7 +435,7 @@ public class Game
 				return;
 
 			case 4:
-				CreatureType.load(gameLanguage, difficultLevel);
+				CreatureData.load() ;
 				logInitializationTime("creature types", initialTime);
 				return;
 

@@ -10,7 +10,16 @@ public class BattleSpecialAttribute
 	protected double basicDefChanceBonus ;
 	protected double duration ;
 	
-	
+
+	public BattleSpecialAttribute(double basicAtkChance, double basicDefChance, double duration)
+	{
+		this.basicAtkChance = basicAtkChance;
+		this.basicAtkChanceBonus = 0.0;
+		this.basicDefChance = basicDefChance;
+		this.basicDefChanceBonus = 0.0;
+		this.duration = duration;
+	}
+
 	public BattleSpecialAttribute(double basicAtkChance, double basicAtkChanceBonus, double basicDefChance,
 			double basicDefChanceBonus, double duration)
 	{
