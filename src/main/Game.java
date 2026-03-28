@@ -16,7 +16,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import Buildings.Building;
-import Buildings.BuildingType;
 import NPC.NPC;
 import NPC.NPCType;
 import UI.GameButton;
@@ -102,7 +101,6 @@ public class Game
 	private static FieldMap[] fieldMaps;
 	private static SpecialMap[] specialMaps;
 	private static GameMap[] allMaps;
-	private static BuildingType[] buildingTypes;
 	private static NPCType[] npcTypes;
 	private static Item[] allItems;
 	private static Spell[] allSpells;
@@ -451,7 +449,6 @@ public class Game
 				return;
 
 			case 7:
-				buildingTypes = BuildingType.initialize();
 				logInitializationTime("building types", initialTime);
 				return;
 
@@ -461,7 +458,7 @@ public class Game
 				return;
 
 			case 9:
-				cityMaps = CityMap.load(buildingTypes);
+				cityMaps = CityMap.load();
 				fieldMaps = FieldMap.load(npcTypes);
 				specialMaps = SpecialMap.load(Item.allItems);
 				allMaps = GameMap.assemble(cityMaps, fieldMaps, specialMaps);

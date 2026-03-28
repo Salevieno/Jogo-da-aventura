@@ -2,6 +2,7 @@ package maps;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import Buildings.Building;
-import Buildings.BuildingType;
 import Buildings.Forge;
 import Buildings.Sign;
 import NPC.NPC;
@@ -20,6 +20,7 @@ import items.Fab;
 import items.GeneralItem;
 import main.Game;
 import main.ImageLoader;
+import main.Music;
 import main.Path;
 import utilities.Util;
 
@@ -29,16 +30,7 @@ public class CityMap extends GameMap
 
 	private final Sign sign ;
 	private final Forge forge ;
-	private static final List<Image> images ;
-	
-	static
-	{
-		images = new ArrayList<>() ;
-		for (int i = 0 ; i <= 5 - 1 ; i += 1)
-		{
-			images.add(ImageLoader.loadImage(Path.MAPS_IMG + "Map" + String.valueOf(i) + ".png")) ;
-		}
-	}
+	private static final Clip musicCities = Music.musicFileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
 	
 	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, Point forgePos)
 	{
@@ -80,13 +72,13 @@ public class CityMap extends GameMap
 		return npcs ;
 	}
 	
-	private static List<Building> loadBuildings(BuildingType[] buildingTypes, JSONObject map)
+	private static List<Building> loadBuildings(JSONObject map)
 	{		
 		JSONArray listBuildingObjs = (JSONArray) map.get("Buildings") ;
 		List<Building> buildings = new ArrayList<>() ;
 		for (Object buildingObj : listBuildingObjs)
 		{
-			Building newBuilding = Building.load(buildingTypes, (JSONObject) buildingObj) ;
+			Building newBuilding = Building.load((JSONObject) buildingObj) ;
 			buildings.add(newBuilding) ;
 		}
 		
@@ -109,7 +101,7 @@ public class CityMap extends GameMap
 		return connections ;
 	}
 
-	public static CityMap[] load(BuildingType[] buildingTypes)
+	public static CityMap[] load()
 	{
 		JSONArray input = Util.readJsonArray(dadosPath + "mapsCity.json") ;
 		CityMap[] cityMaps = new CityMap[input.size()] ;
@@ -122,14 +114,13 @@ public class CityMap extends GameMap
 			int continentID = (int) (long) map.get("Continent") ;
 			Continents continent = Continents.values()[continentID] ;
 			int[] connections = loadConnections(map) ;
-			Image image = CityMap.images.get(id) ;
-			Clip music = GameMap.musicCities ;
-			List<Building> buildings = loadBuildings(buildingTypes, map) ;
+			Image image = ImageLoader.loadImage(Path.MAPS_IMG + "Map" + String.valueOf(id) + ".png") ;
+			List<Building> buildings = loadBuildings(map) ;
 			List<NPC> npcs = loadNPCs(map) ;
 			Point signPos = Game.getScreen().getPointWithinBorders((Double) ((JSONObject) map.get("signPos")).get("x"), (Double) ((JSONObject) map.get("signPos")).get("y")) ;
 			Point forgePos =Game.getScreen().getPointWithinBorders((Double) ((JSONObject) map.get("forgePos")).get("x"), (Double) ((JSONObject) map.get("forgePos")).get("y")) ;
 
-			cityMaps[id] = new CityMap(id, name, continent, connections, image, music, buildings, npcs, signPos, forgePos) ;
+			cityMaps[id] = new CityMap(id, name, continent, connections, image, musicCities, buildings, npcs, signPos, forgePos) ;
 		}
 
 		return cityMaps ;

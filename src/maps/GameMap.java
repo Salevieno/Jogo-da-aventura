@@ -63,7 +63,6 @@ public class GameMap
 	protected static final SpriteAnimation beachGif ;
 	
 	public static final Map<Item, Double> allDiggingItems ;
-	public static final Clip musicCities ;
 	public static final Clip musicForest ;
 	public static final Clip musicSpecial ;
 
@@ -89,7 +88,6 @@ public class GameMap
 		beachGif = new SpriteAnimation(Path.MAPS_IMG + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, 12, 15) ;
 		infoWindow = ImageLoader.loadImage(Path.WINDOWS_IMG + "MapInfo.png") ;
 
-		musicCities = Music.musicFileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
 		musicForest = Music.musicFileToClip(new File(Path.MUSIC + "floresta.wav").getAbsoluteFile()) ;
 		musicSpecial = Music.musicFileToClip(new File(Path.MUSIC + "12-Special.wav").getAbsoluteFile()) ;
 		

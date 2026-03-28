@@ -25,24 +25,34 @@ import utilities.Util;
 
 public class Building implements Drawable
 {
-	private final BuildingType type ;
+	private final BuildingTypes type ;
 	private final Point pos ;
-	private List<NPC> npcs ;
-	private List<Collider> colliders ;
+	private final List<NPC> npcs ;
+	private final List<Collider> colliders ;
 
-	public Building(BuildingType type, Point pos)
+	private Building(BuildingTypes type, Point pos)
 	{
 		this.type = type ;
 		this.pos = pos ;
-		addStandardNPCs() ;
-		colliders = new ArrayList<>() ;
+		this.npcs = new ArrayList<>() ;
+		this.colliders = new ArrayList<>() ;
+
+		if (Game.getNPCTypes() == null) { Log.error("Ao adicionar NPCs nas construções: tipos de NPC não existem") ; return ;}
+		if (Game.getNPCTypes().length <= 9) { Log.error("Ao adicionar NPCs nas construções: não há tipos de NPCs suficientes") ; return ;}
+
+		switch (type)
+		{
+			case hospital: npcs.add(new NPC(Game.getNPCTypes()[0], Util.translate(pos, 50, -20))) ; break ;
+			case store: 
+				npcs.add(new NPC(Game.getNPCTypes()[1], Util.translate(pos, 120, -60))) ;
+				npcs.add(new NPC(Game.getNPCTypes()[2], Util.translate(pos, 80, -60))) ;
+				
+				break ;
+			case bank: npcs.add(new NPC(Game.getNPCTypes()[4], Util.translate(pos, 40, -30))) ; break ;
+			case craft: npcs.add(new NPC(Game.getNPCTypes()[8], Util.translate(pos, 100, -30))) ; break ;
+			default: break;
+		}
 //		addColliders() ;
-	}
-	
-	public Building(BuildingType type, Point pos, List<NPC> npcs)
-	{
-		this(type, pos) ;
-		this.npcs = npcs ;
 	}
 	
 	// private void addColliders()
@@ -63,29 +73,16 @@ public class Building implements Drawable
 	// 	}
 	// }
 
-	public static Building load(BuildingType[] buildingTypes, JSONObject buildingObj)
+	public static Building load(JSONObject buildingObj)
 	{
-		BuildingTypes buildingName = BuildingTypes.valueOf((String) buildingObj.get("name")) ;
+		BuildingTypes type = BuildingTypes.valueOf((String) buildingObj.get("name")) ;
 		double posX = (Double) ((JSONObject) buildingObj.get("pos")).get("x") ;
 		double posY = (Double) ((JSONObject) buildingObj.get("pos")).get("y") ;
-		Point buildingPos = Game.getScreen().getPointWithinBorders(posX, posY) ;
+		Point pos = Game.getScreen().getPointWithinBorders(posX, posY) ;
 
-		BuildingType buildingType = null ;
-		for (BuildingType type : buildingTypes)
-		{
-			if (!buildingName.equals(type.getType()))
-			{
-				continue ; 
-			}
-
-			buildingType = type ;
-		}
-
-		return new Building(buildingType, buildingPos) ;
+		return new Building(type, pos) ;
 	}
 
-	
-	public BuildingType getType() { return type ;}
 	public Point getPos() { return pos ;}
 	public List<NPC> getNPCs() {return npcs ;}
 	public List<Collider> getColliders() { return colliders ;}
@@ -96,48 +93,16 @@ public class Building implements Drawable
 		return Util.isInside(pos, topLeftPos, Util.getSize(type.getExteriorImage())) ;
 	}
 	public boolean hasNPCs() {return npcs != null ;}
-		
-	public void addStandardNPCs()
-	{
 
-		if (Game.getNPCTypes() == null) { Log.error("Ao adicionar NPCs nas construções: tipos de NPC não existem") ; return ;}
-		if (Game.getNPCTypes().length <= 0) { Log.error("Ao adicionar NPCs nas construções: não há nenhum tipo de NPC") ; return ;}
-		
-		npcs = new ArrayList<>() ;
-		switch (type.getType())
-		{
-			case hospital: npcs.add(new NPC(Game.getNPCTypes()[0], Util.translate(pos, 50, -20))) ; break ;
-			case store: 
-				npcs.add(new NPC(Game.getNPCTypes()[1], Util.translate(pos, 120, -60))) ;
-				npcs.add(new NPC(Game.getNPCTypes()[2], Util.translate(pos, 80, -60))) ;
-				
-				break ;
-			case bank: npcs.add(new NPC(Game.getNPCTypes()[4], Util.translate(pos, 40, -30))) ; break ;
-			case craft: npcs.add(new NPC(Game.getNPCTypes()[8], Util.translate(pos, 100, -30))) ; break ;
-			default: break;
-		}
-	}
-	
 	public void displayNPCs(Hitbox playerHitbox)
 	{
-		if (npcs == null) { return ;}
+		if (!hasNPCs()) { return ;}
 		
-		for (NPC npc : npcs)
-		{
-			npc.display(playerHitbox) ;
-		}
+		npcs.forEach(npc -> npc.display(playerHitbox)) ;
 	}
-	
+
 	public void display(Hitbox playerHitbox, Point playerPos, int cityID)
 	{		
-		if (type.getInteriorImage() == null)
-		{
-			GamePanel.DP.drawImage(type.getExteriorImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
-			displayNPCs(playerHitbox) ;
-			
-			return ;
-		}
-		
 		if (!isInside(playerPos))
 		{
 			GamePanel.DP.drawImage(type.getExteriorImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;			
@@ -152,7 +117,6 @@ public class Building implements Drawable
 		{
 			GamePanel.DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Palette.colors[0], null) ;
 		}
-		
 	}
 
 	public void display()
@@ -160,12 +124,9 @@ public class Building implements Drawable
 		display(Game.getPlayer().getHitbox(), Game.getPlayer().getPos(), Arrays.asList(Game.getMaps()).indexOf(Game.getPlayer().getMap())) ;
 	}
 
-
 	@Override
 	public String toString()
 	{
 		return "Building [type=" + type + ", pos=" + pos + ", npcs=" + npcs + ", colliders=" + colliders + "]";
 	}
-	
-	
 }
