@@ -75,7 +75,10 @@ public abstract class SideBar
 			player.switchOpenClose(player.getQuestWindow()) ;
 		} ; 
 		actions[2] = () -> { player.switchOpenClose(player.getBag()) ;} ; 
-		actions[3] = () -> { } ; // player.switchOpenClose(player.getSettings()) ;
+		actions[3] = () -> { 
+			Game.getPauseWindow().updateButtons() ;
+			Game.getPauseWindow().switchOpenClose() ;
+		} ;
 		actions[4] = () -> { MainGame3_4.closeGame() ;} ;
 
 		SpellsBar.updateSpells(player.getActiveSpells()) ;

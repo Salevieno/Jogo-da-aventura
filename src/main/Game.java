@@ -106,6 +106,7 @@ public class Game
 	private static Spell[] allSpells;
 	private static Quest[] allQuests;
 
+	// TODO unificar pausewindow com as outras windows
 	private static final PauseWindow pauseWindow;
 	public static final List<String> arrowKeys = List.of(KeyEvent.getKeyText(KeyEvent.VK_UP),
 															KeyEvent.getKeyText(KeyEvent.VK_LEFT),
@@ -145,6 +146,7 @@ public class Game
 	public static boolean getShouldRepaint() { return shouldRepaint ;}
 	public static int getSaveSlotInUse() { return saveSlotInUse ;}
 	public static void setSaveSlotInUse(int newSaveSlotInUse) { saveSlotInUse = newSaveSlotInUse ;}
+	public static PauseWindow getPauseWindow() { return pauseWindow ;}
 	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
 	public static void setState(GameStates newState) { state = newState ;}
 	public static void switchToMainState() { state = mainState ;}
