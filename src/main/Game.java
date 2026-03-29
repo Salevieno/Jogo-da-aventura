@@ -8,12 +8,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import Buildings.Building;
 import NPC.NPC;
@@ -40,13 +36,8 @@ import items.Item;
 import items.PetItem;
 import items.Potion;
 import items.QuestItem;
-import items.Recipe;
-import liveBeings.Buff;
 import liveBeings.Creature;
-import liveBeings.CreatureData;
-import liveBeings.CreatureType;
 import liveBeings.HotKeysBar;
-import liveBeings.LiveBeing;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.Spell;
@@ -55,10 +46,8 @@ import maps.CityMap;
 import maps.Continents;
 import maps.FieldMap;
 import maps.GameMap;
-import maps.SpecialMap;
 import screen.Screen;
 import screen.SideBar;
-import screen.Sky;
 import simulations.EvolutionSimulation;
 import utilities.Util;
 import windows.BankWindow;
@@ -99,7 +88,6 @@ public class Game
 	private static final Screen screen;
 	private static CityMap[] cityMaps;
 	private static FieldMap[] fieldMaps;
-	private static SpecialMap[] specialMaps;
 	private static GameMap[] allMaps;
 	private static NPCType[] npcTypes;
 	private static Item[] allItems;
@@ -149,6 +137,13 @@ public class Game
 	public static PauseWindow getPauseWindow() { return pauseWindow ;}
 	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
 	public static void setState(GameStates newState) { state = newState ;}
+	public static GameTimer getDayTimer() { return dayTimer ;}
+	public static void setCityMaps(CityMap[] cityMaps) { Game.cityMaps = cityMaps ;}
+	public static void setFieldMaps(FieldMap[] fieldMaps) { Game.fieldMaps = fieldMaps ;}
+	public static void setAllMaps(GameMap[] allMaps) { Game.allMaps = allMaps ;}
+	public static void setNpcTypes(NPCType[] npcTypes) { Game.npcTypes = npcTypes ;}
+	public static void setAllQuests(Quest[] allQuests) { Game.allQuests = allQuests ;}
+
 	public static void switchToMainState() { state = mainState ;}
 	public static double dayTimeRate() { return dayTimer.rate() <= 0.5 ? dayTimer.rate() + 0.5 : dayTimer.rate() - 0.5 ;}
 
@@ -220,39 +215,6 @@ public class Game
 			pet.getBA().getAgi().incBaseValue(1 * spellLevel);
 		}
 		SideBar.addPetButton(player, pet);
-	}
-
-	private static void loadAllText()
-	{
-
-		JSONObject textData = Util.readJsonObject(Path.TEXT_BR);
-
-		Iterator<?> iterator = textData.keySet().iterator();
-
-		while (iterator.hasNext())
-		{
-			Object key = iterator.next();
-			TextCategories catName = TextCategories.catFromBRName((String) key);
-
-			if (catName == null) { continue ;}
-
-			if (catName.equals(TextCategories.npcs))
-			{
-				NPC.loadText(textData, key, allText, catName);
-				continue;
-			}
-
-			JSONArray listText = (JSONArray) textData.get(key);
-
-			List<String> listValues = new ArrayList<>();
-			for (int j = 0; j <= listText.size() - 1; j += 1)
-			{
-				listValues.add((String) listText.get(j));
-			}
-
-			allText.put(catName, listValues.toArray(new String[] {}));
-		}
-
 	}
 
 	private static void initializeTestMode()
@@ -398,107 +360,6 @@ public class Game
 
 	}
 
-	private static void logInitializationTime(String item, long initialTime)
-	{
-		long elapsedTime = (long) ((System.nanoTime() - initialTime) * Math.pow(10,  -6)) ;
-		Log.info("Loaded " + item + " in " + elapsedTime + " ms") ;
-	}
-
-	protected static void initialize(int step)
-	{
-
-		long initialTime = System.nanoTime();
-
-		switch (step)
-		{
-			case 0:
-				screen.setBorders(new int[] { 0 + Screen.borderOffset, Sky.height + Screen.borderOffset,
-						screen.getSize().width - 60 - Screen.borderOffset, screen.getSize().height - Screen.borderOffset });
-				screen.setMapCenter();
-				logInitializationTime("initial stuff", initialTime) ;
-				return;
-
-			case 1:
-				loadAllText();
-				logInitializationTime("text", initialTime);
-				return;
-
-			case 2:
-				Buff.loadBuffs();
-				Buff.loadDebuffs();
-				Spell.load(gameLanguage, Buff.allBuffs, Buff.allDebuffs);
-				logInitializationTime("spells", initialTime);
-				return;
-
-			case 3:
-				Item.load();
-				logInitializationTime("items", initialTime);
-				return;
-
-			case 4:
-				CreatureData.load() ;
-				logInitializationTime("creature types", initialTime);
-				return;
-
-			case 5:
-				Recipe.load(Item.allItems);
-				logInitializationTime("recipes", initialTime);
-				return;
-
-			case 6:
-				npcTypes = NPCType.load(gameLanguage);
-				logInitializationTime("npc types", initialTime);
-				return;
-
-			case 7:
-				logInitializationTime("building types", initialTime);
-				return;
-
-			case 8:
-				allQuests = Quest.load(gameLanguage, player.getJob(), CreatureType.all, Item.allItems);
-				logInitializationTime("quests", initialTime);
-				return;
-
-			case 9:
-				cityMaps = CityMap.load();
-				fieldMaps = FieldMap.load(npcTypes);
-				specialMaps = SpecialMap.load(Item.allItems);
-				allMaps = GameMap.assemble(cityMaps, fieldMaps, specialMaps);
-				logInitializationTime("maps", initialTime);
-				return;
-
-			case 10:
-				NPC.setIDs();
-
-				// player.InitializeSpells() ;
-				if (player.getSpells().isEmpty())
-				{
-					player.setSpells(Player.jobSpells(player.getJob()));
-				}
-				player.setMap(Game.getMaps()[player.getJob()]);
-				player.setPos(new Point2D.Double(Game.getScreen().getCenter().x, Game.getScreen().getCenter().y));
-				LiveBeing.updateDamageAnimation(settings.getDamageAnimation());
-				SideBar.initialize();
-
-				if (settings.getMusicIsOn())
-				{
-					Music.SwitchMusic(player.getMap().getMusic());
-				}
-				dayTimer.start();
-				logInitializationTime("final stuff", initialTime);
-
-				if (Game.testMode)
-				{
-					Game.initializeTestMode();
-				}
-
-				return;
-
-			default:
-				return;
-		}
-
-	}
 
 	private void activateCounters()
 	{
@@ -780,7 +641,12 @@ public class Game
 			return;
 
 		case loading:
-			LoadingGame.run(player, GamePanel.getMousePos());
+			LoadingGame.load(player, GamePanel.getMousePos(), gameLanguage);
+			
+			if (Game.testMode && LoadingGame.isOver())
+			{
+				Game.initializeTestMode();
+			}
 			shouldRepaint = true;
 			return;
 
