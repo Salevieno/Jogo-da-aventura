@@ -485,7 +485,7 @@ public class Game
 					Music.SwitchMusic(player.getMap().getMusic());
 				}
 				dayTimer.start();
-				logInitializationTime("last stuff", initialTime);
+				logInitializationTime("final stuff", initialTime);
 
 				if (Game.testMode)
 				{

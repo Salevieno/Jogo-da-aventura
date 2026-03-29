@@ -37,7 +37,22 @@ public abstract class LoadingGame
 	
 	public static void run(Player player, Point mousePos)
 	{
-		display(player.getCurrentAction(), mousePos) ;
+		String message = switch(loadingStep)
+		{
+			case -1 -> "Loading initial stuff..." ;
+			case 0 -> "Loading text..." ;
+			case 1 -> "Loading spells..." ;
+			case 2 -> "Loading items..." ;
+			case 3 -> "Loading creature types..." ;
+			case 4 -> "Loading recipes..." ;
+			case 5 -> "Loading npc types..." ;
+			case 6 -> "Loading building types..." ;
+			case 7 -> "Loading quests..." ;
+			case 8 -> "Loading maps..." ;
+			case 9 -> "Loading final stuff..." ;
+			default -> "" ;
+		};
+		display(player.getCurrentAction(), mousePos, message) ;
 		if (!loadingIsOver())
 		{
 			Game.initialize(loadingStep) ;
@@ -64,7 +79,7 @@ public abstract class LoadingGame
 		}
 	}
 	
-	private static void display(String action, Point mousePos)
+	private static void display(String action, Point mousePos, String message)
 	{
 //			Color textColor = Palette.colors[0] ;
 //			Point moveInfoTopLeft = new Point(40, 60) ;
@@ -110,6 +125,7 @@ public abstract class LoadingGame
 			loadingAni.setPos(loadingTextCenter) ;
 			loadingAni.activateIfInactive() ;
 			loadingAni.display(GamePanel.DP);
+			GamePanel.DP.drawText(Util.translate(Game.getScreen().getCenter(), 0, 30), Align.center, message, Palette.colors[3]);
 		}
 
 		if (startButton.isActive())
