@@ -54,7 +54,7 @@ public class MapMoveTest
 		moveNames.put(7, "rightTop") ;
 		
 //		Game.initalizeMapsTest() ;
-		GameMap[] maps = Game.getMaps() ;
+		GameMap[] maps = Game.getAllMaps() ;
 		for (GameMap map : maps)
 		{
 			Log.info(map.getName());

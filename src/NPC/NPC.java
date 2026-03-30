@@ -225,7 +225,7 @@ public class NPC
 	public void resetMenu() { menu = 0 ;}
 	public static void setIDs()
 	{
-		GameMap[] allMaps = Game.getMaps() ;
+		GameMap[] allMaps = Game.getAllMaps() ;
 		int i = 0 ;
 
 		for (GameMap map : allMaps)
@@ -244,7 +244,7 @@ public class NPC
 	}
 	public static int getQuestNPCid(NPC questNPC)
 	{
-		GameMap[] allMaps = Game.getMaps() ;
+		GameMap[] allMaps = Game.getAllMaps() ;
 		int questId = 0 ;
 
 		for (GameMap map : allMaps)
@@ -645,14 +645,14 @@ public class NPC
 		// proTODO usar o move to map
 		if (player.getMap().getName().equals("Forest 2"))
 		{
-			player.setMap(Game.getMaps()[30]) ;
+			player.setMap(Game.getAllMaps()[30]) ;
 			// player.setPos(Util.translate(pos, type.getImage().getWidth(null), 0)) ;
 			return ;
 		}
 
 		if (player.getMap().getName().equals("Cave 1"))
 		{ 
-			player.setMap(Game.getMaps()[6]) ;
+			player.setMap(Game.getAllMaps()[6]) ;
 			// player.setPos(Util.translate(pos, type.getImage().getWidth(null), 0)) ;
 			return ;
 		}
@@ -702,13 +702,13 @@ public class NPC
 		{
 			if (player.getMap().getName().equals("Forest 13"))
 			{
-				player.setMap(Game.getMaps()[40]) ;
+				player.setMap(Game.getAllMaps()[40]) ;
 				// player.setPos(Game.getScreen().pos(0.2, 0.8)) ;
 				return ;
 			}
 			if (player.getMap().getName().equals("Island 1"))
 			{
-				player.setMap(Game.getMaps()[17]) ;
+				player.setMap(Game.getAllMaps()[17]) ;
 				// player.setPos(Game.getScreen().pos(0.8, 0.8)) ;
 				return ;
 			}

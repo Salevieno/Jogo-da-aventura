@@ -40,6 +40,7 @@ import utilities.Util;
 
 public class GameMap
 {
+	protected int id ;
 	protected String name ;
 	protected Continents continent ;
 	protected int[] connections ;
@@ -94,8 +95,9 @@ public class GameMap
 		// Log.diggingItems(allDiggingItems) ;
 	}
 	
-	public GameMap(String Name, Continents continent, int[] Connections, Image image, Clip music, List<Building> building, List<NPC> npc)
+	public GameMap(int id, String Name, Continents continent, int[] Connections, Image image, Clip music, List<Building> building, List<NPC> npc)
 	{
+		this.id = id ;
 		this.name = Name ;
 		this.continent = continent ;
 		this.connections = Connections ;
@@ -380,6 +382,7 @@ public class GameMap
  	}
 	
 
+	public int getID() {return id ;}
 	public String getName() {return name ;}
 	public Continents getContinent() {return continent ;}
 	public Image getimage() {return image ;}

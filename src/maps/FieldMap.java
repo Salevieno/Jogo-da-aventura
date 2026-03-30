@@ -48,16 +48,16 @@ public class FieldMap extends GameMap
 	private static final Image rockImage = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem9_Rock.png") ;
 	private static final String jsonPath = dadosPath + "mapsField.json" ;
 
-	private FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions)
+	private FieldMap(int id, String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions)
 	{
-		super(name, continent, connections, image, music, null, npcs) ;
+		super(id, name, continent, connections, image, music, null, npcs) ;
 		this.groundRegions = groundRegions ;
 		this.level = collectibleLevel ;
 		this.npcs = npcs ;
 	}
-	private FieldMap(String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs)
+	private FieldMap(int id, String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs)
 	{
-		this(name, continent, connections, image, music, collectibleLevel, npcs, null) ;
+		this(id, name, continent, connections, image, music, collectibleLevel, npcs, null) ;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -101,7 +101,7 @@ public class FieldMap extends GameMap
 			List<NPC> npcs = FieldMap.createQuestNPCs(id, npcTypes) ;
 			List<GroundRegion> groundRegions = groundRegionsFromJson((JSONObject) mapData.get("GroundRegions")) ;
 
-			FieldMap map = new FieldMap(name, continent, connections, image, music, collectibleLevel, npcs, groundRegions) ;
+			FieldMap map = new FieldMap(id, name, continent, connections, image, music, collectibleLevel, npcs, groundRegions) ;
 
 			map.addCollectibles() ;
 			map.addCreatures(creatureIDs) ;

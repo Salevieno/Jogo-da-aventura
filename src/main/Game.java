@@ -59,7 +59,6 @@ public class Game
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	// TODO ideia - magias e flechas são projéteis que precisam acertar o oponente para dar dano. O oponente pode se mover durante a luta E usar magias de longe enquanto se move (ou defender)
 	// TODO ideia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
-	// TODO sign deixa de ser building
 	// TODO shopping de cada cidade vender itens diferentes
 	// TODO ideia: ao invés de ter mapa, os npcs indicarem a direção das cidades
 	// FIXME bichos andando sobre a água ao perseguir
@@ -117,7 +116,7 @@ public class Game
 
 	public Game()
 	{
-		player = new Player("", "", 1);
+		player = new Player("", "", 3);
 	}
 
 	public static GameStates getState() { return state ;}
@@ -127,7 +126,8 @@ public class Game
 	public static NPCType[] getNPCTypes() { return npcTypes ;}
 	public static Player getPlayer() { return player ;}
 	public static Pet getPet() { return pet ;}
-	public static GameMap[] getMaps() { return allMaps ;}
+	public static GameMap[] getCityMaps() { return cityMaps ;}
+	public static GameMap[] getAllMaps() { return allMaps ;}
 	public static Quest[] getAllQuests() { return allQuests ;}
 	public static Item[] getAllItems() { return allItems ;}
 	public static Spell[] getAllSpells() { return allSpells ;}
@@ -222,7 +222,7 @@ public class Game
 
 		player.setName("Rosquinhawwwwwwwwwwwwwww");
 		// player.setLevel(50) ;
-		player.setMap(cityMaps[1]);
+		player.setMap(cityMaps[3]);
 		// fieldMaps[1].getCreatures().get(0).setPos(player.getPos());
 		// player.setPos(new Point(393, 140)) ;
 

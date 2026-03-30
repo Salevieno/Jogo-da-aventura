@@ -121,7 +121,7 @@ public class Building implements Drawable
 
 	public void display()
 	{
-		display(Game.getPlayer().getHitbox(), Game.getPlayer().getPos(), Arrays.asList(Game.getMaps()).indexOf(Game.getPlayer().getMap())) ;
+		display(Game.getPlayer().getHitbox(), Game.getPlayer().getPos(), Arrays.asList(Game.getAllMaps()).indexOf(Game.getPlayer().getMap())) ;
 	}
 
 	@Override

@@ -180,7 +180,7 @@ public abstract class LoadingGame
 				{
 					player.setSpells(Player.jobSpells(player.getJob()));
 				}
-				player.setMap(Game.getMaps()[player.getJob()]);
+				player.setMap(Game.getAllMaps()[player.getJob()]);
 				player.setPos(new Point2D.Double(Game.getScreen().getCenter().x, Game.getScreen().getCenter().y));
 				LiveBeing.updateDamageAnimation(Game.getSettings().getDamageAnimation());
 				SideBar.initialize();

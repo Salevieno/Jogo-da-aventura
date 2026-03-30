@@ -351,7 +351,7 @@ public abstract class LiveBeing implements Drawable
 		
 		if (newMapID == -1) { return null ;}
 		
-		return Game.getMaps()[newMapID] ;		
+		return Game.getAllMaps()[newMapID] ;		
 	}
 
 	public void displayState()

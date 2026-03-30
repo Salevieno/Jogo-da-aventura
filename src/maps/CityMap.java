@@ -34,7 +34,7 @@ public class CityMap extends GameMap
 	
 	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, Point forgePos)
 	{
-		super(Name, Continent, Connections, image, music, buildings, npcs) ;
+		super(id, Name, Continent, Connections, image, music, buildings, npcs) ;
 		sign = new Sign(signPos, id) ;
 		forge = new Forge(forgePos) ;
 		diggingItems.put(Fab.getAll()[0], allDiggingItems.get(Fab.getAll()[0])) ;

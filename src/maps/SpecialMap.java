@@ -30,9 +30,9 @@ public class SpecialMap extends GameMap
 		}
 	}
 	
-	public SpecialMap(String Name, Continents Continent, int[] Connections, Image image, Clip music, List<TreasureChest> treasureChests)
+	public SpecialMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<TreasureChest> treasureChests)
 	{
-		super(Name, Continent, Connections, image, music, null, null) ;
+		super(id, Name, Continent, Connections, image, music, null, null) ;
 		
 		treasureChests.forEach(chest -> mapElems.add(chest)) ;
 
@@ -103,7 +103,7 @@ public class SpecialMap extends GameMap
 				int goldReward = Integer.parseInt(input.get(id)[22 + 13 * chest]) ;
 				treasureChests.add(new TreasureChest(chest, pos, itemRewards, goldReward)) ;
 			}
-			specialMaps[id] = new SpecialMap(name, continent, connections, image, music, treasureChests) ;
+			specialMaps[id] = new SpecialMap(id, name, continent, connections, image, music, treasureChests) ;
 		}
 
 		return specialMaps ;
