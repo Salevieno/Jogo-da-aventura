@@ -1,6 +1,5 @@
 package liveBeings ;
 
-import java.awt.Dimension;
 import java.awt.Image ;
 import java.awt.Point;
 import java.awt.geom.Point2D;
@@ -518,27 +517,44 @@ public class Player extends LiveBeing
 	private static Point2D.Double calcNewMapPos(Point2D.Double pos, Directions dir, GameMap currentMap, GameMap newMap)
 	{
 		int[] border = Game.getScreen().getBorders() ;
-		Dimension screenSize = Game.getScreen().mapSize() ;
-		boolean leftSide = pos.x <= Game.getScreen().getSize().width / 2 ;
 		int stepOffset = Screen.borderOffset ;
 		int qtdCities = Game.getCityMaps().length ;
-		// TODO corrigir movimentação para mapas up and down (left and right are working) que tem o dobro ou metade do tamanho
 		switch (dir)
 		{
 			case up:
-				if (!currentMap.meetsTwoMapsUp()) { return new Point2D.Double(pos.x, border[3] - stepOffset) ;}
-				return leftSide ? new Point2D.Double(pos.x + screenSize.width / 2 - 1, border[3] - stepOffset) : new Point2D.Double(pos.x - screenSize.width / 2, border[3] - stepOffset) ;				
-			
+				int newY = border[3] - stepOffset ;
+				boolean mapsHaveSameSize = !currentMap.meetsTwoMapsUp() == !newMap.meetsTwoMapsDown() ;
+
+				if (mapsHaveSameSize) { new Point2D.Double(pos.x, newY) ;}
+
+				if (newMap.meetsTwoMapsDown()) // small -> big
+				{
+					boolean currentMapOnLeftHalf = newMap.getConnections()[4] == currentMap.getID() + qtdCities ;
+					int newX = (int) (border[0] + (pos.x - border[0]) / 2) ;
+					if (!currentMapOnLeftHalf)
+					{
+						newX += (border[2] - border[0]) / 2 ;
+					}
+					return new Point2D.Double(newX, newY) ;
+				}
+				else
+				{
+					// slope = (border[2] - border[0]) / (double)(border[2] / 2.0 - border[0] / 2.0)) -> slope = 2
+					boolean playerOnLeftHalf = pos.x <= (border[0] + border[2]) / 2 ;
+					int newX = playerOnLeftHalf ? (int) (border[0] + (pos.x - border[0]) * 2) : (int) (border[0] + (pos.x - border[0] / 2 - border[2] / 2) * 2) ;
+					return new Point2D.Double(newX, newY) ;
+				}
+
 			case left:
 				int newX = border[2] - stepOffset ;
-				boolean mapsHaveSameSize = !currentMap.meetsTwoMapsLeft() == !newMap.meetsTwoMapsRight() ;
+				mapsHaveSameSize = !currentMap.meetsTwoMapsLeft() == !newMap.meetsTwoMapsRight() ;
 
 				if (mapsHaveSameSize) { new Point2D.Double(newX, pos.y) ;}
 
 				if (newMap.meetsTwoMapsRight()) // small -> big
 				{
 					boolean currentMapOnTopHalf = newMap.getConnections()[7] == currentMap.getID() + qtdCities ;
-					int newY = (int) (border[1] + (pos.y - border[1]) / 2) ;
+					newY = (int) (border[1] + (pos.y - border[1]) / 2) ;
 					if (!currentMapOnTopHalf)
 					{
 						newY += (border[3] - border[1]) / 2 ;
@@ -549,14 +565,35 @@ public class Player extends LiveBeing
 				{
 					// slope = (border[3] - border[1]) / (double)(border[3] / 2.0 - border[1] / 2.0)) -> slope = 2
 					boolean playerOnTopHalf = pos.y <= (border[1] + border[3]) / 2 ;
-					int newY = playerOnTopHalf ? (int) (border[1] + (pos.y - border[1]) * 2) : (int) (border[1] + (pos.y - border[1] / 2 - border[3] / 2) * 2) ;
+					newY = playerOnTopHalf ? (int) (border[1] + (pos.y - border[1]) * 2) : (int) (border[1] + (pos.y - border[1] / 2 - border[3] / 2) * 2) ;
 					return new Point2D.Double(newX, newY) ;
 				}
-
 			
-			case down:
-				if (!currentMap.meetsTwoMapsDown()) { return new Point2D.Double(pos.x, border[1] + stepOffset) ;}
-				return leftSide ? new Point2D.Double(pos.x + screenSize.width / 2 - 1, border[1] + stepOffset) : new Point2D.Double(pos.x - screenSize.width / 2, border[1] + stepOffset) ;			
+			case down:				
+				newY = border[1] + stepOffset ;
+				mapsHaveSameSize = !currentMap.meetsTwoMapsDown() == !newMap.meetsTwoMapsUp() ;
+
+				if (mapsHaveSameSize) { new Point2D.Double(pos.x, newY) ;}
+
+				if (newMap.meetsTwoMapsUp()) // small -> big
+				{
+					boolean currentMapOnLeftHalf = newMap.getConnections()[1] == currentMap.getID() + qtdCities ;
+					newX = (int) (border[0] + (pos.x - border[0]) / 2) ;
+					if (!currentMapOnLeftHalf)
+					{
+						newX += (border[2] - border[0]) / 2 ;
+					}
+					return new Point2D.Double(newX, newY) ;
+				}
+				else
+				{
+					// slope = (border[2] - border[0]) / (double)(border[2] / 2.0 - border[0] / 2.0)) -> slope = 2
+					boolean playerOnLeftHalf = pos.x <= (border[0] + border[2]) / 2 ;
+					newX = playerOnLeftHalf ? (int) (border[0] + (pos.x - border[0]) * 2) : (int) (border[0] + (pos.x - border[0] / 2 - border[2] / 2) * 2) ;
+					return new Point2D.Double(newX, newY) ;
+				}
+				// if (!currentMap.meetsTwoMapsDown()) { return new Point2D.Double(pos.x, border[1] + stepOffset) ;}
+				// return leftSide ? new Point2D.Double(pos.x + screenSize.width / 2 - 1, border[1] + stepOffset) : new Point2D.Double(pos.x - screenSize.width / 2, border[1] + stepOffset) ;			
 			
 			case right:
 				newX = border[0] + stepOffset ;
@@ -567,7 +604,7 @@ public class Player extends LiveBeing
 				if (newMap.meetsTwoMapsLeft()) // small -> big
 				{
 					boolean currentMapOnTopHalf = newMap.getConnections()[2] == currentMap.getID() + qtdCities ;
-					int newY = (int) (border[1] + (pos.y - border[1]) / 2) ;
+					newY = (int) (border[1] + (pos.y - border[1]) / 2) ;
 					if (!currentMapOnTopHalf)
 					{
 						newY += (border[3] - border[1]) / 2 ;
@@ -578,7 +615,7 @@ public class Player extends LiveBeing
 				{
 					// slope = (border[3] - border[1]) / (double)(border[3] / 2.0 - border[1] / 2.0)) -> slope = 2
 					boolean playerOnTopHalf = pos.y <= (border[1] + border[3]) / 2 ;
-					int newY = playerOnTopHalf ? (int) (border[1] + (pos.y - border[1]) * 2) : (int) (border[1] + (pos.y - border[1] / 2 - border[3] / 2) * 2) ;
+					newY = playerOnTopHalf ? (int) (border[1] + (pos.y - border[1]) * 2) : (int) (border[1] + (pos.y - border[1] / 2 - border[3] / 2) * 2) ;
 					return new Point2D.Double(newX, newY) ;
 				}
 			
