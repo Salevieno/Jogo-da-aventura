@@ -299,7 +299,11 @@ public class Creature extends LiveBeing
 		if (chasePlayer) // TODO chasePlayer can be replaced with is fighting and playerIsAlive
 		{
 			// TODO should chase OR do battle action
-			setPos(chase(pos, playerPosAsDouble, range)) ;
+			Point2D.Double newPos = chase(pos, playerPosAsDouble, range) ;
+			if (playerMap.groundIsWalkable(new Point((int)newPos.x, (int)newPos.y), null))
+			{
+				setPos(newPos) ;
+			}
 			doBattleAction() ;
 		}
 		switch (state)

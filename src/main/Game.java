@@ -61,7 +61,6 @@ public class Game
 	// TODO ideia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
 	// TODO shopping de cada cidade vender itens diferentes
 	// TODO ideia: ao invés de ter mapa, os npcs indicarem a direção das cidades
-	// FIXME bichos andando sobre a água ao perseguir
 	private static final List<String> konamiCode = List.of("Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A") ;
 
 
@@ -116,7 +115,7 @@ public class Game
 
 	public Game()
 	{
-		player = new Player("", "", 3);
+		player = new Player("", "", 1);
 	}
 
 	public static GameStates getState() { return state ;}
