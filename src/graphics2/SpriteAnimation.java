@@ -13,7 +13,7 @@ import main.GameTimer;
 public class SpriteAnimation
 {
 	private BufferedImage[] frames;
-    private int currentFrame;
+    private int currentFrameID;
     private int frameCount;
     private double frameDuration;
     private Dimension frameSize;
@@ -22,6 +22,7 @@ public class SpriteAnimation
     private Align align ;
     private boolean loops ;
     private boolean active ;
+    private int layer ;
     
     private static final Set<SpriteAnimation> all ;
     
@@ -30,7 +31,7 @@ public class SpriteAnimation
     	all = new HashSet<>() ;
     }
 
-    public SpriteAnimation(String path, Point pos, Align align, boolean loops, int qtdFrames, double frameDuration)
+    public SpriteAnimation(String path, Point pos, Align align, boolean loops, int qtdFrames, double frameDuration, int layer)
     {
     	Spritesheet sheet = new Spritesheet(path) ;
     	BufferedImage[] sheetFrames = new BufferedImage[qtdFrames] ;
@@ -42,13 +43,19 @@ public class SpriteAnimation
         this.frames = sheetFrames;
         this.frameDuration = frameDuration;
         this.frameCount = frames.length;
-        this.currentFrame = 0;
+        this.currentFrameID = 0;
+        this.layer = layer ;
         this.timer = new GameTimer(frameDuration * frames.length) ;
         this.pos = pos ;
         this.align = align ;
         this.loops = loops ;
         this.active = false ;
         all.add(this) ;
+    }
+
+    public SpriteAnimation(String path, Point pos, Align align, boolean loops, int qtdFrames, double frameDuration)
+    {
+        this(path, pos, align, loops, qtdFrames, frameDuration, 1) ;
     }
 
     public SpriteAnimation(String path, Point pos, Align align, int qtdFrames, double frameDuration)
@@ -62,6 +69,11 @@ public class SpriteAnimation
     }
     
     public Dimension getFrameSize() { return frameSize ;}
+
+    public int getLayer() { return layer ;}
+
+    public BufferedImage getCurrentFrame() { return frames[currentFrameID] ;}
+    public double getTotalDuration() { return frameDuration * frameCount ;}
     public void setPos(Point pos) { this.pos = pos ;}
     
     public boolean isActive() { return active ;}
@@ -74,6 +86,11 @@ public class SpriteAnimation
     	all.stream().filter(sprite -> sprite.active).forEach(sprite -> sprite.update()) ;
     }
     
+    public static void displayAllFromLayer(int layer, DrawPrimitives DP)
+    {
+    	all.stream().filter(sprite -> sprite.active).filter(sprite -> sprite.layer == layer).forEach(sprite -> sprite.display(DP)) ;
+    }
+    
     public static void displayAll(DrawPrimitives DP)
     {
     	all.stream().filter(sprite -> sprite.active).forEach(sprite -> sprite.display(DP)) ;
@@ -83,7 +100,7 @@ public class SpriteAnimation
     {
         if (timer.crossedTime(frameDuration) && timer.getCounter() != 0)
         {
-            currentFrame = (currentFrame + 1) % frameCount;
+            currentFrameID = (currentFrameID + 1) % frameCount;
         }
         if (timer.hasFinished())
         {
@@ -95,7 +112,7 @@ public class SpriteAnimation
             {
                 deactivate();
                 timer.reset();
-                currentFrame = 0;
+                currentFrameID = 0;
             }
         }
     }
@@ -115,20 +132,10 @@ public class SpriteAnimation
     	display(DP, pos, align) ;
     }
 
-    public BufferedImage getCurrentFrame()
-    {
-        return frames[currentFrame];
-    }
-
-    public double getTotalDuration()
-    {
-        return frameDuration * frameCount;
-    }
-
     @Override
     public String toString()
     {
-        return "SpriteAnimation [currentFrame=" + currentFrame + " / " + frameCount + ", frameDuration="
+        return "SpriteAnimation [currentFrame=" + currentFrameID + " / " + frameCount + ", frameDuration="
                 + frameDuration + ", timer=" + timer + ", pos=" + pos + ", align=" + align + ", loops=" + loops
                 + ", active=" + active + "]";
     }

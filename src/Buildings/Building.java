@@ -25,10 +25,12 @@ import utilities.Util;
 
 public class Building implements Drawable
 {
+	private static final int layer = 1;
 	private final BuildingTypes type ;
 	private final Point pos ;
 	private final List<NPC> npcs ;
 	private final List<Collider> colliders ;
+
 
 	private Building(BuildingTypes type, Point pos)
 	{
@@ -83,6 +85,7 @@ public class Building implements Drawable
 		return new Building(type, pos) ;
 	}
 
+	public int getLayer() { return layer ;}
 	public Point getPos() { return pos ;}
 	public List<NPC> getNPCs() {return npcs ;}
 	public List<Collider> getColliders() { return colliders ;}

@@ -518,7 +518,6 @@ public class Game
 
 	private void draw()
 	{
-		// TODO layers for drawables
 		if (!player.getMap().getContinent().equals(Continents.cave))
 		{
 			screen.displaySky();
@@ -526,6 +525,8 @@ public class Game
 		player.getMap().display();
 		player.getMap().displayGroundTypes();
 		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap());
+		
+		SpriteAnimation.displayAllFromLayer(0, GamePanel.DP);
 
 		List<Drawable> drawables = new ArrayList<>();
 
@@ -571,7 +572,7 @@ public class Game
 		}
 
 		Animation.playAll();
-		SpriteAnimation.displayAll(GamePanel.DP);
+		SpriteAnimation.displayAllFromLayer(1, GamePanel.DP);
 
 		SideBar.display(player, pet, GamePanel.getMousePos());
 

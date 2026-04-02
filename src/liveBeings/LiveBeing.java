@@ -78,7 +78,8 @@ public abstract class LiveBeing implements Drawable
 	protected BattleAttributes BA ;
 	protected MovingAnimations movingAni ;
 	protected AttributesWindow attWindow ;
-	
+
+	private static final int layer = 1;
 	private static int damageStyle = 0 ;
 	private static final int MAX_COMBO_SIZE = 10 ;
 	private static final Image attImage = ImageLoader.loadImage(Path.PLAYER_IMG + "Attributes.png") ;
@@ -166,6 +167,7 @@ public abstract class LiveBeing implements Drawable
 	public MovingAnimations getMovingAni() {return movingAni ;}
 	public Map<Attributes, LiveBeingStatus> getStatus() {return status ;}
 	public Hitbox getHitbox() {return hitbox ;}
+	public int getLayer() { return layer ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
 	public void setMpCounter(GameTimer mpCounter) { this.mpCounter = mpCounter ;}
 	public void setBattleActionCounter(GameTimer battleActionCounter) { this.battleActionCounter = battleActionCounter ;}
