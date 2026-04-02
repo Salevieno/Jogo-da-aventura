@@ -9,6 +9,7 @@ import java.util.Set;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import main.GameTimer;
+import main.Log;
 
 public class SpriteAnimation
 {
@@ -77,8 +78,20 @@ public class SpriteAnimation
     public void setPos(Point pos) { this.pos = pos ;}
     
     public boolean isActive() { return active ;}
-    public void activate() { active = true ; timer.restart() ;}
-    public void deactivate() { active = false ; timer.stop() ;}
+    public void activate()
+    {
+        if (active) { Log.warn("Trying to activate animation that is already active") ; return ;}
+
+        active = true ;
+        timer.restart() ;
+    }
+    public void deactivate()
+    {
+        if (!active) { Log.warn("Trying to deactivate animation that is already inactive") ; return ;}
+
+        active = false ;
+        timer.stop() ;
+    }
     public void activateIfInactive() { if (!active) activate() ;}
     
     public static void updateAll()

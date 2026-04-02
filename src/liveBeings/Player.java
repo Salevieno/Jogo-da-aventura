@@ -633,6 +633,9 @@ public class Player extends LiveBeing
 		Point2D.Double newPos = calcNewMapPos(pos, dir, currentMap, newMap) ;
 
 		leaveBattle() ;
+
+		currentMap.deactivateAnimations() ;
+		newMap.activateAnimations() ;
 		setMap(newMap) ;
 		setPos(newPos) ;
 	}

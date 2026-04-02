@@ -54,7 +54,8 @@ public class GameMap
 	protected List<MapElement> mapElems ;
 	protected List<Building> buildings ;
 	protected List<NPC> npcs ;
-	protected Map<Item, Double> diggingItems ;
+	protected final Map<Item, Double> diggingItems ;
+	protected final List<SpriteAnimation> animations ;
 
 	protected static final Dimension screenSize = Game.getScreen().getSize() ;
 	protected static final String dadosPath = Path.DADOS + "gameMaps\\" ;
@@ -64,7 +65,6 @@ public class GameMap
 	protected static final Image dockImg = ImageLoader.loadImage(Path.MAPS_IMG + "Dock.png") ;
 	protected static final Image boatImg = ImageLoader.loadImage(Path.MAPS_IMG + "Boat.png") ;
 	protected static final Image infoWindow ;
-	protected static final SpriteAnimation beachAni ;
 	
 	public static final Map<Item, Double> allDiggingItems ;
 	public static final Clip musicForest ;
@@ -89,16 +89,15 @@ public class GameMap
 		{
 			allDiggingItems.put(GeneralItem.getAll()[genItemIDs[i]], genItemPotentials[i]) ;
 		}
-		beachAni = new SpriteAnimation(Path.MAPS_IMG + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, true, 12, 0.2, 0) ;
+		
 		infoWindow = ImageLoader.loadImage(Path.WINDOWS_IMG + "MapInfo.png") ;
 
 		musicForest = Music.musicFileToClip(new File(Path.MUSIC + "floresta.wav").getAbsoluteFile()) ;
 		musicSpecial = Music.musicFileToClip(new File(Path.MUSIC + "12-Special.wav").getAbsoluteFile()) ;
-		beachAni.activate(); // TODO needs to activate and deactivate all map animations at map moving
 		// Log.diggingItems(allDiggingItems) ;
 	}
 	
-	public GameMap(int id, String Name, Continents continent, int[] Connections, Image image, Clip music, List<Building> building, List<NPC> npc)
+	public GameMap(int id, String Name, Continents continent, int[] Connections, Image image, Clip music, List<Building> building, List<NPC> npc, List<SpriteAnimation> animations)
 	{
 		this.id = id ;
 		this.name = Name ;
@@ -109,6 +108,7 @@ public class GameMap
 		this.buildings = building ;
 		this.npcs = npc ;
 		diggingItems = new HashMap<>() ;
+		this.animations = animations ;
 		
 		mapElems = new ArrayList<>() ;
 		groundRegions = new ArrayList<>() ;
@@ -143,6 +143,9 @@ public class GameMap
 	
 	public void addGroundType (GroundRegion newGroundType) { groundRegions.add(newGroundType) ;}
 	public void removeMapElem (MapElement mapElem) { mapElems.remove(mapElem) ;}
+
+	public void activateAnimations() { animations.forEach(SpriteAnimation::activate) ;}
+	public void deactivateAnimations() { animations.forEach(SpriteAnimation::deactivate) ;}
 
 	public boolean isCity() { return (this instanceof CityMap) ;}
 	public boolean isField() { return (this instanceof FieldMap) ;}
@@ -412,10 +415,10 @@ public class GameMap
  		
  		GamePanel.DP.drawImage(image, Game.getScreen().getMapCenter(), Align.center) ;
  		
- 		if (name.equals("City of the archers") || name.equals("Forest 9") || name.equals("Forest 13"))
- 		{
- 			beachAni.display(GamePanel.DP) ;
- 		}
+ 		// if (name.equals("City of the archers") || name.equals("Forest 9") || name.equals("Forest 13"))
+ 		// {
+ 		// 	animations.display(GamePanel.DP) ;
+ 		// }
  		
  		if (name.equals("Forest 9"))
  		{

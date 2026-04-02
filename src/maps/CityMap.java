@@ -16,6 +16,8 @@ import Buildings.Forge;
 import Buildings.Sign;
 import NPC.NPC;
 import NPC.NPCType;
+import graphics.Align;
+import graphics2.SpriteAnimation;
 import items.Fab;
 import items.GeneralItem;
 import main.Game;
@@ -32,9 +34,9 @@ public class CityMap extends GameMap
 	private final Forge forge ;
 	private static final Clip musicCities = Music.musicFileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
 	
-	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, Point forgePos, List<GroundRegion> groundRegions)
+	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, Point forgePos, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)
 	{
-		super(id, Name, Continent, Connections, image, music, buildings, npcs) ;
+		super(id, Name, Continent, Connections, image, music, buildings, npcs, animations) ;
 		this.groundRegions = groundRegions ;
 		sign = new Sign(signPos, id) ;
 		forge = new Forge(forgePos) ;
@@ -121,8 +123,12 @@ public class CityMap extends GameMap
 			Point signPos = Game.getScreen().getPointWithinBorders((Double) ((JSONObject) mapData.get("signPos")).get("x"), (Double) ((JSONObject) mapData.get("signPos")).get("y")) ;
 			Point forgePos =Game.getScreen().getPointWithinBorders((Double) ((JSONObject) mapData.get("forgePos")).get("x"), (Double) ((JSONObject) mapData.get("forgePos")).get("y")) ;
 			List<GroundRegion> groundRegions = groundRegionsFromJson((JSONObject) mapData.get("GroundRegions")) ;
-
-			cityMaps[id] = new CityMap(id, name, continent, connections, image, musicCities, buildings, npcs, signPos, forgePos, groundRegions) ;
+			List<SpriteAnimation> animations = new ArrayList<>() ;
+			if ("City of the archers".equals(name))
+			{
+				animations.add(new SpriteAnimation(Path.MAPS_IMG + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, true, 12, 0.2, 0)) ;
+			}
+			cityMaps[id] = new CityMap(id, name, continent, connections, image, musicCities, buildings, npcs, signPos, forgePos, groundRegions, animations) ;
 		}
 
 		return cityMaps ;

@@ -182,6 +182,7 @@ public abstract class LoadingGame
 				}
 				player.setMap(Game.getAllMaps()[player.getJob()]);
 				player.setPos(new Point2D.Double(Game.getScreen().getCenter().x, Game.getScreen().getCenter().y));
+				player.getMap().activateAnimations() ;
 				LiveBeing.updateDamageAnimation(Game.getSettings().getDamageAnimation());
 				SideBar.initialize();
 

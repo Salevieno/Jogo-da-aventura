@@ -19,6 +19,7 @@ import org.json.simple.JSONObject;
 
 import NPC.NPC;
 import NPC.NPCType;
+import graphics2.SpriteAnimation;
 import items.Item;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
@@ -48,16 +49,16 @@ public class FieldMap extends GameMap
 	private static final Image rockImage = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem9_Rock.png") ;
 	private static final String jsonPath = dadosPath + "mapsField.json" ;
 
-	private FieldMap(int id, String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions)
+	private FieldMap(int id, String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)
 	{
-		super(id, name, continent, connections, image, music, null, npcs) ;
+		super(id, name, continent, connections, image, music, null, npcs, animations) ;
 		this.groundRegions = groundRegions ;
 		this.level = collectibleLevel ;
 		this.npcs = npcs ;
 	}
 	private FieldMap(int id, String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs)
 	{
-		this(id, name, continent, connections, image, music, collectibleLevel, npcs, null) ;
+		this(id, name, continent, connections, image, music, collectibleLevel, npcs, null, new ArrayList<>()) ;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -100,8 +101,9 @@ public class FieldMap extends GameMap
 
 			List<NPC> npcs = FieldMap.createQuestNPCs(id, npcTypes) ;
 			List<GroundRegion> groundRegions = groundRegionsFromJson((JSONObject) mapData.get("GroundRegions")) ;
+			List<SpriteAnimation> animations = new ArrayList<>() ;
 
-			FieldMap map = new FieldMap(id, name, continent, connections, image, music, collectibleLevel, npcs, groundRegions) ;
+			FieldMap map = new FieldMap(id, name, continent, connections, image, music, collectibleLevel, npcs, groundRegions, animations) ;
 
 			map.addCollectibles() ;
 			map.addCreatures(creatureIDs) ;
