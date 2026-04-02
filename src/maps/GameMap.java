@@ -14,6 +14,9 @@ import java.util.Map;
 
 import javax.sound.sampled.Clip;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import Buildings.Building;
 import NPC.NPC;
 import components.Collider;
@@ -61,7 +64,7 @@ public class GameMap
 	protected static final Image dockImg = ImageLoader.loadImage(Path.MAPS_IMG + "Dock.png") ;
 	protected static final Image boatImg = ImageLoader.loadImage(Path.MAPS_IMG + "Boat.png") ;
 	protected static final Image infoWindow ;
-	protected static final SpriteAnimation beachGif ;
+	protected static final SpriteAnimation beachAni ;
 	
 	public static final Map<Item, Double> allDiggingItems ;
 	public static final Clip musicForest ;
@@ -86,12 +89,12 @@ public class GameMap
 		{
 			allDiggingItems.put(GeneralItem.getAll()[genItemIDs[i]], genItemPotentials[i]) ;
 		}
-		beachGif = new SpriteAnimation(Path.MAPS_IMG + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, 12, 15) ;
+		beachAni = new SpriteAnimation(Path.MAPS_IMG + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, 12, 0.2) ;
 		infoWindow = ImageLoader.loadImage(Path.WINDOWS_IMG + "MapInfo.png") ;
 
 		musicForest = Music.musicFileToClip(new File(Path.MUSIC + "floresta.wav").getAbsoluteFile()) ;
 		musicSpecial = Music.musicFileToClip(new File(Path.MUSIC + "12-Special.wav").getAbsoluteFile()) ;
-		
+		beachAni.activate(); // TODO needs to activate and deactivate all map animations at map moving
 		// Log.diggingItems(allDiggingItems) ;
 	}
 	
@@ -232,7 +235,47 @@ public class GameMap
 			diggingItems.put(item, diggingItems.get(item) / totalPotencial) ;
 		}
 	}
-	
+
+	protected static List<List<Point>> groundRegionPointsFromJson(JSONObject json, GroundType key)
+	{
+		JSONArray polygons = (JSONArray) json.get(key.toString());
+		
+		if (polygons == null || polygons.isEmpty()) { return null ;}
+		
+		List<List<Point>> regionsPoints = new ArrayList<>();
+		for (int i = 0 ; i <= polygons.size() - 1 ; i += 1)
+		{
+			JSONArray points = (JSONArray) polygons.get(i);
+			List<Point> polygonPoints = new ArrayList<>() ;
+			for (Object pointObj : points)
+			{
+				int x = ((Long) ((JSONObject) pointObj).get("x")).intValue();
+				int y = ((Long) ((JSONObject) pointObj).get("y")).intValue() + Sky.height;
+				polygonPoints.add(new Point(x, y));
+			}
+
+			regionsPoints.add(polygonPoints) ;
+		}
+
+		return regionsPoints ;
+	}
+
+	protected static List<GroundRegion> groundRegionsFromJson(JSONObject json)
+	{
+		List<GroundRegion> groundRegions = new ArrayList<>() ;
+
+		for (GroundType groundType : GroundType.values())
+		{
+			List<List<Point>> points = groundRegionPointsFromJson(json, groundType) ;
+
+			if (points == null || points.isEmpty()) { continue ;}
+
+			points.forEach(point -> groundRegions.add(new GroundRegion(groundType, point))) ;
+		}
+
+		return groundRegions ;
+	}
+
  	public List<Collider> allColliders()
  	{
  		List<Collider> allColliders = new ArrayList<>() ;
@@ -371,7 +414,7 @@ public class GameMap
  		
  		if (name.equals("City of the archers") || name.equals("Forest 9") || name.equals("Forest 13"))
  		{
- 			beachGif.display(GamePanel.DP) ;
+ 			beachAni.display(GamePanel.DP) ;
  		}
  		
  		if (name.equals("Forest 9"))

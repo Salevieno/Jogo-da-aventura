@@ -248,47 +248,6 @@ public class FieldMap extends GameMap
 //			}
 //		}*/
 // 	}
-
-	private static List<GroundRegion> groundRegionsFromJson(JSONObject json)
-	{
-		List<GroundRegion> groundRegions = new ArrayList<>() ;
-
-		for (GroundType groundType : GroundType.values())
-		{
-			List<List<Point>> points = groundRegionPointsFromJson(json, groundType) ;
-
-			if (points == null || points.isEmpty()) { continue ;}
-
-			points.forEach(point -> groundRegions.add(new GroundRegion(groundType, point))) ;
-		}
-
-		return groundRegions ;
-	}
-
-	private static List<List<Point>> groundRegionPointsFromJson(JSONObject json, GroundType key)
-	{
-		JSONArray polygons = (JSONArray) json.get(key.toString());
-		
-		if (polygons == null || polygons.isEmpty()) { return null ;}
-		
-		List<List<Point>> regionsPoints = new ArrayList<>();
-		for (int i = 0 ; i <= polygons.size() - 1 ; i += 1)
-		{
-			JSONArray points = (JSONArray) polygons.get(i);
-			List<Point> polygonPoints = new ArrayList<>() ;
-			for (Object pointObj : points)
-			{
-				int x = ((Long) ((JSONObject) pointObj).get("x")).intValue();
-				int y = ((Long) ((JSONObject) pointObj).get("y")).intValue() + Sky.height;
-				polygonPoints.add(new Point(x, y));
-			}
-
-			regionsPoints.add(polygonPoints) ;
-		}
-
-		return regionsPoints ;
-	}
-
 	
 	public void addMapElements()
 	{

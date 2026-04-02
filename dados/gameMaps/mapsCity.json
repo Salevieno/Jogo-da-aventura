@@ -26,7 +26,8 @@
       {"name": "citizen3", "pos": {"x": 0.86, "y": 0.28}}
     ],
     "signPos": {"x": 0.97, "y": 0.52},
-    "forgePos": {"x": 0.80, "y": 0.16}
+    "forgePos": {"x": 0.80, "y": 0.16},
+    "GroundRegions": {}
   },
   {
     "Name": "City of the mages",
@@ -55,7 +56,8 @@
       {"name": "citizen7", "pos": {"x": 0.58, "y": 0.65}}
     ],
     "signPos": {"x": 0.48, "y": 0.1},
-    "forgePos": {"x": 0.66, "y": 0.1}
+    "forgePos": {"x": 0.66, "y": 0.1},
+    "GroundRegions": {}
   },
   {
     "Name": "City of the archers",
@@ -84,7 +86,11 @@
       {"name": "citizen11", "pos": {"x": 0.39, "y": 0.32}}
     ],
     "signPos": {"x": 0.07, "y": 0.52},
-    "forgePos": {"x": 0.48, "y": 0.2}
+    "forgePos": {"x": 0.48, "y": 0.2},
+    "GroundRegions":
+    {
+      "water": [[{"x": 1060, "y": 0}, {"x": 1060, "y": 768}, {"x": 1220, "y": 768}, {"x": 1220, "y": 0}]]
+    }
   },
   {
     "Name": "City of the animals",
@@ -113,7 +119,8 @@
       {"name": "citizen15", "pos": {"x": 0.51, "y": 0.27}}
     ],
     "signPos": {"x": 0.12, "y": 0.39},
-    "forgePos": {"x": 0.80, "y": 0.14}
+    "forgePos": {"x": 0.80, "y": 0.14},
+    "GroundRegions": {}
   },
   {
     "Name": "City of the thieves",
@@ -142,6 +149,7 @@
       {"name": "citizen19", "pos": {"x": 0.51, "y": 0.27}}
     ],
     "signPos": {"x": 0.8, "y": 0.05},
-    "forgePos": {"x": 0.9, "y": 0.19}
+    "forgePos": {"x": 0.9, "y": 0.19},
+    "GroundRegions": {}
   }
 ]

@@ -60,13 +60,11 @@ public class Game
 	// TODO ideia - magias e flechas são projéteis que precisam acertar o oponente para dar dano. O oponente pode se mover durante a luta E usar magias de longe enquanto se move (ou defender)
 	// TODO ideia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
 	// TODO shopping de cada cidade vender itens diferentes
-	// TODO ideia: ao invés de ter mapa, os npcs indicarem a direção das cidades
 	private static final List<String> konamiCode = List.of("Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A") ;
-
 
 	public static final String MainFontName = "Comics";
 	private static final GameStates mainState = GameStates.running;
-	private static final boolean testMode = true;
+	private static final boolean testMode = false;
 	public static final boolean debugMode = false;
 
 	private static GameStates state = GameStates.loading;
@@ -115,7 +113,7 @@ public class Game
 
 	public Game()
 	{
-		player = new Player("", "", 1);
+		player = new Player("", "", 2);
 	}
 
 	public static GameStates getState() { return state ;}
@@ -218,16 +216,8 @@ public class Game
 
 	private static void initializeTestMode()
 	{
-
 		player.setName("Rosquinhawwwwwwwwwwwwwww");
-		// player.setLevel(50) ;
 		player.setMap(cityMaps[3]);
-		// fieldMaps[1].getCreatures().get(0).setPos(player.getPos());
-		// player.setPos(new Point(393, 140)) ;
-
-		// letThereBePet() ;
-		// pet.takeDamage(40);
-		// pet.getMp().decTotalValue(50);
 
 		for (int i = 0; i <= fieldMaps.length - 1; i += 1)
 		{
@@ -236,12 +226,6 @@ public class Game
 
 		player.getPA().getLife().incMaxValue(1000);
 		player.getPA().getMp().incMaxValue(1000);
-		;
-		// player.getBA().getPhyAtk().incBaseValue(1000) ;
-		// player.getBA().getMagAtk().incBaseValue(1000) ;
-		// player.getBA().getPhyDef().incBaseValue(1000) ;
-		// player.getBA().getMagDef().incBaseValue(1000) ;
-		// player.getBA().getAgi().incBaseValue(1000) ;
 		player.getBA().getDex().incBaseValue(1000);
 		player.getPA().getLife().setToMaximum();
 
@@ -297,7 +281,10 @@ public class Game
 		{
 			player.getBag().add(item, 20);
 		}
-		// for (Item item : Equip.getAll()) { player.getBag().add(item, 20) ;}
+		for (Item item : Equip.getAll())
+		{
+			player.getBag().add(item, 20) ;
+		}
 		for (Item item : GeneralItem.getAll())
 		{
 			player.getBag().add(item, 2);
@@ -310,8 +297,6 @@ public class Game
 		{
 			player.getBag().add(item, 10);
 		}
-		// player.getElem()[4] = Elements.water ;
-		//
 		player.getBag().add(Equip.getAll()[0], 20);
 		player.getBag().add(Equip.getAll()[1], 20);
 		player.getBag().add(Equip.getAll()[2], 20);
@@ -331,32 +316,6 @@ public class Game
 			player.getQuestSkills().replace(skill, true);
 		}
 		Quest.all.forEach(quest -> player.addQuest(quest));
-
-		// for (int i = 0 ; i <= 50 - 1 ; i += 1)
-		// {
-		// player.getExp().incCurrentValue(player.getExp().getMaxValue()) ;
-		// player.levelUp(null) ; // Game.getAnimations()[4]
-		// }
-
-		// for (int i = 0 ; i <= 30000 - 1 ; i += 1)
-		// {
-		// player.train(new AtkResults(AtkTypes.physical, AttackEffects.hit, 0)) ;
-		// player.train(new AtkResults(AtkTypes.magical, AttackEffects.hit, 0)) ;
-		// player.train(new AtkResults(AtkTypes.defense, AttackEffects.hit, 0)) ;
-		// }
-		////
-		// for (int i = 0 ; i <= 3 - 1 ; i += 1)
-		// {
-		// ((Equip) player.getBag().getMenuListItems().get(i + 200 *
-		// player.getJob())).use(player) ;
-		// for (int j = 0 ; j <= 10 - 1 ; j += 1)
-		// {
-		// player.getEquips()[i].incForgeLevel() ;
-		// }
-		// }
-
-		// player.getExp().incCurrentValue(5000) ;
-
 	}
 
 
@@ -559,6 +518,7 @@ public class Game
 
 	private void draw()
 	{
+		// TODO layers for drawables
 		if (!player.getMap().getContinent().equals(Continents.cave))
 		{
 			screen.displaySky();

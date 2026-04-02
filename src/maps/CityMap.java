@@ -32,9 +32,10 @@ public class CityMap extends GameMap
 	private final Forge forge ;
 	private static final Clip musicCities = Music.musicFileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
 	
-	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, Point forgePos)
+	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, Point forgePos, List<GroundRegion> groundRegions)
 	{
 		super(id, Name, Continent, Connections, image, music, buildings, npcs) ;
+		this.groundRegions = groundRegions ;
 		sign = new Sign(signPos, id) ;
 		forge = new Forge(forgePos) ;
 		diggingItems.put(Fab.getAll()[0], allDiggingItems.get(Fab.getAll()[0])) ;
@@ -108,19 +109,20 @@ public class CityMap extends GameMap
 
 		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
 		{
-			JSONObject map = (JSONObject) input.get(id) ;
+			JSONObject mapData = (JSONObject) input.get(id) ;
 
-			String name = (String) map.get("Name") ;
-			int continentID = (int) (long) map.get("Continent") ;
+			String name = (String) mapData.get("Name") ;
+			int continentID = (int) (long) mapData.get("Continent") ;
 			Continents continent = Continents.values()[continentID] ;
-			int[] connections = loadConnections(map) ;
+			int[] connections = loadConnections(mapData) ;
 			Image image = ImageLoader.loadImage(Path.MAPS_IMG + "Map" + String.valueOf(id) + ".png") ;
-			List<Building> buildings = loadBuildings(map) ;
-			List<NPC> npcs = loadNPCs(map) ;
-			Point signPos = Game.getScreen().getPointWithinBorders((Double) ((JSONObject) map.get("signPos")).get("x"), (Double) ((JSONObject) map.get("signPos")).get("y")) ;
-			Point forgePos =Game.getScreen().getPointWithinBorders((Double) ((JSONObject) map.get("forgePos")).get("x"), (Double) ((JSONObject) map.get("forgePos")).get("y")) ;
+			List<Building> buildings = loadBuildings(mapData) ;
+			List<NPC> npcs = loadNPCs(mapData) ;
+			Point signPos = Game.getScreen().getPointWithinBorders((Double) ((JSONObject) mapData.get("signPos")).get("x"), (Double) ((JSONObject) mapData.get("signPos")).get("y")) ;
+			Point forgePos =Game.getScreen().getPointWithinBorders((Double) ((JSONObject) mapData.get("forgePos")).get("x"), (Double) ((JSONObject) mapData.get("forgePos")).get("y")) ;
+			List<GroundRegion> groundRegions = groundRegionsFromJson((JSONObject) mapData.get("GroundRegions")) ;
 
-			cityMaps[id] = new CityMap(id, name, continent, connections, image, musicCities, buildings, npcs, signPos, forgePos) ;
+			cityMaps[id] = new CityMap(id, name, continent, connections, image, musicCities, buildings, npcs, signPos, forgePos, groundRegions) ;
 		}
 
 		return cityMaps ;
