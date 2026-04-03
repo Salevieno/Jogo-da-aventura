@@ -554,7 +554,6 @@ public class Game
 		drawables.forEach(Drawable::display);
 		if (player.getMap() instanceof CityMap)
 		{
-			((CityMap) player.getMap()).getForge().display() ;
 			((CityMap) player.getMap()).getSign().display(player.getPos()) ;
 		}
 

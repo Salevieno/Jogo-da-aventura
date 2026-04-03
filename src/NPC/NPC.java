@@ -50,9 +50,10 @@ import windows.SpellsTreeWindow;
 
 public class NPC
 {
-	private int id ;
+	private int id ; // TODO make final
 	private final NPCType type ;
 	private final Point pos ;
+	private final Image desk ;
 	private int menu ;
 	private int selOption ;
 	private int numberMenus ;
@@ -68,9 +69,9 @@ public class NPC
 	private static final Color stdColor = Palette.colors[0] ;
 	private static final Color selColor = Palette.colors[18] ;
 
-	public NPC(NPCType type, Point pos)
+	public NPC(NPCType type, Point pos, Image desk)
 	{
-		
+		System.out.println(type + " " + desk);
 		this.id = 0 ;
 		this.type = type ;
 		this.pos = pos ;
@@ -80,6 +81,7 @@ public class NPC
 		colliders = new ArrayList<>() ;
 		hitbox = null ;
 		isInteracting = false ;
+		this.desk = desk ;
 
 		if (type == null) { Log.error("Ao criar npc: tipo nulo") ; return ;}
 		
@@ -140,6 +142,11 @@ public class NPC
 
 		hitbox = new HitboxRectangle(Util.translate(pos, 0, -type.getImage().getHeight(null) / 2), Util.getSize(type.getImage()), 0.8) ;
 		colliders.add(new Collider(pos)) ;
+	}
+
+	public NPC(NPCType type, Point pos)
+	{
+		this(type, pos, null) ;
 	}
 
 	public void setID(int I) {id = I ;}
@@ -754,6 +761,10 @@ public class NPC
 		{
 			Point buttonPos = Util.translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;
 			Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey()) ;
+		}
+		if (desk != null)
+		{
+			GamePanel.DP.drawImage(desk, pos, Align.bottomCenter);
 		}
 		
 		if (Game.debugMode)

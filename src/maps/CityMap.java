@@ -12,7 +12,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import Buildings.Building;
-import Buildings.Forge;
 import Buildings.Sign;
 import NPC.NPC;
 import NPC.NPCType;
@@ -31,15 +30,14 @@ public class CityMap extends GameMap
 {
 
 	private final Sign sign ;
-	private final Forge forge ;
+	private static final Image forgeDeskImage = ImageLoader.loadImage(Path.NPC_IMG + "Forge.png") ;
 	private static final Clip musicCities = Music.musicFileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
 	
-	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, Point forgePos, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)
+	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)
 	{
 		super(id, Name, Continent, Connections, image, music, buildings, npcs, animations) ;
 		this.groundRegions = groundRegions ;
 		sign = new Sign(signPos, id) ;
-		forge = new Forge(forgePos) ;
 		diggingItems.put(Fab.getAll()[0], allDiggingItems.get(Fab.getAll()[0])) ;
 		diggingItems.put(Fab.getAll()[25], allDiggingItems.get(Fab.getAll()[25])) ;
 		diggingItems.put(GeneralItem.getAll()[4], allDiggingItems.get(GeneralItem.getAll()[4])) ;
@@ -58,7 +56,12 @@ public class CityMap extends GameMap
 		double posY = (Double) ((JSONObject) npc.get("pos")).get("y") ;
 		Point npcPos = Game.getScreen().getPointWithinBorders(posX, posY) ;
 		NPCType npcType = NPC.typeFromName(npcName) ;
-		return new NPC(npcType, npcPos) ;
+		Image desk = null ;
+		if ("forger".equals(npcName))
+		{
+			desk = forgeDeskImage ;
+		}
+		return new NPC(npcType, npcPos, desk) ;
 
 	}
 	
@@ -121,14 +124,14 @@ public class CityMap extends GameMap
 			List<Building> buildings = loadBuildings(mapData) ;
 			List<NPC> npcs = loadNPCs(mapData) ;
 			Point signPos = Game.getScreen().getPointWithinBorders((Double) ((JSONObject) mapData.get("signPos")).get("x"), (Double) ((JSONObject) mapData.get("signPos")).get("y")) ;
-			Point forgePos =Game.getScreen().getPointWithinBorders((Double) ((JSONObject) mapData.get("forgePos")).get("x"), (Double) ((JSONObject) mapData.get("forgePos")).get("y")) ;
+			// Point forgePos =Game.getScreen().getPointWithinBorders((Double) ((JSONObject) mapData.get("forgePos")).get("x"), (Double) ((JSONObject) mapData.get("forgePos")).get("y")) ;
 			List<GroundRegion> groundRegions = groundRegionsFromJson((JSONObject) mapData.get("GroundRegions")) ;
 			List<SpriteAnimation> animations = new ArrayList<>() ;
 			if ("City of the archers".equals(name))
 			{
 				animations.add(new SpriteAnimation(Path.MAPS_IMG + "Map2_beach.png", new Point(Game.getScreen().mapSize().width, 192), Align.topRight, true, 12, 0.2, 0)) ;
 			}
-			cityMaps[id] = new CityMap(id, name, continent, connections, image, musicCities, buildings, npcs, signPos, forgePos, groundRegions, animations) ;
+			cityMaps[id] = new CityMap(id, name, continent, connections, image, musicCities, buildings, npcs, signPos, groundRegions, animations) ;
 		}
 
 		return cityMaps ;
@@ -139,6 +142,5 @@ public class CityMap extends GameMap
 	public Building getCraft() { return buildings.get(2) ;}
 	public Building getBank() { return buildings.get(3) ;}
 	public Sign getSign() { return sign ;}
-	public Forge getForge() { return forge ;}
 
 }
