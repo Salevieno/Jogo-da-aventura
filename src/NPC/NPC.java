@@ -71,7 +71,6 @@ public class NPC
 
 	public NPC(NPCType type, Point pos, Image desk)
 	{
-		System.out.println(type + " " + desk);
 		this.id = 0 ;
 		this.type = type ;
 		this.pos = pos ;
@@ -764,7 +763,7 @@ public class NPC
 		}
 		if (desk != null)
 		{
-			GamePanel.DP.drawImage(desk, pos, Align.bottomCenter);
+			GamePanel.DP.drawImage(desk, pos, Align.centerLeft);
 		}
 		
 		if (Game.debugMode)

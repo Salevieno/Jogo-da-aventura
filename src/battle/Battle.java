@@ -1,8 +1,6 @@
 package battle ;
 
 import java.awt.geom.Point2D;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import attributes.Attributes;
@@ -15,34 +13,19 @@ import liveBeings.Spell;
 import main.Elements;
 import main.Game;
 import main.GameStates;
-import main.Path;
 import simulations.EvolutionSimulation;
 import utilities.Util;
 
 public abstract class Battle 
 {
 	private static double randomAmp ;
-	private static List<Elements> allElements ;
-	private static double[][] elemMult ;
 
 	static
 	{
-		randomAmp = 0.1 ;		
-    	allElements = Arrays.asList(Elements.values()) ;
-		List<String[]> ElemInput = Util.readcsvFile(Path.CSV + "Elem.csv") ;
-		elemMult = new double[ElemInput.size()][ElemInput.size()] ;
-		for (int i = 0 ; i <= ElemInput.size() - 1 ; ++i)
-		{
-			for (int j = 0 ; j <= ElemInput.size() - 1 ; ++j)
-			{
-				elemMult[i][j] = Double.parseDouble(ElemInput.get(i)[j + 1]) ;
-			}				
-		}	
+		randomAmp = 0.1 ;
 	}
 
 	public static void removeRandomness() { randomAmp = 0 ;}
-
-	private static double basicElemMult(Elements atk, Elements def) { return elemMult[allElements.indexOf(atk)][allElements.indexOf(def)] ;}
 	
 	private static boolean hit(double dex, double agi)
 	{
@@ -57,12 +40,12 @@ public abstract class Battle
 	private static double calcElemMult(Elements atk, Elements weapon, Elements armor, Elements shield, Elements superElem)
 	{
 		double mult = 1 ;
-		mult *= atk != null && armor != null ? basicElemMult(atk, armor) : 1 ;
-		mult *= atk != null && shield != null ? basicElemMult(atk, shield) : 1 ;
-		mult *= weapon != null && armor != null ? basicElemMult(weapon, armor) : 1 ;
-		mult *= weapon != null && shield != null ? basicElemMult(weapon, shield) : 1 ;
-		mult *= superElem != null && armor != null ? basicElemMult(superElem, armor) : 1 ;
-		mult *= superElem != null && shield != null ? basicElemMult(superElem, shield) : 1 ;
+		mult *= atk != null && armor != null ? atk.getMultToElem(armor) : 1 ;
+		mult *= atk != null && shield != null ? atk.getMultToElem(shield) : 1 ;
+		mult *= weapon != null && armor != null ? weapon.getMultToElem(armor) : 1 ;
+		mult *= weapon != null && shield != null ? weapon.getMultToElem(shield) : 1 ;
+		mult *= superElem != null && armor != null ? superElem.getMultToElem(armor) : 1 ;
+		mult *= superElem != null && shield != null ? superElem.getMultToElem(shield) : 1 ;
 		return mult ;
 	}
 

@@ -65,10 +65,10 @@
     "Connections": {"topLeft": 24, "leftTop": 20, "leftBottom": 20, "bottomLeft": 17, "bottomRight": 17, "rightBottom": -1, "rightTop": -1, "topRight": 24},
     "Buildings":
     [
-      {"name": "hospital", "pos": {"x": 0.42, "y": 0.88}},
+      {"name": "hospital", "pos": {"x": 0.56, "y": 0.8}},
       {"name": "store", "pos": {"x": 0.44, "y": 0.48}},
-      {"name": "craft", "pos": {"x": 0.02, "y": 0.86}},
-      {"name": "bank", "pos": {"x": 0.1, "y": 0.3}}
+      {"name": "craft", "pos": {"x": 0.16, "y": 0.8}},
+      {"name": "bank", "pos": {"x": 0.16, "y": 0.2}}
     ],
     "NPCs":
     [
