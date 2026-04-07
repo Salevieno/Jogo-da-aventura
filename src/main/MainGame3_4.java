@@ -11,6 +11,7 @@ import java.awt.EventQueue ;
 public class MainGame3_4
 {
 	private static final GameFrame gameFrame = GameFrame.getMe() ;
+	private static final String version = "0.0" ;
 
 	public static void callResizeWindow()
 	{
@@ -21,6 +22,8 @@ public class MainGame3_4
 	{
 		System.exit(0) ;
 	}
+
+	public static String getVersion() { return version ;}
 	
 	public static void main(String[] args)
 	{

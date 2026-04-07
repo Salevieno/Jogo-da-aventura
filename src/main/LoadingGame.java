@@ -115,6 +115,8 @@ public abstract class LoadingGame
 		switch (step)
 		{
 			case 0:
+				System.out.println();
+				Log.info("Game version " + MainGame3_4.getVersion()) ;
 				Game.getScreen().setBorders(new int[] { 0 + Screen.borderOffset, Sky.height + Screen.borderOffset,
 						Game.getScreen().getSize().width - 60 - Screen.borderOffset, Game.getScreen().getSize().height - Screen.borderOffset });
 				Game.getScreen().setMapCenter();
@@ -260,5 +262,7 @@ public abstract class LoadingGame
 		{
 			startButton.display(0, true, mousePos) ;
 		}
+
+		GamePanel.DP.drawText(Util.translate(Game.getScreen().getCenter(), 0, 160), Align.center, "Game version " + MainGame3_4.getVersion(), Palette.colors[3]);
 	}
 }
