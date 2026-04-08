@@ -1,4 +1,4 @@
-package liveBeings;
+package sidebar;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,12 +10,12 @@ import java.util.List;
 import graphics.Align;
 import graphics2.Draw;
 import items.Item;
+import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Palette;
 import main.Path;
-import screen.SideBar;
 import utilities.Util;
 import windows.BagWindow;
 

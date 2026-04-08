@@ -1,4 +1,4 @@
-package screen;
+package sidebar;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,7 +13,6 @@ import UI.GameButton;
 import components.QuestSkills;
 import graphics.Align;
 import graphics2.Draw;
-import liveBeings.HotKeysBar;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
@@ -23,7 +22,6 @@ import main.ImageLoader;
 import main.MainGame3_4;
 import main.Palette;
 import main.Path;
-import spells.SpellsBar;
 import utilities.Util;
 import windows.PetAttributesWindow;
 import windows.PlayerAttributesWindow;
