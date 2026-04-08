@@ -37,6 +37,7 @@ import maps.GameMap;
 import screen.Screen;
 import screen.Sky;
 import simulations.EvolutionSimulation;
+import spells.Spell;
 import utilities.Util;
 
 public class Creature extends LiveBeing

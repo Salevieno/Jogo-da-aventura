@@ -12,14 +12,14 @@ import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
 import liveBeings.Player;
-import liveBeings.Spell;
-import liveBeings.SpellTypes;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
 import main.Palette;
 import main.Path;
+import spells.Spell;
+import spells.SpellTypes;
 import utilities.Util;
 
 

@@ -16,10 +16,10 @@ import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
 import graphics2.SpriteAnimation;
-import liveBeings.Buff;
 import liveBeings.Player;
-import liveBeings.Spell;
 import screen.Screen;
+import spells.Buff;
+import spells.Spell;
 import utilities.Util;
 
 

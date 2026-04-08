@@ -9,11 +9,11 @@ import liveBeings.Creature;
 import liveBeings.LiveBeing;
 import liveBeings.Pet;
 import liveBeings.Player;
-import liveBeings.Spell;
 import main.Elements;
 import main.Game;
 import main.GameStates;
 import simulations.EvolutionSimulation;
+import spells.Spell;
 import utilities.Util;
 
 public abstract class Battle 

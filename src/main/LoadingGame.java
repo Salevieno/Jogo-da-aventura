@@ -20,12 +20,10 @@ import graphics.Align;
 import graphics2.SpriteAnimation;
 import items.Item;
 import items.Recipe;
-import liveBeings.Buff;
 import liveBeings.CreatureData;
 import liveBeings.CreatureType;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
-import liveBeings.Spell;
 import maps.CityMap;
 import maps.FieldMap;
 import maps.GameMap;
@@ -33,6 +31,8 @@ import maps.SpecialMap;
 import screen.Screen;
 import screen.SideBar;
 import screen.Sky;
+import spells.Buff;
+import spells.Spell;
 import utilities.Util;
 
 public abstract class LoadingGame

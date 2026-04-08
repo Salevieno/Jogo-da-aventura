@@ -43,6 +43,8 @@ import main.RelativePos;
 import maps.GameMap;
 import maps.GroundRegion;
 import maps.GroundType;
+import spells.Buff;
+import spells.Spell;
 import utilities.Util;
 import windows.AttributesWindow;
 

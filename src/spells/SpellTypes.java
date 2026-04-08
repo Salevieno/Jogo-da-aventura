@@ -1,4 +1,4 @@
-package liveBeings;
+package spells;
 
 public enum SpellTypes
 {

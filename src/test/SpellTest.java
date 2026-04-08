@@ -18,17 +18,17 @@ import items.GeneralItem;
 import items.Item;
 import items.Potion;
 import items.Recipe;
-import liveBeings.Buff;
 import liveBeings.Creature;
 import liveBeings.CreatureData;
 import liveBeings.CreatureType;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
-import liveBeings.Spell;
-import liveBeings.SpellTypes;
 import main.Elements;
 import main.Languages;
+import spells.Buff;
+import spells.Spell;
+import spells.SpellTypes;
 import windows.CraftWindow;
 
 public class SpellTest

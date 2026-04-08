@@ -39,6 +39,7 @@ import main.Palette;
 import main.Path;
 import maps.GameMap;
 import simulations.EvolutionSimulation;
+import spells.Spell;
 import utilities.Util;
 import windows.PetAttributesWindow;
 

@@ -16,6 +16,7 @@ import graphics2.SpriteAnimation;
 import items.Item;
 import main.Elements;
 import main.Path;
+import spells.Spell;
 import windows.CreatureAttributesWindow;
 
 public class CreatureType

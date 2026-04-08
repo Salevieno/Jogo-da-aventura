@@ -1,4 +1,4 @@
-package liveBeings;
+package spells;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,6 +11,8 @@ import graphics.Align;
 import graphics.Scale;
 import graphics.UtilAlignment;
 import graphics2.Draw;
+import liveBeings.HotKeysBar;
+import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;

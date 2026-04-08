@@ -1,4 +1,4 @@
-package liveBeings ;
+package spells ;
 
 import java.awt.Image;
 import java.util.ArrayList;
@@ -8,6 +8,9 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
+import liveBeings.AttackModifiers;
+import liveBeings.LiveBeing;
+import liveBeings.PlayerJobs;
 import main.Elements;
 import main.GameTimer;
 import main.ImageLoader;

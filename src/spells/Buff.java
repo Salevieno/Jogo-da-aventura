@@ -1,4 +1,4 @@
-package liveBeings;
+package spells;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,7 @@ import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
+import liveBeings.LiveBeing;
 import main.Log;
 import main.Path;
 import utilities.Util;
