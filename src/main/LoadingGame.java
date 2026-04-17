@@ -63,14 +63,14 @@ public abstract class LoadingGame
     	startButton = new GameButton(startButtonPos, Align.center, "start game", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
 		petIdle.activate();
-    }    
+    }
     
     public static boolean isOver() { return 11 <= step ;}
     
     private static boolean startGameButtonClicked() { return step == 12 ;}
-	
-	public static void load(Player player, Point mousePos, Languages language)
-	{		
+
+	public static void load(Player player, Point mousePos, String language)
+	{
 		display(player.getCurrentAction(), mousePos) ;
 		if (!isOver())
 		{
@@ -104,7 +104,7 @@ public abstract class LoadingGame
 		Log.info("Loaded " + item + " in " + elapsedTime + " ms") ;
 	}
 
-	private static void initialize(int step, Player player, Languages language)
+	private static void initialize(int step, Player player, String language)
 	{
 		long initialTime = System.nanoTime();
 

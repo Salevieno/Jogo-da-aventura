@@ -61,8 +61,8 @@ public class Game
 
 	public static final String MainFontName = "Comics";
 	private static final GameStates mainState = GameStates.running;
-	private static final boolean testMode = false;
-	public static final boolean debugMode = true;
+	private static final boolean testMode = true;
+	public static final boolean debugMode = false;
 
 	private static GameStates state = GameStates.loading;
 	private static Languages gameLanguage;
@@ -119,6 +119,7 @@ public class Game
 	public static Player getPlayer() { return player ;}
 	public static Pet getPet() { return pet ;}
 	public static GameMap[] getCityMaps() { return cityMaps ;}
+	public static FieldMap[] getFieldMaps() { return fieldMaps ;}
 	public static GameMap[] getAllMaps() { return allMaps ;}
 	public static Quest[] getAllQuests() { return allQuests ;}
 	public static Item[] getAllItems() { return allItems ;}
@@ -598,7 +599,7 @@ public class Game
 			return;
 
 		case loading:
-			LoadingGame.load(player, GamePanel.getMousePos(), gameLanguage);
+			LoadingGame.load(player, GamePanel.getMousePos(), settings.getLanguage());
 			
 			if (Game.testMode && LoadingGame.isOver())
 			{

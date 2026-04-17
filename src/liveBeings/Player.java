@@ -1112,7 +1112,7 @@ public class Player extends LiveBeing
 			for (NPC npc : map.getNPCs())
 			{
 				if (!hitbox.overlaps(npc.getHitbox())) { continue ;}
-				
+				System.out.println(npc.getMenus().get(0).getSpeech());
 				npcInContact = npc ;
 				npcInContact.startInteraction() ;
 				npcInContact.resetMenu();

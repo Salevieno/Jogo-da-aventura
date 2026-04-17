@@ -52,7 +52,7 @@ public class PauseWindow extends GameWindow
 
     public PauseWindow()
     {
-        super("Opções", windowPos, imageBg, 2, 0, 6, 0) ;
+        super("Opções", windowPos, imageBg, 2, 0, 7, 0) ;
         
         Image btnImg = ImageLoader.loadImage(Path.UI_IMG + "SettingsButton.png") ;
         Image selectedBtnImg = ImageLoader.loadImage(Path.UI_IMG + "SettingsButtonSelected.png") ;
@@ -70,7 +70,8 @@ public class PauseWindow extends GameWindow
             new GameButton(gridPos(8, 1), Align.center, "A U D I O", btnImg, selectedBtnImg, () -> { switchToMenu(2) ;}, soundEffectOnHover),
             new GameButton(gridPos(10, 1), Align.center, "V I D E O", btnImg, selectedBtnImg, () -> { switchToMenu(3) ;}, soundEffectOnHover),
             new GameButton(gridPos(12, 1), Align.center, "C O N T R O L S", btnImg, selectedBtnImg, () -> { switchToMenu(4) ;}, soundEffectOnHover),
-            new GameButton(gridPos(14, 1), Align.center, "E X I T", btnImg, selectedBtnImg, () -> { MainGame3_4.closeGame() ;}, soundEffectOnHover)
+            new GameButton(gridPos(14, 1), Align.center, "L A N G U A G E", btnImg, selectedBtnImg, () -> { switchToMenu(5); ;}, soundEffectOnHover),
+            new GameButton(gridPos(16, 1), Align.center, "E X I T", btnImg, selectedBtnImg, () -> { MainGame3_4.closeGame() ;}, soundEffectOnHover)
         ) ;
         buttonsMainMenu.forEach(GameButton::deactivate) ;
         buttonsMainMenu.get(0).select() ;
@@ -104,12 +105,18 @@ public class PauseWindow extends GameWindow
 
         buttonsControlsMenu.forEach(GameButton::deactivate) ;
 
+        List<GameButton> buttonsLanguageMenu = List.of(
+            new GameButton(gridPos(6, 1), Align.center, "L A N G U A G E", btnShortImg, selectedBtnShortImg, () -> { Game.getSettings().update(6) ;}, soundEffectOnHover)
+        ) ;
+        buttonsLanguageMenu.forEach(GameButton::deactivate) ;
+
         menuButtons = Map.of(
             0, buttonsMainMenu,
             1, buttonsPlayerMenu,
             2, buttonsAudioMenu,
             3, buttonsVideoMenu,
-            4, buttonsControlsMenu
+            4, buttonsControlsMenu,
+            5, buttonsLanguageMenu
         ) ;
 
         menuSettings = new HashMap<>() ;
@@ -118,6 +125,7 @@ public class PauseWindow extends GameWindow
         menuSettings.put(2, List.of(0, 1)) ;
         menuSettings.put(3, List.of(5)) ;
         menuSettings.put(4, List.of()) ;
+        menuSettings.put(5, List.of(6)) ;
     }
 
     private static Point gridPos(int row, int col)

@@ -1,10 +1,18 @@
 package main;
 
 import java.awt.Point;
+import java.util.Arrays;
+import java.util.List;
 
+import NPC.NPC;
 import graphics.Align;
 import graphics2.Draw;
+import items.Item;
 import liveBeings.LiveBeing;
+import maps.CityMap;
+import maps.GameMap;
+import maps.SpecialMap;
+import utilities.Util;
 
 public class Settings
 {
@@ -13,6 +21,14 @@ public class Settings
     private boolean showAtkRange ;
     private int attDisplay ;
     private int damageAnimation ;
+    private String language ;
+
+    private static final List<String> languages ;
+
+    static
+    {
+        languages = Arrays.asList(Util.readcsvFile(Path.DADOS + "GameLanguages.csv").get(0)) ;
+    }
     
     public Settings(boolean musicIsOn, boolean soundEffectsAreOn, boolean showAtkRange, int attDisplay, int damageAnimation)
     {
@@ -21,6 +37,7 @@ public class Settings
         this.showAtkRange = showAtkRange ;
         this.attDisplay = attDisplay ;
         this.damageAnimation = damageAnimation ;
+        this.language = languages.get(0) ;
     }
 
     public void update(int item)
@@ -58,6 +75,15 @@ public class Settings
 		{
 			GameFrame.getMe().resizeWindow() ;
 		}
+        if (item == 6)
+        {
+            language = languages.get((languages.indexOf(language) + 1) % languages.size()) ;
+            NPC.load(language) ;
+            CityMap[] newCityMaps = CityMap.load() ;
+            SpecialMap[] specialMaps = SpecialMap.load(Item.allItems);
+            Game.setAllMaps(GameMap.assemble(newCityMaps, Game.getFieldMaps(), specialMaps)) ;
+            Game.getPlayer().setMap(Arrays.asList(Game.getAllMaps()).stream().filter(map -> Game.getPlayer().getMap().getName().equals(map.getName())).findFirst().get());
+        }
     }
 
     public void displaySetting(int item, Point pos, Align align)
@@ -82,6 +108,8 @@ public class Settings
             case 5:
                 Draw.settingSwitch(pos, align, GameFrame.fullScreen) ;
                 return ;
+            case 6:
+                Draw.settingBars(pos, align, 60, languages.indexOf(language), languages.size()) ;
             default:
                 return ;
         }
@@ -92,5 +120,5 @@ public class Settings
     public boolean getShowAtkRange() {return showAtkRange ;}
     public int getAttDisplay() {return attDisplay ;}
     public int getDamageAnimation() {return damageAnimation ;}
-    
+    public String getLanguage() { return language ;}    
 }

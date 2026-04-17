@@ -2493,5 +2493,43 @@
             }
         ],
         "job": 13
+    },
+    {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ],
+        "job": 13
     }
 ]

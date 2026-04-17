@@ -25,7 +25,6 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Elements;
-import main.Languages;
 import spells.Buff;
 import spells.Spell;
 import spells.SpellTypes;
@@ -49,7 +48,7 @@ public class SpellTest
 	{
 		Buff.loadBuffs();
 		Buff.loadDebuffs();
-		Spell.load(Languages.portugues, Buff.allBuffs, Buff.allDebuffs);
+		Spell.load("portugues", Buff.allBuffs, Buff.allDebuffs);
 		Item.load();
 		Recipe.load(Item.allItems) ;
 		CreatureData.load() ; // TODO level de dificuldade tem que ser 2 aqui

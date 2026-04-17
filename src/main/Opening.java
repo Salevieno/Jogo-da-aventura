@@ -166,7 +166,7 @@ public abstract class Opening
 		buttons.get(1).deactivate() ;
 		Buff.loadBuffs() ;
 		Buff.loadDebuffs() ;
-		Spell.load(Languages.portugues, Buff.allBuffs, Buff.allDebuffs) ;
+		Spell.load("portugues", Buff.allBuffs, Buff.allDebuffs) ;
 		players[0] = Player.load(1) ;
 		players[1] = Player.load(2) ;
 		players[2] = Player.load(3) ;

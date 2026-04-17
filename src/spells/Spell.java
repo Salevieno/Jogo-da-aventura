@@ -14,7 +14,6 @@ import liveBeings.PlayerJobs;
 import main.Elements;
 import main.GameTimer;
 import main.ImageLoader;
-import main.Languages;
 import main.Path;
 import utilities.Util;
 
@@ -166,7 +165,7 @@ public class Spell
 		deBuffs.apply(mult, level, receiver) ;
 	}
 	
-	public static void load(Languages language, List<Buff> allBuffs, List<Buff> allDebuffs)
+	public static void load(String language, List<Buff> allBuffs, List<Buff> allDebuffs)
 	{
 		List<String[]> input = Util.readcsvFile(Path.CSV + "SpellTypes.csv") ;
 
@@ -177,7 +176,7 @@ public class Spell
 		{
 			int id = row ;
 			String[] col = input.get(row) ;
-			info[row] = new String[] { col[44], col[45 + 2 * language.ordinal()] } ;
+			info[row] = new String[] { col[44], col[45 + 0] } ; // TODO spells language + 2 * language.ordinal()
 			String name = col[4] ;
 			String job = PlayerJobs.jobFromSpellID(row).toString() ;
 			Image image = ImageLoader.loadImage(Path.SPELLS_IMG + "spell" + job + row + ".png") ;

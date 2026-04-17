@@ -9,7 +9,6 @@ import attributes.PersonalAttributes;
 import items.Item;
 import liveBeings.CreatureType;
 import main.Game;
-import main.Languages;
 import main.Path;
 import utilities.Util;
 import windows.BagWindow;
@@ -63,7 +62,7 @@ public class Quest
 	}
 
 
-	public static Quest[] load(Languages language, int playerJob, List<CreatureType> creatureTypes, List<Item> allItems)
+	public static Quest[] load(String language, int playerJob, List<CreatureType> creatureTypes, List<Item> allItems)
 	{
 		List<String[]> inputs = Util.readcsvFile(dadosPath + "Quests.csv") ;
 		Quest[] quests = new Quest[inputs.size()] ;
@@ -101,8 +100,8 @@ public class Quest
 				rewardItems.put(allItems.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
 			}
 
-			String name = input[30 + language.ordinal()] ;
-			String description = input[32 + language.ordinal()] ;
+			String name = input[30 + 0] ; // TODO quests language language.ordinal()
+			String description = input[32] ; //  + language.ordinal()
 
 			quests[i] = new Quest(id, type, isRepeatable, reqCreatureTypes, reqItems, goldReward, expReward,
 					rewardItems, name, description) ;

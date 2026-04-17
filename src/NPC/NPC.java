@@ -25,7 +25,6 @@ import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
-import main.Languages;
 import main.Log;
 import main.Palette;
 import main.Path;
@@ -52,7 +51,6 @@ public abstract class NPC
 	protected static final Font stdfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	protected static final Color stdColor = Palette.colors[0] ;
 	protected static final Color selColor = Palette.colors[18] ;
-	private static final String path = Path.DADOS + "npcs\\" ;
 	private static final List<NPC> allNPCs = new ArrayList<>() ;
 
 	
@@ -84,10 +82,11 @@ public abstract class NPC
 		this.hitbox.setCenter(center) ;
 		this.pos = pos ;
 	}
-	public NPCJobs getJob() {return job ;}
-	public String getName() {return name ;}
+	public NPCJobs getJob() { return job ;}
+	public String getName() { return name ;}
 	public GameWindow getWindow() { return window ;}
-	public Hitbox getHitbox() {return hitbox ;}
+	public Hitbox getHitbox() { return hitbox ;}
+	public List<NPCMenu> getMenus() { return menus ;}
 	public List<Collider> getColliders() { return colliders ;}
 	public void resetMenu() { currentMenuID = 0 ;}
 	public boolean isInteracting() { return isInteracting ;}
@@ -134,9 +133,10 @@ public abstract class NPC
 	
 	public void switchOption(String action)
 	{
-		if (menus.get(currentMenuID).getOptions() == null) { Log.warn("Trying to access null options for menu " + currentMenuID + " and NPC " + job.toString()) ; return ;}
-		if (menus.get(currentMenuID).getOptions().isEmpty()) { Log.warn("Trying to access empty options for menu " + currentMenuID + " and NPC " + job.toString()) ; return ;}
-		if (menus.get(currentMenuID).getOptions().size() <= selOption) { Log.warn("Trying to access option out of bounds for menu " + currentMenuID + " and NPC " + job.toString() + "! Sel option id " + selOption + " and options size " + menus.get(currentMenuID).getOptions().size()) ; return ;}
+		if (menus.size() <= currentMenuID) { Log.warn("Trying to access position " + currentMenuID + " of menus with size " + menus.size() + " for npc " + name) ; return ;}
+		if (menus.get(currentMenuID).getOptions() == null) { Log.warn("Trying to access null options for menu " + currentMenuID + " and NPC " + name) ; return ;}
+		if (menus.get(currentMenuID).getOptions().isEmpty()) { Log.warn("Trying to access empty options for menu " + currentMenuID + " and NPC " + name) ; return ;}
+		if (menus.get(currentMenuID).getOptions().size() <= selOption) { Log.warn("Trying to access option out of bounds for menu " + currentMenuID + " and NPC " + name + "! Sel option id " + selOption + " and options size " + menus.get(currentMenuID).getOptions().size()) ; return ;}
 		
 		if (action.equals(PlayerActions.moveDown.getKey()) & selOption <= menus.get(currentMenuID).getOptions().size() - 2)
 		{
@@ -279,10 +279,11 @@ public abstract class NPC
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void load(Languages language)
+	public static void load(String language)
 	{
-		List<JSONObject> npcList = (List<JSONObject>) Util.readJsonArray(path + "NPCMenus-ptBR copy.json");
-		List<NPC> npcTypes = new ArrayList<>();
+		allNPCs.removeAll(allNPCs) ;
+		List<JSONObject> npcList = (List<JSONObject>) Util.readJsonArray(Path.DADOS + language + "/NPCMenus.json");
+		List<NPC> npcs = new ArrayList<>();
 
 		for (JSONObject npcData : npcList)
 		{
@@ -309,7 +310,7 @@ public abstract class NPC
 			}
 
 			NPC newNPC = NPC.create(job, name, info, menus) ;
-			npcTypes.add(newNPC);
+			npcs.add(newNPC);
 		}
 	}
 
