@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class ForgeWindow extends GameWindow
 		super("Forge", windowPos, windowImage, 1, 1, 1, 1) ;
 		bag = null ;
 		// forgeButton = new GameButton(new Point(200, 300), Align.topLeft, null, null, () -> {forge() ;}) ;
-		itemsForForge = null ;
+		itemsForForge = new ArrayList<>() ;
 		message = messages.get(0) ;
 		item = 0 ;
 	}	

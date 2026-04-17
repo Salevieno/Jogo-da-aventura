@@ -1106,7 +1106,7 @@ public class Player extends LiveBeing
 			npcInContact = null ;
 			return ;
 		}
-		
+
 		if (map.getNPCs() != null)
 		{
 			for (NPC npc : map.getNPCs())
@@ -1208,11 +1208,6 @@ public class Player extends LiveBeing
 			npcInContact.endInteraction() ;
 			npcInContact = null ;
 		}
-	}
-	
-	public void talkToNPC(Point mousePos)
-	{
-		npcInContact.act(this, Game.getPet(), mousePos) ;
 	}
 	
 	public void checkMeet(Point mousePos)

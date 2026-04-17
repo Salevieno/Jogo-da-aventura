@@ -44,10 +44,12 @@ public class CraftWindow extends GameWindow
 	public CraftWindow(List<Recipe> recipes)
 	{
 		super("", windowPos, craftImage, 1, 1, RecipesPerWindow, recipes.size() / RecipesPerWindow) ;
-		amountOfCrafts = 1 ;
+		this.amountOfCrafts = 1 ;
 		this.recipes = recipes ;
-		recipesInWindow = RecipesPerWindow <= recipes.size() ? recipes.subList(window, RecipesPerWindow + window) : recipes ;
-		craftButton = new GameButton(Util.translate(windowPos, 286, 130), Align.center, "Fabricar " + String.valueOf(amountOfCrafts), buttonImg, buttonImg, () -> {setBag(Game.getPlayer().getBag()) ; craft(playerBag) ;}) ;
+		this.recipesInWindow = RecipesPerWindow <= recipes.size() ? recipes.subList(window, RecipesPerWindow + window) : recipes ;
+		this.craftButton = new GameButton(Util.translate(windowPos, 286, 130), Align.center, "Fabricar " + String.valueOf(amountOfCrafts), buttonImg, buttonImg, () -> {setBag(Game.getPlayer().getBag()) ; craft(playerBag) ;}) ;
+		this.craftButton.deactivate() ;
+		addButton(craftButton) ;
 	}
 	
 	public void navigate(String action)

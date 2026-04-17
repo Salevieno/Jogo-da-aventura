@@ -1,56 +1,56 @@
 package NPC;
 
 import java.awt.Color;
+import java.awt.Image;
+import java.util.List;
 
+import main.ImageLoader;
 import main.Palette;
+import main.Path;
 
 public enum NPCJobs
 {
-	alchemist (Palette.colors[4]),
-	banker (Palette.colors[13]),
-	citizen0 (Palette.colors[5]),
-	citizen1 (Palette.colors[5]),
-	citizen2 (Palette.colors[5]),
-	citizen3 (Palette.colors[5]),
-	citizen4 (Palette.colors[5]),
-	citizen5 (Palette.colors[5]),
-	citizen6 (Palette.colors[5]),
-	citizen7 (Palette.colors[5]),
-	citizen8 (Palette.colors[5]),
-	citizen9 (Palette.colors[5]),
-	citizen10 (Palette.colors[5]),
-	citizen11 (Palette.colors[5]),
-	citizen12 (Palette.colors[5]),
-	citizen13 (Palette.colors[5]),
-	citizen14 (Palette.colors[5]),
-	citizen15 (Palette.colors[5]),
-	citizen16 (Palette.colors[5]),
-	citizen17 (Palette.colors[5]),
-	citizen18 (Palette.colors[5]),
-	citizen19 (Palette.colors[5]),
-	crafter (Palette.colors[21]),
-	doctor (Palette.colors[3]),
-	elemental (Palette.colors[3]),
-	equipsSeller (Palette.colors[20]),
-	itemsSeller (Palette.colors[12]),
-	smuggleSeller (Palette.colors[17]),
-	master (Palette.colors[5]),
-	woodcrafter (Palette.colors[8]),
-	forger (Palette.colors[21]),
-	saver (Palette.colors[19]),
-	sailorToIsland (Palette.colors[3]),
-	sailorToForest (Palette.colors[3]),
-	caveEntry (Palette.colors[5]),
-	caveExit (Palette.colors[5]),
-	questExp (Palette.colors[5]),
-	questItem (Palette.colors[5]);
+	alchemist (0, Palette.colors[4], List.of(List.of(1, 4), List.of(), List.of(), List.of(), List.of(4), List.of(-1))),
+	banker (1, Palette.colors[13], List.of(List.of(1, 2, 3, 3, 8), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(8), List.of(8), List.of(8), List.of(-1))),
+	citizen (2, Palette.colors[5], List.of(List.of(1), List.of(2), List.of(-1))),
+	crafter (3, Palette.colors[21], List.of(List.of(1, 4), List.of(), List.of(), List.of(), List.of(4), List.of(), List.of(-1))),
+	doctor (4, Palette.colors[3], List.of(List.of(3, 4), List.of(), List.of(), List.of(), List.of(4), List.of(-1))),
+	elemental (5, Palette.colors[3], List.of(List.of(0, 1), List.of(1), List.of(-1))),
+	equipsSeller (6, Palette.colors[20], List.of(List.of(1, 2), List.of(), List.of(2), List.of(-1))),
+	itemsSeller (7, Palette.colors[12], List.of(List.of(1, 2), List.of(), List.of(2), List.of(-1))),
+	smuggleSeller (8, Palette.colors[17], List.of(List.of(1, 2), List.of(), List.of(2), List.of(-1))),
+	master (9, Palette.colors[5], List.of(List.of(1, 6), List.of(), List.of(3, 5), List.of(), List.of(6), List.of(1, 6), List.of(6), List.of(-1))),
+	woodcrafter (10, Palette.colors[8], List.of(List.of(1, 4), List.of(), List.of(), List.of(), List.of(4), List.of(-1))),
+	forger (11, Palette.colors[21], List.of(List.of(0, 1), List.of(1), List.of(-1))),
+	saver (12, Palette.colors[19], List.of(List.of(1, 3), List.of(2, 2, 2), List.of(3), List.of(3), List.of(-1))),
+	questExp (13, Palette.colors[5], List.of(List.of(1, 4), List.of(2), List.of(2), List.of(4), List.of(4), List.of(-1))),
+	questItem (14, Palette.colors[5], List.of(List.of(1, 4), List.of(2), List.of(2), List.of(4), List.of(4), List.of(-1)));
 	
+	private final int id ;
+	private final Image image ;
 	private final Color color ;
+	private final List<List<Integer>> destination ;
 	
-	private NPCJobs(Color color)
+	private NPCJobs(int id, Color color, List<List<Integer>> destination)
 	{
+		this.id = id ;
+		this.image = ImageLoader.loadImage(Path.NPC_IMG + "NPC_" + this.toString() + ".png") ;
 		this.color = color ;
+		this.destination = destination ;
+	}
+
+	public static NPCJobs getByID(int id)
+	{
+		for (NPCJobs job : values())
+		{
+			if (id == job.id) { return job ;}
+		}
+
+		return null ;
 	}
 	
+	public int getID() { return id ;}
+	public Image getImage() { return image ;}
 	public Color getColor() { return color ;}
+	public List<List<Integer>> getDestination() { return destination ;}
 }

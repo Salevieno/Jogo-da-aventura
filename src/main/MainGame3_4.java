@@ -12,11 +12,6 @@ public class MainGame3_4
 {
 	private static final GameFrame gameFrame = GameFrame.getMe() ;
 	private static final String version = "0.2" ;
-
-	public static void callResizeWindow()
-	{
-		gameFrame.resizeWindow() ;
-	}
 	
 	public static void closeGame()
 	{

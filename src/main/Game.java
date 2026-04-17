@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import Buildings.Building;
-import NPC.NPC;
-import NPC.NPCType;
 import UI.GameButton;
 import animations.Animation;
 import battle.AtkTypes;
@@ -50,7 +48,6 @@ import sidebar.SpellsBar;
 import simulations.EvolutionSimulation;
 import spells.Spell;
 import utilities.Util;
-import windows.BankWindow;
 import windows.PauseWindow;
 
 public class Game
@@ -65,7 +62,7 @@ public class Game
 	public static final String MainFontName = "Comics";
 	private static final GameStates mainState = GameStates.running;
 	private static final boolean testMode = false;
-	public static final boolean debugMode = false;
+	public static final boolean debugMode = true;
 
 	private static GameStates state = GameStates.loading;
 	private static Languages gameLanguage;
@@ -85,7 +82,6 @@ public class Game
 	private static CityMap[] cityMaps;
 	private static FieldMap[] fieldMaps;
 	private static GameMap[] allMaps;
-	private static NPCType[] npcTypes;
 	private static Item[] allItems;
 	private static Spell[] allSpells;
 	private static Quest[] allQuests;
@@ -120,7 +116,6 @@ public class Game
 	public static Languages getLanguage() { return gameLanguage ;}
 	public static Settings getSettings() { return settings ;}
 	public static Screen getScreen() { return screen ;}
-	public static NPCType[] getNPCTypes() { return npcTypes ;}
 	public static Player getPlayer() { return player ;}
 	public static Pet getPet() { return pet ;}
 	public static GameMap[] getCityMaps() { return cityMaps ;}
@@ -138,7 +133,6 @@ public class Game
 	public static void setCityMaps(CityMap[] cityMaps) { Game.cityMaps = cityMaps ;}
 	public static void setFieldMaps(FieldMap[] fieldMaps) { Game.fieldMaps = fieldMaps ;}
 	public static void setAllMaps(GameMap[] allMaps) { Game.allMaps = allMaps ;}
-	public static void setNpcTypes(NPCType[] npcTypes) { Game.npcTypes = npcTypes ;}
 	public static void setAllQuests(Quest[] allQuests) { Game.allQuests = allQuests ;}
 
 	public static void switchToMainState() { state = mainState ;}
@@ -324,7 +318,7 @@ public class Game
 		if (dayTimer.hasFinished())
 		{
 			dayTimer.restart();
-			NPC.renewStocks();
+			// NPC.renewStocks();
 		}
 		player.activateSpellCounters();
 
@@ -348,11 +342,12 @@ public class Game
 				continue;
 			}
 
-			BankWindow bankWindow = (BankWindow) bank.getNPCs().get(0).getWindow();
-			if (bankWindow.hasInvestment() & bankWindow.investmentIsComplete())
-			{
-				bankWindow.completeInvestment();
-			}
+			// TODO reativar
+			// BankWindow bankWindow = (BankWindow) bank.getNPCs().get(0).getWindow();
+			// if (bankWindow != null && bankWindow.hasInvestment() && bankWindow.investmentIsComplete())
+			// {
+			// 	bankWindow.completeInvestment();
+			// }
 		}
 
 		player.activateCounters();
@@ -494,7 +489,10 @@ public class Game
 
 		if (player.isInContactWithNPC() && player.getNPCInContact().isInteracting())
 		{
-			player.getNPCInContact().act(player, pet, GamePanel.getMousePos()) ;
+			player.getNPCInContact().act(player, pet, player.getCurrentAction()) ;
+// 		if (playerAction == null) { return ;}				
+// 		if (window != null && window.isOpen()) { return ;}
+			player.getNPCInContact().navigate(player.getCurrentAction()) ;
 		}
 
 		Projectiles.updateAll(player, pet);

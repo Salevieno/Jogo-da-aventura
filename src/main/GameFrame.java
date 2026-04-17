@@ -21,7 +21,7 @@ public class GameFrame extends JFrame implements ActionListener
 	private static final Dimension windowSize = new Dimension(1280,960) ; // TODO consider 1280 x 720
 	private static final Image icon = ImageLoader.loadImage(Path.GAME_IMG + "gameIcon.png") ;
 	private static final GameFrame gameFrame = new GameFrame() ;
-	public static boolean fullScreen = true ;
+	public static boolean fullScreen = false ;
 
 	private GameFrame()
     {

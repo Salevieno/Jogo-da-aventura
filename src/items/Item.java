@@ -22,8 +22,8 @@ public abstract class Item
 	protected final double dropChance ;
 	
 	protected static final Image infoMenu = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "itemInfoWindow.png") ;
-	public static final List<Item> allItems = new ArrayList<>() ;
     public static final Image slot = ImageLoader.loadImage(Path.WINDOWS_IMG + "itemSlot.png") ;
+	public static final List<Item> allItems = new ArrayList<>() ;
 	
 	public Item(int id, String name, String description, Image image, int price, double dropChance)
 	{

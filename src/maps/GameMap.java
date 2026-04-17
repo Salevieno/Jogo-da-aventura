@@ -278,7 +278,7 @@ public class GameMap
 
 		return groundRegions ;
 	}
-
+ 	// TODO collider pode ser set?
  	public List<Collider> allColliders()
  	{
  		List<Collider> allColliders = new ArrayList<>() ;

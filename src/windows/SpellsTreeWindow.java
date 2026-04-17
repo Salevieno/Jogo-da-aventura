@@ -45,14 +45,21 @@ public class SpellsTreeWindow extends GameWindow
 
 	public SpellsTreeWindow(int playerJob)
 	{
-
 		super("Árvore de magias", windowTopLeft, mainImage, 0, 1, 0, 1) ;
 		this.playerJob = playerJob ;
-		playerCurrentSpells = new ArrayList<>() ;
+		this.spells = new ArrayList<>() ;
+		this.playerCurrentSpells = new ArrayList<>() ;
 	}
 		
 	public void switchTo2Tabs() { numberTabs = 2 ;}
-	public void setSpells(List<Spell> spells) { this.spells = spells ; updateSpellsOnWindow() ; numberItems = spellsOnWindow.size() ;}
+
+	public void setSpells(List<Spell> spells)
+	{
+		this.spells = spells ;
+		updateSpellsOnWindow() ;
+		numberItems = spellsOnWindow.size() ;
+	}
+
 	public void setPoints (int points) { this.points = points ;}
 	public void setplayerCurrentSpells (List<Spell> playerCurrentSpells) { this.playerCurrentSpells = playerCurrentSpells ;}
 	

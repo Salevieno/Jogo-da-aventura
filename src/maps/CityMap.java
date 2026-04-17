@@ -14,7 +14,6 @@ import org.json.simple.JSONObject;
 import Buildings.Building;
 import Buildings.Sign;
 import NPC.NPC;
-import NPC.NPCType;
 import graphics.Align;
 import graphics2.SpriteAnimation;
 import items.Fab;
@@ -30,7 +29,6 @@ public class CityMap extends GameMap
 {
 
 	private final Sign sign ;
-	private static final Image forgeDeskImage = ImageLoader.loadImage(Path.NPC_IMG + "Forge.png") ;
 	private static final Clip musicCities = Music.musicFileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
 	
 	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)
@@ -46,35 +44,24 @@ public class CityMap extends GameMap
 		diggingItems.put(GeneralItem.getAll()[155], allDiggingItems.get(GeneralItem.getAll()[155])) ;
 		calcDigItemChances() ;
 	}
-
-	private static NPC readNPCfromJson(JSONObject npcJSONObject)
-	{
-
-		JSONObject npc = npcJSONObject ;
-		String npcName = (String) npc.get("name") ;
-		double posX = (Double) ((JSONObject) npc.get("pos")).get("x") ;
-		double posY = (Double) ((JSONObject) npc.get("pos")).get("y") ;
-		Point npcPos = Game.getScreen().getPointWithinBorders(posX, posY) ;
-		NPCType npcType = NPC.typeFromName(npcName) ;
-		Image desk = null ;
-		if ("forger".equals(npcName))
-		{
-			desk = forgeDeskImage ;
-		}
-		return new NPC(npcType, npcPos, desk) ;
-
-	}
 	
 	private static List<NPC> loadNPCs(JSONObject map)
 	{
 		JSONArray listNPCs = (JSONArray) map.get("NPCs") ;
 		List<NPC> npcs = new ArrayList<>() ;
-		for (int i = 0 ; i <= listNPCs.size() - 1 ; i += 1)
+
+		for (Object npcObj : listNPCs)
 		{
-			NPC npc = readNPCfromJson((JSONObject) listNPCs.get(i)) ;
+			JSONObject npcJson = (JSONObject) npcObj ;
+			int id = (int) (long) npcJson.get("id") ;
+			JSONObject posJson = (JSONObject) npcJson.get("pos") ;
+			double posX = (double) posJson.get("x") ;
+			double posY = (double) posJson.get("y") ;
+			NPC npc = NPC.getAll().get(id) ;
+			npc.setPos(Game.getScreen().getPointWithinBorders(posX, posY)) ;
 			npcs.add(npc) ;
 		}
-		
+
 		return npcs ;
 	}
 	

@@ -12,7 +12,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import NPC.NPC;
-import NPC.NPCType;
 import UI.ButtonFunction;
 import UI.GameButton;
 import components.Quest;
@@ -41,6 +40,19 @@ public abstract class LoadingGame
     private static final GameButton startButton ;
 	private static final SpriteAnimation loadingAni = new SpriteAnimation(Path.OPENING_IMG + "LoadingSprite.png", new Point(), Align.center, 3, 0.2) ;
 	private static final SpriteAnimation petIdle = new SpriteAnimation(Path.PET_IMG + "pet0_idle.png", Game.getScreen().getCenter(), Align.center, 4, 0.13) ;
+	private static final List<String> message = List.of(
+		"Loading initial stuff...",
+		"Loading text...",
+		"Loading spells...",
+		"Loading items...",
+		"Loading creature types...",
+		"Loading recipes...",
+		"Loading npc types...",
+		"Loading building types...",
+		"Loading quests...",
+		"Loading maps...",
+		"Loading final stuff..."
+	);
 
     static
     {
@@ -51,31 +63,15 @@ public abstract class LoadingGame
     	startButton = new GameButton(startButtonPos, Align.center, "start game", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
 		petIdle.activate();
-    }
-    
+    }    
     
     public static boolean isOver() { return 11 <= step ;}
     
     private static boolean startGameButtonClicked() { return step == 12 ;}
 	
 	public static void load(Player player, Point mousePos, Languages language)
-	{
-		String message = switch(step)
-		{
-			case 0 -> "Loading initial stuff..." ;
-			case 1 -> "Loading text..." ;
-			case 2 -> "Loading spells..." ;
-			case 3 -> "Loading items..." ;
-			case 4 -> "Loading creature types..." ;
-			case 5 -> "Loading recipes..." ;
-			case 6 -> "Loading npc types..." ;
-			case 7 -> "Loading building types..." ;
-			case 8 -> "Loading quests..." ;
-			case 9 -> "Loading maps..." ;
-			case 10 -> "Loading final stuff..." ;
-			default -> "" ;
-		};
-		display(player.getCurrentAction(), mousePos, message) ;
+	{		
+		display(player.getCurrentAction(), mousePos) ;
 		if (!isOver())
 		{
 			initialize(step, player, language) ;
@@ -151,7 +147,7 @@ public abstract class LoadingGame
 				return;
 
 			case 6:
-				Game.setNpcTypes(NPCType.load(language)) ;
+				NPC.load(language) ;
 				logInitializationTime("npc types", initialTime);
 				return;
 
@@ -166,7 +162,7 @@ public abstract class LoadingGame
 
 			case 9:
 				CityMap[] cityMaps = CityMap.load() ;
-				FieldMap[] fieldMaps = FieldMap.load(Game.getNPCTypes());
+				FieldMap[] fieldMaps = FieldMap.load();
 				SpecialMap[] specialMaps = SpecialMap.load(Item.allItems);
 				Game.setCityMaps(cityMaps);
 				Game.setFieldMaps(fieldMaps) ;
@@ -175,8 +171,6 @@ public abstract class LoadingGame
 				return;
 
 			case 10:
-				NPC.setIDs();
-
 				// player.InitializeSpells() ;
 				if (player.getSpells().isEmpty())
 				{
@@ -218,11 +212,11 @@ public abstract class LoadingGame
 
 			if (catName == null) { continue ;}
 
-			if (catName.equals(TextCategories.npcs))
-			{
-				NPC.loadText(textData, key, Game.allText, catName);
-				continue;
-			}
+			// if (catName.equals(TextCategories.npcs))
+			// {
+			// 	NPC.loadText(textData, key, Game.allText, catName);
+			// 	continue;
+			// }
 
 			JSONArray listText = (JSONArray) textData.get(key);
 
@@ -237,7 +231,7 @@ public abstract class LoadingGame
 
 	}
 	
-	private static void display(String action, Point mousePos, String message)
+	private static void display(String action, Point mousePos)
 	{		
 		GamePanel.DP.drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), Palette.colors[0], null) ;
 		SpriteAnimation.updateAll();
@@ -255,7 +249,7 @@ public abstract class LoadingGame
 			loadingAni.setPos(loadingTextCenter) ;
 			loadingAni.activateIfInactive() ;
 			loadingAni.display(GamePanel.DP);
-			GamePanel.DP.drawText(Util.translate(Game.getScreen().getCenter(), 0, 30), Align.center, message, Palette.colors[3]);
+			GamePanel.DP.drawText(Util.translate(Game.getScreen().getCenter(), 0, 30), Align.center, message.get(step), Palette.colors[3]);
 		}
 
 		if (startButton.isActive())

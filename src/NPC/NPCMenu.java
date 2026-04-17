@@ -1,0 +1,38 @@
+package NPC;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import main.Log;
+
+public class NPCMenu
+{
+	private final String speech ;
+    private final Map<String, Integer> optionDestination ;
+	private final List<String> options ;
+	private final List<Integer> destination ;
+
+    protected NPCMenu(List<Integer> destination, String speech, List<String> options)
+    {
+        if (speech == null) { Log.error("Trying to create NPCMenu with null speech") ;}
+        if (destination.size() != options.size()) { Log.error("Trying to create NPCMenu with destination size = " + destination.size() + " and options size = " + options.size()) ;}
+
+        this.speech = speech ;
+        this.options = options ;
+        this.destination = destination ;
+        this.optionDestination = new HashMap<>() ;
+        for (int i = 0 ; i <= destination.size() - 1 ; i += 1)
+        {
+            this.optionDestination.put(options.get(i), destination.get(i)) ;
+        }
+    }
+
+    public String getSpeech() { return speech ;}
+
+    public List<String> getOptions() { return options ;}
+
+    public List<Integer> getDestination() { return destination ;}
+
+    public Map<String, Integer> getOptionDestination() { return optionDestination ;}
+}

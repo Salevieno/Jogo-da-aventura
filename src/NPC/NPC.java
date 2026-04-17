@@ -6,24 +6,17 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import attributes.PersonalAttributes;
 import components.Collider;
 import components.Hitbox;
 import components.HitboxRectangle;
-import components.Quest;
-import components.QuestSkills;
 import graphics.Align;
 import graphics.Scale;
+import graphics.UtilAlignment;
 import graphics2.Draw;
-import items.Equip;
 import items.Item;
 import items.Recipe;
 import liveBeings.Pet;
@@ -32,127 +25,71 @@ import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Languages;
 import main.Log;
 import main.Palette;
 import main.Path;
-import main.TextCategories;
-import maps.GameMap;
 import utilities.Util;
-import windows.BagWindow;
-import windows.BankAction;
-import windows.BankWindow;
-import windows.CraftWindow;
-import windows.ElementalWindow;
-import windows.ForgeWindow;
 import windows.GameWindow;
-import windows.ShoppingWindow;
-import windows.SpellsTreeWindow;
 
-public class NPC
+public abstract class NPC
 {
-	private int id ; // TODO make final
-	private final NPCType type ;
-	private final Point pos ;
-	private final Image desk ;
-	private int menu ;
-	private int selOption ;
-	private int numberMenus ;
-	private GameWindow window ;
+	protected final int id ;
+	protected final String name ;
+	protected NPCJobs job ;
+	protected Point pos ;
+	protected final Image desk ;
+	protected final List<NPCMenu> menus ;
+	protected int currentMenuID ;
+	protected int selOption ;
+	protected GameWindow window ;
 	private Hitbox hitbox ;
 	private boolean isInteracting ;
 	
-	private final List<Collider> colliders ;
-	private static boolean renewStocks = false ;
-	private static final Font stdfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
-	private static final Image speakingBubble = ImageLoader.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
-	private static final Image choicesWindow = ImageLoader.loadImage(Path.NPC_IMG + "ChoicesWindow.png") ;
-	private static final Color stdColor = Palette.colors[0] ;
-	private static final Color selColor = Palette.colors[18] ;
+	protected final List<Collider> colliders ;
+	protected static final Image speakingBubble = ImageLoader.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
+	protected static final Image choicesWindow = ImageLoader.loadImage(Path.NPC_IMG + "ChoicesWindow.png") ;
+	protected static final Font stdfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
+	protected static final Color stdColor = Palette.colors[0] ;
+	protected static final Color selColor = Palette.colors[18] ;
+	private static final String path = Path.DADOS + "npcs\\" ;
+	private static final List<NPC> allNPCs = new ArrayList<>() ;
 
-	public NPC(NPCType type, Point pos, Image desk)
+	
+	public NPC(NPCJobs job, String name, Point pos, List<NPCMenu> menus, Image desk)
 	{
-		this.id = 0 ;
-		this.type = type ;
+		this.id = allNPCs.size() ;
+		this.job = job ;
+		this.name = name ;
 		this.pos = pos ;
-		selOption = 0 ;
-		menu = 0 ;
-		numberMenus = 0 ;
-		colliders = new ArrayList<>() ;
-		hitbox = null ;
-		isInteracting = false ;
+		this.selOption = 0 ;
+		this.currentMenuID = 0 ;
+		this.menus = menus ;
+		this.isInteracting = false ;
 		this.desk = desk ;
-
-		if (type == null) { Log.error("Ao criar npc: tipo nulo") ; return ;}
 		
-		if (type.getSpeech() != null)
-		{
-			numberMenus = type.getSpeech().length - 1 ;
-		}
-
-		switch (type.getJob())
-		{
-			case equipsSeller: case itemsSeller: case smuggleSeller:
-				break ;
-				
-			case alchemist:
-			{
-		    	List<Recipe> recipes = Recipe.all.subList(0, 40) ;
-				
-				window = new CraftWindow(recipes) ;
-				
-				break ;
-			}
-			case woodcrafter:
-			{
-		    	List<Recipe> recipes = Recipe.all.subList(40, 58) ;
-				
-				window = new CraftWindow(recipes) ;
-				
-				break ;
-			}
-			case crafter:
-			{
-		    	List<Recipe> recipes = Recipe.all.subList(58, Recipe.all.size()) ;
-				
-				window = new CraftWindow(recipes) ;
-				
-				break ;
-			}
-			case forger:
-			{
-				window = new ForgeWindow() ;
-				
-				break ;
-			}
-			case elemental:
-			{
-				window = new ElementalWindow() ;
-
-				break ;
-			}
-			case banker:
-			{
-				window = new BankWindow() ;
-
-				break ;
-			}
-			default: window = null ; break ;
-		}
-
-		hitbox = new HitboxRectangle(Util.translate(pos, 0, -type.getImage().getHeight(null) / 2), Util.getSize(type.getImage()), 0.8) ;
-		colliders.add(new Collider(pos)) ;
+		this.hitbox = new HitboxRectangle(Util.translate(pos, 0, -job.getImage().getHeight(null) / 2), Util.getSize(job.getImage()), 0.8) ;
+		this.colliders = List.of(new Collider(pos)) ;
+		allNPCs.add(this) ;
 	}
-
-	public NPC(NPCType type, Point pos)
+	
+	public NPC(NPCJobs job, String name, Point pos, List<NPCMenu> menus)
 	{
-		this(type, pos, null) ;
+		this(job, name, pos, menus, null) ;
 	}
 
-	public void setID(int I) {id = I ;}
-	public NPCType getType() {return type ;}
+	public void setPos(Point pos)
+	{
+		Point center = UtilAlignment.getPosAt(pos, Align.bottomCenter, Align.center, Util.getSize(job.getImage())) ;
+		this.hitbox.setCenter(center) ;
+		this.pos = pos ;
+	}
+	public NPCJobs getJob() {return job ;}
+	public String getName() {return name ;}
 	public GameWindow getWindow() { return window ;}
 	public Hitbox getHitbox() {return hitbox ;}
 	public List<Collider> getColliders() { return colliders ;}
+	public void resetMenu() { currentMenuID = 0 ;}
 	public boolean isInteracting() { return isInteracting ;}
 	public void startInteraction() { isInteracting = true ;}
 	public void endInteraction()
@@ -163,321 +100,45 @@ public class NPC
 			Game.getPlayer().switchOpenClose(window) ;
 		}
 	}
-	public void switchInteraction() { isInteracting = !isInteracting ;}
-	
-	
+		
 	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
+	public static List<NPC> getAll() { return allNPCs ;}
 	
-	public static NPCType typeFromName(String name)
-	{
+	public abstract void act(Player player, Pet pet, String action) ;
 
-		if (Game.getNPCTypes() == null) { Log.error("Ao obter nome do npc. Tipos de NPC não existem") ; return null ;}
-		if (Game.getNPCTypes().length == 0) { Log.error("Ao obter nome do npc. Não há nenhum tipo de NPC") ; return null ;}
-		
-		NPCJobs npcJob = NPCJobs.valueOf(name) ;
-		for (NPCType type : Game.getNPCTypes())
-		{
-			if (!npcJob.equals(type.getJob()))
-			{
-				continue ;
-			}
-
-			return type ;
-		}
-		
-		return null ;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static void loadText(JSONObject textData, Object key, Map <TextCategories, String[]> allText, TextCategories catName)
-	{
-		JSONArray npcData = (JSONArray) textData.get(key) ;
-
-		for (int i = 0 ; i <= npcData.size() - 1 ; i += 1)
-		{
-			JSONObject npc = (JSONObject) npcData.get(i) ;
-			String npcName = (String) npc.get("Nome") ;
-			List<String> falas = (List<String>) npc.get("Falas") ;
-			List<JSONArray> opcoes = (List<JSONArray>) npc.get("Opcoes") ;
-			TextCategories textCatName = TextCategories.catFromBRName(catName + "Nome") ;
-			TextCategories textCatFala = TextCategories.catFromBRName(catName + npcName + "Falas") ;
-
-			if (textCatName != null)
-			{
-				allText.put(textCatName, falas.toArray(new String[0])) ;
-			}
-
-			if (textCatFala != null)
-			{
-				allText.put(textCatFala, falas.toArray(new String[0])) ;
-			}
-
-			for (int j = 0 ; j <= opcoes.size() - 1 ; j += 1)
-			{
-				List<String> opcoesMenu = (List<String>) opcoes.get(j) ;
-				TextCategories textCatOption = TextCategories.catFromBRName(catName + npcName + "Opcoes" + j) ;
-
-				if (textCatOption == null)
-				{
-					continue ;
-				}
-
-				allText.put(textCatOption, opcoesMenu.toArray(new String[0])) ;
-			}
-		}
-	}
-	
-	
-	public void resetMenu() { menu = 0 ;}
-	public static void setIDs()
-	{
-		GameMap[] allMaps = Game.getAllMaps() ;
-		int i = 0 ;
-
-		for (GameMap map : allMaps)
-		{
-			List<NPC> npcsInMap = map.getNPCs() ;
-
-			if (npcsInMap == null) { continue ;}
-			if (npcsInMap.isEmpty()) { continue ;}
-			
-			for (NPC npc : npcsInMap)
-			{
-				npc.setID(i) ;
-				i += 1 ;
-			}
-		}
-	}
-	public static int getQuestNPCid(NPC questNPC)
-	{
-		GameMap[] allMaps = Game.getAllMaps() ;
-		int questId = 0 ;
-
-		for (GameMap map : allMaps)
-		{
-			List<NPC> npcsInMap = map.getNPCs() ;
-			if (npcsInMap == null) { continue ;}
-			if (npcsInMap.isEmpty()) { continue ;}
-			
-			for (int i = 0 ; i <= npcsInMap.size() - 1 ; i += 1)
-			{
-				NPCJobs npcJob = npcsInMap.get(i).getType().getJob() ;
-				if (!npcJob.equals(NPCJobs.questExp) & !npcJob.equals(NPCJobs.questItem)) { continue ;}
-				if (!npcsInMap.get(i).equals(questNPC)) { questId += 1; continue ;}
-				
-				return questId ;
-			}
-		}
-		
-		return -1 ;
-	}
-	
-	private int[] newSmuggledStock()
-	{
-		List<Integer> fullStock = new ArrayList<>() ;
-		for (int i = 0 ; i <= 99 - 1 ; i += 1)
-		{
-			fullStock.add(200 + i) ;
-		}
-		int[] newStockIDs = new int[12] ; 
-		for (int i = 0 ; i <= newStockIDs.length - 1 ; i += 1)
-		{
-			int newItem = Util.randomInt(0, fullStock.size() - 1) ;
-			newStockIDs[i] = fullStock.get(newItem) ;
-			fullStock.remove(newItem) ;
-		}
-		
-		return newStockIDs ;
-	}
-	
-	public static void renewStocks() { renewStocks = true ;}
-	
-	public void act(Player player, Pet pet, Point mousePos)
-	{				
-		String playerAction = player.getCurrentAction() ;
-
-		if (playerAction == null) { return ;}				
-		if (window != null && window.isOpen()) { return ;}
-
-		BagWindow playerBag = player.getBag() ;
-		switch (type.getJob())
-		{
-			case alchemist: case woodcrafter: case crafter:
-			{
-				crafterAction(player, playerBag, playerAction, mousePos, (CraftWindow) window) ;
-				
-				break ;
-			}
-			case banker:
-			{
-				bankerAction(player, (BankWindow) window, playerAction) ;
-
-				break ;
-			}
-			case caveEntry:
-			{
-				portalAction(player) ;
-
-				break ;
-			}
-			case caveExit:
-			{
-				if (playerBag.contains(Game.getAllItems()[1338])) { portalAction(player) ;}
-
-				break ;
-			}
-			case doctor: 
-			{
-				if (pet == null) { doctorAction(playerAction, player.getPA(), null) ;}
-				else { doctorAction(playerAction, player.getPA(), pet.getPA()) ;}
-
-				break ;
-			}
-			case elemental:
-			{
-				List<Equip> listEquips = new ArrayList<Equip> (playerBag.getEquip().keySet()) ;
-
-				((ElementalWindow) window).setItems(listEquips, ElementalWindow.spheresInBag(playerBag)) ;
-				
-				elementalAction(player, playerBag, (ElementalWindow) window, player.getCurrentAction()) ;
-
-				break ;
-			}
-			case equipsSeller:
-			{
-				int[] itemIDs = new int[] {300, 305, 307, 309, 315, 322, 326, 328, 332, 336, 340, 344} ;
-				int cityID = id / 17 ;
-				for (int i = 0 ; i <= itemIDs.length - 1; i += 1) { itemIDs[i] += 200 * cityID ;}
-//		    	List<Item> itemsOnSale = new ArrayList<>() ;
-//		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
-		    	
-		    	window = new ShoppingWindow(Item.getItems(itemIDs)) ;
-		    	
-		    	sellerAction(player, playerAction, (ShoppingWindow) window) ;
-		    	
-		    	break ;
-			}
-			case itemsSeller:
-				int[] itemIDs = new int[] {1329, 0, 1, 4, 5, 121, 122, 125, 130, 1301, 1305, 1702, 1708, 1710, 1713} ;
-//		    	List<Item> itemsOnSale = new ArrayList<>() ;
-//		    	for (int itemID : itemIDs) { itemsOnSale.add(Game.getAllItems()[itemID]) ;}
-		    	
-		    	window = new ShoppingWindow(Item.getItems(itemIDs)) ;
-		    	
-		    	sellerAction(player, playerAction, (ShoppingWindow) window) ;
-		    	
-		    	break ;
-				
-			case smuggleSeller:
-				int[] itemids = newSmuggledStock() ;
-				if (renewStocks)
-				{
-					itemids = newSmuggledStock() ;
-					renewStocks = false ;
-				}
-				int cityID = id / 17 ;
-				for (int i = 0 ; i <= itemids.length - 1; i += 1)
-				{
-					itemids[i] += 200 * cityID ;
-				}
-		    	
-		    	window = new ShoppingWindow(Item.getItems(itemids)) ;
-		    	
-		    	sellerAction(player, playerAction, (ShoppingWindow) window) ;
-				
-		    	break ;
-				
-				 
-			case forger:
-			{
-				List<Equip> equipsForForge = new ArrayList<>() ;
-				playerBag.getEquip().keySet().forEach(equipsForForge::add) ;
-				equipsForForge = equipsForForge.stream().filter(eq -> !Arrays.asList(player.getEquips()).contains(eq)).collect(Collectors.toList());
-				((ForgeWindow) window).setItemsForForge(equipsForForge);
-				((ForgeWindow) window).setBag(playerBag);
-				
-				forgerAction(player, playerBag, playerAction, (ForgeWindow) window) ;
-				
-				break ;
-			}
-			case master:
-			{
-				player.getSpellsTreeWindow().setSpells(player.getSpells()) ;
-				
-				if (50 <= player.getLevel() & player.getProJob() == 0 & menu == 0)
-				{
-					menu = 2 ;
-					String[] proClassesText = Game.allText.get(TextCategories.proclasses) ;
-					String proJob1 = proClassesText[2 * player.getJob() + 0] ;
-					String proJob2 = proClassesText[2 * player.getJob() + 1] ;
-					type.getOptions().set(3, new ArrayList<String>(Arrays.asList(proJob1, proJob2))) ;
-				}
-				window = player.getSpellsTreeWindow() ;
-				
-				masterAction(player, player.getCurrentAction(), mousePos, (SpellsTreeWindow) window) ;
-
-				break ;
-			}
-			case saver:
-			{
-				saverAction(player, pet, playerAction) ;
-
-				break ;
-			}
-			case sailorToIsland: case sailorToForest:
-			{
-				sailorAction(player, playerAction) ;
-
-				break ;
-			}
-			case questExp: case questItem:
-			{
-				questAction(player.getQuests(), playerBag, player.getPA(), player.getQuestSkills(), playerAction) ;
-
-				break ;
-			}
-			
-			default: break;			
-		}
-
-		navigate(playerAction) ;		
-	}
-	
 	public void navigate(String action)
-	{		
+	{
+		if (action == null) { return ;}
+
 		switchOption(action) ;
 
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) && menu <= numberMenus - 1)
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) && currentMenuID <= menus.size() - 2)
 		{
-			if (type.getOptions().size() == 0) { return ;}
-			if (type.getOptions().size() <= menu) { return ;}
-			if (type.getOptions().get(menu).isEmpty()) { return ;}
-			menu = type.getDestination().get(menu).get(selOption) ;
+			currentMenuID = job.getDestination().get(currentMenuID).get(selOption) ;
 			selOption = 0 ;
 			return ;
 		}
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) && menu == numberMenus)
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) && currentMenuID == menus.size() - 1)
 		{
 			endInteraction() ;
-			menu = 0 ;
+			currentMenuID = 0 ;
 			selOption = 0 ;
 			return ;
 		}
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) && 0 < menu)
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) && 0 < currentMenuID)
 		{
-			menu = 0 ;
+			currentMenuID = 0 ;
 			selOption = 0 ;
 		}
 	}
 	
 	public void switchOption(String action)
 	{
-		if (type == null) { return ;}
-		if (type.getOptions() == null) { return ;}
-		if (type.getOptions().size() <= 0) { return ;}
-		if (type.getOptions().get(menu) == null) { return ;}
+		if (menus.get(currentMenuID).getOptions() == null) { Log.warn("Trying to access null options for menu " + currentMenuID + " and NPC " + job.toString()) ; return ;}
+		if (menus.get(currentMenuID).getOptions().isEmpty()) { Log.warn("Trying to access empty options for menu " + currentMenuID + " and NPC " + job.toString()) ; return ;}
+		if (menus.get(currentMenuID).getOptions().size() <= selOption) { Log.warn("Trying to access option out of bounds for menu " + currentMenuID + " and NPC " + job.toString() + "! Sel option id " + selOption + " and options size " + menus.get(currentMenuID).getOptions().size()) ; return ;}
 		
-		if (action.equals(PlayerActions.moveDown.getKey()) & selOption <= type.getOptions().get(menu).size() - 2)
+		if (action.equals(PlayerActions.moveDown.getKey()) & selOption <= menus.get(currentMenuID).getOptions().size() - 2)
 		{
 			selOption += 1 ;
 		}
@@ -489,282 +150,59 @@ public class NPC
 	
 	public void displaySpeech(Point pos)
 	{
+		if (this instanceof NPCCitizen)
+		{
+			((NPCCitizen) this).displaySpeech() ;
+			return ;
+		}
 
-		if (type.getSpeech() == null) { return ;}
-		if (type.getSpeech().length <= menu) { return ;}
-		if (type.getSpeech()[menu].isEmpty()) { return ;}
-		if (type.getImage() == null) { return ;}
+		if (menus == null) { Log.warn("Trying to display npc null speech") ; return ;}
+		if (menus.size() <= currentMenuID) { Log.warn("Not enough npc speeches to display") ; return ;}
+		if (menus.isEmpty()) { Log.warn("NPC speech is empty") ; return ;}
+		if (job.getImage() == null) { Log.warn("NPC job image is null") ; return ;}
 
-		String content = type.getSpeech()[menu] ;
-		
-		if (content == null) { return ;}
-		
-		Point speechPos = Util.translate(pos, 0, 10 - type.height()) ;
+		String content = menus.get(currentMenuID).getSpeech() ;		
+		Point speechPos = Util.translate(pos, 0, 10 - job.getImage().getHeight(null)) ;
 
-		Draw.speech(speechPos, content, stdfont, speakingBubble, stdColor) ;
-		
+		Draw.speech(speechPos, content, stdfont, speakingBubble, stdColor) ;		
 	}	
 	
 	public void displaySpeech() { displaySpeech(pos) ;}
 
 	public void displayOptions(Point windowPos)
 	{
-		if (type.getOptions() == null) { return ;}
-		if (type.getOptions().size() <= menu) { return ;}
-		if (type.getOptions().get(menu) == null) { return ;}
-		
-		List<String> options = type.getOptions().get(menu) ;
-		
-		if (options == null) { return ;}		
-		if (options.size() <= 0) { return ;}
+		if (menus == null) { return ;}
+		if (menus.size() <= currentMenuID) { return ;}
+		if (menus.get(currentMenuID).getOptions() == null) { return ;}
+		if (menus.get(currentMenuID).getOptions().size() <= 0) { return ;}
 		
 		GamePanel.DP.drawImage(choicesWindow, windowPos, Align.topLeft) ;
 		
-		int sy = stdfont.getSize() + 5 ;
-		for (int i = 0 ; i <= options.size() - 1 ; i += 1)
+		List<String> opt = menus.get(currentMenuID).getOptions() ;
+		for (int i = 0 ; i <= opt.size() - 1 ; i += 1)
 		{
-			Point textPos = Util.translate(windowPos, 5, 5 + i * sy) ;
-			String text = options.get(i) ;
-			Color textColor = stdColor ;
-			if (i == selOption)
-			{
-				textColor = selColor ;
-			}
+			Point textPos = Util.translate(windowPos, 5, 5 + i * (stdfont.getSize() + 5)) ;
+			String text = opt.get(i) ;
+			Color textColor = i == selOption ? selColor : stdColor ;
 			GamePanel.DP.drawText(textPos, Align.topLeft, Draw.stdAngle, text, stdfont, textColor) ;
-		}
-		
+		}		
 	}
 	
 	public void displayOptions() { displayOptions(Util.translate(pos, 20, -10)) ;}
 
-	private void bankerAction(Player player, BankWindow bankWindow, String action)
-	{
-		if (action == null) { return ;}		
-		if (!actionIsForward(action)) { return ;}
-		if (menu != 0) { return ;}
-
-		switch (selOption)
-		{
-			case 0: bankWindow.setMode(BankAction.deposit) ; player.switchOpenClose(bankWindow) ; return ;
-			case 1: bankWindow.setMode(BankAction.withdraw) ; player.switchOpenClose(bankWindow) ; return ;
-			case 2: bankWindow.setMode(BankAction.investmentLowRisk) ; player.switchOpenClose(bankWindow) ; return ;
-			case 3: bankWindow.setMode(BankAction.investmentHighRisk) ; player.switchOpenClose(bankWindow) ; return ;
-			default: return ;
-		}		
-	}
-
-	private void crafterAction(Player player, BagWindow bag, String action, Point mousePos, CraftWindow craftWindow)
-	{
-		if (action == null) { return ;}
-
-		if (menu == 0 & selOption == 0 & actionIsForward(action))
-		{
-			craftWindow.setBag(bag) ;
-			player.switchOpenClose(craftWindow) ;
-		}
-	}
-	
-	private void doctorAction(String action, PersonalAttributes playerPA, PersonalAttributes petPA)
-	{
-
-		if (petPA == null & playerPA.getLife().isMaxed())
-		{
-			menu = 1 ;
-			return ;
-		}
-		if (petPA != null && petPA.getLife().isMaxed() & playerPA.getLife().isMaxed())
-		{
-			menu = 1 ;
-			return ;
-		}
-		
-		if (selOption == 0 & actionIsForward(action))
-		{
-
-			if (petPA != null)
-			{
-				petPA.getLife().setToMaximum() ;
-				petPA.getMp().setToMaximum() ;
-			}		
-			
-			playerPA.getLife().setToMaximum() ;
-			playerPA.getMp().setToMaximum() ;
-		}
-
-	}
-
-	private void elementalAction(Player player, BagWindow bag, ElementalWindow elementalWindow, String action)
-	{
-		
-		if (action == null) { return ;}
-
-		if (menu == 0 & selOption == 0 & actionIsForward(action))
-		{
-			player.switchOpenClose(elementalWindow) ;
-		}	
-		
-	}
-	
-	private void forgerAction(Player player, BagWindow bag, String action, ForgeWindow forgeWindow)
-	{
-
-		if (action == null) { return ;}
-
-		if (menu == 0 & selOption == 0 & actionIsForward(action))
-		{
-			player.switchOpenClose(forgeWindow) ;
-		}
-		
-	}
-
-	private void masterAction(Player player, String action, Point mousePos, SpellsTreeWindow spellsTree)
-	{
-		if (50 <= player.getLevel() & player.getProJob() == 0 & menu == 3)
-		{
-			if (action == null) { return ;}
-
-			if (actionIsForward(action))
-			{
-				player.setProJob(1 + selOption) ;
-				player.addProSpells() ;
-				player.getSpellsTreeWindow().switchTo2Tabs() ;
-			}			
-		}
-		
-		if (action == null) { return ;}
-	
-		if ((menu == 0 | menu == 5) & actionIsForward(action))
-		{
-//			player.setFocusWindow(spellsTree) ;
-
-			spellsTree.setplayerCurrentSpells(player.getSpells()) ;
-			spellsTree.setPoints(player.getSpellPoints()) ;
-			spellsTree.updateSpellsOnWindow() ;
-			spellsTree.updateSpellsDistribution() ;
-			player.switchOpenClose(spellsTree) ;
-		}
-		
-	}
-
-	private void portalAction(Player player)
-	{
-		// proTODO usar o move to map
-		if (player.getMap().getName().equals("Forest 2"))
-		{
-			player.setMap(Game.getAllMaps()[30]) ;
-			// player.setPos(Util.translate(pos, type.getImage().getWidth(null), 0)) ;
-			return ;
-		}
-
-		if (player.getMap().getName().equals("Cave 1"))
-		{ 
-			player.setMap(Game.getAllMaps()[6]) ;
-			// player.setPos(Util.translate(pos, type.getImage().getWidth(null), 0)) ;
-			return ;
-		}
-	}
-	
-	private void questAction(List<Quest> quests, BagWindow bag, PersonalAttributes PA, Map<QuestSkills, Boolean> skills, String action)
-	{
-
-		if (action == null) { return ;}
-
-		int questID = getQuestNPCid(this) ;
-
-		if (questID == -1) { Log.warn("Quest id não encontrado para npc " + type.getName() + " " + id) ; return ;}
-		Quest quest = Game.getAllQuests()[questID] ;
-
-		if (action.equals("Enter") & selOption == 0)
-		{
-
-			if (!quests.contains(quest))
-			{
-				quest.checkCompletion(bag) ;
-				if (!quest.isRepeatable() & quest.isComplete())
-				{
-					quest.complete(bag, PA, skills) ;
-					return ;
-				}
-				
-				quests.add(quest) ;
-			}
-			
-			quest.checkCompletion(bag) ;
-			
-			if (!quest.isComplete()) { return ; }
-			
-			quest.complete(bag, PA, skills) ;
-			quests.remove(quest) ;
-			
-		}
-		
-	}
-	
-	private void sailorAction(Player player, String action)
-	{// proTODO sailor animation
-		if (action == null) { return ;}		
-
-		if (action.equals("Enter") & selOption == 0)
-		{
-			if (player.getMap().getName().equals("Forest 13"))
-			{
-				player.setMap(Game.getAllMaps()[40]) ;
-				// player.setPos(Game.getScreen().pos(0.2, 0.8)) ;
-				return ;
-			}
-			if (player.getMap().getName().equals("Island 1"))
-			{
-				player.setMap(Game.getAllMaps()[17]) ;
-				// player.setPos(Game.getScreen().pos(0.8, 0.8)) ;
-				return ;
-			}
-		}
-	}
-
-	private void saverAction(Player player, Pet pet, String action)
-	{
-		
-		if (action == null) { return ;}
-		
-		if (actionIsForward(action) & menu == 1)
-		{
-			int slot = selOption + 1 ;
-	        player.save(slot) ;
-	        Game.setSaveSlotInUse(slot) ;
-		}
-		
-	}
-	
-	private void sellerAction(Player player, String action, ShoppingWindow shopping)
-	{
-
-		if (action == null) { return ;}
-		
-		if (menu == 0 & actionIsForward(action))
-		{
-			shopping.setBuyMode(selOption == 0) ;
-			if (selOption == 1)
-			{
-				shopping.setIemsForSellingMode(player.getBag()) ;
-			}
-			player.switchOpenClose(shopping) ;
-		}
-		
-	}
-
 	public void display(Hitbox playerHitbox)
 	{
-		
-		GamePanel.DP.drawImage(type.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
+		GamePanel.DP.drawImage(job.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
 		if (hitbox.overlaps(playerHitbox))
 		{
-			Point buttonPos = Util.translate(pos, -type.getImage().getWidth(null), -type.getImage().getHeight(null)) ;
+			Point buttonPos = Util.translate(pos, -job.getImage().getWidth(null), -job.getImage().getHeight(null)) ;
 			Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey()) ;
 		}
 		if (desk != null)
 		{
 			GamePanel.DP.drawImage(desk, pos, Align.centerLeft);
 		}
+		GamePanel.DP.drawText(Util.translate(pos, 0, -job.getImage().getHeight(null) - 20), Align.bottomCenter, name, Palette.colors[3]);
 		
 		if (Game.debugMode)
 		{
@@ -772,4 +210,114 @@ public class NPC
 		}
 		
 	}
+
+	private static NPC create(NPCJobs job, String name, String info, List<NPCMenu> menus)
+	{
+		switch (job) {
+			case citizen:
+				return new NPCCitizen(name, new Point(0, 0), menus) ;		
+		
+			case crafter:
+				return new NPCCrafter(name, new Point(0, 0), menus, Recipe.all.subList(58, Recipe.all.size())) ;
+		
+			case alchemist:
+				return new NPCCrafter(name, new Point(0, 0), menus, Recipe.all.subList(0, 40)) ;
+
+			case woodcrafter:
+				return new NPCCrafter(name, new Point(0, 0), menus, Recipe.all.subList(40, 58)) ;
+
+			case banker:
+				return new NPCBanker(name, new Point(0, 0), menus) ;
+
+			case doctor:
+				return new NPCDoctor(name, new Point(0, 0), menus) ;
+
+			case elemental:
+				return new NPCElemental(name, new Point(0, 0), menus) ;
+
+			case equipsSeller:
+				int[] itemIDs = new int[] {300, 305, 307, 309, 315, 322, 326, 328, 332, 336, 340, 344} ;
+				// int cityID = id / 17 ;
+				// for (int i = 0 ; i <= itemIDs.length - 1; i += 1) { itemIDs[i] += 200 * cityID ;}
+				return new NPCSeller(name, new Point(0, 0), menus, Item.getItems(itemIDs)) ;
+		
+			case itemsSeller:
+				itemIDs = new int[] {1329, 0, 1, 4, 5, 121, 122, 125, 130, 1301, 1305, 1702, 1708, 1710, 1713} ;
+				return new NPCSeller(name, new Point(0, 0), menus, Item.getItems(itemIDs)) ;
+
+			case smuggleSeller:
+				itemIDs = new int[] {1, 2} ;
+				// itemIDs = newSmuggledStock() ;
+				// if (renewStocks)
+				// {
+				// 	itemids = newSmuggledStock() ;
+				// 	renewStocks = false ;
+				// }
+				// int cityID = id / 17 ;
+				// for (int i = 0 ; i <= itemids.length - 1; i += 1)
+				// {
+				// 	itemids[i] += 200 * cityID ;
+				// }
+				return new NPCSeller(name, new Point(0, 0), menus, Item.getItems(itemIDs)) ;
+			
+			case master:
+				return new NPCMaster(name, new Point(0, 0), menus) ;
+
+			case forger:
+				return new NPCForger(name, new Point(0, 0), menus) ;
+
+			case questExp: case questItem:
+				return new NPCQuest(name, new Point(0, 0), menus) ;
+
+			case saver:
+				return new NPCSaver(name, new Point(0, 0), menus) ;
+
+			default:
+				Log.warn("Criando NPC sem job definido") ;
+				return null ;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void load(Languages language)
+	{
+		List<JSONObject> npcList = (List<JSONObject>) Util.readJsonArray(path + "NPCMenus-ptBR copy.json");
+		List<NPC> npcTypes = new ArrayList<>();
+
+		for (JSONObject npcData : npcList)
+		{
+			String name = (String) npcData.get("nome");
+			String info = (String) npcData.get("info");
+			int jobId = ((Long) npcData.get("job")).intValue();
+			NPCJobs job = NPCJobs.getByID(jobId);
+
+			List<JSONObject> menusData = (List<JSONObject>) npcData.get("menus");
+			// List<String> speech = new ArrayList<>(menus.size());
+			// List<List<String>> options = new ArrayList<>(menus.size());
+			List<NPCMenu> menus = new ArrayList<>() ;
+
+			for (int i = 0 ; i <= menusData.size() - 1 ; i += 1)
+			{
+				JSONObject menu = menusData.get(i) ;
+				String speech = (String) menu.get("fala") ;
+				List<String> options = (List<String>) menu.get("opcoes") ;
+				if (options == null)
+				{
+					options = new ArrayList<>() ;
+				}
+				menus.add(new NPCMenu(job.getDestination().get(i), speech, options)) ;
+			}
+
+			NPC newNPC = NPC.create(job, name, info, menus) ;
+			npcTypes.add(newNPC);
+		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return "NPC [id=" + id + ", job=" + job + "]";
+	}
+
+	
 }

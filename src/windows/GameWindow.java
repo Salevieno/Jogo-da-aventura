@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import UI.ButtonFunction;
 import UI.GameButton;
@@ -34,6 +36,7 @@ public abstract class GameWindow
 	protected int window ;
 	protected int numberWindows ;
 	protected Dimension size ;
+	protected List<GameButton> buttons ;
 	
 	protected String stdMenuUp = PlayerActions.moveUp.getKey() ;
 	protected String stdMenuDown = PlayerActions.moveDown.getKey() ;
@@ -65,6 +68,7 @@ public abstract class GameWindow
 		this.numberTabs = numberTabs ;
 		this.numberItems = numberItems ;
 		this.numberWindows = numberWindows ;
+		this.buttons = new ArrayList<>() ;
 		isOpen = false ;
 		menu = 0 ;
 		tab = 0 ;
@@ -73,6 +77,7 @@ public abstract class GameWindow
 		size = image != null ? new Dimension(image.getWidth(null), image.getHeight(null)) : new Dimension(0, 0) ;
 	}
 	public boolean isOpen() {return isOpen ;}
+	protected void addButton(GameButton button) { buttons.add(button) ;}
 	protected int getMenu() {return menu ;}
 	protected int getTab() {return tab ;}
 	protected int getWindow() {return window ;}
@@ -93,10 +98,13 @@ public abstract class GameWindow
 	
 	protected boolean mouseIsOver(Point mousePos) { return Util.isInside(mousePos, topLeftPos, size) ;}
 	
-	public void open() { isOpen = true ;}
-	public void close() { isOpen = false ;}
+	public void open() { isOpen = true ; activateButtons() ;}
+	public void close() { isOpen = false ; deactivateButtons() ;}
 	public void switchOpenClose() { isOpen = !isOpen ;}
-	
+
+	private void activateButtons() { buttons.forEach(GameButton::activate) ;}
+	private void deactivateButtons() { buttons.forEach(GameButton::deactivate) ;}
+
 	protected void menuUp()
 	{
 		if (menu < numberMenus - 1)

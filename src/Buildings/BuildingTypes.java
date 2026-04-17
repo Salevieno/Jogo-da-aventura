@@ -16,7 +16,7 @@ public enum BuildingTypes
 	private final Image exteriorImage ;
 	private final Image interiorImage ;
 
-	private BuildingTypes(Image exteriorImage, Image interiorImage)
+	private BuildingTypes(Image exteriorImage, Image interiorImage) // TODO remover args e manter constantes
 	{
 		if (exteriorImage == null) { Log.error("Building type with null exterior image") ;}
 		if (interiorImage == null) { Log.error("Building type with null interior image") ;}

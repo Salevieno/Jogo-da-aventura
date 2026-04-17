@@ -1,0 +1,3159 @@
+{
+    "0": {
+        "nome": "Alquimista",
+        "info": "Fabrica poções.",
+        "menus": [
+            {
+                "fala": "Olá, quer fabricar poções com suas ervas?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Escolha a poção que quer fabricar:"
+            },
+            {
+                "fala": "Aqui está sua poção!"
+            },
+            {
+                "fala": "Você não tem os ingredientes necessários!"
+            },
+            {
+                "fala": "Obrigado por vir!",
+                "opcoes": [
+                    "Tchau"
+                ]
+            }
+        ]
+    },
+    "1": {
+        "nome": "Banqueiro",
+        "info": "Guarda seu dinheiro por uma pequena taxa.",
+        "menus": [
+            {
+                "fala": "Olá, gostaria de usar o banco?",
+                "opcoes": [
+                    "Guardar ouro",
+                    "Sacar ouro",
+                    "Investimento seguro",
+                    "Investimento arriscado",
+                    "Só estou passando"
+                ]
+            },
+            {
+                "fala": "Quanto gostaria de guardar?"
+            },
+            {
+                "fala": "Quanto gostaria de sacar?"
+            },
+            {
+                "fala": "Quanto gostaria de investir?"
+            },
+            {
+                "fala": "Por favor, informe um número:"
+            },
+            {
+                "fala": "Você não tem todo esse dinheiro!"
+            },
+            {
+                "fala": "Você não tem dinheiro para pagar a taxa de 1%!"
+            },
+            {
+                "fala": "Dinheiro guardado, até mais!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            },
+            {
+                "fala": "Aqui está seu dinheiro, até mais!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            },
+            {
+                "fala": "Obrigado por vir!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            }
+        ]
+    },
+    "2": {
+        "nome": "Cidadão 0",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Eu quero viajar para outras cidades e conhecer todo este mundo. Seria tão fácil se não fossem essas criaturas asquerosas!",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Estes vermes vagam pela floresta agredindo aventureiros, saqueando cidadãos inocentes.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Malditas criaturas, podiam matar todas elas!",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "3": {
+        "nome": "Cidadão 1",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Grandes são os mestres, que treinam os aventureiros desde as classes básicas at as superiores.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Apenas os mais bravos chegam at essas classes, mas o duro treinamento para alcançá-las recompensa.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Nada se compara ao poder daqueles que atingem as classes superiores.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "4": {
+        "nome": "Cidadão 2",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Um bom equipamento e um equipamento forjado. A forja intensifica todas as qualidades do equipamento.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "É necessário um forjador habilidoso para chegar a um alto nível de forja sem quebrar o equipamento.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "No entanto, as propriedades refinadas compensam. Diz a lenda que equipamentos com alto nível de forja chegam a exibir um brilho peculiar.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "5": {
+        "nome": "Cidadão 3",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "É muito desgastante ter que voltar para a cidade toda vez que me machuco. É por isso que sempre levo uma tenda para minhas aventuras.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Acampar ao ar livre é a melhor coisa. Revigora as energias. Revitaliza o corpo e a alma.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Eu aprendi a fazer minha tenda com um viajante que me ensinou a fazer a tenda em troca de alguns itens.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "6": {
+        "nome": "Cidadão 4",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Nós magos somos sortudos por saber manipular a energia arcana.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Todo ser vivo nasce com ela, mas apenas com treinamento se aprende a usá-la.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "A energia arcana pode ser usada para curar ferimentos ou para ferir outros e não é afetada por defesas físicas.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "7": {
+        "nome": "Cidadão 5",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Pff, eu não sei o que seria de nós sem os elementos, as forças fundamentais do nosso universo.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Quando eu me deparo com criaturas muito fortes, só consigo vencê-las usando o elemento certo.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Usar as forças mágicas, elementais e naturais em sua vantagem é o verdadeiro poder de um mago.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "8": {
+        "nome": "Cidadão 6",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Já ouviu a lenda do super elemento?",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Quando um ser vivo reune todos os equipamentos de um mesmo elemento, ele se torna o super elemento.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Dizem que o super elemento da poderes especiais, fazendo o usuário receber as propriedades do elemento.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "9": {
+        "nome": "Cidadão 7",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Esta floresta é tão grande, é muito fácil se perder por aí.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Eu ouvi dizer que um aventureiro uma vez fez um mapa, ele deve estar em algum lugar da floresta.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Contam que o mapa dele e tão avançado que mostra at a sua localização. Há! Como isso seria possível?",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "10": {
+        "nome": "Cidadão 8",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Nem todas as criaturas são terrestres. Uma vez eu pesquei uma do oceano.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Parece que elas vagam pelas águas, mas possuem uma cor azulada que torna difícil vê-las.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Muito cuidado se um dia resolver entrar na água sem um barco, alguma criatura pode esbarrar em você.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "11": {
+        "nome": "Cidadão 9",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "A floresta é grande, mas não é todo o mundo. Para alm das águas e das árvores existem outros continentes.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Eu pessoalmente já fui at uma ilha, pegando o barco no cais, é claro.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Mas há boatos de que há ainda outras terras por aí.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "12": {
+        "nome": "Cidadão 10",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Sabe, só porque seu equipamento é de fogo não quer dizer que ele sempre tem que ser de fogo.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Existem certas esferas poderosas, chamadas esferas elementais, capazes de mudar o elemento fundamental de um equipamento.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Claro, para isso e necessário um ser igualmente poderoso que saiba usar as esferas. Ainda bem que temos um em nossa cidade.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "13": {
+        "nome": "Cidadão 11",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Fabricar itens e equipamentos é uma das melhores formas de obter coisas de qualidade, mas são tantos!",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Como descobrir e memorizar todas as receitas? Ainda bem que fizeram um livro para isso.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Quem fez provavelmente está por aí afora em aventuras agora, mas tenho certeza que não se importaria de compartilhar o conhecimento.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "14": {
+        "nome": "Cidadão 12",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Ah, como é maravilhosa a natureza. Fornece ervas, madeira e outros materiais de graça para a gente coletar.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Claro que a coleta requer habilidade, para coletar materiais de alto nível é preciso ter um nível de coleta alto.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Mas nós animais temos uma facilidade natural para essas coisas. Alguns de nós até coletam em dobro!",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "15": {
+        "nome": "Cidadão 13",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "O mundo é tão rico de diferentes criaturas. Eu quero saber tudo sobre elas!",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "É difícil memorizar todas, mas é pra isso que existe o bestiário. Nele você grava informações das criaturas que ja encontrou, como uma agenda.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Não é fácil montar um bestiário. Um aventureiro que passou por aqui uma vez tinha um. Ele deve estar pelo mundo afora agora.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "16": {
+        "nome": "Cidadão 14",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Por mais que algumas criaturas sejam agressivas, temos que aprender a amá-las. São bichos como nós.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Quando o laço entre uma criatura e um aventureiro é forte o suficiente, ela pode se tornar um pet.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "O pet e seu companheiro são inseparáveis e quando estão juntos a aventura se torna muito mais fácil. ",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "17": {
+        "nome": "Cidadão 15",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "A maioria das criaturas é bonitinha como nós, mas existem criaturas mais perigosas. Você já ouviu falar do dragão?",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Ele vive perto daqui, porém em terras tão quentes que apenas aventureiros de classe superior conseguem entrar.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "O dragão vive pacificamente em sua morada, mas são muitos os aventureiros que querem desafiá-lo.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "18": {
+        "nome": "Cidadão 16",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Não quero saber o que eles dizem, dinheiro é o que importa nesse mundo! Muitos equipamentos poderosos só podem ser encontrados em lojas.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Claro, você tambm pode fabricá-los com suas próprias mãos, mas como vai saber quais os itens necessários?",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Fabricar é uma forma prática de obter itens valiosos a baixo custo, mas eu prefiro comprá-los com o suado dinheiro que roubei!",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "19": {
+        "nome": "Cidadão 17",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Um aventureiro forte é um aventureiro bem equipado, é o que todos dizem. Mas, mesmo os mais poderosos equipamentos são melhores forjados.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "A forja é feita com pedras preciosas, chamadas runas de ataque e de defesa. Equipamentos especiais requerem runas especiais.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Há! Mas é claro que você também pode ganhar uma grana preta vendendo elas no mercado negro. Especialmente as de nível alto.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "20": {
+        "nome": "Cidadão 18",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Equipamentos normais podem ser poderosos, mas só possuem força bruta. Equipamentos especiais por outro lado dão todo tipo de poder.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Eles não são encontrados em criaturas ou lojas normais, só podem ser fabricados ou comprados ilegalmente de contrabandistas.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "No entanto, são ótimos para intensificar os efeitos especiais dos seus ataques e te dar vantagem em batalha.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "21": {
+        "nome": "Cidadão 19",
+        "info": "Morador da cidade",
+        "menus": [
+            {
+                "fala": "Tanta terra, tanta terra...já pensou quantos tesouros devem estar enterrados nela?",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Para que se desgastar caçando criaturas quando você pode arrumar uma pá e procurar por tesouros debaixo da terra?",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Achado também é roubado, mesmo debaixo da terra! É o meu lema.",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    "22": {
+        "nome": "Fabricante",
+        "info": "Fabrica itens.",
+        "menus": [
+            {
+                "fala": "Olá, quer fabricar itens?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Escolha o item que quer fabricar:"
+            },
+            {
+                "fala": "Aqui está seu item!"
+            },
+            {
+                "fala": "Você não tem os materiais necessários!"
+            },
+            {
+                "fala": "Obrigado por vir!",
+                "opcoes": [
+                    "Tchau"
+                ]
+            },
+            {
+                "fala": "Quantos itens vc deseja fabricar?"
+            }
+        ]
+    },
+    "23": {
+        "nome": "Doutor",
+        "info": "Cura a sua vida.",
+        "menus": [
+            {
+                "fala": "Olá, gostaria de tratar esses ferimentos?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Você não está ferido!"
+            },
+            {
+                "fala": "Prontinho! Seu pet está melhor agora."
+            },
+            {
+                "fala": "Prontinho! Aproveite sua vida."
+            },
+            {
+                "fala": "Tenha um bom dia!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            }
+        ]
+    },
+    "24": {
+        "nome": "Elemental",
+        "info": "Muda o elemento dos equips.",
+        "menus": [
+            {
+                "fala": "Olá, quer mudar o elemento de seus equipamentos?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Obrigado e até mais!",
+                "opcoes": [
+                    "Tchau"
+                ]
+            }
+        ]
+    },
+    "25": {
+        "nome": "Vendedor de equipamentos",
+        "info": "Vende equipamentos.",
+        "menus": [
+            {
+                "fala": "Os melhores equipamentos aqui! O que deseja?",
+                "opcoes": [
+                    "Comprar",
+                    "Vender"
+                ]
+            },
+            {
+                "fala": "Escolha seu equipamento!"
+            },
+            {
+                "fala": "Volte sempre!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            }
+        ]
+    },
+    "26": {
+        "nome": "Vendedor de itens",
+        "info": "Vende itens.",
+        "menus": [
+            {
+                "fala": "Itens em geral. Chegue pra loja! O que deseja?",
+                "opcoes": [
+                    "Comprar",
+                    "Vender"
+                ]
+            },
+            {
+                "fala": "O que deseja comprar?"
+            },
+            {
+                "fala": "Até mais!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            }
+        ]
+    },
+    "27": {
+        "nome": "Contrabandista",
+        "info": "Vende itens ilegalmente.",
+        "menus": [
+            {
+                "fala": "Itens especiais por preços exagerados. O que deseja?",
+                "opcoes": [
+                    "Comprar",
+                    "Vender"
+                ]
+            },
+            {
+                "fala": "O que deseja comprar?"
+            },
+            {
+                "fala": "Até mais!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            }
+        ]
+    },
+    "28": {
+        "nome": "Mestre",
+        "info": "Te ensina novas habilidades e te faz evoluir.",
+        "menus": [
+            {
+                "fala": "Olá, deseja aumentar suas habilidades?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Escolha uma habilidade."
+            },
+            {
+                "fala": "Uau, como vc cresceu! Está pronto para evoluir?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Para qual classe quer evoluir?"
+            },
+            {
+                "fala": "Parabéns! Agora vc é um:",
+                "opcoes": [
+                    "Até mais."
+                ]
+            },
+            {
+                "fala": "Neste caso, quer aumentar suas habilidades?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Até a proxima!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            }
+        ]
+    },
+    "29": {
+        "nome": "Madeireiro",
+        "info": "Fabrica itens de pet.",
+        "menus": [
+            {
+                "fala": "Olá, quer trocar sua madeira em comida para pet?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Obrigado pela madeira!"
+            },
+            {
+                "fala": "Aqui está sua comida de pet!"
+            },
+            {
+                "fala": "Você nao tem madeira!"
+            },
+            {
+                "fala": "Te vejo por aí!",
+                "opcoes": [
+                    "Tchau"
+                ]
+            }
+        ]
+    },
+    "30": {
+        "nome": "Forjador",
+        "info": "Forja sua arma (há o risco de quebrá-la).",
+        "menus": [
+            {
+                "fala": "Olá, vc deseja forjar seu equipamento?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Até a próxima!",
+                "opcoes": [
+                    "Até"
+                ]
+            }
+        ]
+    },
+    "31": {
+        "nome": "Salvador",
+        "info": "Salva seu jogo.",
+        "menus": [
+            {
+                "fala": "Olá, deseja salvar o jogo?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Em que slot gostaria de salvar?",
+                "opcoes": [
+                    "1",
+                    "2",
+                    "3"
+                ]
+            },
+            {
+                "fala": "Seu jogo está salvo!",
+                "opcoes": [
+                    "ok"
+                ]
+            },
+            {
+                "fala": "Até a próxima!",
+                "opcoes": [
+                    "Até"
+                ]
+            }
+        ]
+    },
+    "32": {
+        "nome": "Navegador 1",
+        "info": "Te leva para a ilha.",
+        "menus": [
+            {
+                "fala": "Olá, quer viajar para a ilha?"
+            },
+            {
+                "fala": "Obrigado, Até a próxima!"
+            }
+        ]
+    },
+    "33": {
+        "nome": "Navegador 2",
+        "info": "Te traz para a floresta.",
+        "menus": [
+            {
+                "fala": "Olá, quer voltar para o continente?"
+            },
+            {
+                "fala": "Obrigado, Até a próxima!"
+            }
+        ]
+    },
+    "34": {
+        "nome": "Entrada da caverna",
+        "info": "Entrada da caverna.",
+        "menus": []
+    },
+    "35": {
+        "nome": "Saída da caverna",
+        "info": "Saída da caverna.",
+        "menus": []
+    },
+    "36": {
+        "nome": "Quest exp",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode se livrar de umas criaturas pra mim?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests as criaturas que vc precisa caçar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, preciso que vc cace mais criaturas.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aceite esta recompensa:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "37": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "38": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "39": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "40": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "41": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "42": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "43": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "44": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "45": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "46": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "47": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "48": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "49": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "50": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "51": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "52": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "53": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "54": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "55": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "56": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "57": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "58": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "59": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "60": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "61": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "62": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "63": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "64": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "65": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "66": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "67": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "68": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "69": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "70": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "71": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "72": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "73": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "74": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "75": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "76": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "77": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "78": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "79": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "80": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "81": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "82": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "83": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "84": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "85": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "86": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "87": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "88": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "89": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "90": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "91": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "92": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "93": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "94": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "95": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "96": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    "97": {
+        "nome": "Quest item",
+        "info": "Te dá uma quest.",
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    }
+}

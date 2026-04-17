@@ -18,7 +18,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import NPC.NPC;
-import NPC.NPCType;
 import graphics2.SpriteAnimation;
 import items.Item;
 import liveBeings.Creature;
@@ -26,7 +25,6 @@ import liveBeings.CreatureType;
 import main.Game;
 import main.GameTimer;
 import main.ImageLoader;
-import main.Log;
 import main.Path;
 import screen.Screen;
 import screen.Sky;
@@ -62,7 +60,7 @@ public class FieldMap extends GameMap
 	}
 
 	@SuppressWarnings("unchecked")
-	public static FieldMap[] load(NPCType[] npcTypes)
+	public static FieldMap[] load()
 	{
 		JSONArray input = Util.readJsonArray(jsonPath) ;
 		FieldMap[] fieldMaps = new FieldMap[input.size()] ;
@@ -99,7 +97,7 @@ public class FieldMap extends GameMap
 				creatureIDs[i] = (int) (long) creatures.get(i) ;
 			}
 
-			List<NPC> npcs = FieldMap.createQuestNPCs(id, npcTypes) ;
+			List<NPC> npcs = FieldMap.createQuestNPCs(id) ;
 			List<GroundRegion> groundRegions = groundRegionsFromJson((JSONObject) mapData.get("GroundRegions")) ;
 			List<SpriteAnimation> animations = new ArrayList<>() ;
 
@@ -315,19 +313,15 @@ public class FieldMap extends GameMap
 		calcDigItemChances() ;
 	}
 	
-	public static List<NPC> createQuestNPCs(int mapID, NPCType[] npcTypes)
+	public static List<NPC> createQuestNPCs(int mapID)
 	{
+		return List.of() ;
+		// if (npcTypes == null) { Log.error("Ao criar npcs de quest: tipos de npc nulo") ; return null ;}
+		// if (npcTypes.length <= 0) { Log.error("Ao criar npcs de quest: sem tipos de npc") ; return null ;}
 		
-		if (npcTypes == null) { Log.error("Ao criar npcs de quest: tipos de npc nulo") ; return null ;}
-		if (npcTypes.length <= 0) { Log.error("Ao criar npcs de quest: sem tipos de npc") ; return null ;}
-		
-		NPC questExp = new NPC(npcTypes[12], Game.getScreen().pos(0.27, 0.73)) ;
-		NPC questItem = new NPC(npcTypes[13], Game.getScreen().pos(0.87, 0.63)) ;
-		switch (mapID)
-		{
-			case 0: return List.of(questExp, questItem) ;
-			default: return List.of(questExp, questItem) ;
-		}
+		// NPC questExp = new NPCQuest(Game.getScreen().pos(0.27, 0.73)) ;
+		// NPC questItem = new NPCQuest(Game.getScreen().pos(0.87, 0.63)) ;
+		// return List.of(questExp, questItem) ;
 	}
 	
 	public boolean hasCreatures() { return creatures != null && !creatures.isEmpty() ;}
