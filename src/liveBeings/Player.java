@@ -59,6 +59,7 @@ import main.ImageLoader;
 import main.Log;
 import main.Palette;
 import main.Path;
+import maps.CityMap;
 import maps.Collectible;
 import maps.Continents;
 import maps.FieldMap;
@@ -173,10 +174,10 @@ public class Player extends LiveBeing
 		this.proJob = 0 ;
 		this.level = 1 ;
 		
-		if (Game.getAllMaps() != null)
-		{
-			map = Game.getAllMaps()[job] ;
-		}
+		// if (GameMap.getAllMaps() != null)
+		// {
+		// 	map = GameMap.getAllMaps().get(job) ;
+		// }
 
 		pos = new Point2D.Double();
 		dir = Directions.up;
@@ -259,7 +260,7 @@ public class Player extends LiveBeing
 		{
     		int spellID = cumNumberOfSpellsPerJob[job] + i ;
     		
-			spells.add(Spell.all.get(spellID)) ;
+			spells.add(Spell.getAll().get(spellID)) ;
 		}
     	
 		spells.get(0).incLevel(1) ;
@@ -337,7 +338,7 @@ public class Player extends LiveBeing
 	{
 		int firstSpellID = spells.size() + cumNumberOfSpellsPerJob[job] ;
 		firstSpellID += proJob == 1 ? 0 : 10 ;
-		spells.addAll(Spell.all.subList(firstSpellID - 1, firstSpellID + 10)) ;
+		spells.addAll(Spell.getAll().subList(firstSpellID - 1, firstSpellID + 10)) ;
 	}
 	public void learnSpell(Spell spell)
 	{
@@ -522,7 +523,7 @@ public class Player extends LiveBeing
 	{
 		int[] border = Game.getScreen().getBorders() ;
 		int stepOffset = Screen.borderOffset ;
-		int qtdCities = Game.getCityMaps().length ;
+		int qtdCities = CityMap.getAllCityMaps().size() ;
 		switch (dir)
 		{
 			case up:
@@ -836,7 +837,7 @@ public class Player extends LiveBeing
 				return ;
 				
 			case interact:
-				if (!bag.contains(Item.allItems.get(1340)) | !isTouching(GroundType.water)) { return ;}
+				if (!bag.contains(Item.getAllItems().get(1340)) | !isTouching(GroundType.water)) { return ;}
 				setState(LiveBeingStates.fishing) ; return ;
 				
 			case map:
@@ -1515,7 +1516,7 @@ public class Player extends LiveBeing
 			if (job == 3 & 0 < spells.get(10).getLevel() & !spells.get(10).isActive())
 			{
 				int alchBuffId = Alchemy.isHerb(alch.getId()) ? 10 : Alchemy.isWood(alch.getId()) ? 11 : 12 ;
-				Buff alchBuff = Buff.allBuffs.get(alchBuffId) ;
+				Buff alchBuff = Buff.getAllBuffs().get(alchBuffId) ;
 				alchBuff.apply(1, spells.get(10).getLevel(), Game.getPet());
 				spells.get(10).activate();
 				Game.getPet().setAlchBuffId(alchBuffId) ;
@@ -1708,7 +1709,7 @@ public class Player extends LiveBeing
 
 	private void resetPosition()
 	{
-		setMap(Game.getAllMaps()[job]) ;
+		setMap(GameMap.getAllMaps().get(job)) ;
 		//setContinent(0) ;
 		switch (job)
 		{

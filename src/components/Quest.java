@@ -30,7 +30,7 @@ public class Quest
 	private boolean isComplete ;
 
 	protected static final String dadosPath = Path.DADOS + "quests\\" ;
-	public static final List<Quest> all ;
+	private static final List<Quest> all ;
 	
 	static
 	{
@@ -182,16 +182,11 @@ public class Quest
 		
 	}
 
-	public int getID() {return id ;}
 	public String getName() {return name ;}
-	public String getType() {return type ;}
 	public Map<CreatureType, Integer> getCounter() {return reqCreaturesCounter ;}
 	public Map<CreatureType, Integer> getReqCreatures() {return reqCreatureTypes ;}
 	public Map<Item, Integer> getReqItems() {return reqItems ;}
-	public int getGoldReward() {return goldReward ;}
-	public int getExpReward() {return expReward ;}
-	public String getDescription() {return description ;}
-	public Map<Item, Integer> getRewardItems() {return rewardItems ;}
+	public static List<Quest> getAll() { return all ;} 
 
 	@Override
 	public String toString()

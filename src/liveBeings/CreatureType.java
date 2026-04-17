@@ -43,7 +43,7 @@ public class CreatureType
 
 	private static final List<MovingAnimations> moveAni;
 	public static final int numberCreatureTypesImages ;
-	public static final List<CreatureType> all;
+	private static final List<CreatureType> all;
 	public static final CreatureAttributesWindow attWindow;
 
 	static
@@ -105,7 +105,7 @@ public class CreatureType
 		this.spell = new ArrayList<>();
 		for (int i : spellIDs)
 		{
-			this.spell.add(new Spell(Spell.all.get(i)));
+			this.spell.add(new Spell(Spell.getAll().get(i)));
 		}
 		this.spell.forEach(spell -> spell.incLevel(1));
 
@@ -114,7 +114,7 @@ public class CreatureType
 		{
 			if (-1 < i)
 			{
-				items.add(Item.allItems.get(i));
+				items.add(Item.getAllItems().get(i));
 			}
 		}
 		this.gold = gold;
@@ -171,6 +171,7 @@ public class CreatureType
 	public String getHitboxType() { return hitboxType ;}
 	public Genetics getGenes() { return genes ;}
 	public void setGenes(Genetics newGenes) { genes = newGenes ;}
+	public static List<CreatureType> getAll() { return all ;}
 
 	public void display(Point pos, Scale scale)
 	{

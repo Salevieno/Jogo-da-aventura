@@ -54,8 +54,7 @@ public class MapMoveTest
 		moveNames.put(7, "rightTop") ;
 		
 //		Game.initalizeMapsTest() ;
-		GameMap[] maps = Game.getAllMaps() ;
-		for (GameMap map : maps)
+		for (GameMap map : GameMap.getAllMaps())
 		{
 			Log.info(map.getName());
 			possiblePositions.keySet().forEach(id -> 

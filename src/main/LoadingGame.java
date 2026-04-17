@@ -3,7 +3,6 @@ package main;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,14 +20,11 @@ import items.Item;
 import items.Recipe;
 import liveBeings.CreatureData;
 import liveBeings.CreatureType;
-import liveBeings.LiveBeing;
 import liveBeings.Player;
 import maps.CityMap;
 import maps.FieldMap;
 import maps.GameMap;
 import maps.SpecialMap;
-import screen.Screen;
-import screen.Sky;
 import sidebar.SideBar;
 import spells.Buff;
 import spells.Spell;
@@ -37,6 +33,7 @@ import utilities.Util;
 public abstract class LoadingGame
 {
     private static int step = 0 ;
+	private static boolean isDone ;
     private static final GameButton startButton ;
 	private static final SpriteAnimation loadingAni = new SpriteAnimation(Path.OPENING_IMG + "LoadingSprite.png", new Point(), Align.center, 3, 0.2) ;
 	private static final SpriteAnimation petIdle = new SpriteAnimation(Path.PET_IMG + "pet0_idle.png", Game.getScreen().getCenter(), Align.center, 4, 0.13) ;
@@ -59,42 +56,54 @@ public abstract class LoadingGame
 		Point startButtonPos = Util.translate(Game.getScreen().getCenter(), 0, 80) ;
     	Image startImage = ImageLoader.loadImage(Path.OPENING_IMG + "Start.png") ;
     	Image startImageSelected = ImageLoader.loadImage(Path.OPENING_IMG + "StartSelected.png") ;
-		ButtonFunction startAction = () -> { step = 12 ;} ;
+		ButtonFunction startAction = () ->
+		{
+			startGame() ;
+		} ;
     	startButton = new GameButton(startButtonPos, Align.center, "start game", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
 		petIdle.activate();
     }
     
-    public static boolean isOver() { return 11 <= step ;}
-    
-    private static boolean startGameButtonClicked() { return step == 12 ;}
+    public static boolean isOver() { return isDone ;}
 
-	public static void load(Player player, Point mousePos, String language)
+	private static void startGame()
+	{		
+		loadingAni.deactivate() ;
+		petIdle.deactivate() ;
+		startButton.deactivate() ;
+		Game.getPlayer().startCounters() ;
+		Game.switchToMainState() ;
+	}
+
+	public static void load(Player player, String language)
 	{
-		display(player.getCurrentAction(), mousePos) ;
 		if (!isOver())
 		{
 			initialize(step, player, language) ;
 			step += 1 ;
 		}
-
-		if (startButton.isClicked(mousePos, player.getCurrentAction()))
-		{
-			startButton.act() ;
-		}
 		
-		if (isOver())
+		if (isOver() && !startButton.isActive())
 		{
-			startButton.activateAndSelect() ;
-		}
+			if (player.getSpells().isEmpty())
+			{
+				player.setSpells(Player.jobSpells(player.getJob()));
+			}
+			player.setMap(GameMap.getAllMaps().get(player.getJob())) ;
+			player.getMap().activateAnimations() ;
+			SideBar.initialize();
 
-		if (startGameButtonClicked())
-		{
-			loadingAni.deactivate() ;
-			petIdle.deactivate() ;
-			startButton.deactivate() ;			
-			player.startCounters() ;
-			Game.switchToMainState() ;
+			if (Game.getSettings().getMusicIsOn())
+			{
+				Music.SwitchMusic(player.getMap().getMusic());
+			}
+			Game.getDayTimer().start();
+			// if (Game.testMode)
+			// {
+			// 	Game.initializeTestMode();
+			// }
+			startButton.activateAndSelect() ;
 		}
 	}
 	
@@ -106,90 +115,58 @@ public abstract class LoadingGame
 
 	private static void initialize(int step, Player player, String language)
 	{
-		long initialTime = System.nanoTime();
+		long initialStepLoadingTime = System.nanoTime();
 
 		switch (step)
 		{
 			case 0:
-				System.out.println();
-				Log.info("Game version " + MainGame3_4.getVersion()) ;
-				Game.getScreen().setBorders(new int[] { 0 + Screen.borderOffset, Sky.height + Screen.borderOffset,
-						Game.getScreen().getSize().width - 60 - Screen.borderOffset, Game.getScreen().getSize().height - Screen.borderOffset });
-				Game.getScreen().setMapCenter();
-				logInitializationTime("initial stuff", initialTime) ;
+				loadAllText();
+				logInitializationTime("text", initialStepLoadingTime);
 				return;
 
 			case 1:
-				loadAllText();
-				logInitializationTime("text", initialTime);
+				Buff.loadBuffs();
+				Buff.loadDebuffs();
+				Spell.load(language, Buff.getAllBuffs(), Buff.getAllDebuffs());
+				logInitializationTime("spells", initialStepLoadingTime);
 				return;
 
 			case 2:
-				Buff.loadBuffs();
-				Buff.loadDebuffs();
-				Spell.load(language, Buff.allBuffs, Buff.allDebuffs);
-				logInitializationTime("spells", initialTime);
+				Item.load();
+				logInitializationTime("items", initialStepLoadingTime);
 				return;
 
 			case 3:
-				Item.load();
-				logInitializationTime("items", initialTime);
+				CreatureData.load() ;
+				logInitializationTime("creature types", initialStepLoadingTime);
 				return;
 
 			case 4:
-				CreatureData.load() ;
-				logInitializationTime("creature types", initialTime);
+				Recipe.load(Item.getAllItems());
+				logInitializationTime("recipes", initialStepLoadingTime);
 				return;
 
 			case 5:
-				Recipe.load(Item.allItems);
-				logInitializationTime("recipes", initialTime);
+				NPC.load(language) ;
+				logInitializationTime("npc types", initialStepLoadingTime);
 				return;
 
 			case 6:
-				NPC.load(language) ;
-				logInitializationTime("npc types", initialTime);
+				// Buildings are being created when city is loaded
+				logInitializationTime("building types", initialStepLoadingTime);
 				return;
 
 			case 7:
-				logInitializationTime("building types", initialTime);
+				Quest.load(language, player.getJob(), CreatureType.getAll(), Item.getAllItems()) ;
+				logInitializationTime("quests", initialStepLoadingTime);
 				return;
 
 			case 8:
-				Game.setAllQuests(Quest.load(language, player.getJob(), CreatureType.all, Item.allItems)) ;
-				logInitializationTime("quests", initialTime);
-				return;
-
-			case 9:
-				CityMap[] cityMaps = CityMap.load() ;
-				FieldMap[] fieldMaps = FieldMap.load();
-				SpecialMap[] specialMaps = SpecialMap.load(Item.allItems);
-				Game.setCityMaps(cityMaps);
-				Game.setFieldMaps(fieldMaps) ;
-				Game.setAllMaps(GameMap.assemble(cityMaps, fieldMaps, specialMaps)) ;
-				logInitializationTime("maps", initialTime);
-				return;
-
-			case 10:
-				// player.InitializeSpells() ;
-				if (player.getSpells().isEmpty())
-				{
-					player.setSpells(Player.jobSpells(player.getJob()));
-				}
-				player.setMap(Game.getAllMaps()[player.getJob()]);
-				player.setPos(new Point2D.Double(Game.getScreen().getCenter().x, Game.getScreen().getCenter().y));
-				player.getMap().activateAnimations() ;
-				LiveBeing.updateDamageAnimation(Game.getSettings().getDamageAnimation());
-				SideBar.initialize();
-
-				if (Game.getSettings().getMusicIsOn())
-				{
-					Music.SwitchMusic(player.getMap().getMusic());
-				}
-				Game.getDayTimer().start();
-				logInitializationTime("final stuff", initialTime);
-
-
+				CityMap.load() ;
+				FieldMap.load();
+				SpecialMap.load(Item.getAllItems());
+				logInitializationTime("maps", initialStepLoadingTime);
+				isDone = true ;
 				return;
 
 			default:
@@ -212,12 +189,6 @@ public abstract class LoadingGame
 
 			if (catName == null) { continue ;}
 
-			// if (catName.equals(TextCategories.npcs))
-			// {
-			// 	NPC.loadText(textData, key, Game.allText, catName);
-			// 	continue;
-			// }
-
 			JSONArray listText = (JSONArray) textData.get(key);
 
 			List<String> listValues = new ArrayList<>();
@@ -231,8 +202,8 @@ public abstract class LoadingGame
 
 	}
 	
-	private static void display(String action, Point mousePos)
-	{		
+	protected static void display(Point mousePos)
+	{
 		GamePanel.DP.drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), Palette.colors[0], null) ;
 		SpriteAnimation.updateAll();
 		petIdle.display(GamePanel.DP);

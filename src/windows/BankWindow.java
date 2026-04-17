@@ -34,7 +34,7 @@ public class BankWindow extends GameWindow
 	private static final Image image = ImageLoader.loadImage(Path.WINDOWS_IMG + "Banco.png") ;
 	private static final String[] investmentRiskLevels = new String[] {"low", "high"} ;
 	public static final Image clock = ImageLoader.loadImage(Path.WINDOWS_IMG + "clock.png") ;
-
+// TODO investment
 	public BankWindow()
 	{
 		super("Banco", windowPos, image, 1, 1, 1, 1) ;

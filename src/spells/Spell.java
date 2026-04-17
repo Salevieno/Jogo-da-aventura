@@ -39,7 +39,7 @@ public class Spell
 	private final String effect ;
 	private final String description ;
 	
-	public static final List<Spell> all = new ArrayList<>() ;
+	private static final List<Spell> all = new ArrayList<>() ;
 
 	
 	
@@ -249,6 +249,8 @@ public class Spell
 		spell.effectCounter = effectCounter;
 		return spell;
 	}
+
+	public static List<Spell> getAll() { return all;}
 
 
 	@Override

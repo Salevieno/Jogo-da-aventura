@@ -23,7 +23,7 @@ public abstract class Item
 	
 	protected static final Image infoMenu = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "itemInfoWindow.png") ;
     public static final Image slot = ImageLoader.loadImage(Path.WINDOWS_IMG + "itemSlot.png") ;
-	public static final List<Item> allItems = new ArrayList<>() ;
+	private static final List<Item> allItems = new ArrayList<>() ;
 	
 	public Item(int id, String name, String description, Image image, int price, double dropChance)
 	{
@@ -47,6 +47,7 @@ public abstract class Item
 	public Image getImage() {return image ;}
 	public int getPrice() {return price ;}
 	public double getDropChance() {return dropChance ;}
+	public static List<Item> getAllItems() { return allItems ;}
 	
 	public abstract void displayInfo(Point pos, Align align) ;
 	

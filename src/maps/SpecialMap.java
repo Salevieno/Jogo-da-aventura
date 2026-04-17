@@ -21,6 +21,7 @@ public class SpecialMap extends GameMap
 {
 	
 	private static final List<Image> images ;
+	private static final List<SpecialMap> allSpecialMaps = new ArrayList<>() ;
 	
 	static
 	{
@@ -62,7 +63,8 @@ public class SpecialMap extends GameMap
 			diggingItems.put(GeneralItem.getAll()[250], allDiggingItems.get(GeneralItem.getAll()[250])) ;
 		}
 		calcDigItemChances() ;
-	}	
+		allSpecialMaps.add(this) ;
+	}
 
 
 	public static SpecialMap[] load(List<Item> allItems)
@@ -111,4 +113,6 @@ public class SpecialMap extends GameMap
 		return specialMaps ;
 	}
 
+	
+	public static List<SpecialMap> getAllSpecialMaps() { return allSpecialMaps ;}
 }

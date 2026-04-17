@@ -48,9 +48,9 @@ public class SpellTest
 	{
 		Buff.loadBuffs();
 		Buff.loadDebuffs();
-		Spell.load("portugues", Buff.allBuffs, Buff.allDebuffs);
+		Spell.load("portugues", Buff.getAllBuffs(), Buff.getAllDebuffs());
 		Item.load();
-		Recipe.load(Item.allItems) ;
+		Recipe.load(Item.getAllItems()) ;
 		CreatureData.load() ; // TODO level de dificuldade tem que ser 2 aqui
 
 		knightLevel0 = new Player("Player", "", 0) ;
@@ -62,7 +62,7 @@ public class SpellTest
 		
 		pet = new Pet(1) ;
 		
-		refCreature = new Creature(CreatureType.all.get(0)) ;
+		refCreature = new Creature(CreatureType.getAll().get(0)) ;
 		
 		Battle.removeRandomness();
 	}
@@ -87,8 +87,8 @@ public class SpellTest
 		thiefLevel0.setBA(new BattleAttributes(Player.initialAttributes.get(5), 1, Player.initialAttributes.get(5)[41], Player.initialAttributes.get(5)[42])) ;
 		pet.setPA(Pet.InitializePersonalAttributes(pet.getJob())) ;
 		pet.setBA(new BattleAttributes(Pet.InitialAtts.get(pet.getJob()), 1, Player.initialAttributes.get(pet.getJob())[36], Player.initialAttributes.get(pet.getJob())[37])) ;
-		refCreature.setPA(CreatureType.all.get(0).getPA());
-		refCreature.setBA(CreatureType.all.get(0).getBA());
+		refCreature.setPA(CreatureType.getAll().get(0).getPA());
+		refCreature.setBA(CreatureType.getAll().get(0).getBA());
 		knightLevel0.engageInFight(refCreature) ;
 		mageLevel0.engageInFight(refCreature) ;
 		archerLevel0.engageInFight(refCreature) ;
@@ -415,7 +415,7 @@ public class SpellTest
 		player.getBag().add(GeneralItem.getAll()[121], 5);
 		player.getBag().add(GeneralItem.getAll()[122], 5);
 		
-    	List<Recipe> recipes = Recipe.all ;
+    	List<Recipe> recipes = Recipe.getAll() ;
     	CraftWindow craftWindow = new CraftWindow(recipes) ;
 		player.switchOpenClose(craftWindow) ;
 		
@@ -678,11 +678,11 @@ public class SpellTest
 		Spell dailyWeapons = player.getSpells().get(8) ;
 		Spell pocaoVenenosa = player.getSpells().get(9) ;
 		dailyWeapons.incLevel(5) ;
-		player.getBag().add(Item.allItems.get(1364), 2);
-		player.getBag().add(Item.allItems.get(1376), 2);
-		player.getBag().add(Item.allItems.get(1700), 2);
+		player.getBag().add(Item.getAllItems().get(1364), 2);
+		player.getBag().add(Item.getAllItems().get(1376), 2);
+		player.getBag().add(Item.getAllItems().get(1700), 2);
 		
-    	List<Recipe> recipes = Recipe.all ;
+    	List<Recipe> recipes = Recipe.getAll() ;
     	CraftWindow craftWindow = new CraftWindow(recipes) ;
 		player.switchOpenClose(craftWindow) ;
 		
@@ -691,18 +691,18 @@ public class SpellTest
         	craftWindow.navigate(PlayerActions.moveRight.getKey());
     	}
     	craftWindow.act(player.getBag(), null, "Enter", player) ;
-		assertTrue(!player.getBag().contains(Item.allItems.get(1378))) ;
+		assertTrue(!player.getBag().contains(Item.getAllItems().get(1378))) ;
 
 		pocaoVenenosa.incLevel(1) ;
     	craftWindow.act(player.getBag(), null, "Enter", player) ;
     	craftWindow.act(player.getBag(), null, "Enter", player) ;
-    	assertTrue(player.getBag().hasEnough(Item.allItems.get(1378), 2)) ;
+    	assertTrue(player.getBag().hasEnough(Item.getAllItems().get(1378), 2)) ;
 
-    	player.useItem(Item.allItems.get(1378));
+    	player.useItem(Item.getAllItems().get(1378));
     	assertEquals(30, refCreature.getLife().getCurrentValue());
     	
 		pocaoVenenosa.incLevel(4) ;
-    	player.useItem(Item.allItems.get(1378));
+    	player.useItem(Item.getAllItems().get(1378));
     	assertEquals(2, refCreature.getLife().getCurrentValue());
 	}
 	
@@ -784,7 +784,7 @@ public class SpellTest
 		Player player = thiefLevel0 ;
 		Spell roubo = player.getSpells().get(3) ;
 		
-		assertTrue(!player.getBag().contains(Item.allItems.get(0))) ;
+		assertTrue(!player.getBag().contains(Item.getAllItems().get(0))) ;
 		player.useSpell(roubo, refCreature);
 		
 		boolean containsAny = false ;

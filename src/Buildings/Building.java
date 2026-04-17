@@ -3,7 +3,6 @@ package Buildings ;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -20,6 +19,7 @@ import graphics2.Drawable;
 import main.Game;
 import main.GamePanel;
 import main.Palette;
+import maps.GameMap;
 import utilities.Util;
 
 
@@ -150,7 +150,7 @@ public class Building implements Drawable
 
 	public void display()
 	{
-		display(Game.getPlayer().getHitbox(), Game.getPlayer().getPos(), Arrays.asList(Game.getAllMaps()).indexOf(Game.getPlayer().getMap())) ;
+		display(Game.getPlayer().getHitbox(), Game.getPlayer().getPos(), GameMap.getAllMaps().indexOf(Game.getPlayer().getMap())) ;
 	}
 
 	@Override

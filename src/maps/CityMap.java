@@ -30,6 +30,7 @@ public class CityMap extends GameMap
 
 	private final Sign sign ;
 	private static final Clip musicCities = Music.musicFileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
+	private static final List<CityMap> allCityMaps = new ArrayList<>() ;
 	
 	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)
 	{
@@ -43,6 +44,7 @@ public class CityMap extends GameMap
 		diggingItems.put(GeneralItem.getAll()[35], allDiggingItems.get(GeneralItem.getAll()[35])) ;
 		diggingItems.put(GeneralItem.getAll()[155], allDiggingItems.get(GeneralItem.getAll()[155])) ;
 		calcDigItemChances() ;
+		allCityMaps.add(this) ;
 	}
 	
 	private static List<NPC> loadNPCs(JSONObject map)
@@ -129,5 +131,6 @@ public class CityMap extends GameMap
 	public Building getCraft() { return buildings.get(2) ;}
 	public Building getBank() { return buildings.get(3) ;}
 	public Sign getSign() { return sign ;}
+	public static List<CityMap> getAllCityMaps() { return allCityMaps ;}
 
 }

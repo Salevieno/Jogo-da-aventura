@@ -40,14 +40,15 @@ import liveBeings.Player;
 import maps.CityMap;
 import maps.Continents;
 import maps.FieldMap;
-import maps.GameMap;
 import screen.Screen;
+import screen.Sky;
 import sidebar.HotKeysBar;
 import sidebar.SideBar;
 import sidebar.SpellsBar;
 import simulations.EvolutionSimulation;
 import spells.Spell;
 import utilities.Util;
+import windows.BankWindow;
 import windows.PauseWindow;
 
 public class Game
@@ -79,12 +80,6 @@ public class Game
 	private static int saveSlotInUse = -1;
 
 	private static final Screen screen;
-	private static CityMap[] cityMaps;
-	private static FieldMap[] fieldMaps;
-	private static GameMap[] allMaps;
-	private static Item[] allItems;
-	private static Spell[] allSpells;
-	private static Quest[] allQuests;
 
 	// TODO unificar pausewindow com as outras windows
 	private static final PauseWindow pauseWindow;
@@ -110,6 +105,13 @@ public class Game
 	public Game()
 	{
 		player = new Player("", "", 2);
+		
+		System.out.println();
+		Log.info("Game version " + MainGame3_4.getVersion()) ;
+		Game.getScreen().setBorders(new int[] { 0 + Screen.borderOffset, Sky.height + Screen.borderOffset,
+				Game.getScreen().getSize().width - 60 - Screen.borderOffset, Game.getScreen().getSize().height - Screen.borderOffset });
+		Game.getScreen().setMapCenter();		
+		player.setPos(new Point2D.Double(Game.getScreen().getCenter().x, Game.getScreen().getCenter().y));
 	}
 
 	public static GameStates getState() { return state ;}
@@ -118,12 +120,6 @@ public class Game
 	public static Screen getScreen() { return screen ;}
 	public static Player getPlayer() { return player ;}
 	public static Pet getPet() { return pet ;}
-	public static GameMap[] getCityMaps() { return cityMaps ;}
-	public static FieldMap[] getFieldMaps() { return fieldMaps ;}
-	public static GameMap[] getAllMaps() { return allMaps ;}
-	public static Quest[] getAllQuests() { return allQuests ;}
-	public static Item[] getAllItems() { return allItems ;}
-	public static Spell[] getAllSpells() { return allSpells ;}
 	public static boolean getShouldRepaint() { return shouldRepaint ;}
 	public static int getSaveSlotInUse() { return saveSlotInUse ;}
 	public static void setSaveSlotInUse(int newSaveSlotInUse) { saveSlotInUse = newSaveSlotInUse ;}
@@ -131,10 +127,6 @@ public class Game
 	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
 	public static void setState(GameStates newState) { state = newState ;}
 	public static GameTimer getDayTimer() { return dayTimer ;}
-	public static void setCityMaps(CityMap[] cityMaps) { Game.cityMaps = cityMaps ;}
-	public static void setFieldMaps(FieldMap[] fieldMaps) { Game.fieldMaps = fieldMaps ;}
-	public static void setAllMaps(GameMap[] allMaps) { Game.allMaps = allMaps ;}
-	public static void setAllQuests(Quest[] allQuests) { Game.allQuests = allQuests ;}
 
 	public static void switchToMainState() { state = mainState ;}
 	public static double dayTimeRate() { return dayTimer.rate() <= 0.5 ? dayTimer.rate() + 0.5 : dayTimer.rate() - 0.5 ;}
@@ -212,11 +204,11 @@ public class Game
 	private static void initializeTestMode()
 	{
 		player.setName("Rosquinhawwwwwwwwwwwwwww");
-		player.setMap(cityMaps[3]);
+		player.setMap(CityMap.getAllCityMaps().get(3));
 
-		for (int i = 0; i <= fieldMaps.length - 1; i += 1)
+		for (int i = 0; i <= FieldMap.getAllFieldMaps().size() - 1; i += 1)
 		{
-			player.discoverCreature(fieldMaps[i].getCreatures().get(0).getType());
+			player.discoverCreature(FieldMap.getAllFieldMaps().get(i).getCreatures().get(0).getType());
 		}
 
 		player.getPA().getLife().incMaxValue(1000);
@@ -310,9 +302,8 @@ public class Game
 		{
 			player.getQuestSkills().replace(skill, true);
 		}
-		Quest.all.forEach(quest -> player.addQuest(quest));
+		Quest.getAll().forEach(quest -> player.addQuest(quest));
 	}
-
 
 	private void activateCounters()
 	{
@@ -334,7 +325,7 @@ public class Game
 			fm.getCreatures().forEach(Creature::activateSpellCounters);
 		}
 
-		for (CityMap city : cityMaps)
+		for (CityMap city : CityMap.getAllCityMaps())
 		{
 			Building bank = city.getBank();
 
@@ -343,12 +334,11 @@ public class Game
 				continue;
 			}
 
-			// TODO reativar
-			// BankWindow bankWindow = (BankWindow) bank.getNPCs().get(0).getWindow();
-			// if (bankWindow != null && bankWindow.hasInvestment() && bankWindow.investmentIsComplete())
-			// {
-			// 	bankWindow.completeInvestment();
-			// }
+			BankWindow bankWindow = (BankWindow) bank.getNPCs().get(0).getWindow();
+			if (bankWindow != null && bankWindow.hasInvestment() && bankWindow.investmentIsComplete())
+			{
+				bankWindow.completeInvestment();
+			}
 		}
 
 		player.activateCounters();
@@ -599,12 +589,9 @@ public class Game
 			return;
 
 		case loading:
-			LoadingGame.load(player, GamePanel.getMousePos(), settings.getLanguage());
-			
-			if (Game.testMode && LoadingGame.isOver())
-			{
-				Game.initializeTestMode();
-			}
+			LoadingGame.display(GamePanel.getMousePos()) ;
+			LoadingGame.load(player, settings.getLanguage());
+
 			shouldRepaint = true;
 			return;
 

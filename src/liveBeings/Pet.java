@@ -130,7 +130,7 @@ public class Pet extends LiveBeing
 		List<Spell> spells = new ArrayList<>() ;
 		for (int id : spellIDs)
 		{
-			spells.add(new Spell(Spell.all.get(id))) ;
+			spells.add(new Spell(Spell.getAll().get(id))) ;
 		}
 		spells.get(0).incLevel(1) ;
 		return spells ;

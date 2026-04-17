@@ -6,7 +6,6 @@ import java.util.List;
 import components.Quest;
 import liveBeings.Pet;
 import liveBeings.Player;
-import main.Game;
 import main.Log;
 import maps.GameMap;
 
@@ -20,10 +19,9 @@ public class NPCQuest extends NPC
 	
 	private static int getQuestNPCid(NPC questNPC)
 	{
-		GameMap[] allMaps = Game.getAllMaps() ;
 		int questId = 0 ;
 
-		for (GameMap map : allMaps)
+		for (GameMap map : GameMap.getAllMaps())
 		{
 			List<NPC> npcsInMap = map.getNPCs() ;
 			if (npcsInMap == null) { continue ;}
@@ -50,7 +48,7 @@ public class NPCQuest extends NPC
 		int questID = getQuestNPCid(this) ;
 // TODO usar name
 		if (questID == -1) { Log.warn("Quest id não encontrado para npc " + job.toString() + " " + id) ; return ;}
-		Quest quest = Game.getAllQuests()[questID] ;
+		Quest quest = Quest.getAll().get(questID) ;
 
 		if (action.equals("Enter") & selOption == 0)
 		{

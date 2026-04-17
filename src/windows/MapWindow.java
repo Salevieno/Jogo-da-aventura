@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import graphics.Align;
@@ -48,7 +47,7 @@ public class MapWindow extends GameWindow
 		Continents continentWithPlayer = mapWithPlayer.getContinent() ;
 		scale = new Scale(0.1, 0.1) ;
 		mapSize = new Dimension((int) (Game.getScreen().mapSize().width * scale.x), (int) (Game.getScreen().mapSize().height * scale.y)) ;
-		this.mapsDisplayed = Arrays.asList(Game.getAllMaps()).stream().filter(map -> continentWithPlayer.equals(map.getContinent())).toList() ;
+		this.mapsDisplayed = GameMap.getAllMaps().stream().filter(map -> continentWithPlayer.equals(map.getContinent())).toList() ;
 		this.offset = switch(continentWithPlayer)
 		{
 			case forest -> calcMapOffset(8, 6, scale, spacing) ;
@@ -251,7 +250,7 @@ public class MapWindow extends GameWindow
 		
 		if (displayFull)
 		{
-			mapsDisplayed = Arrays.asList(Game.getAllMaps()) ;
+			mapsDisplayed = GameMap.getAllMaps() ;
 			scale = new Scale(0.05, 0.05) ;
 			mapSize = new Dimension((int) (Game.getScreen().mapSize().width * scale.x), (int) (Game.getScreen().mapSize().height * scale.y)) ;
 			offset = calcMapOffset(15, 14, scale, spacing) ;

@@ -20,8 +20,8 @@ public class Buff
 	private final Map<Attributes, Double> valueIncrease;
 	private final Map<Attributes, Double> chance;
 	
-	public static final List<Buff> allBuffs ;
-	public static final List<Buff> allDebuffs ;
+	private static final List<Buff> allBuffs ;
+	private static final List<Buff> allDebuffs ;
 	
 	static
 	{
@@ -59,6 +59,8 @@ public class Buff
 	public Map<Attributes, Double> getPercentIncrease() { return percentIncrease ;}
 	public Map<Attributes, Double> getValueIncrease() { return valueIncrease ;}
 	public Map<Attributes, Double> getChance() { return chance ;}
+	public static List<Buff> getAllBuffs() { return allBuffs ;}
+	public static List<Buff> getAllDebuffs() { return allDebuffs ;}
 	
 	public void apply(int mult, int level, LiveBeing receiver)
 	{

@@ -218,13 +218,13 @@ public abstract class NPC
 				return new NPCCitizen(name, new Point(0, 0), menus) ;		
 		
 			case crafter:
-				return new NPCCrafter(name, new Point(0, 0), menus, Recipe.all.subList(58, Recipe.all.size())) ;
+				return new NPCCrafter(name, new Point(0, 0), menus, Recipe.getAll().subList(58, Recipe.getAll().size())) ;
 		
 			case alchemist:
-				return new NPCCrafter(name, new Point(0, 0), menus, Recipe.all.subList(0, 40)) ;
+				return new NPCCrafter(name, new Point(0, 0), menus, Recipe.getAll().subList(0, 40)) ;
 
 			case woodcrafter:
-				return new NPCCrafter(name, new Point(0, 0), menus, Recipe.all.subList(40, 58)) ;
+				return new NPCCrafter(name, new Point(0, 0), menus, Recipe.getAll().subList(40, 58)) ;
 
 			case banker:
 				return new NPCBanker(name, new Point(0, 0), menus) ;

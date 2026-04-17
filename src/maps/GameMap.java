@@ -69,6 +69,7 @@ public class GameMap
 	public static final Map<Item, Double> allDiggingItems ;
 	public static final Clip musicForest ;
 	public static final Clip musicSpecial ;
+	private static final List<GameMap> allMaps ;
 
 	static
 	{
@@ -94,6 +95,7 @@ public class GameMap
 
 		musicForest = Music.musicFileToClip(new File(Path.MUSIC + "floresta.wav").getAbsoluteFile()) ;
 		musicSpecial = Music.musicFileToClip(new File(Path.MUSIC + "12-Special.wav").getAbsoluteFile()) ;
+		allMaps = new ArrayList<>() ;
 		// Log.diggingItems(allDiggingItems) ;
 	}
 	
@@ -112,6 +114,7 @@ public class GameMap
 		
 		mapElems = new ArrayList<>() ;
 		groundRegions = new ArrayList<>() ;
+		allMaps.add(this) ;
 	}
 
 
@@ -439,6 +442,7 @@ public class GameMap
 	public List<NPC> getNPCs() {return npcs ;}
 	public List<Building> getBuildings() {return buildings ;}
 	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
+	public static List<GameMap> getAllMaps() { return allMaps ;}
 	
  	
 	@Override

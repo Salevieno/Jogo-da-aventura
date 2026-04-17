@@ -16,7 +16,7 @@ public class Recipe
 	private final Map<Item, Integer> Ingredients ;
 	private final Map<Item, Integer> Products ;
 	
-	public static final List<Recipe> all ;
+	private static final List<Recipe> all ;
 	
 	static
 	{
@@ -114,6 +114,8 @@ public class Recipe
 		
 		return false;
 	}
+
+	public static List<Recipe> getAll() { return all ;}
 
 	@Override
 	public String toString() {

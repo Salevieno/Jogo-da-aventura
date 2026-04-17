@@ -21,8 +21,8 @@ public class Collectible extends Item
 	
 	public Collectible(int itemID, int level, Point pos)
 	{
-		super(itemID, Item.allItems.get(itemID).getName(), Item.allItems.get(itemID).getDescription(),
-				type(itemID).getImage(), Item.allItems.get(itemID).getPrice(), Item.allItems.get(itemID).getDropChance()) ;		
+		super(itemID, Item.getAllItems().get(itemID).getName(), Item.getAllItems().get(itemID).getDescription(),
+				type(itemID).getImage(), Item.getAllItems().get(itemID).getPrice(), Item.getAllItems().get(itemID).getDropChance()) ;		
 		this.itemID = itemID ;
 		this.level = level ;
 		this.pos = pos ;
@@ -32,7 +32,7 @@ public class Collectible extends Item
 	public int getLevel() { return level ; }
 	public Point getPos() { return pos ; }
 	public Hitbox getHitbox() { return hitbox ;}
-	public Item getItem() {return Item.allItems.get(itemID) ;}
+	public Item getItem() {return Item.getAllItems().get(itemID) ;}
 
 	public int typeNumber() { return typeID(itemID) ;}
 	

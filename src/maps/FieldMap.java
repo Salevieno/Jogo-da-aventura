@@ -46,6 +46,7 @@ public class FieldMap extends GameMap
 	private static final Image grassImage2 = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem8_Grass2.png") ;
 	private static final Image rockImage = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem9_Rock.png") ;
 	private static final String jsonPath = dadosPath + "mapsField.json" ;
+	private static final List<FieldMap> allFieldMaps = new ArrayList<>() ;
 
 	private FieldMap(int id, String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)
 	{
@@ -53,6 +54,7 @@ public class FieldMap extends GameMap
 		this.groundRegions = groundRegions ;
 		this.level = collectibleLevel ;
 		this.npcs = npcs ;
+		allFieldMaps.add(this) ;
 	}
 	private FieldMap(int id, String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs)
 	{
@@ -295,7 +297,7 @@ public class FieldMap extends GameMap
 		{
 			if (creatureTypeID <= -1) { continue ;}
 			
-			CreatureType creatureType = CreatureType.all.get(creatureTypeID);
+			CreatureType creatureType = CreatureType.getAll().get(creatureTypeID);
 			Point2D.Double randomPos = randomPosOnLandDouble() ;
 			Creature creature = new Creature(creatureType, randomPos) ;
 			creatures.add(creature) ;
@@ -396,6 +398,7 @@ public class FieldMap extends GameMap
 		return allItems ;
 	}
 	public void setCreatures(List<Creature> newValue) {creatures = newValue ;}
+	public static List<FieldMap> getAllFieldMaps() { return allFieldMaps ;}
 	
 	@Override
 	public String toString()

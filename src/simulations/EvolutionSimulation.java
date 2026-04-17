@@ -104,7 +104,7 @@ public abstract class EvolutionSimulation
 		{
 			pet.setPos(new Point2D.Double(450, 230)) ;
 		}
-		playerOpponent = new Creature(CreatureType.all.get(playerOpponentID)) ;
+		playerOpponent = new Creature(CreatureType.getAll().get(playerOpponentID)) ;
 		playerOpponent.setPos(new Point2D.Double(460, 340)) ;
 		
 		playerPreviousExp = player.getExp().getCurrentValue() ;
@@ -460,10 +460,10 @@ public abstract class EvolutionSimulation
 	
 	private static void incPlayerOpponentID(int amount)
 	{
-		if (playerOpponentID + amount <= CreatureType.all.size() - 1)
+		if (playerOpponentID + amount <= CreatureType.getAll().size() - 1)
 		{
 			playerOpponentID += amount ;
-			playerOpponent = new Creature(CreatureType.all.get(playerOpponentID)) ;
+			playerOpponent = new Creature(CreatureType.getAll().get(playerOpponentID)) ;
 		}
 	}
 	
@@ -472,7 +472,7 @@ public abstract class EvolutionSimulation
 		if (0 <= playerOpponentID - amount)
 		{
 			playerOpponentID += -amount ;
-			playerOpponent = new Creature(CreatureType.all.get(playerOpponentID)) ;
+			playerOpponent = new Creature(CreatureType.getAll().get(playerOpponentID)) ;
 		}
 	}
 	
@@ -491,7 +491,7 @@ public abstract class EvolutionSimulation
 	
 	private static void CreateNewCreature()
 	{
-		playerOpponent = new Creature(CreatureType.all.get(playerOpponentID)) ;
+		playerOpponent = new Creature(CreatureType.getAll().get(playerOpponentID)) ;
 		playerOpponent.setPos(new Point2D.Double(460, 340)) ;
 		playerOpponent.setRange(1000) ;
 		playerOpponent.getType().setGenes(new Genetics(newGenes.getGenes(), newGenes.getGeneMods()));
@@ -527,10 +527,10 @@ public abstract class EvolutionSimulation
 			totalExpUntilMaxLevel += (int) Player.calcExpToLevelUp(level) ;
 		}
 
-		int numberCreatures = CreatureType.all.size() ;
+		int numberCreatures = CreatureType.getAll().size() ;
 //		for (int creatureID = 0 ; creatureID <= numberCreatures - 1; creatureID += 1)
 //		{
-//			Creature creature = new Creature(CreatureType.all.get(creatureID]) ;
+//			Creature creature = new Creature(CreatureType.getAll().get(creatureID]) ;
 //			int itemsValue = 0 ;
 //			for (Item item : creature.getBag())
 //			{
@@ -544,7 +544,7 @@ public abstract class EvolutionSimulation
 //		double avrGoldUntilMaxLevel = 0 ;
 		for (int creatureID = 0 ; creatureID <= numberCreatures - 1; creatureID += 1)
 		{
-			Creature creature = new Creature(CreatureType.all.get(creatureID)) ;
+			Creature creature = new Creature(CreatureType.getAll().get(creatureID)) ;
 			int numberWinsToMaxLevel = totalExpUntilMaxLevel / creature.getExp().getCurrentValue() + 1 ;
 //			int cumGoldUntilMaxLevel = creature.getGold() * numberWinsToMaxLevel ;
 //			avrGoldUntilMaxLevel += cumGoldUntilMaxLevel / (double) numberCreatures ;
@@ -1025,9 +1025,9 @@ public abstract class EvolutionSimulation
 	
 	// private static void printCreaturesPowerList()
 	// {
-	// 	for (int i = 0 ; i <= CreatureType.all.size() - 1; i += 1)
+	// 	for (int i = 0 ; i <= CreatureType.getAll().size() - 1; i += 1)
 	// 	{
-	// 		Creature creature = new Creature(CreatureType.all.get(i)) ;
+	// 		Creature creature = new Creature(CreatureType.getAll().get(i)) ;
 	// 		Log.info(creature.totalPower()) ;
 	// 	}		
 	// }
