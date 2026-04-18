@@ -73,7 +73,13 @@ public class CityMap extends GameMap
 		List<Building> buildings = new ArrayList<>() ;
 		for (Object buildingObj : listBuildingObjs)
 		{
-			Building newBuilding = Building.load((JSONObject) buildingObj) ;
+			JSONObject buildingJsonObj = (JSONObject) buildingObj ;
+			int buildingID = (int) (long) buildingJsonObj.get("id") ;
+			double posX = (Double) ((JSONObject) buildingJsonObj.get("pos")).get("x") ;
+			double posY = (Double) ((JSONObject) buildingJsonObj.get("pos")).get("y") ;
+			Point pos = Game.getScreen().getPointWithinBorders(posX, posY) ;
+			Building newBuilding = Building.getAll().get(buildingID) ;
+			newBuilding.setPos(pos) ;
 			buildings.add(newBuilding) ;
 		}
 		

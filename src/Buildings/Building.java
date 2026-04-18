@@ -19,6 +19,7 @@ import graphics2.Drawable;
 import main.Game;
 import main.GamePanel;
 import main.Palette;
+import main.Path;
 import maps.GameMap;
 import utilities.Util;
 
@@ -27,15 +28,16 @@ public class Building implements Drawable
 {
 	private static final int layer = 1;
 	private final BuildingTypes type ;
-	private final Point pos ;
+	private Point pos ;
 	private final List<NPC> npcs ;
 	private final List<Collider> colliders ;
 
+	private static final List<Building> all = new ArrayList<>() ;
 
-	private Building(BuildingTypes type, Point pos, List<NPC> npcs)
+
+	private Building(BuildingTypes type, List<NPC> npcs)
 	{
 		this.type = type ;
-		this.pos = pos ;
 		this.npcs = npcs ;
 		this.colliders = new ArrayList<>() ;
 
@@ -63,6 +65,7 @@ public class Building implements Drawable
 		// }
 
 //		addColliders() ;
+		all.add(this) ;
 	}
 	
 	// private void addColliders()
@@ -84,37 +87,41 @@ public class Building implements Drawable
 	// }
 
 	@SuppressWarnings("unchecked")
-	public static Building load(JSONObject buildingObj)
+	public static void load()
 	{
-		BuildingTypes type = BuildingTypes.valueOf((String) buildingObj.get("name")) ;
-		double posX = (Double) ((JSONObject) buildingObj.get("pos")).get("x") ;
-		double posY = (Double) ((JSONObject) buildingObj.get("pos")).get("y") ;
-		Point pos = Game.getScreen().getPointWithinBorders(posX, posY) ;
-		List<JSONArray> npcsData = (JSONArray) buildingObj.get("npcs") ;
-		if (npcsData == null)
+		JSONArray jsonData = Util.readJsonArray(Path.DADOS + "gameMaps\\" + "buildings.json") ;
+		for (Object buildingObj : jsonData)
 		{
-			npcsData = new ArrayList<>() ;
+			JSONObject buildingJsonObj = (JSONObject) buildingObj ;
+			BuildingTypes type = BuildingTypes.valueOf((String) buildingJsonObj.get("type")) ;
+			List<JSONArray> npcsData = (JSONArray) buildingJsonObj.get("npcs") ;
+			if (npcsData == null)
+			{
+				npcsData = new ArrayList<>() ;
+			}
+			List<NPC> npcs = new ArrayList<>(npcsData.size()) ;
+			for (Object npcObj : npcsData)
+			{
+				JSONObject npcJson = (JSONObject) npcObj ;
+				int id = (int) (long) npcJson.get("id") ;
+				JSONObject posJson = (JSONObject) npcJson.get("pos") ;
+				double npcPosX = (double) posJson.get("x") ;
+				double npcPosY = (double) posJson.get("y") ;
+				NPC npc = NPC.getAll().get(id) ;
+				npc.setPos(Game.getScreen().getPointWithinBorders(npcPosX, npcPosY)) ;
+				npcs.add(npc) ;
+			}
+			
+			new Building(type, npcs) ;
 		}
-		List<NPC> npcs = new ArrayList<>(npcsData.size()) ;
-		for (Object npcObj : npcsData)
-		{
-			JSONObject npcJson = (JSONObject) npcObj ;
-			int id = (int) (long) npcJson.get("id") ;
-			JSONObject posJson = (JSONObject) npcJson.get("pos") ;
-			double npcPosX = (double) posJson.get("x") ;
-			double npcPosY = (double) posJson.get("y") ;
-			NPC npc = NPC.getAll().get(id) ;
-			npc.setPos(Game.getScreen().getPointWithinBorders(npcPosX, npcPosY)) ;
-			npcs.add(npc) ;
-		}
-
-		return new Building(type, pos, npcs) ;
 	}
 
 	public int getLayer() { return layer ;}
 	public Point getPos() { return pos ;}
 	public List<NPC> getNPCs() {return npcs ;}
 	public List<Collider> getColliders() { return colliders ;}
+	public static List<Building> getAll() { return all ;}
+	public void setPos(Point pos) { this.pos = pos ;}
 	
 	private boolean isInside(Point pos)
 	{

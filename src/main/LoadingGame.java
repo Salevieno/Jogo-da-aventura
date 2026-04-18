@@ -10,6 +10,7 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import Buildings.Building;
 import NPC.NPC;
 import UI.ButtonFunction;
 import UI.GameButton;
@@ -152,7 +153,7 @@ public abstract class LoadingGame
 				return;
 
 			case 6:
-				// Buildings are being created when city is loaded
+				Building.load() ;
 				logInitializationTime("building types", initialStepLoadingTime);
 				return;
 
