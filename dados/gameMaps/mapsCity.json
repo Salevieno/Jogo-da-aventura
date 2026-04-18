@@ -2,7 +2,7 @@
   {
     "Name": "City of the knights",
     "Continent": 0,
-    "Connections": {"topLeft": -1, "leftTop": -1, "leftBottom": -1, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 14, "rightTop": 14, "topRight": -1},
+    "Connections": [-1, -1, -1, -1, 14, 14, -1, -1],
     "Buildings":
     [
       {"id": 0, "pos": {"x": 0.5, "y": 0.0}},
@@ -32,7 +32,7 @@
   {
     "Name": "City of the mages",
     "Continent": 0,
-    "Connections": {"topLeft": 8, "leftTop": 5, "leftBottom": 5, "bottomLeft": -1, "bottomRight": -1, "rightBottom": -1, "rightTop": -1, "topRight": 8},
+    "Connections": [5, 5, -1, -1, -1, -1, 8, 8],
     "Buildings":
     [
       {"id": 4, "pos": {"x": 0.62, "y": 0.9}},
@@ -62,7 +62,7 @@
   {
     "Name": "City of the archers",
     "Continent": 0,
-    "Connections": {"topLeft": 24, "leftTop": 20, "leftBottom": 20, "bottomLeft": 17, "bottomRight": 17, "rightBottom": -1, "rightTop": -1, "topRight": 24},
+    "Connections": [20, 20, 17, 17, -1, -1, 24, 24],
     "Buildings":
     [
       {"id": 8, "pos": {"x": 0.56, "y": 0.8}},
@@ -95,7 +95,7 @@
   {
     "Name": "City of the animals",
     "Continent": 0,
-    "Connections": {"topLeft": 46, "leftTop": 29, "leftBottom": 27, "bottomLeft": 24, "bottomRight": -1, "rightBottom": -1, "rightTop": 45, "topRight": 47},
+    "Connections": [29, 27, 24, -1, -1, 45, 47, 46],
     "Buildings":
     [
       {"id": 12, "pos": {"x": 0.56, "y": 0.88}},
@@ -125,7 +125,7 @@
   {
     "Name": "City of the thieves",
     "Continent": 0,
-    "Connections": {"topLeft": 6, "leftTop": -1, "leftBottom": -1, "bottomLeft": -1, "bottomRight": -1, "rightBottom": 5, "rightTop": 5, "topRight": 6},
+    "Connections": [-1, -1, -1, -1, 5, 5, 6, 6],
     "Buildings":
     [
       {"id": 16, "pos": {"x": 0.6, "y": 0.88}},

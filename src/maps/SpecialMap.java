@@ -34,7 +34,7 @@ public class SpecialMap extends GameMap
 	
 	public SpecialMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<TreasureChest> treasureChests, List<SpriteAnimation> animations)
 	{
-		super(id, Name, Continent, Connections, image, music, null, null, animations) ;
+		super(id, Name, Continent, Connections, image, music, null, null, null, animations) ;
 		
 		treasureChests.forEach(chest -> mapElems.add(chest)) ;
 
@@ -67,7 +67,7 @@ public class SpecialMap extends GameMap
 	}
 
 
-	public static SpecialMap[] load(List<Item> allItems)
+	public static void load(List<Item> allItems)
 	{
 		List<String[]> input = Util.readcsvFile(dadosPath + "MapsSpecial.csv") ;
 		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
@@ -77,10 +77,10 @@ public class SpecialMap extends GameMap
 			String name = input.get(id)[0] ;
 			Continents continent = Continents.values()[Integer.parseInt(input.get(id)[1])] ;
 			int[] connections = new int[] {
-												Integer.parseInt(input.get(id)[9]), Integer.parseInt(input.get(id)[2]),
 												Integer.parseInt(input.get(id)[3]), Integer.parseInt(input.get(id)[4]),
 												Integer.parseInt(input.get(id)[5]), Integer.parseInt(input.get(id)[6]),
-												Integer.parseInt(input.get(id)[7]), Integer.parseInt(input.get(id)[8])
+												Integer.parseInt(input.get(id)[7]), Integer.parseInt(input.get(id)[8]),
+												Integer.parseInt(input.get(id)[9]), Integer.parseInt(input.get(id)[2])
 											} ;
 
 			Image image = SpecialMap.images.get(id) ;
@@ -109,8 +109,6 @@ public class SpecialMap extends GameMap
 			List<SpriteAnimation> animations = new ArrayList<>() ;
 			specialMaps[id] = new SpecialMap(id, name, continent, connections, image, music, treasureChests, animations) ;
 		}
-
-		return specialMaps ;
 	}
 
 	

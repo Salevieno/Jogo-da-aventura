@@ -534,7 +534,7 @@ public class Player extends LiveBeing
 
 				if (newMap.meetsTwoMapsDown()) // small -> big
 				{
-					boolean currentMapOnLeftHalf = newMap.getConnections()[4] == currentMap.getID() + qtdCities ;
+					boolean currentMapOnLeftHalf = newMap.getConnections()[2] == currentMap.getID() + qtdCities ;
 					int newX = (int) (border[0] + (pos.x - border[0]) / 2) ;
 					if (!currentMapOnLeftHalf)
 					{
@@ -558,7 +558,7 @@ public class Player extends LiveBeing
 
 				if (newMap.meetsTwoMapsRight()) // small -> big
 				{
-					boolean currentMapOnTopHalf = newMap.getConnections()[7] == currentMap.getID() + qtdCities ;
+					boolean currentMapOnTopHalf = newMap.getConnections()[5] == currentMap.getID() + qtdCities ;
 					newY = (int) (border[1] + (pos.y - border[1]) / 2) ;
 					if (!currentMapOnTopHalf)
 					{
@@ -582,7 +582,7 @@ public class Player extends LiveBeing
 
 				if (newMap.meetsTwoMapsUp()) // small -> big
 				{
-					boolean currentMapOnLeftHalf = newMap.getConnections()[1] == currentMap.getID() + qtdCities ;
+					boolean currentMapOnLeftHalf = newMap.getConnections()[7] == currentMap.getID() + qtdCities ;
 					newX = (int) (border[0] + (pos.x - border[0]) / 2) ;
 					if (!currentMapOnLeftHalf)
 					{
@@ -608,7 +608,7 @@ public class Player extends LiveBeing
 
 				if (newMap.meetsTwoMapsLeft()) // small -> big
 				{
-					boolean currentMapOnTopHalf = newMap.getConnections()[2] == currentMap.getID() + qtdCities ;
+					boolean currentMapOnTopHalf = newMap.getConnections()[0] == currentMap.getID() + qtdCities ;
 					newY = (int) (border[1] + (pos.y - border[1]) / 2) ;
 					if (!currentMapOnTopHalf)
 					{

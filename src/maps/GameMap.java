@@ -43,17 +43,16 @@ import utilities.Util;
 
 public class GameMap
 {
-	protected int id ;
-	protected String name ;
-	protected Continents continent ;
-	protected int[] connections ;
-	protected Image image ;
-	protected Clip music ;
-	
-	protected List<GroundRegion> groundRegions ;	
-	protected List<MapElement> mapElems ;
-	protected List<Building> buildings ;
-	protected List<NPC> npcs ;
+	protected final int id ;
+	protected final String name ;
+	protected final Continents continent ;
+	protected final int[] connections ;
+	protected final Image image ;
+	protected final Clip music ;	
+	protected final List<GroundRegion> groundRegions ;	
+	protected final List<MapElement> mapElems ;
+	protected final List<Building> buildings ;
+	protected final List<NPC> npcs ;
 	protected final Map<Item, Double> diggingItems ;
 	protected final List<SpriteAnimation> animations ;
 
@@ -64,11 +63,10 @@ public class GameMap
 
 	protected static final Image dockImg = ImageLoader.loadImage(Path.MAPS_IMG + "Dock.png") ;
 	protected static final Image boatImg = ImageLoader.loadImage(Path.MAPS_IMG + "Boat.png") ;
-	protected static final Image infoWindow ;
-	
-	public static final Map<Item, Double> allDiggingItems ;
-	public static final Clip musicForest ;
-	public static final Clip musicSpecial ;
+	protected static final Image infoWindow ;	
+	protected static final Map<Item, Double> allDiggingItems ;
+	protected static final Clip musicForest ;
+	protected static final Clip musicSpecial ;
 	private static final List<GameMap> allMaps ;
 
 	static
@@ -99,7 +97,7 @@ public class GameMap
 		// Log.diggingItems(allDiggingItems) ;
 	}
 	
-	public GameMap(int id, String Name, Continents continent, int[] Connections, Image image, Clip music, List<Building> building, List<NPC> npc, List<SpriteAnimation> animations)
+	public GameMap(int id, String Name, Continents continent, int[] Connections, Image image, Clip music, List<GroundRegion> groundRegions, List<Building> building, List<NPC> npc, List<SpriteAnimation> animations)
 	{
 		this.id = id ;
 		this.name = Name ;
@@ -109,11 +107,10 @@ public class GameMap
 		this.music = music ;
 		this.buildings = building ;
 		this.npcs = npc ;
-		diggingItems = new HashMap<>() ;
-		this.animations = animations ;
-		
-		mapElems = new ArrayList<>() ;
-		groundRegions = new ArrayList<>() ;
+		this.diggingItems = new HashMap<>() ;
+		this.animations = animations ;		
+		this.mapElems = new ArrayList<>() ;
+		this.groundRegions = groundRegions ;
 		allMaps.add(this) ;
 	}
 
@@ -153,10 +150,10 @@ public class GameMap
 	public boolean isCity() { return (this instanceof CityMap) ;}
 	public boolean isField() { return (this instanceof FieldMap) ;}
 	public boolean isSpecial() { return (this instanceof SpecialMap) ;}
-	public boolean meetsTwoMapsUp() { return connections[1] != connections[0] ;}
-	public boolean meetsTwoMapsLeft() { return connections[3] != connections[2] ;}
-	public boolean meetsTwoMapsDown() { return connections[4] != connections[5] ;}
-	public boolean meetsTwoMapsRight() { return connections[6] != connections[7] ;}
+	public boolean meetsTwoMapsLeft() { return connections[1] != connections[0] ;}
+	public boolean meetsTwoMapsDown() { return connections[2] != connections[3] ;}
+	public boolean meetsTwoMapsRight() { return connections[4] != connections[5] ;}
+	public boolean meetsTwoMapsUp() { return connections[7] != connections[6] ;}
 	public boolean groundIsWalkable(Point pos, Elements superElem)
 	{
 		
@@ -317,6 +314,13 @@ public class GameMap
 		
 		return null ;
 	}
+
+	protected static int[] loadConnections(JSONObject map)
+	{
+		List<Long> connectionIDs = (List<Long>) (JSONArray) map.get("Connections") ;
+		
+		return connectionIDs.stream().mapToInt(i -> (int) (long) i).toArray() ;
+	}
  	
  	public void displayElements(Point playerPos)
  	{ 		
@@ -443,7 +447,6 @@ public class GameMap
 	public List<Building> getBuildings() {return buildings ;}
 	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
 	public static List<GameMap> getAllMaps() { return allMaps ;}
-	
  	
 	@Override
 	public String toString()

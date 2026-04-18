@@ -34,8 +34,7 @@ public class CityMap extends GameMap
 	
 	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)
 	{
-		super(id, Name, Continent, Connections, image, music, buildings, npcs, animations) ;
-		this.groundRegions = groundRegions ;
+		super(id, Name, Continent, Connections, image, music, groundRegions, buildings, npcs, animations) ;
 		sign = new Sign(signPos, id) ;
 		diggingItems.put(Fab.getAll()[0], allDiggingItems.get(Fab.getAll()[0])) ;
 		diggingItems.put(Fab.getAll()[25], allDiggingItems.get(Fab.getAll()[25])) ;
@@ -85,24 +84,8 @@ public class CityMap extends GameMap
 		
 		return buildings ;
 	}
-	
-	private static int[] loadConnections(JSONObject map)
-	{
-		JSONObject connectionIDs = (JSONObject) map.get("Connections") ;
-		int[] connections = new int[8] ;
-		connections[0] = (int) (long) connectionIDs.get("topRight") ;
-		connections[1] = (int) (long) connectionIDs.get("topLeft") ;
-		connections[2] = (int) (long) connectionIDs.get("leftTop") ;
-		connections[3] = (int) (long) connectionIDs.get("leftBottom") ;
-		connections[4] = (int) (long) connectionIDs.get("bottomLeft") ;
-		connections[5] = (int) (long) connectionIDs.get("bottomRight") ;
-		connections[6] = (int) (long) connectionIDs.get("rightBottom") ;
-		connections[7] = (int) (long) connectionIDs.get("rightTop") ;
-		
-		return connections ;
-	}
 
-	public static CityMap[] load()
+	public static void load()
 	{
 		JSONArray input = Util.readJsonArray(dadosPath + "mapsCity.json") ;
 		CityMap[] cityMaps = new CityMap[input.size()] ;
@@ -128,8 +111,6 @@ public class CityMap extends GameMap
 			}
 			cityMaps[id] = new CityMap(id, name, continent, connections, image, musicCities, buildings, npcs, signPos, groundRegions, animations) ;
 		}
-
-		return cityMaps ;
 	}
     
 	public Building getHospital() { return buildings.get(0) ;}

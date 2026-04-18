@@ -347,10 +347,10 @@ public abstract class LiveBeing implements Drawable
 		boolean topSide = pos.y <= Game.getScreen().getBorders()[1] + Game.getScreen().mapSize().height / 2 ;
 		int newMapID = switch (dir)
 		{
-			case up -> newMapID = leftSide ? mapConnections[1] : mapConnections[0] ;			
-			case left -> newMapID = topSide ? mapConnections[2] : mapConnections[3] ;
-			case down -> newMapID = leftSide ? mapConnections[4] : mapConnections[5] ;
-			case right -> newMapID = topSide ? mapConnections[7] : mapConnections[6] ;
+			case up -> newMapID = leftSide ? mapConnections[7] : mapConnections[6] ;			
+			case left -> newMapID = topSide ? mapConnections[0] : mapConnections[1] ;
+			case down -> newMapID = leftSide ? mapConnections[2] : mapConnections[3] ;
+			case right -> newMapID = topSide ? mapConnections[5] : mapConnections[4] ;
 		};
 		
 		if (newMapID == -1) { return null ;}

@@ -50,19 +50,13 @@ public class FieldMap extends GameMap
 
 	private FieldMap(int id, String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)
 	{
-		super(id, name, continent, connections, image, music, null, npcs, animations) ;
-		this.groundRegions = groundRegions ;
+		super(id, name, continent, connections, image, music, groundRegions, null, npcs, animations) ;
 		this.level = collectibleLevel ;
-		this.npcs = npcs ;
 		allFieldMaps.add(this) ;
-	}
-	private FieldMap(int id, String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs)
-	{
-		this(id, name, continent, connections, image, music, collectibleLevel, npcs, null, new ArrayList<>()) ;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static FieldMap[] load()
+	public static void load()
 	{
 		JSONArray input = Util.readJsonArray(jsonPath) ;
 		FieldMap[] fieldMaps = new FieldMap[input.size()] ;
@@ -75,17 +69,7 @@ public class FieldMap extends GameMap
 			String name = (String) mapData.get("Name") ;
 			int continentID = (int) (long) mapData.get("Continent") ;
 			Continents continent = Continents.values()[continentID] ;
-			JSONObject connectionIDs = (JSONObject) mapData.get("Connections") ;
-			int[] connections = new int[8] ;
-			connections[0] = (int) (long) connectionIDs.get("topRight") ;
-			connections[1] = (int) (long) connectionIDs.get("topLeft") ;
-			connections[2] = (int) (long) connectionIDs.get("leftTop") ;
-			connections[3] = (int) (long) connectionIDs.get("leftBottom") ;
-			connections[4] = (int) (long) connectionIDs.get("bottomLeft") ;
-			connections[5] = (int) (long) connectionIDs.get("bottomRight") ;
-			connections[6] = (int) (long) connectionIDs.get("rightBottom") ;
-			connections[7] = (int) (long) connectionIDs.get("rightTop") ;
-
+			int[] connections = loadConnections(mapData) ;
 			Image image = ImageLoader.loadImage(Path.MAPS_IMG + "Map" + String.valueOf(id + 5) + ".png") ;
 			Clip music = GameMap.musicForest ;
 
@@ -111,8 +95,6 @@ public class FieldMap extends GameMap
 			map.addDiggingItems() ;
 			fieldMaps[id] = map ;
 		}
-
-		return fieldMaps ;
 	}
 
 // 	public void initializeGroundTypes(int SkyHeight, Dimension screenDim)
