@@ -314,6 +314,7 @@ public abstract class NPC
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void updateText(String language)
 	{
 		List<JSONObject> npcList = (List<JSONObject>) Util.readJsonArray(Path.DADOS + language + "/NPCMenus.json");

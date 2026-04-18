@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import NPC.NPC;
+import components.Quest;
 import graphics.Align;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
@@ -77,6 +78,7 @@ public class Settings
 
             // TODO incluir demais textos
             NPC.updateText(language) ;
+            Quest.updateText(language) ;
         }
     }
 

@@ -16,9 +16,6 @@ import windows.BagWindow;
 public class Quest
 {
 	private final int id ;
-	private final String name ;
-	private final String type ;
-//	private final boolean isActive ;
 	private final boolean isRepeatable ;
 	private final Map<CreatureType, Integer> reqCreaturesCounter ;
 	private final Map<CreatureType, Integer> reqCreatureTypes;
@@ -26,7 +23,8 @@ public class Quest
 	private final int goldReward ;
 	private final int expReward ;
 	private final Map<Item, Integer> rewardItems ;
-	private final String description ;
+	private String name ;
+	private String description ;
 	private boolean isComplete ;
 
 	protected static final String dadosPath = Path.DADOS + "quests\\" ;
@@ -37,13 +35,9 @@ public class Quest
 		all = new ArrayList<>() ;
 	}
 	
-	public Quest(int id, String type, boolean isRepeatable, Map<CreatureType, Integer> reqCreatureTypes, Map<Item, Integer> reqItems,
-			int goldReward, int expReward, Map<Item, Integer> rewardItems, String name, String description)
-	{
-		
+	public Quest(int id, boolean isRepeatable, Map<CreatureType, Integer> reqCreatureTypes, Map<Item, Integer> reqItems, int goldReward, int expReward, Map<Item, Integer> rewardItems)
+	{		
 		this.id = id ;
-		this.name = name ;
-		this.type = type ;
 		isComplete = false ;
 		this.isRepeatable = isRepeatable ;
 		reqCreaturesCounter = new HashMap<>() ;
@@ -57,57 +51,61 @@ public class Quest
 		this.goldReward = goldReward ;
 		this.expReward = expReward ;
 		this.rewardItems = rewardItems ;
-		this.description = description ;
 		all.add(this);
 	}
 
 
-	public static Quest[] load(String language, int playerJob, List<CreatureType> creatureTypes, List<Item> allItems)
+	public static void load(String language, int playerJob, List<CreatureType> creatureTypes, List<Item> allItems)
 	{
 		List<String[]> inputs = Util.readcsvFile(dadosPath + "Quests.csv") ;
-		Quest[] quests = new Quest[inputs.size()] ;
-		for (int i = 0 ; i <= quests.length - 1 ; i += 1)
+		for (int i = 0 ; i <= inputs.size() - 1 ; i += 1)
 		{
 			String[] input = inputs.get(i) ;
 			int id = Integer.parseInt(input[0]) ;
-			String type = input[1] ;
 			Map<CreatureType, Integer> reqCreatureTypes = new HashMap<>() ;
 			Map<Item, Integer> reqItems = new HashMap<>() ;
 
-			for (int j = 2 ; j <= 8 - 1 ; j += 2)
+			for (int j = 1 ; j <= 7 - 1 ; j += 2)
 			{
 				if (Integer.parseInt(input[j]) <= -1) { continue ;}
 				
 				reqCreatureTypes.put(creatureTypes.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
 			}
 
-			for (int j = 8 ; j <= 18 - 1 ; j += 2)
+			for (int j = 7 ; j <= 17 - 1 ; j += 2)
 			{
 				if (Integer.parseInt(input[j]) <= -1) { continue ;}
 				
 				reqItems.put(allItems.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
 			}
 
-			int goldReward = Integer.parseInt(input[18]) ;
-			int expReward = Integer.parseInt(input[19]) ;
+			int goldReward = Integer.parseInt(input[17]) ;
+			int expReward = Integer.parseInt(input[18]) ;
 			boolean isRepeatable = 0 <= expReward ;
 			Map<Item, Integer> rewardItems = new HashMap<>() ;
 
-			for (int j = 20 ; j <= 28 - 1 ; j += 2)
+			for (int j = 19 ; j <= 27 - 1 ; j += 2)
 			{
 				if (Integer.parseInt(input[j + 1]) <= -1) { continue ;}
 				
 				rewardItems.put(allItems.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
 			}
 
-			String name = input[30 + 0] ; // TODO quests language language.ordinal()
-			String description = input[32] ; //  + language.ordinal()
-
-			quests[i] = new Quest(id, type, isRepeatable, reqCreatureTypes, reqItems, goldReward, expReward,
-					rewardItems, name, description) ;
+			new Quest(id, isRepeatable, reqCreatureTypes, reqItems, goldReward, expReward, rewardItems) ;
 		}
 
-		return quests ;
+		updateText(language) ;
+	}
+
+	public static void updateText(String language)
+	{
+		List<String[]> inputs = Util.readcsvFile(Path.DADOS + language + "/QuestsInfo.csv") ;
+		for (int i = 0 ; i <= inputs.size() - 1 ; i += 1)
+		{
+			Quest quest = all.get(i) ;
+			quest.setName(inputs.get(i)[1]) ;
+			quest.setDescription(inputs.get(i)[2]) ;
+		}
 	}
 	
 	
@@ -119,7 +117,10 @@ public class Quest
 	public void IncReqCreaturesCounter(CreatureType creatureType)
 	{
 		reqCreatureTypes.keySet().forEach(type -> {
-			if (type.equals(creatureType)) {reqCreaturesCounter.put(type, reqCreaturesCounter.get(type) + 1) ;}
+			if (type.equals(creatureType))
+			{
+				reqCreaturesCounter.put(type, reqCreaturesCounter.get(type) + 1) ;
+			}
 		});
 	}
 	
@@ -130,14 +131,20 @@ public class Quest
 		if (reqCreatureTypes != null)
 		{
 			reqCreatureTypes.keySet().forEach(type -> {
-				if (reqCreaturesCounter.get(type) < reqCreatureTypes.get(type)) {isComplete = false ;}
+				if (reqCreaturesCounter.get(type) < reqCreatureTypes.get(type))
+				{
+					isComplete = false ;
+				}
 			});
 		}
 		
 		if (reqItems == null) { return ;}
 
 		reqItems.keySet().forEach(item -> {
-			if (!bag.contains(item)) {isComplete = false ;}
+			if (!bag.contains(item))
+			{
+				isComplete = false ;
+			}
 		});
 		
 	}
@@ -185,12 +192,16 @@ public class Quest
 	public String getName() {return name ;}
 	public Map<CreatureType, Integer> getCounter() {return reqCreaturesCounter ;}
 	public Map<CreatureType, Integer> getReqCreatures() {return reqCreatureTypes ;}
-	public Map<Item, Integer> getReqItems() {return reqItems ;}
-	public static List<Quest> getAll() { return all ;} 
+	public Map<Item, Integer> getReqItems() {return reqItems ;}	
+	public void setName(String name) { this.name = name ;}
+	public void setDescription(String description) { this.description = description ;}
+	public static List<Quest> getAll() { return all ;}
 
 	@Override
 	public String toString()
 	{
-		return id + ";" + type + ";" + isRepeatable + ";" + reqCreatureTypes + ";" + reqItems + ";" + goldReward + ";" + expReward + ";" + rewardItems ;
-	}	
+		return "Quest [id=" + id + ", name=" + name + ", isRepeatable=" + isRepeatable				
+				+ ", goldReward=" + goldReward + ", expReward=" + expReward + ", description=" + description + ", isComplete=" + isComplete + "]";
+	}
+
 }
