@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import attributes.PersonalAttributes;
 import items.Item;
@@ -17,12 +18,12 @@ public class Quest
 {
 	private final int id ;
 	private final boolean isRepeatable ;
-	private final Map<CreatureType, Integer> reqCreaturesCounter ;
-	private final Map<CreatureType, Integer> reqCreatureTypes;
-	private final Map<Item, Integer> reqItems;
+	private final Map<Integer, Integer> reqCreaturesCounter ;
+	private final Map<Integer, Integer> reqCreatureTypeIDs;
+	private final Map<Integer, Integer> reqItemIDs;
+	private final Map<Integer, Integer> rewardItemIDs ;
 	private final int goldReward ;
 	private final int expReward ;
-	private final Map<Item, Integer> rewardItems ;
 	private String name ;
 	private String description ;
 	private boolean isComplete ;
@@ -35,65 +36,47 @@ public class Quest
 		all = new ArrayList<>() ;
 	}
 	
-	public Quest(int id, boolean isRepeatable, Map<CreatureType, Integer> reqCreatureTypes, Map<Item, Integer> reqItems, int goldReward, int expReward, Map<Item, Integer> rewardItems)
+	// public Quest(int id, boolean isRepeatable, Map<CreatureType, Integer> reqCreatureTypes, Map<Item, Integer> reqItems, int goldReward, int expReward, Map<Item, Integer> rewardItems)
+	// {		
+	// 	this.id = id ;
+	// 	isComplete = false ;
+	// 	this.isRepeatable = isRepeatable ;
+	// 	reqCreaturesCounter = new HashMap<>() ;
+	// 	if (reqCreatureTypes != null)
+	// 	{
+	// 		reqCreatureTypes.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 0)) ;
+	// 	}
+		
+	// 	this.reqCreatureTypes = reqCreatureTypes ;
+	// 	this.reqItems = reqItems ;
+	// 	this.goldReward = goldReward ;
+	// 	this.expReward = expReward ;
+	// 	this.rewardItems = rewardItems ;
+	// 	all.add(this);
+	// }
+	
+	public Quest(int id, boolean isRepeatable, Map<Integer, Integer> reqCreatureTypeIDs, Map<Integer, Integer> reqItemIDs, int goldReward, int expReward, Map<Integer, Integer> rewardItemIDs)
 	{		
 		this.id = id ;
 		isComplete = false ;
 		this.isRepeatable = isRepeatable ;
 		reqCreaturesCounter = new HashMap<>() ;
-		if (reqCreatureTypes != null)
+		if (reqCreatureTypeIDs != null)
 		{
-			reqCreatureTypes.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 0)) ;
+			reqCreatureTypeIDs.keySet().forEach(typeID -> reqCreaturesCounter.put(typeID, 0)) ;
 		}
 		
-		this.reqCreatureTypes = reqCreatureTypes ;
-		this.reqItems = reqItems ;
+		this.reqCreatureTypeIDs = reqCreatureTypeIDs ;
+		this.reqItemIDs = reqItemIDs ;
 		this.goldReward = goldReward ;
 		this.expReward = expReward ;
-		this.rewardItems = rewardItems ;
+		this.rewardItemIDs = rewardItemIDs ;
 		all.add(this);
 	}
 
-
-	public static void load(String language, int playerJob, List<CreatureType> creatureTypes, List<Item> allItems)
+	public static void create(String language)
 	{
-		List<String[]> inputs = Util.readcsvFile(dadosPath + "Quests.csv") ;
-		for (int i = 0 ; i <= inputs.size() - 1 ; i += 1)
-		{
-			String[] input = inputs.get(i) ;
-			int id = Integer.parseInt(input[0]) ;
-			Map<CreatureType, Integer> reqCreatureTypes = new HashMap<>() ;
-			Map<Item, Integer> reqItems = new HashMap<>() ;
-
-			for (int j = 1 ; j <= 7 - 1 ; j += 2)
-			{
-				if (Integer.parseInt(input[j]) <= -1) { continue ;}
-				
-				reqCreatureTypes.put(creatureTypes.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
-			}
-
-			for (int j = 7 ; j <= 17 - 1 ; j += 2)
-			{
-				if (Integer.parseInt(input[j]) <= -1) { continue ;}
-				
-				reqItems.put(allItems.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
-			}
-
-			int goldReward = Integer.parseInt(input[17]) ;
-			int expReward = Integer.parseInt(input[18]) ;
-			boolean isRepeatable = 0 <= expReward ;
-			Map<Item, Integer> rewardItems = new HashMap<>() ;
-
-			for (int j = 19 ; j <= 27 - 1 ; j += 2)
-			{
-				if (Integer.parseInt(input[j + 1]) <= -1) { continue ;}
-				
-				rewardItems.put(allItems.get(Integer.parseInt(input[j])), Integer.parseInt(input[j + 1])) ;
-			}
-
-			new Quest(id, isRepeatable, reqCreatureTypes, reqItems, goldReward, expReward, rewardItems) ;
-		}
-
+		QuestData.create() ;
 		updateText(language) ;
 	}
 
@@ -112,12 +95,12 @@ public class Quest
 	public boolean isComplete() { return isComplete ;}
 	public boolean isRepeatable() { return isRepeatable ;}
 	
-	private void resetCreaturesCounter() { reqCreatureTypes.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 0)) ;}
+	private void resetCreaturesCounter() { reqCreatureTypeIDs.keySet().forEach(creatureType -> reqCreaturesCounter.put(creatureType, 0)) ;}
 	
 	public void IncReqCreaturesCounter(CreatureType creatureType)
 	{
-		reqCreatureTypes.keySet().forEach(type -> {
-			if (type.equals(creatureType))
+		reqCreatureTypeIDs.keySet().forEach(type -> {
+			if (type.equals(creatureType.getID()))
 			{
 				reqCreaturesCounter.put(type, reqCreaturesCounter.get(type) + 1) ;
 			}
@@ -126,22 +109,21 @@ public class Quest
 	
 	public void checkCompletion(BagWindow bag)
 	{
-		
 		isComplete = true ;
-		if (reqCreatureTypes != null)
+		if (reqCreatureTypeIDs != null && !reqCreatureTypeIDs.isEmpty() && reqCreaturesCounter != null && !reqCreaturesCounter.isEmpty())
 		{
-			reqCreatureTypes.keySet().forEach(type -> {
-				if (reqCreaturesCounter.get(type) < reqCreatureTypes.get(type))
+			reqCreatureTypeIDs.keySet().forEach(typeID -> {
+				if (reqCreaturesCounter.get(typeID) < reqCreatureTypeIDs.get(typeID))
 				{
 					isComplete = false ;
 				}
 			});
 		}
 		
-		if (reqItems == null) { return ;}
+		if (reqItemIDs == null) { return ;}
 
-		reqItems.keySet().forEach(item -> {
-			if (!bag.contains(item))
+		reqItemIDs.keySet().forEach(itemID -> {
+			if (!bag.contains(Item.getAllItems().get(itemID)))
 			{
 				isComplete = false ;
 			}
@@ -179,20 +161,22 @@ public class Quest
 		PA.getExp().incCurrentValue(expReward) ;
 		bag.addGold(goldReward) ;
 
+		Map<Item, Integer> reqItems = reqItemIDs.entrySet().stream().collect(Collectors.toMap(entry -> Item.getAllItems().get(entry.getKey()), Map.Entry::getValue)) ;
+		Map<Item, Integer> rewardItems = rewardItemIDs.entrySet().stream().collect(Collectors.toMap(entry -> Item.getAllItems().get(entry.getKey()), Map.Entry::getValue)) ;
+
 		for (Item item : reqItems.keySet()) { bag.remove(item, 1) ;}
 		for (Item item : rewardItems.keySet()) { bag.add(item, 1) ;}
+
 		giveSkillRewards(skills) ;
-//		Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), "Quest completa!", Game.colorPalette[4]}) ;
-		
-		
+//		Game.getAnimations().get(12).start(200, new Object[] {Game.getScreen().pos(0.2, 0.1), "Quest completa!", Game.colorPalette[4]}) ;		
 		isComplete = true ;
 		
 	}
 
 	public String getName() {return name ;}
-	public Map<CreatureType, Integer> getCounter() {return reqCreaturesCounter ;}
-	public Map<CreatureType, Integer> getReqCreatures() {return reqCreatureTypes ;}
-	public Map<Item, Integer> getReqItems() {return reqItems ;}	
+	public Map<Integer, Integer> getCounter() {return reqCreaturesCounter ;}
+	public Map<Integer, Integer> getReqCreatures() {return reqCreatureTypeIDs ;}
+	public Map<Integer, Integer> getReqItemIDs() {return reqItemIDs ;}	
 	public void setName(String name) { this.name = name ;}
 	public void setDescription(String description) { this.description = description ;}
 	public static List<Quest> getAll() { return all ;}

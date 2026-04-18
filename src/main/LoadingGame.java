@@ -20,7 +20,6 @@ import graphics2.SpriteAnimation;
 import items.Item;
 import items.Recipe;
 import liveBeings.CreatureData;
-import liveBeings.CreatureType;
 import liveBeings.Player;
 import maps.CityMap;
 import maps.FieldMap;
@@ -134,7 +133,7 @@ public abstract class LoadingGame
 				return;
 
 			case 4:
-				CreatureData.load() ;
+				CreatureData.create() ;
 				logInitializationTime("creature types", initialStepLoadingTime);
 				return;
 
@@ -154,7 +153,8 @@ public abstract class LoadingGame
 				return;
 
 			case 8:
-				Quest.load(language, player.getJob(), CreatureType.getAll(), Item.getAllItems()) ;
+				// Quest.load(language, player.getJob(), CreatureType.getAll(), Item.getAllItems()) ;
+				Quest.create(language) ;
 				logInitializationTime("quests", initialStepLoadingTime);
 				return;
 

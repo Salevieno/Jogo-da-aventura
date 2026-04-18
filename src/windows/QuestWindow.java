@@ -62,16 +62,15 @@ public class QuestWindow extends GameWindow
 	public void displayReqCreatures(Point sectionPos, Quest quest)
 	{
 		
-		Map<CreatureType, Integer> reqCreatureTypes = quests.get(window).getReqCreatures() ;
+		Map<Integer, Integer> reqCreatureTypeIDs = quests.get(window).getReqCreatures() ;
 		
-		if (reqCreatureTypes == null) { return ;}
-		if (reqCreatureTypes.isEmpty()) { return ;}
+		if (reqCreatureTypeIDs == null) { return ;}
+		if (reqCreatureTypeIDs.isEmpty()) { return ;}
 		
 		double angle = Draw.stdAngle ;
 		Color textColor = Palette.colors[0] ;
 		
-		CreatureType[] reqCreatureType = new CreatureType[0];
-		reqCreatureType = reqCreatureTypes.keySet().toArray(reqCreatureType) ;
+		List<CreatureType> reqCreatureType = reqCreatureTypeIDs.keySet().stream().map(typeID -> CreatureType.getAll().get(typeID)).toList() ;
 		GamePanel.DP.drawText(sectionPos, Align.center, angle, "Criaturas necessárias", font, textColor) ;
 		GamePanel.DP.drawLine(Util.translate(sectionPos, -60, 20), Util.translate(sectionPos, 60, 20), 1, textColor) ;
 		
@@ -81,8 +80,8 @@ public class QuestWindow extends GameWindow
 			String creatureName = creatureType.getName() ;
 			creaturePos.y += creatureType.getSize().height / 2 + 6 ;
 			Point textPos = Util.translate(creaturePos, 25, 0) ;
-			int numberReq = reqCreatureTypes.get(creatureType) ;
-			int numberCounter = quest.getCounter().get(creatureType) ;
+			int numberReq = reqCreatureTypeIDs.get(creatureType.getID()) ;
+			int numberCounter = quest.getCounter().get(creatureType.getID()) ;
 			creatureType.display(creaturePos, Scale.unit) ;
 			GamePanel.DP.drawText(textPos, Align.centerLeft, angle, creatureName + " : " + numberCounter + " / " + numberReq, font, textColor) ;
 			creaturePos.y += creatureType.getSize().height / 2 ;
@@ -93,16 +92,15 @@ public class QuestWindow extends GameWindow
 	public void displayReqItems(Point sectionPos)
 	{
 		
-		Map<Item, Integer> reqItems = quests.get(window).getReqItems() ;
+		Map<Integer, Integer> reqItemIDs = quests.get(window).getReqItemIDs() ;
 		
-		if (reqItems == null) { return ;}
-		if (reqItems.isEmpty()) { return ;}
+		if (reqItemIDs == null) { return ;}
+		if (reqItemIDs.isEmpty()) { return ;}
 
 		double angle = Draw.stdAngle ;
 		Color textColor = Palette.colors[0] ;
 		
-		Item[] reqItem = new Item[0] ;
-		reqItem = reqItems.keySet().toArray(reqItem) ;
+		List<Item> reqItem = reqItemIDs.keySet().stream().map(id -> Item.getAllItems().get(id)).toList() ;
 		GamePanel.DP.drawText(sectionPos, Align.center, angle, "Itens necessários", font, textColor) ;
 		GamePanel.DP.drawLine(Util.translate(sectionPos, -60, 20), Util.translate(sectionPos, 60, 20), 1, textColor) ;
 		

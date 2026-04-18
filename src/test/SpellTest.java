@@ -51,7 +51,7 @@ public class SpellTest
 		Spell.load("portugues", Buff.getAllBuffs(), Buff.getAllDebuffs());
 		Item.load();
 		Recipe.load(Item.getAllItems()) ;
-		CreatureData.load() ; // TODO level de dificuldade tem que ser 2 aqui
+		CreatureData.create() ; // TODO level de dificuldade tem que ser 2 aqui
 
 		knightLevel0 = new Player("Player", "", 0) ;
 		mageLevel0 = new Player("Player", "", 1) ;
