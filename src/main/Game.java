@@ -583,32 +583,32 @@ public class Game
 		GameButton.actWhenClicked(GamePanel.getMousePos(), player.getCurrentAction());
 		switch (state)
 		{
-		case opening:
-			Opening.run(player, GamePanel.getMousePos());
-			shouldRepaint = true;
-			return;
+			case opening:
+				Opening.run(player, GamePanel.getMousePos());
+				shouldRepaint = true;
+				return;
 
-		case loading:
-			LoadingGame.display(GamePanel.getMousePos()) ;
-			LoadingGame.load(player, settings.getLanguage());
+			case loading:
+				LoadingGame.load(player, settings.getLanguage());
+				LoadingGame.display(GamePanel.getMousePos()) ;
 
-			shouldRepaint = true;
-			return;
+				shouldRepaint = true;
+				return;
 
-		case simulation:
-			EvolutionSimulation.run(GamePanel.getMousePos());
-			return;
+			case simulation:
+				EvolutionSimulation.run(GamePanel.getMousePos());
+				return;
 
-		case running:
-			run((System.nanoTime() - dt) / Math.pow(10, 9));
-			dt = System.nanoTime();
-			draw();
-			return;
+			case running:
+				run((System.nanoTime() - dt) / Math.pow(10, 9));
+				dt = System.nanoTime();
+				draw();
+				return;
 
-		case paused:
-			return;
-		default:
-			return;
+			case paused:
+				return;
+			default:
+				return;
 		}
 	}
 

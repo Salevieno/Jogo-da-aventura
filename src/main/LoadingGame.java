@@ -39,7 +39,6 @@ public abstract class LoadingGame
 	private static final SpriteAnimation loadingAni = new SpriteAnimation(Path.OPENING_IMG + "LoadingSprite.png", new Point(), Align.center, 3, 0.2) ;
 	private static final SpriteAnimation petIdle = new SpriteAnimation(Path.PET_IMG + "pet0_idle.png", Game.getScreen().getCenter(), Align.center, 4, 0.13) ;
 	private static final List<String> message = List.of(
-		"Loading initial stuff...",
 		"Loading text...",
 		"Loading spells...",
 		"Loading items...",
@@ -49,7 +48,7 @@ public abstract class LoadingGame
 		"Loading building types...",
 		"Loading quests...",
 		"Loading maps...",
-		"Loading final stuff..."
+		""
 	);
 
     static
@@ -57,10 +56,7 @@ public abstract class LoadingGame
 		Point startButtonPos = Util.translate(Game.getScreen().getCenter(), 0, 80) ;
     	Image startImage = ImageLoader.loadImage(Path.OPENING_IMG + "Start.png") ;
     	Image startImageSelected = ImageLoader.loadImage(Path.OPENING_IMG + "StartSelected.png") ;
-		ButtonFunction startAction = () ->
-		{
-			startGame() ;
-		} ;
+		ButtonFunction startAction = () -> { startGame() ;};
     	startButton = new GameButton(startButtonPos, Align.center, "start game", startImage, startImageSelected, startAction) ;
     	startButton.deactivate() ;
 		petIdle.activate();
@@ -120,49 +116,49 @@ public abstract class LoadingGame
 
 		switch (step)
 		{
-			case 0:
+			case 1:
 				loadAllText();
 				logInitializationTime("text", initialStepLoadingTime);
 				return;
 
-			case 1:
+			case 2:
 				Buff.loadBuffs();
 				Buff.loadDebuffs();
 				Spell.load(language, Buff.getAllBuffs(), Buff.getAllDebuffs());
 				logInitializationTime("spells", initialStepLoadingTime);
 				return;
 
-			case 2:
+			case 3:
 				Item.load();
 				logInitializationTime("items", initialStepLoadingTime);
 				return;
 
-			case 3:
+			case 4:
 				CreatureData.load() ;
 				logInitializationTime("creature types", initialStepLoadingTime);
 				return;
 
-			case 4:
+			case 5:
 				Recipe.load(Item.getAllItems());
 				logInitializationTime("recipes", initialStepLoadingTime);
 				return;
 
-			case 5:
+			case 6:
 				NPC.load(language) ;
 				logInitializationTime("npc types", initialStepLoadingTime);
 				return;
 
-			case 6:
+			case 7:
 				Building.load() ;
 				logInitializationTime("building types", initialStepLoadingTime);
 				return;
 
-			case 7:
+			case 8:
 				Quest.load(language, player.getJob(), CreatureType.getAll(), Item.getAllItems()) ;
 				logInitializationTime("quests", initialStepLoadingTime);
 				return;
 
-			case 8:
+			case 9:
 				CityMap.load() ;
 				FieldMap.load();
 				SpecialMap.load(Item.getAllItems());
