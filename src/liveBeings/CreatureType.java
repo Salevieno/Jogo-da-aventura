@@ -91,7 +91,7 @@ public class CreatureType
 		this.satiationDuration = satiationDuration;
 		this.movePattern = MovePattern.values()[movePatternID] ;
 		this.battleActionDuration = atkSpeed ;
-
+// TODO verificar o.O
 		this.PA = new PersonalAttributes(
                 new BasicAttribute((int) (life), (int) (life), 1),
                 new BasicAttribute((int) (mp), (int) (mp), 1),

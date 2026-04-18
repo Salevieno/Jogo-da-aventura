@@ -135,8 +135,8 @@ public class Player extends LiveBeing
 	private static final SpriteAnimation diggingAni = new SpriteAnimation(Path.PLAYER_IMG + "DiggingSprite.png", new Point(), Align.center, false, 7, 2/7.0) ;
 	private static final SpriteAnimation fishingAni = new SpriteAnimation(Path.PLAYER_IMG + "FishingSprite.png", new Point(), Align.center, false, 11, 2/11.0) ;
     
-	public static final List<String[]> initialAttributes = Util.readcsvFile(Path.CSV + "PlayerInitialStats.csv") ;
-	public static final List<String[]> attributeIncreaseOnLevelUp = Util.readcsvFile(Path.CSV + "PlayerEvolution.csv") ;	
+	// public static final List<String[]> initialAttributes = Util.readcsvFile(Path.CSV + "PlayerInitialStats.csv") ;
+	// public static final List<String[]> attributeIncreaseOnLevelUp = Util.readcsvFile(Path.CSV + "PlayerEvolution.csv") ;	
 	public static final int[] numberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	private static final int[] cumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     // private static final Color[] jobColors = new Color[] {Palette.colors[21], Palette.colors[5], Palette.colors[2], Palette.colors[3], Palette.colors[4]} ;
@@ -165,7 +165,7 @@ public class Player extends LiveBeing
 	
 	public Player(String name, String sex, int job)
 	{
-		super(InitializePersonalAttributes(job), new BattleAttributes(initialAttributes.get(job), 1, initialAttributes.get(job)[41], initialAttributes.get(job)[42]), movingAnimations, new PlayerAttributesWindow()) ;
+		super(InitializePersonalAttributes(job), new BattleAttributes(PlayerData.initialAttributes.get(job), 1, PlayerData.initialAttributes.get(job)[41], PlayerData.initialAttributes.get(job)[42]), movingAnimations, new PlayerAttributesWindow()) ;
 
 		((PlayerAttributesWindow) attWindow).initializeAttIncButtons(this) ;
 		
@@ -183,13 +183,13 @@ public class Player extends LiveBeing
 		dir = Directions.up;
 		state = LiveBeingStates.idle;
 	    size = movingAni.spriteIdle.getFrameSize() ;
-		range = Integer.parseInt(initialAttributes.get(job)[4]) ;
-		step = Integer.parseInt(initialAttributes.get(job)[33]);
+		range = Integer.parseInt(PlayerData.initialAttributes.get(job)[4]) ;
+		step = Integer.parseInt(PlayerData.initialAttributes.get(job)[33]);
 	    atkElem = Elements.neutral ;
-		satiationCounter = new GameTimer(Double.parseDouble(initialAttributes.get(job)[38])) ;
-		thirstCounter = new GameTimer(Double.parseDouble(initialAttributes.get(job)[39])) ;
-		mpCounter = new GameTimer(Double.parseDouble(initialAttributes.get(job)[40]) / 1.0) ;
-		battleActionCounter = new GameTimer(Double.parseDouble(initialAttributes.get(job)[41]) / 1.0) ;
+		satiationCounter = new GameTimer(Double.parseDouble(PlayerData.initialAttributes.get(job)[38])) ;
+		thirstCounter = new GameTimer(Double.parseDouble(PlayerData.initialAttributes.get(job)[39])) ;
+		mpCounter = new GameTimer(Double.parseDouble(PlayerData.initialAttributes.get(job)[40]) / 1.0) ;
+		battleActionCounter = new GameTimer(Double.parseDouble(PlayerData.initialAttributes.get(job)[41]) / 1.0) ;
 		movingTimer = new GameTimer(stepDuration) ;
 		combo = new ArrayList<>() ;
 		hitbox = new HitboxRectangle(getPos(), size, 0.8) ;
@@ -217,7 +217,7 @@ public class Player extends LiveBeing
 		spellPoints = 0 ;
     	
 		collectLevel = new ArrayList<>(List.of(0.0, 0.0, 0.0));
-		goldMultiplier = Double.parseDouble(initialAttributes.get(job)[32]) ;
+		goldMultiplier = Double.parseDouble(PlayerData.initialAttributes.get(job)[32]) ;
 		digBonus = 0 ;
 		questSkills = new HashMap<QuestSkills, Boolean>() ;
 		for (QuestSkills questSkill : QuestSkills.values())
@@ -242,11 +242,11 @@ public class Player extends LiveBeing
 
 	public static PersonalAttributes InitializePersonalAttributes(int job)
 	{
-	    BasicAttribute life = new BasicAttribute(Integer.parseInt(initialAttributes.get(job)[2]), Integer.parseInt(initialAttributes.get(job)[2]), 1) ;
-	    BasicAttribute mp = new BasicAttribute(Integer.parseInt(initialAttributes.get(job)[3]), Integer.parseInt(initialAttributes.get(job)[3]), 1) ;
-		BasicAttribute exp = new BasicAttribute(0, 5, Double.parseDouble(initialAttributes.get(job)[34])) ;
-		BasicAttribute satiation = new BasicAttribute(100, 100, Integer.parseInt(initialAttributes.get(job)[35])) ;
-		BasicAttribute thirst = new BasicAttribute(100, 100, Integer.parseInt(initialAttributes.get(job)[36])) ;
+	    BasicAttribute life = new BasicAttribute(Integer.parseInt(PlayerData.initialAttributes.get(job)[2]), Integer.parseInt(PlayerData.initialAttributes.get(job)[2]), 1) ;
+	    BasicAttribute mp = new BasicAttribute(Integer.parseInt(PlayerData.initialAttributes.get(job)[3]), Integer.parseInt(PlayerData.initialAttributes.get(job)[3]), 1) ;
+		BasicAttribute exp = new BasicAttribute(0, 5, Double.parseDouble(PlayerData.initialAttributes.get(job)[34])) ;
+		BasicAttribute satiation = new BasicAttribute(100, 100, Integer.parseInt(PlayerData.initialAttributes.get(job)[35])) ;
+		BasicAttribute thirst = new BasicAttribute(100, 100, Integer.parseInt(PlayerData.initialAttributes.get(job)[36])) ;
 		return new PersonalAttributes(life, mp, exp, satiation,	thirst) ;
 	}
 		
@@ -270,8 +270,8 @@ public class Player extends LiveBeing
 	
 	private static AttributeIncrease calcAttributeIncrease(int job, int proJob)
 	{
-		List<Double> attIncrements = Arrays.asList(attributeIncreaseOnLevelUp.get(3 * job + proJob)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
-		List<Double> incChances = Arrays.asList(attributeIncreaseOnLevelUp.get(3 * job + proJob)).subList(10, 18).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		List<Double> attIncrements = Arrays.asList(PlayerData.attributeIncreaseOnLevelUp.get(3 * job + proJob)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		List<Double> incChances = Arrays.asList(PlayerData.attributeIncreaseOnLevelUp.get(3 * job + proJob)).subList(10, 18).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
 		AttributeIncrease attInc = new AttributeIncrease(attIncrements, incChances) ;
 
 		return attInc ;
@@ -1640,7 +1640,7 @@ public class Player extends LiveBeing
 	{		
 		
 		List<Item> itemsObtained = new ArrayList<>() ;
-		System.out.println(creature.getBag());
+
 		for (Item item : creature.getBag())
 		{
 			if (!Util.chance(0.01 * item.getDropChance())) { continue ;}
@@ -1648,7 +1648,6 @@ public class Player extends LiveBeing
 			itemsObtained.add(item) ;
 			bag.add(item, 1) ;
 		}
-		System.out.println(itemsObtained);
 		
 		bag.addGold((int) (creature.getGold() * Util.randomMult(0.1 * goldMultiplier))) ;
 		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())) ;
