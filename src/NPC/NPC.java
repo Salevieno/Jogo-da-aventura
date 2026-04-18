@@ -34,7 +34,7 @@ import windows.GameWindow;
 public abstract class NPC
 {
 	protected final int id ;
-	protected final String name ;
+	protected String name ;
 	protected NPCJobs job ;
 	protected Point pos ;
 	protected final Image desk ;
@@ -88,6 +88,8 @@ public abstract class NPC
 	public Hitbox getHitbox() { return hitbox ;}
 	public List<NPCMenu> getMenus() { return menus ;}
 	public List<Collider> getColliders() { return colliders ;}
+	public void setName(String name) { this.name = name ;}
+
 	public void resetMenu() { currentMenuID = 0 ;}
 	public boolean isInteracting() { return isInteracting ;}
 	public void startInteraction() { isInteracting = true ;}
@@ -293,8 +295,6 @@ public abstract class NPC
 			NPCJobs job = NPCJobs.getByID(jobId);
 
 			List<JSONObject> menusData = (List<JSONObject>) npcData.get("menus");
-			// List<String> speech = new ArrayList<>(menus.size());
-			// List<List<String>> options = new ArrayList<>(menus.size());
 			List<NPCMenu> menus = new ArrayList<>() ;
 
 			for (int i = 0 ; i <= menusData.size() - 1 ; i += 1)
@@ -311,6 +311,28 @@ public abstract class NPC
 
 			NPC newNPC = NPC.create(job, name, info, menus) ;
 			npcs.add(newNPC);
+		}
+	}
+
+	public static void updateText(String language)
+	{
+		List<JSONObject> npcList = (List<JSONObject>) Util.readJsonArray(Path.DADOS + language + "/NPCMenus.json");
+		for (int i = 0 ; i <= npcList.size() - 1 ; i += 1)
+		{
+			JSONObject npcData = npcList.get(i) ;
+			NPC npc = allNPCs.get(i) ;
+			npc.setName((String) npcData.get("nome")) ;
+			List<JSONObject> menusData = (List<JSONObject>) npcData.get("menus");
+			for (int m = 0 ; m <= menusData.size() - 1 ; m += 1)
+			{
+				JSONObject menu = menusData.get(m) ;
+				npc.getMenus().get(m).setSpeech((String) menu.get("fala")) ;
+				npc.getMenus().get(m).setOptions((List<String>) menu.get("opcoes")) ;
+				if (npc.getMenus().get(m).getOptions() != null)
+				{
+					npc.getMenus().get(m).updateOptionDestination() ;
+				}
+			}
 		}
 	}
 

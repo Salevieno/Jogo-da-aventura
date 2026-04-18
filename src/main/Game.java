@@ -17,23 +17,10 @@ import animations.Animation;
 import battle.AtkTypes;
 import battle.Battle;
 import components.Projectiles;
-import components.Quest;
-import components.QuestSkills;
 import graphics.Align;
 import graphics2.Draw;
 import graphics2.Drawable;
 import graphics2.SpriteAnimation;
-import items.Alchemy;
-import items.Arrow;
-import items.Equip;
-import items.Fab;
-import items.Food;
-import items.Forge;
-import items.GeneralItem;
-import items.Item;
-import items.PetItem;
-import items.Potion;
-import items.QuestItem;
 import liveBeings.Creature;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -44,9 +31,7 @@ import screen.Screen;
 import screen.Sky;
 import sidebar.HotKeysBar;
 import sidebar.SideBar;
-import sidebar.SpellsBar;
 import simulations.EvolutionSimulation;
-import spells.Spell;
 import utilities.Util;
 import windows.BankWindow;
 import windows.PauseWindow;
@@ -62,7 +47,7 @@ public class Game
 
 	public static final String MainFontName = "Comics";
 	private static final GameStates mainState = GameStates.running;
-	private static final boolean testMode = true;
+	// private static final boolean testMode = true;
 	public static final boolean debugMode = false;
 
 	private static GameStates state = GameStates.loading;
@@ -201,109 +186,109 @@ public class Game
 		SideBar.addPetButton(player, pet);
 	}
 
-	private static void initializeTestMode()
-	{
-		player.setName("Rosquinhawwwwwwwwwwwwwww");
-		player.setMap(CityMap.getAllCityMaps().get(3));
+	// private static void initializeTestMode()
+	// {
+	// 	player.setName("Rosquinhawwwwwwwwwwwwwww");
+	// 	player.setMap(CityMap.getAllCityMaps().get(3));
 
-		for (int i = 0; i <= FieldMap.getAllFieldMaps().size() - 1; i += 1)
-		{
-			player.discoverCreature(FieldMap.getAllFieldMaps().get(i).getCreatures().get(0).getType());
-		}
+	// 	for (int i = 0; i <= FieldMap.getAllFieldMaps().size() - 1; i += 1)
+	// 	{
+	// 		player.discoverCreature(FieldMap.getAllFieldMaps().get(i).getCreatures().get(0).getType());
+	// 	}
 
-		player.getPA().getLife().incMaxValue(1000);
-		player.getPA().getMp().incMaxValue(1000);
-		player.getBA().getDex().incBaseValue(1000);
-		player.getPA().getLife().setToMaximum();
+	// 	player.getPA().getLife().incMaxValue(1000);
+	// 	player.getPA().getMp().incMaxValue(1000);
+	// 	player.getBA().getDex().incBaseValue(1000);
+	// 	player.getPA().getLife().setToMaximum();
 
-		// player.getBA().getStun().incAtkChance(1) ;
-		player.getBA().getStun().incDuration(1);
+	// 	// player.getBA().getStun().incAtkChance(1) ;
+	// 	player.getBA().getStun().incDuration(1);
 
-		// player.getBA().getBlock().incAtkChance(1) ;
-		player.getBA().getBlock().incDuration(1);
+	// 	// player.getBA().getBlock().incAtkChance(1) ;
+	// 	player.getBA().getBlock().incDuration(1);
 
-		// player.getBA().getBlood().incAtkChance(1) ;
-		player.getBA().getBlood().incAtkBonus(8);
-		player.getBA().getBlood().incDefBonus(1);
-		player.getBA().getBlood().incDuration(1);
+	// 	// player.getBA().getBlood().incAtkChance(1) ;
+	// 	player.getBA().getBlood().incAtkBonus(8);
+	// 	player.getBA().getBlood().incDefBonus(1);
+	// 	player.getBA().getBlood().incDuration(1);
 
-		// player.getBA().getPoison().incAtkChance(1) ;
-		player.getBA().getPoison().incAtkBonus(1);
-		player.getBA().getPoison().incDefBonus(1);
-		player.getBA().getPoison().incDuration(1);
+	// 	// player.getBA().getPoison().incAtkChance(1) ;
+	// 	player.getBA().getPoison().incAtkBonus(1);
+	// 	player.getBA().getPoison().incDefBonus(1);
+	// 	player.getBA().getPoison().incDuration(1);
 
-		// player.getBA().getSilence().incAtkChance(1) ;
-		player.getBA().getSilence().incDuration(1);
+	// 	// player.getBA().getSilence().incAtkChance(1) ;
+	// 	player.getBA().getSilence().incDuration(1);
 
-		player.takeDamage(500);
-		player.getBag().addGold(30000);
-		for (Spell spell : player.getSpells())
-		{
-			spell.incLevel(5);
-		}
-		SpellsBar.updateSpells(player.getActiveSpells());
+	// 	player.takeDamage(500);
+	// 	player.getBag().addGold(30000);
+	// 	for (Spell spell : player.getSpells())
+	// 	{
+	// 		spell.incLevel(5);
+	// 	}
+	// 	SpellsBar.updateSpells(player.getActiveSpells());
 
-		//
-		for (Item item : Potion.getAll())
-		{
-			player.getBag().add(item, 10);
-		}
-		for (Item item : Alchemy.getAll())
-		{
-			player.getBag().add(item, 20);
-		}
-		for (Item item : Forge.getAll())
-		{
-			player.getBag().add(item, 3);
-		}
-		for (Item item : PetItem.getAll())
-		{
-			player.getBag().add(item, 2);
-		}
-		for (Item item : Food.getAll())
-		{
-			player.getBag().add(item, 10);
-		}
-		for (Item item : Arrow.getAll())
-		{
-			player.getBag().add(item, 20);
-		}
-		for (Item item : Equip.getAll())
-		{
-			player.getBag().add(item, 20) ;
-		}
-		for (Item item : GeneralItem.getAll())
-		{
-			player.getBag().add(item, 2);
-		}
-		for (Item item : Fab.getAll())
-		{
-			player.getBag().add(item, 10);
-		}
-		for (Item item : QuestItem.getAll())
-		{
-			player.getBag().add(item, 10);
-		}
-		player.getBag().add(Equip.getAll()[0], 20);
-		player.getBag().add(Equip.getAll()[1], 20);
-		player.getBag().add(Equip.getAll()[2], 20);
-		player.getBag().add(Equip.getAll()[100], 20);
-		player.getBag().add(Equip.getAll()[102], 20);
-		player.getBag().add(Equip.getAll()[110], 20);
-		player.getBag().add(Equip.getAll()[111], 20);
-		player.getBag().add(Equip.getAll()[112], 20);
-		player.getBag().add(Equip.getAll()[115], 20);
-		player.getBag().add(Equip.getAll()[116], 20);
-		player.getBag().add(Equip.getAll()[117], 20);
-		player.getBag().add(Equip.getAll()[121], 20);
-		player.getBag().add(Equip.getAll()[122], 20);
-		player.getBag().add(Equip.getAll()[123], 20);
-		for (QuestSkills skill : QuestSkills.values())
-		{
-			player.getQuestSkills().replace(skill, true);
-		}
-		Quest.getAll().forEach(quest -> player.addQuest(quest));
-	}
+	// 	//
+	// 	for (Item item : Potion.getAll())
+	// 	{
+	// 		player.getBag().add(item, 10);
+	// 	}
+	// 	for (Item item : Alchemy.getAll())
+	// 	{
+	// 		player.getBag().add(item, 20);
+	// 	}
+	// 	for (Item item : Forge.getAll())
+	// 	{
+	// 		player.getBag().add(item, 3);
+	// 	}
+	// 	for (Item item : PetItem.getAll())
+	// 	{
+	// 		player.getBag().add(item, 2);
+	// 	}
+	// 	for (Item item : Food.getAll())
+	// 	{
+	// 		player.getBag().add(item, 10);
+	// 	}
+	// 	for (Item item : Arrow.getAll())
+	// 	{
+	// 		player.getBag().add(item, 20);
+	// 	}
+	// 	for (Item item : Equip.getAll())
+	// 	{
+	// 		player.getBag().add(item, 20) ;
+	// 	}
+	// 	for (Item item : GeneralItem.getAll())
+	// 	{
+	// 		player.getBag().add(item, 2);
+	// 	}
+	// 	for (Item item : Fab.getAll())
+	// 	{
+	// 		player.getBag().add(item, 10);
+	// 	}
+	// 	for (Item item : QuestItem.getAll())
+	// 	{
+	// 		player.getBag().add(item, 10);
+	// 	}
+	// 	player.getBag().add(Equip.getAll()[0], 20);
+	// 	player.getBag().add(Equip.getAll()[1], 20);
+	// 	player.getBag().add(Equip.getAll()[2], 20);
+	// 	player.getBag().add(Equip.getAll()[100], 20);
+	// 	player.getBag().add(Equip.getAll()[102], 20);
+	// 	player.getBag().add(Equip.getAll()[110], 20);
+	// 	player.getBag().add(Equip.getAll()[111], 20);
+	// 	player.getBag().add(Equip.getAll()[112], 20);
+	// 	player.getBag().add(Equip.getAll()[115], 20);
+	// 	player.getBag().add(Equip.getAll()[116], 20);
+	// 	player.getBag().add(Equip.getAll()[117], 20);
+	// 	player.getBag().add(Equip.getAll()[121], 20);
+	// 	player.getBag().add(Equip.getAll()[122], 20);
+	// 	player.getBag().add(Equip.getAll()[123], 20);
+	// 	for (QuestSkills skill : QuestSkills.values())
+	// 	{
+	// 		player.getQuestSkills().replace(skill, true);
+	// 	}
+	// 	Quest.getAll().forEach(quest -> player.addQuest(quest));
+	// }
 
 	private void activateCounters()
 	{

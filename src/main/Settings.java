@@ -7,11 +7,7 @@ import java.util.List;
 import NPC.NPC;
 import graphics.Align;
 import graphics2.Draw;
-import items.Item;
 import liveBeings.LiveBeing;
-import maps.CityMap;
-import maps.GameMap;
-import maps.SpecialMap;
 import utilities.Util;
 
 public class Settings
@@ -79,11 +75,8 @@ public class Settings
         {
             language = languages.get((languages.indexOf(language) + 1) % languages.size()) ;
 
-            // TODO incluir demais textos e refatorar
-            NPC.load(language) ;
-            CityMap.load() ;
-            SpecialMap.load(Item.getAllItems());
-            Game.getPlayer().setMap(GameMap.getAllMaps().stream().filter(map -> Game.getPlayer().getMap().getName().equals(map.getName())).findFirst().get());
+            // TODO incluir demais textos
+            NPC.updateText(language) ;
         }
     }
 

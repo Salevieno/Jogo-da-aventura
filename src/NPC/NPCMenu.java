@@ -8,9 +8,9 @@ import main.Log;
 
 public class NPCMenu
 {
-	private final String speech ;
-    private final Map<String, Integer> optionDestination ;
-	private final List<String> options ;
+	private String speech ;
+    private Map<String, Integer> optionDestination ;
+	private List<String> options ;
 	private final List<Integer> destination ;
 
     protected NPCMenu(List<Integer> destination, String speech, List<String> options)
@@ -28,11 +28,25 @@ public class NPCMenu
         }
     }
 
+    protected void updateOptionDestination()
+    {
+        for (int i = 0 ; i <= destination.size() - 1 ; i += 1)
+        {
+            this.optionDestination.put(options.get(i), destination.get(i)) ;
+        }
+    }
+
     public String getSpeech() { return speech ;}
 
     public List<String> getOptions() { return options ;}
 
-    public List<Integer> getDestination() { return destination ;}
+    public List<Integer> getDestination() { return destination ;}    
+
+    protected void setSpeech(String speech) { this.speech = speech ;}
+
+    protected void setOptionDestination(Map<String, Integer> optionDestination) { this.optionDestination = optionDestination ;}
+
+    protected void setOptions(List<String> options) { this.options = options ;}
 
     public Map<String, Integer> getOptionDestination() { return optionDestination ;}
 }
