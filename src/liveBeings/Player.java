@@ -1640,13 +1640,15 @@ public class Player extends LiveBeing
 	{		
 		
 		List<Item> itemsObtained = new ArrayList<>() ;
+		System.out.println(creature.getBag());
 		for (Item item : creature.getBag())
 		{
 			if (!Util.chance(0.01 * item.getDropChance())) { continue ;}
 			
 			itemsObtained.add(item) ;
 			bag.add(item, 1) ;
-		}		
+		}
+		System.out.println(itemsObtained);
 		
 		bag.addGold((int) (creature.getGold() * Util.randomMult(0.1 * goldMultiplier))) ;
 		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())) ;

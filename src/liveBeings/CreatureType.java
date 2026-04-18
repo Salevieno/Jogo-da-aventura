@@ -3,9 +3,9 @@ package liveBeings;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import attributes.BasicAttribute;
 import attributes.BattleAttributes;
@@ -109,14 +109,7 @@ public class CreatureType
 		}
 		this.spell.forEach(spell -> spell.incLevel(1));
 
-		this.items = new HashSet<>();
-		for (int i = 0; i <= this.items.size() - 1; i += 1)
-		{
-			if (-1 < i)
-			{
-				items.add(Item.getAllItems().get(i));
-			}
-		}
+		this.items = itemIDs.stream().map(itemID -> Item.getAllItems().get(itemID)).collect(Collectors.toSet()) ;
 		this.gold = gold;
 		this.hitboxType = hitboxType ;
 
