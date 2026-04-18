@@ -524,13 +524,14 @@ public class Player extends LiveBeing
 		int[] border = Game.getScreen().getBorders() ;
 		int stepOffset = Screen.borderOffset ;
 		int qtdCities = CityMap.getAllCityMaps().size() ;
+		System.out.println("current pos = " + pos);
 		switch (dir)
 		{
 			case up:
 				int newY = border[3] - stepOffset ;
 				boolean mapsHaveSameSize = !currentMap.meetsTwoMapsUp() == !newMap.meetsTwoMapsDown() ;
 
-				if (mapsHaveSameSize) { new Point2D.Double(pos.x, newY) ;}
+				if (mapsHaveSameSize) { System.out.println("maps have same size up, new pos = " + new Point2D.Double(pos.x, newY)); return new Point2D.Double(pos.x, newY) ;}
 
 				if (newMap.meetsTwoMapsDown()) // small -> big
 				{
@@ -554,7 +555,7 @@ public class Player extends LiveBeing
 				int newX = border[2] - stepOffset ;
 				mapsHaveSameSize = !currentMap.meetsTwoMapsLeft() == !newMap.meetsTwoMapsRight() ;
 
-				if (mapsHaveSameSize) { new Point2D.Double(newX, pos.y) ;}
+				if (mapsHaveSameSize) { return new Point2D.Double(newX, pos.y) ;}
 
 				if (newMap.meetsTwoMapsRight()) // small -> big
 				{
@@ -578,7 +579,7 @@ public class Player extends LiveBeing
 				newY = border[1] + stepOffset ;
 				mapsHaveSameSize = !currentMap.meetsTwoMapsDown() == !newMap.meetsTwoMapsUp() ;
 
-				if (mapsHaveSameSize) { new Point2D.Double(pos.x, newY) ;}
+				if (mapsHaveSameSize) { return new Point2D.Double(pos.x, newY) ;}
 
 				if (newMap.meetsTwoMapsUp()) // small -> big
 				{
