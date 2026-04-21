@@ -18,6 +18,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import NPC.NPC;
+import components.Hitbox;
 import graphics2.SpriteAnimation;
 import items.Item;
 import liveBeings.Creature;
@@ -346,11 +347,11 @@ public class FieldMap extends GameMap
 	
 	public void removeCollectible(Collectible collectible) { collectibles.remove(collectible) ;}
 	
- 	public void displayCollectibles()
+ 	public void displayCollectibles(Hitbox playerHitbox)
  	{
  		for (Collectible collectible : collectibles)
 		{
- 			collectible.display() ;
+ 			collectible.display(playerHitbox) ;
 		}
  	}
 

@@ -7,6 +7,7 @@ import components.HitboxRectangle;
 import graphics.Align;
 import graphics2.Draw;
 import items.Item;
+import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
 import utilities.Util;
@@ -52,9 +53,14 @@ public class Collectible extends Item
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
 	}
 	
-	public void display()
+	public void display(Hitbox playerHitbox)
 	{
 		GamePanel.DP.drawImage(image, pos, Align.center) ;
+		if (hitbox.overlaps(playerHitbox))
+		{
+			Point buttonPos = Util.translate(pos, -image.getWidth(null), -image.getHeight(null)) ;
+			Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey()) ;
+		}
 		if (Game.debugMode)
 		{
 			hitbox.display() ;

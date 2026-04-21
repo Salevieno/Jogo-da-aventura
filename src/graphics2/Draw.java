@@ -256,7 +256,7 @@ public abstract class Draw
 		if (map instanceof FieldMap)
 		{
 			FieldMap fm = (FieldMap) map ;
-			fm.displayCollectibles() ;
+			fm.displayCollectibles(playerHitbox) ;
 		}
 		map.displayTudoEstaBem();
 		time() ;

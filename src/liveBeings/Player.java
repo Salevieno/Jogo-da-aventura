@@ -17,7 +17,6 @@ import org.json.simple.JSONObject;
 
 import Buildings.Building;
 import NPC.NPC;
-import animations.Animation;
 import animations.BufferedTextAnimation;
 import animations.MessageAnimation;
 import animations.ObtainedItemAnimation;
@@ -405,17 +404,9 @@ public class Player extends LiveBeing
 		collectLevel.set(collectible.typeNumber() - 1, currentLevel + 0.25 / (currentLevel + 1)) ;
 		
 	}
-	
-	private void removeCollectibleFromMap(Collectible collectible)
-	{        
-		if (!map.isField()) { return ;}
-
-		((FieldMap) map).removeCollectible(collectible) ;
-	}
 
 	public void collect(Collectible collectible)
-    {
-		
+    {		
 		SpriteAnimation collectingAnimation = collectingAnimations[collectible.typeNumber()] ;
 		if (!collectingAnimation.isActive() && !collectingAnimation.hasFinished())
 		{
@@ -447,11 +438,12 @@ public class Player extends LiveBeing
 			MessageAnimation.start(Game.getScreen().pos(0.2, 0.2), msg, Palette.colors[0]) ;
         }
 
-    	removeCollectibleFromMap(collectible) ;
+		if (!map.isField()) { return ;}
+
+		((FieldMap) map).removeCollectible(collectible) ;
 
     	setState(LiveBeingStates.idle) ;
         currentCollectible = null ;
-
     }
 	
 	private void addChestContentToBag(TreasureChest chest, BagWindow bag)
@@ -1016,8 +1008,11 @@ public class Player extends LiveBeing
 			useItem(hotItems.get(i)) ;
 		}
 
-		// Interacting with NPCs
 		interactWithNPCs() ;
+		if (map instanceof FieldMap)
+		{
+			interactWithCollectibles(((FieldMap) map)) ;
+		}
 	}
 
 	private void navigateThroughOpenWindows(Point mousePos)
@@ -1115,6 +1110,32 @@ public class Player extends LiveBeing
 		}
 	}
 
+	private void interactWithCollectibles(FieldMap map)
+	{
+		if (PlayerActions.actionOfKey(currentAction) == null) { return ;}
+		if (!PlayerActions.actionOfKey(currentAction).equals(PlayerActions.interact)) { return ;}
+
+		List<Collectible> mapCollectibles = map.getCollectibles() ;
+
+		if (mapCollectibles == null) { return ;}
+		if (mapCollectibles.isEmpty()) { return ;}
+
+		for (Collectible collectible : mapCollectibles)
+		{
+			if (!hitbox.overlaps(collectible.getHitbox())) { continue ;}
+			
+			if (0 < collectible.typeNumber() && collectLevel.get(collectible.typeNumber() - 1) + 1 < map.getLevel())
+			{
+				MessageAnimation.start(new Point((int)pos.x, (int)(pos.y - 20 - size.height)), "Nível de coleta insuficiente", Palette.colors[4]) ;
+				return ;
+			}
+			
+			setState(LiveBeingStates.collecting);
+			currentCollectible = collectible ;
+			return ;
+		}
+	}
+
 	private void meetWithTreasureChests()
 	{
 		if (!map.isSpecial()) { return ;}
@@ -1132,38 +1153,31 @@ public class Player extends LiveBeing
 		}
 	}
 
-	private void meetWithCollectibles(FieldMap map)
-	{
-		List<Collectible> collectibles = map.getCollectibles() ;
+	// private void meetWithCollectibles(FieldMap map)
+	// {
+	// 	List<Collectible> collectibles = map.getCollectibles() ;
 
-		if (collectibles == null) { return ;}
-		if (collectibles.isEmpty()) { return ;}
+	// 	if (collectibles == null) { return ;}
+	// 	if (collectibles.isEmpty()) { return ;}
 		
-		for (int i = 0 ; i <= collectibles.size() - 1 ; i += 1)
-		{
+	// 	for (int i = 0 ; i <= collectibles.size() - 1 ; i += 1)
+	// 	{
 			
-			Collectible collectible = collectibles.get(i) ;
-			if (!hitbox.overlaps(collectible.getHitbox())) { continue ;}
+	// 		Collectible collectible = collectibles.get(i) ;
+	// 		if (!hitbox.overlaps(collectible.getHitbox())) { continue ;}
 			
-			if (0 < collectible.typeNumber())
-			{
-				if (collectLevel.get(collectible.typeNumber() - 1) + 1 < map.getLevel())
-				{
-					if (Animation.getAll().isEmpty())
-					{
-						// Animation.start(AnimationTypes.message, new Object[] {new Point((int)pos.x, (int)(pos.y - 20 - size.height)), "Nível de coleta insuficiente", Palette.colors[4]}) ;
-						MessageAnimation.start(new Point((int)pos.x, (int)(pos.y - 20 - size.height)), "Nível de coleta insuficiente", Palette.colors[4]) ;
-					}
-					break ;
-				}
-			}
+	// 		if (0 < collectible.typeNumber() && collectLevel.get(collectible.typeNumber() - 1) + 1 < map.getLevel())
+	// 		{
+	// 			MessageAnimation.start(new Point((int)pos.x, (int)(pos.y - 20 - size.height)), "Nível de coleta insuficiente", Palette.colors[4]) ;
+	// 			break ;
+	// 		}
 			
-			setState(LiveBeingStates.collecting);
-			currentCollectible = collectible ;
-			break ;		
+	// 		setState(LiveBeingStates.collecting);
+	// 		currentCollectible = collectible ;
+	// 		break ;		
 			
-		}
-	}
+	// 	}
+	// }
 
 	private void meetWithCreatures(FieldMap map)
 	{
@@ -1196,7 +1210,7 @@ public class Player extends LiveBeing
 		
 		if (map.isField())
 		{
-			meetWithCollectibles((FieldMap) map) ;
+			// meetWithCollectibles((FieldMap) map) ;
 			meetWithCreatures((FieldMap) map) ;			
 		}	
 		
