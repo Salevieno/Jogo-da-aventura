@@ -5,10 +5,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import attributes.AttributeIncrease;
-import attributes.BattleAttributes;
 import liveBeings.LiveBeing;
 import liveBeings.Pet;
 import liveBeings.Player;
+import liveBeings.PlayerData;
 import main.Log;
 
 public abstract class JobBuild
@@ -82,8 +82,8 @@ public abstract class JobBuild
 		player.setProJob(0) ;
 		player.updateAttributeIncrease() ;
 		player.setProJob(originalProJob) ;
-		player.setPA(Player.InitializePersonalAttributes(player.getJob())) ;
-		player.setBA(new BattleAttributes(Player.initialAttributes.get(player.getJob()), 1, Player.initialAttributes.get(player.getJob())[41], Player.initialAttributes.get(player.getJob())[42])) ; // Player.InitializeBattleAttributes(player.getJob())
+		player.setPA(PlayerData.getInitialpersonalattperjob().get(player.getJob())) ;
+		// player.setBA(PlayerData.battleAttributes.get(player.getJob())) ;
 	}
 	// private static void resetToLevel50(Player player, boolean addChosenPoints)
 	// {

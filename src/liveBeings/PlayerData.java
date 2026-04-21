@@ -2,19 +2,94 @@ package liveBeings;
 
 import java.util.List;
 
+import attributes.BattleAttributes;
+import attributes.PersonalAttributes;
+
 public abstract class PlayerData
 {
-    protected static final List<String[]> initialAttributes ;
-    protected static final List<String[]> attributeIncreaseOnLevelUp ;
+    private static final List<String[]> attributeIncreaseOnLevelUp ;
+    private static final List<PersonalAttributes> initialPersonalAttPerJob ;
+    private static final List<BattleAttributes> initialBattleAttPerJob ;
+    private static final List<Integer> range ;
+    private static final List<Integer> step ;
+    private static final List<Double> goldMultiplier ;
+    private static final List<Double> satiationCounterDuration ;
+    private static final List<Double> mpCounterDuration ;
+    private static final List<Double> thirstCounterDuration ;
+    private static final List<Double> battleActionCounterDuration ;
 
     static
     {
-        initialAttributes = List.of(
-            new String[] {"0","0","100","50","60","5","2","5","2","10","2","0.1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","150","1","1","1","0.0375","5","2.5","0.25","1","10"},
-            new String[] {"1","0","50","100","140","2","5","2","5","7","1","0.1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","150","1","1","1","0.0375","5","2.5","0.0625","1","10"},
-            new String[] {"2","0","60","80","200","3","3","3","3","18","3","0.15","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","150","1","1","1","0.0375","5","2.5","0.25","1","10"},
-            new String[] {"3","0","70","70","60","4","3","4","3","12","6","0.12","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","150","1.2","1","1","0.0375","4.25","2","0.1875","1","10"},
-            new String[] {"4","0","30","50","60","3","2","3","2","15","8","0.18","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1.15","150","1","1","1","0.0375","5","2.5","0.25","0.75","10"}
+        initialPersonalAttPerJob = List.of(
+            new PersonalAttributes(100, 100, 1, 50, 50, 1, 0, 5, 1, 100, 100, 1, 100, 100, 1),
+            new PersonalAttributes(50, 50, 1, 100, 100, 1, 0, 5, 1, 100, 100, 1, 100, 100, 1),
+            new PersonalAttributes(60, 60, 1, 80, 80, 1, 0, 5, 1, 100, 100, 1, 100, 100, 1),
+            new PersonalAttributes(70, 70, 1, 70, 70, 1, 0, 5, 1.2, 100, 100, 1, 100, 100, 1),
+            new PersonalAttributes(30, 30, 1, 50, 50, 1, 0, 5, 1, 100, 100, 1, 100, 100, 1)
+        ) ;
+
+        range = List.of(
+            60,
+            140,
+            200,
+            60,
+            60
+        ) ;
+
+        step = List.of(
+            150,
+            150,
+            150,
+            150,
+            150
+        ) ;
+
+        goldMultiplier = List.of(
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.15
+        ) ;
+
+        satiationCounterDuration = List.of(
+            5.0,
+            5.0,
+            5.0,
+            4.25,
+            5.0
+        ) ;
+
+        mpCounterDuration = List.of(
+            0.25,
+            0.0625,
+            0.25,
+            0.1875,
+            0.25
+        ) ;
+
+        thirstCounterDuration = List.of(
+            2.5,
+            2.5,
+            2.5,
+            2.0,
+            2.5
+        ) ;
+
+        battleActionCounterDuration = List.of(
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.75
+        ) ;
+
+        initialBattleAttPerJob = List.of(
+            new BattleAttributes(5, 2, 5, 2, 10, 2, 0.1, 0.0, 1.0, 10),
+            new BattleAttributes(2, 5, 2, 5, 7, 1, 0.1, 0.0, 1.0, 10),
+            new BattleAttributes(3, 3, 3, 3, 18, 3, 0.15, 0.0, 1.0, 10),
+            new BattleAttributes(4, 3, 4, 3, 12, 6, 0.12, 0.0, 1.0, 10),
+            new BattleAttributes(3, 2, 3, 2, 15, 8, 0.18, 0.0, 0.75, 10)
         ) ;
 
         attributeIncreaseOnLevelUp = List.of(
@@ -35,4 +110,16 @@ public abstract class PlayerData
             new String[] {"4","2","10","10","2","4","2","2","3","6","1","1","0.5","0.4","0.5","0.4","0.4","0.4"}
         ) ;
     }
+
+    public static List<String[]> getAttributeincreaseonlevelup() { return attributeIncreaseOnLevelUp ;}
+    public static List<PersonalAttributes> getInitialpersonalattperjob() { return initialPersonalAttPerJob ;}
+    public static List<BattleAttributes> getInitialbattleattperjob() { return initialBattleAttPerJob ;}
+    public static List<Integer> getRange() { return range ;}
+    public static List<Integer> getStep() { return step ;}
+    public static List<Double> getGoldmultiplier() { return goldMultiplier ;}
+    public static List<Double> getSatiationcounterduration() { return satiationCounterDuration ;}
+    public static List<Double> getMpcounterduration() { return mpCounterDuration ;}
+    public static List<Double> getThirstcounterduration() { return thirstCounterDuration ;}
+    public static List<Double> getBattleactioncounterduration() { return battleActionCounterDuration ;}
+
 }

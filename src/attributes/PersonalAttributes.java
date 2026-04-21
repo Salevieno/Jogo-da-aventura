@@ -19,6 +19,19 @@ public class PersonalAttributes
 		this.satiation = Satiation ;
 		this.thirst = Thirst ;
 	}
+
+	public PersonalAttributes(int lifeCurrent, int lifeMax, double lifeMult,
+		int mpCurrent, int mpMax, double mpMult,
+		int expCurrent, int expMax, double expMult,
+		int satiationCurrent, int satiationMax, double satiationMult,
+		int thirstCurrent, int thirstMax, double thirstMult)
+	{
+		this.life = new BasicAttribute(lifeCurrent, lifeMax, lifeMult) ;
+		this.mp = new BasicAttribute(mpCurrent, mpMax, mpMult) ;
+		this.exp = new BasicAttribute(expCurrent, expMax, expMult) ;
+		this.satiation = new BasicAttribute(satiationCurrent, satiationMax, satiationMult) ;
+		this.thirst = new BasicAttribute(thirstCurrent, thirstMax, thirstMult) ;
+	}
 	
 	public PersonalAttributes(PersonalAttributes PA)
 	{
@@ -33,12 +46,6 @@ public class PersonalAttributes
 	public BasicAttribute getExp() {return exp ;}
 	public BasicAttribute getSatiation() {return satiation ;}
 	public BasicAttribute getThirst() {return thirst ;}
-	
-	public void setLife(BasicAttribute newValue) {life = newValue ;}
-	public void setMp(BasicAttribute newValue) {mp = newValue ;}
-	public void setExp(BasicAttribute newValue) {exp = newValue ;}
-	public void setSatiation(BasicAttribute newValue) {satiation = newValue ;}
-	public void setThirst(BasicAttribute newValue) {thirst = newValue ;}
 
 	public BasicAttribute mapAttributes(Attributes att)
 	{

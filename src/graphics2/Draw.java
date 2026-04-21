@@ -312,4 +312,12 @@ public abstract class Draw
 	{
 		settingSwitch(pos, align, isOn, Palette.colors[3]) ;
 	}
+
+	public static void filter(Color color)
+	{
+		for (int i = 0 ; i <= Game.getScreen().getSize().height - 1 ; i += 2)
+		{
+			GamePanel.DP.drawLine(new Point(0, i), new Point(Game.getScreen().getSize().width, i), color) ;
+		}
+	}
 }

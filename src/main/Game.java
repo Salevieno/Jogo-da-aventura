@@ -89,7 +89,7 @@ public class Game
 
 	public Game()
 	{
-		player = new Player("", "", 0);
+		player = new Player("", "", 1);
 		
 		System.out.println();
 		Log.info("Game version " + MainGame3_4.getVersion()) ;
@@ -558,7 +558,6 @@ public class Game
 		{
 			screen.displayBorders();
 		}
-
 	}
 
 	protected void update()

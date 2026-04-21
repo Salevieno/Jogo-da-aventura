@@ -134,9 +134,7 @@ public class Player extends LiveBeing
 	private static final SpriteAnimation tentAni = new SpriteAnimation(Path.PLAYER_IMG + "Tent.png", new Point(), Align.bottomCenter, false, 1, 5) ;
 	private static final SpriteAnimation diggingAni = new SpriteAnimation(Path.PLAYER_IMG + "DiggingSprite.png", new Point(), Align.center, false, 7, 2/7.0) ;
 	private static final SpriteAnimation fishingAni = new SpriteAnimation(Path.PLAYER_IMG + "FishingSprite.png", new Point(), Align.center, false, 11, 2/11.0) ;
-    
-	// public static final List<String[]> initialAttributes = Util.readcsvFile(Path.CSV + "PlayerInitialStats.csv") ;
-	// public static final List<String[]> attributeIncreaseOnLevelUp = Util.readcsvFile(Path.CSV + "PlayerEvolution.csv") ;	
+
 	public static final int[] numberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
 	private static final int[] cumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
     // private static final Color[] jobColors = new Color[] {Palette.colors[21], Palette.colors[5], Palette.colors[2], Palette.colors[3], Palette.colors[4]} ;
@@ -165,91 +163,70 @@ public class Player extends LiveBeing
 	
 	public Player(String name, String sex, int job)
 	{
-		super(InitializePersonalAttributes(job), new BattleAttributes(PlayerData.initialAttributes.get(job), 1, PlayerData.initialAttributes.get(job)[41], PlayerData.initialAttributes.get(job)[42]), movingAnimations, new PlayerAttributesWindow()) ;
+		super(PlayerData.getInitialpersonalattperjob().get(job), PlayerData.getInitialbattleattperjob().get(job), movingAnimations, new PlayerAttributesWindow()) ;
 
 		((PlayerAttributesWindow) attWindow).initializeAttIncButtons(this) ;
 		
 		this.name = name ;
+		this.sex = sex ;
 		this.job = job ;
 		this.proJob = 0 ;
 		this.level = 1 ;
-		
-		// if (GameMap.getAllMaps() != null)
-		// {
-		// 	map = GameMap.getAllMaps().get(job) ;
-		// }
-
-		pos = new Point2D.Double();
-		dir = Directions.up;
-		state = LiveBeingStates.idle;
-	    size = movingAni.spriteIdle.getFrameSize() ;
-		range = Integer.parseInt(PlayerData.initialAttributes.get(job)[4]) ;
-		step = Integer.parseInt(PlayerData.initialAttributes.get(job)[33]);
-	    atkElem = Elements.neutral ;
-		satiationCounter = new GameTimer(Double.parseDouble(PlayerData.initialAttributes.get(job)[38])) ;
-		thirstCounter = new GameTimer(Double.parseDouble(PlayerData.initialAttributes.get(job)[39])) ;
-		mpCounter = new GameTimer(Double.parseDouble(PlayerData.initialAttributes.get(job)[40]) / 1.0) ;
-		battleActionCounter = new GameTimer(Double.parseDouble(PlayerData.initialAttributes.get(job)[41]) / 1.0) ;
-		movingTimer = new GameTimer(stepDuration) ;
-		combo = new ArrayList<>() ;
-		hitbox = new HitboxRectangle(getPos(), size, 0.8) ;
-	    
-		this.sex = sex ;
-		
-		
-		spells = new ArrayList<Spell>() ;
-
-		focusWindow = null ;
-		openWindows = new ArrayList<>() ;
-		bag = new BagWindow() ;
+		this.pos = new Point2D.Double();
+		this.dir = Directions.up;
+		this.state = LiveBeingStates.idle;
+	    this.size = movingAni.spriteIdle.getFrameSize() ;
+		this.range = PlayerData.getRange().get(job) ;
+		this.step = PlayerData.getStep().get(job);
+	    this.atkElem = Elements.neutral ;
+		// TODO optional - passar counters para dentro dos atributos com counter increment e counter deplete
+		this.satiationCounter = new GameTimer(PlayerData.getSatiationcounterduration().get(job)) ;
+		this.thirstCounter = new GameTimer(PlayerData.getThirstcounterduration().get(job)) ;
+		this.mpCounter = new GameTimer(PlayerData.getMpcounterduration().get(job)) ;
+		this.battleActionCounter = new GameTimer(PlayerData.getBattleactioncounterduration().get(job)) ;
+		this.movingTimer = new GameTimer(stepDuration) ;
+		this.combo = new ArrayList<>() ;
+		this.hitbox = new HitboxRectangle(getPos(), size, 0.8) ;		
+		this.spells = new ArrayList<Spell>() ;
+		this.focusWindow = null ;
+		this.openWindows = new ArrayList<>() ;
+		this.bag = new BagWindow() ;
 		if (job == 2)
 		{
 			bag.add(Arrow.getAll()[0], 100) ;
 		}
-		questWindow = new QuestWindow() ;
-		quests = new ArrayList<>() ;
-		mapWindow = new MapWindow() ;
-		hintsWindow = new HintsWindow() ;
-		spellsTree = new SpellsTreeWindow(job) ;
-		bestiary = new BestiaryWindow() ;
-		equips = new Equip[4] ;
-		equippedArrow = null ;
-		spellPoints = 0 ;
+		this.questWindow = new QuestWindow() ;
+		this.quests = new ArrayList<>() ;
+		this.mapWindow = new MapWindow() ;
+		this.hintsWindow = new HintsWindow() ;
+		this.spellsTree = new SpellsTreeWindow(job) ;
+		this.bestiary = new BestiaryWindow() ;
+		this.equips = new Equip[4] ;
+		this.equippedArrow = null ;
+		this.spellPoints = 0 ;
     	
-		collectLevel = new ArrayList<>(List.of(0.0, 0.0, 0.0));
-		goldMultiplier = Double.parseDouble(PlayerData.initialAttributes.get(job)[32]) ;
-		digBonus = 0 ;
-		questSkills = new HashMap<QuestSkills, Boolean>() ;
+		this.collectLevel = new ArrayList<>(List.of(0.0, 0.0, 0.0));
+		this.goldMultiplier = PlayerData.getGoldmultiplier().get(job) ;
+		this.digBonus = 0 ;
+		this.questSkills = new HashMap<QuestSkills, Boolean>() ;
 		for (QuestSkills questSkill : QuestSkills.values())
 		{
 			questSkills.put(questSkill, false) ;
 		}
-		keysPressed = new HashSet<>() ;
-		isRiding = false ;
-		stats = new Statistics() ;
-		attPoints = 0 ;
+		this.keysPressed = new HashSet<>() ;
+		this.isRiding = false ;
+		this.stats = new Statistics() ;
+		this.attPoints = 0 ;
 		
-		attInc = calcAttributeIncrease(job, proJob) ;
+		this.attInc = calcAttributeIncrease(job, proJob) ;
 
-		closestCreature = null ;
-	    opponent = null ;
-	    npcInContact = null ;
-	    currentCollectible = null ;
-	    currentChest = null ;
-		hotItems = Arrays.asList(null, null, null) ;
+		this.closestCreature = null ;
+	    this.opponent = null ;
+	    this.npcInContact = null ;
+	    this.currentCollectible = null ;
+	    this.currentChest = null ;
+		this.hotItems = Arrays.asList(null, null, null) ;
 	}
-	
-
-	public static PersonalAttributes InitializePersonalAttributes(int job)
-	{
-	    BasicAttribute life = new BasicAttribute(Integer.parseInt(PlayerData.initialAttributes.get(job)[2]), Integer.parseInt(PlayerData.initialAttributes.get(job)[2]), 1) ;
-	    BasicAttribute mp = new BasicAttribute(Integer.parseInt(PlayerData.initialAttributes.get(job)[3]), Integer.parseInt(PlayerData.initialAttributes.get(job)[3]), 1) ;
-		BasicAttribute exp = new BasicAttribute(0, 5, Double.parseDouble(PlayerData.initialAttributes.get(job)[34])) ;
-		BasicAttribute satiation = new BasicAttribute(100, 100, Integer.parseInt(PlayerData.initialAttributes.get(job)[35])) ;
-		BasicAttribute thirst = new BasicAttribute(100, 100, Integer.parseInt(PlayerData.initialAttributes.get(job)[36])) ;
-		return new PersonalAttributes(life, mp, exp, satiation,	thirst) ;
-	}
-		
 	
 	public static List<Spell> jobSpells(int job)
 	{
@@ -270,8 +247,8 @@ public class Player extends LiveBeing
 	
 	private static AttributeIncrease calcAttributeIncrease(int job, int proJob)
 	{
-		List<Double> attIncrements = Arrays.asList(PlayerData.attributeIncreaseOnLevelUp.get(3 * job + proJob)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
-		List<Double> incChances = Arrays.asList(PlayerData.attributeIncreaseOnLevelUp.get(3 * job + proJob)).subList(10, 18).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		List<Double> attIncrements = Arrays.asList(PlayerData.getAttributeincreaseonlevelup().get(3 * job + proJob)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).toList() ;
+		List<Double> incChances = Arrays.asList(PlayerData.getAttributeincreaseonlevelup().get(3 * job + proJob)).subList(10, 18).stream().map(p -> Double.parseDouble(p)).toList() ;
 		AttributeIncrease attInc = new AttributeIncrease(attIncrements, incChances) ;
 
 		return attInc ;

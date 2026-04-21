@@ -7,24 +7,17 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import UI.ButtonFunction;
 import UI.GameButton;
 import animations.Animation;
 import attributes.AttributeIncrease;
 import attributes.Attributes;
-import attributes.BasicAttribute;
-import attributes.BasicBattleAttribute;
-import attributes.BattleAttributes;
-import attributes.BattleSpecialAttribute;
-import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
 import battle.AtkEffects;
 import battle.AtkResults;
@@ -42,7 +35,6 @@ import liveBeings.Player;
 import main.Directions;
 import main.Game;
 import main.GamePanel;
-import main.GameTimer;
 import main.ImageLoader;
 import main.Log;
 import main.Palette;
@@ -301,50 +293,50 @@ public abstract class EvolutionSimulation
 	
 	private static void playerResetJob(int newJob)
 	{
-		player.setLevel(1) ;
-		player.setJob(newJob) ;
+		// player.setLevel(1) ;
+		// player.setJob(newJob) ;
 		
-		List<String[]> prop = Player.initialAttributes ;
-	    BasicAttribute life = new BasicAttribute(Integer.parseInt(prop.get(newJob)[2]), Integer.parseInt(prop.get(newJob)[2]), 1) ;
-	    BasicAttribute mp = new BasicAttribute(Integer.parseInt(prop.get(newJob)[3]), Integer.parseInt(prop.get(newJob)[3]), 1) ;
-		BasicAttribute exp = new BasicAttribute(0, 5, Double.parseDouble(prop.get(newJob)[34])) ;
-		BasicAttribute satiation = new BasicAttribute(100, 100, Integer.parseInt(prop.get(newJob)[35])) ;
-		BasicAttribute thirst = new BasicAttribute(100, 100, Integer.parseInt(prop.get(newJob)[36])) ;
+		// List<String[]> prop = Player.initialAttributes ;
+	    // BasicAttribute life = new BasicAttribute(Integer.parseInt(prop.get(newJob)[2]), Integer.parseInt(prop.get(newJob)[2]), 1) ;
+	    // BasicAttribute mp = new BasicAttribute(Integer.parseInt(prop.get(newJob)[3]), Integer.parseInt(prop.get(newJob)[3]), 1) ;
+		// BasicAttribute exp = new BasicAttribute(0, 5, Double.parseDouble(prop.get(newJob)[34])) ;
+		// BasicAttribute satiation = new BasicAttribute(100, 100, Integer.parseInt(prop.get(newJob)[35])) ;
+		// BasicAttribute thirst = new BasicAttribute(100, 100, Integer.parseInt(prop.get(newJob)[36])) ;
 		
-		player.setPA(new PersonalAttributes(life, mp, exp, satiation, thirst)) ;
+		// player.setPA(new PersonalAttributes(life, mp, exp, satiation, thirst)) ;
 
-		BasicBattleAttribute phyAtk = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[5]), 0, 0) ;
-		BasicBattleAttribute magAtk = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[6]), 0, 0) ;
-		BasicBattleAttribute phyDef = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[7]), 0, 0) ;
-		BasicBattleAttribute magDef = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[8]), 0, 0) ;
-		BasicBattleAttribute dex = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[9]), 0, 0) ;	
-		BasicBattleAttribute agi = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[10]), 0, 0) ;
-		BasicBattleAttribute critAtk = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[11]), 0, 0) ;
-		BasicBattleAttribute critDef = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[12]), 0, 0) ;
-		BattleSpecialAttribute stun = new BattleSpecialAttribute(Double.parseDouble(prop.get(newJob)[13]), 0, Double.parseDouble(prop.get(newJob)[14]), 0, Integer.parseInt(prop.get(newJob)[15])) ;
-		BattleSpecialAttribute block = new BattleSpecialAttribute(Double.parseDouble(prop.get(newJob)[16]), 0, Double.parseDouble(prop.get(newJob)[17]), 0, Integer.parseInt(prop.get(newJob)[18])) ;
-		BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(prop.get(newJob)[19]), 0, Double.parseDouble(prop.get(newJob)[20]), 0, Integer.parseInt(prop.get(newJob)[21]), 0, Integer.parseInt(prop.get(newJob)[22]), 0, Integer.parseInt(prop.get(newJob)[23])) ;
-		BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(prop.get(newJob)[24]), 0, Double.parseDouble(prop.get(newJob)[25]), 0, Integer.parseInt(prop.get(newJob)[26]), 0, Integer.parseInt(prop.get(newJob)[27]), 0, Integer.parseInt(prop.get(newJob)[28])) ;
-		BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(prop.get(newJob)[29]), 0, Double.parseDouble(prop.get(newJob)[30]), 0, Integer.parseInt(prop.get(newJob)[31])) ;
-		BasicBattleAttribute atkSpeed = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[41]), 0, 0) ;
-		BasicBattleAttribute knockbackPower = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[42]), 0, 0) ;
+		// BasicBattleAttribute phyAtk = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[5]), 0, 0) ;
+		// BasicBattleAttribute magAtk = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[6]), 0, 0) ;
+		// BasicBattleAttribute phyDef = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[7]), 0, 0) ;
+		// BasicBattleAttribute magDef = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[8]), 0, 0) ;
+		// BasicBattleAttribute dex = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[9]), 0, 0) ;	
+		// BasicBattleAttribute agi = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[10]), 0, 0) ;
+		// BasicBattleAttribute critAtk = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[11]), 0, 0) ;
+		// BasicBattleAttribute critDef = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[12]), 0, 0) ;
+		// BattleSpecialAttribute stun = new BattleSpecialAttribute(Double.parseDouble(prop.get(newJob)[13]), 0, Double.parseDouble(prop.get(newJob)[14]), 0, Integer.parseInt(prop.get(newJob)[15])) ;
+		// BattleSpecialAttribute block = new BattleSpecialAttribute(Double.parseDouble(prop.get(newJob)[16]), 0, Double.parseDouble(prop.get(newJob)[17]), 0, Integer.parseInt(prop.get(newJob)[18])) ;
+		// BattleSpecialAttributeWithDamage blood = new BattleSpecialAttributeWithDamage(Double.parseDouble(prop.get(newJob)[19]), 0, Double.parseDouble(prop.get(newJob)[20]), 0, Integer.parseInt(prop.get(newJob)[21]), 0, Integer.parseInt(prop.get(newJob)[22]), 0, Integer.parseInt(prop.get(newJob)[23])) ;
+		// BattleSpecialAttributeWithDamage poison = new BattleSpecialAttributeWithDamage(Double.parseDouble(prop.get(newJob)[24]), 0, Double.parseDouble(prop.get(newJob)[25]), 0, Integer.parseInt(prop.get(newJob)[26]), 0, Integer.parseInt(prop.get(newJob)[27]), 0, Integer.parseInt(prop.get(newJob)[28])) ;
+		// BattleSpecialAttribute silence = new BattleSpecialAttribute(Double.parseDouble(prop.get(newJob)[29]), 0, Double.parseDouble(prop.get(newJob)[30]), 0, Integer.parseInt(prop.get(newJob)[31])) ;
+		// BasicBattleAttribute atkSpeed = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[41]), 0, 0) ;
+		// BasicBattleAttribute knockbackPower = new BasicBattleAttribute (Double.parseDouble(prop.get(newJob)[42]), 0, 0) ;
 		
-		player.setBA(new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef, stun, block, blood, poison, silence, atkSpeed, knockbackPower)) ;
+		// player.setBA(new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi, critAtk, critDef, stun, block, blood, poison, silence, atkSpeed, knockbackPower)) ;
 		
-		player.setRange(Integer.parseInt(prop.get(newJob)[4])) ;
-		player.setStep(Integer.parseInt(prop.get(newJob)[33])) ;
-		player.setSatiationCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[38]))) ;
-		player.setThirstCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[39]))) ;
-		player.setMpCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[40]))) ;
-		player.setBattleActionCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[41]) / 100.0)) ;
-		player.setGoldMultiplier(Double.parseDouble(prop.get(newJob)[32])) ;
+		// player.setRange(Integer.parseInt(prop.get(newJob)[4])) ;
+		// player.setStep(Integer.parseInt(prop.get(newJob)[33])) ;
+		// player.setSatiationCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[38]))) ;
+		// player.setThirstCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[39]))) ;
+		// player.setMpCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[40]))) ;
+		// player.setBattleActionCounter(new GameTimer(Double.parseDouble(prop.get(newJob)[41]) / 100.0)) ;
+		// player.setGoldMultiplier(Double.parseDouble(prop.get(newJob)[32])) ;
 		
-		List<Double> attIncrements = Arrays.asList(Player.attributeIncreaseOnLevelUp.get(3 * newJob + 0)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
-		List<Double> incChances = Arrays.asList(Player.attributeIncreaseOnLevelUp.get(3 * newJob + 0)).subList(10, 18).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
-		AttributeIncrease attInc = new AttributeIncrease(attIncrements, incChances) ;
-		player.setAttInc(attInc) ;
+		// List<Double> attIncrements = Arrays.asList(Player.attributeIncreaseOnLevelUp.get(3 * newJob + 0)).subList(2, 10).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		// List<Double> incChances = Arrays.asList(Player.attributeIncreaseOnLevelUp.get(3 * newJob + 0)).subList(10, 18).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		// AttributeIncrease attInc = new AttributeIncrease(attIncrements, incChances) ;
+		// player.setAttInc(attInc) ;
 
-    	player.setSpells(Player.jobSpells(player.getJob())) ;
+    	// player.setSpells(Player.jobSpells(player.getJob())) ;
 	}
 	
 	private static void petReset()

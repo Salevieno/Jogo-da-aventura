@@ -56,6 +56,31 @@ public class BattleAttributes
 			elemResistanceMult.put(elem, 1.0) ;
 		}
 	}
+	
+	public BattleAttributes(double phyAtk, double magAtk, double phyDef, double magDef, double dex, double agi,
+			double critAtk, double critDef, double atkSpeed, double knockbackPower)
+	{
+		this.phyAtk = new BasicBattleAttribute(phyAtk) ;
+		this.magAtk = new BasicBattleAttribute(magAtk) ;
+		this.phyDef = new BasicBattleAttribute(phyDef) ;
+		this.magDef = new BasicBattleAttribute(magDef) ;
+		this.dex = new BasicBattleAttribute(dex) ;
+		this.agi = new BasicBattleAttribute(agi) ;
+		this.critAtk = new BasicBattleAttribute(critAtk) ;
+		this.critDef = new BasicBattleAttribute(critDef) ;
+		this.stun = new BattleSpecialAttribute(0.0, 0.0, 0.0) ;
+		this.block = new BattleSpecialAttribute(0.0, 0.0, 0.0) ;
+		this.blood = new BattleSpecialAttributeWithDamage(0.0, 0.0, 0.0, 0.0, 0.0) ;
+		this.poison = new BattleSpecialAttributeWithDamage(0.0, 0.0, 0.0, 0.0, 0.0) ;
+		this.silence = new BattleSpecialAttribute(0.0, 0.0, 0.0) ;
+		this.atkSpeed = new BasicBattleAttribute(atkSpeed) ;
+		this.knockbackPower = new BasicBattleAttribute(knockbackPower) ;
+		elemResistanceMult = new HashMap<>() ;
+		for (Elements elem : Elements.values())
+		{
+			elemResistanceMult.put(elem, 1.0) ;
+		}
+	}
 
 	public BattleAttributes(BasicBattleAttribute phyAtk, BasicBattleAttribute magAtk, BasicBattleAttribute phyDef, BasicBattleAttribute magDef, BasicBattleAttribute dex, BasicBattleAttribute agi,
 			BasicBattleAttribute critAtk, BasicBattleAttribute critDef,
