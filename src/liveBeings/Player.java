@@ -326,6 +326,7 @@ public class Player extends LiveBeing
 	}
 	
 	public boolean isInContactWithNPC() { return npcInContact != null ;}
+	public boolean isInteractingWithNPC() { return npcInContact != null && npcInContact.isInteracting() ;}
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
 	private boolean hitCreature() { return (usedPhysicalAtk() | usedSpell()) & closestCreature != null ;}	

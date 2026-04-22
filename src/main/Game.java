@@ -634,7 +634,7 @@ public class Game
 			screen.updateScale();
 		}
 
-		if (keyCode == KeyEvent.VK_ESCAPE && !player.hasWindowOpen())
+		if (keyCode == KeyEvent.VK_ESCAPE && !player.hasWindowOpen() && ! player.isInteractingWithNPC())
 		{
 			pauseWindow.updateButtons() ;
 			pauseWindow.switchOpenClose() ;

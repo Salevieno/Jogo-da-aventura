@@ -126,10 +126,17 @@ public abstract class NPC
 			selOption = 0 ;
 			return ;
 		}
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)) && 0 < currentMenuID)
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)))
 		{
-			currentMenuID = 0 ;
-			selOption = 0 ;
+			if (currentMenuID <= 0)
+			{
+				endInteraction() ;
+			}
+			else
+			{
+				currentMenuID = 0 ;
+				selOption = 0 ;
+			}
 		}
 	}
 	
