@@ -4,7 +4,9 @@ import java.awt.Image;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.sound.sampled.Clip;
 
@@ -20,6 +22,7 @@ import items.Fab;
 import items.GeneralItem;
 import main.Game;
 import main.ImageLoader;
+import main.Interactable;
 import main.Music;
 import main.Path;
 import utilities.Util;
@@ -118,6 +121,7 @@ public class CityMap extends GameMap
 	public Building getCraft() { return buildings.get(2) ;}
 	public Building getBank() { return buildings.get(3) ;}
 	public Sign getSign() { return sign ;}
+	public Set<Interactable> getInteractables() { return new HashSet<>(npcs) ;}
 	public static List<CityMap> getAllCityMaps() { return allCityMaps ;}
 
 }

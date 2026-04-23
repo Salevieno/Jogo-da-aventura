@@ -3,7 +3,9 @@ package maps;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.sound.sampled.Clip;
 
@@ -13,6 +15,7 @@ import items.GeneralItem;
 import items.Item;
 import main.Game;
 import main.ImageLoader;
+import main.Interactable;
 import main.Path;
 import utilities.Util;
 
@@ -112,5 +115,7 @@ public class SpecialMap extends GameMap
 	}
 
 	
+	public Set<Interactable> getInteractables() { return new HashSet<>(npcs) ;}
+
 	public static List<SpecialMap> getAllSpecialMaps() { return allSpecialMaps ;}
 }

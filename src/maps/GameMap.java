@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.sound.sampled.Clip;
 
@@ -32,6 +33,7 @@ import main.Game;
 import main.GameFrame;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Interactable;
 import main.Log;
 import main.Music;
 import main.Palette;
@@ -41,7 +43,7 @@ import screen.Sky;
 import utilities.Util;
 
 
-public class GameMap
+public abstract class GameMap
 {
 	protected final int id ;
 	protected final String name ;
@@ -447,6 +449,7 @@ public class GameMap
 	public List<Building> getBuildings() {return buildings ;}
 	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
 	public static List<GameMap> getAllMaps() { return allMaps ;}
+	public abstract Set<Interactable> getInteractables() ;
  	
 	@Override
 	public String toString()

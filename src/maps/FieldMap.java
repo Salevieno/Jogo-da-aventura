@@ -26,6 +26,7 @@ import liveBeings.CreatureType;
 import main.Game;
 import main.GameTimer;
 import main.ImageLoader;
+import main.Interactable;
 import main.Path;
 import screen.Screen;
 import screen.Sky;
@@ -379,6 +380,13 @@ public class FieldMap extends GameMap
 		creatures.forEach(creature -> creature.getBag().forEach(item -> allItems.add(item))) ;
 		
 		return allItems ;
+	}
+	public Set<Interactable> getInteractables()
+	{
+		Set<Interactable> interactables = new HashSet<Interactable>(npcs) ;
+		interactables.addAll(collectibles) ;
+
+		return interactables ;
 	}
 	public void setCreatures(List<Creature> newValue) {creatures = newValue ;}
 	public static List<FieldMap> getAllFieldMaps() { return allFieldMaps ;}

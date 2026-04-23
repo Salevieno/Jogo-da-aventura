@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -24,6 +25,7 @@ import graphics2.SpriteAnimation;
 import liveBeings.Creature;
 import liveBeings.Pet;
 import liveBeings.Player;
+import liveBeings.PlayerActions;
 import maps.CityMap;
 import maps.Continents;
 import maps.FieldMap;
@@ -542,6 +544,15 @@ public class Game
 		if (player.getBag().getItemFetched() != null)
 		{
 			GamePanel.DP.drawImage(player.getBag().getItemFetched().getImage(), GamePanel.getMousePos(), Align.center);
+		}
+
+		for (Interactable interactable : player.getMap().getInteractables())
+		{
+			if (interactable.getHitbox().overlaps(player.getHitbox()))
+			{				
+				Point buttonPos = Util.translate(interactable.getPos(), -interactable.getImage().getWidth(null), -interactable.getImage().getHeight(null)) ;
+				Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey()) ;
+			}
 		}
 
 		Animation.playAll();

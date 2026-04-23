@@ -25,13 +25,14 @@ import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Interactable;
 import main.Log;
 import main.Palette;
 import main.Path;
 import utilities.Util;
 import windows.GameWindow;
 
-public abstract class NPC
+public abstract class NPC implements Interactable
 {
 	protected final int id ;
 	protected String name ;
@@ -82,8 +83,10 @@ public abstract class NPC
 		this.hitbox.setCenter(center) ;
 		this.pos = pos ;
 	}
-	public NPCJobs getJob() { return job ;}
 	public String getName() { return name ;}
+	public NPCJobs getJob() { return job ;}
+	public Point getPos() { return pos ;}
+	public Image getImage() { return job.getImage() ;}
 	public GameWindow getWindow() { return window ;}
 	public Hitbox getHitbox() { return hitbox ;}
 	public List<NPCMenu> getMenus() { return menus ;}
@@ -202,11 +205,6 @@ public abstract class NPC
 	public void display(Hitbox playerHitbox)
 	{
 		GamePanel.DP.drawImage(job.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
-		if (hitbox.overlaps(playerHitbox))
-		{
-			Point buttonPos = Util.translate(pos, -job.getImage().getWidth(null), -job.getImage().getHeight(null)) ;
-			Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey()) ;
-		}
 		if (desk != null)
 		{
 			GamePanel.DP.drawImage(desk, pos, Align.centerLeft);
