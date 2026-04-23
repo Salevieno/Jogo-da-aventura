@@ -75,7 +75,7 @@ public class CreatureType
 			double poisonAtkChance, double poisonAtk, double poisonDefChance, double poisonDef, double poisonDuration,
 			double blockAtkChance, double blockDefChance, double blockDuration,
 			double silenceAtkChance, double silenceDefChance, double silenceDuration,
-			double atkSpeed, double knockBackPower,
+			double atkSpeed, double knockbackPower,
 			List<Integer> spellIDs,
 			Set<Integer> itemIDs, int gold, String hitboxType)
 	{
@@ -91,7 +91,7 @@ public class CreatureType
 		this.satiationDuration = satiationDuration;
 		this.movePattern = MovePattern.values()[movePatternID] ;
 		this.battleActionDuration = atkSpeed ;
-// TODO verificar o.O
+
 		this.PA = new PersonalAttributes(
                 new BasicAttribute((int) (life), (int) (life), 1),
                 new BasicAttribute((int) (mp), (int) (mp), 1),
@@ -99,9 +99,14 @@ public class CreatureType
                 new BasicAttribute((int) (satiation), (int) (satiation), 1),
                 new BasicAttribute((int) (thirst), (int) (thirst), 1)
             );
-		this.BA = new BattleAttributes(8, 7, 8, 7, 26, 9, 0.13 ,0.02,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			1.09, 10);
+		this.BA = new BattleAttributes(phyAtk, magAtk, phyDef, magDef, dex, agi,
+										critAtk, critDef,
+										stunAtkChance, stunDefChance, stunDuration,
+										blockAtkChance, blockDefChance, blockDuration,
+										bloodAtkChance, bloodAtk, bloodDefChance, bloodDef, bloodDuration,
+										poisonAtkChance, poisonAtk, poisonDefChance, poisonDef, poisonDuration,
+										silenceAtkChance, silenceDefChance, silenceDuration,
+										atkSpeed, knockbackPower);
 		this.spell = new ArrayList<>();
 		for (int i : spellIDs)
 		{
