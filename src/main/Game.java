@@ -575,7 +575,8 @@ public class Game
 	{
 		GameButton.updateMouseCursor(GamePanel.getMousePos());
 		GameButton.updateSelected(GamePanel.getMousePos());
-		GameButton.actWhenClicked(GamePanel.getMousePos(), player.getCurrentAction());
+		clickedButtonActs(GamePanel.getMousePos(), player.getCurrentAction()) ;
+
 		switch (state)
 		{
 			case opening:
@@ -605,6 +606,22 @@ public class Game
 			default:
 				return;
 		}
+	}
+
+	private void clickedButtonActs(Point mousePos, String action)
+	{
+		if (action == null) { return ;}
+
+		for (GameButton button : GameButton.getAll())
+		{
+			if (button.isActive() && button.isSelected() && (button.isClicked(mousePos, action) || action.equals("Enter")))
+			{	
+				button.act() ;
+				player.resetAction() ;
+				return ;
+			}
+		}
+		
 	}
 
 	private String keypadNumberValue(int keyCode)

@@ -116,6 +116,7 @@ public class GameButton
 		}
 	}
 	public Point getCenter() {return Util.translate(topLeft, size.width / 2, size.height / 2) ;}	
+	public static List<GameButton> getAll() { return all ;}
 	public boolean ishovered(Point mousePos) { return Util.isInside(mousePos, topLeft, size) ;}
 	public boolean isSelected() { return isSelected ;}
 	public boolean isClicked(Point mousePos, String action)

@@ -78,6 +78,7 @@ public abstract class GameWindow
 	}
 	public boolean isOpen() {return isOpen ;}
 	protected void addButton(GameButton button) { buttons.add(button) ;}
+	public String getName() { return name ;}
 	protected int getMenu() {return menu ;}
 	protected int getTab() {return tab ;}
 	protected int getWindow() {return window ;}

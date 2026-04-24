@@ -1598,7 +1598,7 @@ public class Player extends LiveBeing
 			setFocusWindow(openWindows.get(openWindows.size() - 1)) ;
 			return ;
 		}
-
+		System.out.println("window opening " + win.getName());
 		win.open() ;
 		openWindows.add(win) ;
 		setFocusWindow(win) ;
