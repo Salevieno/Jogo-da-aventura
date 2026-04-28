@@ -14,14 +14,12 @@ import main.ImageLoader;
 import main.Log;
 import main.Path;
 import utilities.Util;
-
-
 public class Arrow extends Item
 {
-	private final float atkPower ;
+	private final double atkPower ;
 	private final Elements elem ;
 	
-	private static final Arrow[] all ;
+	private static final Arrow[] all = new Arrow[20] ;
 
 	private static final Image woodArrowIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconWoodArrow.png") ;
 	private static final Image strongArrowIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconStrongArrow.png") ;
@@ -31,24 +29,36 @@ public class Arrow extends Item
 	
 	static
 	{
-		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Arrow.csv") ;
-		all = new Arrow[input.size()] ;
-		for (int p = 0; p <= all.length - 1; p += 1)
-		{
-			all[p] = new Arrow(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3],
-					Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]),
-					Float.parseFloat(input.get(p)[7]), Elements.valueOf(input.get(p)[8]));
-		}
+		// List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Arrow.csv") ;
+		// all = new Arrow[input.size()] ;
+		// for (int p = 0; p <= all.length - 1; p += 1)
+		// {
+		// 	all[p] = new Arrow(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3],
+		// 			Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]),
+		// 			Float.parseFloat(input.get(p)[7]), Elements.valueOf(input.get(p)[8]));
+		// }
 	}
 	
-	private Arrow(int id, String Name, String Description, int price, float dropChance, float atkPower, Elements elem)
+	protected Arrow(int id, int price, double dropChance, double atkPower, Elements elem)
 	{
-		super(id, Name, Description, imageFromID(id), price, dropChance) ;
+		super(id, "", "", imageFromID(id), price, dropChance) ;
 		this.atkPower = atkPower ;
 		this.elem = elem ;
+		all[id] = this ;
 	}
 
-	public float getAtkPower() {return atkPower ;}
+	public static void updateText(String language)
+	{
+		List<String[]> arrowText = Util.readcsvFile(Path.DADOS + language + "/ArrowText.csv") ;
+		for (String[] line : arrowText)
+		{
+			int id = Integer.parseInt(line[0]) ;
+			all[id].setName(line[1]) ;
+			all[id].setDescription(line[2]) ;
+		}
+	}
+
+	public double getAtkPower() {return atkPower ;}
 	public Elements getElem() {return elem ;}
 	public static Arrow[] getAll() {return all ;}
 

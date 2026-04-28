@@ -129,7 +129,6 @@ public class BagWindow extends GameWindow
 	
 	public void navigate(String action)
 	{
-		System.out.println("navigating bag: " + menu + " " + action);
 		if (menu == 0)
 		{
 			if (action.equals(stdMenuDown))

@@ -91,7 +91,7 @@ public class Game
 
 	public Game()
 	{
-		player = new Player("", "", 1);
+		player = new Player("", "", 2);
 		
 		System.out.println();
 		Log.info("Game version " + MainGame3_4.getVersion()) ;

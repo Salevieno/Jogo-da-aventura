@@ -15,8 +15,8 @@ import main.Path;
 public abstract class Item
 {
 	protected final int id ;
-	protected final String name ;
-	protected final String description ;
+	protected String name ;
+	protected String description ;
 	protected final Image image ;
 	protected final int price ;
 	protected final double dropChance ;
@@ -48,11 +48,15 @@ public abstract class Item
 	public int getPrice() {return price ;}
 	public double getDropChance() {return dropChance ;}
 	public static List<Item> getAllItems() { return allItems ;}
-	
+	public void setName(String name) { this.name = name ;}
+	public void setDescription(String description) { this.description = description ;}
+
 	public abstract void displayInfo(Point pos, Align align) ;
 	
-	public static void load()
+	public static void load(String language)
 	{
+		ItemsData.createArrows() ;
+		Arrow.updateText(language);
 //		List<Item> allItems = new ArrayList<>() ;
 		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
 		{

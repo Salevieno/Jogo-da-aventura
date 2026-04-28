@@ -190,10 +190,6 @@ public class Player extends LiveBeing
 		this.focusWindow = null ;
 		this.openWindows = new ArrayList<>() ;
 		this.bag = new BagWindow() ;
-		if (job == 2)
-		{
-			bag.add(Arrow.getAll()[0], 100) ;
-		}
 		this.questWindow = new QuestWindow() ;
 		this.quests = new ArrayList<>() ;
 		this.mapWindow = new MapWindow() ;
@@ -1598,7 +1594,6 @@ public class Player extends LiveBeing
 			setFocusWindow(openWindows.get(openWindows.size() - 1)) ;
 			return ;
 		}
-		System.out.println("window opening " + win.getName());
 		win.open() ;
 		openWindows.add(win) ;
 		setFocusWindow(win) ;

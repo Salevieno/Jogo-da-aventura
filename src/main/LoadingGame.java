@@ -17,6 +17,7 @@ import UI.GameButton;
 import components.Quest;
 import graphics.Align;
 import graphics2.SpriteAnimation;
+import items.Arrow;
 import items.Item;
 import items.Recipe;
 import liveBeings.CreatureData;
@@ -86,6 +87,11 @@ public abstract class LoadingGame
 			{
 				player.setSpells(Player.jobSpells(player.getJob()));
 			}
+			
+			if (player.getJob() == 2)
+			{
+				player.getBag().add(Arrow.getAll()[0], 100) ;
+			}
 			player.setMap(GameMap.getAllMaps().get(player.getJob())) ;
 			player.getMap().activateAnimations() ;
 			SideBar.initialize();
@@ -128,7 +134,7 @@ public abstract class LoadingGame
 				return;
 
 			case 3:
-				Item.load();
+				Item.load(language);
 				logInitializationTime("items", initialStepLoadingTime);
 				return;
 

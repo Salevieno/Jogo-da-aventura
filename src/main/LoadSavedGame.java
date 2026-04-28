@@ -1,6 +1,6 @@
 package main;
 
-public abstract class LoadGame
+public abstract class LoadSavedGame
 {
 //	private int selectedSlot, tab ;
 
