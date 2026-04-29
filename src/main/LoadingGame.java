@@ -101,10 +101,6 @@ public abstract class LoadingGame
 				Music.SwitchMusic(player.getMap().getMusic());
 			}
 			Game.getDayTimer().start();
-			// if (Game.testMode)
-			// {
-			// 	Game.initializeTestMode();
-			// }
 			startButton.activateAndSelect() ;
 		}
 	}

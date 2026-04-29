@@ -11,7 +11,7 @@ import java.awt.EventQueue ;
 public class MainGame3_4
 {
 	private static final GameFrame gameFrame = GameFrame.getMe() ;
-	private static final String version = "0.6" ;
+	private static final String version = "0.7" ;
 	
 	public static void closeGame()
 	{

@@ -18,7 +18,7 @@ public class Potion extends Item
 	private final double lifeHeal ;
 	private final double MPHeal ;
 	
-	private static final Potion[] AllPotions ;
+	private static final Potion[] all = new Potion[60] ;
 	
 	private static final Image lifePotionSmall = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconLifePotionSmall.png") ;
 	private static final Image lifePotionMedium = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconLifePotionMedium.png") ;
@@ -26,30 +26,24 @@ public class Potion extends Item
 	private static final Image mpPotionSmall = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconMpPotionSmall.png") ;
 	private static final Image mpPotionMedium = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconMpPotionMedium.png") ;
 	private static final Image mpPotionLarge = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconMpPotionLarge.png") ;
-	
-	static
+
+	public Potion(int id, int price, double dropChance, double lifeHeal, double MPHeal)
 	{
-		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Potions.csv") ;
-		AllPotions = new Potion[input.size()] ;
-		for (int p = 0; p <= AllPotions.length - 1; p += 1)
-		{
-			int id = Integer.parseInt(input.get(p)[0]) ;
-			String description = input.get(p)[1] ;
-			String name = input.get(p)[3] ;
-			int price = Integer.parseInt(input.get(p)[5]) ;
-			double dropChance = Double.parseDouble(input.get(p)[6]) ;
-			double lifeHeal = Double.parseDouble(input.get(p)[7]) ;
-			double MPHeal = Double.parseDouble(input.get(p)[8]) ;
-			
-			AllPotions[p] = new Potion(id, description, name, price, dropChance, lifeHeal, MPHeal) ;
-		}	
-	}
-	
-	public Potion(int id, String Name, String Description, int price, double dropChance, double lifeHeal, double MPHeal)
-	{
-		super(id, Name, Description, imageFromID(id), price, dropChance) ;
+		super(id, "", "", imageFromID(id), price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
+		all[id] = this ;
+	}
+
+	public static void updateText(String language)
+	{
+		List<String[]> arrowText = Util.readcsvFile(Path.DADOS + language + "/PotionText.csv") ;
+		for (String[] line : arrowText)
+		{
+			int id = Integer.parseInt(line[0]) ;
+			all[id].setName(line[1]) ;
+			all[id].setDescription(line[2]) ;
+		}
 	}
 
 	public static Image imageFromID(int id)
@@ -66,7 +60,7 @@ public class Potion extends Item
 	
 	public double getLifeHeal() {return lifeHeal ;}
 	public double getMPHeal() {return MPHeal ;}	
-	public static Potion[] getAll() {return AllPotions ;}
+	public static Potion[] getAll() {return all ;}
 		
 	public void use(LiveBeing target, double powerMult)
 	{

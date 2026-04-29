@@ -20,27 +20,13 @@ import utilities.Util;
 public class Arrow extends Item
 {
 	private final double atkPower ;
-	private final Elements elem ;
+	private final Elements elem ;	
 	
-	private static final Arrow[] all = new Arrow[20] ;
-
 	private static final Image woodArrowIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconWoodArrow.png") ;
 	private static final Image strongArrowIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconStrongArrow.png") ;
 	private static final Image boltArrowIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconBoltArrow.png") ;
-	
 	private static final Image ArrowImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq7_Arrow.png") ;
-	
-	static
-	{
-		// List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Arrow.csv") ;
-		// all = new Arrow[input.size()] ;
-		// for (int p = 0; p <= all.length - 1; p += 1)
-		// {
-		// 	all[p] = new Arrow(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3],
-		// 			Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]),
-		// 			Float.parseFloat(input.get(p)[7]), Elements.valueOf(input.get(p)[8]));
-		// }
-	}
+	private static final Arrow[] all = new Arrow[20] ;
 	
 	protected Arrow(int id, int price, double dropChance, double atkPower, Elements elem)
 	{
