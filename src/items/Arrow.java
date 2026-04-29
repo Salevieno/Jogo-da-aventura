@@ -4,14 +4,17 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
+import animations.MessageAnimation;
 import attributes.BattleAttributes;
 import graphics.Align;
 import graphics2.Draw;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Elements;
+import main.Game;
 import main.ImageLoader;
 import main.Log;
+import main.Palette;
 import main.Path;
 import utilities.Util;
 public class Arrow extends Item
@@ -92,6 +95,7 @@ public class Arrow extends Item
 			// unequip
 			applyBonus(user.getBA(), arrow, -1) ;
 			player.setEquippedArrow(null) ;
+			MessageAnimation.start(Game.getScreen().pos(0.4, 0.3), arrow.getName() + " desequipada!", Palette.colors[0]) ;
 			
 			return ;
 		}
@@ -101,6 +105,7 @@ public class Arrow extends Item
 
 		applyBonus(user.getBA(), arrow, 1) ;
 		player.setEquippedArrow(arrow) ;
+		MessageAnimation.start(Game.getScreen().pos(0.4, 0.3), arrow.getName() + " equipada!", Palette.colors[0]) ;
 	}
 	
 	private void applyBonus(BattleAttributes BA, Arrow arrow, double mult)

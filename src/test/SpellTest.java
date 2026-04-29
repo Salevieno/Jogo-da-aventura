@@ -49,7 +49,7 @@ public class SpellTest
 		Buff.loadBuffs();
 		Buff.loadDebuffs();
 		Spell.load("portugues", Buff.getAllBuffs(), Buff.getAllDebuffs());
-		Item.load();
+		Item.load("portugues");
 		Recipe.load(Item.getAllItems()) ;
 		CreatureData.create() ; // TODO level de dificuldade tem que ser 2 aqui
 

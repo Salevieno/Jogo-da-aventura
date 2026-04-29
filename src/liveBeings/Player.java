@@ -1619,7 +1619,7 @@ public class Player extends LiveBeing
 		if (!bag.contains(equippedArrow))
 		{
 			equippedArrow.use(this) ;
-			setEquippedArrow(null) ;
+			// MessageAnimation.start(Game.getScreen().pos(0.4, 0.3), "Última flecha usada!", Palette.colors[0]) ;
 		}
 	}
 	
