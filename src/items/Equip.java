@@ -33,8 +33,7 @@ public class Equip extends Item
 	private final Elements originalElem ;
 	private int forgeLevel ;
 	private Elements elem ;
-	
-	private static final Equip[] allEquips ;
+
 	private static final double setBonus = 0.2 ;
 	public static final int maxForgeLevel = 10 ;
 	
@@ -62,73 +61,28 @@ public class Equip extends Item
 	private static final Image ShiningClawsImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq3_ShiningClaws.png") ;
 	private static final Image ShiningDaggerImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq4_ShiningDagger.png") ;
 	private static final Image ShiningShieldImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq5_ShiningShield.png") ;
-	private static final Image ShiningArmorImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq6_ShiningArmor.png") ;
+	private static final Image ShiningArmorImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq6_ShiningArmor.png") ;	
+	private static final Equip[] all = new Equip[1000];
 
-	static
+	public Equip(int id, int price, double dropChance, AttributeBonus attBonus, Elements elem)
 	{
-		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Equip.csv") ;
-		allEquips = new Equip[input.size()] ;
-		for (int p = 0; p <= allEquips.length - 1; p += 1)
-		{
-			int id = Integer.parseInt(input.get(p)[0]) ;
-			String name = input.get(p)[1] ;
-			String description = input.get(p)[3] ;
-			int price = Integer.parseInt(input.get(p)[5]) ;
-			float dropChance = Float.parseFloat(input.get(p)[6]) ;
-			int forgeLevel = 0;
-			
-			int life = Integer.parseInt(input.get(p)[7]) ;
-			int MP = Integer.parseInt(input.get(p)[8]) ;
-			int phyAtk = Integer.parseInt(input.get(p)[9]) ;
-			int magAtk = Integer.parseInt(input.get(p)[10]) ;
-			int phyDef = Integer.parseInt(input.get(p)[11]) ;
-			int magDef = Integer.parseInt(input.get(p)[12]) ;
-			int dex = Integer.parseInt(input.get(p)[13]) ;
-			int agi = Integer.parseInt(input.get(p)[14]) ;
-			double critAtkChance = Double.parseDouble(input.get(p)[15]) ;
-			double critDefChance = Double.parseDouble(input.get(p)[16]) ;
-			double stunAtkChance = Double.parseDouble(input.get(p)[17]) ;
-			double stunDefChance = Double.parseDouble(input.get(p)[18]) ;
-			int stunDuration = Integer.parseInt(input.get(p)[19]) ;
-			double blockAtkChance = Double.parseDouble(input.get(p)[20]) ;
-			double blockDefChance = Double.parseDouble(input.get(p)[21]) ;
-			int blockDuration = Integer.parseInt(input.get(p)[22]) ;
-			double bloodAtkChance = Double.parseDouble(input.get(p)[23]) ;
-			double bloodDefChance = Double.parseDouble(input.get(p)[24]) ;
-			int bloodAtk = Integer.parseInt(input.get(p)[25]) ;
-			int bloodDef = Integer.parseInt(input.get(p)[26]) ;
-			int bloodDuration = Integer.parseInt(input.get(p)[27]) ;
-			double poisonAtkChance = Double.parseDouble(input.get(p)[28]) ;
-			double poisonDefChance = Double.parseDouble(input.get(p)[29]) ;
-			int poisonAtk = Integer.parseInt(input.get(p)[30]) ;
-			int poisonDef = Integer.parseInt(input.get(p)[31]) ;
-			int poisonDuration = Integer.parseInt(input.get(p)[32]) ;
-			double silenceAtkChance = Double.parseDouble(input.get(p)[33]) ;
-			double silenceDefChance = Double.parseDouble(input.get(p)[34]) ;
-			int silenceDuration = Integer.parseInt(input.get(p)[35]) ;
-	
-			AttributeBonus attBonus = new AttributeBonus(life, MP,
-					phyAtk,	magAtk, phyDef, magDef,	dex, agi,
-					critAtkChance, critDefChance,
-					stunAtkChance, stunDefChance, stunDuration,
-					blockAtkChance, blockDefChance, blockDuration,
-					bloodAtkChance, bloodDefChance, bloodAtk, bloodDef, bloodDuration,
-					poisonAtkChance, poisonDefChance, poisonAtk, poisonDef, poisonDuration,
-					silenceAtkChance, silenceDefChance, silenceDuration);
-			
-			Elements elem = Elements.valueOf(input.get(p)[36]) ;
-			
-			allEquips[p] = new Equip(id, name, description, price, dropChance, forgeLevel, attBonus, elem);																																					// elem
-		}
-	}
-	
-	public Equip(int id, String name, String description, int price, float dropChance, int forgeLevel, AttributeBonus attBonus, Elements elem)
-	{
-		super(id, name, description, imageFromID(id), price, dropChance) ;
-		this.forgeLevel = forgeLevel ;
+		super(id, "", "", imageFromID(id), price, dropChance) ;
+		this.forgeLevel = 0 ;
 		this.attBonus = attBonus ;
 		this.elem = elem ;
 		originalElem = elem ;
+		all[id] = this ;
+	}
+
+	public static void updateText(String language)
+	{
+		List<String[]> data = Util.readcsvFile(Path.DADOS + language + "/EquipText.csv") ;
+		for (String[] line : data)
+		{
+			int id = Integer.parseInt(line[0]) ;
+			all[id].setName(line[1]) ;
+			all[id].setDescription(line[2]) ;
+		}
 	}
 
 	
@@ -190,7 +144,7 @@ public class Equip extends Item
 	public Elements getElem() {return elem ;}
 	public void setElem(Elements newElem) { elem = newElem ;}
 	public AttributeBonus getAttributeBonus() {return attBonus ;}
-	public static Equip[] getAll() {return allEquips ;}
+	public static Equip[] getAll() {return all ;}
 
 	public boolean isSpecial()
 	{

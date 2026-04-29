@@ -27,27 +27,28 @@ public class GeneralItem extends Item
 {
 	private final double power ;
 	private final AttackModifiers atkMod ;
-	private final Elements elem ;
-	
-	private static final GeneralItem[] AllGeneralItems ;
+	private final Elements elem ;	
 	
 	private static final Image generalItemIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconGenItem.png") ;
+	private static final GeneralItem[] all = new GeneralItem[400];
 	
-	static
+	public GeneralItem(int id, int price, double dropChance, int power, Elements elem)
 	{
-		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_GeneralItem.csv") ;
-		AllGeneralItems = new GeneralItem[input.size()] ;
-		for (int p = 0; p <= AllGeneralItems.length - 1; p += 1)
+		super(id, "", "", imageFromID(id), price, dropChance) ;
+		this.power = power ;
+		this.atkMod = calcAtkMod(id) ;
+		this.elem = elem ;
+		all[id] = this ;
+	}
+
+	public static void updateText(String language)
+	{
+		List<String[]> data = Util.readcsvFile(Path.DADOS + language + "/GeneralItemText.csv") ;
+		for (String[] line : data)
 		{
-			int id = Integer.parseInt(input.get(p)[0]) ;
-			String name = input.get(p)[1] ;
-			String description = input.get(p)[3] ;
-			int price = Integer.parseInt(input.get(p)[5]) ;
-			double dropChance = Double.parseDouble(input.get(p)[6]) ;
-			int power = Integer.parseInt(input.get(p)[7]) ;
-			AttackModifiers atkMod = calcAtkMod(id) ;
-			Elements elem = Elements.valueOf(input.get(p)[8]) ;
-			AllGeneralItems[p] = new GeneralItem(id, name, description, price, dropChance, power, atkMod, elem) ;
+			int id = Integer.parseInt(line[0]) ;
+			all[id].setName(line[1]) ;
+			all[id].setDescription(line[2]) ;
 		}
 	}
 	
@@ -68,19 +69,11 @@ public class GeneralItem extends Item
 		};
 	}
 	
-	public static List<Item> throwableItems() { return Arrays.asList(AllGeneralItems).stream().filter(item -> item.isThrowable()).collect(Collectors.toList()) ;}
+	public static List<Item> throwableItems() { return Arrays.asList(all).stream().filter(item -> item.isThrowable()).collect(Collectors.toList()) ;}
 	
 	public boolean isThrowable() { return 0 < power ;}
-	
-	public GeneralItem(int id, String Name, String Description, int price, double dropChance, int power, AttackModifiers atkMod, Elements elem)
-	{
-		super(id, Name, Description, imageFromID(id), price, dropChance) ;
-		this.power = power ;
-		this.atkMod = atkMod ;
-		this.elem = elem ;
-	}
 
-	public static GeneralItem[] getAll() {return AllGeneralItems ;}
+	public static GeneralItem[] getAll() {return all ;}
 	
 	public double getPower() { return power ;}
 	public Elements getElem() { return elem ;}
@@ -121,7 +114,7 @@ public class GeneralItem extends Item
 			case 26, 27, 28: 
 				if (!(user instanceof Player) | !user.isTouching(GroundType.water)) { return ;}
 				
-				((Player) user).getBag().add(AllGeneralItems[id + 3], 1) ;
+				((Player) user).getBag().add(all[id + 3], 1) ;
 				return ;
 			
 			case 29: user.getPA().getThirst().incCurrentValue(30) ;  return ;

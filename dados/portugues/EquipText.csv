@@ -1,0 +1,1001 @@
+ID,Nome,Descrição
+0,espada de madeira,-
+1,escudo de madeira,-
+2,armadura de madeira,-
+3,espada de bronze,-
+4,escudo de bronze,-
+5,armadura de bronze,-
+6,espada pesada,-
+7,escudo pesada,-
+8,armadura pesada,-
+9,espada da montanha,-
+10,escudo da montanha,-
+11,armadura da montanha,-
+12,espada do cavaleiro,-
+13,escudo do cavaleiro,-
+14,armadura do cavaleiro,-
+15,espada fenomenal,-
+16,escudo fenomenal,-
+17,armadura fenomenal,-
+18,espada do epicentro,-
+19,escudo do epicentro,-
+20,armadura do epicentro,-
+21,espada dimensional,-
+22,escudo dimensional,-
+23,armadura dimensional,-
+24,espada do pirata,-
+25,escudo do pirata,-
+26,armadura do pirata,-
+27,espada épica,-
+28,escudo épico,-
+29,armadura épica,-
+30,espada arcana,-
+31,escudo arcano,-
+32,armadura arcana,-
+33,espada lunar,-
+34,escudo lunar,-
+35,armadura lunar,-
+36,espada feroz,-
+37,escudo feroz,-
+38,armadura feroz,-
+39,espada curva,-
+40,escudo curvo,-
+41,armadura curva,-
+42,espada picante,-
+43,escudo picante,-
+44,armadura picante,-
+45,espada da floresta,-
+46,escudo da floresta,-
+47,armadura da floresta,-
+48,espada da escavação,-
+49,escudo da escavação,-
+50,armadura da escavação,-
+51,espada secular,-
+52,escudo secular,-
+53,armadura secular,-
+54,espada do cristal,-
+55,escudo do cristal,-
+56,armadura do cristal,-
+57,espada da caverna,-
+58,escudo da caverna,-
+59,armadura da caverna,-
+60,espada tropical,-
+61,escudo tropical,-
+62,armadura tropical,-
+63,espada ondulada,-
+64,escudo ondulado,-
+65,armadura ondulada,-
+66,espada da ilha,-
+67,escudo da ilha,-
+68,armadura da ilha,-
+69,espada do oceano,-
+70,escudo do oceano,-
+71,armadura do oceano,-
+72,espada do magma,-
+73,escudo do magma,-
+74,armadura do magma,-
+75,espada de chocolate,-
+76,escudo de chocolate,-
+77,armadura de chocolate,-
+78,espada da fênix,-
+79,escudo da fênix,-
+80,armadura da fênix,-
+81,espada explosiva,-
+82,escudo explosivo,-
+83,armadura explosiva,-
+84,espada em derretimento,-
+85,escudo em derretimento,-
+86,armadura em derretimento,-
+87,espada do vulcão,-
+88,escudo do vulcão,-
+89,armadura do vulcão,-
+90,espada gelada,-
+91,escudo gelado,-
+92,armadura gelada,-
+93,espada invernal,-
+94,escudo invernal,-
+95,armadura invernal,-
+96,espada do homem das neves,-
+97,escudo do homem das neves,-
+98,armadura do homem das neves,-
+99,emblema do cavaleiro,-
+100,espada de brinquedo,-
+101,escudo de brinquedo,-
+102,armadura de brinquedo,-
+103,espada artesanal,-
+104,escudo artesanal,-
+105,armadura artesanal,-
+106,espada do sonhador,-
+107,escudo do sonhador,-
+108,armadura do sonhador,-
+109,espada leve,-
+110,escudo leve,-
+111,armadura leve,-
+112,espada da coragem,-
+113,escudo da coragem,-
+114,armadura da coragem,-
+115,espada do parceiro,-
+116,escudo do parceiro,-
+117,armadura do parceiro,-
+118,espada do som,-
+119,escudo do som,-
+120,armadura do som,-
+121,espada selvagem,-
+122,escudo selvagem,-
+123,armadura selvagem,-
+124,espada do amor,-
+125,escudo do amor,-
+126,armadura do amor,-
+127,espada do ninja,-
+128,escudo do ninja,-
+129,armadura do ninja,-
+130,espada da restauração,-
+131,escudo da restauração,-
+132,armadura da restauração,-
+133,espada da energia,-
+134,escudo da energia,-
+135,armadura da energia,-
+136,espada espinhosa,-
+137,escudo espinhoso,-
+138,armadura espinhosa,-
+139,espada pantanosa,-
+140,escudo pantanoso,-
+141,armadura pantanosa,-
+142,espada da névoa,-
+143,escudo da névoa,-
+144,armadura da névoa,-
+145,espada gloriosa,-
+146,escudo glorioso,-
+147,armadura gloriosa,-
+148,espada negra,-
+149,escudo negro,-
+150,armadura negra,-
+151,espada punk,-
+152,escudo punk,-
+153,armadura punk,-
+154,espada rachada,-
+155,escudo rachado,-
+156,armadura rachada,-
+157,espada encrostada,-
+158,escudo encrostado,-
+159,armadura encrostada,-
+160,espada arenosa,-
+161,escudo arenoso,-
+162,armadura arenosa,-
+163,espada solar,-
+164,escudo solar,-
+165,armadura solar,-
+166,espada indígena,-
+167,escudo indígena,-
+168,armadura indígena,-
+169,espada subaquática,-
+170,escudo subaquático,-
+171,armadura subaquática,-
+172,espada da rajada,-
+173,escudo da rajada,-
+174,armadura da rajada,-
+175,espada da determinação,-
+176,escudo da determinação,-
+177,armadura da determinação,-
+178,espada do terremoto,-
+179,escudo do terremoto,-
+180,armadura do terremoto,-
+181,espada da erupção,-
+182,escudo da erupção,-
+183,armadura da erupção,-
+184,espada nuclear,-
+185,escudo nuclear,-
+186,armadura nuclear,-
+187,espada do dragão,-
+188,escudo do dragão,-
+189,armadura do dragão,-
+190,espada de picolé,-
+191,escudo de picolé,-
+192,armadura de picolé,-
+193,espada polar,-
+194,escudo polar,-
+195,armadura polar,-
+196,espada da aurora,-
+197,escudo da aurora,-
+198,armadura da aurora,-
+199,emblema do cavaleiro da aventura,-
+200,cajado de madeira,-
+201,escudo de madeira,-
+202,armadura de madeira,-
+203,cajado de bronze,-
+204,escudo de bronze,-
+205,armadura de bronze,-
+206,cajado pesado,-
+207,escudo pesado,-
+208,armadura pesada,-
+209,cajado da montanha,-
+210,escudo da montanha,-
+211,armadura da montanha,-
+212,cajado do mago,-
+213,escudo do mago,-
+214,armadura do mago,-
+215,cajado fenomenal,-
+216,escudo fenomenal,-
+217,armadura fenomenal,-
+218,cajado do epicentro,-
+219,escudo do epicentro,-
+220,armadura do epicentro,-
+221,cajado dimensional,-
+222,escudo dimensional,-
+223,armadura dimensional,-
+224,cajado do pirata,-
+225,escudo do pirata,-
+226,armadura do pirata,-
+227,cajado épico,-
+228,escudo épico,-
+229,armadura épica,-
+230,cajado arcano,-
+231,escudo arcano,-
+232,armadura arcana,-
+233,cajado lunar,-
+234,escudo lunar,-
+235,armadura lunar,-
+236,cajado feroz,-
+237,escudo feroz,-
+238,armadura feroz,-
+239,cajado curvo,-
+240,escudo curvo,-
+241,armadura curva,-
+242,cajado picante,-
+243,escudo picante,-
+244,armadura picante,-
+245,cajado da floresta,-
+246,escudo da floresta,-
+247,armadura da floresta,-
+248,cajado da escavação,-
+249,escudo da escavação,-
+250,armadura da escavação,-
+251,cajado secular,-
+252,escudo secular,-
+253,armadura secular,-
+254,cajado do cristal,-
+255,escudo do cristal,-
+256,armadura do cristal,-
+257,cajado da caverna,-
+258,escudo da caverna,-
+259,armadura da caverna,-
+260,cajado tropical,-
+261,escudo tropical,-
+262,armadura tropical,-
+263,cajado ondulado,-
+264,escudo ondulado,-
+265,armadura ondulada,-
+266,cajado da ilha,-
+267,escudo da ilha,-
+268,armadura da ilha,-
+269,cajado do oceano,-
+270,escudo do oceano,-
+271,armadura do oceano,-
+272,cajado do magma,-
+273,escudo do magma,-
+274,armadura do magma,-
+275,cajado de chocolate,-
+276,escudo de chocolate,-
+277,armadura de chocolate,-
+278,cajado da fênix,-
+279,escudo da fênix,-
+280,armadura da fênix,-
+281,cajado explosivo,-
+282,escudo explosivo,-
+283,armadura explosiva,-
+284,cajado em derretimento,-
+285,escudo em derretimento,-
+286,armadura em derretimento,-
+287,cajado do vulcão,-
+288,escudo do vulcão,-
+289,armadura do vulcão,-
+290,cajado gelado,-
+291,escudo gelado,-
+292,armadura gelada,-
+293,cajado invernal,-
+294,escudo invernal,-
+295,armadura invernal,-
+296,cajado do homem das neves,-
+297,escudo do homem das neves,-
+298,armadura do homem das neves,-
+299,emblema do mago,-
+300,cajado de brinquedo,-
+301,escudo de brinquedo,-
+302,armadura de brinquedo,-
+303,cajado artesanal,-
+304,escudo artesanal,-
+305,armadura artesanal,-
+306,cajado do sonhador,-
+307,escudo do sonhador,-
+308,armadura do sonhador,-
+309,cajado leve,-
+310,escudo leve,-
+311,armadura leve,-
+312,cajado da coragem,-
+313,escudo da coragem,-
+314,armadura da coragem,-
+315,cajado do parceiro,-
+316,escudo do parceiro,-
+317,armadura do parceiro,-
+318,cajado do som,-
+319,escudo do som,-
+320,armadura do som,-
+321,cajado selvagem,-
+322,escudo selvagem,-
+323,armadura selvagem,-
+324,cajado do amor,-
+325,escudo do amor,-
+326,armadura do amor,-
+327,cajado do ninja,-
+328,escudo do ninja,-
+329,armadura do ninja,-
+330,cajado da restauração,-
+331,escudo da restauração,-
+332,armadura da restauração,-
+333,cajado da energia,-
+334,escudo da energia,-
+335,armadura da energia,-
+336,cajado espinhoso,-
+337,escudo espinhoso,-
+338,armadura espinhosa,-
+339,cajado pantanoso,-
+340,escudo pantanoso,-
+341,armadura pantanosa,-
+342,cajado da névoa,-
+343,escudo da névoa,-
+344,armadura da névoa,-
+345,cajado glorioso,-
+346,escudo glorioso,-
+347,armadura gloriosa,-
+348,cajado negro,-
+349,escudo negro,-
+350,armadura negra,-
+351,cajado punk,-
+352,escudo punk,-
+353,armadura punk,-
+354,cajado rachado,-
+355,escudo rachado,-
+356,armadura rachada,-
+357,cajado encrostado,-
+358,escudo encrostado,-
+359,armadura encrostada,-
+360,cajado arenoso,-
+361,escudo arenoso,-
+362,armadura arenosa,-
+363,cajado solar,-
+364,escudo solar,-
+365,armadura solar,-
+366,cajado indígena,-
+367,escudo indígena,-
+368,armadura indígena,-
+369,cajado subaquático,-
+370,escudo subaquático,-
+371,armadura subaquática,-
+372,cajado da rajada,-
+373,escudo da rajada,-
+374,armadura da rajada,-
+375,cajado da determinação,-
+376,escudo da determinação,-
+377,armadura da determinação,-
+378,cajado do terremoto,-
+379,escudo do terremoto,-
+380,armadura do terremoto,-
+381,cajado da erupção,-
+382,escudo da erupção,-
+383,armadura da erupção,-
+384,cajado nuclear,-
+385,escudo nuclear,-
+386,armadura nuclear,-
+387,cajado do dragão,-
+388,escudo do dragão,-
+389,armadura do dragão,-
+390,cajado de picolé,-
+391,escudo de picolé,-
+392,armadura de picolé,-
+393,cajado polar,-
+394,escudo polar,-
+395,armadura polar,-
+396,cajado da aurora,-
+397,escudo da aurora,-
+398,armadura da aurora,-
+399,emblema do mago da aventura,-
+400,arco de madeira,-
+401,bandana de madeira,-
+402,armadura de madeira,-
+403,arco de bronze,-
+404,bandana de bronze,-
+405,armadura de bronze,-
+406,arco pesada,-
+407,bandana pesada,-
+408,armadura pesada,-
+409,arco da montanha,-
+410,bandana da montanha,-
+411,armadura da montanha,-
+412,arco do arqueiro,-
+413,bandana do arqueiro,-
+414,armadura do arqueiro,-
+415,arco fenomenal,-
+416,bandana fenomenal,-
+417,armadura fenomenal,-
+418,arco do epicentro,-
+419,bandana do epicentro,-
+420,armadura do epicentro,-
+421,arco dimensional,-
+422,bandana dimensional,-
+423,armadura dimensional,-
+424,arco do pirata,-
+425,bandana do pirata,-
+426,armadura do pirata,-
+427,arco épico,-
+428,bandana épica,-
+429,armadura épica,-
+430,arco arcano,-
+431,bandana arcana,-
+432,armadura arcana,-
+433,arco lunar,-
+434,bandana lunar,-
+435,armadura lunar,-
+436,arco feroz,-
+437,bandana feroz,-
+438,armadura feroz,-
+439,arco curvo,-
+440,bandana curva,-
+441,armadura curva,-
+442,arco picante,-
+443,bandana picante,-
+444,armadura picante,-
+445,arco da floresta,-
+446,bandana da floresta,-
+447,armadura da floresta,-
+448,arco da escavação,-
+449,bandana da escavação,-
+450,armadura da escavação,-
+451,arco secular,-
+452,bandana secular,-
+453,armadura secular,-
+454,arco do cristal,-
+455,bandana do cristal,-
+456,armadura do cristal,-
+457,arco da caverna,-
+458,bandana da caverna,-
+459,armadura da caverna,-
+460,arco tropical,-
+461,bandana tropical,-
+462,armadura tropical,-
+463,arco ondulado,-
+464,bandana ondulada,-
+465,armadura ondulada,-
+466,arco da ilha,-
+467,bandana da ilha,-
+468,armadura da ilha,-
+469,arco do oceano,-
+470,bandana do oceano,-
+471,armadura do oceano,-
+472,arco do magma,-
+473,bandana do magma,-
+474,armadura do magma,-
+475,arco de chocolate,-
+476,bandana de chocolate,-
+477,armadura de chocolate,-
+478,arco da fênix,-
+479,bandana da fênix,-
+480,armadura da fênix,-
+481,arco explosivo,-
+482,bandana explosiva,-
+483,armadura explosiva,-
+484,arco em derretimento,-
+485,bandana em derretimento,-
+486,armadura em derretimento,-
+487,arco do vulcão,-
+488,bandana do vulcão,-
+489,armadura do vulcão,-
+490,arco gelado,-
+491,bandana gelada,-
+492,armadura gelada,-
+493,arco invernal,-
+494,bandana invernal,-
+495,armadura invernal,-
+496,arco do homem das neves,-
+497,bandana do homem das neves,-
+498,armadura do homem das neves,-
+499,emblema do arqueiro,-
+500,arco de brinquedo,-
+501,bandana de brinquedo,-
+502,armadura de brinquedo,-
+503,arco artesanal,-
+504,bandana artesanal,-
+505,armadura artesanal,-
+506,arco do sonhador,-
+507,bandana do sonhador,-
+508,armadura do sonhador,-
+509,arco leve,-
+510,bandana leve,-
+511,armadura leve,-
+512,arco da coragem,-
+513,bandana da coragem,-
+514,armadura da coragem,-
+515,arco do parceiro,-
+516,bandana do parceiro,-
+517,armadura do parceiro,-
+518,arco do som,-
+519,bandana no som,-
+520,armadura do som,-
+521,arco selvagem,-
+522,bandana selvagem,-
+523,armadura selvagem,-
+524,arco do amor,-
+525,bandana do amor,-
+526,armadura do amor,-
+527,arco do ninja,-
+528,bandana no ninja,-
+529,armadura do ninja,-
+530,arco da restauração,-
+531,bandana da restauração,-
+532,armadura da restauração,-
+533,arco da energia,-
+534,bandana da energia,-
+535,armadura da energia,-
+536,arco espinhoso,-
+537,bandana espinhosa,-
+538,armadura espinhosa,-
+539,arco pantanoso,-
+540,bandana pantanosa,-
+541,armadura pantanosa,-
+542,arco da névoa,-
+543,bandana da névoa,-
+544,armadura da névoa,-
+545,arco glorioso,-
+546,bandana gloriosa,-
+547,armadura gloriosa,-
+548,arco negro,-
+549,bandana negra,-
+550,armadura negra,-
+551,arco punk,-
+552,bandana punk,-
+553,armadura punk,-
+554,arco rachado,-
+555,bandana rachada,-
+556,armadura rachada,-
+557,arco encrostado,-
+558,bandana encrostada,-
+559,armadura encrostada,-
+560,arco arenoso,-
+561,bandana arenosa,-
+562,armadura arenosa,-
+563,arco solar,-
+564,bandana solar,-
+565,armadura solar,-
+566,arco indígena,-
+567,bandana indígena,-
+568,armadura indígena,-
+569,arco subaquático,-
+570,bandana subaquática,-
+571,armadura subaquática,-
+572,arco da rajada,-
+573,bandana da rajada,-
+574,armadura da rajada,-
+575,arco da determinação,-
+576,bandana da determinação,-
+577,armadura da determinação,-
+578,arco do terremoto,-
+579,bandana do terremoto,-
+580,armadura do terremoto,-
+581,arco da erupção,-
+582,bandana da erupção,-
+583,armadura da erupção,-
+584,arco nuclear,-
+585,bandana nuclear,-
+586,armadura nuclear,-
+587,arco do dragão,-
+588,bandana do dragão,-
+589,armadura do dragão,-
+590,arco de picolé,-
+591,bandana de picolé,-
+592,armadura de picolé,-
+593,arco polar,-
+594,bandana polar,-
+595,armadura polar,-
+596,arco da aurora,-
+597,bandana da aurora,-
+598,armadura da aurora,-
+599,emblema do arqueiro da aventura,-
+600,garras de madeira,-
+601,escudo de madeira,-
+602,armadura de madeira,-
+603,garras de bronze,-
+604,escudo de bronze,-
+605,armadura de bronze,-
+606,garras pesadas,-
+607,escudo pesado,-
+608,armadura pesada,-
+609,garras da montanha,-
+610,escudo da montanha,-
+611,armadura da montanha,-
+612,garras do animal,-
+613,escudo do animal,-
+614,armadura do animal,-
+615,garras fenomenais,-
+616,escudo fenomenal,-
+617,armadura fenomenal,-
+618,garras do epicentro,-
+619,escudo do epicentro,-
+620,armadura do epicentro,-
+621,garras dimensional,-
+622,escudo dimensional,-
+623,armadura dimensional,-
+624,garras do piratas,-
+625,escudo do pirata,-
+626,armadura do pirata,-
+627,garras épicas,-
+628,escudo épico,-
+629,armadura épica,-
+630,garras arcanas,-
+631,escudo arcano,-
+632,armadura arcana,-
+633,garras lunares,-
+634,escudo lunar,-
+635,armadura lunar,-
+636,garras ferozes,-
+637,escudo feroz,-
+638,armadura feroz,-
+639,garras curvas,-
+640,escudo curvo,-
+641,armadura curva,-
+642,garras picantes,-
+643,escudo picante,-
+644,armadura picante,-
+645,garras da floresta,-
+646,escudo da floresta,-
+647,armadura da floresta,-
+648,garras da escavação,-
+649,escudo da escavação,-
+650,armadura da escavação,-
+651,garras seculares,-
+652,escudo secular,-
+653,armadura secular,-
+654,garras do cristal,-
+655,escudo do cristal,-
+656,armadura do cristal,-
+657,garras da caverna,-
+658,escudo da caverna,-
+659,armadura da caverna,-
+660,garras tropicais,-
+661,escudo tropical,-
+662,armadura tropical,-
+663,garras onduladas,-
+664,escudo ondulado,-
+665,armadura ondulada,-
+666,garras da ilha,-
+667,escudo da ilha,-
+668,armadura da ilha,-
+669,garras do oceano,-
+670,escudo do oceano,-
+671,armadura do oceano,-
+672,garras do magma,-
+673,escudo do magma,-
+674,armadura do magma,-
+675,garras de chocolate,-
+676,escudo de chocolate,-
+677,armadura de chocolate,-
+678,garras da fênix,-
+679,escudo da fênix,-
+680,armadura da fênix,-
+681,garras explosivas,-
+682,escudo explosivo,-
+683,armadura explosiva,-
+684,garras em derretimento,-
+685,escudo em derretimento,-
+686,armadura em derretimento,-
+687,garras do vulcão,-
+688,escudo do vulcão,-
+689,armadura do vulcão,-
+690,garras geladas,-
+691,escudo gelado,-
+692,armadura gelada,-
+693,garras invernais,-
+694,escudo invernal,-
+695,armadura invernal,-
+696,garras do homem das neves,-
+697,escudo do homem das neves,-
+698,armadura do homem das neves,-
+699,emblema do animal,-
+700,garras de brinquedo,-
+701,escudo de brinquedo,-
+702,armadura de brinquedo,-
+703,garras artesanais,-
+704,escudo artesanal,-
+705,armadura artesanal,-
+706,garras do sonhador,-
+707,escudo do sonhador,-
+708,armadura do sonhador,-
+709,garras leves,-
+710,escudo leve,-
+711,armadura leve,-
+712,garras da coragem,-
+713,escudo da coragem,-
+714,armadura da coragem,-
+715,garras do parceiro,-
+716,escudo do parceiro,-
+717,armadura do parceiro,-
+718,garras do som,-
+719,escudo do som,-
+720,armadura do som,-
+721,garras selvagens,-
+722,escudo selvagem,-
+723,armadura selvagem,-
+724,garras do amor,-
+725,escudo do amor,-
+726,armadura do amor,-
+727,garras do ninja,-
+728,escudo do ninja,-
+729,armadura do ninja,-
+730,garras da restauração,-
+731,escudo da restauração,-
+732,armadura da restauração,-
+733,garras da energia,-
+734,escudo da energia,-
+735,armadura da energia,-
+736,garras espinhosas,-
+737,escudo espinhoso,-
+738,armadura espinhosa,-
+739,garras pantanosas,-
+740,escudo pantanoso,-
+741,armadura pantanosa,-
+742,garras da névoa,-
+743,escudo da névoa,-
+744,armadura da névoa,-
+745,garras gloriosas,-
+746,escudo glorioso,-
+747,armadura gloriosa,-
+748,garras negras,-
+749,escudo negro,-
+750,armadura negra,-
+751,garras punk,-
+752,escudo punk,-
+753,armadura punk,-
+754,garras rachadas,-
+755,escudo rachado,-
+756,armadura rachada,-
+757,garras encrostadas,-
+758,escudo encrostado,-
+759,armadura encrostada,-
+760,garras arenosas,-
+761,escudo arenoso,-
+762,armadura arenosa,-
+763,garras solares,-
+764,escudo solar,-
+765,armadura solar,-
+766,garras indígenas,-
+767,escudo indígena,-
+768,armadura indígena,-
+769,garras subaquáticas,-
+770,escudo subaquático,-
+771,armadura subaquática,-
+772,garras da rajada,-
+773,escudo da rajada,-
+774,armadura da rajada,-
+775,garras da determinação,-
+776,escudo da determinação,-
+777,armadura da determinação,-
+778,garras do terremoto,-
+779,escudo do terremoto,-
+780,armadura do terremoto,-
+781,garras da erupção,-
+782,escudo da erupção,-
+783,armadura da erupção,-
+784,garras nucleares,-
+785,escudo nuclear,-
+786,armadura nuclear,-
+787,garras do dragão,-
+788,escudo do dragão,-
+789,armadura do dragão,-
+790,garras de picolé,-
+791,escudo de picolé,-
+792,armadura de picolé,-
+793,garras polares,-
+794,escudo polar,-
+795,armadura polar,-
+796,garras da aurora,-
+797,escudo da aurora,-
+798,armadura da aurora,-
+799,emblema do animal da aventura,-
+800,faca de madeira,-
+801,escudo de madeira,-
+802,armadura de madeira,-
+803,faca de bronze,-
+804,escudo de bronze,-
+805,armadura de bronze,-
+806,faca pesada,-
+807,escudo pesado,-
+808,armadura pesada,-
+809,faca da montanha,-
+810,escudo da montanha,-
+811,armadura da montanha,-
+812,faca do assassino,-
+813,escudo do assassino,-
+814,armadura do assassino,-
+815,faca fenomenal,-
+816,escudo fenomenal,-
+817,armadura fenomenal,-
+818,faca do epicentro,-
+819,escudo do epicentro,-
+820,armadura do epicentro,-
+821,faca dimensional,-
+822,escudo dimensional,-
+823,armadura dimensional,-
+824,faca do pirata,-
+825,escudo do pirata,-
+826,armadura do pirata,-
+827,faca épica,-
+828,escudo épico,-
+829,armadura épica,-
+830,faca arcana,-
+831,escudo arcano,-
+832,armadura arcana,-
+833,faca lunar,-
+834,escudo lunar,-
+835,armadura lunar,-
+836,faca feroz,-
+837,escudo feroz,-
+838,armadura feroz,-
+839,faca curva,-
+840,escudo curvo,-
+841,armadura curva,-
+842,faca picante,-
+843,escudo picante,-
+844,armadura picante,-
+845,faca da floresta,-
+846,escudo da floresta,-
+847,armadura da floresta,-
+848,faca da escavação,-
+849,escudo da escavação,-
+850,armadura da escavação,-
+851,faca secular,-
+852,escudo secular,-
+853,armadura secular,-
+854,faca do cristal,-
+855,escudo do cristal,-
+856,armadura do cristal,-
+857,faca da caverna,-
+858,escudo da caverna,-
+859,armadura da caverna,-
+860,faca tropical,-
+861,escudo tropical,-
+862,armadura tropical,-
+863,faca ondulada,-
+864,escudo ondulado,-
+865,armadura ondulada,-
+866,faca da ilha,-
+867,escudo da ilha,-
+868,armadura da ilha,-
+869,faca do oceano,-
+870,escudo do oceano,-
+871,armadura do oceano,-
+872,faca do magma,-
+873,escudo do magma,-
+874,armadura do magma,-
+875,faca de chocolate,-
+876,escudo de chocolate,-
+877,armadura de chocolate,-
+878,faca da fênix,-
+879,escudo da fênix,-
+880,armadura da fênix,-
+881,faca explosiva,-
+882,escudo explosivo,-
+883,armadura explosiva,-
+884,faca em derretimento,-
+885,escudo  em derretimento,-
+886,armadura em derretimento,-
+887,faca do vulcão,-
+888,escudo do vulcão,-
+889,armadura do vulcão,-
+890,faca gelada,-
+891,escudo gelado,-
+892,armadura gelada,-
+893,faca invernal,-
+894,escudo invernal,-
+895,armadura invernal,-
+896,faca do homem das neves,-
+897,escudo do homem das neves,-
+898,armadura do homem das neves,-
+899,emblema do ladrão,-
+900,faca de brinquedo,-
+901,escudo de brinquedo,-
+902,armadura de brinquedo,-
+903,faca artesanal,-
+904,escudo artesanal,-
+905,armadura artesanal,-
+906,faca do sonhador,-
+907,escudo do sonhador,-
+908,armadura do sonhador,-
+909,faca leve,-
+910,escudo leve,-
+911,armadura leve,-
+912,faca da coragem,-
+913,escudo da coragem,-
+914,armadura da coragem,-
+915,faca do parceiro,-
+916,escudo do parceiro,-
+917,armadura do parceiro,-
+918,faca do som,-
+919,escudo do som,-
+920,armadura do som,-
+921,faca selvagem,-
+922,escudo selvagem,-
+923,armadura selvagem,-
+924,faca do amor,-
+925,escudo do amor,-
+926,armadura do amor,-
+927,faca do ninja,-
+928,escudo do ninja,-
+929,armadura do ninja,-
+930,faca da restauração,-
+931,escudo da restauração,-
+932,armadura da restauração,-
+933,faca da energia,-
+934,escudo da energia,-
+935,armadura da energia,-
+936,faca espinhosa,-
+937,escudo espinhoso,-
+938,armadura espinhosa,-
+939,faca pantanosa,-
+940,escudo pantanoso,-
+941,armadura pantanosa,-
+942,faca da névoa,-
+943,escudo da névoa,-
+944,armadura da névoa,-
+945,faca gloriosa,-
+946,escudo glorioso,-
+947,armadura gloriosa,-
+948,faca negra,-
+949,escudo negro,-
+950,armadura negra,-
+951,faca punk,-
+952,escudo punk,-
+953,armadura punk,-
+954,faca rachada,-
+955,escudo rachado,-
+956,armadura rachada,-
+957,faca encrostada,-
+958,escudo encrostado,-
+959,armadura encrostada,-
+960,faca arenosa,-
+961,escudo arenoso,-
+962,armadura arenosa,-
+963,faca solar,-
+964,escudo solar,-
+965,armadura solar,-
+966,faca indígena,-
+967,escudo indígena,-
+968,armadura indígena,-
+969,faca subaquática,-
+970,escudo subaquático,-
+971,armadura subaquática,-
+972,faca da rajada,-
+973,escudo da rajada,-
+974,armadura da rajada,-
+975,faca da determinação,-
+976,escudo da determinação,-
+977,armadura da determinação,-
+978,faca do terremoto,-
+979,escudo do terremoto,-
+980,armadura do terremoto,-
+981,faca da erupção,-
+982,escudo da erupção,-
+983,armadura da erupção,-
+984,faca nuclear,-
+985,escudo nuclear,-
+986,armadura nuclear,-
+987,faca do dragão,-
+988,escudo do dragão,-
+989,armadura do dragão,-
+990,faca de picolé,-
+991,escudo de picolé,-
+992,armadura de picolé,-
+993,faca polar,-
+994,escudo polar,-
+995,armadura polar,-
+996,faca da aurora,-
+997,escudo da aurora,-
+998,armadura da aurora,-
+999,emblema do ladrão da aventura,-

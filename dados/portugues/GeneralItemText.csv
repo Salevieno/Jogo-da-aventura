@@ -1,0 +1,401 @@
+Id,Nome,Descrição
+0,pêlo,-
+1,asas,-
+2,noz,-
+3,couro,-
+4,pedra,-
+5,pedra estranhamente redonda,-
+6,esporos,-
+7,gosma,-
+8,folha,-
+9,casca,-
+10,ambrosia,-
+11,samambaia,-
+12,hedera,-
+13,folha de maple,-
+14,tulsi,-
+15,orquídea,-
+16,violeta,-
+17,espinho preto,-
+18,orvalho,-
+19,lilás,-
+20,flor,-
+21,fogueira,recupera vida com o tempo
+22,antídoto,para veneno
+23,bandaid,recupera vida
+24,megafone,-
+25,minhoca,aumenta chance de pesca (usada automagicamente)
+26,garrafa pequena,pode ser enchida com água
+27,garrafa média,pode ser enchida com água
+28,garrafa grande,pode ser enchida com água
+29,garrafa pequena de água,-
+30,garrafa média de água,-
+31,garrafa grande de água,-
+32,arame,-
+33,pedra pesada,-
+34,corrente fina,-
+35,seda animal,-
+36,pá,-
+37,escada,permite entrar e sair da caverna
+38,tenda,-
+39,corda,permite entrar e sair da caverna (consumível). Leve pelo menos duas
+40,vara de pescar,permite pescar
+41,casca sardenta,-
+42,carteira,-
+43,animal que late,-
+44,cipó,-
+45,perna de inseto,-
+46,galhos,-
+47,bola de pêlos,-
+48,lentes refletivas,-
+49,mola,-
+50,tecla de piano,-
+51,braço peludo,-
+52,caulo seco,-
+53,telescópio,-
+54,asas de morcego,-
+55,olhos brilhantes,-
+56,ovo pequeno,-
+57,ovo pontudo,-
+58,espírito frenético,-
+59,pepita de ouro,-
+60,diamante,-
+61,grafeno,-
+62,corda dourada,-
+63,pena colorida,-
+64,esporo venenoso,causa envenenamento
+65,escama cortante,causa sangramento
+66,escama protetora,causa bloqueio
+67,tábua atordoante,causa atordoamento
+68,chifre,-
+69,zípper silenciador,causa silêncio
+70,mordaça,causa silêncio
+71,madeira com pregos,causa atordoamento
+72,seringa,-
+73,seringa envenenada,causa envenenamento
+74,cogumelo alucinógeno,deixa alucinado
+75,casco robusto,causa bloqueio
+76,copo vazio,Mas sem espaço para especulações filosóficas
+77,óculos de sol,-
+78,copo com veneno,causa envenenamento
+79,pequena dose de adrenalina,aumenta a velocidade de ataque
+80,pedra energizada,aumenta chance de refino de armas (usada automagicamente)
+81,fluido viscoso,para o sangramento
+82,calmante,para o sangramento e reduz a velocidade de ataque
+83,seringa com adrenalina,aumenta a velocidade de ataque
+84,engrossador de sangue,para o sangramento
+85,elástico,-
+86,binóculos,aumenta dex
+87,óculos de alta precisão,aumenta dex
+88,cachimbo,-
+89,poção mágica,aumenta ataque e defesa mágicos
+90,pó cintilante,aumenta chance de refino de armas especiais (usado automagicamente)
+91,neve cintilante,-
+92,presa curva,-
+93,gás de enxofre,-
+94,fumaça colorida,-
+95,orbe mágico,-
+96,fósforos,-
+97,ignidor,-
+98,asas celestiais,-
+99,vareta encantada,aumenta chance de refino de escudos e armaduras (usada automagicamente)
+100,manifesto eclíptico,aumenta chance de refino de escudos e armaduras especiais (usado automagicamente)
+101,manhã pacífica,-
+102,estilingue,-
+103,língua grudenta,-
+104,olhos de águia,são os olhos dela...não os seus (não aumenta dex)
+105,copo de cerveja,deixa bêbado
+106,galão de cerveja,deixa muito bêbado
+107,pintura festiva,-
+108,orelhas de elfo,essas orelhas te deixam élficu
+109,teia de tarântula,reduces agi
+110,pílulas suspeitas,você não tomaria pílulas tão suspeitas
+111,voz gravada,para o silêncio
+112,remédio,-
+113,lama suja,e tem lama limpa?
+114,pano molhado,causa ataque de água
+115,pano em chamas,causa ataque de fogo
+116,semente de crescimento rápido,causa ataque de planta
+117,bola de argila,causa ataque de terra
+118,ar vibrante,causa ataque de ar
+119,pano atritado,causa ataque de trovão
+120,vidro luminoso,causa ataque de luz
+121,capa sombria,causa ataque de escuridão
+122,bola de neve,causa ataque de neve
+123,arma d'água,causa ataque de água
+124,panela fervente,causa ataque de fogo
+125,folha afiada,causa ataque de planta
+126,rochedo,causa ataque de terra
+127,ar pressurizado,causa ataque de ar
+128,fio elétrico,causa ataque de trovão
+129,lanterna,causa ataque de luz
+130,venda,causa ataque de escuridão
+131,punhado de neve,causa ataque de neve
+132,canhão de água,causa ataque de água
+133,incinerador,causa ataque de fogo
+134,pé de feijão,causa ataque de planta
+135,montanha,causa ataque de terra
+136,espinho faiscante,causa ataque de ar
+137,nuvem carregada,causa ataque de trovão
+138,holofote,causa ataque de luz
+139,tábua molhada,causa ataque de escuridão
+140,avalanche,causa ataque de neve
+141,seixo cósmico,-
+142,estrela cadente,-
+143,raiz subterrânea,-
+144,fragmento de pulsar,-
+145,cérebro ativo,-
+146,coração latejante,-
+147,rabo verdejante,-
+148,nove caudas,-
+149,desenho animalesco,-
+150,bastão acrômico,-
+151,vírus indomado,-
+152,gel cromático,-
+153,desenho de giz de cera,-
+154,solo fértil,-
+155,solo úmido,-
+156,raiz úmida,-
+157,semente frutífera,-
+158,criaturinha saltitante,-
+159,corda ascendente,-
+160,tiara florida,-
+161,anel rochoso,-
+162,xilema rugoso,-
+163,pele áspera,-
+164,pedaço de nuvem,-
+165,corda vibrante,-
+166,rocha ressonante,-
+167,estalactite,-
+168,estalagmite,-
+169,gancho trepador,-
+170,astrolábio primitivo,-
+171,relíquia descoberta,-
+172,poeira estelar,-
+173,osso quebrado,-
+174,limo escorregadio,-
+175,mineral brilhante,-
+176,água cristalina,-
+177,mochila de expedição,-
+178,gosma bioluminescente,-
+179,formação cristalina,-
+180,paredes úmidas,-
+181,tecido mole,-
+182,olhos não-usados,-
+183,larva subcutânea,-
+184,braço obnóxio,-
+185,boca articulada,-
+186,falésia íngreme,-
+187,desenho arqueológico,-
+188,fluido superdosado,-
+189,catarro grudento,-
+190,asas cintilantes,-
+191,rocha subterrânea,-
+192,formação subsólida,-
+193,pó brilhante,-
+194,olhos brilhantes divinos,-
+195,cabelo crocante,-
+196,bloco capilar,-
+197,pés rebitados,-
+198,pata urrante,-
+199,lei metralhante,-
+200,bactéria corona,-
+201,hélice rotacional,-
+202,núcleo vórtico,-
+203,relíquia escavada,-
+204,musgo exótico,-
+205,substrato do solo,-
+206,substância biológica,-
+207,cheio putrefado,-
+208,flor única,-
+209,parte do corpo retorcida,-
+210,lanterna de escavação,-
+211,vela parafinada morna,-
+212,vela derretida,-
+213,organismo intrínseco,-
+214,mensagem criptografada,-
+215,olho petrificado,-
+216,turbante carismático,-
+217,padrão intrincado,-
+218,chapéu medieval,-
+219,ancião poligâmico,-
+220,ferramenta torta,-
+221,caixa secreta,-
+222,abraço forte,-
+223,rocha sedimentada,-
+224,solo em camadas,-
+225,orbe ornamentado,-
+226,pata de carangueijo,-
+227,shuriken,-
+228,casca de côco,-
+229,joelheira,-
+230,areia grossa,-
+231,bico pontiagudo,-
+232,folha de palha,-
+233,casca de palma,-
+234,saia nativa,-
+235,colar florido,-
+236,prancha pintada,-
+237,tábua parafinada,-
+238,bandeira fanática,-
+239,pombo orgástico,-
+240,tímpano ritualístico,-
+241,disco aerodinâmico,-
+242,concha ondulada,-
+243,toalha salina,-
+244,flutuante com sardas,-
+245,balde d'água,-
+246,fantasia contemporânea,-
+247,filhote veloz,-
+248,argila moldada,-
+249,castelo de areia,-
+250,caravela inchada,-
+251,música praieira,-
+252,peteca aerada,-
+253,leque,-
+254,água salgada,-
+255,boné,-
+256,tentáculo grudento,-
+257,cauda elétrica,-
+258,asa marinha,-
+259,arcada óssea adaptada,-
+260,antena exótica,-
+261,boca assustadora,-
+262,forma sem formato,-
+263,vórtex sinérgico,-
+264,líquido florescente,-
+265,mente psicológica,-
+266,alma emocionada,-
+267,dente incisivo,-
+268,pele escamada,-
+269,coração vigoroso,-
+270,movimento avantajado,-
+271,pele táctil,-
+272,dentes duros,-
+273,véu luminoso,-
+274,som inumano,-
+275,fluido interno,-
+276,pérola refinada,-
+277,rolo superredondo,-
+278,seixo escarlate,-
+279,energia estática,-
+280,anel da êxtase,-
+281,óculos inoculares,-
+282,forma reluzente,-
+283,algemas apertadas,-
+284,piercing gradiente,-
+285,octaedro barbudo,-
+286,unhas esmaltadas,-
+287,eletroldo,-
+288,banha,-
+289,lentes magnéticas,-
+290,queratina tingida,-
+291,relaxante muscular,-
+292,ovo brilhante,-
+293,magma,-
+294,máscara de raposa,-
+295,rocha ígnea,-
+296,fogo incandescente,-
+297,pele de cobra,-
+298,criatura fantástica,-
+299,platina,-
+300,foice ameaçadora,-
+301,núcleo,-
+302,tela digital,-
+303,nave romântica,-
+304,motor improbabilístico,-
+305,fone de ouvido superfaturado,-
+306,guarda-chuva arco-íris,-
+307,morcego sapeca,-
+308,forma de vida inteligente,-
+309,veia latejante,-
+310,membro pulsante,-
+311,espiral flexível,-
+312,canhão carregado,-
+313,saudação alienígena,-
+314,conto do submundo,-
+315,olho hipnótico,-
+316,esqueleto arcaico,-
+317,asas tortuosas,-
+318,colar entusiástico,-
+319,pluma galática,-
+320,canto sábio,-
+321,encanto lunático,-
+322,bastão encantado,-
+323,totem ignitivo,-
+324,trilhão de bolinhas,-
+325,metal improvável,-
+326,flauta da ventania,-
+327,buraco dimensional,-
+328,disco artístico,-
+329,sorriso furtivo,-
+330,papel celestial,-
+331,gás pressurizado,-
+332,melodia harmônica,-
+333,tempero apimentado,-
+334,cauda dracônica,-
+335,engrenagem poderosa,-
+336,língua empoeirada,-
+337,pergaminho enterrado,-
+338,vaso restaurado,-
+339,corpo negro,-
+340,gota de chuva com sol,-
+341,corpo de inseto,-
+342,véu transparente,-
+343,energia vulcânica,-
+344,robô rabugento,-
+345,orbe imaterial,-
+346,vidro translúcido,-
+347,rede de captura,-
+348,tecido bom de arranhar,-
+349,testa em chamas,-
+350,tendão tensionado,-
+351,adesivo de nuvem,-
+352,nervo sensível,-
+353,giroscópio,-
+354,inquietação giratória,-
+355,canino doentio,-
+356,músculo quente,-
+357,bola de cristal,-
+358,olho de sapo,-
+359,lâmina moldada,-
+360,mão esperançosa,-
+361,caneta entortada,-
+362,espada nebulosa,-
+363,marionete nublada,-
+364,bumbum dançante,-
+365,cauda peluda,-
+366,hélice aerada,-
+367,bracelete espiral,-
+368,flor em fractal,-
+369,floco de neve,-
+370,cubo de gelo,-
+371,biscoitos congelados,-
+372,pêlo branco,-
+373,lança glacial,-
+374,berrante de tyrande,-
+375,biscoitos assados,-
+376,cachecol aconchegante,-
+377,grande aquecedor de rosto,-
+378,chapéu viking,-
+379,janela da queda da noite,-
+380,companhia celestial,-
+381,luvas brancas de neve,-
+382,noite estrelada,-
+383,casaco de isolamento térmico,-
+384,grande pé,-
+385,bandeira de exploração,-
+386,visão da luz da noite,-
+387,cabeça do homem das neves,-
+388,pele congelada,-
+389,marca da aventura,-
+390,esfera neutra,-
+391,esfera de água,-
+392,esfera de fogo,-
+393,esfera de planta,-
+394,esfera de terra,-
+395,esfera de ar,-
+396,esfera de trovão,-
+397,esfera de luz,-
+398,esfera negra,-
+399,esfera de neve,-

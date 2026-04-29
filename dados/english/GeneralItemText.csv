@@ -1,0 +1,401 @@
+Id,Name,Description
+0,fur,-
+1,wings,-
+2,nut,-
+3,leather,-
+4,rock,-
+5,strangely round rock,-
+6,spores,-
+7,slime,-
+8,leaf,-
+9,shell,-
+10,ambrosia,-
+11,fern,-
+12,ivy,-
+13,maple leaf,-
+14,tulsi,-
+15,orchid,-
+16,violet,-
+17,black haw,-
+18,dew,-
+19,lilac,-
+20,flower,-
+21,campfire,heals life over time
+22,antidote,stops poison
+23,bandaid,heals life
+24,megaphone,-
+25,worms,increases fishing chance (consumed automagically)
+26,little bottle,can be filled with water
+27,medium bottle,can be filled with water
+28,big bottle,can be filled with water
+29,little water bottle,-
+30,medium water bottle,-
+31,big water bottle,-
+32,wire,-
+33,heavy rock,-
+34,thin chain,-
+35,animal silk,-
+36,shovel,-
+37,ladder,allows to go in and out of the cave
+38,tent,-
+39,rope,allows to go in and out of the cave (consumable). Bring at least 2
+40,fishing rod,allows fishing
+41,freckly shell,-
+42,wallet,-
+43,barking animal,-
+44,vine,-
+45,insect leg,-
+46,branches,-
+47,fur ball,-
+48,reflective lens,-
+49,spring,-
+50,piano key,-
+51,furry arm,-
+52,dry stalk,-
+53,telescope,-
+54,bat wings,-
+55,shiny eyes,-
+56,small egg,-
+57,edgy egg,-
+58,frenetic spirit,-
+59,gold nugget,-
+60,diamond,-
+61,graphene,-
+62,golden string,-
+63,colorful feather,-
+64,poisonous spore,causes poison
+65,cutting scale,causes blood
+66,protective scale,causes block
+67,stunning planck,causes stun
+68,horn,-
+69,silencing zipper,causes silence
+70,gag,causes silence
+71,nailled wood,causes stun
+72,syringe,-
+73,poison syringe,causes poison
+74,hallucinogenic mushroom,causes hallucinations
+75,sturdy shell,causes block
+76,empty glass,But without enough space for philosophical wondering
+77,sunglasses,-
+78,poison glass,causes poison
+79,little adrenaline dose,increases attack speed
+80,energetic stone,increases the chance of forging weapons (consumed automagically)
+81,viscous fluid,stops blood
+82,sedative,stops blood and reduces attack speed
+83,adrenaline syringe,increases attack speed
+84,blood thickening,stops blood
+85,elastic,-
+86,binoculars,increases dex
+87,high-precision glasses,increases dex
+88,smoking pipe,-
+89,magic potion,increases magical attack and defense
+90,sparkling dust,increases the chance of forging special weapons (consumed automagically)
+91,sparkling snow,-
+92,curvy fang,-
+93,sulfer gas,fede
+94,colorful smoke,-
+95,magic orb,-
+96,matches,-
+97,igniter,-
+98,celestial wings,-
+99,enchanted stick,increases the chance of forging shields and armors (consumed automagically)
+100,ecliptic manifest,increases the chance of forging special shields and armors (consumed automagically)
+101,peaceful morning,-
+102,slingshot,-
+103,sticky tongue,-
+104,eagle's eyes,its eyes...not yours (does not increase dex)
+105,beer cup,causes drunk
+106,beer gallon,causes a whola lotta drunk
+107,festive ink,-
+108,elven ears,lendárias e super raras
+109,tarantula web,diminui agi
+110,suspicious pills,you wouldn't take such suspicious pills
+111,recorded voice,stops silence
+112,medicine,-
+113,dirty mud,is there clean mud?
+114,wet cloth,causes water attack
+115,burning cloth,causes fire attack
+116,fast growth seed,causes plant attack
+117,ball of clay,causes earth attack
+118,vibrant air,causes air attack
+119,rubbed rug,causes thunder attack
+120,luminous glass,causes light attack
+121,somber robe,causes dark attack
+122,snowball,causes snow attack
+123,water gun,causes water attack
+124,burning pan,causes fire attack
+125,sharp leaf,causes plant attack
+126,boulder,causes earth attack
+127,pressurized air,causes air attack
+128,electric wire,causes thunder attack
+129,flashlight,causes light attack
+130,blindfold,causes dark attack
+131,snowchunck,causes snow attack
+132,water cannon,causes water attack
+133,incinerator,causes fire attack
+134,beanstalk,causes plant attack
+135,mountain,causes earth attack
+136,sparky spike,causes air attack
+137,charged cloud,causes thunder attack
+138,spotlight,causes light attack
+139,wet plank,causes dark attack
+140,avalanche,causes snow attack
+141,cosmic pebble,-
+142,falling star,-
+143,underground root,-
+144,pulsar fragment,-
+145,active brain,-
+146,pulsant heart,-
+147,verdant tail,-
+148,nine tails,-
+149,animalistic drawing,-
+150,acromic bat,-
+151,untamed virus,-
+152,cromatic gel,-
+153,crayon drawing,-
+154,fertile soil,-
+155,humid soil,-
+156,moisty root,-
+157,frutiferous seed,-
+158,bouncy little creature,-
+159,ascending rope,-
+160,flowey tiara,-
+161,rocky ring,-
+162,rugged xylem,-
+163,scratchy skin,-
+164,piece of cloud,-
+165,vibrant string,-
+166,ressonant rock,-
+167,stalactite,-
+168,stalagmite,-
+169,climbing hook,-
+170,primitive astrolabe,-
+171,discovered relic,-
+172,stardust,-
+173,broken bone,-
+174,slippery lime,-
+175,shiny mineral,-
+176,crystaline water,-
+177,expedition bag,-
+178,bioluminescent jelly,-
+179,crystallic formation,-
+180,moist walls,-
+181,soft tissue,-
+182,unused eyes,-
+183,subcutaneous verm,-
+184,obnoxious arm,-
+185,articulate mouth,-
+186,steep cliff,-
+187,arqueological drawing,-
+188,overdosed fluid,-
+189,sticky mucus,-
+190,sparkling wings,-
+191,underground rock,-
+192,subsolid formation,-
+193,brilliant dust,-
+194,divine shiny eyes,-
+195,crispy hair,-
+196,capilar block,-
+197,clinchy toes,-
+198,howling paw,-
+199,strafing law,-
+200,corona bacteria,-
+201,rotational helix,-
+202,vortexy nuclei,-
+203,dug relic,-
+204,exotic moss,-
+205,ground substrate,-
+206,biologic substance,-
+207,putrefied smell,-
+208,unique flower,-
+209,twisted body part,-
+210,excavation flashlight,-
+211,warm waxed candle,-
+212,melted candle,-
+213,intrinsic organism,-
+214,encrypted message,-
+215,petrified eye,-
+216,carismatic turbant,-
+217,intricate pattern,-
+218,medieval hat,-
+219,polygamous elder,-
+220,crooked tool,-
+221,secret box,-
+222,tight hug,-
+223,sedimented rock,-
+224,layered soil,-
+225,ornate orb,-
+226,crab leg,-
+227,shuriken,-
+228,coconut shell,-
+229,knee pad,-
+230,granular sand,-
+231,pointy beak,-
+232,palm leaf,-
+233,palm shell,-
+234,native skirt,-
+235,flowery collar,-
+236,painted surfboard,-
+237,waxed board,-
+238,fanatic flag,-
+239,orgastic dove,-
+240,ritualistic timpano,-
+241,aerodynamic disk,-
+242,wavy shell,-
+243,saline towel,-
+244,freckled floater,-
+245,water bucket,-
+246,contemporaneous costume,-
+247,swift pup,-
+248,molded clay,-
+249,sand castle,-
+250,swollen jellyfish,-
+251,beachy music,-
+252,airy shuttlecock,-
+253,fan,-
+254,salt water,-
+255,sun hat,-
+256,sticky tentacle,-
+257,electric tail,-
+258,marine wing,-
+259,adapted bone arch,-
+260,exotic feeler,-
+261,creepy mouth,-
+262,shapeless form,-
+263,synergic vortex,-
+264,fluorescent liquid,-
+265,psychological mind,-
+266,emotive soul,-
+267,incisive tooth,-
+268,scaling skin,-
+269,vigorous heart,-
+270,topping move,-
+271,tactile skin,-
+272,hard teeth,-
+273,luminous veil,-
+274,inhumane sound,-
+275,internal fluid,-
+276,refined pearl,-
+277,overround roll,-
+278,scarlet pebble,-
+279,static energy,-
+280,ecstatic ring,-
+281,inocular glasses,-
+282,relucent shape,-
+283,tight handcuffs,-
+284,gradient piercing,-
+285,bearded octahedron,-
+286,enamelled nails,-
+287,electrode,-
+288,lard,-
+289,magnetic lens,-
+290,dyed queratin,-
+291,muscle relaxant,-
+292,shiny egg,-
+293,magma,-
+294,kitsune mask,-
+295,igneous rock,-
+296,incandescent fire,-
+297,snake skin,-
+298,fantastic beast,-
+299,platinum,-
+300,treacherous scythe,-
+301,core,-
+302,digital screen,-
+303,romantic ship,-
+304,improbabilistic motor,-
+305,overpriced headphone,-
+306,rainbow umbrella,-
+307,naughty bat,-
+308,intelligent lifeform,-
+309,pulsant vein,-
+310,throbbing member,-
+311,flexible spiral,-
+312,loaded cannon,-
+313,alien greeting,-
+314,tale of the underworld,-
+315,hipnotic eye,-
+316,archaic skeleton,-
+317,tortuous wings,-
+318,enthusiastic collar,-
+319,galactic plum,-
+320,wise corner,-
+321,lunatic spell,-
+322,wicked bat,-
+323,ignitive totem,-
+324,trillion tiny balls,-
+325,improbable metal,-
+326,windy flute,-
+327,dimensional hole,-
+328,artistic disk,-
+329,stealthy smile,-
+330,celestial paper,-
+331,pressurized gas,-
+332,harmonic melody,-
+333,spicy seasoning,-
+334,draconic tail,-
+335,power gear,-
+336,dusty tongue,-
+337,burried scroll,-
+338,restored vase,-
+339,blackbody,-
+340,sunny raindrop,-
+341,insect body,-
+342,transparent veil,-
+343,volcanic energy,-
+344,grumpy robot,-
+345,immaterial orb,-
+346,translucid glass,-
+347,capture net,-
+348,scratchy cloth,-
+349,burning forehead,-
+350,tensioned tendon,-
+351,cloud adhesive,-
+352,sensitive nerve,-
+353,gyroscope,-
+354,spinning fidget,-
+355,ill canine,-
+356,hot muscle,-
+357,crystal ball,-
+358,froggy eye,-
+359,moulded blade,-
+360,hopeful hand,-
+361,twisted pen,-
+362,misty sword,-
+363,cloudy puppet,-
+364,jiggly butt,-
+365,furry tail,-
+366,airy helix,-
+367,spiral bracelet,-
+368,fractal flower,-
+369,snowflake,-
+370,ice cube,-
+371,frozen cookies,-
+372,white fur,-
+373,glacial spear,-
+374,tyrande's horn,-
+375,baked cookies,-
+376,cozy scarf,-
+377,large facewarmer,-
+378,viking hat,-
+379,nightfall window,-
+380,celestial companion,-
+381,snowwhite gloves,-
+382,starry night,-
+383,thermal isolating coat,-
+384,big foot,-
+385,exploration flag,-
+386,nightlight vision,-
+387,snowman head,-
+388,frosted skin,-
+389,mark of the adventure,-
+390,neutral sphere,-
+391,sphere of water,-
+392,sphere of fire,-
+393,sphere of plant,-
+394,sphere of earth,-
+395,sphere of air,-
+396,sphere of thunder,-
+397,sphere of light,-
+398,sphere of dark,-
+399,sphere of snow,-

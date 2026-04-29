@@ -57,10 +57,24 @@ public abstract class Item
 	{
 		ItemsData.createPotions() ;
 		ItemsData.createAlchemy() ;
+		ItemsData.createForge() ;
+		ItemsData.createPetItem() ;
+		ItemsData.createFood() ;
 		ItemsData.createArrows() ;
+		ItemsData.createEquips() ;
+		ItemsData.createGeneralItems() ;
+		ItemsData.createFab() ;
+		ItemsData.createQuest() ;
 		Potion.updateText(language) ;
 		Alchemy.updateText(language) ;
+		Forge.updateText(language) ;
+		PetItem.updateText(language) ;
+		Food.updateText(language) ;
 		Arrow.updateText(language);
+		Equip.updateText(language) ;
+		GeneralItem.updateText(language) ;
+		Fab.updateText(language) ;
+		QuestItem.updateText(language) ;
 //		List<Item> allItems = new ArrayList<>() ;
 		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
 		{

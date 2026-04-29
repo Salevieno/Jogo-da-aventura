@@ -13,30 +13,30 @@ import utilities.Util;
 
 public class Forge extends Item
 {
-	
-	private static final Forge[] allForge ;
-	
 	private static final Image runeAtk = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconRuneAtk.png") ;
 	private static final Image runeDef = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconRuneDef.png") ;
 	private static final Image specialRuneAtk = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconSpecialRuneAtk.png") ;
 	private static final Image specialRuneDef = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconSpecialRuneDef.png") ;
+	private static final Forge[] all = new Forge[40] ;
 	
-	static
+	public Forge(int id, int price, double dropChance)
 	{
-		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Forge.csv") ;
-		allForge = new Forge[input.size()] ;
-		for (int p = 0; p <= allForge.length - 1; p += 1)
-		{
-			allForge[p] = new Forge(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]));
-		}	
-	}
-	
-	public Forge(int id, String Name, String Description, int price, float dropChance)
-	{
-		super(id, Name, Description, imageFromID(id), price, dropChance) ;
+		super(id, "", "", imageFromID(id), price, dropChance) ;
+		all[id] = this ;
 	}
 
-	public static Forge[] getAll() {return allForge ;}
+	public static void updateText(String language)
+	{
+		List<String[]> data = Util.readcsvFile(Path.DADOS + language + "/ForgeText.csv") ;
+		for (String[] line : data)
+		{
+			int id = Integer.parseInt(line[0]) ;
+			all[id].setName(line[1]) ;
+			all[id].setDescription(line[2]) ;
+		}
+	}
+
+	public static Forge[] getAll() {return all ;}
 
 	public static int typeFromID(int id)
 	{
@@ -65,8 +65,7 @@ public class Forge extends Item
 	
 	public String toString()
 	{
-//		return "forge id: " + AllForge[id].getId() + "   name: " + AllForge[id].getName() + "   description: " + AllForge[id].getDescription() + "   price: " + AllForge[id].getPrice() + "   drop chance: " + AllForge[id].getDropChance() + "%" ;
-		return "Forge," + id + "," + name;
+		return "Forge " + id + ": " + name;
 	}
 	
 }

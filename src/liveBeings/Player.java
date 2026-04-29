@@ -597,7 +597,7 @@ public class Player extends LiveBeing
 	private void moveToNewMap(Point2D.Double pos, Directions dir, GameMap currentMap)
 	{
 		GameMap newMap = calcNewMap(pos, dir, currentMap) ;
-		
+		// TODO checar se o chão no novo mapa é caminhável. Bug ao se mover para a cidade dos arqueiros de cima
 		if (newMap == null) { Log.warn("trying to move to null map") ; return ;}
 		if (!newMap.getContinent().equals(Continents.forest)) { Log.warn("trying to leave the forest"); return ;}
 		

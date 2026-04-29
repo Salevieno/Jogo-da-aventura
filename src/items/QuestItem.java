@@ -12,26 +12,28 @@ import utilities.Util;
 
 
 public class QuestItem extends Item
-{
-	private static final QuestItem[] AllQuests ;
-	
+{	
 	private static final Image questItemIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconQuestItem.png") ;
-	
-	static
+	private static final QuestItem[] all = new QuestItem[200] ;
+
+	public QuestItem(int id, int price, double dropChance)
 	{
-		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Quest.csv") ;
-		AllQuests = new QuestItem[input.size()] ;
-		for (int p = 0; p <= AllQuests.length - 1; p += 1)
-		{
-			AllQuests[p] = new QuestItem(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]));
-		}
-	}
-	public QuestItem(int id, String Name, String Description, int price, float dropChance)
-	{
-		super(id, Name, Description, imageFromID(id), price, dropChance) ;
+		super(id, "", "", imageFromID(id), price, dropChance) ;
+		all[id] = this ;
 	}
 
-	public static QuestItem[] getAll() {return AllQuests ;}
+	public static void updateText(String language)
+	{
+		List<String[]> data = Util.readcsvFile(Path.DADOS + language + "/QuestText.csv") ;
+		for (String[] line : data)
+		{
+			int id = Integer.parseInt(line[0]) ;
+			all[id].setName(line[1]) ;
+			all[id].setDescription(line[2]) ;
+		}
+	}
+
+	public static QuestItem[] getAll() {return all ;}
 
 	public static Image imageFromID(int id)
 	{		

@@ -19,40 +19,42 @@ import utilities.Util;
 
 public class PetItem extends Item
 {
-	private final float lifeHeal ;
-	private final float mpHeal ;
+	private final double lifeHeal ;
+	private final double mpHeal ;
 	private final int satiationHeal ;
 	private final int power ;
 	
-	private static final PetItem[] AllPetItems ;
-
 	private static final Image petLifePotion = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetLifePotion.png") ;
 	private static final Image petMPPotion = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetMPPotion.png") ;
 	private static final Image petFood = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetFood.png") ;
 	private static final Image petSet = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetSet.png") ;
-	
-	static
+	private static final PetItem[] all = new PetItem[60] ;
+
+	public PetItem(int id, int price, double dropChance, double lifeHeal, double mpHeal, int satiationHeal)
 	{
-		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_PetItem.csv") ;
-		AllPetItems = new PetItem[input.size()] ;
-		for (int p = 0; p <= AllPetItems.length - 1; p += 1)
-		{
-			AllPetItems[p] = new PetItem(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]), Float.parseFloat(input.get(p)[7]), Float.parseFloat(input.get(p)[8]), Integer.parseInt(input.get(p)[9]));
-		}	
-	}
-	public PetItem(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal, int SatiationHeal)
-	{
-		super(id, Name, Description, imageFromID(id), price, dropChance) ;
+		super(id, "", "", imageFromID(id), price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
-		this.mpHeal = MPHeal ;
-		this.satiationHeal = SatiationHeal ;
+		this.mpHeal = mpHeal ;
+		this.satiationHeal = satiationHeal ;
 		this.power = id / 4 ;
+		all[id] = this ;
 	}
 
-	public float getLifeHeal() {return lifeHeal ;}
-	public float getMPHeal() {return mpHeal ;}	
+	public static void updateText(String language)
+	{
+		List<String[]> data = Util.readcsvFile(Path.DADOS + language + "/PetItemText.csv") ;
+		for (String[] line : data)
+		{
+			int id = Integer.parseInt(line[0]) ;
+			all[id].setName(line[1]) ;
+			all[id].setDescription(line[2]) ;
+		}
+	}
+
+	public double getLifeHeal() {return lifeHeal ;}
+	public double getMPHeal() {return mpHeal ;}	
 	public int getSatiationHeal() {return satiationHeal ;}	
-	public static PetItem[] getAll() {return AllPetItems ;}
+	public static PetItem[] getAll() {return all ;}
 
 	public static boolean isLifePotion(int id) { return id % 4 == 0 ;}
 	public static boolean isMpPotion(int id) { return id % 4 == 1 ;}

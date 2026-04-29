@@ -15,41 +15,37 @@ import utilities.Util;
 
 public class Food extends Item
 {
-	private final float lifeHeal ;
-	private final float MPHeal ;
+	private final double lifeHeal ;
+	private final double MPHeal ;
 	private final int satiationHeal ;
 	
-	private static final Food[] allFood ;
+	private static final Image iconFoodBerry = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconFoodBerry.png") ;
+	private static final Food[] all = new Food[60];
 	
-	private static final Image iconFoodBerry ;
-	
-	static
+	public Food(int id, int price, double dropChance, double lifeHeal, double MPHeal, int SatiationHeal)
 	{
-		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Food.csv") ;
-		allFood = new Food[input.size()] ;
-		iconFoodBerry = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconFoodBerry.png") ;
-		for (int p = 0; p <= allFood.length - 1; p += 1)
-		{
-			allFood[p] = new Food(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3],
-					Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]),
-					Float.parseFloat(input.get(p)[7]), Float.parseFloat(input.get(p)[8]),
-					Integer.parseInt(input.get(p)[9]));
-		}
-	}
-	
-	public Food(int id, String Name, String Description, int price,
-			float dropChance, float lifeHeal, float MPHeal, int SatiationHeal)
-	{
-		super(id, Name, Description, imageFromID(id), price, dropChance) ;
+		super(id, "", "", imageFromID(id), price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
 		this.satiationHeal = SatiationHeal ;
+		all[id] = this ;
 	}
 
-	public float getLifeHeal() {return lifeHeal ;}
-	public float getMPHeal() {return MPHeal ;}	
+	public static void updateText(String language)
+	{
+		List<String[]> data = Util.readcsvFile(Path.DADOS + language + "/FoodText.csv") ;
+		for (String[] line : data)
+		{
+			int id = Integer.parseInt(line[0]) ;
+			all[id].setName(line[1]) ;
+			all[id].setDescription(line[2]) ;
+		}
+	}
+
+	public double getLifeHeal() {return lifeHeal ;}
+	public double getMPHeal() {return MPHeal ;}	
 	public int getSatiationHeal() {return satiationHeal ;}	
-	public static Food[] getAll() {return allFood ;}
+	public static Food[] getAll() {return all ;}
 
 	public static Image imageFromID(int id) { return iconFoodBerry ;}
 	
@@ -69,7 +65,6 @@ public class Food extends Item
 	@Override
 	public String toString()
 	{
-//		return "Food [lifeHeal=" + lifeHeal + ", MPHeal=" + MPHeal + ", SatiationHeal=" + SatiationHeal + ", id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance=" + dropChance + "]";
-		return "Food," + id + "," + name;
+		return "Food " + id + ": " + name;
 	}	
 }

@@ -13,26 +13,27 @@ import utilities.Util;
 
 public class Fab extends Item
 {
-	private static final Fab[] allFabs ;
-	
 	private static final Image ferkIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconFerk.png") ;
-	
-	static
+	private static final Fab[] all = new Fab[100] ;
+
+	public Fab(int id, int price, double dropChance)
 	{
-		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Fab.csv") ;
-		allFabs = new Fab[input.size()] ;
-		for (int p = 0; p <= allFabs.length - 1; p += 1)
-		{
-			allFabs[p] = new Fab(Integer.parseInt(input.get(p)[0]), input.get(p)[1], input.get(p)[3], Integer.parseInt(input.get(p)[5]), Float.parseFloat(input.get(p)[6]));
-		}
-	}
-	
-	public Fab(int id, String Name, String Description, int price, float dropChance)
-	{
-		super(id, Name, Description, imageFromID(id), price, dropChance) ;
+		super(id, "", "", imageFromID(id), price, dropChance) ;
+		all[id] = this ;
 	}
 
-	public static Fab[] getAll() {return allFabs ;}
+	public static void updateText(String language)
+	{
+		List<String[]> data = Util.readcsvFile(Path.DADOS + language + "/FabText.csv") ;
+		for (String[] line : data)
+		{
+			int id = Integer.parseInt(line[0]) ;
+			all[id].setName(line[1]) ;
+			all[id].setDescription(line[2]) ;
+		}
+	}
+
+	public static Fab[] getAll() {return all ;}
 
 	public static Image imageFromID(int id)
 	{		
