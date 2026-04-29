@@ -67,6 +67,70 @@ public abstract class ItemsData
         new Potion(58, 1500, 0.06, 0.0, 0.0) ;
         new Potion(59, 1500, 0.04, 0.0, 0.0) ;
     }
+    
+    public static void createAlchemy()
+    {
+        new Alchemy(0, 5, 0.05, 0.00) ;
+        new Alchemy(1, 5, 0.00, 0.05) ;
+        new Alchemy(2, 5, 0.00, 0.00) ;
+        new Alchemy(3, 405, 0.10, 0.00) ;
+        new Alchemy(4, 405, 0.00, 0.10) ;
+        new Alchemy(5, 405, 0.00, 0.00) ;
+        new Alchemy(6, 1605, 0.15, 0.00) ;
+        new Alchemy(7, 1605, 0.00, 0.15) ;
+        new Alchemy(8, 1605, 0.00, 0.00) ;
+        new Alchemy(9, 3605, 0.20, 0.00) ;
+        new Alchemy(10, 3605, 0.00, 0.20) ;
+        new Alchemy(11, 3605, 0.00, 0.00) ;
+        new Alchemy(12, 6405, 0.25, 0.00) ;
+        new Alchemy(13, 6405, 0.00, 0.25) ;
+        new Alchemy(14, 6405, 0.00, 0.00) ;
+        new Alchemy(15, 10005, 0.00, 0.00) ;
+        new Alchemy(16, 10005, 0.00, 0.00) ;
+        new Alchemy(17, 10005, 0.00, 0.00) ;
+        new Alchemy(18, 14405, 0.00, 0.00) ;
+        new Alchemy(19, 14405, 0.00, 0.00) ;
+        new Alchemy(20, 14405, 0.00, 0.00) ;
+        new Alchemy(21, 19605, 0.00, 0.00) ;
+        new Alchemy(22, 19605, 0.00, 0.00) ;
+        new Alchemy(23, 19605, 0.00, 0.00) ;
+        new Alchemy(24, 25605, 0.00, 0.00) ;
+        new Alchemy(25, 25605, 0.00, 0.00) ;
+        new Alchemy(26, 25605, 0.00, 0.00) ;
+        new Alchemy(27, 32405, 0.00, 0.00) ;
+        new Alchemy(28, 32405, 0.00, 0.00) ;
+        new Alchemy(29, 32405, 0.00, 0.00) ;
+        new Alchemy(30, 22505, 0.00, 0.00) ;
+        new Alchemy(31, 24030, 0.00, 0.00) ;
+        new Alchemy(32, 25605, 0.00, 0.00) ;
+        new Alchemy(33, 27230, 0.00, 0.00) ;
+        new Alchemy(34, 28905, 0.00, 0.00) ;
+        new Alchemy(35, 30630, 0.00, 0.00) ;
+        new Alchemy(36, 32405, 0.00, 0.00) ;
+        new Alchemy(37, 34230, 0.00, 0.00) ;
+        new Alchemy(38, 36105, 0.00, 0.00) ;
+        new Alchemy(39, 38030, 0.00, 0.00) ;
+        new Alchemy(40, 40005, 0.00, 0.00) ;
+        new Alchemy(41, 42030, 0.00, 0.00) ;
+        new Alchemy(42, 44105, 0.00, 0.00) ;
+        new Alchemy(43, 46230, 0.00, 0.00) ;
+        new Alchemy(44, 48405, 0.00, 0.00) ;
+        new Alchemy(45, 50630, 0.00, 0.00) ;
+        new Alchemy(46, 52905, 0.00, 0.00) ;
+        new Alchemy(47, 55230, 0.00, 0.00) ;
+        new Alchemy(48, 57605, 0.00, 0.00) ;
+        new Alchemy(49, 60030, 0.00, 0.00) ;
+        new Alchemy(50, 62505, 0.00, 0.00) ;
+        new Alchemy(51, 65030, 0.00, 0.00) ;
+        new Alchemy(52, 67605, 0.00, 0.00) ;
+        new Alchemy(53, 70230, 0.00, 0.00) ;
+        new Alchemy(54, 72905, 0.00, 0.00) ;
+        new Alchemy(55, 75630, 0.00, 0.00) ;
+        new Alchemy(56, 78405, 0.00, 0.00) ;
+        new Alchemy(57, 81230, 0.00, 0.00) ;
+        new Alchemy(58, 84105, 0.00, 0.00) ;
+        new Alchemy(59, 87030, 0.00, 0.00) ;
+    }
 
     public static void createArrows()
     {

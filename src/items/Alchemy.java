@@ -15,33 +15,33 @@ import utilities.Util;
 
 public class Alchemy extends Item
 {
-	private final float lifeHeal ;
-	private final float MPHeal ;
+	private final double lifeHeal ;
+	private final double MPHeal ;
 	
-	private static final Alchemy[] AllAlchemy ;
+	private static final Alchemy[] all = new Alchemy[60] ;
 	
 	private static final String pathImg = "\\Windows\\bagIcons\\" ;
 	private static final Image HerbIcon = ImageLoader.loadImage(pathImg + "IconHerb.png") ;
 	private static final Image WoodIcon = ImageLoader.loadImage(pathImg + "IconWood.png") ;
 	private static final Image MetalIcon = ImageLoader.loadImage(pathImg + "IconMetal.png") ;
 	
-	static
-	{
-		List<String[]> input = Util.readcsvFile(Path.CSV + "Item_Alchemy.csv") ;
-		AllAlchemy = new Alchemy[input.size()] ;
-		for (int a = 0; a <= AllAlchemy.length - 1; a += 1)
-		{
-			AllAlchemy[a] = new Alchemy(Integer.parseInt(input.get(a)[0]), input.get(a)[1], input.get(a)[3], Integer.parseInt(input.get(a)[5]), Float.parseFloat(input.get(a)[6]), Float.parseFloat(input.get(a)[7]), Float.parseFloat(input.get(a)[8]));
-		}
-	}
-	
-	public Alchemy(int id, String Name, String Description, int price, float dropChance, float lifeHeal, float MPHeal)
-	{
-		
-		super(id, Name, Description, imageFromID(id), price, dropChance) ;
+	public Alchemy(int id, int price, double lifeHeal, double mpHeal)
+	{		
+		super(id, "", "", imageFromID(id), price, 0.0) ;
 		this.lifeHeal = lifeHeal ;
-		this.MPHeal = MPHeal ;
-		
+		this.MPHeal = mpHeal ;
+		all[id] = this ;
+	}
+
+	public static void updateText(String language)
+	{
+		List<String[]> data = Util.readcsvFile(Path.DADOS + language + "/AlchemyText.csv") ;
+		for (String[] line : data)
+		{
+			int id = Integer.parseInt(line[0]) ;
+			all[id].setName(line[1]) ;
+			all[id].setDescription(line[2]) ;
+		}
 	}
 	
 	public static boolean isHerb(int id) {return id % 3 == 0 ;}
@@ -49,10 +49,8 @@ public class Alchemy extends Item
 	public static boolean isMetal(int id) {return id % 3 == 2 ;}
 	
 	public static Image imageFromID(int id) { return isHerb(id) ? HerbIcon : isWood(id) ? WoodIcon : MetalIcon ;}
-	
-	public float getLifeHeal() {return lifeHeal ;}
-	public float getMPHeal() {return MPHeal ;}
-	public static Alchemy[] getAll() {return AllAlchemy ;}
+
+	public static Alchemy[] getAll() {return all ;}
 	
 	public void use(LiveBeing target, double powerMult)
 	{		
@@ -69,7 +67,6 @@ public class Alchemy extends Item
 	@Override
 	public String toString()
 	{
-//		return "Alchemy [lifeHeal=" + lifeHeal + ", MPHeal=" + MPHeal + ", id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance=" + dropChance + "]";
 		return "Alchemy," + id + "," + name;
 	}
 }

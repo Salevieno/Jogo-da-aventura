@@ -6,13 +6,13 @@ import java.awt.EventQueue ;
  * made with love by Salevieno and Larissa
  * @author Salevieno
  * @author Larissa
- * @version 0.8
+ * @version 0.9
  * @since 2022
  */
 public class MainGame3_4
 {
 	private static final GameFrame gameFrame = GameFrame.getMe() ;
-	private static final String version = "0.8" ;
+	private static final String version = "0.9" ;
 	
 	public static void closeGame()
 	{

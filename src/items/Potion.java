@@ -37,8 +37,8 @@ public class Potion extends Item
 
 	public static void updateText(String language)
 	{
-		List<String[]> arrowText = Util.readcsvFile(Path.DADOS + language + "/PotionText.csv") ;
-		for (String[] line : arrowText)
+		List<String[]> data = Util.readcsvFile(Path.DADOS + language + "/PotionText.csv") ;
+		for (String[] line : data)
 		{
 			int id = Integer.parseInt(line[0]) ;
 			all[id].setName(line[1]) ;

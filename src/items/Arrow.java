@@ -38,8 +38,8 @@ public class Arrow extends Item
 
 	public static void updateText(String language)
 	{
-		List<String[]> arrowText = Util.readcsvFile(Path.DADOS + language + "/ArrowText.csv") ;
-		for (String[] line : arrowText)
+		List<String[]> data = Util.readcsvFile(Path.DADOS + language + "/ArrowText.csv") ;
+		for (String[] line : data)
 		{
 			int id = Integer.parseInt(line[0]) ;
 			all[id].setName(line[1]) ;

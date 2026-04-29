@@ -56,9 +56,11 @@ public abstract class Item
 	public static void load(String language)
 	{
 		ItemsData.createPotions() ;
+		ItemsData.createAlchemy() ;
 		ItemsData.createArrows() ;
 		Potion.updateText(language) ;
-		Arrow.updateText(language) ;
+		Alchemy.updateText(language) ;
+		Arrow.updateText(language);
 //		List<Item> allItems = new ArrayList<>() ;
 		for (int i = 0 ; i <= Potion.getAll().length - 1 ; i += 1)
 		{
