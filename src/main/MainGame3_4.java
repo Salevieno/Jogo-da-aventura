@@ -6,13 +6,13 @@ import java.awt.EventQueue ;
  * made with love by Salevieno and Larissa
  * @author Salevieno
  * @author Larissa
- * @version 0.7
+ * @version 0.8
  * @since 2022
  */
 public class MainGame3_4
 {
 	private static final GameFrame gameFrame = GameFrame.getMe() ;
-	private static final String version = "0.7 - última antes das artes feitas por Lari" ;
+	private static final String version = "0.8" ;
 	
 	public static void closeGame()
 	{
