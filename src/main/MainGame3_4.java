@@ -3,15 +3,16 @@ package main ;
 import java.awt.EventQueue ;
 
 /**
- * made with love by Salevieno
+ * made with love by Salevieno and Larissa
  * @author Salevieno
- * @version 3.4
+ * @author Larissa
+ * @version 0.7
  * @since 2022
  */
 public class MainGame3_4
 {
 	private static final GameFrame gameFrame = GameFrame.getMe() ;
-	private static final String version = "0.7" ;
+	private static final String version = "0.7 - última antes das artes feitas por Lari" ;
 	
 	public static void closeGame()
 	{
