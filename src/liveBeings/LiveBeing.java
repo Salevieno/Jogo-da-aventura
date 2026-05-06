@@ -506,7 +506,7 @@ public abstract class LiveBeing implements Drawable
 	}
 	
 	private double timeToWin(LiveBeing defender)
-	{		
+	{
 		double rateMagAtkAttacker =	this instanceof Player ? 0.4147 :  0.366;
 		double ratePhyAtkAttacker = 0.5 - rateMagAtkAttacker / 2.0  ;
 		double rateDefDefender = 0.5 - rateMagAtkAttacker / 2.0 ;
@@ -532,7 +532,7 @@ public abstract class LiveBeing implements Drawable
 		
 		
 		double movesPerSec = 1 / this.getBattleActionCounter().getDuration() ;
-		double damPerSec = damPerMove * hitRate  * movesPerSec ;
+		double damPerSec = damPerMove * movesPerSec ;
 		double timeToWin = defender.getPA().getLife().getMaxValue() / damPerSec ;
 
 		return timeToWin ;
