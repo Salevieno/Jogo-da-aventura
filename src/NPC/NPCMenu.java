@@ -1,30 +1,34 @@
 package NPC;
 
+import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import UI.OptionBox;
 import main.Log;
 
 public class NPCMenu
 {
 	private String speech ;
     private Map<String, Integer> optionDestination ;
-	private List<String> options ;
+	private List<OptionBox> options ;
 	private final List<Integer> destination ;
 
-    protected NPCMenu(List<Integer> destination, String speech, List<String> options)
+    protected NPCMenu(Point pos, List<Integer> destination, String speech, List<String> optionsText)
     {
         if (speech == null) { Log.error("Trying to create NPCMenu with null speech") ;}
-        if (destination.size() != options.size()) { Log.error("Trying to create NPCMenu with destination size = " + destination.size() + " and options size = " + options.size()) ;}
+        if (destination.size() != optionsText.size()) { Log.error("Trying to create NPCMenu with destination size = " + destination.size() + " and options size = " + optionsText.size()) ;}
 
         this.speech = speech ;
-        this.options = options ;
+        this.options = new ArrayList<>() ;
+        optionsText.forEach(opText -> this.options.add(new OptionBox(pos, NPC.stdfont, opText)));
         this.destination = destination ;
         this.optionDestination = new HashMap<>() ;
         for (int i = 0 ; i <= destination.size() - 1 ; i += 1)
         {
-            this.optionDestination.put(options.get(i), destination.get(i)) ;
+            this.optionDestination.put(optionsText.get(i), destination.get(i)) ;
         }
     }
 
@@ -32,13 +36,13 @@ public class NPCMenu
     {
         for (int i = 0 ; i <= destination.size() - 1 ; i += 1)
         {
-            this.optionDestination.put(options.get(i), destination.get(i)) ;
+            this.optionDestination.put(options.get(i).getText(), destination.get(i)) ;
         }
     }
 
     public String getSpeech() { return speech ;}
 
-    public List<String> getOptions() { return options ;}
+    public List<OptionBox> getOptions() { return options ;}
 
     public List<Integer> getDestination() { return destination ;}    
 
@@ -46,7 +50,15 @@ public class NPCMenu
 
     protected void setOptionDestination(Map<String, Integer> optionDestination) { this.optionDestination = optionDestination ;}
 
-    protected void setOptions(List<String> options) { this.options = options ;}
+    protected void setOptionsText(List<String> options)
+    {
+        if (options.size() != this.options.size()) { Log.warn("Qtd. de opções inválida ao tentar setar opções de menu de NPC. Recebeu " + options.size() + " e esperava " + this.options.size()) ; return ;}
+    
+        for (int i = 0 ; i <= options.size() ; i += 1)
+        {
+            this.options.get(i).setText(options.get(i)) ;
+        }
+    }
 
     public Map<String, Integer> getOptionDestination() { return optionDestination ;}
 }

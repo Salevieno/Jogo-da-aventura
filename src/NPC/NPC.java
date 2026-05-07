@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.json.simple.JSONObject;
 
+import UI.OptionBox;
 import components.Collider;
 import components.Hitbox;
 import components.HitboxRectangle;
@@ -82,6 +83,14 @@ public abstract class NPC implements Interactable
 		Point center = UtilAlignment.getPosAt(pos, Align.bottomCenter, Align.center, Util.getSize(job.getImage())) ;
 		this.hitbox.setCenter(center) ;
 		this.pos = pos ;
+		for (NPCMenu menu : menus)
+		{
+			for (int i = 0 ; i <= menu.getOptions().size() - 1 ; i += 1)
+			{
+				OptionBox option = menu.getOptions().get(i) ;
+				option.setTopLeftPos(Util.translate(pos, 20, (option.getSize().height + 6) * i)) ;
+			}
+		}
 	}
 	public String getName() { return name ;}
 	public NPCJobs getJob() { return job ;}
@@ -187,17 +196,8 @@ public abstract class NPC implements Interactable
 		if (menus.size() <= currentMenuID) { return ;}
 		if (menus.get(currentMenuID).getOptions() == null) { return ;}
 		if (menus.get(currentMenuID).getOptions().size() <= 0) { return ;}
-		
-		GamePanel.DP.drawImage(choicesWindow, windowPos, Align.topLeft) ;
-		
-		List<String> opt = menus.get(currentMenuID).getOptions() ;
-		for (int i = 0 ; i <= opt.size() - 1 ; i += 1)
-		{
-			Point textPos = Util.translate(windowPos, 5, 5 + i * (stdfont.getSize() + 5)) ;
-			String text = opt.get(i) ;
-			Color textColor = i == selOption ? selColor : stdColor ;
-			GamePanel.DP.drawText(textPos, Align.topLeft, Draw.stdAngle, text, stdfont, textColor) ;
-		}		
+
+		menus.get(currentMenuID).getOptions().forEach(OptionBox::display) ;		
 	}
 	
 	public void displayOptions() { displayOptions(Util.translate(pos, 20, -10)) ;}
@@ -311,7 +311,7 @@ public abstract class NPC implements Interactable
 				{
 					options = new ArrayList<>() ;
 				}
-				menus.add(new NPCMenu(job.getDestination().get(i), speech, options)) ;
+				menus.add(new NPCMenu(new Point(0, 0), job.getDestination().get(i), speech, options)) ;
 			}
 
 			NPC newNPC = NPC.create(job, name, info, menus) ;
@@ -333,7 +333,7 @@ public abstract class NPC implements Interactable
 			{
 				JSONObject menu = menusData.get(m) ;
 				npc.getMenus().get(m).setSpeech((String) menu.get("fala")) ;
-				npc.getMenus().get(m).setOptions((List<String>) menu.get("opcoes")) ;
+				npc.getMenus().get(m).setOptionsText((List<String>) menu.get("opcoes")) ;
 				if (npc.getMenus().get(m).getOptions() != null)
 				{
 					npc.getMenus().get(m).updateOptionDestination() ;
