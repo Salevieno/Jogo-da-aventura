@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,6 +13,7 @@ import Buildings.Building;
 import NPC.NPC;
 import UI.ButtonFunction;
 import UI.GameButton;
+import UI.GameTextButton;
 import components.Quest;
 import graphics.Align;
 import graphics2.SpriteAnimation;
@@ -54,10 +54,8 @@ public abstract class LoadingGame
     static
     {
 		Point startButtonPos = Util.translate(Game.getScreen().getCenter(), 0, 80) ;
-    	Image startImage = ImageLoader.loadImage(Path.OPENING_IMG + "Start.png") ;
-    	Image startImageSelected = ImageLoader.loadImage(Path.OPENING_IMG + "StartSelected.png") ;
 		ButtonFunction startAction = () -> { startGame() ;};
-    	startButton = new GameButton(startButtonPos, Align.center, "start game", startImage, startImageSelected, startAction) ;
+    	startButton = new GameTextButton(startButtonPos, Align.center, "start game", startAction) ;
     	startButton.deactivate() ;
 		petIdle.activate();
     }

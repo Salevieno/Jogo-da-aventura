@@ -12,6 +12,8 @@ import javax.sound.sampled.Clip;
 
 import UI.ButtonFunction;
 import UI.GameButton;
+import UI.GameIconButton;
+import UI.GameTextButton;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
@@ -49,10 +51,6 @@ public abstract class Opening
 	private static final SpriteAnimation openingAni = new SpriteAnimation(Path.OPENING_IMG + "Opening.png", new Point(), Align.topLeft, 12, 0.05) ;
 	
 	private static final Image backgroundImage = ImageLoader.loadImage(Path.OPENING_IMG + "Opening.png") ;
-	private static final Image LoadingSlot = ImageLoader.loadImage(Path.OPENING_IMG + "LoadingSlot.png") ;
-	private static final Image LoadingSlotSelected = ImageLoader.loadImage(Path.OPENING_IMG + "LoadingSlotSelected.png") ;
-	private static final Image generalButtonImg = ImageLoader.loadImage(Path.OPENING_IMG + "generalButton.png") ;
-	private static final Image generalButtonSelectedImg = ImageLoader.loadImage(Path.OPENING_IMG + "generalButtonSelected.png") ;
 	private static final Image jobDescriptionBackground = ImageLoader.loadImage(Path.OPENING_IMG + "JobDescriptionBackground.png") ;
 	// private static final Image LoadingEnfeite ;
 	private static final Clip thunderSound ;
@@ -90,8 +88,8 @@ public abstract class Opening
 		ButtonFunction thiefAction = () -> { chosenJob = 4 ; advanceStep() ;} ;
 		
 		Screen screen = Game.getScreen() ;
-		GameButton portButton = new GameButton(screen.pos(0.85, 0.05), Align.center, "Port", ImageLoader.loadImage(Path.OPENING_IMG + "Port.png"), ImageLoader.loadImage(Path.OPENING_IMG + "PortSelected.png"), portAction) ;
-		GameButton enButton = new GameButton(screen.pos(0.95, 0.05), Align.center, "En", ImageLoader.loadImage(Path.OPENING_IMG + "En.png"), ImageLoader.loadImage(Path.OPENING_IMG + "EnSelected.png"), enAction) ;
+		GameButton portButton = new GameIconButton(screen.pos(0.85, 0.05), Align.center, ImageLoader.loadImage(Path.OPENING_IMG + "Port.png"), ImageLoader.loadImage(Path.OPENING_IMG + "PortSelected.png"), portAction) ;
+		GameButton enButton = new GameIconButton(screen.pos(0.95, 0.05), Align.center, ImageLoader.loadImage(Path.OPENING_IMG + "En.png"), ImageLoader.loadImage(Path.OPENING_IMG + "EnSelected.png"), enAction) ;
 		languageButtons = List.of(portButton, enButton) ;
 
 		String[] btNames = new String[] {
@@ -119,7 +117,7 @@ public abstract class Opening
 			if (btImage == null) { btImage = ImageLoader.loadImage("ButtonGeneral.png") ;}
 			if (btImageSelected == null) { btImageSelected = ImageLoader.loadImage(Path.OPENING_IMG + btNames[i] + " Selected.png") ;}
 			if (btImageSelected == null) { btImageSelected = ImageLoader.loadImage("ButtonGeneralSelected.png") ;}
-			GameButton newButton = new GameButton(btPos[i], Align.center, btNames[i], generalButtonImg, generalButtonSelectedImg, btAction[i]) ;
+			GameButton newButton = new GameTextButton(btPos[i], Align.center, btNames[i], btNames[i], btAction[i]) ;
 			newButton.deactivate() ;
 			buttons.add(newButton) ;		
 		}
@@ -199,9 +197,9 @@ public abstract class Opening
 		ButtonFunction loadSlot2 = () -> { loadGame(players, 1) ;} ;
 		ButtonFunction loadSlot3 = () -> { loadGame(players, 2) ;} ;
 		
-		loadSlotButtons.add(new GameButton(new Point(60, 100), Align.topLeft, "Load slot 1", LoadingSlot, LoadingSlotSelected, loadSlot1)) ;
-		loadSlotButtons.add(new GameButton(new Point(260, 100), Align.topLeft, "Load slot 2", LoadingSlot, LoadingSlotSelected, loadSlot2)) ;
-		loadSlotButtons.add(new GameButton(new Point(460, 100), Align.topLeft, "Load slot 3", LoadingSlot, LoadingSlotSelected, loadSlot3)) ;
+		loadSlotButtons.add(new GameTextButton(new Point(60, 100), Align.topLeft, "Load slot 1", loadSlot1)) ;
+		loadSlotButtons.add(new GameTextButton(new Point(260, 100), Align.topLeft, "Load slot 2", loadSlot2)) ;
+		loadSlotButtons.add(new GameTextButton(new Point(460, 100), Align.topLeft, "Load slot 3", loadSlot3)) ;
 
 		if (players[0] == null) { loadSlotButtons.get(0).deactivate() ;}
 		if (players[1] == null) { loadSlotButtons.get(1).deactivate() ;}

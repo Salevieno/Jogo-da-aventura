@@ -33,7 +33,7 @@ public class NPCMaster extends NPC
 // 				break ;
 // 			}
 	public void act(Player player, Pet pet, String action)
-	{
+	{// TODO como spells window é do player, janela não fecha ao encerrar interação.
 		if (50 <= player.getLevel() & player.getProJob() == 0 & currentMenuID == 3)
 		{
 			if (action == null) { return ;}

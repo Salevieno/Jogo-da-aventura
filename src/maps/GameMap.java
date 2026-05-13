@@ -450,6 +450,15 @@ public abstract class GameMap
 	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
 	public static List<GameMap> getAllMaps() { return allMaps ;}
 	public abstract Set<Interactable> getInteractables() ;
+	public List<NPC> getAllNPCs()
+	{ 
+		List<NPC> allNPCs = new ArrayList<>(npcs);
+		if (buildings != null)
+		{
+			allNPCs.addAll(buildings.stream().flatMap(building -> building.getNPCs().stream()).toList());
+		}
+		return allNPCs;
+	}
  	
 	@Override
 	public String toString()

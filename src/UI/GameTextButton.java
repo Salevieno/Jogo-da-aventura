@@ -1,20 +1,26 @@
 package UI;
 
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
+import javax.sound.sampled.Clip;
+
 import graphics.Align;
+import graphics.Scale;
+import graphics.UtilAlignment;
+import graphics2.Draw;
 import main.GamePanel;
 import main.ImageLoader;
-import main.Palette;
 import main.Path;
 
-public class OptionBox
+public class GameTextButton extends GameButton
 {
+    private final Dimension minSize ;
     private Point pos1 ;
     private Point pos2 ;
     private Point pos3 ;
@@ -25,9 +31,7 @@ public class OptionBox
     private Point pos8 ;
     private Point pos9 ;
     private Point center ;
-    private Dimension size ;
     private String text ;
-    private boolean isHovered ;
 
     private Image boxStretchedPart2 ;
     private Image boxStretchedPart4 ;
@@ -59,29 +63,40 @@ public class OptionBox
     private static final Image boxSelectedPart8 = flipVertically(boxSelectedPart4) ;
     private static final Image boxSelectedPart9 = ImageLoader.loadImage(Path.UI_IMG + "TextBoxSelected4.png") ;
     private static final int edgeSize = boxPart1.getWidth(null) ;
+    private static final int padding = 2 * edgeSize + 2 ;
 
-    public OptionBox(Point pos, Dimension size, String text)
+    public GameTextButton(Point pos, Align alignment, String name, Dimension size, String text, Image image, Image selectedImage, ButtonFunction action, Clip soundEffectOnHover)
     {
-        this.size = new Dimension(Math.max(size.width, 2 * edgeSize + 2), Math.max(size.height, 2 * edgeSize + 2)) ;
+        super(pos, alignment, name, image, selectedImage, action, soundEffectOnHover);
+        Dimension textSize = calcTextSize(text) ;
+        this.minSize = new Dimension(textSize.width + padding, textSize.height + padding) ;
+        this.size = new Dimension(Math.max(size.width, minSize.width), Math.max(size.height, minSize.height)) ;
+        resize(size) ;
+		this.topLeft = UtilAlignment.getTopLeft(pos, alignment, size) ;
+        updatePositions(topLeft) ;
         this.text = text ;
-        this.boxStretchedPart2 = stretchImage(boxPart2, boxPart2.getWidth(null), this.size.height - 2 * edgeSize) ;
-        this.boxStretchedPart4 = stretchImage(boxPart4, this.size.width - 2 * edgeSize, boxPart4.getHeight(null)) ;
-        this.boxStretchedPart6 = stretchImage(boxPart6, boxPart6.getWidth(null), this.size.height - 2 * edgeSize) ;
-        this.boxStretchedPart8 = stretchImage(boxPart8, this.size.width - 2 * edgeSize, boxPart8.getHeight(null)) ;
-        this.boxStretchedPart9 = stretchImage(boxPart9, this.size.width - 2 * edgeSize, this.size.height - 2 * edgeSize) ;
-        this.boxSelectedStretchedPart2 = stretchImage(boxSelectedPart2, boxSelectedPart2.getWidth(null), this.size.height - 2 * edgeSize) ;
-        this.boxSelectedStretchedPart4 = stretchImage(boxSelectedPart4, this.size.width - 2 * edgeSize, boxSelectedPart4.getHeight(null)) ;
-        this.boxSelectedStretchedPart6 = stretchImage(boxSelectedPart6, boxSelectedPart6.getWidth(null), this.size.height - 2 * edgeSize) ;
-        this.boxSelectedStretchedPart8 = stretchImage(boxSelectedPart8, this.size.width - 2 * edgeSize, boxSelectedPart8.getHeight(null)) ;
-        this.boxSelectedStretchedPart9 = stretchImage(boxSelectedPart9, this.size.width - 2 * edgeSize, this.size.height - 2 * edgeSize) ;
-        updatePositions(pos) ;
     }
 
-    public OptionBox(Point pos, Font font, String text)
+    public GameTextButton(Point pos, Align alignment, String name, String text, Image image, Image selectedImage, ButtonFunction action, Clip soundEffectOnHover)
     {
-        this(pos, new Dimension(GamePanel.DP.textLength(text, font) + 2 * edgeSize, GamePanel.DP.textHeight(font) + 2 * edgeSize), text) ;
+        this(pos, alignment, name, new Dimension(10 + padding, 50 + padding), text, image, selectedImage, action, soundEffectOnHover) ;
     }
 
+    public GameTextButton(Point pos, Align alignment, String name, String text, ButtonFunction action)
+    {
+        this(pos, alignment, name, new Dimension(10 + padding, 5 + padding), text, null, null, action, null) ;
+    }
+
+    public GameTextButton(Point pos, Align alignment, Dimension size, String text, ButtonFunction action)
+    {
+        this(pos, alignment, "", size, text, null, null, action, null) ;
+    }
+
+    public GameTextButton(Point pos, Align alignment, String text, ButtonFunction action)
+    {
+        this(pos, alignment, "", new Dimension(10 + padding, 5 + padding), text, null, null, action, null) ;
+    }
+	
     private static Image flip(Image image, boolean flipH, boolean flipV)
     {
         int width = image.getWidth(null);
@@ -109,7 +124,6 @@ public class OptionBox
 
     private static Image flipHorizontally(Image image) { return flip(image, true, false) ;}
     private static Image flipVertically(Image image) { return flip(image, false, true) ;}
-
     private static Image stretchImage(Image image, int finalWidth, int finalHeight)
     {
         BufferedImage stretchedImage = new BufferedImage(finalWidth, finalHeight, BufferedImage.TYPE_INT_ARGB);
@@ -117,13 +131,6 @@ public class OptionBox
         g2d.drawImage(image, 0, 0, finalWidth, finalHeight, null);
         g2d.dispose();
         return stretchedImage;
-    }
-    public String getText() { return text ;}
-    public Dimension getSize() { return size ;}
-    public void setText(String text) { this.text = text ;}
-    public void setTopLeftPos(Point pos)
-    {
-        updatePositions(pos) ;
     }
 
     private void updatePositions(Point pos)
@@ -140,9 +147,9 @@ public class OptionBox
         this.center = new Point(pos1.x + size.width / 2, pos1.y + size.height / 2) ;
     }
 
-    public void display()
+    public void displayStdTextButton()
     {
-        if (isHovered)
+        if (isSelected)
         {
             GamePanel.DP.drawImage(boxSelectedPart1, pos1, Align.topLeft);
             GamePanel.DP.drawImage(boxSelectedStretchedPart2, pos2, Align.topLeft);
@@ -153,10 +160,6 @@ public class OptionBox
             GamePanel.DP.drawImage(boxSelectedPart7, pos7, Align.topLeft);
             GamePanel.DP.drawImage(boxSelectedStretchedPart8, pos8, Align.topLeft);
             GamePanel.DP.drawImage(boxSelectedStretchedPart9, pos9, Align.topLeft);
-            if (text != null)
-            {
-                GamePanel.DP.drawText(center, Align.center, text, Palette.colors[3]);
-            }
 
             return ;
         }
@@ -170,9 +173,87 @@ public class OptionBox
         GamePanel.DP.drawImage(boxPart7, pos7, Align.topLeft);
         GamePanel.DP.drawImage(boxStretchedPart8, pos8, Align.topLeft);
         GamePanel.DP.drawImage(boxStretchedPart9, pos9, Align.topLeft);
-        if (text != null)
-        {
-            GamePanel.DP.drawText(center, Align.center, text, Palette.colors[3]);
-        }
     }
+
+	public void display(double angle, boolean displayText, Point mousePos, Color textColor, double opacity)
+	{
+		
+		if (!isActive) { return ;} // TODO move this logic
+		
+		Image imageDisplayed = isSelected ? selectedImage : image ;
+		
+		if (imageDisplayed == null)
+		{
+            displayStdTextButton() ;
+		}
+        else
+        {
+            GamePanel.DP.drawImage(imageDisplayed, center, angle, Scale.unit, Align.center, opacity) ;
+        }
+
+		GamePanel.DP.drawText(center, Align.center, 0, text, font, textColor) ;
+	}
+
+	public void display()
+	{
+		Image imageDisplayed = isSelected ? selectedImage : image ;
+		
+		if (imageDisplayed == null)
+		{
+            displayStdTextButton() ;
+		}
+        else
+        {
+            GamePanel.DP.drawImage(imageDisplayed, center, Draw.stdAngle, Scale.unit, Align.center, 1.0) ;
+        }
+
+		GamePanel.DP.drawText(center, Align.center, 0, text, font, textColor) ;
+	}
+
+    public Dimension getSize() { return size ;}
+    public String getText() { return text ;}
+
+    public void setTopLeftPos(Point topLeftPos)
+    {
+        this.topLeft = topLeftPos ;
+        updatePositions(topLeftPos) ;
+    }
+    public void setText(String text) { this.text = text ;}
+    public void resize(Dimension size)
+    {
+        if (size.width < minSize.width)
+        {
+            size.width = minSize.width ;
+        }
+        if (size.height < minSize.height)
+        {
+            size.height = minSize.height ;
+        }
+        this.boxStretchedPart2 = stretchImage(boxPart2, boxPart2.getWidth(null), size.height - 2 * edgeSize) ;
+        this.boxStretchedPart4 = stretchImage(boxPart4, size.width - 2 * edgeSize, boxPart4.getHeight(null)) ;
+        this.boxStretchedPart6 = stretchImage(boxPart6, boxPart6.getWidth(null), size.height - 2 * edgeSize) ;
+        this.boxStretchedPart8 = stretchImage(boxPart8, size.width - 2 * edgeSize, boxPart8.getHeight(null)) ;
+        this.boxStretchedPart9 = stretchImage(boxPart9, size.width - 2 * edgeSize, size.height - 2 * edgeSize) ;
+        this.boxSelectedStretchedPart2 = stretchImage(boxSelectedPart2, boxSelectedPart2.getWidth(null), size.height - 2 * edgeSize) ;
+        this.boxSelectedStretchedPart4 = stretchImage(boxSelectedPart4, size.width - 2 * edgeSize, boxSelectedPart4.getHeight(null)) ;
+        this.boxSelectedStretchedPart6 = stretchImage(boxSelectedPart6, boxSelectedPart6.getWidth(null), size.height - 2 * edgeSize) ;
+        this.boxSelectedStretchedPart8 = stretchImage(boxSelectedPart8, size.width - 2 * edgeSize, boxSelectedPart8.getHeight(null)) ;
+        this.boxSelectedStretchedPart9 = stretchImage(boxSelectedPart9, size.width - 2 * edgeSize, size.height - 2 * edgeSize) ;
+    }
+
+    private Dimension calcTextSize(String text) // TODO move to Util
+    {
+        BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = img.createGraphics();
+
+        FontMetrics metrics = g2d.getFontMetrics(font);
+
+        int width = metrics.stringWidth(text);
+        int height = metrics.getHeight();
+
+        g2d.dispose();
+
+        return new Dimension(width, height) ;
+    }
+    
 }

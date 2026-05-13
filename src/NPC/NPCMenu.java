@@ -1,34 +1,32 @@
 package NPC;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import UI.OptionBox;
+import UI.GameTextButton;
 import main.Log;
 
 public class NPCMenu
 {
 	private String speech ;
     private Map<String, Integer> optionDestination ;
-	private List<OptionBox> options ;
+	private List<GameTextButton> options ;
 	private final List<Integer> destination ;
 
-    protected NPCMenu(Point pos, List<Integer> destination, String speech, List<String> optionsText)
+    protected NPCMenu(Point pos, List<Integer> destination, String speech, List<GameTextButton> options)
     {
         if (speech == null) { Log.error("Trying to create NPCMenu with null speech") ;}
-        if (destination.size() != optionsText.size()) { Log.error("Trying to create NPCMenu with destination size = " + destination.size() + " and options size = " + optionsText.size()) ;}
+        if (destination.size() != options.size()) { Log.error("Trying to create NPCMenu with destination size = " + destination.size() + " and options size = " + options.size()) ;}
 
         this.speech = speech ;
-        this.options = new ArrayList<>() ;
-        optionsText.forEach(opText -> this.options.add(new OptionBox(pos, NPC.stdfont, opText)));
+        this.options = options ;
         this.destination = destination ;
         this.optionDestination = new HashMap<>() ;
         for (int i = 0 ; i <= destination.size() - 1 ; i += 1)
         {
-            this.optionDestination.put(optionsText.get(i), destination.get(i)) ;
+            this.optionDestination.put(options.get(i).getText(), destination.get(i)) ;
         }
     }
 
@@ -42,13 +40,9 @@ public class NPCMenu
 
     public String getSpeech() { return speech ;}
 
-    public List<OptionBox> getOptions() { return options ;}
-
-    public List<Integer> getDestination() { return destination ;}    
+    public List<GameTextButton> getOptions() { return options ;}
 
     protected void setSpeech(String speech) { this.speech = speech ;}
-
-    protected void setOptionDestination(Map<String, Integer> optionDestination) { this.optionDestination = optionDestination ;}
 
     protected void setOptionsText(List<String> options)
     {
@@ -59,6 +53,4 @@ public class NPCMenu
             this.options.get(i).setText(options.get(i)) ;
         }
     }
-
-    public Map<String, Integer> getOptionDestination() { return optionDestination ;}
 }

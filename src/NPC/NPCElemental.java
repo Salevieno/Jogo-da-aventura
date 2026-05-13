@@ -12,8 +12,7 @@ public class NPCElemental extends NPC
 
     public NPCElemental(String name, Point pos, List<NPCMenu> menus)
     {
-        super(NPCJobs.elemental, name, pos, menus);
-        this.window = new ElementalWindow() ;
+        super(NPCJobs.elemental, name, pos, menus, new ElementalWindow());
     }
 	// 			case elemental:
 // 			{

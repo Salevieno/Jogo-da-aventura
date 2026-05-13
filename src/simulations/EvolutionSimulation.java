@@ -15,6 +15,7 @@ import java.util.Map;
 
 import UI.ButtonFunction;
 import UI.GameButton;
+import UI.GameTextButton;
 import animations.Animation;
 import attributes.AttributeIncrease;
 import attributes.Attributes;
@@ -61,8 +62,6 @@ public abstract class EvolutionSimulation
 
 	private static final String pathSimulation = "Simulation/" ;
 	private static final Image screenImage = ImageLoader.loadImage(pathSimulation + "SimulationScreen.png") ;
-	private static final Image buttonImage = ImageLoader.loadImage(pathSimulation + "ButtonGeneral.png") ;
-	private static final Image buttonSelectedImage = ImageLoader.loadImage(pathSimulation + "ButtonGeneralSelected.png") ;
 	private static final Image fightingImage = ImageLoader.loadImage(pathSimulation + "fightingIcon.png") ;
 	
 	
@@ -134,7 +133,7 @@ public abstract class EvolutionSimulation
 	
 	private static GameButton newButton(Point pos, String text, ButtonFunction action)
 	{
-		return new GameButton(pos, Align.topLeft, text, buttonImage, buttonSelectedImage, action) ;
+		return new GameTextButton(pos, Align.topLeft, text, action) ;
 	}
 	
 	private static void addJobSection()

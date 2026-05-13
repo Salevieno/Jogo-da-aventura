@@ -11,6 +11,7 @@ import java.util.List;
 
 import UI.ButtonFunction;
 import UI.GameButton;
+import UI.GameIconButton;
 import graphics.Align;
 import graphics.UtilAlignment;
 import liveBeings.PlayerActions;
@@ -89,12 +90,12 @@ public abstract class GameWindow
 	protected GameButton windowUpButton(Point pos, Align align)
 	{
 		ButtonFunction action = () -> { windowUp() ;} ;
-		return new GameButton(pos, align, buttonWindowUpImage, selectedButtonWindowUpImage, action) ;
+		return new GameIconButton(pos, align, buttonWindowUpImage, selectedButtonWindowUpImage, action) ;
 	}
 	protected GameButton windowDownButton(Point pos, Align align)
 	{
 		ButtonFunction action = () -> { windowDown() ;} ;
-		return new GameButton(pos, align, buttonWindowDownImage, selectedButtonWindowDownImage, action) ;
+		return new GameIconButton(pos, align, buttonWindowDownImage, selectedButtonWindowDownImage, action) ;
 	}
 	
 	protected boolean mouseIsOver(Point mousePos) { return Util.isInside(mousePos, topLeftPos, size) ;}

@@ -13,8 +13,7 @@ public class NPCCrafter extends NPC
 
     public NPCCrafter(String name, Point pos, List<NPCMenu> menus, List<Recipe> recipes)
     {
-        super(NPCJobs.crafter, name, pos, menus);		
-        this.window = new CraftWindow(recipes) ;
+        super(NPCJobs.crafter, name, pos, menus, new CraftWindow(recipes));
     }
 	
 	public void act(Player player, Pet pet, String action)

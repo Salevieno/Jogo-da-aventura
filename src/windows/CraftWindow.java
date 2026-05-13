@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import UI.GameButton;
+import UI.GameTextButton;
 import animations.MessageAnimation;
 import graphics.Align;
 import graphics.Scale;
@@ -47,7 +48,7 @@ public class CraftWindow extends GameWindow
 		this.amountOfCrafts = 1 ;
 		this.recipes = recipes ;
 		this.recipesInWindow = RecipesPerWindow <= recipes.size() ? recipes.subList(window, RecipesPerWindow + window) : recipes ;
-		this.craftButton = new GameButton(Util.translate(windowPos, 286, 130), Align.center, "Fabricar " + String.valueOf(amountOfCrafts), buttonImg, buttonImg, () -> {setBag(Game.getPlayer().getBag()) ; craft(playerBag) ;}) ;
+		this.craftButton = new GameTextButton(Util.translate(windowPos, 286, 130), Align.center, "Fabricar " + String.valueOf(amountOfCrafts), () -> {setBag(Game.getPlayer().getBag()) ; craft(playerBag) ;}) ;
 		this.craftButton.deactivate() ;
 		addButton(craftButton) ;
 	}

@@ -11,6 +11,7 @@ import java.util.Map;
 
 import UI.ButtonFunction;
 import UI.GameButton;
+import UI.GameIconButton;
 import attributes.Attributes;
 import attributes.BasicBattleAttribute;
 import graphics.Align;
@@ -69,7 +70,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		for (Attributes att : Arrays.asList(Attributes.getIncrementable()))
 		{
 			ButtonFunction method = () -> {player.getBA().mapAttributes(att).incBaseValue(1) ;} ;
-			GameButton newAttButton = new GameButton(pos, Align.center, plusSign, selectedPlusSign, method) ;
+			GameButton newAttButton = new GameIconButton(pos, Align.center, plusSign, selectedPlusSign, method) ;
 			newAttButton.deactivate() ;
 			incAttButtons.put(att, newAttButton) ;
 			pos.y += 27 ;

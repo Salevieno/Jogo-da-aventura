@@ -14,12 +14,10 @@ public class NPCSeller extends NPC
 {
 
 	private boolean renewStocks = false ;
-    private final ShoppingWindow shopping ;
 
     public NPCSeller(String name, Point pos, List<NPCMenu> menus, List<Item> itemsForSale)
     {// TODO corrigir npcType
-        super(NPCJobs.equipsSeller, name, pos, menus) ;
-        this.shopping = new ShoppingWindow(itemsForSale) ;
+        super(NPCJobs.equipsSeller, name, pos, menus, new ShoppingWindow(itemsForSale)) ;
     }
 	
 	private int[] newSmuggledStock()
@@ -92,11 +90,11 @@ public class NPCSeller extends NPC
 
 	public void act(Player player, Pet pet, String action)
 	{
-
 		if (action == null) { return ;}
 		
 		if (currentMenuID == 0 & actionIsForward(action))
 		{
+			ShoppingWindow shopping = (ShoppingWindow) window ;
 			shopping.setBuyMode(selOption == 0) ;
 			if (selOption == 1)
 			{

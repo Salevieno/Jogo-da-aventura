@@ -10,6 +10,7 @@ import java.util.List;
 
 import UI.ButtonFunction;
 import UI.GameButton;
+import UI.GameIconButton;
 import components.QuestSkills;
 import graphics.Align;
 import graphics2.Draw;
@@ -84,11 +85,11 @@ public abstract class SideBar
 		
 
 		Point iconPos = Util.translate(barPos, size.width / 2, 45) ;
-		buttons.add(new GameButton(iconPos, Align.topCenter, playerImage, playerImage, playerAction)) ;
+		buttons.add(new GameIconButton(iconPos, Align.topCenter, playerImage, playerImage, playerAction)) ;
 		iconPos.y += playerImage.getHeight(null) + 10 ;
 		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
 		{
-			buttons.add(new GameButton(iconPos, Align.topCenter, iconNames[i], iconImages[i], iconSelectedImages[i], actions[i])) ;
+			buttons.add(new GameIconButton(iconPos, Align.topCenter, iconImages[i], iconSelectedImages[i], actions[i])) ;
 
 			iconPos.y += iconImages[i].getHeight(null) + 10 ;
 		}
@@ -109,7 +110,7 @@ public abstract class SideBar
 			((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
 			player.switchOpenClose(pet.getAttWindow()) ;
 		} ;
-		buttons.add(new GameButton(Util.translate(barPos, size.width / 2, 10), Align.topCenter, petImage, petImage, petAction)) ;
+		buttons.add(new GameIconButton(Util.translate(barPos, size.width / 2, 10), Align.topCenter, petImage, petImage, petAction)) ;
 	}
 	
 	private static void displayKeys()

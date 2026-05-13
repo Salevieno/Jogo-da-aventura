@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import Buildings.Building;
 import NPC.NPC;
 import animations.BufferedTextAnimation;
 import animations.MessageAnimation;
@@ -1069,41 +1068,23 @@ public class Player extends LiveBeing
 	private void interactWithNPCs()
 	{
 		if (PlayerActions.actionOfKey(currentAction) == null) { return ;}
-		if (!PlayerActions.actionOfKey(currentAction).equals(PlayerActions.interact)) { return ;}		
+		if (!PlayerActions.actionOfKey(currentAction).equals(PlayerActions.interact)) { return ;}
 
 		if (npcInContact != null && npcInContact.isInteracting())
 		{
+			npcInContact.endInteraction() ;
 			npcInContact = null ;
 			return ;
 		}
 
-		if (map.getNPCs() != null)
-		{
-			for (NPC npc : map.getNPCs())
-			{
-				if (!hitbox.overlaps(npc.getHitbox())) { continue ;}
-				npcInContact = npc ;
-				npcInContact.startInteraction() ;
-				npcInContact.resetMenu();
-				
-				break ;
-			}
-		}
-		
-		if (map.getBuildings() == null) { return ;}
-		
-		for (Building building : map.getBuildings())
-		{
-			for (NPC npc : building.getNPCs())
-			{				
-				if (!hitbox.overlaps(npc.getHitbox())) { continue ;}
+		for (NPC npc : map.getAllNPCs())
+		{				
+			if (!hitbox.overlaps(npc.getHitbox())) { continue ;}
 
-				npcInContact = npc ;
-				npcInContact.startInteraction() ;
-				npcInContact.resetMenu();
-				
-				break ;
-			}
+			npcInContact = npc ;
+			npcInContact.startInteraction() ;
+			
+			return ;
 		}
 	}
 

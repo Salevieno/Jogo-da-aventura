@@ -20,7 +20,7 @@ public class NPCCitizen extends NPC
     {
 		Point speechPos = Util.translate(pos, 0, 10 - job.getImage().getHeight(null)) ;
 
-		Draw.speech(speechPos, menus.get(currentMenuID).getSpeech(), stdfont, speakingBubble, stdColor) ;
+		Draw.speech(speechPos, menus.get(currentMenuID).getSpeech(), stdFont, speakingBubble, stdColor) ;
     }
 	
 	public void act(Player player, Pet pet, String action) { }

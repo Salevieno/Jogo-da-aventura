@@ -17,8 +17,7 @@ public class NPCForger extends NPC
 
     public NPCForger(String name, Point pos, List<NPCMenu> menus)
     {
-        super(NPCJobs.forger, name, pos, menus, forgeDeskImage);
-        this.window = new ForgeWindow() ;
+        super(NPCJobs.forger, name, pos, menus, forgeDeskImage, new ForgeWindow());
     }
 	// TODO update on interaction with player
 	// 				((ForgeWindow) window).setItemsForForge(equipsForForge);

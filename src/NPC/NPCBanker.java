@@ -13,8 +13,7 @@ public class NPCBanker extends NPC
 
     public NPCBanker(String name, Point pos, List<NPCMenu> menus)
     {
-        super(NPCJobs.banker, name, pos, menus);
-        window = new BankWindow() ;
+        super(NPCJobs.banker, name, pos, menus, new BankWindow());
     }
     
 	public void act(Player player, Pet pet, String action)

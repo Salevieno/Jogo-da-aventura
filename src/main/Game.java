@@ -467,7 +467,7 @@ public class Game
 
 		if (player.isInContactWithNPC() && player.getNPCInContact().isInteracting())
 		{
-			player.getNPCInContact().act(player, pet, player.getCurrentAction()) ;
+			// player.getNPCInContact().act(player, pet, player.getCurrentAction()) ;
 // 		if (playerAction == null) { return ;}				
 // 		if (window != null && window.isOpen()) { return ;}
 			player.getNPCInContact().navigate(player.getCurrentAction()) ;

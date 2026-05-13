@@ -1,6 +1,7 @@
 package NPC ;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image ;
 import java.awt.Point;
@@ -10,7 +11,7 @@ import java.util.List;
 
 import org.json.simple.JSONObject;
 
-import UI.OptionBox;
+import UI.GameTextButton;
 import components.Collider;
 import components.Hitbox;
 import components.HitboxRectangle;
@@ -43,20 +44,20 @@ public abstract class NPC implements Interactable
 	protected final List<NPCMenu> menus ;
 	protected int currentMenuID ;
 	protected int selOption ;
-	protected GameWindow window ;
+	protected GameWindow window ; // TODO passar window para o  player. Como fazer para a criação de NPCs não depender do player?
 	private Hitbox hitbox ;
 	private boolean isInteracting ;
 	
 	protected final List<Collider> colliders ;
 	protected static final Image speakingBubble = ImageLoader.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
 	protected static final Image choicesWindow = ImageLoader.loadImage(Path.NPC_IMG + "ChoicesWindow.png") ;
-	protected static final Font stdfont = new Font(Game.MainFontName, Font.BOLD, 12) ;
+	protected static final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	protected static final Color stdColor = Palette.colors[0] ;
 	protected static final Color selColor = Palette.colors[18] ;
 	private static final List<NPC> allNPCs = new ArrayList<>() ;
 
 	
-	public NPC(NPCJobs job, String name, Point pos, List<NPCMenu> menus, Image desk)
+	public NPC(NPCJobs job, String name, Point pos, List<NPCMenu> menus, Image desk, GameWindow window)
 	{
 		this.id = allNPCs.size() ;
 		this.job = job ;
@@ -67,15 +68,21 @@ public abstract class NPC implements Interactable
 		this.menus = menus ;
 		this.isInteracting = false ;
 		this.desk = desk ;
+		this.window = window ;
 		
 		this.hitbox = new HitboxRectangle(Util.translate(pos, 0, -job.getImage().getHeight(null) / 2), Util.getSize(job.getImage()), 0.8) ;
 		this.colliders = List.of(new Collider(pos)) ;
 		allNPCs.add(this) ;
 	}
 	
+	public NPC(NPCJobs job, String name, Point pos, List<NPCMenu> menus, GameWindow window)
+	{
+		this(job, name, pos, menus, null, window) ;
+	}
+	
 	public NPC(NPCJobs job, String name, Point pos, List<NPCMenu> menus)
 	{
-		this(job, name, pos, menus, null) ;
+		this(job, name, pos, menus, null, null) ;
 	}
 
 	public void setPos(Point pos)
@@ -87,8 +94,8 @@ public abstract class NPC implements Interactable
 		{
 			for (int i = 0 ; i <= menu.getOptions().size() - 1 ; i += 1)
 			{
-				OptionBox option = menu.getOptions().get(i) ;
-				option.setTopLeftPos(Util.translate(pos, 20, (option.getSize().height + 6) * i)) ;
+				GameTextButton button = menu.getOptions().get(i) ;
+				button.setTopLeftPos(Util.translate(pos, 20, (button.getSize().height + 6) * i)) ;
 			}
 		}
 	}
@@ -101,12 +108,32 @@ public abstract class NPC implements Interactable
 	public List<NPCMenu> getMenus() { return menus ;}
 	public List<Collider> getColliders() { return colliders ;}
 	public void setName(String name) { this.name = name ;}
-
-	public void resetMenu() { currentMenuID = 0 ;}
+	
 	public boolean isInteracting() { return isInteracting ;}
-	public void startInteraction() { isInteracting = true ;}
+
+	private void goToMenu(int menuID)
+	{
+
+		if (menuID == -1)
+		{
+			endInteraction() ;
+			return ;
+		}
+
+		menus.get(currentMenuID).getOptions().forEach(GameTextButton::deactivate) ;
+		currentMenuID = menuID ;
+		menus.get(currentMenuID).getOptions().forEach(GameTextButton::activate) ;
+	}
+	private void resetMenu() { goToMenu(0) ;}
+	public void startInteraction()
+	{
+		isInteracting = true ;
+		resetMenu() ;
+	}
+
 	public void endInteraction()
 	{
+		menus.get(currentMenuID).getOptions().forEach(GameTextButton::deactivate) ;
 		isInteracting = false ;
 		if (window != null && window.isOpen())
 		{
@@ -123,21 +150,6 @@ public abstract class NPC implements Interactable
 	{
 		if (action == null) { return ;}
 
-		switchOption(action) ;
-
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) && currentMenuID <= menus.size() - 2)
-		{
-			currentMenuID = job.getDestination().get(currentMenuID).get(selOption) ;
-			selOption = 0 ;
-			return ;
-		}
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ENTER)) && currentMenuID == menus.size() - 1)
-		{
-			endInteraction() ;
-			currentMenuID = 0 ;
-			selOption = 0 ;
-			return ;
-		}
 		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)))
 		{
 			if (currentMenuID <= 0)
@@ -146,7 +158,7 @@ public abstract class NPC implements Interactable
 			}
 			else
 			{
-				currentMenuID = 0 ;
+				resetMenu() ;
 				selOption = 0 ;
 			}
 		}
@@ -185,7 +197,7 @@ public abstract class NPC implements Interactable
 		String content = menus.get(currentMenuID).getSpeech() ;		
 		Point speechPos = Util.translate(pos, 0, 10 - job.getImage().getHeight(null)) ;
 
-		Draw.speech(speechPos, content, stdfont, speakingBubble, stdColor) ;		
+		Draw.speech(speechPos, content, stdFont, speakingBubble, stdColor) ;		
 	}	
 	
 	public void displaySpeech() { displaySpeech(pos) ;}
@@ -197,7 +209,7 @@ public abstract class NPC implements Interactable
 		if (menus.get(currentMenuID).getOptions() == null) { return ;}
 		if (menus.get(currentMenuID).getOptions().size() <= 0) { return ;}
 
-		menus.get(currentMenuID).getOptions().forEach(OptionBox::display) ;		
+		menus.get(currentMenuID).getOptions().stream().filter(GameTextButton::isActive).forEach(GameTextButton::display) ;		
 	}
 	
 	public void displayOptions() { displayOptions(Util.translate(pos, 20, -10)) ;}
@@ -302,6 +314,7 @@ public abstract class NPC implements Interactable
 			List<JSONObject> menusData = (List<JSONObject>) npcData.get("menus");
 			List<NPCMenu> menus = new ArrayList<>() ;
 
+			NPC newNPC = NPC.create(job, name, info, menus) ;
 			for (int i = 0 ; i <= menusData.size() - 1 ; i += 1)
 			{
 				JSONObject menu = menusData.get(i) ;
@@ -311,10 +324,24 @@ public abstract class NPC implements Interactable
 				{
 					options = new ArrayList<>() ;
 				}
-				menus.add(new NPCMenu(new Point(0, 0), job.getDestination().get(i), speech, options)) ;
-			}
+				List<GameTextButton> buttons ;
+				List<Integer> destinationMenus = job.getDestination().get(i) ;
+				buttons = new ArrayList<>(options.size()) ;
+				for (int j = 0 ; j <= options.size() - 1 ; j += 1)
+				{
+					int destinationMenu = destinationMenus.get(j) ;
+					String text = options.get(j) ;
+					GameTextButton button = new GameTextButton(new Point(0, 0), Align.topLeft, text, text, () -> {
+						newNPC.act(Game.getPlayer(), Game.getPet(), Game.getPlayer().getCurrentAction());
+						newNPC.goToMenu(destinationMenu) ;
+					}) ;
+					button.resize(new Dimension(GamePanel.DP.textLength(text, new Font(Game.MainFontName, Font.BOLD, 17)), GamePanel.DP.textHeight(new Font(Game.MainFontName, Font.BOLD, 17))));
+					button.deactivate() ;
+					buttons.add(button) ;
+				}
 
-			NPC newNPC = NPC.create(job, name, info, menus) ;
+				menus.add(new NPCMenu(new Point(0, 0), job.getDestination().get(i), speech, buttons)) ;
+			}
 			npcs.add(newNPC);
 		}
 	}
