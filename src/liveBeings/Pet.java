@@ -15,10 +15,8 @@ import attributes.AttributeIncrease;
 import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
-import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
-import attributes.PersonalAttributes;
 import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
@@ -51,60 +49,42 @@ public class Pet extends LiveBeing
 	private int spellPoints ;
 	private PetItem equip ;
 	private int alchBuffId ;
-	
-	public static final List<String[]> InitialAtts = Util.readcsvFile(Path.CSV + "PetInitialStats.csv") ;
-	private static final List<String[]> attEvolution = Util.readcsvFile(Path.CSV + "PetEvolution.csv") ;
     	
-	public Pet(int Job)
+	public Pet(int job)
 	{
-		super(InitializePersonalAttributes(Job),
-				new BattleAttributes(InitialAtts.get(Job), 1, InitialAtts.get(Job)[36], InitialAtts.get(Job)[37]),
-				initializeMovingAnimations(Job),
-				new PetAttributesWindow()) ;
+		super(PetData.getInitialpersonalattperjob().get(job), PetData.getInitialbattleattperjob().get(job), initializeMovingAnimations(job), new PetAttributesWindow()) ;
 		
-		name = InitialAtts.get(Job)[0] ;
-		level = 1 ;
-		proJob = 0 ;
-		map = null ;
-		pos = new Point2D.Double(0, 0) ;
-		dir = Directions.up ;
-		state = LiveBeingStates.idle ;
-		size = new Dimension(movingAni.spriteIdle.getFrameSize().width, movingAni.spriteIdle.getFrameSize().height) ;	
-		range = Integer.parseInt(InitialAtts.get(Job)[4]) ;
-		step = Integer.parseInt(InitialAtts.get(Job)[32]) ;
-		atkElem = Elements.neutral ;
-		satiationCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[34])) ;
-		mpCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[35])) ;
-		battleActionCounter = new GameTimer(Double.parseDouble(InitialAtts.get(Job)[36])) ;
-		movingTimer = new GameTimer(20) ;
-		combo = new ArrayList<>();
-		hitbox = new HitboxRectangle(getPos(), size, 0.8) ;
-		equip = null ;
-		alchBuffId = -1 ;
+		this.job = job ;
+		this.name = PetData.getName().get(job) ;
+		this.level = 1 ;
+		this.proJob = 0 ;
+		this.map = null ;
+		this.pos = new Point2D.Double(0, 0) ;
+		this.dir = Directions.up ;
+		this.state = LiveBeingStates.idle ;
+		this.size = new Dimension(movingAni.spriteIdle.getFrameSize().width, movingAni.spriteIdle.getFrameSize().height) ;	
+		this.range = PlayerData.getRange().get(job) ;
+		this.step = PlayerData.getStep().get(job) ;
+		this.atkElem = Elements.neutral ;
+		this.satiationCounter = new GameTimer(PlayerData.getSatiationcounterduration().get(job)) ;
+		this.thirstCounter = new GameTimer(PlayerData.getThirstcounterduration().get(job)) ;
+		this.mpCounter = new GameTimer(PlayerData.getMpcounterduration().get(job)) ;
+		this.movingTimer = new GameTimer(20) ;
+		this.combo = new ArrayList<>();
+		this.hitbox = new HitboxRectangle(getPos(), size, 0.8) ;
+		this.equip = null ;
+		this.alchBuffId = -1 ;
 		
-		this.job = Job ;
 		Color[] colorPalette = Palette.colors ;
 		Color[] petColors = new Color[] {colorPalette[3], colorPalette[5], colorPalette[21], colorPalette[21]} ;
-		color = petColors[Job] ;
-		spells = InitializePetSpells();
-		spellPoints = 0 ;
-
+		color = petColors[job] ;
+		this.spells = InitializePetSpells();
+		this.spellPoints = 0 ;
 
 		startCounters() ;
-		attInc = calcAttributeIncrease(job) ;
-		
+		attInc = calcAttributeIncrease(job) ;		
 	}
-	
-	public static PersonalAttributes InitializePersonalAttributes(int Job)
-	{
-		BasicAttribute life = new BasicAttribute(Integer.parseInt(InitialAtts.get(Job)[2]), Integer.parseInt(InitialAtts.get(Job)[2]), 1) ;
-		BasicAttribute mp = new BasicAttribute(Integer.parseInt(InitialAtts.get(Job)[3]), Integer.parseInt(InitialAtts.get(Job)[3]), 1) ;
-		BasicAttribute exp = new BasicAttribute(0, 50, 1) ;
-		BasicAttribute satiation = new BasicAttribute(100, 100, 1) ;
-		BasicAttribute thirst = new BasicAttribute(100, 100, 1) ;
-		return new PersonalAttributes(life, mp, exp, satiation, thirst) ;
-	}
-	
+
 	public static MovingAnimations initializeMovingAnimations(int Job)
 	{
 		String rootPath = Path.PET_IMG + "pet" + Job;
@@ -138,8 +118,8 @@ public class Pet extends LiveBeing
 	
 	private static AttributeIncrease calcAttributeIncrease(int job)
 	{
-		List<Double> attIncrements = Arrays.asList(attEvolution.get(job)).subList(1, 9).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
-		List<Double> incChances = Arrays.asList(attEvolution.get(job)).subList(9, 17).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		List<Double> attIncrements = Arrays.asList(PetData.getAttributeincreaseonlevelup().get(job)).subList(1, 9).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
+		List<Double> incChances = Arrays.asList(PetData.getAttributeincreaseonlevelup().get(job)).subList(9, 17).stream().map(p -> Double.parseDouble(p)).collect(Collectors.toList()) ;
 		AttributeIncrease attInc = new AttributeIncrease(attIncrements, incChances) ;
 		
 		return attInc ;

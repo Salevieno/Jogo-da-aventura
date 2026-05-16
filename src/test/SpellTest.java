@@ -85,7 +85,7 @@ public class SpellTest
 		archerLevel0.setBA(PlayerData.getInitialbattleattperjob().get(2)) ;
 		animalLevel0.setBA(PlayerData.getInitialbattleattperjob().get(3)) ;
 		thiefLevel0.setBA(PlayerData.getInitialbattleattperjob().get(4)) ;
-		pet.setPA(Pet.InitializePersonalAttributes(pet.getJob())) ;
+		// pet.setPA(Pet.InitializePersonalAttributes(pet.getJob())) ;
 		// pet.setBA(new BattleAttributes(Pet.InitialAtts.get(pet.getJob()), 1, Player.initialAttributes.get(pet.getJob())[36], Player.initialAttributes.get(pet.getJob())[37])) ;
 		refCreature.setPA(CreatureType.getAll().get(0).getPA());
 		refCreature.setBA(CreatureType.getAll().get(0).getBA());
