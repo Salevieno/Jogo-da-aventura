@@ -335,7 +335,8 @@ public abstract class NPC implements Interactable
 						newNPC.act(Game.getPlayer(), Game.getPet(), Game.getPlayer().getCurrentAction());
 						newNPC.goToMenu(destinationMenu) ;
 					}) ;
-					button.resize(new Dimension(GamePanel.DP.textLength(text, new Font(Game.MainFontName, Font.BOLD, 17)), GamePanel.DP.textHeight(new Font(Game.MainFontName, Font.BOLD, 17))));
+					Dimension textSize = Util.calcTextSize(text, new Font(Game.MainFontName, Font.BOLD, 17)) ;
+					button.resize(textSize);
 					button.deactivate() ;
 					buttons.add(button) ;
 				}

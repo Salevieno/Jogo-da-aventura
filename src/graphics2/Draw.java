@@ -101,7 +101,7 @@ public abstract class Draw
 		{
 			String lastLine = lines.get(lines.size() - 1) ;
 			String newLineText = lastLine + word + " " ;
-			if (maxLength <= GamePanel.DP.textLength(newLineText, font))
+			if (maxLength <= Util.calcTextSize(newLineText, font).width)
 			{
 				lines.add("") ;
 				lines.set(lines.size() - 1, word + " ") ;
@@ -123,7 +123,7 @@ public abstract class Draw
 	
 	public static void textUntil(Point pos, Align align, double angle, String text, Font font, Color color, int maxLength, Point mousePos)
 	{
-		Point offset = UtilAlignment.offsetForAlignment(align, new Dimension(maxLength, GamePanel.DP.textHeight(font))) ;
+		Point offset = UtilAlignment.offsetForAlignment(align, new Dimension(maxLength, Util.calcTextSize(text, font).height)) ;
 		int minlength = 3 ;	// 3 is the length of "..."
 		String shortText = text ;
 		maxLength = Math.max(maxLength, minlength) ;
@@ -135,7 +135,7 @@ public abstract class Draw
 		}
 		
 		Point topLeftPos = Util.translate(pos, offset.x, offset.y) ;
-		Dimension size = new Dimension(GamePanel.DP.textLength(shortText, font), GamePanel.DP.textHeight(font)) ;
+		Dimension size = new Dimension(Util.calcTextSize(shortText, font).width, Util.calcTextSize(text, font).height) ;
 		String textDrawn =  text.length() <= maxLength | Util.isInside(mousePos, topLeftPos, size) ? text : shortText + "..." ;
 		GamePanel.DP.drawText(pos, align, stdAngle, textDrawn, font, color) ;
 	}

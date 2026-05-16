@@ -2,7 +2,6 @@ package UI;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -17,6 +16,7 @@ import graphics2.Draw;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Path;
+import utilities.Util;
 
 public class GameTextButton extends GameButton
 {
@@ -68,7 +68,7 @@ public class GameTextButton extends GameButton
     public GameTextButton(Point pos, Align alignment, String name, Dimension size, String text, Image image, Image selectedImage, ButtonFunction action, Clip soundEffectOnHover)
     {
         super(pos, alignment, name, image, selectedImage, action, soundEffectOnHover);
-        Dimension textSize = calcTextSize(text) ;
+        Dimension textSize = Util.calcTextSize(text, font) ;
         this.minSize = new Dimension(textSize.width + padding, textSize.height + padding) ;
         this.size = new Dimension(Math.max(size.width, minSize.width), Math.max(size.height, minSize.height)) ;
         resize(size) ;
@@ -239,21 +239,6 @@ public class GameTextButton extends GameButton
         this.boxSelectedStretchedPart6 = stretchImage(boxSelectedPart6, boxSelectedPart6.getWidth(null), size.height - 2 * edgeSize) ;
         this.boxSelectedStretchedPart8 = stretchImage(boxSelectedPart8, size.width - 2 * edgeSize, boxSelectedPart8.getHeight(null)) ;
         this.boxSelectedStretchedPart9 = stretchImage(boxSelectedPart9, size.width - 2 * edgeSize, size.height - 2 * edgeSize) ;
-    }
-
-    private Dimension calcTextSize(String text) // TODO move to Util
-    {
-        BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = img.createGraphics();
-
-        FontMetrics metrics = g2d.getFontMetrics(font);
-
-        int width = metrics.stringWidth(text);
-        int height = metrics.getHeight();
-
-        g2d.dispose();
-
-        return new Dimension(width, height) ;
     }
     
 }
