@@ -25,8 +25,9 @@ import liveBeings.Player;
 import liveBeings.PlayerActions;
 import liveBeings.PlayerData;
 import main.Elements;
-import spells.Buff;
+import spells.BuffData;
 import spells.Spell;
+import spells.SpellData;
 import spells.SpellTypes;
 import windows.CraftWindow;
 
@@ -46,9 +47,9 @@ public class SpellTest
 	@BeforeAll
 	static void initializeGame()
 	{
-		Buff.loadBuffs();
-		Buff.loadDebuffs();
-		Spell.load("portugues", Buff.getAllBuffs(), Buff.getAllDebuffs());
+		BuffData.createBuffs();
+		BuffData.createNerfs();
+		SpellData.createSpells() ;
 		Item.load("portugues");
 		Recipe.load(Item.getAllItems()) ;
 		CreatureData.create() ; // TODO level de dificuldade tem que ser 2 aqui

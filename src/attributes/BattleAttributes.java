@@ -302,11 +302,11 @@ public class BattleAttributes
 	public double[] totalValues() { return new double[] {TotalPhyAtk(), TotalMagAtk(), TotalPhyDef(), TotalMagDef(), TotalDex(), TotalAgi()} ;}
 	public double[] baseAtkChances()
 	{
-		return new double[] {stun.TotalAtkChance(), block.TotalAtkChance(), blood.TotalAtkChance(), poison.TotalAtkChance(), silence.TotalAtkChance()} ;
+		return new double[] {stun.totalAtkChance(), block.totalAtkChance(), blood.totalAtkChance(), poison.totalAtkChance(), silence.totalAtkChance()} ;
 	}
 	public double[] baseDefChances()
 	{
-		return new double[] {stun.TotalDefChance(), block.TotalDefChance(), blood.TotalDefChance(), poison.TotalDefChance(), silence.TotalDefChance()} ;
+		return new double[] {stun.totalDefChance(), block.totalDefChance(), blood.totalDefChance(), poison.totalDefChance(), silence.totalDefChance()} ;
 	}
 	public double[] baseDurations()
 	{

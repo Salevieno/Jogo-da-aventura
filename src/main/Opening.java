@@ -20,8 +20,8 @@ import graphics2.Draw;
 import graphics2.SpriteAnimation;
 import liveBeings.Player;
 import screen.Screen;
-import spells.Buff;
-import spells.Spell;
+import spells.BuffData;
+import spells.SpellData;
 import utilities.Util;
 
 
@@ -162,9 +162,10 @@ public abstract class Opening
 		newGame = false ;
 		buttons.get(0).deactivate() ;
 		buttons.get(1).deactivate() ;
-		Buff.loadBuffs() ;
-		Buff.loadDebuffs() ;
-		Spell.load("portugues", Buff.getAllBuffs(), Buff.getAllDebuffs()) ;
+		BuffData.createBuffs() ;
+		BuffData.createNerfs() ;
+		SpellData.createSpells() ;
+		// Spell.load("portugues", Buff.getAllBuffs(), Buff.getAllNerfs()) ;
 		players[0] = Player.load(1) ;
 		players[1] = Player.load(2) ;
 		players[2] = Player.load(3) ;

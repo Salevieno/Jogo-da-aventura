@@ -25,6 +25,7 @@ import attributes.PersonalAttributes;
 import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
+import battle.Battle;
 import components.Hitbox;
 import graphics.Align;
 import graphics2.Drawable;
@@ -144,10 +145,33 @@ public abstract class LiveBeing implements Drawable
 		
 		if (receiver == null) { return ;}
 		
-		spell.applyDebuffs(true, receiver) ;
+		spell.applyNerfs(true, receiver) ;
 		
 	}
-	
+
+	protected AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
+	{
+		if (spell == null) { return null ;}
+		if (receiver == null) { Log.warn(name + " trying to use offensive spell in no one") ; return null ;}
+
+		double basicAtk = BA.getMagAtk().totalModified(spell.getAttMod(Attributes.magAtk)) ;
+		double basicDef = receiver.getBA().getMagDef().totalModified(spell.getAttMod(Attributes.magDef)) ;
+		double atkDex = BA.getDex().totalModified(spell.getAttMod(Attributes.dex)) ;
+		double defAgi = receiver.getBA().getAgi().totalModified(spell.getAttMod(Attributes.agi)) ;		
+		double atkCrit = BA.getCritAtk().totalModified(spell.getAttMod(Attributes.critAtk)) ;
+		double defCrit = receiver.getBA().getCritDef().totalModified(spell.getAttMod(Attributes.critDef)) ;
+		double receiverElemMod = 1 ;
+
+		AtkEffects effect = Battle.calcEffect(atkDex, defAgi, atkCrit, defCrit, receiver.getBA().getBlock().totalDefChance()) ;
+		int damage = Battle.calcDamage(effect, basicAtk, basicDef, atkElems(), receiver.defElems(), receiverElemMod) ;
+		Map<Attributes, Double> inflictedStatus = Battle.calcStatus(spell.getSpecialAtt(), receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
+		
+		spell.applyBuffs(true, this) ;
+		spell.applyNerfs(true, receiver) ;
+		return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
+		
+	}
+
 	public abstract void useAutoSpell(boolean activate, Spell spell);
 	public abstract void dies() ;
 	

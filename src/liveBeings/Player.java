@@ -1332,12 +1332,12 @@ public class Player extends LiveBeing
 				{
 					spell.deactivate();
 					spell.applyBuffs(false, this) ;
-					spell.applyDebuffs(false, this) ;
+					spell.applyNerfs(false, this) ;
 					return ;
 				}
 				spell.activate();
 				spell.applyBuffs(true, this) ;
-				spell.applyDebuffs(true, this) ;
+				spell.applyNerfs(true, this) ;
 
 				return ;
 			
@@ -1351,108 +1351,108 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
-	{
-		if (spell == null) { return null ;}
-		if (receiver == null) { return null ;}
+	// public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
+	// {
+	// 	if (spell == null) { return null ;}
+	// 	if (receiver == null) { Log.warn(name + " trying to use offensive spell in no one") ; return null ;}
 		
-		int spellLevel = spell.getLevel() ;
-		int spellID = spells.indexOf(spell) ;
+	// 	int spellLevel = spell.getLevel() ;
+	// 	int spellID = spells.indexOf(spell) ;
 		
-		double PhyAtk = BA.TotalPhyAtk() ;
-		double MagAtk = BA.TotalMagAtk() ;
-		double PhyDef = receiver.getBA().TotalPhyDef() ;
-		double MagDef = receiver.getBA().TotalMagDef() ;
-		double AtkDex = BA.TotalDex() ;
-		double DefAgi = receiver.getBA().TotalAgi() ;
-		double AtkCrit = BA.TotalCritAtkChance() ;
-		double DefCrit = receiver.getBA().TotalCritDefChance() ;		
+	// 	double PhyAtk = BA.TotalPhyAtk() ;
+	// 	double MagAtk = BA.TotalMagAtk() ;
+	// 	double PhyDef = receiver.getBA().TotalPhyDef() ;
+	// 	double MagDef = receiver.getBA().TotalMagDef() ;
+	// 	double AtkDex = BA.TotalDex() ;
+	// 	double DefAgi = receiver.getBA().TotalAgi() ;
+	// 	double AtkCrit = BA.TotalCritAtkChance() ;
+	// 	double DefCrit = receiver.getBA().TotalCritDefChance() ;		
 		
-		double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
-		double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
-		double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
-		double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
-		double[] stunMod = new double[] {spell.getStunMod()[0] * spellLevel, 1 + spell.getStunMod()[1] * spellLevel} ;
-		double[] blockMod = new double[] {spell.getBlockMod()[0] * spellLevel, 1 + spell.getBlockMod()[1] * spellLevel} ;
-		double[] bloodMod = new double[] {spell.getBloodMod()[0] * spellLevel, 1 + spell.getBloodMod()[1] * spellLevel} ;
-		double[] poisonMod = new double[] {spell.getPoisonMod()[0] * spellLevel, 1 + spell.getPoisonMod()[1] * spellLevel} ;
-		double[] silenceMod = new double[] {spell.getSilenceMod()[0] * spellLevel, 1 + spell.getSilenceMod()[1] * spellLevel} ;
-		double[] atkChances = new double[] {stunMod[0], blockMod[0], bloodMod[0], poisonMod[0], silenceMod[0]} ;
+	// 	double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
+	// 	double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
+	// 	double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
+	// 	double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
+	// 	double[] stunMod = new double[] {spell.getStunMod()[0] * spellLevel, 1 + spell.getStunMod()[1] * spellLevel} ;
+	// 	double[] blockMod = new double[] {spell.getBlockMod()[0] * spellLevel, 1 + spell.getBlockMod()[1] * spellLevel} ;
+	// 	double[] bloodMod = new double[] {spell.getBloodMod()[0] * spellLevel, 1 + spell.getBloodMod()[1] * spellLevel} ;
+	// 	double[] poisonMod = new double[] {spell.getPoisonMod()[0] * spellLevel, 1 + spell.getPoisonMod()[1] * spellLevel} ;
+	// 	double[] silenceMod = new double[] {spell.getSilenceMod()[0] * spellLevel, 1 + spell.getSilenceMod()[1] * spellLevel} ;
+	// 	double[] atkChances = new double[] {stunMod[0], blockMod[0], bloodMod[0], poisonMod[0], silenceMod[0]} ;
 		
-		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;
-		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;
-		double BlockDef = receiver.getBA().getBlock().TotalDefChance() ;
+	// 	double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;
+	// 	double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;
+	// 	double BlockDef = receiver.getBA().getBlock().TotalDefChance() ;
 		
-		double BasicAtk = 0 ;
-		double BasicDef = 0 ;
+	// 	double BasicAtk = 0 ;
+	// 	double BasicDef = 0 ;
 		
-		Elements weaponElem = equips[0] != null ? equips[0].getElem() : null ;
-		Elements[] AtkElem = new Elements[] {spell.getElem(), weaponElem, superElem} ;
-		Elements[] DefElem = receiver.defElems() ;
-		double receiverElemMod = 1 ;
+	// 	Elements weaponElem = equips[0] != null ? equips[0].getElem() : null ;
+	// 	Elements[] AtkElem = new Elements[] {spell.getElem(), weaponElem, superElem} ;
+	// 	Elements[] DefElem = receiver.defElems() ;
+	// 	double receiverElemMod = 1 ;
 		
-		switch (job)
-		{
-			case 0:
+	// 	switch (job)
+	// 	{
+	// 		case 0:
 			
-				BasicAtk = PhyAtk ;
-				BasicDef = PhyDef ;
+	// 			BasicAtk = PhyAtk ;
+	// 			BasicDef = PhyDef ;
 				
-				break ;
+	// 			break ;
 			
-			case 1:
+	// 		case 1:
 			
-				BasicAtk = MagAtk ;
-				BasicDef = MagDef ;
+	// 			BasicAtk = MagAtk ;
+	// 			BasicDef = MagDef ;
 				
-				break ;
+	// 			break ;
 			
-			case 2:
+	// 		case 2:
 			
-				double arrowAtkPower = arrowIsEquipped() ? equippedArrow.getAtkPower() : 0 ;
-				if (spellID == 0 | spellID == 3 | spellID == 6 | spellID == 9 | spellID == 12)
-				{
-					BasicAtk = PhyAtk + arrowAtkPower ;
-					BasicDef = PhyDef ;
-				}
-				if (spellID == 2 | spellID == 5 | spellID == 11)
-				{
-					BasicAtk = (PhyAtk + MagAtk) / 2.0 + arrowAtkPower ;
-					BasicDef = (PhyDef + MagDef) / 2.0 ;
-				}
-				if (spellID == 14)
-				{
-					BasicAtk = MagAtk + arrowAtkPower ;
-					BasicDef = MagDef ;
-				}
+	// 			double arrowAtkPower = arrowIsEquipped() ? equippedArrow.getAtkPower() : 0 ;
+	// 			if (spellID == 0 | spellID == 3 | spellID == 6 | spellID == 9 | spellID == 12)
+	// 			{
+	// 				BasicAtk = PhyAtk + arrowAtkPower ;
+	// 				BasicDef = PhyDef ;
+	// 			}
+	// 			if (spellID == 2 | spellID == 5 | spellID == 11)
+	// 			{
+	// 				BasicAtk = (PhyAtk + MagAtk) / 2.0 + arrowAtkPower ;
+	// 				BasicDef = (PhyDef + MagDef) / 2.0 ;
+	// 			}
+	// 			if (spellID == 14)
+	// 			{
+	// 				BasicAtk = MagAtk + arrowAtkPower ;
+	// 				BasicDef = MagDef ;
+	// 			}
 				
-				break ;
+	// 			break ;
 			
-			case 3:
+	// 		case 3:
 			
-				BasicAtk = PhyAtk ;
-				BasicDef = PhyDef ;
+	// 			BasicAtk = PhyAtk ;
+	// 			BasicDef = PhyDef ;
 				
-				break ;
+	// 			break ;
 			
-			case 4:
+	// 		case 4:
 			
-				BasicAtk = PhyAtk ;
-				BasicDef = PhyDef ;
+	// 			BasicAtk = PhyAtk ;
+	// 			BasicDef = PhyDef ;
 				
-				break ;
+	// 			break ;
 			
-		}
+	// 	}
 
-		AtkEffects effect = Battle.calcEffect(DexMod[0] + AtkDex * DexMod[1], AgiMod[0] + DefAgi * AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
-		int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk * AtkMod[1], DefMod[0] + BasicDef * DefMod[1], AtkElem, DefElem, receiverElemMod) ;
-		Map<Attributes, Double> inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
+	// 	AtkEffects effect = Battle.calcEffect(DexMod[0] + AtkDex * DexMod[1], AgiMod[0] + DefAgi * AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
+	// 	int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk * AtkMod[1], DefMod[0] + BasicDef * DefMod[1], AtkElem, DefElem, receiverElemMod) ;
+	// 	Map<Attributes, Double> inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
-		spell.applyBuffs(true, this) ;
-		spell.applyDebuffs(true, receiver) ;
-		return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
+	// 	spell.applyBuffs(true, this) ;
+	// 	spell.applyNerfs(true, receiver) ;
+	// 	return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
 		
-	}
+	// }
 	
 	private void throwItem(GeneralItem item, LiveBeing receiver)
 	{

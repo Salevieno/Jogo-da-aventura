@@ -7,12 +7,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import animations.BufferedTextAnimation;
 import attributes.AttributeIncrease;
-import attributes.Attributes;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
@@ -367,48 +364,51 @@ public class Pet extends LiveBeing
 	
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
-		if (spell == null) { return null ;}
-		if (receiver == null) { return null ;}
+		// if (spell == null) { return null ;}
+		// if (receiver == null) { return null ;}
 		
-		int spellLevel = spell.getLevel() ;
+		// int spellLevel = spell.getLevel() ;
 		
-		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Palette.colors[5]) ;
-		PA.getMp().decTotalValue(spell.getMpCost()) ;
+		// BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Palette.colors[5]) ;
+		// PA.getMp().decTotalValue(spell.getMpCost()) ;
 
-		double MagAtk = BA.TotalMagAtk() ;
-		double MagDef = receiver.getBA().TotalMagDef() ;
-		double AtkDex = BA.TotalDex() ;
-		double DefAgi = receiver.getBA().TotalAgi() ;
-		double AtkCrit = BA.TotalCritAtkChance() ;
-		double DefCrit = receiver.getBA().TotalCritDefChance() ;
-		double receiverElemMod = 1 ;
-		double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
-		double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
-		double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
-		double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
-		double[] stunMod = new double[] {spell.getStunMod()[0] * spellLevel, 1 + spell.getStunMod()[1] * spellLevel} ;
-		double[] blockMod = new double[] {spell.getBlockMod()[0] * spellLevel, 1 + spell.getBlockMod()[1] * spellLevel} ;
-		double[] bloodMod = new double[] {spell.getBloodMod()[0] * spellLevel, 1 + spell.getBloodMod()[1] * spellLevel} ;
-		double[] poisonMod = new double[] {spell.getPoisonMod()[0] * spellLevel, 1 + spell.getPoisonMod()[1] * spellLevel} ;
-		double[] silenceMod = new double[] {spell.getSilenceMod()[0] * spellLevel, 1 + spell.getSilenceMod()[1] * spellLevel} ;
-		double[] atkChances = new double[] {stunMod[0], blockMod[0], bloodMod[0], poisonMod[0], silenceMod[0]} ;
+		// double MagAtk = BA.TotalMagAtk() ;
+		// double MagDef = receiver.getBA().TotalMagDef() ;
+		// double AtkDex = BA.TotalDex() ;
+		// double DefAgi = receiver.getBA().TotalAgi() ;
+		// double AtkCrit = BA.TotalCritAtkChance() ;
+		// double DefCrit = receiver.getBA().TotalCritDefChance() ;
+		// double receiverElemMod = 1 ;
+		// double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
+		// double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
+		// double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
+		// double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
+		// double[] stunMod = new double[] {spell.getStunMod()[0] * spellLevel, 1 + spell.getStunMod()[1] * spellLevel} ;
+		// double[] blockMod = new double[] {spell.getBlockMod()[0] * spellLevel, 1 + spell.getBlockMod()[1] * spellLevel} ;
+		// double[] bloodMod = new double[] {spell.getBloodMod()[0] * spellLevel, 1 + spell.getBloodMod()[1] * spellLevel} ;
+		// double[] poisonMod = new double[] {spell.getPoisonMod()[0] * spellLevel, 1 + spell.getPoisonMod()[1] * spellLevel} ;
+		// double[] silenceMod = new double[] {spell.getSilenceMod()[0] * spellLevel, 1 + spell.getSilenceMod()[1] * spellLevel} ;
+		// double[] atkChances = new double[] {stunMod[0], blockMod[0], bloodMod[0], poisonMod[0], silenceMod[0]} ;
 		
-		double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;	// Critical atk modifier
-		double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;	// Critical def modifier
-		double BlockDef = receiver.getBA().getBlock().TotalDefChance() ;
-		double BasicAtk = 0 ;
-		double BasicDef = 0 ;
-		Elements[] AtkElem = new Elements[] {spell.getElem(), null, null} ;
-		Elements[] DefElem = receiver.defElems() ;
+		// double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;	// Critical atk modifier
+		// double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;	// Critical def modifier
+		// double BlockDef = receiver.getBA().getBlock().totalDefChance() ;
+		// double BasicAtk = 0 ;
+		// double BasicDef = 0 ;
+		// Elements[] AtkElem = new Elements[] {spell.getElem(), null, null} ;
+		// Elements[] DefElem = receiver.defElems() ;
 		
-		BasicAtk = MagAtk ;
-		BasicDef = MagDef ;
+		// BasicAtk = MagAtk ;
+		// BasicDef = MagDef ;
 
-		AtkEffects effect = Battle.calcEffect(DexMod[0] + AtkDex*DexMod[1], AgiMod[0] + DefAgi*AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
-		int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
-		Map<Attributes, Double> inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
+		// AtkEffects effect = Battle.calcEffect(DexMod[0] + AtkDex*DexMod[1], AgiMod[0] + DefAgi*AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
+		// int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk*AtkMod[1], DefMod[0] + BasicDef*DefMod[1], AtkElem, DefElem, receiverElemMod) ;
+		// Map<Attributes, Double> inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
-		return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
+		// spell.applyBuffs(true, this) ;
+		// spell.applyNerfs(true, receiver) ;
+		// return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
+		return new AtkResults() ;
 	}
 	
 	public void win(Creature creature)

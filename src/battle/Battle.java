@@ -61,7 +61,7 @@ public abstract class Battle
 		double defAgi = receiver.getBA().TotalAgi() ;
 		double atkCrit = attacker.getBA().TotalCritAtkChance() ;
 		double defCrit = receiver.getBA().TotalCritDefChance() ;
-		double defBlock = receiver.getBA().getBlock().TotalDefChance() ;
+		double defBlock = receiver.getBA().getBlock().totalDefChance() ;
 		double atkPhyAtk = attacker.getBA().TotalPhyAtk() ;
 		double defPhyDef = receiver.getBA().TotalPhyDef() ;
 		Elements[] atkElems = attacker.atkElems() ;
@@ -148,7 +148,7 @@ public abstract class Battle
 		double defAgi = receiver.getBA().TotalAgi() ;
 		double atkCrit = attacker.getBA().TotalCritAtkChance() ;
 		double defCrit = receiver.getBA().TotalCritDefChance() ;
-		double defBlock = receiver.getBA().getBlock().TotalDefChance() ;
+		double defBlock = receiver.getBA().getBlock().totalDefChance() ;
 		double defPhyDef = receiver.getBA().TotalPhyDef() ;
 		double[] baseAtkChances = itemAtkMod == null ? new double[5] : itemAtkMod.getBaseAtkChances() ;
 		

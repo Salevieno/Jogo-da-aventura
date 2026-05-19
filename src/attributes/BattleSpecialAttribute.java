@@ -39,26 +39,11 @@ public class BattleSpecialAttribute
 		this.duration = battleSA.getDuration();
 	}
 	
-	public double getBasicAtkChance()
-	{
-		return basicAtkChance;
-	}
-	public double getBasicAtkChanceBonus()
-	{
-		return basicAtkChanceBonus;
-	}
-	public double getBasicDefChance()
-	{
-		return basicDefChance;
-	}
-	public double getBasicDefChanceBonus()
-	{
-		return basicDefChanceBonus;
-	}
-	public double getDuration()
-	{
-		return duration;
-	}
+	public double getBasicAtkChance() { return basicAtkChance ;}
+	public double getBasicAtkChanceBonus() { return basicAtkChanceBonus ;}
+	public double getBasicDefChance() { return basicDefChance ;}
+	public double getBasicDefChanceBonus() { return basicDefChanceBonus ;}
+	public double getDuration() { return duration ;}
 	public double[] attributes() { return new double[] {basicAtkChance, basicDefChance, duration} ;}
 	public double[] bonuses() { return new double[] {basicAtkChanceBonus, basicDefChanceBonus} ;}
 	public String textAtk() { return (int) (100 * basicAtkChance) + "% + " + (int) (100 * basicAtkChanceBonus) + "%" ;}
@@ -66,14 +51,8 @@ public class BattleSpecialAttribute
 	public String textDuration() { return String.valueOf(duration) ;}
 	public String[] texts() { return new String[] {textAtk(), textDef(), textDuration()} ;}
 	
-	public double TotalAtkChance()
-	{
-		return basicAtkChance + basicAtkChanceBonus ;
-	}
-	public double TotalDefChance()
-	{
-		return basicDefChance + basicDefChanceBonus ;
-	}
+	public double totalAtkChance() { return basicAtkChance + basicAtkChanceBonus ;}
+	public double totalDefChance() { return basicDefChance + basicDefChanceBonus ;}
 
 	public void incAtkChance(double inc) {basicAtkChance += inc ;}
 	public void incDefChance(double inc) {basicDefChance += inc ;}

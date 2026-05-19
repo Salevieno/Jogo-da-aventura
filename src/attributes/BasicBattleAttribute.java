@@ -2,12 +2,13 @@ package attributes;
 
 import org.json.simple.JSONObject;
 
+import spells.AttMod;
 import utilities.Util;
 
 public class BasicBattleAttribute extends LiveBeingAttribute
 {
-	private double baseValue ;	// base value of the attribute
-	private double train ;		// training value of the attribute (increases with use)
+	private double baseValue ;
+	private double train ;		// increases with use
 
 	public BasicBattleAttribute(double baseValue)
 	{
@@ -30,24 +31,17 @@ public class BasicBattleAttribute extends LiveBeingAttribute
 		this.train = basicBA.getTrain() ;
 	}
 
-	public double getBaseValue()
-	{
-		return baseValue;
-	}
-
-	public void setBaseValue(double baseValue)
-	{
-		this.baseValue = baseValue;
-	}
-	
-	public double getTrain() {return train ;}
-	public void setTrain(double newValue) {train = newValue ;}
+	public double getBaseValue() { return baseValue ;}
+	public double getTrain() { return train ;}
 
 	public void incBaseValue(double inc) {baseValue += inc ;}
 	public void incTrain(double inc) {train += inc ;}
 	public String text() {return Util.round(baseValue, 1) + " + " + Util.round(bonus, 1) + " + " + Util.round(train, 1) ;}
 	
 	public double getTotal() {return baseValue + bonus + train ;}
+	public double modified(double perc, double value) { return baseValue * (1 + perc) + value ;}
+	public double totalModified(double perc, double value) { return getTotal() * (1 + perc) + value ;}
+	public double totalModified(AttMod attMod) { return getTotal() * (1 + attMod.getPercentualIncrease()) + attMod.getValueIncrease() ;}
 
 	@SuppressWarnings("unchecked")
 	public JSONObject toJsonObject()

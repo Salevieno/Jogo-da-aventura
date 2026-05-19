@@ -1,8 +1,6 @@
 package spells;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import attributes.Attributes;
@@ -11,72 +9,43 @@ import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
 import liveBeings.LiveBeing;
 import main.Log;
-import main.Path;
-import utilities.Util;
 
 public class Buff
 {
-	private final Map<Attributes, Double> percentIncrease;
-	private final Map<Attributes, Double> valueIncrease;
-	private final Map<Attributes, Double> chance;
-	
-	private static final List<Buff> allBuffs ;
-	private static final List<Buff> allDebuffs ;
+	private final Map<Attributes, BuffPower> power ;
+
+	private static final Map<Integer, Buff> allBuffs ;
+	private static final Map<Integer, Buff> allNerfs ;
 	
 	static
 	{
-		allBuffs = new ArrayList<>() ;
-		allDebuffs = new ArrayList<>() ;
+		allBuffs = new HashMap<>() ;
+		allNerfs = new HashMap<>() ;
 	}
 	
-	public Buff(Map<Attributes, Double> percentIncrease, Map<Attributes, Double> valueIncrease, Map<Attributes, Double> chance)
+	protected Buff(boolean isBuff, int id, Map<Attributes, BuffPower> power)
 	{
-		this.percentIncrease = percentIncrease;
-		this.valueIncrease = valueIncrease;
-		this.chance = chance;
-	}
-	
-	public static void loadBuffs()
-	{
-		List<String[]> spellsBuffsInput = Util.readcsvFile(Path.CSV + "Buffs.csv") ;
-		
-		for (int i = 0 ; i <= spellsBuffsInput.size() - 1 ; i += 1)
+		this.power = power ;
+		if (isBuff)
 		{
-			allBuffs.add(Buff.load(spellsBuffsInput.get(i))) ;
+			allBuffs.put(id, this) ;
+		}
+		else
+		{
+			allNerfs.put(id, this) ;
 		}
 	}
-	
-	public static void loadDebuffs()
-	{
-		List<String[]> spellsDebuffsInput = Util.readcsvFile(Path.CSV + "Debuffs.csv") ;
-		
-		for (int i = 0 ; i <= spellsDebuffsInput.size() - 1 ; i += 1)
-		{
-			allDebuffs.add(Buff.load(spellsDebuffsInput.get(i))) ;
-		}
-	}
-	
-	public Map<Attributes, Double> getPercentIncrease() { return percentIncrease ;}
-	public Map<Attributes, Double> getValueIncrease() { return valueIncrease ;}
-	public Map<Attributes, Double> getChance() { return chance ;}
-	public static List<Buff> getAllBuffs() { return allBuffs ;}
-	public static List<Buff> getAllDebuffs() { return allDebuffs ;}
-	
+
 	public void apply(int mult, int level, LiveBeing receiver)
 	{
 		if (receiver == null) { Log.warn("Tentando usar buffs de magia em ninguém!") ; return ;}
 
-		for (Attributes att : Attributes.values())
-		{
-			if (att.equals(Attributes.exp) | att.equals(Attributes.satiation) | att.equals(Attributes.thirst))
-			{
-				continue ;
-			}
-			
+		for (Attributes att : power.keySet())
+		{			
 			BasicAttribute personalAttribute = receiver.getPA().mapAttributes(att) ;
 			if (personalAttribute != null)
 			{
-				double increment = personalAttribute.getMaxValue() * percentIncrease.get(att) + valueIncrease.get(att) ;
+				double increment = personalAttribute.getMaxValue() * power.get(att).getPercentIncrease() + power.get(att).getValueIncrease() ;
 				personalAttribute.incBonus((int) (increment * level * mult));
 				
 				continue ;
@@ -85,7 +54,7 @@ public class Buff
 			BasicBattleAttribute battleAttribute = receiver.getBA().mapAttributes(att) ;
 			if (battleAttribute != null)
 			{
-				double increment = battleAttribute.getBaseValue() * percentIncrease.get(att) + valueIncrease.get(att) ;
+				double increment = battleAttribute.getBaseValue() * power.get(att).getPercentIncrease() + power.get(att).getValueIncrease() ;
 				battleAttribute.incBonus(increment * level * mult);
 
 				continue ;
@@ -94,49 +63,19 @@ public class Buff
 			BattleSpecialAttribute battleSpecialAttribute = receiver.getBA().mapSpecialAttributes(att) ;
 			if (battleSpecialAttribute != null)
 			{
-				battleSpecialAttribute.incAtkChanceBonus(percentIncrease.get(att) * level * mult);
-				battleSpecialAttribute.incAtkChanceBonus(valueIncrease.get(att) * level * mult);
+				battleSpecialAttribute.incAtkChanceBonus(power.get(att).getPercentIncrease() * level * mult);
+				battleSpecialAttribute.incAtkChanceBonus(power.get(att).getValueIncrease() * level * mult);
 			}
 		}
 	}
-	
-	public static Buff load(String[] spellsBuffsInp)
-	{
-		Map<Attributes, Double> percentIncrease = new HashMap<>() ;
-		Map<Attributes, Double> valueIncrease = new HashMap<>() ;
-		Map<Attributes, Double> chance = new HashMap<>() ;
-		int BuffCont = 0 ;
 
-		for (Attributes att : Attributes.values())
-		{
-			if (att.equals(Attributes.exp) | att.equals(Attributes.satiation) | att.equals(Attributes.thirst) | att.equals(Attributes.atkSpeed))
-			{
-				continue ;
-			}
-			if (att.equals(Attributes.blood) | att.equals(Attributes.poison))
-			{
-				percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
-				valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
-				chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
-				BuffCont += 12 ;
-			}
-			else
-			{
-				percentIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 3])) ;
-				valueIncrease.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 4])) ;
-				chance.put(att, Double.parseDouble(spellsBuffsInp[BuffCont + 5])) ;
-				BuffCont += 3 ;
-			}
-		}
-		
-		return new Buff(percentIncrease, valueIncrease, chance) ;
-	}
-	
+	public static Map<Integer, Buff> getAllBuffs() { return allBuffs ;}
+	public static Map<Integer, Buff> getAllNerfs() { return allNerfs ;}
+
 	@Override
 	public String toString()
 	{
-		return "Buff: inc% = " + percentIncrease + "\n incValue = " + valueIncrease + "\n chance = " + chance ;
+		return "Buff [power=" + power + "]";
 	}
-	
 	
 }

@@ -2,20 +2,17 @@ package spells ;
 
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
 
+import attributes.Attributes;
 import liveBeings.AttackModifiers;
 import liveBeings.LiveBeing;
-import liveBeings.PlayerJobs;
 import main.Elements;
 import main.GameTimer;
 import main.ImageLoader;
-import main.Path;
-import utilities.Util;
 
 
 public class Spell 
@@ -32,9 +29,12 @@ public class Spell
 	private final int maxLevel ;
 	private final SpellTypes type ;
 	private final Map<Integer, Integer> preRequisites ;
-	private final Buff buffs;
-	private final Buff deBuffs;
+	private final int buffID;
+	private final int nerfID;
 	private final AttackModifiers atkMod ;
+	private final Map<Attributes, AttMod> attMods ;
+	// private final Map<Attributes, Double> attModPerc ;
+	// private final Map<Attributes, Double> attModValue ;
 	private final Elements elem ;
 	private final String effect ;
 	private final String description ;
@@ -43,28 +43,31 @@ public class Spell
 
 	
 	
-	private Spell(int id, String name, Image image, int maxLevel, int mpCost, SpellTypes type, Map<Integer, Integer> preRequisites,
-			Buff buffs, Buff deBuffs, double[] atkMod, double[] defMod, double[] dexMod, double[] agiMod,
-			double[] atkCritMod, double[] defCritMod, double[] stunMod, double[] blockMod, double[] bloodMod,
-			double[] poisonMod, double[] silenceMod, int cooldown, int duration, Elements elem, String[] info)
+	protected Spell(int id, String name, String info, String description, SpellTypes type, int cooldown, int duration,
+			Elements elem, String imagePath, int maxLevel, int mpCost, Map<Integer, Integer> preRequisites,
+			int buffID, int nerfID, Map<Attributes, AttMod> attMods)
 	{
 		this.id = id ;
 		this.name = name;
-		this.image = image;
-		level = 0;
+		this.image = ImageLoader.loadImage(imagePath);
+		this.level = 0;
 		this.maxLevel = maxLevel;
 		this.mpCost = mpCost;
 		this.type = type;
 		this.preRequisites = preRequisites;
-		this.buffs = buffs;
-		this.deBuffs = deBuffs;
-		this.atkMod = new AttackModifiers(atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod) ;
-		isActive = false;
-		cooldownCounter = new GameTimer(cooldown / 80.0) ;
-		effectCounter = new GameTimer(duration / 1.0) ;
+		this.buffID = buffID;
+		this.nerfID = nerfID;
+		this.attMods = attMods ;
+		// this.attModPerc = attModPerc ;
+		// this.attModValue = attModValue ;
+		this.atkMod = new AttackModifiers() ;
+		// this.atkMod = new AttackModifiers(atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod) ;
+		this.isActive = false;
+		this.cooldownCounter = new GameTimer(cooldown / 80.0) ;
+		this.effectCounter = new GameTimer(duration / 1.0) ;
 		this.elem = elem;
-		this.effect = info[0];
-		this.description = info[1];
+		this.effect = info;
+		this.description = description;
 		all.add(this);
 	}
 
@@ -73,17 +76,18 @@ public class Spell
 		this.id = spell.id ;
 		this.name = spell.name;
 		this.image = spell.image;
-		level = spell.level;
+		this.level = spell.level;
 		this.maxLevel = spell.maxLevel;
 		this.mpCost = spell.mpCost;
 		this.type = spell.type;
 		this.preRequisites = spell.preRequisites;
-		this.buffs = spell.buffs;
-		this.deBuffs = spell.deBuffs;
+		this.buffID = spell.buffID;
+		this.nerfID = spell.nerfID;
+		this.attMods = spell.getAttMods() ;
 		this.atkMod = new AttackModifiers(spell.atkMod.getAtkMod(), spell.atkMod.getDefMod(), spell.atkMod.getDexMod(), spell.atkMod.getAgiMod(), spell.atkMod.getAtkCritMod(), spell.atkMod.getDefCritMod(), spell.atkMod.getStunMod(), spell.atkMod.getBlockMod(), spell.atkMod.getBloodMod(), spell.atkMod.getPoisonMod(), spell.atkMod.getSilenceMod()) ;
-		isActive = false;
-		cooldownCounter = new GameTimer(spell.cooldownCounter.getDuration() / 80.0) ;
-		effectCounter = new GameTimer(spell.effectCounter.getDuration() / 1.0) ;
+		this.isActive = false;
+		this.cooldownCounter = new GameTimer(spell.cooldownCounter.getDuration() / 80.0) ;
+		this.effectCounter = new GameTimer(spell.effectCounter.getDuration() / 1.0) ;
 		this.elem = spell.elem;
 		this.effect = spell.effect;
 		this.description = spell.description;
@@ -96,17 +100,15 @@ public class Spell
 	public int getMaxLevel() {return maxLevel ;}
 	public int getMpCost() {return mpCost ;}
 	public SpellTypes getType() {return type ;}
-	public double[] getAtkMod() {return atkMod.getAtkMod() ;}
-	public double[] getDefMod() {return atkMod.getDefMod() ;}
-	public double[] getDexMod() {return atkMod.getDexMod() ;}
-	public double[] getAgiMod() {return atkMod.getAgiMod() ;}
-	public double[] getAtkCritMod() {return atkMod.getAtkCritMod() ;}
-	public double[] getDefCritMod() {return atkMod.getDefCritMod() ;}
-	public double[] getStunMod() {return atkMod.getStunMod() ;}
-	public double[] getBlockMod() {return atkMod.getBlockMod() ;}
-	public double[] getBloodMod() {return atkMod.getBloodMod() ;}
-	public double[] getPoisonMod() {return atkMod.getPoisonMod() ;}
-	public double[] getSilenceMod() {return atkMod.getSilenceMod() ;}
+	public Map<Attributes, AttMod> getAttMods() { return attMods ;}
+	public AttMod getAttMod(Attributes att) { return new AttMod(attMods.get(att).getPercentualIncrease() * level, attMods.get(att).getValueIncrease() * level ) ;}
+	public double[] getSpecialAtt() { return new double[] {
+		getAttMod(Attributes.stun).getValueIncrease() * level,
+		getAttMod(Attributes.block).getValueIncrease() * level,
+		getAttMod(Attributes.blood).getValueIncrease() * level,
+		getAttMod(Attributes.poison).getValueIncrease() * level,
+		getAttMod(Attributes.silence).getValueIncrease() * level
+	} ;}
 	public Elements getElem() {return elem ;}
 	public GameTimer getCooldownCounter() {return cooldownCounter ;}
 	public GameTimer getDurationCounter() {return effectCounter ;}
@@ -150,71 +152,18 @@ public class Spell
 	
 	public void applyBuffs(boolean activate, LiveBeing receiver)
 	{
-		if (buffs == null) { return ;}
+		if (buffID < 0 || Buff.getAllBuffs().size() <= buffID) { return ;}
 		
 		int mult = activate ? 1 : -1 ;
-		buffs.apply(mult, level, receiver) ;
+		Buff.getAllBuffs().get(buffID).apply(mult, level, receiver) ;
 	}
 
-	public void applyDebuffs(boolean activate, LiveBeing receiver)
+	public void applyNerfs(boolean activate, LiveBeing receiver)
 	{
-		
-		if (deBuffs == null) { return ;}
-		int mult = activate ? -1 : 1 ;
-		
-		deBuffs.apply(mult, level, receiver) ;
-	}
-	
-	public static void load(String language, List<Buff> allBuffs, List<Buff> allDebuffs)
-	{
-		List<String[]> input = Util.readcsvFile(Path.CSV + "SpellTypes.csv") ;
+		if (buffID < 0 || Buff.getAllNerfs().size() <= buffID) { return ;}
 
-		Spell[] allSpells = new Spell[input.size()] ;
-		String[][] info = new String[allSpells.length][2] ;
-
-		for (int row = 0 ; row <= allSpells.length - 1 ; row += 1)
-		{
-			int id = row ;
-			String[] col = input.get(row) ;
-			info[row] = new String[] { col[44], col[45 + 0] } ; // TODO spells language + 2 * language.ordinal()
-			String name = col[4] ;
-			String job = PlayerJobs.jobFromSpellID(row).toString() ;
-			Image image = ImageLoader.loadImage(Path.SPELLS_IMG + "spell" + job + row + ".png") ;
-			int maxLevel = Integer.parseInt(col[5]) ;
-			int mpCost = Integer.parseInt(col[6]) ;
-			SpellTypes type = SpellTypes.valueOf(col[7]) ;
-			Map<Integer, Integer> preRequisites = new HashMap<>() ;
-			for (int p = 0 ; p <= 6 - 1 ; p += 2)
-			{
-				if (-1 < Integer.parseInt(col[p + 8]))
-				{
-					preRequisites.put(Integer.parseInt(col[p + 8]), Integer.parseInt(col[p + 9])) ;
-				}
-			}
-			int cooldown = Integer.parseInt(col[14]) ;
-			int duration = Integer.parseInt(col[15]) ;
-			double[] atkMod = new double[] { Double.parseDouble(col[16]), Double.parseDouble(col[17]) } ;
-			double[] defMod = new double[] { Double.parseDouble(col[18]), Double.parseDouble(col[19]) } ;
-			double[] dexMod = new double[] { Double.parseDouble(col[20]), Double.parseDouble(col[21]) } ;
-			double[] agiMod = new double[] { Double.parseDouble(col[22]), Double.parseDouble(col[23]) } ;
-			double[] atkCritMod = new double[] { Double.parseDouble(col[24]) } ;
-			double[] defCritMod = new double[] { Double.parseDouble(col[25]) } ;
-			double[] stunMod = new double[] { Double.parseDouble(col[26]), Double.parseDouble(col[27]), Double.parseDouble(col[28]) } ;
-			double[] blockMod = new double[] { Double.parseDouble(col[29]), Double.parseDouble(col[30]), Double.parseDouble(col[31]) } ;
-			double[] bloodMod = new double[] { Double.parseDouble(col[32]), Double.parseDouble(col[33]), Double.parseDouble(col[34]) } ;
-			double[] poisonMod = new double[] { Double.parseDouble(col[35]), Double.parseDouble(col[36]), Double.parseDouble(col[37]) } ;
-			double[] silenceMod = new double[] { Double.parseDouble(col[38]), Double.parseDouble(col[39]), Double.parseDouble(col[40]) } ;
-
-			int buffId = col[41].equals("-") ? -1 : Integer.parseInt(col[41]) ;
-			int debuffId = col[42].equals("-") ? -1 : Integer.parseInt(col[42]) ;
-			Buff buffs = buffId == -1 ? null : allBuffs.get(buffId);
-			Buff debuffs = debuffId == -1 ? null : allDebuffs.get(debuffId);
-			Elements elem = Elements.valueOf(col[43]) ;
-
-			new Spell(id, name, image, maxLevel, mpCost, type, preRequisites, buffs, debuffs, atkMod,
-					defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod,
-					cooldown, duration, elem, info[row]) ;
-		}
+		int mult = activate ? -1 : 1 ;		
+		Buff.getAllNerfs().get(nerfID).apply(mult, level, receiver) ;
 	}
 	
 	@SuppressWarnings("unchecked")

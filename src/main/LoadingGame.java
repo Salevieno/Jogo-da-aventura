@@ -27,8 +27,8 @@ import maps.FieldMap;
 import maps.GameMap;
 import maps.SpecialMap;
 import sidebar.SideBar;
-import spells.Buff;
-import spells.Spell;
+import spells.BuffData;
+import spells.SpellData;
 import utilities.Util;
 
 public abstract class LoadingGame
@@ -121,9 +121,9 @@ public abstract class LoadingGame
 				return;
 
 			case 2:
-				Buff.loadBuffs();
-				Buff.loadDebuffs();
-				Spell.load(language, Buff.getAllBuffs(), Buff.getAllDebuffs());
+				BuffData.createBuffs() ;
+				BuffData.createNerfs() ;
+				SpellData.createSpells() ;
 				logInitializationTime("spells", initialStepLoadingTime);
 				return;
 
