@@ -11,8 +11,7 @@ import java.awt.EventQueue ;
  */
 public class MainGame3_4
 {
-	private static final GameFrame gameFrame = GameFrame.getMe() ;
-	private static final String version = "0.14" ;
+	private static final String version = "0.15" ;
 	
 	public static void closeGame()
 	{
@@ -23,6 +22,9 @@ public class MainGame3_4
 	
 	public static void main(String[] args)
 	{
-		EventQueue.invokeLater(() -> {gameFrame.setVisible(true) ;}) ;
+		EventQueue.invokeLater(() -> {
+			GameFrame gameFrame = GameFrame.getMe() ;
+			gameFrame.setVisible(true) ;
+		}) ;
 	}
 }

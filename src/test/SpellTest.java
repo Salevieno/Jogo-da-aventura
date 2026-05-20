@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import battle.AtkResults;
-import battle.Battle;
 import items.Arrow;
 import items.Fab;
 import items.GeneralItem;
@@ -18,17 +17,11 @@ import items.Item;
 import items.Potion;
 import items.Recipe;
 import liveBeings.Creature;
-import liveBeings.CreatureData;
-import liveBeings.CreatureType;
 import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
-import liveBeings.PlayerData;
 import main.Elements;
-import spells.BuffData;
 import spells.Spell;
-import spells.SpellData;
-import spells.SpellTypes;
 import windows.CraftWindow;
 
 public class SpellTest
@@ -43,79 +36,78 @@ public class SpellTest
 	static Pet pet ;
 	
 	static Creature refCreature ;
+
 	// TODO optional - test jackpot spell
 	@BeforeAll
 	static void initializeGame()
 	{
-		BuffData.createBuffs();
-		BuffData.createNerfs();
-		SpellData.createSpells() ;
-		Item.load("portugues");
-		Recipe.load(Item.getAllItems()) ;
-		CreatureData.create() ; // TODO level de dificuldade tem que ser 2 aqui
+		// BuffData.createBuffs();
+		// BuffData.createNerfs();
+		// SpellData.createSpells() ;
+		// Item.load("portugues");
+		// Recipe.load(Item.getAllItems()) ;
+		// CreatureData.create() ; // TODO level de dificuldade tem que ser 2 aqui
 
 		knightLevel0 = new Player("Player", "", 0) ;
-		mageLevel0 = new Player("Player", "", 1) ;
-		archerLevel0 = new Player("Player", "", 2) ;
-		animalLevel0 = new Player("Player", "", 3) ;
-		thiefLevel0 = new Player("Player", "", 4) ;
-//		List.of(knightLevel0, mageLevel0, archerLevel0, animalLevel0, thiefLevel0).forEach(Player::InitializeSpells) ;
+		// mageLevel0 = new Player("Player", "", 1) ;
+		// archerLevel0 = new Player("Player", "", 2) ;
+		// animalLevel0 = new Player("Player", "", 3) ;
+		// thiefLevel0 = new Player("Player", "", 4) ;
 		
-		pet = new Pet(1) ;
+		// pet = new Pet(1) ;
 		
-		refCreature = new Creature(CreatureType.getAll().get(0)) ;
+		// refCreature = new Creature(CreatureType.getAll().get(0)) ;
 		
-		Battle.removeRandomness();
+		// Battle.removeRandomness();
 	}
 	
 	@BeforeEach
 	void resetAttributes()
 	{
-		List.of(knightLevel0, mageLevel0, archerLevel0, animalLevel0, thiefLevel0, pet, refCreature).forEach(being ->
-		{
-			being.getPA().getLife().setToMaximum() ;
-			being.getPA().getMp().setToMaximum() ;
-		});
-		knightLevel0.setPA(PlayerData.getInitialpersonalattperjob().get(0)) ;
-		mageLevel0.setPA(PlayerData.getInitialpersonalattperjob().get(1)) ;
-		archerLevel0.setPA(PlayerData.getInitialpersonalattperjob().get(2)) ;
-		animalLevel0.setPA(PlayerData.getInitialpersonalattperjob().get(3)) ;
-		thiefLevel0.setPA(PlayerData.getInitialpersonalattperjob().get(4)) ;
-		knightLevel0.setBA(PlayerData.getInitialbattleattperjob().get(0)) ;
-		mageLevel0.setBA(PlayerData.getInitialbattleattperjob().get(1)) ;
-		archerLevel0.setBA(PlayerData.getInitialbattleattperjob().get(2)) ;
-		animalLevel0.setBA(PlayerData.getInitialbattleattperjob().get(3)) ;
-		thiefLevel0.setBA(PlayerData.getInitialbattleattperjob().get(4)) ;
-		// pet.setPA(Pet.InitializePersonalAttributes(pet.getJob())) ;
-		// pet.setBA(new BattleAttributes(Pet.InitialAtts.get(pet.getJob()), 1, Player.initialAttributes.get(pet.getJob())[36], Player.initialAttributes.get(pet.getJob())[37])) ;
-		refCreature.setPA(CreatureType.getAll().get(0).getPA());
-		refCreature.setBA(CreatureType.getAll().get(0).getBA());
-		knightLevel0.engageInFight(refCreature) ;
-		mageLevel0.engageInFight(refCreature) ;
-		archerLevel0.engageInFight(refCreature) ;
-		animalLevel0.engageInFight(refCreature) ;
-		thiefLevel0.engageInFight(refCreature) ;
+// 		List.of(knightLevel0, mageLevel0, archerLevel0, animalLevel0, thiefLevel0, pet, refCreature).forEach(being ->
+// 		{
+// 			being.getPA().getLife().setToMaximum() ;
+// 			being.getPA().getMp().setToMaximum() ;
+// 		});
+// 		knightLevel0.setPA(PlayerData.getInitialpersonalattperjob().get(0)) ;
+// 		mageLevel0.setPA(PlayerData.getInitialpersonalattperjob().get(1)) ;
+// 		archerLevel0.setPA(PlayerData.getInitialpersonalattperjob().get(2)) ;
+// 		animalLevel0.setPA(PlayerData.getInitialpersonalattperjob().get(3)) ;
+// 		thiefLevel0.setPA(PlayerData.getInitialpersonalattperjob().get(4)) ;
+// 		knightLevel0.setBA(PlayerData.getInitialbattleattperjob().get(0)) ;
+// 		mageLevel0.setBA(PlayerData.getInitialbattleattperjob().get(1)) ;
+// 		archerLevel0.setBA(PlayerData.getInitialbattleattperjob().get(2)) ;
+// 		animalLevel0.setBA(PlayerData.getInitialbattleattperjob().get(3)) ;
+// 		thiefLevel0.setBA(PlayerData.getInitialbattleattperjob().get(4)) ;
+// 		// pet.setPA(Pet.InitializePersonalAttributes(pet.getJob())) ;
+// 		// pet.setBA(new BattleAttributes(Pet.InitialAtts.get(pet.getJob()), 1, Player.initialAttributes.get(pet.getJob())[36], Player.initialAttributes.get(pet.getJob())[37])) ;
+// 		refCreature.setPA(CreatureType.getAll().get(0).getPA());
+// 		refCreature.setBA(CreatureType.getAll().get(0).getBA());
+// 		knightLevel0.engageInFight(refCreature) ;
+// 		mageLevel0.engageInFight(refCreature) ;
+// 		archerLevel0.engageInFight(refCreature) ;
+// 		animalLevel0.engageInFight(refCreature) ;
+// 		thiefLevel0.engageInFight(refCreature) ;
 		
-		List.of(knightLevel0, mageLevel0, archerLevel0, animalLevel0, thiefLevel0).forEach(player -> {
-	    	for (Spell spell : player.getSpells())
-	    	{
-	    		if (spell.getLevel() == spell.getMaxLevel()) { spell.incLevel(-spell.getMaxLevel()) ;}
-	    		if (spell.getType().equals(SpellTypes.passive)) { continue ;}
-	    		spell.incLevel(5) ;
+// 		List.of(knightLevel0, mageLevel0, archerLevel0, animalLevel0, thiefLevel0).forEach(player -> {
+// 	    	for (Spell spell : player.getSpells())
+// 	    	{
+// 	    		if (spell.getLevel() == spell.getMaxLevel()) { spell.incLevel(-spell.getMaxLevel()) ;}
+// 	    		if (spell.getType().equals(SpellTypes.passive)) { continue ;}
+// 	    		spell.incLevel(5) ;
 	    		
-	    		// make spell ready
-//	    		for (int i = 0 ; i <= spell.getCooldownCounter().getDuration() - 1; i += 1)
-//	    		{
-//	    			spell.getCooldownCounter().inc() ;
-//	    		}
-	    	}
-		}) ;
+// 	    		// make spell ready
+// //	    		for (int i = 0 ; i <= spell.getCooldownCounter().getDuration() - 1; i += 1)
+// //	    		{
+// //	    			spell.getCooldownCounter().inc() ;
+// //	    		}
+// 	    	}
+// 		}) ;
 	}
 	
-
 	
 	@Test
-	void spellLevelIncrease()
+	public void spellLevelIncrease()
 	{
 		Player player = knightLevel0 ;
 		Spell pancada = player.getSpells().get(0) ;
@@ -130,7 +122,7 @@ public class SpellTest
 	}
 	
 	@Test
-	void knightOffensiveSpells()
+	public void knightOffensiveSpells()
 	{
 		Player player = knightLevel0 ;
 		Spell pancada = player.getSpells().get(0) ;
@@ -148,7 +140,7 @@ public class SpellTest
 	
 	
 	@Test
-	void mageOffensiveSpells()
+	public void mageOffensiveSpells()
 	{
 		Player player = mageLevel0 ;
 		Spell chama = player.getSpells().get(0) ;
@@ -166,7 +158,7 @@ public class SpellTest
 	
 	
 	@Test
-	void archerOffensiveSpells()
+	public void archerOffensiveSpells()
 	{
 		Player player = archerLevel0 ;
 		Spell flechadaForte = player.getSpells().get(0) ;
@@ -184,7 +176,7 @@ public class SpellTest
 	
 	
 	@Test
-	void animalOffensiveSpells()
+	public void animalOffensiveSpells()
 	{
 		Player player = animalLevel0 ;
 		Spell mordidaProfunda = player.getSpells().get(0) ;
@@ -202,7 +194,7 @@ public class SpellTest
 	
 	
 	@Test
-	void thiefOffensiveSpells()
+	public void thiefOffensiveSpells()
 	{
 		Player player = thiefLevel0 ;
 		Spell ataqueFurtivo = player.getSpells().get(0) ;
@@ -221,7 +213,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive1vitality()
+	public void passive1vitality()
 	{
 		Player player = knightLevel0 ;
 		Spell eternalLife = player.getSpells().get(1) ;
@@ -234,7 +226,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive2strength()
+	public void passive2strength()
 	{
 		Player player = knightLevel0 ;
 		Spell forca = player.getSpells().get(2) ;
@@ -247,7 +239,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive3resistance()
+	public void passive3resistance()
 	{
 		Player player = knightLevel0 ;
 		Spell resistencia = player.getSpells().get(3) ;
@@ -260,7 +252,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive7thickBlood()
+	public void passive7thickBlood()
 	{
 		Player player = knightLevel0 ;
 		Spell sangueGrosso = player.getSpells().get(7) ;
@@ -273,7 +265,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive10neutralResistance()
+	public void passive10neutralResistance()
 	{
 		Player player = knightLevel0 ;
 		Spell resistenciaNeutra = player.getSpells().get(10) ;
@@ -284,7 +276,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive11physicalCondition()
+	public void passive11physicalCondition()
 	{
 		Player player = knightLevel0 ;
 		Spell condicaoFisica = player.getSpells().get(11) ;
@@ -299,7 +291,7 @@ public class SpellTest
 
 	
 //	@Test
-//	void passive26improvedBlock()
+//	public void passive26improvedBlock()
 //	{
 //		// Teste de shielder, ainda precisa implementar.
 //		Player player = mageLevel0 ;
@@ -313,7 +305,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive36Meditation()
+	public void passive36Meditation()
 	{
 		Player player = mageLevel0 ;
 		Spell meditation = player.getSpells().get(2) ;
@@ -326,7 +318,7 @@ public class SpellTest
 	}
 	
 	@Test
-	void passive70archery()
+	public void passive70archery()
 	{
 		Player player = archerLevel0 ;
 		Spell archery = player.getSpells().get(1) ;
@@ -340,7 +332,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive73arrowExpertise()
+	public void passive73arrowExpertise()
 	{
 		Player player = archerLevel0 ;
 		Spell archery = player.getSpells().get(4) ;
@@ -387,7 +379,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive76intensity()
+	public void passive76intensity()
 	{
 		Player player = archerLevel0 ;
 		Spell intensidade = player.getSpells().get(7) ;
@@ -401,7 +393,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive77elementalArrows()
+	public void passive77elementalArrows()
 	{
 		Player player = archerLevel0 ;
 		Spell flechasElementais = player.getSpells().get(7) ;
@@ -478,7 +470,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive79huntingTactics()
+	public void passive79huntingTactics()
 	{
 		Player player = archerLevel0 ;
 		Spell taticasDeCaca = player.getSpells().get(10) ;
@@ -492,7 +484,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive105fourPaws()
+	public void passive105fourPaws()
 	{
 		Player player = animalLevel0 ;
 		Spell quatroPatas = player.getSpells().get(1) ;
@@ -507,7 +499,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive107criticalPoints()
+	public void passive107criticalPoints()
 	{
 		Player player = animalLevel0 ;
 		Spell pontosCriticos = player.getSpells().get(3) ;
@@ -519,7 +511,7 @@ public class SpellTest
 	}
 	
 	@Test
-	void passive111naturalElements()
+	public void passive111naturalElements()
 	{
 		Player player = animalLevel0 ;
 		Spell elementosNaturais = player.getSpells().get(7) ;
@@ -534,7 +526,7 @@ public class SpellTest
 	}
 	
 //	@Test
-//	void passive114naturalHelp()
+//	public void passive114naturalHelp()
 //	{
 //		Player player = animalLevel0 ;
 //		Spell ajudinhaNatural = player.getSpells().get(10) ;
@@ -567,7 +559,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive113sturdy()
+	public void passive113sturdy()
 	{
 		Player player = animalLevel0 ;
 		Spell robusto = player.getSpells().get(9) ;
@@ -582,7 +574,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive117bestFriend()
+	public void passive117bestFriend()
 	{
 		Player player = animalLevel0 ;
 		Spell melhorAmigo = player.getSpells().get(13) ;
@@ -600,7 +592,7 @@ public class SpellTest
 	
 	
 	@Test
-	void passive139speed()
+	public void passive139speed()
 	{
 		Player player = thiefLevel0 ;
 		Spell rapidez = player.getSpells().get(1) ;
@@ -613,7 +605,7 @@ public class SpellTest
 
 	
 	@Test
-	void passive142combatPractice()
+	public void passive142combatPractice()
 	{
 		Player player = thiefLevel0 ;
 		Spell praticaDeCombate = player.getSpells().get(4) ;
@@ -627,7 +619,7 @@ public class SpellTest
 
 	
 	@Test
-	void passive144Jackpot()
+	public void passive144Jackpot()
 	{
 		Player player = thiefLevel0 ;
 		Spell bolada = player.getSpells().get(6) ;
@@ -644,7 +636,7 @@ public class SpellTest
 	
 
 	@Test
-	void passive146dailyWeapons()
+	public void passive146dailyWeapons()
 	{
 		Player player = thiefLevel0 ;
 		Spell armasCotidianas = player.getSpells().get(8) ;
@@ -673,7 +665,7 @@ public class SpellTest
 	}
 	
 	@Test
-	void passive147poisonPot()
+	public void passive147poisonPot()
 	{
 		Player player = thiefLevel0 ;
 		Spell dailyWeapons = player.getSpells().get(8) ;
@@ -708,7 +700,7 @@ public class SpellTest
 	}
 	
 	@Test
-	void passive151hardToKill()
+	public void passive151hardToKill()
 	{
 		Player player = thiefLevel0 ;
 		Spell duroDeMatar = player.getSpells().get(13) ;
@@ -722,7 +714,7 @@ public class SpellTest
 	
 	
 	@Test
-	void support4eternalLife()
+	public void support4eternalLife()
 	{
 		Player player = knightLevel0 ;
 		Spell eternalLife = player.getSpells().get(4) ;
@@ -732,7 +724,7 @@ public class SpellTest
 	
 	
 	@Test
-	void support5offensivePosture()
+	public void support5offensivePosture()
 	{
 		Player player = knightLevel0 ;
 		Spell posturaOfensiva = player.getSpells().get(5) ;
@@ -743,7 +735,7 @@ public class SpellTest
 	
 	
 	@Test
-	void support9block()
+	public void support9block()
 	{
 		Player player = knightLevel0 ;
 		Spell bloqueio = player.getSpells().get(9) ;
@@ -755,7 +747,7 @@ public class SpellTest
 	
 	
 	@Test
-	void support112wavingTail()
+	public void support112wavingTail()
 	{
 		Player player = animalLevel0 ;
 		Spell abanandoORabinho = player.getSpells().get(8) ;
@@ -768,7 +760,7 @@ public class SpellTest
 	
 	
 //	@Test
-//	void support114naturalHelp()
+//	public void support114naturalHelp()
 //	{
 //		Player player = animalLevel0 ;
 //		Spell ajudinhaNatural = player.getSpells().get(10) ;
@@ -780,7 +772,7 @@ public class SpellTest
 	
 	
 	@Test
-	void support141steal()
+	public void support141steal()
 	{
 		Player player = thiefLevel0 ;
 		Spell roubo = player.getSpells().get(3) ;
@@ -801,7 +793,7 @@ public class SpellTest
 	
 	
 	@Test
-	void support44heal()
+	public void support44heal()
 	{
 		mageLevel0.takeDamage(40) ;
 		mageLevel0.useSpell(mageLevel0.getSpells().get(10), mageLevel0) ;
@@ -809,7 +801,7 @@ public class SpellTest
 	}
 	
 	@Test
-	void auto42Restoration()
+	public void auto42Restoration()
 	{
 		Player player = mageLevel0 ;
 		player.setCurrentAction("0") ;
@@ -818,7 +810,7 @@ public class SpellTest
 	}
 	
 	@Test	
-	void auto82bouncyArrow()
+	public void auto82bouncyArrow()
 	{
 		Player player = archerLevel0 ;
 		player.getBag().add(Arrow.getAll()[2], 10) ;
@@ -828,7 +820,7 @@ public class SpellTest
 	}
 	
 	@Test
-	void auto116survivorInstinct()
+	public void auto116survivorInstinct()
 	{
 		Player player = animalLevel0 ;
 		player.takeDamage((int) (0.8 * player.getLife().getCurrentValue())) ;
@@ -844,7 +836,7 @@ public class SpellTest
 	
 	
 //	@Test
-//	void auto108doubleCollect()
+//	public void auto108doubleCollect()
 //	{
 //		Player player = animalLevel0 ;
 //		Collectible herb = new Collectible(60, 1, null, 0) ;
@@ -854,7 +846,7 @@ public class SpellTest
 //		assertTrue(player.getBag().hasEnough(herb.getItem(), 2)) ;
 //	}
 	
-	void auto149surpriseAttack()
+	public void auto149surpriseAttack()
 	{
 		Player player = thiefLevel0 ;
 		player.useAutoSpell(true, player.getSpells().get(11)) ;

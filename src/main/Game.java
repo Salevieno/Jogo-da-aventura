@@ -79,6 +79,7 @@ public class Game
 
 	static
 	{
+		// TODO remover screen de static para que Game não precise ser inicializado antes das classes que usam Game.getScreen()
 		screen = new Screen(new Dimension(GameFrame.getWindowsize().width, GameFrame.getWindowsize().height), null);
 		gameLanguage = Languages.portugues;
 		allText = new HashMap<>();
