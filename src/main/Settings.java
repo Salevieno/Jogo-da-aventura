@@ -102,7 +102,7 @@ public class Settings
                 Draw.settingBars(pos, align, 60, damageAnimation, 4) ;
                 return ;
             case 5:
-                Draw.settingSwitch(pos, align, GameFrame.fullScreen) ;
+                Draw.settingSwitch(pos, align, GameFrame.isFullscreen()) ;
                 return ;
             case 6:
                 Draw.settingBars(pos, align, 60, languages.indexOf(language), languages.size()) ;

@@ -22,14 +22,9 @@ public class GamePanel extends JPanel
 	private static final long serialVersionUID = 1L;
 
 	private static Point mousePos ;
-	public static final DrawPrimitives DP ;
-	private static final GamePanel gamePanel = new GamePanel() ;
-	private static final Game game = new Game() ;
-	
-	static
-	{
-		DP = new DrawPrimitives() ;
-	}
+	private static DrawPrimitives DP ;
+	private static GamePanel gamePanel ;
+	private static Game game ;
 	
 	private GamePanel()
 	{
@@ -39,24 +34,32 @@ public class GamePanel extends JPanel
 		addKeyListener(new TAdapter()) ;
 		setFocusable(true) ;
 	}
+	
+	protected static void create()
+	{
+		DP = new DrawPrimitives() ;
+		gamePanel = new GamePanel() ;
+		game = new Game() ;
+	}
 
 	public static GamePanel getMe() { return gamePanel ;}
+	public static DrawPrimitives getDP() { return DP ;}
 	
 	public static void setCursorToDefault()
 	{
-		GamePanel.getMe().setCursor(new Cursor(Cursor.DEFAULT_CURSOR)) ;
+		gamePanel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)) ;
 	}
 	
 	public static void setCursorToHand()
 	{
-		GamePanel.getMe().setCursor(new Cursor(Cursor.HAND_CURSOR)) ;
+		gamePanel.setCursor(new Cursor(Cursor.HAND_CURSOR)) ;
 	}
 	
 	public static Point getMousePos() { return mousePos ;}
 	
-	public void updateMousePos()
+	private static void updateMousePos(JPanel panel)
 	{
-		mousePos = Util.getMousePos(this) ;
+		mousePos = Util.getMousePos(panel) ;
         mousePos.x = (int) (mousePos.x / Game.getScreen().getScale().x) ;
         mousePos.y = (int) (mousePos.y / Game.getScreen().getScale().y) ;
 	}
@@ -73,12 +76,11 @@ public class GamePanel extends JPanel
 	protected void paintComponent(Graphics graphs)
 	{
 		super.paintComponent(graphs) ;
-		updateMousePos() ;
+		updateMousePos(gamePanel) ;
 		
         Graphics2D graphs2D = (Graphics2D) graphs ;
         graphs2D.scale(Game.getScreen().getScale().x, Game.getScreen().getScale().y);
 		DP.setGraphics(graphs2D) ;
-		GameTimer.updateAll() ;
 		game.update() ;
 
 		Toolkit.getDefaultToolkit().sync() ;

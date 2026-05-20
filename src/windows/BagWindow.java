@@ -664,12 +664,12 @@ public class BagWindow extends GameWindow
 			Image tabImage = m == tab ? (menu == 0 ? selectedMenuTab0 : selectedMenuTab1) : menuImage ;
 			checkMenuMouseSelection(mousePos, tabPos, m) ;
 			
-			GamePanel.DP.drawImage(tabImage, tabPos, Align.topLeft) ;
-			GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, tabNames[m], titleFont, textColor) ;
+			GamePanel.getDP().drawImage(tabImage, tabPos, Align.topLeft) ;
+			GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, tabNames[m], titleFont, textColor) ;
 		}
 		
 		// draw bag
-		GamePanel.DP.drawImage(menu == 0 ? image : selectedBag, windowPos, Align.topLeft) ;
+		GamePanel.getDP().drawImage(menu == 0 ? image : selectedBag, windowPos, Align.topLeft) ;
 		
 		// draw items		
 		itemsOnWindow = getItemsOnWindow() ;		
@@ -687,8 +687,8 @@ public class BagWindow extends GameWindow
 			checkMouseSelection(mousePos, slotCenterLeft, Align.centerLeft, itemNameSize, itemID) ;
 			Color textColor = getTextColor(itemID == item) ;
 			
-			GamePanel.DP.drawImage(slotImage, slotCenter, Align.center) ;
-			GamePanel.DP.drawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
+			GamePanel.getDP().drawImage(slotImage, slotCenter, Align.center) ;
+			GamePanel.getDP().drawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
 			Draw.textUntil(textPos, Align.centerLeft, Draw.stdAngle, itemText, titleFont, textColor, 40, mousePos) ;
 		}
 		

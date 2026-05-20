@@ -35,12 +35,12 @@ public class GameIconButton extends GameButton
 		
 		if (imageDisplayed == null)
 		{
-            GamePanel.DP.drawRoundRect(topLeft, Align.topLeft, size, 5, Palette.colors[3], Palette.colors[0], true) ;
-            GamePanel.DP.drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
+            GamePanel.getDP().drawRoundRect(topLeft, Align.topLeft, size, 5, Palette.colors[3], Palette.colors[0], true) ;
+            GamePanel.getDP().drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
 			return ;
 		}
 		
-		GamePanel.DP.drawImage(imageDisplayed, topLeft, angle, Scale.unit, Align.topLeft, opacity) ;
+		GamePanel.getDP().drawImage(imageDisplayed, topLeft, angle, Scale.unit, Align.topLeft, opacity) ;
 	}
     
 }

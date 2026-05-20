@@ -361,17 +361,17 @@ public abstract class GameMap
 		Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 		Font titleFont = new Font(Game.MainFontName, Font.BOLD, 15) ;
 		
-		GamePanel.DP.drawImage(infoWindow, pos, Align.topLeft) ;
+		GamePanel.getDP().drawImage(infoWindow, pos, Align.topLeft) ;
 		
 		Point titlePos = Util.translate(pos, size.width / 2 + 5, 13) ;
-		GamePanel.DP.drawText(titlePos, Align.center, 0, name, titleFont, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(titlePos, Align.center, 0, name, titleFont, Palette.colors[0]) ;
 		
 		Point diggingItemsPos = Util.translate(pos, 10, 43) ;
-		GamePanel.DP.drawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(diggingItemsPos, Align.centerLeft, 0, "Items de escavação", largeFont, Palette.colors[0]) ;
 		diggingItemsPos.y += 14 ;
 		for (Item item : diggingItems.keySet())
 		{
-			GamePanel.DP.drawText(diggingItemsPos, Align.centerLeft, 0, item.getName(), font, Palette.colors[0]) ;
+			GamePanel.getDP().drawText(diggingItemsPos, Align.centerLeft, 0, item.getName(), font, Palette.colors[0]) ;
 			diggingItemsPos.y += 10 ;
 		}
 		
@@ -380,14 +380,14 @@ public abstract class GameMap
 			FieldMap fm = (FieldMap) this ;
 			
 			Point levelPos = Util.translate(titlePos, 0, 14) ;
-			GamePanel.DP.drawText(levelPos, Align.center, 0, "Nível " + String.valueOf(fm.getLevel()), largeFont, Palette.colors[6]) ;
+			GamePanel.getDP().drawText(levelPos, Align.center, 0, "Nível " + String.valueOf(fm.getLevel()), largeFont, Palette.colors[6]) ;
 			
 			Point allItemsPos = Util.translate(pos, 160, 43) ;
-			GamePanel.DP.drawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Palette.colors[0]) ;
+			GamePanel.getDP().drawText(allItemsPos, Align.centerLeft, 0, "Items encontrados", largeFont, Palette.colors[0]) ;
 			allItemsPos.y += 14 ;
 			for (Item item : fm.getItems())
 			{
-				GamePanel.DP.drawText(allItemsPos, Align.centerLeft, 0, item.getName(), font, Palette.colors[0]) ;
+				GamePanel.getDP().drawText(allItemsPos, Align.centerLeft, 0, item.getName(), font, Palette.colors[0]) ;
 				allItemsPos.y += 10 ;
 			}
 			
@@ -395,7 +395,7 @@ public abstract class GameMap
 		}
 		
 		Point levelPos = Util.translate(titlePos, 0, 14) ;
-		GamePanel.DP.drawText(levelPos, Align.center, 0, "Nível 0", largeFont, Palette.colors[6]) ;
+		GamePanel.getDP().drawText(levelPos, Align.center, 0, "Nível 0", largeFont, Palette.colors[6]) ;
 
 	}
  	
@@ -404,12 +404,12 @@ public abstract class GameMap
  		Point pos = new Point(500, 10) ;
  		String text = Game.allText.get(TextCategories.allIsGood)[0] ;
  		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
- 		GamePanel.DP.drawText(pos, Align.topLeft, 0, text, font, Palette.colors[19]) ;
+ 		GamePanel.getDP().drawText(pos, Align.topLeft, 0, text, font, Palette.colors[19]) ;
  	}
 	
  	public void display(Point pos, Align align, Scale scale)
  	{
- 		GamePanel.DP.drawImage(image, pos, scale, align) ;
+ 		GamePanel.getDP().drawImage(image, pos, scale, align) ;
  	}
  	
  	public void display()
@@ -418,21 +418,21 @@ public abstract class GameMap
 
  		if (name.equals("City of the animals"))
  		{
- 			GamePanel.DP.drawImage(image, Game.getScreen().getMapCenter(), new Scale(0.5, 0.5), Align.center) ;
+ 			GamePanel.getDP().drawImage(image, Game.getScreen().getMapCenter(), new Scale(0.5, 0.5), Align.center) ;
  			return ;
  		}
  		
- 		GamePanel.DP.drawImage(image, Game.getScreen().getMapCenter(), Align.center) ;
+ 		GamePanel.getDP().drawImage(image, Game.getScreen().getMapCenter(), Align.center) ;
  		
  		// if (name.equals("City of the archers") || name.equals("Forest 9") || name.equals("Forest 13"))
  		// {
- 		// 	animations.display(GamePanel.DP) ;
+ 		// 	animations.display(GamePanel.getDP()) ;
  		// }
  		
  		if (name.equals("Forest 9"))
  		{
- 			GamePanel.DP.drawImage(dockImg, Game.getScreen().pos(0.6, 0.85), Align.centerLeft) ;
- 			GamePanel.DP.drawImage(boatImg, Game.getScreen().pos(0.75, 0.8), Align.centerLeft) ;
+ 			GamePanel.getDP().drawImage(dockImg, Game.getScreen().pos(0.6, 0.85), Align.centerLeft) ;
+ 			GamePanel.getDP().drawImage(boatImg, Game.getScreen().pos(0.75, 0.8), Align.centerLeft) ;
  		}
  	}
 	

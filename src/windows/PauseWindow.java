@@ -200,7 +200,7 @@ public class PauseWindow extends GameWindow
 
     public void display(Point mousePos)
     {
-        GamePanel.DP.drawImage(imageBg, windowPos, Align.topLeft, 0.3) ;
+        GamePanel.getDP().drawImage(imageBg, windowPos, Align.topLeft, 0.3) ;
 
         for (GameButton button : menuButtons.get(menu))
         {
@@ -220,8 +220,8 @@ public class PauseWindow extends GameWindow
             {
                 Color textColor = isListeningToKeyInput && item == i ? Palette.colors[18] : Palette.colors[3] ;
                 int posY = menuButtons.get(menu).get(i).getCenter().y ;
-                GamePanel.DP.drawImage(textBgImg, new Point(settingColPosX, posY), Align.center, 0.5) ;
-                GamePanel.DP.drawText(new Point(settingColPosX, posY), Align.center, Draw.stdAngle, PlayerActions.values()[i].getKey(), largeFont, textColor) ;
+                GamePanel.getDP().drawImage(textBgImg, new Point(settingColPosX, posY), Align.center, 0.5) ;
+                GamePanel.getDP().drawText(new Point(settingColPosX, posY), Align.center, Draw.stdAngle, PlayerActions.values()[i].getKey(), largeFont, textColor) ;
             }
         }
     }

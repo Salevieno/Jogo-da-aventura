@@ -63,7 +63,7 @@ public class LiveBeingStatus
 	{
 		if (!isActive()) { return ;}
 		
-		GamePanel.DP.drawImage(image, pos, Align.center) ;
+		GamePanel.getDP().drawImage(image, pos, Align.center) ;
 	}
 
 	@Override

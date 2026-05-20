@@ -157,17 +157,17 @@ public class CraftWindow extends GameWindow
 		Point titlePos = Util.translate(windowPos, size.width / 2, border + 9) ;
 		double angle = Draw.stdAngle ;		
 		
-		GamePanel.DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
+		GamePanel.getDP().drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
 		
-		GamePanel.DP.drawText(titlePos, Align.center, angle, name, titleFont, stdColor) ;
+		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, titleFont, stdColor) ;
 		
 		Point ingredientsTextPos = Util.translate(windowPos, border + padding + 84, border + 10) ;
 		Point productsTextPos = Util.translate(windowPos, border + padding + 362 + 84, border + 10) ;
 //		Point amountTextPos = Util.translate(windowPos, border + padding + 276, border + 30) ;
-		GamePanel.DP.drawText(ingredientsTextPos, Align.center, angle, "Ingredientes", subTitleFont, stdColor) ;
-		GamePanel.DP.drawText(productsTextPos, Align.center, angle, "Produtos", subTitleFont, stdColor) ;
-//		GamePanel.DP.drawText(amountTextPos, Align.center, angle, "Fabricar", subTitleFont, textColor) ;
-//		GamePanel.DP.drawText(Util.translate(amountTextPos, 0, 70), Align.center, angle, String.valueOf(amountOfCrafts), titleFont, textColor) ;
+		GamePanel.getDP().drawText(ingredientsTextPos, Align.center, angle, "Ingredientes", subTitleFont, stdColor) ;
+		GamePanel.getDP().drawText(productsTextPos, Align.center, angle, "Produtos", subTitleFont, stdColor) ;
+//		GamePanel.getDP().drawText(amountTextPos, Align.center, angle, "Fabricar", subTitleFont, textColor) ;
+//		GamePanel.getDP().drawText(Util.translate(amountTextPos, 0, 70), Align.center, angle, String.valueOf(amountOfCrafts), titleFont, textColor) ;
 
 		Point ingredientsPos = Util.translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + padding + Item.slot.getHeight(null) / 2 + 30) ;
 		Point productsPos = Util.translate(windowPos, border + padding + Item.slot.getWidth(null) / 2 + 362, border + padding + Item.slot.getHeight(null) / 2 + 30) ;
@@ -179,17 +179,17 @@ public class CraftWindow extends GameWindow
 			ingredients.forEach((item, qtd) -> {
 				Color itemNameColor = playerBag.hasEnough(item, qtd * amountOfCrafts) ? stdColor : Palette.colors[2] ;
 				String msg = qtd * amountOfCrafts + " " + item.getName() + " (" + playerBag.getAmount(item) + ")" ;
-				GamePanel.DP.drawImage(Item.slot, ingredientsPos, angle, Scale.unit, Align.center) ;
-				GamePanel.DP.drawImage(item.getImage(), ingredientsPos, Draw.stdAngle, Scale.unit, Align.center) ;
-				GamePanel.DP.drawText(Util.translate(ingredientsPos, 14, 0), Align.centerLeft, Draw.stdAngle, msg, stdFont, itemNameColor) ;
+				GamePanel.getDP().drawImage(Item.slot, ingredientsPos, angle, Scale.unit, Align.center) ;
+				GamePanel.getDP().drawImage(item.getImage(), ingredientsPos, Draw.stdAngle, Scale.unit, Align.center) ;
+				GamePanel.getDP().drawText(Util.translate(ingredientsPos, 14, 0), Align.centerLeft, Draw.stdAngle, msg, stdFont, itemNameColor) ;
 				ingredientsPos.y += 23 ;
 			}) ;
 			
 			products.forEach((item, qtd) -> {
 				Color itemNameColor = stdColor ;
-				GamePanel.DP.drawImage(Item.slot, productsPos, angle, Scale.unit, Align.center) ;
-				GamePanel.DP.drawImage(item.getImage(), productsPos, Draw.stdAngle, Scale.unit, Align.center) ;
-				GamePanel.DP.drawText(Util.translate(productsPos, 14, 0), Align.centerLeft, Draw.stdAngle, qtd * amountOfCrafts + " " + item.getName(), stdFont, itemNameColor) ;
+				GamePanel.getDP().drawImage(Item.slot, productsPos, angle, Scale.unit, Align.center) ;
+				GamePanel.getDP().drawImage(item.getImage(), productsPos, Draw.stdAngle, Scale.unit, Align.center) ;
+				GamePanel.getDP().drawText(Util.translate(productsPos, 14, 0), Align.centerLeft, Draw.stdAngle, qtd * amountOfCrafts + " " + item.getName(), stdFont, itemNameColor) ;
 				productsPos.y += 23 ;
 			}) ;		
 		}

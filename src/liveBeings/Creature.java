@@ -394,7 +394,7 @@ public class Creature extends LiveBeing
 	public void displayName(Point pos, Align alignment, Color color)
 	{
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		GamePanel.DP.drawText(pos, alignment, Draw.stdAngle, name, font, color) ;
+		GamePanel.getDP().drawText(pos, alignment, Draw.stdAngle, name, font, color) ;
 	}
 	
 	public void display(Point pos, Scale scale)
@@ -426,11 +426,11 @@ public class Creature extends LiveBeing
 		}
 		if (Game.debugMode)
 		{
-			GamePanel.DP.drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;
-			GamePanel.DP.drawText(Util.translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
-			GamePanel.DP.drawText(Util.translate(pos, 0, -40), Align.bottomCenter, !idleTimer.isActive() ? "is moving: " + dir : "", Color.black) ;
+			GamePanel.getDP().drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;
+			GamePanel.getDP().drawText(Util.translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
+			GamePanel.getDP().drawText(Util.translate(pos, 0, -40), Align.bottomCenter, !idleTimer.isActive() ? "is moving: " + dir : "", Color.black) ;
 			displayState() ;
-			GamePanel.DP.drawText(Util.translate(pos, 0, -50), Align.bottomCenter, totalPower() + " ", Color.black) ;
+			GamePanel.getDP().drawText(Util.translate(pos, 0, -50), Align.bottomCenter, totalPower() + " ", Color.black) ;
 			hitbox.display();
 		}
 	}	
@@ -442,8 +442,8 @@ public class Creature extends LiveBeing
 	
 	public void displayAdditionalInfo()
 	{
-		GamePanel.DP.drawText(new Point((int) pos.x, (int) pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
-		GamePanel.DP.drawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
+		GamePanel.getDP().drawText(new Point((int) pos.x, (int) pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
+		GamePanel.getDP().drawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
 	}
 	
 	public void dies()

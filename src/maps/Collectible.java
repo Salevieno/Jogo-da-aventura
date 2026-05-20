@@ -55,7 +55,7 @@ public class Collectible extends Item implements Interactable
 	
 	public void display(Hitbox playerHitbox)
 	{
-		GamePanel.DP.drawImage(image, pos, Align.center) ;
+		GamePanel.getDP().drawImage(image, pos, Align.center) ;
 		if (Game.debugMode)
 		{
 			hitbox.display() ;

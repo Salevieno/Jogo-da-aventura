@@ -11,20 +11,21 @@ import java.awt.EventQueue ;
  */
 public class MainGame3_4
 {
-	private static final String version = "0.15" ;
-	
-	public static void closeGame()
-	{
-		System.exit(0) ;
-	}
-
-	public static String getVersion() { return version ;}
-	
+	private static final String version = "0.16" ;
+		
 	public static void main(String[] args)
 	{
 		EventQueue.invokeLater(() -> {
+			GameFrame.create() ;
 			GameFrame gameFrame = GameFrame.getMe() ;
 			gameFrame.setVisible(true) ;
 		}) ;
+	}
+
+	public static String getVersion() { return version ;}
+
+	public static void closeGame()
+	{
+		System.exit(0) ;
 	}
 }

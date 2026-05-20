@@ -40,8 +40,8 @@ public class ObtainedItemAnimation extends Animation
     protected void play()
     {
 		Point pos = Util.translate(initialPos, 0, (int) (-speed * timer.rate())) ;
-		GamePanel.DP.drawImage(obtainedItemImg, pos, Align.topCenter) ;
-		GamePanel.DP.drawText(Util.translate(pos, 0, 0), Align.topCenter, Draw.stdAngle, "Você obteve", smallFont, color) ;
-		GamePanel.DP.drawText(Util.translate(pos, 5 - obtainedItemImg.getWidth(null) / 2, 20), Align.topLeft, Draw.stdAngle, text, smallFont, color) ;
+		GamePanel.getDP().drawImage(obtainedItemImg, pos, Align.topCenter) ;
+		GamePanel.getDP().drawText(Util.translate(pos, 0, 0), Align.topCenter, Draw.stdAngle, "Você obteve", smallFont, color) ;
+		GamePanel.getDP().drawText(Util.translate(pos, 5 - obtainedItemImg.getWidth(null) / 2, 20), Align.topLeft, Draw.stdAngle, text, smallFont, color) ;
     }
 }

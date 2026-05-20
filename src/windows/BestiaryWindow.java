@@ -50,7 +50,7 @@ public class BestiaryWindow extends GameWindow
 		int sy = infoFont.getSize() ;
 
 		Dimension windowSize = new Dimension(128, 240) ;
-		GamePanel.DP.drawGradRoundRect(pos, Align.topLeft, windowSize, 3, Palette.colors[5], Palette.colors[14], Palette.colors[0], true) ;
+		GamePanel.getDP().drawGradRoundRect(pos, Align.topLeft, windowSize, 3, Palette.colors[5], Palette.colors[14], Palette.colors[0], true) ;
 		
 		Point creaturePos = Util.translate(pos, 40, offset) ;
 		creatureType.display(creaturePos, Scale.unit) ;
@@ -65,12 +65,12 @@ public class BestiaryWindow extends GameWindow
 
 		// draw text
 		Point textPos = Util.translate(pos, offset, creatureType.getSize().height + offset) ;
-		GamePanel.DP.drawText(textPos, Align.topLeft, angle, creatureType.getName(), namefont, textColor) ;
+		GamePanel.getDP().drawText(textPos, Align.topLeft, angle, creatureType.getName(), namefont, textColor) ;
 		textPos = Util.translate(textPos, 0, sy) ;
 		for (int i = 0 ; i <= text.length - 1 ; i += 1)
 		{
 			textPos = Util.translate(textPos, 0, sy) ;
-			GamePanel.DP.drawText(textPos, Align.topLeft, angle, textInfo.get(i), infoFont, textColor) ;
+			GamePanel.getDP().drawText(textPos, Align.topLeft, angle, textInfo.get(i), infoFont, textColor) ;
 		}
 	}
 	
@@ -86,7 +86,7 @@ public class BestiaryWindow extends GameWindow
 
 		
 		// draw window
-		GamePanel.DP.drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Palette.colors[5], Palette.colors[14], Palette.colors[0], true) ;
+		GamePanel.getDP().drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Palette.colors[5], Palette.colors[14], Palette.colors[0], true) ;
 		
 		if (discoveredCreatures == null) { return ;}
 		
@@ -97,7 +97,7 @@ public class BestiaryWindow extends GameWindow
 			// draw slots
 			Point slotTopLeft = Util.translate(windowPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
 			Point slotCenter = Util.translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
-			GamePanel.DP.drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Palette.colors[3], Palette.colors[20], Palette.colors[0], true) ;
+			GamePanel.getDP().drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Palette.colors[3], Palette.colors[20], Palette.colors[0], true) ;
 
 			// draw creatures
 			CreatureType creatureType = discoveredCreatures.get(slot) ;

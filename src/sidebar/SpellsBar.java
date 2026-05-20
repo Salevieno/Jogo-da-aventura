@@ -69,7 +69,7 @@ public abstract class SpellsBar
 		Dimension imgSize = Util.getSize(cooldownImage) ;
 		Scale scale = new Scale(1, 1 - spell.getCooldownCounter().rate()) ;
 		Point imgPos = new Point(slotCenter.x - imgSize.width / 2, slotCenter.y + imgSize.height / 2);
-		GamePanel.DP.drawImage(cooldownImage, imgPos, Draw.stdAngle, scale, Align.bottomLeft, 0.5) ;
+		GamePanel.getDP().drawImage(cooldownImage, imgPos, Draw.stdAngle, scale, Align.bottomLeft, 0.5) ;
 	
 	}
 
@@ -84,7 +84,7 @@ public abstract class SpellsBar
 		int sx = (int) Util.spacing(barSize.width, nCols, slotSize.width, slotsOffset.x) ;
 		int sy = (int) Util.spacing(barSize.height, nRows, slotSize.height, slotsOffset.y) ;
 
-		GamePanel.DP.drawImage(barImage, barPos, Align.bottomLeft) ;
+		GamePanel.getDP().drawImage(barImage, barPos, Align.bottomLeft) ;
 
 		for (int i = 0 ; i <= spells.size() - 1 ; i += 1)
 		{
@@ -96,8 +96,8 @@ public abstract class SpellsBar
 			Point slotCenter = Util.translate(barPos, slotsOffset.x + slotSize.width / 2 + col * sx, - barSize.height + slotSize.height / 2 + slotsOffset.y + row * sy) ;
 			Point slotTopLeft = UtilAlignment.getTopLeft(slotCenter, Align.center, slotSize) ;
 			Image image = spell.getMpCost() < userMP ? SideBar.slotImage : slotImageNoMP ;
-			GamePanel.DP.drawImage(image, slotCenter, Align.center, 0.8) ;
-			GamePanel.DP.drawImage(spell.getImage(), slotCenter, Align.center) ;
+			GamePanel.getDP().drawImage(image, slotCenter, Align.center, 0.8) ;
+			GamePanel.getDP().drawImage(spell.getImage(), slotCenter, Align.center) ;
 			Draw.keyboardKey(slotTopLeft, Player.spellKeys.get(i), Palette.colors[0]);
 			
 			displayCooldown(slotCenter, spell) ;

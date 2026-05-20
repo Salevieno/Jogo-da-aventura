@@ -306,7 +306,7 @@ public class Equip extends Item
 	
 	public void displayInfo(Point pos, Align align)
 	{
-		GamePanel.DP.drawImage(infoMenu, pos, align) ;
+		GamePanel.getDP().drawImage(infoMenu, pos, align) ;
 		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
 		int nRows = 4 ;
 		Point topLeftSlotCenter = Util.translate(pos, 15 - Util.getSize(infoMenu).width, 18) ;
@@ -314,16 +314,16 @@ public class Equip extends Item
 		for (int i = 0 ; i <= attOrder.length - 1 ; i += 1)
 		{
 			Point imagePos = Util.calcGridPos(topLeftSlotCenter, i, nRows, new Point(70, 25)) ;
-			GamePanel.DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
+			GamePanel.getDP().drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
 			
 			Point textPos = Util.translate(imagePos, 10, 0) ;
-			GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Palette.colors[0]) ;
+			GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Palette.colors[0]) ;
 		}
 	}
 	
 	public void display(Point pos, double angle, Scale scale, Align align)
 	{
-		GamePanel.DP.drawImage(this.fullSizeImage(), pos, angle, scale, align) ;
+		GamePanel.getDP().drawImage(this.fullSizeImage(), pos, angle, scale, align) ;
 	}
 	
 	@Override

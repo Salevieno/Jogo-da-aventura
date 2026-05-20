@@ -41,7 +41,7 @@ public class MessageAnimation extends Animation
     public void play()
     {
 		Point pos = Util.translate(initialPos, 0, (int) (-speed * timer.rate())) ;
-		GamePanel.DP.drawImage(messageBoxImg, pos, Draw.stdAngle, Scale.unit, Align.topCenter, 0.9) ;
-		GamePanel.DP.drawText(Util.translate(pos, 5 - messageBoxImg.getWidth(null) / 2, 20), Align.centerLeft, Draw.stdAngle, text, smallFont, color) ;
+		GamePanel.getDP().drawImage(messageBoxImg, pos, Draw.stdAngle, Scale.unit, Align.topCenter, 0.9) ;
+		GamePanel.getDP().drawText(Util.translate(pos, 5 - messageBoxImg.getWidth(null) / 2, 20), Align.centerLeft, Draw.stdAngle, text, smallFont, color) ;
     }
 }

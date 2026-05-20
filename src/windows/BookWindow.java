@@ -87,12 +87,12 @@ public class BookWindow extends GameWindow
 		
 		Point textPos = Util.translate(UtilAlignment.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
 		String pageText = (window + 1) + " / " + numberWindows ;
-		GamePanel.DP.drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Palette.colors[0]) ;
 	}
 	
 	public void display(Point mousePos)
 	{
-		GamePanel.DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.getDP().drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.center) ;
 		displayRecipes(mousePos) ;
 		displayPageNumber() ;
 		

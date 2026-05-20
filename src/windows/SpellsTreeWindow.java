@@ -170,7 +170,7 @@ public class SpellsTreeWindow extends GameWindow
 	
 		Point pos = Util.translate(windowTopLeft, 0, -64) ;
 		Color textColor = Palette.colors[0] ;
-		GamePanel.DP.drawImage(spellInfo, pos, Align.topLeft) ;
+		GamePanel.getDP().drawImage(spellInfo, pos, Align.topLeft) ;
 		pos.x += 5 ;
 		pos.y += 10 ;
 		Draw.fitText(pos, 16, Align.centerLeft, spellsOnWindow.get(item).getEffect(), regularFont, 568, textColor) ;
@@ -184,7 +184,7 @@ public class SpellsTreeWindow extends GameWindow
 		Point pointsPos = Util.translate(windowTopLeft, border + 6, size.height - border - padding - 6) ;
 		Color color = Palette.colors[21] ;
 
-		GamePanel.DP.drawText(pointsPos, Align.centerLeft, angle, "Pontos: " + String.valueOf(points), regularFont, color) ;
+		GamePanel.getDP().drawText(pointsPos, Align.centerLeft, angle, "Pontos: " + String.valueOf(points), regularFont, color) ;
 		
 	}
 	
@@ -193,7 +193,7 @@ public class SpellsTreeWindow extends GameWindow
 		double angle = Draw.stdAngle ;
 		if (numberTabs <= 1)
 		{
-			GamePanel.DP.drawImage(image, windowTopLeft, angle, Scale.unit, Align.topLeft) ;
+			GamePanel.getDP().drawImage(image, windowTopLeft, angle, Scale.unit, Align.topLeft) ;
 			return ;
 		}
 		
@@ -202,9 +202,9 @@ public class SpellsTreeWindow extends GameWindow
 		Point tab2Pos = Util.translate(windowTopLeft, -10, 6 + 75 + 75/2) ;
 		Image displayImage = tab == 0 ? tab0Image : tab1Image ;
 		Color tabTextColor = Palette.colors[21] ;
-		GamePanel.DP.drawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
-		GamePanel.DP.drawText(tab1Pos, Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
-		GamePanel.DP.drawText(tab2Pos, Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
+		GamePanel.getDP().drawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
+		GamePanel.getDP().drawText(tab1Pos, Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
+		GamePanel.getDP().drawText(tab2Pos, Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
 	}
 	
 	public List<Spell> basicSpells()
@@ -234,7 +234,7 @@ public class SpellsTreeWindow extends GameWindow
 		displayWindow() ;
 		
 		Point titlePos = Util.translate(windowTopLeft, size.width / 2, 6 + 6) ;
-		GamePanel.DP.drawText(titlePos, Align.center, angle, name, largeFont, Palette.colors[21]);
+		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, largeFont, Palette.colors[21]);
 		
 		if (spells == null) { return ;}
 		
@@ -265,10 +265,10 @@ public class SpellsTreeWindow extends GameWindow
 			Point spellLevelPos = Util.translate(slotPos, slotSize.width / 2, slotSize.height / 2 + space.y + 4) ;
 			Point spellNamePos = Util.translate(slotPos, slotSize.width / 2, -5) ;
 					
-			GamePanel.DP.drawImage(slotImage, slotPos, Align.topLeft) ;
-			GamePanel.DP.drawImage(spell.getImage(), spellImagePos, Align.center) ;			
-			GamePanel.DP.drawText(spellNamePos, Align.bottomCenter, angle, spell.getName(), regularFont, textColor) ;
-			GamePanel.DP.drawText(spellLevelPos, Align.center, angle, String.valueOf(spell.getLevel()), regularFont, textColor) ;
+			GamePanel.getDP().drawImage(slotImage, slotPos, Align.topLeft) ;
+			GamePanel.getDP().drawImage(spell.getImage(), spellImagePos, Align.center) ;			
+			GamePanel.getDP().drawText(spellNamePos, Align.bottomCenter, angle, spell.getName(), regularFont, textColor) ;
+			GamePanel.getDP().drawText(spellLevelPos, Align.center, angle, String.valueOf(spell.getLevel()), regularFont, textColor) ;
 			col += 1 ;			
 			
 			if (spellsDistribution[row] <= col)

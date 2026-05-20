@@ -216,12 +216,12 @@ public abstract class NPC implements Interactable
 
 	public void display(Hitbox playerHitbox)
 	{
-		GamePanel.DP.drawImage(job.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
+		GamePanel.getDP().drawImage(job.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
 		if (desk != null)
 		{
-			GamePanel.DP.drawImage(desk, pos, Align.centerLeft);
+			GamePanel.getDP().drawImage(desk, pos, Align.centerLeft);
 		}
-		GamePanel.DP.drawText(Util.translate(pos, 0, -job.getImage().getHeight(null) - 20), Align.bottomCenter, name, Palette.colors[3]);
+		GamePanel.getDP().drawText(Util.translate(pos, 0, -job.getImage().getHeight(null) - 20), Align.bottomCenter, name, Palette.colors[3]);
 		
 		if (Game.debugMode)
 		{

@@ -503,7 +503,7 @@ public class Game
 		player.getMap().displayGroundTypes();
 		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap());
 		
-		SpriteAnimation.displayAllFromLayer(0, GamePanel.DP);
+		SpriteAnimation.displayAllFromLayer(0, GamePanel.getDP());
 
 		List<Drawable> drawables = new ArrayList<>();
 
@@ -544,7 +544,7 @@ public class Game
 
 		if (player.getBag().getItemFetched() != null)
 		{
-			GamePanel.DP.drawImage(player.getBag().getItemFetched().getImage(), GamePanel.getMousePos(), Align.center);
+			GamePanel.getDP().drawImage(player.getBag().getItemFetched().getImage(), GamePanel.getMousePos(), Align.center);
 		}
 
 		for (Interactable interactable : player.getMap().getInteractables())
@@ -557,7 +557,7 @@ public class Game
 		}
 
 		Animation.playAll();
-		SpriteAnimation.displayAllFromLayer(1, GamePanel.DP);
+		SpriteAnimation.displayAllFromLayer(1, GamePanel.getDP());
 
 		SideBar.display(player, pet, GamePanel.getMousePos());
 
@@ -573,7 +573,8 @@ public class Game
 	}
 
 	protected void update()
-	{
+	{		
+		GameTimer.updateAll() ;
 		GameButton.updateMouseCursor(GamePanel.getMousePos());
 		GameButton.updateSelected(GamePanel.getMousePos());
 		clickedButtonActs(GamePanel.getMousePos(), player.getCurrentAction()) ;

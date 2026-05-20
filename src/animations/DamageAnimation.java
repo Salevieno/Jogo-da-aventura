@@ -71,6 +71,6 @@ public class DamageAnimation extends Animation
         } ;
 
 		Point pos = Util.translate(initialPos, trajectory) ;
-		GamePanel.DP.drawBufferedText(pos, Align.center, Draw.stdAngle, text, font, color, Palette.colors[2], 1, opacity) ;
+		GamePanel.getDP().drawBufferedText(pos, Align.center, Draw.stdAngle, text, font, color, Palette.colors[2], 1, opacity) ;
     }
 }

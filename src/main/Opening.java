@@ -281,13 +281,13 @@ public abstract class Opening
 		Color textColor = Palette.colors[0] ;
 		
 		Point textPos = Util.translate(pos, 75, 10) ;
-		GamePanel.DP.drawText(textPos, Align.center, angle, "Slot " + (slotNumber + 1), font, textColor) ;
+		GamePanel.getDP().drawText(textPos, Align.center, angle, "Slot " + (slotNumber + 1), font, textColor) ;
 
 		Point namePos = Util.translate(pos, 75, 30) ;
-		GamePanel.DP.drawText(namePos, Align.center, angle, player.getName(), smallFont, textColor) ;
+		GamePanel.getDP().drawText(namePos, Align.center, angle, player.getName(), smallFont, textColor) ;
 		
 		Point levelPos = Util.translate(pos, 10, 45) ;
-		GamePanel.DP.drawText(levelPos, Align.centerLeft, angle, "Nível: " + player.getLevel(), smallFont, textColor) ;
+		GamePanel.getDP().drawText(levelPos, Align.centerLeft, angle, "Nível: " + player.getLevel(), smallFont, textColor) ;
 		
 	}
 	
@@ -310,7 +310,7 @@ public abstract class Opening
 		{
 			Point rectPos = Game.getScreen().pos(0.02 + i * 0.2, 0.4) ;
 			Point textPos = Util.translate(rectPos, 10, 10) ;
-			GamePanel.DP.drawImage(jobDescriptionBackground, rectPos, Align.topLeft) ;
+			GamePanel.getDP().drawImage(jobDescriptionBackground, rectPos, Align.topLeft) ;
 			Draw.fitText(textPos, font.getSize() + 12, Align.topLeft, description[i], font, 24, textColor) ;
 		}
 	}
@@ -320,7 +320,7 @@ public abstract class Opening
 		Point textPos = Game.getScreen().pos(0.5, 0.3) ;
 		Color textColor = Palette.colors[0] ;
 		
-		GamePanel.DP.drawImage(backgroundImage, new Point(0, 0), 0, Scale.unit, Align.topLeft) ;
+		GamePanel.getDP().drawImage(backgroundImage, new Point(0, 0), 0, Scale.unit, Align.topLeft) ;
 
 		for (GameButton button : languageButtons)
 		{
@@ -346,7 +346,7 @@ public abstract class Opening
 		}
 		
 		if (stepMessage.length - 1 <= step) { return ;}
-		GamePanel.DP.drawText(textPos, Align.center, Draw.stdAngle, stepMessage[step], font, textColor) ;
+		GamePanel.getDP().drawText(textPos, Align.center, Draw.stdAngle, stepMessage[step], font, textColor) ;
 	}
 
 	public static void run(Player player, Point mousePos)

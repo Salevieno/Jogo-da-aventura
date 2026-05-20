@@ -48,7 +48,7 @@ public class HitboxCircle implements Hitbox
 	
 	public void display()
 	{
-		GamePanel.DP.drawCircle(center, 2 * radius, null, Palette.colors[3]);
+		GamePanel.getDP().drawCircle(center, 2 * radius, null, Palette.colors[3]);
 	}
 
 	public Point getCenter() { return center ;}

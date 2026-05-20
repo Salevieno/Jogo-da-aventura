@@ -41,13 +41,13 @@ public class Sign
 	{
 		Point boardPos = Util.translate(pos, image.getWidth(null), 0) ;
 		Point messagePos = Util.translate(boardPos, 12, 5) ;
-		GamePanel.DP.drawImage(boardImg, boardPos, Align.topLeft, 0.85) ;
+		GamePanel.getDP().drawImage(boardImg, boardPos, Align.topLeft, 0.85) ;
 		Draw.fitText(messagePos, msgFont.getSize() + 2, Align.topLeft, message, msgFont, 435, Palette.colors[0]) ;	
 	}
     
 	public void display(Point playerPos)
 	{
-		GamePanel.DP.drawImage(image, pos, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.getDP().drawImage(image, pos, Draw.stdAngle, Scale.unit, Align.center) ;
 		if (isInside(playerPos))
         {
 			displaySignMessage() ;

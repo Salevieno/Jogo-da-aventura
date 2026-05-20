@@ -388,7 +388,7 @@ public abstract class LiveBeing implements Drawable
 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		String stateText = state.toString() ;
 		
-		GamePanel.DP.drawText(displayPos, Align.center, 0, stateText, font, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(displayPos, Align.center, 0, stateText, font, Palette.colors[0]) ;
 	}
 
 	public void displayUsedSpellMessage(Spell spell, Point pos, Color color)
@@ -403,9 +403,9 @@ public abstract class LiveBeing implements Drawable
 		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
 		Dimension barSize = new Dimension(15, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
 		
-		GamePanel.DP.drawRect(Util.translate(pos, 0, -13), Align.bottomCenter, barSize, 0, color, null, 1.0) ;
-		GamePanel.DP.drawImage(powerBarImage, pos, Align.bottomCenter) ;
-		GamePanel.DP.drawText(Util.translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
+		GamePanel.getDP().drawRect(Util.translate(pos, 0, -13), Align.bottomCenter, barSize, 0, color, null, 1.0) ;
+		GamePanel.getDP().drawImage(powerBarImage, pos, Align.bottomCenter) ;
+		GamePanel.getDP().drawText(Util.translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
 	}
 
 	private static Directions calcDrunkDir(Directions dir, GameTimer drunk)
@@ -854,7 +854,7 @@ public abstract class LiveBeing implements Drawable
 			{
 				Point barPos = Util.translate(headPos(), -size.width / 2, - attRate.size() * barSize.height - clearSpace + i * sy) ;
 				Dimension filledSize = new Dimension((int)(attRate.get(i) * barSize.width), barSize.height) ;
-				GamePanel.DP.drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Palette.colors[0], 1.0) ;
+				GamePanel.getDP().drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Palette.colors[0], 1.0) ;
 			}
 		}
 		if (style == 1)
@@ -862,14 +862,14 @@ public abstract class LiveBeing implements Drawable
 			Point topLeft = Game.getScreen().pos(0.01, 0.02) ;
 			Dimension barSize = new Dimension(5, 60) ;
 			int stroke = 1 ;
-			GamePanel.DP.drawImage(attImage, topLeft, Align.topLeft, 0.85) ;
+			GamePanel.getDP().drawImage(attImage, topLeft, Align.topLeft, 0.85) ;
 			Point offset = new Point(63, 70) ;
 			Point barPos = Util.translate(topLeft, offset.x, offset.y) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
 			{
 				Dimension rateSize = new Dimension(barSize.width, (int) (attRate.get(att) *  barSize.height)) ;
-				GamePanel.DP.drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Palette.colors[0], 1.0) ;
-				GamePanel.DP.drawRect(barPos, Align.bottomCenter, rateSize, stroke, attColor.get(att), null, 1.0) ;
+				GamePanel.getDP().drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Palette.colors[0], 1.0) ;
+				GamePanel.getDP().drawRect(barPos, Align.bottomCenter, rateSize, stroke, attColor.get(att), null, 1.0) ;
 				barPos.x += barSize.width + 26 ;
 			}
 		}
@@ -887,10 +887,10 @@ public abstract class LiveBeing implements Drawable
 		int outerRadius = 15 ;
 		
 		// draw fill
-		GamePanel.DP.drawAnnularSector(getPos(), innerRadius, outerRadius, angleStart, angleFilledSpan, stroke, Palette.colors[21], null) ;
+		GamePanel.getDP().drawAnnularSector(getPos(), innerRadius, outerRadius, angleStart, angleFilledSpan, stroke, Palette.colors[21], null) ;
 		
 		// draw contour
-		GamePanel.DP.drawAnnularSector(getPos(), innerRadius, outerRadius, angleStart, angleMaxSpan, stroke, null, Palette.colors[0]) ;
+		GamePanel.getDP().drawAnnularSector(getPos(), innerRadius, outerRadius, angleStart, angleMaxSpan, stroke, null, Palette.colors[0]) ;
 	}
 
 	public void takeDamage(int damage)
@@ -961,14 +961,14 @@ public abstract class LiveBeing implements Drawable
 	{
 		Point offset = new Point(size.width / 2 + drunkImage.getWidth(null) / 2 + 2, defendingImage.getHeight(null) + 2) ;
 		Point imagePos = Util.translate(center(), -offset.x, 0) ;
-		GamePanel.DP.drawImage(drunkImage, imagePos, Align.center) ;
+		GamePanel.getDP().drawImage(drunkImage, imagePos, Align.center) ;
 	}
 	
 	public void displayDefending()
 	{
 		Point offset = new Point(size.width / 2 + defendingImage.getWidth(null) / 2 + 2, 0) ;
 		Point imagePos = Util.translate(center(), -offset.x, 0) ;
-		GamePanel.DP.drawImage(defendingImage, imagePos, Align.center) ;
+		GamePanel.getDP().drawImage(defendingImage, imagePos, Align.center) ;
 	}
 
 	public void getsDrunk(int duration)

@@ -201,9 +201,9 @@ public abstract class LoadingGame
 	
 	protected static void display(Point mousePos)
 	{
-		GamePanel.DP.drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), Palette.colors[0], null) ;
+		GamePanel.getDP().drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), Palette.colors[0], null) ;
 		SpriteAnimation.updateAll();
-		petIdle.display(GamePanel.DP);
+		petIdle.display(GamePanel.getDP());
 
 		if (!isOver())
 		{
@@ -212,12 +212,12 @@ public abstract class LoadingGame
 			Point loadingBarCenterLeft = Util.translate(Game.getScreen().getCenter(), -loadingBarSize.width / 2, 80) ;
 			Dimension loadedBarSize = new Dimension(step * loadingBarSize.width / 11, loadingBarSize.height) ;
 
-			GamePanel.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, Palette.colors[0], true);
-			GamePanel.DP.drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Palette.colors[18], Palette.colors[0], false);
+			GamePanel.getDP().drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, Palette.colors[0], true);
+			GamePanel.getDP().drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadedBarSize, 1, Palette.colors[18], Palette.colors[0], false);
 			loadingAni.setPos(loadingTextCenter) ;
 			loadingAni.activateIfInactive() ;
-			loadingAni.display(GamePanel.DP);
-			GamePanel.DP.drawText(Util.translate(Game.getScreen().getCenter(), 0, 30), Align.center, message.get(step), Palette.colors[3]);
+			loadingAni.display(GamePanel.getDP());
+			GamePanel.getDP().drawText(Util.translate(Game.getScreen().getCenter(), 0, 30), Align.center, message.get(step), Palette.colors[3]);
 		}
 
 		if (startButton.isActive())
@@ -225,6 +225,6 @@ public abstract class LoadingGame
 			startButton.display(0, true, mousePos) ;
 		}
 
-		GamePanel.DP.drawText(Util.translate(Game.getScreen().getCenter(), 0, 160), Align.center, "Game version " + MainGame3_4.getVersion(), Palette.colors[3]);
+		GamePanel.getDP().drawText(Util.translate(Game.getScreen().getCenter(), 0, 160), Align.center, "Game version " + MainGame3_4.getVersion(), Palette.colors[3]);
 	}
 }

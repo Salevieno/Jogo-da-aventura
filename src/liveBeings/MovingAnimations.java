@@ -33,17 +33,17 @@ public class MovingAnimations
 	public void displayIdle(Point pos, double angle, Scale scale, Align align)
 	{
 		spriteIdle.activateIfInactive() ; 
-		spriteIdle.display(GamePanel.DP, pos, align) ;
+		spriteIdle.display(GamePanel.getDP(), pos, align) ;
 	}
 	
 	public void displayMoving(Directions direction, Point pos, double angle, Scale scale, Align align)
 	{
 		switch (direction)
 		{
-			case up: spriteMovingUp.activateIfInactive() ; spriteMovingUp.display(GamePanel.DP, pos, align) ; return ;
-			case down: spriteMovingDown.activateIfInactive() ; spriteMovingDown.display(GamePanel.DP, pos, align) ; return ;
-			case left: spriteMovingLeft.activateIfInactive() ; spriteMovingLeft.display(GamePanel.DP, pos, align) ; return ;
-			case right: spriteMovingRight.activateIfInactive() ; spriteMovingRight.display(GamePanel.DP, pos, align) ; return ;
+			case up: spriteMovingUp.activateIfInactive() ; spriteMovingUp.display(GamePanel.getDP(), pos, align) ; return ;
+			case down: spriteMovingDown.activateIfInactive() ; spriteMovingDown.display(GamePanel.getDP(), pos, align) ; return ;
+			case left: spriteMovingLeft.activateIfInactive() ; spriteMovingLeft.display(GamePanel.getDP(), pos, align) ; return ;
+			case right: spriteMovingRight.activateIfInactive() ; spriteMovingRight.display(GamePanel.getDP(), pos, align) ; return ;
 		}
 	}
 }

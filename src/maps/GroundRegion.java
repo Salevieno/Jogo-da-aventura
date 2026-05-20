@@ -60,7 +60,7 @@ public class GroundRegion
 
 				if (Game.debugMode)
 				{
-					GamePanel.DP.drawPolyLine(closedXPoints, closedYPoints, 2, type.getColor());
+					GamePanel.getDP().drawPolyLine(closedXPoints, closedYPoints, 2, type.getColor());
 				}
 				return ;
 		}

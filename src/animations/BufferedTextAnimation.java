@@ -37,6 +37,6 @@ public class BufferedTextAnimation extends Animation
     public void play()
     {
 		Point textPos = Util.translate(initPos, 0, (int) (-speed * timer.rate())) ;
-		GamePanel.DP.drawBufferedText(textPos, Align.center, Draw.stdAngle, text, smallFont, color, Palette.colors[3], 2);
+		GamePanel.getDP().drawBufferedText(textPos, Align.center, Draw.stdAngle, text, smallFont, color, Palette.colors[3], 2);
     }
 }

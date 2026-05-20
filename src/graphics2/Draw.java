@@ -61,7 +61,7 @@ public abstract class Draw
 
 	public static void bufferedText(Point pos, Align align, double angle, String text, Font font, Color color, Color outlineColor, int outlineWidth)
 	{
-		GamePanel.DP.drawBufferedText(pos, align, angle, text, font, color, outlineColor, outlineWidth) ;
+		GamePanel.getDP().drawBufferedText(pos, align, angle, text, font, color, outlineColor, outlineWidth) ;
 	}
 	public static void bufferedText(Point pos, Align align, double angle, String text, Font font, Color color)
 	{
@@ -77,10 +77,10 @@ public abstract class Draw
 	}
 	public static void textSelection(Point center, Dimension size)
 	{
-		GamePanel.DP.drawImage(textSelectionImages.get(0), Util.translate(center, -size.width / 2, -size.height / 2), Align.bottomRight) ;
-		GamePanel.DP.drawImage(textSelectionImages.get(1), Util.translate(center, size.width / 2, -size.height / 2), Align.bottomLeft) ;
-		GamePanel.DP.drawImage(textSelectionImages.get(2), Util.translate(center, size.width / 2, size.height / 2), Align.topLeft) ;
-		GamePanel.DP.drawImage(textSelectionImages.get(3), Util.translate(center, -size.width / 2, size.height / 2), Align.topRight) ;
+		GamePanel.getDP().drawImage(textSelectionImages.get(0), Util.translate(center, -size.width / 2, -size.height / 2), Align.bottomRight) ;
+		GamePanel.getDP().drawImage(textSelectionImages.get(1), Util.translate(center, size.width / 2, -size.height / 2), Align.bottomLeft) ;
+		GamePanel.getDP().drawImage(textSelectionImages.get(2), Util.translate(center, size.width / 2, size.height / 2), Align.topLeft) ;
+		GamePanel.getDP().drawImage(textSelectionImages.get(3), Util.translate(center, -size.width / 2, size.height / 2), Align.topRight) ;
 	}
 	
 	
@@ -89,7 +89,7 @@ public abstract class Draw
 		
 		Dimension size = new Dimension(gif.getWidth(null), gif.getHeight(null)) ;
 		Point offset = UtilAlignment.offsetForAlignment(align, size) ;
-		GamePanel.DP.drawImage(gif, Util.translate(pos, offset.x, offset.y), align);
+		GamePanel.getDP().drawImage(gif, Util.translate(pos, offset.x, offset.y), align);
 	}
 	
 	private static List<String> textFitted(String text, Font font, int maxLength)
@@ -117,7 +117,7 @@ public abstract class Draw
 		List<String> lines = textFitted(text, font, maxLength) ;
 		for (int i = 0 ; i <= lines.size() - 1 ; i += 1)
 		{
-			GamePanel.DP.drawText(new Point(pos.x, pos.y + i*sy), align, stdAngle, lines.get(i), font, color) ;						
+			GamePanel.getDP().drawText(new Point(pos.x, pos.y + i*sy), align, stdAngle, lines.get(i), font, color) ;						
 		}
 	}
 	
@@ -137,7 +137,7 @@ public abstract class Draw
 		Point topLeftPos = Util.translate(pos, offset.x, offset.y) ;
 		Dimension size = new Dimension(Util.calcTextSize(shortText, font).width, Util.calcTextSize(text, font).height) ;
 		String textDrawn =  text.length() <= maxLength | Util.isInside(mousePos, topLeftPos, size) ? text : shortText + "..." ;
-		GamePanel.DP.drawText(pos, align, stdAngle, textDrawn, font, color) ;
+		GamePanel.getDP().drawText(pos, align, stdAngle, textDrawn, font, color) ;
 	}
 	
 	public static void speech(Point pos, String text, Font font, Image speechBubble, Color color)
@@ -148,7 +148,7 @@ public abstract class Draw
 		boolean flipH = Game.getScreen().mapSize().width / 2 <= pos.x ;
 		Color textColor = color != null ? color : Palette.colors[21] ;
 		
-		GamePanel.DP.drawImage(speechBubble, pos, DrawPrimitives.stdAngle, Scale.unit, flipH, false, Align.bottomCenter, 1) ;
+		GamePanel.getDP().drawImage(speechBubble, pos, DrawPrimitives.stdAngle, Scale.unit, flipH, false, Align.bottomCenter, 1) ;
 		
 		Point textOffset = new Point(6, 5) ;
 		Point textPos = Util.translate(pos, textOffset.x - bubbleL / 2, textOffset.y - bubbleH) ;
@@ -164,8 +164,8 @@ public abstract class Draw
 	
 	public static void keyboardButton(Point pos, String key, Color color)
 	{
-		GamePanel.DP.drawImage(Draw.KeyboardButtonImage, pos, Draw.stdAngle, Scale.unit, Align.center) ;
-		GamePanel.DP.drawText(pos, Align.center, Draw.stdAngle, key, Draw.stdFont, color) ;	
+		GamePanel.getDP().drawImage(Draw.KeyboardButtonImage, pos, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.getDP().drawText(pos, Align.center, Draw.stdAngle, key, Draw.stdFont, color) ;	
 	}
 	
 	public static void windowArrows(Point pos, int width, int selectedWindow, int numberWindows, double opacity)
@@ -174,14 +174,14 @@ public abstract class Draw
 		{
 			Point leftArrowPos = Util.translate(pos, 25, 0) ;
 			Point textPos = Util.translate(leftArrowPos, 18, 0) ;
-			GamePanel.DP.drawImage(ArrowIconImage, leftArrowPos, stdAngle, new Scale(-1, -1), Align.center, opacity) ;
+			GamePanel.getDP().drawImage(ArrowIconImage, leftArrowPos, stdAngle, new Scale(-1, -1), Align.center, opacity) ;
 			Draw.keyboardButton(textPos, PlayerActions.moveLeft.getKey()) ;			
 		}
 		if (selectedWindow < numberWindows - 1)
 		{
 			Point rightArrowPos = Util.translate(pos, width - 25, 0) ;
 			Point textPos = Util.translate(rightArrowPos, -18, 0) ;
-			GamePanel.DP.drawImage(ArrowIconImage, rightArrowPos, stdAngle, new Scale(1, -1), Align.center, opacity) ;
+			GamePanel.getDP().drawImage(ArrowIconImage, rightArrowPos, stdAngle, new Scale(1, -1), Align.center, opacity) ;
 			Draw.keyboardButton(textPos, PlayerActions.moveRight.getKey()) ;	
 		}
 	}
@@ -192,7 +192,7 @@ public abstract class Draw
 	{
 		Point[] WindowPos = new Point[] {Game.getScreen().pos(0.15, 0.2), Game.getScreen().pos(0.65, 0.2), Game.getScreen().pos(0.5, 0.2)} ;
 		
-		GamePanel.DP.drawText(Game.getScreen().pos(0.5, 0.05), Align.center, stdAngle, "Slot " + (SlotID + 1), loadingGameScreenFont, Palette.colors[5]) ;
+		GamePanel.getDP().drawText(Game.getScreen().pos(0.5, 0.05), Align.center, stdAngle, "Slot " + (SlotID + 1), loadingGameScreenFont, Palette.colors[5]) ;
 		((PlayerAttributesWindow) player.getAttWindow()).display(new Point(0, 0)) ;
 		if (0 < pet.getLife().getCurrentValue())
 		{
@@ -218,7 +218,7 @@ public abstract class Draw
 				LineThickness = 2 ;
 				color = Palette.colors[5] ;
 			}
-			GamePanel.DP.drawLine(new Point(i*spacing[0], 0), new Point(i*spacing[0], screenSize.height), LineThickness, color) ;
+			GamePanel.getDP().drawLine(new Point(i*spacing[0], 0), new Point(i*spacing[0], screenSize.height), LineThickness, color) ;
 			for (int j = 0 ; j <= screenSize.height/spacing[1] - 1 ; ++j)
 			{
 				LineThickness = 1 ;
@@ -232,21 +232,21 @@ public abstract class Draw
 					LineThickness = 2 ;
 					color = Palette.colors[5] ;
 				}
-				GamePanel.DP.drawLine(new Point(0, j*spacing[1]), new Point(screenSize.width, j*spacing[1]), LineThickness, color) ;
+				GamePanel.getDP().drawLine(new Point(0, j*spacing[1]), new Point(screenSize.width, j*spacing[1]), LineThickness, color) ;
 			}							
 		}
 	}
 	
 	public static void menu(Point pos, Align align, Dimension size)
 	{
-		GamePanel.DP.drawRoundRect(pos, align, size, 1, Palette.colors[3], Palette.colors[0], true);
+		GamePanel.getDP().drawRoundRect(pos, align, size, 1, Palette.colors[3], Palette.colors[0], true);
 	}
 	
 	public static void time()
 	{
 		float time = (float) Game.dayTimeRate() ;
 		String message = (int) (24 * time) + ":" + (int) (24 * 60 * time % 60) ;
-		GamePanel.DP.drawText(Game.getScreen().pos(0, 0.99), Align.bottomLeft, stdAngle, message, stdFont, Palette.colors[20]) ;
+		GamePanel.getDP().drawText(Game.getScreen().pos(0, 0.99), Align.bottomLeft, stdAngle, message, stdFont, Palette.colors[20]) ;
 	}
 	
 	public static void mapElements(Hitbox playerHitbox, Point playerPos, GameMap map)
@@ -264,8 +264,8 @@ public abstract class Draw
 
 	public static void keyboardKey(Point pos, String key, Font font, Color color)
 	{
-		GamePanel.DP.drawRoundRect(pos, Align.center, new Dimension(12, 12), 1, Palette.colors[3], Palette.colors[0], true, 2, 2) ;
-		GamePanel.DP.drawText(pos, Align.center, stdAngle, key, font, color) ;
+		GamePanel.getDP().drawRoundRect(pos, Align.center, new Dimension(12, 12), 1, Palette.colors[3], Palette.colors[0], true, 2, 2) ;
+		GamePanel.getDP().drawText(pos, Align.center, stdAngle, key, font, color) ;
 	}
 	public static void keyboardKey(Point pos, String key, Color color)
 	{
@@ -283,7 +283,7 @@ public abstract class Draw
 		{
 			int barHeight = increasingHeights ? (int) ((i + 1) * maxBarHeight / totalBars) : maxBarHeight ;
 			Color color = i <= qtdFilledBars ? fillColor : null ;
-			GamePanel.DP.drawRoundRect(bottomLeftBar, align, new Dimension(barWidth, barHeight), 1, color, Palette.colors[3], true) ;
+			GamePanel.getDP().drawRoundRect(bottomLeftBar, align, new Dimension(barWidth, barHeight), 1, color, Palette.colors[3], true) ;
 			bottomLeftBar.x += barWidth + barSpacing ;
 		}
 	}
@@ -301,11 +301,11 @@ public abstract class Draw
 		Color borderColor = Palette.colors[0] ;
 		Color backgroundColor = isOn ? fillColor : null ;
 		
-		GamePanel.DP.drawRoundRect(pos, align, new Dimension(width, height), borderThickness, backgroundColor, borderColor, true, 25, 25) ;
+		GamePanel.getDP().drawRoundRect(pos, align, new Dimension(width, height), borderThickness, backgroundColor, borderColor, true, 25, 25) ;
 		
 		Point centerPos = UtilAlignment.getPosAt(pos, align, Align.center, new Dimension(width, height)) ;
 		Point circleCenter = Util.translate(centerPos, isOn ? width / 4 : -width / 4, 0) ;
-		GamePanel.DP.drawCircle(circleCenter, height / 2 - borderThickness, borderColor) ;
+		GamePanel.getDP().drawCircle(circleCenter, height / 2 - borderThickness, borderColor) ;
 	}
 	
 	public static void settingSwitch(Point pos, Align align, boolean isOn)
@@ -317,7 +317,7 @@ public abstract class Draw
 	{
 		for (int i = 0 ; i <= Game.getScreen().getSize().height - 1 ; i += 2)
 		{
-			GamePanel.DP.drawLine(new Point(0, i), new Point(Game.getScreen().getSize().width, i), color) ;
+			GamePanel.getDP().drawLine(new Point(0, i), new Point(Game.getScreen().getSize().width, i), color) ;
 		}
 	}
 }

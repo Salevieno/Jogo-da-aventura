@@ -16,12 +16,12 @@ public class GameFrame extends JFrame implements ActionListener
 {
 	private static final long serialVersionUID = 1L ;
 	
-	private static Timer timer ;		// Main timer of the game
-	private static GameStates previousState ;
-	private static final Dimension windowSize = new Dimension(1280,960) ; // TODO consider 1280 x 720
-	private static final Image icon = ImageLoader.loadImage(Path.GAME_IMG + "gameIcon.png") ;
-	private static final GameFrame gameFrame = new GameFrame() ;
-	public static boolean fullScreen = false ;
+	private Timer timer ;		// Main timer of the game
+	private GameStates previousState ;
+	private boolean fullScreen = false ;
+	private final Dimension windowSize = new Dimension(1280,960) ; // TODO consider 1280 x 720
+	private final Image icon = ImageLoader.loadImage(Path.GAME_IMG + "gameIcon.png") ;
+	private static GameFrame gameFrame ;
 
 	private GameFrame()
     {
@@ -54,11 +54,17 @@ public class GameFrame extends JFrame implements ActionListener
 		timer.start() ;							// Game will start checking for keyboard events every "timer" miliseconds
 		previousState = GameStates.opening ;
 		
-		Game.getScreen().updateScale();
-        add(GamePanel.getMe()) ;
 
     }
 	
+	protected static void create()
+	{
+		gameFrame = new GameFrame() ;
+		GamePanel.create() ;
+		Game.getScreen().updateScale();
+        gameFrame.add(GamePanel.getMe()) ;
+	}
+
 	public static GameFrame getMe() { return gameFrame ;}
 
 	public void resizeWindow()
@@ -92,15 +98,15 @@ public class GameFrame extends JFrame implements ActionListener
 	
 	public static void pauseGame()
 	{
-        timer.stop() ;
-        previousState = Game.getState() ;
+        gameFrame.timer.stop() ;
+        gameFrame.previousState = Game.getState() ;
         Game.setState(GameStates.paused) ;
 	}
 
 	public static void resumeGame()
 	{
-        timer.start() ;
-        Game.setState(previousState) ;
+        gameFrame.timer.start() ;
+        Game.setState(gameFrame.previousState) ;
 	}
 	
 	public static void closeGame()
@@ -108,9 +114,10 @@ public class GameFrame extends JFrame implements ActionListener
 		System.exit(0) ;
 	}
 	
-	public static Dimension getWindowsize() { return windowSize ;}
-	public static int width() { return windowSize.width ;}
-	public static int height() { return windowSize.height ;}
+	public static boolean isFullscreen() { return gameFrame.fullScreen ;}
+	public static Dimension getWindowsize() { return gameFrame.windowSize ;}
+	public static int width() { return gameFrame.windowSize.width ;}
+	public static int height() { return gameFrame.windowSize.height ;}
 
 	@Override
     public void actionPerformed(ActionEvent e) 

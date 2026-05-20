@@ -63,7 +63,7 @@ public class HitboxRectangle implements Hitbox
 	
 	public void display()
 	{
-		GamePanel.DP.drawRect(center, Align.center, size, null, Palette.colors[3]);
+		GamePanel.getDP().drawRect(center, Align.center, size, null, Palette.colors[3]);
 	}
 
 	public Point getCenter() { return center ;}

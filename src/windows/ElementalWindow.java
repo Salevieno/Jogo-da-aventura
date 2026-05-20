@@ -203,9 +203,9 @@ public class ElementalWindow extends GameWindow
 			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
 			Color textColor = getTextColor(i == item) ;
 			
-			GamePanel.DP.drawImage(slotImage, slotCenter, Align.center) ;
-			GamePanel.DP.drawImage(equip.getImage(), slotCenter, Align.center) ;
-			GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, equip.getName(), stdFont, textColor) ;
+			GamePanel.getDP().drawImage(slotImage, slotCenter, Align.center) ;
+			GamePanel.getDP().drawImage(equip.getImage(), slotCenter, Align.center) ;
+			GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, equip.getName(), stdFont, textColor) ;
 		}
 	}
 	
@@ -225,11 +225,11 @@ public class ElementalWindow extends GameWindow
 
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
 			Image slotImage = item == i ? BagWindow.selectedSlotImage : BagWindow.slotImage ;
-			GamePanel.DP.drawImage(slotImage, slotCenter, Align.center) ;
-			GamePanel.DP.drawImage(sphere.getImage(), slotCenter, Align.center) ;
+			GamePanel.getDP().drawImage(slotImage, slotCenter, Align.center) ;
+			GamePanel.getDP().drawImage(sphere.getImage(), slotCenter, Align.center) ;
 			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
 			Color textColor = getTextColor(i == item) ;
-			GamePanel.DP.drawText(textPos, Align.centerLeft, Draw.stdAngle, sphere.getName(), stdFont, textColor) ;
+			GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, sphere.getName(), stdFont, textColor) ;
 		}
 	}
 	
@@ -238,8 +238,8 @@ public class ElementalWindow extends GameWindow
 		
 		Point titlePos = Util.translate(windowPos, size.width / 2, 2 + 9) ;
 		
-		GamePanel.DP.drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
-		GamePanel.DP.drawText(titlePos, Align.center, Draw.stdAngle, menuTitles.get(menu), titleFont, stdColor) ;
+		GamePanel.getDP().drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
+		GamePanel.getDP().drawText(titlePos, Align.center, Draw.stdAngle, menuTitles.get(menu), titleFont, stdColor) ;
 		
 		switch (menu)
 		{

@@ -234,7 +234,7 @@ public class MapWindow extends GameWindow
 		double playerRelXPos = playerPos.x / (double) Game.getScreen().mapSize().width ;
 		double playerRelYPos = (playerPos.y - Sky.height) / (double) Game.getScreen().mapSize().height ;
 		Point circlePos = Util.translate(mapPos, (int) (screenSize.width * playerRelXPos), (int) (-screenSize.height * (1 - playerRelYPos))) ;
-		GamePanel.DP.drawCircle(circlePos, 5, 0, Palette.colors[6], null) ;
+		GamePanel.getDP().drawCircle(circlePos, 5, 0, Palette.colors[6], null) ;
 	}
 	
 	public void display(Point mousePos)
@@ -242,7 +242,7 @@ public class MapWindow extends GameWindow
 		// full map = 14 x 15 mapas
 		// continent maps = 6 x 8 maps (max)
 		
-		GamePanel.DP.drawImage(image, windowPos, Align.topLeft) ;
+		GamePanel.getDP().drawImage(image, windowPos, Align.topLeft) ;
 		
 		if (mapWithPlayer == null) { Log.warn("Map with player = null when displaying map") ; return ;}
 		if (mapsDisplayed == null) { Log.warn("Maps displayed = null when displaying map") ; return ;}
@@ -268,7 +268,7 @@ public class MapWindow extends GameWindow
 
 			Point mapNamePos = Util.translate(mapPos, (int) (scale.x * Game.getScreen().mapSize().width / 2),
 													(int) (-scale.y * Game.getScreen().mapSize().height / 2)) ;
-			GamePanel.DP.drawText(mapNamePos, Align.center, 0, map.getName(), stdFont, Palette.colors[0]) ;
+			GamePanel.getDP().drawText(mapNamePos, Align.center, 0, map.getName(), stdFont, Palette.colors[0]) ;
 			
 			if (!map.equals(mapWithPlayer)) { continue ;}
 			if (playerPos == null) { continue ;}

@@ -43,7 +43,7 @@ public class Screen
 	
 	private static Point2D.Double calcScale()
 	{
-		if (!GameFrame.fullScreen) { return new Point2D.Double(1.0, 1.0) ;}
+		if (!GameFrame.isFullscreen()) { return new Point2D.Double(1.0, 1.0) ;}
 		
 		Dimension laptopScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		double scaleX = (double) laptopScreenSize.width / GameFrame.getWindowsize().width ;
@@ -88,7 +88,7 @@ public class Screen
 	public void displayBorders()
 	{
 		Point botLeft = new Point(borders[0], borders[3]) ;
-		GamePanel.DP.drawRect(botLeft, Align.bottomLeft, new Dimension(borders[2] - borders[0], borders[3] - borders[1]), null, Palette.colors[1]) ;
+		GamePanel.getDP().drawRect(botLeft, Align.bottomLeft, new Dimension(borders[2] - borders[0], borders[3] - borders[1]), null, Palette.colors[1]) ;
 	}
 
 	public void updateSky(double dt)

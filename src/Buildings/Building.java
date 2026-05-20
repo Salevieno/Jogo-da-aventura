@@ -141,17 +141,17 @@ public class Building implements Drawable
 	{		
 		if (!isInside(playerPos))
 		{
-			GamePanel.DP.drawImage(type.getExteriorImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;			
+			GamePanel.getDP().drawImage(type.getExteriorImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;			
 			
 			return ;
 		}
 
-		GamePanel.DP.drawImage(type.getInteriorImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.getDP().drawImage(type.getInteriorImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
 		displayNPCs(playerHitbox) ;
 		
 		for (Collider collider : colliders)
 		{
-			GamePanel.DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Palette.colors[0], null) ;
+			GamePanel.getDP().drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Palette.colors[0], null) ;
 		}
 	}
 

@@ -65,6 +65,6 @@ public class PterodactileAnimation extends Animation
 			pos.x += (screenSize.width / 2 + imageWidth / 2) + 2 * (screenSize.width + imageWidth) * (timer.rate() - 0.75) ;
 			pos.y += 0.25 * screenSize.height - 1 * screenSize.height * (timer.rate() - 0.75) ;
 		}
-		GamePanel.DP.drawImage(pterodactile, pos, Align.center) ;
+		GamePanel.getDP().drawImage(pterodactile, pos, Align.center) ;
     }
 }

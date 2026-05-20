@@ -56,24 +56,24 @@ public abstract class HotKeysBar
 	{
 		Dimension slotSize = Util.getSize(SideBar.slotImage) ;
 
-		GamePanel.DP.drawImage(image, barPos, Align.bottomLeft) ;
+		GamePanel.getDP().drawImage(image, barPos, Align.bottomLeft) ;
 		
 		for (int i = 0 ; i <= Player.getHotKeys().length - 1 ; i += 1)
 		{
 			Point slotCenter = Util.translate(topLeft(), 13, 16 + 24 * i) ;
 			Point keyTextPos = Util.translate(slotCenter, slotSize.width / 2 + 6, slotSize.height / 2) ;
 			
-			GamePanel.DP.drawImage(BagWindow.slotImage, slotCenter, Align.center) ;
-			GamePanel.DP.drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.getHotKeys()[i], font, textColor) ;
+			GamePanel.getDP().drawImage(BagWindow.slotImage, slotCenter, Align.center) ;
+			GamePanel.getDP().drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.getHotKeys()[i], font, textColor) ;
 			
 			if (hotItems.get(i) == null) { continue ;}
 
-			GamePanel.DP.drawImage(hotItems.get(i).getImage(), slotCenter, Align.center) ;
+			GamePanel.getDP().drawImage(hotItems.get(i).getImage(), slotCenter, Align.center) ;
 			
 			if (!Util.isInside(mousePos, Util.translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize)) { continue ;}
 			
 			Point textPos = Util.translate(slotCenter, - slotSize.width / 2 - 10, 0);
-			GamePanel.DP.drawText(textPos, Align.centerRight, Draw.stdAngle, hotItems.get(i).getName(), font, textColor) ;
+			GamePanel.getDP().drawText(textPos, Align.centerRight, Draw.stdAngle, hotItems.get(i).getName(), font, textColor) ;
 		}
 	}
 }

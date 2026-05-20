@@ -188,7 +188,7 @@ public class SettingsWindow extends GameWindow
 			
 		Color textColor = selected ? Palette.colors[20] : Palette.colors[2] ;
 
-		GamePanel.DP.drawText(textPos, Align.bottomCenter, angle, text, font, textColor) ;	
+		GamePanel.getDP().drawText(textPos, Align.bottomCenter, angle, text, font, textColor) ;	
 	}
 	
 	
@@ -207,7 +207,7 @@ public class SettingsWindow extends GameWindow
 			Point actionKeyPos = Util.translate(optionPos, sx, 0) ;
 			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
 			Color textColor = getTextColor(item == i) ;
-			GamePanel.DP.drawText(optionPos, Align.bottomLeft, angle, text[i], font, textColor) ;
+			GamePanel.getDP().drawText(optionPos, Align.bottomLeft, angle, text[i], font, textColor) ;
 			
 			if (i == 3)
 			{
@@ -243,8 +243,8 @@ public class SettingsWindow extends GameWindow
 			Point actionKeyPos = Util.translate(optionPos, sx, 0) ;
 			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
 			Color textColor = getTextColor(item == i) ;
-			GamePanel.DP.drawText(optionPos, Align.bottomLeft, angle, text[i + 6], font, textColor) ;
-			GamePanel.DP.drawText(actionKeyPos, Align.bottomCenter, angle, PlayerActions.values()[i].getKey(), font, getTextColor(selectedActionKeyID == i)) ;			
+			GamePanel.getDP().drawText(optionPos, Align.bottomLeft, angle, text[i + 6], font, textColor) ;
+			GamePanel.getDP().drawText(actionKeyPos, Align.bottomCenter, angle, PlayerActions.values()[i].getKey(), font, getTextColor(selectedActionKeyID == i)) ;			
 		}
 	}
 	
@@ -257,9 +257,9 @@ public class SettingsWindow extends GameWindow
 		Arrays.fill(textColor, Palette.colors[0]) ;
 		textColor[item] = Palette.colors[18] ;
 		
-		GamePanel.DP.drawImage(menuImage, windowPos, Align.topLeft) ;
+		GamePanel.getDP().drawImage(menuImage, windowPos, Align.topLeft) ;
 		Point titlePos = Util.translate(textPos, image.getWidth(null) / 2 - 15, -6) ;
-		GamePanel.DP.drawText(titlePos, Align.bottomCenter, Draw.stdAngle, name, font, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(titlePos, Align.bottomCenter, Draw.stdAngle, name, font, Palette.colors[0]) ;
 		if (menu == 0)
 		{
 			numberItems = 7 ;

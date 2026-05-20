@@ -51,17 +51,17 @@ public class LevelUpAnimation extends Animation
 
     protected void play()
     {		
-		GamePanel.DP.drawImage(levelUpAttImg, pos, Scale.unit, Align.topLeft) ;
+		GamePanel.getDP().drawImage(levelUpAttImg, pos, Scale.unit, Align.topLeft) ;
 		Point textPos = Util.translate(pos, winObtainedItemsImg.getWidth(null) / 2, offset.y) ;
 		
-		GamePanel.DP.drawText(textPos, Align.bottomCenter, Draw.stdAngle, attText[0] + " " + newLevel + "!", smallFont, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(textPos, Align.bottomCenter, Draw.stdAngle, attText[0] + " " + newLevel + "!", smallFont, Palette.colors[0]) ;
 
 		Point topLeftSlotCenter = Util.translate(pos, 18, 35) ;
 		for (int i = 0 ; i <= attOrder.length - 1 ; i += 1)
 		{
 			Point imagePos = Util.calcGridPos(topLeftSlotCenter, i, nRows, new Point(80, sy)) ;
-			GamePanel.DP.drawImage(BagWindow.slotImage, imagePos, Align.center) ;
-			GamePanel.DP.drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
+			GamePanel.getDP().drawImage(BagWindow.slotImage, imagePos, Align.center) ;
+			GamePanel.getDP().drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
 		}
 		
 		if (timer.rate() <= 0.2) { return ;}		
@@ -73,7 +73,7 @@ public class LevelUpAnimation extends Animation
 			int row = i % nCols ;
 			int col = i / nCols ;
 			Point attTextPos = Util.translate(pos, 28 + row * 80, 40 + col * sy) ;
-			GamePanel.DP.drawText(attTextPos, Align.bottomLeft, Draw.stdAngle, " + " + attributeInc[i], smallFont, Palette.colors[0]) ;
+			GamePanel.getDP().drawText(attTextPos, Align.bottomLeft, Draw.stdAngle, " + " + attributeInc[i], smallFont, Palette.colors[0]) ;
 		}
     }
 }

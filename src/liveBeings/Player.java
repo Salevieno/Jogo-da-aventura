@@ -1857,7 +1857,7 @@ public class Player extends LiveBeing
 	
 	private void drawRange()
 	{
-		GamePanel.DP.drawCircle(getPos(), (int)(2 * range), 2, null, Palette.colors[10]) ;
+		GamePanel.getDP().drawCircle(getPos(), (int)(2 * range), 2, null, Palette.colors[10]) ;
 	}
 
 	public void drawWeapon(Point pos, Scale scale)
@@ -1878,7 +1878,7 @@ public class Player extends LiveBeing
 		if (isRiding)
 		{
 			Point ridePos = Util.translate(pos, -tigerImg.getWidth(null) / 2, tigerImg.getHeight(null) / 2) ;
-			GamePanel.DP.drawImage(tigerImg, ridePos, Draw.stdAngle , scale, Align.bottomLeft) ;
+			GamePanel.getDP().drawImage(tigerImg, ridePos, Draw.stdAngle , scale, Align.bottomLeft) ;
 		}
 		if (isDrunk())
 		{
@@ -1900,7 +1900,7 @@ public class Player extends LiveBeing
 		if (questSkills.get(QuestSkills.dragonAura))
 		{
 //			Point auraPos = Util.translate(pos, -size.width / 2, 0) ; proTODO arte - dragon aura
-//			GamePanel.DP.drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
+//			GamePanel.getDP().drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
 		}
 		if (showRange)
 		{

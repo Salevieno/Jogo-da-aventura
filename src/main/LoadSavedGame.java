@@ -30,7 +30,7 @@ public abstract class LoadSavedGame
 			//DifficultLevel = Integer.parseInt(ReadFile[2*(NumberOfPlayerAttributes + 35)][0]) ;
 			if (player == null)
 			{
-				GamePanel.DP.DrawText(new Point((int) (0.5 * screen.getSize().x), (int) (0.5 * screen.getSize().y)), "Center", DrawPrimitives.OverallAngle, "Save version is old, do you want to convert to a new version?", font, ColorPalette[5]) ;
+				GamePanel.getDP().DrawText(new Point((int) (0.5 * screen.getSize().x), (int) (0.5 * screen.getSize().y)), "Center", DrawPrimitives.OverallAngle, "Save version is old, do you want to convert to a new version?", font, ColorPalette[5]) ;
 			}
 			else
 			{

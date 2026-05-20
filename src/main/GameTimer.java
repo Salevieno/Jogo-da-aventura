@@ -92,8 +92,8 @@ public class GameTimer
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate())) ;
 		Point rectPos = Util.translate(botLeftPos, offset.width, offset.height) ;
 		
-		GamePanel.DP.drawRect(rectPos, align, barSize, stroke, null, Palette.colors[0], 1.0) ;
-		GamePanel.DP.drawRect(rectPos, align, fillSize, stroke, color, null, 1.0) ;
+		GamePanel.getDP().drawRect(rectPos, align, barSize, stroke, null, Palette.colors[0], 1.0) ;
+		GamePanel.getDP().drawRect(rectPos, align, fillSize, stroke, color, null, 1.0) ;
 	}
 	
 	public void display(Point botLeftPos, Color color)

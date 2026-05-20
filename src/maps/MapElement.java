@@ -69,7 +69,7 @@ public class MapElement implements Drawable
 	{
 		for (Collider collider : colliders)
 		{
-			GamePanel.DP.drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Color.red, null) ;
+			GamePanel.getDP().drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Color.red, null) ;
 		}
 	}
 	
@@ -77,7 +77,7 @@ public class MapElement implements Drawable
 	{
 		double alpha = playerIsBehind(Game.getPlayer().getPos()) ? 0.5 : 1.0 ;
 		
-		GamePanel.DP.drawImage(image, topLeft, Draw.stdAngle, Scale.unit, false, false, Align.topLeft, alpha) ;
+		GamePanel.getDP().drawImage(image, topLeft, Draw.stdAngle, Scale.unit, false, false, Align.topLeft, alpha) ;
 		if (Game.debugMode)
 		{
 			displayColliders() ;

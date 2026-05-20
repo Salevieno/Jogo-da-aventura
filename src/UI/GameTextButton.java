@@ -151,28 +151,28 @@ public class GameTextButton extends GameButton
     {
         if (isSelected)
         {
-            GamePanel.DP.drawImage(boxSelectedPart1, pos1, Align.topLeft);
-            GamePanel.DP.drawImage(boxSelectedStretchedPart2, pos2, Align.topLeft);
-            GamePanel.DP.drawImage(boxSelectedPart3, pos3, Align.topLeft);
-            GamePanel.DP.drawImage(boxSelectedStretchedPart4, pos4, Align.topLeft);
-            GamePanel.DP.drawImage(boxSelectedPart5, pos5, Align.topLeft);
-            GamePanel.DP.drawImage(boxSelectedStretchedPart6, pos6, Align.topLeft);
-            GamePanel.DP.drawImage(boxSelectedPart7, pos7, Align.topLeft);
-            GamePanel.DP.drawImage(boxSelectedStretchedPart8, pos8, Align.topLeft);
-            GamePanel.DP.drawImage(boxSelectedStretchedPart9, pos9, Align.topLeft);
+            GamePanel.getDP().drawImage(boxSelectedPart1, pos1, Align.topLeft);
+            GamePanel.getDP().drawImage(boxSelectedStretchedPart2, pos2, Align.topLeft);
+            GamePanel.getDP().drawImage(boxSelectedPart3, pos3, Align.topLeft);
+            GamePanel.getDP().drawImage(boxSelectedStretchedPart4, pos4, Align.topLeft);
+            GamePanel.getDP().drawImage(boxSelectedPart5, pos5, Align.topLeft);
+            GamePanel.getDP().drawImage(boxSelectedStretchedPart6, pos6, Align.topLeft);
+            GamePanel.getDP().drawImage(boxSelectedPart7, pos7, Align.topLeft);
+            GamePanel.getDP().drawImage(boxSelectedStretchedPart8, pos8, Align.topLeft);
+            GamePanel.getDP().drawImage(boxSelectedStretchedPart9, pos9, Align.topLeft);
 
             return ;
         }
 
-        GamePanel.DP.drawImage(boxPart1, pos1, Align.topLeft);
-        GamePanel.DP.drawImage(boxStretchedPart2, pos2, Align.topLeft);
-        GamePanel.DP.drawImage(boxPart3, pos3, Align.topLeft);
-        GamePanel.DP.drawImage(boxStretchedPart4, pos4, Align.topLeft);
-        GamePanel.DP.drawImage(boxPart5, pos5, Align.topLeft);
-        GamePanel.DP.drawImage(boxStretchedPart6, pos6, Align.topLeft);
-        GamePanel.DP.drawImage(boxPart7, pos7, Align.topLeft);
-        GamePanel.DP.drawImage(boxStretchedPart8, pos8, Align.topLeft);
-        GamePanel.DP.drawImage(boxStretchedPart9, pos9, Align.topLeft);
+        GamePanel.getDP().drawImage(boxPart1, pos1, Align.topLeft);
+        GamePanel.getDP().drawImage(boxStretchedPart2, pos2, Align.topLeft);
+        GamePanel.getDP().drawImage(boxPart3, pos3, Align.topLeft);
+        GamePanel.getDP().drawImage(boxStretchedPart4, pos4, Align.topLeft);
+        GamePanel.getDP().drawImage(boxPart5, pos5, Align.topLeft);
+        GamePanel.getDP().drawImage(boxStretchedPart6, pos6, Align.topLeft);
+        GamePanel.getDP().drawImage(boxPart7, pos7, Align.topLeft);
+        GamePanel.getDP().drawImage(boxStretchedPart8, pos8, Align.topLeft);
+        GamePanel.getDP().drawImage(boxStretchedPart9, pos9, Align.topLeft);
     }
 
 	public void display(double angle, boolean displayText, Point mousePos, Color textColor, double opacity)
@@ -188,10 +188,10 @@ public class GameTextButton extends GameButton
 		}
         else
         {
-            GamePanel.DP.drawImage(imageDisplayed, center, angle, Scale.unit, Align.center, opacity) ;
+            GamePanel.getDP().drawImage(imageDisplayed, center, angle, Scale.unit, Align.center, opacity) ;
         }
 
-		GamePanel.DP.drawText(center, Align.center, 0, text, font, textColor) ;
+		GamePanel.getDP().drawText(center, Align.center, 0, text, font, textColor) ;
 	}
 
 	public void display()
@@ -204,10 +204,10 @@ public class GameTextButton extends GameButton
 		}
         else
         {
-            GamePanel.DP.drawImage(imageDisplayed, center, Draw.stdAngle, Scale.unit, Align.center, 1.0) ;
+            GamePanel.getDP().drawImage(imageDisplayed, center, Draw.stdAngle, Scale.unit, Align.center, 1.0) ;
         }
 
-		GamePanel.DP.drawText(center, Align.center, 0, text, font, textColor) ;
+		GamePanel.getDP().drawText(center, Align.center, 0, text, font, textColor) ;
 	}
 
     public Dimension getSize() { return size ;}

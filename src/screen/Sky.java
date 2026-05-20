@@ -191,7 +191,7 @@ public class Sky
 	
 	public void display()
 	{ // new Point(0, height), Align.bottomLeft, size, color, null
-		GamePanel.DP.drawGradRoundRect(new Point(0, height), Align.bottomLeft, size, botColor, topColor, false) ;
+		GamePanel.getDP().drawGradRoundRect(new Point(0, height), Align.bottomLeft, size, botColor, topColor, false) ;
 		
 		if (isDay())
 		{

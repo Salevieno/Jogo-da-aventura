@@ -41,11 +41,11 @@ public class WinAnimation extends Animation
 
     protected void play()
     {
-		GamePanel.DP.drawImage(winObtainedItemsImg, pos, Scale.unit, Align.topLeft) ;
+		GamePanel.getDP().drawImage(winObtainedItemsImg, pos, Scale.unit, Align.topLeft) ;
 		
 		if ( timer.rate() <= 0.1 ) { return ;}
 		
-		GamePanel.DP.drawText(textPos, Align.center, Draw.stdAngle, "Você obteve!", stdFont, Palette.colors[3]) ;
+		GamePanel.getDP().drawText(textPos, Align.center, Draw.stdAngle, "Você obteve!", stdFont, Palette.colors[3]) ;
 		
 		if ( timer.rate() <= 0.3 ) { return ;}
 		
@@ -54,7 +54,7 @@ public class WinAnimation extends Animation
 		{
 			if ( 0.3 + 0.5 * i / items.size() <= timer.rate() )
 			{
-				GamePanel.DP.drawText(itemTextPos, Align.bottomLeft, Draw.stdAngle, items.get(i).getName(), smallFont, Palette.colors[3]) ;
+				GamePanel.getDP().drawText(itemTextPos, Align.bottomLeft, Draw.stdAngle, items.get(i).getName(), smallFont, Palette.colors[3]) ;
 				itemTextPos.y += 15 ;
 			}
 		}
