@@ -19,6 +19,7 @@ import main.ImageLoader;
 import main.Palette;
 import main.Path;
 import main.TextCategories;
+import screen.Screen;
 import utilities.Util;
 
 
@@ -26,7 +27,7 @@ public class PetAttributesWindow extends AttributesWindow
 {
 	private Pet pet ;
 
-	Point windowPos = Game.getScreen().pos(0.52, 0.14) ;
+	Point windowPos = Screen.getMe().pos(0.52, 0.14) ;
 	
 	private static final Image image = ImageLoader.loadImage(Path.WINDOWS_IMG + "PetAttWindow.png") ;
 	

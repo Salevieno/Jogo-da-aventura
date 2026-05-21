@@ -21,6 +21,7 @@ import main.GamePanel;
 import main.Palette;
 import main.Path;
 import maps.GameMap;
+import screen.Screen;
 import utilities.Util;
 
 
@@ -108,7 +109,7 @@ public class Building implements Drawable
 				double npcPosX = (double) posJson.get("x") ;
 				double npcPosY = (double) posJson.get("y") ;
 				NPC npc = NPC.getAll().get(id) ;
-				npc.setPos(Game.getScreen().getPointWithinBorders(npcPosX, npcPosY)) ;
+				npc.setPos(Screen.getMe().getPointWithinBorders(npcPosX, npcPosY)) ;
 				npcs.add(npc) ;
 			}
 			

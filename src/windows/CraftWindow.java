@@ -23,6 +23,7 @@ import main.GamePanel;
 import main.ImageLoader;
 import main.Palette;
 import main.Path;
+import screen.Screen;
 import utilities.Util;
 
 
@@ -34,7 +35,7 @@ public class CraftWindow extends GameWindow
 	private List<Recipe> recipesInWindow ;
 	private GameButton craftButton ;
 	
-	private static final Point windowPos = Game.getScreen().pos(0.03, 0.25) ;	
+	private static final Point windowPos = Screen.getMe().pos(0.03, 0.25) ;	
 	private static final int RecipesPerWindow = 1 ;
 	private static final Image buttonImg = ImageLoader.loadImage(Path.WINDOWS_IMG + "CraftButton.png") ;
 	private static final List<String> messages = Arrays.asList(

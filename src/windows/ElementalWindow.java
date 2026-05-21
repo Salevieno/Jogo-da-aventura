@@ -16,11 +16,11 @@ import items.Equip;
 import items.GeneralItem;
 import liveBeings.Player;
 import main.Elements;
-import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Palette;
 import main.Path;
+import screen.Screen;
 import utilities.Util;
 
 
@@ -32,7 +32,7 @@ public class ElementalWindow extends GameWindow
 	private List<Equip> equipsForElemChange ;
 	private Equip selectedEquip ;
 
-	private static final Point windowPos = Game.getScreen().pos(0.35, 0.23) ;
+	private static final Point windowPos = Screen.getMe().pos(0.35, 0.23) ;
 	private static final List<String> menuTitles = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
 	private static final Image windowImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "Elemental.png") ;
 	private static final int firstSphereID = 390 ;
@@ -153,7 +153,7 @@ public class ElementalWindow extends GameWindow
 			case 3 -> "Elemento mudado com sucesso!" ;
 			default -> "" ;
 		};
-		MessageAnimation.start(Game.getScreen().pos(0.5, 0.2), message, Palette.colors[0]) ;
+		MessageAnimation.start(Screen.getMe().pos(0.5, 0.2), message, Palette.colors[0]) ;
 	}
 	
 	public void changeEquipElement(BagWindow bag)

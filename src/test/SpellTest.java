@@ -3,6 +3,7 @@ package test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.awt.Dimension;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +22,9 @@ import liveBeings.Pet;
 import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Elements;
+import screen.Screen;
 import spells.Spell;
+import spells.SpellData;
 import windows.CraftWindow;
 
 public class SpellTest
@@ -41,18 +44,25 @@ public class SpellTest
 	@BeforeAll
 	static void initializeGame()
 	{
+		Screen.create(new Dimension(), false) ;
 		// BuffData.createBuffs();
 		// BuffData.createNerfs();
-		// SpellData.createSpells() ;
+		SpellData.createSpells() ;
 		// Item.load("portugues");
 		// Recipe.load(Item.getAllItems()) ;
 		// CreatureData.create() ; // TODO level de dificuldade tem que ser 2 aqui
 
-		knightLevel0 = new Player("Player", "", 0) ;
-		// mageLevel0 = new Player("Player", "", 1) ;
-		// archerLevel0 = new Player("Player", "", 2) ;
-		// animalLevel0 = new Player("Player", "", 3) ;
-		// thiefLevel0 = new Player("Player", "", 4) ;
+		knightLevel0 = new Player("Player knight spell test", "", 0) ;
+		mageLevel0 = new Player("Player mage spell test", "", 1) ;
+		archerLevel0 = new Player("Player archer spell test", "", 2) ;
+		animalLevel0 = new Player("Player animal spell test", "", 3) ;
+		thiefLevel0 = new Player("Player thief spell test", "", 4) ;
+
+		knightLevel0.setSpells(Player.jobSpells(knightLevel0.getJob()));
+		mageLevel0.setSpells(Player.jobSpells(mageLevel0.getJob()));
+		archerLevel0.setSpells(Player.jobSpells(archerLevel0.getJob()));
+		animalLevel0.setSpells(Player.jobSpells(animalLevel0.getJob()));
+		thiefLevel0.setSpells(Player.jobSpells(thiefLevel0.getJob()));
 		
 		// pet = new Pet(1) ;
 		

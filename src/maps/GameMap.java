@@ -39,6 +39,7 @@ import main.Music;
 import main.Palette;
 import main.Path;
 import main.TextCategories;
+import screen.Screen;
 import screen.Sky;
 import utilities.Util;
 
@@ -58,7 +59,7 @@ public abstract class GameMap
 	protected final Map<Item, Double> diggingItems ;
 	protected final List<SpriteAnimation> animations ;
 
-	protected static final Dimension screenSize = Game.getScreen().getSize() ;
+	protected static final Dimension screenSize = Screen.getMe().getSize() ;
 	protected static final String dadosPath = Path.DADOS + "gameMaps\\" ;
 
 	// TODO if it makes sense, move forge, sign AND the dock and boat to a new class of map elements or in the map elements class
@@ -179,7 +180,7 @@ public abstract class GameMap
 	private boolean hasGroundTypes() { return groundRegions != null && !groundRegions.isEmpty() ;}
 
 	public static int width() { return GameFrame.width() - 60 ;}
-	public static int height() { return GameFrame.height() - Sky.height ;}
+	public static int height() { return GameFrame.height() - Sky.getHeight() ;}
 
 	protected Point2D.Double randomPosOnLandDouble(Point2D.Double minCoord, Dimension range, Dimension step)
 	{
@@ -193,8 +194,8 @@ public abstract class GameMap
 	
 	protected Point2D.Double randomPosOnLandDouble()
 	{
-		Point2D.Double minCoord = new Point2D.Double(0, (int) (0.2*Game.getScreen().getSize().height)) ;
-		Dimension range = new Dimension(Game.getScreen().mapSize().width, (int) ((1 - (float)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
+		Point2D.Double minCoord = new Point2D.Double(0, (int) (0.2*Screen.getMe().getSize().height)) ;
+		Dimension range = new Dimension(Screen.getMe().mapSize().width, (int) ((1 - (float)(Sky.getHeight())/Screen.getMe().getSize().height) * Screen.getMe().getSize().height)) ;
 		Dimension step = new Dimension(1, 1) ;
 
 		return randomPosOnLandDouble(minCoord, range, step) ;
@@ -212,8 +213,8 @@ public abstract class GameMap
 	
 	protected Point randomPosOnLand()
 	{
-		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
-		Dimension range = new Dimension(Game.getScreen().mapSize().width, (int) ((1 - (float)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
+		Point minCoord = new Point(0, (int) (0.2*Screen.getMe().getSize().height)) ;
+		Dimension range = new Dimension(Screen.getMe().mapSize().width, (int) ((1 - (float)(Sky.getHeight())/Screen.getMe().getSize().height) * Screen.getMe().getSize().height)) ;
 		Dimension step = new Dimension(1, 1) ;
 
 		return randomPosOnLand(minCoord, range, step) ;
@@ -221,8 +222,8 @@ public abstract class GameMap
 	
 	public Point randomPosInMap()
 	{
-		Point minCoord = new Point(0, (int) (0.2*Game.getScreen().getSize().height)) ;
-		Dimension range = new Dimension(Game.getScreen().mapSize().width, (int) ((1 - (float)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)) ;
+		Point minCoord = new Point(0, (int) (0.2*Screen.getMe().getSize().height)) ;
+		Dimension range = new Dimension(Screen.getMe().mapSize().width, (int) ((1 - (float)(Sky.getHeight())/Screen.getMe().getSize().height) * Screen.getMe().getSize().height)) ;
 		
 		return Util.randomPos(minCoord, range, new Dimension(1, 1)) ;
 	}	
@@ -255,7 +256,7 @@ public abstract class GameMap
 			for (Object pointObj : points)
 			{
 				int x = ((Long) ((JSONObject) pointObj).get("x")).intValue();
-				int y = ((Long) ((JSONObject) pointObj).get("y")).intValue() + Sky.height;
+				int y = ((Long) ((JSONObject) pointObj).get("y")).intValue() + Sky.getHeight();
 				polygonPoints.add(new Point(x, y));
 			}
 
@@ -418,11 +419,11 @@ public abstract class GameMap
 
  		if (name.equals("City of the animals"))
  		{
- 			GamePanel.getDP().drawImage(image, Game.getScreen().getMapCenter(), new Scale(0.5, 0.5), Align.center) ;
+ 			GamePanel.getDP().drawImage(image, Screen.getMe().getMapCenter(), new Scale(0.5, 0.5), Align.center) ;
  			return ;
  		}
  		
- 		GamePanel.getDP().drawImage(image, Game.getScreen().getMapCenter(), Align.center) ;
+ 		GamePanel.getDP().drawImage(image, Screen.getMe().getMapCenter(), Align.center) ;
  		
  		// if (name.equals("City of the archers") || name.equals("Forest 9") || name.equals("Forest 13"))
  		// {
@@ -431,8 +432,8 @@ public abstract class GameMap
  		
  		if (name.equals("Forest 9"))
  		{
- 			GamePanel.getDP().drawImage(dockImg, Game.getScreen().pos(0.6, 0.85), Align.centerLeft) ;
- 			GamePanel.getDP().drawImage(boatImg, Game.getScreen().pos(0.75, 0.8), Align.centerLeft) ;
+ 			GamePanel.getDP().drawImage(dockImg, Screen.getMe().pos(0.6, 0.85), Align.centerLeft) ;
+ 			GamePanel.getDP().drawImage(boatImg, Screen.getMe().pos(0.75, 0.8), Align.centerLeft) ;
  		}
  	}
 	

@@ -15,12 +15,12 @@ import graphics.Scale;
 import graphics2.Draw;
 import items.Item;
 import liveBeings.Player;
-import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
 import main.Palette;
 import main.Path;
+import screen.Screen;
 import utilities.Util;
 
 
@@ -30,7 +30,7 @@ public class ShoppingWindow extends GameWindow
 	private List<Item> itemsOnWindow ;
 	private boolean buyMode ;
 
-	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
+	private static final Point windowPos = Screen.getMe().pos(0.4, 0.2) ;
 	private static final int numberItemsPerWindow = 10 ;
 	private static final Image image = ImageLoader.loadImage(Path.WINDOWS_IMG + "Shopping.png") ;
 	
@@ -105,11 +105,11 @@ public class ShoppingWindow extends GameWindow
 	{
 		if (i == 0)
 		{
-			MessageAnimation.start(Game.getScreen().pos(0.1, 0.2), "Você não possui ouro suficiente", Palette.colors[0]) ;
+			MessageAnimation.start(Screen.getMe().pos(0.1, 0.2), "Você não possui ouro suficiente", Palette.colors[0]) ;
 			return ;
 		}
 
-		ObtainedItemAnimation.start(Game.getScreen().pos(0.5, 0.2), selectedItem().getName(), Palette.colors[0]) ;
+		ObtainedItemAnimation.start(Screen.getMe().pos(0.5, 0.2), selectedItem().getName(), Palette.colors[0]) ;
 	}
 	
 	public void buyItem(BagWindow bag)

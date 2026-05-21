@@ -8,7 +8,6 @@ import java.util.List;
 
 import graphics.Align;
 import graphics.Scale;
-import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
@@ -16,6 +15,7 @@ import main.Palette;
 import main.Path;
 import maps.Continents;
 import maps.GameMap;
+import screen.Screen;
 import screen.Sky;
 import utilities.Util;
 
@@ -46,7 +46,7 @@ public class MapWindow extends GameWindow
 		this.mapWithPlayer = mapWithPlayer ;
 		Continents continentWithPlayer = mapWithPlayer.getContinent() ;
 		scale = new Scale(0.1, 0.1) ;
-		mapSize = new Dimension((int) (Game.getScreen().mapSize().width * scale.x), (int) (Game.getScreen().mapSize().height * scale.y)) ;
+		mapSize = new Dimension((int) (Screen.getMe().mapSize().width * scale.x), (int) (Screen.getMe().mapSize().height * scale.y)) ;
 		this.mapsDisplayed = GameMap.getAllMaps().stream().filter(map -> continentWithPlayer.equals(map.getContinent())).toList() ;
 		this.offset = switch(continentWithPlayer)
 		{
@@ -231,8 +231,8 @@ public class MapWindow extends GameWindow
 	
 	public void displayPlayerLocation(Point mapPos, Dimension screenSize)
 	{
-		double playerRelXPos = playerPos.x / (double) Game.getScreen().mapSize().width ;
-		double playerRelYPos = (playerPos.y - Sky.height) / (double) Game.getScreen().mapSize().height ;
+		double playerRelXPos = playerPos.x / (double) Screen.getMe().mapSize().width ;
+		double playerRelYPos = (playerPos.y - Sky.getHeight()) / (double) Screen.getMe().mapSize().height ;
 		Point circlePos = Util.translate(mapPos, (int) (screenSize.width * playerRelXPos), (int) (-screenSize.height * (1 - playerRelYPos))) ;
 		GamePanel.getDP().drawCircle(circlePos, 5, 0, Palette.colors[6], null) ;
 	}
@@ -252,7 +252,7 @@ public class MapWindow extends GameWindow
 		{
 			mapsDisplayed = GameMap.getAllMaps() ;
 			scale = new Scale(0.05, 0.05) ;
-			mapSize = new Dimension((int) (Game.getScreen().mapSize().width * scale.x), (int) (Game.getScreen().mapSize().height * scale.y)) ;
+			mapSize = new Dimension((int) (Screen.getMe().mapSize().width * scale.x), (int) (Screen.getMe().mapSize().height * scale.y)) ;
 			offset = calcMapOffset(15, 14, scale, spacing) ;
 		}
 		
@@ -266,8 +266,8 @@ public class MapWindow extends GameWindow
 													size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
 			map.display(mapPos, Align.bottomLeft, scale) ;
 
-			Point mapNamePos = Util.translate(mapPos, (int) (scale.x * Game.getScreen().mapSize().width / 2),
-													(int) (-scale.y * Game.getScreen().mapSize().height / 2)) ;
+			Point mapNamePos = Util.translate(mapPos, (int) (scale.x * Screen.getMe().mapSize().width / 2),
+													(int) (-scale.y * Screen.getMe().mapSize().height / 2)) ;
 			GamePanel.getDP().drawText(mapNamePos, Align.center, 0, map.getName(), stdFont, Palette.colors[0]) ;
 			
 			if (!map.equals(mapWithPlayer)) { continue ;}

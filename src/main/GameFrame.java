@@ -59,9 +59,10 @@ public class GameFrame extends JFrame implements ActionListener
 	
 	protected static void create()
 	{
+		if (gameFrame != null) { return ;}
+
 		gameFrame = new GameFrame() ;
-		GamePanel.create() ;
-		Game.getScreen().updateScale();
+		GamePanel.create(gameFrame.windowSize) ;
         gameFrame.add(GamePanel.getMe()) ;
 	}
 

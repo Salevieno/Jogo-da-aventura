@@ -27,6 +27,7 @@ import main.Palette;
 import main.Path;
 import maps.FieldMap;
 import maps.GameMap;
+import screen.Screen;
 import utilities.Util;
 import windows.PlayerAttributesWindow;
 
@@ -46,7 +47,7 @@ public abstract class Draw
 	
 	static
 	{
-		screenSize = Game.getScreen().getSize() ;
+		screenSize = Screen.getMe().getSize() ;
 		stdAngle = DrawPrimitives.stdAngle;
 		ArrowIconImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "ArrowIcon.png") ;
 		KeyboardButtonImage = ImageLoader.loadImage(Path.UI_IMG + "KeyboardButton.png") ;
@@ -145,7 +146,7 @@ public abstract class Draw
 		// obs: text must end with . , ? or ! for this function to work
 		int bubbleL = speechBubble.getWidth(null) ;
 		int bubbleH = speechBubble.getHeight(null) ;
-		boolean flipH = Game.getScreen().mapSize().width / 2 <= pos.x ;
+		boolean flipH = Screen.getMe().mapSize().width / 2 <= pos.x ;
 		Color textColor = color != null ? color : Palette.colors[21] ;
 		
 		GamePanel.getDP().drawImage(speechBubble, pos, DrawPrimitives.stdAngle, Scale.unit, flipH, false, Align.bottomCenter, 1) ;
@@ -190,9 +191,9 @@ public abstract class Draw
 	
 	public static void loadingGameScreen(Player player, Pet pet, GameButton[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
 	{
-		Point[] WindowPos = new Point[] {Game.getScreen().pos(0.15, 0.2), Game.getScreen().pos(0.65, 0.2), Game.getScreen().pos(0.5, 0.2)} ;
+		Point[] WindowPos = new Point[] {Screen.getMe().pos(0.15, 0.2), Screen.getMe().pos(0.65, 0.2), Screen.getMe().pos(0.5, 0.2)} ;
 		
-		GamePanel.getDP().drawText(Game.getScreen().pos(0.5, 0.05), Align.center, stdAngle, "Slot " + (SlotID + 1), loadingGameScreenFont, Palette.colors[5]) ;
+		GamePanel.getDP().drawText(Screen.getMe().pos(0.5, 0.05), Align.center, stdAngle, "Slot " + (SlotID + 1), loadingGameScreenFont, Palette.colors[5]) ;
 		((PlayerAttributesWindow) player.getAttWindow()).display(new Point(0, 0)) ;
 		if (0 < pet.getLife().getCurrentValue())
 		{
@@ -246,7 +247,7 @@ public abstract class Draw
 	{
 		float time = (float) Game.dayTimeRate() ;
 		String message = (int) (24 * time) + ":" + (int) (24 * 60 * time % 60) ;
-		GamePanel.getDP().drawText(Game.getScreen().pos(0, 0.99), Align.bottomLeft, stdAngle, message, stdFont, Palette.colors[20]) ;
+		GamePanel.getDP().drawText(Screen.getMe().pos(0, 0.99), Align.bottomLeft, stdAngle, message, stdFont, Palette.colors[20]) ;
 	}
 	
 	public static void mapElements(Hitbox playerHitbox, Point playerPos, GameMap map)
@@ -315,9 +316,9 @@ public abstract class Draw
 
 	public static void filter(Color color)
 	{
-		for (int i = 0 ; i <= Game.getScreen().getSize().height - 1 ; i += 2)
+		for (int i = 0 ; i <= Screen.getMe().getSize().height - 1 ; i += 2)
 		{
-			GamePanel.getDP().drawLine(new Point(0, i), new Point(Game.getScreen().getSize().width, i), color) ;
+			GamePanel.getDP().drawLine(new Point(0, i), new Point(Screen.getMe().getSize().width, i), color) ;
 		}
 	}
 }

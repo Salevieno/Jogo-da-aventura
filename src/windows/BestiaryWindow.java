@@ -15,13 +15,14 @@ import main.Game;
 import main.GamePanel;
 import main.Palette;
 import main.TextCategories;
+import screen.Screen;
 import utilities.Util;
 
 public class BestiaryWindow extends GameWindow
 {
 	private List<CreatureType> discoveredCreatures ;
 
-	private static final Point windowPos = Game.getScreen().pos(0.1, 0.3) ;
+	private static final Point windowPos = Screen.getMe().pos(0.1, 0.3) ;
 	private Dimension windowSize = new Dimension(384, 288) ;
 	
 	public BestiaryWindow()

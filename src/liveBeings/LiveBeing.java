@@ -44,6 +44,7 @@ import main.RelativePos;
 import maps.GameMap;
 import maps.GroundRegion;
 import maps.GroundType;
+import screen.Screen;
 import spells.Buff;
 import spells.Spell;
 import utilities.Util;
@@ -367,8 +368,8 @@ public abstract class LiveBeing implements Drawable
 	public static GameMap calcNewMap(Point2D.Double pos, Directions dir, GameMap currentMap)
 	{
 		int[] mapConnections = currentMap.getConnections() ;
-		boolean leftSide = pos.x <= Game.getScreen().mapSize().width / 2 ;
-		boolean topSide = pos.y <= Game.getScreen().getBorders()[1] + Game.getScreen().mapSize().height / 2 ;
+		boolean leftSide = pos.x <= Screen.getMe().mapSize().width / 2 ;
+		boolean topSide = pos.y <= Screen.getMe().getBorders()[1] + Screen.getMe().mapSize().height / 2 ;
 		int newMapID = switch (dir)
 		{
 			case up -> newMapID = leftSide ? mapConnections[7] : mapConnections[6] ;			
@@ -859,7 +860,7 @@ public abstract class LiveBeing implements Drawable
 		}
 		if (style == 1)
 		{			
-			Point topLeft = Game.getScreen().pos(0.01, 0.02) ;
+			Point topLeft = Screen.getMe().pos(0.01, 0.02) ;
 			Dimension barSize = new Dimension(5, 60) ;
 			int stroke = 1 ;
 			GamePanel.getDP().drawImage(attImage, topLeft, Align.topLeft, 0.85) ;

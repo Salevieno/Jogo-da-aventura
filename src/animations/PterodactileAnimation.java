@@ -8,17 +8,17 @@ import java.awt.Point;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics2.Draw;
-import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Palette;
 import main.Path;
+import screen.Screen;
 import utilities.Util;
 
 public class PterodactileAnimation extends Animation
 {
 	private static final Font stdFont = DrawPrimitives.stdFont ;
-    private static final Dimension screenSize = Game.getScreen().getSize() ;
+    private static final Dimension screenSize = Screen.getMe().getSize() ;
   	private static final Image image = ImageLoader.loadImage(Path.NPC_IMG + "Pterodactile.png") ;
 	private static final int imageWidth = image.getWidth(null) ;
 

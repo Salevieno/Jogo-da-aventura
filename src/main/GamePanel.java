@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -15,6 +16,7 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JPanel;
 
 import graphics.DrawPrimitives;
+import screen.Screen;
 import utilities.Util;
 
 public class GamePanel extends JPanel
@@ -35,10 +37,13 @@ public class GamePanel extends JPanel
 		setFocusable(true) ;
 	}
 	
-	protected static void create()
+	protected static void create(Dimension size)
 	{
+		if (gamePanel != null) { return ;}
+
 		DP = new DrawPrimitives() ;
 		gamePanel = new GamePanel() ;
+		Screen.create(size, GameFrame.isFullscreen());
 		game = new Game() ;
 	}
 
@@ -60,8 +65,8 @@ public class GamePanel extends JPanel
 	private static void updateMousePos(JPanel panel)
 	{
 		mousePos = Util.getMousePos(panel) ;
-        mousePos.x = (int) (mousePos.x / Game.getScreen().getScale().x) ;
-        mousePos.y = (int) (mousePos.y / Game.getScreen().getScale().y) ;
+        mousePos.x = (int) (mousePos.x / Screen.getMe().getScale().x) ;
+        mousePos.y = (int) (mousePos.y / Screen.getMe().getScale().y) ;
 	}
 
 	// Ensure focused when added
@@ -79,7 +84,7 @@ public class GamePanel extends JPanel
 		updateMousePos(gamePanel) ;
 		
         Graphics2D graphs2D = (Graphics2D) graphs ;
-        graphs2D.scale(Game.getScreen().getScale().x, Game.getScreen().getScale().y);
+        graphs2D.scale(Screen.getMe().getScale().x, Screen.getMe().getScale().y);
 		DP.setGraphics(graphs2D) ;
 		game.update() ;
 

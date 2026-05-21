@@ -10,11 +10,11 @@ import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics2.Draw;
 import items.Item;
-import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Palette;
 import main.Path;
+import screen.Screen;
 import utilities.Util;
 
 public class WinAnimation extends Animation
@@ -22,7 +22,7 @@ public class WinAnimation extends Animation
 	private static final Font stdFont = DrawPrimitives.stdFont ;
 	private static final Font smallFont = new Font(DrawPrimitives.stdFont.getName(), Font.BOLD, 11) ;
 	private static final Image winObtainedItemsImg = ImageLoader.loadImage(Path.PLAYER_IMG + "Win.png") ;
-	private static final Point pos = Game.getScreen().pos(0.35, 0.2) ;
+	private static final Point pos = Screen.getMe().pos(0.35, 0.2) ;
 	private static final Point textPos = Util.translate(pos, 80, 11) ;
 
     private List<Item> items ;

@@ -45,7 +45,7 @@ public class SkyComponent
 	public void display(double angle)
 	{
 		Point posAsPoint = new Point((int) pos.x, (int) pos.y) ;
-		GamePanel.getDP().drawSubImage(image, Game.getScreen().getSize().width, posAsPoint, angle, Scale.unit, false, false, Align.topLeft, opacity) ;
+		GamePanel.getDP().drawSubImage(image, Screen.getMe().getSize().width, posAsPoint, angle, Scale.unit, false, false, Align.topLeft, opacity) ;
 	}
 	
 	public void display()

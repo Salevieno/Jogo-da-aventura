@@ -87,7 +87,7 @@ public abstract class Opening
 		ButtonFunction animalAction = () -> { chosenJob = 3 ; advanceStep() ;} ;
 		ButtonFunction thiefAction = () -> { chosenJob = 4 ; advanceStep() ;} ;
 		
-		Screen screen = Game.getScreen() ;
+		Screen screen = Screen.getMe() ;
 		GameButton portButton = new GameIconButton(screen.pos(0.85, 0.05), Align.center, ImageLoader.loadImage(Path.OPENING_IMG + "Port.png"), ImageLoader.loadImage(Path.OPENING_IMG + "PortSelected.png"), portAction) ;
 		GameButton enButton = new GameIconButton(screen.pos(0.95, 0.05), Align.center, ImageLoader.loadImage(Path.OPENING_IMG + "En.png"), ImageLoader.loadImage(Path.OPENING_IMG + "EnSelected.png"), enAction) ;
 		languageButtons = List.of(portButton, enButton) ;
@@ -308,7 +308,7 @@ public abstract class Opening
 		String[] description = Game.getLanguage() == Languages.portugues ? jobDescriptionPtBr : jobDescriptionEn ;
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
-			Point rectPos = Game.getScreen().pos(0.02 + i * 0.2, 0.4) ;
+			Point rectPos = Screen.getMe().pos(0.02 + i * 0.2, 0.4) ;
 			Point textPos = Util.translate(rectPos, 10, 10) ;
 			GamePanel.getDP().drawImage(jobDescriptionBackground, rectPos, Align.topLeft) ;
 			Draw.fitText(textPos, font.getSize() + 12, Align.topLeft, description[i], font, 24, textColor) ;
@@ -317,7 +317,7 @@ public abstract class Opening
 	
 	public static void display(String action, Point mousePos)
 	{
-		Point textPos = Game.getScreen().pos(0.5, 0.3) ;
+		Point textPos = Screen.getMe().pos(0.5, 0.3) ;
 		Color textColor = Palette.colors[0] ;
 		
 		GamePanel.getDP().drawImage(backgroundImage, new Point(0, 0), 0, Scale.unit, Align.topLeft) ;
@@ -338,7 +338,7 @@ public abstract class Opening
 		
 		if (step == 1)
 		{
-			liveInput.displayTypingField(Game.getScreen().pos(0.34, 0.36), false) ;
+			liveInput.displayTypingField(Screen.getMe().pos(0.34, 0.36), false) ;
 		}
 		if (step == 4)
 		{

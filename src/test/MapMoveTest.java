@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import liveBeings.LiveBeing;
 import main.Directions;
-import main.Game;
 import main.Log;
 import maps.GameMap;
+import screen.Screen;
 
 public class MapMoveTest
 {
@@ -21,10 +21,10 @@ public class MapMoveTest
 	void mapMoveTest()
 	{
 		
-		Point topLeft = Game.getScreen().pos(0.01, 0.99) ;
-		Point bottomLeft = Game.getScreen().pos(0.01, 0.01) ;
-		Point bottomRight = Game.getScreen().pos(0.99, 0.01) ;
-		Point topRight = Game.getScreen().pos(0.99, 0.99) ;
+		Point topLeft = Screen.getMe().pos(0.01, 0.99) ;
+		Point bottomLeft = Screen.getMe().pos(0.01, 0.01) ;
+		Point bottomRight = Screen.getMe().pos(0.99, 0.01) ;
+		Point topRight = Screen.getMe().pos(0.99, 0.99) ;
 		Map<Integer, Point> possiblePositions = new LinkedHashMap<>() ;
 		Map<Integer, Directions> possibleDirections = new LinkedHashMap<>() ;
 		Map<Integer, String> moveNames = new LinkedHashMap<>() ;

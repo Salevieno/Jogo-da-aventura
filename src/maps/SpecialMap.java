@@ -13,10 +13,10 @@ import graphics2.SpriteAnimation;
 import items.Fab;
 import items.GeneralItem;
 import items.Item;
-import main.Game;
 import main.ImageLoader;
 import main.Interactable;
 import main.Path;
+import screen.Screen;
 import utilities.Util;
 
 
@@ -94,8 +94,8 @@ public class SpecialMap extends GameMap
 			for (int chest = 0 ; chest <= 5 - 1 ; chest += 1)
 			{
 				Point pos = new Point(
-										(int) (Double.parseDouble(input.get(id)[10 + 13 * chest]) * Game.getScreen().mapSize().width),
-										(int) (Double.parseDouble(input.get(id)[11 + 13 * chest]) * Game.getScreen().mapSize().height)
+										(int) (Double.parseDouble(input.get(id)[10 + 13 * chest]) * Screen.getMe().mapSize().width),
+										(int) (Double.parseDouble(input.get(id)[11 + 13 * chest]) * Screen.getMe().mapSize().height)
 									) ;
 				List<Item> itemRewards = new ArrayList<>() ;
 				for (int item = 0 ; item <= 10 - 1 ; item += 1)

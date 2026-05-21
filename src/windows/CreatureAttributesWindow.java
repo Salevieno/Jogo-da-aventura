@@ -17,13 +17,14 @@ import main.ImageLoader;
 import main.Palette;
 import main.Path;
 import main.TextCategories;
+import screen.Screen;
 import utilities.Util;
 
 
 public class CreatureAttributesWindow extends AttributesWindow
 {
 
-	private static final Point windowPos = Game.getScreen().pos(0.4, 0.2) ;
+	private static final Point windowPos = Screen.getMe().pos(0.4, 0.2) ;
 	private static final Image image = ImageLoader.loadImage(Path.WINDOWS_IMG + "CreatureAttWindow.png") ;
 	
 	public CreatureAttributesWindow()

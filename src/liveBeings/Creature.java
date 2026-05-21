@@ -73,7 +73,7 @@ public class Creature extends LiveBeing
 
 		if (getName().equals("Dragão") | getName().equals("Dragon"))
 		{
-			setPos(new Point2D.Double(Game.getScreen().getCenter().x, Game.getScreen().getCenter().y)) ;
+			setPos(new Point2D.Double(Screen.getMe().getCenter().x, Screen.getMe().getCenter().y)) ;
 		}
 		startCounters() ;
 		
@@ -85,7 +85,7 @@ public class Creature extends LiveBeing
  	
  	public Creature(CreatureType CT)
 	{
- 		this(CT, Util.randomPosDouble(new Point2D.Double(0, (int) (0.2*Game.getScreen().mapSize().height)), new Dimension(Game.getScreen().getSize().width, (int) ((1 - (double)(Sky.height)/Game.getScreen().getSize().height) * Game.getScreen().getSize().height)), new Dimension(1, 1))) ;
+ 		this(CT, Util.randomPosDouble(new Point2D.Double(0, (int) (0.2*Screen.getMe().mapSize().height)), new Dimension(Screen.getMe().getSize().width, (int) ((1 - (double)(Sky.getHeight())/Screen.getMe().getSize().height) * Screen.getMe().getSize().height)), new Dimension(1, 1))) ;
 	}
 
 	public CreatureType getType() {return type ;}
@@ -134,7 +134,7 @@ public class Creature extends LiveBeing
 	
 	public void setRandomPos()
 	{
-		Screen screen = Game.getScreen() ;
+		Screen screen = Screen.getMe() ;
 		Point2D.Double minCoord = new Point2D.Double(0, (int) (0.2*screen.mapSize().height)) ;
 		Dimension range = new Dimension(screen.mapSize().width, (int) (screen.getBorders()[3] - screen.getBorders()[1])) ;
 		Dimension step = new Dimension(1, 1) ;
@@ -147,7 +147,7 @@ public class Creature extends LiveBeing
 	{
 		Point2D.Double newPos = MovePattern.calcNewPos(type.getMovePattern(), dir, step, dt, CurrentPos, moveRate) ;
  
-		if (!Game.getScreen().posIsWithinBorders(newPos)) { return ;}
+		if (!Screen.getMe().posIsWithinBorders(newPos)) { return ;}
 		if (!map.groundIsWalkable(new Point((int) newPos.x, (int) newPos.y), null)) { return ;}
 
 		setPos(newPos) ;

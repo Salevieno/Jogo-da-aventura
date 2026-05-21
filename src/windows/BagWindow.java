@@ -34,6 +34,7 @@ import main.ImageLoader;
 import main.Log;
 import main.Path;
 import main.TextCategories;
+import screen.Screen;
 import utilities.Util;
 
 
@@ -56,7 +57,7 @@ public class BagWindow extends GameWindow
 	private final List<GameButton> buttons ;
 	
 
-	private static final Point windowPos = Game.getScreen().pos(0.28, 0.4) ;
+	private static final Point windowPos = Screen.getMe().pos(0.28, 0.4) ;
 	private static final int numberSlotMax ;
 	private static final List<Point> itemsPos ;
 	private static final Point spacing = new Point(300, 35) ;

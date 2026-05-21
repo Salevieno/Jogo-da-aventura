@@ -26,6 +26,7 @@ import maps.CityMap;
 import maps.FieldMap;
 import maps.GameMap;
 import maps.SpecialMap;
+import screen.Screen;
 import sidebar.SideBar;
 import spells.BuffData;
 import spells.SpellData;
@@ -37,7 +38,7 @@ public abstract class LoadingGame
 	private static boolean isDone ;
     private static final GameButton startButton ;
 	private static final SpriteAnimation loadingAni = new SpriteAnimation(Path.OPENING_IMG + "LoadingSprite.png", new Point(), Align.center, 3, 0.2) ;
-	private static final SpriteAnimation petIdle = new SpriteAnimation(Path.PET_IMG + "pet0_idle.png", Game.getScreen().getCenter(), Align.center, 4, 0.13) ;
+	private static final SpriteAnimation petIdle = new SpriteAnimation(Path.PET_IMG + "pet0_idle.png", Screen.getMe().getCenter(), Align.center, 4, 0.13) ;
 	private static final List<String> message = List.of(
 		"Loading text...",
 		"Loading spells...",
@@ -53,7 +54,7 @@ public abstract class LoadingGame
 
     static
     {
-		Point startButtonPos = Util.translate(Game.getScreen().getCenter(), 0, 80) ;
+		Point startButtonPos = Util.translate(Screen.getMe().getCenter(), 0, 80) ;
 		ButtonFunction startAction = () -> { startGame() ;};
     	startButton = new GameTextButton(startButtonPos, Align.center, "start game", startAction) ;
     	startButton.deactivate() ;
@@ -201,15 +202,15 @@ public abstract class LoadingGame
 	
 	protected static void display(Point mousePos)
 	{
-		GamePanel.getDP().drawRect(new Point(0, 0), Align.topLeft, Game.getScreen().getSize(), Palette.colors[0], null) ;
+		GamePanel.getDP().drawRect(new Point(0, 0), Align.topLeft, Screen.getMe().getSize(), Palette.colors[0], null) ;
 		SpriteAnimation.updateAll();
 		petIdle.display(GamePanel.getDP());
 
 		if (!isOver())
 		{
 			Dimension loadingBarSize = new Dimension(400, 30) ;
-			Point loadingTextCenter = Util.translate(Game.getScreen().getCenter(), 0, 80) ;
-			Point loadingBarCenterLeft = Util.translate(Game.getScreen().getCenter(), -loadingBarSize.width / 2, 80) ;
+			Point loadingTextCenter = Util.translate(Screen.getMe().getCenter(), 0, 80) ;
+			Point loadingBarCenterLeft = Util.translate(Screen.getMe().getCenter(), -loadingBarSize.width / 2, 80) ;
 			Dimension loadedBarSize = new Dimension(step * loadingBarSize.width / 11, loadingBarSize.height) ;
 
 			GamePanel.getDP().drawRoundRect(loadingBarCenterLeft, Align.centerLeft, loadingBarSize, 2, null, Palette.colors[0], true);
@@ -217,7 +218,7 @@ public abstract class LoadingGame
 			loadingAni.setPos(loadingTextCenter) ;
 			loadingAni.activateIfInactive() ;
 			loadingAni.display(GamePanel.getDP());
-			GamePanel.getDP().drawText(Util.translate(Game.getScreen().getCenter(), 0, 30), Align.center, message.get(step), Palette.colors[3]);
+			GamePanel.getDP().drawText(Util.translate(Screen.getMe().getCenter(), 0, 30), Align.center, message.get(step), Palette.colors[3]);
 		}
 
 		if (startButton.isActive())
@@ -225,6 +226,6 @@ public abstract class LoadingGame
 			startButton.display(0, true, mousePos) ;
 		}
 
-		GamePanel.getDP().drawText(Util.translate(Game.getScreen().getCenter(), 0, 160), Align.center, "Game version " + MainGame3_4.getVersion(), Palette.colors[3]);
+		GamePanel.getDP().drawText(Util.translate(Screen.getMe().getCenter(), 0, 160), Align.center, "Game version " + MainGame3_4.getVersion(), Palette.colors[3]);
 	}
 }

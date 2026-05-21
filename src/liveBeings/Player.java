@@ -224,6 +224,8 @@ public class Player extends LiveBeing
 	
 	public static List<Spell> jobSpells(int job)
 	{
+		if (Spell.getAll() == null || Spell.getAll().isEmpty()) { Log.warn("Tentando setar player spells antes de inicializar Spell") ; return List.of() ;}
+
 		List<Spell> spells = new ArrayList<>() ;	
     	int numberSpells = numberOfSpellsPerJob[job] ;
 
@@ -361,7 +363,7 @@ public class Player extends LiveBeing
 		if (!fieldMap.hasCreatures()) { return null ;}
 
 		Creature closestCreature = null ;
-		double minDist = Game.getScreen().getSize().width ;
+		double minDist = Screen.getMe().getSize().width ;
 		for (Creature creature : fieldMap.getCreatures())
 		{
 			double dist = pos.distance(creature.getPos()) ;
@@ -430,8 +432,8 @@ public class Player extends LiveBeing
 		}
         else
         {
-        	// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.2, 0.2), msg, Palette.colors[0]});
-			MessageAnimation.start(Game.getScreen().pos(0.2, 0.2), msg, Palette.colors[0]) ;
+        	// Animation.start(AnimationTypes.message, new Object[] {Screen.getMe().pos(0.2, 0.2), msg, Palette.colors[0]});
+			MessageAnimation.start(Screen.getMe().pos(0.2, 0.2), msg, Palette.colors[0]) ;
         }
 
 		if (!map.isField()) { return ;}
@@ -486,8 +488,8 @@ public class Player extends LiveBeing
 
 	private static Point2D.Double calcNewMapPos(Point2D.Double pos, Directions dir, GameMap currentMap, GameMap newMap)
 	{
-		int[] border = Game.getScreen().getBorders() ;
-		int stepOffset = Screen.borderOffset ;
+		int[] border = Screen.getMe().getBorders() ;
+		int stepOffset = Screen.getBorderOffset() ;
 		int qtdCities = CityMap.getAllCityMaps().size() ;
 		switch (dir)
 		{
@@ -620,7 +622,7 @@ public class Player extends LiveBeing
 	{
 		Point2D.Double newPos = calcNewPos(dt) ;
 
-		if (Game.getScreen().posIsWithinBorders(newPos))
+		if (Screen.getMe().posIsWithinBorders(newPos))
 		{
 			if (!map.groundIsWalkable(new Point((int) newPos.x, (int) newPos.y), superElem)) { return ;}
 			
@@ -702,16 +704,16 @@ public class Player extends LiveBeing
     	
 		if (!Util.chance(successChance))
 		{
-			// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.3, 0.2), "Não pegou peixe", Palette.colors[0]}) ;
-			MessageAnimation.start(Game.getScreen().pos(0.3, 0.2), "Não pegou peixe", Palette.colors[0]) ;
+			// Animation.start(AnimationTypes.message, new Object[] {Screen.getMe().pos(0.3, 0.2), "Não pegou peixe", Palette.colors[0]}) ;
+			MessageAnimation.start(Screen.getMe().pos(0.3, 0.2), "Não pegou peixe", Palette.colors[0]) ;
 			return ;
 		}
 		
 		int fishType = Util.randomInt(6, 8) ;
 		Item fish = Food.getAll()[fishType] ;
 		bag.add(fish, 1) ;
-		// Animation.start(AnimationTypes.obtainedItem, new Object[] {Game.getScreen().pos(0.3, 0.2), fish.getName(), Palette.colors[0]}) ;
-		ObtainedItemAnimation.start(Game.getScreen().pos(0.3, 0.2), fish.getName(), Palette.colors[0]) ;
+		// Animation.start(AnimationTypes.obtainedItem, new Object[] {Screen.getMe().pos(0.3, 0.2), fish.getName(), Palette.colors[0]}) ;
+		ObtainedItemAnimation.start(Screen.getMe().pos(0.3, 0.2), fish.getName(), Palette.colors[0]) ;
 	}
 
 	private Item determineDiggedItem()
@@ -760,13 +762,13 @@ public class Player extends LiveBeing
 		Item diggedItem = determineDiggedItem() ;
 		
 		bag.add(diggedItem, 1) ;
-		ObtainedItemAnimation.start(Game.getScreen().pos(0.2, 0.2), diggedItem.getName(), Palette.colors[0]) ;
+		ObtainedItemAnimation.start(Screen.getMe().pos(0.2, 0.2), diggedItem.getName(), Palette.colors[0]) ;
 		if (superElem == Elements.earth)
 		{
 			Item diggedItemExtra = determineDiggedItem() ;
 			
 			bag.add(diggedItemExtra, 1) ;
-			ObtainedItemAnimation.start(Game.getScreen().pos(0.2, 0.25), diggedItemExtra.getName(), Palette.colors[0]) ;		
+			ObtainedItemAnimation.start(Screen.getMe().pos(0.2, 0.25), diggedItemExtra.getName(), Palette.colors[0]) ;		
 		}
 	}
 	
@@ -1600,7 +1602,7 @@ public class Player extends LiveBeing
 		if (!bag.contains(equippedArrow))
 		{
 			equippedArrow.use(this) ;
-			// MessageAnimation.start(Game.getScreen().pos(0.4, 0.3), "Última flecha usada!", Palette.colors[0]) ;
+			// MessageAnimation.start(Screen.getMe().pos(0.4, 0.3), "Última flecha usada!", Palette.colors[0]) ;
 		}
 	}
 	
@@ -1934,8 +1936,8 @@ public class Player extends LiveBeing
 	public void applySuperElementEffect(Elements elem, boolean apply)
 	{
 		// proTODO superelementos luz: ilumina a caverna, escuridão: aura escura, trovão e neve
-		// Animation.start(AnimationTypes.message, new Object[] {Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Palette.colors[7]}) ;
-		MessageAnimation.start(Game.getScreen().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Palette.colors[7]) ;
+		// Animation.start(AnimationTypes.message, new Object[] {Screen.getMe().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Palette.colors[7]}) ;
+		MessageAnimation.start(Screen.getMe().pos(0.4, 0.2), "Super element " + (apply ? elem : Elements.neutral.toString()), Palette.colors[7]) ;
 		switch (elem)
 		{
 			case fire:

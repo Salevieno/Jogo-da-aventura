@@ -18,6 +18,7 @@ import main.ImageLoader;
 import main.Log;
 import main.Palette;
 import main.Path;
+import screen.Screen;
 import spells.Spell;
 import spells.SpellTypes;
 import utilities.Util;
@@ -32,7 +33,7 @@ public class SpellsTreeWindow extends GameWindow
 	private int playerJob ;
 	private int points ;
 
-	private static final Point windowTopLeft = Game.getScreen().pos(0.4, 0.2) ;
+	private static final Point windowTopLeft = Screen.getMe().pos(0.4, 0.2) ;
 	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
 	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 14) ;
 	private static final Image mainImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellsTree.png") ;

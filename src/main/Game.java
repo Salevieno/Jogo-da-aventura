@@ -1,6 +1,5 @@
 package main;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -30,7 +29,6 @@ import maps.CityMap;
 import maps.Continents;
 import maps.FieldMap;
 import screen.Screen;
-import screen.Sky;
 import sidebar.HotKeysBar;
 import sidebar.SideBar;
 import simulations.EvolutionSimulation;
@@ -66,8 +64,6 @@ public class Game
 	public static int difficultLevel = 0;
 	private static int saveSlotInUse = -1;
 
-	private static final Screen screen;
-
 	// TODO unificar pausewindow com as outras windows
 	private static final PauseWindow pauseWindow;
 	public static final List<String> arrowKeys = List.of(KeyEvent.getKeyText(KeyEvent.VK_UP),
@@ -79,8 +75,6 @@ public class Game
 
 	static
 	{
-		// TODO remover screen de static para que Game não precise ser inicializado antes das classes que usam Game.getScreen()
-		screen = new Screen(new Dimension(GameFrame.getWindowsize().width, GameFrame.getWindowsize().height), null);
 		gameLanguage = Languages.portugues;
 		allText = new HashMap<>();
 		dayTimer = new GameTimer(DAY_DURATION);
@@ -95,17 +89,14 @@ public class Game
 		player = new Player("", "", 2);
 		
 		System.out.println();
-		Log.info("Game version " + MainGame3_4.getVersion()) ;
-		Game.getScreen().setBorders(new int[] { 0 + Screen.borderOffset, Sky.height + Screen.borderOffset,
-				Game.getScreen().getSize().width - 60 - Screen.borderOffset, Game.getScreen().getSize().height - Screen.borderOffset });
-		Game.getScreen().setMapCenter();		
-		player.setPos(new Point2D.Double(Game.getScreen().getCenter().x, Game.getScreen().getCenter().y));
+		Log.info("Game version " + MainGame3_4.getVersion()) ;	
+		player.setPos(new Point2D.Double(Screen.getMe().getCenter().x, Screen.getMe().getCenter().y));
 	}
 
 	public static GameStates getState() { return state ;}
 	public static Languages getLanguage() { return gameLanguage ;}
 	public static Settings getSettings() { return settings ;}
-	public static Screen getScreen() { return screen ;}
+	public static Screen getScreen() { return Screen.getMe() ;} // TODO refatorar
 	public static Player getPlayer() { return player ;}
 	public static Pet getPet() { return pet ;}
 	public static boolean getShouldRepaint() { return shouldRepaint ;}
@@ -402,7 +393,7 @@ public class Game
 	{
 		if (Math.pow(10, 1) <= dt) { return ;}
 
-		screen.updateSky(dt);
+		Screen.getMe().updateSky(dt);
 		activateCounters();
 		
 		// TODO mover as verificações de batalha pra cá e unir às gerais
@@ -497,7 +488,7 @@ public class Game
 	{
 		if (!player.getMap().getContinent().equals(Continents.cave))
 		{
-			screen.displaySky();
+			Screen.getMe().displaySky();
 		}
 		player.getMap().display();
 		player.getMap().displayGroundTypes();
@@ -568,7 +559,7 @@ public class Game
 
 		if (debugMode)
 		{
-			screen.displayBorders();
+			Screen.getMe().displayBorders();
 		}
 	}
 
@@ -661,7 +652,7 @@ public class Game
 		if (keyCode == KeyEvent.VK_F12)
 		{
 			GameFrame.getMe().resizeWindow();
-			screen.updateScale();
+			Screen.getMe().updateScale(GameFrame.isFullscreen());
 		}
 
 		if (keyCode == KeyEvent.VK_ESCAPE && !player.hasWindowOpen() && ! player.isInteractingWithNPC())

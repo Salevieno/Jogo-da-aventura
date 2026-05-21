@@ -26,6 +26,7 @@ import main.ImageLoader;
 import main.Palette;
 import main.Path;
 import main.TextCategories;
+import screen.Screen;
 import utilities.Util;
 
 
@@ -44,7 +45,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 	
 	static
 	{
-		windowPos = Game.getScreen().pos(0.01, 0.25) ;
+		windowPos = Screen.getMe().pos(0.01, 0.25) ;
 		tab0Image = ImageLoader.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow1.png") ;
 		tab1Image = ImageLoader.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow2.png") ;
 		tab2Image = ImageLoader.loadImage(Path.WINDOWS_IMG + "PlayerAttWindow3.png") ;

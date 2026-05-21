@@ -24,6 +24,7 @@ import main.ImageLoader;
 import main.Palette;
 import main.Path;
 import main.TextCategories;
+import screen.Screen;
 import utilities.Util;
 
 
@@ -36,7 +37,7 @@ public class ForgeWindow extends GameWindow
 	private static final List<String> messages ;
 	
 	private static final int NumberItemsPerWindow = 10 ;
-	private static final Point windowPos = Game.getScreen().getPointWithinBorders(0.2, 0.05) ;
+	private static final Point windowPos = Screen.getMe().getPointWithinBorders(0.2, 0.05) ;
 	private static final Image windowImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "Forge.png") ;
 	
 

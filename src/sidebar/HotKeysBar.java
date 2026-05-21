@@ -16,6 +16,7 @@ import main.GamePanel;
 import main.ImageLoader;
 import main.Palette;
 import main.Path;
+import screen.Screen;
 import utilities.Util;
 import windows.BagWindow;
 
@@ -31,7 +32,7 @@ public abstract class HotKeysBar
 		font = new Font(Game.MainFontName, Font.BOLD, 14) ;
 		textColor = Palette.colors[0] ;
 		image = ImageLoader.loadImage(Path.SIDEBAR_IMG + "HotBar.png") ;
-		barPos = new Point(Game.getScreen().mapSize().width + 2, Game.getScreen().getSize().height - SideBar.sy) ;
+		barPos = new Point(Screen.getMe().mapSize().width + 2, Screen.getMe().getSize().height - SideBar.sy) ;
 	}
 	
 	public static Dimension size() { return Util.getSize(image) ;}

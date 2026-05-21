@@ -14,6 +14,7 @@ import main.ImageLoader;
 import main.Palette;
 import main.Path;
 import main.TextCategories;
+import screen.Screen;
 import utilities.Util;
 
 
@@ -25,7 +26,7 @@ public class HintsWindow extends GameWindow
 	
 	static
 	{
-		windowPos = Game.getScreen().pos(0.15, 0.4) ;
+		windowPos = Screen.getMe().pos(0.15, 0.4) ;
 		font = new Font(Game.MainFontName, Font.BOLD, 12) ;
 		image = ImageLoader.loadImage(Path.WINDOWS_IMG + "Hints.png") ;
 	}

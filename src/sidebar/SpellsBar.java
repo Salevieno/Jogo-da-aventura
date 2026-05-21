@@ -12,11 +12,11 @@ import graphics.Scale;
 import graphics.UtilAlignment;
 import graphics2.Draw;
 import liveBeings.Player;
-import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Palette;
 import main.Path;
+import screen.Screen;
 import spells.Spell;
 import utilities.Util;
 
@@ -45,7 +45,7 @@ public abstract class SpellsBar
 		largefont = new Font("SansSerif", Font.BOLD, 14) ;
 		textColor = Palette.colors[4] ;
 
-		barPos = new Point(Game.getScreen().mapSize().width + 2, HotKeysBar.topLeft().y - SideBar.sy) ;
+		barPos = new Point(Screen.getMe().mapSize().width + 2, HotKeysBar.topLeft().y - SideBar.sy) ;
 		barImage = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SpellsBar.png") ;
 		barSize = Util.getSize(barImage) ;
 		slotImageNoMP = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SlotNoMP.png") ;

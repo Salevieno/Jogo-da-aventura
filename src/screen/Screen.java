@@ -14,36 +14,45 @@ public class Screen
 {
 	private final Dimension size ;
 	private final Sky sky ;
-	private int[] borders ;	// min x, min y, max x, max y
-	private Point center ;	// center of the entire screen, including the sky
-	private Point mapCenter ;	// center of the walkable map
+	private final int[] borders ;	// min x, min y, max x, max y
+	private final Point center ;	// center of the entire screen, including the sky
+	private final Point mapCenter ;	// center of the walkable map
 	private Point2D.Double scale ;
+	
+	private static Screen screen ;
+	private static final int borderOffset = 20 ;
 
-	public static final int borderOffset = 20 ;
-
-	public Screen(Dimension size, int[] borders)
+	private Screen(Dimension size, boolean fullscreen)
 	{
+		this.sky = new Sky(size.width) ;
 		this.size = size ;
-		this.borders = borders ;
-		this.scale = calcScale() ;
-		sky = new Sky(size.width) ;
-		calcCenter() ;
+		this.borders = new int[] { borderOffset, Sky.getHeight() + borderOffset, size.width - 60 - borderOffset, size.height - borderOffset } ;
+		this.center = new Point(size.width / 2, size.height / 2) ;
+		this.mapCenter = new Point((size.width - 60) / 2, (size.height + Sky.getHeight()) / 2) ;
+		this.scale = calcScale(fullscreen) ;
 	}
+
+	public static void create(Dimension size, boolean fullScreen)
+	{
+		if (screen != null) { return ;}
+
+		screen = new Screen(size, fullScreen) ;
+	}
+
+	public static Screen getMe() { return screen ;}
+	public static int getBorderOffset() { return borderOffset ;}
 
 	public Dimension getSize() {return size ;}
 	public int[] getBorders() {return borders ;}
 	public Point getCenter() {return center ;}
 	public Point getMapCenter() {return mapCenter ;}
 	public Point2D.Double getScale() {return scale ;}
-	public void setBorders(int[] B) {borders = B ;}
-	public void calcCenter() {center = new Point(size.width / 2, size.height / 2) ;}
-	public void setMapCenter() {mapCenter = new Point((size.width - 60) / 2, (size.height + Sky.height) / 2) ;}
 	public Dimension mapSize() { return new Dimension(size.width - 60, size.height - borders[1]) ;}
 	
 	
-	private static Point2D.Double calcScale()
+	private static Point2D.Double calcScale(boolean fullScreen)
 	{
-		if (!GameFrame.isFullscreen()) { return new Point2D.Double(1.0, 1.0) ;}
+		if (!fullScreen) { return new Point2D.Double(1.0, 1.0) ;}
 		
 		Dimension laptopScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		double scaleX = (double) laptopScreenSize.width / GameFrame.getWindowsize().width ;
@@ -63,7 +72,7 @@ public class Screen
         return new Point2D.Double(scaleX, scaleY) ;
 	}
 	
-	public void updateScale() { scale = calcScale() ;}
+	public void updateScale(boolean fullScreen) { scale = calcScale(fullScreen) ;}
 	
 	public boolean posIsWithinBorders(Point2D.Double pos)
 	{

@@ -23,6 +23,7 @@ import main.ImageLoader;
 import main.MainGame3_4;
 import main.Palette;
 import main.Path;
+import screen.Screen;
 import utilities.Util;
 import windows.PetAttributesWindow;
 import windows.PlayerAttributesWindow;
@@ -30,7 +31,7 @@ import windows.PlayerAttributesWindow;
 public abstract class SideBar
 {
 	
-	private static final Point barPos = Game.getScreen().posInMap(1, 0) ;
+	private static final Point barPos = Screen.getMe().posInMap(1, 0) ;
 	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
 	private static final String[] iconNames ;
 	private static final Image[] iconImages ;
@@ -38,7 +39,7 @@ public abstract class SideBar
 	private static final List<GameButton> buttons = new ArrayList<>() ;
 	private static final Color bgColor = Palette.colors[1] ;
 	
-	private static final Dimension size = new Dimension(60, Game.getScreen().getSize().height) ;
+	private static final Dimension size = new Dimension(60, Screen.getMe().getSize().height) ;
 	public static final Image slotImage = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Slot.png") ;
 	public static final int sy = 10 ;
 	

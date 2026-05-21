@@ -18,6 +18,7 @@ import main.GamePanel;
 import main.ImageLoader;
 import main.Palette;
 import main.Path;
+import screen.Screen;
 import utilities.Util;
 
 
@@ -32,7 +33,7 @@ public class QuestWindow extends GameWindow
 	
 	static
 	{
-		windowPos = Game.getScreen().pos(0.3, 0.1) ;
+		windowPos = Screen.getMe().pos(0.3, 0.1) ;
 		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 		image = ImageLoader.loadImage(Path.WINDOWS_IMG + "Quest.png") ;
 	}

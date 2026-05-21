@@ -15,6 +15,7 @@ import main.ImageLoader;
 import main.Palette;
 import main.Path;
 import main.TextCategories;
+import screen.Screen;
 import utilities.Util;
 import windows.AttributesWindow;
 import windows.BagWindow;
@@ -24,7 +25,7 @@ public class LevelUpAnimation extends Animation
 	private static final Font smallFont = DrawPrimitives.stdFont ;
 	private static final Image levelUpAttImg = ImageLoader.loadImage(Path.LIVE_BEINGS_IMG + "LevelUp.png") ;
 	private static final Image winObtainedItemsImg = ImageLoader.loadImage(Path.PLAYER_IMG + "Win.png") ;
-	private static final Point pos = Game.getScreen().pos(0.55, 0.2) ;
+	private static final Point pos = Screen.getMe().pos(0.55, 0.2) ;
 	private static final Point offset = new Point(15, 15) ;
 	private static final int nRows = 4 ;
 	private static final int nCols = 2 ;

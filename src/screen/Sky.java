@@ -30,7 +30,7 @@ public class Sky
 	private static final Image cloudImage2 ;
 	private static final Image cloudImage3 ;
 	private static final Image[] starImages ;
-	public static final int height ;
+	private static final int height ;
 	
 	static
 	{
@@ -59,9 +59,9 @@ public class Sky
 		} ;
 	}
 	
-	public Sky (int screenWidth)
+	protected Sky (int width)
 	{
-		size = new Dimension(screenWidth - 60, height) ;
+		size = new Dimension(width - 60, height) ;
     	
     	clouds = new ArrayList<>() ;
 		for (int c = 0 ; c <= 5 - 1 ; c += 1)
@@ -110,7 +110,7 @@ public class Sky
 		cloud.setPos(originPos) ;
 	}
 	
-	private static boolean passedScreen(double x) { return Game.getScreen().mapSize().width <= x ;}
+	private static boolean passedScreen(double x) { return Screen.getMe().mapSize().width <= x ;}
 	
 	private static boolean isDay() { return (0.25 <= Game.dayTimeRate() & Game.dayTimeRate() <= 0.75) ;}
 	
@@ -202,5 +202,7 @@ public class Sky
 		
 		displayNightSky() ;		
 	}
+
+	public static int getHeight() { return height ;}
 
 }

@@ -18,6 +18,7 @@ import main.ImageLoader;
 import main.Palette;
 import main.Path;
 import main.TextCategories;
+import screen.Screen;
 import utilities.Util;
 
 
@@ -38,7 +39,7 @@ public class SettingsWindow extends GameWindow
 	
 	static
 	{
-		windowPos = Game.getScreen().pos(0.4, 0.35) ;
+		windowPos = Screen.getMe().pos(0.4, 0.35) ;
 		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
 	    imageMenu0 = ImageLoader.loadImage(Path.WINDOWS_IMG + "windowSettings.png") ;
 		imageMenu1 = ImageLoader.loadImage(Path.WINDOWS_IMG + "settingsDeeperWindow.png") ;

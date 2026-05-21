@@ -23,7 +23,6 @@ import graphics2.SpriteAnimation;
 import items.Item;
 import liveBeings.Creature;
 import liveBeings.CreatureType;
-import main.Game;
 import main.GameTimer;
 import main.ImageLoader;
 import main.Interactable;
@@ -237,8 +236,8 @@ public class FieldMap extends GameMap
 	
 	public void addMapElements()
 	{
-		Screen screen = Game.getScreen() ;
-		Point minCoord = new Point(20, Sky.height + 20) ;
+		Screen screen = Screen.getMe() ;
+		Point minCoord = new Point(20, Sky.getHeight() + 20) ;
 		Dimension range = new Dimension(screen.mapSize().width - 100, screen.mapSize().height - 100) ;
 		Dimension step = new Dimension(1, 1) ;
 		Set<Image> grassImages = new HashSet<>(Set.of(grassImage, grassImage2)) ;
@@ -305,8 +304,8 @@ public class FieldMap extends GameMap
 		// if (npcTypes == null) { Log.error("Ao criar npcs de quest: tipos de npc nulo") ; return null ;}
 		// if (npcTypes.length <= 0) { Log.error("Ao criar npcs de quest: sem tipos de npc") ; return null ;}
 		
-		// NPC questExp = new NPCQuest(Game.getScreen().pos(0.27, 0.73)) ;
-		// NPC questItem = new NPCQuest(Game.getScreen().pos(0.87, 0.63)) ;
+		// NPC questExp = new NPCQuest(Screen.getMe().pos(0.27, 0.73)) ;
+		// NPC questItem = new NPCQuest(Screen.getMe().pos(0.87, 0.63)) ;
 		// return List.of(questExp, questItem) ;
 	}
 	
