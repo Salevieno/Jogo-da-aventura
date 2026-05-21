@@ -135,8 +135,8 @@ public class PlayerAttributesWindow extends AttributesWindow
 
 		if (equips == null) { return ;}
 
-		Font smallFont = new Font(Game.MainFontName, Font.BOLD, 9) ;
-		String[] equipsText = Game.allText.get(TextCategories.equipments) ;
+		Font smallFont = new Font(Game.getMainFontName(), Font.BOLD, 9) ;
+		String[] equipsText = Game.getAllText().get(TextCategories.equipments) ;
 		int eqSlotSize = 51 ;
 		Point[] eqSlotCenter = new Point[] {
 				Util.translate(windowPos, leftSlotCenter.x, leftSlotCenter.y),
@@ -180,7 +180,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 	private void displayAttributes(Point centerLeftPos, double angle, Color textColor)
 	{
 		Font font = subTitleFont ;
-		String[] attText = Game.allText.get(TextCategories.attributes) ;
+		String[] attText = Game.getAllText().get(TextCategories.attributes) ;
 		Point lifePos = centerLeftPos ;
 		Point mpPos = Util.translate(centerLeftPos, 0, 27) ;
 		int attTextImgOffset = 12 + 4 ;
@@ -234,8 +234,8 @@ public class PlayerAttributesWindow extends AttributesWindow
 	public void displayTab0(Point mousePos)
 	{
 		Font font = subTitleFont ;
-		String[] classesText = Game.allText.get(TextCategories.classes) ;
-		String[] proClassesText = Game.allText.get(TextCategories.proclasses) ;
+		String[] classesText = Game.getAllText().get(TextCategories.classes) ;
+		String[] proClassesText = Game.getAllText().get(TextCategories.proclasses) ;
 
 		Point playerImgPos = Util.translate(windowPos, size.width / 2, 156) ;
 		Point equipsLeftSlotCenter = new Point(110, 156) ;
@@ -269,10 +269,10 @@ public class PlayerAttributesWindow extends AttributesWindow
 	public void displayTab1(Player player)
 	{
 		
-		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
+		Font font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;
 		Color textColor = Palette.colors[0] ;
 		double angle = Draw.stdAngle ;
-		String[] attText = Game.allText.get(TextCategories.attributes) ;
+		String[] attText = Game.getAllText().get(TextCategories.attributes) ;
 		
 		int leftColX = 44 + 4 ;
 		int rightColX = 197 + 4 ;
@@ -316,7 +316,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 	public void displayTab2(Player player)
 	{
 		
-		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
+		Font font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;
 		String title = "Totais" ;
 		List<String> subTitles = List.of("Causados", "Recebidos", "Defendidos") ;
 		Color textColor = Palette.colors[0] ;
@@ -374,7 +374,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 	public void display(Point mousePos)
 	{
 		
-		String[] tabsText = Game.allText.get(TextCategories.playerWindow) ;
+		String[] tabsText = Game.getAllText().get(TextCategories.playerWindow) ;
 		Image windowImage = tab == 0 ? image : (tab == 1 ? tab1Image : tab2Image) ;
 		
 		// Main window

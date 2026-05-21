@@ -85,7 +85,7 @@ public abstract class EvolutionSimulation
 	
 	static
 	{
-		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		font = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 		buttons = new ArrayList<>() ;
 		
 		player = new Player("Player", "f", 0) ;

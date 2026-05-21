@@ -17,7 +17,7 @@ import utilities.Util;
 
 public class DamageAnimation extends Animation
 {
-	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 15) ;
+	private static final Font font = new Font(Game.getMainFontName(), Font.BOLD, 15) ;
 	private static final Color phyAtkColor  = Palette.colors[6] ;
 	private static final Color magAtkColor = Palette.colors[5] ;
 	private static final int speed = 20 ;

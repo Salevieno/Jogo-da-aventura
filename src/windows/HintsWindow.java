@@ -27,7 +27,7 @@ public class HintsWindow extends GameWindow
 	static
 	{
 		windowPos = Screen.getMe().pos(0.15, 0.4) ;
-		font = new Font(Game.MainFontName, Font.BOLD, 12) ;
+		font = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
 		image = ImageLoader.loadImage(Path.WINDOWS_IMG + "Hints.png") ;
 	}
 	
@@ -43,7 +43,7 @@ public class HintsWindow extends GameWindow
 	
 	public void display(Point mousePos)
 	{
-		String[] text = Game.allText.get(TextCategories.hints) ;
+		String[] text = Game.getAllText().get(TextCategories.hints) ;
 		Point textPos = new Point(windowPos.x + 15, windowPos.y + 10) ;
 		Color textColor = Palette.colors[0] ;
 		double angle = Draw.stdAngle ;

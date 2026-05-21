@@ -26,7 +26,6 @@ public class GamePanel extends JPanel
 	private static Point mousePos ;
 	private static DrawPrimitives DP ;
 	private static GamePanel gamePanel ;
-	private static Game game ;
 	
 	private GamePanel()
 	{
@@ -44,7 +43,7 @@ public class GamePanel extends JPanel
 		DP = new DrawPrimitives() ;
 		gamePanel = new GamePanel() ;
 		Screen.create(size, GameFrame.isFullscreen());
-		game = new Game() ;
+		Game.create() ;
 	}
 
 	public static GamePanel getMe() { return gamePanel ;}
@@ -86,7 +85,7 @@ public class GamePanel extends JPanel
         Graphics2D graphs2D = (Graphics2D) graphs ;
         graphs2D.scale(Screen.getMe().getScale().x, Screen.getMe().getScale().y);
 		DP.setGraphics(graphs2D) ;
-		game.update() ;
+		Game.getMe().update() ;
 
 		Toolkit.getDefaultToolkit().sync() ;
 		graphs.dispose() ;
@@ -97,13 +96,13 @@ public class GamePanel extends JPanel
 		@Override
 		public void keyPressed(KeyEvent event)
 		{
-			game.keyPressedAction(event) ;
+			Game.getMe().keyPressedAction(event) ;
 		}
 
 		@Override
 		public void keyReleased(KeyEvent event)
 		{
-			game.keyReleasedAction(event) ;
+			Game.getMe().keyReleasedAction(event) ;
 		}
 	}
 
@@ -112,7 +111,7 @@ public class GamePanel extends JPanel
 		@Override
 		public void mouseClicked(MouseEvent evt)
 		{
-			game.mouseClickedAction(evt) ;
+			Game.getMe().mouseClickedAction(evt) ;
 		}
 
 		@Override
@@ -128,13 +127,13 @@ public class GamePanel extends JPanel
 		@Override
 		public void mousePressed(MouseEvent evt)
 		{
-			game.mousePressedAction(evt) ;
+			Game.getMe().mousePressedAction(evt) ;
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent evt)
 		{
-			game.mouseReleaseAction(evt) ;
+			Game.getMe().mouseReleaseAction(evt) ;
 		}
 	}
 
@@ -143,7 +142,7 @@ public class GamePanel extends JPanel
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent evt)
 		{
-			game.mouseWheelAction(evt) ;
+			Game.getMe().mouseWheelAction(evt) ;
 		}
 	}
 

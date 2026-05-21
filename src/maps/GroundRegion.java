@@ -58,7 +58,7 @@ public class GroundRegion
 				closedXPoints[region.npoints] = region.xpoints[0];
 				closedYPoints[region.npoints] = region.ypoints[0];
 
-				if (Game.debugMode)
+				if (Game.DEBUG_MODE)
 				{
 					GamePanel.getDP().drawPolyLine(closedXPoints, closedYPoints, 2, type.getColor());
 				}

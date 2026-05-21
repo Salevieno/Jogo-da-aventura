@@ -41,9 +41,9 @@ public class BestiaryWindow extends GameWindow
 	public void displayCreatureInfo(Point pos, CreatureType creatureType)
 	{
 		
-		Font namefont = new Font(Game.MainFontName, Font.BOLD, 15) ;
-		Font infoFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		String[] text = Game.allText.get(TextCategories.bestiary) ;
+		Font namefont = new Font(Game.getMainFontName(), Font.BOLD, 15) ;
+		Font infoFont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
+		String[] text = Game.getAllText().get(TextCategories.bestiary) ;
 		Color textColor = Palette.colors[0] ;
 		double angle = Draw.stdAngle ;
 		

@@ -393,7 +393,7 @@ public class Creature extends LiveBeing
 	
 	public void displayName(Point pos, Align alignment, Color color)
 	{
-		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		Font font = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 		GamePanel.getDP().drawText(pos, alignment, Draw.stdAngle, name, font, color) ;
 	}
 	
@@ -424,7 +424,7 @@ public class Creature extends LiveBeing
 		{
 			displayAttributes(0);
 		}
-		if (Game.debugMode)
+		if (Game.DEBUG_MODE)
 		{
 			GamePanel.getDP().drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;
 			GamePanel.getDP().drawText(Util.translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
@@ -442,8 +442,8 @@ public class Creature extends LiveBeing
 	
 	public void displayAdditionalInfo()
 	{
-		GamePanel.getDP().drawText(new Point((int) pos.x, (int) pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.MainFontName, Font.BOLD, 14), Color.black) ;
-		GamePanel.getDP().drawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.MainFontName, Font.BOLD, 24), Color.black) ;
+		GamePanel.getDP().drawText(new Point((int) pos.x, (int) pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.getMainFontName(), Font.BOLD, 14), Color.black) ;
+		GamePanel.getDP().drawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.getMainFontName(), Font.BOLD, 24), Color.black) ;
 	}
 	
 	public void dies()

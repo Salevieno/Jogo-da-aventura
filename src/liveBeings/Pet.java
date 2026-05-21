@@ -477,7 +477,7 @@ public class Pet extends LiveBeing
 			displayDefending() ;
 		}
 		displayStatus() ;
-		if (Game.debugMode)
+		if (Game.DEBUG_MODE)
 		{
 			displayState() ;
 			hitbox.display() ;

@@ -191,7 +191,7 @@ public class GeneralItem extends Item
 	public void displayInfo(Point pos, Align align)
 	{
 		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
+		Font font = new Font(Game.getMainFontName(), Font.BOLD, 9) ;
 		Point textPos = Util.translate(pos, 5 - Util.getSize(infoMenu).width, 10) ;		
 		GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, description, font, Palette.colors[0]) ;
 	}

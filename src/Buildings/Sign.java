@@ -23,12 +23,12 @@ public class Sign
 
 	private static final Image image = ImageLoader.loadImage(Path.BUILDINGS_IMG + "Sign.png") ;
 	private static final Image boardImg = ImageLoader.loadImage(Path.BUILDINGS_IMG + "SignBoard.png") ;
-	private static final Font msgFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	private static final Font msgFont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 
 	public Sign(Point pos, int cityID)
 	{
 		this.pos = pos ;
-        this.message = Game.allText.get(TextCategories.signMessages)[cityID] ;
+        this.message = Game.getAllText().get(TextCategories.signMessages)[cityID] ;
 	}
 
 	private boolean isInside(Point pos)

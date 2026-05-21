@@ -195,7 +195,7 @@ public abstract class LoadingGame
 				listValues.add((String) listText.get(j));
 			}
 
-			Game.allText.put(catName, listValues.toArray(new String[] {}));
+			Game.getAllText().put(catName, listValues.toArray(new String[] {}));
 		}
 
 	}

@@ -46,7 +46,7 @@ public class PauseWindow extends GameWindow
 	    imageBg = ImageLoader.loadImage(Path.WINDOWS_IMG + "SettingsBackground.png") ;
         soundEffectOnHover = Music.loadMusicFile("PauseButtonHoverSoundEffect.wav") ;
         textBgImg = ImageLoader.loadImage(Path.UI_IMG + "SettingsTextBackground.png") ;
-        largeFont = new Font(Game.MainFontName, Font.BOLD, 20) ;
+        largeFont = new Font(Game.getMainFontName(), Font.BOLD, 20) ;
         Dimension windowSize = Util.getSize(imageBg) ; 
         settingColPosX = windowPos.x + (2 * windowSize.width) / 3 ;
     }

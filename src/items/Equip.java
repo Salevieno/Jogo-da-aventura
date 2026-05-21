@@ -308,7 +308,7 @@ public class Equip extends Item
 	public void displayInfo(Point pos, Align align)
 	{
 		GamePanel.getDP().drawImage(infoMenu, pos, align) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 9) ;
+		Font font = new Font(Game.getMainFontName(), Font.BOLD, 9) ;
 		int nRows = 4 ;
 		Point topLeftSlotCenter = Util.translate(pos, 15 - Util.getSize(infoMenu).width, 18) ;
 		int[] attOrder = new int[] {0, 2, 4, 6, 1, 3, 5, 7} ;

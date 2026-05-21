@@ -43,12 +43,12 @@ public class CreatureAttributesWindow extends AttributesWindow
 		Point userPos = Util.translate(windowPos, size.width / 2, 60) ;
 		userImage.display(GamePanel.getDP(), userPos, Align.center) ;
 
-		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;		
+		Font namefont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
+		Font font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;		
 		Color[] colorPalette = Palette.colors ;
 		Color textColor = colorPalette[0] ;
 		
-		String[] attText = Game.allText.get(TextCategories.attributes) ;		
+		String[] attText = Game.getAllText().get(TextCategories.attributes) ;		
 		Point namePos = Util.translate(windowPos, size.width / 2, 14) ;
 		Point levelPos = Util.translate(windowPos, size.width / 2, 30) ;
 		GamePanel.getDP().drawText(namePos, Align.center, angle, creatureType.getName(), namefont, textColor) ;		

@@ -34,8 +34,8 @@ public class SpellsTreeWindow extends GameWindow
 	private int points ;
 
 	private static final Point windowTopLeft = Screen.getMe().pos(0.4, 0.2) ;
-	private static final Font regularFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
-	private static final Font largeFont = new Font(Game.MainFontName, Font.BOLD, 14) ;
+	private static final Font regularFont = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
+	private static final Font largeFont = new Font(Game.getMainFontName(), Font.BOLD, 14) ;
 	private static final Image mainImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellsTree.png") ;
 	private static final Image tab0Image = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellsTreeTab0.png") ;
 	private static final Image tab1Image = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellsTreeTab1.png") ;

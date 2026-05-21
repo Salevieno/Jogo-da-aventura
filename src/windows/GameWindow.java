@@ -52,9 +52,9 @@ public abstract class GameWindow
 	protected static final Image buttonWindowDownImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;
 	protected static final Image selectedButtonWindowUpImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveUpSprite.png") ;
 	protected static final Image selectedButtonWindowDownImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveDownSprite.png") ;
-	protected static final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 10) ;
-	protected static final Font subTitleFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
-	protected static final Font titleFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
+	protected static final Font stdFont = new Font(Game.getMainFontName(), Font.BOLD, 10) ;
+	protected static final Font subTitleFont = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
+	protected static final Font titleFont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 	protected static final Color stdColor = Palette.colors[0] ;
 	protected static final int border = 6 ;
 	protected static final int padding = 4 ;

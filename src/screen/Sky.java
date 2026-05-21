@@ -18,19 +18,19 @@ import utilities.Util;
 
 public class Sky 
 {
-	private final Dimension size ;
-	
-	private static List<SkyComponent> clouds;
-	private static List<SkyComponent> stars ;
-	private static Color topColor ;
-	private static Color botColor ;
+	private final Dimension size ;	
+	private List<SkyComponent> clouds;
+	private List<SkyComponent> stars ;
+	private Color topColor ;
+	private Color botColor ;
+
+	private static final int height ;
 	private static final Color[] topColors ;
 	private static final Color[] botColors ;
 	private static final Image cloudImage1 ;
 	private static final Image cloudImage2 ;
 	private static final Image cloudImage3 ;
 	private static final Image[] starImages ;
-	private static final int height ;
 	
 	static
 	{

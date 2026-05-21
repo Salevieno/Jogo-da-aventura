@@ -29,7 +29,7 @@ public class BookWindow extends GameWindow
 
 	private static final Point windowPos = Screen.getMe().getCenter() ;
 	private static final Image windowImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "Book.png") ;
-	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 14) ;
+	private static final Font font = new Font(Game.getMainFontName(), Font.BOLD, 14) ;
 	
 	public BookWindow()
 	{

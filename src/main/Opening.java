@@ -45,8 +45,8 @@ public abstract class Opening
     private static int chosenJob ;
 	private static LiveInput liveInput ;	
 
-    private static final Font font = new Font(Game.MainFontName, Font.BOLD, 16) ;
-    private static final Font smallFont = new Font(Game.MainFontName, Font.BOLD, 13) ;
+    private static final Font font = new Font(Game.getMainFontName(), Font.BOLD, 16) ;
+    private static final Font smallFont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 
 	private static final SpriteAnimation openingAni = new SpriteAnimation(Path.OPENING_IMG + "Opening.png", new Point(), Align.topLeft, 12, 0.05) ;
 	
@@ -384,7 +384,7 @@ public abstract class Opening
 			openingAni.deactivate();
 			if (newGame())
 			{
-				Game.difficultLevel = getChosenDifficultLevel() ;
+				Game.setDifficultLevel(getChosenDifficultLevel()) ;
 				Game.setPlayer(getChosenPlayer()) ;
 			}
 			Game.setState(GameStates.loading) ;

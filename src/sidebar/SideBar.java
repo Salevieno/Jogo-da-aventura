@@ -32,7 +32,7 @@ public abstract class SideBar
 {
 	
 	private static final Point barPos = Screen.getMe().posInMap(1, 0) ;
-	private static final Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
+	private static final Font font = new Font(Game.getMainFontName(), Font.BOLD, 10) ;
 	private static final String[] iconNames ;
 	private static final Image[] iconImages ;
 	private static final Image[] iconSelectedImages ;

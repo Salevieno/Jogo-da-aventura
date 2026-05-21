@@ -8,7 +8,6 @@ import java.awt.geom.Point2D;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
-import main.Game;
 import main.GamePanel;
 import utilities.Util;
 

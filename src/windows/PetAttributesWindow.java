@@ -49,12 +49,12 @@ public class PetAttributesWindow extends AttributesWindow
 		Point userPos = Util.translate(windowPos, size.width / 2, 73) ;
 		userImage.display(GamePanel.getDP(), userPos, Align.center); ;
 
-		Font namefont = new Font(Game.MainFontName, Font.BOLD, 13) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;		
+		Font namefont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
+		Font font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;		
 		Color[] colorPalette = Palette.colors ;
 		Color textColor = colorPalette[0] ;
 		
-		String[] attText = Game.allText.get(TextCategories.attributes) ;		
+		String[] attText = Game.getAllText().get(TextCategories.attributes) ;		
 		Point namePos = Util.translate(windowPos, size.width / 2, 18) ;
 		Point levelPos = Util.translate(windowPos, size.width / 2, 38) ;
 		GamePanel.getDP().drawText(namePos, Align.center, angle, pet.getName(), namefont, textColor) ;		

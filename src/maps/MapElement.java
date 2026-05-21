@@ -78,7 +78,7 @@ public class MapElement implements Drawable
 		double alpha = playerIsBehind(Game.getPlayer().getPos()) ? 0.5 : 1.0 ;
 		
 		GamePanel.getDP().drawImage(image, topLeft, Draw.stdAngle, Scale.unit, false, false, Align.topLeft, alpha) ;
-		if (Game.debugMode)
+		if (Game.DEBUG_MODE)
 		{
 			displayColliders() ;
 		}

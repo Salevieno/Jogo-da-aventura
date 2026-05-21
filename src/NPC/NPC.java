@@ -51,7 +51,7 @@ public abstract class NPC implements Interactable
 	protected final List<Collider> colliders ;
 	protected static final Image speakingBubble = ImageLoader.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
 	protected static final Image choicesWindow = ImageLoader.loadImage(Path.NPC_IMG + "ChoicesWindow.png") ;
-	protected static final Font stdFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
+	protected static final Font stdFont = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
 	protected static final Color stdColor = Palette.colors[0] ;
 	protected static final Color selColor = Palette.colors[18] ;
 	private static final List<NPC> allNPCs = new ArrayList<>() ;
@@ -223,7 +223,7 @@ public abstract class NPC implements Interactable
 		}
 		GamePanel.getDP().drawText(Util.translate(pos, 0, -job.getImage().getHeight(null) - 20), Align.bottomCenter, name, Palette.colors[3]);
 		
-		if (Game.debugMode)
+		if (Game.DEBUG_MODE)
 		{
 			hitbox.display() ;
 		}
@@ -335,7 +335,7 @@ public abstract class NPC implements Interactable
 						newNPC.act(Game.getPlayer(), Game.getPet(), Game.getPlayer().getCurrentAction());
 						newNPC.goToMenu(destinationMenu) ;
 					}) ;
-					Dimension textSize = Util.calcTextSize(text, new Font(Game.MainFontName, Font.BOLD, 17)) ;
+					Dimension textSize = Util.calcTextSize(text, new Font(Game.getMainFontName(), Font.BOLD, 17)) ;
 					button.resize(textSize);
 					button.deactivate() ;
 					buttons.add(button) ;

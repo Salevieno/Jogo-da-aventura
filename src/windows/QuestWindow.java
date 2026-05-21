@@ -34,7 +34,7 @@ public class QuestWindow extends GameWindow
 	static
 	{
 		windowPos = Screen.getMe().pos(0.3, 0.1) ;
-		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		font = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 		image = ImageLoader.loadImage(Path.WINDOWS_IMG + "Quest.png") ;
 	}
 	

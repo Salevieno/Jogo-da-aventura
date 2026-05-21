@@ -43,7 +43,7 @@ public class ForgeWindow extends GameWindow
 
 	static
 	{
-		messages = Arrays.asList(Game.allText.get(TextCategories.forgeWindowMessages)) ;
+		messages = Arrays.asList(Game.getAllText().get(TextCategories.forgeWindowMessages)) ;
 	}
 	
 	public ForgeWindow()

@@ -40,7 +40,7 @@ public class SettingsWindow extends GameWindow
 	static
 	{
 		windowPos = Screen.getMe().pos(0.4, 0.35) ;
-		font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		font = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 	    imageMenu0 = ImageLoader.loadImage(Path.WINDOWS_IMG + "windowSettings.png") ;
 		imageMenu1 = ImageLoader.loadImage(Path.WINDOWS_IMG + "settingsDeeperWindow.png") ;
 	}
@@ -253,7 +253,7 @@ public class SettingsWindow extends GameWindow
 	{
 		Point textPos = Util.translate(windowPos, 25, 42) ;
 		Image menuImage = menu == 0 ? image : imageMenu1 ;
-		String[] text = Game.allText.get(TextCategories.settings) ;
+		String[] text = Game.getAllText().get(TextCategories.settings) ;
 		Color[] textColor = new Color[3 + PlayerActions.values().length] ;
 		Arrays.fill(textColor, Palette.colors[0]) ;
 		textColor[item] = Palette.colors[18] ;

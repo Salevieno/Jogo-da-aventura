@@ -386,7 +386,7 @@ public abstract class LiveBeing implements Drawable
 	public void displayState()
 	{
 		Point displayPos = Util.translate(getPos(), 0, size.height + 10) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+		Font font = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 		String stateText = state.toString() ;
 		
 		GamePanel.getDP().drawText(displayPos, Align.center, 0, stateText, font, Palette.colors[0]) ;
@@ -401,7 +401,7 @@ public abstract class LiveBeing implements Drawable
 	{
 		int maxPower = 10000 ;
 		Color color = Palette.colors[6] ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
+		Font font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;
 		Dimension barSize = new Dimension(15, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
 		
 		GamePanel.getDP().drawRect(Util.translate(pos, 0, -13), Align.bottomCenter, barSize, 0, color, null, 1.0) ;

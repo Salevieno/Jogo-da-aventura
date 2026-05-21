@@ -358,9 +358,9 @@ public abstract class GameMap
 
 		Point pos = new Point(200, 30) ;
 		Dimension size = new Dimension(340, 420) ;
-		Font font = new Font(Game.MainFontName, Font.BOLD, 11) ;
-		Font largeFont = new Font(Game.MainFontName, Font.BOLD, 12) ;
-		Font titleFont = new Font(Game.MainFontName, Font.BOLD, 15) ;
+		Font font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;
+		Font largeFont = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
+		Font titleFont = new Font(Game.getMainFontName(), Font.BOLD, 15) ;
 		
 		GamePanel.getDP().drawImage(infoWindow, pos, Align.topLeft) ;
 		
@@ -403,8 +403,8 @@ public abstract class GameMap
  	public void displayTudoEstaBem()
  	{
  		Point pos = new Point(500, 10) ;
- 		String text = Game.allText.get(TextCategories.allIsGood)[0] ;
- 		Font font = new Font(Game.MainFontName, Font.BOLD, 13) ;
+ 		String text = Game.getAllText().get(TextCategories.allIsGood)[0] ;
+ 		Font font = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
  		GamePanel.getDP().drawText(pos, Align.topLeft, 0, text, font, Palette.colors[19]) ;
  	}
 	

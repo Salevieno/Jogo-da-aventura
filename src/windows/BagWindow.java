@@ -653,7 +653,7 @@ public class BagWindow extends GameWindow
 	
 	public void display(Point mousePos)
 	{
-		String[] tabNames = Game.allText.get(TextCategories.bagMenus) ;
+		String[] tabNames = Game.getAllText().get(TextCategories.bagMenus) ;
 		
 		// draw tabs
 		for (int m = 0 ; m <= tabNames.length - 1 ; m += 1)

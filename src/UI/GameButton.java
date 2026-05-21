@@ -30,7 +30,7 @@ public abstract class GameButton
 	protected final Align alignment ;
 	protected final Clip soundEffectOnHover ;
 	
-	protected static final Font font = new Font(Game.MainFontName, Font.BOLD, 17) ;
+	protected static final Font font = new Font(Game.getMainFontName(), Font.BOLD, 17) ;
 	protected static final Color textColor = Palette.colors[0] ;
 	protected static final Color selectedTextColor = Palette.colors[18] ;
 	

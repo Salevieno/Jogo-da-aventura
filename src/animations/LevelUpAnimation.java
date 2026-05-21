@@ -31,7 +31,7 @@ public class LevelUpAnimation extends Animation
 	private static final int nCols = 2 ;
 	private static final int sy = smallFont.getSize() + 15 ;
 	private static final int[] attOrder = new int[] {0, 2, 4, 6, 1, 3, 5, 7} ;
-	private static final String[] attText = Game.allText.get(TextCategories.attributes) ;
+	private static final String[] attText = Game.getAllText().get(TextCategories.attributes) ;
 	private static final String[] attNames = Arrays.copyOfRange(attText, 1, 9) ;
 
     private double[] attributeInc ;

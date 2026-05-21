@@ -43,92 +43,96 @@ public class Game
 	// TODO ideia - magias e flechas são projéteis que precisam acertar o oponente para dar dano. O oponente pode se mover durante a luta E usar magias de longe enquanto se move (ou defender)
 	// TODO ideia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
 	// TODO shopping de cada cidade vender itens diferentes
-	private static final List<String> konamiCode = List.of("Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A") ;
 
-	public static final String MainFontName = "Comics";
-	private static final GameStates mainState = GameStates.running;
-	// private static final boolean testMode = true;
-	public static final boolean debugMode = false;
-
-	private static GameStates state = GameStates.loading;
-	private static Languages gameLanguage;
-	private static boolean shouldRepaint; // tells if the panel should be repainted, responding to multiple requests only once
-	private static boolean konamiCodeIsActive;
-	private static double dt;
-	public static GameTimer dayTimer;
-
-	public static Map<TextCategories, String[]> allText;
-
-	private static Player player;
-	private static Pet pet;
-	public static int difficultLevel = 0;
-	private static int saveSlotInUse = -1;
-
-	// TODO unificar pausewindow com as outras windows
-	private static final PauseWindow pauseWindow;
-	public static final List<String> arrowKeys = List.of(KeyEvent.getKeyText(KeyEvent.VK_UP),
+	private GameStates state ;
+	private Languages gameLanguage ;
+	private boolean shouldRepaint; // tells if the panel should be repainted, responding to multiple requests only once
+	private boolean konamiCodeIsActive;
+	private double dt ;	
+	private Player player;
+	private Pet pet;
+	private int difficultLevel ; // TODO use
+	private int saveSlotInUse ;	
+	private GameTimer dayTimer ;
+	private final Map<TextCategories, String[]> allText ;	
+    private final Settings settings ;
+	private final PauseWindow pauseWindow ; // TODO unificar pausewindow com as outras windows	
+	
+	private static final String MAIN_FONT_NAME = "Comics";
+	private static final List<String> ARROW_KEYS = List.of(KeyEvent.getKeyText(KeyEvent.VK_UP),
 															KeyEvent.getKeyText(KeyEvent.VK_LEFT),
 															KeyEvent.getKeyText(KeyEvent.VK_DOWN),
-															KeyEvent.getKeyText(KeyEvent.VK_RIGHT));
+															KeyEvent.getKeyText(KeyEvent.VK_RIGHT)) ;
+	private static final List<String> KONAMI_CODE = List.of("Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A") ;
+	private static final GameStates MAIN_STATE = GameStates.running;
+	// private static final boolean testMode = true;
+	public static final boolean DEBUG_MODE = false;
 	private static final int DAY_DURATION = 600 ;
-    private static Settings settings ;
+	private static Game game ;
 
-	static
+	private Game()
 	{
-		gameLanguage = Languages.portugues;
-		allText = new HashMap<>();
-		dayTimer = new GameTimer(DAY_DURATION);
-		settings = new Settings(false, true, false, 1, 0) ;
-
-		pauseWindow = new PauseWindow();
-		dt = System.nanoTime();
-	}
-
-	public Game()
-	{
-		player = new Player("", "", 2);
-		
 		System.out.println();
 		Log.info("Game version " + MainGame3_4.getVersion()) ;	
-		player.setPos(new Point2D.Double(Screen.getMe().getCenter().x, Screen.getMe().getCenter().y));
+		this.allText = new HashMap<>();
+		this.settings = new Settings(false, true, false, 1, 0) ;
+		this.pauseWindow= new PauseWindow();
+		this.player = new Player("", "", 2);
+		this.player.setPos(new Point2D.Double(Screen.getMe().getCenter().x, Screen.getMe().getCenter().y));
+		this.difficultLevel = 0;
+		this.saveSlotInUse = -1;
+		this.state = GameStates.loading;
+		this.gameLanguage = Languages.portugues;
+		this.dayTimer = new GameTimer(DAY_DURATION);
+		this.dt = System.nanoTime() ;
 	}
 
-	public static GameStates getState() { return state ;}
-	public static Languages getLanguage() { return gameLanguage ;}
-	public static Settings getSettings() { return settings ;}
-	public static Screen getScreen() { return Screen.getMe() ;} // TODO refatorar
-	public static Player getPlayer() { return player ;}
-	public static Pet getPet() { return pet ;}
-	public static boolean getShouldRepaint() { return shouldRepaint ;}
-	public static int getSaveSlotInUse() { return saveSlotInUse ;}
-	public static void setSaveSlotInUse(int newSaveSlotInUse) { saveSlotInUse = newSaveSlotInUse ;}
-	public static PauseWindow getPauseWindow() { return pauseWindow ;}
-	public static void setPlayer(Player newPlayer) { player = newPlayer ;}
-	public static void setState(GameStates newState) { state = newState ;}
-	public static GameTimer getDayTimer() { return dayTimer ;}
+	protected static void create()
+	{
+		game = new Game() ;
+	}
 
-	public static void switchToMainState() { state = mainState ;}
-	public static double dayTimeRate() { return dayTimer.rate() <= 0.5 ? dayTimer.rate() + 0.5 : dayTimer.rate() - 0.5 ;}
+	protected static Game getMe() { return game ;}
+
+	public static String getMainFontName() { return MAIN_FONT_NAME ;}
+	public static GameStates getState() { return game.state ;}
+	public static Languages getLanguage() { return game.gameLanguage ;}
+	public static Settings getSettings() { return game.settings ;}
+	public static Player getPlayer() { return game.player ;}
+	public static Pet getPet() { return game.pet ;}
+	public static List<String> getArrowKeys() { return ARROW_KEYS ;}
+	public static boolean getShouldRepaint() { return game.shouldRepaint ;}
+	public static Map<TextCategories, String[]> getAllText() { return game.allText ;}
+	public static void setDifficultLevel(int difficultLevel) { game.difficultLevel = difficultLevel ;}
+	public static int getSaveSlotInUse() { return game.saveSlotInUse ;}
+	public static void setSaveSlotInUse(int newSaveSlotInUse) { game.saveSlotInUse = newSaveSlotInUse ;}
+	public static PauseWindow getPauseWindow() { return game.pauseWindow ;}
+	public static void setPlayer(Player newPlayer) { game.player = newPlayer ;}
+	public static void setState(GameStates newState) { game.state = newState ;}
+	public static GameTimer getDayTimer() { return game.dayTimer ;}
+
+	public static void switchToMainState() { setState(MAIN_STATE) ;}
+	public static double dayTimeRate() { return game.dayTimer.rate() <= 0.5 ? game.dayTimer.rate() + 0.5 : game.dayTimer.rate() - 0.5 ;}
 
 	private static void activateKonamiEffect()
 	{
 		Palette.switchToKonami() ;
-		dayTimer.setDuration(DAY_DURATION / 100.0);
+		game.dayTimer.setDuration(DAY_DURATION / 100.0);
 	}
 
 	private static void deactivateKonamiEffect()
 	{
 		Palette.switchToNormal() ;
-		dayTimer.setDuration(DAY_DURATION);
+		game.dayTimer.setDuration(DAY_DURATION);
 		Draw.stdAngle = 0;
 	}
 
 	private static void checkKonamiCode(List<String> combo)
 	{
-		if (!konamiCode.equals(combo)) { return ;}
+		if (!KONAMI_CODE.equals(combo)) { return ;}
 
-		konamiCodeIsActive = !konamiCodeIsActive;
-		if (konamiCodeIsActive)
+		game.konamiCodeIsActive = !game.konamiCodeIsActive;
+		if (game.konamiCodeIsActive)
 		{
 			activateKonamiEffect() ;
 		}
@@ -136,16 +140,16 @@ public class Game
 		{
 			deactivateKonamiEffect() ;
 		}
-		player.resetCombo();
+		game.player.resetCombo();
 	}
 
 	private static void applyKonamiEffect(double dt)
 	{
-		if (dayTimer.rate() <= 0.25)
+		if (game.dayTimer.rate() <= 0.25)
 		{
 			Draw.stdAngle += 0.04;
 		}
-		else if (dayTimer.rate() <= 0.75)
+		else if (game.dayTimer.rate() <= 0.75)
 		{
 			Draw.stdAngle -= 0.04;
 		}
@@ -157,27 +161,27 @@ public class Game
 
 	public static void removePet()
 	{
-		pet = null;
+		game.pet = null;
 	}
 
 	public static void letThereBePet()
 	{
 		int job = Util.randomInt(0, 3);
-		pet = new Pet(job);
-		pet.setPos(player.getPosAsDouble());
-		if (player.getJob() == 3 & 0 < player.getSpells().get(13).getLevel()) // Best friend
+		game.pet = new Pet(job);
+		game.pet.setPos(game.player.getPosAsDouble());
+		if (game.player.getJob() == 3 & 0 < game.player.getSpells().get(13).getLevel()) // Best friend
 		{
-			int spellLevel = player.getSpells().get(13).getLevel();
-			pet.getPA().getLife().incMaxValue(10 * spellLevel);
-			pet.getPA().getLife().setToMaximum();
-			pet.getPA().getMp().incMaxValue(10 * spellLevel);
-			pet.getPA().getMp().setToMaximum();
-			pet.getBA().getPhyAtk().incBaseValue(2 * spellLevel);
-			pet.getBA().getMagAtk().incBaseValue(2 * spellLevel);
-			pet.getBA().getDex().incBaseValue(1 * spellLevel);
-			pet.getBA().getAgi().incBaseValue(1 * spellLevel);
+			int spellLevel = game.player.getSpells().get(13).getLevel();
+			game.pet.getPA().getLife().incMaxValue(10 * spellLevel);
+			game.pet.getPA().getLife().setToMaximum();
+			game.pet.getPA().getMp().incMaxValue(10 * spellLevel);
+			game.pet.getPA().getMp().setToMaximum();
+			game.pet.getBA().getPhyAtk().incBaseValue(2 * spellLevel);
+			game.pet.getBA().getMagAtk().incBaseValue(2 * spellLevel);
+			game.pet.getBA().getDex().incBaseValue(1 * spellLevel);
+			game.pet.getBA().getAgi().incBaseValue(1 * spellLevel);
 		}
-		SideBar.addPetButton(player, pet);
+		SideBar.addPetButton(game.player, game.pet);
 	}
 
 	// private static void initializeTestMode()
@@ -557,7 +561,7 @@ public class Game
 			pauseWindow.display(GamePanel.getMousePos());
 		}
 
-		if (debugMode)
+		if (DEBUG_MODE)
 		{
 			Screen.getMe().displayBorders();
 		}
@@ -661,7 +665,7 @@ public class Game
 			pauseWindow.switchOpenClose() ;
 		}
 
-		if (arrowKeys.contains(KeyEvent.getKeyText(keyCode)))
+		if (ARROW_KEYS.contains(KeyEvent.getKeyText(keyCode)))
 		{
 			player.addKeyPressed(KeyEvent.getKeyText(keyCode));
 			if (player.isMoving())
@@ -676,7 +680,7 @@ public class Game
 	protected void keyReleasedAction(KeyEvent event)
 	{
 		int keyCode = event.getKeyCode();
-		if (arrowKeys.contains(KeyEvent.getKeyText(keyCode)))
+		if (ARROW_KEYS.contains(KeyEvent.getKeyText(keyCode)))
 		{
 			player.removeKeyPressed(KeyEvent.getKeyText(keyCode));
 		}

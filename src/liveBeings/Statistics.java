@@ -194,7 +194,7 @@ public class Statistics
 	
 	public Map<String, Integer> numberStats()
 	{
-		String[] statsText = Game.allText.get(TextCategories.statistics) ;
+		String[] statsText = Game.getAllText().get(TextCategories.statistics) ;
 		Map<String, Integer> numberStats = new LinkedHashMap<>() ;
 		Map<String, Double> allStats = allStatistics() ;
 		for (int i = 0 ; i <= 11 - 1; i += 1)
@@ -207,7 +207,7 @@ public class Statistics
 	
 	public Map<String, Double> damageStats()
 	{
-		String[] statsText = Game.allText.get(TextCategories.statistics) ;
+		String[] statsText = Game.getAllText().get(TextCategories.statistics) ;
 		Map<String, Double> damageStats = new LinkedHashMap<>() ;
 		Map<String, Double> allStats = allStatistics() ;
 		for (int i = 11 ; i <= statsText.length - 2 - 1; i += 1)
@@ -220,7 +220,7 @@ public class Statistics
 	
 	public Map<String, Double> maxStats()
 	{
-		String[] statsText = Game.allText.get(TextCategories.statistics) ;
+		String[] statsText = Game.getAllText().get(TextCategories.statistics) ;
 		Map<String, Double> maxStats = new LinkedHashMap<>() ;
 		Map<String, Double> allStats = allStatistics() ;
 		for (int i = statsText.length - 2 ; i <= statsText.length - 1; i += 1)
@@ -234,7 +234,7 @@ public class Statistics
 	public Map<String, Double> allStatistics()
 	{
 		Map<String, Double> allStats = new LinkedHashMap<>() ;
-		String[] statsText = Game.allText.get(TextCategories.statistics) ;
+		String[] statsText = Game.getAllText().get(TextCategories.statistics) ;
 		Field[] fields = Statistics.class.getDeclaredFields() ;
 
 		for (int i = 0 ; i <= statsText.length - 1 ; i += 1)

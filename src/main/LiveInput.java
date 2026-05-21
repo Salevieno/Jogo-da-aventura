@@ -11,7 +11,7 @@ import utilities.Util;
 public class LiveInput
 {
 	private String text = "" ;
-	private Font font = new Font(Game.MainFontName, Font.BOLD, 10) ;
+	private Font font = new Font(Game.getMainFontName(), Font.BOLD, 10) ;
 	
 	public String getText() { return text ;}
 	
