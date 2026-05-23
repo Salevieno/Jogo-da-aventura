@@ -37,28 +37,29 @@ public abstract class GameWindow
 	protected int window ;
 	protected int numberWindows ;
 	protected Dimension size ;
-	protected List<GameButton> buttons ;
-	
-	protected String stdMenuUp = PlayerActions.moveUp.getKey() ;
-	protected String stdMenuDown = PlayerActions.moveDown.getKey() ;
-	protected String stdWindowUp = PlayerActions.moveRight.getKey() ;
-	protected String stdWindowDown = PlayerActions.moveLeft.getKey() ;
-	protected String stdEnter = KeyEvent.getKeyText(KeyEvent.VK_ENTER) ;
-	protected String stdReturn = "MouseRightClick" ;
-	protected String stdExit = KeyEvent.getKeyText(KeyEvent.VK_ESCAPE) ;	
-	protected double stdOpacity = 0.9 ;
+	protected String stdMenuUp ;
+	protected String stdMenuDown ;
+	protected String stdWindowUp ;
+	protected String stdWindowDown ;
+	protected String stdEnter ;
+	protected String stdReturn ;
+	protected String stdExit ;	
+	protected double stdOpacity ;
+	protected List<GameButton> buttons ;	
 
-	protected static final Image buttonWindowUpImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveUp.png") ;
-	protected static final Image buttonWindowDownImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;
-	protected static final Image selectedButtonWindowUpImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveUpSprite.png") ;
-	protected static final Image selectedButtonWindowDownImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveDownSprite.png") ;
-	protected static final Font stdFont = new Font(Game.getMainFontName(), Font.BOLD, 10) ;
-	protected static final Font subTitleFont = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
-	protected static final Font titleFont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
-	protected static final Color stdColor = Palette.colors[0] ;
-	protected static final int border = 6 ;
-	protected static final int padding = 4 ;
-	protected static final Color selColor = Palette.colors[18];
+	protected static final int BORDER = 6 ;
+	protected static final int PADDING = 4 ;
+	protected static final Color STD_COLOR = Palette.colors[0] ;
+	protected static final Color SELECTED_COLOR = Palette.colors[18];
+	protected static final Font STD_FONT = new Font(Game.getMainFontName(), Font.BOLD, 10) ;
+	protected static final Font TITLE_FONT = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
+	protected static final Font SUBTITLE_FONT = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
+	protected static final Image BTN_WINDOW_UP_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveUp.png") ;
+	protected static final Image SELECTED_BTN_WINDOW_UP_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveUpSprite.png") ;
+	protected static final Image BTN_WINDOW_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;
+	protected static final Image SLOT_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSlot.png") ;
+	protected static final Image SELECTED_SLOT_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSelectedSlot.png") ;
+	protected static final Image SELECTED_BTN_WINDOW_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveDownSprite.png") ;
 	
 	public GameWindow(String name, Point topLeftPos, Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
 	{
@@ -70,12 +71,20 @@ public abstract class GameWindow
 		this.numberItems = numberItems ;
 		this.numberWindows = numberWindows ;
 		this.buttons = new ArrayList<>() ;
-		isOpen = false ;
-		menu = 0 ;
-		tab = 0 ;
-		item = 0 ;
-		window = 0 ;
-		size = image != null ? new Dimension(image.getWidth(null), image.getHeight(null)) : new Dimension(0, 0) ;
+		this.isOpen = false ;
+		this.menu = 0 ;
+		this.tab = 0 ;
+		this.item = 0 ;
+		this.window = 0 ;
+		this.size = image != null ? new Dimension(image.getWidth(null), image.getHeight(null)) : new Dimension(0, 0) ;
+		this.stdMenuUp = PlayerActions.moveUp.getKey() ;
+		this.stdMenuDown = PlayerActions.moveDown.getKey() ;
+		this.stdWindowUp = PlayerActions.moveRight.getKey() ;
+		this.stdWindowDown = PlayerActions.moveLeft.getKey() ;
+		this.stdEnter = KeyEvent.getKeyText(KeyEvent.VK_ENTER) ;
+		this.stdReturn = "MouseRightClick" ;
+		this.stdExit = KeyEvent.getKeyText(KeyEvent.VK_ESCAPE) ;	
+		this.stdOpacity = 0.9 ;
 	}
 	public boolean isOpen() {return isOpen ;}
 	protected void addButton(GameButton button) { buttons.add(button) ;}
@@ -85,17 +94,19 @@ public abstract class GameWindow
 	protected int getWindow() {return window ;}
 	protected int getItem() {return item ;}
 	protected void setItem(int newValue) {item = newValue ;}
+
+	public static Image getSlotImage() { return SLOT_IMAGE ;}
 	
 	public static boolean actionIsForward(String action) { return action == null ? false : action.equals("Enter") | action.equals("LeftClick") ;}
 	protected GameButton windowUpButton(Point pos, Align align)
 	{
 		ButtonFunction action = () -> { windowUp() ;} ;
-		return new GameIconButton(pos, align, buttonWindowUpImage, selectedButtonWindowUpImage, action) ;
+		return new GameIconButton(pos, align, BTN_WINDOW_UP_IMAGE, SELECTED_BTN_WINDOW_UP_IMAGE, action) ;
 	}
 	protected GameButton windowDownButton(Point pos, Align align)
 	{
 		ButtonFunction action = () -> { windowDown() ;} ;
-		return new GameIconButton(pos, align, buttonWindowDownImage, selectedButtonWindowDownImage, action) ;
+		return new GameIconButton(pos, align, BTN_WINDOW_DOWN_IMAGE, SELECTED_BTN_WINDOW_DOWN_IMAGE, action) ;
 	}
 	
 	protected boolean mouseIsOver(Point mousePos) { return Util.isInside(mousePos, topLeftPos, size) ;}
@@ -175,7 +186,7 @@ public abstract class GameWindow
 		item = 0 ;
 	}
 	
-	protected Color getTextColor(boolean isSelected) { return isSelected ? selColor : stdColor ;}
+	protected Color getTextColor(boolean isSelected) { return isSelected ? SELECTED_COLOR : STD_COLOR ;}
 	
 	protected void checkMouseSelection(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
 	{

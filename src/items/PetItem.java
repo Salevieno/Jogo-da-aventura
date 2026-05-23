@@ -24,11 +24,11 @@ public class PetItem extends Item
 	private final int satiationHeal ;
 	private final int power ;
 	
-	private static final Image petLifePotion = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetLifePotion.png") ;
-	private static final Image petMPPotion = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetMPPotion.png") ;
-	private static final Image petFood = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetFood.png") ;
-	private static final Image petSet = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetSet.png") ;
-	private static final PetItem[] all = new PetItem[60] ;
+	private static final Image PET_LIFE_POTION_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetLifePotion.png") ;
+	private static final Image PET_MP_POTION_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetMPPotion.png") ;
+	private static final Image PET_FOOD_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetFood.png") ;
+	private static final Image PET_SET_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconPetSet.png") ;
+	private static final PetItem[] ALL = new PetItem[60] ;
 
 	public PetItem(int id, int price, double dropChance, double lifeHeal, double mpHeal, int satiationHeal)
 	{
@@ -37,7 +37,7 @@ public class PetItem extends Item
 		this.mpHeal = mpHeal ;
 		this.satiationHeal = satiationHeal ;
 		this.power = id / 4 ;
-		all[id] = this ;
+		ALL[id] = this ;
 	}
 
 	public static void updateText(String language)
@@ -46,29 +46,29 @@ public class PetItem extends Item
 		for (String[] line : data)
 		{
 			int id = Integer.parseInt(line[0]) ;
-			all[id].setName(line[1]) ;
-			all[id].setDescription(line[2]) ;
+			ALL[id].setName(line[1]) ;
+			ALL[id].setDescription(line[2]) ;
 		}
 	}
 
 	public double getLifeHeal() {return lifeHeal ;}
 	public double getMPHeal() {return mpHeal ;}	
 	public int getSatiationHeal() {return satiationHeal ;}	
-	public static PetItem[] getAll() {return all ;}
+	public static PetItem[] getAll() {return ALL ;}
 
 	public static boolean isLifePotion(int id) { return id % 4 == 0 ;}
 	public static boolean isMpPotion(int id) { return id % 4 == 1 ;}
 	public static boolean isFood(int id) { return id % 4 == 2 ;}
 	public static boolean isEquipSet(int id) { return id % 4 == 3 ;}
 	
-	public Image fullSizeImage() { return petSet ;}
+	public Image fullSizeImage() { return PET_SET_ICON ;}
 
 	public static Image imageFromID(int id)
 	{		
-		if (isLifePotion(id)) { return petLifePotion ;}
-		if (isMpPotion(id)) { return petMPPotion ;}
-		if (isFood(id)) { return petFood ;}
-		if (isEquipSet(id)) { return petSet ;}
+		if (isLifePotion(id)) { return PET_LIFE_POTION_ICON ;}
+		if (isMpPotion(id)) { return PET_MP_POTION_ICON ;}
+		if (isFood(id)) { return PET_FOOD_ICON ;}
+		if (isEquipSet(id)) { return PET_SET_ICON ;}
 		
 		return null ;
 	}
@@ -162,7 +162,7 @@ public class PetItem extends Item
 	
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 	}
 	
 	@Override

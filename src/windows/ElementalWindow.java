@@ -32,15 +32,15 @@ public class ElementalWindow extends GameWindow
 	private List<Equip> equipsForElemChange ;
 	private Equip selectedEquip ;
 
-	private static final Point windowPos = Screen.getMe().pos(0.35, 0.23) ;
-	private static final List<String> menuTitles = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
-	private static final Image windowImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "Elemental.png") ;
-	private static final int firstSphereID = 390 ;
-	private static final int numberItemsOnWindow = 10 ;
+	private static final Point WINDOW_POS = Screen.getMe().pos(0.35, 0.23) ;
+	private static final List<String> MENU_TITLES = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
+	private static final Image WINDOW_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Elemental.png") ;
+	private static final int FIRST_SPHERE_ID = 390 ;
+	private static final int QTD_ITEMS_ON_WINDOW = 10 ;
 
 	public ElementalWindow()
 	{
-		super("Elemental", windowPos, windowImage, 2, 1, 1, 1) ;
+		super("Elemental", WINDOW_POS, WINDOW_IMAGE, 2, 1, 1, 1) ;
 		spheres = null ;
 		selectedEquip = null ;
 		selectedSphere = null ;
@@ -51,7 +51,7 @@ public class ElementalWindow extends GameWindow
 	{
 		
 		List<GeneralItem> spheres = new ArrayList<>() ;
-		for (int i = firstSphereID; i <= firstSphereID + Elements.values().length - 1; i += 1)
+		for (int i = FIRST_SPHERE_ID; i <= FIRST_SPHERE_ID + Elements.values().length - 1; i += 1)
 		{
 			GeneralItem sphere = GeneralItem.getAll()[i] ;
 			if (bag.contains(sphere)) { spheres.add(sphere) ;}
@@ -71,7 +71,7 @@ public class ElementalWindow extends GameWindow
 		this.equipsForElemChange = equipsForElemChange ;
 		this.spheres = spheres ;
 		numberItems = menu == 0 ? getEquipsOnWindow().size() : (menu == 1 ? spheres.size() : 0) ;
-		numberWindows = menu == 0 ? 1 + equipsForElemChange.size() / numberItemsOnWindow : (menu == 1 ? spheres.size() : 1) ;
+		numberWindows = menu == 0 ? 1 + equipsForElemChange.size() / QTD_ITEMS_ON_WINDOW : (menu == 1 ? spheres.size() : 1) ;
 	}
 
 	public void navigate(String action)
@@ -161,7 +161,7 @@ public class ElementalWindow extends GameWindow
 		if (selectedEquip == null) { displayMessage(0) ; return ;}
 		if (selectedSphere == null) { displayMessage(1) ; return ;}
 		
-		Elements sphereElem = Elements.values()[selectedSphere.getId() - firstSphereID] ;
+		Elements sphereElem = Elements.values()[selectedSphere.getId() - FIRST_SPHERE_ID] ;
 		
 		if (!bag.contains(selectedSphere)) { displayMessage(2) ; return ;}
 		
@@ -173,10 +173,10 @@ public class ElementalWindow extends GameWindow
 
 	private List<Equip> getEquipsOnWindow()
 	{
-		if (equipsForElemChange.size() <= numberItemsOnWindow) { return equipsForElemChange ;}
+		if (equipsForElemChange.size() <= QTD_ITEMS_ON_WINDOW) { return equipsForElemChange ;}
 		
-		int minIndex = numberItemsOnWindow * window ;
-		int maxIndex = Math.min(numberItemsOnWindow * (window + 1), equipsForElemChange.size()) ;
+		int minIndex = QTD_ITEMS_ON_WINDOW * window ;
+		int maxIndex = Math.min(QTD_ITEMS_ON_WINDOW * (window + 1), equipsForElemChange.size()) ;
 		return equipsForElemChange.subList(minIndex, maxIndex) ;
 	}
 	
@@ -186,60 +186,60 @@ public class ElementalWindow extends GameWindow
 		if (equipsForElemChange == null) { return ;}
 		if (equipsForElemChange.isEmpty()) { return ;}
 		
-		int slotW = BagWindow.slotImage.getWidth(null) ;
-		int slotH = BagWindow.slotImage.getHeight(null) ;
+		int slotW = BagWindow.SLOT_IMAGE.getWidth(null) ;
+		int slotH = BagWindow.SLOT_IMAGE.getHeight(null) ;
 		
 		List<Equip> equipsOnWindow = getEquipsOnWindow() ;
 		for (int i = 0 ; i <= equipsOnWindow.size() - 1; i += 1)
 		{
-			int row = i % ( numberItemsOnWindow / 1) ;
-			int col = i / ( numberItemsOnWindow / 1) ;
+			int row = i % ( QTD_ITEMS_ON_WINDOW / 1) ;
+			int col = i / ( QTD_ITEMS_ON_WINDOW / 1) ;
 			Equip equip = equipsOnWindow.get(i) ;
-			Point slotCenter = Util.translate(windowPos,
-					border + padding + 6 + slotW / 2 + col * (140 + slotW),
-					border + padding + 22 + slotH / 2 + row * 21) ;
+			Point slotCenter = Util.translate(WINDOW_POS,
+					BORDER + PADDING + 6 + slotW / 2 + col * (140 + slotW),
+					BORDER + PADDING + 22 + slotH / 2 + row * 21) ;
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
-			Image slotImage = i == item ? BagWindow.selectedSlotImage : BagWindow.slotImage ;
+			Image slotImage = i == item ? BagWindow.SELECTED_SLOT_IMAGE : BagWindow.SLOT_IMAGE ;
 			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
 			Color textColor = getTextColor(i == item) ;
 			
 			GamePanel.getDP().drawImage(slotImage, slotCenter, Align.center) ;
 			GamePanel.getDP().drawImage(equip.getImage(), slotCenter, Align.center) ;
-			GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, equip.getName(), stdFont, textColor) ;
+			GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, equip.getName(), STD_FONT, textColor) ;
 		}
 	}
 	
 	private void displaySphereSelectionMenu(Point mousePos)
 	{
-		int slotW = BagWindow.slotImage.getWidth(null) ;
-		int slotH = BagWindow.slotImage.getHeight(null) ;
+		int slotW = BagWindow.SLOT_IMAGE.getWidth(null) ;
+		int slotH = BagWindow.SLOT_IMAGE.getHeight(null) ;
 
 		for (int i = 0 ; i <= spheres.size() - 1; i += 1)
 		{
-			int row = i % numberItemsOnWindow ;
-			int col = i / numberItemsOnWindow ;
+			int row = i % QTD_ITEMS_ON_WINDOW ;
+			int col = i / QTD_ITEMS_ON_WINDOW ;
 			GeneralItem sphere = spheres.get(i) ;
-			Point slotCenter = Util.translate(windowPos,
-					border + padding + 6 + slotW / 2 + col * (140 + slotW),
-					border + padding + 22 + slotH / 2 + row * 21) ;
+			Point slotCenter = Util.translate(WINDOW_POS,
+					BORDER + PADDING + 6 + slotW / 2 + col * (140 + slotW),
+					BORDER + PADDING + 22 + slotH / 2 + row * 21) ;
 
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
-			Image slotImage = item == i ? BagWindow.selectedSlotImage : BagWindow.slotImage ;
+			Image slotImage = item == i ? BagWindow.SELECTED_SLOT_IMAGE : BagWindow.SLOT_IMAGE ;
 			GamePanel.getDP().drawImage(slotImage, slotCenter, Align.center) ;
 			GamePanel.getDP().drawImage(sphere.getImage(), slotCenter, Align.center) ;
 			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
 			Color textColor = getTextColor(i == item) ;
-			GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, sphere.getName(), stdFont, textColor) ;
+			GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, sphere.getName(), STD_FONT, textColor) ;
 		}
 	}
 	
 	public void display(Point mousePos)
 	{
 		
-		Point titlePos = Util.translate(windowPos, size.width / 2, 2 + 9) ;
+		Point titlePos = Util.translate(WINDOW_POS, size.width / 2, 2 + 9) ;
 		
-		GamePanel.getDP().drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
-		GamePanel.getDP().drawText(titlePos, Align.center, Draw.stdAngle, menuTitles.get(menu), titleFont, stdColor) ;
+		GamePanel.getDP().drawImage(image, WINDOW_POS, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
+		GamePanel.getDP().drawText(titlePos, Align.center, Draw.stdAngle, MENU_TITLES.get(menu), TITLE_FONT, STD_COLOR) ;
 		
 		switch (menu)
 		{
@@ -249,7 +249,7 @@ public class ElementalWindow extends GameWindow
 		}
 		
 		
-		Draw.windowArrows(Util.translate(windowPos, 0, size.height + 5), size.width, window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(Util.translate(WINDOW_POS, 0, size.height + 5), size.width, window, numberWindows, stdOpacity) ;
 		
 	}
 

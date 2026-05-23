@@ -13,11 +13,11 @@ import windows.ForgeWindow;
 public class NPCForger extends NPC
 {
 
-	private static final Image forgeDeskImage = ImageLoader.loadImage(Path.NPC_IMG + "Forge.png") ;
+	private static final Image FORGE_DESK_IMAGE = ImageLoader.loadImage(Path.NPC_IMG + "Forge.png") ;
 
     public NPCForger(String name, Point pos, List<NPCMenu> menus)
     {
-        super(NPCJobs.forger, name, pos, menus, forgeDeskImage, new ForgeWindow());
+        super(NPCJobs.forger, name, pos, menus, FORGE_DESK_IMAGE, new ForgeWindow());
     }
 	// TODO update on interaction with player
 	// 				((ForgeWindow) window).setItemsForForge(equipsForForge);

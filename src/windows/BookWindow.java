@@ -27,13 +27,13 @@ public class BookWindow extends GameWindow
 {
     private List<Recipe> recipes = new ArrayList<>() ;
 
-	private static final Point windowPos = Screen.getMe().getCenter() ;
-	private static final Image windowImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "Book.png") ;
-	private static final Font font = new Font(Game.getMainFontName(), Font.BOLD, 14) ;
+	private static final Point WINDOW_POS = Screen.getMe().getCenter() ;
+	private static final Image WINDOW_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Book.png") ;
+	private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 14) ;
 	
 	public BookWindow()
 	{
-		super("Livro", windowPos, windowImage, 0, 0, 0, 0) ;
+		super("Livro", WINDOW_POS, WINDOW_IMAGE, 0, 0, 0, 0) ;
 	}
 
 	public void setRecipes(List<Recipe> recipes) { this.recipes = recipes ; numberWindows = recipes.size() ;}
@@ -50,10 +50,10 @@ public class BookWindow extends GameWindow
 		if (recipes == null) { return ;}
 		if (recipes.isEmpty()) { return ;}
 
-		Point ingredientsCol = Util.translate(windowPos, -image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
-		Point productsCol = Util.translate(windowPos, image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
+		Point ingredientsCol = Util.translate(WINDOW_POS, -image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
+		Point productsCol = Util.translate(WINDOW_POS, image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
 		
-		int sy = font.getSize() + 1 ;
+		int sy = FONT.getSize() + 1 ;
 		int id = window ;
 		Color textColor = Palette.colors[5] ;
 		
@@ -66,7 +66,7 @@ public class BookWindow extends GameWindow
 			String ingredientName = ingredients[i].getName() ;
 			int ingredientAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
 			String text = ingredientAmount + " " + ingredientName ;
-			Draw.textUntil(textPos, Align.topLeft, Draw.stdAngle, text, font, textColor, 10, mousePos) ;
+			Draw.textUntil(textPos, Align.topLeft, Draw.stdAngle, text, FONT, textColor, 10, mousePos) ;
 		}
 		
 		// draw products
@@ -78,7 +78,7 @@ public class BookWindow extends GameWindow
 			String productsName = products[i].getName() ;
 			int productsAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
 			String text = productsAmount + " " + productsName ;
-			Draw.textUntil(textPos, Align.topRight, Draw.stdAngle, text, font, textColor, 10, mousePos) ;
+			Draw.textUntil(textPos, Align.topRight, Draw.stdAngle, text, FONT, textColor, 10, mousePos) ;
 		}
 	}
 
@@ -86,17 +86,17 @@ public class BookWindow extends GameWindow
 	{
 		if (numberWindows == 0) { return ;}
 		
-		Point textPos = Util.translate(UtilAlignment.getPosAt(windowPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
+		Point textPos = Util.translate(UtilAlignment.getPosAt(WINDOW_POS, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
 		String pageText = (window + 1) + " / " + numberWindows ;
-		GamePanel.getDP().drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, font, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, FONT, Palette.colors[0]) ;
 	}
 	
 	public void display(Point mousePos)
 	{
-		GamePanel.getDP().drawImage(image, windowPos, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.getDP().drawImage(image, WINDOW_POS, Draw.stdAngle, Scale.unit, Align.center) ;
 		displayRecipes(mousePos) ;
 		displayPageNumber() ;
 		
-		Draw.windowArrows(UtilAlignment.getPosAt(windowPos, Align.center, Align.bottomLeft, size), image.getWidth(null), window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(UtilAlignment.getPosAt(WINDOW_POS, Align.center, Align.bottomLeft, size), image.getWidth(null), window, numberWindows, stdOpacity) ;
 	}
 }

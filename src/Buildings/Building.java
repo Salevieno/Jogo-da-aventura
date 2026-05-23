@@ -27,13 +27,13 @@ import utilities.Util;
 
 public class Building implements Drawable
 {
-	private static final int layer = 1;
-	private final BuildingTypes type ;
 	private Point pos ;
+	private final BuildingTypes type ;
 	private final List<NPC> npcs ;
 	private final List<Collider> colliders ;
-
-	private static final List<Building> all = new ArrayList<>() ;
+	
+	private static final int LAYER = 1;
+	private static final List<Building> ALL = new ArrayList<>() ;
 
 
 	private Building(BuildingTypes type, List<NPC> npcs)
@@ -66,7 +66,7 @@ public class Building implements Drawable
 		// }
 
 //		addColliders() ;
-		all.add(this) ;
+		ALL.add(this) ;
 	}
 	
 	// private void addColliders()
@@ -117,11 +117,11 @@ public class Building implements Drawable
 		}
 	}
 
-	public int getLayer() { return layer ;}
+	public int getLayer() { return LAYER ;}
 	public Point getPos() { return pos ;}
 	public List<NPC> getNPCs() {return npcs ;}
 	public List<Collider> getColliders() { return colliders ;}
-	public static List<Building> getAll() { return all ;}
+	public static List<Building> getAll() { return ALL ;}
 	public void setPos(Point pos) { this.pos = pos ;}
 	
 	private boolean isInside(Point pos)

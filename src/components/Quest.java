@@ -28,14 +28,9 @@ public class Quest
 	private String description ;
 	private boolean isComplete ;
 
-	protected static final String dadosPath = Path.DADOS + "quests\\" ;
-	private static final List<Quest> all ;
-	
-	static
-	{
-		all = new ArrayList<>() ;
-	}
-	
+	protected static final String DADOS_PATH = Path.DADOS + "quests\\" ;
+	private static final List<Quest> ALL = new ArrayList<>() ;
+
 	// public Quest(int id, boolean isRepeatable, Map<CreatureType, Integer> reqCreatureTypes, Map<Item, Integer> reqItems, int goldReward, int expReward, Map<Item, Integer> rewardItems)
 	// {		
 	// 	this.id = id ;
@@ -71,7 +66,7 @@ public class Quest
 		this.goldReward = goldReward ;
 		this.expReward = expReward ;
 		this.rewardItemIDs = rewardItemIDs ;
-		all.add(this);
+		ALL.add(this);
 	}
 
 	public static void create(String language)
@@ -85,7 +80,7 @@ public class Quest
 		List<String[]> inputs = Util.readcsvFile(Path.DADOS + language + "/QuestsInfo.csv") ;
 		for (int i = 0 ; i <= inputs.size() - 1 ; i += 1)
 		{
-			Quest quest = all.get(i) ;
+			Quest quest = ALL.get(i) ;
 			quest.setName(inputs.get(i)[1]) ;
 			quest.setDescription(inputs.get(i)[2]) ;
 		}
@@ -179,7 +174,7 @@ public class Quest
 	public Map<Integer, Integer> getReqItemIDs() {return reqItemIDs ;}	
 	public void setName(String name) { this.name = name ;}
 	public void setDescription(String description) { this.description = description ;}
-	public static List<Quest> getAll() { return all ;}
+	public static List<Quest> getAll() { return ALL ;}
 
 	@Override
 	public String toString()

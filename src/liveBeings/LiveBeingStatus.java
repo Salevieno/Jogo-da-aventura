@@ -24,14 +24,14 @@ public class LiveBeingStatus
 	private double intensity ;
 	private final Image image ;
 
-	public static final Map<Attributes, Image> images ;
+	public static final Map<Attributes, Image> IMAGES ;
 	
 	static
 	{
-		images = new HashMap<>() ;
+		IMAGES = new HashMap<>() ;
 		for (Attributes att : Attributes.values())
 		{
-			images.put(att, ImageLoader.loadImage(Path.STATUS_IMG + att.toString() + ".png")) ;
+			IMAGES.put(att, ImageLoader.loadImage(Path.STATUS_IMG + att.toString() + ".png")) ;
 		}
 	}
 	
@@ -39,7 +39,7 @@ public class LiveBeingStatus
 	{
 		timer = new GameTimer(0) ;
 		intensity = 0.0 ;
-		this.image = images.get(att) ;
+		this.image = IMAGES.get(att) ;
 	}
 
 	public GameTimer getTimer() { return timer ;}

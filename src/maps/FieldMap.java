@@ -39,27 +39,27 @@ public class FieldMap extends GameMap
 	private List<Collectible> collectibles ;
 	private Map<CollectibleTypes, GameTimer> collectibleCounters ;
 	
-	private static final int numberTrees = 5 ;
-	private static final int numberGrass = 30 ;
-	private static final int numberRocks = 10 ;
-	private static final Image treeImage = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem6_TreeForest.png") ;
-	private static final Image grassImage = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem8_Grass.png") ;
-	private static final Image grassImage2 = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem8_Grass2.png") ;
-	private static final Image rockImage = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem9_Rock.png") ;
-	private static final String jsonPath = dadosPath + "mapsField.json" ;
-	private static final List<FieldMap> allFieldMaps = new ArrayList<>() ;
+	private static final int NUMBER_TREES = 5 ;
+	private static final int NUMBER_GRASS = 30 ;
+	private static final int NUMBER_ROCKS = 10 ;
+	private static final Image TREE_IMAGE = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem6_TreeForest.png") ;
+	private static final Image GRASS_IMAGE = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem8_Grass.png") ;
+	private static final Image GRASS_IMAGE2 = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem8_Grass2.png") ;
+	private static final Image ROCK_IMAGE = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem9_Rock.png") ;
+	private static final String JSON_PATH = DADOS_PATH + "mapsField.json" ;
+	private static final List<FieldMap> ALL_FIELD_MAPS = new ArrayList<>() ;
 
 	private FieldMap(int id, String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)
 	{
 		super(id, name, continent, connections, image, music, groundRegions, null, npcs, animations) ;
 		this.level = collectibleLevel ;
-		allFieldMaps.add(this) ;
+		ALL_FIELD_MAPS.add(this) ;
 	}
 
 	@SuppressWarnings("unchecked")
 	public static void load()
 	{
-		JSONArray input = Util.readJsonArray(jsonPath) ;
+		JSONArray input = Util.readJsonArray(JSON_PATH) ;
 		FieldMap[] fieldMaps = new FieldMap[input.size()] ;
 
 		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
@@ -72,7 +72,7 @@ public class FieldMap extends GameMap
 			Continents continent = Continents.values()[continentID] ;
 			int[] connections = loadConnections(mapData) ;
 			Image image = ImageLoader.loadImage(Path.MAPS_IMG + "Map" + String.valueOf(id + 5) + ".png") ;
-			Clip music = GameMap.musicForest ;
+			Clip music = GameMap.MUSIC_FOREST ;
 
 			JSONObject collectibles = (JSONObject) mapData.get("Collectibles") ;
 			int collectibleLevel = (int) (long) collectibles.get("level") ;
@@ -240,19 +240,19 @@ public class FieldMap extends GameMap
 		Point minCoord = new Point(20, Sky.getHeight() + 20) ;
 		Dimension range = new Dimension(screen.mapSize().width - 100, screen.mapSize().height - 100) ;
 		Dimension step = new Dimension(1, 1) ;
-		Set<Image> grassImages = new HashSet<>(Set.of(grassImage, grassImage2)) ;
+		Set<Image> grassImages = new HashSet<>(Set.of(GRASS_IMAGE, GRASS_IMAGE2)) ;
 		
-		for (int i = 0 ; i <= numberRocks - 1 ; i += 1)
+		for (int i = 0 ; i <= NUMBER_ROCKS - 1 ; i += 1)
 		{
 			Point randomPos = randomPosOnLand(minCoord, range, step) ;
-			mapElems.add(new MapElement(i, "rock", rockImage, randomPos)) ;			
+			mapElems.add(new MapElement(i, "rock", ROCK_IMAGE, randomPos)) ;			
 		}
-		for (int i = 0 ; i <= numberTrees - 1 ; i += 1)
+		for (int i = 0 ; i <= NUMBER_TREES - 1 ; i += 1)
 		{
 			Point randomPos = randomPosOnLand(minCoord, range, step) ;
-			mapElems.add(new MapElement(i, "ForestTree", treeImage, randomPos)) ;				
+			mapElems.add(new MapElement(i, "ForestTree", TREE_IMAGE, randomPos)) ;			
 		}
-		for (int i = 0 ; i <= numberGrass - 1 ; i += 1)
+		for (int i = 0 ; i <= NUMBER_GRASS - 1 ; i += 1)
 		{
 			Point randomPos = randomPosOnLand(minCoord, range, step) ;
 			mapElems.add(new MapElement(i, "grass", grassImages.stream().skip(Util.randomInt(0, grassImages.size() - 1)).findFirst().get(), randomPos)) ;				
@@ -289,11 +289,11 @@ public class FieldMap extends GameMap
 	
 	public void addDiggingItems()
 	{
-		for (Item item : allDiggingItems.keySet())
+		for (Item item : ALL_DIGGING_ITEMS.keySet())
 		{
 			if (!containsItem(item)) { continue ;}
 			
-			diggingItems.put(item, allDiggingItems.get(item)) ;
+			diggingItems.put(item, ALL_DIGGING_ITEMS.get(item)) ;
 		}
 		calcDigItemChances() ;
 	}
@@ -388,7 +388,7 @@ public class FieldMap extends GameMap
 		return interactables ;
 	}
 	public void setCreatures(List<Creature> newValue) {creatures = newValue ;}
-	public static List<FieldMap> getAllFieldMaps() { return allFieldMaps ;}
+	public static List<FieldMap> getAllFieldMaps() { return ALL_FIELD_MAPS ;}
 	
 	@Override
 	public String toString()

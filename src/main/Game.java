@@ -609,7 +609,7 @@ public class Game
 	{
 		if (action == null) { return ;}
 
-		for (GameButton button : GameButton.getAll())
+		for (GameButton button : GameButton.getALL())
 		{
 			if (button.isActive() && button.isSelected() && (button.isClicked(mousePos, action) || action.equals("Enter")))
 			{	

@@ -24,12 +24,12 @@ import utilities.Util;
 public class CreatureAttributesWindow extends AttributesWindow
 {
 
-	private static final Point windowPos = Screen.getMe().pos(0.4, 0.2) ;
-	private static final Image image = ImageLoader.loadImage(Path.WINDOWS_IMG + "CreatureAttWindow.png") ;
+	private static final Point WINDOW_POS = Screen.getMe().pos(0.4, 0.2) ;
+	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "CreatureAttWindow.png") ;
 	
 	public CreatureAttributesWindow()
 	{
-		super(image, 1);
+		super(IMAGE, 1);
 	}
 
 	public void display(CreatureType creatureType)
@@ -37,10 +37,10 @@ public class CreatureAttributesWindow extends AttributesWindow
 
 		double angle = Draw.stdAngle ;
 		
-		GamePanel.getDP().drawImage(image, windowPos, Align.topLeft) ;
+		GamePanel.getDP().drawImage(IMAGE, WINDOW_POS, Align.topLeft) ;
 
 		SpriteAnimation userImage = creatureType.getMovingAnimations().spriteIdle ;
-		Point userPos = Util.translate(windowPos, size.width / 2, 60) ;
+		Point userPos = Util.translate(WINDOW_POS, size.width / 2, 60) ;
 		userImage.display(GamePanel.getDP(), userPos, Align.center) ;
 
 		Font namefont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
@@ -49,33 +49,33 @@ public class CreatureAttributesWindow extends AttributesWindow
 		Color textColor = colorPalette[0] ;
 		
 		String[] attText = Game.getAllText().get(TextCategories.attributes) ;		
-		Point namePos = Util.translate(windowPos, size.width / 2, 14) ;
-		Point levelPos = Util.translate(windowPos, size.width / 2, 30) ;
+		Point namePos = Util.translate(WINDOW_POS, size.width / 2, 14) ;
+		Point levelPos = Util.translate(WINDOW_POS, size.width / 2, 30) ;
 		GamePanel.getDP().drawText(namePos, Align.center, angle, creatureType.getName(), namefont, textColor) ;		
 		GamePanel.getDP().drawText(levelPos, Align.center, angle, attText[0] + ": " + creatureType.getLevel(), font, colorPalette[6]) ;
 		
 		
 		// attributes
-		Point lifePos = Util.translate(windowPos, 20, border + padding + 37) ;
-		Point mpPos = Util.translate(windowPos, 20, border + padding + 37 + 26) ;
+		Point lifePos = Util.translate(WINDOW_POS, 20, BORDER + PADDING + 37) ;
+		Point mpPos = Util.translate(WINDOW_POS, 20, BORDER + PADDING + 37 + 26) ;
 		String lifeText = attText[1] + ": " + Util.round(creatureType.getPA().getLife().getCurrentValue(), 1) ;
 		String mpText = attText[2] + ": " + Util.round(creatureType.getPA().getMp().getCurrentValue(), 1) ;
 		GamePanel.getDP().drawText(lifePos, Align.centerLeft, angle, lifeText, font, colorPalette[6]) ;
 		GamePanel.getDP().drawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[5]) ;
 				
 		BasicBattleAttribute[] attributes = creatureType.getBA().basicAttributes() ;
-		Point initialAttPos = Util.translate(windowPos, border + padding + 34, 124) ;
-		for (int i = 0; i <= attIcons.length - 1; i += 1)
+		Point initialAttPos = Util.translate(WINDOW_POS, BORDER + PADDING + 34, 124) ;
+		for (int i = 0; i <= ATT_ICONS.length - 1; i += 1)
 		{
 			Point attPos = Util.translate(initialAttPos, 117 * (i / 3), (i % 3) * 22) ;
 			String attValue = Util.round(attributes[i].getBaseValue(), 1) + " + " + Util.round(attributes[i].getBonus(), 1) + " + " + Util.round(attributes[i].getTrain(), 1) ;
 			
-			GamePanel.getDP().drawImage(attIcons[i], Util.translate(attPos, -15, 0), Scale.unit, Align.center) ;
+			GamePanel.getDP().drawImage(ATT_ICONS[i], Util.translate(attPos, -15, 0), Scale.unit, Align.center) ;
 			GamePanel.getDP().drawText(attPos, Align.centerLeft, angle, attValue, font, textColor) ;
 		}
 		Point critPos = Util.translate(initialAttPos, 0, 71) ;
 		String critValue = attText[9] + ": " + Util.round(100 * creatureType.getBA().TotalCritAtkChance(), 1) + "%" ;
-		GamePanel.getDP().drawImage(critIcon, Util.translate(initialAttPos, -15, 72), Scale.unit, Align.center) ;
+		GamePanel.getDP().drawImage(CRIT_ICON, Util.translate(initialAttPos, -15, 72), Scale.unit, Align.center) ;
 		GamePanel.getDP().drawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[6]) ;		
 		
 		

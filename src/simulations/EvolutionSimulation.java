@@ -365,7 +365,7 @@ public abstract class EvolutionSimulation
 	public static void playerLevelUpAvr()
 	{	
 
-		if (Player.maxLevel <= player.getLevel()) { return ;}
+		if (Player.MAX_LEVEL <= player.getLevel()) { return ;}
 		
 		AttributeIncrease attInc = player.getAttInc() ;
 		double[] attIncrease =  new double[attInc.getIncrement().basic().length + 1] ;
@@ -854,7 +854,7 @@ public abstract class EvolutionSimulation
 			playerOpponent.activateCounters() ;
 			if (playerOpponent.getAttWindow().isOpen())
 			{
-				CreatureType.attWindow.display(playerOpponent.getType()) ;
+				CreatureType.ATT_WINDOW.display(playerOpponent.getType()) ;
 			}
 		}
 

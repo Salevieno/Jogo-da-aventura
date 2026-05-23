@@ -18,29 +18,21 @@ import main.Palette;
 import main.Path;
 import screen.Screen;
 import utilities.Util;
-import windows.BagWindow;
+import windows.GameWindow;
 
 public abstract class HotKeysBar
 {
-	private static final Font font ;
-	private static final Color textColor  ;
-	private static final Image image ;
-	private static final Point barPos ;
-	
-	static
-	{
-		font = new Font(Game.getMainFontName(), Font.BOLD, 14) ;
-		textColor = Palette.colors[0] ;
-		image = ImageLoader.loadImage(Path.SIDEBAR_IMG + "HotBar.png") ;
-		barPos = new Point(Screen.getMe().mapSize().width + 2, Screen.getMe().getSize().height - SideBar.sy) ;
-	}
-	
-	public static Dimension size() { return Util.getSize(image) ;}
-	public static Point topLeft() { return new Point(barPos.x, barPos.y - size().height) ;}
+	private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 14) ;
+	private static final Color TEXT_COLOR = Palette.colors[0] ;
+	private static final Image IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "HotBar.png") ;
+	private static final Point BAR_POS = new Point(Screen.getMe().mapSize().width + 2, Screen.getMe().getSize().height - SideBar.SY) ;
+
+	public static Dimension size() { return Util.getSize(IMAGE) ;}
+	public static Point topLeft() { return new Point(BAR_POS.x, BAR_POS.y - size().height) ;}
 
 	public static int slotHovered(Point mousePos)
 	{
-		Dimension slotSize = Util.getSize(SideBar.slotImage) ;
+		Dimension slotSize = Util.getSize(SideBar.SLOT_IMAGE) ;
 		for (int i = 0 ; i <= Player.getHotKeys().length - 1 ; i += 1)
 		{
 			Point slotCenter = Util.translate(topLeft(), 10, 10 + 20 * i) ;
@@ -55,17 +47,17 @@ public abstract class HotKeysBar
 	
 	public static void display(List<Item> hotItems, Point mousePos)
 	{
-		Dimension slotSize = Util.getSize(SideBar.slotImage) ;
+		Dimension slotSize = Util.getSize(SideBar.SLOT_IMAGE) ;
 
-		GamePanel.getDP().drawImage(image, barPos, Align.bottomLeft) ;
+		GamePanel.getDP().drawImage(IMAGE, BAR_POS, Align.bottomLeft) ;
 		
 		for (int i = 0 ; i <= Player.getHotKeys().length - 1 ; i += 1)
 		{
 			Point slotCenter = Util.translate(topLeft(), 13, 16 + 24 * i) ;
 			Point keyTextPos = Util.translate(slotCenter, slotSize.width / 2 + 6, slotSize.height / 2) ;
 			
-			GamePanel.getDP().drawImage(BagWindow.slotImage, slotCenter, Align.center) ;
-			GamePanel.getDP().drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.getHotKeys()[i], font, textColor) ;
+			GamePanel.getDP().drawImage(GameWindow.getSlotImage(), slotCenter, Align.center) ;
+			GamePanel.getDP().drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.getHotKeys()[i], FONT, TEXT_COLOR) ;
 			
 			if (hotItems.get(i) == null) { continue ;}
 
@@ -74,7 +66,7 @@ public abstract class HotKeysBar
 			if (!Util.isInside(mousePos, Util.translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize)) { continue ;}
 			
 			Point textPos = Util.translate(slotCenter, - slotSize.width / 2 - 10, 0);
-			GamePanel.getDP().drawText(textPos, Align.centerRight, Draw.stdAngle, hotItems.get(i).getName(), font, textColor) ;
+			GamePanel.getDP().drawText(textPos, Align.centerRight, Draw.stdAngle, hotItems.get(i).getName(), FONT, TEXT_COLOR) ;
 		}
 	}
 }

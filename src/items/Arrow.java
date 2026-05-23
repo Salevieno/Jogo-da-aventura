@@ -22,10 +22,10 @@ public class Arrow extends Item
 	private final double atkPower ;
 	private final Elements elem ;	
 	
-	private static final Image woodArrowIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconWoodArrow.png") ;
-	private static final Image strongArrowIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconStrongArrow.png") ;
-	private static final Image boltArrowIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconBoltArrow.png") ;
-	private static final Image ArrowImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq7_Arrow.png") ;
+	private static final Image WOOD_ARROW_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconWoodArrow.png") ;
+	private static final Image STRONG_ARROW_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconStrongArrow.png") ;
+	private static final Image BOLT_ARROW_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconBoltArrow.png") ;
+	private static final Image ARROW_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq7_Arrow.png") ;
 	private static final Arrow[] all = new Arrow[20] ;
 	
 	protected Arrow(int id, int price, double dropChance, double atkPower, Elements elem)
@@ -57,16 +57,16 @@ public class Arrow extends Item
 	
 	public static Image imageFromID(int id)
 	{
-		if (id % 3 == 0) { return woodArrowIcon ;}
-		if (id % 3 == 1) { return strongArrowIcon ;}
-		if (id % 3 == 2) { return boltArrowIcon ;}
+		if (id % 3 == 0) { return WOOD_ARROW_ICON ;}
+		if (id % 3 == 1) { return STRONG_ARROW_ICON ;}
+		if (id % 3 == 2) { return BOLT_ARROW_ICON ;}
 		
 		return null ;
 	}
 
 	public Image fullSizeImage()
 	{
-		return ArrowImage ;
+		return ARROW_IMAGE ;
 	}
 	
 	public void use(LiveBeing user)
@@ -101,7 +101,7 @@ public class Arrow extends Item
 
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 	}
 	
 	@Override

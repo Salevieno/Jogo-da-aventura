@@ -16,17 +16,12 @@ public class TreasureChest extends MapElement
 	private final List<Item> items ;
 	private final int gold ;
 	
-	private static final Image treasureChestsImage ;
+	private static final Image TREASURE_CHEST_IMAGE = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem15_Chest.png") ;
 
-	static
-	{
-		treasureChestsImage = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem15_Chest.png") ;
-	}
-	
 	public TreasureChest(int id, Point pos, List<Item> items, int gold)
 	{
-		super(id, "treasureChest" + id, treasureChestsImage, pos) ;
-		hitbox = new HitboxRectangle(center(), Util.getSize(treasureChestsImage), 0.8) ;
+		super(id, "treasureChest" + id, TREASURE_CHEST_IMAGE, pos) ;
+		hitbox = new HitboxRectangle(center(), Util.getSize(TREASURE_CHEST_IMAGE), 0.8) ;
 		this.items = items ;
 		this.gold = gold ;
 	}

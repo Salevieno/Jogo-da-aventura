@@ -225,7 +225,7 @@ public class Pet extends LiveBeing
 				
 			case magical:
 			{
-				int spellID = Player.spellKeys.indexOf(currentAction) ;
+				int spellID = Player.SPELL_KEYS.indexOf(currentAction) ;
 				Spell spell = getActiveSpells().get(spellID) ;
 				if (canUseSpell(spell))
 				{
@@ -322,8 +322,8 @@ public class Pet extends LiveBeing
 		int move = Util.randomInt(0, 1 + getActiveSpells().size()) ;
 		switch (move)
 		{
-			case 0: currentAction = battleKeys[0] ; return ;
-			case 1: currentAction = battleKeys[1] ; return ;
+			case 0: currentAction = BATTLE_KEYS[0] ; return ;
+			case 1: currentAction = BATTLE_KEYS[1] ; return ;
 			default: currentAction = String.valueOf(move - 2) ; return ;
 		}
 	}

@@ -59,18 +59,18 @@ public abstract class GameMap
 	protected final Map<Item, Double> diggingItems ;
 	protected final List<SpriteAnimation> animations ;
 
-	protected static final Dimension screenSize = Screen.getMe().getSize() ;
-	protected static final String dadosPath = Path.DADOS + "gameMaps\\" ;
+	protected static final Dimension SCREEN_SIZE = Screen.getMe().getSize() ;
+	protected static final String DADOS_PATH = Path.DADOS + "gameMaps\\" ;
 
 	// TODO if it makes sense, move forge, sign AND the dock and boat to a new class of map elements or in the map elements class
 
-	protected static final Image dockImg = ImageLoader.loadImage(Path.MAPS_IMG + "Dock.png") ;
-	protected static final Image boatImg = ImageLoader.loadImage(Path.MAPS_IMG + "Boat.png") ;
-	protected static final Image infoWindow ;	
-	protected static final Map<Item, Double> allDiggingItems ;
-	protected static final Clip musicForest ;
-	protected static final Clip musicSpecial ;
-	private static final List<GameMap> allMaps ;
+	protected static final Image DOCK_IMAGE = ImageLoader.loadImage(Path.MAPS_IMG + "Dock.png") ;
+	protected static final Image BOAT_IMAGE = ImageLoader.loadImage(Path.MAPS_IMG + "Boat.png") ;
+	protected static final Image INFO_WINDOW_IMAGE ;	
+	protected static final Map<Item, Double> ALL_DIGGING_ITEMS ;
+	protected static final Clip MUSIC_FOREST ;
+	protected static final Clip MUSIC_SPECIAL ;
+	private static final List<GameMap> ALL ;
 
 	static
 	{
@@ -81,22 +81,22 @@ public abstract class GameMap
 		int[] genItemIDs = new int[] {2,4,8,9,25,33,35,41,45,46,48,50,52,59,60,61,67,68,75,77,80,90,91,109,110,113,116,117,120,122,125,126,131,136,141,142,143,144,147,150,154,155,156,157,161,162,166,167,168,169,170,171,172,173,175,178,179,183,191,193,202,203,205,215,221,223,224,228,230,231,232,233,242,248,249,250,259,267,268,276,277,278,283,286,292,293,294,295,296,299,301,310,311,315,316,317,323,325,327,335,337,338,339,341,343,345,346,350,353,355,358,363,367,368,370,371,375,378,381} ;
 		double[] genItemPotentials = new double[] {5,5,5,5,4,4,3,4,4,5,3,2,4,2,1,2,3,4,4,2,3,1,1,3,1,3,2,4,3,1,3,3,1,2,2,1,3,2,3,2,4,4,4,5,2,3,3,5,5,4,4,1,2,3,2,2,3,4,5,2,2,3,4,2,1,5,4,5,5,4,5,5,5,3,2,4,3,4,4,1,4,1,2,5,3,4,5,4,2,1,2,3,4,3,2,3,3,1,1,2,2,3,2,4,3,2,4,5,3,4,4,3,2,2,5,4,3,2,1} ;
 		
-		allDiggingItems = new HashMap<>() ;
+		ALL_DIGGING_ITEMS = new HashMap<>() ;
 		for (int i = 0 ; i <= fabItemIDs.length - 1; i += 1)
 		{
-			allDiggingItems.put(Fab.getAll()[fabItemIDs[i]], fabItemPotentials[i]) ;
+			ALL_DIGGING_ITEMS.put(Fab.getAll()[fabItemIDs[i]], fabItemPotentials[i]) ;
 		}
 		
 		for (int i = 0 ; i <= genItemIDs.length - 1; i += 1)
 		{
-			allDiggingItems.put(GeneralItem.getAll()[genItemIDs[i]], genItemPotentials[i]) ;
+			ALL_DIGGING_ITEMS.put(GeneralItem.getAll()[genItemIDs[i]], genItemPotentials[i]) ;
 		}
 		
-		infoWindow = ImageLoader.loadImage(Path.WINDOWS_IMG + "MapInfo.png") ;
+		INFO_WINDOW_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "MapInfo.png") ;
 
-		musicForest = Music.musicFileToClip(new File(Path.MUSIC + "floresta.wav").getAbsoluteFile()) ;
-		musicSpecial = Music.musicFileToClip(new File(Path.MUSIC + "12-Special.wav").getAbsoluteFile()) ;
-		allMaps = new ArrayList<>() ;
+		MUSIC_FOREST = Music.musicFileToClip(new File(Path.MUSIC + "floresta.wav").getAbsoluteFile()) ;
+		MUSIC_SPECIAL = Music.musicFileToClip(new File(Path.MUSIC + "12-Special.wav").getAbsoluteFile()) ;
+		ALL = new ArrayList<>() ;
 		// Log.diggingItems(allDiggingItems) ;
 	}
 	
@@ -114,7 +114,7 @@ public abstract class GameMap
 		this.animations = animations ;		
 		this.mapElems = new ArrayList<>() ;
 		this.groundRegions = groundRegions ;
-		allMaps.add(this) ;
+		ALL.add(this) ;
 	}
 
 
@@ -362,7 +362,7 @@ public abstract class GameMap
 		Font largeFont = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
 		Font titleFont = new Font(Game.getMainFontName(), Font.BOLD, 15) ;
 		
-		GamePanel.getDP().drawImage(infoWindow, pos, Align.topLeft) ;
+		GamePanel.getDP().drawImage(INFO_WINDOW_IMAGE, pos, Align.topLeft) ;
 		
 		Point titlePos = Util.translate(pos, size.width / 2 + 5, 13) ;
 		GamePanel.getDP().drawText(titlePos, Align.center, 0, name, titleFont, Palette.colors[0]) ;
@@ -432,8 +432,8 @@ public abstract class GameMap
  		
  		if (name.equals("Forest 9"))
  		{
- 			GamePanel.getDP().drawImage(dockImg, Screen.getMe().pos(0.6, 0.85), Align.centerLeft) ;
- 			GamePanel.getDP().drawImage(boatImg, Screen.getMe().pos(0.75, 0.8), Align.centerLeft) ;
+ 			GamePanel.getDP().drawImage(DOCK_IMAGE, Screen.getMe().pos(0.6, 0.85), Align.centerLeft) ;
+ 			GamePanel.getDP().drawImage(BOAT_IMAGE, Screen.getMe().pos(0.75, 0.8), Align.centerLeft) ;
  		}
  	}
 	
@@ -449,7 +449,7 @@ public abstract class GameMap
 	public List<NPC> getNPCs() {return npcs ;}
 	public List<Building> getBuildings() {return buildings ;}
 	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
-	public static List<GameMap> getAllMaps() { return allMaps ;}
+	public static List<GameMap> getAllMaps() { return ALL ;}
 	public abstract Set<Interactable> getInteractables() ;
 	public List<NPC> getAllNPCs()
 	{ 

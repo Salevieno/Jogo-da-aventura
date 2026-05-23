@@ -18,12 +18,10 @@ public class Alchemy extends Item
 	private final double lifeHeal ;
 	private final double MPHeal ;
 	
+	private static final Image HERB_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\IconHerb.png") ;
+	private static final Image WOOD_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\IconWood.png") ;
+	private static final Image METAL_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\IconMetal.png") ;
 	private static final Alchemy[] all = new Alchemy[60] ;
-	
-	private static final String pathImg = "\\Windows\\bagIcons\\" ;
-	private static final Image HerbIcon = ImageLoader.loadImage(pathImg + "IconHerb.png") ;
-	private static final Image WoodIcon = ImageLoader.loadImage(pathImg + "IconWood.png") ;
-	private static final Image MetalIcon = ImageLoader.loadImage(pathImg + "IconMetal.png") ;
 	
 	public Alchemy(int id, int price, double lifeHeal, double mpHeal)
 	{		
@@ -48,7 +46,7 @@ public class Alchemy extends Item
 	public static boolean isWood(int id) {return id % 3 == 1 ;}
 	public static boolean isMetal(int id) {return id % 3 == 2 ;}
 	
-	public static Image imageFromID(int id) { return isHerb(id) ? HerbIcon : isWood(id) ? WoodIcon : MetalIcon ;}
+	public static Image imageFromID(int id) { return isHerb(id) ? HERB_ICON : isWood(id) ? WOOD_ICON : METAL_ICON ;}
 
 	public static Alchemy[] getAll() {return all ;}
 	
@@ -61,7 +59,7 @@ public class Alchemy extends Item
 	
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 	}
 
 	@Override

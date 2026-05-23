@@ -18,21 +18,20 @@ public class Potion extends Item
 	private final double lifeHeal ;
 	private final double MPHeal ;
 	
-	private static final Potion[] all = new Potion[60] ;
+	private static final Image LIFE_POTION_SMALL_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconLifePotionSmall.png") ;
+	private static final Image LIFE_POTION_MEDIUM_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconLifePotionMedium.png") ;
+	private static final Image LIFE_POTION_LARGE_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconLifePotionLarge.png") ;
+	private static final Image MP_POTION_SMALL_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconMpPotionSmall.png") ;
+	private static final Image MP_POTION_MEDIUM_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconMpPotionMedium.png") ;
+	private static final Image MP_POTION_LARGE_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconMpPotionLarge.png") ;
+	private static final Potion[] ALL = new Potion[60] ;
 	
-	private static final Image lifePotionSmall = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconLifePotionSmall.png") ;
-	private static final Image lifePotionMedium = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconLifePotionMedium.png") ;
-	private static final Image lifePotionLarge = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconLifePotionLarge.png") ;
-	private static final Image mpPotionSmall = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconMpPotionSmall.png") ;
-	private static final Image mpPotionMedium = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconMpPotionMedium.png") ;
-	private static final Image mpPotionLarge = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconMpPotionLarge.png") ;
-
 	public Potion(int id, int price, double dropChance, double lifeHeal, double MPHeal)
 	{
 		super(id, "", "", imageFromID(id), price, dropChance) ;
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
-		all[id] = this ;
+		ALL[id] = this ;
 	}
 
 	public static void updateText(String language)
@@ -41,26 +40,26 @@ public class Potion extends Item
 		for (String[] line : data)
 		{
 			int id = Integer.parseInt(line[0]) ;
-			all[id].setName(line[1]) ;
-			all[id].setDescription(line[2]) ;
+			ALL[id].setName(line[1]) ;
+			ALL[id].setDescription(line[2]) ;
 		}
 	}
 
 	public static Image imageFromID(int id)
 	{
-		if (id % 6 == 0) { return lifePotionSmall ;}
-		if (id % 4 == 0) { return lifePotionMedium ;}
-		if (id % 2 == 0) { return lifePotionLarge ;}
-		if (id % 5 == 0) { return mpPotionSmall ;}
-		if (id % 3 == 0) { return mpPotionMedium ;}
-		if (id % 1 == 0) { return mpPotionLarge ;}
+		if (id % 6 == 0) { return LIFE_POTION_SMALL_ICON ;}
+		if (id % 4 == 0) { return LIFE_POTION_MEDIUM_ICON ;}
+		if (id % 2 == 0) { return LIFE_POTION_LARGE_ICON ;}
+		if (id % 5 == 0) { return MP_POTION_SMALL_ICON ;}
+		if (id % 3 == 0) { return MP_POTION_MEDIUM_ICON ;}
+		if (id % 1 == 0) { return MP_POTION_LARGE_ICON ;}
 		
 		return null ;
 	}
 	
 	public double getLifeHeal() {return lifeHeal ;}
 	public double getMPHeal() {return MPHeal ;}	
-	public static Potion[] getAll() {return all ;}
+	public static Potion[] getAll() {return ALL ;}
 		
 	public void use(LiveBeing target, double powerMult)
 	{
@@ -72,7 +71,7 @@ public class Potion extends Item
 
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 	}
 		
 	@Override

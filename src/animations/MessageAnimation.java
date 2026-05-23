@@ -16,13 +16,13 @@ import utilities.Util;
 
 public class MessageAnimation extends Animation
 {
-	private static final Font smallFont = DrawPrimitives.stdFont ;
-	private static final Image messageBoxImg = ImageLoader.loadImage(Path.PLAYER_IMG + "messageBox.png") ;
-    private static final double speed = 60 ;
-
     private Point initialPos ;
     private final String text ;
     private final Color color ;
+
+	private static final Font SMALL_FONT = DrawPrimitives.stdFont ;
+	private static final Image MESSAGE_BOX_IMG = ImageLoader.loadImage(Path.PLAYER_IMG + "messageBox.png") ;
+    private static final double SPEED = 60 ;
 
 	private MessageAnimation(Point pos, String text, Color color)
     {
@@ -40,8 +40,8 @@ public class MessageAnimation extends Animation
 
     public void play()
     {
-		Point pos = Util.translate(initialPos, 0, (int) (-speed * timer.rate())) ;
-		GamePanel.getDP().drawImage(messageBoxImg, pos, Draw.stdAngle, Scale.unit, Align.topCenter, 0.9) ;
-		GamePanel.getDP().drawText(Util.translate(pos, 5 - messageBoxImg.getWidth(null) / 2, 20), Align.centerLeft, Draw.stdAngle, text, smallFont, color) ;
+		Point pos = Util.translate(initialPos, 0, (int) (-SPEED * timer.rate())) ;
+		GamePanel.getDP().drawImage(MESSAGE_BOX_IMG, pos, Draw.stdAngle, Scale.unit, Align.topCenter, 0.9) ;
+		GamePanel.getDP().drawText(Util.translate(pos, 5 - MESSAGE_BOX_IMG.getWidth(null) / 2, 20), Align.centerLeft, Draw.stdAngle, text, SMALL_FONT, color) ;
     }
 }

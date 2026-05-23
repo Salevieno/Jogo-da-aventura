@@ -14,13 +14,13 @@ public class Buff
 {
 	private final Map<Attributes, BuffPower> power ;
 
-	private static final Map<Integer, Buff> allBuffs ;
-	private static final Map<Integer, Buff> allNerfs ;
+	private static final Map<Integer, Buff> ALL_BUFFS ;
+	private static final Map<Integer, Buff> ALL_NERFS ;
 	
 	static
 	{
-		allBuffs = new HashMap<>() ;
-		allNerfs = new HashMap<>() ;
+		ALL_BUFFS = new HashMap<>() ;
+		ALL_NERFS = new HashMap<>() ;
 	}
 	
 	protected Buff(boolean isBuff, int id, Map<Attributes, BuffPower> power)
@@ -28,11 +28,11 @@ public class Buff
 		this.power = power ;
 		if (isBuff)
 		{
-			allBuffs.put(id, this) ;
+			ALL_BUFFS.put(id, this) ;
 		}
 		else
 		{
-			allNerfs.put(id, this) ;
+			ALL_NERFS.put(id, this) ;
 		}
 	}
 
@@ -69,8 +69,8 @@ public class Buff
 		}
 	}
 
-	public static Map<Integer, Buff> getAllBuffs() { return allBuffs ;}
-	public static Map<Integer, Buff> getAllNerfs() { return allNerfs ;}
+	public static Map<Integer, Buff> getAllBuffs() { return ALL_BUFFS ;}
+	public static Map<Integer, Buff> getAllNerfs() { return ALL_NERFS ;}
 
 	@Override
 	public String toString()

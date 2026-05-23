@@ -39,7 +39,7 @@ public class Spell
 	private final String effect ;
 	private final String description ;
 	
-	private static final List<Spell> all = new ArrayList<>() ;
+	private static final List<Spell> ALL = new ArrayList<>() ;
 
 	
 	
@@ -68,7 +68,7 @@ public class Spell
 		this.elem = elem;
 		this.effect = info;
 		this.description = description;
-		all.add(this);
+		ALL.add(this);
 	}
 
 	public Spell(Spell spell)
@@ -190,7 +190,7 @@ public class Spell
 		GameTimer cooldownCounter = GameTimer.fromJson(cooldownData);
 		GameTimer effectCounter = GameTimer.fromJson(effectData);
 
-		Spell spell = all.get(id) ;
+		Spell spell = ALL.get(id) ;
 		spell.level = level;
 		spell.isActive = isActive;
 		spell.mpCost = mpCost ;
@@ -199,7 +199,7 @@ public class Spell
 		return spell;
 	}
 
-	public static List<Spell> getAll() { return all;}
+	public static List<Spell> getAll() { return ALL;}
 
 
 	@Override

@@ -15,13 +15,13 @@ import utilities.Util;
 
 public class ObtainedItemAnimation extends Animation
 {
-	private static final Font smallFont = DrawPrimitives.stdFont ;
-	private static final Image obtainedItemImg = ImageLoader.loadImage(Path.PLAYER_IMG + "ObtainedItem.png") ;
-    private static final double speed = 60 ;
-
     private Point initialPos ;
     private String text ;
     private Color color ;
+
+	private static final Font SMALL_FONT = DrawPrimitives.stdFont ;
+	private static final Image OBTAINED_ITEM_IMG = ImageLoader.loadImage(Path.PLAYER_IMG + "ObtainedItem.png") ;
+    private static final double SPEED = 60 ;
 
 	private ObtainedItemAnimation(Point pos, String text, Color color)
     {
@@ -39,9 +39,9 @@ public class ObtainedItemAnimation extends Animation
 
     protected void play()
     {
-		Point pos = Util.translate(initialPos, 0, (int) (-speed * timer.rate())) ;
-		GamePanel.getDP().drawImage(obtainedItemImg, pos, Align.topCenter) ;
-		GamePanel.getDP().drawText(Util.translate(pos, 0, 0), Align.topCenter, Draw.stdAngle, "Você obteve", smallFont, color) ;
-		GamePanel.getDP().drawText(Util.translate(pos, 5 - obtainedItemImg.getWidth(null) / 2, 20), Align.topLeft, Draw.stdAngle, text, smallFont, color) ;
+		Point pos = Util.translate(initialPos, 0, (int) (-SPEED * timer.rate())) ;
+		GamePanel.getDP().drawImage(OBTAINED_ITEM_IMG, pos, Align.topCenter) ;
+		GamePanel.getDP().drawText(Util.translate(pos, 0, 0), Align.topCenter, Draw.stdAngle, "Você obteve", SMALL_FONT, color) ;
+		GamePanel.getDP().drawText(Util.translate(pos, 5 - OBTAINED_ITEM_IMG.getWidth(null) / 2, 20), Align.topLeft, Draw.stdAngle, text, SMALL_FONT, color) ;
     }
 }

@@ -48,7 +48,7 @@ public class Creature extends LiveBeing
 
  	public Creature(CreatureType CT, Point2D.Double pos)
  	{
- 		super(new PersonalAttributes(CT.getPA()), new BattleAttributes(CT.getBA()), CT.getMovingAnimations(), CreatureType.attWindow) ;
+ 		super(new PersonalAttributes(CT.getPA()), new BattleAttributes(CT.getBA()), CT.getMovingAnimations(), CreatureType.ATT_WINDOW) ;
 		
 		this.type = CT ;
 		this.name = CT.getName();
@@ -184,8 +184,8 @@ public class Creature extends LiveBeing
 			int move = Util.randomInt(0, qtdAvailableMoves) ;
 			switch (move)
 			{
-				case 0:	setCurrentAction(battleKeys[0]) ; return ;	// Physical attack
-				case 1:	setCurrentAction(battleKeys[1]) ; return ;	// Defense
+				case 0:	setCurrentAction(BATTLE_KEYS[0]) ; return ;	// Physical attack
+				case 1:	setCurrentAction(BATTLE_KEYS[1]) ; return ;	// Defense
 				case 2:	setCurrentAction(String.valueOf(Util.randomInt(0, spells.size() - 1))) ; return ;	// spell
 			}
 			return ;
@@ -196,8 +196,8 @@ public class Creature extends LiveBeing
 		int move = Util.randomFromChanceList(modifiedGenes) ;
 		switch (move)
 		{
-			case 0:	setCurrentAction(battleKeys[0]) ; return ;	// Physical attack
-			case 1:	setCurrentAction(battleKeys[1]) ; return ;	// Defense
+			case 0:	setCurrentAction(BATTLE_KEYS[0]) ; return ;	// Physical attack
+			case 1:	setCurrentAction(BATTLE_KEYS[1]) ; return ;	// Defense
 			case 2:	setCurrentAction(String.valueOf(Util.randomInt(0, spells.size() - 1))) ; return ;	// spell
 		}
 
@@ -211,7 +211,7 @@ public class Creature extends LiveBeing
 				
 			case magical:
 			{
-				int spellID = Player.spellKeys.indexOf(currentAction) ;
+				int spellID = Player.SPELL_KEYS.indexOf(currentAction) ;
 				Spell spell = getActiveSpells().get(spellID) ;
 				if (canUseSpell(spell))
 				{

@@ -30,13 +30,13 @@ public class ShoppingWindow extends GameWindow
 	private List<Item> itemsOnWindow ;
 	private boolean buyMode ;
 
-	private static final Point windowPos = Screen.getMe().pos(0.4, 0.2) ;
-	private static final int numberItemsPerWindow = 10 ;
-	private static final Image image = ImageLoader.loadImage(Path.WINDOWS_IMG + "Shopping.png") ;
+	private static final Point WINDOW_POS = Screen.getMe().pos(0.4, 0.2) ;
+	private static final int QTD_ITEMS_ON_WINDOW = 10 ;
+	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Shopping.png") ;
 	
 	public ShoppingWindow(List<Item> itemsForSale)
 	{
-		super("Shopping", windowPos, image, 1, 1, Math.min(itemsForSale.size(), numberItemsPerWindow), calcNumberWindows(itemsForSale.size())) ;
+		super("Shopping", WINDOW_POS, IMAGE, 1, 1, Math.min(itemsForSale.size(), QTD_ITEMS_ON_WINDOW), calcNumberWindows(itemsForSale.size())) ;
 		this.itemsForSale = itemsForSale ;
 		itemsOnWindow = calcItemsOnWindow() ;
 		buyMode = true ;
@@ -44,7 +44,7 @@ public class ShoppingWindow extends GameWindow
 
 	public void setBuyMode(boolean buyMode) { this.buyMode = buyMode ;}
 	
-	private Item selectedItem() { return itemsForSale.get(item + window * numberItemsPerWindow) ;}
+	private Item selectedItem() { return itemsForSale.get(item + window * QTD_ITEMS_ON_WINDOW) ;}
 	
 	public void setIemsForSellingMode(BagWindow bag)
 	{
@@ -54,7 +54,7 @@ public class ShoppingWindow extends GameWindow
 		updateWindow() ;
 	}
 	
-	private static int calcNumberWindows(int numberItems) { return (int) Math.ceil(numberItems / (double)numberItemsPerWindow) ;}
+	private static int calcNumberWindows(int numberItems) { return (int) Math.ceil(numberItems / (double)QTD_ITEMS_ON_WINDOW) ;}
 	
 	public void updateNumberWindows() { numberWindows = calcNumberWindows(itemsForSale.size()) ;}
 	
@@ -137,50 +137,50 @@ public class ShoppingWindow extends GameWindow
 	
 	private List<Item> calcItemsOnWindow()
 	{
-		if (itemsForSale.size() <= numberItemsPerWindow)
+		if (itemsForSale.size() <= QTD_ITEMS_ON_WINDOW)
 		{
 			return itemsForSale ;
 		}
 		
-		int firstItemID = window * numberItemsPerWindow ;
-		int lastItemID = Math.min(firstItemID + numberItemsPerWindow, itemsForSale.size()) ;
+		int firstItemID = window * QTD_ITEMS_ON_WINDOW ;
+		int lastItemID = Math.min(firstItemID + QTD_ITEMS_ON_WINDOW, itemsForSale.size()) ;
 		
 		return itemsForSale.subList(firstItemID, lastItemID) ;		
 	}
 	
 	public void display(Point mousePos)
 	{
-		Point itemPos = Util.translate(windowPos, border + padding + Item.slot.getWidth(null) / 2, border + 20 + padding + Item.slot.getHeight(null) / 2) ;
-		Point titlePos = Util.translate(windowPos, size.width / 2, 16) ;
+		Point itemPos = Util.translate(WINDOW_POS, BORDER + PADDING + Item.getSlotImage().getWidth(null) / 2, BORDER + 20 + PADDING + Item.getSlotImage().getHeight(null) / 2) ;
+		Point titlePos = Util.translate(WINDOW_POS, size.width / 2, 16) ;
 		double angle = Draw.stdAngle ;
 		
-		GamePanel.getDP().drawImage(image, windowPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;		
-		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, titleFont, Palette.colors[0]) ;				
+		GamePanel.getDP().drawImage(IMAGE, WINDOW_POS, angle, Scale.unit, Align.topLeft, stdOpacity) ;		
+		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, TITLE_FONT, Palette.colors[0]) ;				
 		
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
 		{
 			Item bagItem = itemsOnWindow.get(i) ;
 			String qtdItem = buyMode ? "" : "" ; // TODO pegar bag e mostrar qtos itens tem
-			Point namePos = Util.translate(itemPos, border + 10, 0) ;
-			Point pricePos = Util.translate(namePos, size.width - border - padding - 50, 0) ;
+			Point namePos = Util.translate(itemPos, BORDER + 10, 0) ;
+			Point pricePos = Util.translate(namePos, size.width - BORDER - PADDING - 50, 0) ;
 			Point coinPos = Util.translate(pricePos, 10, 0) ;
 			
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(100, 10), i) ;
-			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? selColor : stdColor ;
-			GamePanel.getDP().drawImage(Item.slot, itemPos, angle, Scale.unit, Align.center) ;
+			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? SELECTED_COLOR : STD_COLOR ;
+			GamePanel.getDP().drawImage(Item.getSlotImage(), itemPos, angle, Scale.unit, Align.center) ;
 			GamePanel.getDP().drawImage(bagItem.getImage(), itemPos, angle, Scale.unit, Align.center) ;
-			GamePanel.getDP().drawText(namePos, Align.centerLeft, angle, bagItem.getName() + qtdItem, stdFont, itemColor) ;
-			GamePanel.getDP().drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), stdFont, Palette.colors[14]) ;
+			GamePanel.getDP().drawText(namePos, Align.centerLeft, angle, bagItem.getName() + qtdItem, STD_FONT, itemColor) ;
+			GamePanel.getDP().drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), STD_FONT, Palette.colors[14]) ;
 			GamePanel.getDP().drawImage(Player.getCoinImg(), coinPos, Align.center) ;
 			
 			if (this.item == itemsOnWindow.indexOf(bagItem))
 			{
-				bagItem.displayInfo(Util.translate(windowPos, -10, 0), Align.topRight) ;
+				bagItem.displayInfo(Util.translate(WINDOW_POS, -10, 0), Align.topRight) ;
 			}
 			itemPos.y += 23 ;
 		}
 		
-		Draw.windowArrows(Util.translate(windowPos, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(Util.translate(WINDOW_POS, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
 		
 	}
 }

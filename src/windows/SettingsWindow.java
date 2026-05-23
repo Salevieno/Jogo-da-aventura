@@ -32,22 +32,14 @@ public class SettingsWindow extends GameWindow
 	private int selectedActionKeyID ;
 	
 	
-	private static final Point windowPos ;
-	private static final Font font ;
-    public final static Image imageMenu0 ;
-	private static final Image imageMenu1 ;
-	
-	static
-	{
-		windowPos = Screen.getMe().pos(0.4, 0.35) ;
-		font = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
-	    imageMenu0 = ImageLoader.loadImage(Path.WINDOWS_IMG + "windowSettings.png") ;
-		imageMenu1 = ImageLoader.loadImage(Path.WINDOWS_IMG + "settingsDeeperWindow.png") ;
-	}
-	
+	private static final Point WINDOW_POS = Screen.getMe().pos(0.4, 0.35) ;
+	private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
+    public final static Image MENU_0_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "windowSettings.png") ;
+	private static final Image MENU_1_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "settingsDeeperWindow.png") ;
+
 	public SettingsWindow(boolean musicIsOn, boolean soundEffectsAreOn, boolean showAtkRange, int attDisplay, int damageAnimation)
 	{
-		super("Opções", windowPos, imageMenu0, 3, 0, 6, 0) ;
+		super("Opções", WINDOW_POS, MENU_0_IMAGE, 3, 0, 6, 0) ;
 		this.musicIsOn = musicIsOn ;
 		this.soundEffectsAreOn = soundEffectsAreOn ;
 		this.showAtkRange = showAtkRange ;
@@ -189,7 +181,7 @@ public class SettingsWindow extends GameWindow
 			
 		Color textColor = selected ? Palette.colors[20] : Palette.colors[2] ;
 
-		GamePanel.getDP().drawText(textPos, Align.bottomCenter, angle, text, font, textColor) ;	
+		GamePanel.getDP().drawText(textPos, Align.bottomCenter, angle, text, FONT, textColor) ;	
 	}
 	
 	
@@ -197,10 +189,10 @@ public class SettingsWindow extends GameWindow
 	{
 		
 		boolean[] keyIsOn = new boolean[] {musicIsOn, soundEffectsAreOn, showAtkRange, false, false} ;
-		Point optionPos = Util.translate(windowPos, 25, 42) ;
+		Point optionPos = Util.translate(WINDOW_POS, 25, 42) ;
 		double angle = Draw.stdAngle ;
 		int sx = image.getWidth(null) - 45 ;
-		int sy = font.getSize() + 4 ;
+		int sy = FONT.getSize() + 4 ;
 		
 		for (int i = 0 ; i <= numberItems - 1 ; i += 1)
 		{
@@ -208,7 +200,7 @@ public class SettingsWindow extends GameWindow
 			Point actionKeyPos = Util.translate(optionPos, sx, 0) ;
 			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
 			Color textColor = getTextColor(item == i) ;
-			GamePanel.getDP().drawText(optionPos, Align.bottomLeft, angle, text[i], font, textColor) ;
+			GamePanel.getDP().drawText(optionPos, Align.bottomLeft, angle, text[i], FONT, textColor) ;
 			
 			if (i == 3)
 			{
@@ -233,10 +225,10 @@ public class SettingsWindow extends GameWindow
 	
 	private void displayMenu1(Point mousePos, String[] text)
 	{
-		Point optionPos = Util.translate(windowPos, 25, 42) ;
+		Point optionPos = Util.translate(WINDOW_POS, 25, 42) ;
 		double angle = Draw.stdAngle ;
 		int sx = image.getWidth(null) - 45 ;
-		int sy = font.getSize() + 4 ;
+		int sy = FONT.getSize() + 4 ;
 		
 		for (int i = 0 ; i <= PlayerActions.values().length - 1 ; i += 1)
 		{
@@ -244,23 +236,23 @@ public class SettingsWindow extends GameWindow
 			Point actionKeyPos = Util.translate(optionPos, sx, 0) ;
 			checkMouseSelection(mousePos, optionPos, Align.bottomLeft, new Dimension(100, 10), i) ;
 			Color textColor = getTextColor(item == i) ;
-			GamePanel.getDP().drawText(optionPos, Align.bottomLeft, angle, text[i + 6], font, textColor) ;
-			GamePanel.getDP().drawText(actionKeyPos, Align.bottomCenter, angle, PlayerActions.values()[i].getKey(), font, getTextColor(selectedActionKeyID == i)) ;			
+			GamePanel.getDP().drawText(optionPos, Align.bottomLeft, angle, text[i + 6], FONT, textColor) ;
+			GamePanel.getDP().drawText(actionKeyPos, Align.bottomCenter, angle, PlayerActions.values()[i].getKey(), FONT, getTextColor(selectedActionKeyID == i)) ;			
 		}
 	}
 	
 	public void display(Point mousePos)
 	{
-		Point textPos = Util.translate(windowPos, 25, 42) ;
-		Image menuImage = menu == 0 ? image : imageMenu1 ;
+		Point textPos = Util.translate(WINDOW_POS, 25, 42) ;
+		Image menuImage = menu == 0 ? image : MENU_1_IMAGE ;
 		String[] text = Game.getAllText().get(TextCategories.settings) ;
 		Color[] textColor = new Color[3 + PlayerActions.values().length] ;
 		Arrays.fill(textColor, Palette.colors[0]) ;
 		textColor[item] = Palette.colors[18] ;
 		
-		GamePanel.getDP().drawImage(menuImage, windowPos, Align.topLeft) ;
+		GamePanel.getDP().drawImage(menuImage, WINDOW_POS, Align.topLeft) ;
 		Point titlePos = Util.translate(textPos, image.getWidth(null) / 2 - 15, -6) ;
-		GamePanel.getDP().drawText(titlePos, Align.bottomCenter, Draw.stdAngle, name, font, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(titlePos, Align.bottomCenter, Draw.stdAngle, name, FONT, Palette.colors[0]) ;
 		if (menu == 0)
 		{
 			numberItems = 7 ;

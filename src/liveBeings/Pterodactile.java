@@ -11,11 +11,11 @@ import main.TextCategories;
 
 public class Pterodactile
 {
-  private static final Image SpeakingBubbleImage = ImageLoader.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
-  private static final String[] message = Game.getAllText().get(TextCategories.pterodactile)  ;
+  private static final Image SPEAKING_BUBBLE_IMAGE = ImageLoader.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
+  private static final String[] MESSAGE = Game.getAllText().get(TextCategories.pterodactile)  ;
   
   public static void speak()
   {
-    PterodactileAnimation.start(SpeakingBubbleImage, message);
+    PterodactileAnimation.start(SPEAKING_BUBBLE_IMAGE, MESSAGE);
   }
 }

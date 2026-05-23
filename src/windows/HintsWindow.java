@@ -1,8 +1,6 @@
 package windows;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.Image;
 import java.awt.Point;
 
 import graphics.Align;
@@ -19,21 +17,10 @@ import utilities.Util;
 
 
 public class HintsWindow extends GameWindow
-{
-	private static final Point windowPos ;
-	private static final Font font ;
-	private static final Image image ;
-	
-	static
-	{
-		windowPos = Screen.getMe().pos(0.15, 0.4) ;
-		font = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
-		image = ImageLoader.loadImage(Path.WINDOWS_IMG + "Hints.png") ;
-	}
-	
+{	
 	public HintsWindow()
 	{
-		super("Dicas", windowPos, image, 0, 0, 0, 0) ;
+		super("Dicas", Screen.getMe().pos(0.15, 0.4), ImageLoader.loadImage(Path.WINDOWS_IMG + "Hints.png"), 0, 0, 0, 0) ;
 	}
 	
 	public void navigate(String action)
@@ -44,20 +31,20 @@ public class HintsWindow extends GameWindow
 	public void display(Point mousePos)
 	{
 		String[] text = Game.getAllText().get(TextCategories.hints) ;
-		Point textPos = new Point(windowPos.x + 15, windowPos.y + 10) ;
+		Point textPos = new Point(topLeftPos.x + 15, topLeftPos.y + 10) ;
 		Color textColor = Palette.colors[0] ;
 		double angle = Draw.stdAngle ;
-		int sy = font.getSize() + 2 ;
+		int sy = SUBTITLE_FONT.getSize() + 2 ;
 		numberWindows = text.length - 6 ;
 		
-		GamePanel.getDP().drawImage(image, windowPos, 0, Scale.unit, Align.topLeft, stdOpacity) ;
+		GamePanel.getDP().drawImage(image, topLeftPos, 0, Scale.unit, Align.topLeft, stdOpacity) ;
 		
-		GamePanel.getDP().drawText(Util.translate(windowPos, size.width / 2, 20), Align.center, angle, text[0], font, textColor) ;
-		GamePanel.getDP().drawText(Util.translate(textPos, 10, size.height - 35), Align.topLeft, angle, text[1], font, textColor) ;
-		GamePanel.getDP().drawText(Util.translate(textPos, (int)(0.9 * size.width), size.height - 35), Align.topRight, angle, text[2], font, textColor) ;
-		GamePanel.getDP().drawText(Util.translate(textPos, size.width / 2, size.height - 40), Align.center, angle, text[3], font, textColor) ;
-		Draw.fitText(Util.translate(textPos, 0, 30), sy, Align.topLeft, text[window + 4], font, 70, textColor) ;
+		GamePanel.getDP().drawText(Util.translate(topLeftPos, size.width / 2, 20), Align.center, angle, text[0], SUBTITLE_FONT, textColor) ;
+		GamePanel.getDP().drawText(Util.translate(textPos, 10, size.height - 35), Align.topLeft, angle, text[1], SUBTITLE_FONT, textColor) ;
+		GamePanel.getDP().drawText(Util.translate(textPos, (int)(0.9 * size.width), size.height - 35), Align.topRight, angle, text[2], SUBTITLE_FONT, textColor) ;
+		GamePanel.getDP().drawText(Util.translate(textPos, size.width / 2, size.height - 40), Align.center, angle, text[3], SUBTITLE_FONT, textColor) ;
+		Draw.fitText(Util.translate(textPos, 0, 30), sy, Align.topLeft, text[window + 4], SUBTITLE_FONT, 70, textColor) ;
 		
-		Draw.windowArrows(Util.translate(windowPos, 0, size.height + 10), size.width, window, numberWindows - 1, stdOpacity) ;
+		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, window, numberWindows - 1, stdOpacity) ;
 	}
 }

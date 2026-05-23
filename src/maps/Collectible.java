@@ -13,8 +13,7 @@ import main.Interactable;
 import utilities.Util;
 
 public class Collectible extends Item implements Interactable
-{
-	
+{	
 	private final int itemID ;
 	private final int level ;
 	private final Point pos ;
@@ -50,7 +49,7 @@ public class Collectible extends Item implements Interactable
 	
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 	}
 	
 	public void display(Hitbox playerHitbox)

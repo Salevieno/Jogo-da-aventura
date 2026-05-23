@@ -35,35 +35,35 @@ public class Equip extends Item
 	private int forgeLevel ;
 	private Elements elem ;
 
-	private static final double setBonus = 0.2 ;
-	public static final int maxForgeLevel = 10 ;
+	private static final double SET_BONUS = 0.2 ;
+	private static final int MAX_FORGE_LEVEL = 10 ;
 	
-	private static final Image swordIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconSword.png") ;
-	private static final Image staffIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconStaff.png") ;
-	private static final Image bowIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconBow.png") ;
-	private static final Image clawsIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconClaws.png") ;
-	private static final Image daggerIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconDagger.png") ;
-	private static final Image shieldIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconShield.png") ;
-	private static final Image armorIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconArmor.png") ;
-	private static final Image emblemIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconEmblem.png") ;
+	private static final Image SWORD_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconSword.png") ;
+	private static final Image STAFF_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconStaff.png") ;
+	private static final Image BOW_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconBow.png") ;
+	private static final Image CLAWS_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconClaws.png") ;
+	private static final Image DAGGER_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconDagger.png") ;
+	private static final Image SHIELD_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconShield.png") ;
+	private static final Image ARMOR_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconArmor.png") ;
+	private static final Image EMBLEM_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconEmblem.png") ;
 	
-	private static final Image SwordImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq0_Sword.png") ;
-	private static final Image StaffImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq1_Staff.png") ;
-	private static final Image BowImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq2_Bow.png") ;
-	private static final Image ClawsImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq3_Claws.png") ;
-	private static final Image DaggerImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq4_Dagger.png") ;
-	private static final Image ShieldImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq5_Shield.png") ;
-	private static final Image ArmorImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq6_Armor.png") ;
-	private static final Image emblemImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq8_emblem.png") ;
+	private static final Image SWORD_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq0_Sword.png") ;
+	private static final Image STAFF_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq1_Staff.png") ;
+	private static final Image BOW_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq2_Bow.png") ;
+	private static final Image CLAWS_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq3_Claws.png") ;
+	private static final Image DAGGER_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq4_Dagger.png") ;
+	private static final Image SHIELD_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq5_Shield.png") ;
+	private static final Image ARMOR_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq6_Armor.png") ;
+	private static final Image EMBLEM_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq8_emblem.png") ;
 	
-	private static final Image ShiningSwordImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq0_ShiningSword.png") ;
-	private static final Image ShiningStaffImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq1_ShiningStaff.png") ;
-	private static final Image ShiningBowImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq2_ShiningBow.png") ;
-	private static final Image ShiningClawsImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq3_ShiningClaws.png") ;
-	private static final Image ShiningDaggerImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq4_ShiningDagger.png") ;
-	private static final Image ShiningShieldImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq5_ShiningShield.png") ;
-	private static final Image ShiningArmorImage = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq6_ShiningArmor.png") ;	
-	private static final Equip[] all = new Equip[1000];
+	private static final Image SHINING_SWORD_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq0_ShiningSword.png") ;
+	private static final Image SHINING_STAFF_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq1_ShiningStaff.png") ;
+	private static final Image SHINING_BOW_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq2_ShiningBow.png") ;
+	private static final Image SHINING_CLAWS_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq3_ShiningClaws.png") ;
+	private static final Image SHINING_DAGGER_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq4_ShiningDagger.png") ;
+	private static final Image SHINING_SHIELD_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq5_ShiningShield.png") ;
+	private static final Image SHINING_ARMOR_IMAGE = ImageLoader.loadImage(Path.EQUIPS_IMG + "Eq6_ShiningArmor.png") ;
+	private static final Equip[] ALL = new Equip[1000];
 
 	public Equip(int id, int price, double dropChance, AttributeBonus attBonus, Elements elem)
 	{
@@ -72,7 +72,7 @@ public class Equip extends Item
 		this.attBonus = attBonus ;
 		this.elem = elem ;
 		originalElem = elem ;
-		all[id] = this ;
+		ALL[id] = this ;
 	}
 
 	public static void updateText(String language)
@@ -81,8 +81,8 @@ public class Equip extends Item
 		for (String[] line : data)
 		{
 			int id = Integer.parseInt(line[0]) ;
-			all[id].setName(line[1]) ;
-			all[id].setDescription(line[2]) ;
+			ALL[id].setName(line[1]) ;
+			ALL[id].setDescription(line[2]) ;
 		}
 	}
 
@@ -120,7 +120,7 @@ public class Equip extends Item
 	public static Image imageFromID(int id)
 	{
 		
-		Image[] equipImages = new Image[] {swordIcon, staffIcon, bowIcon, clawsIcon, daggerIcon, shieldIcon, armorIcon, emblemIcon} ;
+		Image[] equipImages = new Image[] {SWORD_ICON, STAFF_ICON, BOW_ICON, CLAWS_ICON, DAGGER_ICON, SHIELD_ICON, ARMOR_ICON, EMBLEM_ICON} ;
 		return equipImages[Arrays.asList(EquipTypes.values()).indexOf(typeFromID(id))] ;
 		
 	}
@@ -129,14 +129,14 @@ public class Equip extends Item
 	{
 		switch(typeFromID(id))
 		{
-			case sword: return forgeLevel == 10 ? ShiningSwordImage : SwordImage ;
-			case staff: return forgeLevel == 10 ? ShiningStaffImage : StaffImage ;
-			case bow: return forgeLevel == 10 ? ShiningBowImage : BowImage ;
-			case claws: return forgeLevel == 10 ? ShiningClawsImage : ClawsImage ;
-			case dagger: return forgeLevel == 10 ? ShiningDaggerImage : DaggerImage ;
-			case shield: return forgeLevel == 10 ? ShiningShieldImage : ShieldImage ;
-			case armor: return forgeLevel == 10 ? ShiningArmorImage : ArmorImage ;
-			case emblem: return emblemImage ;
+			case sword: return forgeLevel == 10 ? SHINING_SWORD_IMAGE : SWORD_IMAGE ;
+			case staff: return forgeLevel == 10 ? SHINING_STAFF_IMAGE : STAFF_IMAGE ;
+			case bow: return forgeLevel == 10 ? SHINING_BOW_IMAGE : BOW_IMAGE ;
+			case claws: return forgeLevel == 10 ? SHINING_CLAWS_IMAGE : CLAWS_IMAGE ;
+			case dagger: return forgeLevel == 10 ? SHINING_DAGGER_IMAGE : DAGGER_IMAGE ;
+			case shield: return forgeLevel == 10 ? SHINING_SHIELD_IMAGE : SHIELD_IMAGE ;
+			case armor: return forgeLevel == 10 ? SHINING_ARMOR_IMAGE : ARMOR_IMAGE ;
+			case emblem: return EMBLEM_IMAGE ;
 			default: return null ;
 		}
 	}
@@ -145,7 +145,7 @@ public class Equip extends Item
 	public Elements getElem() {return elem ;}
 	public void setElem(Elements newElem) { elem = newElem ;}
 	public AttributeBonus getAttributeBonus() {return attBonus ;}
-	public static Equip[] getAll() {return all ;}
+	public static Equip[] getAll() {return ALL ;}
 
 	public boolean isSpecial()
 	{
@@ -177,6 +177,7 @@ public class Equip extends Item
 	
 	public void resetElem() { elem = originalElem ;}
 	
+	public boolean isAtMaxForgeLevel() { return forgeLevel == MAX_FORGE_LEVEL ;}
 	public void incForgeLevel()
 	{
 		double forgeBonus = 0.1 ;
@@ -265,10 +266,10 @@ public class Equip extends Item
 		
 		if (Player.setIsFormed(player.getEquips()))
 		{
-			applyBonus(player.getPA(), player.getBA(), player.getEquips()[0], setBonus) ;
-			applyBonus(player.getPA(), player.getBA(), player.getEquips()[1], setBonus) ;
-			applyBonus(player.getPA(), player.getBA(), player.getEquips()[2], setBonus) ;
-		}				
+			applyBonus(player.getPA(), player.getBA(), player.getEquips()[0], SET_BONUS) ;
+			applyBonus(player.getPA(), player.getBA(), player.getEquips()[1], SET_BONUS) ;
+			applyBonus(player.getPA(), player.getBA(), player.getEquips()[2], SET_BONUS) ;
+		}			
 		applyBonus(player.getPA(), player.getBA(), equip, 1) ;
 
 		// Animation.start(AnimationTypes.message, new Object[] {Screen.getMe().pos(0.4, 0.3), equip.getName() + " equipado!", Palette.colors[0]}) ;
@@ -290,9 +291,9 @@ public class Equip extends Item
 		
 		if (Player.setIsFormed(player.getEquips()))
 		{
-			applyBonus(player.getPA(), player.getBA(), player.getEquips()[0], -setBonus) ;
-			applyBonus(player.getPA(), player.getBA(), player.getEquips()[1], -setBonus) ;
-			applyBonus(player.getPA(), player.getBA(), player.getEquips()[2], -setBonus) ;
+			applyBonus(player.getPA(), player.getBA(), player.getEquips()[0], -SET_BONUS) ;
+			applyBonus(player.getPA(), player.getBA(), player.getEquips()[1], -SET_BONUS) ;
+			applyBonus(player.getPA(), player.getBA(), player.getEquips()[2], -SET_BONUS) ;
 		}
 		
 		player.applySuperElementEffect(player.getSuperElem(), false) ;
@@ -307,10 +308,10 @@ public class Equip extends Item
 	
 	public void displayInfo(Point pos, Align align)
 	{
-		GamePanel.getDP().drawImage(infoMenu, pos, align) ;
+		GamePanel.getDP().drawImage(INFO_MENU_IMAGE, pos, align) ;
 		Font font = new Font(Game.getMainFontName(), Font.BOLD, 9) ;
 		int nRows = 4 ;
-		Point topLeftSlotCenter = Util.translate(pos, 15 - Util.getSize(infoMenu).width, 18) ;
+		Point topLeftSlotCenter = Util.translate(pos, 15 - Util.getSize(INFO_MENU_IMAGE).width, 18) ;
 		int[] attOrder = new int[] {0, 2, 4, 6, 1, 3, 5, 7} ;
 		for (int i = 0 ; i <= attOrder.length - 1 ; i += 1)
 		{

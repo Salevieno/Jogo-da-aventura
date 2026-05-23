@@ -30,23 +30,22 @@ import utilities.Util;
 
 public class CityMap extends GameMap
 {
-
 	private final Sign sign ;
-	private static final Clip musicCities = Music.musicFileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
-	private static final List<CityMap> allCityMaps = new ArrayList<>() ;
+	private static final Clip MUSIC_CITIES = Music.musicFileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
+	private static final List<CityMap> ALL = new ArrayList<>() ;
 	
 	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)
 	{
 		super(id, Name, Continent, Connections, image, music, groundRegions, buildings, npcs, animations) ;
 		sign = new Sign(signPos, id) ;
-		diggingItems.put(Fab.getAll()[0], allDiggingItems.get(Fab.getAll()[0])) ;
-		diggingItems.put(Fab.getAll()[25], allDiggingItems.get(Fab.getAll()[25])) ;
-		diggingItems.put(GeneralItem.getAll()[4], allDiggingItems.get(GeneralItem.getAll()[4])) ;
-		diggingItems.put(GeneralItem.getAll()[25], allDiggingItems.get(GeneralItem.getAll()[25])) ;
-		diggingItems.put(GeneralItem.getAll()[35], allDiggingItems.get(GeneralItem.getAll()[35])) ;
-		diggingItems.put(GeneralItem.getAll()[155], allDiggingItems.get(GeneralItem.getAll()[155])) ;
+		diggingItems.put(Fab.getAll()[0], ALL_DIGGING_ITEMS.get(Fab.getAll()[0])) ;
+		diggingItems.put(Fab.getAll()[25], ALL_DIGGING_ITEMS.get(Fab.getAll()[25])) ;
+		diggingItems.put(GeneralItem.getAll()[4], ALL_DIGGING_ITEMS.get(GeneralItem.getAll()[4])) ;
+		diggingItems.put(GeneralItem.getAll()[25], ALL_DIGGING_ITEMS.get(GeneralItem.getAll()[25])) ;
+		diggingItems.put(GeneralItem.getAll()[35], ALL_DIGGING_ITEMS.get(GeneralItem.getAll()[35])) ;
+		diggingItems.put(GeneralItem.getAll()[155], ALL_DIGGING_ITEMS.get(GeneralItem.getAll()[155])) ;
 		calcDigItemChances() ;
-		allCityMaps.add(this) ;
+		ALL.add(this) ;
 	}
 	
 	private static List<NPC> loadNPCs(JSONObject map)
@@ -90,7 +89,7 @@ public class CityMap extends GameMap
 
 	public static void load()
 	{
-		JSONArray input = Util.readJsonArray(dadosPath + "mapsCity.json") ;
+		JSONArray input = Util.readJsonArray(DADOS_PATH + "mapsCity.json") ;
 		CityMap[] cityMaps = new CityMap[input.size()] ;
 
 		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
@@ -112,7 +111,7 @@ public class CityMap extends GameMap
 			{
 				animations.add(new SpriteAnimation(Path.MAPS_IMG + "Map2_beach.png", new Point(Screen.getMe().mapSize().width, 192), Align.topRight, true, 12, 0.2, 0)) ;
 			}
-			cityMaps[id] = new CityMap(id, name, continent, connections, image, musicCities, buildings, npcs, signPos, groundRegions, animations) ;
+			cityMaps[id] = new CityMap(id, name, continent, connections, image, MUSIC_CITIES, buildings, npcs, signPos, groundRegions, animations) ;
 		}
 	}
     
@@ -122,6 +121,6 @@ public class CityMap extends GameMap
 	public Building getBank() { return buildings.get(3) ;}
 	public Sign getSign() { return sign ;}
 	public Set<Interactable> getInteractables() { return new HashSet<>(npcs) ;}
-	public static List<CityMap> getAllCityMaps() { return allCityMaps ;}
+	public static List<CityMap> getAllCityMaps() { return ALL ;}
 
 }

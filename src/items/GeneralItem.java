@@ -29,8 +29,8 @@ public class GeneralItem extends Item
 	private final AttackModifiers atkMod ;
 	private final Elements elem ;	
 	
-	private static final Image generalItemIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconGenItem.png") ;
-	private static final GeneralItem[] all = new GeneralItem[400];
+	private static final Image GENERAL_ITEM_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconGenItem.png") ;
+	private static final GeneralItem[] ALL = new GeneralItem[400];
 	
 	public GeneralItem(int id, int price, double dropChance, int power, Elements elem)
 	{
@@ -38,7 +38,7 @@ public class GeneralItem extends Item
 		this.power = power ;
 		this.atkMod = calcAtkMod(id) ;
 		this.elem = elem ;
-		all[id] = this ;
+		ALL[id] = this ;
 	}
 
 	public static void updateText(String language)
@@ -47,8 +47,8 @@ public class GeneralItem extends Item
 		for (String[] line : data)
 		{
 			int id = Integer.parseInt(line[0]) ;
-			all[id].setName(line[1]) ;
-			all[id].setDescription(line[2]) ;
+			ALL[id].setName(line[1]) ;
+			ALL[id].setDescription(line[2]) ;
 		}
 	}
 	
@@ -69,11 +69,11 @@ public class GeneralItem extends Item
 		};
 	}
 	
-	public static List<Item> throwableItems() { return Arrays.asList(all).stream().filter(item -> item.isThrowable()).collect(Collectors.toList()) ;}
+	public static List<Item> throwableItems() { return Arrays.asList(ALL).stream().filter(item -> item.isThrowable()).collect(Collectors.toList()) ;}
 	
 	public boolean isThrowable() { return 0 < power ;}
 
-	public static GeneralItem[] getAll() {return all ;}
+	public static GeneralItem[] getAll() {return ALL ;}
 	
 	public double getPower() { return power ;}
 	public Elements getElem() { return elem ;}
@@ -81,7 +81,7 @@ public class GeneralItem extends Item
 	
 	public static Image imageFromID(int id)
 	{		
-		return generalItemIcon ;		
+		return GENERAL_ITEM_ICON ;		
 	}
 	
 	public void use(LiveBeing user)
@@ -114,7 +114,7 @@ public class GeneralItem extends Item
 			case 26, 27, 28: 
 				if (!(user instanceof Player) | !user.isTouching(GroundType.water)) { return ;}
 				
-				((Player) user).getBag().add(all[id + 3], 1) ;
+				((Player) user).getBag().add(ALL[id + 3], 1) ;
 				return ;
 			
 			case 29: user.getPA().getThirst().incCurrentValue(30) ;  return ;
@@ -190,9 +190,9 @@ public class GeneralItem extends Item
 
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 		Font font = new Font(Game.getMainFontName(), Font.BOLD, 9) ;
-		Point textPos = Util.translate(pos, 5 - Util.getSize(infoMenu).width, 10) ;		
+		Point textPos = Util.translate(pos, 5 - Util.getSize(INFO_MENU_IMAGE).width, 10) ;		
 		GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, description, font, Palette.colors[0]) ;
 	}
 	

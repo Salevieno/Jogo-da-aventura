@@ -21,9 +21,9 @@ public class Sign
 	private final Point pos ;
 	private final String message ;
 
-	private static final Image image = ImageLoader.loadImage(Path.BUILDINGS_IMG + "Sign.png") ;
-	private static final Image boardImg = ImageLoader.loadImage(Path.BUILDINGS_IMG + "SignBoard.png") ;
-	private static final Font msgFont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
+	private static final Image IMAGE = ImageLoader.loadImage(Path.BUILDINGS_IMG + "Sign.png") ;
+	private static final Image BOARD_IMAGE = ImageLoader.loadImage(Path.BUILDINGS_IMG + "SignBoard.png") ;
+	private static final Font MSG_FONT = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 
 	public Sign(Point pos, int cityID)
 	{
@@ -33,21 +33,21 @@ public class Sign
 
 	private boolean isInside(Point pos)
 	{
-		Point topLeftPos = UtilAlignment.getPosAt(this.pos, Align.center, Align.topLeft, Util.getSize(image)) ;
-		return Util.isInside(pos, topLeftPos, Util.getSize(image)) ;
+		Point topLeftPos = UtilAlignment.getPosAt(this.pos, Align.center, Align.topLeft, Util.getSize(IMAGE)) ;
+		return Util.isInside(pos, topLeftPos, Util.getSize(IMAGE)) ;
 	}
 
 	private void displaySignMessage()
 	{
-		Point boardPos = Util.translate(pos, image.getWidth(null), 0) ;
+		Point boardPos = Util.translate(pos, IMAGE.getWidth(null), 0) ;
 		Point messagePos = Util.translate(boardPos, 12, 5) ;
-		GamePanel.getDP().drawImage(boardImg, boardPos, Align.topLeft, 0.85) ;
-		Draw.fitText(messagePos, msgFont.getSize() + 2, Align.topLeft, message, msgFont, 435, Palette.colors[0]) ;	
+		GamePanel.getDP().drawImage(BOARD_IMAGE, boardPos, Align.topLeft, 0.85) ;
+		Draw.fitText(messagePos, MSG_FONT.getSize() + 2, Align.topLeft, message, MSG_FONT, 435, Palette.colors[0]) ;	
 	}
     
 	public void display(Point playerPos)
 	{
-		GamePanel.getDP().drawImage(image, pos, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.getDP().drawImage(IMAGE, pos, Draw.stdAngle, Scale.unit, Align.center) ;
 		if (isInside(playerPos))
         {
 			displaySignMessage() ;

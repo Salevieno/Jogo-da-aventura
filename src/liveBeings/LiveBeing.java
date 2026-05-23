@@ -83,17 +83,17 @@ public abstract class LiveBeing implements Drawable
 	protected MovingAnimations movingAni ;
 	protected AttributesWindow attWindow ;
 
-	private static final int layer = 1;
 	private static int damageStyle = 0 ;
+	private static final int LAYER = 1 ;
 	private static final int MAX_COMBO_SIZE = 10 ;
-	private static final Image attImage = ImageLoader.loadImage(Path.PLAYER_IMG + "Attributes.png") ;
-	private static final Image drunkImage = ImageLoader.loadImage(Path.STATUS_IMG + "Drunk.png") ;
-	private static final Image defendingImage = ImageLoader.loadImage(Path.BATTLE_IMG + "ShieldIcon.png") ;
-	private static final Image powerBarImage = ImageLoader.loadImage(Path.LIVE_BEINGS_IMG + "PowerBar.png") ;
-	public static final String[] battleKeys = new String[] {"Y", "U"} ;	
-	public static final List<String> spellKeys = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12") ;
-	protected static final SpriteAnimation levelUpAni = new SpriteAnimation(Path.PLAYER_IMG + "LevelUpSprite.png", new Point(), Align.bottomCenter, false, 45, 0.2) ;
-	protected static final Clip hitSound = Music.musicFileToClip(new File(Path.MUSIC + "16-Hit.wav").getAbsoluteFile()) ;	
+	private static final Image ATT_IMAGE = ImageLoader.loadImage(Path.PLAYER_IMG + "Attributes.png") ;
+	private static final Image DRUNK_IMAGE = ImageLoader.loadImage(Path.STATUS_IMG + "Drunk.png") ;
+	private static final Image DEFENDING_IMAGE = ImageLoader.loadImage(Path.BATTLE_IMG + "ShieldIcon.png") ;
+	private static final Image POWER_BAR_IMAGE = ImageLoader.loadImage(Path.LIVE_BEINGS_IMG + "PowerBar.png") ;
+	protected static final Clip HIT_SOUND = Music.musicFileToClip(new File(Path.MUSIC + "16-Hit.wav").getAbsoluteFile()) ;	
+	protected static final String[] BATTLE_KEYS = new String[] {"Y", "U"} ;
+	protected static final List<String> SPELL_KEYS = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12") ;
+	protected static final SpriteAnimation LEVEL_UP_ANI = new SpriteAnimation(Path.PLAYER_IMG + "LevelUpSprite.png", new Point(), Align.bottomCenter, false, 45, 0.2) ;
 	
 	public LiveBeing(PersonalAttributes PA, BattleAttributes BA, MovingAnimations movingAni, AttributesWindow attWindow)
 	{
@@ -194,7 +194,7 @@ public abstract class LiveBeing implements Drawable
 	public MovingAnimations getMovingAni() {return movingAni ;}
 	public Map<Attributes, LiveBeingStatus> getStatus() {return status ;}
 	public Hitbox getHitbox() {return hitbox ;}
-	public int getLayer() { return layer ;}
+	public int getLayer() { return LAYER ;}
 	public void setCurrentAction(String newValue) {currentAction = newValue ;}
 	public void setMpCounter(GameTimer mpCounter) { this.mpCounter = mpCounter ;}
 	public void setBattleActionCounter(GameTimer battleActionCounter) { this.battleActionCounter = battleActionCounter ;}
@@ -343,6 +343,7 @@ public abstract class LiveBeing implements Drawable
 	public void setPA(PersonalAttributes pA) { PA = pA ;}
 	public BattleAttributes getBA() {return BA ;}
 	public void setBA(BattleAttributes bA) { BA = bA ;}
+	public static List<String> getSpellKeys() { return SPELL_KEYS ;}
 	
 	protected double magicAtkBonus() { return 1 + Math.min(0.25, 0.25 * BA.TotalMagAtk() / 200.0) ;}
 	
@@ -402,11 +403,11 @@ public abstract class LiveBeing implements Drawable
 		int maxPower = 10000 ;
 		Color color = Palette.colors[6] ;
 		Font font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;
-		Dimension barSize = new Dimension(15, powerBarImage.getHeight(null) * totalPower() / maxPower) ;
+		Dimension barSize = new Dimension(15, POWER_BAR_IMAGE.getHeight(null) * totalPower() / maxPower) ;
 		
 		GamePanel.getDP().drawRect(Util.translate(pos, 0, -13), Align.bottomCenter, barSize, 0, color, null, 1.0) ;
-		GamePanel.getDP().drawImage(powerBarImage, pos, Align.bottomCenter) ;
-		GamePanel.getDP().drawText(Util.translate(pos, 0, -powerBarImage.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
+		GamePanel.getDP().drawImage(POWER_BAR_IMAGE, pos, Align.bottomCenter) ;
+		GamePanel.getDP().drawText(Util.translate(pos, 0, -POWER_BAR_IMAGE.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
 	}
 
 	private static Directions calcDrunkDir(Directions dir, GameTimer drunk)
@@ -582,16 +583,16 @@ public abstract class LiveBeing implements Drawable
 	public List<Spell> getActiveSpells() { return spells.stream().filter(Spell::isUsable).collect(Collectors.toList()) ;}
 	
 	public boolean isAlive() { return 0 < PA.getLife().getTotalValue() ;}
-	public boolean hasTheSpell(String action) {return Player.spellKeys.indexOf(action) < getActiveSpells().size() ;}
+	public boolean hasTheSpell(String action) {return Player.SPELL_KEYS.indexOf(action) < getActiveSpells().size() ;}
 	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
 	public boolean hasActed() {return currentAction != null ;}
 	public boolean actionIsSpell()
 	{
 		if (!hasActed()) { return false ;}
 
-		if (!spellKeys.contains(currentAction)) { return false ;}
+		if (!SPELL_KEYS.contains(currentAction)) { return false ;}
 		
-		int spellID = spellKeys.indexOf(currentAction) ;
+		int spellID = SPELL_KEYS.indexOf(currentAction) ;
 		
 		if (getActiveSpells().size() <= spellID) { return false ;}
 		
@@ -601,7 +602,7 @@ public abstract class LiveBeing implements Drawable
 	{
 		if (!actionIsSpell()) { return false ;}
 
-		int spellID = spellKeys.indexOf(currentAction) ;
+		int spellID = SPELL_KEYS.indexOf(currentAction) ;
 		Spell spell = getActiveSpells().get(spellID);
 		
 		if (!canUseSpell(spell)) { return false ;}
@@ -618,8 +619,8 @@ public abstract class LiveBeing implements Drawable
 		return 1 <= spell.getLevel() ;
 		
 	}
-	public boolean usedPhysicalAtk() {return hasActed() ? currentAction.equals(battleKeys[0]) : false ;}
-	public boolean usedDef() {return hasActed() ? currentAction.equals(battleKeys[1]) : false ;}
+	public boolean usedPhysicalAtk() {return hasActed() ? currentAction.equals(BATTLE_KEYS[0]) : false ;}
+	public boolean usedDef() {return hasActed() ? currentAction.equals(BATTLE_KEYS[1]) : false ;}
 	public boolean actionIsArrowAtk()
 	{
 		if (!( this instanceof Player)) { return false ;}
@@ -636,7 +637,7 @@ public abstract class LiveBeing implements Drawable
 		
 		if (this instanceof Player)
 		{
-			return (!battleActionCounter.hasFinished() & combo.get(combo.size() - 1).equals(battleKeys[1])) ;
+			return (!battleActionCounter.hasFinished() & combo.get(combo.size() - 1).equals(BATTLE_KEYS[1])) ;
 		}
 		return usedDef() ;
 	}
@@ -863,7 +864,7 @@ public abstract class LiveBeing implements Drawable
 			Point topLeft = Screen.getMe().pos(0.01, 0.02) ;
 			Dimension barSize = new Dimension(5, 60) ;
 			int stroke = 1 ;
-			GamePanel.getDP().drawImage(attImage, topLeft, Align.topLeft, 0.85) ;
+			GamePanel.getDP().drawImage(ATT_IMAGE, topLeft, Align.topLeft, 0.85) ;
 			Point offset = new Point(63, 70) ;
 			Point barPos = Util.translate(topLeft, offset.x, offset.y) ;
 			for (int att = 0; att <= attRate.size() - 1; att += 1)
@@ -960,16 +961,16 @@ public abstract class LiveBeing implements Drawable
 	
 	public void displayDrunk()
 	{
-		Point offset = new Point(size.width / 2 + drunkImage.getWidth(null) / 2 + 2, defendingImage.getHeight(null) + 2) ;
+		Point offset = new Point(size.width / 2 + DRUNK_IMAGE.getWidth(null) / 2 + 2, DEFENDING_IMAGE.getHeight(null) + 2) ;
 		Point imagePos = Util.translate(center(), -offset.x, 0) ;
-		GamePanel.getDP().drawImage(drunkImage, imagePos, Align.center) ;
+		GamePanel.getDP().drawImage(DRUNK_IMAGE, imagePos, Align.center) ;
 	}
 	
 	public void displayDefending()
 	{
-		Point offset = new Point(size.width / 2 + defendingImage.getWidth(null) / 2 + 2, 0) ;
+		Point offset = new Point(size.width / 2 + DEFENDING_IMAGE.getWidth(null) / 2 + 2, 0) ;
 		Point imagePos = Util.translate(center(), -offset.x, 0) ;
-		GamePanel.getDP().drawImage(defendingImage, imagePos, Align.center) ;
+		GamePanel.getDP().drawImage(DEFENDING_IMAGE, imagePos, Align.center) ;
 	}
 
 	public void getsDrunk(int duration)

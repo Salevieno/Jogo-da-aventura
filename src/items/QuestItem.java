@@ -13,13 +13,13 @@ import utilities.Util;
 
 public class QuestItem extends Item
 {	
-	private static final Image questItemIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconQuestItem.png") ;
-	private static final QuestItem[] all = new QuestItem[200] ;
+	private static final Image QUEST_ITEM_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconQuestItem.png") ;
+	private static final QuestItem[] ALL = new QuestItem[200] ;
 
 	public QuestItem(int id, int price, double dropChance)
 	{
 		super(id, "", "", imageFromID(id), price, dropChance) ;
-		all[id] = this ;
+		ALL[id] = this ;
 	}
 
 	public static void updateText(String language)
@@ -28,21 +28,21 @@ public class QuestItem extends Item
 		for (String[] line : data)
 		{
 			int id = Integer.parseInt(line[0]) ;
-			all[id].setName(line[1]) ;
-			all[id].setDescription(line[2]) ;
+			ALL[id].setName(line[1]) ;
+			ALL[id].setDescription(line[2]) ;
 		}
 	}
 
-	public static QuestItem[] getAll() {return all ;}
+	public static QuestItem[] getAll() {return ALL ;}
 
 	public static Image imageFromID(int id)
 	{		
-		return questItemIcon ;		
+		return QUEST_ITEM_ICON ;		
 	}
 
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 	}
 	
 	@Override

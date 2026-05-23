@@ -10,22 +10,21 @@ import main.Path;
 
 public abstract class AttributesWindow extends GameWindow
 {
-
-	private static final Image lifeIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "LifeIcon.png") ;
-	private static final Image mpIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "MPIcon.png") ;
-	private static final Image phyAtkIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "PhyAtkIcon.png") ;
-	private static final Image phyDefIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "PhyDefIcon.png") ;
-	private static final Image magAtkIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "MagAtkIcon.png") ;
-	private static final Image magDefIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "MagDefIcon.png") ;
-	private static final Image dexIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "DexIcon.png") ;
-	private static final Image agiIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "AgiIcon.png") ;
-	protected static final Image critIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "CritIcon.png") ;
-	protected static final Image herbIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "HerbIcon.png") ;
-	protected static final Image woodIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "WoodIcon.png") ;
-	protected static final Image metalIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "MetalIcon.png") ;
+	private static final Image LIFE_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "LifeIcon.png") ;
+	private static final Image MP_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "MPIcon.png") ;
+	private static final Image PHY_ATK_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "PhyAtkIcon.png") ;
+	private static final Image PHY_DEF_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "PhyDefIcon.png") ;
+	private static final Image MAG_ATK_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "MagAtkIcon.png") ;
+	private static final Image MAG_DEF_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "MagDefIcon.png") ;
+	private static final Image DEX_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "DexIcon.png") ;
+	private static final Image AGI_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "AgiIcon.png") ;
+	protected static final Image CRIT_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "CritIcon.png") ;
+	protected static final Image HERB_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "HerbIcon.png") ;
+	protected static final Image WOOD_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "WoodIcon.png") ;
+	protected static final Image METAL_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "attIcons\\" + "MetalIcon.png") ;
 	
-	protected static final Image[] attIcons = new Image[] {phyAtkIcon, magAtkIcon, phyDefIcon, magDefIcon, dexIcon, agiIcon} ;
-	protected static final Image[] collectIcons = new Image[] {herbIcon, woodIcon, metalIcon} ;
+	protected static final Image[] ATT_ICONS = new Image[] {PHY_ATK_ICON, MAG_ATK_ICON, PHY_DEF_ICON, MAG_DEF_ICON, DEX_ICON, AGI_ICON} ;
+	protected static final Image[] COLLECT_ICONS = new Image[] {HERB_ICON, WOOD_ICON, METAL_ICON} ;
 	
 	public AttributesWindow(Image image, int numberTabs)
 	{
@@ -34,7 +33,7 @@ public abstract class AttributesWindow extends GameWindow
 
 	public static Image[] getIcons()
 	{
-		return new Image[] {lifeIcon, mpIcon, phyAtkIcon, magAtkIcon, phyDefIcon, magDefIcon, dexIcon, agiIcon} ;
+		return new Image[] {LIFE_ICON, MP_ICON, PHY_ATK_ICON, MAG_ATK_ICON, PHY_DEF_ICON, MAG_DEF_ICON, DEX_ICON, AGI_ICON} ;
 	}
 	
 	@Override

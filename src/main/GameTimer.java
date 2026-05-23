@@ -20,15 +20,11 @@ public class GameTimer
 	private double initialTime ;
 	private double prevCounter ;
 	private double counter ;
-	private double duration ;	// duration of the counter in seconds
+	private double duration ; // in seconds
 	private double timeElapsedAtStop ;
 	
-	private static final Set<GameTimer> all ;
 	private static double timeAtStop ;
-	static 
-	{
-		all = new HashSet<>() ;
-	}
+	private static final Set<GameTimer> all = new HashSet<>() ;
 	
 	public GameTimer(double duration, double initialCounter)
 	{
@@ -88,7 +84,7 @@ public class GameTimer
 	{
 		int stroke = DrawPrimitives.stdStroke ;
 		Dimension barSize = new Dimension(6, 24) ;
-		Dimension offset = new Dimension (barSize.width / 2 + (LiveBeingStatus.images.get(Attributes.stun).getWidth(null) + 5), barSize.height / 2) ;
+		Dimension offset = new Dimension (barSize.width / 2 + (LiveBeingStatus.IMAGES.get(Attributes.stun).getWidth(null) + 5), barSize.height / 2) ;
 		Dimension fillSize = new Dimension(barSize.width, (int) (barSize.height * rate())) ;
 		Point rectPos = Util.translate(botLeftPos, offset.width, offset.height) ;
 		

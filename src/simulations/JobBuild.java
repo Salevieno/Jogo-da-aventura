@@ -110,7 +110,7 @@ public abstract class JobBuild
 	
 	private static void levelUp(LiveBeing being, int qtdLevels, boolean addChosenPoints)
 	{
-		if (being.getLevel() == Player.maxLevel) { return ;}
+		if (being.getLevel() == Player.MAX_LEVEL) { return ;}
 		
 		AttributeIncrease attInc = being instanceof Player ? ((Player) being).getAttInc() : ((Pet) being).getAttInc() ;
 		double[] chosenIncrease = addChosenPoints ? calcChosenIncrease(attInc.getChance().basic()) : new double[8] ;

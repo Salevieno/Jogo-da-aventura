@@ -25,12 +25,7 @@ public class SpriteAnimation
     private boolean active ;
     private int layer ;
     
-    private static final Set<SpriteAnimation> all ;
-    
-    static
-    {
-    	all = new HashSet<>() ;
-    }
+    private static final Set<SpriteAnimation> ALL = new HashSet<>() ;
 
     public SpriteAnimation(String path, Point pos, Align align, boolean loops, int qtdFrames, double frameDuration, int layer)
     {
@@ -51,7 +46,7 @@ public class SpriteAnimation
         this.align = align ;
         this.loops = loops ;
         this.active = false ;
-        all.add(this) ;
+        ALL.add(this) ;
     }
 
     public SpriteAnimation(String path, Point pos, Align align, boolean loops, int qtdFrames, double frameDuration)
@@ -96,17 +91,17 @@ public class SpriteAnimation
     
     public static void updateAll()
     {
-    	all.stream().filter(sprite -> sprite.active).forEach(sprite -> sprite.update()) ;
+    	ALL.stream().filter(sprite -> sprite.active).forEach(sprite -> sprite.update()) ;
     }
     
     public static void displayAllFromLayer(int layer, DrawPrimitives DP)
     {
-    	all.stream().filter(sprite -> sprite.active).filter(sprite -> sprite.layer == layer).forEach(sprite -> sprite.display(DP)) ;
+    	ALL.stream().filter(sprite -> sprite.active).filter(sprite -> sprite.layer == layer).forEach(sprite -> sprite.display(DP)) ;
     }
     
     public static void displayAll(DrawPrimitives DP)
     {
-    	all.stream().filter(sprite -> sprite.active).forEach(sprite -> sprite.display(DP)) ;
+    	ALL.stream().filter(sprite -> sprite.active).forEach(sprite -> sprite.display(DP)) ;
     }
 
     private void update()

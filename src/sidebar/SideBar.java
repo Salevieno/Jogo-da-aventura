@@ -30,28 +30,24 @@ import windows.PlayerAttributesWindow;
 
 public abstract class SideBar
 {
-	
-	private static final Point barPos = Screen.getMe().posInMap(1, 0) ;
-	private static final Font font = new Font(Game.getMainFontName(), Font.BOLD, 10) ;
-	private static final String[] iconNames ;
-	private static final Image[] iconImages ;
-	private static final Image[] iconSelectedImages ;
-	private static final List<GameButton> buttons = new ArrayList<>() ;
-	private static final Color bgColor = Palette.colors[1] ;
-	
-	private static final Dimension size = new Dimension(60, Screen.getMe().getSize().height) ;
-	public static final Image slotImage = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Slot.png") ;
-	public static final int sy = 10 ;
+	private static final Point BAR_POS = Screen.getMe().posInMap(1, 0) ;
+	private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 10) ;
+	private static final String[] ICON_NAMES = new String[] {"map", "quest", "bag", "settings", "exit"} ;
+	private static final Image[] ICON_IMAGES = new Image[ICON_NAMES.length] ;
+	private static final Image[] ICON_SELECTED_IMAGES = new Image[ICON_NAMES.length] ;
+	private static final List<GameButton> BUTTONS = new ArrayList<>() ;
+	private static final Color BG_COLOR = Palette.colors[1] ;
+    
+	private static final Dimension SIZE = new Dimension(60, Screen.getMe().getSize().height) ;
+	protected static final Image SLOT_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Slot.png") ;
+	protected static final int SY = 10 ;
 	
 	static
 	{
-		iconNames = new String[] {"map", "quest", "bag", "settings", "exit"} ;
-		iconImages = new Image[iconNames.length] ;
-		iconSelectedImages = new Image[iconNames.length] ;
-		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
+		for (int i = 0; i <= ICON_NAMES.length - 1 ; i += 1)
 		{
-			iconImages[i] = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Icon" + "_" + iconNames[i] + ".png");
-			iconSelectedImages[i] = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Icon" + "_" + iconNames[i] + "Selected.png") ;
+			ICON_IMAGES[i] = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Icon" + "_" + ICON_NAMES[i] + ".png");
+			ICON_SELECTED_IMAGES[i] = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Icon" + "_" + ICON_NAMES[i] + "Selected.png") ;
 		}
 	}
 	
@@ -64,7 +60,7 @@ public abstract class SideBar
 			((PlayerAttributesWindow) player.getAttWindow()).updateAttIncButtons(player) ;
 			player.switchOpenClose(player.getAttWindow()) ;
 		} ;
-		ButtonFunction[] actions = new ButtonFunction[iconNames.length] ;
+		ButtonFunction[] actions = new ButtonFunction[ICON_NAMES.length] ;
 		actions[0] = () -> {
 			player.getMapWindow().update(player.getPos(), player.getMap()) ;
 			player.switchOpenClose(player.getMapWindow()) ;
@@ -83,22 +79,22 @@ public abstract class SideBar
 
 		SpellsBar.updateSpells(player.getActiveSpells()) ;
 		addPetButton(player, Game.getPet()) ;
-		
+        
 
-		Point iconPos = Util.translate(barPos, size.width / 2, 45) ;
-		buttons.add(new GameIconButton(iconPos, Align.topCenter, playerImage, playerImage, playerAction)) ;
+		Point iconPos = Util.translate(BAR_POS, SIZE.width / 2, 45) ;
+		BUTTONS.add(new GameIconButton(iconPos, Align.topCenter, playerImage, playerImage, playerAction)) ;
 		iconPos.y += playerImage.getHeight(null) + 10 ;
-		for (int i = 0; i <= iconNames.length - 1 ; i += 1)
+		for (int i = 0; i <= ICON_NAMES.length - 1 ; i += 1)
 		{
-			buttons.add(new GameIconButton(iconPos, Align.topCenter, iconImages[i], iconSelectedImages[i], actions[i])) ;
+			BUTTONS.add(new GameIconButton(iconPos, Align.topCenter, ICON_IMAGES[i], ICON_SELECTED_IMAGES[i], actions[i])) ;
 
-			iconPos.y += iconImages[i].getHeight(null) + 10 ;
+			iconPos.y += ICON_IMAGES[i].getHeight(null) + 10 ;
 		}
-		
-		buttons.forEach(GameButton::activate) ;
+        
+		BUTTONS.forEach(GameButton::activate) ;
 		if (!player.getQuestSkills().get(QuestSkills.getContinentMap(player.getMap().getContinent().name())))
 		{
-			buttons.get(1).deactivate() ;
+			BUTTONS.get(1).deactivate() ;
 		}
 	}
 	
@@ -111,7 +107,7 @@ public abstract class SideBar
 			((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
 			player.switchOpenClose(pet.getAttWindow()) ;
 		} ;
-		buttons.add(new GameIconButton(Util.translate(barPos, size.width / 2, 10), Align.topCenter, petImage, petImage, petAction)) ;
+		BUTTONS.add(new GameIconButton(Util.translate(BAR_POS, SIZE.width / 2, 10), Align.topCenter, petImage, petImage, petAction)) ;
 	}
 	
 	private static void displayKeys()
@@ -119,12 +115,12 @@ public abstract class SideBar
 		String[] keys = new String[] {PlayerActions.attWindow.getKey(), PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null, null} ;
 		Color textColor = Palette.colors[0] ;
 		int i = 0 ;
-		for (GameButton button : buttons)
+		for (GameButton button : BUTTONS)
 		{
 			if (keys[i] == null | !button.isActive()) { i += 1 ; continue ;}
 
 			Point rectCenter = Util.translate(button.getTopLeftPos(), 5, 0) ;
-			Draw.keyboardKey(rectCenter, keys[i], font, textColor);
+			Draw.keyboardKey(rectCenter, keys[i], FONT, textColor);
 			i += 1 ;
 		}
 	}
@@ -132,10 +128,10 @@ public abstract class SideBar
 	public static void display(Player player, Pet pet, Point mousePos)
 	{
 		
-		GamePanel.getDP().drawRect(barPos, Align.topLeft, size, bgColor, null) ;
-//		GamePanel.getDP().drawLine(Util.translate(barPos, size.width, 0), Util.translate(barPos, size.width, size.height), Palette.colors[1]) ;
+		GamePanel.getDP().drawRect(BAR_POS, Align.topLeft, SIZE, BG_COLOR, null) ;
+//		GamePanel.getDP().drawLine(Util.translate(BAR_POS, SIZE.width, 0), Util.translate(BAR_POS, SIZE.width, SIZE.height), Palette.colors[1]) ;
 		
-		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos)) ;
+		BUTTONS.forEach(button -> button.display(Draw.stdAngle, false, mousePos)) ;
 		displayKeys() ;
 		
 		SpellsBar.display(player.getMp().getCurrentValue(), mousePos);

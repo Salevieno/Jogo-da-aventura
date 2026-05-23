@@ -30,11 +30,11 @@ public abstract class GameButton
 	protected final Align alignment ;
 	protected final Clip soundEffectOnHover ;
 	
-	protected static final Font font = new Font(Game.getMainFontName(), Font.BOLD, 17) ;
-	protected static final Color textColor = Palette.colors[0] ;
-	protected static final Color selectedTextColor = Palette.colors[18] ;
+	protected static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 17) ;
+	protected static final Color TEXT_COLOR = Palette.colors[0] ;
+	protected static final Color TEXT_SELECTED_COLOR = Palette.colors[18] ;
 	
-	private static List<GameButton> all = new ArrayList<>() ;
+	private static final List<GameButton> ALL = new ArrayList<>() ;
 
 	protected GameButton(Point pos, Align alignment, String name, Image image, Image selectedImage, ButtonFunction action, Clip soundEffectOnHover)
 	{
@@ -46,7 +46,7 @@ public abstract class GameButton
 		this.isSelected = false ;
 		this.alignment = alignment ;
 		this.action = action ;
-		all.add(this) ;
+		ALL.add(this) ;
 	}
 
 
@@ -54,14 +54,14 @@ public abstract class GameButton
 	public boolean isActive() { return isActive ;}
 	public void setName(String newName) { name = newName ;}
 
-	public static boolean anyIsHovered(Point mousePos) { return all.stream().filter(button -> button.isActive() && button.ishovered(mousePos)).findAny().isPresent() ;}
+	public static boolean anyIsHovered(Point mousePos) { return ALL.stream().filter(button -> button.isActive() && button.ishovered(mousePos)).findAny().isPresent() ;}
 	public static void updateSelected(Point mousePos)
 	{
-		for (GameButton button : all)
+		for (GameButton button : ALL)
 		{
 			if (button.isSelected || !button.isActive || !button.ishovered(mousePos)) { continue ;}
 
-			all.forEach(GameButton::deSelect) ;
+			ALL.forEach(GameButton::deSelect) ;
 			if (button.soundEffectOnHover != null && Game.getSettings().getSoundEffectsAreOn())
 			{
 				Music.PlayMusic(button.soundEffectOnHover) ;
@@ -83,7 +83,7 @@ public abstract class GameButton
 	}
 
 	public Point getCenter() {return Util.translate(topLeft, size.width / 2, size.height / 2) ;}	
-	public static List<GameButton> getAll() { return all ;}
+	public static List<GameButton> getALL() { return ALL ;}
 	public boolean ishovered(Point mousePos) { return Util.isInside(mousePos, topLeft, size) ;}
 	public boolean isSelected() { return isSelected ;}
 	public boolean isClicked(Point mousePos, String action)
@@ -106,7 +106,7 @@ public abstract class GameButton
 	
 	public void display(double angle, boolean displayText, Point mousePos)
 	{
-		display(angle, displayText, mousePos, textColor, 1.0) ;
+		display(angle, displayText, mousePos, TEXT_COLOR, 1.0) ;
 	}
 	
 	@Override

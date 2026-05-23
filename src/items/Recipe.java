@@ -16,18 +16,13 @@ public class Recipe
 	private final Map<Item, Integer> Ingredients ;
 	private final Map<Item, Integer> Products ;
 	
-	private static final List<Recipe> all ;
-	
-	static
-	{
-		all = new ArrayList<>() ;
-	}
-	
+	private static final List<Recipe> ALL= new ArrayList<>() ;
+
 	public Recipe(Map<Item, Integer> Ingredients, Map<Item, Integer> Products)
 	{
 		this.Ingredients = Ingredients ;
 		this.Products = Products ;
-		all.add(this) ;
+		ALL.add(this) ;
 	}
 	
 	public static void load(List<Item> allItems)
@@ -115,7 +110,7 @@ public class Recipe
 		return false;
 	}
 
-	public static List<Recipe> getAll() { return all ;}
+	public static List<Recipe> getAll() { return ALL ;}
 
 	@Override
 	public String toString() {

@@ -49,17 +49,17 @@ public abstract class NPC implements Interactable
 	private boolean isInteracting ;
 	
 	protected final List<Collider> colliders ;
-	protected static final Image speakingBubble = ImageLoader.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
-	protected static final Image choicesWindow = ImageLoader.loadImage(Path.NPC_IMG + "ChoicesWindow.png") ;
-	protected static final Font stdFont = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
-	protected static final Color stdColor = Palette.colors[0] ;
-	protected static final Color selColor = Palette.colors[18] ;
-	private static final List<NPC> allNPCs = new ArrayList<>() ;
+	protected static final Image SPEAKING_BUBBLE_IMAGE = ImageLoader.loadImage(Path.NPC_IMG + "SpeechBubble.png") ;
+	protected static final Image CHOICES_WINDOW_IMAGE = ImageLoader.loadImage(Path.NPC_IMG + "ChoicesWindow.png") ;
+	protected static final Font STD_FONT = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
+	protected static final Color STD_COLOR = Palette.colors[0] ;
+	protected static final Color STD_SELECTED_COLOR = Palette.colors[18] ;
+	private static final List<NPC> ALL = new ArrayList<>() ;
 
 	
 	public NPC(NPCJobs job, String name, Point pos, List<NPCMenu> menus, Image desk, GameWindow window)
 	{
-		this.id = allNPCs.size() ;
+		this.id = ALL.size() ;
 		this.job = job ;
 		this.name = name ;
 		this.pos = pos ;
@@ -72,7 +72,7 @@ public abstract class NPC implements Interactable
 		
 		this.hitbox = new HitboxRectangle(Util.translate(pos, 0, -job.getImage().getHeight(null) / 2), Util.getSize(job.getImage()), 0.8) ;
 		this.colliders = List.of(new Collider(pos)) ;
-		allNPCs.add(this) ;
+		ALL.add(this) ;
 	}
 	
 	public NPC(NPCJobs job, String name, Point pos, List<NPCMenu> menus, GameWindow window)
@@ -142,7 +142,7 @@ public abstract class NPC implements Interactable
 	}
 		
 	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
-	public static List<NPC> getAll() { return allNPCs ;}
+	public static List<NPC> getAll() { return ALL ;}
 	
 	public abstract void act(Player player, Pet pet, String action) ;
 
@@ -197,7 +197,7 @@ public abstract class NPC implements Interactable
 		String content = menus.get(currentMenuID).getSpeech() ;		
 		Point speechPos = Util.translate(pos, 0, 10 - job.getImage().getHeight(null)) ;
 
-		Draw.speech(speechPos, content, stdFont, speakingBubble, stdColor) ;		
+		Draw.speech(speechPos, content, STD_FONT, SPEAKING_BUBBLE_IMAGE, STD_COLOR) ;		
 	}	
 	
 	public void displaySpeech() { displaySpeech(pos) ;}
@@ -300,7 +300,7 @@ public abstract class NPC implements Interactable
 	@SuppressWarnings("unchecked")
 	public static void load(String language)
 	{
-		allNPCs.removeAll(allNPCs) ;
+		ALL.removeAll(ALL) ;
 		List<JSONObject> npcList = (List<JSONObject>) Util.readJsonArray(Path.DADOS + language + "/NPCMenus.json");
 		List<NPC> npcs = new ArrayList<>();
 
@@ -354,7 +354,7 @@ public abstract class NPC implements Interactable
 		for (int i = 0 ; i <= npcList.size() - 1 ; i += 1)
 		{
 			JSONObject npcData = npcList.get(i) ;
-			NPC npc = allNPCs.get(i) ;
+			NPC npc = ALL.get(i) ;
 			npc.setName((String) npcData.get("nome")) ;
 			List<JSONObject> menusData = (List<JSONObject>) npcData.get("menus");
 			for (int m = 0 ; m <= menusData.size() - 1 ; m += 1)

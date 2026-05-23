@@ -9,7 +9,6 @@ public class BattleSpecialAttribute
 	protected double basicDefChance ;
 	protected double basicDefChanceBonus ;
 	protected double duration ;
-	
 
 	public BattleSpecialAttribute(double basicAtkChance, double basicDefChance, double duration)
 	{

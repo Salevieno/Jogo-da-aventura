@@ -14,7 +14,6 @@ import utilities.Util;
 
 public class GameIconButton extends GameButton
 {
-
     public GameIconButton(Point pos, Align alignment, Image image, Image selectedImage, ButtonFunction action)
     {
         super(pos, alignment, "", image, selectedImage, action, null) ;
@@ -36,7 +35,7 @@ public class GameIconButton extends GameButton
 		if (imageDisplayed == null)
 		{
             GamePanel.getDP().drawRoundRect(topLeft, Align.topLeft, size, 5, Palette.colors[3], Palette.colors[0], true) ;
-            GamePanel.getDP().drawText(getCenter(), Align.center, 0, name, font, selectedTextColor) ;
+            GamePanel.getDP().drawText(getCenter(), Align.center, 0, name, FONT, TEXT_SELECTED_COLOR) ;
 			return ;
 		}
 		

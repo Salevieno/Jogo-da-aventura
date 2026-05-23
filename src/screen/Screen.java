@@ -20,13 +20,13 @@ public class Screen
 	private Point2D.Double scale ;
 	
 	private static Screen screen ;
-	private static final int borderOffset = 20 ;
+	private static final int BORDER_OFFSET = 20 ;
 
 	private Screen(Dimension size, boolean fullscreen)
 	{
 		this.sky = new Sky(size.width) ;
 		this.size = size ;
-		this.borders = new int[] { borderOffset, Sky.getHeight() + borderOffset, size.width - 60 - borderOffset, size.height - borderOffset } ;
+		this.borders = new int[] { BORDER_OFFSET, Sky.getHeight() + BORDER_OFFSET, size.width - 60 - BORDER_OFFSET, size.height - BORDER_OFFSET } ;
 		this.center = new Point(size.width / 2, size.height / 2) ;
 		this.mapCenter = new Point((size.width - 60) / 2, (size.height + Sky.getHeight()) / 2) ;
 		this.scale = calcScale(fullscreen) ;
@@ -40,7 +40,7 @@ public class Screen
 	}
 
 	public static Screen getMe() { return screen ;}
-	public static int getBorderOffset() { return borderOffset ;}
+	public static int getBorderOffset() { return BORDER_OFFSET ;}
 
 	public Dimension getSize() {return size ;}
 	public int[] getBorders() {return borders ;}

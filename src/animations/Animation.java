@@ -9,7 +9,7 @@ public abstract class Animation
 {
 	protected final GameTimer timer ;
 	
-	private static final List<Animation> all = new ArrayList<>() ;
+	private static final List<Animation> ALL = new ArrayList<>() ;
 
 	protected Animation(double duration)
 	{
@@ -18,20 +18,20 @@ public abstract class Animation
 
 	protected abstract void play() ;
 	
-	public static List<Animation> getAll() { return all ;}
+	public static List<Animation> getAll() { return ALL ;}
 	
     public void start()
     {
-        all.add(this) ;
+        ALL.add(this) ;
 		timer.start() ;
     }
 	
 	public static void playAll()
 	{
-		all.forEach(Animation::play) ;
-		for (int i = 0; i < all.size(); i++)
+		ALL.forEach(Animation::play) ;
+		for (int i = 0; i < ALL.size(); i++)
 		{
-			all.get(i).finishWhenDone() ;
+			ALL.get(i).finishWhenDone() ;
 		}
 	}
 
@@ -40,6 +40,6 @@ public abstract class Animation
 		if (!timer.hasFinished()) { return ;}
 
 		timer.reset() ;
-		all.remove(this) ;
+		ALL.remove(this) ;
 	}
 }

@@ -2,7 +2,6 @@ package windows;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
 import liveBeings.Player;
-import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
@@ -33,20 +31,17 @@ public class SpellsTreeWindow extends GameWindow
 	private int playerJob ;
 	private int points ;
 
-	private static final Point windowTopLeft = Screen.getMe().pos(0.4, 0.2) ;
-	private static final Font regularFont = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
-	private static final Font largeFont = new Font(Game.getMainFontName(), Font.BOLD, 14) ;
-	private static final Image mainImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellsTree.png") ;
-	private static final Image tab0Image = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellsTreeTab0.png") ;
-	private static final Image tab1Image = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellsTreeTab1.png") ;
-	private static final Image spellSlot = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellSlot.png") ;
-	private static final Image spellSlotSelected = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellSlotSelected.png") ;
-	private static final Image spellInactiveSlot = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellInactiveSlot.png") ;
-	private static final Image spellInfo = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellInfo.png") ;
+	private static final Image WINDOW_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellsTree.png") ;
+	private static final Image TAB_0_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellsTreeTab0.png") ;
+	private static final Image TAB_1_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellsTreeTab1.png") ;
+	private static final Image SPELL_SLOT_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellSlot.png") ;
+	private static final Image SPELL_SLOT_SELECTED_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellSlotSelected.png") ;
+	private static final Image SPELL_INACTIVE_SLOT_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellInactiveSlot.png") ;
+	private static final Image SPELL_INFO_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "SpellInfo.png") ;
 
 	public SpellsTreeWindow(int playerJob)
 	{
-		super("Árvore de magias", windowTopLeft, mainImage, 0, 1, 0, 1) ;
+		super("Árvore de magias", Screen.getMe().pos(0.4, 0.2), WINDOW_IMAGE, 0, 1, 0, 1) ;
 		this.playerJob = playerJob ;
 		this.spells = new ArrayList<>() ;
 		this.playerCurrentSpells = new ArrayList<>() ;
@@ -155,9 +150,9 @@ public class SpellsTreeWindow extends GameWindow
 	private Point calcSlotPos(int row, int col, int numberRows, int numberCols, Dimension slotSize)
 	{
 		int padding = 30 ;
-		Point offset = new Point(windowTopLeft.x + border + padding, windowTopLeft.y + 22 + padding) ;
-		double spacingX = Util.spacing(mainImage.getWidth(null) - border - padding, numberCols, slotSize.width, padding) ;
-		double spacingY = Util.spacing(mainImage.getHeight(null) - 22 - padding, numberRows, slotSize.height, padding) ;
+		Point offset = new Point(topLeftPos.x + BORDER + padding, topLeftPos.y + 22 + padding) ;
+		double spacingX = Util.spacing(WINDOW_IMAGE.getWidth(null) - BORDER - padding, numberCols, slotSize.width, padding) ;
+		double spacingY = Util.spacing(WINDOW_IMAGE.getHeight(null) - 22 - padding, numberRows, slotSize.height, padding) ;
 
 		Point slotPos = new Point((int) (offset.x + col * spacingX), (int) (offset.y + row * spacingY)) ;
 		
@@ -169,23 +164,23 @@ public class SpellsTreeWindow extends GameWindow
 		if (spellsOnWindow == null) { return ;}
 		if (spellsOnWindow.get(item) == null) { return ;}
 	
-		Point pos = Util.translate(windowTopLeft, 0, -64) ;
+		Point pos = Util.translate(topLeftPos, 0, -64) ;
 		Color textColor = Palette.colors[0] ;
-		GamePanel.getDP().drawImage(spellInfo, pos, Align.topLeft) ;
+		GamePanel.getDP().drawImage(SPELL_INFO_IMAGE, pos, Align.topLeft) ;
 		pos.x += 5 ;
 		pos.y += 10 ;
-		Draw.fitText(pos, 16, Align.centerLeft, spellsOnWindow.get(item).getEffect(), regularFont, 568, textColor) ;
+		Draw.fitText(pos, 16, Align.centerLeft, spellsOnWindow.get(item).getEffect(), SUBTITLE_FONT, 568, textColor) ;
 		pos.y += 34 ;
-		Draw.fitText(pos, 16, Align.centerLeft, spellsOnWindow.get(item).getDescription(), regularFont, 568, textColor) ;
+		Draw.fitText(pos, 16, Align.centerLeft, spellsOnWindow.get(item).getDescription(), SUBTITLE_FONT, 568, textColor) ;
 	}
 	
 	public void displaySpellPoints(int points)
 	{
 		double angle = Draw.stdAngle ;
-		Point pointsPos = Util.translate(windowTopLeft, border + 6, size.height - border - padding - 6) ;
+		Point pointsPos = Util.translate(topLeftPos, BORDER + 6, size.height - BORDER - PADDING - 6) ;
 		Color color = Palette.colors[21] ;
 
-		GamePanel.getDP().drawText(pointsPos, Align.centerLeft, angle, "Pontos: " + String.valueOf(points), regularFont, color) ;
+		GamePanel.getDP().drawText(pointsPos, Align.centerLeft, angle, "Pontos: " + String.valueOf(points), SUBTITLE_FONT, color) ;
 		
 	}
 	
@@ -194,23 +189,23 @@ public class SpellsTreeWindow extends GameWindow
 		double angle = Draw.stdAngle ;
 		if (numberTabs <= 1)
 		{
-			GamePanel.getDP().drawImage(image, windowTopLeft, angle, Scale.unit, Align.topLeft) ;
+			GamePanel.getDP().drawImage(image, topLeftPos, angle, Scale.unit, Align.topLeft) ;
 			return ;
 		}
 		
-		Point displayPos = Util.translate(windowTopLeft, -23, 0) ;
-		Point tab1Pos = Util.translate(windowTopLeft, -10, 6 + 75/2) ;
-		Point tab2Pos = Util.translate(windowTopLeft, -10, 6 + 75 + 75/2) ;
-		Image displayImage = tab == 0 ? tab0Image : tab1Image ;
+		Point displayPos = Util.translate(topLeftPos, -23, 0) ;
+		Point tab1Pos = Util.translate(topLeftPos, -10, 6 + 75/2) ;
+		Point tab2Pos = Util.translate(topLeftPos, -10, 6 + 75 + 75/2) ;
+		Image displayImage = tab == 0 ? TAB_0_IMAGE : TAB_1_IMAGE ;
 		Color tabTextColor = Palette.colors[21] ;
 		GamePanel.getDP().drawImage(displayImage, displayPos, angle, Scale.unit, Align.topLeft) ;
-		GamePanel.getDP().drawText(tab1Pos, Align.center, 90, "Basic", largeFont, tab == 0 ? selColor : tabTextColor);
-		GamePanel.getDP().drawText(tab2Pos, Align.center, 90, "Pro", largeFont, tab == 1 ? selColor : tabTextColor);
+		GamePanel.getDP().drawText(tab1Pos, Align.center, 90, "Basic", TITLE_FONT, tab == 0 ? SELECTED_COLOR : tabTextColor);
+		GamePanel.getDP().drawText(tab2Pos, Align.center, 90, "Pro", TITLE_FONT, tab == 1 ? SELECTED_COLOR : tabTextColor);
 	}
 	
 	public List<Spell> basicSpells()
 	{
-		return spells.subList(0, Player.numberOfSpellsPerJob[playerJob]) ;
+		return spells.subList(0, Player.QTD_SPELLS_PER_JOB[playerJob]) ;
 	}
 	
 	public List<Spell> proSpells()
@@ -234,8 +229,8 @@ public class SpellsTreeWindow extends GameWindow
 		displaySpellsInfo() ;
 		displayWindow() ;
 		
-		Point titlePos = Util.translate(windowTopLeft, size.width / 2, 6 + 6) ;
-		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, largeFont, Palette.colors[21]);
+		Point titlePos = Util.translate(topLeftPos, size.width / 2, 6 + 6) ;
+		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, TITLE_FONT, Palette.colors[21]);
 		
 		if (spells == null) { return ;}
 		
@@ -250,16 +245,16 @@ public class SpellsTreeWindow extends GameWindow
 			
 			Spell spell = spellsOnWindow.get(i) ;
 			boolean hasPreReq = spell.hasPreRequisitesMet(playerCurrentSpells) ;
-			Dimension slotSize = new Dimension(spellSlot.getWidth(null), spellSlot.getHeight(null)) ;
+			Dimension slotSize = new Dimension(SPELL_SLOT_IMAGE.getWidth(null), SPELL_SLOT_IMAGE.getHeight(null)) ;
 			Color textColor = hasPreReq ? hasPreReqColor : hasNotPreReqColor ;
-			Image slotImage = hasPreReq ? spellSlot : spellInactiveSlot ;
+			Image slotImage = hasPreReq ? SPELL_SLOT_IMAGE : SPELL_INACTIVE_SLOT_IMAGE ;
 			Point slotPos = calcSlotPos(row, col, spellsDistribution.length, spellsDistribution[row], slotSize) ;
 			
 			checkMouseSelection(mousePos, slotPos, Align.topLeft, slotSize, initialSpell + i) ;
 			if (this.item == initialSpell + i)
 			{
 				textColor = selectedColor ;
-				slotImage = hasPreReq ? spellSlotSelected : spellInactiveSlot;
+				slotImage = hasPreReq ? SPELL_SLOT_SELECTED_IMAGE : SPELL_INACTIVE_SLOT_IMAGE;
 			}
 			
 			Point spellImagePos = Util.translate(slotPos, slotSize.width / 2, 4 + space.y) ;
@@ -268,8 +263,8 @@ public class SpellsTreeWindow extends GameWindow
 					
 			GamePanel.getDP().drawImage(slotImage, slotPos, Align.topLeft) ;
 			GamePanel.getDP().drawImage(spell.getImage(), spellImagePos, Align.center) ;			
-			GamePanel.getDP().drawText(spellNamePos, Align.bottomCenter, angle, spell.getName(), regularFont, textColor) ;
-			GamePanel.getDP().drawText(spellLevelPos, Align.center, angle, String.valueOf(spell.getLevel()), regularFont, textColor) ;
+			GamePanel.getDP().drawText(spellNamePos, Align.bottomCenter, angle, spell.getName(), SUBTITLE_FONT, textColor) ;
+			GamePanel.getDP().drawText(spellLevelPos, Align.center, angle, String.valueOf(spell.getLevel()), SUBTITLE_FONT, textColor) ;
 			col += 1 ;			
 			
 			if (spellsDistribution[row] <= col)

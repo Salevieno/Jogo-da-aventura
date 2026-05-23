@@ -7,20 +7,20 @@ import attributes.PersonalAttributes;
 
 public abstract class PlayerData
 {
-    private static final List<String[]> attributeIncreaseOnLevelUp ;
-    private static final List<PersonalAttributes> initialPersonalAttPerJob ;
-    private static final List<BattleAttributes> initialBattleAttPerJob ;
-    private static final List<Integer> range ;
-    private static final List<Integer> step ;
-    private static final List<Double> goldMultiplier ;
-    private static final List<Double> satiationCounterDuration ;
-    private static final List<Double> mpCounterDuration ;
-    private static final List<Double> thirstCounterDuration ;
-    private static final List<Double> battleActionCounterDuration ;
+    private static final List<String[]> ATTRIBUTE_INCREASE_ON_LEVEL_UP ;
+    private static final List<PersonalAttributes> INITIAL_PERSONAL_ATT_PER_JOB ;
+    private static final List<BattleAttributes> INITIAL_BATTLE_ATT_PER_JOB ;
+    private static final List<Integer> RANGE ;
+    private static final List<Integer> STEP ;
+    private static final List<Double> GOLD_MULTIPLIER ;
+    private static final List<Double> SATIATION_COUNTER_DURATION ;
+    private static final List<Double> MP_COUNTER_DURATION ;
+    private static final List<Double> THIRST_COUNTER_DURATION ;
+    private static final List<Double> BATTLE_ACTION_COUNTER_DURATION ;
 
     static
     {
-        initialPersonalAttPerJob = List.of(
+        INITIAL_PERSONAL_ATT_PER_JOB = List.of(
             new PersonalAttributes(100, 100, 1, 50, 50, 1, 0, 5, 1, 100, 100, 1, 100, 100, 1),
             new PersonalAttributes(50, 50, 1, 100, 100, 1, 0, 5, 1, 100, 100, 1, 100, 100, 1),
             new PersonalAttributes(60, 60, 1, 80, 80, 1, 0, 5, 1, 100, 100, 1, 100, 100, 1),
@@ -28,7 +28,7 @@ public abstract class PlayerData
             new PersonalAttributes(30, 30, 1, 50, 50, 1, 0, 5, 1, 100, 100, 1, 100, 100, 1)
         ) ;
 
-        range = List.of(
+        RANGE = List.of(
             60,
             140,
             200,
@@ -36,7 +36,7 @@ public abstract class PlayerData
             60
         ) ;
 
-        step = List.of(
+        STEP = List.of(
             150,
             150,
             150,
@@ -44,7 +44,7 @@ public abstract class PlayerData
             150
         ) ;
 
-        goldMultiplier = List.of(
+        GOLD_MULTIPLIER = List.of(
             1.0,
             1.0,
             1.0,
@@ -52,7 +52,7 @@ public abstract class PlayerData
             1.15
         ) ;
 
-        satiationCounterDuration = List.of(
+        SATIATION_COUNTER_DURATION = List.of(
             5.0,
             5.0,
             5.0,
@@ -60,7 +60,7 @@ public abstract class PlayerData
             5.0
         ) ;
 
-        mpCounterDuration = List.of(
+        MP_COUNTER_DURATION = List.of(
             0.25,
             0.0625,
             0.25,
@@ -68,7 +68,7 @@ public abstract class PlayerData
             0.25
         ) ;
 
-        thirstCounterDuration = List.of(
+        THIRST_COUNTER_DURATION = List.of(
             2.5,
             2.5,
             2.5,
@@ -76,7 +76,7 @@ public abstract class PlayerData
             2.5
         ) ;
 
-        battleActionCounterDuration = List.of(
+        BATTLE_ACTION_COUNTER_DURATION = List.of(
             1.0,
             1.0,
             1.0,
@@ -84,7 +84,7 @@ public abstract class PlayerData
             0.75
         ) ;
 
-        initialBattleAttPerJob = List.of(
+        INITIAL_BATTLE_ATT_PER_JOB = List.of(
             new BattleAttributes(5, 2, 5, 2, 10, 2, 0.1, 0.0, 1.0, 10),
             new BattleAttributes(2, 5, 2, 5, 7, 1, 0.1, 0.0, 1.0, 10),
             new BattleAttributes(3, 3, 3, 3, 18, 3, 0.15, 0.0, 1.0, 10),
@@ -92,7 +92,7 @@ public abstract class PlayerData
             new BattleAttributes(3, 2, 3, 2, 15, 8, 0.18, 0.0, 0.75, 10)
         ) ;
 
-        attributeIncreaseOnLevelUp = List.of(
+        ATTRIBUTE_INCREASE_ON_LEVEL_UP = List.of(
             new String[] {"0","0","20","10","2","1","2","1","1","1","1","1","0.8","0.8","0.8","0.8","0.4","0.4"},
             new String[] {"0","1","40","10","5","2","3","2","1","1","1","1","0.8","0.6","0.666666667","0.6","0.8","0.4"},
             new String[] {"0","2","34","16","3","4","5","6","1","1","1","1","0.666666667","0.4","0.8","0.4","0.4","0.4"},
@@ -111,15 +111,15 @@ public abstract class PlayerData
         ) ;
     }
 
-    public static List<String[]> getAttributeincreaseonlevelup() { return attributeIncreaseOnLevelUp ;}
-    public static List<PersonalAttributes> getInitialpersonalattperjob() { return initialPersonalAttPerJob ;}
-    public static List<BattleAttributes> getInitialbattleattperjob() { return initialBattleAttPerJob ;}
-    public static List<Integer> getRange() { return range ;}
-    public static List<Integer> getStep() { return step ;}
-    public static List<Double> getGoldmultiplier() { return goldMultiplier ;}
-    public static List<Double> getSatiationcounterduration() { return satiationCounterDuration ;}
-    public static List<Double> getMpcounterduration() { return mpCounterDuration ;}
-    public static List<Double> getThirstcounterduration() { return thirstCounterDuration ;}
-    public static List<Double> getBattleactioncounterduration() { return battleActionCounterDuration ;}
+    public static List<String[]> getAttributeincreaseonlevelup() { return ATTRIBUTE_INCREASE_ON_LEVEL_UP ;}
+    public static List<PersonalAttributes> getInitialpersonalattperjob() { return INITIAL_PERSONAL_ATT_PER_JOB ;}
+    public static List<BattleAttributes> getInitialbattleattperjob() { return INITIAL_BATTLE_ATT_PER_JOB ;}
+    public static List<Integer> getRange() { return RANGE ;}
+    public static List<Integer> getStep() { return STEP ;}
+    public static List<Double> getGoldmultiplier() { return GOLD_MULTIPLIER ;}
+    public static List<Double> getSatiationcounterduration() { return SATIATION_COUNTER_DURATION ;}
+    public static List<Double> getMpcounterduration() { return MP_COUNTER_DURATION ;}
+    public static List<Double> getThirstcounterduration() { return THIRST_COUNTER_DURATION ;}
+    public static List<Double> getBattleactioncounterduration() { return BATTLE_ACTION_COUNTER_DURATION ;}
 
 }

@@ -17,16 +17,16 @@ import utilities.Util;
 
 public class DamageAnimation extends Animation
 {
-	private static final Font font = new Font(Game.getMainFontName(), Font.BOLD, 15) ;
-	private static final Color phyAtkColor  = Palette.colors[6] ;
-	private static final Color magAtkColor = Palette.colors[5] ;
-	private static final int speed = 20 ;
-
-    private Point initialPos ;
+    private final Point initialPos ;
     private final String text ;
     private final AtkResults atkResults ;
     private final int style ;
     private final Color color ;
+
+	private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 15) ;
+	private static final Color PHY_ATK_COLOR  = Palette.colors[6] ;
+	private static final Color MAG_ATK_COLOR = Palette.colors[5] ;
+	private static final int SPEED = 20 ;
 
 	private DamageAnimation(Point initialPos, AtkResults atkResults, int style, Color color)
     {
@@ -53,7 +53,7 @@ public class DamageAnimation extends Animation
 
     public static void start(Point initialPos, AtkResults atkResults, int style, Color color)
     {
-		Color textColor = color != null ? color : (atkResults.getAtkType().equals(AtkTypes.magical) ? magAtkColor : phyAtkColor) ;
+		Color textColor = color != null ? color : (atkResults.getAtkType().equals(AtkTypes.magical) ? MAG_ATK_COLOR : PHY_ATK_COLOR) ;
 		DamageAnimation ani = new DamageAnimation(initialPos, atkResults, style, textColor) ;
         ani.start() ;
     }
@@ -65,12 +65,12 @@ public class DamageAnimation extends Animation
 		double rate = Math.pow(timer.rate(), 0.6) ;
 		Point trajectory = switch (style)
 		{
-			case 0 -> new Point(0, (int) (-speed - 3 * speed * rate  + speed * rate * rate)) ;
-			case 1 -> new Point((int) (Math.pow(8 * rate, 2)), (int) (-speed - 2 * speed * rate)) ;
+			case 0 -> new Point(0, (int) (-SPEED - 3 * SPEED * rate  + SPEED * rate * rate)) ;
+			case 1 -> new Point((int) (Math.pow(8 * rate, 2)), (int) (-SPEED - 2 * SPEED * rate)) ;
 			default -> new Point(0, 0) ;
         } ;
 
 		Point pos = Util.translate(initialPos, trajectory) ;
-		GamePanel.getDP().drawBufferedText(pos, Align.center, Draw.stdAngle, text, font, color, Palette.colors[2], 1, opacity) ;
+		GamePanel.getDP().drawBufferedText(pos, Align.center, Draw.stdAngle, text, FONT, color, Palette.colors[2], 1, opacity) ;
     }
 }

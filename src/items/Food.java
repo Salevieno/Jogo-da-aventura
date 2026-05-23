@@ -19,8 +19,8 @@ public class Food extends Item
 	private final double MPHeal ;
 	private final int satiationHeal ;
 	
-	private static final Image iconFoodBerry = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconFoodBerry.png") ;
-	private static final Food[] all = new Food[60];
+	private static final Image FOOD_BERRY_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconFoodBerry.png") ;
+	private static final Food[] ALL = new Food[60];
 	
 	public Food(int id, int price, double dropChance, double lifeHeal, double MPHeal, int SatiationHeal)
 	{
@@ -28,7 +28,7 @@ public class Food extends Item
 		this.lifeHeal = lifeHeal ;
 		this.MPHeal = MPHeal ;
 		this.satiationHeal = SatiationHeal ;
-		all[id] = this ;
+		ALL[id] = this ;
 	}
 
 	public static void updateText(String language)
@@ -37,17 +37,17 @@ public class Food extends Item
 		for (String[] line : data)
 		{
 			int id = Integer.parseInt(line[0]) ;
-			all[id].setName(line[1]) ;
-			all[id].setDescription(line[2]) ;
+			ALL[id].setName(line[1]) ;
+			ALL[id].setDescription(line[2]) ;
 		}
 	}
 
 	public double getLifeHeal() {return lifeHeal ;}
 	public double getMPHeal() {return MPHeal ;}	
 	public int getSatiationHeal() {return satiationHeal ;}	
-	public static Food[] getAll() {return all ;}
+	public static Food[] getAll() {return ALL ;}
 
-	public static Image imageFromID(int id) { return iconFoodBerry ;}
+	public static Image imageFromID(int id) { return FOOD_BERRY_ICON ;}
 	
 	public void use(LiveBeing user)
 	{
@@ -59,7 +59,7 @@ public class Food extends Item
 
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 	}
 	
 	@Override

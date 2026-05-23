@@ -20,13 +20,8 @@ public class Settings
     private int damageAnimation ;
     private String language ;
 
-    private static final List<String> languages ;
+    private static final List<String> languages = Arrays.asList(Util.readcsvFile(Path.DADOS + "GameLanguages.csv").get(0)) ;
 
-    static
-    {
-        languages = Arrays.asList(Util.readcsvFile(Path.DADOS + "GameLanguages.csv").get(0)) ;
-    }
-    
     public Settings(boolean musicIsOn, boolean soundEffectsAreOn, boolean showAtkRange, int attDisplay, int damageAnimation)
     {
         this.musicIsOn = musicIsOn ;

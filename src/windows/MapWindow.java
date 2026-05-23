@@ -1,7 +1,6 @@
 package windows;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ import main.ImageLoader;
 import main.Log;
 import main.Palette;
 import main.Path;
-import maps.Continents;
 import maps.GameMap;
 import screen.Screen;
 import screen.Sky;
@@ -22,33 +20,32 @@ import utilities.Util;
 
 public class MapWindow extends GameWindow
 {
-	private final Point spacing = new Point(6, 6) ;
-	private Scale scale = new Scale(0.1, 0.1) ;
-	private Dimension mapSize ;
-	private Point playerPos ;
-	private GameMap mapWithPlayer ;
+	private Scale scale ;
 	private Point offset ;
+	private Point playerPos ;
+	private Dimension mapSize ;
+	private GameMap mapWithPlayer ; // TODO verificar se precisa de gamemap
 	private List<GameMap> mapsDisplayed ;
+	private final Point spacing ;
 	
-	private static final boolean displayFull = false ;
-	private static final Point windowPos = new Point(150, 100) ;
-	private static final Image image = ImageLoader.loadImage(Path.WINDOWS_IMG + "MapWindow.png") ;
+	private static final boolean FULL_MAP = false ;
 	
 	public MapWindow()
 	{
-		super("Mapa", windowPos, image, 0, 0, 0, 0) ;
-		mapsDisplayed = new ArrayList<>() ;
+		super("Mapa", new Point(150, 100), ImageLoader.loadImage(Path.WINDOWS_IMG + "MapWindow.png"), 0, 0, 0, 0) ;
+		this.mapsDisplayed = new ArrayList<>() ;
+		this.scale = new Scale(0.1, 0.1) ;
+		this.spacing = new Point(6, 6) ;
 	}
 
 	public void update(Point playerPos, GameMap mapWithPlayer)
 	{
 		this.playerPos = playerPos ;
 		this.mapWithPlayer = mapWithPlayer ;
-		Continents continentWithPlayer = mapWithPlayer.getContinent() ;
-		scale = new Scale(0.1, 0.1) ;
-		mapSize = new Dimension((int) (Screen.getMe().mapSize().width * scale.x), (int) (Screen.getMe().mapSize().height * scale.y)) ;
-		this.mapsDisplayed = GameMap.getAllMaps().stream().filter(map -> continentWithPlayer.equals(map.getContinent())).toList() ;
-		this.offset = switch(continentWithPlayer)
+		this.scale = new Scale(0.1, 0.1) ;
+		this.mapSize = new Dimension((int) (Screen.getMe().mapSize().width * scale.x), (int) (Screen.getMe().mapSize().height * scale.y)) ;
+		this.mapsDisplayed = GameMap.getAllMaps().stream().filter(map -> mapWithPlayer.getContinent().equals(map.getContinent())).toList() ;
+		this.offset = switch(mapWithPlayer.getContinent())
 		{
 			case forest -> calcMapOffset(8, 6, scale, spacing) ;
 			case cave -> calcMapOffset(2, 6, scale, spacing) ;
@@ -242,13 +239,13 @@ public class MapWindow extends GameWindow
 		// full map = 14 x 15 mapas
 		// continent maps = 6 x 8 maps (max)
 		
-		GamePanel.getDP().drawImage(image, windowPos, Align.topLeft) ;
+		GamePanel.getDP().drawImage(image, topLeftPos, Align.topLeft) ;
 		
 		if (mapWithPlayer == null) { Log.warn("Map with player = null when displaying map") ; return ;}
 		if (mapsDisplayed == null) { Log.warn("Maps displayed = null when displaying map") ; return ;}
 		if (mapsDisplayed.isEmpty()) { Log.warn("Maps displayed = empty when displaying map") ; return ;}
 		
-		if (displayFull)
+		if (FULL_MAP)
 		{
 			mapsDisplayed = GameMap.getAllMaps() ;
 			scale = new Scale(0.05, 0.05) ;
@@ -258,17 +255,17 @@ public class MapWindow extends GameWindow
 		
 		for (GameMap map : mapsDisplayed)
 		{
-			Point cell = displayFull ? getMapRowColFullMap(map.getName()) : getMapRowCol(map.getName()) ;
+			Point cell = FULL_MAP ? getMapRowColFullMap(map.getName()) : getMapRowCol(map.getName()) ;
 	
 			if (cell == null) { Log.warn("cell = null when displaying map") ; continue ;}
 			
-			Point mapPos = Util.translate(windowPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
+			Point mapPos = Util.translate(topLeftPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
 													size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
 			map.display(mapPos, Align.bottomLeft, scale) ;
 
 			Point mapNamePos = Util.translate(mapPos, (int) (scale.x * Screen.getMe().mapSize().width / 2),
 													(int) (-scale.y * Screen.getMe().mapSize().height / 2)) ;
-			GamePanel.getDP().drawText(mapNamePos, Align.center, 0, map.getName(), stdFont, Palette.colors[0]) ;
+			GamePanel.getDP().drawText(mapNamePos, Align.center, 0, map.getName(), STD_FONT, Palette.colors[0]) ;
 			
 			if (!map.equals(mapWithPlayer)) { continue ;}
 			if (playerPos == null) { continue ;}

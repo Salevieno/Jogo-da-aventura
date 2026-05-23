@@ -30,14 +30,14 @@ public class BankWindow extends GameWindow
 	private GameTimer investmentCounter ;
 	private LiveInput liveInput ;
 
-	private static final Point windowPos = Screen.getMe().pos(0.4, 0.2) ;
-	private static final Image image = ImageLoader.loadImage(Path.WINDOWS_IMG + "Banco.png") ;
-	private static final String[] investmentRiskLevels = new String[] {"low", "high"} ;
-	public static final Image clock = ImageLoader.loadImage(Path.WINDOWS_IMG + "clock.png") ;
+	private static final Point WINDOW_POS = Screen.getMe().pos(0.4, 0.2) ;
+	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Banco.png") ;
+	private static final String[] INVESTMENT_RISK_LEVELS = new String[] {"low", "high"} ;
+	public static final Image CLOCK_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "clock.png") ;
 // TODO investment
 	public BankWindow()
 	{
-		super("Banco", windowPos, image, 1, 1, 1, 1) ;
+		super("Banco", WINDOW_POS, IMAGE, 1, 1, 1, 1) ;
 		amountTyped = 0 ;
 		balance = 0 ;
 		investedAmount = 0 ;
@@ -58,7 +58,7 @@ public class BankWindow extends GameWindow
 	
 	public void completeInvestment()
 	{
-		double rate = investmentRisk.equals(investmentRiskLevels[0]) ? Math.random() <= 0.95 ? 1.05 : 0.95 : Math.random() <= 0.6 ? 1.2 : 0.9 ;
+		double rate = investmentRisk.equals(INVESTMENT_RISK_LEVELS[0]) ? Math.random() <= 0.95 ? 1.05 : 0.95 : Math.random() <= 0.6 ? 1.2 : 0.9 ;
 		
 		investedAmount = (int) (investedAmount * rate) ;
 		balance += investedAmount ;
@@ -119,7 +119,7 @@ public class BankWindow extends GameWindow
 	{
 		if (!bag.hasEnoughGold(amount)) { displayNotEnoughGold() ; return ;}
 		
-		investmentRisk = highRisk ? investmentRiskLevels[1] : investmentRiskLevels[0] ;
+		investmentRisk = highRisk ? INVESTMENT_RISK_LEVELS[1] : INVESTMENT_RISK_LEVELS[0] ;
 		hasInvestement = true ;
 		investmentCounter.start() ;
 		investedAmount += amount ;
@@ -137,7 +137,7 @@ public class BankWindow extends GameWindow
 	
 	private void drawInvestmentTimer(Point pos, double timeRate)
 	{
-		GamePanel.getDP().drawImage(clock, pos, Align.center) ;
+		GamePanel.getDP().drawImage(CLOCK_IMAGE, pos, Align.center) ;
 		GamePanel.getDP().drawArc(Util.translate(pos, 0, 2), 21, 1, 90, (int) (-360 * timeRate), Palette.colors[20], null) ;
 	}
 	
@@ -151,33 +151,33 @@ public class BankWindow extends GameWindow
 	
 	public void display(Point mousePos)
 	{
-		Point titlePos = Util.translate(windowPos, size.width / 2, border + 10) ;
+		Point titlePos = Util.translate(WINDOW_POS, size.width / 2, BORDER + 10) ;
 		Color textColor = Palette.colors[0] ;
 		double angle = Draw.stdAngle ;
 		
-		GamePanel.getDP().drawImage(image, windowPos, angle, Scale.unit, Align.topLeft) ;
+		GamePanel.getDP().drawImage(IMAGE, WINDOW_POS, angle, Scale.unit, Align.topLeft) ;
 
-		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, titleFont, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, TITLE_FONT, Palette.colors[0]) ;
 		
-		Point balancePos = Util.translate(windowPos, border + padding + 4, (int) border + 30) ;
-		Point investmentPos = Util.translate(windowPos, border + padding + 4, border + 90) ;
+		Point balancePos = Util.translate(WINDOW_POS, BORDER + PADDING + 4, (int) BORDER + 30) ;
+		Point investmentPos = Util.translate(WINDOW_POS, BORDER + PADDING + 4, BORDER + 90) ;
 		
-		GamePanel.getDP().drawText(balancePos, Align.centerLeft, angle, "Saldo", stdFont, textColor) ;
-		GamePanel.getDP().drawText(investmentPos, Align.centerLeft, angle, "Investimento", stdFont, textColor) ;
+		GamePanel.getDP().drawText(balancePos, Align.centerLeft, angle, "Saldo", STD_FONT, textColor) ;
+		GamePanel.getDP().drawText(investmentPos, Align.centerLeft, angle, "Investimento", STD_FONT, textColor) ;
 		
 		drawInvestmentTimer(Util.translate(investmentPos, 110, 10), investmentCounter.rate()) ;
 
 		GamePanel.getDP().drawImage(Player.getCoinImg(), Util.translate(balancePos, 0, 20), Align.centerLeft) ;
-		GamePanel.getDP().drawText(Util.translate(balancePos, 15, 20), Align.centerLeft, angle, String.valueOf(balance), stdFont, textColor) ;
+		GamePanel.getDP().drawText(Util.translate(balancePos, 15, 20), Align.centerLeft, angle, String.valueOf(balance), STD_FONT, textColor) ;
 		GamePanel.getDP().drawImage(Player.getCoinImg(), Util.translate(investmentPos, 0, 20), Align.centerLeft) ;
-		GamePanel.getDP().drawText(Util.translate(investmentPos, 15, 20), Align.centerLeft, angle, String.valueOf(investedAmount), stdFont, textColor) ;
+		GamePanel.getDP().drawText(Util.translate(investmentPos, 15, 20), Align.centerLeft, angle, String.valueOf(investedAmount), STD_FONT, textColor) ;
 		
 		if (!isReadingInput()) { return ;}
 
-		Point inputMessagePos = Util.translate(windowPos, 0, border + size.height + 15) ;
-		GamePanel.getDP().drawText(inputMessagePos, Align.centerLeft, angle, "Amount for " + mode, stdFont, textColor) ;
+		Point inputMessagePos = Util.translate(WINDOW_POS, 0, BORDER + size.height + 15) ;
+		GamePanel.getDP().drawText(inputMessagePos, Align.centerLeft, angle, "Amount for " + mode, STD_FONT, textColor) ;
 		
-		Point inputPos = Util.translate(windowPos, 0, border + size.height + 35) ;
+		Point inputPos = Util.translate(WINDOW_POS, 0, BORDER + size.height + 35) ;
 		liveInput.displayTypingField(inputPos, true) ;
 		GamePanel.getDP().drawImage(Player.getCoinImg(), Util.translate(inputPos, 5, 0), Align.centerLeft) ;
 	}

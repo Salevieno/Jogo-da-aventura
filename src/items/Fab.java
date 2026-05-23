@@ -13,13 +13,13 @@ import utilities.Util;
 
 public class Fab extends Item
 {
-	private static final Image ferkIcon = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconFerk.png") ;
-	private static final Fab[] all = new Fab[100] ;
+	private static final Image FERK_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconFerk.png") ;
+	private static final Fab[] ALL = new Fab[100] ;
 
 	public Fab(int id, int price, double dropChance)
 	{
 		super(id, "", "", imageFromID(id), price, dropChance) ;
-		all[id] = this ;
+		ALL[id] = this ;
 	}
 
 	public static void updateText(String language)
@@ -28,21 +28,21 @@ public class Fab extends Item
 		for (String[] line : data)
 		{
 			int id = Integer.parseInt(line[0]) ;
-			all[id].setName(line[1]) ;
-			all[id].setDescription(line[2]) ;
+			ALL[id].setName(line[1]) ;
+			ALL[id].setDescription(line[2]) ;
 		}
 	}
 
-	public static Fab[] getAll() {return all ;}
+	public static Fab[] getAll() {return ALL ;}
 
 	public static Image imageFromID(int id)
 	{		
-		return ferkIcon ;		
+		return FERK_ICON ;		
 	}
 
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(infoMenu)) ;
+		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 	}
 	
 	@Override

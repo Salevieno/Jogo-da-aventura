@@ -41,19 +41,19 @@ public class CreatureType
 	private final String hitboxType ;
 	private Genetics genes;
 
-	private static final List<MovingAnimations> moveAni;
-	public static final int numberCreatureTypesImages ;
-	private static final List<CreatureType> all;
-	public static final CreatureAttributesWindow attWindow;
+	private static final List<MovingAnimations> MOVE_ANIMATIONS;
+	public static final int QTD_CREATURE_TYPES_IMAGES ;
+	private static final List<CreatureType> ALL;
+	public static final CreatureAttributesWindow ATT_WINDOW;
 
 	static
 	{// TODO imagens das criaturas tem que refletir o poder (1, 6, 11, 16 e 21) são as nível 0, pode ser a mesma imagem mudando cores
-		numberCreatureTypesImages = 3;
-		moveAni = new ArrayList<>();
-		for (int i = 0; i <= numberCreatureTypesImages - 1; i += 1)
+		QTD_CREATURE_TYPES_IMAGES = 3;
+		MOVE_ANIMATIONS = new ArrayList<>();
+		for (int i = 0; i <= QTD_CREATURE_TYPES_IMAGES - 1; i += 1)
 		{
 			String rootPath = Path.CREATURES_IMG + "creature" + i ;
-			moveAni.add(new MovingAnimations(
+			MOVE_ANIMATIONS.add(new MovingAnimations(
 				new SpriteAnimation(rootPath + "_idle.png", new Point(0, 0), Align.bottomCenter, 9, 0.333),
 				new SpriteAnimation(rootPath + "_movingup.png", new Point(0, 0), Align.bottomCenter, 4, 0.16),
 				new SpriteAnimation(rootPath + "_movingdown.png", new Point(0, 0), Align.bottomCenter, 4, 0.16),
@@ -62,8 +62,8 @@ public class CreatureType
 			);
 		}
 
-		attWindow = new CreatureAttributesWindow();
-		all = new ArrayList<>();
+		ATT_WINDOW = new CreatureAttributesWindow();
+		ALL = new ArrayList<>();
 	}
 
 	public CreatureType(int id, String name, int level, int range, int step, int movePatternID, Elements[] elem,
@@ -82,7 +82,7 @@ public class CreatureType
 		this.id = id;
 		this.name = name;
 		this.level = level;
-		this.movingAni = CreatureType.moveAni.get(id % numberCreatureTypesImages);
+		this.movingAni = CreatureType.MOVE_ANIMATIONS.get(id % QTD_CREATURE_TYPES_IMAGES);
 		this.size = new Dimension(movingAni.spriteIdle.getFrameSize().width, movingAni.spriteIdle.getFrameSize().height);
 		this.range = range;
 		this.step = step;
@@ -119,7 +119,7 @@ public class CreatureType
 		this.hitboxType = hitboxType ;
 
 		genes = new Genetics();
-		all.add(this);
+		ALL.add(this);
 	}
 
 	public CreatureType(int id, String name, int level, int range, int step, int movePatternID, Elements[] elem,
@@ -169,7 +169,7 @@ public class CreatureType
 	public String getHitboxType() { return hitboxType ;}
 	public Genetics getGenes() { return genes ;}
 	public void setGenes(Genetics newGenes) { genes = newGenes ;}
-	public static List<CreatureType> getAll() { return all ;}
+	public static List<CreatureType> getAll() { return ALL ;}
 
 	public void display(Point pos, Scale scale)
 	{

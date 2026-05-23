@@ -121,36 +121,36 @@ public class Player extends LiveBeing
     private List<Item> hotItems ;
 	private Statistics stats ;
     
-	public static final int maxLevel = 99 ;
-	public static final double stepDuration = 0.25 ;
-	private static final double fishingChance = 0.1 ;
-    private static final Image tigerImg = ImageLoader.loadImage(Path.PLAYER_IMG + "Tiger.png") ;
-	private static final Image coinImg = ImageLoader.loadImage(Path.PLAYER_IMG + "CoinIcon.png") ;
+	public static final int MAX_LEVEL = 99 ;
+	private static final double STEP_DURATION = 0.25 ;
+	private static final double FISHING_CHANCE = 0.1 ;
+    private static final Image TIGER_IMG = ImageLoader.loadImage(Path.PLAYER_IMG + "Tiger.png") ;
+	private static final Image COIN_IMG = ImageLoader.loadImage(Path.PLAYER_IMG + "CoinIcon.png") ;
 	// private static final SpriteAnimation magicBlissAni = new SpriteAnimation(Path.PLAYER_IMG + "MagicBlissSprite.png", new Point(), Align.center, 5, 0.15) ;
-    private static final SpriteAnimation[] collectingAnimations ;
+    private static final SpriteAnimation[] COLLECTING_ANI ;
 
-	private static final SpriteAnimation tentAni = new SpriteAnimation(Path.PLAYER_IMG + "Tent.png", new Point(), Align.bottomCenter, false, 1, 5) ;
-	private static final SpriteAnimation diggingAni = new SpriteAnimation(Path.PLAYER_IMG + "DiggingSprite.png", new Point(), Align.center, false, 7, 2/7.0) ;
-	private static final SpriteAnimation fishingAni = new SpriteAnimation(Path.PLAYER_IMG + "FishingSprite.png", new Point(), Align.center, false, 11, 2/11.0) ;
+	private static final SpriteAnimation TENT_ANI = new SpriteAnimation(Path.PLAYER_IMG + "Tent.png", new Point(), Align.bottomCenter, false, 1, 5) ;
+	private static final SpriteAnimation DIGGING_ANI = new SpriteAnimation(Path.PLAYER_IMG + "DiggingSprite.png", new Point(), Align.center, false, 7, 2/7.0) ;
+	private static final SpriteAnimation FISHING_ANI = new SpriteAnimation(Path.PLAYER_IMG + "FishingSprite.png", new Point(), Align.center, false, 11, 2/11.0) ;
 
-	public static final int[] numberOfSpellsPerJob = new int[] {14, 15, 15, 14, 14} ;
-	private static final int[] cumNumberOfSpellsPerJob = new int[] {0, 34, 69, 104, 138} ;
+	public static final int[] QTD_SPELLS_PER_JOB = new int[] {14, 15, 15, 14, 14} ;
+	private static final int[] CUM_QTD_SPELLS_PER_JOB = new int[] {0, 34, 69, 104, 138} ;
     // private static final Color[] jobColors = new Color[] {Palette.colors[21], Palette.colors[5], Palette.colors[2], Palette.colors[3], Palette.colors[4]} ;
 
-    private static final String[] hotKeys = new String[] {"F", "G", "V"} ;
+    private static final String[] HOT_KEYS = new String[] {"F", "G", "V"} ;
 
-	private static final MovingAnimations movingAnimations ;
+	private static final MovingAnimations MOVING_ANI ;
 	
 	static
 	{
-		collectingAnimations = new SpriteAnimation[] {
+		COLLECTING_ANI = new SpriteAnimation[] {
 			new SpriteAnimation(Path.COLLECTABLES_IMG + "CollectingFruit.png", new Point(300, 300), Align.center, false, 12, 0.3),
 			new SpriteAnimation(Path.COLLECTABLES_IMG + "CollectingHerb.png", new Point(300, 300), Align.center, false, 12, 0.3),
 			new SpriteAnimation(Path.COLLECTABLES_IMG + "CollectingWood.png", new Point(300, 300), Align.center, false, 12, 0.3),
 			new SpriteAnimation(Path.COLLECTABLES_IMG + "CollectingMetal.png", new Point(300, 300), Align.center, false, 12, 0.3)
 		} ;
 		
-		movingAnimations = new MovingAnimations(
+		MOVING_ANI = new MovingAnimations(
 			new SpriteAnimation(Path.PLAYER_IMG + "PlayerIdle.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
 			new SpriteAnimation(Path.PLAYER_IMG + "PlayerFront.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
 			new SpriteAnimation(Path.PLAYER_IMG + "PlayerBack.png", new Point(0, 0), Align.bottomCenter, 1, 0.1),
@@ -161,7 +161,7 @@ public class Player extends LiveBeing
 	
 	public Player(String name, String sex, int job)
 	{
-		super(PlayerData.getInitialpersonalattperjob().get(job), PlayerData.getInitialbattleattperjob().get(job), movingAnimations, new PlayerAttributesWindow()) ;
+		super(PlayerData.getInitialpersonalattperjob().get(job), PlayerData.getInitialbattleattperjob().get(job), MOVING_ANI, new PlayerAttributesWindow()) ;
 
 		((PlayerAttributesWindow) attWindow).initializeAttIncButtons(this) ;
 		
@@ -182,7 +182,7 @@ public class Player extends LiveBeing
 		this.thirstCounter = new GameTimer(PlayerData.getThirstcounterduration().get(job)) ;
 		this.mpCounter = new GameTimer(PlayerData.getMpcounterduration().get(job)) ;
 		this.battleActionCounter = new GameTimer(PlayerData.getBattleactioncounterduration().get(job)) ;
-		this.movingTimer = new GameTimer(stepDuration) ;
+		this.movingTimer = new GameTimer(STEP_DURATION) ;
 		this.combo = new ArrayList<>() ;
 		this.hitbox = new HitboxRectangle(getPos(), size, 0.8) ;		
 		this.spells = new ArrayList<Spell>() ;
@@ -227,11 +227,11 @@ public class Player extends LiveBeing
 		if (Spell.getAll() == null || Spell.getAll().isEmpty()) { Log.warn("Tentando setar player spells antes de inicializar Spell") ; return List.of() ;}
 
 		List<Spell> spells = new ArrayList<>() ;	
-    	int numberSpells = numberOfSpellsPerJob[job] ;
+    	int numberSpells = QTD_SPELLS_PER_JOB[job] ;
 
     	for (int i = 0 ; i <= numberSpells - 1 ; i += 1)
 		{
-    		int spellID = cumNumberOfSpellsPerJob[job] + i ;
+    		int spellID = CUM_QTD_SPELLS_PER_JOB[job] + i ;
     		
 			spells.add(Spell.getAll().get(spellID)) ;
 		}
@@ -285,8 +285,8 @@ public class Player extends LiveBeing
 	public void setFocusWindow(GameWindow W) { focusWindow = W ;}
 	public void setSpells(List<Spell> spells) { this.spells = spells ;}
 
-	public static String[] getHotKeys() { return hotKeys ;}
-	public static Image getCoinImg() { return coinImg ;}
+	public static String[] getHotKeys() { return HOT_KEYS ;}
+	public static Image getCoinImg() { return COIN_IMG ;}
 
 	public Point center() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
 	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - size.height)) ;}
@@ -309,7 +309,7 @@ public class Player extends LiveBeing
 	}
 	public void addProSpells()
 	{
-		int firstSpellID = spells.size() + cumNumberOfSpellsPerJob[job] ;
+		int firstSpellID = spells.size() + CUM_QTD_SPELLS_PER_JOB[job] ;
 		firstSpellID += proJob == 1 ? 0 : 10 ;
 		spells.addAll(Spell.getAll().subList(firstSpellID - 1, firstSpellID + 10)) ;
 	}
@@ -405,7 +405,7 @@ public class Player extends LiveBeing
 
 	public void collect(Collectible collectible)
     {		
-		SpriteAnimation collectingAnimation = collectingAnimations[collectible.typeNumber()] ;
+		SpriteAnimation collectingAnimation = COLLECTING_ANI[collectible.typeNumber()] ;
 		if (!collectingAnimation.isActive() && !collectingAnimation.hasFinished())
 		{
 			collectingAnimation.setPos(new Point((int) pos.x, (int) (pos.y - size.height))) ;
@@ -627,9 +627,9 @@ public class Player extends LiveBeing
 			if (!map.groundIsWalkable(new Point((int) newPos.x, (int) newPos.y), superElem)) { return ;}
 			
 			setPos(newPos) ;
-			if (levelUpAni.isActive())
+			if (LEVEL_UP_ANI.isActive())
 			{
-				levelUpAni.setPos(getPos());
+				LEVEL_UP_ANI.setPos(getPos());
 			}
 			
 			return ;
@@ -677,23 +677,23 @@ public class Player extends LiveBeing
 	
 	public void fish()
 	{
-		if (!fishingAni.isActive() && !fishingAni.hasFinished())
+		if (!FISHING_ANI.isActive() && !FISHING_ANI.hasFinished())
 		{
 			Point fishingPos = switch (dir)
 			{
-				case left -> Util.translate(getPos(), -Player.fishingAni.getFrameSize().width, 0) ;
-				case right -> Util.translate(getPos(), Player.fishingAni.getFrameSize().width, 0) ;
-				case up -> Util.translate(getPos(), 0, -Player.fishingAni.getFrameSize().height) ;
-				case down -> Util.translate(getPos(), 0, Player.fishingAni.getFrameSize().height) ;
+				case left -> Util.translate(getPos(), -Player.FISHING_ANI.getFrameSize().width, 0) ;
+				case right -> Util.translate(getPos(), Player.FISHING_ANI.getFrameSize().width, 0) ;
+				case up -> Util.translate(getPos(), 0, -Player.FISHING_ANI.getFrameSize().height) ;
+				case down -> Util.translate(getPos(), 0, Player.FISHING_ANI.getFrameSize().height) ;
 			};
-			fishingAni.setPos(fishingPos);
-			fishingAni.activate() ;
+			FISHING_ANI.setPos(fishingPos);
+			FISHING_ANI.activate() ;
 		}
 		
-		if (!Player.fishingAni.hasFinished()) { return ;}
+		if (!Player.FISHING_ANI.hasFinished()) { return ;}
 
 		Item worm = GeneralItem.getAll()[25] ;
-		double successChance = fishingChance ;
+		double successChance = FISHING_CHANCE ;
 		if (bag.contains(worm))
 		{
 			successChance += 0.1 ;
@@ -738,7 +738,7 @@ public class Player extends LiveBeing
 	
 	private void dig()
 	{
-		if (diggingAni.isActive() && !diggingAni.hasFinished()) { return ;}
+		if (DIGGING_ANI.isActive() && !DIGGING_ANI.hasFinished()) { return ;}
 
 		setState(LiveBeingStates.idle) ;
 		
@@ -774,12 +774,12 @@ public class Player extends LiveBeing
 	
 	public void tent()
 	{
-		if (tentAni.isActive()) { return ;}
+		if (TENT_ANI.isActive()) { return ;}
 		
-		tentAni.setPos(getPos()) ;
-		tentAni.activate() ;
+		TENT_ANI.setPos(getPos()) ;
+		TENT_ANI.activate() ;
 		
-		if (!tentAni.hasFinished()) { return ;}
+		if (!TENT_ANI.hasFinished()) { return ;}
 		
 		PA.getLife().setToMaximum() ;
 		PA.getMp().setToMaximum() ;
@@ -836,8 +836,8 @@ public class Player extends LiveBeing
 				
 			case dig: 
 				if (!questSkills.get(QuestSkills.dig)) { return ;}
-				diggingAni.setPos(getPos()) ;
-				diggingAni.activate() ; 
+				DIGGING_ANI.setPos(getPos()) ;
+				DIGGING_ANI.activate() ; 
 				setState(LiveBeingStates.digging) ;
 				return ;
 			
@@ -897,7 +897,7 @@ public class Player extends LiveBeing
 				
 			case magical:
 			{
-				int spellID = Player.spellKeys.indexOf(currentAction) ;
+				int spellID = Player.SPELL_KEYS.indexOf(currentAction) ;
 				Spell spell = getActiveSpells().get(spellID) ;
 				if (canUseSpell(spell))
 				{
@@ -978,7 +978,7 @@ public class Player extends LiveBeing
 		// using spells
 		if (actionIsSpell() & !isFighting())
 		{
-			Spell spell = getActiveSpells().get(spellKeys.indexOf(currentAction));
+			Spell spell = getActiveSpells().get(SPELL_KEYS.indexOf(currentAction));
 			if (canUseSpell(spell))
 			{
 				useSpell(spell, this) ;
@@ -999,9 +999,9 @@ public class Player extends LiveBeing
 		navigateThroughOpenWindows(mousePos) ;
 
 		// using hotItems
-		for (int i = 0; i <= hotKeys.length - 1 ; i += 1)
+		for (int i = 0; i <= HOT_KEYS.length - 1 ; i += 1)
 		{
-			if (!hotKeys[i].equals(currentAction) || hotItems.get(i) == null) { continue ;}
+			if (!HOT_KEYS[i].equals(currentAction) || hotItems.get(i) == null) { continue ;}
 			
 			useItem(hotItems.get(i)) ;
 		}
@@ -1636,7 +1636,7 @@ public class Player extends LiveBeing
 	
 	public void levelUp()
 	{
-		if (level == maxLevel) { return ;}
+		if (level == MAX_LEVEL) { return ;}
 
 		double[] attIncrease = calcAttributesIncrease() ;
 		setLevel(level + 1) ;
@@ -1657,8 +1657,8 @@ public class Player extends LiveBeing
 		((PlayerAttributesWindow) attWindow).activateIncAttButtons(attPoints) ;
 		
 		// Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, level});
-		levelUpAni.setPos(getPos()) ;
-		levelUpAni.activate() ;
+		LEVEL_UP_ANI.setPos(getPos()) ;
+		LEVEL_UP_ANI.activate() ;
 	}
 	
 	private double[] calcAttributesIncrease()
@@ -1879,8 +1879,8 @@ public class Player extends LiveBeing
 		displayAttributes(Game.getSettings().getAttDisplay()) ;
 		if (isRiding)
 		{
-			Point ridePos = Util.translate(pos, -tigerImg.getWidth(null) / 2, tigerImg.getHeight(null) / 2) ;
-			GamePanel.getDP().drawImage(tigerImg, ridePos, Draw.stdAngle , scale, Align.bottomLeft) ;
+			Point ridePos = Util.translate(pos, -TIGER_IMG.getWidth(null) / 2, TIGER_IMG.getHeight(null) / 2) ;
+			GamePanel.getDP().drawImage(TIGER_IMG, ridePos, Draw.stdAngle , scale, Align.bottomLeft) ;
 		}
 		if (isDrunk())
 		{

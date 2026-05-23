@@ -20,18 +20,16 @@ import utilities.Util;
 
 public class BestiaryWindow extends GameWindow
 {
+	private Dimension windowSize ;
 	private List<CreatureType> discoveredCreatures ;
-
-	private static final Point windowPos = Screen.getMe().pos(0.1, 0.3) ;
-	private Dimension windowSize = new Dimension(384, 288) ;
 	
 	public BestiaryWindow()
 	{
-		super("Bestiário", windowPos, null, 0, 0, 0, 0) ;
-		discoveredCreatures = new ArrayList<>() ;
+		super("Bestiário", Screen.getMe().pos(0.1, 0.3), null, 0, 0, 0, 0) ;
+		this.discoveredCreatures = new ArrayList<>() ;
+		this.windowSize = new Dimension(384, 288) ;
 	}
-	
-	public List<CreatureType> getDiscoveredCreatures() { return discoveredCreatures ;}
+
 	public void addDiscoveredCreature(CreatureType newCreature) { discoveredCreatures.add(newCreature) ;}
 	
 	public void navigate(String action)
@@ -87,7 +85,7 @@ public class BestiaryWindow extends GameWindow
 
 		
 		// draw window
-		GamePanel.getDP().drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Palette.colors[5], Palette.colors[14], Palette.colors[0], true) ;
+		GamePanel.getDP().drawGradRoundRect(topLeftPos, Align.topLeft, windowSize, 3, Palette.colors[5], Palette.colors[14], Palette.colors[0], true) ;
 		
 		if (discoveredCreatures == null) { return ;}
 		
@@ -96,7 +94,7 @@ public class BestiaryWindow extends GameWindow
 		for (int slot = 0 ; slot <= numSlotsInWindow - 1 ; slot += 1)
 		{
 			// draw slots
-			Point slotTopLeft = Util.translate(windowPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
+			Point slotTopLeft = Util.translate(topLeftPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
 			Point slotCenter = Util.translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
 			GamePanel.getDP().drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Palette.colors[3], Palette.colors[20], Palette.colors[0], true) ;
 
@@ -112,7 +110,7 @@ public class BestiaryWindow extends GameWindow
 		if (item < 0) { return ;}
 		
 		CreatureType selectedCreature = discoveredCreatures.get(item) ;
-		Point creatureInfoPos = Util.translate(windowPos, windowSize.width, 0) ;
+		Point creatureInfoPos = Util.translate(topLeftPos, windowSize.width, 0) ;
 		displayCreatureInfo(creatureInfoPos, selectedCreature) ;
 	}
 }
