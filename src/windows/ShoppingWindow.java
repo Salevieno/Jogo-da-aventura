@@ -30,13 +30,12 @@ public class ShoppingWindow extends GameWindow
 	private List<Item> itemsOnWindow ;
 	private boolean buyMode ;
 
-	private static final Point WINDOW_POS = Screen.getMe().pos(0.4, 0.2) ;
 	private static final int QTD_ITEMS_ON_WINDOW = 10 ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Shopping.png") ;
 	
 	public ShoppingWindow(List<Item> itemsForSale)
 	{
-		super("Shopping", WINDOW_POS, IMAGE, 1, 1, Math.min(itemsForSale.size(), QTD_ITEMS_ON_WINDOW), calcNumberWindows(itemsForSale.size())) ;
+		super("Shopping", Screen.getMe().pos(0.4, 0.2), IMAGE, 1, 1, Math.min(itemsForSale.size(), QTD_ITEMS_ON_WINDOW), calcNumberWindows(itemsForSale.size())) ;
 		this.itemsForSale = itemsForSale ;
 		itemsOnWindow = calcItemsOnWindow() ;
 		buyMode = true ;
@@ -150,11 +149,11 @@ public class ShoppingWindow extends GameWindow
 	
 	public void display(Point mousePos)
 	{
-		Point itemPos = Util.translate(WINDOW_POS, BORDER + PADDING + Item.getSlotImage().getWidth(null) / 2, BORDER + 20 + PADDING + Item.getSlotImage().getHeight(null) / 2) ;
-		Point titlePos = Util.translate(WINDOW_POS, size.width / 2, 16) ;
+		Point itemPos = Util.translate(topLeftPos, BORDER + PADDING + Item.getSlotImage().getWidth(null) / 2, BORDER + 20 + PADDING + Item.getSlotImage().getHeight(null) / 2) ;
+		Point titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
 		double angle = Draw.stdAngle ;
 		
-		GamePanel.getDP().drawImage(IMAGE, WINDOW_POS, angle, Scale.unit, Align.topLeft, stdOpacity) ;		
+		GamePanel.getDP().drawImage(image, topLeftPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;		
 		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, TITLE_FONT, Palette.colors[0]) ;				
 		
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
@@ -175,12 +174,12 @@ public class ShoppingWindow extends GameWindow
 			
 			if (this.item == itemsOnWindow.indexOf(bagItem))
 			{
-				bagItem.displayInfo(Util.translate(WINDOW_POS, -10, 0), Align.topRight) ;
+				bagItem.displayInfo(Util.translate(topLeftPos, -10, 0), Align.topRight) ;
 			}
 			itemPos.y += 23 ;
 		}
 		
-		Draw.windowArrows(Util.translate(WINDOW_POS, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
 		
 	}
 }

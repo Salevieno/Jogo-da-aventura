@@ -25,22 +25,20 @@ import utilities.Util;
 
 
 public class ElementalWindow extends GameWindow
-{
-	
+{	
 	private List<GeneralItem> spheres ;
 	private GeneralItem selectedSphere ;
 	private List<Equip> equipsForElemChange ;
 	private Equip selectedEquip ;
 
-	private static final Point WINDOW_POS = Screen.getMe().pos(0.35, 0.23) ;
-	private static final List<String> MENU_TITLES = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
-	private static final Image WINDOW_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Elemental.png") ;
 	private static final int FIRST_SPHERE_ID = 390 ;
 	private static final int QTD_ITEMS_ON_WINDOW = 10 ;
+	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Elemental.png") ;
+	private static final List<String> MENU_TITLES = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
 
 	public ElementalWindow()
 	{
-		super("Elemental", WINDOW_POS, WINDOW_IMAGE, 2, 1, 1, 1) ;
+		super("Elemental", Screen.getMe().pos(0.35, 0.23), IMAGE, 2, 1, 1, 1) ;
 		spheres = null ;
 		selectedEquip = null ;
 		selectedSphere = null ;
@@ -195,7 +193,7 @@ public class ElementalWindow extends GameWindow
 			int row = i % ( QTD_ITEMS_ON_WINDOW / 1) ;
 			int col = i / ( QTD_ITEMS_ON_WINDOW / 1) ;
 			Equip equip = equipsOnWindow.get(i) ;
-			Point slotCenter = Util.translate(WINDOW_POS,
+			Point slotCenter = Util.translate(topLeftPos,
 					BORDER + PADDING + 6 + slotW / 2 + col * (140 + slotW),
 					BORDER + PADDING + 22 + slotH / 2 + row * 21) ;
 			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
@@ -219,7 +217,7 @@ public class ElementalWindow extends GameWindow
 			int row = i % QTD_ITEMS_ON_WINDOW ;
 			int col = i / QTD_ITEMS_ON_WINDOW ;
 			GeneralItem sphere = spheres.get(i) ;
-			Point slotCenter = Util.translate(WINDOW_POS,
+			Point slotCenter = Util.translate(topLeftPos,
 					BORDER + PADDING + 6 + slotW / 2 + col * (140 + slotW),
 					BORDER + PADDING + 22 + slotH / 2 + row * 21) ;
 
@@ -236,9 +234,9 @@ public class ElementalWindow extends GameWindow
 	public void display(Point mousePos)
 	{
 		
-		Point titlePos = Util.translate(WINDOW_POS, size.width / 2, 2 + 9) ;
+		Point titlePos = Util.translate(topLeftPos, size.width / 2, 2 + 9) ;
 		
-		GamePanel.getDP().drawImage(image, WINDOW_POS, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
+		GamePanel.getDP().drawImage(image, topLeftPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
 		GamePanel.getDP().drawText(titlePos, Align.center, Draw.stdAngle, MENU_TITLES.get(menu), TITLE_FONT, STD_COLOR) ;
 		
 		switch (menu)
@@ -249,7 +247,7 @@ public class ElementalWindow extends GameWindow
 		}
 		
 		
-		Draw.windowArrows(Util.translate(WINDOW_POS, 0, size.height + 5), size.width, window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 5), size.width, window, numberWindows, stdOpacity) ;
 		
 	}
 

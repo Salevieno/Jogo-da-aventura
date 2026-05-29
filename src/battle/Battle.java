@@ -18,12 +18,7 @@ import utilities.Util;
 
 public abstract class Battle 
 {
-	private static double randomAmp ;
-
-	static
-	{
-		randomAmp = 0.1 ;
-	}
+	private static double randomAmp = 0.1 ;
 
 	public static void removeRandomness() { randomAmp = 0 ;}
 	

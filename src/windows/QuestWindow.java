@@ -1,6 +1,7 @@
 package windows;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +24,12 @@ public class QuestWindow extends GameWindow
 {
 	private List<Quest> quests ;
 	private BagWindow bag ; // TODO remover bag, registrar itens já coletados e atualizar ao abrir a janela
+	
+	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Quest.png") ;
 
 	public QuestWindow()
 	{
-		super("Quest", Screen.getMe().pos(0.3, 0.1), ImageLoader.loadImage(Path.WINDOWS_IMG + "Quest.png"), 0, 0, 0, 0) ;
+		super("Quest", Screen.getMe().pos(0.3, 0.1), IMAGE, 0, 0, 0, 0) ;
 	}
 	
 	

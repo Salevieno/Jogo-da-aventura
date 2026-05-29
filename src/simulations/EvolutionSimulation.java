@@ -44,7 +44,6 @@ import windows.PlayerAttributesWindow;
 
 public abstract class EvolutionSimulation
 {
-	private static final Font font ;
 	
 	private static Player player ;
 	private static Pet pet ;
@@ -58,12 +57,7 @@ public abstract class EvolutionSimulation
 	
 	private static int numberFightsRepetition = 0 ;
 	
-	private static List<GameButton> buttons ;
-
-	private static final String pathSimulation = "Simulation/" ;
-	private static final Image screenImage = ImageLoader.loadImage(pathSimulation + "SimulationScreen.png") ;
-	private static final Image fightingImage = ImageLoader.loadImage(pathSimulation + "fightingIcon.png") ;
-	
+	private static List<GameButton> buttons = new ArrayList<>() ;
 	
 	private static int BattleResultsPlayerLife = 0 ;
 	private static int BattleResultsCreatureLife = 0 ;
@@ -82,12 +76,14 @@ public abstract class EvolutionSimulation
 	private static List<Genetics> listBestGenes = new ArrayList<>() ;
 	private static Genetics newGenes = new Genetics() ;
 	private static boolean evolutionIsOn = false ;
+
+	private static final String pathSimulation = "Simulation/" ;
+	private static final Font font = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
+	private static final Image screenImage = ImageLoader.loadImage(pathSimulation + "SimulationScreen.png") ;
+	private static final Image fightingImage = ImageLoader.loadImage(pathSimulation + "fightingIcon.png") ;
 	
 	static
-	{
-		font = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
-		buttons = new ArrayList<>() ;
-		
+	{		
 		player = new Player("Player", "f", 0) ;
 		player.setPos(new Point2D.Double(45, 230)) ;
 		pet = Game.getPet() ;

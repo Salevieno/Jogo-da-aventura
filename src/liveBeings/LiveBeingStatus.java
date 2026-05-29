@@ -24,11 +24,10 @@ public class LiveBeingStatus
 	private double intensity ;
 	private final Image image ;
 
-	public static final Map<Attributes, Image> IMAGES ;
+	public static final Map<Attributes, Image> IMAGES = new HashMap<>() ;
 	
 	static
 	{
-		IMAGES = new HashMap<>() ;
 		for (Attributes att : Attributes.values())
 		{
 			IMAGES.put(att, ImageLoader.loadImage(Path.STATUS_IMG + att.toString() + ".png")) ;

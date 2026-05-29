@@ -20,40 +20,24 @@ import screen.Screen;
 import spells.Spell;
 import utilities.Util;
 
-
 public abstract class SpellsBar
 {   
-    private static final int MAX_NUMBER_ROWS ;
-    private static final Font LARGE_FONT ;
-    private static final Color TEXT_COLOR ;
-
-    private static final Point BAR_POS ;
-    private static final Image BAR_IMAGE ;
-    private static final Dimension BAR_SIZE ;
-    private static final Image SLOT_IMAGE_NO_MP ;
-    private static final Dimension SLOT_SIZE ;
-    private static final Point SLOTS_OFFSET ;
-    private static final Image COOLDOWN_IMAGE ;
-	
 	private static List<Spell> spells ;
 	private static int nRows ;
 	private static int nCols ;
-	
-	static
-	{
-		MAX_NUMBER_ROWS = 8 ;
-		LARGE_FONT = new Font("SansSerif", Font.BOLD, 14) ;
-		TEXT_COLOR = Palette.colors[4] ;
 
-		BAR_POS = new Point(Screen.getMe().mapSize().width + 2, HotKeysBar.topLeft().y - SideBar.SY) ;
-		BAR_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SpellsBar.png") ;
-		BAR_SIZE = Util.getSize(BAR_IMAGE) ;
-		SLOT_IMAGE_NO_MP = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SlotNoMP.png") ;
-		SLOT_SIZE = Util.getSize(SideBar.SLOT_IMAGE) ;
-		SLOTS_OFFSET = new Point(3, 4) ;
-		COOLDOWN_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Cooldown.png") ;
-	}
-	
+    private static final int MAX_NUMBER_ROWS = 8 ;
+    private static final Font LARGE_FONT = new Font("SansSerif", Font.BOLD, 14) ;
+    private static final Color TEXT_COLOR = Palette.colors[4] ;
+
+    private static final Point BAR_POS = new Point(Screen.getMe().mapSize().width + 2, HotKeysBar.topLeft().y - SideBar.SY) ;
+    private static final Image BAR_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SpellsBar.png") ;
+    private static final Dimension BAR_SIZE = Util.getSize(BAR_IMAGE) ;
+    private static final Image SLOT_IMAGE_NO_MP = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SlotNoMP.png") ;
+    private static final Dimension SLOT_SIZE = Util.getSize(SideBar.SLOT_IMAGE) ;
+    private static final Point SLOTS_OFFSET = new Point(3, 4) ;
+    private static final Image COOLDOWN_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Cooldown.png") ;
+
 	public static void updateSpells(List<Spell> newSpells)
 	{
 		spells = newSpells ;

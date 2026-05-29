@@ -1,6 +1,7 @@
 package windows;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Point;
 
 import graphics.Align;
@@ -17,10 +18,12 @@ import utilities.Util;
 
 
 public class HintsWindow extends GameWindow
-{	
+{
+	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Hints.png") ;
+
 	public HintsWindow()
 	{
-		super("Dicas", Screen.getMe().pos(0.15, 0.4), ImageLoader.loadImage(Path.WINDOWS_IMG + "Hints.png"), 0, 0, 0, 0) ;
+		super("Dicas", Screen.getMe().pos(0.15, 0.4), IMAGE, 0, 0, 0, 0) ;
 	}
 	
 	public void navigate(String action)

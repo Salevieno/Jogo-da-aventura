@@ -24,20 +24,16 @@ public class Sky
 	private Color topColor ;
 	private Color botColor ;
 
-	private static final int HEIGHT ;
-	private static final Color[] TOP_COLORS ;
-	private static final Color[] BOT_COLORS ;
-	private static final Image CLOUD_IMAGE1 ;
-	private static final Image CLOUD_IMAGE2 ;
-	private static final Image CLOUD_IMAGE3 ;
+	private static final int HEIGHT = 192 ;
+	private static final Color[] TOP_COLORS = new Color[8];
+	private static final Color[] BOT_COLORS = new Color[8];
+	private static final Image CLOUD_IMAGE1 = ImageLoader.loadImage(Path.SKY_IMG + "Cloud1.png") ;
+	private static final Image CLOUD_IMAGE2 = ImageLoader.loadImage(Path.SKY_IMG + "Cloud2.png") ;
+	private static final Image CLOUD_IMAGE3 = ImageLoader.loadImage(Path.SKY_IMG + "Cloud3.png") ;
 	private static final Image[] STAR_IMAGES ;
 	
 	static
-	{
-		HEIGHT = 192 ;
-		TOP_COLORS = new Color[8];
-		BOT_COLORS = new Color[8];
-		
+	{		
 		Image skyColors = ImageLoader.loadImage(Path.SKY_IMG + "Colors.png") ;
 		for (int i = 0; i <= 8 - 1; i += 1)
 		{
@@ -45,9 +41,6 @@ public class Sky
 			BOT_COLORS[i] = Util.getPixelColor(Util.toBufferedImage(skyColors), new Point(10 * i, 10));
 		}
 
-		CLOUD_IMAGE1 = ImageLoader.loadImage(Path.SKY_IMG + "Cloud1.png") ;
-		CLOUD_IMAGE2 = ImageLoader.loadImage(Path.SKY_IMG + "Cloud2.png") ;
-		CLOUD_IMAGE3 = ImageLoader.loadImage(Path.SKY_IMG + "Cloud3.png") ;
 		STAR_IMAGES = new Image[] {
 				ImageLoader.loadImage(Path.SKY_IMG + "Star1.png") ,
 				ImageLoader.loadImage(Path.SKY_IMG + "Star2.png") ,

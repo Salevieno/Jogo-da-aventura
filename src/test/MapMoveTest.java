@@ -19,8 +19,7 @@ public class MapMoveTest
 {
 	@Test
 	void mapMoveTest()
-	{
-		
+	{		
 		Point topLeft = Screen.getMe().pos(0.01, 0.99) ;
 		Point bottomLeft = Screen.getMe().pos(0.01, 0.01) ;
 		Point bottomRight = Screen.getMe().pos(0.99, 0.01) ;

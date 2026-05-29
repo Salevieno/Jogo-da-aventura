@@ -27,17 +27,17 @@ import utilities.Util;
 
 public abstract class Opening
 {
-    private static List<GameButton> buttons ;
-    private static List<List<GameButton>> buttonsInStep ;
-    private static List<GameButton> languageButtons ;
-    private static List<GameButton> loadSlotButtons ;
+    private static List<GameButton> buttons = new ArrayList<>() ;
+    private static List<List<GameButton>> buttonsInStep = new ArrayList<>() ;
+    private static List<GameButton> languageButtons = new ArrayList<>() ;
+    private static List<GameButton> loadSlotButtons = new ArrayList<>() ;
 	private static Player[] players ;
     private static String[] stepMessage ;
     private static String[] jobDescriptionPtBr ;
     private static String[] jobDescriptionEn ;
-    private static int step ;
-    private static boolean newGame ;
-    private static boolean isOver ;
+    private static int step = 0;
+    private static boolean newGame = true ;
+    private static boolean isOver = false ;
     
     private static String chosenName ;
     private static int difficultLevel ;
@@ -62,14 +62,6 @@ public abstract class Opening
 		// LoadingEnfeite = ImageLoader.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
 		thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
 		introMusic = Music.loadMusicFile("intro.wav") ;
-		
-    	step = 0 ;
-    	newGame = true ;
-    	isOver = false ;
-		liveInput = new LiveInput() ;
-    	buttons = new ArrayList<>() ;
-		buttonsInStep = new ArrayList<>() ;
-    	loadSlotButtons = new ArrayList<>() ;
 
 		ButtonFunction portAction = () -> { } ; // TODO switch language
 		ButtonFunction enAction = () -> { } ;

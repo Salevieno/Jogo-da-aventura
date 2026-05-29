@@ -14,14 +14,8 @@ public class Buff
 {
 	private final Map<Attributes, BuffPower> power ;
 
-	private static final Map<Integer, Buff> ALL_BUFFS ;
-	private static final Map<Integer, Buff> ALL_NERFS ;
-	
-	static
-	{
-		ALL_BUFFS = new HashMap<>() ;
-		ALL_NERFS = new HashMap<>() ;
-	}
+	private static final Map<Integer, Buff> ALL_BUFFS = new HashMap<>() ;
+	private static final Map<Integer, Buff> ALL_NERFS = new HashMap<>() ;
 	
 	protected Buff(boolean isBuff, int id, Map<Attributes, BuffPower> power)
 	{

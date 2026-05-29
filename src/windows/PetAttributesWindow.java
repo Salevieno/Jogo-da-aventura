@@ -26,14 +26,14 @@ import utilities.Util;
 public class PetAttributesWindow extends AttributesWindow
 {
 	private Pet pet ;
-
-	Point windowPos = Screen.getMe().pos(0.52, 0.14) ;
+	private final Point windowPos ;
 	
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "PetAttWindow.png") ;
 	
 	public PetAttributesWindow()
 	{
-		super(IMAGE, 1);
+		super(IMAGE, 1) ;
+		this.windowPos = Screen.getMe().pos(0.52, 0.14) ;
 	}
 
 	public void setPet(Pet pet) { this.pet = pet ;}

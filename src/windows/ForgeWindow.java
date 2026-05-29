@@ -34,14 +34,13 @@ public class ForgeWindow extends GameWindow
 	private String message ;
 	private BagWindow bag ;
 
-	private static final Point WINDOW_POS = Screen.getMe().getPointWithinBorders(0.2, 0.05) ;
-	private static final Image WINDOW_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Forge.png") ;
 	private static final int QTD_ITEMS_ON_WINDOW = 10 ;
+	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Forge.png") ;
 	private static final List<String> MESSAGES = Arrays.asList(Game.getAllText().get(TextCategories.forgeWindowMessages)) ;	
 
 	public ForgeWindow()
 	{
-		super("Forge", WINDOW_POS, WINDOW_IMAGE, 1, 1, 1, 1) ;
+		super("Forge", Screen.getMe().getPointWithinBorders(0.2, 0.05), IMAGE, 1, 1, 1, 1) ;
 		bag = null ;
 		// forgeButton = new GameButton(new Point(200, 300), Align.topLeft, null, null, () -> {forge() ;}) ;
 		itemsForForge = new ArrayList<>() ;
@@ -60,7 +59,7 @@ public class ForgeWindow extends GameWindow
 	public void displayMessage(int i)
 	{
 		message = MESSAGES.get(i) ;
-		Point pos = Util.translate(WINDOW_POS, 0, - 30) ;
+		Point pos = Util.translate(topLeftPos, 0, - 30) ;
 		MessageAnimation.start(pos, message, Palette.colors[0]) ;
 	}
 	
@@ -167,19 +166,19 @@ public class ForgeWindow extends GameWindow
 	public void display(Point mousePos)
 	{
 
-		Point titlePos = Util.translate(WINDOW_POS, size.width / 2, 16) ;
-		Point messagePos = Util.translate(WINDOW_POS, size.width / 2, 36) ;
+		Point titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
+		Point messagePos = Util.translate(topLeftPos, size.width / 2, 36) ;
 		double angle = Draw.stdAngle ;
 		List<Equip> itemsOnWindow = QTD_ITEMS_ON_WINDOW <= itemsForForge.size() ? itemsForForge.subList(0, QTD_ITEMS_ON_WINDOW) : itemsForForge ;
 		
 		if (itemsOnWindow.size() == 0) { item = -1 ;}
 		
-		GamePanel.getDP().drawImage(image, WINDOW_POS, angle, Scale.unit, Align.topLeft, stdOpacity) ;
+		GamePanel.getDP().drawImage(image, topLeftPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
 		
 		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, TITLE_FONT, Palette.colors[1]) ;
 		GamePanel.getDP().drawText(messagePos, Align.center, angle, MESSAGES.get(0), STD_FONT, STD_COLOR) ;
 		
-		Point itemPos = Util.translate(WINDOW_POS, 24, 70) ;
+		Point itemPos = Util.translate(topLeftPos, 24, 70) ;
 		
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
 		{			

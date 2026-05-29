@@ -27,13 +27,12 @@ public class BookWindow extends GameWindow
 {
     private List<Recipe> recipes = new ArrayList<>() ;
 
-	private static final Point WINDOW_POS = Screen.getMe().getCenter() ;
-	private static final Image WINDOW_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Book.png") ;
 	private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 14) ;
-	
+	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Book.png") ;
+
 	public BookWindow()
 	{
-		super("Livro", WINDOW_POS, WINDOW_IMAGE, 0, 0, 0, 0) ;
+		super("Livro", Screen.getMe().getCenter(), IMAGE, 0, 0, 0, 0) ;
 	}
 
 	public void setRecipes(List<Recipe> recipes) { this.recipes = recipes ; numberWindows = recipes.size() ;}
@@ -50,8 +49,8 @@ public class BookWindow extends GameWindow
 		if (recipes == null) { return ;}
 		if (recipes.isEmpty()) { return ;}
 
-		Point ingredientsCol = Util.translate(WINDOW_POS, -image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
-		Point productsCol = Util.translate(WINDOW_POS, image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
+		Point ingredientsCol = Util.translate(topLeftPos, -image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
+		Point productsCol = Util.translate(topLeftPos, image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
 		
 		int sy = FONT.getSize() + 1 ;
 		int id = window ;
@@ -86,17 +85,17 @@ public class BookWindow extends GameWindow
 	{
 		if (numberWindows == 0) { return ;}
 		
-		Point textPos = Util.translate(UtilAlignment.getPosAt(WINDOW_POS, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
+		Point textPos = Util.translate(UtilAlignment.getPosAt(topLeftPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
 		String pageText = (window + 1) + " / " + numberWindows ;
 		GamePanel.getDP().drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, FONT, Palette.colors[0]) ;
 	}
 	
 	public void display(Point mousePos)
 	{
-		GamePanel.getDP().drawImage(image, WINDOW_POS, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.getDP().drawImage(image, topLeftPos, Draw.stdAngle, Scale.unit, Align.center) ;
 		displayRecipes(mousePos) ;
 		displayPageNumber() ;
 		
-		Draw.windowArrows(UtilAlignment.getPosAt(WINDOW_POS, Align.center, Align.bottomLeft, size), image.getWidth(null), window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(UtilAlignment.getPosAt(topLeftPos, Align.center, Align.bottomLeft, size), image.getWidth(null), window, numberWindows, stdOpacity) ;
 	}
 }

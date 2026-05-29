@@ -35,21 +35,18 @@ public class CraftWindow extends GameWindow
 	private List<Recipe> recipesInWindow ;
 	private GameButton craftButton ;
 	
-	private static final Point WINDOW_POS = Screen.getMe().pos(0.03, 0.25) ;	
 	private static final int RECIPES_PER_WINDOW = 1 ;
-	private static final Image BTN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "CraftButton.png") ;
+	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Craft.png") ;
 	private static final List<String> MESSAGES = Arrays.asList(
 																"Items criados!",
 																"Vc não possui todos os ingredientes") ;
-	public static final Image craftImage = ImageLoader.loadImage(Path.WINDOWS_IMG + "Craft.png") ;
-
 	public CraftWindow(List<Recipe> recipes)
 	{
-		super("", WINDOW_POS, craftImage, 1, 1, RECIPES_PER_WINDOW, recipes.size() / RECIPES_PER_WINDOW) ;
+		super("", Screen.getMe().pos(0.03, 0.25), IMAGE, 1, 1, RECIPES_PER_WINDOW, recipes.size() / RECIPES_PER_WINDOW) ;
 		this.amountOfCrafts = 1 ;
 		this.recipes = recipes ;
 		this.recipesInWindow = RECIPES_PER_WINDOW <= recipes.size() ? recipes.subList(window, RECIPES_PER_WINDOW + window) : recipes ;
-		this.craftButton = new GameTextButton(Util.translate(WINDOW_POS, 286, 130), Align.center, "Fabricar " + String.valueOf(amountOfCrafts), () -> {setBag(Game.getPlayer().getBag()) ; craft(playerBag) ;}) ;
+		this.craftButton = new GameTextButton(Util.translate(topLeftPos, 286, 130), Align.center, "Fabricar " + String.valueOf(amountOfCrafts), () -> {setBag(Game.getPlayer().getBag()) ; craft(playerBag) ;}) ;
 		this.craftButton.deactivate() ;
 		addButton(craftButton) ;
 	}
@@ -148,30 +145,30 @@ public class CraftWindow extends GameWindow
 	public void displayMessage(int i)
 	{
 		String message = MESSAGES.get(i) ;
-		Point pos = Util.translate(WINDOW_POS, 320, -30) ;
+		Point pos = Util.translate(topLeftPos, 320, -30) ;
 		MessageAnimation.start(pos, message, Palette.colors[0]) ;
 	}
 	
 	public void display(Point mousePos)
 	{
 		
-		Point titlePos = Util.translate(WINDOW_POS, size.width / 2, BORDER + 9) ;
+		Point titlePos = Util.translate(topLeftPos, size.width / 2, BORDER + 9) ;
 		double angle = Draw.stdAngle ;		
 		
-		GamePanel.getDP().drawImage(image, WINDOW_POS, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
+		GamePanel.getDP().drawImage(image, topLeftPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
 		
 		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, TITLE_FONT, STD_COLOR) ;
 		
-		Point ingredientsTextPos = Util.translate(WINDOW_POS, BORDER + PADDING + 84, BORDER + 10) ;
-		Point productsTextPos = Util.translate(WINDOW_POS, BORDER + PADDING + 362 + 84, BORDER + 10) ;
+		Point ingredientsTextPos = Util.translate(topLeftPos, BORDER + PADDING + 84, BORDER + 10) ;
+		Point productsTextPos = Util.translate(topLeftPos, BORDER + PADDING + 362 + 84, BORDER + 10) ;
 //		Point amountTextPos = Util.translate(windowPos, border + padding + 276, border + 30) ;
 		GamePanel.getDP().drawText(ingredientsTextPos, Align.center, angle, "Ingredientes", SUBTITLE_FONT, STD_COLOR) ;
 		GamePanel.getDP().drawText(productsTextPos, Align.center, angle, "Produtos", SUBTITLE_FONT, STD_COLOR) ;
 //		GamePanel.getDP().drawText(amountTextPos, Align.center, angle, "Fabricar", subTitleFont, textColor) ;
 //		GamePanel.getDP().drawText(Util.translate(amountTextPos, 0, 70), Align.center, angle, String.valueOf(amountOfCrafts), titleFont, textColor) ;
 
-		Point ingredientsPos = Util.translate(WINDOW_POS, BORDER + PADDING + Item.getSlotImage().getWidth(null) / 2, BORDER + PADDING + Item.getSlotImage().getHeight(null) / 2 + 30) ;
-		Point productsPos = Util.translate(WINDOW_POS, BORDER + PADDING + Item.getSlotImage().getWidth(null) / 2 + 362, BORDER + PADDING + Item.getSlotImage().getHeight(null) / 2 + 30) ;
+		Point ingredientsPos = Util.translate(topLeftPos, BORDER + PADDING + Item.getSlotImage().getWidth(null) / 2, BORDER + PADDING + Item.getSlotImage().getHeight(null) / 2 + 30) ;
+		Point productsPos = Util.translate(topLeftPos, BORDER + PADDING + Item.getSlotImage().getWidth(null) / 2 + 362, BORDER + PADDING + Item.getSlotImage().getHeight(null) / 2 + 30) ;
 		for (Recipe recipe : recipesInWindow)
 		{
 			Map<Item, Integer> ingredients = recipe.getIngredients() ;
@@ -198,7 +195,7 @@ public class CraftWindow extends GameWindow
 		craftButton.setName("Fabricar " + amountOfCrafts) ;
 		craftButton.display(0.0, true, mousePos) ;
 		
-		Draw.windowArrows(Util.translate(WINDOW_POS, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
 		
 	}
 }

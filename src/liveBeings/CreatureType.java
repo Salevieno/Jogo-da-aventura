@@ -41,15 +41,13 @@ public class CreatureType
 	private final String hitboxType ;
 	private Genetics genes;
 
-	private static final List<MovingAnimations> MOVE_ANIMATIONS;
-	public static final int QTD_CREATURE_TYPES_IMAGES ;
-	private static final List<CreatureType> ALL;
+	private static final List<MovingAnimations> MOVE_ANIMATIONS = new ArrayList<>() ;
+	public static final int QTD_CREATURE_TYPES_IMAGES = 3 ;
+	private static final List<CreatureType> ALL = new ArrayList<>() ;
 	public static final CreatureAttributesWindow ATT_WINDOW;
 
 	static
 	{// TODO imagens das criaturas tem que refletir o poder (1, 6, 11, 16 e 21) são as nível 0, pode ser a mesma imagem mudando cores
-		QTD_CREATURE_TYPES_IMAGES = 3;
-		MOVE_ANIMATIONS = new ArrayList<>();
 		for (int i = 0; i <= QTD_CREATURE_TYPES_IMAGES - 1; i += 1)
 		{
 			String rootPath = Path.CREATURES_IMG + "creature" + i ;
@@ -63,7 +61,6 @@ public class CreatureType
 		}
 
 		ATT_WINDOW = new CreatureAttributesWindow();
-		ALL = new ArrayList<>();
 	}
 
 	public CreatureType(int id, String name, int level, int range, int step, int movePatternID, Elements[] elem,

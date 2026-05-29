@@ -30,14 +30,13 @@ public class BankWindow extends GameWindow
 	private GameTimer investmentCounter ;
 	private LiveInput liveInput ;
 
-	private static final Point WINDOW_POS = Screen.getMe().pos(0.4, 0.2) ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Banco.png") ;
 	private static final String[] INVESTMENT_RISK_LEVELS = new String[] {"low", "high"} ;
-	public static final Image CLOCK_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "clock.png") ;
+	private static final Image CLOCK_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "clock.png") ;
 // TODO investment
 	public BankWindow()
 	{
-		super("Banco", WINDOW_POS, IMAGE, 1, 1, 1, 1) ;
+		super("Banco", Screen.getMe().pos(0.4, 0.2), IMAGE, 1, 1, 1, 1) ;
 		amountTyped = 0 ;
 		balance = 0 ;
 		investedAmount = 0 ;
@@ -151,16 +150,16 @@ public class BankWindow extends GameWindow
 	
 	public void display(Point mousePos)
 	{
-		Point titlePos = Util.translate(WINDOW_POS, size.width / 2, BORDER + 10) ;
+		Point titlePos = Util.translate(topLeftPos, size.width / 2, BORDER + 10) ;
 		Color textColor = Palette.colors[0] ;
 		double angle = Draw.stdAngle ;
 		
-		GamePanel.getDP().drawImage(IMAGE, WINDOW_POS, angle, Scale.unit, Align.topLeft) ;
+		GamePanel.getDP().drawImage(image, topLeftPos, angle, Scale.unit, Align.topLeft) ;
 
 		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, TITLE_FONT, Palette.colors[0]) ;
 		
-		Point balancePos = Util.translate(WINDOW_POS, BORDER + PADDING + 4, (int) BORDER + 30) ;
-		Point investmentPos = Util.translate(WINDOW_POS, BORDER + PADDING + 4, BORDER + 90) ;
+		Point balancePos = Util.translate(topLeftPos, BORDER + PADDING + 4, (int) BORDER + 30) ;
+		Point investmentPos = Util.translate(topLeftPos, BORDER + PADDING + 4, BORDER + 90) ;
 		
 		GamePanel.getDP().drawText(balancePos, Align.centerLeft, angle, "Saldo", STD_FONT, textColor) ;
 		GamePanel.getDP().drawText(investmentPos, Align.centerLeft, angle, "Investimento", STD_FONT, textColor) ;
@@ -174,10 +173,10 @@ public class BankWindow extends GameWindow
 		
 		if (!isReadingInput()) { return ;}
 
-		Point inputMessagePos = Util.translate(WINDOW_POS, 0, BORDER + size.height + 15) ;
+		Point inputMessagePos = Util.translate(topLeftPos, 0, BORDER + size.height + 15) ;
 		GamePanel.getDP().drawText(inputMessagePos, Align.centerLeft, angle, "Amount for " + mode, STD_FONT, textColor) ;
 		
-		Point inputPos = Util.translate(WINDOW_POS, 0, BORDER + size.height + 35) ;
+		Point inputPos = Util.translate(topLeftPos, 0, BORDER + size.height + 35) ;
 		liveInput.displayTypingField(inputPos, true) ;
 		GamePanel.getDP().drawImage(Player.getCoinImg(), Util.translate(inputPos, 5, 0), Align.centerLeft) ;
 	}

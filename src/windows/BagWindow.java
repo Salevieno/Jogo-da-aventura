@@ -52,37 +52,22 @@ public class BagWindow extends GameWindow
 	private Map<Item, Integer> itemsOnWindow ;
 	private int gold ;
 	private Item itemFetched ;
+	private final List<Point> itemPos ;
 
-	private static final List<Point> ITEM_POS ;
 	private static final int QTD_SLOTS_PER_WINDOW = 20 ;
-	private static final Point WINDOW_POS = Screen.getMe().pos(0.28, 0.4) ;
 	private static final Point SPACING = new Point(300, 35) ;
-	private static final Dimension ITEM_NAME_SIZE = new Dimension(140, 10) ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Bag.png") ;
+	private static final Dimension ITEM_NAME_SIZE = new Dimension(140, 10) ;
 	private static final Image SELECTED_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSelected.png") ;
 	private static final Image MENU_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagMenu.png") ;
 	private static final Image SELECTED_MENU_TAB_0_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSelectedMenuTab0.png") ;
 	private static final Image SELECTED_MENU_TAB_1_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSelectedMenuTab1.png") ;
-	
-	static
-	{
-		ITEM_POS = new ArrayList<>() ;
-		int slotW = SLOT_IMAGE.getWidth(null) ;
-		int slotH = SLOT_IMAGE.getHeight(null) ;
-		Point offset = new Point(70 + BORDER + slotW / 2, BORDER + PADDING + 2 + slotH / 2) ;
-		for (int i = 0 ; i <= QTD_SLOTS_PER_WINDOW - 1; i += 1)
-		{
-			int row = i % (QTD_SLOTS_PER_WINDOW / 2) ;
-			int col = i / (QTD_SLOTS_PER_WINDOW / 2) ;
-			ITEM_POS.add(Util.translate(WINDOW_POS, offset.x + col * SPACING.x, offset.y + row * SPACING.y)) ;
-		}
-	}
-	
+
     public BagWindow()
 	{
-    	super("Mochila", WINDOW_POS, IMAGE, 2, 10, 0, 0) ;
-		this.buttons = List.of(windowUpButton(new Point(WINDOW_POS.x + IMAGE.getWidth(null) - 10, WINDOW_POS.y + IMAGE.getHeight(null) + 10), Align.topLeft),
-				windowDownButton(new Point(WINDOW_POS.x + 10, WINDOW_POS.y + IMAGE.getHeight(null) + 10), Align.topLeft)) ;
+    	super("Mochila", Screen.getMe().pos(0.28, 0.4), IMAGE, 2, 10, 0, 0) ;
+		this.buttons = List.of(windowUpButton(new Point(topLeftPos.x + image.getWidth(null) - 10, topLeftPos.y + image.getHeight(null) + 10), Align.topLeft),
+				windowDownButton(new Point(topLeftPos.x + 10, topLeftPos.y + image.getHeight(null) + 10), Align.topLeft)) ;
 		this.pot = new LinkedHashMap<Potion, Integer>() ;
 		this.alch = new LinkedHashMap<Alchemy, Integer>() ;
 		this.forges = new LinkedHashMap<Forge, Integer>() ;
@@ -95,6 +80,18 @@ public class BagWindow extends GameWindow
 		this.questItems = new LinkedHashMap<QuestItem, Integer>() ;
 		this.itemsOnWindow = new LinkedHashMap<>() ;
 		this.gold = 0 ;
+
+		
+		int slotW = SLOT_IMAGE.getWidth(null) ;
+		int slotH = SLOT_IMAGE.getHeight(null) ;
+		Point offset = new Point(70 + BORDER + slotW / 2, BORDER + PADDING + 2 + slotH / 2) ;
+		itemPos = new ArrayList<>() ;
+		for (int i = 0 ; i <= QTD_SLOTS_PER_WINDOW - 1; i += 1)
+		{
+			int row = i % (QTD_SLOTS_PER_WINDOW / 2) ;
+			int col = i / (QTD_SLOTS_PER_WINDOW / 2) ;
+			itemPos.add(Util.translate(topLeftPos, offset.x + col * SPACING.x, offset.y + row * SPACING.y)) ;
+		}
 		
 	}
 
@@ -619,7 +616,7 @@ public class BagWindow extends GameWindow
 
 		for (int i = 0 ; i <= numberItemsDisplayed - 1; i += 1)
 		{
-			Point slotCenter = ITEM_POS.get(i) ;
+			Point slotCenter = itemPos.get(i) ;
 			Point slotCenterLeft = UtilAlignment.getPosAt(slotCenter, Align.center, Align.centerLeft, Util.getSize(SLOT_IMAGE)) ;
 			if (Util.isInside(mousePos, slotCenterLeft, ITEM_NAME_SIZE))
 			{
@@ -646,7 +643,7 @@ public class BagWindow extends GameWindow
 		// draw tabs
 		for (int m = 0 ; m <= tabNames.length - 1 ; m += 1)
 		{
-			Point tabPos = Util.translate(WINDOW_POS, 0, BORDER + m * MENU_IMAGE.getHeight(null)) ;
+			Point tabPos = Util.translate(topLeftPos, 0, BORDER + m * MENU_IMAGE.getHeight(null)) ;
 			tabPos.x += m == tab ? 3 : 0 ; 
 			Point textPos = Util.translate(tabPos, 3, MENU_IMAGE.getHeight(null) / 2) ;
 			Color textColor = getTextColor(m == tab) ;
@@ -658,7 +655,7 @@ public class BagWindow extends GameWindow
 		}
 		
 		// draw bag
-		GamePanel.getDP().drawImage(menu == 0 ? image : SELECTED_IMAGE, WINDOW_POS, Align.topLeft) ;
+		GamePanel.getDP().drawImage(menu == 0 ? image : SELECTED_IMAGE, topLeftPos, Align.topLeft) ;
 		
 		// draw items		
 		itemsOnWindow = getItemsOnWindow() ;		
@@ -669,7 +666,7 @@ public class BagWindow extends GameWindow
 		for (int i = 0 ; i <= numberItemsDisplayed - 1; i += 1)
 		{
 			int itemID = i + window * QTD_SLOTS_PER_WINDOW ;
-			Point slotCenter = ITEM_POS.get(i) ;
+			Point slotCenter = itemPos.get(i) ;
 			Point slotCenterLeft = UtilAlignment.getPosAt(slotCenter, Align.center, Align.centerLeft, Util.getSize(SLOT_IMAGE)) ;
 			String itemText = itemsDisplayed.get(i).getName() + " (x " + amountsDisplayed.get(i) + ")" ;
 			Point textPos = Util.translate(slotCenterLeft, SLOT_IMAGE.getWidth(null) + 5, 0) ;
@@ -686,7 +683,7 @@ public class BagWindow extends GameWindow
 			Item selectedItem = itemsDisplayed.get(item - window * QTD_SLOTS_PER_WINDOW) ;
 			if (selectedItem instanceof Equip || selectedItem instanceof GeneralItem)
 			{
-				selectedItem.displayInfo(WINDOW_POS, Align.topRight) ;
+				selectedItem.displayInfo(topLeftPos, Align.topRight) ;
 			}
 		}
 		

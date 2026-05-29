@@ -20,17 +20,21 @@ import utilities.Util;
 public class WinAnimation extends Animation
 {
     private List<Item> items ;
+	private final Point topLeftPos ;
+	private final Font stdFont ;
+	private final Font smallFont ;
+	private final Point textPos ;
 
-	private static final Point POS = Screen.getMe().pos(0.35, 0.2) ;
-	private static final Font STD_FONT = DrawPrimitives.stdFont ;
-	private static final Font SMALL_FONT = new Font(DrawPrimitives.stdFont.getName(), Font.BOLD, 11) ;
-	private static final Point TEXT_POS = Util.translate(POS, 80, 11) ;
 	private static final Image WIN_OBTAINED_ITEMS_IMG = ImageLoader.loadImage(Path.PLAYER_IMG + "Win.png") ;
 
 	private WinAnimation(List<Item> items)
     {
 		super(8) ;
         this.items = items ;
+		this.topLeftPos = Screen.getMe().pos(0.35, 0.2) ;
+		this.textPos = Util.translate(topLeftPos, 80, 11) ;
+		this.stdFont = DrawPrimitives.stdFont ;
+		this.smallFont = new Font(DrawPrimitives.stdFont.getName(), Font.BOLD, 11) ;
 	}
 
     public static void start(List<Item> items)
@@ -41,20 +45,20 @@ public class WinAnimation extends Animation
 
     protected void play()
     {
-		GamePanel.getDP().drawImage(WIN_OBTAINED_ITEMS_IMG, POS, Scale.unit, Align.topLeft) ;
+		GamePanel.getDP().drawImage(WIN_OBTAINED_ITEMS_IMG, topLeftPos, Scale.unit, Align.topLeft) ;
 		
 		if ( timer.rate() <= 0.1 ) { return ;}
 		
-		GamePanel.getDP().drawText(TEXT_POS, Align.center, Draw.stdAngle, "Você obteve!", STD_FONT, Palette.colors[3]) ;
+		GamePanel.getDP().drawText(textPos, Align.center, Draw.stdAngle, "Você obteve!", stdFont, Palette.colors[3]) ;
 		
 		if ( timer.rate() <= 0.3 ) { return ;}
 		
-		Point itemTextPos = Util.translate(POS, 15, 40) ;
+		Point itemTextPos = Util.translate(topLeftPos, 15, 40) ;
 		for (int i = 0 ; i <= items.size() - 1 ; i += 1)
 		{
 			if ( 0.3 + 0.5 * i / items.size() <= timer.rate() )
 			{
-				GamePanel.getDP().drawText(itemTextPos, Align.bottomLeft, Draw.stdAngle, items.get(i).getName(), SMALL_FONT, Palette.colors[3]) ;
+				GamePanel.getDP().drawText(itemTextPos, Align.bottomLeft, Draw.stdAngle, items.get(i).getName(), smallFont, Palette.colors[3]) ;
 				itemTextPos.y += 15 ;
 			}
 		}

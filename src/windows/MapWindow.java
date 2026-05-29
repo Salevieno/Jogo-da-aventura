@@ -1,6 +1,7 @@
 package windows;
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +29,12 @@ public class MapWindow extends GameWindow
 	private List<GameMap> mapsDisplayed ;
 	private final Point spacing ;
 	
+	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "MapWindow.png") ;
 	private static final boolean FULL_MAP = false ;
 	
 	public MapWindow()
 	{
-		super("Mapa", new Point(150, 100), ImageLoader.loadImage(Path.WINDOWS_IMG + "MapWindow.png"), 0, 0, 0, 0) ;
+		super("Mapa", new Point(150, 100), IMAGE, 0, 0, 0, 0) ;
 		this.mapsDisplayed = new ArrayList<>() ;
 		this.scale = new Scale(0.1, 0.1) ;
 		this.spacing = new Point(6, 6) ;
