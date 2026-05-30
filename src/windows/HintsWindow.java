@@ -48,6 +48,6 @@ public class HintsWindow extends GameWindow
 		GamePanel.getDP().drawText(Util.translate(textPos, size.width / 2, size.height - 40), Align.center, angle, text[3], SUBTITLE_FONT, textColor) ;
 		Draw.fitText(Util.translate(textPos, 0, 30), sy, Align.topLeft, text[window + 4], SUBTITLE_FONT, 70, textColor) ;
 		
-		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, window, numberWindows - 1, stdOpacity) ;
+		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, window, numberWindows - 1, stdOpacity) ;
 	}
 }

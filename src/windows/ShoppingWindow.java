@@ -179,7 +179,7 @@ public class ShoppingWindow extends GameWindow
 			itemPos.y += 23 ;
 		}
 		
-		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
 		
 	}
 }

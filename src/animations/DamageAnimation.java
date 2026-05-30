@@ -61,6 +61,7 @@ public class DamageAnimation extends Animation
     protected void play()
     {
 		if (AtkEffects.none.equals(atkResults.getEffect())) { Log.warn("Damage animation with effect = none, will not display") ; return ;}
+
 		double opacity = 1.0 - timer.rate() ;
 		double rate = Math.pow(timer.rate(), 0.6) ;
 		Point trajectory = switch (style)

@@ -82,7 +82,7 @@ public abstract class SpellsBar
 			Image image = spell.getMpCost() < userMP ? SideBar.SLOT_IMAGE : SLOT_IMAGE_NO_MP ;
 			GamePanel.getDP().drawImage(image, slotCenter, Align.center, 0.8) ;
 			GamePanel.getDP().drawImage(spell.getImage(), slotCenter, Align.center) ;
-			Draw.keyboardKey(slotTopLeft, LiveBeing.getSpellKeys().get(i), Palette.colors[0]);
+			Draw.keyboardKey(slotTopLeft, LiveBeing.getSpellKeys().get(i), LARGE_FONT, Palette.colors[0]);
 			
 			displayCooldown(slotCenter, spell) ;
 

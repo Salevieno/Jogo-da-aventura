@@ -96,6 +96,6 @@ public class BookWindow extends GameWindow
 		displayRecipes(mousePos) ;
 		displayPageNumber() ;
 		
-		Draw.windowArrows(UtilAlignment.getPosAt(topLeftPos, Align.center, Align.bottomLeft, size), image.getWidth(null), window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(UtilAlignment.getPosAt(topLeftPos, Align.center, Align.bottomLeft, size), image.getWidth(null), FONT, window, numberWindows, stdOpacity) ;
 	}
 }

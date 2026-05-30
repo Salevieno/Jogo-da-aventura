@@ -195,7 +195,7 @@ public class CraftWindow extends GameWindow
 		craftButton.setName("Fabricar " + amountOfCrafts) ;
 		craftButton.display(0.0, true, mousePos) ;
 		
-		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
 		
 	}
 }

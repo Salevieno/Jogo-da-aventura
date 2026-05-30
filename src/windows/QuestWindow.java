@@ -124,7 +124,7 @@ public class QuestWindow extends GameWindow
 		displayReqCreatures(Util.translate(topLeftPos, size.width / 2 , 60), quest) ;
 		displayReqItems(Util.translate(topLeftPos, size.width / 2, 260)) ;
 		
-		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
 		
 	}
 }

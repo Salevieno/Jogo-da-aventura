@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -59,6 +60,7 @@ public class Game
 	private final PauseWindow pauseWindow ; // TODO unificar pausewindow com as outras windows	
 	
 	private static final String MAIN_FONT_NAME = "Comics";
+	private static final Font STD_FONT = new Font(MAIN_FONT_NAME, Font.PLAIN, 16) ;
 	private static final List<String> ARROW_KEYS = List.of(KeyEvent.getKeyText(KeyEvent.VK_UP),
 															KeyEvent.getKeyText(KeyEvent.VK_LEFT),
 															KeyEvent.getKeyText(KeyEvent.VK_DOWN),
@@ -496,7 +498,7 @@ public class Game
 		}
 		player.getMap().display();
 		player.getMap().displayGroundTypes();
-		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap());
+		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap(), STD_FONT);
 		
 		SpriteAnimation.displayAllFromLayer(0, GamePanel.getDP());
 
@@ -547,7 +549,7 @@ public class Game
 			if (interactable.getHitbox().overlaps(player.getHitbox()))
 			{				
 				Point buttonPos = Util.translate(interactable.getPos(), -interactable.getImage().getWidth(null), -interactable.getImage().getHeight(null)) ;
-				Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey()) ;
+				Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey(), STD_FONT) ;
 			}
 		}
 

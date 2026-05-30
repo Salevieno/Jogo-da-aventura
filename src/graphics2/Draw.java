@@ -11,14 +11,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import UI.GameButton;
 import components.Hitbox;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics.UtilAlignment;
-import liveBeings.Pet;
-import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
@@ -29,20 +26,12 @@ import maps.FieldMap;
 import maps.GameMap;
 import screen.Screen;
 import utilities.Util;
-import windows.PlayerAttributesWindow;
 
 public abstract class Draw 
 {
-
-	private static final Dimension SCREEN_SIZE = Screen.getMe().getSize() ;
 	private static final Image ARROW_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "ArrowIcon.png") ;
 	private static final Image KEYBOARD_BTN_IMAGE = ImageLoader.loadImage(Path.UI_IMG + "KeyboardButton.png") ;
 	private static final List<Image> TEXT_SELECTION_IMAGES ;
-	
-	private static final Font STD_FONT = DrawPrimitives.stdFont ;
-	private static final Font SMALL_FONT = new Font(DrawPrimitives.stdFont.getName(), Font.BOLD, 11) ;
-	private static final Font LOADING_GAME_SCREEN_FONT = new Font("SansSerif", Font.BOLD, 28) ;
-
 	public static double stdAngle = DrawPrimitives.stdAngle;
 	
 	static
@@ -68,10 +57,7 @@ public abstract class Draw
 	{
 		bufferedText(pos, align, Draw.stdAngle, text, font, color) ;
 	}
-	public static void bufferedText(Point pos, Align align, String text, Color color)
-	{
-		bufferedText(pos, align, text, STD_FONT, color) ;
-	}
+
 	public static void textSelection(Point center, Dimension size)
 	{
 		GamePanel.getDP().drawImage(TEXT_SELECTION_IMAGES.get(0), Util.translate(center, -size.width / 2, -size.height / 2), Align.bottomRight) ;
@@ -154,55 +140,41 @@ public abstract class Draw
 		fitText(textPos, sy, Align.topLeft, text, font, maxTextL, textColor) ;
 	}
 
-	public static void keyboardButton(Point pos, String key)
+	public static void keyboardButton(Point pos, String key, Font font)
 	{
-		keyboardButton(pos, key, Palette.colors[0]) ;
+		keyboardButton(pos, key, font, Palette.colors[0]) ;
 	}
 	
-	public static void keyboardButton(Point pos, String key, Color color)
+	public static void keyboardButton(Point pos, String key, Font font, Color color)
 	{
 		GamePanel.getDP().drawImage(Draw.KEYBOARD_BTN_IMAGE, pos, Draw.stdAngle, Scale.unit, Align.center) ;
-		GamePanel.getDP().drawText(pos, Align.center, Draw.stdAngle, key, Draw.STD_FONT, color) ;	
+		GamePanel.getDP().drawText(pos, Align.center, Draw.stdAngle, key, font, color) ;	
 	}
 	
-	public static void windowArrows(Point pos, int width, int selectedWindow, int numberWindows, double opacity)
+	public static void windowArrows(Point pos, int width, Font font, int selectedWindow, int numberWindows, double opacity)
 	{
 		if (0 < selectedWindow)
 		{
 			Point leftArrowPos = Util.translate(pos, 25, 0) ;
 			Point textPos = Util.translate(leftArrowPos, 18, 0) ;
 			GamePanel.getDP().drawImage(ARROW_ICON, leftArrowPos, stdAngle, new Scale(-1, -1), Align.center, opacity) ;
-			Draw.keyboardButton(textPos, PlayerActions.moveLeft.getKey()) ;			
+			Draw.keyboardButton(textPos, PlayerActions.moveLeft.getKey(), font) ;			
 		}
 		if (selectedWindow < numberWindows - 1)
 		{
 			Point rightArrowPos = Util.translate(pos, width - 25, 0) ;
 			Point textPos = Util.translate(rightArrowPos, -18, 0) ;
 			GamePanel.getDP().drawImage(ARROW_ICON, rightArrowPos, stdAngle, new Scale(1, -1), Align.center, opacity) ;
-			Draw.keyboardButton(textPos, PlayerActions.moveRight.getKey()) ;	
+			Draw.keyboardButton(textPos, PlayerActions.moveRight.getKey(), font) ;	
 		}
 	}
 	
 	public static void loadingText(Image LoadingGif, Point Pos) { gif(LoadingGif, Pos, Align.center) ;}
-	
-	public static void loadingGameScreen(Player player, Pet pet, GameButton[] icons, int SlotID, int NumberOfUsedSlots, Image GoldCoinImage)
-	{
-		Point[] WindowPos = new Point[] {Screen.getMe().pos(0.15, 0.2), Screen.getMe().pos(0.65, 0.2), Screen.getMe().pos(0.5, 0.2)} ;
-		
-		GamePanel.getDP().drawText(Screen.getMe().pos(0.5, 0.05), Align.center, stdAngle, "Slot " + (SlotID + 1), LOADING_GAME_SCREEN_FONT, Palette.colors[5]) ;
-		((PlayerAttributesWindow) player.getAttWindow()).display(new Point(0, 0)) ;
-		if (0 < pet.getLife().getCurrentValue())
-		{
- 			//pet.getAttWindow().display(pet, allText, null, null, NumberOfUsedSlots, null, null, null, null);
-		}
- 		if (ARROW_ICON == null) { return ;}
-		
- 		windowArrows(WindowPos[2], (int)(0.5*SCREEN_SIZE.width), SlotID, NumberOfUsedSlots - 1, 1.0) ;
-	}
+
 
 	public static void gameGrid(int[] spacing)
 	{
-		for (int i = 0 ; i <= SCREEN_SIZE.width/spacing[0] - 1 ; ++i)
+		for (int i = 0 ; i <= Screen.getMe().getSize().width/spacing[0] - 1 ; ++i)
 		{
 			int LineThickness = 1 ;
 			Color color = Palette.colors[21] ;
@@ -215,8 +187,8 @@ public abstract class Draw
 				LineThickness = 2 ;
 				color = Palette.colors[5] ;
 			}
-			GamePanel.getDP().drawLine(new Point(i*spacing[0], 0), new Point(i*spacing[0], SCREEN_SIZE.height), LineThickness, color) ;
-			for (int j = 0 ; j <= SCREEN_SIZE.height/spacing[1] - 1 ; ++j)
+			GamePanel.getDP().drawLine(new Point(i*spacing[0], 0), new Point(i*spacing[0], Screen.getMe().getSize().height), LineThickness, color) ;
+			for (int j = 0 ; j <= Screen.getMe().getSize().height/spacing[1] - 1 ; ++j)
 			{
 				LineThickness = 1 ;
 				color = Palette.colors[21] ;
@@ -229,7 +201,7 @@ public abstract class Draw
 					LineThickness = 2 ;
 					color = Palette.colors[5] ;
 				}
-				GamePanel.getDP().drawLine(new Point(0, j*spacing[1]), new Point(SCREEN_SIZE.width, j*spacing[1]), LineThickness, color) ;
+				GamePanel.getDP().drawLine(new Point(0, j*spacing[1]), new Point(Screen.getMe().getSize().width, j*spacing[1]), LineThickness, color) ;
 			}							
 		}
 	}
@@ -239,14 +211,14 @@ public abstract class Draw
 		GamePanel.getDP().drawRoundRect(pos, align, size, 1, Palette.colors[3], Palette.colors[0], true);
 	}
 	
-	public static void time()
+	public static void time(Font font)
 	{
 		float time = (float) Game.dayTimeRate() ;
 		String message = (int) (24 * time) + ":" + (int) (24 * 60 * time % 60) ;
-		GamePanel.getDP().drawText(Screen.getMe().pos(0, 0.99), Align.bottomLeft, stdAngle, message, STD_FONT, Palette.colors[20]) ;
+		GamePanel.getDP().drawText(Screen.getMe().pos(0, 0.99), Align.bottomLeft, stdAngle, message, font, Palette.colors[20]) ;
 	}
 	
-	public static void mapElements(Hitbox playerHitbox, Point playerPos, GameMap map)
+	public static void mapElements(Hitbox playerHitbox, Point playerPos, GameMap map, Font font)
 	{
 		map.displayNPCs(playerHitbox) ;
 		
@@ -256,7 +228,7 @@ public abstract class Draw
 			fm.displayCollectibles(playerHitbox) ;
 		}
 		map.displayTudoEstaBem();
-		time() ;
+		time(font) ;
 	}
 
 	public static void keyboardKey(Point pos, String key, Font font, Color color)
@@ -264,11 +236,7 @@ public abstract class Draw
 		GamePanel.getDP().drawRoundRect(pos, Align.center, new Dimension(12, 12), 1, Palette.colors[3], Palette.colors[0], true, 2, 2) ;
 		GamePanel.getDP().drawText(pos, Align.center, stdAngle, key, font, color) ;
 	}
-	public static void keyboardKey(Point pos, String key, Color color)
-	{
-		keyboardKey(pos, key, SMALL_FONT, color) ;
-	}
-	
+
 	public static void settingBars(Point pos, Align align, int height, int qtdFilledBars, int totalBars, boolean increasingHeights, Color fillColor)
 	{
 		int barWidth = 10 ;

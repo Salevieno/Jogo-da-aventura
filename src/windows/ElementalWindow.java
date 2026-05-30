@@ -247,7 +247,7 @@ public class ElementalWindow extends GameWindow
 		}
 		
 		
-		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 5), size.width, window, numberWindows, stdOpacity) ;
+		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 5), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
 		
 	}
 
