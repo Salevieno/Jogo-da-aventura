@@ -1579,8 +1579,6 @@ public class Player extends LiveBeing
 	
 	public void switchOpenClose(GameWindow win)
 	{
-		System.out.println("Win " + win);
-		System.out.println(win.isOpen());
 		if (win.isOpen())
 		{
 			win.reset() ;
@@ -1597,7 +1595,6 @@ public class Player extends LiveBeing
 		win.open() ;
 		openWindows.add(win) ;
 		setFocusWindow(win) ;
-		System.out.println(openWindows);
 	}	
 	
 	

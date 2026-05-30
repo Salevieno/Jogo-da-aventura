@@ -11,7 +11,7 @@ import java.awt.EventQueue ;
  */
 public class MainGame3_4
 {
-	private static final String version = "0.20" ;
+	private static final String version = "0.21" ;
 		
 	public static void main(String[] args)
 	{

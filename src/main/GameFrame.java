@@ -26,35 +26,15 @@ public class GameFrame extends JFrame implements ActionListener
 	private GameFrame()
     {
         System.setProperty("sun.java2d.uiScale", "1.0");
-        
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		
-		if (fullScreen && gd.isFullScreenSupported())
-		{
-            setUndecorated(true) ;
-            gd.setFullScreenWindow(this);
-            pack() ;
-            setSize(Toolkit.getDefaultToolkit().getScreenSize()); 
-        }
-		else
-        {
-			pack() ;
-			Insets insets = getInsets();
-			setSize(windowSize.width + insets.left + insets.right, windowSize.height + insets.top + insets.bottom);
-			setLocation(200, 20) ;
-        }
-		
 		resizeWindow();
 		setIconImage(icon) ;
         setTitle("Jogo da aventura") ;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         setVisible(true) ;
-        timer = new Timer(0, this) ;			// timer of the game, first number = frame duration
+        timer = new Timer(0, this) ;		// timer of the game, first number = frame duration
 		timer.start() ;							// Game will start checking for keyboard events every "timer" miliseconds
 		previousState = GameStates.opening ;
-		
-
     }
 	
 	protected static void create()
@@ -74,8 +54,8 @@ public class GameFrame extends JFrame implements ActionListener
 		
 	    // Dispose the frame before changing decoration settings
 	    dispose();
-	    
-		if (!fullScreen && gd.isFullScreenSupported())
+
+		if (fullScreen && gd.isFullScreenSupported())
 		{
             setUndecorated(true) ;
             gd.setFullScreenWindow(this);
@@ -93,8 +73,12 @@ public class GameFrame extends JFrame implements ActionListener
 		}
 		
 	    setVisible(true);
-	    
-		fullScreen = !fullScreen ;
+	}
+
+	public void switchFullscreen()
+	{
+		gameFrame.fullScreen = !gameFrame.fullScreen ;
+		resizeWindow() ;
 	}
 	
 	public static void pauseGame()

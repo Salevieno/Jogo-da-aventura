@@ -65,7 +65,7 @@ public class Settings
 		}
 		if (item == 5)
 		{
-			GameFrame.getMe().resizeWindow() ;
+			GameFrame.getMe().switchFullscreen() ;
 		}
         if (item == 6)
         {

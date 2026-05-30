@@ -642,7 +642,7 @@ public class Game
 
 		if (keyCode == KeyEvent.VK_F12)
 		{
-			GameFrame.getMe().resizeWindow();
+			GameFrame.getMe().switchFullscreen();
 			Screen.getMe().updateScale(GameFrame.isFullscreen());
 		}
 
