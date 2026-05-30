@@ -35,7 +35,6 @@ import sidebar.SideBar;
 import simulations.EvolutionSimulation;
 import utilities.Util;
 import windows.BankWindow;
-import windows.PauseWindow;
 
 public class Game
 {
@@ -57,7 +56,6 @@ public class Game
 	private GameTimer dayTimer ;
 	private final Map<TextCategories, String[]> allText ;	
     private final Settings settings ;
-	private final PauseWindow pauseWindow ; // TODO unificar pausewindow com as outras windows	
 	
 	private static final String MAIN_FONT_NAME = "Comics";
 	private static final Font STD_FONT = new Font(MAIN_FONT_NAME, Font.PLAIN, 16) ;
@@ -78,7 +76,6 @@ public class Game
 		Log.info("Game version " + MainGame3_4.getVersion()) ;	
 		this.allText = new HashMap<>();
 		this.settings = new Settings(false, true, false, 1, 0) ;
-		this.pauseWindow= new PauseWindow();
 		this.player = new Player("", "", 2);
 		this.player.setPos(new Point2D.Double(Screen.getMe().getCenter().x, Screen.getMe().getCenter().y));
 		this.difficultLevel = 0;
@@ -108,7 +105,6 @@ public class Game
 	public static void setDifficultLevel(int difficultLevel) { game.difficultLevel = difficultLevel ;}
 	public static int getSaveSlotInUse() { return game.saveSlotInUse ;}
 	public static void setSaveSlotInUse(int newSaveSlotInUse) { game.saveSlotInUse = newSaveSlotInUse ;}
-	public static PauseWindow getPauseWindow() { return game.pauseWindow ;}
 	public static void setPlayer(Player newPlayer) { game.player = newPlayer ;}
 	public static void setState(GameStates newState) { game.state = newState ;}
 	public static GameTimer getDayTimer() { return game.dayTimer ;}
@@ -478,12 +474,6 @@ public class Game
 			player.useAutoSpell(true, player.getSpells().get(12));
 		}
 
-		
-		if (pauseWindow.isOpen())
-		{
-			pauseWindow.navigate(player.getCurrentAction()) ;
-		}
-
 		player.resetAction();
 
 		SpriteAnimation.updateAll();
@@ -557,11 +547,6 @@ public class Game
 		SpriteAnimation.displayAllFromLayer(1, GamePanel.getDP());
 
 		SideBar.display(player, pet, GamePanel.getMousePos());
-
-		if (pauseWindow.isOpen())
-		{
-			pauseWindow.display(GamePanel.getMousePos());
-		}
 
 		if (DEBUG_MODE)
 		{
@@ -659,12 +644,6 @@ public class Game
 		{
 			GameFrame.getMe().resizeWindow();
 			Screen.getMe().updateScale(GameFrame.isFullscreen());
-		}
-
-		if (keyCode == KeyEvent.VK_ESCAPE && !player.hasWindowOpen() && ! player.isInteractingWithNPC())
-		{
-			pauseWindow.updateButtons() ;
-			pauseWindow.switchOpenClose() ;
 		}
 
 		if (ARROW_KEYS.contains(KeyEvent.getKeyText(keyCode)))

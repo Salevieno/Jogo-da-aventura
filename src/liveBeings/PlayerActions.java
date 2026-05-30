@@ -2,6 +2,7 @@ package liveBeings;
 
 public enum PlayerActions
 {
+	escape("Escape"),
 	moveUp("W"),
 	moveLeft("A"),
 	moveDown("S"),

@@ -54,7 +54,7 @@ public class PauseWindow extends GameWindow
         List<GameButton> buttonsMainMenu = List.of(
             new GameTextButton(gridPos(4, 1), Align.center, "", "R E S U M E", btnImg, selectedBtnImg, () -> { 
                 updateButtons() ;
-                switchOpenClose() ;
+                Game.getPlayer().switchOpenClose(Game.getPlayer().getPauseWindow()) ;
             }, SOUND_EFFECT_ON_HOVER),
             new GameTextButton(gridPos(6, 1), Align.center, "", "P L A Y E R", btnImg, selectedBtnImg, () -> { switchToMenu(1) ;}, SOUND_EFFECT_ON_HOVER),
             new GameTextButton(gridPos(8, 1), Align.center, "", "A U D I O", btnImg, selectedBtnImg, () -> { switchToMenu(2) ;}, SOUND_EFFECT_ON_HOVER),

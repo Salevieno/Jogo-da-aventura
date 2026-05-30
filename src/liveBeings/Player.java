@@ -80,6 +80,7 @@ import windows.ForgeWindow;
 import windows.GameWindow;
 import windows.HintsWindow;
 import windows.MapWindow;
+import windows.PauseWindow;
 import windows.PetAttributesWindow;
 import windows.PlayerAttributesWindow;
 import windows.QuestWindow;
@@ -97,6 +98,7 @@ public class Player extends LiveBeing
 	private QuestWindow questWindow ;
 	private HintsWindow hintsWindow ;
 	private BestiaryWindow bestiary ;
+	private PauseWindow pauseWindow ;
 	private GameWindow focusWindow ;
 	private List<GameWindow> openWindows ;
 	
@@ -195,6 +197,7 @@ public class Player extends LiveBeing
 		this.hintsWindow = new HintsWindow() ;
 		this.spellsTree = new SpellsTreeWindow(job) ;
 		this.bestiary = new BestiaryWindow() ;
+		this.pauseWindow = new PauseWindow();
 		this.equips = new Equip[4] ;
 		this.equippedArrow = null ;
 		this.spellPoints = 0 ;
@@ -257,6 +260,7 @@ public class Player extends LiveBeing
 
 	public List<Quest> getQuests() {return quests ;}
 	public BagWindow getBag() {return bag ;}
+	public PauseWindow getPauseWindow() { return pauseWindow ;}
 	public Equip[] getEquips() {return equips ;}
 	public Arrow getEquippedArrow() {return equippedArrow ;}
 	public int getSpellPoints() {return spellPoints ;}
@@ -795,6 +799,14 @@ public class Player extends LiveBeing
 
 		switch (action)
 		{
+			case escape:
+				if ((!hasWindowOpen() || (openWindows.size() == 1 && openWindows.get(0).equals(pauseWindow))) && !isInteractingWithNPC())
+				{
+					pauseWindow.updateButtons() ;
+					switchOpenClose(pauseWindow) ;
+				}
+				return ;
+
 			case bag: switchOpenClose(bag) ; return ;
 			
 			case attWindow:
@@ -1030,7 +1042,7 @@ public class Player extends LiveBeing
 
 		if (focusWindow.isOpen())
 		{
-			if (currentAction.equals("Escape"))
+			if (currentAction.equals("Escape") && !focusWindow.equals(pauseWindow))
 			{
 				switchOpenClose(focusWindow) ;
 			}
@@ -1567,19 +1579,25 @@ public class Player extends LiveBeing
 	
 	public void switchOpenClose(GameWindow win)
 	{
-		// Janelas deviam ficar com o Game, não com o player
+		System.out.println("Win " + win);
+		System.out.println(win.isOpen());
 		if (win.isOpen())
 		{
 			win.reset() ;
 			win.close() ;
 			openWindows.remove(win) ;
-			if (openWindows.isEmpty()) { setFocusWindow(null) ; return ;}
+			if (openWindows.isEmpty())
+			{
+				setFocusWindow(null) ;
+				return ;
+			}
 			setFocusWindow(openWindows.get(openWindows.size() - 1)) ;
 			return ;
 		}
 		win.open() ;
 		openWindows.add(win) ;
 		setFocusWindow(win) ;
+		System.out.println(openWindows);
 	}	
 	
 	
