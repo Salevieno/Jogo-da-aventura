@@ -13,18 +13,22 @@ import liveBeings.LiveBeing;
 import main.Elements;
 import main.GameTimer;
 import main.ImageLoader;
+import main.Path;
+import utilities.Util;
 
 
 public class Spell 
 {	
+	private final int id ;
+	private String name ;
+	private String description ;
+	private String effect ;
 	private int level ;
 	private int mpCost ;
 	private boolean isActive ;
 	private GameTimer cooldownCounter ;
 	private GameTimer effectCounter ;
 
-	private final int id ;
-	private final String name ;
 	private final Image image ;
 	private final int maxLevel ;
 	private final SpellTypes type ;
@@ -36,8 +40,6 @@ public class Spell
 	// private final Map<Attributes, Double> attModPerc ;
 	// private final Map<Attributes, Double> attModValue ;
 	private final Elements elem ;
-	private final String effect ;
-	private final String description ;
 	
 	private static final List<Spell> ALL = new ArrayList<>() ;
 
@@ -101,7 +103,12 @@ public class Spell
 	public int getMpCost() {return mpCost ;}
 	public SpellTypes getType() {return type ;}
 	public Map<Attributes, AttMod> getAttMods() { return attMods ;}
-	public AttMod getAttMod(Attributes att) { return new AttMod(attMods.get(att).getPercentualIncrease() * level, attMods.get(att).getValueIncrease() * level ) ;}
+	public AttMod getAttMod(Attributes att)
+	{
+		if (!attMods.containsKey(att)) { return new AttMod(0, 0) ;}
+
+		return new AttMod(attMods.get(att).getPercentualIncrease() * level, attMods.get(att).getValueIncrease() * level ) ;
+	}
 	public double[] getSpecialAtt() { return new double[] {
 		getAttMod(Attributes.stun).getValueIncrease() * level,
 		getAttMod(Attributes.block).getValueIncrease() * level,
@@ -114,6 +121,10 @@ public class Spell
 	public GameTimer getDurationCounter() {return effectCounter ;}
 	public String getEffect() {return effect ;}
 	public String getDescription() {return description ;}
+
+	private void setName(String name) {this.name = name ;}
+	private void setDescription(String description) {this.description = description ;}
+	private void setEffect(String effect) {this.effect = effect ;}
 
 	public boolean isReady() { return cooldownCounter.hasFinished() ;}
 	public boolean isActive() { return isActive ;}
@@ -164,6 +175,24 @@ public class Spell
 
 		int mult = activate ? -1 : 1 ;		
 		Buff.getAllNerfs().get(nerfID).apply(mult, level, receiver) ;
+	}
+
+	public static void create(String language)
+	{
+		SpellData.createSpells() ;
+		updateText(language) ;
+	}
+
+	public static void updateText(String language)
+	{
+		List<String[]> inputs = Util.readcsvFile(Path.DADOS + language + "/SpellsInfo.csv") ;
+		for (int i = 0 ; i <= inputs.size() - 1 ; i += 1)
+		{
+			Spell spell = ALL.get(i) ;
+			spell.setName(inputs.get(i)[1]) ;
+			spell.setDescription(inputs.get(i)[2]) ;
+			spell.setEffect(inputs.get(i)[3]) ;
+		}
 	}
 	
 	@SuppressWarnings("unchecked")

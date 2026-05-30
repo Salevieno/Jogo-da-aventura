@@ -29,7 +29,7 @@ import maps.SpecialMap;
 import screen.Screen;
 import sidebar.SideBar;
 import spells.BuffData;
-import spells.SpellData;
+import spells.Spell;
 import utilities.Util;
 
 public abstract class LoadingGame
@@ -124,7 +124,7 @@ public abstract class LoadingGame
 			case 2:
 				BuffData.createBuffs() ;
 				BuffData.createNerfs() ;
-				SpellData.createSpells() ;
+				Spell.create(language) ;
 				logInitializationTime("spells", initialStepLoadingTime);
 				return;
 

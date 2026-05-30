@@ -1,0 +1,135 @@
+ID,nome,descricao,efeito
+0,Pancada,Movimento especial causando mais dano físico que ataques normais.,Ataque físico com dano adicional de até 5 + 10%.
+1,Vitalidade,Treino de resistência física que aumenta a quantidade de dano suportado.,Aumenta permanente a vida máxima em até 50 + 25%.
+2,Força,Treino de ataque físico que aumenta o dano físico causado a inimigos.,Aumenta permanente o ataque físico em até 10 + 20%.
+3,Resistência,Treino de defesa física que reduz o dano físico recebido de inimigos.,Aumenta permanente a defesa física em até 10 + 20%.
+4,Vida eterna,Concentra a energia vital aumentando temporariamente a quantidade de vida.,Aumenta a vida temporariamente em até 100% com chance de receber atordoamento de até 10%.
+5,Postura ofensiva,Assume uma postura totalmente ofensiva causando temporariamente mais dano porém cuidando menos de sua defesa.,Aumenta temporariamente o ataque físico em até 50% e reduz temporariamente a defesa física em até 25%.
+6,Ataque penetrante,Ataque que penetra mais fundo na defesa do inimigo ignorando parte da sua defesa e aumentando a chance de ataque crítico.,Ataque físico padrão que ignora até 20% da defesa física e possui destreza e chance de crítico até 5% maior.
+7,Sangue grosso,Alimentação e treino especiais que engrossa o sangue diminuindo a quantidade de sangramento em feridas.,Diminui permanentemente o dano provocado por sangramento em até 2 + 25%.
+8,Batida poderosa,Um poderoso movimento que causa bastante dano físico podendo até ser crítico e atordoar o inimigo.,Ataque físico com dano adicional de até 50 + 20% chance de crítico até 5% maior e chance adicional de atordoar de até 5%.
+9,Bloqueio,Concentra na defesa aumentando temporariamente a defesa e a chance de bloquear golpes.,Aumenta temporariamente a defesa de até 20% e chance de bloqueio de até 80%.
+10,Resistência neutra,Técnica que permite utilizar a energia mágica como vida temporariamente.,Aumenta permanentemente a resistência contra danos neutros em até 15%.
+11,Condição física,Duro treinamento físico que aumenta ataque destreza e agilidade.,Aumenta permanentemente o ataque físico em até 10 a destreza em até 5 e a agi em até 5.
+12,Posture defensiva,Assume uma postura defensiva aumentando temporariamente a defesa porém causando menos dano.,Aumenta temporariamente a defesa física em até 50% e reduz o ataque físico em até 25%.
+13,Técnica de espada,Poderosa técnica que causa grande dano físico com boa chance de ser crítico e atordoar o inimigo ao mesmo tempo em que aumenta a força física.,Ataque físico com dano adicional de até 50 + 25% chance adicional de crítico e atordoar de até 20% e aumento temporário de vida ataque físico e defesa física em até 10%.
+14,Treinamento de Lorde,Intenso treinamento físico que faz parte da preparação para se tornar um Lorde.,Aumenta permanentemente o vida máxima o ataque físico e a defesa física em até 1100 45 e 25.
+15,Ataque atordoante,Ataque especial com o objetivo de atordoar o alvo.,Ataque com dano físico adicional de até 100 + 50% e chance de atordoar de até 70%.
+16,Na mosca!,Ataque muito preciso porém que força o Lorde a baixar sua guarda para executar.,Ataque com até 80% de dano adicional e com até 100% mais precisão. Diminui temporariamente a defesa em até 20%.
+17,Aquecimento,Preparação para a batalha que deixa o Lorde de sangue quente aumentando suas habilidades.,Aumenta temporariamente todos os atributos positivos em até 50%.
+18,Treinamento atordoante,Treinamento específico para dar mais rapidez ao Lorde e focar nos pontos de atordoamento do inimigo.,Aumenta permanentemente a destreza e agilidade em até 15 e a chance de ataques físicos normais atordoarem em até 20%.
+19,Maestria de arma,Treinamento que permite ao Lorde utilizar melhor sua arma.,Aumenta permanentemente o bônus de ataque físico da arma em até 50%.
+20,Nobreza,Lorde poupa a vida de seu inimigo se estiver mais forte que ele ganhando a experiência da batalha.,Poupa a vida do inimigo se a sua vida está mais cheia que a dele quando ele está abaixo de até 15% da vida ganhando a experiência.
+21,Ataque fatal,Ataque físico extremamente poderoso que causa dano colossal porém expõe o Lorde a ataques críticos.,Ataque físico com dano adicional de até 300 + 300% aumenta a chance de receber ataques críticos em até 50%.
+22,Nome,Descrição..,Efeito.
+23,Resultado do treino,O resultado de todo o treinamento finalmente começa a aparecer.,Aumenta permanentemente o efeito do treinamento dos atributos em até 20%.
+24,Treinamento de Escudeiro,Intenso treinamento físico que faz parte da preparação para se tornar um Escudeiro.,Aumenta permanentemente a vida máxima o ataque físico e a defesa física em até 1100 25 e 45.
+25,Ataque de escudo,Ataque que usa o escudo ao invés da espada causando dano de acordo com a defesa física.,Ataca usando até 150% da defesa física ao invés do ataque físico para o cálculo de dano físico.
+26,Bloqueio melhorado,Treinamento que melhora a técnica de bloqueio do Escudeiro.,Chance permanente de até 30% de bloquear o ataque físico do inimigo.
+27,Defesa mágica,Treinamento que aumenta a habilidade do Escudeiro de defender magia.,Aumenta permanentemente a defesa mágica em até 50%.
+28,Defesa fechada,Fecha a defesa diminuindo a chance do Escudeiro receber ataques críticos.,Diminui permanentemente a chance de receber ataque crítico em até 75%.
+29,Resistência a veneno,Preparação prévia que permite ao Escudeiro defender ataques venenosos com mais frequência.,Diminui permanentemente a chance de sofrer envenenamento em até 50%.
+30,Espinhoso,Prepara uma defesa espinhosa que faz o inimigo se machucar ao atacar. Manter a defesa requer atenção total do Escudeiro.,Chance de até 70% de bloquear temporariamente todos os ataques inimigos devolvendo até 100% do dano bloqueado. Fica atordoado neste período.
+31,Moral,Descrição..,Defesa vai aumentando com cada ataque recebido durante a duração da magia.
+32,Escudo humano,Coloca seu corpo na frente do inimigo, fazendo-se de escudo.,Atrai todos os ataques para si mesmo por um determinado tempo. Duração = 50 * nível.
+33,Salvação,Monta a defesa máxima sem impedir o Escudeiro de se movimentar. O esforço desta técnica pode machucar o Escudeiro após o seu término.,Reduz temporariamente todos os danos a 0. O Escudeiro pode atacar e usar itens neste período. Após seu término chance de até 30% de reduzir a vida em até 30%.
+34,Chama,Magia básica de fogo.,Ataque mágico de fogo com dano adicional de até 10.
+35,Onda,Magia básica de água.,Ataque mágico de água com dano adicional de até 10.
+36,Meditação,Treino de ataque mágico que aumenta o dano mágico causado a inimigos e a defesa mágica do mago.,Aumenta permanente o ataque e defesa mágicos em até 10 + 20%.
+37,Sopro,Magia básica de ar.,Ataque mágico de ar com dano adicional de até 10.
+38,Tremida,Magia básica de terra.,Ataque mágico de terra com dano adicional de até 10.
+39,Ataque mágico,Poderoso ataque mágico não elemental.,Ataque mágico neutro com dano adicional de até 25.
+40,Tornado,Magia intermediária de ar.,Ataque mágico de ar com dano adicional de até 25 + 10%.
+41,Tsunami,Magia intermediária de água.,Ataque mágico de água com dano adicional de até 25 + 10%.
+42,Restauração,Recuperação automática de mp.,Chance de 50% de recuperar até 20% do MP usado ao lançar uma magia.
+43,Pantâno,Cria um pântano sob os pés do oponente diminuindo a agilidade de seus movimentos.,Reduz temporariamente a agilidade do oponente em até 20%.
+44,Cura,Converte a energia mística em energia vital para o usuário e seus aliados.,Restaura a vida em até 20% (sem ultrapassar a vida máxima). Aliados recebem até 10% de restauração suas manas também são consumidas. A cura aumenta com o atk mag até 25%.
+45,Inspiração mística,Inspiração vinda da energia mística do universo que permite ao mago amplificar seus poderes mágicos.,Aumenta temporariamente o ataque e defesa mágicos em até 20%.
+46,Fogaréu,Magia avançada de fogo.,Ataque mágico de fogo com dano adicional de até 25 + 10%.
+47,Terremoto,Magia avançada de terra.,Ataque mágico de terra com dano adicional de até 25 + 10%.
+48,Ataque místico,Ataque que reduz a vida e a energia mística do inimigo.,Ataca a vida e mana ao mesmo tempo.
+49,Treinamento de Arquimago,Intenso treinamento mágico que faz parte da preparação para se tornar um Arquimago.,Aumenta permanentemente o mp máximo o ataque mágico e a defesa mágica em até 1100 45 e 25.
+50,Magia inerente,Usa o poder mágico inerente do cajado para causar um ataque poderoso com o elemento dele.,Ataque mágico com o elemento do cajado com dano adicional de até 50% do bônus de ataque mágico.
+51,Inversão de vida,Magia que transforma a energia vital do inimigo em energia mística e vice-versa. O processo pode atordoar o inimigo.,Troca temporariamente a vida e mana do inimigo chance de atordoar de até 10%. Só funciona se ambos estiverem acima de 50%
+52,Raios e trovões,Conjura um raio na cabeça do inimigo. Cuidado para não acertar a sua própria cabeça.,Ataque mágico de trovão com dano adicional de até 100 e até 1% de chance de atacar o usuário a depender da dex.
+53,Ying yang,Conjura a luz e escuridão interiores da criatura para atacá-la.,Ataque mágico de luz e trevas com dano adicional de até 200.
+54,Conjuração supersônica,Descrição.,Reduz permanentemente o tempo de carregamento das magias em até 50%.
+55,Roubo de energia,Descrição.,Drena até 200 de mana da criatura.
+56,Energia cósmica,Descrição.,Até 50% do dano recebido é direcionado à energia mágica.
+57,Intuição,Afinação do sexto sentido do arquimago que o ajuda a sentir o que a criatura vai fazer em seguida.,Dá até 70% de chance de descobrir qual será o próximo movimento da criatura.
+58,Aniquilação total,Descrição.,Poderosíssmo ataque mágico que acerta a criatura 10 vezes, uma com cada elemento.
+59,Treinamento de Curandeiro,Intenso treinamento mágico que faz parte da preparação para se tornar um Curandeiro.,Aumenta permanentemente o mp máximo o ataque mágico e a defesa mágica em até 1100 25 e 45.
+60,Semente mágica,Invoca uma plantinha com propriedades medicinais que aproveita que está ali para dar uma folhada na criatura.,Ataque do tipo planta que traz benefícios para o usuário. O benefício melhora com o nível.
+61,Sol e lua,Invoca o brilho do sol e a mística luz da lua sobre o alvo.,Duplo ataque mágico de luz com dano adicional de até 100 no primeiro ataque e 30 no segundo ataque.
+62,Regen,O Curandeiro invoca uma aura mágica que permite que sua energia mística seja continuamente convertida em vida.,Regeneração automática e permanente de até 5% da vida a cada turno. Consome mp cada vez que a vida é regenerada.
+63,Saúde,O Curandeiro usa sua magia defensiva para recuperar sua saúde eliminando qualquer mal-estar causado por inimigos.,Elimina os efeitos negativos inflingidos no usuário. Cada nível adiciona um efeito.
+64,Eclipse total,Durante a escuridão do eclipse, toda luz brilha mais forte e é mais difícil se mover.,Aumenta o poder dos ataque de luz. Diminui a agilidade da criatura em até 70%.
+65,Guerreiro da deusa,Escudo mágico criado antes de cada ataque inimigo que converte o dano mágico em vida. O escudo precisa ser preparado antes que o ataque o alcance.,Chance permanente baseada nas agilidades do Curandeiro e do inimigo de converter até 100% de qualquer dano mágico recebido em vida.
+66,Anjos celestes,Anjos descem para ajudar o Curandeiro formando ao seu redor uma barreira mágica impenetrável.,Reduz temporariamente todos os danos mágicos em até 100%.
+67,Mártir,Sacrifício da própria vitalidade para causar um ataque místico.,Ataque que converte até 80% da vida atual em dano mágico.
+68,Intervenção divina,Clama aos poderes divinos que purifiquem a alma da criatura. O processo é doloroso no início, mas eficiente.,Ataque mágico de luz com dano adicional de até 300 + 10% do ataque mágico. Converte o elemento da criatura para luz.
+69,Flechada forte,O próprio nome da habilidade já diz tudo.,Ataque físico com dano adicional de até 10.
+70,Arco e flecha,Treinamento de tiro a alvos móveis que permite ao arqueiro aumentar sua destreza e agilidade.,Aumento permanente na destreza de até 5 e na agilidade de até 2.
+71,Flechada flamejante,Flechada que incorpora magia de fogo.,Ataque físico e mágico de fogo com dano adicional de até 10.
+72,Flechada dupla,Disparo com duas flechas ao mesmo tempo. Assim fica mais difícil de mirar né?,Ataque físico duplo porém com destreza reduzida em até 50%.
+73,Perícia em flechas,Estudo dos diferentes tipos de flechas que permite ao arqueiro usar flechas mais poderosas e com propriedades especiais.,Permite o uso de flechas mais poderosas (nv 1: flechas de aço da montanha e lunar nv 2: flecha do oceano nv 3: flecha de magma nv 4: flechas elementais nv 5: flechas especiais).
+74,Flechada de neve,Flechada que incorpora magia de neve.,Ataque físico e mágico de neve com dano adicional de até 10.
+75,Flechada penetrante,Flechada mirada pra penetrar as defesas do inimigo e causar uma ferida aberta.,Ataque físico com chance adicional de até 50% de crítico e de até 30% de causar sangramento.
+76,Intensidade,Treinamento físico-arcano que permite ao arqueiro aumentar seus ataques físico e mágico ao mesmo tempo.,Aumento permanente nos ataques físico e mágico em até 5 + 10% cada.
+77,Flechas elementais,O primeiro passo para o uso dos elementos.,Permite a fabricação de flechas elementais.
+78,Flechada venenosa,Flecha com adição de veneno na ponta. Um golpe baixo.,Ataque físico com chance adicional de até 25% de envenenar o inimigo. A chance aumenta com a destreza do arqueiro e diminui com a agilidade do inimigo.
+79,Táticas de caça,Conhecimento de táticas de caça que permite evitar sangramento e envenenamento.,Aumenta permanentemente a resistência a sangramento e evenenamento em até 25%.
+80,Flechada trovejante,Flechada que incorpora magia de trovão.,Ataque físico e mágico de trovão com dano adicional de até 10.
+81,Flechada impulsionante,Poderoso ataque físico que usa o impulso da flecha para empurrar a criatura para trás.,Ataque físico com dano adicional de até 50% que empurra a criatura na direção oposta ao ataque em até 5 passos.
+82,Flechada saltitante,Técnica que permite atirar flechas de um modo que elas batam e voltem para o usuário reduzindo o consumo de flechas.,Chance permanente de recuperar a flecha usada no ataque de até 50%.
+83,Tiro mágico,Flechada mágica usando todo o poder arcano do arqueiro.,Ataque mágico com dano adicional de até 25 + 100% do ataque mágico do arqueiro.
+84,Treinamento do ranger,Intenso treinamento físico que faz parte da preparação para se tornar um Ranger.,Aumenta permanentemente o ataque físico destreza e agi em até 35 50 e 15.
+85,Escanear,Habilidade de rastreamento que analisa a criatura mais próxima revelando suas características.,Permite ver os atributos da criatura mais próxima.
+86,Olhos de águia,Melhora a visão do ranger permitindo que ele alcance criaturas a maiores distâncias.,Aumenta permanentemente o alcance do ranger em até 100%.
+87,Evasão,Foca em desviar dos ataques recebidos.,Aumenta temporariamente a agilidade do ranger.
+88,Fabricação de flechas,Conhecimento que permite ao ranger fabricar flechas especiais.,Permite fabricar flechas especiais.
+89,No caminho,Já ouviu falar de atirar em movimento?,Permite se mover durante a batalha. Reduz a destreza em 100% no primeiro nível e 0% no nível máximo.
+90,Ligeirinho,Corre, Forest, corre!,Aumenta temporariamente a velocidade de movimento em até 100%
+91,Pontos vitais,Acerta os pontos vitais do inimigo. O resultado é melequento!,Ataque físico com chance de até 100% de causar um poderoso sangramento.
+92,Técnicas de sobrevivência,Técnicas para melhorar a sua sobrevivência na natureza.,Aumenta a duração da saciedade. Comidas recuperam vida.
+93,Invisibilidade,Descrição.,Chance de até 100% de não ser visto pelas criaturas ao passar por elas.
+94,Treinamento de elementalista,Intenso treinamento mágico necessário para se tornar um elementalista.,Aumenta permanentemente o mp o ataque mágico a destreza e a agi em até 340 35 15 e 10.
+95,Neutralização,Descrição.,Faz com que temporariamente todos os ataques do inimigo sejam de elemento neutro.
+96,Resistência elemental,Aumenta a resistência do elementalista a ataques elementais.,Aumenta a resistência do elementalista a todos os elementos em até 30%.
+97,Intensificação elemental,Ritual que exalta o poder dos elementos.,Aumenta o efeito dos elementos em até 2x.
+98,Alegrinhe,Joga uma bebida alcóolica na boca da criatura. Usa uma bebida alcóolica da mochila.,Deixa a criatura bêbada (cada magia + 10%). Gasta uma bebida alcóolica da mochila.
+99,Visão elemental,Visão que enxerga o elemento intrínseco de cada criatura.,Vê o elemento das criaturas.
+100,Reversão elemental,Altera o elemento intrínseco da criatura para seu oposto natural.,Inverte o elemento da criatura.
+101,Explosão química,Mistura os elementos químicos dentro da criatura danificando seus órgãos internos.,Ataque mágico com dano adicional de até 50 + 200% do ataque mágico do elementalista. Sempre crítico. Não gasta flecha.
+102,Flecha no peito,Enfia a flecha no peito da criatura com as próprias mãos, causando um dano preciso.,Ataque físico com dando adicional de até 50 + 150% do ataque físico do elementalista. Sempre crítico. Tem precisão aumentada em até 50%.
+103,Ataque multi elemental,Uma poderosa tempestade de ataques elementais!,Lança até 5 ataques com bônus de 100% do ataque mágico de elementos próximos no círculo elemental.
+104,Patada,Uma patada pesada.,Ataque físico com dano adicional de até 5 + 10%.
+105,Quatro patas,Treino que aumenta a destreza e agilidade do animal.,Aumento permanente na destreza de até 10 e na agilidade de até 5.
+106,Mordida profunda,Uma mordida que pode deixar uma ferida aberta.,Ataque físico com chance adicional de até 30% de causar sangramento.
+107,Pontos críticos,Treino para reconhecer e acertar pontos críticos em batalha.,Aumenta permanentemente a chance de crítico em até 15%.
+108,Erva em dobro,Uma boa coleta produz frutos em dobro!,Chance permanente de coletar em dobro de até 70%.
+109,Cabeçada,Testa com testa. Machuca e pode atordoar o inimigo mas se não tomar cuidado pode atordoar você também.,Ataque com dano físico adicional de até 25% e chance adicional de atordoar de até 20%. Chance de até 2% de atordoar a si mesmo.
+110,Roar!,Rugido que aumenta a moral do animal! Se ligou na rima legal?,Aumento temporário de ataque físico e mágico de até 20% e de destreza e agilidade de até 10%.
+111,Elementos naturais,Uso melhorado das poções.,Aumenta permanentemente o efeito das poções em até 30%.
+112,Abanando o rabinho,Um movimento fofo pra deixar a criatura bobinha! Tem o efeito colateral de restaurar a vitalidade dela...,Restaura a vida da criatura em até 20% e reduz sua dex e agi temporariamente em até 50%.
+113,Robusto,Treino físico.,Aumento permanente na vida do animal de até 15% e no ataque e defesa físicos do animal de até 10.
+114,Ajudinha natural,Quem diria que é possível usar as coletas para fortalecer o pet?!,Bônus temporário de até 20% nos atributos pet a depender da coleta usada. Erva = vida e mana madeira = defesas e agi metal = ataques e destreza.
+115,Salto,Animal pula sobre o oponente atacando vorazmente com maior destreza e chance de causar sangramento e crítico.,Ataque com dano físico adicional de até 15% destreza adicional de até 10 maior chance de crítico de até 15% e chance de causar sangramento de até 20%. Diminui temporariamente a defesa em até 10%.
+116,Instinto de sobrevivência,Você já ouviu falar sobre o instinto de sobrevivência. Pois ele é ainda mais forte em animais!,Se a vida estiver abaixo de 20% todos os atributos do Animal aumentam automaticamente em até 50%.
+117,Melhor amigo,Bônuzinhos para o pet!,Aumento permanente na vida e mana do pet de até 50 ataque físico e mágico de até 10 e dex e agi de até 5.
+118,Treinamento do Rei da floresta,Descrição.,Aumenta permanentemente o mp o ataque físico o ataque mágico a destreza e a agi em até 240 35 20 10 e 15.
+119,Incremento em poções,Descrição.,Efeito.
+120,Paralisia,Descrição.,Efeito.
+121,Culto ao Sol,Descrição.,Aumento temporário na ...
+122,Nome,Descrição.,Efeito.
+123,Controle do pet,Descrição.,Efeito.
+124,Brado do rei,Descrição.,Efeito.
+125,Camuflagem,Descrição.,Efeito.
+126,Nome,Descrição.,Efeito.
+127,Nome,Descrição.,Efeito.
+128,Treinamento do selvagem,Descrição.,Aumenta permanentemente a vida o ataque físico a defesa física a destreza e a agi em até 140 55 20 15 e 25.
+129,Frenético,Descrição.,Aumenta permanentemente a velocidade de ataque.
+130,Multigarras,Descrição.,Efeito.
+131,Selvageria,Descrição.,Efeito.
+132,Fúria,Descrição.,Ganha um bônus de ataque físico por um curto período após ser atacado.
+133,Empurrãozinho,Descrição.,Se a criatura estiver com a vida abaixo de 30%, os ataques físicos e mágicos do Selvagem aumentam em 30%.
