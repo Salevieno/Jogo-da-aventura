@@ -68,7 +68,7 @@ public class Screen
         {
             scaleY = scaleX ;
         }
-        
+        System.out.println("new scale = " + new Point2D.Double(scaleX, scaleY));
         return new Point2D.Double(scaleX, scaleY) ;
 	}
 	

@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.sound.sampled.Clip;
 
@@ -20,7 +22,6 @@ import utilities.Util;
 
 public class GameTextButton extends GameButton
 {
-    private final Dimension minSize ;
     private Point pos1 ;
     private Point pos2 ;
     private Point pos3 ;
@@ -32,6 +33,7 @@ public class GameTextButton extends GameButton
     private Point pos9 ;
     private Point center ;
     private String text ;
+    private Dimension minSize ;
 
     private Image boxStretchedPart2 ;
     private Image boxStretchedPart4 ;
@@ -64,6 +66,7 @@ public class GameTextButton extends GameButton
     private static final Image BOX_SELECTED_PART9 = ImageLoader.loadImage(Path.UI_IMG + "TextBoxSelected4.png") ;
     private static final int EDGE_SIZE = BOX_PART1.getWidth(null) ;
     private static final int PADDING = 2 * EDGE_SIZE + 2 ;
+    private static final Set<GameTextButton> ALL = new HashSet<>() ;
 
     public GameTextButton(Point pos, Align alignment, String name, Dimension size, String text, Image image, Image selectedImage, ButtonFunction action, Clip soundEffectOnHover)
     {
@@ -75,6 +78,7 @@ public class GameTextButton extends GameButton
 		this.topLeft = UtilAlignment.getTopLeft(pos, alignment, size) ;
         updatePositions(topLeft) ;
         this.text = text ;
+        ALL.add(this) ;
     }
 
     public GameTextButton(Point pos, Align alignment, String name, String text, Image image, Image selectedImage, ButtonFunction action, Clip soundEffectOnHover)
@@ -219,6 +223,15 @@ public class GameTextButton extends GameButton
         updatePositions(topLeftPos) ;
     }
     public void setText(String text) { this.text = text ;}
+    public static void updateAllTextSize()
+    {
+        ALL.forEach(btn -> {
+            Dimension textSize = GamePanel.calcTextSize(btn.text, FONT) ;
+            btn.minSize = new Dimension(textSize.width + PADDING, textSize.height + PADDING) ;
+            btn.size = new Dimension(Math.max(btn.size.width, btn.minSize.width), Math.max(btn.size.height, btn.minSize.height)) ;
+            btn.resize(btn.size) ;
+        });
+    }
     public void resize(Dimension size)
     {
         if (size.width < minSize.width)

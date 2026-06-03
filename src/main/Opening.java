@@ -43,7 +43,7 @@ public abstract class Opening
     private static int difficultLevel ;
     private static String chosenSex ;
     private static int chosenJob ;
-	private static LiveInput liveInput ;	
+	private static LiveInput liveInput = new LiveInput() ;	
 
     private static final Font font = new Font(Game.getMainFontName(), Font.BOLD, 16) ;
     private static final Font smallFont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
@@ -296,14 +296,15 @@ public abstract class Opening
 	
 	private static void displayJobDescription()
 	{
-		Color textColor = Palette.colors[0] ;
-		String[] description = Game.getLanguage() == Languages.portugues ? jobDescriptionPtBr : jobDescriptionEn ;
+		int padding = 10 ;
+		int maxLength = jobDescriptionBackground.getWidth(null) - padding ;
+		int sy = font.getSize() + 6 ;
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
 			Point rectPos = Screen.getMe().pos(0.02 + i * 0.2, 0.4) ;
-			Point textPos = Util.translate(rectPos, 10, 10) ;
+			Point textPos = Util.translate(rectPos, padding, padding) ;
 			GamePanel.getDP().drawImage(jobDescriptionBackground, rectPos, Align.topLeft) ;
-			Draw.fitText(textPos, font.getSize() + 12, Align.topLeft, description[i], font, 24, textColor) ;
+			Draw.fitText(textPos, sy, Align.topLeft, jobDescriptionPtBr[i], font, maxLength, Palette.colors[0]) ;
 		}
 	}
 	

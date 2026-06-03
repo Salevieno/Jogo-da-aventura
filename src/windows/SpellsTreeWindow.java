@@ -165,13 +165,15 @@ public class SpellsTreeWindow extends GameWindow
 		if (spellsOnWindow.get(item) == null) { return ;}
 	
 		Point pos = Util.translate(topLeftPos, 0, -64) ;
+		int padding = 5 ;
+		int sy = SUBTITLE_FONT.getSize() + 2 ;
+		Point effectPos = Util.translate(pos, padding, 10) ;
+		Point descriptionPos = Util.translate(pos, padding, 40) ;
+		int maxTextLength = SPELL_INFO_IMAGE.getWidth(null) - padding ;
 		Color textColor = Palette.colors[0] ;
 		GamePanel.getDP().drawImage(SPELL_INFO_IMAGE, pos, Align.topLeft) ;
-		pos.x += 5 ;
-		pos.y += 10 ;
-		Draw.fitText(pos, 16, Align.centerLeft, spellsOnWindow.get(item).getEffect(), SUBTITLE_FONT, 568, textColor) ;
-		pos.y += 34 ;
-		Draw.fitText(pos, 16, Align.centerLeft, spellsOnWindow.get(item).getDescription(), SUBTITLE_FONT, 568, textColor) ;
+		Draw.fitText(effectPos, sy, Align.centerLeft, spellsOnWindow.get(item).getEffect(), SUBTITLE_FONT, maxTextLength, textColor) ;
+		Draw.fitText(descriptionPos, sy, Align.centerLeft, spellsOnWindow.get(item).getDescription(), SUBTITLE_FONT, maxTextLength, textColor) ;
 	}
 	
 	public void displaySpellPoints(int points)

@@ -14,6 +14,7 @@ import java.util.Map;
 
 import Buildings.Building;
 import UI.GameButton;
+import UI.GameTextButton;
 import animations.Animation;
 import battle.AtkTypes;
 import battle.Battle;
@@ -80,7 +81,7 @@ public class Game
 		this.player.setPos(new Point2D.Double(Screen.getMe().getCenter().x, Screen.getMe().getCenter().y));
 		this.difficultLevel = 0;
 		this.saveSlotInUse = -1;
-		this.state = GameStates.loading;
+		this.state = GameStates.opening;
 		this.gameLanguage = Languages.portugues;
 		this.dayTimer = new GameTimer(DAY_DURATION);
 		this.dt = System.nanoTime() ;
@@ -626,6 +627,11 @@ public class Game
 		}
 	}
 
+	protected static void requestTextResize()
+	{
+		GameTextButton.updateAllTextSize() ;
+	}
+
 	protected void keyPressedAction(KeyEvent event)
 	{
 		int keyCode = event.getKeyCode();
@@ -643,7 +649,6 @@ public class Game
 		if (keyCode == KeyEvent.VK_F12)
 		{
 			GameFrame.getMe().switchFullscreen();
-			Screen.getMe().updateScale(GameFrame.isFullscreen());
 		}
 
 		if (ARROW_KEYS.contains(KeyEvent.getKeyText(keyCode)))

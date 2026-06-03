@@ -34,8 +34,10 @@ public class HintsWindow extends GameWindow
 	public void display(Point mousePos)
 	{
 		String[] text = Game.getAllText().get(TextCategories.hints) ;
-		Point textPos = new Point(topLeftPos.x + 15, topLeftPos.y + 10) ;
+		Point padding = new Point(15, 10) ;
+		Point textPos = new Point(topLeftPos.x + padding.x, topLeftPos.y + padding.y) ;
 		Color textColor = Palette.colors[0] ;
+		int maxTextLength = image.getHeight(null) - padding.x ;
 		double angle = Draw.stdAngle ;
 		int sy = SUBTITLE_FONT.getSize() + 2 ;
 		numberWindows = text.length - 6 ;
@@ -46,7 +48,7 @@ public class HintsWindow extends GameWindow
 		GamePanel.getDP().drawText(Util.translate(textPos, 10, size.height - 35), Align.topLeft, angle, text[1], SUBTITLE_FONT, textColor) ;
 		GamePanel.getDP().drawText(Util.translate(textPos, (int)(0.9 * size.width), size.height - 35), Align.topRight, angle, text[2], SUBTITLE_FONT, textColor) ;
 		GamePanel.getDP().drawText(Util.translate(textPos, size.width / 2, size.height - 40), Align.center, angle, text[3], SUBTITLE_FONT, textColor) ;
-		Draw.fitText(Util.translate(textPos, 0, 30), sy, Align.topLeft, text[window + 4], SUBTITLE_FONT, 70, textColor) ;
+		Draw.fitText(Util.translate(textPos, 0, 30), sy, Align.topLeft, text[window + 4], SUBTITLE_FONT, maxTextLength, textColor) ;
 		
 		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, window, numberWindows - 1, stdOpacity) ;
 	}

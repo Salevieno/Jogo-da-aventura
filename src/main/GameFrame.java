@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame ;
 import javax.swing.Timer;
 
+import screen.Screen;
+
 public class GameFrame extends JFrame implements ActionListener
 {
 	private static final long serialVersionUID = 1L ;
@@ -78,6 +80,8 @@ public class GameFrame extends JFrame implements ActionListener
 	public void switchFullscreen()
 	{
 		gameFrame.fullScreen = !gameFrame.fullScreen ;
+		Screen.getMe().updateScale(GameFrame.isFullscreen());
+		GamePanel.requestTextResize() ;
 		resizeWindow() ;
 	}
 	

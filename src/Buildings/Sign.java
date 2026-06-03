@@ -40,9 +40,12 @@ public class Sign
 	private void displaySignMessage()
 	{
 		Point boardPos = Util.translate(pos, IMAGE.getWidth(null), 0) ;
-		Point messagePos = Util.translate(boardPos, 12, 5) ;
+		int paddingX = 12 ;
+		int paddingY = 5 ;
+		Point messagePos = Util.translate(boardPos, paddingX, paddingY) ;
+		int maxTextLength = BOARD_IMAGE.getWidth(null) - paddingX ;
 		GamePanel.getDP().drawImage(BOARD_IMAGE, boardPos, Align.topLeft, 0.85) ;
-		Draw.fitText(messagePos, MSG_FONT.getSize() + 2, Align.topLeft, message, MSG_FONT, 435, Palette.colors[0]) ;	
+		Draw.fitText(messagePos, MSG_FONT.getSize() + 2, Align.topLeft, message, MSG_FONT, maxTextLength, Palette.colors[0]) ;	
 	}
     
 	public void display(Point playerPos)

@@ -2,6 +2,8 @@ package main;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -48,7 +50,21 @@ public class GamePanel extends JPanel
 
 	public static GamePanel getMe() { return gamePanel ;}
 	public static DrawPrimitives getDP() { return DP ;}
-	
+
+	public static Dimension calcTextSize(String text, Font font)
+	{
+		FontMetrics fontMetrics = DP.getFontMetrics(font) ;
+		int width = (int) Math.ceil(fontMetrics.stringWidth(text));
+		int height = (int) Math.ceil(fontMetrics.getHeight());
+
+		return new Dimension(width, height);
+	}
+
+	protected static void requestTextResize()
+	{
+		Game.requestTextResize() ;
+	}
+
 	public static void setCursorToDefault()
 	{
 		gamePanel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)) ;

@@ -84,7 +84,7 @@ public abstract class Draw
 		{
 			String lastLine = lines.get(lines.size() - 1) ;
 			String newLineText = lastLine + word + " " ;
-			if (maxLength <= Util.calcTextSize(newLineText, font).width)
+			if (maxLength <= GamePanel.calcTextSize(newLineText, font).width)
 			{
 				lines.add("") ;
 				lines.set(lines.size() - 1, word + " ") ;
@@ -106,7 +106,7 @@ public abstract class Draw
 	
 	public static void textUntil(Point pos, Align align, double angle, String text, Font font, Color color, int maxLength, Point mousePos)
 	{
-		Point offset = UtilAlignment.offsetForAlignment(align, new Dimension(maxLength, Util.calcTextSize(text, font).height)) ;
+		Point offset = UtilAlignment.offsetForAlignment(align, new Dimension(maxLength, GamePanel.calcTextSize(text, font).height)) ;
 		int minlength = 3 ;	// 3 is the length of "..."
 		String shortText = text ;
 		maxLength = Math.max(maxLength, minlength) ;
@@ -118,24 +118,24 @@ public abstract class Draw
 		}
 		
 		Point topLeftPos = Util.translate(pos, offset.x, offset.y) ;
-		Dimension size = new Dimension(Util.calcTextSize(shortText, font).width, Util.calcTextSize(text, font).height) ;
+		Dimension size = new Dimension(GamePanel.calcTextSize(shortText, font).width, GamePanel.calcTextSize(text, font).height) ;
 		String textDrawn =  text.length() <= maxLength | Util.isInside(mousePos, topLeftPos, size) ? text : shortText + "..." ;
 		GamePanel.getDP().drawText(pos, align, stdAngle, textDrawn, font, color) ;
 	}
 	
-	public static void speech(Point pos, String text, Font font, Image speechBubble, Color color)
+	public static void speech(Point pos, String text, Font font, Image speechBubbleImage, Color color)
 	{
 		// obs: text must end with . , ? or ! for this function to work
-		int bubbleL = speechBubble.getWidth(null) ;
-		int bubbleH = speechBubble.getHeight(null) ;
+		int bubbleL = speechBubbleImage.getWidth(null) ;
+		int bubbleH = speechBubbleImage.getHeight(null) ;
 		boolean flipH = Screen.getMe().mapSize().width / 2 <= pos.x ;
 		Color textColor = color != null ? color : Palette.colors[21] ;
 		
-		GamePanel.getDP().drawImage(speechBubble, pos, DrawPrimitives.stdAngle, Scale.unit, flipH, false, Align.bottomCenter, 1) ;
+		GamePanel.getDP().drawImage(speechBubbleImage, pos, DrawPrimitives.stdAngle, Scale.unit, flipH, false, Align.bottomCenter, 1) ;
 		
-		Point textOffset = new Point(6, 5) ;
-		Point textPos = Util.translate(pos, textOffset.x - bubbleL / 2, textOffset.y - bubbleH) ;
-		int maxTextL = 297 ;
+		Point padding = new Point(6, 5) ;
+		Point textPos = Util.translate(pos, padding.x - bubbleL / 2, padding.y - bubbleH) ;
+		int maxTextL = speechBubbleImage.getWidth(null) - padding.x ;
 		int sy = font.getSize() + 1 ;
 		fitText(textPos, sy, Align.topLeft, text, font, maxTextL, textColor) ;
 	}
