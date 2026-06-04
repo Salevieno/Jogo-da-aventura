@@ -29,7 +29,7 @@ public class QuestWindow extends GameWindow
 
 	public QuestWindow()
 	{
-		super("Quest", Screen.getMe().pos(0.3, 0.1), IMAGE, 0, 0, 0, 0) ;
+		super("Quest", Screen.getMe().pos(0.36, 0.14), IMAGE, 0, 0, 0, 0) ;
 	}
 	
 	

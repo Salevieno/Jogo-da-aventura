@@ -3,11 +3,14 @@ package NPC;
 import java.awt.Point;
 import java.util.List;
 
+import animations.MessageAnimation;
 import components.Quest;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.Log;
+import main.Palette;
 import maps.GameMap;
+import screen.Screen;
 
 public class NPCQuest extends NPC
 {
@@ -42,7 +45,6 @@ public class NPCQuest extends NPC
 
 	public void act(Player player, Pet pet, String action)
 	{
-
 		if (action == null) { return ;}
 
 		int questID = getQuestNPCid(this) ;
@@ -50,9 +52,8 @@ public class NPCQuest extends NPC
 		if (questID == -1) { Log.warn("Quest id não encontrado para npc " + job.toString() + " " + id) ; return ;}
 		Quest quest = Quest.getAll().get(questID) ;
 
-		if (action.equals("Enter") & selOption == 0)
+		if (actionIsForward(action) && selOption == 0)
 		{
-
 			if (!player.getQuests().contains(quest))
 			{
 				quest.checkCompletion(player.getBag()) ;
@@ -62,6 +63,7 @@ public class NPCQuest extends NPC
 					return ;
 				}
 				
+				MessageAnimation.start(Screen.getMe().pos(0.84, 0.22), "Quest " + quest.getName() + " obtained!", Palette.colors[4]) ;
 				player.getQuests().add(quest) ;
 			}
 			
@@ -70,9 +72,7 @@ public class NPCQuest extends NPC
 			if (!quest.isComplete()) { return ; }
 			
 			quest.complete(player.getBag(), player.getPA(), player.getQuestSkills()) ;
-			player.getQuests().remove(quest) ;
-			
-		}
-		
+			player.getQuests().remove(quest) ;			
+		}		
 	}
 }

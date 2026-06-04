@@ -81,7 +81,7 @@ public class Game
 		this.player.setPos(new Point2D.Double(Screen.getMe().getCenter().x, Screen.getMe().getCenter().y));
 		this.difficultLevel = 0;
 		this.saveSlotInUse = -1;
-		this.state = GameStates.opening;
+		this.state = GameStates.loading;
 		this.gameLanguage = Languages.portugues;
 		this.dayTimer = new GameTimer(DAY_DURATION);
 		this.dt = System.nanoTime() ;
