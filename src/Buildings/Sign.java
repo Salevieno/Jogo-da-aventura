@@ -50,7 +50,7 @@ public class Sign
     
 	public void display(Point playerPos)
 	{
-		GamePanel.getDP().drawImage(IMAGE, pos, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.getDP().drawImage(IMAGE, pos, Scale.unit, Align.center) ;
 		if (isInside(playerPos))
         {
 			displaySignMessage() ;

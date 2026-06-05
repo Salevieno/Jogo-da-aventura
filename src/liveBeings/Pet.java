@@ -21,7 +21,6 @@ import battle.Battle;
 import components.HitboxRectangle;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Draw;
 import graphics2.SpriteAnimation;
 import items.PetItem;
 import main.Directions;
@@ -460,7 +459,7 @@ public class Pet extends LiveBeing
 	
 	public void display(Point pos, Scale scale)
 	{
-		movingAni.displayMoving(dir, pos, Draw.stdAngle, scale, Align.bottomCenter) ;
+		movingAni.displayMoving(dir, pos, scale, Align.bottomCenter) ;
 
 		if (isDrunk())
 		{

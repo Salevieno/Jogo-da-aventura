@@ -6,7 +6,6 @@ import java.awt.Point;
 
 import graphics.Align;
 import graphics.DrawPrimitives;
-import graphics2.Draw;
 import main.GamePanel;
 import main.Palette;
 import utilities.Util;
@@ -37,6 +36,6 @@ public class BufferedTextAnimation extends Animation
     public void play()
     {
 		Point textPos = Util.translate(initPos, 0, (int) (-SPEED * timer.rate())) ;
-		GamePanel.getDP().drawBufferedText(textPos, Align.center, Draw.stdAngle, text, SMALL_FONT, color, Palette.colors[3], 2);
+		GamePanel.getDP().drawBufferedText(textPos, Align.center, text, SMALL_FONT, color, Palette.colors[3], 2);
     }
 }

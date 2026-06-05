@@ -9,7 +9,6 @@ import java.awt.Point;
 import attributes.BasicBattleAttribute;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Draw;
 import graphics2.SpriteAnimation;
 import liveBeings.Pet;
 import main.Elements;
@@ -40,9 +39,6 @@ public class PetAttributesWindow extends AttributesWindow
 	
 	public void display(Point mousePos)
 	{
-
-		double angle = Draw.stdAngle ;
-		
 		GamePanel.getDP().drawImage(IMAGE, windowPos, Align.topLeft, stdOpacity) ;
 
 		SpriteAnimation userImage = pet.getMovingAni().spriteIdle ;
@@ -57,8 +53,8 @@ public class PetAttributesWindow extends AttributesWindow
 		String[] attText = Game.getAllText().get(TextCategories.attributes) ;		
 		Point namePos = Util.translate(windowPos, size.width / 2, 18) ;
 		Point levelPos = Util.translate(windowPos, size.width / 2, 38) ;
-		GamePanel.getDP().drawText(namePos, Align.center, angle, pet.getName(), namefont, textColor) ;		
-		GamePanel.getDP().drawText(levelPos, Align.center, angle, attText[0] + ": " + pet.getLevel(), font, colorPalette[7]) ;
+		GamePanel.getDP().drawText(namePos, Align.center, pet.getName(), namefont, textColor) ;		
+		GamePanel.getDP().drawText(levelPos, Align.center, attText[0] + ": " + pet.getLevel(), font, colorPalette[7]) ;
 		
 		//	Equips
 		if (pet.getEquip() != null)
@@ -71,7 +67,7 @@ public class PetAttributesWindow extends AttributesWindow
 			{
 
 				Point elemPos = Util.translate(slotCenter, slotSize.width - 12, slotSize.height / 2) ;
-				GamePanel.getDP().drawImage(eqElem.image, elemPos, angle, new Scale(0.12, 0.12), Align.center) ;
+				GamePanel.getDP().drawImage(eqElem.image, elemPos, new Scale(0.12, 0.12), Align.center) ;
 			}
 		}
 		
@@ -81,7 +77,7 @@ public class PetAttributesWindow extends AttributesWindow
 //		{
 //			Point superElemPos = Util.translate(userPos, 0, 35) ;
 //			Image superElemImage = pet.getElem()[4].image ;
-//			GamePanel.getDP().drawImage(superElemImage, superElemPos, angle, new Scale(0.3, 0.3), Align.center) ;
+//			GamePanel.getDP().drawImage(superElemImage, superElemPos, new Scale(0.3, 0.3), Align.center) ;
 //		}
 		
 		
@@ -90,8 +86,8 @@ public class PetAttributesWindow extends AttributesWindow
 		Point mpPos = Util.translate(windowPos, 20, BORDER + PADDING + 46 + 27) ;
 		String lifeText = attText[1] + ": " + Util.round(pet.getPA().getLife().getCurrentValue(), 1) ;
 		String mpText = attText[2] + ": " + Util.round(pet.getPA().getMp().getCurrentValue(), 1) ;
-		GamePanel.getDP().drawText(lifePos, Align.centerLeft, angle, lifeText, font, colorPalette[7]) ;
-		GamePanel.getDP().drawText(mpPos, Align.centerLeft, angle, mpText, font, colorPalette[20]) ;
+		GamePanel.getDP().drawText(lifePos, Align.centerLeft, lifeText, font, colorPalette[7]) ;
+		GamePanel.getDP().drawText(mpPos, Align.centerLeft, mpText, font, colorPalette[20]) ;
 				
 		BasicBattleAttribute[] attributes = pet.getBA().basicAttributes() ;
 		Point initialAttPos = Util.translate(windowPos, BORDER + PADDING + 26, 136) ;
@@ -101,12 +97,11 @@ public class PetAttributesWindow extends AttributesWindow
 			String attValue = Util.round(attributes[i].getBaseValue(), 1) + " + " + Util.round(attributes[i].getBonus(), 1) + " + " + Util.round(attributes[i].getTrain(), 1) ;
 			
 			GamePanel.getDP().drawImage(ATT_ICONS[i], Util.translate(attPos, -15, 0), Scale.unit, Align.center) ;
-			GamePanel.getDP().drawText(attPos, Align.centerLeft, angle, attValue, font, textColor) ;
+			GamePanel.getDP().drawText(attPos, Align.centerLeft, attValue, font, textColor) ;
 		}
 		Point critPos = Util.translate(initialAttPos, 0, 71) ;
 		String critValue = attText[9] + ": " + Util.round(100 * pet.getBA().TotalCritAtkChance(), 1) + "%" ;
 		GamePanel.getDP().drawImage(CRIT_ICON, Util.translate(initialAttPos, -15, 72), Scale.unit, Align.center) ;
-		GamePanel.getDP().drawText(critPos, Align.centerLeft, angle, critValue, font, colorPalette[7]) ;		
-		
+		GamePanel.getDP().drawText(critPos, Align.centerLeft, critValue, font, colorPalette[7]) ;
 	}
 }

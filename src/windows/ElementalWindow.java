@@ -11,7 +11,6 @@ import java.util.List;
 import animations.MessageAnimation;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Draw;
 import items.Equip;
 import items.GeneralItem;
 import liveBeings.Player;
@@ -203,7 +202,7 @@ public class ElementalWindow extends GameWindow
 			
 			GamePanel.getDP().drawImage(slotImage, slotCenter, Align.center) ;
 			GamePanel.getDP().drawImage(equip.getImage(), slotCenter, Align.center) ;
-			GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, equip.getName(), STD_FONT, textColor) ;
+			GamePanel.getDP().drawText(textPos, Align.centerLeft, equip.getName(), STD_FONT, textColor) ;
 		}
 	}
 	
@@ -227,7 +226,7 @@ public class ElementalWindow extends GameWindow
 			GamePanel.getDP().drawImage(sphere.getImage(), slotCenter, Align.center) ;
 			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
 			Color textColor = getTextColor(i == item) ;
-			GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, sphere.getName(), STD_FONT, textColor) ;
+			GamePanel.getDP().drawText(textPos, Align.centerLeft, sphere.getName(), STD_FONT, textColor) ;
 		}
 	}
 	
@@ -236,8 +235,8 @@ public class ElementalWindow extends GameWindow
 		
 		Point titlePos = Util.translate(topLeftPos, size.width / 2, 2 + 9) ;
 		
-		GamePanel.getDP().drawImage(image, topLeftPos, Draw.stdAngle, Scale.unit, Align.topLeft, stdOpacity) ;
-		GamePanel.getDP().drawText(titlePos, Align.center, Draw.stdAngle, MENU_TITLES.get(menu), TITLE_FONT, STD_COLOR) ;
+		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;
+		GamePanel.getDP().drawText(titlePos, Align.center, MENU_TITLES.get(menu), TITLE_FONT, STD_COLOR) ;
 		
 		switch (menu)
 		{
@@ -247,7 +246,7 @@ public class ElementalWindow extends GameWindow
 		}
 		
 		
-		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 5), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
+		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 5), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
 		
 	}
 

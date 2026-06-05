@@ -18,7 +18,6 @@ import utilities.Util;
 public class PterodactileAnimation extends Animation
 {
     private Image pterodactile ;
-    private Image speakingBubble ;
     private String[] message ;
     private final Dimension screenSize ;
 	private final Point pos ;
@@ -27,24 +26,26 @@ public class PterodactileAnimation extends Animation
   	private static final Image IMAGE = ImageLoader.loadImage(Path.NPC_IMG + "Pterodactile.png") ;
 	private static final int IMAGE_WIDTH = IMAGE.getWidth(null) ;
 
-	private PterodactileAnimation(Image speakingBubble, String[] message)
+	private PterodactileAnimation(String[] message)
     {
 		super(20) ;
-        this.speakingBubble = speakingBubble ;
         this.message = message ;
 		this.screenSize = Screen.getMe().getSize() ;
 		this.pos = new Point(-IMAGE_WIDTH / 2, (int)(0.25*screenSize.height)) ;
 		this.font = DrawPrimitives.stdFont ;
 	}
 
-    public static void start(Image speakingBubble, String[] message)
+    public static void start(String[] message)
     {
-        PterodactileAnimation ani = new PterodactileAnimation(speakingBubble, message) ;
+        PterodactileAnimation ani = new PterodactileAnimation(message) ;
         ani.start() ;
     }
 
     protected void play()
-    {		
+    {
+		int padding = 6 ;
+		int maxTextL = 300 - padding ; // SPEAKING_BUBBLE_IMAGE.getWidth(null) - padding
+		int sy = font.getSize() + 1 ;
 		if (timer.rate() <= 0.25)
 		{
 			pos.x += 4 * timer.rate() * (screenSize.width / 2 + IMAGE_WIDTH / 2) ;
@@ -54,13 +55,13 @@ public class PterodactileAnimation extends Animation
 		{
 			pos.x += screenSize.width / 2 + IMAGE_WIDTH / 2 ;
 			pos.y += 0.25 * screenSize.height ;
-			Draw.speech(Util.translate(pos, 0, -10), message[0], font, speakingBubble, Palette.colors[19]) ;
+			Draw.fitText(Util.translate(pos, 0, -10), sy, Align.topLeft, message[0], font, maxTextL, Palette.colors[19]) ;
 		}
 		else if (timer.rate() <= 0.75)
 		{
 			pos.x +=screenSize.width / 2 + IMAGE_WIDTH / 2 ;
 			pos.y += 0.25 * screenSize.height ;
-			Draw.speech(Util.translate(pos, 0, -10), message[1], font, speakingBubble, Palette.colors[19]) ;
+			Draw.fitText(Util.translate(pos, 0, -10), sy, Align.topLeft, message[1], font, maxTextL, Palette.colors[19]) ;
 		}
 		else
 		{

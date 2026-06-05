@@ -6,7 +6,6 @@ import java.util.List;
 
 import attributes.PersonalAttributes;
 import graphics.Align;
-import graphics2.Draw;
 import liveBeings.LiveBeing;
 import main.ImageLoader;
 import main.Path;
@@ -71,7 +70,7 @@ public class Potion extends Item
 
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
+		drawMenu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 	}
 		
 	@Override

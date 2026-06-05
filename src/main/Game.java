@@ -123,7 +123,7 @@ public class Game
 	{
 		Palette.switchToNormal() ;
 		game.dayTimer.setDuration(DAY_DURATION);
-		Draw.stdAngle = 0;
+		GamePanel.getDP().setStdAngle(0.0) ;
 	}
 
 	private static void checkKonamiCode(List<String> combo)
@@ -146,15 +146,15 @@ public class Game
 	{
 		if (game.dayTimer.rate() <= 0.25)
 		{
-			Draw.stdAngle += 0.04;
+			GamePanel.getDP().incStdAngle(0.04) ;
 		}
 		else if (game.dayTimer.rate() <= 0.75)
 		{
-			Draw.stdAngle -= 0.04;
+			GamePanel.getDP().incStdAngle(-0.04) ;
 		}
 		else
 		{
-			Draw.stdAngle += 0.04;
+			GamePanel.getDP().incStdAngle(0.04) ;
 		}
 	}
 
@@ -489,7 +489,15 @@ public class Game
 		}
 		player.getMap().display();
 		player.getMap().displayGroundTypes();
-		Draw.mapElements(player.getHitbox(), player.getPos(), player.getMap(), STD_FONT);
+		player.getMap().displayNPCs(player.getHitbox()) ;
+		
+		if (player.getMap() instanceof FieldMap)
+		{
+			FieldMap fm = (FieldMap) player.getMap() ;
+			fm.displayCollectibles(player.getHitbox()) ;
+		}
+		player.getMap().displayTudoEstaBem();
+		drawTime(STD_FONT) ;
 		
 		SpriteAnimation.displayAllFromLayer(0, GamePanel.getDP());
 
@@ -553,6 +561,14 @@ public class Game
 		{
 			Screen.getMe().displayBorders();
 		}
+	}
+
+	
+	private static void drawTime(Font font)
+	{
+		float time = (float) Game.dayTimeRate() ;
+		String message = (int) (24 * time) + ":" + (int) (24 * 60 * time % 60) ;
+		GamePanel.getDP().drawText(Screen.getMe().pos(0, 0.99), Align.bottomLeft, message, font, Palette.colors[20]) ;
 	}
 
 	protected void update()

@@ -65,7 +65,7 @@ public class BookWindow extends GameWindow
 			String ingredientName = ingredients[i].getName() ;
 			int ingredientAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
 			String text = ingredientAmount + " " + ingredientName ;
-			Draw.textUntil(textPos, Align.topLeft, Draw.stdAngle, text, FONT, textColor, 10, mousePos) ;
+			Draw.textUntil(textPos, Align.topLeft, text, FONT, textColor, 10, mousePos) ;
 		}
 		
 		// draw products
@@ -77,7 +77,7 @@ public class BookWindow extends GameWindow
 			String productsName = products[i].getName() ;
 			int productsAmount = recipes.get(id).getIngredients().get(ingredients[i]) ;
 			String text = productsAmount + " " + productsName ;
-			Draw.textUntil(textPos, Align.topRight, Draw.stdAngle, text, FONT, textColor, 10, mousePos) ;
+			Draw.textUntil(textPos, Align.topRight, text, FONT, textColor, 10, mousePos) ;
 		}
 	}
 
@@ -92,10 +92,10 @@ public class BookWindow extends GameWindow
 	
 	public void display(Point mousePos)
 	{
-		GamePanel.getDP().drawImage(image, topLeftPos, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.center) ;
 		displayRecipes(mousePos) ;
 		displayPageNumber() ;
 		
-		Draw.windowArrows(UtilAlignment.getPosAt(topLeftPos, Align.center, Align.bottomLeft, size), image.getWidth(null), FONT, window, numberWindows, stdOpacity) ;
+		drawNavigationButtons(UtilAlignment.getPosAt(topLeftPos, Align.center, Align.bottomLeft, size), image.getWidth(null), FONT, window, numberWindows, stdOpacity) ;
 	}
 }

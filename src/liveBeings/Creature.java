@@ -21,7 +21,6 @@ import components.HitboxCircle;
 import components.HitboxRectangle;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Draw;
 import items.Item;
 import main.Directions;
 import main.Elements;
@@ -394,18 +393,18 @@ public class Creature extends LiveBeing
 	public void displayName(Point pos, Align alignment, Color color)
 	{
 		Font font = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
-		GamePanel.getDP().drawText(pos, alignment, Draw.stdAngle, name, font, color) ;
+		GamePanel.getDP().drawText(pos, alignment, name, font, color) ;
 	}
 	
 	public void display(Point pos, Scale scale)
 	{
 		if (!idleTimer.isActive())
 		{
-			type.getMovingAnimations().displayMoving(dir, pos, 0, scale, Align.center) ;
+			type.getMovingAnimations().displayMoving(dir, pos, scale, Align.center) ;
 		}
 		else
 		{
-			type.getMovingAnimations().displayIdle(pos, 0, scale, Align.center) ;
+			type.getMovingAnimations().displayIdle(pos, scale, Align.center) ;
 		}
 		if (isFighting())
 		{

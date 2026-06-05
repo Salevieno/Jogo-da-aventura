@@ -1,5 +1,6 @@
 package items;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -8,7 +9,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import graphics.Align;
+import main.GamePanel;
 import main.ImageLoader;
+import main.Palette;
 import main.Path;
 
 
@@ -52,6 +55,11 @@ public abstract class Item
 	public void setName(String name) { this.name = name ;}
 	public void setDescription(String description) { this.description = description ;}
 
+	protected static void drawMenu(Point pos, Align align, Dimension size)
+	{
+		GamePanel.getDP().drawRoundRect(pos, align, size, 1, Palette.colors[3], Palette.colors[0], true);
+	}
+	
 	public abstract void displayInfo(Point pos, Align align) ;
 	
 	public static void load(String language)

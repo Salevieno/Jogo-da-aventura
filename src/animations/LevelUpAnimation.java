@@ -8,7 +8,6 @@ import java.util.Arrays;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics.Scale;
-import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
@@ -58,7 +57,7 @@ public class LevelUpAnimation extends Animation
 		GamePanel.getDP().drawImage(LEVEL_UP_ATT_IMG, topLeftPos, Scale.unit, Align.topLeft) ;
 		Point textPos = Util.translate(topLeftPos, WIN_OBTAINED_ITEMS_IMG.getWidth(null) / 2, OFFSET.y) ;
 		
-		GamePanel.getDP().drawText(textPos, Align.bottomCenter, Draw.stdAngle, ATT_TEXT[0] + " " + newLevel + "!", font, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(textPos, Align.bottomCenter, ATT_TEXT[0] + " " + newLevel + "!", font, Palette.colors[0]) ;
 
 		Point topLeftSlotCenter = Util.translate(topLeftPos, 18, 35) ;
 		for (int i = 0 ; i <= ATT_ORDER.length - 1 ; i += 1)
@@ -77,7 +76,7 @@ public class LevelUpAnimation extends Animation
 			int row = i % N_COLS ;
 			int col = i / N_COLS ;
 			Point attTextPos = Util.translate(topLeftPos, 28 + row * 80, 40 + col * spacingY) ;
-			GamePanel.getDP().drawText(attTextPos, Align.bottomLeft, Draw.stdAngle, " + " + attributeInc[i], font, Palette.colors[0]) ;
+			GamePanel.getDP().drawText(attTextPos, Align.bottomLeft, " + " + attributeInc[i], font, Palette.colors[0]) ;
 		}
     }
 }

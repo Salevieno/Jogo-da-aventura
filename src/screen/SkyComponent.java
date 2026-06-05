@@ -7,7 +7,6 @@ import java.awt.geom.Point2D;
 
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Draw;
 import main.GamePanel;
 import utilities.Util;
 
@@ -41,14 +40,9 @@ public class SkyComponent
 		pos.y += speed.y * dt ;
 	}
 	
-	public void display(double angle)
-	{
-		Point posAsPoint = new Point((int) pos.x, (int) pos.y) ;
-		GamePanel.getDP().drawSubImage(image, Screen.getMe().getSize().width, posAsPoint, angle, Scale.unit, false, false, Align.topLeft, opacity) ;
-	}
-	
 	public void display()
 	{
-		display(Draw.stdAngle) ;
+		Point posAsPoint = new Point((int) pos.x, (int) pos.y) ;
+		GamePanel.getDP().drawSubImage(image, Screen.getMe().getSize().width, posAsPoint, Scale.unit, false, false, Align.topLeft, opacity) ;
 	}
 }

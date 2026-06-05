@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.util.List;
 
 import graphics.Align;
-import graphics2.Draw;
 import main.ImageLoader;
 import main.Path;
 import utilities.Util;
@@ -42,7 +41,7 @@ public class Fab extends Item
 
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
+		drawMenu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 	}
 	
 	@Override

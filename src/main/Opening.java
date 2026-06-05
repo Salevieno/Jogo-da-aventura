@@ -266,21 +266,18 @@ public abstract class Opening
 	}
 	
 	private static void displaySlot(Point pos, int slotNumber)
-	{
-		
+	{		
 		Player player = players[slotNumber] ;
-		double angle = Draw.stdAngle ;
 		Color textColor = Palette.colors[0] ;
 		
 		Point textPos = Util.translate(pos, 75, 10) ;
-		GamePanel.getDP().drawText(textPos, Align.center, angle, "Slot " + (slotNumber + 1), font, textColor) ;
+		GamePanel.getDP().drawText(textPos, Align.center, "Slot " + (slotNumber + 1), font, textColor) ;
 
 		Point namePos = Util.translate(pos, 75, 30) ;
-		GamePanel.getDP().drawText(namePos, Align.center, angle, player.getName(), smallFont, textColor) ;
+		GamePanel.getDP().drawText(namePos, Align.center, player.getName(), smallFont, textColor) ;
 		
 		Point levelPos = Util.translate(pos, 10, 45) ;
-		GamePanel.getDP().drawText(levelPos, Align.centerLeft, angle, "Nível: " + player.getLevel(), smallFont, textColor) ;
-		
+		GamePanel.getDP().drawText(levelPos, Align.centerLeft, "Nível: " + player.getLevel(), smallFont, textColor) ;
 	}
 	
 	private static void displayLoadingSlot(Player player, Point mousePos)
@@ -289,7 +286,7 @@ public abstract class Opening
 		{
 			if (!loadSlotButtons.get(i).isActive()) { continue ;}
 
-			loadSlotButtons.get(i).display(0, true, mousePos) ;
+			loadSlotButtons.get(i).display(true, mousePos) ;
 			displaySlot(new Point(60 + 200 * i, 100), i) ;
 		}
 	}
@@ -319,14 +316,14 @@ public abstract class Opening
 		{
 			if (!button.isActive()) { continue ;}
 			
-			button.display(0, false, mousePos) ;
+			button.display(false, mousePos) ;
 		}
 
 		for (GameButton button : buttons)
 		{
 			if (!button.isActive()) { continue ;}
 			
-			button.display(0, true, mousePos) ;
+			button.display(true, mousePos) ;
 		}
 		
 		if (step == 1)
@@ -339,7 +336,7 @@ public abstract class Opening
 		}
 		
 		if (stepMessage.length - 1 <= step) { return ;}
-		GamePanel.getDP().drawText(textPos, Align.center, Draw.stdAngle, stepMessage[step], font, textColor) ;
+		GamePanel.getDP().drawText(textPos, Align.center, stepMessage[step], font, textColor) ;
 	}
 
 	public static void run(Player player, Point mousePos)

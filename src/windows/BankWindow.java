@@ -7,7 +7,6 @@ import java.awt.Point;
 import animations.MessageAnimation;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Draw;
 import liveBeings.Player;
 import main.GamePanel;
 import main.GameTimer;
@@ -152,29 +151,28 @@ public class BankWindow extends GameWindow
 	{
 		Point titlePos = Util.translate(topLeftPos, size.width / 2, BORDER + 10) ;
 		Color textColor = Palette.colors[0] ;
-		double angle = Draw.stdAngle ;
 		
-		GamePanel.getDP().drawImage(image, topLeftPos, angle, Scale.unit, Align.topLeft) ;
+		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft) ;
 
-		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, TITLE_FONT, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[0]) ;
 		
 		Point balancePos = Util.translate(topLeftPos, BORDER + PADDING + 4, (int) BORDER + 30) ;
 		Point investmentPos = Util.translate(topLeftPos, BORDER + PADDING + 4, BORDER + 90) ;
 		
-		GamePanel.getDP().drawText(balancePos, Align.centerLeft, angle, "Saldo", STD_FONT, textColor) ;
-		GamePanel.getDP().drawText(investmentPos, Align.centerLeft, angle, "Investimento", STD_FONT, textColor) ;
+		GamePanel.getDP().drawText(balancePos, Align.centerLeft, "Saldo", STD_FONT, textColor) ;
+		GamePanel.getDP().drawText(investmentPos, Align.centerLeft, "Investimento", STD_FONT, textColor) ;
 		
 		drawInvestmentTimer(Util.translate(investmentPos, 110, 10), investmentCounter.rate()) ;
 
 		GamePanel.getDP().drawImage(Player.getCoinImg(), Util.translate(balancePos, 0, 20), Align.centerLeft) ;
-		GamePanel.getDP().drawText(Util.translate(balancePos, 15, 20), Align.centerLeft, angle, String.valueOf(balance), STD_FONT, textColor) ;
+		GamePanel.getDP().drawText(Util.translate(balancePos, 15, 20), Align.centerLeft, String.valueOf(balance), STD_FONT, textColor) ;
 		GamePanel.getDP().drawImage(Player.getCoinImg(), Util.translate(investmentPos, 0, 20), Align.centerLeft) ;
-		GamePanel.getDP().drawText(Util.translate(investmentPos, 15, 20), Align.centerLeft, angle, String.valueOf(investedAmount), STD_FONT, textColor) ;
+		GamePanel.getDP().drawText(Util.translate(investmentPos, 15, 20), Align.centerLeft, String.valueOf(investedAmount), STD_FONT, textColor) ;
 		
 		if (!isReadingInput()) { return ;}
 
 		Point inputMessagePos = Util.translate(topLeftPos, 0, BORDER + size.height + 15) ;
-		GamePanel.getDP().drawText(inputMessagePos, Align.centerLeft, angle, "Amount for " + mode, STD_FONT, textColor) ;
+		GamePanel.getDP().drawText(inputMessagePos, Align.centerLeft, "Amount for " + mode, STD_FONT, textColor) ;
 		
 		Point inputPos = Util.translate(topLeftPos, 0, BORDER + size.height + 35) ;
 		liveInput.displayTypingField(inputPos, true) ;

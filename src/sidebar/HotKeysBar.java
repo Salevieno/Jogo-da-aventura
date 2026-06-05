@@ -8,7 +8,6 @@ import java.awt.Point;
 import java.util.List;
 
 import graphics.Align;
-import graphics2.Draw;
 import items.Item;
 import liveBeings.Player;
 import main.Game;
@@ -57,7 +56,7 @@ public abstract class HotKeysBar
 			Point keyTextPos = Util.translate(slotCenter, slotSize.width / 2 + 6, slotSize.height / 2) ;
 			
 			GamePanel.getDP().drawImage(GameWindow.getSlotImage(), slotCenter, Align.center) ;
-			GamePanel.getDP().drawText(keyTextPos, Align.bottomLeft, Draw.stdAngle, Player.getHotKeys()[i], FONT, TEXT_COLOR) ;
+			GamePanel.getDP().drawText(keyTextPos, Align.bottomLeft, Player.getHotKeys()[i], FONT, TEXT_COLOR) ;
 			
 			if (hotItems.get(i) == null) { continue ;}
 
@@ -66,7 +65,7 @@ public abstract class HotKeysBar
 			if (!Util.isInside(mousePos, Util.translate(slotCenter, -slotSize.width / 2, -slotSize.height / 2), slotSize)) { continue ;}
 			
 			Point textPos = Util.translate(slotCenter, - slotSize.width / 2 - 10, 0);
-			GamePanel.getDP().drawText(textPos, Align.centerRight, Draw.stdAngle, hotItems.get(i).getName(), FONT, TEXT_COLOR) ;
+			GamePanel.getDP().drawText(textPos, Align.centerRight, hotItems.get(i).getName(), FONT, TEXT_COLOR) ;
 		}
 	}
 }

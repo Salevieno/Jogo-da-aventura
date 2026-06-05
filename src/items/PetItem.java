@@ -8,7 +8,6 @@ import animations.MessageAnimation;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.Align;
-import graphics2.Draw;
 import liveBeings.Pet;
 import main.ImageLoader;
 import main.Palette;
@@ -162,7 +161,7 @@ public class PetItem extends Item
 	
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
+		drawMenu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 	}
 	
 	@Override

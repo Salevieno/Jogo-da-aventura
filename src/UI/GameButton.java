@@ -102,11 +102,11 @@ public abstract class GameButton
 
 	public void act() { action.act() ;}
 
-	public abstract void display(double angle, boolean displayText, Point mousePos, Color textColor, double opacity) ;
+	public abstract void display(boolean displayText, Point mousePos, Color textColor, double opacity) ;
 	
-	public void display(double angle, boolean displayText, Point mousePos)
+	public void display(boolean displayText, Point mousePos)
 	{
-		display(angle, displayText, mousePos, TEXT_COLOR, 1.0) ;
+		display(displayText, mousePos, TEXT_COLOR, 1.0) ;
 	}
 	
 	@Override

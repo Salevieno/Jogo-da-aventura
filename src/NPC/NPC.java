@@ -16,6 +16,7 @@ import components.Collider;
 import components.Hitbox;
 import components.HitboxRectangle;
 import graphics.Align;
+import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics.UtilAlignment;
 import graphics2.Draw;
@@ -31,6 +32,7 @@ import main.Interactable;
 import main.Log;
 import main.Palette;
 import main.Path;
+import screen.Screen;
 import utilities.Util;
 import windows.GameWindow;
 
@@ -183,12 +185,6 @@ public abstract class NPC implements Interactable
 	
 	public void displaySpeech(Point pos)
 	{
-		if (this instanceof NPCCitizen)
-		{
-			((NPCCitizen) this).displaySpeech() ;
-			return ;
-		}
-
 		if (menus == null) { Log.warn("Trying to display npc null speech") ; return ;}
 		if (menus.size() <= currentMenuID) { Log.warn("Not enough npc speeches to display") ; return ;}
 		if (menus.isEmpty()) { Log.warn("NPC speech is empty") ; return ;}
@@ -197,8 +193,19 @@ public abstract class NPC implements Interactable
 		String content = menus.get(currentMenuID).getSpeech() ;		
 		Point speechPos = Util.translate(pos, 0, 10 - job.getImage().getHeight(null)) ;
 
-		Draw.speech(speechPos, content, STD_FONT, SPEAKING_BUBBLE_IMAGE, STD_COLOR) ;		
-	}	
+		int bubbleL = SPEAKING_BUBBLE_IMAGE.getWidth(null) ;
+		int bubbleH = SPEAKING_BUBBLE_IMAGE.getHeight(null) ;
+		boolean flipH = Screen.getMe().mapSize().width / 2 <= speechPos.x ;
+		Color textColor = STD_COLOR != null ? STD_COLOR : Palette.colors[21] ;
+		
+		GamePanel.getDP().drawImage(SPEAKING_BUBBLE_IMAGE, speechPos, DrawPrimitives.stdAngle, Scale.unit, flipH, false, Align.bottomCenter, 1) ;
+		
+		Point padding = new Point(6, 5) ;
+		Point textPos = Util.translate(speechPos, padding.x - bubbleL / 2, padding.y - bubbleH) ;
+		int maxTextL = SPEAKING_BUBBLE_IMAGE.getWidth(null) - padding.x ;
+		int sy = STD_FONT.getSize() + 1 ;
+		Draw.fitText(textPos, sy, Align.topLeft, content, STD_FONT, maxTextL, textColor) ;		
+	}
 	
 	public void displaySpeech() { displaySpeech(pos) ;}
 
@@ -216,7 +223,7 @@ public abstract class NPC implements Interactable
 
 	public void display(Hitbox playerHitbox)
 	{
-		GamePanel.getDP().drawImage(job.getImage(), pos, Draw.stdAngle, Scale.unit, Align.bottomCenter) ;
+		GamePanel.getDP().drawImage(job.getImage(), pos, Scale.unit, Align.bottomCenter) ;
 		if (desk != null)
 		{
 			GamePanel.getDP().drawImage(desk, pos, Align.centerLeft);

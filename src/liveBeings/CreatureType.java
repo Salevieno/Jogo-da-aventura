@@ -170,7 +170,7 @@ public class CreatureType
 
 	public void display(Point pos, Scale scale)
 	{
-		movingAni.displayIdle(pos, 0.0, scale, Align.center);
+		movingAni.displayIdle(pos, scale, Align.center);
 	}
 
 	public String toString()

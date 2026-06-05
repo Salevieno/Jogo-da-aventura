@@ -651,7 +651,7 @@ public class BagWindow extends GameWindow
 			checkMenuMouseSelection(mousePos, tabPos, m) ;
 			
 			GamePanel.getDP().drawImage(tabImage, tabPos, Align.topLeft) ;
-			GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, tabNames[m], TITLE_FONT, textColor) ;
+			GamePanel.getDP().drawText(textPos, Align.centerLeft, tabNames[m], TITLE_FONT, textColor) ;
 		}
 		
 		// draw bag
@@ -675,7 +675,7 @@ public class BagWindow extends GameWindow
 			
 			GamePanel.getDP().drawImage(SLOT_IMAGE, slotCenter, Align.center) ;
 			GamePanel.getDP().drawImage(itemsDisplayed.get(i).getImage(), slotCenter, Align.center) ;
-			Draw.textUntil(textPos, Align.centerLeft, Draw.stdAngle, itemText, TITLE_FONT, textColor, 40, mousePos) ;
+			Draw.textUntil(textPos, Align.centerLeft, itemText, TITLE_FONT, textColor, 40, mousePos) ;
 		}
 		
 		if (0 < numberItemsDisplayed)
@@ -687,7 +687,7 @@ public class BagWindow extends GameWindow
 			}
 		}
 		
-		buttons.forEach(button -> button.display(Draw.stdAngle, false, mousePos)) ;
+		buttons.forEach(button -> button.display(false, mousePos)) ;
 		
 	}
 	

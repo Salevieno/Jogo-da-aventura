@@ -26,7 +26,7 @@ public class GameIconButton extends GameButton
 		this.topLeft = UtilAlignment.getTopLeft(pos, alignment, size) ;
     }
 
-	public void display(double angle, boolean displayText, Point mousePos, Color textColor, double opacity)
+	public void display(boolean displayText, Point mousePos, Color textColor, double opacity)
 	{		
 		if (!isActive) { return ;}
 		
@@ -39,7 +39,7 @@ public class GameIconButton extends GameButton
 			return ;
 		}
 		
-		GamePanel.getDP().drawImage(imageDisplayed, topLeft, angle, Scale.unit, Align.topLeft, opacity) ;
+		GamePanel.getDP().drawImage(imageDisplayed, topLeft, Scale.unit, Align.topLeft, opacity) ;
 	}
     
 }

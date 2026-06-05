@@ -14,7 +14,6 @@ import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Draw;
 import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Elements;
@@ -319,7 +318,7 @@ public class Equip extends Item
 			GamePanel.getDP().drawImage(AttributesWindow.getIcons()[attOrder[i]], imagePos, Align.center) ;
 			
 			Point textPos = Util.translate(imagePos, 10, 0) ;
-			GamePanel.getDP().drawText(textPos, Align.centerLeft, Draw.stdAngle, "+ " + attBonus.all()[attOrder[i]], font, Palette.colors[0]) ;
+			GamePanel.getDP().drawText(textPos, Align.centerLeft, "+ " + attBonus.all()[attOrder[i]], font, Palette.colors[0]) ;
 		}
 	}
 	

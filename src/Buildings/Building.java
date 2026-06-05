@@ -14,7 +14,6 @@ import components.Hitbox;
 import graphics.Align;
 import graphics.Scale;
 import graphics.UtilAlignment;
-import graphics2.Draw;
 import graphics2.Drawable;
 import main.Game;
 import main.GamePanel;
@@ -142,12 +141,12 @@ public class Building implements Drawable
 	{		
 		if (!isInside(playerPos))
 		{
-			GamePanel.getDP().drawImage(type.getExteriorImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;			
+			GamePanel.getDP().drawImage(type.getExteriorImage(), pos, Scale.unit, Align.center) ;			
 			
 			return ;
 		}
 
-		GamePanel.getDP().drawImage(type.getInteriorImage(), pos, Draw.stdAngle, Scale.unit, Align.center) ;
+		GamePanel.getDP().drawImage(type.getInteriorImage(), pos, Scale.unit, Align.center) ;
 		displayNPCs(playerHitbox) ;
 		
 		for (Collider collider : colliders)

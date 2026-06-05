@@ -8,7 +8,6 @@ import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
 import graphics.Align;
-import graphics2.Draw;
 import main.Game;
 import main.GamePanel;
 import main.Log;
@@ -72,6 +71,6 @@ public class DamageAnimation extends Animation
         } ;
 
 		Point pos = Util.translate(initialPos, trajectory) ;
-		GamePanel.getDP().drawBufferedText(pos, Align.center, Draw.stdAngle, text, FONT, color, Palette.colors[2], 1, opacity) ;
+		GamePanel.getDP().drawBufferedText(pos, Align.center, text, FONT, color, Palette.colors[2], 1, opacity) ;
     }
 }

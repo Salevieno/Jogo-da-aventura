@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Point;
 
 import graphics.Align;
-import graphics2.Draw;
 import utilities.Util;
 
 public class LiveInput
@@ -47,7 +46,7 @@ public class LiveInput
 		}
 		int offsetX = (int) (7.3 * text.length()) ;
 		GamePanel.getDP().drawLine(Util.translate(pos, 20 + offsetX, 5), Util.translate(pos, 20 + offsetX, -5), 2, Palette.colors[0]) ;
-		GamePanel.getDP().drawText(Util.translate(pos, 20, 0), Align.centerLeft, Draw.stdAngle, text, font, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(Util.translate(pos, 20, 0), Align.centerLeft, text, font, Palette.colors[0]) ;
 	
 	}
 }

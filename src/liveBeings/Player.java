@@ -34,7 +34,6 @@ import components.Quest;
 import components.QuestSkills;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Draw;
 import graphics2.SpriteAnimation;
 import items.Alchemy;
 import items.Arrow;
@@ -1895,7 +1894,7 @@ public class Player extends LiveBeing
 		if (isRiding)
 		{
 			Point ridePos = Util.translate(pos, -TIGER_IMG.getWidth(null) / 2, TIGER_IMG.getHeight(null) / 2) ;
-			GamePanel.getDP().drawImage(TIGER_IMG, ridePos, Draw.stdAngle , scale, Align.bottomLeft) ;
+			GamePanel.getDP().drawImage(TIGER_IMG, ridePos, scale, Align.bottomLeft) ;
 		}
 		if (isDrunk())
 		{
@@ -1908,11 +1907,11 @@ public class Player extends LiveBeing
 		}
 		if (isMoving())
 		{
-			movingAni.displayMoving(direction, pos, Draw.stdAngle , Scale.unit, Align.bottomCenter) ;
+			movingAni.displayMoving(direction, pos, Scale.unit, Align.bottomCenter) ;
 		}
 		else
 		{
-			movingAni.displayIdle(pos, Draw.stdAngle , Scale.unit, Align.bottomCenter) ;
+			movingAni.displayIdle(pos, Scale.unit, Align.bottomCenter) ;
 		}
 		if (questSkills.get(QuestSkills.dragonAura))
 		{

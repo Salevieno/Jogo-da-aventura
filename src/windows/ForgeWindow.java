@@ -12,7 +12,6 @@ import animations.MessageAnimation;
 import graphics.Align;
 import graphics.Scale;
 import graphics.UtilAlignment;
-import graphics2.Draw;
 import items.Equip;
 import items.Forge;
 import items.GeneralItem;
@@ -168,15 +167,14 @@ public class ForgeWindow extends GameWindow
 
 		Point titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
 		Point messagePos = Util.translate(topLeftPos, size.width / 2, 36) ;
-		double angle = Draw.stdAngle ;
 		List<Equip> itemsOnWindow = QTD_ITEMS_ON_WINDOW <= itemsForForge.size() ? itemsForForge.subList(0, QTD_ITEMS_ON_WINDOW) : itemsForForge ;
 		
 		if (itemsOnWindow.size() == 0) { item = -1 ;}
 		
-		GamePanel.getDP().drawImage(image, topLeftPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;
+		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;
 		
-		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, TITLE_FONT, Palette.colors[1]) ;
-		GamePanel.getDP().drawText(messagePos, Align.center, angle, MESSAGES.get(0), STD_FONT, STD_COLOR) ;
+		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[1]) ;
+		GamePanel.getDP().drawText(messagePos, Align.center, MESSAGES.get(0), STD_FONT, STD_COLOR) ;
 		
 		Point itemPos = Util.translate(topLeftPos, 24, 70) ;
 		
@@ -193,19 +191,19 @@ public class ForgeWindow extends GameWindow
 			
 			Equip equip = itemsOnWindow.get(i) ;
 			Color itemColor = this.item == itemsOnWindow.indexOf(equip) ? SELECTED_COLOR : STD_COLOR ;
-			GamePanel.getDP().drawImage(Item.getSlotImage(), itemPos, angle, Scale.unit, Align.center) ;
-			GamePanel.getDP().drawImage(equip.getImage(), itemPos, angle, Scale.unit, Align.center) ;
-			GamePanel.getDP().drawText(namePos, Align.centerLeft, angle, equip.getName() + " + " + equip.getForgeLevel(), STD_FONT, itemColor) ;
+			GamePanel.getDP().drawImage(Item.getSlotImage(), itemPos, Scale.unit, Align.center) ;
+			GamePanel.getDP().drawImage(equip.getImage(), itemPos, Scale.unit, Align.center) ;
+			GamePanel.getDP().drawText(namePos, Align.centerLeft, equip.getName() + " + " + equip.getForgeLevel(), STD_FONT, itemColor) ;
 			GamePanel.getDP().drawImage(reqRune(equip).getImage(), runePos, Align.center) ;
 			
 			if (Util.isInside(mousePos, UtilAlignment.getTopLeft(runePos, Align.center, Util.getSize(Item.getSlotImage())), Util.getSize(Item.getSlotImage())))
 			{
 				Point runeNamePos = Util.translate(runePos, -Item.getSlotImage().getWidth(null) / 2, -Item.getSlotImage().getHeight(null) / 2 - 5) ;
-				GamePanel.getDP().drawText(runeNamePos, Align.centerLeft, angle, reqRune(equip).getName(), STD_FONT, STD_COLOR) ;
+				GamePanel.getDP().drawText(runeNamePos, Align.centerLeft, reqRune(equip).getName(), STD_FONT, STD_COLOR) ;
 			}
 			
-			GamePanel.getDP().drawImage(Player.getCoinImg(), coinPos, angle, Scale.unit, Align.center) ;
-			GamePanel.getDP().drawText(pricePos, Align.centerLeft, angle, String.valueOf(forgePrice(equip.getForgeLevel())), STD_FONT, itemColor) ;
+			GamePanel.getDP().drawImage(Player.getCoinImg(), coinPos, Scale.unit, Align.center) ;
+			GamePanel.getDP().drawText(pricePos, Align.centerLeft, String.valueOf(forgePrice(equip.getForgeLevel())), STD_FONT, itemColor) ;
 			itemPos.y += 28 ;
 		}
 		

@@ -15,7 +15,6 @@ import javax.sound.sampled.Clip;
 import UI.GameButton;
 import UI.GameTextButton;
 import graphics.Align;
-import graphics2.Draw;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
@@ -194,7 +193,7 @@ public class PauseWindow extends GameWindow
         {
             if (!button.isActive()) { continue ;}
             
-            button.display(0, true, mousePos, Palette.colors[3], 0.6) ;
+            button.display(true, mousePos, Palette.colors[3], 0.6) ;
         }
         for (int i = 0 ; i <= menuSettings.get(menu).size() - 1 ; i += 1)
         {
@@ -209,7 +208,7 @@ public class PauseWindow extends GameWindow
                 Color textColor = isListeningToKeyInput && item == i ? Palette.colors[18] : Palette.colors[3] ;
                 int posY = menuButtons.get(menu).get(i).getCenter().y ;
                 GamePanel.getDP().drawImage(TEXT_BG_IMG, new Point(SETTING_COL_POS_X, posY), Align.center, 0.5) ;
-                GamePanel.getDP().drawText(new Point(SETTING_COL_POS_X, posY), Align.center, Draw.stdAngle, PlayerActions.values()[i].getKey(), LARGE_FONT, textColor) ;
+                GamePanel.getDP().drawText(new Point(SETTING_COL_POS_X, posY), Align.center, PlayerActions.values()[i].getKey(), LARGE_FONT, textColor) ;
             }
         }
     }

@@ -14,7 +14,6 @@ import javax.sound.sampled.Clip;
 import graphics.Align;
 import graphics.Scale;
 import graphics.UtilAlignment;
-import graphics2.Draw;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Path;
@@ -179,7 +178,7 @@ public class GameTextButton extends GameButton
         GamePanel.getDP().drawImage(boxStretchedPart9, pos9, Align.topLeft);
     }
 
-	public void display(double angle, boolean displayText, Point mousePos, Color textColor, double opacity)
+	public void display(boolean displayText, Point mousePos, Color textColor, double opacity)
 	{
 		
 		if (!isActive) { return ;} // TODO move this logic
@@ -192,7 +191,7 @@ public class GameTextButton extends GameButton
 		}
         else
         {
-            GamePanel.getDP().drawImage(imageDisplayed, center, angle, Scale.unit, Align.center, opacity) ;
+            GamePanel.getDP().drawImage(imageDisplayed, center, Scale.unit, Align.center, opacity) ;
         }
 
 		GamePanel.getDP().drawText(center, Align.center, 0, text, FONT, textColor) ;
@@ -208,7 +207,7 @@ public class GameTextButton extends GameButton
 		}
         else
         {
-            GamePanel.getDP().drawImage(imageDisplayed, center, Draw.stdAngle, Scale.unit, Align.center, 1.0) ;
+            GamePanel.getDP().drawImage(imageDisplayed, center, Scale.unit, Align.center, 1.0) ;
         }
 
 		GamePanel.getDP().drawText(center, Align.center, 0, text, FONT, TEXT_COLOR) ;

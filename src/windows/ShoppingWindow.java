@@ -12,7 +12,6 @@ import animations.MessageAnimation;
 import animations.ObtainedItemAnimation;
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Draw;
 import items.Item;
 import liveBeings.Player;
 import main.GamePanel;
@@ -151,10 +150,9 @@ public class ShoppingWindow extends GameWindow
 	{
 		Point itemPos = Util.translate(topLeftPos, BORDER + PADDING + Item.getSlotImage().getWidth(null) / 2, BORDER + 20 + PADDING + Item.getSlotImage().getHeight(null) / 2) ;
 		Point titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
-		double angle = Draw.stdAngle ;
 		
-		GamePanel.getDP().drawImage(image, topLeftPos, angle, Scale.unit, Align.topLeft, stdOpacity) ;		
-		GamePanel.getDP().drawText(titlePos, Align.center, angle, name, TITLE_FONT, Palette.colors[0]) ;				
+		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;		
+		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[0]) ;				
 		
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
 		{
@@ -166,10 +164,10 @@ public class ShoppingWindow extends GameWindow
 			
 			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(100, 10), i) ;
 			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? SELECTED_COLOR : STD_COLOR ;
-			GamePanel.getDP().drawImage(Item.getSlotImage(), itemPos, angle, Scale.unit, Align.center) ;
-			GamePanel.getDP().drawImage(bagItem.getImage(), itemPos, angle, Scale.unit, Align.center) ;
-			GamePanel.getDP().drawText(namePos, Align.centerLeft, angle, bagItem.getName() + qtdItem, STD_FONT, itemColor) ;
-			GamePanel.getDP().drawText(pricePos, Align.centerRight, angle, String.valueOf(bagItem.getPrice()), STD_FONT, Palette.colors[14]) ;
+			GamePanel.getDP().drawImage(Item.getSlotImage(), itemPos, Scale.unit, Align.center) ;
+			GamePanel.getDP().drawImage(bagItem.getImage(), itemPos, Scale.unit, Align.center) ;
+			GamePanel.getDP().drawText(namePos, Align.centerLeft, bagItem.getName() + qtdItem, STD_FONT, itemColor) ;
+			GamePanel.getDP().drawText(pricePos, Align.centerRight, String.valueOf(bagItem.getPrice()), STD_FONT, Palette.colors[14]) ;
 			GamePanel.getDP().drawImage(Player.getCoinImg(), coinPos, Align.center) ;
 			
 			if (this.item == itemsOnWindow.indexOf(bagItem))
@@ -179,7 +177,6 @@ public class ShoppingWindow extends GameWindow
 			itemPos.y += 23 ;
 		}
 		
-		Draw.windowArrows(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
-		
+		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
 	}
 }

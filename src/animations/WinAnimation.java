@@ -8,7 +8,6 @@ import java.util.List;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics.Scale;
-import graphics2.Draw;
 import items.Item;
 import main.GamePanel;
 import main.ImageLoader;
@@ -49,7 +48,7 @@ public class WinAnimation extends Animation
 		
 		if ( timer.rate() <= 0.1 ) { return ;}
 		
-		GamePanel.getDP().drawText(textPos, Align.center, Draw.stdAngle, "Você obteve!", stdFont, Palette.colors[3]) ;
+		GamePanel.getDP().drawText(textPos, Align.center, "Você obteve!", stdFont, Palette.colors[3]) ;
 		
 		if ( timer.rate() <= 0.3 ) { return ;}
 		
@@ -58,7 +57,7 @@ public class WinAnimation extends Animation
 		{
 			if ( 0.3 + 0.5 * i / items.size() <= timer.rate() )
 			{
-				GamePanel.getDP().drawText(itemTextPos, Align.bottomLeft, Draw.stdAngle, items.get(i).getName(), smallFont, Palette.colors[3]) ;
+				GamePanel.getDP().drawText(itemTextPos, Align.bottomLeft, items.get(i).getName(), smallFont, Palette.colors[3]) ;
 				itemTextPos.y += 15 ;
 			}
 		}

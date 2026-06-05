@@ -5,7 +5,6 @@ import java.awt.Point;
 import components.Hitbox;
 import components.HitboxRectangle;
 import graphics.Align;
-import graphics2.Draw;
 import items.Item;
 import main.Game;
 import main.GamePanel;
@@ -49,7 +48,7 @@ public class Collectible extends Item implements Interactable
 	
 	public void displayInfo(Point pos, Align align)
 	{
-		Draw.menu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
+		drawMenu(pos, align, Util.getSize(INFO_MENU_IMAGE)) ;
 	}
 	
 	public void display(Hitbox playerHitbox)

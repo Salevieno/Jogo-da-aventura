@@ -13,9 +13,12 @@ import UI.ButtonFunction;
 import UI.GameButton;
 import UI.GameIconButton;
 import graphics.Align;
+import graphics.Scale;
 import graphics.UtilAlignment;
+import graphics2.Draw;
 import liveBeings.PlayerActions;
 import main.Game;
+import main.GamePanel;
 import main.ImageLoader;
 import main.Palette;
 import main.Path;
@@ -59,7 +62,8 @@ public abstract class GameWindow
 	protected static final Image BTN_WINDOW_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;
 	protected static final Image SLOT_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSlot.png") ;
 	protected static final Image SELECTED_SLOT_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSelectedSlot.png") ;
-	protected static final Image SELECTED_BTN_WINDOW_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveDownSprite.png") ;
+	protected static final Image SELECTED_BTN_WINDOW_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveDownSprite.png") ;	
+	private static final Image ARROW_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "ArrowIcon.png") ;
 	
 	public GameWindow(String name, Point topLeftPos, Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
 	{
@@ -195,6 +199,26 @@ public abstract class GameWindow
 		
 		item = itemID ;
 	}
+
+	
+	protected static void drawNavigationButtons(Point pos, int width, Font font, int selectedWindow, int numberWindows, double opacity)
+	{
+		if (0 < selectedWindow)
+		{
+			Point leftArrowPos = Util.translate(pos, 25, 0) ;
+			Point textPos = Util.translate(leftArrowPos, 18, 0) ;
+			GamePanel.getDP().drawImage(ARROW_ICON, leftArrowPos, new Scale(-1, -1), Align.center, opacity) ;
+			Draw.keyboardButton(textPos, PlayerActions.moveLeft.getKey(), font) ;			
+		}
+		if (selectedWindow < numberWindows - 1)
+		{
+			Point rightArrowPos = Util.translate(pos, width - 25, 0) ;
+			Point textPos = Util.translate(rightArrowPos, -18, 0) ;
+			GamePanel.getDP().drawImage(ARROW_ICON, rightArrowPos, new Scale(1, -1), Align.center, opacity) ;
+			Draw.keyboardButton(textPos, PlayerActions.moveRight.getKey(), font) ;	
+		}
+	}
+	
 	
 	protected void stdNavigation(String action)
 	{

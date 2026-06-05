@@ -12,7 +12,6 @@ import components.Hitbox;
 import graphics.Align;
 import graphics.Scale;
 import graphics.UtilAlignment;
-import graphics2.Draw;
 import graphics2.Drawable;
 import main.Game;
 import main.GamePanel;
@@ -77,7 +76,7 @@ public class MapElement implements Drawable
 	{
 		double alpha = playerIsBehind(Game.getPlayer().getPos()) ? 0.5 : 1.0 ;
 		
-		GamePanel.getDP().drawImage(image, topLeft, Draw.stdAngle, Scale.unit, false, false, Align.topLeft, alpha) ;
+		GamePanel.getDP().drawImage(image, topLeft, Scale.unit, false, false, Align.topLeft, alpha) ;
 		if (Game.DEBUG_MODE)
 		{
 			displayColliders() ;

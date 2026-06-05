@@ -30,13 +30,13 @@ public class MovingAnimations
 		return spriteIdle.getTotalDuration() ;
 	}
 
-	public void displayIdle(Point pos, double angle, Scale scale, Align align)
+	public void displayIdle(Point pos, Scale scale, Align align)
 	{
 		spriteIdle.activateIfInactive() ; 
 		spriteIdle.display(GamePanel.getDP(), pos, align) ;
 	}
 	
-	public void displayMoving(Directions direction, Point pos, double angle, Scale scale, Align align)
+	public void displayMoving(Directions direction, Point pos, Scale scale, Align align)
 	{
 		switch (direction)
 		{

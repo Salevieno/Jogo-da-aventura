@@ -9,7 +9,6 @@ import java.util.List;
 
 import graphics.Align;
 import graphics.Scale;
-import graphics2.Draw;
 import liveBeings.CreatureType;
 import main.Game;
 import main.GamePanel;
@@ -43,7 +42,6 @@ public class BestiaryWindow extends GameWindow
 		Font infoFont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 		String[] text = Game.getAllText().get(TextCategories.bestiary) ;
 		Color textColor = Palette.colors[0] ;
-		double angle = Draw.stdAngle ;
 		
 		int offset = 5 ;
 		int sy = infoFont.getSize() ;
@@ -64,12 +62,12 @@ public class BestiaryWindow extends GameWindow
 
 		// draw text
 		Point textPos = Util.translate(pos, offset, creatureType.getSize().height + offset) ;
-		GamePanel.getDP().drawText(textPos, Align.topLeft, angle, creatureType.getName(), namefont, textColor) ;
+		GamePanel.getDP().drawText(textPos, Align.topLeft, creatureType.getName(), namefont, textColor) ;
 		textPos = Util.translate(textPos, 0, sy) ;
 		for (int i = 0 ; i <= text.length - 1 ; i += 1)
 		{
 			textPos = Util.translate(textPos, 0, sy) ;
-			GamePanel.getDP().drawText(textPos, Align.topLeft, angle, textInfo.get(i), infoFont, textColor) ;
+			GamePanel.getDP().drawText(textPos, Align.topLeft, textInfo.get(i), infoFont, textColor) ;
 		}
 	}
 	

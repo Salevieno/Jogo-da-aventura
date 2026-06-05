@@ -7,7 +7,6 @@ import java.awt.Point;
 
 import graphics.Align;
 import graphics.DrawPrimitives;
-import graphics2.Draw;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Path;
@@ -41,7 +40,7 @@ public class ObtainedItemAnimation extends Animation
     {
 		Point pos = Util.translate(initialPos, 0, (int) (-SPEED * timer.rate())) ;
 		GamePanel.getDP().drawImage(OBTAINED_ITEM_IMG, pos, Align.topCenter) ;
-		GamePanel.getDP().drawText(Util.translate(pos, 0, 0), Align.topCenter, Draw.stdAngle, "Você obteve", SMALL_FONT, color) ;
-		GamePanel.getDP().drawText(Util.translate(pos, 5 - OBTAINED_ITEM_IMG.getWidth(null) / 2, 20), Align.topLeft, Draw.stdAngle, text, SMALL_FONT, color) ;
+		GamePanel.getDP().drawText(Util.translate(pos, 0, 0), Align.topCenter, "Você obteve", SMALL_FONT, color) ;
+		GamePanel.getDP().drawText(Util.translate(pos, 5 - OBTAINED_ITEM_IMG.getWidth(null) / 2, 20), Align.topLeft, text, SMALL_FONT, color) ;
     }
 }

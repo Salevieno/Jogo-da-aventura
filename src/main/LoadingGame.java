@@ -223,7 +223,7 @@ public abstract class LoadingGame
 
 		if (startButton.isActive())
 		{
-			startButton.display(0, true, mousePos) ;
+			startButton.display(true, mousePos) ;
 		}
 
 		GamePanel.getDP().drawText(Util.translate(Screen.getMe().getCenter(), 0, 160), Align.center, "Game version " + MainGame3_4.getVersion(), Palette.colors[3]);
