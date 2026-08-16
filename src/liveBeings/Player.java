@@ -623,6 +623,7 @@ public class Player extends LiveBeing
 
 	public void move(Pet pet, double dt)
 	{
+		// TODO checar se TODOS os pontos entre a posição atual e a final são caminháveis. Apenas mover se todos forem
 		Point2D.Double newPos = calcNewPos(dt) ;
 
 		if (Screen.getMe().posIsWithinBorders(newPos))
@@ -1479,6 +1480,7 @@ public class Player extends LiveBeing
 		if (item == null) { Log.warn("Tentando usar item nulo!"); return ;}
 		if (!bag.contains(item)) { Log.warn("Tentando usar item que não tem na mochila!"); return ;}
 
+		bag.addRecentlyUsedItem(item) ;
 		if (item instanceof Potion)
 		{
 			Potion pot = (Potion) item ;

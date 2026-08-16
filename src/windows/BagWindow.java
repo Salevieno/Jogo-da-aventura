@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -50,6 +51,7 @@ public class BagWindow extends GameWindow
 	private Map<Fab, Integer> fabItems ;
 	private Map<QuestItem, Integer> questItems ;
 	private Map<Item, Integer> itemsOnWindow ;
+	private List<Item> recentlyUsedItems ;
 	private int gold ;
 	private Item itemFetched ;
 	private final List<Point> itemPos ;
@@ -66,8 +68,9 @@ public class BagWindow extends GameWindow
     public BagWindow()
 	{
     	super("Mochila", Screen.getMe().pos(0.28, 0.4), IMAGE, 2, 10, 0, 0) ;
-		this.buttons = List.of(windowUpButton(new Point(topLeftPos.x + image.getWidth(null) - 10, topLeftPos.y + image.getHeight(null) + 10), Align.topLeft),
-				windowDownButton(new Point(topLeftPos.x + 10, topLeftPos.y + image.getHeight(null) + 10), Align.topLeft)) ;
+		Dimension size = Util.getSize(image) ;
+		this.buttons = List.of(windowUpButton(new Point(topLeftPos.x + size.width - 10, topLeftPos.y + size.height + 10), Align.topLeft),
+				windowDownButton(new Point(topLeftPos.x + 10, topLeftPos.y + size.height + 10), Align.topLeft)) ;
 		this.pot = new LinkedHashMap<Potion, Integer>() ;
 		this.alch = new LinkedHashMap<Alchemy, Integer>() ;
 		this.forges = new LinkedHashMap<Forge, Integer>() ;
@@ -79,12 +82,13 @@ public class BagWindow extends GameWindow
 		this.fabItems = new LinkedHashMap<Fab, Integer>() ;
 		this.questItems = new LinkedHashMap<QuestItem, Integer>() ;
 		this.itemsOnWindow = new LinkedHashMap<>() ;
+		this.recentlyUsedItems = new ArrayList<>() ;
 		this.gold = 0 ;
 
 		
 		int slotW = SLOT_IMAGE.getWidth(null) ;
 		int slotH = SLOT_IMAGE.getHeight(null) ;
-		Point offset = new Point(70 + BORDER + slotW / 2, BORDER + PADDING + 2 + slotH / 2) ;
+		Point offset = new Point(70 + BORDER + slotW / 2, BORDER + PADDING + 162 + slotH / 2) ;
 		itemPos = new ArrayList<>() ;
 		for (int i = 0 ; i <= QTD_SLOTS_PER_WINDOW - 1; i += 1)
 		{
@@ -95,16 +99,15 @@ public class BagWindow extends GameWindow
 		
 	}
 
-	public Map<Potion, Integer> getPotions() {return pot ;}
-	public Map<Alchemy, Integer> getAlchemy() {return alch ;}
-	public Map<Forge, Integer> getForge() {return forges ;}
-	public Map<PetItem, Integer> getPetItem() {return petItems ;}
-	public Map<Food, Integer> getFood() {return foods ;}
-	public Map<Arrow, Integer> getArrow() {return arrows ;}
-	public Map<Equip, Integer> getEquip() {return equips ;}
-	public Map<GeneralItem, Integer> getGenItem() {return genItems ;}
-	public Map<Fab, Integer> getFab() {return fabItems ;}
-	public Map<QuestItem, Integer> getQuest() {return questItems ;}
+	public void addRecentlyUsedItem(Item item)
+	{
+		recentlyUsedItems.add(item) ;
+		if (recentlyUsedItems.size() == 10)
+		{
+			recentlyUsedItems.remove(0) ;
+		}
+	}
+
 	public int getGold() {return gold ;}
 	public Item getItemFetched() { return itemFetched ;}
 	
@@ -548,18 +551,6 @@ public class BagWindow extends GameWindow
 		numberWindows = getMenuItems().size() / QTD_SLOTS_PER_WINDOW ;
 	}
 	
-	public int calcGenItemsValue()
-	{
-		int value = 0 ;
-
-		for (Item item : genItems.keySet())
-		{
-			value += item.getPrice() * genItems.get(item) ;
-		}
-		
-		return value ;
-	}
-	
 	public int calcValue()
 	{
 		int value = 0 ;
@@ -636,33 +627,47 @@ public class BagWindow extends GameWindow
 		tab = tabID ;
 	}
 	
-	public void display(Point mousePos)
+	private void displayTabs(Point mousePos)
 	{
 		String[] tabNames = Game.getAllText().get(TextCategories.bagMenus) ;
-		
-		// draw tabs
+		double a = 200.0 ;
+		double b = 50.0 ;
 		for (int m = 0 ; m <= tabNames.length - 1 ; m += 1)
 		{
-			Point tabPos = Util.translate(topLeftPos, 0, BORDER + m * MENU_IMAGE.getHeight(null)) ;
-			tabPos.x += m == tab ? 3 : 0 ; 
-			Point textPos = Util.translate(tabPos, 3, MENU_IMAGE.getHeight(null) / 2) ;
+			double angle = 2 * Math.PI * m / (double) tabNames.length ;
+			Point2D.Double tabDoublePos = new Point2D.Double(a * Math.cos(angle), b * Math.sin(angle)) ;
+			Point tabPos = new Point((int) (topLeftPos.x + 350 + tabDoublePos.x), (int) (topLeftPos.y + 80 + tabDoublePos.y)) ;
 			Color textColor = getTextColor(m == tab) ;
-			Image tabImage = m == tab ? (menu == 0 ? SELECTED_MENU_TAB_0_IMAGE : SELECTED_MENU_TAB_1_IMAGE) : MENU_IMAGE ;
+			Image tabImage = menu == 0 ? SELECTED_MENU_TAB_0_IMAGE : SELECTED_MENU_TAB_1_IMAGE ;
 			checkMenuMouseSelection(mousePos, tabPos, m) ;
 			
-			GamePanel.getDP().drawImage(tabImage, tabPos, Align.topLeft) ;
-			GamePanel.getDP().drawText(textPos, Align.centerLeft, tabNames[m], TITLE_FONT, textColor) ;
+			GamePanel.getDP().drawImage(tabImage, tabPos, Align.center) ;
+			GamePanel.getDP().drawText(tabPos, Align.center, tabNames[m], TITLE_FONT, textColor) ;
 		}
+	}
+
+	private void displayItemInfo(int numberItemsDisplayed, List<Item> itemsDisplayed)
+	{
+		if (numberItemsDisplayed <= 0) { return ;}
 		
-		// draw bag
+		Item selectedItem = itemsDisplayed.get(item - window * QTD_SLOTS_PER_WINDOW) ;
+		if (selectedItem instanceof Equip || selectedItem instanceof GeneralItem)
+		{
+			selectedItem.displayInfo(topLeftPos, Align.topRight) ;
+		}
+	}
+
+	public void display(Point mousePos)
+	{	
 		GamePanel.getDP().drawImage(menu == 0 ? image : SELECTED_IMAGE, topLeftPos, Align.topLeft) ;
-		
+		displayTabs(mousePos) ;
+
 		// draw items		
-		itemsOnWindow = getItemsOnWindow() ;		
+		itemsOnWindow = getItemsOnWindow() ;
 		List<Item> itemsDisplayed = new ArrayList<>(itemsOnWindow.keySet()) ;
 		List<Integer> amountsDisplayed = new ArrayList<>(itemsOnWindow.values()) ;
 		int numberItemsDisplayed = Math.min(QTD_SLOTS_PER_WINDOW, itemsDisplayed.size()) ;
-		
+
 		for (int i = 0 ; i <= numberItemsDisplayed - 1; i += 1)
 		{
 			int itemID = i + window * QTD_SLOTS_PER_WINDOW ;
@@ -678,17 +683,9 @@ public class BagWindow extends GameWindow
 			Draw.textUntil(textPos, Align.centerLeft, itemText, TITLE_FONT, textColor, 40, mousePos) ;
 		}
 		
-		if (0 < numberItemsDisplayed)
-		{
-			Item selectedItem = itemsDisplayed.get(item - window * QTD_SLOTS_PER_WINDOW) ;
-			if (selectedItem instanceof Equip || selectedItem instanceof GeneralItem)
-			{
-				selectedItem.displayInfo(topLeftPos, Align.topRight) ;
-			}
-		}
+		displayItemInfo(numberItemsDisplayed, itemsDisplayed) ;
 		
 		buttons.forEach(button -> button.display(false, mousePos)) ;
-		
 	}
 	
 	@Override
