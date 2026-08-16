@@ -117,7 +117,7 @@ public class GameFrame extends JFrame implements ActionListener
         }
 		if (e.getSource() != timer)
 		{
-			Log.info("action performed = " + e);
+			Log.debug("action performed = " + e);
 			repaint() ;
 		}
 	}

@@ -193,23 +193,23 @@ public abstract class JobBuild
 	private static void printBuild(LiveBeing liveBeing)
 	{
 		String jobName = liveBeing instanceof Pet ? liveBeing.getName() : jobName(liveBeing.getJob(), liveBeing.getProJob()) ;
-		Log.info(jobName + "	") ;
-		Log.info(liveBeing.getPA().getLife().getCurrentValue() + "	") ;
-		Log.info(liveBeing.getPA().getMp().getCurrentValue() + "	") ;
-		Log.info((int) liveBeing.getBA().getPhyAtk().getTotal() + "	") ;
-		Log.info((int) liveBeing.getBA().getMagAtk().getTotal() + "	") ;
-		Log.info((int) liveBeing.getBA().getPhyDef().getTotal() + "	") ;
-		Log.info((int) liveBeing.getBA().getMagDef().getTotal() + "	") ;
-		Log.info((int) liveBeing.getBA().getDex().getTotal() + "	") ;
-		Log.info((int) liveBeing.getBA().getAgi().getTotal() + "") ;
+		Log.debug(jobName + "	") ;
+		Log.debug(liveBeing.getPA().getLife().getCurrentValue() + "	") ;
+		Log.debug(liveBeing.getPA().getMp().getCurrentValue() + "	") ;
+		Log.debug((int) liveBeing.getBA().getPhyAtk().getTotal() + "	") ;
+		Log.debug((int) liveBeing.getBA().getMagAtk().getTotal() + "	") ;
+		Log.debug((int) liveBeing.getBA().getPhyDef().getTotal() + "	") ;
+		Log.debug((int) liveBeing.getBA().getMagDef().getTotal() + "	") ;
+		Log.debug((int) liveBeing.getBA().getDex().getTotal() + "	") ;
+		Log.debug((int) liveBeing.getBA().getAgi().getTotal() + "") ;
 	}
 	
 	private static void printBuilds(String title, List<LiveBeing> liveBeings)
 	{
-		Log.info("\n--------------- " + title + " ---------------") ;
-		Log.info("Job	Life	MP 	PhyAtk	MagAtk	PhyDef	MagDef	Dex	Agi") ;
+		Log.debug("\n--------------- " + title + " ---------------") ;
+		Log.debug("Job	Life	MP 	PhyAtk	MagAtk	PhyDef	MagDef	Dex	Agi") ;
 		liveBeings.forEach(liveBeing -> printBuild(liveBeing)) ;
-		Log.info("\n") ;
+		Log.debug("\n") ;
 	}
 
 	public static void printAll()

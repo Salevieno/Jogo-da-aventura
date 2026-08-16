@@ -936,7 +936,7 @@ public class Player extends LiveBeing
 	{
 		AtkResults atkResults = calcAtkResults(atkType, receiver) ;		
 		
-		Log.info(name + " performed " + atkType + " on " + receiver.getName() +
+		Log.debug(name + " performed " + atkType + " on " + receiver.getName() +
 							"\n with effect " + atkResults.getEffect() +
 							"\n and damage " + atkResults.getDamage() +
 							"\n and status " + atkResults.getStatus()) ;
@@ -967,7 +967,7 @@ public class Player extends LiveBeing
 		
 		if (atkType == null) { return ;}
 		
-		Log.info("\n============ " + name + " performing " + atkType + " ============") ;
+		Log.debug("\n============ " + name + " performing " + atkType + " ============") ;
 		setCurrentAtkType(atkType) ;
 		AtkResults atkResults = performAtk(atkType, opponent) ;
 		trainOffensive(atkResults) ;
@@ -978,7 +978,7 @@ public class Player extends LiveBeing
 		{
 			EvolutionSimulation.updateBattleStats(this, opponent, atkResults) ;
 		}
-		Log.info("=======================================================") ;
+		Log.debug("=======================================================") ;
 	}
 
 	public void act(Pet pet, Point mousePos)

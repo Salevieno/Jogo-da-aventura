@@ -921,7 +921,7 @@ public abstract class LiveBeing implements Drawable
 		}
 		if (bloodStatus.isActive() && bloodStatus.getTimer().crossedTime(0.5))
 		{
-			Log.info(name + " took " + (int) (bloodStatus.getIntensity() * bloodMult) + " blood damage") ;
+			Log.debug(name + " took " + (int) (bloodStatus.getIntensity() * bloodMult) + " blood damage") ;
 			bloodDamage = (int) (bloodStatus.getIntensity() * bloodMult) ;
 			if (this instanceof Player) {((Player) this).getStatistics().updateReceivedBlood(bloodDamage, BA.getBlood().TotalDef()) ;}
 			playDamageAnimation(damageStyle, new AtkResults(AtkTypes.physical, AtkEffects.hit, bloodDamage, null), Palette.colors[7]) ;

@@ -55,7 +55,7 @@ public class MapMoveTest
 //		Game.initalizeMapsTest() ;
 		for (GameMap map : GameMap.getAllMaps())
 		{
-			Log.info(map.getName());
+			Log.debug(map.getName());
 			possiblePositions.keySet().forEach(id -> 
 			{
 				Point2D.Double pos = new Point2D.Double(possiblePositions.get(id).x, possiblePositions.get(id).y) ;
@@ -63,9 +63,9 @@ public class MapMoveTest
 				String moveName = moveNames.get(id) ;
 				GameMap newMap = LiveBeing.calcNewMap(pos, dir, map) ;
 				String newMapName = newMap != null ? newMap.getName() : "-" ;
-				Log.info(moveName + ":	" + newMapName);
+				Log.debug(moveName + ":	" + newMapName);
 			}) ;
-			Log.info("\n");
+			Log.debug("\n");
 		}
 		
 		assertEquals(true, true) ;

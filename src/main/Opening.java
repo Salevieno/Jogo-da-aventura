@@ -163,7 +163,7 @@ public abstract class Opening
 		players[2] = Player.load(3) ;
 		if (players[0] != null)
 		{
-			Log.info("save 1 loaded successfully!");
+			Log.debug("save 1 loaded successfully!");
 		}
 		else
 		{
@@ -171,7 +171,7 @@ public abstract class Opening
 		}
 		if (players[1] != null)
 		{
-			Log.info("save 2 loaded successfully!");
+			Log.debug("save 2 loaded successfully!");
 		}
 		else
 		{
@@ -179,7 +179,7 @@ public abstract class Opening
 		}
 		if (players[2] != null)
 		{
-			Log.info("save 3 loaded successfully!");
+			Log.debug("save 3 loaded successfully!");
 		}
 		else
 		{
