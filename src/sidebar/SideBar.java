@@ -73,7 +73,7 @@ public abstract class SideBar
 		actions[2] = () -> { player.switchOpenClose(player.getBag()) ;} ; 
 		actions[3] = () -> { 
 			player.getPauseWindow().updateButtons() ;
-			player.getPauseWindow().switchOpenClose() ;
+			player.switchOpenClose(player.getPauseWindow()) ;
 		} ;
 		actions[4] = () -> { MainGame3_4.closeGame() ;} ;
 
