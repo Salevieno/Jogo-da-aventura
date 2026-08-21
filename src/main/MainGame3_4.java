@@ -6,12 +6,12 @@ import java.awt.EventQueue ;
  * made with love by Salevieno and Larissa
  * @author Salevieno
  * @author Larissa
- * @version 0.25
+ * @version 0.26
  * @since 2022
  */
 public class MainGame3_4
 {
-	private static final String version = "0.25" ;
+	private static final String version = "0.26" ;
 		
 	public static void main(String[] args)
 	{

@@ -1,26 +1,26 @@
 [
-    {"id": 0, "type": "hospital", "npcs": [{"id": 7, "pos": {"x": 0.5, "y": 0.06}}]},
-    {"id": 1, "type": "store", "npcs": [{"id": 9, "pos": {"x": 0.42, "y": 0.53}}, {"id": 10, "pos": {"x": 0.44, "y": 0.53}}]},
-    {"id": 2, "type": "craft", "npcs": [{"id": 6, "pos": {"x": 0.00, "y": 1.00}}]},
-    {"id": 3, "type": "bank", "npcs": [{"id": 1, "pos": {"x": 0.10, "y": 0.26}}]},
+    {"id": 0, "type": "hospital", "npcs": [{"id": 7, "offset": {"x": 10, "y": 48}}]},
+    {"id": 1, "type": "store", "npcs": [{"id": 9, "offset": {"x": 30, "y": 30}}, {"id": 10, "offset": {"x": 70, "y": 30}}]},
+    {"id": 2, "type": "craft", "npcs": [{"id": 6, "offset": {"x": -85, "y": 100}}]},
+    {"id": 3, "type": "bank", "npcs": [{"id": 1, "offset": {"x": 0, "y": -10}}]},
 
-    {"id": 4, "type": "hospital", "npcs": [{"id": 24, "pos": {"x": 0.62, "y": 0.96}}]},
-    {"id": 5, "type": "store", "npcs": [{"id": 26, "pos": {"x": 0.77, "y": 0.34}}, {"id": 27, "pos": {"x": 0.79, "y": 0.34}}]},
-    {"id": 6, "type": "craft", "npcs": [{"id": 23, "pos": {"x": 0.09, "y": 0.94}}]},
-    {"id": 7, "type": "bank", "npcs": [{"id": 18, "pos": {"x": 0.10, "y": 0.30}}]},
+    {"id": 4, "type": "hospital", "npcs": [{"id": 24, "offset": {"x": 10, "y": 48}}]},
+    {"id": 5, "type": "store", "npcs": [{"id": 26, "offset": {"x": 30, "y": 30}}, {"id": 27, "offset": {"x": 70, "y": 30}}]},
+    {"id": 6, "type": "craft", "npcs": [{"id": 23, "offset": {"x": -85, "y": 100}}]},
+    {"id": 7, "type": "bank", "npcs": [{"id": 18, "offset": {"x": 0, "y": -10}}]},
 
-    {"id": 8, "type": "hospital", "npcs": [{"id": 41, "pos": {"x": 0.56, "y": 0.86}}]},
-    {"id": 9, "type": "store", "npcs": [{"id": 43, "pos": {"x": 0.46, "y": 0.52}}, {"id": 44, "pos": {"x": 0.50, "y": 0.52}}]},
-    {"id": 10, "type": "craft", "npcs": [{"id": 40, "pos": {"x": 0.10, "y": 0.94}}]},
-    {"id": 11, "type": "bank", "npcs": [{"id": 35, "pos": {"x": 0.16, "y": 0.2}}]},
+    {"id": 8, "type": "hospital", "npcs": [{"id": 41, "offset": {"x": 10, "y": 48}}]},
+    {"id": 9, "type": "store", "npcs": [{"id": 43, "offset": {"x": 30, "y": 30}}, {"id": 44, "offset": {"x": 70, "y": 30}}]},
+    {"id": 10, "type": "craft", "npcs": [{"id": 40, "offset": {"x": -85, "y": 100}}]},
+    {"id": 11, "type": "bank", "npcs": [{"id": 35, "offset": {"x": 0, "y": -10}}]},
 
-    {"id": 12, "type": "hospital", "npcs": [{"id": 58, "pos": {"x": 0.56, "y": 0.94}}]},
-    {"id": 13, "type": "store", "npcs": [{"id": 60, "pos": {"x": 0.42, "y": 0.53}}, {"id": 61, "pos": {"x": 0.44, "y": 0.53}}]},
-    {"id": 14, "type": "craft", "npcs": [{"id": 57, "pos": {"x": 0.00, "y": 1.00}}]},
-    {"id": 15, "type": "bank", "npcs": [{"id": 52, "pos": {"x": 0.1, "y": 0.26}}]},
+    {"id": 12, "type": "hospital", "npcs": [{"id": 58, "offset": {"x": 10, "y": 48}}]},
+    {"id": 13, "type": "store", "npcs": [{"id": 60, "offset": {"x": 30, "y": 30}}, {"id": 61, "offset": {"x": 70, "y": 30}}]},
+    {"id": 14, "type": "craft", "npcs": [{"id": 57, "offset": {"x": -85, "y": 100}}]},
+    {"id": 15, "type": "bank", "npcs": [{"id": 52, "offset": {"x": 0, "y": -10}}]},
 
-    {"id": 16, "type": "hospital", "npcs": [{"id": 75, "pos": {"x": 0.6, "y": 0.94}}]},
-    {"id": 17, "type": "store", "npcs": [{"id": 77, "pos": {"x": 0.56, "y": 0.53}}, {"id": 78, "pos": {"x": 0.58, "y": 0.53}}]},
-    {"id": 18, "type": "craft", "npcs": [{"id": 74, "pos": {"x": 0.00, "y": 1.00}}]},
-    {"id": 19, "type": "bank", "npcs": [{"id": 69, "pos": {"x": 0.28, "y": 0.49}}]}    
+    {"id": 16, "type": "hospital", "npcs": [{"id": 75, "offset": {"x": 10, "y": 48}}]},
+    {"id": 17, "type": "store", "npcs": [{"id": 77, "offset": {"x": 30, "y": 30}}, {"id": 78, "offset": {"x": 70, "y": 30}}]},
+    {"id": 18, "type": "craft", "npcs": [{"id": 74, "offset": {"x": -85, "y": 100}}]},
+    {"id": 19, "type": "bank", "npcs": [{"id": 69, "offset": {"x": 0, "y": -10}}]}    
 ]

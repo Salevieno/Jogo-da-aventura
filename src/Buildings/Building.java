@@ -20,7 +20,6 @@ import main.GamePanel;
 import main.Palette;
 import main.Path;
 import maps.GameMap;
-import screen.Screen;
 import utilities.Util;
 
 
@@ -29,47 +28,26 @@ public class Building implements Drawable
 	private Point pos ;
 	private final BuildingTypes type ;
 	private final List<NPC> npcs ;
+	private final List<Point> npcOffsets ;
 	private final List<Collider> colliders ;
 	
 	private static final int LAYER = 1;
+	private static final String BUILDINGS_JSON_PATH = Path.DADOS + "gameMaps\\" + "buildings.json" ;
 	private static final List<Building> ALL = new ArrayList<>() ;
 
 
-	private Building(BuildingTypes type, List<NPC> npcs)
+	private Building(BuildingTypes type, List<NPC> npcs, List<Point> npcOffsets)
 	{
 		this.type = type ;
 		this.npcs = npcs ;
-		this.colliders = new ArrayList<>() ;
-
-		// if (Game.getNPCTypes() == null) { Log.error("Ao adicionar NPCs nas construções: tipos de NPC não existem") ; return ;}
-		// if (Game.getNPCTypes().length <= 9) { Log.error("Ao adicionar NPCs nas construções: não há tipos de NPCs suficientes") ; return ;}
-
-		// switch (type)
-		// {
-		// 	case hospital:
-		// 		npcs.add(new NPCDoctor(Util.translate(pos, 50, -20), List.of("Test", "Test doc 1 menu 1"))) ;
-		// 		break ;
-
-		// 	case store: 
-		// 		int[] itemIDs = new int[] {300, 305, 307, 309, 315, 322, 326, 328, 332, 336, 340, 344} ;
-		// 		npcs.add(new NPCSeller(Util.translate(pos, 120, -60), speech, Item.getItems(itemIDs))) ;
-		// 		itemIDs = new int[] {1329, 0, 1, 4, 5, 121, 122, 125, 130, 1301, 1305, 1702, 1708, 1710, 1713} ;
-		// 		npcs.add(new NPCSeller(Util.translate(pos, 80, -60), speech, Item.getItems(itemIDs))) ;
-		// 		// npcs.add(new NPC(Game.getNPCTypes()[1], Util.translate(pos, 120, -60))) ;
-		// 		// npcs.add(new NPC(Game.getNPCTypes()[2], Util.translate(pos, 80, -60))) ;
-				
-		// 		break ;
-		// 	case bank: npcs.add(new NPCBanker(Util.translate(pos, 40, -30))) ; break ;
-		// 	case craft: npcs.add(new NPCCrafter(Util.translate(pos, 100, -30))) ; break ;
-		// 	default: break;
-		// }
-
-//		addColliders() ;
+		this.npcOffsets = npcOffsets ;
+		this.colliders = new ArrayList<>() ; // loadColliders() ;
 		ALL.add(this) ;
 	}
 	
-	// private void addColliders()
+	// private List<Collider> loadColliders()
 	// {
+	//  List<Collider> colliders = new ArrayList<>() ;
 	// 	Image collidersImage = ImageLoader.loadImage(Path.BUILDINGS_IMG + "Building" + type.getName() + "Colliders.png") ;
 		
 	// 	if (collidersImage == null) { return ;}
@@ -84,35 +62,33 @@ public class Building implements Drawable
 	// 			}
 	// 		}
 	// 	}
+	//  return colliders ;
 	// }
 
 	@SuppressWarnings("unchecked")
 	public static void load()
 	{
-		JSONArray jsonData = Util.readJsonArray(Path.DADOS + "gameMaps\\" + "buildings.json") ;
+		JSONArray jsonData = Util.readJsonArray(BUILDINGS_JSON_PATH) ;
 		for (Object buildingObj : jsonData)
 		{
 			JSONObject buildingJsonObj = (JSONObject) buildingObj ;
 			BuildingTypes type = BuildingTypes.valueOf((String) buildingJsonObj.get("type")) ;
-			List<JSONArray> npcsData = (JSONArray) buildingJsonObj.get("npcs") ;
-			if (npcsData == null)
-			{
-				npcsData = new ArrayList<>() ;
-			}
+			JSONArray npcsData = (JSONArray) buildingJsonObj.getOrDefault("npcs", new JSONArray()) ;
 			List<NPC> npcs = new ArrayList<>(npcsData.size()) ;
+			List<Point> npcOffsets = new ArrayList<>(npcsData.size()) ;
 			for (Object npcObj : npcsData)
 			{
 				JSONObject npcJson = (JSONObject) npcObj ;
 				int id = (int) (long) npcJson.get("id") ;
-				JSONObject posJson = (JSONObject) npcJson.get("pos") ;
-				double npcPosX = (double) posJson.get("x") ;
-				double npcPosY = (double) posJson.get("y") ;
+				JSONObject posJson = (JSONObject) npcJson.get("offset") ;
+				int npcPosX = (int) (long) posJson.get("x") ;
+				int npcPosY = (int) (long) posJson.get("y") ;
 				NPC npc = NPC.getAll().get(id) ;
-				npc.setPos(Screen.getMe().getPointWithinBorders(npcPosX, npcPosY)) ;
+				npcOffsets.add(new Point(npcPosX, npcPosY)) ;
 				npcs.add(npc) ;
 			}
 			
-			new Building(type, npcs) ;
+			new Building(type, npcs, npcOffsets) ;
 		}
 	}
 
@@ -121,14 +97,21 @@ public class Building implements Drawable
 	public List<NPC> getNPCs() {return npcs ;}
 	public List<Collider> getColliders() { return colliders ;}
 	public static List<Building> getAll() { return ALL ;}
-	public void setPos(Point pos) { this.pos = pos ;}
+	public void setPos(Point pos)
+	{
+		this.pos = pos ;
+		for (int i = 0 ; i <= npcs.size() - 1 ; i += 1)
+		{
+			npcs.get(i).setPos(new Point((int) (pos.x + npcOffsets.get(i).x), (int) (pos.y + npcOffsets.get(i).y))) ;
+		}
+	}
 	
 	private boolean isInside(Point pos)
 	{
 		Point topLeftPos = UtilAlignment.getPosAt(this.pos, Align.center, Align.topLeft, Util.getSize(type.getExteriorImage())) ;
 		return Util.isInside(pos, topLeftPos, Util.getSize(type.getExteriorImage())) ;
 	}
-	public boolean hasNPCs() {return npcs != null ;}
+	public boolean hasNPCs() {return npcs != null && !npcs.isEmpty() ;}
 
 	public void displayNPCs(Hitbox playerHitbox)
 	{
