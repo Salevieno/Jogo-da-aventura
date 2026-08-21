@@ -312,9 +312,9 @@ public abstract class GameMap
 
 	protected static int[] loadConnections(JSONObject map)
 	{
-		List<Long> connectionIDs = (List<Long>) (JSONArray) map.get("Connections") ;
+		List<?> connectionIDs = (List<?>) (JSONArray) map.get("Connections") ;
 		
-		return connectionIDs.stream().mapToInt(i -> (int) (long) i).toArray() ;
+		return connectionIDs.stream().mapToInt(i -> ((Number) i).intValue()).toArray() ;
 	}
  	
  	public void displayElements(Point playerPos)

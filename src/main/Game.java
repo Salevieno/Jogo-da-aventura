@@ -40,6 +40,20 @@ import windows.BankWindow;
 public class Game
 {
 	// TODO arquivos - nomes das criaturas
+	// TODO remapeamento de teclas
+		// WASD e setas -> movimento
+		// tab (segurando) -> mapa
+		// bag
+		// att window
+		// pet
+		// atk
+		// def
+		// ride
+		// tent
+		// dig
+		// bestiary
+		// hints
+		// hot keys
 	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	// TODO ideia - magias e flechas são projéteis que precisam acertar o oponente para dar dano. O oponente pode se mover durante a luta E usar magias de longe enquanto se move (ou defender)
 	// TODO ideia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
@@ -77,7 +91,7 @@ public class Game
 		Log.info("Game version " + MainGame3_4.getVersion()) ;	
 		this.allText = new HashMap<>();
 		this.settings = new Settings(false, true, false, 1, 0) ;
-		this.player = new Player("", "", 2);
+		this.player = new Player("", "", 0);
 		this.player.setPos(new Point2D.Double(Screen.getMe().getCenter().x, Screen.getMe().getCenter().y));
 		this.difficultLevel = 0;
 		this.saveSlotInUse = -1;

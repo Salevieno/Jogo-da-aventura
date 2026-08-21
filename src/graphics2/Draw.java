@@ -98,7 +98,7 @@ public abstract class Draw
 	public static void keyboardButton(Point pos, String key, Font font, Color color)
 	{
 		GamePanel.getDP().drawImage(Draw.KEYBOARD_BTN_IMAGE, pos, Scale.unit, Align.center) ;
-		GamePanel.getDP().drawText(pos, Align.center, key, font, color) ;	
+		GamePanel.getDP().drawText(Util.translate(pos, 0, -1), Align.center, key, font, color) ;	
 	}
 	
 	public static void gameGrid(int[] spacing)
