@@ -228,7 +228,7 @@ public abstract class NPC implements Interactable
 		{
 			GamePanel.getDP().drawImage(desk, pos, Align.centerLeft);
 		}
-		GamePanel.getDP().drawText(Util.translate(pos, 0, -job.getImage().getHeight(null) - 20), Align.bottomCenter, name, Palette.colors[3]);
+		GamePanel.getDP().drawText(Util.translate(pos, 0, -job.getImage().getHeight(null) - 6), Align.bottomCenter, name, Palette.colors[3]);
 		
 		if (Game.DEBUG_MODE)
 		{

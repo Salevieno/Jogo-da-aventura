@@ -2,6 +2,7 @@ package Buildings ;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import utilities.Util;
 public class Building implements Drawable
 {
 	private Point pos ;
+	private Polygon contour ;
 	private final BuildingTypes type ;
 	private final List<NPC> npcs ;
 	private final List<Point> npcOffsets ;
@@ -100,17 +102,31 @@ public class Building implements Drawable
 	public void setPos(Point pos)
 	{
 		this.pos = pos ;
+		
+		// Add offset for contour
+		Point topLeftPos = UtilAlignment.getTopLeft(pos, Align.center, Util.getSize(type.getExteriorImage())) ;
+		contour = new Polygon() ;
+		Polygon typeContour = type.getContour() ;
+		if (0 < typeContour.npoints)
+		{
+			int[] xpoints = new int[typeContour.npoints];
+			int[] ypoints = new int[typeContour.npoints];
+	
+			for (int i = 0; i <= typeContour.npoints - 1; i++)
+			{
+				xpoints[i] = topLeftPos.x + typeContour.xpoints[i];
+				ypoints[i] = topLeftPos.y + typeContour.ypoints[i];
+			}
+			contour = new Polygon(xpoints, ypoints, typeContour.npoints);
+		}
+
+		// Add offset for NPCs inside
 		for (int i = 0 ; i <= npcs.size() - 1 ; i += 1)
 		{
 			npcs.get(i).setPos(new Point((int) (pos.x + npcOffsets.get(i).x), (int) (pos.y + npcOffsets.get(i).y))) ;
 		}
 	}
-	
-	private boolean isInside(Point pos)
-	{
-		Point topLeftPos = UtilAlignment.getPosAt(this.pos, Align.center, Align.topLeft, Util.getSize(type.getExteriorImage())) ;
-		return Util.isInside(pos, topLeftPos, Util.getSize(type.getExteriorImage())) ;
-	}
+
 	public boolean hasNPCs() {return npcs != null && !npcs.isEmpty() ;}
 
 	public void displayNPCs(Hitbox playerHitbox)
@@ -122,9 +138,13 @@ public class Building implements Drawable
 
 	public void display(Hitbox playerHitbox, Point playerPos, int cityID)
 	{		
-		if (!isInside(playerPos))
+		if (!contour.contains(playerPos))
 		{
-			GamePanel.getDP().drawImage(type.getExteriorImage(), pos, Scale.unit, Align.center) ;			
+			GamePanel.getDP().drawImage(type.getExteriorImage(), pos, Scale.unit, Align.center) ;
+			if (Game.DEBUG_MODE)
+			{
+				GamePanel.getDP().drawPolyLine(contour.xpoints, contour.ypoints, Palette.colors[3]) ;
+			}
 			
 			return ;
 		}
@@ -136,6 +156,7 @@ public class Building implements Drawable
 		{
 			GamePanel.getDP().drawRect(collider.getPos(), Align.center, new Dimension(1, 1), Palette.colors[0], null) ;
 		}
+
 	}
 
 	public void display()
