@@ -55,11 +55,12 @@ public class Sky
 	protected Sky (int width)
 	{
 		size = new Dimension(width - 60, HEIGHT) ;
+		int paddingBot = HEIGHT * 1 / 7 ;
     	clouds = new ArrayList<>() ;
 		for (int c = 0 ; c <= 5 - 1 ; c += 1)
 		{
 			Image image = randomCloudImage() ;
-			Point posAsPoint = Util.randomPos(new Point(), new Dimension(size.width, size.height - image.getHeight(null)), new Dimension(1, 1)) ;
+			Point posAsPoint = Util.randomPos(new Point(), new Dimension(size.width, size.height - image.getHeight(null) - paddingBot), new Dimension(1, 1)) ;
 			Point2D.Double pos = new Point2D.Double(posAsPoint.x, posAsPoint.y) ;
 			Point2D.Double speed = new Point2D.Double((int) (5 + 10 * Math.random()), 0) ;
 	    	clouds.add(new SkyComponent(image, pos, speed)) ;
@@ -68,7 +69,7 @@ public class Sky
     	stars = new ArrayList<>() ;
 		for (int s = 0 ; s <= 50 - 1 ; s += 1)
 		{
-			Point posAsPoint = Util.randomPos(new Point(), size, new Dimension(1, 1)) ;
+			Point posAsPoint = Util.randomPos(new Point(), new Dimension(size.width, size.height - paddingBot), new Dimension(1, 1)) ;
 			Point2D.Double pos = new Point2D.Double(posAsPoint.x, posAsPoint.y) ;
 			Image image = randomStarImage() ;
 			stars.add(new SkyComponent(image, pos, new Point2D.Double(0, 0))) ;
