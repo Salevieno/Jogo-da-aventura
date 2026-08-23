@@ -65,6 +65,7 @@ public class Pet extends LiveBeing
 		this.satiationCounter = new GameTimer(PlayerData.getSatiationcounterduration().get(job)) ;
 		this.thirstCounter = new GameTimer(PlayerData.getThirstcounterduration().get(job)) ;
 		this.mpCounter = new GameTimer(PlayerData.getMpcounterduration().get(job)) ;
+		this.battleActionCounter = new GameTimer(PlayerData.getBattleactioncounterduration().get(job)) ;
 		this.movingTimer = new GameTimer(20) ;
 		this.combo = new ArrayList<>();
 		this.hitbox = new HitboxRectangle(getPos(), size, 0.8) ;
@@ -74,16 +75,16 @@ public class Pet extends LiveBeing
 		Color[] colorPalette = Palette.colors ;
 		Color[] petColors = new Color[] {colorPalette[3], colorPalette[5], colorPalette[21], colorPalette[21]} ;
 		color = petColors[job] ;
-		this.spells = InitializePetSpells();
+		this.spells = new ArrayList<Spell>() ;//InitializePetSpells();
 		this.spellPoints = 0 ;
 
 		startCounters() ;
 		attInc = calcAttributeIncrease(job) ;		
 	}
 
-	public static MovingAnimations initializeMovingAnimations(int Job)
+	public static MovingAnimations initializeMovingAnimations(int job)
 	{
-		String rootPath = Path.PET_IMG + "pet" + Job;
+		String rootPath = Path.PET_IMG + "pet" + job;
 		return new MovingAnimations(
 			new SpriteAnimation(rootPath + "_idle.png", new Point(0, 0), Align.bottomCenter, 1, 5),
 			new SpriteAnimation(rootPath + "_movingup.png", new Point(0, 0), Align.bottomCenter, 1, 5),

@@ -758,14 +758,6 @@ public abstract class LiveBeing implements Drawable
 
 	}
 	
-	public void checkDeactivateDef()
-	{
-		if (battleActionCounter.hasFinished() & isDefending())
-		{
-			deactivateDef() ;
-		}
-	}
-	
 	public void activateDef()
 	{
 		BA.getPhyDef().incBonus(BA.getPhyDef().getBaseValue()) ;

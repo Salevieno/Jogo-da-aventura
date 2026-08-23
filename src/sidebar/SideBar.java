@@ -42,9 +42,11 @@ public abstract class SideBar
 	protected static final Image SLOT_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Slot.png") ;
 	protected static final int SY = 10 ;
 	
+	private static String[] keys = new String[] {PlayerActions.attWindow.getKey(), PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null, null, null} ;
+	
 	static
 	{
-		for (int i = 0; i <= ICON_NAMES.length - 1 ; i += 1)
+		for (int i = 0 ; i <= ICON_NAMES.length - 1 ; i += 1)
 		{
 			ICON_IMAGES[i] = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Icon" + "_" + ICON_NAMES[i] + ".png");
 			ICON_SELECTED_IMAGES[i] = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Icon" + "_" + ICON_NAMES[i] + "Selected.png") ;
@@ -77,14 +79,12 @@ public abstract class SideBar
 		} ;
 		actions[4] = () -> { MainGame3_4.closeGame() ;} ;
 
-		SpellsBar.updateSpells(player.getActiveSpells()) ;
-		addPetButton(player, Game.getPet()) ;
-        
+		SpellsBar.updateSpells(player.getActiveSpells()) ;        
 
 		Point iconPos = Util.translate(BAR_POS, SIZE.width / 2, 45) ;
 		BUTTONS.add(new GameIconButton(iconPos, Align.topCenter, playerImage, playerImage, playerAction)) ;
 		iconPos.y += playerImage.getHeight(null) + 10 ;
-		for (int i = 0; i <= ICON_NAMES.length - 1 ; i += 1)
+		for (int i = 0 ; i <= ICON_NAMES.length - 1 ; i += 1)
 		{
 			BUTTONS.add(new GameIconButton(iconPos, Align.topCenter, ICON_IMAGES[i], ICON_SELECTED_IMAGES[i], actions[i])) ;
 
@@ -112,15 +112,21 @@ public abstract class SideBar
 	
 	private static void displayKeys()
 	{
-		String[] keys = new String[] {PlayerActions.attWindow.getKey(), PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null, null} ;
-		Color textColor = Palette.colors[0] ;
+		if (Game.getPet() != null && keys[6] == null)
+		{
+			keys[6] = PlayerActions.pet.getKey() ;
+			addPetButton(Game.getPlayer(), Game.getPet()) ;
+		}
 		int i = 0 ;
 		for (GameButton button : BUTTONS)
 		{
-			if (keys[i] == null | !button.isActive()) { i += 1 ; continue ;}
-
+			if (keys[i] == null || !button.isActive())
+			{
+				i += 1 ;
+				continue ;
+			}
 			Point rectCenter = Util.translate(button.getTopLeftPos(), 5, 0) ;
-			Draw.keyboardKey(rectCenter, keys[i], FONT, textColor);
+			Draw.keyboardKey(rectCenter, keys[i], FONT, Palette.colors[0]) ;
 			i += 1 ;
 		}
 	}

@@ -182,7 +182,7 @@ public class Game
 		int job = Util.randomInt(0, 3);
 		game.pet = new Pet(job);
 		game.pet.setPos(game.player.getPosAsDouble());
-		if (game.player.getJob() == 3 & 0 < game.player.getSpells().get(13).getLevel()) // Best friend
+		if (game.player.getJob() == 3 && 0 < game.player.getSpells().get(13).getLevel()) // Best friend
 		{
 			int spellLevel = game.player.getSpells().get(13).getLevel();
 			game.pet.getPA().getLife().incMaxValue(10 * spellLevel);
@@ -194,7 +194,6 @@ public class Game
 			game.pet.getBA().getDex().incBaseValue(1 * spellLevel);
 			game.pet.getBA().getAgi().incBaseValue(1 * spellLevel);
 		}
-		SideBar.addPetButton(game.player, game.pet);
 	}
 
 	// private static void initializeTestMode()
@@ -414,7 +413,7 @@ public class Game
 		activateCounters();
 		
 		// TODO mover as verificações de batalha pra cá e unir às gerais
-		if (player.getBattleActionCounter().hasFinished() & player.getCurrentAtkType() != null)
+		if (player.getBattleActionCounter().hasFinished() && player.getCurrentAtkType() != null)
 		{
 			if (player.getCurrentAtkType().equals(AtkTypes.defense))
 			{
@@ -437,10 +436,10 @@ public class Game
 
 		if (pet != null && pet.isAlive())
 		{
-			if (pet.getBattleActionCounter().hasFinished() && AtkTypes.defense.equals(pet.getCurrentAtkType()))
-			{
-				pet.deactivateDef() ;
-			}
+			// if (pet.getBattleActionCounter().hasFinished() && AtkTypes.defense.equals(pet.getCurrentAtkType()))
+			// {
+			// 	pet.deactivateDef() ;
+			// }
 			petActs(dt);
 		}
 
