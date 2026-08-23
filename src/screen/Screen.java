@@ -42,11 +42,12 @@ public class Screen
 	public static Screen getMe() { return screen ;}
 	public static int getBorderOffset() { return BORDER_OFFSET ;}
 
-	public Dimension getSize() {return size ;}
-	public int[] getBorders() {return borders ;}
-	public Point getCenter() {return center ;}
-	public Point getMapCenter() {return mapCenter ;}
-	public Point2D.Double getScale() {return scale ;}
+	public Dimension getSize() { return size ;}
+	public int[] getBorders() { return borders ;}
+	public Point getCenter() { return center ;}
+	public Point2D.Double getCenterAsDouble() { return new Point2D.Double(center.x, center.y) ;}
+	public Point getMapCenter() { return mapCenter ;}
+	public Point2D.Double getScale() { return scale ;}
 	public Dimension mapSize() { return new Dimension(size.width - 60, size.height - borders[1]) ;}
 	
 	

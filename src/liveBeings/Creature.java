@@ -72,7 +72,7 @@ public class Creature extends LiveBeing
 
 		if (getName().equals("Dragão") | getName().equals("Dragon"))
 		{
-			setPos(new Point2D.Double(Screen.getMe().getCenter().x, Screen.getMe().getCenter().y)) ;
+			setPos(Screen.getMe().getCenterAsDouble()) ;
 		}
 		startCounters() ;
 		

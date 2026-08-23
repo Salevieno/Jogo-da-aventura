@@ -60,7 +60,6 @@ public class Game
 	// TODO shopping de cada cidade vender itens diferentes
 
 	private GameStates state ;
-	private Languages gameLanguage ;
 	private boolean shouldRepaint; // tells if the panel should be repainted, responding to multiple requests only once
 	private boolean konamiCodeIsActive;
 	private double dt ;	
@@ -80,7 +79,6 @@ public class Game
 															KeyEvent.getKeyText(KeyEvent.VK_RIGHT)) ;
 	private static final List<String> KONAMI_CODE = List.of("Up", "Up", "Down", "Down", "Left", "Right", "Left", "Right", "B", "A") ;
 	private static final GameStates MAIN_STATE = GameStates.running;
-	// private static final boolean testMode = true;
 	public static final boolean DEBUG_MODE = false;
 	private static final int DAY_DURATION = 600 ;
 	private static Game game ;
@@ -92,11 +90,10 @@ public class Game
 		this.allText = new HashMap<>();
 		this.settings = new Settings(false, true, false, 1, 0) ;
 		this.player = new Player("", "", 0);
-		this.player.setPos(new Point2D.Double(Screen.getMe().getCenter().x, Screen.getMe().getCenter().y));
+		this.player.setPos(Screen.getMe().getCenterAsDouble());
 		this.difficultLevel = 0;
 		this.saveSlotInUse = -1;
-		this.state = GameStates.loading;
-		this.gameLanguage = Languages.portugues;
+		this.state = GameStates.opening;
 		this.dayTimer = new GameTimer(DAY_DURATION);
 		this.dt = System.nanoTime() ;
 	}
@@ -110,7 +107,6 @@ public class Game
 
 	public static String getMainFontName() { return MAIN_FONT_NAME ;}
 	public static GameStates getState() { return game.state ;}
-	public static Languages getLanguage() { return game.gameLanguage ;}
 	public static Settings getSettings() { return game.settings ;}
 	public static Player getPlayer() { return game.player ;}
 	public static Pet getPet() { return game.pet ;}
@@ -196,110 +192,6 @@ public class Game
 		}
 	}
 
-	// private static void initializeTestMode()
-	// {
-	// 	player.setName("Rosquinhawwwwwwwwwwwwwww");
-	// 	player.setMap(CityMap.getAllCityMaps().get(3));
-
-	// 	for (int i = 0; i <= FieldMap.getAllFieldMaps().size() - 1; i += 1)
-	// 	{
-	// 		player.discoverCreature(FieldMap.getAllFieldMaps().get(i).getCreatures().get(0).getType());
-	// 	}
-
-	// 	player.getPA().getLife().incMaxValue(1000);
-	// 	player.getPA().getMp().incMaxValue(1000);
-	// 	player.getBA().getDex().incBaseValue(1000);
-	// 	player.getPA().getLife().setToMaximum();
-
-	// 	// player.getBA().getStun().incAtkChance(1) ;
-	// 	player.getBA().getStun().incDuration(1);
-
-	// 	// player.getBA().getBlock().incAtkChance(1) ;
-	// 	player.getBA().getBlock().incDuration(1);
-
-	// 	// player.getBA().getBlood().incAtkChance(1) ;
-	// 	player.getBA().getBlood().incAtkBonus(8);
-	// 	player.getBA().getBlood().incDefBonus(1);
-	// 	player.getBA().getBlood().incDuration(1);
-
-	// 	// player.getBA().getPoison().incAtkChance(1) ;
-	// 	player.getBA().getPoison().incAtkBonus(1);
-	// 	player.getBA().getPoison().incDefBonus(1);
-	// 	player.getBA().getPoison().incDuration(1);
-
-	// 	// player.getBA().getSilence().incAtkChance(1) ;
-	// 	player.getBA().getSilence().incDuration(1);
-
-	// 	player.takeDamage(500);
-	// 	player.getBag().addGold(30000);
-	// 	for (Spell spell : player.getSpells())
-	// 	{
-	// 		spell.incLevel(5);
-	// 	}
-	// 	SpellsBar.updateSpells(player.getActiveSpells());
-
-	// 	//
-	// 	for (Item item : Potion.getAll())
-	// 	{
-	// 		player.getBag().add(item, 10);
-	// 	}
-	// 	for (Item item : Alchemy.getAll())
-	// 	{
-	// 		player.getBag().add(item, 20);
-	// 	}
-	// 	for (Item item : Forge.getAll())
-	// 	{
-	// 		player.getBag().add(item, 3);
-	// 	}
-	// 	for (Item item : PetItem.getAll())
-	// 	{
-	// 		player.getBag().add(item, 2);
-	// 	}
-	// 	for (Item item : Food.getAll())
-	// 	{
-	// 		player.getBag().add(item, 10);
-	// 	}
-	// 	for (Item item : Arrow.getAll())
-	// 	{
-	// 		player.getBag().add(item, 20);
-	// 	}
-	// 	for (Item item : Equip.getAll())
-	// 	{
-	// 		player.getBag().add(item, 20) ;
-	// 	}
-	// 	for (Item item : GeneralItem.getAll())
-	// 	{
-	// 		player.getBag().add(item, 2);
-	// 	}
-	// 	for (Item item : Fab.getAll())
-	// 	{
-	// 		player.getBag().add(item, 10);
-	// 	}
-	// 	for (Item item : QuestItem.getAll())
-	// 	{
-	// 		player.getBag().add(item, 10);
-	// 	}
-	// 	player.getBag().add(Equip.getAll()[0], 20);
-	// 	player.getBag().add(Equip.getAll()[1], 20);
-	// 	player.getBag().add(Equip.getAll()[2], 20);
-	// 	player.getBag().add(Equip.getAll()[100], 20);
-	// 	player.getBag().add(Equip.getAll()[102], 20);
-	// 	player.getBag().add(Equip.getAll()[110], 20);
-	// 	player.getBag().add(Equip.getAll()[111], 20);
-	// 	player.getBag().add(Equip.getAll()[112], 20);
-	// 	player.getBag().add(Equip.getAll()[115], 20);
-	// 	player.getBag().add(Equip.getAll()[116], 20);
-	// 	player.getBag().add(Equip.getAll()[117], 20);
-	// 	player.getBag().add(Equip.getAll()[121], 20);
-	// 	player.getBag().add(Equip.getAll()[122], 20);
-	// 	player.getBag().add(Equip.getAll()[123], 20);
-	// 	for (QuestSkills skill : QuestSkills.values())
-	// 	{
-	// 		player.getQuestSkills().replace(skill, true);
-	// 	}
-	// 	Quest.getAll().forEach(quest -> player.addQuest(quest));
-	// }
-
 	private void activateCounters()
 	{
 		if (dayTimer.hasFinished())
@@ -324,10 +216,7 @@ public class Game
 		{
 			Building bank = city.getBank();
 
-			if (!bank.hasNPCs())
-			{
-				continue;
-			}
+			if (!bank.hasNPCs()) { continue ;}
 
 			BankWindow bankWindow = (BankWindow) bank.getNPCs().get(0).getWindow();
 			if (bankWindow != null && bankWindow.hasInvestment() && bankWindow.investmentIsComplete())
@@ -346,10 +235,7 @@ public class Game
 			}
 		}
 
-		if (!player.getMap().isField())
-		{
-			return;
-		}
+		if (!player.getMap().isField()) { return ;}
 
 		FieldMap fm = (FieldMap) player.getMap();
 		fm.getCreatures().forEach(Creature::activateCounters);
@@ -374,10 +260,7 @@ public class Game
 
 	private void petActs(double dt)
 	{
-		if (!pet.isAlive())
-		{
-			return;
-		}
+		if (!pet.isAlive()) { return ;}
 
 		pet.takeBloodAndPoisonDamage();
 		pet.updateCombo();
@@ -465,19 +348,13 @@ public class Game
 			player.levelUp();
 		}
 
-		if (pet != null)
+		if (pet != null && pet.shouldLevelUP())
 		{
-			if (pet.shouldLevelUP())
-			{
-				pet.levelUp();
-			}
+			pet.levelUp();
 		}
 
 		if (player.isInContactWithNPC() && player.getNPCInContact().isInteracting())
 		{
-			// player.getNPCInContact().act(player, pet, player.getCurrentAction()) ;
-// 		if (playerAction == null) { return ;}				
-// 		if (window != null && window.isOpen()) { return ;}
 			player.getNPCInContact().navigate(player.getCurrentAction()) ;
 		}
 
@@ -615,10 +492,8 @@ public class Game
 				draw();
 				return;
 
-			case paused:
-				return;
-			default:
-				return;
+			case paused: return;
+			default: return;
 		}
 	}
 
@@ -649,7 +524,8 @@ public class Game
 		{
 			GameFrame.resumeGame();
 			GameTimer.resumeAll();
-		} else
+		}
+		else
 		{
 			GameFrame.pauseGame();
 			GameTimer.stopAll();

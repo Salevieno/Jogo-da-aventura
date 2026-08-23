@@ -135,7 +135,6 @@ public abstract class SideBar
 	{
 		
 		GamePanel.getDP().drawRect(BAR_POS, Align.topLeft, SIZE, BG_COLOR, null) ;
-//		GamePanel.getDP().drawLine(Util.translate(BAR_POS, SIZE.width, 0), Util.translate(BAR_POS, SIZE.width, SIZE.height), Palette.colors[1]) ;
 		
 		BUTTONS.forEach(button -> button.display(false, mousePos)) ;
 		displayKeys() ;
