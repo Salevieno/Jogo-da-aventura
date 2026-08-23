@@ -93,7 +93,7 @@ public class Game
 		this.player.setPos(Screen.getMe().getCenterAsDouble());
 		this.difficultLevel = 0;
 		this.saveSlotInUse = -1;
-		this.state = GameStates.opening;
+		this.state = GameStates.loading;
 		this.dayTimer = new GameTimer(DAY_DURATION);
 		this.dt = System.nanoTime() ;
 	}
