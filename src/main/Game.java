@@ -436,7 +436,7 @@ public class Game
 
 		for (Interactable interactable : player.getMap().getInteractables())
 		{
-			if (interactable.getHitbox().overlaps(player.getHitbox()))
+			if (interactable.getHitbox().overlaps(player.getHitbox()) && !player.isInteractingWithNPC())
 			{
                 Dimension size = Util.getSize(interactable.getImage()) ;
 				Point buttonPos = Util.translate(interactable.getPos(), -size.width, -size.height) ;
