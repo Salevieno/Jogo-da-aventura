@@ -42,7 +42,11 @@ public class ShoppingWindow extends GameWindow
 
 	public void setBuyMode(boolean buyMode) { this.buyMode = buyMode ;}
 	
-	private Item selectedItem() { return itemsForSale.get(item + window * QTD_ITEMS_ON_WINDOW) ;}
+	private Item selectedItem()
+    {
+        if (item + window * QTD_ITEMS_ON_WINDOW <= -1) { return null ;}
+        return itemsForSale.get(item + window * QTD_ITEMS_ON_WINDOW) ;
+    }
 	
     public void openShopBag()
     {
@@ -90,8 +94,9 @@ public class ShoppingWindow extends GameWindow
 			if (buyMode)
 			{
 		        Item selectedItem = selectedItem() ;
+                if (selectedItem == null) { return ;}
+
                 shopBag.addItem(selectedItem) ;
-				// buyItem(bag) ;
 				return ;
 			}
 			
@@ -140,6 +145,18 @@ public class ShoppingWindow extends GameWindow
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;		
 		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[0]) ;				
 		
+        item = -1 ;
+		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
+		{
+			Point namePos = Util.translate(itemPos, BORDER + 10, 23 * i) ;
+            int newItemID = getIDItemHovered(mousePos, namePos, Align.centerLeft, new Dimension(100, 10), i) ;
+            if (newItemID != -1)
+            {
+                item = newItemID ;
+                break ;
+            }
+        }
+
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
 		{
 			Item bagItem = itemsOnWindow.get(i) ;
@@ -147,8 +164,7 @@ public class ShoppingWindow extends GameWindow
 			Point namePos = Util.translate(itemPos, BORDER + 10, 0) ;
 			Point pricePos = Util.translate(namePos, size.width - BORDER - PADDING - 50, 0) ;
 			Point coinPos = Util.translate(pricePos, 10, 0) ;
-			
-			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(100, 10), i) ;
+
 			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? SELECTED_COLOR : STD_COLOR ;
 			GamePanel.getDP().drawImage(Item.getSlotImage(), itemPos, Scale.unit, Align.center) ;
 			GamePanel.getDP().drawImage(bagItem.getImage(), itemPos, Scale.unit, Align.center) ;

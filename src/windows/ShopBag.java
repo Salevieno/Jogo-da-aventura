@@ -17,6 +17,7 @@ import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Log;
 import main.Palette;
 import main.Path;
 import utilities.Util;
@@ -75,6 +76,7 @@ public class ShopBag
 
     public void addItem(Item item)
     {
+        if (item == null) { Log.warn("Trying to add null item to shop bag") ; return ;}
         if (QTD_ITEMS_ON_WINDOW <= itemsForSale.size())
         {
             MessageAnimation.start(Util.translate(topLeftPos, BAG_SIZE.width / 2, -30), "Sacola cheia", Palette.colors[0]) ;

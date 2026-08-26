@@ -191,13 +191,21 @@ public abstract class GameWindow
 	}
 	
 	protected Color getTextColor(boolean isSelected) { return isSelected ? SELECTED_COLOR : STD_COLOR ;}
-	
+
 	protected void checkMouseSelection(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
 	{
 		Point textTopLeft = UtilAlignment.getTopLeft(itemPos, align, itemSize) ;
 		if (!Util.isInside(mousePos, textTopLeft, itemSize)) { return ;}
 		
 		item = itemID ;
+	}
+
+	protected int getIDItemHovered(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
+	{
+		Point textTopLeft = UtilAlignment.getTopLeft(itemPos, align, itemSize) ;
+		if (!Util.isInside(mousePos, textTopLeft, itemSize)) { return -1 ;}
+		
+		return itemID ;
 	}
 
 	
