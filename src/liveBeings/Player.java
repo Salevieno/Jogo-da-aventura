@@ -126,7 +126,6 @@ public class Player extends LiveBeing
 	private static final double STEP_DURATION = 0.25 ;
 	private static final double FISHING_CHANCE = 0.1 ;
     private static final Image TIGER_IMG = ImageLoader.loadImage(Path.PLAYER_IMG + "Tiger.png") ;
-	private static final Image COIN_IMG = ImageLoader.loadImage(Path.PLAYER_IMG + "CoinIcon.png") ;
 	// private static final SpriteAnimation magicBlissAni = new SpriteAnimation(Path.PLAYER_IMG + "MagicBlissSprite.png", new Point(), Align.center, 5, 0.15) ;
     private static final SpriteAnimation[] COLLECTING_ANI ;
 
@@ -289,7 +288,6 @@ public class Player extends LiveBeing
 	public void setSpells(List<Spell> spells) { this.spells = spells ;}
 
 	public static String[] getHotKeys() { return HOT_KEYS ;}
-	public static Image getCoinImg() { return COIN_IMG ;} // TODO realocar isso
 
 	public Point center() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
 	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - size.height)) ;}

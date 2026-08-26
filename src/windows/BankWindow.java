@@ -7,7 +7,6 @@ import java.awt.Point;
 import animations.MessageAnimation;
 import graphics.Align;
 import graphics.Scale;
-import liveBeings.Player;
 import main.GamePanel;
 import main.GameTimer;
 import main.ImageLoader;
@@ -15,6 +14,7 @@ import main.LiveInput;
 import main.Palette;
 import main.Path;
 import screen.Screen;
+import shared.SharedImages;
 import utilities.Util;
 
 
@@ -164,9 +164,9 @@ public class BankWindow extends GameWindow
 		
 		drawInvestmentTimer(Util.translate(investmentPos, 110, 10), investmentCounter.rate()) ;
 
-		GamePanel.getDP().drawImage(Player.getCoinImg(), Util.translate(balancePos, 0, 20), Align.centerLeft) ;
+		GamePanel.getDP().drawImage(SharedImages.getCoinImg(), Util.translate(balancePos, 0, 20), Align.centerLeft) ;
 		GamePanel.getDP().drawText(Util.translate(balancePos, 15, 20), Align.centerLeft, String.valueOf(balance), STD_FONT, textColor) ;
-		GamePanel.getDP().drawImage(Player.getCoinImg(), Util.translate(investmentPos, 0, 20), Align.centerLeft) ;
+		GamePanel.getDP().drawImage(SharedImages.getCoinImg(), Util.translate(investmentPos, 0, 20), Align.centerLeft) ;
 		GamePanel.getDP().drawText(Util.translate(investmentPos, 15, 20), Align.centerLeft, String.valueOf(investedAmount), STD_FONT, textColor) ;
 		
 		if (!isReadingInput()) { return ;}
@@ -176,7 +176,7 @@ public class BankWindow extends GameWindow
 		
 		Point inputPos = Util.translate(topLeftPos, 0, BORDER + size.height + 35) ;
 		liveInput.displayTypingField(inputPos, true) ;
-		GamePanel.getDP().drawImage(Player.getCoinImg(), Util.translate(inputPos, 5, 0), Align.centerLeft) ;
+		GamePanel.getDP().drawImage(SharedImages.getCoinImg(), Util.translate(inputPos, 5, 0), Align.centerLeft) ;
 	}
 
 }

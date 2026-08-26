@@ -13,13 +13,13 @@ import UI.GameTextButton;
 import animations.MessageAnimation;
 import graphics.Align;
 import items.Item;
-import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
 import main.Palette;
 import main.Path;
+import shared.SharedImages;
 import utilities.Util;
 
 public class ShopBag
@@ -59,7 +59,7 @@ public class ShopBag
         this.qtdItemsOnDisplay = 0 ;
         this.totalPrice = 0 ;
         this.coinPos = Util.translate(topLeftPos, 10, SHOP_BAG_IMAGE.getHeight(null) - 14) ;
-        this.pricePos = Util.translate(coinPos, Player.getCoinImg().getWidth(null) / 2 + 4, 0) ;
+        this.pricePos = Util.translate(coinPos, SharedImages.getCoinImg().getWidth(null) / 2 + 4, 0) ;
         this.priceColor = Palette.colors[12] ;
 
         this.buyButton = new GameTextButton(Util.translate(topLeftPos, 80, BAG_SIZE.height), Align.center, "Buy", "Buy", () -> { buyItems() ;}) ;
@@ -134,7 +134,7 @@ public class ShopBag
             GamePanel.getDP().drawText(textsLeftCenter.get(i), Align.centerLeft, item.getName(), Palette.colors[0]);
         }
 
-        GamePanel.getDP().drawImage(Player.getCoinImg(), coinPos, Align.center) ;
+        GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos, Align.center) ;
         GamePanel.getDP().drawText(pricePos, Align.centerLeft, String.valueOf(totalPrice), priceColor);
         buyButton.display(true, GamePanel.getMousePos()) ;
         cancelButton.display(true, GamePanel.getMousePos()) ;

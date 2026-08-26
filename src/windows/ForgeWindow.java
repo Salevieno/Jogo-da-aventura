@@ -16,7 +16,6 @@ import items.Equip;
 import items.Forge;
 import items.GeneralItem;
 import items.Item;
-import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
@@ -24,6 +23,7 @@ import main.Palette;
 import main.Path;
 import main.TextCategories;
 import screen.Screen;
+import shared.SharedImages;
 import utilities.Util;
 
 
@@ -202,7 +202,7 @@ public class ForgeWindow extends GameWindow
 				GamePanel.getDP().drawText(runeNamePos, Align.centerLeft, reqRune(equip).getName(), STD_FONT, STD_COLOR) ;
 			}
 			
-			GamePanel.getDP().drawImage(Player.getCoinImg(), coinPos, Scale.unit, Align.center) ;
+			GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos, Scale.unit, Align.center) ;
 			GamePanel.getDP().drawText(pricePos, Align.centerLeft, String.valueOf(forgePrice(equip.getForgeLevel())), STD_FONT, itemColor) ;
 			itemPos.y += 28 ;
 		}

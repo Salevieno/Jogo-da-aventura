@@ -27,6 +27,7 @@ import main.Palette;
 import main.Path;
 import main.TextCategories;
 import screen.Screen;
+import shared.SharedImages;
 import utilities.Util;
 
 
@@ -217,7 +218,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 		//	Gold
 		String goldValue = String.valueOf(Util.round(player.getBag().getGold(), 1)) ;
 		Point goldTextPos = Util.translate(goldImgCenter, attTextImgOffset, 0) ;
-		GamePanel.getDP().drawImage(Player.getCoinImg(), goldImgCenter, Scale.unit, Align.center) ;
+		GamePanel.getDP().drawImage(SharedImages.getCoinImg(), goldImgCenter, Scale.unit, Align.center) ;
 		GamePanel.getDP().drawText(goldTextPos, Align.centerLeft, goldValue, font, Palette.colors[13]) ;	
 	}
 	

@@ -11,13 +11,13 @@ import java.util.Set;
 import graphics.Align;
 import graphics.Scale;
 import items.Item;
-import liveBeings.Player;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
 import main.Palette;
 import main.Path;
 import screen.Screen;
+import shared.SharedImages;
 import utilities.Util;
 
 
@@ -170,7 +170,7 @@ public class ShoppingWindow extends GameWindow
 			GamePanel.getDP().drawImage(bagItem.getImage(), itemPos, Scale.unit, Align.center) ;
 			GamePanel.getDP().drawText(namePos, Align.centerLeft, bagItem.getName() + qtdItem, STD_FONT, itemColor) ;
 			GamePanel.getDP().drawText(pricePos, Align.centerRight, String.valueOf(bagItem.getPrice()), STD_FONT, Palette.colors[14]) ;
-			GamePanel.getDP().drawImage(Player.getCoinImg(), coinPos, Align.center) ;
+			GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos, Align.center) ;
 			
 			if (this.item == itemsOnWindow.indexOf(bagItem))
 			{
