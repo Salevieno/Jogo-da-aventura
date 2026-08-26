@@ -46,9 +46,10 @@ public class NPCMenu
 
     protected void setOptionsText(List<String> options)
     {
+        if (options == null || this.options == null) { Log.warn("Opções nulas ao tentar setar opções de menu de NPC. Recebeu " + options + " e possuia " + this.options) ; return ;}
         if (options.size() != this.options.size()) { Log.warn("Qtd. de opções inválida ao tentar setar opções de menu de NPC. Recebeu " + options.size() + " e esperava " + this.options.size()) ; return ;}
     
-        for (int i = 0 ; i <= options.size() ; i += 1)
+        for (int i = 0 ; i <= options.size() - 1 ; i += 1)
         {
             this.options.get(i).setText(options.get(i)) ;
         }

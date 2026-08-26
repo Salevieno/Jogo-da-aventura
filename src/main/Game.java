@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -436,8 +437,9 @@ public class Game
 		for (Interactable interactable : player.getMap().getInteractables())
 		{
 			if (interactable.getHitbox().overlaps(player.getHitbox()))
-			{				
-				Point buttonPos = Util.translate(interactable.getPos(), -interactable.getImage().getWidth(null), -interactable.getImage().getHeight(null)) ;
+			{
+                Dimension size = Util.getSize(interactable.getImage()) ;
+				Point buttonPos = Util.translate(interactable.getPos(), -size.width, -size.height) ;
 				Draw.keyboardButton(buttonPos, PlayerActions.interact.getKey(), STD_FONT) ;
 			}
 		}

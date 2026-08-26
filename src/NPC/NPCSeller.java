@@ -100,6 +100,7 @@ public class NPCSeller extends NPC
 			{
 				shopping.setIemsForSellingMode(player.getBag()) ;
 			}
+            shopping.openShopBag() ;
 			player.switchOpenClose(shopping) ;
 		}
 		

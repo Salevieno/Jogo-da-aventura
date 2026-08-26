@@ -289,7 +289,7 @@ public class Player extends LiveBeing
 	public void setSpells(List<Spell> spells) { this.spells = spells ;}
 
 	public static String[] getHotKeys() { return HOT_KEYS ;}
-	public static Image getCoinImg() { return COIN_IMG ;}
+	public static Image getCoinImg() { return COIN_IMG ;} // TODO realocar isso
 
 	public Point center() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
 	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - size.height)) ;}

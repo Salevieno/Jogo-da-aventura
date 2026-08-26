@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import animations.MessageAnimation;
-import animations.ObtainedItemAnimation;
 import graphics.Align;
 import graphics.Scale;
 import items.Item;
@@ -28,6 +26,7 @@ public class ShoppingWindow extends GameWindow
 	private List<Item> itemsForSale ;
 	private List<Item> itemsOnWindow ;
 	private boolean buyMode ;
+	private final ShopBag shopBag ;
 
 	private static final int QTD_ITEMS_ON_WINDOW = 10 ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Shopping.png") ;
@@ -38,12 +37,18 @@ public class ShoppingWindow extends GameWindow
 		this.itemsForSale = itemsForSale ;
 		itemsOnWindow = calcItemsOnWindow() ;
 		buyMode = true ;
+        shopBag = new ShopBag(Util.translate(topLeftPos, 300, 200)) ;
 	}
 
 	public void setBuyMode(boolean buyMode) { this.buyMode = buyMode ;}
 	
 	private Item selectedItem() { return itemsForSale.get(item + window * QTD_ITEMS_ON_WINDOW) ;}
 	
+    public void openShopBag()
+    {
+        shopBag.open() ;
+    }
+
 	public void setIemsForSellingMode(BagWindow bag)
 	{
 		Set<Item> newItems = bag.getAllItems().keySet();
@@ -84,7 +89,9 @@ public class ShoppingWindow extends GameWindow
 		{
 			if (buyMode)
 			{
-				buyItem(bag) ;
+		        Item selectedItem = selectedItem() ;
+                shopBag.addItem(selectedItem) ;
+				// buyItem(bag) ;
 				return ;
 			}
 			
@@ -97,27 +104,6 @@ public class ShoppingWindow extends GameWindow
 		item = 0 ;
 		itemsOnWindow = calcItemsOnWindow() ;
 		numberItems = itemsOnWindow.size() ;
-	}
-	
-	public void displayMessage(int i)
-	{
-		if (i == 0)
-		{
-			MessageAnimation.start(Screen.getMe().pos(0.1, 0.2), "Você não possui ouro suficiente", Palette.colors[0]) ;
-			return ;
-		}
-
-		ObtainedItemAnimation.start(Screen.getMe().pos(0.5, 0.2), selectedItem().getName(), Palette.colors[0]) ;
-	}
-	
-	public void buyItem(BagWindow bag)
-	{
-		Item selectedItem = selectedItem() ;
-		if (bag.getGold() < selectedItem.getPrice()) { displayMessage(0) ; return ;}
-		
-		displayMessage(1) ;
-		bag.add(selectedItem, 1) ;
-		bag.addGold(-selectedItem.getPrice()) ;
 	}
 	
 	public void sellItem(BagWindow bag)
@@ -176,6 +162,8 @@ public class ShoppingWindow extends GameWindow
 			}
 			itemPos.y += 23 ;
 		}
+
+		shopBag.display() ;
 		
 		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
 	}

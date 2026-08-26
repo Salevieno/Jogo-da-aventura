@@ -55,6 +55,17 @@ public abstract class Item
 	public void setName(String name) { this.name = name ;}
 	public void setDescription(String description) { this.description = description ;}
 
+    public void display(Point pos, Align align)
+    {
+		GamePanel.getDP().drawImage(image, pos, align) ;
+    }
+
+    public void displayInSlot(Point center)
+    {
+		GamePanel.getDP().drawImage(SLOT_IMAGE, center, Align.center) ;
+		GamePanel.getDP().drawImage(image, center, Align.center) ;
+    }
+
 	protected static void drawMenu(Point pos, Align align, Dimension size)
 	{
 		GamePanel.getDP().drawRoundRect(pos, align, size, 1, Palette.colors[3], Palette.colors[0], true);

@@ -93,6 +93,7 @@ public abstract class LoadingGame
 			}
 			player.setMap(GameMap.getAllMaps().get(player.getJob())) ;
 			player.getMap().activateAnimations() ;
+            player.getBag().addGold(3000);
 			SideBar.initialize();
 
 			if (Game.getSettings().getMusicIsOn())

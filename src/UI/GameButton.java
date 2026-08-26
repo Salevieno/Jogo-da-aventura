@@ -91,7 +91,7 @@ public abstract class GameButton
 		if (mousePos == null) { return false ;}
 		if (action == null) { return false ;}
 
-		return ishovered(mousePos) & action.equals("LeftClick") ;
+		return ishovered(mousePos) && action.equals("LeftClick") ;
 	}
 	
 	public void activate() { isActive = true ;}

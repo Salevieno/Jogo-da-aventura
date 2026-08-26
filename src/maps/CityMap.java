@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.sound.sampled.Clip;
 
@@ -120,7 +121,16 @@ public class CityMap extends GameMap
 	public Building getCraft() { return buildings.get(2) ;}
 	public Building getBank() { return buildings.get(3) ;}
 	public Sign getSign() { return sign ;}
-	public Set<Interactable> getInteractables() { return new HashSet<>(npcs) ;}
+	public Set<Interactable> getInteractables()
+    {
+        List<NPC> npcsInBuildings = new ArrayList<>() ;
+        for (Building building : buildings)
+        {
+            npcsInBuildings.addAll(building.getNPCs()) ;
+        }
+        List<NPC> allNPCs = Stream.concat(npcs.stream(), npcsInBuildings.stream()).toList() ;
+        return new HashSet<>(allNPCs) ;
+    }
 	public static List<CityMap> getAllCityMaps() { return ALL ;}
 
 }
