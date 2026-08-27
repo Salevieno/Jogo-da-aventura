@@ -311,6 +311,9 @@ public class FieldMap extends GameMap
 	
 	public boolean hasCreatures() { return creatures != null && !creatures.isEmpty() ;}
 	
+	public void startCreaturesIdleTimer() { creatures.forEach(Creature::restartIdleCounter) ;}
+	public void stopCreaturesIdleTimer() { creatures.forEach(Creature::stopIdleCounter) ;}
+
 	public void activateCollectiblesCounter()
 	{
 		collectibleCounters.entrySet().forEach(entry -> 

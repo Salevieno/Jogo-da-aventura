@@ -59,7 +59,7 @@ public class Creature extends LiveBeing
 		this.mpCounter = new GameTimer(CT.getMpTimerDuration() / 1.0);
 		this.satiationCounter = new GameTimer(CT.getSatiationTimerDuration());
 		this.battleActionCounter = new GameTimer(CT.getBattleActionTimerDuration() * 5.0) ;
-		this.movingTimer = new GameTimer(CT.getMovingTimerDuration(), Math.random() * CT.getMovingTimerDuration()) ;
+		this.movingTimer = new GameTimer(CT.getMovingTimerDuration()) ;
 		this.combo = new ArrayList<>() ;
 		this.hitbox = CT.getHitboxType().equals("circle") ? new HitboxCircle(new Point(), size.width / 2) : new HitboxRectangle(new Point(), size) ;
 		
@@ -78,7 +78,6 @@ public class Creature extends LiveBeing
 		
 		this.chasePlayer = false ;
 		this.idleTimer = new GameTimer(CT.getMovingAnimations().getIdleDuration()) ;
-		this.idleTimer.start() ;
  		setPos(pos) ;
  	}
  	
@@ -88,12 +87,10 @@ public class Creature extends LiveBeing
 	}
 
 	public CreatureType getType() {return type ;}
-	public List<Spell> getSpell() {return spells ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public Set<Item> getBag() {return items ;}
 	public int getGold() {return gold ;}
-	public GameTimer getIdleTimer() {return idleTimer ;}
 	public void setChasePlayer(boolean F) {chasePlayer = F ;}
 
 	public Point center() { return new Point((int) pos.x, (int) pos.y) ;}
@@ -106,12 +103,6 @@ public class Creature extends LiveBeing
 		PA.getLife().setToMaximum() ;
 		PA.getMp().setToMaximum() ;
 		setChasePlayer(false) ;
-	}
-
-	public boolean hasEnoughMP(int spellID)
-	{
-		int MPcost = 10 * spellID ;
-		return (MPcost <= PA.getMp().getCurrentValue()) ;
 	}
 	
 	public Item getRandomElemFromBag()
@@ -164,10 +155,12 @@ public class Creature extends LiveBeing
 		}
 	}
 
-    public void makeMoveSound(double volume)
+    public void makeMoveSound()
     {
         if (type.getMoveSound() == null) { return ;}
 
+        double dist = Util.dist(Game.getPlayer().getPos(), getPos()) ;
+        double volume = 1.0 - Math.pow(dist / Game.getPlayer().getHearingRange(), 2) ;  
         type.getMoveSound().play(volume) ;
     }
 
@@ -299,6 +292,9 @@ public class Creature extends LiveBeing
 		Log.debug("=======================================================") ;
 	}
 	
+    public void restartIdleCounter() { idleTimer.restartAtRate(Math.random()) ;}
+    public void stopIdleCounter() { idleTimer.stop() ;}
+
 	public void act(Point2D.Double playerPosAsDouble, GameMap playerMap, double dt)
 	{
 		if (chasePlayer) // TODO chasePlayer can be replaced with is fighting and playerIsAlive
@@ -311,14 +307,15 @@ public class Creature extends LiveBeing
 			}
 			doBattleAction() ;
 		}
+
 		switch (state)
 		{
 			case idle:
-				// does nothing
 				if (idleTimer.hasFinished())
 				{
 					setState(LiveBeingStates.moving) ;
 					movingTimer.restart() ;
+                    makeMoveSound() ;
 				}
 
 				return ;

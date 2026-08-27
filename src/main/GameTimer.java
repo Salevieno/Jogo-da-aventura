@@ -19,55 +19,47 @@ public class GameTimer
 	private boolean active ;
 	private double initialTime ;
 	private double prevCounter ;
-	private double counter ;
+	private double elapsedTime ;
 	private double duration ; // in seconds
-	private double timeElapsedAtStop ;
+	private double elapsedTimeAtStop ;
 	
 	private static double timeAtStop ;
 	private static final Set<GameTimer> all = new HashSet<>() ;
-	
-	public GameTimer(double duration, double initialCounter)
-	{
-		this.active = false ;
-		this.counter = Math.min(duration, Math.max(initialCounter, 0.0)) ;
-		this.prevCounter = counter ;
-		this.duration = duration/1.0 ;
-		
-		all.add(this) ;
-	}
-	
+
 	public GameTimer(double duration)
 	{
 		this.active = false ;
-		this.counter = 0 ;
-		this.prevCounter = counter ;
-		this.duration = duration/1.0 ;
+		this.elapsedTime = 0 ;
+		this.prevCounter = elapsedTime ;
+		this.duration = duration ;
 		
 		all.add(this) ;
 	}
 	
-	public double getCounter() { return counter ;}
+	public double getElapsedTime() { return elapsedTime ;}
 	public double getDuration() {return duration ;}	
 	public void setDuration(double duration) { this.duration = duration ;}
 	private static double timeNowInSec() { return System.nanoTime() * Math.pow(10, -9) ;}
 	
 	public void start() { initialTime = timeNowInSec() ; active = true ;}
+	public void startAtRate(double rate) { elapsedTimeAtStop = -rate * duration ; initialTime = timeNowInSec() ; active = true ;} // TODO armengue
 	public void stop() { active = false ;}
 	public void resume() { active = hasStarted() ;}
-	public void reset() { initialTime = timeNowInSec() ; timeElapsedAtStop = 0 ; counter = 0 ; prevCounter = 0 ;}
+	public void reset() { initialTime = timeNowInSec() ; elapsedTimeAtStop = 0 ; elapsedTime = 0 ; prevCounter = 0 ;}
 	public void restart() { reset() ; start() ;}
-	public double rate() { return counter / duration ;}
-	public boolean crossedTime(double time) { return active && (counter % time <= prevCounter % time) ;}
+	public void restartAtRate(double rate) { reset() ; startAtRate(rate) ;}
+	public double rate() { return elapsedTime / duration ;}
+	public boolean crossedTime(double time) { return active && (elapsedTime % time <= prevCounter % time) ;}
 	public boolean isActive() { return active ;}
-	public boolean hasStarted() { return 0 < counter ;}
-	public boolean hasFinished() { return duration <= counter ;}
+	public boolean hasStarted() { return 0 < elapsedTime ;}
+	public boolean hasFinished() { return duration <= elapsedTime ;}
 	
 	public void update()
 	{
 		if (!active) { return ;}
 		
-		prevCounter = counter ;
-		counter = (timeNowInSec() - initialTime - timeElapsedAtStop) ;
+		prevCounter = elapsedTime ;
+		elapsedTime = (timeNowInSec() - initialTime - elapsedTimeAtStop) ;
 		if (hasFinished())
 		{
 			finish() ;
@@ -76,7 +68,7 @@ public class GameTimer
 
 	private void finish()
 	{
-		counter = duration ;
+		elapsedTime = duration ;
 		active = false ;
 	}
 
@@ -110,13 +102,13 @@ public class GameTimer
 	
 	public static void resumeAll()
 	{
-		all.forEach(timeCounter -> timeCounter.timeElapsedAtStop += timeCounter.hasStarted() ? timeNowInSec() - timeAtStop : 0) ;
+		all.forEach(timeCounter -> timeCounter.elapsedTimeAtStop += timeCounter.hasStarted() ? timeNowInSec() - timeAtStop : 0) ;
 		all.forEach(GameTimer::resume) ;
 	}
 	
 	public static void updateAll()
 	{
-		all.forEach(GameTimer::update);
+		all.forEach(GameTimer::update) ;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -127,9 +119,9 @@ public class GameTimer
         content.put("active", active);
         content.put("initialTime", initialTime);
         content.put("prevCounter", prevCounter);
-        content.put("counter", counter);
+        content.put("counter", elapsedTime);
         content.put("duration", duration);
-        content.put("timeElapsedAtStop", timeElapsedAtStop);
+        content.put("timeElapsedAtStop", elapsedTimeAtStop);
         
         return content ;
 	}
@@ -143,8 +135,8 @@ public class GameTimer
 		timer.active = (boolean) jsonData.get("active") ;
 		timer.initialTime = (double) (Double) jsonData.get("initialTime") ;
 		timer.prevCounter = (double) (Double) jsonData.get("prevCounter") ;
-		timer.counter = (double) (Double) jsonData.get("counter") ;
-		timer.timeElapsedAtStop = (double) (Double) jsonData.get("timeElapsedAtStop") ;
+		timer.elapsedTime = (double) (Double) jsonData.get("counter") ;
+		timer.elapsedTimeAtStop = (double) (Double) jsonData.get("timeElapsedAtStop") ;
 		
 		return timer ;
 	}
@@ -152,6 +144,6 @@ public class GameTimer
 	@Override
 	public String toString()
 	{
-		return "TimeCounter [active = " + active + " time = " + counter + ", duration = " + duration + "]";
+		return "TimeCounter [active = " + active + " time = " + elapsedTime + ", duration = " + duration + "]";
 	}
 }

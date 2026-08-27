@@ -106,7 +106,7 @@ public class SpriteAnimation
 
     private void update()
     {
-        if (timer.crossedTime(frameDuration) && timer.getCounter() != 0)
+        if (timer.crossedTime(frameDuration) && timer.getElapsedTime() != 0)
         {
             currentFrameID = (currentFrameID + 1) % frameCount;
         }

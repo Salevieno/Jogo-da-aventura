@@ -611,7 +611,15 @@ public class Player extends LiveBeing
 		leaveBattle() ;
 
 		currentMap.deactivateAnimations() ;
+        if (currentMap instanceof FieldMap)
+        {
+            ((FieldMap) (currentMap)).stopCreaturesIdleTimer() ;
+        }
 		newMap.activateAnimations() ;
+        if (newMap instanceof FieldMap)
+        {
+            ((FieldMap) (newMap)).startCreaturesIdleTimer() ;
+        }
 		setMap(newMap) ;
 		setPos(newPos) ;
 	}
