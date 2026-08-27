@@ -11,7 +11,6 @@ import java.util.List;
 import animations.MessageAnimation;
 import graphics.Align;
 import graphics.Scale;
-import graphics.UtilAlignment;
 import items.Equip;
 import items.Forge;
 import items.GeneralItem;
@@ -45,15 +44,14 @@ public class ForgeWindow extends GameWindow
 		itemsForForge = new ArrayList<>() ;
 		message = MESSAGES.get(0) ;
 		item = 0 ;
-	}	
+	}
 
-	public void setItemsForForge(List<Equip> itemsForForge)
+	public void update(BagWindow bag, List<Equip> itemsForForge)
 	{
 		this.itemsForForge = itemsForForge ;
 		numberItems = itemsForForge.size() ;
+        this.bag = bag ;
 	}
-	
-	public void setBag(BagWindow bag) { this.bag = bag ;}
 
 	public void displayMessage(int i)
 	{
@@ -84,7 +82,12 @@ public class ForgeWindow extends GameWindow
 		}
 	}
 	
-	public Equip selectedEquip() { if (item == -1) { return null ;} return itemsForForge.get(item) ;}
+	public Equip selectedEquip()
+    {
+        if (item == -1) { return null ;}
+
+        return itemsForForge.get(item) ;
+    }
 	
 	public int forgePrice(int forgeLevel) { return 30 + 100 * forgeLevel + 30 * forgeLevel * forgeLevel ;}
 	
@@ -191,16 +194,11 @@ public class ForgeWindow extends GameWindow
 			
 			Equip equip = itemsOnWindow.get(i) ;
 			Color itemColor = this.item == itemsOnWindow.indexOf(equip) ? SELECTED_COLOR : STD_COLOR ;
-			GamePanel.getDP().drawImage(Item.getSlotImage(), itemPos, Scale.unit, Align.center) ;
-			GamePanel.getDP().drawImage(equip.getImage(), itemPos, Scale.unit, Align.center) ;
+            equip.displayInSlot(itemPos, false) ;
 			GamePanel.getDP().drawText(namePos, Align.centerLeft, equip.getName() + " + " + equip.getForgeLevel(), STD_FONT, itemColor) ;
-			GamePanel.getDP().drawImage(reqRune(equip).getImage(), runePos, Align.center) ;
-			
-			if (Util.isInside(mousePos, UtilAlignment.getTopLeft(runePos, Align.center, Util.getSize(Item.getSlotImage())), Util.getSize(Item.getSlotImage())))
-			{
-				Point runeNamePos = Util.translate(runePos, -Item.getSlotImage().getWidth(null) / 2, -Item.getSlotImage().getHeight(null) / 2 - 5) ;
-				GamePanel.getDP().drawText(runeNamePos, Align.centerLeft, reqRune(equip).getName(), STD_FONT, STD_COLOR) ;
-			}
+
+            Forge rune = reqRune(equip) ;         			
+            rune.display(runePos, Item.isHovered(runePos, mousePos)) ;
 			
 			GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos, Scale.unit, Align.center) ;
 			GamePanel.getDP().drawText(pricePos, Align.centerLeft, String.valueOf(forgePrice(equip.getForgeLevel())), STD_FONT, itemColor) ;

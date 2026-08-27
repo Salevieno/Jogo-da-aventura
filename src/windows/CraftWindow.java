@@ -164,8 +164,8 @@ public class CraftWindow extends GameWindow
 //		GamePanel.getDP().drawText(amountTextPos, Align.center, "Fabricar", subTitleFont, textColor) ;
 //		GamePanel.getDP().drawText(Util.translate(amountTextPos, 0, 70), Align.center, String.valueOf(amountOfCrafts), titleFont, textColor) ;
 
-		Point ingredientsPos = Util.translate(topLeftPos, BORDER + PADDING + Item.getSlotImage().getWidth(null) / 2, BORDER + PADDING + Item.getSlotImage().getHeight(null) / 2 + 30) ;
-		Point productsPos = Util.translate(topLeftPos, BORDER + PADDING + Item.getSlotImage().getWidth(null) / 2 + 362, BORDER + PADDING + Item.getSlotImage().getHeight(null) / 2 + 30) ;
+		Point ingredientsPos = Util.translate(topLeftPos, BORDER + PADDING + 10, BORDER + PADDING + 40) ;
+		Point productsPos = Util.translate(topLeftPos, BORDER + PADDING + 372, BORDER + PADDING + 40) ;
 		for (Recipe recipe : recipesInWindow)
 		{
 			Map<Item, Integer> ingredients = recipe.getIngredients() ;
@@ -174,16 +174,14 @@ public class CraftWindow extends GameWindow
 			ingredients.forEach((item, qtd) -> {
 				Color itemNameColor = playerBag.hasEnough(item, qtd * amountOfCrafts) ? STD_COLOR : Palette.colors[2] ;
 				String msg = qtd * amountOfCrafts + " " + item.getName() + " (" + playerBag.getAmount(item) + ")" ;
-				GamePanel.getDP().drawImage(Item.getSlotImage(), ingredientsPos, Scale.unit, Align.center) ;
-				GamePanel.getDP().drawImage(item.getImage(), ingredientsPos, Scale.unit, Align.center) ;
+                item.displayInSlot(ingredientsPos, false) ;
 				GamePanel.getDP().drawText(Util.translate(ingredientsPos, 14, 0), Align.centerLeft, msg, STD_FONT, itemNameColor) ;
 				ingredientsPos.y += 23 ;
 			}) ;
 			
 			products.forEach((item, qtd) -> {
 				Color itemNameColor = STD_COLOR ;
-				GamePanel.getDP().drawImage(Item.getSlotImage(), productsPos, Scale.unit, Align.center) ;
-				GamePanel.getDP().drawImage(item.getImage(), productsPos, Scale.unit, Align.center) ;
+                item.displayInSlot(productsPos, false) ;
 				GamePanel.getDP().drawText(Util.translate(productsPos, 14, 0), Align.centerLeft, qtd * amountOfCrafts + " " + item.getName(), STD_FONT, itemNameColor) ;
 				productsPos.y += 23 ;
 			}) ;		

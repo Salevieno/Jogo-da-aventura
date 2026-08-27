@@ -131,7 +131,7 @@ public class ShopBag
         for (int i = 0 ; i <= qtdItemsOnDisplay - 1 ; i += 1)
         {
             Item item = itemsForSale.get(i) ;
-            item.displayInSlot(slotsCenter.get(i)) ;
+            item.displayInSlot(slotsCenter.get(i), false) ;
             GamePanel.getDP().drawText(textsLeftCenter.get(i), Align.centerLeft, item.getName(), Palette.colors[0]);
         }
 

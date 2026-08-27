@@ -138,14 +138,13 @@ public class ShoppingWindow extends GameWindow
 	}
 	
 	public void display(Point mousePos)
-	{
-		Point itemPos = Util.translate(topLeftPos, BORDER + PADDING + Item.getSlotImage().getWidth(null) / 2, BORDER + 20 + PADDING + Item.getSlotImage().getHeight(null) / 2) ;
-		Point titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
-		
+	{        
+        Point titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;		
 		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[0]) ;				
 		
         item = -1 ;
+		Point itemPos = Util.translate(topLeftPos, BORDER + PADDING + 10, BORDER + PADDING + 30) ;
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
 		{
 			Point namePos = Util.translate(itemPos, BORDER + 10, 23 * i) ;
@@ -160,16 +159,18 @@ public class ShoppingWindow extends GameWindow
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
 		{
 			Item bagItem = itemsOnWindow.get(i) ;
+            
+            bagItem.displayInSlot(itemPos, false);
+            
 			String qtdItem = buyMode ? "" : "" ; // TODO pegar bag e mostrar qtos itens tem
 			Point namePos = Util.translate(itemPos, BORDER + 10, 0) ;
-			Point pricePos = Util.translate(namePos, size.width - BORDER - PADDING - 50, 0) ;
-			Point coinPos = Util.translate(pricePos, 10, 0) ;
-
 			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? SELECTED_COLOR : STD_COLOR ;
-			GamePanel.getDP().drawImage(Item.getSlotImage(), itemPos, Scale.unit, Align.center) ;
-			GamePanel.getDP().drawImage(bagItem.getImage(), itemPos, Scale.unit, Align.center) ;
 			GamePanel.getDP().drawText(namePos, Align.centerLeft, bagItem.getName() + qtdItem, STD_FONT, itemColor) ;
+            
+			Point pricePos = Util.translate(namePos, size.width - BORDER - PADDING - 50, 0) ;
 			GamePanel.getDP().drawText(pricePos, Align.centerRight, String.valueOf(bagItem.getPrice()), STD_FONT, Palette.colors[14]) ;
+
+			Point coinPos = Util.translate(pricePos, 10, 0) ;
 			GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos, Align.center) ;
 			
 			if (this.item == itemsOnWindow.indexOf(bagItem))
