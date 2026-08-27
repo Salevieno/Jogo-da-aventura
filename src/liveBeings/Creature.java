@@ -164,6 +164,13 @@ public class Creature extends LiveBeing
 		}
 	}
 
+    public void makeMoveSound(double volume)
+    {
+        if (type.getMoveSound() == null) { return ;}
+
+        type.getMoveSound().play(volume) ;
+    }
+
 	public String chooseTarget(boolean playerIsAlive, boolean petIsAlive)
 	{// TODO optional - retornar liveBeing
 		if (!playerIsAlive & !petIsAlive) { return null ;}		

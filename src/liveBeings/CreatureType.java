@@ -15,6 +15,7 @@ import graphics.Scale;
 import graphics2.SpriteAnimation;
 import items.Item;
 import main.Elements;
+import main.Music;
 import main.Path;
 import spells.Spell;
 import windows.CreatureAttributesWindow;
@@ -39,6 +40,7 @@ public class CreatureType
 	private final Set<Item> items;
 	private final int gold;
 	private final String hitboxType ;
+    private final Music moveSound ;
 	private Genetics genes;
 
 	private static final List<MovingAnimations> MOVE_ANIMATIONS = new ArrayList<>() ;
@@ -114,6 +116,7 @@ public class CreatureType
 		this.items = itemIDs.stream().map(itemID -> Item.getAllItems().get(itemID)).collect(Collectors.toSet()) ;
 		this.gold = gold;
 		this.hitboxType = hitboxType ;
+        this.moveSound = level <= 4 ? new Music(Music.loadSoundEffect("slime" + level + ".wav")) : null ;
 
 		genes = new Genetics();
 		ALL.add(this);
@@ -165,6 +168,7 @@ public class CreatureType
 	public int getGold() { return gold ;}
 	public String getHitboxType() { return hitboxType ;}
 	public Genetics getGenes() { return genes ;}
+    public Music getMoveSound() { return moveSound ;}
 	public void setGenes(Genetics newGenes) { genes = newGenes ;}
 	public static List<CreatureType> getAll() { return ALL ;}
 

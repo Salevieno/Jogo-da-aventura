@@ -64,7 +64,7 @@ public abstract class GameButton
 			ALL.forEach(GameButton::deSelect) ;
 			if (button.soundEffectOnHover != null && Game.getSettings().getSoundEffectsAreOn())
 			{
-				Music.PlayMusic(button.soundEffectOnHover) ;
+				Music.playMusic(button.soundEffectOnHover) ;
 			}
 			button.select() ;
 			return ;

@@ -10,6 +10,7 @@ public class Path
     public static String DADOS = "./dados/" ;
     public static String IMAGES = "./images/" ;
     public static String MUSIC = "./music/" ;
+    public static String SOUND_EFFECTS = "./soundEffects/" ;
     public static String TEXT_BR = "./Texto-PT-br.json" ;
     public static String BATTLE_IMG = "Battle/" ;
     public static String BUILDINGS_IMG = "Buildings/" ;
@@ -42,6 +43,7 @@ public class Path
             DADOS = props.getProperty("DADOS", DADOS) ;
             IMAGES = props.getProperty("IMAGES", IMAGES) ;
             MUSIC = props.getProperty("MUSIC", MUSIC) ;
+            SOUND_EFFECTS = props.getProperty("SOUND_EFFECTS", SOUND_EFFECTS) ;
             TEXT_BR = props.getProperty("TEXT_BR", TEXT_BR) ;
             BATTLE_IMG = props.getProperty("BATTLE_IMG", BATTLE_IMG) ;
             BUILDINGS_IMG = props.getProperty("BUILDINGS_IMG", BUILDINGS_IMG) ;

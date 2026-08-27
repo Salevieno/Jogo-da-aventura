@@ -98,7 +98,7 @@ public abstract class LoadingGame
 
 			if (Game.getSettings().getMusicIsOn())
 			{
-				Music.SwitchMusic(player.getMap().getMusic());
+				Music.switchMusic(player.getMap().getMusic());
 			}
 			Game.getDayTimer().start();
 			startButton.activateAndSelect() ;

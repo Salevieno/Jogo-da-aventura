@@ -5,28 +5,36 @@ import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 public class Music
 {
-//	private boolean isOn ;
 	private final Clip clip ;
+    private double volume ;
+    private FloatControl soundControl ;
 	
 	private static Clip currentlyPlayingClip = null ;
+    private static final double MIN_VOL = 0.0001 ;
+    private static final double MAX_VOL = 1.0 ;
 	
 	
 	public Music(Clip clip)
 	{
 		this.clip = clip ;
-//		isOn = false ;
+        this.volume = 1.0 ;
+        this.soundControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN) ;
 	}
 	
-//	public boolean isOn() {return isOn ;}
-	
 	public Clip getClip() {return clip ;}
-	
+
 	public static Clip loadMusicFile(String fileName)
 	{
 		return musicFileToClip(new File(Path.MUSIC + fileName).getAbsoluteFile()) ;
+	}
+
+	public static Clip loadSoundEffect(String fileName)
+	{
+		return musicFileToClip(new File(Path.SOUND_EFFECTS + fileName).getAbsoluteFile()) ;
 	}
 	
 	public static Clip musicFileToClip(File MusicFile)
@@ -46,17 +54,34 @@ public class Music
 		
 		return MusicClip ;
 	}
-	
-	public static void PlayMusic(Clip MusicFile)
- 	{
-		// Melhor manter a linha abaixo comentadas para efeitos sonoros
-		// if (MusicFile.isRunning() | MusicFile.isActive()) { return ;}
-		
+
+    public void setVolume(double volume)
+    {
+        float decibels = 20.0f * (float) Math.log10(volume) ;
+        decibels = Math.max(soundControl.getMinimum(), Math.min(soundControl.getMaximum(), decibels)) ;
+
+        soundControl.setValue(decibels) ;
+    }
+
+    public void incVolume(double amount)
+    {
+        volume = Math.min(MAX_VOL, volume + amount) ;
+        setVolume(volume + amount) ;
+    }
+
+    public void decVolume(double amount)
+    {
+        volume = Math.max(MIN_VOL, volume + amount) ;
+        setVolume(volume - amount) ;
+    }
+
+	public static void playMusic(Clip clip)
+ 	{		
  		try 
  		{
- 			currentlyPlayingClip = MusicFile ;
-			MusicFile.setFramePosition(0) ;
-	        MusicFile.start() ;
+ 			currentlyPlayingClip = clip ;
+			clip.setFramePosition(0) ;
+	        clip.start() ;
  	    } 
  		catch(Exception ex) 
  		{
@@ -64,8 +89,17 @@ public class Music
  	        ex.printStackTrace() ;
  	    }
  	}
+    
+
+	public void play(double volume)
+ 	{
+        if (clip.isRunning()) { return ;}
+
+        setVolume(volume) ;
+        playMusic(clip) ;
+    }
 	
-	public static void LoopMusic(Clip MusicFile)
+	public static void loopMusic(Clip MusicFile)
  	{
  		try 
  		{
@@ -79,7 +113,7 @@ public class Music
  	    }
  	}
  	
- 	public static void StopMusic(Clip MusicFile)
+ 	public static void stopMusic(Clip MusicFile)
  	{
  		try 
  		{
@@ -92,12 +126,12 @@ public class Music
  	    }
  	}
  	
- 	public static void SwitchMusic(Clip newClip)
+ 	public static void switchMusic(Clip newClip)
  	{
  		if (currentlyPlayingClip != null)
  		{
- 			StopMusic(currentlyPlayingClip) ;
+ 			stopMusic(currentlyPlayingClip) ;
  		}
-		PlayMusic(newClip) ;
+		playMusic(newClip) ;
  	}
 }

@@ -345,8 +345,8 @@ public abstract class Opening
 		{
 			if (!openingAni.isActive() & !openingAni.hasFinished())
 			{
-				Music.PlayMusic(thunderSound) ;
-				Music.PlayMusic(introMusic) ;
+				Music.playMusic(thunderSound) ;
+				Music.playMusic(introMusic) ;
 				openingAni.activate() ;
 			}
     		return ;
@@ -370,7 +370,7 @@ public abstract class Opening
 		
 		if (isOver())
 		{
-			Music.StopMusic(introMusic) ;
+			Music.stopMusic(introMusic) ;
 			openingAni.deactivate();
 			if (newGame())
 			{

@@ -104,6 +104,7 @@ public class Player extends LiveBeing
 	private int attPoints ;
 	private int spellPoints ;
 	private AttributeIncrease attInc ;
+    private double hearingRange = 260.0 ;
 	private List<Double> collectLevel ;	// 0: herb, 1: wood, 2: metal
 	private Equip[] equips ;			// 0: weapon, 1: shield, 2: armor, 3: emblem
 	private Arrow equippedArrow ;
@@ -280,6 +281,7 @@ public class Player extends LiveBeing
 	public Creature getOpponent() { return opponent ;}
 	public List<Item> getHotItems() { return hotItems ;}
 	public Statistics getStatistics() { return stats ;}
+    public double getHearingRange() { return hearingRange ;}
 	public void setAttInc(AttributeIncrease newAttInc) { attInc = newAttInc ;}
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}

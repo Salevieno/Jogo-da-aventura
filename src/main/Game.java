@@ -254,8 +254,11 @@ public class Game
 				creature.deactivateDef() ;
 				creature.setCurrentAtkType(null);
 			}
-			creature.takeBloodAndPoisonDamage();
-			creature.act(player.getPosAsDouble(), player.getMap(), dt);
+			creature.takeBloodAndPoisonDamage() ;
+			creature.act(player.getPosAsDouble(), player.getMap(), dt) ;
+            double dist = Util.dist(player.getPos(), creature.getPos()) ;
+            double volume = 1.0 - Math.pow(dist / player.getHearingRange(), 2) ;
+            creature.makeMoveSound(volume) ;
 		}
 	}
 
