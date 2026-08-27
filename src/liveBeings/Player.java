@@ -104,7 +104,7 @@ public class Player extends LiveBeing
 	private int attPoints ;
 	private int spellPoints ;
 	private AttributeIncrease attInc ;
-    private double hearingRange = 260.0 ;
+    private double hearingRange ;
 	private List<Double> collectLevel ;	// 0: herb, 1: wood, 2: metal
 	private Equip[] equips ;			// 0: weapon, 1: shield, 2: armor, 3: emblem
 	private Arrow equippedArrow ;
@@ -176,6 +176,7 @@ public class Player extends LiveBeing
 		this.state = LiveBeingStates.idle;
 	    this.size = movingAni.spriteIdle.getFrameSize() ;
 		this.range = PlayerData.getRange().get(job) ;
+		this.hearingRange = PlayerData.getHearingRange().get(job) ;
 		this.step = PlayerData.getStep().get(job);
 	    this.atkElem = Elements.neutral ;
 		// TODO optional - passar counters para dentro dos atributos com counter increment e counter deplete

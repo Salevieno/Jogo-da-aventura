@@ -11,6 +11,7 @@ public abstract class PlayerData
     private static final List<PersonalAttributes> INITIAL_PERSONAL_ATT_PER_JOB ;
     private static final List<BattleAttributes> INITIAL_BATTLE_ATT_PER_JOB ;
     private static final List<Integer> RANGE ;
+    private static final List<Integer> HEARING_RANGE ;
     private static final List<Integer> STEP ;
     private static final List<Double> GOLD_MULTIPLIER ;
     private static final List<Double> SATIATION_COUNTER_DURATION ;
@@ -33,6 +34,14 @@ public abstract class PlayerData
             140,
             200,
             60,
+            60
+        ) ;
+
+        HEARING_RANGE = List.of(
+            160,
+            200,
+            180,
+            260,
             60
         ) ;
 
@@ -115,6 +124,7 @@ public abstract class PlayerData
     public static List<PersonalAttributes> getInitialpersonalattperjob() { return INITIAL_PERSONAL_ATT_PER_JOB ;}
     public static List<BattleAttributes> getInitialbattleattperjob() { return INITIAL_BATTLE_ATT_PER_JOB ;}
     public static List<Integer> getRange() { return RANGE ;}
+    public static List<Integer> getHearingRange() { return HEARING_RANGE ;}
     public static List<Integer> getStep() { return STEP ;}
     public static List<Double> getGoldmultiplier() { return GOLD_MULTIPLIER ;}
     public static List<Double> getSatiationcounterduration() { return SATIATION_COUNTER_DURATION ;}
