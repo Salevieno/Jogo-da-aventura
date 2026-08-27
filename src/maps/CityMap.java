@@ -23,8 +23,8 @@ import items.Fab;
 import items.GeneralItem;
 import main.ImageLoader;
 import main.Interactable;
-import main.Music;
 import main.Path;
+import music.MusicManager;
 import screen.Screen;
 import utilities.Util;
 
@@ -32,7 +32,7 @@ import utilities.Util;
 public class CityMap extends GameMap
 {
 	private final Sign sign ;
-	private static final Clip MUSIC_CITIES = Music.musicFileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
+	private static final Clip MUSIC_CITIES = MusicManager.fileToClip(new File(Path.MUSIC + "cidade.wav").getAbsoluteFile()) ;
 	private static final List<CityMap> ALL = new ArrayList<>() ;
 	
 	private CityMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<Building> buildings, List<NPC> npcs, Point signPos, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)

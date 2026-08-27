@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.sound.sampled.Clip;
-
 import UI.GameButton;
 import UI.GameTextButton;
 import graphics.Align;
@@ -20,9 +18,9 @@ import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.MainGame3_4;
-import main.Music;
 import main.Palette;
 import main.Path;
+import music.GameSound;
 import utilities.Util;
 
 
@@ -33,7 +31,7 @@ public class PauseWindow extends GameWindow
     private final Map<Integer, List<Integer>> menuSettings ;
     private static final Point WINDOW_POS = new Point(20, 20) ;
     private static final Image IMAGE_BG = ImageLoader.loadImage(Path.WINDOWS_IMG + "SettingsBackground.png") ;
-    private static final Clip SOUND_EFFECT_ON_HOVER = Music.loadMusicFile("PauseButtonHoverSoundEffect.wav") ;
+    private static final GameSound SOUND_EFFECT_ON_HOVER = new GameSound("PauseButtonHoverSoundEffect.wav") ;
     private static final Image TEXT_BG_IMG = ImageLoader.loadImage(Path.UI_IMG + "SettingsTextBackground.png") ;
     private static final Font LARGE_FONT = new Font(Game.getMainFontName(), Font.BOLD, 20) ;
     private static final int SETTING_COL_POS_X = WINDOW_POS.x + (2 * Util.getSize(IMAGE_BG).width) / 3 ;

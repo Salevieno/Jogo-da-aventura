@@ -19,6 +19,9 @@ import graphics.Scale;
 import graphics2.Draw;
 import graphics2.SpriteAnimation;
 import liveBeings.Player;
+import music.GameMusic;
+import music.GameSound;
+import music.MusicManager;
 import screen.Screen;
 import spells.BuffData;
 import spells.SpellData;
@@ -53,15 +56,15 @@ public abstract class Opening
 	private static final Image backgroundImage = ImageLoader.loadImage(Path.OPENING_IMG + "Opening.png") ;
 	private static final Image jobDescriptionBackground = ImageLoader.loadImage(Path.OPENING_IMG + "JobDescriptionBackground.png") ;
 	// private static final Image LoadingEnfeite ;
-	private static final Clip thunderSound ;
+	private static final GameSound thunderSound ;
 	private static final Clip introMusic ;
 	
 	
 	static
 	{
 		// LoadingEnfeite = ImageLoader.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
-		thunderSound = Music.loadMusicFile("0-Thunder.wav") ;
-		introMusic = Music.loadMusicFile("intro.wav") ;
+		thunderSound = new GameSound("Thunder.wav") ;
+		introMusic = GameMusic.load("intro.wav") ;
 
 		ButtonFunction portAction = () -> { } ; // TODO switch language
 		ButtonFunction enAction = () -> { } ;
@@ -343,10 +346,10 @@ public abstract class Opening
 	{
 		if (!openingAni.hasFinished())
 		{
-			if (!openingAni.isActive() & !openingAni.hasFinished())
+			if (!openingAni.isActive() && !openingAni.hasFinished())
 			{
-				Music.playMusic(thunderSound) ;
-				Music.playMusic(introMusic) ;
+				thunderSound.play() ;
+				MusicManager.playMusic(introMusic) ;
 				openingAni.activate() ;
 			}
     		return ;
@@ -370,7 +373,7 @@ public abstract class Opening
 		
 		if (isOver())
 		{
-			Music.stopMusic(introMusic) ;
+			MusicManager.stopMusic(introMusic) ;
 			openingAni.deactivate();
 			if (newGame())
 			{

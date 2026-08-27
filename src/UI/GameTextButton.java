@@ -9,14 +9,13 @@ import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.sound.sampled.Clip;
-
 import graphics.Align;
 import graphics.Scale;
 import graphics.UtilAlignment;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Path;
+import music.GameSound;
 import utilities.Util;
 
 public class GameTextButton extends GameButton
@@ -67,9 +66,9 @@ public class GameTextButton extends GameButton
     private static final int PADDING = 2 * EDGE_SIZE + 2 ;
     private static final Set<GameTextButton> ALL = new HashSet<>() ;
 
-    public GameTextButton(Point pos, Align alignment, String name, Dimension size, String text, Image image, Image selectedImage, ButtonFunction action, Clip soundEffectOnHover)
+    public GameTextButton(Point pos, Align alignment, String name, Dimension size, String text, Image image, Image selectedImage, ButtonFunction action, GameSound soundOnHover)
     {
-        super(pos, alignment, name, image, selectedImage, action, soundEffectOnHover);
+        super(pos, alignment, name, image, selectedImage, action, soundOnHover);
         Dimension textSize = Util.calcTextSize(text, FONT) ;
         this.minSize = new Dimension(textSize.width + PADDING, textSize.height + PADDING) ;
         this.size = new Dimension(Math.max(size.width, minSize.width), Math.max(size.height, minSize.height)) ;
@@ -80,9 +79,9 @@ public class GameTextButton extends GameButton
         ALL.add(this) ;
     }
 
-    public GameTextButton(Point pos, Align alignment, String name, String text, Image image, Image selectedImage, ButtonFunction action, Clip soundEffectOnHover)
+    public GameTextButton(Point pos, Align alignment, String name, String text, Image image, Image selectedImage, ButtonFunction action, GameSound soundOnHover)
     {
-        this(pos, alignment, name, new Dimension(10 + PADDING, 50 + PADDING), text, image, selectedImage, action, soundEffectOnHover) ;
+        this(pos, alignment, name, new Dimension(10 + PADDING, 50 + PADDING), text, image, selectedImage, action, soundOnHover) ;
     }
 
     public GameTextButton(Point pos, Align alignment, String name, String text, ButtonFunction action)

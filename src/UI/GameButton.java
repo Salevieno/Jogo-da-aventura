@@ -8,13 +8,11 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sound.sampled.Clip;
-
 import graphics.Align;
 import main.Game;
 import main.GamePanel;
-import main.Music;
 import main.Palette;
+import music.GameSound;
 import utilities.Util;
 
 public abstract class GameButton
@@ -28,7 +26,7 @@ public abstract class GameButton
 	protected final Image image ;
 	protected final Image selectedImage ;
 	protected final Align alignment ;
-	protected final Clip soundEffectOnHover ;
+	protected final GameSound soundOnHover ;
 	
 	protected static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 17) ;
 	protected static final Color TEXT_COLOR = Palette.colors[0] ;
@@ -36,12 +34,12 @@ public abstract class GameButton
 	
 	private static final List<GameButton> ALL = new ArrayList<>() ;
 
-	protected GameButton(Point pos, Align alignment, String name, Image image, Image selectedImage, ButtonFunction action, Clip soundEffectOnHover)
+	protected GameButton(Point pos, Align alignment, String name, Image image, Image selectedImage, ButtonFunction action, GameSound soundOnHover)
 	{
 		this.name = name ;
 		this.image = image ;
 		this.selectedImage = selectedImage ;
-		this.soundEffectOnHover = soundEffectOnHover ;
+		this.soundOnHover = soundOnHover ;
 		this.isActive = true ;
 		this.isSelected = false ;
 		this.alignment = alignment ;
@@ -62,9 +60,9 @@ public abstract class GameButton
 			if (button.isSelected || !button.isActive || !button.ishovered(mousePos)) { continue ;}
 
 			ALL.forEach(GameButton::deSelect) ;
-			if (button.soundEffectOnHover != null && Game.getSettings().getSoundEffectsAreOn())
+			if (button.soundOnHover != null)
 			{
-				Music.playMusic(button.soundEffectOnHover) ;
+				button.soundOnHover.play() ;
 			}
 			button.select() ;
 			return ;

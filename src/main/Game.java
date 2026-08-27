@@ -89,12 +89,12 @@ public class Game
 		System.out.println();
 		Log.info("Game version " + MainGame3_4.getVersion()) ;	
 		this.allText = new HashMap<>();
-		this.settings = new Settings(false, true, false, 1, 0) ;
+		this.settings = new Settings(true, true, false, 1, 0) ;
 		this.player = new Player("", "", 0);
 		this.player.setPos(Screen.getMe().getCenterAsDouble());
 		this.difficultLevel = 0;
 		this.saveSlotInUse = -1;
-		this.state = GameStates.loading;
+		this.state = GameStates.opening;
 		this.dayTimer = new GameTimer(DAY_DURATION);
 		this.dt = System.nanoTime() ;
 	}

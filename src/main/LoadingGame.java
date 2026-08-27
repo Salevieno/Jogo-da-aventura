@@ -26,6 +26,7 @@ import maps.CityMap;
 import maps.FieldMap;
 import maps.GameMap;
 import maps.SpecialMap;
+import music.MusicManager;
 import screen.Screen;
 import sidebar.SideBar;
 import spells.BuffData;
@@ -98,7 +99,7 @@ public abstract class LoadingGame
 
 			if (Game.getSettings().getMusicIsOn())
 			{
-				Music.switchMusic(player.getMap().getMusic());
+				MusicManager.switchMusic(player.getMap().getMusic());
 			}
 			Game.getDayTimer().start();
 			startButton.activateAndSelect() ;

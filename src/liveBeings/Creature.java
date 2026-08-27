@@ -161,7 +161,7 @@ public class Creature extends LiveBeing
 
         double dist = Util.dist(Game.getPlayer().getPos(), getPos()) ;
         double volume = 1.0 - Math.pow(dist / Game.getPlayer().getHearingRange(), 2) ;  
-        type.getMoveSound().play(volume) ;
+        type.getMoveSound().playAtVolume(volume) ;
     }
 
 	public String chooseTarget(boolean playerIsAlive, boolean petIsAlive)

@@ -35,10 +35,10 @@ import main.GamePanel;
 import main.ImageLoader;
 import main.Interactable;
 import main.Log;
-import main.Music;
 import main.Palette;
 import main.Path;
 import main.TextCategories;
+import music.MusicManager;
 import screen.Screen;
 import screen.Sky;
 import utilities.Util;
@@ -67,8 +67,8 @@ public abstract class GameMap
 	protected static final Image BOAT_IMAGE = ImageLoader.loadImage(Path.MAPS_IMG + "Boat.png") ;
 	protected static final Image INFO_WINDOW_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "MapInfo.png") ;
 	protected static final Map<Item, Double> ALL_DIGGING_ITEMS = new HashMap<>() ;
-	protected static final Clip MUSIC_FOREST = Music.musicFileToClip(new File(Path.MUSIC + "floresta.wav").getAbsoluteFile()) ;
-	protected static final Clip MUSIC_SPECIAL = Music.musicFileToClip(new File(Path.MUSIC + "12-Special.wav").getAbsoluteFile()) ;
+	protected static final Clip MUSIC_FOREST = MusicManager.fileToClip(new File(Path.MUSIC + "floresta.wav").getAbsoluteFile()) ;
+	protected static final Clip MUSIC_SPECIAL = MusicManager.fileToClip(new File(Path.MUSIC + "12-Special.wav").getAbsoluteFile()) ;
 	private static final List<GameMap> ALL = new ArrayList<>() ;
 
 	static
