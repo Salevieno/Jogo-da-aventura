@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import graphics.Align;
@@ -20,51 +21,59 @@ import utilities.Util;
 
 public class GameTextButton extends GameButton
 {
-    private Point pos1 ;
-    private Point pos2 ;
-    private Point pos3 ;
-    private Point pos4 ;
-    private Point pos5 ;
-    private Point pos6 ;
-    private Point pos7 ;
-    private Point pos8 ;
-    private Point pos9 ;
+    private List<Point> positions ;
     private Point center ;
     private String text ;
     private Dimension minSize ;
 
-    private Image boxStretchedPart2 ;
-    private Image boxStretchedPart4 ;
-    private Image boxStretchedPart6 ;
-    private Image boxStretchedPart8 ;
-    private Image boxStretchedPart9 ;
-    private Image boxSelectedStretchedPart2 ;
-    private Image boxSelectedStretchedPart4 ;
-    private Image boxSelectedStretchedPart6 ;
-    private Image boxSelectedStretchedPart8 ;
-    private Image boxSelectedStretchedPart9 ;
+    private List<Image> boxStretched ;
+    private List<Image> boxSelectedStretched ;
+    private List<Image> boxInactiveStretched ;
 
-    private static final Image BOX_PART1 = ImageLoader.loadImage(Path.UI_IMG + "TextBox1.png") ;
-    private static final Image BOX_PART2 = ImageLoader.loadImage(Path.UI_IMG + "TextBox3.png") ;
-    private static final Image BOX_PART3 = flipVertically(BOX_PART1) ;
-    private static final Image BOX_PART4 = ImageLoader.loadImage(Path.UI_IMG + "TextBox2.png") ;
-    private static final Image BOX_PART5 = flipVertically(flipHorizontally(BOX_PART1)) ;
-    private static final Image BOX_PART6 = flipHorizontally(BOX_PART2) ;
-    private static final Image BOX_PART7 = flipHorizontally(BOX_PART1) ;
-    private static final Image BOX_PART8 = flipVertically(BOX_PART4) ;
-    private static final Image BOX_PART9 = ImageLoader.loadImage(Path.UI_IMG + "TextBox4.png") ;
-    private static final Image BOX_SELECTED_PART1 = ImageLoader.loadImage(Path.UI_IMG + "TextBoxSelected1.png") ;
-    private static final Image BOX_SELECTED_PART2 = ImageLoader.loadImage(Path.UI_IMG + "TextBoxSelected3.png") ;
-    private static final Image BOX_SELECTED_PART3 = flipVertically(BOX_SELECTED_PART1) ;
-    private static final Image BOX_SELECTED_PART4 = ImageLoader.loadImage(Path.UI_IMG + "TextBoxSelected2.png") ;
-    private static final Image BOX_SELECTED_PART5 = flipVertically(flipHorizontally(BOX_SELECTED_PART1)) ;
-    private static final Image BOX_SELECTED_PART6 = flipHorizontally(BOX_SELECTED_PART2) ;
-    private static final Image BOX_SELECTED_PART7 = flipHorizontally(BOX_SELECTED_PART1) ;
-    private static final Image BOX_SELECTED_PART8 = flipVertically(BOX_SELECTED_PART4) ;
-    private static final Image BOX_SELECTED_PART9 = ImageLoader.loadImage(Path.UI_IMG + "TextBoxSelected4.png") ;
-    private static final int EDGE_SIZE = BOX_PART1.getWidth(null) ;
-    private static final int PADDING = 2 * EDGE_SIZE + 2 ;
+    private static final List<Image> BOX_IMGS ;
+    private static final List<Image> BOX_SELECTED_IMGS ;
+    private static final List<Image> BOX_INACTIVE_IMGS ;
+
+    private static final int EDGE_SIZE ;
+    private static final int PADDING ;
     private static final Set<GameTextButton> ALL = new HashSet<>() ;
+
+    /*
+        ____________
+        |  1  8  7  |
+        |  2  9  6  |
+        |__3__4__5__|
+    */
+// TODO dá pra otimizar updating e stretching reutilizando botões iguais
+    static
+    {
+        BOX_IMGS = imagesToListImages("TextBox1.png", "TextBox2.png", "TextBox3.png", "TextBox4.png") ;
+        BOX_SELECTED_IMGS = imagesToListImages("TextBoxSelected1.png", "TextBoxSelected2.png", "TextBoxSelected3.png", "TextBoxSelected4.png") ;
+        BOX_INACTIVE_IMGS = imagesToListImages("TextBoxInactive1.png", "TextBoxInactive2.png", "TextBoxInactive3.png", "TextBoxInactive4.png") ;
+        EDGE_SIZE = BOX_IMGS.get(0).getWidth(null) ;
+        PADDING = 2 * EDGE_SIZE + 2 ;
+    }
+
+    private static List<Image> imagesToListImages(String path1, String path2, String path3, String path4)
+    {
+        Image img1 = ImageLoader.loadImage(Path.UI_IMG + path1) ;
+        Image img2 = ImageLoader.loadImage(Path.UI_IMG + path2) ;
+        Image img3 = ImageLoader.loadImage(Path.UI_IMG + path3) ;
+        Image img4 = ImageLoader.loadImage(Path.UI_IMG + path4) ;
+        List<Image> allImages = List.of(
+            img1,
+            img2,
+            flipVertically(img1),
+            img3,
+            flipVertically(flipHorizontally(img1)),
+            flipHorizontally(img2),
+            flipHorizontally(img1),
+            flipVertically(img3),
+            img4
+        ) ;
+
+        return allImages ;
+    }
 
     public GameTextButton(Point pos, Align alignment, String name, Dimension size, String text, Image image, Image selectedImage, ButtonFunction action, GameSound soundOnHover)
     {
@@ -87,11 +96,6 @@ public class GameTextButton extends GameButton
     public GameTextButton(Point pos, Align alignment, String name, String text, ButtonFunction action)
     {
         this(pos, alignment, name, new Dimension(10 + PADDING, 5 + PADDING), text, null, null, action, null) ;
-    }
-
-    public GameTextButton(Point pos, Align alignment, Dimension size, String text, ButtonFunction action)
-    {
-        this(pos, alignment, "", size, text, null, null, action, null) ;
     }
 
     public GameTextButton(Point pos, Align alignment, String text, ButtonFunction action)
@@ -135,56 +139,45 @@ public class GameTextButton extends GameButton
         return stretchedImage;
     }
 
-    private void updatePositions(Point pos)
-    {        
-        this.pos1 = pos ;
-        this.pos2 = new Point(pos.x, pos.y + EDGE_SIZE) ;
-        this.pos3 = new Point(pos.x, pos.y + size.height - EDGE_SIZE) ;
-        this.pos4 = new Point(pos.x + EDGE_SIZE, pos.y + size.height - EDGE_SIZE) ;
-        this.pos5 = new Point(pos.x + size.width - EDGE_SIZE, pos.y + size.height - EDGE_SIZE) ;
-        this.pos6 = new Point(pos.x + size.width - EDGE_SIZE, pos.y + EDGE_SIZE) ;
-        this.pos7 = new Point(pos.x + size.width - EDGE_SIZE, pos.y) ;
-        this.pos8 = new Point(pos.x + EDGE_SIZE, pos.y) ;
-        this.pos9 = new Point(pos.x + EDGE_SIZE, pos.y + EDGE_SIZE) ;
-        this.center = new Point(pos1.x + size.width / 2, pos1.y + size.height / 2) ;
+    private void updatePositions(Point topLeftPos)
+    {
+        this.positions = List.of(
+            topLeftPos,
+            new Point(topLeftPos.x, topLeftPos.y + EDGE_SIZE),
+            new Point(topLeftPos.x, topLeftPos.y + size.height - EDGE_SIZE),
+            new Point(topLeftPos.x + EDGE_SIZE, topLeftPos.y + size.height - EDGE_SIZE),
+            new Point(topLeftPos.x + size.width - EDGE_SIZE, topLeftPos.y + size.height - EDGE_SIZE),
+            new Point(topLeftPos.x + size.width - EDGE_SIZE, topLeftPos.y + EDGE_SIZE),
+            new Point(topLeftPos.x + size.width - EDGE_SIZE, topLeftPos.y),
+            new Point(topLeftPos.x + EDGE_SIZE, topLeftPos.y),
+            new Point(topLeftPos.x + EDGE_SIZE, topLeftPos.y + EDGE_SIZE)
+        ) ;
+        this.center = new Point(topLeftPos.x + size.width / 2, topLeftPos.y + size.height / 2) ;
     }
 
     public void displayStdTextButton()
     {
-        if (isSelected)
+        List<Image> displayedImages = boxStretched ;
+        if (!isActive)
         {
-            GamePanel.getDP().drawImage(BOX_SELECTED_PART1, pos1, Align.topLeft);
-            GamePanel.getDP().drawImage(boxSelectedStretchedPart2, pos2, Align.topLeft);
-            GamePanel.getDP().drawImage(BOX_SELECTED_PART3, pos3, Align.topLeft);
-            GamePanel.getDP().drawImage(boxSelectedStretchedPart4, pos4, Align.topLeft);
-            GamePanel.getDP().drawImage(BOX_SELECTED_PART5, pos5, Align.topLeft);
-            GamePanel.getDP().drawImage(boxSelectedStretchedPart6, pos6, Align.topLeft);
-            GamePanel.getDP().drawImage(BOX_SELECTED_PART7, pos7, Align.topLeft);
-            GamePanel.getDP().drawImage(boxSelectedStretchedPart8, pos8, Align.topLeft);
-            GamePanel.getDP().drawImage(boxSelectedStretchedPart9, pos9, Align.topLeft);
-
-            return ;
+            displayedImages = boxInactiveStretched ;
+        }
+        else if (isSelected)
+        {
+            displayedImages = boxSelectedStretched ;
         }
 
-        GamePanel.getDP().drawImage(BOX_PART1, pos1, Align.topLeft);
-        GamePanel.getDP().drawImage(boxStretchedPart2, pos2, Align.topLeft);
-        GamePanel.getDP().drawImage(BOX_PART3, pos3, Align.topLeft);
-        GamePanel.getDP().drawImage(boxStretchedPart4, pos4, Align.topLeft);
-        GamePanel.getDP().drawImage(BOX_PART5, pos5, Align.topLeft);
-        GamePanel.getDP().drawImage(boxStretchedPart6, pos6, Align.topLeft);
-        GamePanel.getDP().drawImage(BOX_PART7, pos7, Align.topLeft);
-        GamePanel.getDP().drawImage(boxStretchedPart8, pos8, Align.topLeft);
-        GamePanel.getDP().drawImage(boxStretchedPart9, pos9, Align.topLeft);
+        for (int i = 0 ; i <= displayedImages.size() - 1 ; i += 1)
+        {
+            GamePanel.getDP().drawImage(displayedImages.get(i), positions.get(i), Align.topLeft);
+        }
     }
 
 	public void display(boolean displayText, Point mousePos, Color textColor, double opacity)
 	{
-		
-		if (!isActive) { return ;} // TODO move this logic
-		
 		Image imageDisplayed = isSelected ? selectedImage : image ;
 		
-		if (imageDisplayed == null)
+		if (imageDisplayed == null || !isActive)
 		{
             displayStdTextButton() ;
 		}
@@ -198,18 +191,7 @@ public class GameTextButton extends GameButton
 
 	public void display()
 	{
-		Image imageDisplayed = isSelected ? selectedImage : image ;
-		
-		if (imageDisplayed == null)
-		{
-            displayStdTextButton() ;
-		}
-        else
-        {
-            GamePanel.getDP().drawImage(imageDisplayed, center, Scale.unit, Align.center, 1.0) ;
-        }
-
-		GamePanel.getDP().drawText(center, Align.center, 0, text, FONT, TEXT_COLOR) ;
+        display(true, null, TEXT_COLOR, 1.0) ;
 	}
 
     public Dimension getSize() { return size ;}
@@ -240,16 +222,25 @@ public class GameTextButton extends GameButton
         {
             size.height = minSize.height ;
         }
-        this.boxStretchedPart2 = stretchImage(BOX_PART2, BOX_PART2.getWidth(null), size.height - 2 * EDGE_SIZE) ;
-        this.boxStretchedPart4 = stretchImage(BOX_PART4, size.width - 2 * EDGE_SIZE, BOX_PART4.getHeight(null)) ;
-        this.boxStretchedPart6 = stretchImage(BOX_PART6, BOX_PART6.getWidth(null), size.height - 2 * EDGE_SIZE) ;
-        this.boxStretchedPart8 = stretchImage(BOX_PART8, size.width - 2 * EDGE_SIZE, BOX_PART8.getHeight(null)) ;
-        this.boxStretchedPart9 = stretchImage(BOX_PART9, size.width - 2 * EDGE_SIZE, size.height - 2 * EDGE_SIZE) ;
-        this.boxSelectedStretchedPart2 = stretchImage(BOX_SELECTED_PART2, BOX_SELECTED_PART2.getWidth(null), size.height - 2 * EDGE_SIZE) ;
-        this.boxSelectedStretchedPart4 = stretchImage(BOX_SELECTED_PART4, size.width - 2 * EDGE_SIZE, BOX_SELECTED_PART4.getHeight(null)) ;
-        this.boxSelectedStretchedPart6 = stretchImage(BOX_SELECTED_PART6, BOX_SELECTED_PART6.getWidth(null), size.height - 2 * EDGE_SIZE) ;
-        this.boxSelectedStretchedPart8 = stretchImage(BOX_SELECTED_PART8, size.width - 2 * EDGE_SIZE, BOX_SELECTED_PART8.getHeight(null)) ;
-        this.boxSelectedStretchedPart9 = stretchImage(BOX_SELECTED_PART9, size.width - 2 * EDGE_SIZE, size.height - 2 * EDGE_SIZE) ;
+
+        this.boxStretched = getStrecthedImages(BOX_IMGS) ;
+        this.boxSelectedStretched = getStrecthedImages(BOX_SELECTED_IMGS) ;
+        this.boxInactiveStretched = getStrecthedImages(BOX_INACTIVE_IMGS) ;
+    }
+
+    private List<Image> getStrecthedImages(List<Image> originalImages)
+    {
+        return List.of(
+            originalImages.get(0),
+            stretchImage(originalImages.get(1), originalImages.get(1).getWidth(null), size.height - 2 * EDGE_SIZE),
+            originalImages.get(2),
+            stretchImage(originalImages.get(3), size.width - 2 * EDGE_SIZE, originalImages.get(3).getHeight(null)),
+            originalImages.get(4),
+            stretchImage(originalImages.get(5), originalImages.get(5).getWidth(null), size.height - 2 * EDGE_SIZE),
+            originalImages.get(6),
+            stretchImage(originalImages.get(7), size.width - 2 * EDGE_SIZE, originalImages.get(7).getHeight(null)),
+            stretchImage(originalImages.get(8), size.width - 2 * EDGE_SIZE, size.height - 2 * EDGE_SIZE)
+        ) ;
     }
     
 }

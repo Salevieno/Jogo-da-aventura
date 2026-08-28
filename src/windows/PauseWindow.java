@@ -187,12 +187,8 @@ public class PauseWindow extends GameWindow
     {
         GamePanel.getDP().drawImage(IMAGE_BG, WINDOW_POS, Align.topLeft, 0.3) ;
 
-        for (GameButton button : menuButtons.get(menu))
-        {
-            if (!button.isActive()) { continue ;}
-            
-            button.display(true, mousePos, Palette.colors[3], 0.6) ;
-        }
+        menuButtons.get(menu).forEach(button -> button.display(true, mousePos, Palette.colors[3], 0.6)) ;
+
         for (int i = 0 ; i <= menuSettings.get(menu).size() - 1 ; i += 1)
         {
             int setting = menuSettings.get(menu).get(i) ;
