@@ -27,9 +27,11 @@ import utilities.Util;
 
 public abstract class GameWindow
 {
-	protected String name ;
-	protected Point topLeftPos ;
-	protected Image image ;
+	protected final String name ;
+	protected final Image image ;
+	protected final Point topLeftPos ;
+	protected final List<GameButton> buttons ;
+
 	protected boolean isOpen ;
 	protected int menu ;
 	protected int numberMenus ;
@@ -47,8 +49,7 @@ public abstract class GameWindow
 	protected String stdEnter ;
 	protected String stdReturn ;
 	protected String stdExit ;	
-	protected double stdOpacity ;
-	protected List<GameButton> buttons ;	
+	protected double stdOpacity ;	
 
 	protected static final int BORDER = 6 ;
 	protected static final int PADDING = 4 ;
@@ -68,19 +69,19 @@ public abstract class GameWindow
 	public GameWindow(String name, Point topLeftPos, Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
 	{
 		this.name = name ;
-		this.topLeftPos = topLeftPos ;
 		this.image = image ;
+		this.topLeftPos = topLeftPos ;
+		this.buttons = new ArrayList<>() ;
 		this.numberMenus = numberMenus ;
 		this.numberTabs = numberTabs ;
 		this.numberItems = numberItems ;
 		this.numberWindows = numberWindows ;
-		this.buttons = new ArrayList<>() ;
 		this.isOpen = false ;
 		this.menu = 0 ;
 		this.tab = 0 ;
 		this.item = 0 ;
 		this.window = 0 ;
-		this.size = image != null ? new Dimension(image.getWidth(null), image.getHeight(null)) : new Dimension(0, 0) ;
+		this.size = image != null ? Util.getSize(image) : new Dimension(0, 0) ;
 		this.stdMenuUp = PlayerActions.moveUp.getKey() ;
 		this.stdMenuDown = PlayerActions.moveDown.getKey() ;
 		this.stdWindowUp = PlayerActions.moveRight.getKey() ;
@@ -91,17 +92,10 @@ public abstract class GameWindow
 		this.stdOpacity = 0.9 ;
 	}
 	public boolean isOpen() {return isOpen ;}
-	protected void addButton(GameButton button) { buttons.add(button) ;}
-	public String getName() { return name ;}
-	protected int getMenu() {return menu ;}
-	protected int getTab() {return tab ;}
-	protected int getWindow() {return window ;}
-	protected int getItem() {return item ;}
-	protected void setItem(int newValue) {item = newValue ;}
 
 	public static Image getSlotImage() { return SLOT_IMAGE ;}
 	
-	public static boolean actionIsForward(String action) { return action == null ? false : action.equals("Enter") | action.equals("LeftClick") ;}
+	public static boolean actionIsForward(String action) { return action == null ? false : action.equals("Enter") || action.equals("LeftClick") ;}
 	protected GameButton windowUpButton(Point pos, Align align)
 	{
 		ButtonFunction action = () -> { windowUp() ;} ;

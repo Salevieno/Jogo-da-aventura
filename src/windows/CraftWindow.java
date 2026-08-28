@@ -17,7 +17,6 @@ import items.GeneralItem;
 import items.Item;
 import items.Recipe;
 import liveBeings.Player;
-import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Palette;
@@ -30,11 +29,11 @@ public class CraftWindow extends GameWindow
 {
 	private int amountOfCrafts ;
 	private BagWindow playerBag ;
-	private List<Recipe> recipes ;
 	private List<Recipe> recipesInWindow ;
-	private GameButton craftButton ;
 	
-
+    
+	private final List<Recipe> recipes ;
+	private final GameButton craftButton ;
     private final Point leftWindowPos ;
     private final Point centerWindowPos ;
     private final Point rightWindowPos ;
@@ -50,6 +49,9 @@ public class CraftWindow extends GameWindow
 	public CraftWindow(List<Recipe> recipes)
 	{
 		super("Craft window", Screen.getMe().pos(0.03, 0.25), IMAGE, 1, 1, RECIPES_PER_WINDOW, recipes.size() / RECIPES_PER_WINDOW) ;
+        this.amountOfCrafts = 1 ;
+        this.recipesInWindow = RECIPES_PER_WINDOW <= recipes.size() ? recipes.subList(window, RECIPES_PER_WINDOW + window) : recipes ;
+
 		this.leftWindowPos = Util.translate(topLeftPos, 0, 0) ;
         this.centerWindowPos = Util.translate(topLeftPos, 384, 0) ;
         this.rightWindowPos = Util.translate(topLeftPos, 576, 0) ;
@@ -64,13 +66,11 @@ public class CraftWindow extends GameWindow
             this.productsPos.add(Util.translate(rightWindowPos, 32, 32 + 23 * i)) ;
             this.productsTextPos.add(Util.translate(rightWindowPos, 32 + 20, 32 + 23 * i)) ;
         }
-        this.amountOfCrafts = 1 ;
 		this.recipes = recipes ;
-		this.recipesInWindow = RECIPES_PER_WINDOW <= recipes.size() ? recipes.subList(window, RECIPES_PER_WINDOW + window) : recipes ;
         Point craftButtonCenter = Util.translate(centerWindowPos, 88, 100) ;
-		this.craftButton = new GameTextButton(craftButtonCenter, Align.center, "Fabricar", () -> {setBag(Game.getPlayer().getBag()) ; craft(playerBag) ;}) ;
+		this.craftButton = new GameTextButton(craftButtonCenter, Align.center, "Fabricar", () -> {craft(playerBag) ;}) ;
 		this.craftButton.deactivate() ;
-		addButton(craftButton) ;
+		this.buttons.add(craftButton) ;
 	}
 	
 	public void navigate(String action)
@@ -98,7 +98,7 @@ public class CraftWindow extends GameWindow
 		recipesInWindow = RECIPES_PER_WINDOW <= recipes.size() ? recipes.subList(window, RECIPES_PER_WINDOW + window) : recipes ;
 	}
 	
-	public void setBag(BagWindow bag) {this.playerBag = bag ;}
+	public void setBag(BagWindow bag) { this.playerBag = bag ;}
 	
 	public void craft(BagWindow bag)
 	{

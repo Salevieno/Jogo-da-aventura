@@ -69,8 +69,8 @@ public class BagWindow extends GameWindow
 	{
     	super("Mochila", Screen.getMe().pos(0.28, 0.4), IMAGE, 2, 10, 0, 0) ;
 		Dimension size = Util.getSize(image) ;
-		this.buttons = List.of(windowUpButton(new Point(topLeftPos.x + size.width - 10, topLeftPos.y + size.height + 10), Align.topLeft),
-				windowDownButton(new Point(topLeftPos.x + 10, topLeftPos.y + size.height + 10), Align.topLeft)) ;
+		this.buttons.add(windowUpButton(new Point(topLeftPos.x + size.width - 10, topLeftPos.y + size.height + 10), Align.topLeft)) ;
+		this.buttons.add(windowDownButton(new Point(topLeftPos.x + 10, topLeftPos.y + size.height + 10), Align.topLeft)) ;
 		this.pot = new LinkedHashMap<Potion, Integer>() ;
 		this.alch = new LinkedHashMap<Alchemy, Integer>() ;
 		this.forges = new LinkedHashMap<Forge, Integer>() ;
