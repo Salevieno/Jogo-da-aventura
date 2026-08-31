@@ -1629,7 +1629,7 @@ public class Player extends LiveBeing
 
 		for (Item item : creature.getBag())
 		{
-			if (!Util.chance(0.01 * item.getDropChance())) { continue ;}
+			if (!Util.chance(item.getDropChance())) { continue ;}
 			
 			itemsObtained.add(item) ;
 			bag.add(item, 1) ;
