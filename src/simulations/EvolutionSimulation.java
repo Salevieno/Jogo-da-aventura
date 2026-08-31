@@ -390,8 +390,6 @@ public abstract class EvolutionSimulation
 //		spellPoints += 1 ;
 		player.setAttPoints(player.getAttPoints() + 2) ;
 		
-		((PlayerAttributesWindow) player.getAttWindow()).activateIncAttButtons(player.getAttPoints()) ;
-		
 		// Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, player.getLevel()});
 	}
 	
@@ -693,9 +691,7 @@ public abstract class EvolutionSimulation
 			case "B": player.getBag().open() ; break ;
 			case "C": 
 //				player.getAttWindow().open() ;
-				((PlayerAttributesWindow) player.getAttWindow()).updateAttIncButtons(player) ;
-				
-				((PlayerAttributesWindow) player.getAttWindow()).setPlayer(player) ;
+				((PlayerAttributesWindow) player.getAttWindow()).update(player) ;
 				player.switchOpenClose(player.getAttWindow());
 				
 				break ;
@@ -737,23 +733,6 @@ public abstract class EvolutionSimulation
 			{
 				player.getSpellsTreeWindow().act(player) ;
 			}
-		}
-		
-		if (player.getAttWindow().isOpen())
-		{
-			((PlayerAttributesWindow) player.getAttWindow()).act(player, mousePos, player.getCurrentAction()) ;
-		
-			return ;
-		}
-
-		if (player.getBag().isOpen())
-		{
-//			if (player.getBag().getTab() == 1 & (player.getCurrentAction().equals("Enter") | player.getCurrentAction().equals("LeftClick")))
-//			{
-//				player.useItem(player.getBag().getSelectedItem()) ;
-//			}
-			
-			return ;
 		}
 		
 		buttons.forEach(button -> {

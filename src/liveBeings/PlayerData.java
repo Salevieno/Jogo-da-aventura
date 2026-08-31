@@ -94,7 +94,7 @@ public abstract class PlayerData
         ) ;
 
         INITIAL_BATTLE_ATT_PER_JOB = List.of(
-            new BattleAttributes(5, 2, 5, 2, 10, 2, 0.1, 0.0, 1.0, 10),
+            new BattleAttributes(500, 2, 5, 2, 100, 2, 0.1, 0.0, 1.0, 10),
             new BattleAttributes(2, 5, 2, 5, 7, 1, 0.1, 0.0, 1.0, 10),
             new BattleAttributes(3, 3, 3, 3, 18, 3, 0.15, 0.0, 1.0, 10),
             new BattleAttributes(4, 3, 4, 3, 12, 6, 0.12, 0.0, 1.0, 10),

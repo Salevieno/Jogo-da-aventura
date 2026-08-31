@@ -58,8 +58,7 @@ public abstract class SideBar
 		Player player = Game.getPlayer() ;
 		Image playerImage = player.getMovingAni().spriteIdle.getCurrentFrame() ;
 		ButtonFunction playerAction = () -> {
-			((PlayerAttributesWindow) player.getAttWindow()).setPlayer(player) ;
-			((PlayerAttributesWindow) player.getAttWindow()).updateAttIncButtons(player) ;
+			((PlayerAttributesWindow) player.getAttWindow()).update(player) ;
 			player.switchOpenClose(player.getAttWindow()) ;
 		} ;
 		ButtonFunction[] actions = new ButtonFunction[ICON_NAMES.length] ;

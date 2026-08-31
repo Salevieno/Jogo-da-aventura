@@ -285,7 +285,8 @@ public class BattleAttributes
 		return atkSpeed.getTotal() ;
 	}
 	
-	public BasicBattleAttribute[] basicAttributes() { return new BasicBattleAttribute[] {getPhyAtk(), getMagAtk(), getPhyDef(), getMagDef(), getDex(), getAgi(), critAtk, critDef};}
+	public BasicBattleAttribute[] basicAttributes() { return new BasicBattleAttribute[] {getPhyAtk(), getMagAtk(), getPhyDef(), getMagDef(), getDex(), getAgi(), critAtk, critDef} ;}
+	public String[] basicAttributesText() { return new String[] {getPhyAtk().text(), getMagAtk().text(), getPhyDef().text(), getMagDef().text(), getDex().text(), getAgi().text(), critAtk.text(), critDef.text()} ;}
 	public BattleSpecialAttribute[] specialAttributes() { return new BattleSpecialAttribute[] {stun, block, blood, poison, silence} ;}
 //	public double[] getBaseValues()
 //	{

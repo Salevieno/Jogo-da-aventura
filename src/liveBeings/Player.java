@@ -162,10 +162,7 @@ public class Player extends LiveBeing
 	
 	public Player(String name, String sex, int job)
 	{
-		super(PlayerData.getInitialpersonalattperjob().get(job), PlayerData.getInitialbattleattperjob().get(job), MOVING_ANI, new PlayerAttributesWindow()) ;
-
-		((PlayerAttributesWindow) attWindow).initializeAttIncButtons(this) ;
-		
+		super(PlayerData.getInitialpersonalattperjob().get(job), PlayerData.getInitialbattleattperjob().get(job), MOVING_ANI, new PlayerAttributesWindow()) ;		
 		this.name = name ;
 		this.sex = sex ;
 		this.job = job ;
@@ -819,8 +816,7 @@ public class Player extends LiveBeing
 			case bag: switchOpenClose(bag) ; return ;
 			
 			case attWindow:
-				((PlayerAttributesWindow) attWindow).setPlayer(this) ;
-				((PlayerAttributesWindow) attWindow).updateAttIncButtons(this) ;
+				((PlayerAttributesWindow) attWindow).update(this) ;
 				switchOpenClose(attWindow) ;
 				return ;
 				
@@ -1040,11 +1036,6 @@ public class Player extends LiveBeing
 		if (bag.isOpen())
 		{
 			bag.act(currentAction, mousePos, this) ;
-		}
-		
-		if (attWindow.isOpen() & GameWindow.actionIsForward(currentAction))
-		{
-			((PlayerAttributesWindow) attWindow).act(this, mousePos, currentAction) ;
 		}
 
 		if (focusWindow == null) { return ;}
@@ -1678,8 +1669,6 @@ public class Player extends LiveBeing
 		PA.getMp().setToMaximum() ;
 		spellPoints += 1 ;
 		attPoints += 2 ;
-		
-		((PlayerAttributesWindow) attWindow).activateIncAttButtons(attPoints) ;
 		
 		// Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, level});
 		LEVEL_UP_ANI.setPos(getPos()) ;
