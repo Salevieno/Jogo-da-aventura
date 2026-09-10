@@ -65,6 +65,12 @@ public abstract class Draw
 			GamePanel.getDP().drawText(new Point(pos.x, pos.y + i*sy), align, DrawPrimitives.stdAngle, lines.get(i), font, color) ;						
 		}
 	}
+
+	public static void fitText(Point pos, Align align, String text, Font font, int maxLength, Color color)
+	{
+        int sy = font.getSize() + 2 ;
+		fitText(pos, sy, align, text, font, maxLength, color) ;
+	}
 	
 	public static void textUntil(Point pos, Align align, double angle, String text, Font font, Color color, int maxLength, Point mousePos)
 	{

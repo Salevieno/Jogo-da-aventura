@@ -540,7 +540,7 @@ public abstract class EvolutionSimulation
 				if (player.shouldLevelUP()) { player.levelUp() ;}
 			}
 			
-			Log.debug(String.valueOf(player.getBag().calcValue()));
+			Log.debug(String.valueOf(player.getBag().totalValue()));
 			 
 			resetPlayer() ;
 		}

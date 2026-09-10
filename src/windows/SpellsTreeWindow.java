@@ -248,7 +248,7 @@ public class SpellsTreeWindow extends GameWindow
 			Image slotImage = hasPreReq ? SPELL_SLOT_IMAGE : SPELL_INACTIVE_SLOT_IMAGE ;
 			Point slotPos = calcSlotPos(row, col, spellsDistribution.length, spellsDistribution[row], slotSize) ;
 			
-			checkMouseSelection(mousePos, slotPos, Align.topLeft, slotSize, initialSpell + i) ;
+			updateSelectedItemOnHover(mousePos, slotPos, Align.topLeft, slotSize, initialSpell + i) ;
 			if (this.item == initialSpell + i)
 			{
 				textColor = selectedColor ;

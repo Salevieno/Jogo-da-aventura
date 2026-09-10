@@ -17,15 +17,15 @@ import main.Palette;
 import main.Path;
 import screen.Screen;
 import utilities.Util;
-import windows.GameWindow;
 
 public abstract class HotKeysBar
 {
 	private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 14) ;
 	private static final Color TEXT_COLOR = Palette.colors[0] ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "HotBar.png") ;
+	private static final Image SLOT_TRANSPARENT_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SlotTransparent.png") ;
 	private static final Point BAR_POS = new Point(Screen.getMe().mapSize().width + 2, Screen.getMe().getSize().height - SideBar.SY) ;
-
+// TODO itens incorretos estão sendo levados ao arrastar e o último slot V não funciona
 	public static Dimension size() { return Util.getSize(IMAGE) ;}
 	public static Point topLeft() { return new Point(BAR_POS.x, BAR_POS.y - size().height) ;}
 
@@ -55,7 +55,7 @@ public abstract class HotKeysBar
 			Point slotCenter = Util.translate(topLeft(), 13, 16 + 24 * i) ;
 			Point keyTextPos = Util.translate(slotCenter, slotSize.width / 2 + 6, slotSize.height / 2) ;
 			
-			GamePanel.getDP().drawImage(GameWindow.getSlotImage(), slotCenter, Align.center) ;
+			GamePanel.getDP().drawImage(SLOT_TRANSPARENT_IMAGE, slotCenter, Align.center) ;
 			GamePanel.getDP().drawText(keyTextPos, Align.bottomLeft, Player.getHotKeys()[i], FONT, TEXT_COLOR) ;
 			
 			if (hotItems.get(i) == null) { continue ;}

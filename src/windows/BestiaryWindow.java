@@ -100,7 +100,7 @@ public class BestiaryWindow extends GameWindow
 			CreatureType creatureType = discoveredCreatures.get(slot) ;
 			double scaleFactor = Math.min((double) (slotSize.width - 10) / creatureType.getSize().width,
 					(double) (slotSize.height - 10) / creatureType.getSize().height) ;
-			checkMouseSelection(mousePos, slotTopLeft, Align.topLeft, slotSize, slot) ;
+			updateSelectedItemOnHover(mousePos, slotTopLeft, Align.topLeft, slotSize, slot) ;
 			creatureType.display(slotCenter, new Scale(scaleFactor, scaleFactor)) ;
 		}
 

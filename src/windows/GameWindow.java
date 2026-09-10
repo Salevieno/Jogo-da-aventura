@@ -52,7 +52,7 @@ public abstract class GameWindow
 	protected double stdOpacity ;	
 
 	protected static final int BORDER = 6 ;
-	protected static final int PADDING = 4 ;
+	protected static final int PADDING = 36 ;
 	protected static final Color STD_COLOR = Palette.colors[0] ;
 	protected static final Color SELECTED_COLOR = Palette.colors[18];
 	protected static final Font STD_FONT = new Font(Game.getMainFontName(), Font.BOLD, 10) ;
@@ -61,8 +61,6 @@ public abstract class GameWindow
 	protected static final Image BTN_WINDOW_UP_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveUp.png") ;
 	protected static final Image SELECTED_BTN_WINDOW_UP_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveUpSprite.png") ;
 	protected static final Image BTN_WINDOW_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;
-	protected static final Image SLOT_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSlot.png") ;
-	protected static final Image SELECTED_SLOT_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSelectedSlot.png") ;
 	protected static final Image SELECTED_BTN_WINDOW_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveDownSprite.png") ;	
 	private static final Image ARROW_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "ArrowIcon.png") ;
 	
@@ -92,8 +90,6 @@ public abstract class GameWindow
 		this.stdOpacity = 0.9 ;
 	}
 	public boolean isOpen() {return isOpen ;}
-
-	public static Image getSlotImage() { return SLOT_IMAGE ;}
 	
 	public static boolean actionIsForward(String action) { return action == null ? false : action.equals("Enter") || action.equals("LeftClick") ;}
 	protected GameButton windowUpButton(Point pos, Align align)
@@ -186,11 +182,11 @@ public abstract class GameWindow
 	
 	protected Color getTextColor(boolean isSelected) { return isSelected ? SELECTED_COLOR : STD_COLOR ;}
 
-	protected void checkMouseSelection(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
+	protected void updateSelectedItemOnHover(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
 	{
-		Point textTopLeft = UtilAlignment.getTopLeft(itemPos, align, itemSize) ;
-		if (!Util.isInside(mousePos, textTopLeft, itemSize)) { return ;}
-		
+		Point itemTopLeft = UtilAlignment.getTopLeft(itemPos, align, itemSize) ;
+		if (!Util.isInside(mousePos, itemTopLeft, itemSize)) { return ;}
+
 		item = itemID ;
 	}
 

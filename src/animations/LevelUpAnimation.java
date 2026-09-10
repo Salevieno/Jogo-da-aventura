@@ -17,7 +17,6 @@ import main.TextCategories;
 import screen.Screen;
 import utilities.Util;
 import windows.AttributesWindow;
-import windows.BagWindow;
 
 public class LevelUpAnimation extends Animation
 {
@@ -63,7 +62,6 @@ public class LevelUpAnimation extends Animation
 		for (int i = 0 ; i <= ATT_ORDER.length - 1 ; i += 1)
 		{
 			Point imagePos = Util.calcGridPos(topLeftSlotCenter, i, N_ROWS, new Point(80, spacingY)) ;
-			GamePanel.getDP().drawImage(BagWindow.getSlotImage(), imagePos, Align.center) ;
 			GamePanel.getDP().drawImage(AttributesWindow.getIcons()[ATT_ORDER[i]], imagePos, Align.center) ;
 		}
 		

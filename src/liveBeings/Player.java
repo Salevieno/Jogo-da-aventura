@@ -813,7 +813,10 @@ public class Player extends LiveBeing
 				}
 				return ;
 
-			case bag: switchOpenClose(bag) ; return ;
+			case bag:
+                bag.updateWindow() ;
+                switchOpenClose(bag) ;
+                return ;
 			
 			case attWindow:
 				((PlayerAttributesWindow) attWindow).update(this) ;
@@ -1044,7 +1047,8 @@ public class Player extends LiveBeing
 		{
 			if (currentAction.equals("Escape") && !focusWindow.equals(pauseWindow))
 			{
-				switchOpenClose(focusWindow) ;
+				// switchOpenClose(focusWindow) ;
+                focusWindow.navigate(currentAction) ;
 			}
 			else
 			{
@@ -1480,11 +1484,11 @@ public class Player extends LiveBeing
 		if (item == null) { Log.warn("Tentando usar item nulo!"); return ;}
 		if (!bag.contains(item)) { Log.warn("Tentando usar item que não tem na mochila!"); return ;}
 
-		bag.addRecentlyUsedItem(item) ;
+		bag.updateRecentlyUsedItem(item) ;
 		if (item instanceof Potion)
 		{
 			Potion pot = (Potion) item ;
-			double powerMult = job == 3 & 1 <= spells.get(7).getLevel() ? 1 + 0.06 * spells.get(7).getLevel() : 1 ;
+			double powerMult = job == 3 && 1 <= spells.get(7).getLevel() ? 1 + 0.06 * spells.get(7).getLevel() : 1 ;
 			
 			pot.use(this, powerMult) ;
 			bag.remove(pot, 1) ;
@@ -1494,7 +1498,7 @@ public class Player extends LiveBeing
 		if (item instanceof Alchemy)
 		{
 			Alchemy alch = (Alchemy) item ;
-			double powerMult = job == 3 & 1 <= spells.get(7).getLevel() ? 1 + 0.06 * spells.get(7).getLevel() : 1 ;
+			double powerMult = job == 3 && 1 <= spells.get(7).getLevel() ? 1 + 0.06 * spells.get(7).getLevel() : 1 ;
 			
 			if (job == 3 & 0 < spells.get(10).getLevel() & !spells.get(10).isActive())
 			{

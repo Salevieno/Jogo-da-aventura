@@ -1,6 +1,5 @@
 package windows;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
@@ -183,50 +182,33 @@ public class ElementalWindow extends GameWindow
 		if (equipsForElemChange == null) { return ;}
 		if (equipsForElemChange.isEmpty()) { return ;}
 		
-		int slotW = BagWindow.SLOT_IMAGE.getWidth(null) ;
-		int slotH = BagWindow.SLOT_IMAGE.getHeight(null) ;
-		
 		List<Equip> equipsOnWindow = getEquipsOnWindow() ;
 		for (int i = 0 ; i <= equipsOnWindow.size() - 1; i += 1)
 		{
 			int row = i % ( QTD_ITEMS_ON_WINDOW / 1) ;
 			int col = i / ( QTD_ITEMS_ON_WINDOW / 1) ;
 			Equip equip = equipsOnWindow.get(i) ;
-			Point slotCenter = Util.translate(topLeftPos,
-					BORDER + PADDING + 6 + slotW / 2 + col * (140 + slotW),
-					BORDER + PADDING + 22 + slotH / 2 + row * 21) ;
-			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
-			Image slotImage = i == item ? BagWindow.SELECTED_SLOT_IMAGE : BagWindow.SLOT_IMAGE ;
-			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
-			Color textColor = getTextColor(i == item) ;
-			
-			GamePanel.getDP().drawImage(slotImage, slotCenter, Align.center) ;
-			GamePanel.getDP().drawImage(equip.getImage(), slotCenter, Align.center) ;
-			GamePanel.getDP().drawText(textPos, Align.centerLeft, equip.getName(), STD_FONT, textColor) ;
+			Point slotCenter = Util.translate(topLeftPos, BORDER + PADDING + 6 + col * 140, BORDER + PADDING + 22 + row * 21) ;
+			Point textPos = new Point(slotCenter.x + 5, slotCenter.y) ;
+			updateSelectedItemOnHover(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;			
+            equip.displayInSlot(slotCenter, true) ;
 		}
 	}
 	
 	private void displaySphereSelectionMenu(Point mousePos)
 	{
-		int slotW = BagWindow.SLOT_IMAGE.getWidth(null) ;
-		int slotH = BagWindow.SLOT_IMAGE.getHeight(null) ;
-
 		for (int i = 0 ; i <= spheres.size() - 1; i += 1)
 		{
 			int row = i % QTD_ITEMS_ON_WINDOW ;
 			int col = i / QTD_ITEMS_ON_WINDOW ;
 			GeneralItem sphere = spheres.get(i) ;
 			Point slotCenter = Util.translate(topLeftPos,
-					BORDER + PADDING + 6 + slotW / 2 + col * (140 + slotW),
-					BORDER + PADDING + 22 + slotH / 2 + row * 21) ;
+					BORDER + PADDING + 6  + col * 140,
+					BORDER + PADDING + 22 + row * 21) ;
 
-			Point textPos = new Point(slotCenter.x + slotW / 2 + 5, slotCenter.y) ;
-			Image slotImage = item == i ? BagWindow.SELECTED_SLOT_IMAGE : BagWindow.SLOT_IMAGE ;
-			GamePanel.getDP().drawImage(slotImage, slotCenter, Align.center) ;
-			GamePanel.getDP().drawImage(sphere.getImage(), slotCenter, Align.center) ;
-			checkMouseSelection(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
-			Color textColor = getTextColor(i == item) ;
-			GamePanel.getDP().drawText(textPos, Align.centerLeft, sphere.getName(), STD_FONT, textColor) ;
+			Point textPos = new Point(slotCenter.x  + 5, slotCenter.y) ;
+            sphere.displayInSlot(slotCenter, true) ;
+			updateSelectedItemOnHover(mousePos, textPos, Align.centerLeft, new Dimension(140, 10), i) ;
 		}
 	}
 	

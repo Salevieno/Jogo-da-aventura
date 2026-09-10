@@ -41,7 +41,7 @@ public class ShopBag
     private static final int QTD_ITEMS_ON_WINDOW = 7 ;
     private static final Image SHOP_BAG_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "ShopBag.png") ;
     private static final Dimension BAG_SIZE = Util.getSize(SHOP_BAG_IMAGE) ;
-    
+    // TODO consertar bug -> vários botões um sob o outro após abrir a bag
     public ShopBag(Point topLeftPos)
     {
         this.topLeftPos = topLeftPos ;

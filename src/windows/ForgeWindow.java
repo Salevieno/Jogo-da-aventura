@@ -190,7 +190,7 @@ public class ForgeWindow extends GameWindow
 			Point pricePos = Util.translate(itemPos, 185, 0) ;
 			Point coinPos = Util.translate(itemPos, 210, 0) ;
 			
-			checkMouseSelection(mousePos, namePos, Align.centerLeft, new Dimension(200, 10), i) ;
+			updateSelectedItemOnHover(mousePos, namePos, Align.centerLeft, new Dimension(200, 10), i) ;
 			
 			Equip equip = itemsOnWindow.get(i) ;
 			Color itemColor = this.item == itemsOnWindow.indexOf(equip) ? SELECTED_COLOR : STD_COLOR ;
