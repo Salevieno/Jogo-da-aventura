@@ -25,27 +25,46 @@ public class ShoppingWindow extends GameWindow
 {
 	private List<Item> itemsForSale ;
 	private List<Item> itemsOnWindow ;
-	private boolean buyMode ;
+	private boolean buyMode ; // TODO fazer venda funcionar no shopping
+    private final Point titlePos ;
+	private final List<Point> itemPos ;    
+	private final List<Point> namePos ;
+	private final List<Point> pricePos ;
+    private final List<Point> coinPos ;
 	private final ShopBag shopBag ;
 
-	private static final int QTD_ITEMS_ON_WINDOW = 10 ;
+	private static final int MAX_ITEMS_PER_PAGE = 10 ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Shopping.png") ;
 	
 	public ShoppingWindow(List<Item> itemsForSale)
 	{
-		super("Shopping", Screen.getMe().pos(0.4, 0.2), IMAGE, 1, 1, Math.min(itemsForSale.size(), QTD_ITEMS_ON_WINDOW), calcNumberWindows(itemsForSale.size())) ;
+		super("Shopping", Screen.getMe().pos(0.4, 0.2), IMAGE, 1, 1, Math.min(itemsForSale.size(), MAX_ITEMS_PER_PAGE), calcNumberWindows(itemsForSale.size())) ;
 		this.itemsForSale = itemsForSale ;
-		itemsOnWindow = calcItemsOnWindow() ;
-		buyMode = true ;
-        shopBag = new ShopBag(Util.translate(topLeftPos, 300, 200)) ;
+		this.itemsOnWindow = calcItemsOnWindow() ;
+		this.buyMode = true ;
+
+        this.titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
+        this.itemPos = new ArrayList<>() ;
+        this.namePos = new ArrayList<>() ;
+        this.pricePos = new ArrayList<>() ;
+        this.coinPos = new ArrayList<>() ;
+        for (int i = 0 ; i <= MAX_ITEMS_PER_PAGE - 1 ; i += 1)
+        {
+            this.itemPos.add(Util.translate(topLeftPos, BORDER + PADDING - 20, BORDER + PADDING + 23 * i)) ;
+            this.namePos.add(Util.translate(itemPos.get(i), BORDER + 10, 0)) ;
+            this.pricePos.add(Util.translate(namePos.get(i), size.width - BORDER - 60, 0)) ;
+            this.coinPos.add(Util.translate(pricePos.get(i), 10, 0)) ;
+        }
+
+        this.shopBag = new ShopBag(Util.translate(topLeftPos, 300, 200)) ;
 	}
 
 	public void setBuyMode(boolean buyMode) { this.buyMode = buyMode ;}
 	
 	private Item selectedItem()
     {
-        if (item + window * QTD_ITEMS_ON_WINDOW <= -1) { return null ;}
-        return itemsForSale.get(item + window * QTD_ITEMS_ON_WINDOW) ;
+        if (item + window * MAX_ITEMS_PER_PAGE <= -1) { return null ;}
+        return itemsForSale.get(item + window * MAX_ITEMS_PER_PAGE) ;
     }
 	
     public void openShopBag()
@@ -66,9 +85,9 @@ public class ShoppingWindow extends GameWindow
 		updateWindow() ;
 	}
 	
-	private static int calcNumberWindows(int numberItems) { return (int) Math.ceil(numberItems / (double)QTD_ITEMS_ON_WINDOW) ;}
+	private static int calcNumberWindows(int numberItems) { return (int) Math.ceil(numberItems / (double)MAX_ITEMS_PER_PAGE) ;}
 	
-	public void updateNumberWindows() { numberWindows = calcNumberWindows(itemsForSale.size()) ;}
+	private void updateNumberWindows() { numberWindows = calcNumberWindows(itemsForSale.size()) ;}
 	
 	public void navigate(String action)
 	{
@@ -105,7 +124,7 @@ public class ShoppingWindow extends GameWindow
 				return ;
 			}
 			
-			sellItem(bag) ;
+			sellItemFromBag(bag) ;
 		}
 	}
 	
@@ -116,7 +135,8 @@ public class ShoppingWindow extends GameWindow
 		numberItems = itemsOnWindow.size() ;
 	}
 	
-	public void sellItem(BagWindow bag)
+    // TODO mover para shopBag
+	private void sellItemFromBag(BagWindow bag)
 	{
 		if (itemsForSale == null || itemsForSale.isEmpty()) { return ;}
 
@@ -131,58 +151,38 @@ public class ShoppingWindow extends GameWindow
 	
 	private List<Item> calcItemsOnWindow()
 	{
-		if (itemsForSale.size() <= QTD_ITEMS_ON_WINDOW)
+		if (itemsForSale.size() <= MAX_ITEMS_PER_PAGE)
 		{
 			return itemsForSale ;
 		}
 		
-		int firstItemID = window * QTD_ITEMS_ON_WINDOW ;
-		int lastItemID = Math.min(firstItemID + QTD_ITEMS_ON_WINDOW, itemsForSale.size()) ;
+		int firstItemID = window * MAX_ITEMS_PER_PAGE ;
+		int lastItemID = Math.min(firstItemID + MAX_ITEMS_PER_PAGE, itemsForSale.size()) ;
 		
 		return itemsForSale.subList(firstItemID, lastItemID) ;		
 	}
 	
 	public void display(Point mousePos)
-	{        
-        Point titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
+	{
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;		
 		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[0]) ;				
-		
-        item = -1 ;
-		Point itemPos = Util.translate(topLeftPos, BORDER + PADDING + 10, BORDER + PADDING + 30) ;
-		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
-		{
-			Point namePos = Util.translate(itemPos, BORDER + 10, 23 * i) ;
-            int newItemID = getIDItemHovered(mousePos, namePos, Align.centerLeft, new Dimension(100, 10), i) ;
-            if (newItemID != -1)
-            {
-                item = newItemID ;
-                break ;
-            }
-        }
 
 		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
-		{
+        {
+            updateSelectedItemOnHover(mousePos, namePos.get(i), Align.centerLeft, new Dimension(100, 10), i) ;
 			Item bagItem = itemsOnWindow.get(i) ;
-            
-            bagItem.displayInSlot(itemPos, false);
+            bagItem.displayInSlot(itemPos.get(i), false);
             
 			String qtdItem = buyMode ? "" : "" ; // TODO pegar bag e mostrar qtos itens tem
-			Point namePos = Util.translate(itemPos, BORDER + 10, 0) ;
-			Color itemColor = this.item == itemsOnWindow.indexOf(bagItem) ? SELECTED_COLOR : STD_COLOR ;
-			GamePanel.getDP().drawText(namePos, Align.centerLeft, bagItem.getName() + qtdItem, STD_FONT, itemColor) ;
-            
-			Point pricePos = Util.translate(namePos, size.width - BORDER - PADDING - 50, 0) ;
-			GamePanel.getDP().drawText(pricePos, Align.centerRight, String.valueOf(bagItem.getPrice()), STD_FONT, Palette.colors[14]) ;
-
-			Point coinPos = Util.translate(pricePos, 10, 0) ;
-			GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos, Align.center) ;
+			Color itemColor = this.item == i ? SELECTED_COLOR : STD_COLOR ;
+			GamePanel.getDP().drawText(namePos.get(i), Align.centerLeft, bagItem.getName() + qtdItem, STD_FONT, itemColor) ;            
+			GamePanel.getDP().drawText(pricePos.get(i), Align.centerRight, String.valueOf(bagItem.getPrice()), STD_FONT, Palette.colors[14]) ;
+			GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos.get(i), Align.center) ;
 			
-			if (this.item == itemsOnWindow.indexOf(bagItem))
+			if (this.item == i)
 			{
 				bagItem.displayInfo(Util.translate(topLeftPos, -10, 0), Align.topRight) ;
 			}
-			itemPos.y += 23 ;
 		}
 
 		shopBag.display() ;

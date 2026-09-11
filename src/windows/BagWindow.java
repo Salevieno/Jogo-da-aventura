@@ -380,7 +380,7 @@ public class BagWindow extends GameWindow
 		numberWindows = getItemsInTab(tab).size() / QTD_SLOTS_PER_WINDOW + 1 ;
 	}
 	
-	public int totalValue()
+	public int totalValue() // TODO considerar valor de venda dos itens
 	{
 		return itemsInBag.entrySet().stream().mapToInt(entry -> entry.getKey().getPrice() * entry.getValue()).sum() ;
 	}

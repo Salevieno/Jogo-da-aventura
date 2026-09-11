@@ -199,15 +199,6 @@ public abstract class GameWindow
 
 		item = itemID ;
 	}
-
-	protected int getIDItemHovered(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
-	{
-		Point textTopLeft = UtilAlignment.getTopLeft(itemPos, align, itemSize) ;
-		if (!Util.isInside(mousePos, textTopLeft, itemSize)) { return -1 ;}
-		
-		return itemID ;
-	}
-
 	
 	protected static void drawNavigationButtons(Point pos, int width, Font font, int selectedWindow, int numberWindows, double opacity)
 	{
