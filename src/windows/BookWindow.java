@@ -35,9 +35,9 @@ public class BookWindow extends GameWindow
 		super("Livro", Screen.getMe().getCenter(), IMAGE, 0, 0, 0, 0) ;
 	}
 
-	public void setRecipes(List<Recipe> recipes) { this.recipes = recipes ; numberWindows = recipes.size() ;}
+	public void setRecipes(List<Recipe> recipes) { this.recipes = recipes ; numberPages = recipes.size() ;}
 	
-	public void addRecipes(List<Recipe> newRecipes) { recipes.addAll(newRecipes) ; numberWindows = recipes.size() ;}
+	public void addRecipes(List<Recipe> newRecipes) { recipes.addAll(newRecipes) ; numberPages = recipes.size() ;}
 
 	public void navigate(String action)
 	{
@@ -53,7 +53,7 @@ public class BookWindow extends GameWindow
 		Point productsCol = Util.translate(topLeftPos, image.getWidth(null) / 3, -image.getHeight(null) / 3) ;
 		
 		int sy = FONT.getSize() + 1 ;
-		int id = window ;
+		int id = page ;
 		Color textColor = Palette.colors[5] ;
 		
 		// draw ingredients
@@ -83,10 +83,10 @@ public class BookWindow extends GameWindow
 
 	private void displayPageNumber()
 	{
-		if (numberWindows == 0) { return ;}
+		if (numberPages == 0) { return ;}
 		
 		Point textPos = Util.translate(UtilAlignment.getPosAt(topLeftPos, Align.center, Align.bottomLeft, size), size.width - 60, -50) ;
-		String pageText = (window + 1) + " / " + numberWindows ;
+		String pageText = (page + 1) + " / " + numberPages ;
 		GamePanel.getDP().drawText(textPos, Align.centerRight, DrawPrimitives.stdAngle, pageText, FONT, Palette.colors[0]) ;
 	}
 	
@@ -96,6 +96,6 @@ public class BookWindow extends GameWindow
 		displayRecipes(mousePos) ;
 		displayPageNumber() ;
 		
-		drawNavigationButtons(UtilAlignment.getPosAt(topLeftPos, Align.center, Align.bottomLeft, size), image.getWidth(null), FONT, window, numberWindows, stdOpacity) ;
+		drawNavigationButtons(UtilAlignment.getPosAt(topLeftPos, Align.center, Align.bottomLeft, size), image.getWidth(null), FONT, page, numberPages, stdOpacity) ;
 	}
 }

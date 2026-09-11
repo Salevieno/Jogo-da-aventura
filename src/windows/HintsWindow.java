@@ -39,7 +39,7 @@ public class HintsWindow extends GameWindow
 		Color textColor = Palette.colors[0] ;
 		int maxTextLength = image.getHeight(null) - padding.x ;
 		int sy = SUBTITLE_FONT.getSize() + 2 ;
-		numberWindows = text.length - 6 ;
+		numberPages = text.length - 6 ;
 		
 		GamePanel.getDP().drawImage(image, topLeftPos, 0, Scale.unit, Align.topLeft, stdOpacity) ;
 		
@@ -47,8 +47,8 @@ public class HintsWindow extends GameWindow
 		GamePanel.getDP().drawText(Util.translate(textPos, 10, size.height - 35), Align.topLeft, text[1], SUBTITLE_FONT, textColor) ;
 		GamePanel.getDP().drawText(Util.translate(textPos, (int)(0.9 * size.width), size.height - 35), Align.topRight, text[2], SUBTITLE_FONT, textColor) ;
 		GamePanel.getDP().drawText(Util.translate(textPos, size.width / 2, size.height - 40), Align.center, text[3], SUBTITLE_FONT, textColor) ;
-		Draw.fitText(Util.translate(textPos, 0, 30), sy, Align.topLeft, text[window + 4], SUBTITLE_FONT, maxTextLength, textColor) ;
+		Draw.fitText(Util.translate(textPos, 0, 30), sy, Align.topLeft, text[page + 4], SUBTITLE_FONT, maxTextLength, textColor) ;
 		
-		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, window, numberWindows - 1, stdOpacity) ;
+		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, page, numberPages - 1, stdOpacity) ;
 	}
 }

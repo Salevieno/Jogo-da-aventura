@@ -39,13 +39,13 @@ public abstract class GameWindow
 	protected int numberTabs ;
 	protected int item ;
 	protected int numberItems ;
-	protected int window ;
-	protected int numberWindows ;
+	protected int page ;
+	protected int numberPages ;
 	protected Dimension size ;
 	protected String stdMenuUp ;
 	protected String stdMenuDown ;
-	protected String stdWindowUp ;
-	protected String stdWindowDown ;
+	protected String stdPageUp ;
+	protected String stdPageDown ;
 	protected String stdEnter ;
 	protected String stdReturn ;
 	protected String stdExit ;	
@@ -58,13 +58,13 @@ public abstract class GameWindow
 	protected static final Font STD_FONT = new Font(Game.getMainFontName(), Font.BOLD, 10) ;
 	protected static final Font TITLE_FONT = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 	protected static final Font SUBTITLE_FONT = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
-	protected static final Image BTN_WINDOW_UP_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveUp.png") ;
-	protected static final Image SELECTED_BTN_WINDOW_UP_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveUpSprite.png") ;
-	protected static final Image BTN_WINDOW_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;
-	protected static final Image SELECTED_BTN_WINDOW_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveDownSprite.png") ;	
+	protected static final Image BTN_PAGE_UP_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveUp.png") ;
+	protected static final Image SELECTED_BTN_PAGE_UP_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveUpSprite.png") ;
+	protected static final Image BTN_PAGE_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;
+	protected static final Image SELECTED_BTN_PAGE_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveDownSprite.png") ;	
 	private static final Image ARROW_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "ArrowIcon.png") ;
 	
-	public GameWindow(String name, Point topLeftPos, Image image, int numberMenus, int numberTabs, int numberItems, int numberWindows)
+	public GameWindow(String name, Point topLeftPos, Image image, int numberMenus, int numberTabs, int numberItems, int numberPages)
 	{
 		this.name = name ;
 		this.image = image ;
@@ -73,17 +73,17 @@ public abstract class GameWindow
 		this.numberMenus = numberMenus ;
 		this.numberTabs = numberTabs ;
 		this.numberItems = numberItems ;
-		this.numberWindows = numberWindows ;
+		this.numberPages = numberPages ;
 		this.isOpen = false ;
 		this.menu = 0 ;
 		this.tab = 0 ;
 		this.item = 0 ;
-		this.window = 0 ;
+		this.page = 0 ;
 		this.size = image != null ? Util.getSize(image) : new Dimension(0, 0) ;
 		this.stdMenuUp = PlayerActions.moveUp.getKey() ;
 		this.stdMenuDown = PlayerActions.moveDown.getKey() ;
-		this.stdWindowUp = PlayerActions.moveRight.getKey() ;
-		this.stdWindowDown = PlayerActions.moveLeft.getKey() ;
+		this.stdPageUp = PlayerActions.moveRight.getKey() ;
+		this.stdPageDown = PlayerActions.moveLeft.getKey() ;
 		this.stdEnter = KeyEvent.getKeyText(KeyEvent.VK_ENTER) ;
 		this.stdReturn = "MouseRightClick" ;
 		this.stdExit = KeyEvent.getKeyText(KeyEvent.VK_ESCAPE) ;	
@@ -92,15 +92,15 @@ public abstract class GameWindow
 	public boolean isOpen() {return isOpen ;}
 	
 	public static boolean actionIsForward(String action) { return action == null ? false : action.equals("Enter") || action.equals("LeftClick") ;}
-	protected GameButton windowUpButton(Point pos, Align align)
+	protected GameButton pageUpButton(Point pos, Align align)
 	{
-		ButtonFunction action = () -> { windowUp() ;} ;
-		return new GameIconButton(pos, align, BTN_WINDOW_UP_IMAGE, SELECTED_BTN_WINDOW_UP_IMAGE, action) ;
+		ButtonFunction action = () -> { pageUp() ;} ;
+		return new GameIconButton(pos, align, BTN_PAGE_UP_IMAGE, SELECTED_BTN_PAGE_UP_IMAGE, action) ;
 	}
-	protected GameButton windowDownButton(Point pos, Align align)
+	protected GameButton pageDownButton(Point pos, Align align)
 	{
-		ButtonFunction action = () -> { windowDown() ;} ;
-		return new GameIconButton(pos, align, BTN_WINDOW_DOWN_IMAGE, SELECTED_BTN_WINDOW_DOWN_IMAGE, action) ;
+		ButtonFunction action = () -> { pageDown() ;} ;
+		return new GameIconButton(pos, align, BTN_PAGE_DOWN_IMAGE, SELECTED_BTN_PAGE_DOWN_IMAGE, action) ;
 	}
 	
 	protected boolean mouseIsOver(Point mousePos) { return Util.isInside(mousePos, topLeftPos, size) ;}
@@ -152,18 +152,18 @@ public abstract class GameWindow
 		}
 	}
 	
-	protected void windowUp()
+	protected void pageUp()
 	{
-		if (window < numberWindows - 1)
+		if (page < numberPages - 1)
 		{
-			window += 1 ;
+			page += 1 ;
 		}
 	}	
-	protected void windowDown()
+	protected void pageDown()
 	{
-		if (0 < window)
+		if (0 < page)
 		{
-			window -= 1 ;
+			page -= 1 ;
 		}
 	}
 	
@@ -186,7 +186,7 @@ public abstract class GameWindow
 	{
 		menu = 0 ;
 		tab = 0 ;
-		window = 0 ;
+		page = 0 ;
 		item = 0 ;
 	}
 	
@@ -200,16 +200,16 @@ public abstract class GameWindow
 		item = itemID ;
 	}
 	
-	protected static void drawNavigationButtons(Point pos, int width, Font font, int selectedWindow, int numberWindows, double opacity)
+	protected static void drawNavigationButtons(Point pos, int width, Font font, int selectedPage, int numberPages, double opacity)
 	{
-		if (0 < selectedWindow)
+		if (0 < selectedPage)
 		{
 			Point leftArrowPos = Util.translate(pos, 25, 0) ;
 			Point textPos = Util.translate(leftArrowPos, 18, 0) ;
 			GamePanel.getDP().drawImage(ARROW_ICON, leftArrowPos, new Scale(-1, -1), Align.center, opacity) ;
 			Draw.keyboardButton(textPos, PlayerActions.moveLeft.getKey(), font) ;			
 		}
-		if (selectedWindow < numberWindows - 1)
+		if (selectedPage < numberPages - 1)
 		{
 			Point rightArrowPos = Util.translate(pos, width - 25, 0) ;
 			Point textPos = Util.translate(rightArrowPos, -18, 0) ;
@@ -221,8 +221,8 @@ public abstract class GameWindow
 	
 	protected void stdNavigation(String action)
 	{
-		if (action.equals(stdWindowUp)) { windowUp() ;}
-		if (action.equals(stdWindowDown)) { windowDown() ;}
+		if (action.equals(stdPageUp)) { pageUp() ;}
+		if (action.equals(stdPageDown)) { pageDown() ;}
 		if (action.equals(stdMenuUp)) { menuUp() ;}
 		if (action.equals(stdMenuDown)) { menuDown() ;}
 		if (action.equals(stdEnter)) { tabUp() ;}

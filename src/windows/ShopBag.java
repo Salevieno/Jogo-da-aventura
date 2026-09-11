@@ -38,7 +38,7 @@ public class ShopBag
     
     private static final Dimension MARGIN = new Dimension(16, 44) ;
     private static final int SPACING_Y = 24 ;
-    private static final int QTD_ITEMS_ON_WINDOW = 7 ;
+    private static final int MAX_ITEMS_DISPLAYED = 7 ;
     private static final Image SHOP_BAG_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "ShopBag.png") ;
     private static final Dimension BAG_SIZE = Util.getSize(SHOP_BAG_IMAGE) ;
     public ShopBag(Point topLeftPos)
@@ -48,7 +48,7 @@ public class ShopBag
         this.textsLeftCenter = new ArrayList<>() ;
         this.itemsForSale = new ArrayList<>() ;
         
-        for (int i = 0 ; i <= QTD_ITEMS_ON_WINDOW - 1 ; i += 1)
+        for (int i = 0 ; i <= MAX_ITEMS_DISPLAYED - 1 ; i += 1)
         {
             Point slotCenter = Util.translate(topLeftPos, MARGIN.width, MARGIN.height + SPACING_Y * i) ;
             this.slotsCenter.add(slotCenter) ;
@@ -83,14 +83,14 @@ public class ShopBag
     {
         if (item == null) { Log.warn("Trying to add null item to shop bag") ; return ;}
 
-        if (QTD_ITEMS_ON_WINDOW <= itemsForSale.size())
+        if (MAX_ITEMS_DISPLAYED <= itemsForSale.size())
         {
             MessageAnimation.start(Util.translate(topLeftPos, BAG_SIZE.width / 2, -30), "Sacola cheia", Palette.colors[0]) ;
             return ;
         }
 
         itemsForSale.add(item) ;
-        qtdItemsOnDisplay = Math.min(itemsForSale.size(), QTD_ITEMS_ON_WINDOW) ;
+        qtdItemsOnDisplay = Math.min(itemsForSale.size(), MAX_ITEMS_DISPLAYED) ;
         totalPrice += item.getPrice() ;
         if (totalPrice <= Game.getPlayer().getBag().getGold())
         {

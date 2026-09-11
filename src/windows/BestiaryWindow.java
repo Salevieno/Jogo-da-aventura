@@ -87,9 +87,9 @@ public class BestiaryWindow extends GameWindow
 		
 		if (discoveredCreatures == null) { return ;}
 		
-		int numSlotsInWindow = Math.min(discoveredCreatures.size(), numRows * numCols) ;
+		int numSlotsInPage = Math.min(discoveredCreatures.size(), numRows * numCols) ;
 		item = -1 ;
-		for (int slot = 0 ; slot <= numSlotsInWindow - 1 ; slot += 1)
+		for (int slot = 0 ; slot <= numSlotsInPage - 1 ; slot += 1)
 		{
 			// draw slots
 			Point slotTopLeft = Util.translate(topLeftPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;

@@ -814,7 +814,7 @@ public class Player extends LiveBeing
 				return ;
 
 			case bag:
-                bag.updateWindow() ;
+                bag.updatePage() ;
                 switchOpenClose(bag) ;
                 return ;
 			

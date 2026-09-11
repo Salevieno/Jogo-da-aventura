@@ -30,7 +30,7 @@ public class ElementalWindow extends GameWindow
 	private Equip selectedEquip ;
 
 	private static final int FIRST_SPHERE_ID = 390 ;
-	private static final int QTD_ITEMS_ON_WINDOW = 10 ;
+	private static final int QTD_ITEMS_ON_PAGE = 10 ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Elemental.png") ;
 	private static final List<String> MENU_TITLES = Arrays.asList("Selecione o equipamento", "Selecione a esfera") ;
 
@@ -66,8 +66,8 @@ public class ElementalWindow extends GameWindow
 	{
 		this.equipsForElemChange = equipsForElemChange ;
 		this.spheres = spheres ;
-		numberItems = menu == 0 ? getEquipsOnWindow().size() : (menu == 1 ? spheres.size() : 0) ;
-		numberWindows = menu == 0 ? 1 + equipsForElemChange.size() / QTD_ITEMS_ON_WINDOW : (menu == 1 ? spheres.size() : 1) ;
+		numberItems = menu == 0 ? getEquipsOnPage().size() : (menu == 1 ? spheres.size() : 0) ;
+		numberPages = menu == 0 ? 1 + equipsForElemChange.size() / QTD_ITEMS_ON_PAGE : (menu == 1 ? spheres.size() : 1) ;
 	}
 
 	public void navigate(String action)
@@ -80,22 +80,22 @@ public class ElementalWindow extends GameWindow
 		{
 			itemDown() ;
 		}
-		if (action.equals(stdWindowUp))
+		if (action.equals(stdPageUp))
 		{
-			windowUp() ;
-			updateWindow() ;
+			pageUp() ;
+			updatePage() ;
 		}
-		if (action.equals(stdWindowDown))
+		if (action.equals(stdPageDown))
 		{
-			windowDown() ;
-			updateWindow() ;
+			pageDown() ;
+			updatePage() ;
 		}
 	}
 
-	private void updateWindow()
+	private void updatePage()
 	{
 		item = 0 ;
-		numberItems = menu == 0 ? getEquipsOnWindow().size() : (menu == 1 ? spheres.size() : 0) ;
+		numberItems = menu == 0 ? getEquipsOnPage().size() : (menu == 1 ? spheres.size() : 0) ;
 	}
 	
 	public void act(BagWindow bag, String action, Player player)
@@ -109,7 +109,7 @@ public class ElementalWindow extends GameWindow
 				
 				selectEquip() ;
 				menu += 1 ;
-				updateWindow() ;
+				updatePage() ;
 				player.resetAction() ;
 				return ;
 				
@@ -167,12 +167,12 @@ public class ElementalWindow extends GameWindow
 		
 	}
 
-	private List<Equip> getEquipsOnWindow()
+	private List<Equip> getEquipsOnPage()
 	{
-		if (equipsForElemChange.size() <= QTD_ITEMS_ON_WINDOW) { return equipsForElemChange ;}
+		if (equipsForElemChange.size() <= QTD_ITEMS_ON_PAGE) { return equipsForElemChange ;}
 		
-		int minIndex = QTD_ITEMS_ON_WINDOW * window ;
-		int maxIndex = Math.min(QTD_ITEMS_ON_WINDOW * (window + 1), equipsForElemChange.size()) ;
+		int minIndex = QTD_ITEMS_ON_PAGE * page ;
+		int maxIndex = Math.min(QTD_ITEMS_ON_PAGE * (page + 1), equipsForElemChange.size()) ;
 		return equipsForElemChange.subList(minIndex, maxIndex) ;
 	}
 	
@@ -182,11 +182,11 @@ public class ElementalWindow extends GameWindow
 		if (equipsForElemChange == null) { return ;}
 		if (equipsForElemChange.isEmpty()) { return ;}
 		
-		List<Equip> equipsOnWindow = getEquipsOnWindow() ;
+		List<Equip> equipsOnWindow = getEquipsOnPage() ;
 		for (int i = 0 ; i <= equipsOnWindow.size() - 1; i += 1)
 		{
-			int row = i % ( QTD_ITEMS_ON_WINDOW / 1) ;
-			int col = i / ( QTD_ITEMS_ON_WINDOW / 1) ;
+			int row = i % ( QTD_ITEMS_ON_PAGE / 1) ;
+			int col = i / ( QTD_ITEMS_ON_PAGE / 1) ;
 			Equip equip = equipsOnWindow.get(i) ;
 			Point slotCenter = Util.translate(topLeftPos, BORDER + PADDING + 6 + col * 140, BORDER + PADDING + 22 + row * 21) ;
 			Point textPos = new Point(slotCenter.x + 5, slotCenter.y) ;
@@ -199,8 +199,8 @@ public class ElementalWindow extends GameWindow
 	{
 		for (int i = 0 ; i <= spheres.size() - 1; i += 1)
 		{
-			int row = i % QTD_ITEMS_ON_WINDOW ;
-			int col = i / QTD_ITEMS_ON_WINDOW ;
+			int row = i % QTD_ITEMS_ON_PAGE ;
+			int col = i / QTD_ITEMS_ON_PAGE ;
 			GeneralItem sphere = spheres.get(i) ;
 			Point slotCenter = Util.translate(topLeftPos,
 					BORDER + PADDING + 6  + col * 140,
@@ -228,7 +228,7 @@ public class ElementalWindow extends GameWindow
 		}
 		
 		
-		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 5), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
+		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 5), size.width, SUBTITLE_FONT, page, numberPages, stdOpacity) ;
 		
 	}
 

@@ -24,7 +24,7 @@ import utilities.Util;
 public class ShoppingWindow extends GameWindow
 {
 	private List<Item> itemsForSale ;
-	private List<Item> itemsOnWindow ;
+	private List<Item> itemsOnPage ;
 	private boolean buyMode ; // TODO fazer venda funcionar no shopping
     private final Point titlePos ;
 	private final List<Point> itemPos ;    
@@ -38,9 +38,9 @@ public class ShoppingWindow extends GameWindow
 	
 	public ShoppingWindow(List<Item> itemsForSale)
 	{
-		super("Shopping", Screen.getMe().pos(0.4, 0.2), IMAGE, 1, 1, Math.min(itemsForSale.size(), MAX_ITEMS_PER_PAGE), calcNumberWindows(itemsForSale.size())) ;
+		super("Shopping", Screen.getMe().pos(0.4, 0.2), IMAGE, 1, 1, Math.min(itemsForSale.size(), MAX_ITEMS_PER_PAGE), calcNumberPages(itemsForSale.size())) ;
 		this.itemsForSale = itemsForSale ;
-		this.itemsOnWindow = calcItemsOnWindow() ;
+		this.itemsOnPage = calcItemsOnPage() ;
 		this.buyMode = true ;
 
         this.titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
@@ -63,8 +63,8 @@ public class ShoppingWindow extends GameWindow
 	
 	private Item selectedItem()
     {
-        if (item + window * MAX_ITEMS_PER_PAGE <= -1) { return null ;}
-        return itemsForSale.get(item + window * MAX_ITEMS_PER_PAGE) ;
+        if (item + page * MAX_ITEMS_PER_PAGE <= -1) { return null ;}
+        return itemsForSale.get(item + page * MAX_ITEMS_PER_PAGE) ;
     }
 	
     public void openShopBag()
@@ -81,25 +81,25 @@ public class ShoppingWindow extends GameWindow
 	{
 		Set<Item> newItems = bag.getAllItems().keySet();
 		itemsForSale = new ArrayList<>(newItems) ;
-		updateNumberWindows() ;
-		updateWindow() ;
+		updateNumberPages() ;
+		updatePage() ;
 	}
 	
-	private static int calcNumberWindows(int numberItems) { return (int) Math.ceil(numberItems / (double)MAX_ITEMS_PER_PAGE) ;}
+	private static int calcNumberPages(int numberItems) { return (int) Math.ceil(numberItems / (double)MAX_ITEMS_PER_PAGE) ;}
 	
-	private void updateNumberWindows() { numberWindows = calcNumberWindows(itemsForSale.size()) ;}
+	private void updateNumberPages() { numberPages = calcNumberPages(itemsForSale.size()) ;}
 	
 	public void navigate(String action)
 	{
-		if (action.equals(stdWindowDown))
+		if (action.equals(stdPageDown))
 		{
-			windowDown() ;
-			updateWindow() ;
+			pageDown() ;
+			updatePage() ;
 		}
-		if (action.equals(stdWindowUp))
+		if (action.equals(stdPageUp))
 		{
-			windowUp() ;
-			updateWindow() ;
+			pageUp() ;
+			updatePage() ;
 		}
 		if (action.equals(stdMenuUp))
 		{
@@ -128,11 +128,11 @@ public class ShoppingWindow extends GameWindow
 		}
 	}
 	
-	private void updateWindow()
+	private void updatePage()
 	{
 		item = 0 ;
-		itemsOnWindow = calcItemsOnWindow() ;
-		numberItems = itemsOnWindow.size() ;
+		itemsOnPage = calcItemsOnPage() ;
+		numberItems = itemsOnPage.size() ;
 	}
 	
     // TODO mover para shopBag
@@ -149,14 +149,14 @@ public class ShoppingWindow extends GameWindow
 		setIemsForSellingMode(bag) ;
 	}
 	
-	private List<Item> calcItemsOnWindow()
+	private List<Item> calcItemsOnPage()
 	{
 		if (itemsForSale.size() <= MAX_ITEMS_PER_PAGE)
 		{
 			return itemsForSale ;
 		}
 		
-		int firstItemID = window * MAX_ITEMS_PER_PAGE ;
+		int firstItemID = page * MAX_ITEMS_PER_PAGE ;
 		int lastItemID = Math.min(firstItemID + MAX_ITEMS_PER_PAGE, itemsForSale.size()) ;
 		
 		return itemsForSale.subList(firstItemID, lastItemID) ;		
@@ -167,10 +167,10 @@ public class ShoppingWindow extends GameWindow
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;		
 		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[0]) ;				
 
-		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
+		for (int i = 0 ; i <= itemsOnPage.size() - 1 ; i += 1)
         {
             updateSelectedItemOnHover(mousePos, namePos.get(i), Align.centerLeft, new Dimension(100, 10), i) ;
-			Item bagItem = itemsOnWindow.get(i) ;
+			Item bagItem = itemsOnPage.get(i) ;
             bagItem.displayInSlot(itemPos.get(i), false);
             
 			String qtdItem = buyMode ? "" : "" ; // TODO pegar bag e mostrar qtos itens tem
@@ -187,6 +187,6 @@ public class ShoppingWindow extends GameWindow
 
 		shopBag.display() ;
 		
-		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
+		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, page, numberPages, stdOpacity) ;
 	}
 }

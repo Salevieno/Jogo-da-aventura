@@ -382,10 +382,10 @@ public class PlayerAttributesWindow extends AttributesWindow
 
 	public void display(Point mousePos)
 	{		
-        Image windowImage = TAB_IMAGES.get(tab) ;
+        Image tabImage = TAB_IMAGES.get(tab) ;
 		
 		// Main window
-		GamePanel.getDP().drawImage(windowImage, topLeftPos, Align.topLeft) ;
+		GamePanel.getDP().drawImage(tabImage, topLeftPos, Align.topLeft) ;
         
         // tab names
 		String[] tabsText = Game.getAllText().get(TextCategories.playerWindow) ;

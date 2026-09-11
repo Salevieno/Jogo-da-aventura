@@ -26,7 +26,7 @@ public class SpellsTreeWindow extends GameWindow
 {
 	private List<Spell> spells ;
 	private List<Spell> playerCurrentSpells ;
-	private List<Spell> spellsOnWindow ;
+	private List<Spell> spellsOnPage ;
 	private int[] spellsDistribution ;
 	private int playerJob ;
 	private int points ;
@@ -52,8 +52,8 @@ public class SpellsTreeWindow extends GameWindow
 	public void setSpells(List<Spell> spells)
 	{
 		this.spells = spells ;
-		updateSpellsOnWindow() ;
-		numberItems = spellsOnWindow.size() ;
+		updateSpellsOnPage() ;
+		numberItems = spellsOnPage.size() ;
 	}
 
 	public void setPoints (int points) { this.points = points ;}
@@ -66,7 +66,7 @@ public class SpellsTreeWindow extends GameWindow
 	
 	public void acquireSpell(Player player)
 	{
-		Spell spell = spellsOnWindow.get(item) ;
+		Spell spell = spellsOnPage.get(item) ;
 		if (!spells.contains(spell)) { return ;}
 
 		if (spell.getLevel() == 0)
@@ -111,21 +111,21 @@ public class SpellsTreeWindow extends GameWindow
 		}
 		if (1 <= numberTabs)
 		{
-			if (action.equals(stdWindowUp))
+			if (action.equals(stdPageUp))
 			{
 				item = 0 ;
 				tabDown() ;
-				updateSpellsOnWindow() ;
+				updateSpellsOnPage() ;
 				updateSpellsDistribution() ;
-				numberItems = spellsOnWindow.size() ;
+				numberItems = spellsOnPage.size() ;
 			}
-			if (action.equals(stdWindowDown))
+			if (action.equals(stdPageDown))
 			{
 				item = 0 ;
 				tabUp() ;
-				updateSpellsOnWindow() ;
+				updateSpellsOnPage() ;
 				updateSpellsDistribution() ;
-				numberItems = spellsOnWindow.size() ;
+				numberItems = spellsOnPage.size() ;
 			}
 		}
 		if (action.equals("Escape"))
@@ -161,8 +161,8 @@ public class SpellsTreeWindow extends GameWindow
 	
 	public void displaySpellsInfo()
 	{
-		if (spellsOnWindow == null) { return ;}
-		if (spellsOnWindow.get(item) == null) { return ;}
+		if (spellsOnPage == null) { return ;}
+		if (spellsOnPage.get(item) == null) { return ;}
 	
 		Point pos = Util.translate(topLeftPos, 0, -64) ;
 		int padding = 5 ;
@@ -172,8 +172,8 @@ public class SpellsTreeWindow extends GameWindow
 		int maxTextLength = SPELL_INFO_IMAGE.getWidth(null) - padding ;
 		Color textColor = Palette.colors[0] ;
 		GamePanel.getDP().drawImage(SPELL_INFO_IMAGE, pos, Align.topLeft) ;
-		Draw.fitText(effectPos, sy, Align.centerLeft, spellsOnWindow.get(item).getEffect(), SUBTITLE_FONT, maxTextLength, textColor) ;
-		Draw.fitText(descriptionPos, sy, Align.centerLeft, spellsOnWindow.get(item).getDescription(), SUBTITLE_FONT, maxTextLength, textColor) ;
+		Draw.fitText(effectPos, sy, Align.centerLeft, spellsOnPage.get(item).getEffect(), SUBTITLE_FONT, maxTextLength, textColor) ;
+		Draw.fitText(descriptionPos, sy, Align.centerLeft, spellsOnPage.get(item).getDescription(), SUBTITLE_FONT, maxTextLength, textColor) ;
 	}
 	
 	public void displaySpellPoints(int points)
@@ -213,9 +213,9 @@ public class SpellsTreeWindow extends GameWindow
 		return spells.subList(spells.size() - 10, spells.size()) ;
 	}
 
-	public void updateSpellsOnWindow()
+	public void updateSpellsOnPage()
 	{
-		spellsOnWindow = tab == 0 ? basicSpells() : proSpells() ;
+		spellsOnPage = tab == 0 ? basicSpells() : proSpells() ;
 	}
 	
 	public void display(Point mousePos)
@@ -237,11 +237,11 @@ public class SpellsTreeWindow extends GameWindow
 		Point space = new Point(28, 23) ;
 		int row = 0 ;
 		int col = 0 ;
-		for (int i = 0 ; i <= spellsOnWindow.size() - 1 ; i += 1)
+		for (int i = 0 ; i <= spellsOnPage.size() - 1 ; i += 1)
 		{
 			if (spellsDistribution.length <= row) { Log.warn("Tentando desenhar magias demais!") ; break ;}
 			
-			Spell spell = spellsOnWindow.get(i) ;
+			Spell spell = spellsOnPage.get(i) ;
 			boolean hasPreReq = spell.hasPreRequisitesMet(playerCurrentSpells) ;
 			Dimension slotSize = new Dimension(SPELL_SLOT_IMAGE.getWidth(null), SPELL_SLOT_IMAGE.getHeight(null)) ;
 			Color textColor = hasPreReq ? hasPreReqColor : hasNotPreReqColor ;

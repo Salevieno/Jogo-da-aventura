@@ -43,7 +43,7 @@ import utilities.Util;
 public class BagWindow extends GameWindow
 {
 	private Map<Item, Integer> itemsOnMenu ;
-	private Map<Item, Integer> itemsOnWindow ;
+	private Map<Item, Integer> itemsOnPage ;
 	private Map<Item, Integer> itemsInBag ;
 	private Map<Integer, List<Item>> recentlyUsedItems ;
 	private int gold ;
@@ -55,7 +55,7 @@ public class BagWindow extends GameWindow
 
 	private static final int QTD_COL = 3 ;
 	private static final int MAX_RECENTLY_USED_ITEMS = 3 ;
-	private static final int QTD_SLOTS_PER_WINDOW = 12 ;
+	private static final int QTD_SLOTS_PER_PAGE = 12 ;
 	private static final Point SPACING = new Point(74, 48) ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Bag.png") ;
 	private static final Image ITEM_DESCRIPTION_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagItemDescription.png") ;
@@ -72,9 +72,9 @@ public class BagWindow extends GameWindow
 	{
     	super("Mochila", Screen.getMe().pos(0.28, 0.4), IMAGE, 2, 10, 0, 0) ;
 		Dimension size = Util.getSize(image) ;
-		this.buttons.add(windowUpButton(new Point(topLeftPos.x + size.width - 10, topLeftPos.y + size.height + 10), Align.topLeft)) ;
-		this.buttons.add(windowDownButton(new Point(topLeftPos.x + 10, topLeftPos.y + size.height + 10), Align.topLeft)) ;
-		this.itemsOnWindow = new LinkedHashMap<>() ;
+		this.buttons.add(pageUpButton(new Point(topLeftPos.x + size.width - 10, topLeftPos.y + size.height + 10), Align.topLeft)) ;
+		this.buttons.add(pageDownButton(new Point(topLeftPos.x + 10, topLeftPos.y + size.height + 10), Align.topLeft)) ;
+		this.itemsOnPage = new LinkedHashMap<>() ;
         this.itemsOnMenu = new LinkedHashMap<>() ;
         this.itemsInBag = new LinkedHashMap<>() ;
 		this.recentlyUsedItems = new HashMap<>() ;
@@ -86,10 +86,10 @@ public class BagWindow extends GameWindow
 
 		Point offset = new Point(16 + SLOT_SIZE.width, 80) ;
 		itemPos = new ArrayList<>() ;
-		for (int i = 0 ; i <= QTD_SLOTS_PER_WINDOW - 1; i += 1)
+		for (int i = 0 ; i <= QTD_SLOTS_PER_PAGE - 1; i += 1)
 		{
-			int row = i % (QTD_SLOTS_PER_WINDOW / QTD_COL) ;
-			int col = i / (QTD_SLOTS_PER_WINDOW / QTD_COL) ;
+			int row = i % (QTD_SLOTS_PER_PAGE / QTD_COL) ;
+			int col = i / (QTD_SLOTS_PER_PAGE / QTD_COL) ;
 			itemPos.add(Util.translate(insideTopLeft, offset.x + col * SPACING.x, offset.y + row * SPACING.y)) ;
 		}
 
@@ -143,14 +143,14 @@ public class BagWindow extends GameWindow
 			if (action.equals(stdMenuDown))
 			{
 				tabUp() ;
-				window = 0 ;
-				updateWindow() ;
+				page = 0 ;
+				updatePage() ;
 			}
 			if (action.equals(stdMenuUp))
 			{
 				tabDown() ;
-				window = 0 ;
-				updateWindow() ;
+				page = 0 ;
+				updatePage() ;
 			}			
 			if (actionIsForward(action))
 			{
@@ -161,10 +161,10 @@ public class BagWindow extends GameWindow
 		{
 			if (action.equals(stdMenuDown))
 			{
-                if (QTD_SLOTS_PER_WINDOW * (window + 1) - 1 == item)
+                if (QTD_SLOTS_PER_PAGE * (page + 1) - 1 == item)
 				{
-                    windowUp() ;
-                    updateWindow() ;
+                    pageUp() ;
+                    updatePage() ;
                 }
                 else
                 {
@@ -173,26 +173,26 @@ public class BagWindow extends GameWindow
 			}
 			if (action.equals(stdMenuUp))
 			{
-				if (QTD_SLOTS_PER_WINDOW * window == item)
+				if (QTD_SLOTS_PER_PAGE * page == item)
 				{
-                    windowDown() ;
-                    updateWindow() ;
-                    item = QTD_SLOTS_PER_WINDOW * (window + 1) - 1 ;
+                    pageDown() ;
+                    updatePage() ;
+                    item = QTD_SLOTS_PER_PAGE * (page + 1) - 1 ;
                 }
                 else
                 {
                     itemDown() ;
                 }
 			}
-			if (action.equals(stdWindowUp))
+			if (action.equals(stdPageUp))
 			{
-				windowUp() ;
-				updateWindow() ;
+				pageUp() ;
+				updatePage() ;
 			}
-			if (action.equals(stdWindowDown))
+			if (action.equals(stdPageDown))
 			{
-				windowDown() ;
-				updateWindow() ;
+				pageDown() ;
+				updatePage() ;
 			}
 			if (action.equals(stdExit) || action.equals(stdReturn))
 			{
@@ -208,14 +208,14 @@ public class BagWindow extends GameWindow
 		if (menu == 1 && actionIsForward(action))
 		{
 			player.useItem(getSelectedItem()) ;
-            updateWindow() ;
+            updatePage() ;
 		}		
 	}
 	
 	public void add(Item item, int amount)
 	{
         itemsInBag.put(item, itemsInBag.getOrDefault(item, 0) + amount) ;
-        updateWindow() ;
+        updatePage() ;
 	}
 
 	public void remove(Item item, int amount)
@@ -233,13 +233,13 @@ public class BagWindow extends GameWindow
         {
 			itemsInBag.put(item, itemsInBag.get(item) - amount) ;
         }
-        updateWindow() ;
+        updatePage() ;
 	}
 	
 	public void empty()
 	{
         itemsInBag.clear() ;
-        updateWindow() ;
+        updatePage() ;
 	}
 	
 	public void addGold (int amount) { gold += amount ;}
@@ -366,18 +366,18 @@ public class BagWindow extends GameWindow
 	
 	public boolean hasEnoughGold (int amount) { return amount <= gold ;}
 	
-	public void updateWindow()
+	public void updatePage()
 	{
-		item = window * QTD_SLOTS_PER_WINDOW ;
+		item = page * QTD_SLOTS_PER_PAGE ;
 		
         itemsOnMenu = orderItems(getItemsInSelectedMenuWithAmounts()) ;
 
         // removes the first items that are not in the current window and limits the number of items to the max number of slots per window, while keeping item order
-        itemsOnWindow = itemsOnMenu.entrySet().stream().skip(window * QTD_SLOTS_PER_WINDOW).limit(QTD_SLOTS_PER_WINDOW)
+        itemsOnPage = itemsOnMenu.entrySet().stream().skip(page * QTD_SLOTS_PER_PAGE).limit(QTD_SLOTS_PER_PAGE)
                                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (existing, replacement) -> existing, LinkedHashMap::new)) ;
 
-		numberItems = Math.min((window + 1) * QTD_SLOTS_PER_WINDOW, itemsOnWindow.size() + window * QTD_SLOTS_PER_WINDOW) ;
-		numberWindows = getItemsInTab(tab).size() / QTD_SLOTS_PER_WINDOW + 1 ;
+		numberItems = Math.min((page + 1) * QTD_SLOTS_PER_PAGE, itemsOnPage.size() + page * QTD_SLOTS_PER_PAGE) ;
+		numberPages = getItemsInTab(tab).size() / QTD_SLOTS_PER_PAGE + 1 ;
 	}
 	
 	public int totalValue() // TODO considerar valor de venda dos itens
@@ -387,8 +387,8 @@ public class BagWindow extends GameWindow
 		
 	public Item itemHovered(Point mousePos)
 	{	
-		List<Item> itemsDisplayed = new ArrayList<>(itemsOnWindow.keySet()) ;
-		int numberItemsDisplayed = Math.min(QTD_SLOTS_PER_WINDOW, itemsDisplayed.size()) ;
+		List<Item> itemsDisplayed = new ArrayList<>(itemsOnPage.keySet()) ;
+		int numberItemsDisplayed = Math.min(QTD_SLOTS_PER_PAGE, itemsDisplayed.size()) ;
 
 		for (int i = 0 ; i <= numberItemsDisplayed - 1 ; i += 1)
 		{
@@ -412,13 +412,13 @@ public class BagWindow extends GameWindow
         if (tab == tabID) { return ;}
 		
 		switchTab(tabID) ;
-        updateWindow() ;
+        updatePage() ;
 	}
 
     private void switchTab(int tabID)
     {
 		item = 0 ;
-		window = 0 ;
+		page = 0 ;
 		tab = tabID ;
     }
 
@@ -503,12 +503,12 @@ public class BagWindow extends GameWindow
 
     private void displayItems(Point mousePos, List<Item> itemsDisplayed)
     {
-		int qtdItemsDisplayed = Math.min(QTD_SLOTS_PER_WINDOW, itemsDisplayed.size()) ;
-		List<Integer> amountsDisplayed = new ArrayList<>(itemsOnWindow.values()) ;
+		int qtdItemsDisplayed = Math.min(QTD_SLOTS_PER_PAGE, itemsDisplayed.size()) ;
+		List<Integer> amountsDisplayed = new ArrayList<>(itemsOnPage.values()) ;
 
         for (int i = 0 ; i <= qtdItemsDisplayed - 1; i += 1)
 		{
-			int itemID = i + window * QTD_SLOTS_PER_WINDOW ;
+			int itemID = i + page * QTD_SLOTS_PER_PAGE ;
             boolean selected = 1 <= menu && item == itemID ;
 			Point slotCenter = itemPos.get(i) ;
 
@@ -522,7 +522,7 @@ public class BagWindow extends GameWindow
 		GamePanel.getDP().drawImage(menu == 0 ? image : SELECTED_IMAGE, topLeftPos, Align.topLeft) ;
 		displayTabs(mousePos) ;
 
-		List<Item> listItemsDisplayed = new ArrayList<>(itemsOnWindow.keySet()) ;
+		List<Item> listItemsDisplayed = new ArrayList<>(itemsOnPage.keySet()) ;
 		List<Item> listItemsOnMenu = new ArrayList<>(itemsOnMenu.keySet()) ;
         Item selectedItem = 1 <= listItemsOnMenu.size() ? listItemsOnMenu.get(item) : null ;
 

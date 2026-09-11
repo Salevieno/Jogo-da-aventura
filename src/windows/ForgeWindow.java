@@ -32,7 +32,7 @@ public class ForgeWindow extends GameWindow
 	private String message ;
 	private BagWindow bag ;
 
-	private static final int QTD_ITEMS_ON_WINDOW = 10 ;
+	private static final int QTD_ITEMS_ON_PAGE = 10 ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Forge.png") ;
 	private static final List<String> MESSAGES = Arrays.asList(Game.getAllText().get(TextCategories.forgeWindowMessages)) ;	
 
@@ -170,9 +170,9 @@ public class ForgeWindow extends GameWindow
 
 		Point titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
 		Point messagePos = Util.translate(topLeftPos, size.width / 2, 36) ;
-		List<Equip> itemsOnWindow = QTD_ITEMS_ON_WINDOW <= itemsForForge.size() ? itemsForForge.subList(0, QTD_ITEMS_ON_WINDOW) : itemsForForge ;
+		List<Equip> itemsOnPage = QTD_ITEMS_ON_PAGE <= itemsForForge.size() ? itemsForForge.subList(0, QTD_ITEMS_ON_PAGE) : itemsForForge ;
 		
-		if (itemsOnWindow.size() == 0) { item = -1 ;}
+		if (itemsOnPage.size() == 0) { item = -1 ;}
 		
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;
 		
@@ -181,9 +181,9 @@ public class ForgeWindow extends GameWindow
 		
 		Point itemPos = Util.translate(topLeftPos, 24, 70) ;
 		
-		for (int i = 0 ; i <= itemsOnWindow.size() - 1 ; i += 1)
+		for (int i = 0 ; i <= itemsOnPage.size() - 1 ; i += 1)
 		{			
-			if (itemsOnWindow.get(i) == null) { continue ;}
+			if (itemsOnPage.get(i) == null) { continue ;}
 			
 			Point namePos = Util.translate(itemPos, 14, 0) ;
 			Point runePos = Util.translate(itemPos, 160, 0) ;
@@ -192,8 +192,8 @@ public class ForgeWindow extends GameWindow
 			
 			updateSelectedItemOnHover(mousePos, namePos, Align.centerLeft, new Dimension(200, 10), i) ;
 			
-			Equip equip = itemsOnWindow.get(i) ;
-			Color itemColor = this.item == itemsOnWindow.indexOf(equip) ? SELECTED_COLOR : STD_COLOR ;
+			Equip equip = itemsOnPage.get(i) ;
+			Color itemColor = this.item == itemsOnPage.indexOf(equip) ? SELECTED_COLOR : STD_COLOR ;
             equip.displayInSlot(itemPos, false) ;
 			GamePanel.getDP().drawText(namePos, Align.centerLeft, equip.getName() + " + " + equip.getForgeLevel(), STD_FONT, itemColor) ;
 

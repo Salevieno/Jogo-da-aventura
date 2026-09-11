@@ -32,26 +32,26 @@ public class QuestWindow extends GameWindow
 	}
 	
 	
-	public void setQuests(List<Quest> quests) { this.quests = quests ; numberWindows = quests.size() ;}
+	public void setQuests(List<Quest> quests) { this.quests = quests ; numberPages = quests.size() ;}
 	public void setBag(BagWindow bag) { this.bag = bag ;}
 
 
 	public void navigate(String action)
 	{
-		if (action.equals(stdWindowUp))
+		if (action.equals(stdPageUp))
 		{
-			windowUp() ;
+			pageUp() ;
 		}
-		if (action.equals(stdWindowDown))
+		if (action.equals(stdPageDown))
 		{
-			windowDown() ;
+			pageDown() ;
 		}
 	}
 	
 	public void displayReqCreatures(Point sectionPos, Quest quest)
 	{
 		
-		Map<Integer, Integer> reqCreatureTypeIDs = quests.get(window).getReqCreatures() ;
+		Map<Integer, Integer> reqCreatureTypeIDs = quests.get(page).getReqCreatures() ;
 		
 		if (reqCreatureTypeIDs == null) { return ;}
 		if (reqCreatureTypeIDs.isEmpty()) { return ;}
@@ -80,7 +80,7 @@ public class QuestWindow extends GameWindow
 	public void displayReqItems(Point sectionPos)
 	{
 		
-		Map<Integer, Integer> reqItemIDs = quests.get(window).getReqItemIDs() ;
+		Map<Integer, Integer> reqItemIDs = quests.get(page).getReqItemIDs() ;
 		
 		if (reqItemIDs == null) { return ;}
 		if (reqItemIDs.isEmpty()) { return ;}
@@ -111,13 +111,13 @@ public class QuestWindow extends GameWindow
 
 		if (quests.size() <= 0) { return ;}
 		
-		Quest quest = quests.get(window) ;
+		Quest quest = quests.get(page) ;
 		Point questPos = Util.translate(topLeftPos, image.getWidth(null) / 2, 30) ;
 		GamePanel.getDP().drawText(questPos, Align.center, quest.getName(), TITLE_FONT, Palette.colors[8]) ;
 		
 		displayReqCreatures(Util.translate(topLeftPos, size.width / 2 , 60), quest) ;
 		displayReqItems(Util.translate(topLeftPos, size.width / 2, 260)) ;
 		
-		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
+		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, page, numberPages, stdOpacity) ;
 	}
 }

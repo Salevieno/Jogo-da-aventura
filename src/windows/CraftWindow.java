@@ -29,7 +29,7 @@ public class CraftWindow extends GameWindow
 {
 	private int amountOfCrafts ;
 	private BagWindow playerBag ;
-	private List<Recipe> recipesInWindow ;
+	private List<Recipe> recipesInPage ;
 	
     
 	private final List<Recipe> recipes ;
@@ -42,15 +42,15 @@ public class CraftWindow extends GameWindow
     private final List<Point> productsPos ;
     private final List<Point> productsTextPos ;
 
-	private static final int RECIPES_PER_WINDOW = 1 ;
+	private static final int RECIPES_PER_PAGE = 1 ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Craft.png") ;
 	private static final List<String> MESSAGES = List.of(   "Items criados!",
                                                             "Vc não possui todos os ingredientes") ;
 	public CraftWindow(List<Recipe> recipes)
 	{
-		super("Craft window", Screen.getMe().pos(0.03, 0.25), IMAGE, 1, 1, RECIPES_PER_WINDOW, recipes.size() / RECIPES_PER_WINDOW) ;
+		super("Craft window", Screen.getMe().pos(0.03, 0.25), IMAGE, 1, 1, RECIPES_PER_PAGE, recipes.size() / RECIPES_PER_PAGE) ;
         this.amountOfCrafts = 1 ;
-        this.recipesInWindow = RECIPES_PER_WINDOW <= recipes.size() ? recipes.subList(window, RECIPES_PER_WINDOW + window) : recipes ;
+        this.recipesInPage = RECIPES_PER_PAGE <= recipes.size() ? recipes.subList(page, RECIPES_PER_PAGE + page) : recipes ;
 
 		this.leftWindowPos = Util.translate(topLeftPos, 0, 0) ;
         this.centerWindowPos = Util.translate(topLeftPos, 384, 0) ;
@@ -75,14 +75,14 @@ public class CraftWindow extends GameWindow
 	
 	public void navigate(String action)
 	{
-		if (action.equals(stdWindowUp))
+		if (action.equals(stdPageUp))
 		{
-			windowUp() ;
+			pageUp() ;
 			itemUp() ;
 		}
-		if (action.equals(stdWindowDown))
+		if (action.equals(stdPageDown))
 		{
-			windowDown() ;
+			pageDown() ;
 			itemDown() ;
 		}
 		if (action.equals(stdMenuUp) || action.equals("MouseWheelUp"))
@@ -95,14 +95,14 @@ public class CraftWindow extends GameWindow
 			amountOfCrafts += -1 ;
 		}
 		
-		recipesInWindow = RECIPES_PER_WINDOW <= recipes.size() ? recipes.subList(window, RECIPES_PER_WINDOW + window) : recipes ;
+		recipesInPage = RECIPES_PER_PAGE <= recipes.size() ? recipes.subList(page, RECIPES_PER_PAGE + page) : recipes ;
 	}
 	
 	public void setBag(BagWindow bag) { this.playerBag = bag ;}
 	
-	public void craft(BagWindow bag)
+	private void craft(BagWindow bag)
 	{
-		Recipe recipe = recipesInWindow.get(item) ;
+		Recipe recipe = recipesInPage.get(item) ;
 		
 		if (!bag.hasEnough(recipe.getIngredients())) { displayMessage(1) ; return ;}
 		
@@ -147,7 +147,7 @@ public class CraftWindow extends GameWindow
 		
 		if (action.equals("Enter"))
 		{
-			Recipe recipe = recipesInWindow.get(item) ;
+			Recipe recipe = recipesInPage.get(item) ;
 
 			if (!meetsElementalArrowRules(recipe, player)) { return ;}
 			if (!meetsPoisonousPotionsRules(recipe, player)) { return ;}
@@ -175,7 +175,7 @@ public class CraftWindow extends GameWindow
 	{		
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;
 
-		for (Recipe recipe : recipesInWindow)
+		for (Recipe recipe : recipesInPage)
 		{
 			Map<Item, Integer> ingredients = recipe.getIngredients() ;
 			Map<Item, Integer> products = recipe.getProducts() ;
@@ -210,6 +210,6 @@ public class CraftWindow extends GameWindow
 		craftButton.setName("Fabricar " + amountOfCrafts) ;
 		craftButton.display(true, mousePos) ;
 		
-		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, window, numberWindows, stdOpacity) ;
+		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, page, numberPages, stdOpacity) ;
 	}
 }
