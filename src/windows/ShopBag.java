@@ -74,6 +74,12 @@ public class ShopBag
         cancelButton.activate() ;
     }
 
+    protected void deactivateButtons()
+    {
+        buyButton.deactivate() ;
+        cancelButton.deactivate() ;
+    }
+
     public void addItem(Item item)
     {
         if (item == null) { Log.warn("Trying to add null item to shop bag") ; return ;}

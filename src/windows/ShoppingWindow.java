@@ -53,6 +53,11 @@ public class ShoppingWindow extends GameWindow
         shopBag.open() ;
     }
 
+    protected void closeShopBag()
+    {
+        shopBag.deactivateButtons() ;
+    }
+
 	public void setIemsForSellingMode(BagWindow bag)
 	{
 		Set<Item> newItems = bag.getAllItems().keySet();

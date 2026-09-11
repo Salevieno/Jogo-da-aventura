@@ -92,7 +92,7 @@ public class NPCSeller extends NPC
 	{
 		if (action == null) { return ;}
 		
-		if (currentMenuID == 0 & actionIsForward(action))
+		if (currentMenuID == 0 && actionIsForward(action))
 		{
 			ShoppingWindow shopping = (ShoppingWindow) window ;
 			shopping.setBuyMode(selOption == 0) ;
