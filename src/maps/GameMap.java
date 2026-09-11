@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -153,7 +154,7 @@ public abstract class GameMap
 	{
 		
 		// checking colliders
- 		List<Collider> allColliders = allColliders() ;
+ 		Set<Collider> allColliders = allColliders() ;
  		for (Collider collider : allColliders)
  		{
  			if (pos.equals(collider.getPos()) & superElem != Elements.air) { return false ;}
@@ -273,10 +274,10 @@ public abstract class GameMap
 
 		return groundRegions ;
 	}
- 	// TODO collider pode ser set?
- 	public List<Collider> allColliders()
+
+ 	public Set<Collider> allColliders()
  	{
- 		List<Collider> allColliders = new ArrayList<>() ;
+ 		Set<Collider> allColliders = new HashSet<>() ;
  		
  		if (buildings != null)
  		{
