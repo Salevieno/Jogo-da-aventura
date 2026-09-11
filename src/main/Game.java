@@ -563,7 +563,7 @@ public class Game
 			player.addKeyPressed(KeyEvent.getKeyText(keyCode));
 			if (player.isMoving())
 			{
-				player.updateDirection(KeyEvent.getKeyText(keyCode));
+				player.updateDirection(keyCode);
 			}
 		}
 

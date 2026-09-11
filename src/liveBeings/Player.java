@@ -2,6 +2,7 @@ package liveBeings ;
 
 import java.awt.Image ;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList ;
 import java.util.Arrays ;
@@ -883,16 +884,14 @@ public class Player extends LiveBeing
 		}
 	}
 	
-	public void updateDirection(String action)
+	public void updateDirection(int keyCode)
 	{
-		if (action == null) { return ;}
-// TODO generalizar para qualquer linguagem de teclado
-		switch (action)
+		switch (keyCode)
 		{
-			case "W", "Up", "Acima" -> setDir(Directions.up) ;
-			case "A", "Left", "Esquerda" -> setDir(Directions.left) ;
-			case "S", "Down", "Abaixo" -> setDir(Directions.down) ;
-			case "D", "Right", "Direita" -> setDir(Directions.right) ;
+			case KeyEvent.VK_W, KeyEvent.VK_UP -> setDir(Directions.up) ;
+			case KeyEvent.VK_A, KeyEvent.VK_LEFT -> setDir(Directions.left) ;
+			case KeyEvent.VK_S, KeyEvent.VK_DOWN -> setDir(Directions.down) ;
+			case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> setDir(Directions.right) ;
 		}
 	}
 
