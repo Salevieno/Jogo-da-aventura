@@ -132,7 +132,6 @@ public class BagWindow extends GameWindow
 	public Map<Item, Integer> getAllItems() { return Collections.unmodifiableMap(itemsInBag) ;}
     public int getGold() {return gold ;}
 	public Item getItemFetched() { return itemFetched ;}
-	public static Image getSlotImage() { return SLOT_IMAGE ;}
 	
 	public void setItemFetched(Item itemFetched) { this.itemFetched = itemFetched ;}
 	
@@ -393,8 +392,8 @@ public class BagWindow extends GameWindow
 		for (int i = 0 ; i <= numberItemsDisplayed - 1 ; i += 1)
 		{
 			Point slotCenter = itemPos.get(i) ;
-			Point slotCenterLeft = UtilAlignment.getPosAt(slotCenter, Align.center, Align.centerLeft, Util.getSize(SLOT_IMAGE)) ;
-			if (Util.isInside(mousePos, slotCenterLeft, ITEM_NAME_SIZE))
+			Point slotCenterLeft = UtilAlignment.getTopLeft(slotCenter, Align.center, Util.getSize(SLOT_IMAGE)) ;
+			if (Util.isInside(mousePos, slotCenterLeft, Util.getSize(SLOT_IMAGE)))
 			{
 				return itemsDisplayed.get(i) ;
 			}

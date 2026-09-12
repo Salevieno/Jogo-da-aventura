@@ -606,37 +606,20 @@ public class Game
 		{
 			player.setCurrentAction("MouseRightClick");
 			player.setPos(new Point2D.Double(GamePanel.getMousePos().x, GamePanel.getMousePos().y));
-			// Log.attributes(player) ;
-			if (pet != null)
-			{
-				pet.setPos(player.getPosAsDouble());
-			}
 		}
 
 		if (!GameStates.running.equals(state))
 		{
 			return;
 		}
-
-		int hotKeySlotHovered = HotKeysBar.slotHovered(GamePanel.getMousePos());
-
-		if (-1 < hotKeySlotHovered)
-		{
-			player.getHotItems().set(hotKeySlotHovered, player.getBag().getItemFetched());
-		}
-
+		
+        HotKeysBar.addItem(player.getBag().getItemFetched()) ;
 		player.getBag().setItemFetched(null);
 	}
 
 	protected void mouseWheelAction(MouseWheelEvent evt)
 	{
-		if (evt.getWheelRotation() < 0)
-		{
-			player.setCurrentAction("MouseWheelUp");
-		} else
-		{
-			player.setCurrentAction("MouseWheelDown");
-		}
+        String action = 0 <= evt.getWheelRotation() ? "MouseWheelDown" : "MouseWheelUp" ;
+		player.setCurrentAction(action) ;
 	}
-
 }

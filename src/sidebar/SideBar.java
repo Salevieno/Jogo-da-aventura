@@ -139,7 +139,7 @@ public abstract class SideBar
 		displayKeys() ;
 		
 		SpellsBar.display(player.getMp().getCurrentValue(), mousePos);
-		HotKeysBar.display(player.getHotItems(), mousePos) ;
+		HotKeysBar.display(mousePos) ;
 
 	}
 	

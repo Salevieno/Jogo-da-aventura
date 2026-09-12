@@ -65,6 +65,7 @@ import maps.GameMap;
 import maps.GroundType;
 import maps.TreasureChest;
 import screen.Screen;
+import sidebar.HotKeysBar;
 import sidebar.SpellsBar;
 import simulations.EvolutionSimulation;
 import spells.Buff;
@@ -121,7 +122,6 @@ public class Player extends LiveBeing
     private NPC npcInContact ;
     private Collectible currentCollectible ;
     private TreasureChest currentChest ;
-    private List<Item> hotItems ;
 	private Statistics stats ;
     
 	public static final int MAX_LEVEL = 99 ;
@@ -220,7 +220,6 @@ public class Player extends LiveBeing
 	    this.npcInContact = null ;
 	    this.currentCollectible = null ;
 	    this.currentChest = null ;
-		this.hotItems = Arrays.asList(null, null, null) ;
 	}
 	
 	public static List<Spell> jobSpells(int job)
@@ -278,7 +277,6 @@ public class Player extends LiveBeing
 	public MapWindow getMapWindow() {return mapWindow ;}
 	public SpellsTreeWindow getSpellsTreeWindow() {return spellsTree ;}
 	public Creature getOpponent() { return opponent ;}
-	public List<Item> getHotItems() { return hotItems ;}
 	public Statistics getStatistics() { return stats ;}
     public double getHearingRange() { return hearingRange ;}
 	public void setAttInc(AttributeIncrease newAttInc) { attInc = newAttInc ;}
@@ -1020,9 +1018,9 @@ public class Player extends LiveBeing
 		// using hotItems
 		for (int i = 0; i <= HOT_KEYS.length - 1 ; i += 1)
 		{
-			if (!HOT_KEYS[i].equals(currentAction) || hotItems.get(i) == null) { continue ;}
+			if (!HOT_KEYS[i].equals(currentAction) || HotKeysBar.getItem(i) == null) { continue ;}
 			
-			useItem(hotItems.get(i)) ;
+			useItem(HotKeysBar.getItem(i)) ;
 		}
 
 		interactWithNPCs() ;
