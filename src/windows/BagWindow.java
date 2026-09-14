@@ -59,7 +59,6 @@ public class BagWindow extends GameWindow
 	private static final Point SPACING = new Point(74, 48) ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Bag.png") ;
 	private static final Image ITEM_DESCRIPTION_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagItemDescription.png") ;
-	private static final Dimension ITEM_NAME_SIZE = new Dimension(140, 10) ;
 	private static final Image SELECTED_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSelected.png") ;
 	private static final Image SLOT_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSlot.png") ;
 	private static final Image SLOT_SELECTED_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagSlotSelected.png") ;
@@ -106,6 +105,11 @@ public class BagWindow extends GameWindow
         }
 		
 	}
+
+    protected void onOpen()
+    {
+        updatePage() ;
+    }
 
 	public void updateRecentlyUsedItem(Item item)
 	{
@@ -365,7 +369,7 @@ public class BagWindow extends GameWindow
 	
 	public boolean hasEnoughGold (int amount) { return amount <= gold ;}
 	
-	public void updatePage()
+	private void updatePage()
 	{
 		item = page * QTD_SLOTS_PER_PAGE ;
 		

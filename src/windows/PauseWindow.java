@@ -50,7 +50,7 @@ public class PauseWindow extends GameWindow
 
         List<GameButton> buttonsMainMenu = List.of(
             new GameTextButton(gridPos(4, 1), Align.center, "", "R E S U M E", btnImg, selectedBtnImg, () -> { 
-                updateButtons() ;
+                onClose() ;
                 Game.getPlayer().switchOpenClose(Game.getPlayer().getPauseWindow()) ;
             }, SOUND_EFFECT_ON_HOVER),
             new GameTextButton(gridPos(6, 1), Align.center, "", "P L A Y E R", btnImg, selectedBtnImg, () -> { switchToMenu(1) ;}, SOUND_EFFECT_ON_HOVER),
@@ -115,15 +115,20 @@ public class PauseWindow extends GameWindow
         menuSettings.put(5, List.of(6)) ;
     }
 
+    protected void onOpen()
+    {
+        menuButtons.get(menu).forEach(GameButton::activate) ;
+    }
+
+    protected void onClose()
+    {
+        menuButtons.get(menu).forEach(GameButton::deactivate) ;
+    }
+
     private static Point gridPos(int row, int col)
     {
         Dimension windowSize = Util.getSize(IMAGE_BG) ;
         return Util.translate(WINDOW_POS, windowSize.width / 2 + (col - 1) * 100, row * 50) ;
-    }
-
-    public void updateButtons()
-    {
-        menuButtons.get(menu).forEach(!isOpen ? GameButton::activate : GameButton::deactivate) ;
     }
 
     private void switchToMenu(int newMenu)

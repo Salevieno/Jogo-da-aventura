@@ -102,10 +102,16 @@ public abstract class GameWindow
 		ButtonFunction action = () -> { pageDown() ;} ;
 		return new GameIconButton(pos, align, BTN_PAGE_DOWN_IMAGE, SELECTED_BTN_PAGE_DOWN_IMAGE, action) ;
 	}
+
+    protected abstract void onOpen() ;
 	
-	protected boolean mouseIsOver(Point mousePos) { return Util.isInside(mousePos, topLeftPos, size) ;}
-	
-	public void open() { isOpen = true ; activateButtons() ;}
+	public void open()
+    {
+        isOpen = true ;
+        onOpen() ;
+        activateButtons() ;
+    }
+
 	public void close()
     {
         isOpen = false ;

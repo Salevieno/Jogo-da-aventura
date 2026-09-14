@@ -46,12 +46,12 @@ public class ForgeWindow extends GameWindow
 		item = 0 ;
 	}
 
-	public void update(BagWindow bag, List<Equip> itemsForForge)
-	{
-		this.itemsForForge = itemsForForge ;
+    protected void onOpen()
+    {
+		itemsForForge = Arrays.asList(Game.getPlayer().getEquips()) ;
 		numberItems = itemsForForge.size() ;
-        this.bag = bag ;
-	}
+        bag = Game.getPlayer().getBag() ;
+    }
 
 	public void displayMessage(int i)
 	{

@@ -11,6 +11,7 @@ import graphics.Align;
 import graphics.Scale;
 import items.Item;
 import liveBeings.CreatureType;
+import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Palette;
@@ -30,10 +31,13 @@ public class QuestWindow extends GameWindow
 	{
 		super("Quest", Screen.getMe().pos(0.36, 0.14), IMAGE, 0, 0, 0, 0) ;
 	}
-	
-	
-	public void setQuests(List<Quest> quests) { this.quests = quests ; numberPages = quests.size() ;}
-	public void setBag(BagWindow bag) { this.bag = bag ;}
+
+    protected void onOpen()
+    {
+        quests = Game.getPlayer().getQuests() ;
+        bag = Game.getPlayer().getBag() ;
+        numberPages = quests.size() ;
+    }
 
 
 	public void navigate(String action)

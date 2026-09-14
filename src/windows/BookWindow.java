@@ -35,6 +35,11 @@ public class BookWindow extends GameWindow
 		super("Livro", Screen.getMe().getCenter(), IMAGE, 0, 0, 0, 0) ;
 	}
 
+    protected void onOpen()
+    {
+        
+    }
+
 	public void setRecipes(List<Recipe> recipes) { this.recipes = recipes ; numberPages = recipes.size() ;}
 	
 	public void addRecipes(List<Recipe> newRecipes) { recipes.addAll(newRecipes) ; numberPages = recipes.size() ;}

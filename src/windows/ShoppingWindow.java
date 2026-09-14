@@ -59,6 +59,11 @@ public class ShoppingWindow extends GameWindow
         this.shopBag = new ShopBag(Util.translate(topLeftPos, 300, 200)) ;
 	}
 
+    protected void onOpen()
+    {
+        
+    }
+
 	public void setBuyMode(boolean buyMode) { this.buyMode = buyMode ;}
 	
 	private Item selectedItem()

@@ -2,7 +2,6 @@ package NPC;
 
 import java.awt.Image;
 import java.awt.Point;
-import java.util.Arrays;
 import java.util.List;
 
 import liveBeings.Pet;
@@ -40,15 +39,11 @@ public class NPCForger extends NPC
 // 			}
 	public void act(Player player, Pet pet, String action)
 	{
-
 		if (action == null) { return ;}
 
 		if (currentMenuID == 0 & selOption == 0 & actionIsForward(action))
 		{
-            ((ForgeWindow) window).update(player.getBag(), Arrays.asList(player.getEquips())) ;
 			player.switchOpenClose(window) ;
 		}
-
-    }
-    
+    }    
 }

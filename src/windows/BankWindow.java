@@ -44,10 +44,12 @@ public class BankWindow extends GameWindow
 		liveInput = new LiveInput() ;
 	}
 
+
+    protected void onOpen()
+    {
+        
+    }
 	
-	public int getAmountTyped() { return amountTyped ;}
-	public int getBalance() { return balance;}
-	public GameTimer getInvestmentCounter() { return investmentCounter ;}
 	public void setMode(BankAction mode) { this.mode = mode ;}
 	
 	private boolean isReadingInput() { return mode.equals(BankAction.deposit) || mode.equals(BankAction.withdraw) || mode.equals(BankAction.investmentLowRisk) || mode.equals(BankAction.investmentHighRisk) ;}

@@ -43,6 +43,11 @@ public class ElementalWindow extends GameWindow
 		equipsForElemChange = new ArrayList<>() ;
 	}
 
+    protected void onOpen()
+    {
+        
+    }
+
 	public static List<GeneralItem> spheresInBag(BagWindow bag)
 	{
 		

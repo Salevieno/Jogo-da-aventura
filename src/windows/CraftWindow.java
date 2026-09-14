@@ -72,6 +72,11 @@ public class CraftWindow extends GameWindow
 		this.craftButton.deactivate() ;
 		this.buttons.add(craftButton) ;
 	}
+
+    protected void onOpen()
+    {
+        
+    }
 	
 	public void navigate(String action)
 	{

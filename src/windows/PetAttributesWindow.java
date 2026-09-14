@@ -35,7 +35,10 @@ public class PetAttributesWindow extends AttributesWindow
 		this.windowPos = Screen.getMe().pos(0.52, 0.14) ;
 	}
 
-	public void setPet(Pet pet) { this.pet = pet ;}
+    protected void onOpen()
+    {
+        this.pet = Game.getPet() ;
+    }
 	
 	public void display(Point mousePos)
 	{

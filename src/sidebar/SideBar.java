@@ -25,8 +25,6 @@ import main.Palette;
 import main.Path;
 import screen.Screen;
 import utilities.Util;
-import windows.PetAttributesWindow;
-import windows.PlayerAttributesWindow;
 
 public abstract class SideBar
 {
@@ -56,33 +54,20 @@ public abstract class SideBar
 	public static void initialize()
 	{
 		Player player = Game.getPlayer() ;
-		Image playerImage = player.getMovingAni().spriteIdle.getCurrentFrame() ;
-		ButtonFunction playerAction = () -> {
-			((PlayerAttributesWindow) player.getAttWindow()).update(player) ;
-			player.switchOpenClose(player.getAttWindow()) ;
-		} ;
-		ButtonFunction[] actions = new ButtonFunction[ICON_NAMES.length] ;
-		actions[0] = () -> {
-			player.getMapWindow().update(player.getPos(), player.getMap()) ;
-			player.switchOpenClose(player.getMapWindow()) ;
-		} ; 
-		actions[1] = () -> {
-			player.getQuestWindow().setQuests(player.getQuests()) ;
-			player.getQuestWindow().setBag(player.getBag()) ;
-			player.switchOpenClose(player.getQuestWindow()) ;
-		} ; 
-		actions[2] = () -> { player.switchOpenClose(player.getBag()) ;} ; 
-		actions[3] = () -> { 
-			player.getPauseWindow().updateButtons() ;
-			player.switchOpenClose(player.getPauseWindow()) ;
-		} ;
-		actions[4] = () -> { MainGame3_4.closeGame() ;} ;
-
-		SpellsBar.updateSpells(player.getActiveSpells()) ;        
+		SpellsBar.updateSpells(player.getActiveSpells()) ;  
 
 		Point iconPos = Util.translate(BAR_POS, SIZE.width / 2, 45) ;
+		Image playerImage = player.getMovingAni().spriteIdle.getCurrentFrame() ;
+		ButtonFunction playerAction = () -> { player.switchOpenClose(player.getAttWindow()) ;} ;
 		BUTTONS.add(new GameIconButton(iconPos, Align.topCenter, playerImage, playerImage, playerAction)) ;
 		iconPos.y += playerImage.getHeight(null) + 10 ;
+        
+		ButtonFunction[] actions = new ButtonFunction[ICON_NAMES.length] ;
+		actions[0] = () -> { player.switchOpenClose(player.getMapWindow()) ;} ; 
+		actions[1] = () -> { player.switchOpenClose(player.getQuestWindow()) ;} ; 
+		actions[2] = () -> { player.switchOpenClose(player.getBag()) ;} ; 
+		actions[3] = () -> { player.switchOpenClose(player.getPauseWindow()) ;} ;
+		actions[4] = () -> { MainGame3_4.closeGame() ;} ;
 		for (int i = 0 ; i <= ICON_NAMES.length - 1 ; i += 1)
 		{
 			BUTTONS.add(new GameIconButton(iconPos, Align.topCenter, ICON_IMAGES[i], ICON_SELECTED_IMAGES[i], actions[i])) ;
@@ -102,10 +87,7 @@ public abstract class SideBar
 		if (pet == null) { return ;}
 		
 		Image petImage = pet.getMovingAnimations().spriteIdle.getCurrentFrame() ;
-		ButtonFunction petAction = () -> {
-			((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
-			player.switchOpenClose(pet.getAttWindow()) ;
-		} ;
+		ButtonFunction petAction = () -> { player.switchOpenClose(pet.getAttWindow()) ;} ;
 		BUTTONS.add(new GameIconButton(Util.translate(BAR_POS, SIZE.width / 2, 10), Align.topCenter, petImage, petImage, petAction)) ;
 	}
 	
@@ -131,8 +113,7 @@ public abstract class SideBar
 	}
 	
 	public static void display(Player player, Pet pet, Point mousePos)
-	{
-		
+	{		
 		GamePanel.getDP().drawRect(BAR_POS, Align.topLeft, SIZE, BG_COLOR, null) ;
 		
 		BUTTONS.forEach(button -> button.display(false, mousePos)) ;
@@ -140,8 +121,5 @@ public abstract class SideBar
 		
 		SpellsBar.display(player.getMp().getCurrentValue(), mousePos);
 		HotKeysBar.display(mousePos) ;
-
-	}
-	
-	
+	}	
 }

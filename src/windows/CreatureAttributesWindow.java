@@ -28,6 +28,11 @@ public class CreatureAttributesWindow extends AttributesWindow
 		this.topLeftPos = Screen.getMe().pos(0.4, 0.2) ;
 	}
 
+    protected void onOpen()
+    {
+        
+    }
+
 	public void display(CreatureType creatureType)
 	{
 		GamePanel.getDP().drawImage(image, topLeftPos, Align.topLeft) ;

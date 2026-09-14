@@ -29,6 +29,11 @@ public class BestiaryWindow extends GameWindow
 		this.windowSize = new Dimension(384, 288) ;
 	}
 
+    protected void onOpen()
+    {
+        
+    }
+
 	public void addDiscoveredCreature(CreatureType newCreature) { discoveredCreatures.add(newCreature) ;}
 	
 	public void navigate(String action)

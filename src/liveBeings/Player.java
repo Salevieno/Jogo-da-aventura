@@ -82,7 +82,6 @@ import windows.GameWindow;
 import windows.HintsWindow;
 import windows.MapWindow;
 import windows.PauseWindow;
-import windows.PetAttributesWindow;
 import windows.PlayerAttributesWindow;
 import windows.QuestWindow;
 import windows.ShoppingWindow;
@@ -807,20 +806,12 @@ public class Player extends LiveBeing
 			case escape:
 				if ((!hasWindowOpen() || (openWindows.size() == 1 && openWindows.get(0).equals(pauseWindow))) && !isInteractingWithNPC())
 				{
-					pauseWindow.updateButtons() ;
 					switchOpenClose(pauseWindow) ;
 				}
 				return ;
 
-			case bag:
-                bag.updatePage() ;
-                switchOpenClose(bag) ;
-                return ;
-			
-			case attWindow:
-				((PlayerAttributesWindow) attWindow).update(this) ;
-				switchOpenClose(attWindow) ;
-				return ;
+			case bag: switchOpenClose(bag) ; return ;			
+			case attWindow: switchOpenClose(attWindow) ; return ;
 				
 			case interact:
 				if (!bag.contains(Item.getAllItems().get(1340)) | !isTouching(GroundType.water)) { return ;}
@@ -828,19 +819,13 @@ public class Player extends LiveBeing
 				
 			case map:
 				if (!questSkills.get(QuestSkills.getContinentMap(map.getContinent().name()))) { return ;}
-				mapWindow.update(getPos(), map);
 				switchOpenClose(mapWindow) ; return ;
 				
 			case pet:
 				if (pet == null) { return ;}
-				((PetAttributesWindow) pet.getAttWindow()).setPet(pet) ;
 				switchOpenClose(pet.getAttWindow()) ; return ;
 				
-			case quest: 
-				questWindow.setQuests(quests) ;
-				questWindow.setBag(bag) ;
-				switchOpenClose(questWindow) ; return ;
-				
+			case quest: switchOpenClose(questWindow) ; return ;				
 			case hints: switchOpenClose(hintsWindow) ; return ;
 			
 			case ride:
@@ -1586,12 +1571,7 @@ public class Player extends LiveBeing
 			win.reset() ;
 			win.close() ;
 			openWindows.remove(win) ;
-			if (openWindows.isEmpty())
-			{
-				setFocusWindow(null) ;
-				return ;
-			}
-			setFocusWindow(openWindows.get(openWindows.size() - 1)) ;
+			setFocusWindow(openWindows.isEmpty() ? null : openWindows.get(openWindows.size() - 1)) ;
 			return ;
 		}
 		win.open() ;
@@ -1987,8 +1967,4 @@ public class Player extends LiveBeing
 		stats.updateInflictedBlood(bloodDamage) ;		
 		stats.updateInflictedPoison(poisonDamage) ;
 	}
-
-
-
-	
 }

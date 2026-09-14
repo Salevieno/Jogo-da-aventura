@@ -39,7 +39,6 @@ import main.ImageLoader;
 import main.Log;
 import main.Palette;
 import utilities.Util;
-import windows.PlayerAttributesWindow;
 
 public abstract class EvolutionSimulation
 {
@@ -689,12 +688,7 @@ public abstract class EvolutionSimulation
 		switch (action)
 		{
 			case "B": player.getBag().open() ; break ;
-			case "C": 
-//				player.getAttWindow().open() ;
-				((PlayerAttributesWindow) player.getAttWindow()).update(player) ;
-				player.switchOpenClose(player.getAttWindow());
-				
-				break ;
+			case "C": player.switchOpenClose(player.getAttWindow()) ; break ;
 			case "P": if (pet != null) { pet.getAttWindow().open() ;} ; break ;
 			case "T": player.getSpellsTreeWindow().setSpells(player.getSpells()) ; player.getSpellsTreeWindow().open() ; break ;
 			case "O":

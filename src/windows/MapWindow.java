@@ -8,6 +8,7 @@ import java.util.List;
 
 import graphics.Align;
 import graphics.Scale;
+import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
@@ -40,10 +41,10 @@ public class MapWindow extends GameWindow
 		this.spacing = new Point(6, 6) ;
 	}
 
-	public void update(Point playerPos, GameMap mapWithPlayer)
-	{
-		this.playerPos = playerPos ;
-		this.mapWithPlayer = mapWithPlayer ;
+    protected void onOpen()
+    {
+		this.playerPos = Game.getPlayer().getPos() ;
+		this.mapWithPlayer = Game.getPlayer().getMap() ;
 		this.scale = new Scale(0.1, 0.1) ;
 		this.mapSize = new Dimension((int) (Screen.getMe().mapSize().width * scale.x), (int) (Screen.getMe().mapSize().height * scale.y)) ;
 		this.mapsDisplayed = GameMap.getAllMaps().stream().filter(map -> mapWithPlayer.getContinent().equals(map.getContinent())).toList() ;
@@ -58,7 +59,7 @@ public class MapWindow extends GameWindow
 			case special -> calcMapOffset(3, 4, scale, spacing) ;
 			default -> new Point() ;
 		};
-	}
+    }
 
 	public void navigate(String action)
 	{

@@ -141,10 +141,10 @@ public class PlayerAttributesWindow extends AttributesWindow
 
 		this.incAttButtons = new HashMap<>() ;
 	}
-	
-    public void update(Player player)
+
+    protected void onOpen()
     {
-        this.player = player ;
+        this.player = Game.getPlayer() ;
 
         this.levelText = "Level: " + player.getLevel() ;
 		String[] classesText = Game.getAllText().get(TextCategories.classes) ;

@@ -46,6 +46,11 @@ public class SpellsTreeWindow extends GameWindow
 		this.spells = new ArrayList<>() ;
 		this.playerCurrentSpells = new ArrayList<>() ;
 	}
+
+    protected void onOpen()
+    {
+        
+    }
 		
 	public void switchTo2Tabs() { numberTabs = 2 ;}
 

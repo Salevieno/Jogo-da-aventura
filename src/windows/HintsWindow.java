@@ -25,6 +25,11 @@ public class HintsWindow extends GameWindow
 	{
 		super("Dicas", Screen.getMe().pos(0.15, 0.4), IMAGE, 0, 0, 0, 0) ;
 	}
+
+    protected void onOpen()
+    {
+        
+    }
 	
 	public void navigate(String action)
 	{
