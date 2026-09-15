@@ -73,18 +73,13 @@ import spells.Spell;
 import spells.SpellTypes;
 import utilities.Util;
 import windows.BagWindow;
-import windows.BankWindow;
 import windows.BestiaryWindow;
-import windows.CraftWindow;
-import windows.ElementalWindow;
-import windows.ForgeWindow;
 import windows.GameWindow;
 import windows.HintsWindow;
 import windows.MapWindow;
 import windows.PauseWindow;
 import windows.PlayerAttributesWindow;
 import windows.QuestWindow;
-import windows.ShoppingWindow;
 import windows.SpellsTreeWindow;
 
 public class Player extends LiveBeing
@@ -1017,52 +1012,11 @@ public class Player extends LiveBeing
 
 	private void navigateThroughOpenWindows(Point mousePos)
 	{
-
-		if (bag.isOpen())
-		{
-			bag.act(currentAction, mousePos, this) ;
-		}
-
 		if (focusWindow == null) { return ;}
+		if (!focusWindow.isOpen()) {  return ;}
 
-		if (focusWindow.isOpen())
-		{
-			if (currentAction.equals("Escape") && !focusWindow.equals(pauseWindow))
-			{
-				// switchOpenClose(focusWindow) ;
-                focusWindow.navigate(currentAction) ;
-			}
-			else
-			{
-				focusWindow.navigate(currentAction) ;
-			}
-		}
-		if (focusWindow instanceof ShoppingWindow)
-		{
-			((ShoppingWindow) focusWindow).act(currentAction, bag) ;
-		}
-		if (focusWindow instanceof SpellsTreeWindow)
-		{
-			((SpellsTreeWindow) focusWindow).act(this) ;
-		}
-		if (focusWindow instanceof BankWindow)
-		{
-			((BankWindow) focusWindow).act(bag, currentAction) ;
-		}
-		if (focusWindow instanceof CraftWindow)
-		{
-			((CraftWindow) focusWindow).act(bag, mousePos, currentAction, this) ;
-		}
-		if (focusWindow instanceof ElementalWindow)
-		{
-			((ElementalWindow) focusWindow).act(bag, currentAction, this) ;
-			return ;
-		}
-		if (focusWindow instanceof ForgeWindow)
-		{
-			((ForgeWindow) focusWindow).act(currentAction) ;
-		}
-		
+        focusWindow.navigate(currentAction) ;
+		focusWindow.act(this, mousePos) ;		
 	}
 
 	private void interactWithNPCs()

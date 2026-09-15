@@ -47,6 +47,32 @@ public class ElementalWindow extends GameWindow
     {
         
     }
+	
+	public void act(Player player, Point mousePos)
+	{
+		if (!actionIsForward(player.getCurrentAction())) { return ;}
+		
+		switch (menu)
+		{
+			case 0:
+				if (equipsForElemChange == null || equipsForElemChange.isEmpty()) { return ;}
+				
+				selectEquip() ;
+				menu += 1 ;
+				updatePage() ;
+				player.resetAction() ;
+				return ;
+				
+			case 1:
+				selectSphere() ;
+				changeEquipElement(player.getBag()) ;
+				player.switchOpenClose(this) ;
+				player.resetAction() ;
+				return ;
+			
+			default: return ;
+		}		
+	}
 
 	public static List<GeneralItem> spheresInBag(BagWindow bag)
 	{
@@ -101,33 +127,6 @@ public class ElementalWindow extends GameWindow
 	{
 		item = 0 ;
 		numberItems = menu == 0 ? getEquipsOnPage().size() : (menu == 1 ? spheres.size() : 0) ;
-	}
-	
-	public void act(BagWindow bag, String action, Player player)
-	{
-		if (!actionIsForward(action)) { return ;}
-		
-		switch (menu)
-		{
-			case 0:
-				if (equipsForElemChange == null || equipsForElemChange.isEmpty()) { return ;}
-				
-				selectEquip() ;
-				menu += 1 ;
-				updatePage() ;
-				player.resetAction() ;
-				return ;
-				
-			case 1:
-				selectSphere() ;
-				changeEquipElement(bag) ;
-				player.switchOpenClose(this) ;
-				player.resetAction() ;
-				return ;
-			
-			default: return ;
-		}
-		
 	}
 	
 	public void selectEquip()

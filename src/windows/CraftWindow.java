@@ -78,6 +78,29 @@ public class CraftWindow extends GameWindow
         
     }
 	
+	public void act(Player player, Point mousePos)
+	{
+		if (player.getCurrentAction() == null) { return ;}
+		
+		if (player.getCurrentAction().equals("Enter"))
+		{
+			Recipe recipe = recipesInPage.get(item) ;
+
+			if (!meetsElementalArrowRules(recipe, player)) { return ;}
+			if (!meetsPoisonousPotionsRules(recipe, player)) { return ;}
+			
+			for (int i = 0 ; i <= amountOfCrafts - 1; i += 1)
+			{
+				craft(player.getBag()) ;
+			}
+		}
+		
+		if (craftButton.isActive() & craftButton.isClicked(mousePos, player.getCurrentAction()))
+		{
+			craftButton.act() ;
+		}
+	}
+	
 	public void navigate(String action)
 	{
 		if (action.equals(stdPageUp))
@@ -144,29 +167,6 @@ public class CraftWindow extends GameWindow
 		if (player.getSpells().get(9).getLevel() <= 0) { return false ;}
 		
 		return true ;
-	}
-	
-	public void act(BagWindow bag, Point mousePos, String action, Player player)
-	{
-		if (action == null) { return ;}
-		
-		if (action.equals("Enter"))
-		{
-			Recipe recipe = recipesInPage.get(item) ;
-
-			if (!meetsElementalArrowRules(recipe, player)) { return ;}
-			if (!meetsPoisonousPotionsRules(recipe, player)) { return ;}
-			
-			for (int i = 0 ; i <= amountOfCrafts - 1; i += 1)
-			{
-				craft(bag) ;
-			}
-		}
-		
-		if (craftButton.isActive() & craftButton.isClicked(mousePos, action))
-		{
-			craftButton.act() ;
-		}
 	}
 
 	public void displayMessage(int i)

@@ -7,6 +7,7 @@ import java.awt.Point;
 import animations.MessageAnimation;
 import graphics.Align;
 import graphics.Scale;
+import liveBeings.Player;
 import main.GamePanel;
 import main.GameTimer;
 import main.ImageLoader;
@@ -50,6 +51,29 @@ public class BankWindow extends GameWindow
         
     }
 	
+	public void act(Player player, Point mousePos)
+	{		
+		if (player.getCurrentAction() == null) { return ;}
+		
+		if (isReadingInput())
+		{
+			readValue(player.getCurrentAction()) ;
+		}
+		if (player.getCurrentAction().equals("Enter") & !liveInput.getText().isEmpty())
+		{
+			amountTyped = Integer.parseInt(liveInput.getText()) ;
+			liveInput.clearText() ;
+			switch(mode)
+			{
+				case deposit: deposit(player.getBag(), amountTyped) ; return ;
+				case withdraw: withdraw(player.getBag(), amountTyped) ; return ;
+				case investmentLowRisk: invest(player.getBag(), amountTyped, false) ; return ;
+				case investmentHighRisk: invest(player.getBag(), amountTyped, true) ; return ;
+				default: return ;
+			}
+		}		
+	}
+	
 	public void setMode(BankAction mode) { this.mode = mode ;}
 	
 	private boolean isReadingInput() { return mode.equals(BankAction.deposit) || mode.equals(BankAction.withdraw) || mode.equals(BankAction.investmentLowRisk) || mode.equals(BankAction.investmentHighRisk) ;}
@@ -70,31 +94,6 @@ public class BankWindow extends GameWindow
 	public void navigate(String action)
 	{
 
-	}
-	
-	public void act(BagWindow bag, String action)
-	{
-		
-		if (action == null) { return ;}
-		
-		if (isReadingInput())
-		{
-			readValue(action) ;
-		}
-		if (action.equals("Enter") & !liveInput.getText().isEmpty())
-		{
-			amountTyped = Integer.parseInt(liveInput.getText()) ;
-			liveInput.clearText() ;
-			switch(mode)
-			{
-				case deposit: deposit(bag, amountTyped) ; return ;
-				case withdraw: withdraw(bag, amountTyped) ; return ;
-				case investmentLowRisk: invest(bag, amountTyped, false) ; return ;
-				case investmentHighRisk: invest(bag, amountTyped, true) ; return ;
-				default: return ;
-			}
-		}
-		
 	}
 
 	public void deposit(BagWindow bag, int amount)

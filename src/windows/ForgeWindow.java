@@ -15,6 +15,7 @@ import items.Equip;
 import items.Forge;
 import items.GeneralItem;
 import items.Item;
+import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
@@ -52,6 +53,14 @@ public class ForgeWindow extends GameWindow
 		numberItems = itemsForForge.size() ;
         bag = Game.getPlayer().getBag() ;
     }
+	
+	public void act(Player player, Point mousePos)
+	{
+		if (menu == 0 & actionIsForward(player.getCurrentAction()))
+		{
+			forge() ;
+		}
+	}
 
 	public void displayMessage(int i)
 	{
@@ -71,14 +80,6 @@ public class ForgeWindow extends GameWindow
 		if (action.equals(stdMenuUp))
 		{
 			itemDown() ;
-		}
-	}
-	
-	public void act(String action)
-	{
-		if (menu == 0 & actionIsForward(action))
-		{
-			forge() ;
 		}
 	}
 	

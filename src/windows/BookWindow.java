@@ -14,6 +14,7 @@ import graphics.UtilAlignment;
 import graphics2.Draw;
 import items.Item;
 import items.Recipe;
+import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
@@ -36,6 +37,11 @@ public class BookWindow extends GameWindow
 	}
 
     protected void onOpen()
+    {
+        
+    }
+
+    public void act(Player player, Point mousePos)
     {
         
     }

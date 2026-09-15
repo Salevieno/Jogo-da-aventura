@@ -13,6 +13,7 @@ import java.util.Map;
 import UI.GameButton;
 import UI.GameTextButton;
 import graphics.Align;
+import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
@@ -118,6 +119,11 @@ public class PauseWindow extends GameWindow
     protected void onOpen()
     {
         menuButtons.get(menu).forEach(GameButton::activate) ;
+    }
+
+    public void act(Player player, Point mousePos)
+    {
+        
     }
 
     protected void onClose()

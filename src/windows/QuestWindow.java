@@ -11,6 +11,7 @@ import graphics.Align;
 import graphics.Scale;
 import items.Item;
 import liveBeings.CreatureType;
+import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
@@ -39,6 +40,10 @@ public class QuestWindow extends GameWindow
         numberPages = quests.size() ;
     }
 
+    public void act(Player player, Point mousePos)
+    {
+        
+    }
 
 	public void navigate(String action)
 	{

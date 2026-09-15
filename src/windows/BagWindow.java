@@ -204,11 +204,11 @@ public class BagWindow extends GameWindow
 		}
 	}
 	
-	public void act(String action, Point mousePos, Player player)
+	public void act(Player player, Point mousePos)
 	{
-		buttons.forEach(button -> { if (button.isClicked(mousePos, action)) {button.act() ;}}) ;
+		buttons.forEach(button -> { if (button.isClicked(mousePos, player.getCurrentAction())) { button.act() ;}}) ;
 		
-		if (menu == 1 && actionIsForward(action))
+		if (menu == 1 && actionIsForward(player.getCurrentAction()))
 		{
 			player.useItem(getSelectedItem()) ;
             updatePage() ;

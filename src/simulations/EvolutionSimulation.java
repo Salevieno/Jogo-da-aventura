@@ -725,7 +725,7 @@ public abstract class EvolutionSimulation
 
 			if (action.equals("Enter") | action.equals("LeftClick"))
 			{
-				player.getSpellsTreeWindow().act(player) ;
+				player.getSpellsTreeWindow().act(player, mousePos) ;
 			}
 		}
 		

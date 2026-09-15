@@ -11,6 +11,7 @@ import graphics.Align;
 import graphics.Scale;
 import graphics2.SpriteAnimation;
 import liveBeings.Pet;
+import liveBeings.Player;
 import main.Elements;
 import main.Game;
 import main.GamePanel;
@@ -38,6 +39,11 @@ public class PetAttributesWindow extends AttributesWindow
     protected void onOpen()
     {
         this.pet = Game.getPet() ;
+    }
+
+    public void act(Player player, Point mousePos)
+    {
+        
     }
 	
 	public void display(Point mousePos)

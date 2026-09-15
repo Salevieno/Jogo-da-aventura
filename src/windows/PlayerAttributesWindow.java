@@ -171,6 +171,11 @@ public class PlayerAttributesWindow extends AttributesWindow
         updateAttIncButtons() ;
     }
 
+    public void act(Player player, Point mousePos)
+    {
+        
+    }
+
     private void updateAttIncButtons()
     {
 		if (player.getAttPoints() <= 0)

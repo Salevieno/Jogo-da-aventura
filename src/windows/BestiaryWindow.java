@@ -10,6 +10,7 @@ import java.util.List;
 import graphics.Align;
 import graphics.Scale;
 import liveBeings.CreatureType;
+import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.Palette;
@@ -30,6 +31,11 @@ public class BestiaryWindow extends GameWindow
 	}
 
     protected void onOpen()
+    {
+        
+    }
+
+    public void act(Player player, Point mousePos)
     {
         
     }

@@ -11,6 +11,7 @@ import java.util.Set;
 import graphics.Align;
 import graphics.Scale;
 import items.Item;
+import liveBeings.Player;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Log;
@@ -116,9 +117,9 @@ public class ShoppingWindow extends GameWindow
 		}
 	}
 	
-	public void act(String action, BagWindow bag)
+	public void act(Player player, Point mousePos)
 	{
-		if (actionIsForward(action))
+		if (actionIsForward(player.getCurrentAction()))
 		{
 			if (buyMode)
 			{
@@ -129,7 +130,7 @@ public class ShoppingWindow extends GameWindow
 				return ;
 			}
 			
-			sellItemFromBag(bag) ;
+			sellItemFromBag(player.getBag()) ;
 		}
 	}
 	

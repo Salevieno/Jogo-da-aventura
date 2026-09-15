@@ -16,6 +16,7 @@ import graphics.Align;
 import graphics.Scale;
 import graphics.UtilAlignment;
 import graphics2.Draw;
+import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
@@ -89,6 +90,12 @@ public abstract class GameWindow
 		this.stdExit = KeyEvent.getKeyText(KeyEvent.VK_ESCAPE) ;	
 		this.stdOpacity = 0.9 ;
 	}
+
+    protected abstract void onOpen() ;
+    public abstract void act(Player player, Point mousePos) ;
+	public abstract void navigate(String action) ;
+	public abstract void display(Point mousePos) ;
+
 	public boolean isOpen() {return isOpen ;}
 	
 	public static boolean actionIsForward(String action) { return action == null ? false : action.equals("Enter") || action.equals("LeftClick") ;}
@@ -102,8 +109,6 @@ public abstract class GameWindow
 		ButtonFunction action = () -> { pageDown() ;} ;
 		return new GameIconButton(pos, align, BTN_PAGE_DOWN_IMAGE, SELECTED_BTN_PAGE_DOWN_IMAGE, action) ;
 	}
-
-    protected abstract void onOpen() ;
 	
 	public void open()
     {
@@ -224,7 +229,6 @@ public abstract class GameWindow
 		}
 	}
 	
-	
 	protected void stdNavigation(String action)
 	{
 		if (action.equals(stdPageUp)) { pageUp() ;}
@@ -234,7 +238,4 @@ public abstract class GameWindow
 		if (action.equals(stdEnter)) { tabUp() ;}
 		if (action.equals(stdReturn)) { tabDown() ;}
 	}
-	
-	public abstract void navigate(String action) ;
-	public abstract void display(Point mousePos) ;
 }

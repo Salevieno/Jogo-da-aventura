@@ -8,6 +8,7 @@ import java.util.List;
 
 import graphics.Align;
 import graphics.Scale;
+import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
@@ -59,6 +60,11 @@ public class MapWindow extends GameWindow
 			case special -> calcMapOffset(3, 4, scale, spacing) ;
 			default -> new Point() ;
 		};
+    }
+
+    public void act(Player player, Point mousePos)
+    {
+        
     }
 
 	public void navigate(String action)

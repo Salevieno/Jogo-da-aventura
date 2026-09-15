@@ -51,6 +51,19 @@ public class SpellsTreeWindow extends GameWindow
     {
         
     }
+	
+	public void act(Player player, Point mousePos)
+	{
+		String action = player.getCurrentAction() ;
+		
+		if (canAcquireSpell(points) & actionIsForward(action))
+		{
+			acquireSpell(player) ;
+			points += -1 ;
+			player.decSpellPoints() ;
+		}		
+		
+	}
 		
 	public void switchTo2Tabs() { numberTabs = 2 ;}
 
@@ -137,19 +150,6 @@ public class SpellsTreeWindow extends GameWindow
 		{
 			close() ;
 		}
-	}
-	
-	public void act(Player player)
-	{
-		String action = player.getCurrentAction() ;
-		
-		if (canAcquireSpell(points) & actionIsForward(action))
-		{
-			acquireSpell(player) ;
-			points += -1 ;
-			player.decSpellPoints() ;
-		}		
-		
 	}
 	
 	private Point calcSlotPos(int row, int col, int numberRows, int numberCols, Dimension slotSize)

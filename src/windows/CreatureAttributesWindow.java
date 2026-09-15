@@ -9,6 +9,7 @@ import graphics.Align;
 import graphics.Scale;
 import graphics2.SpriteAnimation;
 import liveBeings.CreatureType;
+import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
@@ -29,6 +30,11 @@ public class CreatureAttributesWindow extends AttributesWindow
 	}
 
     protected void onOpen()
+    {
+        
+    }
+
+    public void act(Player player, Point mousePos)
     {
         
     }
