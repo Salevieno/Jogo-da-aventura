@@ -62,4 +62,6 @@ public class HintsWindow extends GameWindow
 		
 		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, page, numberPages - 1, stdOpacity) ;
 	}
+
+	protected void onClose() { }
 }

@@ -236,4 +236,6 @@ public class ElementalWindow extends GameWindow
 		
 	}
 
+	protected void onClose() { }
+
 }

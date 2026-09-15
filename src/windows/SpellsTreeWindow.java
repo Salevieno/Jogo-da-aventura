@@ -280,5 +280,7 @@ public class SpellsTreeWindow extends GameWindow
 
 		displaySpellPoints(points) ;
 	}
+
+	protected void onClose() { }
 	
 }

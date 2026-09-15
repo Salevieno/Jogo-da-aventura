@@ -42,4 +42,6 @@ public abstract class AttributesWindow extends GameWindow
 	}
 
 	public void display(Point mousePos) { }
+
+	protected void onClose() { }
 }

@@ -109,4 +109,6 @@ public class BookWindow extends GameWindow
 		
 		drawNavigationButtons(UtilAlignment.getPosAt(topLeftPos, Align.center, Align.bottomLeft, size), image.getWidth(null), FONT, page, numberPages, stdOpacity) ;
 	}
+
+		protected void onClose() { }
 }

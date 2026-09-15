@@ -122,4 +122,6 @@ public class BestiaryWindow extends GameWindow
 		Point creatureInfoPos = Util.translate(topLeftPos, windowSize.width, 0) ;
 		displayCreatureInfo(creatureInfoPos, selectedCreature) ;
 	}
+
+	protected void onClose() { }
 }

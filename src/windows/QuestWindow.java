@@ -129,4 +129,6 @@ public class QuestWindow extends GameWindow
 		
 		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 10), size.width, SUBTITLE_FONT, page, numberPages, stdOpacity) ;
 	}
+
+		protected void onClose() { }
 }

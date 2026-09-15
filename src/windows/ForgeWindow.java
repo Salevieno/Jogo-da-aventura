@@ -208,6 +208,8 @@ public class ForgeWindow extends GameWindow
 		
 //		forgeButton.display(angle, false, mousePos) ;
 		
-	}
+		}
+
+		protected void onClose() { }
 
 }

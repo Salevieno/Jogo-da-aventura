@@ -282,4 +282,6 @@ public class MapWindow extends GameWindow
 			displayPlayerLocation(mapPos, mapSize) ;
 		}
 	}
+
+	protected void onClose() { }
 }

@@ -180,4 +180,6 @@ public class BankWindow extends GameWindow
 		GamePanel.getDP().drawImage(SharedImages.getCoinImg(), Util.translate(inputPos, 5, 0), Align.centerLeft) ;
 	}
 
+	protected void onClose() { }
+
 }

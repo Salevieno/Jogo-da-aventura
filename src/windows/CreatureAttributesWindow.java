@@ -82,4 +82,6 @@ public class CreatureAttributesWindow extends AttributesWindow
 		GamePanel.getDP().drawImage(CRIT_ICON, Util.translate(initialAttPos, -15, 72), Scale.unit, Align.center) ;
 		GamePanel.getDP().drawText(critPos, Align.centerLeft, critValue, font, colorPalette[6]) ;
 	}
+
+	protected void onClose() { }
 }

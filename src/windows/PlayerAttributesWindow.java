@@ -408,4 +408,6 @@ public class PlayerAttributesWindow extends AttributesWindow
 
 		GamePanel.getDP().drawText(playerNamePos, Align.center, player.getName(), TITLE_FONT, Palette.colors[0]) ;		
 	}	
+
+	protected void onClose() { }
 }

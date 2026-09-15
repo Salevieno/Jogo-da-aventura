@@ -537,6 +537,8 @@ public class BagWindow extends GameWindow
 		
 		buttons.forEach(button -> button.display(false, mousePos)) ;
 	}
+
+	protected void onClose() { }
 	
 	@Override
 	public String toString()

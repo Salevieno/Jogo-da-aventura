@@ -93,6 +93,7 @@ public abstract class GameWindow
 
     protected abstract void onOpen() ;
     public abstract void act(Player player, Point mousePos) ;
+    protected abstract void onClose() ;
 	public abstract void navigate(String action) ;
 	public abstract void display(Point mousePos) ;
 
@@ -120,14 +121,10 @@ public abstract class GameWindow
 	public void close()
     {
         isOpen = false ;
+        onClose() ;
         deactivateButtons() ;
-
-        // TODO fazer uma implementação geral para todas as janelas. Colocar open/update/close como abstract?
-        if (this instanceof ShoppingWindow)
-        {
-            ((ShoppingWindow) this).closeShopBag() ;
-        }
     }
+
 	public void switchOpenClose() { isOpen = !isOpen ;}
 
 	private void activateButtons() { buttons.forEach(GameButton::activate) ;}
