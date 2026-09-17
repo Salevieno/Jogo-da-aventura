@@ -370,11 +370,7 @@ public class Player extends LiveBeing
 
 		return closestCreature ;
 	}
-	
-	public void discoverCreature(CreatureType creatureType) { bestiary.addDiscoveredCreature(creatureType) ;}
-	
-	public void addQuest(Quest newQuest) { quests.add(newQuest) ;}
-	
+
 	public void decSpellPoints() { spellPoints += -1 ;}
 	
 	public void resetClosestCreature() { closestCreature = null ;}
@@ -841,7 +837,7 @@ public class Player extends LiveBeing
 				return ;
 			
 			case bestiary: 
-				if (!questSkills.get(QuestSkills.bestiary)) { return ;}
+				// if (!questSkills.get(QuestSkills.bestiary)) { return ;}
 				switchOpenClose(bestiary) ; return ;
 
 			default: return ;

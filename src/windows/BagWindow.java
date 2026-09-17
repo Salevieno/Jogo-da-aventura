@@ -51,7 +51,7 @@ public class BagWindow extends GameWindow
 	private final List<Point> itemPos ;
 	private final List<Point> recentItemPos ;
     private final List<Point> tabTextPos ;
-	private final Point insideTopLeft = Util.translate(topLeftPos, 240, 96) ;
+	private final Point insideTopLeft ;
 
 	private static final int QTD_COL = 3 ;
 	private static final int MAX_RECENTLY_USED_ITEMS = 3 ;
@@ -83,6 +83,7 @@ public class BagWindow extends GameWindow
         }
 		this.gold = 0 ;
 
+        this.insideTopLeft = Util.translate(topLeftPos, 240, 96) ;
 		Point offset = new Point(16 + SLOT_SIZE.width, 80) ;
 		itemPos = new ArrayList<>() ;
 		for (int i = 0 ; i <= QTD_SLOTS_PER_PAGE - 1; i += 1)
@@ -342,21 +343,9 @@ public class BagWindow extends GameWindow
 		return null ;
 	}
 
-	public int getAmount(Item item)
-	{
-		return itemsInBag.getOrDefault(item, 0) ;
-	}
-	
-	public boolean contains(Item item)
-	{
-		return itemsInBag.containsKey(item) && 1 <= itemsInBag.get(item) ;
-	}
-	
-	public boolean hasEnough(Item item, int qtd)
-	{
-		return contains(item) && qtd <= itemsInBag.get(item) ;
-	}
-	
+	public int getAmount(Item item) { return itemsInBag.getOrDefault(item, 0) ;}
+	public boolean contains(Item item) { return itemsInBag.containsKey(item) && 1 <= itemsInBag.get(item) ;}
+	public boolean hasEnough(Item item, int qtd) { return contains(item) && qtd <= itemsInBag.get(item) ;}
 	public boolean hasEnough(Map<Item, Integer> items)
 	{
 		for (Item item : items.keySet())

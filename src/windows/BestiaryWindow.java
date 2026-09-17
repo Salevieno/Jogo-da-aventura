@@ -1,8 +1,6 @@
 package windows;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,23 +9,45 @@ import graphics.Align;
 import graphics.Scale;
 import liveBeings.CreatureType;
 import liveBeings.Player;
-import main.Game;
 import main.GamePanel;
 import main.Palette;
-import main.TextCategories;
 import screen.Screen;
 import utilities.Util;
 
 public class BestiaryWindow extends GameWindow
 {
-	private Dimension windowSize ;
+	private final Dimension windowSize ;
+    private final int offset ;
+    private final Dimension slotSize ;
+    private final int sx ;
+    private final int sy ;
+    private final List<Point> slotTopLeft ;
+    private final List<Point> slotCenter ;
 	private List<CreatureType> discoveredCreatures ;
+    private int numSlotsInPage ;
+    private CreatureInfoWindow creatureInfoWindow ;
+
+    private static final int NUM_ROWS = 6 ;
+    private static final int NUM_COLS = 6 ;
 	
 	public BestiaryWindow()
 	{
 		super("Bestiário", Screen.getMe().pos(0.1, 0.3), null, 0, 0, 0, 0) ;
-		this.discoveredCreatures = new ArrayList<>() ;
 		this.windowSize = new Dimension(384, 288) ;
+        this.offset = 12 ;
+        this.slotSize = new Dimension(windowSize.width / (NUM_COLS + 1) - 2 * offset / NUM_COLS, windowSize.height / (NUM_ROWS + 1) - 2 * offset / NUM_ROWS) ;
+        this.sx = (int) Util.spacing(windowSize.width, NUM_COLS, slotSize.width, offset) ;
+        this.sy = (int) Util.spacing(windowSize.height, NUM_ROWS, slotSize.height, offset) ;
+        this.slotTopLeft = new ArrayList<>(NUM_ROWS * NUM_COLS) ;
+        this.slotCenter = new ArrayList<>(NUM_ROWS * NUM_COLS) ;
+        for (int i = 0 ; i <= NUM_ROWS * NUM_COLS - 1 ; i += 1)
+		{
+            this.slotTopLeft.add(Util.translate(topLeftPos, (i / NUM_COLS) * sx + offset, (i % NUM_ROWS) * sy + offset)) ;
+            this.slotCenter.add(Util.translate(slotTopLeft.get(i), slotSize.width / 2, slotSize.height / 2)) ;
+        }
+		this.discoveredCreatures = new ArrayList<>() ;
+        this.numSlotsInPage = Math.min(discoveredCreatures.size(), NUM_ROWS * NUM_COLS) ;
+        this.creatureInfoWindow = new CreatureInfoWindow() ;
 	}
 
     protected void onOpen()
@@ -40,87 +60,41 @@ public class BestiaryWindow extends GameWindow
         
     }
 
-	public void addDiscoveredCreature(CreatureType newCreature) { discoveredCreatures.add(newCreature) ;}
+	public void addDiscoveredCreature(CreatureType newCreature)
+    {
+        discoveredCreatures.add(newCreature) ;
+        numSlotsInPage = Math.min(discoveredCreatures.size(), NUM_ROWS * NUM_COLS) ;
+    }
 	
 	public void navigate(String action)
 	{
 	}
 	
-	public void displayCreatureInfo(Point pos, CreatureType creatureType)
-	{
-		
-		Font namefont = new Font(Game.getMainFontName(), Font.BOLD, 15) ;
-		Font infoFont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
-		String[] text = Game.getAllText().get(TextCategories.bestiary) ;
-		Color textColor = Palette.colors[0] ;
-		
-		int offset = 5 ;
-		int sy = infoFont.getSize() ;
-
-		Dimension windowSize = new Dimension(128, 240) ;
-		GamePanel.getDP().drawGradRoundRect(pos, Align.topLeft, windowSize, 3, Palette.colors[5], Palette.colors[14], Palette.colors[0], true) ;
-		
-		Point creaturePos = Util.translate(pos, 40, offset) ;
-		creatureType.display(creaturePos, Scale.unit) ;
-		
-		List<String> textInfo = new ArrayList<>() ;
-		textInfo.add(text[1] + ": " + creatureType.getLevel()) ;
-		textInfo.add(text[2] + ": " + (int)creatureType.getPA().getLife().getCurrentValue()) ;
-		textInfo.add(text[3] + ": " + creatureType.getPA().getExp().getCurrentValue()) ;
-		textInfo.add(text[4] + ": " + creatureType.getGold()) ;
-		textInfo.add(text[5] + ": ") ;
-		creatureType.getItems().forEach(item -> textInfo.add(item.getName())) ;
-
-		// draw text
-		Point textPos = Util.translate(pos, offset, creatureType.getSize().height + offset) ;
-		GamePanel.getDP().drawText(textPos, Align.topLeft, creatureType.getName(), namefont, textColor) ;
-		textPos = Util.translate(textPos, 0, sy) ;
-		for (int i = 0 ; i <= text.length - 1 ; i += 1)
-		{
-			textPos = Util.translate(textPos, 0, sy) ;
-			GamePanel.getDP().drawText(textPos, Align.topLeft, textInfo.get(i), infoFont, textColor) ;
-		}
-	}
-	
 	public void display(Point mousePos)
 	{
-		int numRows = 6 ;
-		int numCols = 6 ;
-		
-		int offset = 12 ;
-		Dimension slotSize = new Dimension(windowSize.width / (numCols + 1) - 2 * offset / numCols, windowSize.height / (numRows + 1) - 2 * offset / numRows) ;
-		int sx = (int) Util.spacing(windowSize.width, numCols, slotSize.width, offset) ;
-		int sy = (int) Util.spacing(windowSize.height, numRows, slotSize.height, offset) ;
-
-		
 		// draw window
 		GamePanel.getDP().drawGradRoundRect(topLeftPos, Align.topLeft, windowSize, 3, Palette.colors[5], Palette.colors[14], Palette.colors[0], true) ;
 		
 		if (discoveredCreatures == null) { return ;}
 		
-		int numSlotsInPage = Math.min(discoveredCreatures.size(), numRows * numCols) ;
 		item = -1 ;
-		for (int slot = 0 ; slot <= numSlotsInPage - 1 ; slot += 1)
+		for (int i = 0 ; i <= numSlotsInPage - 1 ; i += 1)
 		{
 			// draw slots
-			Point slotTopLeft = Util.translate(topLeftPos, (slot / numCols) * sx + offset, (slot % numRows) * sy + offset) ;
-			Point slotCenter = Util.translate(slotTopLeft, slotSize.width / 2, slotSize.height / 2) ;
-			GamePanel.getDP().drawGradRoundRect(slotCenter, Align.center, slotSize, 2, Palette.colors[3], Palette.colors[20], Palette.colors[0], true) ;
+			GamePanel.getDP().drawGradRoundRect(slotCenter.get(i), Align.center, slotSize, 2, Palette.colors[3], Palette.colors[20], Palette.colors[0], true) ;
 
 			// draw creatures
-			CreatureType creatureType = discoveredCreatures.get(slot) ;
-			double scaleFactor = Math.min((double) (slotSize.width - 10) / creatureType.getSize().width,
-					(double) (slotSize.height - 10) / creatureType.getSize().height) ;
-			updateSelectedItemOnHover(mousePos, slotTopLeft, Align.topLeft, slotSize, slot) ;
-			creatureType.display(slotCenter, new Scale(scaleFactor, scaleFactor)) ;
+			CreatureType creatureType = discoveredCreatures.get(i) ;
+			double scaleFactor = Math.min((double) (slotSize.width - 10) / creatureType.getSize().width, (double) (slotSize.height - 10) / creatureType.getSize().height) ;
+			updateSelectedItemOnHover(mousePos, slotTopLeft.get(i), Align.topLeft, slotSize, i) ;
+			creatureType.display(slotCenter.get(i), new Scale(scaleFactor, scaleFactor)) ;
 		}
 
 		if (discoveredCreatures.isEmpty()) { return ;}
 		if (item < 0) { return ;}
-		
-		CreatureType selectedCreature = discoveredCreatures.get(item) ;
-		Point creatureInfoPos = Util.translate(topLeftPos, windowSize.width, 0) ;
-		displayCreatureInfo(creatureInfoPos, selectedCreature) ;
+
+        creatureInfoWindow.setCreatureType(discoveredCreatures.get(item)) ;
+		creatureInfoWindow.display(mousePos) ;
 	}
 
 	protected void onClose() { }

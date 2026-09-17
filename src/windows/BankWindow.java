@@ -21,6 +21,11 @@ import utilities.Util;
 
 public class BankWindow extends GameWindow
 {
+	private final Point titlePos ;
+	private final Point balancePos ;
+	private final Point investmentPos ;
+	private final Point inputMessagePos ;
+	private final Point inputPos ;
 	private BankAction mode ;
 	private int amountTyped ;
 	private int balance ;
@@ -37,12 +42,17 @@ public class BankWindow extends GameWindow
 	public BankWindow()
 	{
 		super("Banco", Screen.getMe().pos(0.4, 0.2), IMAGE, 1, 1, 1, 1) ;
-		amountTyped = 0 ;
-		balance = 0 ;
-		investedAmount = 0 ;
-		hasInvestement = false ;
-		investmentCounter = new GameTimer(50) ;
-		liveInput = new LiveInput() ;
+        this.titlePos = Util.translate(topLeftPos, size.width / 2, BORDER + 10) ;
+        this.balancePos = Util.translate(topLeftPos, BORDER + PADDING + 4, (int) BORDER + 30) ;
+        this.investmentPos = Util.translate(topLeftPos, BORDER + PADDING + 4, BORDER + 90) ;
+        this.inputMessagePos = Util.translate(topLeftPos, 0, BORDER + size.height + 15) ;
+        this.inputPos = Util.translate(topLeftPos, 0, BORDER + size.height + 35) ;
+		this.amountTyped = 0 ;
+		this.balance = 0 ;
+		this.investedAmount = 0 ;
+		this.hasInvestement = false ;
+		this.investmentCounter = new GameTimer(50) ;
+		this.liveInput = new LiveInput() ;
 	}
 
 
@@ -143,23 +153,15 @@ public class BankWindow extends GameWindow
 	private void displayNotEnoughGold()
 	{
 		Point msgPos = Screen.getMe().pos(0.4, 0.3) ;
-		String msg = "Você não tem ouro suficiente!" ;
-		Color msgColor = Palette.colors[0] ;
-		MessageAnimation.start(msgPos, msg, msgColor) ;
+		MessageAnimation.start(msgPos, "Você não tem ouro suficiente!", Palette.colors[0]) ;
 	}
 	
 	public void display(Point mousePos)
 	{
-		Point titlePos = Util.translate(topLeftPos, size.width / 2, BORDER + 10) ;
 		Color textColor = Palette.colors[0] ;
 		
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft) ;
-
 		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[0]) ;
-		
-		Point balancePos = Util.translate(topLeftPos, BORDER + PADDING + 4, (int) BORDER + 30) ;
-		Point investmentPos = Util.translate(topLeftPos, BORDER + PADDING + 4, BORDER + 90) ;
-		
 		GamePanel.getDP().drawText(balancePos, Align.centerLeft, "Saldo", STD_FONT, textColor) ;
 		GamePanel.getDP().drawText(investmentPos, Align.centerLeft, "Investimento", STD_FONT, textColor) ;
 		
@@ -172,10 +174,7 @@ public class BankWindow extends GameWindow
 		
 		if (!isReadingInput()) { return ;}
 
-		Point inputMessagePos = Util.translate(topLeftPos, 0, BORDER + size.height + 15) ;
 		GamePanel.getDP().drawText(inputMessagePos, Align.centerLeft, "Amount for " + mode, STD_FONT, textColor) ;
-		
-		Point inputPos = Util.translate(topLeftPos, 0, BORDER + size.height + 35) ;
 		liveInput.displayTypingField(inputPos, true) ;
 		GamePanel.getDP().drawImage(SharedImages.getCoinImg(), Util.translate(inputPos, 5, 0), Align.centerLeft) ;
 	}
