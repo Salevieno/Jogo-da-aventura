@@ -24,6 +24,7 @@ import utilities.Util;
 
 public class ElementalWindow extends GameWindow
 {	
+	private final Point titlePos ;
 	private List<GeneralItem> spheres ;
 	private GeneralItem selectedSphere ;
 	private List<Equip> equipsForElemChange ;
@@ -37,6 +38,7 @@ public class ElementalWindow extends GameWindow
 	public ElementalWindow()
 	{
 		super("Elemental", Screen.getMe().pos(0.35, 0.23), IMAGE, 2, 1, 1, 1) ;
+        this.titlePos = Util.translate(topLeftPos, size.width / 2, 2 + 9) ;
 		spheres = null ;
 		selectedEquip = null ;
 		selectedSphere = null ;
@@ -182,10 +184,9 @@ public class ElementalWindow extends GameWindow
 	
 	private void displayEquipSelectionMenu(Point mousePos)
 	{
-		
 		if (equipsForElemChange == null) { return ;}
 		if (equipsForElemChange.isEmpty()) { return ;}
-		
+
 		List<Equip> equipsOnWindow = getEquipsOnPage() ;
 		for (int i = 0 ; i <= equipsOnWindow.size() - 1; i += 1)
 		{
@@ -218,22 +219,17 @@ public class ElementalWindow extends GameWindow
 	
 	public void display(Point mousePos)
 	{
-		
-		Point titlePos = Util.translate(topLeftPos, size.width / 2, 2 + 9) ;
-		
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;
 		GamePanel.getDP().drawText(titlePos, Align.center, MENU_TITLES.get(menu), TITLE_FONT, STD_COLOR) ;
-		
+
 		switch (menu)
 		{
 			case 0: displayEquipSelectionMenu(mousePos) ; break ;
 			case 1: displaySphereSelectionMenu(mousePos) ; break ;
 			default: break ;
 		}
-		
-		
+
 		drawNavigationButtons(Util.translate(topLeftPos, 0, size.height + 5), size.width, SUBTITLE_FONT, page, numberPages, stdOpacity) ;
-		
 	}
 
 	protected void onClose() { }

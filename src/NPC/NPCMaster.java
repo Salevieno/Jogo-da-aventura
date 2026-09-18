@@ -34,7 +34,7 @@ public class NPCMaster extends NPC
 // 			}
 	public void act(Player player, Pet pet, String action)
 	{// TODO como spells window é do player, janela não fecha ao encerrar interação.
-		if (50 <= player.getLevel() & player.getProJob() == 0 & currentMenuID == 3)
+		if (50 <= player.getLevel() && player.getProJob() == 0 && currentMenuID == 3)
 		{
 			if (action == null) { return ;}
 
@@ -42,18 +42,14 @@ public class NPCMaster extends NPC
 			{
 				player.setProJob(1 + selOption) ;
 				player.addProSpells() ;
-				player.getSpellsTreeWindow().switchTo2Tabs() ;
+				player.getSpellsTreeWindow().enableTab2() ;
 			}			
 		}
 		
 		if (action == null) { return ;}
 	
-		if ((currentMenuID == 0 | currentMenuID == 5) & actionIsForward(action))
+		if ((currentMenuID == 0 || currentMenuID == 5) && actionIsForward(action))
 		{
-			player.getSpellsTreeWindow().setplayerCurrentSpells(player.getSpells()) ;
-			player.getSpellsTreeWindow().setPoints(player.getSpellPoints()) ;
-			player.getSpellsTreeWindow().setSpells(player.getSpells()) ;
-			player.getSpellsTreeWindow().updateSpellsDistribution() ;
 			player.switchOpenClose(player.getSpellsTreeWindow()) ;
 		}
     }

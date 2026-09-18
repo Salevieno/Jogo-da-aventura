@@ -6,5 +6,7 @@
   ],
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
-  }
+  },
+"java.eclipse.downloadSources": false,
+"java.maven.downloadSources": false
 }

@@ -158,7 +158,6 @@ public class Spell
 		}
 		
 		return true ;
-		
 	}
 	
 	public void applyBuffs(boolean activate, LiveBeing receiver)

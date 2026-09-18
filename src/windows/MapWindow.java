@@ -15,6 +15,7 @@ import main.ImageLoader;
 import main.Log;
 import main.Palette;
 import main.Path;
+import maps.Continents;
 import maps.GameMap;
 import screen.Screen;
 import screen.Sky;
@@ -23,13 +24,19 @@ import utilities.Util;
 
 public class MapWindow extends GameWindow
 {
+	private final Point spacing ;
 	private Scale scale ;
 	private Point offset ;
 	private Point playerPos ;
 	private Dimension mapSize ;
-	private GameMap mapWithPlayer ; // TODO verificar se precisa de gamemap
 	private List<GameMap> mapsDisplayed ;
-	private final Point spacing ;
+    private List<Point> cellPos ;
+    private List<Point> mapPos ;
+    private List<Point> mapNamePos ;
+    private Continents continent ;
+	private double playerRelXPos ;
+	private double playerRelYPos ;
+	private Point circlePos ;
 	
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "MapWindow.png") ;
 	private static final boolean FULL_MAP = false ;
@@ -40,16 +47,27 @@ public class MapWindow extends GameWindow
 		this.mapsDisplayed = new ArrayList<>() ;
 		this.scale = new Scale(0.1, 0.1) ;
 		this.spacing = new Point(6, 6) ;
+
+		if (FULL_MAP)
+		{
+			mapsDisplayed = GameMap.getAllMaps() ;
+			scale = new Scale(0.05, 0.05) ;
+			mapSize = new Dimension((int) (Screen.getMe().mapSize().width * scale.x), (int) (Screen.getMe().mapSize().height * scale.y)) ;
+			offset = calcMapOffset(15, 14, scale, spacing) ;
+		}
 	}
 
     protected void onOpen()
     {
 		this.playerPos = Game.getPlayer().getPos() ;
-		this.mapWithPlayer = Game.getPlayer().getMap() ;
+
+        if (Game.getPlayer().getMap().getContinent().equals(this.continent)) { return ;}
+
+        this.continent = Game.getPlayer().getMap().getContinent() ;
 		this.scale = new Scale(0.1, 0.1) ;
 		this.mapSize = new Dimension((int) (Screen.getMe().mapSize().width * scale.x), (int) (Screen.getMe().mapSize().height * scale.y)) ;
-		this.mapsDisplayed = GameMap.getAllMaps().stream().filter(map -> mapWithPlayer.getContinent().equals(map.getContinent())).toList() ;
-		this.offset = switch(mapWithPlayer.getContinent())
+		this.mapsDisplayed = GameMap.getAllMaps().stream().filter(map -> continent.equals(map.getContinent())).toList() ;
+		this.offset = switch(Game.getPlayer().getMap().getContinent())
 		{
 			case forest -> calcMapOffset(8, 6, scale, spacing) ;
 			case cave -> calcMapOffset(2, 6, scale, spacing) ;
@@ -60,6 +78,29 @@ public class MapWindow extends GameWindow
 			case special -> calcMapOffset(3, 4, scale, spacing) ;
 			default -> new Point() ;
 		};
+
+        this.cellPos = new ArrayList<>(67) ;
+        this.mapPos = new ArrayList<>(67) ;
+        this.mapNamePos = new ArrayList<>(67) ;
+		for (GameMap map : mapsDisplayed)
+		{
+            Point pos = FULL_MAP ? getMapRowColFullMap(map.getName()) : getMapRowCol(map.getName()) ;
+
+            if (pos == null) { continue ;}
+
+			this.cellPos.add(pos) ;
+            this.mapPos.add(Util.translate(topLeftPos, offset.x + (mapSize.width + spacing.x) * pos.x / 2,
+                                                size.height - offset.y - (mapSize.height + spacing.y) * pos.y / 2)) ;
+            this.mapNamePos.add(Util.translate(mapPos.get(mapPos.size() - 1), (int) (scale.x * Screen.getMe().mapSize().width / 2),
+                                                (int) (-scale.y * Screen.getMe().mapSize().height / 2))) ;
+
+            if (map.equals(Game.getPlayer().getMap()))
+            {
+                this.playerRelXPos = playerPos.x / (double) Screen.getMe().mapSize().width ;
+                this.playerRelYPos = (playerPos.y - Sky.getHeight()) / (double) Screen.getMe().mapSize().height ;
+                this.circlePos = Util.translate(mapPos.get(mapPos.size() - 1), (int) (mapSize.width * playerRelXPos), (int) (-mapSize.height * (1 - playerRelYPos))) ;
+            }
+        }
     }
 
     public void act(Player player, Point mousePos)
@@ -144,7 +185,7 @@ public class MapWindow extends GameWindow
 			case "Ocean 4": row = 4 ; col = 6 ; break ;
 			case "Ocean 5": row = 2 ; col = 2 ; break ;
 			case "Ocean 6": row = 0 ; col = 2 ; break ;
-			default: return null ;
+			default: Log.warn("cell = null when displaying map") ; return null ;
 		}
 		
 		return new Point(col, row) ;
@@ -222,7 +263,7 @@ public class MapWindow extends GameWindow
 			case "Ocean 4": row = 6 ; col = 10 ; break ;
 			case "Ocean 5": row = 5 ; col = 8 ; break ;
 			case "Ocean 6": row = 4 ; col = 8 ; break ;
-			default: return null ;
+			default: Log.warn("cell = null when displaying map") ; return null ;
 		}
 		
 		return new Point(2*col, 2*row) ;
@@ -235,11 +276,8 @@ public class MapWindow extends GameWindow
 		return new Point(offsetX, offsetY) ;
 	}
 	
-	public void displayPlayerLocation(Point mapPos, Dimension screenSize)
+	private void displayPlayerLocation(Point mapPos, Dimension screenSize)
 	{
-		double playerRelXPos = playerPos.x / (double) Screen.getMe().mapSize().width ;
-		double playerRelYPos = (playerPos.y - Sky.getHeight()) / (double) Screen.getMe().mapSize().height ;
-		Point circlePos = Util.translate(mapPos, (int) (screenSize.width * playerRelXPos), (int) (-screenSize.height * (1 - playerRelYPos))) ;
 		GamePanel.getDP().drawCircle(circlePos, 5, 0, Palette.colors[6], null) ;
 	}
 	
@@ -250,36 +288,21 @@ public class MapWindow extends GameWindow
 		
 		GamePanel.getDP().drawImage(image, topLeftPos, Align.topLeft) ;
 		
-		if (mapWithPlayer == null) { Log.warn("Map with player = null when displaying map") ; return ;}
+		if (Game.getPlayer().getMap() == null) { Log.warn("Map with player = null when displaying map") ; return ;}
 		if (mapsDisplayed == null) { Log.warn("Maps displayed = null when displaying map") ; return ;}
 		if (mapsDisplayed.isEmpty()) { Log.warn("Maps displayed = empty when displaying map") ; return ;}
 		
-		if (FULL_MAP)
+		for (int i = 0 ; i <= mapsDisplayed.size() - 1 ; i += 1)
 		{
-			mapsDisplayed = GameMap.getAllMaps() ;
-			scale = new Scale(0.05, 0.05) ;
-			mapSize = new Dimension((int) (Screen.getMe().mapSize().width * scale.x), (int) (Screen.getMe().mapSize().height * scale.y)) ;
-			offset = calcMapOffset(15, 14, scale, spacing) ;
-		}
-		
-		for (GameMap map : mapsDisplayed)
-		{
-			Point cell = FULL_MAP ? getMapRowColFullMap(map.getName()) : getMapRowCol(map.getName()) ;
-	
-			if (cell == null) { Log.warn("cell = null when displaying map") ; continue ;}
-			
-			Point mapPos = Util.translate(topLeftPos, offset.x + (mapSize.width + spacing.x) * cell.x / 2,
-													size.height - offset.y - (mapSize.height + spacing.y) * cell.y / 2) ;
-			map.display(mapPos, Align.bottomLeft, scale) ;
+            GameMap map = mapsDisplayed.get(i) ;
 
-			Point mapNamePos = Util.translate(mapPos, (int) (scale.x * Screen.getMe().mapSize().width / 2),
-													(int) (-scale.y * Screen.getMe().mapSize().height / 2)) ;
-			GamePanel.getDP().drawText(mapNamePos, Align.center, 0, map.getName(), STD_FONT, Palette.colors[0]) ;
+			map.display(mapPos.get(i), Align.bottomLeft, scale) ;
+			GamePanel.getDP().drawText(mapNamePos.get(i), Align.center, 0, map.getName(), STD_FONT, Palette.colors[0]) ;
 			
-			if (!map.equals(mapWithPlayer)) { continue ;}
+			if (!map.equals(Game.getPlayer().getMap())) { continue ;}
 			if (playerPos == null) { continue ;}
 
-			displayPlayerLocation(mapPos, mapSize) ;
+			displayPlayerLocation(mapPos.get(i), mapSize) ;
 		}
 	}
 

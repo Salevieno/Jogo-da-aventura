@@ -28,7 +28,15 @@ import utilities.Util;
 
 
 public class ForgeWindow extends GameWindow
-{	
+{
+    private final Point titlePos ;
+    private final Point messagePos ;
+    private final Point itemPos ;
+    private final Point namePos ;
+    private final Point runePos ;
+    private final Point pricePos ;
+    private final Point coinPos ;
+    private final Dimension itemSize ;
 	private List<Equip> itemsForForge ;
 	private String message ;
 	private BagWindow bag ;
@@ -40,6 +48,14 @@ public class ForgeWindow extends GameWindow
 	public ForgeWindow()
 	{
 		super("Forge", Screen.getMe().getPointWithinBorders(0.2, 0.05), IMAGE, 1, 1, 1, 1) ;
+        this.titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
+        this.messagePos = Util.translate(topLeftPos, size.width / 2, 36) ;
+        this.itemPos = Util.translate(topLeftPos, 24, 70) ;
+        this.namePos = Util.translate(itemPos, 14, 0) ;
+        this.runePos = Util.translate(itemPos, 160, 0) ;
+        this.pricePos = Util.translate(itemPos, 185, 0) ;
+        this.coinPos = Util.translate(itemPos, 210, 0) ;
+        this.itemSize = new Dimension(200, 10) ;
 		bag = null ;
 		// forgeButton = new GameButton(new Point(200, 300), Align.topLeft, null, null, () -> {forge() ;}) ;
 		itemsForForge = new ArrayList<>() ;
@@ -62,7 +78,7 @@ public class ForgeWindow extends GameWindow
 		}
 	}
 
-	public void displayMessage(int i)
+	private void displayMessage(int i)
 	{
 		message = MESSAGES.get(i) ;
 		Point pos = Util.translate(topLeftPos, 0, - 30) ;
@@ -83,28 +99,32 @@ public class ForgeWindow extends GameWindow
 		}
 	}
 	
-	public Equip selectedEquip()
+	private Equip selectedEquip()
     {
         if (item == -1) { return null ;}
 
         return itemsForForge.get(item) ;
     }
 	
-	public int forgePrice(int forgeLevel) { return 30 + 100 * forgeLevel + 30 * forgeLevel * forgeLevel ;}
+	private int forgePrice(int forgeLevel) { return 30 + 100 * forgeLevel + 30 * forgeLevel * forgeLevel ;}
 	
-	public Forge reqRune(Equip selectedEquip)
+    private int calcRuneID(Equip equip)
+    {
+		int runeId = equip.isSpecial() ? 20 : 0 ;
+		runeId += 2 * equip.getForgeLevel() ;
+		runeId += equip.isWeapon() ? 0 : 1 ;
+        return runeId ;
+    }
+
+	private Forge reqRune(Equip selectedEquip)
 	{
-		int runeId = selectedEquip.isSpecial() ? 20 : 0 ;
-		runeId += 2 * selectedEquip.getForgeLevel() ;
-		runeId += selectedEquip.isWeapon() ? 0 : 1 ;
+        int runeId = calcRuneID(selectedEquip) ;
 		return Forge.getAll()[runeId] ;
 	}
 	
 	private double forgeChanceBonus(Equip selectedEquip, BagWindow bag)
 	{
-		int runeId = selectedEquip.isSpecial() ? 20 : 0 ;
-		runeId += 2 * selectedEquip.getForgeLevel() ;
-		runeId += selectedEquip.isWeapon() ? 0 : 1 ;
+        int runeId = calcRuneID(selectedEquip) ;
 		int runeType = Forge.typeFromID(runeId) ;
 		
 		Item bonusItem = switch (runeType)
@@ -124,7 +144,6 @@ public class ForgeWindow extends GameWindow
 	
 	public void forge()
 	{
-		
 		Equip selectedEquip = selectedEquip() ;
 		
 		if (selectedEquip == null) { return ;}
@@ -138,7 +157,6 @@ public class ForgeWindow extends GameWindow
 		int forgeLevel = selectedEquip.getForgeLevel() ;
 		int forgePrice = forgePrice(forgeLevel) ;
 
-
 		if (!bag.hasEnoughGold(forgePrice)) { displayMessage(3) ; return ;}
 
 		double chanceBonus = forgeChanceBonus(selectedEquip, bag) ;
@@ -146,7 +164,6 @@ public class ForgeWindow extends GameWindow
 
 		bag.removeGold(forgePrice) ;
 		bag.remove(rune, 1) ;
-
 
 		if (Util.chance(chanceForge))
 		{
@@ -163,35 +180,23 @@ public class ForgeWindow extends GameWindow
 			Game.getPlayer().save(Game.getSaveSlotInUse()) ;
 		}
 		displayMessage(5) ; return ; 
-		
 	}
 	
 	public void display(Point mousePos)
 	{
-
-		Point titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
-		Point messagePos = Util.translate(topLeftPos, size.width / 2, 36) ;
 		List<Equip> itemsOnPage = QTD_ITEMS_ON_PAGE <= itemsForForge.size() ? itemsForForge.subList(0, QTD_ITEMS_ON_PAGE) : itemsForForge ;
 		
 		if (itemsOnPage.size() == 0) { item = -1 ;}
 		
-		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;
-		
+		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;		
 		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[1]) ;
 		GamePanel.getDP().drawText(messagePos, Align.center, MESSAGES.get(0), STD_FONT, STD_COLOR) ;
-		
-		Point itemPos = Util.translate(topLeftPos, 24, 70) ;
 		
 		for (int i = 0 ; i <= itemsOnPage.size() - 1 ; i += 1)
 		{			
 			if (itemsOnPage.get(i) == null) { continue ;}
 			
-			Point namePos = Util.translate(itemPos, 14, 0) ;
-			Point runePos = Util.translate(itemPos, 160, 0) ;
-			Point pricePos = Util.translate(itemPos, 185, 0) ;
-			Point coinPos = Util.translate(itemPos, 210, 0) ;
-			
-			updateSelectedItemOnHover(mousePos, namePos, Align.centerLeft, new Dimension(200, 10), i) ;
+			updateSelectedItemOnHover(mousePos, namePos, Align.centerLeft, itemSize, i) ;
 			
 			Equip equip = itemsOnPage.get(i) ;
 			Color itemColor = this.item == itemsOnPage.indexOf(equip) ? SELECTED_COLOR : STD_COLOR ;
@@ -205,11 +210,7 @@ public class ForgeWindow extends GameWindow
 			GamePanel.getDP().drawText(pricePos, Align.centerLeft, String.valueOf(forgePrice(equip.getForgeLevel())), STD_FONT, itemColor) ;
 			itemPos.y += 28 ;
 		}
-		
-//		forgeButton.display(angle, false, mousePos) ;
-		
-		}
+    }
 
-		protected void onClose() { }
-
+    protected void onClose() { }
 }

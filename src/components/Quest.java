@@ -170,7 +170,7 @@ public class Quest
 
 	public String getName() {return name ;}
 	public Map<Integer, Integer> getCounter() {return reqCreaturesCounter ;}
-	public Map<Integer, Integer> getReqCreatures() {return reqCreatureTypeIDs ;}
+	public Map<Integer, Integer> getReqCreatureIDs() {return reqCreatureTypeIDs ;}
 	public Map<Integer, Integer> getReqItemIDs() {return reqItemIDs ;}	
 	public void setName(String name) { this.name = name ;}
 	public void setDescription(String description) { this.description = description ;}

@@ -690,7 +690,7 @@ public abstract class EvolutionSimulation
 			case "B": player.getBag().open() ; break ;
 			case "C": player.switchOpenClose(player.getAttWindow()) ; break ;
 			case "P": if (pet != null) { pet.getAttWindow().open() ;} ; break ;
-			case "T": player.getSpellsTreeWindow().setSpells(player.getSpells()) ; player.getSpellsTreeWindow().open() ; break ;
+			case "T": player.getSpellsTreeWindow().open() ; break ;
 			case "O":
 				if (playerOpponent == null) { break ;}
 				

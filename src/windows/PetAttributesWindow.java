@@ -1,10 +1,11 @@
 package windows;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 import attributes.BasicBattleAttribute;
 import graphics.Align;
@@ -25,8 +26,21 @@ import utilities.Util;
 
 public class PetAttributesWindow extends AttributesWindow
 {
-	private Pet pet ;
 	private final Point windowPos ;
+	private Pet pet ;
+	private final Point userPos ;
+	private final Font namefont ;
+	private final Font font ;
+	private final Point namePos ;
+	private final Point levelPos ;
+    private final Point slotCenter ;
+    private final Dimension slotSize ;
+    private final Point elemPos ;
+	private final Point lifePos ;
+	private final Point mpPos ;
+	private final Point initialAttPos ;
+    private final List<Point> attPos ;
+	private final Point critPos ;
 	
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "PetAttWindow.png") ;
 	
@@ -34,6 +48,23 @@ public class PetAttributesWindow extends AttributesWindow
 	{
 		super(IMAGE, 1) ;
 		this.windowPos = Screen.getMe().pos(0.52, 0.14) ;
+	    this.userPos = Util.translate(windowPos, size.width / 2, 73) ;
+	    this.namefont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
+	    this.font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;
+	    this.namePos = Util.translate(windowPos, size.width / 2, 18) ;
+	    this.levelPos = Util.translate(windowPos, size.width / 2, 38) ;
+        this.slotCenter = Util.translate(windowPos, 222, 72) ;
+        this.slotSize = new Dimension(51, 51) ;
+        this.elemPos = Util.translate(slotCenter, slotSize.width - 12, slotSize.height / 2) ;
+	    this.lifePos = Util.translate(windowPos, 20, BORDER + PADDING + 46) ;
+	    this.mpPos = Util.translate(windowPos, 20, BORDER + PADDING + 46 + 27) ;
+	    this.initialAttPos = Util.translate(windowPos, BORDER + PADDING + 26, 136) ;
+        this.attPos = new ArrayList<>(ATT_ICONS.length) ;
+        for (int i = 0; i <= ATT_ICONS.length - 1; i += 1)
+        {
+            this.attPos.add(Util.translate(initialAttPos, 134 * (i / 3), (i % 3) * 22)) ;
+        }
+	    this.critPos = Util.translate(initialAttPos, 0, 71) ;
 	}
 
     protected void onOpen()
@@ -51,67 +82,40 @@ public class PetAttributesWindow extends AttributesWindow
 		GamePanel.getDP().drawImage(IMAGE, windowPos, Align.topLeft, stdOpacity) ;
 
 		SpriteAnimation userImage = pet.getMovingAni().spriteIdle ;
-		Point userPos = Util.translate(windowPos, size.width / 2, 73) ;
-		userImage.display(GamePanel.getDP(), userPos, Align.center); ;
-
-		Font namefont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
-		Font font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;		
-		Color[] colorPalette = Palette.colors ;
-		Color textColor = colorPalette[0] ;
+		userImage.display(GamePanel.getDP(), userPos, Align.center) ;
 		
-		String[] attText = Game.getAllText().get(TextCategories.attributes) ;		
-		Point namePos = Util.translate(windowPos, size.width / 2, 18) ;
-		Point levelPos = Util.translate(windowPos, size.width / 2, 38) ;
-		GamePanel.getDP().drawText(namePos, Align.center, pet.getName(), namefont, textColor) ;		
-		GamePanel.getDP().drawText(levelPos, Align.center, attText[0] + ": " + pet.getLevel(), font, colorPalette[7]) ;
+		String[] attText = Game.getAllText().get(TextCategories.attributes) ;
+		GamePanel.getDP().drawText(namePos, Align.center, pet.getName(), namefont, Palette.colors[0]) ;		
+		GamePanel.getDP().drawText(levelPos, Align.center, attText[0] + ": " + pet.getLevel(), font, Palette.colors[7]) ;
 		
 		//	Equips
 		if (pet.getEquip() != null)
 		{
-			Point slotCenter = Util.translate(windowPos, 222, 72) ;
-			Dimension slotSize = new Dimension(51, 51) ;
 			GamePanel.getDP().drawImage(pet.getEquip().fullSizeImage(), slotCenter, Align.center) ;
 			Elements eqElem = pet.getAtkElem() ;
 			if (eqElem != null)
 			{
-
-				Point elemPos = Util.translate(slotCenter, slotSize.width - 12, slotSize.height / 2) ;
 				GamePanel.getDP().drawImage(eqElem.image, elemPos, new Scale(0.12, 0.12), Align.center) ;
 			}
 		}
-		
-		
-		// super element
-//		if (pet.hasSuperElement())
-//		{
-//			Point superElemPos = Util.translate(userPos, 0, 35) ;
-//			Image superElemImage = pet.getElem()[4].image ;
-//			GamePanel.getDP().drawImage(superElemImage, superElemPos, new Scale(0.3, 0.3), Align.center) ;
-//		}
-		
-		
+
 		// attributes
-		Point lifePos = Util.translate(windowPos, 20, BORDER + PADDING + 46) ;
-		Point mpPos = Util.translate(windowPos, 20, BORDER + PADDING + 46 + 27) ;
 		String lifeText = attText[1] + ": " + Util.round(pet.getPA().getLife().getCurrentValue(), 1) ;
 		String mpText = attText[2] + ": " + Util.round(pet.getPA().getMp().getCurrentValue(), 1) ;
-		GamePanel.getDP().drawText(lifePos, Align.centerLeft, lifeText, font, colorPalette[7]) ;
-		GamePanel.getDP().drawText(mpPos, Align.centerLeft, mpText, font, colorPalette[20]) ;
+		GamePanel.getDP().drawText(lifePos, Align.centerLeft, lifeText, font, Palette.colors[7]) ;
+		GamePanel.getDP().drawText(mpPos, Align.centerLeft, mpText, font, Palette.colors[20]) ;
 				
 		BasicBattleAttribute[] attributes = pet.getBA().basicAttributes() ;
-		Point initialAttPos = Util.translate(windowPos, BORDER + PADDING + 26, 136) ;
 		for (int i = 0; i <= ATT_ICONS.length - 1; i += 1)
 		{
-			Point attPos = Util.translate(initialAttPos, 134 * (i / 3), (i % 3) * 22) ;
 			String attValue = Util.round(attributes[i].getBaseValue(), 1) + " + " + Util.round(attributes[i].getBonus(), 1) + " + " + Util.round(attributes[i].getTrain(), 1) ;
 			
-			GamePanel.getDP().drawImage(ATT_ICONS[i], Util.translate(attPos, -15, 0), Scale.unit, Align.center) ;
-			GamePanel.getDP().drawText(attPos, Align.centerLeft, attValue, font, textColor) ;
+			GamePanel.getDP().drawImage(ATT_ICONS[i], Util.translate(attPos.get(i), -15, 0), Scale.unit, Align.center) ;
+			GamePanel.getDP().drawText(attPos.get(i), Align.centerLeft, attValue, font, Palette.colors[0]) ;
 		}
-		Point critPos = Util.translate(initialAttPos, 0, 71) ;
 		String critValue = attText[9] + ": " + Util.round(100 * pet.getBA().TotalCritAtkChance(), 1) + "%" ;
 		GamePanel.getDP().drawImage(CRIT_ICON, Util.translate(initialAttPos, -15, 72), Scale.unit, Align.center) ;
-		GamePanel.getDP().drawText(critPos, Align.centerLeft, critValue, font, colorPalette[7]) ;
+		GamePanel.getDP().drawText(critPos, Align.centerLeft, critValue, font, Palette.colors[7]) ;
 	}
 
 	protected void onClose() { }
