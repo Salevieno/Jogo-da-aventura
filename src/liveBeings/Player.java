@@ -605,6 +605,12 @@ public class Player extends LiveBeing
         {
             ((FieldMap) (newMap)).startCreaturesIdleTimer() ;
         }
+		resetClosestCreature() ;
+		resetOpponent() ;
+        // if (opponent != null)
+		// {
+		// 	opponent.setChasePlayer(false) ;
+		// }	
 		setMap(newMap) ;
 		setPos(newPos) ;
 	}
@@ -619,31 +625,14 @@ public class Player extends LiveBeing
 	{
 		Point2D.Double newPos = calcNewPos(dt) ;
 
-		if (Screen.getMe().posIsWithinBorders(newPos))
-		{
-			if (!pathIsWalkable(pos, newPos, superElem)) { return ;}
-			
+		if (Screen.getMe().posIsWithinBorders(newPos) && pathIsWalkable(pos, newPos, superElem))
+		{			
 			setPos(newPos) ;
-			if (LEVEL_UP_ANI.isActive())
-			{
-				LEVEL_UP_ANI.setPos(getPos()) ;
-			}
 			
 			return ;
 		}
 
 		moveToNewMap(pos, dir, map) ;
-
-		if (pet != null)
-		{
-			pet.setPos(pos) ;
-		}
-		if (opponent != null)
-		{
-			opponent.setChasePlayer(false) ;
-		}
-		resetClosestCreature() ;
-		resetOpponent() ;		
 	}
 
 	public void engageInFight(Creature newOpponent)
@@ -651,8 +640,7 @@ public class Player extends LiveBeing
 		opponent = newOpponent ;
 		setState(LiveBeingStates.fighting) ;
 		battleActionCounter.start() ;
-		
-		opponent.setChasePlayer(true) ;
+	
 		opponent.setState(LiveBeingStates.fighting);
 		opponent.getBattleActionCounter().start() ;
 		if (Game.getPet() != null)
@@ -1559,7 +1547,6 @@ public class Player extends LiveBeing
 		if (opponent != null)
 		{
 			opponent.setState(LiveBeingStates.idle) ;
-			opponent.setChasePlayer(false) ;
 		}
 		resetOpponent() ;
 		resetPosition() ;

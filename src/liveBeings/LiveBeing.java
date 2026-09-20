@@ -212,6 +212,10 @@ public abstract class LiveBeing implements Drawable
 	{
 		pos = newValue ;
 		hitbox.setCenter(center()) ;
+        if (LEVEL_UP_ANI.isActive())
+        {
+            LEVEL_UP_ANI.setPos(getPos()) ;
+        }
 	}
 
     protected boolean pathIsWalkable(Point2D.Double originPos, Point2D.Double destinyPos, Elements superElem)

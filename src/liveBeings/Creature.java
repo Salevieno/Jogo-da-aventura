@@ -42,7 +42,6 @@ public class Creature extends LiveBeing
 	private final CreatureType type ;
 	private final Set<Item> items ;
 	private final int gold ;
-	private boolean chasePlayer ;
 	private GameTimer idleTimer ;
 
  	public Creature(CreatureType CT, Point2D.Double pos)
@@ -75,8 +74,7 @@ public class Creature extends LiveBeing
 			setPos(Screen.getMe().getCenterAsDouble()) ;
 		}
 		startCounters() ;
-		
-		this.chasePlayer = false ;
+
 		this.idleTimer = new GameTimer(CT.getMovingAnimations().getIdleDuration()) ;
  		setPos(pos) ;
  	}
@@ -91,8 +89,6 @@ public class Creature extends LiveBeing
 	public BasicAttribute getExp() {return PA.getExp() ;}
 	public Set<Item> getBag() {return items ;}
 	public int getGold() {return gold ;}
-	public void setChasePlayer(boolean F) {chasePlayer = F ;}
-
 	public Point center() { return new Point((int) pos.x, (int) pos.y) ;}
 
 	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
@@ -102,7 +98,6 @@ public class Creature extends LiveBeing
 		setState(LiveBeingStates.idle) ;
 		PA.getLife().setToMaximum() ;
 		PA.getMp().setToMaximum() ;
-		setChasePlayer(false) ;
 	}
 	
 	public Item getRandomElemFromBag()
@@ -255,14 +250,15 @@ public class Creature extends LiveBeing
 
 	private void doBattleAction()
 	{		
+        if (!isAlive()) { return ;}
+        if (!canAtk()) { return ;}
+
 		LiveBeing creatureTarget = Game.getPlayer() ;
 		if (Game.getPet() != null)
 		{
 			creatureTarget = chooseTarget(Game.getPlayer().isAlive(), Game.getPet().isAlive()).equals("player") ? Game.getPlayer() : Game.getPet() ;
 		}		
 		
-		if (!isAlive()) { return ;}		
-		if (!canAtk()) { return ;}
 		if (!isInRange(creatureTarget.getPosAsDouble())) { return ;}
 		
 		chooseFightMove(creatureTarget.getCurrentAction()) ;
@@ -297,17 +293,6 @@ public class Creature extends LiveBeing
 
 	public void act(Point2D.Double playerPosAsDouble, GameMap playerMap, double dt)
 	{
-		if (chasePlayer) // TODO chasePlayer can be replaced with is fighting and playerIsAlive
-		{
-			// TODO should chase OR do battle action
-			Point2D.Double newPos = chase(pos, playerPosAsDouble, range) ;
-			if (playerMap.groundIsWalkable(new Point((int)newPos.x, (int)newPos.y), null))
-			{
-				setPos(newPos) ;
-			}
-			doBattleAction() ;
-		}
-
 		switch (state)
 		{
 			case idle:
@@ -320,7 +305,21 @@ public class Creature extends LiveBeing
 
 				return ;
 
-			case moving: move(playerMap, dt) ; return;			
+			case moving: move(playerMap, dt) ; return;
+			case fighting:          
+                if (!isInRange(playerPosAsDouble))
+                {
+                    Point2D.Double newPos = chase(pos, playerPosAsDouble, range) ;
+                    if (playerMap.groundIsWalkable(new Point((int)newPos.x, (int)newPos.y), null))
+                    {
+                        setPos(newPos) ;
+                    }
+                }
+                else
+                {
+                    doBattleAction() ;
+                }
+                return ;
 			default: return ;
 		}
 	}
@@ -428,11 +427,11 @@ public class Creature extends LiveBeing
 			displayAttributes(0);
 		}
 		if (Game.DEBUG_MODE)
-		{
-			GamePanel.getDP().drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;
-			GamePanel.getDP().drawText(Util.translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
+            {
+            GamePanel.getDP().drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;
+            GamePanel.getDP().drawText(Util.translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
 			GamePanel.getDP().drawText(Util.translate(pos, 0, -40), Align.bottomCenter, !idleTimer.isActive() ? "is moving: " + dir : "", Color.black) ;
-			displayState() ;
+            displayState() ;
 			GamePanel.getDP().drawText(Util.translate(pos, 0, -50), Align.bottomCenter, totalPower() + " ", Color.black) ;
 			hitbox.display();
 		}
@@ -462,7 +461,6 @@ public class Creature extends LiveBeing
 			}
 		}
 		setRandomPos() ;
-		chasePlayer = false ;
 	}
 	
 	@Override
