@@ -213,13 +213,34 @@ public abstract class LiveBeing implements Drawable
 		pos = newValue ;
 		hitbox.setCenter(center()) ;
 	}
+
+    protected boolean pathIsWalkable(Point2D.Double originPos, Point2D.Double destinyPos, Elements superElem)
+    {
+        double dx = destinyPos.x - originPos.x ;
+        double dy = destinyPos.y - originPos.y ;
+
+        int samples = (int) Math.ceil(Math.max(Math.abs(dx), Math.abs(dy))) ;
+
+        for (int i = 1; i <= samples; i += 1)
+        {
+            double t = (double) i / samples;
+            Point point = new Point((int) Math.round(originPos.x + dx * t), (int) Math.round(originPos.y + dy * t)) ;
+
+            if (!map.groundIsWalkable(point, superElem))
+            {
+                return false ;
+            }
+        }
+
+        return true ;
+    }
+
 	public void moveIfWalkable(Point2D.Double dist)
 	{
 		Point2D.Double newPos = new Point2D.Double(pos.x + dist.x, pos.y + dist.y) ;
 		Elements superElem = this instanceof Player ? ((Player) this).getSuperElem() : null ;
-		GameMap map = Game.getPlayer().getMap() ;
-		// TODO melhorar para pegar ponto "walkable" mais próximo e mover para ele, jogando para a projeção movível
-		if (map.groundIsWalkable(new Point((int)newPos.x, (int)newPos.y), superElem))
+
+		if (pathIsWalkable(pos, newPos, superElem))
 		{
 			setPos(newPos) ;
 		}

@@ -283,6 +283,7 @@ public class FieldMap extends GameMap
 			CreatureType creatureType = CreatureType.getAll().get(creatureTypeID);
 			Point2D.Double randomPos = randomPosOnLandDouble() ;
 			Creature creature = new Creature(creatureType, randomPos) ;
+            creature.setMap(this) ;
 			creatures.add(creature) ;
 		}
 	}

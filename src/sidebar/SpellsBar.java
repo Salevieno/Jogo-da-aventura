@@ -29,6 +29,7 @@ public abstract class SpellsBar
     private static final int MAX_NUMBER_ROWS = 8 ;
     private static final Font LARGE_FONT = new Font("SansSerif", Font.BOLD, 14) ;
     private static final Color TEXT_COLOR = Palette.colors[4] ;
+    private static final Scale SPELL_SCALE = new Scale(0.5, 0.5) ;
 
     private static final Point BAR_POS = new Point(Screen.getMe().mapSize().width + 2, HotKeysBar.topLeft().y - SideBar.SY) ;
     private static final Image BAR_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SpellsBar.png") ;
@@ -81,7 +82,7 @@ public abstract class SpellsBar
 			Point slotTopLeft = UtilAlignment.getTopLeft(slotCenter, Align.center, SLOT_SIZE) ;
 			Image image = spell.getMpCost() < userMP ? SideBar.SLOT_IMAGE : SLOT_IMAGE_NO_MP ;
 			GamePanel.getDP().drawImage(image, slotCenter, Align.center, 0.8) ;
-			GamePanel.getDP().drawImage(spell.getImage(), slotCenter, Align.center) ;
+			GamePanel.getDP().drawImage(spell.getImage(), slotCenter, SPELL_SCALE, Align.center) ;
 			Draw.keyboardKey(slotTopLeft, LiveBeing.getSpellKeys().get(i), LARGE_FONT, Palette.colors[0]);
 			
 			displayCooldown(slotCenter, spell) ;

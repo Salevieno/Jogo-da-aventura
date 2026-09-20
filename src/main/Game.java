@@ -90,7 +90,7 @@ public class Game
 		Log.info("Game version " + MainGame3_4.getVersion()) ;	
 		this.allText = new HashMap<>();
 		this.settings = new Settings(true, true, false, 1, 0) ;
-		this.player = new Player("", "", 0);
+		this.player = new Player("", "", 1);
 		this.player.setPos(Screen.getMe().getCenterAsDouble());
 		this.difficultLevel = 0;
 		this.saveSlotInUse = -1;

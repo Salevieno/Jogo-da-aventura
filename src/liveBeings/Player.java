@@ -417,12 +417,10 @@ public class Player extends LiveBeing
             	useAutoSpell(true, spells.get(4)) ;
         	}
         	trainCollecting(collectible) ;
-        	// Animation.start(AnimationTypes.obtainedItem, new Object[] {new Point((int)pos.x, (int)(pos.y - 20 - size.height)), msg, Palette.colors[0]});
 			ObtainedItemAnimation.start(new Point((int)pos.x, (int)(pos.y - 20 - size.height)), msg, Palette.colors[0]) ;
 		}
         else
         {
-        	// Animation.start(AnimationTypes.message, new Object[] {Screen.getMe().pos(0.2, 0.2), msg, Palette.colors[0]});
 			MessageAnimation.start(Screen.getMe().pos(0.2, 0.2), msg, Palette.colors[0]) ;
         }
 
@@ -584,15 +582,16 @@ public class Player extends LiveBeing
 			default: return null ;
 		}
 	}
-	
+
 	private void moveToNewMap(Point2D.Double pos, Directions dir, GameMap currentMap)
 	{
 		GameMap newMap = calcNewMap(pos, dir, currentMap) ;
-		// TODO checar se o chão no novo mapa é caminhável. Bug ao se mover para a cidade dos arqueiros de cima
 		if (newMap == null) { Log.warn("trying to move to null map") ; return ;}
 		if (!newMap.getContinent().equals(Continents.forest)) { Log.warn("trying to leave the forest"); return ;}
 		
 		Point2D.Double newPos = calcNewMapPos(pos, dir, currentMap, newMap) ;
+
+        if (!newMap.groundIsWalkable(new Point((int)newPos.x, (int)newPos.y), superElem)) {Log.info("Ground in new map is not walkable") ; return ;}
 
 		leaveBattle() ;
 
@@ -618,17 +617,16 @@ public class Player extends LiveBeing
 
 	public void move(Pet pet, double dt)
 	{
-		// TODO checar se TODOS os pontos entre a posição atual e a final são caminháveis. Apenas mover se todos forem
 		Point2D.Double newPos = calcNewPos(dt) ;
 
 		if (Screen.getMe().posIsWithinBorders(newPos))
 		{
-			if (!map.groundIsWalkable(new Point((int) newPos.x, (int) newPos.y), superElem)) { return ;}
+			if (!pathIsWalkable(pos, newPos, superElem)) { return ;}
 			
 			setPos(newPos) ;
 			if (LEVEL_UP_ANI.isActive())
 			{
-				LEVEL_UP_ANI.setPos(getPos());
+				LEVEL_UP_ANI.setPos(getPos()) ;
 			}
 			
 			return ;
@@ -1258,12 +1256,12 @@ public class Player extends LiveBeing
 		if (spell.isActive() & activate) { return ;}
 		if (!spell.isActive() & !activate) { return ;}
 
-//		Log.spellUsed(this, spell.getName(), spell.getLevel());
 		switch (spell.getId())
 		{
 			case 42:
 				if (Util.chance(0.5)) { return ;}
-				Spell lastSpellUsed = getActiveSpells().get(Integer.parseInt(currentAction)) ; // TODO parseInt doesn't work with F1 - F12
+				Spell lastSpellUsed = getActiveSpells().get(SPELL_KEYS.indexOf(currentAction)) ;
+                // TODO add animation for + hp, + mp ...
 				PA.getMp().incCurrentValue((int) (0.04 * spell.getLevel()* lastSpellUsed.getMpCost())) ;
 				
 			case 82:
@@ -1300,109 +1298,6 @@ public class Player extends LiveBeing
 			default: return ;
 		}
 	}
-	
-	// public AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
-	// {
-	// 	if (spell == null) { return null ;}
-	// 	if (receiver == null) { Log.warn(name + " trying to use offensive spell in no one") ; return null ;}
-		
-	// 	int spellLevel = spell.getLevel() ;
-	// 	int spellID = spells.indexOf(spell) ;
-		
-	// 	double PhyAtk = BA.TotalPhyAtk() ;
-	// 	double MagAtk = BA.TotalMagAtk() ;
-	// 	double PhyDef = receiver.getBA().TotalPhyDef() ;
-	// 	double MagDef = receiver.getBA().TotalMagDef() ;
-	// 	double AtkDex = BA.TotalDex() ;
-	// 	double DefAgi = receiver.getBA().TotalAgi() ;
-	// 	double AtkCrit = BA.TotalCritAtkChance() ;
-	// 	double DefCrit = receiver.getBA().TotalCritDefChance() ;		
-		
-	// 	double[] AtkMod = new double[] {spell.getAtkMod()[0] * spellLevel, 1 + spell.getAtkMod()[1] * spellLevel} ;
-	// 	double[] DefMod = new double[] {spell.getDefMod()[0] * spellLevel, 1 + spell.getDefMod()[1] * spellLevel} ;
-	// 	double[] DexMod = new double[] {spell.getDexMod()[0] * spellLevel, 1 + spell.getDexMod()[1] * spellLevel} ;
-	// 	double[] AgiMod = new double[] {spell.getAgiMod()[0] * spellLevel, 1 + spell.getAgiMod()[1] * spellLevel} ;
-	// 	double[] stunMod = new double[] {spell.getStunMod()[0] * spellLevel, 1 + spell.getStunMod()[1] * spellLevel} ;
-	// 	double[] blockMod = new double[] {spell.getBlockMod()[0] * spellLevel, 1 + spell.getBlockMod()[1] * spellLevel} ;
-	// 	double[] bloodMod = new double[] {spell.getBloodMod()[0] * spellLevel, 1 + spell.getBloodMod()[1] * spellLevel} ;
-	// 	double[] poisonMod = new double[] {spell.getPoisonMod()[0] * spellLevel, 1 + spell.getPoisonMod()[1] * spellLevel} ;
-	// 	double[] silenceMod = new double[] {spell.getSilenceMod()[0] * spellLevel, 1 + spell.getSilenceMod()[1] * spellLevel} ;
-	// 	double[] atkChances = new double[] {stunMod[0], blockMod[0], bloodMod[0], poisonMod[0], silenceMod[0]} ;
-		
-	// 	double AtkCritMod = spell.getAtkCritMod()[0] * spellLevel ;
-	// 	double DefCritMod = spell.getDefCritMod()[0] * spellLevel ;
-	// 	double BlockDef = receiver.getBA().getBlock().TotalDefChance() ;
-		
-	// 	double BasicAtk = 0 ;
-	// 	double BasicDef = 0 ;
-		
-	// 	Elements weaponElem = equips[0] != null ? equips[0].getElem() : null ;
-	// 	Elements[] AtkElem = new Elements[] {spell.getElem(), weaponElem, superElem} ;
-	// 	Elements[] DefElem = receiver.defElems() ;
-	// 	double receiverElemMod = 1 ;
-		
-	// 	switch (job)
-	// 	{
-	// 		case 0:
-			
-	// 			BasicAtk = PhyAtk ;
-	// 			BasicDef = PhyDef ;
-				
-	// 			break ;
-			
-	// 		case 1:
-			
-	// 			BasicAtk = MagAtk ;
-	// 			BasicDef = MagDef ;
-				
-	// 			break ;
-			
-	// 		case 2:
-			
-	// 			double arrowAtkPower = arrowIsEquipped() ? equippedArrow.getAtkPower() : 0 ;
-	// 			if (spellID == 0 | spellID == 3 | spellID == 6 | spellID == 9 | spellID == 12)
-	// 			{
-	// 				BasicAtk = PhyAtk + arrowAtkPower ;
-	// 				BasicDef = PhyDef ;
-	// 			}
-	// 			if (spellID == 2 | spellID == 5 | spellID == 11)
-	// 			{
-	// 				BasicAtk = (PhyAtk + MagAtk) / 2.0 + arrowAtkPower ;
-	// 				BasicDef = (PhyDef + MagDef) / 2.0 ;
-	// 			}
-	// 			if (spellID == 14)
-	// 			{
-	// 				BasicAtk = MagAtk + arrowAtkPower ;
-	// 				BasicDef = MagDef ;
-	// 			}
-				
-	// 			break ;
-			
-	// 		case 3:
-			
-	// 			BasicAtk = PhyAtk ;
-	// 			BasicDef = PhyDef ;
-				
-	// 			break ;
-			
-	// 		case 4:
-			
-	// 			BasicAtk = PhyAtk ;
-	// 			BasicDef = PhyDef ;
-				
-	// 			break ;
-			
-	// 	}
-
-	// 	AtkEffects effect = Battle.calcEffect(DexMod[0] + AtkDex * DexMod[1], AgiMod[0] + DefAgi * AgiMod[1], AtkCrit + AtkCritMod, DefCrit + DefCritMod, BlockDef) ;
-	// 	int damage = Battle.calcDamage(effect, AtkMod[0] + BasicAtk * AtkMod[1], DefMod[0] + BasicDef * DefMod[1], AtkElem, DefElem, receiverElemMod) ;
-	// 	Map<Attributes, Double> inflictedStatus = Battle.calcStatus(atkChances, receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
-		
-	// 	spell.applyBuffs(true, this) ;
-	// 	spell.applyNerfs(true, receiver) ;
-	// 	return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
-		
-	// }
 	
 	private void throwItem(GeneralItem item, LiveBeing receiver)
 	{
@@ -1566,7 +1461,6 @@ public class Player extends LiveBeing
 		if (!bag.contains(equippedArrow))
 		{
 			equippedArrow.use(this) ;
-			// MessageAnimation.start(Screen.getMe().pos(0.4, 0.3), "Última flecha usada!", Palette.colors[0]) ;
 		}
 	}
 	
@@ -1617,8 +1511,7 @@ public class Player extends LiveBeing
 		PA.getMp().setToMaximum() ;
 		spellPoints += 1 ;
 		attPoints += 2 ;
-		
-		// Animation.start(AnimationTypes.levelUp, new Object[] {attIncrease, level});
+
 		LEVEL_UP_ANI.setPos(getPos()) ;
 		LEVEL_UP_ANI.activate() ;
 	}
