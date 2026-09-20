@@ -30,16 +30,13 @@ public abstract class SideBar
 {
 	private static final Point BAR_POS = Screen.getMe().posInMap(1, 0) ;
 	private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 10) ;
+	private static final int SY = 10 ;
 	private static final String[] ICON_NAMES = new String[] {"map", "quest", "bag", "settings", "exit"} ;
 	private static final Image[] ICON_IMAGES = new Image[ICON_NAMES.length] ;
 	private static final Image[] ICON_SELECTED_IMAGES = new Image[ICON_NAMES.length] ;
 	private static final List<GameButton> BUTTONS = new ArrayList<>() ;
-	private static final Color BG_COLOR = Palette.colors[1] ;
-    
+	private static final Color BG_COLOR = Palette.colors[1] ;    
 	private static final Dimension SIZE = new Dimension(60, Screen.getMe().getSize().height) ;
-	protected static final Image SLOT_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Slot.png") ;
-	protected static final int SY = 10 ;
-	
 	private static String[] keys = new String[] {PlayerActions.attWindow.getKey(), PlayerActions.map.getKey(), PlayerActions.quest.getKey(), PlayerActions.bag.getKey(), null, null, null, null} ;
 	
 	static
@@ -60,7 +57,7 @@ public abstract class SideBar
 		Image playerImage = player.getMovingAni().spriteIdle.getCurrentFrame() ;
 		ButtonFunction playerAction = () -> { player.switchOpenClose(player.getAttWindow()) ;} ;
 		BUTTONS.add(new GameIconButton(iconPos, Align.topCenter, playerImage, playerImage, playerAction)) ;
-		iconPos.y += playerImage.getHeight(null) + 10 ;
+		iconPos.y += playerImage.getHeight(null) + SY ;
         
 		ButtonFunction[] actions = new ButtonFunction[ICON_NAMES.length] ;
 		actions[0] = () -> { player.switchOpenClose(player.getMapWindow()) ;} ; 
@@ -72,7 +69,7 @@ public abstract class SideBar
 		{
 			BUTTONS.add(new GameIconButton(iconPos, Align.topCenter, ICON_IMAGES[i], ICON_SELECTED_IMAGES[i], actions[i])) ;
 
-			iconPos.y += ICON_IMAGES[i].getHeight(null) + 10 ;
+			iconPos.y += ICON_IMAGES[i].getHeight(null) + SY ;
 		}
         
 		BUTTONS.forEach(GameButton::activate) ;
@@ -88,7 +85,7 @@ public abstract class SideBar
 		
 		Image petImage = pet.getMovingAnimations().spriteIdle.getCurrentFrame() ;
 		ButtonFunction petAction = () -> { player.switchOpenClose(pet.getAttWindow()) ;} ;
-		BUTTONS.add(new GameIconButton(Util.translate(BAR_POS, SIZE.width / 2, 10), Align.topCenter, petImage, petImage, petAction)) ;
+		BUTTONS.add(new GameIconButton(Util.translate(BAR_POS, SIZE.width / 2, SY), Align.topCenter, petImage, petImage, petAction)) ;
 	}
 	
 	private static void displayKeys()

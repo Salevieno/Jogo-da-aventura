@@ -31,11 +31,12 @@ public abstract class SpellsBar
     private static final Color TEXT_COLOR = Palette.colors[4] ;
     private static final Scale SPELL_SCALE = new Scale(0.5, 0.5) ;
 
-    private static final Point BAR_POS = new Point(Screen.getMe().mapSize().width + 2, HotKeysBar.topLeft().y - SideBar.SY) ;
+    private static final Point BAR_POS = new Point(Screen.getMe().mapSize().width + 2, Screen.getMe().getSize().height - 140) ;
     private static final Image BAR_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SpellsBar.png") ;
     private static final Dimension BAR_SIZE = Util.getSize(BAR_IMAGE) ;
     private static final Image SLOT_IMAGE_NO_MP = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SlotNoMP.png") ;
-    private static final Dimension SLOT_SIZE = Util.getSize(SideBar.SLOT_IMAGE) ;
+	private static final Image SLOT_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Slot.png") ;
+    private static final Dimension SLOT_SIZE = Util.getSize(SLOT_IMAGE) ;
     private static final Point SLOTS_OFFSET = new Point(3, 4) ;
     private static final Image COOLDOWN_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "Cooldown.png") ;
 
@@ -80,7 +81,7 @@ public abstract class SpellsBar
 			int col = i % nCols ;
 			Point slotCenter = Util.translate(BAR_POS, SLOTS_OFFSET.x + SLOT_SIZE.width / 2 + col * sx, - BAR_SIZE.height + SLOT_SIZE.height / 2 + SLOTS_OFFSET.y + row * sy) ;
 			Point slotTopLeft = UtilAlignment.getTopLeft(slotCenter, Align.center, SLOT_SIZE) ;
-			Image image = spell.getMpCost() < userMP ? SideBar.SLOT_IMAGE : SLOT_IMAGE_NO_MP ;
+			Image image = spell.getMpCost() < userMP ? SLOT_IMAGE : SLOT_IMAGE_NO_MP ;
 			GamePanel.getDP().drawImage(image, slotCenter, Align.center, 0.8) ;
 			GamePanel.getDP().drawImage(spell.getImage(), slotCenter, SPELL_SCALE, Align.center) ;
 			Draw.keyboardKey(slotTopLeft, LiveBeing.getSpellKeys().get(i), LARGE_FONT, Palette.colors[0]);

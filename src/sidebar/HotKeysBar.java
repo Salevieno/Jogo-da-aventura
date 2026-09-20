@@ -29,12 +29,12 @@ public abstract class HotKeysBar
     private static final List<Point> KEY_TEXT_POS ;
     private static final List<Point> ITEM_NAME_POS ;
     
-	private static final Dimension SLOT_SIZE = Util.getSize(SideBar.SLOT_IMAGE) ;
+	private static final Image SLOT_TRANSPARENT_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SlotTransparent.png") ;
+	private static final Dimension SLOT_SIZE = Util.getSize(SLOT_TRANSPARENT_IMAGE) ;
 	private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 14) ;
 	private static final Color TEXT_COLOR = Palette.colors[0] ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "HotBar.png") ;
-	private static final Image SLOT_TRANSPARENT_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SlotTransparent.png") ;
-	private static final Point BAR_POS = new Point(Screen.getMe().mapSize().width + 2, Screen.getMe().getSize().height - SideBar.SY) ;
+	private static final Point BAR_POS = new Point(Screen.getMe().mapSize().width + 2, Screen.getMe().getSize().height - 10) ;
 
     static
     {
