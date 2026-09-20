@@ -18,6 +18,8 @@ import components.Quest;
 import graphics.Align;
 import graphics2.SpriteAnimation;
 import items.Arrow;
+import items.Equip;
+import items.GeneralItem;
 import items.Item;
 import items.Recipe;
 import liveBeings.CreatureData;
@@ -100,6 +102,13 @@ public abstract class LoadingGame
 			{
 				MusicManager.switchMusic(player.getMap().getMusic());
 			}
+            player.getBag().add(Equip.getAll()[0], 1);
+            player.getBag().add(Equip.getAll()[1], 1);
+            player.getBag().add(Equip.getAll()[3], 1);
+            player.getBag().add(GeneralItem.getAll()[380], 1);
+            player.getBag().add(GeneralItem.getAll()[390], 1);
+            player.getBag().add(GeneralItem.getAll()[398], 1);
+            player.getBag().add(GeneralItem.getAll()[399], 1);
 			Game.getDayTimer().start();
 			startButton.activateAndSelect() ;
 		}

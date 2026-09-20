@@ -125,6 +125,14 @@ public class CraftWindow extends GameWindow
 		
 		recipesInPage = RECIPES_PER_PAGE <= recipes.size() ? recipes.subList(page, RECIPES_PER_PAGE + page) : recipes ;
 	}
+    protected int itemHoveredID(Point mousePos)
+    {
+        return -1 ;
+    }
+
+    public void updateSelectedItemOnHover(Point mousePos)
+    {
+    }
 	
 	public void setBag(BagWindow bag) { this.playerBag = bag ;}
 	
@@ -193,7 +201,7 @@ public class CraftWindow extends GameWindow
 
 				Color itemNameColor = playerBag.hasEnough(item, qtd) ? STD_COLOR : Palette.colors[2] ;
 				String msg = item.getName() + " (" + playerBag.getAmount(item) + " / " + qtd + ")" ;
-                item.displayInSlot(ingredientsPos.get(i), false) ;
+                item.displayInSlot(ingredientsPos.get(i)) ;
 				GamePanel.getDP().drawText(ingredientsTextPos.get(i), Align.centerLeft, msg, SUBTITLE_FONT, itemNameColor) ;
 
                 i++;
@@ -205,7 +213,7 @@ public class CraftWindow extends GameWindow
                 Item item = entry.getKey();
                 int qtd = entry.getValue() * amountOfCrafts ;
 
-                item.displayInSlot(productsPos.get(i), false) ;
+                item.displayInSlot(productsPos.get(i)) ;
 				GamePanel.getDP().drawText(productsTextPos.get(i), Align.centerLeft, qtd + " " + item.getName(), SUBTITLE_FONT, STD_COLOR) ;
 
                 i++;

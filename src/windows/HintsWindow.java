@@ -61,6 +61,14 @@ public class HintsWindow extends GameWindow
 	{
 		stdNavigation(action);
 	}
+    protected int itemHoveredID(Point mousePos)
+    {
+        return -1 ;
+    }
+
+    public void updateSelectedItemOnHover(Point mousePos)
+    {
+    }
 	
 	public void display(Point mousePos)
 	{

@@ -112,6 +112,14 @@ public class MapWindow extends GameWindow
 	{
 		
 	}
+    protected int itemHoveredID(Point mousePos)
+    {
+        return -1 ;
+    }
+
+    public void updateSelectedItemOnHover(Point mousePos)
+    {
+    }
 	
 	private Point getMapRowCol(String mapName)
 	{

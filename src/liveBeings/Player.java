@@ -1530,6 +1530,12 @@ public class Player extends LiveBeing
 	}	
 	
 	
+	public void updateWindows(Pet pet, Point mousePos)
+	{
+        if (focusWindow == null) { return ;}
+
+        focusWindow.updateSelectedItemOnHover(mousePos) ;
+	}
 	// called every time the window is repainted
 	public void showWindows(Pet pet, Point mousePos)
 	{

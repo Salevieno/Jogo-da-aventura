@@ -318,6 +318,19 @@ public class BagWindow extends GameWindow
 
 		return orderedItems ;		
 	}
+
+    public Map<Item, Integer> getEquips()
+    {
+        return itemsInBag.entrySet()
+                .stream()
+                .filter(entry -> entry.getKey() instanceof Equip)
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (existing, replacement) -> existing,
+                        LinkedHashMap::new
+                ));
+    }
 	
 	private Map<Item, Integer> getItemsInSelectedMenuWithAmounts()
 	{
@@ -429,6 +442,22 @@ public class BagWindow extends GameWindow
 		}
 	}
 	
+    protected int itemHoveredID(Point mousePos)
+    {
+        for (int i = 0 ; i <= itemsOnPage.keySet().size() - 1; i += 1)
+		{
+            if (itemIsHovered(mousePos, itemPos.get(i), Align.center, SLOT_SIZE)) { return i + page * QTD_SLOTS_PER_PAGE ;}
+        }
+        for (int i = 0 ; i <= recentlyUsedItems.get(tab).size() - 1 ; i += 1)
+        {
+            Item item = recentlyUsedItems.get(tab).get(i) ;
+            int itemID = new ArrayList<>(itemsOnMenu.keySet()).indexOf(item) ;
+
+            if (contains(item) && itemIsHovered(mousePos, recentItemPos.get(i), Align.center, SLOT_SIZE)) { return itemID ;}
+        }
+        return -1 ;
+    }
+
 	private void displayTabs(Point mousePos)
 	{
 		String[] tabNames = Game.getAllText().get(TextCategories.bagMenus) ;
@@ -452,13 +481,9 @@ public class BagWindow extends GameWindow
 
             if (!contains(item)) { continue ;}
 
-			Point slotCenter = recentItemPos.get(i) ;
             int amount = getAmount(item);
-            int itemID = new ArrayList<>(itemsOnMenu.keySet()).indexOf(item) ;
-			updateSelectedItemOnHover(mousePos, slotCenter, Align.center, SLOT_SIZE, itemID) ;
-            displayItem(item, amount, slotCenter, false) ;
+            displayItem(item, amount, recentItemPos.get(i), false) ;
         }
-
     }
 
     private void displayItem(Item itemDisplayed, int amount, Point slotCenter, boolean selected)
@@ -503,8 +528,7 @@ public class BagWindow extends GameWindow
 			int itemID = i + page * QTD_SLOTS_PER_PAGE ;
             boolean selected = 1 <= menu && item == itemID ;
 			Point slotCenter = itemPos.get(i) ;
-
-			updateSelectedItemOnHover(mousePos, slotCenter, Align.center, SLOT_SIZE, itemID) ;			
+		
             displayItem(itemsDisplayed.get(i), amountsDisplayed.get(i), slotCenter, selected) ;
 		}
     }
@@ -532,6 +556,6 @@ public class BagWindow extends GameWindow
 	@Override
 	public String toString()
 	{
-        return itemsInBag.toString() ;
+        return "Bag: " + itemsInBag.toString() ;
 	}
 }

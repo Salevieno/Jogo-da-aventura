@@ -93,13 +93,22 @@ public abstract class GameWindow
 
     protected abstract void onOpen() ;
     public abstract void act(Player player, Point mousePos) ;
+    protected abstract int itemHoveredID(Point mousePos) ;
+    public void updateSelectedItemOnHover(Point mousePos)
+    {
+        int itemHoveredID = itemHoveredID(mousePos) ;
+
+        if (itemHoveredID == -1 || item == itemHoveredID) { return ;}
+      
+        item = itemHoveredID ;
+    }
     protected abstract void onClose() ;
 	public abstract void navigate(String action) ;
 	public abstract void display(Point mousePos) ;
 
 	public boolean isOpen() {return isOpen ;}
 	
-	public static boolean actionIsForward(String action) { return action == null ? false : action.equals("Enter") || action.equals("LeftClick") ;}
+	public static boolean actionIsForward(String action) { return action != null && (action.equals("Enter") || action.equals("LeftClick")) ;}
 	protected GameButton pageUpButton(Point pos, Align align)
 	{
 		ButtonFunction action = () -> { pageUp() ;} ;
@@ -200,13 +209,10 @@ public abstract class GameWindow
 	
 	protected Color getTextColor(boolean isSelected) { return isSelected ? SELECTED_COLOR : STD_COLOR ;}
 
-	protected void updateSelectedItemOnHover(Point mousePos, Point itemPos, Align align, Dimension itemSize, int itemID)
-	{
-		Point itemTopLeft = UtilAlignment.getTopLeft(itemPos, align, itemSize) ;
-		if (!Util.isInside(mousePos, itemTopLeft, itemSize)) { return ;}
-
-		item = itemID ;
-	}
+    protected boolean itemIsHovered(Point mousePos, Point itemPos, Align align, Dimension hoverArea)
+    {
+        return Util.isInside(mousePos, UtilAlignment.getTopLeft(itemPos, align, hoverArea), hoverArea) ;
+    }
 	
 	protected static void drawNavigationButtons(Point pos, int width, Font font, int selectedPage, int numberPages, double opacity)
 	{

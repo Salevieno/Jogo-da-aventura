@@ -171,9 +171,29 @@ public class PlayerAttributesWindow extends AttributesWindow
         updateAttIncButtons() ;
     }
 
+	public void navigate(String action)
+	{
+		if (action.equals(stdMenuDown))
+		{
+			tabUp() ;
+		}
+		if (action.equals(stdMenuUp))
+		{
+			tabDown() ;
+		}
+	}
+
     public void act(Player player, Point mousePos)
     {
         
+    }
+    protected int itemHoveredID(Point mousePos)
+    {
+        return -1 ;
+    }
+
+    public void updateSelectedItemOnHover(Point mousePos)
+    {
     }
 
     private void updateAttIncButtons()
@@ -186,18 +206,6 @@ public class PlayerAttributesWindow extends AttributesWindow
 		
 		incAttButtons.values().forEach(GameButton::activate) ;
     }
-
-	public void navigate(String action)
-	{
-		if (action.equals(stdMenuDown))
-		{
-			tabUp() ;
-		}
-		if (action.equals(stdMenuUp))
-		{
-			tabDown() ;
-		}
-	}
 	
 	private void displayEquips(Point mousePos, Color textColor)
 	{

@@ -31,13 +31,14 @@ public class ForgeWindow extends GameWindow
 {
     private final Point titlePos ;
     private final Point messagePos ;
-    private final Point itemPos ;
-    private final Point namePos ;
-    private final Point runePos ;
-    private final Point pricePos ;
-    private final Point coinPos ;
+    private final List<Point> itemPos ;
+    private final List<Point> namePos ;
+    private final List<Point> runePos ;
+    private final List<Point> pricePos ;
+    private final List<Point> coinPos ;
     private final Dimension itemSize ;
 	private List<Equip> itemsForForge ;
+    private List<Equip> itemsOnPage ;
 	private String message ;
 	private BagWindow bag ;
 
@@ -50,24 +51,33 @@ public class ForgeWindow extends GameWindow
 		super("Forge", Screen.getMe().getPointWithinBorders(0.2, 0.05), IMAGE, 1, 1, 1, 1) ;
         this.titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
         this.messagePos = Util.translate(topLeftPos, size.width / 2, 36) ;
-        this.itemPos = Util.translate(topLeftPos, 24, 70) ;
-        this.namePos = Util.translate(itemPos, 14, 0) ;
-        this.runePos = Util.translate(itemPos, 160, 0) ;
-        this.pricePos = Util.translate(itemPos, 185, 0) ;
-        this.coinPos = Util.translate(itemPos, 210, 0) ;
+        this.itemPos = new ArrayList<>(QTD_ITEMS_ON_PAGE) ;
+        this.namePos = new ArrayList<>(QTD_ITEMS_ON_PAGE) ;
+        this.runePos = new ArrayList<>(QTD_ITEMS_ON_PAGE) ;
+        this.pricePos = new ArrayList<>(QTD_ITEMS_ON_PAGE) ;
+        this.coinPos = new ArrayList<>(QTD_ITEMS_ON_PAGE) ;
+        for (int i = 0 ; i <= QTD_ITEMS_ON_PAGE - 1 ; i += 1)
+        {
+            Point newItemPos = Util.translate(topLeftPos, 24, 70 + i * 28) ;
+            this.itemPos.add(newItemPos) ;
+            this.namePos.add(Util.translate(newItemPos, 14, 0)) ;
+            this.runePos.add(Util.translate(newItemPos, 160, 0)) ;
+            this.pricePos.add(Util.translate(newItemPos, 185, 0)) ;
+            this.coinPos.add(Util.translate(newItemPos, 210, 0)) ;
+        }
         this.itemSize = new Dimension(200, 10) ;
-		bag = null ;
-		// forgeButton = new GameButton(new Point(200, 300), Align.topLeft, null, null, () -> {forge() ;}) ;
-		itemsForForge = new ArrayList<>() ;
-		message = MESSAGES.get(0) ;
-		item = 0 ;
+		this.bag = null ;
+		this.itemsForForge = new ArrayList<>() ;
+		this.itemsOnPage = new ArrayList<>() ;
+		this.message = MESSAGES.get(0) ;
+		this.item = 0 ;
 	}
 
     protected void onOpen()
     {
-		itemsForForge = Arrays.asList(Game.getPlayer().getEquips()) ;
-		numberItems = itemsForForge.size() ;
-        bag = Game.getPlayer().getBag() ;
+		this.itemsForForge = Arrays.asList(Game.getPlayer().getEquips()) ;
+        this.bag = Game.getPlayer().getBag() ;
+		this.itemsOnPage = QTD_ITEMS_ON_PAGE <= itemsForForge.size() ? itemsForForge.subList(0, QTD_ITEMS_ON_PAGE) : itemsForForge ;
     }
 	
 	public void act(Player player, Point mousePos)
@@ -98,7 +108,18 @@ public class ForgeWindow extends GameWindow
 			itemDown() ;
 		}
 	}
-	
+    protected int itemHoveredID(Point mousePos)
+    {        
+		List<Equip> itemsOnPage = QTD_ITEMS_ON_PAGE <= itemsForForge.size() ? itemsForForge.subList(0, QTD_ITEMS_ON_PAGE) : itemsForForge ;
+        
+		for (int i = 0 ; i <= itemsOnPage.size() - 1 ; i += 1)
+		{			
+			if (itemsOnPage.get(i) == null) { continue ;}
+            if (itemIsHovered(mousePos, namePos.get(i), Align.centerLeft, itemSize)) { return i;}
+        }
+        return -1 ;
+    }
+
 	private Equip selectedEquip()
     {
         if (item == -1) { return null ;}
@@ -183,32 +204,27 @@ public class ForgeWindow extends GameWindow
 	}
 	
 	public void display(Point mousePos)
-	{
-		List<Equip> itemsOnPage = QTD_ITEMS_ON_PAGE <= itemsForForge.size() ? itemsForForge.subList(0, QTD_ITEMS_ON_PAGE) : itemsForForge ;
-		
-		if (itemsOnPage.size() == 0) { item = -1 ;}
+	{		
+		// if (itemsOnPage.size() == 0) { item = -1 ;}
 		
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;		
 		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[1]) ;
 		GamePanel.getDP().drawText(messagePos, Align.center, MESSAGES.get(0), STD_FONT, STD_COLOR) ;
 		
 		for (int i = 0 ; i <= itemsOnPage.size() - 1 ; i += 1)
-		{			
+		{
 			if (itemsOnPage.get(i) == null) { continue ;}
-			
-			updateSelectedItemOnHover(mousePos, namePos, Align.centerLeft, itemSize, i) ;
 			
 			Equip equip = itemsOnPage.get(i) ;
 			Color itemColor = this.item == itemsOnPage.indexOf(equip) ? SELECTED_COLOR : STD_COLOR ;
-            equip.displayInSlot(itemPos, false) ;
-			GamePanel.getDP().drawText(namePos, Align.centerLeft, equip.getName() + " + " + equip.getForgeLevel(), STD_FONT, itemColor) ;
+            equip.displayInSlot(itemPos.get(i)) ;
+			GamePanel.getDP().drawText(namePos.get(i), Align.centerLeft, equip.getName() + " + " + equip.getForgeLevel(), STD_FONT, itemColor) ;
 
             Forge rune = reqRune(equip) ;         			
-            rune.display(runePos, Item.isHovered(runePos, mousePos)) ;
+            rune.display(runePos.get(i), Item.isHovered(runePos.get(i), mousePos), Palette.colors[0]) ;
 			
-			GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos, Scale.unit, Align.center) ;
-			GamePanel.getDP().drawText(pricePos, Align.centerLeft, String.valueOf(forgePrice(equip.getForgeLevel())), STD_FONT, itemColor) ;
-			itemPos.y += 28 ;
+			GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos.get(i), Scale.unit, Align.center) ;
+			GamePanel.getDP().drawText(pricePos.get(i), Align.centerLeft, String.valueOf(forgePrice(equip.getForgeLevel())), STD_FONT, itemColor) ;
 		}
     }
 

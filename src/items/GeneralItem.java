@@ -86,7 +86,7 @@ public class GeneralItem extends Item
 	public void use(LiveBeing user)
 	{
 
-		((Player) user).getBag().remove(this, 1) ;
+		// ((Player) user).getBag().remove(this, 1) ; TODO criar lista de itens usáveis e remover apenas os usáveis
 		
 		switch (id)
 		{

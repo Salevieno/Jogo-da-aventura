@@ -69,7 +69,15 @@ public class BestiaryWindow extends GameWindow
 	public void navigate(String action)
 	{
 	}
-	
+    protected int itemHoveredID(Point mousePos)
+    {
+        for (int i = 0 ; i <= numSlotsInPage - 1 ; i += 1)
+		{
+            if (Util.isInside(mousePos, slotTopLeft.get(i), slotSize)) { return i ;}
+        }
+        return -1 ;
+    }
+
 	public void display(Point mousePos)
 	{
 		// draw window
@@ -77,7 +85,6 @@ public class BestiaryWindow extends GameWindow
 		
 		if (discoveredCreatures == null) { return ;}
 		
-		item = -1 ;
 		for (int i = 0 ; i <= numSlotsInPage - 1 ; i += 1)
 		{
 			// draw slots
@@ -86,7 +93,6 @@ public class BestiaryWindow extends GameWindow
 			// draw creatures
 			CreatureType creatureType = discoveredCreatures.get(i) ;
 			double scaleFactor = Math.min((double) (slotSize.width - 10) / creatureType.getSize().width, (double) (slotSize.height - 10) / creatureType.getSize().height) ;
-			updateSelectedItemOnHover(mousePos, slotTopLeft.get(i), Align.topLeft, slotSize, i) ;
 			creatureType.display(slotCenter.get(i), new Scale(scaleFactor, scaleFactor)) ;
 		}
 

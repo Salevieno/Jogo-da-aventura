@@ -1,5 +1,6 @@
 package items;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
@@ -63,19 +64,25 @@ public abstract class Item
         return Util.isInside(mousePos, topLeftPos, itemSize) ;
     }
 
-    public void display(Point center, boolean displayName)
+    public void display(Point center, boolean displayName, Color nameColor)
     {
 		GamePanel.getDP().drawImage(image, center, Align.center) ;
         if (displayName)
         {
-            GamePanel.getDP().drawText(Util.translate(center, 0, -12), Align.centerLeft, name, Palette.colors[0]);
+            GamePanel.getDP().drawText(Util.translate(center, 0, -12), Align.centerLeft, name, nameColor);
         }
     }
 
-    public void displayInSlot(Point center, boolean displayName)
+    public void displayInSlotWithName(Point center, Color nameColor)
     {
 		GamePanel.getDP().drawImage(SLOT_IMAGE, center, Align.center) ;
-		display(center, displayName) ;
+		display(center, true, nameColor) ;
+    }
+
+    public void displayInSlot(Point center)
+    {
+		GamePanel.getDP().drawImage(SLOT_IMAGE, center, Align.center) ;
+		display(center, false, null) ;
     }
 
 	protected static void drawMenu(Point pos, Align align, Dimension size)

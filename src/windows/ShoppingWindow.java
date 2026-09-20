@@ -35,6 +35,7 @@ public class ShoppingWindow extends GameWindow
 	private final ShopBag shopBag ;
 
 	private static final int MAX_ITEMS_PER_PAGE = 10 ;
+    private static final Dimension ITEM_HOVER_AREA = new Dimension(100, 10) ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Shopping.png") ;
 	
 	public ShoppingWindow(List<Item> itemsForSale)
@@ -133,7 +134,15 @@ public class ShoppingWindow extends GameWindow
 			sellItemFromBag(player.getBag()) ;
 		}
 	}
-	
+    protected int itemHoveredID(Point mousePos)
+    {
+		for (int i = 0 ; i <= itemsOnPage.size() - 1 ; i += 1)
+        {
+            if (itemIsHovered(mousePos, namePos.get(i), Align.centerLeft, ITEM_HOVER_AREA)) { return i ;}
+        }
+        return -1 ;
+    }
+
 	private void updatePage()
 	{
 		item = 0 ;
@@ -175,21 +184,17 @@ public class ShoppingWindow extends GameWindow
 
 		for (int i = 0 ; i <= itemsOnPage.size() - 1 ; i += 1)
         {
-            updateSelectedItemOnHover(mousePos, namePos.get(i), Align.centerLeft, new Dimension(100, 10), i) ;
 			Item bagItem = itemsOnPage.get(i) ;
-            bagItem.displayInSlot(itemPos.get(i), false);
+            bagItem.displayInSlot(itemPos.get(i));
             
 			String qtdItem = buyMode ? "" : "" ; // TODO pegar bag e mostrar qtos itens tem
 			Color itemColor = this.item == i ? SELECTED_COLOR : STD_COLOR ;
 			GamePanel.getDP().drawText(namePos.get(i), Align.centerLeft, bagItem.getName() + qtdItem, STD_FONT, itemColor) ;            
 			GamePanel.getDP().drawText(pricePos.get(i), Align.centerRight, String.valueOf(bagItem.getPrice()), STD_FONT, Palette.colors[14]) ;
 			GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos.get(i), Align.center) ;
-			
-			if (this.item == i)
-			{
-				bagItem.displayInfo(Util.translate(topLeftPos, -10, 0), Align.topRight) ;
-			}
 		}
+
+        itemsOnPage.get(this.item).displayInfo(Util.translate(topLeftPos, -10, 0), Align.topRight) ;
 
 		shopBag.display() ;
 		

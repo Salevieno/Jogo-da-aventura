@@ -83,6 +83,15 @@ public class BankWindow extends GameWindow
 			}
 		}		
 	}
+
+    protected int itemHoveredID(Point mousePos)
+    {
+        return -1 ;
+    }
+
+    public void updateSelectedItemOnHover(Point mousePos)
+    {
+    }
 	
 	public void setMode(BankAction mode) { this.mode = mode ;}
 	

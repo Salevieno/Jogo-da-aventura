@@ -186,6 +186,14 @@ public class SpellsTreeWindow extends GameWindow
 			close() ;
 		}
 	}
+    protected int itemHoveredID(Point mousePos)
+    {
+		for (int i = 0 ; i <= spellsOnPage.size() - 1 ; i += 1)
+		{
+            if (itemIsHovered(mousePos, spellImagePos.get(i), Align.center, SLOT_SIZE)) { return i ;}
+        }
+        return -1 ;
+    }
 
     private void updateTab()
     {
@@ -253,8 +261,6 @@ public class SpellsTreeWindow extends GameWindow
 			boolean hasPreReq = spell.hasPreRequisitesMet(spells) ;
 			Color textColor = hasPreReq ? HAS_PRE_REQ_COLOR : DOESNT_HAVE_PRE_REQ_COLOR ;
 			Image slotImage = hasPreReq ? SPELL_SLOT_IMAGE : SPELL_INACTIVE_SLOT_IMAGE ;
-			
-			updateSelectedItemOnHover(mousePos, slotPos.get(i), Align.topLeft, SLOT_SIZE, initialSpell + i) ;
 			if (this.item == initialSpell + i)
 			{
 				textColor = SELECTED_COLOR ;

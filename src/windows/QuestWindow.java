@@ -94,6 +94,14 @@ public class QuestWindow extends GameWindow
             updatePage() ;
 		}
 	}
+    protected int itemHoveredID(Point mousePos)
+    {
+        return -1 ;
+    }
+
+    public void updateSelectedItemOnHover(Point mousePos)
+    {
+    }
 	
     private void updatePage()
     {

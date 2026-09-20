@@ -193,6 +193,14 @@ public class PauseWindow extends GameWindow
                 return ;
         }
     }
+    protected int itemHoveredID(Point mousePos)
+    {
+        return -1 ;
+    }
+
+    public void updateSelectedItemOnHover(Point mousePos)
+    {
+    }
 
     public void display(Point mousePos)
     {

@@ -69,6 +69,14 @@ public class CreatureInfoWindow extends GameWindow
     public void navigate(String action)
     {
     }
+    protected int itemHoveredID(Point mousePos)
+    {
+        return -1 ;
+    }
+
+    public void updateSelectedItemOnHover(Point mousePos)
+    {
+    }
 
     public void display(Point mousePos)
     {

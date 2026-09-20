@@ -328,6 +328,7 @@ public class Game
 		}
 
 		playerActs(dt);
+        player.updateWindows(pet, GamePanel.getMousePos()) ;
 
 		player.checkMeet(GamePanel.getMousePos());
 
