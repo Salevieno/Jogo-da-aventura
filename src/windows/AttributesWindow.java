@@ -26,9 +26,9 @@ public abstract class AttributesWindow extends GameWindow
 	protected static final Image[] ATT_ICONS = new Image[] {PHY_ATK_ICON, MAG_ATK_ICON, PHY_DEF_ICON, MAG_DEF_ICON, DEX_ICON, AGI_ICON} ;
 	protected static final Image[] COLLECT_ICONS = new Image[] {HERB_ICON, WOOD_ICON, METAL_ICON} ;
 	
-	public AttributesWindow(Image image, int numberTabs)
+	public AttributesWindow(Image image, int numberTabs, Point topLeftPos)
 	{
-		super("Atributos", new Point(0, 0), image, 0, numberTabs, 0, 0) ;
+		super("Atributos", topLeftPos, image, 0, numberTabs, 0, 0) ;
 	}
 
 	public static Image[] getIcons()

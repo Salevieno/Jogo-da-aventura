@@ -1533,13 +1533,24 @@ public class Player extends LiveBeing
 	public void updateWindows(Pet pet, Point mousePos)
 	{
         if (focusWindow == null) { return ;}
+        if (!focusWindow.isOpen()) { return ;}
 
         focusWindow.updateSelectedItemOnHover(mousePos) ;
 	}
 	// called every time the window is repainted
 	public void showWindows(Pet pet, Point mousePos)
 	{
-		openWindows.forEach(win -> win.display(mousePos)) ;
+		openWindows.forEach(win -> 
+        {
+            if (win.isOpen())
+            {
+                win.display(mousePos) ;
+            }
+            else
+            {
+                win.runOpenCloseAnimation(mousePos) ;
+            }
+        }) ;
 	}
 		
 	

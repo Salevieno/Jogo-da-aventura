@@ -23,7 +23,6 @@ import utilities.Util;
 
 public class CreatureAttributesWindow extends AttributesWindow
 {
-	private final Point topLeftPos ;
 	private final Point userPos ;
 	private final Point namePos ;
 	private final Point levelPos ;
@@ -36,8 +35,7 @@ public class CreatureAttributesWindow extends AttributesWindow
 	private final Font font ;
 	public CreatureAttributesWindow()
 	{
-		super(ImageLoader.loadImage(Path.WINDOWS_IMG + "CreatureAttWindow.png"), 1);
-		this.topLeftPos = Screen.getMe().pos(0.4, 0.2) ;
+		super(ImageLoader.loadImage(Path.WINDOWS_IMG + "CreatureAttWindow.png"), 1, Screen.getMe().pos(0.4, 0.2));
 	    this.userPos = Util.translate(topLeftPos, size.width / 2, 60) ;	
 	    this.namePos = Util.translate(topLeftPos, size.width / 2, 14) ;
 	    this.levelPos = Util.translate(topLeftPos, size.width / 2, 30) ;

@@ -14,6 +14,7 @@ import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Log;
 import main.Palette;
 import main.Path;
 import screen.Screen;
@@ -56,7 +57,7 @@ public class SpellsTreeWindow extends GameWindow
 	private static final Color HAS_PRE_REQ_COLOR = Palette.colors[21] ;
 	private static final Color DOESNT_HAVE_PRE_REQ_COLOR = Palette.colors[21] ;
 	private static final Dimension SLOT_SIZE = Util.getSize(SPELL_SLOT_IMAGE) ;
-
+// TODO ajustar posições dos spells
 	public SpellsTreeWindow(int playerJob)
 	{
 		super("Árvore de magias", Screen.getMe().pos(0.4, 0.2), WINDOW_IMAGE, 0, 1, 0, 1) ;
@@ -121,6 +122,7 @@ public class SpellsTreeWindow extends GameWindow
 		
 	public void enableTab2() { numberTabs = 2 ;}
 
+    // proTODO verificar se funciona com duas abas
 	private boolean canAcquireSpell(int spellPoints) { return 0 < spellPoints && !spells.get(item).isMaxed() && spells.get(item).hasPreRequisitesMet(spells) ;}
 	
 	private void acquireSpell(Player player)
@@ -197,6 +199,16 @@ public class SpellsTreeWindow extends GameWindow
 
     private void updateTab()
     {
+        /*
+        proTODO
+         *  atualiza spellsOnPage e spellsDistribution, mas não atualiza:
+            slotPos
+            spellImagePos
+            spellLevelPos
+            spellNamePos
+            As posições calculadas em onOpen() podem ficar incompatíveis com a nova aba.
+            O cálculo dos slots deveria ser extraído para um método, por exemplo updateSpellPositions(), e chamado em onOpen() e updateTab().
+         */
         this.item = 0 ;
         updateSpellsOnPage() ;
         updateSpellsDistribution() ;
@@ -218,6 +230,8 @@ public class SpellsTreeWindow extends GameWindow
 	private void displaySpellsInfo()
 	{
 		if (spellsOnPage == null) { return ;}
+		if (spellsOnPage.isEmpty()) { return ;}
+		if (spellsOnPage.size() <= item) { Log.warn("Tentando obter spellOnPage além do tamanho da lista") ; return ;}
 		if (spellsOnPage.get(item) == null) { return ;}
 
         Spell spell = spellsOnPage.get(item) ;

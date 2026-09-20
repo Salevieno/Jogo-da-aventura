@@ -20,6 +20,7 @@ import liveBeings.Player;
 import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
+import main.GameTimer;
 import main.ImageLoader;
 import main.Palette;
 import main.Path;
@@ -32,6 +33,8 @@ public abstract class GameWindow
 	protected final Image image ;
 	protected final Point topLeftPos ;
 	protected final List<GameButton> buttons ;
+    private final GameTimer openingAnimationTimer ;
+    private Scale scale ;
 
 	protected boolean isOpen ;
 	protected int menu ;
@@ -54,6 +57,7 @@ public abstract class GameWindow
 
 	protected static final int BORDER = 6 ;
 	protected static final int PADDING = 36 ;
+	protected static final double OPEN_ANI_DURATION = 0.15 ;
 	protected static final Color STD_COLOR = Palette.colors[0] ;
 	protected static final Color SELECTED_COLOR = Palette.colors[18];
 	protected static final Font STD_FONT = new Font(Game.getMainFontName(), Font.BOLD, 10) ;
@@ -71,6 +75,8 @@ public abstract class GameWindow
 		this.image = image ;
 		this.topLeftPos = topLeftPos ;
 		this.buttons = new ArrayList<>() ;
+        this.openingAnimationTimer = new GameTimer(OPEN_ANI_DURATION) ;
+        this.scale = new Scale(0, 0) ;
 		this.numberMenus = numberMenus ;
 		this.numberTabs = numberTabs ;
 		this.numberItems = numberItems ;
@@ -106,7 +112,8 @@ public abstract class GameWindow
 	public abstract void navigate(String action) ;
 	public abstract void display(Point mousePos) ;
 
-	public boolean isOpen() {return isOpen ;}
+    // TODO considerar criar um enum com o estado da janela // OPENING, OPEN, CLOSED
+	public boolean isOpen() { return isOpen ;}
 	
 	public static boolean actionIsForward(String action) { return action != null && (action.equals("Enter") || action.equals("LeftClick")) ;}
 	protected GameButton pageUpButton(Point pos, Align align)
@@ -122,19 +129,52 @@ public abstract class GameWindow
 	
 	public void open()
     {
+        if (isOpen) { return ;}
+
+        if (!openingAnimationTimer.hasFinished())
+        {
+            if (!openingAnimationTimer.isActive())
+            {
+                openingAnimationTimer.start() ;
+            }
+            return ;
+        }
+
+        finishOpening() ;
+    }
+
+    private void finishOpening()
+    {
         isOpen = true ;
         onOpen() ;
         activateButtons() ;
     }
 
+    private void updateScale()
+    {
+        scale = new Scale(1.1 * openingAnimationTimer.rate(), 1.1 * openingAnimationTimer.rate()) ;
+    }
+
+    public void runOpenCloseAnimation(Point mousePos)
+    {
+        if (openingAnimationTimer.hasFinished())
+        {
+            finishOpening() ;
+            display(mousePos) ;
+            return ;
+        }
+
+        updateScale() ;
+        GamePanel.getDP().drawImage(image, UtilAlignment.getPosAt(topLeftPos, Align.topLeft, Align.center, size), scale, Align.center) ;
+    }
+
 	public void close()
     {
+        openingAnimationTimer.reset() ;
         isOpen = false ;
         onClose() ;
         deactivateButtons() ;
     }
-
-	public void switchOpenClose() { isOpen = !isOpen ;}
 
 	private void activateButtons() { buttons.forEach(GameButton::activate) ;}
 	private void deactivateButtons() { buttons.forEach(GameButton::deactivate) ;}

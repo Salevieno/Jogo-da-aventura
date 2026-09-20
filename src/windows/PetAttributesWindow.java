@@ -26,7 +26,6 @@ import utilities.Util;
 
 public class PetAttributesWindow extends AttributesWindow
 {
-	private final Point windowPos ;
 	private Pet pet ;
 	private final Point userPos ;
 	private final Font namefont ;
@@ -46,19 +45,18 @@ public class PetAttributesWindow extends AttributesWindow
 	
 	public PetAttributesWindow()
 	{
-		super(IMAGE, 1) ;
-		this.windowPos = Screen.getMe().pos(0.52, 0.14) ;
-	    this.userPos = Util.translate(windowPos, size.width / 2, 73) ;
+		super(IMAGE, 1, Screen.getMe().pos(0.52, 0.14)) ;
+	    this.userPos = Util.translate(topLeftPos, size.width / 2, 73) ;
 	    this.namefont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 	    this.font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;
-	    this.namePos = Util.translate(windowPos, size.width / 2, 18) ;
-	    this.levelPos = Util.translate(windowPos, size.width / 2, 38) ;
-        this.slotCenter = Util.translate(windowPos, 222, 72) ;
+	    this.namePos = Util.translate(topLeftPos, size.width / 2, 18) ;
+	    this.levelPos = Util.translate(topLeftPos, size.width / 2, 38) ;
+        this.slotCenter = Util.translate(topLeftPos, 222, 72) ;
         this.slotSize = new Dimension(51, 51) ;
         this.elemPos = Util.translate(slotCenter, slotSize.width - 12, slotSize.height / 2) ;
-	    this.lifePos = Util.translate(windowPos, 20, BORDER + PADDING + 46) ;
-	    this.mpPos = Util.translate(windowPos, 20, BORDER + PADDING + 46 + 27) ;
-	    this.initialAttPos = Util.translate(windowPos, BORDER + PADDING + 26, 136) ;
+	    this.lifePos = Util.translate(topLeftPos, 20, BORDER + PADDING + 46) ;
+	    this.mpPos = Util.translate(topLeftPos, 20, BORDER + PADDING + 46 + 27) ;
+	    this.initialAttPos = Util.translate(topLeftPos, BORDER + PADDING + 26, 136) ;
         this.attPos = new ArrayList<>(ATT_ICONS.length) ;
         for (int i = 0; i <= ATT_ICONS.length - 1; i += 1)
         {
@@ -87,7 +85,7 @@ public class PetAttributesWindow extends AttributesWindow
 	
 	public void display(Point mousePos)
 	{
-		GamePanel.getDP().drawImage(IMAGE, windowPos, Align.topLeft, stdOpacity) ;
+		GamePanel.getDP().drawImage(IMAGE, topLeftPos, Align.topLeft, stdOpacity) ;
 
 		SpriteAnimation userImage = pet.getMovingAni().spriteIdle ;
 		userImage.display(GamePanel.getDP(), userPos, Align.center) ;

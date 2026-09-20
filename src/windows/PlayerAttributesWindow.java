@@ -31,9 +31,7 @@ import utilities.Util;
 
 
 public class PlayerAttributesWindow extends AttributesWindow
-{	
-	private final Point topLeftPos ;
-
+{
 	private final Point tabsTextPos ;
 
 	private final Point playerNamePos ;
@@ -83,11 +81,9 @@ public class PlayerAttributesWindow extends AttributesWindow
 
 	public PlayerAttributesWindow()
 	{		
-		super(TAB_IMAGES.get(0), 3) ;
-		this.topLeftPos = Screen.getMe().pos(0.01, 0.25) ;
+		super(TAB_IMAGES.get(0), 3, Screen.getMe().pos(0.01, 0.25)) ;
 
         this.tabsTextPos = Util.translate(topLeftPos, 14, 56) ;
-
         this.playerNamePos = Util.translate(topLeftPos, size.width / 2, 11) ;
 
         this.eqSlotCenter = new Point[] {
@@ -289,6 +285,8 @@ public class PlayerAttributesWindow extends AttributesWindow
 		displayAttributes() ;
 		player.displayPowerBar(powerPos) ;
 		
+        // TODO verificar se funciona
+        incAttButtons.values().forEach(button -> this.buttons.add(button)) ;
 		incAttButtons.values().forEach(button -> button.display(false, mousePos)) ;
 	}
 	
