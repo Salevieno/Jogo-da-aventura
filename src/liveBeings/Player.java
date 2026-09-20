@@ -607,10 +607,10 @@ public class Player extends LiveBeing
         }
 		resetClosestCreature() ;
 		resetOpponent() ;
-        // if (opponent != null)
-		// {
-		// 	opponent.setChasePlayer(false) ;
-		// }	
+        if (Game.getPet() != null)
+        {
+            Game.getPet().setPos(pos) ;
+        }
 		setMap(newMap) ;
 		setPos(newPos) ;
 	}

@@ -285,11 +285,6 @@ public class Game
 		if (player.isMoving() && !player.isCollecting())
 		{
 			player.move(pet, dt);
-            
-            if (pet != null)
-            {
-                pet.setPos(player.getPosAsDouble()) ; // TODO mover daqui
-            }
 		}
 		player.updateCombo() ;
 	}

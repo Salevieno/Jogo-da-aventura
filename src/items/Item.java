@@ -28,7 +28,7 @@ public abstract class Item
 	protected final double dropChance ;
 	
 	protected static final Image INFO_MENU_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "itemInfoWindow.png") ;
-    private static final Image SLOT_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "itemSlot.png") ; // TODO move to shared?
+    private static final Image SLOT_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "itemSlot.png") ;
 	private static final List<Item> ALL = new ArrayList<>() ;
 	
 	public Item(int id, String name, String description, Image image, int price, double dropChance)
@@ -71,12 +71,6 @@ public abstract class Item
         {
             GamePanel.getDP().drawText(Util.translate(center, 0, -12), Align.centerLeft, name, nameColor);
         }
-    }
-
-    public void displayInSlotWithName(Point center, Color nameColor)
-    {
-		GamePanel.getDP().drawImage(SLOT_IMAGE, center, Align.center) ;
-		display(center, true, nameColor) ;
     }
 
     public void displayInSlot(Point center)

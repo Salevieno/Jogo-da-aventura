@@ -159,14 +159,13 @@ public class Creature extends LiveBeing
         type.getMoveSound().playAtVolume(volume) ;
     }
 
-	public String chooseTarget(boolean playerIsAlive, boolean petIsAlive)
-	{// TODO optional - retornar liveBeing
-		if (!playerIsAlive & !petIsAlive) { return null ;}		
-		if (!playerIsAlive) { return "pet"  ;}
-		if (!petIsAlive) { return "player" ;}
+	private LiveBeing chooseTarget()
+	{
+		if (Game.getPlayer().isAlive() && Game.getPet() != null && Game.getPet().isAlive()) { return 0.5 <= Math.random() ? Game.getPlayer() : Game.getPet() ;}		
+		if (Game.getPlayer().isAlive()) { return Game.getPlayer()  ;}
+		if (Game.getPet() != null && Game.getPet().isAlive()) { return Game.getPet() ;}
 
-		if (0.5 <= Math.random()) { return "player" ;}
-		else { return "pet" ;}
+		return null ;
 	}
 		
 	public void chooseFightMove(String playerMove)
@@ -253,11 +252,7 @@ public class Creature extends LiveBeing
         if (!isAlive()) { return ;}
         if (!canAtk()) { return ;}
 
-		LiveBeing creatureTarget = Game.getPlayer() ;
-		if (Game.getPet() != null)
-		{
-			creatureTarget = chooseTarget(Game.getPlayer().isAlive(), Game.getPet().isAlive()).equals("player") ? Game.getPlayer() : Game.getPet() ;
-		}		
+		LiveBeing creatureTarget = chooseTarget() ;
 		
 		if (!isInRange(creatureTarget.getPosAsDouble())) { return ;}
 		
