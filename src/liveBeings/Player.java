@@ -625,14 +625,15 @@ public class Player extends LiveBeing
 	{
 		Point2D.Double newPos = calcNewPos(dt) ;
 
-		if (Screen.getMe().posIsWithinBorders(newPos) && pathIsWalkable(pos, newPos, superElem))
+		if (!Screen.getMe().posIsWithinBorders(newPos))
 		{			
-			setPos(newPos) ;
-			
+		    moveToNewMap(pos, dir, map) ;
 			return ;
 		}
 
-		moveToNewMap(pos, dir, map) ;
+        if (!pathIsWalkable(pos, newPos, superElem)) { return ;}
+
+        setPos(newPos) ;
 	}
 
 	public void engageInFight(Creature newOpponent)
